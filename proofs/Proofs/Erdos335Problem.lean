@@ -146,3 +146,35 @@ theorem additive_implies_tight (A B : Set ℕ) (h : DensityAdditive A B) :
     asympDensity (Sumset A B) = min (asympDensity A + asympDensity B) 1 := by
   have hle := additive_sum_le_one A B h
   rw [h.2.2.2, min_eq_left hle]
+
+/- ## Derived Structural Results -/
+
+/-- If A is density-additive with itself, then d(A) ≤ 1/2.
+    Since d(A + A) = d(A) + d(A) = 2·d(A) ≤ 1, we get d(A) ≤ 1/2. -/
+theorem self_additive_density_le_half (A : Set ℕ) (h : DensityAdditive A A) :
+    asympDensity A ≤ 1 / 2 := by
+  have := additive_sum_le_one A A h
+  linarith
+
+/-- Sumset is monotone: A ⊆ A' and B ⊆ B' imply (A + B) ⊆ (A' + B'). -/
+theorem Sumset_mono {A A' B B' : Set ℕ} (hA : A ⊆ A') (hB : B ⊆ B') :
+    Sumset A B ⊆ Sumset A' B' := by
+  intro n ⟨a, ha, b, hb, hn⟩
+  exact ⟨a, hA ha, b, hB hb, hn⟩
+
+/-- Sumset is commutative. -/
+theorem Sumset_comm (A B : Set ℕ) : Sumset A B = Sumset B A := by
+  ext n
+  simp only [Sumset, Set.mem_setOf_eq]
+  constructor
+  · rintro ⟨a, ha, b, hb, hn⟩
+    exact ⟨b, hb, a, ha, by omega⟩
+  · rintro ⟨b, hb, a, ha, hn⟩
+    exact ⟨a, ha, b, hb, by omega⟩
+
+/-- Density additivity with the Plünnecke–Ruzsa bound: additive pairs are
+    extremal (they achieve the minimum possible sumset density). -/
+theorem additive_achieves_lower_bound (A B : Set ℕ)
+    (hA : DensityExists A) (hB : DensityExists B) (h : DensityAdditive A B) :
+    asympDensity (Sumset A B) ≥ min (asympDensity A + asympDensity B) 1 := by
+  rw [additive_implies_tight A B h]

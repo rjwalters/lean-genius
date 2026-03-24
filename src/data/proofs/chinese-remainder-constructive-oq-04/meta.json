@@ -199,11 +199,13 @@
     "definitionCount": 3
   },
   "relatedProofs": [
-    "chinese-remainder-constructive",
-    "bezout-identity",
-    "chinese-remainder-non-coprime",
-    "gcd-algorithm",
-    "euler-totient",
-    "fundamental-arithmetic"
+    "chinese-remainder-constructive"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    }
   ]
 }

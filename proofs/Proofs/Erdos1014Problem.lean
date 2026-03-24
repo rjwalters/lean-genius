@@ -79,13 +79,39 @@ axiom ratio_from_asymptotics (k : ℕ) (hk : k ≥ 3) :
   ∀ ε : ℝ, ε > 0 → ∃ L₀ : ℕ, ∀ l : ℕ, l > L₀ →
     |(ramseyNumber k (l + 1) : ℝ) / (ramseyNumber k l : ℝ) - 1| < ε
 
-/-- The conjecture is equivalent to: R(k, l+1) - R(k, l) = o(R(k, l)). -/
-axiom ratio_equiv_difference (k : ℕ) (hk : k ≥ 3) :
+/-- The conjecture is equivalent to: R(k, l+1) - R(k, l) = o(R(k, l)).
+Proved from monotonicity (R(k,l+1) ≥ R(k,l)) and positivity (R(k,l) ≥ 1):
+|x/y - 1| = (x - y)/y when x ≥ y > 0. -/
+theorem ratio_equiv_difference (k : ℕ) (hk : k ≥ 3) :
   (∀ ε : ℝ, ε > 0 → ∃ L₀ : ℕ, ∀ l : ℕ, l > L₀ →
     |(ramseyNumber k (l + 1) : ℝ) / (ramseyNumber k l : ℝ) - 1| < ε) ↔
   (∀ ε : ℝ, ε > 0 → ∃ L₀ : ℕ, ∀ l : ℕ, l > L₀ →
     ((ramseyNumber k (l + 1) : ℝ) - (ramseyNumber k l : ℝ)) /
-    (ramseyNumber k l : ℝ) < ε)
+    (ramseyNumber k l : ℝ) < ε) := by
+  -- Key facts: R(k,l) ≥ 1 > 0 for l ≥ 1, and R(k,l+1) ≥ R(k,l)
+  have abs_eq : ∀ l : ℕ, l ≥ 1 →
+      |(ramseyNumber k (l + 1) : ℝ) / (ramseyNumber k l : ℝ) - 1| =
+      ((ramseyNumber k (l + 1) : ℝ) - (ramseyNumber k l : ℝ)) /
+      (ramseyNumber k l : ℝ) := by
+    intro l hl
+    set a := (ramseyNumber k (l + 1) : ℝ) with ha_def
+    set b := (ramseyNumber k l : ℝ) with hb_def
+    have hb_pos : b ≥ 1 := by simp [hb_def]; exact_mod_cast ramsey_pos k l (by omega) hl
+    have hb_ne : b ≠ 0 := by linarith
+    have hab : b ≤ a := by simp [ha_def, hb_def]; exact_mod_cast ramsey_monotone_right k l
+    have h_eq : a / b - 1 = (a - b) / b := by
+      rw [eq_comm, sub_div, div_self hb_ne]
+    have h_nn : 0 ≤ a / b - 1 := by
+      rw [h_eq]; exact div_nonneg (by linarith) (by linarith)
+    rw [abs_of_nonneg h_nn]
+    exact h_eq
+  constructor
+  · intro h ε hε
+    obtain ⟨L₀, hL⟩ := h ε hε
+    exact ⟨L₀, fun l hl => by rw [← abs_eq l (by omega)]; exact hL l hl⟩
+  · intro h ε hε
+    obtain ⟨L₀, hL⟩ := h ε hε
+    exact ⟨L₀, fun l hl => by rw [abs_eq l (by omega)]; exact hL l hl⟩
 
 /- ## Special Cases -/
 
@@ -99,6 +125,10 @@ axiom R34 : ramseyNumber 3 4 = 9
 axiom R35 : ramseyNumber 3 5 = 14
 
 /-- For the diagonal case k = l, Erdős–Szekeres gives R(k,k) ≤ C(2k-2,k-1).
-    See Problem #1030 for the full diagonal Ramsey asymptotics question. -/
-axiom diagonal_ramsey_upper (k : ℕ) (hk : k ≥ 2) :
-  ramseyNumber k k ≤ Nat.choose (2 * k - 2) (k - 1)
+    Proved from ramsey_upper_erdos_szekeres with l = k. -/
+theorem diagonal_ramsey_upper (k : ℕ) (hk : k ≥ 2) :
+    ramseyNumber k k ≤ Nat.choose (2 * k - 2) (k - 1) := by
+  have h := ramsey_upper_erdos_szekeres k k hk hk
+  have heq : k + k - 2 = 2 * k - 2 := by omega
+  rw [heq] at h
+  exact_mod_cast h

@@ -10,7 +10,7 @@
     "title": "Module Overview: From Degree Criterion to Galois Criterion",
     "content": "The file imports Mathlib (for p-groups, Galois groups, field extensions, polynomials) plus four project-local files: `InverseGalois` (S\u2083 as Galois group of x\u00b3-2), `InverseGaloisD4` (D\u2084 as Galois group of x\u2074-2), `NthRootIrrationalOQ01` (irreducibility of x^n-a), and `AngleTrisectionCos20Gal` (Galois group of the trisection polynomial). The module docstring explains the upgrade from OQ-01's necessary condition (degree divides 2^n) to OQ-02's exact biconditional (constructibility \u2194 2-group Galois). This is a fundamental shift: degree is a numerical shadow of the richer group-theoretic structure.\n\n**Why the upgrade matters:** The degree criterion alone cannot distinguish \u221a2 (constructible, degree 2) from \u221b2 (non-constructible, degree 3). But it also fails more subtly: there exist algebraic numbers whose degree IS a power of 2 but which are NOT constructible \u2014 because the Galois group, though of 2-power order, may not embed into the right intermediate field structure. The 2-group Galois criterion captures the exact obstruction.",
     "mathContext": "The upgrade: OQ-01 says $\\alpha$ constructible $\\Rightarrow [\\mathbb{Q}(\\alpha):\\mathbb{Q}] \\mid 2^n$ (necessary). OQ-02 says $\\alpha$ constructible $\\iff \\text{Gal}(\\text{minpoly}(\\mathbb{Q},\\alpha))$ is a 2-group (necessary AND sufficient).",
-    "significance": "supporting",
+    "significance": "key",
     "relatedConcepts": [
       "Galois correspondence",
       "2-groups",
@@ -54,7 +54,7 @@
     "id": "ann-constructibility-def",
     "proofId": "angle-trisection-oq-02",
     "range": {
-      "startLine": 65,
+      "startLine": 61,
       "endLine": 75
     },
     "type": "definition",
@@ -111,27 +111,31 @@
     "id": "ann-non-constructible",
     "proofId": "angle-trisection-oq-02",
     "range": {
-      "startLine": 95,
+      "startLine": 91,
       "endLine": 141
     },
     "type": "technique",
     "title": "Non-Constructibility: Coprimality Proves Order 6 Is Not a 2-Power",
-    "content": "The private lemma `not_pow_two_of_eq_six` proves `6 \u2260 2^n` by contradiction: if `6 = 2^n`, then `Coprime 3 (2^n)` (since gcd(3,2)=1 implies gcd(3,2^n)=1 via `Nat.Coprime.pow_right`), but `3 \u2223 2^n` (since 3 \u2223 6 = 2^n). A number coprime to n cannot divide n. This drives both non-constructibility proofs: for `x_cube_sub_2_gal_not_2group` and `cos20_gal_not_2group`, the axioms give `|Gal| = 6`, then `IsPGroup.iff_card.mp` extracts `Nat.card = 2^n`, and `not_pow_two_of_eq_six` gives the contradiction.",
-    "mathContext": "Coprimality argument: $3 \\nmid 2^n$ for any $n$ because $\\gcd(3, 2) = 1 \\Rightarrow \\gcd(3, 2^n) = 1$ (coprimality preserved under powers), so 3 cannot divide $2^n$. But $3 \\mid 6$, hence $6 \\neq 2^n$. In Lean 4: `Nat.Coprime.pow_right n (by norm_num : Nat.Coprime 3 2)` gives `Coprime 3 (2^n)`, then `Nat.dvd_gcd (dvd_refl 3) h3dvd` constructs the contradiction. The same lemma serves both: $\\text{Gal}(x^3-2/\\mathbb{Q}) \\cong S_3$ (order 6) and $\\text{Gal}(8x^3-6x-1/\\mathbb{Q}) \\cong S_3$ (order 6, the triple-angle formula polynomial for cos(20\u00b0)).",
+    "content": "Two coprimality lemmas prove that certain group orders cannot be 2-powers. `not_pow_two_of_eq_six` proves `6 \u2260 2^n` by contradiction: if `6 = 2^n`, then `Coprime 3 (2^n)` (since gcd(3,2)=1 implies gcd(3,2^n)=1 via `Nat.Coprime.pow_right`), but `3 \u2223 2^n` (since 3 \u2223 6 = 2^n) \u2014 a number coprime to 3 cannot be divisible by 3. `not_pow_two_of_eq_three` proves `3 \u2260 2^n` by bounding: `n \u2264 1` since `2^n \u2265 4` for `n \u2265 2`, then `interval_cases` eliminates `n = 0` and `n = 1`.\n\nThese drive the two non-constructibility results: `x_cube_sub_2_gal_not_2group` uses `|Gal(x\u00b3-2)| = 6` (from InverseGalois.lean) with `not_pow_two_of_eq_six`; `cos20_gal_not_2group` uses `|Gal(8x\u00b3-6x-1)| = 3` (from AngleTrisectionCos20Gal.lean) with `not_pow_two_of_eq_three`. Both follow the same pattern: assume `IsPGroup 2`, extract `Nat.card = 2^n` via `IsPGroup.iff_card.mp`, rewrite with the known cardinality, and derive a contradiction.",
+    "mathContext": "Two distinct arguments:\n\n**Order 6** ($\\text{Gal}(x^3-2/\\mathbb{Q}) \\cong S_3$): Coprimality argument \u2014 $\\gcd(3, 2) = 1 \\Rightarrow \\gcd(3, 2^n) = 1$, but $3 \\mid 6$, so $6 \\neq 2^n$. In Lean 4: `Nat.Coprime.pow_right n (by norm_num : Nat.Coprime 3 2)` gives `Coprime 3 (2^n)`, then `Nat.dvd_gcd (dvd_refl 3) h3dvd` constructs the contradiction.\n\n**Order 3** ($\\text{Gal}(8x^3-6x-1/\\mathbb{Q}) \\cong \\mathbb{Z}/3\\mathbb{Z}$, the triple-angle formula polynomial for $\\cos(20\u00b0)$): Bounding argument \u2014 $2^n \\geq 4$ for $n \\geq 2$, so $3 = 2^n$ forces $n \\leq 1$; `interval_cases` eliminates both. The discriminant of $8x^3-6x-1$ is $(-6)^2 - 4(8)(-1) = 68$... actually $\\Delta = 81 = 9^2$, a perfect square, so $\\text{Gal} \\subseteq A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ (order 3, not $S_3$).",
     "significance": "key",
     "prerequisites": [
       "not_pow_two_of_eq_six",
-      "x_cube_sub_2_gal_order axiom",
-      "cos20_gal_order axiom",
+      "not_pow_two_of_eq_three",
+      "x_cube_sub_2_gal_order (from InverseGalois.lean)",
+      "cos20_gal_order (from AngleTrisectionCos20Gal.lean)",
       "IsPGroup.iff_card"
     ],
     "relatedConcepts": [
       "Nat.Coprime",
       "Nat.Coprime.pow_right",
       "6 \u2260 2^n",
+      "3 \u2260 2^n",
       "S\u2083 order 6",
+      "\u2124/3\u2124 order 3",
       "\u221b2 non-constructible",
-      "cos(20\u00b0) non-constructible"
+      "cos(20\u00b0) non-constructible",
+      "interval_cases tactic"
     ]
   },
   {
@@ -147,8 +151,8 @@
     "mathContext": "- $\\text{Gal}(x^2 - 2/\\mathbb{Q}) \\cong \\mathbb{Z}/2\\mathbb{Z}$ (order $2 = 2^1$): only automorphism is $\\sqrt{2} \\mapsto -\\sqrt{2}$. - $\\text{Gal}(x^4 - 2/\\mathbb{Q}) \\cong D_4$ (dihedral group, order $8 = 2^3$): the four roots are $\\zeta^k \\sqrt[4]{2}$ for $\\zeta = i$ and the Galois group acts by permuting them. Both groups are 2-groups ($|G| = 2^1$ and $|G| = 2^3$). The pattern `IsPGroup.of_card (show Nat.card ... = 2^k from by simp ...)` is the idiomatic Lean 4 way to establish 2-group membership from a cardinality axiom.",
     "significance": "supporting",
     "prerequisites": [
-      "x_sq_sub_2_gal_order axiom",
-      "x_4th_sub_2_gal_order axiom",
+      "x_sq_sub_2_gal_order (proved in this file)",
+      "x_4th_sub_2_gal_order (from InverseGaloisD4.lean)",
       "IsPGroup.of_card",
       "wantzel_galois_characterization"
     ],
@@ -169,14 +173,14 @@
     },
     "type": "insight",
     "title": "OQ-02 Strictly Strengthens OQ-01: Galois Criterion Implies Degree Criterion",
-    "content": "`constructible_implies_degree_dvd_pow2` chains two steps: constructibility \u2192 (Galois 2-group via `wantzel_galois_characterization`) \u2192 (degree \u2223 2^n via `galois_2group_implies_degree_pow2`). This shows OQ-02 implies OQ-01 but not vice versa. The degree criterion is necessary but not sufficient for constructibility; the Galois criterion is the exact characterization. The axiom `galois_2group_implies_degree_pow2` captures the fact that `natDegree(minpoly) \u2223 |Gal|` and 2-groups have 2-power order.",
+    "content": "`constructible_implies_degree_dvd_pow2` chains two steps: constructibility \u2192 (Galois 2-group via `wantzel_galois_characterization`) \u2192 (degree \u2223 2^n via `galois_2group_implies_degree_pow2`). This shows OQ-02 implies OQ-01 but not vice versa. The degree criterion is necessary but not sufficient for constructibility; the Galois criterion is the exact characterization.\n\nThe theorem `galois_2group_implies_degree_pow2` is fully proved (not axiomatized). Its 4-step proof: (1) extract `|Gal| = 2^k` from the 2-group hypothesis via `IsPGroup.iff_card`; (2) get `|Gal| = finrank` from separability (`Polynomial.Gal.card_of_separable`); (3) get `natDegree | finrank` from the tower law via `irred_monic_degree_dvd_splitting_finrank`; (4) combine: `natDegree | finrank = Nat.card Gal = 2^k`.",
     "mathContext": "The logical chain: Constructible $\\Rightarrow$ Gal is 2-group $\\Rightarrow$ deg $\\mid 2^n$. Reverse failures: degree = $2^k$ does NOT imply Gal is a 2-group (some degree-$2^k$ polynomials have non-2-group Galois groups via composita). The key fact used is that `natDegree(p) \u2223 |Gal(p)|` (Galois group order is divisible by the degree for irreducible polynomials), so $|\\text{Gal}| = 2^m \\Rightarrow \\text{deg} \\mid 2^m$.",
     "significance": "supporting",
     "prerequisites": [
       "wantzel_galois_characterization",
-      "galois_2group_implies_degree_pow2 axiom",
-      "natDegree",
-      "Galois group order divides degree"
+      "galois_2group_implies_degree_pow2",
+      "Polynomial.Gal.card_of_separable",
+      "irred_monic_degree_dvd_splitting_finrank"
     ],
     "relatedConcepts": [
       "degree criterion (OQ-01)",

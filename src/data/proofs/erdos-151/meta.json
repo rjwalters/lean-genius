@@ -64,7 +64,7 @@
   "overview": {
     "historicalContext": "Paul Erdős and Tibor Gallai proposed this conjecture connecting two fundamental graph-theoretic quantities: the clique transversal number $\\tau(G)$ and the triangle-free independence function $H(n)$. The function $H(n)$, defined as the largest $k$ such that every triangle-free graph on $n$ vertices has an independent set of size $\\ge k$, is intimately tied to the Ramsey number $R(3,t)$. Kim (1995) proved $R(3,t) = \\Theta(t^2/\\log t)$, implying $H(n) = \\Theta(\\sqrt{n \\log n})$. The easy bound $\\tau(G) \\le n - \\sqrt{n}$ follows from the Ramsey-theoretic lower bound on independence numbers: every graph on $n$ vertices has $\\alpha(G) \\ge \\sqrt{n}$ (since $R(\\omega+1, t) \\ge t$ for some $t \\sim \\sqrt{n}$), and the complement of any independent set is a clique transversal. Erdős famously described this conjecture as 'perhaps completely wrongheaded,' expressing genuine uncertainty about its truth — unusual for Erdős, who typically had strong intuitions. Even the restricted case for $K_4$-free graphs remains open, suggesting the problem is fundamentally hard.",
     "problemStatement": "Is τ(G) ≤ n − H(n) for every graph G on n vertices?",
-    "text": "Is \u03c4(G) \u2264 n \u2212 H(n) for every n-vertex graph G, where \u03c4 is the clique transversal number and H(n) is the triangle-free independence number?",
+    "text": "Is τ(G) ≤ n − H(n) for every n-vertex graph G, where τ is the clique transversal number and H(n) is the triangle-free independence number?",
     "proofStrategy": "The formalization axiomatises cliques, maximal cliques, independence, and triangle-freeness. Defines clique transversals and axiomatises τ(G) and H(n) with their specifications. The easy bound and the main conjecture are stated.",
     "keyInsights": [
       "τ(G) is the minimum vertex set hitting every maximal clique of size ≥ 2",
@@ -138,5 +138,33 @@
     "axiomCount": 18,
     "theoremCount": 6,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey theory provides the lower bound H(n) ≥ √n via R(3,t) estimates; the Ramsey number R(3,t) = Θ(t²/log t) determines the exact growth of H(n)"
+    },
+    {
+      "targetId": "erdos-150",
+      "relationship": "related",
+      "description": "Adjacent Erdős problem on graph Ramsey theory and extremal graph structure"
+    },
+    {
+      "targetId": "erdos-152",
+      "relationship": "related",
+      "description": "Adjacent Erdős problem in combinatorial graph theory"
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "related",
+      "description": "Both involve graph coloring/independence structure; the four-color theorem guarantees large independent sets in planar graphs"
+    }
+  ],
+  "relatedProofs": [
+    "ramseys-theorem",
+    "erdos-150",
+    "erdos-152",
+    "four-color-theorem"
+  ]
 }

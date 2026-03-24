@@ -12,9 +12,7 @@ for all sufficiently large `x`?
 Erdős–Graham (1980), p. 92.
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Least prime factor -/
 
@@ -26,19 +24,19 @@ noncomputable def leastPrimeFactor (n : ℕ) : ℕ :=
 /-- For `n ≥ 2`, `leastPrimeFactor n` is prime. -/
 theorem leastPrimeFactor_prime (n : ℕ) (hn : 2 ≤ n) :
     (leastPrimeFactor n).Prime := by
-  unfold leastPrimeFactor; simp [show ¬(n ≤ 1) from by omega]
+  unfold leastPrimeFactor; rw [dif_neg (by omega)]
   exact Nat.minFac_prime (by omega)
 
 /-- `leastPrimeFactor n` divides `n` for `n ≥ 2`. -/
 theorem leastPrimeFactor_dvd (n : ℕ) (hn : 2 ≤ n) :
     leastPrimeFactor n ∣ n := by
-  unfold leastPrimeFactor; simp [show ¬(n ≤ 1) from by omega]
+  unfold leastPrimeFactor; rw [dif_neg (by omega)]
   exact Nat.minFac_dvd n
 
 /-- `leastPrimeFactor n` is at most any prime dividing `n`. -/
 theorem leastPrimeFactor_le (n p : ℕ) (hn : 2 ≤ n) (hp : p.Prime) (hpn : p ∣ n) :
     leastPrimeFactor n ≤ p := by
-  unfold leastPrimeFactor; simp [show ¬(n ≤ 1) from by omega]
+  unfold leastPrimeFactor; rw [dif_neg (by omega)]
   exact Nat.minFac_le_of_dvd hp.two_le hpn
 
 /- ## Sums involving least prime factor -/
@@ -80,19 +78,23 @@ def ErdosProblem462 : Prop :=
 /-- The least prime factor of a prime is itself. -/
 theorem leastPrimeFactor_prime_self (p : ℕ) (hp : p.Prime) :
     leastPrimeFactor p = p := by
-  unfold leastPrimeFactor; simp [show ¬(p ≤ 1) from by omega [hp.two_le]]
+  unfold leastPrimeFactor
+  have := hp.two_le
+  rw [dif_neg (by omega)]
   exact hp.minFac_eq
 
 /-- The least prime factor of any `n ≥ 2` is at least 2. -/
 theorem leastPrimeFactor_ge_two (n : ℕ) (hn : 2 ≤ n) :
     2 ≤ leastPrimeFactor n := by
-  unfold leastPrimeFactor; simp [show ¬(n ≤ 1) from by omega]
+  unfold leastPrimeFactor; rw [dif_neg (by omega)]
   exact (Nat.minFac_prime (by omega : n ≠ 1)).two_le
 
 /-- The least prime factor of any `n ≥ 2` is at most `√n` for composite `n`. -/
 theorem leastPrimeFactor_le_sqrt (n : ℕ) (hn : 2 ≤ n) (hc : ¬n.Prime) :
     (leastPrimeFactor n : ℝ) ≤ (n : ℝ) ^ (1/2 : ℝ) := by
-  unfold leastPrimeFactor; simp [show ¬(n ≤ 1) from by omega]
+  unfold leastPrimeFactor; rw [dif_neg (by omega)]
   have hsq : n.minFac ^ 2 ≤ n := Nat.minFac_sq_le_self (by omega) hc
-  rw [← Real.sqrt_eq_rpow, ← Real.sqrt_sq (Nat.cast_nonneg (n.minFac))]
+  suffices h : (n.minFac : ℝ) ≤ Real.sqrt (n : ℝ) by
+    rwa [Real.sqrt_eq_rpow] at h
+  rw [← Real.sqrt_sq (Nat.cast_nonneg (n.minFac))]
   exact Real.sqrt_le_sqrt (by exact_mod_cast hsq)

@@ -2,7 +2,7 @@
   "id": "erdos-4",
   "title": "Erdős Problem #4: Large Prime Gaps",
   "slug": "erdos-4",
-  "description": "For any C > 0, are there infinitely many n with p_{n+1} - p_n > C·f(n) where f(n) involves iterated logs? SOLVED: YES (Maynard 2016, FGKT 2016).",
+  "description": "Erdős Problem #4: For any $C > 0$, are there infinitely many $n$ with $p_{n+1} - p_n > C \\cdot \\log n \\cdot \\log\\log n \\cdot \\log\\log\\log\\log n / (\\log\\log\\log n)^2$? SOLVED (YES) by Maynard (2016) and Ford-Green-Konyagin-Tao (2016) independently, with the combined FGKMT (2018) establishing the stronger result. This 243-line formalization axiomatizes 9 landmark results from Rankin (1938) through FGKMT (2018), defines `primeGap` and `erdosFunction` with iterated logarithms, and states the conjecture's resolution. 1 sorry remains. Erdős's $10,000 prize for gaps exceeding $(\\log n)^{1+c}$ remains open.",
   "meta": {
     "author": "Ford-Green-Konyagin-Maynard-Tao",
     "erdosNumber": 4,
@@ -81,17 +81,6 @@
       "Filter-based asymptotics in Lean (Filter.atTop, Filter.Tendsto)"
     ],
     "lineCount": 243,
-    "leanFile": {
-      "lineCount": 243,
-      "structureCount": 0,
-      "axiomCount": 9,
-      "theoremCount": 2,
-      "lemmaCount": 0,
-      "defCount": 16,
-      "imports": [
-        "Mathlib"
-      ]
-    },
     "relatedProblems": [
       {
         "id": "erdos-1",
@@ -220,7 +209,7 @@
   "overview": {
     "historicalContext": "Erdős Problem #4 is one of the most celebrated problems in prime number theory. The prime number theorem gives average gap $\\log n$ near $n$, but individual gaps can be much larger.\n\nRankin (1938) proved infinitely many gaps exceed $C \\cdot (\\log n)(\\log\\log n)(\\log\\log\\log\\log n)/(\\log\\log\\log n)^2$ for $C = e^\\gamma/3 \\approx 0.593$. His constant stood for 75 years. Erdős offered a $\\$10{,}000$ prize for gaps exceeding $(\\log n)^{1+c}$.\n\nIn 2014-2016, two independent breakthroughs resolved the problem for ALL $C > 0$: Maynard used multidimensional sieve weights, while Ford-Green-Konyagin-Tao used hypergraph covering lemmas. In 2018, all five combined techniques for a stronger bound.\n\nThe problem complements bounded gaps: Zhang (2013) and Maynard (2013) showed $\\liminf(p_{n+1}-p_n) < \\infty$ (small gaps exist), while Erdős #4 concerns $\\limsup(p_{n+1}-p_n)/\\log p_n = \\infty$ (large gaps exist). Cramér's conjecture ($\\sim (\\log p_n)^2$) and Granville's refinement ($\\sim 2e^{-\\gamma}(\\log p_n)^2$) predict the true maximum gap size.",
     "problemStatement": "Is it true that for any $C > 0$, there are infinitely many $n$ such that $p_{n+1} - p_n > C \\cdot \\frac{\\log\\log n \\cdot \\log\\log\\log\\log n}{(\\log\\log\\log n)^2} \\cdot \\log n$?",
-    "text": "Erdős Problem #4 asks whether prime gaps can exceed any constant multiple of Rankin's function log n · log log n · log log log log n / (log log log n)². Posed in the 1930s, it stood for 75 years until simultaneous solutions by Maynard and Ford-Green-Konyagin-Tao in 2016. The $10,000 prize for gaps exceeding (log n)^{1+c} remains open.",
+    "text": "A 243-line formalization of one of Erdős's most celebrated problems on prime gaps. The problem asks whether for any constant $C > 0$, there exist infinitely many consecutive primes $p_n, p_{n+1}$ with gap exceeding $C$ times Rankin's function $R(n) = \\log n \\cdot \\log\\log n \\cdot \\log\\log\\log\\log n / (\\log\\log\\log n)^2$. Posed by Erdős in the 1930s, it stood for 75 years — with Rankin (1938) establishing the first lower bound on large gaps using sieve methods, then Maier-Pomerance (1990) and Pintz (1997) making incremental progress — until simultaneous solutions by Maynard (2016) and Ford-Green-Konyagin-Tao (2016), with their combined FGKMT (2018) paper establishing the strongest result. The formalization defines `nthPrime` via `Nat.nth Nat.Prime`, `primeGap n = nthPrime (n+1) - nthPrime n`, and `erdosFunction`/`rankinFunction` with iterated real logarithms. Nine axioms capture the historical progression from Rankin's 1938 bound through FGKMT's 2018 resolution, with 1 sorry remaining on a log-comparison lemma. Erdős offered \\$10,000 — his largest prize — for proving gaps exceed $(\\log n)^{1+c}$; this remains open and is the most tantalizing prize in prime number theory.",
     "proofStrategy": "The formalization defines the $n$-th prime via `Nat.nth`, iterated logarithms, and the Erdős function. The conjecture is stated as a universally quantified proposition over $C > 0$. Rankin's theorem ($\\exists C$), Maynard's theorem ($\\forall C$), and the FGKT theorem (independent $\\forall C$) are axiomatized. The FGKMT improved bound, Baker-Harman-Pintz upper bound, Cramér's conjecture, and Firoozbakht's conjecture provide context. One sorry remains in the comparison theorem `improved_stronger`.",
     "keyInsights": [
       "**75 years stuck**: Rankin's constant $C = e^\\gamma/3$ from 1938 was not improved until 2016 — the longest-standing result in prime gap theory",
@@ -299,21 +288,6 @@
       "targetId": "bounded-prime-gaps-oq-03",
       "relationship": "complementary",
       "description": "Large gaps (this entry) and bounded gaps (OQ-03 on Engelsma's optimal 246 bound) are dual perspectives on prime gap distribution: FGKT proves $\\limsup g_n/f(n) = \\infty$ while Zhang-Maynard-Polymath prove $\\liminf g_n \\leq 246$. Together they show prime gaps are simultaneously infinitely large and infinitely small relative to their expected size"
-    },
-    {
-      "targetId": "twin-primes-special",
-      "relationship": "complementary",
-      "description": "Twin primes ($p_{n+1} - p_n = 2$) represent the smallest possible prime gap, while this entry concerns the largest. The twin prime conjecture ($\\liminf g_n = 2$) and Erdős #4 ($\\limsup g_n/f(n) = \\infty$) together would characterize the extreme oscillation of the prime gap sequence"
-    },
-    {
-      "targetId": "bounded-prime-gaps-oq-03-oq-01",
-      "relationship": "complementary",
-      "description": "The k-tuple size and gap bounds entry formalizes how optimizing Selberg sieve weights in Maynard's multidimensional framework yields the specific bound $\\liminf g_n \\leq 246$. The same sieve technology — applied in reverse by Maynard for large gaps — is what resolved Erdős #4. The detailed analysis of admissible tuples and Bombieri-Vinogradov estimates in OQ-03-OQ-01 illuminates the technical machinery shared between the bounded and unbounded gap proofs"
-    },
-    {
-      "targetId": "erdos-3",
-      "relationship": "related",
-      "description": "Erdős #3 (Green-Tao theorem on arithmetic progressions in primes) and #4 (large prime gaps) are complementary perspectives on prime distribution: Green-Tao shows primes contain long arithmetic progressions (a regularity property), while #4 shows prime gaps can be arbitrarily large relative to the average (an irregularity property). Both are deep results about the fine structure of the prime sequence beyond what the prime number theorem reveals"
     }
   ],
   "relatedProofs": [
@@ -326,25 +300,18 @@
     "infinitude-primes",
     "bounded-prime-gaps",
     "bounded-prime-gaps-oq-03",
-    "dirichlets-theorem",
-    "twin-primes-special",
-    "bounded-prime-gaps-oq-03-oq-01",
-    "erdos-3"
+    "dirichlets-theorem"
   ],
   "leanFile": {
-    "imports": [
-      "Mathlib"
-    ],
-    "opens": [
-      "Set",
-      "Nat",
-      "Real"
-    ],
-    "namespace": "Erdos4",
     "lineCount": 243,
+    "structureCount": 0,
     "axiomCount": 9,
     "theoremCount": 2,
-    "definitionCount": 16
+    "lemmaCount": 0,
+    "defCount": 16,
+    "imports": [
+      "Mathlib"
+    ]
   },
   "references": [
     {

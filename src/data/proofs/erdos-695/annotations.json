@@ -27,7 +27,7 @@
     "id": "ann-695-primechain",
     "proofId": "erdos-695",
     "range": {
-      "startLine": 37,
+      "startLine": 38,
       "endLine": 42
     },
     "type": "definition",
@@ -51,7 +51,7 @@
     "id": "ann-695-divisibility",
     "proofId": "erdos-695",
     "range": {
-      "startLine": 43,
+      "startLine": 44,
       "endLine": 46
     },
     "type": "definition",
@@ -73,7 +73,7 @@
     "id": "ann-695-kthroot",
     "proofId": "erdos-695",
     "range": {
-      "startLine": 64,
+      "startLine": 65,
       "endLine": 67
     },
     "type": "definition",
@@ -95,7 +95,7 @@
     "id": "ann-695-question1",
     "proofId": "erdos-695",
     "range": {
-      "startLine": 68,
+      "startLine": 69,
       "endLine": 72
     },
     "type": "definition",
@@ -118,7 +118,7 @@
     "id": "ann-695-question2",
     "proofId": "erdos-695",
     "range": {
-      "startLine": 79,
+      "startLine": 80,
       "endLine": 84
     },
     "type": "definition",
@@ -141,7 +141,7 @@
     "id": "ann-695-linnik",
     "proofId": "erdos-695",
     "range": {
-      "startLine": 91,
+      "startLine": 93,
       "endLine": 95
     },
     "type": "concept",
@@ -164,7 +164,7 @@
     "id": "ann-695-greedy",
     "proofId": "erdos-695",
     "range": {
-      "startLine": 99,
+      "startLine": 100,
       "endLine": 103
     },
     "type": "concept",
@@ -186,7 +186,7 @@
     "id": "ann-695-conjecture",
     "proofId": "erdos-695",
     "range": {
-      "startLine": 104,
+      "startLine": 105,
       "endLine": 108
     },
     "type": "concept",
@@ -209,7 +209,7 @@
     "id": "ann-695-cunningham",
     "proofId": "erdos-695",
     "range": {
-      "startLine": 125,
+      "startLine": 126,
       "endLine": 129
     },
     "type": "definition",
@@ -231,7 +231,7 @@
     "id": "ann-695-fkl",
     "proofId": "erdos-695",
     "range": {
-      "startLine": 141,
+      "startLine": 142,
       "endLine": 146
     },
     "type": "concept",
@@ -254,7 +254,7 @@
     "id": "ann-695-lower",
     "proofId": "erdos-695",
     "range": {
-      "startLine": 147,
+      "startLine": 148,
       "endLine": 150
     },
     "type": "concept",
@@ -276,7 +276,7 @@
     "id": "ann-695-status",
     "proofId": "erdos-695",
     "range": {
-      "startLine": 158,
+      "startLine": 159,
       "endLine": 164
     },
     "type": "concept",
@@ -298,10 +298,10 @@
     "id": "ann-695-main",
     "proofId": "erdos-695",
     "range": {
-      "startLine": 176,
+      "startLine": 177,
       "endLine": 187
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Main Formal Statement",
     "content": "erdos_695_main: For all prime chains p, Tendsto(p_k^{1/k}) atTop atTop ↔ Question1. Formal statement of Part 1.",
     "mathContext": "Uses Mathlib's Filter.Tendsto for the limit formulation.",
@@ -321,10 +321,10 @@
     "id": "ann-695-variant",
     "proofId": "erdos-695",
     "range": {
-      "startLine": 188,
+      "startLine": 189,
       "endLine": 195
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Variant Formal Statement",
     "content": "erdos_695_variant: Question2 ↔ ∃p chain with p_k ≤ exp(k(log k)^{1+o(1)}). Formal statement of Part 2.",
     "mathContext": "Uses Mathlib's Asymptotics for the o(1) notation.",

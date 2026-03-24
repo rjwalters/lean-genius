@@ -67,7 +67,7 @@
   "overview": {
     "historicalContext": "The Basel Problem was posed by Pietro Mengoli in 1650 and named after Basel, the hometown of the Bernoulli family who publicized it. Jakob Bernoulli himself tried and failed to find the sum, knowing only that $\\sum 1/n^2 < 2$ (published in *Tractatus de Seriebus Infinitis*, 1689). The problem defeated the leading mathematicians of the era — the Bernoulli brothers, Leibniz, and Stirling all attempted it without success.\n\nIn 1734, the 27-year-old Leonhard Euler stunned the mathematical world by proving $\\sum_{n=1}^{\\infty} 1/n^2 = \\pi^2/6$. His original proof used a daring factorization of $\\sin(x)/x$ as an infinite product $\\prod(1 - x^2/n^2\\pi^2)$, then compared the $x^2$ coefficient with the Taylor expansion — a method that was brilliant but not fully rigorous, as it assumed infinite polynomials factor like finite ones (justified later by the Weierstrass factorization theorem, 1876). Euler gave at least four different proofs, including partial fractions of $\\pi\\cot(\\pi x)$. The result was later proved rigorously via Fourier analysis: Parseval's identity applied to $f(x) = x$ on $[-\\pi, \\pi]$ yields the sum directly.\n\nThe problem has a remarkable probabilistic interpretation discovered by Euler himself: the probability that two random positive integers are coprime equals $6/\\pi^2 = 1/\\zeta(2)$. At least 70 proofs are now known, including approaches via residue calculus, double integrals, and even statistical mechanics.\n\nEuler went on to compute $\\zeta(2k)$ for all positive integers $k$, discovering the formula $\\zeta(2k) = (-1)^{k+1} B_{2k} (2\\pi)^{2k} / (2(2k)!)$ involving Bernoulli numbers. The odd values $\\zeta(3), \\zeta(5), \\ldots$ remain mysterious: Apéry proved $\\zeta(3)$ irrational in 1978, but no closed form in terms of $\\pi$ is known for any odd zeta value. Today the Basel identity $\\zeta(2) = \\pi^2/6$ is recognized as the birth of analytic number theory, connecting a sum over integers to the transcendental number $\\pi$ and foreshadowing Riemann's 1859 memoir on the distribution of primes.",
     "problemStatement": "**Theorem (Euler, 1734)**: The sum of reciprocals of perfect squares equals π²/6:\n\n$$\\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{1}{1^2} + \\frac{1}{2^2} + \\frac{1}{3^2} + \\cdots = \\frac{\\pi^2}{6}$$\n\nThis is Wiedijk's 100 Theorems #14 and represents one of the most beautiful identities in mathematics.",
-    "text": "A 164-line formalization of the Basel Problem (Wiedijk #14) with 10 declarations, 0 sorries, 0 axioms. The core proof delegates to Mathlib's `hasSum_zeta_two` from `NumberTheory.ZetaValues`, which derives $\\zeta(2) = \\pi^2/6$ via Bernoulli polynomial Fourier expansions. The file provides `basel_identity` as a clean `HasSum` restatement, `zeta_two_value` as a `tsum` equality, and `basel_convergent` confirming summability via the p-series test (`Real.summable_nat_rpow` with $p=2>1$). Includes partial sum bounds (`basel_partial_sum_bound`: $\\sum_{k=1}^n 1/k^2 \\leq \\pi^2/6$) and a concrete example verifying $1 + 1/4 + 1/9 < \\pi^2/6$ via `norm_num`. Commentary connects to Euler's $\\sin(x)/x$ infinite product factorization and Parseval's identity.",
+    "text": "A 164-line formalization of the Basel Problem (Wiedijk #14) with 9 named theorems, 0 sorries, 0 axioms. The core proof delegates to Mathlib's `hasSum_zeta_two` from `NumberTheory.ZetaValues`, which derives $\\zeta(2) = \\pi^2/6$ via Bernoulli polynomial Fourier expansions. The file provides `basel_hasSum` as a clean `HasSum` statement, `basel_tsum` as the `tsum` equality, and `summable_one_div_sq` confirming summability via the p-series test (`Real.summable_nat_rpow_inv` with $p=2>1$). Positivity lemmas (`one_div_sq_pos`, `one_div_sq_nonneg`, `basel_value_pos`) are dispatched by the `positivity` tactic. Extensions include `zeta_four_hasSum` ($\\zeta(4) = \\pi^4/90$) and `zeta_general` (the full Euler formula $\\zeta(2k) = (-1)^{k+1} 2^{2k-1} \\pi^{2k} B_{2k}/(2k)!$). Commentary connects to Euler's $\\sin(x)/x$ infinite product factorization and Parseval's identity.",
     "proofStrategy": "**Modern Approach (Mathlib)**:\n\nThe proof in Mathlib uses the theory of Bernoulli polynomials and Fourier analysis. The key steps are:\n\n1. **Bernoulli polynomials**: Define $B_n(x)$ which satisfy specific differential equations\n2. **Fourier expansion**: Express $B_n(x)$ as a Fourier series involving $1/n^k$ terms\n3. **Evaluation at $x=0$**: Setting $x=0$ extracts the zeta values $\\zeta(2k)$\n4. **Basel identity**: For $k=1$, this gives $\\zeta(2) = \\pi^2/6$\n\n**Euler's Original Insight (1734)**:\n\nEuler factored $\\sin(x)/x$ as an infinite product:\n$$\\frac{\\sin x}{x} = \\left(1 - \\frac{x^2}{\\pi^2}\\right)\\left(1 - \\frac{x^2}{4\\pi^2}\\right)\\left(1 - \\frac{x^2}{9\\pi^2}\\right)\\cdots$$\n\nComparing the $x^2$ coefficient with the Taylor series of $\\sin(x)/x$ yields the Basel identity.",
     "keyInsights": [
       "The appearance of $\\pi$ in a sum over integers hints at deep connections between discrete and continuous mathematics — the bridge is Fourier analysis, where periodic functions on the integers produce $\\pi$-related values",
@@ -75,7 +75,9 @@
       "The Riemann zeta function $\\zeta(s) = \\sum 1/n^s$ unifies these values into a single analytic function, and the Basel identity is the first non-trivial evaluation of $\\zeta$ at a positive integer",
       "Unlike $\\zeta(2), \\zeta(4), \\ldots$, the odd zeta values $\\zeta(3), \\zeta(5), \\ldots$ have no known closed form — Apéry's 1978 proof that $\\zeta(3)$ is irrational was a major surprise, and infinitely many odd zeta values are known to be irrational (Rivoal 2000)",
       "The Lean proof is a one-line invocation of `hasSum_zeta_two`, but this brevity conceals deep Mathlib infrastructure: Bernoulli polynomial theory, Fourier series convergence, and the evaluation of periodic zeta functions — hundreds of lemmas supporting a single `exact`",
-      "The Basel identity has a striking probabilistic interpretation: the probability that two independently chosen positive integers are coprime is $\\prod_p (1 - 1/p^2) = 1/\\zeta(2) = 6/\\pi^2 \\approx 0.6079$, connecting the sum over squares to the Euler product and the randomness of prime factorization"
+      "The Basel identity has a striking probabilistic interpretation: the probability that two independently chosen positive integers are coprime is $\\prod_p (1 - 1/p^2) = 1/\\zeta(2) = 6/\\pi^2 \\approx 0.6079$, connecting the sum over squares to the Euler product and the randomness of prime factorization",
+      "**Euler Product as a Prime Constraint:** The identity $\\zeta(2) = \\prod_p (1 - p^{-2})^{-1} = \\pi^2/6$ is a non-trivial constraint on the distribution of primes. Expanding the product gives $\\pi^2/6 = \\prod_p p^2/(p^2-1)$, so the primes collectively determine $\\pi$ — a profound link between the discrete (primes) and the continuous ($\\pi$). This multiplicative structure is the prototype for all Dirichlet series and $L$-functions in analytic number theory",
+      "**Parseval's Identity as a One-Line Proof:** Applying Parseval's theorem to $f(x) = x$ on $[-\\pi,\\pi]$ gives $\\frac{1}{\\pi}\\int_{-\\pi}^{\\pi} x^2\\,dx = \\frac{a_0^2}{2} + \\sum_{n=1}^{\\infty}(a_n^2 + b_n^2)$. Since $f$ is odd, $a_n = 0$ and $b_n = 2(-1)^{n+1}/n$, so $\\frac{2\\pi^2}{3} = 4\\sum 1/n^2$, giving $\\zeta(2) = \\pi^2/6$. This Fourier-analytic proof is the modern rigorous approach that Mathlib's `hasSum_zeta_two` generalizes via Bernoulli polynomial theory"
     ],
     "prerequisites": [
       "Real analysis and series convergence",
@@ -111,7 +113,7 @@
     },
     {
       "id": "basic-properties",
-      "title": "Basic Properties",
+      "title": "Positivity and Basic Properties",
       "startLine": 93,
       "endLine": 106,
       "summary": "Three simple properties established by the `positivity` tactic: each term 1/n² is positive (for n > 0) and nonneg, and the sum π²/6 is positive. These serve as building blocks for more complex arguments.",
@@ -148,7 +150,9 @@
     "openQuestions": [
       "Is ζ(5) irrational? (ζ(3) was proved irrational by Apéry in 1978, but ζ(5) remains unknown despite Rivoal and Zudilin's partial results)",
       "Are all odd zeta values ζ(2k+1) transcendental? Their irrationality is known only for infinitely many of them (Rivoal 2000), not individually beyond ζ(3)",
-      "What is the relationship between single zeta values and multiple zeta values (MZVs)? The algebra of MZVs connects to knot theory, quantum groups, and motives"
+      "What is the relationship between single zeta values and multiple zeta values (MZVs)? The algebra of MZVs connects to knot theory, quantum groups, and motives",
+      "Can the Euler product form $\\prod_p (1 - p^{-2})^{-1} = \\pi^2/6$ be formalized in Lean? This would connect the Basel identity to the prime number distribution and require formalizing the convergence of Euler products for $\\Re(s) > 1$",
+      "Can Euler's original proof via the Weierstrass factorization $\\sin(x)/x = \\prod(1 - x^2/n^2\\pi^2)$ be formalized? Mathlib has `Complex.sin_eq_tsum` for the Taylor series, but the infinite product factorization would require the Weierstrass factorization theorem for entire functions of finite order"
     ]
   },
   "references": [
@@ -176,6 +180,21 @@
       "key": "Ri00",
       "citation": "Rivoal, T., La fonction zêta de Riemann prend une infinité de valeurs irrationnelles aux entiers impairs, Comptes Rendus Acad. Sci. Paris Sér. I 331 (2000), 267–270.",
       "type": "paper"
+    },
+    {
+      "key": "We76",
+      "citation": "Weierstrass, K., Zur Theorie der eindeutigen analytischen Functionen, Abhandlungen der Königlich Preussischen Akademie der Wissenschaften zu Berlin (1876), 11–60. Established the factorization theorem for entire functions, rigorously justifying Euler's 1734 infinite product factorization of sin(x)/x.",
+      "type": "paper"
+    },
+    {
+      "key": "Ch11",
+      "citation": "Chapman, R., Evaluating ζ(2), preprint (1999, revised 2003). Collects and compares fourteen proofs of ζ(2) = π²/6, including Euler's product, Parseval, residue calculus, and double integral approaches.",
+      "type": "paper"
+    },
+    {
+      "key": "Be1713",
+      "citation": "Bernoulli, J., Ars Conjectandi (posthumous, 1713). Contains the Bernoulli numbers B_k and their connection to power sums — the same B_k that appear in Euler's formula ζ(2k) = (-1)^(k+1) 2^(2k-1) π^(2k) B_{2k} / (2k)!.",
+      "type": "book"
     }
   ],
   "crossReferences": [

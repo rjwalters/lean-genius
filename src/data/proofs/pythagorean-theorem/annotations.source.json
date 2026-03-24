@@ -119,7 +119,7 @@
     "title": "Perpendicularity via Inner Product",
     "content": "Two vectors are **perpendicular** (or orthogonal) if and only if their inner product is zero:\n\n$$\\vec{v} \\perp \\vec{w} \\iff \\langle \\vec{v}, \\vec{w} \\rangle = 0$$\n\nThis is the algebraic translation of 'at right angles'. It's remarkable that such a simple algebraic condition captures a geometric concept.\n\nExample: $(1, 0)$ and $(0, 1)$ are perpendicular because $1 \\cdot 0 + 0 \\cdot 1 = 0$.",
     "mathContext": "$\\vec{v} \\perp \\vec{w} \\iff \\langle \\vec{v}, \\vec{w} \\rangle = 0$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "orthogonality",
       "right angle",
@@ -165,7 +165,7 @@
     "title": "The Pythagorean Theorem (Vector Form)",
     "content": "The theorem states: if $\\vec{v} \\perp \\vec{w}$, then\n\n$$\\|\\vec{v} + \\vec{w}\\|^2 = \\|\\vec{v}\\|^2 + \\|\\vec{w}\\|^2$$\n\nThe proof is a beautiful application of bilinearity:\n\n1. $\\|\\vec{v} + \\vec{w}\\|^2 = \\langle \\vec{v} + \\vec{w}, \\vec{v} + \\vec{w} \\rangle$ (by definition)\n2. $= \\langle \\vec{v}, \\vec{v} \\rangle + \\langle \\vec{v}, \\vec{w} \\rangle + \\langle \\vec{w}, \\vec{v} \\rangle + \\langle \\vec{w}, \\vec{w} \\rangle$ (bilinearity)\n3. $= \\|\\vec{v}\\|^2 + 0 + 0 + \\|\\vec{w}\\|^2$ (perpendicularity!)\n4. $= \\|\\vec{v}\\|^2 + \\|\\vec{w}\\|^2$\n\nThe cross terms vanish because the vectors are perpendicular.",
     "mathContext": "$\\vec{v} \\perp \\vec{w} \\implies \\|\\vec{v} + \\vec{w}\\|^2 = \\|\\vec{v}\\|^2 + \\|\\vec{w}\\|^2$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-perpendicular",
       "ann-bilinearity"

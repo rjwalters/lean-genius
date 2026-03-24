@@ -156,34 +156,34 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-1140",
       "relationship": "structural-sibling",
-      "description": "Erdős #1140 asks the same question but with 2x² instead of k² (restricted to coprime k). Epure-Gica disproved infinitude for that variant, making it a resolved counterpart to this open problem. The contrast illustrates how small structural changes to the subtraction formula can shift the problem from open to resolved."
+      "description": "Erdős #1140 asks the same question but with 2x² instead of k² (restricted to coprime k). Epure-Gica disproved infinitude for that variant, making it a resolved counterpart to this open problem. The contrast illustrates how small structural changes to the subtraction formula can shift the problem from open to resolved.",
+      "targetId": "erdos-1140"
     },
     {
-      "id": "erdos-1142",
       "relationship": "structural-sibling",
-      "description": "Erdős #1142 replaces the coprime-square condition with powers of 2: n − 2^k prime for all 1 < 2^k < n. The known values (up to 105) are even sparser than OEIS A214583, and the problem is likewise unresolved. Both problems share the same skeleton — requiring n minus every element of a structured set to be prime simultaneously."
+      "description": "Erdős #1142 replaces the coprime-square condition with powers of 2: n − 2^k prime for all 1 < 2^k < n. The known values (up to 105) are even sparser than OEIS A214583, and the problem is likewise unresolved. Both problems share the same skeleton — requiring n minus every element of a structured set to be prime simultaneously.",
+      "targetId": "erdos-1142"
     },
     {
-      "id": "erdos-1059",
       "relationship": "thematic",
-      "description": "Erdős #1059 asks whether infinitely many primes p satisfy p − k! composite for all k with k! < p. The flavor is dual: #1141 demands primality of n − k² for all eligible k, while #1059 demands compositeness of p − k!. Both are open problems where a universal primality/compositeness condition over a structured set forces the candidate values to be extremely rare."
+      "description": "Erdős #1059 asks whether infinitely many primes p satisfy p − k! composite for all k with k! < p. The flavor is dual: #1141 demands primality of n − k² for all eligible k, while #1059 demands compositeness of p − k!. Both are open problems where a universal primality/compositeness condition over a structured set forces the candidate values to be extremely rare.",
+      "targetId": "erdos-1059"
     },
     {
-      "id": "erdos-680",
       "relationship": "thematic",
-      "description": "Erdős #680 asks about the least prime factor of integers near n exceeding k² + 1. This problem directly involves the interplay between squares and prime factors, touching the same quadratic-prime boundary that defines the good values in #1141. Both problems concern how quadratic growth interacts with primality constraints."
+      "description": "Erdős #680 asks about the least prime factor of integers near n exceeding k² + 1. This problem directly involves the interplay between squares and prime factors, touching the same quadratic-prime boundary that defines the good values in #1141. Both problems concern how quadratic growth interacts with primality constraints.",
+      "targetId": "erdos-680"
     },
     {
-      "id": "erdos-17",
       "relationship": "thematic",
-      "description": "Erdős #17 on cluster primes asks whether every even n ≤ p − 3 is a difference of two primes ≤ p. The structural idea of representing integers as differences involving primes — and asking which n make this universal — parallels the coprime-square subtraction property. Both probe universality-of-primeness questions over finite ranges."
+      "description": "Erdős #17 on cluster primes asks whether every even n ≤ p − 3 is a difference of two primes ≤ p. The structural idea of representing integers as differences involving primes — and asking which n make this universal — parallels the coprime-square subtraction property. Both probe universality-of-primeness questions over finite ranges.",
+      "targetId": "erdos-17"
     },
     {
-      "id": "erdos-203",
       "relationship": "methodological",
-      "description": "Erdős #203 on covering systems and prime avoidance asks whether covering congruences can block all primality. Covering systems are a key tool for proving that sequences of the form n − f(k) contain no primes; they provide one potential route to showing the good-value sequence in #1141 is finite by constructing a covering for large n."
+      "description": "Erdős #203 on covering systems and prime avoidance asks whether covering congruences can block all primality. Covering systems are a key tool for proving that sequences of the form n − f(k) contain no primes; they provide one potential route to showing the good-value sequence in #1141 is finite by constructing a covering for large n.",
+      "targetId": "erdos-203"
     }
   ],
   "relatedProofs": [

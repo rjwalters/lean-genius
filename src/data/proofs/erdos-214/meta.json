@@ -196,5 +196,51 @@
     "axiomCount": 15,
     "theoremCount": 5,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-213",
+      "relationship": "related",
+      "description": "Companion problem: integer distance sets in general position (n points, all distances integers, no three collinear, no four cocircular)"
+    },
+    {
+      "targetId": "erdos-216",
+      "relationship": "related",
+      "description": "Empty convex polygons in point sets: related combinatorial geometry of planar configurations and Ramsey-type existence results"
+    },
+    {
+      "targetId": "erdos-171",
+      "relationship": "related",
+      "description": "Unit distance chromatic number (Hadwiger-Nelson problem): each color class is unit-distance-free, directly connecting to Juhász's theorem"
+    },
+    {
+      "targetId": "erdos-508",
+      "relationship": "related",
+      "description": "Another formulation of the Hadwiger-Nelson problem: bounds χ(ℝ²) ∈ {5,...,7} via de Grey's 1581-vertex graph"
+    },
+    {
+      "targetId": "erdos-100",
+      "relationship": "related",
+      "description": "Point sets with restricted distances: n points in ℝ² with distance constraints, sharing the distance geometry framework"
+    },
+    {
+      "targetId": "erdos-107",
+      "relationship": "related",
+      "description": "The Happy Ending problem: convex n-gons in point sets, related Ramsey-type existence of geometric configurations"
+    },
+    {
+      "targetId": "erdos-705",
+      "relationship": "related",
+      "description": "Unit distance graphs with large girth: chromatic number of unit distance graphs under girth constraints"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-213",
+    "erdos-216",
+    "erdos-171",
+    "erdos-508",
+    "erdos-100",
+    "erdos-107",
+    "erdos-705"
+  ]
 }

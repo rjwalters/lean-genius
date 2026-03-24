@@ -78,17 +78,6 @@
       "Filter-based limits in Lean (Filter.Tendsto)"
     ],
     "lineCount": 201,
-    "leanFile": {
-      "lineCount": 201,
-      "structureCount": 0,
-      "axiomCount": 13,
-      "theoremCount": 3,
-      "lemmaCount": 0,
-      "defCount": 10,
-      "imports": [
-        "Mathlib"
-      ]
-    },
     "relatedProblems": [
       {
         "id": "erdos-1083",
@@ -179,6 +168,7 @@
     }
   ],
   "overview": {
+    "text": "A 201-line formalization of Erdős Problem #1089 (Kelly-Erdős, 1975): given $n$ fixed, what is the minimum number $g_d(n)$ of points in $\\mathbb{R}^d$ needed to guarantee $n$ distinct pairwise distances? The formalization defines $g_d(n)$ as a threshold function via `Nat.sInf`, axiomatizes the key bounds ($g_d(n) \\geq c \\cdot d^{n-1}$ from the cube construction; $g_d(n) \\leq c^{d^{1-b_n}}$ from the Erdős-Straus bound), and states the main conjecture: does $\\lim_{d \\to \\infty} g_d(n)/d^{n-1}$ exist? The central tension is the vast gap between the polynomial lower bound ($d^{n-1}$) and the stretched-exponential upper bound ($c^{d^{1-b_n}}$). Of the 13 axioms, 5 encode geometric constructions (cube vertices, distance computations), 5 encode known bounds (Erdős lower, Straus upper), and 3 encode structural properties. One theorem (`ratio_bounded_below`) is genuinely proved from the Erdős lower bound, showing the ratio $g_d(n)/d^{n-1}$ is bounded below — partial progress toward the limit conjecture. 2 sorries remain on the cube construction lemma.",
     "historicalContext": "The distinct distances problem in higher dimensions was posed by L.M. Kelly and Paul Erdős in their 1975 paper on combinatorial geometry. It generalizes the famous planar distinct distances problem — solved by Larry Guth and Nets Hawk Katz in 2015 (published in *Annals of Mathematics*), who proved $f_2(n) \\geq cn/\\sqrt{\\log n}$ using algebraic topology and polynomial partitioning — to arbitrary dimension $d$. But with a twist: instead of fixing $d$ and varying $n$, Problem #1089 fixes the number of distinct distances $n$ and asks how the threshold $g_d(n)$ grows with $d$.\n\nThe key construction is the $d$-dimensional unit cube $\\{0,1\\}^d$: its $2^d$ vertices produce only $d$ distinct distances ($\\sqrt{1}, \\sqrt{2}, \\ldots, \\sqrt{d}$), since two vertices differing in $k$ coordinates have Hamming-Euclidean distance $\\sqrt{k}$. This shows $g_d(d+1) > 2^d$. Erdős proved 'easily' that $g_d(n) \\gg d^{n-1}$ for fixed $n$ using a counting argument, establishing a polynomial lower bound. Croft (1962) computed the exact value $g_3(3) = 7$ through a painstaking analysis of all possible 6-point configurations in $\\mathbb{R}^3$ with at most 2 distinct distances.\n\nThe upper bound side remains poorly understood: the Erdős-Straus bound $g_d(n) \\leq c^{d^{1-b_n}}$ is stretched-exponential, leaving an enormous gap with the polynomial lower bound. Whether $g_d(n)/d^{n-1}$ converges as $d \\to \\infty$ for fixed $n$ is the central open question. If the limit exists and is positive, it determines the exact polynomial growth rate; if it diverges, $g_d(n)$ grows super-polynomially in $d$.",
     "problemStatement": "Let $g_d(n)$ be minimal such that every collection of $g_d(n)$ points in $\\mathbb{R}^d$ determines at least $n$ distinct distances. Estimate $g_d(n)$. In particular, does $\\lim_{d \\to \\infty} g_d(n)/d^{n-1}$ exist?",
     "proofStrategy": "The formalization defines g_d(n) as the infimum of thresholds guaranteeing n distinct distances in ℝ^d, using Mathlib's EuclideanSpace. The cube construction is axiomatized (embedding {0,1}^d into ℝ^d would require substantial infrastructure). Known bounds are captured as axioms. The theorem ratio_bounded_below is genuinely proved from the Erdős lower bound axiom. The f_d(n) inverse function connects to Problem #1083.",
@@ -262,18 +252,15 @@
     "isoperimetric-theorem"
   ],
   "leanFile": {
-    "imports": [
-      "Mathlib"
-    ],
-    "opens": [
-      "Set",
-      "Finset"
-    ],
-    "namespace": null,
     "lineCount": 201,
+    "structureCount": 0,
     "axiomCount": 13,
     "theoremCount": 3,
-    "definitionCount": 10
+    "lemmaCount": 0,
+    "defCount": 10,
+    "imports": [
+      "Mathlib"
+    ]
   },
   "references": [
     {

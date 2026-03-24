@@ -7,7 +7,7 @@
     "author": "Erdős and Freud",
     "sourceUrl": "https://erdosproblems.com/840",
     "date": "1991",
-    "status": "verified",
+    "status": "pending",
     "proofRepoPath": "Proofs/Erdos840Problem.lean",
     "tags": [
       "erdos",
@@ -16,14 +16,14 @@
       "sumsets",
       "open"
     ],
-    "badge": "mathlib",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 840,
     "erdosUrl": "https://erdosproblems.com/840",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
     "lineCount": 1,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"verified\"."
   },
   "overview": {
     "historicalContext": "Sidon sets (also called $B_2$ sequences) were introduced by Simon Sidon in a 1932 letter to Erdős, asking for the maximum size of a subset of $\\{1, \\ldots, N\\}$ with all pairwise sums distinct. Erdős and Turán (1941) proved the upper bound $|A| \\leq \\sqrt{N} + O(N^{1/4})$, while constructions by Singer (1938, using difference sets from projective planes) and Bose–Chowla (1962) achieved $|A| \\sim \\sqrt{N}$. The quasi-Sidon relaxation, introduced by Erdős and Freud in 1991, allows a vanishing fraction of sum collisions: $|A + A| = (1 + o(1)) \\binom{|A|}{2}$. This permits larger sets — the question is how much larger. Erdős and Freud proved $(2/\\sqrt{3})\\sqrt{N} \\leq f(N) \\leq 2\\sqrt{N}$ using a reflection construction and pigeonhole arguments. Pikhurko (2006) improved the upper bound to $\\approx 1.863\\sqrt{N}$ via a connection to edge-magic graph labelings and thin additive bases. Cilleruelo (2010) resolved the analogous problem for difference sets ($A - A$ instead of $A + A$), showing the answer is simply $\\sim \\sqrt{N}$ with constant 1. The sum version remains open, with the true constant lying in the interval $[2/\\sqrt{3}, 1.863] \\approx [1.155, 1.863]$.",

@@ -187,5 +187,51 @@
     "axiomCount": 15,
     "theoremCount": 7,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-466",
+      "relationship": "related",
+      "description": "Direct companion: provides the matching lower bound N(X,δ) ≫_δ X^{1/2}, proving the exponent 1/2 is optimal. Together with #465's upper bound, gives N(X,δ) ≍ X^{1/2}"
+    },
+    {
+      "targetId": "erdos-953",
+      "relationship": "related",
+      "description": "Measure-theoretic variant: asks for the maximum measure M(r) of a measurable set in B(0,r) avoiding integer distances, with bounds r^{0.26} ≤ M(r) ≤ O(r)"
+    },
+    {
+      "targetId": "erdos-464",
+      "relationship": "related",
+      "description": "Shares Diophantine approximation techniques: studies density of fractional parts {θn_k} for lacunary sequences, solved by de Mathan/Pollington (1979-80)"
+    },
+    {
+      "targetId": "erdos-100",
+      "relationship": "related",
+      "description": "Distance geometry companion: asks if diameter must grow with n for points with integer distances and spacing constraints, bounds n^{3/4} to n/log n"
+    },
+    {
+      "targetId": "erdos-254",
+      "relationship": "related",
+      "description": "Connects additive combinatorics with Diophantine approximation: subset sum representation involving fractional parts {θn}"
+    },
+    {
+      "targetId": "erdos-1127",
+      "relationship": "related",
+      "description": "Set-theoretic variant on distance constraints: decomposing ℝⁿ into countably many sets with distinct pairwise distances, solved under CH"
+    },
+    {
+      "targetId": "erdos-1000",
+      "relationship": "related",
+      "description": "Uses Diophantine approximation techniques: generalized totient φ_A with Cesàro averages and fraction denominators, solved by Haight"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-466",
+    "erdos-953",
+    "erdos-464",
+    "erdos-100",
+    "erdos-254",
+    "erdos-1127",
+    "erdos-1000"
+  ]
 }

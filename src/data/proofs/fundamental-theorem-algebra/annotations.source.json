@@ -30,7 +30,7 @@
     "title": "The Fundamental Theorem of Algebra",
     "content": "**Every non-constant polynomial with complex coefficients has at least one complex root.**\n\nThis seemingly simple statement has profound consequences:\n- No need to extend numbers beyond the complexes for algebra\n- Every polynomial equation is solvable (has solutions)\n- The complex numbers are 'algebraically complete'\n\nDespite the name 'algebra', every known proof uses analysis or topology.",
     "mathContext": "$\\forall p \\in \\mathbb{C}[z], \\deg p \\geq 1 \\Rightarrow \\exists z_0 \\in \\mathbb{C}, p(z_0) = 0$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Complex.exists_root",
       "algebraically closed",
@@ -90,7 +90,7 @@
     "title": "Counting Roots",
     "content": "**A degree-n polynomial has exactly n roots, counted with multiplicity.**\n\nMultiplicity: if $(z - r)^k$ divides $p$ but $(z - r)^{k+1}$ doesn't, then $r$ has multiplicity $k$.\n\nExample: $z^3 - z^2 = z^2(z-1)$ has:\n- Root 0 with multiplicity 2\n- Root 1 with multiplicity 1\n- Total: 2 + 1 = 3 = degree",
     "mathContext": "For $p \\neq 0$: $\\sum_{r : p(r) = 0} \\text{mult}_r(p) = \\deg p$\n\nMathlib represents this via multisets: $|\\text{roots}(p)| = \\deg p$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "multiplicity",
       "Multiset.card",

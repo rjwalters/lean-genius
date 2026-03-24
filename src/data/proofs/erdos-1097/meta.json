@@ -23,19 +23,6 @@
     "axiomCount": 6,
     "assumptions": "6 axiom declarations: katz_tao_upper (O(n^{11/6}) upper bound), erdos_spencer_lower (Ω(n log n) lower bound), erdos_ruzsa_explicit (Ω(n^{4/3}) explicit lower bound), lemm_lower (Ω(n^{1.778}) best known lower bound), alphaevolve_improvement (Ω(n^{1.822}) DeepMind AlphaEvolve result), chan_equivalence (equivalence to Bourgain sums-differences problem). All are established results from the literature.",
     "lineCount": 374,
-    "leanFile": {
-      "lineCount": 374,
-      "structureCount": 0,
-      "axiomCount": 6,
-      "theoremCount": 20,
-      "lemmaCount": 0,
-      "defCount": 8,
-      "imports": [
-        "Mathlib.Tactic",
-        "Mathlib.Data.Finset.Basic",
-        "Mathlib.Analysis.SpecialFunctions.Pow.Real"
-      ]
-    },
     "relatedProblems": [
       {
         "id": "erdos-3",
@@ -48,6 +35,7 @@
     ]
   },
   "overview": {
+    "text": "A 374-line formalization of Erdős Problem #1097 on counting distinct common differences in three-term arithmetic progressions within an $n$-element integer set $A$. Defines $D(A) = \\{d : \\exists a,\\; a, a+d, a+2d \\in A\\}$ and asks whether $|D(A)| = O(n^{3/2})$. The formalization proves 14 structural lemmas without axioms — including translation invariance ($D(A+c) = D(A)$), dilation covariance ($D(\\lambda A) = \\lambda \\cdot D(A)$), negation symmetry, subset monotonicity, and exact computations for small sets — then axiomatizes 6 established bounds: Katz-Tao's $O(n^{11/6})$ upper bound (1999, incidence geometry), Erdős-Spencer's $\\Omega(n \\log n)$, Erdős-Ruzsa's explicit $\\Omega(n^{4/3})$, Lemm's $\\Omega(n^{1.778})$ (2015, best human lower bound), DeepMind AlphaEvolve's $\\Omega(n^{1.822})$ (2025), and Chan's equivalence to Bourgain's restricted sums-differences problem (linking discrete combinatorics to harmonic analysis). A summary theorem captures the current state: the critical exponent lies in $(1.778, 11/6]$, with resolution potentially impacting the Kakeya conjecture.",
     "historicalContext": "Erdős posed this problem at the 1989 Great Western Number Theory problem session in Asilomar, California. He asked: given an $n$-element set of integers $A$, how many distinct common differences can three-term arithmetic progressions in $A$ have?\n\nThe Erdős-Spencer probabilistic argument (random subsets of $\\{1,\\ldots,N\\}$) showed that $\\Omega(n^{3/2})$ is achievable. Bourgain connected the problem to the Kakeya conjecture, reformulating it via restricted sums and differences. In 1999, Katz and Tao established $O(n^{11/6})$ using Szemerédi-Trotter incidence geometry. Lemm improved the lower bound past $n^{1.778}$ in 2015, and in 2025 AlphaEvolve achieved a marginal further improvement. The gap $\\Omega(n^{1.778})$ vs $O(n^{11/6}) \\approx O(n^{1.833})$ remains open, with implications for the Kakeya conjecture and additive combinatorics.",
     "problemStatement": "Let $A \\subseteq \\mathbb{Z}$ with $|A| = n$, and let $D(A) = \\{d : \\exists\\, a \\text{ s.t. } a, a+d, a+2d \\in A\\}$. Is $|D(A)| = O(n^{3/2})$?",
     "proofStrategy": "The formalization defines IsThreeAP and commonDifferences, then develops a comprehensive infrastructure of proven structural results: subset bounds, monotonicity, symmetry, translation invariance, and dilation covariance. The main conjecture and known bounds are stated as axioms. Bourgain's restricted sums-differences framework is formalized, and Chan's equivalence theorem connecting the two formulations is recorded. A summary theorem combines the bounds to capture the current state of knowledge: $1.778 < c^* \\le 11/6$.",
@@ -210,19 +198,17 @@
     "prob-method-second-moment"
   ],
   "leanFile": {
+    "lineCount": 374,
+    "structureCount": 0,
+    "axiomCount": 6,
+    "theoremCount": 20,
+    "lemmaCount": 0,
+    "defCount": 8,
     "imports": [
       "Mathlib.Tactic",
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Analysis.SpecialFunctions.Pow.Real"
-    ],
-    "opens": [
-      "Finset"
-    ],
-    "namespace": null,
-    "lineCount": 374,
-    "axiomCount": 6,
-    "theoremCount": 20,
-    "definitionCount": 8
+    ]
   },
   "references": [
     {

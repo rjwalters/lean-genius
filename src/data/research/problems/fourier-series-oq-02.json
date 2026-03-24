@@ -30,13 +30,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-23T18:00:00Z",
-    "iteration": 3,
-    "focus": "Proved Cinfty rapid decay. 9 axioms remain.",
-    "blockers": [
-      "holder_translation_bound needs QuotientAddGroup distance API (dist on AddCircle)",
-      "fourierCoeff_difference_formula needs Haar measure translation invariance"
-    ],
-    "nextAction": "Prove holder_translation_bound using HolderWith.dist_le_of_le + quotient distance bound",
+    "iteration": 6,
+    "focus": "4 axioms, 2 sorries. Converted sq_summable and riemann_lebesgue from axiom to theorem.",
+    "blockers": [],
+    "nextAction": "Fill riemannLebesgue sorry (rpow arithmetic) or prove fourierCoeff_smooth_decay",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -44,11 +41,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved fourierCoeff_Cinfty_rapid_decay (C^∞ rapid decay follows from C^k decay). Axiom count: 10→9. 0 sorries.",
+    "progressSummary": "PROGRESS: Converted 2 axioms to theorem stubs (sq_summable, riemann_lebesgue). Now: 4 axioms, 2 sorries, 382 lines.",
     "builtItems": [
       "fourier_norm_one: proved via simp [fourier_apply] — toCircle maps to unit circle",
       "fourier_translate_halfperiod: proved via fourier_neg + fourier_add_half_inv_index + map_neg",
-      "Proved fourierCoeff_Cinfty_rapid_decay: C^∞ ⟹ rapid decay, trivially from fourierCoeff_smooth_decay (C^∞ ⟹ C^k for all k)"
+      "Proved fourierCoeff_Cinfty_rapid_decay: C^∞ ⟹ rapid decay, trivially from fourierCoeff_smooth_decay (C^∞ ⟹ C^k for all k)",
+      "fourierCoeff_difference_formula: proved via half-period identity + Haar measure translation invariance + integral splitting",
+      "Proved quotient norm bound: ‖(↑r : AddCircle T)‖ ≤ ‖r‖ via QuotientAddGroup.norm_mk_le_norm",
+      "Eliminated sorry in fourierCoeff_difference_formula: added Continuous f hypothesis, proved non-integrable case impossible via ContinuousOn.integrableOn_compact isCompact_univ",
+      "Added 0 < α to fourierCoeff_holder_decay: derives Continuous f from holder_continuous, passes to difference formula",
+      "Converted fourierCoeff_sq_summable_of_holder: axiom -> theorem with sorry",
+      "Converted riemannLebesgue_of_holder: axiom -> theorem with sorry (Metric.tendsto_nhds + Filter.eventually_cofinite)"
     ],
     "insights": [
       "fourier_apply unfolds to ↑(n • x).toCircle, which immediately gives unit norm via simp",
@@ -57,15 +60,23 @@
       "T/(2*n) vs T/2/n: ring normalizes between these equivalent forms",
       "holder_translation_bound needs QuotientAddGroup dist API — dist(x, x+↑s) ≤ |s| on AddCircle",
       "integral_product_bound needs norm_integral_le + fourier_norm_one + holder_bound + probability measure",
-      "fourierCoeff_Cinfty_rapid_decay is a trivial consequence of fourierCoeff_smooth_decay — C^∞ means C^k for all k"
+      "fourierCoeff_Cinfty_rapid_decay is a trivial consequence of fourierCoeff_smooth_decay — C^∞ means C^k for all k",
+      "MeasurePreserving.integrable_comp_of_integrable is the key API for translated function integrability",
+      "norm_mk_le_norm from Mathlib.Analysis.Normed.Group.Quotient exists but may need explicit import or @-notation to resolve",
+      "QuotientAddGroup.norm_mk_le_norm is the correct API for ‖(↑x : AddCircle T)‖ ≤ ‖x‖ (found via exact?)",
+      "The non-integrable edge case in fourierCoeff_difference_formula is genuinely hard: f-f∘τ can be integrable when f isn't. Needs Continuous f hypothesis.",
+      "ContinuousOn.integrableOn_compact isCompact_univ is the right API for showing continuous functions on compact spaces are integrable (with respect to any measure)",
+      "(fourier (-n)).continuous.smul hf_cont gives continuity of fun x => fourier(-n) x • f x in Lean 4 Mathlib",
+      "Metric.tendsto_nhds unfolds Tendsto into epsilon-delta form; Filter.eventually_cofinite characterizes the cofinite filter"
     ],
     "mathlibGaps": [
       "No obvious dist(x, x+↑s) ≤ |s| lemma found for AddCircle quotient metric"
     ],
     "nextSteps": [
-      "Prove holder_translation_bound via HolderWith API + quotient distance bound",
-      "Prove integral_product_bound from norm_integral_le + fourier_norm_one + holder_bound",
-      "Prove fourierCoeff_difference_formula via Haar translation invariance"
+      "Prove riemannLebesgue_of_holder: either via Mathlib R-L for L¹ or squeeze theorem with decay bound",
+      "Prove fourierCoeff_sq_summable_of_holder: decay bound + p-series convergence",
+      "Prove fourierCoeff_smooth_decay: integration by parts for C^k functions",
+      "holder_decay_is_optimal and decay_implies_regularity are deep results — likely stay as axioms"
     ]
   },
   "tags": [
@@ -97,22 +108,22 @@
     {
       "path": "Proofs/FourierSeries.lean",
       "filename": "FourierSeries.lean",
-      "lineCount": 467,
-      "theoremCount": 13,
-      "axiomCount": 2,
+      "lineCount": 453,
+      "theoremCount": 15,
+      "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeries.lean"
     },
     {
       "path": "Proofs/FourierSeriesOQ02.lean",
       "filename": "FourierSeriesOQ02.lean",
-      "lineCount": 329,
-      "theoremCount": 12,
-      "axiomCount": 7,
+      "lineCount": 382,
+      "theoremCount": 13,
+      "axiomCount": 4,
       "defCount": 3,
-      "sorryCount": 0,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02.lean"
     },

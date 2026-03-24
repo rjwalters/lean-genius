@@ -3,7 +3,7 @@
     "id": "h-function",
     "proofId": "erdos-414",
     "range": {
-      "startLine": 27,
+      "startLine": 28,
       "endLine": 29
     },
     "type": "definition",
@@ -50,7 +50,7 @@
     "proofId": "erdos-414",
     "range": {
       "startLine": 38,
-      "endLine": 40
+      "endLine": 51
     },
     "type": "technique",
     "title": "Strict Monotonicity",
@@ -70,8 +70,8 @@
     "id": "orbit-inc-upper",
     "proofId": "erdos-414",
     "range": {
-      "startLine": 42,
-      "endLine": 48
+      "startLine": 53,
+      "endLine": 82
     },
     "type": "technique",
     "title": "Orbit Monotonicity and Upper Bound",
@@ -92,8 +92,8 @@
     "id": "concrete-values",
     "proofId": "erdos-414",
     "range": {
-      "startLine": 54,
-      "endLine": 61
+      "startLine": 89,
+      "endLine": 96
     },
     "type": "technique",
     "title": "Concrete Values: h(1)=2, h(2)=4, h(3)=5",
@@ -114,8 +114,8 @@
     "id": "h-prime",
     "proofId": "erdos-414",
     "range": {
-      "startLine": 50,
-      "endLine": 52
+      "startLine": 84,
+      "endLine": 87
     },
     "type": "technique",
     "title": "h at Primes",
@@ -136,8 +136,8 @@
     "id": "main-conjecture",
     "proofId": "erdos-414",
     "range": {
-      "startLine": 65,
-      "endLine": 69
+      "startLine": 98,
+      "endLine": 104
     },
     "type": "concept",
     "title": "Erdős Problem #414: All Orbits Merge (OPEN)",
@@ -158,8 +158,8 @@
     "id": "single-orbit",
     "proofId": "erdos-414",
     "range": {
-      "startLine": 73,
-      "endLine": 76
+      "startLine": 106,
+      "endLine": 111
     },
     "type": "concept",
     "title": "Single Eventual Orbit",
@@ -179,8 +179,8 @@
     "id": "orbit-example",
     "proofId": "erdos-414",
     "range": {
-      "startLine": 80,
-      "endLine": 83
+      "startLine": 113,
+      "endLine": 119
     },
     "type": "technique",
     "title": "Orbit of 1",
@@ -201,10 +201,10 @@
     "id": "merge-example",
     "proofId": "erdos-414",
     "range": {
-      "startLine": 87,
-      "endLine": 88
+      "startLine": 121,
+      "endLine": 125
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Orbits of 1 and 3 Merge at 7",
     "content": "**h³(1) = h²(3) = 7**: The orbit of 1 reaches 7 in 3 steps (1→2→4→7), while the orbit of 3 reaches 7 in 2 steps (3→5→7). After 7, both follow the same path: 7→9→12→18→24→...",
     "significance": "key",
@@ -223,8 +223,8 @@
     "id": "average-divisor",
     "proofId": "erdos-414",
     "range": {
-      "startLine": 95,
-      "endLine": 96
+      "startLine": 127,
+      "endLine": 134
     },
     "type": "concept",
     "title": "Dirichlet's Average Order of τ",
@@ -244,8 +244,8 @@
     "id": "growth-analysis",
     "proofId": "erdos-414",
     "range": {
-      "startLine": 98,
-      "endLine": 100
+      "startLine": 136,
+      "endLine": 146
     },
     "type": "technique",
     "title": "Linear Lower Bound on Orbit Growth",
@@ -266,8 +266,8 @@
     "id": "orbits-close",
     "proofId": "erdos-414",
     "range": {
-      "startLine": 105,
-      "endLine": 109
+      "startLine": 148,
+      "endLine": 155
     },
     "type": "concept",
     "title": "Orbits Get Arbitrarily Close",

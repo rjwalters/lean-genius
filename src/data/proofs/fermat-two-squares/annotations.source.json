@@ -46,7 +46,7 @@
     "title": "Zagier's One-Sentence Proof",
     "content": "In 1990, Don Zagier published a proof that fits in a single sentence (though understanding it takes considerably longer):\n\n\"The involution on the finite set S = {(x,y,z) ∈ N³ : x² + 4yz = p} defined by (x,y,z) → (x+2z, z, y-x-z) if x < y-z, (2y-x, y, x-y+z) if y-z < x < 2y, (x-2y, x-y+z, y) if x > 2y, has exactly one fixed point, so |S| is odd and the involution (x,y,z) → (x,z,y) also has a fixed point.\"\n\nThe genius is in choosing the right set S and the right involutions.",
     "mathContext": "Zagier's proof exploits: (1) |S| is odd since p is odd, (2) an involution on a set of odd cardinality must have a fixed point.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "involutions",
       "combinatorial proof",
@@ -64,7 +64,7 @@
     "title": "The Complete Characterization",
     "content": "**A prime p is a sum of two squares iff p % 4 ≠ 3**\n\nThe proof has two directions:\n\n1. **If p = a² + b², then p % 4 ≠ 3**: Squares mod 4 are 0 or 1, so their sum is 0, 1, or 2 - never 3.\n\n2. **If p % 4 ≠ 3, then p = a² + b²**: This is the hard direction, proved by Zagier's involution argument in Mathlib.",
     "mathContext": "$(2k)^2 = 4k^2 \\equiv 0 \\pmod 4$\n$(2k+1)^2 = 4k^2 + 4k + 1 \\equiv 1 \\pmod 4$\n\nSo $a^2 + b^2 \\mod 4 \\in \\{0+0, 0+1, 1+0, 1+1\\} = \\{0, 1, 2\\}$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "modular arithmetic",
       "characterization theorem"

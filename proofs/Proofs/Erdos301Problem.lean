@@ -19,6 +19,8 @@ import Mathlib.Tactic
 
 open Finset
 
+attribute [local instance] Classical.propDecidable
+
 /- ## Egyptian fraction decomposition avoidance -/
 
 /-- `HasEgyptianDecomp A a` means there exist distinct `b₁, ..., bₖ ∈ A` with
@@ -64,10 +66,18 @@ axiom vanDoorn_upper (N : ℕ) (hN : 0 < N) :
 
 /-- The empty set is EgyptFractionFree. -/
 theorem egyptFractionFree_empty : EgyptFractionFree ∅ := by
-  intro a ha; exact absurd ha (Finset.not_mem_empty a)
+  intro a ha; exact absurd ha (Finset.notMem_empty a)
 
 /-- A singleton is EgyptFractionFree (no other elements to decompose into). -/
-axiom egyptFractionFree_singleton (n : ℕ) : EgyptFractionFree {n}
+theorem egyptFractionFree_singleton (n : ℕ) : EgyptFractionFree {n} := by
+  intro a ha ⟨B, hB, haB, hne, _⟩
+  have hab : a = n := Finset.mem_singleton.mp ha
+  have : B = ∅ := by
+    rw [Finset.eq_empty_iff_forall_notMem]
+    intro x hx
+    have hxn := Finset.mem_singleton.mp (hB hx)
+    exact haB (hab ▸ hxn ▸ hx)
+  exact absurd (this ▸ hne) Finset.not_nonempty_empty
 
 /-- Subsets of EgyptFractionFree sets are EgyptFractionFree. -/
 theorem egyptFractionFree_subset {A B : Finset ℕ} (h : B ⊆ A) (hA : EgyptFractionFree A) :

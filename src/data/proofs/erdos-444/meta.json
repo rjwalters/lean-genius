@@ -209,26 +209,60 @@
     "perfect-numbers"
   ],
   "leanFile": {
+    "lineCount": 160,
+    "structureCount": 0,
+    "axiomCount": 6,
+    "theoremCount": 2,
+    "lemmaCount": 0,
+    "defCount": 6,
     "imports": [
       "Mathlib.Data.Nat.Basic",
       "Mathlib.Data.Real.Basic",
       "Mathlib.Data.Set.Basic"
-    ],
-    "opens": [],
-    "namespace": "Erdos444",
-    "lineCount": 160,
-    "axiomCount": 6,
-    "theoremCount": 2,
-    "definitionCount": 6
+    ]
   },
   "references": [
-    "Erdős, P. and Graham, R.L. (1980): 'Old and new problems and results in combinatorial number theory', Monographies de L'Enseignement Mathématique 28, p. 88",
-    "Erdős, P. and Sárközy, A. (1980): 'Some asymptotic formulas on generalized divisor functions IV'",
-    "Ramanujan, S. (1915): 'Highly composite numbers', Proc. London Math. Soc. 14, 347–409",
-    "Wigert, S. (1907): 'Sur l'ordre de grandeur du nombre des diviseurs d'un entier', Arkiv för Matematik 3(18), 1–9",
-    "Hardy, G.H. and Ramanujan, S. (1917): 'The normal number of prime factors of a number n', Quart. J. Math. 48, 76–92",
-    "Mertens, F. (1874): 'Ein Beitrag zur analytischen Zahlentheorie', J. Reine Angew. Math. 78, 46–62",
-    "Erdős, P. and Kac, M. (1940): 'The Gaussian law of errors in the theory of additive number theoretic functions', Amer. J. Math. 62, 738–742",
-    "https://erdosproblems.com/444"
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "L'Enseignement Mathématique, Université de Genève, Monographie No. 28",
+      "note": "Problem #444 on p. 88"
+    },
+    {
+      "authors": "Erdős, Paul; Sárközy, András",
+      "title": "Some asymptotic formulas on generalized divisor functions IV",
+      "year": "1980",
+      "venue": "Studia Scientiarum Mathematicarum Hungarica",
+      "note": "Asymptotic results on divisor function behavior relevant to the conjecture"
+    },
+    {
+      "authors": "Ramanujan, Srinivasa",
+      "title": "Highly composite numbers",
+      "year": "1915",
+      "venue": "Proceedings of the London Mathematical Society, vol. 14, pp. 347-409",
+      "note": "Systematic study of numbers maximizing τ(n) — extremal cases for divisor function growth"
+    },
+    {
+      "authors": "Wigert, Carl Severin",
+      "title": "Sur l'ordre de grandeur du nombre des diviseurs d'un entier",
+      "year": "1907",
+      "venue": "Arkiv för Matematik, Astronomi och Fysik, vol. 3(18), pp. 1-9",
+      "note": "Wigert's bound: τ(n) = O(2^{(1+o(1)) log n / log log n})"
+    },
+    {
+      "authors": "Hardy, Godfrey Harold; Ramanujan, Srinivasa",
+      "title": "The normal number of prime factors of a number n",
+      "year": "1917",
+      "venue": "Quarterly Journal of Mathematics, vol. 48, pp. 76-92",
+      "note": "Normal order of ω(n) is log log n — foundational for understanding divisor function statistics"
+    },
+    {
+      "authors": "Erdős, Paul; Kac, Mark",
+      "title": "The Gaussian law of errors in the theory of additive number theoretic functions",
+      "year": "1940",
+      "venue": "American Journal of Mathematics, vol. 62, pp. 738-742",
+      "note": "Erdős-Kac theorem: ω(n) is approximately normally distributed with mean and variance log log n"
+    }
   ]
 }

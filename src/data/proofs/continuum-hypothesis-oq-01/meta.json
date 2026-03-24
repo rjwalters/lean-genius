@@ -163,5 +163,15 @@
     "axiomCount": 10,
     "theoremCount": 20,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "continuum-hypothesis",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    }
+  ],
+  "relatedProofs": [
+    "continuum-hypothesis"
+  ]
 }

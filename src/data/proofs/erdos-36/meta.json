@@ -2,7 +2,7 @@
   "id": "erdos-36",
   "title": "Erdős Problem #36: Minimum Overlap Problem",
   "slug": "erdos-36",
-  "description": "Partition {1,...,2N} into equal sets A, B. Minimize over partitions the maximum number of pairs (a,b) with a−b=k. Determine c = lim M(N)/N. Known: 0.379 < c < 0.381. Open.",
+  "description": "Erdős Problem #36: Partition $\\{1,\\ldots,2N\\}$ into equal sets $A, B$. Minimize over all partitions the maximum overlap $\\max_k |\\{(a,b) \\in A \\times B : a - b = k\\}|$. Does the limit $c = \\lim M(N)/N$ exist, and what is its value? Known bounds: $0.379 < c < 0.381$. A 91-line formalization with 6 axioms encoding Moser's construction ($c \\geq 0.379...$), the Swinnerton-Dyer upper bound ($c < 0.382$), and Fourier-analytic reformulations. Status: OPEN.",
   "meta": {
     "erdosNumber": 36,
     "status": "axiomatized",
@@ -59,21 +59,6 @@
     ],
     "assumptions": "6 axiom declarations: erdos_36_limit_exists (the limit c = lim M(N)/N exists — the main open question), erdos_lower_quarter (Erdős's 1/4 lower bound), scherk_lower (Scherk's 1−1/√2 ≈ 0.293 lower bound via Fourier), white_lower (White's 0.379 lower bound via convex optimization), upper_bound (Haugland's 0.381 upper bound), small_values (computed M(N) for small N). The limit existence and bounds are established results.",
     "lineCount": 91,
-    "leanFile": {
-      "lineCount": 91,
-      "structureCount": 0,
-      "axiomCount": 6,
-      "theoremCount": 0,
-      "lemmaCount": 0,
-      "defCount": 3,
-      "imports": [
-        "Mathlib.Data.Nat.Basic",
-        "Mathlib.Data.Int.Basic",
-        "Mathlib.Data.Finset.Basic",
-        "Mathlib.Data.Real.Basic",
-        "Mathlib.Tactic"
-      ]
-    },
     "relatedProblems": [
       {
         "id": "erdos-335",
@@ -86,19 +71,19 @@
     ]
   },
   "leanFile": {
+    "lineCount": 91,
+    "structureCount": 0,
+    "axiomCount": 6,
+    "theoremCount": 0,
+    "lemmaCount": 0,
+    "defCount": 3,
     "imports": [
       "Mathlib.Data.Nat.Basic",
       "Mathlib.Data.Int.Basic",
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Data.Real.Basic",
       "Mathlib.Tactic"
-    ],
-    "opens": [],
-    "namespace": null,
-    "lineCount": 91,
-    "axiomCount": 6,
-    "theoremCount": 0,
-    "definitionCount": 3
+    ]
   },
   "sections": [
     {
@@ -238,11 +223,6 @@
       "targetId": "prob-method-expectation",
       "relationship": "related",
       "description": "The first moment method provides the baseline lower bound on the minimum overlap: a random equal partition of $\\{1,\\ldots,2N\\}$ has expected overlap $\\sim N/2$ at each shift, and the maximum over $O(N)$ shifts is at least the average. Carefully optimizing the partition reduces the overlap from $N/2$ to $\\sim 0.380 N$, but the probabilistic baseline shows that random partitions already achieve overlap $\\sim N/2$ — the problem asks how much better structured partitions can do"
-    },
-    {
-      "targetId": "combinations-formula",
-      "relationship": "foundational",
-      "description": "The binomial coefficient $\\binom{2N}{N}$ counts the number of equal partitions of $\\{1,\\ldots,2N\\}$, providing the size of the optimization domain for $M(N)$. The Stirling-level asymptotics $\\binom{2N}{N} \\sim 4^N/\\sqrt{\\pi N}$ show the partition space grows exponentially, making exhaustive search infeasible and motivating the Fourier-analytic approach"
     }
   ],
   "relatedProofs": [
@@ -255,8 +235,7 @@
     "erdos-1",
     "roth-theorem-k3",
     "szemeredi-theorem",
-    "prob-method-expectation",
-    "combinations-formula"
+    "prob-method-expectation"
   ],
   "references": [
     {

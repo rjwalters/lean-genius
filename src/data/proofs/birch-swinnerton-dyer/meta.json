@@ -113,7 +113,7 @@
   "overview": {
     "historicalContext": "The BSD conjecture arose from pioneering computational experiments by Bryan Birch and Peter Swinnerton-Dyer at Cambridge in the early 1960s. Using the EDSAC computer, they computed the product of local factors $N_p/p$ for many elliptic curves and observed that the growth rate as $p \\to \\infty$ correlated with the number of rational points. In 1965, they published their conjecture: the rank of the Mordell-Weil group $E(\\mathbb{Q})$ equals the order of vanishing of $L(E, s)$ at $s = 1$.\n\nThe first major progress came from Coates and Wiles (1977), who proved BSD for elliptic curves with complex multiplication when $L(E, 1) \\neq 0$. The breakthrough decade was the 1980s-90s: Gross and Zagier (1986) established their celebrated formula relating $L'(E, 1)$ to the height of Heegner points, and Kolyvagin (1990) introduced Euler systems to prove the rank 0 and rank 1 cases. These results established that if $L(E, 1) \\neq 0$ then rank $= 0$, and if $L(E, 1) = 0$ but $L'(E, 1) \\neq 0$ then rank $= 1$, with the Shafarevich-Tate group finite in both cases.\n\nWiles' proof of the modularity theorem for semistable curves (1995) -- which famously proved Fermat's Last Theorem as a corollary -- was essential for BSD because it guaranteed that $L(E, s)$ has analytic continuation, making the order of vanishing at $s = 1$ well-defined. Breuil-Conrad-Diamond-Taylor (2001) completed the modularity theorem for all elliptic curves over $\\mathbb{Q}$.\n\nIn 2000, the Clay Mathematics Institute designated BSD as one of seven Millennium Prize Problems, carrying a $1,000,000 prize. Despite massive computational evidence (verified for all curves with conductor $\\leq 500{,}000$ with no counterexamples), the conjecture remains open for rank $\\geq 2$. Bhargava and Shankar (2015) showed the average rank of elliptic curves is at most 7/6, providing statistical evidence that BSD is 'usually true', but a proof for individual curves of higher rank remains elusive.",
     "problemStatement": "**Weak BSD:** rank(E(Q)) = ord_{s=1} L(E,s)\n\n**Strong BSD:** The leading Taylor coefficient of L(E,s) at s=1 equals a precise formula involving periods, regulators, and the Shafarevich-Tate group.",
-    "text": "One of the seven Millennium Prize Problems. The rank of an elliptic curve equals the order of vanishing of its L-function at s=1.",
+    "text": "Formalizes the Birch and Swinnerton-Dyer Conjecture (Millennium Prize): $\\text{rank}\\, E(\\mathbb{Q}) = \\text{ord}_{s=1} L(E, s)$. Constructs elliptic curve infrastructure (Weierstrass models, group law, Mordell-Weil), defines the $L$-function via Euler product, and axiomatizes the conjecture. Includes Koblitz correspondence for congruent number curves, Selmer groups with $n$-descent rank bounds, root numbers, Iwasawa theory, Tunnell's theorem, Bloch-Kato generalization, Euler systems (Kolyvagin), BSD verification for curves 37a and 389a, anticyclotomic theory, and algorithmic approaches.",
     "proofStrategy": "The formalization provides the most comprehensive formal treatment of BSD in any proof assistant, spanning 49 parts across 5534 lines. **Core BSD (Parts I-XII):** EllipticCurveQ with Mathlib embedding, L-functions via Euler products, weak and strong BSD statements, proven cases (rank 0/1/CM), Gross-Zagier formula, full Koblitz correspondence (both directions proved), and Hasse bound. **Algebraic Infrastructure (Parts XIII-XVI):** Selmer groups with descent, height functions and regulators, local Euler factors, Mazur's 15 torsion groups. **Analytic Theory (Parts XVIII-XXV):** Root number theory with proved parity consequences, Tamagawa numbers and Kodaira types, BSD constant computations, verified BSD for curves 37a (rank 1) and 389a (rank 2). **Modern Methods (Parts XXVI-XXXVI):** Goldfeld's rank distribution conjecture, Kolyvagin's Euler systems, Cassels-Tate pairing, Iwasawa theory with main conjecture, p-adic BSD, Tunnell's theorem with verified computations, Bloch-Kato generalization. **Deep Structure (Parts XXXVII-XLIV):** Explicit period/height/L-value computations, modularity theorem and Wiles' proof, Langlands program, higher rank methods, computational database framework. **Proved Algebraic Results (Parts XLV-XLIX):** j-invariant classification (CM curves), point doubling formula, rank-2 Hadamard bound, additional congruent number verifications, parametric curve properties.",
     "keyInsights": [
       "**BSD connects two fundamentally different invariants**: the algebraic rank (from Mordell-Weil, counting independent rational points) and the analytic rank (from the L-function, an analytic object encoding arithmetic data)",
@@ -128,7 +128,10 @@
       "**The Bloch-Kato conjecture generalizes BSD to all motives**: BSD is the special case for the motive h^1(E), connecting to the Langlands program"
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Algebraic number theory (elliptic curves, Mordell-Weil theorem, heights)",
+      "Analytic number theory ($L$-functions, Euler products, analytic continuation)",
+      "Algebraic geometry (Weierstrass models, group law, Néron models)",
+      "Galois cohomology (Selmer groups, Shafarevich-Tate group, descent)"
     ]
   },
   "crossReferences": [
@@ -166,21 +169,24 @@
       "title": "Part I: Elliptic Curves over Q",
       "startLine": 104,
       "endLine": 200,
-      "summary": "`EllipticCurveQ` structure in short Weierstrass form $y^2 = x^3 + ax + b$, with discriminant $\\Delta = -16(4a^3 + 27b^2)$, j-invariant, and `toWeierstrassCurve` embedding into Mathlib. Three verified theorems: discriminant match, discriminant nonzero, $c_4 = -48a$."
+      "summary": "`EllipticCurveQ` structure in short Weierstrass form $y^2 = x^3 + ax + b$, with discriminant $\\Delta = -16(4a^3 + 27b^2)$, j-invariant, and `toWeierstrassCurve` embedding into Mathlib. Three verified theorems: discriminant match, discriminant nonzero, $c_4 = -48a$.",
+      "mathContext": "$E : y^2 = x^3 + ax + b$, $\\Delta = -16(4a^3 + 27b^2) \\neq 0$, $j = -1728 \\cdot (48a)^3/\\Delta$."
     },
     {
       "id": "mordell-weil",
       "title": "Part II: Mordell-Weil Group",
       "startLine": 202,
       "endLine": 265,
-      "summary": "`MordellWeilGroup` structure with `AddCommGroup` instance. Mordell-Weil theorem (axiomatized), algebraic rank, torsion subgroup, and Mazur's theorem on the 15 possible torsion groups."
+      "summary": "`MordellWeilGroup` structure with `AddCommGroup` instance. Mordell-Weil theorem (axiomatized), algebraic rank, torsion subgroup, and Mazur's theorem on the 15 possible torsion groups.",
+      "mathContext": "$E(\\mathbb{Q}) \\cong \\mathbb{Z}^r \\oplus E(\\mathbb{Q})_{\\text{tors}}$ (Mordell-Weil). Mazur: $E(\\mathbb{Q})_{\\text{tors}}$ is one of 15 groups."
     },
     {
       "id": "l-functions",
       "title": "Part III: L-Functions",
       "startLine": 267,
       "endLine": 345,
-      "summary": "L-function $L(E,s) = \\prod_p L_p(E,s)^{-1}$ via Euler product with local factors, conductor $N$, completed L-function $\\Lambda(E,s)$, and root number $w(E) \\in \\{\\pm 1\\}$. All axiomatized from the Euler product definition."
+      "summary": "L-function $L(E,s) = \\prod_p L_p(E,s)^{-1}$ via Euler product with local factors, conductor $N$, completed L-function $\\Lambda(E,s)$, and root number $w(E) \\in \\{\\pm 1\\}$. All axiomatized from the Euler product definition.",
+      "mathContext": "$L(E,s) = \\prod_p (1 - a_p p^{-s} + p^{1-2s})^{-1}$ where $a_p = p + 1 - \\#E(\\mathbb{F}_p)$. Functional equation: $\\Lambda(E, 2-s) = w(E) \\Lambda(E, s)$."
     },
     {
       "id": "modularity",
@@ -201,7 +207,8 @@
       "title": "Part VI: BSD Conjecture Statement",
       "startLine": 425,
       "endLine": 557,
-      "summary": "Formal statement of weak BSD (`algebraicRank E = analyticRank E`) and strong BSD (leading coefficient formula with $\\Omega, R, |\\text{III}|, c_p, |E(\\mathbb{Q})_{\\text{tors}}|$). `BSDConstant` defined from five axiomatized arithmetic invariants."
+      "summary": "Formal statement of weak BSD (`algebraicRank E = analyticRank E`) and strong BSD (leading coefficient formula with $\\Omega, R, |\\text{III}|, c_p, |E(\\mathbb{Q})_{\\text{tors}}|$). `BSDConstant` defined from five axiomatized arithmetic invariants.",
+      "mathContext": "Weak: $\\text{rank}\\,E(\\mathbb{Q}) = \\text{ord}_{s=1} L(E,s)$. Strong: $\\lim_{s \\to 1} L(E,s)/(s-1)^r = \\Omega_E \\cdot R_E \\cdot |\\text{Ш}| \\cdot \\prod c_p / |E(\\mathbb{Q})_{\\text{tors}}|^2$."
     },
     {
       "id": "proven-cases",
@@ -215,7 +222,8 @@
       "title": "Part VIII: Gross-Zagier Formula",
       "startLine": 630,
       "endLine": 668,
-      "summary": "`HeegnerPoint` structure with discriminant field. `NeronTateHeight` axiomatized as bilinear form. `gross_zagier_formula` relates $L'(E,1)$ to height of Heegner point (placeholder proof)."
+      "summary": "`HeegnerPoint` structure with discriminant field. `NeronTateHeight` axiomatized as bilinear form. `gross_zagier_formula` relates $L'(E,1)$ to height of Heegner point (placeholder proof).",
+      "mathContext": "Gross-Zagier: $L'(E, 1) = c \\cdot \\hat{h}(P_K)$ where $P_K$ is a Heegner point and $\\hat{h}$ is the Néron-Tate height."
     },
     {
       "id": "computational-evidence",

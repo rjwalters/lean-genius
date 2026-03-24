@@ -20,8 +20,8 @@
     "erdosNumber": 374,
     "erdosUrl": "https://erdosproblems.com/374",
     "erdosProblemStatus": "open",
-    "axiomCount": 7,
-    "lineCount": 79,
+    "axiomCount": 5,
+    "lineCount": 149,
     "dateAdded": "2026-02-10",
     "mathlibDependencies": [
       {
@@ -34,7 +34,11 @@
       "IsPerfectSquare: constructive definition via ∃ k, n = k * k",
       "factorialProduct: product of factorials of elements in a list",
       "HasSquareFactorialProduct: formal condition for factorial products being perfect squares",
-      "bigF: axiomatized F(m), the minimum k for factorial square products",
+      "bigF: noncomputable definition of F(m) via Nat.find (replaces axiom)",
+      "bigF_ge_two: proved F(m) ≥ 2 when defined (replaces axiom)",
+      "squares_have_square_factorial_product: proved backward direction D₂ ⊇ {n² : n ≥ 2}",
+      "bigF_prime_zero: derived that F is undefined for primes",
+      "no_prime_in_Dk: derived prime exclusion from Dₖ for k ≥ 2",
       "inDk: membership predicate for the sets Dₖ"
     ],
     "prerequisites": [
@@ -46,7 +50,7 @@
       "infinitude-primes",
       "fundamental-arithmetic"
     ],
-    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "5 axiom(s) encoding deep results from Erdős-Graham 1976. bigF and bigF_ge_two replaced with definition and proof. See the Lean source for details."
   },
   "crossReferences": [
     {
@@ -64,7 +68,7 @@
     "historicalContext": "**Erdős Problem #374** originated in Erdős and Graham's 1976 work on factorial arithmetic. For an integer $m$, define $F(m)$ as the minimal $k \\geq 2$ such that there exist integers $a_1 < a_2 < \\cdots < a_k = m$ with the product $a_1! \\cdot a_2! \\cdots a_k!$ being a **perfect square**. The classes $D_k = \\{m : F(m) = k\\}$ partition the integers with well-defined $F$.\n\nThe structural results are striking: $D_2$ consists exactly of perfect squares greater than 1 (since $m! \\cdot a!$ is a square iff $m!/a!$ is a square, which for $a < m$ reduces to $m$ being a perfect square when $k=2$). No prime belongs to any $D_k$: if $p$ is prime, then $v_p(p!) = 1$, making it impossible to achieve even $p$-adic valuation in any product $a_1! \\cdots a_k!$ with $a_k = p$.\n\nThe most remarkable structural result is $D_k = \\emptyset$ for $k > 6$, proved by analyzing the parity constraints on $v_p(a_1! \\cdots a_k!)$ via Legendre's formula. The smallest element of $D_6$ is $527$, discovered by computational search. The **growth rates** of $|D_k \\cap \\{1, \\ldots, n\\}|$ for $3 \\leq k \\leq 6$ remain unknown as of 2026, with the interplay between Legendre's formula and parity constraints being the key obstacle.",
     "problemStatement": "Determine the growth rate of $|D_k \\cap \\{1,\\ldots,n\\}|$ for $3 \\leq k \\leq 6$, where $D_k = \\{m : F(m) = k\\}$ and $F(m) = \\min\\{k \\geq 2 : \\exists a_1 < \\cdots < a_k = m,\\ a_1! \\cdots a_k! \\text{ is a perfect square}\\}$.",
     "text": "For F(m) = min k with a₁!···aₖ! a square (a₁<···<aₖ=m), study |Dₖ∩{1,...,n}| for Dₖ = {m: F(m)=k}. D₂ = squares. Dₖ = ∅ for k>6. Min D₆ = 527. Open for 3≤k≤6.",
-    "proofStrategy": "The formalization defines `IsPerfectSquare`, `factorialProduct`, and `HasSquareFactorialProduct` constructively, axiomatizes $F(m)$ as `bigF`, and records known structural results about the sets $D_k$. Seven axioms encode: $F$ is well-defined (minimality), $D_2 = $ squares, primes are excluded, $D_k = \\emptyset$ for $k > 6$, the minimum of $D_6$ is $527$, and the main open question about growth rates.",
+    "proofStrategy": "The formalization defines `IsPerfectSquare`, `factorialProduct`, and `HasSquareFactorialProduct` constructively. `bigF` (F(m)) is a **noncomputable definition** via `Nat.find` (replacing the original axiom). Five proved theorems include: `bigF_ge_two` (from definition), `factorialProduct_pair` (helper), `squares_have_square_factorial_product` (backward D₂ direction: n² ∈ D₂), `bigF_prime_zero` and `no_prime_in_Dk` (derived from axioms). Five axioms remain for deep results: D₂ forward direction, prime exclusion, $D_k = \\emptyset$ for $k > 6$, min D₆ = 527, and the open growth rate question.",
     "keyInsights": [
       "D₂ = perfect squares > 1, giving |D₂ ∩ {1,...,n}| = √n + O(1)",
       "No prime belongs to any Dₖ: v_p(p!) = 1 is odd, so the p-adic valuation of any factorial product including p! has odd p-contribution, preventing a perfect square",
@@ -122,7 +126,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #374 is formalized in 79 lines with 7 axioms encoding the structural results about factorial square products. The partition D₂ through D₆ is established, with D₂ = squares and Dₖ = ∅ for k > 6. The growth rates of D₃ through D₆ remain open.",
+    "summary": "Erdős Problem #374 is formalized in 149 lines with 5 axioms and 5 proved theorems. bigF is now a noncomputable definition (eliminating 2 axioms). The backward direction of D₂ = squares is proved: for n ≥ 2, (n²−1)! · (n²)! = (n · (n²−1)!)². Prime exclusion and basic properties are derived from axioms. The growth rates of D₃ through D₆ remain open.",
     "implications": "Resolution would connect factorial arithmetic to the distribution of square-free parts and p-adic valuations, with links to Legendre's formula, base-p representations, and the theory of multiplicative functions.",
     "openQuestions": [
       "What is |D₃ ∩ {1,...,n}| asymptotically? Is D₃ infinite?",
@@ -136,11 +140,11 @@
       "Mathlib.Tactic",
       "Mathlib.Data.Nat.Basic"
     ],
-    "opens": [],
-    "namespace": "Erdos374",
-    "lineCount": 79,
-    "axiomCount": 7,
-    "theoremCount": 0,
+    "opens": ["Classical"],
+    "namespace": "",
+    "lineCount": 149,
+    "axiomCount": 5,
+    "theoremCount": 5,
     "definitionCount": 5
   },
   "references": [

@@ -212,26 +212,61 @@
     "chinese-remainder-constructive"
   ],
   "leanFile": {
+    "lineCount": 141,
+    "structureCount": 0,
+    "axiomCount": 3,
+    "theoremCount": 0,
+    "lemmaCount": 0,
+    "defCount": 7,
     "imports": [
       "Mathlib.Data.Nat.Basic",
       "Mathlib.Data.Nat.GCD.Basic",
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Tactic"
-    ],
-    "opens": [],
-    "namespace": "Erdos432",
-    "lineCount": 141,
-    "axiomCount": 3,
-    "theoremCount": 0,
-    "definitionCount": 7
+    ]
   },
   "references": [
-    "Erdős, P. and Graham, R.L. (1980): 'Old and new problems and results in combinatorial number theory', Monographies de L'Enseignement Mathématique 28, pp. 84–85",
-    "Ostmann, H.-H. (1956): 'Additive Zahlentheorie', Ergebnisse der Mathematik, Springer",
-    "Freiman, G.A. (1973): 'Foundations of a structural theory of set addition', Translations of Mathematical Monographs 37, AMS",
-    "Plünnecke, H. (1970): 'Eine zahlentheoretische Anwendung der Graphentheorie', J. Reine Angew. Math. 243, 171–183",
-    "Ruzsa, I.Z. (1989): 'An application of graph theory to additive number theory', Scientia Ser. A 3, 97–109",
-    "Green, B. and Tao, T. (2008): 'The primes contain arbitrarily long arithmetic progressions', Annals of Mathematics 167, 481–547",
-    "https://erdosproblems.com/432"
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "L'Enseignement Mathématique, Université de Genève, Monographie No. 28",
+      "note": "Problem #432 on pp. 84-85: coprime sumset bases"
+    },
+    {
+      "authors": "Ostmann, Hans-Heinrich",
+      "title": "Additive Zahlentheorie",
+      "year": "1956",
+      "venue": "Ergebnisse der Mathematik und ihrer Grenzgebiete, Springer",
+      "note": "Foundational work on additive number theory and sumset structure"
+    },
+    {
+      "authors": "Freiman, Gregory A.",
+      "title": "Foundations of a Structural Theory of Set Addition",
+      "year": "1973",
+      "venue": "Translations of Mathematical Monographs, vol. 37, AMS",
+      "note": "Freiman's structure theorem: sets with small sumsets are dense in generalized arithmetic progressions"
+    },
+    {
+      "authors": "Plünnecke, Helmut",
+      "title": "Eine zahlentheoretische Anwendung der Graphentheorie",
+      "year": "1970",
+      "venue": "Journal für die reine und angewandte Mathematik, vol. 243, pp. 171-183",
+      "note": "Plünnecke's inequality via directed graph methods — foundational for sumset growth estimates"
+    },
+    {
+      "authors": "Ruzsa, Imre Z.",
+      "title": "An application of graph theory to additive number theory",
+      "year": "1989",
+      "venue": "Scientia, Series A, vol. 3, pp. 97-109",
+      "note": "Simplified proof of Plünnecke's inequality with the Ruzsa covering lemma"
+    },
+    {
+      "authors": "Green, Ben; Tao, Terence",
+      "title": "The primes contain arbitrarily long arithmetic progressions",
+      "year": "2008",
+      "venue": "Annals of Mathematics, vol. 167, pp. 481-547",
+      "note": "Green-Tao theorem — connected to Problem #432 through the additive structure of primes"
+    }
   ]
 }

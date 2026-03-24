@@ -2,7 +2,7 @@
   "id": "binomial-theorem",
   "title": "The Binomial Theorem",
   "slug": "binomial-theorem",
-  "description": "(x + y)^n = Σ C(n,k) x^k y^(n-k). One of the most fundamental results in algebra and combinatorics.",
+  "description": "The Binomial Theorem (Wiedijk #44): $(x+y)^n = \\sum_{k=0}^{n} \\binom{n}{k} x^k y^{n-k}$, formalized for arbitrary commutative semirings via Mathlib's `add_pow`. Includes coefficient sum ($\\sum \\binom{n}{k} = 2^n$), alternating sum, Pascal's identity, symmetry, and explicit expansions for $n=2,3$. 176 lines, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Al-Karaji, Newton (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Binomial_theorem",
@@ -85,7 +85,21 @@
         "relationship": "Sub-entry on advanced binomial coefficient properties"
       }
     ],
-    "lineCount": 176
+    "lineCount": 176,
+    "leanFile": {
+      "lineCount": 176,
+      "structureCount": 0,
+      "axiomCount": 0,
+      "theoremCount": 9,
+      "lemmaCount": 0,
+      "defCount": 0,
+      "imports": [
+        "Mathlib.Algebra.BigOperators.Ring.Finset",
+        "Mathlib.Data.Nat.Choose.Sum",
+        "Mathlib.Algebra.Ring.Basic",
+        "Mathlib.Tactic"
+      ]
+    }
   },
   "overview": {
     "historicalContext": "The binomial theorem has one of the longest histories in mathematics, with contributions spanning civilizations and millennia. Special cases like $(a + b)^2 = a^2 + 2ab + b^2$ appear in Euclid's *Elements* (c. 300 BCE). The Indian mathematician **Pingala** (c. 200 BCE) described the binomial coefficients in the context of prosody (counting syllable patterns), and **Halayudha** (c. 975 CE) gave the first explicit construction of the coefficient triangle. The Persian mathematician **al-Karajī** (c. 953–1029) and **Omar Khayyám** (c. 1048–1131) described the general pattern and used it for extracting roots. The Chinese mathematician **Yang Hui** independently published the triangle in 1261. In Europe, **Blaise Pascal** systematized the theory in his 1654 *Traité du triangle arithmétique*, establishing the recurrence $\\binom{n+1}{k+1} = \\binom{n}{k} + \\binom{n}{k+1}$ and connecting it to probability theory — his correspondence with Fermat on gambling problems launched the entire field of combinatorics.\n\nThe most profound generalization came from **Isaac Newton** in 1665, who extended the theorem to non-integer exponents: $(1 + x)^\\alpha = \\sum_{k=0}^{\\infty} \\binom{\\alpha}{k} x^k$ where $\\binom{\\alpha}{k} = \\alpha(\\alpha-1)\\cdots(\\alpha-k+1)/k!$. Newton's generalized binomial series was a key tool in his development of calculus and the discovery of the power series for functions like $(1 + x)^{1/2}$ and $(1 + x)^{-1}$. The theorem is entry #44 on Wiedijk's list of 100 famous theorems.\n\nThe Lean 4 formalization works in the generality of **commutative semirings** — not just integers or reals — using Mathlib's `add_pow` theorem. This level of generality means the same proof applies to integers, rationals, reals, complex numbers, polynomials, and any other commutative semiring. The file proves the main theorem plus several corollaries: the sum of coefficients equals $2^n$, the alternating sum vanishes for $n \\geq 1$, Pascal's identity, symmetry, boundary values, and explicit expansions for $n = 2$ and $n = 3$.",
@@ -342,7 +356,7 @@
   ],
   "conclusion": {
     "summary": "This 177-line formalization of the Binomial Theorem (Wiedijk #44) proves the expansion $(x+y)^n = \\sum \\binom{n}{k} x^k y^{n-k}$ for commutative semirings, along with five structural properties (coefficient sum, alternating sum, Pascal's identity, symmetry, boundary values), two explicit expansions (square and cube), and six verified numerical examples. With 0 sorries and full Mathlib integration, it showcases how algebraic generality (CommSemiring) and proof automation (ring, native_decide) enable clean formalizations of classical results.",
-    "implications": "The binomial theorem is foundational to combinatorics (subset counting, inclusion-exclusion), algebra (polynomial identities, formal power series), analysis (Newton's generalized binomial series, Taylor expansions of $(1+x)^\\alpha$), and probability (the binomial distribution $P(X = k) = \\binom{n}{k} p^k (1-p)^{n-k}$). The CommSemiring generality means this formalization applies to all these domains simultaneously.",
+    "implications": "**Theoretical Significance:**\n\n**1. Combinatorics and Counting:** The binomial theorem is the prototype for all generating function methods. The identity $\\sum \\binom{n}{k} = 2^n$ (subset counting) and $\\sum (-1)^k \\binom{n}{k} = 0$ (inclusion-exclusion) are the two most basic instances. The Vandermonde identity, hockey stick identity, and Chu-Vandermonde formula all generalize the binomial expansion.\n\n**2. Probability and Statistics:** The binomial distribution $P(X = k) = \\binom{n}{k} p^k (1-p)^{n-k}$ arises directly from the binomial theorem with $x = p$, $y = 1-p$. The Central Limit Theorem shows this converges to a Gaussian, and the moment-generating function $M(t) = (pe^t + 1-p)^n$ is a direct application of the binomial expansion.\n\n**3. Analysis and Calculus:** Newton's generalized binomial series $(1+x)^\\alpha = \\sum \\binom{\\alpha}{k} x^k$ for non-integer $\\alpha$ was pivotal in the development of calculus. It gives $(1+x)^{1/2} = 1 + x/2 - x^2/8 + \\cdots$ (square root approximation) and $(1+x)^{-1} = 1 - x + x^2 - \\cdots$ (geometric series), both fundamental tools in physics and engineering.\n\n**4. Algebraic Generality:** The CommSemiring generality means this single formalization covers integers, rationals, reals, complex numbers, polynomials, formal power series, and $p$-adic numbers simultaneously. The $q$-analog (Gaussian binomial coefficients $\\binom{n}{k}_q$) extends this to count subspaces of $\\mathbb{F}_q^n$, connecting the binomial theorem to finite geometry and quantum groups.",
     "openQuestions": [
       "Can Newton's generalized binomial theorem for fractional/negative exponents be formalized using Mathlib's formal power series?",
       "Can the multinomial theorem $(x_1 + \\cdots + x_m)^n = \\sum \\frac{n!}{k_1! \\cdots k_m!} \\prod x_i^{k_i}$ be proved as a generalization?",

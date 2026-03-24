@@ -60,7 +60,12 @@
       "The step-by-step computation σ₁² = σ₂ + σ₁₁, σ₁³ = 2σ₂₁, σ₁⁴ = 2σ₂₂ reveals how Pieri's rule iteratively builds up the answer",
       "Steiner's erroneous count of 7776 conics (corrected to 3264) illustrates precisely the rigor Hilbert demanded — naive counting overcounts degenerate configurations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Algebraic geometry (Grassmannians, intersection theory, cohomology)",
+      "Linear algebra (subspaces, dimension, rank)",
+      "Combinatorics (Young tableaux, Littlewood-Richardson rule, partitions)",
+      "Enumerative geometry (Schubert calculus, Schubert classes)"
+    ]
   },
   "sections": [
     {
@@ -75,7 +80,8 @@
       "title": "Part I: The Grassmannian",
       "startLine": 73,
       "endLine": 105,
-      "summary": "Defines Grassmannian k n K as the subtype {V : Submodule K (Fin n → K) // finrank K V = k}, with CoeSort instance and grassmannian_rank theorem."
+      "summary": "Defines Grassmannian k n K as the subtype {V : Submodule K (Fin n → K) // finrank K V = k}, with CoeSort instance and grassmannian_rank theorem.",
+      "mathContext": "$\\text{Gr}(k, n) = \\{V \\leq K^n : \\dim V = k\\}$. Dimension: $\\dim \\text{Gr}(k,n) = k(n-k)$."
     },
     {
       "id": "lines-in-p3",
@@ -89,14 +95,16 @@
       "title": "Part III: The Four Lines Theorem",
       "startLine": 143,
       "endLine": 218,
-      "summary": "Defines FourLinesGeneralPosition (no two meet), IsTransversal (meets all four), Transversals (the set), and axiomatizes exactly 2 transversals via both existential and ncard formulations."
+      "summary": "Defines FourLinesGeneralPosition (no two meet), IsTransversal (meets all four), Transversals (the set), and axiomatizes exactly 2 transversals via both existential and ncard formulations.",
+      "mathContext": "Four lines in general position in $\\mathbb{P}^3$: exactly 2 lines meet all four. Schubert computation: $\\sigma_1^4 = 2\\sigma_{22}$ in $H^*(\\text{Gr}(2,4))$."
     },
     {
       "id": "schubert-numbers",
       "title": "Part IV: Classical Schubert Numbers",
       "startLine": 219,
       "endLine": 250,
-      "summary": "Records schubertNumber_FourLines = 2, schubertNumber_CubicSurface = 27, schubertNumber_FiveConics = 3264, schubertNumber_FivePoints = 1 as ℕ constants."
+      "summary": "Records schubertNumber_FourLines = 2, schubertNumber_CubicSurface = 27, schubertNumber_FiveConics = 3264, schubertNumber_FivePoints = 1 as ℕ constants.",
+      "mathContext": "Classical enumerative results: 2 lines meet 4 general lines, 27 lines on a cubic surface, 3264 conics tangent to 5 conics (Steiner's corrected count)."
     },
     {
       "id": "schubert-varieties",

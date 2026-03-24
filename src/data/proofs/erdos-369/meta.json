@@ -36,6 +36,18 @@
     "axiomCount": 2,
     "assumptions": "2 axiom declarations: (1) largestPrimeFactor — definitional axiom positing existence of the largest prime factor function (trivially realizable, used for convenience), (2) balog_wooley_infinitely_many — mathematical assumption encoding the Balog-Wooley 1998 theorem (infinitely many consecutive smooth pairs)",
     "author": "Erdős-Graham (1980), Balog-Wooley (1998)",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate for prime factors",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsSmooth and ConsecutiveSmoothRun predicates capturing B-smooth runs",
+      "Parametrized conjecture statement avoiding real exponentiation via divergent smoothBound function",
+      "Separation of definitional axiom (largestPrimeFactor) from mathematical axiom (Balog-Wooley)"
+    ],
     "prerequisites": [
       "smooth-numbers",
       "Dickman-function",
@@ -96,16 +108,6 @@
       "targetId": "stirling-formula",
       "relationship": "foundational",
       "description": "Stirling's approximation $k! \\sim \\sqrt{2\\pi k}(k/e)^k$ is essential to the Dickman function analysis: the differential-delay equation $u\\rho'(u) = -\\rho(u-1)$ governing smooth number density requires precise factorial/gamma function asymptotics for its saddle-point analysis. The asymptotic $\\rho(u) \\sim u^{-u(1+o(1))}$ — which determines the density of $n^\\varepsilon$-smooth numbers — is derived via Laplace-type estimates that depend on Stirling's formula"
-    },
-    {
-      "targetId": "euler-totient",
-      "relationship": "related",
-      "description": "Euler's totient $\\varphi(n)$ connects to smooth numbers through the structure of $(\\mathbb{Z}/n\\mathbb{Z})^*$: the largest prime factor of $\\varphi(n)$ governs the group structure. An integer $n$ is $B$-smooth iff all prime factors of $n$ are $\\leq B$, and $\\varphi(n)$ for smooth $n$ has a restricted factorization that influences Pollard's p-1 factoring algorithm — which succeeds precisely when $p-1$ is smooth for a prime factor $p$ of $n$"
-    },
-    {
-      "targetId": "gcd-algorithm",
-      "relationship": "foundational",
-      "description": "The Euclidean algorithm for GCD computation is the basic tool for factorization and smoothness testing: trial division to determine whether an integer is $B$-smooth uses repeated GCD or division by primes up to $B$. The complexity of testing $B$-smoothness is $O(B)$ by trial division, or $O(\\sqrt{B})$ by sieving — and the Euclidean algorithm underlies the modular arithmetic operations in more advanced factoring algorithms (quadratic sieve, GNFS) that exploit smooth numbers"
     }
   ],
   "sections": [
@@ -209,30 +211,57 @@
     "bertrands-postulate",
     "fundamental-arithmetic",
     "infinitude-primes",
-    "stirling-formula",
-    "euler-totient",
-    "gcd-algorithm"
+    "stirling-formula"
   ],
   "leanFile": {
+    "lineCount": 131,
+    "structureCount": 0,
+    "axiomCount": 2,
+    "theoremCount": 0,
+    "lemmaCount": 0,
+    "defCount": 5,
     "imports": [
       "Mathlib.Data.Nat.Basic",
       "Mathlib.Data.Nat.Prime.Basic",
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Tactic"
-    ],
-    "opens": [],
-    "namespace": "Erdos369",
-    "lineCount": 131,
-    "axiomCount": 2,
-    "theoremCount": 0,
-    "definitionCount": 5
+    ]
   },
   "references": [
-    "Erdős, P. and Graham, R.L. (1980): 'Old and New Problems and Results in Combinatorial Number Theory', p.69 — original problem statement",
-    "Balog, A. and Wooley, T.D. (1998): 'On strings of consecutive integers with no large prime factors', J. Austral. Math. Soc. Ser. A 64, 266–276",
-    "Hildebrand, A. and Tenenbaum, G. (1986): 'On integers free of large prime factors', Trans. Amer. Math. Soc. 296, 265–290 — Dickman function asymptotics",
-    "de Bruijn, N.G. (1951): 'On the number of positive integers ≤ x and free of prime factors > y', Nederl. Akad. Wetensch. Proc. Ser. A 54",
-    "Guy, R.K.: 'Unsolved Problems in Number Theory', related to B33",
-    "https://erdosproblems.com/369"
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "L'Enseignement Mathématique, Université de Genève, Monographie No. 28",
+      "note": "Problem statement on p. 69: consecutive smooth numbers in {1,...,n}"
+    },
+    {
+      "authors": "Balog, Antal; Wooley, Trevor D.",
+      "title": "On strings of consecutive integers with no large prime factors",
+      "year": "1998",
+      "venue": "Journal of the Australian Mathematical Society (Series A), vol. 64, pp. 266-276",
+      "note": "Proves infinitely many consecutive smooth pairs using sieve methods and exponential sum estimates — the strongest partial result toward Problem #369"
+    },
+    {
+      "authors": "Hildebrand, Adolf; Tenenbaum, Gérald",
+      "title": "On integers free of large prime factors",
+      "year": "1986",
+      "venue": "Transactions of the American Mathematical Society, vol. 296, pp. 265-290",
+      "note": "Precise uniform estimates for Ψ(x,y), the smooth number counting function, refining the Dickman-de Bruijn asymptotic"
+    },
+    {
+      "authors": "de Bruijn, Nicolaas G.",
+      "title": "On the number of positive integers ≤ x and free of prime factors > y",
+      "year": "1951",
+      "venue": "Koninklijke Nederlandse Akademie van Wetenschappen, Proceedings, Series A, vol. 54",
+      "note": "Rigorous development of the Dickman function ρ(u) governing smooth number density"
+    },
+    {
+      "authors": "Guy, Richard K.",
+      "title": "Unsolved Problems in Number Theory",
+      "year": "2004",
+      "venue": "Springer, Problem Books in Mathematics (3rd edition)",
+      "note": "Section B33 discusses smooth numbers and consecutive factorization problems"
+    }
   ]
 }

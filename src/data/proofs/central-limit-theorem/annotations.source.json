@@ -8,7 +8,7 @@
     "type": "concept",
     "title": "Dual Perspectives on CLT",
     "content": "This proof presents the Central Limit Theorem through two complementary lenses. The **classical approach** uses characteristic functions (Fourier transforms) to show convergence. The **topological approach** reveals why the Gaussian emerges: it is a fixed-point attractor in the dynamics of averaging.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "characteristic functions",
       "fixed point theory",
@@ -43,7 +43,7 @@
     "title": "Characteristic Functions",
     "content": "The **characteristic function** $\\varphi_X(t) = \\mathbb{E}[e^{itX}]$ is the Fourier transform of a probability distribution. It uniquely determines the distribution and has a crucial property: for independent $X, Y$, we have $\\varphi_{X+Y} = \\varphi_X \\cdot \\varphi_Y$. This converts convolution (sums of random variables) into multiplication.",
     "mathContext": "Characteristic functions always exist (bounded exponential integrand) and are uniformly continuous. They encode all moments: $\\varphi^{(k)}(0) = i^k \\mathbb{E}[X^k]$ when moments exist.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Fourier transform",
       "moment generating function",
@@ -118,7 +118,7 @@
     "type": "concept",
     "title": "The Product-to-Exponential Limit",
     "content": "The classical limit $(1 + x/n)^n \\to e^x$ is the engine of CLT. For the normalized sum $S_n = (X_1 + \\cdots + X_n)/\\sqrt{n}$, we have $\\varphi_{S_n}(t) = [\\varphi_X(t/\\sqrt{n})]^n$. Taylor expansion gives $\\varphi_X(t/\\sqrt{n}) \\approx 1 - t^2/(2n)$, and $(1 - t^2/(2n))^n \\to e^{-t^2/2}$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "exponential limit",
       "compound interest",
@@ -136,7 +136,7 @@
     "title": "Heart of CLT: Characteristic Function Convergence",
     "content": "**The Central Computation**: As $n \\to \\infty$, the characteristic function of $S_n$ converges pointwise to $e^{-t^2/2}$. This is the analytical core of CLT.\n\n**Topological insight**: We're watching the orbit of a distribution under the renormalization map $T_n(\\mu) = (1/\\sqrt{n}) \\cdot \\mu^{*n}$. The Gaussian is a fixed point, and all finite-variance distributions are in its basin of attraction.",
     "mathContext": "The third moment condition ensures uniform convergence on compact sets, which is needed for the next step (Lévy's theorem).",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-clt-taylor-theorem",
       "ann-clt-limit-setup"
@@ -159,7 +159,7 @@
     "title": "Lévy Continuity Theorem",
     "content": "**The Bridge**: Pointwise convergence of characteristic functions to a continuous function implies weak convergence of probability measures. This connects the Fourier (analysis) world to the distributional (probability) world.\n\nLévy's theorem is the inverse of the continuity of the Fourier transform: if the images converge, so do the preimages.",
     "mathContext": "Continuity at $t=0$ is essential and automatic for characteristic functions (they equal 1 at 0). The theorem fails for discontinuous limits.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "weak convergence",
       "Fourier inversion",
@@ -177,7 +177,7 @@
     "title": "The Central Limit Theorem",
     "content": "**Statement**: Let $X_1, X_2, \\ldots$ be i.i.d. with mean $\\mu$ and variance $\\sigma^2$. The normalized sum $Z_n = (\\sum X_i - n\\mu)/(\\sigma\\sqrt{n})$ converges in distribution to $N(0,1)$.\n\n**Classical interpretation**: Sums of random effects average toward the bell curve.\n\n**Topological interpretation**: The renormalization flow contracts all finite-variance distributions toward the Gaussian fixed point.",
     "mathContext": "The proof assembles: (1) Taylor expansion of characteristic function, (2) product-to-exponential limit, (3) Lévy continuity. Each piece is classical; together they prove the most useful theorem in probability.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-clt-key-convergence",
       "ann-clt-levy-theorem"
@@ -199,7 +199,7 @@
     "type": "concept",
     "title": "The Topological Viewpoint",
     "content": "Now we shift perspective: instead of computing limits, we ask WHY the Gaussian emerges. The answer: **it is a fixed point attractor** of the renormalization group flow on the space of probability distributions.\n\nThis dynamical systems perspective reveals that CLT is not an accident of computation but a consequence of the structure of the convolution operation.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "dynamical systems",
       "fixed point theory",
@@ -237,7 +237,7 @@
     "title": "Gaussian as Universal Attractor",
     "content": "**CLT Restated**: Every distribution with finite variance is in the basin of attraction of the Gaussian under the renormalization flow. Formally, $T_n(\\mu) \\to \\mathcal{N}$ in the Wasserstein metric as $n \\to \\infty$.\n\nThis is the dynamical systems view: we have a discrete dynamical system on $\\mathcal{P}_2$ with the Gaussian as a globally attracting fixed point (for finite-variance starting points).",
     "mathContext": "The 'domain of attraction' is exactly the set of distributions with finite variance. Infinite variance leads to stable distributions with $\\alpha < 2$ (Lévy flights).",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-clt-fixed-point"
     ],
@@ -334,7 +334,7 @@
     "type": "concept",
     "title": "Synthesis: Why the Gaussian is Universal",
     "content": "The Central Limit Theorem reveals the Gaussian as a **mathematical necessity**, not an accident:\n\n1. **Dynamically**: It is the unique fixed-point attractor of the averaging operation\n2. **Information-theoretically**: It maximizes entropy at fixed variance\n3. **Analytically**: It is self-dual under Fourier transform\n4. **Probabilistically**: It is the only finite-variance stable distribution\n\nWherever we see many small independent effects being summed—measurement errors, thermal fluctuations, stock prices, IQ scores—the Gaussian emerges because averaging dynamics demand it.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "universality",
       "emergence",

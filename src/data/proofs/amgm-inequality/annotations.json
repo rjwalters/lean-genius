@@ -39,7 +39,9 @@
       "geometric mean",
       "inequality",
       "convexity",
-      "Jensen's inequality"
+      "Jensen's inequality",
+      "forward-backward induction",
+      "Wiedijk 100 theorems"
     ],
     "prerequisites": [
       "real numbers",
@@ -110,9 +112,11 @@
     "significance": "key",
     "relatedConcepts": [
       "equality condition",
-      "optimization",
+      "constrained optimization",
+      "Lagrange multipliers",
       "critical points",
-      "pow_eq_zero"
+      "pow_eq_zero",
+      "maximum entropy principle"
     ],
     "prerequisites": [
       "Real.sq_sqrt",
@@ -201,20 +205,22 @@
     "id": "ann-product-sum",
     "proofId": "amgm-inequality",
     "range": {
-      "startLine": 184,
+      "startLine": 182,
       "endLine": 194
     },
     "type": "insight",
     "title": "Product-Sum Corollary: ab ≤ ((a+b)/2)²",
-    "content": "**Corollary**: For non-negative $a, b$:\n$$ab \\leq \\left(\\frac{a+b}{2}\\right)^2$$\n\n**Proof**: Square both sides of AM-GM:\n$$\\sqrt{ab} \\leq \\frac{a+b}{2} \\implies ab = (\\sqrt{ab})^2 \\leq \\left(\\frac{a+b}{2}\\right)^2$$\n\nThe Lean proof uses `sq_le_sq'` to square the inequality, combined with `Real.sq_sqrt` to recover $ab$ from $(\\sqrt{ab})^2$.\n\n**Application**: This is the key step in proving that among all rectangles with fixed perimeter, the square maximizes area—a classical isoperimetric principle. With perimeter $2(a+b) = P$, area $= ab \\leq (P/4)^2$, achieved when $a = b$. This is also the core ingredient in the arithmetic-geometric mean iteration used by Gauss and Legendre to compute elliptic integrals.",
+    "content": "**Corollary**: For non-negative $a, b$:\n$$ab \\leq \\left(\\frac{a+b}{2}\\right)^2$$\n\n**Proof**: Square both sides of AM-GM:\n$$\\sqrt{ab} \\leq \\frac{a+b}{2} \\implies ab = (\\sqrt{ab})^2 \\leq \\left(\\frac{a+b}{2}\\right)^2$$\n\nThe Lean proof uses `sq_le_sq'` to square the inequality, combined with `Real.sq_sqrt` to recover $ab$ from $(\\sqrt{ab})^2$.\n\n**Application**: This is the key step in proving that among all rectangles with fixed perimeter, the square maximizes area—a classical isoperimetric principle. With perimeter $2(a+b) = P$, area $= ab \\leq (P/4)^2$, achieved when $a = b$. This is also the core ingredient in the arithmetic-geometric mean iteration used by Gauss and Legendre to compute elliptic integrals.\n\n**In number theory**: The inequality $ab \\leq ((a+b)/2)^2$ gives the estimate $\\sum_{d|n} 1 \\leq 2\\sqrt{n}$ via pairing divisors $d$ and $n/d$, since $d \\cdot (n/d) = n \\leq ((d + n/d)/2)^2$ forces one of the pair to be $\\leq \\sqrt{n}$. This divisor-counting argument appears throughout analytic number theory.",
     "mathContext": "$$ab = (\\sqrt{ab})^2 \\leq \\left(\\frac{a+b}{2}\\right)^2$$",
-    "significance": "supporting",
+    "significance": "key",
     "relatedConcepts": [
       "isoperimetric inequality",
       "optimization",
       "sq_le_sq'",
       "product maximization",
-      "Gauss AGM iteration"
+      "Gauss AGM iteration",
+      "divisor counting",
+      "analytic number theory"
     ],
     "prerequisites": [
       "am_gm_two",

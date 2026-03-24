@@ -155,5 +155,15 @@
     "axiomCount": 0,
     "theoremCount": 12,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    }
+  ],
+  "relatedProofs": [
+    "central-limit-theorem"
+  ]
 }

@@ -440,10 +440,10 @@
     "id": "ann-1037-ramseytheorem",
     "proofId": "erdos-1037",
     "range": {
-      "startLine": 143,
-      "endLine": 148
+      "startLine": 144,
+      "endLine": 149
     },
-    "type": "context",
+    "type": "concept",
     "title": "ramsey_theorem",
     "content": "Axiomatized Ramsey's theorem: graphs on at least R(k,k) vertices must contain a trivial set of size k.",
     "mathContext": "$\\forall G$ with $|V(G)| \\geq R(k,k)$: $\\text{maxTrivial}(G) \\geq k$. This guarantees every large graph has a clique or independent set of logarithmic size.",
@@ -461,10 +461,10 @@
     "id": "ann-1037-ramseylower",
     "proofId": "erdos-1037",
     "range": {
-      "startLine": 150,
-      "endLine": 152
+      "startLine": 151,
+      "endLine": 153
     },
-    "type": "context",
+    "type": "concept",
     "title": "ramsey_lower_bound",
     "content": "Axiomatized Ramsey number lower bound: R(k,k) \u2265 2^{k/2}, proved by Erd\u0151s (1947) using the probabilistic method.",
     "mathContext": "$R(k,k) \\geq 2^{k/2}$ (Erd\u0151s 1947). This means graphs on $n$ vertices need only have trivial sets of size $O(\\log n)$ \u2014 the conjecture asked whether degree diversity could improve this.",
@@ -482,10 +482,10 @@
     "id": "ann-1037-nohelp",
     "proofId": "erdos-1037",
     "range": {
-      "startLine": 154,
-      "endLine": 161
+      "startLine": 156,
+      "endLine": 162
     },
-    "type": "technique",
+    "type": "insight",
     "title": "degree_diversity_no_ramsey_help",
     "content": "The counterexample shows degree diversity doesn't help Ramsey: there exist graphs with \u2265 3n/4 distinct degrees (each \u2264 2 times) where the max trivial size is only O(log n), matching the Ramsey-guaranteed minimum.",
     "mathContext": "There exists $G$ with $\\text{mult}(d) \\leq 2$, $|D(G)| \\geq 3n/4$, but $\\text{maxTrivial}(G) = O(\\log n)$. Degree diversity is independent of Ramsey-type structure.",
@@ -502,10 +502,10 @@
     "id": "ann-1037-degreesum",
     "proofId": "erdos-1037",
     "range": {
-      "startLine": 167,
-      "endLine": 170
+      "startLine": 169,
+      "endLine": 171
     },
-    "type": "technique",
+    "type": "insight",
     "title": "degree_sum_eq_twice_edges",
     "content": "The handshaking lemma: the sum of all vertex degrees equals twice the number of edges.",
     "mathContext": "$\\sum_{v \\in V} \\deg(v) = 2|E(G)|$. Each edge $uv$ contributes $1$ to $\\deg(u)$ and $1$ to $\\deg(v)$.",
@@ -523,10 +523,10 @@
     "id": "ann-1037-limitedbound",
     "proofId": "erdos-1037",
     "range": {
-      "startLine": 172,
-      "endLine": 176
+      "startLine": 174,
+      "endLine": 177
     },
-    "type": "technique",
+    "type": "insight",
     "title": "limited_multiplicity_bound",
     "content": "With limited multiplicity (each degree \u2264 2 times), the number of distinct degrees is at most (n+2)/2. This is a counting bound from the pigeonhole principle.",
     "mathContext": "If $\\text{mult}(d) \\leq 2$ for all $d$, then $n = \\sum_d \\text{mult}(d) \\leq 2 \\cdot |D(G)|$, so $|D(G)| \\geq \\lceil n/2 \\rceil$.",
@@ -544,8 +544,8 @@
     "id": "ann-1037-maxdeg",
     "proofId": "erdos-1037",
     "range": {
-      "startLine": 178,
-      "endLine": 179
+      "startLine": 180,
+      "endLine": 180
     },
     "type": "definition",
     "title": "maxPossibleDegree",
@@ -564,8 +564,8 @@
     "id": "ann-1037-optimal",
     "proofId": "erdos-1037",
     "range": {
-      "startLine": 189,
-      "endLine": 190
+      "startLine": 191,
+      "endLine": 191
     },
     "type": "definition",
     "title": "optimalDistinctBound",
@@ -582,10 +582,10 @@
     "id": "ann-1037-maxdistinct",
     "proofId": "erdos-1037",
     "range": {
-      "startLine": 192,
-      "endLine": 196
+      "startLine": 194,
+      "endLine": 197
     },
-    "type": "technique",
+    "type": "insight",
     "title": "max_distinct_with_limited_mult",
     "content": "With multiplicity \u2264 2, the number of distinct degrees is at most 3n/4 + O(1). This is the upper bound matching the Cambie-Chan-Hunter construction.",
     "mathContext": "If $\\text{mult}(d) \\leq 2$ for all $d$, then $|D(G)| \\leq 3n/4 + O(1)$. Degrees $0$ and $n-1$ cannot both appear, and the handshaking lemma constrains the degree sequence.",
@@ -603,10 +603,10 @@
     "id": "ann-1037-cambieoptimal",
     "proofId": "erdos-1037",
     "range": {
-      "startLine": 198,
-      "endLine": 206
+      "startLine": 200,
+      "endLine": 207
     },
-    "type": "technique",
+    "type": "insight",
     "title": "cambie_is_optimal",
     "content": "The Cambie-Chan-Hunter construction is asymptotically optimal: for any \u03b5 > 0 and sufficiently large n, there exist graphs with limited multiplicity achieving at least (3/4 - \u03b5)n distinct degrees.",
     "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists N$ such that $\\forall n \\geq N$: $\\exists G$ with $\\text{mult}(d) \\leq 2$ and $|D(G)| \\geq (3/4 - \\varepsilon)n$.",
@@ -624,8 +624,8 @@
     "id": "ann-1037-multk",
     "proofId": "erdos-1037",
     "range": {
-      "startLine": 212,
-      "endLine": 214
+      "startLine": 214,
+      "endLine": 215
     },
     "type": "definition",
     "title": "hasMultiplicityAtMost",
@@ -644,8 +644,8 @@
     "id": "ann-1037-generalbound",
     "proofId": "erdos-1037",
     "range": {
-      "startLine": 216,
-      "endLine": 217
+      "startLine": 218,
+      "endLine": 218
     },
     "type": "definition",
     "title": "generalMultiplicityBound",
@@ -662,10 +662,10 @@
     "id": "ann-1037-mult2",
     "proofId": "erdos-1037",
     "range": {
-      "startLine": 228,
-      "endLine": 232
+      "startLine": 230,
+      "endLine": 233
     },
-    "type": "technique",
+    "type": "insight",
     "title": "multiplicity_two_bound",
     "content": "For k=2, the general multiplicity bound gives 2/3, which is beaten by the Cambie-Chan-Hunter construction achieving 3/4.",
     "mathContext": "$k/(k+1)|_{k=2} = 2/3$. But the actual optimum for $k=2$ is $3/4$, so the general bound formula $k/(k+1)$ is not tight at $k=2$.",
@@ -681,10 +681,10 @@
     "id": "ann-1037-beats",
     "proofId": "erdos-1037",
     "range": {
-      "startLine": 234,
-      "endLine": 237
+      "startLine": 236,
+      "endLine": 238
     },
-    "type": "technique",
+    "type": "insight",
     "title": "cambie_beats_general",
     "content": "The Cambie constant 3/4 exceeds the general bound 2/3 for k=2, showing the general formula k/(k+1) is not tight.",
     "mathContext": "$3/4 > 2/3$: the Cambie-Chan-Hunter construction exceeds the naive general bound, demonstrating the formula $k/(k+1)$ underestimates the true maximum for $k=2$.",
@@ -702,10 +702,10 @@
     "id": "ann-1037-disproved",
     "proofId": "erdos-1037",
     "range": {
-      "startLine": 243,
-      "endLine": 253
+      "startLine": 245,
+      "endLine": 254
     },
-    "type": "technique",
+    "type": "insight",
     "title": "erdos_1037_disproved",
     "content": "The main result: there exists \u03b5 > 0 (specifically 1/8) and a graph satisfying Chen-Erd\u0151s conditions with max trivial size only O(log n), disproving the conjecture.",
     "mathContext": "$\\exists \\varepsilon > 0,\\; \\exists G$: isChenErdosGraph($\\varepsilon$) and $\\text{maxTrivial}(G) \\leq C \\log n$. Takes $\\varepsilon = 1/8 < 1/4$.",
@@ -723,10 +723,10 @@
     "id": "ann-1037-answer",
     "proofId": "erdos-1037",
     "range": {
-      "startLine": 255,
-      "endLine": 256
+      "startLine": 257,
+      "endLine": 257
     },
-    "type": "technique",
+    "type": "insight",
     "title": "erdos_1037_answer",
     "content": "The answer to Erd\u0151s #1037 is NO: \u00acchenErdosConjecture, derived directly from the axiomatized chenErdos_false.",
     "mathContext": "The Chen-Erd\u0151s conjecture is false: degree diversity does not improve Ramsey-type bounds on homogeneous subgraph sizes.",

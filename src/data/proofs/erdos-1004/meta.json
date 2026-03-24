@@ -7,7 +7,7 @@
     "author": "Paul Erdős, Carl Pomerance, András Sárközy",
     "sourceUrl": "https://erdosproblems.com/1004",
     "date": "1987",
-    "status": "formalized",
+    "status": "pending",
     "proofRepoPath": "Proofs/Erdos1004Problem.lean",
     "tags": [
       "erdos",
@@ -22,7 +22,7 @@
     "erdosProblemStatus": "open",
     "axiomCount": 0,
     "lineCount": 1,
-    "assumptions": "None. Formalized with 0 axioms and 0 sorries."
+    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"formalized\"."
   },
   "overview": {
     "historicalContext": "Euler's totient function $\\varphi(n)$ — counting integers $1 \\leq k \\leq n$ coprime to $n$ — has been studied since Euler's 1763 work on modular arithmetic. Its value distribution is rich: by the prime number theorem, $\\varphi(p) = p - 1$ for primes, but composite numbers introduce collisions like $\\varphi(3) = \\varphi(4) = \\varphi(6) = 2$. Carmichael conjectured in 1907 that every value in the range of $\\varphi$ is attained at least twice, a conjecture still open after over a century. In their influential 1987 paper \"On locally repeated values of certain arithmetic functions, III,\" Erdős, Pomerance, and Sárközy (EPS) studied how often consecutive values of $\\varphi$ can be distinct. They proved the striking upper bound: if $\\varphi(n+1), \\ldots, \\varphi(n+K)$ are all distinct, then $K \\leq n/\\exp(c(\\log n)^{1/3})$ for some $c > 0$. This uses deep results on smooth number estimates (related to the de Bruijn $\\Psi$ function). Problem 1004 asks whether the complementary lower bound holds: can we always find runs of length $(\\log x)^c$ with distinct totient values? The analogous Problem 945 asks the same for the divisor function $\\tau(n)$. Both remain open.",
@@ -139,34 +139,34 @@
   },
   "crossReferences": [
     {
-      "id": "euler-totient",
       "relationship": "foundation",
-      "description": "The Euler totient function $\\varphi(n)$ is the central object in Problem 1004. The euler-totient proof establishes its core properties — multiplicativity, the formula $\\varphi(p^k) = p^{k-1}(p-1)$, and the identity $\\sum_{d \\mid n} \\varphi(d) = n$ — that underpin the collision and run-length analysis in this problem."
+      "description": "The Euler totient function $\\varphi(n)$ is the central object in Problem 1004. The euler-totient proof establishes its core properties — multiplicativity, the formula $\\varphi(p^k) = p^{k-1}(p-1)$, and the identity $\\sum_{d \\mid n} \\varphi(d) = n$ — that underpin the collision and run-length analysis in this problem.",
+      "targetId": "euler-totient"
     },
     {
-      "id": "erdos-1003",
       "relationship": "sibling",
-      "description": "Erdős Problem 1003 studies locally repeated values of arithmetic functions, the direct predecessor of Problem 1004 in the EPS (1987) series 'On locally repeated values of certain arithmetic functions.' Both problems ask about consecutive distinct values of $\\varphi$ and arise from the same paper."
+      "description": "Erdős Problem 1003 studies locally repeated values of arithmetic functions, the direct predecessor of Problem 1004 in the EPS (1987) series 'On locally repeated values of certain arithmetic functions.' Both problems ask about consecutive distinct values of $\\varphi$ and arise from the same paper.",
+      "targetId": "erdos-1003"
     },
     {
-      "id": "erdos-1005",
       "relationship": "sibling",
-      "description": "Erdős Problem 1005 is the next problem in the EPS series on locally repeated values, studying further properties of totient and related multiplicative functions. Together, Problems 1003–1005 form a cohesive cluster on the local distribution of $\\varphi$."
+      "description": "Erdős Problem 1005 is the next problem in the EPS series on locally repeated values, studying further properties of totient and related multiplicative functions. Together, Problems 1003–1005 form a cohesive cluster on the local distribution of $\\varphi$.",
+      "targetId": "erdos-1005"
     },
     {
-      "id": "erdos-1049",
       "relationship": "analogy",
-      "description": "Erdős Problem 1049 concerns the divisor function $\\tau(n)$, which appears explicitly in the Problem 1004 formalization as 'Problem 945' — the parallel conjecture asking whether runs of length $(\\log x)^c$ with distinct $\\tau$-values exist. Both problems share the same open status and heuristic evidence."
+      "description": "Erdős Problem 1049 concerns the divisor function $\\tau(n)$, which appears explicitly in the Problem 1004 formalization as 'Problem 945' — the parallel conjecture asking whether runs of length $(\\log x)^c$ with distinct $\\tau$-values exist. Both problems share the same open status and heuristic evidence.",
+      "targetId": "erdos-1049"
     },
     {
-      "id": "infinitude-primes",
       "relationship": "dependency",
-      "description": "The EPS upper bound on distinct totient runs relies on smooth number estimates, which in turn depend on the distribution of primes. The infinitude of primes underpins the fact that $\\varphi(p) = p - 1$ for infinitely many $p$, which drives both the richness of totient values and the upper-bound argument via $\\Psi(x, y)$."
+      "description": "The EPS upper bound on distinct totient runs relies on smooth number estimates, which in turn depend on the distribution of primes. The infinitude of primes underpins the fact that $\\varphi(p) = p - 1$ for infinitely many $p$, which drives both the richness of totient values and the upper-bound argument via $\\Psi(x, y)$.",
+      "targetId": "infinitude-primes"
     },
     {
-      "id": "fundamental-arithmetic",
       "relationship": "dependency",
-      "description": "The unique factorization theorem is essential for totient calculations: $\\varphi(n) = n \\prod_{p \\mid n}(1 - 1/p)$ uses prime factorizations. The section on special totient preimages ($\\varphi^{-1}(1), \\varphi^{-1}(2), \\varphi^{-1}(4)$) relies directly on factoring arguments from fundamental arithmetic."
+      "description": "The unique factorization theorem is essential for totient calculations: $\\varphi(n) = n \\prod_{p \\mid n}(1 - 1/p)$ uses prime factorizations. The section on special totient preimages ($\\varphi^{-1}(1), \\varphi^{-1}(2), \\varphi^{-1}(4)$) relies directly on factoring arguments from fundamental arithmetic.",
+      "targetId": "fundamental-arithmetic"
     }
   ],
   "relatedProofs": [

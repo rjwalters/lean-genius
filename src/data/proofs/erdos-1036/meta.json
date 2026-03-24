@@ -7,7 +7,7 @@
     "author": "Erdős-Rényi (question), Shelah (1998, solution)",
     "sourceUrl": "https://erdosproblems.com/1036",
     "date": "1998",
-    "status": "formalized",
+    "status": "pending",
     "proofRepoPath": "Proofs/Erdos1036Problem.lean",
     "tags": [
       "graph-theory",
@@ -16,7 +16,7 @@
       "induced-subgraphs",
       "isomorphism"
     ],
-    "badge": "pending",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 1036,
     "erdosUrl": "https://erdosproblems.com/1036",
@@ -26,7 +26,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 1,
-    "assumptions": "None. Formalized with 0 axioms and 0 sorries."
+    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"formalized\"."
   },
   "overview": {
     "historicalContext": "This problem originates from a question of Erdős and Rényi about the structural complexity of graphs that avoid large homogeneous (trivial) subgraphs. By Ramsey's theorem (1930), every n-vertex graph contains a clique or independent set of size at least (1/2) log₂ n. Erdős (1947) showed via the probabilistic method that random graphs G(n,1/2) achieve the opposite extreme: their largest clique and independent set are both O(log n). Such 'non-Ramsey' graphs exist in abundance but must be structurally complex. Erdős and Hajnal (1989) proved the first result in this direction: graphs avoiding K_{k,k} in both G and its complement have 2^{Ω(n)} distinct induced subgraphs. Alon and Hajnal (1991) extended this to all non-Ramsey graphs, proving a sub-exponential bound of exp(n·(log n)^{-O(log log n)}) using Szemerédi's regularity lemma. The full exponential bound 2^{Ω(n)} remained open until Shelah (1998) proved it using a deep partition argument connected to the Hales-Jewett theorem. Independently, Prömel and Rödl (1999) proved the related result that non-Ramsey graphs are c·log(n)-universal (Problem 1031), which gives a weaker but conceptually elegant approach to induced subgraph diversity.",
@@ -102,7 +102,8 @@
       "title": "The Erdős-Rényi Conjecture",
       "summary": "erdos_renyi_conjecture: for every c > 0, there exists c' > 0 such that non-Ramsey graphs with parameter c have ≥ 2^{c'n} distinct induced subgraphs",
       "startLine": 155,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "Conjecture: if $G$ has no trivial induced subgraph on $> c \\log n$ vertices, then $G$ has $\\geq 2^{c' n}$ distinct induced subgraphs."
     },
     {
       "id": "alon-hajnal",
@@ -123,7 +124,8 @@
       "title": "Shelah's Theorem (1998)",
       "summary": "Axiomatized Shelah's theorem (2^{c'n} bound) and erdos_1036_solved establishing the conjecture is true",
       "startLine": 221,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "Shelah (1998): proved the Erdős-Rényi conjecture. Non-Ramsey graphs have $\\geq 2^{c'n}$ distinct induced subgraphs. Status: SOLVED."
     },
     {
       "id": "comparison",
@@ -174,19 +176,19 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-1031",
       "relationship": "related",
-      "description": "Erdős #1031 (induced regular subgraphs in non-Ramsey graphs) proves Prömel-Rödl universality, which provides an alternative proof path for the induced subgraph diversity of Problem 1036."
+      "description": "Erdős #1031 (induced regular subgraphs in non-Ramsey graphs) proves Prömel-Rödl universality, which provides an alternative proof path for the induced subgraph diversity of Problem 1036.",
+      "targetId": "erdos-1031"
     },
     {
-      "id": "erdos-szekeres",
       "relationship": "related",
-      "description": "The Erdős-Szekeres theorem is a foundational result in Ramsey theory (monotone subsequences), sharing the theme that avoiding simple structure forces complex patterns."
+      "description": "The Erdős-Szekeres theorem is a foundational result in Ramsey theory (monotone subsequences), sharing the theme that avoiding simple structure forces complex patterns.",
+      "targetId": "erdos-szekeres"
     },
     {
-      "id": "erdos-88",
       "relationship": "related",
-      "description": "Erdős #88 studies Ramsey-theoretic questions about graph colorings, connecting to the non-Ramsey graph framework underlying Problem 1036."
+      "description": "Erdős #88 studies Ramsey-theoretic questions about graph colorings, connecting to the non-Ramsey graph framework underlying Problem 1036.",
+      "targetId": "erdos-88"
     }
   ],
   "relatedProofs": [
