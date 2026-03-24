@@ -45,11 +45,10 @@ theorem wilson_theorem (p : ℕ) (hp : p.Prime) :
     p ∣ (p - 1).factorial + 1 := by
   haveI : Fact p.Prime := ⟨hp⟩
   have h := ZMod.wilsons_lemma p
-  -- h : ((p - 1)! : ZMod p) = -1, so ((p-1)! + 1 : ZMod p) = 0
-  rw [← ZMod.natCast_zmod_eq_zero_iff_dvd]
-  have : ((p - 1).factorial + 1 : ZMod p) = ((p - 1).factorial : ZMod p) + 1 := by push_cast; ring
-  rw [this, h]
-  simp
+  rw [← ZMod.natCast_eq_zero_iff]
+  push_cast
+  rw [h]
+  ring
 
 /-- The function f(p) is well-defined for primes: f(p) ≤ p - 1.
     Follows from Wilson's theorem: (p-1) is in the defining set,
@@ -60,9 +59,14 @@ theorem f_le_pred (p : ℕ) (hp : p.Prime) :
   exact ⟨by have := hp.one_lt; omega, wilson_theorem p hp⟩
 
 /-- f(p) ≥ 1 for primes p ≥ 3 (since 1! + 1 = 2 is not
-    divisible by primes ≥ 3). -/
-axiom f_pos (p : ℕ) (hp : p.Prime) (h3 : 3 ≤ p) :
-    1 ≤ leastFactorialWilson p
+    divisible by primes ≥ 3).
+    Proof: Every element n of the defining set satisfies 0 < n,
+    so sInf ≥ 1. -/
+theorem f_pos (p : ℕ) (hp : p.Prime) (h3 : 3 ≤ p) :
+    1 ≤ leastFactorialWilson p := by
+  unfold leastFactorialWilson
+  exact le_csInf ⟨p - 1, by omega, wilson_theorem p hp⟩
+    fun _ ⟨hpos, _⟩ => by omega
 
 /- ## Question 1: Infinitely Many Maximal Primes -/
 
@@ -85,6 +89,8 @@ axiom erdos_1072b :
 
 /- ## Hardy–Subbarao Belief -/
 
+noncomputable instance : DecidablePred isWilsonMaximal := Classical.decPred _
+
 /-- Hardy and Subbarao believed that the number of primes p ≤ x
     with f(p) = p - 1 is o(x/log x). That is, such primes have
     density 0 among all primes. -/
@@ -96,19 +102,44 @@ axiom hardy_subbarao_belief :
 /- ## Small Examples -/
 
 /-- For p = 2: 1! + 1 = 2, so f(2) = 1 = 2 - 1. Maximal. -/
-axiom f_of_2 : leastFactorialWilson 2 = 1
+theorem f_of_2 : leastFactorialWilson 2 = 1 := by
+  unfold leastFactorialWilson
+  apply le_antisymm
+  · exact Nat.sInf_le ⟨by omega, by decide⟩
+  · exact le_csInf ⟨1, by omega, by decide⟩ fun _ ⟨hpos, _⟩ => by omega
 
 /-- For p = 3: 2! + 1 = 3, so f(3) = 2 = 3 - 1. Maximal. -/
-axiom f_of_3 : leastFactorialWilson 3 = 2
+theorem f_of_3 : leastFactorialWilson 3 = 2 := by
+  unfold leastFactorialWilson
+  apply le_antisymm
+  · exact Nat.sInf_le ⟨by omega, by decide⟩
+  · exact le_csInf ⟨2, by omega, by decide⟩ fun k ⟨hpos, hdvd⟩ => by
+      by_contra h; push_neg at h
+      have : k = 1 := by omega
+      subst this; revert hdvd; decide
 
 /-- For p = 5: 4! + 1 = 25 = 5², so f(5) = 4 = 5 - 1. Maximal.
     But also 3! + 1 = 7 is not divisible by 5, and 2! + 1 = 3
     is not divisible by 5, and 1! + 1 = 2 is not divisible by 5. -/
-axiom f_of_5 : leastFactorialWilson 5 = 4
+theorem f_of_5 : leastFactorialWilson 5 = 4 := by
+  unfold leastFactorialWilson
+  apply le_antisymm
+  · exact Nat.sInf_le ⟨by omega, by decide⟩
+  · exact le_csInf ⟨4, by omega, by decide⟩ fun k ⟨hpos, hdvd⟩ => by
+      by_contra h; push_neg at h
+      have : k = 1 ∨ k = 2 ∨ k = 3 := by omega
+      rcases this with rfl | rfl | rfl <;> revert hdvd <;> decide
 
 /-- For p = 7: 3! + 1 = 7, so f(7) = 3 < 6 = 7 - 1. NOT maximal.
     This is the first prime where f(p) < p - 1. -/
-axiom f_of_7 : leastFactorialWilson 7 = 3
+theorem f_of_7 : leastFactorialWilson 7 = 3 := by
+  unfold leastFactorialWilson
+  apply le_antisymm
+  · exact Nat.sInf_le ⟨by omega, by decide⟩
+  · exact le_csInf ⟨3, by omega, by decide⟩ fun k ⟨hpos, hdvd⟩ => by
+      by_contra h; push_neg at h
+      have : k = 1 ∨ k = 2 := by omega
+      rcases this with rfl | rfl <;> revert hdvd <;> decide
 
 /- ## Connection to Wilson Primes -/
 
@@ -122,14 +153,17 @@ axiom f_of_7 : leastFactorialWilson 7 = 3
 
 **Problem Status: OPEN**
 
-**Proved Theorems**:
+**Proved Theorems (7)**:
 - wilson_theorem: (p-1)! ≡ -1 (mod p) from Mathlib's ZMod.wilsons_lemma [was axiom]
 - f_le_pred: f(p) ≤ p-1 from Wilson's theorem [was axiom]
+- f_pos: f(p) ≥ 1 for p ≥ 3 via le_csInf (every element has 0 < n) [was axiom]
+- f_of_2: f(2) = 1 via sInf computation [was axiom]
+- f_of_3: f(3) = 2 via sInf + decide [was axiom]
+- f_of_5: f(5) = 4 via sInf + decide (eliminates k=1,2,3) [was axiom]
+- f_of_7: f(7) = 3 via sInf + decide (eliminates k=1,2) [was axiom]
 
-**Remaining Axioms (9)**:
-- f_pos: f(p) ≥ 1 for p ≥ 3 (provable but needs sInf reasoning)
+**Remaining Axioms (3)** — all OPEN conjectures:
 - erdos_1072a: infinitely many maximal primes (OPEN)
 - erdos_1072b: f(p)/p → 0 for almost all primes (OPEN)
 - hardy_subbarao_belief: maximal primes have density 0 (OPEN conjecture)
-- f_of_2, f_of_3, f_of_5, f_of_7: small values (provable, need sInf computation)
 -/
