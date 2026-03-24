@@ -242,5 +242,22 @@
       "venue": "arXiv preprints",
       "note": "Independently proved that Sylvester's sequence has maximal growth rate among Egyptian sequences"
     }
+  ],
+  "relatedProofs": [
+    {
+      "id": "erdos-288",
+      "relationship": "related",
+      "description": "Both concern integer properties of sums of unit fractions — #288 asks when harmonic sums are integers, #315 asks about growth rates of sequences summing to 1"
+    },
+    {
+      "id": "erdos-267",
+      "relationship": "related",
+      "description": "Both involve irrationality/transcendence of sums related to number-theoretic sequences (Fibonacci vs Sylvester)"
+    },
+    {
+      "id": "erdos-285",
+      "relationship": "related",
+      "description": "Both concern Egyptian fraction structure: #285 studies asymptotics of Egyptian fraction representations, #315 characterizes the optimal growth rate among all Egyptian sequences for 1"
+    }
   ]
 }

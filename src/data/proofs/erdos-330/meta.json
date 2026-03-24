@@ -158,5 +158,22 @@
       "venue": "Springer GTM 164",
       "note": "Standard reference for additive basis theory including Waring's problem, minimal bases, and the Erdős-Nathanson program"
     }
+  ],
+  "relatedProofs": [
+    {
+      "id": "erdos-38",
+      "relationship": "related",
+      "description": "Both concern additive bases and density: #38 studies essential components and density boosting via Schnirelmann's method, while #330 asks about minimal bases where each element's removal creates positive-density gaps"
+    },
+    {
+      "id": "erdos-469",
+      "relationship": "related",
+      "description": "Both ask about density/convergence properties of number-theoretic sets defined by divisor/representability conditions"
+    },
+    {
+      "id": "lagrange-four-squares",
+      "relationship": "foundational",
+      "description": "Lagrange's four-square theorem proves that the squares form an additive basis of order 4. This is the classical example motivating additive basis theory — Problem #330 asks about the minimality structure of general bases, not just classical ones like squares"
+    }
   ]
 }
