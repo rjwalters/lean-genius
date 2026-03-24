@@ -64,9 +64,9 @@
       "erdos_382_summary: combined known results theorem",
       "Concrete example: prodInterval 2 4 = 24 via native_decide"
     ],
-    "axiomCount": 13,
+    "axiomCount": 12,
     "lineCount": 266,
-    "assumptions": "13 axioms: prodInterval_factorial, largestPrimeDivisor_dvd, largestPrimeDivisor_prime, and 10 more. See Lean source for complete statements."
+    "assumptions": "12 axioms: largestPrimeDivisor_dvd, largestPrimeDivisor_prime, prime_le_largestPrimeDivisor, exponentInProduct_sum, largest_prime_exp_one, exp_ge_two_needs_square, erdos_382_q1, erdos_382_q2_heuristic, ramachandra_bound, cramer_implies_q1, no_prime_in_upper_half, condition_iff_no_large_prime."
   },
   "overview": {
     "historicalContext": "Erdős Problem #382 originates from the 1980 monograph by Erdős and Graham [ErGr80], which systematically cataloged open problems in combinatorial number theory. The problem studies the factorization structure of products of consecutive integers u·(u+1)·...·v, specifically asking about the exponent of the largest prime divisor.\n\nThe key constraint is that the largest prime p dividing the product must appear with exponent ≥ 2. Since p² must divide some integer in [u,v], this forces p ≤ √v, meaning the interval [u,v] is 'prime-free' above √v. The problem asks two questions: whether v−u grows subpolynomially in v, and whether v−u can be arbitrarily large.\n\nRamachandra established the best known upper bound v−u ≤ v^{1/2+o(1)}, using techniques from the distribution of primes in short intervals. Cramér's famous conjecture on prime gaps would imply the stronger result that v−u = v^o(1). Cambie's heuristic analysis suggests that v−u can indeed be arbitrarily large, but both questions remain open.",
@@ -196,7 +196,7 @@
     ],
     "namespace": "Erdos382",
     "lineCount": 266,
-    "axiomCount": 13,
+    "axiomCount": 12,
     "theoremCount": 3,
     "definitionCount": 9
   },
