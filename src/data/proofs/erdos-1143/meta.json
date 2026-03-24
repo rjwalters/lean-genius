@@ -17,7 +17,7 @@
       "inclusion-exclusion"
     ],
     "badge": "axiom",
-    "sorries": 4,
+    "sorries": 3,
     "axioms": 3,
     "erdosNumber": 1143,
     "erdosUrl": "https://erdosproblems.com/1143",
@@ -53,7 +53,7 @@
     "historicalContext": "Erdős asked about F_k(p₁,...,pᵤ), the minimum number of integers divisible by at least one given prime in any interval of k consecutive integers. Erdős and Selfridge reportedly found the exact formula for 2 < α < 3 (where k = αpᵤ), but the paper has not been located. For α > 3, very little is known.",
     "axiomCount": 3,
     "lineCount": 183,
-    "assumptions": "3 axiom(s) and 4 sorry(s). See the Lean source for details."
+    "assumptions": "3 axiom(s) and 3 sorry(s). 1 True-stub placeholder (covering_complement_relation). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #1143 belongs to the rich tradition of **sieve-theoretic covering problems** dating back to Eratosthenes. The question of how many integers in a short interval are divisible by given primes connects to the **Selberg sieve**, the **large sieve**, and the distribution of prime gaps. Erdős formulated this problem as a quantitative version of the Chinese Remainder Theorem: while CRT tells us the *average* density of covered integers is $1 - \\prod(1 - 1/p_i)$, the problem asks about the *worst-case* covering over all starting positions. The parameter $\\alpha = k/p_u$ measures how many complete periods of the largest prime fit in the interval. Erdős and Selfridge reportedly solved the $2 < \\alpha < 3$ case exactly, but their paper has never been located — one of the tantalizing 'lost results' in combinatorial number theory. The dual problem (Erdős #970, Jacobsthal's function) asks about coprime elements instead; Iwaniec (1978) proved the best known bounds $h(k) = O(k^{0.735})$.",
@@ -119,7 +119,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős #1143, an open problem about covering intervals with multiples of primes. The covering function, expected density, and known results are formalized. 7 sorries (routine density/bound calculations), 3 axioms (asymptotic, Erdős-Selfridge, α > 3).",
+    "summary": "This formalization captures Erdős #1143, an open problem about covering intervals with multiples of primes. The covering function, expected density, and known results are formalized. 3 sorries (routine density/bound calculations), 3 axioms (asymptotic, Erdős-Selfridge, α > 3), 1 True-stub placeholder.",
     "implications": "**Theoretical Significance**: Understanding $F_k$ connects to several important areas: **sieve theory** (the covering function is closely related to sieve weights), **Jacobsthal's function** (the dual coprimality question), and the **distribution of smooth numbers** in short intervals.\n\nSharp estimates for $F_k$ in the $\\alpha > 3$ regime would have consequences for prime gap bounds and the structure of residue classes modulo products of small primes. The lost Erdős-Selfridge result, if reconstructed, could provide a template for the general case.",
     "openQuestions": [
       "What is the exact formula for $F_k$ when $k = \\alpha p_u$ with $\\alpha > 3$? Can the density approximation error be made uniform in the prime set?",
