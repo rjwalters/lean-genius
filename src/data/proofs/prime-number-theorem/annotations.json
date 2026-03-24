@@ -444,5 +444,52 @@
       "approximation quality"
     ],
     "prerequisites": []
+  },
+  {
+    "id": "ann-prime-counting-axiom",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 382,
+      "endLine": 402
+    },
+    "type": "context",
+    "title": "Axiom: Prime Counting Tends to Infinity",
+    "content": "`prime_counting_tendsto_top_axiom` axiomatizes that $\\pi(x) \\to \\infty$ as $x \\to \\infty$. This is a weak consequence of Euclid's theorem (infinitude of primes) but stated here as an axiom rather than proved from Mathlib's `Nat.infinite_setOf_prime` because converting between the set-theoretic infinitude and the analytic limit requires bridging Mathlib's `Finset`-based counting with the `Filter.Tendsto` framework.\n\n`prime_counting_tendsto_top` wraps the axiom for downstream use. This is a common formalization pattern: axiomatize a 'morally obvious' fact that requires significant infrastructure to prove formally, marking it for future replacement when the bridge lemmas are available.",
+    "mathContext": "$\\pi(x) \\to \\infty$ as $x \\to \\infty$. Quantitatively: $\\pi(x) \\geq \\ln\\ln x$ (Euler, 1737) and $\\pi(x) \\geq x/(2\\ln x)$ for $x \\geq 59$ (Chebyshev bound). PNT gives $\\pi(x) \\sim x/\\ln x$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Tendsto",
+      "atTop filter",
+      "primePi"
+    ],
+    "relatedConcepts": [
+      "axiom usage",
+      "formalization gap",
+      "prime counting function",
+      "Euclid's theorem"
+    ]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 430,
+      "endLine": 463
+    },
+    "type": "context",
+    "title": "Summary and API Surface",
+    "content": "The summary doc-comment recaps the six key aspects of PNT:\n1. **Statement**: $\\pi(x) \\sim x/\\ln x$\n2. **Meaning**: fraction $\\sim 1/\\ln x$ of integers up to $x$ are prime\n3. **Better approximation**: $\\pi(x) \\sim \\text{Li}(x) = \\int_2^x dt/\\ln t$\n4. **Error terms**: unconditional $O(x e^{-c\\sqrt{\\ln x}})$ vs conditional (RH) $O(\\sqrt{x} \\ln x)$\n5. **Proof techniques**: complex analysis of $\\zeta(s)$, zero-free region, Tauberian theorems\n6. **History**: Gauss/Legendre conjecture (~1800), Hadamard/de la Vallée Poussin proof (1896)\n\n`pnt_summary` is a trivial placeholder theorem ($1 + 1 = 2$) anchoring the doc-comment. The four `#check` commands verify the API: `primeNumberTheorem`, `prime_asymptotic`, `prime_density_tends_to_zero`, `nth_prime_asymptotic`.",
+    "mathContext": "Error term hierarchy:\n- Trivial: $\\pi(x) = x/\\ln x + O(x/\\ln^2 x)$ (from PNT)\n- Best unconditional: $\\pi(x) = \\text{Li}(x) + O(x \\exp(-c(\\ln x)^{3/5}(\\ln\\ln x)^{-1/5}))$ (Korobov-Vinogradov, 1958)\n- Under RH: $\\pi(x) = \\text{Li}(x) + O(\\sqrt{x} \\ln x)$ (von Koch, 1901)",
+    "significance": "supporting",
+    "prerequisites": [
+      "PNT statement",
+      "Li(x) function"
+    ],
+    "relatedConcepts": [
+      "logarithmic integral",
+      "error terms",
+      "zero-free region",
+      "Tauberian theorem"
+    ]
   }
 ]

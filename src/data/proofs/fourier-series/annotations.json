@@ -23,6 +23,56 @@
     ]
   },
   {
+    "id": "ann-fs-docstring",
+    "proofId": "fourier-series",
+    "range": {
+      "startLine": 8,
+      "endLine": 102
+    },
+    "type": "concept",
+    "title": "Module Overview: Fourier Series Theory (Wiedijk #76)",
+    "content": "A comprehensive 95-line docstring covering the full scope of Fourier series:\n\n**Classical statement**: Every periodic function $f$ with period $2\\pi$ can be represented as $f(x) = \\frac{a_0}{2} + \\sum_{n=1}^{\\infty}(a_n \\cos nx + b_n \\sin nx)$. The **complex exponential form** $f(x) = \\sum_{n=-\\infty}^{\\infty} c_n e^{inx}$ is more elegant.\n\n**Three convergence modes**: (1) $L^2$ convergence for all square-integrable functions (Parseval), (2) pointwise convergence under Dirichlet conditions (piecewise smooth), (3) uniform convergence with continuity + bounded variation.\n\n**Mathlib approach**: Fourier series are formalized on the additive circle $\\mathbb{R}/T\\mathbb{Z}$ (not just $[-\\pi,\\pi]$), using Haar measure as the canonical probability measure. The basis functions $e_n(x) = e^{2\\pi inx/T}$ are orthonormal in $L^2$.\n\n**Applications listed**: heat equation (Fourier's original motivation, 1807), signal processing (Shannon-Nyquist), quantum mechanics (wavefunctions), music theory (overtone series), image compression (JPEG via DCT).",
+    "mathContext": "Classical: $c_n = \\frac{1}{2\\pi}\\int_{-\\pi}^{\\pi} f(x)e^{-inx}\\,dx$. Parseval: $\\sum|c_n|^2 = \\frac{1}{2\\pi}\\int|f|^2\\,dx$. Mathlib: $c_n = \\text{fourierCoeff}(f, n) = \\int_{\\mathbb{R}/T\\mathbb{Z}} f(x)\\overline{e_n(x)}\\,d\\mu_{\\text{Haar}}(x)$.",
+    "significance": "key",
+    "prerequisites": [
+      "periodic functions",
+      "trigonometric series",
+      "L2 space",
+      "complex exponentials"
+    ],
+    "relatedConcepts": [
+      "Fourier transform",
+      "harmonic analysis",
+      "heat equation",
+      "signal processing",
+      "Dirichlet conditions"
+    ]
+  },
+  {
+    "id": "ann-fs-setup",
+    "proofId": "fourier-series",
+    "range": {
+      "startLine": 104,
+      "endLine": 126
+    },
+    "type": "context",
+    "title": "Setup: Noncomputable Section and Additive Circle",
+    "content": "The `noncomputable section` declares all definitions as noncomputable — necessary because Fourier coefficients involve integrals (which are not algorithmically computable in general). `maxHeartbeats 400000` extends the type-checker's computation budget for this file's heavier proofs.\n\nPart I introduces the **additive circle** $\\text{AddCircle}\\,T = \\mathbb{R}/T\\mathbb{Z}$ for positive period $T$. The normalized **Haar measure** `haarAddCircle` is the unique translation-invariant probability measure — the analog of uniform distribution on the circle. `IsProbabilityMeasure` ensures $\\mu(\\mathbb{R}/T\\mathbb{Z}) = 1$, which is why Fourier coefficients automatically normalize.",
+    "mathContext": "The additive circle $\\mathbb{R}/T\\mathbb{Z}$ is a compact abelian group. By Haar's theorem (1933), it admits a unique translation-invariant probability measure $\\mu$. For $T = 2\\pi$: $\\int_{\\mathbb{R}/2\\pi\\mathbb{Z}} 1\\,d\\mu = 1$, so $d\\mu = dx/(2\\pi)$ in classical notation.",
+    "significance": "supporting",
+    "prerequisites": [
+      "quotient groups",
+      "Haar measure",
+      "compact groups"
+    ],
+    "relatedConcepts": [
+      "additive circle",
+      "Haar measure",
+      "compact abelian group",
+      "noncomputable"
+    ]
+  },
+  {
     "id": "ann-fs-haar",
     "proofId": "fourier-series",
     "range": {

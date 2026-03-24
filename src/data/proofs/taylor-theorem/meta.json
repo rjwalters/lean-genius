@@ -169,6 +169,21 @@
       "targetId": "basel-problem",
       "relationship": "related",
       "description": "Euler's evaluation $\\zeta(2) = \\pi^2/6$ can be proved via the Taylor series $\\sin(x)/x = \\prod(1 - x^2/(n\\pi)^2)$ — comparing Taylor coefficients yields the Basel sum."
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "related",
+      "description": "Taylor series expand functions in powers of $(x-a)$ (local, polynomial basis), while Fourier series expand in $e^{inx}$ (global, trigonometric basis). Both are instances of expanding functions in orthogonal bases — Taylor in the monomial basis for analytic functions, Fourier in the exponential basis for $L^2$ functions. The Taylor coefficients $f^{(n)}(a)/n!$ are local (depend on derivatives at $a$), while Fourier coefficients $c_n = \\int f e^{-inx}\\,dx$ are global (depend on the entire function)"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "The Taylor series $\\arctan(x) = x - x^3/3 + x^5/5 - \\cdots$ evaluated at $x = 1$ gives Leibniz's formula $\\pi/4 = 1 - 1/3 + 1/5 - \\cdots$. Lindemann's proof that $\\pi$ is transcendental (1882) uses the convergence properties of Taylor series for $e^x$ and the Lindemann-Weierstrass theorem"
+    },
+    {
+      "targetId": "intermediate-value-theorem",
+      "relationship": "foundational",
+      "description": "IVT guarantees the existence of the intermediate point $c$ in the Lagrange remainder: $R_n = f^{(n+1)}(c)(x-a)^{n+1}/(n+1)!$ for some $c$ between $a$ and $x$. Without IVT (or the completeness of $\\mathbb{R}$), this intermediate value might not exist"
     }
   ],
   "relatedProofs": [
@@ -176,7 +191,10 @@
     "fundamental-theorem-calculus",
     "binomial-theorem",
     "e-transcendental",
-    "basel-problem"
+    "basel-problem",
+    "fourier-series",
+    "pi-transcendental",
+    "intermediate-value-theorem"
   ],
   "leanFile": {
     "imports": [
