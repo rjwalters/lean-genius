@@ -2,8 +2,8 @@
   "version": 1,
   "entries": {
     "pythagorean-triples": {
-      "auditCount": 3,
-      "lastAudited": "2026-03-24T04:28:57Z",
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T03:28:54Z",
       "result": "clean",
       "issues": []
     },
@@ -253,39 +253,112 @@
       "result": "issues-fixed",
       "issues": []
     },
-    "buffons-needle-oq-01-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-03-24T04:30:50Z",
-      "result": "clean",
-      "issues": []
-    },
     "binomial-theorem-oq-03": {
       "auditCount": 1,
-      "lastAudited": "2026-03-24T04:31:48Z",
+      "lastAudited": "2026-03-24T04:32:31Z",
       "result": "clean",
       "issues": []
     },
     "birthday-problem-oq-02": {
       "auditCount": 1,
-      "lastAudited": "2026-03-24T04:31:49Z",
+      "lastAudited": "2026-03-24T04:32:40Z",
       "result": "clean",
       "issues": []
     },
     "brouwer-fixed-point-oq-02": {
       "auditCount": 1,
-      "lastAudited": "2026-03-24T04:31:49Z",
+      "lastAudited": "2026-03-24T04:32:40Z",
       "result": "clean",
       "issues": []
     },
     "buffons-needle-oq-01": {
       "auditCount": 1,
-      "lastAudited": "2026-03-24T04:31:49Z",
+      "lastAudited": "2026-03-24T04:32:40Z",
       "result": "clean",
       "issues": []
     },
     "buffons-needle-oq-02": {
       "auditCount": 1,
-      "lastAudited": "2026-03-24T04:31:49Z",
+      "lastAudited": "2026-03-24T04:32:40Z",
+      "result": "clean",
+      "issues": []
+    },
+    "buffons-needle-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T04:32:40Z",
+      "result": "clean",
+      "issues": []
+    },
+    "buffons-needle-oq-02-oq-01": {
+      "auditCount": 3,
+      "lastAudited": "2026-03-24T04:37:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "Stale sorry annotation: section 7 summary says 'States (with sorry)' and conclusion says '1 sorry' but the Lean file has 0 sorries (the asymptotic theorem crossingFactor_tendsto_zero is now fully proved)"
+      ]
+    },
+    "cantor-diagonalization-oq-02": {
+      "auditCount": 3,
+      "lastAudited": "2026-03-24T04:37:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "Stale axiom annotation: section 'countable-ordinals' summary says 'States the axiom \u03b1 < \u03c9\u2081 \u2194 IsCountableOrdinal \u03b1' but lt_omega1_iff_countable is a fully proved theorem, not an axiom"
+      ]
+    },
+    "cantor-diagonalization-oq-02-oq-01": {
+      "auditCount": 3,
+      "lastAudited": "2026-03-24T04:37:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "Badge 'original' overclaimed: most theorems are 1-2 line wrappers around Mathlib lemmas (aleph_lt_aleph, isRegular_aleph_one, card_ord, etc.) -- 'verified' would be more accurate"
+      ]
+    },
+    "cantors-theorem-oq-03": {
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T04:35:30Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cauchy-schwarz-integral-oq-01": {
+      "auditCount": 3,
+      "lastAudited": "2026-03-24T04:37:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "Uses /-! docstring sections (6 occurrences) which cause Aristotle parsing errors",
+        "Badge 'original' overclaimed: core theorems (holder_lintegral, minkowski_l2) are thin wrappers around Mathlib -- 'verified' would be more accurate"
+      ]
+    },
+    "cauchy-schwarz-integral-oq-01-oq-01": {
+      "auditCount": 3,
+      "lastAudited": "2026-03-24T04:37:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "Badge 'original' overclaimed: holder_lintegral is a one-liner wrapping ENNReal.lintegral_mul_le_Lp_mul_Lq, cauchy_schwarz_lintegral wraps same, l2_cauchy_schwarz wraps abs_real_inner_le_norm, young_nnreal wraps NNReal.young_inequality. Badge should be 'verified' (specializations are real but core content is Mathlib)"
+      ]
+    },
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01": {
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T04:35:30Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cauchy-schwarz-integral-oq-02-oq-01": {
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T04:35:30Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cauchy-schwarz-oq-01": {
+      "auditCount": 3,
+      "lastAudited": "2026-03-24T04:37:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "Badge 'original' overclaimed: cauchy_schwarz_complex, cauchy_schwarz_real, cauchy_schwarz_rclike are all one-line applications of norm_inner_le_norm. Derived results are thin Mathlib combinations. Badge should be 'verified' or 'mathlib'"
+      ]
+    },
+    "chinese-remainder-constructive": {
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T04:35:30Z",
       "result": "clean",
       "issues": []
     }

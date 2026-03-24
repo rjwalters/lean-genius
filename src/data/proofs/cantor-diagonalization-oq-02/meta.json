@@ -127,7 +127,7 @@
     {
       "id": "countable-ordinals",
       "title": "Countable Ordinals as Iio(ω₁)",
-      "summary": "Defines IsCountableOrdinal α ↔ α.card ≤ ℵ₀. States the axiom α < ω₁ ↔ IsCountableOrdinal α and derives that the set of countable ordinals equals Set.Iio omega1.",
+      "summary": "Defines IsCountableOrdinal α ↔ α.card ≤ ℵ₀. Proves α < ω₁ ↔ IsCountableOrdinal α via Cardinal.lt_ord, and derives that the set of countable ordinals equals Set.Iio omega1.",
       "startLine": 123,
       "endLine": 143
     },
