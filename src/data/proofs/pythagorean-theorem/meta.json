@@ -243,78 +243,11 @@
       "targetId": "binomial-theorem",
       "relationship": "related",
       "description": "The expansion $\\|u+v\\|^2 = \\|u\\|^2 + 2\\langle u,v \\rangle + \\|v\\|^2$ used in the proof is the inner product analog of the binomial expansion $(a+b)^2 = a^2 + 2ab + b^2$. The Pythagorean theorem says the cross term vanishes when $\\langle u,v \\rangle = 0$"
-    }
-  ],
-  "relatedProofs": [
+    },
     {
-      "id": "area-of-circle",
+      "targetId": "pythagorean-theorem-oq-03",
       "relationship": "related",
-      "description": "Both are fundamental results in Euclidean geometry. The Pythagorean theorem relates side lengths; the area formula uses πr² which depends on the same metric structure"
-    },
-    {
-      "id": "angle-trisection",
-      "relationship": "related",
-      "description": "The Pythagorean theorem underpins compass-and-straightedge constructions — every constructible length arises from iterated application of the theorem via circle-line intersections"
-    },
-    {
-      "id": "fermats-last-theorem",
-      "relationship": "foundational",
-      "description": "FLT generalizes the Pythagorean equation: while a²+b²=c² has infinitely many integer solutions, aⁿ+bⁿ=cⁿ has none for n≥"
-    },
-    {
-      "id": "cauchy-schwarz",
-      "relationship": "related",
-      "description": "Both are consequences of inner product space structure: Pythagorean theorem uses orthogonality (⟨v,w⟩=0), Cauchy-Schwarz bounds the general case (|⟨v,w⟩| ≤ ‖v‖‖w‖)"
-    },
-    {
-      "id": "pythagorean-theorem-oq-03",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "sqrt2-irrational",
-      "relationship": "foundational",
-      "description": "The irrationality of $\\sqrt{2}$ follows directly from the Pythagorean theorem: the diagonal of a unit square has length $\\sqrt{1^2 + 1^2} = \\sqrt{2}$, and the Pythagoreans' discovery that this is irrational was a foundational crisis in Greek mathematics. The Pythagorean theorem creates the very quantity whose irrationality had to be confronted"
-    },
-    {
-      "id": "law-of-cosines",
-      "relationship": "extended-by",
-      "description": "The law of cosines generalizes the Pythagorean theorem: $c^2 = a^2 + b^2 - 2ab\\cos(C)$. When $C = 90°$, $\\cos(C) = 0$ and this reduces to $c^2 = a^2 + b^2$. In inner product form: $\\|u-v\\|^2 = \\|u\\|^2 + \\|v\\|^2 - 2\\langle u,v \\rangle$"
-    },
-    {
-      "id": "euler-identity",
-      "relationship": "related",
-      "description": "Euler's identity $e^{i\\pi} + 1 = 0$ connects to the Pythagorean theorem via $|e^{i\\theta}|^2 = \\cos^2\\theta + \\sin^2\\theta = 1$ — the Pythagorean identity on the unit circle. The modulus of complex numbers is defined via $|z|^2 = (\\text{Re}\\,z)^2 + (\\text{Im}\\,z)^2$, which is the Pythagorean theorem applied to the Argand plane"
-    },
-    {
-      "id": "cauchy-schwarz-integral",
-      "relationship": "related",
-      "description": "The integral Cauchy-Schwarz inequality $|\\int fg|^2 \\leq \\int f^2 \\cdot \\int g^2$ is the infinite-dimensional generalization of the same inner product framework. The Pythagorean theorem for $L^2$ functions — $\\|f+g\\|^2 = \\|f\\|^2 + \\|g\\|^2$ when $\\int fg = 0$ — is Parseval's identity in Fourier analysis"
-    },
-    {
-      "id": "triangle-inequality",
-      "relationship": "related",
-      "description": "The triangle inequality $\\|u + v\\| \\leq \\|u\\| + \\|v\\|$ and the Pythagorean theorem $\\|u + v\\|^2 = \\|u\\|^2 + \\|v\\|^2$ (when $u \\perp v$) are complementary: the Pythagorean theorem gives equality in the squared norm when vectors are orthogonal, while the triangle inequality gives the bound for general vectors. Both are fundamental properties of inner product norms"
-    },
-    {
-      "id": "amgm-inequality",
-      "relationship": "related",
-      "description": "Both AM-GM and the Pythagorean theorem arise from inner product/norm inequalities. The AM-GM inequality $\\sqrt{ab} \\leq (a+b)/2$ can be proved via the Cauchy-Schwarz inequality, which itself is a direct consequence of the Pythagorean decomposition $v = \\text{proj}_w v + (v - \\text{proj}_w v)$"
-    },
-    {
-      "id": "mathematical-induction",
-      "relationship": "foundational",
-      "description": "The generalized Pythagorean theorem (`pythagorean_sum`) for $n$ mutually orthogonal vectors is proved by induction on the number of vectors using `Finset.induction_on` — a direct application of mathematical induction in the formalization"
-    },
-    {
-      "id": "fundamental-theorem-calculus",
-      "relationship": "related",
-      "description": "The FTC connects to the Pythagorean theorem through arc length: the length of a curve $\\gamma$ is $\\int \\sqrt{dx^2 + dy^2}$, where $dx^2 + dy^2$ is the Pythagorean theorem applied infinitesimally. The Pythagorean theorem is the local, infinitesimal form of the metric that the FTC integrates globally"
-    },
-    {
-      "id": "binomial-theorem",
-      "relationship": "related",
-      "description": "The expansion $\\|u+v\\|^2 = \\|u\\|^2 + 2\\langle u,v \\rangle + \\|v\\|^2$ used in the proof is the inner product analog of the binomial expansion $(a+b)^2 = a^2 + 2ab + b^2$. The Pythagorean theorem says the cross term vanishes when $\\langle u,v \\rangle = 0$"
+      "description": "Sub-entry exploring extensions or open questions about the Pythagorean theorem"
     }
   ],
   "leanFile": {

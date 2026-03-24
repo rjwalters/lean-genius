@@ -52,7 +52,12 @@
     ],
     "assumptions": "13 axioms encoding measure-theoretic infrastructure not yet available in Mathlib: (1) stdGaussian — standard Gaussian measure on ℝ, (2) stdGaussian_isProbabilityMeasure — probability measure instance, (3) gaussian_fourier_identity — Gaussian Fourier transform $\\int e^{itx} dN = e^{-t^2/2}$, (4) charFun_deriv_interchange — differentiation under the integral for characteristic functions, (5) integral_ofReal_eq_ofReal_integral — complex/real integral coercion, (6) charFun_taylor_remainder — Taylor expansion remainder bound $O(|t|^3)$, (7) charFun_normalized_sum_limit — core CLT convergence $[\\varphi(t/\\sqrt{n})]^n \\to e^{-t^2/2}$, (8) measureWeakTopology — weak-* topology on measures, (9) levy_continuity_axiom — Lévy continuity theorem, (10) clt_general_case_axiom — CLT for non-standardized distributions, (11) renormalization_measure — n-fold convolution and scaling, (12) gaussian_fixed_point_axiom — Gaussian fixed point under renormalization, (13) gaussian_attractor_axiom — Gaussian as attractor of renormalization flow. The substantive original proofs are charFun_zero, charFun_deriv_mean, limit_one_plus_x_over_n, and gaussian_charFun.",
     "proofRepoPath": "Proofs/CentralLimitTheorem.lean",
-    "lineCount": 618
+    "lineCount": 618,
+    "prerequisites": [
+      "Probability theory (random variables, expectation, variance)",
+      "Measure theory (convergence in distribution)",
+      "Characteristic functions and Fourier analysis"
+    ]
   },
   "overview": {
     "historicalContext": "The Central Limit Theorem (CLT) stands as one of the most remarkable results in probability theory. Its origins trace back to Abraham de Moivre's 1733 analysis of coin flips, but the theorem took nearly two centuries to reach its modern form.\n\nPierre-Simon Laplace generalized de Moivre's result in 1812, showing that sums of many independent random variables tend toward a bell curve. However, the first rigorous proof came from Aleksandr Lyapunov in 1901, using characteristic functions.\n\nThe algebraic topological perspective—viewing the Gaussian as a fixed point of a renormalization flow on the space of distributions—emerged in the late 20th century, connecting probability theory to dynamical systems, information geometry, and category theory.\n\nThis dual perspective reveals not just *that* the Gaussian appears universally, but *why*: it is an attractor in the space of probability distributions under the operation of convolution and rescaling.",
