@@ -213,10 +213,16 @@ theorem equal_residues_minimize (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 
 
 -- ## Question 1: Maximum Density (OPEN)
 
-/-- For coprime moduli, the maximum is Σ 1/nᵢ (≤ 1). -/
+/-- For coprime moduli, the coverage density is 1 - ∏(1 - 1/nᵢ) for ALL residue
+    choices (by CRT, intersection sizes are determined). Thus max = min = this value.
+
+    NOTE: The original axiom stated "= Σ 1/nᵢ" which is INCORRECT for |moduli| ≥ 2.
+    Counterexample: moduli = {2,3}, Σ 1/nᵢ = 5/6 but actual density = 4/6 = 2/3
+    (since CRT forces nonempty intersections between coprime residue classes).
+    The correct formula is 1 - ∏(1 - 1/nᵢ) = 2/3 for {2,3}. -/
 axiom max_density_coprime_case (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n)
     (hcop : ∀ m ∈ moduli, ∀ n ∈ moduli, m ≠ n → Nat.Coprime m n) :
-    maxCoverageDensity moduli hpos = moduli.sum (fun n => (1 : ℝ) / n)
+    maxCoverageDensity moduli hpos = 1 - moduli.prod (fun n => 1 - 1 / (n : ℝ))
 
 /-- The maximum coverage density is at most 1 (follows from density_le_one). -/
 theorem erdos_278_density_le_one (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n) :
