@@ -226,7 +226,7 @@
   ],
   "conclusion": {
     "summary": "This formalization proves the Power Mean Limit Theorem: lim_{r→0} M_r(z,w) = GM(z,w) with 0 sorries. The proof chain — derivative of ∑ wᵢzᵢ^r at r=0, chain rule for log composition, slope limit via hasDerivAt_iff_tendsto_slope, and exp continuity — is fully verified in Lean 4 using Mathlib. Additionally proves HM ≤ GM ≤ AM as corollaries. Together with AmgmInequalityOQ03.lean (power mean monotonicity), this completes the full chain HM = M_{-1} ≤ M_0 = GM ≤ M_1 = AM ≤ M_2 ≤ ...",
-    "implications": "**Theoretical Significance**: **For the power mean chain**: The limit establishes M_0 = GM, making the power mean family M_r continuous at r = 0.\n\nCombined with monotonicity for r > 0 and r < 0 (proved in OQ03), this gives the complete chain.\n\n**For Mathlib**: This is the 'r=0 case' explicitly listed as a TODO in Mathlib.Analysis.MeanInequalitiesPow. This formalization fills that known gap and could be contributed upstream.\n\n**Key technique**: The `hasDerivAt_iff_tendsto_slope` lemma provides a clean bridge: 'f differentiable at 0 with f(0) = 0' immediately gives 'f(r)/r → f'(0)', which is the standard L'Hôpital-style step formalized without any division issues.",
+    "implications": "**Theoretical Significance**: **For the power mean chain**: The limit establishes $M_0 = \\text{GM}$, making the power mean family $M_r$ continuous at $r = 0$. Combined with monotonicity for $r > 0$ and $r < 0$ (proved in OQ03), this gives the complete chain $\\min \\leq \\cdots \\leq M_{-1} = \\text{HM} \\leq M_0 = \\text{GM} \\leq M_1 = \\text{AM} \\leq \\cdots \\leq \\max$.\n\n**For Mathlib**: This is the '$r=0$ case' explicitly listed as a TODO in `Mathlib.Analysis.MeanInequalitiesPow`. This formalization fills that known gap and could be contributed upstream.\n\n**Key technique**: The `hasDerivAt_iff_tendsto_slope` lemma provides a clean bridge: 'f differentiable at 0 with $f(0) = 0$' immediately gives '$f(r)/r \\to f'(0)$', which is the standard L'Hôpital-style step formalized without any division issues.\n\n**Information theory**: The proof technique applies verbatim to the Rényi-to-Shannon entropy limit. Rényi entropy $H_\\alpha = \\frac{1}{1-\\alpha}\\log\\sum p_i^\\alpha$ has a singularity at $\\alpha = 1$. Setting $g(\\alpha) = \\log(\\sum p_i^\\alpha)$, we have $g(1) = 0$ and $g'(1) = \\sum p_i \\log p_i$, so $g(\\alpha)/(\\alpha - 1) \\to g'(1)$ by the same `hasDerivAt_iff_tendsto_slope` technique, yielding $\\lim_{\\alpha \\to 1} H_\\alpha = -\\sum p_i \\log p_i = H_1$ (Shannon entropy). This structural parallel — power mean limit and Rényi entropy limit as instances of the same derivative-at-singularity pattern — could unify both results under a single abstract lemma in Lean.\n\n**Kolmogorov-Nagumo characterization**: The $r \\to 0$ limit proved here is not merely a computation but a foundational continuity requirement. Kolmogorov (1930) and Nagumo (1930) independently proved that the power mean family is essentially the unique class of quasi-arithmetic means satisfying continuity, strict monotonicity, and homogeneity. Without the $r = 0$ limit, the family would have a discontinuity, and the uniqueness characterization would fail.",
     "openQuestions": [
       "Generalize to M_r ≤ M_s for all r < 0 < s (crossing zero case — handled by combining OQ03 with this limit)",
       "Add this to Mathlib as a proper contribution filling the existing TODO in MeanInequalitiesPow",
@@ -301,6 +301,13 @@
       "year": "1930",
       "venue": "Atti della Reale Accademia Nazionale dei Lincei, Rendiconti, Classe di Scienze Fisiche, Matematiche e Naturali, ser. 6, vol. 12, pp. 388–391",
       "note": "Independently of Nagumo, characterized the power mean family as the unique class of quasi-arithmetic means satisfying continuity, strict monotonicity, and homogeneity. The r→0 limit proved in this formalization is the continuity condition at the singular point that makes the power mean family a smooth one-parameter family from min to max"
+    },
+    {
+      "authors": "Nagumo, Mitio",
+      "title": "Über eine Klasse der Mittelwerte",
+      "year": "1930",
+      "venue": "Japanese Journal of Mathematics, vol. 7, pp. 71–79",
+      "note": "Independently of Kolmogorov, characterized quasi-arithmetic means by the same axioms (continuity, strict monotonicity, associativity). Together with Kolmogorov's paper, established the uniqueness of the power mean family up to continuous strictly monotone transformations"
     }
   ]
 }
