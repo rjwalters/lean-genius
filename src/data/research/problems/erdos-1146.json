@@ -1,6 +1,6 @@
 {
   "slug": "erdos-1146",
-  "title": "Erd\u0151s #1146",
+  "title": "Erdős #1146",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
@@ -29,10 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED+: Sorry narrowed from full theorem to specific algebraic step (C\u00b7x\u00b2-x \u2265 x^(3/2) for large x). 2 axioms assessed as deep/substantial. 13 theorems fully proved.",
+    "progressSummary": "COMPLETED: All sorries eliminated. Proved growth_satisfies_ruzsa_necessary via rpow→sqrt conversion and polynomial arithmetic. File has 0 sorries, 2 axioms (both deep/substantial), 13 proved theorems.",
     "builtItems": [
       "Narrowed sorry in growth_satisfies_ruzsa_necessary to algebraic rpow bound",
-      "Proof structure: filter_upwards combines counting approx with algebraic bound"
+      "Proof structure: filter_upwards combines counting approx with algebraic bound",
+      "Proved growth_satisfies_ruzsa_necessary: rpow_add + sqrt substitution + nlinarith"
     ],
     "insights": [
       "File has only 2 axioms and 1 sorry - very clean formalization",
@@ -40,15 +41,17 @@
       "Proof structure: filter_upwards + abs bound + algebraic step",
       "smooth23_not_lacunary: deep result about ratios of smooth numbers, keep as axiom",
       "smooth23_schnirelmann_zero: provable from smooth23_counting via iInf/Tendsto but substantial",
-      "Imports Erdos37Problem which has 6 axioms (mann_theorem, schnirelmann_theorem, etc.)"
+      "Imports Erdos37Problem which has 6 axioms (mann_theorem, schnirelmann_theorem, etc.)",
+      "rpow algebra pattern: use rpow_add to split x^(1+1/2) into x^1 * x^(1/2), then sqrt_eq_rpow to convert to sqrt",
+      "Polynomial bound via contradiction: C*sqrt(x) >= 2 from (C*s)^2 >= 4 and C*s >= 0",
+      "Key decomposition: C*s^4 - s^3 - s^2 = s^2*(C*s-2)*s + s^2*(s-1), both nonneg"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Fill rpow algebra sorry: use rpow_add, sqrt_eq_rpow, sqrt bounds",
-      "Prove smooth23_schnirelmann_zero from smooth23_counting",
-      "Consider companion Aristotle file for rpow algebra step"
+      "Prove smooth23_schnirelmann_zero from smooth23_counting (substantial but achievable)",
+      "Consider proving smooth23_not_lacunary from 3-distance theorem"
     ],
-    "markdown": "# Erd\u0151s #1146 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erdős #1146 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"

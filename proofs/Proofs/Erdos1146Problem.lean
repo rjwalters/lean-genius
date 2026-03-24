@@ -141,12 +141,36 @@ theorem growth_satisfies_ruzsa_necessary :
     have hx_ge1 : x ≥ 1 := le_trans (le_max_left _ _) hN
     have hx_pos : 0 < x := lt_of_lt_of_le one_pos hx_ge1
     have hx_ge4C2 : x ≥ 4 / C ^ 2 := le_trans (le_max_right _ _) hN
-    -- The algebraic bound C·x² - x ≥ x^(3/2) for x ≥ max(1, 4/C²) follows from:
-    -- (1) C·√x ≥ 2, so C·x² = C·(√x)²·x ≥ 2·(x·√x) = 2·x^(3/2)
-    -- (2) x ≤ x^(3/2) for x ≥ 1
-    -- Combined: C·x² - x ≥ 2·x^(3/2) - x^(3/2) = x^(3/2)
-    -- TODO: formalize rpow algebra (rpow_add, sqrt_eq_rpow, sqrt bounds)
-    sorry
+    -- Convert x^(1+1/2) to x · √x via rpow_add and sqrt_eq_rpow
+    have h_eq : x ^ ((1 : ℝ) + 1 / 2) = x * Real.sqrt x := by
+      rw [Real.rpow_add hx_pos, Real.rpow_one, ← Real.sqrt_eq_rpow]
+    rw [h_eq]
+    -- Now goal: C * x ^ 2 - x ≥ x * √x. Let s = √x, so x = s².
+    set s := Real.sqrt x
+    have hs_nn : 0 ≤ s := Real.sqrt_nonneg x
+    have hsx : s ^ 2 = x := Real.sq_sqrt hx_pos.le
+    have hs1 : s ≥ 1 := by
+      have := Real.sqrt_le_sqrt hx_ge1; rwa [Real.sqrt_one] at this
+    -- From x ≥ 4/C², derive C·√x ≥ 2 (by contradiction)
+    have hCs : C * s ≥ 2 := by
+      by_contra h_lt; push_neg at h_lt
+      have h_nn := mul_nonneg hCpos.le hs_nn
+      -- (C·s)² < 4 since 0 ≤ C·s < 2
+      have h1 : (C * s) ^ 2 < 4 := by
+        nlinarith [mul_nonneg h_nn (show (0 : ℝ) ≤ 2 - C * s by linarith)]
+      -- (C·s)² = C²·x ≥ 4 since x ≥ 4/C²
+      have h2 : (C * s) ^ 2 ≥ 4 := by
+        have h_c2 := pow_pos hCpos 2
+        calc (C * s) ^ 2 = C ^ 2 * s ^ 2 := by ring
+          _ = C ^ 2 * x := by rw [hsx]
+          _ ≥ C ^ 2 * (4 / C ^ 2) := mul_le_mul_of_nonneg_left hx_ge4C2 h_c2.le
+          _ = 4 := by field_simp
+      linarith
+    -- Substitute x = s² and prove s³ ≤ C·s⁴ - s² by polynomial arithmetic
+    -- Decompose as s²·(C·s−2)·s + s²·(s−1), both nonneg
+    rw [show x = s ^ 2 from hsx.symm]
+    nlinarith [mul_nonneg (sq_nonneg s) (mul_nonneg (show (0 : ℝ) ≤ C * s - 2 by linarith) hs_nn),
+               mul_nonneg (sq_nonneg s) (show (0 : ℝ) ≤ s - 1 by linarith)]
   exact (hcount.and h_alg).mono fun N ⟨hcounting, halg⟩ => by
     have h_lower : (countingFunction smoothNumbers23 N : ℝ) ≥
         C * (Real.log (N : ℝ)) ^ 2 - Real.log (N : ℝ) := by
