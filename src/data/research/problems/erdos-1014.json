@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 2 of 16 axioms proved (16→14). diagonal_ramsey_upper trivially follows from Erdős-Szekeres. ratio_equiv_difference proved via algebraic identity |a/b-1|=(a-b)/b when a≥b>0. Remaining 14 axioms cannot be eliminated (no Ramsey theory in Mathlib).",
+    "progressSummary": "BLOCKED: 14 of 16 axioms remain. Only diagonal_ramsey_upper and ratio_equiv_difference were provable (session 1). All remaining axioms depend on opaque ramseyNumber — no Ramsey theory in Mathlib. File is at natural endpoint.",
     "builtItems": [
       "Proved diagonal_ramsey_upper from ramsey_upper_erdos_szekeres (4 lines)",
       "Proved ratio_equiv_difference from monotonicity + positivity + real analysis (35 lines)"
@@ -37,7 +37,9 @@
     "insights": [
       "2 axioms proved: diagonal_ramsey_upper (from Erdős-Szekeres with k=l) and ratio_equiv_difference (algebraic identity |x/y-1|=(x-y)/y for x>=y>0)",
       "ratio_equiv_difference proof uses: ramsey_pos for R(k,l)>=1, ramsey_monotone_right for R(k,l+1)>=R(k,l), sub_div+div_self+abs_of_nonneg for the algebraic identity",
-      "Most axioms CANNOT be eliminated - no Ramsey theory in Mathlib (ramseyNumber is an opaque axiom)"
+      "BLOCKER: ramseyNumber is opaque axiom. 12 non-conjecture axioms all depend on it. No Ramsey theory in Mathlib.",
+      "ratio_from_asymptotics is theoretically provable (~100 lines real analysis: squeeze argument + power/log limit) but low value (1 of 14)",
+      "Session 2 confirmed session 1 assessment: file at natural endpoint until Mathlib gets Ramsey number infrastructure"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
