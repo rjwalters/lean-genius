@@ -229,49 +229,14 @@
       "description": "Euler's proof of the infinitude of primes uses the Euler product ζ(s) = ∏(1-p⁻ˢ)⁻¹ — the same zeta function whose value at s=2 is the Basel problem"
     },
     {
-      "targetId": "buffons-needle",
-      "relationship": "related",
-      "description": "Both reveal π in unexpected contexts: Basel finds π in a sum over integers, Buffon finds π in a probability of needle crossings. Together they illustrate π's ubiquity beyond geometry — connecting number theory and probability to the circle constant."
-    },
-    {
-      "targetId": "stirling-formula",
-      "relationship": "related",
-      "description": "Stirling's approximation $n! \\approx \\sqrt{2\\pi n}(n/e)^n$ shares the same mysterious appearance of π in a discrete context. Both results ultimately trace to Fourier analysis: Basel via Bernoulli polynomial Fourier expansions, Stirling via the saddle-point method on the Gamma function."
-    },
-    {
       "targetId": "prime-reciprocal-divergence",
       "relationship": "related",
       "description": "Euler proved ∑ 1/p diverges using the Euler product ζ(s) = ∏(1-p⁻ˢ)⁻¹ — the same zeta function framework. The divergence of ∑ 1/p contrasts with the convergence of ∑ 1/n² = π²/6, highlighting how prime density differs from integer density"
     },
     {
-      "targetId": "e-transcendental",
-      "relationship": "related",
-      "description": "The Basel identity ζ(2) = π²/6 involves two transcendental constants: π (Lindemann 1882) and implicitly e via the Gamma function and Bernoulli number machinery underlying the proof"
-    },
-    {
-      "targetId": "area-of-circle",
-      "relationship": "related",
-      "description": "Both reveal π in fundamental ways: area-of-circle gives π its geometric meaning (ratio of area to radius²), while Basel gives π an arithmetic meaning (sum of reciprocal squares = π²/6). The connection runs deep: both trace to the Gaussian integral ∬e^{-(x²+y²)}dA = π"
-    },
-    {
-      "targetId": "arithmetic-series",
-      "relationship": "complementary",
-      "description": "The simplest summation formula (∑k = n(n+1)/2) and the simplest infinite sum identity (∑1/n² = π²/6) — both are canonical examples of closed-form evaluation, the first via Gauss's pairing trick and the second via Bernoulli polynomials"
-    },
-    {
       "targetId": "basel-problem-oq-01",
       "relationship": "extended-by",
       "description": "Explores the open question of whether $\\zeta(5)$ is irrational — extending the Basel problem's $\\zeta(2) = \\pi^2/6$ to odd zeta values, where Apéry proved $\\zeta(3)$ irrational (1978) but $\\zeta(5)$ remains unknown"
-    },
-    {
-      "targetId": "euler-totient",
-      "relationship": "related",
-      "description": "Euler's product formula $\\zeta(s) = \\prod_p (1 - p^{-s})^{-1}$ connects the Basel problem's $\\zeta(2)$ to prime number theory via the same multiplicative structure that Euler's totient captures — the Euler product is the analytic counterpart to $\\phi(n)$'s arithmetic structure"
-    },
-    {
-      "targetId": "sum-of-kth-powers",
-      "relationship": "related",
-      "description": "Faulhaber's formulas for $\\sum k^p$ involve Bernoulli numbers $B_k$, which also determine $\\zeta(2n) = (-1)^{n+1} (2\\pi)^{2n} B_{2n} / (2(2n)!)$ — the Basel problem's $\\zeta(2) = \\pi^2/6$ is the $n=1$ case with $B_2 = 1/6$"
     },
     {
       "targetId": "leibniz-pi",
@@ -289,29 +254,9 @@
       "description": "Euler's original proof compares the Taylor expansion $\\sin(x)/x = 1 - x^2/6 + x^4/120 - \\cdots$ with the infinite product $\\prod(1 - x^2/n^2\\pi^2)$. The Taylor expansion provides the $x^2$ coefficient $-1/6$ that, matched against the product expansion, yields the Basel identity. Taylor's theorem thus provides one half of the input to Euler's proof"
     },
     {
-      "targetId": "fundamental-theorem-calculus",
-      "relationship": "foundational",
-      "description": "The integral test for series convergence ($\\sum f(n)$ converges iff $\\int f$ converges for decreasing $f > 0$) relies on FTC to evaluate $\\int_1^{\\infty} x^{-2}dx = 1$. This confirms convergence of $\\sum 1/n^2$ and provides the crude bound $\\sum 1/n^2 < 2$, but cannot determine the exact value $\\pi^2/6$ — for that, the deeper Bernoulli polynomial machinery is needed"
-    },
-    {
-      "targetId": "dirichlets-theorem",
-      "relationship": "related",
-      "description": "Dirichlet's theorem on primes in arithmetic progressions uses Dirichlet L-functions $L(s, \\chi)$, which generalize the Riemann zeta function. The key step of Dirichlet's proof is showing $L(1, \\chi) \\neq 0$ for non-principal characters — a fact that parallels the Basel evaluation $\\zeta(2) = \\pi^2/6$ in showing that these L-functions have non-trivial values. The Euler product $\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$ that links Basel to primes generalizes to $L(s, \\chi) = \\prod_p (1 - \\chi(p)p^{-s})^{-1}$"
-    },
-    {
-      "targetId": "hermite-lindemann",
-      "relationship": "related",
-      "description": "The Hermite-Lindemann theorem ($e^\\alpha$ is transcendental for algebraic $\\alpha \\neq 0$) implies $\\pi$ is transcendental (since $e^{i\\pi} = -1$ is algebraic), which in turn implies $\\zeta(2) = \\pi^2/6$ is transcendental. This places the Basel identity in the transcendence hierarchy: not only is $\\sum 1/n^2$ a specific real number, it is a transcendental one — the sum of rational terms converges to a number that satisfies no polynomial equation with rational coefficients"
-    },
-    {
       "targetId": "prime-number-theorem",
       "relationship": "extends",
       "description": "The Prime Number Theorem ($\\pi(x) \\sim x/\\ln x$) is proved by analyzing the Riemann zeta function $\\zeta(s)$ in the complex plane — the same function whose value $\\zeta(2) = \\pi^2/6$ is the Basel identity. Riemann's 1859 memoir showed that the distribution of primes is encoded in the zeros of $\\zeta(s)$, transforming Euler's product formula $\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$ from a curiosity into the central tool of analytic number theory. Basel was the first hint that $\\zeta$ carries deep arithmetic information"
-    },
-    {
-      "targetId": "gelfond-schneider",
-      "relationship": "related",
-      "description": "The Gelfond-Schneider theorem ($\\alpha^\\beta$ is transcendental for algebraic $\\alpha \\neq 0,1$ and irrational algebraic $\\beta$) sits in the same transcendence hierarchy as the Basel identity: both involve the transcendence of expressions built from elementary operations. The Basel value $\\pi^2/6$ is transcendental because $\\pi$ is, while Gelfond-Schneider shows $2^{\\sqrt{2}}$ is transcendental despite being built from algebraic ingredients"
     }
   ],
   "relatedProofs": [
@@ -321,23 +266,12 @@
     "euler-identity",
     "prime-reciprocal-divergence",
     "pi-transcendental",
-    "e-transcendental",
-    "buffons-needle",
-    "stirling-formula",
     "infinitude-primes",
-    "area-of-circle",
-    "arithmetic-series",
     "basel-problem-oq-01",
-    "euler-totient",
-    "sum-of-kth-powers",
     "leibniz-pi",
     "geometric-series",
     "taylor-theorem",
-    "fundamental-theorem-calculus",
-    "dirichlets-theorem",
-    "hermite-lindemann",
-    "prime-number-theorem",
-    "gelfond-schneider"
+    "prime-number-theorem"
   ],
   "leanFile": {
     "imports": [

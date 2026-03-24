@@ -215,29 +215,9 @@
       "description": "The tower law [L:F] = [L:K]·[K:F] — the multiplicativity of field extension degrees, a consequence of Lagrange's theorem — is the central proof technique: applied to F ⊂ F(α) ⊂ SplittingField(p) to derive natDegree | |Gal|"
     },
     {
-      "targetId": "sylow-theorems",
-      "relationship": "foundational",
-      "description": "Sylow theory underpins the p-group characterization: IsPGroup 2 G ↔ |G| = 2^n, which converts the 2-group hypothesis into a divisibility condition on |Gal|"
-    },
-    {
-      "targetId": "quadratic-reciprocity",
-      "relationship": "related",
-      "description": "The Gauss-Wantzel theorem (regular n-gon constructible iff φ(n) = 2^k) connects constructibility to Fermat primes, which are linked to quadratic residue structure. The Galois groups of cyclotomic fields are (ℤ/nℤ)×, and their 2-group structure determines constructibility"
-    },
-    {
-      "targetId": "abel-ruffini-oq-04",
-      "relationship": "related",
-      "description": "Both formalize Galois group obstructions: OQ-04 shows A₅ simplicity blocks quintic solvability, while this file uses 2-group structure to characterize constructibility — different group-theoretic criteria within the same Galois framework"
-    },
-    {
       "targetId": "sqrt2-irrational",
       "relationship": "complementary",
       "description": "The irrationality of $\\sqrt{2}$ is the simplest instance of the constructibility framework: $\\text{Gal}(x^2 - 2/\\mathbb{Q}) \\cong \\mathbb{Z}/2\\mathbb{Z}$ is a 2-group of order $2^1$, so $\\sqrt{2}$ is constructible. This file's tower law argument shows why: $[\\mathbb{Q}(\\sqrt{2}):\\mathbb{Q}] = 2 \\mid |\\text{Gal}| = 2$"
-    },
-    {
-      "targetId": "fundamental-theorem-algebra",
-      "relationship": "foundational",
-      "description": "FTA guarantees that every polynomial over $\\mathbb{Q}$ splits over $\\mathbb{C}$, ensuring the splitting field and Galois group $\\text{Gal}(p)$ are well-defined — the starting point for the tower law argument $F \\subset F(\\alpha) \\subset \\text{SplittingField}(p)$"
     },
     {
       "targetId": "nth-root-irrational",
@@ -258,11 +238,7 @@
     "inverse-galois",
     "abel-ruffini",
     "lagrange-theorem",
-    "sylow-theorems",
-    "quadratic-reciprocity",
-    "abel-ruffini-oq-04",
     "sqrt2-irrational",
-    "fundamental-theorem-algebra",
     "nth-root-irrational",
     "factor-remainder-theorem"
   ],

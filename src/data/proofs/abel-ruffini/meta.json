@@ -223,6 +223,11 @@
       "targetId": "primitive-roots",
       "relationship": "foundational",
       "description": "Primitive roots and cyclotomic extensions supply the abelian Galois groups $(\\mathbb{Z}/n\\mathbb{Z})^{\\times}$ that form each layer of a radical tower via Kummer theory. Each radical step $K \\to K(\\sqrt[n]{a})$ has cyclic Galois group precisely because the $n$th roots of unity form a cyclic group. Abel-Ruffini's impossibility arises when the target Galois group $S_5$ cannot be decomposed into such abelian cyclotomic layers"
+    },
+    {
+      "targetId": "kummer-theorem",
+      "relationship": "foundational",
+      "description": "Kummer theory provides the mechanism underlying the Galois bridge (galois_bridge): each radical extraction creates a Kummer extension with cyclic Galois group, so radical towers produce solvable Galois groups — the forward direction of the bridge that Abel-Ruffini applies contrapositively"
     }
   ],
   "relatedProofs": [
@@ -239,7 +244,8 @@
     "fundamental-theorem-algebra",
     "kroneckers-jugendtraum",
     "e-transcendental",
-    "primitive-roots"
+    "primitive-roots",
+    "kummer-theorem"
   ],
   "references": [
     {
