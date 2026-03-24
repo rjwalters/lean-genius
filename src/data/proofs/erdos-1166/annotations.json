@@ -30,7 +30,7 @@
       "startLine": 35,
       "endLine": 38
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Lattice Point and Origin",
     "content": "Defines the integer lattice $\\mathbb{Z}^2$ as pairs of integers and the origin $(0,0)$. The integer lattice is the natural setting for simple random walks: at each step the walker moves to one of four adjacent lattice points with equal probability $1/4$.",
     "mathContext": "$\\mathbb{Z}^2 = \\mathbb{Z} \\times \\mathbb{Z}$, with origin $o = (0,0)$",
@@ -252,7 +252,7 @@
       "startLine": 173,
       "endLine": 180
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Polylogarithmic Reformulation",
     "content": "Converts the $O((\\log n)^2)$ bound into the polylogarithmic form $(\\log n)^{O(1)}$ asked for in the original problem. Specifically, $C (\\log n)^2 \\leq (\\log n)^3$ for sufficiently large $n$ (since $C \\leq (\\log n)$ eventually). This uses the `almostSurely_mono` axiom to lift the pointwise implication to an almost sure statement.",
     "mathContext": "$C (\\log n)^2 \\leq (\\log n)^\\alpha$ for $\\alpha = 3$ and large $n$",
@@ -296,7 +296,7 @@
       "startLine": 216,
       "endLine": 219
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Connection to Erdős Problem #1165",
     "content": "Explicitly connects to Erdős Problem #1165, which asks about the size of $F(n)$ itself (not the cumulative union). The result $|F(n)| \\leq 3$ a.s. is the bridge between the two problems. This illustrates how Erdős problems often form interconnected families where solving one contributes to others.",
     "mathContext": "Problem #1165: What is $\\limsup_{n \\to \\infty} |F(n)|$? Answer: $\\leq 3$ a.s.",

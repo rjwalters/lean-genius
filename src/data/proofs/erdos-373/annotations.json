@@ -102,7 +102,7 @@
       "startLine": 73,
       "endLine": 74
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Solution: 9! = 2!3!3!7!",
     "content": "**solution_9** verifies 9! = 2! * 3! * 3! * 7! = 362880. Note the repeated 3! - this is the only known solution with a repeated factor.",
     "mathContext": "Proved by native_decide which computes both sides. 362880 = 2 * 6 * 6 * 5040.",
@@ -121,7 +121,7 @@
       "startLine": 77,
       "endLine": 78
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Solution: 10! = 6!7! (Suranyi)",
     "content": "**solution_10_67** verifies 10! = 6! * 7! = 3628800. This is the famous Suranyi solution - conjectured to be the ONLY two-factor solution.",
     "mathContext": "720 * 5040 = 3628800. Computationally verified to be unique for n <= 10^3000.",
@@ -140,7 +140,7 @@
       "startLine": 81,
       "endLine": 82
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Solution: 10! = 3!5!7!",
     "content": "**solution_10_357** verifies 10! = 3! * 5! * 7!. This is the second way to write 10! as a product of factorials.",
     "mathContext": "6 * 120 * 5040 = 3628800. Shows n = 10 has two different representations.",
@@ -159,7 +159,7 @@
       "startLine": 85,
       "endLine": 86
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Solution: 16! = 14!5!2!",
     "content": "**solution_16** verifies 16! = 14! * 5! * 2!. This is the largest known solution and Hickerson conjectures it's the maximum.",
     "mathContext": "16! = 20922789888000. The factor 14! is close to 16!, showing a_1 must be near n.",
@@ -311,7 +311,7 @@
       "startLine": 210,
       "endLine": 215
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_373_summary** bundles all four verified solutions into one theorem, confirming the computational results.",
     "mathContext": "Packages 9!, 10! (two ways), and 16! solutions for easy reference.",

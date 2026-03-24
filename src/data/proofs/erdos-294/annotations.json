@@ -180,7 +180,7 @@
       "startLine": 131,
       "endLine": 150
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Harmonic Sum",
     "content": "**harmonicSum:**\n\nH_N = ∑_{k=1}^N 1/k ≈ log(N) + γ.\n\n```lean\nnoncomputable def harmonicSum (N : ℕ) : ℚ :=\n  ∑ k ∈ Finset.range (N + 1), if k ≥ 1 then unitFraction k else 0\n```\n\nThe harmonic sum grows logarithmically, which connects to t(N)'s behavior.",
     "mathContext": "The harmonic sum $H_N = \\sum_{k=1}^{N} \\frac{1}{k} = \\ln N + \\gamma + O(1/N)$ where $\\gamma \\approx 0.5772$ is the Euler-Mascheroni constant. The partial harmonic sum $\\sum_{k=t}^{N}\\frac{1}{k} \\approx \\ln(N/t)$; for this to exceed $1$ we need $t \\lesssim N/e$. The Erdős-Graham upper bound $t(N) \\ll N/\\log N$ is thus far below this trivial threshold.",

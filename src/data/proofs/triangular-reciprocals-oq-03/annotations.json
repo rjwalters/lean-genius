@@ -32,7 +32,7 @@
     },
     "type": "definition",
     "title": "Alternating Harmonic Series Axiom",
-    "content": "The first axiom states $\\sum_{n=1}^\\infty (-1)^{n+1}/n = \\ln 2$. This is the Mercator series (1668) evaluated at $x=1$. The $n=0$ case is defined to be $0$ to handle the natural number indexing \u2014 the mathematical series starts at $n=1$. The sign pattern $(-1)^{n+1}$ ensures the first nonzero term ($n=1$) is positive.",
+    "content": "The first axiom states $\\sum_{n=1}^\\infty (-1)^{n+1}/n = \\ln 2$. This is the Mercator series (1668) evaluated at $x=1$. The $n=0$ case is defined to be $0$ to handle the natural number indexing — the mathematical series starts at $n=1$. The sign pattern $(-1)^{n+1}$ ensures the first nonzero term ($n=1$) is positive.",
     "mathContext": "$\\texttt{HasSum}\\; f\\; s$ means $\\sum_{n=0}^{\\infty} f(n) = s$ in the topology of $\\mathbb{R}$",
     "significance": "key",
     "relatedConcepts": [
@@ -96,7 +96,7 @@
       "startLine": 55,
       "endLine": 71
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Partial Fraction Decomposition via funext",
     "content": "The proof begins by showing pointwise equality: $(-1)^{n+1} \\cdot 2/(n(n+1)) = 2 \\cdot (-1)^{n+1}/n - 2 \\cdot (-1)^{n+1}/(n+1)$. This is established using `ext n` (function extensionality) with case splitting on $n = 0$. For $n \\neq 0$, `field_simp` clears denominators and `ring` verifies the algebraic identity. The `positivity` tactic proves $n + 1 \\neq 0$ automatically.",
     "mathContext": "$\\frac{2}{n(n+1)} = \\frac{2}{n} - \\frac{2}{n+1}$ (partial fractions / telescoping decomposition)",
@@ -119,7 +119,7 @@
       "startLine": 72,
       "endLine": 79
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Combining HasSum Results",
     "content": "After rewriting, the proof combines the two axioms using `HasSum.mul_left` (scalar multiplication: if $\\sum f(n) = s$ then $\\sum c \\cdot f(n) = c \\cdot s$) and `HasSum.sub` (if $\\sum f(n) = s$ and $\\sum g(n) = t$, then $\\sum (f(n) - g(n)) = s - t$). The algebraic simplification $2 \\cdot \\ln 2 - 2 \\cdot (1 - \\ln 2) = 4\\ln 2 - 2$ is verified by `ring`.",
     "mathContext": "$2 \\cdot \\ln 2 - 2(1 - \\ln 2) = 2\\ln 2 - 2 + 2\\ln 2 = 4\\ln 2 - 2$",
@@ -208,7 +208,7 @@
     },
     "type": "insight",
     "title": "Finite Partial Sum Verification",
-    "content": "Four partial sums are verified by `norm_num`: $S_1 = 1$, $S_2 = 2/3$, $S_3 = 5/6$, $S_4 = 11/15$. These oscillate around the limit $4\\ln 2 - 2 \\approx 0.7726$ \u2014 odd partial sums overshoot, even ones undershoot. This oscillation is characteristic of alternating series (guaranteed by the Leibniz alternating series test). The denominators $1, 3, 6, 15$ are related to products of consecutive integers.",
+    "content": "Four partial sums are verified by `norm_num`: $S_1 = 1$, $S_2 = 2/3$, $S_3 = 5/6$, $S_4 = 11/15$. These oscillate around the limit $4\\ln 2 - 2 \\approx 0.7726$ — odd partial sums overshoot, even ones undershoot. This oscillation is characteristic of alternating series (guaranteed by the Leibniz alternating series test). The denominators $1, 3, 6, 15$ are related to products of consecutive integers.",
     "mathContext": "$S_1 = 1 > 0.7726 > S_2 = \\tfrac{2}{3} < S_4 = \\tfrac{11}{15} < 0.7726 < S_3 = \\tfrac{5}{6}$",
     "significance": "supporting",
     "relatedConcepts": [

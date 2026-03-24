@@ -225,7 +225,7 @@
       "startLine": 158,
       "endLine": 189
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Supremum Equivalence on Unit Circle (Proved by Aristotle)",
     "content": "**sup_on_circle_eq_trig_sup**: The $L^\\infty$ norm of $P(z)$ on the unit circle equals the supremum of $|f(\\theta)|$ over $[0, 2\\pi]$. **Fully proved** by Aristotle (Harmonic) using a bijection between $S^1$ and $[0, 2\\pi]$.",
     "mathContext": "The proof establishes a bijection: for every $z$ with $\\|z\\| = 1$, there exists $\\theta \\in [0, 2\\pi]$ with $z = e^{i\\theta}$, and vice versa. This uses `Complex.norm_eq_one_iff` and floor-division to normalize $\\theta$ into $[0, 2\\pi]$. The key steps are: (1) `le_antisymm` to prove equality of suprema, (2) `ciSup_le` to bound one supremum by the other, (3) `le_ciSup` with compactness (`IsCompact.bddAbove`) to reverse the inequality.",

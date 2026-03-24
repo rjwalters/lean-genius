@@ -96,7 +96,7 @@
       "startLine": 76,
       "endLine": 94
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Larson's Theorem and Bollobas-Erdos (1979)",
     "content": "**Larson (1979)**: Every $K_4$-free graph with $\\chi(G) \\geq 4$ contains an odd cycle with at least **one** diagonal. This was the first major result.\n\n**Bollobas-Erdos Conjecture** (proved by Larson): If $G$ is $K_4$-free with no odd cycle having a diagonal, then $G$ is bipartite, has a cut vertex, or has a vertex of degree $\\leq 2$. The three alternatives are captured by the `BollobasErdosAlternative` structure.",
     "mathContext": "$K_4$-free $\\wedge\\; \\chi \\geq 4 \\Rightarrow \\exists\\, C$ odd, $\\text{diag}(C) \\geq 1$. Both axiomatized. Larson's theorem is subsumed by Voss's stronger result. The Bollobas-Erdos alternatives show that the absence of odd-cycle diagonals forces extreme structural restrictions on $K_4$-free graphs.",
@@ -119,7 +119,7 @@
       "startLine": 102,
       "endLine": 111
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Voss's Theorem (1982): Two Diagonals",
     "content": "**Voss (1982)**: Every $K_4$-free graph with $\\chi(G) \\geq 4$ contains an odd cycle with at least **two** diagonals. This significant strengthening of Larson's result answers the first question of Erdos #1091 affirmatively. The corollary `voss_implies_larson` is fully verified: $\\geq 2$ implies $\\geq 1$ via `Nat.le_of_succ_le`.",
     "mathContext": "$K_4$-free $\\wedge\\; \\chi \\geq 4 \\Rightarrow \\exists\\, C$ odd, $\\text{diag}(C) \\geq 2$. Axiomatized. The corollary `voss_implies_larson` is proved by extracting the cycle from Voss's result and weakening the diagonal bound.",
@@ -186,7 +186,7 @@
       "startLine": 180,
       "endLine": 207
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Related Results and Summary",
     "content": "**K4_free_high_chi_possible** (verified): The pentagonal wheel witnesses that $K_4$-free graphs can have $\\chi \\geq 4$.\n\n**mycielski_construction** (axiomatized): Triangle-free ($K_3$-free) graphs can have arbitrarily high $\\chi$, contextualizing why $K_4$-free high-$\\chi$ graphs exist.\n\n**erdos_1091_summary** (verified): Combines Voss ($\\geq 2$ guaranteed) with the pentagonal wheel counterexample ($\\geq 3$ not guaranteed), giving a complete answer to the specific question.",
     "mathContext": "$\\forall\\, k$, $\\exists\\, G$ triangle-free with $\\chi(G) \\geq k$ (Mycielski). K4_free_high_chi_possible is proved by instantiation with PentagonalWheel. The summary theorem combines both directions into a single statement.",

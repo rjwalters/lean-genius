@@ -96,7 +96,7 @@
       "startLine": 58,
       "endLine": 61
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lindström's Theorem (1998)",
     "content": "**Lindström (1998): Near-maximal Sidon sets are well-distributed modulo small $m$.**\n\nBernt Lindström proved that if $A \\subset \\{1, \\ldots, N\\}$ is a Sidon set with $|A| \\sim \\sqrt{N}$, then for any fixed modulus $m \\geq 2$ and any $\\varepsilon > 0$, $A$ is $\\varepsilon$-well-distributed mod $m$ for sufficiently large $N$. The proof uses exponential sum estimates: the character sums $\\sum_{a \\in A} e^{2\\pi i ra/m}$ are shown to be $o(|A|)$ for non-trivial characters.",
     "significance": "key",
@@ -120,7 +120,7 @@
       "startLine": 72,
       "endLine": 75
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sumset Distribution from Sidon Property",
     "content": "**The sumset $A + A$ inherits well-distribution from $A$.**\n\nAxiomatized: for Sidon $A$ with $|A| \\sim \\sqrt{N}$, the sumset $A + A$ is well-distributed mod $m$ for all $m \\geq 2$. The proof transfers distribution from $A$ to $A + A$ using the unique representation property: since each element of $A + A$ has exactly one representation $a + b$ (up to order), the distribution of sums mod $m$ is controlled by the joint distribution of $(a \\bmod m, b \\bmod m)$.",
     "significance": "key",
@@ -143,7 +143,7 @@
       "startLine": 85,
       "endLine": 88
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Even-Odd Balance (m = 2 Case)",
     "content": "**The specific case $m = 2$: about half of $A + A$ is even and half is odd.**\n\nThis is the most natural instance of the general distribution result. If $A$ has $k$ even and $|A| - k$ odd elements, then $A + A$ has $\\binom{k}{2} + \\binom{|A|-k}{2}$ even sums and $k(|A|-k)$ odd sums. Well-distribution of $A$ mod 2 means $k \\approx |A|/2$, which gives approximately equal even/odd counts in $A + A$.",
     "significance": "key",
@@ -165,7 +165,7 @@
       "startLine": 100,
       "endLine": 104
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result: erdos_154",
     "content": "**Erdős Problem #154: SOLVED.**\n\nThe main theorem states that for any Sidon set $A \\subset \\{1, \\ldots, N\\}$, any modulus $m \\geq 2$, and any $\\varepsilon > 0$, the sumset $A + A$ is $\\varepsilon$-well-distributed mod $m$ for sufficiently large $N$. Proved directly via `sumset_distribution A N hA hN`, packaging the axiomatized result.\n\nThis closes the problem posed by Erdős about the regularity properties of Sidon set sumsets.",
     "significance": "key",

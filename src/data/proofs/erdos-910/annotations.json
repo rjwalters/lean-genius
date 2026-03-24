@@ -52,7 +52,7 @@
       "endLine": 46
     },
     "title": "Homeomorphism Between Subsets",
-    "content": "Defines `AreHomeomorphic S T` as the existence of a homeomorphism $S \\simeq_t T$ \u2014 a continuous bijection with continuous inverse, where $S$ and $T$ carry the subspace topology. This captures topological equivalence: $S$ and $T$ have identical topological structure.",
+    "content": "Defines `AreHomeomorphic S T` as the existence of a homeomorphism $S \\simeq_t T$ — a continuous bijection with continuous inverse, where $S$ and $T$ carry the subspace topology. This captures topological equivalence: $S$ and $T$ have identical topological structure.",
     "mathContext": "$\\text{AreHomeomorphic}(S, T) :\\iff \\exists f: S \\to T$ continuous bijection with $f^{-1}$ continuous, i.e., $S \\cong T$ as topological spaces. Formally: $\\text{Nonempty}(S \\simeq_t T)$.",
     "significance": "key",
     "relatedConcepts": [
@@ -113,7 +113,7 @@
   {
     "id": "ann-e910-homeo-refl",
     "proofId": "erdos-910",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 64,
       "endLine": 65
@@ -133,7 +133,7 @@
   {
     "id": "ann-e910-homeo-symm",
     "proofId": "erdos-910",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 67,
       "endLine": 69
@@ -153,7 +153,7 @@
   {
     "id": "first-conjecture",
     "proofId": "erdos-910",
-    "type": "insight",
+    "type": "definition",
     "range": {
       "startLine": 74,
       "endLine": 76
@@ -197,12 +197,12 @@
   {
     "id": "rudin-theorem",
     "proofId": "erdos-910",
-    "type": "insight",
+    "type": "concept",
     "range": {
       "startLine": 93,
       "endLine": 98
     },
-    "title": "Rudin's Theorem (1958) \u2014 Axiomatized",
+    "title": "Rudin's Theorem (1958) — Axiomatized",
     "content": "The central axiom: under the Continuum Hypothesis ($\\aleph_1 = 2^{\\aleph_0}$), there exists a connected subset $S \\subseteq \\mathbb{R}^2$ that is a Rudin set with exactly $2^{\\aleph_0}$ connected subsets and is nontrivial ($|S| \\geq 2$). Mary Ellen Rudin's construction uses transfinite induction of length $\\aleph_1$ (which equals $2^{\\aleph_0}$ under CH) to build $S$ point by point while maintaining both connectivity and the self-similarity property at each successor stage. This was published in 'A connected subset of the plane' (Fundamenta Mathematicae 46, 1958).",
     "mathContext": "$\\text{CH} \\implies \\exists S \\subseteq \\mathbb{R}^2,\\; \\text{IsRudinSet}(S) \\wedge |\\text{connectedSubsetsOf}(S)| = 2^{\\aleph_0} \\wedge |S| \\geq 2$.",
     "significance": "key",
@@ -220,7 +220,7 @@
   {
     "id": "no-diverse-subset-theorem",
     "proofId": "erdos-910",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 104,
       "endLine": 121
@@ -242,7 +242,7 @@
   {
     "id": "first-conjecture-false",
     "proofId": "erdos-910",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 124,
       "endLine": 129
@@ -263,7 +263,7 @@
   {
     "id": "second-conjecture-false",
     "proofId": "erdos-910",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 132,
       "endLine": 139
@@ -284,7 +284,7 @@
   {
     "id": "ann-e910-combined",
     "proofId": "erdos-910",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 150,
       "endLine": 153

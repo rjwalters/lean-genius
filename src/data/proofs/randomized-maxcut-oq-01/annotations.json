@@ -163,7 +163,7 @@
       "startLine": 182,
       "endLine": 186
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Ratio Form of the Approximation Guarantee",
     "content": "The gw_ratio_bound theorem reformulates the approximation guarantee as alpha_GW <= E[cut]/MaxCut, the standard way approximation ratios are stated in the algorithms literature. The proof applies le_div_iff (division characterization of inequality) to the multiplicative form, requiring the hypothesis that MaxCut > 0. This non-degeneracy condition excludes the trivial case of edgeless graphs. The ratio form directly shows that the GW algorithm achieves at least 87.8% of the optimal cut value in expectation.",
     "mathContext": "\\alpha_{\\text{GW}} \\leq \\frac{\\mathbb{E}[|C_{\\text{GW}}|]}{\\text{MaxCut}(G)} \\quad \\text{when } \\text{MaxCut}(G) > 0",
@@ -205,7 +205,7 @@
       "startLine": 197,
       "endLine": 217
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Structural Bounds: MaxCut and Edge Count",
     "content": "The structural bound gwMaxCut_le_edges proves that no cut can exceed the total number of edges, an obvious but necessary sanity check. The proof uses Finset.sup_le to reduce to showing each individual cut has size at most |E|, then applies Finset.card_filter_le. The chain of bounds gwExpectedCut_le_sdp and sdp_le_edges (axiomatized) establishes gwExpectedCut_le_edges by transitivity. These bounds ensure all quantities in the GW analysis remain within the natural range [0, |E|], preventing vacuous results.",
     "mathContext": "0 \\leq \\text{MaxCut}(G) \\leq |E(G)| \\quad \\text{and} \\quad \\mathbb{E}[|C|] \\leq \\text{SDP}_{\\text{OPT}} \\leq |E(G)|",

@@ -149,7 +149,7 @@
       "startLine": 170,
       "endLine": 200
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Degree-9 Ring Identity: ~400s Verification",
     "content": "The core step of the proof is a polynomial identity of degree 9 in 18 variables (coordinates of A, A', B, B', C, C'). Lean's `ring` tactic verifies it by symbolic normalization:\n\n```lean\nset_option maxHeartbeats 400000000 in\nlemma desargues_core_identity_K (...) :\n    d1*d3*d5 - d2*d4*d6 = detCross * det(A,B,C) := by ring\n```\n\nThis takes approximately 400 seconds in Docker due to polynomial size. The `maxHeartbeats` option is set to 400,000,000 (default is 400,000) to allow sufficient computation time.\n\n**Why ring works:** Over a CommRing, `ring` performs polynomial normalization. Since both sides are polynomials in the coordinates with integer coefficients, this is a purely algebraic verification.",
     "mathContext": "The identity $d_1d_3d_5 - d_2d_4d_6 = \\det(A\\times A', B\\times B', C\\times C') \\cdot \\det(A,B,C)$ expands to a degree-9 polynomial equation in 18 variables.",

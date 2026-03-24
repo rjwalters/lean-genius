@@ -100,7 +100,7 @@
       "startLine": 110,
       "endLine": 119
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verified $\\sigma$-Equivalences",
     "content": "Four equivalences proved computationally via `native_decide`: $2 \\equiv 3$ ($\\sigma_1(2) = 3$), $2 \\equiv 4$ ($\\sigma_2(2) = 4$), $5 \\equiv 6$ ($\\sigma_1(5) = 6$), $7 \\equiv 8$ ($\\sigma_1(7) = 8$). All follow from the prime merging pattern: $\\sigma(p) = p + 1$ for primes $p$.",
     "significance": "supporting",
@@ -146,7 +146,7 @@
       "startLine": 142,
       "endLine": 160
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Growth Properties of $\\sigma$ (Proved)",
     "content": "`sigma_ge_succ` (proved): $\\sigma(n) \\ge n + 1$ for $n \\ge 2$. `sigma_gt` (proved): $\\sigma(n) > n$ for $n \\ge 2$. Proof: $\\{1, n\\} \\subseteq \\text{divisors}(n)$ with $1 \\ne n$, so $\\sigma(n) \\ge 1 + n$ by `Finset.sum_le_sum_of_subset`.",
     "significance": "key",
@@ -171,7 +171,7 @@
       "startLine": 166,
       "endLine": 172
     },
-    "type": "technique",
+    "type": "definition",
     "title": "No $\\sigma$-Periodicity (Proved)",
     "content": "`IsSigmaPeriodic n`: $\\exists k \\ge 1,\\, \\sigma^k(n) = n$. `no_sigma_periodic_step1` (proved): $\\sigma_1(n) > n$ for $n \\ge 2$, ruling out fixed points. By induction, $\\sigma^k(n) > n$ for all $k \\ge 1$, so no $n \\ge 2$ is $\\sigma$-periodic.",
     "significance": "supporting",
@@ -194,7 +194,7 @@
       "startLine": 186,
       "endLine": 190
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "`erdos_412_summary` (proved): packages three results as a conjunction: (1) $\\sigma(n) > n$ for $n \\ge 2$, (2) $2 \\equiv_\\sigma 3$, (3) $\\sigma_1(n) > n$ for $n \\ge 2$. Proved as $\\langle\\text{sigma\\_gt}, \\text{equiv\\_2\\_3}, \\text{no\\_sigma\\_periodic\\_step1}\\rangle$. The main conjecture `Erdos412Conjecture` remains OPEN and is not asserted.",
     "significance": "key",

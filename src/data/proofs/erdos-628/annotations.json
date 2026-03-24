@@ -165,7 +165,7 @@
       "startLine": 152,
       "endLine": 168
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Critical Graphs",
     "content": "**`IsCritical G k`**: $\\chi(G) = k$ and $\\chi(G - v) < k$ for every vertex $v$ (removing any vertex drops the chromatic number). These are the 'minimal' $k$-chromatic graphs.\n\n**`contains_critical`** (sorry'd): every $K_k$-free $k$-chromatic graph contains a $k$-critical subgraph. This is a standard result — repeatedly remove vertices that don't decrease $\\chi$.\n\n**`critical_min_degree`** (sorry'd): $k$-critical graphs have minimum degree $\\ge k-1$. Each vertex $v$ has $\\chi(G-v) = k-1$, so $v$ must be adjacent to vertices of all $k-1$ colors in a $(k-1)$-coloring of $G-v$.",
     "mathContext": "$$\\text{IsCritical}(G,k) \\iff \\chi(G) = k \\;\\wedge\\; \\forall v,\\; \\chi(G-v) < k$$",
@@ -187,7 +187,7 @@
       "startLine": 170,
       "endLine": 185
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Perfect Graphs — Tihany is Vacuous",
     "content": "**`IsPerfect G`**: $\\chi(H) = \\omega(H)$ for all induced subgraphs $H \\le_i G$.\n\n**`perfect_clique_free`** (sorry'd): perfect graphs are $K_{\\chi+1}$-free (they contain $K_\\chi$ but not $K_{\\chi+1}$).\n\n**`perfect_tihany_vacuous`** (sorry'd): for perfect $G$ with $\\chi(G) = k$, we have $\\omega(G) = k$, so $G$ contains $K_k$ and is NOT $K_k$-free. The Tihany hypothesis fails, making the conjecture vacuously true.\n\nThis shows Tihany is interesting precisely for **imperfect** graphs — those where $\\chi > \\omega$.",
     "mathContext": "$$G \\text{ perfect},\\; \\chi(G) = k \\implies \\omega(G) = k \\implies K_k \\subseteq G$$",

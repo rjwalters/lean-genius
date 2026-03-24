@@ -147,7 +147,7 @@
       "startLine": 223,
       "endLine": 230
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Pascal's Hexagon Theorem",
     "content": "**Pascal's Theorem** (Wiedijk #28): For hexagon $ABCDEF$ inscribed in conic $C$, the points $P = AB \\cap DE$, $Q = BC \\cap EF$, $R = CD \\cap FA$ are collinear. The proof unfolds the definitions of `collinear`, `pascalP/Q/R`, and applies the axiom `conic_implies_pascal_constraint` which captures the Cayley-Bacharach / Bezout theorem argument.",
     "mathContext": "The axiom `conic_implies_pascal_constraint` encodes: two degenerate cubics $\\Gamma_1 = \\overline{AB} \\cup \\overline{CD} \\cup \\overline{EF}$ and $\\Gamma_2 = \\overline{BC} \\cup \\overline{DE} \\cup \\overline{FA}$ intersect in 9 points (by Bezout's theorem, $3 \\times 3 = 9$). Six of these are the vertices $A, \\ldots, F$ on the conic. By Cayley-Bacharach, the remaining 3 points $P, Q, R$ are collinear.",

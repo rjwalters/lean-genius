@@ -67,7 +67,7 @@
       "startLine": 49,
       "endLine": 54
     },
-    "type": "technique",
+    "type": "concept",
     "title": "σ(p) = p + 1 for primes",
     "content": "**sigma_prime:**\n\nFor prime p, the only divisors are 1 and p, so σ(p) = 1 + p.\n\n```lean\ntheorem sigma_prime (p : N) (hp : p.Prime) : sigma p = p + 1\n```",
     "significance": "key",
@@ -149,7 +149,7 @@
       "startLine": 100,
       "endLine": 117
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Finiteness of Solutions",
     "content": "**solutionSet_finite:**\n\nThe solution set is finite for any n > 0.\n\n**Proof idea:**\n- σ(k) ≥ 1 for all k > 0 (since 1 | k)\n- Therefore k·σ(k) ≥ k\n- So if g(k) = n, then k ≤ n\n\nThis means we only need to check finitely many k.",
     "mathContext": "This finiteness is crucial for f(n) to be well-defined as a natural number.",
@@ -194,7 +194,7 @@
       "startLine": 178,
       "endLine": 182
     },
-    "type": "definition",
+    "type": "concept",
     "title": "OEIS A327153",
     "content": "**oeis_A327153:**\n\nThe set of n for which f(n) > 0 (i.e., k·σ(k) = n has a solution).\n\n```lean\ndef oeis_A327153 : Set N := {n : N | f n > 0}\n```\n\nThis is the range of the function g(k) = k·σ(k).",
     "significance": "key",
@@ -242,7 +242,7 @@
       "startLine": 226,
       "endLine": 231
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: g(6) = 72",
     "content": "**Example:**\n\nn = 72: k = 6 gives 6·σ(6) = 6·12 = 72.\n\nNote: σ(6) = 1+2+3+6 = 12.",
     "significance": "supporting",

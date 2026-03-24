@@ -53,7 +53,7 @@
       "startLine": 36,
       "endLine": 36
     },
-    "type": "technique",
+    "type": "concept",
     "title": "ordinalPartition (Ramsey Arrow)",
     "content": "**Ordinal Partition Relation:** $\\alpha \\to (\\alpha, k)^2$ asserts that for any 2-coloring of pairs from $\\alpha$, either there is a monochromatic-red copy of order type $\\alpha$ or a monochromatic-blue copy of size $k$.\n\nThis is the **unbalanced Ramsey arrow** — the two colors have different target sizes. The notation generalizes Ramsey's theorem: $\\omega \\to (\\omega, n)^2$ is equivalent to the infinite Ramsey theorem for pairs.",
     "significance": "key",
@@ -122,7 +122,7 @@
       "startLine": 49,
       "endLine": 49
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Specker's Positive Result (1957)",
     "content": "**Specker (1957):** $\\omega^2 \\to (\\omega^2, 3)^2$.\n\nThe case $\\beta = 2$ holds. Specker's proof uses an intricate induction on the ordinal type of red-homogeneous sets, showing that any 2-coloring of pairs from $\\omega^2$ that avoids blue triangles must contain a red copy of order type $\\omega^2$. This was the first positive result beyond Ramsey's theorem.",
     "significance": "key",
@@ -145,7 +145,7 @@
       "startLine": 52,
       "endLine": 53
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Specker's Negative Result (1957)",
     "content": "**Specker (1957):** For finite $n \\geq 3$, $\\omega^n \\not\\to (\\omega^n, 3)^2$.\n\nThis shows the partition property is **not monotone in $\\beta$**: it holds for $\\beta = 2$, fails for $\\beta = 3, 4, 5, \\ldots$, then recovers at $\\beta = \\omega$ (Chang 1972). The counterexample colorings exploit the product structure of $\\omega^n$ to construct triangle-free blue colorings that prevent large red-homogeneous sets.",
     "significance": "key",
@@ -169,7 +169,7 @@
       "startLine": 58,
       "endLine": 58
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Chang's Theorem (1972)",
     "content": "**Chang (1972):** $\\omega^\\omega \\to (\\omega^\\omega, 3)^2$.\n\nDespite the failure for $\\omega^3, \\omega^4, \\ldots$, the partition property recovers at $\\omega^\\omega$. Chang's proof uses a sophisticated tree argument, analyzing the structure of triangle-free colorings on $\\omega^\\omega = \\sup_n \\omega^n$. The limit structure provides enough 'room' for the partition property to hold.",
     "significance": "key",
@@ -216,7 +216,7 @@
       "startLine": 69,
       "endLine": 71
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Galvin-Larson Necessary Condition (1974)",
     "content": "**Galvin-Larson (1974):** If $\\beta \\geq 3$ has the partition property, then $\\beta$ must be additively indecomposable.\n\nThis powerful necessary condition eliminates most ordinals from consideration. Combined with the fact that additively indecomposable ordinals are exactly $\\omega^\\gamma$, it reduces the classification to: for which $\\gamma$ does $\\omega^{\\omega^\\gamma} \\to (\\omega^{\\omega^\\gamma}, 3)^2$ hold?",
     "significance": "key",
@@ -240,7 +240,7 @@
       "startLine": 77,
       "endLine": 77
     },
-    "type": "definition",
+    "type": "concept",
     "title": "cantorNFLength",
     "content": "**Cantor Normal Form Length:** The number of indecomposable ordinal summands in the CNF of $\\gamma$.\n\nIf $\\gamma = \\omega^{\\alpha_1} + \\cdots + \\omega^{\\alpha_k}$ (with $\\alpha_1 \\geq \\cdots \\geq \\alpha_k$), then $\\text{cantorNFLength}(\\gamma) = k$. This is the parameter that determines the partition property: length $\\leq 2$ implies partition property, length $\\geq 4$ implies failure.",
     "significance": "key",
@@ -263,7 +263,7 @@
       "startLine": 82,
       "endLine": 83
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Schipperus Positive Result (2010)",
     "content": "**Schipperus (2010):** If $\\gamma$ has CNF-length $\\leq 2$ (i.e., $\\gamma = \\omega^{\\alpha_1} + \\omega^{\\alpha_2}$ or simpler), then $\\omega^{\\omega^\\gamma} \\to (\\omega^{\\omega^\\gamma}, 3)^2$.\n\nThis extends the positive results of Specker ($\\gamma = 0, 1$) and Chang ($\\gamma = \\omega^0 = 1$ in the tower). The proof generalizes Chang's tree method to handle ordinals with two-term CNF exponents.",
     "significance": "key",
@@ -287,7 +287,7 @@
       "startLine": 88,
       "endLine": 89
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Schipperus Negative Result (2010)",
     "content": "**Schipperus (2010):** If $\\gamma$ has CNF-length $\\geq 4$, then $\\omega^{\\omega^\\gamma} \\not\\to (\\omega^{\\omega^\\gamma}, 3)^2$.\n\nThe counterexample constructs a 2-coloring that uses the four (or more) CNF summands of $\\gamma$ to define a coloring avoiding both blue triangles and large red-homogeneous sets. This shows the partition property fails definitively for long CNF exponents.",
     "significance": "key",
@@ -311,7 +311,7 @@
       "startLine": 96,
       "endLine": 98
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Open Case: CNF-Length 3 ($1,000 Bounty)",
     "content": "**Open Problem ($1,000):** Does $\\omega^{\\omega^\\gamma} \\to (\\omega^{\\omega^\\gamma}, 3)^2$ hold when $\\text{cantorNFLength}(\\gamma) = 3$?\n\nThis single case is all that remains of the full classification. The axiom states the disjunction — it must be true or false — but neither direction has been proved. The simplest instance is $\\gamma = \\omega^{\\alpha_1} + \\omega^{\\alpha_2} + \\omega^{\\alpha_3}$. Erdős offered $1,000 for resolving this case.",
     "significance": "key",
@@ -335,7 +335,7 @@
       "startLine": 110,
       "endLine": 114
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Partition Ordinal Classification Summary",
     "content": "**Complete Classification (Modulo Length 3):**\n\n| $\\beta$ | Partition Property | Source |\n|---------|-------------------|--------|\n| $0$ | Yes (trivial) | $\\omega^0 = 1$ |\n| $1$ | Yes | Ramsey's theorem |\n| $2$ | Yes | Specker (1957) |\n| $3 \\leq n < \\omega$ | No | Specker (1957) |\n| $\\omega^\\gamma$, CNF-len $\\leq 2$ | Yes | Schipperus (2010) |\n| $\\omega^\\gamma$, CNF-len $\\geq 4$ | No | Schipperus (2010) |\n| $\\omega^\\gamma$, CNF-len $= 3$ | **OPEN** | $1,000 bounty |\n\nThis classification captures the complete state of knowledge on partition ordinals for triangles.",
     "significance": "key",

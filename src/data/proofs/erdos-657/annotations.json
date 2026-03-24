@@ -70,7 +70,7 @@
       "startLine": 49,
       "endLine": 58
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Distance Properties",
     "content": "Basic metric properties of dist2: symmetry ($d(p,q) = d(q,p)$) proved via ring normalization, non-negativity from $\\texttt{Real.sqrt\\_nonneg}$, and positive-definiteness ($d(p,q) = 0 \\iff p = q$) axiomatized.",
     "mathContext": "$d(p,q) = d(q,p)$ follows from $(p_1-q_1)^2 = (q_1-p_1)^2$. Non-negativity: $\\sqrt{x} \\ge 0$ for all $x$. Positive-definiteness: $\\sqrt{(\\Delta x)^2 + (\\Delta y)^2} = 0 \\iff \\Delta x = \\Delta y = 0$.",
@@ -224,7 +224,7 @@
       "startLine": 142,
       "endLine": 146
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Dumitrescu's Lower Bound (2008)",
     "content": "**Dumitrescu (2008)**: $f(n) \\ge (\\log n)^c$ for some constant $c > 0$. This answers Erdős's question affirmatively: $f(n) \\to \\infty$.",
     "mathContext": "For all $n \\ge 3$ and all isosceles-free $A$ with $|A| = n$: $|\\Delta(A)| \\ge (\\log n)^c \\cdot n$. The proof uses a pigeonhole argument on distance multiplicities combined with the isosceles-free condition. Since $(\\log n)^c \\to \\infty$, this establishes $f(n) \\to \\infty$.",
@@ -246,7 +246,7 @@
       "startLine": 150,
       "endLine": 154
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Dumitrescu's Upper Bound (2008)",
     "content": "**Dumitrescu (2008)**: $f(n) \\le 2^{O(\\sqrt{\\log n})}$. There exist isosceles-free $n$-point sets with only $2^{O(\\sqrt{\\log n})} \\cdot n$ distinct distances.",
     "mathContext": "The construction uses 3-AP-free sets in $\\{1, \\ldots, N\\}$ of size $n$ (via Behrend's construction) embedded on a line in $\\mathbb{R}^2$. Such sets are isosceles-free in $\\mathbb{R}$ and have $\\le 2^{O(\\sqrt{\\log n})} \\cdot n$ distinct differences, giving the upper bound on $f(n)$.",
@@ -268,7 +268,7 @@
       "startLine": 162,
       "endLine": 166
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Kelley-Meka/Bloom-Sisask Improvement (2023)",
     "content": "**Kelley-Meka (2023)**: $f(n) \\ge 2^{c(\\log n)^{1/9}}$ for some $c > 0$, dramatically improving Dumitrescu's $(\\log n)^c$ lower bound.",
     "mathContext": "The breakthrough comes from improved bounds on 3-term arithmetic progressions in $[N]$: the largest 3-AP-free subset of $\\{1, \\ldots, N\\}$ has size $\\le N/2^{c(\\log N)^{1/9}}$ (Kelley-Meka 2023). Via the 3-AP connection, this translates to $f(n) \\ge 2^{c(\\log n)^{1/9}}$.",
@@ -312,7 +312,7 @@
       "startLine": 194,
       "endLine": 197
     },
-    "type": "technique",
+    "type": "concept",
     "title": "One-Dimensional Equivalence",
     "content": "In $\\mathbb{R}$, the isosceles-free condition is equivalent to having 3-AP-free differences. This connects Erdős Problem #657 to additive combinatorics.",
     "mathContext": "In $\\mathbb{R}$, a set $A$ is isosceles-free iff for all $a, b, c \\in A$ with $a < b < c$, the three distances $b-a, c-a, c-b$ are all distinct. This is equivalent to requiring that $A$ be 3-AP-free: $2b = a + c$ iff $b - a = c - b$ (two of the three distances are equal).",
@@ -334,7 +334,7 @@
       "startLine": 217,
       "endLine": 221
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Straus's High-Dimensional Construction",
     "content": "**Straus**: In $\\mathbb{R}^k$ with $2^k \\ge n$, there exist isosceles-free $n$-point sets with at most $n - 1$ distinct distances. Standard basis vectors $e_i$ are all equidistant: $\\|e_i - e_j\\| = \\sqrt{2}$.",
     "mathContext": "Take $n$ vertices of the unit hypercube $\\{0,1\\}^k \\subset \\mathbb{R}^k$ where $2^k \\ge n$. Any subset of the $2^k$ vertices has the property that $\\|v_i - v_j\\|^2 = |\\text{supp}(v_i \\oplus v_j)|$, giving at most $k$ distinct squared distances. For standard basis vectors, all distances are $\\sqrt{2}$.",
@@ -378,7 +378,7 @@
       "startLine": 285,
       "endLine": 285
     },
-    "type": "technique",
+    "type": "concept",
     "title": "f(n) → ∞",
     "content": "The main partial answer: $f(n) \\to \\infty$ as $n \\to \\infty$. This follows from Dumitrescu's lower bound $(\\log n)^c \\to \\infty$.",
     "mathContext": "$\\texttt{f\\_tends\\_to\\_infinity}$: axiomatized as $\\texttt{ErdosQuestion657}$. The proof in the literature: Dumitrescu showed $f(n) \\ge (\\log n)^c$, and since $(\\log n)^c \\to \\infty$, we get $f(n) \\to \\infty$. Axiomatized because the formal proof requires real analysis machinery.",
@@ -400,7 +400,7 @@
       "startLine": 313,
       "endLine": 313
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem: erdos_657",
     "content": "The main theorem: Erdős Problem #657 is answered YES — $f(n) \\to \\infty$. Proved by direct invocation of $\\texttt{f\\_tends\\_to\\_infinity}$.",
     "mathContext": "$\\texttt{erdos\\_657} : \\texttt{ErdosQuestion657} := \\texttt{f\\_tends\\_to\\_infinity}$. Unfolding: $\\forall M : \\mathbb{R},\\; \\exists N : \\mathbb{N},\\; \\forall n \\ge N,\\; \\forall A$ isosceles-free with $|A| = n$: $|\\Delta(A)| \\ge M \\cdot n$.",
@@ -421,7 +421,7 @@
       "startLine": 323,
       "endLine": 323
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Resolution Status",
     "content": "The problem is **partially solved**: the qualitative answer ($f(n) \\to \\infty$) is established, but the quantitative answer (exact growth rate) remains open with the gap $2^{(\\log n)^{1/9}} \\le f(n) \\le 2^{\\sqrt{\\log n}}$.",
     "mathContext": "$\\texttt{erdos\\_657\\_resolved}$ duplicates the main result. The $\\texttt{refinedQuestion}$ asks whether $f(n) = 2^{(\\log n)^{\\theta}}$ for some explicit $\\theta \\in (1/9, 1/2)$ — this would give a complete asymptotic description.",

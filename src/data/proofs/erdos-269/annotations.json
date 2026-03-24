@@ -45,7 +45,7 @@
       "startLine": 74,
       "endLine": 92
     },
-    "type": "definition",
+    "type": "concept",
     "title": "The P-smooth Sequence",
     "content": "**smoothSeq P:** Enumeration of P-smooth numbers.\n\n```lean\nnoncomputable def smoothSeq (P : Set N) : N -> N :=\n  Nat.nth (IsPSmooth P)\n```\n\n**For P = {2, 3}:**\n- smoothSeq P 0 = 1\n- smoothSeq P 1 = 2\n- smoothSeq P 2 = 3\n- smoothSeq P 3 = 4\n- smoothSeq P 4 = 6\n- ...\n\nThe sequence is strictly increasing and exhausts all P-smooth numbers.",
     "significance": "key",
@@ -64,7 +64,7 @@
       "startLine": 94,
       "endLine": 128
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Partial LCM",
     "content": "**partialLcm P n = L_n = [a_0,...,a_{n-1}]**\n\n```lean\nnoncomputable def partialLcm (P : Set N) (n : N) : N :=\n  (Finset.range n).lcm (smoothSeq P)\n```\n\n**Key Properties:**\n- L_0 = 1 (empty LCM)\n- L_1 = 1 (just a_0 = 1)\n- L_{n+1} = lcm(L_n, a_n)\n- L_n is monotone non-decreasing\n- L_n is P-smooth\n\n**For P = {2,3}:**\nL_1=1, L_2=2, L_3=6, L_4=12, L_5=12 (duplicate!), ...",
     "mathContext": "The key insight is that L_n stays constant when a_n | L_{n-1}. These 'duplicate' terms complicate the analysis.",

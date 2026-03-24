@@ -142,7 +142,7 @@
       "startLine": 92,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "definition",
     "title": "emptyGraph_triangleFree",
     "content": "The empty graph $\\bot$ (no edges) is triangle-free. Proved by unfolding definitions, applying `push_neg`, and using `bot_adj` (which states $\\bot.\\text{Adj}\\,v\\,w = \\text{False}$). One of only two fully proved results in the file.",
     "mathContext": "The proof is purely logical: $\\neg\\exists\\,a\\,b\\,c,\\, \\bot.\\text{Adj}\\,a\\,b$ holds vacuously since $\\bot.\\text{Adj} = \\lambda\\,v\\,w,\\, \\text{False}$. The tactic chain `unfold; push_neg; intros; simp [bot_adj]` demonstrates how Lean handles existential negation with the `push_neg` tactic from Mathlib.",
@@ -210,7 +210,7 @@
       "startLine": 129,
       "endLine": 132
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Mycielski's Theorem",
     "content": "**Axiom** (Mycielski, 1955): For every $k$, there exists a triangle-free graph $G$ with $\\chi(G) \\geq k$. The Mycielskian $\\mu(G)$ adds shadow vertices $u_v$ for each $v$, connecting $u_v$ to $N_G(v)$, plus an apex. Starting from $K_2$, iteration gives $\\chi(M_k) = k$ while remaining triangle-free.",
     "mathContext": "The Mycielskian $\\mu(G)$ of a graph $G = (V, E)$ has vertex set $V \\cup \\{u_v : v \\in V\\} \\cup \\{w\\}$, with edges $E \\cup \\{u_v x : vx \\in E\\} \\cup \\{wu_v : v \\in V\\}$. Mycielski proved $\\chi(\\mu(G)) = \\chi(G) + 1$ and that $\\mu(G)$ is triangle-free when $G$ is. This was the first proof that the chromatic number and clique number can be arbitrarily far apart, refuting the early conjecture that $\\chi(G)$ depends only on $\\omega(G)$.",
@@ -233,7 +233,7 @@
       "startLine": 141,
       "endLine": 149
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Rödl's Theorem (1977)",
     "content": "**Axiom** (Rödl, 1977): For every $k \\in \\mathbb{N}$, there exists $f_k$ such that any graph $G$ with $\\chi(G) \\geq f_k$ contains a triangle-free spanning subgraph $H$ with $\\chi(H) \\geq k$. This is the core result solving Problem #923.",
     "mathContext": "Published in *Proc. Amer. Math. Soc.* **64** (1977), 370--371, Rödl's remarkably short proof works by edge-coloring $G$ based on triangle participation and applying Ramsey's theorem to extract a monochromatic triangle-free subgraph retaining high chromatic number. Each Ramsey application exponentiates the required chromatic number, leading to the tower-type bound $f_k \\leq \\text{tower}(O(k))$.",
@@ -258,7 +258,7 @@
       "startLine": 154,
       "endLine": 163
     },
-    "type": "technique",
+    "type": "definition",
     "title": "erdos_923_true",
     "content": "The corollary `erdos_923_true` directly restates Rödl's theorem as the affirmative answer to Problem #923. The proof is `:= rodl_1977`, a definitional equality since the type signatures are identical.",
     "mathContext": "This theorem serves as the human-readable formal answer: Problem #923 is TRUE. The proof is trivial (identity on the axiom) because the statement of `erdos_923_true` is literally the same as `rodl_1977`. The separation into axiom + corollary is a stylistic choice to distinguish the mathematical result from its problem-answer packaging.",
@@ -279,7 +279,7 @@
       "startLine": 172,
       "endLine": 184
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Tower Function",
     "content": "**towerFunction**: $\\text{tower}(0) = 1$, $\\text{tower}(n+1) = 2^{\\text{tower}(n)}$. Gives the sequence $1, 2, 4, 16, 65536, 2^{65536}, \\ldots$ The first four values are verified by `rfl`, and $\\text{tower}(4) = 65536$ by `native_decide`.",
     "mathContext": "The tower function $\\text{tower}(n) = 2 \\uparrow\\uparrow n$ (Knuth up-arrow notation) grows faster than any fixed iteration of exponentiation. $\\text{tower}(5) = 2^{65536}$ has approximately $19{,}728$ decimal digits. Tower-type bounds are characteristic of Ramsey theory: the Hales-Jewett numbers, Szemerédi regularity applications, and Shelah's bounds all involve tower-type growth.",
@@ -302,7 +302,7 @@
       "startLine": 190,
       "endLine": 198
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Rödl Tower Bound",
     "content": "**Axiom**: $f(k) \\leq \\text{tower}(C \\cdot k)$ for some universal constant $C$. Graphs with $\\chi \\geq \\text{tower}(C \\cdot k)$ must contain a triangle-free subgraph with $\\chi \\geq k$.",
     "mathContext": "The tower bound is believed to be qualitatively tight: the iterated Ramsey argument suggests $f(k)$ cannot be bounded by any function growing slower than tower-type. This parallels the situation in the Hales-Jewett theorem, where primitive recursive upper bounds were not known before Shelah's proof. The question of whether $f(k)$ is exactly tower-type or merely tower-bounded remains open.",

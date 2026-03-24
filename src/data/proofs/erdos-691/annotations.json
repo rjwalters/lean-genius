@@ -139,7 +139,7 @@
   {
     "id": "ann-e691-structuralLemmas",
     "proofId": "erdos-691",
-    "type": "technique",
+    "type": "concept",
     "title": "Structural Lemmas for Multiples (Fully Proved)",
     "content": "Seven fully proved lemmas: membership characterization, monotonicity, empty set, self-membership, multiple membership, closure under multiplication, union decomposition.",
     "mathContext": "These **fully proved** structural lemmas establish the basic algebraic properties of $M_A$: (1) `mem_multiplesOf`: membership is $n > 0 \\wedge \\exists a \\in A, a \\mid n$; (2) `multiplesOf_mono`: $A \\subseteq B \\implies M_A \\subseteq M_B$; (3) `multiplesOf_empty`: $M_\\emptyset = \\emptyset$; (4) `self_mem_multiplesOf`: $a \\in A \\implies a \\in M_A$; (5) `mul_mem_multiplesOf`: $a \\in A, k > 0 \\implies ka \\in M_A$; (6) `multiplesOf_mul_closed`: $M_A$ is closed under positive multiples; (7) `multiplesOf_union`: $M_{A \\cup B} = M_A \\cup M_B$. These form the foundation for density arguments about $M_A$. All proofs are complete with no sorry.",
@@ -162,7 +162,7 @@
   {
     "id": "ann-e691-countingBounds",
     "proofId": "erdos-691",
-    "type": "technique",
+    "type": "concept",
     "title": "Counting Function Bounds (Fully Proved)",
     "content": "The counting function is monotone for subsets and bounded by n+1. Both proved without sorry.",
     "mathContext": "Two fully proved bounds on the counting function: `countingFunction_mono` shows $A \\subseteq B \\implies A(n) \\leq B(n)$ (since more elements pass the filter), and `countingFunction_le` shows $A(n) \\leq n + 1$ (since at most $n+1$ elements lie in $\\{0, \\ldots, n\\}$). The monotonicity proof uses `Finset.card_le_card` with `Finset.filter_subset_filter`; the upper bound uses `Finset.card_filter_le`. These are foundational for density arguments.",

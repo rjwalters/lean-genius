@@ -221,7 +221,7 @@
       "startLine": 124,
       "endLine": 127
     },
-    "type": "technique",
+    "type": "concept",
     "title": "turjanyi_counterexample",
     "content": "**turjanyi_counterexample** (1984): $\\exists A$ sparse basis and $\\exists C > 0$ such that:\n$$\\frac{|A+A \\cap [1,N]|}{|A \\cap [1,N]|} < C \\quad \\forall N \\geq 1$$\n\nThe ratio stays bounded! This is the key witness disproving the conjecture.",
     "mathContext": "Turjányi's construction [Tu84] builds $A$ so that the sumset $A+A$ has maximal overlap with $A$ itself. The bound $C$ is a universal constant independent of $N$. The construction exploits the fact that elements of $A+A$ exceeding $N$ are not counted in $|A+A \\cap [1,N]|$, so by concentrating sums above $N$, the visible sumset stays small.",
@@ -242,7 +242,7 @@
       "startLine": 132,
       "endLine": 143
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_conjecture_false",
     "content": "**erdos_conjecture_false**: $\\neg$ `erdosConjecture`\n\n**Lean proof by contradiction**: Assume the conjecture holds. Instantiate with $M = C+1$ (where $C$ is Turjányi's bound). For large $N$, the conjecture gives ratio $> C+1$, but the counterexample gives ratio $< C$. Contradiction via `linarith`.",
     "mathContext": "This is one of the few theorems in the file with a complete Lean proof (not axiomatized). The contradiction argument is clean: the conjecture claims unbounded growth, but the counterexample provides a global upper bound $C$. Setting $M = C+1$ forces $C+1 < C$.",
@@ -263,7 +263,7 @@
       "startLine": 153,
       "endLine": 163
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Ruzsa-Turjányi Generalization",
     "content": "**generalizedConjecture h**: the $hA$ version of the conjecture.\n\n**ruzsa_turjanyi_generalization**: $\\neg$ `generalizedConjecture h` for all $h \\geq 2$.\n\nRuzsa and Turjányi (1985) showed the counterexample extends to all $h$-fold sumsets.",
     "mathContext": "The generalization [RT85] shows the phenomenon is not specific to pairwise sums: for any fixed $h \\geq 2$, there exist sparse bases where $|hA \\cap [1,N]|/|A \\cap [1,N]|$ stays bounded. The construction modifies Turjányi's original example to handle iterated sumsets.",
@@ -284,7 +284,7 @@
       "startLine": 176,
       "endLine": 181
     },
-    "type": "technique",
+    "type": "definition",
     "title": "ruzsa_turjanyi_positive",
     "content": "**ruzsa_turjanyi_positive**: For sparse bases:\n$$\\frac{|3A \\cap [1,3N]|}{|A \\cap [1,N]|} \\to \\infty$$\n\nThe **scaled** 3-fold version IS true. The scaling factor 3 matches the number of summands.",
     "mathContext": "The scaling $[1,3N]$ (instead of $[1,N]$) captures all sums $a_1+a_2+a_3$ where each $a_i \\leq N$, ensuring no sums are 'lost' beyond the counting window. This is the key insight: the original conjecture fails because $A+A$ elements can exceed $N$ even when $A \\subseteq [1,N]$.",
@@ -326,7 +326,7 @@
       "startLine": 217,
       "endLine": 220
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Why the Conjecture Fails",
     "content": "**Key insight**: The sumset $A+A$ can have many **collisions**—different pairs $(a,b)$ and $(a',b')$ giving the same sum. This limits $|A+A|$ growth. Moreover, sums $a+b > N$ are invisible in $|A+A \\cap [1,N]|$, further reducing the counted sumset.",
     "mathContext": "In additive combinatorics, sets with few collisions (small doubling) are well-understood via Freiman's theorem. But the Erdős conjecture asks about sets with MANY collisions. Turjányi's construction maximizes both collisions and the fraction of sums exceeding $N$.",
@@ -347,7 +347,7 @@
       "startLine": 239,
       "endLine": 241
     },
-    "type": "technique",
+    "type": "concept",
     "title": "plunnecke_ruzsa",
     "content": "**plunnecke_ruzsa**: $|hA| \\leq |A|^h$ for finite sets.\n\nThe Plünnecke-Ruzsa inequality gives an UPPER bound on sumset size but no useful LOWER bound—this gap is exactly what allows bounded ratios.",
     "mathContext": "The Plünnecke-Ruzsa inequality (Plünnecke 1970, Ruzsa 1989) is one of the most important tools in additive combinatorics. The precise form: if $|A+B| \\leq K|A|$, then $|hB - lB| \\leq K^{h+l}|A|$. Petridis (2012) gave a beautifully simple proof. The axiom here states a weaker version: $|hA| \\leq |A|^h$.",
@@ -369,7 +369,7 @@
       "startLine": 259,
       "endLine": 259
     },
-    "type": "technique",
+    "type": "concept",
     "title": "powers_of_two_not_basis",
     "content": "**powers_of_two_not_basis**: $\\{2^k : k \\in \\mathbb{N}\\}$ is NOT an additive basis of any finite order.\n\nPowers of 2 are extremely sparse ($|A \\cap [1,N]| \\sim \\log_2 N$) but cannot represent all large integers.",
     "mathContext": "Binary representations use each power of 2 at most once, but sums of $h$ powers of 2 (with repetition) can only represent numbers up to $h \\cdot 2^k$, which is too restrictive. In contrast, the primes (slightly denser at $N/\\ln N$) are conjectured to be a basis of order 2 (Goldbach).",
@@ -390,7 +390,7 @@
       "startLine": 267,
       "endLine": 267
     },
-    "type": "technique",
+    "type": "concept",
     "title": "squares_are_basis",
     "content": "**squares_are_basis**: $\\{n^2 : n \\in \\mathbb{N}\\}$ is an additive basis of order 4.\n\nThis is Lagrange's four-square theorem (1770): every natural number is a sum of four squares.",
     "mathContext": "Lagrange's theorem was the first result in Waring's problem. The squares are sparse ($|A \\cap [1,N]| \\sim \\sqrt{N} = o(N)$), making them a natural test case for Erdős's conjecture. For squares, $|A+A \\cap [1,N]|/|A \\cap [1,N]|$ does grow, so the squares are NOT a counterexample—Turjányi needed a more exotic construction.",
@@ -411,7 +411,7 @@
       "startLine": 276,
       "endLine": 284
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_337_summary",
     "content": "**erdos_337_summary**: Combines three results:\n1. $\\neg$ `erdosConjecture` (from `erdos_conjecture_false`)\n2. $\\forall h \\geq 2, \\neg$ `generalizedConjecture h` (from `ruzsa_turjanyi_generalization`)\n3. `scaledConjecture` (from `scaled_conjecture_open`)\n\nProved by `⟨erdos_conjecture_false, ..., scaled_conjecture_open⟩`.",
     "mathContext": "The summary packages the complete picture: the original and generalized conjectures are both false, while the scaled conjecture (which is OPEN) is stated as an axiom. This gives a snapshot of the current state of knowledge on Problem #337.",
@@ -433,7 +433,7 @@
       "startLine": 303,
       "endLine": 303
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_337 (Main Theorem)",
     "content": "**erdos_337**: $\\neg$ `erdosConjecture`\n\nThe main theorem of the file: Erdős's conjecture about sumset growth for sparse additive bases is FALSE.\n\nDefined as `erdos_conjecture_false`.",
     "mathContext": "This is the 'headline' result. The proof chain: Turjányi's counterexample (axiom) → contradiction argument (Lean proof) → negation of the universal claim.",

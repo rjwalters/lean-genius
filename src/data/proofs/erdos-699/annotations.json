@@ -196,7 +196,7 @@
       "startLine": 182,
       "endLine": 190
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Weak Version Satisfied",
     "content": "**example_28_5_14_weak** shows HasCommonLargePrime 28 5 14:\n\nThe prime 5 ≥ 5 divides gcd(C(28,5), C(28,14)) = 1080.\n\nSo the weak conjecture (p ≥ i) holds for this triple.",
     "mathContext": "The witness prime p = 5 satisfies: 5 is prime, 5 ≥ 5 = i, and 5 | 1080.",
@@ -215,7 +215,7 @@
       "startLine": 192,
       "endLine": 204
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Strong Version Failed",
     "content": "**counterexample_28_5_14_strong** proves ¬HasCommonStrictlyLargePrime 28 5 14:\n\nSuppose prime p > 5 divides gcd = 1080. By max_prime_1080_is_5, p ≤ 5. Contradiction!\n\nSo (28, 5, 14) is a counterexample to the strict form.",
     "mathContext": "The proof by contradiction: assume p > 5 and p | 1080. Since 1080 = 2³·3³·5, any prime divisor p ∈ {2, 3, 5}, so p ≤ 5 < 5+1. This contradicts p > 5.",

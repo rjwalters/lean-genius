@@ -115,7 +115,7 @@
       "startLine": 143,
       "endLine": 164
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Ratio Question",
     "content": "The trivial bound f(k)/log W(k) ≥ 1/2 follows from basic properties. Erdős asks: can we do better? Specifically, does this ratio tend to infinity? Even improving 1/2 to any constant > 1/2 remains open. This is the heart of Problem #169.",
     "mathContext": "Question: lim_{k→∞} f(k)/log W(k) = ∞?",
@@ -133,7 +133,7 @@
       "startLine": 166,
       "endLine": 180
     },
-    "type": "insight",
+    "type": "definition",
     "title": "Computational Records",
     "content": "Explicit computations give lower bounds for small k: Wróblewski (1984) showed f(3) ≥ 3.00849 by constructing 3-AP-free sets with large harmonic sum. Walker (2025) proved f(4) ≥ 4.43975. These computations inform our understanding of f(k)'s behavior.",
     "mathContext": "f(3) ≥ 3.00849, f(4) ≥ 4.43975",
@@ -170,7 +170,7 @@
       "startLine": 205,
       "endLine": 227
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Basic Properties of f(k)",
     "content": "The function f has natural properties: f(k) is monotonically decreasing in k (avoiding longer APs is more restrictive), and f(k) > 0 for all k ≥ 3 (non-trivial AP-free sets always exist). Even the singleton {1} is k-AP-free for k ≥ 2.",
     "mathContext": "k₁ ≤ k₂ → f(k₂) ≤ f(k₁), f(k) > 0 for k ≥ 3",

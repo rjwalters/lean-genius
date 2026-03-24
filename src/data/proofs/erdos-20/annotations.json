@@ -432,7 +432,7 @@
       "startLine": 148,
       "endLine": 155
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Example: 3-Sunflower with Non-Empty Core",
     "content": "A concrete 3-sunflower: $\\{1,2,3\\}, \\{1,4,5\\}, \\{1,6,7\\}$ with core $\\{1\\}$. The proof verifies the sunflower property by exhaustive case analysis on all pairs — the `decide` tactic handles the finite checking automatically.",
     "mathContext": "Core $C = \\{1\\}$, petals $P_1 = \\{2,3\\}, P_2 = \\{4,5\\}, P_3 = \\{6,7\\}$. Each petal is disjoint from the others, and $S_i \\cap S_j = \\{1\\} = C$ for all $i \\neq j$. The formalization uses Lean's `decide` tactic for finite set equality.",
@@ -454,7 +454,7 @@
       "startLine": 158,
       "endLine": 165
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Example: 3-Sunflower with Empty Core",
     "content": "A 3-sunflower with empty core: $\\{1,2\\}, \\{3,4\\}, \\{5,6\\}$. Pairwise disjoint sets form a sunflower with $C = \\emptyset$. This illustrates that sunflowers generalize both 'sets sharing a common part' and 'pairwise disjoint families'.",
     "mathContext": "Core $C = \\emptyset$, so $S_i \\cap S_j = \\emptyset$ for all $i \\neq j$. The petals equal the original sets. This degenerate case shows that any $k$ pairwise disjoint sets automatically form a $k$-sunflower, making the empty-core case the 'easy' part of sunflower finding.",

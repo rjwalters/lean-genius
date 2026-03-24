@@ -6,9 +6,9 @@
       "startLine": 27,
       "endLine": 28
     },
-    "type": "definition",
+    "type": "concept",
     "title": "The Division-Modulus Identity",
-    "content": "The private helper lemma `div_mod_cast` establishes the fundamental arithmetic identity $(n : \\mathbb{Z}) = 10 \\cdot \\lfloor n/10 \\rfloor + (n \\bmod 10)$ by casting `Nat.div_add_mod` to integers. This identity is the algebraic engine of the entire proof: multiplying the osculator expression by 10 and substituting this identity produces a term where the (10c-1) factor can be isolated. The proof is a one-liner using `push_cast` (to handle the \u2115 \u2192 \u2124 coercion) and `omega` (to verify the linear arithmetic).",
+    "content": "The private helper lemma `div_mod_cast` establishes the fundamental arithmetic identity $(n : \\mathbb{Z}) = 10 \\cdot \\lfloor n/10 \\rfloor + (n \\bmod 10)$ by casting `Nat.div_add_mod` to integers. This identity is the algebraic engine of the entire proof: multiplying the osculator expression by 10 and substituting this identity produces a term where the (10c-1) factor can be isolated. The proof is a one-liner using `push_cast` (to handle the ℕ → ℤ coercion) and `omega` (to verify the linear arithmetic).",
     "mathContext": "$(n : \\mathbb{Z}) = 10 \\cdot \\lfloor n/10 \\rfloor + (n \\bmod 10)$; fundamental to $10(q + c \\cdot r) = n + (10c-1)r$",
     "significance": "supporting",
     "relatedConcepts": [

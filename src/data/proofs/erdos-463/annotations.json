@@ -51,7 +51,7 @@
       "startLine": 39,
       "endLine": 42
     },
-    "type": "technique",
+    "type": "concept",
     "title": "$p(m) \\geq 2$ for Composites",
     "content": "For any composite $m$ (i.e., $p(m) < m$, meaning $m$ has a prime factor strictly less than itself), the least prime factor satisfies $p(m) \\geq 2$. Proved using $\\texttt{Nat.minFac\\_prime}$ and $\\texttt{Prime.two\\_le}$.",
     "mathContext": "$m \\text{ composite} \\Rightarrow p(m) \\geq 2$. Since $m \\neq 1$ and $\\texttt{minFac}$ returns a prime divisor, $p(m) \\geq 2$.",
@@ -72,7 +72,7 @@
       "startLine": 45,
       "endLine": 48
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Even Composite Gap",
     "content": "For even composites ($p(m) = 2$), the gap simplifies to $m - 2$. Since the condition $m < n + p(m) = n + 2$ forces $m \\leq n + 1$, even composites can never satisfy $m > n + f(n)$ for $f(n) \\geq 2$. This eliminates all even composites from consideration.",
     "mathContext": "$p(m) = 2 \\Rightarrow \\texttt{leastPrimeGap}(m) = m - 2$. Condition $m < n + 2$ contradicts $m > n + f(n)$ when $f(n) \\geq 2$.",
@@ -94,7 +94,7 @@
       "startLine": 51,
       "endLine": 56
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Odd Composites: $p(m) \\geq 3$",
     "content": "For odd composites (where $p(m) \\neq 2$), the least prime factor satisfies $p(m) \\geq 3$. Combined with the constraint $p(m)^2 \\leq m$, this gives $m \\geq 9$. These odd composites with large least prime factor are the only candidates for the conjecture.",
     "mathContext": "$p(m) \\neq 2 \\Rightarrow p(m) \\geq 3$. Since $p(m)^2 \\leq m$ for composites: $m \\geq 9$.",
@@ -116,7 +116,7 @@
       "startLine": 60,
       "endLine": 72
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Odd Composites Satisfy $m \\geq 9$",
     "content": "For odd composite $m$ with $p(m) \\geq 3$: since $p(m)^2 \\leq m$ (by $\\texttt{Nat.minFac\\_sq\\_le\\_self}$), we have $m \\geq 3^2 = 9$. The proof uses $\\texttt{Nat.mul\\_le\\_mul}$ and a calc chain. This is the smallest possible odd composite with $p(m) \\geq 3$ (namely $9 = 3^2$).",
     "mathContext": "$p(m) \\geq 3 \\Rightarrow m \\geq p(m)^2 \\geq 9$. Achieved by $m = 9 = 3 \\times 3$.",
@@ -138,7 +138,7 @@
       "startLine": 76,
       "endLine": 89
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Composites Above Any $n$ Exist",
     "content": "For any $n \\geq 1$, there exists a composite $m > n$: take $m = 2(n+1)$, which is even and $\\geq 4$, hence composite. The proof shows $2(n+1) > n$, then proves non-primality by exhibiting $2$ as a proper divisor. This is a warm-up for the harder question of finding composites with large $p(m)$ near $n$.",
     "mathContext": "$\\forall n \\geq 1,\\; \\exists m > n,\\; m \\text{ composite}$. Witness: $m = 2(n+1)$. Key: $2 \\mid m$ and $m \\geq 4$, so $m$ is not prime.",
@@ -160,7 +160,7 @@
       "startLine": 94,
       "endLine": 97
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Even Composites Are Insufficient",
     "content": "A direct proof that no even composite can satisfy both $m > n + 2$ and $m < n + 2$ simultaneously (contradiction by $\\texttt{omega}$). This formalizes why the conjecture requires composites with $p(m) > 2$: the sandwiching condition $n + f(n) < m < n + p(m)$ collapses when $p(m) = 2$.",
     "mathContext": "$\\neg\\exists m,\\; p(m) = 2 \\wedge n + 2 < m \\wedge m < n + 2$. The interval $(n+2, n+2)$ is empty.",
@@ -182,7 +182,7 @@
       "startLine": 103,
       "endLine": 106
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Conjecture Requires Large $p(m)$",
     "content": "If composite $m$ satisfies $n + f(n) < m < n + p(m)$, then $p(m) > f(n)$. This is the key structural insight: the conjecture asks for composites whose least prime factor exceeds $f(n)$, i.e., composites that are $f(n)$-rough. Since $f(n) \\to \\infty$, we need arbitrarily rough composites near $n$.",
     "mathContext": "$n + f(n) < m < n + p(m) \\Rightarrow p(m) > f(n)$. So the conjecture requires $(f(n)+1)$-rough composites in $(n, n + p(m))$.",
@@ -204,7 +204,7 @@
       "startLine": 109,
       "endLine": 112
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Gap Upper Bound",
     "content": "The trivial bound $\\texttt{leastPrimeGap}(m) \\leq m$, since $p(m) \\geq 0$. More informatively, for composites: $\\texttt{leastPrimeGap}(m) = m - p(m) \\leq m - 2$.",
     "mathContext": "$m - p(m) \\leq m$. For composites: $m - p(m) \\leq m - 2$.",
@@ -225,7 +225,7 @@
       "startLine": 115,
       "endLine": 118
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Positive Gap for Composites",
     "content": "For composite $m$ (with $p(m) < m$), the gap $\\texttt{leastPrimeGap}(m) = m - p(m) > 0$. This is immediate from the definition of composite: $m$ has a prime factor strictly less than itself.",
     "mathContext": "$m \\text{ composite} \\Rightarrow m - p(m) > 0$.",

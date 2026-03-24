@@ -248,7 +248,7 @@
       "startLine": 126,
       "endLine": 129
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Ganelius Improvement (1954)",
     "content": "The constant C in the Erdős-Turán bound can be taken ≤ 8. Ganelius improved the explicit numerical constant just 4 years after the original paper.",
     "mathContext": "Improving the constant in the Erdős-Turán inequality has been a long-running project. The original Erdős-Turán paper gave C without explicit computation. Ganelius (1954) showed C ≤ 8 using sharper estimates on exponential sums. Mignotte (1992) further improved the constant. The quest culminated with Soundararajan (2019) and Steinerberger et al. (2021) determining the *sharp* (optimal) constant, showing it is related to an extremal problem involving Hilbert transforms on L²([0,1]).",
@@ -294,7 +294,7 @@
       "startLine": 144,
       "endLine": 147
     },
-    "type": "technique",
+    "type": "concept",
     "title": "sparse_improves_dense (Proved)",
     "content": "n ≤ d + 1 always holds: the sparsity is at most the degree plus one. Hence the sparse bound (if true) would always be at least as good as the classical bound.",
     "mathContext": "The proof is a one-liner: `Finset.card_filter_le _ _` — the cardinality of a filtered set is at most the cardinality of the original set, and `Finset.univ` for `Fin (d+1)` has cardinality d+1. This simple observation shows the sparse conjecture is a *strict strengthening* of the classical Erdős-Turán for polynomials with n < d+1 (i.e., sparse polynomials). The improvement is significant when n ≪ d, e.g., x^{1000} + x + 1 has n = 3 but d = 1000.",
@@ -316,7 +316,7 @@
       "startLine": 150,
       "endLine": 151
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Unity Roots Are Sparse",
     "content": "x^d - 1 has only 2 nonzero coefficients (a₀ = -1, a_d = 1) but degree d. This is the motivating example: maximally sparse yet perfectly equidistributed roots.",
     "mathContext": "The d-th roots of unity ζ_k = e^{2πik/d} for k = 0,...,d-1 are uniformly spaced at angles 2πk/d. The discrepancy is at most 1 (from integrality). Meanwhile, the classical Erdős-Turán bound gives O(√(d log 2)), which is much worse. The sparse conjecture would give O(√(2 log 2)) = O(1), correctly reflecting the near-perfect equidistribution. This example also shows that the log M factor is essential: for the polynomial x^d - c with |c| very large, M ~ √|c|, and the roots cluster near a circle of radius |c|^{1/d}, with worse angular equidistribution.",
@@ -338,7 +338,7 @@
       "startLine": 160,
       "endLine": 165
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sharp Erdős-Turán Constant",
     "content": "There exists an optimal constant C_sharp such that the Erdős-Turán inequality holds with C = C_sharp but not with any smaller constant. Determined by Soundararajan (2019) and Steinerberger et al. (2021) after 70 years.",
     "mathContext": "The sharp constant is characterized by an extremal problem: C_sharp = sup over all trigonometric polynomials T of degree N of the ratio ||T||_∞ / (||T||₂ · √(N log ||T||₁)). Soundararajan connected this to the *Hilbert transform* on L²([0,1]): the optimal bound involves the operator norm of a modified Hilbert transform restricted to trigonometric polynomials. This unexpected connection between polynomial root distribution and harmonic analysis was the key breakthrough. The formalization axiomatizes the existence of C_sharp without specifying its value.",
@@ -361,7 +361,7 @@
       "startLine": 168,
       "endLine": 169
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hilbert Transform Connection",
     "content": "The optimal constant in the Erdős-Turán inequality is determined by an extremal problem involving Hilbert transforms. Axiomatized as `True` (placeholder for the deep harmonic analysis connection).",
     "mathContext": "The *Hilbert transform* Hf(x) = PV ∫ f(t)/(x-t) dt is a fundamental operator in harmonic analysis. Soundararajan showed that the sharp constant in Erdős-Turán is related to the norm of H restricted to certain function spaces. This connects polynomial root distribution to: (1) singular integral operators, (2) Fourier multiplier theory, (3) the theory of conjugate functions. The connection arises because the discrepancy can be expressed as a Fourier series involving the polynomial's coefficients, and optimizing the bound reduces to a norm estimate for the Hilbert transform applied to this series.",
@@ -391,7 +391,7 @@
       "startLine": 178,
       "endLine": 180
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Roots of Unity: Perfect Equidistribution",
     "content": "The n-th roots of unity (roots of x^n - 1) are exactly uniformly distributed at angles 2πk/n. The discrepancy is at most 1 (from rounding to integers).",
     "mathContext": "This is the *ideal case*: the d-th roots of unity form a regular d-gon on the unit circle. For any arc I of length |I|, the root count satisfies |N(I) - |I|d/(2π)| ≤ 1. The axiom states that discrepancy is 0 (if the interval endpoints align with root positions) or at most 1 (from integrality). This motivates the sparse conjecture: since x^d - 1 has sparsity 2, the sparse bound √(2 log M) correctly predicts O(1) discrepancy, while the classical bound √(d log M) drastically overestimates.",
@@ -438,7 +438,7 @@
       "startLine": 237,
       "endLine": 240
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lower Bound: Tightness of √d",
     "content": "For every degree d, there exist polynomials with maxDiscrepancy ≥ (1/10)√d. This shows the √d dependence in the Erdős-Turán bound is necessary and cannot be improved to o(√d).",
     "mathContext": "The lower bound construction uses *random polynomials*: a polynomial with i.i.d. random coefficients on the unit circle has roots whose angular distribution, by the central limit theorem, exhibits Θ(√d) fluctuations from uniformity. More explicitly, one can use *Riesz products* or *Rudin-Shapiro polynomials* to construct deterministic examples with large discrepancy. The constant 1/10 is not optimal but suffices to establish the order of magnitude. Combined with the upper bound O(√(d log M)), this shows the Erdős-Turán bound is tight up to the logarithmic factor.",
@@ -461,7 +461,7 @@
       "startLine": 253,
       "endLine": 257
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdélyi's One-Sided Improvement",
     "content": "The one-sided bound: rootsInInterval - expectedCount ≤ C√(d log M) (without absolute value). Roots can cluster below expectation but cannot exceed the expected count by more than C√(d log M).",
     "mathContext": "Erdélyi's result is a *refinement* of the classical Erdős-Turán, not a strengthening of the bound itself. The two-sided version says |N(I) - E(I)| ≤ C√(d log M), which implies both N(I) - E(I) ≤ C√(d log M) (excess) and E(I) - N(I) ≤ C√(d log M) (deficit). Erdélyi showed that the *excess* bound holds with a better constant or under weaker hypotheses. The Totik-Varjú corollary extends this to potential-theoretic settings. One-sided bounds are useful in applications where we care about *clustering* (too many roots in a sector) but not *voids* (too few roots).",
@@ -486,7 +486,7 @@
       "startLine": 279,
       "endLine": 283
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_990_summary (Proved)",
     "content": "The classical Erdős-Turán inequality: there exists C > 0 such that maxDiscrepancy(p) ≤ C√(d log M) for all degree-d polynomials with nonzero leading and constant coefficients. Proved by forwarding to `erdos_turan_explicit_constant`.",
     "mathContext": "The summary theorem captures the *proved* part of Problem #990 — the classical bound with degree d. The *open* part (replacing d with sparsity n) is formalized as `sparseConjecture` but not proved. The proof structure `erdos_990_summary := erdos_turan_explicit_constant` is a direct forwarding, showing that the theorem is a repackaging of the explicit-constant version. This separation between the proved classical result and the open sparse conjecture is the key organizational insight of the formalization.",
@@ -519,7 +519,7 @@
       "startLine": 271,
       "endLine": 274
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_turan_known (Proved)",
     "content": "The classical Erdős-Turán bound for a specific polynomial: maxDiscrepancy(p) ≤ C√(d log M). A direct application of `erdos_turan_classical`.",
     "mathContext": "This per-polynomial version complements the universal `erdos_990_summary`. While the summary gives a single universal C, this theorem states the result for a fixed polynomial with its specific hypotheses (hd : 0 < d, hp : leading ≠ 0, h0 : constant ≠ 0). The proof is a single `exact` call, demonstrating the clean modular structure of the formalization.",

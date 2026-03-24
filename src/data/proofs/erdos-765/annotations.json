@@ -180,7 +180,7 @@
       "startLine": 196,
       "endLine": 227
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Projective Plane Examples (4 PROVED)",
     "content": "Four projective plane vertex counts proved by simp+ring. fano_plane_example: PG(2,2) has 7 vertices (the Fano plane, smallest projective plane). pg23_example: PG(2,3) has 13 vertices. pg24_example: PG(2,4) has 21 vertices (4 = 2^2 is prime power but not prime). pg25_example: PG(2,5) has 31 vertices. Each uses projectivePlaneVertices q = q^2 + q + 1.",
     "mathContext": "`fano_plane_example : 2^2 + 2 + 1 = 7`. `pg23_example : 3^2 + 3 + 1 = 13`. `pg24_example : 4^2 + 4 + 1 = 21`. `pg25_example : 5^2 + 5 + 1 = 31`. All proved by `simp [projectivePlaneVertices]; ring`. The Fano plane has 7 points, 7 lines, 3 points per line, 3 lines per point.",
@@ -200,7 +200,7 @@
       "startLine": 239,
       "endLine": 246
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "erdos_765_summary (PROVED): combines the asymptotic formula (via axiom) and the Fano plane computation (proved by simp+ring). The conjunction establishes both the main asymptotic answer and a concrete computational example. Problem #765 is SOLVED: ex(n;C4) ~ (1/2)n^{3/2}.",
     "mathContext": "`erdos_765_summary : (\\forall \\varepsilon > 0, \\exists N, \\forall n \\geq N, |r(n) - 1/2| < \\varepsilon) \\wedge \\text{projectivePlaneVertices}(2) = 7$. Proved: `\\langle\\text{asymptotic\\_formula}, \\text{simp+ring}\\rangle`.",

@@ -254,7 +254,7 @@
       "startLine": 215,
       "endLine": 225
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Primes Form Antichains",
     "content": "**primes_antichain:** (PROVED)\n\nAny set of primes is automatically a divisibility antichain.\n\n**Proof:** If $p \\mid q$ for primes $p, q$, then by `Nat.Prime.eq_one_or_self_of_dvd`, either $p = 1$ or $p = q$. Since $p$ is prime, $p > 1$, so $p = q$.\n\nThis is the key constructive result in the formalization and the most natural source of antichains.",
     "mathContext": "The proof uses the fundamental property of primes: if p | q and q is prime, then p ∈ {1, q}. Since p is also prime (hence > 1), we get p = q. This is formalized using Mathlib's Nat.Prime.eq_one_or_self_of_dvd.",

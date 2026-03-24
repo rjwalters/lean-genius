@@ -51,7 +51,7 @@
       "startLine": 71,
       "endLine": 101
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sum and Length Identities for Binary Lists",
     "content": "For any list with only $1$ and $-k$ values, the sum equals $\\text{count}(1) - k \\cdot \\text{count}(-k)$ and the length equals $\\text{count}(1) + \\text{count}(-k)$. These are proved by induction on the list, using `List.count_cons` to track how counts change at each step. The sum identity is the algebraic backbone of the ballot theorem: it connects the path's total displacement to the vote counts.",
     "mathContext": "$$\\sum l = |\\{i : l_i = 1\\}| - k \\cdot |\\{i : l_i = -k\\}|, \\qquad |l| = |\\{i : l_i = 1\\}| + |\\{i : l_i = -k\\}|$$",
@@ -74,7 +74,7 @@
       "startLine": 115,
       "endLine": 137
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Permutation Characterization and Finiteness",
     "content": "Every element of kCountedSequence is a permutation of the canonical witness `replicate a 1 ++ replicate b (-k)`. This is proved using `List.perm_iff_count` — two lists are permutations iff they have the same count for every element. The proof handles three cases: $x = 1$ (use $h_1$), $x = -k$ (use $h_2$), and $x \\notin \\{1, -k\\}$ (both counts are zero).\n\nThis characterization immediately gives **finiteness**: the set of permutations of a finite list is finite, so `kCountedSequence` inherits `Set.Finite`.",
     "mathContext": "$$l \\in \\text{kCountedSequence}(k,a,b) \\iff l \\sim \\underbrace{[1, \\ldots, 1]}_{a} \\mathbin{\\|} \\underbrace{[-k, \\ldots, -k]}_{b}$$",
@@ -98,7 +98,7 @@
       "startLine": 152,
       "endLine": 158
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Classical Reduction (k = 1)",
     "content": "When $k = 1$, our generalized definition exactly matches Mathlib's `Ballot.countedSequence`. The proof is remarkably clean: just `simpa` to convert $-(1 : \\mathbb{Z})$ to $-1$.\n\nThis validates our generalization against the established formalization and ensures backward compatibility with Wiedijk theorem #30.",
     "mathContext": "$$\\text{kCountedSequence}(1, a, b) = \\text{Ballot.countedSequence}(a, b)$$",
@@ -120,7 +120,7 @@
       "startLine": 162,
       "endLine": 181
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Generalized Ballot Theorem Statement",
     "content": "The main theorem statements: `generalized_ballot_count` asserts the counting formula via double counting (still has 1 sorry), while `generalized_ballot_prob` proves the probability $(a - kb)/(a + b) > 0$ when $a > kb$. Verified special cases include $(5, 2, 2) \\to 1/7$, $(10, 3, 3) \\to 1/13$, $(3, 1, 1) \\to 1/2$, and $(7, 2, 3) \\to 1/10$.",
     "mathContext": "$$P(\\text{A leads throughout}) = \\frac{a - kb}{a + b} > 0 \\quad \\text{when } a > kb$$",
@@ -166,7 +166,7 @@
       "startLine": 249,
       "endLine": 272
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Prefix Sum Relation for Rotations",
     "content": "The key structural lemma for the cycle lemma. For rotation starting at position $i$, the prefix sum at position $j$ decomposes into two cases depending on whether $i + j$ wraps around. The non-wrapping case uses `take_drop_sum`, while the wrapping case involves `List.take_append` and a careful re-indexing via `List.take_take`.\n\nThis lemma is the technical heart of the file — it connects the combinatorial structure of rotations to the analytic property of prefix sums.",
     "mathContext": "$$\\sigma_{\\text{rot}(i)}(j) = \\begin{cases} \\sigma(i+j) - \\sigma(i) & i+j \\leq n \\\\ \\sigma(i+j-n) + S - \\sigma(i) & i+j > n \\end{cases}$$",
@@ -260,7 +260,7 @@
       "startLine": 520,
       "endLine": 561
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Discrete Intermediate Value Theorem for Prefix Sums",
     "content": "Proves that for every integer level $v \\in [\\min(\\sigma), \\min(\\sigma) + S)$, there exists a position $i < n$ with $\\sigma(i) = v$. The proof uses `Finset.max'` to find the rightmost position $j$ with $\\sigma(j) \\leq v$. By maximality, $\\sigma(j+1) > v$. Since the only way to increase is by $+1$ steps, the element at position $j$ must be $+1$, forcing $\\sigma(j) = v$ exactly.\n\nThis is a discrete analogue of the intermediate value theorem, exploiting the $+1$ step structure.",
     "mathContext": "$$\\forall\\, v \\in [\\min(\\sigma),\\, \\min(\\sigma) + S): \\quad \\exists\\, i < n,\\; \\sigma(i) = v$$",

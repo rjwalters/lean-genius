@@ -77,7 +77,7 @@
       "startLine": 82,
       "endLine": 123
     },
-    "type": "technique",
+    "type": "concept",
     "title": "General Negative Osculator Theorem",
     "content": "Symmetric theorem `truncation_neg` for the negative osculator: $d \\mid (10c+1)$ gives $d \\mid n \\iff d \\mid (\\lfloor n/10 \\rfloor - c \\cdot (n\\%10))$.\n\nThe identity is $10(q - cr) = n - (10c+1)r$. When $d \\mid (10c+1)$, we have $10c \\equiv -1 \\pmod{d}$, meaning $c$ is the 'negative inverse' of 10 mod $d$.\n\nCanonical examples: $d = 7$, $c = 2$ (since $21 = 3 \\times 7$); $d = 11$, $c = 1$ (since $11 = 11$); $d = 17$, $c = 5$ (since $51 = 3 \\times 17$). The $d = 11$ case with $c = 1$ reduces to the alternating digit-sum rule: subtracting the last digit from the truncated number is equivalent to the classical alternating sum test.",
     "mathContext": "$10(\\lfloor n/10 \\rfloor - c(n \\bmod 10)) = n - (10c+1)(n \\bmod 10)$\n\nWhen $d \\mid (10c+1)$ and $\\gcd(d,10) = 1$:\n$d \\mid n \\iff d \\mid (q - cr)$\n\nThe negative osculator $c$ satisfies $10c \\equiv -1 \\pmod{d}$, i.e., $c \\equiv -10^{-1} \\pmod{d}$.",

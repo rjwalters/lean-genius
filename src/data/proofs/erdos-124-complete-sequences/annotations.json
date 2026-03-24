@@ -177,7 +177,7 @@
       "startLine": 107,
       "endLine": 128
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Brown's Criterion Proof",
     "content": "**Proof Structure in Lean**\n\n```lean\nset Sn : ℕ → ℕ := fun n => ∑ i ∈ Finset.range (n + 1), f i\n```\n\n$S_n$ = partial sum through index $n$.\n\n**The induction**:\n1. For each $n$, prove: $\\forall m \\leq S_n$, $m$ is a subset sum of $\\{f(0), \\ldots, f(n)\\}$\n2. Base case ($n = 0$): $S_0 = f(0) = 1$, so $m \\in \\{0, 1\\}$ works\n3. Inductive step: If $m \\leq S_n$, use IH. If $m > S_n$, then $m - f(n+1) \\leq S_n$ by gap condition\n\n**Key Lean tactics**:\n- `induction' n with n ih`: Strong induction\n- `by_cases h_case : m ≤ Sn n`: Case split\n- `use s ∪ { n + 1 }`: Extend the subset",
     "mathContext": "Induction on partial sums",
@@ -310,7 +310,7 @@
       "startLine": 286,
       "endLine": 318
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Gap Property",
     "content": "**Key Lemma: The Gap Property**\n\n```lean\nlemma u_seq_gap {k : ℕ} {d : Fin k → ℕ} (hk : k ≠ 0) (h_ge : ∀ i, 2 ≤ d i)\n    (h_sum : 1 ≤ ∑ i, (1 : ℚ) / (d i - 1)) :\n    ∀ n, u_seq d (n + 1) ≤ 1 + ∑ i ∈ Finset.range (n + 1), u_seq d i\n```\n\n**The heart of the proof!** This is where the reciprocal condition $\\sum 1/(d_i-1) \\geq 1$ gets used.\n\n**Intuition**: Each base $d_i$ \"contributes\" roughly $1/(d_i-1)$ to filling gaps. The condition ensures total contribution $\\geq 1$, which suffices for the gap bound.\n\n**This lemma uses**: `algebraic_gap` to handle the inequality.",
     "mathContext": "Gap bounded by reciprocal condition",
@@ -348,7 +348,7 @@
       "startLine": 326,
       "endLine": 328
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Power Equality",
     "content": "**u_seq Equals the Chosen Power**\n\n```lean\nlemma u_seq_eq_power {k : ℕ} {d : Fin k → ℕ} (hk : k ≠ 0) (n : ℕ) :\n    u_seq d n = d (chosen_index d n hk) ^ (chosen_exponent d n hk)\n```\n\n**What this says**: $u_n = d_i^{e}$ where $i$ = `chosen_index` and $e$ = `chosen_exponent`.\n\n**Proof**: Just unfolding definitions - `u_seq` is defined exactly this way.\n\n**Why it matters**: Connects the abstract sequence to concrete (base, exponent) pairs for decomposition.",
     "mathContext": "u_n = d_i^e explicitly",
@@ -366,7 +366,7 @@
       "startLine": 345,
       "endLine": 350
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Pairs are Unique",
     "content": "**Each (Index, Exponent) Pair Appears Once**\n\n```lean\nlemma chosen_pair_injective {k : ℕ} {d : Fin k → ℕ} (hk : k ≠ 0) :\n    Function.Injective (fun n => (chosen_index d n hk, chosen_exponent d n hk))\n```\n\n**What this says**: If $(i_m, e_m) = (i_n, e_n)$, then $m = n$.\n\n**Why?** Once we use $d_i^e$, we increment $e_i$. So the same (base, exponent) pair can never be chosen again.\n\n**Critical for digit decomposition**: When we sum powers from base $d_i$, each exponent appears at most once, so the sum has only 0/1 digits!",
     "mathContext": "(index, exponent) pairs are distinct",
@@ -404,7 +404,7 @@
       "startLine": 402,
       "endLine": 403
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Initial Value",
     "content": "**The Sequence Starts at 1**\n\n```lean\nlemma u_seq_zero {k : ℕ} {d : Fin k → ℕ} : u_seq d 0 = 1\n```\n\n**Why?** At $n = 0$, all exponents are 0, so every base contributes $d_i^0 = 1$. The minimum is 1.\n\n**Required for Brown's criterion**: $f(0) = 1$ is one of the three conditions.\n\n**Proof**: Just `unfold u_seq; aesop` - definition unfolding handles it.",
     "mathContext": "u_0 = 1",
@@ -423,7 +423,7 @@
       "startLine": 405,
       "endLine": 406
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Non-Empty Base Set",
     "content": "**The Reciprocal Condition Implies k > 0**\n\n```lean\nlemma k_ne_zero_of_sum_eq_one {k : ℕ} {d : Fin k → ℕ}\n    (h : 1 ≤ ∑ i, (1 : ℚ) / (d i - 1)) : k ≠ 0\n```\n\n**Why?** If $k = 0$, the sum is empty, so $\\sum_i = 0 < 1$.\n\n**The `bound` tactic**: A Mathlib tactic for numerical bounds - handles this automatically.\n\n**Why needed**: Many definitions require `k ≠ 0` (can't minimize over an empty set). This lemma lets us derive it from the reciprocal condition.",
     "mathContext": "sum >= 1 implies k > 0",

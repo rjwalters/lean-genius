@@ -159,7 +159,7 @@
       "startLine": 134,
       "endLine": 149
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Tower Function Properties",
     "content": "**tower_zero**, **tower_one**, **tower_two** are definitional equalities verified by `rfl`.\n\n**tower_pos** proves that tower k n ≥ 1 whenever n ≥ 1, by induction on k. The base case uses n ≥ 1, and the inductive case uses Nat.one_le_two_pow.",
     "mathContext": "These basic properties establish that tower functions are well-behaved. The positivity lemma ensures we can safely work with these as denominators or in logarithms.",

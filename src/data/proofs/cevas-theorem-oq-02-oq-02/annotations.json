@@ -163,7 +163,7 @@
       "startLine": 220,
       "endLine": 233
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Ceva-Menelaus Duality via Sign Flip",
     "content": "The negate_one_ratio_flips_sign theorem extends the classical Ceva-Menelaus duality to n-gons. Negating a single ratio r_k multiplies the entire product by -1. The proof uses Function.update to modify exactly one component, then Finset.prod_update_of_mem to factor out the modified term. Combined with Finset.mul_prod_erase, the product decomposes as r_k times the remaining factors, and negating r_k yields the negative of the original product.",
     "mathContext": "r'_i = \\begin{cases} -r_k & i = k \\\\ r_i & i \\neq k \\end{cases} \\implies \\prod_i r'_i = -\\prod_i r_i",

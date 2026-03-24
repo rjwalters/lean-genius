@@ -250,7 +250,7 @@
       "startLine": 240,
       "endLine": 247
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary: Problem #204 SOLVED",
     "content": "**Theorem** (`erdos_204_summary`): $\\neg$ExistsDisjointCoveringN $\\wedge$ ErdosGrahamConjecture.\n\nBoth conjuncts proved from `adenwalla_2025`. This is the complete resolution of Erdős Problem #204: the Erdős-Graham conjecture is confirmed, and no $n > 1$ admits a covering system by its divisors with the disjointness property.",
     "mathContext": "The conjunction is logically redundant (both parts are $\\neg$ExistsDisjointCoveringN), but serves to explicitly connect the formalized statement to the named conjecture.",

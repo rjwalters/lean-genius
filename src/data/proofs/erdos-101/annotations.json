@@ -8,14 +8,14 @@
     },
     "type": "context",
     "title": "Problem Statement and Imports",
-    "content": "The header states Erd\u0151s Problem #101: given $n$ points in $\\mathbb{R}^2$ with no five collinear, is the number of lines through exactly four points $o(n^2)$? This is an open problem with a $100 prize. The formalization imports Mathlib's finite set cardinality and basic natural number machinery.",
+    "content": "The header states Erdős Problem #101: given $n$ points in $\\mathbb{R}^2$ with no five collinear, is the number of lines through exactly four points $o(n^2)$? This is an open problem with a $100 prize. The formalization imports Mathlib's finite set cardinality and basic natural number machinery.",
     "mathContext": "The problem asks whether $f_4(n) = o(n^2)$, where $f_4(n)$ is the maximum number of 4-point lines determined by $n$ points in general position (no five collinear). The quantity $f_4(n)$ lies between $\\Omega(n^{3/2})$ and $O(n^2)$.",
     "significance": "supporting",
     "relatedConcepts": [
       "little-o notation",
       "collinearity",
       "discrete geometry",
-      "Erd\u0151s problems"
+      "Erdős problems"
     ],
     "prerequisites": [
       "real analysis",
@@ -38,7 +38,7 @@
       "general position",
       "collinearity",
       "degenerate configurations",
-      "Sylvester\u2013Gallai theorem"
+      "Sylvester–Gallai theorem"
     ],
     "prerequisites": [
       "combinatorial geometry",
@@ -78,7 +78,7 @@
     "type": "definition",
     "title": "Four-Point Line Count",
     "content": "Counts lines passing through exactly four points of $P$ by filtering 4-element subsets of $P$ that are collinear. A subset $S$ of size 4 contributes if there exist two points $a, b \\in S$ such that every point $p \\in S$ satisfies $\\text{collinear}(a, b, p)$. This is marked `noncomputable` since it involves decidability over real-valued predicates.",
-    "mathContext": "The four-point line count is $f_4(P) = |\\{S \\in \\binom{P}{4} : S \\text{ is collinear}\\}|$. Note this counts 4-element collinear subsets, not lines; each line through exactly 4 points contributes exactly $\\binom{4}{4} = 1$ such subset, while a line through $k \\geq 5$ points would contribute $\\binom{k}{4}$ subsets\u2014but the no-five-collinear condition prevents $k \\geq 5$.",
+    "mathContext": "The four-point line count is $f_4(P) = |\\{S \\in \\binom{P}{4} : S \\text{ is collinear}\\}|$. Note this counts 4-element collinear subsets, not lines; each line through exactly 4 points contributes exactly $\\binom{4}{4} = 1$ such subset, while a line through $k \\geq 5$ points would contribute $\\binom{k}{4}$ subsets—but the no-five-collinear condition prevents $k \\geq 5$.",
     "significance": "key",
     "relatedConcepts": [
       "powerset filtration",
@@ -99,14 +99,14 @@
       "endLine": 57
     },
     "type": "concept",
-    "title": "Erd\u0151s Problem #101: The Main Conjecture",
-    "content": "The central open problem: the four-point line count is $o(n^2)$, formalized as for every $\\varepsilon > 0$, there exists $N_0$ such that for all no-five-collinear point sets $P$ with $|P| \\geq N_0$, we have $f_4(P) < \\varepsilon \\cdot |P|^2$. This is stated as an axiom since the problem is open, carrying a $100 Erd\u0151s prize.",
+    "title": "Erdős Problem #101: The Main Conjecture",
+    "content": "The central open problem: the four-point line count is $o(n^2)$, formalized as for every $\\varepsilon > 0$, there exists $N_0$ such that for all no-five-collinear point sets $P$ with $|P| \\geq N_0$, we have $f_4(P) < \\varepsilon \\cdot |P|^2$. This is stated as an axiom since the problem is open, carrying a $100 Erdős prize.",
     "mathContext": "The conjecture is $f_4(n) = o(n^2)$: $\\forall \\varepsilon > 0, \\exists N_0 \\in \\mathbb{N}, \\forall P$ with $\\text{NoFiveCollinear}(P)$ and $|P| \\geq N_0$: $f_4(P) < \\varepsilon \\cdot |P|^2$.",
     "significance": "key",
     "relatedConcepts": [
       "asymptotic notation",
       "extremal combinatorics",
-      "Erd\u0151s prize problems",
+      "Erdős prize problems",
       "density of collinear configurations"
     ],
     "prerequisites": [
@@ -121,9 +121,9 @@
       "startLine": 61,
       "endLine": 67
     },
-    "type": "technique",
-    "title": "Gr\u00fcnbaum's Lower Bound Construction",
-    "content": "Gr\u00fcnbaum constructed no-five-collinear point sets achieving $\\Omega(n^{3/2})$ four-point lines. The construction uses points on a family of algebraic curves (specifically, unions of lines in a grid-like arrangement) that create many collinear quadruples while avoiding five-point collinearities. Erd\u0151s originally conjectured $\\Theta(n^{3/2})$ was the true order of growth based on this construction.",
+    "type": "concept",
+    "title": "Grünbaum's Lower Bound Construction",
+    "content": "Grünbaum constructed no-five-collinear point sets achieving $\\Omega(n^{3/2})$ four-point lines. The construction uses points on a family of algebraic curves (specifically, unions of lines in a grid-like arrangement) that create many collinear quadruples while avoiding five-point collinearities. Erdős originally conjectured $\\Theta(n^{3/2})$ was the true order of growth based on this construction.",
     "mathContext": "There exists $c > 0$ such that for all $N$, there is a set $P$ with $|P| \\geq N$, $\\text{NoFiveCollinear}(P)$, and $f_4(P) \\geq c \\cdot |P|^{3/2}$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -144,8 +144,8 @@
       "endLine": 75
     },
     "type": "insight",
-    "title": "Solymosi\u2013Stojakovi\u0107: Nearly Quadratic Lower Bound",
-    "content": "Solymosi and Stojakovi\u0107 achieved a breakthrough by constructing point sets with $n^{2 - O(1/\\sqrt{\\log n})}$ four-point lines while maintaining the no-five-collinear condition. This disproved Erd\u0151s's conjecture that $\\Theta(n^{3/2})$ was the correct order, pushing the known lower bound tantalizingly close to the conjectured $o(n^2)$ upper bound. Their construction uses combinatorial number-theoretic techniques.",
+    "title": "Solymosi–Stojaković: Nearly Quadratic Lower Bound",
+    "content": "Solymosi and Stojaković achieved a breakthrough by constructing point sets with $n^{2 - O(1/\\sqrt{\\log n})}$ four-point lines while maintaining the no-five-collinear condition. This disproved Erdős's conjecture that $\\Theta(n^{3/2})$ was the correct order, pushing the known lower bound tantalizingly close to the conjectured $o(n^2)$ upper bound. Their construction uses combinatorial number-theoretic techniques.",
     "mathContext": "For all $C > 0$, for all sufficiently large $n$, there exists $P$ with $|P| = n$, $\\text{NoFiveCollinear}(P)$, and $f_4(P) \\geq n^{2 - C/\\sqrt{\\log n}}$. Since $C/\\sqrt{\\log n} \\to 0$, this is $n^{2 - o(1)}$, i.e., super-polynomial in $n$ but still sub-quadratic.",
     "significance": "key",
     "relatedConcepts": [
@@ -167,7 +167,7 @@
       "startLine": 77,
       "endLine": 81
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Quadratic Upper Bound",
     "content": "Any set of $n$ points determines at most $\\binom{n}{2} = n(n-1)/2$ lines (each pair of points defines a unique line), so the four-point line count is trivially $O(n^2)$. The open question is whether this can be improved to $o(n^2)$.",
     "mathContext": "$f_4(P) \\leq \\binom{|P|}{2} = \\frac{|P|(|P|-1)}{2}$, since each four-point line is determined by any pair of its points, and distinct pairs determine distinct lines.",
@@ -190,13 +190,13 @@
     },
     "type": "context",
     "title": "Collinear Triples Without Four-Point Lines",
-    "content": "Burr, Gr\u00fcnbaum, and Sloane, as well as F\u00fcredi and Pal\u00e1sti, constructed point sets with approximately $n^2/6$ collinear triples but no four-point lines at all. This shows that three-point collinearity can be abundant even when four-point collinearity is absent, highlighting the delicate combinatorial transition from 3-point to 4-point collinearity.",
+    "content": "Burr, Grünbaum, and Sloane, as well as Füredi and Palásti, constructed point sets with approximately $n^2/6$ collinear triples but no four-point lines at all. This shows that three-point collinearity can be abundant even when four-point collinearity is absent, highlighting the delicate combinatorial transition from 3-point to 4-point collinearity.",
     "mathContext": "There exist configurations $P$ with $|P| = n$, no four collinear points, and $\\Theta(n^2)$ collinear triples. The constant $1/6$ comes from the construction: $\\sim n^2/6$ collinear triples in $n$ points on a cubic curve.",
     "significance": "supporting",
     "relatedConcepts": [
-      "Burr\u2013Gr\u00fcnbaum\u2013Sloane construction",
+      "Burr–Grünbaum–Sloane construction",
       "cubic curves",
-      "F\u00fcredi\u2013Pal\u00e1sti",
+      "Füredi–Palásti",
       "collinear triple density"
     ],
     "prerequisites": [
@@ -211,16 +211,16 @@
       "startLine": 93,
       "endLine": 99
     },
-    "type": "technique",
-    "title": "Szemer\u00e9di\u2013Trotter Incidence Theorem",
-    "content": "The Szemer\u00e9di\u2013Trotter theorem (1983) bounds point-line incidences: given $n$ points and $m$ lines in $\\mathbb{R}^2$, the number of incidences is $O(n^{2/3}m^{2/3} + n + m)$. This is tight and serves as the fundamental tool in incidence geometry. For Problem #101, it provides an avenue to bound four-point lines by relating them to incidence counts.",
-    "mathContext": "The Szemer\u00e9di\u2013Trotter bound: $I(P, L) \\leq C(|P|^{2/3}|L|^{2/3} + |P| + |L|)$ for some absolute constant $C > 0$. Each four-point line contributes 4 incidences, so $4 f_4 \\leq I(P, L)$, but the lines $L$ depend on $P$, making direct application subtle.",
+    "type": "concept",
+    "title": "Szemerédi–Trotter Incidence Theorem",
+    "content": "The Szemerédi–Trotter theorem (1983) bounds point-line incidences: given $n$ points and $m$ lines in $\\mathbb{R}^2$, the number of incidences is $O(n^{2/3}m^{2/3} + n + m)$. This is tight and serves as the fundamental tool in incidence geometry. For Problem #101, it provides an avenue to bound four-point lines by relating them to incidence counts.",
+    "mathContext": "The Szemerédi–Trotter bound: $I(P, L) \\leq C(|P|^{2/3}|L|^{2/3} + |P| + |L|)$ for some absolute constant $C > 0$. Each four-point line contributes 4 incidences, so $4 f_4 \\leq I(P, L)$, but the lines $L$ depend on $P$, making direct application subtle.",
     "significance": "key",
     "relatedConcepts": [
       "incidence geometry",
       "crossing number inequality",
       "point-line duality",
-      "Elekes\u2013R\u00f3nyai problem"
+      "Elekes–Rónyai problem"
     ],
     "prerequisites": [
       "graph theory (crossing number)",

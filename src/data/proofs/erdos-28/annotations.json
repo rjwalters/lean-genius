@@ -147,7 +147,7 @@
       "startLine": 65,
       "endLine": 70
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Density Version of the Conjecture",
     "content": "Replaces the basis condition with the weaker hypothesis $A(N) \\geq c\\sqrt{N}$ for all large $N$. Since every basis of order 2 satisfies this density bound, this version is strictly stronger. It asks: does sufficient density alone force unbounded representations, without requiring $A + A$ to cover almost all integers?",
     "mathContext": "If $A(N) \\geq c\\sqrt{N}$ for some $c > 0$ and all $N \\geq 1$, then $\\limsup r_A(n) = \\infty$. This generalizes the main conjecture since $\\text{IsAsymptoticBasis2}(A) \\Rightarrow A(N) \\gg \\sqrt{N}$.",
@@ -193,7 +193,7 @@
       "startLine": 79,
       "endLine": 84
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sidon Sets Cannot Be Bases",
     "content": "A Sidon set (or $B_2$ set) has $r_A(n) \\leq 1$ for all $n$: each integer has at most one representation as $a + b$. Such sets satisfy $A(N) \\leq \\sqrt{N} + O(N^{1/4})$ (by the Lindström–Erdős–Turán bound), which is too sparse for a basis. This confirms the conjecture vacuously: the extremal case $r \\leq 1$ is incompatible with being a basis.",
     "mathContext": "If $r_A(n) \\leq 1$ for all $n$, then $A$ is a **Sidon set** ($B_2$ set). Sidon sets satisfy $|A \\cap [1,N]| \\leq \\sqrt{N} + O(N^{1/4})$, but bases require $|A \\cap [1,N]| \\gg \\sqrt{N}$ with a constant that forces density beyond the Sidon threshold.",
@@ -217,7 +217,7 @@
       "startLine": 88,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Connection to Problem #40 (B₂[g] Sets)",
     "content": "Problem #40 asks: if $r_A(n) \\leq g$ for some constant $g$ (i.e., $A$ is a $B_2[g]$ set), can $A$ be a basis of order 2? The Erdős–Turán conjecture (#28) implies the answer is no for every finite $g$. This formalization shows #28 $\\Rightarrow$ #40, connecting two of Erdős's most celebrated problems in additive combinatorics.",
     "mathContext": "A $B_2[g]$ set satisfies $r_A(n) \\leq g$ for all $n$. Problem #28 states $\\limsup r_A(n) = \\infty$ for any basis, which immediately implies no $B_2[g]$ set (with bounded $r$) can be a basis. The converse implication (#40 $\\Rightarrow$ #28) is unknown.",
@@ -241,7 +241,7 @@
       "startLine": 97,
       "endLine": 103
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős–Fuchs Theorem (1956)",
     "content": "The Erdős–Fuchs theorem shows the cumulative representation count $\\sum_{n \\leq N} r_A(n)$ cannot be approximated by a linear function $cN$ with error $o(N^{1/4} / \\sqrt{\\log N})$. This is a fluctuation result: the partial sums of $r_A(n)$ must oscillate. However, it does NOT imply the Erdős–Turán conjecture — the fluctuations could come from occasional large values with $r_A(n)$ still bounded.",
     "mathContext": "$\\nexists \\, c > 0$ such that $\\sum_{n \\leq N} r_A(n) = cN + o\\left(\\frac{N^{1/4}}{\\sqrt{\\log N}}\\right)$. The exponent $1/4$ is sharp (Montgomery–Vaughan, 1990). This is an **Omega result**: $\\sum r_A(n) - cN = \\Omega(N^{1/4} / \\sqrt{\\log N})$.",
@@ -266,7 +266,7 @@
       "startLine": 105,
       "endLine": 111
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Average Representation Unbounded (Halberstam–Roth)",
     "content": "For a basis of order 2, the average representation $\\frac{1}{N}\\sum_{n \\leq N} r_A(n) \\to \\infty$ as $N \\to \\infty$. This follows because $A + A$ covers all large integers, so the sum grows like $N$, but the representation function concentrates differently than a uniform distribution. Crucially, this does NOT prove $\\limsup r_A(n) = \\infty$ — the average could diverge even if individual values are bounded (e.g., if the average is pulled up by a bounded function applied to more and more terms).",
     "mathContext": "$\\frac{1}{N+1} \\sum_{n=0}^{N} r_A(n) \\to \\infty$ as $N \\to \\infty$. More precisely, if $A + A \\supseteq \\{N_0, N_0+1, \\ldots\\}$, then $\\sum_{n \\leq N} r_A(n) \\geq N - N_0$ for $N \\geq N_0$, so the average is at least $\\sim 1$. But actually the sum grows faster because of multiplicities, making the average tend to $\\infty$.",

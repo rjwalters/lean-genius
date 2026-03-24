@@ -84,7 +84,7 @@
       "startLine": 104,
       "endLine": 119
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Finite Version",
     "content": "**IsFinitePrimeSumPermutation n a:** A bijection a : Fin n → Fin n where consecutive elements (shifted by +1 to make them positive) sum to primes.\n\n**finiteVersionQuestion:** Does such a permutation exist for every n ≥ 2?\n\n**finite_version_true_infinitely_often:** Axiomatizes that the set of n for which such permutations exist is infinite. The full conjecture (all n ≥ 2) remains open but is supported by probabilistic arguments based on prime density.",
     "mathContext": "The Fin n encoding uses 0-indexed values, so +1 shifts are needed to get positive integers {1,...,n}. The bijection on Fin n automatically ensures it's a permutation. The infinite family is established by explicit constructions for specific n values.",

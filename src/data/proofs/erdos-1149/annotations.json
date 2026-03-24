@@ -97,7 +97,7 @@
       "startLine": 99,
       "endLine": 110
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Integer Exponent Exclusion",
     "content": "integer_alpha_trivial: For positive integer k and n > 1, gcd(n, n^k) ≠ 1. Since n | n^k (by dvd_pow_self), we get n | gcd(n, n^k). If gcd(n, n^k) = 1, then n | 1, contradicting n > 1.\n\nThis justifies the non-integer hypothesis: for integer α, the coprime set would be {1}, with density 0.",
     "mathContext": "When $\\alpha = k \\in \\mathbb{Z}_{>0}$, $\\lfloor n^k \\rfloor = n^k$ exactly, so $\\gcd(n, n^k) = n$. Only $n = 1$ satisfies coprimality, giving density 0. The non-integer condition is therefore necessary for the 6/$\\pi^2$ result.",
@@ -126,7 +126,7 @@
       "startLine": 112,
       "endLine": 131
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Classical Coprime Probability: 6/π² = 1/ζ(2)",
     "content": "random_coprime_density (axiom): The density of coprime pairs in {1,...,N}² is 6/π². This is the classical result that 'random' integers are coprime with probability 6/π² = 1/ζ(2) = ∏_p(1 - 1/p²).\n\nThe Bergelson-Richter theorem shows that n and ⌊n^α⌋ achieve exactly this coprime density, despite being deterministically related. This is the 'independence phenomenon' at the heart of Erdős #1149.",
     "mathContext": "The Euler product formula gives $\\frac{1}{\\zeta(2)} = \\prod_p (1 - 1/p^2)$. Heuristically, for each prime $p$, the events '$p \\mid a$' and '$p \\mid b$' are independent with probability $1/p$, so $P(p \\nmid \\gcd(a,b)) = 1 - 1/p^2$. The product over all primes gives $6/\\pi^2$.",

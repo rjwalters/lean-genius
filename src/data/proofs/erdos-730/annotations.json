@@ -184,7 +184,7 @@
       "startLine": 67,
       "endLine": 68
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Non-Consecutive Pair Existence",
     "content": "Proved theorem: there exists a pair $(n,m) \\in \\text{CentralBinomPairs}$ with $m \\ne n+1$. Witnessed by $(10003, 10005)$ from the triple, with gap 2.",
     "significance": "supporting",
@@ -319,7 +319,7 @@
       "startLine": 98,
       "endLine": 106
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Spacing-1 Implies Main Conjecture",
     "content": "Proved theorem: if infinitely many consecutive matches exist (spacing $k=1$), then CentralBinomPairs is infinite. The proof maps $n \\mapsto (n, n+1)$ injectively into CentralBinomPairs.",
     "significance": "key",
@@ -342,7 +342,7 @@
       "startLine": 114,
       "endLine": 118
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Prime Set Stability Heuristic",
     "content": "Heuristic axiom (trivially True): for consecutive $n$, the intervals $(n, 2n]$ and $(n+1, 2(n+1)]$ differ by at most one prime at each boundary. So the 'middle prime' contributions to the divisor set change slowly, making matches plausible.",
     "significance": "supporting",

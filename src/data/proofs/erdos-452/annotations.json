@@ -78,7 +78,7 @@
       "startLine": 65,
       "endLine": 72
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hardy–Ramanujan Normal Order and Erdős Density",
     "content": "**hardy_ramanujan:** For any $\\varepsilon > 0$, eventually $|\\omega(n) - \\log\\log n| < \\varepsilon \\cdot \\log\\log n$.\n\nThe *normal order* of $\\omega(n)$ is $\\log\\log n$: for almost all integers, $\\omega(n)$ is within a factor $(1 \\pm \\varepsilon)$ of $\\log\\log n$.\n\n**erdos_1937_density:** The natural density of $\\{n : \\omega(n) > \\log\\log n\\}$ is exactly $\\frac{1}{2}$.\n\nFormalized as: $\\forall \\varepsilon > 0,\\; \\exists N,\\; \\forall x \\geq N,\\; |\\frac{|\\{n \\in [1,x] : \\omega(n) > \\log\\log n\\}|}{x} - \\frac{1}{2}| < \\varepsilon$.",
     "mathContext": "Hardy and Ramanujan proved their theorem in 1917 using the method of moments: they showed $\\sum_{n \\leq x} \\omega(n) \\sim x \\log\\log x$ and $\\sum_{n \\leq x} \\omega(n)^2 \\sim x(\\log\\log x)^2$, from which Chebyshev's inequality gives the normal order. Turán (1934) simplified this using his power sum method. The density-$\\frac{1}{2}$ result is a consequence of the Erdős–Kac theorem: since $(\\omega(n) - \\log\\log n)/\\sqrt{\\log\\log n} \\to \\mathcal{N}(0,1)$, and $P(\\mathcal{N} > 0) = 1/2$, exactly half the integers exceed the mean.",
@@ -103,7 +103,7 @@
       "startLine": 81,
       "endLine": 88
     },
-    "type": "technique",
+    "type": "concept",
     "title": "CRT Lower Bound Construction",
     "content": "**crt_lower_bound:** There exists a valid interval $[a, b] \\subseteq [x, 2x]$ with\n$$|I| \\geq (1 - o(1)) \\cdot \\frac{\\log x}{(\\log\\log x)^2}$$\n\nThe construction uses the Chinese Remainder Theorem to find consecutive integers divisible by a primorial $P_k = 2 \\cdot 3 \\cdot 5 \\cdots p_k$.\n\n**crt_construction_idea:** For any $k$, there exists $P$ such that $P \\mid n \\Rightarrow \\omega(n) \\geq k$. This $P$ is the primorial $p_k\\#$.",
     "mathContext": "The CRT construction works as follows: choose $k$ such that $k > \\log\\log x$ (so $\\omega(n) \\geq k$ implies the condition). Let $P = p_k\\# \\sim e^{p_k} \\sim e^{k \\log k}$ by the prime number theorem. The CRT guarantees $\\lfloor x/P \\rfloor$ multiples of $P$ in $[x, 2x]$, spaced $P$ apart. Consecutive multiples of $P$ form a valid interval of length $\\sim x/P \\sim \\frac{\\log x}{(\\log\\log x)^2}$ after optimizing $k$. The key limitation is that this construction forces divisibility by a fixed modulus, which is inefficient — most of the interval's 'capacity' is wasted ensuring divisibility rather than just having many prime factors.",
@@ -127,7 +127,7 @@
       "startLine": 97,
       "endLine": 106
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Maximum Length and Polynomial Conjecture",
     "content": "**maxValidIntervalLength(x):** The maximum length of a valid interval in $[x, 2x]$ — axiomatized as a function $\\mathbb{N} \\to \\mathbb{N}$.\n\n**conjecture_polynomial_length:** For any $k \\in \\mathbb{N}$, there exists $x_0$ such that for all $x \\geq x_0$:\n$$\\exists [a, b] \\subseteq [x, 2x] \\text{ valid with } |I| \\geq (\\log x)^k$$\n\n**This is the central open conjecture.** The gap from the known $\\frac{\\log x}{(\\log\\log x)^2}$ is enormous — even achieving $(\\log x)^2$ would be a major result.",
     "mathContext": "The conjecture is motivated by the observation that primes are the primary obstruction and prime gaps of size $\\sim (\\log p)^2$ are expected (Cramér's conjecture). If Cramér's conjecture holds, there exist intervals of length $(\\log x)^{2-\\varepsilon}$ containing no primes, and within such gaps one expects $\\omega(n) > \\log\\log n$ for most (perhaps all) composite integers. The difficulty is making 'most' into 'all' — even in long prime-free intervals, some composites might have $\\omega(n) \\leq \\log\\log n$ (e.g., prime powers $p^k$).",
@@ -150,7 +150,7 @@
       "startLine": 115,
       "endLine": 125
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Prime Obstruction: Why Intervals Must Avoid Primes",
     "content": "**prime_gap_constraint:** For $x \\geq 16$, there exists a prime $p \\in [x, 2x]$ that fails `satisfiesCondition`.\n\n**primes_fail_condition:** For primes $p > 16$: $\\omega(p) = 1$ but $\\log\\log p > 1$ (since $\\log\\log 16 = \\log 4 \\cdot \\log 2 \\approx 1.02$, and $e^e \\approx 15.15$).\n\n**no_large_primes_in_valid:** Valid intervals cannot contain any prime $> 16$. Combined with Bertrand's postulate (a prime exists in $[x, 2x]$), this means valid intervals are bounded by prime gap lengths.\n\n**Critical threshold:** $p > e^e \\approx 15.15$ implies $\\log\\log p > 1 = \\omega(p)$, so $p = 17$ is the first prime failing the condition.",
     "mathContext": "The threshold $e^e \\approx 15.15$ arises because $\\log\\log n > 1$ iff $\\log n > e$ iff $n > e^e$. Since $e^e \\approx 15.15$ and the first prime above this is 17, all primes $p \\geq 17$ fail the condition. This creates a fundamental tension: the conjecture asks for long intervals where *every* integer has many prime factors, but primes (which have exactly one prime factor) are ubiquitous by the PNT. Valid intervals must lie within prime gaps, and the question reduces to: can prime gaps contain long stretches where all composites have $\\omega(n) > \\log\\log n$?",
@@ -199,7 +199,7 @@
       "startLine": 150,
       "endLine": 163
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Small Examples of $\\omega(n)$",
     "content": "**Proved computations:**\n- $\\omega(1) = 0$ (by `simp` — no prime factors)\n- $\\omega(2) = 1$ (by `native_decide` — only prime factor is 2)\n- $\\omega(6) = 2$ (primes 2, 3; $6 = 2 \\cdot 3$)\n- $\\omega(30) = 3$ (primes 2, 3, 5; $30 = 5\\#$)\n- $\\omega(210) = 4$ (primes 2, 3, 5, 7; $210 = 7\\#$)\n\nThese illustrate primorial structure: $30 = 5\\#$ has $\\omega = \\pi(5) = 3$, and $210 = 7\\#$ has $\\omega = \\pi(7) = 4$.",
     "mathContext": "The `native_decide` tactic works because $\\omega(n)$ for small $n$ can be computed by Lean's native evaluator, which checks whether each small prime divides $n$ and counts the results. For larger values, `decide` or `native_decide` become impractical and one must use mathematical reasoning. The primorial pattern $\\omega(p_k\\#) = k$ gives the most efficient way to achieve large $\\omega$ values.",
@@ -222,7 +222,7 @@
       "startLine": 170,
       "endLine": 171
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Consecutive Integers with Many Prime Factors",
     "content": "**consecutive_many_factors:** For any $k$ and $L$, there exist $L$ consecutive integers each with $\\omega(n) \\geq k$.\n\nThis is a strong existence result: arbitrarily long runs of integers with at least $k$ distinct prime factors exist. However, this does NOT imply the conjecture because it lacks the constraint $\\omega(n) > \\log\\log n$ (which grows with $n$).",
     "mathContext": "The proof uses CRT: choose $L$ distinct primes $q_1, \\ldots, q_L$ each having at least $k$ prime factors (e.g., $q_i = p_1 \\cdots p_k \\cdot r_i$ for distinct primes $r_i$). Then the CRT gives $a$ with $q_i \\mid (a + i)$ for $i = 1, \\ldots, L$, so $\\omega(a + i) \\geq k$. The key distinction from Problem #452 is that this gives a *fixed* lower bound $k$, while the problem requires $\\omega(n) > \\log\\log n$, which grows as $n$ grows.",
@@ -269,7 +269,7 @@
       "startLine": 201,
       "endLine": 203
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Current Best Lower Bound",
     "content": "**known_lower_bound:** For $x \\geq 3$, there exists a valid interval $[a, b] \\subseteq [x, 2x]$ with:\n$$|I| \\geq \\frac{\\log x}{(\\log\\log x)^2}$$\n\nThis is the simplified version of `crt_lower_bound` (dropping the $(1 - o(1))$ factor). It represents the current state of the art for constructing long intervals with the $\\omega > \\log\\log$ property.",
     "mathContext": "The bound $\\frac{\\log x}{(\\log\\log x)^2}$ grows *very* slowly — for $x = 10^{100}$, this gives intervals of length about $\\frac{230}{(5.4)^2} \\approx 8$. The conjectured $(\\log x)^k$ for $k = 2$ would give $(230)^2 \\approx 53{,}000$ — a dramatic improvement. The enormous gap between the established and conjectured bounds makes this one of the more tantalizing open problems in multiplicative number theory.",
@@ -291,7 +291,7 @@
       "startLine": 216,
       "endLine": 225
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_452_summary:** Combines three established results:\n1. **Density:** $\\{n : \\omega(n) > \\log\\log n\\}$ has density $\\frac{1}{2}$ (Erdős 1937)\n2. **CRT lower bound:** Valid intervals of length $\\geq \\frac{\\log x}{(\\log\\log x)^2}$ exist\n3. **Prime obstruction:** Primes in $[x, 2x]$ fail the condition for $x \\geq 16$\n\n**Proof:** `⟨erdos_1937_density, known_lower_bound, prime_gap_constraint⟩`\n\nThe open conjecture $(\\log x)^k$ is NOT included in the summary (it remains unproved).",
     "mathContext": "The three-part conjunction captures the complete state of knowledge: density tells us the condition holds for half of all integers (making long intervals plausible), CRT gives a constructive lower bound on interval length, and the prime obstruction reveals the fundamental limitation. The conjunction is proved trivially in Lean by pairing the three axioms. The missing piece — the polynomial conjecture — would require entirely new techniques.",

@@ -118,7 +118,7 @@
       "startLine": 50,
       "endLine": 53
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Kleitman's Theorem (1965)",
     "content": "The main result: for complex z₁,...,zₙ with |zᵢ| ≥ 1, at most C(n,⌊n/2⌋) signed sums fall in any unit disc. This is the sharp bound, matching Erdős's real case result. Kleitman's proof uses a correlation inequality for monotone Boolean functions and antichain properties.",
     "mathContext": "Kleitman (1965): $\\forall z_1, \\ldots, z_n \\in \\mathbb{C}$ with $|z_i| \\geq 1$, $\\forall w \\in \\mathbb{C}$: $|\\{\\varepsilon \\in \\{\\pm 1\\}^n : |\\sum \\varepsilon_i z_i - w| \\leq 1\\}| \\leq \\binom{n}{\\lfloor n/2 \\rfloor}$.",
@@ -142,7 +142,7 @@
       "startLine": 60,
       "endLine": 67
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős's Real Case (1945)",
     "content": "For real zᵢ with |zᵢ| ≥ 1, at most C(n,⌊n/2⌋) signed sums fall in any interval of length 2. Erdős's proof maps signed sums to subsets of [n] via positive signs, and uses Sperner's theorem: if many sums lie in [a, a+2], the corresponding subsets form an antichain, bounded by C(n,⌊n/2⌋).",
     "mathContext": "Erdős (1945): For real $z_i$ with $|z_i| \\geq 1$ and $a \\in \\mathbb{R}$: $|\\{\\varepsilon : a \\leq \\sum \\varepsilon_i z_i \\leq a + 2\\}| \\leq \\binom{n}{\\lfloor n/2 \\rfloor}$. The key: if $S \\subset T$ and $\\sum_{i \\in T \\setminus S} z_i \\geq 1$, their sums differ by $\\geq 2$, so they can't both be in $[a, a+2]$.",
@@ -165,7 +165,7 @@
       "startLine": 72,
       "endLine": 75
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős's Weak Complex Bound (1961)",
     "content": "Before Kleitman's result, Erdős showed the count is O(2ⁿ/√n) for complex numbers, which is weaker than C(n,⌊n/2⌋) ~ 2ⁿ/√(πn/2) by a constant factor √(π/2) ≈ 1.25. The proof used probabilistic/analytic methods rather than combinatorial antichain arguments.",
     "mathContext": "Erdős (1961): $\\exists C > 0$ such that $|\\{\\varepsilon : |\\sum \\varepsilon_i z_i - w| \\leq 1\\}| \\leq C \\cdot 2^n / \\sqrt{n}$. Since $\\binom{n}{\\lfloor n/2 \\rfloor} \\sim 2^n \\sqrt{2/(\\pi n)}$, the gap is a factor of $\\sqrt{\\pi/2}$.",

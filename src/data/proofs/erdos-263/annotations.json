@@ -256,7 +256,7 @@
       "startLine": 80,
       "endLine": 83
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Folklore Irrationality Theorem",
     "content": "The classical sufficient condition: if $a_n^{1/2^n} \\to \\infty$, then $\\sum 1/a_n$ is irrational. The proof typically uses the fact that such rapidly growing sequences produce very good rational approximations to $\\sum 1/a_n$ via partial sums, which contradicts rationality by a measure-of-irrationality argument (similar to Liouville's theorem).",
     "mathContext": "If $\\lim_{n \\to \\infty} a_n^{1/2^n} = \\infty$, then $\\sum_{n=0}^{\\infty} \\frac{1}{a_n} \\notin \\mathbb{Q}$. The key step uses $|S - S_N| < 1/a_{N+1}$ combined with the growth condition to get $|S - p/q| < 1/q^{2+\\epsilon}$.",
@@ -279,7 +279,7 @@
       "startLine": 86,
       "endLine": 87
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Double Exponential Satisfies Folklore",
     "content": "Verifies that $2^{2^n}$ satisfies the folklore growth condition. Since $(2^{2^n})^{1/2^n} = 2$ for all $n$, this sequence is actually on the boundary — it does NOT satisfy folklore growth (the limit is 2, not $\\infty$). This is why the irrationality sequence question for $2^{2^n}$ remains open.",
     "mathContext": "$(2^{2^n})^{1/2^n} = 2^{2^n/2^n} = 2^1 = 2$ for all $n$. Since $2 \\not\\to \\infty$, the folklore condition does NOT hold. This sorry may represent a false claim.",
@@ -366,7 +366,7 @@
       "startLine": 104,
       "endLine": 109
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Kovač-Tao Theorem (2024)",
     "content": "The landmark 2024 result by Vjekoslav Kovač and Terence Tao: strictly increasing sequences with convergent reciprocal sum and $a_{n+1}/a_n^2 \\to 0$ are NOT irrationality sequences. Their proof constructs an explicit perturbation $(b_n)$ with $b_n/a_n \\to 1$ such that $\\sum 1/b_n$ is rational, using a delicate greedy algorithm for Egyptian fraction decomposition.",
     "mathContext": "If $a_0 < a_1 < \\cdots$, $\\sum 1/a_n < \\infty$, and $a_{n+1}/a_n^2 \\to 0$, then $\\exists (b_n) \\in \\mathbb{Z}_{>0}^{\\mathbb{N}}$ with $b_n/a_n \\to 1$ and $\\sum 1/b_n \\in \\mathbb{Q}$.",
@@ -412,7 +412,7 @@
       "startLine": 119,
       "endLine": 122
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Positive Condition Implies Irrationality Sequence",
     "content": "If a sequence satisfies the positive condition $\\liminf a_{n+1}/a_n^{2+\\epsilon} > 0$, it is an irrationality sequence. The proof uses the fact that fast-growing sequences produce extremely good rational approximations to their reciprocal sums, and any perturbation preserves this approximation quality.",
     "mathContext": "$\\exists \\epsilon > 0,\\; \\liminf \\frac{a_{n+1}}{a_n^{2+\\epsilon}} > 0 \\;\\Rightarrow\\; (a_n) \\text{ is an irrationality sequence}$.",
@@ -482,7 +482,7 @@
       "startLine": 139,
       "endLine": 140
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Double Exponential is Strictly Increasing",
     "content": "Proves $2^{2^n}$ is strictly increasing: since $2^n$ is strictly increasing and $x \\mapsto 2^x$ is strictly monotone, the composition is strictly increasing.",
     "mathContext": "$n < m \\Rightarrow 2^n < 2^m \\Rightarrow 2^{2^n} < 2^{2^m}$.",
@@ -502,7 +502,7 @@
       "startLine": 143,
       "endLine": 144
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Double Exponential Sum Converges",
     "content": "The sum $\\sum 1/2^{2^n}$ converges extremely rapidly. Each term is at most the square of the previous tail, giving supergeometric convergence. The sum equals approximately $0.8164215...$, related to Fredholm numbers.",
     "mathContext": "$\\sum_{n=0}^{\\infty} \\frac{1}{2^{2^n}} = \\frac{1}{2} + \\frac{1}{4} + \\frac{1}{16} + \\frac{1}{256} + \\cdots \\approx 0.8164$. This converges by comparison with any geometric series.",
@@ -524,7 +524,7 @@
       "startLine": 149,
       "endLine": 151
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Characterization Gap",
     "content": "There exist sequences with superexponential growth that do NOT satisfy the folklore condition — establishing a genuine gap between the necessary and sufficient conditions. This gap is where the core difficulty of Problem #263 lives: the double exponential $2^{2^n}$ falls exactly in this gap.",
     "mathContext": "$\\exists a : \\mathbb{N} \\to \\mathbb{N}^+$ such that $a_n^{1/n} \\to \\infty$ but $a_n^{1/2^n} \\not\\to \\infty$. Example: $a_n = n!$ or any sequence with $\\log\\log a_n / n \\to c < 1$.",
@@ -611,7 +611,7 @@
       "startLine": 172,
       "endLine": 175
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Non-Computability of Irrationality Sequence Property",
     "content": "The property of being an irrationality sequence cannot be decided by any algorithm, because it requires checking ALL perturbation sequences — an inherently infinite verification. This is formalized by showing no Boolean function on sequences can correctly classify all irrationality sequences.",
     "mathContext": "$\\nexists\\; \\texttt{decide} : (\\mathbb{N} \\to \\mathbb{N}^+) \\to \\texttt{Bool}$ such that $\\texttt{decide}(a) = \\texttt{true} \\iff (a_n) \\text{ is an irrationality sequence}$.",
@@ -634,7 +634,7 @@
       "startLine": 178,
       "endLine": 181
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Truncation Insufficiency",
     "content": "No finite prefix of a sequence determines whether it is an irrationality sequence: for every $N$, there exist two sequences agreeing on the first $N$ terms where one is an irrationality sequence and the other is not. This shows the property is genuinely infinitary.",
     "mathContext": "$\\forall N \\in \\mathbb{N},\\; \\exists a, b : \\mathbb{N} \\to \\mathbb{N}^+$ with $a_n = b_n$ for $n < N$, $(a_n)$ an irrationality sequence, $(b_n)$ not.",

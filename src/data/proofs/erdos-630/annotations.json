@@ -75,7 +75,7 @@
       "startLine": 60,
       "endLine": 81
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Properties of List Chromatic Number",
     "content": "Three key facts about list chromatic number:\n\n1. **`list_chromatic_ge_chromatic`** (sorry'd): $\\chi_L(G) \\ge \\chi(G)$ always. When all lists are identical $\\{1,\\ldots,k\\}$, list coloring reduces to ordinary coloring.\n\n2. **`complete_graph_list_chromatic`** (sorry'd): $\\chi_L(K_n) = n$. For complete graphs, list and ordinary chromatic numbers coincide.\n\n3. **`complete_bipartite_list_chromatic`** (axiomatized): $K_{n,n}$ has $\\chi = 2$ but $\\chi_L > 2$ for $n \\ge 2$. This is the critical observation: list coloring is **strictly harder** than ordinary coloring, even for bipartite graphs.\n\nThe gap $\\chi_L - \\chi$ for $K_{n,n}$ grows as $\\Theta(\\log n)$ (Erdős, Rubin, Taylor 1980).",
     "mathContext": "$$\\chi_L(G) \\ge \\chi(G); \\quad \\chi_L(K_{n,n}) \\ge \\lceil \\log_2 n \\rceil + 1 \\text{ but } \\chi(K_{n,n}) = 2$$",
@@ -97,7 +97,7 @@
       "startLine": 83,
       "endLine": 103
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Planar Graphs: Euler's Formula and Coloring Bounds",
     "content": "**`IsPlanar G`**: $G$ can be drawn in the plane without edge crossings (sorry'd definition).\n\n**`euler_formula`** (axiomatized): $|V| - |E| + F = 2$ for connected planar graphs.\n\n**`four_color_theorem`** (axiomatized): $\\chi(G) \\le 4$ for planar $G$. Appel–Haken (1976). But $\\chi \\le 4$ does NOT imply $\\chi_L \\le 4$!\n\n**`thomassen_five_list`** (axiomatized): $\\chi_L(G) \\le 5$ for planar $G$. Thomassen's 1994 elegant inductive proof.",
     "mathContext": "$$\\text{planar} \\implies \\chi \\le 4 \\;(\\text{4CT}),\\quad \\chi_L \\le 5 \\;(\\text{Thomassen})$$",
@@ -121,7 +121,7 @@
       "startLine": 105,
       "endLine": 121
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bipartite Graphs and the List Coloring Gap",
     "content": "**`bipartite_iff_no_odd_cycle`** (sorry'd): $G$ is bipartite iff it has no odd cycle.\n\n**`bipartite_chi_le_2`** (sorry'd): bipartite graphs have $\\chi \\le 2$.\n\n**`bipartite_list_can_exceed_2`** (sorry'd): some bipartite graphs have $\\chi_L > 2$.\n\nExample: $K_{3,3}$ has $\\chi_L = 3$, and $K_{n,n}$ has $\\chi_L \\ge \\lceil \\log_2 n \\rceil + 1$.",
     "mathContext": "$$G \\text{ bipartite} \\implies \\chi(G) \\le 2, \\quad \\text{but } \\chi_L(K_{n,n}) \\to \\infty$$",
@@ -166,7 +166,7 @@
       "startLine": 140,
       "endLine": 157
     },
-    "type": "definition",
+    "type": "concept",
     "title": "The Algebraic Method: Graph Polynomial and Nullstellensatz",
     "content": "**`graphPolynomial G`**: $P_G = \\prod_{(u,v) \\in E} (x_u - x_v) \\in \\mathbb{Z}[x_v : v \\in V]$, as `MvPolynomial V ℤ` (sorry'd).\n\n**`combinatorial_nullstellensatz`** (axiomatized): if the coefficient of $\\prod_v x_v^{d_v}$ in $P_G$ is nonzero, then $G$ is $(\\max d_v + 1)$-choosable.\n\n**`alon_tarsi_coefficient`** (axiomatized): for planar bipartite graphs, this coefficient is nonzero.",
     "mathContext": "$$P_G = \\prod_{(u,v) \\in E(G)} (x_u - x_v); \\quad [\\prod x_v^{d_v}] P_G \\ne 0 \\implies G \\text{ is choosable}$$",

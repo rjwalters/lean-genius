@@ -194,7 +194,7 @@
       "startLine": 148,
       "endLine": 152
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sumset of Powers of 2",
     "content": "We prove that for any a, b ∈ ℕ, the sum 2^a + 2^b belongs to the sumset of powers of 2.\n\nThis is a simple application of the sumset definition:\n- 2^a ∈ powersOfTwo (witnessed by a)\n- 2^b ∈ powersOfTwo (witnessed by b)\n- Therefore 2^a + 2^b ∈ powersOfTwo + powersOfTwo",
     "mathContext": "2^a + 2^b ∈ sumset powersOfTwo",

@@ -47,7 +47,7 @@
       "startLine": 64,
       "endLine": 84
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Basic Properties and Monotonicity",
     "content": "Five basic results:\n\n1. **Perfect squares are representable**: $k^2 = k^2 + 0^2 - 0^2$ with $k^2 \\le k^2$\n2. **0 is representable**: $0 = 0^2 + 0^2 - 0^2$\n3. **1 is representable**: $1 = 1^2 + 0^2 - 0^2$\n4. **Monotonicity** (`representable_mono`): If $n$ is representable with bound $b_1$ and $b_1 \\le b_2$, then it's representable with bound $b_2$. Uses `le_trans`.\n5. **Strict implies relaxed** (`representable_implies_relaxed`): `IsRepresentable n` implies `IsRepresentableWith n b` for any $b \\ge n$.\n\nAll proved by explicit witness construction with `norm_num` or `le_refl`/`le_trans`.",
     "mathContext": "$k^2 = k^2 + 0^2 - 0^2$; bound monotonicity: $b_1 \\le b_2 \\Rightarrow \\text{repr with } b_1 \\Rightarrow \\text{repr with } b_2$",
@@ -69,7 +69,7 @@
       "startLine": 96,
       "endLine": 104
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Odd Numbers and Difference of Squares",
     "content": "For odd $n$, the classical identity $n = ((n+1)/2)^2 - ((n-1)/2)^2$ always holds. However, this **violates the bound** for $n \\ge 3$:\n\n$$\\left(\\frac{n+1}{2}\\right)^2 = \\frac{n^2 + 2n + 1}{4} > n \\quad \\text{when } n \\ge 3$$\n\nTwo theorems formalize this:\n1. `odd_diff_squares_exceeds_bound`: For odd $n \\ge 3$, $((n+1)/2)^2 > n$. Proved by `omega`.\n2. `odd_diff_squares_identity`: For odd $n$, $((n+1)/2)^2 = ((n-1)/2)^2 + n$. Proved by `omega`.\n\nThis shows the naive difference-of-squares approach fails — the bound constraint is the heart of the problem.",
     "mathContext": "$n = ((n+1)/2)^2 - ((n-1)/2)^2$ but $((n+1)/2)^2 > n$ for $n \\ge 3$",

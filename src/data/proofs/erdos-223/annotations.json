@@ -158,7 +158,7 @@
       "startLine": 138,
       "endLine": 141
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Leading Coefficient",
     "content": "The **leadingCoefficient d** = (p-1)/(2p) where p = ⌊d/2⌋. For d=4: 1/4, d=6: 1/3, approaching 1/2 as d → ∞.",
     "mathContext": "This determines the asymptotic density of diameter pairs. As dimension increases, we can pack more diameter pairs.",
@@ -216,7 +216,7 @@
       "startLine": 168,
       "endLine": 172
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Four-Dimensional Coefficient",
     "content": "For d = 4: **leadingCoefficient 4 = 1/4**. Since p = 2, we get (2-1)/(2·2) = 1/4.",
     "mathContext": "This means f₄(n) ≈ n²/4 for large n. About 1/4 of all pairs can be at the diameter distance!",
@@ -235,7 +235,7 @@
       "startLine": 260,
       "endLine": 276
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_223_summary** packages all three cases: 2D (f = n), 3D (f = 2n-2), and 4D+ (f ≥ cn²).",
     "mathContext": "The conjunction shows the complete solution across all dimensions, demonstrating the phase transition at d = 4.",

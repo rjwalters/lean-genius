@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erd\u0151s Problem #167**: Tuza's Conjecture on Triangle Covering\n\n**Statement**: If G has at most k edge-disjoint triangles, can G be made triangle-free by removing \u2264 2k edges?\n\n**Status**: PARTIALLY SOLVED\n\n**Aristotle verified**:\n- `trivial_bound`: \u03c4(G) \u2264 3\u03bd(G) \u2713\n- `k4_tight`: K\u2084 shows 2k is tight \u2713\n- `k5_tight`: K\u2085 shows 2k is tight \u2713",
+    "content": "**Erdős Problem #167**: Tuza's Conjecture on Triangle Covering\n\n**Statement**: If G has at most k edge-disjoint triangles, can G be made triangle-free by removing ≤ 2k edges?\n\n**Status**: PARTIALLY SOLVED\n\n**Aristotle verified**:\n- `trivial_bound`: τ(G) ≤ 3ν(G) ✓\n- `k4_tight`: K₄ shows 2k is tight ✓\n- `k5_tight`: K₅ shows 2k is tight ✓",
     "mathContext": "Tuza's Conjecture (1981): $\\tau(G) \\leq 2\\nu(G)$ where $\\tau(G) = \\min\\{|E'| : G \\setminus E'$ is triangle-free$\\}$ and $\\nu(G) = \\max\\{|\\mathcal{T}| : \\mathcal{T}$ is an edge-disjoint triangle packing$\\}$. Best known general bound: $\\tau \\leq (3 - 3/23)\\nu \\approx 2.87\\nu$ (Haxell-Kohayakawa 1998). The conjecture is sharp: $K_4$ and $K_5$ achieve $\\tau = 2\\nu$.",
     "significance": "key",
     "relatedConcepts": [
@@ -54,8 +54,8 @@
       "endLine": 76
     },
     "type": "definition",
-    "title": "Edge-Disjoint Triangles and \u03bd(G)",
-    "content": "**EdgeDisjoint G t\u2081 t\u2082**: Triangles $t_1$ and $t_2$ share no edges.\n\n**maxEdgeDisjointTriangles G** $= \\nu(G)$: Maximum size of a set of pairwise edge-disjoint triangles.\n\nDefined as $\\sup\\{k \\in \\mathbb{N} \\mid \\exists\\, T,\\, |T| = k \\wedge T$ is a valid packing$\\}$.",
+    "title": "Edge-Disjoint Triangles and ν(G)",
+    "content": "**EdgeDisjoint G t₁ t₂**: Triangles $t_1$ and $t_2$ share no edges.\n\n**maxEdgeDisjointTriangles G** $= \\nu(G)$: Maximum size of a set of pairwise edge-disjoint triangles.\n\nDefined as $\\sup\\{k \\in \\mathbb{N} \\mid \\exists\\, T,\\, |T| = k \\wedge T$ is a valid packing$\\}$.",
     "mathContext": "$\\nu(G)$ is the **triangle packing number**, the maximum cardinality of a family $\\mathcal{T} = \\{T_1, \\ldots, T_k\\}$ of triangles where $E(T_i) \\cap E(T_j) = \\emptyset$ for $i \\neq j$. Computing $\\nu(G)$ is NP-hard in general (it reduces to 3-dimensional matching). The `sSup` formulation requires showing the set is bounded (by `Fintype.card` of all 3-element subsets) and nonempty (the empty packing has size 0).",
     "significance": "key",
     "relatedConcepts": [
@@ -78,7 +78,7 @@
       "endLine": 84
     },
     "type": "definition",
-    "title": "Triangle Covering and \u03c4(G)",
+    "title": "Triangle Covering and τ(G)",
     "content": "**IsTriangleCover G E**: Removing edges $E$ makes $G$ triangle-free: $G.\\text{deleteEdges}\\, E$ has no triangles.\n\n**triangleCoverNumber G** $= \\tau(G)$: Minimum size of a triangle cover.\n\nDefined as $\\inf\\{k \\in \\mathbb{N} \\mid \\exists\\, E,\\, |E| = k \\wedge E$ is a triangle cover$\\}$.",
     "mathContext": "$\\tau(G)$ is the **triangle edge cover number**: the minimum number of edges to delete to make $G$ triangle-free. This is the dual of the packing number in the sense of LP duality: the fractional relaxations satisfy $\\tau^*(G) = 2\\nu^*(G)$ by strong duality. Tuza's conjecture asserts $\\tau(G) \\leq 2\\nu(G)$ integrally.",
     "significance": "key",
@@ -123,9 +123,9 @@
       "startLine": 104,
       "endLine": 121
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Maximum Packing Exists (Aristotle)",
-    "content": "**theorem exists_max_packing** \u2713 (Aristotle)\n\n$\\exists\\, T : \\text{Finset}$ of triangles with:\n- $|T| = \\nu(G)$\n- All $t \\in T$ are triangles in $G$\n- Any two distinct $t_1, t_2 \\in T$ are edge-disjoint\n\n**Proof**: Uses `Set.exists_max_image` on the finite type of possible packings, bounded by `Finset.card_le_univ`.",
+    "content": "**theorem exists_max_packing** ✓ (Aristotle)\n\n$\\exists\\, T : \\text{Finset}$ of triangles with:\n- $|T| = \\nu(G)$\n- All $t \\in T$ are triangles in $G$\n- Any two distinct $t_1, t_2 \\in T$ are edge-disjoint\n\n**Proof**: Uses `Set.exists_max_image` on the finite type of possible packings, bounded by `Finset.card_le_univ`.",
     "mathContext": "This is a **realizer lemma**: it converts the supremum definition of $\\nu(G)$ into an explicit witness. The proof shows the set $S = \\{k : \\exists T,\\, |T| = k \\wedge T$ is valid$\\}$ is finite (bounded by $|\\binom{V}{3}|$) and nonempty ($\\emptyset$ has size 0), so $\\sup S$ is attained. The `csSup_le'` and `le_csSup` pair establishes $|T| = \\sup S$.",
     "significance": "key",
     "relatedConcepts": [
@@ -147,9 +147,9 @@
       "startLine": 125,
       "endLine": 174
     },
-    "type": "technique",
-    "title": "Trivial Bound \u03c4 \u2264 3\u03bd (Aristotle)",
-    "content": "**theorem trivial_bound** \u2713 (Aristotle)\n\n$\\tau(G) \\leq 3\\nu(G)$\n\n**Proof strategy**:\n1. Get maximum packing $T$ with $|T| = \\nu(G)$ via `exists_max_packing`\n2. Construct $E = \\bigcup_{t \\in T} \\text{edges}(t)$ using `Finset.biUnion` and `offDiag`\n3. Show $E$ is a triangle cover: any surviving triangle would be edge-disjoint from all of $T$, contradicting maximality\n4. Count: $|E| \\leq 3|T| = 3\\nu(G)$ since each triangle contributes $\\leq 3$ edges\n\nThe maximality argument uses `grind` to close the case analysis at line 155.",
+    "type": "concept",
+    "title": "Trivial Bound τ ≤ 3ν (Aristotle)",
+    "content": "**theorem trivial_bound** ✓ (Aristotle)\n\n$\\tau(G) \\leq 3\\nu(G)$\n\n**Proof strategy**:\n1. Get maximum packing $T$ with $|T| = \\nu(G)$ via `exists_max_packing`\n2. Construct $E = \\bigcup_{t \\in T} \\text{edges}(t)$ using `Finset.biUnion` and `offDiag`\n3. Show $E$ is a triangle cover: any surviving triangle would be edge-disjoint from all of $T$, contradicting maximality\n4. Count: $|E| \\leq 3|T| = 3\\nu(G)$ since each triangle contributes $\\leq 3$ edges\n\nThe maximality argument uses `grind` to close the case analysis at line 155.",
     "mathContext": "This is a 50-line proof — the longest Aristotle-verified result in this file. The bound $\\tau \\leq 3\\nu$ is sometimes called the **greedy bound**: given a maximal packing, delete all edges of all packed triangles. The counting uses $|\\text{offDiag}(t)| / 2 \\leq 3$ for $|t| = 3$ (each unordered edge corresponds to two ordered pairs). The `Finset.card_biUnion_le` bound handles potential overlaps between edge sets of different packed triangles.",
     "significance": "key",
     "relatedConcepts": [
@@ -173,8 +173,8 @@
       "endLine": 203
     },
     "type": "technique",
-    "title": "K\u2084 Shows 2k is Tight (Aristotle)",
-    "content": "**theorem k4_tight** \u2713 (Aristotle)\n\n$\\exists\\, G : \\text{SimpleGraph}\\,(\\text{Fin}\\, 4)$: $\\nu(G) = 1 \\wedge \\tau(G) = 2$\n\n**Proof**: $G = \\top$ (complete graph $K_4$ on $\\text{Fin}\\, 4$)\n- $K_4$ has $\\binom{4}{3} = 4$ triangles, any two share an edge $\\Rightarrow \\nu = 1$\n- Any single edge lies in exactly 2 triangles $\\Rightarrow$ one edge doesn't suffice, two do $\\Rightarrow \\tau = 2$\n\nThe $\\tau = 2$ part uses `native_decide` for exhaustive search over all edge subsets of size $\\leq 1$.",
+    "title": "K₄ Shows 2k is Tight (Aristotle)",
+    "content": "**theorem k4_tight** ✓ (Aristotle)\n\n$\\exists\\, G : \\text{SimpleGraph}\\,(\\text{Fin}\\, 4)$: $\\nu(G) = 1 \\wedge \\tau(G) = 2$\n\n**Proof**: $G = \\top$ (complete graph $K_4$ on $\\text{Fin}\\, 4$)\n- $K_4$ has $\\binom{4}{3} = 4$ triangles, any two share an edge $\\Rightarrow \\nu = 1$\n- Any single edge lies in exactly 2 triangles $\\Rightarrow$ one edge doesn't suffice, two do $\\Rightarrow \\tau = 2$\n\nThe $\\tau = 2$ part uses `native_decide` for exhaustive search over all edge subsets of size $\\leq 1$.",
     "mathContext": "$K_4$ achieves $\\tau/\\nu = 2$ exactly. This is the smallest tight example for Tuza's conjecture. The proof that $\\nu(K_4) = 1$ is structural (any two triangles in $K_4$ share an edge), while $\\tau(K_4) = 2$ requires checking that no single edge deletion destroys all 4 triangles — automated by `native_decide` over the $\\binom{6}{1} = 6$ possible single-edge deletions.",
     "significance": "key",
     "relatedConcepts": [
@@ -197,8 +197,8 @@
       "endLine": 238
     },
     "type": "technique",
-    "title": "K\u2085 Shows 2k is Tight (Aristotle)",
-    "content": "**theorem k5_tight** \u2713 (Aristotle)\n\n$\\exists\\, G : \\text{SimpleGraph}\\,(\\text{Fin}\\, 5)$: $\\nu(G) = 2 \\wedge \\tau(G) = 4$\n\n**Proof**: $G = \\top$ ($K_5$ on $\\text{Fin}\\, 5$)\n- $K_5$ has $\\binom{5}{3} = 10$ triangles; maximum 2 can be edge-disjoint\n- Need 4 edges to hit all 10 triangles\n\nUses `native_decide` for both the upper bound on $\\nu$ (no 3 pairwise edge-disjoint triangles exist) and the lower bound on $\\tau$ (no 3-edge deletion destroys all triangles).",
+    "title": "K₅ Shows 2k is Tight (Aristotle)",
+    "content": "**theorem k5_tight** ✓ (Aristotle)\n\n$\\exists\\, G : \\text{SimpleGraph}\\,(\\text{Fin}\\, 5)$: $\\nu(G) = 2 \\wedge \\tau(G) = 4$\n\n**Proof**: $G = \\top$ ($K_5$ on $\\text{Fin}\\, 5$)\n- $K_5$ has $\\binom{5}{3} = 10$ triangles; maximum 2 can be edge-disjoint\n- Need 4 edges to hit all 10 triangles\n\nUses `native_decide` for both the upper bound on $\\nu$ (no 3 pairwise edge-disjoint triangles exist) and the lower bound on $\\tau$ (no 3-edge deletion destroys all triangles).",
     "mathContext": "$K_5$ provides a second tight example with $\\tau/\\nu = 4/2 = 2$. The proof that $\\nu(K_5) \\leq 2$ uses the pigeonhole principle on the 10 edges: each triangle uses 3 edges, edge-disjoint triangles need disjoint edge sets, but $3 \\times 3 = 9 < 10$ edges means the third triangle would need to avoid 6 used edges from only 10 total — tight enough that `native_decide` settles it. Explicit witness: $\\{\\{0,1,2\\}, \\{0,3,4\\}\\}$ are edge-disjoint.",
     "significance": "key",
     "relatedConcepts": [
@@ -294,7 +294,7 @@
     },
     "type": "concept",
     "title": "Summary and Status",
-    "content": "**Erd\u0151s Problem #167: PARTIALLY SOLVED**\n\n**Aristotle verified** (3 theorems):\n- `trivial_bound`: $\\tau \\leq 3\\nu$ \u2713\n- `k4_tight`: $K_4$ achieves $\\tau = 2\\nu$ \u2713\n- `k5_tight`: $K_5$ achieves $\\tau = 2\\nu$ \u2713\n\n**Known bounds**:\n- Trivial: $\\tau \\leq 3\\nu$\n- Best general: $\\tau \\leq 2.87\\nu$ (Haxell-Kohayakawa)\n- Conjectured: $\\tau \\leq 2\\nu$ (open)\n\n**Special cases proven**: $K_4$-free, planar, random graphs\n\n**Fractional version**: TRUE",
+    "content": "**Erdős Problem #167: PARTIALLY SOLVED**\n\n**Aristotle verified** (3 theorems):\n- `trivial_bound`: $\\tau \\leq 3\\nu$ ✓\n- `k4_tight`: $K_4$ achieves $\\tau = 2\\nu$ ✓\n- `k5_tight`: $K_5$ achieves $\\tau = 2\\nu$ ✓\n\n**Known bounds**:\n- Trivial: $\\tau \\leq 3\\nu$\n- Best general: $\\tau \\leq 2.87\\nu$ (Haxell-Kohayakawa)\n- Conjectured: $\\tau \\leq 2\\nu$ (open)\n\n**Special cases proven**: $K_4$-free, planar, random graphs\n\n**Fractional version**: TRUE",
     "mathContext": "The gap between $\\tau \\leq 2.87\\nu$ and the conjectured $\\tau \\leq 2\\nu$ has resisted improvement since 1998 — over 25 years. The conjecture is listed in multiple surveys of important open problems in extremal graph theory. The formalization captures the full state of knowledge: verified bounds, tightness examples, special cases, and the fractional resolution.",
     "significance": "key",
     "relatedConcepts": [

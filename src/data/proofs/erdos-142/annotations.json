@@ -75,7 +75,7 @@
       "startLine": 47,
       "endLine": 48
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Szemerédi's Theorem: $r_k(N) = o(N)$",
     "content": "The foundational qualitative result: for every $k \\ge 3$, any subset of $\\{1,\\ldots,N\\}$ of positive density must contain a $k$-term AP. Equivalently, $r_k(N)/N \\to 0$ as $N \\to \\infty$. Proved by Szemerédi (1975) via a combinatorial regularity lemma. Alternative proofs: Furstenberg (1977, ergodic theory, multiple recurrence), Gowers (2001, Fourier analysis and uniformity norms), and hypergraph regularity (Gowers 2007, Nagle–Rödl–Schacht 2006). Axiomatized here since the full proof is extremely long.",
     "mathContext": "$\\forall k \\ge 3,\\, \\forall \\varepsilon > 0,\\, \\exists N_0 : \\forall N \\ge N_0,\\, r_k(N) \\le \\varepsilon N$. The original proof gives tower-type bounds on $N_0(k, \\varepsilon)$; Gowers's proof gives $N_0 \\le 2^{2^{\\varepsilon^{-c_k}}}$.",
@@ -99,7 +99,7 @@
       "startLine": 54,
       "endLine": 55
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Roth's Theorem: The $k = 3$ Case",
     "content": "Roth (1953) proved $r_3(N) = o(N)$ using Fourier analysis on $\\mathbb{Z}/N\\mathbb{Z}$ (the circle method). This was the first case of Szemerédi's theorem to be proved, preceding the general result by over two decades. Successive quantitative improvements: Heath-Brown and Szemerédi ($N/(\\log N)^c$), Bourgain ($N(\\log\\log N)^2/\\log N$), Sanders ($N/(\\log N)^{1-\\varepsilon}$), Bloom ($N/(\\log N)^{1+c}$), Bloom–Sisask, and finally Kelley–Meka.",
     "mathContext": "$r_3(N) = o(N)$. The Fourier-analytic proof decomposes the indicator function of $S$ into structured (major arc) and pseudorandom (minor arc) components, showing both contribute 3-APs when $|S|$ is large.",
@@ -122,7 +122,7 @@
       "startLine": 61,
       "endLine": 63
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Behrend's Lower Bound: $r_3(N) \\ge N \\cdot e^{-C\\sqrt{\\log N}}$",
     "content": "Behrend (1946) constructed AP-3-free sets of size $N \\cdot \\exp(-C\\sqrt{\\log N})$ by embedding $\\{1,\\ldots,N\\}$ into a high-dimensional integer lattice and taking a sphere (which contains no 3-term AP since the midpoint of two points on a sphere lies interior). Elkin (2011) improved the leading constant by a $\\sqrt{\\log N}$ factor. Green and Wolf showed Behrend-type constructions are essentially optimal within their framework.",
     "mathContext": "$r_3(N) \\ge N \\cdot \\exp(-C\\sqrt{\\log N})$. The exponent $\\sqrt{\\log N}$ arises from optimizing the dimension $d \\approx \\sqrt{\\log N}$ in the lattice embedding. The gap from the upper bound $\\exp(-c(\\log N)^{1/12})$ is vast.",
@@ -145,7 +145,7 @@
       "startLine": 69,
       "endLine": 71
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Kelley–Meka Upper Bound: $r_3(N) \\le N \\cdot e^{-c(\\log N)^{1/12}}$",
     "content": "Kelley and Meka (2023) proved the breakthrough upper bound $r_3(N) \\le N \\cdot \\exp(-c(\\log N)^{1/12})$, the first to achieve sub-polynomial density decay. Their proof uses a novel **spectral method**: instead of the traditional density-increment strategy, they show that AP-free sets must correlate with a structured set, then use a multiscale Fourier analysis. This improved on Bloom–Sisask (2020) by an exponential factor in the exponent.",
     "mathContext": "$r_3(N) \\le N \\cdot \\exp(-c(\\log N)^{1/12})$. The exponent $1/12$ is believed to be suboptimal; the conjectured truth is closer to $\\exp(-c(\\log N)^{1/2})$ (matching Behrend up to constants).",
@@ -170,7 +170,7 @@
       "startLine": 78,
       "endLine": 80
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős's $\\$5{,}000$ Sub-Question: $r_k(N) = o(N/\\log N)$",
     "content": "Erdős offered $\\$5{,}000$ for showing $r_k(N) = o(N/\\log N)$ for all $k \\ge 3$. For $k = 3$, this follows from Kelley–Meka's exponential-type bound, but for general $k \\ge 5$ it remains open. The axiom states the full generality. For $k = 4$, Green–Tao (2017) proved $r_4(N) \\le N/(\\log N)^{1+c}$, resolving the $k = 4$ case.",
     "mathContext": "$r_k(N) = o(N/\\log N)$ for all $k \\ge 3$. Known: $k = 3$ (Kelley–Meka 2023), $k = 4$ (Green–Tao 2017). Open: $k \\ge 5$ (best bound: Leng–Sah–Sawhney 2024).",
@@ -192,7 +192,7 @@
       "startLine": 88,
       "endLine": 91
     },
-    "type": "insight",
+    "type": "concept",
     "title": "The $\\$10{,}000$ Open Problem: Asymptotic Formula for $r_k(N)$",
     "content": "The central open problem: find an asymptotic formula $f_k(N) \\sim r_k(N)$ such that $r_k(N)/f_k(N) \\to 1$. Erdős called this 'probably unattackable at present' and offered $\\$10{,}000$ — his largest prize for a combinatorics problem. Even for $k = 3$, the correct order of magnitude is unknown: the Behrend lower bound $\\exp(-C\\sqrt{\\log N})$ and Kelley–Meka upper bound $\\exp(-c(\\log N)^{1/12})$ differ by an exponential factor in the exponent. For $k \\ge 5$, the situation is even more dire.",
     "mathContext": "$\\exists f_k : \\mathbb{N} \\to \\mathbb{R}_{>0}$ such that $r_k(N)/f_k(N) \\to 1$ as $N \\to \\infty$. The formalization uses the $\\varepsilon$-$\\delta$ characterization: $\\forall \\varepsilon > 0,\\, \\exists N_0,\\, \\forall N \\ge N_0 : |r_k(N)/f_k(N) - 1| < \\varepsilon$.",
@@ -216,7 +216,7 @@
       "startLine": 97,
       "endLine": 99
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Green–Tao Bound for $k = 4$",
     "content": "Green and Tao (2017) proved $r_4(N) \\le N/(\\log N)^{1+c}$ for some $c > 0$, using a density-increment argument combined with the arithmetic regularity lemma and inverse theorems for the $U^3$ norm. This resolves Erdős's $\\$5{,}000$ question for $k = 4$ specifically. For $k \\ge 5$, Leng–Sah–Sawhney (2024) obtained the best bounds using novel algebraic methods, but these do not yet reach $o(N/\\log N)$.",
     "mathContext": "$r_4(N) \\le N/(\\log N)^{1+c}$. The proof uses the $U^3$ inverse theorem: sets lacking 4-APs must correlate with a degree-2 polynomial phase, then a density increment is extracted.",
@@ -239,7 +239,7 @@
       "startLine": 102,
       "endLine": 102
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Positivity: $r_k(N) \\ge 1$",
     "content": "For $N \\ge 1$, any singleton $\\{a\\} \\subseteq \\{1,\\ldots,N\\}$ is AP-$k$-free, so $r_k(N) \\ge 1$. This trivial lower bound ensures the ratio $r_k(N)/f_k(N)$ in the asymptotic formula is well-defined. Axiomatized for convenience.",
     "mathContext": "$r_k(N) \\ge 1$ for $N \\ge 1$. Any singleton set is vacuously AP-free since $k \\ge 3 > 1$.",

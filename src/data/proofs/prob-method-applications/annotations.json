@@ -6,7 +6,7 @@
       "startLine": 17,
       "endLine": 18
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Ramsey Lower Bound R(k,k) >= 2^((k-1)/2)",
     "content": "A tighter variant of Erdős's 1947 bound. The proof idea: color edges of $K_n$ randomly with 2 colors. The expected number of monochromatic $K_k$ is $\\binom{n}{k} \\cdot 2^{1-\\binom{k}{2}}$. When $n = 2^{(k-1)/2}$, this is approximately 1, so the first moment dual gives a coloring with zero monochromatic copies. The formulation uses $(k-1)/2$ instead of $k/2$ for tighter integer arithmetic.",
     "mathContext": "$R(k,k) \\geq 2^{(k-1)/2}$ for $k \\geq 3$",
@@ -98,7 +98,7 @@
       "startLine": 36,
       "endLine": 37
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Unbalancing Lights (Balancing Vectors)",
     "content": "For any $n \\times n$ matrix with entries $\\pm 1$, there exists a row or column whose sum has absolute value $\\geq \\sqrt{n}/2$. The proof uses the second moment method: consider the random variable $X = \\sum_j \\varepsilon_j c_j$ where $\\varepsilon_j$ are random signs and $c_j$ are column sums. Then $\\mathbb{E}[X^2] = \\sum_j c_j^2$. If all column sums are small, then so are all row sums (by a counting argument), contradicting $\\sum_j c_j^2 \\geq n$. This result has applications in discrepancy theory and computational complexity (the balancing vectors problem).",
     "mathContext": "$\\forall A \\in \\{\\pm 1\\}^{n \\times n}$, $\\exists$ row or column with sum $\\geq \\sqrt{n}/2$",

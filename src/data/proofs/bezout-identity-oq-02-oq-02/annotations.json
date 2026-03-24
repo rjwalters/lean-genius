@@ -33,7 +33,7 @@
       "startLine": 63,
       "endLine": 75
     },
-    "type": "technique",
+    "type": "concept",
     "title": "euclids_lemma_ring: Universal Euclid's Lemma via linear_combination",
     "content": "`euclids_lemma_ring` is the master theorem: in any `CommRing R`, if `IsCoprime a b` and `a ∣ b * c`, then `a ∣ c`. The 3-line proof: obtain Bézout coefficients `u, v` from `IsCoprime` (so `u*a + v*b = 1`), obtain divisibility witness `k` (so `b*c = a*k`), then the explicit witness `u*c + v*k` satisfies `c = a*(u*c + v*k)` verified by `linear_combination v * hk - c * huv`. The `euclids_lemma_ring'` variant handles `a ∣ c*b` by commutativity.",
     "mathContext": "**Proof arithmetic**: Given $ua + vb = 1$ and $bc = ak$, verify $c = a(uc + vk)$: $$a(uc + vk) = a \\cdot uc + a \\cdot vk = (ua)c + v(ak) = (ua)c + v(bc) = (ua + vb)c = 1 \\cdot c = c.$$ The `linear_combination` tactic automates this: `v * hk - c * huv` encodes $v(bc - ak) - c(ua + vb - 1) = 0 \\Rightarrow c - a(uc + vk) = 0$. No ring structure beyond `CommRing` is needed — the proof is purely axiomatic.",
@@ -84,7 +84,7 @@
       "startLine": 109,
       "endLine": 123
     },
-    "type": "technique",
+    "type": "concept",
     "title": "IsCoprime → IsRelPrime: Divisibility of the Bézout Sum",
     "content": "`isCoprime_to_relPrime` proves the converse direction in ANY CommRing (no IsBezout needed): if `IsCoprime a b` and `d ∣ a` and `d ∣ b`, then `d` is a unit. Proof: `d ∣ u*a` and `d ∣ v*b` by `dvd_mul_of_dvd_right`, so `d ∣ u*a + v*b = 1` by `dvd_add`. Then `isUnit_of_dvd_one` concludes. Combined with `isBezout_relPrime_to_isCoprime`, this gives `isBezout_coprime_iff`: in IsBezout rings, IsCoprime ↔ IsRelPrime.",
     "mathContext": "**Direction**: $IsCoprime(a,b) \\Rightarrow IsRelPrime(a,b)$. Proof: if $d \\mid a$ and $d \\mid b$, then $d \\mid ua + vb = 1$ (since $d$ divides any linear combination). Hence $d$ is a unit. This direction uses no special structure — it's a universal fact about rings. The biconditional `IsCoprime ↔ IsRelPrime` in IsBezout rings is the algebraic core of Bézout's identity: the existence of Bézout coefficients is equivalent to gcd(a,b) = 1 (i.e., every common divisor is a unit).",
@@ -135,7 +135,7 @@
       "startLine": 176,
       "endLine": 221
     },
-    "type": "insight",
+    "type": "concept",
     "title": "One Proof, Three Rings: ℤ, k[X], ℤ[i] are All One-Liners",
     "mathContext": "The typeclass instances used: $\\mathbb{Z}$: `IsBezout ℤ` (ℤ is a PID, every ideal is principal), `DecompositionMonoid ℤ` (ℤ is a UFD). $k[X]$ over field $k$: `EuclideanDomain (Polynomial k)` (polynomial division algorithm), hence `IsBezout`. $\\mathbb{Z}[i]$: `EuclideanDomain GaussianInt` (norm function $N(a+bi) = a^2+b^2$), hence `IsBezout`. Explicit Bézout coefficient example in ℤ: $\\text{IsCoprime}(3, 7)$ via $(3,7) = (5 \\cdot 3 + (-2) \\cdot 7 = 1)$: `⟨5, -2, by norm_num⟩`.",
     "significance": "key",
@@ -162,7 +162,7 @@
       "startLine": 244,
       "endLine": 285
     },
-    "type": "insight",
+    "type": "concept",
     "title": "The Uniform Proof Table: How Each Ring Establishes IsCoprime",
     "mathContext": "**Term-mode proof** (lines 250-253): `euclids_lemma_explicit u v huv k hk` takes Bézout coefficients and divisibility witness as explicit arguments, returning `⟨u * c + v * k, by linear_combination v * hk - c * huv⟩`. This is the 'pre-abstracted' form showing no magic is happening — just algebraic manipulation. The `#check` commands at lines 279-283 confirm all theorem types are well-formed. The `IsRelPrime (3 : ℤ) 7` example at line 273-277 shows how to prove arithmetic coprimality directly: compute $3 \\cdot 5 + 7 \\cdot (-2) = 1$, so any common divisor divides 1.",
     "significance": "key",

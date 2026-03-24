@@ -82,7 +82,7 @@
       "startLine": 59,
       "endLine": 76
     },
-    "type": "context",
+    "type": "definition",
     "title": "The Function f(n)",
     "content": "We axiomatize **f(n)** as the minimal m such that n is representable via m.\n\n**Properties**:\n- When n is representable: f(n) ≥ 1\n- When n is not representable: f(n) = 0 (junk value)\n\nThis mirrors the 'partial function' semantics from the original problem.",
     "mathContext": "Using 0 as a junk value for undefined cases is a common pattern in formalization. It avoids dealing with Option types while still capturing the essential mathematics.",
@@ -157,7 +157,7 @@
       "startLine": 120,
       "endLine": 166
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Concrete Examples",
     "content": "We record specific values of f(n) as axioms:\n\n| n | f(n) | Explanation |\n|---|------|-------------|\n| 1 | 1 | divisors of 1 = {1}, sum = 1 |\n| 3 | 2 | divisors of 2 = {1,2}, 1+2 = 3 |\n| 4 | 3 | divisors of 3 = {1,3}, 1+3 = 4 |\n| 6 | 6 | divisors of 6 = {1,2,3,6}, 1+2+3 = 6 |\n\nThese examples illustrate how f(n) can sometimes be much smaller than n (f(3) = 2) and sometimes equal to n (f(6) = 6).",
     "significance": "supporting",
@@ -175,7 +175,7 @@
       "startLine": 170,
       "endLine": 184
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Open Question I: f(n) = o(n)?",
     "content": "**erdos_1054_part_i** asks whether f(n)/n → 0 as n → ∞.\n\nIn formal terms: ∀ε > 0, ∃N, ∀n ≥ N: f(n) < εn\n\nThis would mean that for large n, f(n) is 'negligible' compared to n.\n\n**STATUS: FALSE** — Tao disproved this.",
     "mathContext": "Tao showed the density of {n : f(n) ≤ δn} is O(δ²), meaning the set of 'easy' values (where f(n) is small) is sparse. Many values require f(n) ≈ n.",
@@ -194,7 +194,7 @@
       "startLine": 186,
       "endLine": 196
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Open Question II: Almost All?",
     "content": "**erdos_1054_part_ii** weakens Part I: Is f(n) = o(n) for **almost all** n?\n\n'Almost all' means the exceptional set has density 0. Formally, for any ε, δ > 0, eventually the fraction of n with f(n) ≥ εn is less than δ.\n\n**STATUS: OPEN**",
     "mathContext": "Even though Part I fails (there are many 'hard' values), perhaps they form a density-0 set. This is a subtler question about the distribution of hard cases.",
@@ -213,7 +213,7 @@
       "startLine": 197,
       "endLine": 204
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Open Question III: limsup = ∞?",
     "content": "**erdos_1054_part_iii** asks: Is limsup f(n)/n = ∞?\n\nThis means: for any constant C, there exist arbitrarily large n with f(n) ≥ Cn.\n\n**STATUS: OPEN** — Related to Part II; if true, it implies Part I fails (which we know) and gives information about the 'worst case' behavior.",
     "significance": "key",
@@ -232,7 +232,7 @@
       "startLine": 211,
       "endLine": 223
     },
-    "type": "context",
+    "type": "concept",
     "title": "Tao's Partial Result",
     "content": "**Terry Tao** disproved Part I by showing: the upper density of {n : f(n) ≤ δn} is O(δ²).\n\nThis means:\n- For small δ, very few n satisfy f(n) ≤ δn\n- Specifically, the fraction is bounded by Cδ² for some constant C\n- So f(n) ≥ δn for 'most' n in a density sense\n\nThis is formalized as `tao_disproves_part_i : ¬erdos_1054_part_i`.",
     "mathContext": "Tao's proof appeared in comments to Erdős Problem #468. The O(δ²) bound is quite strong—it shows the 'hard' values are not just present but prevalent.",

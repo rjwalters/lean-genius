@@ -53,7 +53,7 @@
       "startLine": 60,
       "endLine": 69
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Unfolding Lemmas for euclideanSteps",
     "content": "Three structural lemmas: `euclideanSteps_zero` (simp lemma, $b = 0$ case), `euclideanSteps_pos_eq` ($b > 0$ gives the recursive equation), and `euclideanSteps_ge_one` ($b > 0$ implies at least 1 step). These are the interface lemmas through which all subsequent proofs reason about `euclideanSteps`, avoiding direct unfolding of the recursive definition.",
     "mathContext": "$b > 0 \\implies \\text{euclideanSteps}(a, b) = \\text{euclideanSteps}(b, a \\bmod b) + 1 \\geq 1$",
@@ -100,7 +100,7 @@
       "startLine": 145,
       "endLine": 147
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lame's Theorem (Classical Form)",
     "content": "Lame's Theorem in its classical form: $\\text{fib}(\\text{steps} + 1) \\leq b$ when $b > 0$. A direct corollary of `lame_pair_bound` by extracting the first component. This is the fundamental result connecting Euclidean algorithm complexity to Fibonacci growth, first proved by Gabriel Lame in 1844, making it one of the earliest results in computational complexity.",
     "mathContext": "$b > 0 \\implies \\text{fib}(\\text{euclideanSteps}(a, b) + 1) \\leq b$",
@@ -144,7 +144,7 @@
       "startLine": 162,
       "endLine": 167
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Fibonacci Mod Recurrence",
     "content": "Key lemma: $\\text{fib}(n+2) \\bmod \\text{fib}(n+1) = \\text{fib}(n)$ for $n \\geq 2$. Follows from the Fibonacci recurrence $\\text{fib}(n+2) = \\text{fib}(n) + \\text{fib}(n+1)$ and the fact that $\\text{fib}(n) < \\text{fib}(n+1)$ for $n \\geq 2$ (`fib_lt_fib_succ`). This shows consecutive Fibonacci pairs reduce to the previous pair under one Euclidean step.",
     "mathContext": "$n \\geq 2 \\implies \\text{fib}(n+2) \\bmod \\text{fib}(n+1) = \\text{fib}(n)$",
@@ -168,7 +168,7 @@
       "startLine": 171,
       "endLine": 192
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Fibonacci Worst-Case Optimality",
     "content": "Proves $\\text{euclideanSteps}(\\text{fib}(n+2), \\text{fib}(n+1)) = n$ for all $n \\geq 1$, by induction on $n$. The base case $n = 1$ is verified by `native_decide`. The inductive step uses `fib_mod_fib` to show each Euclidean step reduces $(\\text{fib}(k+3), \\text{fib}(k+2))$ to $(\\text{fib}(k+2), \\text{fib}(k+1))$. Combined with Lame's theorem, this establishes that consecutive Fibonacci numbers are the unique worst-case inputs (up to the bound).",
     "mathContext": "$n \\geq 1 \\implies \\text{euclideanSteps}(\\text{fib}(n+2), \\text{fib}(n+1)) = n$",
@@ -192,7 +192,7 @@
       "startLine": 203,
       "endLine": 218
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Exponential Fibonacci Lower Bound",
     "content": "Proves $\\text{fib}(2n+1) \\geq 2^n$ by induction. The inductive step uses $\\text{fib}(2k+3) = \\text{fib}(2k+2) + \\text{fib}(2k+1)$ and $\\text{fib}(2k+2) = \\text{fib}(2k) + \\text{fib}(2k+1)$, giving $\\text{fib}(2k+3) = 2 \\cdot \\text{fib}(2k+1) + \\text{fib}(2k) \\geq 2 \\cdot 2^k = 2^{k+1}$. This bridges Fibonacci growth to powers of 2, enabling the logarithmic step bound.",
     "mathContext": "$\\forall n:\\; 2^n \\leq \\text{fib}(2n+1)$. Proof: $\\text{fib}(2k+3) \\geq 2 \\cdot \\text{fib}(2k+1) \\geq 2^{k+1}$",
@@ -240,7 +240,7 @@
       "startLine": 237,
       "endLine": 237
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Decimal Digits Function",
     "content": "Defines `decimalDigits b = ⌊log₁₀(b)⌋ + 1`, the number of decimal digits of $b$. For $b \\in [10^{k-1}, 10^k)$, this returns $k$. Verified by `native_decide` on examples: $\\text{decimalDigits}(1) = 1$, $\\text{decimalDigits}(10) = 2$, $\\text{decimalDigits}(100) = 3$.",
     "mathContext": "$\\text{decimalDigits}(b) = \\lfloor \\log_{10} b \\rfloor + 1$",
@@ -261,7 +261,7 @@
       "startLine": 250,
       "endLine": 262
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lame's Classical 5-Digit Bound",
     "content": "Lame's famous 1844 result: $\\text{euclideanSteps}(a, b) \\leq 5 \\cdot \\text{decimalDigits}(b)$ for $b < 10^{20}$. Uses the intermediate result $\\text{fib}(5k+2) \\geq 10^k$ (proved by `interval_cases` and `native_decide` for $k \\leq 20$). The bound $b < 10^{20}$ ensures $d + 1 \\leq 20$ so the Fibonacci-vs-power-of-10 comparison applies. For unrestricted $b$, the result follows from $\\text{fib}(n) \\sim \\varphi^n / \\sqrt{5}$ where $\\log_{10} \\varphi \\approx 0.209 > 1/5$.",
     "mathContext": "$b < 10^{20} \\wedge b > 0 \\implies \\text{steps} \\leq 5 \\cdot \\text{decimalDigits}(b)$. Uses $\\text{fib}(5k+2) \\geq 10^k$",
@@ -287,7 +287,7 @@
       "startLine": 276,
       "endLine": 282
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Finite Average Computation Infrastructure",
     "content": "Defines `totalSteps N` as the sum of $\\text{euclideanSteps}(i+1, j+1)$ over all pairs with $1 \\leq j+1 \\leq i+1 \\leq N$, and `pairCount N = N(N+1)/2$ as the number of such pairs. The ratio $\\text{totalSteps}(N) / \\text{pairCount}(N)$ gives the exact finite average for inputs up to $N$. Verified: $\\text{totalSteps}(1) = 1$, $\\text{totalSteps}(2) = 3$, $\\text{totalSteps}(3) = 7$.",
     "mathContext": "$\\text{totalSteps}(N) = \\sum_{i=1}^{N} \\sum_{j=1}^{i} \\text{euclideanSteps}(i, j)$, $\\text{pairCount}(N) = N(N+1)/2$",

@@ -138,7 +138,7 @@
       "startLine": 15,
       "endLine": 16
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Shared Type Signature: Finite Alphabet with Positive Distribution",
     "content": "All four theorems share the parameter pattern `{α : Type*} [Fintype α] [DecidableEq α] {p : α → ℝ} (hp : ∀ x, 0 < p x) (hsum : ∑ x, p x = 1)`. This encodes a discrete probability distribution on a finite alphabet:\n\n- `Fintype α`: the alphabet is finite (needed for finite sums)\n- `DecidableEq α`: equality on alphabet elements is decidable (needed for counting)\n- `p : α → ℝ`: probability mass function as a real-valued function\n- `hp : ∀ x, 0 < p x`: strict positivity prevents $\\log 0$ and ensures full support\n- `hsum : ∑ x, p x = 1`: normalization to a valid probability distribution\n\nA more idiomatic Lean formalization might use Mathlib's `PMF α` (probability mass function) or `MeasureTheory.IsProbabilityMeasure` instead of raw functions with manual constraints. The strict positivity constraint is mathematically natural here: zero-probability symbols can be removed from the alphabet without loss of generality.",
     "mathContext": "The constraints encode: $p \\in \\Delta_{|\\mathcal{X}|}^\\circ = \\{p \\in \\mathbb{R}^{|\\mathcal{X}|} : p_i > 0,\\, \\sum_i p_i = 1\\}$ — the interior of the probability simplex. Strict positivity is needed because $H(X) = -\\sum_x p(x)\\log p(x)$ uses $\\log p(x)$, and $\\lim_{p \\to 0^+} p\\log p = 0$ makes the convention $0 \\log 0 = 0$ standard but requires careful handling in formal proofs.",

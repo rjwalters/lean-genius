@@ -183,7 +183,7 @@
       "startLine": 92,
       "endLine": 92
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Danzer-Grünbaum Theorem (1962)",
     "content": "**danzer_grunbaum**: `ErdosObtuseConjecture d` for all $d$. Published in *Mathematische Zeitschrift* (1962) by Ludwig Danzer and Branko Grünbaum, this resolved Erdős's problem completely.",
     "significance": "key",
@@ -205,7 +205,7 @@
       "startLine": 102,
       "endLine": 102
     },
-    "type": "technique",
+    "type": "concept",
     "title": "d = 2: Five Points in the Plane",
     "content": "**case_d2**: Any $5$ points in $\\mathbb{R}^2$ contain an obtuse triple. Follows from convex position analysis: a convex quadrilateral has angle sum $360°$, so some angle $\\geq 90°$.",
     "significance": "supporting",
@@ -226,7 +226,7 @@
       "startLine": 108,
       "endLine": 108
     },
-    "type": "technique",
+    "type": "concept",
     "title": "d = 3: Nine Points in Space",
     "content": "**case_d3**: Any $9$ points in $\\mathbb{R}^3$ contain an obtuse triple. Proved by Kuiper and Boerdijk (unpublished), independently of the general result.",
     "significance": "supporting",
@@ -271,7 +271,7 @@
       "startLine": 132,
       "endLine": 133
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hypercube Cardinality",
     "content": "**hypercube_card**: $|\\{0,1\\}^d| = 2^d$ by the multiplication principle — each of $d$ coordinates has $2$ choices.",
     "significance": "key",
@@ -292,7 +292,7 @@
       "startLine": 140,
       "endLine": 141
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hypercube is Obtuse-Free",
     "content": "**hypercube_obtuse_free**: No three vertices of $\\{0,1\\}^d$ form an obtuse angle. All angles are $60°$ (equilateral triangles on face diagonals) or $90°$ (right angles along edges).",
     "significance": "key",
@@ -314,7 +314,7 @@
       "startLine": 148,
       "endLine": 150
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hypercube is Extremal (PROVED)",
     "content": "**hypercube_extremal**: $|\\{0,1\\}^d| = 2^d \\land \\text{IsObtuseFree}(\\{0,1\\}^d)$. Proved by pairing `hypercube_card` and `hypercube_obtuse_free`.",
     "significance": "key",
@@ -336,7 +336,7 @@
       "startLine": 163,
       "endLine": 168
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hypercube Angle Classification",
     "content": "**hypercube_angle_classification**: For distinct $A, B, C \\in \\{0,1\\}^d$, $\\angle ABC \\leq \\pi/2$. A pointwise bound on every angle in the hypercube, stronger than the global obtuse-free property.",
     "significance": "key",
@@ -358,7 +358,7 @@
       "startLine": 185,
       "endLine": 187
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Pigeonhole on Orthants",
     "content": "**pigeonhole_orthants**: With $2^d + 1$ points in $\\mathbb{R}^d$, some coordinate orthant contains $\\geq 2$ points (since there are only $2^d$ orthants).",
     "significance": "key",
@@ -381,7 +381,7 @@
       "startLine": 238,
       "endLine": 241
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem #224: SOLVED (PROVED)",
     "content": "**erdos_224**: For $|P| = 2^d + 1$, $P$ contains an obtuse triple. A one-line proof: `danzer_grunbaum d P hcard`. This formally resolves the problem.",
     "significance": "key",
@@ -403,7 +403,7 @@
       "startLine": 249,
       "endLine": 254
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem (PROVED)",
     "content": "**erdos_224_summary**: Combines `ErdosObtuseConjecture d` with hypercube extremality into a single conjunction, proving both the threshold result and its tightness.",
     "significance": "key",

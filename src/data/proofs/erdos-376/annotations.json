@@ -63,7 +63,7 @@
       "startLine": 78,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Conditions for 105 (Verified)",
     "content": "**theorem factorization_105** ✓: 105 = 3 × 5 × 7\n\n**axiom coprime_105_iff**: Coprime to 105 ⟺ coprime to 3, 5, AND 7\n\n**Digit constraints**:\n- **coprime_3_digits**: digits in base 3 must be ≤ 1 (only 0,1)\n- **coprime_5_digits**: digits in base 5 must be ≤ 2 (only 0,1,2)\n- **coprime_7_digits**: digits in base 7 must be ≤ 3 (only 0,1,2,3)\n\nMust satisfy ALL THREE simultaneously!",
     "mathContext": "The intersection of three digit constraints makes the problem hard. Each constraint alone gives an infinite set, but the intersection is unknown.",

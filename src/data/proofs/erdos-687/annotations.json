@@ -139,7 +139,7 @@
       "startLine": 68,
       "endLine": 72
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Jacobsthal Set Nonempty",
     "content": "The jacobsthalSet is always nonempty: y = 0 is vacuously in the set since there are no integers in [1, 0]. This is needed to justify the use of sSup.",
     "significance": "supporting",
@@ -160,7 +160,7 @@
       "startLine": 78,
       "endLine": 79
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Jacobsthal Set Bounded Above",
     "content": "The jacobsthalSet(x) is bounded above. By the Chinese Remainder Theorem, the covering pattern repeats with period primorial(x), so any uncovered integer implies infinitely many uncovered integers.",
     "significance": "key",
@@ -182,7 +182,7 @@
       "startLine": 86,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Jacobsthal Set Monotonicity",
     "content": "If x₁ ≤ x₂ then jacobsthalSet(x₁) ⊆ jacobsthalSet(x₂). The proof extends any covering for primes ≤ x₁ to primes ≤ x₂ by assigning residue class 0 to each new prime.",
     "significance": "key",
@@ -204,7 +204,7 @@
       "startLine": 99,
       "endLine": 103
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Y(x) Monotonicity",
     "content": "**Y(x) is monotone**: x₁ ≤ x₂ implies Y(x₁) ≤ Y(x₂). More primes allow longer covering intervals. Proved via csSup_le_csSup from the set monotonicity.",
     "significance": "key",
@@ -227,7 +227,7 @@
       "startLine": 108,
       "endLine": 109
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Y(x) = g(primorial(x))",
     "content": "**Fundamental equivalence**: Y(x) equals the Jacobsthal function of the primorial. This connects covering systems (combinatorial) to gaps in coprime sequences (analytic).",
     "significance": "key",
@@ -250,7 +250,7 @@
       "startLine": 115,
       "endLine": 117
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem #687 ($1,000 Prize)",
     "content": "**Main Conjecture**: For all ε > 0, eventually Y(x) ≤ x^{1+ε}. This asks whether Y(x) = o(x²), formalized using Lean's `Filter.Eventually` and `Filter.atTop`.",
     "significance": "key",
@@ -271,7 +271,7 @@
       "startLine": 123,
       "endLine": 125
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Iwaniec Upper Bound (1978)",
     "content": "**Iwaniec's Theorem**: There exists C > 0 such that Y(x) ≤ C · x² for all x ≥ 2. This 1978 result remains the best known upper bound, unimproved for nearly 50 years.",
     "significance": "key",
@@ -292,7 +292,7 @@
       "startLine": 130,
       "endLine": 134
     },
-    "type": "technique",
+    "type": "concept",
     "title": "FGKMT Lower Bound (2018)",
     "content": "**Ford–Green–Konyagin–Maynard–Tao**: Y(x) ≥ c · x · (log x)(log log log x)/(log log x). This improved Rankin's 1938 classical bound using breakthrough techniques from the proof of bounded gaps between primes.",
     "significance": "key",
@@ -314,7 +314,7 @@
       "startLine": 138,
       "endLine": 140
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Maier–Pomerance Conjecture",
     "content": "**Conjectured**: Y(x) ≤ C · x · (log x)^{2+ε} for any ε > 0 and large x. If true, this would nearly close the gap with the FGKMT lower bound, leaving only a (log x)^{1+o(1)} factor.",
     "significance": "key",
@@ -335,7 +335,7 @@
       "startLine": 147,
       "endLine": 148
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Lower Bound: Y(x) ≥ x + 1",
     "content": "For x ≥ 2, Y(x) ≥ x + 1. Every integer in [1, x] has a prime factor ≤ x, so taking aₚ = 0 for all primes p ≤ x covers at least [1, x].",
     "significance": "supporting",

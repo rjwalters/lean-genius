@@ -244,7 +244,7 @@
       "startLine": 133,
       "endLine": 141
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Basic Properties (Verified)",
     "content": "**theorem plane_points** ✓:\n$$|P| = n^2 + n + 1$$\n\n**theorem plane_lines** ✓:\n$$|L| = n^2 + n + 1$$\n\nBoth extracted directly from Mathlib's `ProjectivePlane` API via `pp.card_points` and `pp.card_lines`. These are one-line proofs demonstrating that Mathlib already encodes the fundamental counting results.",
     "mathContext": "The formula $n^2 + n + 1$ is symmetric in points and lines, reflecting projective duality. This number is also the number of 1-dimensional subspaces of $\\mathbb{F}_q^3$ when $n = q$ is a prime power, connecting the combinatorial formula to the algebraic construction.",

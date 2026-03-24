@@ -146,7 +146,7 @@
       "startLine": 73,
       "endLine": 74
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Singleton Count Formula",
     "content": "For A = {a}, the multiples count |B∩[1,N]| = ⌊N/a⌋. This is the fundamental building block: the number of multiples of a in [1,N] is exactly the integer quotient N/a. The general case follows by inclusion-exclusion.",
     "mathContext": "$|\\{n \\in [1,N] : a \\mid n\\}| = \\lfloor N/a \\rfloor$. The multiples are $a, 2a, \\ldots, \\lfloor N/a \\rfloor \\cdot a$.",
@@ -168,7 +168,7 @@
       "startLine": 77,
       "endLine": 78
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Monotonicity in N",
     "content": "The multiples count is monotone non-decreasing: extending the interval [1,M] to [1,N] with M ≤ N can only add elements, never remove them. This basic property ensures the density ratio doesn't vanish.",
     "mathContext": "If $M \\leq N$, then $B(A) \\cap [1,M] \\subseteq B(A) \\cap [1,N]$, so $|B(A) \\cap [1,M]| \\leq |B(A) \\cap [1,N]|$.",
@@ -190,7 +190,7 @@
       "startLine": 81,
       "endLine": 82
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Monotonicity in A",
     "content": "Adding elements to A increases the multiples count: if A ⊆ B, then multiplesCount A N ≤ multiplesCount B N. More divisors means more multiples in any interval.",
     "mathContext": "If $A \\subseteq B$, then $B(A) \\subseteq B(B)$, so $|B(A) \\cap [1,N]| \\leq |B(B) \\cap [1,N]|$.",
@@ -212,7 +212,7 @@
       "startLine": 88,
       "endLine": 92
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Davenport's Density Theorem",
     "content": "The asymptotic density δ(B(A)) exists in (0,1] for any finite set A of positive integers. The density ratio converges to δ in the usual ε-N₀ sense. This 1933 result of Davenport provides the foundation: the density is well-defined, and the conjecture asks about the rate of convergence.",
     "mathContext": "Davenport (1933): For finite $A \\subset \\mathbb{N}_{\\geq 1}$, $\\exists \\delta \\in (0,1]$ such that $\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0,\\; |\\rho(A, N) - \\delta| < \\varepsilon$. The density equals $\\delta = \\sum_{\\emptyset \\neq S \\subseteq A} (-1)^{|S|+1} / \\operatorname{lcm}(S)$.",

@@ -121,7 +121,7 @@
       "startLine": 133,
       "endLine": 147
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result: No Such Sequence Exists",
     "content": "**Erdős Problem #299 (SOLVED)**: There does NOT exist an infinite sequence with bounded gaps that avoids unit fraction sums. The proof chains: bounded gaps → positive density → contains unit fraction sum (by Bloom).",
     "mathContext": "The full proof: assume such a sequence exists. By boundedGaps_implies_positiveDensity, its range has positive density. By bloom_theorem, it contains a unit fraction sum. Contradiction.",
@@ -159,7 +159,7 @@
       "startLine": 211,
       "endLine": 227
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Powers of 2 Have Unbounded Gaps",
     "content": "**Contrast with sparse sequences**: Powers of 2 (1, 2, 4, 8, ...) have gaps that grow without bound (2^{n+1} doubles each time). Their reciprocals sum to less than 1 (geometric series). This shows bounded gaps are necessary.",
     "mathContext": "Proof by contradiction: if gaps ≤ C for all n, then 2^{C+1} ≤ C at position C, but 2^{C+1} > C + 1 > C by Nat.lt_two_pow_self.",
@@ -178,7 +178,7 @@
       "startLine": 231,
       "endLine": 249
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary of Results",
     "content": "**Summary**: We bundle the main theorem (no bounded-gap sequence avoids unit fractions), the density variant (positive density suffices), and verified Egyptian fraction examples into a single theorem statement.",
     "mathContext": "erdos_299_summary packages: (1) the impossibility result, (2) the density variant using bloom_theorem, and (3) the concrete example {2,3,6}.",

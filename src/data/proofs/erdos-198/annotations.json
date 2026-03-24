@@ -177,7 +177,7 @@
       "startLine": 138,
       "endLine": 157
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verified Examples",
     "content": "We verify the first factorial values using native_decide: 0! + 0 = 1, 1! + 1 = 2, 2! + 2 = 4, 3! + 3 = 9, 4! + 4 = 28. These are the first elements of the AlphaProof Sidon set.",
     "mathContext": "The native_decide tactic uses Lean's kernel evaluation to verify these numeric facts. This provides machine-checked confirmation of the construction.",

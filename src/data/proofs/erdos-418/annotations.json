@@ -309,7 +309,7 @@
       "startLine": 205,
       "endLine": 215
     },
-    "type": "concept",
+    "type": "definition",
     "title": "Nonaliquots Have Positive Density",
     "content": "**erdos_nonaliquot_density** states that numbers not of the form sigma(n) - n (nonaliquots) have positive density. Erdos proved this in 1973.",
     "mathContext": "This contrasts with non-cototients where density is unknown. Banks-Luca showed density >= 1/48; Chen-Zhao improved to 0.06.",
@@ -328,7 +328,7 @@
       "startLine": 232,
       "endLine": 237
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary",
     "content": "**erdos_418_summary** packages key facts: the base 509203, and the first two witnesses 2*509203 and 4*509203.",
     "mathContext": "Verified computationally using native_decide to check the arithmetic.",

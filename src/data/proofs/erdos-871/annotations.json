@@ -101,7 +101,7 @@
       "startLine": 90,
       "endLine": 96
     },
-    "type": "definition",
+    "type": "concept",
     "title": "r_A(n) → ∞ Condition",
     "content": "RepTendsToInfty(A) says that r_A(n) grows without bound as n → ∞. This is formalized using Filter.Tendsto to atTop. The weaker RepEventuallyGe(A, t) says r_A(n) ≥ t eventually.",
     "mathContext": "The Tendsto characterization lets us extract: for any t, eventually r_A(n) ≥ t. This is proved in repTendsToInfty_implies_eventuallyGe.",
@@ -139,7 +139,7 @@
       "startLine": 119,
       "endLine": 121
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Partition into Bases",
     "content": "CanPartitionIntoBases(A) asserts that A can be split into disjoint sets B and C, each of which is itself an order-2 basis. This is the property the conjecture asked about.",
     "mathContext": "The partition requirement is B ∩ C = ∅ and B ∪ C = A. Both B and C must independently cover all large integers.",
@@ -234,7 +234,7 @@
       "startLine": 155,
       "endLine": 159
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Disproof Theorem",
     "content": "erdos_871_disproved proves ¬Erdos871Conjecture. The proof applies the conjecture to the Larsen counterexample, obtaining a contradiction.",
     "mathContext": "This is a classic proof by contradiction: assume the conjecture, apply to the counterexample, derive False.",
@@ -253,7 +253,7 @@
       "startLine": 182,
       "endLine": 185
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Blocking Property",
     "content": "HasBlockingProperty(A) says: for any partition B ∪ C = A, infinitely many n satisfy n ∉ B + B or n ∉ C + C. This prevents both parts from being bases.",
     "mathContext": "The blocking is quantified using Filter.Frequently (∃ᶠ), meaning infinitely many failures. This is the key obstruction to partition.",
@@ -272,7 +272,7 @@
       "startLine": 187,
       "endLine": 221
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Blocking Prevents Partition",
     "content": "If A has the blocking property, then A cannot be partitioned into two bases. The proof shows that the 'frequently fails' condition contradicts both parts being bases (which must cover all large n).",
     "mathContext": "The proof uses the Filter.Frequently characterization to derive a contradiction with the eventually-covers property of bases.",

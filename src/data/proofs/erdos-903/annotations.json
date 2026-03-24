@@ -309,7 +309,7 @@
       "startLine": 141,
       "endLine": 146
     },
-    "type": "technique",
+    "type": "concept",
     "title": "first_above_n (Proved)",
     "content": "The first achievable value above n is at least n + p. This is a direct consequence of `gap_theorem`: any t ∈ achievableBlocks(p) with t > n must satisfy t ≥ n + p, since all intermediate values are forbidden.",
     "mathContext": "The proof is a clean application of proof by contradiction: assume t > n and t < n + p, then gap_theorem gives t ∉ achievableBlocks(p), contradicting the hypothesis. This is one of the few fully-proved results in the file (no sorry). The Lean proof uses `by_contra` and `push_neg` to convert the negation into the form needed by gap_theorem, then applies `exact` to close the goal.",
@@ -376,7 +376,7 @@
       "startLine": 179,
       "endLine": 182
     },
-    "type": "technique",
+    "type": "concept",
     "title": "de_bruijn_erdos_from_fisher (Proved)",
     "content": "For uniform block designs (2-designs), de Bruijn-Erdős follows directly from Fisher's inequality. The proof is a single application of `fisher_inequality`.",
     "mathContext": "This theorem demonstrates the logical relationship: Fisher's inequality ⊂ de Bruijn-Erdős. The converse fails — de Bruijn-Erdős applies to non-uniform designs where Fisher's linear-algebraic proof breaks down. The proof `exact fisher_inequality D k hk h` is a direct forwarding, showing that for the uniform case, Fisher's result is strictly stronger (as it provides additional structural information about the equality case).",
@@ -391,7 +391,7 @@
       "startLine": 201,
       "endLine": 227
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_903_summary (Proved)",
     "content": "The main summary theorem combining three results: (1) de Bruijn-Erdős: t ≥ n for all block designs, (2) projective plane achieves t = n, (3) EFSW: t > n implies t ≥ n + p. All three conjuncts are proved from the axioms.",
     "mathContext": "The proof structure uses `refine ⟨?_, ?_, ?_⟩` to split the conjunction into three goals. The first goal requires showing n ≥ 2 (needed by `de_bruijn_erdos`), which is proved from the prime power hypothesis: if q = p^k with p prime and k ≥ 1, then q ≥ 2, so q²+q+1 ≥ 7 ≥ 2. This is the most substantial sub-proof, using `calc` and `omega` tactics. The second goal is discharged by `projective_plane_design`, and the third by `efsw_1985`. This theorem serves as a certificate that the formalization captures the complete answer to Erdős Problem #903.",

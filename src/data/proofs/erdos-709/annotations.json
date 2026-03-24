@@ -294,7 +294,7 @@
       "startLine": 281,
       "endLine": 286
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Statement",
     "content": "**erdos_709_statement**: The main theorem combining both Erdős-Surányi bounds.\n\nStates the conjunction:\n1. Lower bound: $\\exists c > 0$ such that $f(n) \\geq (\\log n)^c$ for large $n$\n2. Upper bound: $\\exists C > 0$ such that $f(n) \\leq C\\sqrt{n}$ for all $n \\geq 1$\n\nProved by pairing the two axioms: `⟨lower_bound_log, upper_bound_sqrt⟩`.",
     "mathContext": "This theorem serves as the formal summary of what is known about Problem 709. The proof is a simple conjunction introduction, since the individual bounds are axiomatized. The real mathematical content is in the axioms themselves.",

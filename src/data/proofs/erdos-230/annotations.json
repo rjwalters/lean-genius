@@ -140,7 +140,7 @@
       "startLine": 84,
       "endLine": 87
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Parseval's Identity",
     "content": "Proves that $(\\|P\\|_2)^2 = n$ for any unimodular polynomial of degree $n$. This is a formal verification of Parseval's identity in the unimodular case, proved by unfolding the $L^2$ norm definition and applying $\\sqrt{n}^2 = n$.",
     "mathContext": "The theorem states $\\|P\\|_2^2 = n$, which unfolds to $(\\sqrt{n})^2 = n$. The proof uses `Real.sq_sqrt` with the non-negativity condition $n \\geq 0$. This is the **exact** Parseval identity $\\sum_{k=1}^n |a_k|^2 = n$ simplified via $|a_k| = 1$.",
@@ -162,7 +162,7 @@
       "startLine": 93,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Lower Bound: sup ≥ √n",
     "content": "The sup norm always exceeds the $L^2$ norm: $\\|P\\|_\\infty \\geq \\sqrt{n}$ for any unimodular polynomial of degree $n \\geq 1$. This is the baseline lower bound that Erdős asked whether one can improve by a multiplicative constant $(1+c)$.",
     "mathContext": "From the general inequality $\\|f\\|_\\infty \\geq \\|f\\|_2$ (for probability measures on compact spaces), we get $\\sup_{|z|=1} |P(z)| \\geq \\left(\\frac{1}{2\\pi}\\int_0^{2\\pi} |P(e^{i\\theta})|^2 d\\theta\\right)^{1/2} = \\sqrt{n}$. The proof is marked `sorry` as it requires the measure-theoretic inequality.",
@@ -207,7 +207,7 @@
       "startLine": 116,
       "endLine": 119
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Conjecture Is False",
     "content": "States that the Erdős-Newman conjecture is false ($\\neg \\texttt{ErdosNewmanConjecture}$). The proof sketch extracts a contradiction from Kahane's ultraflat theorem but is currently marked `sorry`.",
     "mathContext": "The proof strategy: assume the conjecture holds with constant $c > 0$. Apply Kahane's theorem with $\\varepsilon = c/2$ to get an ultraflat $P$ with $\\|P\\|_\\infty \\leq (1 + c/2)\\sqrt{n} < (1+c)\\sqrt{n}$, contradicting the conjecture.",
@@ -253,7 +253,7 @@
       "startLine": 140,
       "endLine": 142
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Kahane's Ultraflat Theorem (1980)",
     "content": "Jean-Pierre Kahane's landmark 1980 theorem: for any $\\varepsilon > 0$ and sufficiently large $n$, there exists an $\\varepsilon$-ultraflat unimodular polynomial of degree $n$. The construction is probabilistic — random coefficient phases with careful correlation structure.",
     "mathContext": "Kahane's theorem: $\\forall \\varepsilon > 0, \\exists N(\\varepsilon), \\forall n \\geq N(\\varepsilon), \\exists P \\in \\mathcal{U}_n : (1-\\varepsilon)\\sqrt{n} \\leq |P(z)| \\leq (1+\\varepsilon)\\sqrt{n}$ for all $|z| = 1$. The proof uses a **probabilistic method**: random phases $a_k = e^{i\\theta_k}$ with controlled joint distribution achieve ultraflat behavior with positive probability, hence such polynomials exist.",
@@ -277,7 +277,7 @@
       "startLine": 148,
       "endLine": 155
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Kahane Disproves Erdős-Newman",
     "content": "Combines Kahane's ultraflat theorem with the Erdős-Newman conjecture to derive a contradiction. Given any putative constant $c > 0$ from the conjecture, choosing $\\varepsilon = c/2$ yields polynomials violating the conjecture for large $n$.",
     "mathContext": "Proof: Suppose $\\exists c > 0$ with $\\|P\\|_\\infty \\geq (1+c)\\sqrt{n}$ for all $P \\in \\mathcal{U}_n$, $n \\geq 2$. By Kahane, $\\exists N$ and $P_N \\in \\mathcal{U}_N$ with $\\|P_N\\|_\\infty \\leq (1 + c/2)\\sqrt{N} < (1+c)\\sqrt{N}$. Contradiction.",
@@ -299,7 +299,7 @@
       "startLine": 166,
       "endLine": 171
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Körner's Bounded Ratio Construction (1980)",
     "content": "Thomas W. Körner (1980) constructed unimodular polynomials with $c_1\\sqrt{n} \\leq |P(z)| \\leq c_2\\sqrt{n}$ for constants $0 < c_1 < c_2$. This was a key stepping stone toward Kahane's ultraflat result, showing that bounded ratios $\\max/\\min$ were achievable even if the ratio was not close to 1.",
     "mathContext": "Körner showed $\\exists c_1, c_2 > 0$ with $c_1 < c_2$ and $\\exists N, \\forall n \\geq N, \\exists P \\in \\mathcal{U}_n : c_1 \\sqrt{n} \\leq |P(z)| \\leq c_2 \\sqrt{n}$ for all $|z| = 1$. The gap between Körner ($c_2/c_1 > 1$ fixed) and Kahane ($c_2/c_1 \\to 1$) represents the key difficulty: controlling the oscillation ratio, not just bounding it.",
@@ -321,7 +321,7 @@
       "startLine": 182,
       "endLine": 187
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bombieri-Bourgain Improvement (2009)",
     "content": "Enrico Bombieri and Jean Bourgain (2009) dramatically improved the error in Kahane's construction: there exist unimodular polynomials with $|P(z)| = \\sqrt{n} + O(n^{7/18} (\\log n)^{O(1)})$. The exponent $7/18 \\approx 0.389$ is the current best known.",
     "mathContext": "The Bombieri-Bourgain bound: $\\exists C > 0, \\exists N, \\forall n \\geq N, \\exists P \\in \\mathcal{U}_n : ||P(z)| - \\sqrt{n}| \\leq C n^{7/18} (\\log n)^{10}$ for all $|z| = 1$. The error exponent improved from Kahane's $1/2 - \\delta$ to $7/18$. Whether $O(1)$ error is achievable (i.e., $||P(z)| - \\sqrt{n}| \\leq C$) remains a major open problem.",
@@ -365,7 +365,7 @@
       "startLine": 205,
       "endLine": 207
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Rudin-Shapiro Polynomials",
     "content": "The Rudin-Shapiro polynomials are a **deterministic** family of $\\pm 1$ polynomials satisfying $\\|P\\|_\\infty \\leq 2\\sqrt{n}$. Unlike Kahane's probabilistic ultraflat construction, these are explicit but only control the **upper** bound — the minimum of $|P(z)|$ on $S^1$ can be very small.",
     "mathContext": "The Rudin-Shapiro polynomials $R_n(z)$ of degree $2^n$ satisfy $|R_n(z)| \\leq 2\\sqrt{2^n}$ for all $|z| = 1$, but $\\min_{|z|=1} |R_n(z)|$ can be much smaller than $\\sqrt{2^n}$. These are **Littlewood polynomials** ($a_k \\in \\{\\pm 1\\}$), making them relevant to the harder Littlewood conjecture variant (Problem #228).",
@@ -388,7 +388,7 @@
       "startLine": 230,
       "endLine": 239
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "The formalization's concluding theorem combines both main results: (1) the Erdős-Newman conjecture is false ($\\neg \\texttt{ErdosNewmanConjecture}$), and (2) the Parseval lower bound $\\|P\\|_\\infty \\geq \\sqrt{n}$ is always valid. Together these show that $\\sqrt{n}$ is the exact asymptotic for the infimum of $\\|P\\|_\\infty$ over unimodular polynomials.",
     "mathContext": "The summary establishes: $\\inf_{P \\in \\mathcal{U}_n} \\|P\\|_\\infty / \\sqrt{n} \\to 1$ as $n \\to \\infty$. Part (1) is $\\lim \\inf \\leq 1$ (from Kahane), part (2) is $\\lim \\inf \\geq 1$ (from Parseval). The conjunction gives $\\lim_{n \\to \\infty} \\inf_{P \\in \\mathcal{U}_n} \\|P\\|_\\infty / \\sqrt{n} = 1$.",

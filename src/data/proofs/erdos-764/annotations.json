@@ -184,7 +184,7 @@
       "startLine": 196,
       "endLine": 208
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem: Three Impossibility Results",
     "content": "erdos_764_summary (PROVED from axioms): combines three impossibility results into one theorem. (1) 3-fold convolution sum cannot be cN + O(1) — the direct answer to Problem #764. (2) Cannot even be cN + o(N^{1/4}/(log N)^{1/2}) — the strong Vaughan bound. (3) Generalizes to h-fold for all h >= 2 — completely general. Proved as a triple conjunction directly from vaughan_corollary, vaughan_3fold_theorem, and vaughan_hfold_theorem.",
     "mathContext": "`erdos_764_summary` proves the conjunction: $(\\forall A, c > 0, \\neg\\text{IsLinearBounded}(\\text{sumConv3}(A), c)) \\wedge (\\forall A, c > 0, \\neg\\text{IsLinearVaughan}(\\text{sumConv3}(A), c)) \\wedge (\\forall h \\geq 2, \\forall A, c > 0, \\neg\\text{IsLinearBounded}(\\sum \\text{convH}(h,A), c))$. Proof: `\\langle\\text{vaughan\\_corollary}, \\text{vaughan\\_3fold\\_theorem}, \\text{vaughan\\_hfold\\_theorem}\\rangle`.",

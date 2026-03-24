@@ -53,7 +53,7 @@
       "startLine": 33,
       "endLine": 37
     },
-    "type": "technique",
+    "type": "concept",
     "title": "General (Asymmetric) Lovász Local Lemma",
     "content": "The general LLL assigns individual witness values $x_i \\in [0,1)$ to each event $i$. The condition $\\Pr[A_i] \\leq x_i \\prod_{j \\in \\Gamma(i)} (1 - x_j)$ ensures $\\Pr[\\bigcap \\overline{A_i}] \\geq \\prod_i (1-x_i) > 0$. This is strictly stronger than the symmetric form: it allows events with different probabilities and different dependency degrees. The formalization uses `Fin n` for indexing, `Finset (Fin n)` for adjacency lists, and $\\mathbb{Q}$ for exact probability arithmetic. The conclusion $\\prod_i(1-x_i) > 0$ follows from each $x_i < 1$.",
     "mathContext": "$\\Pr[A_i] \\leq x_i \\prod_{j \\in \\Gamma(i)}(1-x_j) \\implies \\Pr\\left[\\bigcap_i \\overline{A_i}\\right] \\geq \\prod_i(1-x_i) > 0$",
@@ -100,7 +100,7 @@
       "startLine": 48,
       "endLine": 52
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Moser-Tardos Constructive LLL (2010)",
     "content": "Robin Moser and Gábor Tardos (2010) gave a constructive proof of the LLL via a simple resampling algorithm: while any bad event $A_i$ occurs, pick one and resample its random variables. They proved that the expected number of resampling steps is at most $\\sum_i x_i/(1-x_i)$, which is polynomial in $n$ under the LLL conditions. This resolved a major open problem: Erdős and Lovász's original proof was purely existential and gave no algorithm. The formalization currently only states that this sum is non-negative (a weak bound), with a sorry on a simplified version of the witness condition.",
     "mathContext": "Moser-Tardos: expected resampling steps $\\leq \\sum_{i=1}^n \\frac{x_i}{1-x_i}$",

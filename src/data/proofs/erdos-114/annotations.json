@@ -163,7 +163,7 @@
       "startLine": 67,
       "endLine": 72
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lower Bound from $z^n - 1$",
     "content": "The lemniscate of $z^n - 1$ has positive length, giving $f(n) \\geq L(z^n - 1) > 0$. The exact length involves the Beta function: $L(z^n - 1) = 2n \\cdot B(1/(2n), 1/2) / \\sqrt{2\\pi}$, which tends to $2n$ as $n \\to \\infty$.",
     "mathContext": "$f(n) \\geq L(z^n - 1) = \\frac{2n \\cdot \\Gamma(1/(2n))^2}{\\sqrt{2\\pi} \\cdot \\Gamma(1/n)} \\sim 2n$.",

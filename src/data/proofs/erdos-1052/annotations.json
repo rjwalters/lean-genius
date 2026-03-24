@@ -65,7 +65,7 @@
       "startLine": 47,
       "endLine": 54
     },
-    "type": "technique",
+    "type": "concept",
     "title": "One is Always a Unitary Divisor",
     "content": "**one_mem_properUnitaryDivisors**: For n > 1, 1 belongs to `properUnitaryDivisors n`. Proof unfolds the filter definition with `simp` and verifies: 1 ∈ Ico 1 n (by `omega`), 1 ∣ n (by `one_dvd`), and `gcd(1, n) = 1` (by `simp [Nat.Coprime]`).",
     "significance": "supporting",
@@ -85,7 +85,7 @@
       "startLine": 56,
       "endLine": 58
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Membership Characterization",
     "content": "**mem_properUnitaryDivisors**: Characterizes membership as `d ∈ Finset.Ico 1 n ∧ d ∣ n ∧ d.Coprime (n / d)`, directly unfolding the filter definition with `simp [properUnitaryDivisors]`.",
     "significance": "supporting",

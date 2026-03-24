@@ -175,7 +175,7 @@
       "startLine": 90,
       "endLine": 98
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Natural Numbers as an AP",
     "content": "The set of all natural numbers ℕ is an infinite arithmetic progression with a = 0 and d = 1.",
     "mathContext": "Every n ∈ ℕ can be written as n = 0 + n·1, so ℕ = {0 + k·1 : k ∈ ℕ}. The proof uses `ring` to verify the arithmetic identity.",
@@ -193,7 +193,7 @@
       "startLine": 100,
       "endLine": 113
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Even Numbers as an AP",
     "content": "The set of even numbers {0, 2, 4, 6, ...} is an infinite arithmetic progression with a = 0 and d = 2.",
     "mathContext": "A number n is even iff n = 2k for some k, which is equivalent to n = 0 + k·2. The proof uses `omega` to handle the arithmetic equivalences.",

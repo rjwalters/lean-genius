@@ -176,7 +176,7 @@
       "startLine": 180,
       "endLine": 188
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Impossibility Proof",
     "content": "The main theorem: **No Eulerian path exists in the Königsberg graph.**\n\nThe proof is by contradiction:\n1. Assume an Eulerian path `p` exists\n2. Apply `card_odd_degree`: the number of odd-degree vertices must be 0 or 2\n3. But we proved it's 4 (the set {V1, V2, V3, V4})\n4. Contradiction!\n\nIn Lean: `simp at h` derives a contradiction from `4 ∈ {0, 2}`.",
     "mathContext": "$\\neg\\exists$ Eulerian path in $G_{\\text{Königsberg}}$",

@@ -169,7 +169,7 @@
       "startLine": 154,
       "endLine": 163
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Gruslys-Letzter Theorem (2020)",
     "content": "**gruslys_letzter** (axiom): For $n \\ge 6$, every 2-coloring of $K_n$ has at least $(1 - 1/n) \\cdot n^2/12$ edge-disjoint monochromatic triangles. This confirms the Erdős-Faudree-Ordman conjecture.\n\n**extremal_uniqueness** (axiom): The balanced coloring is essentially the unique extremal construction (up to isomorphism).",
     "mathContext": "Gruslys and Letzter's proof (2020) uses the Szemerédi regularity lemma to decompose the 2-colored $K_n$ into structured pieces. The regular pairs are analyzed for triangle density, and a greedy-absorption method builds the packing. The uniqueness result shows that any coloring achieving the bound must be close to the balanced bipartition, a stability-type result.",
@@ -193,7 +193,7 @@
       "startLine": 173,
       "endLine": 181
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Triangle Counting vs Packing",
     "content": "**totalTriangles n**: $\\binom{n}{3} = n(n-1)(n-2)/6$ triangles in $K_n$.\n\n**totalEdges n**: $\\binom{n}{2} = n(n-1)/2$ edges in $K_n$.\n\n**packing_upper_bound** (sorry): Any packing has at most $\\lfloor \\binom{n}{2}/3 \\rfloor$ triangles, since each triangle uses 3 edges.",
     "mathContext": "The trivial upper bound $\\binom{n}{2}/3 \\approx n^2/6$ for edge-disjoint triangle packing is twice the conjectured lower bound $n^2/12$. The factor of 2 gap reflects the fact that in the extremal coloring, one color (red) contributes zero triangles (being bipartite), so only half the edges are 'useful' for triangle packing.",
@@ -217,7 +217,7 @@
       "startLine": 194,
       "endLine": 197
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The $n^2/12$ Bound Explained",
     "content": "**bound_from_cliques** (proved): $n^2/12 = 2 \\times (n/2)^2/24$. In the balanced coloring, each blue clique $K_{n/2}$ contributes $(n/2)^2/24$ packed triangles, and two cliques give $n^2/12$.",
     "mathContext": "The optimal edge-disjoint triangle packing in $K_m$ has $\\lfloor m(m-1)/6 \\rfloor$ triangles (Steiner triple system for $m \\equiv 1, 3 \\pmod{6}$, near-optimal otherwise). For $m = n/2$: $(n/2)(n/2 - 1)/6 \\approx n^2/24$. Two such cliques: $2 \\times n^2/24 = n^2/12$. The red bipartite graph contributes zero triangles.",

@@ -90,7 +90,7 @@
   {
     "id": "ann-703-4",
     "proofId": "erdos-703",
-    "type": "technique",
+    "type": "concept",
     "title": "T(n,0) = 2^{n-1} — Intersecting Family Maximum",
     "content": "The trivial case: 0-avoiding families are exactly intersecting families (all pairs must intersect). The maximum is 2^{n-1}, achieved by all sets containing a fixed element. Has a sorry — the proof requires showing the construction achieves 2^{n-1} and that no intersecting family is larger.",
     "range": {
@@ -112,7 +112,7 @@
   {
     "id": "ann-703-5",
     "proofId": "erdos-703",
-    "type": "technique",
+    "type": "concept",
     "title": "0-Avoiding Equals Intersecting",
     "content": "|A ∩ B| ≠ 0 is equivalent to A ∩ B ≠ ∅, i.e., A and B must intersect. This connects the r-avoiding framework to classical intersecting family theory. Proved by unfolding definitions and using card_eq_zero / nonempty_iff_ne_empty.",
     "range": {
@@ -134,7 +134,7 @@
   {
     "id": "ann-703-6",
     "proofId": "erdos-703",
-    "type": "technique",
+    "type": "concept",
     "title": "Frankl (1977) — T(n,1) Determination",
     "content": "Frankl determined T(n,1) for all n. The optimal 1-avoiding family consists of large sets (size > (n+1)/2) plus the empty set. Axiomatized because the proof requires detailed casework on set sizes and intersection counting.",
     "range": {
@@ -156,7 +156,7 @@
   {
     "id": "ann-703-7",
     "proofId": "erdos-703",
-    "type": "technique",
+    "type": "concept",
     "title": "Large Sets Avoid 1-Intersection",
     "content": "If |A|, |B| > (n+1)/2, then |A ∩ B| > 1 by pigeonhole. Large sets cannot have intersection exactly 1. Has a sorry — the proof requires the pigeonhole argument on set sizes within {1,...,n}.",
     "range": {
@@ -222,7 +222,7 @@
   {
     "id": "ann-703-10",
     "proofId": "erdos-703",
-    "type": "technique",
+    "type": "definition",
     "title": "Frankl-Füredi (1984) — Exact T(n,r) for Fixed r",
     "content": "For fixed r ≥ 1 and n sufficiently large, T(n,r) equals the Frankl-Füredi optimal family size. The construction achieves the maximum, split by parity of n + r. Axiomatized because the optimality proof requires sophisticated double-counting arguments.",
     "range": {
@@ -266,7 +266,7 @@
   {
     "id": "ann-703-12",
     "proofId": "erdos-703",
-    "type": "technique",
+    "type": "definition",
     "title": "Frankl-Rödl (1987) — Main Question Resolved YES",
     "content": "The answer is YES: for r in the middle range, T(n,r) is exponentially bounded away from 2^n. This resolves Erdős Problem #703 and the $250 prize. Axiomatized because the proof uses the probabilistic method and regularity-type arguments.",
     "range": {
@@ -400,7 +400,7 @@
   {
     "id": "ann-703-clean",
     "proofId": "erdos-703",
-    "type": "technique",
+    "type": "concept",
     "title": "Clean Statement: erdos_703",
     "content": "The clean one-line resolution: mainQuestion follows directly from frankl_rodl_1987. This is the final statement that Erdős Problem #703 is solved.",
     "range": {

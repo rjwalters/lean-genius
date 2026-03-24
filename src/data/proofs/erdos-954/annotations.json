@@ -73,7 +73,7 @@
       "startLine": 85,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verified Initial Values (OEIS A390642)",
     "content": "The first 11 terms of the Rosen sequence $(0, 1, 3, 5, 9, 13, 17, 24, 31, 38, 45)$ are verified by `native_decide`. These match OEIS A390642. The gaps between consecutive terms grow: $1, 2, 2, 4, 4, 4, 7, 7, 7, 7$, suggesting roughly $\\sqrt{k}$-type growth in spacing.",
     "significance": "supporting",

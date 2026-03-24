@@ -97,7 +97,7 @@
       "startLine": 63,
       "endLine": 71
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Triangle-Free Implies K₄-Free",
     "content": "Every triangle-free graph is automatically $K_4$-free, since $K_4$ contains 4 triangles. This is one of the few theorems in the file with a complete Lean proof — it destructs the $K_4$ witness and extracts a triangle. This gives the problem content: we measure how much of a $K_4$-free graph can avoid the 'next level' of clique structure.",
     "mathContext": "The proof destructs $\\langle a, b, c, d, \\ldots \\rangle$ from `HasK4 G` and constructs a triangle from the first three vertices. Formally: $K_4 \\supseteq K_3$, so $\\neg K_3 \\Rightarrow \\neg K_4$. This is the monotonicity of the clique-free property.",

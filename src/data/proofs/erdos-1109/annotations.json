@@ -54,7 +54,7 @@
       "startLine": 69,
       "endLine": 79
     },
-    "type": "definition",
+    "type": "concept",
     "title": "The Sumset and Squarefree Sumset Predicate",
     "content": "**Sumset Definition:**\n```lean\ndef sumset (A : Finset ℕ) : Finset ℕ :=\n  (A ×ˢ A).image (fun p => p.1 + p.2)\n```\n\nThis computes A + A = {a + b : a, b ∈ A}.\n\n**Squarefree Sumset Predicate:**\n```lean\ndef hasSquarefreeSumset (A : Finset ℕ) : Prop :=\n  ∀ s ∈ sumset A, isSquarefree s\n```\n\n**Size Explosion:** If |A| = m, then |A + A| can be as large as m(m+1)/2. For ALL these sums to be squarefree is an extremely strong constraint that severely limits how large A can be.",
     "significance": "key",

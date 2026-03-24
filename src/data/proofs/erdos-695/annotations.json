@@ -291,7 +291,7 @@
       "startLine": 159,
       "endLine": 164
     },
-    "type": "concept",
+    "type": "definition",
     "title": "Problem Status",
     "content": "Both Question1 and Question2 are OPEN. The gap between lower bound c^k and upper bound exp(exp(Ck)) is enormous.",
     "mathContext": "Neither question has been resolved. The true growth rate of prime chains remains unknown.",
@@ -314,7 +314,7 @@
       "startLine": 177,
       "endLine": 187
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Main Formal Statement",
     "content": "erdos_695_main: For all prime chains p, Tendsto(p_k^{1/k}) atTop atTop ↔ Question1. Formal statement of Part 1.",
     "mathContext": "Uses Mathlib's Filter.Tendsto for the limit formulation.",
@@ -338,7 +338,7 @@
       "startLine": 189,
       "endLine": 195
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Variant Formal Statement",
     "content": "erdos_695_variant: Question2 ↔ ∃p chain with p_k ≤ exp(k(log k)^{1+o(1)}). Formal statement of Part 2.",
     "mathContext": "Uses Mathlib's Asymptotics for the o(1) notation.",

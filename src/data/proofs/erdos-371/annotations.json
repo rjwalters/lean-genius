@@ -73,7 +73,7 @@
       "startLine": 69,
       "endLine": 71
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Counting Function",
     "content": "Defines `countingFunction S x` as $|\\{n < x : n \\in S\\}|$ using `Finset.range(x).filter`. This is the basic building block for all density definitions — natural density is the limit of this count divided by $x$.",
     "mathContext": "$\\pi_S(x) := |\\{n \\in S : n < x\\}| = |\\text{Finset.range}(x) \\cap S|$. Natural density $d(S) = \\lim_{x \\to \\infty} \\pi_S(x)/x$.",
@@ -96,7 +96,7 @@
       "startLine": 73,
       "endLine": 75
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Natural Density",
     "content": "A set $S \\subseteq \\mathbb{N}$ has natural density $d$ if $\\pi_S(x)/x \\to d$ as $x \\to \\infty$. Formalized as `Tendsto` towards the neighborhood filter $\\mathcal{N}(d)$ along `atTop`. Not all sets have natural density (e.g., $\\{n : \\text{leading digit of } n \\text{ is } 1\\}$), which is why logarithmic and lower density are also defined.",
     "mathContext": "$\\text{HasNaturalDensity}(S, d) :\\Leftrightarrow \\lim_{x \\to \\infty} \\frac{|\\{n < x : n \\in S\\}|}{x} = d$. Examples: $d(\\text{evens}) = 1/2$, $d(\\text{primes}) = 0$, $d(\\text{squares}) = 0$.",
@@ -208,7 +208,7 @@
       "startLine": 109,
       "endLine": 118
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Erdos-Pomerance (1978)",
     "content": "Two axioms record the foundational result: both $S^+$ and $S^-$ have positive upper density. This was the first major progress — showing that neither set is negligible. Erdős and Pomerance used sieve methods to prove $\\overline{d}(S^+) > 0$ and $\\overline{d}(S^-) > 0$, but could not determine the exact density.",
     "mathContext": "Erdős-Pomerance (1978): $\\overline{d}(S^+) > 0$ and $\\overline{d}(S^-) > 0$. Their method gave explicit but small positive bounds, far from the conjectured $1/2$.",
@@ -390,7 +390,7 @@
       "startLine": 249,
       "endLine": 274
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Small Examples and Set Membership",
     "content": "Computes $P(2)=2$, $P(3)=3$, $P(4)=2$, $P(5)=5$, $P(6)=3$ (all sorry). Then proves set membership: $2 \\in S^+$ (since $P(2)=2 < P(3)=3$), $4 \\in S^+$ (since $P(4)=2 < P(5)=5$), $5 \\in S^-$ (since $P(5)=5 > P(6)=3$). These concrete examples ground the abstract definitions.",
     "mathContext": "$P(2)=2, P(3)=3, P(4)=2, P(5)=5, P(6)=3$. So $2,4 \\in S^+$ and $5 \\in S^-$. The OEIS sequence A070089 begins $2, 4, 6, 8, 10, 12, \\ldots$",
@@ -413,7 +413,7 @@
       "startLine": 278,
       "endLine": 284
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Related Problems #372 and #928",
     "content": "Defines formal connections to two companion problems: Problem #372 asks about the ratio $P(n)/P(n+1)$ (related to descending chains of prime factors), and Problem #928 asks about consecutive integers sharing a common prime factor (a Diophantine constraint rather than a comparison constraint).",
     "mathContext": "Problem #372: density of $\\{n : P(n)/P(n+1) < 1\\}$. Problem #928: density of $\\{n : \\exists p \\text{ prime},\\, p \\mid n,\\, p \\mid (n+1)\\}$ (this set is empty since $\\gcd(n, n+1) = 1$, so #928 likely concerns a different formulation).",
@@ -435,7 +435,7 @@
       "startLine": 290,
       "endLine": 296
     },
-    "type": "definition",
+    "type": "concept",
     "title": "OEIS A070089 and Even Numbers",
     "content": "Defines `isOEIS_A070089` as membership in $S^+$ and proves `even_often_in_set`: if $n$ is even, $n \\ge 2$, $n+1$ is odd, and $n+1$ is prime, then $n \\in S^+$. This captures the heuristic that even numbers often appear in the sequence because $P(\\text{even})$ tends to be small (often 2) while $P(\\text{odd})$ can be large.",
     "mathContext": "If $n$ is even and $n+1$ is prime, then $P(n) \\le n/2$ while $P(n+1) = n+1 > n/2 \\ge P(n)$, so $n \\in S^+$. The first terms of A070089: $2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, \\ldots$",

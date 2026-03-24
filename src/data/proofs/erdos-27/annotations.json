@@ -308,7 +308,7 @@
       "startLine": 145,
       "endLine": 149
     },
-    "type": "technique",
+    "type": "concept",
     "title": "FFKPY Main Theorem",
     "content": "**ffkpy_main_theorem**: For large $N$, if $1 < C \\leq N^{\\alpha(N)}$, every system with moduli in $[N, CN]$ has $\\delta(S) \\geq \\frac{1}{2}\\prod_c(1-1/c.n)$.",
     "mathContext": "Since $\\prod_{n=N}^{CN}(1-1/n) \\geq 1/C$, this gives $\\delta(S) \\geq 1/(2C) > 0$ for fixed $C$, proving the conjecture false.",
@@ -331,7 +331,7 @@
       "startLine": 158,
       "endLine": 159
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Conjecture Disproved",
     "content": "**erdos_27_disproved**: `ErdosConjectureNegation` holds. No constant $C > 1$ works. This resolved Erdős's $\\$100$ prize.",
     "mathContext": "For any $C > 1$, choose $N$ large enough that $C \\leq N^{\\alpha(N)}$, then $\\delta(S) \\geq 1/(2C)$ for all $S$. Setting $\\varepsilon = 1/(4C)$ refutes the conjecture.",
@@ -353,7 +353,7 @@
       "startLine": 171,
       "endLine": 175
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Growing C Works",
     "content": "**growing_C_works**: If $C = C(N)$ grows with $N$, $\\varepsilon$-almost coverings exist for any fixed $\\varepsilon$.",
     "mathContext": "For $C(N) \\to \\infty$, $\\prod_{n=N}^{C(N)N}(1-1/n) \\to 0$, so the averaging argument gives uncovered density $\\to 0$.",
@@ -396,7 +396,7 @@
       "startLine": 198,
       "endLine": 201
     },
-    "type": "technique",
+    "type": "concept",
     "title": "BBMST Bound",
     "content": "**bbmst_bound**: Every perfect covering has some modulus $< 616{,}000$ (Bloom-Briggs-Maynard-Smith-Tao 2024). Resolves the Erdős minimum modulus conjecture.",
     "mathContext": "Hough (2015) first proved the conjecture with bound $10^{18}$. Balister et al. improved to $10^6$. BBMST achieved $616{,}000$. This means no covering system can have all moduli $\\geq 616{,}000$.",

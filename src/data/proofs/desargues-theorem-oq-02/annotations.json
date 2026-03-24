@@ -163,7 +163,7 @@
       "startLine": 190,
       "endLine": 224
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Non-Collinearity Proof",
     "content": "Proves $\\neg \\text{MoultonCollinear}(\\alpha, \\beta, \\gamma)$ by exhaustive case analysis over the three `MLine` constructors. For standard lines: the system $4 = -3m + b$, $38/11 = (6/11)m + b$, $8 = -35m + b$ is inconsistent ($m = -1/8$, $b = 29/8$ satisfies the first and third but gives $313/88 \\neq 304/88$ for the second). For bent lines: $\\alpha$ and $\\gamma$ force the left branch ($m = -1/8$, $b = 29/8$), but $\\beta$ uses the right branch where $2(-1/8)(6/11) + 29/8 = 307/88 \\neq 304/88$. For vertical: $x$-coordinates $-3 \\neq 6/11$.",
     "mathContext": "Standard case: the overdetermined system has discrepancy $313/88 - 304/88 = 9/88$. Bent case: discrepancy $307/88 - 304/88 = 3/88$. Both contradictions are derived by `linarith`. The bent case yields the tighter gap because the doubled slope partially compensates, but not enough.",
@@ -186,7 +186,7 @@
       "startLine": 233,
       "endLine": 250
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Desargues Fails in the Moulton Plane",
     "content": "The culminating theorem: assembles all components into a single 13-conjunct statement showing Desargues's theorem fails. The first 9 conjuncts establish perspectivity from $O$, the next 6 verify that $\\alpha, \\beta, \\gamma$ lie on the correct side-intersection pairs, and the final conjunct negates Moulton-collinearity. This is a constructive counterexample: all data is explicit and all verification is by computation.",
     "mathContext": "The theorem states: two triangles $\\triangle ABC$, $\\triangle A'B'C'$ are perspective from point $O$ (three concurrent line triples), the three side-intersection points are correctly computed ($\\alpha, \\beta, \\gamma$), yet $\\neg \\text{MoultonCollinear}(\\alpha, \\beta, \\gamma)$. Desargues's theorem would require collinearity.",
@@ -210,7 +210,7 @@
       "startLine": 256,
       "endLine": 308
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Non-Degeneracy of Both Triangles",
     "content": "Proves that both triangles are non-degenerate: vertices are pairwise distinct and the three vertices of each triangle are not Moulton-collinear. The non-collinearity proofs follow the same structure as the main non-collinearity theorem — case analysis over MLine constructors with `linarith` deriving contradictions from overdetermined systems. This ensures the counterexample is genuine (not a degenerate configuration).",
     "mathContext": "$A \\neq B \\neq C \\neq A$ and $A' \\neq B' \\neq C' \\neq A'$ (6 distinctness conditions). $\\neg \\text{MoultonCollinear}(A, B, C)$ and $\\neg \\text{MoultonCollinear}(A', B', C')$ (neither triangle degenerates to a line).",
@@ -232,7 +232,7 @@
       "startLine": 317,
       "endLine": 321
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Euclidean Collinearity Contrast",
     "content": "Demonstrates that in the standard Euclidean plane (all lines standard), the same three intersection points ARE collinear — they all lie on $y = -x/8 + 29/8$. The Euclidean $\\beta$ would be $(1, 7/2)$ instead of $(6/11, 38/11)$. This proves the non-collinearity is purely a consequence of the Moulton bending, not an artifact of the chosen coordinates.",
     "mathContext": "Euclidean collinearity: $\\alpha = (-3, 4)$, $\\beta_{\\text{Euc}} = (1, 7/2)$, $\\gamma = (-35, 8)$ all satisfy $y = -\\frac{1}{8}x + \\frac{29}{8}$. The line $y = -x/8 + 29/8$ passes through all three: $4 = 3/8 + 29/8 = 32/8$, $7/2 = -1/8 + 29/8 = 28/8$, $8 = 35/8 + 29/8 = 64/8$.",
@@ -255,7 +255,7 @@
       "startLine": 327,
       "endLine": 330
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The 3/88 Moulton Gap",
     "content": "Quantifies the exact arithmetic discrepancy caused by Moulton bending: the bent line through $\\alpha$ and $\\gamma$ (slope $-1/8$) evaluates to $307/88$ at $x = 6/11$ using the doubled slope, while $\\beta_y = 38/11 = 304/88$. The gap of $3/88 \\approx 0.034$ is the precise obstruction to Desargues's theorem. This makes the counterexample not just qualitative but quantitatively sharp.",
     "mathContext": "Gap computation: $2 \\cdot (-1/8) \\cdot (6/11) + 29/8 = -12/88 + 319/88 = 307/88$. Beta: $38/11 = 304/88$. Discrepancy: $307/88 - 304/88 = 3/88$.",

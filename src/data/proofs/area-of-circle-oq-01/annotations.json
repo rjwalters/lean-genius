@@ -75,7 +75,7 @@
       "startLine": 57,
       "endLine": 65
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem: HasDerivAt for Circle Area",
     "content": "The core result: `HasDerivAt circleArea (2 * π * r) r`, proving that the derivative of the area function at any point $r$ equals $2\\pi r$. The proof unfolds `circleArea`, applies `hasDerivAt_pow 2 r` to get $d(r^2)/dr = 2r$, then uses `.const_mul π` to scale by $\\pi$, and finishes with `ring` to verify $\\pi \\cdot 2r = 2\\pi r$.",
     "mathContext": "$\\frac{d}{dr}(\\pi r^2) = \\pi \\cdot 2r = 2\\pi r$. The `HasDerivAt` typeclass provides the strongest form: it asserts the limit $\\lim_{h \\to 0} \\frac{A(r+h) - A(r) - 2\\pi r \\cdot h}{h} = 0$.",

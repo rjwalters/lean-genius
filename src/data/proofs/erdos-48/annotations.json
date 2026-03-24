@@ -294,7 +294,7 @@
       "startLine": 304,
       "endLine": 315
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Prime Pair Condition",
     "content": "**prime_pair_condition:**\n\nFor primes p, q: (p, q) in totientSigmaPairs iff p - 1 = q + 1.\n\nThis means p = q + 2, i.e., (p, q) must be (q+2, q).\n\nSo prime pairs in the set are exactly twin prime pairs!",
     "significance": "key",

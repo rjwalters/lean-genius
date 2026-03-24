@@ -229,7 +229,7 @@
       "startLine": 120,
       "endLine": 129
     },
-    "type": "context",
+    "type": "concept",
     "title": "Kahane's Unimodular Ultraflat (1980)",
     "content": "For general unimodular coefficients (|aᵢ| = 1, complex phases allowed), Kahane proved in 1980 that ultraflat polynomials exist: for any ε > 0 and all large n, there exist coefficients with |aᵢ| = 1 such that (1-ε)√n ≤ |P(z)| ≤ (1+ε)√n on the entire unit circle. This shows the restriction to ±1 coefficients is what makes Problem #1150 hard. The continuous symmetry group U(1)^{n+1} is rich enough to allow ultraflat behavior, but the discrete group {±1}^{n+1} may not be.",
     "mathContext": "$$\\forall \\varepsilon > 0,\\; \\forall^\\infty n,\\; \\exists (a_k)_{k=0}^n \\text{ with } |a_k|=1:\\quad (1-\\varepsilon)\\sqrt{n} \\le \\left|\\sum_{k=0}^n a_k z^k\\right| \\le (1+\\varepsilon)\\sqrt{n} \\quad \\forall |z|=1$$",
@@ -258,7 +258,7 @@
       "startLine": 131,
       "endLine": 142
     },
-    "type": "technique",
+    "type": "concept",
     "title": "BBMST Upper Bound Consequence",
     "content": "Derives from the BBMST result that for some Littlewood polynomials, the sup norm is at most c₂√n. The pointwise bound |P(z)| ≤ c₂√n for all |z| = 1 implies the supremum is bounded: ‖P‖∞ ≤ c₂√n. Contains one sorry for the step converting pointwise bounds to a supremum bound, which requires showing the supremum over unit circle values is ≤ c₂√n when each individual value satisfies this bound.",
     "mathContext": "From BBMST: $\\forall |z|=1,\\; \\|P(z)\\| \\le c_2\\sqrt{n}$ implies $\\sup_{|z|=1}\\|P(z)\\| \\le c_2\\sqrt{n}$. This is the definition of supremum: if every element of a set is $\\le M$, then $\\sup \\le M$.",

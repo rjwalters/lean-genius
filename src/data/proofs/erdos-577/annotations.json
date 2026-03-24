@@ -162,7 +162,7 @@
       "startLine": 104,
       "endLine": 104
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Wang's Theorem (2010)",
     "content": "**Wang's Theorem**: The Erdős-Faudree conjecture is TRUE. Axiomatized as `wang_theorem : ErdosFaudreeConjecture`. Wang's 45-page proof analyzes minimal counterexamples using neighborhood structure analysis, greedy cycle extraction with careful bookkeeping, and contradiction arguments.",
     "significance": "key",
@@ -183,7 +183,7 @@
       "startLine": 107,
       "endLine": 107
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős-Faudree Conjecture: SOLVED",
     "content": "Direct application of `wang_theorem`: the Erdős-Faudree conjecture holds. This is a trivial wrapper (`erdos_faudree_solved := wang_theorem`) that makes the resolution explicit.",
     "significance": "supporting",
@@ -203,7 +203,7 @@
       "startLine": 118,
       "endLine": 128
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Base Case: k = 1",
     "content": "For $k=1$: a graph on 4 vertices with $\\delta(G) \\geq 2$ contains a 4-cycle. With 4 vertices each having degree $\\geq 2$, the graph is Hamiltonian — and a Hamiltonian cycle on 4 vertices IS a 4-cycle. Derived from Wang's theorem with $k=1$.",
     "significance": "supporting",
@@ -226,7 +226,7 @@
       "startLine": 133,
       "endLine": 139
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sharpness of Degree Bound",
     "content": "The degree bound $2k$ is **sharp**: for every $k > 0$, there exists a graph on $4k$ vertices with $\\delta(G) = 2k-1$ (one less than the threshold) that contains NO $k$ vertex-disjoint 4-cycles. This shows the conjecture's hypothesis cannot be weakened.",
     "significance": "key",
@@ -305,7 +305,7 @@
       "startLine": 169,
       "endLine": 175
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Wang's Proof Technique",
     "content": "Axiomatized placeholder (`wang_proof_technique : True`) documenting Wang's proof approach: (1) assume a minimal counterexample, (2) analyze neighborhood structures of high-degree vertices, (3) use greedy extraction with careful bookkeeping, (4) derive contradiction.",
     "significance": "supporting",
@@ -324,7 +324,7 @@
       "startLine": 198,
       "endLine": 200
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem #577: Final Theorem",
     "content": "The canonical statement: `erdos_577 : ErdosFaudreeConjecture := wang_theorem`. Erdős Problem #577 is SOLVED. The Erdős-Faudree conjecture holds: dense graphs with $4k$ vertices and $\\delta(G) \\geq 2k$ contain $k$ vertex-disjoint $C_4$'s.",
     "significance": "key",

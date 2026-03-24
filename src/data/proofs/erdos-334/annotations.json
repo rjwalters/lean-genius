@@ -32,7 +32,7 @@
       "startLine": 52,
       "endLine": 54
     },
-    "type": "technique",
+    "type": "concept",
     "title": "1 is Trivially Smooth",
     "content": "**one_smooth:**\n\nThe number 1 is y-smooth for any bound y, since 1 has no prime factors at all.\n\n**Proof:** If p is prime and p | 1, then p ≤ 1 (contradiction), so the condition is vacuously true.",
     "mathContext": "$\\text{isSmooth}(1, y)$ is vacuously true because no prime divides 1: $\\forall p \\text{ prime}, p \\nmid 1$. In Lean: Nat.Prime.one_dvd is False (no prime divides 1), so the ∀ is vacuously satisfied.",
@@ -55,7 +55,7 @@
       "startLine": 59,
       "endLine": 63
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Prime Powers are p-Smooth",
     "content": "**prime_power_smooth:**\n\nAny power p^k of a prime p is p-smooth, since its only prime factor is p itself.\n\n**Application:** Powers of 2 are 2-smooth, powers of 3 are 3-smooth, etc. These are building blocks for smooth representations.",
     "mathContext": "If $p$ is prime, then $p^k$ is $p$-smooth: the only prime dividing $p^k$ is $p$ itself. Lean proof uses Nat.Prime.dvd_prime_pow: if $q$ prime and $q \\mid p^k$, then $q = p$. Powers of 2 (Hamming numbers) and powers of 2×3×5 (5-smooth or regular numbers) are classical examples.",
@@ -79,7 +79,7 @@
       "startLine": 68,
       "endLine": 73
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Product of Smooth Numbers is Smooth",
     "content": "**smooth_mul:**\n\nThe product of two y-smooth numbers is also y-smooth.\n\n**Proof:** If p | ab, then p | a or p | b. Either way, p ≤ y since both a and b are y-smooth.\n\nThis closure property is essential for constructing smooth pair representations.",
     "mathContext": "$\\text{isSmooth}(a,y) \\wedge \\text{isSmooth}(b,y) \\Rightarrow \\text{isSmooth}(a \\cdot b, y)$. Proof: if prime $p \\mid ab$, then $p \\mid a$ or $p \\mid b$ (by Euclid's lemma / Nat.Prime.dvd_mul), and in either case $p \\le y$. This makes y-smooth numbers a multiplicative semigroup.",

@@ -150,7 +150,7 @@
       "startLine": 194,
       "endLine": 208
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "`erdos_914_summary` combines both results: (1) Hajnal–Szemerédi holds for all $r, m$, and (2) the degree condition is tight. Proved by `⟨fun ... => hajnal_szemeredi ..., degree_condition_tight⟩`. This fully characterizes the minimum degree threshold for vertex-disjoint cliques.",
     "mathContext": "The conjunction $(\\forall\\, r, m, G,\\; \\delta(G) \\ge m(r-1) \\implies m\\text{ disjoint } K_r\\text{'s}) \\;\\land\\; (\\forall\\, r, m,\\; \\exists\\, G,\\; \\delta(G) = m(r-1)-1 \\land \\neg m\\text{ disjoint } K_r\\text{'s})$ gives a complete characterization: $m(r-1)$ is both sufficient and necessary.",

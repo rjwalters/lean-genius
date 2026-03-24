@@ -66,7 +66,7 @@
       "startLine": 73,
       "endLine": 104
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Four Properties of Bump Functions That Drive the Proof",
     "content": "The proof establishes four critical properties of each bump function: (1) nonnegativity, which follows immediately from the max with zero; (2) continuity, proved by composing continuous operations (norm, subtraction, max); (3) positivity inside the epsilon-ball, since epsilon - ||x - c|| > 0 when ||x - c|| < epsilon; and (4) vanishing outside the ball, since max(0, negative) = 0. The contrapositive of property (4) gives property (5): if the bump is positive, then x is within epsilon of the center. This last fact is the engine of the approximation bound, ensuring only nearby centers contribute to the weighted average.",
     "mathContext": "$\\varphi_c(x) > 0 \\iff \\|x - c\\| < \\varepsilon$; and $\\varphi_c(x) > 0 \\implies \\|x - c\\| < \\varepsilon$",
@@ -154,7 +154,7 @@
       "startLine": 161,
       "endLine": 184
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Convex Hull Membership: The Weighted Average Is a Convex Combination",
     "content": "The proof that pi(x) lies in the convex hull of the centers is a beautiful application of the characterization of convex hulls via convex combinations. The weights w_i = phi_i(x)/S(x) are nonneg (since each phi_i >= 0 and S > 0) and sum to 1 (by construction). The proof rewrites the projection as sum(w_i * x_i) and then invokes Mathlib's convex_convexHull.sum_mem, which says that any convex combination of points in a convex set lies in the set. The algebraic manipulation uses div_eq_mul_inv and mul_inv_cancel to verify the weight normalization.",
     "mathContext": "$w_i = \\varphi_i(x)/S(x) \\geq 0$, $\\sum w_i = 1$, so $\\pi(x) = \\sum w_i x_i \\in \\mathrm{conv}(\\{x_1,\\ldots,x_n\\})$.",
@@ -177,7 +177,7 @@
       "startLine": 188,
       "endLine": 233
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Epsilon-Approximation Bound: Only Nearby Centers Contribute",
     "content": "This is the most technically involved part of the proof. The key insight is that ||pi(x) - x|| is small because pi(x) is a weighted average of centers x_i, and only centers within distance epsilon of x have nonzero weight. The proof rewrites pi(x) - x as S(x)^(-1) * sum(phi_i(x) * (x_i - x)), applies the triangle inequality to the sum, then bounds each term: if phi_i(x) = 0 the term vanishes, and if phi_i(x) > 0 then ||x_i - x|| < epsilon. The strict inequality requires Finset.sum_lt_sum, which needs at least one strictly smaller summand -- guaranteed by the existence of a positive bump. The calculation concludes with inv_mul_lt_iff to cancel the S(x) factor.",
     "mathContext": "$\\|\\pi(x) - x\\| = S^{-1} \\|\\sum \\varphi_i(x_i - x)\\| \\leq S^{-1} \\sum \\varphi_i \\|x_i - x\\| < S^{-1} \\cdot S \\cdot \\varepsilon = \\varepsilon$",
@@ -200,7 +200,7 @@
       "startLine": 254,
       "endLine": 296
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Main Theorem: Assembly via Compactness",
     "content": "The main theorem ties everything together. First, compactness of K produces a finite subcover of epsilon-balls (via IsCompact.elim_finite_subcover_image). The centers are then indexed by Fin N through Fintype.truncEquivFin. The covering property is translated from the set-theoretic union to the norm-based formulation needed by the bump functions. Finally, the three established properties -- continuity, convex hull membership, and epsilon-approximation -- are packaged into the existential witness. The proof is constructive in the sense that the projection map is explicitly defined, not merely shown to exist.",
     "mathContext": "$K$ compact $\\Rightarrow$ $\\exists$ finite $\\{x_i\\} \\subset K$ with $K \\subseteq \\bigcup B(x_i, \\varepsilon)$ $\\Rightarrow$ construct $\\pi$ with all required properties.",

@@ -141,7 +141,7 @@
       "startLine": 58,
       "endLine": 62
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem #566: Ramsey Size Linearity Conjecture",
     "content": "The central conjecture: if $G$ is $(2k-3)$-sparse, then $G$ is **Ramsey size linear**, i.e., $\\hat{r}(G,H) = O(|E(H)|)$ uniformly over all $H$ without isolated vertices. This would provide a **clean combinatorial characterization** of Ramsey size linearity in terms of subgraph density. The axiom form reflects that this is an open problem — the statement is assumed without proof.",
     "mathContext": "$\\text{IsSparse}(G) \\implies \\exists c > 0,\\; \\forall H \\text{ with no isolated vertices},\\; \\hat{r}(G,H) \\le c \\cdot |E(H)|$",
@@ -164,7 +164,7 @@
       "startLine": 68,
       "endLine": 72
     },
-    "type": "technique",
+    "type": "concept",
     "title": "EFRS Theorem (1993): n+1 Edge Bound",
     "content": "Erdős, Faudree, Rousseau, and Schelp proved that any graph with $n$ vertices and at most $n+1$ edges is Ramsey size linear. This is the **strongest confirmed positive case** toward the conjecture. Graphs with $\\le n+1$ edges have at most one cycle, so they are very close to trees. The proof uses the structure theory of unicyclic graphs combined with Ramsey embedding arguments.",
     "mathContext": "$|E(G)| \\le |V(G)| + 1 \\implies \\exists c > 0,\\; \\forall H,\\; \\hat{r}(G,H) \\le c \\cdot |E(H)|$. Note: such $G$ has cyclomatic number $\\le 1$.",
@@ -188,7 +188,7 @@
       "startLine": 77,
       "endLine": 81
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Counterexample at 2n−2 Edges",
     "content": "There exist graphs with $2n - 2$ edges that are **not** Ramsey size linear. This demonstrates that the $(2k-3)$ sparsity threshold is **tight**: since a graph on $n$ vertices with $2n - 2$ edges can have a subgraph on $k$ vertices with $2k - 2$ edges (one above the threshold), the conjecture precisely identifies the boundary. The gap between $n+1$ (confirmed) and $2n-3$ (conjectured) remains the central open question.",
     "mathContext": "$\\exists G$ with $|E(G)| = 2|V(G)| - 2$ such that $\\hat{r}(G,H) \\ne O(|E(H)|)$. The $(2k-3)$ threshold is tight since $2k - 2 > 2k - 3$.",
@@ -210,7 +210,7 @@
       "startLine": 89,
       "endLine": 97
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trees Are Ramsey Size Linear",
     "content": "Trees (connected acyclic graphs on $n$ vertices with $n-1$ edges) are Ramsey size linear. This is a well-known result that predates the EFRS work and provides the foundational evidence for the conjecture. The proof for paths was established by Beck (1983), and the general tree case follows from careful embedding arguments. Trees are far below the $(2k-3)$ threshold since every $k$-vertex subtree has exactly $k-1$ edges.",
     "mathContext": "$T$ a tree on $n$ vertices $\\implies |E(T[S])| \\le |S| - 1 \\le 2|S| - 3$ for $|S| \\ge 2$, so trees are $(2k-3)$-sparse. Beck showed $\\hat{r}(P_n) = O(n)$ for paths.",

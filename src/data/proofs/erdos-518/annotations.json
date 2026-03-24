@@ -353,7 +353,7 @@
       "startLine": 194,
       "endLine": 199
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Conjecture Confirmed",
     "content": "**erdos_gyarfas_conjecture_true:**\n\n```lean\ntheorem erdos_gyarfas_conjecture_true : ErdosGyarfasConjecture :=\n  pokrovskiy_versteegen_williams\n```\n\nDirect assignment of the axiom to the conjecture type.",
     "significance": "key",
@@ -378,7 +378,7 @@
       "startLine": 201,
       "endLine": 208
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Explicit Main Result",
     "content": "**main_result:**\n\n```lean\ntheorem main_result (n : ℕ) (hn : n ≥ 1) (c : TwoColoring n) :\n    ∃ (cover : PathCover n) (col : Color),\n      IsMonochromaticCover c cover col ∧\n      cover.size ≤ Nat.sqrt n :=\n  erdos_gyarfas_conjecture_true n hn c\n```\n\nAn explicit statement that any coloring of K_n admits a √n same-color path cover.",
     "significance": "key",

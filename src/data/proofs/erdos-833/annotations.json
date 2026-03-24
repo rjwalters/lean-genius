@@ -279,7 +279,7 @@
       "startLine": 245,
       "endLine": 260
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Complete Theorem: erdos_833 (Proved)",
     "content": "**Verified proof** combining both components of the resolution: (1) `ExponentialGrowthConjecture` holds (from `erdos_833_solution`), and (2) the explicit Erdős–Lovász bound applies to every 3-chromatic $r$-uniform hypergraph (from `erdos_lovasz_bound`). Proved by `constructor; exact erdos_833_solution; exact erdos_lovasz_bound`. The `erdos_833_status` string records the problem status. This packages the complete resolution of Problem #833, established in the landmark 1975 paper that also introduced the Lovász Local Lemma itself.",
     "mathContext": "$\\text{erdos\\_833} : \\text{ExponentialGrowthConjecture} \\wedge (\\forall r \\geq 2,\\; \\forall H \\in \\mathcal{H}_{r,3},\\; \\exists v,\\; \\deg(v) \\geq 2^{r-1}/(4r))$.",

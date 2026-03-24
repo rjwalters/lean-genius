@@ -49,7 +49,7 @@
       "startLine": 60,
       "endLine": 70
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Basic Examples",
     "content": "**Immediate q-representable numbers:**\n\n- `zero_q_representable`: 0 ∈ QRepresentable q (empty sum)\n- `one_q_representable`: 1 ∈ QRepresentable q (S = {0})\n- `q_q_representable`: q ∈ QRepresentable q (S = {1})\n\nThese form the beginning of the ordered sequence when q < 2. The proofs use `Finset.sum` on empty or singleton sets.",
     "significance": "supporting",
@@ -158,7 +158,7 @@
       "startLine": 159,
       "endLine": 179
     },
-    "type": "definition",
+    "type": "concept",
     "title": "m-Digit Expansions and Characterizations",
     "content": "**QRepresentableM q m:**\n\nGeneralizing from binary coefficients to digits 0, 1, ..., m.\n\n**Bugeaud's Characterization (1996):** For 1 < q ≤ 2, q is Pisot iff liminf of m-digit gaps > 0 for all m ≥ 1.\n\n**EJS Refinement (1996):** For 1 < q < φ, only need to check m = 2 digit expansions.\n\nSince φ ≈ 1.618 > q₀ ≈ 1.325, this simplification applies to the entire range of interest.",
     "mathContext": "$Q_q^{(m)} = \\{\\sum_{i} d_i q^i : d_i \\in \\{0, 1, \\ldots, m\\}\\}$ generalizes binary to $m$-ary coefficients. Bugeaud (1996): $q$ is Pisot $\\iff$ $\\liminf g_q^{(m)}(k) > 0$ for all $m \\geq 1$. EJS refinement: for $q < \\varphi$, only $m = 2$ is needed.",

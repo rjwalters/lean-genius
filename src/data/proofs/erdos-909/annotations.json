@@ -159,7 +159,7 @@
       "startLine": 97,
       "endLine": 100
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem: Erdős Problem #909 SOLVED",
     "content": "**`erdos_909 : erdos909Statement`**: The problem is solved — YES for all $n \\geq 1$.\n\n**Proof**: Given $n \\geq 1$, apply `anderson_keisler_theorem n hn` to obtain space $S$ with `MetrizableSpace` instance and dimension properties. The metrizability witness is dropped (the problem statement only requires `TopologicalSpace`), and $(S, \\text{hTop}, \\text{hdim})$ is returned.\n\n**Lean proof**: `intro n hn; obtain ⟨S, hTop, _, hdim⟩ := anderson_keisler_theorem n hn; exact ⟨S, hTop, hdim⟩`\n\nThe underscore `_` discards the `MetrizableSpace` instance since the problem statement doesn't require it.",
     "mathContext": "erdos_909 : erdos909Statement (direct from anderson_keisler_theorem, dropping MetrizableSpace witness)",

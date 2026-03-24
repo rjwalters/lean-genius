@@ -96,7 +96,7 @@
       "startLine": 43,
       "endLine": 44
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Primes Form Increasing Totient Set",
     "content": "The set of primes in {1,…,N} is an increasing totient set. Since φ(p) = p-1 for primes and p ↦ p-1 is strictly increasing, the totient values are automatically ordered.",
     "mathContext": "For primes $p < q$: $\\varphi(p) = p - 1 < q - 1 = \\varphi(q)$. Hence $\\{p \\leq N : p \\text{ prime}\\}$ satisfies `IsIncreasingTotientSet`.",
@@ -119,7 +119,7 @@
       "startLine": 47,
       "endLine": 48
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lower Bound: maxIncTotientSize ≥ π(N)",
     "content": "Since primes form an increasing totient set of size π(N), the maximum is at least π(N). This is the matching lower bound for Tao's upper bound.",
     "mathContext": "$\\text{maxIncTotientSize}(N) \\geq \\pi(N)$. Combined with Tao's $\\leq (1+o(1))\\pi(N)$, this gives $\\text{maxIncTotientSize}(N) \\sim \\pi(N)$.",
@@ -141,7 +141,7 @@
       "startLine": 57,
       "endLine": 60
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Tao's Theorem (2023)",
     "content": "For all ε > 0, there exists N₀ such that for N ≥ N₀, maxIncTotientSize(N) ≤ (1+ε)π(N). This resolves Erdős Problem 49, proving primes are asymptotically optimal.",
     "mathContext": "Tao (2023): $\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0: \\text{maxIncTotientSize}(N) \\leq (1+\\varepsilon)\\pi(N)$. The precise bound: $|A| \\leq (1 + O((\\log\\log x)^5/\\log x))\\pi(x)$.",
@@ -187,7 +187,7 @@
       "startLine": 75,
       "endLine": 78
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Density Zero Corollary",
     "content": "Any increasing totient set has density zero: maxIncTotientSize(N) = o(N). This follows from Tao's bound and the PNT since π(N) ~ N/ln N = o(N).",
     "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0: \\text{maxIncTotientSize}(N) \\leq \\varepsilon N$. Proof: by Tao, $\\leq (1+\\varepsilon)\\pi(N) \\leq (1+\\varepsilon) \\cdot \\frac{2N}{\\ln N} \\leq \\varepsilon' N$ for large $N$.",
@@ -209,7 +209,7 @@
       "startLine": 83,
       "endLine": 84
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Totient of Primes",
     "content": "For any prime p, φ(p) = p - 1. This is the fundamental identity that makes primes a natural increasing totient set: the totient is simply one less than the prime itself.",
     "mathContext": "$\\varphi(p) = p - 1$ for $p$ prime. This follows from the definition: all $k \\in \\{1, \\ldots, p-1\\}$ are coprime to $p$, so $\\varphi(p) = |\\{1, \\ldots, p-1\\}| = p-1$.",
@@ -231,7 +231,7 @@
       "startLine": 87,
       "endLine": 87
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Totient Upper Bound",
     "content": "φ(n) ≤ n for all n. A basic inequality following from the definition: at most n residues can be coprime to n.",
     "mathContext": "$\\varphi(n) \\leq n$ for all $n \\geq 0$. Equality holds only for $n \\leq 1$. For $n \\geq 2$, $\\varphi(n) \\leq n - 1$ since $n$ is not coprime to itself.",

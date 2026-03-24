@@ -142,7 +142,7 @@
       "startLine": 616,
       "endLine": 645
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Representation Theorem for Regular Variation",
     "content": "The representation theorem states that every regularly varying function decomposes as $f(x) = |x|^\\alpha \\cdot L(x)$ where $L$ is slowly varying. The decomposition direction extracts $L(x) = f(x)/|x|^\\alpha$ and shows it is slowly varying by the algebraic identity $RV(\\alpha)/RV(\\alpha) = RV(0) = SV$. The synthesis direction shows that $|x|^\\alpha \\cdot L(x) \\in RV(\\alpha)$ using $RV(\\alpha) \\cdot RV(0) = RV(\\alpha + 0) = RV(\\alpha)$. These results reduce all questions about regularly varying functions to questions about slowly varying functions, which is why Karamata theory focuses on the latter.",
     "mathContext": "$f \\in RV(\\alpha) \\iff f(x) = |x|^\\alpha L(x)$ with $L \\in SV$. This separates \"pure power\" behavior from \"slowly varying correction\".",

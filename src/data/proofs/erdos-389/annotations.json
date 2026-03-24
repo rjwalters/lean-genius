@@ -95,7 +95,7 @@
       "startLine": 57,
       "endLine": 58
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős-Straus Conjecture (Main Statement)",
     "content": "The central open question: for every $n \\geq 1$, there exists $k \\geq 1$ such that $n(n+1)\\cdots(n+k-1) \\mid (n+k)\\cdots(n+2k-1)$. Declared as an axiom since the problem is OPEN. This is equivalent to asking whether the product ratio $\\prod (n+k+i)/(n+i)$ can always be made an integer.",
     "mathContext": "$\\forall n \\geq 1,\\; \\exists k \\geq 1,\\; (n)_k \\mid (n+k)_k$.",
@@ -117,7 +117,7 @@
       "startLine": 63,
       "endLine": 64
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Case n = 1 (Proved)",
     "content": "The trivial base case: with $k = 1$, the lower block is $1$ and the upper block is $2$, so $1 \\mid 2$. This is the only case where Lean's $\\texttt{simp}$ suffices. For $n = 1$ and arbitrary $k$, we have $(1)_k = k!$ and $(1+k)_k = (2k)!/k!$, so the condition becomes $k! \\mid (2k)!/k!$, i.e., $\\binom{2k}{k}$ is an integer (which is always true).",
     "mathContext": "$(1)_1 = 1$, $(2)_1 = 2$, and $1 \\mid 2$. More generally, for $n = 1$: $(1)_k = k!$ and $\\binom{2k}{k} \\in \\mathbb{Z}$.",
@@ -139,7 +139,7 @@
       "startLine": 67,
       "endLine": 67
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Case n = 2",
     "content": "For $n = 2$, the minimal $k$ is 5. The lower block is $2 \\cdot 3 \\cdot 4 \\cdot 5 \\cdot 6 = 720$ and the upper block is $7 \\cdot 8 \\cdot 9 \\cdot 10 \\cdot 11 = 55440 = 77 \\times 720$. One can verify that $k = 1, 2, 3, 4$ all fail: e.g., $k = 4$ gives $2 \\cdot 3 \\cdot 4 \\cdot 5 = 120$ vs $6 \\cdot 7 \\cdot 8 \\cdot 9 = 3024 = 25.2 \\times 120$.",
     "mathContext": "$2 \\cdot 3 \\cdot 4 \\cdot 5 \\cdot 6 = 720$ and $7 \\cdot 8 \\cdot 9 \\cdot 10 \\cdot 11 = 55440$. Ratio: $55440/720 = 77$.",
@@ -159,7 +159,7 @@
       "startLine": 70,
       "endLine": 70
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Case n = 3",
     "content": "For $n = 3$, the minimal $k$ is 4. The lower block is $3 \\cdot 4 \\cdot 5 \\cdot 6 = 360$ and the upper block is $7 \\cdot 8 \\cdot 9 \\cdot 10 = 5040 = 14 \\times 360$. The minimal $k$ decreases from 5 (for $n=2$) to 4 (for $n=3$), then jumps dramatically to 207 for $n=4$.",
     "mathContext": "$(3)_4 = 360$, $(7)_4 = 5040$, $5040/360 = 14$.",
@@ -179,7 +179,7 @@
       "startLine": 77,
       "endLine": 78
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Mehta's Computation: k = 207 for n = 4",
     "content": "Bhavik Mehta computed that the minimal $k$ for $n = 4$ is 207 — a dramatic and unexpected jump from the small values $k = 1, 5, 4$ for $n = 1, 2, 3$. This means $4 \\cdot 5 \\cdots 210 \\mid 211 \\cdot 212 \\cdots 414$, involving products of 207 consecutive integers each. The enormous size of these numbers (each product has hundreds of digits) shows why exhaustive search is computationally demanding. The sequence of minimal $k$ values was registered as OEIS A375071.",
     "mathContext": "$\\texttt{minimalK}(4) = 207$. The products: $(4)_{207} = 210!/3!$ and $(211)_{207} = 417!/210!$.",
@@ -201,7 +201,7 @@
       "startLine": 81,
       "endLine": 82
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Minimality for n = 4",
     "content": "Confirms that no $k$ in $\\{1, 2, \\ldots, 206\\}$ satisfies the divisibility for $n = 4$, proving 207 is genuinely minimal. This required checking 206 divisibility conditions, each involving products of hundreds of terms. The minimality result demonstrates the erratic behavior of the minimal $k$ function.",
     "mathContext": "$\\forall k \\in [1, 206],\\; (4)_k \\nmid (4+k)_k$.",
@@ -223,7 +223,7 @@
       "startLine": 90,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Ratio Identity",
     "content": "The ratio of upper to lower block equals $\\prod_{i=0}^{k-1} \\frac{n+k+i}{n+i}$. Each factor $(n+k+i)/(n+i) = 1 + k/(n+i)$ is greater than 1, so the product grows with $k$. The question is when this product of rationals happens to be an integer. The formalization handles the case where integer division may not be exact by providing a disjunction.",
     "mathContext": "$\\frac{(n+k)_k}{(n)_k} = \\prod_{i=0}^{k-1} \\frac{n+k+i}{n+i} = \\prod_{i=0}^{k-1}\\left(1 + \\frac{k}{n+i}\\right)$.",
@@ -245,7 +245,7 @@
       "startLine": 97,
       "endLine": 98
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Binomial Coefficient Connection",
     "content": "The identity $(n)_k = k! \\binom{n+k-1}{k}$ connects consecutive products to binomial coefficients. The divisibility condition $(n)_k \\mid (n+k)_k$ becomes $\\binom{n+k-1}{k} \\mid \\binom{n+2k-1}{k}$, since $k!$ cancels. This places the problem in the study of divisibility of binomial coefficients — connected to Kummer's theorem ($v_p\\binom{m}{j}$ counts carries in base-$p$ addition) and Lucas' theorem.",
     "mathContext": "$(n)_k = k! \\binom{n+k-1}{k}$. The divisibility becomes $\\binom{n+k-1}{k} \\mid \\binom{n+2k-1}{k}$. By Kummer's theorem, $v_p\\binom{m}{j}$ equals the number of carries in the base-$p$ addition $j + (m-j)$.",

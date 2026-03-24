@@ -208,7 +208,7 @@
       "startLine": 100,
       "endLine": 102
     },
-    "type": "technique",
+    "type": "concept",
     "title": "turan_triangle: Dense Graphs Contain Triangles",
     "content": "**axiom turan_triangle**: $\\forall G, \\text{IsDense}(G) \\implies \\exists x\\, y\\, z,\\, \\text{IsTriangle}(G, x, y, z)$\n\nTurán's theorem for $K_3$: any graph with more than $\\lfloor n^2/4 \\rfloor$ edges contains a triangle. This is the *weaker* predecessor to Edwards' theorem.",
     "mathContext": "Turán (1941) proved this via the extremal function. Modern proofs use the probabilistic method (Alon-Spencer), algebraic methods, or direct counting. This axiom provides the foundational existence result that Edwards' theorem strengthens with the degree-sum condition.",
@@ -316,7 +316,7 @@
       "startLine": 149,
       "endLine": 152
     },
-    "type": "technique",
+    "type": "concept",
     "title": "complete_bipartite_triangle_free: Sharpness of Edge Threshold",
     "content": "**axiom complete_bipartite_triangle_free**: For $n \\geq 2$, there exists a graph with exactly $\\lfloor n^2/4 \\rfloor$ edges and no triangles.\n\nThe complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ achieves the Turán bound with zero triangles, showing the edge threshold in Edwards' theorem cannot be relaxed.",
     "mathContext": "The Turán graph $T(n,2) = K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ is the unique extremal triangle-free graph. Since bipartite graphs contain no odd cycles (hence no triangles), $K_{n/2,n/2}$ is triangle-free with $\\lfloor n^2/4 \\rfloor$ edges. This construction is a *lower bound witness* for $\\text{ex}(n, K_3)$.",
@@ -339,7 +339,7 @@
       "startLine": 157,
       "endLine": 160
     },
-    "type": "technique",
+    "type": "concept",
     "title": "turan_extremal: No Triangle-Free Graph Exceeds n²/4 Edges",
     "content": "**axiom turan_extremal**: $\\forall G$ triangle-free on $n$ vertices, $|E(G)| \\leq \\lfloor n^2/4 \\rfloor$.\n\nThe *upper bound* direction of Turán's theorem. Combined with the bipartite construction, this establishes $\\text{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$ exactly.",
     "mathContext": "Mantel (1907) first proved this for triangles; Turán (1941) generalized to all cliques. The proof uses the Zykov symmetrization argument or the method of counting: $\\sum_{\\{u,v\\} \\in E} (d(u)+d(v)) \\geq 4|E|^2/n$, which forces a common neighbor when $|E| > n^2/4$.",
@@ -362,7 +362,7 @@
       "startLine": 170,
       "endLine": 175
     },
-    "type": "technique",
+    "type": "concept",
     "title": "degree_sum_tight: The Constant 3/2 is Optimal",
     "content": "**axiom degree_sum_tight**: $\\forall \\varepsilon > 0$, $\\exists N_0$ such that $\\forall n \\geq N_0$, there exists a dense graph $G$ containing a triangle with degree sum $< (\\frac{3}{2}+\\varepsilon)n$.\n\nThe constant $\\frac{3}{2}$ in Edwards' theorem cannot be replaced by any larger constant.",
     "mathContext": "Tightness constructions typically use near-balanced dense graphs where most vertices have degree close to $n/2$. In such graphs, the best triangle has degree sum close to $\\frac{3}{2}n$ but not much more. This shows Edwards' theorem is *best possible* in the constant, complementing the sharpness of the edge threshold.",
@@ -385,7 +385,7 @@
       "startLine": 181,
       "endLine": 185
     },
-    "type": "technique",
+    "type": "concept",
     "title": "supersaturation: Many Triangles Above Turán Threshold",
     "content": "**axiom supersaturation**: Every dense graph $G$ contains a non-empty collection of triangles.\n\nThis is a weak form of the Erdős-Simonovits supersaturation lemma: graphs with $|E| > \\text{ex}(n, K_3) + t$ contain $\\Omega(tn)$ triangles.",
     "mathContext": "The full supersaturation result (Erdős-Simonovits 1983) states that for $|E| \\geq \\text{ex}(n,K_3) + t$, the number of triangles is $\\geq c \\cdot t \\cdot n$ for some $c > 0$. Even adding one edge above Turán's bound forces a triangle, and the number grows linearly with the excess. Edwards' theorem refines supersaturation by finding a *qualitatively good* triangle.",
@@ -408,7 +408,7 @@
       "startLine": 193,
       "endLine": 196
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_904_main: Instantiated Edwards' Theorem",
     "content": "**theorem erdos_904_main(G, h)**: Given a specific dense graph $G$ with proof $h$ : IsDense $G$, extract witnesses $x, y, z$ forming a triangle with $d(x)+d(y)+d(z) \\geq \\frac{3}{2}n$.\n\nApplies the universal `edwards_1978` to the concrete type $V$ and graph $G$.",
     "mathContext": "This instantiation demonstrates Lean 4's universe-polymorphic quantification: `BollobasErdosConjecture` quantifies over all `V : Type*`, and `erdos_904_main` specializes it to the ambient type variable. The proof is `edwards_1978 V G h`, applying the axiom to the specific graph.",

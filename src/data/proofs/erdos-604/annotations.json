@@ -180,7 +180,7 @@
       "startLine": 88,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Upper Bound on Pinned Distances",
     "content": "No point can see more than n-1 distinct distances.\n\nProof: From x, we measure distances to at most n-1 other points. Even if all distances are distinct, we get at most n-1 values.\n\nThe `card_image_le` lemma shows |image f S| ≤ |S|.",
     "mathContext": "Uses the chain: |image| ≤ |filter| ≤ |A| ≤ |A| - 1, where the last step needs |A| ≥ 1.",

@@ -119,7 +119,7 @@
       "startLine": 147,
       "endLine": 168
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Combined Bounds",
     "content": "**Combined Bounds (proved from axioms):**\n\nFor any ε > 0, for sufficiently large N:\n(3/8 - ε)N ≤ f(N) ≤ (1/2 + ε)N\n\nThis theorem combines both Erdős-Freud axioms by taking the maximum of the two thresholds N₁ and N₂.\n\nAlso verified computationally: the gap between coefficients is exactly 1/8.",
     "mathContext": "The proof uses the standard technique of taking max(N₁, N₂) to ensure both bounds hold simultaneously for N ≥ max(N₁, N₂).",

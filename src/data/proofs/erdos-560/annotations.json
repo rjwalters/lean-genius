@@ -120,7 +120,7 @@
       "startLine": 130,
       "endLine": 138
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Combined Size Ramsey Bounds",
     "content": "**size_ramsey_bounds:**\n\nCombines both bounds into a single theorem for n >= 6:\n\n(1/60)*n^2*2^n < R_hat(K_{n,n}) < (3/2)*n^3*2^n\n\nThe ratio of upper to lower bound is 90n, showing the gap is O(n).",
     "significance": "key",
@@ -214,7 +214,7 @@
       "startLine": 229,
       "endLine": 258
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bounds Gap Analysis",
     "content": "**bounds_gap:**\n\nThe ratio between upper and lower bounds:\n\n(3/2)*n^3*2^n / ((1/60)*n^2*2^n) = 90*n\n\nSo the gap is O(n) - a linear factor of uncertainty remains.\n\n**Implication:** If CFW conjecture is true (R_hat ~ n^3*2^n), then the lower bound can be improved by factor n while upper bound is optimal.",
     "significance": "key",
@@ -233,7 +233,7 @@
       "startLine": 260,
       "endLine": 291
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Results Summary",
     "content": "**erdos_560_summary:**\n\nCombines all main results for n >= 6:\n\n1. **Lower bound:** (1/60)*n^2*2^n (Erdos-Rousseau 1993)\n2. **Upper bound:** (3/2)*n^3*2^n (EFRS 1978)\n3. **Monotonicity:** m <= n implies R_hat(K_{m,m}) <= R_hat(K_{n,n})\n\n**Status:** OPEN - exact value unknown, O(n) gap between bounds\n\n**Conjecture:** R_hat(K_{n,n}) = Theta(n^3*2^n) (CFW 2023)",
     "significance": "key",

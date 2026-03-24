@@ -139,7 +139,7 @@
       "startLine": 113,
       "endLine": 126
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Schur Numbers",
     "content": "The Schur number S(k) is the largest n such that {1,...,n} can be k-colored without a monochromatic solution to x + y = z. The connection R(3;k) ≥ S(k) + 2 links edge-coloring problems to arithmetic combinatorics.",
     "mathContext": "If we have a sum-free k-coloring of {1,...,n}, we can use it to avoid monochromatic triangles in K_{n+1}. Color edge {i,j} by the color of |i-j|.",
@@ -177,7 +177,7 @@
       "startLine": 149,
       "endLine": 151
     },
-    "type": "definition",
+    "type": "concept",
     "title": "k-th Root Function",
     "content": "The k-th root R(3;k)^{1/k} measures the 'average multiplicative rate' of growth. If R(3;k) grew like c^k, this would converge to c. The question asks whether this sequence converges and to what.",
     "mathContext": "By Stirling, (k!)^{1/k} ~ k/e → ∞. So the upper bound grows without limit, but the lower bound 380^{1/5} ≈ 3.28 is fixed.",

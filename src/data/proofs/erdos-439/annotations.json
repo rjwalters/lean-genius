@@ -76,7 +76,7 @@
       "startLine": 86,
       "endLine": 94
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős-Sárközy-Sós Partial Results (1989)",
     "content": "**ess_two_colors** and **ess_three_colors:** Erdős, Sárközy, and Sós (1989) proved that for 2- and 3-colorings of $\\mathbb{Z}$, monochromatic square-sum pairs exist. Their method used discrete Fourier analysis on $\\mathbb{Z}/N\\mathbb{Z}$: they showed that the number of representations $r(n) = |\\{(a,b) : a + b = n,\\; a,b \\in A\\}|$ for a color class $A$ of density $\\geq 1/k$ satisfies $\\sum_n r(n)^2 \\gg N^2/k^2$, forcing many square-sum pairs when $k \\leq 3$.",
     "mathContext": "The ESS method bounds the Fourier transform $\\hat{1}_A(\\xi) = \\sum_{a \\in A} e^{2\\pi i a\\xi/N}$ and uses Parseval's identity. For $k \\leq 3$, a color class has density $\\geq 1/3$, giving enough additive structure. The method breaks down for $k \\geq 4$ because density $1/4$ is insufficient for their Fourier bounds.",
@@ -100,7 +100,7 @@
       "startLine": 108,
       "endLine": 109
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Khalfalah-Szemerédi Main Theorem (2006)",
     "content": "**khalfalah_szemeredi (k : ℕ) (hk : k ≥ 1):** For any $k \\geq 1$ and any $k$-coloring $c : \\mathbb{Z} \\to \\mathrm{Fin}\\, k$, there exist distinct $x \\neq y$ with $c(x) = c(y)$ and $x + y$ a perfect square. This is the main result solving Problem #439. The proof combines Szemerédi's regularity lemma with careful counting of square-sum representations in arithmetic progressions.",
     "mathContext": "The Khalfalah-Szemerédi proof uses the regularity lemma to partition $[1, N]$ into arithmetic progressions where the coloring is approximately uniform. Within a regular pair of progressions, they count pairs $(a, b)$ with $a + b = s^2$ and show the count exceeds what any proper coloring can avoid. The key estimate is $|\\{(a,b) \\in A_i \\times A_j : a + b = s^2\\}| \\gg N/k^2$ for a suitable $s$, leveraging the distribution of squares in arithmetic progressions (following Hooley's work on $r_2(n)$ in progressions).",
@@ -172,7 +172,7 @@
       "startLine": 175,
       "endLine": 192
     },
-    "type": "technique",
+    "type": "definition",
     "title": "k-th Power Graph and Square Connection",
     "content": "**kthPowerGraph k:** `SimpleGraph ℕ` where $m \\sim n \\iff m \\neq n \\wedge \\exists s,\\; m + n = s^k$, with symmetry via `add_comm` and looplessness via `Ne.irrefl`. **square_is_second_power:** `squareGraph = kthPowerGraph 2`, proved by `ext` (graph extensionality) and converting between $n \\cdot n$ and $n^2$ via `pow_two`. This formally unifies the square and power perspectives.",
     "mathContext": "The theorem $\\text{squareGraph} = \\text{kthPowerGraph}\\, 2$ is a definitional equality modulo the identity $n \\cdot n = n^2$. In Lean, `pow_two` provides $n^2 = n * n$, and `simp [pow_two]` handles the conversion in both directions. The proof uses `SimpleGraph.ext` which reduces graph equality to adjacency equality: $G = H \\iff \\forall m\\, n,\\; G.\\text{Adj}\\, m\\, n \\leftrightarrow H.\\text{Adj}\\, m\\, n$.",
@@ -195,7 +195,7 @@
       "startLine": 215,
       "endLine": 223
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_439_summary:** Packages three facts into a conjunction: (1) the Khalfalah-Szemerédi theorem $\\forall k \\geq 1,\\; \\forall c : \\text{FiniteColoring}\\, k,\\; \\text{HasMonochromaticSquarePair}\\, c$; (2) the ESS 2-color result; (3) the ESS 3-color result. The proof uses `refine ⟨?_, ess_two_colors, ess_three_colors⟩` to reduce to the first component, then applies `khalfalah_szemeredi`.",
     "mathContext": "The summary captures the full resolution of Erdős Problem #439. The ESS results (2 and 3 colors) are included as historical stepping stones, though they are logically subsumed by the general theorem. The conjunction structure $P_1 \\wedge P_2 \\wedge P_3$ is split using `refine ⟨?_, _, _⟩` (anonymous constructor), filling the latter two goals immediately and leaving only the universal statement.",

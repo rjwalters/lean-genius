@@ -213,7 +213,7 @@
       "startLine": 196,
       "endLine": 209
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Explicit Partial Sums",
     "content": "We prove exact values for the first 1, 2, 3, 4, 5 terms: **1, 7/4, 19/8, 45/16, 101/32**. These are verified using Lean's `norm_num` tactic.",
     "mathContext": "Each computation is straightforward arithmetic: 1 + 3/4 = 7/4, then + 5/8 = 19/8, then + 7/16 = 45/16, then + 11/32 = 101/32. The pattern of numerators (1, 7, 19, 45, 101) has no simple formula.",

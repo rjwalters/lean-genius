@@ -347,7 +347,7 @@
       "startLine": 244,
       "endLine": 256
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Upper Bounds",
     "content": "**multiplicity_trivial_upper:**\n\nTrivial bound: any distance has multiplicity ≤ n².\n\n```lean\ntheorem multiplicity_trivial_upper (A : PointSet) (d : ℝ) :\n    distanceMultiplicity A d ≤ A.card * A.card\n```\n\n**Proof:** The multiplicity counts pairs from A × A, which has n² elements.\n\n**rich_distances_trivial_upper:**\nNumber of rich distances ≤ number of distinct distances.",
     "significance": "supporting",
@@ -365,7 +365,7 @@
       "startLine": 262,
       "endLine": 284
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem",
     "content": "**erdos_756 and erdos_756_main:**\n\nThe complete resolution of Erdős Problem #756.\n\n```lean\ntheorem erdos_756 : ErdosPachQuestion := erdos_756_answer\n\ntheorem erdos_756_main :\n    ∀ n : ℕ, n ≥ 4 →\n      ∃ A : PointSet, A.card = n ∧\n        (numRichDistances A : ℝ) ≥ n / 4\n```\n\n**Summary:**\n- Answer: YES to Erdős-Pach question\n- Constant: c = 1/4 achieved\n- Constraint: Largest distance never rich (Hopf-Pannwitz)\n- Status: SOLVED by Bhowmick (2024)",
     "mathContext": "These theorems package the complete answer: the Erdős-Pach question has an affirmative answer with explicit constant.",

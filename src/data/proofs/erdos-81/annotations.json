@@ -127,7 +127,7 @@
       "startLine": 129,
       "endLine": 147
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Extremal Construction and Lower Bound",
     "content": "`extremal_construction_exists` (axiom): For $n \\geq 3$, there exists a split graph on $n$ vertices requiring $\\geq n^2/6$ cliques.\n\n`lower_bound` (theorem, line 140): Derives the chordal lower bound from the split graph construction by applying `split_is_chordal`. This is a genuine theorem — the proof extracts the split graph, converts it to chordal, and preserves the partition bound.",
     "mathContext": "The construction takes $K_{n/3}$ and $2n/3$ isolated vertices, connecting all pairs. The bipartite edges between $K_{n/3}$ and the independent set form $(n/3)(2n/3) = 2n^2/9$ edges. Each clique in a partition can cover at most one edge from each 'star' centered at an isolated vertex, leading to $\\geq n^2/6$ cliques. The proof at line 144–147 is a clean application of `split_is_chordal`.",

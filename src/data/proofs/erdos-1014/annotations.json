@@ -2,169 +2,309 @@
   {
     "id": "ann-erdos1014-imports",
     "proofId": "erdos-1014",
-    "range": { "startLine": 21, "endLine": 23 },
+    "range": {
+      "startLine": 21,
+      "endLine": 23
+    },
     "type": "concept",
     "title": "Imports and Dependencies",
     "content": "Imports SimpleGraph.Basic for graph-theoretic foundations, Data.Real.Basic for ℝ (needed for ratio limits and asymptotic bounds), and Tactic for proof automation. The formalization operates axiomatically over Ramsey numbers rather than constructing them from graph colorings.",
     "significance": "supporting",
     "mathContext": "Ramsey theory sits at the intersection of combinatorics and graph theory. A constructive definition of $R(k,l)$ would require formalizing graph colorings and the compactness argument, which is why axiomatization is appropriate here.",
-    "relatedConcepts": ["Ramsey theory", "graph coloring", "axiomatic formalization"],
-    "prerequisites": ["Mathlib.Combinatorics.SimpleGraph.Basic", "Mathlib.Data.Real.Basic"]
+    "relatedConcepts": [
+      "Ramsey theory",
+      "graph coloring",
+      "axiomatic formalization"
+    ],
+    "prerequisites": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Real.Basic"
+    ]
   },
   {
     "id": "ramsey-number",
     "proofId": "erdos-1014",
-    "range": { "startLine": 27, "endLine": 29 },
+    "range": {
+      "startLine": 27,
+      "endLine": 29
+    },
     "type": "definition",
     "title": "Ramsey Number R(k,l)",
     "content": "The Ramsey number R(k,l) is the minimum n such that every 2-coloring of K_n's edges contains a red K_k or blue K_l. Axiomatized here since a constructive definition would require significant graph-theoretic machinery including Ramsey's theorem and the well-ordering of ℕ.",
     "significance": "key",
     "mathContext": "Ramsey's theorem (1930) guarantees $R(k,l)$ exists for all $k,l \\geq 1$. The function $R : \\mathbb{N}^2 \\to \\mathbb{N}$ is one of the most studied objects in combinatorics, yet exact values are known only for small parameters. As of 2024, $R(5,5)$ remains unknown.",
-    "relatedConcepts": ["Ramsey's theorem", "complete graph", "graph coloring", "combinatorial optimization"],
-    "prerequisites": ["graph theory basics", "pigeonhole principle"]
+    "relatedConcepts": [
+      "Ramsey's theorem",
+      "complete graph",
+      "graph coloring",
+      "combinatorial optimization"
+    ],
+    "prerequisites": [
+      "graph theory basics",
+      "pigeonhole principle"
+    ]
   },
   {
     "id": "ann-erdos1014-positivity",
     "proofId": "erdos-1014",
-    "range": { "startLine": 31, "endLine": 33 },
+    "range": {
+      "startLine": 31,
+      "endLine": 33
+    },
     "type": "technique",
     "title": "Positivity of Ramsey Numbers",
     "content": "R(k,l) ≥ 1 for k,l ≥ 1. This basic property ensures the ratio R(k,l+1)/R(k,l) is well-defined (denominator is positive), which is essential for stating the limit conjecture.",
     "significance": "supporting",
     "mathContext": "The positivity follows from the trivial coloring: $K_1$ contains neither a red $K_k$ (for $k \\geq 2$) nor a blue $K_l$ (for $l \\geq 2$), but the minimum $n$ must be at least 1. For $k=l=1$, $R(1,1) = 1$.",
-    "relatedConcepts": ["well-definedness of ratios", "Ramsey number lower bounds"],
-    "prerequisites": ["ramseyNumber"]
+    "relatedConcepts": [
+      "well-definedness of ratios",
+      "Ramsey number lower bounds"
+    ],
+    "prerequisites": [
+      "ramseyNumber"
+    ]
   },
   {
     "id": "ramsey-symmetry",
     "proofId": "erdos-1014",
-    "range": { "startLine": 35, "endLine": 36 },
+    "range": {
+      "startLine": 35,
+      "endLine": 36
+    },
     "type": "technique",
     "title": "Ramsey Symmetry: R(k,l) = R(l,k)",
     "content": "R(k,l) = R(l,k) follows from swapping red and blue in any 2-coloring. This symmetry means the ratio convergence question is symmetric in which parameter grows, reducing the problem to studying one parameter direction.",
     "significance": "key",
     "mathContext": "The symmetry $R(k,l) = R(l,k)$ is immediate from the definition: a 2-coloring of $K_n$ with a red $K_k$ or blue $K_l$ becomes, upon color-swapping, a coloring with a blue $K_k$ or red $K_l$. This means Problem 1014 for $R(k,l+1)/R(k,l)$ is equivalent to asking about $R(l+1,k)/R(l,k)$.",
-    "relatedConcepts": ["color symmetry", "automorphism of 2-colorings"],
-    "prerequisites": ["ramseyNumber"]
+    "relatedConcepts": [
+      "color symmetry",
+      "automorphism of 2-colorings"
+    ],
+    "prerequisites": [
+      "ramseyNumber"
+    ]
   },
   {
     "id": "erdos-szekeres",
     "proofId": "erdos-1014",
-    "range": { "startLine": 40, "endLine": 42 },
+    "range": {
+      "startLine": 40,
+      "endLine": 42
+    },
     "type": "technique",
     "title": "Erdős-Szekeres Upper Bound",
     "content": "R(k,l) ≤ C(k+l-2, k-1), the foundational 1935 result. For fixed k, this gives R(k,l) ≤ c_k · l^(k-1), establishing polynomial growth in l. This upper bound, combined with lower bounds, constrains the ratio R(k,l+1)/R(k,l).",
     "significance": "key",
     "mathContext": "The Erdős-Szekeres bound $R(k,l) \\leq \\binom{k+l-2}{k-1}$ follows from the recurrence $R(k,l) \\leq R(k-1,l) + R(k,l-1)$ by induction. For fixed $k$, this gives $R(k,l) = O(l^{k-1})$. The bound is tight for $k=2$ ($R(2,l) = l$) but believed to be far from optimal for $k \\geq 3$.",
-    "relatedConcepts": ["binomial coefficient", "Ramsey recurrence", "polynomial growth"],
-    "prerequisites": ["ramseyNumber", "Nat.choose"]
+    "relatedConcepts": [
+      "binomial coefficient",
+      "Ramsey recurrence",
+      "polynomial growth"
+    ],
+    "prerequisites": [
+      "ramseyNumber",
+      "Nat.choose"
+    ]
   },
   {
     "id": "ramsey-monotone",
     "proofId": "erdos-1014",
-    "range": { "startLine": 44, "endLine": 46 },
+    "range": {
+      "startLine": 44,
+      "endLine": 46
+    },
     "type": "technique",
     "title": "Monotonicity: R(k,l) ≤ R(k,l+1)",
     "content": "Requiring a larger monochromatic clique can only increase the Ramsey number. This ensures the ratio R(k,l+1)/R(k,l) ≥ 1, so the conjecture R(k,l+1)/R(k,l) → 1 asks whether this ratio approaches 1 from above.",
     "significance": "key",
     "mathContext": "Monotonicity follows because any coloring witnessing $R(k,l+1) > n$ (no red $K_k$ or blue $K_{l+1}$) also witnesses $R(k,l) > n$ (a blue $K_{l+1}$ contains a blue $K_l$). Combined with the conjecture, this means $R(k,l+1)/R(k,l) \\geq 1$ and the limit is 1, so the ratio decreases toward 1.",
-    "relatedConcepts": ["monotone functions", "subgraph containment", "Ramsey number ordering"],
-    "prerequisites": ["ramseyNumber"]
+    "relatedConcepts": [
+      "monotone functions",
+      "subgraph containment",
+      "Ramsey number ordering"
+    ],
+    "prerequisites": [
+      "ramseyNumber"
+    ]
   },
   {
     "id": "ann-erdos1014-recurrence",
     "proofId": "erdos-1014",
-    "range": { "startLine": 48, "endLine": 50 },
+    "range": {
+      "startLine": 48,
+      "endLine": 50
+    },
     "type": "technique",
     "title": "Ramsey Recurrence Relation",
     "content": "R(k, l+1) ≤ R(k, l) + R(k-1, l+1). This is the fundamental recurrence underlying the Erdős-Szekeres bound. It implies R(k,l+1) - R(k,l) ≤ R(k-1,l+1), giving a crude upper bound on the increment.",
     "significance": "key",
     "mathContext": "The recurrence follows from considering a vertex $v$ in $K_n$: its neighbors form a set of size $\\geq R(k-1,l+1)$ (red neighborhood) or $\\geq R(k,l)$ (blue neighborhood). This gives $n \\leq R(k,l) + R(k-1,l+1) - 1$, hence $R(k,l+1) \\leq R(k,l) + R(k-1,l+1)$. For the ratio problem, this bounds $R(k,l+1)/R(k,l) \\leq 1 + R(k-1,l+1)/R(k,l)$.",
-    "relatedConcepts": ["Erdős-Szekeres bound", "vertex neighborhood argument", "Ramsey upper bounds"],
-    "prerequisites": ["ramseyNumber", "ramsey_monotone_right"]
+    "relatedConcepts": [
+      "Erdős-Szekeres bound",
+      "vertex neighborhood argument",
+      "Ramsey upper bounds"
+    ],
+    "prerequisites": [
+      "ramseyNumber",
+      "ramsey_monotone_right"
+    ]
   },
   {
     "id": "r3-tight-bounds",
     "proofId": "erdos-1014",
-    "range": { "startLine": 54, "endLine": 62 },
+    "range": {
+      "startLine": 54,
+      "endLine": 62
+    },
     "type": "technique",
     "title": "Tight Bounds for R(3,l): Θ(l²/log l)",
     "content": "R(3,l) is Θ(l²/log l). The lower bound is due to Shearer (1983) / Kim (1995) via the triangle-free process; the upper bound to Ajtai-Komlós-Szemerédi (1980). Even with this tight characterization, the ratio convergence for k=3 remains open because the implicit constants in the lower and upper bounds don't match precisely enough.",
     "significance": "key",
     "mathContext": "The lower bound $R(3,l) \\geq c_1 l^2/\\log l$ was proved by Shearer (1983) and reproved constructively by Kim (1995) using the triangle-free process. The upper bound $R(3,l) \\leq c_2 l^2/\\log l$ is due to Ajtai-Komlós-Szemerédi (1980). Mattheus-Verstraëte (2024) improved the lower bound constant. The gap between $c_1$ and $c_2$ prevents concluding ratio convergence directly.",
-    "relatedConcepts": ["triangle-free process", "Ajtai-Komlós-Szemerédi theorem", "Ramsey multiplicity"],
-    "prerequisites": ["ramseyNumber", "Real.log"]
+    "relatedConcepts": [
+      "triangle-free process",
+      "Ajtai-Komlós-Szemerédi theorem",
+      "Ramsey multiplicity"
+    ],
+    "prerequisites": [
+      "ramseyNumber",
+      "Real.log"
+    ]
   },
   {
     "id": "main-conjecture",
     "proofId": "erdos-1014",
-    "range": { "startLine": 66, "endLine": 70 },
+    "range": {
+      "startLine": 66,
+      "endLine": 70
+    },
     "type": "insight",
     "title": "Erdős Problem #1014: Ratio Convergence Conjecture",
     "content": "For fixed k ≥ 3, R(k,l+1)/R(k,l) → 1 as l → ∞. This asserts smooth, regular growth of Ramsey numbers. The conjecture is open even for the best-understood case k=3. Formalized using ε-δ convergence: for all ε > 0, there exists L₀ such that |R(k,l+1)/R(k,l) - 1| < ε for all l > L₀.",
     "significance": "key",
     "mathContext": "This is the central open question. The ε-δ formulation captures $\\lim_{l \\to \\infty} R(k,l+1)/R(k,l) = 1$. An equivalent form is $R(k,l+1) = R(k,l)(1 + o(1))$, meaning consecutive Ramsey numbers are asymptotically equal. This would imply $R(k,l)$ is a regularly varying function of $l$.",
-    "relatedConcepts": ["regular variation", "asymptotic equivalence", "ε-δ limits", "Ramsey number growth"],
-    "prerequisites": ["ramseyNumber", "ramsey_pos", "ramsey_monotone_right"]
+    "relatedConcepts": [
+      "regular variation",
+      "asymptotic equivalence",
+      "ε-δ limits",
+      "Ramsey number growth"
+    ],
+    "prerequisites": [
+      "ramseyNumber",
+      "ramsey_pos",
+      "ramsey_monotone_right"
+    ]
   },
   {
     "id": "from-asymptotics",
     "proofId": "erdos-1014",
-    "range": { "startLine": 74, "endLine": 80 },
+    "range": {
+      "startLine": 74,
+      "endLine": 80
+    },
     "type": "technique",
     "title": "Ratio Convergence from Power-Law Asymptotics",
     "content": "If R(k,l) ~ c_k · l^(k-1) / (log l)^(k-2), then R(k,l+1)/R(k,l) = ((l+1)/l)^(k-1) · (log l/log(l+1))^(k-2) → 1. The conjecture thus follows from any power-law asymptotic with the same exponent, making it a weaker statement than the full asymptotic conjecture.",
     "significance": "key",
     "mathContext": "If $R(k,l) \\sim c_k \\cdot l^{k-1}/(\\log l)^{k-2}$, then $R(k,l+1)/R(k,l) \\sim ((l+1)/l)^{k-1} \\cdot (\\log l/\\log(l+1))^{k-2}$. Since $(l+1)/l = 1 + 1/l \\to 1$ and $\\log l / \\log(l+1) \\to 1$, the ratio tends to 1. This shows Problem 1014 is strictly weaker than determining the exact asymptotics of $R(k,l)$.",
-    "relatedConcepts": ["asymptotic analysis", "power-law growth", "slowly varying functions", "L'Hôpital-type arguments"],
-    "prerequisites": ["erdos_1014_conjecture", "ramseyNumber", "Real.log"]
+    "relatedConcepts": [
+      "asymptotic analysis",
+      "power-law growth",
+      "slowly varying functions",
+      "L'Hôpital-type arguments"
+    ],
+    "prerequisites": [
+      "erdos_1014_conjecture",
+      "ramseyNumber",
+      "Real.log"
+    ]
   },
   {
     "id": "ann-erdos1014-diff-equiv",
     "proofId": "erdos-1014",
-    "range": { "startLine": 82, "endLine": 88 },
+    "range": {
+      "startLine": 82,
+      "endLine": 88
+    },
     "type": "technique",
     "title": "Equivalence: Ratio → 1 iff Difference is o(R(k,l))",
     "content": "The ratio convergence R(k,l+1)/R(k,l) → 1 is equivalent to the difference condition R(k,l+1) - R(k,l) = o(R(k,l)). This reformulation makes the conjecture more intuitive: the increment between consecutive Ramsey numbers is negligible compared to their magnitude.",
     "significance": "key",
     "mathContext": "$R(k,l+1)/R(k,l) \\to 1$ iff $(R(k,l+1) - R(k,l))/R(k,l) \\to 0$, i.e., the discrete derivative $\\Delta_l R(k,l)$ is $o(R(k,l))$. For $R(3,l) \\sim l^2/\\log l$, the expected increment is $\\sim 2l/\\log l - l^2/(l \\log^2 l) = \\Theta(l/\\log l)$, which is indeed $o(l^2/\\log l)$ — but proving this rigorously from the known bounds remains open.",
-    "relatedConcepts": ["discrete derivative", "little-o notation", "asymptotic equivalence", "ratio test"],
-    "prerequisites": ["erdos_1014_conjecture", "ramsey_pos"]
+    "relatedConcepts": [
+      "discrete derivative",
+      "little-o notation",
+      "asymptotic equivalence",
+      "ratio test"
+    ],
+    "prerequisites": [
+      "erdos_1014_conjecture",
+      "ramsey_pos"
+    ]
   },
   {
     "id": "ramsey-k2",
     "proofId": "erdos-1014",
-    "range": { "startLine": 92, "endLine": 94 },
-    "type": "technique",
+    "range": {
+      "startLine": 92,
+      "endLine": 94
+    },
+    "type": "concept",
     "title": "Trivial Case: R(2,l) = l",
     "content": "R(2,l) = l since K_l always contains an edge (red K_2) or has l independent vertices (blue K_l). The ratio (l+1)/l → 1 trivially, so the question is interesting only for k ≥ 3 where the combinatorial structure becomes nontrivial.",
     "significance": "supporting",
     "mathContext": "For $k = 2$: in any 2-coloring of $K_n$, either there is a red edge ($K_2$) or all edges are blue, giving a blue $K_n$. So $R(2,l) = l$. The ratio $R(2,l+1)/R(2,l) = (l+1)/l \\to 1$ is trivially convergent, which is why the conjecture restricts to $k \\geq 3$.",
-    "relatedConcepts": ["degenerate Ramsey numbers", "independent set", "trivial bounds"],
-    "prerequisites": ["ramseyNumber"]
+    "relatedConcepts": [
+      "degenerate Ramsey numbers",
+      "independent set",
+      "trivial bounds"
+    ],
+    "prerequisites": [
+      "ramseyNumber"
+    ]
   },
   {
     "id": "ann-erdos1014-known-values",
     "proofId": "erdos-1014",
-    "range": { "startLine": 97, "endLine": 99 },
-    "type": "technique",
+    "range": {
+      "startLine": 97,
+      "endLine": 99
+    },
+    "type": "concept",
     "title": "Known Small Ramsey Values",
     "content": "R(3,3) = 6, R(3,4) = 9, R(3,5) = 14. These exact values demonstrate the difficulty: even computing R(3,l) for small l requires sophisticated arguments. The ratios 9/6 = 1.5 and 14/9 ≈ 1.556 are far from 1, showing convergence (if true) is slow.",
     "significance": "supporting",
     "mathContext": "Known exact values include $R(3,3) = 6$ (Greenwood-Gleason 1955), $R(3,4) = 9$ (Greenwood-Gleason 1955), $R(3,5) = 14$ (McKay-Radziszowski 1995), and further $R(3,6) = 18$, $R(3,7) = 23$, $R(3,8) = 28$, $R(3,9) = 36$. The ratios $R(3,l+1)/R(3,l)$ for these: 1.50, 1.56, 1.29, 1.28, 1.22, 1.29 — suggesting slow convergence toward 1.",
-    "relatedConcepts": ["exact Ramsey numbers", "Radziszowski survey", "computational Ramsey theory"],
-    "prerequisites": ["ramseyNumber"]
+    "relatedConcepts": [
+      "exact Ramsey numbers",
+      "Radziszowski survey",
+      "computational Ramsey theory"
+    ],
+    "prerequisites": [
+      "ramseyNumber"
+    ]
   },
   {
     "id": "ann-erdos1014-diagonal",
     "proofId": "erdos-1014",
-    "range": { "startLine": 101, "endLine": 104 },
-    "type": "technique",
+    "range": {
+      "startLine": 101,
+      "endLine": 104
+    },
+    "type": "concept",
     "title": "Diagonal Ramsey Upper Bound",
     "content": "R(k,k) ≤ C(2k-2, k-1), the Erdős-Szekeres bound specialized to the diagonal case. This connects to Problem #1030 which asks about the full diagonal Ramsey asymptotics, a separate but related open question.",
     "significance": "supporting",
     "mathContext": "The diagonal case $R(k,k) \\leq \\binom{2k-2}{k-1} \\sim 4^k/\\sqrt{\\pi k}$ (by Stirling) is the starting point for diagonal Ramsey theory. Erdős (1947) proved $R(k,k) \\geq 2^{k/2}$ probabilistically. The gap between $2^{k/2}$ and $4^k/\\sqrt{k}$ remains one of the great open problems. Problem #1030 asks specifically about the limit of $R(k,k)^{1/k}$.",
-    "relatedConcepts": ["diagonal Ramsey numbers", "Erdős probabilistic method", "central binomial coefficient", "Problem 1030"],
-    "prerequisites": ["ramseyNumber", "Nat.choose"]
+    "relatedConcepts": [
+      "diagonal Ramsey numbers",
+      "Erdős probabilistic method",
+      "central binomial coefficient",
+      "Problem 1030"
+    ],
+    "prerequisites": [
+      "ramseyNumber",
+      "Nat.choose"
+    ]
   }
 ]

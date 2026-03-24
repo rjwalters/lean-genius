@@ -141,7 +141,7 @@
       "startLine": 194,
       "endLine": 200
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Friendship Theorem",
     "content": "The main result: every finite simple graph satisfying the friendship property has a universal vertex. This means someone must be friends with everyone.",
     "mathContext": "`friendship_theorem`: `IsFriendshipGraph G → Fintype.card V ≥ 3 → ∃ c, IsUniversalVertex G c`; proved via the spectral sandwich: either all vertices are regular (proved impossible for $|V| \\geq 3$ unless universal vertex exists) or one vertex already has degree $|V|-1$.",
@@ -163,7 +163,7 @@
       "startLine": 233,
       "endLine": 245
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Windmill Graph W₂",
     "content": "The windmill graph W₂ consists of two triangles sharing a common vertex (vertex 0). This is the simplest non-trivial friendship graph with 5 vertices.",
     "mathContext": "`windmill2 : SimpleGraph (Fin 5)` with vertex 0 as the universal vertex; adjacency defined by: 0∼1, 0∼2, 0∼3, 0∼4, 1∼2, 3∼4. Lemmas `windmill2_has_universal` and `windmill2_is_friendship` verify the friendship property holds.",

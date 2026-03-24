@@ -102,7 +102,7 @@
       "startLine": 77,
       "endLine": 92
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Basic Properties",
     "content": "**macmahon_first_term** shows A(0) = 1, **macmahon_strictMono** proves strict monotonicity, and **term_is_achievable** shows each A(i) is achievable as the 'singleton sum' of just itself.",
     "mathContext": "These are direct consequences of the definition. Strict monotonicity follows because A(j+1) > A(j) by construction.",
@@ -140,7 +140,7 @@
       "startLine": 117,
       "endLine": 134
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Why 3 and 6 are Skipped",
     "content": "**three_is_achievable** proves 3 in AchievableSums (since 3 = 1 + 2 = A(0) + A(1)). **six_is_achievable** proves 6 in AchievableSums (since 6 = 2 + 4 = A(1) + A(2)).",
     "mathContext": "These verified theorems show concrete examples of the sequence's construction. Each uses the Finset.sum_Icc_succ_top lemma to compute the sum.",
@@ -254,7 +254,7 @@
       "startLine": 222,
       "endLine": 235
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_359_summary** bundles basic facts: A(0) = 1 for MacMahon sequences, strict monotonicity holds, and the first and eighth values are 1 and 15 respectively.",
     "mathContext": "A convenience theorem packaging the core verified results for quick reference.",

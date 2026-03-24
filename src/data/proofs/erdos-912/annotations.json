@@ -143,7 +143,7 @@
       "startLine": 110,
       "endLine": 118
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Combined Asymptotic (Proved)",
     "content": "**erdos_selfridge_asymptotic**: Combines the lower and upper bounds into a single statement: ∃ c₁ c₂ > 0, ∃ N₀, ∀ n ≥ N₀, c₁√(n/log n) ≤ h(n) ≤ c₂√(n/log n).\n\nProved constructively by extracting constants from both axioms and using `max N₁ N₂` to unify the thresholds.",
     "mathContext": "The proof pattern is standard for combining two eventually-true bounds: given $N_1$ for the lower bound and $N_2$ for the upper bound, take $N_0 = \\max(N_1, N_2)$. Uses `le_of_max_le_left` and `le_of_max_le_right` to discharge the individual hypotheses.",
@@ -216,7 +216,7 @@
       "startLine": 159,
       "endLine": 163
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Exponent Monotonicity (Proved)",
     "content": "**exponent_monotone**: For fixed prime p, m ≤ n implies v_p(m!) ≤ v_p(n!). Proved using Mathlib's `padicValNat.factorial_le_factorial`.\n\nThis is one of the few fully proved results in the file.",
     "mathContext": "The proof unfolds `exponentInFactorial` and applies `padicValNat.factorial_le_factorial hp hmn`. The underlying fact is that $v_p(n!) = \\sum \\lfloor n/p^j \\rfloor$ is a sum of non-decreasing functions of $n$, hence non-decreasing.",
@@ -260,7 +260,7 @@
       "startLine": 229,
       "endLine": 247
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary and Constants",
     "content": "**erdos_912_summary**: Packages the asymptotic bound as `⟨erdos_selfridge_asymptotic, trivial⟩`. The `True` conjunct is a placeholder for the open conjecture.\n\n**constant_gap**: Axiomatizes that √(2π) ≈ 2.506 (between 2.5 and 2.51). This numerical bound verifies Tao's constant is well-defined and reasonable.",
     "mathContext": "The summary captures the current state: $h(n) \\asymp \\sqrt{n/\\log n}$ is proved (Erdős-Selfridge), $h(n) \\sim c\\sqrt{n/\\log n}$ with $c = \\sqrt{2\\pi}$ is conjectured (Tao). The gap between 'asymptotic order' and 'exact constant' is a common challenge in analytic number theory, analogous to knowing $\\pi(x) \\sim x/\\log x$ vs proving $\\pi(x) = \\text{Li}(x) + O(\\cdot)$.",

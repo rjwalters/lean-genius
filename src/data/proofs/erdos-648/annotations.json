@@ -205,7 +205,7 @@
       "startLine": 158,
       "endLine": 161
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: [3, 4] is GPF-Descending",
     "content": "**example_3_4_gpf_descending**: Proves $P(3) > P(4)$, i.e., $3 > 2$.\n\nThe pair $[3, 4]$ satisfies both conditions: values increase ($3 < 4$) and GPFs decrease ($P(3) = 3 > 2 = P(4)$). This is the simplest non-trivial GPF-descending pair. Note that $[4, 6]$ fails because $P(4) = 2 < 3 = P(6)$.",
     "mathContext": "The pair $(3, 4) = (3, 2^2)$ works because $4 = 2^2$ has a smaller GPF than the prime 3. More generally, for any prime $p$, the pair $(p, 2^{\\lceil \\log_2(p+1) \\rceil})$ is GPF-descending when $2^{\\lceil \\log_2(p+1) \\rceil} > p$.",
@@ -227,7 +227,7 @@
       "startLine": 175,
       "endLine": 181
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: [7, 9, 16] of Length 3",
     "content": "**example_7_9_16_gpf_descending**: Proves $P(7) > P(9) > P(16)$, i.e., $7 > 3 > 2$.\n\nA length-3 GPF-descending sequence using the prime 7, the prime square $9 = 3^2$, and the prime power $16 = 2^4$. The construction strategy: pick a prime $p$, then $q^j > p$ with $q < p$, then $2^k > q^j$.",
     "mathContext": "The sequence $[7, 9, 16] = [7, 3^2, 2^4]$ uses distinct primes $7 > 3 > 2$. For each prime $p_i$ in the descending chain, we need $a_i$ with $P(a_i) = p_i$ and $a_i > a_{i-1}$. Prime powers $p_i^{k_i}$ with sufficiently large $k_i$ achieve this.",
@@ -249,7 +249,7 @@
       "startLine": 189,
       "endLine": 198
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: [7, 10, 27, 64] of Length 4",
     "content": "**example_length_4_exists**: Proves $P(7) > P(10) > P(27) > P(64)$, giving GPF values $[7, 5, 3, 2]$.\n\nA length-4 GPF-descending sequence demonstrating the key construction principle: use numbers whose GPF equals a chosen descending prime. Here $10 = 2 \\cdot 5$ (GPF 5), $27 = 3^3$ (GPF 3), $64 = 2^6$ (GPF 2). Not pure prime powers — $10$ is a product.",
     "mathContext": "This example uses primes $7 > 5 > 3 > 2$ and representatives $[7, 10, 27, 64]$. The choice of $10 = 2 \\cdot 5$ instead of $5^2 = 25$ illustrates flexibility: any $p_i$-smooth number with $P = p_i$ works, not just prime powers.",
@@ -339,7 +339,7 @@
       "startLine": 252,
       "endLine": 254
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Cambie's Lower Bound",
     "content": "**cambie_lower_bound**: Axiomatizes the existence of $c_1 \\ge 2$ such that $g(n) \\ge c_1 \\sqrt{n / \\log n}$ for $n \\ge 10$.\n\nCambie's construction: partition $[2, n)$ by GPF value. For each prime $p \\le \\sqrt{n \\log n}$, there are $\\sim \\Psi(n, p) - \\Psi(n, p-1)$ integers with $P = p$. Selecting one representative per prime level and ensuring the increasing-value condition yields a sequence of length $\\Omega(\\sqrt{n/\\log n})$.",
     "mathContext": "The lower bound $g(n) \\ge 2\\sqrt{n/\\log n}$ uses the prime number theorem: there are $\\sim p/\\log p$ primes $\\le p$. Setting $p \\approx \\sqrt{n \\log n}$ gives $\\sim \\sqrt{n/\\log n}$ distinct prime levels, each with a valid representative. The constant $c_1 \\ge 2$ comes from optimizing the construction.",
@@ -363,7 +363,7 @@
       "startLine": 260,
       "endLine": 262
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Cambie's Upper Bound",
     "content": "**cambie_upper_bound**: Axiomatizes the existence of $c_2$ with $0 < c_2 \\le 2\\sqrt{2}$ such that $g(n) \\le c_2 \\sqrt{n / \\log n}$ for $n \\ge 10$.\n\nThe upper bound is the harder direction. Cambie's proof uses a pigeonhole/counting argument: any GPF-descending sequence of length $t$ requires $t$ distinct primes, and the representatives must fit in $[2, n)$. Counting constraints from smooth number estimates force $t \\le O(\\sqrt{n/\\log n})$.",
     "mathContext": "The upper bound proof: a sequence of length $t$ uses primes $p_1 > \\cdots > p_t \\ge 2$, so $t \\le \\pi(n)$. But the increasing-value constraint is stronger: the $i$-th element $a_i$ satisfies $a_i \\ge i+1$ (at minimum), and $a_i$ must be $p_i$-smooth but not $(p_i - 1)$-smooth. Balancing these constraints via $\\Psi(x, y)$ estimates gives $t \\le 2\\sqrt{2} \\cdot \\sqrt{n/\\log n}$.",
@@ -388,7 +388,7 @@
       "startLine": 268,
       "endLine": 278
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Cambie's Main Theorem",
     "content": "**cambie_main**: Combines both bounds to prove $g(n) \\asymp \\sqrt{n / \\log n}$.\n\nThis is the only non-axiom, non-sorry theorem among the main results. It extracts the constants from both axiomatized bounds and packages them into a single two-sided estimate. The proof is structural: `obtain` the witnesses from each axiom and `use` them.",
     "mathContext": "$\\exists\\, c_1, c_2 > 0 : \\forall n \\ge 10,\\quad c_1 \\sqrt{\\frac{n}{\\log n}} \\le g(n) \\le c_2 \\sqrt{\\frac{n}{\\log n}}$\n\nThis determines the order of magnitude: $g(n) = \\Theta(\\sqrt{n/\\log n})$. The result resolves Erdős #648 up to constants.",
@@ -410,7 +410,7 @@
       "startLine": 291,
       "endLine": 294
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Cambie's Asymptotic Conjecture",
     "content": "**cambie_asymptotic_conjecture**: Axiomatizes the conjecture that $g(n)/\\sqrt{n/\\log n} \\to c$ for some $c \\in [2, 2\\sqrt{2}]$.\n\nThis goes beyond the $\\Theta$ result to ask whether an exact asymptotic constant exists. The conjecture uses `Filter.Tendsto` with `Filter.atTop` and `nhds c` to express the limit $\\lim_{n \\to \\infty} g(n)/\\sqrt{n/\\log n} = c$.",
     "mathContext": "The conjecture asks: does $\\lim_{n \\to \\infty} \\frac{g(n)}{\\sqrt{n/\\log n}} = c$ exist, with $c \\in [2, 2\\sqrt{2}]$? If so, $g(n) \\sim c\\sqrt{n/\\log n}$. The gap between 2 and $2\\sqrt{2} \\approx 2.83$ reflects the gap between known construction efficiency and the counting upper bound.",
@@ -500,7 +500,7 @@
       "startLine": 370,
       "endLine": 376
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_648_summary**: Packages both bounds into a conjunction.\n\nThe lower bound (from `cambie_lower_bound`) and upper bound (from `cambie_upper_bound`) are combined. This is a direct destructuring of the axioms — the proof is simply `⟨cambie_lower_bound, cambie_upper_bound⟩`.",
     "mathContext": "States both directions simultaneously: $\\exists c_1 \\ge 2,\\, \\forall n \\ge 10: g(n) \\ge c_1\\sqrt{n/\\log n}$ AND $\\exists c_2 \\le 2\\sqrt{2},\\, \\forall n \\ge 10: g(n) \\le c_2\\sqrt{n/\\log n}$.",

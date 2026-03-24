@@ -204,7 +204,7 @@
       "startLine": 75,
       "endLine": 77
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős-Hajnal Theorem (1960)",
     "content": "For any bounded outer measure family, arbitrarily large finite independent sets exist. The proof uses subadditivity: the union of k sets of measure < 1 has measure < k, so in a large enough interval, a new independent point exists.",
     "mathContext": "Erdős-Hajnal: $\\forall n,\\; \\text{IsIndependentOfSize}(A, n)$. Proof: $\\mu^*(\\bigcup_{i=1}^k A_{x_i}) \\leq \\sum \\mu^*(A_{x_i}) < k$, so for large intervals, a new point exists outside all $A_{x_i}$.",
@@ -249,7 +249,7 @@
       "startLine": 94,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hechler's Theorem (1972)",
     "content": "Under CH, there exists a bounded outer measure family with NO infinite independent set. The construction well-orders ℝ in type ω₁ and builds each A_x to block all potential infinite independent sequences via transfinite induction.",
     "mathContext": "Hechler: CH $\\implies \\exists A$ with $\\mu^*(A_x) < 1$ bounded, but $\\nexists$ infinite independent set. Uses well-ordering of $\\mathbb{R}$ in type $\\omega_1$ enabled by CH.",
@@ -272,7 +272,7 @@
       "startLine": 101,
       "endLine": 103
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Gladysz's Theorem (1962)",
     "content": "For closed measure families, size-2 independent sets always exist. Closedness provides the topological structure the general case lacks.",
     "mathContext": "Gladysz: If $A_x$ is closed, $\\mu(A_x) < 1$ $\\forall x$, then $\\exists x \\neq y$ with $x \\notin A_y \\land y \\notin A_x$.",
@@ -294,7 +294,7 @@
       "startLine": 107,
       "endLine": 109
     },
-    "type": "technique",
+    "type": "concept",
     "title": "NPS Theorem (1987)",
     "content": "For closed families, infinite independent sets DO exist, provable in ZFC. This is the positive counterpart to Hechler — closedness restores decidability from ZFC alone.",
     "mathContext": "NPS (1987): $\\text{ClosedMeasureFamily}(A) \\implies \\text{HasInfiniteIndependent}(A)$, provable in ZFC. Uses topological properties of closed sets of small measure.",
@@ -338,7 +338,7 @@
       "startLine": 132,
       "endLine": 139
     },
-    "type": "technique",
+    "type": "concept",
     "title": "ZFC Independence of Question 1",
     "content": "The formal proof of independence: (1) CH ⟹ ¬Q1 via Hechler, (2) closed families have infinite independence via NPS. Combined with Gödel-Cohen, Q1 is independent of ZFC.",
     "mathContext": "$(\\text{CH} \\implies \\neg\\text{Q1}) \\land (\\text{ClosedMeasureFamily} \\implies \\text{HasInfiniteIndependent})$. With Gödel-Cohen independence of CH, Q1 is independent of ZFC.",
@@ -361,7 +361,7 @@
       "startLine": 144,
       "endLine": 147
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hereditary Property",
     "content": "Subsets of independent sets are independent. Proved directly by subset membership.",
     "mathContext": "$Y \\subseteq X \\land \\text{IsIndependent}(A, X) \\implies \\text{IsIndependent}(A, Y)$.",
@@ -383,7 +383,7 @@
       "startLine": 150,
       "endLine": 161
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Insertion Lemma",
     "content": "To extend an independent set X by z: need z ∉ A_y for all y ∈ X AND y ∉ A_z for all y ∈ X. The proof case-splits on membership in the enlarged set insert z X.",
     "mathContext": "If $X$ independent, $z \\notin X$, $z \\notin A_y$ $\\forall y \\in X$, $y \\notin A_z$ $\\forall y \\in X$, then $X \\cup \\{z\\}$ is independent.",
