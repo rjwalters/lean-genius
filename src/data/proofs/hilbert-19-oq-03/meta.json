@@ -233,7 +233,17 @@
     {
       "targetId": "hilbert-19",
       "relationship": "extends",
-      "description": "Parent formalization; this entry extends it with further exploration"
+      "description": "Parent formalization of Hilbert's 19th problem on regularity of variational solutions. This entry extends to fully nonlinear equations via Evans-Krylov theory, proving $C^{2,\\alpha}$ regularity for viscosity solutions of uniformly elliptic equations — beyond the linear/quasilinear De Giorgi-Nash-Moser setting"
+    },
+    {
+      "targetId": "navier-stokes",
+      "relationship": "related",
+      "description": "Both concern regularity of PDE solutions: Hilbert 19 asks whether variational solutions are smooth (answered affirmatively by De Giorgi-Nash-Moser), while the Navier-Stokes millennium problem asks whether incompressible flow solutions remain smooth for all time. Schauder-type estimates are foundational tools in both"
+    },
+    {
+      "targetId": "schauder-fixed-point",
+      "relationship": "technique",
+      "description": "Schauder's fixed point theorem provides PDE solution existence via compactness. The Schauder estimates ($C^{k,\\alpha}$ bounds for elliptic PDEs) are the linear regularity theory that Evans-Krylov extends to the fully nonlinear setting formalized here"
     }
   ]
 }
