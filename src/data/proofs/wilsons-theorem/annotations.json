@@ -230,5 +230,53 @@
       "Fin",
       "typeclasses"
     ]
+  },
+  {
+    "id": "ann-full-characterization",
+    "proofId": "wilsons-theorem",
+    "range": {
+      "startLine": 60,
+      "endLine": 89
+    },
+    "type": "technique",
+    "title": "Full Iff Characterization and Both Directions",
+    "content": "`wilsons_theorem` gives the full iff: $n \\neq 1 \\Rightarrow (n \\text{ prime} \\iff (n-1)! \\equiv -1 \\pmod{n})$. This is remarkable — it gives a *complete* characterization of primality via a single factorial congruence.\n\n**Forward** (`prime_implies_factorial_neg_one`): In $(\\mathbb{Z}/p\\mathbb{Z})^*$, pair each $a$ with $a^{-1}$. The only self-inverse elements satisfy $x^2 \\equiv 1$, i.e., $x \\equiv \\pm 1$. All other elements pair off, contributing 1 to the product. So $(p-1)! = 1 \\cdot (-1) \\cdot 1 = -1$.\n\n**Backward** (`factorial_neg_one_implies_prime`): If $n = ab$ with $1 < a < n$, then $a | (n-1)!$ (since $a$ appears in the factorial product). If $(n-1)! \\equiv -1 \\pmod{n}$, then $a | (n-1)! + 1$, so $a | 1$ — contradiction.\n\nThe Lean proofs are one-liners delegating to Mathlib's `Nat.prime_iff_fac_equiv_neg_one`, `ZMod.wilsons_lemma`, and `Nat.prime_of_fac_equiv_neg_one`.",
+    "mathContext": "$n \\neq 1 \\Rightarrow (n \\text{ prime} \\iff (n-1)! \\equiv -1 \\pmod{n})$. The pairing argument: $(\\mathbb{Z}/p\\mathbb{Z})^* = \\{1, -1\\} \\cup \\{\\text{pairs } (a, a^{-1}) : a \\neq a^{-1}\\}$. Product = $1 \\cdot (-1) \\cdot \\prod 1 = -1$.",
+    "significance": "key",
+    "prerequisites": [
+      "ZMod.wilsons_lemma",
+      "Nat.prime_iff_fac_equiv_neg_one",
+      "multiplicative inverses mod p"
+    ],
+    "relatedConcepts": [
+      "primality test",
+      "pairing argument",
+      "self-inverse elements",
+      "multiplicative group mod p"
+    ]
+  },
+  {
+    "id": "ann-group-theory",
+    "proofId": "wilsons-theorem",
+    "range": {
+      "startLine": 136,
+      "endLine": 160
+    },
+    "type": "insight",
+    "title": "Group-Theoretic Interpretation and Pairing Argument",
+    "content": "The commentary section reveals Wilson's theorem as a statement about the multiplicative group $(\\mathbb{Z}/p\\mathbb{Z})^*$:\n\n1. $(\\mathbb{Z}/p\\mathbb{Z})^*$ is **cyclic** of order $p-1$ (primitive root theorem)\n2. **Self-inverse elements** satisfy $x^2 \\equiv 1 \\pmod{p}$, i.e., $p | (x-1)(x+1)$. Since $p$ is prime, $x \\equiv \\pm 1$\n3. The **pairing argument**: elements cancel in pairs $\\{a, a^{-1}\\}$, leaving only $1$ and $-1$\n\nThis group-theoretic viewpoint generalizes: in any finite abelian group $G$, $\\prod_{g \\in G} g$ equals the product of elements of order 2 (and the identity). For $(\\mathbb{Z}/p\\mathbb{Z})^*$, the unique element of order 2 is $-1$.\n\nThe file ends with `#check` commands verifying the API surface.",
+    "mathContext": "For any finite group $G$: $\\prod_{g \\in G} g = \\prod_{g : g^2 = e} g$. For $G = (\\mathbb{Z}/p\\mathbb{Z})^*$: elements of order dividing 2 are $\\{1, -1\\}$, so $\\prod_{a=1}^{p-1} a = 1 \\cdot (-1) = -1$.",
+    "significance": "key",
+    "prerequisites": [
+      "cyclic groups",
+      "primitive roots",
+      "order of group elements"
+    ],
+    "relatedConcepts": [
+      "cyclic group",
+      "primitive root",
+      "self-inverse element",
+      "Lagrange's theorem"
+    ]
   }
 ]
