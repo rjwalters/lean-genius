@@ -394,11 +394,3 @@ The independence of CH didn't end the story:
 -/
 
 end ContinuumHypothesis
-
--- Export main theorems
-#check ContinuumHypothesis.CH
-#check ContinuumHypothesis.GCH
-#check ContinuumHypothesis.continuum_hypothesis_independent
-#check ContinuumHypothesis.cantor_theorem
-#check ContinuumHypothesis.ch_consistent_with_zfc
-#check ContinuumHypothesis.not_ch_consistent_with_zfc
