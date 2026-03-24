@@ -5,7 +5,7 @@
   "description": "Let h(n) be the minimal k such that gcd(2^n−1, 3^n−1, ..., k^n−1) = 1. Does lim inf h(n) = ∞? Does the density of h(n) = p exist? h(n) = n+1 iff n+1 prime. Open.",
   "meta": {
     "erdosNumber": 770,
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos770Problem.lean",
     "tags": [
       "erdos",
@@ -14,7 +14,7 @@
       "coprimality",
       "open"
     ],
-    "badge": "formalized",
+    "badge": "axiom",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/770",
     "erdosUrl": "https://erdosproblems.com/770",
