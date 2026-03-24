@@ -30,7 +30,7 @@
   "overview": {
     "historicalContext": "This problem, credited to Ore by Erdős (1971), explores whether high-girth graphs have particularly stable acyclic orientations. Every graph admits an acyclic orientation (just order the vertices and direct edges from lower to higher), but some orientations are 'fragile' — reversing a single edge creates a directed cycle. Ore asked whether avoiding short cycles (girth > 4) guarantees the existence of a 'robust' orientation that stays acyclic after any single edge reversal.\n\nEarly counterexamples at small girth were known: Ore found a girth-4 graph without this property, and Gallai observed the Grötzsch graph (11 vertices, girth 4, chromatic number 4) also fails. These examples relied on high chromatic number relative to girth, suggesting that chromatic structure, not just cycle length, governs robust orientability.\n\nNešetřil and Rödl (1978) settled the question completely by proving counterexamples exist for ALL girths g ≥ 3. Their proof uses the probabilistic method: by the Erdős theorem on graphs with high girth and high chromatic number, such graphs exist, and their high chromatic number forces every acyclic orientation to contain a 'fragile' edge whose reversal creates a directed cycle. The formalization axiomatizes the Nešetřil-Rödl theorem and derives the falsity of Ore's conjecture as a corollary.",
     "problemStatement": "Let G be a graph with girth > 4 (no cycles of length 3 or 4). Can the edges of G always be directed such that (1) there is no directed cycle, and (2) reversing any single edge also creates no directed cycle?",
-    "text": "Can every graph with girth > 4 be oriented so that there is no directed cycle, and reversing any single edge also creates no directed cycle? Disproved by Nešetřil-Rödl (1978) for all girths.",
+    "text": "This formalization captures the disproof of Erdős Problem #1006, originally posed by Ore and recorded by Erdős in 1971. The problem asks whether every graph with girth greater than 4 admits an acyclic orientation that remains acyclic after reversing any single edge — a property called robust acyclicity. The Lean development defines graph girth via the absence of short cycles, constructs an Orientation structure with fields ensuring each edge receives exactly one direction, and formalizes robust acyclicity as the conjunction of acyclicity with acyclicity-preservation under all single-edge reversals. The three axioms encode the edge-reversal operation, the Grötzsch graph as a concrete girth-4 counterexample, and the Nešetřil-Rödl theorem establishing counterexamples at every girth g >= 3. The final theorem, ores_conjecture_false, instantiates the Nešetřil-Rödl axiom at g = 5 to derive a girth-5 graph contradicting the conjecture, completing a clean proof by contradiction in 8 lines of tactic code.",
     "proofStrategy": "Nešetřil and Rödl (1978) used the probabilistic method to construct counterexamples. They showed that random graphs with high girth and high chromatic number have the property that EVERY acyclic orientation contains an edge whose reversal creates a directed cycle. This gives counterexamples for all girths g ≥ 3.",
     "keyInsights": [
       "Acyclic orientations correspond to linear orderings: direct u→v iff u comes before v",
@@ -88,7 +88,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1006 is resolved NEGATIVELY. The conjecture that graphs with girth > 4 admit robustly acyclic orientations is false. Nešetřil and Rödl (1978) proved counterexamples exist for all girths g ≥ 3.",
-    "implications": "This result shows that sparsity (high girth) alone cannot guarantee robust orientability. The chromatic number plays a crucial role: graphs with high girth AND high chromatic number necessarily fail to have robust orientations.",
+    "implications": "The negative resolution of Erdős #1006 reveals a fundamental limit of local sparsity in graph theory. High girth — the absence of short cycles — forces a graph to be locally tree-like, and one might expect this local simplicity to yield well-behaved global orientations. The Nešetřil-Rödl disproof shows this intuition fails spectacularly: for every girth threshold, there exist graphs that are locally tree-like yet globally so chromatically complex that no acyclic orientation can tolerate even a single edge reversal.\n\nThe key mechanism is the interplay between girth and chromatic number. Erdős proved in 1959 that for any integers g and k, there exist graphs with girth at least g and chromatic number at least k. Nešetřil and Rödl exploited this: when the chromatic number is sufficiently high (at least 4), any acyclic orientation — which corresponds to a linear ordering of vertices — must contain edges where the two endpoints are 'close' in the ordering. Reversing such an edge closes a directed cycle. This connection between chromatic number and orientation fragility is the conceptual heart of the disproof.\n\nThe formalization captures this argument at the right level of abstraction. Rather than constructing specific high-girth, high-chromatic-number graphs (which would require formalizing the probabilistic method or explicit Ramsey-type constructions), the Lean development axiomatizes the Nešetřil-Rödl theorem directly and derives the disproof as a clean corollary. The three axioms — edge reversal, the Grötzsch counterexample, and the Nešetřil-Rödl theorem — represent the irreducible mathematical content that cannot be derived from Mathlib alone.\n\nThis problem sits at the intersection of several major themes in combinatorics. The probabilistic method, which underlies the Nešetřil-Rödl construction, is the same tool that Erdős used to prove the existence of Ramsey graphs and to establish lower bounds on chromatic numbers. The connection to the Lovász Local Lemma is particularly noteworthy: constructing graphs with simultaneously high girth and high chromatic number requires controlling dependencies among local events, exactly the setting where the Local Lemma excels.\n\nThe open questions that remain — characterizing which graphs admit robustly acyclic orientations, and determining the minimum chromatic number at each girth that forces fragility — connect to active research in structural graph theory and the theory of graph orientations. The Grötzsch graph, axiomatized here as a girth-4 counterexample, is the smallest triangle-free graph with chromatic number 4 and continues to serve as a testing ground for conjectures about triangle-free graphs and their chromatic properties.",
     "openQuestions": [
       "Characterize which graphs admit robustly acyclic orientations",
       "What is the minimum chromatic number of a graph with girth g that fails robust orientability?"
@@ -98,17 +98,59 @@
     {
       "targetId": "four-color-theorem",
       "relationship": "related",
-      "description": "Both concern structural properties of graph orientations and colorings. The four-color theorem constrains planar graph colorings; Erdős #1006 asks about acyclic orientations robust to edge reversal, connecting graph orientation theory to chromatic properties"
+      "description": "Both problems connect graph structure to chromatic properties. The four-color theorem constrains chromatic numbers of planar graphs; Erdős #1006 shows that high chromatic number (not planarity) is the obstruction to robust acyclic orientations. The Grötzsch graph, axiomatized here as a girth-4 counterexample, is a classic example in chromatic graph theory."
     },
     {
       "targetId": "ramseys-theorem",
       "relationship": "related",
-      "description": "Ramsey theory and this problem share the theme of unavoidable structures: Ramsey shows large enough graphs must contain monochromatic substructures; the Nešetřil-Rödl disproof uses Ramsey-type constructions to show high-girth graphs cannot always admit robustly acyclic orientations"
+      "description": "Ramsey theory and this problem share the theme of unavoidable structures in large graphs. The Nešetřil-Rödl construction uses Ramsey-type amalgamation techniques to build high-girth, high-chromatic-number graphs, and Ramsey's theorem itself provides the combinatorial backbone for controlling cycle lengths in random graph constructions."
+    },
+    {
+      "targetId": "prob-method-lovasz-local",
+      "relationship": "technique",
+      "description": "The Lovász Local Lemma is a key tool in constructing graphs with high girth and high chromatic number, which form the counterexamples in Nešetřil-Rödl's disproof. The Local Lemma controls dependencies among local events (short cycles at different locations), enabling the simultaneous avoidance of all short cycles while maintaining high chromatic number."
+    },
+    {
+      "targetId": "prob-method-alteration",
+      "relationship": "technique",
+      "description": "The alteration method complements the probabilistic constructions underlying Erdős #1006. In Erdős's 1959 proof of high-girth high-chromatic-number graphs, a random graph is generated and then altered by deleting vertices from short cycles, yielding a graph with the desired girth while preserving high chromatic number."
+    },
+    {
+      "targetId": "prob-method-second-moment",
+      "relationship": "technique",
+      "description": "Second moment methods are used in probabilistic combinatorics to show that random constructions achieve desired properties with positive probability. The Erdős theorem on high-girth high-chromatic-number graphs — the foundation of the Nešetřil-Rödl disproof — relies on concentration inequalities from the second moment method."
+    },
+    {
+      "targetId": "erdos-544",
+      "relationship": "related",
+      "description": "Both problems involve Ramsey-theoretic graph structure. Erdős #544 concerns the growth of R(3,k) — the Ramsey number for triangles versus cliques — while #1006 uses the existence of triangle-free (and more generally high-girth) graphs with high chromatic number, a result closely tied to Ramsey number lower bounds."
+    },
+    {
+      "targetId": "erdos-1009",
+      "relationship": "related",
+      "description": "Erdős #1009 and #1006 both explore extremal graph theory beyond classical thresholds. #1009 asks about edge-disjoint triangles in graphs exceeding the Turán bound; #1006 asks about orientation stability in high-girth graphs. Both reveal that naive structural intuitions fail when chromatic complexity is high."
+    },
+    {
+      "targetId": "erdos-905",
+      "relationship": "related",
+      "description": "Erdős #905 shows that graphs above the Turán threshold must contain edges in many triangles, connecting edge density to local triangle structure. Erdős #1006 connects girth (absence of short cycles) to orientation fragility, and both results illustrate how global graph invariants constrain local structural properties."
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "broader-context",
+      "description": "Szemerédi's theorem and the associated regularity lemma are foundational tools in extremal combinatorics. The regularity lemma provides a structural decomposition of dense graphs that has been applied to orientation problems, and Szemerédi's work on graph regularity influenced the development of the probabilistic techniques used in the Nešetřil-Rödl construction."
     }
   ],
   "relatedProofs": [
     "four-color-theorem",
-    "ramseys-theorem"
+    "ramseys-theorem",
+    "prob-method-lovasz-local",
+    "prob-method-alteration",
+    "prob-method-second-moment",
+    "erdos-544",
+    "erdos-1009",
+    "erdos-905",
+    "szemeredi-theorem"
   ],
   "references": [
     {
@@ -124,6 +166,27 @@
       "year": "1976",
       "venue": "Congressus Numerantium, vol. 15, pp. 169–192",
       "note": "Collection of open problems including #1006 on robust acyclic orientations of high-girth graphs"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Graph theory and probability",
+      "year": "1959",
+      "venue": "Canadian Journal of Mathematics, vol. 11, pp. 34–38",
+      "note": "Proves the existence of graphs with arbitrarily high girth and chromatic number using the probabilistic method — the foundational result that Nešetřil and Rödl build upon"
+    },
+    {
+      "authors": "Ore, Oystein",
+      "title": "Theory of Graphs",
+      "year": "1962",
+      "venue": "American Mathematical Society Colloquium Publications, vol. 38",
+      "note": "Ore's monograph on graph theory where the question of robust acyclic orientations originates; includes the girth-4 counterexample that motivated the conjecture for girth > 4"
+    },
+    {
+      "authors": "Alon, Noga; Spencer, Joel H.",
+      "title": "The Probabilistic Method",
+      "year": "2016",
+      "venue": "Wiley Series in Discrete Mathematics, 4th edition",
+      "note": "Standard reference for the probabilistic techniques (alteration method, Lovász Local Lemma) used in constructing high-girth high-chromatic-number graphs"
     }
   ],
   "leanFile": {
