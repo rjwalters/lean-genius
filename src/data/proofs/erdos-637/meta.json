@@ -35,7 +35,7 @@
   "overview": {
     "historicalContext": "Erdős, Faudree, and Sós conjectured that graphs with small Ramsey numbers (no large cliques or independent sets) must have induced subgraphs with many distinct degrees. This connects degree diversity to Ramsey-theoretic properties. Ramsey graphs — graphs whose clique number and independence number are both O(log n) — were studied intensively following the development of the probabilistic method; the Erdős-Rényi random graph G(n,1/2) is the canonical example. Faudree and Schelp made important contributions to degree sequence problems throughout the 1980s and 1990s. Bukh and Sudakov's 2007 resolution used a combination of probabilistic arguments and spectral techniques, while the subsequent 2020 improvement by Jenssen, Keevash, Long, and Yepremyan to n^{2/3} distinct degrees exploited more refined structural properties of Ramsey graphs.",
     "problemStatement": "If G on n vertices has ω(G), α(G) = O(log n), then G contains an induced subgraph on ≫ n vertices with ≫ √n distinct degrees. Bukh-Sudakov (2007) proved this. JKLY (2020) improved to ≫ n^{2/3} degrees without vertex count restriction.",
-    "text": "If G on n vertices has no clique/independent set on ≫ log n vertices, then G contains an induced subgraph with ≫ √n distinct degrees. Bukh-Sudakov (2007) proved this; JKLY (2020) strengthened to ≫ n^{2/3} degrees.",
+    "text": "This formalization captures Erdős Problem #637, which asks how many distinct vertex degrees must appear in induced subgraphs of Ramsey graphs — graphs on n vertices whose clique number and independence number are both O(log n). The Lean file defines vertex degrees, distinct degree counts, clique and independence numbers, and the Ramsey graph property using Mathlib's SimpleGraph library, then states the original Erdős-Faudree-Sós conjecture (an induced subgraph on linearly many vertices with at least c*sqrt(n) distinct degrees) and the stronger JKLY result (at least c*n^{2/3} distinct degrees in the whole graph). The formalization includes 16 definitions and 18 theorem statements across 253 lines, covering the Bukh-Sudakov (2007) resolution, the Jenssen-Keevash-Long-Yepremyan (2020) strengthening, optimality conjectures, connections to random graphs and Ramsey numbers, and degree sequence theory. Ten sorries remain, corresponding to the deep combinatorial and probabilistic arguments underlying the main results.",
     "proofStrategy": "We formalize vertex degrees, distinct degree counts, Ramsey graph properties, induced subgraphs, the original conjecture, the Bukh-Sudakov solution, the JKLY strengthening, optimality considerations, and connections to Ramsey theory.",
     "keyInsights": [
       "Ramsey graphs: ω(G), α(G) = O(log n)",
@@ -140,7 +140,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #637 on distinct degrees in induced subgraphs of Ramsey graphs. The problem was solved by Bukh-Sudakov (2007) and strengthened by JKLY (2020).",
-    "implications": "The results reveal a fundamental connection between Ramsey-theoretic properties (absence of large cliques/independent sets) and degree diversity in graphs.",
+    "implications": "The resolution of Erdős Problem #637 reveals a deep structural principle: the absence of large homogeneous substructures (cliques and independent sets) in a graph forces rich heterogeneity in the degree sequence. This is a striking instance of the broader phenomenon in extremal combinatorics where pseudo-randomness — the failure to contain large structured patterns — implies quantitative regularity properties.\n\nThe progression from the original Erdős-Faudree-Sós conjecture (sqrt(n) distinct degrees) to the JKLY strengthening (n^{2/3} distinct degrees) illustrates how the field's understanding of Ramsey graph structure deepened over the 2007-2020 period. Bukh and Sudakov's approach combined probabilistic reasoning with careful analysis of the degree distribution in neighborhoods, while JKLY's improvement required new ideas connecting degree diversity to the spectral properties and neighborhood structure of Ramsey graphs.\n\nThe conjectured optimality of the exponent 2/3 connects to fundamental open questions about the structure of Ramsey graphs. If the exponent is indeed tight, it would mean there is a sharp threshold separating the degree diversity of pseudo-random graphs from truly random ones: G(n, 1/2) has approximately n distinct degrees, but Ramsey graphs can have as few as n^{2/3}. This gap reflects the difference between algorithmic pseudo-randomness and true randomness.\n\nThe problem also connects naturally to Szemerédi's regularity lemma and its applications: the regularity method is one of the primary tools for extracting structure from dense graphs, and the Ramsey graph condition is precisely the setting where regularity-based arguments are most powerful. Bukh and Sudakov's original proof leveraged regularity-type decompositions, highlighting how graph regularity and Ramsey theory reinforce each other.\n\nFrom the formalization perspective, this entry demonstrates the challenge of encoding asymptotic combinatorial results in Lean 4. The definitions of Ramsey graphs, induced subgraphs, and distinct degree counts are clean and composable, but the proofs of the main theorems require deep probabilistic and structural arguments that remain as sorries. The formalization nonetheless serves as a precise specification of the mathematical claims, separating the definitional content (which is fully verified) from the proof content (which requires further work).",
     "openQuestions": [
       "Is the exponent 2/3 optimal?",
       "What is the exact constant in the JKLY bound?",
@@ -161,17 +161,80 @@
       "year": "2020",
       "venue": "Proc. Amer. Math. Soc. 148, pp. 3835-3846",
       "note": "Strengthened to ≫ n^{2/3} degrees, nearly matching the conjectured optimum"
+    },
+    {
+      "authors": "Erdős, Paul; Faudree, Ralph; Sós, Vera T.",
+      "title": "Problems and results on Ramsey-type questions for graphs",
+      "year": "1991",
+      "venue": "Discrete Math. 94(1), pp. 1-11",
+      "note": "Original source of the conjecture on distinct degrees in Ramsey graphs"
+    },
+    {
+      "authors": "Erdős, Paul; Szemerédi, Endre",
+      "title": "On a Ramsey type theorem",
+      "year": "1972",
+      "venue": "Period. Math. Hungar. 2, pp. 295-299",
+      "note": "Early work connecting Ramsey graph structure to degree properties"
+    },
+    {
+      "authors": "Shelah, Saharon",
+      "title": "A combinatorial problem; stability and order for models and theories in infinitary languages",
+      "year": "1972",
+      "venue": "Pacific J. Math. 41, pp. 247-261",
+      "note": "Improved the Erdős-Szemerédi Ramsey-type upper bound, contributing to the study of Ramsey graph structure"
     }
   ],
   "crossReferences": [
     {
       "targetId": "ramseys-theorem",
       "relationship": "uses",
-      "description": "The problem concerns graphs with no large cliques or independent sets — precisely the regime where Ramsey theory applies"
+      "description": "The problem concerns graphs with no large cliques or independent sets — precisely the regime where Ramsey theory applies. The formalization defines IsRamseyGraph via clique and independence number bounds, directly invoking Ramsey-theoretic concepts."
+    },
+    {
+      "targetId": "erdos-544",
+      "relationship": "related",
+      "description": "Both problems study fine structural properties of Ramsey numbers. Problem #544 asks about consecutive Ramsey number differences, while #637 examines degree diversity in graphs whose parameters are controlled by Ramsey bounds."
+    },
+    {
+      "targetId": "prob-method-second-moment",
+      "relationship": "technique",
+      "description": "The probabilistic method underlies both the proof that random G(n,1/2) is a Ramsey graph and key steps in the Bukh-Sudakov argument. Second moment estimates are used to control degree concentration in random and pseudo-random graphs."
+    },
+    {
+      "targetId": "prob-method-alteration",
+      "relationship": "technique",
+      "description": "The alteration method is central to probabilistic constructions in Ramsey theory. The classical proof that R(k,k) >= 2^{k/2} — referenced in the formalization's ramsey_lower_bound — uses first-moment deletion, a form of alteration."
+    },
+    {
+      "targetId": "prob-method-lovasz-local",
+      "relationship": "technique",
+      "description": "The Lovász Local Lemma provides a more refined probabilistic tool for Ramsey-type problems. While not directly used in #637, it represents the broader toolkit of probabilistic combinatorics that Bukh-Sudakov and JKLY draw upon."
+    },
+    {
+      "targetId": "erdos-905",
+      "relationship": "related",
+      "description": "Both problems study structural properties of graphs in extremal settings. Problem #905 concerns edge-triangle multiplicities above the Turán threshold, another instance where global structure forces local diversity."
+    },
+    {
+      "targetId": "erdos-1010",
+      "relationship": "related",
+      "description": "Triangle supersaturation (#1010) is an extremal graph theory result where exceeding a density threshold forces many copies of a substructure. This parallels #637's theme: Ramsey graph conditions force degree diversity."
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Szemerédi's regularity lemma and its applications are foundational tools in the study of Ramsey graphs. Bukh and Sudakov's proof uses regularity-type decompositions, and the regularity method is a primary bridge between Ramsey theory and structural graph theory."
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem"
+    "ramseys-theorem",
+    "erdos-544",
+    "prob-method-second-moment",
+    "prob-method-alteration",
+    "prob-method-lovasz-local",
+    "erdos-905",
+    "erdos-1010",
+    "szemeredi-theorem"
   ],
   "leanFile": {
     "imports": [
