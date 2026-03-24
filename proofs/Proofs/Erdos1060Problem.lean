@@ -46,14 +46,21 @@ For prime p, σ(p) = p + 1
 theorem sigma_prime (p : ℕ) (hp : p.Prime) : sigma p = p + 1 := by
   unfold sigma
   rw [Nat.Prime.divisors hp]
-  simp
+  have h1p : (1 : ℕ) ∉ ({p} : Finset ℕ) := by
+    rw [Finset.mem_singleton]; exact hp.one_lt.ne
+  rw [Finset.sum_insert h1p, Finset.sum_singleton]
+  simp only [id]; omega
 
 /--
 σ is multiplicative on coprime arguments.
 -/
-theorem sigma_mul_coprime (m n : ℕ) (hmn : m.Coprime n) (hm : m ≠ 0) (hn : n ≠ 0) :
+theorem sigma_mul_coprime (m n : ℕ) (hmn : m.Coprime n) (_hm : m ≠ 0) (_hn : n ≠ 0) :
     sigma (m * n) = sigma m * sigma n := by
-  sorry
+  -- Bridge to Mathlib's ArithmeticFunction.sigma 1, which is proved multiplicative
+  have bridge : ∀ k : ℕ, sigma k = (ArithmeticFunction.sigma 1) k := by
+    intro k; simp only [sigma, ArithmeticFunction.sigma_apply, pow_one, id]
+  rw [bridge, bridge, bridge]
+  exact ArithmeticFunction.isMultiplicative_sigma.map_mul_of_coprime hmn
 
 /-
 ## Part II: The Product k·σ(k)
@@ -137,7 +144,23 @@ noncomputable def f' (n : ℕ) : ℕ :=
 f and f' agree for n > 0.
 -/
 theorem f_eq_f' (n : ℕ) (hn : n > 0) : f n = f' n := by
-  sorry
+  unfold f f'
+  -- Key: solutionSet n = ↑((Icc 1 n).filter (fun k => g k = n)) as sets
+  have h_eq : solutionSet n = ↑((Finset.Icc 1 n).filter (fun k => g k = n)) := by
+    ext k
+    simp only [solutionSet, Set.mem_setOf_eq, Finset.coe_filter, Set.mem_setOf_eq,
+               Finset.mem_coe, Finset.mem_filter, Finset.mem_Icc]
+    constructor
+    · intro hk
+      refine ⟨⟨?_, ?_⟩, hk⟩
+      · -- k ≥ 1: if k = 0 then g 0 = 0 ≠ n since n > 0
+        by_contra hle; push_neg at hle; interval_cases k; simp [g] at hk; omega
+      · -- k ≤ n: since k ≤ g(k) = n
+        have hk_pos : 0 < k := by
+          by_contra hle; push_neg at hle; interval_cases k; simp [g] at hk; omega
+        linarith [k_le_g k hk_pos]
+    · exact fun ⟨_, hk⟩ => hk
+  rw [h_eq, Set.ncard_coe_finset]
 
 /-
 ## Part IV: Basic Values
@@ -221,11 +244,24 @@ The sequence of n for which f(n) > 0 (i.e., k·σ(k) = n has a solution).
 def oeis_A327153 : Set ℕ := {n : ℕ | f n > 0}
 
 /--
-Membership in A327153.
+Membership in A327153 for positive n.
+
+Note: For n = 0, f(0) = 1 > 0 (via k = 0), but no k > 0 satisfies g(k) = 0,
+so the k > 0 condition requires n > 0.
 -/
-theorem mem_A327153_iff (n : ℕ) :
+theorem mem_A327153_iff (n : ℕ) (hn : n > 0) :
     n ∈ oeis_A327153 ↔ ∃ k > 0, g k = n := by
-  sorry
+  -- Use show to keep f n visible for rewriting
+  show f n > 0 ↔ ∃ k > 0, g k = n
+  rw [f_eq_f' n hn]
+  simp only [f', Finset.card_pos, Finset.Nonempty]
+  constructor
+  · rintro ⟨k, hk⟩
+    rw [Finset.mem_filter, Finset.mem_Icc] at hk
+    exact ⟨k, hk.1.1, hk.2⟩
+  · rintro ⟨k, hk_pos, hgk⟩
+    exact ⟨k, Finset.mem_filter.mpr ⟨Finset.mem_Icc.mpr
+      ⟨hk_pos, hgk ▸ k_le_g k hk_pos⟩, hgk⟩⟩
 
 /-
 ## Part VII: Examples and Computations

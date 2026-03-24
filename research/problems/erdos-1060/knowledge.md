@@ -58,7 +58,30 @@ Back to the problem
 
 ## Sessions
 
-(No research sessions yet)
+### Session 2026-03-24 (Session 1) - Eliminate All Sorries
+
+**Mode**: FRESH
+**Outcome**: progress (3 sorries → 0 sorries)
+
+#### What I Did
+- Proved `sigma_mul_coprime`: σ is multiplicative on coprime arguments. Bridge to Mathlib's `ArithmeticFunction.isMultiplicative_sigma` via showing our local `sigma k = (ArithmeticFunction.sigma 1) k`.
+- Proved `f_eq_f'`: Bridge between `Set.ncard` and `Finset.card` characterizations of f(n). Key: showed `solutionSet n = ↑((Icc 1 n).filter (fun k => g k = n))` then used `Set.ncard_coe_finset`.
+- Proved `mem_A327153_iff`: Characterized OEIS A327153 membership for n > 0. Added hypothesis `n > 0` (original statement was unprovable for n=0). Uses `f_eq_f'` bridge and `Finset.card_pos`.
+- Fixed pre-existing `sigma_prime` proof that relied on `simp` which couldn't close `∑ x ∈ {1, p}, x = p + 1`. Used explicit `Finset.sum_insert` + `Finset.sum_singleton` + `omega`.
+
+#### Key Findings
+- `Nat.Coprime.divisors_mul` was removed/renamed in Mathlib v4.26.0 - need to use ArithmeticFunction bridge instead
+- `sigma_isMultiplicative` → now `ArithmeticFunction.isMultiplicative_sigma`
+- `Set.ncard_coe_Finset` → deprecated, use `Set.ncard_coe_finset`
+- `Set.Finite` is now `Finite` on the subtype in recent Mathlib
+
+#### Files Modified
+- `proofs/Proofs/Erdos1060Problem.lean` (3 sorries → 0, also fixed sigma_prime)
+
+#### Next Steps
+- 2 axioms remain (OPEN conjectures - cannot be proved)
+- File is now in good shape: 0 sorries, well-structured
+- Consider adding more supporting lemmas (e.g., bounds on f for specific n)
 
 ---
 
