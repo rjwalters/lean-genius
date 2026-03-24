@@ -17,13 +17,13 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 430,
     "erdosUrl": "https://erdosproblems.com/430",
     "erdosProblemStatus": "open",
-    "axiomCount": 3,
-    "assumptions": "3 axioms: erdos_385_equivalence (equivalence with Problem 385), erdos_430_conjecture (composites appear for large n), small_n_all_prime (small n can be all-prime). example_n8 now proved by native_decide.",
-    "lineCount": 114,
+    "axiomCount": 2,
+    "assumptions": "2 axioms: erdos_430_conjecture (composites appear for large n), small_n_all_prime (small n can be all-prime). 1 sorry remaining in greedy sequence containment proof.",
+    "lineCount": 172,
     "mathlib_version": "4.26.0"
   },
   "overview": {
