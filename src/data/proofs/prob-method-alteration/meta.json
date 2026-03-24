@@ -15,7 +15,7 @@
       "graph-theory",
       "intermediate"
     ],
-    "badge": "wip",
+    "badge": "formalized",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -49,7 +49,7 @@
       "Property B and hypergraph 2-colorability",
       "Optimization of probability parameters"
     ],
-    "assumptions": "property_b_bound proves True (placeholder, needs hypergraph type). 2/3 theorems fully proved; 1 True stub remains.",
+    "assumptions": "1 True stub (1/3 theorems): property_b_bound (line 58): proves True instead of Property B bound. property_b_bound proves True (placeholder, needs hypergraph type). 2/3 theorems fully proved; 1 True stub remains.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -179,12 +179,12 @@
     {
       "id": "prob-method-second-moment",
       "relationship": "related",
-      "description": "The second moment method provides concentration results that can sharpen alteration bounds by showing the random constru"
+      "description": "The second moment method provides concentration results that can sharpen alteration bounds by showing the random construction is close to its expectation"
     },
     {
       "id": "ramseys-theorem",
       "relationship": "related",
-      "description": "Ramsey-type problems are a primary motivation for the alteration method — the probabilistic lower bound on Ramsey number"
+      "description": "Ramsey-type problems are a primary motivation for the alteration method — the probabilistic lower bound on Ramsey numbers uses an alteration argument to handle edge colorings"
     }
   ],
   "leanFile": {

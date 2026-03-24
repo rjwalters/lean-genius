@@ -180,27 +180,27 @@
     {
       "id": "erdos-776",
       "relationship": "applied-in",
-      "description": "Kummer's theorem determines which layers have enough sets for multiplicity r, since layer availability depends on binomi"
+      "description": "Kummer's theorem determines which layers have enough sets for multiplicity r, since layer availability depends on binomial coefficient divisibility"
     },
     {
       "id": "binomial-theorem-oq-01",
       "relationship": "related",
-      "description": "Both study properties of binomial coefficients — Kummer's theorem addresses divisibility while the binomial theorem addr"
+      "description": "Both study properties of binomial coefficients — Kummer's theorem addresses divisibility while the binomial theorem addresses evaluation"
     },
     {
       "id": "binomial-theorem",
       "relationship": "foundational",
-      "description": "The binomial theorem generates the coefficients $\\binom{n}{k}$ whose $p$-adic valuations Kummer's theorem computes. Kumm"
+      "description": "The binomial theorem generates the coefficients $\\binom{n}{k}$ whose $p$-adic valuations Kummer's theorem computes. Kummer counts carries in base-$p$ addition"
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "Unique prime factorization underpins $v_p(n)$, the $p$-adic valuation that Kummer's theorem evaluates for binomial coeff"
+      "description": "Unique prime factorization underpins $v_p(n)$, the $p$-adic valuation that Kummer's theorem evaluates for binomial coefficients"
     },
     {
       "id": "wilsons-theorem",
       "relationship": "related",
-      "description": "Both concern modular arithmetic with primes. Legendre's formula $v_p(n!) = \\sum \\lfloor n/p^i \\rfloor$ connects Wilson's"
+      "description": "Both concern modular arithmetic with primes. Legendre's formula $v_p(n!) = \\sum \\lfloor n/p^i \\rfloor$ connects Wilson's factorial congruence to Kummer's carry-counting"
     }
   ],
   "leanFile": {

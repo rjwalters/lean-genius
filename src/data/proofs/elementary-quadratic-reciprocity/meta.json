@@ -207,7 +207,7 @@
     {
       "id": "quadratic-reciprocity",
       "relationship": "related",
-      "description": "The main quadratic reciprocity entry — this file provides an alternative elementary proof via Eisenstein's method, compl"
+      "description": "The main quadratic reciprocity entry — this file provides an alternative elementary proof via Eisenstein's method, complementing the standard Gauss-sum approach"
     },
     {
       "id": "infinitude-primes",
@@ -217,17 +217,17 @@
     {
       "id": "lagrange-theorem",
       "relationship": "foundational",
-      "description": "Lagrange's theorem (subgroup order divides group order) underpins the structure of (ℤ/pℤ)× — the multiplicative group wh"
+      "description": "Lagrange's theorem (subgroup order divides group order) underpins the structure of (ℤ/pℤ)× — the multiplicative group whose quadratic residue structure QR describes"
     },
     {
       "id": "abel-ruffini",
       "relationship": "thematic",
-      "description": "Both concern the algebraic structure of number-theoretic objects: QR describes the splitting behavior of primes in quadr"
+      "description": "Both concern the algebraic structure of number-theoretic objects: QR describes the splitting behavior of primes in quadratic extensions, while Abel-Ruffini concerns solvability of polynomial equations. The Artin reciprocity law unifies both"
     },
     {
       "id": "primitive-roots",
       "relationship": "foundational",
-      "description": "Primitive roots establish that $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic of order $p-1$. The quadratic residues are pr"
+      "description": "Primitive roots establish that $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic of order $p-1$. The quadratic residues are precisely the even powers of a primitive root, forming the unique subgroup of index 2. This group structure is what makes the Legendre symbol a group homomorphism"
     }
   ],
   "references": [

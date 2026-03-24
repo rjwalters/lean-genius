@@ -210,12 +210,12 @@
     {
       "id": "geometric-series",
       "relationship": "complementary",
-      "description": "The two fundamental series formulas: arithmetic series ∑(a+kd) = n(2a+(n-1)d)/2 and geometric series ∑ar^k = a(r^n-1)/(r"
+      "description": "The two fundamental series formulas: arithmetic series ∑(a+kd) = n(2a+(n-1)d)/2 and geometric series ∑ar^k = a(r^n-1)/(r-1) — both foundational to discrete mathematics and both proved by elegant algebraic tricks"
     },
     {
       "id": "mathematical-induction",
       "relationship": "foundational",
-      "description": "The arithmetic series formula ∑k = n(n+1)/2 is one of the canonical examples of proof by mathematical induction — though"
+      "description": "The arithmetic series formula ∑k = n(n+1)/2 is one of the canonical examples of proof by mathematical induction — though Gauss's pairing argument provides a direct proof"
     },
     {
       "id": "binomial-theorem",
@@ -230,7 +230,7 @@
     {
       "id": "sum-of-kth-powers",
       "relationship": "extended-by",
-      "description": "Faulhaber's formulas generalize the arithmetic series from $\\sum k$ (degree 1) to $\\sum k^p$ for arbitrary $p$ — the ari"
+      "description": "Faulhaber's formulas generalize the arithmetic series from $\\sum k$ (degree 1) to $\\sum k^p$ for arbitrary $p$ — the arithmetic series formula $n(n+1)/2$ is the $p=1$ case of Faulhaber's general result"
     }
   ],
   "references": [

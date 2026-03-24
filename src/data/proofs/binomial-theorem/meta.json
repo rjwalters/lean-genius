@@ -263,7 +263,7 @@
     {
       "id": "combinations-formula",
       "relationship": "foundational",
-      "description": "The binomial coefficient $\\binom{n}{k} = \\frac{n!}{k!(n-k)!}$ is precisely the combinations formula. The binomial theore"
+      "description": "The binomial coefficient $\\binom{n}{k} = \\frac{n!}{k!(n-k)!}$ is precisely the combinations formula. The binomial theorem gives the algebraic identity that these coefficients satisfy."
     },
     {
       "id": "binomial-theorem-oq-01",
@@ -273,12 +273,12 @@
     {
       "id": "inclusion-exclusion",
       "relationship": "related",
-      "description": "The alternating sum identity $\\sum (-1)^k \\binom{n}{k} = 0$ for $n \\geq 1$, proved here as a corollary of the binomial t"
+      "description": "The alternating sum identity $\\sum (-1)^k \\binom{n}{k} = 0$ for $n \\geq 1$, proved here as a corollary of the binomial theorem, is the simplest instance of inclusion-exclusion. Both use the same signed summation machinery."
     },
     {
       "id": "central-limit-theorem",
       "relationship": "extends",
-      "description": "The binomial distribution $P(X = k) = \\binom{n}{k} p^k (1-p)^{n-k}$ arises directly from the binomial theorem. The Centr"
+      "description": "The binomial distribution $P(X = k) = \\binom{n}{k} p^k (1-p)^{n-k}$ arises directly from the binomial theorem. The Central Limit Theorem shows this distribution converges to a Gaussian as $n \\to \\infty$."
     },
     {
       "id": "binomial-theorem-oq-02",

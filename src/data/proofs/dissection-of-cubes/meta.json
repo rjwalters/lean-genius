@@ -261,12 +261,12 @@
     {
       "id": "angle-trisection",
       "relationship": "thematic",
-      "description": "Both are geometric impossibility results: angle trisection shows certain constructions are impossible with compass and s"
+      "description": "Both are geometric impossibility results: angle trisection shows certain constructions are impossible with compass and straightedge (via Galois theory), while cube dissection shows certain decompositions are impossible (via infinite descent). Different proof techniques for the same genre of result"
     },
     {
       "id": "dissection-of-cubes-oq-01",
       "relationship": "extended-by",
-      "description": "OQ-01 formalizes collision pairs and minimum collision lower bounds — extending the cube dissection impossibility with q"
+      "description": "OQ-01 formalizes collision pairs and minimum collision lower bounds — extending the cube dissection impossibility with quantitative results about how many cubes must share sizes"
     },
     {
       "id": "dissection-of-cubes-oq-02",
@@ -276,7 +276,7 @@
     {
       "id": "abel-ruffini",
       "relationship": "thematic",
-      "description": "Both are structural impossibility results where the proof identifies a fundamental obstruction: Abel-Ruffini's obstructi"
+      "description": "Both are structural impossibility results where the proof identifies a fundamental obstruction: Abel-Ruffini's obstruction is the non-solvability of $S_5$ (group theory), while cube dissection's obstruction is the infinite descent forced by the surrounding geometry (combinatorics). Both reduce impossibility to a structural property that cannot be circumvented"
     }
   ]
 }

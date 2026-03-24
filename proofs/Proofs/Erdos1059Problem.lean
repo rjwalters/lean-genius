@@ -92,8 +92,9 @@ theorem counterexample_89 : ¬AllFactorialSubtractionsComposite 89 := by
 -/
 
 /-- **Erdős Problem #1059** (OPEN): There are infinitely many primes p
-    such that p - k! is composite for every k with 1 ≤ k! < p. -/
-axiom erdos_1059_conjecture :
+    such that p - k! is composite for every k with 1 ≤ k! < p.
+    Stated as a definition since this is an open conjecture. -/
+def ErdosProblem1059 : Prop :=
   Set.Infinite {p : ℕ | p.Prime ∧ AllFactorialSubtractionsComposite p}
 
 /-

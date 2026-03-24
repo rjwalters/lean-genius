@@ -195,17 +195,17 @@
     {
       "id": "ballot-problem",
       "relationship": "extends",
-      "description": "The classical discrete ballot problem (Bertrand 1887) — this file extends it to continuous time via Brownian motion, rep"
+      "description": "The classical discrete ballot problem (Bertrand 1887) — this file extends it to continuous time via Brownian motion, replacing discrete vote counts with a continuous diffusion process"
     },
     {
       "id": "ballot-problem-oq-01",
       "relationship": "extends",
-      "description": "The generalized k-fold ballot problem — this file provides the continuous analog via the reflection principle for Browni"
+      "description": "The generalized k-fold ballot problem — this file provides the continuous analog via the reflection principle for Brownian motion, recovering the same probabilities in the scaling limit"
     },
     {
       "id": "ballot-problem-oq-01-oq-01",
       "relationship": "sibling",
-      "description": "Sibling open question addressing the ballot problem from a different angle — both extend the base ballot problem formali"
+      "description": "Sibling open question addressing the ballot problem from a different angle — both extend the base ballot problem formalization in complementary directions"
     },
     {
       "id": "birthday-problem",
@@ -215,7 +215,7 @@
     {
       "id": "ballot-problem-oq-03",
       "relationship": "sibling",
-      "description": "The LGV lemma via 2D reflection provides a discrete determinantal approach to ballot counting, complementing this file's"
+      "description": "The LGV lemma via 2D reflection provides a discrete determinantal approach to ballot counting, complementing this file's continuous-time Brownian motion formulation. Both generalize the original ballot problem: this file to continuous time via stochastic processes, LGV to multiple non-crossing paths via linear algebra"
     }
   ],
   "leanFile": {

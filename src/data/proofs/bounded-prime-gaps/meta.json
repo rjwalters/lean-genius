@@ -267,12 +267,12 @@
     {
       "id": "bertrands-postulate",
       "relationship": "foundational",
-      "description": "Bertrand's postulate (always a prime between n and 2n) was the first result on bounded prime gaps in a weak sense. Bound"
+      "description": "Bertrand's postulate (always a prime between n and 2n) was the first result on bounded prime gaps in a weak sense. Bounded prime gaps strengthens this dramatically: not just one prime in (n,2n], but infinitely many consecutive prime pairs with gap ≤ 246"
     },
     {
       "id": "bertrands-postulate-oq-03",
       "relationship": "related",
-      "description": "Sub-entry extending Bertrand's postulate with refined prime counting bounds. The bounded prime gaps formalization uses B"
+      "description": "Sub-entry extending Bertrand's postulate with refined prime counting bounds. The bounded prime gaps formalization uses Bertrand to prove primeGap_le_nthPrime ($g(n) \\leq p_n$), connecting the classical upper bound on every gap to the modern Polymath lower-frequency result ($g(n) \\leq 246$ infinitely often)"
     },
     {
       "id": "infinitude-primes",
@@ -282,7 +282,7 @@
     {
       "id": "prime-gap-bounds",
       "relationship": "depends-on",
-      "description": "Imports prime gap infrastructure: nth prime bounds (p_n <= 2^(n+1)), prime counting bounds (pi(2n) > pi(n)), and the ord"
+      "description": "Imports prime gap infrastructure: nth prime bounds (p_n <= 2^(n+1)), prime counting bounds (pi(2n) > pi(n)), and the order-preserving enumeration property of primes used in the prime gap analysis"
     },
     {
       "id": "prime-number-theorem",

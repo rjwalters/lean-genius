@@ -202,22 +202,22 @@
     {
       "id": "harmonic-divergence",
       "relationship": "foundational",
-      "description": "The divergence of the harmonic series Σ 1/n is directly connected to Egyptian fractions: the greedy algorithm for writin"
+      "description": "The divergence of the harmonic series Σ 1/n is directly connected to Egyptian fractions: the greedy algorithm for writing 1 as a sum of unit fractions terminates precisely because partial harmonic sums grow without bound. The growth rate f(k) ≈ k/(e-1) relates to harmonic series asymptotics"
     },
     {
       "id": "euler-totient",
       "relationship": "related",
-      "description": "Euler's totient function φ(n) appears in counting the number of reduced fractions with denominator ≤ n, which connects t"
+      "description": "Euler's totient function φ(n) appears in counting the number of reduced fractions with denominator ≤ n, which connects to the density of available denominators in Egyptian fraction representations"
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "Unique factorization determines which denominators can combine to give integer numerators when added, a key constraint i"
+      "description": "Unique factorization determines which denominators can combine to give integer numerators when added, a key constraint in Egyptian fraction representations of 1"
     },
     {
       "id": "e-transcendental",
       "relationship": "thematic",
-      "description": "The constant e appears naturally in the solution f(k) = (1+o(1))·k/(e-1): this connects Egyptian fractions to the expone"
+      "description": "The constant e appears naturally in the solution f(k) = (1+o(1))·k/(e-1): this connects Egyptian fractions to the exponential function through the relation 1/(e-1) = Σ_{n≥1} 1/n! and related series identities"
     }
   ]
 }

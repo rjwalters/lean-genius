@@ -167,12 +167,12 @@
     {
       "id": "cantor-diagonalization",
       "relationship": "technique",
-      "description": "Both use the diagonal argument: Cantor constructs a real not in any enumeration, Turing constructs a program that any ha"
+      "description": "Both use the diagonal argument: Cantor constructs a real not in any enumeration, Turing constructs a program that any halting oracle gets wrong. Turing's proof is a computability-theoretic incarnation of Cantor's set-theoretic argument — the halting set is the effective analog of a non-enumerable set"
     },
     {
       "id": "godel-incompleteness",
       "relationship": "related",
-      "description": "Both are impossibility results about formal reasoning via self-reference. Gödel shows no consistent system proves all tr"
+      "description": "Both are impossibility results about formal reasoning via self-reference. Gödel shows no consistent system proves all truths; Turing shows no algorithm decides all halting questions. They are logically equivalent: the halting problem can encode Gödel sentences, and incompleteness follows from undecidability"
     },
     {
       "id": "hilbert-10",
@@ -182,12 +182,12 @@
     {
       "id": "abel-ruffini",
       "relationship": "thematic",
-      "description": "Both are impossibility results about natural-seeming procedures: Abel-Ruffini shows no radical formula solves all quinti"
+      "description": "Both are impossibility results about natural-seeming procedures: Abel-Ruffini shows no radical formula solves all quintics, the halting problem shows no algorithm decides all programs. Both reveal fundamental limits of 'finite symbolic methods' — radicals in one case, algorithms in the other"
     },
     {
       "id": "angle-trisection",
       "relationship": "thematic",
-      "description": "Both prove that a natural class of problems has no universal solution within a given framework: compass-straightedge can"
+      "description": "Both prove that a natural class of problems has no universal solution within a given framework: compass-straightedge cannot trisect all angles, algorithms cannot decide all halting questions. Both disprove the existence of a universal method by exhibiting specific unsolvable instances"
     }
   ],
   "references": [

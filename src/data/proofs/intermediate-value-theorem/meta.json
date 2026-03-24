@@ -197,22 +197,22 @@
     {
       "id": "brouwer-fixed-point",
       "relationship": "extends",
-      "description": "The fixed point theorem for continuous self-maps of $[a,b]$ (proved here as a corollary of IVT) is the 1-dimensional cas"
+      "description": "The fixed point theorem for continuous self-maps of $[a,b]$ (proved here as a corollary of IVT) is the 1-dimensional case of Brouwer's fixed point theorem, which generalizes to continuous self-maps of $[0,1]^n$"
     },
     {
       "id": "borsuk-ulam",
       "relationship": "related",
-      "description": "The $n=1$ case of Borsuk-Ulam — every continuous $f: S^1 \\to \\mathbb{R}$ has $f(x) = f(-x)$ — is equivalent to IVT appli"
+      "description": "The $n=1$ case of Borsuk-Ulam — every continuous $f: S^1 \\to \\mathbb{R}$ has $f(x) = f(-x)$ — is equivalent to IVT applied to $g(\\theta) = f(\\theta) - f(\\theta + \\pi)$ on the circle. Borsuk-Ulam is the higher-dimensional generalization"
     },
     {
       "id": "mean-value-theorem",
       "relationship": "related",
-      "description": "Both are consequences of the completeness of $\\mathbb{R}$: IVT uses connectedness of intervals, MVT uses compactness (vi"
+      "description": "Both are consequences of the completeness of $\\mathbb{R}$: IVT uses connectedness of intervals, MVT uses compactness (via the extreme value theorem). MVT extends IVT to derivatives: the mean value $\\frac{f(b)-f(a)}{b-a}$ is achieved by $f'$ at some interior point"
     },
     {
       "id": "fundamental-theorem-calculus",
       "relationship": "extends",
-      "description": "The Fundamental Theorem of Calculus uses continuity of the integrand and the IVT-style reasoning that continuous functio"
+      "description": "The Fundamental Theorem of Calculus uses continuity of the integrand and the IVT-style reasoning that continuous functions on intervals attain all intermediate values, connecting antiderivatives to definite integrals"
     },
     {
       "id": "sqrt2-irrational",

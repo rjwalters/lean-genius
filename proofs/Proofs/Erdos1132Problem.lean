@@ -56,15 +56,30 @@ noncomputable def lagrangeBasis' (nodes : Fin n → ℝ) (k : Fin n) (x : ℝ) :
   (∏ i ∈ Finset.univ.filter (· ≠ k), (x - nodes i)) /
   (∏ i ∈ Finset.univ.filter (· ≠ k), (nodes k - nodes i))
 
-/-- **Lagrange basis at its own node equals 1.** -/
-axiom lagrangeBasis_self (nodes : Fin n → ℝ) (k : Fin n)
+/-- **Lagrange basis at its own node equals 1.**
+    Numerator = denominator = ∏_{i≠k} (nodes k - nodes i). -/
+theorem lagrangeBasis_self (nodes : Fin n → ℝ) (k : Fin n)
     (hdistinct : ∀ i j, i ≠ j → nodes i ≠ nodes j) :
-    lagrangeBasis nodes k (nodes k) = 1
+    lagrangeBasis nodes k (nodes k) = 1 := by
+  unfold lagrangeBasis
+  -- Numerator and denominator are identical
+  have hne : ∏ i ∈ Finset.univ.filter (· ≠ k), (nodes k - nodes i) ≠ 0 := by
+    apply Finset.prod_ne_zero
+    intro i hi
+    simp at hi
+    exact sub_ne_zero.mpr (hdistinct k i hi.2)
+  exact div_self hne
 
-/-- **Lagrange basis at other nodes equals 0.** -/
-axiom lagrangeBasis_other (nodes : Fin n → ℝ) (k j : Fin n)
+/-- **Lagrange basis at other nodes equals 0.**
+    The numerator has factor (nodes j - nodes j) = 0 since j ≠ k. -/
+theorem lagrangeBasis_other (nodes : Fin n → ℝ) (k j : Fin n)
     (hdistinct : ∀ i₁ i₂, i₁ ≠ i₂ → nodes i₁ ≠ nodes i₂) (hkj : k ≠ j) :
-    lagrangeBasis nodes k (nodes j) = 0
+    lagrangeBasis nodes k (nodes j) = 0 := by
+  unfold lagrangeBasis
+  rw [div_eq_zero_iff]
+  left
+  apply Finset.prod_eq_zero (Finset.mem_filter.mpr ⟨Finset.mem_univ j, hkj.symm⟩)
+  simp
 
 /- ## Part II: The Lebesgue Function
 

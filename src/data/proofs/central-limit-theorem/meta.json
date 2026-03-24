@@ -253,7 +253,7 @@
     {
       "id": "birthday-problem",
       "relationship": "related",
-      "description": "Both are fundamental results in probability theory. The birthday problem illustrates combinatorial probability, while CL"
+      "description": "Both are fundamental results in probability theory. The birthday problem illustrates combinatorial probability, while CLT explains why the normal distribution dominates averaged statistics"
     },
     {
       "id": "buffons-needle",
@@ -263,7 +263,7 @@
     {
       "id": "stirling-formula",
       "relationship": "foundational",
-      "description": "Stirling's formula n! ≈ √(2πn)(n/e)^n provides the √(2π) factor in the Gaussian density — the binomial distribution appr"
+      "description": "Stirling's formula n! ≈ √(2πn)(n/e)^n provides the √(2π) factor in the Gaussian density — the binomial distribution approaches the normal via Stirling, giving de Moivre's original CLT (1733)"
     },
     {
       "id": "area-of-circle",
@@ -273,7 +273,7 @@
     {
       "id": "central-limit-theorem-oq-01",
       "relationship": "extended-by",
-      "description": "Explores what happens when variance is infinite — leading to stable distributions (Lévy $\\alpha$-stable) with heavier ta"
+      "description": "Explores what happens when variance is infinite — leading to stable distributions (Lévy $\\alpha$-stable) with heavier tails than the Gaussian, answering the first open question"
     }
   ],
   "leanFile": {

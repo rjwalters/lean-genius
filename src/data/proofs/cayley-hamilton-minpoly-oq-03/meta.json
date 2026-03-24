@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Minimal_polynomial_(linear_algebra)#Computation",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ03.lean",
     "tags": [
       "linear-algebra",
@@ -18,7 +18,7 @@
       "computational-complexity",
       "research"
     ],
-    "badge": "formalized",
+    "badge": "verified",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -228,12 +228,12 @@
     {
       "id": "cayley-hamilton",
       "relationship": "foundational",
-      "description": "The Cayley-Hamilton theorem ($\\chi_M(M) = 0$) implies $\\mu_M | \\chi_M$, which gives the degree bound $\\deg(\\mu_M) \\leq n"
+      "description": "The Cayley-Hamilton theorem ($\\chi_M(M) = 0$) implies $\\mu_M | \\chi_M$, which gives the degree bound $\\deg(\\mu_M) \\leq n$ used in the complexity analysis."
     },
     {
       "id": "cayley-hamilton-minpoly",
       "relationship": "parent",
-      "description": "Parent formalization establishing minimal polynomial reduction and annihilator theory. This OQ investigates the computat"
+      "description": "Parent formalization establishing minimal polynomial reduction and annihilator theory. This OQ investigates the computational complexity of finding $\\mu_M$."
     },
     {
       "id": "cayley-hamilton-minpoly-oq-02",
@@ -243,12 +243,12 @@
     {
       "id": "cayley-hamilton-minpoly-oq-04",
       "relationship": "complementary",
-      "description": "Characterizes nonderogatory matrices via cyclic vectors. The Krylov method is optimal precisely for nonderogatory matric"
+      "description": "Characterizes nonderogatory matrices via cyclic vectors. The Krylov method is optimal precisely for nonderogatory matrices, where a single cyclic vector extracts the full minimal polynomial."
     },
     {
       "id": "cayley-hamilton-minpoly-oq-05",
       "relationship": "foundational",
-      "description": "General K-algebra minimal polynomial reduction providing the algebraic foundation for the Krylov method's termination gu"
+      "description": "General K-algebra minimal polynomial reduction providing the algebraic foundation for the Krylov method's termination guarantee."
     }
   ],
   "crossReferences": [

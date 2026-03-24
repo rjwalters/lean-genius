@@ -213,17 +213,17 @@
     {
       "id": "chinese-remainder-constructive",
       "relationship": "complementary",
-      "description": "The natural-number CRT formalization using Nat.chineseRemainder — this file provides the integer-level alternative using"
+      "description": "The natural-number CRT formalization using Nat.chineseRemainder — this file provides the integer-level alternative using Bézout coefficients directly"
     },
     {
       "id": "chinese-remainder-non-coprime",
       "relationship": "related",
-      "description": "Extends CRT to the non-coprime case gcd(m,n) > 1 — where the coprimality assumption of this file fails, requiring a diff"
+      "description": "Extends CRT to the non-coprime case gcd(m,n) > 1 — where the coprimality assumption of this file fails, requiring a different approach"
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "related",
-      "description": "CRT and FTA are both consequences of Bézout's identity: FTA uses Euclid's lemma (from Bézout), while CRT uses Bézout coe"
+      "description": "CRT and FTA are both consequences of Bézout's identity: FTA uses Euclid's lemma (from Bézout), while CRT uses Bézout coefficients as selectors"
     }
   ],
   "leanFile": {

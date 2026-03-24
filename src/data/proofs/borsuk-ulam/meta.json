@@ -244,12 +244,12 @@
     {
       "id": "brouwer-fixed-point",
       "relationship": "implication",
-      "description": "Borsuk-Ulam implies Brouwer's Fixed Point Theorem: the retraction proof shows that a continuous map without a fixed poin"
+      "description": "Borsuk-Ulam implies Brouwer's Fixed Point Theorem: the retraction proof shows that a continuous map without a fixed point would yield an antipode-preserving map, contradicting Borsuk-Ulam"
     },
     {
       "id": "intermediate-value-theorem",
       "relationship": "related",
-      "description": "The n=1 case of Borsuk-Ulam (every continuous f: S¹ → ℝ has f(x) = f(-x)) is equivalent to the intermediate value theore"
+      "description": "The n=1 case of Borsuk-Ulam (every continuous f: S¹ → ℝ has f(x) = f(-x)) is equivalent to the intermediate value theorem applied to g(θ) = f(θ) - f(θ+π) on the circle — Borsuk-Ulam is the higher-dimensional generalization of IVT"
     },
     {
       "id": "prob-method-lovasz-local",
@@ -264,7 +264,7 @@
     {
       "id": "borsuk-ulam-oq-02",
       "relationship": "extended-by",
-      "description": "Explores equivariant extensions of Borsuk-Ulam to group actions beyond the $\\mathbb{Z}/2\\mathbb{Z}$ antipodal action — a"
+      "description": "Explores equivariant extensions of Borsuk-Ulam to group actions beyond the $\\mathbb{Z}/2\\mathbb{Z}$ antipodal action — answering the open question about which group actions preserve the Borsuk-Ulam property"
     }
   ],
   "leanFile": {

@@ -7,7 +7,7 @@
     "author": "Classical combinatorics; formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Derangement#Generalizations",
     "date": "classical",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/DerangementsOQ02.lean",
     "badge": "mathlib",
     "sorries": 0,
@@ -225,17 +225,17 @@
     {
       "id": "binomial-theorem",
       "relationship": "uses",
-      "description": "The binomial coefficient C(n,k) appears as the number of ways to choose which k elements are fixed points; formalized vi"
+      "description": "The binomial coefficient C(n,k) appears as the number of ways to choose which k elements are fixed points; formalized via Finset.powersetCard"
     },
     {
       "id": "inclusion-exclusion",
       "relationship": "related",
-      "description": "The classical proof of S(n,k) = C(n,k)·D(n-k) uses inclusion-exclusion; this formalization uses a bijective proof instea"
+      "description": "The classical proof of S(n,k) = C(n,k)·D(n-k) uses inclusion-exclusion; this formalization uses a bijective proof instead, avoiding alternating sums"
     },
     {
       "id": "birthday-problem",
       "relationship": "related",
-      "description": "Both involve counting permutations with specific coincidence properties: the birthday problem counts collisions in rando"
+      "description": "Both involve counting permutations with specific coincidence properties: the birthday problem counts collisions in random selections, while partial derangements count fixed points in random permutations"
     }
   ]
 }

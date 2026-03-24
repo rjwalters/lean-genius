@@ -1,6 +1,6 @@
 {
   "slug": "erdos-1059",
-  "title": "Erd\u0151s #1059",
+  "title": "Erdős #1059",
   "phase": "COMPLETED",
   "status": "active",
   "tier": "B",
@@ -29,23 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Eliminated factorial_count_bound axiom (now proved via Nat.find). Fixed broken proofs (simp/constructor \u2192 decide/native_decide). 9 theorems, 2 axioms, 0 sorries.",
+    "progressSummary": "COMPLETED: Fixed open conjecture axiom. Axioms: 2 → 1.",
     "builtItems": [
       "Proved factorial_count_bound (eliminated axiom)",
       "Fixed example_101 proof (broken by Mathlib update)",
       "Fixed example_211 proof (broken by Mathlib update)",
       "Fixed counterexample_89 proof (broken by Mathlib update)",
-      "Fixed prime_211 (decide \u2192 native_decide for recursion depth)"
+      "Fixed prime_211 (decide → native_decide for recursion depth)",
+      "Converted erdos_1059_conjecture from axiom to def"
     ],
     "insights": [
-      "factorial_count_bound proved using Nat.find (smallest m with m! \u2265 n, take l = m-1)",
-      "Mathlib update broke constructor on \u00acPrime \u2227 ... goals: simp now resolves \u22652 part automatically",
+      "factorial_count_bound proved using Nat.find (smallest m with m! ≥ n, take l = m-1)",
+      "Mathlib update broke constructor on ¬Prime ∧ ... goals: simp now resolves ≥2 part automatically",
       "Fixed by replacing constructor with direct decide/native_decide after simp",
-      "Remaining 2 axioms are genuinely open: the conjecture itself and Erd\u0151s alternative approach"
+      "Remaining 2 axioms are genuinely open: the conjecture itself and Erdős alternative approach",
+      "erdos_1059_conjecture was the open conjecture — converted to def"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erd\u0151s #1059 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many primes $p$ such that $p-k!$ is composite for each $k$ such that $1\\leq k!<p$?\n\n\n\nA question of Erd\\H{o}s reported in problem A2 of Guy's collection \\cite{Gu04}.\n\nExamples are $p=101$ and $p=211$. Erd\\H{o}s suggested it may be easier to show that there are infinitely many $n$ such that, if $l!<n\\leq (l+1)!$, then all the prime factors of $n$ are $>l$, and all the numbers $n-k!$ are composite for $1\\leq k\\leq l$.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1058\n- Problem #1060\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erdős #1059 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many primes $p$ such that $p-k!$ is composite for each $k$ such that $1\\leq k!<p$?\n\n\n\nA question of Erd\\H{o}s reported in problem A2 of Guy's collection \\cite{Gu04}.\n\nExamples are $p=101$ and $p=211$. Erd\\H{o}s suggested it may be easier to show that there are infinitely many $n$ such that, if $l!<n\\leq (l+1)!$, then all the prime factors of $n$ are $>l$, and all the numbers $n-k!$ are composite for $1\\leq k\\leq l$.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1058\n- Problem #1060\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -62,7 +64,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T14:31:40.058Z",
-  "lastUpdate": "2026-03-24T08:40:00Z",
+  "lastUpdate": "2026-03-24T17:50:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
@@ -71,7 +73,7 @@
       "filename": "Erdos1059Problem.lean",
       "lineCount": 144,
       "theoremCount": 6,
-      "axiomCount": 3,
+      "axiomCount": 1,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,

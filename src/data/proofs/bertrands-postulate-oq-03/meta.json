@@ -198,17 +198,17 @@
     {
       "id": "bertrands-postulate",
       "relationship": "extends",
-      "description": "Parent entry proving Bertrand's postulate (a prime between n and 2n) — this file extends to the precise density question"
+      "description": "Parent entry proving Bertrand's postulate (a prime between n and 2n) — this file extends to the precise density question: how small can θ be such that [x, x+x^θ] always contains a prime?"
     },
     {
       "id": "prime-number-theorem",
       "relationship": "foundational",
-      "description": "PNT (π(x) ~ x/ln x) provides the asymptotic framework for understanding prime density in short intervals — Bertrand's po"
+      "description": "PNT (π(x) ~ x/ln x) provides the asymptotic framework for understanding prime density in short intervals — Bertrand's postulate is the crude θ=1 case"
     },
     {
       "id": "bounded-prime-gaps",
       "relationship": "related",
-      "description": "Both address prime distribution: bounded gaps (Zhang-Maynard-Tao) shows infinitely many gaps ≤ 246, while this entry stu"
+      "description": "Both address prime distribution: bounded gaps (Zhang-Maynard-Tao) shows infinitely many gaps ≤ 246, while this entry studies the weakest θ guaranteeing primes in every interval [x, x+x^θ]"
     },
     {
       "id": "infinitude-primes",

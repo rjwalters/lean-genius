@@ -204,12 +204,12 @@
     {
       "id": "ramseys-theorem",
       "relationship": "thematic",
-      "description": "Ramsey theory guarantees monochromatic substructures in large graphs — the complementary perspective to MaxCut, which se"
+      "description": "Ramsey theory guarantees monochromatic substructures in large graphs — the complementary perspective to MaxCut, which seeks to maximize bichromatic edges. Both use probabilistic arguments in their non-constructive proofs"
     },
     {
       "id": "birthday-problem",
       "relationship": "foundational",
-      "description": "The birthday problem illustrates probabilistic counting over combinatorial structures — the same linearity of expectatio"
+      "description": "The birthday problem illustrates probabilistic counting over combinatorial structures — the same linearity of expectation technique that powers the MaxCut approximation proof"
     },
     {
       "id": "randomized-maxcut-oq-01",
@@ -219,7 +219,7 @@
     {
       "id": "halting-problem",
       "relationship": "thematic",
-      "description": "MaxCut is NP-Complete — its computational intractability motivates the approximation approach. The halting problem estab"
+      "description": "MaxCut is NP-Complete — its computational intractability motivates the approximation approach. The halting problem establishes fundamental computability limits that underpin the P vs NP question"
     }
   ],
   "leanFile": {

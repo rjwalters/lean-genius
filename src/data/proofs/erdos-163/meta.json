@@ -185,17 +185,17 @@
     {
       "id": "ramseys-theorem",
       "relationship": "extends",
-      "description": "Ramsey's theorem guarantees $R(H)$ exists for all $H$; the Burr-Erdős conjecture gives tight linear bounds for the degen"
+      "description": "Ramsey's theorem guarantees $R(H)$ exists for all $H$; the Burr-Erdős conjecture gives tight linear bounds for the degenerate case"
     },
     {
       "id": "szemeredi-theorem",
       "relationship": "technique",
-      "description": "Lee's proof uses the Szemerédi regularity lemma, the same foundational tool underlying Szemerédi's theorem on arithmetic"
+      "description": "Lee's proof uses the Szemerédi regularity lemma, the same foundational tool underlying Szemerédi's theorem on arithmetic progressions"
     },
     {
       "id": "four-color-theorem",
       "relationship": "related",
-      "description": "Planar graphs are 5-degenerate and have chromatic number $\\le 4$; the Burr-Erdős conjecture gives $R(H) = O(n)$ for plan"
+      "description": "Planar graphs are 5-degenerate and have chromatic number $\\le 4$; the Burr-Erdős conjecture gives $R(H) = O(n)$ for planar $H$"
     },
     {
       "id": "erdos-569",
@@ -205,7 +205,7 @@
     {
       "id": "erdos-61",
       "relationship": "related",
-      "description": "The Erdős-Hajnal Conjecture also connects graph structure (being $H$-free) to Ramsey-type coloring properties, complemen"
+      "description": "The Erdős-Hajnal Conjecture also connects graph structure (being $H$-free) to Ramsey-type coloring properties, complementing the degeneracy-based approach"
     }
   ],
   "leanFile": {

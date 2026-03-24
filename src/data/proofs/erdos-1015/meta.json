@@ -143,17 +143,17 @@
     {
       "id": "ramseys-theorem",
       "relationship": "foundational",
-      "description": "Ramsey's theorem guarantees the existence of monochromatic cliques in any 2-colored complete graph, providing the theore"
+      "description": "Ramsey's theorem guarantees the existence of monochromatic cliques in any 2-colored complete graph, providing the theoretical foundation for the leftover function f(t). The off-diagonal Ramsey numbers R(t, t-1) that appear in the exact BES formula f(t) = R(t, t-1) + x are direct instances of the Ramsey-number framework formalized here."
     },
     {
       "id": "erdos-1017",
       "relationship": "related",
-      "description": "Erdős Problem #1017 studies the minimum number of cliques needed to partition the *edges* of a graph, whereas #1015 part"
+      "description": "Erdős Problem #1017 studies the minimum number of cliques needed to partition the *edges* of a graph, whereas #1015 partitions the *vertices* of a 2-colored complete graph into monochromatic cliques. Both problems require understanding clique partition numbers and the extremal graphs that force large leftover; the Erdős-Goodman-Pósa bound f(n,k) ≤ n²/4 uses similar counting arguments to those in the BES proof."
     },
     {
       "id": "erdos-1009",
       "relationship": "thematic",
-      "description": "Erdős Problem #1009 concerns edge-disjoint triangle packing near the Turán threshold. The packing/covering duality betwe"
+      "description": "Erdős Problem #1009 concerns edge-disjoint triangle packing near the Turán threshold. The packing/covering duality between vertex-disjoint clique partitions (#1015) and edge-disjoint triangle covers (#1009) is a recurring structural motif; both problems measure how far a graph is from being perfectly decomposable into cliques of a fixed size."
     },
     {
       "id": "erdos-1010",

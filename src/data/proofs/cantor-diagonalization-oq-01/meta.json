@@ -157,27 +157,27 @@
     {
       "id": "cantor-diagonalization",
       "relationship": "extends",
-      "description": "Parent proof: Cantor's diagonal argument showing |S| < |P(S)| — this file extends to the continuum hypothesis and beth n"
+      "description": "Parent proof: Cantor's diagonal argument showing |S| < |P(S)| — this file extends to the continuum hypothesis and beth numbers"
     },
     {
       "id": "cantors-theorem",
       "relationship": "foundational",
-      "description": "Cantor's theorem |S| < |P(S)| is the starting point: the continuum hypothesis asks whether 2^ℵ₀ = ℵ₁, i.e., whether ther"
+      "description": "Cantor's theorem |S| < |P(S)| is the starting point: the continuum hypothesis asks whether 2^ℵ₀ = ℵ₁, i.e., whether there is a cardinality strictly between ℕ and P(ℕ)"
     },
     {
       "id": "godel-incompleteness",
       "relationship": "thematic",
-      "description": "Gödel proved CH is consistent with ZFC (1940); Cohen proved ¬CH is also consistent (1963). This independence parallels G"
+      "description": "Gödel proved CH is consistent with ZFC (1940); Cohen proved ¬CH is also consistent (1963). This independence parallels Gödel's incompleteness: certain natural questions are undecidable within the standard axiom system"
     },
     {
       "id": "halting-problem",
       "relationship": "thematic",
-      "description": "Both establish fundamental undecidability: the halting problem shows no algorithm decides all halting questions, while C"
+      "description": "Both establish fundamental undecidability: the halting problem shows no algorithm decides all halting questions, while CH shows ZFC cannot decide the cardinality question — both reveal limits of formal systems"
     },
     {
       "id": "schroeder-bernstein",
       "relationship": "foundational",
-      "description": "The Schröder-Bernstein theorem (injections both ways ↔ bijection) provides the cardinal arithmetic framework in which CH"
+      "description": "The Schröder-Bernstein theorem (injections both ways ↔ bijection) provides the cardinal arithmetic framework in which CH is formulated: ℵ₀ < 2^ℵ₀ uses the strict ordering of cardinals"
     }
   ],
   "leanFile": {

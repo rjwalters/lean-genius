@@ -146,12 +146,12 @@
     {
       "id": "taylor-theorem",
       "relationship": "related",
-      "description": "Taylor's theorem provides the polynomial approximation framework that Lagrange interpolation generalizes. The Lebesgue f"
+      "description": "Taylor's theorem provides the polynomial approximation framework that Lagrange interpolation generalizes. The Lebesgue function measures how much worse interpolation is compared to best polynomial approximation."
     },
     {
       "id": "fourier-series",
       "relationship": "related",
-      "description": "The Lebesgue constant for interpolation is analogous to the Lebesgue constant for partial Fourier sums. Both measure ope"
+      "description": "The Lebesgue constant for interpolation is analogous to the Lebesgue constant for partial Fourier sums. Both measure operator norm growth and both achieve optimal O(log n) rates with appropriate node/coefficient choices."
     }
   ],
   "leanFile": {

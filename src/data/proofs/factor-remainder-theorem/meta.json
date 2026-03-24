@@ -219,17 +219,17 @@
     {
       "id": "abel-ruffini",
       "relationship": "foundational",
-      "description": "The Factor Theorem underlies Galois theory: splitting fields are built by repeatedly adjoining roots and factoring out l"
+      "description": "The Factor Theorem underlies Galois theory: splitting fields are built by repeatedly adjoining roots and factoring out linear terms. Each such step uses the Factor Theorem to reduce the polynomial's degree, creating the tower of field extensions whose automorphism group is the Galois group"
     },
     {
       "id": "vietas-formulas",
       "relationship": "complementary",
-      "description": "Vieta's formulas express coefficients as elementary symmetric functions of roots — a consequence of the Factor Theorem's"
+      "description": "Vieta's formulas express coefficients as elementary symmetric functions of roots — a consequence of the Factor Theorem's complete factorization. If $p = \\prod (x - \\alpha_i)$, expanding gives Vieta's relations directly"
     },
     {
       "id": "bezout-identity",
       "relationship": "related",
-      "description": "Bézout's identity for polynomial GCD ($\\gcd(p,q) = ap + bq$) relies on the Euclidean algorithm for polynomials, which us"
+      "description": "Bézout's identity for polynomial GCD ($\\gcd(p,q) = ap + bq$) relies on the Euclidean algorithm for polynomials, which uses repeated polynomial division — the same division algorithm that underpins the Remainder Theorem"
     },
     {
       "id": "gcd-algorithm",

@@ -143,17 +143,17 @@
     {
       "id": "erdos-1",
       "relationship": "related",
-      "description": "Both concern subset sum structure: #1 asks when all subset sums are distinct (minimizing representations), while #347 as"
+      "description": "Both concern subset sum structure: #1 asks when all subset sums are distinct (minimizing representations), while #347 asks when subset sums achieve density 1 robustly (maximizing coverage). They sit at opposite ends of the subset sum complexity spectrum"
     },
     {
       "id": "erdos-28",
       "relationship": "related",
-      "description": "Both concern additive completeness: #28 asks whether representation functions of additive bases must be unbounded, while"
+      "description": "Both concern additive completeness: #28 asks whether representation functions of additive bases must be unbounded, while #347 asks whether a sequence growing at rate 2 can maintain density-1 subset sums under deletions. Both explore the boundary between thin and thick additive structure"
     },
     {
       "id": "erdos-40",
       "relationship": "related",
-      "description": "Both involve additive structure at critical thresholds: #40 studies B_2[g] sets that cannot be bases, while #347 studies"
+      "description": "Both involve additive structure at critical thresholds: #40 studies B_2[g] sets that cannot be bases, while #347 studies sequences at the critical ratio 2 that can be robustly complete. Both concern how growth rate constraints interact with additive coverage"
     }
   ],
   "references": [

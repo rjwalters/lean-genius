@@ -202,12 +202,12 @@
     {
       "id": "wilsons-theorem",
       "relationship": "related",
-      "description": "Both Wilson's theorem ($(p-1)! \\equiv -1 \\pmod{p}$) and Wolstenholme's theorem concern mod $p^k$ congruences for factori"
+      "description": "Both Wilson's theorem ($(p-1)! \\equiv -1 \\pmod{p}$) and Wolstenholme's theorem concern mod $p^k$ congruences for factorial/binomial expressions. Wilson characterizes primes via factorials; Wolstenholme strengthens this to mod $p^3$ for central binomials"
     },
     {
       "id": "binomial-theorem",
       "relationship": "foundational",
-      "description": "The binomial coefficient $\\binom{2p-1}{p-1}$ (the central object of this formalization) arises from the binomial expansi"
+      "description": "The binomial coefficient $\\binom{2p-1}{p-1}$ (the central object of this formalization) arises from the binomial expansion. Properties of binomial coefficients underpin both Wolstenholme's theorem and its mod $p^4$ strengthening"
     },
     {
       "id": "kummer-theorem",

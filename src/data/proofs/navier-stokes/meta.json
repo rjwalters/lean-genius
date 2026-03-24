@@ -54,8 +54,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
-    "assumptions": "0 Lean axiom declarations, but the 3D regularity theorem is conditional on the NSAxioms structure (5 fields encoding physical hypotheses: Type II exponent, spectral gap, theta dynamics, blowup rate, and BKM criterion). These structure fields are mathematically equivalent to axiom declarations -- the assumptions were reorganized, not eliminated. The 2D global existence theorem (Ladyzhenskaya 1969) is genuinely unconditional. The Millennium Prize problem remains unsolved.",
+    "axiomCount": 5,
+    "assumptions": "5 structure-encoded assumptions in NSAxioms (Type II exponent, spectral gap, theta dynamics, blowup rate, BKM criterion). 0 Lean axiom declarations, but the 3D regularity theorem is conditional on the NSAxioms structure (5 fields encoding physical hypotheses: Type II exponent, spectral gap, theta dynamics, blowup rate, and BKM criterion). These structure fields are mathematically equivalent to axiom declarations -- the assumptions were reorganized, not eliminated. The 2D global existence theorem (Ladyzhenskaya 1969) is genuinely unconditional. The Millennium Prize problem remains unsolved.",
     "mathlibDependencies": [
       {
         "theorem": "Real",
@@ -73,7 +73,7 @@
     "millenniumProblem": "navier-stokes",
     "proofRepoPath": "Proofs/NavierStokes.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 21111
+    "lineCount": 21110
   },
   "objection": {
     "verdict": "CONDITIONAL 3D + PROVEN 2D",
@@ -343,28 +343,28 @@
     {
       "id": "yang-mills",
       "relationship": "thematic",
-      "description": "Both are Millennium Prize Problems involving PDEs and regularity: Navier-Stokes asks for smooth solutions to fluid equat"
+      "description": "Both are Millennium Prize Problems involving PDEs and regularity: Navier-Stokes asks for smooth solutions to fluid equations, Yang-Mills asks for a mass gap in gauge field theories. Both require controlling nonlinear interactions at all scales"
     },
     {
       "id": "riemann-hypothesis",
       "relationship": "thematic",
-      "description": "Fellow Millennium Prize Problem. While RH concerns analytic number theory, both problems involve understanding how struc"
+      "description": "Fellow Millennium Prize Problem. While RH concerns analytic number theory, both problems involve understanding how structures (prime distribution / fluid velocity) behave at extreme scales and under limits"
     },
     {
       "id": "poincare-conjecture",
       "relationship": "thematic",
-      "description": "The only Millennium Prize Problem solved so far (Perelman 2003). Both problems involve PDEs on manifolds: Ricci flow for"
+      "description": "The only Millennium Prize Problem solved so far (Perelman 2003). Both problems involve PDEs on manifolds: Ricci flow for Poincaré, Navier-Stokes for fluid dynamics. Perelman's blowup analysis techniques have parallels in the NS singularity analysis"
     },
     {
       "id": "schauder-fixed-point",
       "relationship": "foundational",
-      "description": "Schauder's fixed point theorem is used in PDE existence proofs: weak solutions to Navier-Stokes are constructed via Gale"
+      "description": "Schauder's fixed point theorem is used in PDE existence proofs: weak solutions to Navier-Stokes are constructed via Galerkin approximation and compactness arguments, where Schauder-type fixed points guarantee existence of approximate solutions"
     }
   ],
   "leanFile": {
-    "lineCount": 21111,
+    "lineCount": 21110,
     "structureCount": 249,
-    "axiomCount": 0,
+    "axiomCount": 5,
     "theoremCount": 832,
     "lemmaCount": 14,
     "defCount": 101,

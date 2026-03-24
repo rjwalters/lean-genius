@@ -216,12 +216,12 @@
     {
       "id": "szemeredi-core",
       "relationship": "foundational",
-      "description": "Imports core definitions (edgeDensity, IsEpsilonRegular, IsRegularPartition, partitionEnergy) and re-exports them for do"
+      "description": "Imports core definitions (edgeDensity, IsEpsilonRegular, IsRegularPartition, partitionEnergy) and re-exports them for downstream use"
     },
     {
       "id": "szemeredi-counting",
       "relationship": "extends",
-      "description": "The counting and removal lemmas are the primary applications of regularity — they use epsilon-regular pairs to count and"
+      "description": "The counting and removal lemmas are the primary applications of regularity — they use epsilon-regular pairs to count and remove subgraph copies"
     },
     {
       "id": "szemeredi-full",

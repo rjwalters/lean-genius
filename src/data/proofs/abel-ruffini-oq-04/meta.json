@@ -362,12 +362,12 @@
     {
       "id": "abel-ruffini",
       "relationship": "extends",
-      "description": "Base Abel-Ruffini theorem using Mathlib's solvableByRad — this file exposes the internal proof chain with each step as a"
+      "description": "Base Abel-Ruffini theorem using Mathlib's solvableByRad — this file exposes the internal proof chain with each step as a named theorem"
     },
     {
       "id": "angle-trisection",
       "relationship": "related",
-      "description": "Both are Galois-theoretic impossibility results: Abel-Ruffini shows quintics are unsolvable by radicals (Galois group no"
+      "description": "Both are Galois-theoretic impossibility results: Abel-Ruffini shows quintics are unsolvable by radicals (Galois group not solvable), angle trisection shows certain angles cannot be trisected (Galois group not a 2-group)"
     },
     {
       "id": "fundamental-theorem-algebra",
@@ -377,12 +377,12 @@
     {
       "id": "inverse-galois",
       "relationship": "related",
-      "description": "The inverse Galois problem asks which groups occur as Galois groups — Sₙ occurs as Gal(generic degree-n polynomial), con"
+      "description": "The inverse Galois problem asks which groups occur as Galois groups — Sₙ occurs as Gal(generic degree-n polynomial), connecting directly to the solvability question"
     },
     {
       "id": "lagrange-theorem",
       "relationship": "foundational",
-      "description": "Lagrange's theorem on subgroup orders is used throughout: |Aₙ| = n!/2, and the derived series quotients have predictable"
+      "description": "Lagrange's theorem on subgroup orders is used throughout: |Aₙ| = n!/2, and the derived series quotients have predictable orders"
     }
   ]
 }

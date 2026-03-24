@@ -163,7 +163,7 @@
     {
       "id": "buffons-needle",
       "relationship": "extends",
-      "description": "Base Buffon's Needle formalization (Wiedijk #99) — this file extends it to arbitrary C¹ smooth curves via the Buffon-Bar"
+      "description": "Base Buffon's Needle formalization (Wiedijk #99) — this file extends it to arbitrary C¹ smooth curves via the Buffon-Barbier theorem, proving shape independence"
     },
     {
       "id": "buffons-needle-oq-01-oq-01",
@@ -178,12 +178,12 @@
     {
       "id": "area-of-circle",
       "relationship": "related",
-      "description": "The π in the Buffon-Barbier formula 2L/(πd) connects to the area of a circle: both are consequences of the rotational sy"
+      "description": "The π in the Buffon-Barbier formula 2L/(πd) connects to the area of a circle: both are consequences of the rotational symmetry of the plane, and historically Buffon's needle was used to experimentally estimate π"
     },
     {
       "id": "cauchy-schwarz-integral",
       "relationship": "related",
-      "description": "Integral inequalities underlie the arc-length estimates: the Cauchy-Schwarz integral inequality bounds the angular avera"
+      "description": "Integral inequalities underlie the arc-length estimates: the Cauchy-Schwarz integral inequality bounds the angular average, connecting this geometric probability result to functional analysis"
     }
   ],
   "leanFile": {

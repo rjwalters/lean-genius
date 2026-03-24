@@ -190,7 +190,7 @@
     {
       "id": "mean-value-theorem",
       "relationship": "foundational",
-      "description": "The Mean Value Theorem is the $n=0$ case of Taylor's theorem (Lagrange remainder). Taylor's theorem generalizes MVT from"
+      "description": "The Mean Value Theorem is the $n=0$ case of Taylor's theorem (Lagrange remainder). Taylor's theorem generalizes MVT from linear to polynomial approximation: MVT gives $f(b) = f(a) + f'(c)(b-a)$, Taylor gives $f(b) = \\sum f^{(k)}(a)(b-a)^k/k! + R_n$."
     },
     {
       "id": "fundamental-theorem-calculus",
@@ -205,12 +205,12 @@
     {
       "id": "e-transcendental",
       "relationship": "related",
-      "description": "The Taylor series $e^x = \\sum x^n/n!$ converging everywhere is a key application of Taylor's theorem. Hermite's proof th"
+      "description": "The Taylor series $e^x = \\sum x^n/n!$ converging everywhere is a key application of Taylor's theorem. Hermite's proof that $e$ is transcendental uses the rapid convergence of this series."
     },
     {
       "id": "basel-problem",
       "relationship": "related",
-      "description": "Euler's evaluation $\\zeta(2) = \\pi^2/6$ can be proved via the Taylor series $\\sin(x)/x = \\prod(1 - x^2/(n\\pi)^2)$ — comp"
+      "description": "Euler's evaluation $\\zeta(2) = \\pi^2/6$ can be proved via the Taylor series $\\sin(x)/x = \\prod(1 - x^2/(n\\pi)^2)$ — comparing Taylor coefficients yields the Basel sum."
     }
   ],
   "leanFile": {

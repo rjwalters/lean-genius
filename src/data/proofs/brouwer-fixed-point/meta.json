@@ -334,12 +334,12 @@
     {
       "id": "borsuk-ulam",
       "relationship": "related",
-      "description": "Borsuk-Ulam implies Brouwer: if no fixed point exists, the retraction from the disk to its boundary would yield an antip"
+      "description": "Borsuk-Ulam implies Brouwer: if no fixed point exists, the retraction from the disk to its boundary would yield an antipode-preserving map contradicting Borsuk-Ulam. Both are cornerstones of algebraic topology"
     },
     {
       "id": "intermediate-value-theorem",
       "relationship": "related",
-      "description": "IVT is the 1-dimensional Brouwer fixed point theorem: a continuous f:[a,b]→[a,b] must have f(x)=x for some x. Brouwer ge"
+      "description": "IVT is the 1-dimensional Brouwer fixed point theorem: a continuous f:[a,b]→[a,b] must have f(x)=x for some x. Brouwer generalizes this to arbitrary dimension"
     },
     {
       "id": "fundamental-theorem-algebra",
@@ -349,12 +349,12 @@
     {
       "id": "cantor-diagonalization",
       "relationship": "thematic",
-      "description": "Both are non-constructive existence proofs: Brouwer proves a fixed point exists without locating it, Cantor proves uncou"
+      "description": "Both are non-constructive existence proofs: Brouwer proves a fixed point exists without locating it, Cantor proves uncountable sets exist without exhibiting specific elements. Ironically, Brouwer later founded intuitionism, rejecting exactly this kind of non-constructive reasoning"
     },
     {
       "id": "schauder-fixed-point",
       "relationship": "extended-by",
-      "description": "Schauder's fixed point theorem (1930) generalizes Brouwer from finite-dimensional balls to compact convex subsets of Ban"
+      "description": "Schauder's fixed point theorem (1930) generalizes Brouwer from finite-dimensional balls to compact convex subsets of Banach spaces: every continuous self-map of a compact convex set in a Banach space has a fixed point. This infinite-dimensional extension is essential for differential equations (Leray-Schauder degree theory) and functional analysis"
     }
   ],
   "leanFile": {

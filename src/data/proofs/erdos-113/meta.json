@@ -188,12 +188,12 @@
     {
       "id": "erdos-146",
       "relationship": "related",
-      "description": "Problem #146 asks whether ex(n;H) ≪ n^{2-1/r} for bipartite r-degenerate H — a direct generalization of the forward dire"
+      "description": "Problem #146 asks whether ex(n;H) ≪ n^{2-1/r} for bipartite r-degenerate H — a direct generalization of the forward direction of Problem #113. The 2-degenerate case (r=2) of #146 gives ex ≪ n^{3/2}, the same threshold appearing in the Erdős-Simonovits Conjecture."
     },
     {
       "id": "erdos-147",
       "relationship": "related",
-      "description": "Problem #147 asks whether bipartite graphs with minimum degree r have ex(n;H) ≫ n^{2-1/(r-1)+ε}. Janzer's 2023 counterex"
+      "description": "Problem #147 asks whether bipartite graphs with minimum degree r have ex(n;H) ≫ n^{2-1/(r-1)+ε}. Janzer's 2023 counterexample to Problem #113 also resolves the backward direction of #147 (disproved), making these two problems directly connected through the same construction."
     },
     {
       "id": "erdos-127",
@@ -208,7 +208,7 @@
     {
       "id": "erdos-133",
       "relationship": "thematic",
-      "description": "Problem #133 studies maximum degree in triangle-free diameter-2 graphs, with answer f(n) = Θ(√n). The Kővári-Sós-Turán b"
+      "description": "Problem #133 studies maximum degree in triangle-free diameter-2 graphs, with answer f(n) = Θ(√n). The Kővári-Sós-Turán bound ex(n; K_{2,2}) = O(n^{3/2}) that anchors #113's threshold is also fundamental to degree/diameter trade-offs studied in #133."
     }
   ],
   "references": [
