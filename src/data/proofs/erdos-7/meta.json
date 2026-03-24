@@ -93,7 +93,7 @@
       "summary": "CongruenceClass and CoveringSystem structures",
       "startLine": 31,
       "endLine": 56,
-      "mathContext": "CongruenceClass and CoveringSystem structures"
+      "mathContext": "A covering system is a finite set of congruence classes $\\{a_i \\pmod{n_i}\\}_{i=1}^k$ satisfying $\\forall x \\in \\mathbb{Z},\\, \\exists i : x \\equiv a_i \\pmod{n_i}$. Each class is formalized as a pair $(a, n)$ with $n \\geq 2$, and coverage is the universal property that their union equals $\\mathbb{Z}$."
     },
     {
       "id": "odd-moduli",
@@ -101,7 +101,7 @@
       "summary": "Predicates for odd and even moduli",
       "startLine": 57,
       "endLine": 70,
-      "mathContext": "Predicates for odd and even moduli"
+      "mathContext": "The predicate $\\text{allOddModuli}(\\mathcal{C})$ asserts $\\forall (a_i, n_i) \\in \\mathcal{C}: n_i \\equiv 1 \\pmod{2}$. The Erdős-Selfridge conjecture posits that no covering system satisfies this predicate, i.e., every covering must contain some $n_i$ with $2 \\mid n_i$."
     },
     {
       "id": "erdos-selfridge",
@@ -109,7 +109,7 @@
       "summary": "Main conjecture in two equivalent forms",
       "startLine": 71,
       "endLine": 101,
-      "mathContext": "Main conjecture in two equivalent forms"
+      "mathContext": "The conjecture has two equivalent forms: (a) $\\nexists$ covering system $\\mathcal{C}$ with all $n_i$ odd; (b) $\\forall$ covering system $\\mathcal{C}$, $\\exists\\, n_i \\in \\mathcal{C}$ with $2 \\mid n_i$. The equivalence $\\lnot\\exists\\mathcal{C}\\,\\text{allOddModuli}(\\mathcal{C}) \\iff \\forall\\mathcal{C}\\,\\text{hasEvenModulus}(\\mathcal{C})$ is proved in Lean."
     },
     {
       "id": "squarefree",
@@ -117,7 +117,7 @@
       "summary": "Definitions for squarefree covering systems",
       "startLine": 102,
       "endLine": 118,
-      "mathContext": "Definitions for squarefree covering systems"
+      "mathContext": "A modulus $n$ is squarefree if $\\forall p$ prime, $p^2 \\nmid n$. A covering system is squarefree when all its moduli satisfy this condition; the combined predicate $\\text{allOddSquarefreeModuli}(\\mathcal{C})$ requires $n_i$ odd and squarefree for every class $(a_i, n_i) \\in \\mathcal{C}$."
     },
     {
       "id": "balister",
@@ -125,7 +125,7 @@
       "summary": "No odd squarefree covering exists",
       "startLine": 119,
       "endLine": 140,
-      "mathContext": "No odd squarefree covering exists"
+      "mathContext": "Balister–Bollobás–Morris–Sahasrabudhe–Tiba (2022) proved $\\nexists$ covering system $\\mathcal{C}$ with all $n_i$ both odd and squarefree. Equivalently, any covering system whose moduli are all squarefree must include at least one even modulus: $\\forall\\mathcal{C},\\, \\text{allSquarefreeModuli}(\\mathcal{C}) \\Rightarrow \\text{hasEvenModulus}(\\mathcal{C})$."
     },
     {
       "id": "hough-nielsen",
@@ -133,7 +133,7 @@
       "summary": "Some modulus must be divisible by 2 or 3",
       "startLine": 141,
       "endLine": 159,
-      "mathContext": "Some modulus must be divisible by 2 or 3"
+      "mathContext": "Hough–Nielsen (2019) proved $\\forall$ covering system $\\mathcal{C}$, $\\exists\\,(a_i, n_i) \\in \\mathcal{C}$ such that $2 \\mid n_i$ or $3 \\mid n_i$. This means any odd covering must include a modulus divisible by 3, since no modulus can be divisible by 2. Equivalently, no covering system exists with all moduli coprime to 6."
     },
     {
       "id": "lcm-constraint",
@@ -141,7 +141,7 @@
       "summary": "If odd covering exists, LCM divisible by 9 or 15",
       "startLine": 160,
       "endLine": 173,
-      "mathContext": "If odd covering exists, LCM divisible by 9 or 15"
+      "mathContext": "If an odd covering system $\\mathcal{C}$ exists, then $9 \\mid \\text{lcm}(n_1,\\ldots,n_k)$ or $15 \\mid \\text{lcm}(n_1,\\ldots,n_k)$. Since all $n_i$ are odd, this forces some modulus divisible by $9 = 3^2$ or some pair with a modulus divisible by $5$, ruling out systems with all moduli squarefree and coprime to 5."
     },
     {
       "id": "properties",
@@ -149,7 +149,7 @@
       "summary": "Basic facts about odd moduli",
       "startLine": 174,
       "endLine": 188,
-      "mathContext": "Basic facts about odd moduli"
+      "mathContext": "Elementary consequences: every odd $n \\geq 1$ (so all moduli $n_i \\geq 3$ in any odd covering, since $n_i \\geq 2$ by definition). If all moduli are odd, then $2 \\nmid n_i$ for all $i$, so $\\{n_i \\pmod{2}\\} = \\{1\\}$; the classes are entirely contained in one residue class modulo 2."
     },
     {
       "id": "gap",
@@ -157,7 +157,7 @@
       "summary": "Summary of what is known vs unknown",
       "startLine": 189,
       "endLine": 207,
-      "mathContext": "Summary of what is known vs unknown"
+      "mathContext": "Known: (1) $\\nexists$ odd squarefree covering (Balister et al.); (2) any covering has $2 \\mid n_i$ or $3 \\mid n_i$ for some $i$ (Hough–Nielsen); (3) any odd covering satisfies $9 \\mid L$ or $15 \\mid L$ where $L = \\text{lcm}(n_i)$. Unknown: whether an odd non-squarefree covering exists, i.e., whether $\\exists\\mathcal{C}: \\text{allOddModuli}(\\mathcal{C})$."
     },
     {
       "id": "selfridge",
@@ -165,7 +165,7 @@
       "summary": "$2000 for explicit odd covering construction",
       "startLine": 208,
       "endLine": 219,
-      "mathContext": "$2000 for explicit odd covering construction"
+      "mathContext": "Selfridge's challenge asks for an explicit covering system $\\mathcal{C} = \\{(a_i, n_i)\\}$ with all $n_i$ odd and all $n_i$ distinct, formalized as $\\exists\\mathcal{C}: \\text{allOddModuli}(\\mathcal{C}) \\land \\text{hasDistinctModuli}(\\mathcal{C})$. The \\$2000 prize requires a concrete construction, not merely a non-constructive existence proof."
     },
     {
       "id": "covering-properties",
@@ -173,7 +173,7 @@
       "summary": "Min odd modulus definitions",
       "startLine": 220,
       "endLine": 234,
-      "mathContext": "Min odd modulus definitions"
+      "mathContext": "For a covering system $\\mathcal{C}$, define $m^*(\\mathcal{C}) = \\min\\{n_i : n_i \\text{ odd},\\, (a_i,n_i) \\in \\mathcal{C}\\}$. The predicate $\\text{minOddModulusAtLeast}(\\mathcal{C}, m)$ asserts $\\forall (a_i, n_i) \\in \\mathcal{C}$ with $n_i$ odd: $m \\leq n_i$, bounding the smallest odd modulus from below."
     },
     {
       "id": "summary-theorem",
@@ -181,7 +181,7 @@
       "summary": "erdos_7_summary combining Hough-Nielsen, Balister, and LCM constraint",
       "startLine": 235,
       "endLine": 274,
-      "mathContext": "erdos_7_summary combining Hough-Nielsen, Balister, and LCM constraint"
+      "mathContext": "The summary theorem packages three results: $\\bigl(\\forall\\mathcal{C},\\, \\exists n_i: 2 \\mid n_i \\lor 3 \\mid n_i\\bigr) \\land \\bigl(\\nexists\\mathcal{C}: \\text{allOddSquarefreeModuli}(\\mathcal{C})\\bigr) \\land \\bigl(\\forall\\mathcal{C},\\, \\text{allOddModuli}(\\mathcal{C}) \\Rightarrow 9 \\mid L \\lor 15 \\mid L\\bigr)$, where $L = \\text{lcm}(n_i)$, proved by direct application of the three axioms."
     }
   ],
   "conclusion": {
