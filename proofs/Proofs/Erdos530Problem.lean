@@ -30,7 +30,7 @@ implies `{a,b} = {c,d}`.
 
 namespace Erdos530
 
-open Finset
+open Finset Classical
 
 /-- A Finset of integers is Sidon if all pairwise sums are distinct:
     a + b = c + d with a ≤ b, c ≤ d implies a = c and b = d. -/
@@ -41,7 +41,7 @@ def IsSidon (S : Finset ℤ) : Prop :=
 /-- The empty set is Sidon. -/
 theorem isSidon_empty : IsSidon ∅ := by
   intro a ha
-  exact absurd ha (Finset.not_mem_empty a)
+  exact absurd ha (Finset.notMem_empty a)
 
 /-- Any singleton is Sidon. -/
 theorem isSidon_singleton (x : ℤ) : IsSidon {x} := by
@@ -83,12 +83,20 @@ axiom komlos_sulyok_szemeredi :
     ∀ A : Finset ℤ, A.card ≥ 4 →
       maxSidonSize A * maxSidonSize A ≥ c * A.card
 
-/-- Upper bound: the maximum Sidon subset of any set of size N
-    has size at most (1 + o(1)) · N^{1/2}. For {1,...,N}, the
-    Sidon set construction gives at most ~ N^{1/2} elements. -/
-axiom sidon_upper_bound :
+/-- Every Sidon subset of A is a subset, hence has cardinality ≤ |A|. -/
+theorem maxSidonSize_le_card (A : Finset ℤ) : maxSidonSize A ≤ A.card := by
+  unfold maxSidonSize
+  apply Finset.sup_le (fun S hS => ?_)
+  exact Finset.card_le_card (Finset.mem_powerset.mp (Finset.mem_filter.mp hS).1)
+
+/-- Trivial upper bound: (maxSidonSize A)² ≤ |A|². Since any Sidon subset
+    of A has at most |A| elements, squaring preserves the inequality.
+    Note: the actual conjecture is the much stronger maxSidonSize A ≤ (1+o(1))√|A|. -/
+theorem sidon_upper_bound :
   ∀ A : Finset ℤ,
-    maxSidonSize A * maxSidonSize A ≤ A.card * A.card
+    maxSidonSize A * maxSidonSize A ≤ A.card * A.card := by
+  intro A
+  exact Nat.mul_le_mul (maxSidonSize_le_card A) (maxSidonSize_le_card A)
 
 /-
 ## Section 4: The main conjecture
@@ -134,10 +142,23 @@ The study of maximum Sidon subsets connects to the broader theory of
 sum-free sets, Szemerédi's theorem, and additive number theory.
 -/
 
+/-- The sum function is injective on sorted pairs of a Sidon set.
+    This is the core property of Sidon sets: distinct pairs give distinct sums. -/
+theorem sidon_sum_injective (S : Finset ℤ) (hS : IsSidon S) :
+    Set.InjOn (fun p : ℤ × ℤ => p.1 + p.2)
+      ((S ×ˢ S).filter (fun p => p.1 ≤ p.2) : Set (ℤ × ℤ)) := by
+  intro ⟨a, b⟩ hab ⟨c, d⟩ hcd heq
+  simp only [Finset.coe_filter, Set.mem_setOf_eq,
+    Finset.mem_product] at hab hcd
+  obtain ⟨⟨haS, hbS⟩, hab_le⟩ := hab
+  obtain ⟨⟨hcS, hdS⟩, hcd_le⟩ := hcd
+  have := hS a haS b hbS c hcS d hdS hab_le hcd_le heq
+  exact Prod.ext this.1 this.2
+
 /-- The number of distinct pairwise sums from a Sidon set S of size k
     is exactly k(k+1)/2 (all sums are distinct). -/
 axiom sidon_sum_count (S : Finset ℤ) (hS : IsSidon S) :
-  ((S ×ˢ S).filter (fun p => p.1 ≤ p.2)).image (fun p => p.1 + p.2)
-    |>.card = S.card * (S.card + 1) / 2
+  (((S ×ˢ S).filter (fun p => p.1 ≤ p.2)).image (fun p => p.1 + p.2)).card =
+    S.card * (S.card + 1) / 2
 
 end Erdos530
