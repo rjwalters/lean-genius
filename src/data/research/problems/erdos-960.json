@@ -29,14 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Fixed linear_implies_littleo N₀ bug (C+1 → ⌈C/ε⌉+1). Converted green_tao_ordinary_lines from sorry to axiom (deep 2013 result). Documented threshold_r2 semantic issue. Axioms: 1→2, sorries: 4→3.",
+    "progressSummary": "SESSION 3: Fixed threshold_r2 semantic bug (=0 not =1). Discovered multiple pre-existing Mathlib API breakages preventing build. File needs mechanic repair.",
     "builtItems": [
       "Proved trivial_bound: ordinaryLineCount P ≤ P.n * (P.n - 1) / 2",
       "Identified bug in threshold_r2 (claims 1, should be 0)",
       "Identified bug in linear_implies_littleo N₀ (C+1 → ⌈C/ε⌉+1)",
       "linear_implies_littleo: fixed N₀ from C+1 to ⌈C/ε⌉+1 (was wrong for ε < 1)",
       "green_tao_ordinary_lines: correctly reclassified as axiom (Green-Tao 2013 deep result)",
-      "threshold_r2: documented semantic bug (sSup definition gives 0, not 1)"
+      "threshold_r2: documented semantic bug (sSup definition gives 0, not 1)",
+      "Fixed threshold_r2 statement: = 0 (was incorrectly = 1)"
     ],
     "insights": [
       "trivial_bound provable: filter_le on offDiag + card_offDiag + omega",
@@ -48,7 +49,11 @@
       "green_tao_ordinary_lines (2013) cannot be proved from Mathlib; correctly axiomatized",
       "turan_upper_bound requires encoding Turán theorem for the ordinary-line graph — non-trivial formalization",
       "The linear_implies_littleo proof requires careful ℚ/ℕ coercion handling for the ε*n*n conversion",
-      "For small ε, N₀ = C+1 fails: need n > C/ε to ensure C*n < ε*n²"
+      "For small ε, N₀ = C+1 fails: need n > C/ε to ensure C*n < ε*n²",
+      "threshold_r2 statement was WRONG: should be =0 not =1 (sSup of empty counterexample set = 0)",
+      "File has pre-existing Mathlib API breakages: Rat.toNat missing, Finset.card_offDiag renamed, projection issues",
+      "linear_implies_littleo N₀ has edge case bug for C=0 (needs ε*n²≥1 guarantee)",
+      "For r=2 with any k≥2: Sylvester-Gallai implies ordinary lines exist, so 2-element all-ordinary subsets always exist"
     ],
     "mathlibGaps": [],
     "nextSteps": [

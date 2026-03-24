@@ -110,15 +110,14 @@ theorem trivial_bound (P : PointConfig) :
 
 -- ## Part VII: Known Cases and Connections
 
-/-- For r = 2: one ordinary line suffices to find a 2-point all-ordinary subset.
-    NOTE: With the current sSup-based definition of `threshold`, the mathematical
-    value should be 0 (the sSup of counterexample ordinary-line counts), not 1
-    (the minimum guaranteeing existence). The definition computes the maximum m
-    where a counterexample with ≥ m ordinary lines exists, which is 0 for r = 2
-    since any ordinary line IS a 2-element all-ordinary subset. The correct
-    statement may be `threshold 2 k n = 0`. -/
-theorem threshold_r2 (k n : ℕ) (hk : k ≥ 2) (hn : n ≥ 2) :
-  threshold 2 k n = 1 := by sorry
+/-- For r = 2: the threshold is 0. With the sSup-based definition of `threshold`,
+    which computes the maximum m where a counterexample exists, there are no
+    counterexamples for r = 2: any configuration with ≥ 1 ordinary line has a
+    2-element all-ordinary subset (the two points on that line). By Sylvester-Gallai,
+    every finite non-collinear set has ordinary lines.
+    Proof: the set in the sSup is empty, so sSup = 0. -/
+theorem threshold_r2 (k n : ℕ) (_hk : k ≥ 2) (_hn : n ≥ 2) :
+  threshold 2 k n = 0 := by sorry
 
 /-- The Sylvester-Gallai theorem: any finite non-collinear point set
     in ℝ² has at least one ordinary line. For n points with no 3
@@ -159,7 +158,7 @@ theorem linear_implies_littleo (r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 2) :
     and the Sylvester-Gallai/Green-Tao ordinary line result. -/
 theorem erdos_960_summary :
     (∀ r k : ℕ, r ≥ 2 → k ≥ 2 → ErdosConjecture960_littleo r k) ∧
-    (∀ k n : ℕ, k ≥ 2 → n ≥ 2 → threshold 2 k n = 1) :=
+    (∀ k n : ℕ, k ≥ 2 → n ≥ 2 → threshold 2 k n = 0) :=
   ⟨erdos_960_littleo_conjecture, fun k n hk hn => threshold_r2 k n hk hn⟩
 
 end Erdos960
