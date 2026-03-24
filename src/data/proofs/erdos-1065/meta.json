@@ -54,6 +54,7 @@
     ],
     "axiomCount": 2,
     "assumptions": "2 axiom declarations: erdos_1065a (Set.Infinite for primes of the form 2^k·q + 1), erdos_1065b (Set.Infinite for primes of the form 2^k·3^l·q + 1). Both encode the open conjectures themselves.",
+    "mathlib_version": "4.26.0",
     "lineCount": 162,
     "relatedProblems": [
       {
@@ -232,7 +233,9 @@
       "Mathlib.Data.Set.Finite.Basic",
       "Mathlib.Data.Nat.Basic",
       "Mathlib.Tactic"
-    ]
+    ],
+    "opens": [],
+    "namespace": null
   },
   "references": [
     {
