@@ -189,6 +189,36 @@
       "targetId": "erdos-467"
     }
   ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Szekeres, George",
+      "title": "A combinatorial problem in geometry",
+      "year": "1935",
+      "venue": "Compositio Mathematica 2, pp. 463–470",
+      "note": "The founding paper of Ramsey-type combinatorial geometry. Proved that for every n, there exists N such that any N points in general position contain a convex n-gon. The paper's romantic origin — Erdős named it the 'Happy Ending Problem' because Szekeres married Esther Klein, who posed the original question — is one of the most famous stories in mathematics"
+    },
+    {
+      "authors": "Suk, Andrew",
+      "title": "On the Erdős-Szekeres convex polygon problem",
+      "year": "2017",
+      "venue": "Journal of the American Mathematical Society 30(4), pp. 1047–1053",
+      "note": "Major breakthrough proving ES(n) ≤ 2^(n+o(n)), nearly matching the Erdős-Szekeres lower bound of 2^(n-2)+1 and essentially resolving the conjecture up to lower-order terms"
+    },
+    {
+      "authors": "Morris, Walter; Soltan, Valeriu",
+      "title": "The Erdős-Szekeres problem on points in convex position — a survey",
+      "year": "2000",
+      "venue": "Bulletin of the American Mathematical Society 37(4), pp. 437–458",
+      "note": "Comprehensive survey of the Happy Ending Problem and its generalizations, covering the original Erdős-Szekeres results, the conjectured bound 2^(n-2)+1, higher-dimensional extensions, and connections to Ramsey theory"
+    },
+    {
+      "authors": "Tóth, Géza; Valtr, Pavel",
+      "title": "The Erdős-Szekeres theorem: upper bounds and related results",
+      "year": "2005",
+      "venue": "Combinatorial and Computational Geometry, MSRI Publications 52, pp. 557–568",
+      "note": "Surveys upper bounds on the Erdős-Szekeres function and variants including the number of empty convex polygons, complementing the original 1935 result"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
