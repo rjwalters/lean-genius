@@ -3,7 +3,7 @@
     "id": "erdos-1007-oq-01-unit-distance-embedding",
     "proofId": "erdos-1007-oq-01",
     "range": {
-      "startLine": 42,
+      "startLine": 47,
       "endLine": 56
     },
     "type": "definition",
@@ -30,10 +30,10 @@
     "id": "erdos-1007-oq-01-min-edges-axiomatization",
     "proofId": "erdos-1007-oq-01",
     "range": {
-      "startLine": 64,
-      "endLine": 77
+      "startLine": 178,
+      "endLine": 186
     },
-    "type": "context",
+    "type": "definition",
     "title": "Axiomatization of minEdges(d)",
     "content": "The function `minEdgesForDim : ℕ → ℕ` is axiomatized rather than computed, since extracting the minimum over all finite graphs of a given dimension requires an unbounded search over graph structures. Three axioms specify the function:\n\n1. **`minEdgesForDim_le`**: For any graph of dimension d, its edge count is at least `minEdgesForDim d` — the function is a valid lower bound.\n2. **`minEdgesForDim_achieved`**: For d > 0, some graph achieves the minimum — the bound is tight.\n3. The function itself: `minEdgesForDim : ℕ → ℕ` is declared as an axiom.\n\nThis is a standard pattern in formalized extremal combinatorics: axiomatize the extremal function when the optimization problem is not computably solvable, then prove structural theorems about its values. The pattern mirrors how Ramsey numbers $R(s,t)$ or Turán numbers $\\text{ex}(n,H)$ would be formalized: declare the extremal quantity, state its defining properties as axioms, and derive consequences.",
     "mathContext": "\\text{minEdges}(d) = \\min\\{|E(G)| : \\text{dim}(G) = d\\}",
@@ -56,10 +56,10 @@
     "id": "erdos-1007-oq-01-known-values",
     "proofId": "erdos-1007-oq-01",
     "range": {
-      "startLine": 84,
-      "endLine": 99
+      "startLine": 191,
+      "endLine": 196
     },
-    "type": "context",
+    "type": "insight",
     "title": "Known Values of minEdges for d = 0 through 5",
     "content": "Six axioms record the known values `minEdges(0..5) = (0, 1, 3, 6, 9, 15)`. For d ≤ 3 and d = 5, the optimal graph is the complete graph K_{d+1} with C(d+1,2) edges. The d = 4 case is exceptional: the complete bipartite graph K_{3,3} achieves dimension 4 with only 9 edges, beating K₅'s 10 edges.\n\nThese values were established computationally and proved via geometric constructions:\n- d ≤ 3: Classical — K_{d+1} embeds as a regular simplex\n- d = 4: House (2013) proved K_{3,3} achieves dimension 4 with 9 edges\n- d = 5: Chaffee-Noble (2016) proved minEdges(5) = 15 = C(6,2)\n\nThe sequence $(0, 1, 3, 6, 9, 15)$ is almost the triangular numbers $T_n = n(n+1)/2$, deviating only at $d=4$ where $T_4 = 10$ but $\\text{minEdges}(4) = 9$. This near-triangular structure is a manifestation of the close-to-optimal behavior of complete graphs.",
     "mathContext": "\\text{minEdges}(0,1,2,3,4,5) = (0, 1, 3, 6, 9, 15)",
@@ -79,10 +79,10 @@
     "id": "erdos-1007-oq-01-small-dim-complete",
     "proofId": "erdos-1007-oq-01",
     "range": {
-      "startLine": 107,
-      "endLine": 112
+      "startLine": 204,
+      "endLine": 209
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Small Dimension Completeness: K_{d+1} Optimal for d ≤ 3",
     "content": "**Theorem** `small_dim_complete`: For 1 ≤ d ≤ 3, minEdges(d) = C(d+1, 2).\n\nThe proof uses `interval_cases d` to enumerate d ∈ {1,2,3}, then for each case substitutes the known value axiom and verifies the binomial coefficient equality with `native_decide`. This establishes that the complete graph K_{d+1} (embedded as a regular simplex) is the unique optimal graph for small dimensions.\n\nThe regular simplex in ℝ^d has d+1 vertices with all pairwise distances equal, giving exactly C(d+1,2) unit-distance edges. For d ≤ 3, no sparser graph can achieve dimension d — the simplex is both necessary and sufficient. This optimality breaks at d = 4, making small_dim_complete a precise boundary theorem.",
     "mathContext": "\\forall d \\in \\{1,2,3\\},\\; \\text{minEdges}(d) = \\binom{d+1}{2}",
@@ -105,10 +105,10 @@
     "id": "erdos-1007-oq-01-dim4-surprise",
     "proofId": "erdos-1007-oq-01",
     "range": {
-      "startLine": 116,
-      "endLine": 118
+      "startLine": 213,
+      "endLine": 215
     },
-    "type": "technique",
+    "type": "insight",
     "title": "The d = 4 Surprise: K_{3,3} Beats K_5",
     "content": "**Theorem** `dim4_beats_complete`: `minEdgesForDim 4 < Nat.choose 5 2`\n\nProves that minEdges(4) = 9 < C(5,2) = 10, establishing that K_{3,3} achieves dimension 4 more efficiently than K₅. The proof substitutes `minEdges_dim4` and closes with `native_decide`.\n\nThis is the key structural surprise: for d ≤ 3 and d = 5, the complete graph K_{d+1} is optimal, but at d = 4 the bipartite graph K_{3,3} does better. Geometrically, K_{3,3} can be embedded with unit distances in ℝ⁴ using fewer edges than K₅ because its bipartite structure provides exactly the right rigidity constraints. House's 2013 construction embeds the two parts of K_{3,3} as regular triangles in orthogonal 2-planes within ℝ⁴, with all 9 cross-edges achieving unit length. Whether d = 4 is the unique anomaly remains open.",
     "mathContext": "\\text{minEdges}(4) = 9 < \\binom{5}{2} = 10",
@@ -130,10 +130,10 @@
     "id": "erdos-1007-oq-01-dim5-matches",
     "proofId": "erdos-1007-oq-01",
     "range": {
-      "startLine": 121,
-      "endLine": 123
+      "startLine": 218,
+      "endLine": 220
     },
-    "type": "technique",
+    "type": "insight",
     "title": "d = 5 Returns to the Complete Graph Pattern",
     "content": "**Theorem** `dim5_matches_complete`: `minEdgesForDim 5 = Nat.choose 6 2`\n\nVerifies that minEdges(5) = 15 = C(6,2), meaning K₆ is optimal at dimension 5. Chaffee and Noble (2016) proved this by showing no graph with fewer than 15 edges can achieve dimension exactly 5, while K₆ achieves it via the regular 5-simplex embedding.\n\nThe return to the complete graph pattern after the d = 4 anomaly raises the question of whether d = 4 is truly isolated. If minEdges(d) = C(d+1,2) for all d ≥ 5, then the complete graph optimality conjecture holds with d = 4 as the sole exception. Currently this is verified only through d = 5.",
     "mathContext": "\\text{minEdges}(5) = 15 = \\binom{6}{2}",
@@ -154,10 +154,10 @@
     "id": "erdos-1007-oq-01-general-bounds",
     "proofId": "erdos-1007-oq-01",
     "range": {
-      "startLine": 131,
-      "endLine": 146
+      "startLine": 227,
+      "endLine": 260
     },
-    "type": "concept",
+    "type": "insight",
     "title": "General Bounds: Rigidity Lower Bound and Complete Graph Upper Bound",
     "content": "Two axioms establish the asymptotic sandwich for minEdges(d):\n\n1. **`minEdges_lower_bound`**: d ≤ minEdges(d) for d ≥ 1. This follows from rigidity theory: a graph of dimension exactly d requires at least d independent distance constraints (edges) to prevent collapsing to a lower-dimensional embedding. More precisely, Laman's theorem (1970) characterizes rigidity in 2D, and its higher-dimensional generalizations show that $d$ edges are the absolute minimum for $d$-dimensional rigidity.\n\n2. **`minEdges_upper_bound`**: minEdges(d) ≤ C(d+1,2). The complete graph K_{d+1} always achieves dimension d (embeddable as a regular simplex in ℝ^d with unit edges), providing the upper bound.\n\nThe theorem `values_are_nondecreasing_small` verifies monotonicity for d = 1..5 by direct computation from known values, establishing the pattern before the general conjecture.\n\nTogether, d ≤ minEdges(d) ≤ d(d+1)/2 gives the growth rate Ω(d) and O(d²). The quadratic growth conjecture asserts the tighter Θ(d²).",
     "mathContext": "d \\le \\text{minEdges}(d) \\le \\binom{d+1}{2} = \\frac{d(d+1)}{2}",
@@ -179,10 +179,10 @@
     "id": "erdos-1007-oq-01-upper-bound-quadratic",
     "proofId": "erdos-1007-oq-01",
     "range": {
-      "startLine": 169,
-      "endLine": 181
+      "startLine": 283,
+      "endLine": 295
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Quadratic Upper Bound via Nat-to-Real Casting",
     "content": "**Theorem** `upper_bound_quadratic`: `(minEdgesForDim d : ℝ) ≤ ((d+1) * d) / 2`\n\nThe proof bridges Nat and Real arithmetic through a careful chain:\n1. `Nat.cast_le.mpr` lifts the natural number bound `minEdges_upper_bound` to reals\n2. `Nat.choose_two_right` rewrites C(d+1,2) as (d+1)*d/2\n3. A parity case split (`Nat.even_or_odd d`) establishes `2 ∣ (d+1)*d` — needed for `Nat.cast_div`\n4. `push_cast` and `ring` close the algebraic identity\n\nThis Nat→Real casting pattern (prove in ℕ, cast to ℝ, simplify) is ubiquitous in Lean formalized combinatorics where bounds involve integer division. The parity argument is needed because $\\text{Nat.cast\\_div}$ requires an explicit divisibility witness — Lean does not automatically know that the product of consecutive integers is even.",
     "mathContext": "\\text{minEdges}(d) \\le \\binom{d+1}{2} = \\frac{(d+1)d}{2}",
@@ -205,10 +205,10 @@
     "id": "erdos-1007-oq-01-lower-bound-linear",
     "proofId": "erdos-1007-oq-01",
     "range": {
-      "startLine": 184,
-      "endLine": 186
+      "startLine": 298,
+      "endLine": 300
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Linear Lower Bound in ℝ via exact_mod_cast",
     "content": "**Theorem** `lower_bound_linear`: (d : ℝ) ≤ (minEdgesForDim d : ℝ)\n\nLifts the natural number lower bound d ≤ minEdges(d) to the reals in a single line using `exact_mod_cast`. The tactic `exact_mod_cast` automatically inserts `Nat.cast_le` coercions and matches the goal, making this a clean one-liner.\n\nThis real-valued version is needed for asymptotic analysis: comparing growth rates requires working in ℝ where division and limits are available. Combined with `upper_bound_quadratic`, it gives the sandwich d ≤ minEdges(d) ≤ d(d+1)/2 in ℝ, establishing Ω(d) growth.",
     "mathContext": "(d : \\mathbb{R}) \\le (\\text{minEdges}(d) : \\mathbb{R})",
@@ -227,8 +227,8 @@
     "id": "erdos-1007-oq-01-simplex-embed",
     "proofId": "erdos-1007-oq-01",
     "range": {
-      "startLine": 197,
-      "endLine": 258
+      "startLine": 69,
+      "endLine": 130
     },
     "type": "definition",
     "title": "Simplex Embedding: K_n in R^n via Scaled Basis Vectors",
@@ -253,10 +253,10 @@
     "id": "erdos-1007-oq-01-inv-sqrt-two-sq",
     "proofId": "erdos-1007-oq-01",
     "range": {
-      "startLine": 201,
-      "endLine": 204
+      "startLine": 73,
+      "endLine": 76
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Key Algebraic Identity: (1/√2)² = 1/2",
     "content": "**Theorem** `inv_sqrt_two_sq` (private): `(1 / Real.sqrt 2) ^ 2 = 1 / 2`\n\nThe numerical linchpin of the simplex embedding. The proof:\n1. `Real.sqrt_ne_zero'.mpr (by norm_num : 0 < 2)` establishes `√2 ≠ 0`\n2. `field_simp` clears the denominator, reducing to `1² = √2 · √2 / 2`\n3. `Real.sq_sqrt (by norm_num : 0 ≤ 2)` gives `(√2)² = 2`\n\nDespite its simplicity, this identity requires careful handling because Lean's `Real.sqrt` is not syntactically invertible — one must go through the `sq_sqrt` characterization. This is a common pattern when working with irrational constants in Lean: $\\sqrt{2}$ is a `noncomputable def` and cannot be evaluated by `norm_num` or `native_decide`.",
     "mathContext": "\\left(\\frac{1}{\\sqrt{2}}\\right)^2 = \\frac{1}{2}",
@@ -276,10 +276,10 @@
     "id": "erdos-1007-oq-01-complete-graph-dim-le",
     "proofId": "erdos-1007-oq-01",
     "range": {
-      "startLine": 262,
-      "endLine": 265
+      "startLine": 309,
+      "endLine": 312
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Corollary: graphDimension(K_n) ≤ n",
     "content": "**Theorem** `complete_graph_dim_le`: For $n \\ge 2$, $\\text{dim}(K_n) \\le n$.\n\nThe proof applies `Nat.find_le` to the simplex embedding witness: since `complete_graph_unit_embedding` produces a `UnitDistanceEmbedding'` of $K_n$ in $\\mathbb{R}^n$, the dimension (defined as the minimum $n$ via `Nat.find`) is at most $n$.\n\nThe `open Classical` is required because `Nat.find_le` operates on classical existence proofs. The inline proof term duplicates `simplexEmbed_dist_sq` rather than invoking `complete_graph_unit_embedding` to avoid definitional unfolding issues.\n\nThe optimal bound is $\\text{dim}(K_n) = n - 1$ (the regular simplex lives in $\\mathbb{R}^{n-1}$), but proving this requires the harder direction: showing no embedding exists in $\\mathbb{R}^{n-2}$, which involves the theory of Cayley–Menger determinants. The $n - 1$ characterization was established by Blumenthal (1953) using distance geometry.",
     "mathContext": "\\text{dim}(K_n) \\le n \\quad (\\text{optimal: } \\text{dim}(K_n) = n-1)",
@@ -300,8 +300,8 @@
     "id": "erdos-1007-oq-01-conjectures",
     "proofId": "erdos-1007-oq-01",
     "range": {
-      "startLine": 153,
-      "endLine": 166
+      "startLine": 267,
+      "endLine": 280
     },
     "type": "definition",
     "title": "Three Core Conjectures as Prop-Valued Definitions",
@@ -324,10 +324,10 @@
     "id": "erdos-1007-oq-01-binomial-monotonicity",
     "proofId": "erdos-1007-oq-01",
     "range": {
-      "startLine": 276,
-      "endLine": 289
+      "startLine": 323,
+      "endLine": 336
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Binomial Coefficient Monotonicity Building Blocks",
     "content": "Three lemmas establishing monotonicity of C(n,2) as building blocks for the conditional monotonicity proof:\n\n1. **`choose_two_mono`**: n ≤ m → C(n,2) ≤ C(m,2). Directly from Mathlib's `Nat.choose_le_choose`, which proves monotonicity of C(n,k) in n for fixed k.\n\n2. **`choose_succ_two_mono`**: d₁ ≤ d₂ → C(d₁+1,2) ≤ C(d₂+1,2). A shifted version of the above, packaging the +1 offset that appears throughout the minEdges analysis.\n\n3. **`choose_succ_two_ge`**: C(d+1,2) ≥ d for d ≥ 1. Proves the upper bound from complete graphs always exceeds the lower bound from rigidity. The proof rewrites C(d+1,2) = d(d+1)/2 and shows 2d ≤ d(d+1) by `nlinarith`.\n\nThese three lemmas cleanly separate the combinatorial facts about binomial coefficients from the case analysis on d = 4 in the main monotonicity theorem.",
     "mathContext": "n \\le m \\Rightarrow \\binom{n}{2} \\le \\binom{m}{2}, \\quad \\binom{d+1}{2} \\ge d",
@@ -347,10 +347,10 @@
     "id": "erdos-1007-oq-01-optimal-implies-monotone",
     "proofId": "erdos-1007-oq-01",
     "range": {
-      "startLine": 294,
-      "endLine": 326
+      "startLine": 341,
+      "endLine": 373
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Complete Graph Optimality Implies Monotonicity",
     "content": "**Theorem** `optimal_implies_monotone`: `complete_graph_optimal_conjecture → minEdges_monotone_conjecture`\n\nA conditional theorem proving the logical relationship between conjectures. The proof performs a 4-way case analysis on whether d₁ = 0, d₂ = 0, d₁ = 4, d₂ = 4:\n\n- **Neither is 4**: The conjecture gives minEdges(dᵢ) = C(dᵢ+1,2), and `choose_succ_two_mono` provides monotonicity of binomial coefficients.\n- **d₁ = 4, d₂ ≠ 4**: The known value 9 is shown ≤ C(d₂+1,2) via `Nat.choose 5 2 ≤ Nat.choose (d₂+1) 2` since d₂ ≥ 5.\n- **d₁ ≠ 4, d₂ = 4**: C(d₁+1,2) ≤ C(4,2) = 6 ≤ 9 since d₁ ≤ 3.\n- **d₁ = d₂ = 4**: Trivial by reflexivity.\n\nThe 4-way case split is forced by the d = 4 anomaly: the function minEdges is piecewise — it agrees with $\\binom{d+1}{2}$ everywhere except $d = 4$, where it drops by 1. The proof must manually bridge this gap at the exceptional point. This demonstrates a powerful proof pattern: reducing questions about an axiomatized function to verifiable numerical inequalities at exceptional points.",
     "mathContext": "(\\forall d \\neq 4,\\; \\text{minEdges}(d) = \\binom{d+1}{2}) \\Rightarrow (d_1 \\le d_2 \\Rightarrow \\text{minEdges}(d_1) \\le \\text{minEdges}(d_2))",
@@ -373,10 +373,10 @@
     "id": "erdos-1007-oq-01-growth-ratios",
     "proofId": "erdos-1007-oq-01",
     "range": {
-      "startLine": 335,
-      "endLine": 349
+      "startLine": 419,
+      "endLine": 433
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Growth Ratios and Successive Differences from Known Values",
     "content": "Direct computations from the known values:\n\n**Growth ratios** minEdges(d)/d: 1, 1.5, 2, 2.25, 3 for d = 1..5. The ratios grow roughly linearly in d, consistent with quadratic growth minEdges(d) ≈ cd² for some constant c ≈ 1/2.\n\n**Successive differences** Δ(d) = minEdges(d+1) - minEdges(d): 2, 3, 3, 6 for d = 1..4. For d ≠ 3→4, the differences match d+1 (the expected value under the complete graph conjecture since C(d+2,2) - C(d+1,2) = d+1). The anomalous Δ(3) = 3 instead of 4 reflects exactly the d = 4 deficiency: K_{3,3}'s 9 edges save 1 edge compared to K₅'s 10.\n\nThese are verified by `rw` + `simp`/`native_decide` substitution from the known value axioms — a standard pattern for establishing data points from axiomatized functions.",
     "mathContext": "\\frac{\\text{minEdges}(d)}{d} \\approx \\frac{d+1}{2}, \\quad \\Delta(d) = \\text{minEdges}(d+1) - \\text{minEdges}(d)",
@@ -399,10 +399,10 @@
     "id": "erdos-1007-oq-01-diff-anomaly",
     "proofId": "erdos-1007-oq-01",
     "range": {
-      "startLine": 353,
-      "endLine": 371
+      "startLine": 437,
+      "endLine": 455
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Growth Rate Analysis and Successive Difference Anomaly",
     "content": "Computes successive differences Δ(d) = minEdges(d+1) - minEdges(d) for known values:\n- Δ(1) = 2, Δ(2) = 3, Δ(3) = 3, Δ(4) = 6\n\n**Theorem** `diff_anomaly`: Δ(3) = 3 < 4 = 3+1, showing the d=3→4 transition is anomalous — the difference equals 3 instead of the expected d+1 = 4.\n\n**Theorem** `optimal_diff`: Under the optimality conjecture, Δ(d) = d+1 for all d where neither d nor d+1 equals 4. The proof shows C(d+2,2) - C(d+1,2) = d+1 by expanding the binomial coefficients and using the divisibility `2 ∣ (d+1)*d`. The key step is `Nat.add_div_of_dvd_right`, which rewrites $(a + 2(d+1)) / 2 = a/2 + (d+1)$ when $2 \\mid a$.\n\nThe growth rates minEdges(d)/d = 1, 1.5, 2, 2.25, 3 grow roughly linearly, consistent with Θ(d²).",
     "mathContext": "\\Delta(d) = \\text{minEdges}(d+1) - \\text{minEdges}(d), \\quad \\Delta(3) = 3 < 4",
@@ -426,8 +426,8 @@
     "id": "erdos-1007-oq-01-deficiency-function",
     "proofId": "erdos-1007-oq-01",
     "range": {
-      "startLine": 381,
-      "endLine": 405
+      "startLine": 465,
+      "endLine": 489
     },
     "type": "definition",
     "title": "Deficiency Function and Equivalence with Optimality",
@@ -450,10 +450,10 @@
     "id": "erdos-1007-oq-01-unique-anomaly",
     "proofId": "erdos-1007-oq-01",
     "range": {
-      "startLine": 408,
-      "endLine": 412
+      "startLine": 492,
+      "endLine": 496
     },
-    "type": "technique",
+    "type": "insight",
     "title": "d = 4 is the Unique Anomaly for d ≤ 5",
     "content": "**Theorem** `unique_anomaly_small`: For 1 ≤ d ≤ 5, δ(d) ≠ 0 implies d = 4.\n\nThe proof uses `interval_cases d` to enumerate all five dimensions and applies the previously computed deficiency values `deficiency_dim1` through `deficiency_dim5`. The tactic `simp_all` discharges each case.\n\nThis formally confirms d = 4 as the unique anomaly among small dimensions and motivates the central open question: is d = 4 the *only* dimension where the complete graph is not optimal? The answer is unknown for d ≥ 6. Computational evidence from Maehara's work on unit-distance graphs in higher dimensions suggests the answer is yes, but no proof exists.",
     "mathContext": "\\forall d,\\; 1 \\le d \\le 5 \\land \\delta(d) \\neq 0 \\implies d = 4",
@@ -477,10 +477,10 @@
     "id": "erdos-1007-oq-01-irrefl-embedding",
     "proofId": "erdos-1007-oq-01",
     "range": {
-      "startLine": 283,
-      "endLine": 316
+      "startLine": 145,
+      "endLine": 159
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Constructive Embedding Existence for Irreflexive Graphs",
     "content": "**Theorem** `hasUnitEmbedding_exists_irrefl`: every irreflexive finite graph admits a unit-distance embedding in some ℝⁿ.\n\nThis constructively proves what was axiomatized in §1 (`hasUnitEmbedding_exists'`), under the standard graph-theoretic assumption of irreflexivity (no self-loops). The proof splits on vertex count:\n- **|V| ≤ 1**: Irreflexivity forces adj to be empty (since u = v for all pairs). Map everything to 0 in ℝ¹.\n- **|V| ≥ 2**: Use `Fintype.truncEquivFin` to get V ≃ Fin |V|, then compose with the simplex embedding. Since adj u v → u ≠ v (by irreflexivity), the complete graph embedding works for any subgraph.\n\nThe helper `subgraph_unit_embedding` factors out the key insight: any subgraph of K_n inherits the unit-distance embedding from K_n.",
     "mathContext": "For an irreflexive graph (no self-loops, standard for simple graphs), the irreflexivity hypothesis adj u v → u ≠ v ensures the simplex embedding of K_{|V|} is also valid for the original graph. This is because the simplex embedding achieves unit distance for *all* distinct pairs, so any subgraph's edges automatically have unit length. The use of `Fintype.truncEquivFin` to identify V with Fin |V| is a standard Lean technique for reducing problems on abstract finite types to concrete indexed types.",
