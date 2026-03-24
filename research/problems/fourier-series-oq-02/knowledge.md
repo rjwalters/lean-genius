@@ -44,9 +44,9 @@ Prove that Fourier coefficients of α-Hölder continuous functions on AddCircle 
 
 ---
 
-## Current State (2026-03-24)
+## Current State (2026-03-24, updated)
 
-**File**: 382 lines, 4 axioms, 15 theorems, 2 sorries
+**File**: 430 lines, 4 axioms, 15 theorems, 1 sorry
 
 ### Remaining Axioms (4 — all deep)
 1. `holder_decay_is_optimal` — optimality via Weierstrass function
@@ -54,9 +54,13 @@ Prove that Fourier coefficients of α-Hölder continuous functions on AddCircle 
 3. `fourierCoeff_smooth_decay` — C^k decay via integration by parts
 4. `fourierCoeff_analytic_decay` — analytic exponential decay
 
-### Remaining Sorries (2)
+### Remaining Sorries (1)
 1. `fourierCoeff_sq_summable_of_holder` (line ~275) — square-summability for α > 1/2
-2. `riemannLebesgue_of_holder` (line ~288) — Riemann-Lebesgue from Hölder decay
+
+### Proved This Session
+1. `riemannLebesgue_of_holder` — **FULLY PROVED** (both internal sorries filled)
+   - `h_rpow`: `Real.zero_rpow + Tendsto.rpow_const (Or.inr hα_pos.le)` — rpow composition at 0
+   - `h_frac_le`: `div_le_div_of_nonneg_left + Nat.cast_natAbs + Int.cast_abs` — fraction comparison
 
 ---
 
@@ -118,6 +122,44 @@ Prove that Fourier coefficients of α-Hölder continuous functions on AddCircle 
 **Difficulty**: Converting between ℤ-indexed sums and ℕ-indexed sums, and the rpow algebra for squaring the bound.
 
 ### General Observations
-- Both sorries are "routine analysis" in human terms but require significant formalization effort due to rpow arithmetic, filter composition, and ℤ ↔ ℕ conversions
 - The 4 remaining axioms are genuinely deep (require Weierstrass functions, Sobolev embedding, integration by parts, complex analysis)
 - No axioms are "routine" enough to eliminate from Mathlib alone
+
+---
+
+## Session: researcher-4 (2026-03-24) — riemannLebesgue Proof + sq_summable Investigation
+
+### riemannLebesgue_of_holder — COMPLETED
+
+Both internal sorries filled:
+1. **h_rpow** (rpow of converging sequence → 0): `Real.zero_rpow hα_pos.ne'` rewrites target, then `h_base.rpow_const (Or.inr hα_pos.le)` composes.
+   - Key: `Tendsto.rpow_const` has hypothesis `0 ≤ a ∨ 0 ≤ p` (NOT `p ≠ 0`)
+2. **h_frac_le** (fraction comparison): `div_le_div_of_nonneg_left hT.out.le (by positivity) h_denom_le`
+   - Key: `hT.out.le` needed (not `hT.out`) — `div_le_div_of_nonneg_left` takes `0 ≤ T`
+   - Cast chain: `Nat.cast_natAbs` + `Int.cast_abs` converts `↑(n.natAbs : ℕ)` to `|(↑n : ℝ)|`
+
+### fourierCoeff_sq_summable_of_holder — Strategy (BLOCKED on API)
+
+**Best approach: Parseval's theorem** (not explicit p-series comparison!)
+
+The Parseval approach is much cleaner than explicit comparison:
+1. `Continuous f` (from Hölder) → `f ∈ L²(haarAddCircle)` (compact space + finite measure)
+2. `hasSum_sq_fourierCoeff F` where `F : Lp ℂ 2 haarAddCircle`
+3. Transfer via a.e. equality: `fourierCoeff (⇑F) n = fourierCoeff f n`
+
+**Blocker**: `Memℒp` identifier not found in this Mathlib version (v4.26.0, mathlib4 rev 2df2f015).
+- `Continuous.memℒp` also missing
+- Likely renamed: try `MemLp`, `MeasureTheory.MemLp`, or find via `#check @MeasureTheory.Lp.mk`
+- Alternative: `ContinuousMap.toLp` or construct Lp element via `AEEqFun`
+
+**Next step**: Search for the correct Lp constructor API:
+```lean
+-- Try these to find the right name:
+#check @MeasureTheory.Lp.mk
+#check @MeasureTheory.MemLp
+#check @ContinuousMap.toLp
+-- Or construct directly:
+-- snorm f 2 haarAddCircle < ⊤ from continuous on compact + finite measure
+```
+
+**Why Parseval over comparison**: The comparison approach requires ℤ-sum splitting, rpow algebra for squaring, and 50+ lines. Parseval reduces to 10 lines once you have the Lp API.
