@@ -69,7 +69,11 @@
     "content": "**IsPerfectMatching:**\n\nA perfect matching covers all vertices exactly once.\n\nFor a 3-uniform hypergraph on 3n vertices, this means exactly n disjoint edges, each covering 3 vertices.",
     "significance": "key",
     "mathContext": "A perfect matching $M$ partitions $[n]$ into $n/r$ disjoint $r$-element edges (requires $r \\mid n$)",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "ring theory",
+      "graph theory"
+    ],
     "prerequisites": []
   },
   {
@@ -122,7 +126,10 @@
     "content": "**ShamirQuestion:**\n\nFind the threshold ℓ(n) for perfect matchings in random 3-uniform hypergraphs.\n\nShamir asked this to Erdős in 1979. It became one of the major open problems in random hypergraph theory.",
     "significance": "key",
     "mathContext": "Find $\\ell(n)$ such that $H_r(n, m)$ has a perfect matching a.s. when $m > \\ell(n)$ and fails a.s. when $m < \\ell(n)$",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "graph theory"
+    ],
     "prerequisites": []
   },
   {
@@ -137,7 +144,10 @@
     "content": "**shamirThreshold:**\n\nℓ(n) = ⌈n log n⌉\n\nThis is the threshold for perfect matchings: below it, no matching exists a.s.; above it, a matching exists a.s.",
     "significance": "key",
     "mathContext": "$\\ell(n) = \\lceil n \\log n \\rceil$ — the sharp threshold for perfect matchings in $H_r(n, m)$",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -170,7 +180,10 @@
     "content": "**kahn_precise_threshold:**\n\nThe precise asymptotic is ℓ(n) ~ n log n.\n\nThis means: ℓ(n) / (n log n) → 1 as n → ∞.\n\nKahn proved this in 'Asymptotics for Shamir's problem', Adv. Math. (2023), also for general r-uniform hypergraphs.",
     "significance": "key",
     "mathContext": "For $r \\geq 3$: if $m = (1+\\epsilon) \\cdot \\frac{n}{r} \\ln n$ then $H_r(n,m)$ has a perfect matching a.s. (Kahn 2023)",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "graph theory",
+      "asymptotics"
+    ],
     "prerequisites": []
   },
   {
@@ -185,7 +198,10 @@
     "content": "**kahn_general_r:**\n\nFor r-uniform hypergraphs on rn vertices, the threshold for perfect matchings is also ~ n log n.\n\nRemarkably, the threshold is the SAME for all uniformities r ≥ 2. This was not expected - hypergraphs seemed more complex than graphs.",
     "mathContext": "The uniformity independence was a surprising discovery.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "graph theory",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -200,7 +216,10 @@
     "content": "**below_threshold_fails:**\n\nIf m < (1-ε) n log n, then almost surely no perfect matching exists.\n\n**Why:** Below threshold, the hypergraph has isolated vertices (vertices in no edge). A perfect matching is impossible if any vertex is isolated.",
     "significance": "key",
     "mathContext": "$m < (1-\\epsilon) \\cdot n \\log n \\implies P(H_r(n,m)$ has perfect matching$) \\to 0$",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "graph theory",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -215,7 +234,10 @@
     "content": "**Key Insight:**\n\nThe obstruction below threshold is isolated vertices.\n\nIn the random model, expected degree of a vertex is proportional to m/n². When m < n log n, some vertices have degree 0 with high probability.\n\nThis is the same obstruction as in ordinary graphs!",
     "significance": "key",
     "mathContext": "Below threshold: $\\exists v \\in [n]$ not covered by any edge with probability $\\to 1$ (coupon collector obstruction)",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "probability theory",
+      "graph theory"
+    ],
     "prerequisites": []
   },
   {
@@ -230,7 +252,10 @@
     "content": "**above_threshold_succeeds:**\n\nIf m > (1+ε) n log n, then almost surely a perfect matching exists.\n\nThe proof is technically challenging, using the nibble method and regularity-type arguments.",
     "significance": "key",
     "mathContext": "$m > (1+\\epsilon) \\cdot n \\log n \\implies P(H_r(n,m)$ has perfect matching$) \\to 1$",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
     "prerequisites": []
   },
   {
@@ -245,7 +270,10 @@
     "content": "**Erdős wrote:**\n\n'Many of the problems on random hypergraphs can be settled by the same methods as used for ordinary graphs and usually one can guess the answer almost immediately. Here we have no idea of the answer.'\n\nThis unusual admission shows how difficult the problem was.",
     "significance": "supporting",
     "mathContext": "Erdős's observation: many random hypergraph problems remain unsolved despite their graph analogues being well-understood",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "graph theory",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -260,7 +288,10 @@
     "content": "**erdos_747** (axiom) and **erdos_747_answer** (theorem): The threshold for perfect matchings in random 3-uniform hypergraphs is ℓ(n) ~ n log n. The answer theorem directly applies Kahn's precise asymptotic result.",
     "significance": "key",
     "mathContext": "$\\ell(n) \\sim \\frac{n}{r} \\ln n$ is the sharp threshold for perfect matchings in random $r$-uniform hypergraphs",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "graph theory",
+      "asymptotics"
+    ],
     "prerequisites": []
   },
   {
@@ -275,7 +306,11 @@
     "content": "**erdos_747_summary** combines all three key results into a single statement:\n\n1. **Threshold exists:** ShamirQuestion is satisfied\n2. **Order of magnitude:** ℓ(n) ≍ n log n (Johansson-Kahn-Vu)\n3. **Precise asymptotic:** ℓ(n)/n log n → 1 (Kahn)\n\nThe proof assembles these from the individual axioms.",
     "significance": "key",
     "mathContext": "Three-part result: threshold at $\\sim n \\log n$, below fails (isolated vertices), above succeeds (Johansson-Kahn-Vu 2008, Kahn 2023)",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "asymptotics",
+      "combinatorics"
+    ],
     "prerequisites": []
   }
 ]

@@ -142,7 +142,10 @@
     "content": "**ErdosConjecture429**:\n\nFormalizes the conjecture as: ∀ A, HasZeroDensity A → IsAdmissible A → HasPrimeShift A.\n\nThis states that any set which is both sparse and admissible must have a prime shift. The conjecture seemed plausible because both conditions are favorable: admissibility removes the obvious mod-p obstruction, and sparsity means fewer primality constraints to satisfy simultaneously.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of the erdős conjecture",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "prime numbers",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {

@@ -57,7 +57,10 @@
     "content": "**sigma_one:**\n\nThe only divisor of 1 is 1 itself, so σ(1) = 1.\n\n```lean\ntheorem sigma_one : sigma 1 = 1\n```",
     "significance": "supporting",
     "mathContext": "See annotation content for formal details of σ(1) = 1",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -72,7 +75,10 @@
     "content": "**sigma_prime:**\n\nFor prime p, the only divisors are 1 and p, so σ(p) = 1 + p.\n\n```lean\ntheorem sigma_prime (p : N) (hp : p.Prime) : sigma p = p + 1\n```",
     "significance": "key",
     "mathContext": "See annotation content for formal details of σ(p) = p + 1 for primes",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "prime numbers",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -87,7 +93,10 @@
     "content": "**g:**\n\nThe product function g(k) = k · σ(k).\n\n```lean\ndef g (k : N) : N := k * sigma k\n```\n\nThis is the central function of the problem. The question is: how many k give g(k) = n?",
     "significance": "key",
     "mathContext": "See annotation content for formal details of product function g(k)",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -124,7 +133,10 @@
     "content": "**solutionSet:**\n\nThe set of k such that k·σ(k) = n.\n\n```lean\ndef solutionSet (n : N) : Set N := {k : N | g k = n}\n```\n\nThis set is what we count to get f(n).",
     "significance": "key",
     "mathContext": "See annotation content for formal details of solution set",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -139,7 +151,10 @@
     "content": "**f:**\n\nf(n) = number of solutions to k·σ(k) = n.\n\n```lean\nnoncomputable def f (n : N) : N := (solutionSet n).ncard\n```\n\nThis is the main object of study. The conjectures bound f(n).",
     "significance": "key",
     "mathContext": "See annotation content for formal details of counting function f(n)",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -154,7 +169,10 @@
     "content": "**solutionSet_finite:**\n\nThe solution set is finite for any n > 0.\n\n**Proof idea:**\n- σ(k) ≥ 1 for all k > 0 (since 1 | k)\n- Therefore k·σ(k) ≥ k\n- So if g(k) = n, then k ≤ n\n\nThis means we only need to check finitely many k.",
     "mathContext": "This finiteness is crucial for f(n) to be well-defined as a natural number.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
     "prerequisites": []
   },
   {
@@ -169,7 +187,10 @@
     "content": "**erdos_1060_weak_conjecture:**\n\nf(n) ≤ n^{o(1/log log n)} as n → ∞.\n\nThis means: for any ε > 0, eventually f(n) ≤ n^{ε/log log n}.\n\n```lean\naxiom erdos_1060_weak_conjecture :\n    forall ε > 0, exists N, forall n > N,\n      f n ≤ n ^ (ε / log (log n))\n```\n\nThis is a very slow growth rate - slower than any fixed power of n.",
     "mathContext": "The double-logarithmic decay means f(n) grows extremely slowly compared to any polynomial.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "mathematical insight",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -184,7 +205,10 @@
     "content": "**erdos_1060_strong_conjecture:**\n\nf(n) ≤ (log n)^C for some constant C.\n\n```lean\naxiom erdos_1060_strong_conjecture :\n    exists C, forall n > 1, f n ≤ (log n) ^ C\n```\n\nThis is much stronger - polynomial in log n rather than a slow power of n.",
     "mathContext": "A polylogarithmic bound would be a dramatic improvement over the weak conjecture.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "mathematical insight",
+      "polynomial theory"
+    ],
     "prerequisites": []
   },
   {
@@ -217,7 +241,10 @@
     "content": "**Example:**\n\nn = 6: k = 2 gives 2·σ(2) = 2·3 = 6.\n\n```lean\nexample : g 2 = 6\n```\n\nVerified by native_decide.",
     "significance": "supporting",
     "mathContext": "See annotation content for formal details of example: g(2) = 6",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -232,7 +259,10 @@
     "content": "**Example:**\n\nn = 12: k = 3 gives 3·σ(3) = 3·4 = 12.\n\n```lean\nexample : g 3 = 12\n```",
     "significance": "supporting",
     "mathContext": "See annotation content for formal details of example: g(3) = 12",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -247,7 +277,10 @@
     "content": "**Example:**\n\nn = 72: k = 6 gives 6·σ(6) = 6·12 = 72.\n\nNote: σ(6) = 1+2+3+6 = 12.",
     "significance": "supporting",
     "mathContext": "See annotation content for formal details of example: g(6) = 72",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
     "prerequisites": []
   },
   {
@@ -262,7 +295,10 @@
     "content": "**Prime examples:**\n\nFor prime p, g(p) = p(p+1):\n- g(5) = 30\n- g(7) = 56\n\nThis gives infinitely many values in the range of g.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of prime examples",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "prime numbers"
+    ],
     "prerequisites": []
   }
 ]

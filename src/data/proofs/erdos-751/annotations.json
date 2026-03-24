@@ -87,7 +87,10 @@
     "content": "**cycleLengths:**\n\nThe set of all cycle lengths present in G.\n\nFor K_4: cycleLengths = {3, 4}\nFor K_5: cycleLengths = {3, 4, 5}\n\nThe \"cycle spectrum\" describes which lengths appear.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of cycle lengths",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -102,7 +105,10 @@
     "content": "**minCycleLengthGap:**\n\nFor sorted cycle lengths m_1 < m_2 < ..., the minimum of consecutive differences m_{i+1} - m_i.\n\nThe problem asks: can this be arbitrarily large for chi = 4?",
     "significance": "key",
     "mathContext": "See annotation content for formal details of minimum cycle length gap",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -117,7 +123,10 @@
     "content": "**four_chromatic_minDeg:**\n\nIf chi(G) = 4, then minDegree(G) >= 3.\n\n**Why?** A graph with max degree Delta can be greedily colored with Delta + 1 colors. Contrapositive: if chi(G) >= k, then G has vertices of degree >= k - 1.\n\nFor chi(G) = 4, we need min degree >= 3.",
     "mathContext": "This is related to Brooks' theorem: chi(G) <= Delta(G) unless G is complete or an odd cycle.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "graph theory",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -132,7 +141,10 @@
     "content": "**bondy_vince_theorem:**\n\nEvery graph with minimum degree >= 3 has two cycles whose lengths differ by at most 2.\n\n```lean\naxiom bondy_vince_theorem (G : SimpleGraph V) :\n    minDegree G >= 3 ->\n    exists m m', m in cycleLengths G and m' in cycleLengths G and\n      m != m' and |m - m'| <= 2\n```\n\nThis is the key technical result.",
     "mathContext": "Published in J. Graph Theory 27 (1998), 11-15.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "graph theory",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -147,7 +159,10 @@
     "content": "**erdos_751_chromatic_4:**\n\nFor chi(G) = 4, there exist cycles m, m' with |m - m'| <= 2.\n\n**Proof:**\n1. chi(G) = 4 implies minDegree >= 3 (four_chromatic_minDeg)\n2. minDegree >= 3 implies close cycles (bondy_vince_theorem)\n3. Therefore chi = 4 implies close cycles",
     "significance": "key",
     "mathContext": "See annotation content for formal details of main theorem for chi = 4",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -162,7 +177,10 @@
     "content": "**erdos_751_with_girth:**\n\nEven if girth(G) is large, the conclusion still holds.\n\n```lean\ntheorem erdos_751_with_girth (G : SimpleGraph V) (k : N) :\n    chromaticNumber G = 4 -> girth G >= k ->\n    exists close cycles\n```\n\nThe girth constraint doesn't change anything because the proof only uses minimum degree.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of girth doesn't help",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "graph theory"
+    ],
     "prerequisites": []
   },
   {
@@ -177,7 +195,10 @@
     "content": "**erdos_751:**\n\nCan min(m_{i+1} - m_i) be arbitrarily large for chi(G) = 4?\n\n**NO.** The gap is always <= 2.\n\n```lean\ntheorem erdos_751 (G : SimpleGraph V) :\n    chromaticNumber G = 4 ->\n    NOT (forall n, minCycleLengthGap > n)\n```",
     "significance": "key",
     "mathContext": "See annotation content for formal details of full answer",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "graph theory"
+    ],
     "prerequisites": []
   },
   {
@@ -192,7 +213,10 @@
     "content": "**min_degree_3_cycle_gap:**\n\nThe result holds for ANY graph with min degree >= 3, not just chi = 4.\n\nThis is actually the more general statement - chromatic number 4 is just one way to guarantee min degree >= 3.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of generalization",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "graph theory"
+    ],
     "prerequisites": []
   },
   {
@@ -207,7 +231,10 @@
     "content": "**erdos_751_summary:**\n\nCombines all results:\n\n1. **Main:** chi = 4 implies close cycles (gap <= 2)\n2. **General:** min degree >= 3 suffices\n3. **Connection:** chi = 4 implies min degree >= 3\n\nThe answer to Erdos's question is definitively NO.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of summary",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "combinatorics"
+    ],
     "prerequisites": []
   }
 ]

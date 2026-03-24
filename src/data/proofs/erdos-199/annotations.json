@@ -50,7 +50,10 @@
     "content": "**is3APFree:**\n\nA set is 3-AP-free if it contains no 3-term arithmetic progression.\n\n**Classical examples of 3-AP-free sets:**\n- Stanley sequence: 0, 1, 3, 5, 11, 22, 45, ...\n- Powers of 2: {1, 2, 4, 8, 16, ...}",
     "significance": "key",
     "mathContext": "See annotation content for formal details of 3-ap-free sets",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -65,7 +68,10 @@
     "content": "**infiniteAP:**\n\nThe infinite arithmetic progression {a, a+d, a+2d, a+3d, ...} for d ≠ 0.\n\n**Examples:**\n- infiniteAP 0 1 = {0, 1, 2, 3, ...} = ℕ\n- infiniteAP 1 2 = {1, 3, 5, 7, ...} = odd naturals",
     "significance": "key",
     "mathContext": "See annotation content for formal details of infinite arithmetic progression",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -80,7 +86,10 @@
     "content": "**containsInfiniteAP:**\n\nA set contains an infinite AP if some infinite arithmetic progression is a subset.\n\n**Note:** This is a much stronger condition than containing arbitrarily long finite APs.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of contains infinite ap",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -95,7 +104,10 @@
     "content": "**ErdosConjecture199:**\n\nThe original question formalized: if A is 3-AP-free, must ℝ \\ A contain an infinite AP?\n\n**Intuition:** If you remove a \"sparse\" set (3-AP-free), there should be \"lots of structure\" left (infinite AP). This turns out to be false!",
     "mathContext": "The conjecture seems plausible given van der Waerden's theorem, but infinite APs behave very differently.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -129,7 +141,10 @@
     "content": "**erdos_199_disproved:**\n\nErdős's conjecture is false.\n\n**Logic:** Baumgartner gives a 3-AP-free set A whose complement has no infinite AP. This directly contradicts the conjecture.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of conjecture disproved",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -144,7 +159,10 @@
     "content": "**erdos_199:**\n\nThe answer to Erdős Problem #199 is NO.\n\nThere exists a set A that is 3-AP-free, yet its complement contains no infinite AP.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of main result",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -178,7 +196,10 @@
     "content": "**Example showing ℕ (embedded in ℝ) has many 3-APs:**\n\n**Verification:** 1, 2, 3 is a 3-term AP with a = 1, d = 1.\n\nThis shows that dense sets like ℕ definitely contain APs. The question is about sparse (3-AP-free) sets.",
     "significance": "supporting",
     "mathContext": "See annotation content for formal details of example: ℕ has 3-aps",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -193,7 +214,10 @@
     "content": "**Example showing ℚ (embedded in ℝ) contains infinite APs:**\n\n**Verification:** The infinite AP {0, 1, 2, 3, ...} ⊆ ℚ.\n\nThis contrasts with Baumgartner's sets, which avoid all infinite APs.",
     "significance": "supporting",
     "mathContext": "See annotation content for formal details of example: ℚ contains infinite aps",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -208,7 +232,10 @@
     "content": "**erdos_199_summary:**\n\nCombines all the main results:\n1. Erdős's conjecture is FALSE\n2. A counterexample EXISTS (via Baumgartner)\n\nThe problem is fully resolved.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of summary theorem",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "combinatorics",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   }
 ]

@@ -70,7 +70,10 @@
     "content": "**hasSizeCondition a b n epsilon:**\n\nBoth a and b are substantial fractions of n:\n- epsilon * n < a\n- epsilon * n < b\n\nThis prevents trivial solutions with very small a or b.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of size condition",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -85,7 +88,10 @@
     "content": "**isErdos728Solution a b n epsilon C C':**\n\nA complete solution satisfies:\n1. n > 0\n2. hasSizeCondition (a, b large)\n3. factorialDivisibility (the divisibility holds)\n4. hasLogarithmicGap (a + b in the right range)\n\nThe problem asks: do such triples exist?",
     "significance": "key",
     "mathContext": "See annotation content for formal details of full solution condition",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "factorial function"
+    ],
     "prerequisites": []
   },
   {
@@ -140,7 +146,10 @@
     "content": "**constructionTemplate:**\n\nFor even n, set:\n- b = n/2\n- a = n/2 + O(log n)\n\nThis construction:\n1. Satisfies the size condition (both ~ n/2)\n2. Achieves the logarithmic gap (a + b = n + O(log n))\n3. Can be verified for divisibility via Legendre's formula",
     "mathContext": "The key insight: b = n/2 provides enough 'room' for the construction.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -155,7 +164,10 @@
     "content": "**construction_size:**\n\nFor n >= 4 and epsilon < 1/3, we have epsilon * n < n/2.\n\nThis confirms b = n/2 satisfies the size condition for reasonable epsilon.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of construction size verification",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -170,7 +182,10 @@
     "content": "**legendreSum n p:**\n\nThe p-adic valuation of n! is:\nv_p(n!) = sum_{i >= 1} floor(n / p^i)\n\n```lean\ndef legendreSum (n p : N) : N :=\n  (Finset.range n).sum fun i => n / p^(i + 1)\n```\n\nThis is the key tool for verifying factorial divisibility.",
     "mathContext": "Legendre's formula converts divisibility questions into arithmetic sums.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "factorial function"
+    ],
     "prerequisites": []
   },
   {
@@ -185,7 +200,10 @@
     "content": "**divisibility_via_legendre:**\n\na! * b! | n! * (a+b-n)! iff for every prime p:\nv_p(n!) + v_p((a+b-n)!) >= v_p(a!) + v_p(b!)\n\nThis reduces divisibility to checking p-adic valuations for all primes.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of divisibility via legendre",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "prime numbers",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -200,7 +218,10 @@
     "content": "**problem_729_connection:**\n\nProblem #729 asks related questions about factorial divisibility with different parameter constraints.\n\nThese problems form a family exploring the boundaries of factorial arithmetic.",
     "significance": "supporting",
     "mathContext": "See annotation content for formal details of problem #729 connection",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "factorial function",
+      "ring theory"
+    ],
     "prerequisites": []
   },
   {
@@ -215,7 +236,10 @@
     "content": "**erdos_728_summary:**\n\n1. Erdos (1968): a!b! | n! implies a + b <= n + O(log n)\n2. Question (1975): Can we achieve divisibility AT the logarithmic limit?\n3. Answer (Barreto/ChatGPT-5.2): YES, using b = n/2 construction\n\n```lean\ntheorem erdos_728_summary :\n    exists K > 0, forall a b n,\n      a! * b! | n! -> (a + b : R) <= n + K * log n\n```",
     "significance": "key",
     "mathContext": "See annotation content for formal details of summary",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "limits"
+    ],
     "prerequisites": []
   }
 ]

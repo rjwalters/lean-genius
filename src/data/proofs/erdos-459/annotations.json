@@ -67,7 +67,10 @@
     "content": "**f_lower_bound:**\n\nFor u ≥ 1, f(u) ≥ u + 2.\n\nReason: u + 1 always has a prime factor not dividing u (by Euclid-style argument).",
     "mathContext": "This is why f(u) ≠ u + 1 - consecutive integers share no common prime factors.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "prime numbers",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -82,7 +85,10 @@
     "content": "**f_upper_bound:**\n\nFor u ≥ 2, f(u) ≤ u².\n\nReason: u² has exactly the same prime factors as u, so it's always smooth w.r.t. u.",
     "mathContext": "This gives the trivial upper bound. The key question is when f(u) is much smaller.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "prime numbers",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -97,7 +103,10 @@
     "content": "**trivial_bounds:**\n\nFor u ≥ 2: u + 2 ≤ f(u) ≤ u².\n\nThis captures the basic range of f(u).",
     "significance": "key",
     "mathContext": "See annotation content for formal details of trivial bounds",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -130,7 +139,10 @@
     "content": "**f_even_bound:**\n\nWhen u is even, f(u) ≤ 2^k where 2^k is the smallest power of 2 > u.\n\nReason: Any power of 2 is smooth w.r.t. any even number (since 2 | u).",
     "mathContext": "Even numbers have good bounds because powers of 2 are always available.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
     "prerequisites": []
   },
   {
@@ -201,7 +213,10 @@
     "content": "**f_2:**\n\nf(2) = 4 = 2².\n\nThe only numbers smooth w.r.t. 2 are powers of 2. The first > 2 is 4.",
     "significance": "supporting",
     "mathContext": "See annotation content for formal details of example: f(2) = 4",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
     "prerequisites": []
   },
   {
@@ -216,7 +231,10 @@
     "content": "**f_6:**\n\nf(6) = 8.\n\n6 = 2·3, so smooth numbers are products of 2s and 3s: 1, 2, 3, 4, 6, 8, 9, 12, ...\n\nThe first > 6 is 8 = 2³.",
     "significance": "supporting",
     "mathContext": "See annotation content for formal details of example: f(6) = 8",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
     "prerequisites": []
   },
   {
@@ -231,7 +249,11 @@
     "content": "**erdos_459_solved:**\n\nCombines all the main results:\n1. Trivial bounds: u + 2 ≤ f(u) ≤ u²\n2. f(p) = p² for primes\n3. Infinitely many minimal (u+2) cases\n4. Infinitely many maximal (u²) cases\n\nCambie's observations settle the main questions about f(u).",
     "mathContext": "The problem asked to 'estimate f(u)' - these results provide a complete characterization.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "prime numbers",
+      "combinatorics"
+    ],
     "prerequisites": []
   }
 ]

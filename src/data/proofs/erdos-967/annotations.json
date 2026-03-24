@@ -30,7 +30,10 @@
     "content": "**IntegerSequence:**\n\nA strictly increasing sequence of integers greater than 1.\n\n```lean\nstructure IntegerSequence where\n  seq : ℕ → ℕ\n  strictly_increasing : ∀ n, seq n < seq (n + 1)\n  all_greater_than_one : ∀ n, seq n > 1\n```",
     "significance": "key",
     "mathContext": "See annotation content for formal details of integer sequence structure",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -45,7 +48,10 @@
     "content": "**hasConvergentReciprocalSum:**\n\nA sequence satisfies ∑(1/aᵢ) < ∞.\n\nThis ensures the Dirichlet series converges absolutely, making the generalized sum well-defined.",
     "mathContext": "Convergence is essential - without it, the infinite sum may not exist. Examples: {2,3,4,...} doesn't converge, but {2,4,8,...} does.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -79,7 +85,10 @@
     "content": "**reciprocalPow(a, t) = 1/a^(1+it):**\n\nThe term in the generalized Dirichlet sum. Has magnitude 1/a and phase -t·log(a).",
     "significance": "key",
     "mathContext": "See annotation content for formal details of reciprocal power term",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -130,7 +139,10 @@
     "content": "**finiteSequenceConjecture:**\n\nDoes 1 + ∑ₖ 1/aₖ^(1+it) ≠ 0 hold for all FINITE sequences?\n\nThis remains OPEN even after Yip's work.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of finite sequence conjecture",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -217,7 +229,10 @@
     "content": "**Theorem erdosInghamConjecture_false:**\n\n¬erdosInghamConjecture\n\n**Proof**: Take any t ≠ 0 (say t = 1). By Yip's theorem, there exists a sequence a where the sum equals 0. But the conjecture claims the sum is never 0. Contradiction.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of the conjecture is false",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof by contradiction",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -232,7 +247,10 @@
     "content": "**Theorem erdos_967:**\n\n¬erdosInghamConjecture\n\nThe answer to Erdős Problem #967 is NO - the conjecture is FALSE.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of main theorem (erdos_967)",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
     "prerequisites": []
   },
   {
@@ -247,7 +265,10 @@
     "content": "**openQuestion_finiteCase:**\n\nDoes the conjecture hold for FINITE sequences?\n\nYip's counterexamples are infinite sequences. The finite case, including {2,3,5}, remains unsolved.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of open question: finite case",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -262,7 +283,10 @@
     "content": "**Theorem yip_construction_t_dependent:**\n\nFor each t ≠ 0, Yip constructs a DIFFERENT counterexample sequence.\n\nNo single sequence works for all t simultaneously - the construction is inherently t-dependent.",
     "mathContext": "This raises the question: can there be a 'universal' counterexample? The structure of Yip's construction suggests probably not.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
     "prerequisites": []
   },
   {
@@ -277,7 +301,10 @@
     "content": "**Theorem sum_positive_at_zero:**\n\nAt t = 0, the sum is real: 1 + ∑ₖ 1/aₖ > 1 > 0.\n\nThe conjecture trivially holds at t = 0 - only nonzero t can produce zeros.",
     "mathContext": "When t = 0, all terms are positive real numbers, so the sum is strictly greater than 1.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
     "prerequisites": []
   },
   {
@@ -310,7 +337,10 @@
     "content": "**geometricSequence = {2, 4, 8, 16, ...}:**\n\nA concrete IntegerSequence where seq(n) = 2^(n+1).\n\nThis sequence has convergent reciprocal sum: ∑(1/2^n) = 1 < ∞.",
     "mathContext": "Provides a constructive example of an IntegerSequence satisfying the convergence condition. The sum 1 + ∑ 2^(-n(1+it)) has a closed form in terms of geometric series.",
     "significance": "supporting",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "metric spaces"
+    ],
     "prerequisites": []
   },
   {
@@ -325,7 +355,11 @@
     "content": "**Theorem powers_of_2_convergent:**\n\nhasConvergentReciprocalSum geometricSequence\n\nVerifies that {2, 4, 8, ...} satisfies the convergence condition required by the problem.",
     "significance": "supporting",
     "mathContext": "See annotation content for formal details of powers of 2 convergent",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "metric spaces",
+      "convergence"
+    ],
     "prerequisites": []
   },
   {
@@ -340,7 +374,10 @@
     "content": "**Theorem erdos_967_summary:**\n\n1. The Erdős-Ingham conjecture (1964) is FALSE for infinite sequences\n2. Yip (2025) provided counterexamples for every nonzero t\n3. The finite sequence case remains OPEN\n4. The {2,3,5} case connects to the Four Exponentials conjecture",
     "significance": "key",
     "mathContext": "See annotation content for formal details of summary theorem",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
     "prerequisites": []
   }
 ]

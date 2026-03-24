@@ -30,7 +30,10 @@
     "content": "**ex(n; H) ≤ ex(m; H) for n ≤ m**\n\nMore vertices allows at least as many edges while avoiding H.\n\nProof: Any H-free graph on n vertices can be extended to m vertices with isolated vertices.",
     "significance": "supporting",
     "mathContext": "$\\text{ex}(n; H) \\leq \\text{ex}(m; H)$ for $n \\leq m$. Monotonicity: adding vertices can only increase the maximum edge count of an $H$-free graph.",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "graph theory",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -64,7 +67,10 @@
     "content": "**2-Degenerate means:**\n\nNo induced subgraph has minimum degree ≥ 3.\n\nEquivalently: every subgraph has a vertex of degree at most 2.\n\n**Examples:**\n- Paths and cycles are 2-degenerate\n- Outerplanar graphs are 2-degenerate\n- K_4 is NOT 2-degenerate (min degree 3)",
     "significance": "key",
     "mathContext": "$G$ is 2-degenerate iff every non-empty induced subgraph has a vertex of degree $\\leq 2$. Equivalently, vertices admit an ordering $v_1, \\ldots, v_n$ where each $v_i$ has $\\leq 2$ neighbors among $v_1, \\ldots, v_{i-1}$. Trees and cycles are 2-degenerate; $K_{3,3}$ is not.",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "graph theory",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -79,7 +85,10 @@
     "content": "**Bipartite Graphs:**\n\nA graph G is bipartite if its vertices can be partitioned into two sets A, B such that every edge connects a vertex in A to one in B.\n\n**Equivalent:** G has no odd cycles.\n\nAxiomatized as a predicate on encoded graphs.",
     "significance": "key",
     "mathContext": "$G = (A \\cup B, E)$ is bipartite if its vertex set partitions into two independent sets $A, B$. Equivalently, $G$ has no odd cycles. Bipartite extremal numbers are generally harder to determine than non-bipartite ones.",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "graph theory",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -94,7 +103,10 @@
     "content": "**K_{s,t} Encoding:**\n\nThe complete bipartite graph K_{s,t} is encoded as s * 1000 + t.\n\nThis allows referencing specific complete bipartite graphs in axioms about extremal numbers.\n\n**Example:** K_{2,3} is encoded as 2003.",
     "significance": "supporting",
     "mathContext": "$K_{s,t}$: the complete bipartite graph with parts of sizes $s$ and $t$. Encoded as $1000s + t$ for the axiomatized framework. Degeneracy of $K_{s,t}$ is $\\\\min(s,t)$.",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "graph theory"
+    ],
     "prerequisites": []
   },
   {
@@ -127,7 +139,10 @@
     "content": "**ex(n; C_4) = O(n^{3/2})**\n\nThe 4-cycle C_4 = K_{2,2} has extremal number O(n^{3/2}).\n\nThis is the threshold exponent in the Erdős-Simonovits conjecture.\n\n**Tight:** There exist graphs achieving Ω(n^{3/2}) edges.",
     "significance": "key",
     "mathContext": "$\\\\text{ex}(n; C_4) = O(n^{3/2})$. The 4-cycle $C_4 = K_{2,2}$ is the simplest bipartite forbidden subgraph. By Kővári-Sós-Turán with $s = t = 2$: exponent $2 - 1/2 = 3/2$. This bound is tight: $\\\\text{ex}(n; C_4) = \\\\Theta(n^{3/2})$.",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "graph theory",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -142,7 +157,11 @@
     "content": "**f ≪ g means f = O(g)**\n\nFormally: ∃ C > 0, ∃ n₀, ∀ n ≥ n₀: f(n) ≤ C · g(n)\n\nThis is the standard big-O notation adapted for use in Lean.\n\nThe notation has precedence 50, requiring parentheses with → and ↔.",
     "significance": "key",
     "mathContext": "$f \\\\ll g$ means $f(n) = O(g(n))$: $\\\\exists C > 0, n_0: \\\\forall n \\\\geq n_0, f(n) \\\\leq C \\\\cdot g(n)$. Used throughout to state extremal number bounds.",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "ring theory",
+      "asymptotics"
+    ],
     "prerequisites": []
   },
   {
@@ -157,7 +176,10 @@
     "content": "**If f ≪ n^α and α < β, then f ≪ n^β**\n\nThis captures that O(n^{4/3}) ⊆ O(n^{3/2}) when 4/3 < 3/2.\n\nEssential for the Janzer counterexample argument.",
     "significance": "key",
     "mathContext": "If $f \\\\ll n^\\\\alpha$ and $\\\\alpha < \\\\beta$, then $f \\\\ll n^\\\\beta$. Transitivity of asymptotic bounds via exponent comparison: $n^\\\\alpha = o(n^\\\\beta)$ for $\\\\alpha < \\\\beta$.",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "asymptotics",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -172,7 +194,10 @@
     "content": "**The Conjecture (1984):**\n\nFor bipartite G:\n  ex(n; G) ≪ n^{3/2} ⟺ G is 2-degenerate\n\n**Forward Direction (TRUE):**\nIf G is 2-degenerate bipartite, then ex(n;G) ≪ n^{3/2}.\n\n**Backward Direction (DISPROVED):**\nIf ex(n;G) ≪ n^{3/2}, then G is 2-degenerate.\n\nThe conjecture claims both directions hold. Janzer disproved the backward direction.",
     "mathContext": "Conjectured in 'Cube-supersaturated graphs and related problems' (1984).",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -187,7 +212,10 @@
     "content": "**Forward Direction is TRUE:**\n\nIf G is bipartite and 2-degenerate, then ex(n;G) ≪ n^{3/2}.\n\nThe proof follows from the KST theorem and properties of 2-degenerate graphs.\n\nThis half of the conjecture was never in doubt.",
     "significance": "key",
     "mathContext": "**Forward direction (TRUE)**: if $G$ is bipartite and 2-degenerate, then $\\\\text{ex}(n; G) \\\\ll n^{3/2}$. This uses the fact that 2-degenerate graphs can be built by adding vertices of degree $\\\\leq 2$, and the KST bound applies at each step.",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "graph theory",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -202,7 +230,10 @@
     "content": "**Backward Direction is FALSE:**\n\n∃ bipartite G: ex(n;G) ≪ n^{3/2} ∧ G is NOT 2-degenerate\n\nJanzer (2023) constructed such a counterexample.\n\nThis axiom encapsulates Janzer's disproof.",
     "significance": "key",
     "mathContext": "**Backward direction (DISPROVED)**: $\\\\exists G$ bipartite with $\\\\text{ex}(n; G) \\\\ll n^{3/2}$ but $G$ not 2-degenerate. Janzer (2023) found 3-regular bipartite $H$ with $\\\\text{ex}(n; H) \\\\ll n^{4/3+\\\\varepsilon} \\\\ll n^{3/2}$.",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
     "prerequisites": []
   },
   {
@@ -217,7 +248,10 @@
     "content": "**k-Regular Graphs:**\n\nA graph is k-regular if every vertex has exactly degree k.\n\nAxiomatized as a predicate isRegular(g, k).\n\n**Key fact:** 3-regular graphs are NOT 2-degenerate.",
     "significance": "key",
     "mathContext": "$G$ is $k$-regular if every vertex has degree exactly $k$. A 3-regular graph has minimum degree 3, hence is NOT 2-degenerate (every induced subgraph including $G$ itself has min degree $\\\\geq 3$).",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "graph theory",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -232,7 +266,10 @@
     "content": "**3-Regular ⟹ NOT 2-Degenerate**\n\nIf G is 3-regular, then every vertex has degree 3.\n\nThus every induced subgraph on G has minimum degree at least 3 (for the whole graph) or contains a vertex of degree 3.\n\nThis contradicts 2-degeneracy.",
     "mathContext": "This is the key structural property exploited by Janzer.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "graph theory",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -265,7 +302,10 @@
     "content": "**janzer_beats_threshold Theorem:**\n\nFor ε > 0 with ε < 1/6:\n∃ bipartite G: G not 2-degenerate ∧ ex(n;G) ≪ n^{3/2}\n\n**Proof:**\n1. Apply Janzer's counterexample with ε\n2. Get 3-regular bipartite H with ex ≪ n^{4/3+ε}\n3. H is not 2-degenerate (by regular3_not_2degenerate)\n4. Since 4/3 + ε < 3/2 when ε < 1/6, apply asymp_trans_exponent\n5. Thus ex(n;H) ≪ n^{3/2}",
     "significance": "key",
     "mathContext": "Janzer's construction: for any $\\\\varepsilon > 0$, $\\\\exists H$ bipartite, 3-regular with $\\\\text{ex}(n; H) \\\\ll n^{4/3+\\\\varepsilon}$. Since $4/3 + \\\\varepsilon < 3/2$ for $\\\\varepsilon < 1/6$, this gives $\\\\text{ex}(n; H) \\\\ll n^{3/2}$ while $H$ is not 2-degenerate.",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -280,7 +320,10 @@
     "content": "**Füredi's Theorem (1996):**\n\nTight bounds for ex(n; K_{s,t}) when t is large relative to s.\n\nThere exist constants c₁, c₂ > 0 such that:\n  c₁ · n^{2-1/s} ≤ ex(n; K_{s,t}) ≤ c₂ · n^{2-1/s}\n\nThis shows the KST bound is essentially optimal.",
     "significance": "supporting",
     "mathContext": "Füredi (1996): for $K_{s,t}$ with $t$ sufficiently large relative to $s$: $\\\\text{ex}(n; K_{s,t}) = \\\\Theta(n^{2-1/s})$. This gives tight bounds matching the KST upper bound with a matching algebraic lower bound construction.",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
     "prerequisites": []
   },
   {
@@ -313,7 +356,10 @@
     "content": "**erdos_113: ¬ErdosSimonovitsConjecture**\n\n**Proof:**\n1. Assume ErdosSimonovitsConjecture holds\n2. Apply backward_false to get counterexample g:\n   - g is bipartite\n   - ex(n;g) ≪ n^{3/2}\n   - g is NOT 2-degenerate\n3. By the conjecture's ↔, ex ≪ n^{3/2} implies 2-degenerate\n4. But g is NOT 2-degenerate — contradiction\n5. Therefore the conjecture is FALSE.\n\n**The $500 prize was claimed by Janzer.**",
     "significance": "key",
     "mathContext": "**Erdős Problem #113: DISPROVED.** The Erdős-Simonovits conjecture ($\\\\text{ex}(n;G) \\\\ll n^{3/2} \\\\iff G$ is 2-degenerate for bipartite $G$) is false. The forward direction holds; the backward direction fails by Janzer's counterexample.",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "proof by contradiction"
+    ],
     "prerequisites": []
   },
   {
@@ -328,7 +374,10 @@
     "content": "**erdos_113_forward:**\n\nisBipartite g → isDegenerate g 2 → ex(n;g) ≪ n^{3/2}\n\nThis theorem confirms the forward direction remains true.\n\nThe conjecture was only half wrong.",
     "significance": "key",
     "mathContext": "$\\\\forall G$ bipartite and 2-degenerate: $\\\\text{ex}(n; G) = O(n^{3/2})$. This half of the Erdős-Simonovits conjecture is true and was known before the conjecture was stated.",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   }
 ]

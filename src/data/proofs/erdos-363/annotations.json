@@ -30,7 +30,10 @@
     "content": "**ConsecutiveInterval:**\n\nAn interval of consecutive integers [a, a+1, ..., a+k-1] defined by:\n- `start`: The first integer in the interval\n- `length`: The number of integers (must be positive)\n\nThe product is computed as ∏_{m ∈ I} m.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of consecutiveinterval structure",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -45,7 +48,10 @@
     "content": "**DisjointIntervalCollection:**\n\nA list of ConsecutiveIntervals with a proof that they are pairwise disjoint (no common elements).\n\nThe total product is the product of all individual interval products.",
     "mathContext": "Disjointness is crucial: overlapping intervals would trivially give more solutions. The mathematical challenge is finding disjoint blocks whose product is a square.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -60,7 +66,10 @@
     "content": "**isPerfectSquare(z):**\n\nAn integer z is a perfect square if z = n² for some integer n.\n\n**squareCollections:**\n\nThe set of all disjoint interval collections with:\n- All intervals have size ≥ 4\n- The total product is a perfect square",
     "significance": "key",
     "mathContext": "See annotation content for formal details of perfect squares",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -75,7 +84,10 @@
     "content": "**erdosConjecture363:**\n\nThe set squareCollections is finite.\n\nErdős conjectured that only finitely many collections of size-≥4 disjoint intervals can have a square product.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of the erdős conjecture",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -160,7 +172,10 @@
     "content": "**Theorem infinitely_many_size4_collections:**\n\nThere are infinitely many collections where all intervals have size 4 and the product is a perfect square.\n\nProof: Apply Ulas's theorem for n = 4, then project to forget the constraint on n.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of infinitely many size-4 collections",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -175,7 +190,10 @@
     "content": "**Theorem erdosConjecture363_false:**\n\n¬erdosConjecture363\n\n**Proof**: The set of size-4 collections is a subset of squareCollections (since size-4 ≥ 4). We have infinitely many size-4 collections. An infinite subset of a finite set is a contradiction.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of the conjecture is false",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "proof by contradiction"
+    ],
     "prerequisites": []
   },
   {
@@ -190,7 +208,10 @@
     "content": "**Theorem erdos_363:**\n\n¬erdosConjecture363\n\nThe answer to Erdős Problem #363 is NO - the conjecture is FALSE.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of main theorem (erdos_363)",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -205,7 +226,10 @@
     "content": "**ulas_conjecture:**\n\nFor any fixed interval size k ≥ 4, there are infinitely many solutions provided n (the number of intervals) is sufficiently large.\n\nThis remains open but is supported by the existing results for k = 4 and k = 5.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of ulas's conjecture",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -238,7 +262,10 @@
     "content": "**Theorem erdos_363_summary:**\n\n1. The conjecture is FALSE (infinitely many square-product collections exist)\n2. Pomerance showed |Iᵢ| ≥ 4 is needed (size-3 gives trivial counterexamples)\n3. Ulas + Bauer-Bennett cover all n ≥ 3 for size-4 intervals\n4. Bennett-Van Luijk extended to size-5 intervals\n5. Ulas's conjecture (any size k for large n) remains open",
     "significance": "key",
     "mathContext": "See annotation content for formal details of summary",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   }
 ]

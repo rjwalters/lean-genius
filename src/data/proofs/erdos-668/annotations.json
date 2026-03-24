@@ -53,7 +53,10 @@
     "content": "**isUnitPair p q:**\n\nTwo points are at unit distance if dist(p, q) = 1.\n\n```lean\ndef isUnitPair (p q : Plane) : Prop := dist p q = 1\n```\n\nThe unit distance graph of a point set has edges between all unit pairs.",
     "mathContext": "Unit distance graphs are fundamental objects in combinatorial geometry.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "graph theory"
+    ],
     "prerequisites": []
   },
   {
@@ -68,7 +71,10 @@
     "content": "**unitDistanceCount S:**\n\nCounts the number of unordered pairs {p, q} in S with dist(p, q) = 1.\n\n```lean\nnoncomputable def unitDistanceCount (S : Finset Plane) : N :=\n  ((S xs S).filter ...).card / 2\n```\n\nDivide by 2 because we count ordered pairs and want unordered.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of counting unit distances",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -83,7 +89,10 @@
     "content": "**u(n):**\n\nThe maximum number of unit distances achievable by n points in the plane.\n\n```lean\nnoncomputable def u (n : N) : N :=\n  sSup {k | exists S, S.card = n and unitDistanceCount S = k}\n```\n\nThis is the central object of Erdos Problem #90.",
     "mathContext": "Erdos proved u(n) = O(n^(4/3)). The exact value is still unknown for most n.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -121,7 +130,10 @@
     "content": "**areCongruent S T:**\n\nTwo point sets are congruent if there exists a bijective isometry mapping one to the other.\n\n```lean\ndef areCongruent (S T : Finset Plane) : Prop :=\n  exists f : Plane -> Plane, isRigidMotion f and ...\n```\n\n**Rigid motions** preserve distances: dist(f(p), f(q)) = dist(p, q).\n\nCongruence is an equivalence relation (reflexive, symmetric, transitive).",
     "mathContext": "Rigid motions in the plane are compositions of translations, rotations, and reflections.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "metric spaces"
+    ],
     "prerequisites": []
   },
   {
@@ -160,7 +172,10 @@
     "content": "**f(4) = 1:**\n\nThe unique 4-point extremal configuration is the **double triangle**: two equilateral triangles sharing an edge.\n\nThis rhombus-like shape has 5 unit distances:\n- The shared edge (1)\n- Two sides from each triangle (4)\n\n**u(4) = 5** is also known.",
     "mathContext": "The double triangle is a well-known configuration in discrete geometry.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "ring theory",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -175,7 +190,10 @@
     "content": "**four_config_unique:**\n\nAny two 4-point extremal configurations are congruent.\n\n```lean\naxiom four_config_unique :\n  forall S T : Finset Plane,\n    S.card = 4 -> T.card = 4 -> isExtremal S -> isExtremal T ->\n    areCongruent S T\n```",
     "significance": "key",
     "mathContext": "See annotation content for formal details of uniqueness for n=4",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
     "prerequisites": []
   },
   {
@@ -190,7 +208,10 @@
     "content": "**Computational results:**\n\nFor 5 <= n <= 21, computational searches suggest f(n) = 1.\n\n**Important caveat:** These checks verified only graph isomorphism, not full geometric congruence.\n\n**Contributors:**\n- Engel, Hammond-Lee, Su, Varga, Zsamboki [EHSVZ25]\n- Alexeev, Mixon, Parshall [AMP25]",
     "significance": "key",
     "mathContext": "See annotation content for formal details of computational evidence",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "metric spaces",
+      "graph theory"
+    ],
     "prerequisites": []
   },
   {
@@ -205,7 +226,10 @@
     "content": "**question_one:**\n\nDoes the number of incongruent extremal configurations grow without bound?\n\n```lean\ndef question_one : Prop :=\n  forall M : N, exists N : N, forall n >= N, f n >= M\n```\n\nThis asks whether extremal configurations become increasingly diverse.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of question 1: does f(n) -> infinity?",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -220,7 +244,10 @@
     "content": "**question_two:**\n\nIs f(n) > 1 for all n > 3?\n\n**Note:** This is FALSE as stated since f(4) = 1.\n\n**Modified question:** Is f(n) > 1 for all sufficiently large n?\n\n```lean\ndef question_two_modified : Prop :=\n  exists N : N, forall n >= N, f n > 1\n```",
     "significance": "key",
     "mathContext": "See annotation content for formal details of question 2: is f(n) > 1?",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -253,7 +280,10 @@
     "content": "**erdos_668_summary:**\n\nCombines the known results:\n1. f(4) = 1 (unique double-triangle)\n2. Any two 4-point extremals are congruent\n\n```lean\ntheorem erdos_668_summary :\n    f 4 = 1 and\n    (forall S T, S.card = 4 -> T.card = 4 ->\n      isExtremal S -> isExtremal T -> areCongruent S T)\n```\n\n**Status:** The main questions remain OPEN.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of summary",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "combinatorics",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   }
 ]
