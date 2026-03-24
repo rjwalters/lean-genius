@@ -17,7 +17,7 @@
       "bezout"
     ],
     "proofRepoPath": "Proofs/BezoutIdentityOQ03.lean",
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -61,7 +61,7 @@
     "dateAdded": "2026-02-21",
     "axiomCount": 0,
     "lineCount": 284,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "0 axioms, 0 sorries. CRT construction derived from Mathlib's Int.gcd_eq_gcd_ab (Bézout's identity) and IsCoprime.mul_dvd.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
