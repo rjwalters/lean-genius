@@ -231,12 +231,54 @@ theorem erdosRatio_le_one (x : ℕ) (hx : x ≥ 2) : erdosRatio x ≤ 1 := by
       have := Finset.mem_range.mp hn; omega))
   exact Nat.mul_le_mul h1 h2
 
+/-- Prime gaps are unbounded: for any B, there exists n with primeGap n ≥ B.
+    Uses the factorial argument: (B+2)!+2, ..., (B+2)!+(B+2) are all composite,
+    giving B+1 consecutive composites, hence a prime gap of size ≥ B.
+    Proof follows the Galois connection between Nat.nth and Nat.count. -/
+private theorem primeGap_unbounded (B : ℕ) : ∃ n, B ≤ primeGap n := by
+  -- (B+2)!+2, ..., (B+2)!+(B+2) are all composite
+  set a := (B + 2)! + 2 with ha_def
+  have hcomp : ∀ j ≤ B, ¬ Nat.Prime (a + j) := by
+    intro j hj
+    have h_eq : a + j = (B + 2)! + (j + 2) := by rw [ha_def]; omega
+    rw [h_eq]; exact not_prime_factorial_add (B + 2) (j + 2) (by omega) (by omega)
+  -- c = #{primes < a}; c ≥ 1 since 2 < a
+  set c := Nat.count Nat.Prime a with hc_def
+  have hc_pos : 0 < c := by
+    rw [hc_def, Nat.lt_nth_iff_count_lt Nat.infinite_setOf_prime]
+    rw [Nat.nth_prime_zero_eq_two, ha_def]
+    have := Nat.factorial_pos (B + 2); omega
+  -- The (c-1)-th prime is below a (Galois connection: c-1 < count → nth(c-1) < a)
+  have h1 : nth Nat.Prime (c - 1) < a :=
+    (Nat.lt_nth_iff_count_lt Nat.infinite_setOf_prime).mp (by rw [← hc_def]; omega)
+  -- The c-th prime is ≥ a (Galois connection: count ≤ c → a ≤ nth c)
+  have h2 : a ≤ nth Nat.Prime c := by
+    rw [← Nat.count_le_iff_le_nth Nat.infinite_setOf_prime]
+  -- The c-th prime must skip the entire composite run [a, a+B]
+  have h3 : a + B + 1 ≤ nth Nat.Prime c := by
+    by_contra hlt
+    push_neg at hlt
+    -- If nth(c) < a + B + 1, then nth(c) ∈ [a, a+B] — but all of those are composite
+    set j := nth Nat.Prime c - a with hj_def
+    have hj_le : j ≤ B := by omega
+    have hj_eq : a + j = nth Nat.Prime c := by omega
+    exact hcomp j hj_le (hj_eq ▸ nth_prime_is_prime c)
+  -- primeGap(c-1) = nth(c) - nth(c-1) ≥ (a+B+1) - a = B+1 ≥ B
+  exact ⟨c - 1, by unfold primeGap; rw [show c - 1 + 1 = c from by omega]; omega⟩
+
 /-- The maximal prime gap tends to infinity.
-    Proof outline: For any B, the B-1 consecutive composites B!+2, ..., B!+B
-    (proved composite by not_prime_factorial_add) witness a prime gap ≥ B.
-    Full proof requires connecting the factorial composites to the nth-prime
-    enumeration (available via Nat.nth_surjective). -/
-axiom maxGap_tendsto_atTop : Tendsto (fun x => (maxGap x : ℝ)) atTop atTop
+    Proved from primeGap_unbounded: for any bound B, eventually maxGap x ≥ B. -/
+theorem maxGap_tendsto_atTop : Tendsto (fun x => (maxGap x : ℝ)) atTop atTop := by
+  rw [Filter.tendsto_atTop_atTop]
+  intro b
+  obtain ⟨B, hB⟩ := exists_nat_gt b
+  obtain ⟨n, hn⟩ := primeGap_unbounded B
+  exact ⟨n + 1, fun x hx => by
+    have h1 : primeGap n ≤ maxGap x :=
+      Finset.le_sup (f := primeGap) (Finset.mem_range.mpr (by omega))
+    calc b ≤ (B : ℝ) := le_of_lt hB
+      _ ≤ ((primeGap n : ℕ) : ℝ) := Nat.cast_le.mpr hn
+      _ ≤ ((maxGap x : ℕ) : ℝ) := Nat.cast_le.mpr h1⟩
 
 /-
 ## Summary
@@ -251,10 +293,11 @@ of consecutive prime gaps to the square of the maximum gap tends to 0.
 - dvd_factorial: k divides n! when 1 ≤ k ≤ n
 - not_prime_factorial_add: n!+k is composite for 2 ≤ k ≤ n
 - erdosRatio_le_one: ratio ≤ 1 (previously axiom, now PROVED)
+- primeGap_unbounded: ∀ B, ∃ n, primeGap n ≥ B (factorial + Galois connection)
+- maxGap_tendsto_atTop: max gap → ∞ (previously axiom, now PROVED)
 
-**Axioms (2)**:
+**Axioms (1)**:
 - erdos_1137: the main open conjecture (ratio → 0)
-- maxGap_tendsto_atTop: max gap → ∞ (provable via factorial, see doc)
 
 **Key Insights**:
 1. The unique odd prime gap is d_0 = 1 (between 2 and 3)
