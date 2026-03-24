@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-02-08T00:55:03.568Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Initial formalization of almost-prime gap problem",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,9 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: New formalization created. 11 proved theorems, 2 axioms (open conjecture + Hardy-Ramanujan), 3 sorries in supporting lemmas. Builds clean.",
+    "builtItems": [
+      "Created Erdos1139Problem.lean (157 lines, 11 theorems, 2 axioms, 3 sorries)",
+      "Proved prime_isAlmostPrime, four_isAlmostPrime, eight_not_almostPrime",
+      "Proved almostPrimes_contain_primes (primes ⊆ almost-primes)"
+    ],
+    "insights": [
+      "Ω(n) available via n.factorization.sum in Mathlib",
+      "Nat.Prime.factorization gives clean single-index sum for primes",
+      "native_decide works for small Ω computations (4, 8)",
+      "Nat.primeFactorsList is the modern API for factor lists"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Erdős #1139 - Knowledge Base\n\n## Problem Statement\n\nLet 1&#x2264;u1&lt;u2&lt;&#x22EF;\" role=\"presentation\" style=\"position: relative;\">1≤u1u2⋯1≤u1u2⋯1\\leq u_1 be the sequence of integers with at most 2\" role=\"presentation\" style=\"position: relative;\">222 prime factors. Is it true thatlim&#x2006;supuk+1&#x2212;uklog&#x2061;k=&#x221E;?\" role=\"presentation\" style=\"text-align: center; position: relative;\">limsupuk+1−uklogk=∞?lim supuk+1−uklog⁡k=∞? View the LaTeX source This page was last edited 23 January 2026.\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1138\n- Problem #1140\n- Problem #2\n- Problem #39\n- Problem #1\n- Problem #7\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-02-08*\n"
