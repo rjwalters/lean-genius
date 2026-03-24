@@ -214,6 +214,21 @@
       "targetId": "isoperimetric-theorem",
       "relationship": "related",
       "description": "The isoperimetric inequality ($4\\pi A \\leq L^2$) can be proved using Fourier series: parametrize the curve, expand in Fourier series, and the constraint becomes an inequality on Fourier coefficients via Parseval"
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "foundational",
+      "description": "Euler's formula $e^{ix} = \\cos x + i\\sin x$ is the foundation of the complex exponential form of Fourier series: the basis functions $e_n(x) = e^{2\\pi inx/T}$ are powers of the complex exponential. Every Fourier coefficient $c_n = \\int f(x) e^{-2\\pi inx/T}\\,dx$ uses this formula"
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "related",
+      "description": "The Fourier basis functions $e^{in\\theta}$ parameterize circles in $\\mathbb{C}$ — each $e^{in\\theta}$ traces the unit circle $n$ times. The $L^2$ inner product on $\\mathbb{R}/2\\pi\\mathbb{Z}$ is integration over the circle, connecting Fourier analysis to the geometry of circles and the area formula $A = \\pi r^2$"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "FTC underpins the computation of Fourier coefficients $c_n = \\int f e^{-inx}\\,dx$ and integration by parts, which shows that smoothness of $f$ implies faster decay of $c_n$: $f \\in C^k \\Rightarrow c_n = O(n^{-k})$"
     }
   ],
   "conclusion": {
@@ -246,6 +261,9 @@
     "prime-number-theorem",
     "basel-problem",
     "cauchy-schwarz",
-    "isoperimetric-theorem"
+    "isoperimetric-theorem",
+    "euler-identity",
+    "area-of-circle",
+    "fundamental-theorem-calculus"
   ]
 }
