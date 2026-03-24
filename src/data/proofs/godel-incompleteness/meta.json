@@ -46,19 +46,7 @@
       "Diagonalization and self-reference (Diagonal Lemma)",
       "Modal logic of provability (Hilbert-Bernays-Löb conditions)"
     ],
-    "lineCount": 467,
-    "leanFile": {
-      "imports": [
-        "Mathlib.Logic.Basic",
-        "Mathlib.Tactic"
-      ],
-      "opens": [],
-      "namespace": "Godel",
-      "lineCount": 467,
-      "axiomCount": 3,
-      "theoremCount": 12,
-      "definitionCount": 8
-    }
+    "lineCount": 467
   },
   "overview": {
     "historicalContext": "In 1931, Kurt Gödel, a 25-year-old logician in Vienna, published a paper that would fundamentally change our understanding of mathematics and logic. His Incompleteness Theorems demonstrated that the dream of a complete, consistent foundation for mathematics—Hilbert's Program—was impossible.\n\nDavid Hilbert had proposed that all mathematical truths could be derived from a fixed set of axioms using formal rules. Gödel showed this was a fantasy: any system powerful enough to do arithmetic would contain truths it could never prove. The implications rippled through philosophy, computer science (anticipating the Halting Problem), and our understanding of the limits of human knowledge.",
