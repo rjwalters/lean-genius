@@ -78,55 +78,73 @@
       "title": "Imports and Setup",
       "startLine": 26,
       "endLine": 35,
-      "summary": "Imports `Nat.Basic`, `Nat.GCD.Basic`, `Finset.Basic`, `Finset.Card`, and tactics. Opens `Finset` namespace."
+      "summary": "Imports `Nat.Basic`, `Nat.GCD.Basic`, `Finset.Basic`, `Finset.Card`, and tactics. Opens `Finset` namespace.",
+      "mathContext": "The formalization uses `Finset` for finite counting and `Nat.dvd` for divisibility. Staying in $\\mathbb{N}$ avoids real arithmetic — the density condition $N(x,y,n)/y \\leq \\varepsilon$ is encoded via cross-multiplication."
     },
     {
       "id": "divisors",
       "title": "Part I: Divisors in an Interval",
       "startLine": 36,
       "endLine": 45,
-      "summary": "Defines `HasDivisorIn m n := \\exists d \\mid m, \\; n < d < 2n$ and counting function $N(x, y, n)$ via `Finset.filter`."
+      "summary": "Defines `HasDivisorIn m n := \\exists d \\mid m, \\; n < d < 2n$ and counting function $N(x, y, n)$ via `Finset.filter`.",
+      "mathContext": "$\\text{HasDivisorIn}(m, n) :\\Leftrightarrow \\exists d : d \\mid m \\wedge n < d < 2n$. The counting function $N(x, y, n) = |\\{m \\in (x, x+y] : \\text{HasDivisorIn}(m, n)\\}|$ measures how many integers in a short interval have a 'medium-sized' divisor."
     },
     {
       "id": "infrastructure",
       "title": "Part II: Infrastructure Lemmas",
       "startLine": 46,
       "endLine": 110,
-      "summary": "**Proves** 7 lemmas: $N \\leq y$, $N(x, 0, n) = 0$, degenerate $n$ cases, monotonicity in $y$, divisor witnesses for multiples, $n+1$, and $m \\in (n, 2n)$."
+      "summary": "**Proves** 7 lemmas: $N \\leq y$, $N(x, 0, n) = 0$, degenerate $n$ cases, monotonicity in $y$, divisor witnesses for multiples, $n+1$, and $m \\in (n, 2n)$.",
+      "mathContext": "Key bounds: $0 \\leq N(x,y,n) \\leq y$ (at most $y$ integers in an interval of length $y$). Monotonicity: $y_1 \\leq y_2 \\Rightarrow N(x,y_1,n) \\leq N(x,y_2,n)$. Witness construction: if $d \\in (n, 2n)$ and $d \\mid m$ then $m$ is counted, so multiples of $d$ contribute."
     },
     {
       "id": "density",
       "title": "Part III: Density Condition",
       "startLine": 111,
       "endLine": 149,
-      "summary": "Defines `DensityBound` using rational $\\varepsilon = \\varepsilon_{\\text{Num}}/\\varepsilon_{\\text{Den}}$. **Proves** 4 trivial cases: $y = 0$, $\\varepsilon \\geq 1$, $n = 0$, $n = 1$."
+      "summary": "Defines `DensityBound` using rational $\\varepsilon = \\varepsilon_{\\text{Num}}/\\varepsilon_{\\text{Den}}$. **Proves** 4 trivial cases: $y = 0$, $\\varepsilon \\geq 1$, $n = 0$, $n = 1$.",
+      "mathContext": "The density condition $N(x,y,n) \\leq \\varepsilon \\cdot y$ is encoded as $N(x,y,n) \\cdot \\varepsilon_{\\text{Den}} \\leq \\varepsilon_{\\text{Num}} \\cdot y$ to stay in $\\mathbb{N}$. Trivial cases: $y=0$ gives $N=0$; $\\varepsilon \\geq 1$ is always satisfied since $N \\leq y$."
     },
     {
       "id": "problem-statements",
       "title": "Part IV: Problem Statements",
       "startLine": 150,
       "endLine": 177,
-      "summary": "States `ErdosProblem450_ForAll` ($\\forall x$) and `ErdosProblem450_Exists` ($\\exists x$). **Proves** `forAll_implies_exists`."
+      "summary": "States `ErdosProblem450_ForAll` ($\\forall x$) and `ErdosProblem450_Exists` ($\\exists x$). **Proves** `forAll_implies_exists`.",
+      "mathContext": "Universal form: $\\forall \\varepsilon > 0,\\, \\forall n \\geq 2,\\, \\exists y: \\forall x,\\, N(x,y,n) \\leq \\varepsilon y$. Existential form: $\\forall \\varepsilon > 0,\\, \\forall n \\geq 2,\\, \\exists y,\\, \\exists x: N(x,y,n) \\leq \\varepsilon y$. The universal trivially implies the existential."
     },
     {
       "id": "known-results",
       "title": "Part V: Known Results (Axiomatized)",
       "startLine": 178,
       "endLine": 204,
-      "summary": "Axiomatizes Cambie's no-$y$ result, small-$\\varepsilon$ regime ($y \\geq 2n+1$ suffices), and Ford's $4n$-interval guarantee."
+      "summary": "Axiomatizes Cambie's no-$y$ result, small-$\\varepsilon$ regime ($y \\geq 2n+1$ suffices), and Ford's $4n$-interval guarantee.",
+      "mathContext": "Cambie showed $\\exists \\varepsilon, n$ where no $y$ satisfies the universal form — the density of integers with a divisor in $(n, 2n)$ is $(\\log n)^{-\\delta}$ (Ford 2008, $\\delta \\approx 0.086$), which exceeds $\\varepsilon$ for certain parameter choices. For small $\\varepsilon$: $y \\geq 2n+1$ ensures a multiple of some $d \\in (n, 2n)$ lies in any interval."
     },
     {
       "id": "corollaries",
       "title": "Part VI: Corollaries and Summary",
       "startLine": 205,
       "endLine": 226,
-      "summary": "**Proves** `not_forAll_in_general` (universal version is false) and `erdos_450_summary` packaging both Cambie results."
+      "summary": "**Proves** `not_forAll_in_general` (universal version is false) and `erdos_450_summary` packaging both Cambie results.",
+      "mathContext": "$\\neg(\\forall \\varepsilon > 0,\\, \\forall n \\geq 2,\\, \\exists y: \\forall x,\\, N(x,y,n) \\leq \\varepsilon y)$. Proved by combining Cambie's axiom with the logical structure. The existential version remains open."
     }
   ],
   "crossReferences": [
     {
-      "relationship": "Both problems concern density and distribution in intervals: #998 studies equidistribution discrepancy for irrational rotations, #450 studies divisor density in short intervals. Both involve the question of which intervals achieve extremal behavior.",
-      "targetId": "erdos-998"
+      "targetId": "erdos-998",
+      "relationship": "related",
+      "description": "Both concern density and distribution in intervals: #998 studies equidistribution discrepancy for irrational rotations, #450 studies divisor density in short intervals"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "Ford's density constant $\\delta = 1 - (1 + \\log\\log 2)/\\log 2$ arises from the prime factorization structure of integers, which PNT governs. The distribution of divisors in $(n, 2n)$ depends on how prime factors of $m$ fall relative to $n$"
+    },
+    {
+      "targetId": "erdos-490",
+      "relationship": "related",
+      "description": "Both concern the multiplicative structure of integers in intervals: #490 studies distinct products from subsets of $\\{1,\\ldots,N\\}$, while #450 studies divisor density. Both connect to Ford's program on the anatomy of integers"
     }
   ],
   "conclusion": {
@@ -159,8 +177,18 @@
   "relatedProofs": [
     {
       "id": "erdos-998",
-      "relationship": "Both problems concern density and distribution in intervals: #998 studies equidistribution discrepancy for irrational rotations, #450 studies divisor density in short intervals. Both involve the question of which intervals achieve extremal behavior.",
-      "description": ""
+      "relationship": "related",
+      "description": "Both concern density and distribution in intervals"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "Ford's density constant arises from prime factorization structure governed by PNT"
+    },
+    {
+      "id": "erdos-490",
+      "relationship": "related",
+      "description": "Both concern multiplicative structure of integers in intervals"
     }
   ]
 }
