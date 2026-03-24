@@ -60,8 +60,8 @@ theorem consecutiveProduct_13_3 : consecutiveProduct 13 3 = 3360 := by native_de
 /-- 19·20·21·22 = 175560. -/
 theorem consecutiveProduct_18_4 : consecutiveProduct 18 4 = 175560 := by native_decide
 
-/-- 54·55·56·57 = 9459360. -/
-theorem consecutiveProduct_53_4 : consecutiveProduct 53 4 = 9459360 := by native_decide
+/-- 54·55·56·57 = 9480240. -/
+theorem consecutiveProduct_53_4 : consecutiveProduct 53 4 = 9480240 := by native_decide
 
 /-- For k = 0, the product is 1 (empty product). -/
 theorem consecutiveProduct_zero (n : ℕ) : consecutiveProduct n 0 = 1 := by
