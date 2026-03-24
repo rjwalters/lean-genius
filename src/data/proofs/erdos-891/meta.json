@@ -89,6 +89,7 @@
       "id": "prime-counting",
       "title": "Prime Factor Counting",
       "summary": "Definitions of bigOmega and littleOmega functions",
+      "mathContext": "$\\Omega(n) = \\sum_{p \\text{ prime}} v_p(n)$, where $v_p(n)$ is the $p$-adic valuation of $n$; $\\omega(n) = |\\{p \\text{ prime} : p \\mid n\\}|$",
       "startLine": 40,
       "endLine": 85
     },
@@ -96,6 +97,7 @@
       "id": "nth-prime",
       "title": "The k-th Prime",
       "summary": "Definition of nthPrime and basic axioms",
+      "mathContext": "$p_k$ denotes the $k$-th prime (1-indexed): $p_1 = 2,\\ p_2 = 3,\\ p_3 = 5,\\ p_4 = 7,\\ \\ldots$",
       "startLine": 86,
       "endLine": 109
     },
@@ -103,6 +105,7 @@
       "id": "primorial",
       "title": "Primorial",
       "summary": "Product of first k primes",
+      "mathContext": "$p_k\\# = \\prod_{i=1}^{k} p_i$; values: $2, 6, 30, 210, 2310, \\ldots$",
       "startLine": 110,
       "endLine": 139
     },
@@ -110,6 +113,7 @@
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "summary": "HasManyFactors predicate and erdos891_conjecture",
+      "mathContext": "$\\forall k \\geq 2,\\ \\exists N,\\ \\forall n \\geq N,\\ \\exists m \\in [n, n + p_k\\#),\\ \\Omega(m) > k$",
       "startLine": 140,
       "endLine": 160
     },
@@ -117,6 +121,7 @@
       "id": "k-equals-2",
       "title": "The k = 2 Case",
       "summary": "Simplest open case with intervals of length 6",
+      "mathContext": "$\\exists N,\\ \\forall n \\geq N,\\ \\exists m \\in [n, n+6),\\ \\Omega(m) \\geq 3$; computationally verified for $n \\in [3, 1002]$",
       "startLine": 161,
       "endLine": 207
     },
@@ -124,6 +129,7 @@
       "id": "schinzel",
       "title": "Schinzel's Weaker Result",
       "summary": "Modified primorial version that is provable",
+      "mathContext": "Holds with skipped primorial $Q_k = p_1 \\cdots p_{k-1} \\cdot p_{k+1}$; e.g., $Q_2 = 10,\\ Q_3 = 42$, proved via Pólya's smooth-number gap theorem",
       "startLine": 208,
       "endLine": 229
     },
@@ -131,6 +137,7 @@
       "id": "weisenberg",
       "title": "Weisenberg's Conditional Counterexample",
       "summary": "p₁···pₖ - 1 fails under Dickson's conjecture",
+      "mathContext": "Under Dickson's conjecture: $\\exists^{\\infty} n,\\ \\forall m \\in [n, n + p_k\\# - 1),\\ \\Omega(m) \\leq k$; interval length $p_k\\# - 1$ is sub-threshold",
       "startLine": 230,
       "endLine": 257
     },
@@ -138,6 +145,7 @@
       "id": "smooth-numbers",
       "title": "Smooth Numbers Connection",
       "summary": "k-smooth numbers and Pólya's theorem",
+      "mathContext": "$n$ is $k$-smooth if $\\forall p \\mid n,\\ p \\leq p_k$; Pólya: $\\limsup_{n \\to \\infty} (s_{n+1} - s_n) = \\infty$ for the sequence $(s_n)$ of $k$-smooth numbers",
       "startLine": 258,
       "endLine": 280
     },
@@ -145,6 +153,7 @@
       "id": "summary",
       "title": "Summary and Status",
       "summary": "Main results and open status",
+      "mathContext": "Threshold: $p_k\\# - 1$ fails (conditional), $p_k\\#$ conjectured, $Q_k > p_k\\#$ proven; open for all $k \\geq 2$",
       "startLine": 281,
       "endLine": 344
     }
