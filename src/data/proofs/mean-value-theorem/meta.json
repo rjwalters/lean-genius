@@ -231,6 +231,21 @@
       "id": "cauchy-schwarz",
       "relationship": "related",
       "description": "The Cauchy form of MVT ($\\frac{f(b)-f(a)}{g(b)-g(a)} = \\frac{f'(c)}{g'(c)}$) is used in L'Hôpital's rule, which evaluates indeterminate forms. Cauchy-Schwarz and Cauchy's MVT both bear Cauchy's name and both provide bounds on ratios — Cauchy-Schwarz on $\\langle u,v\\rangle/(\\|u\\|\\|v\\|)$ and Cauchy's MVT on $\\Delta f/\\Delta g$"
+    },
+    {
+      "id": "harmonic-divergence",
+      "relationship": "related",
+      "description": "The integral test for series convergence uses MVT: comparing $\\sum_{k=1}^n f(k)$ with $\\int_1^n f(x)\\,dx$ requires bound"
+    },
+    {
+      "id": "taylor-theorem",
+      "relationship": "extended-by",
+      "description": "Taylor's theorem is the $n$th-order generalization of MVT: MVT is the $n=0$ case ($f(b) = f(a) + f'(c)(b-a)$), while Tay"
+    },
+    {
+      "id": "e-transcendental",
+      "relationship": "related",
+      "description": "MVT bounds $|e^x - 1 - x| \\leq (e^c/2)x^2$ — the kind of estimate used in Hermite's transcendence proof, where controlli"
     }
   ],
   "leanFile": {

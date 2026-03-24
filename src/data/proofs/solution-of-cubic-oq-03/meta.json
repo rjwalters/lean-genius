@@ -262,6 +262,21 @@
       "id": "vietas-formulas",
       "title": "Vieta's Formulas",
       "relationship": "technique — connects coefficients to roots, essential for cubic analysis"
+    },
+    {
+      "id": "vietas-formulas-oq-03",
+      "relationship": "related",
+      "description": "Newton's identities express power sums p_k = Σxᵢᵏ recursively in terms of elementary symmetric polynomials eⱼ, generaliz"
+    },
+    {
+      "id": "primitive-roots",
+      "relationship": "foundational",
+      "description": "The primitive cube root of unity ω = e^{2πi/3} is a primitive root of the cyclotomic polynomial Φ₃(x) = x² + x + 1. The "
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial theorem underlies the expansion of (ωu + ω²v)³ and similar expressions needed in the Vieta proofs. The mult"
     }
   ]
 }

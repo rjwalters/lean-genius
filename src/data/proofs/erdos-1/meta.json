@@ -236,6 +236,26 @@
       "id": "erdos-347",
       "relationship": "related",
       "description": "Complete sequences with ratio tending to 2 concern sets whose subset sums cover all sufficiently large integers. Problem #1 asks when subset sums are all different; Problem #347 asks when they cover everything. The powers of 2 are extremal for both: they give distinct sums with maximum N, and their subset sums cover exactly $\\{0, 1, \\ldots, 2^n - 1\\}$"
+    },
+    {
+      "id": "erdos-867",
+      "relationship": "related",
+      "description": "Consecutive sum-free sets concern sets avoiding the equation $a + b = c$. While Problem #1 requires all subset sums to b"
+    },
+    {
+      "id": "erdos-1179",
+      "relationship": "extends",
+      "description": "Uniform subset sum representations in abelian groups generalizes the distinct subset sums problem from $\\mathbb{Z}$ to a"
+    },
+    {
+      "id": "erdos-340-greedy-sidon",
+      "relationship": "related",
+      "description": "Sidon sets ($B_2$ sequences) require all pairwise sums $a + b$ to be distinct. Distinct subset sums is the much stronger"
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The binomial theorem gives $|\\mathcal{P}(A)| = 2^{|A|}$ (the number of subsets of an $n$-element set). This cardinality "
     }
   ],
   "leanFile": {

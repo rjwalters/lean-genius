@@ -232,6 +232,21 @@
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
       "description": "Unique prime factorization is the key structural tool: pairwise coprimality of sumset elements forces their prime factorizations to be disjoint, and the counting argument relies on the unique factorization to bound the number of primes available"
+    },
+    {
+      "id": "gcd-algorithm",
+      "relationship": "supports",
+      "description": "The GCD algorithm is the computational tool for checking pairwise coprimality $\\gcd(x,y) = 1$, the central constraint in"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient $\\varphi(n)$ counts integers coprime to $n$, the same coprimality concept central to #432. The density o"
+    },
+    {
+      "id": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "CRT constructs integers with prescribed remainders modulo coprime moduli — the same coprimality machinery. Building pair"
     }
   ],
   "leanFile": {

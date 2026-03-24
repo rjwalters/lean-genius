@@ -261,6 +261,21 @@
       "id": "e-transcendental",
       "relationship": "related",
       "description": "The derangement probability D_n/n! = ∑(-1)^k/k! converges to 1/e as n→∞ — the Taylor series of e^{-1} truncated at the n-th term. The transcendence of e means D_n/n! is never exactly 1/e for finite n"
+    },
+    {
+      "id": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation n! ≈ √(2πn)(n/e)^n combined with D_n ≈ n!/e gives D_n ≈ √(2πn)(n/e)^n/e — an asymptotic formula"
+    },
+    {
+      "id": "buffons-needle",
+      "relationship": "related",
+      "description": "Both are classic probability problems where fundamental constants appear unexpectedly: Buffon's needle yields $2/\\pi$ fr"
+    },
+    {
+      "id": "birthday-problem",
+      "relationship": "related",
+      "description": "Both are celebrated combinatorial probability problems with counterintuitive answers. The birthday problem counts collis"
     }
   ],
   "leanFile": {

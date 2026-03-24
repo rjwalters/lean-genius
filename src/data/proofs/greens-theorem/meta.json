@@ -212,6 +212,21 @@
       "id": "euler-identity",
       "relationship": "related",
       "description": "Cauchy's integral theorem — every holomorphic function satisfies $\\oint_C f(z)\\,dz = 0$ — is a direct consequence of Green's theorem applied to the real and imaginary parts of $f$. Euler's formula $e^{ix} = \\cos x + i\\sin x$ defines the key holomorphic function $e^z$, and the residue theorem (generalization of Cauchy's theorem) evaluates contour integrals by analyzing singularities of $e^z$-related functions"
+    },
+    {
+      "id": "isoperimetric-theorem",
+      "relationship": "related",
+      "description": "The isoperimetric inequality $4\\pi A \\leq L^2$ can be proved using Green's theorem: the area $A = \\frac{1}{2}\\oint (x\\,d"
+    },
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "The Pythagorean theorem defines the Euclidean metric $ds^2 = dx^2 + dy^2$ underlying Green's theorem. The area element $"
+    },
+    {
+      "id": "mean-value-theorem",
+      "relationship": "foundational",
+      "description": "The mean value theorem is used in the proof of Green's theorem for rectangles: the Fubini + FTC approach applies MVT to "
     }
   ],
   "leanFile": {
