@@ -124,6 +124,18 @@
       "How does the Wiedemann algorithm's O(n²) complexity for sparse charpoly computation formalize in Lean?"
     ]
   },
+  "references": [
+    {
+      "key": "CH53",
+      "citation": "Cayley, A., A memoir on the theory of matrices, Philosophical Transactions of the Royal Society of London 148 (1858), 17-37. Original Cayley-Hamilton theorem.",
+      "type": "paper"
+    },
+    {
+      "key": "GG13",
+      "citation": "von zur Gathen, J. and Gerhard, J., Modern Computer Algebra, 3rd ed., Cambridge University Press (2013), Chapter 12. Algorithms for characteristic polynomial computation, including sparse matrix methods and the Wiedemann algorithm.",
+      "type": "book"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic",

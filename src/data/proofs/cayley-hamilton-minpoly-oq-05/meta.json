@@ -197,6 +197,23 @@
   "sorryCount": 0,
   "status": "verified",
   "badge": "verified",
+  "references": [
+    {
+      "key": "CH53",
+      "citation": "Cayley, A., A memoir on the theory of matrices, Philosophical Transactions of the Royal Society of London 148 (1858), 17-37. Original statement of what is now the Cayley-Hamilton theorem.",
+      "type": "paper"
+    },
+    {
+      "key": "La02",
+      "citation": "Lang, S., Algebra, 3rd ed., Springer GTM 211 (2002), Sections XV.2-3. Standard treatment of the minimal polynomial, its relationship to the characteristic polynomial, and the Cayley-Hamilton theorem in the context of general algebras.",
+      "type": "book"
+    },
+    {
+      "key": "HJ13",
+      "citation": "Horn, R.A. and Johnson, C.R., Matrix Analysis, 2nd ed., Cambridge University Press (2013), Chapter 3. Comprehensive treatment of the characteristic polynomial, minimal polynomial, and their relationship for matrices over general fields.",
+      "type": "book"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
