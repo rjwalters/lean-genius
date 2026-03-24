@@ -98,18 +98,50 @@ theorem factor_le_of_factorial_divides {k : ℕ} {a : Fin k → ℕ} {n : ℕ} (
   exact Nat.not_lt.mpr (Nat.le_of_dvd (Nat.factorial_pos n) h) (lt_of_lt_of_le h_fac_lt h_prod_ge)
 
 /-- The excess set is bounded above (each a_i ≤ n+1 so excess ≤ k*(n+1)). -/
-theorem excess_set_bddAbove (k n : ℕ) (hk : k ≥ 2) :
+theorem excess_set_bddAbove (k n : ℕ) (_hk : k ≥ 2) :
     BddAbove { e : ℤ | ∃ a : Fin k → ℕ, FactorialDivides a n ∧ sumExcess a n = e } := by
-  -- Each valid tuple has a_i ≤ n+1, so sum ≤ k*(n+1), excess ≤ k*(n+1)
-  exact ⟨↑(k * (n + 1)), fun e ⟨a, _, hsum⟩ => by rw [← hsum]; unfold sumExcess; sorry⟩
+  use ↑(k * (n + 1))
+  intro e ⟨a, hfac, hsum⟩
+  rw [← hsum]; unfold sumExcess
+  -- Each a_i ≤ n + 1, hence sum ≤ k*(n+1) and excess ≤ k*(n+1)
+  have hle : ∀ i, a i ≤ n + 1 := by
+    intro i
+    rcases n with _ | n
+    · -- n = 0: product of factorials divides 1, each factorial = 1
+      have hprod1 : ∏ j : Fin k, (a j).factorial = 1 := by
+        unfold FactorialDivides at hfac; simpa using Nat.eq_one_of_dvd_one hfac
+      have hfi : (a i).factorial = 1 := by
+        have hdvd : (a i).factorial ∣ ∏ j : Fin k, (a j).factorial :=
+          Finset.dvd_prod_of_mem _ (Finset.mem_univ i)
+        rw [hprod1] at hdvd; exact Nat.eq_one_of_dvd_one hdvd
+      exact Nat.factorial_eq_one.mp hfi
+    · exact Nat.le_succ_of_le (factor_le_of_factorial_divides (by omega) hfac i)
+  have hsum_le : ∑ i : Fin k, (a i : ℤ) ≤ ↑(k * (n + 1)) := by
+    calc ∑ i : Fin k, (a i : ℤ)
+        ≤ ∑ _i : Fin k, (↑(n + 1) : ℤ) := by
+          apply Finset.sum_le_sum; intro i _; exact_mod_cast hle i
+      _ = ↑(k * (n + 1)) := by simp [Finset.sum_const]
+  linarith
 
 /-- The excess set contains 0 via the trivial tuple (n, 0, …, 0). -/
 theorem zero_mem_excess_set (k n : ℕ) (hk : k ≥ 1) :
     (0 : ℤ) ∈ { e : ℤ | ∃ a : Fin k → ℕ, FactorialDivides a n ∧ sumExcess a n = e } := by
-  -- The tuple a(0) = n, a(i) = 0 for i > 0 gives product = n! and sum = n
-  exact ⟨fun i => if i.val = 0 then n else 0, by
-    unfold FactorialDivides; sorry, by
-    unfold sumExcess; sorry⟩
+  -- Use the tuple: a(i) = n if i = 0, else 0. Product = n!, sum = n, excess = 0.
+  let a : Fin k → ℕ := fun i => if i = ⟨0, by omega⟩ then n else 0
+  refine ⟨a, ?_, ?_⟩
+  · -- FactorialDivides: ∏ a_i! = n! · 1^(k-1) = n!
+    unfold FactorialDivides
+    have hsimp : ∀ i : Fin k, (a i).factorial =
+        if i = ⟨0, by omega⟩ then n.factorial else 1 := by
+      intro i; simp only [a]; split <;> simp_all
+    simp_rw [hsimp, Finset.prod_ite_eq', Finset.mem_univ, if_true]
+    exact dvd_refl _
+  · -- sumExcess = n - n = 0
+    unfold sumExcess
+    have hsimp : ∀ i : Fin k, (a i : ℤ) =
+        if i = ⟨0, by omega⟩ then (n : ℤ) else 0 := by
+      intro i; simp only [a]; split <;> simp_all
+    simp_rw [hsimp, Finset.sum_ite_eq', Finset.mem_univ, if_true]; omega
 
 /-- g_k(n) ≥ 0: the trivial tuple gives excess 0, so the supremum is ≥ 0.
     Converted from axiom to theorem. -/
@@ -131,11 +163,8 @@ theorem g2_binomial_connection (n : ℕ) :
       by rwa [Fin.sum_univ_two] at hsum⟩
   · rintro ⟨a, b, hfac, hsum⟩
     -- Construct the Fin 2 → ℕ function from the pair
-    exact ⟨![a, b], by
-      rw [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
-      exact hfac, by
-      rw [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
-      exact hsum⟩
+    exact ⟨![a, b], by simp [Fin.prod_univ_two]; exact hfac,
+      by simp [Fin.sum_univ_two]; exact hsum⟩
 
 /-
 ## Section VI: The k = 2 Case

@@ -1,10 +1,10 @@
 {
   "id": "erdos-400",
-  "title": "Erdős Problem #400: Factorial Divisibility and Sum Excess",
+  "title": "Erd\u0151s Problem #400: Factorial Divisibility and Sum Excess",
   "slug": "erdos-400",
-  "description": "For k ≥ 2, let g_k(n) = max{(a₁+⋯+aₖ)-n : a₁!⋯aₖ! | n!}. Is Σ g_k(n) ~ cₖ·x·log x? Is g_k(n) concentrated around cₖ·log x?",
+  "description": "For k \u2265 2, let g_k(n) = max{(a\u2081+\u22ef+a\u2096)-n : a\u2081!\u22efa\u2096! | n!}. Is \u03a3 g_k(n) ~ c\u2096\u00b7x\u00b7log x? Is g_k(n) concentrated around c\u2096\u00b7log x?",
   "meta": {
-    "author": "Erdős, Graham (1980)",
+    "author": "Erd\u0151s, Graham (1980)",
     "sourceUrl": "https://erdosproblems.com/400",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos400Problem.lean",
@@ -17,7 +17,7 @@
       "divisibility"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 0,
     "erdosNumber": 400,
     "erdosUrl": "https://erdosproblems.com/400",
     "erdosProblemStatus": "open",
@@ -50,26 +50,26 @@
       "`sumExcess` and `gExcess`: the excess function $g_k(n) = \\sup\\{\\sum a_i - n\\}$",
       "`ErdosProblem400a`: average growth $\\sum_{n \\le x} g_k(n) \\sim c_k \\cdot x \\log x$",
       "`ErdosProblem400b`: concentration $g_k(n) = c_k \\log x + o(\\log x)$ a.e.",
-      "`gExcess_upper_bound` (axiom): Erdős-Graham bound $g_k(n) = O(\\log n)$",
+      "`gExcess_upper_bound` (axiom): Erd\u0151s-Graham bound $g_k(n) = O(\\log n)$",
       "`gExcess_nonneg` (axiom): $g_k(n) \\ge 0$ from trivial tuple",
       "`g2_binomial_connection` (axiom): $k = 2$ binomial coefficient link",
       "`g2_excess_characterization` (axiom): supremum attained for $k = 2$",
       "`average_g2_growth` (axiom): average growth constant $c_2$ exists"
     ],
     "axiomCount": 3,
-    "lineCount": 154,
+    "lineCount": 183,
     "assumptions": "5 axioms: gExcess_upper_bound, gExcess_nonneg, g2_binomial_connection, and 2 more. See Lean source for complete statements."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #400**\n\nThis problem appears in the Erdős-Graham monograph *Old and New Problems and Results in Combinatorial Number Theory* (1980, p. 77), investigating the maximum excess that $k$ factorials can achieve over $n!$ while dividing it.\n\n**Historical Development:**\n- **Erdős & Graham (1980):** Posed the problem and proved the fundamental upper bound $g_k(n) = O(\\log n)$ using Legendre's formula for $p$-adic valuations of factorials: $v_p(n!) = \\sum_{j \\ge 1} \\lfloor n/p^j \\rfloor$. The logarithmic bound arises because excess $g$ in the sum forces additional $p$-adic valuation, which is constrained by $v_p(n!)$.\n- **Connection to Multinomials:** The condition $a_1! \\cdots a_k! \\mid n!$ generalizes the integrality of multinomial coefficients $\\binom{n}{a_1, \\ldots, a_k}$. When $\\sum a_i = n$, the divisibility always holds; the problem asks how far beyond $n$ the sum can go.\n- **Kummer's Theorem (1852):** For $k = 2$, the $p$-adic valuation $v_p(\\binom{a+b}{a})$ equals the number of carries when adding $a$ and $b$ in base $p$. This provides a concrete combinatorial interpretation of the divisibility condition.\n\n**Mathematical Context:**\nThe problem sits at the intersection of factorial arithmetic, $p$-adic analysis, and asymptotic number theory. The excess function $g_k(n)$ encodes subtle information about how the prime factorization of $n!$ constrains the joint factorizations of its components. The two-part conjecture asks whether this excess exhibits both average growth ($\\sim c_k \\cdot \\log n$) and concentration (sharp typicality), analogous to the Erdős-Kac phenomenon for additive functions.",
-    "problemStatement": "**Problem Statement**\n\nFor $k \\ge 2$, define\n$$g_k(n) = \\max\\{(a_1 + \\cdots + a_k) - n : a_1! \\cdots a_k! \\mid n!\\}.$$\n\n**(a)** Is $\\sum_{n \\le x} g_k(n) \\sim c_k \\cdot x \\cdot \\log x$ for some constant $c_k > 0$?\n\n**(b)** Is $g_k(n) = c_k \\cdot \\log x + o(\\log x)$ for almost all $n \\le x$?\n\n**Status:** OPEN\n\n**Known:** $g_k(n) = O(\\log n)$ (Erdős-Graham 1980), $g_k(n) \\ge 0$ (trivial tuple)",
-    "text": "For k ≥ 2, let g_k(n) = max{(a₁+⋯+aₖ)-n : a₁!⋯aₖ! | n!}. Is Σ g_k(n) ~ cₖ·x·log x? Is g_k(n) concentrated around cₖ·log x?",
+    "historicalContext": "**Erd\u0151s Problem #400**\n\nThis problem appears in the Erd\u0151s-Graham monograph *Old and New Problems and Results in Combinatorial Number Theory* (1980, p. 77), investigating the maximum excess that $k$ factorials can achieve over $n!$ while dividing it.\n\n**Historical Development:**\n- **Erd\u0151s & Graham (1980):** Posed the problem and proved the fundamental upper bound $g_k(n) = O(\\log n)$ using Legendre's formula for $p$-adic valuations of factorials: $v_p(n!) = \\sum_{j \\ge 1} \\lfloor n/p^j \\rfloor$. The logarithmic bound arises because excess $g$ in the sum forces additional $p$-adic valuation, which is constrained by $v_p(n!)$.\n- **Connection to Multinomials:** The condition $a_1! \\cdots a_k! \\mid n!$ generalizes the integrality of multinomial coefficients $\\binom{n}{a_1, \\ldots, a_k}$. When $\\sum a_i = n$, the divisibility always holds; the problem asks how far beyond $n$ the sum can go.\n- **Kummer's Theorem (1852):** For $k = 2$, the $p$-adic valuation $v_p(\\binom{a+b}{a})$ equals the number of carries when adding $a$ and $b$ in base $p$. This provides a concrete combinatorial interpretation of the divisibility condition.\n\n**Mathematical Context:**\nThe problem sits at the intersection of factorial arithmetic, $p$-adic analysis, and asymptotic number theory. The excess function $g_k(n)$ encodes subtle information about how the prime factorization of $n!$ constrains the joint factorizations of its components. The two-part conjecture asks whether this excess exhibits both average growth ($\\sim c_k \\cdot \\log n$) and concentration (sharp typicality), analogous to the Erd\u0151s-Kac phenomenon for additive functions.",
+    "problemStatement": "**Problem Statement**\n\nFor $k \\ge 2$, define\n$$g_k(n) = \\max\\{(a_1 + \\cdots + a_k) - n : a_1! \\cdots a_k! \\mid n!\\}.$$\n\n**(a)** Is $\\sum_{n \\le x} g_k(n) \\sim c_k \\cdot x \\cdot \\log x$ for some constant $c_k > 0$?\n\n**(b)** Is $g_k(n) = c_k \\cdot \\log x + o(\\log x)$ for almost all $n \\le x$?\n\n**Status:** OPEN\n\n**Known:** $g_k(n) = O(\\log n)$ (Erd\u0151s-Graham 1980), $g_k(n) \\ge 0$ (trivial tuple)",
+    "text": "For k \u2265 2, let g_k(n) = max{(a\u2081+\u22ef+a\u2096)-n : a\u2081!\u22efa\u2096! | n!}. Is \u03a3 g_k(n) ~ c\u2096\u00b7x\u00b7log x? Is g_k(n) concentrated around c\u2096\u00b7log x?",
     "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** `FactorialDivides` for $\\prod a_i! \\mid n!$ using `Finset.prod`, `sumExcess` for $\\sum a_i - n$ over $\\mathbb{Z}$, `gExcess` as `sSup` over feasible excesses\n\n2. **Two-Part Conjecture:** `ErdosProblem400a` (average growth via `Filter.Tendsto` to $c_k$), `ErdosProblem400b` (concentration via density of deviations $\\to 0$)\n\n3. **Known Bounds (axioms):** `gExcess_upper_bound` ($g_k(n) \\le C \\log n$), `gExcess_nonneg` ($g_k(n) \\ge 0$)\n\n4. **$k = 2$ Special Case:** `g2_binomial_connection` (binomial coefficient link), `g2_excess_characterization` (supremum attained), `average_g2_growth` ($c_2$ exists)\n\n5. **Asymptotic Framework:** Uses Mathlib's `Filter.atTop` and `nhds` for limit statements, `Finset.range` for partial sums",
     "keyInsights": [
       "**Legendre's formula controls excess:** The bound $g_k(n) = O(\\log n)$ follows from $v_p(n!) = \\sum_{j \\ge 1} \\lfloor n/p^j \\rfloor \\approx n/(p-1)$. Excess $g$ in the sum $\\sum a_i = n + g$ forces additional $p$-adic valuation from each $a_i!$, constrained by $v_p(n!)$.",
       "**Concentration vs average:** Part (b) implies part (a), since if $g_k(n) \\approx c_k \\log n$ for almost all $n$, then $\\sum_{n \\le x} g_k(n) \\approx c_k \\sum_{n \\le x} \\log n \\sim c_k \\cdot x \\log x$. The concentration conjecture is strictly stronger.",
       "**Kummer's theorem for $k = 2$:** The condition $a! \\cdot b! \\mid n!$ relates to carries when adding $a$ and $b$ in base $p$ for each prime $p \\le n$. The excess measures how far the carry structure permits $a + b$ to exceed $n$.",
-      "**Erdős-Kac analogy:** The concentration conjecture mirrors the Erdős-Kac theorem ($\\omega(n) \\approx \\log \\log n$ for almost all $n$): both assert that a number-theoretic function is sharply concentrated around its mean, with fluctuations of lower order.",
+      "**Erd\u0151s-Kac analogy:** The concentration conjecture mirrors the Erd\u0151s-Kac theorem ($\\omega(n) \\approx \\log \\log n$ for almost all $n$): both assert that a number-theoretic function is sharply concentrated around its mean, with fluctuations of lower order.",
       "**Trivial tuple gives lower bound:** The tuple $(n, 0, \\ldots, 0)$ always satisfies $n! \\cdot 0!^{k-1} \\mid n!$ with excess $0$, establishing $g_k(n) \\ge 0$. Non-trivial lower bounds $g_k(n) \\ge c \\log n$ require Stirling-type analysis."
     ],
     "crossReferences": [
@@ -123,7 +123,7 @@
     },
     {
       "id": "upper-bound",
-      "title": "Erdős-Graham Upper Bound",
+      "title": "Erd\u0151s-Graham Upper Bound",
       "startLine": 71,
       "endLine": 79,
       "summary": "`gExcess_upper_bound` (axiom): $\\exists C > 0,\\, \\forall n \\ge 1,\\, g_k(n) \\le C \\log n$. Establishes logarithmic order of magnitude from $p$-adic valuation constraints."
@@ -144,14 +144,14 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #400 asks for precise asymptotics of $g_k(n) = \\max\\{\\sum a_i - n : \\prod a_i! \\mid n!\\}$. The Erdős-Graham upper bound $g_k(n) = O(\\log n)$ establishes the correct order of magnitude via Legendre's formula, but the exact constants $c_k$ and concentration behavior remain open. The $k = 2$ case connects to binomial coefficients and Kummer's theorem on carries.",
-    "implications": "**Theoretical Significance**: **Mathematical Connections**\n\n1. **$p$-adic number theory:** The logarithmic bound comes from Legendre's formula $v_p(n!) = (n - s_p(n))/(p-1)$\n**2. Erdős-Kac phenomena:** The concentration conjecture mirrors the sharp typicality of additive functions\n3. **Multinomial combinatorics:** Generalizes the integrality of multinomial coefficients beyond $\\sum a_i = n$\n4. **Factorial factorization:** Part of a family including erdos-392 (optimal factorization) and erdos-401 (prime-augmented divisibility).",
+    "summary": "Erd\u0151s Problem #400 asks for precise asymptotics of $g_k(n) = \\max\\{\\sum a_i - n : \\prod a_i! \\mid n!\\}$. The Erd\u0151s-Graham upper bound $g_k(n) = O(\\log n)$ establishes the correct order of magnitude via Legendre's formula, but the exact constants $c_k$ and concentration behavior remain open. The $k = 2$ case connects to binomial coefficients and Kummer's theorem on carries.",
+    "implications": "**Theoretical Significance**: **Mathematical Connections**\n\n1. **$p$-adic number theory:** The logarithmic bound comes from Legendre's formula $v_p(n!) = (n - s_p(n))/(p-1)$\n**2. Erd\u0151s-Kac phenomena:** The concentration conjecture mirrors the sharp typicality of additive functions\n3. **Multinomial combinatorics:** Generalizes the integrality of multinomial coefficients beyond $\\sum a_i = n$\n4. **Factorial factorization:** Part of a family including erdos-392 (optimal factorization) and erdos-401 (prime-augmented divisibility).",
     "openQuestions": [
       "Does the average $\\sum_{n \\le x} g_k(n) / (x \\log x)$ converge to a constant $c_k$ for each $k \\ge 2$?",
       "Is $g_k(n)$ concentrated around $c_k \\log n$ for almost all $n$ (in the density sense)?",
       "What is the exact value of $c_2$? Can it be expressed in terms of the prime-counting function or Euler products?",
       "How do the constants $c_k$ behave as $k \\to \\infty$? Is $c_k \\sim C/k$ for some universal $C$?",
-      "Can the Erdős-Graham bound $g_k(n) = O(\\log n)$ be sharpened to $g_k(n) \\le c_k \\log n + O(1)$?"
+      "Can the Erd\u0151s-Graham bound $g_k(n) = O(\\log n)$ be sharpened to $g_k(n) \\le c_k \\log n + O(1)$?"
     ]
   },
   "leanFile": {
@@ -165,7 +165,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 154,
+    "lineCount": 183,
     "axiomCount": 3,
     "theoremCount": 5,
     "definitionCount": 6
@@ -174,46 +174,46 @@
     {
       "targetId": "erdos-13",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorics, divisibility, number-theory"
+      "description": "Related Erd\u0151s problem sharing themes: combinatorics, divisibility, number-theory"
     },
     {
       "targetId": "erdos-131",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorics, divisibility, number-theory"
+      "description": "Related Erd\u0151s problem sharing themes: combinatorics, divisibility, number-theory"
     },
     {
       "targetId": "erdos-361",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: asymptotics, combinatorics, number-theory"
+      "description": "Related Erd\u0151s problem sharing themes: asymptotics, combinatorics, number-theory"
     }
   ],
   "relatedProofs": [
     {
       "id": "erdos-13",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorics, divisibility, number-theory"
+      "description": "Related Erd\u0151s problem sharing themes: combinatorics, divisibility, number-theory"
     },
     {
       "id": "erdos-131",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorics, divisibility, number-theory"
+      "description": "Related Erd\u0151s problem sharing themes: combinatorics, divisibility, number-theory"
     },
     {
       "id": "erdos-361",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: asymptotics, combinatorics, number-theory"
+      "description": "Related Erd\u0151s problem sharing themes: asymptotics, combinatorics, number-theory"
     }
   ],
   "references": [
     {
-      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "authors": "Erd\u0151s, Paul; Graham, Ronald L.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "L'Enseignement Mathématique, Monographie No. 28, Université de Genève",
+      "venue": "L'Enseignement Math\u00e9matique, Monographie No. 28, Universit\u00e9 de Gen\u00e8ve",
       "note": "Contains the original statement of Problem #400 on factorial divisibility and sum excess"
     },
     {
-      "authors": "Erdős Problems",
+      "authors": "Erd\u0151s Problems",
       "title": "Problem #400",
       "year": "2024",
       "venue": "https://erdosproblems.com/400",
