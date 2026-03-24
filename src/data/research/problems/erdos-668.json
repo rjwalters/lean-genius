@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-13T18:22:04.305Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Proved congruent_unitDistanceCount, assessed all axioms",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Proved congruent_unitDistanceCount (sorry→proof), fixed pre-existing simp bug. Sorries reduced 2→1. f_pos blocked on Set.Finite.",
+    "builtItems": [
+      "Proved congruent_unitDistanceCount (Erdos668Problem.lean:107-135)",
+      "Fixed congruent_refl simp bug (Erdos668Problem.lean:76)"
+    ],
+    "insights": [
+      "congruent_unitDistanceCount proved: isometry pair map φ×φ is injective and maps unitDistancePairs S onto unitDistancePairs T, preserving Set.ncard",
+      "f_pos requires Set.Finite (extremalConfigs n) which holds but needs deep combinatorial geometry to formalize — Set.ncard returns 0 for infinite sets",
+      "Pre-existing simp bug in congruent_refl fixed: changed · simp to · rfl for IsometryEquiv.refl application",
+      "Axiom classification: f_four/four_config_unique/u_four are deep computational, computational_evidence is empirical, extremalConfigs_nonempty needs compactness, u_lower_bound is most tractable (chain construction), u_upper_bound is Spencer-Szemeredi-Trotter"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove u_lower_bound by constructing chain of unit-distance points (most tractable axiom)",
+      "Find correct Mathlib API for Set.ncard_pos to prove f_pos_of_finite",
+      "Consider switching f definition to use Cardinal or ENat to handle potentially infinite sets"
+    ],
     "markdown": "# Erdős #668 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that the number of incongruent sets of $n$ points in $\\mathbb{R}^2$ which maximise the number of unit distances tends to infinity as $n\\to\\infty$? Is it always $>1$ for $n>3$?\n\n\n\nIn fact this is $=1$ also for $n=4$, the unique example given by two equilateral triangles joined by an edge.\n\nComputational evidence of Engel, Hammond-Lee, Su, Varga, and Zs\\'{a}mboki \\cite{EHSVZ25} and Alexeev, Mixon, and Parshall \\cite{AMP25} suggests that this count is $=1$ for various other $5\\leq n\\leq 21$ (although these calculations were checking only up to graph isomorphism, rather than congruency).\n\nThe actual maximal number of unit distances is the subject of [90].\n\n\n\n\nReferences\n\n\n[AMP25] B. Alexeev, D. Mixon, and H. Parshall, The Erd\\H{o}s unit distance problem for small point sets. arXiv:2412.11914 (2025).\n\n[EHSVZ25] P. Engel, O. Hammond-Lee, Y. Su, D. Varga, and P. Zs\\'{a}mboki, Diverse beam search to find densest-known planar unit distance graphs. arXiv:2406.15317 (2025).\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #90\n- Problem #667\n- Problem #669\n- Problem #2\n- Problem #39\n- Problem #1\n- Problem #3\n\n## References\n\n- Er97f\n- EHSVZ25\n- AMP25\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
