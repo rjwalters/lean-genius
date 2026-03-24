@@ -1,0 +1,67 @@
+[
+  {
+    "id": "ann-e1170-balanced-def",
+    "proofId": "erdos-1170",
+    "range": {
+      "startLine": 59,
+      "endLine": 65,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "content": "**Constructive definition** of the balanced partition relation α → (β)²₂. Instead of an opaque axiom, this defines the relation via strictly increasing ordinal embeddings: there exists g mapping [0,β) into [0,α) preserving order, with all pairs monochromatic. This replaces the original axiom and makes the mathematical content transparent to Lean's type checker.",
+    "type": "insight",
+    "importance": "high"
+  },
+  {
+    "id": "ann-e1170-polarized-def",
+    "proofId": "erdos-1170",
+    "range": {
+      "startLine": 74,
+      "endLine": 83,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "content": "**Constructive definition** of the polarized partition relation α → (β, γ)². The disjunction captures the asymmetry: either a 0-monochromatic embedding of length β exists, or a 1-monochromatic embedding of length γ. This is strictly weaker than the balanced relation when β ≠ γ.",
+    "type": "insight",
+    "importance": "high"
+  },
+  {
+    "id": "ann-e1170-balanced-implies-polarized",
+    "proofId": "erdos-1170",
+    "range": {
+      "startLine": 92,
+      "endLine": 97,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "content": "**Proved** (was axiom). The proof uses `fin_cases c` to split on the color of the homogeneous set: if c = 0, we take the left disjunct; if c = 1, the right. The embedding and its properties transfer directly.",
+    "type": "proof-technique",
+    "importance": "medium"
+  },
+  {
+    "id": "ann-e1170-omega1sq-proof",
+    "proofId": "erdos-1170",
+    "range": {
+      "startLine": 144,
+      "endLine": 150,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "content": "**Proved** (was axiom). Key cardinal arithmetic chain: card(ω₁²) = card(ω₁)·card(ω₁) = ℵ₁·ℵ₁ = ℵ₁ < ℵ₂. Uses `Cardinal.lt_ord` (initial ordinal characterization), `Ordinal.card_mul` (cardinality of ordinal product), `Cardinal.mul_eq_self` (infinite cardinal idempotence), and `Cardinal.aleph_lt_aleph`.",
+    "type": "proof-technique",
+    "importance": "high"
+  },
+  {
+    "id": "ann-e1170-laver-axiom",
+    "proofId": "erdos-1170",
+    "range": {
+      "startLine": 135,
+      "endLine": 139,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "content": "**The sole remaining axiom.** Laver's 1982 result is a deep independence/forcing result: using iterated forcing with large cardinals, it is consistent that for all α < ω₂, the polarized relation ω₂ → (ω₁² + 1, α)² holds. This cannot be proved from ZFC alone — it genuinely requires the axiom keyword.",
+    "type": "insight",
+    "importance": "high"
+  }
+]
