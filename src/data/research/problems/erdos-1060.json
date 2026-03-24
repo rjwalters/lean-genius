@@ -29,9 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: All 3 sorries eliminated (3→0). 2 axioms remain (OPEN conjectures).",
+    "builtItems": [
+      "sigma_mul_coprime (Erdos1060Problem.lean:57): σ multiplicativity via ArithmeticFunction bridge",
+      "f_eq_f (Erdos1060Problem.lean:142): Set.ncard = Finset.card for f(n)",
+      "mem_A327153_iff (Erdos1060Problem.lean:247): OEIS A327153 membership for n>0",
+      "sigma_prime fix (Erdos1060Problem.lean:46): explicit sum_insert proof"
+    ],
+    "insights": [
+      "sigma_mul_coprime proved via bridge to ArithmeticFunction.isMultiplicative_sigma",
+      "f_eq_f bridges Set.ncard and Finset.card via Set.ncard_coe_finset",
+      "mem_A327153_iff requires n > 0 (unprovable for n=0 since f(0)=1 but no k>0 with g(k)=0)",
+      "Mathlib v4.26: Nat.Coprime.divisors_mul removed, sigma_isMultiplicative renamed"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Erdős #1060 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ count the number of solutions to $k\\sigma(k)=n$, where $\\sigma(k)$ is the sum of divisors of $k$. Is it true that $f(n)\\leq n^{o(\\frac{1}{\\log\\log n})}$? Perhaps even $\\leq (\\log n)^{O(1)}$?\n\n\n\nThis is discussed in problem B11 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1059\n- Problem #1061\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
