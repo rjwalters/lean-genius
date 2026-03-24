@@ -243,14 +243,17 @@ the primorial is the right order of magnitude for the interval length.
 
 /--
 **Schinzel's Theorem:**
-For k ≥ 2, there exists N such that for all n ≥ N, the interval
-[n, n + p₁···pₖ₋₁·pₖ₊₁) contains an integer with > k prime factors.
+For k ≥ 2, the Erdős #891 statement holds with the "skipped primorial"
+Q_k = p₁···pₖ₋₁·pₖ₊₁ (product of first k primes with pₖ replaced by pₖ₊₁).
+This interval is slightly larger than the primorial p₁···pₖ.
+
+Examples: Q₂ = 2·5 = 10, Q₃ = 2·3·7 = 42, Q₄ = 2·3·5·11 = 330.
 
 This is the best known unconditional result toward Erdős #891.
--/
+We state this existentially since the precise Q requires prime enumeration. -/
 axiom schinzel_theorem_statement : ∀ k ≥ 2,
-    ∃ N : ℕ, ∀ n ≥ N, ∃ m : ℕ, n ≤ m ∧ m < n + primorialComp k * (primorialComp k + 1) ∧
-      bigOmega m > k
+    ∃ Q : ℕ, Q > 0 ∧
+    ∃ N : ℕ, ∀ n ≥ N, ∃ m : ℕ, n ≤ m ∧ m < n + Q ∧ bigOmega m > k
 
 /-
 ## Part VII: Weisenberg's Conditional Counterexample
@@ -268,8 +271,19 @@ n + j = (Lₖ/(1+j))·((1+j)·n' + (1+j)) = (Lₖ/(1+j))·(product of two terms)
 By construction, one factor is prime, giving at most k prime factors total.
 -/
 
-/-- Dickson's conjecture: a standard conjecture in analytic number theory. -/
-axiom dicksons_conjecture : Prop
+/-- **Dickson's Conjecture** (1904):
+For any finite collection of linear forms aᵢn + bᵢ with aᵢ > 0,
+if no prime p divides ∏(aᵢn + bᵢ) for ALL n (the "no fixed prime divisor" condition),
+then there are infinitely many n making all forms simultaneously prime.
+
+This is one of the central open problems in analytic number theory, encompassing
+the twin prime conjecture (k=2, a=(1,1), b=(0,2)) and many other conjectures.
+Used by Weisenberg to show the primorial threshold is sharp. -/
+def DicksonsConjecture : Prop :=
+  ∀ (k : ℕ) (a b : Fin k → ℕ),
+    (∀ i, 0 < a i) →
+    (∀ p : ℕ, p.Prime → ∃ n : ℕ, ∀ i : Fin k, ¬(p ∣ a i * n + b i)) →
+    Set.Infinite {n : ℕ | ∀ i : Fin k, (a i * n + b i).Prime}
 
 /--
 **Weisenberg's Observation:**
@@ -277,7 +291,7 @@ Under Dickson's conjecture, the interval length p₁···pₖ is sharp.
 Reducing it by 1 gives infinitely many counterexamples.
 -/
 axiom weisenberg_conditional (k : ℕ) (hk : k ≥ 2) :
-    dicksons_conjecture →
+    DicksonsConjecture →
     ∃ S : Set ℕ, S.Infinite ∧ ∀ n ∈ S, ∀ m : ℕ,
       n ≤ m → m < n + primorialComp k - 1 → bigOmega m ≤ k
 
@@ -320,6 +334,10 @@ theorem seven_not_3smooth : ¬ isSmoothComp 7 3 := by
 ## Part IX: Summary
 -/
 
+/-
+## Part IX: Summary
+-/
+
 /--
 **Erdős Problem #891: OPEN**
 
@@ -337,6 +355,10 @@ Status:
 Key insight: The primorial p₁···pₖ appears to be the exact threshold.
 Below it (p₁···pₖ - 1), the statement fails conditionally.
 Above it (p₁···pₖ₋₁·pₖ₊₁), the statement holds unconditionally.
+
+NOTE: This uses `primorialComp` which is only defined for k ≤ 5.
+For a fully general statement, a proper primorial function using
+prime enumeration (e.g., via Nat.nth) would be needed.
 -/
 axiom erdos_891 (k : ℕ) (hk : k ≥ 2) :
     ∃ N : ℕ, ∀ n ≥ N, HasManyFactorsComp n k

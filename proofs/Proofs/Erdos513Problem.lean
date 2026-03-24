@@ -21,17 +21,21 @@ Reference: https://erdosproblems.com/513
 
 import Mathlib.Tactic
 import Mathlib.Analysis.Complex.Basic
+import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Order.LiminfLimsup
 
 /- ## Definitions -/
 
 /-- The maximum term μ(r, f) = sup_n |aₙ| · rⁿ for a power series with
-    coefficients given by `a : ℕ → ℂ`. Axiomatized. -/
-axiom maxTerm (a : ℕ → ℂ) (r : ℝ) : ℝ
+    coefficients given by `a : ℕ → ℂ`. Wraps with `max 0` to guarantee
+    nonnegativity even when the iSup is ill-defined (unbounded range). -/
+noncomputable def maxTerm (a : ℕ → ℂ) (r : ℝ) : ℝ :=
+  max 0 (⨆ n : ℕ, ‖a n‖ * max r 0 ^ n)
 
 /-- maxTerm is nonneg for r ≥ 0. -/
-axiom maxTerm_nonneg (a : ℕ → ℂ) (r : ℝ) (hr : 0 ≤ r) :
-  0 ≤ maxTerm a r
+theorem maxTerm_nonneg (a : ℕ → ℂ) (r : ℝ) (hr : 0 ≤ r) :
+    0 ≤ maxTerm a r :=
+  le_max_left 0 _
 
 /-- The maximum modulus M(r, f) = sup_{|z|=r} |f(z)| for the entire
     function defined by `a`. Axiomatized. -/
@@ -111,10 +115,14 @@ theorem termModulusRatio_eq_div (a : ℕ → ℂ) (r : ℝ)
 /-- The known bounds 1/2 and 2/π are consistent: 1/2 < 2/π.
     This ensures the interval in which the answer lies is non-empty. -/
 theorem half_lt_two_div_pi : (1 : ℝ) / 2 < 2 / Real.pi := by
-  rw [div_lt_div_iff (by norm_num : (0:ℝ) < 2)
-    (by linarith [Real.pi_gt_three] : (0:ℝ) < Real.pi)]
-  have : Real.pi < 4 := by linarith [Real.pi_lt_3141593]
-  linarith
+  have h1 := Real.pi_pos
+  have h2 : Real.pi < 4 := by linarith [Real.pi_lt_four]
+  have h3 : 0 < Real.pi * 2 := by positivity
+  have h5 : 1 / 2 * (Real.pi * 2) = Real.pi := by ring
+  have h6 : 2 / Real.pi * (Real.pi * 2) = 4 := by
+    have : Real.pi ≠ 0 := ne_of_gt h1
+    field_simp; ring
+  nlinarith
 
 /-- The supremum of liminf ratios exceeds 1/2 (from Kövári). -/
 theorem supremum_exceeds_half :

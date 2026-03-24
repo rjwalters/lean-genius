@@ -24,12 +24,7 @@ Reference: https://erdosproblems.com/457
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Interval
-import Mathlib.Algebra.BigOperators.Group.Finset
-import Mathlib.Analysis.SpecificLimits.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Filter Finset
 
@@ -53,8 +48,13 @@ noncomputable def consecutiveProduct (n : ℕ) (k : ℕ) : ℕ :=
   ∏ i ∈ Finset.Icc 1 k, (n + i)
 
 /-- The consecutive product is always positive when k ≥ 1. -/
-axiom consecutiveProduct_pos (n k : ℕ) (hk : k ≥ 1) :
-    consecutiveProduct n k > 0
+theorem consecutiveProduct_pos (n k : ℕ) (hk : k ≥ 1) :
+    consecutiveProduct n k > 0 := by
+  unfold consecutiveProduct
+  apply Finset.prod_pos
+  intro i hi
+  simp only [Finset.mem_Icc] at hi
+  omega
 
 /-- Among k consecutive integers, every prime p ≤ k divides the product.
     This follows because the product contains a multiple of p. -/
@@ -70,10 +70,14 @@ beyond the trivial threshold of k. -/
 /-- q(n, k): the smallest prime not dividing ∏_{1 ≤ i ≤ k} (n + i).
     Such a prime always exists since the product is finite. -/
 noncomputable def q (n k : ℕ) : ℕ :=
-  Nat.find (⟨consecutiveProduct n k + 1,
-    ⟨Nat.exists_infinite_primes (consecutiveProduct n k + 1) |>.choose_spec.1,
-     fun h => by omega⟩⟩ :
-    ∃ p, p.Prime ∧ ¬(p ∣ consecutiveProduct n k))
+  have : ∃ p, p.Prime ∧ ¬(p ∣ consecutiveProduct n k) := by
+    obtain ⟨p, hle, hp⟩ := Nat.exists_infinite_primes (consecutiveProduct n k + 1)
+    refine ⟨p, hp, fun hdvd => ?_⟩
+    have hpos : 0 < consecutiveProduct n k :=
+      Finset.prod_pos (fun i hi => by simp only [Finset.mem_Icc] at hi; omega)
+    have hle_prod := Nat.le_of_dvd hpos hdvd
+    omega
+  Nat.find this
 
 /-- q(n, k) is always prime. -/
 axiom q_prime (n k : ℕ) : (q n k).Prime
