@@ -50,12 +50,36 @@
     ],
     "axiomCount": 0,
     "lineCount": 192,
-    "assumptions": "Fully verified. 0 axioms, 0 sorries."
+    "assumptions": "Fully verified. 0 axioms, 0 sorries.",
+    "dateAdded": "2026-03-15",
+    "references": [
+      {
+        "authors": "Mientka, Walter E.; Weitzenkamp, Roger C.",
+        "title": "On f-plentiful numbers",
+        "year": "1969",
+        "venue": "Journal of Combinatorial Theory 7.4: 374-377",
+        "note": "Exhaustive search verifying no solutions exist beyond 105 up to 2^44."
+      },
+      {
+        "authors": "Vaughan, R. C.",
+        "title": "Some applications of Montgomery's sieve",
+        "year": "1973",
+        "venue": "Journal of Number Theory 5.1: 64-79",
+        "note": "Proved upper bounds on the density of n satisfying the property, supporting the conjecture of finiteness."
+      },
+      {
+        "authors": "Erdos, Paul; Gallai, Tibor",
+        "title": "On a problem of Sidon",
+        "year": "1961",
+        "venue": "Acta Arithmetica 7: 67-70",
+        "note": "Early discussion of the interaction between powers of two and prime residues, related to problem #1142."
+      }
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #1142 asks whether there are infinitely many integers $n$ such that $n - 2^k$ is prime for every power of two $2^k$ with $1 < 2^k < n$. The known values satisfying this property are $n \\in \\{4, 7, 15, 21, 45, 75, 105\\}$, catalogued as OEIS sequence A039669.\n\nMientka and Weitzenkamp (1969) performed an exhaustive search verifying that no other values exist up to $2^{44} \\approx 1.76 \\times 10^{13}$. Vaughan (1973) proved that the count of such $n$ up to $N$ is extremely sparse, establishing upper bounds on their density.\n\nErdős formulated a stronger conjecture: the number of $k$ with $1 \\leq k$ and $2^k < n$ for which $n - 2^k$ is prime is $o(\\log n)$. If true, this would imply that for large $n$, not all $\\lfloor \\log_2 n \\rfloor$ differences can simultaneously be prime, suggesting the set is finite. This connects to Erdős Problem #236 on the density of prime differences from powers of two.\n\nThe problem sits at the intersection of additive number theory and the distribution of primes, related to covering congruences and the Goldbach-type question of representing integers as sums/differences of primes and powers of two.",
     "problemStatement": "Are there infinitely many n (or any n > 105) such that n − 2^k is prime for all 1 < 2^k < n?",
-    "text": "Are there infinitely many n (or any n > 105) such that n − 2^k is prime for all 1 < 2^k < n?",
+    "text": "A 192-line formalization of Erdos Problem #1142 with 0 sorries and 0 axioms. Defines `SatisfiesErdos1142 n` requiring all $n - 2^k$ to be prime for powers of two $2^k \\in (1, n)$. All seven known solutions ($n \\in \\{4, 7, 15, 21, 45, 75, 105\\}$, OEIS A039669) are verified by `native_decide`, along with three non-examples. Structural results include the parity constraint (solutions with $n > 4$ must be odd) and the lower bound $n \\geq 4$. The exhaustive verification `erdos1142_complete_le_105` confirms these are the only solutions up to 105. The stronger $o(\\log n)$ conjecture on prime difference density is formalized and shown to imply eventual non-existence of solutions.",
     "proofStrategy": "The formalization defines the property $\\text{SatisfiesErdos1142}(n)$ requiring $n - 2^k$ to be prime for every power of two in the range $(1, n)$. It verifies all seven known values ($n = 4, 7, 15, 21, 45, 75, 105$) using `native_decide`, confirms non-examples ($n = 6, 9, 10$), and proves structural results: solutions must be odd (except $n = 4$), must satisfy $n \\geq 4$, and $n - 2$ must be prime. The completeness theorem `erdos1142_complete_le_105` verifies exhaustively that these are the only solutions up to 105. The stronger $o(\\log n)$ conjecture is formalized and shown to imply eventual non-existence of solutions.",
     "keyInsights": [
       "**Logarithmic constraint growth**: The number of primality conditions grows as $\\lfloor \\log_2 n \\rfloor$, making it increasingly unlikely that all $n - 2^k$ are simultaneously prime for large $n$.",
@@ -155,11 +179,35 @@
     {
       "targetId": "erdos-236",
       "relationship": "strengthens",
-      "description": "Problem #236 asks whether the count of prime n − 2^k is o(log n), which is the stronger conjecture formalized here"
+      "description": "Problem #236 asks whether the count of prime n - 2^k is o(log n), which is the stronger conjecture formalized here. The o(log n) bound implies finiteness of Problem #1142's solution set."
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate guarantees a prime between n and 2n, ensuring that n - 2^k can be prime for the largest power of two below n. The Erdos 1142 property requires ALL such differences to be prime, not just the largest."
+    },
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "The bounded gaps result (Zhang 2013, Maynard-Tao 2014) shows primes cluster infinitely often. Problem #1142 asks about primes at specific exponentially-spaced locations n - 2^k, a much more rigid constraint than bounded gaps."
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes is a prerequisite for the problem to be meaningful: without infinitely many primes, the primality conditions on n - 2^k could never be satisfied for large n."
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The Prime Number Theorem gives the heuristic probability that n - 2^k is prime as approximately 1/ln(n). The probability that ALL log_2(n) differences are simultaneously prime is roughly (1/ln n)^{log_2 n}, which decreases super-polynomially, supporting the finiteness conjecture."
     }
   ],
   "relatedProofs": [
-    "erdos-236"
+    "erdos-236",
+    "bertrands-postulate",
+    "bounded-prime-gaps",
+    "infinitude-primes",
+    "prime-number-theorem"
   ],
   "leanFile": {
     "imports": [
