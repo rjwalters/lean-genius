@@ -145,7 +145,7 @@ theorem omega_upper_bound (n : ℕ) (hn : n ≥ 2) :
     (omega n : ℝ) ≤ Real.log n / Real.log 2 := by
   have h1 : (1 : ℝ) < 2 := by norm_num
   have hlog2 : Real.log 2 > 0 := Real.log_pos h1
-  rw [div_le_iff₀ hlog2]
+  rw [le_div_iff₀ hlog2]
   have h2n : (2 : ℝ) ^ omega n ≤ (n : ℝ) := by
     have := two_pow_omega_le n (by omega : n ≥ 1)
     exact_mod_cast this
@@ -594,7 +594,7 @@ theorem iterOmega_strictly_increasing (n : ℕ) (hn : n ≥ 2) :
   omega
 
 /-- The orbit of n under the ω-iteration -/
-def orbit (n : ℕ) : ℕ → ℕ
+noncomputable def orbit (n : ℕ) : ℕ → ℕ
   | 0 => n
   | k + 1 => iterOmega (orbit n k)
 
