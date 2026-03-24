@@ -26,18 +26,11 @@
     "type": "insight",
     "title": "Three Mathematical Giants",
     "content": "**Bertrand (1845)**: Conjectured the result after checking it for all $n$ up to 3 million by hand calculation.\n\n**Chebyshev (1852)**: Proved the conjecture using analytic techniques involving his famous $\\vartheta$ and $\\psi$ functions.\n\n**Erdős (1932)**: Published an elementary proof at age 19—his first paper. This launched a legendary career of 1,500+ papers and became the standard approach taught today.",
-    "mathContext": "Chebyshev's proof used $\\vartheta(x) = \\sum_{p \\leq x} \\log p$ and showed $0.92 \\cdot x < \\vartheta(x) < 1.11 \\cdot x$ for large $x$, from which Bertrand follows: $\\vartheta(2n) - \\vartheta(n) > 0$ means at least one prime in $(n, 2n]$. Erdős's proof instead bounds $\\binom{2n}{n}$: since $\\prod_{n < p \\leq 2n} p \\mid \\binom{2n}{n}$ and $\\binom{2n}{n} > 4^n/(2n)$, the product of primes in $(n, 2n]$ must be large enough — and if the interval were empty, the remaining prime power factorization (primes $\\leq n$) would be provably too small.",
+    "mathContext": "The proof evolved from analytic to elementary methods.",
     "significance": "key",
     "relatedConcepts": [
       "history of mathematics",
-      "analytic number theory",
-      "Chebyshev functions",
-      "central binomial coefficient"
-    ],
-    "prerequisites": [
-      "prime factorization",
-      "binomial coefficients",
-      "logarithmic sums"
+      "analytic number theory"
     ]
   },
   {
