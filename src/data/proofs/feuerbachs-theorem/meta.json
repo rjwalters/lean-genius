@@ -75,7 +75,7 @@
     {
       "id": "main-theorem",
       "title": "Feuerbach's Theorem: Complete Statement",
-      "startLine": 112,
+      "startLine": 98,
       "endLine": 120,
       "summary": "Combines the four proved distance relations into the full theorem: internal tangency with incircle and external tangency with all three excircles. Fully proved, Wiedijk #29.",
       "mathContext": "**Feuerbach's Theorem (1822)**: The nine-point circle of any triangle is internally tangent to the incircle and externally tangent to all three excircles. Formally: $d(N,I) = |R/2 - r|$ and $d(N,I_k) = R/2 + r_k$ for $k = a, b, c$. The tangent point with the incircle is the **Feuerbach point** $X(11)$ in Kimberling's notation."
@@ -87,6 +87,14 @@
       "endLine": 153,
       "summary": "Proves R = 2r for equilateral triangles via coordinate computation, implying the nine-point circle and incircle coincide (degenerate tangency).",
       "mathContext": "For equilateral triangles: $R = 2r$ (circumradius = twice inradius), so $d(N, I) = |R/2 - r| = |r - r| = 0$, meaning the nine-point circle and incircle coincide. This is the degenerate case where internal tangency becomes coincidence. Also $O = H = I = G = N$ (all centers coincide)."
+    },
+    {
+      "id": "exports",
+      "title": "Export Summary",
+      "startLine": 155,
+      "endLine": 164,
+      "summary": "Verification `#check` block listing the five key exports: `feuerbachs_theorem`, `feuerbach_incircle_tangent`, `feuerbach_excircle_a_tangent`, `ninePointRadius_eq_half_circumradius`, and `euler_line_relation`.",
+      "mathContext": "Complete API: the main theorem, individual tangency theorems, nine-point radius identity, and Euler line relation."
     }
   ],
   "conclusion": {

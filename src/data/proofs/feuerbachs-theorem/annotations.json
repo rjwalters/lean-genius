@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-feuer-assembly",
+    "proofId": "feuerbachs-theorem",
+    "range": {"startLine": 1, "endLine": 23},
+    "type": "context",
+    "title": "Assembly Module: Importing the Computational Core",
+    "content": "This file imports `FeuerbachsTheoremOQ01`, which contains the heavy coordinate computations. The assembly module re-exports the distance relations as clean theorem statements and combines them into the full Feuerbach theorem. This separation is a common Lean pattern: keep the computational proofs (with `field_simp`, `ring`, `nlinarith`) in one file and the clean mathematical statements in another. The `noncomputable section` is needed because the triangle center computations involve real number division.",
+    "mathContext": "The proof architecture splits into: (1) FeuerbachsTheoremDefs.lean (definitions), (2) FeuerbachsTheoremOQ01.lean (coordinate computation proofs), (3) FeuerbachsTheorem.lean (assembly and statement of the complete theorem).",
+    "significance": "supporting",
+    "relatedConcepts": ["modular proof architecture", "noncomputable section", "proof delegation"],
+    "prerequisites": ["Lean 4 imports", "noncomputable keyword"]
+  },
+  {
     "id": "ann-feuer-intro",
     "proofId": "feuerbachs-theorem",
     "range": {"startLine": 3, "endLine": 15},
@@ -58,5 +70,17 @@
     "significance": "supporting",
     "relatedConcepts": ["equilateral triangle", "coincident circles", "R = 2r", "degenerate tangency"],
     "prerequisites": ["Real.sqrt", "positivity tactic"]
+  },
+  {
+    "id": "ann-feuer-exports",
+    "proofId": "feuerbachs-theorem",
+    "range": {"startLine": 155, "endLine": 164},
+    "type": "context",
+    "title": "Export Summary and Verification",
+    "content": "The `#check` block verifies the key exports: `feuerbachs_theorem` (the complete 4-part conjunction), `feuerbach_incircle_tangent` (incircle tangency), `feuerbach_excircle_a_tangent` (excircle A tangency), `ninePointRadius_eq_half_circumradius` ($R_9 = R/2$), and `euler_line_relation` (the Euler line $N = (O+H)/2$). Together these provide a complete API for triangle geometry work downstream.",
+    "mathContext": "Exports: $d(N,I) = |R/2 - r|$, $d(N, I_k) = R/2 + r_k$, $R_9 = R/2$, $N = (O+H)/2$. All fully proved with 0 axioms.",
+    "significance": "technical",
+    "relatedConcepts": ["#check command", "proof inventory", "API surface"],
+    "prerequisites": ["feuerbachs_theorem"]
   }
 ]
