@@ -16,7 +16,11 @@
       "harmonic sums",
       "divisor function maxima"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisor functions",
+      "harmonic series",
+      "lim sup"
+    ]
   },
   {
     "id": "ann-444-dA",
@@ -98,7 +102,7 @@
     "title": "The Erdős-Graham Conjecture (PROVED)",
     "content": "**erdos_graham_conjecture**: For any infinite A ⊆ ℕ and any k ≥ 1, lim sup_{x→∞} M_A(x) / H_A(x)^k = ∞. Equivalently: for any C > 0, frequently M_A(x) > C · H_A(x)^k.",
     "significance": "key",
-    "mathContext": "The conjecture captures the idea that **extremal divisibility always outpaces polynomial growth in the density measure**. The 'for all k' quantifier is crucial: it says M_A grows faster than ANY fixed power of H_A. This rules out bounds of the form M_A(x) = O(H_A(x)^K) for any fixed K. The formalization uses Lean's `Filter.atTop` and `∃ᶠ` (frequently) to express the lim sup condition: for each C > 0, the set {x : M_A(x) > C · H_A(x)^k} is cofinite. The proof by Erdős and Sárközy uses a **greedy construction**: given A, build n = Π a_i^{e_i} for suitably chosen elements a_i ∈ A and exponents e_i, ensuring d_A(n) = Π(e_i + 1) grows super-polynomially in H_A.",
+    "mathContext": "The conjecture captures the idea that **extremal divisibility always outpaces polynomial growth in the density measure**. The 'for all k' quantifier is crucial: it says M_A grows faster than ANY fixed power of H_A. This rules out bounds of the form M_A(x) = O(H_A(x)^K) for any fixed K. The formalization uses Lean 4's `Filter.atTop` and `∃ᶠ` (Filter.Frequently) to express the lim sup condition. Specifically, `∃ᶠ x in Filter.atTop, P x` means 'for every cofinite set, there exists x in it satisfying P' — precisely capturing 'P holds for unboundedly many x'. This is logically equivalent to lim sup = ∞: for each C > 0, the set {x : M_A(x) > C · H_A(x)^k} is infinite (equivalently, cofinite is avoided). Using `∃ᶠ` rather than an explicit lim sup definition avoids real-valued floor/ceiling issues in Lean and leverages Mathlib's filter infrastructure. The proof by Erdős and Sárközy uses a **greedy construction**: given A, build n = Π a_i^{e_i} for suitably chosen elements a_i ∈ A and exponents e_i, ensuring d_A(n) = Π(e_i + 1) grows super-polynomially in H_A.",
     "relatedConcepts": [
       "lim sup",
       "Filter.atTop",
@@ -122,11 +126,13 @@
     "title": "Erdős-Sárközy Proof (1980)",
     "content": "**erdos_graham_conjecture_true**: The conjecture is TRUE. Proved by Erdős and Sárközy in 'Some asymptotic formulas on generalized divisor functions IV' (1980).",
     "significance": "key",
-    "mathContext": "The proof of Erdős and Sárközy appears in their series of papers 'Some asymptotic formulas on generalized divisor functions' (I–IV). The key technique is an **extremal product construction**: given A = {a₁ < a₂ < ...}, consider n = a₁^{e₁} · a₂^{e₂} · ... · aₘ^{eₘ}. Then d_A(n) ≥ Π(eᵢ + 1), while n < x requires Σ eᵢ log aᵢ < log x. By choosing the eᵢ to maximize the product Π(eᵢ + 1) subject to the constraint Σ eᵢ log aᵢ ≤ log x, one obtains d_A(n) that grows super-polynomially in H_A(x). The optimization is analogous to the **Lagrange multiplier** problem for highly composite numbers.",
+    "mathContext": "The proof of Erdős and Sárközy appears in their series of papers 'Some asymptotic formulas on generalized divisor functions' (I–IV). The key technique is an **extremal product construction**: given A = {a₁ < a₂ < ...}, consider n = a₁^{e₁} · a₂^{e₂} · ... · aₘ^{eₘ}. Then d_A(n) ≥ Π(eᵢ + 1), while n < x requires Σ eᵢ log aᵢ < log x. By choosing the eᵢ to maximize the product Π(eᵢ + 1) subject to the constraint Σ eᵢ log aᵢ ≤ log x — a discrete optimization solved by the **Lagrange multiplier** analogy — one obtains d_A(n) that grows super-polynomially in H_A(x). The analytic underpinning uses the **Selberg-Delange method**: by computing the Dirichlet series $\\sum_{n \\geq 1} d_A(n) n^{-s}$ and analyzing its poles, one recovers precise asymptotics for the average order of $d_A$. The extremal behavior (maximum rather than average) requires further combinatorial arguments beyond the average order estimates.",
     "relatedConcepts": [
       "Erdős-Sárközy series",
       "extremal product construction",
-      "Lagrange multiplier analogy"
+      "Lagrange multiplier analogy",
+      "Selberg-Delange method",
+      "Dirichlet series"
     ],
     "prerequisites": [
       "erdos_graham_conjecture"
@@ -247,20 +253,43 @@
     "proofId": "erdos-444",
     "range": {
       "startLine": 132,
-      "endLine": 160
+      "endLine": 152
     },
-    "type": "technique",
-    "title": "Summary: Main Results",
-    "content": "**erdos_444_summary**: The conjecture is PROVED. **limsup_infinite**: For any infinite A and any k ≥ 1, M_A(x)/H_A(x)^k → ∞. This is a direct Lean proof from the main axiom, demonstrating the formal structure.",
+    "type": "concept",
+    "title": "Summary Docstring and erdos_444_summary Theorem",
+    "content": "The docstring (lines 136-150) recaps the full problem, resolution, and known structural facts. **erdos_444_summary** is then proved by term-mode proof `:= erdos_graham_conjecture_true` — a single-line restatement of the axiomatic result, confirming the conjecture holds.",
     "significance": "key",
-    "mathContext": "The file contains two Lean theorems proved from the axiomatized result. `erdos_444_summary` is a trivial restatement (`:= erdos_graham_conjecture_true`). `limsup_infinite` unfolds the definition for specific A and k, using `exact erdos_graham_conjecture_true A hA k hk C hC`. These demonstrate how the axiomatized result can be instantiated. The result belongs to the intersection of **extremal combinatorics** (optimizing divisor counts) and **analytic number theory** (harmonic sum asymptotics), and is part of the broader program of Erdős and his collaborators to understand the extremal behavior of arithmetic functions.",
+    "mathContext": "The `theorem erdos_444_summary : erdos_graham_conjecture := erdos_graham_conjecture_true` is a **definitional equality** proof: `erdos_444_summary` names the main axiom. This pattern — a named theorem that is literally the axiom — serves as the 'top-level result' in the Lean file, making the file's conclusion explicit. The docstring above (lines 136-150) summarizes the four key structural facts: (1) M_A(x) grows faster than any H_A(x)^k, (2) universality over all infinite A, (3) the two classical specializations, (4) the exponential lower bound. This belongs to the broader program of Erdős and his collaborators understanding extremal arithmetic functions — the same circle of ideas as highly composite numbers (Ramanujan 1915) and the Hardy-Ramanujan normal order theorem (1917).",
     "relatedConcepts": [
-      "formal proof from axiom",
-      "instantiation",
+      "definitional equality proof",
+      "axiom restatement",
       "extremal combinatorics meets analytic number theory"
     ],
     "prerequisites": [
       "erdos_graham_conjecture_true"
+    ]
+  },
+  {
+    "id": "ann-444-limsup-proof",
+    "proofId": "erdos-444",
+    "range": {
+      "startLine": 154,
+      "endLine": 160
+    },
+    "type": "technique",
+    "title": "Lean Proof: limsup_infinite",
+    "content": "**limsup_infinite** instantiates the main theorem for specific A and k. The proof is: `intro C hC; exact erdos_graham_conjecture_true A hA k hk C hC`. This demonstrates how to specialize a universally quantified axiom — the `intro/exact` pattern is idiomatic Lean 4 for unfolding a ∀ statement.",
+    "significance": "notable",
+    "mathContext": "The theorem `limsup_infinite (A : Set ℕ) (hA : InfiniteSubset A) (k : ℕ) (hk : k ≥ 1) : ∀ C : ℝ, C > 0 → ∃ᶠ x in Filter.atTop, (M_A A x : ℝ) > C * (H_A A x)^k` is the 'consumer-facing' version of the main axiom: whereas `erdos_graham_conjecture` packages all quantifiers inside a single `Prop`, `limsup_infinite` fixes A and k as parameters, leaving only the C quantifier in the statement. This makes instantiation easier in downstream use. The proof simply uses `exact` to discharge the goal by direct application of the axiom — two lines of Lean for a result that took Erdős and Sárközy a deep analytic paper to establish.",
+    "relatedConcepts": [
+      "Filter.Frequently",
+      "Filter.atTop",
+      "exact tactic",
+      "axiom instantiation"
+    ],
+    "prerequisites": [
+      "erdos_graham_conjecture_true",
+      "limsup_infinite"
     ]
   }
 ]
