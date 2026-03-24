@@ -174,5 +174,22 @@
       "relationship": "extends",
       "description": "Parent formalization; this entry extends it with further exploration"
     }
+  ],
+  "references": [
+    {
+      "key": "SZ",
+      "citation": "Sun Zi, Sunzi Suanjing (Master Sun's Mathematical Manual), c. 3rd–5th century CE. Earliest known statement of what is now called the Chinese Remainder Theorem.",
+      "type": "book"
+    },
+    {
+      "key": "Ga01",
+      "citation": "Gauss, C.F., Disquisitiones Arithmeticae, Leipzig (1801), §36. First modern formulation of the CRT for arbitrary moduli using congruences.",
+      "type": "book"
+    },
+    {
+      "key": "IR90",
+      "citation": "Ireland, K. and Rosen, M., A Classical Introduction to Modern Number Theory, 2nd ed., Springer GTM 84 (1990), Chapter 3. Modern treatment of CRT with applications to number theory.",
+      "type": "book"
+    }
   ]
 }
