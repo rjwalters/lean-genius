@@ -18,6 +18,7 @@ Reference: https://erdosproblems.com/118
 -/
 
 import Mathlib.SetTheory.Ordinal.Arithmetic
+import Mathlib.SetTheory.Ordinal.Exponential
 import Mathlib.SetTheory.Cardinal.Basic
 import Mathlib.Tactic
 
@@ -26,22 +27,22 @@ import Mathlib.Tactic
 /-- The ordinal partition relation: α → (α, k)² means that for any 2-coloring
     of pairs from α, there is either a monochromatic-red set of order type α
     or a monochromatic-blue set of size k. -/
-axiom ordPartition (α : Ordinal) (k : ℕ) : Prop
+axiom ordPartition (α : Ordinal.{0}) (k : ℕ) : Prop
 
 /-- A partition ordinal for k-cliques: α satisfies α → (α, k)². -/
-def IsPartitionOrd (α : Ordinal) (k : ℕ) : Prop :=
+def IsPartitionOrd (α : Ordinal.{0}) (k : ℕ) : Prop :=
   ordPartition α k
 
 /-- The Erdős–Hajnal conjecture (DISPROVED): if α → (α, 3)² then α → (α, n)²
     for all n ≥ 3. -/
 def ErdosHajnalConjecture : Prop :=
-  ∀ α : Ordinal, IsPartitionOrd α 3 → ∀ n : ℕ, 3 ≤ n → IsPartitionOrd α n
+  ∀ α : Ordinal.{0}, IsPartitionOrd α 3 → ∀ n : ℕ, 3 ≤ n → IsPartitionOrd α n
 
 /- ## The Counterexample -/
 
 /-- The specific counterexample ordinal: ω^(ω²). -/
 noncomputable def counterexampleOrd : Ordinal :=
-  Ordinal.omega ^ (Ordinal.omega ^ (2 : Ordinal))
+  Ordinal.omega0 ^ (Ordinal.omega0 ^ (2 : Ordinal))
 
 /-- ω^(ω²) → (ω^(ω²), 3)²: the partition property holds for triangles.
     This follows from Schipperus's positive results for small CNF-length. -/
@@ -64,15 +65,15 @@ theorem erdos_118_disproved : ¬ ErdosHajnalConjecture := by
 
 /-- The partition threshold: for a given ordinal α, the largest k such that
     α → (α, k)² holds. -/
-axiom partitionThreshold (α : Ordinal) : ℕ
+axiom partitionThreshold (α : Ordinal.{0}) : ℕ
 
 /-- If α → (α, k)² holds, then α → (α, j)² holds for all j ≤ k.
     The partition relation is monotone decreasing in k. -/
-axiom partition_monotone_down (α : Ordinal) (k j : ℕ) (hjk : j ≤ k)
+axiom partition_monotone_down (α : Ordinal.{0}) (k j : ℕ) (hjk : j ≤ k)
     (hk : IsPartitionOrd α k) : IsPartitionOrd α j
 
 /-- The threshold captures the exact boundary. -/
-axiom threshold_exact (α : Ordinal) :
+axiom threshold_exact (α : Ordinal.{0}) :
     IsPartitionOrd α (partitionThreshold α) ∧
     (partitionThreshold α + 1 > 2 → ¬ IsPartitionOrd α (partitionThreshold α + 1))
 
@@ -88,6 +89,8 @@ axiom omega_omega2_threshold :
 
 /-- Problem #118 is closely related to Problem #592 (partition ordinals for triangles).
     The disproof shows that being a partition ordinal for triangles does not
-    automatically extend to larger cliques. -/
-axiom relation_to_592 :
-    ∃ α : Ordinal, IsPartitionOrd α 3 ∧ ¬ IsPartitionOrd α 5
+    automatically extend to larger cliques.
+    Previously axiomatized; follows directly from the counterexample. -/
+theorem relation_to_592 :
+    ∃ α : Ordinal.{0}, IsPartitionOrd α 3 ∧ ¬ IsPartitionOrd α 5 :=
+  ⟨counterexampleOrd, counter_partition_3, counter_not_partition_5⟩

@@ -29,9 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "SURVEYED: 8 axioms in complex analysis. Opaque maxTerm/maxModulus functions, deep results (Kovari, Clunie-Hayman).",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "maxTerm and maxModulus are opaque axiom functions - should be defined from power series",
+      "Deep axioms: kovari_lower_bound, clunie_hayman_upper_bound from published papers",
+      "Requires complex analysis beyond current Mathlib capabilities"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Erdős #513 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f=\\sum_{n=0}^\\infty a_nz^n$ be a transcendental entire function. What is the greatest possible value of\\[\\liminf_{r\\to \\infty} \\frac{\\max_n\\lvert a_nr^n\\rvert}{\\max_{\\lvert z\\rvert=r}\\lvert f(z)\\rvert}?\\]\n\n\n\nIt is trivial that this value is in $[1/2,1)$. K\\\"{o}v\\'{a}ri (unpublished) observed that it must be $>1/2$. Clunie and Hayman \\cite{ClHa64} showed that it is $\\leq 2/\\pi-c$ for some absolute constant $c>0$. Some other results on this quantity were established by Gray and Shah \\cite{GrSh63}.\n\nSee also [227].\n\n\n\n\nReferences\n\n\n[ClHa64] Clunie, J. and Hayman, W. K., The maximum term of a power series. J. Analyse Math. (1964), 143-186.\n\n[GrSh63] Gray, Alfred and Shah, S. M., A note on entire functions and a conjecture of Erd\\H{o}s. Bull. Amer. Math. Soc. (1963), 573-577.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #227\n- Problem #512\n- Problem #514\n- Problem #39\n- Problem #1\n\n## References\n\n- ClHa64\n- GrSh63\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
