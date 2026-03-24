@@ -51,7 +51,7 @@
       "startLine": 64,
       "endLine": 70
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Equivalent Formulations",
     "content": "Proved theorem: `IsSumFree A ↔ IsSumFree' A`. The two definitions ($a \\ne b + c$ vs $b + c \\ne a$) are logically equivalent by symmetry of inequality.",
     "significance": "supporting",
@@ -96,7 +96,7 @@
       "startLine": 98,
       "endLine": 105
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Upper Half Is Sum-Free",
     "content": "Proved theorem: any subset of $\\{\\lfloor n/2 \\rfloor + 1, \\ldots, n\\}$ is sum-free. If $a, b \\ge n/2 + 1$, then $a + b \\ge n + 2 > n$, so no sum can land in the set.",
     "significance": "key",
@@ -118,7 +118,7 @@
       "startLine": 111,
       "endLine": 112
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Lower Bound",
     "content": "Axiomatized: $f(n) \\ge 2^{n/2}$ for $n \\ge 2$. This follows from `upperHalf_sumFree` by counting: the upper half has $\\lfloor n/2 \\rfloor$ elements, so has $2^{\\lfloor n/2 \\rfloor}$ subsets, all sum-free.",
     "significance": "key",
@@ -162,7 +162,7 @@
       "startLine": 138,
       "endLine": 139
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Green's Upper Bound (2004)",
     "content": "Axiomatized: $\\exists C > 0,\\; \\forall n \\ge 1,\\; f(n) \\le C \\cdot 2^{n/2}$. Green proved this in Bull. London Math. Soc. (2004), establishing the Cameron-Erdős conjecture.",
     "significance": "key",
@@ -184,7 +184,7 @@
       "startLine": 145,
       "endLine": 146
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sapozhenko's Upper Bound (2003)",
     "content": "Axiomatized: same result as Green, proved independently by Sapozhenko using different graph-theoretic techniques. Published in Dokl. Akad. Nauk (2003).",
     "significance": "key",
@@ -206,7 +206,7 @@
       "startLine": 155,
       "endLine": 161
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Precise Asymptotic with Parity",
     "content": "Axiomatized: $f(n) \\sim c_n \\cdot 2^{n/2}$ where $c_n = c_{\\text{even}}$ if $n$ is even and $c_n = c_{\\text{odd}}$ if $n$ is odd. This is stronger than $f(n) = 2^{(1+o(1))n/2}$ — it pins down the constant.",
     "significance": "key",
@@ -229,7 +229,7 @@
       "startLine": 166,
       "endLine": 173
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Cameron-Erdős Conjecture: Proved",
     "content": "The theorem `cameron_erdos_proved : cameronErdosConjecture` combines the lower and upper bounds. Contains a `sorry` for the asymptotic bookkeeping: $2^{n/2} \\le f(n) \\le C \\cdot 2^{n/2}$ implies $\\log_2 f(n) \\in [n/2, n/2 + O(1)]$.",
     "significance": "key",
@@ -252,7 +252,7 @@
       "startLine": 182,
       "endLine": 184
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Empty Set Is Sum-Free",
     "content": "Proved: $\\emptyset$ is sum-free (vacuously, no elements to form a sum). Proved by contradiction: $a \\in \\emptyset$ is false.",
     "significance": "supporting",
@@ -274,7 +274,7 @@
       "startLine": 189,
       "endLine": 193
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Singletons Are Sum-Free",
     "content": "Proved: $\\{x\\}$ is sum-free for $x > 0$. If $a, b, c \\in \\{x\\}$, then $a = b = c = x$, so $a = b + c$ would mean $x = 2x$, contradicting $x > 0$.",
     "significance": "supporting",
@@ -296,7 +296,7 @@
       "startLine": 199,
       "endLine": 210
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Odd Numbers Are Sum-Free",
     "content": "Proved: the set of odd numbers in $[0, n]$ is sum-free. If $a, b, c$ are all odd, then $b + c$ is even, so $b + c \\ne a$ (odd). This gives another large sum-free family of size $\\lceil n/2 \\rceil$.",
     "significance": "key",
@@ -319,7 +319,7 @@
       "startLine": 225,
       "endLine": 229
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Structure Theorem",
     "content": "Axiomatized: for $n \\ge 100$, $f(n) \\le 10 \\cdot (2^{n/2} + 2^{(n+1)/2})$. This says most sum-free sets are 'essentially' subsets of the upper half or subsets of odd numbers — the two dominant families.",
     "significance": "key",
@@ -342,7 +342,7 @@
       "startLine": 236,
       "endLine": 238
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Maximum Sum-Free Set Size",
     "content": "Axiomatized: every sum-free $A \\subseteq [0, n]$ has $|A| \\le \\lceil n/2 \\rceil$. Achieved by the upper half or odd numbers. Connected to Schur numbers in Ramsey theory.",
     "significance": "supporting",
@@ -388,7 +388,7 @@
       "startLine": 273,
       "endLine": 285
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Summary Theorem",
     "content": "Proved theorem combining all main results: (1) trivial lower bound $f(n) \\ge 2^{n/2}$, (2) Green/Sapozhenko upper bound $f(n) \\le C \\cdot 2^{n/2}$, (3) existence of precise asymptotic constants $c_{\\text{even}}, c_{\\text{odd}} > 0$.",
     "significance": "key",
@@ -411,7 +411,7 @@
       "startLine": 290,
       "endLine": 290
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Erdős Problem #748: Proved",
     "content": "The final theorem `erdos_748 : cameronErdosConjecture := cameron_erdos_proved` confirms the Cameron-Erdős conjecture. The number of sum-free subsets of $\\{1, \\ldots, n\\}$ is $2^{(1+o(1))n/2}$.",
     "significance": "key",
