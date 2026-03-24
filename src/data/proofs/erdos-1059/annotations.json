@@ -26,7 +26,7 @@
   {
     "id": "ann-1059-examples-doc",
     "proofId": "erdos-1059",
-    "range": { "startLine": 34, "endLine": 56 },
+    "range": { "startLine": 34, "endLine": 55 },
     "type": "concept",
     "title": "Worked Examples: Factorizations for 101, 211, and 89",
     "content": "Commentary showing the explicit factorial subtraction computations for all three cases. For $p = 101$: four factorials to check (up to $4! = 24$), all subtractions $100, 99, 95, 77$ are composite. For $p = 211$: five factorials (up to $5! = 120$), all subtractions composite. For $p = 89$: the subtraction $89 - 6 = 83$ is prime, so 89 fails. The factorizations are given explicitly (e.g., $77 = 7 \\times 11$), making the verification transparent.",
