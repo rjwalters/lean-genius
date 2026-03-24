@@ -254,6 +254,26 @@
       "targetId": "roth-theorem-k3",
       "relationship": "related",
       "description": "The triangle removal lemma — a key consequence of Szemerédi regularity — states that graphs with o(n³) triangles can be made triangle-free by removing o(n²) edges. Ruzsa and Szemerédi (1978) used this to prove Roth's theorem (no 3-AP in dense sets) via a graph construction where triangles encode 3-term arithmetic progressions. The triangle removal *process* studied here is the random greedy counterpart: rather than removing a minimal edge set to destroy all triangles, it removes edges of uniformly random triangles one at a time. The connection raises the question of whether the triangle removal lemma's quantitative bounds (recently improved by Fox 2011) can constrain the process's terminal edge count"
+    },
+    {
+      "targetId": "szemeredi-counting",
+      "relationship": "related",
+      "description": "Szemerédi's counting lemma quantifies triangle density in ε-regular triples: if (A, B, C) are pairwise ε-regular with edge densities d₁, d₂, d₃, the triangle count is approximately d₁d₂d₃|A||B||C|. In the triangle removal process, this counting governs the early (dense) phase when the graph still has many ε-regular triples — the rate of triangle depletion in this regime determines how quickly the process transitions to the critical n^{3/2} phase"
+    },
+    {
+      "targetId": "prob-method-alteration",
+      "relationship": "related",
+      "description": "The alteration method (Erdős 1963) constructs combinatorial objects by starting with a random structure and modifying it. The triangle removal process is a natural extension: start with K_n and greedily remove random triangles. The alteration perspective suggests that the terminal graph's structure may be analyzable by viewing it as K_n 'altered' by the removal process, with the n^{3/2} scaling reflecting the balance between the random greedy deletions and the surviving edge structure"
+    },
+    {
+      "targetId": "prob-method-lovasz-local",
+      "relationship": "related",
+      "description": "The Lovász Local Lemma provides bounds on the probability that no 'bad event' occurs when events have limited dependency. In the triangle removal process, triangle deletions create complex dependencies — removing one triangle's edges can destroy adjacent triangles. The BFL proof uses martingale concentration (a related probabilistic tool) to handle these dependencies during the critical phase of the process"
+    },
+    {
+      "targetId": "prob-method-second-moment",
+      "relationship": "related",
+      "description": "The second moment method bounds P(X > 0) via E[X]²/E[X²], providing concentration for the triangle count during the removal process. BFL's proof tracks the variance of edge and triangle counts through the process, using second-moment-type arguments to show concentration around the ODE trajectory until the critical n^{3/2} threshold"
     }
   ],
   "references": [
@@ -360,6 +380,10 @@
     "erdos-1010",
     "erdos-1104",
     "szemeredi-theorem",
-    "roth-theorem-k3"
+    "szemeredi-counting",
+    "roth-theorem-k3",
+    "prob-method-alteration",
+    "prob-method-lovasz-local",
+    "prob-method-second-moment"
   ]
 }
