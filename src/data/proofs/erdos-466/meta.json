@@ -39,6 +39,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "Module docstring documenting the problem statement, background, and references; imports `Tactic`, `Basic`, `Real`; `open` declarations (Set Real)",
+      "mathContext": "Is there some $\\delta > 0$ such that $N(X, \\delta) \\to \\infty$ as $X \\to \\infty$, where $N(X,\\delta)$ counts maximum points in a radius-$X$ disk with pairwise distances $\\delta$-separated from integers? SOLVED: Graham showed $N(X, 1/10) \\geq (\\log X)/10$."
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 35,

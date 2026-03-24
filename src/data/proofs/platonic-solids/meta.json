@@ -68,6 +68,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Module docstring documenting the problem statement, background, and references; imports `Tactic`, `Basic`; linter configuration",
+      "mathContext": "There are exactly five Platonic solids (convex regular polyhedra). The proof enumerates all integer solutions to $(p-2)(q-2) < 4$ with $p, q \\geq 3$, derived from Euler's polyhedral formula $V - E + F = 2$."
+    },
+    {
       "id": "schlafli-symbol",
       "title": "The Schlafli Symbol",
       "startLine": 65,

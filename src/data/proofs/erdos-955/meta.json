@@ -89,6 +89,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Module docstring documenting the problem statement, background, and references; 5 Mathlib imports covering required modules; `open` declarations (Nat Finset Real Filter); namespace `Erdos955`",
+      "mathContext": "Let s(n) = σ(n) - n = Σ_{d|n, d<n} d be the sum of proper divisors. If A ⊂ ℕ has density 0, then s⁻¹(A) must also have density 0."
+    },
+    {
       "id": "divisor-function",
       "title": "The Sum of Proper Divisors Function",
       "summary": "Defines $\\sigma(n) = \\sum_{d | n} d$ using Mathlib's `Nat.divisors`, then the aliquot sum $s(n) = \\sigma(n) - n$. An alternative definition `s_alt` sums directly over `Nat.properDivisors`, and an axiom asserts the two definitions agree for $n > 0$.",

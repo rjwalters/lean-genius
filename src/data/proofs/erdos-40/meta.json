@@ -30,42 +30,42 @@
       "title": "Imports and Setup",
       "summary": "Imports $\\texttt{Nat.Basic}$, $\\texttt{Real.Basic}$, $\\texttt{Real.Sqrt}$, $\\texttt{Set.Basic}$, and Mathlib tactics for formalizing the density conditions and representation counting.",
       "startLine": 22,
-      "endLine": 26
+      "endLine": 27
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "summary": "Defines $r_A(n) = |\\{(a,b) : a \\leq b,\\; a+b=n\\}|$, the counting function $A(N) = |A \\cap [1,N]|$, additive basis of order 2 ($r_A(n) \\geq 1$ eventually), and $\\texttt{RepUnbounded}$ ($\\limsup r_A(n) = \\infty$).",
       "startLine": 28,
-      "endLine": 46
+      "endLine": 47
     },
     {
       "id": "erdos-turan",
       "title": "Erdős-Turan Conjecture (Problem #28)",
       "summary": "States the 1941 conjecture: every additive basis of order 2 has $\\limsup r_A(n) = \\infty$. Declared as an axiom (OPEN).",
       "startLine": 48,
-      "endLine": 53
+      "endLine": 54
     },
     {
       "id": "problem-40",
       "title": "Problem #40: Strengthened Form",
       "summary": "Defines $\\texttt{HasDensity}(A, g)$: $A(N) \\geq c\\sqrt{N}/g(N)$. States Problem #40: for ALL $g \\to \\infty$, this density implies $\\limsup r_A(n) = \\infty$. $500 bounty.",
       "startLine": 55,
-      "endLine": 67
+      "endLine": 68
     },
     {
       "id": "connection-28",
       "title": "Connection to Problem #28",
       "summary": "Proves the logical implication: Problem #40 $\\Rightarrow$ Problem #28. Key insight: additive bases have $A(N) \\geq c\\sqrt{N} \\geq c\\sqrt{N}/g(N)$ for any divergent $g$.",
       "startLine": 69,
-      "endLine": 77
+      "endLine": 78
     },
     {
       "id": "partial-results",
       "title": "Known Partial Results",
       "summary": "Sidon set bound: $r_A(n) \\leq 1 \\Rightarrow A(N) \\leq (1+o(1))\\sqrt{N}$ (Erdős-Turán 1941, Lindström 1969). $B_2[g]$ bound: $r_A(n) \\leq g \\Rightarrow A(N) \\leq c_g\\sqrt{N}$. Shows $\\sqrt{N}$ is the natural threshold.",
       "startLine": 79,
-      "endLine": 94
+      "endLine": 95
     },
     {
       "id": "heuristic",

@@ -84,6 +84,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Module docstring documenting the problem statement, background, and references; single `import Mathlib` for full Mathlib access; `open` declarations (Finset BigOperators); namespace `Erdos1105`",
+      "mathContext": "The anti-Ramsey number $\\text{AR}(n,G)$ is the maximum number of colors in an edge-coloring of $K_n$ with no rainbow copy of $G$. Asks for exact formulas for cycles $C_k$ and paths $P_k$."
+    },
+    {
       "id": "graph-basics",
       "title": "Graph Basics",
       "summary": "SimpleGraph, EdgeSet, CompleteGraph, numEdgesKn, EdgeColoring, numColors",

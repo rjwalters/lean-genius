@@ -76,6 +76,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Module docstring documenting the problem statement, background, and references; 4 Mathlib imports covering required modules; `open` declarations (Finset); namespace `Erdos808`",
+      "mathContext": "Graph version of Erdős-Szemerédi sum-product: for a graph $G$ on $A$ with $n^{1+c}$ edges, is $\\max(|A +_G A|, |A \\cdot_G A|) \\geq n^{1+c-\\varepsilon}$? DISPROVED by Alon-Ruzsa-Solymosi (2020); positive result: $\\max \\geq m^{3/2} n^{-7/4}$."
+    },
+    {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 50,

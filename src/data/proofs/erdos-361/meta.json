@@ -98,7 +98,7 @@
       "id": "asymptotics",
       "title": "Asymptotic Growth",
       "startLine": 52,
-      "endLine": 60,
+      "endLine": 64,
       "summary": "Axiomatizes `maxNonRepr_bigO_bound` (existence of a big-O bound) and the plausible $\\Theta(\\sqrt{n})$ growth rate `maxNonRepr_plausible_theta` using Mathlib's `Asymptotics.IsTheta` and `Asymptotics.IsBigO` with `Filter.atTop`."
     },
     {

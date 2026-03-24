@@ -75,6 +75,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Module docstring documenting the problem statement, background, and references; single `import Mathlib` for full Mathlib access; `open` declarations (Finset); namespace `Erdos1030`",
+      "mathContext": "If R(k,ℓ) is the Ramsey number, prove the existence of some c > 0 such that: lim_{k→∞} R(k+1,k) / R(k,k) > 1 + c"
+    },
+    {
       "id": "ramsey-numbers",
       "title": "Ramsey Numbers",
       "summary": "Edge colorings of $K_n$ and the Ramsey property: $\\forall\\,\\text{col},\\; \\text{red } k\\text{-clique} \\lor \\text{blue } \\ell\\text{-clique}$",

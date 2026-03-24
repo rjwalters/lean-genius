@@ -68,6 +68,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Module docstring documenting the problem statement, background, and references; imports `Basic`, `Basic`, `Basic`; namespace `Erdos1058`",
+      "mathContext": "Let 2 = p₁ < p₂ < ... be the sequence of primes. Are there only finitely many n such that n ∈ [p_{k-1}, p_k) and the only primes dividing n!+1 are p_k and p_{k+1}?"
+    },
+    {
       "id": "prime-seq",
       "title": "Prime Sequence Definitions",
       "startLine": 32,

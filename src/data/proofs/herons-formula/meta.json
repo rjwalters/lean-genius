@@ -70,35 +70,35 @@
       "id": "main-theorem",
       "title": "Main Theorem: Heron's Formula (Wiedijk #57)",
       "startLine": 58,
-      "endLine": 100,
+      "endLine": 105,
       "summary": "States and proves $\\frac{1}{2}ab\\sin(\\angle p_1 p_2 p_3) = \\sqrt{s(s-a)(s-b)(s-c)}$ in abstract inner product spaces via `Theorems100.heron`. The theorem requires only that $p_1 \\neq p_2$ and $p_3 \\neq p_2$ (non-degeneracy)."
     },
     {
       "id": "definitions",
       "title": "Semi-perimeter and Heron Product",
       "startLine": 106,
-      "endLine": 126,
+      "endLine": 130,
       "summary": "Defines `semiperimeter(a,b,c) = (a+b+c)/2` and `heron_product(a,b,c) = s(s-a)(s-b)(s-c)` as noncomputable real-valued functions. Explains why each factor $s-a = (b+c-a)/2$ is non-negative by the triangle inequality."
     },
     {
       "id": "algebraic",
       "title": "Algebraic Expansion",
       "startLine": 131,
-      "endLine": 146,
+      "endLine": 151,
       "summary": "Proves $s(s-a)(s-b)(s-c) = \\frac{(a+b+c)(-a+b+c)(a-b+c)(a+b-c)}{16}$ and an alternative ordering, both via `ring`. This expansion avoids computing $s$ and is numerically more stable."
     },
     {
       "id": "examples",
       "title": "Worked Examples",
       "startLine": 152,
-      "endLine": 211,
+      "endLine": 216,
       "summary": "Verifies Heron's formula for three classic triangles: the **3-4-5** right triangle (area 6), the **equilateral** triangle with side 2 (area $\\sqrt{3}$), and the **5-12-13** right triangle (area 30). Uses `norm_num` for computation and `sqrt_sq` for square root simplification."
     },
     {
       "id": "triangle-inequality",
       "title": "Triangle Inequality and Non-negativity",
       "startLine": 217,
-      "endLine": 238,
+      "endLine": 243,
       "summary": "Proves that $s(s-a)(s-b)(s-c) \\geq 0$ for valid triangles satisfying the strict triangle inequality $a < b+c$, $b < a+c$, $c < a+b$. Each of the four factors is shown positive by `linarith`, then combined via `mul_nonneg`."
     },
     {

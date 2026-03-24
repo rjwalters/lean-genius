@@ -74,6 +74,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module docstring documenting the problem statement, background, and references; 5 Mathlib imports covering required modules; `open` declarations (Nat Finset BigOperators); namespace `Erdos433`",
+      "mathContext": "If A ⊂ ℕ is a finite set, let G(A) denote the greatest integer which is not expressible as a finite sum of elements from A (with repetitions allowed). Let g(k,n) = max G(A) where the maximum is over a"
+    },
+    {
       "id": "frobenius-number",
       "title": "The Frobenius Number",
       "summary": "Definition of numerical semigroups and G(A)",

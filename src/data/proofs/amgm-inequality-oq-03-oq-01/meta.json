@@ -79,6 +79,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 219,
+      "summary": "Module docstring documenting the problem statement, background, and references; 4 Mathlib imports covering required modules; universe/variable declarations; 3 definitions; 7 theorems",
+      "mathContext": "How do weighted power means $M_r(z,w) = (\\sum w_i z_i^r)^{1/r}$ interpolate between AM and GM? Proves monotonicity $M_r \\leq M_s$ for $r \\leq s$, with special cases HM $\\leq$ GM $\\leq$ AM."
+    },
+    {
       "id": "duality-identity",
       "title": "Algebraic Duality: M_r(z) = M_{-r}(z⁻¹)⁻¹",
       "startLine": 220,

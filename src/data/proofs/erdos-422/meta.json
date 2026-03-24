@@ -82,14 +82,14 @@
       "id": "definition",
       "title": "Core Definitions",
       "startLine": 28,
-      "endLine": 37,
+      "endLine": 41,
       "summary": "Defines `hofstadterF : ℕ → ℕ` via Lean's equation compiler with cases for $0$ (sentinel), $1$ (returns 1), $2$ (returns 1), and $n+3$ (recursive case: $f(n+3) = f(n+3 - f(n+2)) + f(n+3 - f(n+1))$). Defines `IsWellDefined n` as the predicate $\\forall k \\leq n, k \\geq 3 \\to f(k-1) < k \\wedge f(k-2) < k$, ensuring recursive indices stay positive. Marked `noncomputable` since well-definedness is not decidable."
     },
     {
       "id": "main-questions",
       "title": "Main Open Questions",
       "startLine": 42,
-      "endLine": 57,
+      "endLine": 62,
       "summary": "Axiomatizes four open questions: `erdos_422_well_defined` ($\\forall n, \\text{IsWellDefined}(n)$), `erdos_422_misses_infinitely` ($\\{m > 0 : \\forall n, f(n) \\neq m\\}$ is infinite via `Set.Infinite`), `erdos_422_surjectivity` ($f$ restricted to $\\mathbb{N}^+$ is not surjective via $\\neg$`Function.Surjective`), and `erdos_422_growth` ($f(n) \\leq (1+\\varepsilon)n$ for large $n$)."
     },
     {

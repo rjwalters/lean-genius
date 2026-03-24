@@ -29,7 +29,7 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 32,
-      "endLine": 36,
+      "endLine": 38,
       "summary": "Imports from Mathlib: `InnerProductSpace.Basic` for the Euclidean metric on $\\mathbb{R}^d$, `Data.Real.Sqrt` for $\\sqrt{12n-3}$ in Harborth's formula, and general tactics.",
       "mathContext": "Imports: `InnerProductSpace` for $\\|x - y\\|$, `Real.sqrt` for Harborth's $\\lfloor 3n - \\sqrt{12n-3} \\rfloor$."
     },
@@ -37,7 +37,7 @@
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 39,
-      "endLine": 53,
+      "endLine": 61,
       "summary": "Defines `SeparatedConfig d n` (points in $\\mathbb{R}^d$ with pairwise distance $\\ge 1$), `unitDistPairs` (edge count of unit-distance graph), and $f_d(n) = \\max$ unit pairs over all configurations.",
       "mathContext": "$f_d(n) = \\max \\{|\\{(i,j): \\|p_i - p_j\\| = 1\\}| : \\|p_i - p_j\\| \\geq 1\\}$ over $n$-point configs in $\\mathbb{R}^d$."
     },
@@ -45,7 +45,7 @@
       "id": "one-dimensional-setup",
       "title": "1D Configuration and Helpers",
       "startLine": 62,
-      "endLine": 72,
+      "endLine": 78,
       "summary": "Specialized `SeparatedConfig1D` using $\\mathbb{R}$ directly with $|x - y| \\ge 1$, avoiding the overhead of `EuclideanSpace ℝ (Fin 1)`. Enables direct absolute value case analysis.",
       "mathContext": "1D specialization: $|x_i - x_j| \\geq 1$ for $i \\neq j$, using $\\mathbb{R}$ directly."
     },
@@ -53,7 +53,7 @@
       "id": "triangle-lemma",
       "title": "1D Triangle Lemma (Proved)",
       "startLine": 79,
-      "endLine": 92,
+      "endLine": 99,
       "summary": "**Machine-verified**: If $|x-y| = |x-z| = 1$ and $|y-z| \\ge 1$, then $|y-z| = 2$. Unit neighbors of $x$ must be on opposite sides. Proof by 4-case analysis on signs of $x-y$ and $x-z$, using `abs_eq` and `linarith`.",
       "mathContext": "Proved: $|x-y| = |x-z| = 1 \\wedge |y-z| \\geq 1 \\Rightarrow |y-z| = 2$. I.e., $y = x-1, z = x+1$ or vice versa."
     },
@@ -61,7 +61,7 @@
       "id": "degree-bound",
       "title": "1D Degree Bound (Proved)",
       "startLine": 100,
-      "endLine": 126,
+      "endLine": 135,
       "summary": "**Machine-verified**: A point in $\\mathbb{R}$ cannot have 3 unit neighbors among separated points. Exhausts all $2^3 = 8$ sign combinations; in each case, pigeonhole forces two neighbors equal, contradicting separation $\\ge 1$.",
       "mathContext": "Proved: $\\deg(x) \\leq 2$ in the unit-distance graph. Exhaustive $2^3 = 8$ case analysis."
     },
@@ -69,7 +69,7 @@
       "id": "one-dimensional-exact",
       "title": "1D Exact Result: $f_1(n) = n-1$",
       "startLine": 136,
-      "endLine": 146,
+      "endLine": 150,
       "summary": "Upper bound: unit-distance graph is a forest ($\\le n-1$ edges). Achievability: $\\{0, 1, \\ldots, n-1\\}$ gives $n-1$ unit pairs. Combined: $f_1(n) = n-1$.",
       "mathContext": "$f_1(n) = n - 1$. Upper: max degree 2 gives forest ($\\leq n-1$ edges). Lower: $\\{0,1,\\ldots,n-1\\}$."
     },
@@ -77,7 +77,7 @@
       "id": "two-dimensional",
       "title": "Two-Dimensional Case",
       "startLine": 151,
-      "endLine": 166,
+      "endLine": 170,
       "summary": "Erdős's bound $f_2(n) < 3n - c\\sqrt{n}$, Harborth's exact formula $f_2(n) = \\lfloor 3n - \\sqrt{12n-3} \\rfloor$ (1974), triangular lattice optimality, and the trivial bound $f_2(n) < 3n$ from kissing number $\\tau(2) = 6$.",
       "mathContext": "$f_2(n) = \\lfloor 3n - \\sqrt{12n-3} \\rfloor$ (Harborth 1974). Trivial: $f_2(n) \\leq \\tau(2) \\cdot n/2 = 3n$."
     },
@@ -85,7 +85,7 @@
       "id": "three-dimensional",
       "title": "Three-Dimensional Case",
       "startLine": 171,
-      "endLine": 185,
+      "endLine": 189,
       "summary": "Leading coefficient $f_3(n)/n \\to 6$ from $\\tau(3) = 12$, Bezdek–Reid upper bound $f_3(n) < 6n - 0.926 n^{2/3}$ (2013), and Erdős's conjecture $f_3(n) = 6n - \\Theta(n^{2/3})$ — the central open question.",
       "mathContext": "Conjecture: $f_3(n) = 6n - \\Theta(n^{2/3})$. Known: $f_3(n) < 6n - 0.926n^{2/3}$ (Bezdek-Reid 2013)."
     },

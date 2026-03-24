@@ -92,14 +92,14 @@
       "id": "module-docstring",
       "title": "Module Documentation",
       "startLine": 5,
-      "endLine": 28,
+      "endLine": 34,
       "summary": "Documents the open question, the answer (yes!), the explicit formula, why it works (Bézout coefficients act as selectors), and proof status (0 sorries)."
     },
     {
       "id": "bezout-int",
       "title": "bezout_int: The Foundation",
       "startLine": 35,
-      "endLine": 65,
+      "endLine": 67,
       "summary": "Two theorems: bezout_int (restates the fundamental Bézout identity for integers) and coprime_bezout (specializes to gcd = 1 case, giving m*u + n*v = 1 via push_cast and linarith)."
     },
     {

@@ -29,42 +29,42 @@
       "id": "header-imports",
       "title": "Header and Imports",
       "startLine": 1,
-      "endLine": 22,
+      "endLine": 23,
       "summary": "Module docstring stating the Bleicher–Erdős bounds with iterated logarithm notation. Imports Mathlib for $\\mathbb{N}$, $\\mathbb{Q}$ (exact reciprocal sums), $\\mathbb{R}$ (asymptotics with $\\log N$), and tactics."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 24,
-      "endLine": 42,
+      "endLine": 43,
       "summary": "Three foundational definitions: **unitFractions** $\\{1/n : n \\in [N]\\}$, **HasDistinctReciprocalSums** requiring all $2^{|A|}$ subset sums over $\\mathbb{Q}$ to be distinct, and **maxDistinctReciprocal** $R(N) = \\max|A|$ over valid subsets of $[N]$."
     },
     {
       "id": "main-question",
       "title": "The Main Asymptotic Question",
       "startLine": 44,
-      "endLine": 50,
+      "endLine": 51,
       "summary": "States the problem: determine $R(N)$ asymptotically. Axiomatizes existence of a function $f$ with $R(N) = f(N)$ for $N \\geq 2$. The precise form of $f$ — whether $R(N) \\sim c \\cdot N/\\log N$ or involves iterated log corrections — is the open question."
     },
     {
       "id": "lower-bound",
       "title": "Bleicher–Erdős Lower Bound (1975)",
       "startLine": 52,
-      "endLine": 59,
+      "endLine": 60,
       "summary": "Lower bound: $R(N) \\geq (N/\\log N) \\cdot \\prod_{i=3}^k \\log_i N$ via a constructive argument using integers with controlled prime factorizations. Simplified in Lean to $R(N) \\geq N/\\log N$."
     },
     {
       "id": "upper-bound",
       "title": "Bleicher–Erdős Upper Bound (1976)",
       "startLine": 61,
-      "endLine": 66,
+      "endLine": 67,
       "summary": "Upper bound: $R(N) \\leq (1/\\log 2) \\cdot \\log_r N \\cdot (N/\\log N) \\cdot \\prod_{i=3}^r \\log_i N$, via a counting argument bounding distinct sums by $2^{|A|} \\leq \\text{lcm}(1,\\ldots,N)$. Simplified to $R(N) \\leq C \\cdot (N/\\log N) \\cdot \\log\\log N$."
     },
     {
       "id": "main-term",
       "title": "Main Term Summary",
       "startLine": 68,
-      "endLine": 74,
+      "endLine": 75,
       "summary": "Combined statement: $c_1 \\cdot N/\\log N \\leq R(N) \\leq c_2 \\cdot (N/\\log N) \\cdot \\log\\log N$. The gap is essentially one iterated logarithm factor — the entire content of the open problem."
     },
     {
