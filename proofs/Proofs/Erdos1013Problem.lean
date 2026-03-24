@@ -50,17 +50,19 @@ noncomputable def triangleFreeChromThreshold (k : ℕ) : ℕ :=
 
 /- ## Main Conjecture -/
 
-/-- **Erdős's Conjecture (Asymptotic)**: h₃(k) ~ c·k²·log k for some
-    constant c. Combined with known bounds, c ∈ [1/2, 1]. -/
-axiom erdos_1013_asymptotic :
+/-- **Erdős's Conjecture (Asymptotic, OPEN)**: h₃(k) ~ c·k²·log k for some
+    constant c. Combined with known bounds, c ∈ [1/2, 1].
+    Stated as a definition since this is an open problem. -/
+def Erdos1013Asymptotic : Prop :=
   ∃ c : ℝ, c > 0 ∧
     Filter.Tendsto
       (fun k => (triangleFreeChromThreshold k : ℝ) / ((k : ℝ) ^ 2 * Real.log k))
       Filter.atTop (nhds c)
 
-/-- **Ratio Convergence**: h₃(k+1)/h₃(k) → 1 as k → ∞.
-    The threshold grows smoothly without large jumps. -/
-axiom erdos_1013_ratio_convergence :
+/-- **Ratio Convergence (OPEN)**: h₃(k+1)/h₃(k) → 1 as k → ∞.
+    The threshold grows smoothly without large jumps.
+    Stated as a definition since this is part of the open problem. -/
+def Erdos1013RatioConvergence : Prop :=
   Filter.Tendsto
     (fun k => (triangleFreeChromThreshold (k + 1) : ℝ) /
               (triangleFreeChromThreshold k : ℝ))
@@ -82,9 +84,13 @@ axiom upper_bound :
     (triangleFreeChromThreshold k : ℝ) ≤ (1 + ε) * (k : ℝ) ^ 2 * Real.log k
 
 /-- **Graver–Yackel** (1968): h₃(k) ≫ (log k / log log k)·k².
-    Early lower bound using probabilistic deletion. -/
+    Early lower bound using probabilistic deletion.
+
+    Note: The previous statement used `c > 0 →` (implication) inside
+    the existential, making it trivially true by picking c ≤ 0.
+    Fixed to use `c > 0 ∧` (conjunction). -/
 axiom graver_yackel_bound :
-  ∃ c : ℝ, c > 0 → ∃ K : ℕ, ∀ k : ℕ, k ≥ K →
+  ∃ c : ℝ, c > 0 ∧ ∃ K : ℕ, ∀ k : ℕ, k ≥ K →
     (triangleFreeChromThreshold k : ℝ) ≥
       c * (k : ℝ) ^ 2 * Real.log k / Real.log (Real.log k)
 
@@ -119,3 +125,35 @@ axiom threshold_four :
 axiom mycielski_construction :
   ∀ k : ℕ, k ≥ 2 → ∃ n : ℕ, ∃ G : SimpleGraph (Fin n),
     IsTriangleFree G ∧ ¬HasProperColoring G (k - 1)
+
+/- ## Proved Results -/
+
+/-- **Any graph can be n-colored using n colors** (one color per vertex). -/
+theorem trivial_n_coloring (n : ℕ) (G : SimpleGraph (Fin n)) :
+    HasProperColoring G n := by
+  exact ⟨id, fun u v hadj => G.ne_of_adj hadj⟩
+
+/-- **Proper coloring monotonicity:** if G has a k-coloring, it has a (k+1)-coloring. -/
+theorem coloring_monotone (n k : ℕ) (G : SimpleGraph (Fin n))
+    (h : HasProperColoring G k) : HasProperColoring G (k + 1) := by
+  obtain ⟨f, hf⟩ := h
+  exact ⟨fun v => (f v).castSucc, fun u v hadj => by
+    simp [Fin.castSucc]
+    exact hf u v hadj⟩
+
+/-- **The empty graph (0 vertices) is trivially k-colorable for any k.** -/
+theorem empty_graph_colorable (k : ℕ) (G : SimpleGraph (Fin 0)) :
+    HasProperColoring G k := by
+  exact ⟨fun v => v.elim0, fun v => v.elim0⟩
+
+/-- **The empty graph is triangle-free.** -/
+theorem empty_graph_triangle_free (G : SimpleGraph (Fin 0)) :
+    IsTriangleFree G := by
+  intro ⟨a, _, _, _, _, _, _⟩
+  exact a.elim0
+
+/-- **A single-vertex graph is triangle-free.** -/
+theorem single_vertex_triangle_free (G : SimpleGraph (Fin 1)) :
+    IsTriangleFree G := by
+  intro ⟨a, b, _, hab, _, _, _⟩
+  exact absurd (Subsingleton.elim a b) hab

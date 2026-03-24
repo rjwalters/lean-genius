@@ -57,9 +57,9 @@
       "perfectSquares and erdos_graham_squares_conjecture for sparse denominators",
       "greedy_implies_representable connecting termination to representability"
     ],
-    "axiomCount": 8,
-    "lineCount": 112,
-    "assumptions": "8 axioms: greedyStep, greedyStep_mem, greedyStep_le, and 5 more. See Lean source for complete statements."
+    "axiomCount": 4,
+    "lineCount": 137,
+    "assumptions": "4 axioms: greedyStep (function definition), greedyStep_mem and greedyStep_le (properties), fibonacci_greedy_terminates (Fibonacci 1202). Open conjectures converted to definitions."
   },
   "sections": [
     {

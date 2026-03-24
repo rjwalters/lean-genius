@@ -101,13 +101,28 @@ axiom kovari_sos_turan_C4 :
       (∀ C4 : CycleFour G, False) →
         (G.edgeFinset.card : ℝ) ≤ C * (n : ℝ) ^ (3 / 2 : ℝ)
 
-/-- **Dense graphs contain C₄s:**
-    Any graph with Ω(n²) edges must contain at least one C₄.
-    This is a consequence of Kővári-Sós-Turán. -/
-axiom dense_graph_has_C4 (n : ℕ) (hn : 2 ≤ n) (ε : ℝ) (hε : ε > 0)
-    (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
-    (hd : ε * (n : ℝ) ^ 2 ≤ (G.edgeFinset.card : ℝ)) :
-  ∃ C4 : CycleFour G, True
+/-- **Dense graphs contain C₄s (for large n):**
+    For any ε > 0, all sufficiently large C₄-free graphs have fewer than
+    εn² edges. Contrapositively: dense graphs on large vertex sets must
+    contain C₄s. This follows from KST by the arithmetic:
+    C·n^{3/2} < ε·n² when n > (C/ε)².
+
+    Note: The previous axiom `dense_graph_has_C4` claimed this for ALL
+    n ≥ 2, but that's too strong (a 2-vertex graph with 1 edge can have
+    ε·4 ≤ 1 for small ε, yet has no C₄). The correct version requires
+    n sufficiently large (depending on ε and the KST constant C). -/
+theorem dense_graph_has_C4_large_n (ε : ℝ) (hε : ε > 0) :
+    ∃ N₀ : ℕ, ∀ (n : ℕ) (hn : N₀ ≤ n)
+      (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
+      (hd : ε * (n : ℝ) ^ 2 ≤ (G.edgeFinset.card : ℝ)),
+    ∃ _C4 : CycleFour G, True := by
+  -- From KST: ∃ C > 0, C₄-free ⟹ |E| ≤ C·n^{3/2}
+  -- For n > (C/ε)²: ε·n² > C·n^{3/2}, so a graph with ≥ εn² edges
+  -- cannot be C₄-free. The N₀ depends on C and ε.
+  obtain ⟨C, hC_pos, hKST⟩ := kovari_sos_turan_C4
+  -- We need N₀ such that for n ≥ N₀: C·n^{3/2} < ε·n²
+  -- i.e., C < ε·n^{1/2}, i.e., n > (C/ε)²
+  sorry
 
 -- ## Part V: Structural Observations
 
@@ -117,5 +132,35 @@ theorem c4_free_vacuously_rainbow
     (hfree : ∀ C4 : CycleFour G, False) :
     IsRainbowC4Coloring G χ :=
   fun C => False.elim (hfree C)
+
+/-- **Any witness graph for Problem 810 must contain C₄s.**
+    If a graph G has εn² edges and admits a rainbow-C₄ coloring, then for
+    large n it must contain C₄s (since C₄-free graphs have O(n^{3/2}) edges).
+    The rainbow condition is non-vacuous. -/
+theorem witness_must_contain_C4 (ε : ℝ) (hε : ε > 0) :
+    ∃ N₀ : ℕ, ∀ (n : ℕ) (hn : N₀ ≤ n)
+      (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
+      (hd : ε * (n : ℝ) ^ 2 ≤ (G.edgeFinset.card : ℝ))
+      (_χ : EdgeColoringN G) (_hR : IsRainbowC4Coloring G _χ),
+    ∃ _C4 : CycleFour G, True := by
+  obtain ⟨N₀, hN⟩ := dense_graph_has_C4_large_n ε hε
+  exact ⟨N₀, fun n hn G _ hd _ _ => hN n hn G hd⟩
+
+/-- **Rainbow C₄ requires n ≥ 4.**
+    To have a C₄ with 4 distinct colors from Fin n, we need n ≥ 4. -/
+theorem rainbow_C4_needs_4_colors {m : ℕ} (G : SimpleGraph (Fin m))
+    (χ : EdgeColoringN G) (C : CycleFour G)
+    (hR : C.isRainbow χ) : 4 ≤ m := by
+  -- The 4 colors are in Fin m, and they form a set of size 4
+  unfold CycleFour.isRainbow at hR
+  -- A Finset of Fin m with card = 4 implies Fin m has ≥ 4 elements
+  have : (Finset.univ : Finset (Fin m)).card = m := Finset.card_fin m
+  have h4 : ({χ C.v₁ C.v₂ C.edge12, χ C.v₂ C.v₃ C.edge23,
+              χ C.v₃ C.v₄ C.edge34, χ C.v₄ C.v₁ C.edge41} : Finset (Fin m)).card = 4 := hR
+  have hsub : {χ C.v₁ C.v₂ C.edge12, χ C.v₂ C.v₃ C.edge23,
+               χ C.v₃ C.v₄ C.edge34, χ C.v₄ C.v₁ C.edge41} ⊆ Finset.univ :=
+    Finset.subset_univ _
+  have := Finset.card_le_card hsub
+  omega
 
 end Erdos810

@@ -1,7 +1,7 @@
 {
   "slug": "erdos-681",
   "title": "Erdős #681",
-  "phase": "OBSERVE",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-01-14T19:46:33.193Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,11 +29,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Full survey of Erdős #681. Added 4 new structural theorems (all proved). k=1 resolves conjecture whenever n+1 composite; the hard case is n+1 prime. Constraint k^(2d) < n+k proved. 21 theorems, 0 sorries, 0 axioms, 246 lines.",
+    "builtItems": [
+      "k1_resolves_all_d: k=1 works for ALL d when n+1 composite (proved)",
+      "general_d1_at_composite_succ: d=1 generalization at composite successors (proved)",
+      "conjecture_at_composite_succ: d=2 conjecture at composite successors (proved)",
+      "hard_case_constraint: when k >= 2, forces k^(2d) < n+k (proved)",
+      "All 21 theorems fully proved, 0 sorries, 0 axioms"
+    ],
+    "insights": [
+      "k=1 trivially resolves the conjecture for ALL d whenever n+1 is composite (p(m) >= 2 > 1^d)",
+      "The conjecture is open ONLY for n where n+1 is prime (n = p-1 for some prime p)",
+      "For k >= 2: the constraint forces k^(2d) < n+k, bounding k to roughly n^(1/(2d))",
+      "The d=0 case is trivially true (k=n gives 2n composite, p(2n) >= 2 > 1)",
+      "Connected to problems 680 (p(n+k) > k^2+1) and 682 (rough numbers in prime gaps, solved by Gafni-Tao 2025)",
+      "Infrastructure is complete: leastPrimeFactor, IsLeastPrimeFactor, uniqueness, sqrt bound all proved from Mathlib"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "The open part: prove existence of k for n with n+1 prime (requires sieve theory or prime gap bounds)",
+      "Connect to Cramér conjecture: if gaps are O(log²p), then k can be bounded",
+      "Investigate computational evidence for small n with n+1 prime"
+    ],
     "markdown": "# Erdős #681 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for all large $n$ there exists $k$ such that $n+k$ is composite and\\[p(n+k)>k^2,\\]where $p(m)$ is the least prime factor of $m$?\n\n\n\nRelated to questions of Erd\\H{o}s, Eggleton, and Selfridge. This may be true with $k^2$ replaced by $k^d$ for any $d$.\n\nSee also [680] and [682].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #680\n- Problem #682\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er7d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "tags": [
@@ -50,15 +67,15 @@
     "mathlib": []
   },
   "started": "2026-01-14T19:46:33.194Z",
-  "lastUpdate": "2026-03-13T07:52:17.051Z",
+  "lastUpdate": "2026-03-24T15:00:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos681Problem.lean",
       "filename": "Erdos681Problem.lean",
-      "lineCount": 200,
-      "theoremCount": 17,
+      "lineCount": 246,
+      "theoremCount": 21,
       "axiomCount": 0,
       "defCount": 4,
       "sorryCount": 0,
