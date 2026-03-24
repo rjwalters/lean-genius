@@ -37,6 +37,7 @@ import Mathlib.Data.Int.ModEq
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Order.Filter.Basic
+import Mathlib.Order.LiminfLimsup
 import Mathlib.NumberTheory.Harmonic.EulerMascheroni
 import Mathlib.Tactic
 
@@ -82,10 +83,52 @@ theorem tendsto_harmonic_div_log :
 noncomputable def logWeightedCount (A : Set ℕ) (N : ℕ) : ℝ :=
   ∑ n ∈ range (N + 1), if n ∈ A ∧ n ≠ 0 then (1 : ℝ) / n else 0
 
+/-- The weighted count is non-negative (sum of non-negative terms). -/
+theorem logWeightedCount_nonneg (A : Set ℕ) (N : ℕ) : 0 ≤ logWeightedCount A N := by
+  unfold logWeightedCount
+  apply Finset.sum_nonneg
+  intro n _
+  split_ifs
+  · exact div_nonneg zero_le_one (Nat.cast_nonneg _)
+  · exact le_refl _
+
+/-- Monotonicity: if A ⊆ B then the weighted count of A is at most that of B. -/
+theorem logWeightedCount_mono {A B : Set ℕ} (h : A ⊆ B) (N : ℕ) :
+    logWeightedCount A N ≤ logWeightedCount B N := by
+  unfold logWeightedCount
+  apply Finset.sum_le_sum
+  intro n _
+  by_cases hA : n ∈ A ∧ n ≠ 0
+  · have hB : n ∈ B ∧ n ≠ 0 := ⟨h hA.1, hA.2⟩
+    simp [hA, hB]
+  · simp only [if_neg hA]
+    split_ifs
+    · exact div_nonneg zero_le_one (Nat.cast_nonneg _)
+    · exact le_refl _
+
 /-- The logarithmic density ratio: (Σ_{n ∈ A, n ≤ N} 1/n) / log(N). -/
 noncomputable def logDensityRatio (A : Set ℕ) (N : ℕ) : ℝ :=
   if N ≤ 1 then 0
   else logWeightedCount A N / Real.log N
+
+/-- The density ratio is non-negative for all N. -/
+theorem logDensityRatio_nonneg (A : Set ℕ) (N : ℕ) : 0 ≤ logDensityRatio A N := by
+  unfold logDensityRatio
+  split_ifs with h
+  · exact le_refl _
+  · apply div_nonneg (logWeightedCount_nonneg A N)
+    exact le_of_lt (Real.log_pos (by exact_mod_cast (show 1 < N from by omega)))
+
+/-- Monotonicity: if A ⊆ B then logDensityRatio A N ≤ logDensityRatio B N. -/
+theorem logDensityRatio_mono {A B : Set ℕ} (h : A ⊆ B) (N : ℕ) :
+    logDensityRatio A N ≤ logDensityRatio B N := by
+  unfold logDensityRatio
+  split_ifs with hN
+  · exact le_refl _
+  · have hlog : 0 < Real.log (N : ℝ) :=
+      Real.log_pos (by exact_mod_cast (show 1 < N from by omega))
+    rw [div_eq_mul_inv, div_eq_mul_inv]
+    exact mul_le_mul_of_nonneg_right (logWeightedCount_mono h N) (inv_nonneg.mpr hlog.le)
 
 /-- A set A has logarithmic density d if lim_{N→∞} logDensityRatio(A, N) = d. -/
 def HasLogDensity (A : Set ℕ) (d : ℝ) : Prop :=
@@ -98,15 +141,6 @@ noncomputable def upperLogDensity (A : Set ℕ) : ℝ :=
 /-- The lower logarithmic density (liminf). -/
 noncomputable def lowerLogDensity (A : Set ℕ) : ℝ :=
   liminf (logDensityRatio A) atTop
-
-/-- **Axiom: Log density exists iff upper = lower**.
-
-Standard characterization: A limit exists iff limsup = liminf = that value.
-
-**Proof status**: HARD (~50 lines) - requires Filter.Tendsto_iff_limsup_liminf
-or similar Mathlib lemma about limit characterization. -/
-axiom hasLogDensity_iff_eq (A : Set ℕ) (d : ℝ) :
-    HasLogDensity A d ↔ upperLogDensity A = d ∧ lowerLogDensity A = d
 
 /- ## Part II: Residue-Avoiding Sets -/
 
@@ -196,6 +230,34 @@ theorem logWeightedCount_full (N : ℕ) :
   · simp only [harmonic, one_div]; push_cast; rfl
   · intro x _ y _ h; have : x + 1 = y + 1 := h; omega
 
+/-- The weighted count of any set is at most the harmonic sum. -/
+theorem logWeightedCount_le_harmonicSum (A : Set ℕ) (N : ℕ) :
+    logWeightedCount A N ≤ harmonicSum N := by
+  rw [← logWeightedCount_full]
+  unfold logWeightedCount
+  apply Finset.sum_le_sum
+  intro n _
+  by_cases hA : n ∈ A ∧ n ≠ 0
+  · -- n ∈ A and n ≠ 0: both ifs evaluate to 1/n
+    have hU : n ∈ (Set.univ \ {0}) ∧ n ≠ 0 :=
+      ⟨Set.mem_diff_singleton.mpr ⟨Set.mem_univ n, hA.2⟩, hA.2⟩
+    simp [hA, hU]
+  · -- n ∉ A or n = 0: first if is 0, second is ≥ 0
+    simp only [if_neg hA]
+    split_ifs
+    · positivity
+    · exact le_refl _
+
+/-- The density ratio is bounded by harmonicSum N / log N. -/
+theorem logDensityRatio_le_harmonic_ratio (A : Set ℕ) (N : ℕ) (hN : 2 ≤ N) :
+    logDensityRatio A N ≤ harmonicSum N / Real.log (N : ℝ) := by
+  unfold logDensityRatio
+  simp only [show ¬(N ≤ 1) by omega, if_false]
+  have hlog : 0 < Real.log (N : ℝ) :=
+    Real.log_pos (by exact_mod_cast (show 1 < N from by omega))
+  rw [div_eq_mul_inv, div_eq_mul_inv]
+  exact mul_le_mul_of_nonneg_right (logWeightedCount_le_harmonicSum A N) (inv_nonneg.mpr hlog.le)
+
 /-- The full set of positive integers has log density 1.
     This uses that Σ_{n≤N} 1/n ~ log(N). -/
 theorem logDensity_full : HasLogDensity (Set.univ \ {0}) 1 := by
@@ -207,26 +269,70 @@ theorem logDensity_full : HasLogDensity (Set.univ \ {0}) 1 := by
     rw [logWeightedCount_full]
   exact Tendsto.congr' h_eq tendsto_harmonic_div_log
 
-/-- **Axiom: Log density ratio is bounded asymptotically**.
+/-- The density ratio is eventually bounded above: it converges to at most 1,
+    so it is eventually below 2. (The previous axiom claiming ratio ≤ 1 for all
+    N ≥ 2 was incorrect since H_N / log N > 1 for all finite N.) -/
+theorem logDensityRatio_eventually_le_two (A : Set ℕ) :
+    ∀ᶠ N in atTop, logDensityRatio A N ≤ 2 := by
+  have h_tend := tendsto_harmonic_div_log
+  have h_ev : ∀ᶠ n in atTop, harmonicSum n / Real.log (↑n) < 2 :=
+    h_tend.eventually (Iio_mem_nhds (by norm_num : (1 : ℝ) < 2))
+  filter_upwards [h_ev, eventually_ge_atTop 2] with n hn hN
+  exact le_trans (logDensityRatio_le_harmonic_ratio A n hN) (le_of_lt hn)
 
-For large N, 0 ≤ logDensityRatio A N ≤ 1 + o(1).
+/-- The density ratio is bounded in [0, 2] for all sufficiently large N. -/
+theorem logDensityRatio_bounded_eventually (A : Set ℕ) :
+    ∀ᶠ N in atTop, 0 ≤ logDensityRatio A N ∧ logDensityRatio A N ≤ 2 := by
+  filter_upwards [logDensityRatio_eventually_le_two A] with N hN
+  exact ⟨logDensityRatio_nonneg A N, hN⟩
 
-**Note**: For small N, this may fail since H_N > log N. The bound
-becomes accurate asymptotically. A more precise statement would use
-Filter.Eventually.
+/-- logDensityRatio is bounded under atTop (needed for limsup arguments). -/
+theorem logDensityRatio_isBoundedUnder (A : Set ℕ) :
+    Filter.IsBoundedUnder (· ≤ ·) atTop (logDensityRatio A) :=
+  ⟨2, logDensityRatio_eventually_le_two A⟩
 
-**Proof status**: HARD - requires careful analysis of harmonic sum bounds. -/
-axiom logDensityRatio_bounded (A : Set ℕ) (N : ℕ) (hN : 2 ≤ N) :
-    0 ≤ logDensityRatio A N ∧ logDensityRatio A N ≤ 1
+/-- logDensityRatio is cobounded under atTop (needed for limsup arguments). -/
+theorem logDensityRatio_isCoboundedUnder (A : Set ℕ) :
+    Filter.IsCoboundedUnder (· ≤ ·) atTop (logDensityRatio A) := by
+  use 0
+  intro a ha
+  by_contra hlt
+  push_neg at hlt
+  simp only [Filter.eventually_map] at ha
+  obtain ⟨N, hN⟩ := ha.exists
+  linarith [logDensityRatio_nonneg A N]
 
-/-- **Axiom: Monotonicity of upper log density**.
+/-- logDensityRatio is bounded below under atTop (needed for tendsto arguments). -/
+theorem logDensityRatio_isBoundedUnder_ge (A : Set ℕ) :
+    Filter.IsBoundedUnder (· ≥ ·) atTop (logDensityRatio A) := by
+  refine ⟨0, ?_⟩
+  simp only [Filter.eventually_map]
+  exact Eventually.of_forall (fun N => logDensityRatio_nonneg A N)
 
-If A ⊆ B then upperLogDensity A ≤ upperLogDensity B.
+/-- Monotonicity of upper log density: if A ⊆ B then
+    upperLogDensity A ≤ upperLogDensity B. -/
+theorem upperLogDensity_mono {A B : Set ℕ} (h : A ⊆ B) :
+    upperLogDensity A ≤ upperLogDensity B := by
+  unfold upperLogDensity
+  exact Filter.limsup_le_limsup
+    (Eventually.of_forall (fun N => logDensityRatio_mono h N))
+    (logDensityRatio_isCoboundedUnder A)
+    (logDensityRatio_isBoundedUnder B)
 
-**Proof status**: HARD (~30 lines) - requires showing logWeightedCount is monotone,
-then using limsup monotonicity. -/
-axiom upperLogDensity_mono {A B : Set ℕ} (h : A ⊆ B) :
-    upperLogDensity A ≤ upperLogDensity B
+/-- Log density exists iff upper and lower log densities both equal d.
+    Forward: Tendsto → limsup = liminf = d (via Mathlib).
+    Backward: limsup = liminf = d → Tendsto (standard characterization). -/
+theorem hasLogDensity_iff_eq (A : Set ℕ) (d : ℝ) :
+    HasLogDensity A d ↔ upperLogDensity A = d ∧ lowerLogDensity A = d := by
+  unfold HasLogDensity upperLogDensity lowerLogDensity
+  constructor
+  · intro h
+    exact ⟨h.limsup_eq, h.liminf_eq⟩
+  · intro ⟨hsup, hinf⟩
+    exact tendsto_of_le_liminf_of_limsup_le
+      (le_of_eq hinf.symm) (le_of_eq hsup)
+      (logDensityRatio_isBoundedUnder A)
+      (logDensityRatio_isBoundedUnder_ge A)
 
 /- ## Part V: Examples -/
 
