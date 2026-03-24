@@ -29,11 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED+: Proved additive_ae_unique from additive_zero_ae in parent file (axioms: 6→5). Extension survey: Pexider, multiplicative, and Jensen equations are natural targets.",
+    "builtItems": [
+      "Proved additive_ae_unique: g₁-g₂ additive + ae_eq → sub_eq_zero",
+      "Reduced parent axiom count from 6 to 5"
+    ],
+    "insights": [
+      "additive_ae_unique follows from additive_zero_ae via Pi.sub + sub_eq_zero",
+      "Parent file uses custom ae_holds/ae_pairs definitions rather than Mathlib Filter.Eventually API",
+      "Natural extension targets: Pexider equation f(x+y)=g(x)+h(y), multiplicative f(xy)=f(x)f(y), Jensen f((x+y)/2)=(f(x)+f(y))/2",
+      "Key axioms remaining: de_bruijn_jurkat_theorem (deep), continuous/measurable_additive_is_linear (classical, possibly in Mathlib)"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove continuous_additive_is_linear from Mathlib (bridge IsAdditive to AddMonoidHom)",
+      "Formalize Pexider almost-equation extension as new oq file",
+      "Consider proving measurable_additive_is_linear via Mathlib Measurable + additive"
+    ]
   },
   "tags": [
     "erdos",
