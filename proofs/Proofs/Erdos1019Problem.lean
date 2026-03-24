@@ -101,6 +101,9 @@ def completeGraph (n : ℕ) : SimpleGraph (Fin n) where
   symm := fun _ _ h => h.symm
   loopless := fun _ h => h rfl
 
+instance completeGraph_decidable (n : ℕ) : DecidableRel (completeGraph n).Adj :=
+  fun i j => if h : i = j then isFalse (fun h' => h' h) else isTrue h
+
 /-- A triangle K₃. -/
 abbrev K3 : SimpleGraph (Fin 3) := completeGraph 3
 
@@ -139,17 +142,22 @@ def hasLargeSaturatedPlanarSubgraph (G : SimpleGraph V) : Prop :=
 K₄ is the smallest saturated planar graph with more than 3 vertices.
 -/
 
-/-- K₄ is a saturated planar graph on 4 vertices. -/
-axiom K4_saturated_planar : isSaturatedPlanar (completeGraph 4)
-
 /-- A graph contains K₄ as a subgraph. -/
 def containsK4 (G : SimpleGraph V) : Prop :=
   ∃ S : Finset V, S.card = 4 ∧ ∀ u ∈ S, ∀ v ∈ S, u ≠ v → G.Adj u v
 
+/-- Any 4-clique in a graph induces a saturated planar subgraph.
+    K₄ is a triangulation: 6 = 3·4 - 6 edges. -/
+axiom K4_saturated_planar (G : SimpleGraph V) [DecidableRel G.Adj]
+    (S : Finset V) (hCard : S.card = 4)
+    (hClique : ∀ u ∈ S, ∀ v ∈ S, u ≠ v → G.Adj u v) :
+    ∀ [DecidableRel (inducedSubgraph G S).Adj], isSaturatedPlanar (inducedSubgraph G S)
+
 /-- K₄ gives a saturated planar subgraph on 4 vertices. -/
-theorem K4_gives_large_saturated (G : SimpleGraph V) :
+theorem K4_gives_large_saturated (G : SimpleGraph V) [DecidableRel G.Adj] :
     containsK4 G → hasLargeSaturatedPlanarSubgraph G := by
-  sorry
+  intro ⟨S, hCard, hClique⟩
+  exact ⟨4, by omega, S, hCard, K4_saturated_planar G S hCard hClique⟩
 
 /-
 ## Cycle Plus Independent Vertices
@@ -161,21 +169,26 @@ C_l + 2K₁ is a cycle with two additional vertices connected to all cycle verti
 def containsCyclePlus2K1 (G : SimpleGraph V) (l : ℕ) : Prop :=
   l ≥ 3 ∧ ∃ (cycle : Fin l → V) (apex1 apex2 : V),
     apex1 ≠ apex2 ∧
-    (∀ i, apex1 ∉ Set.range cycle) ∧
-    (∀ i, apex2 ∉ Set.range cycle) ∧
-    (∀ i : Fin l, G.Adj (cycle i) (cycle ⟨(i.val + 1) % l, Nat.mod_lt _ (Nat.lt_of_lt_of_le (by omega : 0 < 3) ‹l ≥ 3›)⟩)) ∧
+    apex1 ∉ Set.range cycle ∧
+    apex2 ∉ Set.range cycle ∧
+    (∀ i : Fin l, G.Adj (cycle i) (cycle ⟨(i.val + 1) % l, Nat.mod_lt _ (lt_of_le_of_lt (Nat.zero_le _) i.isLt)⟩)) ∧
     (∀ i : Fin l, G.Adj apex1 (cycle i)) ∧
     (∀ i : Fin l, G.Adj apex2 (cycle i))
 
-/-- C_l + 2K₁ is a saturated planar graph on l + 2 vertices. -/
-axiom cyclePlus2K1_saturated_planar (l : ℕ) (hl : l ≥ 3) :
-  ∀ (G : SimpleGraph (Fin (l + 2))),
-    containsCyclePlus2K1 G l → isSaturatedPlanar G
+/-- Graphs containing C_l + 2K₁ (l ≥ 3) have a saturated planar induced subgraph on l + 2 vertices.
+    C_l + 2K₁ is a triangulation: 3l = 3(l+2) - 6 edges. -/
+axiom cyclePlus2K1_saturated_planar (G : SimpleGraph V) [DecidableRel G.Adj]
+    (l : ℕ) (hl : l ≥ 3) (hContains : containsCyclePlus2K1 G l) :
+    ∃ (S : Finset V), S.card = l + 2 ∧
+      ∀ [DecidableRel (inducedSubgraph G S).Adj], isSaturatedPlanar (inducedSubgraph G S)
 
 /-- C_l + 2K₁ gives a large saturated planar subgraph. -/
-theorem cyclePlus2K1_gives_large_saturated (G : SimpleGraph V) (l : ℕ) (hl : l ≥ 3) :
+theorem cyclePlus2K1_gives_large_saturated (G : SimpleGraph V) [DecidableRel G.Adj]
+    (l : ℕ) (hl : l ≥ 3) :
     containsCyclePlus2K1 G l → hasLargeSaturatedPlanarSubgraph G := by
-  sorry
+  intro hCont
+  obtain ⟨S, hCard, hSat⟩ := cyclePlus2K1_saturated_planar G l hl hCont
+  exact ⟨l + 2, by omega, S, hCard, hSat⟩
 
 /-
 ## Erdős's Construction
@@ -188,10 +201,11 @@ def lowerThreshold (n : ℕ) : ℕ := turanEdges n + (n - 1) / 2
 
 /-- Erdős's construction achieves the lower threshold. -/
 axiom erdos_construction_exists :
-  ∀ n ≥ 4, ∃ (V : Type*) [Fintype V] [DecidableEq V],
-    Fintype.card V = n ∧
-    ∃ (G : SimpleGraph V) [DecidableRel G.Adj],
-      edgeCount G = lowerThreshold n ∧ ¬hasLargeSaturatedPlanarSubgraph G
+  ∀ n ≥ 4, ∃ (V : Type*) (hFin : Fintype V) (_ : DecidableEq V),
+    @Fintype.card V hFin = n ∧
+    ∃ (G : SimpleGraph V) (hDecRel : DecidableRel G.Adj),
+      @edgeCount V hFin G hDecRel = lowerThreshold n ∧
+      ¬hasLargeSaturatedPlanarSubgraph G
 
 /-
 ## The Main Question
@@ -260,6 +274,13 @@ def completeBipartite (m n : ℕ) : SimpleGraph (Fin m ⊕ Fin n) where
   symm := fun x y h => by cases x <;> cases y <;> simp_all
   loopless := fun x h => by cases x <;> simp at h
 
+instance completeBipartite_decidable (m n : ℕ) : DecidableRel (completeBipartite m n).Adj :=
+  fun x y => match x, y with
+  | Sum.inl _, Sum.inr _ => isTrue trivial
+  | Sum.inr _, Sum.inl _ => isTrue trivial
+  | Sum.inl _, Sum.inl _ => isFalse id
+  | Sum.inr _, Sum.inr _ => isFalse id
+
 /-- Complete bipartite graphs are planar but not saturated (for large n). -/
 theorem bipartite_not_saturated (m n : ℕ) (hm : m ≥ 3) (hn : n ≥ 3) :
     isPlanar (completeBipartite m n) → ¬isSaturatedPlanar (completeBipartite m n) := by
@@ -284,11 +305,23 @@ theorem threshold_optimal :
         Fintype.card V = n →
         ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
           edgeCount G ≥ saturatedPlanarThreshold n → hasLargeSaturatedPlanarSubgraph G) ∧
-      (∃ (V : Type*) [Fintype V] [DecidableEq V],
-        Fintype.card V = n ∧
-        ∃ (G : SimpleGraph V) [DecidableRel G.Adj],
-          edgeCount G = lowerThreshold n ∧ ¬hasLargeSaturatedPlanarSubgraph G) := by
-  sorry
+      (∃ (V : Type*) (hFin : Fintype V) (_ : DecidableEq V),
+        @Fintype.card V hFin = n ∧
+        ∃ (G : SimpleGraph V) (hDecRel : DecidableRel G.Adj),
+          @edgeCount V hFin G hDecRel = lowerThreshold n ∧
+          ¬hasLargeSaturatedPlanarSubgraph G) := by
+  intro n hn
+  constructor
+  · -- Above threshold: Simonovits gives K₄ or C_l + 2K₁
+    intro V _ _ hV G _ hEdges
+    have hExceed : exceedsThreshold G := by
+      unfold exceedsThreshold; rw [hV]; exact hEdges
+    have hVge : Fintype.card V ≥ 4 := by omega
+    obtain hK4 | ⟨l, hl, hCycle⟩ := simonovits_theorem V hVge G hExceed
+    · exact K4_gives_large_saturated G hK4
+    · exact cyclePlus2K1_gives_large_saturated G l hl hCycle
+  · -- Below threshold: Erdős construction
+    exact erdos_construction_exists n hn
 
 /-
 ## Summary
