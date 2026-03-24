@@ -18,10 +18,7 @@ exact growth of consecutive differences remains open.
 Reference: https://erdosproblems.com/544
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Rat.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Ramsey number R(3, k) -/
 
@@ -29,9 +26,6 @@ import Mathlib.Tactic
     contains either a red triangle or a blue Kₖ.
     Axiomatised with its defining property. -/
 axiom ramsey3 : ℕ → ℕ
-
-/-- R(3, k) is at least 6 for k ≥ 3 (since R(3,3) = 6). -/
-axiom ramsey3_ge_six (k : ℕ) (hk : 3 ≤ k) : 6 ≤ ramsey3 k
 
 /-- R(3, k) is monotone increasing: R(3, k) ≤ R(3, k+1). -/
 axiom ramsey3_mono (k : ℕ) : ramsey3 k ≤ ramsey3 (k + 1)
@@ -59,6 +53,12 @@ axiom ramsey3_val_8 : ramsey3 8 = 28
 /-- R(3, 9) = 36. -/
 axiom ramsey3_val_9 : ramsey3 9 = 36
 
+/- ## Derived bounds -/
+
+/-- R(3, k) is at least 6 for k ≥ 3, proved from R(3,3) = 6 and monotonicity. -/
+theorem ramsey3_ge_six (k : ℕ) (hk : 3 ≤ k) : 6 ≤ ramsey3 k :=
+  ramsey3_val_3 ▸ monotone_nat_of_le_succ ramsey3_mono hk
+
 /- ## Asymptotic bounds -/
 
 /-- Kim (1995) lower bound: R(3, k) ≥ c · k² / log k for some c > 0. -/
@@ -74,7 +74,7 @@ axiom shearer_upper_bound :
 /- ## Main problems -/
 
 /-- The consecutive difference R(3, k+1) − R(3, k). -/
-def ramseyDiff (k : ℕ) : ℕ := ramsey3 (k + 1) - ramsey3 k
+noncomputable def ramseyDiff (k : ℕ) : ℕ := ramsey3 (k + 1) - ramsey3 k
 
 /-- Erdős Problem 544, Part 1: R(3, k+1) − R(3, k) → ∞.
     For every bound M, there exists k₀ such that R(3, k+1) − R(3, k) ≥ M
