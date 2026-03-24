@@ -244,5 +244,71 @@
       "proof by contradiction"
     ],
     "prerequisites": []
+  },
+  {
+    "id": "ann-dvd-factorial",
+    "proofId": "infinitude-primes",
+    "range": {
+      "startLine": 44,
+      "endLine": 49
+    },
+    "type": "technique",
+    "title": "Divisibility by Factorials: The Crucial Property",
+    "content": "`dvd_factorial` proves that any positive $k \\leq n$ divides $n!$. This is the property that makes Euclid's proof work: if we list primes $p_1, \\ldots, p_m \\leq n$, then each $p_i$ divides $n!$. So if $p_i$ also divided $n! + 1$, it would divide $(n!+1) - n! = 1$, contradicting $p_i \\geq 2$. Therefore $n! + 1$ has a prime factor not among $p_1, \\ldots, p_m$.\n\nThe proof delegates to Mathlib's `Nat.dvd_factorial`, which proves $k \\mid n!$ by induction: $k \\mid k \\cdot (k-1) \\cdots 1 \\mid n \\cdot (n-1) \\cdots 1 = n!$ when $k \\leq n$.",
+    "mathContext": "$k! \\mid n!$ for $k \\leq n$, and $k \\mid k!$ since $k$ is one of the factors. Combined: $0 < k \\leq n \\Rightarrow k \\mid n!$. This is the foundation of Euclid's argument: primes up to $n$ divide $n!$ but cannot divide $n! + 1$.",
+    "significance": "key",
+    "prerequisites": [
+      "Nat.dvd_factorial",
+      "factorial definition"
+    ],
+    "relatedConcepts": [
+      "factorial",
+      "divisibility",
+      "Euclid's proof structure"
+    ]
+  },
+  {
+    "id": "ann-dvd-add-one",
+    "proofId": "infinitude-primes",
+    "range": {
+      "startLine": 56,
+      "endLine": 64
+    },
+    "type": "technique",
+    "title": "The Key Lemma: Dividing Consecutive Numbers Forces Dividing 1",
+    "content": "`dvd_of_dvd_add_one` proves: if $p \\mid a$ and $p \\mid (a+1)$, then $p \\mid 1$. The proof subtracts: $p \\mid (a+1) - a = 1$ via `Nat.dvd_sub'`.\n\nThis is the logical core of Euclid's proof. Since every prime $p_i \\leq n$ divides $n!$, and any prime factor $q$ of $n! + 1$ divides $n! + 1$, if $q$ were among the $p_i$ then $q \\mid n!$ AND $q \\mid n! + 1$, giving $q \\mid 1$ — impossible since $q \\geq 2$. Therefore $q > n$.\n\nThe elegance of this argument has made it the standard proof of Euclid's theorem for over two millennia.",
+    "mathContext": "If $p \\mid a$ and $p \\mid (a+1)$, then $p \\mid \\gcd(a, a+1) = 1$, so $p = 1$. More generally, $\\gcd(n!, n!+1) = 1$ since consecutive integers are always coprime. This coprimality is the mechanism that forces new primes into existence.",
+    "significance": "key",
+    "prerequisites": [
+      "Nat.dvd_sub'",
+      "coprimality of consecutive integers"
+    ],
+    "relatedConcepts": [
+      "coprime",
+      "consecutive integers",
+      "divisibility subtraction"
+    ]
+  },
+  {
+    "id": "ann-corollaries",
+    "proofId": "infinitude-primes",
+    "range": {
+      "startLine": 108,
+      "endLine": 127
+    },
+    "type": "insight",
+    "title": "Equivalent Formulations and Corollaries",
+    "content": "Three equivalent statements of prime infinitude:\n\n1. **`primes_infinite`** (= `unbounded_primes`): $\\forall n, \\exists p > n$ prime — the quantitative form\n2. **`exists_prime_gt_prime`**: Given any prime $p$, there exists a larger prime $q$ — primes are unbounded within primes\n3. **`no_largest_prime`**: $\\neg \\exists$ largest prime — the classical qualitative form\n\nThe proof of `no_largest_prime` is by contradiction: assume largest prime $p$ exists, apply `unbounded_primes p` to find $q > p$ prime, then $q \\leq p$ (by assumption) contradicts $q > p$ via `omega`.\n\nThese formulations differ in logical form (universal vs existential, positive vs negative) but are trivially equivalent. The `#check` commands at the end verify the theorems are accessible.",
+    "mathContext": "The three forms are logically equivalent:\n$(\\forall n, \\exists p > n, \\text{prime}(p)) \\iff (\\forall p, \\text{prime}(p) \\Rightarrow \\exists q > p, \\text{prime}(q)) \\iff \\neg(\\exists p, \\text{prime}(p) \\wedge \\forall q, \\text{prime}(q) \\Rightarrow q \\leq p)$\n\nIn cardinality terms: $|\\{p : p \\text{ prime}\\}| = \\aleph_0$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "unbounded_primes",
+      "omega tactic"
+    ],
+    "relatedConcepts": [
+      "logical equivalence",
+      "proof by contradiction",
+      "cardinality of primes"
+    ]
   }
 ]
