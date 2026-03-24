@@ -56,7 +56,7 @@
     "assumptions": "2 axioms: lucaPomerance_density_one, glw_infinitely_many. See Lean source for complete statements."
   },
   "overview": {
-    "historicalContext": "Erdős Problem 1064 concerns the comparison of φ(n) with φ(n - φ(n)), a natural iteration of Euler's totient function. The problem asks whether φ(n) is usually larger, and whether the reverse ever happens.\n\nGrytczuk, Luca, and Wójtowicz (2001) made initial progress, showing A₊ (where φ(n) > φ(n-φ(n))) has lower density at least 0.54 and A₋ is infinite. They gave the explicit pattern: n = 15·2^k gives n ∈ A₋.\n\nLuca and Pomerance (2002) completed the solution, proving A₊ has density 1. Their stronger result: for any f(n) = o(n), we have φ(n) > φ(n - φ(n)) + f(n) for almost all n.",
+    "historicalContext": "Euler's totient function $\\phi(n)$ — the count of integers in $\\{1, \\ldots, n\\}$ coprime to $n$ — was introduced by Leonhard Euler in 1763 in his proof that $a^{\\phi(n)} \\equiv 1 \\pmod{n}$ for $\\gcd(a,n)=1$, generalizing Fermat's little theorem. The function is multiplicative ($\\phi(mn) = \\phi(m)\\phi(n)$ when $\\gcd(m,n) = 1$) with the explicit formula $\\phi(n) = n \\prod_{p|n}(1 - 1/p)$, connecting it to the prime factorization of $n$.\n\nErdős Problem 1064 asks about the *iteration* $n \\mapsto n - \\phi(n)$, which maps $n$ to the count of integers $\\leq n$ sharing a common factor with $n$. The problem compares $\\phi(n)$ with $\\phi(n - \\phi(n))$: is $\\phi(n)$ usually larger? Erdős posed this as part of his broader program studying the 'typical' vs 'exceptional' behavior of arithmetic functions — a theme running through hundreds of his problems, including his work with Kac (1940) on the normal order of $\\omega(n)$ (number of distinct prime factors) and his conjecture with Wintner on additive functions.\n\nThe problem was originally connected to a 1960 conjecture of Mąkowski and Schinzel, who studied the equation $\\phi(n) = \\phi(n - \\phi(n))$ and related comparisons.\n\nGrytczuk, Luca, and Wójtowicz (2001, *Colloquium Mathematicum*) made initial progress: they showed the set $A_>$ (where $\\phi(n) > \\phi(n - \\phi(n))$) has lower density at least 0.54 and that $A_<$ is infinite, giving the explicit family $n = 15 \\cdot 2^k$.\n\nLuca and Pomerance (2002, *Colloquium Mathematicum*) completed the solution by proving $A_>$ has natural density 1. Their method uses the distribution of smooth numbers and the typical prime factorization structure of $n - \\phi(n)$. The key analytic input is that $n - \\phi(n) = n(1 - \\prod_{p|n}(1 - 1/p))$ tends to be divisible by many small primes (making it 'smooth'), which forces $\\phi(n - \\phi(n))$ to be small relative to $n - \\phi(n)$. Their stronger result: for any $f(n) = o(n)$, the dominance $\\phi(n) > \\phi(n - \\phi(n)) + f(n)$ holds for almost all $n$, showing the gap is not borderline but grows unboundedly.",
     "problemStatement": "Prove that $\\phi(n) > \\phi(n - \\phi(n))$ for almost all $n$, but that $\\phi(n) < \\phi(n - \\phi(n))$ for infinitely many $n$.\n\n**Part 1:** The set $A_> = \\{n : \\phi(n) > \\phi(n - \\phi(n))\\}$ has density 1.\n\n**Part 2:** The set $A_< = \\{n : \\phi(n) < \\phi(n - \\phi(n))\\}$ is infinite.\n\nBoth parts are now proved.",
     "text": "Is φ(n) > φ(n - φ(n)) for almost all n? Yes (density 1), but the reverse holds infinitely often. Solved by Luca-Pomerance and Grytczuk-Luca-Wójtowicz.",
     "proofStrategy": "The two parts require different approaches:\n\n**Part 1 (Density 1):** Luca-Pomerance use analytic methods to show that for typical n, the value n - φ(n) has a smaller totient than n. This uses properties of the distribution of φ values.\n\n**Part 2 (Infinitude):** The explicit construction n = 15·2^k works because:\n- φ(15·2^k) = φ(15)·φ(2^k) = 8·2^(k-1) = 4·2^k\n- n - φ(n) = 15·2^k - 4·2^k = 11·2^k\n- φ(11·2^k) = φ(11)·φ(2^k) = 10·2^(k-1) = 5·2^k > 4·2^k",
@@ -108,21 +108,23 @@
       "mathContext": "Natural density: $d(A) = \\lim_{N \\to \\infty} |A \\cap [1, N]| / N$. The density-1 result means: for any $\\epsilon > 0$, all but $o(N)$ integers $n \\leq N$ satisfy $\\phi(n) > \\phi(n - \\phi(n))$. The infinitude of $A_<$ follows from the explicit family $15 \\cdot 2^k$ (but there are other counterexamples too, like $n = 30, 66$)."
     },
     {
-      "id": "generalization",
-      "title": "Generalization: Stronger Dominance",
-      "startLine": 132,
+      "id": "pattern-and-closing",
+      "title": "The 15·2^k Pattern and Namespace Closing",
+      "startLine": 125,
       "endLine": 132,
-      "summary": "Luca-Pomerance's stronger result: for any $f(n) = o(n)$, the set $\\{n : \\phi(n) > \\phi(n - \\phi(n)) + f(n)\\}$ has density 1.",
-      "mathContext": "This says the dominance $\\phi(n) > \\phi(n - \\phi(n))$ is not borderline — the gap $\\phi(n) - \\phi(n - \\phi(n))$ grows faster than any $o(n)$ function for typical $n$. Heuristically, $\\phi(n) \\sim n \\prod_{p|n} (1 - 1/p)$ and $n - \\phi(n) \\sim n(1 - \\prod_{p|n}(1-1/p))$, so the ratio $\\phi(n)/\\phi(n-\\phi(n))$ is typically large."
+      "summary": "Documents the explicit infinite family $n = 15 \\cdot 2^k$ in $A_<$ with worked computation: $\\phi(15 \\cdot 2^k) = 4 \\cdot 2^k < 5 \\cdot 2^k = \\phi(11 \\cdot 2^k)$. The key is $\\phi(11)/11 > \\phi(15)/15$: primes have higher totient ratios than composites with small factors. Closes the `Erdos1064` namespace.",
+      "mathContext": "For $n = 15 \\cdot 2^k$: $\\phi(n) = 4 \\cdot 2^k$ and $\\phi(n - \\phi(n)) = \\phi(11 \\cdot 2^k) = 5 \\cdot 2^k$. The ratio $\\phi(11)/11 = 10/11 \\approx 0.909$ exceeds $\\phi(15)/15 = 8/15 \\approx 0.533$ because 11 is prime (only one factor to subtract) while $15 = 3 \\cdot 5$ has two small prime factors reducing its totient ratio. Luca-Pomerance's stronger result: for any $f(n) = o(n)$, the dominance $\\phi(n) > \\phi(n - \\phi(n)) + f(n)$ holds for almost all $n$, showing the gap grows unboundedly."
     }
   ],
   "conclusion": {
     "summary": "This formalization captures both parts of Erdős Problem 1064. Luca-Pomerance showed φ(n) > φ(n - φ(n)) has density 1, while Grytczuk-Luca-Wójtowicz showed the reverse inequality holds for infinitely many n (including all n = 15·2^k). We state both results as axioms and verify concrete examples.",
-    "implications": "**Theoretical Significance**: The resolution has implications for understanding iterated arithmetic functions:\n\n1. **Typical vs exceptional:** Density-1 sets can have infinite complements with special structure.\n\n**2. Multiplicative structure:** The pattern 15·2^k exploits multiplicativity of φ.\n\n3. **Related problems:** Similar questions for σ(n) vs σ(n - σ(n)) lead to different behavior.",
+    "implications": "**Theoretical Significance**: The resolution illustrates fundamental themes in analytic number theory:\n\n1. **Typical vs exceptional behavior:** The set $A_>$ has density 1 but its complement $A_<$ is infinite — a common pattern for arithmetic functions where 'almost all' coexists with infinitely many exceptions. This parallels the Erdős-Kac theorem (1940), which shows that $\\omega(n) \\sim \\log\\log n$ for almost all $n$ but fluctuates on exceptional sets.\n\n2. **Smooth number structure:** The Luca-Pomerance proof exploits that $n - \\phi(n)$ tends to be smooth (divisible by many small primes) for typical $n$. Smooth numbers have low totient ratios, which is why $\\phi(n - \\phi(n))$ is typically small. This connects to the broader theory of smooth number distribution (Dickman's function, Canfield-Erdős-Pomerance theorem).\n\n3. **Multiplicative structure and explicit constructions:** The pattern $15 \\cdot 2^k$ exploits the multiplicativity of $\\phi$ to construct infinitely many exceptions. Similar techniques appear throughout Erdős's work: finding sparse but infinite exceptional sets via arithmetic structure.\n\n4. **Iterated arithmetic functions:** The map $n \\mapsto n - \\phi(n) \\mapsto n - \\phi(n) - \\phi(n - \\phi(n)) \\mapsto \\cdots$ defines a dynamical system on $\\mathbb{N}$ whose long-term behavior is not well understood. The Carmichael conjecture — that for every $n$, the equation $\\phi(x) = n$ has either 0 or $\\geq 2$ solutions — relates to the 'fiber structure' of $\\phi$ over its range.\n\n5. **Analogues for other functions:** Similar questions for the sum-of-divisors function $\\sigma(n)$ — comparing $\\sigma(n)$ with $\\sigma(n - \\sigma(n))$ when $\\sigma(n) < n$ (deficient numbers) — lead to different density behavior due to the different growth rate of $\\sigma$.",
     "openQuestions": [
       "What is the density of A₌ where φ(n) = φ(n - φ(n))?",
       "Can we characterize all n with φ(n) < φ(n - φ(n))?",
-      "What happens for higher iterates: φ(n) vs φ(n - φ(n - φ(n)))?"
+      "What happens for higher iterates: φ(n) vs φ(n - φ(n - φ(n)))?",
+      "Is there a complete characterization of all n ∈ A₋ beyond the family 15·2^k? Are there 'sporadic' members of A₋ that do not belong to any known infinite family?",
+      "Can the Luca-Pomerance density-1 result be proved constructively, giving an explicit bound N(ε) such that for all M ≥ N(ε), the proportion of n ≤ M in A₊ exceeds 1 - ε?"
     ]
   },
   "crossReferences": [
@@ -140,6 +142,21 @@
       "targetId": "prime-number-theorem",
       "relationship": "related",
       "description": "The density-1 result for $A_>$ relies on the distribution of prime factors of typical integers, which is governed by the prime number theorem and its refinements. The PNT implies that a random integer near $N$ has $\\sim \\log\\log N$ distinct prime factors, controlling the average behavior of $\\phi(n)$"
+    },
+    {
+      "targetId": "erdos-28",
+      "relationship": "related",
+      "description": "Another Erdős problem on the totient function — both explore the arithmetic structure of $\\phi(n)$ and its iterates"
+    },
+    {
+      "targetId": "erdos-106",
+      "relationship": "related",
+      "description": "Erdős Problem 106 also studies density properties of arithmetic functions, connecting to the same themes of typical vs exceptional behavior for multiplicative functions"
+    },
+    {
+      "targetId": "erdos-1065",
+      "relationship": "related",
+      "description": "Adjacent Erdős problem on arithmetic functions — the problems in the 1060s cluster around properties of the totient and divisor functions, often involving density arguments"
     }
   ],
   "references": [
