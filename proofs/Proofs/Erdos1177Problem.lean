@@ -18,51 +18,58 @@ References:
 - Erdős, Galvin, Hajnal (original)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Set.Basic
-import Mathlib.Order.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos1177
 
-/-
-## Part I: Abstract Framework
+open Cardinal
 
-We work with an abstract cardinal type and hypergraph type to avoid heavy
-SetTheory imports. This allows clean formalization of the problem structure
-while staying within reasonable build constraints.
+/-
+## Part I: Cardinals from Mathlib
+
+The original formalization axiomatized an abstract cardinal type with 10 axioms
+(Card, Card.le, Card.lt, aleph0, aleph1, beth2, Card.isUncountable, and 3 properties).
+Using Mathlib's Cardinal type eliminates all of them.
 -/
 
--- We axiomatize an abstract cardinal type with the needed properties
-axiom Card : Type
-axiom Card.le : Card → Card → Prop
-axiom Card.lt : Card → Card → Prop
-instance : LE Card := ⟨Card.le⟩
-instance : LT Card := ⟨Card.lt⟩
+-- ℵ₀ < ℵ₁ (proved from Mathlib; was axiom)
+theorem aleph0_lt_aleph1 : Cardinal.aleph0 < Cardinal.aleph 1 := by
+  rw [← Cardinal.aleph_zero]
+  exact Cardinal.aleph_lt_aleph.mpr (by norm_num)
 
--- Key cardinals used in the problem
-axiom aleph0 : Card          -- ℵ₀
-axiom aleph1 : Card          -- ℵ₁
-axiom beth2 : Card           -- 2^(2^ℵ₀)
-axiom Card.isUncountable : Card → Prop
+-- ℵ₁ is uncountable (proved; was axiom)
+theorem aleph1_uncountable : Cardinal.aleph0 < Cardinal.aleph 1 := aleph0_lt_aleph1
 
-axiom aleph0_lt_aleph1 : aleph0 < aleph1
-axiom aleph1_uncountable : Card.isUncountable aleph1
-axiom aleph1_le_beth2 : aleph1 ≤ beth2
+-- ℵ₁ ≤ 2^(2^ℵ₀) (proved; was axiom)
+-- Proof: ℵ₁ = succ(ℵ₀) ≤ 2^ℵ₀ (Cantor) ≤ 2^(2^ℵ₀) (monotone power)
+theorem aleph1_le_beth2 :
+    Cardinal.aleph 1 ≤ (2 : Cardinal) ^ ((2 : Cardinal) ^ Cardinal.aleph0) := by
+  have h_cantor := Cardinal.cantor Cardinal.aleph0
+  -- Step 1: ℵ₁ ≤ 2^ℵ₀
+  have h1 : Cardinal.aleph 1 ≤ (2 : Cardinal) ^ Cardinal.aleph0 := by
+    -- ℵ₁ = aleph(succ 0) = succ(aleph 0) = succ(ℵ₀)
+    have hsuc : Cardinal.aleph 1 = Order.succ Cardinal.aleph0 := by
+      rw [← Cardinal.aleph_zero, ← Cardinal.aleph_succ]
+      congr 1; exact Ordinal.succ_zero.symm
+    rw [hsuc]
+    exact Order.succ_le_of_lt h_cantor
+  -- Step 2: 2^ℵ₀ ≤ 2^(2^ℵ₀)
+  exact le_trans h1 (Cardinal.power_le_power_left
+    (by norm_num : (2 : Cardinal) ≠ 0) (le_of_lt h_cantor))
 
 /-
 ## Part II: 3-Uniform Hypergraphs
 
 A 3-uniform hypergraph on a vertex type V is specified by its edge set,
 where each edge is an unordered triple of vertices.
+We axiomatize the abstract type and its key operations.
 -/
 
-/-- Abstract type of 3-uniform hypergraphs. We parametrize by a "size" cardinal
-    to handle both finite and infinite vertex sets. -/
+/-- Abstract type of 3-uniform hypergraphs. -/
 axiom Hypergraph3 : Type
 
 /-- The cardinality (number of vertices) of a 3-uniform hypergraph. -/
-axiom Hypergraph3.vertexCard : Hypergraph3 → Card
+axiom Hypergraph3.vertexCard : Hypergraph3 → Cardinal.{0}
 
 /-- Whether one 3-uniform hypergraph contains another as a subhypergraph. -/
 axiom Hypergraph3.ContainsSubgraph : Hypergraph3 → Hypergraph3 → Prop
@@ -73,7 +80,7 @@ axiom Hypergraph3.IsFinite : Hypergraph3 → Prop
 /-- The chromatic number of a 3-uniform hypergraph.
     This is the minimum cardinal κ such that the vertices can be colored
     with κ colors so that no edge is monochromatic. -/
-axiom Hypergraph3.chromaticNumber : Hypergraph3 → Card
+axiom Hypergraph3.chromaticNumber : Hypergraph3 → Cardinal.{0}
 
 /-
 ## Part III: The Forbidden Subgraph Family F_G(κ)
@@ -84,12 +91,12 @@ of all 3-uniform hypergraphs with chromatic number κ that do not contain G.
 
 /-- F_G(κ): the family of 3-uniform hypergraphs with chromatic number κ
     that do not contain G as a subhypergraph. -/
-def forbiddenFamily (G : Hypergraph3) (kappa : Card) : Set Hypergraph3 :=
+def forbiddenFamily (G : Hypergraph3) (kappa : Cardinal.{0}) : Set Hypergraph3 :=
   { H | H.chromaticNumber = kappa ∧ ¬ H.ContainsSubgraph G }
 
 /-- F_G(κ) is nonempty if there exists a hypergraph with chromatic number κ
     avoiding G. -/
-def forbiddenFamilyNonempty (G : Hypergraph3) (kappa : Card) : Prop :=
+def forbiddenFamilyNonempty (G : Hypergraph3) (kappa : Cardinal.{0}) : Prop :=
   ∃ H : Hypergraph3, H ∈ forbiddenFamily G kappa
 
 /-
@@ -103,8 +110,9 @@ These are the three conjectures from Erdős, Galvin, and Hajnal.
     with at most 2^(2^ℵ₀) vertices. -/
 def Conjecture1 : Prop :=
   ∀ G : Hypergraph3, G.IsFinite →
-    forbiddenFamilyNonempty G aleph1 →
-    ∃ X : Hypergraph3, X ∈ forbiddenFamily G aleph1 ∧ X.vertexCard ≤ beth2
+    forbiddenFamilyNonempty G (Cardinal.aleph 1) →
+    ∃ X : Hypergraph3, X ∈ forbiddenFamily G (Cardinal.aleph 1) ∧
+      X.vertexCard ≤ (2 : Cardinal) ^ ((2 : Cardinal) ^ Cardinal.aleph0)
 
 /-- **Conjecture 2** (Intersection Property):
     If F_G(ℵ₁) and F_H(ℵ₁) are both nonempty, their intersection is nonempty.
@@ -112,9 +120,10 @@ def Conjecture1 : Prop :=
     that avoids both G and H. -/
 def Conjecture2 : Prop :=
   ∀ G H : Hypergraph3, G.IsFinite → H.IsFinite →
-    forbiddenFamilyNonempty G aleph1 →
-    forbiddenFamilyNonempty H aleph1 →
-    ∃ X : Hypergraph3, X ∈ forbiddenFamily G aleph1 ∧ X ∈ forbiddenFamily H aleph1
+    forbiddenFamilyNonempty G (Cardinal.aleph 1) →
+    forbiddenFamilyNonempty H (Cardinal.aleph 1) →
+    ∃ X : Hypergraph3, X ∈ forbiddenFamily G (Cardinal.aleph 1) ∧
+      X ∈ forbiddenFamily H (Cardinal.aleph 1)
 
 /-- **Conjecture 3** (Cardinal Transfer):
     If κ and μ are uncountable and F_G(κ) is nonempty, then F_G(μ) is nonempty.
@@ -122,7 +131,7 @@ def Conjecture2 : Prop :=
     between uncountable cardinals. -/
 def Conjecture3 : Prop :=
   ∀ G : Hypergraph3, G.IsFinite →
-    ∀ kappa mu : Card, Card.isUncountable kappa → Card.isUncountable mu →
+    ∀ kappa mu : Cardinal.{0}, Cardinal.aleph0 < kappa → Cardinal.aleph0 < mu →
       forbiddenFamilyNonempty G kappa → forbiddenFamilyNonempty G mu
 
 /-
@@ -136,19 +145,19 @@ def Conjecture3 : Prop :=
     but shows the families are simultaneously rich.) -/
 theorem conj3_implies_simultaneous_nonempty (h3 : Conjecture3) :
     ∀ G H : Hypergraph3, G.IsFinite → H.IsFinite →
-      forbiddenFamilyNonempty G aleph1 →
-      forbiddenFamilyNonempty H aleph1 →
-      ∀ kappa : Card, Card.isUncountable kappa →
+      forbiddenFamilyNonempty G (Cardinal.aleph 1) →
+      forbiddenFamilyNonempty H (Cardinal.aleph 1) →
+      ∀ kappa : Cardinal.{0}, Cardinal.aleph0 < kappa →
         forbiddenFamilyNonempty G kappa ∧ forbiddenFamilyNonempty H kappa := by
   intro G H hGfin hHfin hG hH kappa hkappa
-  unfold Conjecture3 at h3
-  exact ⟨h3 G hGfin aleph1 kappa aleph1_uncountable hkappa hG,
-         h3 H hHfin aleph1 kappa aleph1_uncountable hkappa hH⟩
+  exact ⟨h3 G hGfin (Cardinal.aleph 1) kappa aleph0_lt_aleph1 hkappa hG,
+         h3 H hHfin (Cardinal.aleph 1) kappa aleph0_lt_aleph1 hkappa hH⟩
 
 /-- Conjecture 2 applied to identical forbidden graphs is trivially true. -/
 theorem conj2_trivial_case (G : Hypergraph3) (_hfin : G.IsFinite)
-    (hne : forbiddenFamilyNonempty G aleph1) :
-    ∃ X : Hypergraph3, X ∈ forbiddenFamily G aleph1 ∧ X ∈ forbiddenFamily G aleph1 := by
+    (hne : forbiddenFamilyNonempty G (Cardinal.aleph 1)) :
+    ∃ X : Hypergraph3, X ∈ forbiddenFamily G (Cardinal.aleph 1) ∧
+      X ∈ forbiddenFamily G (Cardinal.aleph 1) := by
   obtain ⟨X, hX⟩ := hne
   exact ⟨X, hX, hX⟩
 
@@ -163,36 +172,21 @@ axiom containsSubgraph_trans {H₁ H₂ H₃ : Hypergraph3} :
 /-- The forbidden family is anti-monotone in G: if G is a subgraph of G'
     (i.e., any graph containing G' also contains G), then avoiding G is
     harder than avoiding G', so F_G(κ) ⊆ F_{G'}(κ). -/
-theorem forbiddenFamily_antimonotone {G G' : Hypergraph3} {kappa : Card}
+theorem forbiddenFamily_antimonotone {G G' : Hypergraph3} {kappa : Cardinal.{0}}
     (hsub : ∀ H : Hypergraph3, H.ContainsSubgraph G' → H.ContainsSubgraph G) :
     forbiddenFamily G kappa ⊆ forbiddenFamily G' kappa := by
   intro H ⟨hchrom, hfree⟩
   exact ⟨hchrom, fun hG'H => hfree (hsub H hG'H)⟩
 
 /-- Anti-monotonicity extends to nonemptiness. -/
-theorem forbiddenFamilyNonempty_antimonotone {G G' : Hypergraph3} {kappa : Card}
+theorem forbiddenFamilyNonempty_antimonotone {G G' : Hypergraph3} {kappa : Cardinal.{0}}
     (hsub : ∀ H : Hypergraph3, H.ContainsSubgraph G' → H.ContainsSubgraph G) :
     forbiddenFamilyNonempty G kappa → forbiddenFamilyNonempty G' kappa := by
   intro ⟨H, hH⟩
   exact ⟨H, forbiddenFamily_antimonotone hsub hH⟩
 
 /-
-## Part VII: Connection to Graph Coloring Theory
-
-For ordinary graphs (2-uniform), the problem of G-free graphs with high
-chromatic number is well-understood thanks to Erdős's probabilistic method
-(1959) and later constructive results.
--/
-
-/-- Erdős's theorem (1959): For any k, l ∈ ℕ, there exists a graph with
-    chromatic number ≥ k and girth ≥ l. In particular, for any finite graph G,
-    F_G(κ) is nonempty for all finite κ when G contains a cycle.
-    This is the 2-uniform analogue of the phenomena studied in Problem #1177. -/
-axiom erdos_1959_high_chromatic_girth :
-  ∀ _k : ℕ, ∀ _l : ℕ, ∃ H : Hypergraph3, H.IsFinite ∧ True
-
-/-
-## Part VIII: The Erdős Problem #1177 Statement
+## Part VII: The Erdős Problem #1177 Statement
 -/
 
 /-- **Erdős Problem #1177:**
@@ -202,5 +196,16 @@ def erdos_1177 : Prop := Conjecture1 ∧ Conjecture2 ∧ Conjecture3
 
 /-- Problem #1177 is OPEN. We state it without proof. -/
 axiom erdos_1177_open : erdos_1177
+
+/-
+## Summary
+
+**Axiom reduction**: 18 → 7
+- Eliminated 10 cardinal axioms by using Mathlib's Cardinal type
+- Eliminated 1 meaningless placeholder axiom (erdos_1959_high_chromatic_girth)
+- Retained 5 Hypergraph3 axioms (abstract type), 1 transitivity, 1 open conjecture
+
+**Proved from Mathlib**: aleph0_lt_aleph1, aleph1_uncountable, aleph1_le_beth2
+-/
 
 end Erdos1177
