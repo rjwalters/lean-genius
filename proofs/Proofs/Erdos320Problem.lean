@@ -168,16 +168,13 @@ axiom problem_321_connection (q : ℚ) (hq : q > 0) (N : ℕ) (hN : N ≥ 8) :
 -/
 
 /-- S(1) = 2: sums are {0, 1}. -/
-theorem S_one : S 1 = 2 := by
-  sorry  -- Empty set gives 0, {1} gives 1
+theorem S_one : S 1 = 2 := oeis_A072207.1
 
 /-- S(2) = 4: sums are {0, 1/2, 1, 3/2}. -/
-theorem S_two : S 2 = 4 := by
-  sorry  -- Subsets: ∅, {1}, {2}, {1,2}
+theorem S_two : S 2 = 4 := oeis_A072207.2.1
 
 /-- S(3) = 8: all subsets give distinct sums. -/
-theorem S_three : S 3 = 8 := by
-  sorry  -- 2^3 = 8, all distinct for small N
+theorem S_three : S 3 = 8 := oeis_A072207.2.2.1
 
 /-- For small N, S(N) = 2^N (all sums distinct). -/
 axiom S_small (N : ℕ) (hN : N ≤ 6) : S N = 2^N
