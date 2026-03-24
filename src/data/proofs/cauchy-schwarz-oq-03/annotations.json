@@ -17,7 +17,11 @@
       "conjugate exponents",
       "L^p spaces"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "NNReal.inner_le_Lp_mul_Lq",
+      "Hölder conjugate exponents",
+      "L^p norm definition"
+    ]
   },
   {
     "id": "ann-holder-normalized",
@@ -37,7 +41,11 @@
       "conjugate condition",
       "unit norm"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "holder_nnreal",
+      "NNReal.one_rpow",
+      "Young's inequality"
+    ]
   },
   {
     "id": "ann-lagrange-identity",
@@ -57,7 +65,12 @@
       "sum of squares",
       "elementary algebra"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.sum_nonneg",
+      "sq_nonneg",
+      "Finset.sum_comm",
+      "Lagrange's identity (1773)"
+    ]
   },
   {
     "id": "ann-holder-real",
@@ -77,7 +90,12 @@
       "triangle inequality",
       "type coercion"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "holder_nnreal",
+      "NNReal.coe_le_coe",
+      "abs_sum_le_sum_abs",
+      "triangle inequality"
+    ]
   },
   {
     "id": "ann-holder-lintegral",
@@ -98,7 +116,11 @@
       "L^p spaces",
       "AEMeasurable"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ENNReal.lintegral_mul_le_Lp_mul_Lq",
+      "AEMeasurable",
+      "measure theory basics"
+    ]
   },
   {
     "id": "ann-holder-bridge",
@@ -118,6 +140,55 @@
       "p=q=2",
       "norm_num"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "holder_nnreal",
+      "HolderConjugate",
+      "norm_num tactic"
+    ]
+  },
+  {
+    "id": "ann-cs-inner-product",
+    "proofId": "cauchy-schwarz-oq-03",
+    "range": {
+      "startLine": 185,
+      "endLine": 200
+    },
+    "type": "theorem",
+    "title": "Abstract Cauchy-Schwarz for Inner Product Spaces",
+    "content": "**Theorem** `cauchy_schwarz_inner`: For any real inner product space $E$ and vectors $u, v \\in E$:\n\n$$|\\langle u, v \\rangle_{\\mathbb{R}}| \\leq \\|u\\| \\cdot \\|v\\|$$\n\nThe proof is a one-line delegation to Mathlib's `abs_real_inner_le_norm`. Internally, Mathlib proves this via the discriminant argument: $\\|u + tv\\|^2 = \\|u\\|^2 + 2t\\langle u,v\\rangle + t^2\\|v\\|^2 \\geq 0$ for all $t$, so the discriminant $4\\langle u,v\\rangle^2 - 4\\|u\\|^2\\|v\\|^2 \\leq 0$.\n\nThis is the most abstract form of Cauchy-Schwarz in the formalization — it applies to any `InnerProductSpace ℝ E`, including $\\mathbb{R}^n$, $L^2$ spaces, and Sobolev spaces.",
+    "mathContext": "$|\\langle u, v \\rangle| \\leq \\|u\\| \\cdot \\|v\\|$. Equality holds iff $u$ and $v$ are linearly dependent. Proved via $\\|u + tv\\|^2 \\geq 0$ $\\Rightarrow$ discriminant $\\leq 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "inner product space",
+      "Hilbert space",
+      "discriminant argument",
+      "abs_real_inner_le_norm"
+    ],
+    "prerequisites": [
+      "NormedAddCommGroup",
+      "InnerProductSpace",
+      "abs_real_inner_le_norm"
+    ]
+  },
+  {
+    "id": "ann-summary-chain",
+    "proofId": "cauchy-schwarz-oq-03",
+    "range": {
+      "startLine": 215,
+      "endLine": 242
+    },
+    "type": "context",
+    "title": "Summary: The Complete Proof Chain",
+    "content": "Documents the full hierarchy of 8 theorems proved with 0 sorries:\n\n1. `holder_nnreal` — General Hölder for $\\mathbb{R}_{\\geq 0}$ (Mathlib wrapper)\n2. `holder_normalized` — Hölder for unit-norm inputs\n3. `cauchy_schwarz_finite` — CS via Lagrange identity (elementary)\n4. `cauchy_schwarz_from_holder` — CS as $p=q=2$ Hölder (definitional)\n5. `holder_real` — Hölder for signed reals via NNReal lift\n6. `holder_lintegral` — Integral Hölder for measure spaces (Mathlib wrapper)\n7. `cauchy_schwarz_inner` — Abstract inner product CS (Mathlib wrapper)\n8. `cauchy_schwarz_holder_bridge` — CS = Hölder at $p=q=2$ for NNReal\n\nThe key mathematical insight: the conjugate condition $1/p + 1/q = 1$ appears naturally in the Young normalization — it is the exact condition that makes the bound sharp, not an arbitrary algebraic constraint.",
+    "mathContext": "The chain: Young ($ab \\leq a^p/p + b^q/q$) $\\to$ Normalized Hölder ($\\sum f_i g_i \\leq 1$ when $\\|f\\|_p = \\|g\\|_q = 1$) $\\to$ General Hölder ($\\sum f_i g_i \\leq \\|f\\|_p \\|g\\|_q$) $\\to$ CS ($p=q=2$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "proof chain",
+      "conjugate condition",
+      "Young's inequality"
+    ],
+    "prerequisites": [
+      "all preceding theorems in the file"
+    ]
   }
 ]
