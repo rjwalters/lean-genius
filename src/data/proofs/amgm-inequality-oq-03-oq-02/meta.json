@@ -80,8 +80,7 @@
         "id": "amgm-inequality",
         "relationship": "Root AM-GM inequality; this limit establishes M₀ = GM, the bridge between AM and HM in the power mean chain"
       }
-    ],
-    "mathlib_version": "4.26.0"
+    ]
   },
   "crossReferences": [
     {
@@ -138,6 +137,11 @@
       "targetId": "taylor-theorem",
       "relationship": "foundational",
       "description": "The derivative-based limit technique used here — f(r)/r → f'(0) when f(0) = 0 — is the first-order case of Taylor's theorem: f(r) = f(0) + f'(0)r + O(r²), so f(r)/r = f'(0) + O(r) → f'(0). Taylor's theorem provides the broader framework for understanding why the power mean limit works: the exp/log representation makes log M_r a smooth function of r whose Taylor expansion at r = 0 reveals the geometric mean as the leading coefficient"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "The calculus infrastructure underpinning this proof — HasDerivAt, chain rule composition, hasDerivAt_iff_tendsto_slope — ultimately rests on the Fundamental Theorem of Calculus connecting derivatives to limits of difference quotients. The FTC formalization establishes the API that makes the slope-to-derivative bridge possible"
     }
   ],
   "overview": {
@@ -266,7 +270,8 @@
     "triangle-inequality",
     "cauchy-schwarz",
     "harmonic-divergence",
-    "taylor-theorem"
+    "taylor-theorem",
+    "fundamental-theorem-calculus"
   ],
   "references": [
     {

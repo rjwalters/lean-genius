@@ -279,6 +279,16 @@
       "targetId": "descartes-rule-of-signs",
       "relationship": "related",
       "description": "Descartes' rule bounds the number of positive real roots of a polynomial by the number of sign changes in its coefficients — a classical tool in the Galois group computation pipeline. For the standard example $x^5 - x - 1$, Descartes' rule (1 sign change) gives exactly 1 positive real root; combined with Sturm's theorem or direct analysis, one finds exactly 3 real roots total, which implies the Galois group contains a transposition (complex conjugation) — one of the key steps in proving $\\text{Gal}(x^5 - x - 1/\\mathbb{Q}) = S_5$"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "Lindemann's proof that $\\pi$ is transcendental (1882) resolved the ancient problem of squaring the circle and sits one level above Abel-Ruffini in the expressibility hierarchy: Abel-Ruffini shows certain algebraic numbers escape radical expressions, while $\\pi \\notin \\overline{\\mathbb{Q}}$ shows $\\pi$ escapes all polynomial equations. Both are impossibility results proved via algebraic structure theory — Galois groups for Abel-Ruffini, the Lindemann-Weierstrass theorem for transcendence"
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "related",
+      "description": "Liouville's construction of the first explicit transcendental numbers (1844) via rational approximation bounds ($|\\alpha - p/q| > c/q^n$ for algebraic $\\alpha$ of degree $n$) bridges the gap between algebraic and transcendental numbers in the expressibility hierarchy. Abel-Ruffini shows a barrier within algebraic numbers (radical vs non-radical), while Liouville's theorem identifies numbers that escape algebraic equations entirely — the next level of the hierarchy discussed in this entry's conclusion"
     }
   ],
   "relatedProofs": [
@@ -306,7 +316,9 @@
     "godel-incompleteness",
     "halting-problem",
     "cantor-diagonalization",
-    "descartes-rule-of-signs"
+    "descartes-rule-of-signs",
+    "pi-transcendental",
+    "liouville-theorem"
   ],
   "references": [
     {
