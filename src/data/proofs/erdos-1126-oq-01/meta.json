@@ -91,49 +91,56 @@
       "title": "Definitions from Parent Problem",
       "startLine": 31,
       "endLine": 58,
-      "summary": "Redefines `IsAdditive`, `ae_holds`, `ae_pairs`, `ae_eq`, and `IsAlmostAdditive` from the parent Erdős #1126 formalization for self-containment."
+      "summary": "Redefines `IsAdditive`, `ae_holds`, `ae_pairs`, `ae_eq`, and `IsAlmostAdditive` from the parent Erdős #1126 formalization for self-containment.",
+      "mathContext": "$f(x+y) = f(x) + f(y)$ (Cauchy); $P$ holds a.e. means $P$ fails only on a Lebesgue null set."
     },
     {
       "id": "jensen",
       "title": "Jensen's Functional Equation",
       "startLine": 60,
       "endLine": 130,
-      "summary": "Defines `IsJensen` and proves the key equivalence: Jensen ↔ additive modulo constant. Three theorems: `jensen_implies_shifted_additive` (forward), `additive_plus_const_is_jensen` (backward), `jensen_iff_additive_shifted` (iff)."
+      "summary": "Defines `IsJensen` and proves the key equivalence: Jensen ↔ additive modulo constant. Three theorems: `jensen_implies_shifted_additive` (forward), `additive_plus_const_is_jensen` (backward), `jensen_iff_additive_shifted` (iff).",
+      "mathContext": "$f\\bigl(\\tfrac{x+y}{2}\\bigr) = \\tfrac{f(x)+f(y)}{2} \\iff f - f(0)$ is additive. Proved via the doubling formula $f(2z) = 2f(z) - f(0)$."
     },
     {
       "id": "almost-jensen",
       "title": "Almost Jensen → Almost Additive",
       "startLine": 170,
       "endLine": 190,
-      "summary": "States that almost Jensen reduces to almost additive for the shifted function. This reduces Jensen stability to de Bruijn-Jurkat."
+      "summary": "States that almost Jensen reduces to almost additive for the shifted function. This reduces Jensen stability to de Bruijn-Jurkat.",
+      "mathContext": "Almost Jensen for $f$ $\\Rightarrow$ almost additive for $g(x) = f(x) - f(0)$. Contains one of the two remaining sorries."
     },
     {
       "id": "multiplicative",
       "title": "Multiplicative Functional Equation",
       "startLine": 192,
       "endLine": 250,
-      "summary": "Defines `IsMultiplicative` and `IsAlmostMultiplicative`. Proves `mul_func_one` ($f(1) = 1$), `mul_func_sq` ($f(x^2) = f(x)^2$), and states the logarithmic reduction to additivity."
+      "summary": "Defines `IsMultiplicative` and `IsAlmostMultiplicative`. Proves `mul_func_one` ($f(1) = 1$), `mul_func_sq` ($f(x^2) = f(x)^2$), and states the logarithmic reduction to additivity.",
+      "mathContext": "$f(xy) = f(x)f(y)$ on $\\mathbb{R} \\setminus \\{0\\}$. Key reduction: $\\log \\circ f \\circ \\exp$ is additive for positive $f$."
     },
     {
       "id": "stability",
       "title": "Extension Theorems (Axiomatized)",
       "startLine": 252,
       "endLine": 280,
-      "summary": "Three stability axioms: `almost_multiplicative_stability`, `almost_jensen_stability`, `almost_derivation_stability` — the deep extension theorems."
+      "summary": "Three stability axioms: `almost_multiplicative_stability`, `almost_jensen_stability`, `almost_derivation_stability` — the deep extension theorems.",
+      "mathContext": "Almost $E$ $\\Rightarrow$ $\\exists$ exact $E$-solution agreeing a.e., for $E \\in \\{$multiplicative, Jensen, derivation$\\}$."
     },
     {
       "id": "derivation",
       "title": "Derivation Equation",
       "startLine": 282,
       "endLine": 350,
-      "summary": "Defines `IsDerivation` and proves structural theorems: `derivation_at_one` ($d(1) = 0$), `derivation_sq` ($d(x^2) = 2x d(x)$), `derivation_pow` (power rule by induction)."
+      "summary": "Defines `IsDerivation` and proves structural theorems: `derivation_at_one` ($d(1) = 0$), `derivation_sq` ($d(x^2) = 2x d(x)$), `derivation_pow` (power rule by induction). Also axiomatizes that continuous derivations are zero and almost-derivation stability.",
+      "mathContext": "$d(xy) = xd(y) + yd(x)$. Power rule: $d(x^n) = nx^{n-1}d(x)$ by induction. Continuous $\\Rightarrow$ $d = 0$."
     },
     {
       "id": "regularity",
       "title": "Regularity Theorems",
       "startLine": 360,
       "endLine": 388,
-      "summary": "Axiomatizes regularity results: `measurable_multiplicative_is_power` (measurable multiplicative → power function) and `measurable_derivation_is_zero` (measurable derivation → zero)."
+      "summary": "Axiomatizes regularity results: `measurable_multiplicative_is_power` (measurable multiplicative → power function) and `measurable_derivation_is_zero` (measurable derivation → zero).",
+      "mathContext": "Measurable $f(xy) = f(x)f(y)$ with $f > 0$: $f(x) = x^c$. Measurable derivation: $d = 0$. Tame vs. wild dichotomy."
     }
   ],
   "crossReferences": [
@@ -149,7 +156,8 @@
     "openQuestions": [
       "Can the stability paradigm be extended to functional equations on locally compact groups beyond ℝ?",
       "What is the optimal null-set estimate: given an ε-null exceptional set, how small can the correction set be?",
-      "Does stability hold for functional inequalities (e.g., almost sub-additive → sub-additive a.e.)?"
+      "Does stability hold for functional inequalities (e.g., almost sub-additive → sub-additive a.e.)?",
+      "Can the two remaining sorries (almost Jensen → almost additive, log-of-multiplicative-is-additive) be resolved using Mathlib's measure theory?"
     ]
   },
   "relatedProofs": [
