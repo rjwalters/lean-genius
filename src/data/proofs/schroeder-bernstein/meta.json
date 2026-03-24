@@ -18,7 +18,7 @@
       "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/SchroederBernstein.lean",
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -50,7 +50,7 @@
       "Function.Embedding and Equiv types in Lean/Mathlib"
     ],
     "lineCount": 198,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "0 axioms, 0 sorries. Core Schroeder-Bernstein theorem derived from Mathlib's Function.Embedding.schroeder_bernstein and Function.Embedding.antisymm. Original contributions include pedagogical examples and cardinal number corollaries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
