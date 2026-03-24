@@ -238,5 +238,28 @@
       "AllModuliPrimeMinusOne",
       "prime enumeration below 5"
     ]
+  },
+  {
+    "id": "ann-e273-reciprocal",
+    "proofId": "erdos-273",
+    "range": {
+      "startLine": 159,
+      "endLine": 172
+    },
+    "type": "insight",
+    "title": "The 109/180 Reciprocal Sum Obstruction",
+    "content": "Two `norm_num` proofs establish the reciprocal sum obstruction:\n\n`easyPrimes_reciprocal_sum_lt_one`: $\\sum 1/(p_i - 1) = 1/4 + 1/6 + 1/12 + 1/18 + 1/36 + 1/60 + 1/180 < 1$\n\n`reciprocal_sum_109_over_180`: the exact value is $109/180$\n\nSince a covering system needs $\\sum 1/m_i \\geq 1$ (each integer must be covered at least once), and the easy primes give only $109/180 \\approx 0.606$, at least $\\lceil 180/109 \\rceil = 2$ copies of the modulus set — or additional larger primes — are required.",
+    "mathContext": "The necessary condition $\\sum 1/m_i \\geq 1$ for covering is elementary: the density of integers $\\equiv a_i \\pmod{m_i}$ is $1/m_i$, and covering requires total density $\\geq 1$. The shortfall $1 - 109/180 = 71/180 \\approx 0.394$ quantifies how far the easy primes fall short.",
+    "significance": "key",
+    "relatedConcepts": [
+      "covering system density",
+      "reciprocal sum",
+      "norm_num",
+      "Chinese Remainder Theorem"
+    ],
+    "prerequisites": [
+      "easyPrimes",
+      "covering system definition"
+    ]
   }
 ]

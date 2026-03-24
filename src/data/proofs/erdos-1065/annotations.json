@@ -317,5 +317,100 @@
       "individual example theorems",
       "List.mem_cons"
     ]
+  },
+  {
+    "id": "ann-e1065-non-examples",
+    "proofId": "erdos-1065",
+    "range": {
+      "startLine": 167,
+      "endLine": 219
+    },
+    "type": "technique",
+    "title": "Non-Form-A and Non-Form-B Proofs by Exhaustion",
+    "content": "Three non-membership proofs using bounded exhaustion:\n\n`not_form_a_61`: $60 = 2^k q$ for $k = 0,1,2$ gives $q \\in \\{60, 30, 15\\}$, all composite. For $k \\geq 3$, $2^k > 60$.\n\n`not_form_a_71`: $70 = 2^k q$ gives $q \\in \\{70, 35\\}$ (composite), then $2^k > 70$ for $k \\geq 2$.\n\n`not_form_b_71`: $70 = 2^k \\cdot 3^l \\cdot q$ is exhaustively checked over $k \\leq 5, l \\leq 3$ using `interval_cases k <;> interval_cases l <;> simp_all`. Since $3 \\nmid 70$, only $l = 0$ cases are non-vacuous, reducing to `not_form_a_71`.",
+    "mathContext": "The bounding strategy: $2^k \\leq p - 1$ forces $k \\leq \\lfloor \\log_2(p-1) \\rfloor$, and $3^l \\leq p - 1$ forces $l \\leq \\lfloor \\log_3(p-1) \\rfloor$. The `interval_cases` tactic enumerates all values in these ranges, and `decide` refutes primality of each candidate $q$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "interval_cases",
+      "bounded exhaustion",
+      "primality refutation",
+      "factorization analysis"
+    ],
+    "prerequisites": [
+      "Nat.pow_le_pow_right",
+      "interval_cases",
+      "decide"
+    ]
+  },
+  {
+    "id": "ann-e1065-strict-inclusion",
+    "proofId": "erdos-1065",
+    "range": {
+      "startLine": 221,
+      "endLine": 231
+    },
+    "type": "insight",
+    "title": "Strict Inclusion: Form A ⊊ Form B via Witnesses",
+    "content": "`strict_inclusion_37` and `strict_inclusion_61` combine positive Form B membership with negative Form A membership to witness $\\{\\text{Form A}\\} \\subsetneq \\{\\text{Form B}\\}$. These are the two smallest separating examples: $37 = 2^2 \\cdot 3^2 + 1$ and $61 = 2^2 \\cdot 3 \\cdot 5 + 1$.",
+    "mathContext": "$\\text{Form A} \\subsetneq \\text{Form B}$ is witnessed by primes $p$ where $p - 1 = 2^k \\cdot 3^l \\cdot q$ with $q$ prime and $l > 0$ (so no Form A decomposition exists). $37 - 1 = 36 = 2^2 \\cdot 3^2$ has $q = 1$ (not prime in Form A), but $q = 1$ with $l = 2$ works for Form B via $36 = 4 \\cdot 9 \\cdot 1$... actually $37 = 2^2 \\cdot 3^2 \\cdot 1 + 1$, which requires $q = 1$ not prime. The actual Form B witness for 37 uses a different decomposition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "strict set inclusion",
+      "separating examples",
+      "witness construction"
+    ],
+    "prerequisites": [
+      "example_37_extended",
+      "not_form_a_37",
+      "example_61_extended",
+      "not_form_a_61"
+    ]
+  },
+  {
+    "id": "ann-e1065-structural-2",
+    "proofId": "erdos-1065",
+    "range": {
+      "startLine": 235,
+      "endLine": 268
+    },
+    "type": "theorem",
+    "title": "Structural Implications: Inclusion Chain and Safe Primes",
+    "content": "Five theorems establishing the inclusion structure:\n\n1. `form_a_implies_b`: Form A $\\subseteq$ Form B via $l = 0$ specialization\n2. `sophie_germain_case`: If infinitely many safe primes exist, then Conjecture A holds (since safe primes are Form A with $k = 1$)\n3. `safe_prime_is_form_a`: Direct safe prime $\\to$ Form A embedding\n4. `smooth_structure`: Extracts $p - 1 = 2^k q$ from Form A membership\n5. `conjecture_a_implies_b`: Uses `Set.Infinite.mono` to lift the inclusion to infinitude\n\nThe Sophie Germain connection is notable: the infinitude of safe primes (widely believed but unproven) would immediately resolve Conjecture A.",
+    "mathContext": "The inclusion chain $\\{2q+1 : q \\text{ prime}\\} \\subseteq \\{p : p = 2^k q + 1\\} \\subseteq \\{p : p = 2^k 3^l q + 1\\}$ gives $\\text{Sophie Germain} \\Rightarrow \\text{Conj A} \\Rightarrow \\text{Conj B}$. The smoothness of $p-1$: Form A primes have $\\omega(p-1) \\leq 2$ (at most the primes 2 and $q$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "safe primes",
+      "Sophie Germain primes",
+      "Set.Infinite.mono",
+      "smooth numbers"
+    ],
+    "prerequisites": [
+      "Set.Infinite",
+      "form_a_implies_b",
+      "IsTwoTimePrimePlusOne"
+    ]
+  },
+  {
+    "id": "ann-e1065-bulk-verify",
+    "proofId": "erdos-1065",
+    "range": {
+      "startLine": 272,
+      "endLine": 301
+    },
+    "type": "technique",
+    "title": "Decidable Check and 14 Form A Primes ≤ 100",
+    "content": "`checkTwoTimePrime` provides a decidable Boolean check for Form A membership by iterating over possible exponents $k$ in `List.range p`. For each $k$, it verifies $2^k \\mid (p-1)$ and checks primality of $(p-1)/2^k$.\n\n`fourteen_examples_le_100` collects all 14 Form A primes $\\leq 100$: $3, 5, 7, 11, 13, 23, 29, 41, 47, 53, 59, 83, 89, 97$. The proof destructures list membership via `simp [List.mem_cons]` and applies the individual example theorems. This is the computational evidence supporting Conjecture A.",
+    "mathContext": "The 14 Form A primes $\\leq 100$ with their decompositions $(p, k, q)$: $(3,0,2), (5,1,2), (7,1,3), (11,1,5), (13,2,3), (23,1,11), (29,2,7), (41,3,5), (47,1,23), (53,2,13), (59,1,29), (83,1,41), (89,3,11), (97,5,3)$. Among the 25 primes $\\leq 100$, 14 are Form A — a density of 56%.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "decidable predicates",
+      "List.range",
+      "computational verification",
+      "prime density"
+    ],
+    "prerequisites": [
+      "checkTwoTimePrime",
+      "individual example theorems"
+    ]
   }
 ]

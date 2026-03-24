@@ -65,6 +65,30 @@
       "startLine": 64,
       "endLine": 69,
       "summary": "States the Collatz conjecture as an axiom: $\\forall m \\geq 1, \\texttt{ReachesOne}(m)$. Open since pre-1952, with $500 Erdős prize."
+    },
+    {
+      "id": "even-reduction",
+      "title": "Even Step Reduction and Orbit Transitivity",
+      "startLine": 70,
+      "endLine": 77,
+      "summary": "Proves `collatz_even_lt` ($f(m) < m$ for even $m > 0$, via `Nat.div_lt_self`) and `reachesOne_of_collatz` (if $f(m)$ reaches 1, then $m$ reaches 1 in one more step). The latter connects iterated orbits.",
+      "mathContext": "Even reduction: $f(m) = m/2 < m$ for $m > 0$. Orbit transitivity: if $f^k(f(m)) = 1$, then $f^{k+1}(m) = 1$, since $f^{k+1}(m) = f^k(f(m))$."
+    },
+    {
+      "id": "concrete-verifications",
+      "title": "Concrete Verifications ($m = 2, \\ldots, 7$)",
+      "startLine": 79,
+      "endLine": 86,
+      "summary": "Six specific verifications by `native_decide`: $m = 2$ (1 step), $m = 3$ (5 steps), $m = 4$ (2 steps), $m = 5$ (4 steps), $m = 6$ (6 steps), $m = 7$ (11 steps). Each provides an explicit witness $k$ with $f^k(m) = 1$.",
+      "mathContext": "The orbit lengths: $f(2) = 1$ (1 step). $3 \\to 5 \\to 8 \\to 4 \\to 2 \\to 1$ (5 steps). $7 \\to 11 \\to 17 \\to 26 \\to 13 \\to 20 \\to 10 \\to 5 \\to 8 \\to 4 \\to 2 \\to 1$ (11 steps). The orbit lengths grow irregularly — this unpredictability is the essence of the problem's difficulty."
+    },
+    {
+      "id": "deep-partial-results",
+      "title": "Deep Partial Results and Conjecture (Axioms)",
+      "startLine": 88,
+      "endLine": 110,
+      "summary": "Axiomatizes Tao (2019): for almost all $m$, the orbit drops below any function $g(m) \\to \\infty$. Axiomatizes Krasikov-Lagarias (2003): $|\\{m \\leq x : m \\text{ reaches 1}\\}| \\geq x^{0.84}$. States the full conjecture: $\\forall m \\geq 1, \\texttt{ReachesOne}(m)$.",
+      "mathContext": "Tao's result: $\\text{dens}(\\{m \\leq x : \\min_k f^k(m) \\leq g(m)\\}) \\to 1$ for any $g(n) \\to \\infty$. This means 'almost all' orbits get arbitrarily small, but does not prove they reach 1. Krasikov-Lagarias: at least $x^{0.84}$ integers below $x$ reach 1, improving earlier $x^{0.81}$ bounds."
     }
   ],
   "overview": {

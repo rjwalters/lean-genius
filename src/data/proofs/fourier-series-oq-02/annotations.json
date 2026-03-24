@@ -347,5 +347,75 @@
       "fourierCoeff_holder_decay",
       "linarith"
     ]
+  },
+  {
+    "id": "ann-fsoq02-lipschitz",
+    "proofId": "fourier-series-oq-02",
+    "range": {
+      "startLine": 256,
+      "endLine": 263
+    },
+    "type": "theorem",
+    "title": "Lipschitz Case: O(1/|n|) Decay",
+    "content": "`fourierCoeff_lipschitz_decay` specializes the main theorem to $\\alpha = 1$: Lipschitz functions have $\\|\\hat{c}_n\\| \\leq CT/(4|n|)$. The proof is a one-liner: apply `fourierCoeff_holder_decay` with $\\alpha = 1$, then simplify via `rpow_one`. This recovers the classical integration-by-parts estimate for $C^1$ functions.",
+    "mathContext": "Lipschitz($C$) $\\subset$ Hölder($C$, 1): setting $\\alpha = 1$ in $\\frac{C}{2}(\\frac{T}{2|n|})^\\alpha$ gives $\\frac{CT}{4|n|}$. For $C^1$ functions with bounded derivative $|f'| \\leq M$: integration by parts gives $|\\hat{c}_n| \\leq \\frac{M}{2\\pi|n|/T}$, consistent with $C = M$ and $T = 2\\pi$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lipschitz continuity",
+      "integration by parts",
+      "rpow_one"
+    ],
+    "prerequisites": [
+      "fourierCoeff_holder_decay",
+      "lipschitz_is_holder_one"
+    ]
+  },
+  {
+    "id": "ann-fsoq02-riemann-lebesgue",
+    "proofId": "fourier-series-oq-02",
+    "range": {
+      "startLine": 281,
+      "endLine": 336
+    },
+    "type": "theorem",
+    "title": "Riemann-Lebesgue for Hölder Functions (58-Line Proof)",
+    "content": "`riemannLebesgue_of_holder` proves $\\hat{c}_n(f) \\to 0$ as $|n| \\to \\infty$ for $\\alpha$-Hölder functions ($\\alpha > 0$). This is the longest proof in the file (58 lines). The strategy:\n\n1. Rewrite the cofinite limit condition as finiteness of $\\{n : \\|\\hat{c}_n\\| \\geq \\varepsilon\\}$\n2. **Case $C = 0$**: bad set $\\subseteq \\{0\\}$ (trivial)\n3. **Case $C > 0$**: Show the bound sequence $a(k) = (C/2)(T/(2(k+1)))^\\alpha \\to 0$:\n   - $T/(2(k+1)) \\to 0$ via `Filter.Tendsto.div_atTop`\n   - $x^\\alpha$ continuous at 0 via `rpow_const`\n   - Multiply by constant $C/2$\n4. Extract $N_0$ with $a(N_0) < \\varepsilon$\n5. Show bad set $\\subseteq [-N_0-1, N_0+1]$ via monotonicity of the bound",
+    "mathContext": "The Riemann-Lebesgue lemma: $\\hat{f}(n) \\to 0$ for $f \\in L^1$. Here the quantitative rate $O(1/|n|^\\alpha)$ from Hölder continuity gives an *explicit* $N_0$ depending on $\\varepsilon$, $C$, $\\alpha$, and $T$. The `cofinite` filter formulation means: for every neighborhood of 0, the complement is finite.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Riemann-Lebesgue lemma",
+      "Filter.Tendsto",
+      "cofinite filter",
+      "rpow continuity"
+    ],
+    "prerequisites": [
+      "fourierCoeff_holder_decay",
+      "Filter.eventually_cofinite",
+      "Real.rpow_le_rpow"
+    ]
+  },
+  {
+    "id": "ann-fsoq02-hierarchy",
+    "proofId": "fourier-series-oq-02",
+    "range": {
+      "startLine": 367,
+      "endLine": 389
+    },
+    "type": "concept",
+    "title": "C^k, C^∞, and Analytic Decay",
+    "content": "Three axioms completing the regularity-decay hierarchy:\n\n- `fourierCoeff_smooth_decay`: $C^k \\Rightarrow |\\hat{c}_n| = O(1/|n|^k)$ (iterated integration by parts)\n- `fourierCoeff_Cinfty_rapid_decay` (**proved**): $C^\\infty \\Rightarrow |\\hat{c}_n| = O(1/|n|^k)$ for all $k$ — follows immediately from smooth decay\n- `fourierCoeff_analytic_decay`: holomorphic on strip of width $\\delta \\Rightarrow |\\hat{c}_n| \\leq C e^{-2\\pi\\delta|n|/T}$\n\nThe $C^\\infty$ case is the only proved result: it applies the $C^k$ axiom for each $k$.",
+    "mathContext": "The hierarchy: $\\text{Hölder}(\\alpha) \\Rightarrow O(1/|n|^\\alpha)$ (proved) $\\subset C^k \\Rightarrow O(1/|n|^k)$ (axiom) $\\subset C^\\infty \\Rightarrow$ rapid (proved from axiom) $\\subset$ analytic $\\Rightarrow O(e^{-c|n|})$ (axiom). The exponential decay for analytic functions follows from contour shifting in the complex strip.",
+    "significance": "key",
+    "relatedConcepts": [
+      "integration by parts",
+      "rapid decay",
+      "Schwartz space",
+      "analytic functions",
+      "contour shifting"
+    ],
+    "prerequisites": [
+      "ContDiff",
+      "fourierCoeff_smooth_decay"
+    ]
   }
 ]

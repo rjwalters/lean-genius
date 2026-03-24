@@ -126,6 +126,30 @@
       "endLine": 115,
       "summary": "Enumerates `easyPrimes` $= \\{5, 7, 13, 19, 37, 61, 181\\}$ (primes $p \\geq 5$ with $(p-1) \\mid 360$) and axiomatizes the key constraints: all moduli $> 2$ and $\\geq 4$ when restricted to $p \\geq 5$.",
       "mathContext": "Easy primes: $\\{p \\geq 5 : (p-1) \\mid 360\\} = \\{5,7,13,19,37,61,181\\}$. Constraint: all $m_i \\geq 4$ for $p \\geq 5$."
+    },
+    {
+      "id": "structural-constraints",
+      "title": "Structural Constraints: Minimum Modulus and Parity",
+      "startLine": 115,
+      "endLine": 136,
+      "summary": "Proves `min_modulus_ge_4` (all moduli in a $p-1$ covering with $p \\geq 5$ are $\\geq 4$) and `moduli_even` (all such moduli are even, since odd primes $p \\geq 5$ have $p - 1$ even). These constraints severely limit the covering system structure.",
+      "mathContext": "Key obstacle: without modulus 2 (since $3$ is excluded) or 3 (since $4-1 = 3$ requires $p = 4$, not prime), the minimum modulus is $4 = 5 - 1$. All moduli are even since $p \\geq 5$ implies $p$ odd, hence $p - 1$ even."
+    },
+    {
+      "id": "verified-properties",
+      "title": "Verified Properties of Easy Primes",
+      "startLine": 138,
+      "endLine": 150,
+      "summary": "Computationally verifies three properties of `easyPrimes` $= \\{5, 7, 13, 19, 37, 61, 181\\}$: all prime, all $\\geq 5$, and all $p - 1$ divide $360 = \\text{lcm}(4,6,12,18,36,60,180)$.",
+      "mathContext": "The 'easy' primes are those $p$ where $p - 1$ divides a tractable modulus: $4, 6, 12, 18, 36, 60, 180$. Their $p - 1$ values all divide $360$, giving Chinese Remainder Theorem compatibility."
+    },
+    {
+      "id": "reciprocal-obstruction",
+      "title": "Reciprocal Sum Obstruction",
+      "startLine": 152,
+      "endLine": 182,
+      "summary": "Proves `easyPrimes_reciprocal_sum_lt_one`: $\\sum 1/(p_i - 1) = 109/180 < 1$, so the easy primes alone cannot form a covering system (which requires $\\sum 1/m_i \\geq 1$). Also proves `max_single_density`: no single modulus $p - 1$ with $p \\geq 5$ covers more than $1/4$ of the integers.",
+      "mathContext": "A covering system $\\{a_i \\pmod{m_i}\\}$ must satisfy $\\sum 1/m_i \\geq 1$ (counting measure argument). The easy primes give $\\sum 1/(p_i - 1) = 1/4 + 1/6 + 1/12 + 1/18 + 1/36 + 1/60 + 1/180 = 109/180 \\approx 0.606 < 1$. Additional moduli or repetitions are needed."
     }
   ],
   "conclusion": {
