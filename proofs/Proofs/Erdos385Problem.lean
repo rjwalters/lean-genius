@@ -50,6 +50,12 @@ the excess F(n) - n tends to infinity.
 /-- A natural number is composite if it is greater than 1 and not prime. -/
 def IsComposite (n : ℕ) : Prop := n > 1 ∧ ¬n.Prime
 
+instance : DecidablePred IsComposite := fun n =>
+  if h1 : n > 1 then
+    if h2 : n.Prime then isFalse (fun ⟨_, hn⟩ => hn h2)
+    else isTrue ⟨h1, h2⟩
+  else isFalse (fun ⟨h, _⟩ => absurd h (not_lt.mpr (by omega)))
+
 /-- The least prime divisor of n, using Mathlib's minFac.
     Returns 0 for n ≤ 1. -/
 noncomputable def leastPrimeDivisor (n : ℕ) : ℕ :=
@@ -60,7 +66,7 @@ theorem leastPrimeDivisor_prime (n : ℕ) (hn : IsComposite n) :
     (leastPrimeDivisor n).Prime := by
   unfold leastPrimeDivisor
   simp only [hn.1, dite_true]
-  exact Nat.minFac_prime (Nat.one_lt_iff_ne_one.mp hn.1)
+  exact Nat.minFac_prime (by have := hn.1; omega)
 
 /-- The least prime divisor divides n. -/
 theorem leastPrimeDivisor_dvd (n : ℕ) (hn : n > 1) :
@@ -71,8 +77,13 @@ theorem leastPrimeDivisor_dvd (n : ℕ) (hn : n > 1) :
 
 /-- For composite n, the least prime divisor is at most √n.
     (If p(n) > √n then n/p(n) < √n < p(n), contradicting minimality.) -/
-axiom leastPrimeDivisor_le_sqrt (n : ℕ) (hn : IsComposite n) :
-    leastPrimeDivisor n ≤ Nat.sqrt n
+theorem leastPrimeDivisor_le_sqrt (n : ℕ) (hn : IsComposite n) :
+    leastPrimeDivisor n ≤ Nat.sqrt n := by
+  have h1 := hn.1
+  unfold leastPrimeDivisor
+  simp only [show n > 1 from h1, ↓reduceDIte]
+  rw [Nat.le_sqrt']
+  exact Nat.minFac_sq_le_self (by omega) hn.2
 
 /- ## The Function F(n) -/
 
@@ -129,7 +140,13 @@ This asks about the same phenomenon from a different angle.
 
 /-- Question 2 implies Question 1: if F(n) - n → ∞ then certainly
     F(n) > n eventually. -/
-axiom q2_implies_q1 : erdos385Question2 → erdos385Question1
+theorem q2_implies_q1 : erdos385Question2 → erdos385Question1 := by
+  intro h
+  unfold erdos385Question2 at h
+  unfold erdos385Question1
+  rw [Filter.eventually_atTop]
+  obtain ⟨N, hN⟩ := Filter.tendsto_atTop_atTop.mp h 1
+  exact ⟨N, fun n hn => by have := hN n hn; omega⟩
 
 /- ## Conjectured Lower Bound
 
@@ -169,7 +186,17 @@ the fine structure of prime gaps.
 /- ## Derived Results -/
 
 /-- Question 1 implies only finitely many n have F(n) ≤ n. -/
-axiom finitely_many_exceptions :
-    erdos385Question1 → {n : ℕ | F n ≤ n}.Finite
+theorem finitely_many_exceptions :
+    erdos385Question1 → {n : ℕ | F n ≤ n}.Finite := by
+  intro h
+  unfold erdos385Question1 at h
+  obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp h
+  apply (Set.finite_Iio N).subset
+  intro n hn
+  simp only [Set.mem_setOf_eq] at hn
+  simp only [Set.mem_Iio]
+  by_contra h_ge
+  push_neg at h_ge
+  exact absurd (hN n h_ge) (not_lt.mpr hn)
 
 end Erdos385
