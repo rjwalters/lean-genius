@@ -154,6 +154,11 @@
       "targetId": "fundamental-theorem-algebra",
       "relationship": "complementary",
       "description": "FTA guarantees every polynomial has roots in $\\mathbb{C}$, so constructibility is never about existence of solutions — only about which geometric operations can produce them. The 2-group criterion characterizes which algebraic numbers (all of which exist by FTA) happen to lie in the compass-and-straightedge closure of $\\mathbb{Q}$"
+    },
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "foundational",
+      "description": "The Sylow theorems are the foundational results about $p$-subgroups of finite groups, and the 2-group characterization of constructibility is a direct application of $p$-group theory with $p = 2$. Sylow's first theorem guarantees the existence of 2-Sylow subgroups in any finite group; the characterization `IsPGroup 2 G $\\iff$ $|G| = 2^n$` used throughout this file is a consequence of the structure theory of $p$-groups that the Sylow theorems initiate"
     }
   ],
   "overview": {
@@ -294,7 +299,8 @@
     "solution-of-cubic",
     "angle-trisection-oq-02-oq-03-oq-01",
     "pi-transcendental",
-    "fundamental-theorem-algebra"
+    "fundamental-theorem-algebra",
+    "sylow-theorems"
   ],
   "references": [
     {
