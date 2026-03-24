@@ -228,6 +228,16 @@
       "targetId": "kummer-theorem",
       "relationship": "foundational",
       "description": "Kummer theory provides the mechanism underlying the Galois bridge (galois_bridge): each radical extraction creates a Kummer extension with cyclic Galois group, so radical towers produce solvable Galois groups — the forward direction of the bridge that Abel-Ruffini applies contrapositively"
+    },
+    {
+      "targetId": "hilbert-13",
+      "relationship": "extended-by",
+      "description": "Hilbert's 13th problem (1900) was directly motivated by Abel-Ruffini: since polynomials of degree $\\geq 5$ cannot be solved by radicals, Hilbert asked whether the roots of the degree-7 equation $x^7 + ax^3 + bx^2 + cx + 1 = 0$ can be expressed as superpositions of continuous functions of two variables. Kolmogorov-Arnold (1957) resolved the topological version positively, but the algebraic formulation remains open — can the roots be expressed via algebraic functions of two variables?"
+    },
+    {
+      "targetId": "hilbert-10",
+      "relationship": "related",
+      "description": "Matiyasevich's negative resolution of Hilbert's 10th problem (MRDP theorem, 1970) extends the impossibility paradigm inaugurated by Abel-Ruffini: Abel-Ruffini shows certain polynomial roots cannot be named by radicals, while MRDP shows the existence of integer solutions to Diophantine equations cannot be decided algorithmically — a deeper level of the expressibility/decidability hierarchy"
     }
   ],
   "relatedProofs": [
@@ -245,7 +255,9 @@
     "kroneckers-jugendtraum",
     "e-transcendental",
     "primitive-roots",
-    "kummer-theorem"
+    "kummer-theorem",
+    "hilbert-13",
+    "hilbert-10"
   ],
   "references": [
     {
