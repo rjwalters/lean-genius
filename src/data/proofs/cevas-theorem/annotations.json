@@ -107,6 +107,27 @@
     ]
   },
   {
+    "id": "ann-part4-header",
+    "proofId": "cevas-theorem",
+    "range": {
+      "startLine": 96,
+      "endLine": 115
+    },
+    "type": "context",
+    "title": "Part 4: Main Theorem Setup",
+    "content": "Section header and variable declarations for the main Ceva's theorem statement. Sets up the triangle vertices, cevian feet, and the ratio product condition.",
+    "mathContext": "Ceva's theorem: cevians AD, BE, CF of triangle ABC are concurrent iff (AF/FB)(BD/DC)(CE/EA) = 1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "cevian",
+      "concurrency",
+      "ratio product"
+    ],
+    "prerequisites": [
+      "triangle geometry"
+    ]
+  },
+  {
     "id": "main-theorem",
     "proofId": "cevas-theorem",
     "range": {
@@ -191,6 +212,28 @@
       "Transversal",
       "Collinearity",
       "Sign difference"
+    ]
+  },
+  {
+    "id": "ann-menelaus",
+    "proofId": "cevas-theorem",
+    "range": {
+      "startLine": 228,
+      "endLine": 263
+    },
+    "type": "insight",
+    "title": "Menelaus Comparison, Verification, and Namespace Close",
+    "content": "Compares Ceva's theorem (+1 for concurrent cevians) with Menelaus's theorem (-1 for collinear points on a transversal). The sign difference reflects that concurrent cevians have an even number of points outside the triangle, while a transversal has an odd number. Includes #check verification of main exports and closes the namespace.",
+    "mathContext": "Ceva: (AF/FB)(BD/DC)(CE/EA) = +1 (concurrency). Menelaus: (AF/FB)(BD/DC)(CE/EA) = -1 (collinearity). The sign encodes the parity of external division points.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Menelaus theorem",
+      "signed ratios",
+      "projective duality"
+    ],
+    "prerequisites": [
+      "Ceva's theorem",
+      "Menelaus's theorem"
     ]
   }
 ]
