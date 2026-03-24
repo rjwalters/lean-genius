@@ -29,12 +29,7 @@ Key bounds:
 Reference: https://erdosproblems.com/1129
 -/
 
-import Mathlib.Analysis.SpecialFunctions.Polynomials.Chebyshev
-import Mathlib.Topology.ContinuousFunction.Compact
-import Mathlib.Data.Real.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Analysis.NormedSpace.Basic
-import Mathlib.Order.Bounds.Basic
+import Mathlib
 
 open Finset BigOperators Real
 
@@ -56,9 +51,9 @@ Key properties:
 - l_k(x_i) = 0 for i ≠ k (equals 0 at other nodes)
 - deg(l_k) = n - 1
 -/
-def LagrangeBasis (nodes : Fin n → ℝ) (k : Fin n) (x : ℝ) : ℝ :=
-  (∏ i in univ.filter (· ≠ k), (x - nodes i)) /
-  (∏ i in univ.filter (· ≠ k), (nodes k - nodes i))
+noncomputable def LagrangeBasis (nodes : Fin n → ℝ) (k : Fin n) (x : ℝ) : ℝ :=
+  (∏ i ∈ Finset.univ.filter (fun j => j ≠ k), (x - nodes i)) /
+  (∏ i ∈ Finset.univ.filter (fun j => j ≠ k), (nodes k - nodes i))
 
 /--
 **Distinct Nodes:**
@@ -85,7 +80,7 @@ The Lebesgue constant measures the conditioning of polynomial interpolation.
 The sum of absolute values of Lagrange basis functions at point x.
   λ(x) = Σ_k |l_k(x)|
 -/
-def LebesgueFunction (nodes : Fin n → ℝ) (x : ℝ) : ℝ :=
+noncomputable def LebesgueFunction (nodes : Fin n → ℝ) (x : ℝ) : ℝ :=
   ∑ k : Fin n, |LagrangeBasis nodes k x|
 
 /--
@@ -95,7 +90,7 @@ The supremum of the Lebesgue function over [-1, 1].
 
 This measures the worst-case amplification of interpolation error.
 -/
-def LebesgueConstant (nodes : Fin n → ℝ) : ℝ :=
+noncomputable def LebesgueConstant (nodes : Fin n → ℝ) : ℝ :=
   sSup {y : ℝ | ∃ x : ℝ, -1 ≤ x ∧ x ≤ 1 ∧ y = LebesgueFunction nodes x}
 
 /-
@@ -111,7 +106,7 @@ The n roots of the n-th Chebyshev polynomial T_n:
 
 These cluster near the endpoints ±1, reducing the Lebesgue constant.
 -/
-def ChebyshevNodes (n : ℕ) (hn : n > 0) (k : Fin n) : ℝ :=
+noncomputable def ChebyshevNodes (n : ℕ) (hn : n > 0) (k : Fin n) : ℝ :=
   Real.cos ((2 * (k.val + 1) - 1 : ℝ) * Real.pi / (2 * n))
 
 /--
@@ -120,11 +115,7 @@ Chebyshev nodes lie in [-1, 1] since cos maps to [-1, 1].
 theorem chebyshev_nodes_in_interval (n : ℕ) (hn : n > 0) :
     NodesInInterval (ChebyshevNodes n hn) := by
   intro k
-  simp only [ChebyshevNodes]
-  constructor <;> exact?
-  all_goals exact Real.neg_one_le_cos _
-  -- cos always gives values in [-1, 1]
-  sorry
+  exact ⟨Real.neg_one_le_cos _, Real.cos_le_one _⟩
 
 /-
 ## Part IV: Fundamental Lower Bounds
@@ -177,7 +168,7 @@ Erdős conjectured and Kilgore proved: optimal nodes satisfy equal oscillation.
 **Subinterval Maximum:**
 The maximum of the Lebesgue function on subinterval [x_i, x_{i+1}].
 -/
-def SubintervalMax (nodes : Fin n → ℝ) (i : Fin n) (hi : i.val + 1 < n) : ℝ :=
+noncomputable def SubintervalMax (nodes : Fin n → ℝ) (i : Fin n) (hi : i.val + 1 < n) : ℝ :=
   sSup {y : ℝ | ∃ x : ℝ, nodes i ≤ x ∧ x ≤ nodes ⟨i.val + 1, hi⟩ ∧
                          y = LebesgueFunction nodes x}
 
@@ -229,6 +220,42 @@ axiom de_boor_pinkus_uniqueness (n : ℕ) (hn : n > 0) :
 Optimal canonical configurations are known only for small n.
 -/
 
+private lemma filter_ne_zero_fin2 :
+    Finset.univ.filter (fun (j : Fin 2) => j ≠ 0) = {1} := by
+  ext i; fin_cases i <;> simp
+
+private lemma filter_ne_one_fin2 :
+    Finset.univ.filter (fun (j : Fin 2) => j ≠ 1) = {0} := by
+  ext i; fin_cases i <;> simp
+
+private lemma lagrange_basis_n2_0 (x : ℝ) :
+    LagrangeBasis (![(-1 : ℝ), 1]) 0 x = (1 - x) / 2 := by
+  simp only [LagrangeBasis, filter_ne_zero_fin2, Finset.prod_singleton,
+    Matrix.cons_val_zero, Matrix.cons_val_one]
+  ring
+
+private lemma lagrange_basis_n2_1 (x : ℝ) :
+    LagrangeBasis (![(-1 : ℝ), 1]) 1 x = (x + 1) / 2 := by
+  simp only [LagrangeBasis, filter_ne_one_fin2, Finset.prod_singleton,
+    Matrix.cons_val_zero, Matrix.cons_val_one]
+  ring
+
+private lemma lebesgue_fn_n2 (x : ℝ) (hx1 : -1 ≤ x) (hx2 : x ≤ 1) :
+    LebesgueFunction (![(-1 : ℝ), 1]) x = 1 := by
+  simp only [LebesgueFunction, Fin.sum_univ_two, lagrange_basis_n2_0, lagrange_basis_n2_1]
+  have h1 : (0 : ℝ) ≤ (1 - x) / 2 := by linarith
+  have h2 : (0 : ℝ) ≤ (x + 1) / 2 := by linarith
+  rw [abs_of_nonneg h1, abs_of_nonneg h2]; ring
+
+private lemma lebesgue_set_n2 :
+    {y : ℝ | ∃ x : ℝ, -1 ≤ x ∧ x ≤ 1 ∧ y = LebesgueFunction (![(-1 : ℝ), 1]) x} = {1} := by
+  ext y; constructor
+  · rintro ⟨x, hx1, hx2, rfl⟩
+    simp [lebesgue_fn_n2 x hx1 hx2]
+  · intro hy
+    rw [Set.mem_singleton_iff] at hy
+    exact ⟨0, by norm_num, by norm_num, by rw [hy, lebesgue_fn_n2 0 (by norm_num) (by norm_num)]⟩
+
 /--
 **n = 2:**
 Optimal nodes: {-1, 1} with Λ = 1.
@@ -238,7 +265,102 @@ theorem optimal_n2 : NodesInInterval (![(-1 : ℝ), 1]) ∧
   constructor
   · intro i
     fin_cases i <;> simp [Matrix.cons_val_zero, Matrix.cons_val_one]
-  · sorry  -- Requires detailed calculation
+  · simp only [LebesgueConstant, lebesgue_set_n2, csSup_singleton]
+
+private lemma filter_ne_zero_fin3 :
+    Finset.univ.filter (fun (j : Fin 3) => j ≠ 0) = {1, 2} := by
+  ext i; fin_cases i <;> simp
+
+private lemma filter_ne_one_fin3 :
+    Finset.univ.filter (fun (j : Fin 3) => j ≠ 1) = {0, 2} := by
+  ext i; fin_cases i <;> simp
+
+private lemma filter_ne_two_fin3 :
+    Finset.univ.filter (fun (j : Fin 3) => j ≠ 2) = {0, 1} := by
+  ext i; fin_cases i <;> simp
+
+private lemma fin3_pair_product_12 (f : Fin 3 → ℝ) :
+    ∏ i ∈ ({1, 2} : Finset (Fin 3)), f i = f 1 * f 2 := by
+  rw [Finset.prod_pair (by decide)]
+
+private lemma fin3_pair_product_02 (f : Fin 3 → ℝ) :
+    ∏ i ∈ ({0, 2} : Finset (Fin 3)), f i = f 0 * f 2 := by
+  rw [Finset.prod_pair (by decide)]
+
+private lemma fin3_pair_product_01 (f : Fin 3 → ℝ) :
+    ∏ i ∈ ({0, 1} : Finset (Fin 3)), f i = f 0 * f 1 := by
+  rw [Finset.prod_pair (by decide)]
+
+/-- Vector access helper: evaluates ![-1, 0, 1] at each index. -/
+private lemma n3_val_0 : (![(-1 : ℝ), 0, 1]) (0 : Fin 3) = -1 := rfl
+private lemma n3_val_1 : (![(-1 : ℝ), 0, 1]) (1 : Fin 3) = 0 := rfl
+private lemma n3_val_2 : (![(-1 : ℝ), 0, 1]) (2 : Fin 3) = 1 := rfl
+
+/-- l_0(x) = x(x-1)/2 for nodes {-1, 0, 1} -/
+private lemma lagrange_basis_n3_0 (x : ℝ) :
+    LagrangeBasis (![(-1 : ℝ), 0, 1]) 0 x = x * (x - 1) / 2 := by
+  simp only [LagrangeBasis, filter_ne_zero_fin3]
+  rw [Finset.prod_pair (show (1 : Fin 3) ≠ 2 by decide),
+      Finset.prod_pair (show (1 : Fin 3) ≠ 2 by decide)]
+  simp only [n3_val_0, n3_val_1, n3_val_2]; ring
+
+/-- l_1(x) = 1 - x² for nodes {-1, 0, 1} -/
+private lemma lagrange_basis_n3_1 (x : ℝ) :
+    LagrangeBasis (![(-1 : ℝ), 0, 1]) 1 x = 1 - x ^ 2 := by
+  simp only [LagrangeBasis, filter_ne_one_fin3]
+  rw [Finset.prod_pair (show (0 : Fin 3) ≠ 2 by decide),
+      Finset.prod_pair (show (0 : Fin 3) ≠ 2 by decide)]
+  simp only [n3_val_0, n3_val_1, n3_val_2]; ring
+
+/-- l_2(x) = x(x+1)/2 for nodes {-1, 0, 1} -/
+private lemma lagrange_basis_n3_2 (x : ℝ) :
+    LagrangeBasis (![(-1 : ℝ), 0, 1]) 2 x = x * (x + 1) / 2 := by
+  simp only [LagrangeBasis, filter_ne_two_fin3]
+  rw [Finset.prod_pair (show (0 : Fin 3) ≠ 1 by decide),
+      Finset.prod_pair (show (0 : Fin 3) ≠ 1 by decide)]
+  simp only [n3_val_0, n3_val_1, n3_val_2]; ring
+
+/-- The Lebesgue function for {-1, 0, 1} on [0, 1] equals x + 1 - x². -/
+private lemma lebesgue_fn_n3_nonneg (x : ℝ) (hx0 : 0 ≤ x) (hx1 : x ≤ 1) :
+    LebesgueFunction (![(-1 : ℝ), 0, 1]) x = x + 1 - x ^ 2 := by
+  simp only [LebesgueFunction, Fin.sum_univ_three, lagrange_basis_n3_0,
+    lagrange_basis_n3_1, lagrange_basis_n3_2]
+  have h1 : x * (x - 1) / 2 ≤ 0 := by nlinarith
+  have h2 : 0 ≤ 1 - x ^ 2 := by nlinarith
+  have h3 : 0 ≤ x * (x + 1) / 2 := by nlinarith
+  rw [abs_of_nonpos h1, abs_of_nonneg h2, abs_of_nonneg h3]; ring
+
+/-- The Lebesgue function for {-1, 0, 1} on [-1, 0] equals -x + 1 - x². -/
+private lemma lebesgue_fn_n3_nonpos (x : ℝ) (hx1 : -1 ≤ x) (hx0 : x ≤ 0) :
+    LebesgueFunction (![(-1 : ℝ), 0, 1]) x = -x + 1 - x ^ 2 := by
+  simp only [LebesgueFunction, Fin.sum_univ_three, lagrange_basis_n3_0,
+    lagrange_basis_n3_1, lagrange_basis_n3_2]
+  have h1 : 0 ≤ x * (x - 1) / 2 := by nlinarith
+  have h2 : 0 ≤ 1 - x ^ 2 := by nlinarith
+  have h3 : x * (x + 1) / 2 ≤ 0 := by nlinarith
+  rw [abs_of_nonneg h1, abs_of_nonneg h2, abs_of_nonpos h3]; ring
+
+/-- The Lebesgue function for {-1, 0, 1} is bounded by 5/4 on [-1, 1]. -/
+private lemma lebesgue_fn_n3_le (x : ℝ) (hx1 : -1 ≤ x) (hx2 : x ≤ 1) :
+    LebesgueFunction (![(-1 : ℝ), 0, 1]) x ≤ 5 / 4 := by
+  rcases le_or_gt 0 x with hx0 | hx0
+  · rw [lebesgue_fn_n3_nonneg x hx0 hx2]; nlinarith [sq_nonneg (x - 1 / 2)]
+  · rw [lebesgue_fn_n3_nonpos x hx1 (le_of_lt hx0)]; nlinarith [sq_nonneg (x + 1 / 2)]
+
+/-- The Lebesgue function for {-1, 0, 1} attains 5/4 at x = 1/2. -/
+private lemma lebesgue_fn_n3_at_half :
+    LebesgueFunction (![(-1 : ℝ), 0, 1]) (1 / 2) = 5 / 4 := by
+  rw [lebesgue_fn_n3_nonneg (1 / 2) (by norm_num) (by norm_num)]; ring
+
+private lemma lebesgue_set_n3_bddAbove :
+    BddAbove {y : ℝ | ∃ x : ℝ, -1 ≤ x ∧ x ≤ 1 ∧
+      y = LebesgueFunction (![(-1 : ℝ), 0, 1]) x} :=
+  ⟨5 / 4, fun _ ⟨x, hx1, hx2, hy⟩ => hy ▸ lebesgue_fn_n3_le x hx1 hx2⟩
+
+private lemma lebesgue_set_n3_nonempty :
+    (↑{y : ℝ | ∃ x : ℝ, -1 ≤ x ∧ x ≤ 1 ∧
+      y = LebesgueFunction (![(-1 : ℝ), 0, 1]) x} : Set ℝ).Nonempty :=
+  ⟨5 / 4, 1 / 2, by norm_num, by norm_num, lebesgue_fn_n3_at_half.symm⟩
 
 /--
 **n = 3:**
@@ -250,7 +372,11 @@ theorem optimal_n3 : NodesInInterval (![(-1 : ℝ), 0, 1]) ∧
   constructor
   · intro i
     fin_cases i <;> simp [Matrix.cons_val_zero, Matrix.cons_val_one]
-  · sorry  -- Requires detailed calculation
+  · apply le_antisymm
+    · exact csSup_le lebesgue_set_n3_nonempty
+        (fun _ ⟨x, hx1, hx2, hy⟩ => hy ▸ lebesgue_fn_n3_le x hx1 hx2)
+    · exact le_csSup lebesgue_set_n3_bddAbove
+        ⟨1 / 2, by norm_num, by norm_num, lebesgue_fn_n3_at_half.symm⟩
 
 /--
 **n = 4:**
@@ -275,16 +401,16 @@ Erdős also posed a variant for points on the unit circle.
 **Complex Lebesgue Constant:**
 For nodes z₁,...,zₙ on the unit circle |z| = 1.
 -/
-def ComplexLebesgueConstant (n : ℕ) (nodes : Fin n → ℂ) : ℝ :=
-  sSup {y : ℝ | ∃ z : ℂ, Complex.abs z = 1 ∧
-    y = ∑ k : Fin n, Complex.abs (∏ i in univ.filter (· ≠ k), (z - nodes i) /
-                                  ∏ i in univ.filter (· ≠ k), (nodes k - nodes i))}
+noncomputable def ComplexLebesgueConstant (n : ℕ) (nodes : Fin n → ℂ) : ℝ :=
+  sSup {y : ℝ | ∃ z : ℂ, ‖z‖ = 1 ∧
+    y = ∑ k : Fin n, ‖(∏ i ∈ Finset.univ.filter (fun j => j ≠ k), (z - nodes i)) /
+                       (∏ i ∈ Finset.univ.filter (fun j => j ≠ k), (nodes k - nodes i))‖}
 
 /--
 **Roots of Unity:**
 The n-th roots of unity: ωₖ = e^(2πik/n) for k = 0, ..., n-1.
 -/
-def RootsOfUnity (n : ℕ) (hn : n > 0) (k : Fin n) : ℂ :=
+noncomputable def RootsOfUnity (n : ℕ) (hn : n > 0) (k : Fin n) : ℂ :=
   Complex.exp (2 * Real.pi * Complex.I * k.val / n)
 
 /--
@@ -292,7 +418,7 @@ def RootsOfUnity (n : ℕ) (hn : n > 0) (k : Fin n) : ℂ :=
 For odd n, the n-th roots of unity minimize the complex Lebesgue constant.
 -/
 axiom brutman_odd (n : ℕ) (hn : n > 0) (hodd : Odd n) :
-    ∀ nodes : Fin n → ℂ, (∀ k, Complex.abs (nodes k) = 1) →
+    ∀ nodes : Fin n → ℂ, (∀ k, ‖nodes k‖ = 1) →
     ComplexLebesgueConstant n (RootsOfUnity n hn) ≤ ComplexLebesgueConstant n nodes
 
 /--
@@ -300,7 +426,7 @@ axiom brutman_odd (n : ℕ) (hn : n > 0) (hodd : Odd n) :
 For even n, the n-th roots of unity minimize the complex Lebesgue constant.
 -/
 axiom brutman_pinkus_even (n : ℕ) (hn : n > 0) (heven : Even n) :
-    ∀ nodes : Fin n → ℂ, (∀ k, Complex.abs (nodes k) = 1) →
+    ∀ nodes : Fin n → ℂ, (∀ k, ‖nodes k‖ = 1) →
     ComplexLebesgueConstant n (RootsOfUnity n hn) ≤ ComplexLebesgueConstant n nodes
 
 /--
@@ -308,7 +434,7 @@ axiom brutman_pinkus_even (n : ℕ) (hn : n > 0) (heven : Even n) :
 For all n, roots of unity minimize the complex Lebesgue constant.
 -/
 theorem erdos_complex_conjecture (n : ℕ) (hn : n > 0) :
-    ∀ nodes : Fin n → ℂ, (∀ k, Complex.abs (nodes k) = 1) →
+    ∀ nodes : Fin n → ℂ, (∀ k, ‖nodes k‖ = 1) →
     ComplexLebesgueConstant n (RootsOfUnity n hn) ≤ ComplexLebesgueConstant n nodes := by
   intro nodes hnodes
   cases Nat.even_or_odd n with
@@ -337,20 +463,17 @@ theorem erdos_1129 (n : ℕ) (hn : n > 0) :
     (∃ nodes : Fin n → ℝ, NodesInInterval nodes ∧ DistinctNodes nodes ∧
      ∀ nodes' : Fin n → ℝ, NodesInInterval nodes' → DistinctNodes nodes' →
      LebesgueConstant nodes ≤ LebesgueConstant nodes') ∧
-    (∃ C₁ C₂ : ℝ, ∀ m : ℕ, ∀ nodes : Fin m → ℝ,
-     NodesInInterval nodes → DistinctNodes nodes → m > 0 →
+    (∃ C₁ C₂ : ℝ, ∀ (m : ℕ) (hm : m > 0), ∀ nodes : Fin m → ℝ,
+     NodesInInterval nodes → DistinctNodes nodes →
      (2 / Real.pi) * Real.log m - C₁ ≤ LebesgueConstant nodes ∧
-     LebesgueConstant (ChebyshevNodes m (by omega : m > 0)) ≤
+     LebesgueConstant (ChebyshevNodes m hm) ≤
        (2 / Real.pi) * Real.log m + C₂) := by
   constructor
   · exact kilgore_cheney_existence n hn
   · obtain ⟨C₁, hC₁⟩ := erdos_lower_bound
     obtain ⟨C₂, hC₂⟩ := chebyshev_upper_bound
-    use C₁, C₂
-    intro m nodes hinterval hdistinct hm
-    constructor
-    · exact hC₁ m nodes hinterval hdistinct hm
-    · exact hC₂ m hm
+    exact ⟨C₁, C₂, fun m hm nodes hinterval hdistinct =>
+      ⟨hC₁ m nodes hinterval hdistinct hm, hC₂ m hm⟩⟩
 
 /--
 **Summary:**
@@ -362,13 +485,10 @@ theorem erdos_1129_summary :
     (∀ n > 0, ∃ nodes : Fin n → ℝ, NodesInInterval nodes ∧ DistinctNodes nodes ∧
      ∀ nodes' : Fin n → ℝ, NodesInInterval nodes' → DistinctNodes nodes' →
      LebesgueConstant nodes ≤ LebesgueConstant nodes') ∧
-    (∀ n > 0, ∀ nodes : Fin n → ℂ, (∀ k, Complex.abs (nodes k) = 1) →
-     ComplexLebesgueConstant n (RootsOfUnity n (by omega : n > 0)) ≤
+    (∀ (n : ℕ) (hn : n > 0), ∀ nodes : Fin n → ℂ, (∀ k, ‖nodes k‖ = 1) →
+     ComplexLebesgueConstant n (RootsOfUnity n hn) ≤
        ComplexLebesgueConstant n nodes) := by
-  constructor
-  · intro n hn
-    exact kilgore_cheney_existence n hn
-  · intro n hn nodes hnodes
-    exact erdos_complex_conjecture n hn nodes hnodes
+  exact ⟨fun n hn => kilgore_cheney_existence n hn,
+         fun n hn nodes hnodes => erdos_complex_conjecture n hn nodes hnodes⟩
 
 end Erdos1129
