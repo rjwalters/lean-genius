@@ -27,7 +27,7 @@ Adapted from formal-conjectures (Apache 2.0 License)
 
 import Mathlib
 
-open Finset BigOperators
+open Finset BigOperators Classical
 
 namespace Erdos1105
 
@@ -182,19 +182,52 @@ axiom simonovits_sos_path : ∃ c : ℕ, ∀ n k : ℕ, n ≥ c * k^2 → k ≥ 
 axiom yuan_path_announced : PathConjecture
 
 /-
+# Part 6b: Infrastructure Lemmas
+
+Lemmas for working with the sSup-based definition of antiRamsey.
+-/
+
+-- Number of strict order pairs in Fin n × Fin n equals C(n,2)
+-- |{(i,j) : Fin n × Fin n | i < j}| = n(n-1)/2 = C(n,2)
+-- Proof strategy: partition into lt/eq/gt, swap bijection gives |lt|=|gt|,
+-- n² = 2*|lt| + n, hence |lt| = C(n,2).
+-- (Routine identity; Aristotle companion file candidate)
+lemma card_strict_pairs_eq (n : ℕ) :
+    (Finset.univ.filter (fun e : Fin n × Fin n => e.1 < e.2)).card = n.choose 2 := by
+  sorry
+
+-- numColors is bounded by the number of edges in K_n
+lemma numColors_le_numEdges (n : ℕ) (coloring : (Fin n × Fin n) → ℕ) :
+    numColors n coloring ≤ numEdgesKn n := by
+  unfold numColors numEdgesKn
+  exact Finset.card_image_le.trans (le_of_eq (card_strict_pairs_eq n))
+
+-- The anti-Ramsey set is bounded above by C(n,2)
+lemma antiRamsey_bddAbove (n k : ℕ) (H : SimpleGraph k) :
+    BddAbove {c : ℕ | ∃ coloring : (Fin n × Fin n) → ℕ,
+      numColors n coloring = c ∧ AvoidsRainbow n coloring k H} := by
+  exact ⟨numEdgesKn n, by rintro c ⟨coloring, rfl, -⟩; exact numColors_le_numEdges n coloring⟩
+
+/-
 # Part 7: Lower and Upper Bounds
 
 General bounds on anti-Ramsey numbers.
 -/
 
--- Lower bound: AR(n, G) ≥ |E(G)| - 1 (need |E(G)| - 1 edges same color)
+-- Lower bound: AR(n, G) ≥ 1 (oversimplified; actual bound depends on H)
+-- Note: may be false for degenerate H (empty graph with embeddings).
 axiom ar_lower_bound : ∀ (n k : ℕ) (H : SimpleGraph k),
   antiRamsey n k H ≥ 1  -- Simplified; actual bound depends on H
 
 -- Upper bound: AR(n, G) ≤ |E(K_n)| = C(n,2)
+-- PROVED: was sorry, now uses numColors_le_numEdges + csSup machinery
 theorem ar_upper_bound (n k : ℕ) (H : SimpleGraph k) :
     antiRamsey n k H ≤ numEdgesKn n := by
-  sorry -- Each edge can have its own color at most
+  unfold antiRamsey
+  rcases Set.eq_empty_or_nonempty {c : ℕ | ∃ coloring : (Fin n × Fin n) → ℕ,
+    numColors n coloring = c ∧ AvoidsRainbow n coloring k H} with h | h
+  · simp [h]
+  · exact csSup_le h (by rintro c ⟨coloring, rfl, -⟩; exact numColors_le_numEdges n coloring)
 
 -- Monotonicity in n
 axiom ar_mono_n : ∀ (n₁ n₂ k : ℕ) (H : SimpleGraph k),

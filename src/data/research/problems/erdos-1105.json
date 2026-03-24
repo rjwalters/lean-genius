@@ -29,13 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: 8 axioms (mostly deep results), 1 sorry. No quick wins.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: ar_upper_bound proved (was sorry). Infrastructure lemmas added. Remaining sorry in card_strict_pairs_eq (routine). Aristotle companion created.",
+    "builtItems": [
+      "card_strict_pairs_eq (sorry) in Erdos1105Problem.lean",
+      "numColors_le_numEdges lemma in Erdos1105Problem.lean",
+      "antiRamsey_bddAbove lemma in Erdos1105Problem.lean",
+      "ar_upper_bound proof in Erdos1105Problem.lean",
+      "Erdos1105Aristotle.lean companion file (3 targets)"
+    ],
     "insights": [
       "8 axioms: ar_triangle, simonovits_sos_path, yuan_path_announced, ar_lower_bound (oversimplified), ar_mono_n, ar_turan_lower, ar_path_3, ar_k3",
       "1 sorry: ar_upper_bound (AR ≤ C(n,2))",
       "ar_lower_bound is oversimplified (says ≥ 1 instead of proper bound)",
-      "yuan_path_announced axiomatizes an announced result"
+      "yuan_path_announced axiomatizes an announced result",
+      "ar_upper_bound PROVED via infrastructure: card_strict_pairs_eq + numColors_le_numEdges + csSup_le machinery",
+      "Added open Classical to fix DecidablePred issue in turan definition",
+      "card_strict_pairs_eq (|{(i,j)|i<j}| = C(n,2)) left as sorry - Aristotle companion file created",
+      "Proof architecture: antiRamsey_bddAbove provides BddAbove for the anti-Ramsey set"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
