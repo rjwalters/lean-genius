@@ -399,5 +399,28 @@
       "Galois theory",
       "history of algebra"
     ]
+  },
+  {
+    "id": "ann-verification",
+    "proofId": "abel-ruffini-oq-04",
+    "range": {
+      "startLine": 154,
+      "endLine": 163
+    },
+    "type": "technique",
+    "title": "Verification: Type-Checking the API Surface",
+    "content": "The file concludes with four #check commands that type-check the main theorems: a5_is_simple, s5_not_solvable, symmetric_not_solvable, and five_is_the_threshold. In Lean 4, #check asks the kernel to infer and display the type of an expression without adding it to the environment. These serve as both a verification step (confirming that all four theorems have the expected types after the namespace closes) and an API summary for users who want to import specific results. The four checked types are: IsSimpleGroup (alternatingGroup (Fin 5)), ¬IsSolvable (Equiv.Perm (Fin 5)), (n : ℕ) → 5 ≤ n → ¬IsSolvable (Equiv.Perm (Fin n)), and IsSolvable (Equiv.Perm (Fin 1)) ∧ ¬IsSolvable (Equiv.Perm (Fin 5)). This pattern of ending a formalization file with #check statements is common in pedagogical Lean files and serves a similar role to a module's export list in other languages.",
+    "mathContext": "Type signatures verified: $\\text{IsSimpleGroup}(A_5)$, $\\neg\\text{IsSolvable}(S_5)$, $\\forall n \\geq 5,\\, \\neg\\text{IsSolvable}(S_n)$, and the threshold conjunction $\\text{IsSolvable}(S_1) \\wedge \\neg\\text{IsSolvable}(S_5)$.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "type checking",
+      "API surface",
+      "Lean kernel verification",
+      "module exports"
+    ],
+    "prerequisites": [
+      "Lean 4 commands",
+      "type theory basics"
+    ]
   }
 ]

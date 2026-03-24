@@ -60,7 +60,13 @@
     "axiomCount": 3,
     "lineCount": 308,
     "assumptions": "3 axioms: (1) bhp_short_interval — Baker-Harman-Pintz short interval prime existence for intervals [x, x+h] with h ≥ x^0.525, (2) cramer_conjecture — Cramér's conjecture on maximal prime gaps O(log²p), (3) legendre_conjecture — a prime exists between n² and (n+1)² for all n ≥ 1.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "relatedProblems": [
+      {
+        "id": "bertrands-postulate",
+        "relationship": "Parent entry proving Bertrand's postulate; this OQ-03 explores prime density in shorter intervals"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "Bertrand conjectured in 1845 that every interval (n, 2n] contains at least one prime. Chebyshev verified this in 1852, and Erdős gave an elegant elementary proof in 1932 using central binomial coefficients. But the deeper question is: how precisely are primes distributed in much shorter intervals? The Prime Number Theorem (PNT) gives π(x) ~ x/ln(x), predicting ~h/ln(x) primes in [x, x+h] for 'large' h. The question of how small h can be while guaranteeing a prime is one of the central problems in analytic number theory.",
@@ -305,6 +311,34 @@
     "lineCount": 308,
     "axiomCount": 3,
     "theoremCount": 12,
-    "definitionCount": 2
+    "definitionCount": 2,
+    "substantiveTheoremCount": 5,
+    "mainTheorems": [
+      {
+        "name": "primeCounting_pow_two_ge",
+        "type": "proved",
+        "description": "π(2^m) ≥ m — iterated Bertrand gives logarithmic lower bound on primes up to 2^m"
+      },
+      {
+        "name": "primeCounting_log_lower_bound",
+        "type": "proved",
+        "description": "π(n) ≥ log₂(n) for n ≥ 2 — logarithmic lower bound on the prime counting function"
+      },
+      {
+        "name": "primeGapConjecture_mono",
+        "type": "proved",
+        "description": "PrimeGapConjecture is monotone: θ₁ ≤ θ₂ and PrimeGapConjecture(θ₁) → PrimeGapConjecture(θ₂)"
+      },
+      {
+        "name": "bhp_short_interval",
+        "type": "axiom",
+        "description": "Baker-Harman-Pintz: every [x, x+x^0.525] contains a prime for sufficiently large x"
+      },
+      {
+        "name": "legendre_conjecture",
+        "type": "axiom",
+        "description": "Legendre's conjecture: a prime exists between n² and (n+1)² for all n ≥ 1"
+      }
+    ]
   }
 }

@@ -114,6 +114,57 @@
       "entropy method",
       "correlation inequality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Kleitman's lower bound",
+      "Sperner's theorem",
+      "entropy method"
+    ]
+  },
+  {
+    "id": "ann-e497-imports",
+    "proofId": "erdos-497",
+    "type": "context",
+    "range": {
+      "startLine": 20,
+      "endLine": 25
+    },
+    "title": "Imports and Infrastructure",
+    "content": "Imports `Nat.Choose.Basic` for binomial coefficients $\\binom{n}{k}$, `Finset.Basic` and `Finset.Powerset` for finite sets and power sets, and `Tactic` for general proof automation. The power set `Finset.powerset` is essential for defining antichainCount: the definition iterates over all subfamilies of $\\mathcal{P}([n])$ and filters for the antichain property.\n\n**Computational note**: The definition `antichainCount` is marked `noncomputable` because filtering over the double powerset $\\mathcal{P}(\\mathcal{P}([n]))$ has size $2^{2^n}$, which is computationally infeasible for even small $n$. This is why the specific values D(0)–D(4) are axiomatized rather than computed.",
+    "mathContext": "$|\\mathcal{P}(\\mathcal{P}([n]))| = 2^{2^n}$. For $n = 5$: $2^{32} = 4{,}294{,}967{,}296$ subfamilies to check. The axiomatization of small values avoids this exponential blowup.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.powerset",
+      "noncomputable definition",
+      "double exponential growth"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Finset API"
+    ]
+  },
+  {
+    "id": "ann-e497-concentration",
+    "proofId": "erdos-497",
+    "type": "insight",
+    "range": {
+      "startLine": 67,
+      "endLine": 79
+    },
+    "title": "Antichain Concentration Near the Middle",
+    "content": "The deeper insight behind Kleitman's theorem is that antichains in $\\mathcal{P}([n])$ exhibit a strong **concentration phenomenon**: almost all antichains are composed primarily of sets near size $n/2$. This is because:\n\n1. **Layer counting**: The layer $\\binom{[n]}{k}$ has $\\binom{n}{k}$ sets, maximized at $k = \\lfloor n/2 \\rfloor$.\n2. **Width vs depth**: An antichain can contain at most one set from each chain in $\\mathcal{P}([n])$. Dilworth's theorem shows the minimum number of chains needed to cover $\\mathcal{P}([n])$ is $\\binom{n}{\\lfloor n/2 \\rfloor}$.\n3. **Entropy bound**: A random antichain (chosen uniformly from all antichains) has each element concentrated near the middle layer with variance $O(n)$.\n\nKleitman's correlation inequality shows that the events 'set $A$ is in the antichain' and 'set $B$ is in the antichain' are negatively correlated when $A \\subset B$, providing the key technical tool.",
+    "mathContext": "Kleitman's correlation inequality: for monotone events $A, B$ in the Boolean lattice, $\\Pr[A \\cap B] \\leq \\Pr[A] \\cdot \\Pr[B]$. This negative correlation drives the concentration of antichains near the middle layer.",
+    "significance": "key",
+    "relatedConcepts": [
+      "concentration phenomenon",
+      "Dilworth's theorem",
+      "correlation inequality",
+      "entropy method",
+      "layer structure"
+    ],
+    "prerequisites": [
+      "Sperner's theorem",
+      "LYM inequality",
+      "probabilistic arguments"
+    ]
   }
 ]
