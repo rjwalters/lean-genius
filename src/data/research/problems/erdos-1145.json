@@ -1,13 +1,13 @@
 {
   "slug": "erdos-1145",
   "title": "Erdős #1145",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
+    "formal": "axiom erdos_sarkozy_conjecture (A B : Set ℕ) (hInf_A : A.Infinite) (hInf_B : B.Infinite) (hRatio : HasAsymptoticRatio A B) (hBasis : IsTwoSetBasis A B) : ∀ k : ℕ, ∃ n : ℕ, k < twoSetRepFunc A B n",
+    "plain": "If A, B ⊆ ℕ are infinite with aₙ/bₙ → 1 and A + B covers all large integers, must r_{A,B}(n) be unbounded?",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-15T16:41:04.200Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Formalization complete. Lean file builds with 0 sorries, 10 proved theorems, 10 axioms.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Full Lean formalization with 337 lines. 10 theorems proved (basis equivalence, self-ratio, 1145→28 implication, Ruzsa necessity, commutativity, monotonicity, positivity, vanishing). 10 axioms (open conjecture + Ruzsa properties + partial results). Gallery entry created.",
+    "builtItems": [
+      "proofs/Proofs/Erdos1145Problem.lean - Full formalization (337 lines, 0 sorries)",
+      "src/data/proofs/erdos-1145/ - Gallery entry (meta.json, index.ts, annotations.json)",
+      "Proved: isTwoSetBasis_iff (basis def equivalence)",
+      "Proved: hasAsymptoticRatio_self (A=A gives ratio 1)",
+      "Proved: erdos_1145_implies_28 (1145 implies Erdős-Turán)",
+      "Proved: ratio_condition_necessary (Ruzsa counterexample)",
+      "Proved: twoSetRepFunc_comm (representation symmetry)"
+    ],
+    "insights": [
+      "Problem #1145 strictly generalizes Problem #28 (Erdős-Turán): setting A = B recovers it",
+      "The ratio condition aₙ/bₙ → 1 is NECESSARY: Ruzsa binary digit construction gives counterexample without it",
+      "Ruzsa sets: A = even binary positions, B = odd positions, every n has unique representation, r = 1 everywhere",
+      "Two-set representation function is commutative: r_{A,B}(n) = r_{B,A}(n)",
+      "For Ruzsa sets aₙ/bₙ → 1/2 (since B = 2A), confirming ratio ≠ 1"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Create Aristotle companion file with routine supporting lemmas",
+      "Prove Ruzsa axioms (ruzsaA_infinite, ruzsaB_infinite) from binary digit properties",
+      "Connect to formal-conjectures repository formalization of Problem #28"
+    ],
     "markdown": "# Erdős #1145 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
