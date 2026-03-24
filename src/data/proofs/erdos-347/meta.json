@@ -137,6 +137,16 @@
       "targetId": "erdos-40",
       "relationship": "related",
       "description": "Both involve additive structure at critical thresholds: #40 studies B_2[g] sets that cannot be bases, while #347 studies sequences at the critical ratio 2 that can be robustly complete. Both concern how growth rate constraints interact with additive coverage"
+    },
+    {
+      "targetId": "zeckendorf-representation",
+      "relationship": "related",
+      "description": "Zeckendorf's theorem guarantees unique representation of every positive integer as a sum of non-consecutive Fibonacci numbers — the Fibonacci sequence is complete with ratio limit $\\phi \\approx 1.618 < 2$. Problem #347 asks whether completeness (with density-1 robustness) is achievable at the harder critical ratio 2, where the gap between consecutive terms just barely allows coverage"
+    },
+    {
+      "targetId": "partition-function",
+      "relationship": "related",
+      "description": "Both concern representing integers as sums from a fixed set. The partition function $p(n)$ counts unrestricted representations; Problem #347 asks for a sequence with enough representations that deleting finitely many terms still yields density-1 coverage — a representation-richness condition dual to the partition-counting perspective"
     }
   ],
   "references": [
