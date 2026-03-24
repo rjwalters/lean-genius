@@ -21,6 +21,7 @@
     "erdosNumber": 340,
     "erdosUrl": "https://erdosproblems.com/340",
     "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-19",
     "axiomCount": 8,
     "assumptions": "8 axiom declarations: greedy_sidon_values (first 11 Mian-Chowla values), greedy_sidon_strict_mono (strict monotonicity), greedy_sidon_is_sidon (Sidon invariant each stage), lower_bound_cube_root (N^{1/3} lower bound), sidon_upper_bound (Erdos-Turan sqrt upper bound), erdos_340_conjecture (near-optimal growth conjecture), erdos_340_diff_set_question (difference set density), random_sidon_context (random Sidon benchmark)",
     "lineCount": 104,
@@ -100,12 +101,64 @@
     {
       "targetId": "erdos-30",
       "relationship": "related",
-      "description": "Problem #30 asks whether h(N) = N^{1/2} + O_ε(N^ε) for general Sidon sets. Problem #340 specifically concerns the greedy construction's growth rate."
+      "description": "Problem #30 asks whether h(N) = N^{1/2} + O_ε(N^ε) for general Sidon sets — the theoretical ceiling that constrains Problem #340. Resolving #340 would show the greedy construction approaches this ceiling"
     },
     {
       "targetId": "erdos-156",
       "relationship": "related",
-      "description": "Problem #156 concerns the slow growth of maximal Sidon subsets. Both problems study how construction methods affect Sidon set density."
+      "description": "Problem #156 concerns maximal Sidon subsets and their density. Both study how construction methods affect Sidon set growth, with #340 focusing on the specific greedy algorithm"
+    },
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "technique",
+      "description": "The random Sidon set benchmark (expected size ~N^{1/3} by the birthday paradox) is the baseline comparison: the greedy construction empirically outperforms randomness by achieving ~N^{0.497} instead of ~N^{1/3}"
+    },
+    {
+      "targetId": "prob-method-alteration",
+      "relationship": "technique",
+      "description": "The alteration method could potentially construct near-optimal Sidon sets by starting with a random set and removing colliding pairs. This approach gives ~N^{1/3} which matches the known lower bound, suggesting the greedy algorithm uses structural information that randomness misses"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "technique",
+      "description": "Singer's construction of Sidon sets from perfect difference sets in Z_p uses primes, achieving size ~√N for specific N. The PNT ensures these constructions exist for arbitrarily large N, providing the existence proof that the Erdős-Turán upper bound is tight (at least for non-greedy constructions)"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes guarantees that Singer-type Sidon set constructions (using Z_p for primes p) exist for all large N, establishing the theoretical maximum density against which the greedy sequence is compared"
+    }
+  ],
+  "references": [
+    {
+      "key": "MC44",
+      "citation": "Mian, A.M. and Chowla, S.D., On the B₂ sequences of Sidon, Proceedings of the National Academy of Sciences, India 14 (1944), 3–4.",
+      "type": "paper"
+    },
+    {
+      "key": "ET41",
+      "citation": "Erdős, P. and Turán, P., On a problem of Sidon in additive number theory, and on some related problems, Journal of the London Mathematical Society 16 (1941), 212–215. Proved the √N + O(N^{1/4}) upper bound for Sidon sets.",
+      "type": "paper"
+    },
+    {
+      "key": "EG80",
+      "citation": "Erdős, P. and Graham, R.L., Old and New Problems and Results in Combinatorial Number Theory, L'Enseignement Mathématique, Monographie No. 28, Geneva (1980). Posed the question about greedy Sidon growth rate.",
+      "type": "book"
+    },
+    {
+      "key": "Si38",
+      "citation": "Singer, J., A theorem in finite projective geometry and some applications to number theory, Transactions of the American Mathematical Society 43 (1938), 377–385. Perfect difference sets give Sidon sets of optimal size.",
+      "type": "paper"
+    },
+    {
+      "key": "OR03",
+      "citation": "O'Bryant, K., A complete annotated bibliography of work related to Sidon sets, Electronic Journal of Combinatorics DS11 (2004, updated regularly). Comprehensive survey of Sidon set research.",
+      "type": "paper"
+    },
+    {
+      "key": "TV06",
+      "citation": "Tao, T. and Vu, V.H., Additive Combinatorics, Cambridge University Press (2006), Chapter 2. Modern treatment of Sidon sets and B_h sequences.",
+      "type": "book"
     }
   ],
   "leanFile": {
