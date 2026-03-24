@@ -2,8 +2,8 @@
   "version": 1,
   "entries": {
     "pythagorean-triples": {
-      "auditCount": 1,
-      "lastAudited": "2026-03-24T02:46:26Z",
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T03:28:54Z",
       "result": "clean",
       "issues": []
     },
@@ -130,6 +130,60 @@
     "amgm-inequality": {
       "auditCount": 1,
       "lastAudited": "2026-03-24T02:59:23Z",
+      "result": "clean",
+      "issues": []
+    },
+    "amgm-inequality-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:29:47Z",
+      "result": "clean",
+      "issues": []
+    },
+    "ballot-problem-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:31:04Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "ballot-problem-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:33:31Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "ballot-problem-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:33:31Z",
+      "result": "clean",
+      "issues": []
+    },
+    "ballot-problem-oq-03-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:33:31Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "bertrands-postulate-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:35:12Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "bezout-identity-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:35:12Z",
+      "result": "clean",
+      "issues": []
+    },
+    "bezout-identity-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:35:12Z",
+      "result": "clean",
+      "issues": []
+    },
+    "bezout-identity-oq-02-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:35:12Z",
       "result": "clean",
       "issues": []
     }
