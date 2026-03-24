@@ -35,6 +35,7 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.SetTheory.Cardinal.Basic
 import Mathlib.SetTheory.Cardinal.Ordinal
 import Mathlib.Data.Set.Countable
+import Mathlib.Tactic
 
 open Cardinal SimpleGraph
 
@@ -155,9 +156,16 @@ theorem inf_connected_no_finite_separator :
   -- (by pairwise internal disjointness). So `bad` is finite (bounded by |S|).
   -- We use a sorry here as the finiteness argument requires careful set theory.
   have hbad_finite : Set.Finite bad := by
-    -- Each s ∈ S contributes at most one bad path (by internal disjointness)
-    -- |bad| ≤ |S| < ∞
-    sorry
+    -- bad ⊆ ⋃ s ∈ S, {p ∈ paths | s internal to p}
+    -- Each fiber has ≤ 1 element (by pairwise internal disjointness), S is finite
+    have hunion : Set.Finite (⋃ s ∈ (↑S : Set V),
+        {p ∈ paths | s ∈ p.vertices.drop 1 ∧ s ∈ p.vertices.dropLast}) :=
+      Set.Finite.biUnion S.finite_toSet fun s _ =>
+        Set.Subsingleton.finite fun p₁ ⟨hp₁, hs_p₁⟩ p₂ ⟨hp₂, hs_p₂⟩ => by
+          by_contra hneq; exact hdisj p₁ hp₁ p₂ hp₂ hneq s hs_p₁ hs_p₂
+    exact hunion.subset fun p hp => by
+      obtain ⟨hp_mem, w, hwS, hw_d, hw_dl⟩ := hp
+      exact Set.mem_biUnion hwS (Set.mem_sep hp_mem ⟨hw_d, hw_dl⟩)
   -- Since paths is infinite and bad is finite, there exists a good path
   have hgood : ∃ p ∈ paths, p ∉ bad := by
     by_contra h
@@ -167,14 +175,33 @@ theorem inf_connected_no_finite_separator :
   obtain ⟨p, hp, hpgood⟩ := hgood
   refine ⟨p, (hpath p hp).1, (hpath p hp).2, ?_⟩
   -- Show all vertices of p avoid S
-  intro w hw
-  -- Case analysis: w is either an endpoint or internal
-  simp only [bad, Set.mem_sep_iff, not_and, not_exists] at hpgood
-  intro hw_in_S
-  -- Since p ∉ bad, no internal vertex of p is in S
-  -- We need: w is the head (= u) or tail (= v), hence not in S by hypothesis,
-  -- OR w is internal, hence not in S by the good path property
-  sorry
+  intro w hw hw_in_S
+  -- Since p ∉ bad, no vertex in S is internal to p
+  have h_not_internal : ¬(w ∈ p.vertices.drop 1 ∧ w ∈ p.vertices.dropLast) := by
+    intro ⟨hd, hdl⟩
+    exact hpgood ⟨hp, w, hw_in_S, hd, hdl⟩
+  -- So w ∉ drop 1 or w ∉ dropLast. Either way w is an endpoint = u or v.
+  rcases not_and_or.mp h_not_internal with h_not_drop | h_not_last
+  · -- w ∉ drop 1 = tail → w is the head = u → u ∈ S, contradiction
+    have hhead : p.vertices.head? = some w := by
+      cases hpv : p.vertices with
+      | nil => simp [hpv] at hw
+      | cons a t =>
+        rw [hpv] at h_not_drop hw
+        simp only [List.drop_succ_cons, List.drop_zero] at h_not_drop
+        simp only [List.head?_cons]
+        exact congr_arg some ((List.mem_cons.mp hw).resolve_right h_not_drop).symm
+    rw [(hpath p hp).1] at hhead
+    exact hu (Option.some.inj hhead ▸ hw_in_S)
+  · -- w ∉ dropLast → w is the last = v → v ∈ S, contradiction
+    have hlast : p.vertices.getLast? = some w := by
+      have hne : p.vertices ≠ [] := List.ne_nil_of_mem hw
+      rw [← List.dropLast_append_getLast hne] at hw
+      rcases List.mem_append.mp hw with h1 | h2
+      · exact absurd h1 h_not_last
+      · rw [List.mem_singleton.mp h2]; exact List.getLast?_eq_some_getLast hne
+    rw [(hpath p hp).2] at hlast
+    exact hv (Option.some.inj hlast ▸ hw_in_S)
 
 /-- **Set-theoretic sensitivity**: Problems about uncountable chromatic
     numbers and infinite connectivity often depend on set-theoretic axioms
