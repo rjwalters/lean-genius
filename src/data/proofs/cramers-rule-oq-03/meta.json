@@ -157,10 +157,7 @@
       "Mathlib.LinearAlgebra.Matrix.Adjugate",
       "Mathlib.Tactic"
     ],
-    "opens": [
-      "Matrix",
-      "Finset"
-    ],
+    "opens": ["Matrix", "Finset"],
     "namespace": "CramersRuleOQ03",
     "lineCount": 175,
     "axiomCount": 0,
@@ -169,14 +166,19 @@
   },
   "references": [
     {
-      "key": "Cr50",
-      "citation": "Cramer, G., Introduction à l'analyse des lignes courbes algébriques, Geneva (1750). Original formulation of Cramer's rule for solving systems of linear equations.",
+      "key": "GGRW05",
+      "citation": "Gelfand, I., Gelfand, S., Retakh, V., and Wilson, R.L., Quasideterminants, Advances in Mathematics 193(1) (2005), 56–141. Comprehensive treatment of quasideterminants over non-commutative rings.",
+      "type": "paper"
+    },
+    {
+      "key": "Co95",
+      "citation": "Cohn, P.M., Skew Fields: Theory of General Division Rings, Cambridge University Press (1995). Non-commutative algebra foundations including Cramer's rule generalizations.",
       "type": "book"
     },
     {
-      "key": "GR91",
-      "citation": "Gelfand, I.M. and Retakh, V.S., Determinants of matrices over noncommutative rings, Functional Analysis and Its Applications 25(2) (1991), 91-102. Quasideterminants and non-commutative Cramer's rule.",
-      "type": "paper"
+      "key": "Dr83",
+      "citation": "Draxl, P.K., Skew Fields, London Mathematical Society Lecture Note Series 81, Cambridge University Press (1983). Introduction to non-commutative determinants and linear algebra over division rings.",
+      "type": "book"
     }
   ]
 }

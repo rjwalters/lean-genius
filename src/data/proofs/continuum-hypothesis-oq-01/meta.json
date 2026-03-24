@@ -182,18 +182,23 @@
   ],
   "references": [
     {
-      "key": "Go38",
-      "citation": "Gödel, K., The Consistency of the Axiom of Choice and of the Generalized Continuum-Hypothesis, Proceedings of the National Academy of Sciences 24(12) (1938), 556-557. Proved Con(ZFC + CH) via constructible universe L.",
-      "type": "paper"
+      "key": "Go40",
+      "citation": "Gödel, K., The Consistency of the Axiom of Choice and of the Generalized Continuum Hypothesis with the Axioms of Set Theory, Annals of Mathematics Studies 3, Princeton University Press (1940). Proved Con(ZFC) → Con(ZFC + GCH).",
+      "type": "book"
     },
     {
       "key": "Co63",
-      "citation": "Cohen, P.J., The independence of the continuum hypothesis, Proceedings of the National Academy of Sciences 50(6) (1963), 1143-1148; 51(1) (1964), 105-110. Proved independence of CH from ZFC via forcing.",
+      "citation": "Cohen, P.J., The independence of the continuum hypothesis, Proceedings of the National Academy of Sciences 50(6) (1963), 1143–1148. Proved Con(ZFC) → Con(ZFC + ¬CH) via forcing.",
       "type": "paper"
     },
     {
-      "key": "Wo10",
-      "citation": "Woodin, W.H., The Axiom of Determinacy, Forcing Axioms, and the Nonstationary Ideal, 2nd ed., de Gruyter (2010). Modern program for resolving CH via large cardinals and forcing axioms.",
+      "key": "Wo01",
+      "citation": "Woodin, W.H., The Continuum Hypothesis, Parts I & II, Notices of the AMS 48(6-7) (2001). Survey of large cardinal axioms and their bearing on CH.",
+      "type": "paper"
+    },
+    {
+      "key": "Ku80",
+      "citation": "Kunen, K., Set Theory: An Introduction to Independence Proofs, North-Holland (1980). Standard reference for forcing and independence results.",
       "type": "book"
     }
   ]
