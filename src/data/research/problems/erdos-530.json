@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved sidon_sum_count (previously axiom). Only 3 axioms remain: erdos_lower_bound (deep), KSS (deep), alon_erdos_partition (open conjecture). File at 236 lines.",
+    "progressSummary": "PROGRESS: Added structural theorems (isSidon_subset, isSidon_pair, maxSidonSize_pos, maxSidonSize_ge_two). 3 deep axioms remain (not eliminable from Mathlib). File at 270 lines, 11 theorems.",
     "builtItems": [
       "maxSidonSize_le_card: proved maxSidonSize A ≤ A.card (Erdos530Problem.lean:87)",
       "sidon_upper_bound: PROVED (was axiom) — trivial bound from subset property (Erdos530Problem.lean:95)",
@@ -37,7 +37,11 @@
       "Fixed compilation: added open Classical for DecidablePred IsSidon (Erdos530Problem.lean:34)",
       "Fixed deprecated: Finset.not_mem_empty → Finset.notMem_empty (Erdos530Problem.lean:44)",
       "Proved card_sorted_pairs: |(S×S).filter(a≤b)| = n(n+1)/2 via partition+swap",
-      "Proved sidon_sum_count from sidon_sum_injective + card_sorted_pairs (axiom: 4→3)"
+      "Proved sidon_sum_count from sidon_sum_injective + card_sorted_pairs (axiom: 4→3)",
+      "isSidon_subset: hereditary property of Sidon sets (term-mode proof)",
+      "isSidon_pair: any 2-element set is Sidon (16-case omega analysis)",
+      "maxSidonSize_pos: nonempty sets have maxSidonSize ≥ 1",
+      "maxSidonSize_ge_two: sets with ≥ 2 elements have maxSidonSize ≥ 2"
     ],
     "insights": [
       "sidon_upper_bound was trivially true (maxSidonSize A ≤ A.card, squared) — eliminated as axiom",
@@ -53,9 +57,9 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove sidon_sum_count: need Finset pair counting identity |{(a,b) ∈ S×S : a ≤ b}| = |S|*(|S|+1)/2",
-      "Investigate if sidon_sum_injective can be used with Finset.card_image_of_injOn to get partial progress",
-      "Note: sidon_upper_bound as stated was very weak (just subset bound). The ACTUAL upper bound ℓ(N) ≤ (1+o(1))√N is much stronger"
+      "All 3 remaining axioms are deep: erdos_lower_bound (probabilistic/greedy), KSS (1975 paper), alon_erdos_partition (open conjecture)",
+      "Could formalize the greedy Sidon algorithm to prove erdos_lower_bound: add elements one by one, each forbids O(|S|²) future additions",
+      "Consider adding explicit Sidon set constructions (e.g., Singer difference sets) as verified examples"
     ],
     "markdown": "# Erdős #530 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\ell(N)$ be maximal such that in any finite set $A\\subset \\mathbb{R}$ of size $N$ there exists a Sidon subset $S$ of size $\\ell(N)$ (i.e. the only solutions to $a+b=c+d$ in $S$ are the trivial ones). Determine the order of $\\ell(N)$.\n\n\nIn particular, is it true that $\\ell(N)\\sim N^{1/2}$?\n\n\n\nOriginally asked by Riddell \\cite{Ri69}. Erd\\H{o}s noted the bounds\\[N^{1/3} \\ll \\ell(N) \\leq (1+o(1))N^{1/2}\\](the upper bound following from the case $A=\\{1,\\ldots,N\\}$). The lower bound was improved to $N^{1/2}\\ll \\ell(N)$ by Koml\\'{o}s, Sulyok, and Szemer\\'{e}di \\cite{KSS75}. The correct constant is unknown, but it is likely that the upper bound is true, so that $\\ell(N)\\sim N^{1/2}$.\n\nIn \\cite{AlEr85} Alon and Erd\\H{o}s make the stronger conjecture that perhaps $A$ can always be written as the union of at most $(1+o(1))N^{1/2}$ many Sidon sets. (This is easily verified for $A=\\{1,\\ldots,N\\}$ using standard constructions of Sidon sets.)\n\nThis is discussed in problem C9 of Guy's collection \\cite{Gu04}.\n\nSee also [1088] for a higher-dimensional generalisation.\n\n\n\n\nReferences\n\n\n[AlEr85] Alon, Noga and Erd\\H{o}s, P., An application of graph theory to additive number theory. European J. Combin. (1985), 201-203.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[KSS75] Koml\\'{o}s, J. and Sulyok, M. and Szemeredi, E., Linear problems in combinatorial number theory. Acta Math. Acad. Sci. Hungar. (1975), 113-121.\n\n[Ri69] Riddell, J., On sets of numbers containing no $l$ terms in arithmetic progression. Nieuw Arch. Wisk. (3) (1969), 204-209.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #3\n- Problem #1088\n- Problem #529\n- Problem #531\n- Problem #39\n- Problem #1\n\n## References\n\n- Er80e\n- Ri69\n- KSS75\n- AlEr85\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
@@ -80,7 +84,7 @@
     {
       "path": "Proofs/Erdos530Problem.lean",
       "filename": "Erdos530Problem.lean",
-      "lineCount": 144,
+      "lineCount": 270,
       "theoremCount": 2,
       "axiomCount": 5,
       "defCount": 4,

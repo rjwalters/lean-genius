@@ -49,6 +49,20 @@ theorem isSidon_singleton (x : ℤ) : IsSidon {x} := by
   rw [Finset.mem_singleton] at ha hb hc hd
   exact ⟨by rw [ha, hc], by rw [hb, hd]⟩
 
+/-- The Sidon property is inherited by subsets. -/
+theorem isSidon_subset {S T : Finset ℤ} (hT : IsSidon T) (hST : S ⊆ T) : IsSidon S :=
+  fun a ha b hb c hc d hd hab hcd heq =>
+    hT a (hST ha) b (hST hb) c (hST hc) d (hST hd) hab hcd heq
+
+/-- Any two-element set {x, y} is Sidon. When x = y this reduces to a singleton;
+    when x ≠ y, the sums 2x, x+y, 2y are distinct so no non-trivial collision. -/
+theorem isSidon_pair (x y : ℤ) : IsSidon ({x, y} : Finset ℤ) := by
+  intro a ha b hb c hc d hd hab hcd heq
+  simp only [Finset.mem_insert, Finset.mem_singleton] at ha hb hc hd
+  rcases ha with rfl | rfl <;> rcases hb with rfl | rfl <;>
+    rcases hc with rfl | rfl <;> rcases hd with rfl | rfl <;>
+    first | exact ⟨rfl, rfl⟩ | (constructor <;> omega)
+
 /-
 ## Section 2: Maximum Sidon subset size
 
@@ -88,6 +102,26 @@ theorem maxSidonSize_le_card (A : Finset ℤ) : maxSidonSize A ≤ A.card := by
   unfold maxSidonSize
   apply Finset.sup_le (fun S hS => ?_)
   exact Finset.card_le_card (Finset.mem_powerset.mp (Finset.mem_filter.mp hS).1)
+
+/-- For nonempty A, maxSidonSize A ≥ 1 (any singleton is Sidon). -/
+theorem maxSidonSize_pos {A : Finset ℤ} (hA : A.Nonempty) : 1 ≤ maxSidonSize A := by
+  obtain ⟨x, hx⟩ := hA
+  unfold maxSidonSize
+  calc 1 = ({x} : Finset ℤ).card := by simp
+    _ ≤ (A.powerset.filter fun S => IsSidon S).sup Finset.card :=
+        Finset.le_sup (Finset.mem_filter.mpr ⟨Finset.mem_powerset.mpr
+          (Finset.singleton_subset_iff.mpr hx), isSidon_singleton x⟩)
+
+/-- For A with ≥ 2 elements, maxSidonSize A ≥ 2 (any pair is Sidon). -/
+theorem maxSidonSize_ge_two {A : Finset ℤ} (hA : 2 ≤ A.card) : 2 ≤ maxSidonSize A := by
+  obtain ⟨x, hx, y, hy, hne⟩ := Finset.one_lt_card.mp (by omega : 1 < A.card)
+  unfold maxSidonSize
+  calc 2 = ({x, y} : Finset ℤ).card := by
+        rw [Finset.card_pair hne]
+    _ ≤ (A.powerset.filter fun S => IsSidon S).sup Finset.card :=
+        Finset.le_sup (Finset.mem_filter.mpr ⟨Finset.mem_powerset.mpr
+          (Finset.insert_subset (hx) (Finset.singleton_subset_iff.mpr hy)),
+          isSidon_pair x y⟩)
 
 /-- Trivial upper bound: (maxSidonSize A)² ≤ |A|². Since any Sidon subset
     of A has at most |A| elements, squaring preserves the inequality.
