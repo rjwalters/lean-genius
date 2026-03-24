@@ -7,7 +7,7 @@
     "author": "researcher-5",
     "sourceUrl": "https://erdosproblems.com/1146",
     "date": "2026-03-11",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1146Problem.lean",
     "tags": [
       "erdos",
@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/1146",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-03-11",
-    "dateUpdated": "2026-03-11",
+    "dateUpdated": "2026-03-24",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
@@ -58,7 +58,8 @@
       "Axiom smooth23_not_lacunary (smooth numbers are not lacunary)",
       "Axiom smooth23_schnirelmann_zero (Schnirelmann density is 0)",
       "Definition smoothNumbers (k-smooth generalization)",
-      "Definition Erdos1146Conjecture (main open question)"
+      "Definition Erdos1146Conjecture (main open question)",
+      "Proved growth_satisfies_ruzsa_necessary (rpow algebra: C·x² - x ≥ x^(3/2) for large x)"
     ],
     "axiomCount": 2,
     "prerequisites": [
@@ -67,8 +68,8 @@
       "additive-number-theory",
       "mann-theorem"
     ],
-    "lineCount": 287,
-    "assumptions": "2 axiom(s): smooth23_not_lacunary (deep: non-lacunary property of smooth numbers) and smooth23_schnirelmann_zero (provable but substantial: Schnirelmann density = 0)."
+    "lineCount": 288,
+    "assumptions": "2 axiom(s): smooth23_not_lacunary (deep result about ratios of smooth numbers) and smooth23_schnirelmann_zero (Schnirelmann density of smooth numbers is 0). No sorries remain."
   },
   "overview": {
     "historicalContext": "Imre Ruzsa posed this problem in 1999, building on his resolution of Erdős Problem #37 about essential components in additive number theory. A set $B \\subseteq \\mathbb{N}$ is an *essential component* if $\\sigma(A + B) > \\sigma(A)$ for every set $A$ with $0 < \\sigma(A) < 1$, where $\\sigma$ denotes the Schnirelmann density. Ruzsa proved that essential components must have counting function growth $\\geq (\\log N)^{1+c}$ for some $c > 0$, ruling out lacunary sets (which have counting function $O(\\log N)$).\n\nThe set $\\{2^m \\cdot 3^n : m, n \\geq 0\\}$ of 3-smooth numbers has counting function $\\sim C(\\log N)^2$, placing it exactly at the threshold with $c = 1$. Ruzsa called this 'the simplest set with a chance to be an essential component,' making it a natural test case for the boundary between essential and non-essential sets in additive combinatorics.",
@@ -116,7 +117,7 @@
       "title": "Growth Rate Analysis",
       "startLine": 110,
       "endLine": 133,
-      "summary": "Proves that the (log N)² growth satisfies Ruzsa's necessary condition for essential components with c = 1/2. Uses rpow algebra: converts x^(3/2) to x·√x, then polynomial arithmetic via √x substitution."
+      "summary": "Proves that the (log N)² growth satisfies Ruzsa's necessary condition for essential components with c = 1/2. The key algebraic bound C·x² - x ≥ x^(3/2) is fully formalized using sqrt substitution and nlinarith."
     },
     {
       "id": "density",
@@ -154,7 +155,7 @@
       "Is {2^m · 3^n} an essential component? (THIS problem — Erdős #1146)",
       "For k-smooth numbers {p₁^a₁ · ... · pₖ^aₖ} with counting ~ (log N)^k, for which k is the set essential?",
       "What is the precise relationship between residue class distribution and essential component property?",
-      "Can the smooth23_schnirelmann_zero axiom be proved from smooth23_counting via iInf/Tendsto?"
+      "Can either of the 2 remaining axioms (smooth23_not_lacunary, smooth23_schnirelmann_zero) be proved from Mathlib?"
     ],
     "crossReferences": [
       {
@@ -220,7 +221,7 @@
       "Erdos37"
     ],
     "namespace": "Erdos1146",
-    "lineCount": 287,
+    "lineCount": 288,
     "axiomCount": 2,
     "theoremCount": 13,
     "definitionCount": 2

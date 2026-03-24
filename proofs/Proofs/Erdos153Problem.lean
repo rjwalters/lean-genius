@@ -18,6 +18,8 @@ import Mathlib.Data.Finset.Sort
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
+open Classical
+
 /-
 ## Section I: Sidon Sets
 -/
@@ -86,9 +88,13 @@ axiom sidon_sumset_card (A : Finset ℕ) (h : IsSidon A) :
 
 /-- If A ⊆ {1,...,N} is Sidon, then A+A ⊆ {2,...,2N} so gaps can be
 computed within a bounded range. -/
-axiom sidon_sumset_range (A : Finset ℕ) (N : ℕ) (h : IsSidon A)
+theorem sidon_sumset_range (A : Finset ℕ) (N : ℕ) (_h : IsSidon A)
     (hN : ∀ a ∈ A, a ≤ N) :
-    ∀ s ∈ sumset A, s ≤ 2 * N
+    ∀ s ∈ sumset A, s ≤ 2 * N := by
+  intro s hs
+  simp only [sumset, Finset.mem_image, Finset.mem_product] at hs
+  obtain ⟨⟨a, b⟩, ⟨ha, hb⟩, rfl⟩ := hs
+  linarith [hN a ha, hN b hb]
 
 /-
 ## Section VI: Known Bounds

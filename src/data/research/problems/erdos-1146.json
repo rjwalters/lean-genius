@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-01-15T16:41:04.200Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,11 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: All sorries eliminated. Proved growth_satisfies_ruzsa_necessary via rpow→sqrt conversion and polynomial arithmetic. File has 0 sorries, 2 axioms (both deep/substantial), 13 proved theorems.",
+    "progressSummary": "COMPLETED: All sorries eliminated. 0 sorry, 2 axioms (both deep), 14 theorems proved. rpow algebra sorry in growth_satisfies_ruzsa_necessary proved via sqrt substitution and nlinarith.",
     "builtItems": [
       "Narrowed sorry in growth_satisfies_ruzsa_necessary to algebraic rpow bound",
       "Proof structure: filter_upwards combines counting approx with algebraic bound",
-      "Proved growth_satisfies_ruzsa_necessary: rpow_add + sqrt substitution + nlinarith"
+      "Proved growth_satisfies_ruzsa_necessary sorry (rpow algebra bound)"
     ],
     "insights": [
       "File has only 2 axioms and 1 sorry - very clean formalization",
@@ -42,14 +42,12 @@
       "smooth23_not_lacunary: deep result about ratios of smooth numbers, keep as axiom",
       "smooth23_schnirelmann_zero: provable from smooth23_counting via iInf/Tendsto but substantial",
       "Imports Erdos37Problem which has 6 axioms (mann_theorem, schnirelmann_theorem, etc.)",
-      "rpow algebra pattern: use rpow_add to split x^(1+1/2) into x^1 * x^(1/2), then sqrt_eq_rpow to convert to sqrt",
-      "Polynomial bound via contradiction: C*sqrt(x) >= 2 from (C*s)^2 >= 4 and C*s >= 0",
-      "Key decomposition: C*s^4 - s^3 - s^2 = s^2*(C*s-2)*s + s^2*(s-1), both nonneg"
+      "growth_satisfies_ruzsa_necessary: proved via converting rpow to sqrt, then using (C*s-2)*s^3 + s^2*(s-1) >= 0 decomposition"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove smooth23_schnirelmann_zero from smooth23_counting (substantial but achievable)",
-      "Consider proving smooth23_not_lacunary from 3-distance theorem"
+      "Assess axiom smooth23_schnirelmann_zero for provability from smooth23_counting",
+      "Assess axiom smooth23_not_lacunary for provability from Mathlib"
     ],
     "markdown": "# Erdős #1146 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
