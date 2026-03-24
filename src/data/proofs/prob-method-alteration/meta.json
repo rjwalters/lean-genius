@@ -7,7 +7,7 @@
     "author": "Paul Erdos, formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Probabilistic_method",
     "date": "1960",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/ProbMethodAlteration.lean",
     "tags": [
       "probabilistic-method",
@@ -15,7 +15,7 @@
       "graph-theory",
       "intermediate"
     ],
-    "badge": "verified",
+    "badge": "wip",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -35,9 +35,9 @@
       }
     ],
     "originalContributions": [
-      "Alteration principle formalization for finite structures",
-      "Independent set lower bound via vertex deletion",
-      "Property B existence proof via hypergraph coloring"
+      "alteration_principle: genuine proof by contradiction via Finset.sum_le_sum",
+      "independent_set_bound: trivial existence witness (max, not graph-theoretic)",
+      "property_b_bound: True stub placeholder (needs hypergraph type)"
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
