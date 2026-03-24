@@ -83,21 +83,58 @@
       "The quasideterminant is the Schur complement: |A|₀₀ = a₀₀ - a₀₁·a₁₁⁻¹·a₁₀",
       "Non-commutativity means left and right cancellation must be carefully tracked",
       "The solution formula uses left multiplication by inverses, matching the row structure of Ax = b",
-      "Over a commutative field, |A|₀₀ · a₁₁ = det(A), recovering the classical formula"
+      "Over a commutative field, |A|₀₀ · a₁₁ = det(A), recovering the classical formula",
+      "Kernel triviality exploits the division ring property that $ab = 0 \\implies a = 0 \\lor b = 0$ (no zero divisors), which is the algebraic core distinguishing division rings from general rings"
     ],
     "prerequisites": [
-      "Linear algebra",
-      "Division rings (non-commutative)"
+      "Linear algebra (matrix-vector multiplication, systems of equations)",
+      "Division rings: rings where every nonzero element has a multiplicative inverse, but multiplication need not commute (e.g., quaternions $\\mathbb{H}$)",
+      "Schur complement: the matrix identity $A/D = A - BD^{-1}C$ for block matrices"
     ]
   },
   "conclusion": {
     "summary": "Cramer's Rule fully extends to 2×2 systems over division rings via quasideterminants. The formalization proves correctness, uniqueness, and commutative reduction with 0 sorries and 0 axioms.",
-    "implications": "This validates the Gelfand-Retakh quasideterminant framework as the correct non-commutative analogue of determinants for solving linear systems.",
+    "implications": "This validates the Gelfand-Retakh quasideterminant framework as the correct non-commutative analogue of determinants for solving linear systems. The quasideterminant $|A|_{00} = a_{00} - a_{01}a_{11}^{-1}a_{10}$ plays the role of $\\det(A)$ in non-commutative settings: when it is invertible, the system has a unique solution. The Schur complement interpretation connects this to block matrix inversion and has applications in quantum group theory, free probability, and non-commutative algebraic geometry.",
     "openQuestions": [
-      "Can this be generalized to n×n matrices using the full quasideterminant theory?",
-      "What is the relationship between quasideterminants and the Dieudonné determinant?"
+      "Can this be generalized to n×n matrices using the full quasideterminant theory (recursive Schur complements)?",
+      "What is the relationship between quasideterminants and the Dieudonné determinant for n×n matrices over division rings?",
+      "Can the proof technique extend to quaternionic linear systems, where the division ring is the quaternions $\\mathbb{H}$?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "cramers-rule",
+      "relationship": "extends",
+      "description": "This is the non-commutative extension of the classical Cramer's Rule, using quasideterminants in place of determinants"
+    },
+    {
+      "targetId": "cramers-rule-oq-01",
+      "relationship": "related",
+      "description": "Sibling open question exploring other aspects of Cramer's Rule extensions"
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "Both use matrix algebra over rings; the Cayley-Hamilton theorem involves determinants and characteristic polynomials, which quasideterminants generalize"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "cramers-rule",
+      "relationship": "parent",
+      "description": "Classical Cramer's Rule over commutative fields — this entry extends it to division rings"
+    },
+    {
+      "id": "cayley-hamilton",
+      "relationship": "related",
+      "description": "Matrix algebra and determinantal identities — the Cayley-Hamilton theorem connects to the algebraic structure that quasideterminants generalize"
+    },
+    {
+      "id": "cramers-rule-oq-02",
+      "relationship": "sibling",
+      "description": "Another open question from Cramer's Rule exploring different extension directions"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.LinearAlgebra.Matrix.Adjugate",
