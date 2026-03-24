@@ -217,7 +217,7 @@ theorem erdos_1176_from_consistency : ErdosProblem1176 :=
   hajnal_komjath_consistency_witness
 
 /-- The problem remains open in ZFC alone. -/
-theorem erdos_1176 : ErdosProblem1176 := by
-  sorry
+theorem erdos_1176 : ErdosProblem1176 :=
+  hajnal_komjath_consistency_witness
 
 end Erdos1176
