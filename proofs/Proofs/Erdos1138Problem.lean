@@ -18,6 +18,7 @@ Reference: https://erdosproblems.com/1138
 
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.NumberTheory.Bertrand
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Real.Basic
@@ -223,9 +224,11 @@ axiom erdos_1138 :
 /- ## Part V: Related Known Results -/
 
 /-- Bertrand's postulate: for n ≥ 1, there exists a prime in (n, 2n].
-    This is a much weaker result than what Erdős 1138 asks. -/
-axiom bertrand_postulate (n : ℕ) (hn : 1 ≤ n) :
-  ∃ p, Nat.Prime p ∧ n < p ∧ p ≤ 2 * n
+    Proved from Mathlib's `Nat.exists_prime_and_le`. -/
+theorem bertrand_postulate (n : ℕ) (hn : 1 ≤ n) :
+    ∃ p, Nat.Prime p ∧ n < p ∧ p ≤ 2 * n := by
+  obtain ⟨p, h1, h2, h3⟩ := Nat.bertrand n (by omega)
+  exact ⟨p, h1, h2, h3⟩
 
 /-- Cramér's conjecture on maximal prime gaps:
     lim sup d(x) / (log x)² = 1, where d(x) is the maximal gap below x.
