@@ -138,6 +138,23 @@
       "Can the Berry-Esseen rate-of-convergence theorem be generalized to α-stable limits?"
     ]
   },
+  "references": [
+    {
+      "key": "GK54",
+      "citation": "Gnedenko, B.V. and Kolmogorov, A.N., Limit Distributions for Sums of Independent Random Variables, Addison-Wesley (1954, English translation). Definitive treatment of domains of attraction and stable distributions.",
+      "type": "book"
+    },
+    {
+      "key": "Fe71",
+      "citation": "Feller, W., An Introduction to Probability Theory and Its Applications, Volume 2, 2nd ed., Wiley (1971), Chapter XVII. Standard reference for stable distributions and their characterization via characteristic functions.",
+      "type": "book"
+    },
+    {
+      "key": "ST94",
+      "citation": "Samorodnitsky, G. and Taqqu, M.S., Stable Non-Gaussian Random Processes, Chapman & Hall (1994). Comprehensive modern treatment of stable distributions, self-similarity, and long-range dependence.",
+      "type": "book"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.SpecialFunctions.Pow.Real",

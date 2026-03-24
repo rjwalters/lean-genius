@@ -169,6 +169,23 @@
       "description": "The absorption identity α·C(α-1,k)=(k+1)·C(α,k+1) is the coefficient-level version of d/dx[(1+x)^α]=α(1+x)^(α-1), connecting power series differentiation to the FTC"
     }
   ],
+  "references": [
+    {
+      "key": "Ne65",
+      "citation": "Newton, I., De analysi per aequationes numero terminorum infinitas (1669, published 1711). First derivation of the generalized binomial series $(1+x)^\\alpha = \\sum_{k=0}^\\infty \\binom{\\alpha}{k} x^k$ for non-integer $\\alpha$.",
+      "type": "paper"
+    },
+    {
+      "key": "Ab26",
+      "citation": "Abel, N.H., Untersuchungen über die Reihe $1 + \\frac{m}{1}x + \\cdots$, Journal für die reine und angewandte Mathematik 1 (1826), 311-339. First rigorous convergence proof of Newton's binomial series.",
+      "type": "paper"
+    },
+    {
+      "key": "Ru76",
+      "citation": "Rudin, W., Principles of Mathematical Analysis, 3rd ed., McGraw-Hill (1976), Theorem 8.26. Standard treatment of the generalized binomial series with ODE characterization.",
+      "type": "book"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

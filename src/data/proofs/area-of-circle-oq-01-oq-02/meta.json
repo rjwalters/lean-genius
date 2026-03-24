@@ -162,6 +162,23 @@
       "Can Archimedes' original method of exhaustion (polygon approximation) be formalized as a Riemann sum that converges to ∫₀ʳ 2πρ dρ?"
     ]
   },
+  "references": [
+    {
+      "key": "Ar97",
+      "citation": "Archimedes, Measurement of a Circle (~250 BCE). Proposition 1: the area of a circle equals a right triangle with base equal to the circumference and height equal to the radius. See Heath, T.L., The Works of Archimedes, Cambridge University Press (1897).",
+      "type": "book"
+    },
+    {
+      "key": "Ap69",
+      "citation": "Apostol, T.M., Calculus, Volume 1, 2nd ed., Wiley (1967), Section 2.4. Standard modern treatment of the area of a circle via integration, using the same circumference-integration approach formalized here.",
+      "type": "book"
+    },
+    {
+      "key": "Sp94",
+      "citation": "Spivak, M., Calculus, 3rd ed., Publish or Perish (1994), Chapter 14. Rigorous development of integration leading to the area formula A = πr², with historical context on Archimedes' method of exhaustion.",
+      "type": "book"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.Calculus.Deriv.Basic",
