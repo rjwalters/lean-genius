@@ -93,7 +93,7 @@
       "summary": "CongruenceClass and CoveringSystem structures",
       "startLine": 31,
       "endLine": 56,
-      "mathContext": "CongruenceClass and CoveringSystem structures"
+      "mathContext": "A covering system $\\{a_i \\pmod{n_i}\\}_{i=1}^k$ covers $\\mathbb{Z}$: $\\forall x \\in \\mathbb{Z},\\, \\exists i: x \\equiv a_i \\pmod{n_i}$, with distinct $n_i \\geq 2$."
     },
     {
       "id": "odd-moduli",
@@ -101,7 +101,7 @@
       "summary": "Predicates for odd and even moduli",
       "startLine": 57,
       "endLine": 70,
-      "mathContext": "Predicates for odd and even moduli"
+      "mathContext": "All moduli odd: $2 \\nmid n_i$ for all $i$. The Erdős-Selfridge conjecture: no such covering exists."
     },
     {
       "id": "erdos-selfridge",
@@ -109,7 +109,7 @@
       "summary": "Main conjecture in two equivalent forms",
       "startLine": 71,
       "endLine": 101,
-      "mathContext": "Main conjecture in two equivalent forms"
+      "mathContext": "Conjecture: $\\nexists$ covering with all $n_i$ odd and distinct. Equivalently: every covering uses some even modulus."
     },
     {
       "id": "squarefree",
@@ -117,7 +117,7 @@
       "summary": "Definitions for squarefree covering systems",
       "startLine": 102,
       "endLine": 118,
-      "mathContext": "Definitions for squarefree covering systems"
+      "mathContext": "Squarefree: $\\forall p$ prime, $p^2 \\nmid n_i$. Combined with odd: all moduli are odd squarefree integers."
     },
     {
       "id": "balister",
@@ -125,7 +125,7 @@
       "summary": "No odd squarefree covering exists",
       "startLine": 119,
       "endLine": 140,
-      "mathContext": "No odd squarefree covering exists"
+      "mathContext": "Balister et al. (2022): $\\nexists$ odd squarefree covering system — proved for the squarefree case."
     },
     {
       "id": "hough-nielsen",
@@ -133,7 +133,7 @@
       "summary": "Some modulus must be divisible by 2 or 3",
       "startLine": 141,
       "endLine": 159,
-      "mathContext": "Some modulus must be divisible by 2 or 3"
+      "mathContext": "Hough-Nielsen (2019): in any covering, $\\exists n_i$ with $2 \\mid n_i$ or $3 \\mid n_i$. Any odd covering must use a multiple of 3."
     },
     {
       "id": "lcm-constraint",
@@ -141,7 +141,7 @@
       "summary": "If odd covering exists, LCM divisible by 9 or 15",
       "startLine": 160,
       "endLine": 173,
-      "mathContext": "If odd covering exists, LCM divisible by 9 or 15"
+      "mathContext": "If odd covering exists, $9 \\mid \\text{lcm}(n_1,\\ldots,n_k)$ or $15 \\mid \\text{lcm}(n_1,\\ldots,n_k)$."
     },
     {
       "id": "properties",
@@ -149,7 +149,7 @@
       "summary": "Basic facts about odd moduli",
       "startLine": 174,
       "endLine": 188,
-      "mathContext": "Basic facts about odd moduli"
+      "mathContext": "Basic: if all $n_i$ odd, smallest $n_i \\geq 3$. Reciprocal sum: $\\sum 1/n_i \\geq 1$ (covering condition)."
     },
     {
       "id": "gap",
@@ -157,7 +157,7 @@
       "summary": "Summary of what is known vs unknown",
       "startLine": 189,
       "endLine": 207,
-      "mathContext": "Summary of what is known vs unknown"
+      "mathContext": "Known: no odd squarefree covering; any covering needs modulus divisible by 2 or 3. Open: odd non-squarefree coverings."
     },
     {
       "id": "selfridge",
@@ -165,7 +165,7 @@
       "summary": "$2000 for explicit odd covering construction",
       "startLine": 208,
       "endLine": 219,
-      "mathContext": "$2000 for explicit odd covering construction"
+      "mathContext": "Selfridge prize: $2000 for explicit construction of a covering with all $n_i$ odd and distinct (if one exists)."
     },
     {
       "id": "covering-properties",
@@ -173,7 +173,7 @@
       "summary": "Min odd modulus definitions",
       "startLine": 220,
       "endLine": 234,
-      "mathContext": "Min odd modulus definitions"
+      "mathContext": "$m^*(\\mathcal{C}) = \\min\\{n_i : n_i \\text{ odd}\\}$; bounds on the smallest modulus of any hypothetical odd covering."
     },
     {
       "id": "summary-theorem",
@@ -181,7 +181,7 @@
       "summary": "erdos_7_summary combining Hough-Nielsen, Balister, and LCM constraint",
       "startLine": 235,
       "endLine": 274,
-      "mathContext": "erdos_7_summary combining Hough-Nielsen, Balister, and LCM constraint"
+      "mathContext": "Main theorem: Hough-Nielsen ($\\exists n_i$ with $6 \\mid n_i$ or $2 \\mid n_i$) + Balister (no odd squarefree covering) + LCM constraint ($9 \\mid \\text{lcm}$ or $15 \\mid \\text{lcm}$)."
     }
   ],
   "conclusion": {
