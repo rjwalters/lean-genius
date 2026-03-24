@@ -1,131 +1,157 @@
 {
   "version": 1,
   "proofId": "ptolemys-theorem",
-  "reviewDate": "2026-03-24T12:00:00Z",
+  "reviewDate": "2026-03-24T19:30:00Z",
   "reviewer": "peer-reviewer",
+
   "overallAssessment": {
     "grade": "C+",
-    "oneLiner": "Well-curated Mathlib wrapper with excellent pedagogy, but padded by duplicate theorems and lacking formal substance beyond the import",
+    "oneLiner": "Honest Mathlib wrapper with strong pedagogy, undermined by duplicate theorems, a wrong function reference in the conclusion, and inflated theorem counts",
     "tier": "B",
-    "tierJustification": "Core theorem is entirely from Mathlib (one-liner call to mul_dist_add_mul_dist_eq_mul_dist_of_cospherical). File provides naming wrappers, trivial algebraic restatements, numerical examples, and extensive commentary. No original proof work."
+    "tierJustification": "The entire mathematical content is a single call to Mathlib's mul_dist_add_mul_dist_eq_mul_dist_of_cospherical. The file adds naming, trivial algebraic variants (rw, mul_comm), arithmetic examples, and extensive commentary. No original proof reasoning beyond a 3-step square example."
   },
+
   "findings": [
     {
       "severity": "positive",
       "category": "strength",
-      "location": "meta.json badge field",
-      "finding": "The badge is honestly set to 'mathlib', accurately communicating that this is a Mathlib-based formalization rather than claiming original proof work. The proofStrategy in the overview also transparently states the Mathlib function used.",
-      "recommendation": "Preserve this honest framing. It sets a good example for other Mathlib wrapper entries."
+      "location": "meta.json badge field and overview.proofStrategy",
+      "finding": "The badge is honestly set to 'mathlib' and the proofStrategy transparently names the Mathlib function used. The conclusion explicitly calls this a 'well-curated Mathlib wrapper.' This honest framing sets a good standard for Mathlib-based entries.",
+      "recommendation": "Preserve this honest framing throughout."
     },
     {
       "severity": "positive",
       "category": "strength",
       "location": "Lean source lines 167-207 (numerical examples)",
-      "finding": "The three numerical examples are pedagogically effective. The rectangle example (line 177) concretely demonstrates how Ptolemy reduces to the Pythagorean theorem. The square example (lines 187-191) has the most non-trivial proof in the file, using mul_mul_mul_comm and Real.mul_self_sqrt. The isosceles trapezoid example shows practical diagonal computation.",
-      "recommendation": "Keep these examples — they are the strongest original contribution in the file."
+      "finding": "The three numerical examples are pedagogically effective. The rectangle example (line 177) concretely demonstrates Ptolemy reducing to the Pythagorean theorem. The square example (lines 187-191) is the most substantive proof in the file, using mul_mul_mul_comm, Real.mul_self_sqrt, and ring in a 3-step tactic proof. The isosceles trapezoid shows practical diagonal computation from side lengths.",
+      "recommendation": "Keep these examples — they are the strongest original contribution."
     },
     {
       "severity": "positive",
       "category": "strength",
       "location": "meta.json overview.keyInsights and overview.historicalContext",
-      "finding": "The five key insights are mathematically accurate and genuinely informative: the Pythagorean generalization, the complex-number algebraic identity, the cospherical higher-dimensional generalization, the converse characterization, and the chord table connection. The historical context about the Almagest and chord tables is well-written and proportionate.",
-      "recommendation": "Preserve the pedagogical exposition — it is the entry's primary value-add over a bare Mathlib import."
+      "finding": "The five key insights are mathematically accurate and genuinely informative: Pythagorean generalization, complex-number algebraic identity, higher-dimensional cospherical generalization, converse characterization, and chord table connection. Historical context about the Almagest is well-researched and proportionate to the entry's pedagogical focus.",
+      "recommendation": "Preserve this exposition — it is the entry's primary value-add."
     },
     {
       "severity": "major",
       "category": "filler",
       "location": "ptolemys_theorem_diagonals, lines 94-99",
-      "finding": "This theorem has an IDENTICAL statement to ptolemys_theorem (line 81-86): same hypotheses, same conclusion. The proof body is just `ptolemys_theorem h hapc hbpd`. The docstring claims it 'emphasizes the diagonal products on the right side' but the statement is character-for-character identical. This is pure padding that inflates the apparent theorem count from 3 distinct statements to 5.",
-      "recommendation": "Remove ptolemys_theorem_diagonals entirely. It adds nothing — not even a rearrangement of terms."
+      "finding": "This theorem has a CHARACTER-FOR-CHARACTER identical statement to ptolemys_theorem (lines 81-86): same hypotheses (Cospherical, angle conditions), same conclusion (dist a b * dist c d + dist b c * dist d a = dist a c * dist b d). The proof body is simply `ptolemys_theorem h hapc hbpd`. The docstring claims it 'emphasizes the diagonal products on the right side' but no terms are rearranged — the statement is identical. This is pure padding.",
+      "recommendation": "Remove ptolemys_theorem_diagonals entirely. It adds nothing — not even a rearrangement."
     },
     {
       "severity": "major",
       "category": "filler",
       "location": "diagonal_product_from_sides, lines 123-128",
-      "finding": "This theorem has an IDENTICAL statement to ptolemys_theorem_symmetric (lines 102-107): `dist a c * dist b d = dist a b * dist c d + dist b c * dist d a`. The proof just calls ptolemys_theorem_symmetric. The docstring claims it can 'be computed from the four side lengths alone' but the Lean statement still requires the full Cospherical and angle hypotheses — it does NOT compute from side lengths alone.",
-      "recommendation": "Remove diagonal_product_from_sides. If the 'computing from sides' interpretation is important, formalize it properly (e.g., given side lengths, derive the diagonal product without angle hypotheses) or remove the misleading framing."
+      "finding": "This theorem has an identical statement to ptolemys_theorem_symmetric (lines 102-107): both prove `dist a c * dist b d = dist a b * dist c d + dist b c * dist d a` with the same hypotheses. The proof calls ptolemys_theorem_symmetric directly. The docstring claims the diagonal product 'can be computed from the four side lengths alone' but the Lean statement still requires full Cospherical and angle hypotheses — it does NOT eliminate geometric conditions.",
+      "recommendation": "Remove diagonal_product_from_sides. If 'computing from sides alone' is the intent, formalize a version that derives diagonal products from side lengths and circumradius without angle hypotheses."
+    },
+    {
+      "severity": "major",
+      "category": "inconsistency",
+      "location": "meta.json conclusion.summary",
+      "finding": "The conclusion references the WRONG Mathlib function: 'EuclideanGeometry.mul_dist_le_mul_dist_add_mul_dist' (an inequality). The actual function used is 'mul_dist_add_mul_dist_eq_mul_dist_of_cospherical' (an equality). This is a factual error in the entry's most prominent summary.",
+      "recommendation": "Replace 'mul_dist_le_mul_dist_add_mul_dist' with 'mul_dist_add_mul_dist_eq_mul_dist_of_cospherical' in the conclusion."
+    },
+    {
+      "severity": "moderate",
+      "category": "inconsistency",
+      "location": "meta.json leanFile.theoremCount",
+      "finding": "theoremCount is 3 but the file contains 5 theorem declarations (ptolemys_theorem, ptolemys_theorem_diagonals, ptolemys_theorem_symmetric, ptolemys_theorem_rearranged, diagonal_product_from_sides). Whether counting declarations (5) or distinct statements (3), the current value of 3 is either correct by coincidence or by wrong reasoning.",
+      "recommendation": "If duplicate theorems are removed per ai-1, update to theoremCount: 3 (which would then be correct). If kept, set to 5."
     },
     {
       "severity": "moderate",
       "category": "overclaim",
-      "location": "meta.json originalContributions",
-      "finding": "The original contributions list ['Multiple formulations', 'Numerical examples', 'Historical context']. 'Multiple formulations' is misleading when 2 of 5 theorems are exact duplicates and the remaining variants use only commutativity. 'Numerical examples' and 'Historical context' are pedagogical decoration, not mathematical contributions to formalization.",
-      "recommendation": "Reframe as: ['Pedagogical examples connecting Ptolemy to the Pythagorean theorem', 'Curated exposition of historical and mathematical context']. This is more honest about the nature of the contributions."
+      "location": "meta.json originalContributions[2]",
+      "finding": "The third original contribution claims 'Symmetric formulation of Ptolemy's theorem.' The proof of ptolemys_theorem_symmetric is `rw [ptolemys_theorem h hapc hbpd]` — a one-line rewrite that Lean's `rw` tactic handles trivially. Calling this an 'original contribution' overstates a mechanical algebraic step.",
+      "recommendation": "Remove this entry or replace with something like 'Named theorem API providing main, symmetric, and rearranged forms for downstream use.'"
     },
     {
       "severity": "moderate",
       "category": "precision",
-      "location": "conclusion.summary in meta.json",
-      "finding": "The conclusion says the entry provides 'the main theorem, three alternative formulations, a diagonal-product corollary.' This counts 5 distinct results when there are really only 3 distinct statements (main, symmetric, rearranged). The phrasing inflates the apparent breadth of the formalization.",
-      "recommendation": "Rewrite to: 'This formalization wraps Mathlib\\'s Ptolemy theorem with named variants (symmetric and rearranged forms), three verified numerical examples, and extensive historical context.'"
+      "location": "meta.json conclusion.summary",
+      "finding": "The conclusion says the entry provides '3 distinct theorem statements (main, symmetric, and rectangle/Pythagorean specialization).' But (1) there is no theorem that IS a Pythagorean specialization — that's an example, and (2) there are actually 5 theorem declarations (2 being duplicates). The characterization conflates examples with theorems and miscounts.",
+      "recommendation": "Rewrite to: 'A well-curated Mathlib wrapper providing named variants of Ptolemy's theorem (main, symmetric, rearranged) with three verified numerical examples and extensive historical context.'"
     },
     {
       "severity": "minor",
       "category": "gap",
       "location": "Lean source line 62",
-      "finding": "The abbreviation `abbrev Vec2 := EuclideanSpace ℝ (Fin 2)` is defined but never used anywhere in the file. It appears to be setup for examples that were never written in the concrete plane.",
-      "recommendation": "Either remove the unused abbreviation or add a concrete Vec2-based example that instantiates Ptolemy's theorem for specific points in ℝ²."
+      "finding": "The abbreviation `abbrev Vec2 := EuclideanSpace ℝ (Fin 2)` is defined but never used anywhere in the file. It appears to be setup for concrete plane examples that were never written.",
+      "recommendation": "Either remove Vec2 or add a concrete example instantiating Ptolemy's theorem for specific points in ℝ²."
     },
     {
       "severity": "minor",
       "category": "precision",
       "location": "Lean source lines 193-203 (isosceles trapezoid docstring)",
-      "finding": "The docstring says 'If AC = BD = 7 (the diagonals are equal for isosceles trapezoid), Ptolemy gives: 5·5 + 6·6 = 25 + 36 = 61. But 7·7 = 49, so this doesn't satisfy Ptolemy exactly.' This describes a FAILED application (wrong diagonal length) before correcting it. While pedagogically interesting, framing a numerical error as the primary example narrative is slightly confusing.",
-      "recommendation": "Restructure the docstring to lead with the correct computation: 'By Ptolemy, AC·BD = 5·5 + 6·6 = 61, so AC = BD = √61 ≈ 7.81. (Note: assuming diagonals of length 7 would violate Ptolemy's equality.)'"
+      "finding": "The docstring introduces a wrong assumption ('If AC = BD = 7') and then explains why it fails, before giving the correct answer. While pedagogically showing the error-correction process, leading with a wrong number in a formal proof file is slightly confusing.",
+      "recommendation": "Restructure to lead with the correct result: 'By Ptolemy, AC·BD = 5²+6² = 61, so AC = BD = √61 ≈ 7.81. (Note: assuming integer diagonals of length 7 would violate Ptolemy's equality.)'"
     },
     {
       "severity": "minor",
       "category": "inconsistency",
-      "location": "annotations.json ann-corollary, significance field",
-      "finding": "The annotation marks diagonal_product_from_sides as 'key' significance, but it is an exact duplicate of ptolemys_theorem_symmetric with no additional content.",
-      "recommendation": "If the duplicate is removed (recommended), remove this annotation. If kept, change significance to 'supporting'."
+      "location": "annotations.json ann-corollary (diagonal_product_from_sides)",
+      "finding": "The annotation marks diagonal_product_from_sides as significance 'key', but the theorem is an exact duplicate of ptolemys_theorem_symmetric with an identical proof (`ptolemys_theorem_symmetric h hapc hbpd`). A duplicate cannot be 'key'.",
+      "recommendation": "If the theorem is removed (recommended), remove this annotation. If kept, change significance to 'supporting'."
     }
   ],
+
   "actionItems": [
     {
       "id": "ai-1",
       "priority": "high",
       "target": "enricher",
-      "description": "Remove duplicate theorems: ptolemys_theorem_diagonals (identical to ptolemys_theorem) and diagonal_product_from_sides (identical to ptolemys_theorem_symmetric). Update meta.json theoremCount from 5 to 3, update conclusion.summary, and update sections accordingly.",
-      "status": "resolved"
+      "description": "Remove duplicate theorems from Lean source: ptolemys_theorem_diagonals (lines 94-99, identical to ptolemys_theorem) and diagonal_product_from_sides (lines 123-128, identical to ptolemys_theorem_symmetric). Remove the corresponding annotations (ann-corollary) and update meta.json sections, theoremCount, and leanFile.lineCount accordingly.",
+      "status": "open"
     },
     {
       "id": "ai-2",
-      "priority": "medium",
+      "priority": "high",
       "target": "enricher",
-      "description": "Reframe originalContributions to honestly reflect pedagogical curation rather than mathematical contributions. Suggested: ['Pedagogical examples connecting Ptolemy to the Pythagorean theorem', 'Curated exposition of historical and mathematical context'].",
-      "status": "resolved"
+      "description": "Fix wrong Mathlib function name in conclusion.summary: replace 'mul_dist_le_mul_dist_add_mul_dist' with 'mul_dist_add_mul_dist_eq_mul_dist_of_cospherical'. The current name refers to the inequality version, not the equality used in the proof.",
+      "status": "open"
     },
     {
       "id": "ai-3",
       "priority": "medium",
       "target": "enricher",
-      "description": "Rewrite conclusion.summary to accurately reflect 3 distinct theorem statements (not 5) and characterize the entry as a well-curated Mathlib wrapper rather than implying broader formal content.",
-      "status": "resolved"
+      "description": "Rewrite conclusion.summary to accurately describe 3 theorem variants (main, symmetric, rearranged) rather than conflating examples with theorems. Replace 'rectangle/Pythagorean specialization' with reference to the numerical examples.",
+      "status": "open"
     },
     {
       "id": "ai-4",
-      "priority": "low",
+      "priority": "medium",
       "target": "enricher",
-      "description": "Remove unused Vec2 abbreviation from Lean source (line 62), or add a concrete ℝ² example that uses it.",
-      "status": "resolved"
+      "description": "Replace originalContributions[2] ('Symmetric formulation of Ptolemy's theorem') with a more accurate characterization, e.g., 'Named theorem API with symmetric and rearranged forms for downstream use.'",
+      "status": "open"
     },
     {
       "id": "ai-5",
       "priority": "low",
       "target": "enricher",
-      "description": "Restructure isosceles trapezoid docstring (lines 193-203) to lead with the correct computation rather than the failed assumption.",
-      "status": "resolved"
+      "description": "Remove unused Vec2 abbreviation (line 62) from Lean source, or add a concrete example using specific ℝ² points.",
+      "status": "open"
+    },
+    {
+      "id": "ai-6",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Restructure isosceles trapezoid docstring (lines 193-203) to lead with the correct computation rather than a failed assumption.",
+      "status": "open"
     }
   ],
+
   "qualityScores": {
     "mathematicalSubstance": 4,
     "originalityAccuracy": 6,
     "completeness": 7,
     "framingPrecision": 6,
     "pedagogicalQuality": 8,
-    "internalConsistency": 7,
-    "overall": 6.3
+    "internalConsistency": 6,
+    "overall": 6.2
   },
-  "suggestedBestFraming": "A pedagogical Mathlib wrapper that names and documents Ptolemy's theorem (Wiedijk #95) with numerical examples demonstrating the Pythagorean theorem as a special case, the square diagonal identity, and isosceles trapezoid diagonal computation."
+
+  "suggestedBestFraming": "A pedagogical Mathlib wrapper that names and documents Ptolemy's theorem (Wiedijk #95) with three verified numerical examples — including the elegant reduction to the Pythagorean theorem for rectangular cyclic quadrilaterals — and extensive historical context on the Almagest and chord tables."
 }
