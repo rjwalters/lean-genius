@@ -62,8 +62,9 @@ def HasMonotone5AP (x : Perm) : Prop :=
 /- ## Main Conjecture -/
 
 /-- **Erdős Problem #196** (OPEN): Every permutation of ℕ contains
-    a monotone 4-term arithmetic progression. -/
-axiom erdos_196_conjecture :
+    a monotone 4-term arithmetic progression.
+    Stated as a definition since this is an open conjecture. -/
+def ErdosProblem196 : Prop :=
   ∀ x : Perm, HasMonotone4AP x
 
 /- ## Known Results -/

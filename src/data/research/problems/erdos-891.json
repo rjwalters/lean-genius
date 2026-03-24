@@ -1,6 +1,6 @@
 {
   "slug": "erdos-891",
-  "title": "Erd\u0151s #891",
+  "title": "Erdős #891",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -29,18 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: Fixed 3 formulation bugs. Properly defined DicksonsConjecture (was bare Prop). Fixed Schinzel theorem (had wrong interval bound). Documented primorialComp limitation for k>=6.",
+    "progressSummary": "COMPLETED: Fixed open conjecture axiom. 26 theorems, 2 axioms (down from 3), 0 sorries, 367 lines.",
     "builtItems": [
       "DicksonsConjecture definition: proper formalization as universal statement about linear forms (was bare Prop placeholder)",
       "Fixed schinzel_theorem_statement: replaced incorrect primorialComp k * (primorialComp k + 1) with existential over Q > 0",
-      "Documented primorialComp limitation (returns 0 for k >= 6, making erdos_891 vacuously false for large k)"
+      "Documented primorialComp limitation (returns 0 for k >= 6, making erdos_891 vacuously false for large k)",
+      "Converted erdos_891 from axiom to def (open conjecture should not be axiomatized)"
     ],
     "insights": [
       "primorialComp returns 0 for k >= 6, making the main axiom erdos_891 literally False for those cases",
       "Original Schinzel formulation used interval primorialComp(k)*(primorialComp(k)+1) which for k=2 gives 42, but actual skipped primorial is 10",
       "dicksons_conjecture was axiom X : Prop (bare type, no content) - now properly defined as statement about simultaneous primality of linear forms",
       "All 4 axioms are either open conjectures (erdos_891, Dickson) or deep results (Schinzel, Weisenberg) - none reducible from Mathlib",
-      "k=2 case computational verification covers n in [3, 1002] with native_decide"
+      "k=2 case computational verification covers n in [3, 1002] with native_decide",
+      "erdos_891 axiom was the open conjecture itself — converted to ErdosProblem891 def"
     ],
     "mathlibGaps": [
       "No Nat.primorial in Mathlib - need prime enumeration for proper general statement",
@@ -51,7 +53,7 @@
       "Create Aristotle companion file for the proved structural lemmas",
       "Extend k=2 computational verification to larger ranges"
     ],
-    "markdown": "# Erd\u0151s #891 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $2=p_1<p_2<\\cdots$ be the primes and $k\\geq 2$. Is it true that, for all sufficiently large $n$, there must exist an integer in $[n,n+p_1\\cdots p_k)$ with $>k$ many prime factors?\n\n\n\nSchinzel deduced from P\\'{o}lya's theorem \\cite{Po18} (that the sequence of $k$-smooth integers has unbounded gaps) that this is true with $p_1\\cdots p_k$ replaced by $p_1\\cdots p_{k-1}p_{k+1}$.\n\nThis is unknown even for $k=2$ - that is, is it true that in every interval of $6$ (sufficiently large) consecutive integers there must exist one with at least $3$ prime factors?\n\nWeisenberg has observed that Dickson's conjecture implies the answer is no if we replace $p_1\\cdots p_k$ with $p_1\\cdots p_k-1$. Indeed, let $L_k$ be the lowest common multiple of all integers at most $p_1\\cdots p_k$. By Dickson's conjecture there are infinitely many $n'$ such that $\\frac{L_k}{m}n'+1$ is prime for all $1\\leq m<p_1\\cdots p_k$. It follows that, if $n=L_kn'+1$, then all integers in $[n,n+p_1\\cdots p_k-1)$ have at most $k$ prime factors.\n\n\n\n\nReferences\n\n\n[Po18] P\\'{o}lya, Georg, Zur arithmetischen {U}ntersuchung der {P}olynome. Math. Z. (1918), 143--148.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #890\n- Problem #892\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Po18\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erdős #891 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $2=p_1<p_2<\\cdots$ be the primes and $k\\geq 2$. Is it true that, for all sufficiently large $n$, there must exist an integer in $[n,n+p_1\\cdots p_k)$ with $>k$ many prime factors?\n\n\n\nSchinzel deduced from P\\'{o}lya's theorem \\cite{Po18} (that the sequence of $k$-smooth integers has unbounded gaps) that this is true with $p_1\\cdots p_k$ replaced by $p_1\\cdots p_{k-1}p_{k+1}$.\n\nThis is unknown even for $k=2$ - that is, is it true that in every interval of $6$ (sufficiently large) consecutive integers there must exist one with at least $3$ prime factors?\n\nWeisenberg has observed that Dickson's conjecture implies the answer is no if we replace $p_1\\cdots p_k$ with $p_1\\cdots p_k-1$. Indeed, let $L_k$ be the lowest common multiple of all integers at most $p_1\\cdots p_k$. By Dickson's conjecture there are infinitely many $n'$ such that $\\frac{L_k}{m}n'+1$ is prime for all $1\\leq m<p_1\\cdots p_k$. It follows that, if $n=L_kn'+1$, then all integers in $[n,n+p_1\\cdots p_k-1)$ have at most $k$ prime factors.\n\n\n\n\nReferences\n\n\n[Po18] P\\'{o}lya, Georg, Zur arithmetischen {U}ntersuchung der {P}olynome. Math. Z. (1918), 143--148.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #890\n- Problem #892\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Po18\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -67,7 +69,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T10:57:29.901Z",
-  "lastUpdate": "2026-03-13T07:52:17.054Z",
+  "lastUpdate": "2026-03-24T17:00:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
@@ -76,7 +78,7 @@
       "filename": "Erdos891Problem.lean",
       "lineCount": 345,
       "theoremCount": 26,
-      "axiomCount": 4,
+      "axiomCount": 2,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,

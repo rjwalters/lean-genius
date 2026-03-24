@@ -113,8 +113,11 @@ def IsConvexComplex (S : Set ℂ) : Prop :=
     (1 - t) • z + t • w ∈ S
 
 /-- Closed balls in ℂ are convex -/
-axiom closedBall_isConvex (center : ℂ) (r : ℝ) :
-    IsConvexComplex (Metric.closedBall center r)
+theorem closedBall_isConvex (center : ℂ) (r : ℝ) :
+    IsConvexComplex (Metric.closedBall center r) := by
+  intro z w hz hw t ht0 ht1
+  have hconv := convex_closedBall center r
+  exact hconv.smul_add_smul_mem_of_nonneg_of_le (by linarith) ht0 (by linarith) ht1 hz hw
 
 /-
 ## Part V: The Grunsky Conjecture (Disproved)
@@ -268,7 +271,10 @@ Summary of Erdős Problem #1047.
 theorem erdos_1047 : ¬grunskyConjecture := grunskyConjecture_false
 
 /-- Goodman's polynomial has positive degree (degree 4) -/
-axiom goodmanPolynomial_degree_pos : goodmanPolynomial.natDegree > 0
+theorem goodmanPolynomial_degree_pos : goodmanPolynomial.natDegree > 0 := by
+  unfold goodmanPolynomial
+  simp [Polynomial.natDegree_mul, Polynomial.natDegree_pow]
+  omega
 
 /-- Existence of non-convex lemniscate components via Goodman's example -/
 theorem erdos_1047_counterexample :
