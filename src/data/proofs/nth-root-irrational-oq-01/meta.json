@@ -210,27 +210,37 @@
     {
       "id": "inverse-galois",
       "relationship": "foundational",
-      "description": "Provides irrationality and irreducibility infrastructure imported by the Inverse Galois Problem formalization for Galois"
+      "description": "Provides irrationality and irreducibility infrastructure imported by the Inverse Galois Problem formalization for Galois group computations over Q. Eisenstein irreducibility of X^n - p is the starting point for computing Galois groups of radical extensions"
     },
     {
       "id": "angle-trisection-oq-02",
       "relationship": "foundational",
-      "description": "Imported by the angle trisection impossibility proof: constructibility requires the minimal polynomial to have degree a "
+      "description": "Imported by the angle trisection impossibility proof: constructibility requires the minimal polynomial to have degree a power of 2, and this module provides the algebraic degree machinery to establish that trisecting 60 degrees requires solving a degree-3 irreducible polynomial"
     },
     {
       "id": "sqrt2-irrational",
       "relationship": "extends",
-      "description": "The base sqrt(2) irrationality proof uses a direct parity/counting argument (Level 1-2). This module provides a strictly"
+      "description": "The base sqrt(2) irrationality proof uses a direct parity/counting argument (Level 1-2). This module provides a strictly more general algebraic proof (Level 3) via irreducibility of X^2 - 2, subsuming the classical argument"
     },
     {
       "id": "nth-root-irrational",
       "relationship": "extends",
-      "description": "The base nth-root irrationality uses irrational_nrt_of_notint_nrt (counting argument). This module provides the algebrai"
+      "description": "The base nth-root irrationality uses irrational_nrt_of_notint_nrt (counting argument). This module provides the algebraic alternative via irreducible polynomials, which extends naturally to non-radical algebraic numbers"
     },
     {
       "id": "hermite-lindemann",
       "relationship": "related",
-      "description": "Hermite-Lindemann proves e^alpha is transcendental for algebraic alpha != 0, a strictly stronger result than irrationali"
+      "description": "Hermite-Lindemann proves e^alpha is transcendental for algebraic alpha != 0, a strictly stronger result than irrationality. Both sit in the hierarchy: algebraic irrationality (this module) < transcendence (Hermite-Lindemann)"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "related",
+      "description": "Abel-Ruffini uses the irreducibility of the generic polynomial to prove radical unsolvability. This module's Eisenstein criterion is the workhorse for establishing irreducibility of X^n - p, which generates the non-solvable extensions central to Abel-Ruffini"
+    },
+    {
+      "id": "e-transcendental",
+      "relationship": "related",
+      "description": "The transcendence of e implies e is not a root of any polynomial over Q, a strictly stronger statement than irrationality. This module's approach (irreducible polynomial -> irrational) is the first step in the algebraic hierarchy that culminates in transcendence theory"
     }
   ]
 }

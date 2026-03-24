@@ -236,27 +236,27 @@
     {
       "id": "erdos-267",
       "relationship": "related",
-      "description": "Both are Erdos irrationality problems about natural arithmetic series: #267 concerns Fibonacci reciprocal sums, #68 conc"
+      "description": "Both are Erdos irrationality problems about natural arithmetic series: #267 concerns Fibonacci reciprocal sums, #68 concerns factorial reciprocal sums with perturbation"
     },
     {
       "id": "e-transcendental",
       "relationship": "related",
-      "description": "Hermite proved e = Sigma 1/n! is transcendental (1873). Problem #68 asks about the perturbed sum Sigma 1/(n!-1), which d"
+      "description": "Hermite proved e = Sigma 1/n! is transcendental (1873). Problem #68 asks about the perturbed sum Sigma 1/(n!-1), which differs from e by approximately 0.04. The -1 perturbation breaks the telescoping identities that make e tractable, placing this seemingly similar problem beyond current methods."
     },
     {
       "id": "geometric-series",
       "relationship": "technique",
-      "description": "Weisenberg's identity uses the geometric series 1/(x-1) = Sigma_{k>=1} x^{-k} to rewrite 1/(n!-1) as Sigma 1/(n!)^k, con"
+      "description": "Weisenberg's identity uses the geometric series 1/(x-1) = Sigma_{k>=1} x^{-k} to rewrite 1/(n!-1) as Sigma 1/(n!)^k, converting the problem from a single sum with awkward denominators to a double sum involving only factorial powers."
     },
     {
       "id": "sqrt2-irrational",
       "relationship": "related",
-      "description": "The irrationality of sqrt(2) is elementary, while the irrationality of Sigma 1/(n!-1) remains open. This contrast illust"
+      "description": "The irrationality of sqrt(2) is elementary, while the irrationality of Sigma 1/(n!-1) remains open. This contrast illustrates how irrationality proofs vary enormously in difficulty: some are accessible to the ancient Greeks, others defeat modern number theory."
     },
     {
       "id": "liouville-theorem",
       "relationship": "related",
-      "description": "Liouville's theorem on Diophantine approximation provides a standard tool for proving transcendence by showing a number "
+      "description": "Liouville's theorem on Diophantine approximation provides a standard tool for proving transcendence by showing a number is too well approximated by rationals. The factorial sum Sigma 1/(n!-1) might be amenable to such methods if sufficiently precise rational approximation bounds could be established."
     }
   ],
   "leanFile": {

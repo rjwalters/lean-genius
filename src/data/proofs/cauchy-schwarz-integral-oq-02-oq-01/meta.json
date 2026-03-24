@@ -185,19 +185,19 @@
     {
       "title": "Geometrie der Zahlen",
       "authors": "H. Minkowski",
-      "year": 1896,
+      "year": "1896",
       "note": "Origin of the Minkowski inequality for Lp spaces"
     },
     {
       "title": "Cours d'Analyse",
       "authors": "A.-L. Cauchy",
-      "year": 1821,
+      "year": "1821",
       "note": "First proof of the discrete Cauchy inequality"
     },
     {
       "title": "Allgemeine Theorie der Operatoren eines unitären Raumes",
       "authors": "J. von Neumann",
-      "year": 1929,
+      "year": "1929",
       "note": "Axiomatic treatment of Hilbert spaces placing inner product inequalities at the foundation of functional analysis"
     }
   ],
@@ -205,27 +205,27 @@
     {
       "id": "cauchy-schwarz-integral-oq-02",
       "relationship": "extends",
-      "description": "This file answers the open question from the parent: Minkowski equality ‖f+g‖ = ‖f‖+‖g‖ can be derived from Cauchy-Schwa"
+      "description": "This file answers the open question from the parent: Minkowski equality ‖f+g‖ = ‖f‖+‖g‖ can be derived from Cauchy-Schwarz equality ⟪f,g⟫ = ‖f‖·‖g‖"
     },
     {
       "id": "cauchy-schwarz-integral",
       "relationship": "foundational",
-      "description": "The integral Cauchy-Schwarz inequality provides the inner product framework used throughout this proof — this file chara"
+      "description": "The integral Cauchy-Schwarz inequality provides the inner product framework used throughout this proof — this file characterizes when the derived triangle inequality is tight"
     },
     {
       "id": "cauchy-schwarz",
       "relationship": "foundational",
-      "description": "The discrete Cauchy-Schwarz inequality is the finite-dimensional ancestor; this proof works in abstract inner product sp"
+      "description": "The discrete Cauchy-Schwarz inequality is the finite-dimensional ancestor; this proof works in abstract inner product spaces that generalize both discrete and integral settings"
     },
     {
       "id": "amgm-inequality",
       "relationship": "related",
-      "description": "Both AM-GM and Cauchy-Schwarz have equality characterizations via proportionality/equality of terms — a common pattern i"
+      "description": "Both AM-GM and Cauchy-Schwarz have equality characterizations via proportionality/equality of terms — a common pattern in classical inequalities"
     },
     {
       "id": "triangle-inequality",
       "relationship": "related",
-      "description": "The triangle inequality ‖f+g‖ ≤ ‖f‖+‖g‖ is the Minkowski inequality specialized to inner product spaces; this file chara"
+      "description": "The triangle inequality ‖f+g‖ ≤ ‖f‖+‖g‖ is the Minkowski inequality specialized to inner product spaces; this file characterizes when equality holds"
     }
   ]
 }

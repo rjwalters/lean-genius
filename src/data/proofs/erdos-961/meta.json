@@ -89,70 +89,80 @@
       "title": "Smooth Numbers",
       "startLine": 42,
       "endLine": 70,
-      "summary": "Defines `isSmooth k n` as $n \\neq 0 \\wedge \\forall p$ prime, $p \\mid n \\to p \\leq k$. *Proves* `isSmooth_iff_smoothNumbers`: equivalence with `Nat.smoothNumbers(k+1)`, handling the offset between $\\leq k$ and $< k+1$. The proof uses `Nat.prime_of_mem_primeFactors`, `Nat.dvd_of_mem_primeFactors`, and `Nat.lt_add_one_iff`."
+      "summary": "Defines `isSmooth k n` as $n \\neq 0 \\wedge \\forall p$ prime, $p \\mid n \\to p \\leq k$. *Proves* `isSmooth_iff_smoothNumbers`: equivalence with `Nat.smoothNumbers(k+1)`, handling the offset between $\\leq k$ and $< k+1$. The proof uses `Nat.prime_of_mem_primeFactors`, `Nat.dvd_of_mem_primeFactors`, and `Nat.lt_add_one_iff`.",
+      "mathContext": "Defines `isSmooth k n` as $n \\neq 0 \\wedge \\forall p$ prime, $p \\mid n \\to p \\leq k$. *Proves* `isSmooth_iff_smoothNumbers`: equivalence with `Nat.smoothNumbers(k+1)`, handling the offset between $\\le"
     },
     {
       "id": "key-property",
       "title": "The Key Property",
       "startLine": 76,
       "endLine": 99,
-      "summary": "Defines `HasLargePrimeFactor k n` as $\\forall m \\geq k+1, \\exists i \\in [m, m+n), \\neg\\text{isSmooth}(k, i)$. *Proves* `haslargeprimefactor_iff`: equivalent formulation using `smoothNumbers`. The proof handles the non-zero condition via `omega`."
+      "summary": "Defines `HasLargePrimeFactor k n` as $\\forall m \\geq k+1, \\exists i \\in [m, m+n), \\neg\\text{isSmooth}(k, i)$. *Proves* `haslargeprimefactor_iff`: equivalent formulation using `smoothNumbers`. The proof handles the non-zero condition via `omega`.",
+      "mathContext": "Defines `HasLargePrimeFactor k n` as $\\forall m \\geq k+1, \\exists i \\in [m, m+n), \\neg\\text{isSmooth}(k, i)$. *Proves* `haslargeprimefactor_iff`: equivalent formulation using `smoothNumbers`. The proo"
     },
     {
       "id": "f-function",
       "title": "The Function f(k)",
       "startLine": 105,
       "endLine": 120,
-      "summary": "Axiomatizes `sylvester_schur` ($\\text{HasLargePrimeFactor}(k, k)$). Defines `f k = Nat.find(f\\_well\\_defined k)$. *Proves* `f_spec` (the defining property) and `f_min` (minimality) using `Nat.find_spec` and `Nat.find_min'`."
+      "summary": "Axiomatizes `sylvester_schur` ($\\text{HasLargePrimeFactor}(k, k)$). Defines `f k = Nat.find(f\\_well\\_defined k)$. *Proves* `f_spec` (the defining property) and `f_min` (minimality) using `Nat.find_spec` and `Nat.find_min'`.",
+      "mathContext": "Axiomatizes `sylvester_schur` ($\\text{HasLargePrimeFactor}(k, k)$). Defines `f k = Nat.find(f\\_well\\_defined k)$. *Proves* `f_spec` (the defining property) and `f_min` (minimality) using `Nat.find_spe"
     },
     {
       "id": "sylvester-schur",
       "title": "Sylvester–Schur Bound",
       "startLine": 124,
       "endLine": 133,
-      "summary": "*Proves* `sylvester_schur_bound : f k ≤ k` by applying `f_min` to the axiomatized Sylvester–Schur theorem. This is the 'trivial' bound derived from the classical result."
+      "summary": "*Proves* `sylvester_schur_bound : f k ≤ k` by applying `f_min` to the axiomatized Sylvester–Schur theorem. This is the 'trivial' bound derived from the classical result.",
+      "mathContext": "*Proves* `sylvester_schur_bound : f k ≤ k` by applying `f_min` to the axiomatized Sylvester–Schur theorem. This is the 'trivial' bound derived from the classical result."
     },
     {
       "id": "erdos-bound",
       "title": "Erdős Bound (1955)",
       "startLine": 137,
       "endLine": 147,
-      "summary": "Axiomatizes `erdos_1955_bound` using `Filter.Eventually`: $\\forall^\\infty k, f(k) < 3k/\\log k$. States `f_sublinear` ($f = o(k)$) with `sorry`—the proof would follow from `erdos_1955_bound`."
+      "summary": "Axiomatizes `erdos_1955_bound` using `Filter.Eventually`: $\\forall^\\infty k, f(k) < 3k/\\log k$. States `f_sublinear` ($f = o(k)$) with `sorry`—the proof would follow from `erdos_1955_bound`.",
+      "mathContext": "Axiomatizes `erdos_1955_bound` using `Filter.Eventually`: $\\forall^\\infty k, f(k) < 3k/\\log k$. States `f_sublinear` ($f = o(k)$) with `sorry`—the proof would follow from `erdos_1955_bound`."
     },
     {
       "id": "jutila-rs-bound",
       "title": "Jutila–Ramachandra–Shorey Bound",
       "startLine": 151,
       "endLine": 159,
-      "summary": "Axiomatizes `jutila_ramachandra_shorey_bound` using `Asymptotics.IsBigO`: $f(k) = O\\left(\\frac{\\log\\log\\log k}{\\log\\log k} \\cdot \\frac{k}{\\log k}\\right)$. This is the strongest known upper bound."
+      "summary": "Axiomatizes `jutila_ramachandra_shorey_bound` using `Asymptotics.IsBigO`: $f(k) = O\\left(\\frac{\\log\\log\\log k}{\\log\\log k} \\cdot \\frac{k}{\\log k}\\right)$. This is the strongest known upper bound.",
+      "mathContext": "Axiomatizes `jutila_ramachandra_shorey_bound` using `Asymptotics.IsBigO`: $f(k) = O\\left(\\frac{\\log\\log\\log k}{\\log\\log k} \\cdot \\frac{k}{\\log k}\\right)$. This is the strongest known upper bound."
     },
     {
       "id": "conjecture",
       "title": "The Open Conjecture",
       "startLine": 169,
       "endLine": 173,
-      "summary": "Defines `polylog_conjecture : Prop` as $\\exists C > 0, \\forall^\\infty k, f(k) < (\\log k)^C$. States `polylog_conjecture_open` as an axiom with `sorry` (the truth value is unknown)."
+      "summary": "Defines `polylog_conjecture : Prop` as $\\exists C > 0, \\forall^\\infty k, f(k) < (\\log k)^C$. States `polylog_conjecture_open` as an axiom with `sorry` (the truth value is unknown).",
+      "mathContext": "Defines `polylog_conjecture : Prop` as $\\exists C > 0, \\forall^\\infty k, f(k) < (\\log k)^C$. States `polylog_conjecture_open` as an axiom with `sorry` (the truth value is unknown)."
     },
     {
       "id": "examples",
       "title": "Small Examples",
       "startLine": 177,
       "endLine": 188,
-      "summary": "*Proves* `example_k2 : f 2 ≤ 2` and `example_k3 : f 3 ≤ 3` as immediate corollaries of `sylvester_schur_bound`. Notes that 2-smooth numbers are powers of 2 and 3-smooth numbers are $2^a \\cdot 3^b$."
+      "summary": "*Proves* `example_k2 : f 2 ≤ 2` and `example_k3 : f 3 ≤ 3` as immediate corollaries of `sylvester_schur_bound`. Notes that 2-smooth numbers are powers of 2 and 3-smooth numbers are $2^a \\cdot 3^b$.",
+      "mathContext": "*Proves* `example_k2 : f 2 ≤ 2` and `example_k3 : f 3 ≤ 3` as immediate corollaries of `sylvester_schur_bound`. Notes that 2-smooth numbers are powers of 2 and 3-smooth numbers are $2^a \\cdot 3^b$."
     },
     {
       "id": "connection-683",
       "title": "Connection to Problem #683",
       "startLine": 199,
       "endLine": 206,
-      "summary": "Defines `smooth_gap k` as the supremum of gaps between consecutive $k$-smooth numbers via `sSup`. States `f_le_smooth_gap_succ` ($f(k) \\leq g(k) + 1$) with `sorry`."
+      "summary": "Defines `smooth_gap k` as the supremum of gaps between consecutive $k$-smooth numbers via `sSup`. States `f_le_smooth_gap_succ` ($f(k) \\leq g(k) + 1$) with `sorry`.",
+      "mathContext": "Defines `smooth_gap k` as the supremum of gaps between consecutive $k$-smooth numbers via `sSup`. States `f_le_smooth_gap_succ` ($f(k) \\leq g(k) + 1$) with `sorry`."
     },
     {
       "id": "summary",
       "title": "Bounds Summary",
       "startLine": 221,
       "endLine": 261,
-      "summary": "*Proves* `bounds_summary`: combines $f(k) \\leq k$ (from `sylvester_schur_bound`) with Erdős's eventually-bound (from the axiom), returning both as a conjunction."
+      "summary": "*Proves* `bounds_summary`: combines $f(k) \\leq k$ (from `sylvester_schur_bound`) with Erdős's eventually-bound (from the axiom), returning both as a conjunction.",
+      "mathContext": "*Proves* `bounds_summary`: combines $f(k) \\leq k$ (from `sylvester_schur_bound`) with Erdős's eventually-bound (from the axiom), returning both as a conjunction."
     }
   ],
   "conclusion": {

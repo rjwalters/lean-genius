@@ -74,56 +74,64 @@
       "title": "Preamble and Setup",
       "startLine": 1,
       "endLine": 28,
-      "summary": "Imports Mathlib, opens the `Set` namespace, and establishes the `BrouwerOQ02` namespace. The file addresses OQ-02: What is the computational complexity of finding approximate fixed points? All 7 main theorems are fully proved (0 sorries, 0 axioms)."
+      "summary": "Imports Mathlib, opens the `Set` namespace, and establishes the `BrouwerOQ02` namespace. The file addresses OQ-02: What is the computational complexity of finding approximate fixed points? All 7 main theorems are fully proved (0 sorries, 0 axioms).",
+      "mathContext": "Imports Mathlib, opens the `Set` namespace, and establishes the `BrouwerOQ02` namespace. The file addresses OQ-02: What is the computational complexity of finding approximate fixed points? All 7 main "
     },
     {
       "id": "discrete-ivt",
       "title": "1D Discrete IVT",
       "startLine": 29,
       "endLine": 45,
-      "summary": "Proves the discrete intermediate value theorem: a sign-changing integer sequence $f: \\mathbb{N} \\to \\mathbb{Z}$ with $f(0) \\geq 0$ and $f(N) < 0$ has an adjacent sign change $f(i) \\geq 0, f(i+1) < 0$. This is the combinatorial foundation for the bisection method and a 1D instance of Sperner's lemma."
+      "summary": "Proves the discrete intermediate value theorem: a sign-changing integer sequence $f: \\mathbb{N} \\to \\mathbb{Z}$ with $f(0) \\geq 0$ and $f(N) < 0$ has an adjacent sign change $f(i) \\geq 0, f(i+1) < 0$. This is the combinatorial foundation for the bisection method and a 1D instance of Sperner's lemma.",
+      "mathContext": "Proves the discrete intermediate value theorem: a sign-changing integer sequence $f: \\mathbb{N} \\to \\mathbb{Z}$ with $f(0) \\geq 0$ and $f(N) < 0$ has an adjacent sign change $f(i) \\geq 0, f(i+1) < 0$."
     },
     {
       "id": "approximate-fixed-points",
       "title": "Approximate Fixed Points",
       "startLine": 46,
       "endLine": 61,
-      "summary": "Defines $\\varepsilon$-approximate fixed points ($|f(x) - x| \\leq \\varepsilon$) and proves existence for continuous self-maps of $[0,1]$ via the IVT. The exact fixed point guaranteed by Brouwer's theorem is trivially $\\varepsilon$-approximate for any $\\varepsilon > 0$."
+      "summary": "Defines $\\varepsilon$-approximate fixed points ($|f(x) - x| \\leq \\varepsilon$) and proves existence for continuous self-maps of $[0,1]$ via the IVT. The exact fixed point guaranteed by Brouwer's theorem is trivially $\\varepsilon$-approximate for any $\\varepsilon > 0$.",
+      "mathContext": "Defines $\\varepsilon$-approximate fixed points ($|f(x) - x| \\leq \\varepsilon$) and proves existence for continuous self-maps of $[0,1]$ via the IVT. The exact fixed point guaranteed by Brouwer's theor"
     },
     {
       "id": "convergence",
       "title": "Convergence of Approximations",
       "startLine": 62,
       "endLine": 125,
-      "summary": "Proves that $1/n$-approximate fixed points converge to exact ones: if $x_n \\to x^*$ with $|f(x_n) - x_n| \\leq 1/n$, then $f(x^*) = x^*$. The proof uses a triangle inequality argument with $\\varepsilon = |f(x^*) - x^*|/2$, combining metric convergence and the approximation bounds."
+      "summary": "Proves that $1/n$-approximate fixed points converge to exact ones: if $x_n \\to x^*$ with $|f(x_n) - x_n| \\leq 1/n$, then $f(x^*) = x^*$. The proof uses a triangle inequality argument with $\\varepsilon = |f(x^*) - x^*|/2$, combining metric convergence and the approximation bounds.",
+      "mathContext": "Proves that $1/n$-approximate fixed points converge to exact ones: if $x_n \\to x^*$ with $|f(x_n) - x_n| \\leq 1/n$, then $f(x^*) = x^*$. The proof uses a triangle inequality argument with $\\varepsilon"
     },
     {
       "id": "contraction-convergence",
       "title": "Contraction Mapping Convergence",
       "startLine": 126,
       "endLine": 177,
-      "summary": "Establishes geometric convergence for $L$-contractions: $|f(f^n(x_0)) - f^n(x_0)| \\leq L^n |f(x_0) - x_0|$ (a priori error bound), and proves the iterate sequence is Cauchy using $L^n \\to 0$ from Mathlib's `tendsto_pow_atTop_nhds_zero_of_lt_one`."
+      "summary": "Establishes geometric convergence for $L$-contractions: $|f(f^n(x_0)) - f^n(x_0)| \\leq L^n |f(x_0) - x_0|$ (a priori error bound), and proves the iterate sequence is Cauchy using $L^n \\to 0$ from Mathlib's `tendsto_pow_atTop_nhds_zero_of_lt_one`.",
+      "mathContext": "Establishes geometric convergence for $L$-contractions: $|f(f^n(x_0)) - f^n(x_0)| \\leq L^n |f(x_0) - x_0|$ (a priori error bound), and proves the iterate sequence is Cauchy using $L^n \\to 0$ from Math"
     },
     {
       "id": "binary-search",
       "title": "Binary Search",
       "startLine": 178,
       "endLine": 216,
-      "summary": "Formalizes the bisection method: after $n$ steps, the sign-change interval for $g(x) = f(x) - x$ has width $\\leq 1/2^n$, yielding $O(\\log(1/\\varepsilon))$ query complexity. The base case uses $g(0) \\geq 0$ and $g(1) \\leq 0$ from the self-map property; each step evaluates the midpoint."
+      "summary": "Formalizes the bisection method: after $n$ steps, the sign-change interval for $g(x) = f(x) - x$ has width $\\leq 1/2^n$, yielding $O(\\log(1/\\varepsilon))$ query complexity. The base case uses $g(0) \\geq 0$ and $g(1) \\leq 0$ from the self-map property; each step evaluates the midpoint.",
+      "mathContext": "Formalizes the bisection method: after $n$ steps, the sign-change interval for $g(x) = f(x) - x$ has width $\\leq 1/2^n$, yielding $O(\\log(1/\\varepsilon))$ query complexity. The base case uses $g(0) \\g"
     },
     {
       "id": "ppad-structure",
       "title": "PPAD Structure",
       "startLine": 217,
       "endLine": 366,
-      "summary": "Complete formalization of PPAD: defines instances with successor/predecessor consistency, proves path injectivity via strong induction on $i + j$, establishes path termination via the pigeonhole principle ($|V|+1$ distinct vertices in a finite set), and concludes with the PPAD principle: every finite PPAD instance has a solution (a sink $v \\neq s$ with $\\text{succ}(v) = \\text{none}$)."
+      "summary": "Complete formalization of PPAD: defines instances with successor/predecessor consistency, proves path injectivity via strong induction on $i + j$, establishes path termination via the pigeonhole principle ($|V|+1$ distinct vertices in a finite set), and concludes with the PPAD principle: every finite PPAD instance has a solution (a sink $v \\neq s$ with $\\text{succ}(v) = \\text{none}$).",
+      "mathContext": "Complete formalization of PPAD: defines instances with successor/predecessor consistency, proves path injectivity via strong induction on $i + j$, establishes path termination via the pigeonhole princ"
     },
     {
       "id": "summary",
       "title": "Complete 1D Picture",
       "startLine": 367,
       "endLine": 391,
-      "summary": "Bundles the three core 1D results: (1) $\\exists x, f(x) = x$ (Brouwer/IVT), (2) $\\forall \\varepsilon > 0, \\exists x, |f(x)-x| \\leq \\varepsilon$ (approximability), (3) $\\forall n, \\exists x, |f(x)-x| \\leq 2^{-n}$ (efficient computability via bisection). Contrasts with PPAD-completeness in higher dimensions."
+      "summary": "Bundles the three core 1D results: (1) $\\exists x, f(x) = x$ (Brouwer/IVT), (2) $\\forall \\varepsilon > 0, \\exists x, |f(x)-x| \\leq \\varepsilon$ (approximability), (3) $\\forall n, \\exists x, |f(x)-x| \\leq 2^{-n}$ (efficient computability via bisection). Contrasts with PPAD-completeness in higher dimensions.",
+      "mathContext": "Bundles the three core 1D results: (1) $\\exists x, f(x) = x$ (Brouwer/IVT), (2) $\\forall \\varepsilon > 0, \\exists x, |f(x)-x| \\leq \\varepsilon$ (approximability), (3) $\\forall n, \\exists x, |f(x)-x| \\"
     }
   ],
   "conclusion": {
@@ -166,27 +174,27 @@
     {
       "id": "brouwer-fixed-point",
       "relationship": "extends",
-      "description": "Base Brouwer fixed-point theorem — this file extends it by formalizing the computational complexity landscape: binary se"
+      "description": "Base Brouwer fixed-point theorem — this file extends it by formalizing the computational complexity landscape: binary search optimality, contraction convergence rates, PPAD structure, and stability under perturbation"
     },
     {
       "id": "borsuk-ulam",
       "relationship": "related",
-      "description": "Borsuk-Ulam implies Brouwer FP via the no-retraction theorem — both are foundational topological fixed-point results, an"
+      "description": "Borsuk-Ulam implies Brouwer FP via the no-retraction theorem — both are foundational topological fixed-point results, and this file's PPAD analysis connects to the computational complexity of BU-type search problems"
     },
     {
       "id": "intermediate-value-theorem",
       "relationship": "uses",
-      "description": "IVT provides the 1D fixed-point existence via exists_mem_Icc_isFixedPt_of_mapsTo — the binary search algorithm in this f"
+      "description": "IVT provides the 1D fixed-point existence via exists_mem_Icc_isFixedPt_of_mapsTo — the binary search algorithm in this file exploits IVT's constructive nature to achieve O(log 1/ε) convergence"
     },
     {
       "id": "schauder-fixed-point",
       "relationship": "related",
-      "description": "Schauder extends Brouwer FP to infinite dimensions — this file's contraction mapping and Krasnoselskii-Mann iteration an"
+      "description": "Schauder extends Brouwer FP to infinite dimensions — this file's contraction mapping and Krasnoselskii-Mann iteration analyses connect to Schauder's broader fixed-point framework"
     },
     {
       "id": "borsuk-ulam-oq-03",
       "relationship": "related",
-      "description": "BU-OQ-03 proves the axiom reduction BU → no-retraction → Brouwer FP — this file explores the computational side of the s"
+      "description": "BU-OQ-03 proves the axiom reduction BU → no-retraction → Brouwer FP — this file explores the computational side of the same fixed-point landscape"
     }
   ],
   "leanFile": {

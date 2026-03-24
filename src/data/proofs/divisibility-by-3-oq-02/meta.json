@@ -183,27 +183,27 @@
     {
       "id": "divisibility-by-3",
       "relationship": "extends",
-      "description": "Generalizes the parent base-10 divisibility-by-3 and divisibility-by-9 rules to arbitrary bases b ≥ 3, with consistency "
+      "description": "Generalizes the parent base-10 divisibility-by-3 and divisibility-by-9 rules to arbitrary bases b ≥ 3, with consistency theorems confirming the general theory reproduces the parent's results"
     },
     {
       "id": "divisibility-by-3-oq-01",
       "relationship": "related",
-      "description": "OQ-01 extends the base-10 divisibility rule in a different direction; this OQ-02 generalizes to arbitrary bases, while O"
+      "description": "OQ-01 extends the base-10 divisibility rule in a different direction; this OQ-02 generalizes to arbitrary bases, while OQ-01 may explore other extensions"
     },
     {
       "id": "chinese-remainder-constructive",
       "relationship": "related",
-      "description": "Both formalize modular arithmetic: CRT shows how to combine congruences mod coprime moduli, while the base-b divisibilit"
+      "description": "Both formalize modular arithmetic: CRT shows how to combine congruences mod coprime moduli, while the base-b divisibility rule uses the congruence b ≡ 1 (mod b−1) to transfer divisibility to digit sums"
     },
     {
       "id": "divisibility-truncation-general",
       "relationship": "complementary",
-      "description": "Truncation-based divisibility tests complement digit-sum tests: truncation works for divisors d where b ≡ 0 (mod d), whi"
+      "description": "Truncation-based divisibility tests complement digit-sum tests: truncation works for divisors d where b ≡ 0 (mod d), while digit sums work when b ≡ 1 (mod d). Together they cover the two extreme cases of b mod d"
     },
     {
       "id": "wilsons-theorem",
       "relationship": "related",
-      "description": "Both connect number theory to modular arithmetic: Wilson's theorem characterizes primes via factorial congruences, while"
+      "description": "Both connect number theory to modular arithmetic: Wilson's theorem characterizes primes via factorial congruences, while digit-sum rules characterize divisibility via positional representation congruences"
     }
   ],
   "references": [

@@ -116,98 +116,112 @@
       "title": "Divisor Operations",
       "summary": "divisors, divisorSubsetSum, IsRepresentable",
       "startLine": 52,
-      "endLine": 64
+      "endLine": 64,
+      "mathContext": "Three definitions: $\\text{divisors}(n) = \\{d \\in \\mathbb{N} : d \\mid n\\}$, $\\text{divisorSubsetSum}(n, S) = \\sum_{s \\in S} s$, and $\\text{IsRepresentable}(k, m) \\iff \\exists S \\subseteq \\text{divisors}(m), \\sum S = k$ (sum of distinct divisors)."
     },
     {
       "id": "practical",
       "title": "Practical Numbers Definition",
       "summary": "IsPractical, PracticalNumbers",
       "startLine": 65,
-      "endLine": 78
+      "endLine": 78,
+      "mathContext": "$m$ is **practical** if $m \\geq 1$ and $\\forall k \\in \\{1, \\ldots, m-1\\},\\ \\exists S \\subseteq \\text{divisors}(m),\\ \\sum S = k$. Also called panarithmic numbers (Srinivasan 1948). $\\text{PracticalNumbers} = \\{m \\in \\mathbb{N} : \\text{IsPractical}(m)\\}$."
     },
     {
       "id": "examples",
       "title": "Basic Examples",
       "summary": "1, 2 practical (proved); 4, 6, 12, powers of 2 (axioms)",
       "startLine": 79,
-      "endLine": 113
+      "endLine": 113,
+      "mathContext": "$1$ is practical (vacuously: no $k$ in $[1, 0)$). $2$ is practical: only $k = 1$ to represent, and $1 \\mid 2$. Both proved by `omega` and `interval_cases`."
     },
     {
       "id": "non-practical",
       "title": "Non-Practical Numbers",
       "summary": "3 and 5 are not practical",
       "startLine": 114,
-      "endLine": 121
+      "endLine": 121,
+      "mathContext": "Section placeholder for examples of non-practical numbers (e.g., $3$ is not practical since $2$ cannot be represented as a sum of distinct divisors of $3 = \\{1, 3\\}$)."
     },
     {
       "id": "characterization",
       "title": "Stewart-Sierpinski Characterization",
       "summary": "Efficient test via prime factorization",
       "startLine": 122,
-      "endLine": 141
+      "endLine": 141,
+      "mathContext": "Stewart (1954) and Sierpiński (1955) independently proved: $m = 2^{a_0} p_1^{a_1} \\cdots p_k^{a_k}$ is practical $\\iff$ for each $i \\geq 1$, $p_i \\leq 1 + \\sigma(2^{a_0} p_1^{a_1} \\cdots p_{i-1}^{a_{i-1}})$ where $\\sigma(n) = \\sum_{d \\mid n} d$."
     },
     {
       "id": "h-function",
       "title": "The h(m) Function",
       "summary": "Minimum divisors needed for representation",
       "startLine": 142,
-      "endLine": 155
+      "endLine": 155,
+      "mathContext": "$h(m) = \\inf\\{|S| : S \\subseteq \\text{divisors}(m),\\ \\forall k \\in [1, m),\\ \\exists T \\subseteq S,\\ \\sum T = k\\}$. The minimum number of divisors needed to represent all $k < m$. For practical $m$, $h(m) \\leq d(m)$ where $d(m) = |\\text{divisors}(m)|$."
     },
     {
       "id": "bounds",
       "title": "Known Bounds on h(m)",
       "summary": "Erdos h(n!) < n, Vose h(m) <= C*sqrt(log m)",
       "startLine": 156,
-      "endLine": 176
+      "endLine": 176,
+      "mathContext": "Known results: Erdős: $h(n!) < n$. Vose (1985): $\\exists$ infinitely many practical $m$ with $h(m) \\ll \\sqrt{\\log m}$."
     },
     {
       "id": "conjectures",
       "title": "The Main Conjectures",
       "summary": "conjecture_part1, conjecture_part2_weak, conjecture_part2_strong",
       "startLine": 177,
-      "endLine": 187
+      "endLine": 187,
+      "mathContext": "**Part 1**: $\\exists C > 0$ such that $\\{m \\text{ practical} : h(m) < (\\log \\log m)^C\\}$ is infinite. **Part 2** ($\\$250$ prize): $h(n!) < n^{o(1)}$ as $n \\to \\infty$. Stronger: $h(n!) < (\\log n)^C$ for some $C$."
     },
     {
       "id": "density",
       "title": "Density of Practical Numbers",
       "summary": "practicalCount, density zero, asymptotic bound",
       "startLine": 187,
-      "endLine": 187
+      "endLine": 187,
+      "mathContext": "$\\text{practicalCount}(x) = |\\{m \\leq x : m \\text{ practical}\\}|$. Practical numbers have density 0 in $\\mathbb{N}$."
     },
     {
       "id": "properties",
       "title": "Properties of Practical Numbers",
       "summary": "Closure, factorials, primorials practical",
       "startLine": 187,
-      "endLine": 187
+      "endLine": 187,
+      "mathContext": "Structural properties of practical numbers including closure under multiplication and connections to highly composite numbers."
     },
     {
       "id": "goldbach",
       "title": "Goldbach-Type Results",
       "summary": "Practical Goldbach (proven!), practical twins (infinite!)",
       "startLine": 187,
-      "endLine": 187
+      "endLine": 187,
+      "mathContext": "Practical Goldbach conjecture (Margenstern 1991): every even $n \\geq 2$ is a sum of two practical numbers. Proved by Melfi (1996)."
     },
     {
       "id": "egyptian",
       "title": "Connection to Egyptian Fractions",
       "summary": "Fibonacci's 1202 use of practical numbers",
       "startLine": 187,
-      "endLine": 187
+      "endLine": 187,
+      "mathContext": "Every $\\frac{a}{b}$ with $b$ practical can be written as a sum of distinct unit fractions $\\frac{1}{d_i}$ with $d_i \\mid b$. This connects practical numbers to the Erdős-Straus conjecture on Egyptian fractions."
     },
     {
       "id": "oeis",
       "title": "The OEIS Sequence",
       "summary": "First 17 practical numbers (A005153)",
       "startLine": 187,
-      "endLine": 187
+      "endLine": 187,
+      "mathContext": "First practical numbers: $1, 2, 4, 6, 8, 12, 16, 18, 20, 24, 28, 30, 32, 36, 40, 42, 48, \\ldots$ (OEIS A005153)."
     },
     {
       "id": "summary",
       "title": "Summary and Why Hard",
       "summary": "Open problem, $250 prize, difficulty explanation",
       "startLine": 187,
-      "endLine": 187
+      "endLine": 187,
+      "mathContext": "Finding minimum representing subsets is NP-hard in general (subset sum variant). For $n!$, understanding the divisor structure requires deep number-theoretic machinery."
     }
   ],
   "conclusion": {
@@ -281,17 +295,17 @@
     {
       "id": "erdos-12",
       "relationship": "related",
-      "description": "Problem #12 on divisibility-free sets concerns how sets of integers relate to divisibility. Practical numbers are define"
+      "description": "Problem #12 on divisibility-free sets concerns how sets of integers relate to divisibility. Practical numbers are defined by divisor properties, making the problems thematically connected"
     },
     {
       "id": "erdos-48",
       "relationship": "related",
-      "description": "Problem #48 concerns Euler's totient and sigma functions, sharing the theme of arithmetic functions and their representa"
+      "description": "Problem #48 concerns Euler's totient and sigma functions, sharing the theme of arithmetic functions and their representability properties with Problem #18's study of practical numbers"
     },
     {
       "id": "erdos-1107",
       "relationship": "related",
-      "description": "Problem #1107 on sums of powerful numbers shares the theme of representability: practical numbers represent all integers"
+      "description": "Problem #1107 on sums of powerful numbers shares the theme of representability: practical numbers represent all integers as sums of divisors, while Problem #1107 studies representation as sums of powerful numbers"
     }
   ]
 }

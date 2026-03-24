@@ -47,70 +47,80 @@
       "title": "Imports and Setup",
       "startLine": 1,
       "endLine": 27,
-      "summary": "Header documentation, Mathlib imports for primes, binomial coefficients, and tactics, and namespace declaration."
+      "summary": "Header documentation, Mathlib imports for primes, binomial coefficients, and tactics, and namespace declaration.",
+      "mathContext": "Header documentation, Mathlib imports for primes, binomial coefficients, and tactics, and namespace declaration."
     },
     {
       "id": "lpf-bound",
       "title": "Core Definitions",
       "startLine": 28,
       "endLine": 40,
-      "summary": "Defines LPFBound (minFac ≤ max(n/k, k)) and IsException for pairs with k > 0, n ≥ 2k where the bound fails."
+      "summary": "Defines LPFBound (minFac ≤ max(n/k, k)) and IsException for pairs with k > 0, n ≥ 2k where the bound fails.",
+      "mathContext": "Defines LPFBound (minFac ≤ max(n/k, k)) and IsException for pairs with k > 0, n ≥ 2k where the bound fails."
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
       "startLine": 41,
       "endLine": 47,
-      "summary": "States ErdosProblem1094 as Set.Finite of the exception set: finitely many pairs violate the LPF bound."
+      "summary": "States ErdosProblem1094 as Set.Finite of the exception set: finitely many pairs violate the LPF bound.",
+      "mathContext": "States ErdosProblem1094 as Set.Finite of the exception set: finitely many pairs violate the LPF bound."
     },
     {
       "id": "verified-exceptions",
       "title": "Verified Exceptions",
       "startLine": 48,
       "endLine": 87,
-      "summary": "Twelve exceptions verified by native_decide (C(7,3) through C(95,10)) and two axiomatized (C(241,16), C(284,28))."
+      "summary": "Twelve exceptions verified by native_decide (C(7,3) through C(95,10)) and two axiomatized (C(241,16), C(284,28)).",
+      "mathContext": "Twelve exceptions verified by native_decide (C(7,3) through C(95,10)) and two axiomatized (C(241,16), C(284,28))."
     },
     {
       "id": "non-exceptions",
       "title": "Verified Non-Exceptions",
       "startLine": 88,
       "endLine": 115,
-      "summary": "Eight pairs verified to satisfy the bound, including near-miss C(12,4) and large C(100,2)."
+      "summary": "Eight pairs verified to satisfy the bound, including near-miss C(12,4) and large C(100,2).",
+      "mathContext": "Eight pairs verified to satisfy the bound, including near-miss C(12,4) and large C(100,2)."
     },
     {
       "id": "properties",
       "title": "Structural Properties",
       "startLine": 116,
       "endLine": 153,
-      "summary": "Bound simplification for n ≥ k² and n < k², plus proofs that k = 0 and k = 1 never produce exceptions. Verified n = 2k boundary cases."
+      "summary": "Bound simplification for n ≥ k² and n < k², plus proofs that k = 0 and k = 1 never produce exceptions. Verified n = 2k boundary cases.",
+      "mathContext": "Bound simplification for n ≥ k² and n < k², plus proofs that k = 0 and k = 1 never produce exceptions. Verified n = 2k boundary cases."
     },
     {
       "id": "selfridge",
       "title": "Selfridge's Refinement",
       "startLine": 154,
       "endLine": 161,
-      "summary": "Selfridge's stronger conjecture: bound holds for n ≥ k² − 1 with sole exception C(62,6)."
+      "summary": "Selfridge's stronger conjecture: bound holds for n ≥ k² − 1 with sole exception C(62,6).",
+      "mathContext": "Selfridge's stronger conjecture: bound holds for n ≥ k² − 1 with sole exception C(62,6)."
     },
     {
       "id": "stronger-bounds",
       "title": "Stronger Bound Conjectures",
       "startLine": 162,
       "endLine": 178,
-      "summary": "Two progressively stronger conjectures replacing k with √k (finitely many exceptions) and the constant 13 (at most 12 exceptions)."
+      "summary": "Two progressively stronger conjectures replacing k with √k (finitely many exceptions) and the constant 13 (at most 12 exceptions).",
+      "mathContext": "Two progressively stronger conjectures replacing k with √k (finitely many exceptions) and the constant 13 (at most 12 exceptions)."
     },
     {
       "id": "problem384",
       "title": "Connection to Problem 384",
       "startLine": 179,
       "endLine": 188,
-      "summary": "Defines Problem 384 and axiomatizes that Problem 1094 implies Problem 384."
+      "summary": "Defines Problem 384 and axiomatizes that Problem 1094 implies Problem 384.",
+      "mathContext": "Defines Problem 384 and axiomatizes that Problem 1094 implies Problem 384."
     },
     {
       "id": "binomial-props",
       "title": "Binomial Coefficient Properties and Summary",
       "startLine": 189,
       "endLine": 219,
-      "summary": "Verified C(n,k) > 1 for small cases ensuring minFac is a genuine prime. Closing summary of proved and open results."
+      "summary": "Verified C(n,k) > 1 for small cases ensuring minFac is a genuine prime. Closing summary of proved and open results.",
+      "mathContext": "Verified C(n,k) > 1 for small cases ensuring minFac is a genuine prime. Closing summary of proved and open results."
     }
   ],
   "conclusion": {
@@ -159,12 +169,12 @@
     {
       "id": "erdos-384",
       "relationship": "strengthens",
-      "description": "Problem 1094 strengthens Problem 384 by bounding the *least* prime factor, not just requiring existence of a small prime"
+      "description": "Problem 1094 strengthens Problem 384 by bounding the *least* prime factor, not just requiring existence of a small prime divisor"
     },
     {
       "id": "erdos-1093",
       "relationship": "related",
-      "description": "Problem 1093 studies deficiency (smoothness) of binomial coefficients, the complementary question to small prime factor "
+      "description": "Problem 1093 studies deficiency (smoothness) of binomial coefficients, the complementary question to small prime factor existence"
     },
     {
       "id": "erdos-1095",
@@ -174,12 +184,17 @@
     {
       "id": "kummer-theorem",
       "relationship": "technique",
-      "description": "Kummer's theorem on p-adic valuations of binomial coefficients provides the key tool for analyzing which primes divide C"
+      "description": "Kummer's theorem on p-adic valuations of binomial coefficients provides the key tool for analyzing which primes divide C(n,k)"
     },
     {
       "id": "bertrands-postulate",
       "relationship": "foundation",
-      "description": "Bertrand's postulate guarantees primes in [n, 2n], relevant to bounding prime factors in the central binomial coefficien"
+      "description": "Bertrand's postulate guarantees primes in [n, 2n], relevant to bounding prime factors in the central binomial coefficient"
+    },
+    {
+      "id": "combinations-formula",
+      "relationship": "foundation",
+      "description": "The combinatorial formula C(n,k) = n!/(k!(n-k)!) underlies all prime factor analysis of binomial coefficients"
     }
   ],
   "leanFile": {

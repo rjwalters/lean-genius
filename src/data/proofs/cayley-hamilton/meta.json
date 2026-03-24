@@ -12,7 +12,8 @@
       "linear-algebra",
       "matrices",
       "polynomials",
-      "eigenvalues"
+      "eigenvalues",
+      "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/CayleyHamilton.lean",
     "badge": "mathlib",
@@ -161,27 +162,27 @@
     {
       "id": "fundamental-theorem-algebra",
       "relationship": "related",
-      "description": "FTA guarantees the characteristic polynomial of a complex matrix splits into linear factors (eigenvalues). Cayley-Hamilt"
+      "description": "FTA guarantees the characteristic polynomial of a complex matrix splits into linear factors (eigenvalues). Cayley-Hamilton then says the matrix is annihilated by the product of these linear factors"
     },
     {
       "id": "lagrange-theorem",
       "relationship": "thematic",
-      "description": "Both are 'every element satisfies a universal polynomial' results: Lagrange says every group element g satisfies g^|G| ="
+      "description": "Both are 'every element satisfies a universal polynomial' results: Lagrange says every group element g satisfies g^|G| = e, Cayley-Hamilton says every matrix M satisfies p(M) = 0 where p is the characteristic polynomial"
     },
     {
       "id": "abel-ruffini",
       "relationship": "related",
-      "description": "The eigenvalues of a matrix are the roots of its characteristic polynomial. For matrices larger than 4×4, Abel-Ruffini i"
+      "description": "The eigenvalues of a matrix are the roots of its characteristic polynomial. For matrices larger than 4×4, Abel-Ruffini implies these roots cannot always be expressed in radicals — yet Cayley-Hamilton guarantees the matrix satisfies the polynomial regardless"
     },
     {
       "id": "cayley-hamilton-reduction",
       "relationship": "extended-by",
-      "description": "Applies Cayley-Hamilton to reduce matrix functions: since $p(M) = 0$, any polynomial in $M$ of degree $\\geq n$ can be re"
+      "description": "Applies Cayley-Hamilton to reduce matrix functions: since $p(M) = 0$, any polynomial in $M$ of degree $\\geq n$ can be reduced to degree $< n$, enabling efficient computation of matrix exponentials and powers"
     },
     {
       "id": "cayley-hamilton-minpoly",
       "relationship": "extended-by",
-      "description": "Develops the minimal polynomial theory: the minimal polynomial $m(x)$ divides the characteristic polynomial $p(x)$ by Ca"
+      "description": "Develops the minimal polynomial theory: the minimal polynomial $m(x)$ divides the characteristic polynomial $p(x)$ by Cayley-Hamilton, and $m(M) = 0$ is the strongest polynomial annihilation result — answering the open question about minimal polynomials"
     }
   ],
   "leanFile": {

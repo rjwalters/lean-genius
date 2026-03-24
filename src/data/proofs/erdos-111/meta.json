@@ -96,77 +96,88 @@
       "title": "Basic Definitions",
       "summary": "Bipartite graphs and edge sets",
       "startLine": 38,
-      "endLine": 62
+      "endLine": 62,
+      "mathContext": "Bipartite graphs and edge sets"
     },
     {
       "id": "edge-deletion",
       "title": "Edge Deletion to Bipartiteness",
       "summary": "edgesToRemoveForBipartite and edgeDeletionFunction h_G (axiomatized)",
       "startLine": 63,
-      "endLine": 92
+      "endLine": 92,
+      "mathContext": "edgesToRemoveForBipartite and edgeDeletionFunction h_G (axiomatized)"
     },
     {
       "id": "chromatic-number",
       "title": "Chromatic Number",
       "summary": "IsProperColoring, IsKColorable, chromaticNumber (axiomatized)",
       "startLine": 93,
-      "endLine": 125
+      "endLine": 125,
+      "mathContext": "IsProperColoring, IsKColorable, chromaticNumber (axiomatized)"
     },
     {
       "id": "infinite-chromatic",
       "title": "Infinite Chromatic Number",
       "summary": "cardinalChromaticNumber (axiomatized), hasAleph1ChromaticNumber",
       "startLine": 126,
-      "endLine": 146
+      "endLine": 146,
+      "mathContext": "cardinalChromaticNumber (axiomatized), hasAleph1ChromaticNumber"
     },
     {
       "id": "odd-cycles",
       "title": "Odd Cycles and Bipartiteness",
       "summary": "hasOddCycle, bipartite_iff_no_odd_cycle axiom",
       "startLine": 147,
-      "endLine": 169
+      "endLine": 169,
+      "mathContext": "hasOddCycle, bipartite_iff_no_odd_cycle axiom"
     },
     {
       "id": "vertex-disjoint-cycles",
       "title": "Vertex-Disjoint Odd Cycles",
       "summary": "hasVertexDisjointOddCycles, ehs_lower_bound, h_at_least_linear",
       "startLine": 170,
-      "endLine": 208
+      "endLine": 208,
+      "mathContext": "hasVertexDisjointOddCycles, ehs_lower_bound, h_at_least_linear"
     },
     {
       "id": "upper-bound",
       "title": "Upper Bound Construction",
       "summary": "ehs_upper_bound axiom",
       "startLine": 209,
-      "endLine": 227
+      "endLine": 227,
+      "mathContext": "ehs_upper_bound axiom"
     },
     {
       "id": "erdos-conjecture",
       "title": "Erdős's Conjecture",
       "summary": "erdosConjecture111 definition",
       "startLine": 228,
-      "endLine": 247
+      "endLine": 247,
+      "mathContext": "erdosConjecture111 definition"
     },
     {
       "id": "main-question",
       "title": "The Main Open Question",
       "summary": "erdos111_question, erdos_111_gap_exists",
       "startLine": 248,
-      "endLine": 276
+      "endLine": 276,
+      "mathContext": "erdos111_question, erdos_111_gap_exists"
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "summary": "Connection to Problem #74, finite_bipartite_zero",
       "startLine": 277,
-      "endLine": 301
+      "endLine": 301,
+      "mathContext": "Connection to Problem #74, finite_bipartite_zero"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_111_summary theorem combining known bounds",
       "startLine": 302,
-      "endLine": 337
+      "endLine": 337,
+      "mathContext": "erdos_111_summary theorem combining known bounds"
     }
   ],
   "conclusion": {
@@ -239,7 +250,7 @@
       "title": "On almost bipartite large chromatic graphs",
       "venue": "Annals of Discrete Mathematics",
       "volume": "12",
-      "year": 1982,
+      "year": "1982",
       "pages": "117–123",
       "note": "The primary source: proves h_G(n) ≫ n for χ = ℵ₁ (vertex-disjoint odd cycles) and constructs the n^(3/2) upper-bound graph."
     },
@@ -252,7 +263,7 @@
       "title": "On some general properties of chromatic number",
       "venue": "Topics in Topology (Proc. Colloq., Keszthely, 1972), Colloq. Math. Soc. János Bolyai",
       "volume": "8",
-      "year": 1974,
+      "year": "1974",
       "pages": "243–255",
       "note": "Proves that every graph with chromatic number ≥ ℵ₁ contains all sufficiently large odd cycles, the key tool for the lower bound in Problem #111."
     },
@@ -264,7 +275,7 @@
       "title": "Chromatic number of finite and infinite graphs and hypergraphs",
       "venue": "Discrete Mathematics",
       "volume": "53",
-      "year": 1985,
+      "year": "1985",
       "pages": "281–285",
       "note": "Survey by Erdős and Hajnal on chromatic numbers of infinite graphs, placing Problem #111 in the broader context of uncountably chromatic graph theory."
     },
@@ -275,7 +286,7 @@
       "title": "Problems from the world surrounding perfect graphs",
       "venue": "Zastosowania Matematyki (Applicationes Mathematicae)",
       "volume": "19",
-      "year": 1987,
+      "year": "1987",
       "pages": "413–441",
       "note": "Contains Gyárfás's work on chromatic number, odd cycles, and bipartite substructure, closely related to the odd-cycle machinery in Problem #111."
     },
@@ -287,7 +298,7 @@
       ],
       "title": "Ramsey Theory",
       "venue": "Wiley-Interscience Series in Discrete Mathematics and Optimization",
-      "year": 1990,
+      "year": "1990",
       "edition": "2nd",
       "note": "Standard reference for the Ramsey-theoretic background underpinning the probabilistic construction in the EHS upper-bound graph."
     }

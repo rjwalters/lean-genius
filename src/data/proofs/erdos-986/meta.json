@@ -82,56 +82,64 @@
       "title": "Ramsey Number Definition",
       "summary": "Definition of R(k,n) and existence axiom",
       "startLine": 39,
-      "endLine": 66
+      "endLine": 66,
+      "mathContext": "Definition of R(k,n) and existence axiom"
     },
     {
       "id": "asymptotic",
       "title": "Asymptotic Notation",
       "summary": "Definitions of ≫ and ≪ for asymptotic bounds",
       "startLine": 67,
-      "endLine": 88
+      "endLine": 88,
+      "mathContext": "Definitions of ≫ and ≪ for asymptotic bounds"
     },
     {
       "id": "conjecture",
       "title": "The Conjectured Lower Bound",
       "summary": "Erdős's conjecture: R(k,n) ≫ n^(k-1)/(log n)^c",
       "startLine": 89,
-      "endLine": 103
+      "endLine": 103,
+      "mathContext": "Erdős's conjecture: R(k,n) ≫ n^(k-1)/(log n)^c"
     },
     {
       "id": "spencer",
       "title": "Spencer's k=3 Result",
       "summary": "Spencer (1977) proved the conjecture for k=3",
       "startLine": 104,
-      "endLine": 125
+      "endLine": 125,
+      "mathContext": "Spencer (1977) proved the conjecture for k=3"
     },
     {
       "id": "mattheus-verstraete",
       "title": "Mattheus-Verstraete k=4 Result",
       "summary": "2023 breakthrough proving the k=4 case",
       "startLine": 126,
-      "endLine": 147
+      "endLine": 147,
+      "mathContext": "2023 breakthrough proving the k=4 case"
     },
     {
       "id": "general-bounds",
       "title": "Best Known General Bounds",
       "summary": "Bohman-Keevash lower and AKS upper bounds",
       "startLine": 148,
-      "endLine": 173
+      "endLine": 173,
+      "mathContext": "Bohman-Keevash lower and AKS upper bounds"
     },
     {
       "id": "gap-analysis",
       "title": "The Gap for k≥5",
       "summary": "Analysis of the polynomial exponent gap",
       "startLine": 174,
-      "endLine": 200
+      "endLine": 200,
+      "mathContext": "Analysis of the polynomial exponent gap"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Combined results: k=3,4 YES; k≥5 OPEN",
       "startLine": 216,
-      "endLine": 250
+      "endLine": 250,
+      "mathContext": "Combined results: k=3,4 YES; k≥5 OPEN"
     }
   ],
   "conclusion": {

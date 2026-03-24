@@ -201,17 +201,17 @@
     {
       "id": "szemeredi-regularity",
       "relationship": "foundational",
-      "description": "Provides the core definitions (edge density, epsilon-regularity, regular partition, partition energy) imported by the re"
+      "description": "Provides the core definitions (edge density, epsilon-regularity, regular partition, partition energy) imported by the regularity lemma proof, which uses the energy increment argument to establish existence of regular partitions"
     },
     {
       "id": "szemeredi-counting",
       "relationship": "foundational",
-      "description": "Provides the core definitions imported by the counting and triangle removal lemmas, which use epsilon-regularity to coun"
+      "description": "Provides the core definitions imported by the counting and triangle removal lemmas, which use epsilon-regularity to count subgraph copies in regular pairs"
     },
     {
       "id": "szemeredi-full",
       "relationship": "foundational",
-      "description": "The full Szemerédi theorem on arithmetic progressions depends on the regularity pipeline that begins with these core def"
+      "description": "The full Szemerédi theorem on arithmetic progressions depends on the regularity pipeline that begins with these core definitions"
     },
     {
       "id": "szemeredi-theorem",
@@ -221,7 +221,12 @@
     {
       "id": "roth-theorem-k3",
       "relationship": "related",
-      "description": "Roth's theorem (1953) on 3-term arithmetic progressions was the first major application of regularity-type ideas. While "
+      "description": "Roth's theorem (1953) on 3-term arithmetic progressions was the first major application of regularity-type ideas. While Roth used Fourier analysis, modern proofs of Roth's theorem use the regularity lemma with these exact definitions of edge density and epsilon-regularity applied to the tripartite graph encoding arithmetic progressions"
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey's theorem guarantees monochromatic complete subgraphs in edge-colorings. The regularity lemma generalizes this perspective: instead of finding exact monochromatic structure, it decomposes any dense graph into pseudorandom pieces (epsilon-regular pairs) that approximate the structure of random graphs"
     }
   ]
 }

@@ -81,56 +81,64 @@
       "title": "Module Documentation",
       "startLine": 1,
       "endLine": 17,
-      "summary": "Problem statement, status, and references to Erdős-Herzog-Piranian (1958)."
+      "summary": "Problem statement, status, and references to Erdős-Herzog-Piranian (1958).",
+      "mathContext": "Problem statement, status, and references to Erdős-Herzog-Piranian (1958)."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 25,
       "endLine": 44,
-      "summary": "Definitions of sublevelSet, length (via Hausdorff measure), and PathInC structure."
+      "summary": "Definitions of sublevelSet, length (via Hausdorff measure), and PathInC structure.",
+      "mathContext": "Definitions of sublevelSet, length (via Hausdorff measure), and PathInC structure."
     },
     {
       "id": "component-lemma",
       "title": "Component Lemma (SOLVED 1958)",
       "startLine": 45,
       "endLine": 67,
-      "summary": "The Erdős-Herzog-Piranian theorem about connected components containing two roots."
+      "summary": "The Erdős-Herzog-Piranian theorem about connected components containing two roots.",
+      "mathContext": "The Erdős-Herzog-Piranian theorem about connected components containing two roots."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture (OPEN)",
       "startLine": 68,
       "endLine": 93,
-      "summary": "The open problem about existence of short paths of length < 2."
+      "summary": "The open problem about existence of short paths of length < 2.",
+      "mathContext": "The open problem about existence of short paths of length < 2."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 94,
       "endLine": 119,
-      "summary": "Diameter bounds and the quadratic case as base case."
+      "summary": "Diameter bounds and the quadratic case as base case.",
+      "mathContext": "Diameter bounds and the quadratic case as base case."
     },
     {
       "id": "properties",
       "title": "Sublevel Set Properties",
       "startLine": 120,
       "endLine": 144,
-      "summary": "Proved theorems: sublevel sets are open and contain all roots."
+      "summary": "Proved theorems: sublevel sets are open and contain all roots.",
+      "mathContext": "Proved theorems: sublevel sets are open and contain all roots."
     },
     {
       "id": "length",
       "title": "Length Properties",
       "startLine": 145,
       "endLine": 164,
-      "summary": "Path length bounds and the triangle inequality for unit disk."
+      "summary": "Path length bounds and the triangle inequality for unit disk.",
+      "mathContext": "Path length bounds and the triangle inequality for unit disk."
     },
     {
       "id": "lemniscates",
       "title": "Connection to Lemniscates",
       "startLine": 165,
       "endLine": 194,
-      "summary": "Definition of polynomial lemniscates and unit disk diameter bound."
+      "summary": "Definition of polynomial lemniscates and unit disk diameter bound.",
+      "mathContext": "Definition of polynomial lemniscates and unit disk diameter bound."
     }
   ],
   "conclusion": {
@@ -172,19 +180,29 @@
   ],
   "relatedProofs": [
     {
-      "target": "erdos-1042",
-      "relationship": "extends",
-      "description": "The Component Lemma proved in #1041 (at least two roots in a single connected component of {z : |f(z)| < 1}) is the departure point for the lemniscate connectivity questions formalized in #1042."
+      "id": "erdos-1040",
+      "relationship": "companion problem",
+      "description": "Erdős #1040 studies transfinite diameter and the measure of sublevel sets for monic polynomials with roots in the unit disk — the same setting as #1041, examining the potential-theoretic capacity of {z : |f(z)| < 1}."
     },
     {
-      "target": "erdos-1043",
-      "relationship": "companion",
-      "description": "Erdős #1043 examines projections of polynomial level sets. Together with #1041, these problems form a systematic study of the metric and topological properties of polynomial level-set geometry."
+      "id": "erdos-1042",
+      "relationship": "companion problem",
+      "description": "Erdős #1042 asks about connected components of polynomial lemniscates {z : |f(z)| = c}, the level curves bounding the sublevel sets studied in #1041. The Component Lemma from 1041 directly motivates the finer lemniscate topology questions in #1042."
     },
     {
-      "target": "erdos-1045",
-      "relationship": "related",
-      "description": "Erdős #1045 studies the maximum product of distances from points in the unit disk to the roots — a quantity closely related to |f(z)| for monic polynomials. Extremal configurations for that problem overlap with those relevant to short-path questions."
+      "id": "erdos-1039",
+      "relationship": "related problem",
+      "description": "Erdős #1039 concerns the disc radius of polynomial lemniscates for monic polynomials with roots in the unit disk. The same polynomial family and level-set geometry underlies both problems."
+    },
+    {
+      "id": "erdos-1044",
+      "relationship": "related problem",
+      "description": "Erdős #1044 asks for bounds on the boundary length of polynomial level sets. Short-path existence inside sublevel sets (#1041) and bounds on the bounding curve's length (#1044) are complementary metric questions about polynomial level-set geometry."
+    },
+    {
+      "id": "erdos-1038",
+      "relationship": "related problem",
+      "description": "Erdős #1038 studies sublevel sets of monic polynomials from a measure-theory perspective, forming part of the same cluster of Erdős–Herzog–Piranian problems on the geometry and measure of polynomial sublevel sets."
     }
   ],
   "references": [
@@ -195,11 +213,11 @@
         "G. Piranian"
       ],
       "title": "Metric properties of polynomials",
-      "journal": "Journal d'Analyse Mathématique",
       "volume": "6",
       "year": "1958",
       "pages": "125–148",
-      "description": "The foundational paper establishing the Component Lemma: for any monic polynomial with roots in the unit disk, the sublevel set {z : |f(z)| < 1} has a connected component containing at least two roots. This is the starting point for Erdős Problem #1041."
+      "description": "The foundational paper establishing the Component Lemma: for any monic polynomial with roots in the unit disk, the sublevel set {z : |f(z)| < 1} has a connected component containing at least two roots. This is the starting point for Erdős Problem #1041.",
+      "venue": "Journal d'Analyse Mathématique"
     },
     {
       "authors": [
@@ -207,33 +225,33 @@
         "W. Hayman"
       ],
       "title": "On the length of lemniscates",
-      "journal": "The Michigan Mathematical Journal",
       "volume": "46",
       "issue": "2",
       "year": "1999",
       "pages": "409–415",
-      "description": "Proves that the total length of the lemniscate {z : |f(z)| = 1} for a degree-n monic polynomial is O(n), with sharp constants. This work informs quantitative path-length questions inside sublevel sets."
+      "description": "Proves that the total length of the lemniscate {z : |f(z)| = 1} for a degree-n monic polynomial is O(n), with sharp constants. This work informs quantitative path-length questions inside sublevel sets.",
+      "venue": "The Michigan Mathematical Journal"
     },
     {
       "authors": [
         "V. Totik"
       ],
       "title": "The area of polynomial lemniscates",
-      "journal": "Proceedings of the American Mathematical Society",
       "volume": "130",
       "issue": "6",
       "year": "2002",
       "pages": "1681–1687",
-      "description": "Studies the area enclosed by polynomial lemniscates and its relation to the capacity of the polynomial. Provides potential-theoretic tools complementary to the path-length approach of Erdős Problem #1041."
+      "description": "Studies the area enclosed by polynomial lemniscates and its relation to the capacity of the polynomial. Provides potential-theoretic tools complementary to the path-length approach of Erdős Problem #1041.",
+      "venue": "Proceedings of the American Mathematical Society"
     },
     {
       "authors": [
         "A. Eremenko"
       ],
       "title": "A conjecture of Erdős on the connectivity of lemniscates",
-      "journal": "Preprint (arXiv:math/0307474)",
       "year": "2003",
-      "description": "Discusses connectivity properties of polynomial lemniscates, directly engaging with the Erdős–Herzog–Piranian framework and related open problems including the short-path conjecture."
+      "description": "Discusses connectivity properties of polynomial lemniscates, directly engaging with the Erdős–Herzog–Piranian framework and related open problems including the short-path conjecture.",
+      "venue": "Preprint (arXiv:math/0307474)"
     },
     {
       "authors": [
@@ -241,10 +259,10 @@
         "V. Totik"
       ],
       "title": "Logarithmic Potentials with External Fields",
-      "journal": "Grundlehren der mathematischen Wissenschaften, Springer",
       "volume": "316",
       "year": "1997",
-      "description": "Standard reference on logarithmic potential theory and polynomial lemniscates. Chapter III covers transfinite diameter, capacity, and the geometry of level sets — the potential-theoretic backbone for the Erdős sublevel-set problems."
+      "description": "Standard reference on logarithmic potential theory and polynomial lemniscates. Chapter III covers transfinite diameter, capacity, and the geometry of level sets — the potential-theoretic backbone for the Erdős sublevel-set problems.",
+      "venue": "Grundlehren der mathematischen Wissenschaften, Springer"
     }
   ],
   "leanFile": {

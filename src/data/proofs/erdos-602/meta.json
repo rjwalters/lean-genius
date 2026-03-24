@@ -86,70 +86,80 @@
       "title": "Basic Definitions",
       "summary": "SetFamily, IsCountablyInfinite, AllCountablyInfinite",
       "startLine": 29,
-      "endLine": 54
+      "endLine": 54,
+      "mathContext": "SetFamily, IsCountablyInfinite, AllCountablyInfinite"
     },
     {
       "id": "intersections",
       "title": "Intersection Conditions",
       "summary": "HasFiniteIntersection, IntersectionNotOne, ValidIntersection, IsErdosFamily",
       "startLine": 55,
-      "endLine": 80
+      "endLine": 80,
+      "mathContext": "HasFiniteIntersection, IntersectionNotOne, ValidIntersection, IsErdosFamily"
     },
     {
       "id": "colorings",
       "title": "2-Colorings",
       "summary": "TwoColoring, ColoredSubset, IsMonochromatic, HasPropertyB",
       "startLine": 81,
-      "endLine": 105
+      "endLine": 105,
+      "mathContext": "TwoColoring, ColoredSubset, IsMonochromatic, HasPropertyB"
     },
     {
       "id": "family-property-b",
       "title": "Property B for Families",
       "summary": "IsValidColoring, FamilyHasPropertyB, ErdosQuestion602",
       "startLine": 106,
-      "endLine": 124
+      "endLine": 124,
+      "mathContext": "IsValidColoring, FamilyHasPropertyB, ErdosQuestion602"
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
       "summary": "ErdosConjecture602, NoCounterexample, conjecture_equiv",
       "startLine": 125,
-      "endLine": 147
+      "endLine": 147,
+      "mathContext": "ErdosConjecture602, NoCounterexample, conjecture_equiv"
     },
     {
       "id": "conditions",
       "title": "Why Conditions Matter",
       "summary": "Role of each condition explained",
       "startLine": 148,
-      "endLine": 167
+      "endLine": 167,
+      "mathContext": "Role of each condition explained"
     },
     {
       "id": "related",
       "title": "Related Property B Results",
       "summary": "Miller's theorem, KomjathProblem",
       "startLine": 168,
-      "endLine": 182
+      "endLine": 182,
+      "mathContext": "Miller's theorem, KomjathProblem"
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "CountableIndex, IsDisjointFamily, IsAlmostDisjoint",
       "startLine": 183,
-      "endLine": 204
+      "endLine": 204,
+      "mathContext": "CountableIndex, IsDisjointFamily, IsAlmostDisjoint"
     },
     {
       "id": "obstructions",
       "title": "Obstructions to Property B",
       "summary": "Is2ChromaticForcing, counterexample_structure",
       "startLine": 205,
-      "endLine": 235
+      "endLine": 235,
+      "mathContext": "Is2ChromaticForcing, counterexample_structure"
     },
     {
       "id": "status",
       "title": "Problem Status",
       "summary": "erdos_602_status, erdos_602_statement",
       "startLine": 236,
-      "endLine": 299
+      "endLine": 299,
+      "mathContext": "erdos_602_status, erdos_602_statement"
     }
   ],
   "conclusion": {

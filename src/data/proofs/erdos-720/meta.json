@@ -118,70 +118,80 @@
       "title": "Header and Imports",
       "startLine": 1,
       "endLine": 41,
-      "summary": "Problem header documenting the $\\$100$ prize and Beck's 1983 solution. Imports Mathlib modules for `SimpleGraph`, `Filter.Tendsto`, `Finset`, and `Real`. Opens `Real` and `Filter` namespaces within `Erdos720`."
+      "summary": "Problem header documenting the $\\$100$ prize and Beck's 1983 solution. Imports Mathlib modules for `SimpleGraph`, `Filter.Tendsto`, `Finset`, and `Real`. Opens `Real` and `Filter` namespaces within `Erdos720`.",
+      "mathContext": "Problem header documenting the $\\$100$ prize and Beck's 1983 solution. Imports Mathlib modules for `SimpleGraph`, `Filter.Tendsto`, `Finset`, and `Real`. Opens `Real` and `Filter` namespaces within `E"
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions: Graphs, Paths, and Cycles",
       "startLine": 42,
       "endLine": 74,
-      "summary": "Defines `GraphOnN n = SimpleGraph (Fin n)`, `numEdges` via filtering ordered pairs, `PathGraph n` with adjacency $|i-j|=1$, and `CycleGraph n` extending the path with a wrap-around edge $\\{0, n-1\\}$. Axiomatizes edge counts: $|E(P_n)| = n-1$ and $|E(C_n)| = n$."
+      "summary": "Defines `GraphOnN n = SimpleGraph (Fin n)`, `numEdges` via filtering ordered pairs, `PathGraph n` with adjacency $|i-j|=1$, and `CycleGraph n` extending the path with a wrap-around edge $\\{0, n-1\\}$. Axiomatizes edge counts: $|E(P_n)| = n-1$ and $|E(C_n)| = n$.",
+      "mathContext": "Defines `GraphOnN n = SimpleGraph (Fin n)`, `numEdges` via filtering ordered pairs, `PathGraph n` with adjacency $|i-j|=1$, and `CycleGraph n` extending the path with a wrap-around edge $\\{0, n-1\\}$. "
     },
     {
       "id": "size-ramsey-numbers",
       "title": "Size Ramsey Numbers: Coloring and $\\hat{R}(G)$",
       "startLine": 75,
       "endLine": 104,
-      "summary": "Defines `EdgeColoring G` as $c : E(G) \\to \\text{Fin } 2$, `IsMonochromatic` for uniform-color subgraphs, and `ContainsMonochromaticCopy` for the Ramsey property. Defines `sizeRamseyNumber n G` via `Nat.find` as $\\min\\{m : \\exists H,\\, |E(H)| = m \\wedge H \\text{ Ramsey for } G\\}$."
+      "summary": "Defines `EdgeColoring G` as $c : E(G) \\to \\text{Fin } 2$, `IsMonochromatic` for uniform-color subgraphs, and `ContainsMonochromaticCopy` for the Ramsey property. Defines `sizeRamseyNumber n G` via `Nat.find` as $\\min\\{m : \\exists H,\\, |E(H)| = m \\wedge H \\text{ Ramsey for } G\\}$.",
+      "mathContext": "Defines `EdgeColoring G` as $c : E(G) \\to \\text{Fin } 2$, `IsMonochromatic` for uniform-color subgraphs, and `ContainsMonochromaticCopy` for the Ramsey property. Defines `sizeRamseyNumber n G` via `Na"
     },
     {
       "id": "erdos-questions",
       "title": "Erdős's Three Questions",
       "startLine": 105,
       "endLine": 128,
-      "summary": "Defines `sizeRamseyPath n` and `sizeRamseyCycle n` as specializations. Formalizes Erdős's questions: (a) $\\hat{R}(P_n)/n \\to \\infty$ via `Tendsto ... atTop atTop`, (b) $\\hat{R}(P_n)/n^2 \\to 0$ via `Tendsto ... atTop (nhds 0)`, (c) $\\hat{R}(C_n)/n^2 \\to 0$ similarly."
+      "summary": "Defines `sizeRamseyPath n` and `sizeRamseyCycle n` as specializations. Formalizes Erdős's questions: (a) $\\hat{R}(P_n)/n \\to \\infty$ via `Tendsto ... atTop atTop`, (b) $\\hat{R}(P_n)/n^2 \\to 0$ via `Tendsto ... atTop (nhds 0)`, (c) $\\hat{R}(C_n)/n^2 \\to 0$ similarly.",
+      "mathContext": "Defines `sizeRamseyPath n` and `sizeRamseyCycle n` as specializations. Formalizes Erdős's questions: (a) $\\hat{R}(P_n)/n \\to \\infty$ via `Tendsto ... atTop atTop`, (b) $\\hat{R}(P_n)/n^2 \\to 0$ via `Te"
     },
     {
       "id": "beck-theorem",
       "title": "Beck's Theorem (1983) and Dudek-Prałat Improvement",
       "startLine": 129,
       "endLine": 153,
-      "summary": "Axiomatizes Beck's $\\$100$-prize result: $\\exists c > 0,\\, \\forall n \\ge 2,\\, \\hat{R}(P_n) \\le cn$ and $\\hat{R}(C_n) \\le c'n$. Defines `beckPathConstant = 900` from Dudek-Prałat (2017) and axiomatizes $\\hat{R}(P_n) \\le 900n$."
+      "summary": "Axiomatizes Beck's $\\$100$-prize result: $\\exists c > 0,\\, \\forall n \\ge 2,\\, \\hat{R}(P_n) \\le cn$ and $\\hat{R}(C_n) \\le c'n$. Defines `beckPathConstant = 900` from Dudek-Prałat (2017) and axiomatizes $\\hat{R}(P_n) \\le 900n$.",
+      "mathContext": "Axiomatizes Beck's $\\$100$-prize result: $\\exists c > 0,\\, \\forall n \\ge 2,\\, \\hat{R}(P_n) \\le cn$ and $\\hat{R}(C_n) \\le c'n$. Defines `beckPathConstant = 900` from Dudek-Prałat (2017) and axiomatizes"
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds and $\\Theta(n)$ Characterization",
       "startLine": 154,
       "endLine": 178,
-      "summary": "Axiomatizes matching lower bounds $\\hat{R}(P_n) \\ge cn$ and $\\hat{R}(C_n) \\ge c'n$. Defines `pathIsLinear` and `cycleIsLinear` as $\\exists c_1, c_2 > 0$ bounding $\\hat{R}$ from both sides — the $\\Theta(n)$ characterization. Current gap: $3.75n \\le \\hat{R}(P_n) \\le 900n$."
+      "summary": "Axiomatizes matching lower bounds $\\hat{R}(P_n) \\ge cn$ and $\\hat{R}(C_n) \\ge c'n$. Defines `pathIsLinear` and `cycleIsLinear` as $\\exists c_1, c_2 > 0$ bounding $\\hat{R}$ from both sides — the $\\Theta(n)$ characterization. Current gap: $3.75n \\le \\hat{R}(P_n) \\le 900n$.",
+      "mathContext": "Axiomatizes matching lower bounds $\\hat{R}(P_n) \\ge cn$ and $\\hat{R}(C_n) \\ge c'n$. Defines `pathIsLinear` and `cycleIsLinear` as $\\exists c_1, c_2 > 0$ bounding $\\hat{R}$ from both sides — the $\\Thet"
     },
     {
       "id": "answers",
       "title": "Answers to Erdős's Questions",
       "startLine": 179,
       "endLine": 195,
-      "summary": "Axiomatizes the three answers: (a) $\\neg$`ErdosQuestion720a` — NO, $\\hat{R}(P_n)/n$ is bounded; (b) `ErdosQuestion720b` — YES, $\\hat{R}(P_n)/n^2 \\to 0$; (c) `ErdosQuestion720c` — YES, $\\hat{R}(C_n)/n^2 \\to 0$."
+      "summary": "Axiomatizes the three answers: (a) $\\neg$`ErdosQuestion720a` — NO, $\\hat{R}(P_n)/n$ is bounded; (b) `ErdosQuestion720b` — YES, $\\hat{R}(P_n)/n^2 \\to 0$; (c) `ErdosQuestion720c` — YES, $\\hat{R}(C_n)/n^2 \\to 0$.",
+      "mathContext": "Axiomatizes the three answers: (a) $\\neg$`ErdosQuestion720a` — NO, $\\hat{R}(P_n)/n$ is bounded; (b) `ErdosQuestion720b` — YES, $\\hat{R}(P_n)/n^2 \\to 0$; (c) `ErdosQuestion720c` — YES, $\\hat{R}(C_n)/n^"
     },
     {
       "id": "linear-bound-context",
       "title": "The Surprising Linear Bound",
       "startLine": 196,
       "endLine": 212,
-      "summary": "Context propositions `beckSurprise` and `ramseyComparison` contrasting size vs ordinary Ramsey: $R(P_n) = 2n - 1$ is exact (Gerencsér-Gyárfás), but $\\hat{R}(P_n) = \\Theta(n)$ has a factor-240 gap in the constant."
+      "summary": "Context propositions `beckSurprise` and `ramseyComparison` contrasting size vs ordinary Ramsey: $R(P_n) = 2n - 1$ is exact (Gerencsér-Gyárfás), but $\\hat{R}(P_n) = \\Theta(n)$ has a factor-240 gap in the constant.",
+      "mathContext": "Context propositions `beckSurprise` and `ramseyComparison` contrasting size vs ordinary Ramsey: $R(P_n) = 2n - 1$ is exact (Gerencsér-Gyárfás), but $\\hat{R}(P_n) = \\Theta(n)$ has a factor-240 gap in t"
     },
     {
       "id": "related-results",
       "title": "Related Results and Generalizations",
       "startLine": 213,
       "endLine": 234,
-      "summary": "Axiomatizes linear size Ramsey for bounded-degree trees (Friedman-Pippenger 1987). Notes connection to Problem #559 on bounded-degree graphs (Kohayakawa-Rödl-Schacht-Szemerédi). States that the exact constant in $\\hat{R}(P_n) = \\Theta(n)$ remains open."
+      "summary": "Axiomatizes linear size Ramsey for bounded-degree trees (Friedman-Pippenger 1987). Notes connection to Problem #559 on bounded-degree graphs (Kohayakawa-Rödl-Schacht-Szemerédi). States that the exact constant in $\\hat{R}(P_n) = \\Theta(n)$ remains open.",
+      "mathContext": "Axiomatizes linear size Ramsey for bounded-degree trees (Friedman-Pippenger 1987). Notes connection to Problem #559 on bounded-degree graphs (Kohayakawa-Rödl-Schacht-Szemerédi). States that the exact "
     },
     {
       "id": "summary-theorems",
       "title": "Summary Theorems",
       "startLine": 235,
       "endLine": 269,
-      "summary": "Three proved results: `erdos_720` derives $\\hat{R}(P_n)/n^2 \\to 0 \\wedge \\hat{R}(C_n)/n^2 \\to 0$; `erdos_720_main` packages all three answers; `erdos_720_beck` proves `pathIsLinear ∧ cycleIsLinear` by combining upper and lower bound axioms via `obtain`."
+      "summary": "Three proved results: `erdos_720` derives $\\hat{R}(P_n)/n^2 \\to 0 \\wedge \\hat{R}(C_n)/n^2 \\to 0$; `erdos_720_main` packages all three answers; `erdos_720_beck` proves `pathIsLinear ∧ cycleIsLinear` by combining upper and lower bound axioms via `obtain`.",
+      "mathContext": "Three proved results: `erdos_720` derives $\\hat{R}(P_n)/n^2 \\to 0 \\wedge \\hat{R}(C_n)/n^2 \\to 0$; `erdos_720_main` packages all three answers; `erdos_720_beck` proves `pathIsLinear ∧ cycleIsLinear` by"
     }
   ],
   "conclusion": {

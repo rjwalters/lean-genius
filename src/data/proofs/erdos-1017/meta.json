@@ -50,70 +50,80 @@
       "title": "Graph Basics",
       "summary": "Defines `edgeCount G` via `G.edgeFinset.card` and `vertexCount` via `Fintype.card V` within Mathlib's `SimpleGraph` framework. These are the parameters $(n,k)$ for $f(n,k)$.",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "Defines `edgeCount G` via `G.edgeFinset.card` and `vertexCount` via `Fintype.card V` within Mathlib's `SimpleGraph` framework. These are the parameters $(n,k)$ for $f(n,k)$."
     },
     {
       "id": "cliques",
       "title": "Complete Subgraphs (Cliques)",
       "summary": "Defines `isClique G S` (pairwise adjacency in $S$) and `completeOn S` (the complete graph $K_S$ as a `SimpleGraph`). These are the atomic pieces of any clique partition.",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "Defines `isClique G S` (pairwise adjacency in $S$) and `completeOn S` (the complete graph $K_S$ as a `SimpleGraph`). These are the atomic pieces of any clique partition."
     },
     {
       "id": "partitions",
       "title": "Edge-Disjoint Clique Partitions",
       "summary": "Defines `edgeDisjoint`, `isPairwiseEdgeDisjoint`, `cliqueUnion` (graph union of complete subgraphs), and `isCliquePartition` (pairwise disjoint with union $= G$). The central predicate for the entire formalization.",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "Defines `edgeDisjoint`, `isPairwiseEdgeDisjoint`, `cliqueUnion` (graph union of complete subgraphs), and `isCliquePartition` (pairwise disjoint with union $= G$). The central predicate for the entire "
     },
     {
       "id": "partition-number",
       "title": "The Clique Partition Number $f(n,k)$",
       "summary": "Defines `canPartitionInto n k m` (universal over all $(n,k)$-graphs) and `cliquePartitionNumber` via `Nat.find`. The trivial bound $m = n^2$ serves as the existence witness.",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "Defines `canPartitionInto n k m` (universal over all $(n,k)$-graphs) and `cliquePartitionNumber` via `Nat.find`. The trivial bound $m = n^2$ serves as the existence witness."
     },
     {
       "id": "egp",
       "title": "Erdős-Goodman-Pósa Theorem (1966)",
       "summary": "Axiomatizes the EGP bound: $f(n,k) \\le \\lfloor n^2/4 \\rfloor$ using only edges and triangles. Defines `usesOnlyEdgesAndTriangles` and derives `cliquePartitionNumber_le`.",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "Axiomatizes the EGP bound: $f(n,k) \\le \\lfloor n^2/4 \\rfloor$ using only edges and triangles. Defines `usesOnlyEdgesAndTriangles` and derives `cliquePartitionNumber_le`."
     },
     {
       "id": "extremal",
       "title": "Extremal Example: Complete Bipartite Graph",
       "summary": "Constructs `completeBipartite A B` as the Turán graph $T(n,2) = K_{n/2, n/2}$, proves it has no triangles, and shows it requires $n^2/4$ edge-cliques—establishing tightness of the EGP bound.",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "Constructs `completeBipartite A B` as the Turán graph $T(n,2) = K_{n/2, n/2}$, proves it has no triangles, and shows it requires $n^2/4$ edge-cliques—establishing tightness of the EGP bound."
     },
     {
       "id": "open-problem",
       "title": "The Open Problem: $k > n^2/4$",
       "summary": "States `canImproveForDenseGraphs` and `erdos_1017_question`: can $f(n,k) < n^2/4$ when $k > n^2/4$? This is the core open question.",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "States `canImproveForDenseGraphs` and `erdos_1017_question`: can $f(n,k) < n^2/4$ when $k > n^2/4$? This is the core open question."
     },
     {
       "id": "lovasz",
       "title": "Lovász's Covering Result (1968)",
       "summary": "Axiomatizes Lovász's result: $G$ is the union of $\\binom{n}{2} - k + t$ cliques where $t \\approx \\sqrt{\\binom{n}{2} - k}$. This is a covering (not partition) result, providing a related but weaker bound.",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "Axiomatizes Lovász's result: $G$ is the union of $\\binom{n}{2} - k + t$ cliques where $t \\approx \\sqrt{\\binom{n}{2} - k}$. This is a covering (not partition) result, providing a related but weaker bou"
     },
     {
       "id": "k4free",
       "title": "$K_4$-Free Case: Győri-Keszegh (2017)",
       "summary": "Axiomatizes the complete solution for $K_4$-free graphs: $\\lfloor n^2/4 \\rfloor + m$ edges $\\Rightarrow m$ edge-disjoint triangles. Derives the partition count formula $\\lfloor n^2/4 \\rfloor - m$.",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "Axiomatizes the complete solution for $K_4$-free graphs: $\\lfloor n^2/4 \\rfloor + m$ edges $\\Rightarrow m$ edge-disjoint triangles. Derives the partition count formula $\\lfloor n^2/4 \\rfloor - m$."
     },
     {
       "id": "general-harder",
       "title": "Why the General Case Is Harder",
       "summary": "Illustrates with `larger_cliques_help`: $K_r$ with $r \\ge 4$ saves $\\binom{r}{2} - 1$ over edge-by-edge partitioning, but global optimization of overlapping cliques is the open challenge.",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "Illustrates with `larger_cliques_help`: $K_r$ with $r \\ge 4$ saves $\\binom{r}{2} - 1$ over edge-by-edge partitioning, but global optimization of overlapping cliques is the open challenge."
     }
   ],
   "conclusion": {
@@ -163,27 +173,32 @@
     {
       "id": "erdos-1009",
       "relationship": "foundational",
-      "description": "Erdős #1009 asks about edge-disjoint triangles in graphs with more than n²/4 edges—precisely the structural ingredient t"
+      "description": "Erdős #1009 asks about edge-disjoint triangles in graphs with more than n²/4 edges—precisely the structural ingredient the Győri-Keszegh theorem uses to lower f(n,k) in the K₄-free case of Problem #1017."
     },
     {
       "id": "erdos-1010",
       "relationship": "complementary",
-      "description": "Erdős #1010 studies triangle supersaturation: how many triangles must appear when k > n²/4. This supersaturation count d"
+      "description": "Erdős #1010 studies triangle supersaturation: how many triangles must appear when k > n²/4. This supersaturation count directly governs how much the clique partition number f(n,k) can decrease below ⌊n²/4⌋ in dense graphs."
     },
     {
       "id": "ramseys-theorem",
       "relationship": "foundational",
-      "description": "Ramsey theory underpins the EGP proof: after greedily extracting triangles from a graph, the remainder is triangle-free "
+      "description": "Ramsey theory underpins the EGP proof: after greedily extracting triangles from a graph, the remainder is triangle-free and hence (by a Ramsey-style argument) bipartite, reducing the partition to individual edges bounded by ⌊n²/4⌋."
     },
     {
       "id": "erdos-1015",
       "relationship": "thematic",
-      "description": "Erdős #1015 partitions edges of 2-colored complete graphs into monochromatic cliques, sharing the same edge-partition fr"
+      "description": "Erdős #1015 partitions edges of 2-colored complete graphs into monochromatic cliques, sharing the same edge-partition framework and complete-bipartite extremal example that appears in Problem #1017."
     },
     {
       "id": "szemeredi-regularity",
       "relationship": "complementary",
-      "description": "The Szemerédi Regularity Lemma is a key tool in modern extremal graph theory for problems about dense graphs. Approaches"
+      "description": "The Szemerédi Regularity Lemma is a key tool in modern extremal graph theory for problems about dense graphs. Approaches to the general case of Problem #1017 beyond the K₄-free regime are expected to require regularity-based techniques."
+    },
+    {
+      "id": "erdos-500",
+      "relationship": "thematic",
+      "description": "Erdős #500 studies Turán-type density questions for hypergraphs. The EGP bound ⌊n²/4⌋ equals the Turán number ex(n,K₃), linking clique partition numbers to Turán density and making Problem #1017 part of the broader Turán extremal program."
     }
   ],
   "references": [
@@ -194,7 +209,7 @@
         "L. Pósa"
       ],
       "title": "The representation of a graph by set intersections",
-      "year": 1966,
+      "year": "1966",
       "venue": "Canadian Journal of Mathematics",
       "note": "Proves f(n,k) ≤ ⌊n²/4⌋ using only edges and triangles; establishes the completebbipartite extremal graph."
     },
@@ -204,7 +219,7 @@
         "B. Keszegh"
       ],
       "title": "On the number of edge-disjoint triangles in K₄-free graphs",
-      "year": 2017,
+      "year": "2017",
       "venue": "Combinatorica",
       "note": "Resolves the K₄-free case: a K₄-free graph with ⌊n²/4⌋+m edges contains m edge-disjoint triangles, giving f(n,k)=⌊n²/4⌋−m."
     },
@@ -213,7 +228,7 @@
         "L. Lovász"
       ],
       "title": "On covering of graphs",
-      "year": 1968,
+      "year": "1968",
       "venue": "Theory of Graphs (Proceedings of the Colloquium, Tihany, 1966)",
       "note": "Establishes the covering bound used as a comparison in Problem #1017: G is covered by ⌊n²/4⌋ − k + t cliques where t measures the triangle density."
     },
@@ -222,7 +237,7 @@
         "P. Turán"
       ],
       "title": "On an extremal problem in graph theory",
-      "year": 1941,
+      "year": "1941",
       "venue": "Matematikai és Fizikai Lapok",
       "note": "Turán's theorem implies ex(n,K₃)=⌊n²/4⌋, establishing that the EGP bound is tight and that K_{n/2,n/2} is the unique extremal graph."
     },
@@ -232,7 +247,7 @@
         "R. L. Graham"
       ],
       "title": "Erdős on Graphs: His Legacy of Unsolved Problems",
-      "year": 1998,
+      "year": "1998",
       "venue": "A K Peters/CRC Press",
       "note": "Surveys the broader context of clique partition and graph decomposition problems in Erdős's program, including Problem #1017 and related questions."
     }

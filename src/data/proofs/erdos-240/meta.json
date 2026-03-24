@@ -102,63 +102,72 @@
       "title": "P-Smooth Numbers",
       "summary": "isPSmooth, smoothNumbers, one_isPSmooth definitions",
       "startLine": 42,
-      "endLine": 68
+      "endLine": 68,
+      "mathContext": "isPSmooth, smoothNumbers, one_isPSmooth definitions"
     },
     {
       "id": "enumeration",
       "title": "Enumeration and Gaps",
       "summary": "smoothEnum axioms, gap definition",
       "startLine": 69,
-      "endLine": 101
+      "endLine": 101,
+      "mathContext": "smoothEnum axioms, gap definition"
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "summary": "gapsTendToInfinity, erdos240Question",
       "startLine": 102,
-      "endLine": 119
+      "endLine": 119,
+      "mathContext": "gapsTendToInfinity, erdos240Question"
     },
     {
       "id": "polya-theorem",
       "title": "Pólya's Theorem (1918)",
       "summary": "polya_theorem, polya_corollary axioms",
       "startLine": 120,
-      "endLine": 139
+      "endLine": 139,
+      "mathContext": "polya_theorem, polya_corollary axioms"
     },
     {
       "id": "finite-p",
       "title": "Finite P Case",
       "summary": "finite_P_unbounded_gaps, tijdeman_finite_bound",
       "startLine": 140,
-      "endLine": 167
+      "endLine": 167,
+      "mathContext": "finite_P_unbounded_gaps, tijdeman_finite_bound"
     },
     {
       "id": "tijdeman-main",
       "title": "Tijdeman's Main Theorem",
       "summary": "tijdeman_main_theorem, erdos240_answer",
       "startLine": 168,
-      "endLine": 197
+      "endLine": 197,
+      "mathContext": "tijdeman_main_theorem, erdos240_answer"
     },
     {
       "id": "construction",
       "title": "Construction Ideas",
       "summary": "tijdeman_construction, singleton_large_gaps",
       "startLine": 198,
-      "endLine": 227
+      "endLine": 227,
+      "mathContext": "tijdeman_construction, singleton_large_gaps"
     },
     {
       "id": "related",
       "title": "Related Results",
       "summary": "stormer_theorem, abc_connection, smooth_in_progressions",
       "startLine": 228,
-      "endLine": 255
+      "endLine": 255,
+      "mathContext": "stormer_theorem, abc_connection, smooth_in_progressions"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_240_summary, erdos_240 main theorem",
       "startLine": 255,
-      "endLine": 288
+      "endLine": 288,
+      "mathContext": "erdos_240_summary, erdos_240 main theorem"
     }
   ],
   "conclusion": {
@@ -240,27 +249,27 @@
     {
       "id": "infinitude-primes",
       "relationship": "uses",
-      "description": "The infinitude of primes is the foundation — the question asks whether an infinite SUBSET of primes can still force smoo"
+      "description": "The infinitude of primes is the foundation — the question asks whether an infinite SUBSET of primes can still force smooth number gaps to diverge"
     },
     {
       "id": "prime-number-theorem",
       "relationship": "related",
-      "description": "PNT governs prime density, which affects how many P-smooth numbers exist in intervals. The density of smooth numbers is "
+      "description": "PNT governs prime density, which affects how many P-smooth numbers exist in intervals. The density of smooth numbers is studied via analytic methods building on PNT"
     },
     {
       "id": "erdos-205",
       "relationship": "related",
-      "description": "Both problems involve prime factor counts and additive representations: #205 asks about Ω(m) for remainders n - 2^k, whi"
+      "description": "Both problems involve prime factor counts and additive representations: #205 asks about Ω(m) for remainders n - 2^k, while #240 concerns integers whose prime factors are restricted to a set P"
     },
     {
       "id": "erdos-4",
       "relationship": "related",
-      "description": "Both connect to the distribution of primes: #4 asks about large prime gaps, while #240 uses the sparseness of primes in "
+      "description": "Both connect to the distribution of primes: #4 asks about large prime gaps, while #240 uses the sparseness of primes in P to create gaps between P-smooth numbers"
     },
     {
       "id": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's postulate guarantees primes in [n, 2n], relevant to understanding prime density and the 'sparseness' conditio"
+      "description": "Bertrand's postulate guarantees primes in [n, 2n], relevant to understanding prime density and the 'sparseness' condition Tijdeman requires"
     }
   ],
   "leanFile": {

@@ -93,77 +93,88 @@
       "title": "Basic Definitions",
       "summary": "largestPrimeFactor, F(n), product_ge_two",
       "startLine": 42,
-      "endLine": 71
+      "endLine": 71,
+      "mathContext": "largestPrimeFactor, F(n), product_ge_two"
     },
     {
       "id": "coprimality",
       "title": "Coprimality",
       "summary": "consecutive_coprime, primeFactors_product_coprime, F_eq_max",
       "startLine": 72,
-      "endLine": 95
+      "endLine": 95,
+      "mathContext": "consecutive_coprime, primeFactors_product_coprime, F_eq_max"
     },
     {
       "id": "polya",
       "title": "Pólya's Theorem",
       "summary": "polya_theorem axiom, F_unbounded theorem",
       "startLine": 96,
-      "endLine": 117
+      "endLine": 117,
+      "mathContext": "polya_theorem axiom, F_unbounded theorem"
     },
     {
       "id": "mahler",
       "title": "Mahler's Bound",
       "summary": "mahler_bound axiom, mahler_improves_polya axiom",
       "startLine": 118,
-      "endLine": 140
+      "endLine": 140,
+      "mathContext": "mahler_bound axiom, mahler_improves_polya axiom"
     },
     {
       "id": "schinzel",
       "title": "Schinzel's Upper Bound",
       "summary": "schinzel_upper axiom, isSmooth definition",
       "startLine": 141,
-      "endLine": 171
+      "endLine": 171,
+      "mathContext": "schinzel_upper axiom, isSmooth definition"
     },
     {
       "id": "erdos-conjectures",
       "title": "Erdős's Conjectures",
       "summary": "erdos_lower_conjecture, erdos_upper_conjecture definitions",
       "startLine": 172,
-      "endLine": 196
+      "endLine": 196,
+      "mathContext": "erdos_lower_conjecture, erdos_upper_conjecture definitions"
     },
     {
       "id": "pasten",
       "title": "Pasten's Theorem",
       "summary": "pasten_bound axiom, pasten_improves_mahler axiom",
       "startLine": 197,
-      "endLine": 220
+      "endLine": 220,
+      "mathContext": "pasten_bound axiom, pasten_improves_mahler axiom"
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "summary": "F(1) through F(8), OEIS A074399",
       "startLine": 221,
-      "endLine": 275
+      "endLine": 275,
+      "mathContext": "F(1) through F(8), OEIS A074399"
     },
     {
       "id": "variant",
       "title": "n² + 1 Variant",
       "summary": "P_squared_plus_one, pasten_squared_plus_one",
       "startLine": 276,
-      "endLine": 296
+      "endLine": 296,
+      "mathContext": "P_squared_plus_one, pasten_squared_plus_one"
     },
     {
       "id": "abc",
       "title": "ABC Connection",
       "summary": "radical definition, abc_implies_strong_bound",
       "startLine": 297,
-      "endLine": 323
+      "endLine": 323,
+      "mathContext": "radical definition, abc_implies_strong_bound"
     },
     {
       "id": "summary",
       "title": "Main Results Summary",
       "summary": "erdos_368_summary combining all bounds",
       "startLine": 324,
-      "endLine": 342
+      "endLine": 342,
+      "mathContext": "erdos_368_summary combining all bounds"
     }
   ],
   "conclusion": {

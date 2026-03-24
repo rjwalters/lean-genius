@@ -64,56 +64,64 @@
       "title": "Background",
       "summary": "The PNT gives $p_n \\sim n \\ln n$, so $n/p_n \\to 0$. But the Leibniz test fails since $n/p_n$ is not monotone decreasing (twin primes cause ratio increases).",
       "startLine": 32,
-      "endLine": 47
+      "endLine": 47,
+      "mathContext": "The PNT gives $p_n \\sim n \\ln n$, so $n/p_n \\to 0$. But the Leibniz test fails since $n/p_n$ is not monotone decreasing (twin primes cause ratio increases)."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "summary": "Defines `nthPrime` via `Nat.nth Nat.Prime`, the alternating term $a_n = (-1)^n \\cdot n/p_n$, partial sums $S_N = \\sum_{n=0}^{N} a_n$, and `AlternatingPrimeSeriesConverges` as $\\exists L : S_N \\to L$.",
       "startLine": 48,
-      "endLine": 69
+      "endLine": 69,
+      "mathContext": "Defines `nthPrime` via `Nat.nth Nat.Prime`, the alternating term $a_n = (-1)^n \\cdot n/p_n$, partial sums $S_N = \\sum_{n=0}^{N} a_n$, and `AlternatingPrimeSeriesConverges` as $\\exists L : S_N \\to L$."
     },
     {
       "id": "pnt-consequences",
       "title": "Prime Number Theorem Consequences",
       "summary": "Axiomatizes PNT ($p_n/(n\\ln n) \\to 1$), $n/p_n \\to 0$, $|a_n| \\to 0$, and the critical failure: $n/p_n$ is not monotone decreasing (counterexample: $5/11 < 6/13$ near twin primes).",
       "startLine": 70,
-      "endLine": 117
+      "endLine": 117,
+      "mathContext": "Axiomatizes PNT ($p_n/(n\\ln n) \\to 1$), $n/p_n \\to 0$, $|a_n| \\to 0$, and the critical failure: $n/p_n$ is not monotone decreasing (counterexample: $5/11 < 6/13$ near twin primes)."
     },
     {
       "id": "tao-result",
       "title": "Tao's Conditional Result (2023)",
       "summary": "States the Hardy–Littlewood prime $k$-tuples conjecture (admissible tuples have infinitely many prime translations) and axiomatizes Tao's theorem: $\\text{HardyLittlewood} \\Rightarrow \\exists L : S_N \\to L$.",
       "startLine": 118,
-      "endLine": 142
+      "endLine": 142,
+      "mathContext": "States the Hardy–Littlewood prime $k$-tuples conjecture (admissible tuples have infinitely many prime translations) and axiomatizes Tao's theorem: $\\text{HardyLittlewood} \\Rightarrow \\exists L : S_N \\"
     },
     {
       "id": "related-series",
       "title": "Related Series and Erdős's Gap Conjectures",
       "summary": "Defines prime gap $g_n = p_{n+1} - p_n$. Erdős's conjectures: (1) $\\sum (-1)^n/(n g_n)$ converges (open); (2) $\\sum (-1)^n/g_n$ diverges (proved via Zhang's bounded gaps $\\liminf g_n \\le H$).",
       "startLine": 143,
-      "endLine": 179
+      "endLine": 179,
+      "mathContext": "Defines prime gap $g_n = p_{n+1} - p_n$. Erdős's conjectures: (1) $\\sum (-1)^n/(n g_n)$ converges (open); (2) $\\sum (-1)^n/g_n$ diverges (proved via Zhang's bounded gaps $\\liminf g_n \\le H$)."
     },
     {
       "id": "difficulty",
       "title": "Why This Problem is Hard",
       "summary": "Four obstacles: (1) Leibniz test fails (non-monotone); (2) cancellation is subtle (depends on prime gap structure); (3) only conditional results known; (4) not finitely resolvable — two sequences agreeing on $[1,N]$ can converge/diverge differently.",
       "startLine": 180,
-      "endLine": 206
+      "endLine": 206,
+      "mathContext": "Four obstacles: (1) Leibniz test fails (non-monotone); (2) cancellation is subtle (depends on prime gap structure); (3) only conditional results known; (4) not finitely resolvable — two sequences agre"
     },
     {
       "id": "absolute-convergence",
       "title": "Absolute Convergence Fails",
       "summary": "$\\sum n/p_n \\sim \\sum 1/\\ln n = \\infty$ (logarithmic integral diverges), so any convergence must be conditional. The comparison $n/p_n \\sim 1/\\ln n$ follows from PNT.",
       "startLine": 207,
-      "endLine": 228
+      "endLine": 228,
+      "mathContext": "$\\sum n/p_n \\sim \\sum 1/\\ln n = \\infty$ (logarithmic integral diverges), so any convergence must be conditional. The comparison $n/p_n \\sim 1/\\ln n$ follows from PNT."
     },
     {
       "id": "numerical-evidence",
       "title": "Numerical Evidence",
       "summary": "Partial sums appear to oscillate around $\\approx -1$: $|S_N - (-1)| < 1 + \\varepsilon$ for large $N$. Suggestive but not a proof, as the infinite tail is uncomputable.",
       "startLine": 229,
-      "endLine": 271
+      "endLine": 271,
+      "mathContext": "Partial sums appear to oscillate around $\\approx -1$: $|S_N - (-1)| < 1 + \\varepsilon$ for large $N$. Suggestive but not a proof, as the infinite tail is uncomputable."
     }
   ],
   "conclusion": {
@@ -187,17 +195,17 @@
     {
       "id": "erdos-6",
       "relationship": "related",
-      "description": "Problem #6 on monotone prime gap sequences and Problem #15 on alternating prime series both study the fine distribution "
+      "description": "Problem #6 on monotone prime gap sequences and Problem #15 on alternating prime series both study the fine distribution of primes"
     },
     {
       "id": "erdos-10",
       "relationship": "related",
-      "description": "Problem #10 studies representations involving primes and powers of 2. Both problems concern how primes interact with str"
+      "description": "Problem #10 studies representations involving primes and powers of 2. Both problems concern how primes interact with structured sequences"
     },
     {
       "id": "infinitude-primes",
       "relationship": "foundational",
-      "description": "The infinitude of primes guarantees the alternating prime series is well-defined. The distribution of primes determines "
+      "description": "The infinitude of primes guarantees the alternating prime series is well-defined. The distribution of primes determines the convergence behavior"
     }
   ]
 }

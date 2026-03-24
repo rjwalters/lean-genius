@@ -47,63 +47,72 @@
       "title": "Imports and Setup",
       "startLine": 23,
       "endLine": 28,
-      "summary": "Imports Mathlib's `Combinatorics.Additive.Dissociated` module (which defines dissociated sets in the group-theoretic sense), along with `Finset.Card`, `Data.Real.Basic`, logarithmic functions, and general tactics."
+      "summary": "Imports Mathlib's `Combinatorics.Additive.Dissociated` module (which defines dissociated sets in the group-theoretic sense), along with `Finset.Card`, `Data.Real.Basic`, logarithmic functions, and general tactics.",
+      "mathContext": "Imports Mathlib's `Combinatorics.Additive.Dissociated` module (which defines dissociated sets in the group-theoretic sense), along with `Finset.Card`, `Data.Real.Basic`, logarithmic functions, and gen"
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 29,
       "endLine": 41,
-      "summary": "Defines `IsDissociatedSubset A B` requiring $B \\subseteq A$ with the subset-sum map injective on $\\mathcal{P}(B)$, and `maxDissociatedSize n = \\sup\\{k : \\forall |A|=n,\\, \\exists B \\subseteq A \\text{ dissociated with } |B| \\ge k\\}$."
+      "summary": "Defines `IsDissociatedSubset A B` requiring $B \\subseteq A$ with the subset-sum map injective on $\\mathcal{P}(B)$, and `maxDissociatedSize n = \\sup\\{k : \\forall |A|=n,\\, \\exists B \\subseteq A \\text{ dissociated with } |B| \\ge k\\}$.",
+      "mathContext": "Defines `IsDissociatedSubset A B` requiring $B \\subseteq A$ with the subset-sum map injective on $\\mathcal{P}(B)$, and `maxDissociatedSize n = \\sup\\{k : \\forall |A|=n,\\, \\exists B \\subseteq A \\text{ d"
     },
     {
       "id": "counting",
       "title": "Subset Sum Counting",
       "startLine": 42,
       "endLine": 48,
-      "summary": "Axiomatizes that a dissociated set of size $k$ yields exactly $2^k$ distinct subset sums, the fundamental counting identity underlying both bounds."
+      "summary": "Axiomatizes that a dissociated set of size $k$ yields exactly $2^k$ distinct subset sums, the fundamental counting identity underlying both bounds.",
+      "mathContext": "Axiomatizes that a dissociated set of size $k$ yields exactly $2^k$ distinct subset sums, the fundamental counting identity underlying both bounds."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 49,
       "endLine": 56,
-      "summary": "States the central open problem: $f(n) \\ge \\lfloor\\log_2 n\\rfloor$ for all $n \\ge 1$. This is axiomatized as `erdos_963_conjecture`."
+      "summary": "States the central open problem: $f(n) \\ge \\lfloor\\log_2 n\\rfloor$ for all $n \\ge 1$. This is axiomatized as `erdos_963_conjecture`.",
+      "mathContext": "States the central open problem: $f(n) \\ge \\lfloor\\log_2 n\\rfloor$ for all $n \\ge 1$. This is axiomatized as `erdos_963_conjecture`."
     },
     {
       "id": "greedy-bound",
       "title": "Greedy Lower Bound",
       "startLine": 57,
       "endLine": 66,
-      "summary": "Axiomatizes Erdős's greedy argument: $f(n) \\ge \\lfloor\\log_3 n\\rfloor$, based on the observation that at most $3^k - 1$ elements are excluded after choosing $k$ dissociated elements."
+      "summary": "Axiomatizes Erdős's greedy argument: $f(n) \\ge \\lfloor\\log_3 n\\rfloor$, based on the observation that at most $3^k - 1$ elements are excluded after choosing $k$ dissociated elements.",
+      "mathContext": "Axiomatizes Erdős's greedy argument: $f(n) \\ge \\lfloor\\log_3 n\\rfloor$, based on the observation that at most $3^k - 1$ elements are excluded after choosing $k$ dissociated elements."
     },
     {
       "id": "upper-bound",
       "title": "Trivial Upper Bound",
       "startLine": 67,
       "endLine": 74,
-      "summary": "Axiomatizes $f(n) \\le \\lfloor\\log_2 n\\rfloor + 1$: a dissociated set of size $k$ needs $2^k$ distinct sums from at most $n+1$ possible values (including 0)."
+      "summary": "Axiomatizes $f(n) \\le \\lfloor\\log_2 n\\rfloor + 1$: a dissociated set of size $k$ needs $2^k$ distinct sums from at most $n+1$ possible values (including 0).",
+      "mathContext": "Axiomatizes $f(n) \\le \\lfloor\\log_2 n\\rfloor + 1$: a dissociated set of size $k$ needs $2^k$ distinct sums from at most $n+1$ possible values (including 0)."
     },
     {
       "id": "base-cases",
       "title": "Structural Base Cases",
       "startLine": 75,
       "endLine": 124,
-      "summary": "Proves that the empty set is trivially dissociated (`empty_dissociated`) and any singleton $\\{a\\} \\subseteq A$ is dissociated (`singleton_dissociated`), establishing the inductive base for dissociated subset constructions."
+      "summary": "Proves that the empty set is trivially dissociated (`empty_dissociated`) and any singleton $\\{a\\} \\subseteq A$ is dissociated (`singleton_dissociated`), establishing the inductive base for dissociated subset constructions.",
+      "mathContext": "Proves that the empty set is trivially dissociated (`empty_dissociated`) and any singleton $\\{a\\} \\subseteq A$ is dissociated (`singleton_dissociated`), establishing the inductive base for dissociated"
     },
     {
       "id": "powers-of-two",
       "title": "Powers of 2 Example",
       "startLine": 125,
       "endLine": 130,
-      "summary": "Axiomatizes that $\\{2^0, 2^1, \\ldots, 2^{k-1}\\}$ is dissociated: binary representation uniqueness guarantees distinct subset sums, providing the extremal example."
+      "summary": "Axiomatizes that $\\{2^0, 2^1, \\ldots, 2^{k-1}\\}$ is dissociated: binary representation uniqueness guarantees distinct subset sums, providing the extremal example.",
+      "mathContext": "Axiomatizes that $\\{2^0, 2^1, \\ldots, 2^{k-1}\\}$ is dissociated: binary representation uniqueness guarantees distinct subset sums, providing the extremal example."
     },
     {
       "id": "monotonicity-and-gap",
       "title": "Monotonicity and Log-Base Gap",
       "startLine": 131,
       "endLine": 137,
-      "summary": "Axiomatizes that $f$ is non-decreasing ($m \\le n \\Rightarrow f(m) \\le f(n)$) and that $\\lfloor\\log_3 n\\rfloor \\le \\lfloor\\log_2 n\\rfloor$ for $n \\ge 2$, quantifying the gap between the known and conjectured bounds."
+      "summary": "Axiomatizes that $f$ is non-decreasing ($m \\le n \\Rightarrow f(m) \\le f(n)$) and that $\\lfloor\\log_3 n\\rfloor \\le \\lfloor\\log_2 n\\rfloor$ for $n \\ge 2$, quantifying the gap between the known and conjectured bounds.",
+      "mathContext": "Axiomatizes that $f$ is non-decreasing ($m \\le n \\Rightarrow f(m) \\le f(n)$) and that $\\lfloor\\log_3 n\\rfloor \\le \\lfloor\\log_2 n\\rfloor$ for $n \\ge 2$, quantifying the gap between the known and conje"
     }
   ],
   "conclusion": {
@@ -143,7 +152,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 137,
+    "lineCount": 124,
     "axiomCount": 7,
     "theoremCount": 2,
     "definitionCount": 2

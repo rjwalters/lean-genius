@@ -14,7 +14,8 @@
       "primes",
       "prime-gaps",
       "classic",
-      "erdos"
+      "erdos",
+      "wiedijk-100"
     ],
     "badge": "mathlib",
     "sorries": 0,
@@ -180,27 +181,42 @@
     {
       "id": "infinitude-primes",
       "relationship": "implied-by",
-      "description": "Bertrand's Postulate immediately implies infinitude of primes (for any n, there's a prime > n), giving an alternative to"
+      "description": "Bertrand's Postulate immediately implies infinitude of primes (for any n, there's a prime > n), giving an alternative to Euclid's proof via a much stronger quantitative result"
     },
     {
       "id": "bounded-prime-gaps",
       "relationship": "related",
-      "description": "Both concern prime gaps: Bertrand gives gaps < p (elementary), while Zhang-Maynard-Tao show infinitely many gaps ≤ 246 ("
+      "description": "Both concern prime gaps: Bertrand gives gaps < p (elementary), while Zhang-Maynard-Tao show infinitely many gaps ≤ 246 (deep analytic methods)"
     },
     {
       "id": "binomial-theorem",
       "relationship": "technique",
-      "description": "Erdős's proof hinges on analyzing the central binomial coefficient C(2n,n), using properties of binomial coefficients an"
+      "description": "Erdős's proof hinges on analyzing the central binomial coefficient C(2n,n), using properties of binomial coefficients and their prime factorizations"
     },
     {
       "id": "prime-number-theorem",
       "relationship": "related",
-      "description": "PNT gives π(n) ~ n/ln(n), which implies Bertrand's postulate for sufficiently large n. Bertrand's postulate is an elemen"
+      "description": "PNT gives π(n) ~ n/ln(n), which implies Bertrand's postulate for sufficiently large n. Bertrand's postulate is an elementary precursor: always a prime between n and 2n, without asymptotics"
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "Unique prime factorization underpins Erdős's proof: the prime factorization of C(2n,n) is analyzed to show large primes "
+      "description": "Unique prime factorization underpins Erdős's proof: the prime factorization of C(2n,n) is analyzed to show large primes must appear"
+    },
+    {
+      "id": "bertrands-postulate-oq-03",
+      "relationship": "extended-by",
+      "description": "Explores the precise density of primes in short intervals — refining Bertrand's guarantee of at least one prime in $(n, 2n)$ to questions about how many primes exist in shorter intervals like $(n, n + n^\\theta)$"
+    },
+    {
+      "id": "riemann-hypothesis",
+      "relationship": "related",
+      "description": "RH implies the strongest form of the prime gap bound: $p_{n+1} - p_n = O(\\sqrt{p_n} \\log p_n)$, far stronger than Bertrand's $p_{n+1} < 2p_n$. Both concern the regularity of prime distribution but at different scales — Bertrand is elementary, RH is deep"
+    },
+    {
+      "id": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "Both quantify prime density: Bertrand's postulate gives a local guarantee ($\\exists$ prime in $(n, 2n]$), while $\\sum 1/p = \\infty$ gives a global measure (primes are collectively dense enough for their reciprocals to diverge). Together they establish that primes are both locally frequent and globally ubiquitous"
     }
   ],
   "leanFile": {

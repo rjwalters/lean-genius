@@ -132,56 +132,64 @@
       "title": "Basic Graph Definitions",
       "summary": "Defines HasTriangle (existence of K₃ subgraph), IsTriangleFree (negation), vertexDegree via neighborFinset cardinality, maxDegree via Finset.sup, hasPathOfLength using Walk.length, hasDiameter2 requiring paths of length ≤ 2 between all pairs, and edgeCount.",
       "startLine": 47,
-      "endLine": 100
+      "endLine": 100,
+      "mathContext": "Defines HasTriangle (existence of K₃ subgraph), IsTriangleFree (negation), vertexDegree via neighborFinset cardinality, maxDegree via Finset.sup, hasPathOfLength using Walk.length, hasDiameter2 requir"
     },
     {
       "id": "graph-extension",
       "title": "Graph Extension Framework",
       "summary": "Defines isSupergraph (edge containment G ⊆ G'), addedEdges as edgeFinset set difference cardinality, and the central predicate extendableToDiameter2WithBudget combining triangle-freeness, diameter 2, and edge budget constraints in a single existential.",
       "startLine": 101,
-      "endLine": 129
+      "endLine": 129,
+      "mathContext": "Defines isSupergraph (edge containment G ⊆ G'), addedEdges as edgeFinset set difference cardinality, and the central predicate extendableToDiameter2WithBudget combining triangle-freeness, diameter 2, "
     },
     {
       "id": "main-conjecture",
       "title": "The Erdős-Gyárfás Conjecture",
       "summary": "Formalizes erdosGyarfasConjecture as a Π₃ statement: ∀ε,δ > 0, ∃N, ∀n ≥ N, ∀G triangle-free with Δ(G) < n^{1/2-ε}, G extends with budget ⌊δn²⌋. Uses Real.rpow for the exponent and Nat.floor for the budget.",
       "startLine": 130,
-      "endLine": 148
+      "endLine": 148,
+      "mathContext": "Formalizes erdosGyarfasConjecture as a Π₃ statement: ∀ε,δ > 0, ∃N, ∀n ≥ N, ∀G triangle-free with Δ(G) < n^{1/2-ε}, G extends with budget ⌊δn²⌋. Uses Real.rpow for the exponent and Nat.floor for the bu"
     },
     {
       "id": "historical-results",
       "title": "Historical Results",
       "summary": "Axiomatizes the weak Erdős-Gyárfás result (works for Δ ≤ C·log n/log log n) and Simonovits's counterexample showing failure at Δ = C√n for large C, establishing the sharp threshold at exponent 1/2.",
       "startLine": 149,
-      "endLine": 184
+      "endLine": 184,
+      "mathContext": "Axiomatizes the weak Erdős-Gyárfás result (works for Δ ≤ C·log n/log log n) and Simonovits's counterexample showing failure at Δ = C√n for large C, establishing the sharp threshold at exponent 1/2."
     },
     {
       "id": "alon-theorem",
       "title": "Alon's Theorem (Solution)",
       "summary": "Axiomatizes Alon's O(n^{2-ε}) extension bound and its implication for the conjecture. The quantitative bound is strictly stronger: n^{2-ε}/n² = n^{-ε} → 0.",
       "startLine": 185,
-      "endLine": 214
+      "endLine": 214,
+      "mathContext": "Axiomatizes Alon's O(n^{2-ε}) extension bound and its implication for the conjecture. The quantitative bound is strictly stronger: n^{2-ε}/n² = n^{-ε} → 0."
     },
     {
       "id": "critical-exponent",
       "title": "The Role of the Exponent",
       "summary": "Commentary section explaining the phase transition at n^{1/2}: below 1/2-ε extension is cheap (Alon), at 1/2 extension is expensive (Simonovits). The ε gap is essential for probabilistic arguments.",
       "startLine": 215,
-      "endLine": 226
+      "endLine": 226,
+      "mathContext": "Commentary section explaining the phase transition at n^{1/2}: below 1/2-ε extension is cheap (Alon), at 1/2 extension is expensive (Simonovits). The ε gap is essential for probabilistic arguments."
     },
     {
       "id": "related-concepts",
       "title": "Related Concepts",
       "summary": "Defines commonNeighborProperty (every non-adjacent pair shares a neighbor) and axiomatizes diameter2_equiv: for connected graphs, diameter ≤ 2 ↔ common neighbor property. This local characterization is key for probabilistic proofs.",
       "startLine": 227,
-      "endLine": 246
+      "endLine": 246,
+      "mathContext": "Defines commonNeighborProperty (every non-adjacent pair shares a neighbor) and axiomatizes diameter2_equiv: for connected graphs, diameter ≤ 2 ↔ common neighbor property. This local characterization i"
     },
     {
       "id": "summary",
       "title": "Summary and Main Theorems",
       "summary": "Proves erdos_134_solved (conjecture follows from Alon, one-line proof) and erdos_134_main (conjunction of qualitative conjecture and quantitative O(n^{2-ε}) bound, proved by destructuring alon_theorem with obtain).",
       "startLine": 247,
-      "endLine": 295
+      "endLine": 295,
+      "mathContext": "Proves erdos_134_solved (conjecture follows from Alon, one-line proof) and erdos_134_main (conjunction of qualitative conjecture and quantitative O(n^{2-ε}) bound, proved by destructuring alon_theorem"
     }
   ],
   "conclusion": {
@@ -199,12 +207,12 @@
     {
       "id": "erdos-618",
       "relationship": "related-problem",
-      "description": "Essentially the same problem in a different formulation — both concern extending triangle-free graphs to diameter 2 and "
+      "description": "Essentially the same problem in a different formulation — both concern extending triangle-free graphs to diameter 2 and were solved by Alon."
     },
     {
       "id": "erdos-133",
       "relationship": "related-problem",
-      "description": "The dual problem: what is the maximum degree achievable in a triangle-free diameter-2 graph? Complementary perspective o"
+      "description": "The dual problem: what is the maximum degree achievable in a triangle-free diameter-2 graph? Complementary perspective on the same degree-diameter tradeoff."
     },
     {
       "id": "erdos-612",
@@ -214,12 +222,12 @@
     {
       "id": "erdos-742",
       "relationship": "related-problem",
-      "description": "Studies the maximum number of edges in minimal diameter-2 graphs — the edge-counting complement to #134's extension ques"
+      "description": "Studies the maximum number of edges in minimal diameter-2 graphs — the edge-counting complement to #134's extension question."
     },
     {
       "id": "erdos-22",
       "relationship": "uses-same-technique",
-      "description": "Ramsey-Turán numbers for K₄ use similar extremal combinatorics techniques — bounding edge density under forbidden subgra"
+      "description": "Ramsey-Turán numbers for K₄ use similar extremal combinatorics techniques — bounding edge density under forbidden subgraph constraints."
     }
   ]
 }

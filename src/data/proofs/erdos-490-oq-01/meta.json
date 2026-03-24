@@ -44,7 +44,7 @@
       "Proved: full sandwich — positive constants c ≤ C bracket all ratios"
     ],
     "axiomCount": 3,
-    "lineCount": 229,
+    "lineCount": 215,
     "assumptions": "3 axioms: Szemerédi upper bound, optimal example lower bound, maxProd existence. All encode deep number-theoretic results.",
     "mathlib_version": "4.26.0"
   },
@@ -78,8 +78,16 @@
       "title": "Structural Analysis and Full Sandwich",
       "summary": "Proves `productRatio_nonneg` (nonnegativity from component signs), `card_le_of_subset_upto` ($|A| \\leq N$ via inclusion into $[1, N]$), `maxProd_le_sq` (trivial bound $\\operatorname{maxProd}(N) \\leq N^2$), and the capstone `productRatio_sandwich` (combining all bounds with $c \\leq C$ verified at $N = 2$). Summary `#check` block lists all nine theorems.",
       "startLine": 158,
-      "endLine": 215,
+      "endLine": 201,
       "mathContext": "$|A| \\leq |[1,N]| = N$ for $A \\subseteq \\{1,\\ldots,N\\}$, so $\\operatorname{maxProd}(N) \\leq N^2$. The full sandwich combines all bounds into a single statement with explicit $c \\leq C$."
+    },
+    {
+      "id": "summary",
+      "title": "Module Summary and API",
+      "summary": "Summary `#check` block listing all nine theorems proved: `maxProd_is_upper`, `maxProd_is_achieved`, `productRatio_bounded_above`, `productRatio_bounded_below`, `limit_in_sandwich`, `productRatio_nonneg`, `card_le_of_subset_upto`, `maxProd_le_sq`, `productRatio_sandwich`. Serves as a concise API reference for downstream consumers.",
+      "startLine": 203,
+      "endLine": 215,
+      "mathContext": "Nine theorems from three axioms: two interface lemmas, two sandwich bounds, one limit theorem, and four structural results."
     }
   ],
   "overview": {
@@ -122,7 +130,7 @@
       "Filter"
     ],
     "namespace": null,
-    "lineCount": 229,
+    "lineCount": 215,
     "axiomCount": 3,
     "theoremCount": 9,
     "definitionCount": 5
@@ -192,33 +200,39 @@
   "relatedProofs": [
     {
       "id": "erdos-490",
-      "relationship": "parent",
-      "description": "Parent problem — this OQ investigates whether the normalized maximum product size has a limit"
+      "title": "Erdős Problem #490: Distinct Products in {1,...,N}",
+      "relationship": "parent problem — this OQ investigates the limit of the normalized maximum product size",
+      "description": "Open question derived from Erdős #490; this OQ investigates the limit of the normalized maximum product size"
     },
     {
       "id": "infinitude-primes",
-      "relationship": "foundational",
-      "description": "The prime construction for the lower bound uses primes in (N/2, N]"
+      "title": "Infinitude of Primes",
+      "relationship": "foundational — the prime construction for the lower bound uses primes in (N/2, N]",
+      "description": "The prime construction for the lower bound uses primes in (N/2, N], whose density comes from the prime number theorem"
     },
     {
       "id": "harmonic-divergence",
-      "relationship": "related",
-      "description": "The divergence of ∑ 1/p underlies the log N factor in Szemerédi's bound"
+      "title": "Divergence of the Harmonic Series",
+      "relationship": "related — the divergence of $\\sum 1/p$ underlies the $\\log N$ factor in Szemerédi's bound",
+      "description": "The divergence of $\\sum 1/p$ underlies the $\\log N$ factor in Szemerédi's bound on distinct product pairs"
     },
     {
       "id": "erdos-262",
-      "relationship": "related",
-      "description": "Sidon sets (distinct pairwise sums) are the additive analogue of the distinct products condition"
+      "title": "Erdős Problem #262: Sidon Sets",
+      "relationship": "additive analogue — Sidon sets require distinct pairwise sums, while this requires distinct products",
+      "description": "Erdős #262 on Sidon sets (distinct pairwise sums) is the additive analogue of the distinct products condition — both ask how large a set can be while maintaining injectivity of a binary operation on pairs"
     },
     {
       "id": "prime-number-theorem",
-      "relationship": "foundational",
-      "description": "PNT provides the asymptotic prime count that establishes the lower bound construction"
+      "title": "Prime Number Theorem",
+      "relationship": "foundational — $\\pi(N) \\sim N/\\log N$ establishes the asymptotic density of primes in (N/2, N] for the lower bound construction",
+      "description": "The prime number theorem $\\pi(N) \\sim N/\\log N$ provides the asymptotic count of primes in $(N/2, N]$ that makes the optimal lower bound construction work — without PNT, the lower bound $c \\cdot N^2/\\log N$ could not be established"
     },
     {
       "id": "bertrands-postulate",
-      "relationship": "foundational",
-      "description": "Guarantees primes in (N/2, N], ensuring the lower bound construction is non-vacuous"
+      "title": "Bertrand's Postulate",
+      "relationship": "foundational — guarantees at least one prime in (N/2, N], ensuring the lower bound construction is non-vacuous",
+      "description": "Bertrand's postulate guarantees at least one prime in $(N/2, N]$ for all $N > 1$, ensuring the lower bound construction is non-vacuous. The prime number theorem strengthens this to $\\sim N/(2\\log N)$ primes in the interval"
     }
   ]
 }

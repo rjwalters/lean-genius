@@ -98,56 +98,64 @@
       "title": "Basic Definitions",
       "summary": "charFun (characteristic function), conv2 (2-fold via Finset.filter on Finset.product), conv3 (3-fold via triple product), convH (axiom for general h-fold), sumConv2 and sumConv3 (cumulative sums via Finset.sum over Finset.range).",
       "startLine": 29,
-      "endLine": 63
+      "endLine": 63,
+      "mathContext": "charFun (characteristic function), conv2 (2-fold via Finset.filter on Finset.product), conv3 (3-fold via triple product), convH (axiom for general h-fold), sumConv2 and sumConv3 (cumulative sums via F"
     },
     {
       "id": "linear-growth",
       "title": "Linear Growth Properties",
       "summary": "IsLinearBounded (cN + O(1) via exists M, forall N, |f(N) - cN| <= M), IsLinearLittleO (cN + o(N^alpha) with parametric exponent), IsLinearVaughan (cN + o(N^{1/4}/(log N)^{1/2}) using Real.sqrt and Real.log). Forms strict hierarchy: O(1) subset o(N^{1/4}/sqrt(log N)) subset o(N^{1/4}).",
       "startLine": 64,
-      "endLine": 81
+      "endLine": 81,
+      "mathContext": "IsLinearBounded (cN + O(1) via exists M, forall N, |f(N) - cN| <= M), IsLinearLittleO (cN + o(N^alpha) with parametric exponent), IsLinearVaughan (cN + o(N^{1/4}/(log N)^{1/2}) using Real.sqrt and Rea"
     },
     {
       "id": "erdos-fuchs",
       "title": "Erdos-Fuchs Theorem (2-Fold Baseline)",
       "summary": "erdos_fuchs_theorem (axiom): 2-fold sum cannot be cN + o(N^{1/4}/(log N)^{1/2}). erdos_fuchs_corollary (axiom): 2-fold sum cannot be cN + O(1). Establishes the foundational 1956 result that Problem #764 generalizes.",
       "startLine": 82,
-      "endLine": 103
+      "endLine": 103,
+      "mathContext": "erdos_fuchs_theorem (axiom): 2-fold sum cannot be cN + o(N^{1/4}/(log N)^{1/2}). erdos_fuchs_corollary (axiom): 2-fold sum cannot be cN + O(1). Establishes the foundational 1956 result that Problem #7"
     },
     {
       "id": "vaughan-theorem",
       "title": "Vaughan's Theorem (Core Result)",
       "summary": "vaughan_3fold_theorem (axiom): 3-fold sum cannot be cN + o(N^{1/4}/(log N)^{1/2}). vaughan_corollary (axiom): direct answer to Problem #764. vaughan_hfold_theorem (axiom): generalizes to h-fold for all h >= 2.",
       "startLine": 104,
-      "endLine": 132
+      "endLine": 132,
+      "mathContext": "vaughan_3fold_theorem (axiom): 3-fold sum cannot be cN + o(N^{1/4}/(log N)^{1/2}). vaughan_corollary (axiom): direct answer to Problem #764. vaughan_hfold_theorem (axiom): generalizes to h-fold for al"
     },
     {
       "id": "error-bounds",
       "title": "Error Oscillation Theory",
       "summary": "ErrorOscillates definition: error infinitely often above N^{1/4} and below -N^{1/4}. error_oscillation (axiom): for infinite A, 3-fold error oscillates. Strengthens impossibility to signed oscillation.",
       "startLine": 133,
-      "endLine": 152
+      "endLine": 152,
+      "mathContext": "ErrorOscillates definition: error infinitely often above N^{1/4} and below -N^{1/4}. error_oscillation (axiom): for infinite A, 3-fold error oscillates. Strengthens impossibility to signed oscillation"
     },
     {
       "id": "examples",
       "title": "Examples and Special Cases",
       "summary": "Squares = {k^2 : k in N}. squares_not_linear (PROVED from vaughan_corollary): even perfect squares cannot achieve linear 3-fold convolution growth.",
       "startLine": 153,
-      "endLine": 162
+      "endLine": 162,
+      "mathContext": "Squares = {k^2 : k in N}. squares_not_linear (PROVED from vaughan_corollary): even perfect squares cannot achieve linear 3-fold convolution growth."
     },
     {
       "id": "refinements",
       "title": "Montgomery-Vaughan Refinement",
       "summary": "montgomery_vaughan_refinement (axiom): o(N^{1/4}) impossible for 2-fold (removes log factor). quarter_exponent_tight (axiom): 1/4 exponent is best possible — sets exist with O(N^alpha) error for any alpha > 1/4.",
       "startLine": 163,
-      "endLine": 182
+      "endLine": 182,
+      "mathContext": "montgomery_vaughan_refinement (axiom): o(N^{1/4}) impossible for 2-fold (removes log factor). quarter_exponent_tight (axiom): 1/4 exponent is best possible — sets exist with O(N^alpha) error for any a"
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "summary": "erdos_764_summary (PROVED): combines vaughan_corollary (3-fold O(1) impossible), vaughan_3fold_theorem (3-fold Vaughan bound impossible), and vaughan_hfold_theorem (h-fold O(1) impossible for h >= 2) into a single triple conjunction.",
       "startLine": 183,
-      "endLine": 208
+      "endLine": 208,
+      "mathContext": "erdos_764_summary (PROVED): combines vaughan_corollary (3-fold O(1) impossible), vaughan_3fold_theorem (3-fold Vaughan bound impossible), and vaughan_hfold_theorem (h-fold O(1) impossible for h >= 2) "
     }
   ],
   "conclusion": {

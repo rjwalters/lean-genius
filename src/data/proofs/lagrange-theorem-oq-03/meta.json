@@ -84,84 +84,96 @@
       "title": "Preamble and Imports",
       "startLine": 1,
       "endLine": 46,
-      "summary": "File header documenting Hall's theorem formalization, imports Mathlib, opens `Fintype` and `Subgroup` namespaces, enters `noncomputable section` within the `LagrangeTheoremOQ03` namespace."
+      "summary": "File header documenting Hall's theorem formalization, imports Mathlib, opens `Fintype` and `Subgroup` namespaces, enters `noncomputable section` within the `LagrangeTheoremOQ03` namespace.",
+      "mathContext": "File header documenting Hall's theorem formalization, imports Mathlib, opens `Fintype` and `Subgroup` namespaces, enters `noncomputable section` within the `LagrangeTheoremOQ03` namespace."
     },
     {
       "id": "hall-def",
       "title": "Hall Subgroup Definition",
       "startLine": 47,
       "endLine": 55,
-      "summary": "Defines `IsHallSubgroup H` as $\\gcd(|H|, [G:H]) = 1$ using `Nat.Coprime` on `Fintype.card` values. This single coprimality condition captures exactly which divisors of $|G|$ are guaranteed to yield subgroups in solvable groups."
+      "summary": "Defines `IsHallSubgroup H` as $\\gcd(|H|, [G:H]) = 1$ using `Nat.Coprime` on `Fintype.card` values. This single coprimality condition captures exactly which divisors of $|G|$ are guaranteed to yield subgroups in solvable groups.",
+      "mathContext": "Defines `IsHallSubgroup H` as $\\gcd(|H|, [G:H]) = 1$ using `Nat.Coprime` on `Fintype.card` values. This single coprimality condition captures exactly which divisors of $|G|$ are guaranteed to yield su"
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 56,
       "endLine": 79,
-      "summary": "Proves three foundational results: the trivial subgroup $\\{e\\}$ is always Hall ($\\gcd(1, n) = 1$), Hall subgroup order divides group order, and the product formula $|G| = |H| \\times [G:H]$ from Mathlib's `Subgroup.card_mul_index`."
+      "summary": "Proves three foundational results: the trivial subgroup $\\{e\\}$ is always Hall ($\\gcd(1, n) = 1$), Hall subgroup order divides group order, and the product formula $|G| = |H| \\times [G:H]$ from Mathlib's `Subgroup.card_mul_index`.",
+      "mathContext": "Proves three foundational results: the trivial subgroup $\\{e\\}$ is always Hall ($\\gcd(1, n) = 1$), Hall subgroup order divides group order, and the product formula $|G| = |H| \\times [G:H]$ from Mathli"
     },
     {
       "id": "sylow-hall",
       "title": "Sylow Subgroups are Hall Subgroups",
       "startLine": 80,
       "endLine": 93,
-      "summary": "Proves that if $|H| = p^k$ where $p^k$ exactly divides $|G|$, then $\\gcd(p^k, [G:H]) = 1$. This establishes Sylow subgroups as special cases of Hall subgroups, connecting the two theories."
+      "summary": "Proves that if $|H| = p^k$ where $p^k$ exactly divides $|G|$, then $\\gcd(p^k, [G:H]) = 1$. This establishes Sylow subgroups as special cases of Hall subgroups, connecting the two theories.",
+      "mathContext": "Proves that if $|H| = p^k$ where $p^k$ exactly divides $|G|$, then $\\gcd(p^k, [G:H]) = 1$. This establishes Sylow subgroups as special cases of Hall subgroups, connecting the two theories."
     },
     {
       "id": "hall-theorem",
       "title": "Hall's Theorem (Axioms)",
       "startLine": 94,
       "endLine": 119,
-      "summary": "States Hall's existence and conjugacy theorems as axioms for finite solvable groups. **Existence**: every Hall divisor $m$ of $|G|$ yields a subgroup of order $m$. **Conjugacy**: any two Hall subgroups of the same order are conjugate ($K = gHg^{-1}$). Both require solvability and are axiomatized because the proofs use strong induction on $|G|$ via the derived series."
+      "summary": "States Hall's existence and conjugacy theorems as axioms for finite solvable groups. **Existence**: every Hall divisor $m$ of $|G|$ yields a subgroup of order $m$. **Conjugacy**: any two Hall subgroups of the same order are conjugate ($K = gHg^{-1}$). Both require solvability and are axiomatized because the proofs use strong induction on $|G|$ via the derived series.",
+      "mathContext": "States Hall's existence and conjugacy theorems as axioms for finite solvable groups. **Existence**: every Hall divisor $m$ of $|G|$ yields a subgroup of order $m$. **Conjugacy**: any two Hall subgroup"
     },
     {
       "id": "consequences",
       "title": "Consequences of Hall's Theorem",
       "startLine": 120,
       "endLine": 159,
-      "summary": "Derives three consequences: (1) abelian groups satisfy Hall existence (abelian $\\Rightarrow$ solvable), (2) normal Hall subgroups are unique at their order (conjugacy + normality $\\Rightarrow$ equality), proved by showing the conjugation map $g \\mapsto gHg^{-1}$ is the identity when $H \\trianglelefteq G$."
+      "summary": "Derives three consequences: (1) abelian groups satisfy Hall existence (abelian $\\Rightarrow$ solvable), (2) normal Hall subgroups are unique at their order (conjugacy + normality $\\Rightarrow$ equality), proved by showing the conjugation map $g \\mapsto gHg^{-1}$ is the identity when $H \\trianglelefteq G$.",
+      "mathContext": "Derives three consequences: (1) abelian groups satisfy Hall existence (abelian $\\Rightarrow$ solvable), (2) normal Hall subgroups are unique at their order (conjugacy + normality $\\Rightarrow$ equalit"
     },
     {
       "id": "counterexample",
       "title": "The A₄ Counterexample",
       "startLine": 160,
       "endLine": 244,
-      "summary": "Establishes that $|A_4| = 12$ and $6 \\mid 12$, but $\\gcd(6, 2) = 2 \\neq 1$, so 6 is not a Hall divisor. The non-existence of a subgroup of order 6 in $A_4$ is axiomatized. The proof that every element of an index-2 subgroup must contain all squares ($g^2 \\in H$ for all $g$) provides the key structural argument, and counting shows $A_4$ has too many squares for an order-6 subgroup."
+      "summary": "Establishes that $|A_4| = 12$ and $6 \\mid 12$, but $\\gcd(6, 2) = 2 \\neq 1$, so 6 is not a Hall divisor. The non-existence of a subgroup of order 6 in $A_4$ is axiomatized. The proof that every element of an index-2 subgroup must contain all squares ($g^2 \\in H$ for all $g$) provides the key structural argument, and counting shows $A_4$ has too many squares for an order-6 subgroup.",
+      "mathContext": "Establishes that $|A_4| = 12$ and $6 \\mid 12$, but $\\gcd(6, 2) = 2 \\neq 1$, so 6 is not a Hall divisor. The non-existence of a subgroup of order 6 in $A_4$ is axiomatized. The proof that every element"
     },
     {
       "id": "index-two",
       "title": "Index-2 Subgroups",
       "startLine": 245,
       "endLine": 259,
-      "summary": "Proves that a subgroup of index 2 is Hall precisely when its order is odd: $[G:H] = 2$ and $2 \\nmid |H|$ implies $\\gcd(|H|, 2) = 1$. Uses the characterization of coprimality with 2 via the negation of even parity."
+      "summary": "Proves that a subgroup of index 2 is Hall precisely when its order is odd: $[G:H] = 2$ and $2 \\nmid |H|$ implies $\\gcd(|H|, 2) = 1$. Uses the characterization of coprimality with 2 via the negation of even parity.",
+      "mathContext": "Proves that a subgroup of index 2 is Hall precisely when its order is odd: $[G:H] = 2$ and $2 \\nmid |H|$ implies $\\gcd(|H|, 2) = 1$. Uses the characterization of coprimality with 2 via the negation of"
     },
     {
       "id": "sylow-relationship",
       "title": "Relationship to Sylow Theory",
       "startLine": 260,
       "endLine": 279,
-      "summary": "Wraps Cauchy's theorem from Mathlib (`exists_prime_orderOf_dvd_card`) and proves that Hall's existence theorem implies Sylow's first theorem for solvable groups: since $p^k$ is always a Hall divisor when $p^k \\| |G|$, Hall existence subsumes Sylow existence."
+      "summary": "Wraps Cauchy's theorem from Mathlib (`exists_prime_orderOf_dvd_card`) and proves that Hall's existence theorem implies Sylow's first theorem for solvable groups: since $p^k$ is always a Hall divisor when $p^k \\| |G|$, Hall existence subsumes Sylow existence.",
+      "mathContext": "Wraps Cauchy's theorem from Mathlib (`exists_prime_orderOf_dvd_card`) and proves that Hall's existence theorem implies Sylow's first theorem for solvable groups: since $p^k$ is always a Hall divisor w"
     },
     {
       "id": "coprimality",
       "title": "Coprimality Infrastructure",
       "startLine": 280,
       "endLine": 298,
-      "summary": "Three utility lemmas for Hall divisor arithmetic: $m \\cdot (n/m) = n$ when $m \\mid n$, symmetry of coprimality for Hall divisors, and $m \\mid n \\implies (n/m) \\mid n$. These are the basic number-theoretic facts underlying all Hall divisor manipulations."
+      "summary": "Three utility lemmas for Hall divisor arithmetic: $m \\cdot (n/m) = n$ when $m \\mid n$, symmetry of coprimality for Hall divisors, and $m \\mid n \\implies (n/m) \\mid n$. These are the basic number-theoretic facts underlying all Hall divisor manipulations.",
+      "mathContext": "Three utility lemmas for Hall divisor arithmetic: $m \\cdot (n/m) = n$ when $m \\mid n$, symmetry of coprimality for Hall divisors, and $m \\mid n \\implies (n/m) \\mid n$. These are the basic number-theor"
     },
     {
       "id": "schur-zassenhaus",
       "title": "Schur-Zassenhaus: The Normal Hall Case",
       "startLine": 299,
       "endLine": 349,
-      "summary": "Proves four results about normal Hall subgroups using Mathlib's Schur-Zassenhaus: (1) complement existence ($\\exists K: NK = G, N \\cap K = \\{1\\}$), (2) trivial intersection ($N \\sqcap K = \\bot$), (3) generation ($N \\sqcup K = \\top$), and (4) $|N| \\cdot |K| = |G|$. Combines with Hall conjugacy to show normal Hall subgroups are unique and their complements are determined."
+      "summary": "Proves four results about normal Hall subgroups using Mathlib's Schur-Zassenhaus: (1) complement existence ($\\exists K: NK = G, N \\cap K = \\{1\\}$), (2) trivial intersection ($N \\sqcap K = \\bot$), (3) generation ($N \\sqcup K = \\top$), and (4) $|N| \\cdot |K| = |G|$. Combines with Hall conjugacy to show normal Hall subgroups are unique and their complements are determined.",
+      "mathContext": "Proves four results about normal Hall subgroups using Mathlib's Schur-Zassenhaus: (1) complement existence ($\\exists K: NK = G, N \\cap K = \\{1\\}$), (2) trivial intersection ($N \\sqcap K = \\bot$), (3) "
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 350,
       "endLine": 373,
-      "summary": "Bundles Lagrange's theorem ($|H| \\mid |G|$ for all $H \\leq G$) and the $A_4$ counterexample ($6 \\mid 12$) into a single summary theorem, framing the narrative: Lagrange gives divisibility, but the converse requires Hall's coprimality condition and group solvability."
+      "summary": "Bundles Lagrange's theorem ($|H| \\mid |G|$ for all $H \\leq G$) and the $A_4$ counterexample ($6 \\mid 12$) into a single summary theorem, framing the narrative: Lagrange gives divisibility, but the converse requires Hall's coprimality condition and group solvability.",
+      "mathContext": "Bundles Lagrange's theorem ($|H| \\mid |G|$ for all $H \\leq G$) and the $A_4$ counterexample ($6 \\mid 12$) into a single summary theorem, framing the narrative: Lagrange gives divisibility, but the con"
     }
   ],
   "conclusion": {

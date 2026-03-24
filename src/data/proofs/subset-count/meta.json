@@ -13,7 +13,8 @@
       "combinatorics",
       "counting",
       "classic",
-      "beginner"
+      "beginner",
+      "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/SubsetCount.lean",
     "badge": "mathlib",
@@ -158,27 +159,27 @@
     {
       "id": "binomial-theorem",
       "relationship": "foundational",
-      "description": "The binomial theorem $(1+1)^n = \\sum_{k=0}^n \\binom{n}{k}$ is the algebraic identity underlying $|\\mathcal{P}(S)| = 2^n$"
+      "description": "The binomial theorem $(1+1)^n = \\sum_{k=0}^n \\binom{n}{k}$ is the algebraic identity underlying $|\\mathcal{P}(S)| = 2^n$ — the number of subsets equals the sum of binomial coefficients"
     },
     {
       "id": "cantors-theorem",
       "relationship": "related",
-      "description": "Cantor's theorem ($|S| < |\\mathcal{P}(S)|$) is the infinite generalization: for infinite sets, the power set is strictly"
+      "description": "Cantor's theorem ($|S| < |\\mathcal{P}(S)|$) is the infinite generalization: for infinite sets, the power set is strictly larger, proved by the diagonal argument"
     },
     {
       "id": "cantor-diagonalization",
       "relationship": "related",
-      "description": "Cantor's diagonalization establishes the uncountability of $\\mathcal{P}(\\mathbb{N})$ — while this entry counts finite su"
+      "description": "Cantor's diagonalization establishes the uncountability of $\\mathcal{P}(\\mathbb{N})$ — while this entry counts finite subsets ($2^n$), the diagonal argument shows the infinite case is qualitatively different"
     },
     {
       "id": "mathematical-induction",
       "relationship": "foundational",
-      "description": "The proof that $|\\mathcal{P}(S)| = 2^n$ typically proceeds by induction: adding one element doubles the number of subset"
+      "description": "The proof that $|\\mathcal{P}(S)| = 2^n$ typically proceeds by induction: adding one element doubles the number of subsets"
     },
     {
       "id": "birthday-problem",
       "relationship": "thematic",
-      "description": "The birthday problem uses combinatorial counting over subsets — the same power-set enumeration framework, applied to pro"
+      "description": "The birthday problem uses combinatorial counting over subsets — the same power-set enumeration framework, applied to probability"
     }
   ],
   "references": [

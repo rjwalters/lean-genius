@@ -193,7 +193,7 @@
     {
       "id": "cantor-diagonalization",
       "relationship": "related",
-      "description": "The direct diagonalization proof for uncountability of the reals; Part V of this entry reproduces the diagonal witness c"
+      "description": "The direct diagonalization proof for uncountability of the reals; Part V of this entry reproduces the diagonal witness construction"
     },
     {
       "id": "godel-incompleteness",
@@ -203,7 +203,12 @@
     {
       "id": "brouwer-fixed-point",
       "relationship": "contrast",
-      "description": "Brouwer's fixed-point theorem guarantees fixed points for continuous maps on compact convex sets — a topological analog,"
+      "description": "Brouwer's fixed-point theorem guarantees fixed points for continuous maps on compact convex sets — a topological analog, whereas Lawvere's theorem forces fixed points from surjectivity"
+    },
+    {
+      "id": "schauder-fixed-point",
+      "relationship": "contrast",
+      "description": "Schauder's fixed-point theorem extends Brouwer to infinite dimensions; both contrast with Lawvere's algebraic/categorical fixed-point result"
     }
   ],
   "leanFile": {

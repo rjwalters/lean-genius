@@ -225,7 +225,7 @@
     {
       "id": "fair-games-theorem",
       "relationship": "related",
-      "description": "Both use conditional probability over finite sample spaces; the ballot problem's staysPositive predicate connects to fai"
+      "description": "Both use conditional probability over finite sample spaces; the ballot problem's staysPositive predicate connects to fair game stopping conditions"
     },
     {
       "id": "binomial-theorem",
@@ -235,17 +235,62 @@
     {
       "id": "combinations-formula",
       "relationship": "uses",
-      "description": "The ballot probability is a ratio of binomial coefficients C(p+q,p); the counting argument relies on the combinations fo"
+      "description": "The ballot probability is a ratio of binomial coefficients C(p+q,p); the counting argument relies on the combinations formula"
     },
     {
       "id": "erdos-szekeres",
       "relationship": "related",
-      "description": "Both are combinatorial results solved by elegant counting arguments: the Erdős-Szekeres theorem (every sequence of lengt"
+      "description": "Both are combinatorial results solved by elegant counting arguments: the Erdős-Szekeres theorem (every sequence of length mn+1 has a monotone subsequence of length m+1 or n+1) uses the pigeonhole principle on lattice paths, while the ballot problem uses the reflection principle on lattice paths — both involve path-counting in grid diagrams"
     },
     {
       "id": "birthday-problem",
       "relationship": "related",
-      "description": "Both are classic probability problems solved by counting arguments over finite sample spaces — the birthday problem coun"
+      "description": "Both are classic probability problems solved by counting arguments over finite sample spaces — the birthday problem counts collisions in random assignments, the ballot problem counts lattice paths staying positive"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "co-listed",
+      "description": "Both appear in Wiedijk's 100 Theorems list; infinitude of primes is #11, ballot problem is #30"
+    },
+    {
+      "id": "ballot-problem-oq-01",
+      "relationship": "extended-by",
+      "description": "Sub-entry extending the ballot problem with generalizations and additional analysis"
+    },
+    {
+      "id": "ballot-problem-oq-02",
+      "relationship": "extended-by",
+      "description": "Sub-entry exploring further connections of the ballot problem"
+    },
+    {
+      "id": "ballot-problem-oq-03",
+      "relationship": "extended-by",
+      "description": "Sub-entry with additional ballot problem variants and applications"
+    },
+    {
+      "id": "derangements",
+      "relationship": "related",
+      "description": "Both are classical combinatorics problems solved by bijective counting: the ballot problem uses the reflection principle while derangements use inclusion-exclusion — both transform a counting constraint into a simpler enumeration"
+    },
+    {
+      "id": "inclusion-exclusion",
+      "relationship": "related",
+      "description": "Inclusion-exclusion is a complementary counting technique to the ballot problem's reflection principle — both reduce constrained counting to simpler enumerations, and some ballot problem proofs use inclusion-exclusion directly"
+    },
+    {
+      "id": "central-limit-theorem",
+      "relationship": "related",
+      "description": "The ballot problem concerns random walks with a bias (p > q votes), which in the limit connects to the central limit theorem: the vote-counting sequence is a biased random walk, and CLT describes its asymptotic distribution"
+    },
+    {
+      "id": "ballot-problem-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Formalizes the Discrete Intermediate Value Theorem for the Dvoretzky-Motzkin cycle lemma — a deeper combinatorial tool that generalizes the ballot problem's reflection principle to cyclic sequences"
+    },
+    {
+      "id": "ballot-problem-oq-03-oq-02",
+      "relationship": "extended-by",
+      "description": "Extends ballot problem lattice path counting to the general $r \\times r$ Lindström-Gessel-Viennot determinant formula — the ballot problem is the $1 \\times 1$ case of the LGV lemma for non-intersecting lattice paths"
     }
   ],
   "references": [

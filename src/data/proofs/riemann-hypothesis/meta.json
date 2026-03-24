@@ -56,7 +56,8 @@
     "hilbertNumber": 8,
     "millenniumProblem": "riemann",
     "proofRepoPath": "Proofs/RiemannHypothesis.lean",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "lineCount": 6594
   },
   "overview": {
     "historicalContext": "The Riemann Hypothesis was first stated by Bernhard Riemann in 1859 in his paper 'On the Number of Primes Less Than a Given Magnitude.' It concerns the location of the non-trivial zeros of the Riemann zeta function, which Riemann showed are intimately connected to the distribution of prime numbers.\n\nIn 2000, the Clay Mathematics Institute designated RH as one of seven Millennium Prize Problems, offering $1 million for its resolution. As of 2025, it remains one of the most important unsolved problems in mathematics.\n\nKey milestones:\n- 1859: Riemann states the hypothesis\n- 1896: Hadamard and de la Vallée Poussin prove the Prime Number Theorem\n- 1914: Hardy proves infinitely many zeros lie on the critical line\n- 1942: Selberg proves a positive proportion of zeros are on the critical line\n- 2004: First 10^13 zeros verified computationally",
@@ -205,22 +206,22 @@
     {
       "id": "infinitude-primes",
       "relationship": "extends",
-      "description": "RH quantifies the distribution of primes beyond mere infinitude — it gives the optimal error term π(x) = Li(x) + O(√x lo"
+      "description": "RH quantifies the distribution of primes beyond mere infinitude — it gives the optimal error term π(x) = Li(x) + O(√x log x), the sharpest form of the Prime Number Theorem"
     },
     {
       "id": "basel-problem",
       "relationship": "foundational",
-      "description": "The Basel identity ζ(2) = π²/6 is the first non-trivial value of the Riemann zeta function whose zeros are the subject o"
+      "description": "The Basel identity ζ(2) = π²/6 is the first non-trivial value of the Riemann zeta function whose zeros are the subject of RH"
     },
     {
       "id": "prime-number-theorem",
       "relationship": "extends",
-      "description": "RH implies the strongest form of PNT: π(x) = Li(x) + O(√x log x). PNT is equivalent to ζ(s) ≠ 0 on Re(s) = 1, while RH i"
+      "description": "RH implies the strongest form of PNT: π(x) = Li(x) + O(√x log x). PNT is equivalent to ζ(s) ≠ 0 on Re(s) = 1, while RH is the much stronger ζ(s) ≠ 0 for Re(s) > 1/2"
     },
     {
       "id": "euler-identity",
       "relationship": "related",
-      "description": "Euler's identity connects e, i, π — the same constants that appear in the functional equation ξ(s) = ξ(1-s) of the compl"
+      "description": "Euler's identity connects e, i, π — the same constants that appear in the functional equation ξ(s) = ξ(1-s) of the completed zeta function"
     },
     {
       "id": "prime-reciprocal-divergence",

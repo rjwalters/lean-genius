@@ -111,63 +111,72 @@
       "title": "Imports and Dependencies",
       "startLine": 14,
       "endLine": 21,
-      "summary": "Imports `Finset` for finite set operations, `Int.Basic` for $\\mathbb{Z}$ (difference sets $A - A \\subseteq \\mathbb{Z}$), `Real.Sqrt` for the $f(N) \\sim \\sqrt{N}$ asymptotic, and `Tactic` for proof automation."
+      "summary": "Imports `Finset` for finite set operations, `Int.Basic` for $\\mathbb{Z}$ (difference sets $A - A \\subseteq \\mathbb{Z}$), `Real.Sqrt` for the $f(N) \\sim \\sqrt{N}$ asymptotic, and `Tactic` for proof automation.",
+      "mathContext": "Imports `Finset` for finite set operations, `Int.Basic` for $\\mathbb{Z}$ (difference sets $A - A \\subseteq \\mathbb{Z}$), `Real.Sqrt` for the $f(N) \\sim \\sqrt{N}$ asymptotic, and `Tactic` for proof aut"
     },
     {
       "id": "sidon-sets",
       "title": "Sidon Sets and Difference Sets",
       "startLine": 22,
       "endLine": 33,
-      "summary": "Defines `IsSidonSet A`: all pairwise sums distinct ($a_1 + b_1 = a_2 + b_2 \\Rightarrow \\{a_1,b_1\\} = \\{a_2,b_2\\}$). Defines `diffSet A = \\{a - b : a, b \\in A\\}$ via `Finset.image` on the Cartesian product $A \\times A$."
+      "summary": "Defines `IsSidonSet A`: all pairwise sums distinct ($a_1 + b_1 = a_2 + b_2 \\Rightarrow \\{a_1,b_1\\} = \\{a_2,b_2\\}$). Defines `diffSet A = \\{a - b : a, b \\in A\\}$ via `Finset.image` on the Cartesian product $A \\times A$.",
+      "mathContext": "Defines `IsSidonSet A`: all pairwise sums distinct ($a_1 + b_1 = a_2 + b_2 \\Rightarrow \\{a_1,b_1\\} = \\{a_2,b_2\\}$). Defines `diffSet A = \\{a - b : a, b \\in A\\}$ via `Finset.image` on the Cartesian pro"
     },
     {
       "id": "disjoint-diff",
       "title": "Disjoint Differences",
       "startLine": 34,
       "endLine": 39,
-      "summary": "Defines `DisjointDifferences A B`: $(A-A) \\cap (B-B) = \\{0\\}$, formalized as $d \\in (A-A) \\wedge d \\in (B-B) \\Rightarrow d = 0$. This forces all nonzero differences to be completely disjoint."
+      "summary": "Defines `DisjointDifferences A B`: $(A-A) \\cap (B-B) = \\{0\\}$, formalized as $d \\in (A-A) \\wedge d \\in (B-B) \\Rightarrow d = 0$. This forces all nonzero differences to be completely disjoint.",
+      "mathContext": "Defines `DisjointDifferences A B`: $(A-A) \\cap (B-B) = \\{0\\}$, formalized as $d \\in (A-A) \\wedge d \\in (B-B) \\Rightarrow d = 0$. This forces all nonzero differences to be completely disjoint."
     },
     {
       "id": "max-sidon",
       "title": "Maximum Sidon Set Size",
       "startLine": 40,
       "endLine": 50,
-      "summary": "Axiomatizes `maxSidonSize : \\mathbb{N} \\to \\mathbb{N}` and `sidon_size_asymptotic`: $|f(N) - \\sqrt{N}| \\le \\varepsilon\\sqrt{N}$ for all $N \\ge N_0(\\varepsilon)$, encoding the Erdős-Turán result $f(N) = (1 + o(1))\\sqrt{N}$."
+      "summary": "Axiomatizes `maxSidonSize : \\mathbb{N} \\to \\mathbb{N}` and `sidon_size_asymptotic`: $|f(N) - \\sqrt{N}| \\le \\varepsilon\\sqrt{N}$ for all $N \\ge N_0(\\varepsilon)$, encoding the Erdős-Turán result $f(N) = (1 + o(1))\\sqrt{N}$.",
+      "mathContext": "Axiomatizes `maxSidonSize : \\mathbb{N} \\to \\mathbb{N}` and `sidon_size_asymptotic`: $|f(N) - \\sqrt{N}| \\le \\varepsilon\\sqrt{N}$ for all $N \\ge N_0(\\varepsilon)$, encoding the Erdős-Turán result $f(N) "
     },
     {
       "id": "conjecture",
       "title": "Erdős Problem #43 ($100 Prize)",
       "startLine": 51,
       "endLine": 61,
-      "summary": "States `ErdosProblem43`: $\\exists C,\\, \\forall N, A, B$, if $A, B$ are Sidon in $\\{1,\\ldots,N\\}$ with disjoint nonzero differences, then $\\binom{|A|}{2} + \\binom{|B|}{2} \\le \\binom{f(N)}{2} + C$. Uses `Nat.choose` for binomial coefficients."
+      "summary": "States `ErdosProblem43`: $\\exists C,\\, \\forall N, A, B$, if $A, B$ are Sidon in $\\{1,\\ldots,N\\}$ with disjoint nonzero differences, then $\\binom{|A|}{2} + \\binom{|B|}{2} \\le \\binom{f(N)}{2} + C$. Uses `Nat.choose` for binomial coefficients.",
+      "mathContext": "States `ErdosProblem43`: $\\exists C,\\, \\forall N, A, B$, if $A, B$ are Sidon in $\\{1,\\ldots,N\\}$ with disjoint nonzero differences, then $\\binom{|A|}{2} + \\binom{|B|}{2} \\le \\binom{f(N)}{2} + C$. Uses"
     },
     {
       "id": "equal-size",
       "title": "Equal Size Variant and Barreto's Counterexample",
       "startLine": 62,
       "endLine": 76,
-      "summary": "States `EqualSizeVariant` with multiplicative savings $(1-c)\\binom{f(N)}{2}$ when $|A| = |B|$. Axiom `barreto_counterexample : \\neg\\text{EqualSizeVariant}$: this strengthening is FALSE for infinitely many $N$."
+      "summary": "States `EqualSizeVariant` with multiplicative savings $(1-c)\\binom{f(N)}{2}$ when $|A| = |B|$. Axiom `barreto_counterexample : \\neg\\text{EqualSizeVariant}$: this strengthening is FALSE for infinitely many $N$.",
+      "mathContext": "States `EqualSizeVariant` with multiplicative savings $(1-c)\\binom{f(N)}{2}$ when $|A| = |B|$. Axiom `barreto_counterexample : \\neg\\text{EqualSizeVariant}$: this strengthening is FALSE for infinitely "
     },
     {
       "id": "bounds",
       "title": "Structural Pair Bounds",
       "startLine": 77,
       "endLine": 97,
-      "summary": "`sidon_pair_bound` (sorry): $\\binom{|A|}{2} \\le N$ from counting $|A|(|A|-1)$ distinct differences in $\\{-(N-1),\\ldots,N-1\\}$. `disjoint_diff_combined_bound` (sorry): $\\binom{|A|}{2} + \\binom{|B|}{2} \\le N$ using disjointness to combine difference counts."
+      "summary": "`sidon_pair_bound` (sorry): $\\binom{|A|}{2} \\le N$ from counting $|A|(|A|-1)$ distinct differences in $\\{-(N-1),\\ldots,N-1\\}$. `disjoint_diff_combined_bound` (sorry): $\\binom{|A|}{2} + \\binom{|B|}{2} \\le N$ using disjointness to combine difference counts.",
+      "mathContext": "`sidon_pair_bound` (sorry): $\\binom{|A|}{2} \\le N$ from counting $|A|(|A|-1)$ distinct differences in $\\{-(N-1),\\ldots,N-1\\}$. `disjoint_diff_combined_bound` (sorry): $\\binom{|A|}{2} + \\binom{|B|}{2} "
     },
     {
       "id": "tao",
       "title": "Tao's Equal-Size Bound",
       "startLine": 98,
       "endLine": 116,
-      "summary": "`tao_equal_size_bound` (sorry): when $|A| = |B| = m$ with disjoint differences, $m^2 \\le 2N + 1$, giving $m \\le (1/\\sqrt{2} + o(1))\\sqrt{N} \\approx 0.707\\sqrt{N}$. Derived from `disjoint_diff_combined_bound` via $2\\binom{m}{2} \\le N$."
+      "summary": "`tao_equal_size_bound` (sorry): when $|A| = |B| = m$ with disjoint differences, $m^2 \\le 2N + 1$, giving $m \\le (1/\\sqrt{2} + o(1))\\sqrt{N} \\approx 0.707\\sqrt{N}$. Derived from `disjoint_diff_combined_bound` via $2\\binom{m}{2} \\le N$.",
+      "mathContext": "`tao_equal_size_bound` (sorry): when $|A| = |B| = m$ with disjoint differences, $m^2 \\le 2N + 1$, giving $m \\le (1/\\sqrt{2} + o(1))\\sqrt{N} \\approx 0.707\\sqrt{N}$. Derived from `disjoint_diff_combined"
     },
     {
       "id": "counting",
       "title": "Counting Arguments",
       "startLine": 117,
       "endLine": 129,
-      "summary": "`sidon_diff_count` (sorry): $|A - A| = |A|^2 - |A| + 1$ for Sidon sets ($|A|(|A|-1)$ distinct nonzero differences plus $0$). `disjoint_diff_total` (sorry): inclusion-exclusion gives $|A-A \\cup B-B| \\ge |A|^2 + |B|^2 - |A| - |B| + 1$ under disjoint differences."
+      "summary": "`sidon_diff_count` (sorry): $|A - A| = |A|^2 - |A| + 1$ for Sidon sets ($|A|(|A|-1)$ distinct nonzero differences plus $0$). `disjoint_diff_total` (sorry): inclusion-exclusion gives $|A-A \\cup B-B| \\ge |A|^2 + |B|^2 - |A| - |B| + 1$ under disjoint differences.",
+      "mathContext": "`sidon_diff_count` (sorry): $|A - A| = |A|^2 - |A| + 1$ for Sidon sets ($|A|(|A|-1)$ distinct nonzero differences plus $0$). `disjoint_diff_total` (sorry): inclusion-exclusion gives $|A-A \\cup B-B| \\g"
     }
   ],
   "conclusion": {
@@ -201,21 +210,25 @@
   ],
   "relatedProofs": [
     {
-      "proofId": "erdos-425",
-      "relationship": "Multiplicative analogue: Erdős #425 studies multiplicative Sidon sets (all pairwise products distinct) in {1,…,n}, with F(n)=π(n)+Θ(n^{3/4}/(log n)^{3/2}), a direct multiplicative counterpart to the additive f(N)~√N"
+      "id": "erdos-40",
+      "relationship": "Erdős #40 studies the representation function r_A(n) for B_2 sets (sets where every integer has at most one representation as a pairwise sum), directly connected to the density and structure theory underlying Problem #43",
+      "description": ""
     },
     {
-      "proofId": "erdos-340",
-      "relationship": "Erdős #340 concerns B_2[g] sequences (at most g representations), a relaxation of the Sidon (B_2[1]) condition; the structure of repeated sums illuminates why disjoint-difference Sidon pairs are constrained"
+      "id": "erdos-41",
+      "relationship": "Erdős #41 asks about B_3 sequences (distinct triple sums), a natural generalization of B_2/Sidon sets; the density bound liminf |A∩{1,…,N}|/N^{1/3}=0 is the B_3 analogue of f(N)~√N for Sidon sets",
+      "description": ""
     },
     {
-      "proofId": "erdos-30",
-      "relationship": "Erdős #30 ($1000 prize) asks whether f(N)=√N+O(N^ε) for all ε>0, sharpening the f(N)~√N asymptotic that underpins Problem #43's conjectured bound"
+      "id": "erdos-1",
+      "relationship": "Erdős #1 (distinct subset sums, $500 prize) is a sibling extremal problem: both ask how large a set with a distinctness condition on its arithmetic structure can be, with the answer controlled by powers of 2 vs. √N",
+      "description": ""
     },
-    "erdos-40",
-    "erdos-41",
-    "erdos-1",
-    "binomial-theorem"
+    {
+      "id": "binomial-theorem",
+      "relationship": "The conjecture is stated entirely in terms of binomial coefficients C(|A|,2) and C(f(N),2); the binomial theorem and properties of C(n,2) = n(n-1)/2 are essential for interpreting the pair-counting bound",
+      "description": ""
+    }
   ],
   "references": [
     {
@@ -224,58 +237,58 @@
         "P. Turán"
       ],
       "title": "On a problem of Sidon in additive number theory, and on some related problems",
-      "journal": "Journal of the London Mathematical Society",
       "volume": "16",
-      "year": 1941,
+      "year": "1941",
       "pages": "212–215",
       "doi": "10.1112/jlms/s1-16.4.212",
-      "note": "Founding paper proving f(N)≤√N+O(N^{1/4}) and constructing Sidon sets of size ~√N via Singer difference sets"
+      "note": "Founding paper proving f(N)≤√N+O(N^{1/4}) and constructing Sidon sets of size ~√N via Singer difference sets",
+      "venue": "Journal of the London Mathematical Society"
     },
     {
       "authors": [
         "S. Chowla"
       ],
       "title": "Solution of a problem of Erdős and Turán in additive-number theory",
-      "journal": "Proceedings of the National Academy of Sciences of India",
       "volume": "14",
-      "year": 1944,
+      "year": "1944",
       "pages": "1–2",
-      "note": "Simplified Singer-type construction giving explicit Sidon sets of size ~√p for prime p"
+      "note": "Simplified Singer-type construction giving explicit Sidon sets of size ~√p for prime p",
+      "venue": "Proceedings of the National Academy of Sciences of India"
     },
     {
       "authors": [
         "B. Lindström"
       ],
       "title": "An inequality for B_2-sequences",
-      "journal": "Journal of Combinatorial Theory",
       "volume": "6",
-      "year": 1969,
+      "year": "1969",
       "pages": "211–212",
       "doi": "10.1016/S0021-9800(69)80124-9",
-      "note": "Proves C(|A|,2)≤N for Sidon sets in {1,…,N} via a direct counting argument on differences"
+      "note": "Proves C(|A|,2)≤N for Sidon sets in {1,…,N} via a direct counting argument on differences",
+      "venue": "Journal of Combinatorial Theory"
     },
     {
       "authors": [
         "I. Z. Ruzsa"
       ],
       "title": "Solving a linear equation in a set of integers",
-      "journal": "Acta Arithmetica",
       "volume": "65",
-      "year": 1993,
+      "year": "1993",
       "pages": "259–282",
       "doi": "10.4064/aa-65-3-259-282",
-      "note": "Develops the Plünnecke-Ruzsa inequality and sumset methods used in modern Sidon set analysis"
+      "note": "Develops the Plünnecke-Ruzsa inequality and sumset methods used in modern Sidon set analysis",
+      "venue": "Acta Arithmetica"
     },
     {
       "authors": [
         "K. O'Bryant"
       ],
       "title": "A complete annotated bibliography of work related to Sidon sets",
-      "journal": "Electronic Journal of Combinatorics",
       "volume": "DS11",
-      "year": 2004,
+      "year": "2004",
       "url": "https://www.combinatorics.org/ojs/index.php/eljc/article/view/DS11",
-      "note": "Comprehensive survey of Sidon set results through 2004, covering B_2 sequences, f(N) bounds, and related prize problems"
+      "note": "Comprehensive survey of Sidon set results through 2004, covering B_2 sequences, f(N) bounds, and related prize problems",
+      "venue": "Electronic Journal of Combinatorics"
     }
   ],
   "leanFile": {

@@ -82,63 +82,72 @@
       "title": "Problem Overview",
       "summary": "Header documentation with problem statement and status",
       "startLine": 1,
-      "endLine": 13
+      "endLine": 13,
+      "mathContext": "Header documentation with problem statement and status"
     },
     {
       "id": "imports-namespace",
       "title": "Imports and Setup",
       "summary": "Mathlib imports for finsets, powersets, and combinatorics",
       "startLine": 14,
-      "endLine": 22
+      "endLine": 22,
+      "mathContext": "Mathlib imports for finsets, powersets, and combinatorics"
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "summary": "Coloring, SubsetSums, MonochromaticSubsetSums, F(k)",
       "startLine": 23,
-      "endLine": 63
+      "endLine": 63,
+      "mathContext": "Coloring, SubsetSums, MonochromaticSubsetSums, F(k)"
     },
     {
       "id": "folkman-theorem",
       "title": "Folkman's Theorem",
       "summary": "Existence axiom and well-definedness of F(k)",
       "startLine": 64,
-      "endLine": 79
+      "endLine": 79,
+      "mathContext": "Existence axiom and well-definedness of F(k)"
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
       "summary": "Erdős-Spencer 1989 and Balogh et al. 2017 bounds",
       "startLine": 80,
-      "endLine": 97
+      "endLine": 97,
+      "mathContext": "Erdős-Spencer 1989 and Balogh et al. 2017 bounds"
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
       "summary": "F(1), F(2), F(3) values and bounds",
       "startLine": 98,
-      "endLine": 114
+      "endLine": 114,
+      "mathContext": "F(1), F(2), F(3) values and bounds"
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "summary": "Tower-type upper bound from Folkman's proof",
       "startLine": 115,
-      "endLine": 126
+      "endLine": 126,
+      "mathContext": "Tower-type upper bound from Folkman's proof"
     },
     {
       "id": "rado-connection",
       "title": "Connection to Rado's Theorem",
       "summary": "How Folkman follows from Rado's partition regularity",
       "startLine": 127,
-      "endLine": 147
+      "endLine": 147,
+      "mathContext": "How Folkman follows from Rado's partition regularity"
     },
     {
       "id": "main-results",
       "title": "Main Results",
       "summary": "Summary theorem and erdos_531 main result",
       "startLine": 148,
-      "endLine": 187
+      "endLine": 187,
+      "mathContext": "Summary theorem and erdos_531 main result"
     }
   ],
   "conclusion": {

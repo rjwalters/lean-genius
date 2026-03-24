@@ -84,63 +84,72 @@
       "title": "Header and Imports",
       "summary": "Problem documentation with references to EFGS (1988), Erdős (1991), and Narins-Pokrovskiy-Szabó (2017); imports SimpleGraph, Subgraph, Connectivity, and Finset.Card",
       "startLine": 1,
-      "endLine": 51
+      "endLine": 51,
+      "mathContext": "Problem documentation with references to EFGS (1988), Erdős (1991), and Narins-Pokrovskiy-Szabó (2017); imports SimpleGraph, Subgraph, Connectivity, and Finset.Card"
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Defines minDegree via Finset.min', IsDegree3Critical (edge count + proper subgraph condition), vertexCount, edgeCount",
       "startLine": 52,
-      "endLine": 75
+      "endLine": 75,
+      "mathContext": "Defines minDegree via Finset.min', IsDegree3Critical (edge count + proper subgraph condition), vertexCount, edgeCount"
     },
     {
       "id": "cycles",
       "title": "Cycles",
       "summary": "HasCycleOfLength (closed trail of length k ≥ 3) and ContainsCk synonym",
       "startLine": 76,
-      "endLine": 86
+      "endLine": 86,
+      "mathContext": "HasCycleOfLength (closed trail of length k ≥ 3) and ContainsCk synonym"
     },
     {
       "id": "conjecture",
       "title": "The Erdős-Hajnal Conjecture",
       "summary": "ErdosHajnalConjecture: ∀ k ≥ 3, ∃ N, all large degree 3 critical graphs contain C_k",
       "startLine": 87,
-      "endLine": 98
+      "endLine": 98,
+      "mathContext": "ErdosHajnalConjecture: ∀ k ≥ 3, ∃ N, all large degree 3 critical graphs contain C_k"
     },
     {
       "id": "positive-results",
       "title": "Known Positive Results (EFGS 1988)",
       "summary": "Four axioms: efgs_short_cycles (C₃, C₄, C₅), efgs_long_cycle (≥ log₂ n), efgs_upper_bound (≤ √n), erdos_hajnal_small_k (k = 3-6, sorry for k = 6)",
       "startLine": 99,
-      "endLine": 137
+      "endLine": 137,
+      "mathContext": "Four axioms: efgs_short_cycles (C₃, C₄, C₅), efgs_long_cycle (≥ log₂ n), efgs_upper_bound (≤ √n), erdos_hajnal_small_k (k = 3-6, sorry for k = 6)"
     },
     {
       "id": "counterexample",
       "title": "The Counterexample and Disproof",
       "summary": "narins_pokrovskiy_szabo axiom (no C₂₃); erdos_815_disproved theorem (¬ErdosHajnalConjecture by contradiction)",
       "startLine": 138,
-      "endLine": 165
+      "endLine": 165,
+      "mathContext": "narins_pokrovskiy_szabo axiom (no C₂₃); erdos_815_disproved theorem (¬ErdosHajnalConjecture by contradiction)"
     },
     {
       "id": "open-problems",
       "title": "What Remains Open: Even k",
       "summary": "evenKConjecture: degree 3 critical graphs contain C_k for all even k ≥ 4? (OPEN)",
       "startLine": 166,
-      "endLine": 180
+      "endLine": 180,
+      "mathContext": "evenKConjecture: degree 3 critical graphs contain C_k for all even k ≥ 4? (OPEN)"
     },
     {
       "id": "explanation",
       "title": "Motivation and Construction Idea",
       "summary": "Why 'degree 3 critical': average degree ≈ 4 but no dense cores. NPS construction uses recursion, graph products, local cycle analysis",
       "startLine": 181,
-      "endLine": 217
+      "endLine": 217,
+      "mathContext": "Why 'degree 3 critical': average degree ≈ 4 but no dense cores. NPS construction uses recursion, graph products, local cycle analysis"
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "summary": "erdos_815_summary: ¬ErdosHajnalConjecture ∧ (C₃, C₄, C₅ always exist in degree 3 critical graphs)",
       "startLine": 218,
-      "endLine": 252
+      "endLine": 252,
+      "mathContext": "erdos_815_summary: ¬ErdosHajnalConjecture ∧ (C₃, C₄, C₅ always exist in degree 3 critical graphs)"
     }
   ],
   "conclusion": {

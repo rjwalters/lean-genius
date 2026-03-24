@@ -216,22 +216,37 @@
     {
       "id": "erdos-431",
       "relationship": "related",
-      "description": "Companion problem by Ostmann: #431 asks about additive complements covering N, while #432 asks how thin a coprime sumset can be forced to be"
+      "description": "Erdős #431 (inverse Goldbach) is explicitly cited as a companion problem in the formalization's structural observations. Both concern additive representations with number-theoretic constraints — #431 on representations as sums of primes, #432 on coprime sumsets"
     },
     {
       "id": "erdos-1",
       "relationship": "related",
-      "description": "Both are extremal problems on integer subsets: #1 studies distinct subset sums (additive uniqueness), #432 studies sumsets with pairwise coprimality (multiplicative uniqueness)"
+      "description": "Both are extremal problems on integer subsets: #1 studies sets with distinct subset sums (additive uniqueness), while #432 studies sumsets with pairwise coprimality (multiplicative uniqueness). Both ask how density constraints interact with structural requirements"
     },
     {
       "id": "infinitude-primes",
       "relationship": "supports",
-      "description": "The prime counting function pi(n) bounds the maximum size of a pairwise coprime set in [1,n]; the infinitude of primes ensures pi(n) -> infinity"
+      "description": "The prime counting function $\\pi(n)$ bounds the maximum size of a pairwise coprime set in $[1,n]$. The infinitude of primes ensures $\\pi(n) \\to \\infty$, making the density question non-trivial"
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "Unique prime factorization is the key tool: pairwise coprimality forces disjoint prime factorizations, and counting relies on unique factorization"
+      "description": "Unique prime factorization is the key structural tool: pairwise coprimality of sumset elements forces their prime factorizations to be disjoint, and the counting argument relies on the unique factorization to bound the number of primes available"
+    },
+    {
+      "id": "gcd-algorithm",
+      "relationship": "supports",
+      "description": "The GCD algorithm is the computational tool for checking pairwise coprimality $\\gcd(x,y) = 1$, the central constraint in Problem #432"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient $\\varphi(n)$ counts integers coprime to $n$, the same coprimality concept central to #432. The density of coprime pairs relates to $\\prod(1 - 1/p)$ over primes, connecting to Euler product formulas"
+    },
+    {
+      "id": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "CRT constructs integers with prescribed remainders modulo coprime moduli — the same coprimality machinery. Building pairwise coprime sumset elements requires assigning prime factors to elements, a CRT-style construction"
     }
   ],
   "leanFile": {

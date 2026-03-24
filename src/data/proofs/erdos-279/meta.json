@@ -160,22 +160,22 @@
     {
       "id": "infinitude-primes",
       "relationship": "foundational",
-      "description": "The infinitude of primes provides the infinite family of moduli used in the covering system. The question asks whether s"
+      "description": "The infinitude of primes provides the infinite family of moduli used in the covering system. The question asks whether shifted prime arithmetic progressions a_p (mod p) can cover all sufficiently large integers when k-fold covers are required"
     },
     {
       "id": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's postulate (prime in (n, 2n]) constrains the distribution of primes used as moduli. The density of primes affe"
+      "description": "Bertrand's postulate (prime in (n, 2n]) constrains the distribution of primes used as moduli. The density of primes affects how efficiently shifted progressions can cover the integers"
     },
     {
       "id": "bounded-prime-gaps",
       "relationship": "related",
-      "description": "Bounded gaps between primes (Maynard-Tao) affects the efficiency of covering with prime-modulus progressions. Small gaps"
+      "description": "Bounded gaps between primes (Maynard-Tao) affects the efficiency of covering with prime-modulus progressions. Small gaps mean nearby moduli can have overlapping residue classes, while large gaps leave potential uncovered intervals"
     },
     {
       "id": "quadratic-reciprocity",
       "relationship": "related",
-      "description": "Quadratic reciprocity and its generalizations constrain which residue classes are achievable modulo different primes. Th"
+      "description": "Quadratic reciprocity and its generalizations constrain which residue classes are achievable modulo different primes. The structure of (ℤ/pℤ)* and quadratic residues affects the design of covering systems"
     }
   ]
 }

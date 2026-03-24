@@ -80,63 +80,72 @@
       "title": "Problem Statement",
       "summary": "Erdős conjecture on triangle-free graphs and bipartite edge deletion, extremal example",
       "startLine": 1,
-      "endLine": 29
+      "endLine": 29,
+      "mathContext": "Erdős conjecture on triangle-free graphs and bipartite edge deletion, extremal example"
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Graph structure, IsBipartite, ContainsTriangle, IsTriangleFree, HasCycle",
       "startLine": 38,
-      "endLine": 86
+      "endLine": 86,
+      "mathContext": "Graph structure, IsBipartite, ContainsTriangle, IsTriangleFree, HasCycle"
     },
     {
       "id": "edge-deletion",
       "title": "Edge Deletion and Bipartiteness",
       "summary": "bipartiteEdgeDeletion axiom, achieved property, bipartite ↔ deletion zero",
       "startLine": 87,
-      "endLine": 101
+      "endLine": 101,
+      "mathContext": "bipartiteEdgeDeletion axiom, achieved property, bipartite ↔ deletion zero"
     },
     {
       "id": "c5-construction",
       "title": "Blow-Up of C₅",
       "summary": "C5 graph, C5BlowUp structure, c5BlowUpGraph, triangle-freeness proofs",
       "startLine": 102,
-      "endLine": 156
+      "endLine": 156,
+      "mathContext": "C5 graph, C5BlowUp structure, c5BlowUpGraph, triangle-freeness proofs"
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "summary": "ErdosConjecture23: triangle-free on 5n vertices → bipartite with ≤ n² deletions",
       "startLine": 157,
-      "endLine": 170
+      "endLine": 170,
+      "mathContext": "ErdosConjecture23: triangle-free on 5n vertices → bipartite with ≤ n² deletions"
     },
     {
       "id": "best-bounds",
       "title": "Best Known Bounds",
       "summary": "Balogh-Clemen-Lidický 1.064n² bound, trivial upper bound",
       "startLine": 171,
-      "endLine": 187
+      "endLine": 187,
+      "mathContext": "Balogh-Clemen-Lidický 1.064n² bound, trivial upper bound"
     },
     {
       "id": "generalized-conjecture",
       "title": "Generalized Conjecture",
       "summary": "GeneralizedConjecture for odd girth ≥ 2k+1, blow-up of C_{2k+1}",
       "startLine": 188,
-      "endLine": 222
+      "endLine": 222,
+      "mathContext": "GeneralizedConjecture for odd girth ≥ 2k+1, blow-up of C_{2k+1}"
     },
     {
       "id": "turan-connections",
       "title": "Turán-Type Connections",
       "summary": "Kővári-Sós-Turán theorem, Mantel's theorem, odd cycle cover",
       "startLine": 223,
-      "endLine": 251
+      "endLine": 251,
+      "mathContext": "Kővári-Sós-Turán theorem, Mantel's theorem, odd cycle cover"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Problem status OPEN, verified theorems, approaches and open questions",
       "startLine": 252,
-      "endLine": 287
+      "endLine": 287,
+      "mathContext": "Problem status OPEN, verified theorems, approaches and open questions"
     }
   ],
   "conclusion": {
@@ -179,14 +188,14 @@
   },
   "relatedProofs": [
     {
-      "id": "",
+      "id": "erdos-szekeres",
       "relationship": "related",
-      "description": "Related gallery proof"
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": ""
     }
   ],
   "references": [

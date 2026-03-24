@@ -114,35 +114,40 @@
       "title": "Connection to Mathlib Quaternions",
       "startLine": 183,
       "endLine": 243,
-      "summary": "Bridges the explicit coordinate proof with Mathlib's `Quaternion.normSq_mul` for an alternative abstract verification. Constructs `fourSquareIdentity : NSquareIdentity 4`."
+      "summary": "Bridges the explicit coordinate proof with Mathlib's `Quaternion.normSq_mul` for an alternative abstract verification. Constructs `fourSquareIdentity : NSquareIdentity 4`.",
+      "mathContext": "Bridges the explicit coordinate proof with Mathlib's `Quaternion.normSq_mul` for an alternative abstract verification. Constructs `fourSquareIdentity : NSquareIdentity 4`."
     },
     {
       "id": "octonions",
       "title": "The 8-Square Identity",
       "startLine": 244,
       "endLine": 316,
-      "summary": "Axiomatizes the existence of `eight_square_identity_exists : NSquareIdentity 8` (Degen's identity from 1818). Full proof requires octonion formalization not yet in Mathlib."
+      "summary": "Axiomatizes the existence of `eight_square_identity_exists : NSquareIdentity 8` (Degen's identity from 1818). Full proof requires octonion formalization not yet in Mathlib.",
+      "mathContext": "Axiomatizes the existence of `eight_square_identity_exists : NSquareIdentity 8` (Degen's identity from 1818). Full proof requires octonion formalization not yet in Mathlib."
     },
     {
       "id": "helper-definitions",
       "title": "Helper Definitions and Orthonormality",
       "startLine": 317,
       "endLine": 451,
-      "summary": "Defines $\\langle u, v \\rangle = \\sum_i u_i v_i$, standard basis $e_i$, proves $\\|e_i\\|^2 = 1$, $\\|v\\|^2 = \\langle v, v \\rangle$, and norm expansion $\\|a+b\\|^2 = \\|a\\|^2 + 2\\langle a,b \\rangle + \\|b\\|^2$. Derives that $m_{ij} = \\text{mul}(e_i, e_j)$ form orthonormal rows and columns."
+      "summary": "Defines $\\langle u, v \\rangle = \\sum_i u_i v_i$, standard basis $e_i$, proves $\\|e_i\\|^2 = 1$, $\\|v\\|^2 = \\langle v, v \\rangle$, and norm expansion $\\|a+b\\|^2 = \\|a\\|^2 + 2\\langle a,b \\rangle + \\|b\\|^2$. Derives that $m_{ij} = \\text{mul}(e_i, e_j)$ form orthonormal rows and columns.",
+      "mathContext": "Defines $\\langle u, v \\rangle = \\sum_i u_i v_i$, standard basis $e_i$, proves $\\|e_i\\|^2 = 1$, $\\|v\\|^2 = \\langle v, v \\rangle$, and norm expansion $\\|a+b\\|^2 = \\|a\\|^2 + 2\\langle a,b \\rangle + \\|b\\|^"
     },
     {
       "id": "parseval-helpers",
       "title": "Parseval Identity Helpers",
       "startLine": 452,
       "endLine": 490,
-      "summary": "Proves auxiliary lemmas for scalar multiplication, projection, and the bilinearity of inner products. Establishes the infrastructure for the Parseval identity proof."
+      "summary": "Proves auxiliary lemmas for scalar multiplication, projection, and the bilinearity of inner products. Establishes the infrastructure for the Parseval identity proof.",
+      "mathContext": "Proves auxiliary lemmas for scalar multiplication, projection, and the bilinearity of inner products. Establishes the infrastructure for the Parseval identity proof."
     },
     {
       "id": "ortho-triple-zero",
       "title": "Orthogonal to Orthonormal Triple is Zero",
       "startLine": 491,
       "endLine": 580,
-      "summary": "**Key lemma:** In $\\mathbb{R}^3$, a vector orthogonal to all three vectors of an orthonormal basis must be zero. Proved via matrix invertibility: the $3 \\times 3$ matrix with orthonormal rows has unit determinant, hence is invertible."
+      "summary": "**Key lemma:** In $\\mathbb{R}^3$, a vector orthogonal to all three vectors of an orthonormal basis must be zero. Proved via matrix invertibility: the $3 \\times 3$ matrix with orthonormal rows has unit determinant, hence is invertible.",
+      "mathContext": "**Key lemma:** In $\\mathbb{R}^3$, a vector orthogonal to all three vectors of an orthonormal basis must be zero. Proved via matrix invertibility: the $3 \\times 3$ matrix with orthonormal rows has unit"
     },
     {
       "id": "parseval-identity",
@@ -157,14 +162,16 @@
       "title": "Unit Vector Orthogonal to Two",
       "startLine": 648,
       "endLine": 678,
-      "summary": "A unit vector orthogonal to two vectors of an orthonormal triple must equal $\\pm$ the third vector. Follows from Parseval: if $\\langle u, v_1 \\rangle = \\langle u, v_2 \\rangle = 0$ and $\\|u\\| = 1$, then $\\langle u, v_3 \\rangle = \\pm 1$."
+      "summary": "A unit vector orthogonal to two vectors of an orthonormal triple must equal $\\pm$ the third vector. Follows from Parseval: if $\\langle u, v_1 \\rangle = \\langle u, v_2 \\rangle = 0$ and $\\|u\\| = 1$, then $\\langle u, v_3 \\rangle = \\pm 1$.",
+      "mathContext": "A unit vector orthogonal to two vectors of an orthonormal triple must equal $\\pm$ the third vector. Follows from Parseval: if $\\langle u, v_1 \\rangle = \\langle u, v_2 \\rangle = 0$ and $\\|u\\| = 1$, the"
     },
     {
       "id": "bilinear-parseval",
       "title": "Bilinear Parseval Identity",
       "startLine": 679,
       "endLine": 793,
-      "summary": "Proves the bilinear Parseval identity: $\\langle u, w \\rangle = \\sum_i \\langle u, v_i \\rangle \\langle w, v_i \\rangle$ for orthonormal basis $\\{v_i\\}$. Uses `linear_combination` tactic for the algebraic manipulation."
+      "summary": "Proves the bilinear Parseval identity: $\\langle u, w \\rangle = \\sum_i \\langle u, v_i \\rangle \\langle w, v_i \\rangle$ for orthonormal basis $\\{v_i\\}$. Uses `linear_combination` tactic for the algebraic manipulation.",
+      "mathContext": "Proves the bilinear Parseval identity: $\\langle u, w \\rangle = \\sum_i \\langle u, v_i \\rangle \\langle w, v_i \\rangle$ for orthonormal basis $\\{v_i\\}$. Uses `linear_combination` tactic for the algebraic"
     },
     {
       "id": "n3-contradiction",
@@ -179,7 +186,8 @@
       "title": "No Three-Square Identity Theorem",
       "startLine": 1173,
       "endLine": 1556,
-      "summary": "Final assembly of the $n = 3$ impossibility proof. Derives additional constraint conflicts and establishes `no_three_square_identity : NSquareIdentity 3 → False`."
+      "summary": "Final assembly of the $n = 3$ impossibility proof. Derives additional constraint conflicts and establishes `no_three_square_identity : NSquareIdentity 3 → False`.",
+      "mathContext": "Final assembly of the $n = 3$ impossibility proof. Derives additional constraint conflicts and establishes `no_three_square_identity : NSquareIdentity 3 → False`."
     },
     {
       "id": "hurwitz-complete",
@@ -275,29 +283,29 @@
   },
   "relatedProofs": [
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "lagrange-four-squares",
+      "relationship": "The four-square identity proved in Hurwitz's theorem ($n = 4$) is the key algebraic ingredient in Lagrange's theorem: Euler's identity shows that the product of two sums of four squares is again a sum of four squares, reducing the proof to prime cases.",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "fermat-two-squares",
+      "relationship": "Fermat's two-square theorem characterizes which primes are sums of two squares, using the Brahmagupta-Fibonacci identity ($n = 2$ case of Hurwitz). The Gaussian integer norm $|z_1 z_2|^2 = |z_1|^2 |z_2|^2$ is precisely the 2-square identity encoding complex multiplication.",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "euler-identity",
+      "relationship": "Euler's identity $e^{i\\pi} + 1 = 0$ relies on complex number arithmetic, which is the $n = 2$ normed division algebra. The norm-multiplicativity $|z_1 z_2| = |z_1| |z_2|$ underlying Euler's formula is the 2-square identity.",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "cayley-hamilton",
+      "relationship": "The $n = 3$ impossibility proof uses matrix invertibility (a $3 \\times 3$ matrix with orthonormal rows has unit determinant). Cayley-Hamilton provides the general framework for matrix algebra and characteristic polynomials used in such arguments.",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "quadratic-reciprocity",
+      "relationship": "Quadratic reciprocity governs which integers are squares modulo primes, connecting to the sum-of-squares representations central to Hurwitz's theorem. The Legendre symbol machinery underlies the arithmetic of quadratic forms that Hurwitz studied.",
+      "description": ""
     }
   ],
   "references": [

@@ -93,63 +93,72 @@
       "title": "Imports and Namespace",
       "startLine": 25,
       "endLine": 29,
-      "summary": "Imports `Nat.Basic`, `Real.Basic`, and `SimpleGraph.Basic`. Opens the `Erdos812` namespace."
+      "summary": "Imports `Nat.Basic`, `Real.Basic`, and `SimpleGraph.Basic`. Opens the `Erdos812` namespace.",
+      "mathContext": "Imports `Nat.Basic`, `Real.Basic`, and `SimpleGraph.Basic`. Opens the `Erdos812` namespace."
     },
     {
       "id": "ramsey-defs",
       "title": "Ramsey Number Definitions",
       "startLine": 40,
       "endLine": 50,
-      "summary": "Axiomatizes $R : \\mathbb{N} \\to \\mathbb{N}$ with basic properties: $R(1) = 1$, $R(2) = 2$, $R(n) < R(n+1)$ for $n \\geq 1$."
+      "summary": "Axiomatizes $R : \\mathbb{N} \\to \\mathbb{N}$ with basic properties: $R(1) = 1$, $R(2) = 2$, $R(n) < R(n+1)$ for $n \\geq 1$.",
+      "mathContext": "Axiomatizes $R : \\mathbb{N} \\to \\mathbb{N}$ with basic properties: $R(1) = 1$, $R(2) = 2$, $R(n) < R(n+1)$ for $n \\geq 1$."
     },
     {
       "id": "known-values",
       "title": "Known Values and Classical Bounds",
       "startLine": 55,
       "endLine": 66,
-      "summary": "Axiomatizes $R(3) = 6$, $R(4) = 18$, and the classical bounds $2^{n/2} \\leq R(n) \\leq 4^n/\\sqrt{n}$ (Erdős 1947 + Erdős-Szekeres 1935)."
+      "summary": "Axiomatizes $R(3) = 6$, $R(4) = 18$, and the classical bounds $2^{n/2} \\leq R(n) \\leq 4^n/\\sqrt{n}$ (Erdős 1947 + Erdős-Szekeres 1935).",
+      "mathContext": "Axiomatizes $R(3) = 6$, $R(4) = 18$, and the classical bounds $2^{n/2} \\leq R(n) \\leq 4^n/\\sqrt{n}$ (Erdős 1947 + Erdős-Szekeres 1935)."
     },
     {
       "id": "main-questions",
       "title": "The Two Main Conjectures",
       "startLine": 76,
       "endLine": 84,
-      "summary": "Defines `ratio_conjecture` ($R(n+1)/R(n) \\geq 1 + c$ eventually) and `quadratic_difference_conjecture` ($R(n+1) - R(n) \\geq Cn^2$ eventually). Both are `Prop` values."
+      "summary": "Defines `ratio_conjecture` ($R(n+1)/R(n) \\geq 1 + c$ eventually) and `quadratic_difference_conjecture` ($R(n+1) - R(n) \\geq Cn^2$ eventually). Both are `Prop` values.",
+      "mathContext": "Defines `ratio_conjecture` ($R(n+1)/R(n) \\geq 1 + c$ eventually) and `quadratic_difference_conjecture` ($R(n+1) - R(n) \\geq Cn^2$ eventually). Both are `Prop` values."
     },
     {
       "id": "befs",
       "title": "BEFS Linear Bound (1989)",
       "startLine": 95,
       "endLine": 96,
-      "summary": "Axiomatizes the Burr-Erdős-Faudree-Schelp theorem: $R(n+1) - R(n) \\geq 4n - 8$ for all $n \\geq 2$. The best known lower bound on consecutive differences."
+      "summary": "Axiomatizes the Burr-Erdős-Faudree-Schelp theorem: $R(n+1) - R(n) \\geq 4n - 8$ for all $n \\geq 2$. The best known lower bound on consecutive differences.",
+      "mathContext": "Axiomatizes the Burr-Erdős-Faudree-Schelp theorem: $R(n+1) - R(n) \\geq 4n - 8$ for all $n \\geq 2$. The best known lower bound on consecutive differences."
     },
     {
       "id": "twostep",
       "title": "Two-Step Bound from Problem #165",
       "startLine": 103,
       "endLine": 105,
-      "summary": "Axiomatizes $R(n+2) - R(n) \\geq Cn^2/f(n)$ where $f$ is subpolynomial. Derived from $R(3,k) \\sim k^2/\\log k$ asymptotics."
+      "summary": "Axiomatizes $R(n+2) - R(n) \\geq Cn^2/f(n)$ where $f$ is subpolynomial. Derived from $R(3,k) \\sim k^2/\\log k$ asymptotics.",
+      "mathContext": "Axiomatizes $R(n+2) - R(n) \\geq Cn^2/f(n)$ where $f$ is subpolynomial. Derived from $R(3,k) \\sim k^2/\\log k$ asymptotics."
     },
     {
       "id": "consequences",
       "title": "Ratio Implies Exponential Growth",
       "startLine": 116,
       "endLine": 118,
-      "summary": "Axiomatizes the telescoping consequence: $R(n+1)/R(n) \\geq 1 + c \\implies R(n) \\geq R(k) \\cdot (1+c)^{n-k}$."
+      "summary": "Axiomatizes the telescoping consequence: $R(n+1)/R(n) \\geq 1 + c \\implies R(n) \\geq R(k) \\cdot (1+c)^{n-k}$.",
+      "mathContext": "Axiomatizes the telescoping consequence: $R(n+1)/R(n) \\geq 1 + c \\implies R(n) \\geq R(k) \\cdot (1+c)^{n-k}$."
     },
     {
       "id": "computations",
       "title": "Computational Verifications",
       "startLine": 128,
       "endLine": 145,
-      "summary": "Six `norm_num` proofs: $R(3)/R(2) = 3$, $R(4)/R(3) = 3$, differences $4$ and $12$, BEFS values $0$, $4$, $8$."
+      "summary": "Six `norm_num` proofs: $R(3)/R(2) = 3$, $R(4)/R(3) = 3$, differences $4$ and $12$, BEFS values $0$, $4$, $8$.",
+      "mathContext": "Six `norm_num` proofs: $R(3)/R(2) = 3$, $R(4)/R(3) = 3$, differences $4$ and $12$, BEFS values $0$, $4$, $8$."
     },
     {
       "id": "summary",
       "title": "Summary Theorem (Proved)",
       "startLine": 165,
       "endLine": 173,
-      "summary": "`erdos_812_summary` packages BEFS + Problem #165 bounds as a conjunction. **Verified proof** by `exact ⟨BEFS_theorem, problem_165_bound⟩`."
+      "summary": "`erdos_812_summary` packages BEFS + Problem #165 bounds as a conjunction. **Verified proof** by `exact ⟨BEFS_theorem, problem_165_bound⟩`.",
+      "mathContext": "`erdos_812_summary` packages BEFS + Problem #165 bounds as a conjunction. **Verified proof** by `exact ⟨BEFS_theorem, problem_165_bound⟩`."
     }
   ],
   "conclusion": {

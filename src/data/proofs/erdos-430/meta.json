@@ -92,6 +92,30 @@
       "startLine": 84,
       "endLine": 90,
       "summary": "For small $n$, the sequence may be entirely prime. The prime number theorem ($\\pi(n) \\sim n/\\ln n$) suggests primes thin out, but proving composites must enter the greedy process requires sieve-theoretic arguments."
+    },
+    {
+      "id": "greedy-properties",
+      "title": "Greedy Sequence Properties",
+      "startLine": 90,
+      "endLine": 126,
+      "summary": "Proves two key lemmas: `greedyNext_admissible` (if `greedyNext n prev > 0`, the result is admissible, via `Finset.sup`/`max'` membership) and `greedySeq_admissible` (every positive element of the greedy sequence is admissible, by induction on step $k$). The base case $k = 0$ shows $n - 1$ is admissible since its only possible factor bound is $n - (n-1) = 1$.",
+      "mathContext": "The admissibility invariant: $a_k > 0 \\Rightarrow \\texttt{IsAdmissible}(n, a_k)$. For $k = 0$: $a_0 = n - 1$ and $n - a_0 = 1$, so any prime $p \\mid (n-1)$ satisfies $p \\geq 2 > 1$. For $k + 1$: follows from `greedyNext_admissible` since $a_{k+1} = \\texttt{greedyNext}(n, a_k)$."
+    },
+    {
+      "id": "equivalence-proof",
+      "title": "Problem #385 Equivalence Proof",
+      "startLine": 127,
+      "endLine": 156,
+      "summary": "Proves `erdos_385_equivalence`: the greedy sequence contains a composite for large $n$ iff there exists a composite rough number near $n$ for large $n$. The forward direction extracts the admissible composite from the greedy sequence. The backward direction (sorry) requires showing that any admissible composite is reached by the greedy process, since the greedy sequence includes all admissible integers in decreasing order.",
+      "mathContext": "The equivalence $\\exists N_0, \\forall n \\geq N_0, \\texttt{hasComposite}(n) \\Leftrightarrow \\exists N_0, \\forall n \\geq N_0, \\exists m < n, m \\text{ composite} \\wedge m \\text{ admissible}$. The forward direction uses `greedySeq_admissible`; the backward direction requires that the greedy maximum-first strategy reaches every admissible element."
+    },
+    {
+      "id": "axioms",
+      "title": "Main Conjecture and Small-$n$ Axiom",
+      "startLine": 158,
+      "endLine": 172,
+      "summary": "Axiomatizes the two deep claims: `erdos_430_conjecture` (the greedy sequence contains a composite for large $n$) and `small_n_all_prime` (for small $n$, the sequence is entirely prime). Both are supported by computation but unproven.",
+      "mathContext": "The conjecture: $\\exists N_0, \\forall n \\geq N_0, \\texttt{hasComposite}(n)$. The small-$n$ axiom: $\\exists n_0, \\forall n \\leq n_0, \\forall k, a_k > 0 \\Rightarrow a_k \\text{ prime or } a_k = 1$. Together these assert a phase transition: the greedy sequence is all-prime below some threshold and must include composites above it."
     }
   ],
   "conclusion": {
@@ -113,7 +137,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 90,
+    "lineCount": 172,
     "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 7

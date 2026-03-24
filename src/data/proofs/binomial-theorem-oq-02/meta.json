@@ -82,70 +82,80 @@
       "title": "Imports",
       "startLine": 1,
       "endLine": 4,
-      "summary": "Imports Mathlib.Data.Nat.Choose.Multinomial (multinomial coefficients and Finset.sum_pow_eq_sum_piAntidiag), Mathlib.Data.Nat.Choose.Sum (binomial theorem add_pow), Mathlib.Algebra.BigOperators.Ring.Finset (∑ notation), and Mathlib.Tactic."
+      "summary": "Imports Mathlib.Data.Nat.Choose.Multinomial (multinomial coefficients and Finset.sum_pow_eq_sum_piAntidiag), Mathlib.Data.Nat.Choose.Sum (binomial theorem add_pow), Mathlib.Algebra.BigOperators.Ring.Finset (∑ notation), and Mathlib.Tactic.",
+      "mathContext": "Imports Mathlib.Data.Nat.Choose.Multinomial (multinomial coefficients and Finset.sum_pow_eq_sum_piAntidiag), Mathlib.Data.Nat.Choose.Sum (binomial theorem add_pow), Mathlib.Algebra.BigOperators.Ring.F"
     },
     {
       "id": "module-docstring",
       "title": "Module Docstring",
       "startLine": 6,
       "endLine": 50,
-      "summary": "Documents the multinomial theorem, proof strategy (induction via binomial at each step), and Mathlib dependencies. Lists which theorems are proved (all 8 parts complete) and notes the multinomial_recurrence mirrors Pascal's identity."
+      "summary": "Documents the multinomial theorem, proof strategy (induction via binomial at each step), and Mathlib dependencies. Lists which theorems are proved (all 8 parts complete) and notes the multinomial_recurrence mirrors Pascal's identity.",
+      "mathContext": "Documents the multinomial theorem, proof strategy (induction via binomial at each step), and Mathlib dependencies. Lists which theorems are proved (all 8 parts complete) and notes the multinomial_recu"
     },
     {
       "id": "part1-multinomial-theorem",
       "title": "Part 1: The Multinomial Theorem",
       "startLine": 52,
       "endLine": 69,
-      "summary": "multinomial_theorem: (∑ f(i))^n = ∑_{k:Σk=n} multinomial(s,k) · ∏ f(i)^k(i). Direct wrapper around Finset.sum_pow_eq_sum_piAntidiag. Works for any CommSemiring R and any finite type α."
+      "summary": "multinomial_theorem: (∑ f(i))^n = ∑_{k:Σk=n} multinomial(s,k) · ∏ f(i)^k(i). Direct wrapper around Finset.sum_pow_eq_sum_piAntidiag. Works for any CommSemiring R and any finite type α.",
+      "mathContext": "multinomial_theorem: (∑ f(i))^n = ∑_{k:Σk=n} multinomial(s,k) · ∏ f(i)^k(i). Direct wrapper around Finset.sum_pow_eq_sum_piAntidiag. Works for any CommSemiring R and any finite type α."
     },
     {
       "id": "part2-coefficient-properties",
       "title": "Part 2: Multinomial Coefficient Properties",
       "startLine": 71,
       "endLine": 103,
-      "summary": "Four properties: multinomial_spec (factorial formula: ∏k(i)! · multinomial = (∑k(i))!), multinomial_recurrence (the key inductive step: multinomial(insert a s, k) = C(k(a)+Σk, k(a)) · multinomial(s,k)), multinomial_eq_binomial (2-element case equals binomial coefficient), multinomial_pos (all multinomials are positive)."
+      "summary": "Four properties: multinomial_spec (factorial formula: ∏k(i)! · multinomial = (∑k(i))!), multinomial_recurrence (the key inductive step: multinomial(insert a s, k) = C(k(a)+Σk, k(a)) · multinomial(s,k)), multinomial_eq_binomial (2-element case equals binomial coefficient), multinomial_pos (all multinomials are positive).",
+      "mathContext": "Four properties: multinomial_spec (factorial formula: ∏k(i)! · multinomial = (∑k(i))!), multinomial_recurrence (the key inductive step: multinomial(insert a s, k) = C(k(a)+Σk, k(a)) · multinomial(s,k)"
     },
     {
       "id": "part3-sum-identity",
       "title": "Part 3: The Sum Identity",
       "startLine": 105,
       "endLine": 116,
-      "summary": "multinomial_total: ∑_{k:Σk=n} multinomial(s,k) = |s|^n. Proved by applying the multinomial theorem to f ≡ 1, then simp with nsmul_eq_mul. Generalizes ∑ C(n,k) = 2^n."
+      "summary": "multinomial_total: ∑_{k:Σk=n} multinomial(s,k) = |s|^n. Proved by applying the multinomial theorem to f ≡ 1, then simp with nsmul_eq_mul. Generalizes ∑ C(n,k) = 2^n.",
+      "mathContext": "multinomial_total: ∑_{k:Σk=n} multinomial(s,k) = |s|^n. Proved by applying the multinomial theorem to f ≡ 1, then simp with nsmul_eq_mul. Generalizes ∑ C(n,k) = 2^n."
     },
     {
       "id": "part4-binomial-theorem",
       "title": "Part 4: The Classical Binomial Theorem",
       "startLine": 118,
       "endLine": 131,
-      "summary": "Restates the binomial theorem (x+y)^n = ∑ C(n,k) x^k y^(n-k) as the 2-variable foundation. Also proves sum_binomial_eq_pow_two as a consequence."
+      "summary": "Restates the binomial theorem (x+y)^n = ∑ C(n,k) x^k y^(n-k) as the 2-variable foundation. Also proves sum_binomial_eq_pow_two as a consequence.",
+      "mathContext": "Restates the binomial theorem (x+y)^n = ∑ C(n,k) x^k y^(n-k) as the 2-variable foundation. Also proves sum_binomial_eq_pow_two as a consequence."
     },
     {
       "id": "part5-inductive-connection",
       "title": "Part 5: The Inductive Connection",
       "startLine": 133,
       "endLine": 163,
-      "summary": "multinomial_inductive_structure: Shows the multinomial theorem for (insert a s) follows from the IH for s via the binomial theorem. multinomial_from_binomial: The full multinomial theorem by induction. Both delegate to Finset.sum_pow_eq_sum_piAntidiag to show the structure is captured."
+      "summary": "multinomial_inductive_structure: Shows the multinomial theorem for (insert a s) follows from the IH for s via the binomial theorem. multinomial_from_binomial: The full multinomial theorem by induction. Both delegate to Finset.sum_pow_eq_sum_piAntidiag to show the structure is captured.",
+      "mathContext": "multinomial_inductive_structure: Shows the multinomial theorem for (insert a s) follows from the IH for s via the binomial theorem. multinomial_from_binomial: The full multinomial theorem by induction"
     },
     {
       "id": "part6-bool-form",
       "title": "Part 6: Binomial Theorem as 2-Variable Multinomial",
       "startLine": 164,
       "endLine": 193,
-      "summary": "multinomial_bool_form_eq_binomial: The multinomial expansion over Bool equals the classical binomial sum. Proved by applying multinomial_theorem to {false,true} with f = (if b then y else x), then using sum_pair/prod_pair and h.symm.trans. binomial_from_multinomial_2vars: Direct consequence showing binomial follows from multinomial."
+      "summary": "multinomial_bool_form_eq_binomial: The multinomial expansion over Bool equals the classical binomial sum. Proved by applying multinomial_theorem to {false,true} with f = (if b then y else x), then using sum_pair/prod_pair and h.symm.trans. binomial_from_multinomial_2vars: Direct consequence showing binomial follows from multinomial.",
+      "mathContext": "multinomial_bool_form_eq_binomial: The multinomial expansion over Bool equals the classical binomial sum. Proved by applying multinomial_theorem to {false,true} with f = (if b then y else x), then usi"
     },
     {
       "id": "part7-examples",
       "title": "Part 7: Concrete Examples and Verification",
       "startLine": 194,
       "endLine": 226,
-      "summary": "Five native_decide verifications: C(3;1,1,1)=6, C(4;2,1,1)=12, C(6;2,2,2)=90, ∑multinomials(Fin3, 2)=9=3², ∑multinomials(Fin4, 3)=64=4³. Also trinomial square and cube proved by ring."
+      "summary": "Five native_decide verifications: C(3;1,1,1)=6, C(4;2,1,1)=12, C(6;2,2,2)=90, ∑multinomials(Fin3, 2)=9=3², ∑multinomials(Fin4, 3)=64=4³. Also trinomial square and cube proved by ring.",
+      "mathContext": "Five native_decide verifications: C(3;1,1,1)=6, C(4;2,1,1)=12, C(6;2,2,2)=90, ∑multinomials(Fin3, 2)=9=3², ∑multinomials(Fin4, 3)=64=4³. Also trinomial square and cube proved by ring."
     },
     {
       "id": "part8-special-formulas",
       "title": "Part 8: Special Value Formulas",
       "startLine": 228,
       "endLine": 250,
-      "summary": "binomial_sum_eq_pow2: ∑ C(n,k) = 2^n. multinomial_pair_choose: multinomial {a,b} f = C(f(a)+f(b), f(a)). multinomial_triple: Three-way formula via two binomial coefficients."
+      "summary": "binomial_sum_eq_pow2: ∑ C(n,k) = 2^n. multinomial_pair_choose: multinomial {a,b} f = C(f(a)+f(b), f(a)). multinomial_triple: Three-way formula via two binomial coefficients.",
+      "mathContext": "binomial_sum_eq_pow2: ∑ C(n,k) = 2^n. multinomial_pair_choose: multinomial {a,b} f = C(f(a)+f(b), f(a)). multinomial_triple: Three-way formula via two binomial coefficients."
     }
   ],
   "conclusion": {
@@ -180,7 +190,7 @@
     {
       "id": "binomial-theorem",
       "relationship": "extends",
-      "description": "The classical binomial theorem (x+y)^n = Σ C(n,k) x^k y^(n-k) is the 2-variable special case of the multinomial theorem "
+      "description": "The classical binomial theorem (x+y)^n = Σ C(n,k) x^k y^(n-k) is the 2-variable special case of the multinomial theorem proved here"
     },
     {
       "id": "combinations-formula",
@@ -195,7 +205,7 @@
     {
       "id": "arithmetic-series-oq-02",
       "relationship": "related",
-      "description": "Both involve multi-index combinatorics: multinomial coefficients generalize binomial coefficients, while simplicial numb"
+      "description": "Both involve multi-index combinatorics: multinomial coefficients generalize binomial coefficients, while simplicial numbers generalize triangular numbers — both are diagonal entries of Pascal's simplex"
     }
   ],
   "leanFile": {

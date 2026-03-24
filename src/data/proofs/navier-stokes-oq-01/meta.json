@@ -60,7 +60,7 @@
       "Theorem total_dissipation_bound: ∫₀ᵀ 2νP(t) dt ≤ E(0), total dissipation bounded by initial enstrophy"
     ],
     "dateAdded": "2026-02-26",
-    "lineCount": 21110,
+    "lineCount": 21111,
     "assumptions": "None. Formalized with 0 axioms and 0 sorries.",
     "relatedProblems": [
       {
@@ -181,7 +181,7 @@
       "TwoDimensionalGlobal"
     ],
     "namespace": "NavierStokesRegularity",
-    "lineCount": 21110,
+    "lineCount": 21111,
     "axiomCount": 0,
     "theoremCount": 1009,
     "definitionCount": 104
@@ -237,12 +237,22 @@
     {
       "id": "fundamental-theorem-calculus",
       "relationship": "foundational",
-      "description": "The enstrophy integral identity directly applies the FTC (integral_eq_sub_of_hasDerivAt_of_le) to convert the pointwise "
+      "description": "The enstrophy integral identity directly applies the FTC (integral_eq_sub_of_hasDerivAt_of_le) to convert the pointwise ODE E'(t) = -2νP(t) into the global identity ∫₀ᵀ -2νP = E(T) - E(0)"
     },
     {
       "id": "fundamental-theorem-calculus-oq-01",
       "relationship": "related",
       "description": "Related gallery proof"
+    },
+    {
+      "id": "cauchy-schwarz-integral",
+      "relationship": "foundational",
+      "description": "The Cauchy-Schwarz inequality for integrals underlies many estimates in PDE regularity theory, including bounding enstrophy dissipation rates"
+    },
+    {
+      "id": "lebesgue-measure",
+      "relationship": "foundational",
+      "description": "The integral identities are formulated using Lebesgue integration (MeasureTheory.Integral.IntervalIntegral), with IntervalIntegrable conditions proved via ContinuousOn"
     }
   ],
   "references": [

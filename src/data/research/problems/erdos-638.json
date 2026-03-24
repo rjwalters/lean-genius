@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-13T17:14:37.756Z",
-    "iteration": 2,
+    "iteration": 3,
     "focus": "Axiom elimination",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,15 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM ELIMINATION: Proved 2 of 3 axioms (complete_graphs_ramsey, triangle_ramsey_mono). Only ramsey_triangle remains. Axiom count: 3→1.",
+    "progressSummary": "PROGRESS: Session 3 fixed 2 pre-existing build failures and proved n=1 case of ramsey_triangle axiom. Path to full elimination: iterate 2-color Ramsey theorem (already proved in RamseysTheorem.lean) via color-splitting.",
     "builtItems": [
       "theorem complete_graphs_ramsey: proved from ramsey_triangle via Set.mem_singleton",
-      "theorem triangle_ramsey_mono: proved via Fin.castLE injection"
+      "theorem triangle_ramsey_mono: proved via Fin.castLE injection",
+      "Fixed 2 pre-existing build failures (set literal syntax, Fin.castLE injectivity)",
+      "Proved ramsey_triangle_base: K_3 has 1-color Ramsey property",
+      "Proved ramsey_triangle_one_proved: instantiates axiom for n=1 without axiom"
     ],
     "insights": [
       "complete_graphs_ramsey follows directly from ramsey_triangle: just instantiate with K_N",
       "triangle_ramsey_mono provable via Fin.castLE: embed m-coloring into n-coloring, use injectivity to transfer monochromaticity",
-      "Only ramsey_triangle (classical Ramsey theorem) needs to remain as axiom — deep result not in Mathlib"
+      "Only ramsey_triangle (classical Ramsey theorem) needs to remain as axiom — deep result not in Mathlib",
+      "Set literal syntax changed in Lean 4: {⊤ : T} → ({⊤} : Set T)",
+      "Fin.castLE_injective replaces manual congrArg proof for injectivity",
+      "ramsey_triangle axiom n=1 case is provable: K_3 with Fin 1 colors is trivially monochromatic"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -68,7 +74,7 @@
       "path": "Proofs/Erdos638Problem.lean",
       "filename": "Erdos638Problem.lean",
       "lineCount": 98,
-      "theoremCount": 2,
+      "theoremCount": 4,
       "axiomCount": 1,
       "defCount": 5,
       "sorryCount": 0,

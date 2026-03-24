@@ -53,70 +53,80 @@
       "title": "Graph Basics",
       "summary": "Defines $\\text{edgeCount}(G) = |E(G)|$ and $\\text{vertexCount} = |V|$ for simple graphs on finite vertex types with decidable adjacency.",
       "startLine": 14,
-      "endLine": 37
+      "endLine": 37,
+      "mathContext": "Defines $\\text{edgeCount}(G) = |E(G)|$ and $\\text{vertexCount} = |V|$ for simple graphs on finite vertex types with decidable adjacency."
     },
     {
       "id": "dense-graphs",
       "title": "Dense Graphs",
       "summary": "Defines $\\text{isDense}(G, \\varepsilon) \\iff |E(G)| \\ge n^{1+\\varepsilon}$, the super-linear density threshold separating planar-possible from forced-non-planar regimes.",
       "startLine": 38,
-      "endLine": 47
+      "endLine": 47,
+      "mathContext": "Defines $\\text{isDense}(G, \\varepsilon) \\iff |E(G)| \\ge n^{1+\\varepsilon}$, the super-linear density threshold separating planar-possible from forced-non-planar regimes."
     },
     {
       "id": "planar-graphs",
       "title": "Planar Graphs",
       "summary": "Abstract $\\text{isPlanar}$ definition (sorry) and $\\text{isNonPlanar} = \\neg\\text{isPlanar}$. Full definition requires topological embedding theory.",
       "startLine": 48,
-      "endLine": 62
+      "endLine": 62,
+      "mathContext": "Abstract $\\text{isPlanar}$ definition (sorry) and $\\text{isNonPlanar} = \\neg\\text{isPlanar}$. Full definition requires topological embedding theory."
     },
     {
       "id": "kuratowski",
       "title": "Complete Graphs and Kuratowski's Theorem",
       "summary": "Defines $K_n$, $K_{m,n}$, graph subdivisions, and axiomatizes Kuratowski (1930): non-planar $\\iff$ contains $\\text{TK}_5$ or $\\text{TK}_{3,3}$.",
       "startLine": 63,
-      "endLine": 104
+      "endLine": 104,
+      "mathContext": "Defines $K_n$, $K_{m,n}$, graph subdivisions, and axiomatizes Kuratowski (1930): non-planar $\\iff$ contains $\\text{TK}_5$ or $\\text{TK}_{3,3}$."
     },
     {
       "id": "subgraphs",
       "title": "Induced Subgraphs",
       "summary": "Defines $G[S]$ (induced subgraph on $S \\subseteq V$) and $\\text{hasSmallNonPlanarSubgraph}(G, k) \\iff \\exists |S| \\le k$ with $G[S]$ non-planar.",
       "startLine": 105,
-      "endLine": 120
+      "endLine": 120,
+      "mathContext": "Defines $G[S]$ (induced subgraph on $S \\subseteq V$) and $\\text{hasSmallNonPlanarSubgraph}(G, k) \\iff \\exists |S| \\le k$ with $G[S]$ non-planar."
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "summary": "Formalizes Erdős's question: $\\forall \\varepsilon > 0,\\; \\exists C_\\varepsilon$ such that $|E| \\ge n^{1+\\varepsilon} \\implies$ non-planar subgraph on $\\le C_\\varepsilon$ vertices.",
       "startLine": 121,
-      "endLine": 136
+      "endLine": 136,
+      "mathContext": "Formalizes Erdős's question: $\\forall \\varepsilon > 0,\\; \\exists C_\\varepsilon$ such that $|E| \\ge n^{1+\\varepsilon} \\implies$ non-planar subgraph on $\\le C_\\varepsilon$ vertices."
     },
     {
       "id": "kostochka-pyber",
       "title": "Kostochka-Pyber Theorem (1988)",
       "summary": "Axiomatizes the solution: dense graphs contain $K_5$ subdivisions on $O_\\varepsilon(1)$ vertices. Derives $\\text{erdos\\_1018\\_solved}$ from this.",
       "startLine": 137,
-      "endLine": 167
+      "endLine": 167,
+      "mathContext": "Axiomatizes the solution: dense graphs contain $K_5$ subdivisions on $O_\\varepsilon(1)$ vertices. Derives $\\text{erdos\\_1018\\_solved}$ from this."
     },
     {
       "id": "constant-grows",
       "title": "The Constant $C_\\varepsilon$ Grows",
       "summary": "States $\\lim_{\\varepsilon \\to 0^+} C_\\varepsilon = \\infty$: sparser graphs hide non-planarity in larger substructures.",
       "startLine": 168,
-      "endLine": 185
+      "endLine": 185,
+      "mathContext": "States $\\lim_{\\varepsilon \\to 0^+} C_\\varepsilon = \\infty$: sparser graphs hide non-planarity in larger substructures."
     },
     {
       "id": "extremal",
       "title": "Extremal Graph Theory Connection",
       "summary": "Euler bound $|E| \\le 3n-6$ for planar graphs and the consequence that $n^{1+\\varepsilon} > 3n-6$ forces the whole graph to be non-planar.",
       "startLine": 186,
-      "endLine": 204
+      "endLine": 204,
+      "mathContext": "Euler bound $|E| \\le 3n-6$ for planar graphs and the consequence that $n^{1+\\varepsilon} > 3n-6$ forces the whole graph to be non-planar."
     },
     {
       "id": "quantitative",
       "title": "Quantitative Bounds and Turán Numbers",
       "summary": "Explicit bound $C_\\varepsilon = \\lceil 1/\\varepsilon^2 \\rceil$, Turán number $\\text{ex}(n, \\text{TK}_5) = O(n)$ by Mader, and dense graphs exceeding the Turán threshold.",
       "startLine": 205,
-      "endLine": 260
+      "endLine": 260,
+      "mathContext": "Explicit bound $C_\\varepsilon = \\lceil 1/\\varepsilon^2 \\rceil$, Turán number $\\text{ex}(n, \\text{TK}_5) = O(n)$ by Mader, and dense graphs exceeding the Turán threshold."
     }
   ],
   "conclusion": {
@@ -166,27 +176,32 @@
     {
       "id": "ramseys-theorem",
       "relationship": "technique",
-      "description": "The probabilistic method used in Kostochka-Pyber (1988) shares roots with Ramsey theory; both study unavoidable substruc"
+      "description": "The probabilistic method used in Kostochka-Pyber (1988) shares roots with Ramsey theory; both study unavoidable substructures in dense combinatorial objects."
     },
     {
       "id": "erdos-1",
       "relationship": "related-problem",
-      "description": "Erdős Problem #1 on graph coloring illustrates the broader program of finding unavoidable substructures in graphs with p"
+      "description": "Erdős Problem #1 on graph coloring illustrates the broader program of finding unavoidable substructures in graphs with prescribed density or chromatic properties."
     },
     {
       "id": "erdos-1009",
       "relationship": "related-problem",
-      "description": "Erdős Problem #1009 on graph density and subgraph containment is closely related to the extremal graph theory framework "
+      "description": "Erdős Problem #1009 on graph density and subgraph containment is closely related to the extremal graph theory framework underlying the Kostochka-Pyber result."
     },
     {
       "id": "erdos-1015",
       "relationship": "related-problem",
-      "description": "Erdős Problem #1015 involves topological graph theory questions similar in spirit to the planarity obstruction theme of "
+      "description": "Erdős Problem #1015 involves topological graph theory questions similar in spirit to the planarity obstruction theme of Problem #1018."
     },
     {
       "id": "erdos-1017",
       "relationship": "sibling",
-      "description": "Erdős Problem #1017 is a neighboring problem in the Erdős problem collection sharing the extremal combinatorics and dens"
+      "description": "Erdős Problem #1017 is a neighboring problem in the Erdős problem collection sharing the extremal combinatorics and density-forcing theme."
+    },
+    {
+      "id": "szemeredi-regularity",
+      "relationship": "technique",
+      "description": "Szemerédi's Regularity Lemma is a fundamental tool in extremal graph theory; the density regime n^(1+ε) studied in Problem #1018 connects naturally to regularity-based decompositions."
     }
   ],
   "references": [
@@ -196,7 +211,7 @@
         "L. Pyber"
       ],
       "title": "Small topological complete subgraphs of 'dense' graphs",
-      "year": 1988,
+      "year": "1988",
       "venue": "Combinatorica",
       "note": "Proves the main result of Erdős Problem #1018: graphs with n^(1+ε) edges contain K₅ subdivisions on O_ε(1) vertices."
     },
@@ -205,7 +220,7 @@
         "W. Mader"
       ],
       "title": "Homomorphieeigenschaften und mittlere Kantendichte von Graphen",
-      "year": 1967,
+      "year": "1967",
       "venue": "Mathematische Annalen",
       "note": "Established that the Turán number for K_t subdivisions is O(t√(log t) · n), a key precursor to the Kostochka-Pyber result."
     },
@@ -214,7 +229,7 @@
         "K. Kuratowski"
       ],
       "title": "Sur le problème des courbes gauches en topologie",
-      "year": 1930,
+      "year": "1930",
       "venue": "Fundamenta Mathematicae",
       "note": "The foundational characterization of planar graphs: a graph is planar if and only if it contains no subdivision of K₅ or K_{3,3}."
     },
@@ -224,7 +239,7 @@
         "M. Simonovits"
       ],
       "title": "A limit theorem in graph theory",
-      "year": 1966,
+      "year": "1966",
       "venue": "Studia Scientiarum Mathematicarum Hungarica",
       "note": "Foundational work on extremal graph theory and Turán-type problems underlying the density threshold analysis in Problem #1018."
     },
@@ -234,7 +249,7 @@
         "J. H. Spencer"
       ],
       "title": "The Probabilistic Method",
-      "year": 2016,
+      "year": "2016",
       "venue": "Wiley (4th edition)",
       "note": "Standard reference for the probabilistic method techniques used in the Kostochka-Pyber proof and related extremal graph theory results."
     }

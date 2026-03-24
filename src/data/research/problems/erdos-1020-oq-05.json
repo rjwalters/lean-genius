@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
+    "phase": "ACT",
     "since": "2026-03-24T00:48:59.903Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Fixed formula bug, proved f_2_explicit",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,21 +29,32 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Well-structured formalization of Erdős matching conjecture. 11 axioms (all known results), 3 sorries in theorems. Main conjecture correctly stated as def.",
+    "progressSummary": "COMPLETED: Fixed incorrect formula in f_2_explicit (k*n-k²-k+1 → (k-1)(2n-k)/2). Proved f_2_explicit from erdos_gallai_graphs using Nat.choose_two_right + omega. Remaining: 2 sorries (upper_bound_tight_construction2, large_n_construction2_dominates), 11 axioms.",
     "builtItems": [
       "Surveyed 239-line formalization of Erdős matching conjecture",
       "Verified main conjecture correctly stated as def (not axiom)",
-      "Identified 3 theorem sorries as potential proof targets"
+      "Identified 3 theorem sorries as potential proof targets",
+      "Fixed f_2_explicit formula bug: k*n-k²-k+1 → (k-1)*(2n-k)/2",
+      "Proved f_2_explicit from erdos_gallai_graphs via Nat.choose_two_right + omega"
     ],
     "insights": [
       "Main conjecture (erdosMatchingConjecture) correctly stated as def, not axiom",
       "11 axioms are all known results from literature (Erdős-Gallai, Łuczak-Mieczkowska, Kleitman, Frankl, etc.)",
       "3 sorries in theorems: f_2_explicit, upper_bound_tight_construction2, large_n_construction2_dominates",
       "File has well-organized structure: hypergraph basics → known results → constructions → open problem",
-      "r=2 solved (Erdős-Gallai), r=3 solved (Łuczak-Mieczkowska 2014), r≥4 open"
+      "r=2 solved (Erdős-Gallai), r=3 solved (Łuczak-Mieczkowska 2014), r≥4 open",
+      "BUG FOUND: f_2_explicit had wrong formula k*n - k² - k + 1; correct is (k-1)*(2n-k)/2",
+      "Verified bug: k=2, n=5 gives C(5,2)-C(4,2)=4 but k*n-k²-k+1=5",
+      "upper_bound_tight_construction2 provable via telescope: C(n,r)-C(n-k+1,r) = Σ C(j-1,r-1) ≤ (k-1)·C(n-1,r-1)",
+      "large_n_construction2_dominates: construction2 grows as n^(r-1) while construction1 is constant",
+      "combined_lower_bound has pre-existing type mismatch error (le_max_iff usage)"
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove upper_bound_tight_construction2 via telescope sum + monotonicity of choose",
+      "Prove large_n_construction2_dominates using growth rate comparison",
+      "Fix combined_lower_bound type mismatch (pre-existing issue)"
+    ]
   },
   "tags": [
     "erdos",

@@ -223,27 +223,32 @@
     {
       "id": "e-transcendental",
       "relationship": "thematic",
-      "description": "Both problems concern the transcendence of naturally-arising constants: $e$ was proved transcendental by Hermite (1873) "
+      "description": "Both problems concern the transcendence of naturally-arising constants: $e$ was proved transcendental by Hermite (1873) and the Erdős-Borwein constant $S(2)$ is conjectured transcendental. Both connect irrationality to deeper arithmetic properties of analytic functions."
     },
     {
       "id": "sqrt2-irrational",
       "relationship": "thematic",
-      "description": "The irrationality of $\\sqrt{2}$ (attributed to the Pythagoreans) and Erdős's 1948 result are foundational irrationality "
+      "description": "The irrationality of $\\sqrt{2}$ (attributed to the Pythagoreans) and Erdős's 1948 result are foundational irrationality theorems. Both use contradiction arguments, but $\\sqrt{2}$ is algebraic while $S(2)$ is conjectured transcendental — illustrating the spectrum from algebraic to transcendental irrationality."
     },
     {
       "id": "euler-totient",
       "relationship": "related",
-      "description": "Euler's totient $\\varphi(n)$ and the divisor function $\\tau(n)$ are both classical multiplicative functions in analytic "
+      "description": "Euler's totient $\\varphi(n)$ and the divisor function $\\tau(n)$ are both classical multiplicative functions in analytic number theory. The Lambert-series representation $S(t) = \\sum \\tau(n)/t^n$ mirrors the Dirichlet series $\\sum \\tau(n)/n^s = \\zeta(s)^2$, placing both in the broader theory of multiplicative arithmetic functions."
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "The Fundamental Theorem of Arithmetic underpins the multiplicativity of $\\tau(n)$: because every integer has a unique pr"
+      "description": "The Fundamental Theorem of Arithmetic underpins the multiplicativity of $\\tau(n)$: because every integer has a unique prime factorization, $\\tau$ factors as $\\prod (e_i + 1)$ over prime powers $p_i^{e_i}$. This multiplicativity is central to the double-sum identity $S(t) = D(t)$."
     },
     {
       "id": "erdos-1003",
       "relationship": "sibling",
-      "description": "Erdős Problem #1003 is another number-theoretic problem from the Erdős collection involving divisibility and arithmetic "
+      "description": "Erdős Problem #1003 is another number-theoretic problem from the Erdős collection involving divisibility and arithmetic properties of integer sequences, sharing techniques from analytic number theory with Problem #1049."
+    },
+    {
+      "id": "erdos-1051",
+      "relationship": "sibling",
+      "description": "Erdős Problem #1051 sits in the same cluster of problems concerning arithmetic properties of series and sums, closely neighboring #1049 in the Erdős problem list and likely sharing thematic techniques."
     }
   ],
   "references": [

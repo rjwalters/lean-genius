@@ -79,7 +79,7 @@
       "erdos_828_summary theorem"
     ],
     "axiomCount": 0,
-    "lineCount": 190,
+    "lineCount": 205,
     "assumptions": "0 axioms. totient_dvd_self_iff backward direction proved. Forward direction (1 sorry): if φ(n)|n then n=2^a·3^b (proof sketch documented)."
   },
   "overview": {
@@ -141,6 +141,30 @@
       "summary": "erdos_828_summary: both a=0 and a=-1 cases are infinite",
       "startLine": 120,
       "endLine": 132
+    },
+    {
+      "id": "powers-of-two",
+      "title": "Powers of Two: Infinite Totient Divisors for $a = 0$",
+      "startLine": 133,
+      "endLine": 147,
+      "summary": "Completes the proof that $\\{2^k : k \\geq 1\\} \\subseteq \\text{totientDivisors}(0)$: shows $\\varphi(2^{k+1}) = 2^k \\mid 2^{k+1}$ via `totient_prime_pow`. Injectivity via `pow_right_injective`.",
+      "mathContext": "$\\varphi(2^{k+1}) = 2^k$ divides $2^{k+1} = 2 \\cdot 2^k$, so $\\varphi(n) \\mid n + 0$ for all $n = 2^{k+1}$."
+    },
+    {
+      "id": "lehmer-conjecture",
+      "title": "Lehmer's Conjecture and $a = -1$ Case",
+      "startLine": 149,
+      "endLine": 175,
+      "summary": "Defines `lehmerConjecture` ($\\varphi(n) \\mid n-1 \\Leftrightarrow n$ prime, OPEN). Proves `prime_totient_dvd_pred` ($\\varphi(p) = p-1 \\mid p-1$) and `totientDivisors_neg_one_infinite` (all primes witness the $a = -1$ case, so `totientDivisors(-1)` is infinite by `Nat.infinite_setOf_prime`).",
+      "mathContext": "Lehmer (1932): is $\\varphi(n) \\mid n-1$ equivalent to $n$ prime? No composite counterexample is known. The easiest direction: $n$ prime $\\Rightarrow \\varphi(n) = n-1 \\mid n-1$."
+    },
+    {
+      "id": "conjecture-structural",
+      "title": "Main Conjecture and Structural Properties",
+      "startLine": 177,
+      "endLine": 205,
+      "summary": "Defines `erdos828Conjecture`: $\\forall a \\in \\mathbb{Z}$, $\\text{totientDivisors}(a)$ is infinite. Proves structural lemmas: $\\varphi(n)$ is even for $n > 2$ (via `Nat.totient_even`), $\\varphi(p) = p-1$, $\\varphi(p^k) = p^{k-1}(p-1)$. Summary theorem: both $a = 0$ and $a = -1$ cases are infinite.",
+      "mathContext": "The multiplicativity of $\\varphi$ ($\\varphi(mn) = \\varphi(m)\\varphi(n)$ for $\\gcd(m,n) = 1$) and the prime power formula $\\varphi(p^k) = p^{k-1}(p-1)$ are the key tools. The summary $\\text{totientDivisors}(0) \\cup \\text{totientDivisors}(-1) = \\infty$ establishes the two solved cases."
     }
   ],
   "conclusion": {
@@ -166,7 +190,7 @@
       "Set"
     ],
     "namespace": "Erdos828",
-    "lineCount": 190,
+    "lineCount": 205,
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 3

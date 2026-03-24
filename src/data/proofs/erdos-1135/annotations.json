@@ -226,5 +226,73 @@
       "axiom declaration in Lean 4",
       "Collatz function definition"
     ]
+  },
+  {
+    "id": "ann-e1135-even-reduction",
+    "proofId": "erdos-1135",
+    "range": {
+      "startLine": 70,
+      "endLine": 77
+    },
+    "type": "technique",
+    "title": "Even Reduction and Orbit Transitivity",
+    "content": "`collatz_even_lt`: for even $m > 0$, $f(m) = m/2 < m$, proved via `Nat.div_lt_self`. This guarantees progress on even steps — the conjecture's difficulty lies in the odd steps which can *increase* $m$.\n\n`reachesOne_of_collatz`: orbit transitivity — if $f(m)$ eventually reaches 1 in $k$ steps, then $m$ reaches 1 in $k + 1$ steps. Proved by unfolding `collatzIter_collatz`.",
+    "mathContext": "Even step: $f(m) = m/2 < m$. Odd step: $f(m) = (3m+1)/2 > m$ for $m > 1$. The interplay between these two behaviors — deterministic halving vs. expansive odd steps — creates the unpredictable orbit structure that makes the conjecture intractable.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.div_lt_self",
+      "orbit transitivity",
+      "collatz dynamics"
+    ],
+    "prerequisites": [
+      "collatz_even_eq",
+      "collatzIter_collatz"
+    ]
+  },
+  {
+    "id": "ann-e1135-verifications",
+    "proofId": "erdos-1135",
+    "range": {
+      "startLine": 81,
+      "endLine": 86
+    },
+    "type": "insight",
+    "title": "Concrete Verifications for $m = 2$ through $7$",
+    "content": "Six verified instances by `native_decide`: each provides an explicit step count $k$ witnessing $f^k(m) = 1$. The step counts ($1, 5, 2, 4, 6, 11$) show the irregular growth typical of Collatz orbits. The longest orbit ($m = 7$, 11 steps) involves reaching the intermediate value 26 before descending.",
+    "mathContext": "Computational verification extends much further: Barina (2020) verified all $m \\leq 2^{68} \\approx 2.95 \\times 10^{20}$. The six Lean verifications are pedagogical examples, not intended to push computational boundaries — `native_decide` evaluates $f^k$ in Lean's compiled runtime.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "computational verification",
+      "orbit enumeration"
+    ],
+    "prerequisites": [
+      "collatzIter",
+      "ReachesOne"
+    ]
+  },
+  {
+    "id": "ann-e1135-tao-kl",
+    "proofId": "erdos-1135",
+    "range": {
+      "startLine": 90,
+      "endLine": 110
+    },
+    "type": "concept",
+    "title": "Tao (2019) and Krasikov-Lagarias: Deep Partial Results",
+    "content": "`tao_almost_all` axiomatizes Tao's 2019 breakthrough: for any function $g(n) \\to \\infty$, almost all Collatz orbits drop below $g(m)$. This is the strongest theoretical result — it says orbits are 'almost bounded' — but does not prove they reach 1.\n\n`krasikov_lagarias` axiomatizes the 2003 counting bound: at least $x^{0.84}$ integers below $x$ eventually reach 1.\n\n`erdos_1135_collatz_conjecture`: the full conjecture $\\forall m \\geq 1, \\text{ReachesOne}(m)$, stated as an axiom.",
+    "mathContext": "Tao's proof uses: (1) entropy arguments for the Collatz map modulo large powers of 2, (2) the ergodic theorem for the Syracuse random map, (3) Bourgain's work on multiplicative functions. The result: for any $f(x) \\to \\infty$, the set $\\{m \\leq x : \\min_k C^k(m) > f(m)\\}$ has density $\\to 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Tao 2019",
+      "Krasikov-Lagarias 2003",
+      "natural density",
+      "almost all"
+    ],
+    "prerequisites": [
+      "collatzIter",
+      "ReachesOne",
+      "Filter.atTop"
+    ]
   }
 ]

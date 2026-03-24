@@ -104,70 +104,80 @@
       "title": "Introduction and Documentation",
       "startLine": 1,
       "endLine": 91,
-      "summary": "Extensive docstring covering the mathematical statement, examples for n=5 and n=8, Mathlib approach, original contributions, proof techniques, status checklist, dependencies, historical note on Euler (1748), and Glaisher's bijection. Notes Wiedijk #45 classification."
+      "summary": "Extensive docstring covering the mathematical statement, examples for n=5 and n=8, Mathlib approach, original contributions, proof techniques, status checklist, dependencies, historical note on Euler (1748), and Glaisher's bijection. Notes Wiedijk #45 classification.",
+      "mathContext": "Extensive docstring covering the mathematical statement, examples for n=5 and n=8, Mathlib approach, original contributions, proof techniques, status checklist, dependencies, historical note on Euler "
     },
     {
       "id": "partitions",
       "title": "Integer Partitions",
       "startLine": 92,
       "endLine": 106,
-      "summary": "Demonstrates Nat.Partition n type, parts accessor (Multiset ℕ), and sum constraint (parts_sum) through three example declarations. Establishes the Mathlib foundation for partition reasoning."
+      "summary": "Demonstrates Nat.Partition n type, parts accessor (Multiset ℕ), and sum constraint (parts_sum) through three example declarations. Establishes the Mathlib foundation for partition reasoning.",
+      "mathContext": "Demonstrates Nat.Partition n type, parts accessor (Multiset ℕ), and sum constraint (parts_sum) through three example declarations. Establishes the Mathlib foundation for partition reasoning."
     },
     {
       "id": "distinct-partitions",
       "title": "Distinct Partitions",
       "startLine": 107,
       "endLine": 119,
-      "summary": "Shows Nat.Partition.distincts n (Finset of distinct partitions) and proves distinct_iff_nodup: membership in distincts ↔ parts.Nodup, via simp."
+      "summary": "Shows Nat.Partition.distincts n (Finset of distinct partitions) and proves distinct_iff_nodup: membership in distincts ↔ parts.Nodup, via simp.",
+      "mathContext": "Shows Nat.Partition.distincts n (Finset of distinct partitions) and proves distinct_iff_nodup: membership in distincts ↔ parts.Nodup, via simp."
     },
     {
       "id": "odd-partitions",
       "title": "Odd Partitions",
       "startLine": 120,
       "endLine": 132,
-      "summary": "Shows Nat.Partition.odds n (Finset of odd partitions) and proves odd_iff_all_odd: membership in odds ↔ ∀ parts are not even, via simp."
+      "summary": "Shows Nat.Partition.odds n (Finset of odd partitions) and proves odd_iff_all_odd: membership in odds ↔ ∀ parts are not even, via simp.",
+      "mathContext": "Shows Nat.Partition.odds n (Finset of odd partitions) and proves odd_iff_all_odd: membership in odds ↔ ∀ parts are not even, via simp."
     },
     {
       "id": "main-theorem",
       "title": "The Partition Theorem",
       "startLine": 133,
       "endLine": 153,
-      "summary": "Main result: partition_theorem proves (distincts n).card = (odds n).card via one-line invocation of Theorems100.partition_theorem. FULLY PROVED — no axioms or sorry."
+      "summary": "Main result: partition_theorem proves (distincts n).card = (odds n).card via one-line invocation of Theorems100.partition_theorem. FULLY PROVED — no axioms or sorry.",
+      "mathContext": "Main result: partition_theorem proves (distincts n).card = (odds n).card via one-line invocation of Theorems100.partition_theorem. FULLY PROVED — no axioms or sorry."
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 154,
       "endLine": 197,
-      "summary": "Computationally verifies partition equality for n = 0 through 8 using native_decide. Lists explicit partitions for each case, providing independent confirmation of the theorem."
+      "summary": "Computationally verifies partition equality for n = 0 through 8 using native_decide. Lists explicit partitions for each case, providing independent confirmation of the theorem.",
+      "mathContext": "Computationally verifies partition equality for n = 0 through 8 using native_decide. Lists explicit partitions for each case, providing independent confirmation of the theorem."
     },
     {
       "id": "generating-functions",
       "title": "Generating Function Proof",
       "startLine": 198,
       "endLine": 223,
-      "summary": "Commentary explaining the classical generating function argument: ∏(1+xᵏ) = ∏1/(1-x^{2k+1}) via the identity 1+xᵏ = (1-x^{2k})/(1-xᵏ) and telescoping cancellation of even factors."
+      "summary": "Commentary explaining the classical generating function argument: ∏(1+xᵏ) = ∏1/(1-x^{2k+1}) via the identity 1+xᵏ = (1-x^{2k})/(1-xᵏ) and telescoping cancellation of even factors.",
+      "mathContext": "Commentary explaining the classical generating function argument: ∏(1+xᵏ) = ∏1/(1-x^{2k+1}) via the identity 1+xᵏ = (1-x^{2k})/(1-xᵏ) and telescoping cancellation of even factors."
     },
     {
       "id": "glaisher-bijection",
       "title": "Glaisher's Bijection",
       "startLine": 224,
       "endLine": 251,
-      "summary": "Commentary on the Glaisher correspondence: distinct → odd via d = 2^a × b decomposition, and reverse via binary representation of multiplicities. Worked example: {6,5,3} ↔ {5,3,3,3}."
+      "summary": "Commentary on the Glaisher correspondence: distinct → odd via d = 2^a × b decomposition, and reverse via binary representation of multiplicities. Worked example: {6,5,3} ↔ {5,3,3,3}.",
+      "mathContext": "Commentary on the Glaisher correspondence: distinct → odd via d = 2^a × b decomposition, and reverse via binary representation of multiplicities. Worked example: {6,5,3} ↔ {5,3,3,3}."
     },
     {
       "id": "pentagonal-connection",
       "title": "Pentagonal Number Connection",
       "startLine": 252,
       "endLine": 265,
-      "summary": "Commentary on Euler's pentagonal number theorem ∏(1-xᵏ) = Σ(-1)ⁿx^{n(3n-1)/2} and the resulting recurrence for p(n) with signs alternating in pairs."
+      "summary": "Commentary on Euler's pentagonal number theorem ∏(1-xᵏ) = Σ(-1)ⁿx^{n(3n-1)/2} and the resulting recurrence for p(n) with signs alternating in pairs.",
+      "mathContext": "Commentary on Euler's pentagonal number theorem ∏(1-xᵏ) = Σ(-1)ⁿx^{n(3n-1)/2} and the resulting recurrence for p(n) with signs alternating in pairs."
     },
     {
       "id": "asymptotics",
       "title": "Asymptotic Growth",
       "startLine": 266,
       "endLine": 281,
-      "summary": "States OEIS A000009 sequence and Meinardus asymptotic formula Q(n) ~ exp(π√(n/3))/(4·3^{1/4}·n^{3/4}). Includes #check commands verifying declaration accessibility."
+      "summary": "States OEIS A000009 sequence and Meinardus asymptotic formula Q(n) ~ exp(π√(n/3))/(4·3^{1/4}·n^{3/4}). Includes #check commands verifying declaration accessibility.",
+      "mathContext": "States OEIS A000009 sequence and Meinardus asymptotic formula Q(n) ~ exp(π√(n/3))/(4·3^{1/4}·n^{3/4}). Includes #check commands verifying declaration accessibility."
     }
   ],
   "conclusion": {
@@ -184,17 +194,17 @@
     {
       "id": "kummer-theorem",
       "relationship": "uses-same-technique",
-      "description": "Kummer's theorem on binomial coefficients uses p-adic valuations and carries in base-p addition — a similar digit-manipu"
+      "description": "Kummer's theorem on binomial coefficients uses p-adic valuations and carries in base-p addition — a similar digit-manipulation technique to Glaisher's binary representation bijection."
     },
     {
       "id": "erdos-250",
       "relationship": "related-problem",
-      "description": "Irrationality of Σ σ(n)/2ⁿ connects to partition theory through the divisor function σ(n) and Ramanujan-Eisenstein serie"
+      "description": "Irrationality of Σ σ(n)/2ⁿ connects to partition theory through the divisor function σ(n) and Ramanujan-Eisenstein series, which arise from the same generating function framework."
     },
     {
       "id": "ramseys-theorem",
       "relationship": "foundation",
-      "description": "Both are foundational combinatorics results. Ramsey theory and partition theory are twin pillars of combinatorial mathem"
+      "description": "Both are foundational combinatorics results. Ramsey theory and partition theory are twin pillars of combinatorial mathematics, both concerning structure within large discrete objects."
     }
   ],
   "references": [

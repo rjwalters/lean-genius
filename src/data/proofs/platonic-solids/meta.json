@@ -192,27 +192,27 @@
     {
       "id": "euler-polyhedral-formula",
       "relationship": "complementary",
-      "description": "Euler's formula V-E+F=2 is the key constraint used to prove there are exactly 5 Platonic solids: the formula, combined w"
+      "description": "Euler's formula V-E+F=2 is the key constraint used to prove there are exactly 5 Platonic solids: the formula, combined with regularity conditions (identical faces, same valence at each vertex), yields exactly 5 solutions"
     },
     {
       "id": "pythagorean-theorem",
       "relationship": "foundational",
-      "description": "The Pythagorean theorem provides the metric relationships needed to construct the Platonic solids: the icosahedron and d"
+      "description": "The Pythagorean theorem provides the metric relationships needed to construct the Platonic solids: the icosahedron and dodecahedron involve the golden ratio phi = (1+sqrt(5))/2, whose properties depend on Pythagorean relationships"
     },
     {
       "id": "four-color-theorem",
       "relationship": "thematic",
-      "description": "Both concern fundamental properties of embedded geometric structures: the four-color theorem concerns graph coloring on "
+      "description": "Both concern fundamental properties of embedded geometric structures: the four-color theorem concerns graph coloring on the sphere, while Platonic solids classify regular polyhedra — both constrain what geometric configurations are possible"
     },
     {
       "id": "isoperimetric-theorem",
       "relationship": "related",
-      "description": "Among all polyhedra with n faces, the Platonic solids are the most symmetric. The isoperimetric theorem (sphere maximize"
+      "description": "Among all polyhedra with n faces, the Platonic solids are the most symmetric. The isoperimetric theorem (sphere maximizes volume for given surface area) is the continuous analog — both concern optimal geometric shapes"
     },
     {
       "id": "triangle-angle-sum",
       "relationship": "foundational",
-      "description": "The angle sum property (180 degrees for planar triangles) constrains face geometry. For Platonic solids, the angle defec"
+      "description": "The angle sum property (180 degrees for planar triangles) constrains face geometry. For Platonic solids, the angle defect at each vertex (360 minus the sum of face angles) must be positive, directly yielding the finiteness of regular polyhedra"
     }
   ]
 }

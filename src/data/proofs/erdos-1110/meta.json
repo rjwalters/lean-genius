@@ -88,56 +88,64 @@
       "title": "Basic Definitions",
       "summary": "Power form p^k q^l, non-divisibility, representability",
       "startLine": 42,
-      "endLine": 77
+      "endLine": 77,
+      "mathContext": "Power form p^k q^l, non-divisibility, representability"
     },
     {
       "id": "case-2-3",
       "title": "The {2,3} Case",
       "summary": "Erdős's 'silly conjecture' and the simple inductive proof",
       "startLine": 78,
-      "endLine": 110
+      "endLine": 110,
+      "mathContext": "Erdős's 'silly conjecture' and the simple inductive proof"
     },
     {
       "id": "general-case",
       "title": "General Case",
       "summary": "Erdős-Lewin theorem: finite exceptions iff {2,3}",
       "startLine": 111,
-      "endLine": 133
+      "endLine": 133,
+      "mathContext": "Erdős-Lewin theorem: finite exceptions iff {2,3}"
     },
     {
       "id": "yu-chen",
       "title": "Yu-Chen Results (2022)",
       "summary": "Density zero and coprime infinitude theorems",
       "startLine": 134,
-      "endLine": 172
+      "endLine": 172,
+      "mathContext": "Density zero and coprime infinitude theorems"
     },
     {
       "id": "minimum-summand",
       "title": "Minimum Summand Size",
       "summary": "Bounds on f(n): how large can summands be?",
       "startLine": 173,
-      "endLine": 204
+      "endLine": 204,
+      "mathContext": "Bounds on f(n): how large can summands be?"
     },
     {
       "id": "related",
       "title": "Related Problems",
       "summary": "Connections to Problems #123, #845, #246",
       "startLine": 205,
-      "endLine": 215
+      "endLine": 215,
+      "mathContext": "Connections to Problems #123, #845, #246"
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "Concrete representations for small numbers",
       "startLine": 216,
-      "endLine": 246
+      "endLine": 246,
+      "mathContext": "Concrete representations for small numbers"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Problem status and main results",
       "startLine": 247,
-      "endLine": 294
+      "endLine": 294,
+      "mathContext": "Problem status and main results"
     }
   ],
   "conclusion": {
@@ -202,7 +210,7 @@
       ],
       "title": "d-Complete Sequences of Integers",
       "venue": "Journal of the Australian Mathematical Society",
-      "year": 1996,
+      "year": "1996",
       "volume": "61",
       "pages": "44–58",
       "doi": "10.1017/S1446788700000057",
@@ -215,7 +223,7 @@
       ],
       "title": "On Representations by Sums of p^a q^b",
       "venue": "Acta Arithmetica",
-      "year": 2022,
+      "year": "2022",
       "volume": "202",
       "pages": "105–127",
       "note": "Establishes density-zero results for non-representable integers in many parameter regimes and proves infinitely many coprime non-representable integers exist for most (p,q) ≠ {2,3}."
@@ -226,7 +234,7 @@
       ],
       "title": "Note on a Problem of Erdős",
       "venue": "Proceedings of the Cambridge Philosophical Society",
-      "year": 1959,
+      "year": "1959",
       "volume": "55",
       "pages": "370–373",
       "doi": "10.1017/S0305004100034277",
@@ -239,7 +247,7 @@
       ],
       "title": "Minimum Summand Bounds for p^k q^l Representations",
       "venue": "Journal of Number Theory",
-      "year": 2025,
+      "year": "2025",
       "note": "Improves the Yu-Chen lower bounds on the minimum summand in representations, showing the minimum summand f(n) satisfies f(n) ~ n / log n asymptotically."
     },
     {
@@ -248,7 +256,7 @@
       ],
       "title": "On a Problem in Additive Number Theory",
       "venue": "Journal of the London Mathematical Society",
-      "year": 1954,
+      "year": "1954",
       "volume": "s1-29",
       "issue": "4",
       "pages": "482–488",

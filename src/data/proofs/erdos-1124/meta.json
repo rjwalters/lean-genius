@@ -87,63 +87,72 @@
       "title": "Imports and Setup",
       "summary": "Imports `EuclideanDist` for the inner product space $\\mathbb{R}^2$, `Lebesgue.Basic` for measurability, `Set.Finite.Basic` for finite decompositions, and `Data.Real.Basic` for $\\pi$ and real arithmetic. Opens the `Set` and `MeasureTheory` namespaces.",
       "startLine": 32,
-      "endLine": 40
+      "endLine": 40,
+      "mathContext": "Imports `EuclideanDist` for the inner product space $\\mathbb{R}^2$, `Lebesgue.Basic` for measurability, `Set.Finite.Basic` for finite decompositions, and `Data.Real.Basic` for $\\pi$ and real arithmeti"
     },
     {
       "id": "basic-defs",
       "title": "Basic Definitions: Points, Disks, Squares",
       "summary": "Defines `Point := EuclideanSpace ℝ (Fin 2)`, the closed disk $D(r) = \\{p : \\|p\\| \\leq r\\}$, and the square $S(s) = [0,s]^2$. Includes `unitDisk` (area $\\pi$) and `unitSquare` (area 1) as special cases.",
       "startLine": 41,
-      "endLine": 63
+      "endLine": 63,
+      "mathContext": "Defines `Point := EuclideanSpace ℝ (Fin 2)`, the closed disk $D(r) = \\{p : \\|p\\| \\leq r\\}$, and the square $S(s) = [0,s]^2$. Includes `unitDisk` (area $\\pi$) and `unitSquare` (area 1) as special cases"
     },
     {
       "id": "translation-congruence",
       "title": "Translation and Isometry Congruence",
       "summary": "Defines `translateBy v` ($p \\mapsto p + v$), `TranslationCongruent` ($B = A + v$), and `IsometryCongruent` ($B = f(A)$ for distance-preserving $f$). Translations form a subgroup of the Euclidean group $E(2) = O(2) \\ltimes \\mathbb{R}^2$.",
       "startLine": 64,
-      "endLine": 79
+      "endLine": 79,
+      "mathContext": "Defines `translateBy v` ($p \\mapsto p + v$), `TranslationCongruent` ($B = A + v$), and `IsometryCongruent` ($B = f(A)$ for distance-preserving $f$). Translations form a subgroup of the Euclidean group"
     },
     {
       "id": "decomposition",
       "title": "Decomposition and Equidecomposability",
       "summary": "Defines `IsDecomposition S pieces` (pairwise disjoint, $\\bigcup = S$), `TranslationEquidecomposable` ($A \\sim_T B$ via $n$ translation-matched pieces), and `IsometryEquidecomposable` ($A \\sim_E B$ via $n$ isometry-matched pieces).",
       "startLine": 80,
-      "endLine": 98
+      "endLine": 98,
+      "mathContext": "Defines `IsDecomposition S pieces` (pairwise disjoint, $\\bigcup = S$), `TranslationEquidecomposable` ($A \\sim_T B$ via $n$ translation-matched pieces), and `IsometryEquidecomposable` ($A \\sim_E B$ via"
     },
     {
       "id": "equal-area",
       "title": "Equal Area Condition",
       "summary": "Defines `SameArea r s` ($\\pi r^2 = s^2$) and `equalAreaRadius = 1/\\sqrt{\\pi}$. The theorem `equal_areas` proves $\\pi \\cdot (1/\\sqrt{\\pi})^2 = 1^2$ via `field_simp; ring` — the only fully proved result in the file.",
       "startLine": 99,
-      "endLine": 119
+      "endLine": 119,
+      "mathContext": "Defines `SameArea r s` ($\\pi r^2 = s^2$) and `equalAreaRadius = 1/\\sqrt{\\pi}$. The theorem `equal_areas` proves $\\pi \\cdot (1/\\sqrt{\\pi})^2 = 1^2$ via `field_simp; ring` — the only fully proved result"
     },
     {
       "id": "tarski-problem",
       "title": "Tarski's Original Question (1925)",
       "summary": "Formalizes `TarskiProblem` as: $\\forall\\, r, s > 0$, $\\pi r^2 = s^2 \\implies D(r) \\sim_E S(s)$. This was open for 65 years and considered one of the most beautiful problems in combinatorial geometry.",
       "startLine": 120,
-      "endLine": 132
+      "endLine": 132,
+      "mathContext": "Formalizes `TarskiProblem` as: $\\forall\\, r, s > 0$, $\\pi r^2 = s^2 \\implies D(r) \\sim_E S(s)$. This was open for 65 years and considered one of the most beautiful problems in combinatorial geometry."
     },
     {
       "id": "laczkovich-theorem",
       "title": "Laczkovich's Solution (1990)",
       "summary": "Axiomatizes `laczkovich_theorem` ($D(r) \\sim_T S(s)$ for equal-area pairs), `laczkovich_piece_count` ($< 10^{51}$ pieces), `translation_implies_isometry` (since translations are isometries), and derives `tarski_solved : TarskiProblem`.",
       "startLine": 133,
-      "endLine": 166
+      "endLine": 166,
+      "mathContext": "Axiomatizes `laczkovich_theorem` ($D(r) \\sim_T S(s)$ for equal-area pairs), `laczkovich_piece_count` ($< 10^{51}$ pieces), `translation_implies_isometry` (since translations are isometries), and deriv"
     },
     {
       "id": "non-measurability",
       "title": "Non-Measurability Results",
       "summary": "Axiomatizes `pieces_not_measurable` (any disk decomposition has a non-measurable piece) and `dubins_hirsch_karush` (1963): no decomposition into measurable, translation-congruent pieces exists, since $\\lambda^2(D) = \\pi \\neq 1 = \\lambda^2(S)$.",
       "startLine": 167,
-      "endLine": 185
+      "endLine": 185,
+      "mathContext": "Axiomatizes `pieces_not_measurable` (any disk decomposition has a non-measurable piece) and `dubins_hirsch_karush` (1963): no decomposition into measurable, translation-congruent pieces exists, since "
     },
     {
       "id": "main-result",
       "title": "Main Result: erdos_1124",
       "summary": "The summary theorem: `TarskiProblem ∧ (∀ r s, ... → TranslationEquidecomposable ...)`. Proved via `exact ⟨tarski_solved, laczkovich_theorem⟩`, packaging Tarski's answer with Laczkovich's stronger translation-only result.",
       "startLine": 186,
-      "endLine": 211
+      "endLine": 211,
+      "mathContext": "The summary theorem: `TarskiProblem ∧ (∀ r s, ... → TranslationEquidecomposable ...)`. Proved via `exact ⟨tarski_solved, laczkovich_theorem⟩`, packaging Tarski's answer with Laczkovich's stronger tran"
     }
   ],
   "conclusion": {

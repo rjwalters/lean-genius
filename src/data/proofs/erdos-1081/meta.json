@@ -87,63 +87,72 @@
       "title": "Squarefull Numbers",
       "summary": "Definition of squarefull (powerful) numbers and alternative characterization",
       "startLine": 39,
-      "endLine": 79
+      "endLine": 79,
+      "mathContext": "Definition of squarefull (powerful) numbers and alternative characterization"
     },
     {
       "id": "examples-squarefull",
       "title": "Squarefull Examples",
       "summary": "Proofs that 1, 4, 8, 9 are squarefull",
       "startLine": 80,
-      "endLine": 107
+      "endLine": 107,
+      "mathContext": "Proofs that 1, 4, 8, 9 are squarefull"
     },
     {
       "id": "sums",
       "title": "Sums of Two Squarefull",
       "summary": "Definition and examples: 5 = 1+4, 13 = 4+9",
       "startLine": 108,
-      "endLine": 132
+      "endLine": 132,
+      "mathContext": "Definition and examples: 5 = 1+4, 13 = 4+9"
     },
     {
       "id": "counting",
       "title": "The Counting Function A(x)",
       "summary": "A(x) definition and squarefull count asymptotic S(x) ~ c√x",
       "startLine": 133,
-      "endLine": 159
+      "endLine": 159,
+      "mathContext": "A(x) definition and squarefull count asymptotic S(x) ~ c√x"
     },
     {
       "id": "conjecture",
       "title": "Erdős's Conjecture (Disproved)",
       "summary": "The false conjecture A(x) ~ cx/√(log x) and Odoni's disproof",
       "startLine": 160,
-      "endLine": 180
+      "endLine": 180,
+      "mathContext": "The false conjecture A(x) ~ cx/√(log x) and Odoni's disproof"
     },
     {
       "id": "odoni",
       "title": "Odoni's Lower Bound",
       "summary": "A(x) grows faster by a slowly growing factor",
       "startLine": 181,
-      "endLine": 198
+      "endLine": 198,
+      "mathContext": "A(x) grows faster by a slowly growing factor"
     },
     {
       "id": "blomer-granville",
       "title": "Blomer-Granville Refinement",
       "summary": "The correct exponent α = 1 - 2^(-1/3) ≈ 0.206",
       "startLine": 199,
-      "endLine": 236
+      "endLine": 236,
+      "mathContext": "The correct exponent α = 1 - 2^(-1/3) ≈ 0.206"
     },
     {
       "id": "explanation",
       "title": "Why the Conjecture Failed",
       "summary": "Heuristic explanation and connection to quadratic forms",
       "startLine": 237,
-      "endLine": 275
+      "endLine": 275,
+      "mathContext": "Heuristic explanation and connection to quadratic forms"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Complete answer: NO, with correct exponent α ≈ 0.206",
       "startLine": 276,
-      "endLine": 356
+      "endLine": 356,
+      "mathContext": "Complete answer: NO, with correct exponent α ≈ 0.206"
     }
   ],
   "conclusion": {
@@ -222,11 +231,11 @@
         "R. W. K. Odoni"
       ],
       "title": "On the norms of algebraic integers",
-      "journal": "Mathematika",
       "volume": "22",
-      "year": 1975,
+      "year": "1975",
       "pages": "71–80",
-      "note": "Contains Odoni's foundational work leading to the 1981 disproof; provides the lower bound showing A(x) grows faster than c·x/√(log x)."
+      "note": "Contains Odoni's foundational work leading to the 1981 disproof; provides the lower bound showing A(x) grows faster than c·x/√(log x).",
+      "venue": "Mathematika"
     },
     {
       "authors": [
@@ -234,22 +243,22 @@
         "J. Brüdern"
       ],
       "title": "Sums of two squareful numbers",
-      "journal": "Acta Arithmetica",
       "volume": "69",
-      "year": 1995,
+      "year": "1995",
       "pages": "369–374",
-      "note": "Establishes intermediate bounds for A(x) improving on Odoni; a key step between the original disproof and the Blomer-Granville refinement."
+      "note": "Establishes intermediate bounds for A(x) improving on Odoni; a key step between the original disproof and the Blomer-Granville refinement.",
+      "venue": "Acta Arithmetica"
     },
     {
       "authors": [
         "V. Blomer"
       ],
       "title": "Ternary quadratic forms with rational zeros",
-      "journal": "Journal de Théorie des Nombres de Bordeaux",
       "volume": "16",
-      "year": 2004,
+      "year": "2004",
       "pages": "293–313",
-      "note": "Blomer's solo work using quadratic forms to tighten bounds on A(x); directly precedes the 2006 joint paper with Granville."
+      "note": "Blomer's solo work using quadratic forms to tighten bounds on A(x); directly precedes the 2006 joint paper with Granville.",
+      "venue": "Journal de Théorie des Nombres de Bordeaux"
     },
     {
       "authors": [
@@ -257,12 +266,12 @@
         "A. Granville"
       ],
       "title": "Estimates for representation numbers of quadratic forms",
-      "journal": "Duke Mathematical Journal",
       "volume": "135",
-      "year": 2006,
+      "year": "2006",
       "pages": "261–302",
       "doi": "10.1215/S0012-7094-06-13522-6",
-      "note": "Definitive paper proving the correct exponent α = 1 − 2^(−1/3) for A(x) ~ x/(log x)^α via representation theory of binary quadratic forms."
+      "note": "Definitive paper proving the correct exponent α = 1 − 2^(−1/3) for A(x) ~ x/(log x)^α via representation theory of binary quadratic forms.",
+      "venue": "Duke Mathematical Journal"
     },
     {
       "authors": [
@@ -271,7 +280,7 @@
       "title": "Introduction to Analytic and Probabilistic Number Theory",
       "publisher": "Cambridge University Press",
       "edition": "3rd",
-      "year": 2015,
+      "year": "2015",
       "note": "Standard reference for multiplicative number theory, counting functions, and the analytic methods (Dirichlet series, saddle-point) underlying the asymptotic results in this problem."
     }
   ],

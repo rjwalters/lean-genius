@@ -49,56 +49,64 @@
       "title": "Problem Documentation and References",
       "summary": "Module docstring documenting the problem statement, historical background (Moon 1966, Erdős, BES 1975), the exact formula $f(t) = R(t,t-1) + x$, and resolution of both Erdős questions. Imports Mathlib.",
       "startLine": 1,
-      "endLine": 44
+      "endLine": 44,
+      "mathContext": "Module docstring documenting the problem statement, historical background (Moon 1966, Erdős, BES 1975), the exact formula $f(t) = R(t,t-1) + x$, and resolution of both Erdős questions. Imports Mathlib"
     },
     {
       "id": "two-coloring",
       "title": "Two-Colorings and Monochromatic Cliques",
       "summary": "Defines `TwoColoring n` as $\\text{Fin}\\;n \\to \\text{Fin}\\;n \\to \\text{Bool}$, the symmetry predicate $c(i,j) = c(j,i)$, and `isMonochromaticClique` requiring all edges in $S$ to have the same color.",
       "startLine": 45,
-      "endLine": 59
+      "endLine": 59,
+      "mathContext": "Defines `TwoColoring n` as $\\text{Fin}\\;n \\to \\text{Fin}\\;n \\to \\text{Bool}$, the symmetry predicate $c(i,j) = c(j,i)$, and `isMonochromaticClique` requiring all edges in $S$ to have the same color."
     },
     {
       "id": "clique-partition",
       "title": "Clique Partitions",
       "summary": "Defines `areDisjoint` for pairwise disjoint sets and the `CliquePartition` structure bundling cliques of size $t$, color assignments, monochromaticity proofs, and disjointness. Defines `coveredVertices` and `leftover`.",
       "startLine": 60,
-      "endLine": 86
+      "endLine": 86,
+      "mathContext": "Defines `areDisjoint` for pairwise disjoint sets and the `CliquePartition` structure bundling cliques of size $t$, color assignments, monochromaticity proofs, and disjointness. Defines `coveredVertice"
     },
     {
       "id": "f-definition",
       "title": "The Function $f(t)$",
       "summary": "Three-level minimax: `minLeftover(c,t)` via `sInf`, `f_n(n,t)` via `sSup` over colorings, and `f(t)` via `sSup` over $n$. This captures $f(t) = \\sup_n \\max_c \\min_P \\text{leftover}(P)$.",
       "startLine": 87,
-      "endLine": 104
+      "endLine": 104,
+      "mathContext": "Three-level minimax: `minLeftover(c,t)` via `sInf`, `f_n(n,t)` via `sSup` over colorings, and `f(t)` via `sSup` over $n$. This captures $f(t) = \\sup_n \\max_c \\min_P \\text{leftover}(P)$."
     },
     {
       "id": "moon",
       "title": "Moon's Theorem: $f(3) = 4$",
       "summary": "Axiomatizes Moon's 1966 result: $f(3) = 4$ and the uniform version $f_n(n, 3) = 4$ for $n \\ge 8$.",
       "startLine": 105,
-      "endLine": 114
+      "endLine": 114,
+      "mathContext": "Axiomatizes Moon's 1966 result: $f(3) = 4$ and the uniform version $f_n(n, 3) = 4$ for $n \\ge 8$."
     },
     {
       "id": "ramsey-bound",
       "title": "Ramsey Numbers and Erdős Bound",
       "summary": "Axiomatizes `ramseyNumber(s,t)` and Erdős's observations: $f(t) < R(t,t)$ (leftover avoids monochromatic $K_t$) and the crude bound $R(t,t) \\le 4^t$ from Erdős-Szekeres.",
       "startLine": 115,
-      "endLine": 127
+      "endLine": 127,
+      "mathContext": "Axiomatizes `ramseyNumber(s,t)` and Erdős's observations: $f(t) < R(t,t)$ (leftover avoids monochromatic $K_t$) and the crude bound $R(t,t) \\le 4^t$ from Erdős-Szekeres."
     },
     {
       "id": "exact-formula",
       "title": "Burr-Erdős-Spencer Exact Formula",
       "summary": "The main result axiomatized: $\\exists x < t: f(t) = R(t, t-1) + x$ for $t \\ge 3$. Includes both the lower bound $f(t) \\ge R(t, t-1)$ and upper bound $f(t) < R(t, t-1) + t$.",
       "startLine": 128,
-      "endLine": 141
+      "endLine": 141,
+      "mathContext": "The main result axiomatized: $\\exists x < t: f(t) = R(t, t-1) + x$ for $t \\ge 3$. Includes both the lower bound $f(t) \\ge R(t, t-1)$ and upper bound $f(t) < R(t, t-1) + t$."
     },
     {
       "id": "asymptotic",
       "title": "Asymptotic Behavior",
       "summary": "Two consequences of the BES formula: the root limit $f(t)^{1/t} \\to 4$ (via `Filter.Tendsto`) answering Erdős's first question, and $f(t) \\ne O(t)$ (negated existential) answering the second.",
       "startLine": 142,
-      "endLine": 158
+      "endLine": 158,
+      "mathContext": "Two consequences of the BES formula: the root limit $f(t)^{1/t} \\to 4$ (via `Filter.Tendsto`) answering Erdős's first question, and $f(t) \\ne O(t)$ (negated existential) answering the second."
     }
   ],
   "conclusion": {
@@ -143,27 +151,27 @@
     {
       "id": "ramseys-theorem",
       "relationship": "foundational",
-      "description": "Ramsey's theorem guarantees the existence of monochromatic cliques in any 2-colored complete graph, providing the theore"
+      "description": "Ramsey's theorem guarantees the existence of monochromatic cliques in any 2-colored complete graph, providing the theoretical foundation for the leftover function f(t). The off-diagonal Ramsey numbers R(t, t-1) that appear in the exact BES formula f(t) = R(t, t-1) + x are direct instances of the Ramsey-number framework formalized here."
     },
     {
       "id": "erdos-1017",
       "relationship": "related",
-      "description": "Erdős Problem #1017 studies the minimum number of cliques needed to partition the *edges* of a graph, whereas #1015 part"
+      "description": "Erdős Problem #1017 studies the minimum number of cliques needed to partition the *edges* of a graph, whereas #1015 partitions the *vertices* of a 2-colored complete graph into monochromatic cliques. Both problems require understanding clique partition numbers and the extremal graphs that force large leftover; the Erdős-Goodman-Pósa bound f(n,k) ≤ n²/4 uses similar counting arguments to those in the BES proof."
     },
     {
       "id": "erdos-1009",
       "relationship": "thematic",
-      "description": "Erdős Problem #1009 concerns edge-disjoint triangle packing near the Turán threshold. The packing/covering duality betwe"
+      "description": "Erdős Problem #1009 concerns edge-disjoint triangle packing near the Turán threshold. The packing/covering duality between vertex-disjoint clique partitions (#1015) and edge-disjoint triangle covers (#1009) is a recurring structural motif; both problems measure how far a graph is from being perfectly decomposable into cliques of a fixed size."
     },
     {
       "id": "erdos-1010",
       "relationship": "complementary",
-      "description": "Erdős Problem #1010 quantifies triangle supersaturation: how many triangles must appear once the edge count exceeds the "
+      "description": "Erdős Problem #1010 quantifies triangle supersaturation: how many triangles must appear once the edge count exceeds the Turán threshold. Problem #1015 quantifies the leftover in vertex-disjoint monochromatic triangle (or t-clique) packings. Together they reflect two sides of extremal Ramsey-packing theory—what is forced by density versus what is forced by 2-coloring."
     },
     {
       "id": "erdos-1012",
       "relationship": "thematic",
-      "description": "Erdős Problem #1012 studies long cycles in dense graphs via threshold edge-count conditions analogous to Ramsey bounds. "
+      "description": "Erdős Problem #1012 studies long cycles in dense graphs via threshold edge-count conditions analogous to Ramsey bounds. The proof techniques—analyzing extremal configurations and using double-counting arguments on vertex degrees—overlap with the Burr-Erdős-Spencer approach to bounding f(t) via properties of the leftover subgraph."
     }
   ],
   "references": [
@@ -174,7 +182,7 @@
         "J. H. Spencer"
       ],
       "title": "Ramsey theorems for multiple copies of graphs",
-      "year": 1975,
+      "year": "1975",
       "venue": "Transactions of the American Mathematical Society",
       "note": "The primary source. Proves the exact formula f(t) = R(t, t-1) + x with 0 ≤ x < t, resolving both Erdős questions about f(t)^{1/t} and the O(t) growth rate."
     },
@@ -183,7 +191,7 @@
         "J. W. Moon"
       ],
       "title": "On sets of consistent arcs in a tournament",
-      "year": 1966,
+      "year": "1966",
       "venue": "Canadian Mathematical Bulletin",
       "note": "Establishes f(3) = 4—the base case of the BES formula. Moon's proof that at most 4 vertices remain when packing monochromatic triangles in any 2-colored K_n (n ≥ 8) motivated the general problem."
     },
@@ -193,7 +201,7 @@
         "G. Szekeres"
       ],
       "title": "A combinatorial problem in geometry",
-      "year": 1935,
+      "year": "1935",
       "venue": "Compositio Mathematica",
       "note": "Proves the classical upper bound R(s,t) ≤ C(s+t-2, s-1) ≤ 4^t via double induction, establishing the exponential growth that underlies f(t) < R(t,t) ≤ 4^t in the BES framework."
     },
@@ -202,7 +210,7 @@
         "F. P. Ramsey"
       ],
       "title": "On a problem of formal logic",
-      "year": 1930,
+      "year": "1930",
       "venue": "Proceedings of the London Mathematical Society",
       "note": "The foundational paper establishing that any 2-coloring of a sufficiently large complete graph contains a monochromatic clique. The Ramsey numbers R(t, t-1) at the heart of the BES formula are instances of this theorem."
     },
@@ -213,7 +221,7 @@
         "J. H. Spencer"
       ],
       "title": "Ramsey Theory",
-      "year": 1990,
+      "year": "1990",
       "venue": "John Wiley & Sons (2nd edition)",
       "note": "Standard reference for Ramsey theory including diagonal and off-diagonal Ramsey numbers, the probabilistic lower bound R(t,t-1) ≥ 2^{(t-1)/2}, and the connection to clique partition problems."
     }

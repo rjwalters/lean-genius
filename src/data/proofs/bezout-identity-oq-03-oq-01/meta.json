@@ -179,7 +179,7 @@
     {
       "id": "bezout-identity-oq-03",
       "relationship": "extends",
-      "description": "Parent entry proving CRT existence/uniqueness via Bézout — this file upgrades to the full ring isomorphism ℤ/mnℤ ≅ ℤ/mℤ "
+      "description": "Parent entry proving CRT existence/uniqueness via Bézout — this file upgrades to the full ring isomorphism ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ"
     },
     {
       "id": "bezout-identity",
@@ -189,7 +189,7 @@
     {
       "id": "chinese-remainder-constructive",
       "relationship": "complementary",
-      "description": "The natural-number CRT uses Nat.chineseRemainder — this file provides the algebraically richer ring isomorphism perspect"
+      "description": "The natural-number CRT uses Nat.chineseRemainder — this file provides the algebraically richer ring isomorphism perspective"
     },
     {
       "id": "chinese-remainder-non-coprime",
@@ -199,7 +199,7 @@
     {
       "id": "angle-trisection-oq-02-oq-03",
       "relationship": "related",
-      "description": "The Gauss-Wantzel theorem uses the structure of (ℤ/nℤ)* — the CRT decomposition (ℤ/mnℤ)* ≅ (ℤ/mℤ)* × (ℤ/nℤ)* proved here"
+      "description": "The Gauss-Wantzel theorem uses the structure of (ℤ/nℤ)* — the CRT decomposition (ℤ/mnℤ)* ≅ (ℤ/mℤ)* × (ℤ/nℤ)* proved here is key to computing totients"
     }
   ],
   "references": [

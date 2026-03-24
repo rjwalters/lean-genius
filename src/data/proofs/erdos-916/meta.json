@@ -81,63 +81,72 @@
       "title": "Basic Graph Definitions",
       "summary": "SimpleGraph setup, hasVerticesAndEdges predicate",
       "startLine": 32,
-      "endLine": 47
+      "endLine": 47,
+      "mathContext": "SimpleGraph setup, hasVerticesAndEdges predicate"
     },
     {
       "id": "k4-subdivisions",
       "title": "K₄ Subdivisions",
       "summary": "isK4Subdivision definition, Dirac's theorem",
       "startLine": 48,
-      "endLine": 79
+      "endLine": 79,
+      "mathContext": "isK4Subdivision definition, Dirac's theorem"
     },
     {
       "id": "cycle-structure",
       "title": "Cycles with Adjacent Vertices",
       "summary": "hasCycle, hasVertexTriplyAdjacentToCycle definitions",
       "startLine": 80,
-      "endLine": 116
+      "endLine": 116,
+      "mathContext": "hasCycle, hasVertexTriplyAdjacentToCycle definitions"
     },
     {
       "id": "main-theorem",
       "title": "Thomassen's Result",
       "summary": "thomassen_cycle_structure axiom, erdos_916 theorem",
       "startLine": 117,
-      "endLine": 148
+      "endLine": 148,
+      "mathContext": "thomassen_cycle_structure axiom, erdos_916 theorem"
     },
     {
       "id": "relationship",
       "title": "Relationship to Dirac's Theorem",
       "summary": "triply_adjacent_implies_k4, thomassen_implies_dirac",
       "startLine": 149,
-      "endLine": 173
+      "endLine": 173,
+      "mathContext": "triply_adjacent_implies_k4, thomassen_implies_dirac"
     },
     {
       "id": "edge-analysis",
       "title": "Edge Count Analysis",
       "summary": "edgeThreshold definition, tree_edge_count",
       "startLine": 174,
-      "endLine": 201
+      "endLine": 201,
+      "mathContext": "edgeThreshold definition, tree_edge_count"
     },
     {
       "id": "small-cases",
       "title": "Concrete Small Cases",
       "summary": "case_n_eq_4, case_n_eq_5, case_n_eq_6",
       "startLine": 202,
-      "endLine": 234
+      "endLine": 234,
+      "mathContext": "case_n_eq_4, case_n_eq_5, case_n_eq_6"
     },
     {
       "id": "degree-analysis",
       "title": "Average Degree Analysis",
       "summary": "averageDegreeNumerator, avg_degree_numerator_formula",
       "startLine": 235,
-      "endLine": 253
+      "endLine": 253,
+      "mathContext": "averageDegreeNumerator, avg_degree_numerator_formula"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_916_summary, erdos_916_answer",
       "startLine": 254,
-      "endLine": 284
+      "endLine": 284,
+      "mathContext": "erdos_916_summary, erdos_916_answer"
     }
   ],
   "conclusion": {

@@ -78,42 +78,48 @@
       "title": "Unit Fraction Definitions",
       "summary": "unitFraction, unitFractionSum, isEgyptianDecomposition",
       "startLine": 42,
-      "endLine": 63
+      "endLine": 63,
+      "mathContext": "unitFraction, unitFractionSum, isEgyptianDecomposition"
     },
     {
       "id": "counting-function",
       "title": "The Counting Function F(k)",
       "summary": "F(k) definition, egyptianDecompositionsOfSize",
       "startLine": 64,
-      "endLine": 79
+      "endLine": 79,
+      "mathContext": "F(k) definition, egyptianDecompositionsOfSize"
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
       "summary": "F(1)=1, F(2)=0, F(3)=1, example decomposition {2,3,6}",
       "startLine": 80,
-      "endLine": 128
+      "endLine": 128,
+      "mathContext": "F(1)=1, F(2)=0, F(3)=1, example decomposition {2,3,6}"
     },
     {
       "id": "bounds",
       "title": "Growth Bounds",
       "summary": "Konyagin lower bound, Elsholtz-Planitzer upper bound, Vardi constant",
       "startLine": 129,
-      "endLine": 151
+      "endLine": 151,
+      "mathContext": "Konyagin lower bound, Elsholtz-Planitzer upper bound, Vardi constant"
     },
     {
       "id": "properties",
       "title": "Basic Properties",
       "summary": "F increasing, super-exponential growth, max denominator bound",
       "startLine": 152,
-      "endLine": 172
+      "endLine": 172,
+      "mathContext": "F increasing, super-exponential growth, max denominator bound"
     },
     {
       "id": "egyptian",
       "title": "Egyptian Fraction Problem",
       "summary": "Every positive rational has a decomposition, greedy algorithm",
       "startLine": 173,
-      "endLine": 196
+      "endLine": 196,
+      "mathContext": "Every positive rational has a decomposition, greedy algorithm"
     },
     {
       "id": "asymptotics",
@@ -127,14 +133,16 @@
       "title": "Related Sequences",
       "summary": "OEIS A076393, A006585",
       "startLine": 209,
-      "endLine": 224
+      "endLine": 224,
+      "mathContext": "OEIS A076393, A006585"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_148_status theorem, bounds gap open",
       "startLine": 225,
-      "endLine": 261
+      "endLine": 261,
+      "mathContext": "erdos_148_status theorem, bounds gap open"
     }
   ],
   "conclusion": {

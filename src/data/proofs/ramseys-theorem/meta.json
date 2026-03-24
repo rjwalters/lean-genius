@@ -14,7 +14,8 @@
       "graph-theory",
       "ramsey-theory",
       "pigeonhole",
-      "classic"
+      "classic",
+      "wiedijk-100"
     ],
     "badge": "axiom",
     "sorries": 0,
@@ -195,12 +196,12 @@
     {
       "id": "prob-method-alteration",
       "relationship": "related",
-      "description": "The probabilistic lower bound on Ramsey numbers R(k,k) ≥ 2^{k/2} uses an alteration/expectation argument on random 2-col"
+      "description": "The probabilistic lower bound on Ramsey numbers R(k,k) ≥ 2^{k/2} uses an alteration/expectation argument on random 2-colorings"
     },
     {
       "id": "pigeonhole-principle",
       "relationship": "depends-on",
-      "description": "The neighborhood partition step relies on pigeonhole: n-1 vertices split into two sets, so one has at least ⌈(n-1)/2⌉ el"
+      "description": "The neighborhood partition step relies on pigeonhole: n-1 vertices split into two sets, so one has at least ⌈(n-1)/2⌉ elements"
     },
     {
       "id": "kummer-theorem",
@@ -210,12 +211,17 @@
     {
       "id": "binomial-theorem",
       "relationship": "foundational",
-      "description": "The Ramsey bound $R(r,s) \\leq \\binom{r+s-2}{r-1}$ directly uses binomial coefficients, and the recurrence $R(r,s) \\leq R"
+      "description": "The Ramsey bound $R(r,s) \\leq \\binom{r+s-2}{r-1}$ directly uses binomial coefficients, and the recurrence $R(r,s) \\leq R(r-1,s) + R(r,s-1)$ mirrors Pascal's identity $\\binom{n}{k} = \\binom{n-1}{k-1} + \\binom{n-1}{k}$ — the same combinatorial structure underlying both results"
     },
     {
       "id": "mathematical-induction",
       "relationship": "foundational",
-      "description": "Ramsey's theorem is proved by strong induction on $r + s$, the same principle formalized in mathematical-induction. The "
+      "description": "Ramsey's theorem is proved by strong induction on $r + s$, the same principle formalized in mathematical-induction. The inductive structure requires strong induction because the step from $R(r,s)$ uses both $R(r-1,s)$ and $R(r,s-1)$, not just the immediately preceding value"
+    },
+    {
+      "id": "erdos-szekeres",
+      "relationship": "related",
+      "description": "The Erdos-Szekeres theorem (every sequence of length $rs+1$ contains a monotone subsequence of length $r+1$ or $s+1$) can be proved via Ramsey's theorem applied to a 2-coloring where edges are colored by the relative order of sequence elements"
     }
   ],
   "conclusion": {

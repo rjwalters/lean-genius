@@ -151,14 +151,16 @@
       "title": "Abstract Computation Model",
       "summary": "Defines `DecisionProblem` as $L : \\mathbb{N} \\to \\text{Bool}$, `inputSize` as $\\lfloor \\log_2 n \\rfloor + 1$, `Program` as abstract TM with `decide : Nat → Bool × Nat`, and predicates `solves` and `runsInTime`.",
       "startLine": 53,
-      "endLine": 89
+      "endLine": 89,
+      "mathContext": "Defines `DecisionProblem` as $L : \\mathbb{N} \\to \\text{Bool}$, `inputSize` as $\\lfloor \\log_2 n \\rfloor + 1$, `Program` as abstract TM with `decide : Nat → Bool × Nat`, and predicates `solves` and `ru"
     },
     {
       "id": "polynomial-time",
       "title": "Polynomial Time",
       "summary": "Defines `Polynomial` (degree + coefficient), evaluation $p(n) = c \\cdot (n+1)^d$, `isPolynomial` predicate. Proves `eval_mono`, `poly_bound_degree`, and `poly_pow_expand` for polynomial arithmetic.",
       "startLine": 90,
-      "endLine": 139
+      "endLine": 139,
+      "mathContext": "Defines `Polynomial` (degree + coefficient), evaluation $p(n) = c \\cdot (n+1)^d$, `isPolynomial` predicate. Proves `eval_mono`, `poly_bound_degree`, and `poly_pow_expand` for polynomial arithmetic."
     },
     {
       "id": "class-p",
@@ -189,28 +191,32 @@
       "title": "Polynomial-Time Reductions",
       "summary": "Defines `Reduction` and `PolyReduction` ($A \\leq_p B$) with output size bounds. Proves reflexivity, transitivity (~150 lines of polynomial arithmetic), and the key `poly_reduce_in_P`: $A \\leq_p B \\wedge B \\in P \\Rightarrow A \\in P$.",
       "startLine": 254,
-      "endLine": 569
+      "endLine": 569,
+      "mathContext": "Defines `Reduction` and `PolyReduction` ($A \\leq_p B$) with output size bounds. Proves reflexivity, transitivity (~150 lines of polynomial arithmetic), and the key `poly_reduce_in_P`: $A \\leq_p B \\wed"
     },
     {
       "id": "np-completeness",
       "title": "NP-Hardness, NP-Completeness, and SAT",
       "summary": "Defines `NPHard` and `NPComplete`. Formalizes SAT with `Literal`, `Clause`, `CNFFormula`, `Assignment`. States Cook-Levin axiom and proves `cook_levin : NPComplete SAT`.",
       "startLine": 570,
-      "endLine": 667
+      "endLine": 667,
+      "mathContext": "Defines `NPHard` and `NPComplete`. Formalizes SAT with `Literal`, `Clause`, `CNFFormula`, `Assignment`. States Cook-Levin axiom and proves `cook_levin : NPComplete SAT`."
     },
     {
       "id": "npc-gallery",
       "title": "NP-Complete Problems Gallery",
       "summary": "Defines and proves NP-completeness of 3-SAT, CLIQUE, SUBSET-SUM, HAMPATH via reduction chains from SAT. Uses helper lemmas for abstract placeholder problems.",
       "startLine": 668,
-      "endLine": 756
+      "endLine": 756,
+      "mathContext": "Defines and proves NP-completeness of 3-SAT, CLIQUE, SUBSET-SUM, HAMPATH via reduction chains from SAT. Uses helper lemmas for abstract placeholder problems."
     },
     {
       "id": "conp-complement",
       "title": "coNP and Complement Classes",
       "summary": "Defines `complement` and `coNP`. **Proves**: $P$ is closed under complement ($L \\in P \\Leftrightarrow \\bar{L} \\in P$) and $P \\subseteq \\text{coNP}$.",
       "startLine": 757,
-      "endLine": 807
+      "endLine": 807,
+      "mathContext": "Defines `complement` and `coNP`. **Proves**: $P$ is closed under complement ($L \\in P \\Leftrightarrow \\bar{L} \\in P$) and $P \\subseteq \\text{coNP}$."
     },
     {
       "id": "conjecture",
@@ -225,14 +231,16 @@
       "title": "Known Results and Barriers",
       "summary": "States Time Hierarchy Theorem and $P \\neq \\text{EXPTIME}$ as axioms. Defines `EXPTIME` as problems solvable in $O(2^{n^c})$ time. States Ladner's Theorem: if $P \\neq NP$, NP-intermediate problems exist.",
       "startLine": 866,
-      "endLine": 900
+      "endLine": 900,
+      "mathContext": "States Time Hierarchy Theorem and $P \\neq \\text{EXPTIME}$ as axioms. Defines `EXPTIME` as problems solvable in $O(2^{n^c})$ time. States Ladner's Theorem: if $P \\neq NP$, NP-intermediate problems exis"
     },
     {
       "id": "summary-export",
       "title": "Summary and Export",
       "summary": "Summarizes all main results: $P \\subseteq NP$, Cook-Levin, NP-completeness of SAT/3-SAT/CLIQUE/SUBSET-SUM/HAMPATH, the key equivalence, and Ladner's theorem. Exports definitions via `#check`.",
       "startLine": 901,
-      "endLine": 6370
+      "endLine": 6370,
+      "mathContext": "Summarizes all main results: $P \\subseteq NP$, Cook-Levin, NP-completeness of SAT/3-SAT/CLIQUE/SUBSET-SUM/HAMPATH, the key equivalence, and Ladner's theorem. Exports definitions via `#check`."
     }
   ],
   "crossReferences": [
@@ -271,17 +279,17 @@
     {
       "id": "halting-problem",
       "relationship": "related",
-      "description": "The Halting Problem (undecidability) uses the same abstract TM model and diagonalization technique that underlies the Ti"
+      "description": "The Halting Problem (undecidability) uses the same abstract TM model and diagonalization technique that underlies the Time Hierarchy Theorem stated here"
     },
     {
       "id": "cantors-theorem",
       "relationship": "related",
-      "description": "Cantor's diagonalization argument is the precursor to the computational diagonalization used in the Time Hierarchy Theor"
+      "description": "Cantor's diagonalization argument is the precursor to the computational diagonalization used in the Time Hierarchy Theorem and Ladner's Theorem"
     },
     {
       "id": "ramseys-theorem",
       "relationship": "related",
-      "description": "Ramsey theory problems are frequently NP-hard — determining Ramsey numbers is an NP-hard problem related to the CLIQUE p"
+      "description": "Ramsey theory problems are frequently NP-hard — determining Ramsey numbers is an NP-hard problem related to the CLIQUE problem formalized here"
     },
     {
       "id": "erdos-szekeres",

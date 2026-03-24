@@ -110,14 +110,16 @@
       "title": "Spherical-Hyperbolic Duality",
       "startLine": 326,
       "endLine": 356,
-      "summary": "The cos-to-cosh correspondence (Wick rotation) connecting spherical and hyperbolic geometry: cos(ix) = cosh(x)."
+      "summary": "The cos-to-cosh correspondence (Wick rotation) connecting spherical and hyperbolic geometry: cos(ix) = cosh(x).",
+      "mathContext": "The cos-to-cosh correspondence (Wick rotation) connecting spherical and hyperbolic geometry: cos(ix) = cosh(x)."
     },
     {
       "id": "flat-limit",
       "title": "Flat Limit: Reduction to Euclidean Case",
       "startLine": 357,
       "endLine": 476,
-      "summary": "Derivatives of cosh and sinh, second-order Taylor behavior at zero, and the flat-limit argument showing both non-Euclidean laws reduce to a² + b² = c²."
+      "summary": "Derivatives of cosh and sinh, second-order Taylor behavior at zero, and the flat-limit argument showing both non-Euclidean laws reduce to a² + b² = c².",
+      "mathContext": "Derivatives of cosh and sinh, second-order Taylor behavior at zero, and the flat-limit argument showing both non-Euclidean laws reduce to a² + b² = c²."
     },
     {
       "id": "unified-framework",
@@ -132,42 +134,48 @@
       "title": "Comparison of Geometries",
       "startLine": 534,
       "endLine": 565,
-      "summary": "The hyperbolic excess: cosh(a)·cosh(b) ≥ cosh(a) + cosh(b) - 1, showing the angular defect in hyperbolic triangles."
+      "summary": "The hyperbolic excess: cosh(a)·cosh(b) ≥ cosh(a) + cosh(b) - 1, showing the angular defect in hyperbolic triangles.",
+      "mathContext": "The hyperbolic excess: cosh(a)·cosh(b) ≥ cosh(a) + cosh(b) - 1, showing the angular defect in hyperbolic triangles."
     },
     {
       "id": "area-defect",
       "title": "Area and Angular Defect/Excess",
       "startLine": 566,
       "endLine": 622,
-      "summary": "Hyperbolic area = π/2 - α - β (angular defect), spherical area = α + β - π/2 (angular excess)."
+      "summary": "Hyperbolic area = π/2 - α - β (angular defect), spherical area = α + β - π/2 (angular excess).",
+      "mathContext": "Hyperbolic area = π/2 - α - β (angular defect), spherical area = α + β - π/2 (angular excess)."
     },
     {
       "id": "numerical-verifications",
       "title": "Euclidean Pythagorean Triples",
       "startLine": 623,
       "endLine": 645,
-      "summary": "Verified Pythagorean triples: 3-4-5, 5-12-13, 8-15-17, 7-24-25."
+      "summary": "Verified Pythagorean triples: 3-4-5, 5-12-13, 8-15-17, 7-24-25.",
+      "mathContext": "Verified Pythagorean triples: 3-4-5, 5-12-13, 8-15-17, 7-24-25."
     },
     {
       "id": "hyperbolic-identities",
       "title": "Hyperbolic Addition and Double Angle",
       "startLine": 646,
       "endLine": 693,
-      "summary": "Addition formulas for cosh(x+y) and sinh(x+y), double-angle formulas cosh(2x) and sinh(2x)."
+      "summary": "Addition formulas for cosh(x+y) and sinh(x+y), double-angle formulas cosh(2x) and sinh(2x).",
+      "mathContext": "Addition formulas for cosh(x+y) and sinh(x+y), double-angle formulas cosh(2x) and sinh(2x)."
     },
     {
       "id": "distance-properties",
       "title": "Hyperbolic Distance and Monotonicity",
       "startLine": 694,
       "endLine": 779,
-      "summary": "Strict monotonicity of cosh on [0,∞), strict hypotenuse > leg inequality, uniqueness of complementary leg."
+      "summary": "Strict monotonicity of cosh on [0,∞), strict hypotenuse > leg inequality, uniqueness of complementary leg.",
+      "mathContext": "Strict monotonicity of cosh on [0,∞), strict hypotenuse > leg inequality, uniqueness of complementary leg."
     },
     {
       "id": "law-of-cosines",
       "title": "Law of Cosines Connection",
       "startLine": 728,
       "endLine": 756,
-      "summary": "Both spherical and hyperbolic laws of cosines reduce to Pythagorean form when the included angle C = π/2."
+      "summary": "Both spherical and hyperbolic laws of cosines reduce to Pythagorean form when the included angle C = π/2.",
+      "mathContext": "Both spherical and hyperbolic laws of cosines reduce to Pythagorean form when the included angle C = π/2."
     },
     {
       "id": "minkowski-spacetime",
@@ -182,28 +190,32 @@
       "title": "Lorentz Boosts and Interval Invariance",
       "startLine": 1221,
       "endLine": 1310,
-      "summary": "Lorentz boost transformations preserving the spacetime interval. Both β-parameterization (with Lorentz factor γ) and rapidity-parameterized forms, with proofs of causal character preservation."
+      "summary": "Lorentz boost transformations preserving the spacetime interval. Both β-parameterization (with Lorentz factor γ) and rapidity-parameterized forms, with proofs of causal character preservation.",
+      "mathContext": "Lorentz boost transformations preserving the spacetime interval. Both β-parameterization (with Lorentz factor γ) and rapidity-parameterized forms, with proofs of causal character preservation."
     },
     {
       "id": "rapidity-hyperbolic",
       "title": "Rapidity and the Hyperbolic Connection",
       "startLine": 1311,
       "endLine": 1380,
-      "summary": "Lorentz boosts as hyperbolic rotations using rapidity φ. Rapidity composition law (additivity), connecting special relativity to hyperbolic geometry via cosh/sinh."
+      "summary": "Lorentz boosts as hyperbolic rotations using rapidity φ. Rapidity composition law (additivity), connecting special relativity to hyperbolic geometry via cosh/sinh.",
+      "mathContext": "Lorentz boosts as hyperbolic rotations using rapidity φ. Rapidity composition law (additivity), connecting special relativity to hyperbolic geometry via cosh/sinh."
     },
     {
       "id": "time-dilation",
       "title": "Time Dilation and Reversed Triangle Inequality",
       "startLine": 1381,
       "endLine": 1431,
-      "summary": "Time dilation as consequence of the anti-Pythagorean relation. The reversed triangle inequality for timelike intervals — the mathematical basis of the twin paradox."
+      "summary": "Time dilation as consequence of the anti-Pythagorean relation. The reversed triangle inequality for timelike intervals — the mathematical basis of the twin paradox.",
+      "mathContext": "Time dilation as consequence of the anti-Pythagorean relation. The reversed triangle inequality for timelike intervals — the mathematical basis of the twin paradox."
     },
     {
       "id": "four-geometries",
       "title": "Connecting All Four Geometries",
       "startLine": 1431,
       "endLine": 1431,
-      "summary": "Comparison of spherical, Euclidean, hyperbolic, and Minkowski Pythagorean relations. Euclidean vs Minkowski quadratic forms, indefiniteness of the Minkowski form."
+      "summary": "Comparison of spherical, Euclidean, hyperbolic, and Minkowski Pythagorean relations. Euclidean vs Minkowski quadratic forms, indefiniteness of the Minkowski form.",
+      "mathContext": "Comparison of spherical, Euclidean, hyperbolic, and Minkowski Pythagorean relations. Euclidean vs Minkowski quadratic forms, indefiniteness of the Minkowski form."
     }
   ],
   "conclusion": {
@@ -237,17 +249,17 @@
     {
       "id": "pythagorean-theorem",
       "relationship": "parent",
-      "description": "The original Euclidean Pythagorean theorem (a^2 + b^2 = c^2) that posed the open question answered by this non-Euclidean"
+      "description": "The original Euclidean Pythagorean theorem (a^2 + b^2 = c^2) that posed the open question answered by this non-Euclidean generalization."
     },
     {
       "id": "law-of-cosines",
       "relationship": "related",
-      "description": "The law of cosines generalizes the Pythagorean theorem to non-right triangles. Both the spherical and hyperbolic laws of"
+      "description": "The law of cosines generalizes the Pythagorean theorem to non-right triangles. Both the spherical and hyperbolic laws of cosines reduce to the Pythagorean form when the included angle is pi/2."
     },
     {
       "id": "area-of-circle",
       "relationship": "related",
-      "description": "Hyperbolic and spherical area formulas connect to circle area through the angular defect/excess: hyperbolic triangle are"
+      "description": "Hyperbolic and spherical area formulas connect to circle area through the angular defect/excess: hyperbolic triangle area = pi - alpha - beta - gamma, with connections to hyperbolic disk area formulas."
     }
   ],
   "leanFile": {

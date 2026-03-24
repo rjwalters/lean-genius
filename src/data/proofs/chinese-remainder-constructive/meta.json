@@ -241,27 +241,52 @@
     {
       "id": "bezout-identity",
       "relationship": "foundational",
-      "description": "The constructive CRT solution uses Bezout coefficients: given $\\gcd(m,n) = 1$, find $u,v$ with $mu + nv = 1$, then $x = "
+      "description": "The constructive CRT solution uses Bezout coefficients: given $\\gcd(m,n) = 1$, find $u,v$ with $mu + nv = 1$, then $x = a \\cdot nv + b \\cdot mu$ solves $x \\equiv a \\pmod{m}, x \\equiv b \\pmod{n}$. The extended Euclidean algorithm provides these coefficients"
     },
     {
       "id": "gcd-algorithm",
       "relationship": "foundational",
-      "description": "The coprimality hypothesis $\\gcd(m,n) = 1$ is verified by the Euclidean algorithm. The extended GCD simultaneously compu"
+      "description": "The coprimality hypothesis $\\gcd(m,n) = 1$ is verified by the Euclidean algorithm. The extended GCD simultaneously computes the Bezout coefficients needed for the CRT solution formula"
     },
     {
       "id": "euler-totient",
       "relationship": "related",
-      "description": "CRT gives the ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ when"
+      "description": "CRT gives the ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ when $\\gcd(m,n)=1$. Taking unit groups: $(\\mathbb{Z}/mn\\mathbb{Z})^* \\cong (\\mathbb{Z}/m\\mathbb{Z})^* \\times (\\mathbb{Z}/n\\mathbb{Z})^*$, which gives the multiplicativity $\\phi(mn) = \\phi(m)\\phi(n)$ for Euler's totient"
     },
     {
       "id": "factor-remainder-theorem",
       "relationship": "related",
-      "description": "CRT for polynomial rings gives $R[x]/(f_1 \\cdots f_k) \\cong \\prod R[x]/(f_i)$ when the $f_i$ are pairwise coprime. When "
+      "description": "CRT for polynomial rings gives $R[x]/(f_1 \\cdots f_k) \\cong \\prod R[x]/(f_i)$ when the $f_i$ are pairwise coprime. When $f_i = (x-a_i)$, this is Lagrange interpolation — the polynomial analog of CRT — and the Factor Theorem provides the coprimality"
     },
     {
       "id": "wilsons-theorem",
       "relationship": "related",
-      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ uses the structure of $(\\mathbb{Z}/p\\mathbb{Z})^*$, while CRT decomposes $("
+      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ uses the structure of $(\\mathbb{Z}/p\\mathbb{Z})^*$, while CRT decomposes $(\\mathbb{Z}/n\\mathbb{Z})^*$ into a product of cyclic groups for composite $n$. Together they explain the generalized Wilson theorem for composite moduli"
+    },
+    {
+      "id": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "CRT is used in proofs of quadratic reciprocity: the Jacobi symbol $(a/mn) = (a/m)(a/n)$ follows from the CRT decomposition. Gauss's proof of QR via Gauss's lemma uses properties of residues that CRT helps organize"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The CRT decomposition $\\mathbb{Z}/n\\mathbb{Z} \\cong \\prod \\mathbb{Z}/p_i^{a_i}\\mathbb{Z}$ (where $n = \\prod p_i^{a_i}$) requires unique prime factorization to identify the factors. This isomorphism is the fundamental structure theorem for $\\mathbb{Z}/n\\mathbb{Z}$"
+    },
+    {
+      "id": "chinese-remainder-non-coprime",
+      "relationship": "extended-by",
+      "description": "The non-coprime CRT generalizes: $x \\equiv a \\pmod{m}, x \\equiv b \\pmod{n}$ has a solution iff $\\gcd(m,n) \\mid (a-b)$, and if so, the solution is unique mod $\\text{lcm}(m,n)$. This entry handles the coprime case where $\\text{lcm}(m,n) = mn$"
+    },
+    {
+      "id": "fermat-two-squares",
+      "relationship": "related",
+      "description": "CRT is used in Cornacchia's algorithm for finding the two-square representation $p = a^2+b^2$: compute $r \\equiv \\sqrt{-1} \\pmod{p}$ (which exists iff $p \\equiv 1 \\pmod{4}$), then apply the Euclidean algorithm to $(p, r)$"
+    },
+    {
+      "id": "perfect-numbers",
+      "relationship": "related",
+      "description": "CRT's multiplicativity result $\\phi(mn) = \\phi(m)\\phi(n)$ (for coprime $m,n$) generalizes to all multiplicative functions including $\\sigma_1$ used in the perfect number theorem: $\\sigma_1(mn) = \\sigma_1(m)\\sigma_1(n)$"
     }
   ],
   "references": [

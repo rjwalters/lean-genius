@@ -87,77 +87,88 @@
       "title": "Problem Statement",
       "startLine": 1,
       "endLine": 18,
-      "summary": "Documentation header stating the problem: are there infinitely many n with n - k² prime for all coprime k? Lists OEIS A214583 values, the 10^10 search bound, and ChatGPT-Tang's density result."
+      "summary": "Documentation header stating the problem: are there infinitely many n with n - k² prime for all coprime k? Lists OEIS A214583 values, the 10^10 search bound, and ChatGPT-Tang's density result.",
+      "mathContext": "Documentation header stating the problem: are there infinitely many n with n - k² prime for all coprime k? Lists OEIS A214583 values, the 10^10 search bound, and ChatGPT-Tang's density result."
     },
     {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 20,
       "endLine": 25,
-      "summary": "Imports Nat.Prime, Nat.GCD, Finset, LocallyFiniteOrder, and Tactic from Mathlib."
+      "summary": "Imports Nat.Prime, Nat.GCD, Finset, LocallyFiniteOrder, and Tactic from Mathlib.",
+      "mathContext": "Imports Nat.Prime, Nat.GCD, Finset, LocallyFiniteOrder, and Tactic from Mathlib."
     },
     {
       "id": "core-def",
       "title": "Core Definition",
       "startLine": 26,
       "endLine": 43,
-      "summary": "Defines IsErdos1141Good using bounded quantification over Finset.range for decidability, then proves equivalence with the unbounded mathematical formulation."
+      "summary": "Defines IsErdos1141Good using bounded quantification over Finset.range for decidability, then proves equivalence with the unbounded mathematical formulation.",
+      "mathContext": "Defines IsErdos1141Good using bounded quantification over Finset.range for decidability, then proves equivalence with the unbounded mathematical formulation."
     },
     {
       "id": "positive-examples",
       "title": "Positive Examples (decide)",
       "startLine": 45,
       "endLine": 69,
-      "summary": "Computationally verifies IsErdos1141Good for n = 3, 4, 6, 8, 12, 14, 18, 20 using the decide tactic."
+      "summary": "Computationally verifies IsErdos1141Good for n = 3, 4, 6, 8, 12, 14, 18, 20 using the decide tactic.",
+      "mathContext": "Computationally verifies IsErdos1141Good for n = 3, 4, 6, 8, 12, 14, 18, 20 using the decide tactic."
     },
     {
       "id": "counterexamples",
       "title": "Counterexamples",
       "startLine": 71,
       "endLine": 86,
-      "summary": "Proves ¬IsErdos1141Good for n = 5, 7, 9, 10, 16 using decide, demonstrating specific k values that violate the property."
+      "summary": "Proves ¬IsErdos1141Good for n = 5, 7, 9, 10, 16 using decide, demonstrating specific k values that violate the property.",
+      "mathContext": "Proves ¬IsErdos1141Good for n = 5, 7, 9, 10, 16 using decide, demonstrating specific k values that violate the property."
     },
     {
       "id": "structural",
       "title": "Structural Properties",
       "startLine": 88,
       "endLine": 107,
-      "summary": "Three structural results: good_0 (vacuously true), not_good_1, not_good_2, and the key theorem good_implies_pred_prime showing good n ≥ 2 requires n-1 prime."
+      "summary": "Three structural results: good_0 (vacuously true), not_good_1, not_good_2, and the key theorem good_implies_pred_prime showing good n ≥ 2 requires n-1 prime.",
+      "mathContext": "Three structural results: good_0 (vacuously true), not_good_1, not_good_2, and the key theorem good_implies_pred_prime showing good n ≥ 2 requires n-1 prime."
     },
     {
       "id": "conjecture",
       "title": "The Open Conjecture",
       "startLine": 109,
       "endLine": 114,
-      "summary": "Axiomatizes the open problem: for every N, there exists n ≥ N with IsErdos1141Good n (infinitude of good values)."
+      "summary": "Axiomatizes the open problem: for every N, there exists n ≥ N with IsErdos1141Good n (infinitude of good values).",
+      "mathContext": "Axiomatizes the open problem: for every N, there exists n ≥ N with IsErdos1141Good n (infinitude of good values)."
     },
     {
       "id": "large-examples",
       "title": "Large Verified Examples (native_decide)",
       "startLine": 116,
       "endLine": 161,
-      "summary": "Defines knownGoodValues (41 terms), verifies list length, and computationally proves IsErdos1141Good for n = 24, 30, 60, 90, 110, 198, 252, 570, 1722 using native_decide."
+      "summary": "Defines knownGoodValues (41 terms), verifies list length, and computationally proves IsErdos1141Good for n = 24, 30, 60, 90, 110, 198, 252, 570, 1722 using native_decide.",
+      "mathContext": "Defines knownGoodValues (41 terms), verifies list length, and computationally proves IsErdos1141Good for n = 24, 30, 60, 90, 110, 198, 252, 570, 1722 using native_decide."
     },
     {
       "id": "unified-verification",
       "title": "Unified Verification",
       "startLine": 163,
       "endLine": 165,
-      "summary": "Single theorem verifying all 41 known OEIS A214583 values satisfy the property, via native_decide over the knownGoodValues list."
+      "summary": "Single theorem verifying all 41 known OEIS A214583 values satisfy the property, via native_decide over the knownGoodValues list.",
+      "mathContext": "Single theorem verifying all 41 known OEIS A214583 values satisfy the property, via native_decide over the knownGoodValues list."
     },
     {
       "id": "classification",
       "title": "Complete Classification to n = 100",
       "startLine": 167,
       "endLine": 180,
-      "summary": "Exhaustive classification: computes exactly which values in {0,...,100} satisfy IsErdos1141Good, yielding 24 good values. Proved by filtering Finset.range 101 and comparing to the explicit list."
+      "summary": "Exhaustive classification: computes exactly which values in {0,...,100} satisfy IsErdos1141Good, yielding 24 good values. Proved by filtering Finset.range 101 and comparing to the explicit list.",
+      "mathContext": "Exhaustive classification: computes exactly which values in {0,...,100} satisfy IsErdos1141Good, yielding 24 good values. Proved by filtering Finset.range 101 and comparing to the explicit list."
     },
     {
       "id": "structural-corollaries",
       "title": "Structural Corollaries",
       "startLine": 182,
       "endLine": 202,
-      "summary": "Three corollaries: no prime ≥ 5 is good (primes are odd but good values ≥ 4 are even), 3 is the unique odd good value ≥ 3, and good n ≥ 10 coprime to 3 forces n − 9 to be prime."
+      "summary": "Three corollaries: no prime ≥ 5 is good (primes are odd but good values ≥ 4 are even), 3 is the unique odd good value ≥ 3, and good n ≥ 10 coprime to 3 forces n − 9 to be prime.",
+      "mathContext": "Three corollaries: no prime ≥ 5 is good (primes are odd but good values ≥ 4 are even), 3 is the unique odd good value ≥ 3, and good n ≥ 10 coprime to 3 forces n − 9 to be prime."
     }
   ],
   "conclusion": {
@@ -205,23 +216,33 @@
   "relatedProofs": [
     {
       "id": "erdos-1140",
-      "relationship": "Closest structural relative: same format (n minus a quadratic expression prime for all eligible k), disproved variant"
+      "relationship": "Closest structural relative: same format (n minus a quadratic expression prime for all eligible k), disproved variant",
+      "description": "Erdős #1140 asks the same question but with 2x² instead of k² (restricted to coprime k). Epure-Gica disproved infinitude for that variant, making it a resolved counterpart to this open problem. The contrast illustrates how small structural changes to the subtraction formula can shift the problem from open to resolved."
     },
     {
       "id": "erdos-1142",
-      "relationship": "Same universality structure with powers of 2 replacing coprime squares; likewise open"
+      "relationship": "Same universality structure with powers of 2 replacing coprime squares; likewise open",
+      "description": "Erdős #1142 replaces the coprime-square condition with powers of 2: n − 2^k prime for all 1 < 2^k < n. The known values (up to 105) are even sparser than OEIS A214583, and the problem is likewise unresolved. Both problems share the same skeleton — requiring n minus every element of a structured set to be prime simultaneously."
     },
     {
       "id": "erdos-1059",
-      "relationship": "Dual problem: composite rather than prime condition for all k! < p; both are open and rely on sparsity of valid n"
+      "relationship": "Dual problem: composite rather than prime condition for all k! < p; both are open and rely on sparsity of valid n",
+      "description": "Erdős #1059 asks whether infinitely many primes p satisfy p − k! composite for all k with k! < p. The flavor is dual: #1141 demands primality of n − k² for all eligible k, while #1059 demands compositeness of p − k!. Both are open problems where a universal primality/compositeness condition over a structured set forces the candidate values to be extremely rare."
     },
     {
       "id": "erdos-203",
-      "relationship": "Covering systems methodology is the leading theoretical tool for potentially proving finiteness of the good-value sequence"
+      "relationship": "Covering systems methodology is the leading theoretical tool for potentially proving finiteness of the good-value sequence",
+      "description": "Erdős #203 on covering systems and prime avoidance asks whether covering congruences can block all primality. Covering systems are a key tool for proving that sequences of the form n − f(k) contain no primes; they provide one potential route to showing the good-value sequence in #1141 is finite by constructing a covering for large n."
     },
     {
       "id": "erdos-680",
-      "relationship": "Shares the quadratic–primality boundary theme; squares and prime factors interact in analogous ways"
+      "relationship": "Shares the quadratic–primality boundary theme; squares and prime factors interact in analogous ways",
+      "description": "Erdős #680 asks about the least prime factor of integers near n exceeding k² + 1. This problem directly involves the interplay between squares and prime factors, touching the same quadratic-prime boundary that defines the good values in #1141. Both problems concern how quadratic growth interacts with primality constraints."
+    },
+    {
+      "id": "erdos-17",
+      "relationship": "thematic",
+      "description": "Erdős #17 on cluster primes asks whether every even n ≤ p − 3 is a difference of two primes ≤ p. The structural idea of representing integers as differences involving primes — and asking which n make this universal — parallels the coprime-square subtraction property. Both probe universality-of-primeness questions over finite ranges."
     }
   ],
   "references": [
@@ -231,7 +252,7 @@
       ],
       "title": "Problems in number theory and combinatorics",
       "venue": "Proceedings of the Sixth Manitoba Conference on Numerical Mathematics",
-      "year": 1976,
+      "year": "1976",
       "pages": "35–58",
       "note": "Original source for many Erdős problems in this family, including the coprime-square subtraction problem."
     },
@@ -241,7 +262,7 @@
       ],
       "title": "Density bound for OEIS A214583: #{n ≤ N : IsErdos1141Good(n)} = O(N^{1/2+o(1)})",
       "venue": "erdosproblems.com comment / informal communication",
-      "year": 2023,
+      "year": "2023",
       "url": "https://erdosproblems.com/1141",
       "note": "Establishes the best known upper bound on the counting function, showing the good values are sub-square-root sparse."
     },
@@ -252,7 +273,7 @@
       ],
       "title": "On a conjecture of Erdős concerning primes of the form n − 2x²",
       "venue": "Journal of Number Theory",
-      "year": 2022,
+      "year": "2022",
       "note": "Disproves the analogous conjecture for Erdős Problem #1140 (n − 2x² prime for all x), giving a cautionary precedent that the sequence in #1141 may also be finite."
     },
     {
@@ -261,7 +282,7 @@
       ],
       "title": "Sequence A214583: Numbers n such that n - k^2 is prime for all k with gcd(n,k)=1 and k^2 < n",
       "venue": "The On-Line Encyclopedia of Integer Sequences",
-      "year": 2012,
+      "year": "2012",
       "url": "https://oeis.org/A214583",
       "note": "Documents all 41 known good values, the 10^10 search bound, and references to related computational work."
     },
@@ -272,7 +293,7 @@
       ],
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "venue": "Monographies de L'Enseignement Mathématique, vol. 28, Université de Genève",
-      "year": 1980,
+      "year": "1980",
       "note": "Canonical reference for Erdős problems of this type; provides context for simultaneous primality conditions and their expected rarity."
     }
   ],

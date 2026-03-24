@@ -49,63 +49,72 @@
       "title": "Header and References",
       "summary": "Module docstring stating the problem, its status, all four key references (Tijdeman, Schinzel-Wirsing, Erdos-Ivic, Ono), and Lean 4 imports from Mathlib for partitions, primes, factorization, and filters.",
       "startLine": 1,
-      "endLine": 53
+      "endLine": 53,
+      "mathContext": "Module docstring stating the problem, its status, all four key references (Tijdeman, Schinzel-Wirsing, Erdos-Ivic, Ono), and Lean 4 imports from Mathlib for partitions, primes, factorization, and filt"
     },
     {
       "id": "partition-function",
       "title": "The Partition Function",
       "summary": "Defines $p(n)$ via `Fintype.card (Nat.Partition n)` and verifies small values $p(0) = 1$ through $p(4) = 5$ using `native_decide`.",
       "startLine": 54,
-      "endLine": 77
+      "endLine": 77,
+      "mathContext": "Defines $p(n)$ via `Fintype.card (Nat.Partition n)` and verifies small values $p(0) = 1$ through $p(4) = 5$ using `native_decide`."
     },
     {
       "id": "partition-product",
       "title": "Product of Partition Numbers",
       "summary": "Defines $\\prod_{k=1}^n p(k)$ via `Finset.prod` over `Icc 1 n` and proves positivity since each $p(k) \\ge 1$.",
       "startLine": 78,
-      "endLine": 91
+      "endLine": 91,
+      "mathContext": "Defines $\\prod_{k=1}^n p(k)$ via `Finset.prod` over `Icc 1 n` and proves positivity since each $p(k) \\ge 1$."
     },
     {
       "id": "prime-factors",
       "title": "Counting Prime Factors: F(n)",
       "summary": "Defines $F(n) = |\\text{primeFactors}(\\prod_{k=1}^n p(k))|$, provides an alternative via the `primeFactorsOfProduct` finset, and states (with sorry) that $F$ is monotone.",
       "startLine": 92,
-      "endLine": 107
+      "endLine": 107,
+      "mathContext": "Defines $F(n) = |\\text{primeFactors}(\\prod_{k=1}^n p(k))|$, provides an alternative via the `primeFactorsOfProduct` finset, and states (with sorry) that $F$ is monotone."
     },
     {
       "id": "known-results",
       "title": "Known Results as Axioms",
       "summary": "States the Schinzel-Wirsing lower bound ($F(n) \\gg \\log n$), the Hardy-Ramanujan asymptotic formula, and Ono's prime divisibility theorem as axioms, since their proofs require the circle method, modular forms, and Galois representations.",
       "startLine": 108,
-      "endLine": 138
+      "endLine": 138,
+      "mathContext": "States the Schinzel-Wirsing lower bound ($F(n) \\gg \\log n$), the Hardy-Ramanujan asymptotic formula, and Ono's prime divisibility theorem as axioms, since their proofs require the circle method, modul"
     },
     {
       "id": "main-theorems",
       "title": "Main Theorems",
       "summary": "States $F(n) \\to \\infty$ (proved, as axiom) and the open conjecture $F(n) > n$ eventually (as a `Prop` definition).",
       "startLine": 139,
-      "endLine": 170
+      "endLine": 170,
+      "mathContext": "States $F(n) \\to \\infty$ (proved, as axiom) and the open conjecture $F(n) > n$ eventually (as a `Prop` definition)."
     },
     {
       "id": "examples",
       "title": "Small Verified Examples",
       "summary": "Computationally verifies $F(1) = 0$, $F(2) = 1$, $F(3) = 2$, $F(4) = 3$, $F(5) = 4$ via `native_decide`, showing how each partition number contributes new prime factors.",
       "startLine": 171,
-      "endLine": 193
+      "endLine": 193,
+      "mathContext": "Computationally verifies $F(1) = 0$, $F(2) = 1$, $F(3) = 2$, $F(4) = 3$, $F(5) = 4$ via `native_decide`, showing how each partition number contributes new prime factors."
     },
     {
       "id": "oeis",
       "title": "OEIS Sequences",
       "summary": "Connects to OEIS A194259 (partition products) and A194260 (prime factor counts), noting the stalling pattern where $p(7) = 15 = 3 \\cdot 5$ introduces no new primes.",
       "startLine": 194,
-      "endLine": 209
+      "endLine": 209,
+      "mathContext": "Connects to OEIS A194259 (partition products) and A194260 (prime factor counts), noting the stalling pattern where $p(7) = 15 = 3 \\cdot 5$ introduces no new primes."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Recaps the formalization: Part 1 proved via Hardy-Ramanujan + Tijdeman, Part 2 open, small values verified, key axioms for deep analytic results.",
       "startLine": 210,
-      "endLine": 246
+      "endLine": 246,
+      "mathContext": "Recaps the formalization: Part 1 proved via Hardy-Ramanujan + Tijdeman, Part 2 open, small values verified, key axioms for deep analytic results."
     }
   ],
   "conclusion": {
@@ -152,24 +161,34 @@
   ],
   "relatedProofs": [
     {
-      "slug": "partition-theorem",
-      "relationship": "foundational",
-      "description": "Euler's generating function approach to partitions establishes that p(n) is well-defined and grows sub-exponentially; the Hardy-Ramanujan asymptotic p(n) ~ (1/4n√3)exp(π√(2n/3)) refines this and is the analytic engine behind the proof that F(n) → ∞."
+      "id": "partition-theorem",
+      "relationship": "related",
+      "description": ""
     },
     {
-      "slug": "partition-theorem-oq-01",
-      "relationship": "extension",
-      "description": "The Rogers-Ramanujan identities and Ramanujan's congruences live in the same arithmetic theory of partitions; Ono's 2000 theorem that every prime divides p(n) for a positive density of n is a direct generalization of Ramanujan's classical congruences mod 5, 7, 11."
+      "id": "partition-theorem-oq-01",
+      "relationship": "related",
+      "description": ""
     },
     {
-      "slug": "erdos-890",
-      "relationship": "analogy",
-      "description": "The Erdős-Kac theorem gives the normal order of ω(n) as log log n; Erdős #890 and #1106 both ask quantitative questions about ω on structured sequences, highlighting the contrast between typical behavior of ω and the much larger values forced by fast-growing products."
+      "id": "erdos-679",
+      "relationship": "related",
+      "description": ""
     },
     {
-      "slug": "bertrands-postulate",
-      "relationship": "prerequisite",
-      "description": "Prime gap estimates of Bertrand type feed into Tijdeman's argument that sequences with super-polynomial growth accumulate unboundedly many prime factors, the key step in proving F(n) → ∞ for the partition product."
+      "id": "erdos-890",
+      "relationship": "related",
+      "description": ""
+    },
+    {
+      "id": "erdos-126",
+      "relationship": "related",
+      "description": ""
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": ""
     }
   ],
   "references": [
@@ -179,24 +198,24 @@
         "S. Ramanujan"
       ],
       "title": "Asymptotic formulæ in combinatory analysis",
-      "journal": "Proceedings of the London Mathematical Society",
       "volume": "17",
-      "year": 1918,
+      "year": "1918",
       "pages": "75–115",
       "doi": "10.1112/plms/s2-17.1.75",
-      "note": "Introduces the circle method and derives the asymptotic p(n) ~ (1/4n√3)exp(π√(2n/3)); the sub-exponential growth rate is the starting point for Tijdeman's argument used in Part 1 of Erdős #1106."
+      "note": "Introduces the circle method and derives the asymptotic p(n) ~ (1/4n√3)exp(π√(2n/3)); the sub-exponential growth rate is the starting point for Tijdeman's argument used in Part 1 of Erdős #1106.",
+      "venue": "Proceedings of the London Mathematical Society"
     },
     {
       "authors": [
         "R. Tijdeman"
       ],
       "title": "On integers with many small prime factors",
-      "journal": "Compositio Mathematica",
       "volume": "26",
-      "year": 1973,
+      "year": "1973",
       "pages": "319–330",
       "url": "https://eudml.org/doc/89179",
-      "note": "Proves that sequences growing at least exponentially must have F(n) → ∞; combined with the Hardy-Ramanujan asymptotic this resolves the first part of Erdős Problem #1106."
+      "note": "Proves that sequences growing at least exponentially must have F(n) → ∞; combined with the Hardy-Ramanujan asymptotic this resolves the first part of Erdős Problem #1106.",
+      "venue": "Compositio Mathematica"
     },
     {
       "authors": [
@@ -204,23 +223,23 @@
         "E. Wirsing"
       ],
       "title": "Multiplicative properties of the partition function",
-      "journal": "Acta Arithmetica",
       "volume": "52",
-      "year": 1989,
+      "year": "1989",
       "pages": "363–370",
-      "note": "Establishes the quantitative lower bound F(n) ≫ log n for the number of distinct prime factors of the partition product, currently the best known result toward the open conjecture F(n) > n."
+      "note": "Establishes the quantitative lower bound F(n) ≫ log n for the number of distinct prime factors of the partition product, currently the best known result toward the open conjecture F(n) > n.",
+      "venue": "Acta Arithmetica"
     },
     {
       "authors": [
         "K. Ono"
       ],
       "title": "Distribution of the partition function modulo m",
-      "journal": "Annals of Mathematics",
       "volume": "151",
-      "year": 2000,
+      "year": "2000",
       "pages": "293–307",
       "doi": "10.2307/121118",
-      "note": "Proves that every prime p divides p(n) for a positive density set of n, generalizing Ramanujan's classical congruences; this shows the partition function has universal arithmetic structure and is cited as an axiom in the Lean formalization."
+      "note": "Proves that every prime p divides p(n) for a positive density set of n, generalizing Ramanujan's classical congruences; this shows the partition function has universal arithmetic structure and is cited as an axiom in the Lean formalization.",
+      "venue": "Annals of Mathematics"
     },
     {
       "authors": [
@@ -228,11 +247,11 @@
         "A. Ivić"
       ],
       "title": "The distribution of values of a certain class of arithmetic functions at consecutive integers",
-      "journal": "Colloquia Mathematica Societatis János Bolyai",
       "volume": "51",
-      "year": 1990,
+      "year": "1990",
       "pages": "45–91",
-      "note": "Contains on page 69 the full details that F(n) → ∞, combining Schinzel's Oberwolfach observation with Tijdeman's result; the primary reference for the proved part of Erdős Problem #1106."
+      "note": "Contains on page 69 the full details that F(n) → ∞, combining Schinzel's Oberwolfach observation with Tijdeman's result; the primary reference for the proved part of Erdős Problem #1106.",
+      "venue": "Colloquia Mathematica Societatis János Bolyai"
     }
   ],
   "leanFile": {

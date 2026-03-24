@@ -50,56 +50,64 @@
       "title": "Imports and Problem Overview",
       "summary": "Module documentation on Problem #104 (unit circles through 3 points), references to Erdős 1981, Elekes 1984, Harborth-Mengersen 1986, and imports for EuclideanSpace, Finset, Set",
       "startLine": 1,
-      "endLine": 35
+      "endLine": 35,
+      "mathContext": "Module documentation on Problem #104 (unit circles through 3 points), references to Erdős 1981, Elekes 1984, Harborth-Mengersen 1986, and imports for EuclideanSpace, Finset, Set"
     },
     {
       "id": "geometry",
       "title": "Points and Unit Circles",
       "summary": "Point type (EuclideanSpace ℝ (Fin 2)), dist (Euclidean distance), UnitCircle structure (center), and OnCircle incidence relation",
       "startLine": 36,
-      "endLine": 56
+      "endLine": 56,
+      "mathContext": "Point type (EuclideanSpace ℝ (Fin 2)), dist (Euclidean distance), UnitCircle structure (center), and OnCircle incidence relation"
     },
     {
       "id": "counting",
       "title": "Point Sets and Circle Counting",
       "summary": "PointSet (Finset Point), CircleContainsKPoints (k-rich predicate), unitCirclesThrough3 (set of 3-rich unit circles), countUnitCircles3 (cardinality via ncard)",
       "startLine": 57,
-      "endLine": 77
+      "endLine": 77,
+      "mathContext": "PointSet (Finset Point), CircleContainsKPoints (k-rich predicate), unitCirclesThrough3 (set of 3-rich unit circles), countUnitCircles3 (cardinality via ncard)"
     },
     {
       "id": "trivial-bound",
       "title": "Trivial Upper Bound",
       "summary": "Circle determination: two_points_two_circles, two_points_one_circle, two_points_no_circle. Bounds: trivial_upper_bound (n(n-1)), harborth_mengersen_bound (n(n-1)/3)",
       "startLine": 78,
-      "endLine": 108
+      "endLine": 108,
+      "mathContext": "Circle determination: two_points_two_circles, two_points_one_circle, two_points_no_circle. Bounds: trivial_upper_bound (n(n-1)), harborth_mengersen_bound (n(n-1)/3)"
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound Constructions",
       "summary": "elekes_lower_bound (Ω(n^{3/2}) via grid construction) and linear_lower_bound (Ω(n) via points on a circle)",
       "startLine": 109,
-      "endLine": 126
+      "endLine": 126,
+      "mathContext": "elekes_lower_bound (Ω(n^{3/2}) via grid construction) and linear_lower_bound (Ω(n) via points on a circle)"
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
       "summary": "erdos104Conjecture (O(n^{3/2})), erdos104WeakConjecture (o(n²)), and strong_implies_weak theorem",
       "startLine": 127,
-      "endLine": 152
+      "endLine": 152,
+      "mathContext": "erdos104Conjecture (O(n^{3/2})), erdos104WeakConjecture (o(n²)), and strong_implies_weak theorem"
     },
     {
       "id": "incidences",
       "title": "Incidence Geometry",
       "summary": "incidenceCount definition and circle_incidence_bound (Szemerédi-Trotter for circles: I ≤ O(n^{2/3}|C|^{2/3} + n + |C|))",
       "startLine": 153,
-      "endLine": 167
+      "endLine": 167,
+      "mathContext": "incidenceCount definition and circle_incidence_bound (Szemerédi-Trotter for circles: I ≤ O(n^{2/3}|C|^{2/3} + n + |C|))"
     },
     {
       "id": "values",
       "title": "Known Values",
       "summary": "maxUnitCircles extremal function (OEIS A003829) and exact values: f(3) = 1, f(4) = 4, f(5) = 8, f(6) = 13",
       "startLine": 168,
-      "endLine": 202
+      "endLine": 202,
+      "mathContext": "maxUnitCircles extremal function (OEIS A003829) and exact values: f(3) = 1, f(4) = 4, f(5) = 8, f(6) = 13"
     }
   ],
   "conclusion": {
@@ -129,12 +137,12 @@
     {
       "id": "erdos-102",
       "relationship": "related",
-      "description": "Erdős #102 (maximum collinear points forced by many rich lines) studies incidence geometry for lines, the prototypical s"
+      "description": "Erdős #102 (maximum collinear points forced by many rich lines) studies incidence geometry for lines, the prototypical setting for Szemerédi-Trotter bounds that inspire the approach to Problem 104."
     },
     {
       "id": "erdos-105",
       "relationship": "related",
-      "description": "Erdős #105 (lines avoiding a point set) studies related point-line incidence questions in discrete geometry, complementi"
+      "description": "Erdős #105 (lines avoiding a point set) studies related point-line incidence questions in discrete geometry, complementing the point-circle incidence focus of Problem 104."
     }
   ],
   "leanFile": {

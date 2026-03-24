@@ -87,42 +87,48 @@
       "title": "Basic Definitions",
       "summary": "chromaticNumber, HasChromaticNumber, HasSubgraphWithChromaticNumber",
       "startLine": 41,
-      "endLine": 57
+      "endLine": 57,
+      "mathContext": "chromaticNumber, HasChromaticNumber, HasSubgraphWithChromaticNumber"
     },
     {
       "id": "galvin-question",
       "title": "Galvin's Question",
       "summary": "GalvinProperty, ErdosGalvinQuestion",
       "startLine": 58,
-      "endLine": 69
+      "endLine": 69,
+      "mathContext": "GalvinProperty, ErdosGalvinQuestion"
     },
     {
       "id": "galvin-countable",
       "title": "Galvin's Theorem (ℵ₀)",
       "summary": "galvin_countable_theorem axiom, finite_chromatic_subgraphs proved",
       "startLine": 70,
-      "endLine": 83
+      "endLine": 83,
+      "mathContext": "galvin_countable_theorem axiom, finite_chromatic_subgraphs proved"
     },
     {
       "id": "set-theory",
       "title": "Set-Theoretic Observation",
       "summary": "galvin_set_theory_implication: induced version implies 2^κ < 2^ν",
       "startLine": 84,
-      "endLine": 94
+      "endLine": 94,
+      "mathContext": "galvin_set_theory_implication: induced version implies 2^κ < 2^ν"
     },
     {
       "id": "komjath",
       "title": "Komjáth's Consistency Result (1988)",
       "summary": "komjath_consistency: χ=ℵ₂ graph with no ℵ₁-chromatic subgraph",
       "startLine": 95,
-      "endLine": 104
+      "endLine": 104,
+      "mathContext": "komjath_consistency: χ=ℵ₂ graph with no ℵ₁-chromatic subgraph"
     },
     {
       "id": "shelah",
       "title": "Shelah's Result under V=L (1990)",
       "summary": "shelah_constructibility: YES under V=L for ℵ₂/ℵ₁",
       "startLine": 105,
-      "endLine": 112
+      "endLine": 112,
+      "mathContext": "shelah_constructibility: YES under V=L for ℵ₂/ℵ₁"
     },
     {
       "id": "gch",
@@ -136,7 +142,8 @@
       "title": "Summary",
       "summary": "erdos_739_summary proved from Galvin and Komjáth",
       "startLine": 123,
-      "endLine": 139
+      "endLine": 139,
+      "mathContext": "erdos_739_summary proved from Galvin and Komjáth"
     }
   ],
   "conclusion": {

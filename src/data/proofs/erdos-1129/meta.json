@@ -93,56 +93,64 @@
       "title": "Lagrange Interpolation Fundamentals",
       "summary": "LagrangeBasis definition, DistinctNodes, NodesInInterval predicates",
       "startLine": 43,
-      "endLine": 76
+      "endLine": 76,
+      "mathContext": "LagrangeBasis definition, DistinctNodes, NodesInInterval predicates"
     },
     {
       "id": "lebesgue-constant",
       "title": "The Lebesgue Constant",
       "summary": "LebesgueFunction and LebesgueConstant definitions measuring interpolation conditioning",
       "startLine": 77,
-      "endLine": 100
+      "endLine": 100,
+      "mathContext": "LebesgueFunction and LebesgueConstant definitions measuring interpolation conditioning"
     },
     {
       "id": "chebyshev-nodes",
       "title": "Chebyshev Nodes",
       "summary": "ChebyshevNodes definition using cosine formula, chebyshev_nodes_in_interval theorem",
       "startLine": 101,
-      "endLine": 128
+      "endLine": 128,
+      "mathContext": "ChebyshevNodes definition using cosine formula, chebyshev_nodes_in_interval theorem"
     },
     {
       "id": "lower-bounds",
       "title": "Fundamental Lower Bounds",
       "summary": "faber_lower_bound, erdos_lower_bound, chebyshev_upper_bound axioms establishing (2/π) log n",
       "startLine": 129,
-      "endLine": 169
+      "endLine": 169,
+      "mathContext": "faber_lower_bound, erdos_lower_bound, chebyshev_upper_bound axioms establishing (2/π) log n"
     },
     {
       "id": "equal-height",
       "title": "The Equal-Height Characterization",
       "summary": "SubintervalMax, EqualHeightProperty definitions; Kilgore-Cheney and de Boor-Pinkus theorems",
       "startLine": 170,
-      "endLine": 225
+      "endLine": 225,
+      "mathContext": "SubintervalMax, EqualHeightProperty definitions; Kilgore-Cheney and de Boor-Pinkus theorems"
     },
     {
       "id": "exact-solutions",
       "title": "Known Exact Solutions",
       "summary": "optimal_n2, optimal_n3, optimal_n4_exists for small cases",
       "startLine": 226,
-      "endLine": 267
+      "endLine": 267,
+      "mathContext": "optimal_n2, optimal_n3, optimal_n4_exists for small cases"
     },
     {
       "id": "complex-variant",
       "title": "Complex Variant",
       "summary": "ComplexLebesgueConstant, RootsOfUnity, Brutman's theorems for unit circle",
       "startLine": 268,
-      "endLine": 317
+      "endLine": 317,
+      "mathContext": "ComplexLebesgueConstant, RootsOfUnity, Brutman's theorems for unit circle"
     },
     {
       "id": "main-results",
       "title": "Main Results",
       "summary": "erdos_1129 and erdos_1129_summary theorems combining all results",
       "startLine": 318,
-      "endLine": 374
+      "endLine": 374,
+      "mathContext": "erdos_1129 and erdos_1129_summary theorems combining all results"
     }
   ],
   "conclusion": {
@@ -223,22 +231,22 @@
         "E. W. Cheney"
       ],
       "title": "A theorem on interpolation in Haar subspaces",
-      "journal": "Aequationes Mathematicae",
-      "year": 1976,
+      "year": "1976",
       "volume": "14",
       "pages": "391–400",
-      "description": "First proof of the existence of optimal interpolation nodes (Kilgore-Cheney existence theorem); the key compactness argument establishing that a minimizer of Λ exists in [-1,1]^n."
+      "description": "First proof of the existence of optimal interpolation nodes (Kilgore-Cheney existence theorem); the key compactness argument establishing that a minimizer of Λ exists in [-1,1]^n.",
+      "venue": "Aequationes Mathematicae"
     },
     {
       "authors": [
         "T. Kilgore"
       ],
       "title": "A characterization of the Lagrange interpolating projection with minimal Tchebycheff norm",
-      "journal": "Journal of Approximation Theory",
-      "year": 1977,
+      "year": "1977",
       "volume": "24",
       "pages": "273–288",
-      "description": "Proves the equal-height characterization: optimal nodes equalize the local maxima of the Lebesgue function on consecutive subintervals (equioscillation theorem)."
+      "description": "Proves the equal-height characterization: optimal nodes equalize the local maxima of the Lebesgue function on consecutive subintervals (equioscillation theorem).",
+      "venue": "Journal of Approximation Theory"
     },
     {
       "authors": [
@@ -246,33 +254,33 @@
         "A. Pinkus"
       ],
       "title": "Proof of the conjectures of Bernstein and Erdős concerning the optimal nodes for polynomial interpolation",
-      "journal": "Journal of Approximation Theory",
-      "year": 1978,
+      "year": "1978",
       "volume": "24",
       "pages": "289–303",
-      "description": "Proves uniqueness of the canonical minimizer and resolves both the Bernstein and Erdős conjectures on optimal interpolation nodes; the source for the uniqueness axiom in the Lean formalization."
+      "description": "Proves uniqueness of the canonical minimizer and resolves both the Bernstein and Erdős conjectures on optimal interpolation nodes; the source for the uniqueness axiom in the Lean formalization.",
+      "venue": "Journal of Approximation Theory"
     },
     {
       "authors": [
         "G. Faber"
       ],
       "title": "Über die interpolatorische Darstellung stetiger Funktionen",
-      "journal": "Jahresbericht der Deutschen Mathematiker-Vereinigung",
-      "year": 1914,
+      "year": "1914",
       "volume": "23",
       "pages": "192–210",
-      "description": "The foundational 1914 result showing that no sequence of interpolation nodes can keep Λ_n bounded; establishes Λ_n → ∞ for every node sequence, the starting point for the logarithmic lower bound."
+      "description": "The foundational 1914 result showing that no sequence of interpolation nodes can keep Λ_n bounded; establishes Λ_n → ∞ for every node sequence, the starting point for the logarithmic lower bound.",
+      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung"
     },
     {
       "authors": [
         "P. Erdős"
       ],
       "title": "Problems and results on the theory of interpolation II",
-      "journal": "Acta Mathematica Academiae Scientiarum Hungaricae",
-      "year": 1961,
+      "year": "1961",
       "volume": "12",
       "pages": "235–244",
-      "description": "Erdős establishes the sharp lower bound Λ ≥ (2/π) log n - O(1) and conjectures the equal-height characterization of optimal nodes, posing the problem that Kilgore and de Boor–Pinkus later solved."
+      "description": "Erdős establishes the sharp lower bound Λ ≥ (2/π) log n - O(1) and conjectures the equal-height characterization of optimal nodes, posing the problem that Kilgore and de Boor–Pinkus later solved.",
+      "venue": "Acta Mathematica Academiae Scientiarum Hungaricae"
     }
   ],
   "leanFile": {

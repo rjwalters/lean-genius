@@ -79,18 +79,27 @@ theorem single_prime_upper (p k : ℕ) (hp : Nat.Prime p) :
 -/
 
 /-- The expected density is in (0, 1) for a nonempty set of primes ≥ 2. -/
+private theorem prod_one_sub_inv_pos (primes : Finset ℕ)
+    (hprime : ∀ p ∈ primes, Nat.Prime p) :
+    0 < ∏ p ∈ primes, (1 - 1 / (p : ℝ)) := by
+  apply Finset.prod_pos
+  intro p hp
+  have hp_pos : (0 : ℝ) < (p : ℝ) := by exact_mod_cast (hprime p hp).pos
+  rw [sub_pos, div_lt_one hp_pos]
+  exact_mod_cast (hprime p hp).one_lt
+
 theorem expectedDensity_pos (primes : Finset ℕ) (hne : primes.Nonempty)
     (hprime : ∀ p ∈ primes, Nat.Prime p) :
     0 < expectedDensity primes := by
   unfold expectedDensity
   simp only [sub_pos]
-  sorry
+  sorry -- Need Finset.prod_lt_one: each factor < 1, nonempty → product < 1
 
 theorem expectedDensity_lt_one (primes : Finset ℕ) (hne : primes.Nonempty)
     (hprime : ∀ p ∈ primes, Nat.Prime p) :
     expectedDensity primes < 1 := by
   unfold expectedDensity
-  linarith [show ∏ p ∈ primes, (1 - 1 / (p : ℝ)) > 0 from by sorry]
+  linarith [prod_one_sub_inv_pos primes hprime]
 
 /-- For large k, F_k should approach k · expectedDensity.
     This is the "main term" in the estimate. -/

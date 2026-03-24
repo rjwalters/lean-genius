@@ -179,7 +179,7 @@
     {
       "id": "binomial-theorem",
       "relationship": "extends",
-      "description": "Extends the standard binomial theorem (a+b)^n to Newton's generalized series (1+x)^α for real α, replacing finite sums w"
+      "description": "Extends the standard binomial theorem (a+b)^n to Newton's generalized series (1+x)^α for real α, replacing finite sums with convergent infinite series"
     },
     {
       "id": "geometric-series",
@@ -189,12 +189,12 @@
     {
       "id": "e-transcendental",
       "relationship": "related",
-      "description": "Newton's binomial series for (1+x/n)^n as n→∞ connects to e^x — the exponential function shares the power series structu"
+      "description": "Newton's binomial series for (1+x/n)^n as n→∞ connects to e^x — the exponential function shares the power series structure studied here"
     },
     {
       "id": "combinations-formula",
       "relationship": "foundational",
-      "description": "The generalized binomial coefficient C(α,k) = α(α-1)...(α-k+1)/k! extends the standard combinatorial C(n,k) to non-integ"
+      "description": "The generalized binomial coefficient C(α,k) = α(α-1)...(α-k+1)/k! extends the standard combinatorial C(n,k) to non-integer α"
     },
     {
       "id": "binomial-theorem-oq-01-oq-01",

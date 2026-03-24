@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/196",
     "erdosProblemStatus": "open",
     "axiomCount": 4,
-    "lineCount": 170,
+    "lineCount": 171,
     "assumptions": "5 axioms: erdos_196_conjecture, degs_3ap_theorem, degs_5ap_counterexample, and 2 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
@@ -135,7 +135,7 @@
       "Function"
     ],
     "namespace": null,
-    "lineCount": 170,
+    "lineCount": 171,
     "axiomCount": 5,
     "theoremCount": 2,
     "definitionCount": 8
@@ -171,7 +171,7 @@
     {
       "id": "erdos-szekeres",
       "relationship": "foundational",
-      "description": "The Erdős-Szekeres theorem (monotone subsequences in sequences) is a structural cousin — both guarantee structured subse"
+      "description": "The Erdős-Szekeres theorem (monotone subsequences in sequences) is a structural cousin — both guarantee structured subsequences, but Erdős-Szekeres gives monotone subsequences while #196 asks about monotone APs"
     }
   ],
   "references": [

@@ -81,63 +81,72 @@
       "title": "Module Documentation",
       "startLine": 1,
       "endLine": 18,
-      "summary": "Problem statement, status (OPEN), and known results."
+      "summary": "Problem statement, status (OPEN), and known results.",
+      "mathContext": "Problem statement, status (OPEN), and known results."
     },
     {
       "id": "main-def",
       "title": "Main Definition",
       "startLine": 31,
       "endLine": 42,
-      "summary": "IsMulCardSet definition: equal products must have equal factor counts."
+      "summary": "IsMulCardSet definition: equal products must have equal factor counts.",
+      "mathContext": "IsMulCardSet definition: equal products must have equal factor counts."
     },
     {
       "id": "density",
       "title": "Natural Density",
       "startLine": 43,
       "endLine": 50,
-      "summary": "HasNaturalDensity using Filter.Tendsto."
+      "summary": "HasNaturalDensity using Filter.Tendsto.",
+      "mathContext": "HasNaturalDensity using Filter.Tendsto."
     },
     {
       "id": "conjectures",
       "title": "The Open Questions",
       "startLine": 51,
       "endLine": 71,
-      "summary": "DensityConjecture and FiniteConjecture as formal Props."
+      "summary": "DensityConjecture and FiniteConjecture as formal Props.",
+      "mathContext": "DensityConjecture and FiniteConjecture as formal Props."
     },
     {
       "id": "examples",
       "title": "Known Examples",
       "startLine": 72,
       "endLine": 108,
-      "summary": "mod 4 example (density 1/4) and Selfridge construction (density 1/e - ε)."
+      "summary": "mod 4 example (density 1/4) and Selfridge construction (density 1/e - ε).",
+      "mathContext": "mod 4 example (density 1/4) and Selfridge construction (density 1/e - ε)."
     },
     {
       "id": "bounds",
       "title": "Upper and Lower Bounds",
       "startLine": 109,
       "endLine": 129,
-      "summary": "Ruzsa's (1-c)N upper bound and log 2 lower bound."
+      "summary": "Ruzsa's (1-c)N upper bound and log 2 lower bound.",
+      "mathContext": "Ruzsa's (1-c)N upper bound and log 2 lower bound."
     },
     {
       "id": "insight",
       "title": "Why These Sets Work",
       "startLine": 130,
       "endLine": 143,
-      "summary": "Explanation of the factorization pattern uniqueness."
+      "summary": "Explanation of the factorization pattern uniqueness.",
+      "mathContext": "Explanation of the factorization pattern uniqueness."
     },
     {
       "id": "verified",
       "title": "Verified Examples",
       "startLine": 144,
       "endLine": 157,
-      "summary": "Concrete mod 4 calculations via native_decide."
+      "summary": "Concrete mod 4 calculations via native_decide.",
+      "mathContext": "Concrete mod 4 calculations via native_decide."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 158,
       "endLine": 175,
-      "summary": "Main summary theorem combining known results."
+      "summary": "Main summary theorem combining known results.",
+      "mathContext": "Main summary theorem combining known results."
     }
   ],
   "conclusion": {
@@ -171,19 +180,19 @@
     {
       "title": "On some problems of a statistical group-theory, I",
       "author": "Erdős, P. and Turán, P.",
-      "year": 1965,
+      "year": "1965",
       "description": "Early appearance of Problem #786 on multiplicative cardinality sets and their density"
     },
     {
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "author": "Erdős, P. and Graham, R. L.",
-      "year": 1980,
+      "year": "1980",
       "description": "Comprehensive discussion of the problem with Selfridge's density 1/e construction"
     },
     {
       "title": "On the distribution of the number of prime factors of sums a+b",
       "author": "Erdős, P.",
-      "year": 1973,
+      "year": "1973",
       "description": "Further discussion of multiplicative structure problems including Ruzsa's unpublished upper bound"
     }
   ],
@@ -211,17 +220,17 @@
     {
       "id": "erdos-437",
       "relationship": "related",
-      "description": "Both study multiplicative structure of integer sets; #437 concerns square partial products while #786 concerns multiplic"
+      "description": "Both study multiplicative structure of integer sets; #437 concerns square partial products while #786 concerns multiplicative cardinality (factor count uniqueness)"
     },
     {
       "id": "erdos-841",
       "relationship": "related",
-      "description": "Companion multiplicative structure problem; both investigate density limitations imposed by multiplicative constraints o"
+      "description": "Companion multiplicative structure problem; both investigate density limitations imposed by multiplicative constraints on integer sets"
     },
     {
       "id": "prime-number-theorem",
       "relationship": "foundational",
-      "description": "The prime number theorem underlies the density analysis of multiplicative cardinality sets, especially Selfridge's 1/e c"
+      "description": "The prime number theorem underlies the density analysis of multiplicative cardinality sets, especially Selfridge's 1/e construction using prime reciprocal sums"
     }
   ]
 }

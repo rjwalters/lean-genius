@@ -244,12 +244,12 @@
     {
       "id": "cauchy-schwarz",
       "relationship": "extends",
-      "description": "Parent formalization proving the real Cauchy-Schwarz inequality |⟪u,v⟫_ℝ| ≤ ‖u‖·‖v‖. This entry extends it to complex in"
+      "description": "Parent formalization proving the real Cauchy-Schwarz inequality |⟪u,v⟫_ℝ| ≤ ‖u‖·‖v‖. This entry extends it to complex inner product spaces and the uniform RCLike framework"
     },
     {
       "id": "cauchy-schwarz-oq-03",
       "relationship": "related",
-      "description": "Sibling open question exploring further aspects of Cauchy-Schwarz — together these entries form a comprehensive treatmen"
+      "description": "Sibling open question exploring further aspects of Cauchy-Schwarz — together these entries form a comprehensive treatment of the inequality across different formulations"
     },
     {
       "id": "cauchy-schwarz-oq-04",
@@ -259,12 +259,27 @@
     {
       "id": "cauchy-schwarz-integral",
       "relationship": "complementary",
-      "description": "The integral form of Cauchy-Schwarz: $(\\int fg)^2 \\leq (\\int f^2)(\\int g^2)$. This entry proves the abstract inner produ"
+      "description": "The integral form of Cauchy-Schwarz: $(\\int fg)^2 \\leq (\\int f^2)(\\int g^2)$. This entry proves the abstract inner product space version; the integral entry proves the $L^2$ specialization via Hölder's inequality"
     },
     {
       "id": "cauchy-schwarz-oq-01-oq-01",
       "relationship": "extended-by",
       "description": "Further exploration building on this entry's complex Cauchy-Schwarz result"
+    },
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "The classical Pythagorean theorem $a^2 + b^2 = c^2$ is a special case of the abstract Pythagorean theorem proved here: orthogonality ($\\langle u,v \\rangle = 0$) implies $\\|u+v\\|^2 = \\|u\\|^2 + \\|v\\|^2$ in any inner product space"
+    },
+    {
+      "id": "triangle-inequality",
+      "relationship": "related",
+      "description": "The triangle inequality $\\|u+v\\| \\leq \\|u\\| + \\|v\\|$ for normed spaces is proved using Cauchy-Schwarz in inner product spaces: expand $\\|u+v\\|^2$ and apply Re⟪u,v⟫ ≤ ‖u‖·‖v‖ (proved in this entry as re_inner_le_norm_mul)"
+    },
+    {
+      "id": "amgm-inequality",
+      "relationship": "related",
+      "description": "AM-GM and Cauchy-Schwarz are both fundamental inequalities in analysis. Cauchy-Schwarz can be derived from AM-GM applied to the quadratic $\\|u - tv\\|^2 \\geq 0$, optimized over $t$"
     }
   ]
 }

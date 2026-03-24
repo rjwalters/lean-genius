@@ -180,7 +180,7 @@
     {
       "id": "erdos-507",
       "relationship": "related",
-      "description": "Heilbronn's triangle problem — another extremal problem on point configurations in the plane, asking for the smallest tr"
+      "description": "Heilbronn's triangle problem — another extremal problem on point configurations in the plane, asking for the smallest triangle area rather than largest angle"
     },
     {
       "id": "erdos-506",
@@ -190,17 +190,27 @@
     {
       "id": "erdos-1026",
       "relationship": "related",
-      "description": "Monotonic subsequence optimization — uses the classical Erdős–Szekeres theorem (1935), which shares foundational roots w"
+      "description": "Monotonic subsequence optimization — uses the classical Erdős–Szekeres theorem (1935), which shares foundational roots with the point-set geometry studied here"
     },
     {
       "id": "erdos-500",
       "relationship": "related",
-      "description": "Another Erdős discrete geometry problem in the 500-series — part of the same cluster of extremal point-set problems that"
+      "description": "Another Erdős discrete geometry problem in the 500-series — part of the same cluster of extremal point-set problems that Erdős systematically studied from the 1930s onward"
     },
     {
       "id": "law-of-cosines",
       "relationship": "foundational",
-      "description": "The law of cosines $c^2 = a^2 + b^2 - 2ab\\cos C$ provides the algebraic foundation for computing angles between points v"
+      "description": "The law of cosines $c^2 = a^2 + b^2 - 2ab\\cos C$ provides the algebraic foundation for computing angles between points via the dot product formula used to define $\\angle(x,y,z)$"
+    },
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "The Pythagorean theorem underpins the Euclidean norm $\\|v\\| = \\sqrt{v_1^2 + v_2^2}$ used in the angle definition $\\angle(x,y,z) = \\arccos\\bigl(\\frac{(x-y)\\cdot(z-y)}{\\|x-y\\|\\|z-y\\|}\\bigr)$"
+    },
+    {
+      "id": "area-of-circle",
+      "relationship": "thematic",
+      "description": "The inscribed angle theorem — central to proving regular polygon optimality for $\\alpha_{2^n}$ — is intimately connected to the circle geometry formalized in the area-of-circle entry"
     }
   ],
   "references": [

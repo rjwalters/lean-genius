@@ -31,56 +31,64 @@
       "title": "Imports and Setup",
       "startLine": 1,
       "endLine": 25,
-      "summary": "Header documentation with known bounds, Mathlib imports for graph theory, coloring, and real analysis."
+      "summary": "Header documentation with known bounds, Mathlib imports for graph theory, coloring, and real analysis.",
+      "mathContext": "Header documentation with known bounds, Mathlib imports for graph theory, coloring, and real analysis."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 26,
       "endLine": 39,
-      "summary": "IsTriangleFree wrapping CliqueFree 3, and triangleFreeMaxChi computing f(n) = sup{χ(G)} via sSup."
+      "summary": "IsTriangleFree wrapping CliqueFree 3, and triangleFreeMaxChi computing f(n) = sup{χ(G)} via sSup.",
+      "mathContext": "IsTriangleFree wrapping CliqueFree 3, and triangleFreeMaxChi computing f(n) = sup{χ(G)} via sSup."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 40,
       "endLine": 108,
-      "summary": "f(n) ≤ n for all n (identity coloring), f(0) = 0, f(1) ≤ 1, f(n) ≥ 1 for n ≥ 1 (one sorry in empty graph chromatic number)."
+      "summary": "f(n) ≤ n for all n (identity coloring), f(0) = 0, f(1) ≤ 1, f(n) ≥ 1 for n ≥ 1 (one sorry in empty graph chromatic number).",
+      "mathContext": "f(n) ≤ n for all n (identity coloring), f(0) = 0, f(1) ≤ 1, f(n) ≥ 1 for n ≥ 1 (one sorry in empty graph chromatic number)."
     },
     {
       "id": "ramsey-duality",
       "title": "Ramsey Duality",
       "startLine": 109,
       "endLine": 126,
-      "summary": "f(n) ≥ k iff R(3,k) ≤ n. Kim's R(3,k) = Θ(k²/log k) axiomatized with constants c₁, c₂."
+      "summary": "f(n) ≥ k iff R(3,k) ≤ n. Kim's R(3,k) = Θ(k²/log k) axiomatized with constants c₁, c₂.",
+      "mathContext": "f(n) ≥ k iff R(3,k) ≤ n. Kim's R(3,k) = Θ(k²/log k) axiomatized with constants c₁, c₂."
     },
     {
       "id": "asymptotic-bounds",
       "title": "Main Asymptotic Bounds",
       "startLine": 127,
       "endLine": 151,
-      "summary": "Lower bound (HHKP 2025): f(n) ≥ (1−o(1))√(n/log n). Upper bound (DI 2022): f(n) ≤ (2+o(1))√(n/log n). Exact constant open."
+      "summary": "Lower bound (HHKP 2025): f(n) ≥ (1−o(1))√(n/log n). Upper bound (DI 2022): f(n) ≤ (2+o(1))√(n/log n). Exact constant open.",
+      "mathContext": "Lower bound (HHKP 2025): f(n) ≥ (1−o(1))√(n/log n). Upper bound (DI 2022): f(n) ≤ (2+o(1))√(n/log n). Exact constant open."
     },
     {
       "id": "edge-variant",
       "title": "Edge Variant",
       "startLine": 152,
       "endLine": 175,
-      "summary": "g(m) = max χ over triangle-free graphs with m edges. Θ((m/(log m)²)^{1/3}) with upper constant 3^{5/3}."
+      "summary": "g(m) = max χ over triangle-free graphs with m edges. Θ((m/(log m)²)^{1/3}) with upper constant 3^{5/3}.",
+      "mathContext": "g(m) = max χ over triangle-free graphs with m edges. Θ((m/(log m)²)^{1/3}) with upper constant 3^{5/3}."
     },
     {
       "id": "mycielski",
       "title": "Mycielski Construction",
       "startLine": 176,
       "endLine": 202,
-      "summary": "Classical triangle-free graphs M_k with χ(M_k) = k on 3·2^{k−2} − 1 vertices. Gives weak f(n) ≥ Ω(log n) bound."
+      "summary": "Classical triangle-free graphs M_k with χ(M_k) = k on 3·2^{k−2} − 1 vertices. Gives weak f(n) ≥ Ω(log n) bound.",
+      "mathContext": "Classical triangle-free graphs M_k with χ(M_k) = k on 3·2^{k−2} − 1 vertices. Gives weak f(n) ≥ Ω(log n) bound."
     },
     {
       "id": "summary",
       "title": "Bounds Summary",
       "startLine": 203,
       "endLine": 212,
-      "summary": "Combined bounds_summary theorem: (1−ε)√(n/log n) ≤ f(n) ≤ (2+ε)√(n/log n) for large n."
+      "summary": "Combined bounds_summary theorem: (1−ε)√(n/log n) ≤ f(n) ≤ (2+ε)√(n/log n) for large n.",
+      "mathContext": "Combined bounds_summary theorem: (1−ε)√(n/log n) ≤ f(n) ≤ (2+ε)√(n/log n) for large n."
     }
   ],
   "overview": {
@@ -141,7 +149,7 @@
     {
       "id": "ramseys-theorem",
       "relationship": "foundation",
-      "description": "Ramsey's theorem is the foundational result; the duality f(n) ≥ k iff R(3,k) ≤ n makes R(3,k) bounds central to this pro"
+      "description": "Ramsey's theorem is the foundational result; the duality f(n) ≥ k iff R(3,k) ≤ n makes R(3,k) bounds central to this problem"
     },
     {
       "id": "erdos-58",
@@ -161,7 +169,7 @@
     {
       "id": "erdos-1015",
       "relationship": "related",
-      "description": "Problem 1015 on partitioning 2-colored complete graphs uses Ramsey number R(t, t-1), connecting to R(3,k) in this proble"
+      "description": "Problem 1015 on partitioning 2-colored complete graphs uses Ramsey number R(t, t-1), connecting to R(3,k) in this problem"
     }
   ],
   "leanFile": {

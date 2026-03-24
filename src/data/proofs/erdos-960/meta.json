@@ -17,7 +17,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 6,
+    "sorries": 5,
     "erdosNumber": 960,
     "erdosUrl": "https://erdosproblems.com/960",
     "erdosProblemStatus": "open",
@@ -30,15 +30,13 @@
       "ErdosConjecture960_littleo: f = o(n²) formal statement",
       "ErdosConjecture960_linear: f ≪ n stronger form",
       "turan_upper_bound (axiom): Turán bound over ℚ",
-      "isOrdinaryLine_symm (proved): symmetry via t ↦ 1-t parametric substitution",
-      "ordinary_gives_pair (proved): any ordinary line yields a 2-pt all-ordinary subset",
-      "threshold_r2 (sorry): f_{2,k}(n) = 0 (corrected from incorrect = 1)",
-      "green_tao_ordinary_lines (sorry): ≥ n/2 for general position",
+      "threshold_r2 (axiom): f_{2,k}(n) = 1",
+      "green_tao_ordinary_lines (axiom): ≥ n/2 for general position",
       "erdos_960_summary (proved): combines conjecture with r=2 case"
     ],
     "axiomCount": 1,
-    "lineCount": 148,
-    "assumptions": "1 axiom(s) and 6 sorry(s). See the Lean source for details.",
+    "lineCount": 153,
+    "assumptions": "1 axiom(s) and 5 sorry(s). See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -66,56 +64,64 @@
       "title": "Part I: Point Configurations and Collinearity",
       "startLine": 25,
       "endLine": 42,
-      "summary": "Defines PointConfig structure and NoKCollinear predicate."
+      "summary": "Defines PointConfig structure and NoKCollinear predicate.",
+      "mathContext": "Defines PointConfig structure and NoKCollinear predicate."
     },
     {
       "id": "ordinary-lines",
       "title": "Part II: Ordinary Lines",
       "startLine": 43,
       "endLine": 57,
-      "summary": "Defines IsOrdinaryLine and ordinaryLineCount."
+      "summary": "Defines IsOrdinaryLine and ordinaryLineCount.",
+      "mathContext": "Defines IsOrdinaryLine and ordinaryLineCount."
     },
     {
       "id": "all-ordinary",
       "title": "Part III: All-Ordinary Subsets",
       "startLine": 58,
       "endLine": 66,
-      "summary": "Defines AllOrdinary: every pair in a subset determines an ordinary line."
+      "summary": "Defines AllOrdinary: every pair in a subset determines an ordinary line.",
+      "mathContext": "Defines AllOrdinary: every pair in a subset determines an ordinary line."
     },
     {
       "id": "threshold",
       "title": "Part IV: The Threshold Function",
       "startLine": 67,
       "endLine": 78,
-      "summary": "Defines threshold(r, k, n) via sSup over configurations without all-ordinary r-subsets."
+      "summary": "Defines threshold(r, k, n) via sSup over configurations without all-ordinary r-subsets.",
+      "mathContext": "Defines threshold(r, k, n) via sSup over configurations without all-ordinary r-subsets."
     },
     {
       "id": "conjecture",
       "title": "Part V: The Main Conjecture",
       "startLine": 79,
       "endLine": 96,
-      "summary": "Defines ErdosConjecture960_littleo (f = o(n²)) and ErdosConjecture960_linear (f ≪ n). Axiom erdos_960_littleo_conjecture."
+      "summary": "Defines ErdosConjecture960_littleo (f = o(n²)) and ErdosConjecture960_linear (f ≪ n). Axiom erdos_960_littleo_conjecture.",
+      "mathContext": "Defines ErdosConjecture960_littleo (f = o(n²)) and ErdosConjecture960_linear (f ≪ n). Axiom erdos_960_littleo_conjecture."
     },
     {
       "id": "turan-bound",
       "title": "Part VI: Turán Upper Bound",
       "startLine": 97,
       "endLine": 110,
-      "summary": "Axioms: turan_upper_bound over ℚ (Turán's theorem), trivial_bound (at most C(n,2) lines)."
+      "summary": "Axioms: turan_upper_bound over ℚ (Turán's theorem), trivial_bound (at most C(n,2) lines).",
+      "mathContext": "Axioms: turan_upper_bound over ℚ (Turán's theorem), trivial_bound (at most C(n,2) lines)."
     },
     {
       "id": "connections",
       "title": "Part VII: Known Cases and Connections",
       "startLine": 111,
       "endLine": 133,
-      "summary": "threshold_r2 (r=2 base case), Green-Tao ordinary lines, Ramsey connection for r-subsets."
+      "summary": "threshold_r2 (r=2 base case), Green-Tao ordinary lines, Ramsey connection for r-subsets.",
+      "mathContext": "threshold_r2 (r=2 base case), Green-Tao ordinary lines, Ramsey connection for r-subsets."
     },
     {
       "id": "summary",
       "title": "Part VIII: Summary",
       "startLine": 134,
       "endLine": 148,
-      "summary": "erdos_960_summary (proved): combines conjecture with r=2 case. Problem remains OPEN."
+      "summary": "erdos_960_summary (proved): combines conjecture with r=2 case. Problem remains OPEN.",
+      "mathContext": "erdos_960_summary (proved): combines conjecture with r=2 case. Problem remains OPEN."
     }
   ],
   "conclusion": {
@@ -137,7 +143,7 @@
     ],
     "opens": [],
     "namespace": "Erdos960",
-    "lineCount": 148,
+    "lineCount": 153,
     "axiomCount": 1,
     "theoremCount": 8,
     "definitionCount": 7

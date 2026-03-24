@@ -82,77 +82,88 @@
       "title": "Dissociated Sets",
       "summary": "IsDissociated, IsDissociatedSet, HasUniqueSubsetSums, equivalence theorem",
       "startLine": 41,
-      "endLine": 70
+      "endLine": 70,
+      "mathContext": "IsDissociated, IsDissociatedSet, HasUniqueSubsetSums, equivalence theorem"
     },
     {
       "id": "examples",
       "title": "Examples of Dissociated Sets",
       "summary": "Powers of 2, powers of any base, lacunary sequences",
       "startLine": 71,
-      "endLine": 96
+      "endLine": 96,
+      "mathContext": "Powers of 2, powers of any base, lacunary sequences"
     },
     {
       "id": "proportionately-dissociated",
       "title": "Proportionately Dissociated Sets",
       "summary": "IsProportionatelyDissociated definition, dissociated implies proportionately",
       "startLine": 97,
-      "endLine": 123
+      "endLine": 123,
+      "mathContext": "IsProportionatelyDissociated definition, dissociated implies proportionately"
     },
     {
       "id": "sidon-harmonic",
       "title": "Sidon Sets (Harmonic Analysis)",
       "summary": "IsSidonHarmonic, Pisier's theorem connecting to proportionately dissociated",
       "startLine": 124,
-      "endLine": 141
+      "endLine": 141,
+      "mathContext": "IsSidonHarmonic, Pisier's theorem connecting to proportionately dissociated"
     },
     {
       "id": "sidon-additive",
       "title": "Sidon Sets (Additive Combinatorics)",
       "summary": "IsSidonAdditive, relationship to dissociated sets",
       "startLine": 142,
-      "endLine": 159
+      "endLine": 159,
+      "mathContext": "IsSidonAdditive, relationship to dissociated sets"
     },
     {
       "id": "union-decomposition",
       "title": "Union Decomposition",
       "summary": "IsFiniteUnionDissociated, finite_union_is_proportionately",
       "startLine": 160,
-      "endLine": 172
+      "endLine": 172,
+      "mathContext": "IsFiniteUnionDissociated, finite_union_is_proportionately"
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "summary": "ErdosConjecture774 formal statement, Alon-Erdős conjecture",
       "startLine": 173,
-      "endLine": 185
+      "endLine": 185,
+      "mathContext": "ErdosConjecture774 formal statement, Alon-Erdős conjecture"
     },
     {
       "id": "sidon-analogue",
       "title": "The Sidon Analogue",
       "summary": "IsProportionatelySidon, SidonAnalogue, Nešetřil-Rödl-Sales theorem, NRS construction",
       "startLine": 186,
-      "endLine": 218
+      "endLine": 218,
+      "mathContext": "IsProportionatelySidon, SidonAnalogue, Nešetřil-Rödl-Sales theorem, NRS construction"
     },
     {
       "id": "connections",
       "title": "Connections and Implications",
       "summary": "Implications between Sidon and dissociated notions",
       "startLine": 219,
-      "endLine": 231
+      "endLine": 231,
+      "mathContext": "Implications between Sidon and dissociated notions"
     },
     {
       "id": "bounds",
       "title": "Bounds on Dissociated Subsets",
       "summary": "maxDissociatedSize, Θ(log n) bound",
       "startLine": 232,
-      "endLine": 246
+      "endLine": 246,
+      "mathContext": "maxDissociatedSize, Θ(log n) bound"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_774_summary theorem combining finite_union_is_proportionately and NRS",
       "startLine": 247,
-      "endLine": 260
+      "endLine": 260,
+      "mathContext": "erdos_774_summary theorem combining finite_union_is_proportionately and NRS"
     }
   ],
   "conclusion": {
@@ -186,19 +197,19 @@
     {
       "title": "An application of graph theory to additive number theory",
       "author": "Alon, N. and Erdős, P.",
-      "year": 1985,
+      "year": "1985",
       "description": "Original statement of Problem #774 on proportionately dissociated sets and finite union decomposition"
     },
     {
       "title": "Conditions de Sidon dans le dual d'un groupe abélien compact",
       "author": "Pisier, G.",
-      "year": 1983,
+      "year": "1983",
       "description": "Breakthrough equivalence: proportionately dissociated equals Sidon in harmonic analysis"
     },
     {
       "title": "A negative answer to a question of Erdős and Nešetřil",
       "author": "Nešetřil, J., Rödl, V., and Sales, M.",
-      "year": 2024,
+      "year": "2024",
       "description": "Resolved the Sidon analogue negatively, providing strong evidence that #774 also has a negative answer"
     }
   ],
@@ -225,17 +236,17 @@
     {
       "id": "erdos-847",
       "relationship": "related",
-      "description": "Both ask whether a proportionality condition on subsets forces finite union decomposition; #847 concerns AP-free sets (d"
+      "description": "Both ask whether a proportionality condition on subsets forces finite union decomposition; #847 concerns AP-free sets (disproved) while #774 concerns dissociated sets (open)"
     },
     {
       "id": "erdos-340-greedy-sidon",
       "relationship": "related",
-      "description": "Both involve Sidon-type sets in additive combinatorics; Sidon sets are closely related to dissociated sets through uniqu"
+      "description": "Both involve Sidon-type sets in additive combinatorics; Sidon sets are closely related to dissociated sets through unique representation properties"
     },
     {
       "id": "szemeredi-theorem",
       "relationship": "related",
-      "description": "Szemeredi's theorem provides context for the density-zero nature of structured sets; dissociated sets have density zero "
+      "description": "Szemeredi's theorem provides context for the density-zero nature of structured sets; dissociated sets have density zero similarly to AP-free sets"
     }
   ]
 }

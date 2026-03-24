@@ -144,11 +144,13 @@
   "relatedProofs": [
     {
       "id": "euler-polyhedral-formula",
-      "relationship": "Base formalization of V-E+F=2; this OQ-02 interprets it as discrete Gauss-Bonnet and proves consequences for Platonic solid classification"
+      "relationship": "Base formalization of V-E+F=2; this OQ-02 interprets it as discrete Gauss-Bonnet and proves consequences for Platonic solid classification",
+      "description": "Extends Euler's formula V-E+F=2 (Wiedijk #25) by interpreting it as a special case of the discrete Gauss-Bonnet theorem: total angular deficiency Σδ(v) = 2πχ"
     },
     {
       "id": "euler-polyhedral-formula-oq-02-oq-01",
-      "relationship": "Extension to smooth surfaces: the smooth Gauss-Bonnet ∫K dA = 2πχ, which this discrete version approximates as triangulations refine"
+      "relationship": "Extension to smooth surfaces: the smooth Gauss-Bonnet ∫K dA = 2πχ, which this discrete version approximates as triangulations refine",
+      "description": "The discrete Gauss-Bonnet theorem proved here is the combinatorial foundation for the smooth Gauss-Bonnet formalization (OQ-02-OQ-01), which extends it to Riemannian surfaces"
     },
     "euler-polyhedral-formula",
     "euler-polyhedral-formula-oq-02-oq-01",

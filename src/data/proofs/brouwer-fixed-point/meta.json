@@ -334,27 +334,72 @@
     {
       "id": "borsuk-ulam",
       "relationship": "related",
-      "description": "Borsuk-Ulam implies Brouwer: if no fixed point exists, the retraction from the disk to its boundary would yield an antip"
+      "description": "Borsuk-Ulam implies Brouwer: if no fixed point exists, the retraction from the disk to its boundary would yield an antipode-preserving map contradicting Borsuk-Ulam. Both are cornerstones of algebraic topology"
     },
     {
       "id": "intermediate-value-theorem",
       "relationship": "related",
-      "description": "IVT is the 1-dimensional Brouwer fixed point theorem: a continuous f:[a,b]→[a,b] must have f(x)=x for some x. Brouwer ge"
+      "description": "IVT is the 1-dimensional Brouwer fixed point theorem: a continuous f:[a,b]→[a,b] must have f(x)=x for some x. Brouwer generalizes this to arbitrary dimension"
     },
     {
       "id": "fundamental-theorem-algebra",
       "relationship": "related",
-      "description": "FTA can be proved using Brouwer's fixed point theorem or closely related degree theory — both show that continuous maps "
+      "description": "FTA can be proved using Brouwer's fixed point theorem or closely related degree theory — both show that continuous maps on compact spaces must have certain algebraic properties"
     },
     {
       "id": "cantor-diagonalization",
       "relationship": "thematic",
-      "description": "Both are non-constructive existence proofs: Brouwer proves a fixed point exists without locating it, Cantor proves uncou"
+      "description": "Both are non-constructive existence proofs: Brouwer proves a fixed point exists without locating it, Cantor proves uncountable sets exist without exhibiting specific elements. Ironically, Brouwer later founded intuitionism, rejecting exactly this kind of non-constructive reasoning"
     },
     {
       "id": "schauder-fixed-point",
       "relationship": "extended-by",
-      "description": "Schauder's fixed point theorem (1930) generalizes Brouwer from finite-dimensional balls to compact convex subsets of Ban"
+      "description": "Schauder's fixed point theorem (1930) generalizes Brouwer from finite-dimensional balls to compact convex subsets of Banach spaces: every continuous self-map of a compact convex set in a Banach space has a fixed point. This infinite-dimensional extension is essential for differential equations (Leray-Schauder degree theory) and functional analysis"
+    },
+    {
+      "id": "poincare-conjecture",
+      "relationship": "thematic",
+      "description": "Both are landmark results in topology requiring sophisticated machinery: Brouwer uses homology (or degree theory) to prove no retraction exists, while the Poincaré conjecture characterizes the 3-sphere via fundamental group triviality. Brouwer's degree theory was a precursor to the topological methods used in studying manifolds"
+    },
+    {
+      "id": "mean-value-theorem",
+      "relationship": "related",
+      "description": "Both guarantee existence of special points for continuous functions. The 1D Brouwer theorem follows from IVT (which also implies MVT): for $f:[a,b] \\to [a,b]$ continuous, $g(x) = f(x) - x$ satisfies $g(a) \\geq 0 \\geq g(b)$, so IVT gives $g(c) = 0$, i.e., $f(c) = c$"
+    },
+    {
+      "id": "brouwer-fixed-point-oq-02",
+      "relationship": "extended-by",
+      "description": "Explores the computational complexity of finding approximate fixed points (PPAD-completeness) — the constructive dimension of Brouwer's inherently non-constructive existence result, with implications for Nash equilibrium computation"
+    },
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "The Pythagorean theorem defines the Euclidean metric $\\|x\\|^2 = x_1^2 + \\cdots + x_n^2$ that determines the closed ball $B^n = \\{x : \\|x\\| \\leq 1\\}$ and its boundary sphere $S^{n-1} = \\{x : \\|x\\| = 1\\}$ — the geometric setting of Brouwer's theorem"
+    },
+    {
+      "id": "area-of-circle",
+      "relationship": "related",
+      "description": "The area formula $A = \\pi r^2$ gives the measure of the 2-disk $B^2$ where the 2-dimensional Brouwer theorem applies. The non-retractibility of $B^2$ onto $S^1$ can be seen measure-theoretically: any retraction would have to 'collapse' the disk's 2-dimensional area onto the circle's 1-dimensional boundary"
+    },
+    {
+      "id": "halting-problem",
+      "relationship": "thematic",
+      "description": "Both are non-constructive existence/impossibility results: Brouwer proves a fixed point exists without exhibiting it, while the halting problem proves no general decision procedure exists. Both involve self-referential constructions — the retraction construction uses the hypothetical fixed-point-free map to create a paradox, paralleling Turing's diagonalization"
+    },
+    {
+      "id": "konigsberg",
+      "relationship": "thematic",
+      "description": "Both are pioneering results in topology: Euler's solution of the Königsberg bridge problem (1736) launched graph theory and combinatorial topology, while Brouwer's fixed point theorem (1911) launched algebraic topology. The progression from Euler's discrete topological insight to Brouwer's continuous one mirrors the development of topology from combinatorial to algebraic"
+    },
+    {
+      "id": "cauchy-schwarz",
+      "relationship": "foundational",
+      "description": "Cauchy-Schwarz provides the triangle inequality $\\|u+v\\| \\leq \\|u\\| + \\|v\\|$ that makes the closed ball $B^n = \\{x : \\|x\\| \\leq 1\\}$ convex and the norm continuous — both prerequisites for Brouwer's theorem. The inner product structure governed by Cauchy-Schwarz ensures the ball is a well-behaved compact convex set"
+    },
+    {
+      "id": "isoperimetric-theorem",
+      "relationship": "thematic",
+      "description": "Both characterize fundamental properties of the ball/sphere: the isoperimetric theorem shows the ball maximizes volume for given surface area, while Brouwer's theorem shows the ball has the fixed point property. Both use compactness and convexity in essential ways — the isoperimetric theorem via calculus of variations, Brouwer via algebraic topology"
     }
   ],
   "leanFile": {

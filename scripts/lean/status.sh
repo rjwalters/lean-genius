@@ -136,6 +136,8 @@ gather_status() {
     local enricher_sessions=()
     local aristotle_status="stopped"
     local researcher_sessions=()
+    local auditor_sessions=()
+    local peer_reviewer_sessions=()
     local seeker_status="stopped"
     local deployer_status="stopped"
     local tester_status="stopped"
@@ -158,6 +160,23 @@ gather_status() {
     for i in $(seq 1 16); do
         if session_exists "researcher-$i"; then
             researcher_sessions+=("researcher-$i:$(get_session_uptime "researcher-$i")")
+        fi
+    done
+
+    # Auditors
+    if session_exists "auditor-agent"; then
+        auditor_sessions+=("auditor-agent:$(get_session_uptime "auditor-agent")")
+    fi
+    for i in 1 2 3; do
+        if session_exists "auditor-$i"; then
+            auditor_sessions+=("auditor-$i:$(get_session_uptime "auditor-$i")")
+        fi
+    done
+
+    # Peer Reviewers
+    for i in 1 2; do
+        if session_exists "peer-reviewer-$i"; then
+            peer_reviewer_sessions+=("peer-reviewer-$i:$(get_session_uptime "peer-reviewer-$i")")
         fi
     done
 
@@ -274,6 +293,14 @@ gather_status() {
       "status": "${herald_status%%:*}",
       "uptime": "${herald_status#*:}"
     },
+    "auditor": {
+      "count": ${#auditor_sessions[@]},
+      "sessions": $(printf '%s\n' "${auditor_sessions[@]:-}" | jq -R -s -c 'split("\n") | map(select(length > 0))')
+    },
+    "peer_reviewer": {
+      "count": ${#peer_reviewer_sessions[@]},
+      "sessions": $(printf '%s\n' "${peer_reviewer_sessions[@]:-}" | jq -R -s -c 'split("\n") | map(select(length > 0))')
+    },
     "mechanic": {
       "count": ${#mechanic_sessions[@]},
       "sessions": $(printf '%s\n' "${mechanic_sessions[@]:-}" | jq -R -s -c 'split("\n") | map(select(length > 0))')
@@ -358,6 +385,32 @@ EOF
             done
         else
             echo -e "    ${BOLD}Researcher:${NC} ${YELLOW}0 active${NC}"
+        fi
+
+        # Auditor
+        local auditor_count=${#auditor_sessions[@]}
+        if [[ $auditor_count -gt 0 ]]; then
+            echo -e "    ${BOLD}Auditor:${NC} ${GREEN}$auditor_count active${NC}"
+            for session in "${auditor_sessions[@]}"; do
+                local name="${session%%:*}"
+                local uptime="${session#*:}"
+                echo "      $name: Running ($uptime)"
+            done
+        else
+            echo -e "    ${BOLD}Auditor:${NC} ${YELLOW}0 active${NC}"
+        fi
+
+        # Peer Reviewer
+        local peer_reviewer_count=${#peer_reviewer_sessions[@]}
+        if [[ $peer_reviewer_count -gt 0 ]]; then
+            echo -e "    ${BOLD}Peer Reviewer:${NC} ${GREEN}$peer_reviewer_count active${NC}"
+            for session in "${peer_reviewer_sessions[@]}"; do
+                local name="${session%%:*}"
+                local uptime="${session#*:}"
+                echo "      $name: Running ($uptime)"
+            done
+        else
+            echo -e "    ${BOLD}Peer Reviewer:${NC} ${YELLOW}0 active${NC}"
         fi
 
         # Seeker

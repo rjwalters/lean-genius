@@ -85,63 +85,72 @@
       "title": "Imports and Setup",
       "startLine": 1,
       "endLine": 59,
-      "summary": "Imports Mathlib's trigonometric functions, inner product spaces, complex numbers, and Euclidean angle definitions. Sets up the `MorleysTheorem` namespace."
+      "summary": "Imports Mathlib's trigonometric functions, inner product spaces, complex numbers, and Euclidean angle definitions. Sets up the `MorleysTheorem` namespace.",
+      "mathContext": "Imports Mathlib's trigonometric functions, inner product spaces, complex numbers, and Euclidean angle definitions. Sets up the `MorleysTheorem` namespace."
     },
     {
       "id": "triangle-angles",
       "title": "Triangle Angles and Trisection",
       "startLine": 60,
       "endLine": 93,
-      "summary": "Defines `TriangleAngles` structure ($\\alpha + \\beta + \\gamma = \\pi$), trisected angles $\\alpha_3 = \\alpha/3$, and the key lemma `trisected_sum`: $\\alpha_3 + \\beta_3 + \\gamma_3 = \\pi/3$."
+      "summary": "Defines `TriangleAngles` structure ($\\alpha + \\beta + \\gamma = \\pi$), trisected angles $\\alpha_3 = \\alpha/3$, and the key lemma `trisected_sum`: $\\alpha_3 + \\beta_3 + \\gamma_3 = \\pi/3$.",
+      "mathContext": "Defines `TriangleAngles` structure ($\\alpha + \\beta + \\gamma = \\pi$), trisected angles $\\alpha_3 = \\alpha/3$, and the key lemma `trisected_sum`: $\\alpha_3 + \\beta_3 + \\gamma_3 = \\pi/3$."
     },
     {
       "id": "backward-construction",
       "title": "Conway's Backward Construction",
       "startLine": 94,
       "endLine": 137,
-      "summary": "Defines equilateral triangle vertices as cube roots of unity $e^{i \\cdot 2\\pi k/3}$ in $\\mathbb{C}$. Axiom `equilateral_side_length_axiom` asserts $|Q - P| = |R - Q| = |P - R|$."
+      "summary": "Defines equilateral triangle vertices as cube roots of unity $e^{i \\cdot 2\\pi k/3}$ in $\\mathbb{C}$. Axiom `equilateral_side_length_axiom` asserts $|Q - P| = |R - Q| = |P - R|$.",
+      "mathContext": "Defines equilateral triangle vertices as cube roots of unity $e^{i \\cdot 2\\pi k/3}$ in $\\mathbb{C}$. Axiom `equilateral_side_length_axiom` asserts $|Q - P| = |R - Q| = |P - R|$."
     },
     {
       "id": "trig-identities",
       "title": "Trigonometric Identities",
       "startLine": 138,
       "endLine": 159,
-      "summary": "Proves $\\sin(\\pi/3 + \\theta)$ and $\\cos(\\pi/3 + \\theta)$ expansions using Mathlib's `sin_add`, `cos_add` with $\\sin(\\pi/3) = \\sqrt{3}/2$, $\\cos(\\pi/3) = 1/2$."
+      "summary": "Proves $\\sin(\\pi/3 + \\theta)$ and $\\cos(\\pi/3 + \\theta)$ expansions using Mathlib's `sin_add`, `cos_add` with $\\sin(\\pi/3) = \\sqrt{3}/2$, $\\cos(\\pi/3) = 1/2$.",
+      "mathContext": "Proves $\\sin(\\pi/3 + \\theta)$ and $\\cos(\\pi/3 + \\theta)$ expansions using Mathlib's `sin_add`, `cos_add` with $\\sin(\\pi/3) = \\sqrt{3}/2$, $\\cos(\\pi/3) = 1/2$."
     },
     {
       "id": "vertex-reconstruction",
       "title": "Original Triangle Reconstruction",
       "startLine": 160,
       "endLine": 198,
-      "summary": "Defines `Point := ℂ`, `direction θ := e^{iθ}`, and vertices $A$, $B$, $C$ reconstructed from Morley triangle using trisected-angle-determined rays."
+      "summary": "Defines `Point := ℂ`, `direction θ := e^{iθ}`, and vertices $A$, $B$, $C$ reconstructed from Morley triangle using trisected-angle-determined rays.",
+      "mathContext": "Defines `Point := ℂ`, `direction θ := e^{iθ}`, and vertices $A$, $B$, $C$ reconstructed from Morley triangle using trisected-angle-determined rays."
     },
     {
       "id": "morley-structure",
       "title": "Morley Triangle and Side Length",
       "startLine": 199,
       "endLine": 231,
-      "summary": "Defines `MorleyTriangle t` (three intersection points $M_1, M_2, M_3$) and `morleySideLength` $= 8R \\sin(\\alpha_3) \\sin(\\beta_3) \\sin(\\gamma_3)$."
+      "summary": "Defines `MorleyTriangle t` (three intersection points $M_1, M_2, M_3$) and `morleySideLength` $= 8R \\sin(\\alpha_3) \\sin(\\beta_3) \\sin(\\gamma_3)$.",
+      "mathContext": "Defines `MorleyTriangle t` (three intersection points $M_1, M_2, M_3$) and `morleySideLength` $= 8R \\sin(\\alpha_3) \\sin(\\beta_3) \\sin(\\gamma_3)$."
     },
     {
       "id": "main-theorem",
       "title": "Morley's Theorem",
       "startLine": 232,
       "endLine": 271,
-      "summary": "**Theorem** `morleys_theorem` (Wiedijk #84): $|M_1 M_2| = |M_2 M_3| = |M_3 M_1|$. Proved from axiom. Alternative formulation `morley_triangle_equilateral`."
+      "summary": "**Theorem** `morleys_theorem` (Wiedijk #84): $|M_1 M_2| = |M_2 M_3| = |M_3 M_1|$. Proved from axiom. Alternative formulation `morley_triangle_equilateral`.",
+      "mathContext": "**Theorem** `morleys_theorem` (Wiedijk #84): $|M_1 M_2| = |M_2 M_3| = |M_3 M_1|$. Proved from axiom. Alternative formulation `morley_triangle_equilateral`."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 272,
       "endLine": 312,
-      "summary": "Equilateral original triangle ($\\alpha = \\beta = \\gamma = \\pi/3$, trisected angle $= \\pi/9$) and right isosceles ($\\alpha = \\beta = \\pi/4$, $\\gamma = \\pi/2$)."
+      "summary": "Equilateral original triangle ($\\alpha = \\beta = \\gamma = \\pi/3$, trisected angle $= \\pi/9$) and right isosceles ($\\alpha = \\beta = \\pi/4$, $\\gamma = \\pi/2$).",
+      "mathContext": "Equilateral original triangle ($\\alpha = \\beta = \\gamma = \\pi/3$, trisected angle $= \\pi/9$) and right isosceles ($\\alpha = \\beta = \\pi/4$, $\\gamma = \\pi/2$)."
     },
     {
       "id": "historical-notes",
       "title": "Historical Notes and Generalizations",
       "startLine": 313,
       "endLine": 352,
-      "summary": "Frank Morley (1860-1937) at Johns Hopkins. Why the theorem was missed (trisection impossibility). Extensions: non-adjacent trisectors, Morley's pentagon, exterior trisectors."
+      "summary": "Frank Morley (1860-1937) at Johns Hopkins. Why the theorem was missed (trisection impossibility). Extensions: non-adjacent trisectors, Morley's pentagon, exterior trisectors.",
+      "mathContext": "Frank Morley (1860-1937) at Johns Hopkins. Why the theorem was missed (trisection impossibility). Extensions: non-adjacent trisectors, Morley's pentagon, exterior trisectors."
     }
   ],
   "conclusion": {
@@ -156,49 +165,49 @@
   },
   "crossReferences": [
     {
-      "targetProofId": "angle-trisection",
       "relationship": "Morley's theorem requires angle trisection (impossible with compass/straightedge by Wantzel 1837, Wiedijk #8). The triple angle formula cos(3θ) = 4cos³θ - 3cosθ connects both results algebraically",
       "sharedConcepts": [
         "angle-trisection",
         "cubic-equations",
         "compass-straightedge-impossibility"
-      ]
+      ],
+      "targetId": "angle-trisection"
     },
     {
-      "targetProofId": "triangle-angle-sum",
       "relationship": "The angle sum α + β + γ = π (Wiedijk #27) is the foundational constraint for TriangleAngles, implying the trisected angle sum α/3 + β/3 + γ/3 = π/3",
       "sharedConcepts": [
         "triangle-angles",
         "angle-sum-property",
         "Euclidean-geometry"
-      ]
+      ],
+      "targetId": "triangle-angle-sum"
     },
     {
-      "targetProofId": "de-moivre",
       "relationship": "De Moivre's formula (Wiedijk #17) provides the complex exponential framework used for equilateral triangle vertices as cube roots of unity",
       "sharedConcepts": [
         "complex-exponential",
         "trigonometry",
         "roots-of-unity"
-      ]
+      ],
+      "targetId": "de-moivre"
     },
     {
-      "targetProofId": "feuerbachs-theorem",
       "relationship": "Both are advanced triangle geometry results on Wiedijk's 100 list involving surprising hidden structures (nine-point circle tangency vs equilateral Morley triangle)",
       "sharedConcepts": [
         "triangle-geometry",
         "Wiedijk-100-theorems",
         "hidden-structure"
-      ]
+      ],
+      "targetId": "feuerbachs-theorem"
     },
     {
-      "targetProofId": "law-of-cosines",
       "relationship": "The law of cosines (Wiedijk #94) and law of sines are used in deriving the Morley side length formula 8R·sin(α/3)·sin(β/3)·sin(γ/3)",
       "sharedConcepts": [
         "trigonometry",
         "circumradius",
         "triangle-side-length"
-      ]
+      ],
+      "targetId": "law-of-cosines"
     }
   ],
   "leanFile": {
@@ -222,29 +231,29 @@
   },
   "relatedProofs": [
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "angle-trisection",
+      "relationship": "Morley's theorem requires angle trisection (impossible with compass/straightedge by Wantzel 1837, Wiedijk #8). The triple angle formula cos(3θ) = 4cos³θ - 3cosθ connects both results algebraically",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "triangle-angle-sum",
+      "relationship": "The angle sum α + β + γ = π (Wiedijk #27) is the foundational constraint for TriangleAngles, implying the trisected angle sum α/3 + β/3 + γ/3 = π/3",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "de-moivre",
+      "relationship": "De Moivre's formula (Wiedijk #17) provides the complex exponential framework used for equilateral triangle vertices as cube roots of unity",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "feuerbachs-theorem",
+      "relationship": "Both are advanced triangle geometry results on Wiedijk's 100 list involving surprising hidden structures (nine-point circle tangency vs equilateral Morley triangle)",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "law-of-cosines",
+      "relationship": "The law of cosines (Wiedijk #94) and law of sines are used in deriving the Morley side length formula 8R·sin(α/3)·sin(β/3)·sin(γ/3)",
+      "description": ""
     }
   ],
   "references": [

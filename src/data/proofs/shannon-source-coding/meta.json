@@ -176,27 +176,42 @@
     {
       "id": "shannon-entropy",
       "relationship": "depends-on",
-      "description": "The source coding theorem characterizes entropy $H(X) = -\\sum_x p(x)\\log p(x)$ operationally as the compression limit — "
+      "description": "The source coding theorem characterizes entropy $H(X) = -\\sum_x p(x)\\log p(x)$ operationally as the compression limit — giving entropy its concrete meaning as 'minimum bits per symbol'. Without the source coding theorem, entropy is just a mathematical formula; with it, entropy becomes the answer to 'how much can we compress?'"
     },
     {
       "id": "shannon-channel-coding",
       "relationship": "complementary",
-      "description": "Source coding (compression) and channel coding (reliable transmission) are the two fundamental theorems of Shannon's 194"
+      "description": "Source coding (compression) and channel coding (reliable transmission) are the two fundamental theorems of Shannon's 1948 paper. Source coding removes redundancy (compresses to $H$ bits/symbol); channel coding adds redundancy (transmits reliably up to capacity $C$ bits/use). The separation theorem states they can be composed: compress to $H$, then code for the channel, achieving reliable communication whenever $H < C$"
     },
     {
       "id": "shannon-channel-coding-oq-04",
       "relationship": "related",
-      "description": "The channel coding sub-entry explores error exponents and reliability functions, which have direct analogues in source c"
+      "description": "The channel coding sub-entry explores error exponents and reliability functions, which have direct analogues in source coding: the source coding error exponent characterizes how fast $P_e \\to 0$ (or $P_e \\to 1$) as a function of the rate, complementing the first-order result that $H$ is the threshold"
     },
     {
       "id": "shannon-source-coding-oq-02",
       "relationship": "extended-by",
-      "description": "Extends the source coding theorem to explore connections with Kolmogorov complexity and algorithmic information theory —"
+      "description": "Extends the source coding theorem to explore connections with Kolmogorov complexity and algorithmic information theory — the individual-sequence analogue of Shannon's average-case compression limit"
     },
     {
       "id": "birthday-problem",
       "relationship": "related",
-      "description": "Both use probabilistic counting arguments involving exponential growth: the birthday problem counts collisions among $2^"
+      "description": "Both use probabilistic counting arguments involving exponential growth: the birthday problem counts collisions among $2^{n/2}$ random selections, while source coding counts typical sequences among $2^{nH}$ — in both cases, the tension between exponentially many possibilities and concentration of probability is the core mechanism"
+    },
+    {
+      "id": "central-limit-theorem",
+      "relationship": "foundational",
+      "description": "The AEP that underlies source coding is an information-theoretic law of large numbers: $-\\frac{1}{n}\\log p(X_1^n) \\to H(X)$ in probability. The CLT provides the finer second-order analysis: the rate of convergence to $H$ is $O(1/\\sqrt{n})$ with Gaussian fluctuations, which determines the second-order coding rate (Strassen 1962, Polyanskiy-Poor-Verdú 2010)"
+    },
+    {
+      "id": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation $\\log n! \\approx n\\log n - n$ underpins the typical set counting argument: the number of sequences with a given type (empirical distribution) is $\\binom{n}{k_1, \\ldots, k_m} \\approx 2^{nH(\\hat{p})}$ by Stirling, which is precisely the connection between combinatorial counting and entropy"
+    },
+    {
+      "id": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The multinomial coefficient $\\binom{n}{k_1, \\ldots, k_m}$ counts sequences of a given type — the method of types (Csiszár-Körner) shows $\\binom{n}{k_1,\\ldots,k_m} \\approx 2^{nH(k_1/n, \\ldots, k_m/n)}$, directly linking combinatorics to entropy and providing an alternative proof of the source coding theorem"
     }
   ],
   "leanFile": {

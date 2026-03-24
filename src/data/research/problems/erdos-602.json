@@ -29,10 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Already fully verified (0 sorries, 0 axioms, 4 theorems, 300 lines).",
-    "builtItems": [],
+    "progressSummary": "COMPLETED: Fully verified formalization of Property B for infinite set families. 4 theorems, 22 definitions, 0 axioms, 0 sorries, 300 lines.",
+    "builtItems": [
+      "Reviewed and graduated: formalization is complete and correct",
+      "22 definitions capturing Property B, set families, intersection constraints",
+      "4 theorems proved with 0 sorries"
+    ],
     "insights": [
-      "Already fully verified, no work needed"
+      "Already fully verified, no work needed",
+      "Property B formalization uses countable set families with finite pairwise intersections",
+      "The 2-coloring question is stated as an open conjecture (def, not axiom)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -52,7 +58,7 @@
     "mathlib": []
   },
   "started": "2026-01-13T18:05:31.779Z",
-  "lastUpdate": "2026-03-24T16:45:00Z",
+  "lastUpdate": "2026-03-24T18:10:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [

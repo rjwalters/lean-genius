@@ -49,70 +49,80 @@
       "title": "Part 1: Arithmetic Progressions",
       "startLine": 40,
       "endLine": 53,
-      "summary": "Definition of k-term arithmetic progressions as sets {a, a+d, ..., a+(k-1)d} and as function sequences."
+      "summary": "Definition of k-term arithmetic progressions as sets {a, a+d, ..., a+(k-1)d} and as function sequences.",
+      "mathContext": "Definition of k-term arithmetic progressions as sets {a, a+d, ..., a+(k-1)d} and as function sequences."
     },
     {
       "id": "colorings",
       "title": "Part 2: Colorings",
       "startLine": 54,
       "endLine": 82,
-      "summary": "Colorings of {1,...,N}, monochromatic sets (all same color), and rainbow sets (all distinct colors)."
+      "summary": "Colorings of {1,...,N}, monochromatic sets (all same color), and rainbow sets (all distinct colors).",
+      "mathContext": "Colorings of {1,...,N}, monochromatic sets (all same color), and rainbow sets (all distinct colors)."
     },
     {
       "id": "canonical-property",
       "title": "Part 3: The Canonical Property",
       "startLine": 83,
       "endLine": 96,
-      "summary": "A coloring has the canonical property for k-APs if it contains a monochromatic OR rainbow k-AP."
+      "summary": "A coloring has the canonical property for k-APs if it contains a monochromatic OR rainbow k-AP.",
+      "mathContext": "A coloring has the canonical property for k-APs if it contains a monochromatic OR rainbow k-AP."
     },
     {
       "id": "h-function",
       "title": "Part 4: The H(k) Function",
       "startLine": 97,
       "endLine": 119,
-      "summary": "H(k) defined via Nat.find as the minimum N guaranteeing the canonical property. Existence, specification, and minimality axioms."
+      "summary": "H(k) defined via Nat.find as the minimum N guaranteeing the canonical property. Existence, specification, and minimality axioms.",
+      "mathContext": "H(k) defined via Nat.find as the minimum N guaranteeing the canonical property. Existence, specification, and minimality axioms."
     },
     {
       "id": "van-der-waerden",
       "title": "Part 5: Relation to van der Waerden Numbers",
       "startLine": 120,
       "endLine": 140,
-      "summary": "Van der Waerden number W(k) defined via Nat.find. H(k) ≤ W(k) and H(k) ≥ k for k ≥ 3."
+      "summary": "Van der Waerden number W(k) defined via Nat.find. H(k) ≤ W(k) and H(k) ≥ k for k ≥ 3.",
+      "mathContext": "Van der Waerden number W(k) defined via Nat.find. H(k) ≤ W(k) and H(k) ≥ k for k ≥ 3."
     },
     {
       "id": "asymptotics",
       "title": "Part 6: Known Asymptotic Results",
       "startLine": 141,
       "endLine": 161,
-      "summary": "Known: H(k)^{1/k} → ∞. Conjecture: H(k)^{1/k}/k → ∞ (super-exponential growth)."
+      "summary": "Known: H(k)^{1/k} → ∞. Conjecture: H(k)^{1/k}/k → ∞ (super-exponential growth).",
+      "mathContext": "Known: H(k)^{1/k} → ∞. Conjecture: H(k)^{1/k}/k → ∞ (super-exponential growth)."
     },
     {
       "id": "small-cases",
       "title": "Part 7: Small Cases",
       "startLine": 162,
       "endLine": 169,
-      "summary": "Bounds on small values: H(3) ≤ 10, H(4) ≤ 100."
+      "summary": "Bounds on small values: H(3) ≤ 10, H(4) ≤ 100.",
+      "mathContext": "Bounds on small values: H(3) ≤ 10, H(4) ≤ 100."
     },
     {
       "id": "connections",
       "title": "Part 8: Connections",
       "startLine": 170,
       "endLine": 188,
-      "summary": "Connection to Szemerédi's theorem (density → existence) and canonical vs standard Ramsey theory."
+      "summary": "Connection to Szemerédi's theorem (density → existence) and canonical vs standard Ramsey theory.",
+      "mathContext": "Connection to Szemerédi's theorem (density → existence) and canonical vs standard Ramsey theory."
     },
     {
       "id": "difficulty",
       "title": "Part 9: Why This Is Hard",
       "startLine": 189,
       "endLine": 208,
-      "summary": "The challenge of precise asymptotics: interplay between monochromatic and rainbow conditions via pigeonhole."
+      "summary": "The challenge of precise asymptotics: interplay between monochromatic and rainbow conditions via pigeonhole.",
+      "mathContext": "The challenge of precise asymptotics: interplay between monochromatic and rainbow conditions via pigeonhole."
     },
     {
       "id": "summary",
       "title": "Part 10: Summary",
       "startLine": 209,
       "endLine": 250,
-      "summary": "H_pos axiom, summary theorem combining H(k) > 0 and H(k)^{1/k} → ∞. Status: OPEN."
+      "summary": "H_pos axiom, summary theorem combining H(k) > 0 and H(k)^{1/k} → ∞. Status: OPEN.",
+      "mathContext": "H_pos axiom, summary theorem combining H(k) > 0 and H(k)^{1/k} → ∞. Status: OPEN."
     }
   ],
   "conclusion": {

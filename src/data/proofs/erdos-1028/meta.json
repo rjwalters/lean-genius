@@ -50,14 +50,16 @@
       "title": "Sign Functions",
       "summary": "SignFunction, isValidSign, validSignFunctions",
       "startLine": 81,
-      "endLine": 97
+      "endLine": 97,
+      "mathContext": "SignFunction, isValidSign, validSignFunctions"
     },
     {
       "id": "discrepancy",
       "title": "Discrepancy",
       "summary": "pairSum, discrepancy, maxDiscrepancy",
       "startLine": 98,
-      "endLine": 115
+      "endLine": 115,
+      "mathContext": "pairSum, discrepancy, maxDiscrepancy"
     },
     {
       "id": "h-function",
@@ -78,42 +80,48 @@
       "title": "Erdős-Spencer (1971)",
       "summary": "erdos_spencer_lower, erdos_spencer_improves",
       "startLine": 145,
-      "endLine": 157
+      "endLine": 157,
+      "mathContext": "erdos_spencer_lower, erdos_spencer_improves"
     },
     {
       "id": "main-result",
       "title": "The Main Result",
       "summary": "H_asymptotic, erdos_1028_question, erdos_1028_solved",
       "startLine": 158,
-      "endLine": 191
+      "endLine": 191,
+      "mathContext": "H_asymptotic, erdos_1028_question, erdos_1028_solved"
     },
     {
       "id": "symmetric",
       "title": "Symmetric Functions",
       "summary": "isSymmetric, symmetric_pairSum",
       "startLine": 192,
-      "endLine": 215
+      "endLine": 215,
+      "mathContext": "isSymmetric, symmetric_pairSum"
     },
     {
       "id": "graph",
       "title": "Graph Interpretation",
       "summary": "asSignedGraph, discrepancy_as_imbalance",
       "startLine": 216,
-      "endLine": 230
+      "endLine": 230,
+      "mathContext": "asSignedGraph, discrepancy_as_imbalance"
     },
     {
       "id": "probabilistic",
       "title": "Probabilistic Intuition",
       "summary": "expectedDiscrepancy, expected_discrepancy_bound, random_upper",
       "startLine": 231,
-      "endLine": 256
+      "endLine": 256,
+      "mathContext": "expectedDiscrepancy, expected_discrepancy_bound, random_upper"
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound and Special Cases",
       "summary": "large_discrepancy_exists, H_two, H_three, homogeneous_small_discrepancy",
       "startLine": 257,
-      "endLine": 318
+      "endLine": 318,
+      "mathContext": "large_discrepancy_exists, H_two, H_three, homogeneous_small_discrepancy"
     }
   ],
   "conclusion": {
@@ -155,16 +163,34 @@
   ],
   "relatedProofs": [
     {
-      "target": "ramseys-theorem",
-      "note": "Ramsey's theorem is the foundational result on unavoidable structure in edge-colorings; discrepancy theory can be viewed as a quantitative strengthening."
+      "id": "ramseys-theorem",
+      "relationship": "Ramsey theory provides the extremal combinatorics context in which homogeneous subsets drive large discrepancy; see openQuestions on Ramsey connections.",
+      "description": ""
     },
     {
-      "target": "szemeredi-regularity",
-      "note": "Szemerédi's Regularity Lemma is the principal modern tool for converting discrepancy-type density information into structural results on graphs."
+      "id": "erdos-1",
+      "relationship": "Erdős #1 (Sidon sets / sum-free sets) shares the probabilistic-method toolkit used to establish the O(n^{3/2}) upper bound.",
+      "description": ""
     },
     {
-      "target": "erdos-1025",
-      "note": "Companion problem on signed graph imbalance; proved with parallel Lean axiom structure."
+      "id": "erdos-1025",
+      "relationship": "Erdős #1025 studies signed graph imbalance; the two problems share the signed-complete-graph model and discrepancy extremal questions.",
+      "description": ""
+    },
+    {
+      "id": "erdos-1029",
+      "relationship": "Adjacent Erdős problem in the discrepancy-theory cluster; formalized with the same axiom structure and proof approach.",
+      "description": ""
+    },
+    {
+      "id": "erdos-500",
+      "relationship": "Erdős #500 involves combinatorial counting over pairs; the pair-sum decomposition technique used here appears in related Erdős pair-counting problems.",
+      "description": ""
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "Binomial coefficient estimates underpin the counting arguments in both the upper and lower bound proofs for H(n).",
+      "description": ""
     }
   ],
   "references": [
@@ -174,7 +200,7 @@
       ],
       "title": "On some problems in graph theory, combinatorial analysis and combinatorial number theory",
       "venue": "Graph Theory and Combinatorics (Cambridge, 1983)",
-      "year": 1984,
+      "year": "1984",
       "note": "Contains the original formulation and n/4 lower bound for H(n)."
     },
     {
@@ -186,7 +212,7 @@
       "venue": "Networks",
       "volume": "1",
       "pages": "379–385",
-      "year": 1971,
+      "year": "1971",
       "note": "Establishes the matching Ω(n^{3/2}) lower bound, completing H(n) = Θ(n^{3/2})."
     },
     {
@@ -197,7 +223,7 @@
       "venue": "Transactions of the American Mathematical Society",
       "volume": "289",
       "pages": "679–706",
-      "year": 1985,
+      "year": "1985",
       "note": "Landmark discrepancy result proving the entropy method; directly related to the Erdős-Spencer lower bound technique used here."
     },
     {
@@ -209,7 +235,7 @@
       "venue": "Journal of the American Mathematical Society",
       "volume": "9",
       "pages": "195–204",
-      "year": 1996,
+      "year": "1996",
       "note": "Illustrates the discrepancy-theory framework connecting signed-sum estimates with combinatorial lower bounds."
     },
     {
@@ -220,7 +246,7 @@
       "title": "The Probabilistic Method",
       "venue": "Wiley",
       "edition": "4th",
-      "year": 2016,
+      "year": "2016",
       "note": "Standard reference for the probabilistic upper bound technique; Chapter 14 covers discrepancy."
     }
   ],

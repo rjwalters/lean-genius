@@ -179,12 +179,12 @@
     {
       "id": "cayley-hamilton",
       "relationship": "extends",
-      "description": "Parent proof: the Cayley-Hamilton theorem (a matrix satisfies its own characteristic polynomial) — this file shows how t"
+      "description": "Parent proof: the Cayley-Hamilton theorem (a matrix satisfies its own characteristic polynomial) — this file shows how to reduce matrix functions modulo the characteristic polynomial"
     },
     {
       "id": "cayley-hamilton-minpoly",
       "relationship": "related",
-      "description": "The minimal polynomial approach to Cayley-Hamilton — this file uses the characteristic polynomial directly for matrix fu"
+      "description": "The minimal polynomial approach to Cayley-Hamilton — this file uses the characteristic polynomial directly for matrix function reduction"
     },
     {
       "id": "cayley-hamilton-reduction-oq-01",
@@ -199,7 +199,12 @@
     {
       "id": "cramers-rule",
       "relationship": "related",
-      "description": "Cramer's rule uses determinants of matrices; the characteristic polynomial involves det(A - λI), connecting determinant "
+      "description": "Cramer's rule uses determinants of matrices; the characteristic polynomial involves det(A - λI), connecting determinant theory to eigenvalue analysis"
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "Matrix power expansion and polynomial evaluation at matrices use binomial-type identities for the algebraic manipulation"
     }
   ],
   "references": [

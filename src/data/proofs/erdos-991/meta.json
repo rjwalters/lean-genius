@@ -91,77 +91,88 @@
       "title": "The Unit Sphere",
       "summary": "UnitSphere definition, sphereDist chordal distance",
       "startLine": 36,
-      "endLine": 55
+      "endLine": 55,
+      "mathContext": "UnitSphere definition, sphereDist chordal distance"
     },
     {
       "id": "logarithmic-energy",
       "title": "Logarithmic Energy",
       "summary": "logEnergy definition, IsOptimalConfig predicate for Fekete points",
       "startLine": 56,
-      "endLine": 85
+      "endLine": 85,
+      "mathContext": "logEnergy definition, IsOptimalConfig predicate for Fekete points"
     },
     {
       "id": "spherical-caps",
       "title": "Spherical Caps",
       "summary": "SphericalCap, normalizedCapArea, capCount definitions",
       "startLine": 86,
-      "endLine": 114
+      "endLine": 114,
+      "mathContext": "SphericalCap, normalizedCapArea, capCount definitions"
     },
     {
       "id": "discrepancy",
       "title": "Discrepancy",
       "summary": "SphericalCapDiscrepancy, HasSmallDiscrepancy property",
       "startLine": 115,
-      "endLine": 139
+      "endLine": 139,
+      "mathContext": "SphericalCapDiscrepancy, HasSmallDiscrepancy property"
     },
     {
       "id": "brauchart-bound",
       "title": "Brauchart's Bound (2008)",
       "summary": "brauchart_bound axiom: O(n^{3/4}) discrepancy",
       "startLine": 140,
-      "endLine": 160
+      "endLine": 160,
+      "mathContext": "brauchart_bound axiom: O(n^{3/4}) discrepancy"
     },
     {
       "id": "marzo-mas-bound",
       "title": "Marzo-Mas Improvement (2021)",
       "summary": "marzo_mas_bound axiom: O(n^{2/3}) discrepancy",
       "startLine": 161,
-      "endLine": 183
+      "endLine": 183,
+      "mathContext": "marzo_mas_bound axiom: O(n^{2/3}) discrepancy"
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem (Erdős #991)",
       "summary": "erdos_991_qualitative, erdos_991 theorem",
       "startLine": 184,
-      "endLine": 224
+      "endLine": 224,
+      "mathContext": "erdos_991_qualitative, erdos_991 theorem"
     },
     {
       "id": "related-concepts",
       "title": "Related Concepts",
       "summary": "FeketePoints, rieszEnergy, potential_theory_equidistribution",
       "startLine": 225,
-      "endLine": 260
+      "endLine": 260,
+      "mathContext": "FeketePoints, rieszEnergy, potential_theory_equidistribution"
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "hemisphere_approx, polar_cap_bound",
       "startLine": 261,
-      "endLine": 297
+      "endLine": 297,
+      "mathContext": "hemisphere_approx, polar_cap_bound"
     },
     {
       "id": "comparison-bounds",
       "title": "Comparison of Bounds",
       "summary": "improvement_factor, discrepancy_summary",
       "startLine": 298,
-      "endLine": 332
+      "endLine": 332,
+      "mathContext": "improvement_factor, discrepancy_summary"
     },
     {
       "id": "main-results",
       "title": "Main Results",
       "summary": "erdos_991_summary combining qualitative and quantitative results.",
       "startLine": 333,
-      "endLine": 359
+      "endLine": 359,
+      "mathContext": "erdos_991_summary combining qualitative and quantitative results."
     }
   ],
   "conclusion": {

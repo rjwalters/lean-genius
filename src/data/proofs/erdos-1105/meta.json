@@ -96,70 +96,80 @@
       "title": "Graph Basics",
       "summary": "SimpleGraph, EdgeSet, CompleteGraph, numEdgesKn, EdgeColoring, numColors",
       "startLine": 34,
-      "endLine": 60
+      "endLine": 60,
+      "mathContext": "SimpleGraph, EdgeSet, CompleteGraph, numEdgesKn, EdgeColoring, numColors"
     },
     {
       "id": "paths-cycles",
       "title": "Paths and Cycles",
       "summary": "PathGraph, CycleGraph, numEdgesPath, numEdgesCycle",
       "startLine": 61,
-      "endLine": 80
+      "endLine": 80,
+      "mathContext": "PathGraph, CycleGraph, numEdgesPath, numEdgesCycle"
     },
     {
       "id": "rainbow",
       "title": "Rainbow Subgraphs",
       "summary": "GraphEmbedding, embeddedEdges, IsRainbow, AvoidsRainbow",
       "startLine": 81,
-      "endLine": 110
+      "endLine": 110,
+      "mathContext": "GraphEmbedding, embeddedEdges, IsRainbow, AvoidsRainbow"
     },
     {
       "id": "anti-ramsey",
       "title": "Anti-Ramsey Numbers",
       "summary": "antiRamsey, arCycle, arPath definitions",
       "startLine": 111,
-      "endLine": 127
+      "endLine": 127,
+      "mathContext": "antiRamsey, arCycle, arPath definitions"
     },
     {
       "id": "cycle-conjecture",
       "title": "The Cycle Conjecture",
       "summary": "cycleCoeff, CycleConjecture, ar_triangle",
       "startLine": 128,
-      "endLine": 148
+      "endLine": 148,
+      "mathContext": "cycleCoeff, CycleConjecture, ar_triangle"
     },
     {
       "id": "path-conjecture",
       "title": "The Path Conjecture",
       "summary": "pathL, pathEpsilon, pathFormula, PathConjecture, simonovits_sos_path, yuan_path_announced",
       "startLine": 149,
-      "endLine": 183
+      "endLine": 183,
+      "mathContext": "pathL, pathEpsilon, pathFormula, PathConjecture, simonovits_sos_path, yuan_path_announced"
     },
     {
       "id": "bounds",
       "title": "Lower and Upper Bounds",
       "summary": "ar_lower_bound, ar_upper_bound, ar_mono_n",
       "startLine": 184,
-      "endLine": 202
+      "endLine": 202,
+      "mathContext": "ar_lower_bound, ar_upper_bound, ar_mono_n"
     },
     {
       "id": "turan",
       "title": "Connection to Turán Numbers",
       "summary": "turan definition, ar_turan_lower",
       "startLine": 203,
-      "endLine": 220
+      "endLine": 220,
+      "mathContext": "turan definition, ar_turan_lower"
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "ar_triangle, ar_path_3, ar_k3",
       "startLine": 221,
-      "endLine": 235
+      "endLine": 235,
+      "mathContext": "ar_triangle, ar_path_3, ar_k3"
     },
     {
       "id": "status",
       "title": "Problem Status",
       "summary": "erdos_1105_status, erdos_1105_cycle_statement, erdos_1105_path_statement",
       "startLine": 236,
-      "endLine": 275
+      "endLine": 275,
+      "mathContext": "erdos_1105_status, erdos_1105_cycle_statement, erdos_1105_path_statement"
     }
   ],
   "conclusion": {
@@ -207,26 +217,35 @@
   ],
   "relatedProofs": [
     {
-      "targetId": "ramseys-theorem",
-      "relationshipType": "dual",
-      "notes": "Anti-Ramsey theory (maximize colors, avoid rainbow H) is the dual of classical Ramsey theory (minimize colors, force monochromatic H). The two theories were explicitly contrasted by Erdős, Simonovits, and Sós in the founding 1975 paper."
+      "id": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey's Theorem is the foundational result in Ramsey theory. Anti-Ramsey theory asks the complementary question: how many colors can be used while avoiding a rainbow (all-distinct-colors) subgraph, inverting the classical goal of forcing monochromatic subgraphs."
     },
     {
-      "targetId": "erdos-1079",
-      "relationshipType": "technique",
-      "notes": "Turán density arguments appear in both. The Turán number ex(n, H) provides a lower bound for anti-Ramsey numbers via AR(n,H) ≥ ex(n,H)+1, connecting neighborhood Turán density (Erdős #1079) to anti-Ramsey bounds."
+      "id": "erdos-1014",
+      "relationship": "related",
+      "description": "Both problems concern asymptotic behavior of extremal numbers in complete graphs. Erdős #1014 studies ratio convergence of classical Ramsey numbers R(k, l), while #1105 studies the linear growth rate of anti-Ramsey numbers AR(n, C_k)."
     },
     {
-      "targetId": "erdos-136",
-      "relationshipType": "technique",
-      "notes": "The Erdős-Gyárfás function f(n,4,5) concerns edge-colorings of K_n with local color constraints, a structural cousin of anti-Ramsey coloring. Both involve optimizing the number of colors in edge-colorings of complete graphs subject to subgraph color restrictions."
+      "id": "erdos-129",
+      "relationship": "related",
+      "description": "Erdős #129 studies edge-colorings of K_n avoiding monochromatic cliques, a classical Ramsey coloring problem. Anti-Ramsey #1105 studies the opposite extremal: maximizing colors in K_n while avoiding rainbow cycles, making both problems extremal edge-coloring questions on complete graphs."
     },
-    "ramseys-theorem",
-    "erdos-1014",
-    "erdos-129",
-    "erdos-1008",
-    "erdos-1009",
-    "erdos-1012"
+    {
+      "id": "erdos-1008",
+      "relationship": "related",
+      "description": "Erdős #1008 studies extremal numbers for C₄-free subgraphs (Zarankiewicz-type). Problem #1105 studies anti-Ramsey numbers for cycles C_k. Both concern extremal properties of cycles in complete or dense graphs, and the Turán connection AR(n,H) ≥ ex(n,H)+1 links these two frameworks."
+    },
+    {
+      "id": "erdos-1009",
+      "relationship": "related",
+      "description": "Erdős #1009 establishes bounds for edge-disjoint triangles beyond the Turán number. The Turán connection is central to #1105 as well: the lower bound AR(n, H) ≥ ex(n, H) + 1 links anti-Ramsey numbers to Turán extremal numbers, so results in Turán theory directly inform anti-Ramsey bounds."
+    },
+    {
+      "id": "erdos-1012",
+      "relationship": "related",
+      "description": "Erdős #1012 studies long cycles in dense graphs from an extremal perspective. Problem #1105 studies anti-Ramsey numbers for cycles C_k and paths P_k. Both problems address extremal properties of cycles in dense graphs, with #1012 focusing on cycle length and #1105 on rainbow-free colorings."
+    }
   ],
   "references": [
     {
@@ -237,7 +256,7 @@
       ],
       "title": "Anti-Ramsey theorems",
       "venue": "Infinite and Finite Sets (Colloq., Keszthely, 1973), Vol. II",
-      "year": 1975,
+      "year": "1975",
       "pages": "633–643",
       "publisher": "North-Holland, Amsterdam",
       "series": "Colloq. Math. Soc. János Bolyai, Vol. 10",
@@ -250,7 +269,7 @@
       ],
       "title": "The anti-Ramsey number of perfect matching",
       "venue": "Discrete Mathematics",
-      "year": 2012,
+      "year": "2012",
       "volume": 312,
       "issue": 5,
       "pages": "933–937",
@@ -264,7 +283,7 @@
       ],
       "title": "Anti-Ramsey numbers for graphs with independent cycles",
       "venue": "Electronic Journal of Combinatorics",
-      "year": 2009,
+      "year": "2009",
       "volume": 16,
       "issue": 1,
       "articleId": "R85",
@@ -276,7 +295,7 @@
       ],
       "title": "Anti-Ramsey numbers of paths",
       "venue": "arXiv preprint",
-      "year": 2021,
+      "year": "2021",
       "arxivId": "2102.02456",
       "notes": "Announced the complete determination of the anti-Ramsey number for paths AR(n, P_k) for n ≥ k ≥ 5, as referenced in the formalization via the yuan_path_announced axiom."
     },
@@ -287,7 +306,7 @@
       ],
       "title": "An anti-Ramsey theorem",
       "venue": "Combinatorica",
-      "year": 2002,
+      "year": "2002",
       "volume": 22,
       "issue": 3,
       "pages": "445–449",

@@ -214,27 +214,27 @@
     {
       "id": "erdos-89",
       "relationship": "foundational",
-      "description": "Problem #89 is the Erdős distinct distances problem (1946): what is the minimum number of distinct distances among n poi"
+      "description": "Problem #89 is the Erdős distinct distances problem (1946): what is the minimum number of distinct distances among n points? Guth-Katz (2015) proved Ω(n/√log n). Problem #652 refines this by studying the per-point distance counts R(xᵢ) rather than the total"
     },
     {
       "id": "erdos-90",
       "relationship": "related",
-      "description": "Problem #90 on unit distances is the complementary question: how many times can one specific distance occur? While #652 "
+      "description": "Problem #90 on unit distances is the complementary question: how many times can one specific distance occur? While #652 studies how many distinct distances each point determines, #90 studies how often one distance repeats"
     },
     {
       "id": "erdos-651",
       "relationship": "related",
-      "description": "Problem #651 studies convex configurations in point sets, sharing the theme of extremal properties of finite planar poin"
+      "description": "Problem #651 studies convex configurations in point sets, sharing the theme of extremal properties of finite planar point configurations"
     },
     {
       "id": "erdos-653",
       "relationship": "extends",
-      "description": "Problem #653 studies the number of distinct R-values g(n) in an n-point set — a complementary question about the distanc"
+      "description": "Problem #653 studies the number of distinct R-values g(n) in an n-point set — a complementary question about the distance multiplicity spectrum that builds on the αₖ framework of #652"
     },
     {
       "id": "erdos-98",
       "relationship": "related",
-      "description": "Problem #98 addresses distinct distances under general position constraints (no 3 collinear, no 4 concyclic), a structur"
+      "description": "Problem #98 addresses distinct distances under general position constraints (no 3 collinear, no 4 concyclic), a structural variant sharing the polynomial partitioning techniques used in Mathialagan's proof"
     }
   ],
   "leanFile": {

@@ -164,24 +164,34 @@
   ],
   "relatedProofs": [
     {
-      "target": "erdos-994",
-      "description": "Khintchine equidistribution conjecture — equidistribution of {kα} for all measurable sets, disproved by Marstrand 1970"
+      "id": "erdos-994",
+      "relationship": "Khintchine's equidistribution conjecture concerns whether (1/n)∑1_{kα∈E} → λ(E) for almost all α and ALL measurable E — the same tension between pointwise and averaged equidistribution that drives the difficulty in Problem #1002",
+      "description": ""
     },
     {
-      "target": "erdos-995",
-      "description": "Lacunary fractional-part sums with o(N √(log log N)) growth conjectured by Erdős"
+      "id": "erdos-995",
+      "relationship": "Lacunary sequences and fractional parts: estimates of ∑f({αn_k}) for lacunary n_k share the same normalization scale and Diophantine dependence on α as the weighted sums in Problem #1002",
+      "description": ""
     },
     {
-      "target": "erdos-1001",
-      "description": "Kesten–Sós theorem on Diophantine approximation density — background for Kesten's Cauchy result"
+      "id": "erdos-1001",
+      "relationship": "Kesten and Sós appear in both problems — Problem #1001 records their result on Diophantine approximation density, providing context for Kesten's 1960 Cauchy-distribution theorem cited in Problem #1002",
+      "description": ""
     },
     {
-      "target": "erdos-464",
-      "description": "Lacunary sequences and density of {θn_k} — related equidistribution question for fractional parts"
+      "id": "erdos-464",
+      "relationship": "Density of fractional parts along lacunary sequences: equidistribution and density questions for {θn_k} complement the distribution-function question for the running sum (1/log n)∑(1/2 − {αk})",
+      "description": ""
     },
     {
-      "target": "erdos-492",
-      "description": "Uniform distribution of generalized fractional parts — Schmidt's disproof shows fragility of such results"
+      "id": "erdos-492",
+      "relationship": "Schmidt's disproof of uniform distribution for generalized fractional parts illustrates how sensitive distribution questions for fractional-part sums are to the exact setup — directly relevant to whether fixing β = 0 destroys the Cauchy limit",
+      "description": ""
+    },
+    {
+      "id": "laws-of-large-numbers",
+      "relationship": "The asymptotic distribution question for f(α,n) is an analogue of the LLN for strongly dependent sequences: Weyl equidistribution gives the almost-sure mean zero, but the fluctuation scale (1/log n) and limiting law require deeper ergodic input",
+      "description": ""
     }
   ],
   "references": [
@@ -191,7 +201,7 @@
       ],
       "title": "On a conjecture of Erdős and Szüsz related to uniform distribution mod 1",
       "venue": "Acta Arithmetica",
-      "year": 1960,
+      "year": "1960",
       "volume": "5",
       "pages": "369–380",
       "notes": "Proves the two-parameter variant f(α,β,n) has Cauchy limit distribution using ergodic properties of the natural extension of the Gauss map; the foundational result for Problem #1002"
@@ -202,7 +212,7 @@
       ],
       "title": "Über die Gleichverteilung von Zahlen mod. Eins",
       "venue": "Mathematische Annalen",
-      "year": 1916,
+      "year": "1916",
       "volume": "77",
       "pages": "313–352",
       "notes": "Weyl's equidistribution theorem: {kα} is uniformly distributed mod 1 for irrational α; the foundational result that justifies the log n normalization in f(α,n)"
@@ -213,7 +223,7 @@
       ],
       "title": "Strong laws of large numbers for weakly correlated random variables",
       "venue": "Michigan Mathematical Journal",
-      "year": 1988,
+      "year": "1988",
       "volume": "35",
       "pages": "353–359",
       "notes": "Ergodic and probabilistic framework for sums of weakly dependent sequences, directly relevant to the one-parameter case where the shift average is absent"
@@ -224,7 +234,7 @@
       ],
       "title": "Probabilistic Diophantine approximation: randomness in lattice point counting",
       "venue": "Springer Monographs in Mathematics",
-      "year": 2014,
+      "year": "2014",
       "notes": "Comprehensive treatment of distribution and fluctuation questions for fractional-part sums, including Cauchy and non-Cauchy limit laws and connections to continued fractions"
     },
     {
@@ -234,7 +244,7 @@
       ],
       "title": "Sums of continuous and differentiable functions in dynamical systems",
       "venue": "Israel Journal of Mathematics",
-      "year": 1997,
+      "year": "1997",
       "volume": "98",
       "pages": "29–60",
       "notes": "Studies asymptotic distributions of ergodic sums of functions on the circle, including the role of the Gauss map's natural extension — the dynamical framework underlying Kesten's proof and the open Problem #1002"

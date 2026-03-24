@@ -150,27 +150,32 @@
     {
       "id": "erdos-1103",
       "relationship": "related",
-      "description": "Squarefree Sumsets (Erdős #1103) asks whether every sumset A + B contains a squarefree element, directly complementing P"
+      "description": "Squarefree Sumsets (Erdős #1103) asks whether every sumset A + B contains a squarefree element, directly complementing Problem #1102's study of sequences defined by squarefree translate conditions"
     },
     {
       "id": "erdos-969",
       "relationship": "foundational",
-      "description": "Error Term in Squarefree Integer Counting (Erdős #969) concerns the precision of the squarefree density 6/π², which is t"
+      "description": "Error Term in Squarefree Integer Counting (Erdős #969) concerns the precision of the squarefree density 6/π², which is the key constant appearing in the Q-sequence bound of Problem #1102"
     },
     {
       "id": "erdos-208",
       "relationship": "related",
-      "description": "Gaps Between Squarefree Numbers (Erdős #208) studies the local distribution of squarefree integers; Problem #1102 relies"
+      "description": "Gaps Between Squarefree Numbers (Erdős #208) studies the local distribution of squarefree integers; Problem #1102 relies on the global density of squarefree numbers (6/π²) and their distribution properties"
     },
     {
       "id": "erdos-378",
       "relationship": "related",
-      "description": "Density of Squarefree Binomial Coefficients (Erdős #378) asks whether infinitely many central binomial coefficients are "
+      "description": "Density of Squarefree Binomial Coefficients (Erdős #378) asks whether infinitely many central binomial coefficients are squarefree, sharing the theme of squarefree density with Problem #1102"
     },
     {
       "id": "erdos-11",
       "relationship": "related",
-      "description": "Squarefree + Power of 2 (Erdős #11) studies whether every integer can be written as the sum of a squarefree number and a"
+      "description": "Squarefree + Power of 2 (Erdős #11) studies whether every integer can be written as the sum of a squarefree number and a power of 2, another instance of Erdős's recurring interest in squarefree translates"
+    },
+    {
+      "id": "basel-problem",
+      "relationship": "foundational",
+      "description": "The Basel Problem establishes ζ(2) = π²/6, hence 1/ζ(2) = 6/π² is the density of squarefree integers — exactly the optimal bound for Q-sequences proved by van Doorn and Tao in Problem #1102"
     }
   ],
   "references": [

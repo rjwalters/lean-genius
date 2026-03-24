@@ -78,70 +78,80 @@
       "title": "Graph Degeneracy",
       "startLine": 49,
       "endLine": 83,
-      "summary": "Defines $d$-degeneracy via two equivalent characterizations: (1) every non-empty subgraph has a vertex of degree $\\le d$ (`IsDDegenerate`), and (2) vertices admit an ordering where each has $\\le d$ later neighbors (`HasDegeneracyOrdering`). Includes examples: trees are 1-degenerate, planar graphs are 5-degenerate."
+      "summary": "Defines $d$-degeneracy via two equivalent characterizations: (1) every non-empty subgraph has a vertex of degree $\\le d$ (`IsDDegenerate`), and (2) vertices admit an ordering where each has $\\le d$ later neighbors (`HasDegeneracyOrdering`). Includes examples: trees are 1-degenerate, planar graphs are 5-degenerate.",
+      "mathContext": "Defines $d$-degeneracy via two equivalent characterizations: (1) every non-empty subgraph has a vertex of degree $\\le d$ (`IsDDegenerate`), and (2) vertices admit an ordering where each has $\\le d$ la"
     },
     {
       "id": "ramsey-numbers",
       "title": "Ramsey Numbers",
       "startLine": 84,
       "endLine": 106,
-      "summary": "Defines the Ramsey number $R(H)$ as the minimum $n$ such that any 2-coloring of $K_n$ contains a monochromatic copy of $H$. States the exponential bounds $2^{n/2} \\le R(K_n) \\le 4^n$ for clique Ramsey numbers (Erdős–Szekeres, 1935)."
+      "summary": "Defines the Ramsey number $R(H)$ as the minimum $n$ such that any 2-coloring of $K_n$ contains a monochromatic copy of $H$. States the exponential bounds $2^{n/2} \\le R(K_n) \\le 4^n$ for clique Ramsey numbers (Erdős–Szekeres, 1935).",
+      "mathContext": "Defines the Ramsey number $R(H)$ as the minimum $n$ such that any 2-coloring of $K_n$ contains a monochromatic copy of $H$. States the exponential bounds $2^{n/2} \\le R(K_n) \\le 4^n$ for clique Ramsey"
     },
     {
       "id": "burr-erdos-conjecture",
       "title": "The Burr-Erdős Conjecture",
       "startLine": 107,
       "endLine": 138,
-      "summary": "States the Burr-Erdős Conjecture ($R(H) \\le C_d \\cdot n$ for $d$-degenerate $H$ on $n$ vertices) and two equivalent formulations: (1) union of $c$ forests has linear Ramsey number, and (2) bounded average degree implies linear Ramsey number."
+      "summary": "States the Burr-Erdős Conjecture ($R(H) \\le C_d \\cdot n$ for $d$-degenerate $H$ on $n$ vertices) and two equivalent formulations: (1) union of $c$ forests has linear Ramsey number, and (2) bounded average degree implies linear Ramsey number.",
+      "mathContext": "States the Burr-Erdős Conjecture ($R(H) \\le C_d \\cdot n$ for $d$-degenerate $H$ on $n$ vertices) and two equivalent formulations: (1) union of $c$ forests has linear Ramsey number, and (2) bounded ave"
     },
     {
       "id": "lee-theorem",
       "title": "Lee's Theorem (2017)",
       "startLine": 139,
       "endLine": 166,
-      "summary": "Axiomatizes Lee's main result: $R(H) \\le 2^{2^{O(d)}} \\cdot n$ for $d$-degenerate $H$, along with the explicit constant bound $C = 2^{2^{cd}}$ and the refined chromatic number version $R(H) \\le 2^{d \\cdot 2^{c\\chi}} \\cdot n$."
+      "summary": "Axiomatizes Lee's main result: $R(H) \\le 2^{2^{O(d)}} \\cdot n$ for $d$-degenerate $H$, along with the explicit constant bound $C = 2^{2^{cd}}$ and the refined chromatic number version $R(H) \\le 2^{d \\cdot 2^{c\\chi}} \\cdot n$.",
+      "mathContext": "Axiomatizes Lee's main result: $R(H) \\le 2^{2^{O(d)}} \\cdot n$ for $d$-degenerate $H$, along with the explicit constant bound $C = 2^{2^{cd}}$ and the refined chromatic number version $R(H) \\le 2^{d \\"
     },
     {
       "id": "solved",
       "title": "Conjecture is SOLVED",
       "startLine": 167,
       "endLine": 179,
-      "summary": "Proves the Burr-Erdős Conjecture by directly applying Lee's theorem. The proof is a one-liner: `lee_theorem d hd` provides the constant $C_d$ and the bound."
+      "summary": "Proves the Burr-Erdős Conjecture by directly applying Lee's theorem. The proof is a one-liner: `lee_theorem d hd` provides the constant $C_d$ and the bound.",
+      "mathContext": "Proves the Burr-Erdős Conjecture by directly applying Lee's theorem. The proof is a one-liner: `lee_theorem d hd` provides the constant $C_d$ and the bound."
     },
     {
       "id": "optimal-bound",
       "title": "Conjectured Optimal Bound",
       "startLine": 180,
       "endLine": 204,
-      "summary": "Defines the conjectured optimal bound $R(H) \\le 2^{O(d)} \\cdot n$ (`OptimalBurrErdos`) and notes the significant gap between Lee's doubly exponential $2^{2^{O(d)}}$ and the conjectured singly exponential $2^{O(d)}$."
+      "summary": "Defines the conjectured optimal bound $R(H) \\le 2^{O(d)} \\cdot n$ (`OptimalBurrErdos`) and notes the significant gap between Lee's doubly exponential $2^{2^{O(d)}}$ and the conjectured singly exponential $2^{O(d)}$.",
+      "mathContext": "Defines the conjectured optimal bound $R(H) \\le 2^{O(d)} \\cdot n$ (`OptimalBurrErdos`) and notes the significant gap between Lee's doubly exponential $2^{2^{O(d)}}$ and the conjectured singly exponent"
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 205,
       "endLine": 233,
-      "summary": "Records known special cases: trees ($d=1$, $R(T_n) \\le Cn$), paths ($R(P_n) = n$ exactly), cycles (computed for various $n$), and planar graphs ($d=5$, $R(H) \\le C_5 n$). These were established before Lee's general result."
+      "summary": "Records known special cases: trees ($d=1$, $R(T_n) \\le Cn$), paths ($R(P_n) = n$ exactly), cycles (computed for various $n$), and planar graphs ($d=5$, $R(H) \\le C_5 n$). These were established before Lee's general result.",
+      "mathContext": "Records known special cases: trees ($d=1$, $R(T_n) \\le Cn$), paths ($R(P_n) = n$ exactly), cycles (computed for various $n$), and planar graphs ($d=5$, $R(H) \\le C_5 n$). These were established before"
     },
     {
       "id": "proof-techniques",
       "title": "Proof Techniques",
       "startLine": 234,
       "endLine": 252,
-      "summary": "Documents the three main techniques in Lee's proof: the Szemerédi regularity lemma for graph decomposition, dependent random choice for finding large common neighborhoods, and embedding lemmas for degenerate graphs in pseudo-random hosts."
+      "summary": "Documents the three main techniques in Lee's proof: the Szemerédi regularity lemma for graph decomposition, dependent random choice for finding large common neighborhoods, and embedding lemmas for degenerate graphs in pseudo-random hosts.",
+      "mathContext": "Documents the three main techniques in Lee's proof: the Szemerédi regularity lemma for graph decomposition, dependent random choice for finding large common neighborhoods, and embedding lemmas for deg"
     },
     {
       "id": "historical-context",
       "title": "Historical Context",
       "startLine": 253,
       "endLine": 271,
-      "summary": "Records the timeline: Burr–Erdős original conjecture (1975), 42 years of partial progress, and Lee's resolution (2017). Notes the connection to Problem #800."
+      "summary": "Records the timeline: Burr–Erdős original conjecture (1975), 42 years of partial progress, and Lee's resolution (2017). Notes the connection to Problem #800.",
+      "mathContext": "Records the timeline: Burr–Erdős original conjecture (1975), 42 years of partial progress, and Lee's resolution (2017). Notes the connection to Problem #800."
     },
     {
       "id": "summary",
       "title": "Summary and Final Result",
       "startLine": 274,
       "endLine": 311,
-      "summary": "Proves `erdos_163_summary` combining the solved conjecture with the explicit Lee bound. The summary theorem witnesses both `BurrErdosConjecture` and the quantitative bound for all $d \\ge 1$."
+      "summary": "Proves `erdos_163_summary` combining the solved conjecture with the explicit Lee bound. The summary theorem witnesses both `BurrErdosConjecture` and the quantitative bound for all $d \\ge 1$.",
+      "mathContext": "Proves `erdos_163_summary` combining the solved conjecture with the explicit Lee bound. The summary theorem witnesses both `BurrErdosConjecture` and the quantitative bound for all $d \\ge 1$."
     }
   ],
   "conclusion": {
@@ -185,27 +195,27 @@
     {
       "id": "ramseys-theorem",
       "relationship": "extends",
-      "description": "Ramsey's theorem guarantees $R(H)$ exists for all $H$; the Burr-Erdős conjecture gives tight linear bounds for the degen"
+      "description": "Ramsey's theorem guarantees $R(H)$ exists for all $H$; the Burr-Erdős conjecture gives tight linear bounds for the degenerate case"
     },
     {
       "id": "szemeredi-theorem",
       "relationship": "technique",
-      "description": "Lee's proof uses the Szemerédi regularity lemma, the same foundational tool underlying Szemerédi's theorem on arithmetic"
+      "description": "Lee's proof uses the Szemerédi regularity lemma, the same foundational tool underlying Szemerédi's theorem on arithmetic progressions"
     },
     {
       "id": "four-color-theorem",
       "relationship": "related",
-      "description": "Planar graphs are 5-degenerate and have chromatic number $\\le 4$; the Burr-Erdős conjecture gives $R(H) = O(n)$ for plan"
+      "description": "Planar graphs are 5-degenerate and have chromatic number $\\le 4$; the Burr-Erdős conjecture gives $R(H) = O(n)$ for planar $H$"
     },
     {
       "id": "erdos-569",
       "relationship": "related",
-      "description": "Problem #569 asks about Ramsey numbers of odd cycles vs general graphs, a complementary Ramsey-theoretic question about "
+      "description": "Problem #569 asks about Ramsey numbers of odd cycles vs general graphs, a complementary Ramsey-theoretic question about specific sparse graph families"
     },
     {
       "id": "erdos-61",
       "relationship": "related",
-      "description": "The Erdős-Hajnal Conjecture also connects graph structure (being $H$-free) to Ramsey-type coloring properties, complemen"
+      "description": "The Erdős-Hajnal Conjecture also connects graph structure (being $H$-free) to Ramsey-type coloring properties, complementing the degeneracy-based approach"
     }
   ],
   "leanFile": {

@@ -294,7 +294,42 @@
     {
       "id": "triangle-inequality",
       "relationship": "related",
-      "description": "Both are fundamental inequalities formalized from first principles — the triangle inequality controls absolute sums whil"
+      "description": "Both are fundamental inequalities formalized from first principles — the triangle inequality controls absolute sums while Maclaurin's chain controls symmetric polynomial means"
+    },
+    {
+      "id": "sum-of-kth-powers",
+      "relationship": "related",
+      "description": "Power sums p_k = ∑ xᵢᵏ are related to elementary symmetric polynomials via Newton's identities (Newton-Girard formulas): p_k - e₁p_{k-1} + e₂p_{k-2} - ⋯ = (-1)^{k+1}ke_k. The Cauchy-Schwarz sum n·p₂ ≥ p₁² used here is a special case"
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "FTA guarantees that elementary symmetric polynomials e_k(x₁,...,xₙ) equal the coefficients (up to sign) of ∏(t - xᵢ) — the Vieta connection that makes Maclaurin's chain a statement about polynomial coefficients"
+    },
+    {
+      "id": "amgm-inequality-oq-03-oq-02",
+      "relationship": "complementary",
+      "description": "Power mean limit: lim_{r→0} M_r = GM shows the geometric mean as a continuous limit of power means M_r = (∑ wᵢxᵢʳ)^{1/r}. Maclaurin means M_k are a discrete analog indexed by k rather than r, and the Maclaurin chain M₁ ≥ ⋯ ≥ Mₙ parallels the monotonicity of power means in r"
+    },
+    {
+      "id": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "The integral Cauchy-Schwarz inequality (∫fg)² ≤ (∫f²)(∫g²) is the continuous analog of the finite Cauchy-Schwarz sum n·∑xᵢ² ≥ (∑xᵢ)² used here as the key engine for proving M₁² ≥ M₂"
+    },
+    {
+      "id": "amgm-inequality-oq-03-oq-01",
+      "relationship": "complementary",
+      "description": "Negative power mean monotonicity M_r ≤ M_s for r ≤ s < 0 completes the power mean picture: OQ-02 studies Maclaurin means (discrete index k, symmetric polynomial basis), while OQ-03-OQ-01 studies power means (continuous index r, Lp norm basis). Both refine AM-GM from opposite directions"
+    },
+    {
+      "id": "vietas-formulas",
+      "relationship": "foundational",
+      "description": "Vieta's formulas $e_k(x_1,\\ldots,x_n) = (-1)^k a_{n-k}/a_n$ express elementary symmetric polynomials as polynomial coefficients — this is the conceptual foundation for Maclaurin's chain, since the Maclaurin means $M_k = (e_k/\\binom{n}{k})^{1/k}$ are normalized versions of the coefficient sequence. Newton's log-concavity of $e_k/\\binom{n}{k}$ then translates to a log-concavity condition on the coefficients of the polynomial $\\prod(t - x_i)$"
+    },
+    {
+      "id": "inclusion-exclusion",
+      "relationship": "related",
+      "description": "The powersetCard decomposition in elemSymm (summing over all $k$-element subsets) is a combinatorial cousin of inclusion-exclusion — both systematically enumerate subsets by cardinality. The elemSymm recurrence $e_{k+1}(n+1) = e_{k+1}(n) + x_{n+1} \\cdot e_k(n)$ parallels the inclusion-exclusion identity for subsets containing vs not containing a fixed element"
     }
   ],
   "references": [

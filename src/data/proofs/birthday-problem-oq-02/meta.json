@@ -67,84 +67,96 @@
       "title": "Probability Definitions",
       "startLine": 60,
       "endLine": 73,
-      "summary": "Defines probAllDistinct as the product ∏(1 - i/d) and probCollision as its complement, generalizing the birthday problem to arbitrary d."
+      "summary": "Defines probAllDistinct as the product ∏(1 - i/d) and probCollision as its complement, generalizing the birthday problem to arbitrary d.",
+      "mathContext": "Defines probAllDistinct as the product ∏(1 - i/d) and probCollision as its complement, generalizing the birthday problem to arbitrary d."
     },
     {
       "id": "fundamental-inequality",
       "title": "The Fundamental Inequality",
       "startLine": 75,
       "endLine": 83,
-      "summary": "Proves 1 - x ≤ exp(-x) for all real x via Mathlib's add_one_le_exp, the key analytic workhorse of the entire bound."
+      "summary": "Proves 1 - x ≤ exp(-x) for all real x via Mathlib's add_one_le_exp, the key analytic workhorse of the entire bound.",
+      "mathContext": "Proves 1 - x ≤ exp(-x) for all real x via Mathlib's add_one_le_exp, the key analytic workhorse of the entire bound."
     },
     {
       "id": "factor-properties",
       "title": "Factor Nonnegativity and Boundedness",
       "startLine": 85,
       "endLine": 100,
-      "summary": "Establishes 0 ≤ 1 - i/d ≤ 1 for valid indices, the preconditions needed for Finset.prod_le_prod."
+      "summary": "Establishes 0 ≤ 1 - i/d ≤ 1 for valid indices, the preconditions needed for Finset.prod_le_prod.",
+      "mathContext": "Establishes 0 ≤ 1 - i/d ≤ 1 for valid indices, the preconditions needed for Finset.prod_le_prod."
     },
     {
       "id": "exponential-sum-bound",
       "title": "Product-to-Exponential Bound (Sum Form)",
       "startLine": 102,
       "endLine": 127,
-      "summary": "The central technical step: lifts the pointwise inequality through the product and collapses via exp_sum to obtain ∏(1-i/d) ≤ exp(-∑ i/d)."
+      "summary": "The central technical step: lifts the pointwise inequality through the product and collapses via exp_sum to obtain ∏(1-i/d) ≤ exp(-∑ i/d).",
+      "mathContext": "The central technical step: lifts the pointwise inequality through the product and collapses via exp_sum to obtain ∏(1-i/d) ≤ exp(-∑ i/d)."
     },
     {
       "id": "gauss-sum",
       "title": "Gauss Summation Formula",
       "startLine": 129,
       "endLine": 149,
-      "summary": "Proves ∑_{i<k} i/d = k(k-1)/(2d) by induction, giving the closed-form exponent."
+      "summary": "Proves ∑_{i<k} i/d = k(k-1)/(2d) by induction, giving the closed-form exponent.",
+      "mathContext": "Proves ∑_{i<k} i/d = k(k-1)/(2d) by induction, giving the closed-form exponent."
     },
     {
       "id": "main-theorem",
       "title": "Main Asymptotic Bound",
       "startLine": 151,
       "endLine": 163,
-      "summary": "Combines the product-to-exponential bound with Gauss's formula to prove P(all distinct) ≤ exp(-k(k-1)/(2d))."
+      "summary": "Combines the product-to-exponential bound with Gauss's formula to prove P(all distinct) ≤ exp(-k(k-1)/(2d)).",
+      "mathContext": "Combines the product-to-exponential bound with Gauss's formula to prove P(all distinct) ≤ exp(-k(k-1)/(2d))."
     },
     {
       "id": "collision-bound",
       "title": "Collision Probability Lower Bound",
       "startLine": 165,
       "endLine": 177,
-      "summary": "Takes the complement to obtain P(collision) ≥ 1 - exp(-k(k-1)/(2d)), the form used in cryptographic security analysis."
+      "summary": "Takes the complement to obtain P(collision) ≥ 1 - exp(-k(k-1)/(2d)), the form used in cryptographic security analysis.",
+      "mathContext": "Takes the complement to obtain P(collision) ≥ 1 - exp(-k(k-1)/(2d)), the form used in cryptographic security analysis."
     },
     {
       "id": "trivial-cases",
       "title": "Base Cases",
       "startLine": 179,
       "endLine": 205,
-      "summary": "Verifies boundary conditions: k=0 and k=1 give P(all distinct) = 1 and P(collision) = 0."
+      "summary": "Verifies boundary conditions: k=0 and k=1 give P(all distinct) = 1 and P(collision) = 0.",
+      "mathContext": "Verifies boundary conditions: k=0 and k=1 give P(all distinct) = 1 and P(collision) = 0."
     },
     {
       "id": "probability-bounds",
       "title": "Probability Validity ([0,1] Containment)",
       "startLine": 207,
       "endLine": 241,
-      "summary": "Proves P(all distinct) and P(collision) lie in [0,1], confirming the definitions are well-formed probabilities."
+      "summary": "Proves P(all distinct) and P(collision) lie in [0,1], confirming the definitions are well-formed probabilities.",
+      "mathContext": "Proves P(all distinct) and P(collision) lie in [0,1], confirming the definitions are well-formed probabilities."
     },
     {
       "id": "threshold",
       "title": "Threshold Characterization",
       "startLine": 243,
       "endLine": 269,
-      "summary": "Proves that k(k-1)/(2d) > ln(1/(1-p)) guarantees P(collision) > p, explaining the 23-person threshold for d=365."
+      "summary": "Proves that k(k-1)/(2d) > ln(1/(1-p)) guarantees P(collision) > p, explaining the 23-person threshold for d=365.",
+      "mathContext": "Proves that k(k-1)/(2d) > ln(1/(1-p)) guarantees P(collision) > p, explaining the 23-person threshold for d=365."
     },
     {
       "id": "consistency",
       "title": "Consistency with Parent File",
       "startLine": 271,
       "endLine": 278,
-      "summary": "Verifies definitional equality with the d=365 specialization in the parent birthday problem formalization."
+      "summary": "Verifies definitional equality with the d=365 specialization in the parent birthday problem formalization.",
+      "mathContext": "Verifies definitional equality with the d=365 specialization in the parent birthday problem formalization."
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity",
       "startLine": 280,
       "endLine": 299,
-      "summary": "Proves P(all distinct, k+1) ≤ P(all distinct, k): adding people can only increase collision probability."
+      "summary": "Proves P(all distinct, k+1) ≤ P(all distinct, k): adding people can only increase collision probability.",
+      "mathContext": "Proves P(all distinct, k+1) ≤ P(all distinct, k): adding people can only increase collision probability."
     }
   ],
   "conclusion": {
@@ -172,12 +184,12 @@
     {
       "id": "birthday-problem",
       "relationship": "generalizes",
-      "description": "Generalizes the parent birthday problem formalization from d=365 to arbitrary d and adds the exponential asymptotic boun"
+      "description": "Generalizes the parent birthday problem formalization from d=365 to arbitrary d and adds the exponential asymptotic bound"
     },
     {
       "id": "combinations-formula",
       "relationship": "related",
-      "description": "The combinations formula underlies counting distinct birthday assignments; the birthday product ∏(1-i/d) is related to f"
+      "description": "The combinations formula underlies counting distinct birthday assignments; the birthday product ∏(1-i/d) is related to falling factorials and binomial coefficients"
     },
     {
       "id": "binomial-theorem-oq-03",

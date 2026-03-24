@@ -12,7 +12,8 @@
       "group-theory",
       "algebra",
       "classic",
-      "intermediate"
+      "intermediate",
+      "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/LagrangeTheorem.lean",
     "badge": "mathlib",
@@ -218,27 +219,52 @@
     {
       "id": "sylow-theorems",
       "relationship": "foundational",
-      "description": "Lagrange's theorem is a prerequisite for the Sylow theorems: Sylow's first theorem provides a partial converse, showing "
+      "description": "Lagrange's theorem is a prerequisite for the Sylow theorems: Sylow's first theorem provides a partial converse, showing subgroups of prime-power order exist for every prime power dividing |G|"
     },
     {
       "id": "abel-ruffini",
       "relationship": "foundational",
-      "description": "Lagrange's theorem underpins the Abel-Ruffini analysis: |A₅| = 60 = 5!/2 (index 2 in S₅), and the derived series quotien"
+      "description": "Lagrange's theorem underpins the Abel-Ruffini analysis: |A₅| = 60 = 5!/2 (index 2 in S₅), and the derived series quotient orders determine solvability. Lagrange's original 1771 paper on permutations of polynomial roots was the precursor to Galois theory"
     },
     {
       "id": "fermats-last-theorem",
       "relationship": "foundational",
-      "description": "Fermat's Little Theorem ($a^p \\equiv a \\pmod{p}$) is a corollary of Lagrange's theorem applied to the multiplicative gro"
+      "description": "Fermat's Little Theorem ($a^p \\equiv a \\pmod{p}$) is a corollary of Lagrange's theorem applied to the multiplicative group $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ of order $p-1$. This underpins modular arithmetic used throughout FLT"
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "related",
-      "description": "The Chinese Remainder Theorem and unique factorization in Z connect to Lagrange via the structure of cyclic groups: Z/nZ"
+      "description": "The Chinese Remainder Theorem and unique factorization in Z connect to Lagrange via the structure of cyclic groups: Z/nZ decomposes as a product of Z/p^k Z (one for each prime power in the factorization of n)"
     },
     {
       "id": "euler-totient",
       "relationship": "extends",
-      "description": "Euler's theorem (a^φ(n) ≡ 1 mod n) is a direct corollary of Lagrange applied to (Z/nZ)× of order φ(n). The formalization"
+      "description": "Euler's theorem (a^φ(n) ≡ 1 mod n) is a direct corollary of Lagrange applied to (Z/nZ)× of order φ(n). The formalization derives Fermat's little theorem (the prime case); Euler's theorem is the general case"
+    },
+    {
+      "id": "angle-trisection",
+      "relationship": "foundational",
+      "description": "The tower law for field extension degrees ([F_n:Q] = ∏[F_{i+1}:F_i] = 2^n) is a consequence of Lagrange's theorem on subgroup indices, underpinning the degree-divisibility argument for constructibility"
+    },
+    {
+      "id": "inverse-galois",
+      "relationship": "related",
+      "description": "Lagrange's original 1771 work on permutations of polynomial roots was the direct precursor to Galois theory. The Inverse Galois Problem asks which groups appear as Galois groups — Lagrange's theorem constrains which subgroups can appear in any finite group"
+    },
+    {
+      "id": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem ($(p-1)! \\equiv -1 \\pmod{p}$) can be proved via Lagrange's theorem: in $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, every element pairs with its inverse in the product $(p-1)!$, except the elements equal to their own inverse ($a^2 \\equiv 1$), which by Lagrange applied to the equation $x^2 = 1$ are exactly $\\pm 1$. So $(p-1)! \\equiv 1 \\cdot (-1) = -1 \\pmod{p}$"
+    },
+    {
+      "id": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Quadratic reciprocity concerns the structure of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, specifically whether elements are quadratic residues. By Lagrange's theorem, $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ has order $p-1$, and the quadratic residues form a subgroup of index 2 (order $(p-1)/2$). This index-2 subgroup structure is the foundation for the Legendre symbol and reciprocity"
+    },
+    {
+      "id": "primitive-roots",
+      "relationship": "related",
+      "description": "The existence of primitive roots modulo $p$ — generators of the cyclic group $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ — is a consequence of the structure theorem for finite abelian groups combined with Lagrange's theorem. By Lagrange, the polynomial $x^d - 1$ has at most $d$ roots in $\\mathbb{Z}/p\\mathbb{Z}$, which forces $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ to be cyclic"
     }
   ],
   "references": [

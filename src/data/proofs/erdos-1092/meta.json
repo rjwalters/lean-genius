@@ -122,16 +122,29 @@
   ],
   "relatedProofs": [
     {
-      "target": "erdos-744",
-      "note": "Directly cited in the formalization: the connection between Problem #744 and #1092 is established via Rödl's construction"
+      "id": "erdos-744",
+      "relationship": "Erdős Problem #744 studies a closely related edge-deletion threshold for k-critical bipartite graphs; Rödl and Tuza's disproof (1985) of #744 uses constructions directly relevant to Problem #1092",
+      "description": ""
     },
     {
-      "target": "erdos-58",
-      "note": "Both problems concern thresholds where local chromatic properties force global bounds; #58 is resolved while #1092 remains open"
+      "id": "erdos-58",
+      "relationship": "Problem #58 (chromatic number vs. odd cycle lengths, solved by Gyárfás 1992) illustrates another dimension of local-to-global chromatic reasoning — cycle structure forcing χ — that complements the edge-deletion threshold approach of #1092",
+      "description": ""
     },
     {
-      "target": "szemeredi-regularity",
-      "note": "The regularity lemma represents the most powerful current tool for local-to-global graph structure arguments, making it the natural benchmark for the philosophy behind #1092"
+      "id": "erdos-1091",
+      "relationship": "Problem #1091 on odd cycles with diagonals in K4-free graphs shares the chromatic-number/substructure theme and similarly combines solved special cases with an open general question",
+      "description": ""
+    },
+    {
+      "id": "szemeredi-regularity",
+      "relationship": "The Szemerédi Regularity Lemma is the canonical example of local approximate structure (ε-regular pairs) controlling global graph properties; Problem #1092 asks an analogous local-to-global question for chromatic reducibility",
+      "description": ""
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "Ramsey theory underpins extremal graph coloring: Ramsey numbers bound the graphs where chromatic constraints must be satisfied, providing context for the extremal behavior of f_r(n)",
+      "description": ""
     }
   ],
   "references": [
@@ -143,7 +156,7 @@
       ],
       "title": "On almost bipartite large chromatic graphs",
       "venue": "Annals of Discrete Mathematics",
-      "year": 1982,
+      "year": "1982",
       "note": "Original paper posing the chromatic decomposition threshold problem; introduces f_r(n) and questions on its asymptotic growth"
     },
     {
@@ -153,7 +166,7 @@
       "title": "On the chromatic number of subgraphs of a given graph",
       "venue": "Proceedings of the American Mathematical Society",
       "volume": 64,
-      "year": 1977,
+      "year": "1977",
       "note": "Rödl's construction establishing the upper bound f_2(n) = O(n·(log n)^2), the key nontrivial bound for Problem #1092"
     },
     {
@@ -164,7 +177,7 @@
       "title": "Double-critical graph conjecture",
       "venue": "Graphs and Combinatorics",
       "volume": 8,
-      "year": 1985,
+      "year": "1985",
       "note": "Disproves Erdős Problem #744 using constructions related to edge-deletion thresholds; the methods are cited in the context of Problem #1092"
     },
     {
@@ -174,7 +187,7 @@
       "title": "On colouring the nodes of a network",
       "venue": "Mathematical Proceedings of the Cambridge Philosophical Society",
       "volume": 37,
-      "year": 1941,
+      "year": "1941",
       "pages": "194–197",
       "note": "Brooks' theorem (χ(G) ≤ Δ(G) + 1) is the classical local-to-global coloring result; f_r(n) can be viewed as a quantitative variant of this local-degree-to-chromatic-number philosophy"
     },
@@ -184,7 +197,7 @@
       ],
       "title": "Asymptotic choice number for triangle free graphs",
       "venue": "DIMACS Technical Report",
-      "year": 1996,
+      "year": "1996",
       "note": "Johansson's theorem (χ = O(Δ/log Δ) for triangle-free graphs) is another landmark local-to-global chromatic bound; mentioned in the key insights as part of the broader hierarchy"
     },
     "Erdős, Hajnal & Szemerédi: original question on chromatic decomposition thresholds",

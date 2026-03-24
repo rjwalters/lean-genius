@@ -77,63 +77,72 @@
       "title": "Module Documentation",
       "startLine": 1,
       "endLine": 18,
-      "summary": "Problem statement, status, references, and OEIS link."
+      "summary": "Problem statement, status, references, and OEIS link.",
+      "mathContext": "Problem statement, status, references, and OEIS link."
     },
     {
       "id": "background",
       "title": "Euler Totient Background",
       "startLine": 28,
       "endLine": 56,
-      "summary": "Properties of φ and when φ(n) = φ(n+1) can hold."
+      "summary": "Properties of φ and when φ(n) = φ(n+1) can hold.",
+      "mathContext": "Properties of φ and when φ(n) = φ(n+1) can hold."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "startLine": 57,
       "endLine": 74,
-      "summary": "Definition of ConsecutiveEqualTotients and the open conjecture."
+      "summary": "Definition of ConsecutiveEqualTotients and the open conjecture.",
+      "mathContext": "Definition of ConsecutiveEqualTotients and the open conjecture."
     },
     {
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 75,
       "endLine": 112,
-      "summary": "Small cases verified with native_decide: n = 1, 3, 15, 104."
+      "summary": "Small cases verified with native_decide: n = 1, 3, 15, 104.",
+      "mathContext": "Small cases verified with native_decide: n = 1, 3, 15, 104."
     },
     {
       "id": "k-consecutive",
       "title": "Consecutive k Equal Values",
       "startLine": 113,
       "endLine": 132,
-      "summary": "The stronger conjecture about k consecutive equal totients."
+      "summary": "The stronger conjecture about k consecutive equal totients.",
+      "mathContext": "The stronger conjecture about k consecutive equal totients."
     },
     {
       "id": "eps-bound",
       "title": "EPS Upper Bound",
       "startLine": 133,
       "endLine": 157,
-      "summary": "The Erdős-Pomerance-Sárközy sparsity result."
+      "summary": "The Erdős-Pomerance-Sárközy sparsity result.",
+      "mathContext": "The Erdős-Pomerance-Sárközy sparsity result."
     },
     {
       "id": "examples-detail",
       "title": "Understanding the Examples",
       "startLine": 197,
       "endLine": 232,
-      "summary": "Why φ(15) = φ(16) and φ(104) = φ(105)."
+      "summary": "Why φ(15) = φ(16) and φ(104) = φ(105).",
+      "mathContext": "Why φ(15) = φ(16) and φ(104) = φ(105)."
     },
     {
       "id": "triple",
       "title": "The Consecutive Triple",
       "startLine": 233,
       "endLine": 255,
-      "summary": "Three consecutive integers 5186, 5187, 5188 with equal totient."
+      "summary": "Three consecutive integers 5186, 5187, 5188 with equal totient.",
+      "mathContext": "Three consecutive integers 5186, 5187, 5188 with equal totient."
     },
     {
       "id": "flp-bound",
       "title": "FLP Lower Bound",
       "startLine": 256,
       "endLine": 276,
-      "summary": "Ford-Luca-Pomerance result suggesting infinitude."
+      "summary": "Ford-Luca-Pomerance result suggesting infinitude.",
+      "mathContext": "Ford-Luca-Pomerance result suggesting infinitude."
     }
   ],
   "conclusion": {
@@ -176,19 +185,29 @@
   ],
   "relatedProofs": [
     {
-      "target": "euler-totient",
-      "relationship": "uses",
-      "description": "This formalization imports and uses Nat.totient from Mathlib, the same definition studied in the euler-totient proof entry."
+      "id": "euler-totient",
+      "relationship": "foundational",
+      "description": "Euler's totient function φ is the central object of this problem; the euler-totient entry formalizes its definition and multiplicativity."
     },
     {
-      "target": "erdos-1004",
-      "relationship": "sibling",
-      "description": "Both problems originate in the EPS 1987 paper and formalize complementary aspects of consecutive totient behavior: equal values (#1003) vs. distinct values (#1004)."
+      "id": "erdos-1004",
+      "relationship": "companion",
+      "description": "Erdős Problem #1004 studies distinct consecutive totient values from the same 1987 Erdős-Pomerance-Sárközy paper that provides the upper bound used..."
     },
     {
-      "target": "fundamental-arithmetic",
-      "relationship": "depends_on",
-      "description": "Computing φ(15) = φ(16) = 8 and the general totient product formula requires the prime factorization guaranteed by the fundamental theorem of arithmetic."
+      "id": "fundamental-arithmetic",
+      "relationship": "dependency",
+      "description": "The totient formula φ(n) = n·Π(1 - 1/p) relies on unique prime factorization; this entry formalizes the fundamental theorem of arithmetic underlying that computation."
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "analogy",
+      "description": "The infinitude-of-solutions argument mirrors the infinitude-of-primes style: both assert an infinite set exists within the positive integers via density or constructive arguments."
+    },
+    {
+      "id": "erdos-1053",
+      "relationship": "related",
+      "description": "Erdős Problem #1053 concerns the growth rate of k-perfect numbers via σ(n); like Problem #1003, it studies asymptotic behavior of a classical multiplicative arithmetic function."
     }
   ],
   "references": [
@@ -200,7 +219,7 @@
       ],
       "title": "On locally repeated values of certain arithmetic functions, I",
       "venue": "Journal of Number Theory",
-      "year": 1987,
+      "year": "1987",
       "volume": 21,
       "pages": "319–332",
       "doi": "10.1016/0022-314X(85)90056-9",
@@ -214,7 +233,7 @@
       ],
       "title": "Common values of the arithmetic functions φ and σ",
       "venue": "Bulletin of the London Mathematical Society",
-      "year": 2010,
+      "year": "2010",
       "volume": 42,
       "pages": "478–488",
       "doi": "10.1112/blms/bdq014",
@@ -226,7 +245,7 @@
       ],
       "title": "Note on Euler's φ-function",
       "venue": "Bulletin of the American Mathematical Society",
-      "year": 1922,
+      "year": "1922",
       "volume": 28,
       "pages": "109–110",
       "doi": "10.1090/S0002-9904-1922-03504-5",
@@ -238,7 +257,7 @@
       ],
       "title": "The distribution of totients",
       "venue": "Ramanujan Journal",
-      "year": 1998,
+      "year": "1998",
       "volume": 2,
       "pages": "67–151",
       "doi": "10.1023/A:1009761909132",
@@ -251,7 +270,7 @@
       ],
       "title": "On the normal number of prime factors of φ(n)",
       "venue": "Rocky Mountain Journal of Mathematics",
-      "year": 1985,
+      "year": "1985",
       "volume": 15,
       "pages": "343–352",
       "doi": "10.1216/RMJ-1985-15-2-343",

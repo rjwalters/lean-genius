@@ -84,56 +84,64 @@
       "title": "Basic Definitions",
       "summary": "PointConfig, pointDist, HasMinSeparation, diameter, IsValidConfig",
       "startLine": 33,
-      "endLine": 59
+      "endLine": 59,
+      "mathContext": "PointConfig, pointDist, HasMinSeparation, diameter, IsValidConfig"
     },
     {
       "id": "optimal",
       "title": "Optimal Configurations",
       "summary": "minDiameter, IsOptimal, OptimalSet",
       "startLine": 60,
-      "endLine": 77
+      "endLine": 77,
+      "mathContext": "minDiameter, IsOptimal, OptimalSet"
     },
     {
       "id": "congruence",
       "title": "Congruence of Configurations",
       "summary": "Isometry2D, applyIsometry, AreCongruent, equivalence properties",
       "startLine": 78,
-      "endLine": 112
+      "endLine": 112,
+      "mathContext": "Isometry2D, applyIsometry, AreCongruent, equivalence properties"
     },
     {
       "id": "counting",
       "title": "Counting Incongruent Optimal Configurations",
       "summary": "IncongruentOptimal, h function, h_counts_optimal",
       "startLine": 113,
-      "endLine": 131
+      "endLine": 131,
+      "mathContext": "IncongruentOptimal, h function, h_counts_optimal"
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
       "summary": "ErdosConjecture103, hUnbounded, conjecture_equiv",
       "startLine": 132,
-      "endLine": 157
+      "endLine": 157,
+      "mathContext": "ErdosConjecture103, hUnbounded, conjecture_equiv"
     },
     {
       "id": "bounds",
       "title": "Known Bounds and Partial Results",
       "summary": "WeakConjecture, VeryWeakConjecture, h_pos, h_2, h_3",
       "startLine": 158,
-      "endLine": 178
+      "endLine": 178,
+      "mathContext": "WeakConjecture, VeryWeakConjecture, h_pos, h_2, h_3"
     },
     {
       "id": "packing",
       "title": "Connection to Packing Problems",
       "summary": "optimalPackingDensity, diameter_asymptotic, IsHexagonalLattice",
       "startLine": 179,
-      "endLine": 198
+      "endLine": 198,
+      "mathContext": "optimalPackingDensity, diameter_asymptotic, IsHexagonalLattice"
     },
     {
       "id": "status",
       "title": "Problem Status",
       "summary": "erdos_103_status, erdos_103_statement, Summary",
       "startLine": 210,
-      "endLine": 248
+      "endLine": 248,
+      "mathContext": "erdos_103_status, erdos_103_statement, Summary"
     }
   ],
   "conclusion": {
@@ -181,29 +189,34 @@
   ],
   "relatedProofs": [
     {
-      "slug": "erdos-99",
-      "title": "Erdős Problem #99: Equilateral Triangles in Minimal Diameter Sets",
-      "relevance": "Directly related predecessor: both ask about structure of optimal-diameter point configurations with separation ≥ 1"
+      "id": "erdos-99",
+      "relationship": "direct predecessor",
+      "description": "Erdős #99 asks whether minimal-diameter sets with separation ≥ 1 must contain a unit equilateral triangle for large n. Both problems study the structure of optimal-diameter point configurations and are closely related."
     },
     {
-      "slug": "erdos-100",
-      "title": "Erdős #100: Point Sets with Restricted Distances",
-      "relevance": "Sibling problem on diameter growth for point sets with minimum separation constraints in ℝ²"
+      "id": "erdos-100",
+      "relationship": "sibling problem",
+      "description": "Erdős #100 studies point sets in ℝ² with all pairwise distances ≥ 1 and distinct distances separated by ≥ 1. Both problems impose minimum-separation constraints and ask about diameter growth."
     },
     {
-      "slug": "erdos-90",
-      "title": "Erdős Problem #90: The Unit Distance Problem",
-      "relevance": "The unit-distance graph framework underlies hexagonal-lattice packing, the canonical optimal configuration"
+      "id": "erdos-90",
+      "relationship": "related problem",
+      "description": "The Unit Distance Problem (Erdős #90) asks for the maximum number of unit distances among n points in ℝ². The unit-distance graph structure underlies the hexagonal-lattice configurations central to #103."
     },
     {
-      "slug": "erdos-106",
-      "title": "Erdős Problem #106: Square Packing in the Unit Square",
-      "relevance": "Analogous counting-of-optimal-packings problem; both ask how many incongruent configurations achieve an extremal value"
+      "id": "erdos-106",
+      "relationship": "analogous packing problem",
+      "description": "Erdős #106 studies square packing with an optimization objective, asking how many incongruent packings achieve the optimum. Both #103 and #106 count optimal configurations up to congruence."
     },
     {
-      "slug": "kepler-conjecture",
-      "title": "Kepler Conjecture: Sphere Packing",
-      "relevance": "The 2D hexagonal lattice used in #103's asymptotic diameter estimates is the planar analogue of the Kepler-optimal sphere packing"
+      "id": "kepler-conjecture",
+      "relationship": "background result",
+      "description": "The Kepler Conjecture establishes that the face-centered cubic lattice maximizes sphere-packing density. The hexagonal lattice used in #103's asymptotic diameter estimates is the 2D analogue of this optimal packing."
+    },
+    {
+      "id": "erdos-104",
+      "relationship": "related incidence problem",
+      "description": "Erdős #104 counts unit circles through ≥ 3 points from an n-point set. The unit-circle incidence structure is dual to the minimum-separation constraints in #103."
     }
   ],
   "references": [
@@ -214,7 +227,7 @@
       ],
       "title": "Some of my favourite unsolved problems",
       "venue": "A Tribute to Paul Erdős",
-      "year": 1994,
+      "year": "1994",
       "pages": "467–478",
       "publisher": "Cambridge University Press",
       "note": "Original source posing Problem #103"
@@ -226,7 +239,7 @@
       ],
       "title": "Über die dichteste Zusammenstellung von kongruenten Kreisen in einer Ebene",
       "venue": "Norske Vid. Selsk. Skr.",
-      "year": 1910,
+      "year": "1910",
       "volume": "1",
       "pages": "1–9",
       "note": "Proves hexagonal packing is densest arrangement of equal circles; underlies asymptotic diameter estimate"
@@ -240,7 +253,7 @@
       ],
       "title": "On the problem of minimum diameter of point sets with prescribed distances",
       "venue": "Discrete Mathematics",
-      "year": 1994,
+      "year": "1994",
       "volume": "129",
       "pages": "195–199",
       "note": "Studies minimum-diameter configurations with unit minimum separation; closely related to #103"
@@ -253,7 +266,7 @@
       ],
       "title": "Combinatorial Geometry",
       "venue": "Wiley-Interscience",
-      "year": 1995,
+      "year": "1995",
       "note": "Comprehensive treatment of distance geometry including packing and diameter problems in the plane"
     },
     {
@@ -265,7 +278,7 @@
       ],
       "title": "Research Problems in Discrete Geometry",
       "venue": "Springer",
-      "year": 2005,
+      "year": "2005",
       "note": "Section 2.1 surveys minimum-diameter point configurations with unit separation; discusses h(n) and related questions"
     }
   ],

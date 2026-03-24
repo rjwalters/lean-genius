@@ -289,7 +289,7 @@
     {
       "id": "abel-ruffini",
       "relationship": "related",
-      "description": "Both use Galois groups to prove impossibility: Abel-Ruffini via solvable groups, constructibility via 2-groups"
+      "description": "Both use Galois groups for impossibility: Abel-Ruffini via solvable groups, constructibility via 2-groups"
     },
     {
       "id": "inverse-galois",
@@ -299,12 +299,57 @@
     {
       "id": "lagrange-theorem",
       "relationship": "foundational",
-      "description": "The tower law [K:ℚ] = ∏[Kᵢ₊₁:Kᵢ] — a consequence of Lagrange's theorem — underpins galois_2group_implies_degree_pow2: th"
+      "description": "The tower law [K:ℚ] = ∏[Kᵢ₊₁:Kᵢ] — a consequence of Lagrange's theorem — underpins galois_2group_implies_degree_pow2: the minimal polynomial degree divides |Gal| = 2^k"
     },
     {
       "id": "sqrt2-irrational",
       "relationship": "complementary",
-      "description": "√2 is the canonical constructible irrational: |Gal(x²-2/ℚ)| = 2 = 2¹, proved here by divisibility squeeze. Its irrationa"
+      "description": "√2 is the canonical constructible irrational: |Gal(x²-2/ℚ)| = 2 = 2¹, proved here by divisibility squeeze. Its irrationality is the first step beyond ℚ in the constructible tower"
+    },
+    {
+      "id": "angle-trisection-oq-02-oq-01",
+      "relationship": "extended-by",
+      "description": "Sub-entry extending the 2-group characterization with additional constructibility examples or refined analysis"
+    },
+    {
+      "id": "angle-trisection-oq-02-oq-03",
+      "relationship": "extended-by",
+      "description": "Sub-entry extending the Galois characterization of constructibility with additional results or concrete examples"
+    },
+    {
+      "id": "angle-trisection-oq-02-oq-03-oq-01",
+      "relationship": "extended-by",
+      "description": "Bridges the Gauss-Wantzel constructibility theorem to Mathlib's cyclotomic field infrastructure. Connects the 2-group Galois criterion proved here to the concrete setting of $\\zeta_n = e^{2\\pi i/n}$ and Chebyshev polynomials, showing how the abstract group-theoretic characterization manifests in the cyclotomic world that governs regular polygon constructibility"
+    },
+    {
+      "id": "primitive-roots",
+      "relationship": "foundational",
+      "description": "Primitive roots establish that $(\\mathbb{Z}/p\\mathbb{Z})^{\\times}$ is cyclic of order $p-1$. For the Gauss-Wantzel theorem: the regular $p$-gon is constructible iff $\\text{Gal}(\\mathbb{Q}(\\zeta_p)/\\mathbb{Q}) \\cong (\\mathbb{Z}/p\\mathbb{Z})^{\\times}$ is a 2-group, i.e., $p-1 = 2^k$, i.e., $p$ is a Fermat prime. Gauss's construction of the 17-gon used the 2-group structure of $(\\mathbb{Z}/17\\mathbb{Z})^{\\times} \\cong \\mathbb{Z}/16\\mathbb{Z}$"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "foundational",
+      "description": "The Gauss-Wantzel theorem states the regular $n$-gon is constructible iff $\\phi(n) = 2^k$, making Euler's totient function the bridge between number theory and constructibility. Since $\\text{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^{\\times}$ has order $\\phi(n)$, the 2-group criterion reduces to $\\phi(n) = 2^k$"
+    },
+    {
+      "id": "nth-root-irrational",
+      "relationship": "foundational",
+      "description": "The irrationality of $\\sqrt[n]{m}$ for non-perfect-power $m$ is the simplest case of the constructibility question: $\\sqrt[n]{m}$ is constructible iff $\\text{Gal}(x^n - m / \\mathbb{Q})$ is a 2-group. For $n = 2$, $\\text{Gal}(x^2 - m) \\cong \\mathbb{Z}/2\\mathbb{Z}$ (a 2-group), so $\\sqrt{m}$ is always constructible. For $n = 3$, $\\text{Gal}(x^3 - m) \\cong S_3$ (order 6, not a 2-group), so $\\sqrt[3]{m}$ is never constructible"
+    },
+    {
+      "id": "solution-of-cubic",
+      "relationship": "complementary",
+      "description": "Cardano's cubic formula solves cubics by radicals (S₃ is solvable), but cos(20°) satisfies the cubic 8x³-6x-1=0 yet is NOT constructible — because S₃ is solvable but not a 2-group. This is the key distinction: solvability by radicals (solvable Galois group) is strictly weaker than constructibility (2-group Galois group). Cardano's formula gives cos(20°) in terms of cube roots, confirming it is solvable by radicals, yet the Galois 2-group criterion blocks constructibility"
+    },
+    {
+      "id": "pi-transcendental",
+      "relationship": "complementary",
+      "description": "The transcendence of $\\pi$ (Lindemann 1882) proves the third classical impossibility — squaring the circle — by a different mechanism than the Galois 2-group criterion used here. Angle trisection and cube doubling fail because the relevant algebraic numbers have non-2-group Galois groups; squaring the circle fails because $\\pi$ is not even algebraic, lying entirely outside the constructible $\\subsetneq$ algebraic hierarchy. Together, the three classical impossibilities span two levels: algebraic obstruction (2-group criterion) and transcendence"
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "complementary",
+      "description": "FTA guarantees every polynomial has roots in $\\mathbb{C}$, so constructibility is never about existence of solutions — only about which geometric operations can produce them. The 2-group criterion characterizes which algebraic numbers (all of which exist by FTA) happen to lie in the compass-and-straightedge closure of $\\mathbb{Q}$"
     }
   ],
   "references": [

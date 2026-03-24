@@ -112,84 +112,96 @@
       "title": "Parts I-II: Counting Functions and Parametrization",
       "summary": "Defines primitiveTripleCount, tripleDensityConstant, and connects to Mathlib's PythagoreanTriple parametrization. Establishes the bijection between primitive triples and valid parameter pairs.",
       "startLine": 69,
-      "endLine": 110
+      "endLine": 110,
+      "mathContext": "Defines primitiveTripleCount, tripleDensityConstant, and connects to Mathlib's PythagoreanTriple parametrization. Establishes the bijection between primitive triples and valid parameter pairs."
     },
     {
       "id": "parity-density",
       "title": "Parts III-IV: Parity Analysis and Density Algebra",
       "summary": "Proves coprime pairs cannot be both-even. Classifies into three parity classes (EO, OE, OO). Verifies the algebraic identity $\\pi/8 \\times 6/\\pi^2 \\times 2/3 = 1/(2\\pi)$ and shows the density constant is positive.",
       "startLine": 111,
-      "endLine": 183
+      "endLine": 183,
+      "mathContext": "Proves coprime pairs cannot be both-even. Classifies into three parity classes (EO, OE, OO). Verifies the algebraic identity $\\pi/8 \\times 6/\\pi^2 \\times 2/3 = 1/(2\\pi)$ and shows the density constant"
     },
     {
       "id": "verification",
       "title": "Part V: Computational Verification",
       "summary": "Verifies primitiveTripleCount for N = 0, 4, 5, 13, 25, 50, 100 via native_decide. Confirms values track the predicted $N/(2\\pi) \\approx 0.159N$.",
       "startLine": 184,
-      "endLine": 221
+      "endLine": 221,
+      "mathContext": "Verifies primitiveTripleCount for N = 0, 4, 5, 13, 25, 50, 100 via native_decide. Confirms values track the predicted $N/(2\\pi) \\approx 0.159N$."
     },
     {
       "id": "monotonicity-intermediates",
       "title": "Parts VI-VII: Monotonicity and Intermediate Counting Functions",
       "summary": "Proves primitiveTripleCount is monotone. Introduces sectorPointCount and coprimeInSectorCount as intermediate sieving steps, with ordering lemmas (primitive $\\le$ coprime $\\le$ sector) and growth results showing coprimeInSectorCount $\\to \\infty$.",
       "startLine": 222,
-      "endLine": 375
+      "endLine": 375,
+      "mathContext": "Proves primitiveTripleCount is monotone. Introduces sectorPointCount and coprimeInSectorCount as intermediate sieving steps, with ordering lemmas (primitive $\\le$ coprime $\\le$ sector) and growth resu"
     },
     {
       "id": "partition-axioms",
       "title": "Parts VIII-A/B: Parity Partition and Density Axioms",
       "summary": "Proves the partition identity coprimeInSector = primitive + bothOdd. States three axioms encoding deep analytic number theory: sector density $\\pi/8$ (Gauss circle problem), coprime fraction $6/\\pi^2$ (Möbius inversion), bothOdd fraction $1/3$ (parity equidistribution). Shows the 2/3 parity fraction follows from the 1/3 bothOdd axiom.",
       "startLine": 376,
-      "endLine": 530
+      "endLine": 530,
+      "mathContext": "Proves the partition identity coprimeInSector = primitive + bothOdd. States three axioms encoding deep analytic number theory: sector density $\\pi/8$ (Gauss circle problem), coprime fraction $6/\\pi^2$"
     },
     {
       "id": "main-theorems",
       "title": "Parts IX-X: Main Asymptotic Theorems and Consequences",
       "summary": "Derives the main result by telescoping three ratio limits: $\\text{count}/N = (\\text{count}/\\text{coprime}) \\cdot (\\text{coprime}/\\text{sector}) \\cdot (\\text{sector}/N) \\to 2/3 \\cdot 6/\\pi^2 \\cdot \\pi/8 = 1/(2\\pi)$. Also proves the equivalent asymptotic form count$(N) \\sim N/(2\\pi)$.",
       "startLine": 531,
-      "endLine": 622
+      "endLine": 622,
+      "mathContext": "Derives the main result by telescoping three ratio limits: $\\text{count}/N = (\\text{count}/\\text{coprime}) \\cdot (\\text{coprime}/\\text{sector}) \\cdot (\\text{sector}/N) \\to 2/3 \\cdot 6/\\pi^2 \\cdot \\pi/"
     },
     {
       "id": "mathlib-connection",
       "title": "Part XI: Connection to Mathlib's PythagoreanTriple",
       "summary": "Links the counting function to Mathlib's PythagoreanTriple.IsPrimitiveClassified, confirming the parametrization generates all primitive triples and the counting function counts the correct objects.",
       "startLine": 606,
-      "endLine": 660
+      "endLine": 660,
+      "mathContext": "Links the counting function to Mathlib's PythagoreanTriple.IsPrimitiveClassified, confirming the parametrization generates all primitive triples and the counting function counts the correct objects."
     },
     {
       "id": "parity-counting",
       "title": "Part XII: Parity Class Counting Functions",
       "summary": "Defines fine-grained counting functions for each parity class: coprimeEvenOddCount, coprimeOddEvenCount, coprimeOddOddCount. Proves the three-way partition and relates bothOddCoprimeCount to coprimeOddOddCount.",
       "startLine": 660,
-      "endLine": 814
+      "endLine": 814,
+      "mathContext": "Defines fine-grained counting functions for each parity class: coprimeEvenOddCount, coprimeOddEvenCount, coprimeOddOddCount. Proves the three-way partition and relates bothOddCoprimeCount to coprimeOd"
     },
     {
       "id": "involution",
       "title": "Parts XIII-XIV: The Parity Involution and Triangle Counting",
       "summary": "Proves the involution $(m,n) \\mapsto (m, m-n)$ preserves coprimality, swaps EO$\\leftrightarrow$OO, and is an involution. Uses Finset.card_bij to establish exact equality $|\\text{OE}(K)| = |\\text{OO}(K)|$ for all $K$.",
       "startLine": 814,
-      "endLine": 930
+      "endLine": 930,
+      "mathContext": "Proves the involution $(m,n) \\mapsto (m, m-n)$ preserves coprimality, swaps EO$\\leftrightarrow$OO, and is an involution. Uses Finset.card_bij to establish exact equality $|\\text{OE}(K)| = |\\text{OO}(K"
     },
     {
       "id": "row-analysis",
       "title": "Parts XIV-B to XV: Row-Level Parity Decomposition",
       "summary": "Per-row analysis: for even $m$, all coprime residues are odd (only EO pairs). For odd $m \\ge 3$, the involution bijects even and odd coprime residues, giving exact equality per row.",
       "startLine": 918,
-      "endLine": 1138
+      "endLine": 1138,
+      "mathContext": "Per-row analysis: for even $m$, all coprime residues are odd (only EO pairs). For odd $m \\ge 3$, the involution bijects even and odd coprime residues, giving exact equality per row."
     },
     {
       "id": "column-analysis",
       "title": "Parts XVI-XIX: Column Decomposition and Density",
       "summary": "The deepest technical section. Analyzes EO coprime density via GCD halving ($\\gcd(2k,n)=1$ iff $\\gcd(k,n)=1$ and $n$ odd). Decomposes column sums by $m$-parity and proves the boundary analysis for sector-triangle discrepancy.",
       "startLine": 1138,
-      "endLine": 2029
+      "endLine": 2029,
+      "mathContext": "The deepest technical section. Analyzes EO coprime density via GCD halving ($\\gcd(2k,n)=1$ iff $\\gcd(k,n)=1$ and $n$ odd). Decomposes column sums by $m$-parity and proves the boundary analysis for sec"
     },
     {
       "id": "final-results",
       "title": "Part XX: Summary and Final Verification",
       "summary": "Collects all results and provides a final summary of the 97 theorems, 3 axioms, and 0 sorries. Includes the verification table showing count$(N)$ tracks $N/(2\\pi)$.",
       "startLine": 2029,
-      "endLine": 2485
+      "endLine": 2485,
+      "mathContext": "Collects all results and provides a final summary of the 97 theorems, 3 axioms, and 0 sorries. Includes the verification table showing count$(N)$ tracks $N/(2\\pi)$."
     }
   ],
   "conclusion": {
@@ -246,17 +258,17 @@
     {
       "id": "pythagorean-theorem",
       "relationship": "extends",
-      "description": "The Pythagorean theorem establishes a^2 + b^2 = c^2; this entry counts how many primitive solutions exist with c <= N, g"
+      "description": "The Pythagorean theorem establishes a^2 + b^2 = c^2; this entry counts how many primitive solutions exist with c <= N, giving the asymptotic density N/(2pi)"
     },
     {
       "id": "infinitude-primes",
       "relationship": "foundational",
-      "description": "The coprime fraction 6/pi^2 = 1/zeta(2) arises from the probability that two random integers are coprime, which depends "
+      "description": "The coprime fraction 6/pi^2 = 1/zeta(2) arises from the probability that two random integers are coprime, which depends on the distribution of primes"
     },
     {
       "id": "euler-totient",
       "relationship": "related",
-      "description": "Euler's totient function underlies the coprimality analysis: the density of coprime pairs in the lattice point count use"
+      "description": "Euler's totient function underlies the coprimality analysis: the density of coprime pairs in the lattice point count uses Euler products over primes"
     }
   ],
   "references": [

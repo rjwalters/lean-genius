@@ -32,56 +32,64 @@
       "title": "Problem Statement and Background",
       "startLine": 1,
       "endLine": 20,
-      "summary": "Module docstring introducing Problem #690: is $d_k(p)$ unimodal in $p$? Cites Cambie's resolution (YES for $k \\le 3$, NO for $k \\ge 4$) and Erdős's observations on typical vs. modal $k$-th prime factors."
+      "summary": "Module docstring introducing Problem #690: is $d_k(p)$ unimodal in $p$? Cites Cambie's resolution (YES for $k \\le 3$, NO for $k \\ge 4$) and Erdős's observations on typical vs. modal $k$-th prime factors.",
+      "mathContext": "Module docstring introducing Problem #690: is $d_k(p)$ unimodal in $p$? Cites Cambie's resolution (YES for $k \\le 3$, NO for $k \\ge 4$) and Erdős's observations on typical vs. modal $k$-th prime facto"
     },
     {
       "id": "imports",
       "title": "Library Imports",
       "startLine": 21,
       "endLine": 22,
-      "summary": "Imports Mathlib's prime number API ($\\text{Nat.Prime}$, $\\text{Nat.factors}$) and tactics for defining the $k$-th smallest prime factor via sorted factor lists."
+      "summary": "Imports Mathlib's prime number API ($\\text{Nat.Prime}$, $\\text{Nat.factors}$) and tactics for defining the $k$-th smallest prime factor via sorted factor lists.",
+      "mathContext": "Imports Mathlib's prime number API ($\\text{Nat.Prime}$, $\\text{Nat.factors}$) and tactics for defining the $k$-th smallest prime factor via sorted factor lists."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 28,
       "endLine": 47,
-      "summary": "Defines the $k$-th smallest prime factor via sorted factorization, the level set $A_k(p) = \\{n : p_k(n) = p\\}$, the axiomatized density $d_k(p)$, and unimodality on primes (existence of a peak prime $p^*$)."
+      "summary": "Defines the $k$-th smallest prime factor via sorted factorization, the level set $A_k(p) = \\{n : p_k(n) = p\\}$, the axiomatized density $d_k(p)$, and unimodality on primes (existence of a peak prime $p^*$).",
+      "mathContext": "Defines the $k$-th smallest prime factor via sorted factorization, the level set $A_k(p) = \\{n : p_k(n) = p\\}$, the axiomatized density $d_k(p)$, and unimodality on primes (existence of a peak prime $"
     },
     {
       "id": "cambie-unimodal",
       "title": "Cambie's Unimodality Results (k ≤ 3)",
       "startLine": 53,
       "endLine": 64,
-      "summary": "Cambie (2025) proved $d_k(p)$ is unimodal for $k = 1, 2, 3$. The $k = 1$ case is classical ($d_1$ is strictly decreasing); $k = 2, 3$ require delicate inclusion-exclusion analysis."
+      "summary": "Cambie (2025) proved $d_k(p)$ is unimodal for $k = 1, 2, 3$. The $k = 1$ case is classical ($d_1$ is strictly decreasing); $k = 2, 3$ require delicate inclusion-exclusion analysis.",
+      "mathContext": "Cambie (2025) proved $d_k(p)$ is unimodal for $k = 1, 2, 3$. The $k = 1$ case is classical ($d_1$ is strictly decreasing); $k = 2, 3$ require delicate inclusion-exclusion analysis."
     },
     {
       "id": "cambie-non-unimodal",
       "title": "Cambie's Non-Unimodality (k ≥ 4) and Answer",
       "startLine": 65,
       "endLine": 75,
-      "summary": "Cambie proved $d_k(p)$ is NOT unimodal for $4 \\le k \\le 20$, confirming Erdős's expectation. The answer to Problem #690 is **NO**: unimodality fails for $k = 4$, giving a concrete counterexample."
+      "summary": "Cambie proved $d_k(p)$ is NOT unimodal for $4 \\le k \\le 20$, confirming Erdős's expectation. The answer to Problem #690 is **NO**: unimodality fails for $k = 4$, giving a concrete counterexample.",
+      "mathContext": "Cambie proved $d_k(p)$ is NOT unimodal for $4 \\le k \\le 20$, confirming Erdős's expectation. The answer to Problem #690 is **NO**: unimodality fails for $k = 4$, giving a concrete counterexample."
     },
     {
       "id": "erdos-observations",
       "title": "Erdős's Observations",
       "startLine": 81,
       "endLine": 99,
-      "summary": "The typical $k$-th prime factor is $\\sim e^{e^k}$ (doubly exponential) while the mode of $d_k$ is $\\sim e^{(1+o(1))k}$ (singly exponential). The divisor analogue (non-unimodal) provided heuristic evidence."
+      "summary": "The typical $k$-th prime factor is $\\sim e^{e^k}$ (doubly exponential) while the mode of $d_k$ is $\\sim e^{(1+o(1))k}$ (singly exponential). The divisor analogue (non-unimodal) provided heuristic evidence.",
+      "mathContext": "The typical $k$-th prime factor is $\\sim e^{e^k}$ (doubly exponential) while the mode of $d_k$ is $\\sim e^{(1+o(1))k}$ (singly exponential). The divisor analogue (non-unimodal) provided heuristic evid"
     },
     {
       "id": "special-k1",
       "title": "Special Case: k = 1",
       "startLine": 105,
       "endLine": 120,
-      "summary": "Explicit formula $d_1(p) = (1/p)\\prod_{q < p}(1 - 1/q)$: $d_1(2) = 1/2$, $d_1(3) = 1/6$. The function $d_1$ is strictly decreasing in $p$, hence trivially unimodal with peak at $p = 2$."
+      "summary": "Explicit formula $d_1(p) = (1/p)\\prod_{q < p}(1 - 1/q)$: $d_1(2) = 1/2$, $d_1(3) = 1/6$. The function $d_1$ is strictly decreasing in $p$, hence trivially unimodal with peak at $p = 2$.",
+      "mathContext": "Explicit formula $d_1(p) = (1/p)\\prod_{q < p}(1 - 1/q)$: $d_1(2) = 1/2$, $d_1(3) = 1/6$. The function $d_1$ is strictly decreasing in $p$, hence trivially unimodal with peak at $p = 2$."
     },
     {
       "id": "summary-theorem",
       "title": "Complete Summary",
       "startLine": 121,
       "endLine": 134,
-      "summary": "Combines all results: $d_k$ unimodal for $k = 1, 2, 3$ and not unimodal for $k = 4$. The threshold is exactly $k = 3/4$: the transition from regular to irregular shape of prime factor densities."
+      "summary": "Combines all results: $d_k$ unimodal for $k = 1, 2, 3$ and not unimodal for $k = 4$. The threshold is exactly $k = 3/4$: the transition from regular to irregular shape of prime factor densities.",
+      "mathContext": "Combines all results: $d_k$ unimodal for $k = 1, 2, 3$ and not unimodal for $k = 4$. The threshold is exactly $k = 3/4$: the transition from regular to irregular shape of prime factor densities."
     }
   ],
   "overview": {

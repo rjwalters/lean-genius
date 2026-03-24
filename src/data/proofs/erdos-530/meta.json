@@ -88,8 +88,32 @@
       "id": "b2-connection",
       "title": "Connection to B₂-Sets",
       "startLine": 129,
-      "endLine": 143,
-      "summary": "Axiom: a Sidon set of size k has exactly k(k+1)/2 distinct pairwise sums, connecting to the B₂-set literature."
+      "endLine": 148,
+      "summary": "Commentary connecting Sidon sets to $B_2$-sets in additive combinatorics. Defines `ErdosProblem530` as a Prop: $\\exists c_1, c_2 \\geq 1, \\forall A, |A| \\geq 4 \\Rightarrow c_1 |A| \\leq \\ell(A)^2 \\leq c_2 |A|$."
+    },
+    {
+      "id": "partition-defs",
+      "title": "Sidon Partition Definitions and Conjecture",
+      "startLine": 150,
+      "endLine": 169,
+      "summary": "Defines `IsSidonPartition A parts` (all parts are Sidon, cover $A$, pairwise disjoint). Axiomatizes `alon_erdos_partition_conjecture`: $\\exists c \\geq 1, \\forall A, \\exists$ partition into $\\leq c\\sqrt{|A|}$ Sidon parts.",
+      "mathContext": "The Alon-Erdős conjecture is the dual of Problem #530: instead of finding the largest Sidon subset, partition into the fewest Sidon sets. The chromatic number of the 'repeated sum' graph equals the partition number, which is conjectured to be $\\Theta(\\sqrt{N})$."
+    },
+    {
+      "id": "sum-injectivity",
+      "title": "Sidon Sum Injectivity and Pair Counting",
+      "startLine": 179,
+      "endLine": 257,
+      "summary": "Proves `sidon_sum_injective`: the sum map $(a,b) \\mapsto a + b$ is injective on sorted pairs of a Sidon set. Then proves `card_sorted_pairs`: $|\\{(a,b) \\in S \\times S : a \\leq b\\}| = |S|(|S|+1)/2$ via a decomposition into strict upper triangle, diagonal, and strict lower triangle, using a swap bijection and diagonal bijection.",
+      "mathContext": "The proof decomposes $S \\times S$ into $\\{a < b\\} \\cup \\{a = b\\} \\cup \\{a > b\\}$ with cardinalities $|\\text{lt}|, |S|, |\\text{gt}|$ respectively. The swap bijection $(a,b) \\mapsto (b,a)$ shows $|\\text{lt}| = |\\text{gt}|$. Then $|\\text{le}| = |\\text{lt}| + |S|$ and $2 \\cdot |\\text{le}| = |S|^2 + |S| = |S|(|S|+1)$."
+    },
+    {
+      "id": "sidon-sum-count",
+      "title": "Sidon Sum Count Theorem",
+      "startLine": 259,
+      "endLine": 270,
+      "summary": "Proves `sidon_sum_count`: a Sidon set of size $k$ has exactly $k(k+1)/2$ distinct pairwise sums. Combines `sidon_sum_injective` (injectivity $\\Rightarrow$ image card = domain card) with `card_sorted_pairs` ($k(k+1)/2$ sorted pairs). This was previously axiomatized and is now fully proved.",
+      "mathContext": "The identity $|\\{a + b : (a,b) \\in S \\times S, a \\leq b\\}| = k(k+1)/2$ for $|S| = k$ Sidon is the key to the upper bound: if all $k(k+1)/2$ sums lie in $S + S \\subseteq \\{2\\min S, \\ldots, 2\\max S\\}$, then $k(k+1)/2 \\leq 2N - 1$, giving $k \\leq O(\\sqrt{N})$."
     }
   ],
   "conclusion": {

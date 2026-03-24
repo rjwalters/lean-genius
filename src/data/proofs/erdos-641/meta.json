@@ -75,70 +75,80 @@
       "title": "Graphs and Chromatic Number",
       "summary": "Defines $\\text{SimpleGraph}\\; V$, proper $k$-coloring $c: V \\to \\text{Fin}\\; k$ with $G.\\text{Adj}\\; u\\; v \\Rightarrow c(u) \\neq c(v)$, chromatic number $\\chi(G) = \\min\\{k \\mid G \\text{ is } k\\text{-colorable}\\}$, and $k$-colorability.",
       "startLine": 34,
-      "endLine": 54
+      "endLine": 54,
+      "mathContext": "Defines $\\text{SimpleGraph}\\; V$, proper $k$-coloring $c: V \\to \\text{Fin}\\; k$ with $G.\\text{Adj}\\; u\\; v \\Rightarrow c(u) \\neq c(v)$, chromatic number $\\chi(G) = \\min\\{k \\mid G \\text{ is } k\\text{-c"
     },
     {
       "id": "cycles",
       "title": "Cycles and Regular Subgraphs",
       "summary": "Defines cycles as lists $[v_0, \\ldots, v_{\\ell-1}]$ with $\\ell \\geq 3$, all distinct, consecutive adjacency, and $v_{\\ell-1} \\sim v_0$. Defines edge-disjoint cycles and $k$ edge-disjoint cycles sharing vertex set $S$.",
       "startLine": 55,
-      "endLine": 79
+      "endLine": 79,
+      "mathContext": "Defines cycles as lists $[v_0, \\ldots, v_{\\ell-1}]$ with $\\ell \\geq 3$, all distinct, consecutive adjacency, and $v_{\\ell-1} \\sim v_0$. Defines edge-disjoint cycles and $k$ edge-disjoint cycles sharin"
     },
     {
       "id": "regular",
       "title": "Regular Subgraphs",
       "summary": "Defines $r$-regularity ($\\forall v,\\; \\deg(v) = r$) and the existence of an $r$-regular subgraph on vertex set $S \\subseteq V$. Proves the key equivalence: $k$ edge-disjoint cycles on $S$ $\\Leftrightarrow$ $2k$-regular subgraph on $S$.",
       "startLine": 80,
-      "endLine": 102
+      "endLine": 102,
+      "mathContext": "Defines $r$-regularity ($\\forall v,\\; \\deg(v) = r$) and the existence of an $r$-regular subgraph on vertex set $S \\subseteq V$. Proves the key equivalence: $k$ edge-disjoint cycles on $S$ $\\Leftrighta"
     },
     {
       "id": "conjecture",
       "title": "The Erdős-Hajnal Conjecture",
       "summary": "States the conjecture: $\\exists f: \\mathbb{N} \\to \\mathbb{N}$ such that $\\chi(G) \\geq f(k) \\Rightarrow G$ has $k$ edge-disjoint cycles on the same vertices. Also gives the equivalent regular-subgraph formulation: $\\chi(G) \\geq f(k) \\Rightarrow G$ has a $2k$-regular subgraph.",
       "startLine": 103,
-      "endLine": 124
+      "endLine": 124,
+      "mathContext": "States the conjecture: $\\exists f: \\mathbb{N} \\to \\mathbb{N}$ such that $\\chi(G) \\geq f(k) \\Rightarrow G$ has $k$ edge-disjoint cycles on the same vertices. Also gives the equivalent regular-subgraph "
     },
     {
       "id": "k-2",
       "title": "The k = 2 Case",
       "summary": "Isolates the weakest non-trivial case: does high $\\chi$ imply a 4-regular subgraph? Axiomatizes that this case is FALSE ($\\neg \\text{Case\\_k\\_2}$), which is sufficient to disprove the full conjecture.",
       "startLine": 125,
-      "endLine": 140
+      "endLine": 140,
+      "mathContext": "Isolates the weakest non-trivial case: does high $\\chi$ imply a 4-regular subgraph? Axiomatizes that this case is FALSE ($\\neg \\text{Case\\_k\\_2}$), which is sufficient to disprove the full conjecture."
     },
     {
       "id": "jss",
       "title": "The JSS Counterexample",
       "summary": "Axiomatizes the Janzer-Steiner-Sudakov (2024) construction: for $n \\geq 10$, graphs exist with $\\chi \\geq \\lfloor c \\cdot \\log\\log n / \\log\\log\\log n \\rfloor$ yet no 4-regular subgraph. Defines the chromatic bound function $\\lfloor \\log\\log n / \\log\\log\\log n \\rfloor$.",
       "startLine": 141,
-      "endLine": 165
+      "endLine": 165,
+      "mathContext": "Axiomatizes the Janzer-Steiner-Sudakov (2024) construction: for $n \\geq 10$, graphs exist with $\\chi \\geq \\lfloor c \\cdot \\log\\log n / \\log\\log\\log n \\rfloor$ yet no 4-regular subgraph. Defines the ch"
     },
     {
       "id": "disproof",
       "title": "The Main Disproof",
       "summary": "Proves $\\neg\\text{ErdosHajnalConjecture}$ by contradiction: any purported function $f$ is defeated by the JSS graphs, which have $\\chi$ exceeding $f(2)$ for large $n$ yet contain no 4-regular subgraph.",
       "startLine": 166,
-      "endLine": 184
+      "endLine": 184,
+      "mathContext": "Proves $\\neg\\text{ErdosHajnalConjecture}$ by contradiction: any purported function $f$ is defeated by the JSS graphs, which have $\\chi$ exceeding $f(2)$ for large $n$ yet contain no 4-regular subgraph"
     },
     {
       "id": "positive",
       "title": "Positive Results",
       "summary": "Records what high $\\chi$ DOES force: long odd cycles of length $\\geq k$ (Erdős), the Gyárfás alternative ($\\omega(G) \\geq k$ or long odd cycle), and Kim's bound $\\chi = O(\\sqrt{n/\\log n})$ for triangle-free graphs.",
       "startLine": 185,
-      "endLine": 210
+      "endLine": 210,
+      "mathContext": "Records what high $\\chi$ DOES force: long odd cycles of length $\\geq k$ (Erdős), the Gyárfás alternative ($\\omega(G) \\geq k$ or long odd cycle), and Kim's bound $\\chi = O(\\sqrt{n/\\log n})$ for triangl"
     },
     {
       "id": "related",
       "title": "Related Conjectures",
       "summary": "States Hadwiger's conjecture ($\\chi(G) \\geq t \\Rightarrow K_t$ minor), the List Coloring Conjecture ($\\chi_L = \\chi'$), and Reed's conjecture ($\\chi \\leq \\lceil(\\Delta + \\omega + 1)/2\\rceil$) as context for the broader landscape of chromatic number problems.",
       "startLine": 211,
-      "endLine": 230
+      "endLine": 230,
+      "mathContext": "States Hadwiger's conjecture ($\\chi(G) \\geq t \\Rightarrow K_t$ minor), the List Coloring Conjecture ($\\chi_L = \\chi'$), and Reed's conjecture ($\\chi \\leq \\lceil(\\Delta + \\omega + 1)/2\\rceil$) as conte"
     },
     {
       "id": "main-result",
       "title": "Main Result",
       "summary": "Final statement: Erdős Problem #641 is DISPROVED. High $\\chi$ does not guarantee $k$ edge-disjoint cycles on the same vertex set, even for $k = 2$. The JSS counterexample achieves $\\chi = \\Omega(\\log\\log n / \\log\\log\\log n)$ with no 4-regular subgraph.",
       "startLine": 253,
-      "endLine": 276
+      "endLine": 276,
+      "mathContext": "Final statement: Erdős Problem #641 is DISPROVED. High $\\chi$ does not guarantee $k$ edge-disjoint cycles on the same vertex set, even for $k = 2$. The JSS counterexample achieves $\\chi = \\Omega(\\log\\"
     }
   ],
   "conclusion": {

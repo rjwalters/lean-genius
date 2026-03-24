@@ -88,63 +88,72 @@
       "title": "Meromorphic Functions and Value Distribution",
       "summary": "IsMeromorphic, IsEntire, entire_is_meromorphic",
       "startLine": 40,
-      "endLine": 77
+      "endLine": 77,
+      "mathContext": "IsMeromorphic, IsEntire, entire_is_meromorphic"
     },
     {
       "id": "counting-function",
       "title": "The Counting Function",
       "summary": "aPoints, countingFunction definitions",
       "startLine": 78,
-      "endLine": 105
+      "endLine": 105,
+      "mathContext": "aPoints, countingFunction definitions"
     },
     {
       "id": "problem-statement",
       "title": "The Problem Statement",
       "summary": "HasUnboundedRatio, HasExtremeValueDistribution definitions",
       "startLine": 106,
-      "endLine": 136
+      "endLine": 136,
+      "mathContext": "HasUnboundedRatio, HasExtremeValueDistribution definitions"
     },
     {
       "id": "solution",
       "title": "The Solution",
       "summary": "goldberg_toppila_existence axiom, erdos_1116 theorem",
       "startLine": 137,
-      "endLine": 160
+      "endLine": 160,
+      "mathContext": "goldberg_toppila_existence axiom, erdos_1116 theorem"
     },
     {
       "id": "nevanlinna-theory",
       "title": "Nevanlinna Theory Context",
       "summary": "characteristic, integratedCounting, deficiency, nevanlinna_deficiency_sum",
       "startLine": 161,
-      "endLine": 196
+      "endLine": 196,
+      "mathContext": "characteristic, integratedCounting, deficiency, nevanlinna_deficiency_sum"
     },
     {
       "id": "surprising",
       "title": "Why This is Surprising",
       "summary": "first_main_theorem_heuristic, oscillation_key_insight",
       "startLine": 197,
-      "endLine": 229
+      "endLine": 229,
+      "mathContext": "first_main_theorem_heuristic, oscillation_key_insight"
     },
     {
       "id": "construction",
       "title": "Construction Sketch",
       "summary": "IsLacunarySeries, WeierstrassProduct definitions",
       "startLine": 230,
-      "endLine": 265
+      "endLine": 265,
+      "mathContext": "IsLacunarySeries, WeierstrassProduct definitions"
     },
     {
       "id": "examples",
       "title": "Examples and Non-examples",
       "summary": "expFunction, exp_not_extreme, polynomial_not_extreme",
       "startLine": 266,
-      "endLine": 290
+      "endLine": 290,
+      "mathContext": "expFunction, exp_not_extreme, polynomial_not_extreme"
     },
     {
       "id": "main-results",
       "title": "Main Results Summary",
       "summary": "erdos_1116_summary, keyInsightStatement",
       "startLine": 291,
-      "endLine": 317
+      "endLine": 317,
+      "mathContext": "erdos_1116_summary, keyInsightStatement"
     }
   ],
   "conclusion": {
@@ -194,27 +203,32 @@
     {
       "id": "erdos-517",
       "relationship": "related",
-      "description": "Erdős #517 concerns lacunary entire functions (Fabry gaps) and whether they assume every value infinitely often. Erdős #"
+      "description": "Erdős #517 concerns lacunary entire functions (Fabry gaps) and whether they assume every value infinitely often. Erdős #1116 uses lacunary series as the primary construction tool to build functions with extreme value distribution — directly applying the structural properties that #517 investigates."
     },
     {
       "id": "erdos-1117",
       "relationship": "related",
-      "description": "Erdős #1117 studies maximum-modulus points on circles |z|=r, another fine-grained measure of how extreme value distribut"
+      "description": "Erdős #1117 studies maximum-modulus points on circles |z|=r, another fine-grained measure of how extreme value distribution can be. Both problems probe the limits of Nevanlinna theory and were partly resolved by Gol'dberg and collaborators in the same 1968–1978 period."
     },
     {
       "id": "erdos-1118",
       "relationship": "related",
-      "description": "Erdős #1118 characterizes entire functions by the measure of their superlevel sets, also solved by Camera and Gol'dberg "
+      "description": "Erdős #1118 characterizes entire functions by the measure of their superlevel sets, also solved by Camera and Gol'dberg (1977–1979). The two problems together show how Gol'dberg's school systematically explored extremal behavior in entire function theory during the same era."
     },
     {
       "id": "erdos-1115",
       "relationship": "related",
-      "description": "Erdős #1115 on path length for entire functions was disproved by Gol'dberg–Eremenko (1979), one year after Gol'dberg's c"
+      "description": "Erdős #1115 on path length for entire functions was disproved by Gol'dberg–Eremenko (1979), one year after Gol'dberg's construction for #1116. Both problems appear in Hayman's survey [Ha74] and involve the same circle of ideas about how entire functions can behave pathologically near infinity."
     },
     {
       "id": "erdos-516",
       "relationship": "foundational",
-      "description": "Erdős #516 on gap series and the minimum modulus problem (Fabry gaps, solved by Fuchs 1963) establishes that lacunary po"
+      "description": "Erdős #516 on gap series and the minimum modulus problem (Fabry gaps, solved by Fuchs 1963) establishes that lacunary power series have tightly controlled minimum modulus. The Weierstrass products and lacunary series used to construct the Gol'dberg–Toppila example in #1116 rely on this same structural theory."
+    },
+    {
+      "id": "erdos-514",
+      "relationship": "related",
+      "description": "Erdős #514 on growth of entire functions along paths (Boas) studies how fast f(z) can grow along curves to infinity. The oscillation between n(r,a) and n(r,b) in #1116 is intimately linked to growth-rate behavior along radii, making both problems part of the same broader study of asymptotic behavior of entire functions."
     }
   ],
   "references": [

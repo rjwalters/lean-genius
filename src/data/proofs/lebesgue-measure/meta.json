@@ -82,70 +82,80 @@
       "title": "Imports and Documentation",
       "startLine": 1,
       "endLine": 61,
-      "summary": "Imports from Mathlib's measure theory, integration, and topology libraries. The module docstring outlines the five main results formalized: Lebesgue measure construction, translation invariance, monotone convergence, dominated convergence, and Fubini's theorem."
+      "summary": "Imports from Mathlib's measure theory, integration, and topology libraries. The module docstring outlines the five main results formalized: Lebesgue measure construction, translation invariance, monotone convergence, dominated convergence, and Fubini's theorem.",
+      "mathContext": "Imports from Mathlib's measure theory, integration, and topology libraries. The module docstring outlines the five main results formalized: Lebesgue measure construction, translation invariance, monot"
     },
     {
       "id": "measure-construction",
       "title": "Lebesgue Measure on $\\mathbb{R}$",
       "startLine": 62,
       "endLine": 101,
-      "summary": "Demonstrates that `volume` in Mathlib is the Lebesgue measure on $\\mathbb{R}$. Proves $\\mu([a,b]) = b-a$, $\\mu((a,b)) = b-a$, $\\mu(\\{x\\}) = 0$, and $\\mu(\\mathbb{R}) = \\infty$ using Mathlib's `Real.volume_Icc` and related lemmas."
+      "summary": "Demonstrates that `volume` in Mathlib is the Lebesgue measure on $\\mathbb{R}$. Proves $\\mu([a,b]) = b-a$, $\\mu((a,b)) = b-a$, $\\mu(\\{x\\}) = 0$, and $\\mu(\\mathbb{R}) = \\infty$ using Mathlib's `Real.volume_Icc` and related lemmas.",
+      "mathContext": "Demonstrates that `volume` in Mathlib is the Lebesgue measure on $\\mathbb{R}$. Proves $\\mu([a,b]) = b-a$, $\\mu((a,b)) = b-a$, $\\mu(\\{x\\}) = 0$, and $\\mu(\\mathbb{R}) = \\infty$ using Mathlib's `Real.vol"
     },
     {
       "id": "translation-invariance",
       "title": "Translation Invariance",
       "startLine": 102,
       "endLine": 129,
-      "summary": "Establishes that Lebesgue measure is left-invariant under addition: $\\mu(E + c) = \\mu(E)$. This follows from Mathlib's Haar measure infrastructure via `IsAddLeftInvariant` and `measure_preimage_add`."
+      "summary": "Establishes that Lebesgue measure is left-invariant under addition: $\\mu(E + c) = \\mu(E)$. This follows from Mathlib's Haar measure infrastructure via `IsAddLeftInvariant` and `measure_preimage_add`.",
+      "mathContext": "Establishes that Lebesgue measure is left-invariant under addition: $\\mu(E + c) = \\mu(E)$. This follows from Mathlib's Haar measure infrastructure via `IsAddLeftInvariant` and `measure_preimage_add`."
     },
     {
       "id": "lebesgue-integral",
       "title": "The Lebesgue Integral",
       "startLine": 130,
       "endLine": 171,
-      "summary": "Introduces both the `lintegral` ($[0,\\infty]$-valued) and Bochner integral (signed/complex-valued) notations. Proves integration of constants over intervals, linearity $\\int(f+g) = \\int f + \\int g$, and scalar multiplication $\\int(cf) = c\\int f$."
+      "summary": "Introduces both the `lintegral` ($[0,\\infty]$-valued) and Bochner integral (signed/complex-valued) notations. Proves integration of constants over intervals, linearity $\\int(f+g) = \\int f + \\int g$, and scalar multiplication $\\int(cf) = c\\int f$.",
+      "mathContext": "Introduces both the `lintegral` ($[0,\\infty]$-valued) and Bochner integral (signed/complex-valued) notations. Proves integration of constants over intervals, linearity $\\int(f+g) = \\int f + \\int g$, a"
     },
     {
       "id": "monotone-convergence",
       "title": "Monotone Convergence Theorem",
       "startLine": 172,
       "endLine": 211,
-      "summary": "Proves the monotone convergence theorem: if $f_n \\nearrow f$ pointwise, then $\\int f_n \\to \\int f$. Also proves the series corollary $\\int \\sum_n f_n = \\sum_n \\int f_n$ via `lintegral_tsum`."
+      "summary": "Proves the monotone convergence theorem: if $f_n \\nearrow f$ pointwise, then $\\int f_n \\to \\int f$. Also proves the series corollary $\\int \\sum_n f_n = \\sum_n \\int f_n$ via `lintegral_tsum`.",
+      "mathContext": "Proves the monotone convergence theorem: if $f_n \\nearrow f$ pointwise, then $\\int f_n \\to \\int f$. Also proves the series corollary $\\int \\sum_n f_n = \\sum_n \\int f_n$ via `lintegral_tsum`."
     },
     {
       "id": "dominated-convergence",
       "title": "Dominated Convergence Theorem",
       "startLine": 212,
       "endLine": 240,
-      "summary": "Proves the dominated convergence theorem: if $|f_n| \\leq g$ for integrable $g$ and $f_n \\to f$ a.e., then $\\int f_n \\to \\int f$. Delegates to Mathlib's `tendsto_integral_of_dominated_convergence`."
+      "summary": "Proves the dominated convergence theorem: if $|f_n| \\leq g$ for integrable $g$ and $f_n \\to f$ a.e., then $\\int f_n \\to \\int f$. Delegates to Mathlib's `tendsto_integral_of_dominated_convergence`.",
+      "mathContext": "Proves the dominated convergence theorem: if $|f_n| \\leq g$ for integrable $g$ and $f_n \\to f$ a.e., then $\\int f_n \\to \\int f$. Delegates to Mathlib's `tendsto_integral_of_dominated_convergence`."
     },
     {
       "id": "fubini-theorem",
       "title": "Fubini's Theorem",
       "startLine": 241,
       "endLine": 295,
-      "summary": "Proves both the Tonelli form (non-negative functions: iterated lintegral equals product lintegral) and the general Fubini form (integrable functions: order of iterated integrals can be swapped). Uses Mathlib's `lintegral_prod` and `integral_prod`."
+      "summary": "Proves both the Tonelli form (non-negative functions: iterated lintegral equals product lintegral) and the general Fubini form (integrable functions: order of iterated integrals can be swapped). Uses Mathlib's `lintegral_prod` and `integral_prod`.",
+      "mathContext": "Proves both the Tonelli form (non-negative functions: iterated lintegral equals product lintegral) and the general Fubini form (integrable functions: order of iterated integrals can be swapped). Uses "
     },
     {
       "id": "completeness-null-sets",
       "title": "Completeness and Null Sets",
       "startLine": 296,
       "endLine": 325,
-      "summary": "Shows that countable sets have measure zero and applies this to prove $\\mu(\\mathbb{Q}) = 0$. Proves that the integral of the indicator function of any null set is zero (`integral_indicator_null_set`). Notes the Cantor set as a famous example of an uncountable null set."
+      "summary": "Shows that countable sets have measure zero and applies this to prove $\\mu(\\mathbb{Q}) = 0$. Proves that the integral of the indicator function of any null set is zero (`integral_indicator_null_set`). Notes the Cantor set as a famous example of an uncountable null set.",
+      "mathContext": "Shows that countable sets have measure zero and applies this to prove $\\mu(\\mathbb{Q}) = 0$. Proves that the integral of the indicator function of any null set is zero (`integral_indicator_null_set`)."
     },
     {
       "id": "riemann-comparison",
       "title": "Comparison with Riemann Integration",
       "startLine": 326,
       "endLine": 384,
-      "summary": "Proves that bounded measurable functions on $[a,b]$ are Lebesgue integrable. Proves that the Dirichlet function integral $\\int_{[0,1]} \\mathbf{1}_{\\mathbb{Q}} = 0$ using the fact that $\\mathbb{Q}$ has measure zero and `integral_eq_zero_of_ae`, demonstrating that Lebesgue integration handles functions that are not Riemann integrable."
+      "summary": "Proves that bounded measurable functions on $[a,b]$ are Lebesgue integrable. Proves that the Dirichlet function integral $\\int_{[0,1]} \\mathbf{1}_{\\mathbb{Q}} = 0$ using the fact that $\\mathbb{Q}$ has measure zero and `integral_eq_zero_of_ae`, demonstrating that Lebesgue integration handles functions that are not Riemann integrable.",
+      "mathContext": "Proves that bounded measurable functions on $[a,b]$ are Lebesgue integrable. Proves that the Dirichlet function integral $\\int_{[0,1]} \\mathbf{1}_{\\mathbb{Q}} = 0$ using the fact that $\\mathbb{Q}$ has"
     },
     {
       "id": "applications",
       "title": "Applications and $L^p$ Spaces",
       "startLine": 385,
       "endLine": 425,
-      "summary": "Demonstrates $L^2$ space membership and states Holder's inequality. Includes verification `#check` statements confirming the formalized theorems are well-typed."
+      "summary": "Demonstrates $L^2$ space membership and states Holder's inequality. Includes verification `#check` statements confirming the formalized theorems are well-typed.",
+      "mathContext": "Demonstrates $L^2$ space membership and states Holder's inequality. Includes verification `#check` statements confirming the formalized theorems are well-typed."
     }
   ],
   "conclusion": {

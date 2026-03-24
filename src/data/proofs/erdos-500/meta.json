@@ -82,56 +82,64 @@
       "title": "Imports and Setup",
       "startLine": 21,
       "endLine": 25,
-      "summary": "Imports $\\texttt{SimpleGraph.Basic}$, $\\texttt{Finset.Basic}$, $\\texttt{Nat.Choose.Basic}$, and $\\texttt{Tactic}$ for hypergraph definitions and binomial coefficients $\\binom{n}{3}$."
+      "summary": "Imports $\\texttt{SimpleGraph.Basic}$, $\\texttt{Finset.Basic}$, $\\texttt{Nat.Choose.Basic}$, and $\\texttt{Tactic}$ for hypergraph definitions and binomial coefficients $\\binom{n}{3}$.",
+      "mathContext": "Imports $\\texttt{SimpleGraph.Basic}$, $\\texttt{Finset.Basic}$, $\\texttt{Nat.Choose.Basic}$, and $\\texttt{Tactic}$ for hypergraph definitions and binomial coefficients $\\binom{n}{3}$."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 26,
       "endLine": 56,
-      "summary": "Defines $\\texttt{Hypergraph3}(n) = \\texttt{Finset}(\\texttt{Finset}(\\texttt{Fin}\\ n))$, $\\texttt{IsThreeUniform}$, $\\texttt{ContainsK4\\_3}$, $\\texttt{IsK4Free}$, and $\\text{ex}_3(n, K_4^{(3)})$ with achievability and optimality axioms."
+      "summary": "Defines $\\texttt{Hypergraph3}(n) = \\texttt{Finset}(\\texttt{Finset}(\\texttt{Fin}\\ n))$, $\\texttt{IsThreeUniform}$, $\\texttt{ContainsK4\\_3}$, $\\texttt{IsK4Free}$, and $\\text{ex}_3(n, K_4^{(3)})$ with achievability and optimality axioms.",
+      "mathContext": "Defines $\\texttt{Hypergraph3}(n) = \\texttt{Finset}(\\texttt{Finset}(\\texttt{Fin}\\ n))$, $\\texttt{IsThreeUniform}$, $\\texttt{ContainsK4\\_3}$, $\\texttt{IsK4Free}$, and $\\text{ex}_3(n, K_4^{(3)})$ with ac"
     },
     {
       "id": "turan-density",
       "title": "Turán Density $\\pi(K_4^{(3)})$",
       "startLine": 57,
       "endLine": 66,
-      "summary": "Axiomatizes $\\pi(K_4^{(3)}) = \\lim \\text{ex}_3(n)/\\binom{n}{3}$ as a real number with $\\varepsilon$-$N$ convergence, guaranteed by the Katona–Nemetz–Simonovits theorem (1964)."
+      "summary": "Axiomatizes $\\pi(K_4^{(3)}) = \\lim \\text{ex}_3(n)/\\binom{n}{3}$ as a real number with $\\varepsilon$-$N$ convergence, guaranteed by the Katona–Nemetz–Simonovits theorem (1964).",
+      "mathContext": "Axiomatizes $\\pi(K_4^{(3)}) = \\lim \\text{ex}_3(n)/\\binom{n}{3}$ as a real number with $\\varepsilon$-$N$ convergence, guaranteed by the Katona–Nemetz–Simonovits theorem (1964)."
     },
     {
       "id": "lower-bound",
       "title": "Turán's Lower Bound (1941)",
       "startLine": 67,
       "endLine": 77,
-      "summary": "Turán's 3-partition construction: $\\pi(K_4^{(3)}) \\geq 5/9$. Axiomatizes both the asymptotic bound and the explicit finite-$n$ bound $\\text{ex}_3(n) \\geq 5\\binom{n}{3}/9$."
+      "summary": "Turán's 3-partition construction: $\\pi(K_4^{(3)}) \\geq 5/9$. Axiomatizes both the asymptotic bound and the explicit finite-$n$ bound $\\text{ex}_3(n) \\geq 5\\binom{n}{3}/9$.",
+      "mathContext": "Turán's 3-partition construction: $\\pi(K_4^{(3)}) \\geq 5/9$. Axiomatizes both the asymptotic bound and the explicit finite-$n$ bound $\\text{ex}_3(n) \\geq 5\\binom{n}{3}/9$."
     },
     {
       "id": "upper-bound",
       "title": "Razborov's Upper Bound (2010)",
       "startLine": 78,
       "endLine": 83,
-      "summary": "Flag algebra method: $\\pi(K_4^{(3)}) \\leq 0.5611666\\ldots$, improving de Caen's $1/\\sqrt{2} \\approx 0.707$. The tightest known upper bound."
+      "summary": "Flag algebra method: $\\pi(K_4^{(3)}) \\leq 0.5611666\\ldots$, improving de Caen's $1/\\sqrt{2} \\approx 0.707$. The tightest known upper bound.",
+      "mathContext": "Flag algebra method: $\\pi(K_4^{(3)}) \\leq 0.5611666\\ldots$, improving de Caen's $1/\\sqrt{2} \\approx 0.707$. The tightest known upper bound."
     },
     {
       "id": "conjecture",
       "title": "Turán's Conjecture",
       "startLine": 84,
       "endLine": 90,
-      "summary": "The OPEN conjecture: $\\pi(K_4^{(3)}) = 5/9$. Turán's construction is conjectured optimal. Erdős offered \\$500 for resolution."
+      "summary": "The OPEN conjecture: $\\pi(K_4^{(3)}) = 5/9$. Turán's construction is conjectured optimal. Erdős offered \\$500 for resolution.",
+      "mathContext": "The OPEN conjecture: $\\pi(K_4^{(3)}) = 5/9$. Turán's construction is conjectured optimal. Erdős offered \\$500 for resolution."
     },
     {
       "id": "small-cases",
       "title": "Exact Values for Small $n$",
       "startLine": 91,
       "endLine": 101,
-      "summary": "Known exact values: $\\text{ex}_3(4) = 3$, $\\text{ex}_3(5) = 7$, $\\text{ex}_3(6) = 13$. All consistent with Turán's conjecture; ratios trend toward $5/9$."
+      "summary": "Known exact values: $\\text{ex}_3(4) = 3$, $\\text{ex}_3(5) = 7$, $\\text{ex}_3(6) = 13$. All consistent with Turán's conjecture; ratios trend toward $5/9$.",
+      "mathContext": "Known exact values: $\\text{ex}_3(4) = 3$, $\\text{ex}_3(5) = 7$, $\\text{ex}_3(6) = 13$. All consistent with Turán's conjecture; ratios trend toward $5/9$."
     },
     {
       "id": "gap",
       "title": "Bounds Summary",
       "startLine": 102,
       "endLine": 107,
-      "summary": "Combined bounds $5/9 \\leq \\pi(K_4^{(3)}) \\leq 0.5612$. Gap of $\\approx 0.006$ is remarkably small but stubbornly open."
+      "summary": "Combined bounds $5/9 \\leq \\pi(K_4^{(3)}) \\leq 0.5612$. Gap of $\\approx 0.006$ is remarkably small but stubbornly open.",
+      "mathContext": "Combined bounds $5/9 \\leq \\pi(K_4^{(3)}) \\leq 0.5612$. Gap of $\\approx 0.006$ is remarkably small but stubbornly open."
     }
   ],
   "conclusion": {
@@ -186,27 +194,37 @@
     {
       "id": "ramseys-theorem",
       "relationship": "related",
-      "description": "Both are foundational results in extremal combinatorics: Ramsey theory guarantees monochromatic substructures, while the"
+      "description": "Both are foundational results in extremal combinatorics: Ramsey theory guarantees monochromatic substructures, while the Turán problem maximizes edges avoiding substructures. Turán's graph theorem (1941) was motivated by Ramsey's theorem"
     },
     {
       "id": "erdos-1009",
       "relationship": "related",
-      "description": "Erdős #1009 concerns edge-disjoint triangles beyond the Turán threshold — directly related to the extremal graph/hypergr"
+      "description": "Erdős #1009 concerns edge-disjoint triangles beyond the Turán threshold — directly related to the extremal graph/hypergraph paradigm. Both problems study how substructure avoidance constrains edge density"
     },
     {
       "id": "erdos-1010",
       "relationship": "related",
-      "description": "Erdős #1010 on triangle supersaturation: once edge density exceeds the Turán threshold, how many copies of the forbidden"
+      "description": "Erdős #1010 on triangle supersaturation: once edge density exceeds the Turán threshold, how many copies of the forbidden subgraph must appear? The supersaturation phenomenon is the complement of Turán's question"
     },
     {
       "id": "erdos-1008",
       "relationship": "related",
-      "description": "Erdős #1008 on C₄-free subgraphs — another extremal problem asking for maximum edge density avoiding a specific forbidde"
+      "description": "Erdős #1008 on C₄-free subgraphs — another extremal problem asking for maximum edge density avoiding a specific forbidden subgraph, paralleling the K₄³ avoidance in Problem #500"
     },
     {
       "id": "szemeredi-regularity",
       "relationship": "related",
-      "description": "Szemerédi's regularity lemma is the key structural tool in extremal graph theory. While it applies to graphs (2-uniform)"
+      "description": "Szemerédi's regularity lemma is the key structural tool in extremal graph theory. While it applies to graphs (2-uniform), the hypergraph regularity lemma (Gowers, Rödl et al.) is a major tool for attacking hypergraph Turán problems like #500"
+    },
+    {
+      "id": "erdos-1",
+      "relationship": "related",
+      "description": "Erdős #1 (distinct subset sums) is another flagship Erdős problem in combinatorics. Both exemplify the characteristic Erdős style: simple to state, extraordinarily difficult to resolve"
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The binomial coefficient C(n,3) normalizes the Turán density π(K₄³) = lim ex₃(n)/C(n,3). The combinatorial identity C(n,3) = n(n-1)(n-2)/6 counts the total number of possible 3-edges"
     }
   ],
   "references": [
@@ -262,7 +280,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 108,
+    "lineCount": 107,
     "axiomCount": 13,
     "theoremCount": 0,
     "definitionCount": 4

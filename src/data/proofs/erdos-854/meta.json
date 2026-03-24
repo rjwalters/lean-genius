@@ -50,70 +50,80 @@
       "title": "Imports and Setup",
       "startLine": 17,
       "endLine": 22,
-      "summary": "Imports Nat.Basic, Nat.Prime.Basic, Finset.Basic, Finset.Card, and tactics."
+      "summary": "Imports Nat.Basic, Nat.Prime.Basic, Finset.Basic, Finset.Card, and tactics.",
+      "mathContext": "Imports Nat.Basic, Nat.Prime.Basic, Finset.Basic, Finset.Card, and tactics."
     },
     {
       "id": "prime-enumeration",
       "title": "Prime Enumeration Axioms",
       "startLine": 25,
       "endLine": 30,
-      "summary": "Axiomatizes the k-th prime with primality, strict monotonicity, and initial values."
+      "summary": "Axiomatizes the k-th prime with primality, strict monotonicity, and initial values.",
+      "mathContext": "Axiomatizes the k-th prime with primality, strict monotonicity, and initial values."
     },
     {
       "id": "primorial",
       "title": "Primorial Function",
       "startLine": 31,
       "endLine": 35,
-      "summary": "Defines the k-th primorial recursively as the product of the first k primes."
+      "summary": "Defines the k-th primorial recursively as the product of the first k primes.",
+      "mathContext": "Defines the k-th primorial recursively as the product of the first k primes."
     },
     {
       "id": "coprime-residues",
       "title": "Coprime Residues",
       "startLine": 36,
       "endLine": 45,
-      "summary": "Defines the coprime residue set computationally and axiomatizes the sorted enumeration."
+      "summary": "Defines the coprime residue set computationally and axiomatizes the sorted enumeration.",
+      "mathContext": "Defines the coprime residue set computationally and axiomatizes the sorted enumeration."
     },
     {
       "id": "gap-structure",
       "title": "Gap Set and Evenness",
       "startLine": 46,
       "endLine": 64,
-      "summary": "Axiomatizes the gap set, gap evenness for k ≥ 2, maximal gap with membership and maximality."
+      "summary": "Axiomatizes the gap set, gap evenness for k ≥ 2, maximal gap with membership and maximality.",
+      "mathContext": "Axiomatizes the gap set, gap evenness for k ≥ 2, maximal gap with membership and maximality."
     },
     {
       "id": "known-bounds",
       "title": "Jacobsthal Bound and Distinct Gap Count",
       "startLine": 65,
       "endLine": 70,
-      "summary": "Records the bound g(nₖ) ≤ 2pₖ and axiomatizes the distinct gap count."
+      "summary": "Records the bound g(nₖ) ≤ 2pₖ and axiomatizes the distinct gap count.",
+      "mathContext": "Records the bound g(nₖ) ≤ 2pₖ and axiomatizes the distinct gap count."
     },
     {
       "id": "first-missing-gap",
       "title": "First Missing Gap",
       "startLine": 71,
       "endLine": 77,
-      "summary": "Axiomatizes the smallest even integer absent from the gap set with evenness and non-membership."
+      "summary": "Axiomatizes the smallest even integer absent from the gap set with evenness and non-membership.",
+      "mathContext": "Axiomatizes the smallest even integer absent from the gap set with evenness and non-membership."
     },
     {
       "id": "counterexample",
       "title": "Lacampagne-Selfridge Counterexample",
       "startLine": 78,
       "endLine": 82,
-      "summary": "Records the computational disproof of Erdős's strong conjecture for n₆ = 30030."
+      "summary": "Records the computational disproof of Erdős's strong conjecture for n₆ = 30030.",
+      "mathContext": "Records the computational disproof of Erdős's strong conjecture for n₆ = 30030."
     },
     {
       "id": "conjecture-part1",
       "title": "Conjecture Part 1: Missing Gap Growth",
       "startLine": 83,
       "endLine": 89,
-      "summary": "States that the smallest missing gap grows without bound."
+      "summary": "States that the smallest missing gap grows without bound.",
+      "mathContext": "States that the smallest missing gap grows without bound."
     },
     {
       "id": "conjecture-part2",
       "title": "Conjecture Part 2: Proportional Distinct Gaps",
       "startLine": 90,
       "endLine": 95,
-      "summary": "States that the number of distinct gap values is proportional to the maximal gap."
+      "summary": "States that the number of distinct gap values is proportional to the maximal gap.",
+      "mathContext": "States that the number of distinct gap values is proportional to the maximal gap."
     }
   ],
   "conclusion": {

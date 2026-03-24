@@ -168,27 +168,32 @@
     {
       "id": "bezout-identity",
       "relationship": "extends",
-      "description": "The root formalization: Bézout's identity ($\\gcd(a,b) = ax + by$). The CRT builds on coprimality ($\\gcd = 1$), which is "
+      "description": "The root formalization: Bézout's identity ($\\gcd(a,b) = ax + by$). The CRT builds on coprimality ($\\gcd = 1$), which is the Bézout case yielding $1 = ax + by$."
     },
     {
       "id": "bezout-identity-oq-03",
       "relationship": "extends",
-      "description": "Direct grandparent: explores the 2-fold CRT and its ring-theoretic formulation. This entry generalizes to arbitrary $k$-"
+      "description": "Direct grandparent: explores the 2-fold CRT and its ring-theoretic formulation. This entry generalizes to arbitrary $k$-fold products."
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "related",
-      "description": "The Fundamental Theorem of Arithmetic (unique prime factorization) provides the canonical pairwise coprime decomposition"
+      "description": "The Fundamental Theorem of Arithmetic (unique prime factorization) provides the canonical pairwise coprime decomposition $n = p_1^{a_1} \\cdots p_k^{a_k}$, making the $k$-fold CRT applicable to any modulus."
     },
     {
       "id": "euler-totient",
       "relationship": "related",
-      "description": "The Euler totient function $\\varphi(n)$. This file proves the $k$-fold multiplicativity $\\varphi(\\prod n_i) = \\prod \\var"
+      "description": "The Euler totient function $\\varphi(n)$. This file proves the $k$-fold multiplicativity $\\varphi(\\prod n_i) = \\prod \\varphi(n_i)$ as a CRT corollary, extending Euler's classical result."
     },
     {
       "id": "primitive-roots",
       "relationship": "related",
-      "description": "Primitive roots modulo primes: $(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic. The CRT decomposes $(\\mathbb{Z}/n\\mathbb{Z})^* \\c"
+      "description": "Primitive roots modulo primes: $(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic. The CRT decomposes $(\\mathbb{Z}/n\\mathbb{Z})^* \\cong \\prod (\\mathbb{Z}/p_i^{a_i}\\mathbb{Z})^*$, reducing unit group structure to prime power components."
+    },
+    {
+      "id": "chinese-remainder-non-coprime",
+      "relationship": "related",
+      "description": "Generalizes the CRT to non-coprime moduli: when $\\gcd(m,n) > 1$, the system $x \\equiv a \\pmod{m}$, $x \\equiv b \\pmod{n}$ has a solution iff $a \\equiv b \\pmod{\\gcd(m,n)}$. The coprime k-fold CRT here is the clean isomorphism case; the non-coprime version shows what happens when the coprimality hypothesis is dropped."
     }
   ],
   "leanFile": {

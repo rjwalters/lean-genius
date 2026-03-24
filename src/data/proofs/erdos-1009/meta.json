@@ -173,27 +173,32 @@
     {
       "id": "ramseys-theorem",
       "relationship": "foundational",
-      "description": "Ramsey theory provides the backdrop for extremal graph problems: just as Ramsey numbers bound unavoidable monochromatic "
+      "description": "Ramsey theory provides the backdrop for extremal graph problems: just as Ramsey numbers bound unavoidable monochromatic cliques, Turán's theorem bounds unavoidable triangles. Györi's result extends this by quantifying how many edge-disjoint triangles are forced by edge density above the Turán threshold."
     },
     {
       "id": "erdos-1008",
       "relationship": "thematic",
-      "description": "Erdős #1008 studies C₄-free subgraphs with many edges in dense graphs; both problems ask how much of a forbidden-subgrap"
+      "description": "Erdős #1008 studies C₄-free subgraphs with many edges in dense graphs; both problems ask how much of a forbidden-subgraph-free structure can be extracted from a graph that just exceeds the corresponding Turán threshold, and both rely on Kővári–Sós–Turán-type arguments."
     },
     {
       "id": "erdos-1010",
       "relationship": "thematic",
-      "description": "Erdős #1010 is a neighboring problem in the same cluster of Turán-type and packing questions. Both #1009 and #1010 conce"
+      "description": "Erdős #1010 is a neighboring problem in the same cluster of Turán-type and packing questions. Both #1009 and #1010 concern the fine structure of graphs near the Turán threshold and were motivated by similar 1971–1975 Erdős problems on extremal graph theory."
     },
     {
       "id": "erdos-1012",
       "relationship": "thematic",
-      "description": "Erdős #1012 concerns another extremal problem on triangle-related structure in dense graphs. Together with #1009, it for"
+      "description": "Erdős #1012 concerns another extremal problem on triangle-related structure in dense graphs. Together with #1009, it forms part of Erdős's systematic study of what happens just beyond Turán's theorem and how triangles pack in graphs of given density."
     },
     {
       "id": "szemeredi-regularity",
       "relationship": "complementary",
-      "description": "Szemerédi's Regularity Lemma is the primary modern tool for analyzing triangle structure in dense graphs. Györi's proof "
+      "description": "Szemerédi's Regularity Lemma is the primary modern tool for analyzing triangle structure in dense graphs. Györi's proof of the edge-disjoint triangle packing bound relies on regularity-type ideas; the Regularity Lemma generalizes these to arbitrary dense subgraph patterns via the triangle removal lemma."
+    },
+    {
+      "id": "erdos-1",
+      "relationship": "thematic",
+      "description": "Erdős Problem #1 is a central problem in Erdős's extremal combinatorics program. Like #1009, it exemplifies Erdős's approach of asking precise quantitative questions about forced combinatorial structure in dense or large discrete systems."
     }
   ],
   "references": [
@@ -202,7 +207,7 @@
         "E. Györi"
       ],
       "title": "On the number of edge disjoint triangles in graphs of given size",
-      "year": 1988,
+      "year": "1988",
       "venue": "Combinatorics (Eger, 1987), Colloq. Math. Soc. János Bolyai, vol. 52, North-Holland",
       "note": "The main reference: Györi proves f(c) ≤ Cc² and provides parity-dependent refinements f(c)=0 for c<2 (odd n) and c<3/2 (even n)."
     },
@@ -211,7 +216,7 @@
         "P. Erdős"
       ],
       "title": "Some unsolved problems in graph theory and combinatorics",
-      "year": 1971,
+      "year": "1971",
       "venue": "Combinatorial Mathematics and its Applications, Academic Press",
       "note": "Original problem statement. Erdős posed the question and proved f(c)=0 for c<1/2."
     },
@@ -220,7 +225,7 @@
         "P. Turán"
       ],
       "title": "On an extremal problem in graph theory",
-      "year": 1941,
+      "year": "1941",
       "venue": "Matematikai és Fizikai Lapok, 48, 436–452",
       "note": "Proves the Turán theorem: ex(n,K₃)=⌊n²/4⌋. This is the baseline whose excess is studied in Erdős #1009."
     },
@@ -229,7 +234,7 @@
         "N. Sauer"
       ],
       "title": "On the density of complete bipartite subgraphs in graphs with bounded independent sets",
-      "year": 1975,
+      "year": "1975",
       "venue": "Proceedings of a conference on graph theory",
       "note": "Sauer's counterexample: K_{1,m,m} has 2m excess edges but only 2m−1 edge-disjoint triangles, proving f(2) ≥ 1 and that f(c)=0 fails for all c."
     },
@@ -238,7 +243,7 @@
         "W. T. Gowers"
       ],
       "title": "Hypergraph regularity and the multidimensional Szemerédi theorem",
-      "year": 2007,
+      "year": "2007",
       "venue": "Annals of Mathematics, 166(3), 897–946",
       "note": "Develops the hypergraph regularity lemma used in modern proofs of triangle removal and packing theorems; provides the analytic machinery generalizing Györi's combinatorial approach."
     }

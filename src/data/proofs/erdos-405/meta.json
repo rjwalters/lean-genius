@@ -89,70 +89,80 @@
       "title": "Basic Definitions",
       "startLine": 35,
       "endLine": 57,
-      "summary": "Defines the `Solution` structure bundling $(p, a, k)$ with primality and equation proofs, and the `IsSolution` predicate for the Diophantine equation $(p-1)! + a^{p-1} = p^k$."
+      "summary": "Defines the `Solution` structure bundling $(p, a, k)$ with primality and equation proofs, and the `IsSolution` predicate for the Diophantine equation $(p-1)! + a^{p-1} = p^k$.",
+      "mathContext": "Defines the `Solution` structure bundling $(p, a, k)$ with primality and equation proofs, and the `IsSolution` predicate for the Diophantine equation $(p-1)! + a^{p-1} = p^k$."
     },
     {
       "id": "three-solutions",
       "title": "The Three Known Solutions",
       "startLine": 58,
       "endLine": 94,
-      "summary": "Computational verification via `norm_num` of the three solutions: $(3,1,1)$ giving $2!+1=3$, $(3,5,3)$ giving $2!+25=27$, and $(5,1,2)$ giving $4!+1=25$."
+      "summary": "Computational verification via `norm_num` of the three solutions: $(3,1,1)$ giving $2!+1=3$, $(3,5,3)$ giving $2!+25=27$, and $(5,1,2)$ giving $4!+1=25$.",
+      "mathContext": "Computational verification via `norm_num` of the three solutions: $(3,1,1)$ giving $2!+1=3$, $(3,5,3)$ giving $2!+25=27$, and $(5,1,2)$ giving $4!+1=25$."
     },
     {
       "id": "finiteness-results",
       "title": "The Finiteness Results",
       "startLine": 95,
       "endLine": 114,
-      "summary": "Axiomatizes the Brindza–Erdős (1991) finiteness theorem (via Baker's theory) and the Yu–Liu (1996) complete characterization identifying all three solutions."
+      "summary": "Axiomatizes the Brindza–Erdős (1991) finiteness theorem (via Baker's theory) and the Yu–Liu (1996) complete characterization identifying all three solutions.",
+      "mathContext": "Axiomatizes the Brindza–Erdős (1991) finiteness theorem (via Baker's theory) and the Yu–Liu (1996) complete characterization identifying all three solutions."
     },
     {
       "id": "wilson-theorem",
       "title": "Wilson's Theorem Connection",
       "startLine": 115,
       "endLine": 133,
-      "summary": "Axiomatizes Wilson's theorem $((p-1)! \\equiv -1 \\pmod{p})$, Fermat's little theorem $(a^{p-1} \\equiv 1 \\pmod{p})$, and their combination showing $p \\mid (p-1)! + a^{p-1}$."
+      "summary": "Axiomatizes Wilson's theorem $((p-1)! \\equiv -1 \\pmod{p})$, Fermat's little theorem $(a^{p-1} \\equiv 1 \\pmod{p})$, and their combination showing $p \\mid (p-1)! + a^{p-1}$.",
+      "mathContext": "Axiomatizes Wilson's theorem $((p-1)! \\equiv -1 \\pmod{p})$, Fermat's little theorem $(a^{p-1} \\equiv 1 \\pmod{p})$, and their combination showing $p \\mid (p-1)! + a^{p-1}$."
     },
     {
       "id": "exceptional-case",
       "title": "The Exceptional Case $p \\mid a$",
       "startLine": 134,
       "endLine": 148,
-      "summary": "Analysis when $p \\mid a$: the power $a^{p-1}$ is divisible by $p^{p-1}$, severely constraining $k$ since $v_p((p-1)!) = 0$."
+      "summary": "Analysis when $p \\mid a$: the power $a^{p-1}$ is divisible by $p^{p-1}$, severely constraining $k$ since $v_p((p-1)!) = 0$.",
+      "mathContext": "Analysis when $p \\mid a$: the power $a^{p-1}$ is divisible by $p^{p-1}$, severely constraining $k$ since $v_p((p-1)!) = 0$."
     },
     {
       "id": "padic-analysis",
       "title": "$p$-adic Analysis",
       "startLine": 149,
       "endLine": 167,
-      "summary": "Defines factorial $p$-adic valuation via Legendre's formula $v_p(n!) = \\sum \\lfloor n/p^i \\rfloor$ and proves the pivotal constraint $v_p((p-1)!) = 0$."
+      "summary": "Defines factorial $p$-adic valuation via Legendre's formula $v_p(n!) = \\sum \\lfloor n/p^i \\rfloor$ and proves the pivotal constraint $v_p((p-1)!) = 0$.",
+      "mathContext": "Defines factorial $p$-adic valuation via Legendre's formula $v_p(n!) = \\sum \\lfloor n/p^i \\rfloor$ and proves the pivotal constraint $v_p((p-1)!) = 0$."
     },
     {
       "id": "only-these-solutions",
       "title": "Why Only These Solutions",
       "startLine": 168,
       "endLine": 203,
-      "summary": "Growth-rate elimination of $p \\geq 7$, then explicit case analysis for $p = 3$ (two solutions: $a = 1, 5$) and $p = 5$ (one solution: $a = 1$) using Yu–Liu."
+      "summary": "Growth-rate elimination of $p \\geq 7$, then explicit case analysis for $p = 3$ (two solutions: $a = 1, 5$) and $p = 5$ (one solution: $a = 1$) using Yu–Liu.",
+      "mathContext": "Growth-rate elimination of $p \\geq 7$, then explicit case analysis for $p = 3$ (two solutions: $a = 1, 5$) and $p = 5$ (one solution: $a = 1$) using Yu–Liu."
     },
     {
       "id": "perfect-power",
       "title": "General Perfect Power Question",
       "startLine": 204,
       "endLine": 224,
-      "summary": "Explores the Erdős–Graham observation that $(p-1)! + a^{p-1}$ is rarely a perfect power, with the example $6! + 2^6 = 28^2$ and a generalized conjecture."
+      "summary": "Explores the Erdős–Graham observation that $(p-1)! + a^{p-1}$ is rarely a perfect power, with the example $6! + 2^6 = 28^2$ and a generalized conjecture.",
+      "mathContext": "Explores the Erdős–Graham observation that $(p-1)! + a^{p-1}$ is rarely a perfect power, with the example $6! + 2^6 = 28^2$ and a generalized conjecture."
     },
     {
       "id": "main-statement",
       "title": "Main Problem Statement",
       "startLine": 225,
       "endLine": 239,
-      "summary": "Complete formalization combining finiteness (Brindza–Erdős) and full characterization (Yu–Liu) into the main theorem `erdos_405_statement`."
+      "summary": "Complete formalization combining finiteness (Brindza–Erdős) and full characterization (Yu–Liu) into the main theorem `erdos_405_statement`.",
+      "mathContext": "Complete formalization combining finiteness (Brindza–Erdős) and full characterization (Yu–Liu) into the main theorem `erdos_405_statement`."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 240,
       "endLine": 269,
-      "summary": "Summary theorem combining existence (three verified solutions) with uniqueness (Yu–Liu), plus the canonical `erdos_405` term-mode proof."
+      "summary": "Summary theorem combining existence (three verified solutions) with uniqueness (Yu–Liu), plus the canonical `erdos_405` term-mode proof.",
+      "mathContext": "Summary theorem combining existence (three verified solutions) with uniqueness (Yu–Liu), plus the canonical `erdos_405` term-mode proof."
     }
   ],
   "conclusion": {

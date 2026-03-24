@@ -198,11 +198,13 @@
   "relatedProofs": [
     {
       "id": "dirichlets-theorem",
-      "relationship": "Base formalization proving L(1,χ) ≠ 0; this OQ-01 studies the quantitative question of how small L(1,χ) can be"
+      "relationship": "Base formalization proving L(1,χ) ≠ 0; this OQ-01 studies the quantitative question of how small L(1,χ) can be",
+      "description": "Extends the base Dirichlet theorem (primes in arithmetic progressions) to the quantitative Siegel zero question: not just that L(1,χ) ≠ 0, but how small it can be"
     },
     {
       "id": "infinitude-primes",
-      "relationship": "Fundamental predecessor: infinitely many primes in ℕ, extended by Dirichlet to arithmetic progressions"
+      "relationship": "Fundamental predecessor: infinitely many primes in ℕ, extended by Dirichlet to arithmetic progressions",
+      "description": "Infinitude of primes is the qualitative predecessor; Dirichlet's theorem is the arithmetic progression extension; this entry addresses quantitative lower bounds on L(1,χ)"
     },
     "dirichlets-theorem",
     "infinitude-primes",

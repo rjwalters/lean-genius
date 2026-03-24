@@ -214,27 +214,62 @@
     {
       "id": "fundamental-theorem-algebra",
       "relationship": "extends",
-      "description": "The Factor Theorem is the key induction step for FTA: each root produces a linear factor, and iterating over all roots ("
+      "description": "The Factor Theorem is the key induction step for FTA: each root produces a linear factor, and iterating over all roots (guaranteed by FTA) gives complete factorization $p = c \\prod_i (x - \\alpha_i)$ over $\\mathbb{C}$"
     },
     {
       "id": "abel-ruffini",
       "relationship": "foundational",
-      "description": "The Factor Theorem underlies Galois theory: splitting fields are built by repeatedly adjoining roots and factoring out l"
+      "description": "The Factor Theorem underlies Galois theory: splitting fields are built by repeatedly adjoining roots and factoring out linear terms. Each such step uses the Factor Theorem to reduce the polynomial's degree, creating the tower of field extensions whose automorphism group is the Galois group"
     },
     {
       "id": "vietas-formulas",
       "relationship": "complementary",
-      "description": "Vieta's formulas express coefficients as elementary symmetric functions of roots — a consequence of the Factor Theorem's"
+      "description": "Vieta's formulas express coefficients as elementary symmetric functions of roots — a consequence of the Factor Theorem's complete factorization. If $p = \\prod (x - \\alpha_i)$, expanding gives Vieta's relations directly"
     },
     {
       "id": "bezout-identity",
       "relationship": "related",
-      "description": "Bézout's identity for polynomial GCD ($\\gcd(p,q) = ap + bq$) relies on the Euclidean algorithm for polynomials, which us"
+      "description": "Bézout's identity for polynomial GCD ($\\gcd(p,q) = ap + bq$) relies on the Euclidean algorithm for polynomials, which uses repeated polynomial division — the same division algorithm that underpins the Remainder Theorem"
     },
     {
       "id": "gcd-algorithm",
       "relationship": "related",
-      "description": "The Euclidean algorithm for polynomial GCD computes $\\gcd(p,q)$ by repeated division with remainder — each step applies "
+      "description": "The Euclidean algorithm for polynomial GCD computes $\\gcd(p,q)$ by repeated division with remainder — each step applies the division algorithm formalized in the Remainder Theorem. Common roots of $p$ and $q$ correspond exactly to the roots of $\\gcd(p,q)$"
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial theorem expands $(x-a)^n$ and provides the standard form for polynomial powers. Combined with the Factor Theorem, it connects root multiplicity to polynomial derivatives: $(x-a)^k \\mid p$ iff $p(a) = p'(a) = \\cdots = p^{(k-1)}(a) = 0$"
+    },
+    {
+      "id": "solution-of-cubic",
+      "relationship": "extends",
+      "description": "Cardano's cubic formula finds one root; the Factor Theorem then reduces the cubic to a quadratic by dividing out $(x - \\alpha_1)$. This deflation technique — find a root, factor it out, repeat — is the practical application of the Factor Theorem to equation-solving"
+    },
+    {
+      "id": "general-quartic",
+      "relationship": "extends",
+      "description": "Ferrari's quartic solution, like Cardano's cubic, uses root-finding followed by factoring out linear terms via the Factor Theorem. The quartic resolvent cubic is itself solved by Cardano's method, with each step using the Factor Theorem for degree reduction"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "analogous",
+      "description": "Unique factorization of polynomials into irreducible factors over a field ($F[x]$ is a UFD) parallels unique prime factorization of integers. The Factor Theorem provides the base case: linear factors $(x - a)$ are the polynomial analogue of prime numbers"
+    },
+    {
+      "id": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "The Chinese Remainder Theorem for polynomials says $R[x]/(f_1 \\cdots f_k) \\cong \\prod R[x]/(f_i)$ when the $f_i$ are pairwise coprime. When $f_i = (x - a_i)$, this reduces to polynomial interpolation — reconstructing $p$ from its values $p(a_i)$ — which is the Remainder Theorem applied at multiple points"
+    },
+    {
+      "id": "mathematical-induction",
+      "relationship": "related",
+      "description": "The proof that a degree-$n$ polynomial has at most $n$ roots uses strong induction on degree, with the Factor Theorem as the induction step: if $p(a) = 0$, write $p = (x-a) \\cdot q$ where $\\deg(q) = n-1$, then apply the inductive hypothesis to $q$"
+    },
+    {
+      "id": "lagrange-theorem",
+      "relationship": "related",
+      "description": "Lagrange's theorem on subgroup orders and the Factor Theorem both concern divisibility structures. More directly, Lagrange interpolation reconstructs a polynomial from its values at $n+1$ points — the existence and uniqueness of the interpolant follows from the Factor Theorem's degree-counting argument"
     }
   ],
   "references": [

@@ -246,17 +246,42 @@
     {
       "id": "fourier-series",
       "relationship": "supports",
-      "description": "Scherk's 1955 lower bound and White's 2022 breakthrough both use Fourier analysis on the partition indicator's autocorrelation"
+      "description": "Scherk's 1955 lower bound and White's 2022 breakthrough both use Fourier analysis. The overlap function equals the autocorrelation of the partition indicator, and Parseval's identity provides the key constraint in the convex optimization formulation"
     },
     {
       "id": "erdos-30",
       "relationship": "complement",
-      "description": "Erdős #30 on Sidon sets represents the opposite extreme — maximizing distinctness of differences vs. minimizing overlap"
+      "description": "Erdős #30 on Sidon sets (B₂ sequences with unique pairwise sums) represents the opposite extreme — maximizing distinctness of differences"
     },
     {
       "id": "roth-theorem-k3",
       "relationship": "related",
-      "description": "Both use Fourier-analytic methods on finite sets of integers; Roth counts 3-term APs, the overlap problem reduces to convex optimization over Fourier coefficients"
+      "description": "Both use Fourier-analytic methods on finite sets of integers. Roth's theorem counts 3-term APs via the Fourier transform; the minimum overlap problem reduces to convex optimization over Fourier coefficients. The same machinery (Parseval's identity, energy bounds) drives both results"
+    },
+    {
+      "id": "erdos-1",
+      "relationship": "related",
+      "description": "Both are extremal problems on subsets of integers: #1 asks for maximum-size sets with distinct subset sums, #36 asks for minimum-overlap equal partitions. Both probe the combinatorial structure of difference and sum sets in $\\{1, \\ldots, N\\}$"
+    },
+    {
+      "id": "erdos-35",
+      "relationship": "related",
+      "description": "Both concern additive structure in integer subsets: #35 studies Schnirelmann density and when sets form additive bases (sumsets cover all integers), while #36 studies the unavoidable overlap in equal partitions. Both use density and counting arguments on $\\{1,\\ldots,N\\}$"
+    },
+    {
+      "id": "erdos-37",
+      "relationship": "related",
+      "description": "Neighboring Erdős problem on essential components and lacunary sets in additive number theory. Both #36 and #37 probe the structural constraints that additive combinatorics imposes on subsets of integers"
+    },
+    {
+      "id": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Szemerédi's theorem on arithmetic progressions in dense sets and the regularity lemma underpin potential approaches to the minimum overlap problem. The open question of whether regularity methods can provide an alternative lower bound connects directly to this machinery — both problems concern the unavoidable additive structure in dense subsets of integers"
+    },
+    {
+      "id": "prob-method-expectation",
+      "relationship": "related",
+      "description": "The first moment method provides the baseline lower bound on the minimum overlap: a random equal partition of $\\{1,\\ldots,2N\\}$ has expected overlap $\\sim N/2$ at each shift, and the maximum over $O(N)$ shifts is at least the average. Carefully optimizing the partition reduces the overlap from $N/2$ to $\\sim 0.380 N$, but the probabilistic baseline shows that random partitions already achieve overlap $\\sim N/2$ — the problem asks how much better structured partitions can do"
     }
   ],
   "references": [

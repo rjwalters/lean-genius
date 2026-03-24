@@ -207,27 +207,47 @@
     {
       "id": "continuum-hypothesis",
       "relationship": "Hilbert Problems",
-      "description": "Both are Hilbert problems (12th and 1st respectively). Hilbert's 12th connects number theory to analysis; Hilbert's 1st "
+      "description": "Both are Hilbert problems (12th and 1st respectively). Hilbert's 12th connects number theory to analysis; Hilbert's 1st connects set theory to cardinal arithmetic."
     },
     {
       "id": "hilbert-9-reciprocity",
       "relationship": "Reciprocity Laws",
-      "description": "Hilbert's 9th problem asks for the most general reciprocity law in number fields. Artin reciprocity, which underlies Kro"
+      "description": "Hilbert's 9th problem asks for the most general reciprocity law in number fields. Artin reciprocity, which underlies Kronecker's Jugendtraum via class field theory, is the answer to Hilbert 9 for abelian extensions."
     },
     {
       "id": "hilbert-11",
       "relationship": "Algebraic Number Theory",
-      "description": "Hilbert's 11th problem concerns quadratic forms over number fields. Both problems require deep understanding of number f"
+      "description": "Hilbert's 11th problem concerns quadratic forms over number fields. Both problems require deep understanding of number field arithmetic and share the class field theory framework."
     },
     {
       "id": "quadratic-reciprocity",
       "relationship": "Reciprocity Laws",
-      "description": "Quadratic reciprocity is the simplest reciprocity law and a precursor to Artin reciprocity. Kronecker-Weber generalizes "
+      "description": "Quadratic reciprocity is the simplest reciprocity law and a precursor to Artin reciprocity. Kronecker-Weber generalizes it: quadratic extensions of ℚ are cyclotomic, which encodes the splitting behavior that quadratic reciprocity describes."
     },
     {
       "id": "euler-totient",
       "relationship": "Cyclotomic Fields",
-      "description": "Euler's totient function φ(n) gives the degree [ℚ(ζₙ):ℚ] = φ(n) and the order of the Galois group (ℤ/nℤ)×, both proved i"
+      "description": "Euler's totient function φ(n) gives the degree [ℚ(ζₙ):ℚ] = φ(n) and the order of the Galois group (ℤ/nℤ)×, both proved in the formalization."
+    },
+    {
+      "id": "inverse-galois",
+      "relationship": "Galois Theory",
+      "description": "The Inverse Galois Problem asks which groups appear as Galois groups over ℚ. Kronecker-Weber completely answers this for abelian groups: every finite abelian group is Gal(L/ℚ) for some cyclotomic subfield L."
+    },
+    {
+      "id": "fermats-last-theorem",
+      "relationship": "Cyclotomic Fields",
+      "description": "Kummer's approach to Fermat's Last Theorem used cyclotomic fields ℚ(ζₚ) and their arithmetic, the same fields that are central to Kronecker-Weber. Both problems drove the development of algebraic number theory."
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "Galois Theory",
+      "description": "Abel-Ruffini uses the non-solvability of S₅ to show general quintics are not solvable by radicals. Kronecker-Weber uses the abelianness (extreme solvability) of cyclotomic Galois groups to classify abelian extensions. Both are landmark applications of Galois theory."
+    },
+    {
+      "id": "primitive-roots",
+      "relationship": "Cyclotomic Fields",
+      "description": "Primitive roots modulo primes are closely related to generators of cyclic Galois groups Gal(ℚ(ζₚ)/ℚ) ≅ (ℤ/pℤ)×, which is cyclic of order p-1. The existence of primitive roots is equivalent to cyclicity of this Galois group."
     }
   ],
   "references": [

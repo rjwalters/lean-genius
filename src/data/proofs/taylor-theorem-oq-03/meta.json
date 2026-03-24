@@ -87,56 +87,64 @@
       "title": "Imports and Module Documentation",
       "startLine": 1,
       "endLine": 37,
-      "summary": "Imports from Mathlib (Taylor calculus, exp derivatives, normed limits, infinite sums, exponential bounds) and module documentation explaining the main results and approach."
+      "summary": "Imports from Mathlib (Taylor calculus, exp derivatives, normed limits, infinite sums, exponential bounds) and module documentation explaining the main results and approach.",
+      "mathContext": "Imports from Mathlib (Taylor calculus, exp derivatives, normed limits, infinite sums, exponential bounds) and module documentation explaining the main results and approach."
     },
     {
       "id": "iterated-derivatives",
       "title": "Section I: Iterated Derivatives of exp",
       "startLine": 38,
       "endLine": 56,
-      "summary": "Proves iteratedDeriv n exp = exp by induction: the base case is iteratedDeriv_zero, and the inductive step uses Real.deriv_exp. The pointwise version iteratedDeriv_exp_apply is an immediate corollary."
+      "summary": "Proves iteratedDeriv n exp = exp by induction: the base case is iteratedDeriv_zero, and the inductive step uses Real.deriv_exp. The pointwise version iteratedDeriv_exp_apply is an immediate corollary.",
+      "mathContext": "Proves iteratedDeriv n exp = exp by induction: the base case is iteratedDeriv_zero, and the inductive step uses Real.deriv_exp. The pointwise version iteratedDeriv_exp_apply is an immediate corollary."
     },
     {
       "id": "partial-sums",
       "title": "Section II: Taylor Partial Sums",
       "startLine": 57,
       "endLine": 81,
-      "summary": "Defines expPartialSum n x = sum_{k=0}^{n} x^k/k! and proves basic properties: S_0(x) = 1, the successor recurrence, and S_n(0) = 1."
+      "summary": "Defines expPartialSum n x = sum_{k=0}^{n} x^k/k! and proves basic properties: S_0(x) = 1, the successor recurrence, and S_n(0) = 1.",
+      "mathContext": "Defines expPartialSum n x = sum_{k=0}^{n} x^k/k! and proves basic properties: S_0(x) = 1, the successor recurrence, and S_n(0) = 1."
     },
     {
       "id": "factorial-dominates",
       "title": "Section III: Factorial Dominates Powers",
       "startLine": 82,
       "endLine": 95,
-      "summary": "Proves summability of x^n/n! (from Mathlib's summable_pow_div_factorial) and the consequence x^n/n! -> 0, which is the engine driving Taylor convergence."
+      "summary": "Proves summability of x^n/n! (from Mathlib's summable_pow_div_factorial) and the consequence x^n/n! -> 0, which is the engine driving Taylor convergence.",
+      "mathContext": "Proves summability of x^n/n! (from Mathlib's summable_pow_div_factorial) and the consequence x^n/n! -> 0, which is the engine driving Taylor convergence."
     },
     {
       "id": "remainder-bounds",
       "title": "Section IV: Remainder Bounds",
       "startLine": 96,
       "endLine": 157,
-      "summary": "States the two axioms (remainder bounds for x > 0 and x < 0), proves the unified bound |exp(x) - S_n(x)| <= exp(|x|) * |x|^{n+1}/n! by case analysis, and shows the remainder tends to zero via squeeze theorem."
+      "summary": "States the two axioms (remainder bounds for x > 0 and x < 0), proves the unified bound |exp(x) - S_n(x)| <= exp(|x|) * |x|^{n+1}/n! by case analysis, and shows the remainder tends to zero via squeeze theorem.",
+      "mathContext": "States the two axioms (remainder bounds for x > 0 and x < 0), proves the unified bound |exp(x) - S_n(x)| <= exp(|x|) * |x|^{n+1}/n! by case analysis, and shows the remainder tends to zero via squeeze "
     },
     {
       "id": "convergence",
       "title": "Section V: Convergence of Taylor Series",
       "startLine": 158,
       "endLine": 199,
-      "summary": "Proves partial sums converge to exp(x) and derives the tsum identity exp(x) = sum' x^n/n! by uniqueness of limits. The index shift from range(n+1) to range(n) is handled by subtracting the n-th term."
+      "summary": "Proves partial sums converge to exp(x) and derives the tsum identity exp(x) = sum' x^n/n! by uniqueness of limits. The index shift from range(n+1) to range(n) is handled by subtracting the n-th term.",
+      "mathContext": "Proves partial sums converge to exp(x) and derives the tsum identity exp(x) = sum' x^n/n! by uniqueness of limits. The index shift from range(n+1) to range(n) is handled by subtracting the n-th term."
     },
     {
       "id": "euler-computation",
       "title": "Section VI: Computation of Euler's Number",
       "startLine": 200,
       "endLine": 239,
-      "summary": "Defines ePartialSum, proves 2 < e < 3, establishes the error bound |e - S_n(1)| <= 3/n!, and verifies that 10 terms give precision < 10^{-6}."
+      "summary": "Defines ePartialSum, proves 2 < e < 3, establishes the error bound |e - S_n(1)| <= 3/n!, and verifies that 10 terms give precision < 10^{-6}.",
+      "mathContext": "Defines ePartialSum, proves 2 < e < 3, establishes the error bound |e - S_n(1)| <= 3/n!, and verifies that 10 terms give precision < 10^{-6}."
     },
     {
       "id": "cauchy-remainder",
       "title": "Section VII: The Cauchy Remainder Form",
       "startLine": 240,
       "endLine": 268,
-      "summary": "Applies the Cauchy remainder theorem to exp: for x > 0, there exists xi in (0,x) with remainder = exp(xi)(x-xi)^n/n! * x. Proves the bound |remainder| <= exp(x) * x^{n+1}/n! using monotonicity of exp and (x-xi)^n <= x^n."
+      "summary": "Applies the Cauchy remainder theorem to exp: for x > 0, there exists xi in (0,x) with remainder = exp(xi)(x-xi)^n/n! * x. Proves the bound |remainder| <= exp(x) * x^{n+1}/n! using monotonicity of exp and (x-xi)^n <= x^n.",
+      "mathContext": "Applies the Cauchy remainder theorem to exp: for x > 0, there exists xi in (0,x) with remainder = exp(xi)(x-xi)^n/n! * x. Proves the bound |remainder| <= exp(x) * x^{n+1}/n! using monotonicity of exp "
     }
   ],
   "conclusion": {
@@ -180,27 +188,27 @@
     {
       "id": "taylor-theorem",
       "relationship": "extends",
-      "description": "Parent entry formalizing Taylor's theorem (Wiedijk #35) with Lagrange and Cauchy remainder forms. This entry answers the"
+      "description": "Parent entry formalizing Taylor's theorem (Wiedijk #35) with Lagrange and Cauchy remainder forms. This entry answers the third open question: using the Cauchy remainder to prove convergence of exp's Taylor series."
     },
     {
       "id": "euler-identity",
       "relationship": "related",
-      "description": "Euler's identity e^{i*pi} + 1 = 0 relies on the Taylor series of exp extended to complex arguments. This entry establish"
+      "description": "Euler's identity e^{i*pi} + 1 = 0 relies on the Taylor series of exp extended to complex arguments. This entry establishes the real-variable convergence that underlies the complex extension."
     },
     {
       "id": "e-transcendental",
       "relationship": "related",
-      "description": "Hermite's proof that e is transcendental uses the rapid convergence of sum 1/n!, which this entry bounds: |e - S_n(1)| <"
+      "description": "Hermite's proof that e is transcendental uses the rapid convergence of sum 1/n!, which this entry bounds: |e - S_n(1)| <= 3/n!."
     },
     {
       "id": "fundamental-theorem-calculus",
       "relationship": "foundational",
-      "description": "The integral form of the Taylor remainder R_n = (1/n!) integral_a^x (x-t)^n f^{(n+1)}(t) dt is derived from the FTC by r"
+      "description": "The integral form of the Taylor remainder R_n = (1/n!) integral_a^x (x-t)^n f^{(n+1)}(t) dt is derived from the FTC by repeated integration by parts."
     },
     {
       "id": "basel-problem",
       "relationship": "related",
-      "description": "The Basel problem sum 1/n^2 = pi^2/6 can be proved by comparing Taylor coefficients of sin(x)/x with its Weierstrass pro"
+      "description": "The Basel problem sum 1/n^2 = pi^2/6 can be proved by comparing Taylor coefficients of sin(x)/x with its Weierstrass product, connecting Taylor series convergence to special values of the Riemann zeta function."
     }
   ],
   "leanFile": {

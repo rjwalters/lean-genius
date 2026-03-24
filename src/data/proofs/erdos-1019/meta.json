@@ -50,84 +50,96 @@
       "title": "Graph Basics",
       "summary": "Defines `edgeCount G` via `G.edgeFinset.card` and `vertexCount` via `Fintype.card V`. These parametrize the function $f(n,k)$ measuring the edge threshold.",
       "startLine": 22,
-      "endLine": 36
+      "endLine": 36,
+      "mathContext": "Defines `edgeCount G` via `G.edgeFinset.card` and `vertexCount` via `Fintype.card V`. These parametrize the function $f(n,k)$ measuring the edge threshold."
     },
     {
       "id": "planar-graphs",
       "title": "Planar Graphs",
       "summary": "Defines `isPlanar G` (as `sorry`) and axiomatizes Euler's bound $|E| \\le 3|V| - 6$ for planar graphs with $|V| \\ge 3$.",
       "startLine": 37,
-      "endLine": 50
+      "endLine": 50,
+      "mathContext": "Defines `isPlanar G` (as `sorry`) and axiomatizes Euler's bound $|E| \\le 3|V| - 6$ for planar graphs with $|V| \\ge 3$."
     },
     {
       "id": "saturated-planar",
       "title": "Saturated Planar Graphs",
       "summary": "Defines `isSaturatedPlanar G` requiring planarity, $|V| \\ge 3$, and $|E| = 3|V| - 6$. Proves basic implications: saturated implies planar, saturated achieves the Euler bound.",
       "startLine": 51,
-      "endLine": 72
+      "endLine": 72,
+      "mathContext": "Defines `isSaturatedPlanar G` requiring planarity, $|V| \\ge 3$, and $|E| = 3|V| - 6$. Proves basic implications: saturated implies planar, saturated achieves the Euler bound."
     },
     {
       "id": "threshold",
       "title": "Edge Density Threshold",
       "summary": "Defines `turanEdges n` $= \\lfloor n^2/4 \\rfloor$, `additionalThreshold n` $= \\lfloor(n+1)/2\\rfloor$, `saturatedPlanarThreshold`, and `exceedsThreshold`.",
       "startLine": 73,
-      "endLine": 91
+      "endLine": 91,
+      "mathContext": "Defines `turanEdges n` $= \\lfloor n^2/4 \\rfloor$, `additionalThreshold n` $= \\lfloor(n+1)/2\\rfloor$, `saturatedPlanarThreshold`, and `exceedsThreshold`."
     },
     {
       "id": "triangles",
       "title": "Triangles and Turán's Theorem",
       "summary": "Defines $K_3$, axiomatizes it as saturated planar, and axiomatizes Turán's theorem: $|E| > \\lfloor n^2/4 \\rfloor \\Rightarrow K_3 \\subseteq G$.",
       "startLine": 92,
-      "endLine": 114
+      "endLine": 114,
+      "mathContext": "Defines $K_3$, axiomatizes it as saturated planar, and axiomatizes Turán's theorem: $|E| > \\lfloor n^2/4 \\rfloor \\Rightarrow K_3 \\subseteq G$."
     },
     {
       "id": "subgraphs",
       "title": "Subgraph Containment",
       "summary": "Defines `inducedSubgraph G S`, `hasSaturatedPlanarSubgraph G k`, and `hasLargeSaturatedPlanarSubgraph G` ($k > 3$).",
       "startLine": 115,
-      "endLine": 135
+      "endLine": 135,
+      "mathContext": "Defines `inducedSubgraph G S`, `hasSaturatedPlanarSubgraph G k`, and `hasLargeSaturatedPlanarSubgraph G` ($k > 3$)."
     },
     {
       "id": "k4",
       "title": "Complete Graph $K_4$",
       "summary": "Axiomatizes $K_4$ as saturated planar (6 $= 3 \\cdot 4 - 6$ edges). Defines `containsK4` and proves it implies a large saturated planar subgraph.",
       "startLine": 136,
-      "endLine": 153
+      "endLine": 153,
+      "mathContext": "Axiomatizes $K_4$ as saturated planar (6 $= 3 \\cdot 4 - 6$ edges). Defines `containsK4` and proves it implies a large saturated planar subgraph."
     },
     {
       "id": "cycle-plus",
       "title": "Cycle Plus Independent Vertices: $C_\\ell + 2K_1$",
       "summary": "Defines `containsCyclePlus2K1 G l` ($\\ell \\ge 3$ with 2 apex vertices). Axiomatizes it as saturated planar ($3\\ell = 3(\\ell+2) - 6$ edges). Proves it implies a large saturated planar subgraph.",
       "startLine": 154,
-      "endLine": 179
+      "endLine": 179,
+      "mathContext": "Defines `containsCyclePlus2K1 G l` ($\\ell \\ge 3$ with 2 apex vertices). Axiomatizes it as saturated planar ($3\\ell = 3(\\ell+2) - 6$ edges). Proves it implies a large saturated planar subgraph."
     },
     {
       "id": "construction",
       "title": "Erdős's Construction",
       "summary": "Axiomatizes existence of graphs with $\\lfloor n^2/4 \\rfloor + \\lfloor(n-1)/2\\rfloor$ edges avoiding large saturated planar subgraphs.",
       "startLine": 180,
-      "endLine": 198
+      "endLine": 198,
+      "mathContext": "Axiomatizes existence of graphs with $\\lfloor n^2/4 \\rfloor + \\lfloor(n-1)/2\\rfloor$ edges avoiding large saturated planar subgraphs."
     },
     {
       "id": "simonovits",
       "title": "Simonovits's Theorem",
       "summary": "Axiomatizes the dichotomy: exceeding the threshold forces $K_4$ or $C_\\ell + 2K_1$. Derives `erdos_1019_solved` resolving the problem.",
       "startLine": 209,
-      "endLine": 229
+      "endLine": 229,
+      "mathContext": "Axiomatizes the dichotomy: exceeding the threshold forces $K_4$ or $C_\\ell + 2K_1$. Derives `erdos_1019_solved` resolving the problem."
     },
     {
       "id": "size-bound",
       "title": "Erdős Size Bound and Turán Connection",
       "summary": "Quantitative bound: $\\lfloor n^2/4 \\rfloor + k$ edges force saturated planar on $\\gg k/n$ vertices. Connection to complete bipartite graphs via Kuratowski.",
       "startLine": 230,
-      "endLine": 267
+      "endLine": 267,
+      "mathContext": "Quantitative bound: $\\lfloor n^2/4 \\rfloor + k$ edges force saturated planar on $\\gg k/n$ vertices. Connection to complete bipartite graphs via Kuratowski."
     },
     {
       "id": "threshold-gap",
       "title": "Threshold Optimality",
       "summary": "Proves the threshold gap is exactly 1 edge via `omega`. States the combined optimality theorem: above the threshold, structure exists; below, it can be avoided.",
       "startLine": 268,
-      "endLine": 316
+      "endLine": 316,
+      "mathContext": "Proves the threshold gap is exactly 1 edge via `omega`. States the combined optimality theorem: above the threshold, structure exists; below, it can be avoided."
     }
   ],
   "conclusion": {
@@ -173,12 +185,39 @@
   ],
   "relatedProofs": [
     {
-      "target": "ramseys-theorem",
-      "relation": "Ramsey's Theorem underpins the extremal framework: K₄ forced by Simonovits is a Ramsey-type guaranteed complete subgraph. The connection between Turán-type theorems and Ramsey theory is foundational to Problem #1019's structure."
+      "id": "erdos-1010",
+      "relationship": "related",
+      "description": ""
     },
     {
-      "target": "erdos-szekeres",
-      "relation": "Erdős–Szekeres Theorem is an archetype for threshold arguments in combinatorics. The 1-edge tight threshold in #1019 echoes the precision of the Erdős-Szekeres bound."
+      "id": "erdos-1011",
+      "relationship": "related",
+      "description": ""
+    },
+    {
+      "id": "erdos-1012",
+      "relationship": "related",
+      "description": ""
+    },
+    {
+      "id": "erdos-1014",
+      "relationship": "related",
+      "description": ""
+    },
+    {
+      "id": "erdos-1018",
+      "relationship": "related",
+      "description": ""
+    },
+    {
+      "id": "erdos-1020",
+      "relationship": "related",
+      "description": ""
+    },
+    {
+      "id": "four-color-theorem",
+      "relationship": "related",
+      "description": ""
     }
   ],
   "references": [
@@ -188,7 +227,7 @@
       ],
       "title": "A method for solving extremal problems in graph theory, stability problems",
       "venue": "Theory of Graphs (Proc. Colloq., Tihany, 1966)",
-      "year": 1968,
+      "year": "1968",
       "pages": "279–319",
       "publisher": "Academic Press",
       "note": "Contains Simonovits's stability theorem and the PhD-thesis result resolving Problem #1019."
@@ -199,7 +238,7 @@
       ],
       "title": "On an extremal problem in graph theory",
       "venue": "Matematikai és Fizikai Lapok",
-      "year": 1941,
+      "year": "1941",
       "volume": 48,
       "pages": "436–452",
       "note": "Original Turán theorem establishing ex(n, K_r) and the Turán graph T(n,r-1); forms the ⌊n²/4⌋ baseline threshold in Problem #1019."
@@ -211,7 +250,7 @@
       ],
       "title": "A limit theorem in graph theory",
       "venue": "Studia Scientiarum Mathematicarum Hungarica",
-      "year": 1966,
+      "year": "1966",
       "volume": 1,
       "pages": "51–57",
       "note": "Erdős-Simonovits stability theorem: near-extremal graphs are structurally close to the Turán graph. Direct precursor to the supersaturation regime studied in Problem #1019."
@@ -222,7 +261,7 @@
       ],
       "title": "Graph Theory",
       "venue": "Graduate Texts in Mathematics, vol. 173",
-      "year": 2017,
+      "year": "2017",
       "edition": "5th",
       "publisher": "Springer",
       "note": "Chapters 4 and 7 cover planar graphs (Euler's formula, Kuratowski's theorem), saturated planar graphs, and extremal graph theory; provides background for the planarity framework in the formalization."
@@ -233,7 +272,7 @@
       ],
       "title": "Extremal Graph Theory",
       "venue": "London Mathematical Society Monographs, vol. 11",
-      "year": 1978,
+      "year": "1978",
       "publisher": "Academic Press",
       "note": "Comprehensive treatment of Turán-type and supersaturation problems; includes the Erdős-Simonovits stability results and the supersaturation regime directly relevant to Problem #1019."
     },
@@ -244,7 +283,7 @@
       ],
       "title": "Supersaturated graphs and hypergraphs",
       "venue": "Combinatorica",
-      "year": 1983,
+      "year": "1983",
       "volume": 3,
       "pages": "181–192",
       "note": "General supersaturation framework: if ex(n, H) is exceeded by cn² edges, then the number of copies of H is Ω(n^{|V(H)|}). The supersaturation regime studied in Problem #1019 is a topological variant of this principle."
@@ -261,7 +300,7 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos1019",
-    "lineCount": 316,
+    "lineCount": 349,
     "axiomCount": 8,
     "theoremCount": 8,
     "definitionCount": 19

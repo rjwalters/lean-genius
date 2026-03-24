@@ -183,34 +183,34 @@
   ],
   "relatedProofs": [
     {
-      "slug": "erdos-99",
-      "title": "Erdős Problem #99: Equilateral Triangles in Minimal Diameter Sets",
-      "relevance": "Discrete geometry packing with extremal configuration questions"
+      "id": "erdos-99",
+      "relationship": "Erdős Problem #99 asks whether minimal-diameter point sets with unit minimum distance must contain equilateral triangles — another packing optimality problem where Cauchy-Schwarz type arguments yield tight bounds on configurations.",
+      "description": ""
     },
     {
-      "slug": "erdos-103",
-      "title": "Erdős Problem #103: Incongruent Optimal Point Configurations",
-      "relevance": "Counting and classifying optimal geometric packings"
+      "id": "erdos-103",
+      "relationship": "Erdős Problem #103 counts incongruent optimal point configurations minimizing diameter, paralleling the question of how many combinatorially distinct optimal packings achieve f(k²) = k.",
+      "description": ""
     },
     {
-      "slug": "cauchy-schwarz",
-      "title": "Cauchy-Schwarz Inequality",
-      "relevance": "Core inequality providing the f(n) ≤ √n upper bound"
+      "id": "cauchy-schwarz",
+      "relationship": "The Cauchy-Schwarz inequality is the central analytic tool: (Σsᵢ)² ≤ n·Σsᵢ² ≤ n gives f(n) ≤ √n, tight at perfect squares. The entire conjecture concerns when this bound can be matched just beyond a perfect square.",
+      "description": ""
     },
     {
-      "slug": "isoperimetric-theorem",
-      "title": "The Isoperimetric Theorem",
-      "relevance": "Extremal geometry: optimizing a linear functional over a packing constraint"
+      "id": "isoperimetric-theorem",
+      "relationship": "The isoperimetric theorem is the prototype extremal geometry result: asking which shape maximizes area for fixed perimeter. The square packing problem similarly asks which packing maximizes total side length under a containment constraint, exhibiting the same rigidity-at-extrema phenomenon.",
+      "description": ""
     },
     {
-      "slug": "erdos-107",
-      "title": "Erdős Problem #107: The Happy Ending Problem",
-      "relevance": "Paradigmatic Erdős combinatorial geometry open problem with exact threshold conjectures"
+      "id": "erdos-107",
+      "relationship": "The Happy Ending Problem (Erdős–Szekeres) is a foundational Erdős combinatorial geometry problem where exact thresholds are conjectured for finite configurations. Like Problem #106, it features a well-known lower bound construction (convex position) and a long-open matching upper bound.",
+      "description": ""
     },
     {
-      "slug": "borsuk-ulam",
-      "title": "Borsuk-Ulam Theorem",
-      "relevance": "Topological and geometric toolkit underlying the 2024 axis-parallel resolution"
+      "id": "borsuk-ulam",
+      "relationship": "The Borsuk-Ulam theorem is a cornerstone of combinatorial topology applied to geometry. The axis-parallel BKU (2024) resolution of Problem #106 used topological and measure-theoretic techniques, placing the problem in the broader tradition of applying analytic tools to packing questions.",
+      "description": ""
     }
   ],
   "references": [
@@ -221,7 +221,7 @@
       ],
       "title": "Squares Packing",
       "venue": "Geombinatorics",
-      "year": 1995,
+      "year": "1995",
       "volume": "4",
       "pages": "75–82",
       "note": "Formulates the Erdős-Soifer conjecture f(k²+2c+1) = k + c/k and states the equivalence with f(k²+1) = k."
@@ -232,7 +232,7 @@
       ],
       "title": "Packing squares into a square",
       "venue": "Studia Scientiarum Mathematicarum Hungarica",
-      "year": 1984,
+      "year": "1984",
       "volume": "20",
       "pages": "249–264",
       "note": "Proves the constructive lower bounds f(k²+2c+1) ≥ k + c/k by splitting grid squares into pairs."
@@ -243,7 +243,7 @@
       ],
       "title": "Squares packing into a square",
       "venue": "Geombinatorics",
-      "year": 2003,
+      "year": "2003",
       "volume": "13",
       "pages": "30–42",
       "note": "Proves the stunning equivalence: f(k²+1) = k for all k if and only if the full Erdős-Soifer formula holds, reducing the conjecture to the single case f(10) = 3."
@@ -256,7 +256,7 @@
       ],
       "title": "Packing unit squares in a square: axis-parallel case",
       "venue": "arXiv preprint",
-      "year": 2024,
+      "year": "2024",
       "arxiv": "2411.06770",
       "note": "Proves g(k²+1) = k for axis-parallel squares (BKU theorem), completely resolving the axis-parallel restriction of Erdős's conjecture."
     },
@@ -266,7 +266,7 @@
       ],
       "title": "Some old and new problems in combinatorial geometry",
       "venue": "Annals of Discrete Mathematics",
-      "year": 1986,
+      "year": "1986",
       "volume": "28",
       "pages": "129–136",
       "note": "Erdős restates the square packing conjecture alongside other open combinatorial geometry problems and discusses partial progress."

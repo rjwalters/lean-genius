@@ -13,7 +13,8 @@
       "trigonometry",
       "classic",
       "intermediate",
-      "wiedijk"
+      "wiedijk",
+      "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/DeMoivre.lean",
     "badge": "mathlib",
@@ -164,17 +165,17 @@
     {
       "id": "euler-identity",
       "relationship": "related",
-      "description": "De Moivre's theorem is equivalent to Euler's formula e^{iθ} = cos θ + i sin θ raised to the nth power. Euler's identity "
+      "description": "De Moivre's theorem is equivalent to Euler's formula e^{iθ} = cos θ + i sin θ raised to the nth power. Euler's identity e^{iπ} + 1 = 0 is the special case θ = π, n = 1."
     },
     {
       "id": "law-of-cosines",
       "relationship": "related",
-      "description": "De Moivre's theorem generates multiple-angle formulas (cos 2θ, cos 3θ, etc.) which connect to the law of cosines through"
+      "description": "De Moivre's theorem generates multiple-angle formulas (cos 2θ, cos 3θ, etc.) which connect to the law of cosines through Chebyshev polynomials."
     },
     {
       "id": "angle-trisection",
       "relationship": "related",
-      "description": "De Moivre's theorem shows cos(θ/3) satisfies a cubic equation, providing the algebraic framework for proving the impossi"
+      "description": "De Moivre's theorem shows cos(θ/3) satisfies a cubic equation, providing the algebraic framework for proving the impossibility of angle trisection by ruler and compass."
     }
   ],
   "leanFile": {

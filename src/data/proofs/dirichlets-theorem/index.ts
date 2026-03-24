@@ -1,4 +1,4 @@
-import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, TacticState } from '@/types/proof'
+import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference, TacticState } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
 import sourceRaw from '../../../../proofs/Proofs/DirichletsTheorem.lean?raw'
@@ -12,6 +12,7 @@ const meta = metaJson as {
   sections: ProofSection[]
   overview?: ProofOverview
   conclusion?: ProofConclusion
+  crossReferences?: CrossReference[]
 }
 
 export const dirichletsTheoremProof: Proof = {
@@ -24,6 +25,7 @@ export const dirichletsTheoremProof: Proof = {
   source: sourceRaw,
   overview: meta.overview,
   conclusion: meta.conclusion,
+  crossReferences: meta.crossReferences,
 }
 
 export const dirichletsTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]

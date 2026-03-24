@@ -58,70 +58,80 @@
       "title": "Non-Commutative Probability Spaces",
       "summary": "Defines `NCDistribution` as a moment sequence $\\{m_n\\}$ with normalization $m_0 = 1$. Proves extensionality (`nc_dist_ext`: equal moments implies equal distributions) and defines `diracNC` ($m_n = 0$ for $n \\geq 1$).",
       "startLine": 66,
-      "endLine": 108
+      "endLine": 108,
+      "mathContext": "Defines `NCDistribution` as a moment sequence $\\{m_n\\}$ with normalization $m_0 = 1$. Proves extensionality (`nc_dist_ext`: equal moments implies equal distributions) and defines `diracNC` ($m_n = 0$ "
     },
     {
       "id": "free-independence",
       "title": "Free Independence",
       "summary": "Explains free independence as the non-commutative analog of classical independence, with alternating product constraints on centered elements.",
       "startLine": 109,
-      "endLine": 133
+      "endLine": 133,
+      "mathContext": "Explains free independence as the non-commutative analog of classical independence, with alternating product constraints on centered elements."
     },
     {
       "id": "free-cumulants",
       "title": "Free Cumulants",
       "summary": "Axiomatizes free cumulants via non-crossing partitions, the moment-cumulant formula, and the bijection between moments and cumulants.",
       "startLine": 134,
-      "endLine": 170
+      "endLine": 170,
+      "mathContext": "Axiomatizes free cumulants via non-crossing partitions, the moment-cumulant formula, and the bijection between moments and cumulants."
     },
     {
       "id": "free-convolution",
       "title": "Free Convolution",
       "summary": "Axiomatizes free convolution $\\boxplus$ as a commutative monoid with $\\kappa_n(\\mu \\boxplus \\nu) = \\kappa_n(\\mu) + \\kappa_n(\\nu)$. Proves `freeConvPow_add` ($\\mu^{\\boxplus(m+n)} = \\mu^{\\boxplus m} \\boxplus \\mu^{\\boxplus n}$) and `freeConvPow_cumulant` ($\\kappa_k(\\mu^{\\boxplus n}) = n \\kappa_k(\\mu)$) by induction.",
       "startLine": 171,
-      "endLine": 259
+      "endLine": 259,
+      "mathContext": "Axiomatizes free convolution $\\boxplus$ as a commutative monoid with $\\kappa_n(\\mu \\boxplus \\nu) = \\kappa_n(\\mu) + \\kappa_n(\\nu)$. Proves `freeConvPow_add` ($\\mu^{\\boxplus(m+n)} = \\mu^{\\boxplus m} \\bo"
     },
     {
       "id": "r-transform",
       "title": "The R-Transform",
       "summary": "Axiomatizes the R-transform as the generating function of free cumulants: $R_\\mu(z) = \\sum \\kappa_n z^{n-1}$. Proves `Rtransform_freeConvPow` ($R_{\\mu^{\\boxplus n}} = n \\cdot R_\\mu$) by induction, paralleling the `freeConvPow_cumulant` proof.",
       "startLine": 260,
-      "endLine": 305
+      "endLine": 305,
+      "mathContext": "Axiomatizes the R-transform as the generating function of free cumulants: $R_\\mu(z) = \\sum \\kappa_n z^{n-1}$. Proves `Rtransform_freeConvPow` ($R_{\\mu^{\\boxplus n}} = n \\cdot R_\\mu$) by induction, par"
     },
     {
       "id": "semicircle",
       "title": "The Semicircle Distribution (Wigner's Law)",
       "summary": "Defines the Wigner semicircle distribution with Catalan number moments ($m_{2k} = C_k$, odd moments zero). Axiomatizes its free cumulant structure: $\\kappa_2 = 1$ and $\\kappa_n = 0$ for $n \\neq 2$, giving R-transform $R_w(z) = z$.",
       "startLine": 306,
-      "endLine": 371
+      "endLine": 371,
+      "mathContext": "Defines the Wigner semicircle distribution with Catalan number moments ($m_{2k} = C_k$, odd moments zero). Axiomatizes its free cumulant structure: $\\kappa_2 = 1$ and $\\kappa_n = 0$ for $n \\neq 2$, gi"
     },
     {
       "id": "dilation",
       "title": "Dilation and Normalized Free Convolution",
       "summary": "Axiomatizes dilation $D_c$ with cumulant scaling $\\kappa_n(D_c(\\mu)) = c^n \\kappa_n(\\mu)$ and R-transform scaling. Defines the normalized free convolution power $D_{1/\\sqrt{n}}(\\mu^{\\boxplus n})$ — the distribution of $(a_1 + \\cdots + a_n)/\\sqrt{n}$.",
       "startLine": 372,
-      "endLine": 401
+      "endLine": 401,
+      "mathContext": "Axiomatizes dilation $D_c$ with cumulant scaling $\\kappa_n(D_c(\\mu)) = c^n \\kappa_n(\\mu)$ and R-transform scaling. Defines the normalized free convolution power $D_{1/\\sqrt{n}}(\\mu^{\\boxplus n})$ — th"
     },
     {
       "id": "free-clt",
       "title": "The Free CLT: Semicircle as Fixed Point and Attractor",
       "summary": "Defines the free renormalization map $T(\\mu) = D_{1/\\sqrt{2}}(\\mu \\boxplus \\mu)$, axiomatizes the semicircle as its fixed point, defines moment convergence, states the Free CLT (`free_clt`), and proves `semicircle_is_attractor`.",
       "startLine": 402,
-      "endLine": 483
+      "endLine": 483,
+      "mathContext": "Defines the free renormalization map $T(\\mu) = D_{1/\\sqrt{2}}(\\mu \\boxplus \\mu)$, axiomatizes the semicircle as its fixed point, defines moment convergence, states the Free CLT (`free_clt`), and prove"
     },
     {
       "id": "structural-parallel",
       "title": "Classical-Free Structural Parallel",
       "summary": "Defines `CLTStructure` abstracting the universal pattern: convolution monoid + cumulant linearization + limit law with only $\\kappa_2 \\neq 0$. Instantiates `freeCLTStructure` and proves structural verification theorems (`clt_structure_double_variance`, `clt_structure_double_higher`).",
       "startLine": 484,
-      "endLine": 588
+      "endLine": 588,
+      "mathContext": "Defines `CLTStructure` abstracting the universal pattern: convolution monoid + cumulant linearization + limit law with only $\\kappa_2 \\neq 0$. Instantiates `freeCLTStructure` and proves structural ver"
     },
     {
       "id": "beyond",
       "title": "Beyond: Muraki's Classification",
       "summary": "Describes all five universal independences (classical, free, Boolean, monotone, anti-monotone) and their CLT limit laws. Axiomatizes Boolean cumulants.",
       "startLine": 589,
-      "endLine": 648
+      "endLine": 648,
+      "mathContext": "Describes all five universal independences (classical, free, Boolean, monotone, anti-monotone) and their CLT limit laws. Axiomatizes Boolean cumulants."
     }
   ],
   "overview": {
@@ -248,7 +258,7 @@
     {
       "id": "central-limit-theorem-oq-01-oq-01",
       "relationship": "sibling",
-      "description": "Sibling: Gnedenko-Kolmogorov domain of attraction theorem — characterizes which distributions are attracted to each stab"
+      "description": "Sibling: Gnedenko-Kolmogorov domain of attraction theorem — characterizes which distributions are attracted to each stable law via regular variation"
     },
     {
       "id": "central-limit-theorem-oq-01-oq-02",

@@ -78,56 +78,64 @@
       "title": "Part I: Basic Definitions",
       "startLine": 30,
       "endLine": 62,
-      "summary": "RPartiteGraph structure, minDegree, ContainsKr."
+      "summary": "RPartiteGraph structure, minDegree, ContainsKr.",
+      "mathContext": "RPartiteGraph structure, minDegree, ContainsKr."
     },
     {
       "id": "bes-conjecture",
       "title": "Part II: The BES Conjecture",
       "startLine": 63,
       "endLine": 83,
-      "summary": "BESConjecture definition and threshold_tight axiom."
+      "summary": "BESConjecture definition and threshold_tight axiom.",
+      "mathContext": "BESConjecture definition and threshold_tight axiom."
     },
     {
       "id": "haxell",
       "title": "Part III: Haxell's Theorem (2001)",
       "startLine": 84,
       "endLine": 108,
-      "summary": "haxell_theorem axiom and asymptotic_threshold proved corollary."
+      "summary": "haxell_theorem axiom and asymptotic_threshold proved corollary.",
+      "mathContext": "haxell_theorem axiom and asymptotic_threshold proved corollary."
     },
     {
       "id": "sharp-threshold",
       "title": "Part IV: Sharp Threshold (Haxell-Szabó 2006)",
       "startLine": 109,
       "endLine": 136,
-      "summary": "sharpThreshold formula, haxell_szabo_theorem, threshold_sharp."
+      "summary": "sharpThreshold formula, haxell_szabo_theorem, threshold_sharp.",
+      "mathContext": "sharpThreshold formula, haxell_szabo_theorem, threshold_sharp."
     },
     {
       "id": "special-cases",
       "title": "Part V: Special Cases",
       "startLine": 137,
       "endLine": 164,
-      "summary": "Computed thresholds for r = 2, 3, 4."
+      "summary": "Computed thresholds for r = 2, 3, 4.",
+      "mathContext": "Computed thresholds for r = 2, 3, 4."
     },
     {
       "id": "comparison",
       "title": "Part VI: Comparison with BES Threshold",
       "startLine": 165,
       "endLine": 176,
-      "summary": "asymptotic_agreement: sharp threshold ≈ (r-3/2)n."
+      "summary": "asymptotic_agreement: sharp threshold ≈ (r-3/2)n.",
+      "mathContext": "asymptotic_agreement: sharp threshold ≈ (r-3/2)n."
     },
     {
       "id": "transversals",
       "title": "Part VII: Connection to Transversals",
       "startLine": 177,
       "endLine": 197,
-      "summary": "IsIndependentTransversal definition and extremal_construction."
+      "summary": "IsIndependentTransversal definition and extremal_construction.",
+      "mathContext": "IsIndependentTransversal definition and extremal_construction."
     },
     {
       "id": "summary",
       "title": "Part VIII: Summary",
       "startLine": 198,
       "endLine": 214,
-      "summary": "erdos_1078_summary combining haxell_theorem, threshold_tight, haxell_szabo_theorem, threshold_sharp."
+      "summary": "erdos_1078_summary combining haxell_theorem, threshold_tight, haxell_szabo_theorem, threshold_sharp.",
+      "mathContext": "erdos_1078_summary combining haxell_theorem, threshold_tight, haxell_szabo_theorem, threshold_sharp."
     }
   ],
   "conclusion": {
@@ -173,24 +181,34 @@
   ],
   "relatedProofs": [
     {
-      "slug": "ramseys-theorem",
-      "title": "Ramsey's Theorem",
-      "connection": "Foundational result guaranteeing monochromatic cliques; provides the combinatorial backdrop against which minimum-degree forcing results for K_r are understood."
+      "id": "ramseys-theorem",
+      "relationship": "Ramsey's theorem guarantees complete subgraphs in dense graphs via pigeonhole arguments; the BES problem studies the sharper question of forcing K_r through a minimum degree condition in structured r-partite graphs.",
+      "description": ""
     },
     {
-      "slug": "erdos-1079",
-      "title": "Erdős Problem #1079: Turán Density in Neighborhoods",
-      "connection": "Shares the extremal-graph-theory framework of minimum degree / density thresholds for forcing dense substructures."
+      "id": "erdos-1079",
+      "relationship": "Turán density in neighborhoods (Problem #1079) studies extremal densities for induced substructures in graph neighborhoods, a closely related minimum-degree / density threshold framework.",
+      "description": ""
     },
     {
-      "slug": "erdos-1077",
-      "title": "Erdős Problem #1077: Balanced Subgraphs in Dense Graphs",
-      "connection": "Degree-regularity conditions for forcing specific subgraphs; directly parallel to the r-partite minimum-degree threshold studied in Problem #1078."
+      "id": "erdos-1077",
+      "relationship": "Problem #1077 on balanced subgraphs in dense graphs shares the theme of forcing structured subgraphs via degree conditions, complementing the multipartite setting of Problem #1078.",
+      "description": ""
     },
     {
-      "slug": "erdos-1075",
-      "title": "Erdős Problem #1075: Dense Subgraphs in r-Uniform Hypergraphs",
-      "connection": "Hypergraph analogue of density-forcing results; the graph case (r = 2) reduces to problems of the type studied in Problem #1078."
+      "id": "erdos-1075",
+      "relationship": "Dense subgraphs in r-uniform hypergraphs (Problem #1075) generalises the bipartite Kővári–Sós–Turán approach to higher uniformity; the r-partite graph setting of Problem #1078 is the graph-level analogue.",
+      "description": ""
+    },
+    {
+      "id": "erdos-1017",
+      "relationship": "Clique partition of graphs (Problem #1017) addresses decomposing graphs into complete subgraphs; Problem #1078 forces a single K_r via a minimum degree threshold in the r-partite setting.",
+      "description": ""
+    },
+    {
+      "id": "erdos-1076",
+      "relationship": "Extremal numbers for 3-uniform hypergraphs (Problem #1076) and the Steiner system constructions used there exhibit the same interplay between density/degree thresholds and the existence of complete sub-structures.",
+      "description": ""
     }
   ],
   "references": [
@@ -200,7 +218,7 @@
       ],
       "title": "A Note on Vertex List Colouring",
       "venue": "Combinatorics, Probability and Computing",
-      "year": 2001,
+      "year": "2001",
       "volume": "10",
       "pages": "345–347",
       "doi": "10.1017/S0963548301004758",
@@ -213,7 +231,7 @@
       ],
       "title": "Odd Independent Transversals Are Odd",
       "venue": "Combinatorics, Probability and Computing",
-      "year": 2006,
+      "year": "2006",
       "volume": "15",
       "pages": "193–211",
       "doi": "10.1017/S0963548305007156",
@@ -227,7 +245,7 @@
       ],
       "title": "On Complete Subgraphs of r-Chromatic Graphs",
       "venue": "Discrete Mathematics",
-      "year": 1975,
+      "year": "1975",
       "volume": "13",
       "pages": "97–107",
       "doi": "10.1016/0012-365X(75)90011-4",
@@ -239,7 +257,7 @@
       ],
       "title": "On the Strong Chromatic Number",
       "venue": "Combinatorics, Probability and Computing",
-      "year": 2004,
+      "year": "2004",
       "volume": "13",
       "pages": "857–865",
       "doi": "10.1017/S0963548304006157",
@@ -251,7 +269,7 @@
       ],
       "title": "On the Structure of Non-Hamiltonian Graphs I",
       "venue": "Combinatorica",
-      "year": 1992,
+      "year": "1992",
       "volume": "12",
       "pages": "27–34",
       "doi": "10.1007/BF01191199",

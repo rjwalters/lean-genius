@@ -59,56 +59,64 @@
       "title": "Beltrami-Klein Disk Model",
       "summary": "Defines DiskPoint (open unit disk), Chord (line restricted to disk), OnChord (incidence), and ChordParallel (no common disk point).",
       "startLine": 24,
-      "endLine": 53
+      "endLine": 53,
+      "mathContext": "Defines DiskPoint (open unit disk), Chord (line restricted to disk), OnChord (incidence), and ChordParallel (no common disk point)."
     },
     {
       "id": "concrete-constructions",
       "title": "Concrete Constructions",
       "summary": "Defines the x-axis chord, point P = (0, 1/2), and two parallel chords par₁ (slope 1/4) and par₂ (slope -1/4).",
       "startLine": 54,
-      "endLine": 90
+      "endLine": 90,
+      "mathContext": "Defines the x-axis chord, point P = (0, 1/2), and two parallel chords par₁ (slope 1/4) and par₂ (slope -1/4)."
     },
     {
       "id": "verification",
       "title": "Incidence and Parallelism Verification",
       "summary": "Proves P is not on xaxis, P lies on both parallels, parallels are distinct, and each parallel doesn't intersect xaxis in the disk.",
       "startLine": 91,
-      "endLine": 132
+      "endLine": 132,
+      "mathContext": "Proves P is not on xaxis, P lies on both parallels, parallels are distinct, and each parallel doesn't intersect xaxis in the disk."
     },
     {
       "id": "hyperbolic-parallel",
       "title": "Hyperbolic Parallel Property",
       "summary": "Assembles the existential witness: chord xaxis, point P, and two distinct parallel chords through P.",
       "startLine": 133,
-      "endLine": 147
+      "endLine": 147,
+      "mathContext": "Assembles the existential witness: chord xaxis, point P, and two distinct parallel chords through P."
     },
     {
       "id": "pp-violation",
       "title": "Parallel Postulate Violation",
       "summary": "Defines Playfair's axiom for the BK model and proves it fails: uniqueness is contradicted by the two parallels.",
       "startLine": 148,
-      "endLine": 169
+      "endLine": 169,
+      "mathContext": "Defines Playfair's axiom for the BK model and proves it fails: uniqueness is contradicted by the two parallels."
     },
     {
       "id": "incidence-axioms",
       "title": "Incidence Axiom Verification",
       "summary": "Proves three non-collinear points exist (O, A, B), disk nontriviality, and axiomatizes two-point-determine-chord and chord-has-two-points.",
       "startLine": 170,
-      "endLine": 200
+      "endLine": 200,
+      "mathContext": "Proves three non-collinear points exist (O, A, B), disk nontriviality, and axiomatizes two-point-determine-chord and chord-has-two-points."
     },
     {
       "id": "independence",
       "title": "Independence Theorem",
       "summary": "Combines Euclidean (axiomatized) and Beltrami-Klein (proved) models to establish that the parallel postulate is independent.",
       "startLine": 201,
-      "endLine": 229
+      "endLine": 229,
+      "mathContext": "Combines Euclidean (axiomatized) and Beltrami-Klein (proved) models to establish that the parallel postulate is independent."
     },
     {
       "id": "additional",
       "title": "Additional Geometric Facts",
       "summary": "Euclidean-parallel chords are BK-parallel; example of a non-parallel secant crossing xaxis inside the disk.",
       "startLine": 230,
-      "endLine": 453
+      "endLine": 453,
+      "mathContext": "Euclidean-parallel chords are BK-parallel; example of a non-parallel secant crossing xaxis inside the disk."
     }
   ],
   "overview": {

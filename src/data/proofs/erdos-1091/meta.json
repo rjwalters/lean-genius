@@ -100,56 +100,64 @@
       "title": "Module Docstring",
       "startLine": 1,
       "endLine": 18,
-      "summary": "Problem statement, answer (YES for 2 diagonals), history (Larson 1979, Voss 1982), and general open question about $f(r)$."
+      "summary": "Problem statement, answer (YES for 2 diagonals), history (Larson 1979, Voss 1982), and general open question about $f(r)$.",
+      "mathContext": "Problem statement, answer (YES for 2 diagonals), history (Larson 1979, Voss 1982), and general open question about $f(r)$."
     },
     {
       "id": "basic-definitions",
       "title": "Part 1: Basic Definitions",
       "startLine": 27,
       "endLine": 69,
-      "summary": "Cycle structure (vertex list with adjacency), isOdd, isDiagonal (non-consecutive edge), diagonalCount (unordered pairs via Finset.filter), IsK4Free (no 4-clique), chromaticNumber (min colors via sSup)."
+      "summary": "Cycle structure (vertex list with adjacency), isOdd, isDiagonal (non-consecutive edge), diagonalCount (unordered pairs via Finset.filter), IsK4Free (no 4-clique), chromaticNumber (min colors via sSup).",
+      "mathContext": "Cycle structure (vertex list with adjacency), isOdd, isDiagonal (non-consecutive edge), diagonalCount (unordered pairs via Finset.filter), IsK4Free (no 4-clique), chromaticNumber (min colors via sSup)"
     },
     {
       "id": "larson-theorem",
       "title": "Part 2: Larson's Theorem (1979)",
       "startLine": 70,
       "endLine": 95,
-      "summary": "`larson_one_diagonal` (axiom): $K_4$-free, $\\chi \\geq 4$ implies odd cycle with $\\geq 1$ diagonal. `BollobasErdosAlternative` structure and `bollobas_erdos_conjecture` (axiom)."
+      "summary": "`larson_one_diagonal` (axiom): $K_4$-free, $\\chi \\geq 4$ implies odd cycle with $\\geq 1$ diagonal. `BollobasErdosAlternative` structure and `bollobas_erdos_conjecture` (axiom).",
+      "mathContext": "`larson_one_diagonal` (axiom): $K_4$-free, $\\chi \\geq 4$ implies odd cycle with $\\geq 1$ diagonal. `BollobasErdosAlternative` structure and `bollobas_erdos_conjecture` (axiom)."
     },
     {
       "id": "voss-theorem",
       "title": "Part 3: Voss's Theorem (1982)",
       "startLine": 96,
       "endLine": 112,
-      "summary": "`voss_two_diagonals` (axiom): $K_4$-free, $\\chi \\geq 4$ implies odd cycle with $\\geq 2$ diagonals. `voss_implies_larson` (verified corollary via `Nat.le_of_succ_le`)."
+      "summary": "`voss_two_diagonals` (axiom): $K_4$-free, $\\chi \\geq 4$ implies odd cycle with $\\geq 2$ diagonals. `voss_implies_larson` (verified corollary via `Nat.le_of_succ_le`).",
+      "mathContext": "`voss_two_diagonals` (axiom): $K_4$-free, $\\chi \\geq 4$ implies odd cycle with $\\geq 2$ diagonals. `voss_implies_larson` (verified corollary via `Nat.le_of_succ_le`)."
     },
     {
       "id": "counterexample",
       "title": "Part 4: Pentagonal Wheel Counterexample",
       "startLine": 113,
       "endLine": 158,
-      "summary": "PentagonalWheel definition as SimpleGraph (Fin 6) with proved symmetry/loop-freeness. Axioms for $K_4$-free, $\\chi=4$, max 2 diagonals. Verified `three_diagonals_not_guaranteed` by contradiction with `omega`."
+      "summary": "PentagonalWheel definition as SimpleGraph (Fin 6) with proved symmetry/loop-freeness. Axioms for $K_4$-free, $\\chi=4$, max 2 diagonals. Verified `three_diagonals_not_guaranteed` by contradiction with `omega`.",
+      "mathContext": "PentagonalWheel definition as SimpleGraph (Fin 6) with proved symmetry/loop-freeness. Axioms for $K_4$-free, $\\chi=4$, max 2 diagonals. Verified `three_diagonals_not_guaranteed` by contradiction with "
     },
     {
       "id": "general-question",
       "title": "Part 5: General Question (OPEN)",
       "startLine": 159,
       "endLine": 176,
-      "summary": "IsLocallyColorable (induced subgraph coloring) and GeneralQuestion (existence of $f(r) \\to \\infty$). The main unsolved part of Problem #1091."
+      "summary": "IsLocallyColorable (induced subgraph coloring) and GeneralQuestion (existence of $f(r) \\to \\infty$). The main unsolved part of Problem #1091.",
+      "mathContext": "IsLocallyColorable (induced subgraph coloring) and GeneralQuestion (existence of $f(r) \\to \\infty$). The main unsolved part of Problem #1091."
     },
     {
       "id": "related-results",
       "title": "Part 6: Related Results",
       "startLine": 177,
       "endLine": 190,
-      "summary": "`K4_free_high_chi_possible` (verified via PentagonalWheel), `mycielski_construction` (axiom: triangle-free graphs with arbitrary $\\chi$)."
+      "summary": "`K4_free_high_chi_possible` (verified via PentagonalWheel), `mycielski_construction` (axiom: triangle-free graphs with arbitrary $\\chi$).",
+      "mathContext": "`K4_free_high_chi_possible` (verified via PentagonalWheel), `mycielski_construction` (axiom: triangle-free graphs with arbitrary $\\chi$)."
     },
     {
       "id": "summary",
       "title": "Part 7: Summary",
       "startLine": 191,
       "endLine": 208,
-      "summary": "`erdos_1091_summary` (verified): combines Voss ($\\geq 2$ guaranteed) and pentagonal wheel ($\\geq 3$ not guaranteed) into a single theorem."
+      "summary": "`erdos_1091_summary` (verified): combines Voss ($\\geq 2$ guaranteed) and pentagonal wheel ($\\geq 3$ not guaranteed) into a single theorem.",
+      "mathContext": "`erdos_1091_summary` (verified): combines Voss ($\\geq 2$ guaranteed) and pentagonal wheel ($\\geq 3$ not guaranteed) into a single theorem."
     }
   ],
   "conclusion": {
@@ -164,16 +172,16 @@
   },
   "crossReferences": [
     {
-      "targetProofId": "erdos-984",
-      "relationship": "Both are Erdos problems in combinatorics involving structural constraints on graphs/sets with extremal colorings or partitions"
+      "relationship": "Both are Erdos problems in combinatorics involving structural constraints on graphs/sets with extremal colorings or partitions",
+      "targetId": "erdos-984"
     },
     {
-      "targetProofId": "erdos-723",
-      "relationship": "Both involve combinatorial structures (graphs/projective planes) where counting arguments and explicit constructions determine extremal behavior"
+      "relationship": "Both involve combinatorial structures (graphs/projective planes) where counting arguments and explicit constructions determine extremal behavior",
+      "targetId": "erdos-723"
     },
     {
-      "targetProofId": "erdos-107",
-      "relationship": "Both are Erdos problems with a clear progression of bounds (trivial -> intermediate -> tight), with explicit extremal constructions showing tightness"
+      "relationship": "Both are Erdos problems with a clear progression of bounds (trivial -> intermediate -> tight), with explicit extremal constructions showing tightness",
+      "targetId": "erdos-107"
     }
   ],
   "leanFile": {
@@ -192,19 +200,19 @@
   },
   "relatedProofs": [
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-984",
+      "relationship": "Both are Erdos problems in combinatorics involving structural constraints on graphs/sets with extremal colorings or partitions",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-723",
+      "relationship": "Both involve combinatorial structures (graphs/projective planes) where counting arguments and explicit constructions determine extremal behavior",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-107",
+      "relationship": "Both are Erdos problems with a clear progression of bounds (trivial -> intermediate -> tight), with explicit extremal constructions showing tightness",
+      "description": ""
     }
   ]
 }

@@ -86,56 +86,64 @@
       "title": "Core Definitions",
       "summary": "Defines `ArithProg` (k-term AP as Finset), `ContainsAP` and `ContainsArbitrarilyLongAP` (AP containment), `IsAPFree` (AP avoidance), `reciprocalSum`, and `HasDivergentSum` (divergent reciprocal sum via negated Summable).",
       "startLine": 33,
-      "endLine": 58
+      "endLine": 58,
+      "mathContext": "Defines `ArithProg` (k-term AP as Finset), `ContainsAP` and `ContainsArbitrarilyLongAP` (AP containment), `IsAPFree` (AP avoidance), `reciprocalSum`, and `HasDivergentSum` (divergent reciprocal sum vi"
     },
     {
       "id": "roth-number",
       "title": "Roth Number r_k(N)",
       "summary": "Defines `rothNumber k N` as the maximum AP-free subset size (via `Finset.sup` over filtered powerset), `countingFunction` for $A(N) = |A \\cap [0,N]|$, and `SublogarithmicGrowth` formalizing $r_k(N) = o(N/\\log N)$.",
       "startLine": 59,
-      "endLine": 70
+      "endLine": 70,
+      "mathContext": "Defines `rothNumber k N` as the maximum AP-free subset size (via `Finset.sup` over filtered powerset), `countingFunction` for $A(N) = |A \\cap [0,N]|$, and `SublogarithmicGrowth` formalizing $r_k(N) = "
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "summary": "States `Erdos3Conjecture`: every set with divergent reciprocal sum contains arbitrarily long APs. Equivalent to $r_k(N) = o(N/\\log N)$ for all $k \\geq 3$.",
       "startLine": 71,
-      "endLine": 81
+      "endLine": 81,
+      "mathContext": "States `Erdos3Conjecture`: every set with divergent reciprocal sum contains arbitrarily long APs. Equivalent to $r_k(N) = o(N/\\log N)$ for all $k \\geq 3$."
     },
     {
       "id": "historical",
       "title": "Historical Results",
       "summary": "Axiomatizes the progression of bounds: Roth (1953, $r_3 = o(N)$), Szemeredi (1975, $r_k = o(N)$), Gowers (2001, $r_k \\ll N/(\\log \\log N)^c$), Kelley-Meka (2023, $r_3 \\ll N/\\exp((\\log N)^{1/11})$), Leng-Sah-Sawhney (2024, $r_k \\ll N/\\exp((\\log \\log N)^c)$).",
       "startLine": 82,
-      "endLine": 114
+      "endLine": 114,
+      "mathContext": "Axiomatizes the progression of bounds: Roth (1953, $r_3 = o(N)$), Szemeredi (1975, $r_k = o(N)$), Gowers (2001, $r_k \\ll N/(\\log \\log N)^c$), Kelley-Meka (2023, $r_3 \\ll N/\\exp((\\log N)^{1/11})$), Len"
     },
     {
       "id": "gap",
       "title": "The Critical Gap",
       "summary": "Defines `RequiredBound` ($r_k(N) = o(N/\\log N)$) and proves `required_bound_implies_conjecture` (with sorry for partial summation). Explains the exponential gap between current bounds and the conjecture threshold.",
       "startLine": 115,
-      "endLine": 135
+      "endLine": 135,
+      "mathContext": "Defines `RequiredBound` ($r_k(N) = o(N/\\log N)$) and proves `required_bound_implies_conjecture` (with sorry for partial summation). Explains the exponential gap between current bounds and the conjectu"
     },
     {
       "id": "constructions",
       "title": "AP-Free Constructions",
       "summary": "Axiomatizes lower bounds: Behrend (1946, $r_3(N) \\geq N/\\exp(c\\sqrt{\\log N})$ via sphere construction in high-dimensional lattices) and Elkin (2011, improvement by $\\sqrt{\\log \\log N}$).",
       "startLine": 136,
-      "endLine": 155
+      "endLine": 155,
+      "mathContext": "Axiomatizes lower bounds: Behrend (1946, $r_3(N) \\geq N/\\exp(c\\sqrt{\\log N})$ via sphere construction in high-dimensional lattices) and Elkin (2011, improvement by $\\sqrt{\\log \\log N}$)."
     },
     {
       "id": "green-tao",
       "title": "Green-Tao Connection",
       "summary": "Axiomatizes Green-Tao (primes contain all APs) and Euler ($\\sum 1/p = \\infty$), then formally proves `erdos3_implies_green_tao`: the conjecture implies Green-Tao as an immediate corollary.",
       "startLine": 156,
-      "endLine": 183
+      "endLine": 183,
+      "mathContext": "Axiomatizes Green-Tao (primes contain all APs) and Euler ($\\sum 1/p = \\infty$), then formally proves `erdos3_implies_green_tao`: the conjecture implies Green-Tao as an immediate corollary."
     },
     {
       "id": "status",
       "title": "Problem Status",
       "summary": "Concludes with `erdos_3_open` via `Classical.em`, plus references documenting the trajectory from Bloom-Sisask (2020) through Kelley-Meka (2023) to Leng-Sah-Sawhney (2024).",
       "startLine": 184,
-      "endLine": 214
+      "endLine": 214,
+      "mathContext": "Concludes with `erdos_3_open` via `Classical.em`, plus references documenting the trajectory from Bloom-Sisask (2020) through Kelley-Meka (2023) to Leng-Sah-Sawhney (2024)."
     }
   ],
   "conclusion": {
@@ -224,27 +232,27 @@
     {
       "id": "erdos-1",
       "relationship": "related",
-      "description": "Problem #1 (distinct subset sums) and Problem #3 (APs in dense sets) are both foundational problems in additive combinat"
+      "description": "Problem #1 (distinct subset sums) and Problem #3 (APs in dense sets) are both foundational problems in additive combinatorics that Erdős posed early in his career. Both concern how combinatorial structure is forced by size: Problem #1 asks about subset sum structure, Problem #3 about arithmetic progression structure"
     },
     {
       "id": "erdos-2",
       "relationship": "related",
-      "description": "Both problems share the theme of density constraints in number theory. Covering systems (Problem #2) require $\\sum 1/n_i"
+      "description": "Both problems share the theme of density constraints in number theory. Covering systems (Problem #2) require $\\sum 1/n_i \\geq 1$, while Problem #3 concerns sets with $\\sum 1/n = \\infty$. Erdős posed both as fundamental questions about how arithmetic structure emerges from density"
     },
     {
       "id": "erdos-26",
       "relationship": "related",
-      "description": "Problem #26 on thick sequences and Behrend sets directly concerns the AP-free constructions that provide lower bounds fo"
+      "description": "Problem #26 on thick sequences and Behrend sets directly concerns the AP-free constructions that provide lower bounds for $r_k(N)$. Behrend's sphere construction gives $r_3(N) \\geq N/\\exp(c\\sqrt{\\log N})$, the main barrier to proving Erdős #3"
     },
     {
       "id": "erdos-28",
       "relationship": "related",
-      "description": "The Erdős-Turán conjecture on additive bases (Problem #28) asks about the representation function of bases of order 2. B"
+      "description": "The Erdős-Turán conjecture on additive bases (Problem #28) asks about the representation function of bases of order 2. Both problems bear the name Erdős-Turán and concern how arithmetic structure (APs vs. representation counts) is forced by density conditions"
     },
     {
       "id": "arithmetic-series",
       "relationship": "foundational",
-      "description": "The arithmetic series formula underlies the counting arguments for arithmetic progressions. A $k$-term AP $\\{a, a+d, \\ld"
+      "description": "The arithmetic series formula underlies the counting arguments for arithmetic progressions. A $k$-term AP $\\{a, a+d, \\ldots, a+(k-1)d\\}$ has sum $ka + k(k-1)d/2$, and bounding the number of such progressions in $\\{1,\\ldots,N\\}$ is the starting point for Roth's argument"
     }
   ],
   "leanFile": {

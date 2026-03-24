@@ -206,27 +206,42 @@
     {
       "id": "vietas-formulas",
       "relationship": "extends",
-      "description": "Parent formalization of Vieta's formulas (coefficients ↔ roots). Newton's identities extend Vieta by expressing all powe"
+      "description": "Parent formalization of Vieta's formulas (coefficients ↔ roots). Newton's identities extend Vieta by expressing all power sums pₖ = Σxᵢᵏ in terms of the elementary symmetric polynomials that Vieta relates to coefficients — providing the full bridge from polynomial coefficients to trace-like invariants"
     },
     {
       "id": "cayley-hamilton",
       "relationship": "related",
-      "description": "The Cayley-Hamilton theorem (every matrix satisfies its characteristic polynomial) is intimately connected: Newton's sec"
+      "description": "The Cayley-Hamilton theorem (every matrix satisfies its characteristic polynomial) is intimately connected: Newton's second identity p₂ − e₁p₁ + 2e₂ = 0 is precisely Cayley-Hamilton at the trace level for 2×2 matrices. The formalization's matrix trace section makes this connection explicit"
     },
     {
       "id": "cayley-hamilton-minpoly",
       "relationship": "related",
-      "description": "The minimal polynomial, whose relation to the characteristic polynomial is governed by the Cayley-Hamilton framework, co"
+      "description": "The minimal polynomial, whose relation to the characteristic polynomial is governed by the Cayley-Hamilton framework, connects to Newton's identities through the power sum recurrence: the minimal polynomial's roots are exactly the distinct eigenvalues, and Newton's identities recover all power sums from these roots"
     },
     {
       "id": "abel-ruffini",
       "relationship": "related",
-      "description": "The discriminant formulas proved here (quadratic and cubic Δ via elementary symmetric polynomials) are essential tools i"
+      "description": "The discriminant formulas proved here (quadratic and cubic Δ via elementary symmetric polynomials) are essential tools in Galois theory: whether Δ is a perfect square determines if Gal(f) ⊆ Aₙ, the key criterion used in Abel-Ruffini's impossibility proof to determine radical solvability"
     },
     {
       "id": "solution-of-cubic",
       "relationship": "complementary",
-      "description": "Cardano's cubic formula explicitly uses Newton's identity p₃ = e₁³ − 3e₁e₂ + 3e₃ via the sum-of-cubes factorization: the"
+      "description": "Cardano's cubic formula explicitly uses Newton's identity p₃ = e₁³ − 3e₁e₂ + 3e₃ via the sum-of-cubes factorization: the resolvent cubic in Cardano's method involves expressing root combinations as symmetric functions, exactly the bridge Newton's identities provide"
+    },
+    {
+      "id": "general-quartic",
+      "relationship": "complementary",
+      "description": "Ferrari's quartic formula uses the resolvent cubic, whose discriminant is expressed via elementary symmetric polynomials using Newton's identities. The four-variable identities proved here directly apply to quartic polynomial analysis"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization in Z[x₁,...,xₙ] guarantees that the polynomial identities proved by `ring` are valid — the ring tactic works by reducing to a normal form in the polynomial ring, and uniqueness of this form depends on the UFD property"
+    },
+    {
+      "id": "lagrange-four-squares",
+      "relationship": "thematic",
+      "description": "Lagrange's four-squares theorem (every positive integer is a sum of four squares) is historically connected to Waring's problem, which was inspired by studying power sums and their relation to symmetric functions — the same objects Newton's identities describe"
     }
   ],
   "references": [

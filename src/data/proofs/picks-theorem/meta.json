@@ -77,77 +77,88 @@
       "title": "Imports and Setup",
       "startLine": 1,
       "endLine": 54,
-      "summary": "Imports `Mathlib.Algebra.BigOperators` and `Mathlib.Data.Rat.Cast.Lemmas` for rational arithmetic. Historical context for Pick (1859-1942)."
+      "summary": "Imports `Mathlib.Algebra.BigOperators` and `Mathlib.Data.Rat.Cast.Lemmas` for rational arithmetic. Historical context for Pick (1859-1942).",
+      "mathContext": "Imports `Mathlib.Algebra.BigOperators` and `Mathlib.Data.Rat.Cast.Lemmas` for rational arithmetic. Historical context for Pick (1859-1942)."
     },
     {
       "id": "lattice-points",
       "title": "Lattice Points",
       "startLine": 55,
       "endLine": 77,
-      "summary": "Defines `LatticePoint := ℤ × ℤ` with coordinate accessors and `origin := (0, 0)` in the integer lattice $\\mathbb{Z}^2$."
+      "summary": "Defines `LatticePoint := ℤ × ℤ` with coordinate accessors and `origin := (0, 0)` in the integer lattice $\\mathbb{Z}^2$.",
+      "mathContext": "Defines `LatticePoint := ℤ × ℤ` with coordinate accessors and `origin := (0, 0)` in the integer lattice $\\mathbb{Z}^2$."
     },
     {
       "id": "polygon-structure",
       "title": "Simple Lattice Polygon",
       "startLine": 78,
       "endLine": 122,
-      "summary": "Axiomatizes `SimpleLatticePolygon` with `interior_count`, `boundary_count`, `area : ℚ`, constraints $A > 0$ and $b \\geq 3$. Custom notation `i(P)`, `b(P)`, `A(P)`."
+      "summary": "Axiomatizes `SimpleLatticePolygon` with `interior_count`, `boundary_count`, `area : ℚ`, constraints $A > 0$ and $b \\geq 3$. Custom notation `i(P)`, `b(P)`, `A(P)`.",
+      "mathContext": "Axiomatizes `SimpleLatticePolygon` with `interior_count`, `boundary_count`, `area : ℚ`, constraints $A > 0$ and $b \\geq 3$. Custom notation `i(P)`, `b(P)`, `A(P)`."
     },
     {
       "id": "picks-formula",
       "title": "Pick's Theorem Statement",
       "startLine": 123,
       "endLine": 169,
-      "summary": "Defines `picks_formula(i, b) = i + b/2 - 1`. Axiom `picks_theorem`: $A(P) = i + b/2 - 1$. Rearrangements solving for $i$ and $b$ via `linarith`."
+      "summary": "Defines `picks_formula(i, b) = i + b/2 - 1`. Axiom `picks_theorem`: $A(P) = i + b/2 - 1$. Rearrangements solving for $i$ and $b$ via `linarith`.",
+      "mathContext": "Defines `picks_formula(i, b) = i + b/2 - 1`. Axiom `picks_theorem`: $A(P) = i + b/2 - 1$. Rearrangements solving for $i$ and $b$ via `linarith`."
     },
     {
       "id": "unit-triangle",
       "title": "Unit Right Triangle",
       "startLine": 170,
       "endLine": 207,
-      "summary": "Verifies Pick's formula for vertices $(0,0), (1,0), (0,1)$: $i=0, b=3, A=1/2$. Formula: $0 + 3/2 - 1 = 1/2$ by `norm_num`."
+      "summary": "Verifies Pick's formula for vertices $(0,0), (1,0), (0,1)$: $i=0, b=3, A=1/2$. Formula: $0 + 3/2 - 1 = 1/2$ by `norm_num`.",
+      "mathContext": "Verifies Pick's formula for vertices $(0,0), (1,0), (0,1)$: $i=0, b=3, A=1/2$. Formula: $0 + 3/2 - 1 = 1/2$ by `norm_num`."
     },
     {
       "id": "rectangles",
       "title": "Rectangle Verification",
       "startLine": 208,
       "endLine": 265,
-      "summary": "Defines `rectangle m n` with $i=(m-1)(n-1)$, $b=2m+2n$, $A=mn$. Algebraic verification by `ring`. Examples: $3 \\times 4$, $5 \\times 7$, unit square."
+      "summary": "Defines `rectangle m n` with $i=(m-1)(n-1)$, $b=2m+2n$, $A=mn$. Algebraic verification by `ring`. Examples: $3 \\times 4$, $5 \\times 7$, unit square.",
+      "mathContext": "Defines `rectangle m n` with $i=(m-1)(n-1)$, $b=2m+2n$, $A=mn$. Algebraic verification by `ring`. Examples: $3 \\times 4$, $5 \\times 7$, unit square."
     },
     {
       "id": "edge-points",
       "title": "Triangles with Edge Points",
       "startLine": 266,
       "endLine": 294,
-      "summary": "Triangle $(0,0), (4,0), (0,4)$ with $i=3, b=12, A=8$. Demonstrates GCD formula for boundary counting on edges."
+      "summary": "Triangle $(0,0), (4,0), (0,4)$ with $i=3, b=12, A=8$. Demonstrates GCD formula for boundary counting on edges.",
+      "mathContext": "Triangle $(0,0), (4,0), (0,4)$ with $i=3, b=12, A=8$. Demonstrates GCD formula for boundary counting on edges."
     },
     {
       "id": "additivity",
       "title": "Additivity Property",
       "startLine": 295,
       "endLine": 335,
-      "summary": "Key inductive step: `picks_additive` proves the formula is preserved when combining polygons sharing an edge with $e$ lattice points. Proved by `ring`."
+      "summary": "Key inductive step: `picks_additive` proves the formula is preserved when combining polygons sharing an edge with $e$ lattice points. Proved by `ring`.",
+      "mathContext": "Key inductive step: `picks_additive` proves the formula is preserved when combining polygons sharing an edge with $e$ lattice points. Proved by `ring`."
     },
     {
       "id": "half-integer",
       "title": "Half-Integer Area and Shoelace Connection",
       "startLine": 336,
       "endLine": 369,
-      "summary": "Corollaries: $2A \\in \\mathbb{Z}$ (`twice_area_is_integer`) and $2A = 2i + b - 2$ (`area_half_integer`). Connection to shoelace and Green's theorem."
+      "summary": "Corollaries: $2A \\in \\mathbb{Z}$ (`twice_area_is_integer`) and $2A = 2i + b - 2$ (`area_half_integer`). Connection to shoelace and Green's theorem.",
+      "mathContext": "Corollaries: $2A \\in \\mathbb{Z}$ (`twice_area_is_integer`) and $2A = 2i + b - 2$ (`area_half_integer`). Connection to shoelace and Green's theorem."
     },
     {
       "id": "3d-failure",
       "title": "Failure in 3D: Reeve Tetrahedra",
       "startLine": 370,
       "endLine": 421,
-      "summary": "Reeve tetrahedra: same $i=0, b=4$ but volume $= r/6$ varies. `picks_fails_3D` proves the 3D counterexample. Ehrhart theory as the correct generalization."
+      "summary": "Reeve tetrahedra: same $i=0, b=4$ but volume $= r/6$ varies. `picks_fails_3D` proves the 3D counterexample. Ehrhart theory as the correct generalization.",
+      "mathContext": "Reeve tetrahedra: same $i=0, b=4$ but volume $= r/6$ varies. `picks_fails_3D` proves the 3D counterexample. Ehrhart theory as the correct generalization."
     },
     {
       "id": "applications",
       "title": "Applications and Lattice Width",
       "startLine": 422,
       "endLine": 489,
-      "summary": "$O(1)$ area computation via `compute_area`. Lattice width bounds: $A \\leq w_x \\cdot w_y$. Export of main results."
+      "summary": "$O(1)$ area computation via `compute_area`. Lattice width bounds: $A \\leq w_x \\cdot w_y$. Export of main results.",
+      "mathContext": "$O(1)$ area computation via `compute_area`. Lattice width bounds: $A \\leq w_x \\cdot w_y$. Export of main results."
     }
   ],
   "conclusion": {
@@ -162,40 +173,40 @@
   },
   "crossReferences": [
     {
-      "targetProofId": "herons-formula",
       "relationship": "Both compute polygon area: Heron's formula uses side lengths while Pick's uses lattice point counts. For lattice triangles, both can be applied and must agree",
       "sharedConcepts": [
         "area-computation",
         "triangle",
         "classical-geometry"
-      ]
+      ],
+      "targetId": "herons-formula"
     },
     {
-      "targetProofId": "minkowski-theorem",
       "relationship": "Both concern lattice geometry: Minkowski's theorem guarantees lattice points in convex bodies of sufficient volume, while Pick's counts them in polygons",
       "sharedConcepts": [
         "lattice-points",
         "convex-geometry",
         "volume-area"
-      ]
+      ],
+      "targetId": "minkowski-theorem"
     },
     {
-      "targetProofId": "triangle-angle-sum",
       "relationship": "Pick's theorem for triangles connects to the angle sum property: a lattice triangle's area via Pick must be consistent with its angles via trigonometry",
       "sharedConcepts": [
         "triangle",
         "area",
         "Euclidean-geometry"
-      ]
+      ],
+      "targetId": "triangle-angle-sum"
     },
     {
-      "targetProofId": "erdos-szekeres",
       "relationship": "Both involve discrete geometry and counting: Erdos-Szekeres concerns point configurations in convex position, while Pick counts lattice points in polygons",
       "sharedConcepts": [
         "discrete-geometry",
         "point-counting",
         "combinatorics"
-      ]
+      ],
+      "targetId": "erdos-szekeres"
     }
   ],
   "leanFile": {
@@ -213,24 +224,24 @@
   },
   "relatedProofs": [
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "herons-formula",
+      "relationship": "Both compute polygon area: Heron's formula uses side lengths while Pick's uses lattice point counts. For lattice triangles, both can be applied and must agree",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "minkowski-theorem",
+      "relationship": "Both concern lattice geometry: Minkowski's theorem guarantees lattice points in convex bodies of sufficient volume, while Pick's counts them in polygons",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "triangle-angle-sum",
+      "relationship": "Pick's theorem for triangles connects to the angle sum property: a lattice triangle's area via Pick must be consistent with its angles via trigonometry",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-szekeres",
+      "relationship": "Both involve discrete geometry and counting: Erdos-Szekeres concerns point configurations in convex position, while Pick counts lattice points in polygons",
+      "description": ""
     }
   ],
   "references": [

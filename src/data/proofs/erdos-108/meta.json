@@ -147,9 +147,34 @@
   ],
   "relatedProofs": [
     {
-      "target": "ramseys-theorem",
-      "relationship": "foundational result",
-      "description": "Ramsey's Theorem underlies the Ramsey-theoretic arguments used in the proof of #108. The probabilistic method that Rödl employed to prove the r=4 case was partly inspired by Erdős's probabilistic lower bounds for Ramsey numbers."
+      "id": "erdos-58",
+      "relationship": "companion problem",
+      "description": "Erdős Problem #58 asks whether graphs with sufficiently high chromatic number must contain odd cycles of every length, a complementary question about how chromatic number forces cycle structure. Together with #108, it forms part of Erdős's program relating chromatic number to cycle properties."
+    },
+    {
+      "id": "erdos-57",
+      "relationship": "closely related result",
+      "description": "Erdős Problem #57 addresses whether graphs of infinite chromatic number must contain odd cycles, an infinite analogue of the finite chromatic/cycle questions. The relationship between girth and chromatic number studied in #108 is directly relevant."
+    },
+    {
+      "id": "erdos-61",
+      "relationship": "related conjecture",
+      "description": "The Erdős–Hajnal Conjecture (#61) asks whether every graph with a forbidden induced subgraph has a large clique or independent set. It shares the theme of extracting structured subgraphs from dense/chromatic graphs, and Erdős and Hajnal are co-authors of both problems."
+    },
+    {
+      "id": "erdos-77",
+      "relationship": "shared technique",
+      "description": "Erdős Problem #77 concerns Ramsey number growth rates and relies on the same probabilistic method (random graph constructions) that underlies Rödl's proof of the r=4 case of #108. Both illustrate the power of the probabilistic method in extremal combinatorics."
+    },
+    {
+      "id": "erdos-78",
+      "relationship": "shared technique",
+      "description": "Erdős Problem #78 seeks constructive lower bounds for Ramsey numbers, using probabilistic arguments similar to those in the proof of #108. The girth control in #108's proof uses random subgraph selection analogous to Ramsey constructions."
+    },
+    {
+      "id": "erdos-74",
+      "relationship": "related problem",
+      "description": "Erdős Problem #74 asks whether graphs of high chromatic number contain almost-bipartite subgraphs of high chromatic number—a variant of the same theme in #108 where the structural constraint is near-bipartiteness rather than large girth."
     }
   ],
   "references": [
@@ -159,7 +184,7 @@
       ],
       "title": "On the chromatic number of subgraphs of a given graph",
       "venue": "Proceedings of the American Mathematical Society",
-      "year": 1977,
+      "year": "1977",
       "volume": "64",
       "pages": "370–371",
       "doi": "10.1090/S0002-9939-1977-0469909-7",
@@ -172,7 +197,7 @@
       ],
       "title": "On chromatic number of graphs and set-systems",
       "venue": "Acta Mathematica Hungarica",
-      "year": 1966,
+      "year": "1966",
       "volume": "17",
       "pages": "61–99",
       "doi": "10.1007/BF02020444",
@@ -184,7 +209,7 @@
       ],
       "title": "Sur le coloriage des graphs",
       "venue": "Colloquium Mathematicum",
-      "year": 1955,
+      "year": "1955",
       "volume": "3",
       "pages": "161–162",
       "doi": "10.4064/cm-3-2-161-162",
@@ -196,7 +221,7 @@
       ],
       "title": "Graph theory and probability",
       "venue": "Canadian Journal of Mathematics",
-      "year": 1959,
+      "year": "1959",
       "volume": "11",
       "pages": "34–38",
       "doi": "10.4153/CJM-1959-003-9",
@@ -209,7 +234,7 @@
       ],
       "title": "The Probabilistic Method",
       "venue": "Wiley-Interscience",
-      "year": 2016,
+      "year": "2016",
       "edition": "4th",
       "isbn": "978-1-119-06195-3",
       "note": "Comprehensive treatment of probabilistic techniques including the girth-chromatic number constructions and Lovász Local Lemma used in proofs related to #108. Chapter 5 covers high girth, high chromatic number graphs."

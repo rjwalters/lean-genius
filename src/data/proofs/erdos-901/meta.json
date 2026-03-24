@@ -106,70 +106,80 @@
       "title": "Hypergraph Definitions",
       "startLine": 36,
       "endLine": 47,
-      "summary": "Defines `UniformHypergraph V n` as a structure with a `Finset (Finset V)` of edges, each of cardinality $n$. Includes `edgeCount` for $|E(H)|$."
+      "summary": "Defines `UniformHypergraph V n` as a structure with a `Finset (Finset V)` of edges, each of cardinality $n$. Includes `edgeCount` for $|E(H)|$.",
+      "mathContext": "Defines `UniformHypergraph V n` as a structure with a `Finset (Finset V)` of edges, each of cardinality $n$. Includes `edgeCount` for $|E(H)|$."
     },
     {
       "id": "property-b",
       "title": "Property B",
       "startLine": 48,
       "endLine": 72,
-      "summary": "Defines `TwoColoring` ($V \\to \\mathrm{Fin}\\, 2$), `IsMonochromatic`, `HasPropertyB` ($\\exists$ proper 2-coloring), and `LacksPropertyB` ($\\forall$ colorings have a monochromatic edge). States the dichotomy $\\texttt{HasPropertyB} \\iff \\neg\\texttt{LacksPropertyB}$."
+      "summary": "Defines `TwoColoring` ($V \\to \\mathrm{Fin}\\, 2$), `IsMonochromatic`, `HasPropertyB` ($\\exists$ proper 2-coloring), and `LacksPropertyB` ($\\forall$ colorings have a monochromatic edge). States the dichotomy $\\texttt{HasPropertyB} \\iff \\neg\\texttt{LacksPropertyB}$.",
+      "mathContext": "Defines `TwoColoring` ($V \\to \\mathrm{Fin}\\, 2$), `IsMonochromatic`, `HasPropertyB` ($\\exists$ proper 2-coloring), and `LacksPropertyB` ($\\forall$ colorings have a monochromatic edge). States the dich"
     },
     {
       "id": "m-function",
       "title": "The Function $m(n)$",
       "startLine": 73,
       "endLine": 87,
-      "summary": "Defines $m(n) = \\inf\\{|E(H)| : H \\text{ is } n\\text{-uniform},\\, \\texttt{LacksPropertyB}(H)\\}$ via `sInf`. States well-definedness $m(n) > 0$ for $n \\ge 2$ and monotonicity."
+      "summary": "Defines $m(n) = \\inf\\{|E(H)| : H \\text{ is } n\\text{-uniform},\\, \\texttt{LacksPropertyB}(H)\\}$ via `sInf`. States well-definedness $m(n) > 0$ for $n \\ge 2$ and monotonicity.",
+      "mathContext": "Defines $m(n) = \\inf\\{|E(H)| : H \\text{ is } n\\text{-uniform},\\, \\texttt{LacksPropertyB}(H)\\}$ via `sInf`. States well-definedness $m(n) > 0$ for $n \\ge 2$ and monotonicity."
     },
     {
       "id": "exact",
       "title": "Exact Values",
       "startLine": 88,
       "endLine": 101,
-      "summary": "States $m(2) = 3$, $m(3) = 7$ (the Fano plane $PG(2,2)$), $m(4) = 23$ (Östergård 2014 computer search). All sorries."
+      "summary": "States $m(2) = 3$, $m(3) = 7$ (the Fano plane $PG(2,2)$), $m(4) = 23$ (Östergård 2014 computer search). All sorries.",
+      "mathContext": "States $m(2) = 3$, $m(3) = 7$ (the Fano plane $PG(2,2)$), $m(4) = 23$ (Östergård 2014 computer search). All sorries."
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
       "startLine": 102,
       "endLine": 125,
-      "summary": "Four lower bounds in historical order: Erdős $m(n) > 2^{n-1}$ (1963), Beck $m(n) \\gg n^{1/3} \\cdot 2^n$ (1977), Radhakrishnan–Srinivasan $m(n) \\gg \\sqrt{n/\\log n} \\cdot 2^n$ (2000, best known), Pluhár $m(n) \\gg n^{1/4} \\cdot 2^n$ (2009, simplified proof)."
+      "summary": "Four lower bounds in historical order: Erdős $m(n) > 2^{n-1}$ (1963), Beck $m(n) \\gg n^{1/3} \\cdot 2^n$ (1977), Radhakrishnan–Srinivasan $m(n) \\gg \\sqrt{n/\\log n} \\cdot 2^n$ (2000, best known), Pluhár $m(n) \\gg n^{1/4} \\cdot 2^n$ (2009, simplified proof).",
+      "mathContext": "Four lower bounds in historical order: Erdős $m(n) > 2^{n-1}$ (1963), Beck $m(n) \\gg n^{1/3} \\cdot 2^n$ (1977), Radhakrishnan–Srinivasan $m(n) \\gg \\sqrt{n/\\log n} \\cdot 2^n$ (2000, best known), Pluhár"
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "startLine": 126,
       "endLine": 137,
-      "summary": "Erdős upper bound $m(n) < n^2 \\cdot 2^n$ via explicit construction, and a probabilistic bound $m(n) \\le C \\cdot n \\cdot 2^n$ supporting the conjecture."
+      "summary": "Erdős upper bound $m(n) < n^2 \\cdot 2^n$ via explicit construction, and a probabilistic bound $m(n) \\le C \\cdot n \\cdot 2^n$ supporting the conjecture.",
+      "mathContext": "Erdős upper bound $m(n) < n^2 \\cdot 2^n$ via explicit construction, and a probabilistic bound $m(n) \\le C \\cdot n \\cdot 2^n$ supporting the conjecture."
     },
     {
       "id": "conjecture",
       "title": "Erdős-Lovász Conjecture",
       "startLine": 138,
       "endLine": 152,
-      "summary": "States $m(n) = \\Theta(n \\cdot 2^n)$ via `Filter.atTop` with constants $c_1, c_2 > 0$. Includes the `current_gap` theorem showing the known bounds $\\sqrt{n/\\log n} \\cdot 2^n \\ll m(n) \\ll n^2 \\cdot 2^n$."
+      "summary": "States $m(n) = \\Theta(n \\cdot 2^n)$ via `Filter.atTop` with constants $c_1, c_2 > 0$. Includes the `current_gap` theorem showing the known bounds $\\sqrt{n/\\log n} \\cdot 2^n \\ll m(n) \\ll n^2 \\cdot 2^n$.",
+      "mathContext": "States $m(n) = \\Theta(n \\cdot 2^n)$ via `Filter.atTop` with constants $c_1, c_2 > 0$. Includes the `current_gap` theorem showing the known bounds $\\sqrt{n/\\log n} \\cdot 2^n \\ll m(n) \\ll n^2 \\cdot 2^n$"
     },
     {
       "id": "constructions",
       "title": "Constructions",
       "startLine": 153,
       "endLine": 167,
-      "summary": "The complete $n$-uniform hypergraph on $2n-1$ vertices lacks Property B by pigeonhole. Explicit `hypergraph_m2` construction for $m(2) = 3$ with three edges $\\{0,1\\}, \\{0,2\\}, \\{1,2\\}$ on 4 vertices."
+      "summary": "The complete $n$-uniform hypergraph on $2n-1$ vertices lacks Property B by pigeonhole. Explicit `hypergraph_m2` construction for $m(2) = 3$ with three edges $\\{0,1\\}, \\{0,2\\}, \\{1,2\\}$ on 4 vertices.",
+      "mathContext": "The complete $n$-uniform hypergraph on $2n-1$ vertices lacks Property B by pigeonhole. Explicit `hypergraph_m2` construction for $m(2) = 3$ with three edges $\\{0,1\\}, \\{0,2\\}, \\{1,2\\}$ on 4 vertices."
     },
     {
       "id": "probabilistic",
       "title": "Probabilistic Method",
       "startLine": 168,
       "endLine": 181,
-      "summary": "Lovász Local Lemma application: if each edge intersects $< 2^{n-1}$ others, Property B holds. Includes the monochromatic probability computation $\\Pr[\\text{monochromatic}] = 2^{1-n}$."
+      "summary": "Lovász Local Lemma application: if each edge intersects $< 2^{n-1}$ others, Property B holds. Includes the monochromatic probability computation $\\Pr[\\text{monochromatic}] = 2^{1-n}$.",
+      "mathContext": "Lovász Local Lemma application: if each edge intersects $< 2^{n-1}$ others, Property B holds. Includes the monochromatic probability computation $\\Pr[\\text{monochromatic}] = 2^{1-n}$."
     },
     {
       "id": "connections",
       "title": "Connections",
       "startLine": 182,
       "endLine": 238,
-      "summary": "Link to list chromatic number (Problem #629) via $m(k) \\le m(k+1)$. Defines `chromaticNumber` via `sInf` and proves the characterization $\\texttt{LacksPropertyB}(H) \\iff \\chi(H) \\ge 3$."
+      "summary": "Link to list chromatic number (Problem #629) via $m(k) \\le m(k+1)$. Defines `chromaticNumber` via `sInf` and proves the characterization $\\texttt{LacksPropertyB}(H) \\iff \\chi(H) \\ge 3$.",
+      "mathContext": "Link to list chromatic number (Problem #629) via $m(k) \\le m(k+1)$. Defines `chromaticNumber` via `sInf` and proves the characterization $\\texttt{LacksPropertyB}(H) \\iff \\chi(H) \\ge 3$."
     }
   ],
   "conclusion": {

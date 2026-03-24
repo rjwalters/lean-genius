@@ -85,63 +85,72 @@
       "title": "Problem Statement, Imports, and Overview",
       "startLine": 1,
       "endLine": 61,
-      "summary": "File header explaining the OQ chain (OQ01 → OQ02 → OQ03), the isoperimetric inequality C²≥4πA, and Hurwitz's Fourier proof strategy. Imports from Mathlib trigonometry, calculus, and Fourier analysis."
+      "summary": "File header explaining the OQ chain (OQ01 → OQ02 → OQ03), the isoperimetric inequality C²≥4πA, and Hurwitz's Fourier proof strategy. Imports from Mathlib trigonometry, calculus, and Fourier analysis.",
+      "mathContext": "File header explaining the OQ chain (OQ01 → OQ02 → OQ03), the isoperimetric inequality C²≥4πA, and Hurwitz's Fourier proof strategy. Imports from Mathlib trigonometry, calculus, and Fourier analysis."
     },
     {
       "id": "part-i-circle",
       "title": "Part I: The Circle Case — Equality C² = 4πA",
       "startLine": 62,
       "endLine": 114,
-      "summary": "circleCirc, circleArea definitions. circle_isoperimetric_equality: (2πr)²=4π·πr² by ring. circle_isoperimetric_ratio=1. circumference_is_deriv_of_area: C = dA/dr (connection to OQ01). circleCirc_pos, circleArea_pos positivity results."
+      "summary": "circleCirc, circleArea definitions. circle_isoperimetric_equality: (2πr)²=4π·πr² by ring. circle_isoperimetric_ratio=1. circumference_is_deriv_of_area: C = dA/dr (connection to OQ01). circleCirc_pos, circleArea_pos positivity results.",
+      "mathContext": "circleCirc, circleArea definitions. circle_isoperimetric_equality: (2πr)²=4π·πr² by ring. circle_isoperimetric_ratio=1. circumference_is_deriv_of_area: C = dA/dr (connection to OQ01). circleCirc_pos, "
     },
     {
       "id": "part-ii-square",
       "title": "Part II: The Square Case — Strict Inequality C² > 4πA",
       "startLine": 115,
       "endLine": 148,
-      "summary": "squareCirc, squareArea definitions. square_isoperimetric_strict: C²>4πA for squares, proved by π<4 (Real.pi_lt_four). square_isoperimetric_ratio = π/4. square_ratio_lt_one: π/4 < 1."
+      "summary": "squareCirc, squareArea definitions. square_isoperimetric_strict: C²>4πA for squares, proved by π<4 (Real.pi_lt_four). square_isoperimetric_ratio = π/4. square_ratio_lt_one: π/4 < 1.",
+      "mathContext": "squareCirc, squareArea definitions. square_isoperimetric_strict: C²>4πA for squares, proved by π<4 (Real.pi_lt_four). square_isoperimetric_ratio = π/4. square_ratio_lt_one: π/4 < 1."
     },
     {
       "id": "part-iii-ngon",
       "title": "Part III: Regular n-gons Approach the Circle",
       "startLine": 149,
       "endLine": 243,
-      "summary": "regular_ngon_isoperimetric_ratio = π/(n·tan(π/n)) for circumradius R. ngon_limit_tendsto_circle: the ratio tends to 1 as n→∞, proved using Real.hasDerivAt_tan and hasDerivAt_iff_tendsto_slope (tan(h)/h→1 at h=0)."
+      "summary": "regular_ngon_isoperimetric_ratio = π/(n·tan(π/n)) for circumradius R. ngon_limit_tendsto_circle: the ratio tends to 1 as n→∞, proved using Real.hasDerivAt_tan and hasDerivAt_iff_tendsto_slope (tan(h)/h→1 at h=0).",
+      "mathContext": "regular_ngon_isoperimetric_ratio = π/(n·tan(π/n)) for circumradius R. ngon_limit_tendsto_circle: the ratio tends to 1 as n→∞, proved using Real.hasDerivAt_tan and hasDerivAt_iff_tendsto_slope (tan(h)/"
     },
     {
       "id": "part-iv-wirtinger",
       "title": "Part IV: Wirtinger's Inequality and SmoothClosedCurve Infrastructure",
       "startLine": 244,
       "endLine": 355,
-      "summary": "SmoothClosedCurve structure (x, y smooth 2π-periodic), circumference and area (Green's theorem) definitions. wirtinger_inequality axiom. circleGamma as SmoothClosedCurve instance with verified circumference 2πr and area πr²."
+      "summary": "SmoothClosedCurve structure (x, y smooth 2π-periodic), circumference and area (Green's theorem) definitions. wirtinger_inequality axiom. circleGamma as SmoothClosedCurve instance with verified circumference 2πr and area πr².",
+      "mathContext": "SmoothClosedCurve structure (x, y smooth 2π-periodic), circumference and area (Green's theorem) definitions. wirtinger_inequality axiom. circleGamma as SmoothClosedCurve instance with verified circumf"
     },
     {
       "id": "part-v-smooth",
       "title": "Part V: The Isoperimetric Inequality for Smooth Curves",
       "startLine": 356,
       "endLine": 381,
-      "summary": "isoperimetric_inequality_smooth: the main theorem (1 sorry) — for any SmoothClosedCurve, C²≥4πA. Uses wirtinger_inequality axiom. The sorry requires integral Cauchy-Schwarz and the constant-speed parametrization argument."
+      "summary": "isoperimetric_inequality_smooth: the main theorem (1 sorry) — for any SmoothClosedCurve, C²≥4πA. Uses wirtinger_inequality axiom. The sorry requires integral Cauchy-Schwarz and the constant-speed parametrization argument.",
+      "mathContext": "isoperimetric_inequality_smooth: the main theorem (1 sorry) — for any SmoothClosedCurve, C²≥4πA. Uses wirtinger_inequality axiom. The sorry requires integral Cauchy-Schwarz and the constant-speed para"
     },
     {
       "id": "part-vi-equality",
       "title": "Part VI: Equality Characterization",
       "startLine": 382,
       "endLine": 412,
-      "summary": "circle_satisfies_isoperimetric: circles achieve equality C²=4πA. equality_implies_circle: NOW PROVED (was axiom) — if 4πA=C², set r=C/(2π), then C=circleCirc r and A=circleArea r (purely algebraic). non_circle_satisfies_strict: strict inequality for non-circles."
+      "summary": "circle_satisfies_isoperimetric: circles achieve equality C²=4πA. equality_implies_circle: NOW PROVED (was axiom) — if 4πA=C², set r=C/(2π), then C=circleCirc r and A=circleArea r (purely algebraic). non_circle_satisfies_strict: strict inequality for non-circles.",
+      "mathContext": "circle_satisfies_isoperimetric: circles achieve equality C²=4πA. equality_implies_circle: NOW PROVED (was axiom) — if 4πA=C², set r=C/(2π), then C=circleCirc r and A=circleArea r (purely algebraic). n"
     },
     {
       "id": "part-vii-corollaries",
       "title": "Part VII: Algebraic Corollaries of the Isoperimetric Inequality",
       "startLine": 413,
       "endLine": 522,
-      "summary": "isoperimetric_area_bound: A ≤ C²/(4π). minimum_circumference_for_area: C ≥ 2√(πA). isoperimetric_ratio_scale_invariant: ratio unchanged by scaling. circle_maximizes_area: circle is optimal for fixed circumference. non_circle_area_lt_circle: non-circles have strictly less area."
+      "summary": "isoperimetric_area_bound: A ≤ C²/(4π). minimum_circumference_for_area: C ≥ 2√(πA). isoperimetric_ratio_scale_invariant: ratio unchanged by scaling. circle_maximizes_area: circle is optimal for fixed circumference. non_circle_area_lt_circle: non-circles have strictly less area.",
+      "mathContext": "isoperimetric_area_bound: A ≤ C²/(4π). minimum_circumference_for_area: C ≥ 2√(πA). isoperimetric_ratio_scale_invariant: ratio unchanged by scaling. circle_maximizes_area: circle is optimal for fixed c"
     },
     {
       "id": "part-viii-arithmetic",
       "title": "Part VIII: Arithmetic Foundations for the Isoperimetric Proof",
       "startLine": 523,
       "endLine": 1232,
-      "summary": "cross_product_sq_le: 2D Cauchy-Schwarz (xv-yu)² ≤ (x²+y²)(u²+v²) by nlinarith. isoperimetric_from_wirtinger_bounds: arithmetic kernel — from Wirtinger bounds (Sxy≤2πc², S²≤2πSxy, 2A≤cS) to 4πA≤L². All inequalities fully proved."
+      "summary": "cross_product_sq_le: 2D Cauchy-Schwarz (xv-yu)² ≤ (x²+y²)(u²+v²) by nlinarith. isoperimetric_from_wirtinger_bounds: arithmetic kernel — from Wirtinger bounds (Sxy≤2πc², S²≤2πSxy, 2A≤cS) to 4πA≤L². All inequalities fully proved.",
+      "mathContext": "cross_product_sq_le: 2D Cauchy-Schwarz (xv-yu)² ≤ (x²+y²)(u²+v²) by nlinarith. isoperimetric_from_wirtinger_bounds: arithmetic kernel — from Wirtinger bounds (Sxy≤2πc², S²≤2πSxy, 2A≤cS) to 4πA≤L². All"
     }
   ],
   "conclusion": {
@@ -215,12 +224,27 @@
     {
       "id": "area-of-circle-oq-01-oq-02-oq-02",
       "relationship": "uses",
-      "description": "The IBP formula for Fourier coefficients ĉₙ(f') = in·ĉₙ(f) proved there is a key ingredient in Hurwitz's Fourier-analyti"
+      "description": "The IBP formula for Fourier coefficients ĉₙ(f') = in·ĉₙ(f) proved there is a key ingredient in Hurwitz's Fourier-analytic proof of the isoperimetric inequality"
     },
     {
       "id": "isoperimetric-theorem",
       "relationship": "extends",
       "description": "Wiedijk #43: the abstract version is in IsoperimetricTheorem.lean; this file provides the OQ-chain approach"
+    },
+    {
+      "id": "fourier-series",
+      "relationship": "foundational",
+      "description": "The Fourier decomposition and Parseval's identity from Fourier series theory underpin the spectral proof: the isoperimetric inequality reduces to comparing Fourier coefficient norms"
+    },
+    {
+      "id": "cauchy-schwarz",
+      "relationship": "uses",
+      "description": "The 2D Cauchy-Schwarz inequality (xv-yu)² ≤ (x²+y²)(u²+v²) proved here as cross_product_sq_le is used in the arithmetic kernel of the isoperimetric proof"
+    },
+    {
+      "id": "borsuk-ulam",
+      "relationship": "thematic",
+      "description": "The Borsuk-Ulam theorem and the isoperimetric inequality are both topological/geometric results about the structure of continuous maps on spheres. While the isoperimetric inequality characterizes the circle as the area-optimal curve, Borsuk-Ulam provides topological constraints on continuous mappings of spheres — both reveal deep geometric rigidity phenomena"
     }
   ],
   "references": [

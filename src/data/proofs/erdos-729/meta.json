@@ -72,70 +72,80 @@
       "title": "Basic Definitions",
       "startLine": 35,
       "endLine": 56,
-      "summary": "Defines `factorialPadicVal` via Legendre's formula $\\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$, axiomatizes `legendre_formula`, and defines `DividesFactorial n a b` as $a! \\cdot b! \\mid n!$."
+      "summary": "Defines `factorialPadicVal` via Legendre's formula $\\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$, axiomatizes `legendre_formula`, and defines `DividesFactorial n a b` as $a! \\cdot b! \\mid n!$.",
+      "mathContext": "Defines `factorialPadicVal` via Legendre's formula $\\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$, axiomatizes `legendre_formula`, and defines `DividesFactorial n a b` as $a! \\cdot b! \\mid n!$."
     },
     {
       "id": "erdos-classical",
       "title": "Erdős's Classical Result (1968)",
       "startLine": 57,
       "endLine": 74,
-      "summary": "Axiomatizes `erdos_1968_classical`: $a!b! \\mid n! \\implies a + b \\leq n + O(\\log n)$. Proves `erdos_proof_via_powers_of_two` by forwarding to the axiom, documenting that the original proof uses only the $p = 2$ constraint."
+      "summary": "Axiomatizes `erdos_1968_classical`: $a!b! \\mid n! \\implies a + b \\leq n + O(\\log n)$. Proves `erdos_proof_via_powers_of_two` by forwarding to the axiom, documenting that the original proof uses only the $p = 2$ constraint.",
+      "mathContext": "Axiomatizes `erdos_1968_classical`: $a!b! \\mid n! \\implies a + b \\leq n + O(\\log n)$. Proves `erdos_proof_via_powers_of_two` by forwarding to the axiom, documenting that the original proof uses only t"
     },
     {
       "id": "relaxed-condition",
       "title": "The Relaxed Condition",
       "startLine": 75,
       "endLine": 94,
-      "summary": "Defines `SmallPrimes C` as primes $\\leq C$, and `DividesFactorialModSmall` allowing a correction factor $k$ with only small prime factors. This formalizes 'ignoring small primes in the denominator'."
+      "summary": "Defines `SmallPrimes C` as primes $\\leq C$, and `DividesFactorialModSmall` allowing a correction factor $k$ with only small prime factors. This formalizes 'ignoring small primes in the denominator'.",
+      "mathContext": "Defines `SmallPrimes C` as primes $\\leq C$, and `DividesFactorialModSmall` allowing a correction factor $k$ with only small prime factors. This formalizes 'ignoring small primes in the denominator'."
     },
     {
       "id": "question",
       "title": "The Question",
       "startLine": 95,
       "endLine": 107,
-      "summary": "Defines `InfinitelyManyExceptions C`: are there infinitely many $(a, b, n)$ with $a + b > n + C\\log n$ and `DividesFactorialModSmall`? This is the formal statement of Erdős Problem 729."
+      "summary": "Defines `InfinitelyManyExceptions C`: are there infinitely many $(a, b, n)$ with $a + b > n + C\\log n$ and `DividesFactorialModSmall`? This is the formal statement of Erdős Problem 729.",
+      "mathContext": "Defines `InfinitelyManyExceptions C`: are there infinitely many $(a, b, n)$ with $a + b > n + C\\log n$ and `DividesFactorialModSmall`? This is the formal statement of Erdős Problem 729."
     },
     {
       "id": "barreto-leeham",
       "title": "Barreto-Leeham Resolution",
       "startLine": 108,
       "endLine": 123,
-      "summary": "Axiomatizes `barreto_leeham_theorem`: $\\neg\\text{InfinitelyManyExceptions}(C)$ for all $C > 0$. Also states `barreto_leeham_bound`: the bound $a + b \\leq n + D\\log n$ persists with an explicit constant $D$."
+      "summary": "Axiomatizes `barreto_leeham_theorem`: $\\neg\\text{InfinitelyManyExceptions}(C)$ for all $C > 0$. Also states `barreto_leeham_bound`: the bound $a + b \\leq n + D\\log n$ persists with an explicit constant $D$.",
+      "mathContext": "Axiomatizes `barreto_leeham_theorem`: $\\neg\\text{InfinitelyManyExceptions}(C)$ for all $C > 0$. Also states `barreto_leeham_bound`: the bound $a + b \\leq n + D\\log n$ persists with an explicit constan"
     },
     {
       "id": "proof-strategy",
       "title": "Proof Strategy",
       "startLine": 124,
       "endLine": 140,
-      "summary": "Axiomatizes `proof_extends_erdos_argument`: for primes $p > C$, the $p$-adic constraint $v_p(a!) + v_p(b!) \\leq v_p(n!)$ holds even under the relaxed condition, since the correction factor $k$ has no $p$-component."
+      "summary": "Axiomatizes `proof_extends_erdos_argument`: for primes $p > C$, the $p$-adic constraint $v_p(a!) + v_p(b!) \\leq v_p(n!)$ holds even under the relaxed condition, since the correction factor $k$ has no $p$-component.",
+      "mathContext": "Axiomatizes `proof_extends_erdos_argument`: for primes $p > C$, the $p$-adic constraint $v_p(a!) + v_p(b!) \\leq v_p(n!)$ holds even under the relaxed condition, since the correction factor $k$ has no "
     },
     {
       "id": "legendre-details",
       "title": "Legendre's Formula Details",
       "startLine": 141,
       "endLine": 160,
-      "summary": "Defines `digitSum p n` recursively and axiomatizes `legendre_identity`: $v_p(n!) = (n - s_p(n))/(p-1)$. The theorem `legendre_for_two` ($v_2(n!) = n - s_2(n)$) has a `sorry`."
+      "summary": "Defines `digitSum p n` recursively and axiomatizes `legendre_identity`: $v_p(n!) = (n - s_p(n))/(p-1)$. The theorem `legendre_for_two` ($v_2(n!) = n - s_2(n)$) has a `sorry`.",
+      "mathContext": "Defines `digitSum p n` recursively and axiomatizes `legendre_identity`: $v_p(n!) = (n - s_p(n))/(p-1)$. The theorem `legendre_for_two` ($v_2(n!) = n - s_2(n)$) has a `sorry`."
     },
     {
       "id": "implications",
       "title": "Implications and Rigidity",
       "startLine": 161,
       "endLine": 178,
-      "summary": "Axiomatizes `factorial_rigidity` and states `binomial_rigidity` (with `sorry`): when $a + b = n$, $n!/(a!b!) = \\binom{n}{a}$ is always an integer."
+      "summary": "Axiomatizes `factorial_rigidity` and states `binomial_rigidity` (with `sorry`): when $a + b = n$, $n!/(a!b!) = \\binom{n}{a}$ is always an integer.",
+      "mathContext": "Axiomatizes `factorial_rigidity` and states `binomial_rigidity` (with `sorry`): when $a + b = n$, $n!/(a!b!) = \\binom{n}{a}$ is always an integer."
     },
     {
       "id": "main-statement",
       "title": "Main Problem Statement",
       "startLine": 179,
       "endLine": 193,
-      "summary": "Proves `erdos_729_statement`: combines `erdos_1968_classical` and `barreto_leeham_theorem` into a single conjunction, establishing both the classical bound and its robustness."
+      "summary": "Proves `erdos_729_statement`: combines `erdos_1968_classical` and `barreto_leeham_theorem` into a single conjunction, establishing both the classical bound and its robustness.",
+      "mathContext": "Proves `erdos_729_statement`: combines `erdos_1968_classical` and `barreto_leeham_theorem` into a single conjunction, establishing both the classical bound and its robustness."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 194,
       "endLine": 207,
-      "summary": "Proves `erdos_729_summary`: the answer is NO, and the explicit bound $a + b \\leq n + D\\log n$ holds, combining `barreto_leeham_theorem` and `barreto_leeham_bound`."
+      "summary": "Proves `erdos_729_summary`: the answer is NO, and the explicit bound $a + b \\leq n + D\\log n$ holds, combining `barreto_leeham_theorem` and `barreto_leeham_bound`.",
+      "mathContext": "Proves `erdos_729_summary`: the answer is NO, and the explicit bound $a + b \\leq n + D\\log n$ holds, combining `barreto_leeham_theorem` and `barreto_leeham_bound`."
     }
   ],
   "conclusion": {

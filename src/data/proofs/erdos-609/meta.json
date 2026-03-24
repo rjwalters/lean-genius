@@ -75,84 +75,96 @@
       "title": "Imports and Setup",
       "summary": "Imports full Mathlib and opens `Finset`, `Function`, `Set`, `SimpleGraph` namespaces. Provides access to `Sym2` for unordered edge pairs, `SimpleGraph.IsBipartite`, and `Real.sqrt`/`Real.log` for analytic bounds.",
       "startLine": 29,
-      "endLine": 32
+      "endLine": 32,
+      "mathContext": "Imports full Mathlib and opens `Finset`, `Function`, `Set`, `SimpleGraph` namespaces. Provides access to `Sym2` for unordered edge pairs, `SimpleGraph.IsBipartite`, and `Real.sqrt`/`Real.log` for anal"
     },
     {
       "id": "basic-defs",
       "title": "Basic Definitions",
       "summary": "Defines `EdgeColoring' V n` as $\\mathrm{Sym2}\\, V \\to \\mathrm{Fin}\\, n$, `IsCycle` as a list-based cycle with `Nodup` and closing edge, `cycleLength`, and `IsOddCycle` (cycle with odd length). These form the combinatorial vocabulary for the problem.",
       "startLine": 33,
-      "endLine": 53
+      "endLine": 53,
+      "mathContext": "Defines `EdgeColoring' V n` as $\\mathrm{Sym2}\\, V \\to \\mathrm{Fin}\\, n$, `IsCycle` as a list-based cycle with `Nodup` and closing edge, `cycleLength`, and `IsOddCycle` (cycle with odd length). These f"
     },
     {
       "id": "monochromatic",
       "title": "Monochromatic Structures",
       "summary": "Defines `IsMonochromaticCycle G coloring cycle c` (all edges have color $c$) and `HasMonochromaticOddCycleOfLength G coloring m` ($\\exists$ monochromatic odd cycle of length $\\leq m$). This is the predicate that $f(n)$ measures.",
       "startLine": 54,
-      "endLine": 71
+      "endLine": 71,
+      "mathContext": "Defines `IsMonochromaticCycle G coloring cycle c` (all edges have color $c$) and `HasMonochromaticOddCycleOfLength G coloring m` ($\\exists$ monochromatic odd cycle of length $\\leq m$). This is the pre"
     },
     {
       "id": "complete-graph",
       "title": "Complete Graph $K_n$",
       "summary": "Defines `completeGraph V` with $\\text{Adj}\\, x\\, y \\iff x \\neq y$ and abbreviation `K n := completeGraph (Fin n)`. The problem studies colorings of $K_{2^n+1}$.",
       "startLine": 72,
-      "endLine": 82
+      "endLine": 82,
+      "mathContext": "Defines `completeGraph V` with $\\text{Adj}\\, x\\, y \\iff x \\neq y$ and abbreviation `K n := completeGraph (Fin n)`. The problem studies colorings of $K_{2^n+1}$."
     },
     {
       "id": "f-function",
       "title": "The Function $f(n)$",
       "summary": "Defines `erdos609_f n` via `Nat.find` as $\\min\\{m : \\forall c,\\; \\exists \\text{mono odd } C_\\ell \\leq m\\}$. Also defines `AvoidsOddCyclesUpTo` and `IsErdos609_f` (the minimality characterization). The existence proof `f_exists` is sorry'd.",
       "startLine": 83,
-      "endLine": 104
+      "endLine": 104,
+      "mathContext": "Defines `erdos609_f n` via `Nat.find` as $\\min\\{m : \\forall c,\\; \\exists \\text{mono odd } C_\\ell \\leq m\\}$. Also defines `AvoidsOddCyclesUpTo` and `IsErdos609_f` (the minimality characterization). The"
     },
     {
       "id": "threshold",
       "title": "The $2^n$ Threshold Dichotomy",
       "summary": "States `K_2n_avoids_odd_cycles` (doubling construction gives odd-cycle-free coloring of $K_{2^n}$) and `K_2n_plus_1_forces_odd_cycle` (every $n$-coloring of $K_{2^n+1}$ has a monochromatic odd cycle). The threshold $2^n$ is sharp.",
       "startLine": 105,
-      "endLine": 121
+      "endLine": 121,
+      "mathContext": "States `K_2n_avoids_odd_cycles` (doubling construction gives odd-cycle-free coloring of $K_{2^n}$) and `K_2n_plus_1_forces_odd_cycle` (every $n$-coloring of $K_{2^n+1}$ has a monochromatic odd cycle)."
     },
     {
       "id": "short-cycles",
       "title": "Avoiding Short Cycles",
       "summary": "States `can_avoid_C5` and `can_avoid_C7`: for large $n$, $n$-colorings of $K_{2^n+1}$ can avoid monochromatic pentagons and heptagons. Shows $f(n) > 5$ and $f(n) > 7$ for large $n$. Also defines Chung's question: does $f(n) \\to \\infty$?",
       "startLine": 122,
-      "endLine": 139
+      "endLine": 139,
+      "mathContext": "States `can_avoid_C5` and `can_avoid_C7`: for large $n$, $n$-colorings of $K_{2^n+1}$ can avoid monochromatic pentagons and heptagons. Shows $f(n) > 5$ and $f(n) > 7$ for large $n$. Also defines Chung"
     },
     {
       "id": "bounds",
       "title": "Quantitative Bounds",
       "summary": "States three bounds: Day-Johnson lower $f(n) \\geq 2^{c\\sqrt{\\log n}}$, Girão-Hunter upper $f(n) \\leq C \\cdot 2^n/n$, and Janzer-Yip upper $f(n) \\leq C \\cdot n^{3/2} \\cdot 2^{n/2}$. Also states `f_tends_to_infinity` confirming Chung's question. Defines `boundsGap` measuring the ratio.",
       "startLine": 140,
-      "endLine": 170
+      "endLine": 170,
+      "mathContext": "States three bounds: Day-Johnson lower $f(n) \\geq 2^{c\\sqrt{\\log n}}$, Girão-Hunter upper $f(n) \\leq C \\cdot 2^n/n$, and Janzer-Yip upper $f(n) \\leq C \\cdot n^{3/2} \\cdot 2^{n/2}$. Also states `f_tend"
     },
     {
       "id": "ramsey-connection",
       "title": "Connection to Cycle Ramsey Numbers",
       "summary": "Defines `cycleRamsey k r` as the $r$-color Ramsey number for $C_k$. States `odd_cycle_ramsey_exponential`: for odd $k \\geq 3$, $R(C_k; r) = \\Theta(2^r)$. This connects $f(n)$ to classical Ramsey theory.",
       "startLine": 171,
-      "endLine": 183
+      "endLine": 183,
+      "mathContext": "Defines `cycleRamsey k r` as the $r$-color Ramsey number for $C_k$. States `odd_cycle_ramsey_exponential`: for odd $k \\geq 3$, $R(C_k; r) = \\Theta(2^r)$. This connects $f(n)$ to classical Ramsey theor"
     },
     {
       "id": "bipartite",
       "title": "Bipartite Characterization",
       "summary": "States `bipartite_iff_no_odd_cycles` ($G$ bipartite $\\iff$ no odd cycles) and `color_class_bipartite` (color class without odd cycles induces a bipartite subgraph). This reduces the problem to covering $K_{2^n+1}$ with $n$ bipartite graphs.",
       "startLine": 184,
-      "endLine": 199
+      "endLine": 199,
+      "mathContext": "States `bipartite_iff_no_odd_cycles` ($G$ bipartite $\\iff$ no odd cycles) and `color_class_bipartite` (color class without odd cycles induces a bipartite subgraph). This reduces the problem to coverin"
     },
     {
       "id": "doubling",
       "title": "The Doubling Construction",
       "summary": "Defines `doublingConstruction n` building an $n$-coloring of $K_{2^n}$ inductively (double and use new color for cross-edges). States `doubling_avoids_odd_cycles` verifying no monochromatic odd cycle exists. Each color class $i$ is $K_{2^{i-1}, 2^{i-1}}$.",
       "startLine": 200,
-      "endLine": 214
+      "endLine": 214,
+      "mathContext": "Defines `doublingConstruction n` building an $n$-coloring of $K_{2^n}$ inductively (double and use new color for cross-edges). States `doubling_avoids_odd_cycles` verifying no monochromatic odd cycle "
     },
     {
       "id": "main",
       "title": "Main Problem Statement",
       "summary": "States `erdos_609` ($\\exists n,\\; f(n) \\geq 3$) and `erdos609_precise` (asks for tight asymptotics $f(n) \\asymp g(n)$). Includes `#check` statements verifying the formalization compiles. The problem remains OPEN.",
       "startLine": 215,
-      "endLine": 241
+      "endLine": 241,
+      "mathContext": "States `erdos_609` ($\\exists n,\\; f(n) \\geq 3$) and `erdos609_precise` (asks for tight asymptotics $f(n) \\asymp g(n)$). Includes `#check` statements verifying the formalization compiles. The problem r"
     }
   ],
   "conclusion": {
@@ -196,27 +208,27 @@
     {
       "id": "erdos-613",
       "relationship": "thematic",
-      "description": "Both study Ramsey-type coloring problems on graphs. #613 concerns size Ramsey numbers for stars vs odd cycles; #609 conc"
+      "description": "Both study Ramsey-type coloring problems on graphs. #613 concerns size Ramsey numbers for stars vs odd cycles; #609 concerns the minimum odd cycle length forced in multi-color edge colorings of $K_{2^n+1}$."
     },
     {
       "id": "erdos-883",
       "relationship": "thematic",
-      "description": "Both involve cycles in structured graphs. #883 asks about cycles in the coprime graph on subsets of $\\{1, \\ldots, n\\}$; "
+      "description": "Both involve cycles in structured graphs. #883 asks about cycles in the coprime graph on subsets of $\\{1, \\ldots, n\\}$; #609 asks about forced monochromatic odd cycles in edge-colored complete graphs."
     },
     {
       "id": "erdos-1091",
       "relationship": "thematic",
-      "description": "Both connect chromatic number to cycle structure. #1091 asks whether $K_4$-free graphs with $\\chi = 4$ contain odd cycle"
+      "description": "Both connect chromatic number to cycle structure. #1091 asks whether $K_4$-free graphs with $\\chi = 4$ contain odd cycles with diagonals; #609 asks about forced monochromatic odd cycles in multi-colored complete graphs."
     },
     {
       "id": "erdos-625",
       "relationship": "methodological",
-      "description": "Both study chromatic properties of graphs. #625 compares chromatic and cochromatic numbers of random graphs; #609 studie"
+      "description": "Both study chromatic properties of graphs. #625 compares chromatic and cochromatic numbers of random graphs; #609 studies the forced monochromatic odd girth in edge-colored $K_{2^n+1}$."
     },
     {
       "id": "erdos-622",
       "relationship": "methodological",
-      "description": "Both use extremal combinatorics and counting arguments on complete-like graphs. #622 studies cycle-spanning subsets in r"
+      "description": "Both use extremal combinatorics and counting arguments on complete-like graphs. #622 studies cycle-spanning subsets in regular graphs; #609 studies forced odd cycles in edge-colored complete graphs."
     }
   ],
   "leanFile": {

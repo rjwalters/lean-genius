@@ -156,6 +156,38 @@
       "startLine": 133,
       "endLine": 168,
       "summary": "Computational check for α = 1/2: 6/10 integers in {1,...,10} satisfy gcd(n, ⌊√n⌋) = 1 (ratio 0.6, close to 6/π² ≈ 0.608). Extended summary combining all results."
+    },
+    {
+      "id": "coprime-pair-infra",
+      "title": "Coprime Pair Infrastructure",
+      "startLine": 168,
+      "endLine": 182,
+      "summary": "Defines `countCoprimePairs N` as a decidable/computable count of coprime pairs in $\\{1,\\ldots,N\\}^2$ via `Finset.filter`. Proves `coprime_pair_symm` ($\\gcd(a,b) = 1 \\Leftrightarrow \\gcd(b,a) = 1$) and `countCoprimePairs_one = 1$ by `native_decide`.",
+      "mathContext": "The computable counting function $C(N) = |\\{(a,b) \\in [1,N]^2 : \\gcd(a,b) = 1\\}|$ serves as the numerator for the coprime pair density $C(N)/N^2 \\to 6/\\pi^2$. The `Finset` formulation enables `native_decide` evaluation at small values."
+    },
+    {
+      "id": "moebius-infrastructure",
+      "title": "Möbius Inversion Infrastructure",
+      "startLine": 218,
+      "endLine": 266,
+      "summary": "Proves `moebius_sum_divisors_eq`: $\\sum_{d \\mid n} \\mu(d) = [n = 1]$ (Möbius inversion principle), via the Dirichlet identity $\\mu * \\zeta = \\varepsilon$ in `ArithmeticFunction \\mathbb{Z}$. Uses `Finset.sum_nbij` for the divisor-antidiagonal bijection.",
+      "mathContext": "The identity $\\sum_{d \\mid n} \\mu(d) = \\begin{cases} 1 & n = 1 \\\\ 0 & n > 1 \\end{cases}$ is the key tool for detecting coprimality: $\\sum_{d \\mid \\gcd(a,b)} \\mu(d) = [\\gcd(a,b) = 1]$. In Lean, this is proved via the Dirichlet convolution algebra: $\\mu * \\zeta = \\varepsilon$ (the identity function), where $\\varepsilon(n) = [n=1]$."
+    },
+    {
+      "id": "counting-lemmas",
+      "title": "Counting Lemmas: Multiples and Common Factors",
+      "startLine": 268,
+      "endLine": 312,
+      "summary": "Proves `card_multiples`: $|\\{a \\in [1,N] : d \\mid a\\}| = \\lfloor N/d \\rfloor$ via an explicit bijection $a \\mapsto a/d - 1$. Proves `pairs_with_common_factor`: $|\\{(a,b) \\in [1,N]^2 : p \\mid \\gcd(a,b)\\}| = \\lfloor N/p \\rfloor^2$ by factoring the product Finset.",
+      "mathContext": "These are the combinatorial building blocks for the coprime counting formula $C(N) = \\sum_{d=1}^{N} \\mu(d) \\lfloor N/d \\rfloor^2$, obtained by Möbius inversion. The asymptotic analysis $C(N)/N^2 \\to \\sum_{d=1}^{\\infty} \\mu(d)/d^2 = 1/\\zeta(2) = 6/\\pi^2$ then proves `random_coprime_density`."
+    },
+    {
+      "id": "zeta-identity",
+      "title": "Zeta Function Identity",
+      "startLine": 314,
+      "endLine": 320,
+      "summary": "Proves `six_div_pi_sq_eq_inv_zeta_two`: $6/\\pi^2 = (\\pi^2/6)^{-1}$ by `inv_div`, connecting the coprime density to the inverse of the Basel sum $\\zeta(2) = \\pi^2/6$. Closes the `Erdos1149` namespace.",
+      "mathContext": "The identity $6/\\pi^2 = 1/\\zeta(2)$ is the link between coprime density and the Riemann zeta function: $\\prod_p (1 - 1/p^2) = 1/\\zeta(2) = 6/\\pi^2$, where the Euler product encodes the independence of divisibility by distinct primes."
     }
   ],
   "conclusion": {
@@ -194,17 +226,17 @@
     {
       "id": "euler-totient",
       "relationship": "foundational",
-      "description": "Euler's totient function $\\phi(n)$ counts integers coprime to $n$ — the same coprimality condition central to Erdős #114"
+      "description": "Euler's totient function $\\phi(n)$ counts integers coprime to $n$ — the same coprimality condition central to Erdős #1149, which asks whether $n$ and $\\lfloor n^\\alpha \\rfloor$ are coprime for infinitely many $n$"
     },
     {
       "id": "infinitude-primes",
       "relationship": "related",
-      "description": "The infinitude of primes is a prerequisite for understanding coprimality density. Erdős #1149 asks about coprimality alo"
+      "description": "The infinitude of primes is a prerequisite for understanding coprimality density. Erdős #1149 asks about coprimality along the sequence $(n, \\lfloor n^\\alpha \\rfloor)$, where prime factors of $\\lfloor n^\\alpha \\rfloor$ determine the coprimality"
     },
     {
       "id": "prime-number-theorem",
       "relationship": "technique",
-      "description": "The prime number theorem gives the density of primes needed to analyze when $\\gcd(n, \\lfloor n^\\alpha \\rfloor) = 1$. Sie"
+      "description": "The prime number theorem gives the density of primes needed to analyze when $\\gcd(n, \\lfloor n^\\alpha \\rfloor) = 1$. Sieve methods and prime counting estimates are the natural tools for this coprimality problem"
     }
   ],
   "leanFile": {

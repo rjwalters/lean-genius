@@ -50,7 +50,7 @@
       "ejs_refinement axiom: for q < φ, only need m = 2"
     ],
     "axiomCount": 14,
-    "lineCount": 198,
+    "lineCount": 232,
     "assumptions": "14 axioms: qSequence, qSequence_initial, IsPisot, and 11 more. See Lean source for complete statements."
   },
   "overview": {
@@ -163,7 +163,7 @@
       "Real"
     ],
     "namespace": "Erdos1096",
-    "lineCount": 198,
+    "lineCount": 232,
     "axiomCount": 14,
     "theoremCount": 5,
     "definitionCount": 7
@@ -221,22 +221,22 @@
     {
       "id": "geometric-series",
       "relationship": "foundational",
-      "description": "The geometric series formula Σ q^i = 1/(1-q) for |q| < 1 bounds the maximum q-representable number. For q > 1, finite su"
+      "description": "The geometric series formula Σ q^i = 1/(1-q) for |q| < 1 bounds the maximum q-representable number. For q > 1, finite sums Σ_{i∈S} q^i (the q-representable numbers) form a countable set whose structure depends on the algebraic properties of q"
     },
     {
       "id": "bounded-prime-gaps",
       "relationship": "thematic",
-      "description": "Both concern gap convergence in structured sequences: bounded prime gaps asks whether lim inf (p_{n+1} - p_n) < ∞ for pr"
+      "description": "Both concern gap convergence in structured sequences: bounded prime gaps asks whether lim inf (p_{n+1} - p_n) < ∞ for primes, while Erdős #1096 asks whether gaps in q-representable numbers tend to 0. Both involve subtle density questions about arithmetically defined sequences"
     },
     {
       "id": "liouville-theorem",
       "relationship": "related",
-      "description": "Liouville's approximation theorem constrains how well algebraic numbers can be approximated by rationals. Pisot numbers "
+      "description": "Liouville's approximation theorem constrains how well algebraic numbers can be approximated by rationals. Pisot numbers have the special property that their powers approach integers exponentially fast — a form of 'anti-Liouville' behavior that drives the gap non-convergence in q-expansions"
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "Unique prime factorization underlies the algebraic number theory needed to study Pisot numbers: the minimal polynomial o"
+      "description": "Unique prime factorization underlies the algebraic number theory needed to study Pisot numbers: the minimal polynomial of q₀ (x³ - x - 1) is irreducible over ℚ, and its factorization properties in ℤ[q₀] determine the expansion structure"
     }
   ]
 }

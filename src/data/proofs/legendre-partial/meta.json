@@ -162,27 +162,32 @@
     {
       "id": "bertrands-postulate",
       "relationship": "complementary",
-      "description": "Bertrand's postulate (prime in $(n, 2n)$, proved by Chebyshev 1852) is the weaker proven analog of Legendre's conjecture"
+      "description": "Bertrand's postulate (prime in $(n, 2n)$, proved by Chebyshev 1852) is the weaker proven analog of Legendre's conjecture. Both concern prime gaps: Bertrand guarantees a prime in an interval of length $n$, while Legendre asks for one in an interval of length $2n$ but at a quadratically larger location ($\\sim n^2$ vs $\\sim n$). Erdős's 1932 proof of Bertrand was one of his first major results"
     },
     {
       "id": "bounded-prime-gaps",
       "relationship": "related",
-      "description": "Zhang (2013) and Maynard (2013) proved that prime gaps stay bounded infinitely often ($\\liminf(p_{n+1} - p_n) \\leq 246$)"
+      "description": "Zhang (2013) and Maynard (2013) proved that prime gaps stay bounded infinitely often ($\\liminf(p_{n+1} - p_n) \\leq 246$). While this concerns the minimum gap, Legendre's conjecture concerns the maximum gap near perfect squares — complementary aspects of prime distribution"
     },
     {
       "id": "prime-number-theorem",
       "relationship": "foundational",
-      "description": "The PNT ($\\pi(x) \\sim x/\\ln x$) provides the heuristic basis for Legendre's conjecture: the expected number of primes in"
+      "description": "The PNT ($\\pi(x) \\sim x/\\ln x$) provides the heuristic basis for Legendre's conjecture: the expected number of primes in $(n^2, (n+1)^2)$ is $\\sim n/\\ln n \\to \\infty$, making the conjecture overwhelmingly plausible. The PNT was the key tool in Ingham's (1937) and later authors' unconditional progress toward Legendre"
     },
     {
       "id": "infinitude-primes",
       "relationship": "foundational",
-      "description": "The infinitude of primes (Euclid, ~300 BCE) is the most basic result about prime distribution. Legendre's conjecture is "
+      "description": "The infinitude of primes (Euclid, ~300 BCE) is the most basic result about prime distribution. Legendre's conjecture is a much finer statement: not just that primes are infinite, but that they are distributed regularly enough to appear in every interval between consecutive squares"
     },
     {
       "id": "dirichlets-theorem",
       "relationship": "related",
-      "description": "Dirichlet's theorem (1837) proves primes exist in every arithmetic progression $a + nd$ with $\\gcd(a,d) = 1$. Both resul"
+      "description": "Dirichlet's theorem (1837) proves primes exist in every arithmetic progression $a + nd$ with $\\gcd(a,d) = 1$. Both results concern the distribution of primes in structured subsets of the integers — Dirichlet in arithmetic progressions, Legendre in intervals between squares"
+    },
+    {
+      "id": "twin-primes-special",
+      "relationship": "thematic",
+      "description": "The twin prime conjecture (infinitely many primes $p$ with $p+2$ also prime) and Legendre's conjecture are both long-standing open problems about prime gaps. Both are heuristically supported by the Hardy-Littlewood prime tuple conjecture but lack proof"
     }
   ],
   "references": [

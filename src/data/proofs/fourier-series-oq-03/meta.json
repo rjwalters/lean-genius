@@ -157,17 +157,17 @@
     {
       "id": "fourier-series",
       "relationship": "extends",
-      "description": "Extends the L2 convergence theory to pointwise convergence under BV conditions. Answers OQ-03 from the Fourier series en"
+      "description": "Extends the L2 convergence theory to pointwise convergence under BV conditions. Answers OQ-03 from the Fourier series entry."
     },
     {
       "id": "fourier-series-oq-02",
       "relationship": "related",
-      "description": "Sibling OQ analyzing Fourier coefficient decay rates under Hölder continuity. Both study regularity-decay relationships:"
+      "description": "Sibling OQ analyzing Fourier coefficient decay rates under Hölder continuity. Both study regularity-decay relationships: OQ-02 focuses on coefficient decay, OQ-03 on pointwise convergence."
     },
     {
       "id": "taylor-sincos-convergence",
       "relationship": "related",
-      "description": "Both formalize convergence of function expansions: Taylor series converge uniformly on compact sets for analytic functio"
+      "description": "Both formalize convergence of function expansions: Taylor series converge uniformly on compact sets for analytic functions, while Fourier series converge pointwise for BV functions — different regularity assumptions yield different convergence modes."
     }
   ],
   "references": [

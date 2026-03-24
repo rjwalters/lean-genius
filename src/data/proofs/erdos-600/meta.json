@@ -91,56 +91,64 @@
       "title": "Graph Definitions",
       "summary": "Graph structure, edgeCount, IsTriangle",
       "startLine": 36,
-      "endLine": 55
+      "endLine": 55,
+      "mathContext": "Graph structure, edgeCount, IsTriangle"
     },
     {
       "id": "edge-triangle-containment",
       "title": "Edge-Triangle Containment",
       "summary": "triangleCount, IsTriangleCovered, AllEdgesTriangleCovered, HasEdgeInRTriangles",
       "startLine": 56,
-      "endLine": 77
+      "endLine": 77,
+      "mathContext": "triangleCount, IsTriangleCovered, AllEdgesTriangleCovered, HasEdgeInRTriangles"
     },
     {
       "id": "e-function",
       "title": "The e(n,r) Function",
       "summary": "e(n,r) definition via sInf and e_well_defined axiom",
       "startLine": 78,
-      "endLine": 91
+      "endLine": 91,
+      "mathContext": "e(n,r) definition via sInf and e_well_defined axiom"
     },
     {
       "id": "ruzsa-szemeredi",
       "title": "Ruzsa-Szemerédi Result",
       "summary": "ruzsa_szemeredi: e(n,r) = o(n²) for fixed r",
       "startLine": 92,
-      "endLine": 100
+      "endLine": 100,
+      "mathContext": "ruzsa_szemeredi: e(n,r) = o(n²) for fixed r"
     },
     {
       "id": "open-questions",
       "title": "The Two Open Questions",
       "summary": "Question1 (absolute difference) and Question2 (ratio convergence)",
       "startLine": 101,
-      "endLine": 115
+      "endLine": 115,
+      "mathContext": "Question1 (absolute difference) and Question2 (ratio convergence)"
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity",
       "summary": "e_monotone_r, e_monotone_n, questions_together theorem",
       "startLine": 116,
-      "endLine": 135
+      "endLine": 135,
+      "mathContext": "e_monotone_r, e_monotone_n, questions_together theorem"
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "summary": "turan_number_bound, upper_bound, lower_bound",
       "startLine": 136,
-      "endLine": 155
+      "endLine": 155,
+      "mathContext": "turan_number_bound, upper_bound, lower_bound"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_600_summary: three-part conjunction of known results",
       "startLine": 156,
-      "endLine": 179
+      "endLine": 179,
+      "mathContext": "erdos_600_summary: three-part conjunction of known results"
     }
   ],
   "conclusion": {

@@ -1,4 +1,4 @@
-import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion } from '@/types/proof'
+import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
 import sourceRaw from '../../../../proofs/Proofs/ParallelPostulateIndependenceOQ02.lean?raw'
@@ -12,6 +12,7 @@ const meta = metaJson as unknown as {
   sections: ProofSection[]
   overview?: ProofOverview
   conclusion?: ProofConclusion
+  crossReferences?: CrossReference[]
 }
 
 export const parallelPostulateIndependenceOQ02Proof: Proof = {
@@ -24,6 +25,7 @@ export const parallelPostulateIndependenceOQ02Proof: Proof = {
   source: sourceRaw,
   overview: meta.overview,
   conclusion: meta.conclusion,
+  crossReferences: meta.crossReferences,
 }
 
 export const parallelPostulateIndependenceOQ02Annotations: Annotation[] = annotationsJson as unknown as Annotation[]

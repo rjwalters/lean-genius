@@ -89,63 +89,72 @@
       "title": "Module Docstring",
       "startLine": 1,
       "endLine": 22,
-      "summary": "Problem statement, definition of completeness and robustness, known cases (0,1) via powers of 2 and (1,2) via Fibonacci, the open (2,3) case, and reference to erdosproblems.com/348."
+      "summary": "Problem statement, definition of completeness and robustness, known cases (0,1) via powers of 2 and (1,2) via Fibonacci, the open (2,3) case, and reference to erdosproblems.com/348.",
+      "mathContext": "Problem statement, definition of completeness and robustness, known cases (0,1) via powers of 2 and (1,2) via Fibonacci, the open (2,3) case, and reference to erdosproblems.com/348."
     },
     {
       "id": "complete-sequences",
       "title": "Complete Sequences",
       "startLine": 23,
       "endLine": 48,
-      "summary": "Core definitions: finiteSums (all sums of distinct elements from a set), IsComplete (all large integers representable), IsStronglyComplete (all integers representable), and sequenceToSet (converting ℕ → ℕ to Set ℕ)."
+      "summary": "Core definitions: finiteSums (all sums of distinct elements from a set), IsComplete (all large integers representable), IsStronglyComplete (all integers representable), and sequenceToSet (converting ℕ → ℕ to Set ℕ).",
+      "mathContext": "Core definitions: finiteSums (all sums of distinct elements from a set), IsComplete (all large integers representable), IsStronglyComplete (all integers representable), and sequenceToSet (converting ℕ"
     },
     {
       "id": "removing-elements",
       "title": "Removing Elements and Robustness",
       "startLine": 49,
       "endLine": 83,
-      "summary": "Defines removeIndices (exclude indices from sequence), removeValues (set difference), IsRobust (complete after removing any m indices), NotRobust (some n-deletion breaks completeness), and validPairs set."
+      "summary": "Defines removeIndices (exclude indices from sequence), removeValues (set difference), IsRobust (complete after removing any m indices), NotRobust (some n-deletion breaks completeness), and validPairs set.",
+      "mathContext": "Defines removeIndices (exclude indices from sequence), removeValues (set difference), IsRobust (complete after removing any m indices), NotRobust (some n-deletion breaks completeness), and validPairs "
     },
     {
       "id": "known-examples",
       "title": "Known Examples: Powers of 2 and Fibonacci",
       "startLine": 84,
       "endLine": 165,
-      "summary": "Defines powersOf2 and fib sequences. Proves pair_0_1_valid (powers of 2 are 0-robust, not 1-robust) with partial proofs and pair_1_2_valid (Fibonacci is 1-robust, not 2-robust) with sorries for Zeckendorf arguments."
+      "summary": "Defines powersOf2 and fib sequences. Proves pair_0_1_valid (powers of 2 are 0-robust, not 1-robust) with partial proofs and pair_1_2_valid (Fibonacci is 1-robust, not 2-robust) with sorries for Zeckendorf arguments.",
+      "mathContext": "Defines powersOf2 and fib sequences. Proves pair_0_1_valid (powers of 2 are 0-robust, not 1-robust) with partial proofs and pair_1_2_valid (Fibonacci is 1-robust, not 2-robust) with sorries for Zecken"
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 166,
       "endLine": 183,
-      "summary": "Two axioms: erdos_348_characterization (validPairs is either all (m,m+1) or has a cutoff) and erdos_348_case_2_3 (the (2,3) case is either valid or not — a tautology highlighting the open question)."
+      "summary": "Two axioms: erdos_348_characterization (validPairs is either all (m,m+1) or has a cutoff) and erdos_348_case_2_3 (the (2,3) case is either valid or not — a tautology highlighting the open question).",
+      "mathContext": "Two axioms: erdos_348_characterization (validPairs is either all (m,m+1) or has a cutoff) and erdos_348_case_2_3 (the (2,3) case is either valid or not — a tautology highlighting the open question)."
     },
     {
       "id": "van-doorn",
       "title": "Van Doorn's Theorem",
       "startLine": 184,
       "endLine": 199,
-      "summary": "Defines IsStronglyRobust and states vanDoorn_theorem: no monotone, strongly complete sequence is 2-robust. This eliminates all (m,n) pairs with m ≥ 2 under strong completeness."
+      "summary": "Defines IsStronglyRobust and states vanDoorn_theorem: no monotone, strongly complete sequence is 2-robust. This eliminates all (m,n) pairs with m ≥ 2 under strong completeness.",
+      "mathContext": "Defines IsStronglyRobust and states vanDoorn_theorem: no monotone, strongly complete sequence is 2-robust. This eliminates all (m,n) pairs with m ≥ 2 under strong completeness."
     },
     {
       "id": "representation-theory",
       "title": "Representation Count",
       "startLine": 200,
       "endLine": 213,
-      "summary": "Defines representationCount via Nat.card of representation sets. States complete_iff_repr: completeness ⟺ positive representation count for all large n (sorry)."
+      "summary": "Defines representationCount via Nat.card of representation sets. States complete_iff_repr: completeness ⟺ positive representation count for all large n (sorry).",
+      "mathContext": "Defines representationCount via Nat.card of representation sets. States complete_iff_repr: completeness ⟺ positive representation count for all large n (sorry)."
     },
     {
       "id": "gap-property",
       "title": "Gap Property",
       "startLine": 214,
       "endLine": 228,
-      "summary": "Defines gap(a, n) = a(n+1) - a(n). States complete_bounded_gaps: complete monotone sequences have eventually bounded gaps."
+      "summary": "Defines gap(a, n) = a(n+1) - a(n). States complete_bounded_gaps: complete monotone sequences have eventually bounded gaps.",
+      "mathContext": "Defines gap(a, n) = a(n+1) - a(n). States complete_bounded_gaps: complete monotone sequences have eventually bounded gaps."
     },
     {
       "id": "main-problem",
       "title": "Main Open Problem",
       "startLine": 229,
       "endLine": 255,
-      "summary": "The final axiom erdos_348_main_problem: either all (m, m+1) are valid, or ∃ cutoff k with (m, m+1) ∉ validPairs for m ≥ k. Includes comprehensive docstring summarizing known results and the open question."
+      "summary": "The final axiom erdos_348_main_problem: either all (m, m+1) are valid, or ∃ cutoff k with (m, m+1) ∉ validPairs for m ≥ k. Includes comprehensive docstring summarizing known results and the open question.",
+      "mathContext": "The final axiom erdos_348_main_problem: either all (m, m+1) are valid, or ∃ cutoff k with (m, m+1) ∉ validPairs for m ≥ k. Includes comprehensive docstring summarizing known results and the open quest"
     }
   ],
   "conclusion": {

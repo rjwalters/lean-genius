@@ -50,56 +50,64 @@
       "title": "Problem Statement and References",
       "startLine": 1,
       "endLine": 16,
-      "summary": "Documents the problem with references to Burr-Erdős-Graham-Li (1996), Melfi (2001), and Hasler-Melfi (2024). Records the known bounds $x^{0.9777}$ and upper density $\\leq 0.696$."
+      "summary": "Documents the problem with references to Burr-Erdős-Graham-Li (1996), Melfi (2001), and Hasler-Melfi (2024). Records the known bounds $x^{0.9777}$ and upper density $\\leq 0.696$.",
+      "mathContext": "Documents the problem with references to Burr-Erdős-Graham-Li (1996), Melfi (2001), and Hasler-Melfi (2024). Records the known bounds $x^{0.9777}$ and upper density $\\leq 0.696$."
     },
     {
       "id": "imports",
       "title": "Imports",
       "startLine": 17,
       "endLine": 23,
-      "summary": "Imports `Nat.digits` for base representations, `Finset` for counting, `Real` for density ratios, and `Filter` for asymptotic statements."
+      "summary": "Imports `Nat.digits` for base representations, `Finset` for counting, `Real` for density ratios, and `Filter` for asymptotic statements.",
+      "mathContext": "Imports `Nat.digits` for base representations, `Finset` for counting, `Real` for density ratios, and `Filter` for asymptotic statements."
     },
     {
       "id": "digit-sets",
       "title": "Digit-Restricted Sets (Cantor Set Integers)",
       "startLine": 24,
       "endLine": 39,
-      "summary": "Defines `digitSet b` as naturals with only 0,1 digits in base $b$. Instantiates `setA = digitSet 3` (counting $\\sim x^{0.631}$) and `setB = digitSet 4` (counting $\\sim x^{0.5}$)."
+      "summary": "Defines `digitSet b` as naturals with only 0,1 digits in base $b$. Instantiates `setA = digitSet 3` (counting $\\sim x^{0.631}$) and `setB = digitSet 4` (counting $\\sim x^{0.5}$).",
+      "mathContext": "Defines `digitSet b` as naturals with only 0,1 digits in base $b$. Instantiates `setA = digitSet 3` (counting $\\sim x^{0.631}$) and `setB = digitSet 4` (counting $\\sim x^{0.5}$)."
     },
     {
       "id": "sumset",
       "title": "The Sumset $C = A + B$",
       "startLine": 40,
       "endLine": 50,
-      "summary": "Defines $C = A + B$ as the set of all sums $a + b$ with $a \\in A$, $b \\in B$. Provides the counting function `countingC x = |C \\cap [0,x]|$ via `Finset.filter`."
+      "summary": "Defines $C = A + B$ as the set of all sums $a + b$ with $a \\in A$, $b \\in B$. Provides the counting function `countingC x = |C \\cap [0,x]|$ via `Finset.filter`.",
+      "mathContext": "Defines $C = A + B$ as the set of all sums $a + b$ with $a \\in A$, $b \\in B$. Provides the counting function `countingC x = |C \\cap [0,x]|$ via `Finset.filter`."
     },
     {
       "id": "conjecture",
       "title": "Erdős Problem 125: Positive Lower Density",
       "startLine": 51,
       "endLine": 61,
-      "summary": "Formalizes the conjecture as $\\exists \\delta > 0$ such that $\\liminf_{x \\to \\infty} |C \\cap [1,x]|/x \\geq \\delta$, using an $\\varepsilon$-$\\delta$ characterization of positive liminf."
+      "summary": "Formalizes the conjecture as $\\exists \\delta > 0$ such that $\\liminf_{x \\to \\infty} |C \\cap [1,x]|/x \\geq \\delta$, using an $\\varepsilon$-$\\delta$ characterization of positive liminf.",
+      "mathContext": "Formalizes the conjecture as $\\exists \\delta > 0$ such that $\\liminf_{x \\to \\infty} |C \\cap [1,x]|/x \\geq \\delta$, using an $\\varepsilon$-$\\delta$ characterization of positive liminf."
     },
     {
       "id": "lower-bounds",
       "title": "Counting Lower Bounds (Melfi, Hasler-Melfi)",
       "startLine": 62,
       "endLine": 75,
-      "summary": "Axiomatizes Melfi's 2001 bound $|C \\cap [1,x]| \\geq cx^{0.965}$ and the Hasler-Melfi 2024 improvement to $cx^{0.9777}$. Both are sub-linear, falling short of proving positive density."
+      "summary": "Axiomatizes Melfi's 2001 bound $|C \\cap [1,x]| \\geq cx^{0.965}$ and the Hasler-Melfi 2024 improvement to $cx^{0.9777}$. Both are sub-linear, falling short of proving positive density.",
+      "mathContext": "Axiomatizes Melfi's 2001 bound $|C \\cap [1,x]| \\geq cx^{0.965}$ and the Hasler-Melfi 2024 improvement to $cx^{0.9777}$. Both are sub-linear, falling short of proving positive density."
     },
     {
       "id": "upper-density",
       "title": "Upper Density Bound (Hasler-Melfi 2024)",
       "startLine": 76,
       "endLine": 85,
-      "summary": "Axiomatizes $\\overline{d}(C) \\leq 0.696$: for any $\\varepsilon > 0$, eventually $|C \\cap [1,x]|/x \\leq 0.696 + \\varepsilon$. Shows $C$ cannot be 'almost all' of $\\mathbb{N}$."
+      "summary": "Axiomatizes $\\overline{d}(C) \\leq 0.696$: for any $\\varepsilon > 0$, eventually $|C \\cap [1,x]|/x \\leq 0.696 + \\varepsilon$. Shows $C$ cannot be 'almost all' of $\\mathbb{N}$.",
+      "mathContext": "Axiomatizes $\\overline{d}(C) \\leq 0.696$: for any $\\varepsilon > 0$, eventually $|C \\cap [1,x]|/x \\leq 0.696 + \\varepsilon$. Shows $C$ cannot be 'almost all' of $\\mathbb{N}$."
     },
     {
       "id": "generalization",
       "title": "Generalization to Multiple Bases",
       "startLine": 86,
       "endLine": 106,
-      "summary": "States the general conjecture for bases $n_1, \\ldots, n_k$ with $\\sum \\log_{n_i}(2) > 1$, and verifies that bases 3 and 4 satisfy $\\log_3(2) + \\log_4(2) \\approx 1.131 > 1$ as an axiom."
+      "summary": "States the general conjecture for bases $n_1, \\ldots, n_k$ with $\\sum \\log_{n_i}(2) > 1$, and verifies that bases 3 and 4 satisfy $\\log_3(2) + \\log_4(2) \\approx 1.131 > 1$ as an axiom.",
+      "mathContext": "States the general conjecture for bases $n_1, \\ldots, n_k$ with $\\sum \\log_{n_i}(2) > 1$, and verifies that bases 3 and 4 satisfy $\\log_3(2) + \\log_4(2) \\approx 1.131 > 1$ as an axiom."
     }
   ],
   "conclusion": {

@@ -149,20 +149,34 @@
   ],
   "relatedProofs": [
     {
-      "target": "erdos-22",
-      "description": "Ramsey–Turán numbers for K₄: combines Ramsey and Turán density constraints on the same graph, directly neighboring the Problem #1079 setting."
+      "id": "erdos-22",
+      "relationship": "Ramsey–Turán theory asks how many edges a K_r-free graph can have if one also forbids large independent sets; Problem #1079 works in the complementary regime where edges are at or above the Turán threshold, showing that local density is then forced.",
+      "description": ""
     },
     {
-      "target": "erdos-1078",
-      "description": "Minimum degree for K_r in r-partite graphs: degree-forcing results for complete cliques, complementary to the neighborhood-density conclusion of Problem #1079."
+      "id": "erdos-1078",
+      "relationship": "Problem #1078 studies the minimum degree forcing K_r in r-partite graphs; Problem #1079 shows that once ex(n, K_r) edges are present the max-degree vertex's neighborhood already contains ex(d, K_{r-1}) edges, linking degree conditions to local clique density.",
+      "description": ""
     },
     {
-      "target": "erdos-1077",
-      "description": "Balanced subgraphs in dense graphs: global edge-density forcing local balanced structure, sharing the supersaturation technique with Problem #1079."
+      "id": "erdos-1077",
+      "relationship": "Problem #1077 examines balanced subgraphs in dense graphs; the supersaturation argument underlying Problem #1079 (global edge density propagates to local density) is the same driving mechanism.",
+      "description": ""
     },
     {
-      "target": "szemeredi-regularity",
-      "description": "Szemerédi Regularity Lemma: the canonical tool for converting global density into local density in dense graphs, generalizing the mechanism used in Problem #1079."
+      "id": "erdos-1075",
+      "relationship": "Problem #1075 extends Turán-type density questions to r-uniform hypergraphs; Problem #1079 is the graph-theoretic base case whose local-density propagation strategy motivates analogous hypergraph questions.",
+      "description": ""
+    },
+    {
+      "id": "erdos-23",
+      "relationship": "Problem #23 studies triangle-free (K_3-free) graphs and bipartiteness, providing the r = 3 extremal baseline; Problem #1079 applies for r ≥ 4, so these results are complementary boundary cases of the same Turán-density framework.",
+      "description": ""
+    },
+    {
+      "id": "szemeredi-regularity",
+      "relationship": "The Szemerédi Regularity Lemma is the principal modern tool for establishing that global edge density propagates to dense local substructures; the local-density conclusion of Problem #1079 (dense neighborhoods) is a precursor to and special case of the regularity paradigm.",
+      "description": ""
     }
   ],
   "references": [
@@ -173,7 +187,7 @@
       ],
       "title": "Graphs which contain all small graphs",
       "venue": "European Journal of Combinatorics",
-      "year": 1981,
+      "year": "1981",
       "volume": "2",
       "pages": "13–15",
       "doi": "10.1016/S0195-6698(81)80015-X",
@@ -185,7 +199,7 @@
       ],
       "title": "Counting subgraphs: a new approach to the Girth problem",
       "venue": "Graphs and Combinatorics",
-      "year": 1983,
+      "year": "1983",
       "volume": "1",
       "pages": "1–7",
       "note": "Strengthens the Bollobás–Thomason result: when edges strictly exceed ex(n, K_r), the maximum-degree vertex has a Turán-dense neighborhood."
@@ -196,7 +210,7 @@
       ],
       "title": "On an extremal problem in graph theory",
       "venue": "Matematikai és Fizikai Lapok",
-      "year": 1941,
+      "year": "1941",
       "volume": "48",
       "pages": "436–452",
       "note": "The original Turán theorem establishing ex(n, K_r) and the extremal Turán graph T(n, r−1); the foundational result that Problem #1079 generalizes from global to local density."
@@ -207,7 +221,7 @@
       ],
       "title": "Extremal Graph Theory",
       "venue": "Academic Press, London",
-      "year": 1978,
+      "year": "1978",
       "note": "Comprehensive reference on Turán-type problems, supersaturation, and stability; the theoretical background for the Bollobás–Thomason result."
     },
     {
@@ -216,7 +230,7 @@
       ],
       "title": "On the number of complete subgraphs contained in certain graphs",
       "venue": "Magyar Tudományos Akadémia Matematikai Kutató Intézetének Közleményei",
-      "year": 1962,
+      "year": "1962",
       "volume": "7",
       "pages": "459–474",
       "note": "Erdős's supersaturation results showing that graphs exceeding the Turán bound contain many copies of K_r; provides the quantitative foundation for the local-density argument in Problem #1079."

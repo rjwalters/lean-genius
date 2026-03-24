@@ -90,77 +90,88 @@
       "title": "Problem Overview",
       "summary": "Header documentation with problem statement, known results, and references to Erdős (1981) and Alon.",
       "startLine": 1,
-      "endLine": 34
+      "endLine": 34,
+      "mathContext": "Header documentation with problem statement, known results, and references to Erdős (1981) and Alon."
     },
     {
       "id": "imports-setup",
       "title": "Imports and Setup",
       "summary": "Mathlib imports for Finset, SimpleGraph, and Real, plus the Erdos732 namespace.",
       "startLine": 35,
-      "endLine": 42
+      "endLine": 42,
+      "mathContext": "Mathlib imports for Finset, SimpleGraph, and Real, plus the Erdos732 namespace."
     },
     {
       "id": "definitions",
       "title": "Basic Definitions",
       "summary": "Defines Block (Finset of Fin n), Pair (2-element subset), pairsCoveredBy (pairs within a block), and IsPBD (every pair in exactly one block).",
       "startLine": 43,
-      "endLine": 74
+      "endLine": 74,
+      "mathContext": "Defines Block (Finset of Fin n), Pair (2-element subset), pairsCoveredBy (pairs within a block), and IsPBD (every pair in exactly one block)."
     },
     {
       "id": "block-compatible",
       "title": "Block-Compatible Sequences",
       "summary": "Defines IsBlockCompatible (exists a PBD with matching block sizes) and IsWellFormed (2 ≤ Xᵢ ≤ n, sorted, non-empty).",
       "startLine": 75,
-      "endLine": 97
+      "endLine": 97,
+      "mathContext": "Defines IsBlockCompatible (exists a PBD with matching block sizes) and IsWellFormed (2 ≤ Xᵢ ≤ n, sorted, non-empty)."
     },
     {
       "id": "necessary",
       "title": "Necessary Conditions",
       "summary": "Defines PairCountCondition (Σ C(Xᵢ,2) = C(n,2)) and axiomatizes pair_count_necessary. Includes the trivial pair_count_explanation theorem.",
       "startLine": 98,
-      "endLine": 125
+      "endLine": 125,
+      "mathContext": "Defines PairCountCondition (Σ C(Xᵢ,2) = C(n,2)) and axiomatizes pair_count_necessary. Includes the trivial pair_count_explanation theorem."
     },
     {
       "id": "characterization",
       "title": "Question 1 - Characterization (OPEN)",
       "summary": "Formalizes CharacterizationQuestion as the existence of a decidable necessary-and-sufficient predicate. Axiomatizes characterization_hard: pair-counting is not sufficient.",
       "startLine": 126,
-      "endLine": 153
+      "endLine": 153,
+      "mathContext": "Formalizes CharacterizationQuestion as the existence of a decidable necessary-and-sufficient predicate. Axiomatizes characterization_hard: pair-counting is not sufficient."
     },
     {
       "id": "counting",
       "title": "Question 2 - Counting (SOLVED)",
       "summary": "Defines B(n), axiomatizes Erdős's upper bound and Alon's lower bound, and axiomatizes question_2_solved combining them.",
       "startLine": 154,
-      "endLine": 202
+      "endLine": 202,
+      "mathContext": "Defines B(n), axiomatizes Erdős's upper bound and Alon's lower bound, and axiomatizes question_2_solved combining them."
     },
     {
       "id": "asymptotic",
       "title": "The Asymptotic Constant",
       "summary": "Defines AsymptoticConstant (B(n) = 2^{(c+o(1))√n log n}) and proves constant_at_least_half (c ≥ 1/2) from alon_lower_bound using norm_num.",
       "startLine": 203,
-      "endLine": 234
+      "endLine": 234,
+      "mathContext": "Defines AsymptoticConstant (B(n) = 2^{(c+o(1))√n log n}) and proves constant_at_least_half (c ≥ 1/2) from alon_lower_bound using norm_num."
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "summary": "Axiomatizes example_n3 (IsBlockCompatible [3] 3) and verifies pair-counting for n=4 ([4] and [2,2,2,2,2,2]) and n=6 ([3,3,3,3,3]) using simp/norm_num.",
       "startLine": 235,
-      "endLine": 280
+      "endLine": 280,
+      "mathContext": "Axiomatizes example_n3 (IsBlockCompatible [3] 3) and verifies pair-counting for n=4 ([4] and [2,2,2,2,2,2]) and n=6 ([3,3,3,3,3]) using simp/norm_num."
     },
     {
       "id": "related",
       "title": "Related Problems",
       "summary": "Notes connections to Problem #733 (line-compatible sequences) and Steiner systems S(2,k,n).",
       "startLine": 281,
-      "endLine": 297
+      "endLine": 297,
+      "mathContext": "Notes connections to Problem #733 (line-compatible sequences) and Steiner systems S(2,k,n)."
     },
     {
       "id": "summary",
       "title": "Summary Theorems",
       "summary": "erdos_732_summary packages Q2-solved + pair-counting necessity as a conjunction. erdos_732 is an alias.",
       "startLine": 298,
-      "endLine": 327
+      "endLine": 327,
+      "mathContext": "erdos_732_summary packages Q2-solved + pair-counting necessity as a conjunction. erdos_732 is an alias."
     }
   ],
   "conclusion": {
@@ -185,7 +196,7 @@
     {
       "id": "erdos-733",
       "relationship": "companion",
-      "description": "Problem #733 asks the analogous question for line-compatible sequences in linear spaces, a closely related combinatorial"
+      "description": "Problem #733 asks the analogous question for line-compatible sequences in linear spaces, a closely related combinatorial design problem."
     }
   ],
   "leanFile": {

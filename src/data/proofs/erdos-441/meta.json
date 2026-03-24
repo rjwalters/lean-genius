@@ -82,84 +82,96 @@
       "title": "Problem Overview",
       "startLine": 1,
       "endLine": 42,
-      "summary": "Header docstring introducing Erdős Problem #441: LCM-bounded subsets of {1,...,N}. Defines the central question (is Erdős' construction optimal?), states the answer (NO, Chen-Dai 2006), and outlines the formalization structure covering definitions, bounds, and the disproof."
+      "summary": "Header docstring introducing Erdős Problem #441: LCM-bounded subsets of {1,...,N}. Defines the central question (is Erdős' construction optimal?), states the answer (NO, Chen-Dai 2006), and outlines the formalization structure covering definitions, bounds, and the disproof.",
+      "mathContext": "Header docstring introducing Erdős Problem #441: LCM-bounded subsets of {1,...,N}. Defines the central question (is Erdős' construction optimal?), states the answer (NO, Chen-Dai 2006), and outlines t"
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions: IsLCMBounded and g(N)",
       "startLine": 43,
       "endLine": 62,
-      "summary": "Defines IsLCMBounded (set A ⊆ {1,...,N} with lcm(a,b) ≤ N for all pairs) and g(N) = sSup{|A| : A is LCM-bounded}. The LCM condition is equivalent to ab ≤ N·gcd(a,b), connecting the problem to divisibility structure."
+      "summary": "Defines IsLCMBounded (set A ⊆ {1,...,N} with lcm(a,b) ≤ N for all pairs) and g(N) = sSup{|A| : A is LCM-bounded}. The LCM condition is equivalent to ab ≤ N·gcd(a,b), connecting the problem to divisibility structure.",
+      "mathContext": "Defines IsLCMBounded (set A ⊆ {1,...,N} with lcm(a,b) ≤ N for all pairs) and g(N) = sSup{|A| : A is LCM-bounded}. The LCM condition is equivalent to ab ≤ N·gcd(a,b), connecting the problem to divisibi"
     },
     {
       "id": "erdos-construction",
       "title": "Erdős' Proposed Construction",
       "startLine": 63,
       "endLine": 87,
-      "summary": "Defines the two-part construction: IsqrtHalf (all integers ≤ ⌊√(N/2)⌋) ∪ EvenRange (even integers 2k with √(N/2) ≤ 2k ≤ √(2N)). Proves construction_valid: the construction is LCM-bounded by verifying three cases (small-small, even-even, cross) via the GCD-LCM identity."
+      "summary": "Defines the two-part construction: IsqrtHalf (all integers ≤ ⌊√(N/2)⌋) ∪ EvenRange (even integers 2k with √(N/2) ≤ 2k ≤ √(2N)). Proves construction_valid: the construction is LCM-bounded by verifying three cases (small-small, even-even, cross) via the GCD-LCM identity.",
+      "mathContext": "Defines the two-part construction: IsqrtHalf (all integers ≤ ⌊√(N/2)⌋) ∪ EvenRange (even integers 2k with √(N/2) ≤ 2k ≤ √(2N)). Proves construction_valid: the construction is LCM-bounded by verifying "
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "startLine": 88,
       "endLine": 101,
-      "summary": "Formalizes ErdosQuestion as ∀ N ≥ 1, g(N) = |ErdosConstruction(N)|. This is a universal statement asking whether the construction is optimal for every N — a strong claim that turns out to be false."
+      "summary": "Formalizes ErdosQuestion as ∀ N ≥ 1, g(N) = |ErdosConstruction(N)|. This is a universal statement asking whether the construction is optimal for every N — a strong claim that turns out to be false.",
+      "mathContext": "Formalizes ErdosQuestion as ∀ N ≥ 1, g(N) = |ErdosConstruction(N)|. This is a universal statement asking whether the construction is optimal for every N — a strong claim that turns out to be false."
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
       "startLine": 102,
       "endLine": 119,
-      "summary": "Axiomatizes the lower bound g(N) ≥ |ErdosConstruction(N)| (the construction is a valid LCM-bounded set) and Chen's asymptotic lower bound g(N) ≥ √(9N/8) - O(1). The lower bound follows directly from the construction's existence."
+      "summary": "Axiomatizes the lower bound g(N) ≥ |ErdosConstruction(N)| (the construction is a valid LCM-bounded set) and Chen's asymptotic lower bound g(N) ≥ √(9N/8) - O(1). The lower bound follows directly from the construction's existence.",
+      "mathContext": "Axiomatizes the lower bound g(N) ≥ |ErdosConstruction(N)| (the construction is a valid LCM-bounded set) and Chen's asymptotic lower bound g(N) ≥ √(9N/8) - O(1). The lower bound follows directly from t"
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds (Chen-Dai 2007)",
       "startLine": 120,
       "endLine": 140,
-      "summary": "Axiomatizes Chen-Dai's upper bound: g(N) ≤ √(9N/8) + C√(N/log N)·log log N. The error term O(√(N/log N)·log log N) = o(√N) but is ω(1), establishing g(N) ~ √(9N/8) while leaving room for the construction to be suboptimal."
+      "summary": "Axiomatizes Chen-Dai's upper bound: g(N) ≤ √(9N/8) + C√(N/log N)·log log N. The error term O(√(N/log N)·log log N) = o(√N) but is ω(1), establishing g(N) ~ √(9N/8) while leaving room for the construction to be suboptimal.",
+      "mathContext": "Axiomatizes Chen-Dai's upper bound: g(N) ≤ √(9N/8) + C√(N/log N)·log log N. The error term O(√(N/log N)·log log N) = o(√N) but is ω(1), establishing g(N) ~ √(9N/8) while leaving room for the construct"
     },
     {
       "id": "not-optimal",
       "title": "The Construction is Not Optimal (Chen-Dai 2006)",
       "startLine": 141,
       "endLine": 161,
-      "summary": "States ConstructionNotOptimal: ∀M, ∃N > M with g(N) > |ErdosConstruction(N)|. Derives erdos_question_disproved: ¬ErdosQuestion by extracting a witness N from the existential and deriving a contradiction with omega (x > y ∧ x = y → ⊥). This is fully proved in Lean."
+      "summary": "States ConstructionNotOptimal: ∀M, ∃N > M with g(N) > |ErdosConstruction(N)|. Derives erdos_question_disproved: ¬ErdosQuestion by extracting a witness N from the existential and deriving a contradiction with omega (x > y ∧ x = y → ⊥). This is fully proved in Lean.",
+      "mathContext": "States ConstructionNotOptimal: ∀M, ∃N > M with g(N) > |ErdosConstruction(N)|. Derives erdos_question_disproved: ¬ErdosQuestion by extracting a witness N from the existential and deriving a contradicti"
     },
     {
       "id": "why-construction-fails",
       "title": "Why the Construction Fails",
       "startLine": 162,
       "endLine": 177,
-      "summary": "Explains the structural reason: for certain N, integers with many small prime factors (highly composite numbers) create additional LCM-bounded elements beyond what the rigid two-part partition allows. The construction treats all integers uniformly within each part, missing divisor-rich opportunities."
+      "summary": "Explains the structural reason: for certain N, integers with many small prime factors (highly composite numbers) create additional LCM-bounded elements beyond what the rigid two-part partition allows. The construction treats all integers uniformly within each part, missing divisor-rich opportunities.",
+      "mathContext": "Explains the structural reason: for certain N, integers with many small prime factors (highly composite numbers) create additional LCM-bounded elements beyond what the rigid two-part partition allows."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 178,
       "endLine": 193,
-      "summary": "Examines small N values where the construction can be verified by exhaustive search. For N ≤ 100, the construction appears optimal; counterexamples arise only for larger N where the error term becomes significant."
+      "summary": "Examines small N values where the construction can be verified by exhaustive search. For N ≤ 100, the construction appears optimal; counterexamples arise only for larger N where the error term becomes significant.",
+      "mathContext": "Examines small N values where the construction can be verified by exhaustive search. For N ≤ 100, the construction appears optimal; counterexamples arise only for larger N where the error term becomes"
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "startLine": 194,
       "endLine": 214,
-      "summary": "Contextualizes within the LCM problem family: connections to Erdős #440 (consecutive LCM), #442 (dense set LCM), and the broader multiplicative combinatorics literature including Szemerédi-type results for multiplicative structures."
+      "summary": "Contextualizes within the LCM problem family: connections to Erdős #440 (consecutive LCM), #442 (dense set LCM), and the broader multiplicative combinatorics literature including Szemerédi-type results for multiplicative structures.",
+      "mathContext": "Contextualizes within the LCM problem family: connections to Erdős #440 (consecutive LCM), #442 (dense set LCM), and the broader multiplicative combinatorics literature including Szemerédi-type result"
     },
     {
       "id": "constant-9-8",
       "title": "The Constant 9/8",
       "startLine": 215,
       "endLine": 240,
-      "summary": "Derives the constant 9/8 algebraically: √(N/2) + (1/2)(√(2N) - √(N/2)) = (3/(2√2))√N = √(9N/8). The identity √(9/8) = 3/(2√2) ≈ 1.0607 is formally verified via ring_nf and norm_num in constant_value."
+      "summary": "Derives the constant 9/8 algebraically: √(N/2) + (1/2)(√(2N) - √(N/2)) = (3/(2√2))√N = √(9N/8). The identity √(9/8) = 3/(2√2) ≈ 1.0607 is formally verified via ring_nf and norm_num in constant_value.",
+      "mathContext": "Derives the constant 9/8 algebraically: √(N/2) + (1/2)(√(2N) - √(N/2)) = (3/(2√2))√N = √(9N/8). The identity √(9/8) = 3/(2√2) ≈ 1.0607 is formally verified via ring_nf and norm_num in constant_value."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 241,
       "endLine": 280,
-      "summary": "Packages all results into erdos_441_solved: conjunction of ChenAsymptotic (g(N) ~ √(9N/8)), ConstructionNotOptimal (infinitely many counterexamples), and ¬ErdosQuestion (the construction is not always optimal). Comprehensive docstring narrative of the full problem history and resolution."
+      "summary": "Packages all results into erdos_441_solved: conjunction of ChenAsymptotic (g(N) ~ √(9N/8)), ConstructionNotOptimal (infinitely many counterexamples), and ¬ErdosQuestion (the construction is not always optimal). Comprehensive docstring narrative of the full problem history and resolution.",
+      "mathContext": "Packages all results into erdos_441_solved: conjunction of ChenAsymptotic (g(N) ~ √(9N/8)), ConstructionNotOptimal (infinitely many counterexamples), and ¬ErdosQuestion (the construction is not always"
     }
   ],
   "conclusion": {
@@ -239,27 +251,42 @@
     {
       "id": "erdos-440",
       "relationship": "related",
-      "description": "Sibling LCM problem studying liminf of counting function A(x) for sets where consecutive elements have small LCM; same m"
+      "description": "Sibling LCM problem studying liminf of counting function A(x) for sets where consecutive elements have small LCM; same multiplicative structure"
     },
     {
       "id": "erdos-442",
       "relationship": "related",
-      "description": "Tao's 2024 result on density-LCM relationship with sharp threshold exp(√(log log x)·log log log x); extends LCM analysis"
+      "description": "Tao's 2024 result on density-LCM relationship with sharp threshold exp(√(log log x)·log log log x); extends LCM analysis to dense sets"
     },
     {
       "id": "erdos-536",
       "relationship": "related",
-      "description": "Density threshold for three elements with equal pairwise LCMs [a,b]=[b,c]=[a,c]; directly addresses LCM pairwise conditi"
+      "description": "Density threshold for three elements with equal pairwise LCMs [a,b]=[b,c]=[a,c]; directly addresses LCM pairwise conditions in dense sets"
     },
     {
       "id": "erdos-542",
       "relationship": "related",
-      "description": "Schinzel-Szekeres tight bound (31/30) for reciprocal sums of sets with lcm(a,b) > n; extremal bound under complementary "
+      "description": "Schinzel-Szekeres tight bound (31/30) for reciprocal sums of sets with lcm(a,b) > n; extremal bound under complementary LCM constraint"
     },
     {
       "id": "erdos-534",
       "relationship": "related",
-      "description": "Ahlswede-Khachatrian characterization of sets with pairwise gcd > 1; dual problem via the GCD-LCM identity lcm(a,b) = ab"
+      "description": "Ahlswede-Khachatrian characterization of sets with pairwise gcd > 1; dual problem via the GCD-LCM identity lcm(a,b) = ab/gcd(a,b)"
+    },
+    {
+      "id": "erdos-487",
+      "relationship": "related",
+      "description": "Kleitman's 1971 theorem: dense sets must contain a,b,c with lcm(a,b)=c; connects LCM constraints to density-Ramsey theor"
+    },
+    {
+      "id": "erdos-402",
+      "relationship": "related",
+      "description": "Graham's GCD conjecture (solved): for any set A, ∃a,b with gcd(a,b) ≤ a/|A|; uses divisibility structure underlying LCM problems"
+    },
+    {
+      "id": "gcd-algorithm",
+      "relationship": "related",
+      "description": "Fundamental Euclidean algorithm for computing gcd; the core operation underlying the LCM constraint lcm(a,b) = ab/gcd(a,"
     }
   ]
 }

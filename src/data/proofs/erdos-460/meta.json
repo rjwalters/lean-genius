@@ -178,22 +178,22 @@
     {
       "id": "erdos-203",
       "relationship": "technique",
-      "description": "Both involve covering systems and coprimality constraints: Problem #203 uses covering congruences to avoid primes, Probl"
+      "description": "Both involve covering systems and coprimality constraints: Problem #203 uses covering congruences to avoid primes, Problem #460 uses greedy coprime selection"
     },
     {
       "id": "erdos-246",
       "relationship": "related",
-      "description": "Both study reciprocal sums with greedy selection: Problem #246 on greedy unit fractions, Problem #460 on greedy coprime "
+      "description": "Both study reciprocal sums with greedy selection: Problem #246 on greedy unit fractions, Problem #460 on greedy coprime sieve reciprocals"
     },
     {
       "id": "erdos-248",
       "relationship": "technique",
-      "description": "Both involve sieve methods in number theory: Problem #248 uses sieve bounds for prime distribution, Problem #460 applies"
+      "description": "Both involve sieve methods in number theory: Problem #248 uses sieve bounds for prime distribution, Problem #460 applies a greedy coprime sieve"
     },
     {
       "id": "erdos-233",
       "relationship": "thematic",
-      "description": "Both concern asymptotic behavior of prime-related sums: Problem #233 on sum of squares of prime gaps, Problem #460 on re"
+      "description": "Both concern asymptotic behavior of prime-related sums: Problem #233 on sum of squares of prime gaps, Problem #460 on reciprocal sums of coprime sieve terms"
     }
   ],
   "references": [
@@ -201,14 +201,14 @@
       "key": "erdos1977",
       "title": "Problems and results in combinatorial number theory",
       "author": "P. Erdős",
-      "year": 1977,
+      "year": "1977",
       "pages": "p.64"
     },
     {
       "key": "erdosgraham1980",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "author": "P. Erdős, R.L. Graham",
-      "year": 1980,
+      "year": "1980",
       "pages": "p.91"
     },
     {

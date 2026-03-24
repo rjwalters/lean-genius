@@ -93,84 +93,96 @@
       "title": "Problem Statement and References",
       "startLine": 1,
       "endLine": 41,
-      "summary": "Module docstring stating the problem: does $\\delta(m, \\alpha) \\to 0$ or $1$ exhibit a sharp threshold $\\beta$? Summarizes the answer ($\\beta = 1/\\ln 2$, Hall 1992), key results (trivial bound for $\\alpha < 1$, Erdős's $\\alpha = 1$ claim), and references [Er79e], [Ha92]. Imports Mathlib's logarithm, exponential, and filter modules."
+      "summary": "Module docstring stating the problem: does $\\delta(m, \\alpha) \\to 0$ or $1$ exhibit a sharp threshold $\\beta$? Summarizes the answer ($\\beta = 1/\\ln 2$, Hall 1992), key results (trivial bound for $\\alpha < 1$, Erdős's $\\alpha = 1$ claim), and references [Er79e], [Ha92]. Imports Mathlib's logarithm, exponential, and filter modules.",
+      "mathContext": "Module docstring stating the problem: does $\\delta(m, \\alpha) \\to 0$ or $1$ exhibit a sharp threshold $\\beta$? Summarizes the answer ($\\beta = 1/\\ln 2$, Hall 1992), key results (trivial bound for $\\al"
     },
     {
       "id": "part-1-basic-definitions",
       "title": "Part 1: Basic Definitions",
       "startLine": 42,
       "endLine": 62,
-      "summary": "Defines `IsAdmissibleDivisor` ($d \\mid n$, $d \\equiv 1 \\pmod{m}$, $1 < d < e^{m^\\alpha}$), `IsCovered` (existence of an admissible divisor), `coveredCount` (count via `Finset.filter`), and `delta` (asymptotic density via `Filter.liminf`)."
+      "summary": "Defines `IsAdmissibleDivisor` ($d \\mid n$, $d \\equiv 1 \\pmod{m}$, $1 < d < e^{m^\\alpha}$), `IsCovered` (existence of an admissible divisor), `coveredCount` (count via `Finset.filter`), and `delta` (asymptotic density via `Filter.liminf`).",
+      "mathContext": "Defines `IsAdmissibleDivisor` ($d \\mid n$, $d \\equiv 1 \\pmod{m}$, $1 < d < e^{m^\\alpha}$), `IsCovered` (existence of an admissible divisor), `coveredCount` (count via `Finset.filter`), and `delta` (as"
     },
     {
       "id": "part-2-the-threshold-question",
       "title": "Part 2: The Threshold Question",
       "startLine": 63,
       "endLine": 80,
-      "summary": "Formalizes `HasSharpThreshold` as $\\exists \\beta > 1$ with density $\\to 0$ below and $\\to 1$ above, using `Filter.Tendsto`. Defines `hallThreshold = 1/\\ln 2$ and proves $\\beta > 1$ via `exp_one_gt_d9` and monotonicity of $\\ln$."
+      "summary": "Formalizes `HasSharpThreshold` as $\\exists \\beta > 1$ with density $\\to 0$ below and $\\to 1$ above, using `Filter.Tendsto`. Defines `hallThreshold = 1/\\ln 2$ and proves $\\beta > 1$ via `exp_one_gt_d9` and monotonicity of $\\ln$.",
+      "mathContext": "Formalizes `HasSharpThreshold` as $\\exists \\beta > 1$ with density $\\to 0$ below and $\\to 1$ above, using `Filter.Tendsto`. Defines `hallThreshold = 1/\\ln 2$ and proves $\\beta > 1$ via `exp_one_gt_d9`"
     },
     {
       "id": "part-3-trivial-bounds",
       "title": "Part 3: Trivial Bounds",
       "startLine": 81,
       "endLine": 94,
-      "summary": "Axiomatizes the trivial bound: for $\\alpha < 1$, $\\delta(m, \\alpha) \\to 0$ because $|\\{d \\equiv 1 \\pmod{m} : d < e^{m^\\alpha}\\}| \\approx m^{\\alpha - 1} \\to 0$."
+      "summary": "Axiomatizes the trivial bound: for $\\alpha < 1$, $\\delta(m, \\alpha) \\to 0$ because $|\\{d \\equiv 1 \\pmod{m} : d < e^{m^\\alpha}\\}| \\approx m^{\\alpha - 1} \\to 0$.",
+      "mathContext": "Axiomatizes the trivial bound: for $\\alpha < 1$, $\\delta(m, \\alpha) \\to 0$ because $|\\{d \\equiv 1 \\pmod{m} : d < e^{m^\\alpha}\\}| \\approx m^{\\alpha - 1} \\to 0$."
     },
     {
       "id": "part-4-erd-s-s-claim-for-1",
       "title": "Part 4: Erdős's Claim for α = 1",
       "startLine": 95,
       "endLine": 104,
-      "summary": "Axiomatizes Erdős's 1979 claim that $\\delta(m, 1) \\to 0$, extending the trivial range from $\\alpha < 1$ to $\\alpha \\le 1$."
+      "summary": "Axiomatizes Erdős's 1979 claim that $\\delta(m, 1) \\to 0$, extending the trivial range from $\\alpha < 1$ to $\\alpha \\le 1$.",
+      "mathContext": "Axiomatizes Erdős's 1979 claim that $\\delta(m, 1) \\to 0$, extending the trivial range from $\\alpha < 1$ to $\\alpha \\le 1$."
     },
     {
       "id": "part-5-hall-s-theorem-1992",
       "title": "Part 5: Hall's Theorem (1992)",
       "startLine": 105,
       "endLine": 129,
-      "summary": "The core axiom: Hall's theorem giving `HasSharpThreshold` with the specific value $\\beta = 1/\\ln 2$. The combined theorem `threshold_is_one_over_log_two` packages existence, the threshold value, and both convergence directions."
+      "summary": "The core axiom: Hall's theorem giving `HasSharpThreshold` with the specific value $\\beta = 1/\\ln 2$. The combined theorem `threshold_is_one_over_log_two` packages existence, the threshold value, and both convergence directions.",
+      "mathContext": "The core axiom: Hall's theorem giving `HasSharpThreshold` with the specific value $\\beta = 1/\\ln 2$. The combined theorem `threshold_is_one_over_log_two` packages existence, the threshold value, and b"
     },
     {
       "id": "part-6-why-1-log-2",
       "title": "Part 6: Why 1/log 2?",
       "startLine": 130,
       "endLine": 148,
-      "summary": "Intuition for the threshold value: the count of admissible $d$ is $\\sim e^{m^\\alpha}/m$. The critical exponent $1/\\ln 2$ arises from sieve-theoretic analysis of when enough admissible divisors exist to cover positive density."
+      "summary": "Intuition for the threshold value: the count of admissible $d$ is $\\sim e^{m^\\alpha}/m$. The critical exponent $1/\\ln 2$ arises from sieve-theoretic analysis of when enough admissible divisors exist to cover positive density.",
+      "mathContext": "Intuition for the threshold value: the count of admissible $d$ is $\\sim e^{m^\\alpha}/m$. The critical exponent $1/\\ln 2$ arises from sieve-theoretic analysis of when enough admissible divisors exist t"
     },
     {
       "id": "part-7-behavior-at-threshold",
       "title": "Part 7: Behavior at Threshold",
       "startLine": 149,
       "endLine": 163,
-      "summary": "Notes that Hall's theorem leaves the exact behavior at $\\alpha = \\beta = 1/\\ln 2$ as an open question—the density may be 0, 1, or intermediate."
+      "summary": "Notes that Hall's theorem leaves the exact behavior at $\\alpha = \\beta = 1/\\ln 2$ as an open question—the density may be 0, 1, or intermediate.",
+      "mathContext": "Notes that Hall's theorem leaves the exact behavior at $\\alpha = \\beta = 1/\\ln 2$ as an open question—the density may be 0, 1, or intermediate."
     },
     {
       "id": "part-8-connection-to-problem-6",
       "title": "Part 8: Connection to Problem #696",
       "startLine": 164,
       "endLine": 172,
-      "summary": "Commentary linking to Erdős Problem #696, which concerns chains of prime divisors under the same congruence condition $d \\equiv 1 \\pmod{m}$."
+      "summary": "Commentary linking to Erdős Problem #696, which concerns chains of prime divisors under the same congruence condition $d \\equiv 1 \\pmod{m}$.",
+      "mathContext": "Commentary linking to Erdős Problem #696, which concerns chains of prime divisors under the same congruence condition $d \\equiv 1 \\pmod{m}$."
     },
     {
       "id": "part-9-examples",
       "title": "Part 9: Examples",
       "startLine": 173,
       "endLine": 185,
-      "summary": "Concrete cases: for $m = 2$, every integer has an odd divisor, so $\\delta(2, \\alpha) = 1$ trivially. For $m = p$ (large prime), the smallest admissible $d$ is $1 + p$, making the density analysis non-trivial."
+      "summary": "Concrete cases: for $m = 2$, every integer has an odd divisor, so $\\delta(2, \\alpha) = 1$ trivially. For $m = p$ (large prime), the smallest admissible $d$ is $1 + p$, making the density analysis non-trivial.",
+      "mathContext": "Concrete cases: for $m = 2$, every integer has an odd divisor, so $\\delta(2, \\alpha) = 1$ trivially. For $m = p$ (large prime), the smallest admissible $d$ is $1 + p$, making the density analysis non-"
     },
     {
       "id": "part-10-historical-context",
       "title": "Part 10: Historical Context",
       "startLine": 186,
       "endLine": 196,
-      "summary": "Notes on the problem's origins in Erdős's 1979 Astérisque paper and Hall's 1992 resolution in J. Number Theory."
+      "summary": "Notes on the problem's origins in Erdős's 1979 Astérisque paper and Hall's 1992 resolution in J. Number Theory.",
+      "mathContext": "Notes on the problem's origins in Erdős's 1979 Astérisque paper and Hall's 1992 resolution in J. Number Theory."
     },
     {
       "id": "part-11-main-results",
       "title": "Part 11: Main Results",
       "startLine": 197,
       "endLine": 239,
-      "summary": "Final theorems: `erdos_697_answer` (threshold exists), `erdos_697_threshold` (full characterization with $\\beta = 1/\\ln 2$), `erdos_697_summary` (threshold exists and $\\beta > 1$), and `erdos_697_solved` (problem is completely resolved)."
+      "summary": "Final theorems: `erdos_697_answer` (threshold exists), `erdos_697_threshold` (full characterization with $\\beta = 1/\\ln 2$), `erdos_697_summary` (threshold exists and $\\beta > 1$), and `erdos_697_solved` (problem is completely resolved).",
+      "mathContext": "Final theorems: `erdos_697_answer` (threshold exists), `erdos_697_threshold` (full characterization with $\\beta = 1/\\ln 2$), `erdos_697_summary` (threshold exists and $\\beta > 1$), and `erdos_697_solv"
     }
   ],
   "conclusion": {
@@ -187,12 +199,12 @@
     {
       "id": "erdos-696",
       "relationship": "related",
-      "description": "Problem #696 concerns chains of prime divisors with congruence conditions $d \\equiv 1 \\pmod{m}$. Both problems arise fro"
+      "description": "Problem #696 concerns chains of prime divisors with congruence conditions $d \\equiv 1 \\pmod{m}$. Both problems arise from Erdős's 1979 Astérisque paper and share the theme of understanding when congruence-constrained divisors sufficiently cover integers."
     },
     {
       "id": "erdos-698",
       "relationship": "related",
-      "description": "Adjacent problem in Erdős's collection. While #697 concerns divisor density with modular constraints, #698 addresses GCD"
+      "description": "Adjacent problem in Erdős's collection. While #697 concerns divisor density with modular constraints, #698 addresses GCDs of binomial coefficients—both explore the fine structure of divisibility."
     }
   ],
   "leanFile": {

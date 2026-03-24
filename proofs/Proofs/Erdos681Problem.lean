@@ -146,7 +146,8 @@ theorem composite_constraint (n k : ℕ) (_hk : 0 < k) (hm : ¬(n + k).Prime)
   -- k² < p and p * p ≤ n + k, so k⁴ = (k²)² < p² ≤ n + k
   calc k ^ 4 = (k ^ 2) ^ 2 := by ring
     _ = k ^ 2 * k ^ 2 := by ring
-    _ < p * p := by nlinarith
+    _ < p * p := mul_lt_mul' (le_of_lt hk2) hk2 (Nat.zero_le _)
+        (lt_of_le_of_lt (Nat.zero_le _) hk2)
     _ ≤ n + k := hpsq
 
 /-- When `d = 1`, the conjecture asks for `p(n+k) > k`. For k = 1, this
@@ -233,32 +234,117 @@ When n + 1 is prime, k = 1 is excluded (n+1 is not composite).
 For k ≥ 2, we need a composite m = n + k with p(m) > k^d.
 Since p(m) ≤ √m for composite m, this forces k^{2d} < n + k ≈ n,
 so k ≲ n^{1/(2d)}. The difficulty is finding such a k. -/
-theorem hard_case_constraint (n k d : ℕ) (hk : 2 ≤ k)
+theorem hard_case_constraint (n k d : ℕ) (_hk : 2 ≤ k)
     (hm : ¬(n + k).Prime) (hm2 : 2 ≤ n + k)
     (hlpf : ∀ p : ℕ, IsLeastPrimeFactor p (n + k) → k ^ d < p) :
     k ^ (2 * d) < n + k := by
   obtain ⟨p, hp, hpsq⟩ := lpf_le_sqrt (n + k) hm hm2
   have hkd := hlpf p hp
   -- k^d < p and p² ≤ n + k, so k^{2d} < p² ≤ n + k
+  have hkd_pos : 0 < k ^ d := by positivity
   calc k ^ (2 * d) = (k ^ d) ^ 2 := by ring
     _ = k ^ d * k ^ d := by ring
-    _ < p * p := by nlinarith
+    _ < k ^ d * p := Nat.mul_lt_mul_of_pos_left hkd hkd_pos
+    _ ≤ p * p := Nat.mul_le_mul_right p (le_of_lt hkd)
     _ ≤ n + k := hpsq
+
+/- ## Witness parity constraints -/
+
+/-- For even m ≥ 4, the least prime factor is 2. -/
+theorem minFac_of_even (m : ℕ) (hm : 4 ≤ m) (heven : 2 ∣ m) :
+    m.minFac = 2 := by
+  apply le_antisymm
+  · exact Nat.minFac_le_of_dvd (by norm_num) heven
+  · exact (Nat.minFac_prime (by omega)).two_le
+
+/-- When n+1 ≥ 3 is prime, n is even (since the only even prime is 2). -/
+theorem even_of_prime_succ (n : ℕ) (hn : 2 ≤ n) (hp : (n + 1).Prime) :
+    Even n := by
+  rw [Nat.even_iff]
+  by_contra h
+  have hmod : n % 2 = 1 := by omega
+  have : (n + 1) % 2 = 0 := by omega
+  have h2dvd : 2 ∣ (n + 1) := Nat.dvd_of_mod_eq_zero (by omega)
+  have := hp.eq_one_or_self_of_dvd 2 h2dvd
+  omega
+
+/-- Even offsets k ≥ 2 never witness the generalised conjecture
+(for d ≥ 1) when n is even: the least prime factor of the even
+composite n + k is 2, but k^d ≥ 2. -/
+theorem even_offset_excluded (n k d : ℕ) (hn : 2 ≤ n) (hk : 2 ≤ k) (hd : 1 ≤ d)
+    (hne : Even n) (hke : Even k) :
+    ¬(∀ p : ℕ, IsLeastPrimeFactor p (n + k) → k ^ d < p) := by
+  intro hlpf
+  have heven : 2 ∣ (n + k) := by
+    obtain ⟨a, ha⟩ := hne; obtain ⟨b, hb⟩ := hke
+    exact ⟨a + b, by omega⟩
+  have hmf : (n + k).minFac = 2 := minFac_of_even (n + k) (by omega) heven
+  have hlpf2 : IsLeastPrimeFactor 2 (n + k) := by
+    rw [← hmf]; exact minFac_is_lpf (n + k) (by omega)
+  have hkd_ge : 2 ≤ k ^ d := by
+    have h1 : k ^ 1 ≤ k ^ d := Nat.pow_le_pow_right (by omega : 0 < k) hd
+    simp at h1; omega
+  have hlt := hlpf 2 hlpf2
+  omega
+
+/-- When n+1 ≥ 3 is prime and d ≥ 1, any witness k ≥ 2 for the
+generalised conjecture must be odd. Even k produces even composites
+with minFac = 2, but k^d ≥ 2^d ≥ 2. -/
+theorem witness_must_be_odd (n k d : ℕ) (hn : 2 ≤ n) (hk : 2 ≤ k) (hd : 1 ≤ d)
+    (hp : (n + 1).Prime)
+    (hlpf : ∀ p : ℕ, IsLeastPrimeFactor p (n + k) → k ^ d < p) :
+    ¬Even k := by
+  intro hke
+  exact even_offset_excluded n k d hn hk hd (even_of_prime_succ n hn hp) hke hlpf
 
 /-- Generalises `hard_case_constraint` with the weaker hypothesis k ≥ 1.
 Shows k^(2d) < n+k for any valid (n, k, d) triple, bounding the search
 range at O(n^{1/(2d)}). -/
-theorem general_constraint (n k d : ℕ) (hk : 0 < k) (hm : ¬(n + k).Prime)
+theorem general_constraint (n k d : ℕ) (_hk : 0 < k) (hm : ¬(n + k).Prime)
     (hm2 : 2 ≤ n + k) (hlpf : ∀ p : ℕ, IsLeastPrimeFactor p (n + k) → k ^ d < p) :
     k ^ (2 * d) < n + k := by
   obtain ⟨p, hp, hpsq⟩ := lpf_le_sqrt (n + k) hm hm2
   have hkd := hlpf p hp
-  have hkd_pos : 0 < k ^ d := pow_pos hk d
   have h2d : k ^ (2 * d) = k ^ d * k ^ d := by
     rw [show 2 * d = d + d from by omega, pow_add]
+  have hp_pos : 0 < p := lt_of_le_of_lt (Nat.zero_le (k ^ d)) hkd
   rw [h2d]
-  calc k ^ d * k ^ d < p * p := by nlinarith
-    _ ≤ n + k := hpsq
+  calc k ^ d * k ^ d
+      _ < k ^ d * p := Nat.mul_lt_mul_of_pos_left hkd hkd_pos
+      _ ≤ p * p := Nat.mul_le_mul_right p (le_of_lt hkd)
+      _ ≤ n + k := hpsq
+
+/- ## d=1 residue class resolution -/
+
+/-- When n+1 = p is prime with p ≡ 2 (mod 3) and n+3 = p+2 is composite,
+k = 3 witnesses the d=1 case. Since n is even (n+1 is odd prime), n+3
+is odd. And p ≡ 2 (mod 3) gives (n+3) = p+2 ≡ 1 (mod 3), so 3 ∤ n+3.
+Hence minFac(n+3) ≥ 5 > 3 = k^1. -/
+theorem d1_at_2_mod_3 (n : ℕ) (hn : 4 ≤ n)
+    (hp : (n + 1).Prime)
+    (hmod : (n + 1) % 3 = 2)
+    (hc : ¬(n + 3).Prime) :
+    ∃ k : ℕ, 0 < k ∧ ¬(n + k).Prime ∧ 2 ≤ n + k ∧
+      ∀ p : ℕ, IsLeastPrimeFactor p (n + k) → k ^ 1 < p := by
+  refine ⟨3, by omega, hc, by omega, ?_⟩
+  intro p ⟨hprime, hdvd, hmin⟩
+  simp only [pow_one]
+  -- n+3 is odd (n is even since n+1 is odd prime ≥ 5)
+  have h2 : ¬(2 ∣ (n + 3)) := by
+    intro ⟨m, hm⟩
+    have hne := even_of_prime_succ n (by omega) hp
+    obtain ⟨a, ha⟩ := hne
+    omega
+  -- (n+1) % 3 = 2 implies (n+3) % 3 = 1, so 3 ∤ n+3
+  have h3 : ¬(3 ∣ (n + 3)) := by
+    intro ⟨m, hm⟩
+    omega
+  -- p is prime, p ∣ n+3, but 2 ∤ n+3 and 3 ∤ n+3, so p ≠ 2, p ≠ 3
+  have hp2 : p ≠ 2 := fun heq => h2 (heq ▸ hdvd)
+  have hp3 : p ≠ 3 := fun heq => h3 (heq ▸ hdvd)
+  -- p is prime and p ≠ 2, p ≠ 3, so p ≥ 5 > 3
+  have := hprime.two_le
+  omega
 
 /- ## Connection to Erdős 680 -/
 

@@ -241,27 +241,47 @@
     {
       "id": "solution-of-cubic",
       "title": "Solution of the Cubic",
-      "relationship": "parent — this is an open question derived from cubic equation theory"
+      "relationship": "parent — this is an open question derived from cubic equation theory",
+      "description": "Parent proof: Cardano's formula for the depressed cubic. This file takes the three roots produced by Cardano's formula and verifies they satisfy Vieta's formulas, completing the algebraic picture: Cardano gives the roots explicitly, Vieta's formulas confirm the coefficient relationships, and the factorization theorem shows the cubic splits at these roots."
     },
     {
       "id": "abel-ruffini",
       "title": "Abel-Ruffini Theorem",
-      "relationship": "related — both concern the solvability of polynomial equations by radicals"
+      "relationship": "related — both concern the solvability of polynomial equations by radicals",
+      "description": "Abel-Ruffini proves no radical formula exists for the general quintic. This file demonstrates the cubic case where a radical formula DOES exist (Cardano's) and completely captures the roots. The contrast illustrates the exact boundary of radical solvability: cubics and quartics yield to radicals, quintics do not."
     },
     {
       "id": "fundamental-theorem-algebra",
       "title": "Fundamental Theorem of Algebra",
-      "relationship": "foundation — guarantees existence of roots whose structure is studied here"
+      "relationship": "foundation — guarantees existence of roots whose structure is studied here",
+      "description": "The FTA guarantees that every degree-n polynomial over ℂ has n roots (counted with multiplicity). This file constructs the three cubic roots explicitly via Cardano's formula and proves the factorization, providing a constructive witness for the FTA in degree 3."
     },
     {
       "id": "general-quartic",
       "title": "General Quartic",
-      "relationship": "sibling — extends cubic solutions to quartic equations"
+      "relationship": "sibling — extends cubic solutions to quartic equations",
+      "description": "Ferrari's quartic formula (1540) uses a resolvent cubic — the solution of the quartic reduces to solving a cubic, which uses Cardano's formula. This file's verification of Vieta's formulas for the cubic is thus foundational for the quartic solution chain."
     },
     {
       "id": "vietas-formulas",
       "title": "Vieta's Formulas",
-      "relationship": "technique — connects coefficients to roots, essential for cubic analysis"
+      "relationship": "technique — connects coefficients to roots, essential for cubic analysis",
+      "description": "The base Vieta's formulas entry proves the general relationship between roots and coefficients abstractly. This file provides the concrete verification for the specific case of Cardano's cubic roots, using the identity 1 + ω + ω² = 0 to perform the explicit computation."
+    },
+    {
+      "id": "vietas-formulas-oq-03",
+      "relationship": "related",
+      "description": "Newton's identities express power sums p_k = Σxᵢᵏ recursively in terms of elementary symmetric polynomials eⱼ, generalizing the relationship verified here. This file proves the elementary symmetric polynomial values σ₁ = 0, σ₂ = p, σ₃ = -q; Newton's identities would give the power sums as well."
+    },
+    {
+      "id": "primitive-roots",
+      "relationship": "foundational",
+      "description": "The primitive cube root of unity ω = e^{2πi/3} is a primitive root of the cyclotomic polynomial Φ₃(x) = x² + x + 1. The identity 1 + ω + ω² = 0 (the key tool in every Vieta proof here) is exactly the statement that ω is a root of Φ₃."
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial theorem underlies the expansion of (ωu + ω²v)³ and similar expressions needed in the Vieta proofs. The multinomial expansions of symmetric products are essentially binomial coefficient computations organized by the symmetry group S₃."
     }
   ]
 }

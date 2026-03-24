@@ -48,70 +48,80 @@
       "title": "Header and Imports",
       "startLine": 1,
       "endLine": 28,
-      "summary": "Module documentation for Erdos Problem #1013 on the triangle-free chromatic threshold, listing key results and references. Imports Mathlib's SimpleGraph, Clique, Real, Log, and Tactic modules."
+      "summary": "Module documentation for Erdos Problem #1013 on the triangle-free chromatic threshold, listing key results and references. Imports Mathlib's SimpleGraph, Clique, Real, Log, and Tactic modules.",
+      "mathContext": "Module documentation for Erdos Problem #1013 on the triangle-free chromatic threshold, listing key results and references. Imports Mathlib's SimpleGraph, Clique, Real, Log, and Tactic modules."
     },
     {
       "id": "triangle-free-def",
       "title": "Triangle-Free and Coloring Definitions",
       "startLine": 29,
       "endLine": 40,
-      "summary": "Defines `IsTriangleFree` (no $K_3$ subgraph) and `HasProperColoring` ($k$-coloring with distinct colors on adjacent vertices). These are the local and global conditions whose interplay the problem studies."
+      "summary": "Defines `IsTriangleFree` (no $K_3$ subgraph) and `HasProperColoring` ($k$-coloring with distinct colors on adjacent vertices). These are the local and global conditions whose interplay the problem studies.",
+      "mathContext": "Defines `IsTriangleFree` (no $K_3$ subgraph) and `HasProperColoring` ($k$-coloring with distinct colors on adjacent vertices). These are the local and global conditions whose interplay the problem stu"
     },
     {
       "id": "chromatic-threshold-def",
       "title": "Chromatic Number and h_3(k)",
       "startLine": 41,
       "endLine": 50,
-      "summary": "Defines `chromaticNumber` as $\\sup\\{k : G$ has no proper $k$-coloring$\\} + 1$, and `triangleFreeChromThreshold` $h_3(k)$ as the smallest $n$ with a triangle-free graph on $n$ vertices achieving $\\chi \\geq k$."
+      "summary": "Defines `chromaticNumber` as $\\sup\\{k : G$ has no proper $k$-coloring$\\} + 1$, and `triangleFreeChromThreshold` $h_3(k)$ as the smallest $n$ with a triangle-free graph on $n$ vertices achieving $\\chi \\geq k$.",
+      "mathContext": "Defines `chromaticNumber` as $\\sup\\{k : G$ has no proper $k$-coloring$\\} + 1$, and `triangleFreeChromThreshold` $h_3(k)$ as the smallest $n$ with a triangle-free graph on $n$ vertices achieving $\\chi "
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture: Asymptotic Formula",
       "startLine": 51,
       "endLine": 60,
-      "summary": "States Erdos's conjecture that $h_3(k)/(k^2 \\log k) \\to c$ for some constant $c > 0$, formalized using `Filter.Tendsto` and `nhds c`."
+      "summary": "States Erdos's conjecture that $h_3(k)/(k^2 \\log k) \\to c$ for some constant $c > 0$, formalized using `Filter.Tendsto` and `nhds c`.",
+      "mathContext": "States Erdos's conjecture that $h_3(k)/(k^2 \\log k) \\to c$ for some constant $c > 0$, formalized using `Filter.Tendsto` and `nhds c`."
     },
     {
       "id": "ratio-convergence",
       "title": "Ratio Convergence Conjecture",
       "startLine": 61,
       "endLine": 68,
-      "summary": "The weaker conjecture $h_3(k+1)/h_3(k) \\to 1$: the threshold grows smoothly. Formalized as `Filter.Tendsto` to `nhds 1`."
+      "summary": "The weaker conjecture $h_3(k+1)/h_3(k) \\to 1$: the threshold grows smoothly. Formalized as `Filter.Tendsto` to `nhds 1`.",
+      "mathContext": "The weaker conjecture $h_3(k+1)/h_3(k) \\to 1$: the threshold grows smoothly. Formalized as `Filter.Tendsto` to `nhds 1`."
     },
     {
       "id": "lower-upper-bounds",
       "title": "Known Lower and Upper Bounds",
       "startLine": 69,
       "endLine": 83,
-      "summary": "The probabilistic lower bound $(1/2 - o(1))k^2 \\log k$ from Shearer's Ramsey bound, and the constructive upper bound $(1+o(1))k^2 \\log k$ from algebraic constructions. Together they give $h_3(k) = \\Theta(k^2 \\log k)$ with constant in $[1/2, 1]$."
+      "summary": "The probabilistic lower bound $(1/2 - o(1))k^2 \\log k$ from Shearer's Ramsey bound, and the constructive upper bound $(1+o(1))k^2 \\log k$ from algebraic constructions. Together they give $h_3(k) = \\Theta(k^2 \\log k)$ with constant in $[1/2, 1]$.",
+      "mathContext": "The probabilistic lower bound $(1/2 - o(1))k^2 \\log k$ from Shearer's Ramsey bound, and the constructive upper bound $(1+o(1))k^2 \\log k$ from algebraic constructions. Together they give $h_3(k) = \\Th"
     },
     {
       "id": "graver-yackel",
       "title": "Graver-Yackel Historical Bound",
       "startLine": 84,
       "endLine": 90,
-      "summary": "The 1968 bound $h_3(k) \\gg k^2 \\log k / \\log \\log k$ by Graver and Yackel using probabilistic deletion. This was the first quantitative lower bound, later superseded by the Ramsey-theoretic approach."
+      "summary": "The 1968 bound $h_3(k) \\gg k^2 \\log k / \\log \\log k$ by Graver and Yackel using probabilistic deletion. This was the first quantitative lower bound, later superseded by the Ramsey-theoretic approach.",
+      "mathContext": "The 1968 bound $h_3(k) \\gg k^2 \\log k / \\log \\log k$ by Graver and Yackel using probabilistic deletion. This was the first quantitative lower bound, later superseded by the Ramsey-theoretic approach."
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity of h_3",
       "startLine": 91,
       "endLine": 96,
-      "summary": "The threshold $h_3$ is non-decreasing: $j \\leq k \\implies h_3(j) \\leq h_3(k)$, since achieving $\\chi \\geq k$ implies $\\chi \\geq j$."
+      "summary": "The threshold $h_3$ is non-decreasing: $j \\leq k \\implies h_3(j) \\leq h_3(k)$, since achieving $\\chi \\geq k$ implies $\\chi \\geq j$.",
+      "mathContext": "The threshold $h_3$ is non-decreasing: $j \\leq k \\implies h_3(j) \\leq h_3(k)$, since achieving $\\chi \\geq k$ implies $\\chi \\geq j$."
     },
     {
       "id": "small-cases",
       "title": "Small Cases and Extremal Graphs",
       "startLine": 97,
       "endLine": 116,
-      "summary": "Computed values: $h_3(1) = 1$, $h_3(2) = 2$, $h_3(3) = 5$ ($C_5$), $h_3(4) = 11$ (Grotzsch graph). Each extremal graph is a Mycielski graph. The Grotzsch graph with 11 vertices and 20 edges is the smallest triangle-free 4-chromatic graph."
+      "summary": "Computed values: $h_3(1) = 1$, $h_3(2) = 2$, $h_3(3) = 5$ ($C_5$), $h_3(4) = 11$ (Grotzsch graph). Each extremal graph is a Mycielski graph. The Grotzsch graph with 11 vertices and 20 edges is the smallest triangle-free 4-chromatic graph.",
+      "mathContext": "Computed values: $h_3(1) = 1$, $h_3(2) = 2$, $h_3(3) = 5$ ($C_5$), $h_3(4) = 11$ (Grotzsch graph). Each extremal graph is a Mycielski graph. The Grotzsch graph with 11 vertices and 20 edges is the sma"
     },
     {
       "id": "mycielski-construction",
       "title": "Mycielski's Construction",
       "startLine": 117,
       "endLine": 121,
-      "summary": "Mycielski's 1955 inductive construction: $M_2 = K_2$, $M_{k+1}$ from $M_k$ via shadow vertices and a universal vertex. Produces $K_3$-free graphs with $\\chi(M_k) = k$ and $|V| = 3 \\cdot 2^{k-2} - 1$, proving finiteness of $h_3(k)$."
+      "summary": "Mycielski's 1955 inductive construction: $M_2 = K_2$, $M_{k+1}$ from $M_k$ via shadow vertices and a universal vertex. Produces $K_3$-free graphs with $\\chi(M_k) = k$ and $|V| = 3 \\cdot 2^{k-2} - 1$, proving finiteness of $h_3(k)$.",
+      "mathContext": "Mycielski's 1955 inductive construction: $M_2 = K_2$, $M_{k+1}$ from $M_k$ via shadow vertices and a universal vertex. Produces $K_3$-free graphs with $\\chi(M_k) = k$ and $|V| = 3 \\cdot 2^{k-2} - 1$, "
     }
   ],
   "conclusion": {
@@ -158,19 +168,34 @@
   ],
   "relatedProofs": [
     {
-      "target": "roth-theorem-k3",
-      "relationship": "shared triangle-free theme",
-      "note": "Roth's theorem on 3-term arithmetic progressions is closely related in spirit: both problems concern how 'dense' or 'chromatic' a structure can be while forbidding triangles. Roth's theorem is the additive combinatorics analogue of the triangle-free chromatic threshold problem."
+      "id": "erdos-1104",
+      "relationship": "dual problem",
+      "description": ""
     },
     {
-      "target": "four-color-theorem",
-      "relationship": "chromatic number context",
-      "note": "The Four Color Theorem establishes an absolute chromatic number bound for planar graphs. Problem #1013 explores the opposite extreme: how high can the chromatic number go when only triangle-freeness is imposed? Together they bracket the landscape of graph coloring."
+      "id": "erdos-920",
+      "relationship": "generalization",
+      "description": ""
     },
     {
-      "target": "prob-method-lovasz-local",
-      "relationship": "related technique",
-      "note": "The Lovász Local Lemma provides an alternative to the first-moment method for constructing triangle-free graphs with controlled chromatic number. It is used in sharper versions of the probabilistic lower bounds for $h_3(k)$."
+      "id": "erdos-1014",
+      "relationship": "structural analogy",
+      "description": ""
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "key tool",
+      "description": ""
+    },
+    {
+      "id": "prob-method-expectation",
+      "relationship": "proof technique",
+      "description": ""
+    },
+    {
+      "id": "prob-method-alteration",
+      "relationship": "proof technique",
+      "description": ""
     }
   ],
   "references": [
@@ -180,7 +205,7 @@
       ],
       "title": "Sur le coloriage des graphes",
       "venue": "Colloquium Mathematicum",
-      "year": 1955,
+      "year": "1955",
       "volume": "3",
       "pages": "161–162",
       "note": "The foundational paper proving that triangle-free graphs of arbitrarily high chromatic number exist via the Mycielski inductive construction. Proves $h_3(k) < \\infty$ for all $k$."
@@ -191,7 +216,7 @@
       ],
       "title": "A note on the independence number of triangle-free graphs",
       "venue": "Discrete Mathematics",
-      "year": 1983,
+      "year": "1983",
       "volume": "46",
       "issue": "1",
       "pages": "83–87",
@@ -205,7 +230,7 @@
       ],
       "title": "Some graph theoretic results associated with Ramsey's theorem",
       "venue": "Journal of Combinatorial Theory",
-      "year": 1968,
+      "year": "1968",
       "volume": "4",
       "issue": "2",
       "pages": "125–175",
@@ -219,7 +244,7 @@
       ],
       "title": "The Probabilistic Method",
       "venue": "Wiley-Interscience",
-      "year": 2016,
+      "year": "2016",
       "edition": "4th",
       "note": "The standard reference for the probabilistic method in combinatorics. Chapter 8 covers triangle-free graphs with high chromatic number, including the Mycielski construction, random graph constructions, and the connection to Ramsey numbers relevant to Problem #1013."
     },
@@ -230,7 +255,7 @@
       ],
       "title": "Correspondence coloring and its application to list-coloring planar graphs without cycles of lengths 4 to 8",
       "venue": "Journal of Combinatorial Theory, Series B",
-      "year": 2018,
+      "year": "2018",
       "volume": "129",
       "pages": "38–54",
       "doi": "10.1016/j.jctb.2017.09.001",
@@ -247,7 +272,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 121,
+    "lineCount": 159,
     "axiomCount": 11,
     "theoremCount": 0,
     "definitionCount": 4

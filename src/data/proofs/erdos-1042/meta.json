@@ -164,16 +164,34 @@
   ],
   "relatedProofs": [
     {
-      "target": "erdos-1040",
-      "description": "Parallel question: does transfinite diameter alone determine the Lebesgue measure of the sublevel set, or does geometry also play a role? GR 2024 answers the analogous question for component counts."
+      "id": "erdos-1040",
+      "relationship": "companion problem",
+      "description": "Erdős #1040 asks whether the measure of {z: |f(z)| < 1} is determined by transfinite diameter alone — a direct complement to #1042's question about component counts vs. geometry."
     },
     {
-      "target": "erdos-1046",
-      "description": "Pommerenke's containment theorem (lemniscate connected ⟹ contained in disc of radius 2) is a key geometric tool for bounding component behaviour when d ≤ 1/4."
+      "id": "erdos-1041",
+      "relationship": "related lemniscate problem",
+      "description": "Erdős #1041 studies path lengths inside polynomial sublevel sets with roots in the unit disk, sharing the same lemniscate setup and polynomial root-constraint framework."
     },
     {
-      "target": "erdos-1041",
-      "description": "Paths of length < 2 inside sublevel sets with roots in the unit disk — a length-analogue of the component-count problem studied in #1042."
+      "id": "erdos-1043",
+      "relationship": "related lemniscate problem",
+      "description": "Erdős #1043 examines projections of polynomial level sets; Pommerenke's 1961 work on lemniscate geometry is directly relevant to the component-count questions of #1042."
+    },
+    {
+      "id": "erdos-1046",
+      "relationship": "companion lemniscate result",
+      "description": "Erdős #1046 (Pommerenke 1959) shows connected lemniscates lie in a disc of radius 2 — a geometric containment result closely related to the single-component bound in the GR 2024 solution."
+    },
+    {
+      "id": "erdos-1047",
+      "relationship": "related lemniscate geometry",
+      "description": "Erdős #1047 studies convexity of lemniscate components; both problems concern the fine geometry of {z: |f(z)| ≤ c} and were motivated by the same Erdős-Herzog-Piranian programme."
+    },
+    {
+      "id": "erdos-1048",
+      "relationship": "related lemniscate problem",
+      "description": "Erdős #1048 asks about diameters of lemniscate components when roots lie in |z| ≤ r < 2, providing a quantitative diameter bound complementary to the component-count bounds in #1042."
     }
   ],
   "references": [
@@ -184,12 +202,12 @@
         "G. Piranian"
       ],
       "title": "Metric properties of polynomials",
-      "journal": "Journal d'Analyse Mathématique",
       "volume": "6",
-      "year": 1958,
+      "year": "1958",
       "pages": "125–148",
       "doi": "10.1007/BF02790232",
-      "description": "The original 1958 paper posing the lemniscate component problem; proves that f(z) = zⁿ + 1 yields n components for the unit disc."
+      "description": "The original 1958 paper posing the lemniscate component problem; proves that f(z) = zⁿ + 1 yields n components for the unit disc.",
+      "venue": "Journal d'Analyse Mathématique"
     },
     {
       "authors": [
@@ -197,22 +215,22 @@
         "N. Ramachandran"
       ],
       "title": "Connected components of polynomial lemniscates",
-      "journal": "arXiv preprint",
-      "year": 2024,
+      "year": "2024",
       "arxiv": "2401.12345",
-      "description": "Solves Erdős #1042 completely: proves the (1-c)n bound for d < 1, the single-component result for d ≤ 1/4 with F connected, and the geometric counterexample separating disc(1/2) from [-1,1]."
+      "description": "Solves Erdős #1042 completely: proves the (1-c)n bound for d < 1, the single-component result for d ≤ 1/4 with F connected, and the geometric counterexample separating disc(1/2) from [-1,1].",
+      "venue": "arXiv preprint"
     },
     {
       "authors": [
         "C. Pommerenke"
       ],
       "title": "On the derivative of a polynomial",
-      "journal": "The Michigan Mathematical Journal",
       "volume": "6",
-      "year": 1959,
+      "year": "1959",
       "pages": "373–380",
       "doi": "10.1307/mmj/1028998232",
-      "description": "Establishes fundamental geometric properties of polynomial lemniscates, including the disc-containment theorem for connected lemniscates (relevant to #1046 and the GR 2024 proof)."
+      "description": "Establishes fundamental geometric properties of polynomial lemniscates, including the disc-containment theorem for connected lemniscates (relevant to #1046 and the GR 2024 proof).",
+      "venue": "The Michigan Mathematical Journal"
     },
     {
       "authors": [
@@ -220,7 +238,7 @@
       ],
       "title": "Potential Theory in the Complex Plane",
       "publisher": "Cambridge University Press",
-      "year": 1995,
+      "year": "1995",
       "isbn": "978-0-521-46654-7",
       "description": "Comprehensive reference for logarithmic capacity (transfinite diameter), Green functions, and their relationship to polynomial approximation — the foundational potential-theoretic background for #1042."
     },
@@ -230,7 +248,7 @@
       ],
       "title": "Foundations of Modern Potential Theory",
       "publisher": "Springer",
-      "year": 1972,
+      "year": "1972",
       "doi": "10.1007/978-3-642-65183-0",
       "description": "Authoritative treatment of logarithmic capacity and transfinite diameter in the complex plane, including the Chebyshev constant characterisation used throughout the lemniscate theory."
     }

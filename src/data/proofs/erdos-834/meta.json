@@ -80,56 +80,64 @@
       "title": "Hypergraph Definitions",
       "startLine": 35,
       "endLine": 58,
-      "summary": "Namespace `Erdos834`. Defines `Hypergraph V` (edge set as `Set (Finset V)`), `IsUniform H k` ($|e| = k$ for all edges), `degree H v` (via `Set.ncard`), and `minDegree H` (via `⨅` over active vertices)."
+      "summary": "Namespace `Erdos834`. Defines `Hypergraph V` (edge set as `Set (Finset V)`), `IsUniform H k` ($|e| = k$ for all edges), `degree H v` (via `Set.ncard`), and `minDegree H` (via `⨅` over active vertices).",
+      "mathContext": "Namespace `Erdos834`. Defines `Hypergraph V` (edge set as `Set (Finset V)`), `IsUniform H k` ($|e| = k$ for all edges), `degree H v` (via `Set.ncard`), and `minDegree H` (via `⨅` over active vertices)"
     },
     {
       "id": "sec-834-transversal",
       "title": "Transversal Number $\\tau(H)$",
       "startLine": 59,
       "endLine": 72,
-      "summary": "Defines `IsTransversal H T` ($T$ hits every edge) and `transversalNumber H` ($\\min |T|$ over transversals) using conditional infimum."
+      "summary": "Defines `IsTransversal H T` ($T$ hits every edge) and `transversalNumber H` ($\\min |T|$ over transversals) using conditional infimum.",
+      "mathContext": "Defines `IsTransversal H T` ($T$ hits every edge) and `transversalNumber H` ($\\min |T|$ over transversals) using conditional infimum."
     },
     {
       "id": "sec-834-tau-critical",
       "title": "Transversal-Criticality",
       "startLine": 73,
       "endLine": 88,
-      "summary": "Defines `removeEdge H e` and `IsTransversalCritical H k`: $\\tau(H) = k$ and every edge removal reduces $\\tau$."
+      "summary": "Defines `removeEdge H e` and `IsTransversalCritical H k`: $\\tau(H) = k$ and every edge removal reduces $\\tau$.",
+      "mathContext": "Defines `removeEdge H e` and `IsTransversalCritical H k`: $\\tau(H) = k$ and every edge removal reduces $\\tau$."
     },
     {
       "id": "sec-834-chromatic",
       "title": "Chromatic Number $\\chi(H)$",
       "startLine": 89,
       "endLine": 107,
-      "summary": "Defines `IsProperColoring H k c` (no monochromatic edge of size $\\ge 2$), `chromaticNumber H` (min colors), and `IsChromaticCritical H k` ($\\chi = k$ and every edge removal reduces $\\chi$)."
+      "summary": "Defines `IsProperColoring H k c` (no monochromatic edge of size $\\ge 2$), `chromaticNumber H` (min colors), and `IsChromaticCritical H k` ($\\chi = k$ and every edge removal reduces $\\chi$).",
+      "mathContext": "Defines `IsProperColoring H k c` (no monochromatic edge of size $\\ge 2$), `chromaticNumber H` (min colors), and `IsChromaticCritical H k` ($\\chi = k$ and every edge removal reduces $\\chi$)."
     },
     {
       "id": "sec-834-questions",
       "title": "Main Question Formulations",
       "startLine": 108,
       "endLine": 123,
-      "summary": "States `transversal_question` and `chromatic_question` as existential propositions: does there exist a 3-uniform, 3-critical hypergraph with $\\delta \\ge 7$ under each interpretation?"
+      "summary": "States `transversal_question` and `chromatic_question` as existential propositions: does there exist a 3-uniform, 3-critical hypergraph with $\\delta \\ge 7$ under each interpretation?",
+      "mathContext": "States `transversal_question` and `chromatic_question` as existential propositions: does there exist a 3-uniform, 3-critical hypergraph with $\\delta \\ge 7$ under each interpretation?"
     },
     {
       "id": "sec-834-li",
       "title": "Li's Theorem (2025)",
       "startLine": 124,
       "endLine": 138,
-      "summary": "Axiomatizes `li_bound` ($\\delta \\le 6$ for $\\tau$-critical) and proves `transversal_answer_no` by contradiction with `omega`."
+      "summary": "Axiomatizes `li_bound` ($\\delta \\le 6$ for $\\tau$-critical) and proves `transversal_answer_no` by contradiction with `omega`.",
+      "mathContext": "Axiomatizes `li_bound` ($\\delta \\le 6$ for $\\tau$-critical) and proves `transversal_answer_no` by contradiction with `omega`."
     },
     {
       "id": "sec-834-lovasz",
       "title": "Lovász's Construction",
       "startLine": 139,
       "endLine": 153,
-      "summary": "Axiomatizes `lovasz_construction` ($\\forall d$, $\\chi$-critical with $\\delta \\ge d$ exists) and proves `chromatic_answer_yes` by instantiating with $d = 7$."
+      "summary": "Axiomatizes `lovasz_construction` ($\\forall d$, $\\chi$-critical with $\\delta \\ge d$ exists) and proves `chromatic_answer_yes` by instantiating with $d = 7$.",
+      "mathContext": "Axiomatizes `lovasz_construction` ($\\forall d$, $\\chi$-critical with $\\delta \\ge d$ exists) and proves `chromatic_answer_yes` by instantiating with $d = 7$."
     },
     {
       "id": "sec-834-resolution",
       "title": "Complete Resolution and Summary",
       "startLine": 154,
       "endLine": 197,
-      "summary": "Proves `erdos_834_resolution` (conjunction of both answers), axiomatizes `tight_bound_exists` ($\\delta = 6$ achieved), and proves `erdos_834_summary` combining Li's universal bound with Lovász's universal existence."
+      "summary": "Proves `erdos_834_resolution` (conjunction of both answers), axiomatizes `tight_bound_exists` ($\\delta = 6$ achieved), and proves `erdos_834_summary` combining Li's universal bound with Lovász's universal existence.",
+      "mathContext": "Proves `erdos_834_resolution` (conjunction of both answers), axiomatizes `tight_bound_exists` ($\\delta = 6$ achieved), and proves `erdos_834_summary` combining Li's universal bound with Lovász's unive"
     }
   ],
   "conclusion": {
@@ -163,17 +171,17 @@
     {
       "id": "erdos-738",
       "relationship": "related",
-      "description": "Erdős #738 studies triangle-free graphs with infinite chromatic number—a graph coloring problem that parallels the hyper"
+      "description": "Erdős #738 studies triangle-free graphs with infinite chromatic number—a graph coloring problem that parallels the hypergraph chromatic number questions in #834"
     },
     {
       "id": "four-color-theorem",
       "relationship": "technique",
-      "description": "Graph coloring theory provides the foundation; the Four Color Theorem concerns planar graphs while #834 concerns hypergr"
+      "description": "Graph coloring theory provides the foundation; the Four Color Theorem concerns planar graphs while #834 concerns hypergraph criticality and minimum degree"
     },
     {
       "id": "ramseys-theorem",
       "relationship": "related",
-      "description": "Ramsey theory underlies many extremal hypergraph results, connecting unavoidable structures to the degree constraints in"
+      "description": "Ramsey theory underlies many extremal hypergraph results, connecting unavoidable structures to the degree constraints in critical hypergraphs"
     }
   ],
   "leanFile": {

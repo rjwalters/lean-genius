@@ -91,63 +91,72 @@
       "title": "Bipartite Graphs and Bipartitions",
       "summary": "IsBipartition, bipartition_edges_between, IsBipartite definitions",
       "startLine": 45,
-      "endLine": 84
+      "endLine": 84,
+      "mathContext": "IsBipartition, bipartition_edges_between, IsBipartite definitions"
     },
     {
       "id": "cycles",
       "title": "Cycles in Graphs",
       "summary": "HasCycleOfLength, C4Free, C6Free, C4C6Free predicates",
       "startLine": 85,
-      "endLine": 113
+      "endLine": 113,
+      "mathContext": "HasCycleOfLength, C4Free, C6Free, C4C6Free predicates"
     },
     {
       "id": "extremal-function",
       "title": "The Extremal Function f(n,m)",
       "summary": "maxC4C6FreeEdges definition and achievability axiom",
       "startLine": 114,
-      "endLine": 138
+      "endLine": 138,
+      "mathContext": "maxC4C6FreeEdges definition and achievability axiom"
     },
     {
       "id": "decaen-szekely",
       "title": "De Caen-Székely Bounds (1992)",
       "summary": "Upper and lower bounds, Faudree-Simonovits general bound",
       "startLine": 139,
-      "endLine": 174
+      "endLine": 174,
+      "mathContext": "Upper and lower bounds, Faudree-Simonovits general bound"
     },
     {
       "id": "lazebnik-improvement",
       "title": "Lazebnik-Ustimenko-Woldar Improvement (1994)",
       "summary": "Improved lower bound Ω(n^(16/15))",
       "startLine": 175,
-      "endLine": 188
+      "endLine": 188,
+      "mathContext": "Improved lower bound Ω(n^(16/15))"
     },
     {
       "id": "disproof",
       "title": "Disproof of Erdős's Conjecture",
       "summary": "erdos_conjecture_false and erdos_1080 main theorems",
       "startLine": 189,
-      "endLine": 234
+      "endLine": 234,
+      "mathContext": "erdos_conjecture_false and erdos_1080 main theorems"
     },
     {
       "id": "c8-observation",
       "title": "The C_8 Observation",
       "summary": "Erdős's observation that C_8 is guaranteed",
       "startLine": 235,
-      "endLine": 251
+      "endLine": 251,
+      "mathContext": "Erdős's observation that C_8 is guaranteed"
     },
     {
       "id": "related-results",
       "title": "Related Extremal Results",
       "summary": "Kővári-Sós-Turán theorem, C_4-free characterization",
       "startLine": 252,
-      "endLine": 282
+      "endLine": 282,
+      "mathContext": "Kővári-Sós-Turán theorem, C_4-free characterization"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_1080_summary combining main results",
       "startLine": 283,
-      "endLine": 310
+      "endLine": 310,
+      "mathContext": "erdos_1080_summary combining main results"
     }
   ],
   "conclusion": {
@@ -215,7 +224,7 @@
       "authors": "De Caen, D. and Székely, L. A.",
       "title": "The maximum size of 4- and 6-cycle-free bipartite graphs on n vertices",
       "venue": "Sets, Graphs and Numbers (Budapest, 1991), Colloq. Math. Soc. János Bolyai, Vol. 60, North-Holland",
-      "year": 1992,
+      "year": "1992",
       "pages": "135–142",
       "note": "Primary source: disproves Erdős's conjecture and establishes the O(n^{10/9}) upper and Ω(n^{58/57}) lower bounds for f(n, ⌊n^{2/3}⌋)."
     },
@@ -223,7 +232,7 @@
       "authors": "Lazebnik, F., Ustimenko, V. A., and Woldar, A. J.",
       "title": "A new series of dense graphs of high girth",
       "venue": "Bulletin of the American Mathematical Society",
-      "year": 1995,
+      "year": "1995",
       "volume": 32,
       "number": 1,
       "pages": "73–79",
@@ -234,7 +243,7 @@
       "authors": "Kővári, T., Sós, V. T., and Turán, P.",
       "title": "On a problem of K. Zarankiewicz",
       "venue": "Colloquium Mathematicum",
-      "year": 1954,
+      "year": "1954",
       "volume": 3,
       "pages": "50–57",
       "note": "Classical theorem bounding the number of edges in K_{s,t}-free bipartite graphs; the formalization includes a kovari_sos_turan theorem as a related extremal result."
@@ -243,7 +252,7 @@
       "authors": "Faudree, R. J. and Simonovits, M.",
       "title": "On a class of degenerate extremal graph problems",
       "venue": "Combinatorica",
-      "year": 1983,
+      "year": "1983",
       "volume": 3,
       "number": "1",
       "pages": "83–93",
@@ -254,7 +263,7 @@
       "authors": "Bondy, J. A. and Simonovits, M.",
       "title": "Cycles of even length in graphs",
       "venue": "Journal of Combinatorial Theory, Series B",
-      "year": 1974,
+      "year": "1974",
       "volume": 16,
       "number": 2,
       "pages": "97–105",

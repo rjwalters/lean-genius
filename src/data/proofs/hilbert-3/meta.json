@@ -86,70 +86,80 @@
       "title": "Part 1: Polyhedra Definitions",
       "startLine": 75,
       "endLine": 102,
-      "summary": "Defines `Edge` (with positive `length : ℝ`) and `Polyhedron` (a `Finset Edge` with `dihedralAngle : Edge → ℝ` in $(0, 2\\pi)$). Models polyhedra by their combinatorial edge-angle data."
+      "summary": "Defines `Edge` (with positive `length : ℝ`) and `Polyhedron` (a `Finset Edge` with `dihedralAngle : Edge → ℝ` in $(0, 2\\pi)$). Models polyhedra by their combinatorial edge-angle data.",
+      "mathContext": "Defines `Edge` (with positive `length : ℝ`) and `Polyhedron` (a `Finset Edge` with `dihedralAngle : Edge → ℝ` in $(0, 2\\pi)$). Models polyhedra by their combinatorial edge-angle data."
     },
     {
       "id": "dehn-invariant",
       "title": "Part 2: The Dehn Invariant",
       "startLine": 103,
       "endLine": 149,
-      "summary": "Defines `DehnElement` (list of $(\\ell, \\theta)$ pairs), `isRationalMultipleOfPi` ($\\exists p, q : \\mathbb{Z},\\; q \\neq 0 \\wedge \\theta \\cdot q = p \\cdot \\pi$), `DehnElement.isZero`, and the `dehnInvariant` function. A simplified model of $\\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Q})$."
+      "summary": "Defines `DehnElement` (list of $(\\ell, \\theta)$ pairs), `isRationalMultipleOfPi` ($\\exists p, q : \\mathbb{Z},\\; q \\neq 0 \\wedge \\theta \\cdot q = p \\cdot \\pi$), `DehnElement.isZero`, and the `dehnInvariant` function. A simplified model of $\\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Q})$.",
+      "mathContext": "Defines `DehnElement` (list of $(\\ell, \\theta)$ pairs), `isRationalMultipleOfPi` ($\\exists p, q : \\mathbb{Z},\\; q \\neq 0 \\wedge \\theta \\cdot q = p \\cdot \\pi$), `DehnElement.isZero`, and the `dehnInvar"
     },
     {
       "id": "scissors",
       "title": "Part 3: Scissors Congruence",
       "startLine": 150,
       "endLine": 169,
-      "summary": "Defines `scissorsCongruent P Q := True` (placeholder). Documents that scissors congruence requires decomposition into finitely many pieces rearranged by rigid motions."
+      "summary": "Defines `scissorsCongruent P Q := True` (placeholder). Documents that scissors congruence requires decomposition into finitely many pieces rearranged by rigid motions.",
+      "mathContext": "Defines `scissorsCongruent P Q := True` (placeholder). Documents that scissors congruence requires decomposition into finitely many pieces rearranged by rigid motions."
     },
     {
       "id": "invariance",
       "title": "Part 4: Dehn's Invariance Theorem",
       "startLine": 170,
       "endLine": 233,
-      "summary": "Three axioms (`cutting_preserves_dehn`, `isometry_preserves_dehn`, `dehn_invariance_axiom`) and two **fully proved** theorems: `dehn_invariance` (wrapper) and `different_dehn_not_scissors_congruent` (contrapositive via `intro/apply/exact`)."
+      "summary": "Three axioms (`cutting_preserves_dehn`, `isometry_preserves_dehn`, `dehn_invariance_axiom`) and two **fully proved** theorems: `dehn_invariance` (wrapper) and `different_dehn_not_scissors_congruent` (contrapositive via `intro/apply/exact`).",
+      "mathContext": "Three axioms (`cutting_preserves_dehn`, `isometry_preserves_dehn`, `dehn_invariance_axiom`) and two **fully proved** theorems: `dehn_invariance` (wrapper) and `different_dehn_not_scissors_congruent` ("
     },
     {
       "id": "cube",
       "title": "Part 5: The Cube — D = 0",
       "startLine": 234,
       "endLine": 280,
-      "summary": "**Fully proved**: `cube_angle_is_rational_pi` ($\\pi/2 \\in \\pi\\mathbb{Q}$ via `use 1, 2; ring`) and `cube_dehn_invariant_is_zero` (all cube angles are $\\pi/2$, hence trivial in $\\mathbb{R}/\\pi\\mathbb{Q}$). Uses `List.mem_map` and `Finset.mem_toList`."
+      "summary": "**Fully proved**: `cube_angle_is_rational_pi` ($\\pi/2 \\in \\pi\\mathbb{Q}$ via `use 1, 2; ring`) and `cube_dehn_invariant_is_zero` (all cube angles are $\\pi/2$, hence trivial in $\\mathbb{R}/\\pi\\mathbb{Q}$). Uses `List.mem_map` and `Finset.mem_toList`.",
+      "mathContext": "**Fully proved**: `cube_angle_is_rational_pi` ($\\pi/2 \\in \\pi\\mathbb{Q}$ via `use 1, 2; ring`) and `cube_dehn_invariant_is_zero` (all cube angles are $\\pi/2$, hence trivial in $\\mathbb{R}/\\pi\\mathbb{Q"
     },
     {
       "id": "tetrahedron",
       "title": "Part 6: Regular Tetrahedron — D ≠ 0",
       "startLine": 281,
       "endLine": 329,
-      "summary": "Axiom `tetrahedron_angle_not_rational_pi` (Niven's theorem: $\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$). **Fully proved** `tetrahedron_dehn_invariant_nonzero` by contradiction: if zero, every edge angle is rational-multiple-of-$\\pi$, contradicting Niven."
+      "summary": "Axiom `tetrahedron_angle_not_rational_pi` (Niven's theorem: $\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$). **Fully proved** `tetrahedron_dehn_invariant_nonzero` by contradiction: if zero, every edge angle is rational-multiple-of-$\\pi$, contradicting Niven.",
+      "mathContext": "Axiom `tetrahedron_angle_not_rational_pi` (Niven's theorem: $\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$). **Fully proved** `tetrahedron_dehn_invariant_nonzero` by contradiction: if zero, every edge angle is "
     },
     {
       "id": "main-result",
       "title": "Part 7: The Main Result",
       "startLine": 330,
       "endLine": 372,
-      "summary": "**Fully proved** `hilbert3_cube_tetrahedron_not_scissors_congruent`: by contradiction, scissors congruence implies equal Dehn invariants, but $D(\\text{cube}) = 0$ and $D(\\text{tet}) \\neq 0$. The `h_equal_volume : True` emphasizes volume is irrelevant."
+      "summary": "**Fully proved** `hilbert3_cube_tetrahedron_not_scissors_congruent`: by contradiction, scissors congruence implies equal Dehn invariants, but $D(\\text{cube}) = 0$ and $D(\\text{tet}) \\neq 0$. The `h_equal_volume : True` emphasizes volume is irrelevant.",
+      "mathContext": "**Fully proved** `hilbert3_cube_tetrahedron_not_scissors_congruent`: by contradiction, scissors congruence implies equal Dehn invariants, but $D(\\text{cube}) = 0$ and $D(\\text{tet}) \\neq 0$. The `h_eq"
     },
     {
       "id": "sydler",
       "title": "Part 8: Sydler's Theorem",
       "startLine": 373,
       "endLine": 401,
-      "summary": "Axiom `sydler_theorem`: $P \\sim Q \\iff \\text{Vol}(P) = \\text{Vol}(Q) \\wedge D(P) = D(Q)$. Sydler (1965) proved the Dehn invariant is a **complete** invariant for scissors congruence in $\\mathbb{R}^3$."
+      "summary": "Axiom `sydler_theorem`: $P \\sim Q \\iff \\text{Vol}(P) = \\text{Vol}(Q) \\wedge D(P) = D(Q)$. Sydler (1965) proved the Dehn invariant is a **complete** invariant for scissors congruence in $\\mathbb{R}^3$.",
+      "mathContext": "Axiom `sydler_theorem`: $P \\sim Q \\iff \\text{Vol}(P) = \\text{Vol}(Q) \\wedge D(P) = D(Q)$. Sydler (1965) proved the Dehn invariant is a **complete** invariant for scissors congruence in $\\mathbb{R}^3$."
     },
     {
       "id": "bolyai-gerwien",
       "title": "Part 9: 2D Contrast — Bolyai-Gerwien",
       "startLine": 402,
       "endLine": 470,
-      "summary": "Defines `Polygon` with positive `area`. Axiom `bolyai_gerwien_theorem`: equal area implies 2D scissors congruence. **Fully proved** `dimension_contrast` combining the 2D result with the 3D counterexample."
+      "summary": "Defines `Polygon` with positive `area`. Axiom `bolyai_gerwien_theorem`: equal area implies 2D scissors congruence. **Fully proved** `dimension_contrast` combining the 2D result with the 3D counterexample.",
+      "mathContext": "Defines `Polygon` with positive `area`. Axiom `bolyai_gerwien_theorem`: equal area implies 2D scissors congruence. **Fully proved** `dimension_contrast` combining the 2D result with the 3D counterexam"
     },
     {
       "id": "history",
       "title": "Part 10: Historical Notes",
       "startLine": 471,
       "endLine": 514,
-      "summary": "Historical commentary: ICM 1900, Dehn's solution, Sydler's 1965 completeness, connections to $K_3(\\mathbb{C})$ and higher-dimensional scissors congruence. Exports five key results via `#check`."
+      "summary": "Historical commentary: ICM 1900, Dehn's solution, Sydler's 1965 completeness, connections to $K_3(\\mathbb{C})$ and higher-dimensional scissors congruence. Exports five key results via `#check`.",
+      "mathContext": "Historical commentary: ICM 1900, Dehn's solution, Sydler's 1965 completeness, connections to $K_3(\\mathbb{C})$ and higher-dimensional scissors congruence. Exports five key results via `#check`."
     }
   ],
   "conclusion": {
@@ -183,17 +193,17 @@
     {
       "id": "euler-polyhedral-formula",
       "relationship": "foundational",
-      "description": "Euler's polyhedral formula V − E + F = 2 provides the combinatorial foundation for polyhedra. The Dehn invariant uses ed"
+      "description": "Euler's polyhedral formula V − E + F = 2 provides the combinatorial foundation for polyhedra. The Dehn invariant uses edge data from the same combinatorial structure."
     },
     {
       "id": "hilbert-10",
       "relationship": "related",
-      "description": "Another Hilbert problem formalized in this gallery. Hilbert's 10th (MRDP theorem) was the last negative-answer Hilbert p"
+      "description": "Another Hilbert problem formalized in this gallery. Hilbert's 10th (MRDP theorem) was the last negative-answer Hilbert problem resolved, while #3 was the first."
     },
     {
       "id": "area-of-circle",
       "relationship": "broader-context",
-      "description": "Area computation for circles relates to the 2D scissors congruence question. The Bolyai-Gerwien theorem shows all equal-"
+      "description": "Area computation for circles relates to the 2D scissors congruence question. The Bolyai-Gerwien theorem shows all equal-area polygons are scissors congruent, contrasting with the 3D failure."
     }
   ],
   "leanFile": {

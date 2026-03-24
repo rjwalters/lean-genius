@@ -130,6 +130,38 @@
       "endLine": 229,
       "summary": "Symmetric case with uniform x = 1/(d+1): proves x is in [0,1), the avoidance product (d/(d+1))^n is positive, the uniform product equals (d/(d+1))^n, and the Moser-Tardos bound simplifies to n/d.",
       "mathContext": "Uniform $x_i = \\frac{1}{d+1}$: product $= (\\frac{d}{d+1})^n > 0$, expected resampling $= \\frac{n}{d}$"
+    },
+    {
+      "id": "bernoulli-threshold",
+      "title": "Bernoulli's Inequality and Universal Threshold Bound",
+      "startLine": 228,
+      "endLine": 294,
+      "summary": "Proves Bernoulli's inequality $(1+x)^n \\geq 1+nx$ by induction, derives $(1+1/d)^d \\geq 2$, $(d+1)^d \\geq 2d^d$, and the universal bound $T(d) \\leq 1/4$ for the LLL threshold. The chain: Bernoulli $\\Rightarrow$ $(d+1)^d \\geq 2d^d$, $(d+1) \\geq 2$ $\\Rightarrow$ $(d+1)^{d+1} \\geq 4d^d$ $\\Rightarrow$ $T(d) = d^d/(d+1)^{d+1} \\leq 1/4$.",
+      "mathContext": "The LLL threshold $T(d) = \\frac{d^d}{(d+1)^{d+1}}$ satisfies $T(d) \\leq 1/4$ for all $d \\geq 1$. This is the classical 'ep \\leq 1/4' condition used in textbook presentations of the symmetric LLL."
+    },
+    {
+      "id": "formal-connections",
+      "title": "Formal Connections: Symmetric from General LLL",
+      "startLine": 296,
+      "endLine": 306,
+      "summary": "Proves `symmetric_from_general`: the symmetric LLL ($x_i = 1/(d+1)$ for all $i$) is a corollary of the general LLL (`general_lll`), formally connecting Parts II and VI.",
+      "mathContext": "Setting $x_i = 1/(d+1)$ in the general LLL product $\\prod_j (1 - x_j)$ gives $(d/(d+1))^{|\\Gamma(i)|} \\geq (d/(d+1))^d > 0$, recovering the symmetric bound."
+    },
+    {
+      "id": "threshold-bridge",
+      "title": "Threshold-to-LLL Bridge",
+      "startLine": 308,
+      "endLine": 347,
+      "summary": "Proves `lllThreshold_eq_product` ($T(d) = \\frac{1}{d+1} (\\frac{d}{d+1})^d$, the product factorization) and `threshold_satisfies_lll` ($\\Pr[A_i] \\leq T(d)$ with max degree $d$ implies the general LLL condition). Uses `Finset.prod_const` and `pow_le_pow_of_le_one` for the degree bound.",
+      "mathContext": "The bridge: $\\Pr[A_i] \\leq T(d) = \\frac{1}{d+1}(\\frac{d}{d+1})^d \\leq \\frac{1}{d+1}(\\frac{d}{d+1})^{|\\Gamma(i)|} = x_i \\prod_{j \\in \\Gamma(i)} (1 - x_j)$. The inequality uses $|\\Gamma(i)| \\leq d$ and $(d/(d+1)) \\leq 1$."
+    },
+    {
+      "id": "complete-theorem",
+      "title": "Complete Symmetric LLL",
+      "startLine": 349,
+      "endLine": 364,
+      "summary": "Proves `symmetric_lll_complete`: given $\\Pr[A_i] \\leq T(d)$ and dependency degree $\\leq d$, both the general LLL condition and the avoidance positivity hold. Combines `threshold_satisfies_lll` and `symmetric_lll_avoidance`.",
+      "mathContext": "The conclusion: $\\Pr[\\cap_i \\bar{A}_i] \\geq \\prod_i (1 - x_i) = (d/(d+1))^n > 0$, so a satisfying assignment exists. This is the complete formal statement of the symmetric Lovász Local Lemma."
     }
   ],
   "crossReferences": [
@@ -173,7 +205,7 @@
     {
       "id": "prob-method-alteration",
       "relationship": "related",
-      "description": "The alteration method and LLL both handle dependencies, with the LLL being more powerful for sparse dependency structure"
+      "description": "The alteration method and LLL both handle dependencies, with the LLL being more powerful for sparse dependency structures"
     },
     {
       "id": "prob-method-second-moment",

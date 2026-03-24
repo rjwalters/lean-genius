@@ -81,77 +81,88 @@
       "title": "Module Documentation",
       "startLine": 1,
       "endLine": 29,
-      "summary": "Problem statement, unclear status, history and references."
+      "summary": "Problem statement, unclear status, history and references.",
+      "mathContext": "Problem statement, unclear status, history and references."
     },
     {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 30,
       "endLine": 40,
-      "summary": "Mathlib imports for complex analysis, topology, and polynomials."
+      "summary": "Mathlib imports for complex analysis, topology, and polynomials.",
+      "mathContext": "Mathlib imports for complex analysis, topology, and polynomials."
     },
     {
       "id": "definitions",
       "title": "Key Definitions",
       "startLine": 41,
       "endLine": 73,
-      "summary": "IsEntire, IsTranscendental, and iteratedDeriv with axiomatized properties."
+      "summary": "IsEntire, IsTranscendental, and iteratedDeriv with axiomatized properties.",
+      "mathContext": "IsEntire, IsTranscendental, and iteratedDeriv with axiomatized properties."
     },
     {
       "id": "zero-set",
       "title": "The Zero Set",
       "startLine": 74,
       "endLine": 84,
-      "summary": "Definition of derivativeZeroSet for a subsequence of derivatives."
+      "summary": "Definition of derivativeZeroSet for a subsequence of derivatives.",
+      "mathContext": "Definition of derivativeZeroSet for a subsequence of derivatives."
     },
     {
       "id": "main-property",
       "title": "The Main Property",
       "startLine": 85,
       "endLine": 94,
-      "summary": "HasDenseDerivativeZeros: the property Erdős asks about."
+      "summary": "HasDenseDerivativeZeros: the property Erdős asks about.",
+      "mathContext": "HasDenseDerivativeZeros: the property Erdős asks about."
     },
     {
       "id": "polynomials",
       "title": "Why Polynomials Are Trivial",
       "startLine": 95,
       "endLine": 111,
-      "summary": "Polynomials satisfy the property trivially (all high derivatives are zero)."
+      "summary": "Polynomials satisfy the property trivially (all high derivatives are zero).",
+      "mathContext": "Polynomials satisfy the property trivially (all high derivatives are zero)."
     },
     {
       "id": "main-problem",
       "title": "The Main Problem",
       "startLine": 112,
       "endLine": 131,
-      "summary": "The open question axiomatized as unknown Prop, plus formal statement."
+      "summary": "The open question axiomatized as unknown Prop, plus formal statement.",
+      "mathContext": "The open question axiomatized as unknown Prop, plus formal statement."
     },
     {
       "id": "examples",
       "title": "Examples and Non-Examples",
       "startLine": 132,
       "endLine": 150,
-      "summary": "exp is entire and transcendental but doesn't satisfy the property."
+      "summary": "exp is entire and transcendental but doesn't satisfy the property.",
+      "mathContext": "exp is entire and transcendental but doesn't satisfy the property."
     },
     {
       "id": "related",
       "title": "Related Concepts",
       "startLine": 151,
       "endLine": 162,
-      "summary": "Connections to Pólya and Weierstrass factorization."
+      "summary": "Connections to Pólya and Weierstrass factorization.",
+      "mathContext": "Connections to Pólya and Weierstrass factorization."
     },
     {
       "id": "properties",
       "title": "Zero Set Properties",
       "startLine": 163,
       "endLine": 176,
-      "summary": "Zero sets are closed; individual zero sets are discrete for non-constant entire functions."
+      "summary": "Zero sets are closed; individual zero sets are discrete for non-constant entire functions.",
+      "mathContext": "Zero sets are closed; individual zero sets are discrete for non-constant entire functions."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "startLine": 177,
       "endLine": 196,
-      "summary": "Summary packaging the key verified results."
+      "summary": "Summary packaging the key verified results.",
+      "mathContext": "Summary packaging the key verified results."
     }
   ],
   "conclusion": {

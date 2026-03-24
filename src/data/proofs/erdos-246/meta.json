@@ -248,27 +248,27 @@
     {
       "id": "gcd-algorithm",
       "relationship": "foundational",
-      "description": "The GCD algorithm tests coprimality gcd(a,b) = 1, the essential hypothesis of Birch's theorem. Without coprimality, the "
+      "description": "The GCD algorithm tests coprimality gcd(a,b) = 1, the essential hypothesis of Birch's theorem. Without coprimality, the set {a^k b^l} can have systematic divisibility patterns that prevent completeness"
     },
     {
       "id": "bezout-identity",
       "relationship": "foundational",
-      "description": "Bézout's identity (sa + tb = 1 for coprime a,b) is central to Birch's proof: coprimality ensures that a^k b^l generates "
+      "description": "Bézout's identity (sa + tb = 1 for coprime a,b) is central to Birch's proof: coprimality ensures that a^k b^l generates elements whose residues modulo any prime cover all possibilities, a key ingredient for completeness"
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "Unique factorization ensures that products a^k b^l are distinct when gcd(a,b) = 1: two such products equal implies the s"
+      "description": "Unique factorization ensures that products a^k b^l are distinct when gcd(a,b) = 1: two such products equal implies the same prime factorization, hence k = k' and l = l'. This injectivity is essential for the completeness argument"
     },
     {
       "id": "geometric-series",
       "relationship": "related",
-      "description": "Powers of 2 form the prototypical complete sequence (binary representation). The geometric growth rate 2^k means the par"
+      "description": "Powers of 2 form the prototypical complete sequence (binary representation). The geometric growth rate 2^k means the partial sums 1 + 2 + 4 + ··· + 2^k = 2^{k+1} - 1 cover all integers — the Erdős problem asks whether mixing two geometric sequences (a^k and b^l) preserves this completeness"
     },
     {
       "id": "binomial-theorem",
       "relationship": "related",
-      "description": "The binomial theorem counts subset sums: a set of n elements generates at most 2^n distinct subset sums. For powerSet(a,"
+      "description": "The binomial theorem counts subset sums: a set of n elements generates at most 2^n distinct subset sums. For powerSet(a,b), the ~(log N)² elements up to N generate 2^{(log N)²} ≫ N subset sums, providing the combinatorial basis for completeness"
     }
   ]
 }

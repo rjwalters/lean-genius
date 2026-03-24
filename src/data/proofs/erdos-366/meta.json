@@ -78,56 +78,64 @@
       "title": "Module Documentation",
       "startLine": 1,
       "endLine": 21,
-      "summary": "Problem statement, definitions of k-full numbers, and known results."
+      "summary": "Problem statement, definitions of k-full numbers, and known results.",
+      "mathContext": "Problem statement, definitions of k-full numbers, and known results."
     },
     {
       "id": "definitions",
       "title": "k-Full Number Definitions",
       "startLine": 33,
       "endLine": 59,
-      "summary": "Definitions of IsKFull, IsPowerful (2-full), and IsCubeful (3-full)."
+      "summary": "Definitions of IsKFull, IsPowerful (2-full), and IsCubeful (3-full).",
+      "mathContext": "Definitions of IsKFull, IsPowerful (2-full), and IsCubeful (3-full)."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 60,
       "endLine": 96,
-      "summary": "Properties like 1 is k-full, prime powers are k-full iff exponent ≥ k."
+      "summary": "Properties like 1 is k-full, prime powers are k-full iff exponent ≥ k.",
+      "mathContext": "Properties like 1 is k-full, prime powers are k-full iff exponent ≥ k."
     },
     {
       "id": "main-question",
       "title": "Main Open Question",
       "startLine": 97,
       "endLine": 114,
-      "summary": "The Erdős Problem #366 conjecture: 2-full n with 3-full n+1."
+      "summary": "The Erdős Problem #366 conjecture: 2-full n with 3-full n+1.",
+      "mathContext": "The Erdős Problem #366 conjecture: 2-full n with 3-full n+1."
     },
     {
       "id": "reverse-direction",
       "title": "Reverse Direction",
       "startLine": 115,
       "endLine": 139,
-      "summary": "Known pairs (8,9) and (12167,12168) where n is 3-full and n+1 is 2-full."
+      "summary": "Known pairs (8,9) and (12167,12168) where n is 3-full and n+1 is 2-full.",
+      "mathContext": "Known pairs (8,9) and (12167,12168) where n is 3-full and n+1 is 2-full."
     },
     {
       "id": "weaker-question",
       "title": "Weaker Question",
       "startLine": 140,
       "endLine": 143,
-      "summary": "Do consecutive 3-full integers exist?"
+      "summary": "Do consecutive 3-full integers exist?",
+      "mathContext": "Do consecutive 3-full integers exist?"
     },
     {
       "id": "pell-connection",
       "title": "Connection to Pell Equations",
       "startLine": 143,
       "endLine": 143,
-      "summary": "Mahler's result: infinitely many consecutive powerful numbers via Pell equations."
+      "summary": "Mahler's result: infinitely many consecutive powerful numbers via Pell equations.",
+      "mathContext": "Mahler's result: infinitely many consecutive powerful numbers via Pell equations."
     },
     {
       "id": "density",
       "title": "Density of k-Full Numbers",
       "startLine": 143,
       "endLine": 143,
-      "summary": "Growth rates: powerful ~ √N, cubeful ~ N^(1/3)."
+      "summary": "Growth rates: powerful ~ √N, cubeful ~ N^(1/3).",
+      "mathContext": "Growth rates: powerful ~ √N, cubeful ~ N^(1/3)."
     }
   ],
   "conclusion": {

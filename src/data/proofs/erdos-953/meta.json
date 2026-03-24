@@ -87,70 +87,80 @@
       "title": "Imports and Namespace",
       "summary": "Imports Mathlib modules for inner product spaces, Lebesgue measure, square roots, and metric spaces. Opens the `Erdos953` namespace for the formalization.",
       "startLine": 35,
-      "endLine": 43
+      "endLine": 43,
+      "mathContext": "Imports Mathlib modules for inner product spaces, Lebesgue measure, square roots, and metric spaces. Opens the `Erdos953` namespace for the formalization."
     },
     {
       "id": "distance-predicates",
       "title": "Distance Predicates",
       "summary": "Defines `IsIntegerDistance a b` ($\\exists n \\in \\mathbb{Z},\\; d(a,b) = n$) and `AvoidsIntegerDistances A` (no distinct pair has integer distance). Includes an equivalence theorem expanding the avoidance property via `simp`.",
       "startLine": 44,
-      "endLine": 72
+      "endLine": 72,
+      "mathContext": "Defines `IsIntegerDistance a b` ($\\exists n \\in \\mathbb{Z},\\; d(a,b) = n$) and `AvoidsIntegerDistances A` (no distinct pair has integer distance). Includes an equivalence theorem expanding the avoidan"
     },
     {
       "id": "disk-measure",
       "title": "The Disk and Measure",
       "summary": "Defines `openDisk r = \\{x \\in \\mathbb{R}^2 : d(x,0) < r\\}` and proves it is nonempty for $r > 0$. Introduces `maxMeasure r = \\sup\\{\\mu(A)\\}$ over measurable subsets avoiding integer distances—the central quantity of Problem #953.",
       "startLine": 73,
-      "endLine": 99
+      "endLine": 99,
+      "mathContext": "Defines `openDisk r = \\{x \\in \\mathbb{R}^2 : d(x,0) < r\\}` and proves it is nonempty for $r > 0$. Introduces `maxMeasure r = \\sup\\{\\mu(A)\\}$ over measurable subsets avoiding integer distances—the cent"
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties and Verified Examples",
       "summary": "Fully proves two base cases: `singleton_avoids` (singletons trivially satisfy the avoidance property) and `pair_half_avoids` (the set $\\{(0,0), (0.5, 0)\\}$ avoids integer distances via an `omega` argument showing $0.5 \\notin \\mathbb{Z}$).",
       "startLine": 100,
-      "endLine": 140
+      "endLine": 140,
+      "mathContext": "Fully proves two base cases: `singleton_avoids` (singletons trivially satisfy the avoidance property) and `pair_half_avoids` (the set $\\{(0,0), (0.5, 0)\\}$ avoids integer distances via an `omega` argu"
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "summary": "Axiomatizes the $O(r)$ upper bound on `maxMeasure r` and the circle separation lemma: if two concentric circles have radii differing by 1, an integer-distance-avoiding set cannot intersect both.",
       "startLine": 141,
-      "endLine": 167
+      "endLine": 167,
+      "mathContext": "Axiomatizes the $O(r)$ upper bound on `maxMeasure r` and the circle separation lemma: if two concentric circles have radii differing by 1, an integer-distance-avoiding set cannot intersect both."
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds and Sárközy Exponent",
       "summary": "Axiomatizes Kovač's lower bound $M(r) \\geq C \\cdot r^{\\alpha}$ with $\\alpha \\approx 0.26$. Introduces the Sárközy exponent as an axiom with bounds $0.25 \\leq \\alpha \\leq 0.27$.",
       "startLine": 168,
-      "endLine": 193
+      "endLine": 193,
+      "mathContext": "Axiomatizes Kovač's lower bound $M(r) \\geq C \\cdot r^{\\alpha}$ with $\\alpha \\approx 0.26$. Introduces the Sárközy exponent as an axiom with bounds $0.25 \\leq \\alpha \\leq 0.27$."
     },
     {
       "id": "annulus-construction",
       "title": "The Annulus Construction",
       "summary": "Defines `annulus r₁ r₂ = \\{x : r_1 \\leq d(x,0) < r_2\\}$ and axiomatizes the thin annulus property: for $\\delta < 1$, there exists a positive-measure subset of the annulus $[r, r+\\delta)$ that avoids integer distances.",
       "startLine": 194,
-      "endLine": 215
+      "endLine": 215,
+      "mathContext": "Defines `annulus r₁ r₂ = \\{x : r_1 \\leq d(x,0) < r_2\\}$ and axiomatizes the thin annulus property: for $\\delta < 1$, there exists a positive-measure subset of the annulus $[r, r+\\delta)$ that avoids i"
     },
     {
       "id": "related-problems",
       "title": "Related Distance Problems",
       "summary": "Introduces `AvoidsForbiddenDistances A D` for general forbidden distance sets. Proves that integer avoidance equals $D = \\mathbb{Z}$ avoidance. Axiomatizes Erdős #465 (unit distance upper bounds) and #466 (unit distance lower bounds).",
       "startLine": 216,
-      "endLine": 256
+      "endLine": 256,
+      "mathContext": "Introduces `AvoidsForbiddenDistances A D` for general forbidden distance sets. Proves that integer avoidance equals $D = \\mathbb{Z}$ avoidance. Axiomatizes Erdős #465 (unit distance upper bounds) and "
     },
     {
       "id": "main-question",
       "title": "The Main Open Question",
       "summary": "Axiomatizes the conjectured asymptotic $C_1 r^{\\alpha} \\leq M(r) \\leq C_2 r^{\\alpha}$ for some $\\alpha \\in (0,1]$ and the existence of a limiting function $f(r)$ with $M(r) = f(r)$ satisfying $f(r) / r^{\\alpha} \\to 1$.",
       "startLine": 257,
-      "endLine": 304
+      "endLine": 304,
+      "mathContext": "Axiomatizes the conjectured asymptotic $C_1 r^{\\alpha} \\leq M(r) \\leq C_2 r^{\\alpha}$ for some $\\alpha \\in (0,1]$ and the existence of a limiting function $f(r)$ with $M(r) = f(r)$ satisfying $f(r) / "
     },
     {
       "id": "summary-theorem",
       "title": "Summary Theorem",
       "summary": "The `erdos_953_summary` theorem combines the upper bound axiom and lower bound axiom into one statement, proved by pairing `trivial_upper_bound` and `kovac_lower_bound`. Confirms the state of knowledge on Problem #953.",
       "startLine": 292,
-      "endLine": 306
+      "endLine": 306,
+      "mathContext": "The `erdos_953_summary` theorem combines the upper bound axiom and lower bound axiom into one statement, proved by pairing `trivial_upper_bound` and `kovac_lower_bound`. Confirms the state of knowledg"
     }
   ],
   "conclusion": {
@@ -180,12 +190,12 @@
     {
       "id": "erdos-465",
       "relationship": "related",
-      "description": "Erdős #465 provides upper bounds for sets avoiding the unit distance, the single-distance case of Problem #953's integer"
+      "description": "Erdős #465 provides upper bounds for sets avoiding the unit distance, the single-distance case of Problem #953's integer-distance avoidance"
     },
     {
       "id": "erdos-466",
       "relationship": "related",
-      "description": "Erdős #466 provides lower bounds for unit-distance-avoiding sets; Kovač adapted Sárközy's methods from this problem to o"
+      "description": "Erdős #466 provides lower bounds for unit-distance-avoiding sets; Kovač adapted Sárközy's methods from this problem to obtain the $r^{0.26}$ lower bound for #953"
     }
   ],
   "leanFile": {

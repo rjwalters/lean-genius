@@ -165,27 +165,32 @@
     {
       "id": "cauchy-schwarz-integral",
       "relationship": "extends",
-      "description": "Parent proof: the integral Cauchy-Schwarz inequality ∫|fg| ≤ (∫f²)^{1/2}·(∫g²)^{1/2} is the p=q=2 special case of the Hö"
+      "description": "Parent proof: the integral Cauchy-Schwarz inequality ∫|fg| ≤ (∫f²)^{1/2}·(∫g²)^{1/2} is the p=q=2 special case of the Hölder inequality proved here"
     },
     {
       "id": "cauchy-schwarz",
       "relationship": "foundational",
-      "description": "The discrete Cauchy-Schwarz inequality (Σ|aᵢbᵢ| ≤ √(Σaᵢ²)·√(Σbᵢ²)) is the counting measure special case of both Cauchy-S"
+      "description": "The discrete Cauchy-Schwarz inequality (Σ|aᵢbᵢ| ≤ √(Σaᵢ²)·√(Σbᵢ²)) is the counting measure special case of both Cauchy-Schwarz integral and this Hölder generalization"
     },
     {
       "id": "amgm-inequality",
       "relationship": "foundational",
-      "description": "Young's inequality (ab ≤ a^p/p + b^q/q for conjugate exponents) — the pointwise step in the Hölder proof — is a conseque"
+      "description": "Young's inequality (ab ≤ a^p/p + b^q/q for conjugate exponents) — the pointwise step in the Hölder proof — is a consequence of AM-GM via the convexity of the exponential function"
     },
     {
       "id": "triangle-inequality",
       "relationship": "related",
-      "description": "Minkowski's inequality (the Lp triangle inequality ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p) is proved using Hölder's inequality; togethe"
+      "description": "Minkowski's inequality (the Lp triangle inequality ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p) is proved using Hölder's inequality; together they make Lp a normed space"
     },
     {
       "id": "cauchy-schwarz-integral-oq-02",
       "relationship": "related",
-      "description": "The Cauchy-Schwarz equality case (⟪f,g⟫ = ‖f‖·‖g‖ iff proportional) — Hölder's equality case similarly requires f^p and "
+      "description": "The Cauchy-Schwarz equality case (⟪f,g⟫ = ‖f‖·‖g‖ iff proportional) — Hölder's equality case similarly requires f^p and g^q to be proportional"
+    },
+    {
+      "id": "cauchy-schwarz-integral-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Strict Minkowski inequality characterization — extends the equality case analysis that this file's Hölder result enables"
     }
   ],
   "leanFile": {

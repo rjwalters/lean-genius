@@ -75,12 +75,25 @@ axiom ramsey_triangle (n : ℕ) (hn : 1 ≤ n) :
 /-- The family of complete graphs is a Ramsey family.
     Proved from ramsey_triangle: for each n, it provides an N with K_N Ramsey. -/
 theorem complete_graphs_ramsey :
-    IsRamseyFamily (fun m => {⊤ : SimpleGraph (Fin m)}) := by
+    IsRamseyFamily (fun m => ({⊤} : Set (SimpleGraph (Fin m)))) := by
   intro n hn
   obtain ⟨N, hN⟩ := ramsey_triangle n hn
   exact ⟨N, ⊤, Set.mem_singleton _, hN⟩
 
 /- ## Basic observations -/
+
+/-- For 1 colour, K_3 has the triangle Ramsey property: every 1-colouring
+    trivially yields a monochromatic triangle (Fin 1 is a subsingleton). -/
+theorem ramsey_triangle_base :
+    HasTriangleRamsey (⊤ : SimpleGraph (Fin 3)) 1 := by
+  intro c
+  refine ⟨0, 1, 2, by decide, by decide, by decide, ?_, ?_, ?_, ?_, ?_⟩
+  all_goals first | simp [SimpleGraph.top_adj] | exact Subsingleton.elim _ _
+
+/-- The n = 1 case of ramsey_triangle, proved without using the axiom. -/
+theorem ramsey_triangle_one_proved :
+    ∃ N : ℕ, HasTriangleRamsey (⊤ : SimpleGraph (Fin N)) 1 :=
+  ⟨3, ramsey_triangle_base⟩
 
 /-- Monotonicity: if `G` has the `n`-colour property and `m ≤ n`, then
 `G` also has the `m`-colour property. Proved by embedding Fin m into
@@ -90,6 +103,5 @@ theorem triangle_ramsey_mono {V : Type*} (G : SimpleGraph V) (m n : ℕ)
   intro c
   obtain ⟨a, b, d, hab, hbd, had, eab, ebd, ead, hc1, hc2⟩ :=
     h (fun v w => (c v w).castLE hmn)
-  have hInj : Function.Injective (Fin.castLE hmn) := by
-    intro x y hxy; ext; exact congrArg Fin.val hxy
+  have hInj : Function.Injective (Fin.castLE hmn) := Fin.castLE_injective hmn
   exact ⟨a, b, d, hab, hbd, had, eab, ebd, ead, hInj hc1, hInj hc2⟩

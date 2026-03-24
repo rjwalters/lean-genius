@@ -218,7 +218,7 @@
     {
       "id": "de-moivre-oq-01",
       "relationship": "sibling",
-      "description": "Sibling OQ-01 establishes T_n(cos θ) = cos(nθ) and computes explicit Chebyshev polynomials; this entry derives algebraic"
+      "description": "Sibling OQ-01 establishes T_n(cos θ) = cos(nθ) and computes explicit Chebyshev polynomials; this entry derives algebraic identities (composition, product-to-sum, parity, roots) from that connection."
     },
     {
       "id": "de-moivre-oq-03",
@@ -228,12 +228,17 @@
     {
       "id": "euler-identity",
       "relationship": "foundational",
-      "description": "Euler's formula e^{iθ} = cos θ + i sin θ is the foundation from which De Moivre's theorem follows, and thus underpins th"
+      "description": "Euler's formula e^{iθ} = cos θ + i sin θ is the foundation from which De Moivre's theorem follows, and thus underpins the entire Chebyshev polynomial framework formalized here."
     },
     {
       "id": "fourier-series",
       "relationship": "related",
-      "description": "The product-to-sum identity 2·T_m(x)·T_n(x) = T_{m+n}(x) + T_{m-n}(x) is the Chebyshev analogue of the trigonometric pro"
+      "description": "The product-to-sum identity 2·T_m(x)·T_n(x) = T_{m+n}(x) + T_{m-n}(x) is the Chebyshev analogue of the trigonometric product-to-sum formula central to Fourier analysis. Chebyshev expansions are discrete cosine transforms."
+    },
+    {
+      "id": "primitive-roots",
+      "relationship": "related",
+      "description": "The roots of T_n are cos((2k+1)π/(2n)), closely related to primitive roots of unity. The Chebyshev nodes are projections of equally-spaced points on the unit circle — the same structure underlying roots of unity."
     }
   ]
 }

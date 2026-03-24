@@ -99,77 +99,88 @@
       "title": "Problem Overview",
       "startLine": 1,
       "endLine": 25,
-      "summary": "Header: incidence signatures, $F(n)$ counting function, Szemerédi-Trotter solution, $\\$250$ prize"
+      "summary": "Header: incidence signatures, $F(n)$ counting function, Szemerédi-Trotter solution, $\\$250$ prize",
+      "mathContext": "Header: incidence signatures, $F(n)$ counting function, Szemerédi-Trotter solution, $\\$250$ prize"
     },
     {
       "id": "point-configurations",
       "title": "Point Configurations",
       "startLine": 31,
       "endLine": 62,
-      "summary": "`Point` ($\\mathbb{R}^2$), `PointConfig n` (injective $\\text{Fin}\\, n \\to \\text{Point}$), `Line` (two distinct points), `Line.contains` (parametric $p_1 + t(p_2 - p_1)$), `determinedLines`"
+      "summary": "`Point` ($\\mathbb{R}^2$), `PointConfig n` (injective $\\text{Fin}\\, n \\to \\text{Point}$), `Line` (two distinct points), `Line.contains` (parametric $p_1 + t(p_2 - p_1)$), `determinedLines`",
+      "mathContext": "`Point` ($\\mathbb{R}^2$), `PointConfig n` (injective $\\text{Fin}\\, n \\to \\text{Point}$), `Line` (two distinct points), `Line.contains` (parametric $p_1 + t(p_2 - p_1)$), `determinedLines`"
     },
     {
       "id": "incidence-counts",
       "title": "Incidence Counts and Signatures",
       "startLine": 63,
       "endLine": 76,
-      "summary": "`incidenceCount` (points on a line), `incidenceSignature` (`Multiset ℕ`), `incidenceSet` (`Finset ℕ` ignoring multiplicities)"
+      "summary": "`incidenceCount` (points on a line), `incidenceSignature` (`Multiset ℕ`), `incidenceSet` (`Finset ℕ` ignoring multiplicities)",
+      "mathContext": "`incidenceCount` (points on a line), `incidenceSignature` (`Multiset ℕ`), `incidenceSet` (`Finset ℕ` ignoring multiplicities)"
     },
     {
       "id": "f-function",
       "title": "The Function $F(n)$",
       "startLine": 77,
       "endLine": 86,
-      "summary": "`F n` (distinct signatures) and `F_set n` (distinct incidence sets) counting achievable patterns"
+      "summary": "`F n` (distinct signatures) and `F_set n` (distinct incidence sets) counting achievable patterns",
+      "mathContext": "`F n` (distinct signatures) and `F_set n` (distinct incidence sets) counting achievable patterns"
     },
     {
       "id": "conjecture-solution",
       "title": "The Conjecture and Solution",
       "startLine": 87,
       "endLine": 96,
-      "summary": "`ErdosConjecture607`: $F(n) \\leq \\exp(C\\sqrt{n})$; `szemeredi_trotter_607`: proved"
+      "summary": "`ErdosConjecture607`: $F(n) \\leq \\exp(C\\sqrt{n})$; `szemeredi_trotter_607`: proved",
+      "mathContext": "`ErdosConjecture607`: $F(n) \\leq \\exp(C\\sqrt{n})$; `szemeredi_trotter_607`: proved"
     },
     {
       "id": "upper-bound",
       "title": "Upper Bound Analysis",
       "startLine": 97,
       "endLine": 113,
-      "summary": "Constraints: `incidence_at_least_two` ($\\geq 2$), `incidence_at_most_n` ($\\leq n$), `lines_at_most_binomial` ($\\leq \\binom{n}{2}$)"
+      "summary": "Constraints: `incidence_at_least_two` ($\\geq 2$), `incidence_at_most_n` ($\\leq n$), `lines_at_most_binomial` ($\\leq \\binom{n}{2}$)",
+      "mathContext": "Constraints: `incidence_at_least_two` ($\\geq 2$), `incidence_at_most_n` ($\\leq n$), `lines_at_most_binomial` ($\\leq \\binom{n}{2}$)"
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound Optimality",
       "startLine": 114,
       "endLine": 124,
-      "summary": "`LowerBoundConjecture`: $F(n) \\geq \\exp(c\\sqrt{n})$; `lower_bound_construction`: explicit configurations achieve this"
+      "summary": "`LowerBoundConjecture`: $F(n) \\geq \\exp(c\\sqrt{n})$; `lower_bound_construction`: explicit configurations achieve this",
+      "mathContext": "`LowerBoundConjecture`: $F(n) \\geq \\exp(c\\sqrt{n})$; `lower_bound_construction`: explicit configurations achieve this"
     },
     {
       "id": "special-configs",
       "title": "Special Configurations",
       "startLine": 125,
       "endLine": 150,
-      "summary": "`collinearConfig` ($A = \\{n\\}$), `generalPositionConfig` ($A = \\{2\\}$), `gridConfig` (intermediate $A$ with multiple values)"
+      "summary": "`collinearConfig` ($A = \\{n\\}$), `generalPositionConfig` ($A = \\{2\\}$), `gridConfig` (intermediate $A$ with multiple values)",
+      "mathContext": "`collinearConfig` ($A = \\{n\\}$), `generalPositionConfig` ($A = \\{2\\}$), `gridConfig` (intermediate $A$ with multiple values)"
     },
     {
       "id": "sz-trotter",
       "title": "Szemerédi-Trotter Incidence Theorem",
       "startLine": 151,
       "endLine": 164,
-      "summary": "`szemeredi_trotter_incidence`: $I \\leq O((nm)^{2/3} + n + m)$; `incidence_bound_constrains_signature`"
+      "summary": "`szemeredi_trotter_incidence`: $I \\leq O((nm)^{2/3} + n + m)$; `incidence_bound_constrains_signature`",
+      "mathContext": "`szemeredi_trotter_incidence`: $I \\leq O((nm)^{2/3} + n + m)$; `incidence_bound_constrains_signature`"
     },
     {
       "id": "partitions",
       "title": "Partition Connection",
       "startLine": 165,
       "endLine": 181,
-      "summary": "`incidence_sum_constraint` ($\\sum \\binom{k_i}{2} = \\binom{n}{2}$), `partition_count_growth`: $\\exp(\\Theta(\\sqrt{n}))$ from Hardy-Ramanujan asymptotics"
+      "summary": "`incidence_sum_constraint` ($\\sum \\binom{k_i}{2} = \\binom{n}{2}$), `partition_count_growth`: $\\exp(\\Theta(\\sqrt{n}))$ from Hardy-Ramanujan asymptotics",
+      "mathContext": "`incidence_sum_constraint` ($\\sum \\binom{k_i}{2} = \\binom{n}{2}$), `partition_count_growth`: $\\exp(\\Theta(\\sqrt{n}))$ from Hardy-Ramanujan asymptotics"
     },
     {
       "id": "main-results",
       "title": "Main Results",
       "startLine": 182,
       "endLine": 203,
-      "summary": "`erdos_607`: both bounds hold; `erdos_607_tight`: $\\exp(c\\sqrt{n}) \\leq F(n) \\leq \\exp(C\\sqrt{n})$"
+      "summary": "`erdos_607`: both bounds hold; `erdos_607_tight`: $\\exp(c\\sqrt{n}) \\leq F(n) \\leq \\exp(C\\sqrt{n})$",
+      "mathContext": "`erdos_607`: both bounds hold; `erdos_607_tight`: $\\exp(c\\sqrt{n}) \\leq F(n) \\leq \\exp(C\\sqrt{n})$"
     }
   ],
   "conclusion": {

@@ -94,63 +94,72 @@
       "title": "Congruence Systems",
       "summary": "Defines **Congruence** (residue/modulus), **CongruenceSystem** (finite set with distinct moduli), **covers** ($\\exists c, x \\equiv c.a \\pmod{c.n}$), and **uncovered** ($\\forall c, x \\not\\equiv c.a \\pmod{c.n}$).",
       "startLine": 36,
-      "endLine": 61
+      "endLine": 61,
+      "mathContext": "Defines **Congruence** (residue/modulus), **CongruenceSystem** (finite set with distinct moduli), **covers** ($\\exists c, x \\equiv c.a \\pmod{c.n}$), and **uncovered** ($\\forall c, x \\not\\equiv c.a \\pm"
     },
     {
       "id": "density",
       "title": "Uncovered Density",
       "summary": "Defines **uncoveredCount** (integers in $[1,M]$ uncovered), **uncoveredDensity** (fraction), and **asymptoticUncoveredDensity** ($\\liminf$ as $M \\to \\infty$).",
       "startLine": 62,
-      "endLine": 75
+      "endLine": 75,
+      "mathContext": "Defines **uncoveredCount** (integers in $[1,M]$ uncovered), **uncoveredDensity** (fraction), and **asymptoticUncoveredDensity** ($\\liminf$ as $M \\to \\infty$)."
     },
     {
       "id": "almost-covering",
       "title": "Almost Covering Systems",
       "summary": "Defines **IsAlmostCovering** ($\\delta(S) \\leq \\varepsilon$) and **IsPerfectCovering** ($\\forall x, S.\\mathrm{covers}(x)$). Proves perfect $\\Rightarrow$ $0$-almost (sorry).",
       "startLine": 76,
-      "endLine": 90
+      "endLine": 90,
+      "mathContext": "Defines **IsAlmostCovering** ($\\delta(S) \\leq \\varepsilon$) and **IsPerfectCovering** ($\\forall x, S.\\mathrm{covers}(x)$). Proves perfect $\\Rightarrow$ $0$-almost (sorry)."
     },
     {
       "id": "bounded-moduli",
       "title": "Bounded Moduli Systems",
       "summary": "Defines **HasModuliInRange** (moduli in $[N,M]$) and **HasModuliInCRange** (moduli in $[N, \\lfloor CN\\rfloor]$). The bounded-range constraint is what makes the problem nontrivial.",
       "startLine": 91,
-      "endLine": 100
+      "endLine": 100,
+      "mathContext": "Defines **HasModuliInRange** (moduli in $[N,M]$) and **HasModuliInCRange** (moduli in $[N, \\lfloor CN\\rfloor]$). The bounded-range constraint is what makes the problem nontrivial."
     },
     {
       "id": "natural-density",
       "title": "Natural Density Bound",
       "summary": "Defines **naturalDensity** = $\\prod(1-1/n)$ over moduli range. States the averaging bound (exists system achieving this density) and that it vanishes as the range grows.",
       "startLine": 101,
-      "endLine": 119
+      "endLine": 119,
+      "mathContext": "Defines **naturalDensity** = $\\prod(1-1/n)$ over moduli range. States the averaging bound (exists system achieving this density) and that it vanishes as the range grows."
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "summary": "States **ErdosConjecture** ($\\exists C > 1$, universal almost-covering) and **ErdosConjectureNegation** ($\\forall C > 1$, some $\\varepsilon, N$ fail). Proves they are logical opposites (sorry).",
       "startLine": 120,
-      "endLine": 136
+      "endLine": 136,
+      "mathContext": "States **ErdosConjecture** ($\\exists C > 1$, universal almost-covering) and **ErdosConjectureNegation** ($\\forall C > 1$, some $\\varepsilon, N$ fail). Proves they are logical opposites (sorry)."
     },
     {
       "id": "disproof",
       "title": "The FFKPY Disproof",
       "summary": "Defines **criticalExponent** $\\alpha(N) = \\frac{\\log\\log\\log N}{4\\log\\log N}$. States **ffkpy_main_theorem** (density lower bound for $C \\leq N^{\\alpha(N)}$), **product_bounded_below** ($\\prod \\geq 1/C$), **erdos_27_disproved**, and **no_universal_constant**.",
       "startLine": 137,
-      "endLine": 167
+      "endLine": 167,
+      "mathContext": "Defines **criticalExponent** $\\alpha(N) = \\frac{\\log\\log\\log N}{4\\log\\log N}$. States **ffkpy_main_theorem** (density lower bound for $C \\leq N^{\\alpha(N)}$), **product_bounded_below** ($\\prod \\geq 1/"
     },
     {
       "id": "what-works",
       "title": "What Does Work",
       "summary": "Proves **growing_C_works** (growing $C(N)$ achieves almost-covering). Defines **sufficientC** = $N^{1/\\log\\log N}$ and states it suffices for any fixed $\\varepsilon$.",
       "startLine": 168,
-      "endLine": 185
+      "endLine": 185,
+      "mathContext": "Proves **growing_C_works** (growing $C(N)$ achieves almost-covering). Defines **sufficientC** = $N^{1/\\log\\log N}$ and states it suffices for any fixed $\\varepsilon$."
     },
     {
       "id": "perfect-covering",
       "title": "Perfect Covering Connection",
       "summary": "States **perfect_covering_min_modulus** (some modulus is bounded) and **bbmst_bound** (minimum modulus $< 616{,}000$ by Bloom-Briggs-Maynard-Smith-Tao).",
       "startLine": 186,
-      "endLine": 242
+      "endLine": 242,
+      "mathContext": "States **perfect_covering_min_modulus** (some modulus is bounded) and **bbmst_bound** (minimum modulus $< 616{,}000$ by Bloom-Briggs-Maynard-Smith-Tao)."
     }
   ],
   "conclusion": {
@@ -227,17 +236,17 @@
     {
       "id": "erdos-2",
       "relationship": "extends",
-      "description": "Problem #2 concerns exact covering systems. Problem #27 relaxes the coverage requirement, asking about systems that cove"
+      "description": "Problem #2 concerns exact covering systems. Problem #27 relaxes the coverage requirement, asking about systems that cover all but a density-zero set of integers"
     },
     {
       "id": "erdos-7",
       "relationship": "related",
-      "description": "Problem #7 (odd coverings) and Problem #27 (almost coverings) are both structural extensions of the basic covering syste"
+      "description": "Problem #7 (odd coverings) and Problem #27 (almost coverings) are both structural extensions of the basic covering system framework"
     },
     {
       "id": "erdos-8",
       "relationship": "related",
-      "description": "Problem #8 (monochromatic coverings) is another variant of covering systems. Problems #2, #7, #8, and #27 form a family "
+      "description": "Problem #8 (monochromatic coverings) is another variant of covering systems. Problems #2, #7, #8, and #27 form a family of structural questions"
     }
   ]
 }

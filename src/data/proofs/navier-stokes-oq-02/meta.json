@@ -59,7 +59,7 @@
       "Theorem continuous_dependence_2d: for any ε > 0, threshold δ = ε·exp(-C·E(0)·T) gives W(0) ≤ δ implies W(t) ≤ ε, establishing Hadamard well-posedness"
     ],
     "dateAdded": "2026-02-28",
-    "lineCount": 21110,
+    "lineCount": 21111,
     "assumptions": "None. Formalized with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0"
   },
@@ -156,22 +156,22 @@
     {
       "id": "navier-stokes",
       "relationship": "parent",
-      "description": "Parent Navier-Stokes formalization providing `GlobalNSSolution2D`, `global_enstrophy_bound` ($E(t) \\leq E(0)$), and the "
+      "description": "Parent Navier-Stokes formalization providing `GlobalNSSolution2D`, `global_enstrophy_bound` ($E(t) \\leq E(0)$), and the foundational structures this well-posedness proof builds upon. The enstrophy bound is the critical 2D ingredient enabling the Gronwall argument"
     },
     {
       "id": "navier-stokes-existence",
       "relationship": "related",
-      "description": "The Clay Millennium Prize problem on 3D Navier-Stokes existence and smoothness. This 2D well-posedness result serves as "
+      "description": "The Clay Millennium Prize problem on 3D Navier-Stokes existence and smoothness. This 2D well-posedness result serves as a template: the same Gronwall argument would work in 3D IF enstrophy were bounded — the Millennium problem is essentially asking whether it is"
     },
     {
       "id": "navier-stokes-oq-01",
       "relationship": "related",
-      "description": "OQ-01 explores other aspects of the Navier-Stokes formalization, complementing the well-posedness theory established her"
+      "description": "OQ-01 explores other aspects of the Navier-Stokes formalization, complementing the well-posedness theory established here"
     },
     {
       "id": "schauder-fixed-point",
       "relationship": "foundational",
-      "description": "Fixed-point methods for PDE existence. The Schauder theorem provides existence of solutions, which together with the uni"
+      "description": "Fixed-point methods for PDE existence. The Schauder theorem provides existence of solutions, which together with the uniqueness and continuous dependence proved here completes the Hadamard well-posedness triple"
     }
   ],
   "leanFile": {
@@ -211,7 +211,7 @@
       "TwoDimensionalGlobal"
     ],
     "namespace": "NavierStokesRegularity",
-    "lineCount": 21110,
+    "lineCount": 21111,
     "axiomCount": 0,
     "theoremCount": 1009,
     "definitionCount": 104

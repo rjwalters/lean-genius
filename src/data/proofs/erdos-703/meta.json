@@ -67,63 +67,72 @@
       "title": "Imports and Setup",
       "startLine": 31,
       "endLine": 39,
-      "summary": "Imports `Finset.Basic`, `Finset.Card`, `Finset.Powerset`, and `SetFamily.Intersecting`. Opens `Nat Finset` namespace."
+      "summary": "Imports `Finset.Basic`, `Finset.Card`, `Finset.Powerset`, and `SetFamily.Intersecting`. Opens `Nat Finset` namespace.",
+      "mathContext": "Imports `Finset.Basic`, `Finset.Card`, `Finset.Powerset`, and `SetFamily.Intersecting`. Opens `Nat Finset` namespace."
     },
     {
       "id": "r-intersection",
       "title": "Forbidden r-Intersection Families",
       "startLine": 49,
       "endLine": 66,
-      "summary": "Defines `hasRIntersection` ($|A \\cap B| = r$), `avoidsRIntersection` (family-level constraint), and $T(n,r) = \\max|\\mathcal{F}|$ via `Finset.sup` over filtered powerset."
+      "summary": "Defines `hasRIntersection` ($|A \\cap B| = r$), `avoidsRIntersection` (family-level constraint), and $T(n,r) = \\max|\\mathcal{F}|$ via `Finset.sup` over filtered powerset.",
+      "mathContext": "Defines `hasRIntersection` ($|A \\cap B| = r$), `avoidsRIntersection` (family-level constraint), and $T(n,r) = \\max|\\mathcal{F}|$ via `Finset.sup` over filtered powerset."
     },
     {
       "id": "trivial-case",
       "title": "The Trivial Case T(n,0)",
       "startLine": 78,
       "endLine": 88,
-      "summary": "$T(n,0) = 2^{n-1}$: 0-avoiding families are intersecting families. Equivalence proved; optimality has a sorry."
+      "summary": "$T(n,0) = 2^{n-1}$: 0-avoiding families are intersecting families. Equivalence proved; optimality has a sorry.",
+      "mathContext": "$T(n,0) = 2^{n-1}$: 0-avoiding families are intersecting families. Equivalence proved; optimality has a sorry."
     },
     {
       "id": "frankl-1977",
       "title": "Frankl's Result for r = 1",
       "startLine": 100,
       "endLine": 112,
-      "summary": "Frankl (1977) determined $T(n,1)$: optimal family is large sets ($|A| > (n+1)/2$) plus $\\emptyset$. Pigeonhole argument for large sets avoiding 1-intersection."
+      "summary": "Frankl (1977) determined $T(n,1)$: optimal family is large sets ($|A| > (n+1)/2$) plus $\\emptyset$. Pigeonhole argument for large sets avoiding 1-intersection.",
+      "mathContext": "Frankl (1977) determined $T(n,1)$: optimal family is large sets ($|A| > (n+1)/2$) plus $\\emptyset$. Pigeonhole argument for large sets avoiding 1-intersection."
     },
     {
       "id": "frankl-furedi",
       "title": "Frankl-Füredi Optimal Families",
       "startLine": 122,
       "endLine": 142,
-      "summary": "Explicit constructions split by parity of $n+r$: odd case uses $|A| > (n+r)/2$ or $|A| < r$; even case uses $|A \\setminus \\{1\\}| \\geq (n+r)/2$. Frankl-Füredi (1984) proves optimality for fixed $r$ and large $n$."
+      "summary": "Explicit constructions split by parity of $n+r$: odd case uses $|A| > (n+r)/2$ or $|A| < r$; even case uses $|A \\setminus \\{1\\}| \\geq (n+r)/2$. Frankl-Füredi (1984) proves optimality for fixed $r$ and large $n$.",
+      "mathContext": "Explicit constructions split by parity of $n+r$: odd case uses $|A| > (n+r)/2$ or $|A| < r$; even case uses $|A \\setminus \\{1\\}| \\geq (n+r)/2$. Frankl-Füredi (1984) proves optimality for fixed $r$ and"
     },
     {
       "id": "main-question",
       "title": "The Main Question — Exponential Bound",
       "startLine": 153,
       "endLine": 165,
-      "summary": "Formal $\\varepsilon$-$\\delta$ statement: $T(n,r) < (2-\\delta)^n$ for $\\varepsilon n < r < (1/2-\\varepsilon)n$. **Frankl-Rödl (1987)**: YES, resolving the \\$250 prize."
+      "summary": "Formal $\\varepsilon$-$\\delta$ statement: $T(n,r) < (2-\\delta)^n$ for $\\varepsilon n < r < (1/2-\\varepsilon)n$. **Frankl-Rödl (1987)**: YES, resolving the \\$250 prize.",
+      "mathContext": "Formal $\\varepsilon$-$\\delta$ statement: $T(n,r) < (2-\\delta)^n$ for $\\varepsilon n < r < (1/2-\\varepsilon)n$. **Frankl-Rödl (1987)**: YES, resolving the \\$250 prize."
     },
     {
       "id": "chromatic-connection",
       "title": "Connection to Chromatic Numbers",
       "startLine": 181,
       "endLine": 204,
-      "summary": "The exponential bound implies $\\chi(G_n) \\geq c^n$ for the unit distance graph. Frankl-Wilson (1981) proved this independently via mod $p$ methods."
+      "summary": "The exponential bound implies $\\chi(G_n) \\geq c^n$ for the unit distance graph. Frankl-Wilson (1981) proved this independently via mod $p$ methods.",
+      "mathContext": "The exponential bound implies $\\chi(G_n) \\geq c^n$ for the unit distance graph. Frankl-Wilson (1981) proved this independently via mod $p$ methods."
     },
     {
       "id": "frankl-wilson",
       "title": "The Frankl-Wilson Theorem",
       "startLine": 214,
       "endLine": 226,
-      "summary": "Generalizes to $L$-avoiding families. The Frankl-Wilson theorem (mod $p$ version): uniform families with modular constraints satisfy $|\\mathcal{F}| \\leq \\binom{n}{s}$, using the linear algebra method."
+      "summary": "Generalizes to $L$-avoiding families. The Frankl-Wilson theorem (mod $p$ version): uniform families with modular constraints satisfy $|\\mathcal{F}| \\leq \\binom{n}{s}$, using the linear algebra method.",
+      "mathContext": "Generalizes to $L$-avoiding families. The Frankl-Wilson theorem (mod $p$ version): uniform families with modular constraints satisfy $|\\mathcal{F}| \\leq \\binom{n}{s}$, using the linear algebra method."
     },
     {
       "id": "summary",
       "title": "Summary and Resolution",
       "startLine": 258,
       "endLine": 282,
-      "summary": "Combined `erdos_703_solved` theorem: `mainQuestion ∧ T(n,0) = 2^{n-1}`. Clean statement `erdos_703 : mainQuestion := frankl_rodl_1987`."
+      "summary": "Combined `erdos_703_solved` theorem: `mainQuestion ∧ T(n,0) = 2^{n-1}`. Clean statement `erdos_703 : mainQuestion := frankl_rodl_1987`.",
+      "mathContext": "Combined `erdos_703_solved` theorem: `mainQuestion ∧ T(n,0) = 2^{n-1}`. Clean statement `erdos_703 : mainQuestion := frankl_rodl_1987`."
     }
   ],
   "overview": {

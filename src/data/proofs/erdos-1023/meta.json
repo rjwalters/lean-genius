@@ -52,70 +52,80 @@
       "title": "Set Families on {1,...,n}",
       "summary": "SetFamily, powerSet definitions",
       "startLine": 60,
-      "endLine": 76
+      "endLine": 76,
+      "mathContext": "SetFamily, powerSet definitions"
     },
     {
       "id": "union-free",
       "title": "Union-Free Families",
       "summary": "familyUnion, isUnionOf, isUnionFree, equivalence proof",
       "startLine": 77,
-      "endLine": 106
+      "endLine": 106,
+      "mathContext": "familyUnion, isUnionOf, isUnionFree, equivalence proof"
     },
     {
       "id": "extremal",
       "title": "The Extremal Function F(n)",
       "summary": "unionFreeMax definition and achievability",
       "startLine": 107,
-      "endLine": 125
+      "endLine": 125,
+      "mathContext": "unionFreeMax definition and achievability"
     },
     {
       "id": "antichains",
       "title": "Antichains are Union-Free",
       "summary": "isAntichain, antichain_unionFree proof",
       "startLine": 126,
-      "endLine": 151
+      "endLine": 151,
+      "mathContext": "isAntichain, antichain_unionFree proof"
     },
     {
       "id": "middle-layer",
       "title": "The Middle Layer",
       "summary": "layer, middleLayer, middleLayer_antichain, middleLayer_unionFree",
       "startLine": 152,
-      "endLine": 187
+      "endLine": 187,
+      "mathContext": "layer, middleLayer, middleLayer_antichain, middleLayer_unionFree"
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound: F(n) ≥ C(n, n/2)",
       "summary": "unionFreeMax_ge_middle",
       "startLine": 188,
-      "endLine": 204
+      "endLine": 204,
+      "mathContext": "unionFreeMax_ge_middle"
     },
     {
       "id": "upper-bound",
       "title": "Upper Bound: F(n) ≤ C(n, n/2)",
       "summary": "erdos_kleitman_upper axiom, unionFreeMax_eq_middle",
       "startLine": 205,
-      "endLine": 221
+      "endLine": 221,
+      "mathContext": "erdos_kleitman_upper axiom, unionFreeMax_eq_middle"
     },
     {
       "id": "asymptotic",
       "title": "Asymptotic Form",
       "summary": "centralBinomial, stirling_central, asymptoticConstant, unionFreeMax_asymptotic",
       "startLine": 222,
-      "endLine": 255
+      "endLine": 255,
+      "mathContext": "centralBinomial, stirling_central, asymptoticConstant, unionFreeMax_asymptotic"
     },
     {
       "id": "main-result",
       "title": "The Main Question Answered",
       "summary": "erdos_1023_question, erdos_1023_solved axiom",
       "startLine": 256,
-      "endLine": 276
+      "endLine": 276,
+      "mathContext": "erdos_1023_question, erdos_1023_solved axiom"
     },
     {
       "id": "problem-447",
       "title": "Connection to Problem 447",
       "summary": "isTwoUnionFree, problem_447_solution axiom, hunter_observation",
       "startLine": 277,
-      "endLine": 366
+      "endLine": 366,
+      "mathContext": "isTwoUnionFree, problem_447_solution axiom, hunter_observation"
     }
   ],
   "conclusion": {
@@ -185,7 +195,7 @@
       ],
       "title": "On combinations of sets",
       "venue": "Nordisk Matematisk Tidskrift",
-      "year": 1968,
+      "year": "1968",
       "volume": "16",
       "pages": "20–25",
       "notes": "Original paper establishing F(n) = C(n, ⌊n/2⌋) by proving the matching upper bound."
@@ -196,7 +206,7 @@
       ],
       "title": "Ein Satz über Untermengen einer endlichen Menge",
       "venue": "Mathematische Zeitschrift",
-      "year": 1928,
+      "year": "1928",
       "volume": "27",
       "pages": "544–548",
       "notes": "The foundational Sperner's theorem: the largest antichain in 2^[n] is the middle layer C(n, ⌊n/2⌋). The lower bound F(n) ≥ C(n, n/2) follows immediately."
@@ -207,7 +217,7 @@
       ],
       "title": "Combinatorics: Set Systems, Hypergraphs, Families of Vectors and Combinatorial Probability",
       "venue": "Cambridge University Press",
-      "year": 1986,
+      "year": "1986",
       "notes": "Standard reference covering Sperner's theorem, union-free families, and the Erdős–Kleitman result in the context of extremal set theory."
     },
     {
@@ -216,7 +226,7 @@
       ],
       "title": "Extremal set systems",
       "venue": "Handbook of Combinatorics (eds. R. Graham, M. Grötschel, L. Lovász), Elsevier",
-      "year": 1995,
+      "year": "1995",
       "pages": "1293–1329",
       "notes": "Comprehensive survey of extremal set systems including union-free families, antichains, and their connections to compression and shifting methods."
     },
@@ -226,7 +236,7 @@
       ],
       "title": "On a combinatorial conjecture of Erdős",
       "venue": "Journal of Combinatorial Theory",
-      "year": 1966,
+      "year": "1966",
       "volume": "1",
       "pages": "209–214",
       "notes": "Early Kleitman paper on Erdős combinatorial conjectures related to set families and antichain bounds."

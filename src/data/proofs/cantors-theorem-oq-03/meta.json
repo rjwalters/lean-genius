@@ -178,7 +178,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 311,
+    "lineCount": 310,
     "structureCount": 0,
     "axiomCount": 0,
     "theoremCount": 17,
@@ -195,22 +195,31 @@
     {
       "id": "cantors-theorem",
       "title": "Cantor's Theorem",
-      "relationship": "parent — this is an open question derived from Cantor's theorem"
+      "relationship": "parent — this is an open question derived from Cantor's theorem",
+      "description": "Cantor's theorem (|A| < |P(A)|) is Level 1 of the hierarchy — the Lawvere instantiation with Bool/Prop negation"
     },
     {
       "id": "cantor-diagonalization",
       "title": "Cantor's Diagonalization",
-      "relationship": "technique — diagonalization is the key proof method for cardinality results"
+      "relationship": "technique — diagonalization is the key proof method for cardinality results",
+      "description": "Cantor's 1891 diagonalization of binary sequences is the Bool instantiation of the coordinate diagonal (Level 2)"
     },
     {
       "id": "cantors-theorem-oq-01",
       "title": "Cantor's Theorem OQ01",
-      "relationship": "sibling open question from the same theorem"
+      "relationship": "sibling open question from the same theorem",
+      "description": "OQ-01 studies |P(ℝ)| = ℶ₂ — König's theorem constrains its aleph-index via the cofinality bound"
     },
     {
       "id": "cantors-theorem-oq-02",
       "title": "Cantor's Theorem OQ02",
-      "relationship": "sibling open question from the same theorem"
+      "relationship": "sibling open question from the same theorem",
+      "description": "OQ-02 formalizes Lawvere's FPT (Level 1); OQ-03 adds Level 2 (Coordinate Diagonal) and Level 3 (König's heterogeneous principle)"
+    },
+    {
+      "id": "cantor-diagonalization-oq-01",
+      "relationship": "related",
+      "description": "The Continuum Hypothesis asks what lies between ℵ₀ and 2^ℵ₀ — König's inequality Σκᵢ < Πλᵢ constrains possible answers"
     }
   ]
 }

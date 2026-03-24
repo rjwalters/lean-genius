@@ -157,27 +157,32 @@
     {
       "id": "arithmetic-series-oq-02",
       "relationship": "extends",
-      "description": "Parent entry proving the 1D hockey stick identity ∑C(i+k,k) = C(n+k+1,k+1) — this file generalizes to 2D via the paralle"
+      "description": "Parent entry proving the 1D hockey stick identity ∑C(i+k,k) = C(n+k+1,k+1) — this file generalizes to 2D via the parallel Vandermonde convolution"
     },
     {
       "id": "arithmetic-series",
       "relationship": "ancestor",
-      "description": "The original arithmetic series ∑k = n(n+1)/2 — this file shows it's the simplest special case (a=0, b=0) of the 2D hocke"
+      "description": "The original arithmetic series ∑k = n(n+1)/2 — this file shows it's the simplest special case (a=0, b=0) of the 2D hockey stick"
     },
     {
       "id": "binomial-theorem",
       "relationship": "related",
-      "description": "The Vandermonde convolution ∑C(m,j)C(s,r-j) = C(m+s,r) is a fundamental identity in binomial coefficient theory, and the"
+      "description": "The Vandermonde convolution ∑C(m,j)C(s,r-j) = C(m+s,r) is a fundamental identity in binomial coefficient theory, and the parallel variant proved here is its shifted analogue"
     },
     {
       "id": "combinations-formula",
       "relationship": "foundational",
-      "description": "Pascal's recurrence C(n+1,k+1) = C(n,k) + C(n,k+1) drives the nested induction — the same identity underlying Pascal's t"
+      "description": "Pascal's recurrence C(n+1,k+1) = C(n,k) + C(n,k+1) drives the nested induction — the same identity underlying Pascal's triangle"
     },
     {
       "id": "ballot-problem",
       "relationship": "related",
-      "description": "The ballot problem counts monotone lattice paths — exactly the combinatorial objects that the parallel Vandermonde ident"
+      "description": "The ballot problem counts monotone lattice paths — exactly the combinatorial objects that the parallel Vandermonde identity decomposes. The ballot problem's reflection argument and this file's Vandermonde convolution are complementary lattice path counting techniques"
+    },
+    {
+      "id": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "The nested induction pattern (outer on $b$, inner on $n$) used in the parallel Vandermonde proof is a sophisticated instance of strong induction on pairs — the same foundational principle formalized in this gallery's induction entry"
     }
   ],
   "leanFile": {

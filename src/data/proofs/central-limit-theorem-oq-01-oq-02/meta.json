@@ -7,7 +7,7 @@
     "author": "Lévy (1934), Khintchine (1937); formalized 2026",
     "sourceUrl": "https://en.wikipedia.org/wiki/L%C3%A9vy%E2%80%93Khintchine_representation",
     "date": "1937",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/CentralLimitTheoremOQ01OQ02.lean",
     "tags": [
       "probability",
@@ -19,7 +19,7 @@
       "gaussian",
       "stable-distributions"
     ],
-    "badge": "verified",
+    "badge": "formalized",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -41,7 +41,7 @@
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
     "lineCount": 322,
-    "assumptions": "stable_inf_divisible proves True (placeholder). 19/20 theorems fully proved; 1 True stub remains for α-stable infinite divisibility.",
+    "assumptions": "1 True stub (1/19 theorems): stable_inf_divisible (line 208): proves True instead of infinite divisibility. stable_inf_divisible proves True (placeholder). 19/20 theorems fully proved; 1 True stub remains for α-stable infinite divisibility.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -66,56 +66,64 @@
       "title": "Lévy Triplet and Infinite Divisibility",
       "startLine": 31,
       "endLine": 56,
-      "summary": "Defines the LevyTriplet structure (γ, σ², ν_total) with nonnegativity constraints and the InfDivisible structure encoding a characteristic exponent with continuity, normalization, and associated triplet."
+      "summary": "Defines the LevyTriplet structure (γ, σ², ν_total) with nonnegativity constraints and the InfDivisible structure encoding a characteristic exponent with continuity, normalization, and associated triplet.",
+      "mathContext": "Defines the LevyTriplet structure (γ, σ², ν_total) with nonnegativity constraints and the InfDivisible structure encoding a characteristic exponent with continuity, normalization, and associated tripl"
     },
     {
       "id": "gaussian-triplet",
       "title": "Gaussian Triplet Properties",
       "startLine": 73,
       "endLine": 105,
-      "summary": "Constructs the Gaussian exponent ψ(t) = iμt - σ²t²/2, the Gaussian triplet (μ, σ², 0), proves normalization and continuity, and packages into an InfDivisible instance."
+      "summary": "Constructs the Gaussian exponent ψ(t) = iμt - σ²t²/2, the Gaussian triplet (μ, σ², 0), proves normalization and continuity, and packages into an InfDivisible instance.",
+      "mathContext": "Constructs the Gaussian exponent ψ(t) = iμt - σ²t²/2, the Gaussian triplet (μ, σ², 0), proves normalization and continuity, and packages into an InfDivisible instance."
     },
     {
       "id": "poisson-triplet",
       "title": "Poisson Triplet Properties",
       "startLine": 106,
       "endLine": 137,
-      "summary": "Constructs the Poisson exponent ψ(t) = λ(e^{it} - 1), the Poisson triplet (0, 0, λ), proves normalization and continuity, and packages into an InfDivisible instance."
+      "summary": "Constructs the Poisson exponent ψ(t) = λ(e^{it} - 1), the Poisson triplet (0, 0, λ), proves normalization and continuity, and packages into an InfDivisible instance.",
+      "mathContext": "Constructs the Poisson exponent ψ(t) = λ(e^{it} - 1), the Poisson triplet (0, 0, λ), proves normalization and continuity, and packages into an InfDivisible instance."
     },
     {
       "id": "divisibility-properties",
       "title": "Divisibility Properties and Triplet Algebra",
       "startLine": 138,
       "endLine": 170,
-      "summary": "Proves triplets add componentwise under independent sums, defines scaling, and establishes that drift, Gaussian variance, and Lévy measure each add independently."
+      "summary": "Proves triplets add componentwise under independent sums, defines scaling, and establishes that drift, Gaussian variance, and Lévy measure each add independently.",
+      "mathContext": "Proves triplets add componentwise under independent sums, defines scaling, and establishes that drift, Gaussian variance, and Lévy measure each add independently."
     },
     {
       "id": "stable-classification",
       "title": "Stable Distribution Classification",
       "startLine": 171,
       "endLine": 201,
-      "summary": "Defines the symmetric α-stable characteristic exponent ψ(t) = -c|t|^α, proves the normalization property, and states the fundamental scaling identity n·ψ(t/n^{1/α}) = ψ(t)."
+      "summary": "Defines the symmetric α-stable characteristic exponent ψ(t) = -c|t|^α, proves the normalization property, and states the fundamental scaling identity n·ψ(t/n^{1/α}) = ψ(t).",
+      "mathContext": "Defines the symmetric α-stable characteristic exponent ψ(t) = -c|t|^α, proves the normalization property, and states the fundamental scaling identity n·ψ(t/n^{1/α}) = ψ(t)."
     },
     {
       "id": "levy-ito-decomposition",
       "title": "Lévy-Itô Decomposition",
       "startLine": 202,
       "endLine": 239,
-      "summary": "Defines the LevyItoDecomposition structure (drift + volatility + small jumps + large jumps), constructs it from a Lévy triplet, and proves Gaussian has no jumps and Poisson has no Gaussian component."
+      "summary": "Defines the LevyItoDecomposition structure (drift + volatility + small jumps + large jumps), constructs it from a Lévy triplet, and proves Gaussian has no jumps and Poisson has no Gaussian component.",
+      "mathContext": "Defines the LevyItoDecomposition structure (drift + volatility + small jumps + large jumps), constructs it from a Lévy triplet, and proves Gaussian has no jumps and Poisson has no Gaussian component."
     },
     {
       "id": "classification-theorems",
       "title": "Classification Theorems",
       "startLine": 240,
       "endLine": 265,
-      "summary": "Proves that ν = 0 implies Gaussian and σ² = 0 implies compound Poisson. States the recovery formula σ² = lim_{t→0} -2ψ(t)/t² for extracting the Gaussian component."
+      "summary": "Proves that ν = 0 implies Gaussian and σ² = 0 implies compound Poisson. States the recovery formula σ² = lim_{t→0} -2ψ(t)/t² for extracting the Gaussian component.",
+      "mathContext": "Proves that ν = 0 implies Gaussian and σ² = 0 implies compound Poisson. States the recovery formula σ² = lim_{t→0} -2ψ(t)/t² for extracting the Gaussian component."
     },
     {
       "id": "moment-formulas",
       "title": "Moment Formulas from Lévy-Khintchine",
       "startLine": 266,
       "endLine": 312,
-      "summary": "Defines mean and variance in terms of the Lévy triplet, proves Gaussian variance = σ² and Poisson variance = λ, and establishes variance additivity under independent sums via ring."
+      "summary": "Defines mean and variance in terms of the Lévy triplet, proves Gaussian variance = σ² and Poisson variance = λ, and establishes variance additivity under independent sums via ring.",
+      "mathContext": "Defines mean and variance in terms of the Lévy triplet, proves Gaussian variance = σ² and Poisson variance = λ, and establishes variance additivity under independent sums via ring."
     }
   ],
   "conclusion": {
@@ -154,7 +162,7 @@
     {
       "id": "central-limit-theorem",
       "relationship": "extends",
-      "description": "The CLT shows Gaussian is the limit for finite-variance sums; Lévy-Khintchine generalizes to all infinitely divisible li"
+      "description": "The CLT shows Gaussian is the limit for finite-variance sums; Lévy-Khintchine generalizes to all infinitely divisible limits"
     },
     {
       "id": "central-limit-theorem-oq-01",
@@ -164,12 +172,12 @@
     {
       "id": "central-limit-theorem-oq-01-oq-01",
       "relationship": "related",
-      "description": "The Gnedenko-Kolmogorov domain of attraction theorem characterizes which distributions converge to α-stable laws under t"
+      "description": "The Gnedenko-Kolmogorov domain of attraction theorem characterizes which distributions converge to α-stable laws under the Lévy-Khintchine framework"
     },
     {
       "id": "central-limit-theorem-oq-03",
       "relationship": "related",
-      "description": "The categorical/monoid structure of distributions under convolution is the algebraic framework underlying triplet additi"
+      "description": "The categorical/monoid structure of distributions under convolution is the algebraic framework underlying triplet addition"
     }
   ],
   "leanFile": {

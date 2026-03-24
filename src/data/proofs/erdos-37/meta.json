@@ -114,70 +114,80 @@
       "title": "Imports and Namespace",
       "startLine": 56,
       "endLine": 62,
-      "summary": "Imports Mathlib and opens `Set`, `Finset`, `BigOperators`, `Filter` for set cardinality, summation, and asymptotic filters. Defines the `Erdos37` namespace."
+      "summary": "Imports Mathlib and opens `Set`, `Finset`, `BigOperators`, `Filter` for set cardinality, summation, and asymptotic filters. Defines the `Erdos37` namespace.",
+      "mathContext": "Imports Mathlib and opens `Set`, `Finset`, `BigOperators`, `Filter` for set cardinality, summation, and asymptotic filters. Defines the `Erdos37` namespace."
     },
     {
       "id": "schnirelmann",
       "title": "Schnirelmann Density",
       "startLine": 63,
       "endLine": 95,
-      "summary": "Defines `countingFunction` $\\pi_A(n) = |A \\cap [1,n]|$ and `schnirelmannDensity` $d_s(A) = \\inf_{n \\ge 1} \\pi_A(n)/n$. Proves $d_s(A) \\in [0,1]$ (Aristotle)."
+      "summary": "Defines `countingFunction` $\\pi_A(n) = |A \\cap [1,n]|$ and `schnirelmannDensity` $d_s(A) = \\inf_{n \\ge 1} \\pi_A(n)/n$. Proves $d_s(A) \\in [0,1]$ (Aristotle).",
+      "mathContext": "Defines `countingFunction` $\\pi_A(n) = |A \\cap [1,n]|$ and `schnirelmannDensity` $d_s(A) = \\inf_{n \\ge 1} \\pi_A(n)/n$. Proves $d_s(A) \\in [0,1]$ (Aristotle)."
     },
     {
       "id": "sumset",
       "title": "Sumsets",
       "startLine": 96,
       "endLine": 107,
-      "summary": "Defines `sumset` $A +_s B = \\{a+b : a \\in A, b \\in B\\}$ with custom notation `+_s`."
+      "summary": "Defines `sumset` $A +_s B = \\{a+b : a \\in A, b \\in B\\}$ with custom notation `+_s`.",
+      "mathContext": "Defines `sumset` $A +_s B = \\{a+b : a \\in A, b \\in B\\}$ with custom notation `+_s`."
     },
     {
       "id": "essential",
       "title": "Essential Components",
       "startLine": 108,
       "endLine": 123,
-      "summary": "Defines `IsEssentialComponent A`: $\\forall B$ with $0 < d_s(B) < 1$, $d_s(A +_s B) > d_s(B)$. The central property under investigation."
+      "summary": "Defines `IsEssentialComponent A`: $\\forall B$ with $0 < d_s(B) < 1$, $d_s(A +_s B) > d_s(B)$. The central property under investigation.",
+      "mathContext": "Defines `IsEssentialComponent A`: $\\forall B$ with $0 < d_s(B) < 1$, $d_s(A +_s B) > d_s(B)$. The central property under investigation."
     },
     {
       "id": "lacunary",
       "title": "Lacunary Sets",
       "startLine": 124,
       "endLine": 159,
-      "summary": "Defines `IsLacunarySeq` ($a_{n+1} \\ge r \\cdot a_n$, $r > 1$) and `IsLacunarySet`. Proves `powersOfTwo_lacunary`: $\\{2^n\\}$ is lacunary with $r = 2$ (Aristotle)."
+      "summary": "Defines `IsLacunarySeq` ($a_{n+1} \\ge r \\cdot a_n$, $r > 1$) and `IsLacunarySet`. Proves `powersOfTwo_lacunary`: $\\{2^n\\}$ is lacunary with $r = 2$ (Aristotle).",
+      "mathContext": "Defines `IsLacunarySeq` ($a_{n+1} \\ge r \\cdot a_n$, $r > 1$) and `IsLacunarySet`. Proves `powersOfTwo_lacunary`: $\\{2^n\\}$ is lacunary with $r = 2$ (Aristotle)."
     },
     {
       "id": "growth",
       "title": "Growth Bounds",
       "startLine": 160,
       "endLine": 249,
-      "summary": "Proves $a_n \\ge a_0 r^n$ and $n \\le C \\log N$ (Aristotle). Then proves `lacunary_counting_bound`: $|A \\cap [1,N]| \\le C \\log N$ for lacunary $A$ (Aristotle). This is the key sparsity result."
+      "summary": "Proves $a_n \\ge a_0 r^n$ and $n \\le C \\log N$ (Aristotle). Then proves `lacunary_counting_bound`: $|A \\cap [1,N]| \\le C \\log N$ for lacunary $A$ (Aristotle). This is the key sparsity result.",
+      "mathContext": "Proves $a_n \\ge a_0 r^n$ and $n \\le C \\log N$ (Aristotle). Then proves `lacunary_counting_bound`: $|A \\cap [1,N]| \\le C \\log N$ for lacunary $A$ (Aristotle). This is the key sparsity result."
     },
     {
       "id": "main",
       "title": "Main Results",
       "startLine": 250,
       "endLine": 306,
-      "summary": "Axiomatizes Ruzsa's lower bound (essential $\\Rightarrow |A \\cap [1,N]| \\ge (\\log N)^{1+c}$) and construction (tight). Axiom `erdos_37_disproved` and theorem `erdos_37_answer`: $\\lnot\\exists A$ lacunary and essential."
+      "summary": "Axiomatizes Ruzsa's lower bound (essential $\\Rightarrow |A \\cap [1,N]| \\ge (\\log N)^{1+c}$) and construction (tight). Axiom `erdos_37_disproved` and theorem `erdos_37_answer`: $\\lnot\\exists A$ lacunary and essential.",
+      "mathContext": "Axiomatizes Ruzsa's lower bound (essential $\\Rightarrow |A \\cap [1,N]| \\ge (\\log N)^{1+c}$) and construction (tight). Axiom `erdos_37_disproved` and theorem `erdos_37_answer`: $\\lnot\\exists A$ lacunar"
     },
     {
       "id": "smooth23",
       "title": "The $2^m \\cdot 3^n$ Open Question",
       "startLine": 307,
       "endLine": 329,
-      "summary": "Defines `smoothNumbers23` $= \\{2^m \\cdot 3^n\\}$ with counting $\\sim C(\\log N)^2$. `RuzsaOpenQuestion`: is this set essential? Growth $(\\log N)^2$ is at Ruzsa's threshold."
+      "summary": "Defines `smoothNumbers23` $= \\{2^m \\cdot 3^n\\}$ with counting $\\sim C(\\log N)^2$. `RuzsaOpenQuestion`: is this set essential? Growth $(\\log N)^2$ is at Ruzsa's threshold.",
+      "mathContext": "Defines `smoothNumbers23` $= \\{2^m \\cdot 3^n\\}$ with counting $\\sim C(\\log N)^2$. `RuzsaOpenQuestion`: is this set essential? Growth $(\\log N)^2$ is at Ruzsa's threshold."
     },
     {
       "id": "classical",
       "title": "Classical Results",
       "startLine": 330,
       "endLine": 351,
-      "summary": "Axiomatizes Schnirelmann's theorem ($d_s(A)+d_s(B) \\ge 1 \\Rightarrow A+B \\supseteq \\mathbb{N}^+$) and Mann's theorem ($d_s(A+B) \\ge \\min(1, d_s(A)+d_s(B))$)."
+      "summary": "Axiomatizes Schnirelmann's theorem ($d_s(A)+d_s(B) \\ge 1 \\Rightarrow A+B \\supseteq \\mathbb{N}^+$) and Mann's theorem ($d_s(A+B) \\ge \\min(1, d_s(A)+d_s(B))$).",
+      "mathContext": "Axiomatizes Schnirelmann's theorem ($d_s(A)+d_s(B) \\ge 1 \\Rightarrow A+B \\supseteq \\mathbb{N}^+$) and Mann's theorem ($d_s(A+B) \\ge \\min(1, d_s(A)+d_s(B))$)."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 352,
       "endLine": 368,
-      "summary": "Recap: Erdős #37 answered NO (Ruzsa 1987). Essential components need $(\\log N)^{1+c}$ growth; lacunary sets have only $O(\\log N)$. The $\\{2^m \\cdot 3^n\\}$ question remains OPEN."
+      "summary": "Recap: Erdős #37 answered NO (Ruzsa 1987). Essential components need $(\\log N)^{1+c}$ growth; lacunary sets have only $O(\\log N)$. The $\\{2^m \\cdot 3^n\\}$ question remains OPEN.",
+      "mathContext": "Recap: Erdős #37 answered NO (Ruzsa 1987). Essential components need $(\\log N)^{1+c}$ growth; lacunary sets have only $O(\\log N)$. The $\\{2^m \\cdot 3^n\\}$ question remains OPEN."
     }
   ],
   "conclusion": {
@@ -252,12 +262,12 @@
     {
       "id": "erdos-35",
       "relationship": "related",
-      "description": "Problem #35 on Schnirelmann density provides the foundational framework. Essential components (Problems #37-38) study wh"
+      "description": "Problem #35 on Schnirelmann density provides the foundational framework. Essential components (Problems #37-38) study which sets can boost density of others"
     },
     {
       "id": "erdos-38",
       "relationship": "related",
-      "description": "Problem #38 on essential components and density boosting is the companion problem. Both concern how adding a set A can b"
+      "description": "Problem #38 on essential components and density boosting is the companion problem. Both concern how adding a set A can boost the Schnirelmann density of another set B"
     }
   ]
 }

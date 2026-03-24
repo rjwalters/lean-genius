@@ -100,63 +100,72 @@
       "title": "Problem Overview and Imports",
       "summary": "Module docstring describing Problem #1113 and imports from Mathlib (`Nat.Basic`, `Nat.Prime.Basic`, `Finset.Basic`, `Nat.Parity`). Sets up the arithmetic foundation for Sierpinski numbers and covering systems.",
       "startLine": 1,
-      "endLine": 41
+      "endLine": 41,
+      "mathContext": "Module docstring describing Problem #1113 and imports from Mathlib (`Nat.Basic`, `Nat.Prime.Basic`, `Finset.Basic`, `Nat.Parity`). Sets up the arithmetic foundation for Sierpinski numbers and covering"
     },
     {
       "id": "sierpinski-numbers",
       "title": "Sierpinski Numbers",
       "summary": "Defines `IsSierpinskiNumber` ($m$ odd, positive, all $2^k \\cdot m + 1$ composite), `sierpinskiSequence` helper, `AllComposite` predicate, and proves `sierpinski_iff_all_composite` establishing their equivalence.",
       "startLine": 42,
-      "endLine": 63
+      "endLine": 63,
+      "mathContext": "Defines `IsSierpinskiNumber` ($m$ odd, positive, all $2^k \\cdot m + 1$ composite), `sierpinskiSequence` helper, `AllComposite` predicate, and proves `sierpinski_iff_all_composite` establishing their e"
     },
     {
       "id": "covering-sets",
       "title": "Covering Sets",
       "summary": "Defines `IsCoveringSet` (finite primes $P$ where $\\forall k, \\exists p \\in P, p \\mid 2^k \\cdot m + 1$) and `HasFiniteCoveringSet`. Axiomatizes `covering_set_implies_sierpinski`: covered numbers are Sierpinski.",
       "startLine": 64,
-      "endLine": 80
+      "endLine": 80,
+      "mathContext": "Defines `IsCoveringSet` (finite primes $P$ where $\\forall k, \\exists p \\in P, p \\mid 2^k \\cdot m + 1$) and `HasFiniteCoveringSet`. Axiomatizes `covering_set_implies_sierpinski`: covered numbers are Si"
     },
     {
       "id": "main-question",
       "title": "The Main Question (OPEN)",
       "summary": "Formalizes `ErdosProblem1113` ($\\exists$ uncovered Sierpinski number) and `AllSierpinskiHaveCoverings` ($\\forall$ Sierpinski numbers are covered). Proves `problem_equivalence` showing these are exact negations via `push_neg`.",
       "startLine": 81,
-      "endLine": 100
+      "endLine": 100,
+      "mathContext": "Formalizes `ErdosProblem1113` ($\\exists$ uncovered Sierpinski number) and `AllSierpinskiHaveCoverings` ($\\forall$ Sierpinski numbers are covered). Proves `problem_equivalence` showing these are exact "
     },
     {
       "id": "known-examples",
       "title": "78557 and Sierpinski's Theorem",
       "summary": "Axiomatizes 78557 as smallest known Sierpinski number with covering set $\\{3,5,7,13,19,37,73\\}$. Axiomatizes Sierpinski's 1960 infinitude theorem: $\\forall N, \\exists m > N$, $m$ is Sierpinski with a finite covering set.",
       "startLine": 101,
-      "endLine": 120
+      "endLine": 120,
+      "mathContext": "Axiomatizes 78557 as smallest known Sierpinski number with covering set $\\{3,5,7,13,19,37,73\\}$. Axiomatizes Sierpinski's 1960 infinitude theorem: $\\forall N, \\exists m > N$, $m$ is Sierpinski with a "
     },
     {
       "id": "izotov",
       "title": "Izotov's Candidate (1995)",
       "summary": "Axiomatizes `izotovCandidate` $= 734110615000775^4$ as Sierpinski. Verifies `izotov_is_power` ($m$ is a perfect 4th power) via `norm_num`/`rfl`. Strongest evidence for Problem #1113 having answer YES.",
       "startLine": 121,
-      "endLine": 131
+      "endLine": 131,
+      "mathContext": "Axiomatizes `izotovCandidate` $= 734110615000775^4$ as Sierpinski. Verifies `izotov_is_power` ($m$ is a perfect 4th power) via `norm_num`/`rfl`. Strongest evidence for Problem #1113 having answer YES."
     },
     {
       "id": "ffk-conjecture",
       "title": "FFK Conjecture and Power Result",
       "summary": "Defines `IsPerfectPower` ($m = n^k$, $k \\geq 2$) and `FFKConjecture` (Sierpinski $\\Rightarrow$ perfect power $\\vee$ covered). Verifies `ffk_consistent_with_izotov`. Axiomatizes the FFK power result on simultaneous compositeness for $2^k \\cdot m^i + 1$.",
       "startLine": 132,
-      "endLine": 155
+      "endLine": 155,
+      "mathContext": "Defines `IsPerfectPower` ($m = n^k$, $k \\geq 2$) and `FFKConjecture` (Sierpinski $\\Rightarrow$ perfect power $\\vee$ covered). Verifies `ffk_consistent_with_izotov`. Axiomatizes the FFK power result on"
     },
     {
       "id": "fermat-connection",
       "title": "Connection to Fermat Primes",
       "summary": "Defines `FermatNumber` ($F_n = 2^{2^n} + 1$) and `IsFermatPrime`. Axiomatizes known Fermat primes $F_0$-$F_4$, $F_5$'s factorization ($641 \\times 6700417$), and the Erdos-Graham connection: universal covering $\\Rightarrow$ infinitely many Fermat primes.",
       "startLine": 156,
-      "endLine": 185
+      "endLine": 185,
+      "mathContext": "Defines `FermatNumber` ($F_n = 2^{2^n} + 1$) and `IsFermatPrime`. Axiomatizes known Fermat primes $F_0$-$F_4$, $F_5$'s factorization ($641 \\times 6700417$), and the Erdos-Graham connection: universal "
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "summary": "Proves `erdos_1113_summary` combining: (1) Izotov's candidate is Sierpinski, (2) it is a perfect power, (3) FFK conjecture is compatible. Verified from axioms and `norm_num` results. **Problem Status: OPEN.**",
       "startLine": 186,
-      "endLine": 207
+      "endLine": 207,
+      "mathContext": "Proves `erdos_1113_summary` combining: (1) Izotov's candidate is Sierpinski, (2) it is a perfect power, (3) FFK conjecture is compatible. Verified from axioms and `norm_num` results. **Problem Status:"
     }
   ],
   "conclusion": {
@@ -171,16 +180,16 @@
   },
   "crossReferences": [
     {
-      "targetProofId": "erdos-370",
-      "relationship": "Both problems involve prime factorization structure of arithmetic sequences -- Problem #370 studies greatest prime factors of consecutive integers while Problem #1113 studies prime divisors covering the Sierpinski sequence $2^k \\cdot m + 1$"
+      "relationship": "Both problems involve prime factorization structure of arithmetic sequences -- Problem #370 studies greatest prime factors of consecutive integers while Problem #1113 studies prime divisors covering the Sierpinski sequence $2^k \\cdot m + 1$",
+      "targetId": "erdos-370"
     },
     {
-      "targetProofId": "erdos-984",
-      "relationship": "Both involve combinatorial number theory with finite set constructions -- Sidon sets (finite sets with unique pairwise sums) and covering sets (finite prime sets with complete divisibility coverage)"
+      "relationship": "Both involve combinatorial number theory with finite set constructions -- Sidon sets (finite sets with unique pairwise sums) and covering sets (finite prime sets with complete divisibility coverage)",
+      "targetId": "erdos-984"
     },
     {
-      "targetProofId": "erdos-107",
-      "relationship": "Both are Erdos problems where existence questions connect to deep structural phenomena -- the Happy Ending problem asks about convex subsets while Problem #1113 asks about uncovered Sierpinski numbers"
+      "relationship": "Both are Erdos problems where existence questions connect to deep structural phenomena -- the Happy Ending problem asks about convex subsets while Problem #1113 asks about uncovered Sierpinski numbers",
+      "targetId": "erdos-107"
     }
   ],
   "leanFile": {
@@ -201,19 +210,19 @@
   },
   "relatedProofs": [
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-370",
+      "relationship": "Both problems involve prime factorization structure of arithmetic sequences -- Problem #370 studies greatest prime factors of consecutive integers while Problem #1113 studies prime divisors covering the Sierpinski sequence $2^k \\cdot m + 1$",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-984",
+      "relationship": "Both involve combinatorial number theory with finite set constructions -- Sidon sets (finite sets with unique pairwise sums) and covering sets (finite prime sets with complete divisibility coverage)",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-107",
+      "relationship": "Both are Erdos problems where existence questions connect to deep structural phenomena -- the Happy Ending problem asks about convex subsets while Problem #1113 asks about uncovered Sierpinski numbers",
+      "description": ""
     }
   ],
   "references": [

@@ -33,7 +33,7 @@
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
     "lineCount": 182,
-    "assumptions": "0 axioms, 1 sorry. See the Lean source for details.",
+    "assumptions": "No axioms, no sorries. Fully machine-checked.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -177,7 +177,12 @@
     {
       "id": "bezout-identity-oq-02-oq-01",
       "relationship": "related",
-      "description": "The Fundamental Theorem of Arithmetic from Euclid's lemma — a key application of the divisibility result made computable"
+      "description": "The Fundamental Theorem of Arithmetic from Euclid's lemma — a key application of the divisibility result made computable here"
+    },
+    {
+      "id": "chinese-remainder-non-coprime",
+      "relationship": "related",
+      "description": "The Chinese Remainder Theorem uses similar coprimality and Bézout coefficient techniques"
     }
   ],
   "leanFile": {

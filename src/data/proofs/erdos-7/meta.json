@@ -92,84 +92,96 @@
       "title": "Basic Definitions",
       "summary": "CongruenceClass and CoveringSystem structures",
       "startLine": 31,
-      "endLine": 56
+      "endLine": 56,
+      "mathContext": "CongruenceClass and CoveringSystem structures"
     },
     {
       "id": "odd-moduli",
       "title": "Odd Moduli",
       "summary": "Predicates for odd and even moduli",
       "startLine": 57,
-      "endLine": 70
+      "endLine": 70,
+      "mathContext": "Predicates for odd and even moduli"
     },
     {
       "id": "erdos-selfridge",
       "title": "The Erdős-Selfridge Conjecture",
       "summary": "Main conjecture in two equivalent forms",
       "startLine": 71,
-      "endLine": 101
+      "endLine": 101,
+      "mathContext": "Main conjecture in two equivalent forms"
     },
     {
       "id": "squarefree",
       "title": "Squarefree Moduli",
       "summary": "Definitions for squarefree covering systems",
       "startLine": 102,
-      "endLine": 118
+      "endLine": 118,
+      "mathContext": "Definitions for squarefree covering systems"
     },
     {
       "id": "balister",
       "title": "Balister et al. (2022)",
       "summary": "No odd squarefree covering exists",
       "startLine": 119,
-      "endLine": 140
+      "endLine": 140,
+      "mathContext": "No odd squarefree covering exists"
     },
     {
       "id": "hough-nielsen",
       "title": "Hough-Nielsen (2019)",
       "summary": "Some modulus must be divisible by 2 or 3",
       "startLine": 141,
-      "endLine": 159
+      "endLine": 159,
+      "mathContext": "Some modulus must be divisible by 2 or 3"
     },
     {
       "id": "lcm-constraint",
       "title": "LCM Constraint",
       "summary": "If odd covering exists, LCM divisible by 9 or 15",
       "startLine": 160,
-      "endLine": 173
+      "endLine": 173,
+      "mathContext": "If odd covering exists, LCM divisible by 9 or 15"
     },
     {
       "id": "properties",
       "title": "Simple Properties",
       "summary": "Basic facts about odd moduli",
       "startLine": 174,
-      "endLine": 188
+      "endLine": 188,
+      "mathContext": "Basic facts about odd moduli"
     },
     {
       "id": "gap",
       "title": "The Gap",
       "summary": "Summary of what is known vs unknown",
       "startLine": 189,
-      "endLine": 207
+      "endLine": 207,
+      "mathContext": "Summary of what is known vs unknown"
     },
     {
       "id": "selfridge",
       "title": "Selfridge's Prize",
       "summary": "$2000 for explicit odd covering construction",
       "startLine": 208,
-      "endLine": 219
+      "endLine": 219,
+      "mathContext": "$2000 for explicit odd covering construction"
     },
     {
       "id": "covering-properties",
       "title": "Covering with Specific Properties",
       "summary": "Min odd modulus definitions",
       "startLine": 220,
-      "endLine": 234
+      "endLine": 234,
+      "mathContext": "Min odd modulus definitions"
     },
     {
       "id": "summary-theorem",
       "title": "Summary",
       "summary": "erdos_7_summary combining Hough-Nielsen, Balister, and LCM constraint",
       "startLine": 235,
-      "endLine": 274
+      "endLine": 274,
+      "mathContext": "erdos_7_summary combining Hough-Nielsen, Balister, and LCM constraint"
     }
   ],
   "conclusion": {
@@ -231,22 +243,22 @@
     {
       "id": "erdos-2",
       "relationship": "extends",
-      "description": "Problem #2 asked whether the minimum modulus of a covering system can be arbitrarily large (answered NO by Hough 2015). "
+      "description": "Problem #2 asked whether the minimum modulus of a covering system can be arbitrarily large (answered NO by Hough 2015). Problem #7 is the natural companion: must every covering system include an even modulus? Both constrain the fundamental structure of covering systems"
     },
     {
       "id": "erdos-8",
       "relationship": "related",
-      "description": "Problem #8 asks about monochromatic covering systems, adding coloring constraints to the covering framework. Problems #2"
+      "description": "Problem #8 asks about monochromatic covering systems, adding coloring constraints to the covering framework. Problems #2, #7, and #8 form a trio of structural questions about covering systems"
     },
     {
       "id": "erdos-27",
       "relationship": "related",
-      "description": "Problem #27 on almost covering systems relaxes the coverage requirement. Understanding the parity constraints of Problem"
+      "description": "Problem #27 on almost covering systems relaxes the coverage requirement. Understanding the parity constraints of Problem #7 informs what near-coverings with odd moduli might look like"
     },
     {
       "id": "chinese-remainder-constructive",
       "relationship": "foundational",
-      "description": "The Chinese Remainder Theorem governs how congruence classes with coprime moduli interact, which is essential for constr"
+      "description": "The Chinese Remainder Theorem governs how congruence classes with coprime moduli interact, which is essential for constructing or ruling out covering systems with constrained moduli"
     }
   ],
   "leanFile": {

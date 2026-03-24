@@ -70,84 +70,96 @@
       "title": "Imports and Setup",
       "startLine": 24,
       "endLine": 33,
-      "summary": "Imports `Mathlib.SetTheory.Ordinal.Arithmetic`, `Cardinal.Basic`, `SimpleGraph.Basic`, and `Tactic`. Opens `Ordinal`, `Cardinal`, `SimpleGraph` namespaces."
+      "summary": "Imports `Mathlib.SetTheory.Ordinal.Arithmetic`, `Cardinal.Basic`, `SimpleGraph.Basic`, and `Tactic`. Opens `Ordinal`, `Cardinal`, `SimpleGraph` namespaces.",
+      "mathContext": "Imports `Mathlib.SetTheory.Ordinal.Arithmetic`, `Cardinal.Basic`, `SimpleGraph.Basic`, and `Tactic`. Opens `Ordinal`, `Cardinal`, `SimpleGraph` namespaces."
     },
     {
       "id": "basic-defs",
       "title": "Basic Definitions",
       "summary": "Defines `OrdinalGraph` ($\\text{SimpleGraph}\\;\\alpha.\\text{toType}$), `HasInfinitePath` (injective $f : \\mathbb{N} \\to V$ with $f(n) \\sim f(n+1)$), `IsIndependent` (no edges in $S$), and `HasOrderType` ($\\text{Ordinal.type}$ of subrelation).",
       "startLine": 34,
-      "endLine": 50
+      "endLine": 50,
+      "mathContext": "Defines `OrdinalGraph` ($\\text{SimpleGraph}\\;\\alpha.\\text{toType}$), `HasInfinitePath` (injective $f : \\mathbb{N} \\to V$ with $f(n) \\sim f(n+1)$), `IsIndependent` (no edges in $S$), and `HasOrderType`"
     },
     {
       "id": "property-p",
       "title": "Property $P(\\alpha)$",
       "summary": "Defines $P(\\alpha)$: every graph on $\\alpha$ has infinite path OR independent set of order type $\\alpha$. Proves equivalence with the contrapositive formulation.",
       "startLine": 51,
-      "endLine": 64
+      "endLine": 64,
+      "mathContext": "Defines $P(\\alpha)$: every graph on $\\alpha$ has infinite path OR independent set of order type $\\alpha$. Proves equivalence with the contrapositive formulation."
     },
     {
       "id": "finite",
       "title": "Finite Ordinals",
       "summary": "$P(n)$ holds trivially for all finite $n$: no infinite path exists in a finite graph, so the independent set condition must hold.",
       "startLine": 65,
-      "endLine": 76
+      "endLine": 76,
+      "mathContext": "$P(n)$ holds trivially for all finite $n$: no infinite path exists in a finite graph, so the independent set condition must hold."
     },
     {
       "id": "omega",
       "title": "The First Infinite Ordinal: $P(\\omega)$",
       "summary": "$P(\\omega)$ follows from the infinite Ramsey theorem ($\\omega \\to (\\omega)^2_2$): any graph on $\\omega$ has either an infinite clique (containing a ray) or an infinite independent set.",
       "startLine": 77,
-      "endLine": 87
+      "endLine": 87,
+      "mathContext": "$P(\\omega)$ follows from the infinite Ramsey theorem ($\\omega \\to (\\omega)^2_2$): any graph on $\\omega$ has either an infinite clique (containing a ray) or an infinite independent set."
     },
     {
       "id": "ehm",
       "title": "Erdős-Hajnal-Milner Theorem (1970)",
       "summary": "Defines `criticalOrdinal` $= \\omega_1^{\\omega+2}$ and axiomatizes the main result: $P(\\alpha)$ holds for all $\\alpha < \\omega_1^{\\omega+2}$. The proof uses transfinite induction on Cantor normal form.",
       "startLine": 88,
-      "endLine": 101
+      "endLine": 101,
+      "mathContext": "Defines `criticalOrdinal` $= \\omega_1^{\\omega+2}$ and axiomatizes the main result: $P(\\alpha)$ holds for all $\\alpha < \\omega_1^{\\omega+2}$. The proof uses transfinite induction on Cantor normal form."
     },
     {
       "id": "critical",
       "title": "The Critical Case: $\\omega_1^{\\omega+2}$ ($250)",
       "summary": "States the `CriticalCaseConjecture`: does $P(\\omega_1^{\\omega+2})$ hold? This is the exact boundary where the Erdős-Hajnal-Milner induction breaks down. \\$250 prize.",
       "startLine": 102,
-      "endLine": 116
+      "endLine": 116,
+      "mathContext": "States the `CriticalCaseConjecture`: does $P(\\omega_1^{\\omega+2})$ hold? This is the exact boundary where the Erdős-Hajnal-Milner induction breaks down. \\$250 prize."
     },
     {
       "id": "martins-axiom",
       "title": "Martin's Axiom and Larson's Extension",
       "summary": "Axiomatizes Martin's Axiom and Larson's theorem (1990): under MA, $P(\\alpha)$ holds for all $\\alpha$ with $|\\alpha| < 2^{\\aleph_0}$, extending the range far beyond $\\omega_1^{\\omega+2}$.",
       "startLine": 117,
-      "endLine": 134
+      "endLine": 134,
+      "mathContext": "Axiomatizes Martin's Axiom and Larson's theorem (1990): under MA, $P(\\alpha)$ holds for all $\\alpha$ with $|\\alpha| < 2^{\\aleph_0}$, extending the range far beyond $\\omega_1^{\\omega+2}$."
     },
     {
       "id": "ordinal-arithmetic",
       "title": "Ordinal Arithmetic and Hierarchy",
       "summary": "Establishes the ordinal chain $\\omega < \\omega_1 < \\omega_1^\\omega < \\omega_1^{\\omega+1} < \\omega_1^{\\omega+2}$ and proves all countable ordinals satisfy $P$.",
       "startLine": 135,
-      "endLine": 151
+      "endLine": 151,
+      "mathContext": "Establishes the ordinal chain $\\omega < \\omega_1 < \\omega_1^\\omega < \\omega_1^{\\omega+1} < \\omega_1^{\\omega+2}$ and proves all countable ordinals satisfy $P$."
     },
     {
       "id": "graph-tools",
       "title": "Graph-Theoretic Tools",
       "summary": "States König's lemma (infinite finitely-branching trees have rays) and ordinal Ramsey partition regularity for large ordinals.",
       "startLine": 152,
-      "endLine": 165
+      "endLine": 165,
+      "mathContext": "States König's lemma (infinite finitely-branching trees have rays) and ordinal Ramsey partition regularity for large ordinals."
     },
     {
       "id": "independence",
       "title": "Independence Number",
       "summary": "Defines `independenceNumber` as $\\sup_{S \\text{ independent}} |S|$ and establishes that $P(\\alpha)$ failure requires $\\alpha(G) < |\\alpha|$ with no infinite path.",
       "startLine": 166,
-      "endLine": 197
+      "endLine": 197,
+      "mathContext": "Defines `independenceNumber` as $\\sup_{S \\text{ independent}} |S|$ and establishes that $P(\\alpha)$ failure requires $\\alpha(G) < |\\alpha|$ with no infinite path."
     },
     {
       "id": "general",
       "title": "The General Conjecture ($500)",
       "summary": "States `GeneralConjecture`: $P(\\alpha)$ holds for all limit ordinals $\\alpha$. Proves the partial result (limit ordinals below $\\omega_1^{\\omega+2}$) and the knowledge gap between known and conjectured.",
       "startLine": 198,
-      "endLine": 247
+      "endLine": 247,
+      "mathContext": "States `GeneralConjecture`: $P(\\alpha)$ holds for all limit ordinals $\\alpha$. Proves the partial result (limit ordinals below $\\omega_1^{\\omega+2}$) and the knowledge gap between known and conjecture"
     }
   ],
   "overview": {

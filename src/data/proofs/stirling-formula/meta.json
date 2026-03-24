@@ -202,27 +202,47 @@
     {
       "id": "e-transcendental",
       "relationship": "related",
-      "description": "Euler's number e appears fundamentally in Stirling's formula as (n/e)^n — the transcendence of e (Hermite 1873) ensures "
+      "description": "Euler's number e appears fundamentally in Stirling's formula as (n/e)^n — the transcendence of e (Hermite 1873) ensures this factor cannot be simplified algebraically"
     },
     {
       "id": "pi-transcendental",
       "relationship": "related",
-      "description": "The factor √(2π) in Stirling's formula connects to the Wallis product and the Gaussian integral ∫e^{-x²}dx = √π. The tra"
+      "description": "The factor √(2π) in Stirling's formula connects to the Wallis product and the Gaussian integral ∫e^{-x²}dx = √π. The transcendence of π (Lindemann 1882) means Stirling's constant is transcendental"
     },
     {
       "id": "binomial-theorem",
       "relationship": "complementary",
-      "description": "Stirling's formula gives the asymptotic form of binomial coefficients: C(n,k) ≈ (n/k)^k · (n/(n-k))^{n-k} · √(n/(2πk(n-k"
+      "description": "Stirling's formula gives the asymptotic form of binomial coefficients: C(n,k) ≈ (n/k)^k · (n/(n-k))^{n-k} · √(n/(2πk(n-k))), essential for the central limit theorem and information theory"
     },
     {
       "id": "central-limit-theorem",
       "relationship": "related",
-      "description": "De Moivre originally discovered Stirling's formula while proving the CLT for the binomial distribution. Stirling's appro"
+      "description": "De Moivre originally discovered Stirling's formula while proving the CLT for the binomial distribution. Stirling's approximation for C(n,k) gives the Gaussian density as the limit of the binomial"
     },
     {
       "id": "euler-identity",
       "relationship": "related",
-      "description": "Euler's formula e^{iπ} + 1 = 0 connects the same constants (e, π) that appear in Stirling's formula. Both reveal deep re"
+      "description": "Euler's formula e^{iπ} + 1 = 0 connects the same constants (e, π) that appear in Stirling's formula. Both reveal deep relationships between exponential growth and circular geometry"
+    },
+    {
+      "id": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "Stirling's formula is derived by approximating $\\ln(n!) = \\sum_{k=1}^n \\ln k \\approx \\int_1^n \\ln x\\,dx = n\\ln n - n + 1$ via FTC. The integral $\\int \\ln x\\,dx = x\\ln x - x$ is evaluated by integration by parts (a consequence of FTC), and the correction terms (including $\\sqrt{2\\pi n}$) come from the Euler-Maclaurin formula — a systematic refinement of the sum-to-integral comparison"
+    },
+    {
+      "id": "harmonic-divergence",
+      "relationship": "related",
+      "description": "Both results compare discrete sums with continuous integrals: the harmonic series $\\sum 1/n$ diverges like $\\ln n$ (by comparison with $\\int 1/x\\,dx$), while $\\sum \\ln k \\approx \\int \\ln x\\,dx = n\\ln n - n$ gives Stirling's formula. The Euler-Mascheroni constant $\\gamma = \\lim(\\sum_{k=1}^n 1/k - \\ln n) \\approx 0.5772$ is the harmonic series analog of Stirling's correction constant $\\frac{1}{2}\\ln(2\\pi)$"
+    },
+    {
+      "id": "derangements",
+      "relationship": "related",
+      "description": "The number of derangements $D_n \\sim n!/e$ uses both the factorial (approximated by Stirling) and $e$ (the base of the natural exponential in Stirling's $(n/e)^n$). Combining: $D_n \\sim \\sqrt{2\\pi n}(n/e)^{n+1}$, giving the asymptotic density of derangements among permutations as $1/e \\approx 36.8\\%$"
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate (there exists a prime between $n$ and $2n$) was first proved by Chebyshev using bounds on $\\binom{2n}{n}$, which Stirling's formula approximates as $\\binom{2n}{n} \\sim 4^n/\\sqrt{\\pi n}$. The growth rate of central binomial coefficients, controlled by Stirling, is the engine powering prime-counting estimates"
     }
   ]
 }

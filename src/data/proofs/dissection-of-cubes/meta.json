@@ -256,17 +256,17 @@
     {
       "id": "hilbert-10",
       "relationship": "thematic",
-      "description": "Both are impossibility results: cube dissection shows no finite decomposition into distinct smaller cubes exists, while "
+      "description": "Both are impossibility results: cube dissection shows no finite decomposition into distinct smaller cubes exists, while Hilbert's 10th (MRDP theorem) shows no algorithm solves all Diophantine equations. Both use indirect arguments — infinite descent here, undecidability there"
     },
     {
       "id": "angle-trisection",
       "relationship": "thematic",
-      "description": "Both are geometric impossibility results: angle trisection shows certain constructions are impossible with compass and s"
+      "description": "Both are geometric impossibility results: angle trisection shows certain constructions are impossible with compass and straightedge (via Galois theory), while cube dissection shows certain decompositions are impossible (via infinite descent). Different proof techniques for the same genre of result"
     },
     {
       "id": "dissection-of-cubes-oq-01",
       "relationship": "extended-by",
-      "description": "OQ-01 formalizes collision pairs and minimum collision lower bounds — extending the cube dissection impossibility with q"
+      "description": "OQ-01 formalizes collision pairs and minimum collision lower bounds — extending the cube dissection impossibility with quantitative results about how many cubes must share sizes"
     },
     {
       "id": "dissection-of-cubes-oq-02",
@@ -276,7 +276,22 @@
     {
       "id": "abel-ruffini",
       "relationship": "thematic",
-      "description": "Both are structural impossibility results where the proof identifies a fundamental obstruction: Abel-Ruffini's obstructi"
+      "description": "Both are structural impossibility results where the proof identifies a fundamental obstruction: Abel-Ruffini's obstruction is the non-solvability of $S_5$ (group theory), while cube dissection's obstruction is the infinite descent forced by the surrounding geometry (combinatorics). Both reduce impossibility to a structural property that cannot be circumvented"
+    },
+    {
+      "id": "erdos-szekeres",
+      "relationship": "related",
+      "description": "The Erdős-Szekeres theorem (every sequence of length $mn+1$ has a monotone subsequence of length $m+1$ or $n+1$) uses the same proof pattern as cube dissection: construct a long chain (here, decreasing cube sizes; there, monotone subsequences), then use pigeonhole to derive a contradiction with finiteness"
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey theory and cube dissection share the infinite descent / pigeonhole methodology: both prove that sufficiently large structures must contain ordered substructures. The cube dissection proof constructs a strictly decreasing chain bounded by $|\\text{cubes}|$; Ramsey constructs monochromatic cliques bounded by partition regularity"
+    },
+    {
+      "id": "hilbert-3",
+      "relationship": "related",
+      "description": "Hilbert's 3rd problem (Dehn's theorem): not all polyhedra of equal volume are equidecomposable — the Dehn invariant provides the obstruction. Both Hilbert-3 and cube dissection concern the limits of geometric decomposition, though the specific questions differ (equidecomposability vs. dissection into distinct-sized subcubes)"
     }
   ]
 }

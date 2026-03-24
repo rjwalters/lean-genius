@@ -161,7 +161,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 257,
+    "lineCount": 256,
     "structureCount": 0,
     "axiomCount": 0,
     "theoremCount": 25,
@@ -176,17 +176,20 @@
     {
       "id": "collatz-structured",
       "title": "Collatz Conjecture (Structured)",
-      "relationship": "parent — this is an open question about Collatz dynamics"
+      "relationship": "parent — this is an open question about Collatz dynamics",
+      "description": "Parent formalization proving Collatz conjecture for powers of 2 and closure under multiplication by 2^k"
     },
     {
       "id": "dirichlets-theorem",
       "title": "Dirichlet's Theorem",
-      "relationship": "related — distribution of primes in arithmetic progressions connects to residue classes in Collatz dynamics"
+      "relationship": "related — distribution of primes in arithmetic progressions connects to residue classes in Collatz dynamics",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions — the residue class analysis (mod 4) used in the 3/4 contraction connects to the distribution of primes in residue classes"
     },
     {
       "id": "fermat-two-squares",
       "title": "Fermat's Two Squares Theorem",
-      "relationship": "related — both involve arithmetic structure of integers modulo primes"
+      "relationship": "related — both involve arithmetic structure of integers modulo primes",
+      "description": "Fermat's two-squares theorem uses mod 4 residue analysis in a different number-theoretic context, illustrating how parity and divisibility arguments appear across number theory"
     }
   ]
 }

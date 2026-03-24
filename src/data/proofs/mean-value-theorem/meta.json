@@ -12,7 +12,8 @@
       "calculus",
       "analysis",
       "classic",
-      "intermediate"
+      "intermediate",
+      "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/MeanValueTheorem.lean",
     "badge": "mathlib",
@@ -86,63 +87,72 @@
       "title": "Imports",
       "startLine": 1,
       "endLine": 4,
-      "summary": "Imports three Mathlib modules: `Deriv.Basic` for derivative definitions, `MeanValue` for the core MVT lemmas, and `Deriv.Slope` for slope-related formulations."
+      "summary": "Imports three Mathlib modules: `Deriv.Basic` for derivative definitions, `MeanValue` for the core MVT lemmas, and `Deriv.Slope` for slope-related formulations.",
+      "mathContext": "Imports three Mathlib modules: `Deriv.Basic` for derivative definitions, `MeanValue` for the core MVT lemmas, and `Deriv.Slope` for slope-related formulations."
     },
     {
       "id": "module-docstring",
       "title": "Module Docstring",
       "startLine": 5,
       "endLine": 49,
-      "summary": "Extensive documentation covering: what is proved (MVT with continuous/differentiable hypotheses), Wiedijk #75 reference, approach (Mathlib foundation + original contributions), proof status, and historical note on Lagrange (1797) and Cauchy (1821). Lists three Mathlib dependencies."
+      "summary": "Extensive documentation covering: what is proved (MVT with continuous/differentiable hypotheses), Wiedijk #75 reference, approach (Mathlib foundation + original contributions), proof status, and historical note on Lagrange (1797) and Cauchy (1821). Lists three Mathlib dependencies.",
+      "mathContext": "Extensive documentation covering: what is proved (MVT with continuous/differentiable hypotheses), Wiedijk #75 reference, approach (Mathlib foundation + original contributions), proof status, and histo"
     },
     {
       "id": "namespace-open",
       "title": "Namespace and Opens",
       "startLine": 50,
       "endLine": 53,
-      "summary": "Opens `Set`, `Filter`, `Topology` namespaces and declares `MeanValueTheorem` namespace for all theorems."
+      "summary": "Opens `Set`, `Filter`, `Topology` namespaces and declares `MeanValueTheorem` namespace for all theorems.",
+      "mathContext": "Opens `Set`, `Filter`, `Topology` namespaces and declares `MeanValueTheorem` namespace for all theorems."
     },
     {
       "id": "lagrange-mvt",
       "title": "Lagrange's Mean Value Theorem",
       "startLine": 54,
       "endLine": 76,
-      "summary": "Section docstring introduces the classical statement. Theorem `mvt` states: for $f$ continuous on $[a,b]$ and differentiable on $(a,b)$, $\\exists c \\in (a,b): \\text{deriv}\\, f\\, c = (f(b) - f(a))/(b - a)$. Proof is a direct application of `exists_deriv_eq_slope`."
+      "summary": "Section docstring introduces the classical statement. Theorem `mvt` states: for $f$ continuous on $[a,b]$ and differentiable on $(a,b)$, $\\exists c \\in (a,b): \\text{deriv}\\, f\\, c = (f(b) - f(a))/(b - a)$. Proof is a direct application of `exists_deriv_eq_slope`.",
+      "mathContext": "Section docstring introduces the classical statement. Theorem `mvt` states: for $f$ continuous on $[a,b]$ and differentiable on $(a,b)$, $\\exists c \\in (a,b): \\text{deriv}\\, f\\, c = (f(b) - f(a))/(b -"
     },
     {
       "id": "hasderivat-mvt",
       "title": "HasDerivAt Version of MVT",
       "startLine": 77,
       "endLine": 86,
-      "summary": "Alternative formulation `mvt_hasDerivAt` for when an explicit derivative function $f'$ is provided. Hypotheses require `HasDerivAt f (f' x) x` for all $x \\in (a,b)$ instead of `DifferentiableOn`. Wraps `exists_hasDerivAt_eq_slope`."
+      "summary": "Alternative formulation `mvt_hasDerivAt` for when an explicit derivative function $f'$ is provided. Hypotheses require `HasDerivAt f (f' x) x` for all $x \\in (a,b)$ instead of `DifferentiableOn`. Wraps `exists_hasDerivAt_eq_slope`.",
+      "mathContext": "Alternative formulation `mvt_hasDerivAt` for when an explicit derivative function $f'$ is provided. Hypotheses require `HasDerivAt f (f' x) x` for all $x \\in (a,b)$ instead of `DifferentiableOn`. Wrap"
     },
     {
       "id": "cauchy-mvt",
       "title": "Cauchy's Mean Value Theorem",
       "startLine": 87,
       "endLine": 110,
-      "summary": "Section docstring introduces Cauchy's generalization. Theorem `cauchy_mvt`: for $f, g$ both continuous on $[a,b]$ and differentiable on $(a,b)$, $\\exists c \\in (a,b): (g(b) - g(a)) \\cdot f'(c) = (f(b) - f(a)) \\cdot g'(c)$. Wraps `exists_ratio_deriv_eq_ratio_slope`. Notes specialization to Lagrange when $g(x) = x$."
+      "summary": "Section docstring introduces Cauchy's generalization. Theorem `cauchy_mvt`: for $f, g$ both continuous on $[a,b]$ and differentiable on $(a,b)$, $\\exists c \\in (a,b): (g(b) - g(a)) \\cdot f'(c) = (f(b) - f(a)) \\cdot g'(c)$. Wraps `exists_ratio_deriv_eq_ratio_slope`. Notes specialization to Lagrange when $g(x) = x$.",
+      "mathContext": "Section docstring introduces Cauchy's generalization. Theorem `cauchy_mvt`: for $f, g$ both continuous on $[a,b]$ and differentiable on $(a,b)$, $\\exists c \\in (a,b): (g(b) - g(a)) \\cdot f'(c) = (f(b)"
     },
     {
       "id": "corollaries",
       "title": "Corollaries: Zero Derivative Implies Constant",
       "startLine": 111,
       "endLine": 129,
-      "summary": "Section header for corollaries. Proves `constant_of_deriv_zero`: if $f'(x) = 0$ for all $x \\in (a,b)$, then $f(b) = f(a)$. This is the only non-wrapper proof in the file, using `mvt` to obtain $c$, substituting the zero-derivative hypothesis, then `field_simp` and `linarith`."
+      "summary": "Section header for corollaries. Proves `constant_of_deriv_zero`: if $f'(x) = 0$ for all $x \\in (a,b)$, then $f(b) = f(a)$. This is the only non-wrapper proof in the file, using `mvt` to obtain $c$, substituting the zero-derivative hypothesis, then `field_simp` and `linarith`.",
+      "mathContext": "Section header for corollaries. Proves `constant_of_deriv_zero`: if $f'(x) = 0$ for all $x \\in (a,b)$, then $f(b) = f(a)$. This is the only non-wrapper proof in the file, using `mvt` to obtain $c$, su"
     },
     {
       "id": "geometric-applications",
       "title": "Geometric Interpretation and Applications",
       "startLine": 130,
       "endLine": 156,
-      "summary": "Documentation section covering: geometric interpretation (tangent parallel to secant), and four key applications — L'Hôpital's rule, Taylor's theorem remainder, monotonicity testing, and uniqueness of antiderivatives."
+      "summary": "Documentation section covering: geometric interpretation (tangent parallel to secant), and four key applications — L'Hôpital's rule, Taylor's theorem remainder, monotonicity testing, and uniqueness of antiderivatives.",
+      "mathContext": "Documentation section covering: geometric interpretation (tangent parallel to secant), and four key applications — L'Hôpital's rule, Taylor's theorem remainder, monotonicity testing, and uniqueness of"
     },
     {
       "id": "verification",
       "title": "Type-Check Verification",
       "startLine": 157,
       "endLine": 163,
-      "summary": "Closes the `MeanValueTheorem` namespace and runs `#check` on all four theorems (`mvt`, `mvt_hasDerivAt`, `cauchy_mvt`, `constant_of_deriv_zero`) to verify they type-check correctly."
+      "summary": "Closes the `MeanValueTheorem` namespace and runs `#check` on all four theorems (`mvt`, `mvt_hasDerivAt`, `cauchy_mvt`, `constant_of_deriv_zero`) to verify they type-check correctly.",
+      "mathContext": "Closes the `MeanValueTheorem` namespace and runs `#check` on all four theorems (`mvt`, `mvt_hasDerivAt`, `cauchy_mvt`, `constant_of_deriv_zero`) to verify they type-check correctly."
     }
   ],
   "conclusion": {
@@ -210,27 +220,42 @@
     {
       "id": "fundamental-theorem-calculus",
       "relationship": "foundational",
-      "description": "The MVT is a key ingredient in proving the Fundamental Theorem of Calculus Part II: $F(b) - F(a) = \\int_a^b F'(x)\\,dx$ u"
+      "description": "The MVT is a key ingredient in proving the Fundamental Theorem of Calculus Part II: $F(b) - F(a) = \\int_a^b F'(x)\\,dx$ uses $F(x_{i+1}) - F(x_i) = F'(c_i)(x_{i+1} - x_i)$ on each partition interval. Without MVT, the bridge from pointwise derivatives to accumulated change would be missing"
     },
     {
       "id": "intermediate-value-theorem",
       "relationship": "related",
-      "description": "IVT and MVT are the two central existence theorems for continuous/differentiable functions on intervals. IVT guarantees "
+      "description": "IVT and MVT are the two central existence theorems for continuous/differentiable functions on intervals. IVT guarantees intermediate values for continuous $f$; MVT guarantees an intermediate slope $f'(c) = (f(b)-f(a))/(b-a)$ for differentiable $f$. Rolle's theorem ($f(a) = f(b) \\Rightarrow f'(c) = 0$) is the bridge between them"
     },
     {
       "id": "greens-theorem",
       "relationship": "foundational",
-      "description": "MVT is used in the proof of Green's theorem for rectangles: the Fubini + FTC approach applies MVT to estimate $\\int_a^b "
+      "description": "MVT is used in the proof of Green's theorem for rectangles: the Fubini + FTC approach applies MVT to estimate $\\int_a^b \\partial F/\\partial x\\,dx = F(b,y) - F(a,y)$ on each subinterval. The MVT-based error estimates are what make the limiting argument rigorous as the partition becomes finer"
     },
     {
       "id": "brouwer-fixed-point",
       "relationship": "related",
-      "description": "Both guarantee existence of special points for continuous/differentiable functions: MVT finds $c$ where the derivative e"
+      "description": "Both guarantee existence of special points for continuous/differentiable functions: MVT finds $c$ where the derivative equals the secant slope, Brouwer finds $c$ where $f(c) = c$. In 1D, Brouwer follows from IVT (which also implies MVT via Rolle's theorem), so both existence theorems share the same topological root"
     },
     {
       "id": "cauchy-schwarz",
       "relationship": "related",
-      "description": "The Cauchy form of MVT ($\\frac{f(b)-f(a)}{g(b)-g(a)} = \\frac{f'(c)}{g'(c)}$) is used in L'Hôpital's rule, which evaluate"
+      "description": "The Cauchy form of MVT ($\\frac{f(b)-f(a)}{g(b)-g(a)} = \\frac{f'(c)}{g'(c)}$) is used in L'Hôpital's rule, which evaluates indeterminate forms. Cauchy-Schwarz and Cauchy's MVT both bear Cauchy's name and both provide bounds on ratios — Cauchy-Schwarz on $\\langle u,v\\rangle/(\\|u\\|\\|v\\|)$ and Cauchy's MVT on $\\Delta f/\\Delta g$"
+    },
+    {
+      "id": "harmonic-divergence",
+      "relationship": "related",
+      "description": "The integral test for series convergence uses MVT: comparing $\\sum_{k=1}^n f(k)$ with $\\int_1^n f(x)\\,dx$ requires bounding $f(k) - \\int_k^{k+1} f(x)\\,dx$, which MVT controls via $|f(k) - f(c)| \\leq |f'(\\xi)|$ for some $\\xi$. The harmonic series diverges because $\\int_1^n 1/x\\,dx = \\ln n \\to \\infty$, an argument mediated by MVT"
+    },
+    {
+      "id": "taylor-theorem",
+      "relationship": "extended-by",
+      "description": "Taylor's theorem is the $n$th-order generalization of MVT: MVT is the $n=0$ case ($f(b) = f(a) + f'(c)(b-a)$), while Taylor gives $f(b) = \\sum f^{(k)}(a)(b-a)^k/k! + R_n$. The Lagrange remainder directly generalizes MVT's intermediate point"
+    },
+    {
+      "id": "e-transcendental",
+      "relationship": "related",
+      "description": "MVT bounds $|e^x - 1 - x| \\leq (e^c/2)x^2$ — the kind of estimate used in Hermite's transcendence proof, where controlling exponential approximation errors is essential"
     }
   ],
   "leanFile": {

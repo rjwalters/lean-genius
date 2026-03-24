@@ -64,56 +64,64 @@
       "title": "Imports and Setup",
       "startLine": 1,
       "endLine": 19,
-      "summary": "Imports from `Mathlib.Analysis.Real.Pi.Leibniz` for the convergence theorem, plus `Monotone.Basic` for subsequence analysis; sets `maxHeartbeats 800000` for the heavy `linarith` calls"
+      "summary": "Imports from `Mathlib.Analysis.Real.Pi.Leibniz` for the convergence theorem, plus `Monotone.Basic` for subsequence analysis; sets `maxHeartbeats 800000` for the heavy `linarith` calls",
+      "mathContext": "Imports from `Mathlib.Analysis.Real.Pi.Leibniz` for the convergence theorem, plus `Monotone.Basic` for subsequence analysis; sets `maxHeartbeats 800000` for the heavy `linarith` calls"
     },
     {
       "id": "partial-sums",
       "title": "Partial Sum Definition and Convergence",
       "startLine": 21,
       "endLine": 25,
-      "summary": "Defines $S(n) = \\sum_{i=0}^{n-1} (-1)^i/(2i+1)$ and proves $S(n) \\to \\pi/4$ via `Real.tendsto_sum_pi_div_four`"
+      "summary": "Defines $S(n) = \\sum_{i=0}^{n-1} (-1)^i/(2i+1)$ and proves $S(n) \\to \\pi/4$ via `Real.tendsto_sum_pi_div_four`",
+      "mathContext": "Defines $S(n) = \\sum_{i=0}^{n-1} (-1)^i/(2i+1)$ and proves $S(n) \\to \\pi/4$ via `Real.tendsto_sum_pi_div_four`"
     },
     {
       "id": "helpers",
       "title": "Step Formula and Sign Lemmas",
       "startLine": 27,
       "endLine": 37,
-      "summary": "Proves $S(n+1) - S(n) = (-1)^n/(2n+1)$, $(-1)^{2k} = 1$, and $(-1)^{2k+1} = -1$ — the building blocks for the monotonicity argument"
+      "summary": "Proves $S(n+1) - S(n) = (-1)^n/(2n+1)$, $(-1)^{2k} = 1$, and $(-1)^{2k+1} = -1$ — the building blocks for the monotonicity argument",
+      "mathContext": "Proves $S(n+1) - S(n) = (-1)^n/(2n+1)$, $(-1)^{2k} = 1$, and $(-1)^{2k+1} = -1$ — the building blocks for the monotonicity argument"
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity of Even/Odd Subsequences",
       "startLine": 39,
       "endLine": 75,
-      "summary": "Proves even partial sums are monotonically increasing ($S(2k+2) - S(2k) = \\frac{2}{(4k+1)(4k+3)} > 0$) and odd partial sums are antitone ($S(2k+3) - S(2k+1) < 0$)"
+      "summary": "Proves even partial sums are monotonically increasing ($S(2k+2) - S(2k) = \\frac{2}{(4k+1)(4k+3)} > 0$) and odd partial sums are antitone ($S(2k+3) - S(2k+1) < 0$)",
+      "mathContext": "Proves even partial sums are monotonically increasing ($S(2k+2) - S(2k) = \\frac{2}{(4k+1)(4k+3)} > 0$) and odd partial sums are antitone ($S(2k+3) - S(2k+1) < 0$)"
     },
     {
       "id": "sandwich",
       "title": "Sandwich Property and Subsequence Convergence",
       "startLine": 77,
       "endLine": 91,
-      "summary": "Proves $S(2k) \\leq \\pi/4 \\leq S(2k+1)$ for all $k$ using `ge_of_tendsto` / `le_of_tendsto` with `eventually_atTop`"
+      "summary": "Proves $S(2k) \\leq \\pi/4 \\leq S(2k+1)$ for all $k$ using `ge_of_tendsto` / `le_of_tendsto` with `eventually_atTop`",
+      "mathContext": "Proves $S(2k) \\leq \\pi/4 \\leq S(2k+1)$ for all $k$ using `ge_of_tendsto` / `le_of_tendsto` with `eventually_atTop`"
     },
     {
       "id": "error-bound",
       "title": "Error Bound (Main Result)",
       "startLine": 93,
       "endLine": 119,
-      "summary": "Proves $|\\pi/4 - S_n| \\leq 1/(2n+1)$ by case-splitting on `Nat.even_or_odd` and using the sandwich to bound the error by the next term"
+      "summary": "Proves $|\\pi/4 - S_n| \\leq 1/(2n+1)$ by case-splitting on `Nat.even_or_odd` and using the sandwich to bound the error by the next term",
+      "mathContext": "Proves $|\\pi/4 - S_n| \\leq 1/(2n+1)$ by case-splitting on `Nat.even_or_odd` and using the sandwich to bound the error by the next term"
     },
     {
       "id": "sharpness",
       "title": "Rate Sharpness",
       "startLine": 121,
       "endLine": 127,
-      "summary": "Proves $|S(n+1) - S(n)| = 1/(2n+1)$ exactly, establishing the rate is $\\Theta(1/N)$ (tight)"
+      "summary": "Proves $|S(n+1) - S(n)| = 1/(2n+1)$ exactly, establishing the rate is $\\Theta(1/N)$ (tight)",
+      "mathContext": "Proves $|S(n+1) - S(n)| = 1/(2n+1)$ exactly, establishing the rate is $\\Theta(1/N)$ (tight)"
     },
     {
       "id": "machin",
       "title": "Machin's Formula (Exponential Alternative)",
       "startLine": 129,
       "endLine": 134,
-      "summary": "Axiomatizes the arctan addition formula and states Machin's identity $\\pi/4 = 4\\arctan(1/5) - \\arctan(1/239)$ (1 sorry); demonstrates $O(1/25^N)$ exponential convergence vs Leibniz's $O(1/N)$"
+      "summary": "Axiomatizes the arctan addition formula and states Machin's identity $\\pi/4 = 4\\arctan(1/5) - \\arctan(1/239)$ (1 sorry); demonstrates $O(1/25^N)$ exponential convergence vs Leibniz's $O(1/N)$",
+      "mathContext": "Axiomatizes the arctan addition formula and states Machin's identity $\\pi/4 = 4\\arctan(1/5) - \\arctan(1/239)$ (1 sorry); demonstrates $O(1/25^N)$ exponential convergence vs Leibniz's $O(1/N)$"
     }
   ],
   "conclusion": {

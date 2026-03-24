@@ -91,56 +91,64 @@
       "title": "Grothendieck Ring of Varieties",
       "startLine": 57,
       "endLine": 101,
-      "summary": "K_0(Var) as CommRing with Lefschetz motive L, affine and projective class formulas with geometric series proof."
+      "summary": "K_0(Var) as CommRing with Lefschetz motive L, affine and projective class formulas with geometric series proof.",
+      "mathContext": "K_0(Var) as CommRing with Lefschetz motive L, affine and projective class formulas with geometric series proof."
     },
     {
       "id": "gln-class",
       "title": "GL_n Motivic Class",
       "startLine": 102,
       "endLine": 150,
-      "summary": "Explicit GL_n formula via Bruhat decomposition with GL_1 through GL_4 theorems proved."
+      "summary": "Explicit GL_n formula via Bruhat decomposition with GL_1 through GL_4 theorems proved.",
+      "mathContext": "Explicit GL_n formula via Bruhat decomposition with GL_1 through GL_4 theorems proved."
     },
     {
       "id": "flag-varieties",
       "title": "Flag Varieties",
       "startLine": 151,
       "endLine": 196,
-      "summary": "Complete flag definition and flag variety motivic class formula with Fl_1 through Fl_4 proved."
+      "summary": "Complete flag definition and flag variety motivic class formula with Fl_1 through Fl_4 proved.",
+      "mathContext": "Complete flag definition and flag variety motivic class formula with Fl_1 through Fl_4 proved."
     },
     {
       "id": "homology-classes",
       "title": "Homology Classes",
       "startLine": 197,
       "endLine": 232,
-      "summary": "Homology class representation, positivity condition, and dimension formula computeA with n=1,2 cases."
+      "summary": "Homology class representation, positivity condition, and dimension formula computeA with n=1,2 cases.",
+      "mathContext": "Homology class representation, positivity condition, and dimension formula computeA with n=1,2 cases."
     },
     {
       "id": "tower-decomposition",
       "title": "Tower Decomposition",
       "startLine": 244,
       "endLine": 303,
-      "summary": "Fiber class formula from Corollary 2.5: [fiber] = L^{exponent} · (L^k - 1), verified for k=1,2,3. Cell decomposition infrastructure."
+      "summary": "Fiber class formula from Corollary 2.5: [fiber] = L^{exponent} · (L^k - 1), verified for k=1,2,3. Cell decomposition infrastructure.",
+      "mathContext": "Fiber class formula from Corollary 2.5: [fiber] = L^{exponent} · (L^k - 1), verified for k=1,2,3. Cell decomposition infrastructure."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "startLine": 304,
       "endLine": 347,
-      "summary": "Main theorem axiom with n=1, n=2 special cases derived and L-expansion formula."
+      "summary": "Main theorem axiom with n=1, n=2 special cases derived and L-expansion formula.",
+      "mathContext": "Main theorem axiom with n=1, n=2 special cases derived and L-expansion formula."
     },
     {
       "id": "mathlib-connection",
       "title": "Mathlib Connection & Dimension Formulas",
       "startLine": 358,
       "endLine": 410,
-      "summary": "Connection to Mathlib's GL_n, explicit fiber class computations, and dimension formula verification via Gauss sums."
+      "summary": "Connection to Mathlib's GL_n, explicit fiber class computations, and dimension formula verification via Gauss sums.",
+      "mathContext": "Connection to Mathlib's GL_n, explicit fiber class computations, and dimension formula verification via Gauss sums."
     },
     {
       "id": "further-formalization",
       "title": "Paths to Further Formalization",
       "startLine": 420,
       "endLine": 438,
-      "summary": "Roadmap for short, medium, and long-term formalization goals (most short-term goals now complete)."
+      "summary": "Roadmap for short, medium, and long-term formalization goals (most short-term goals now complete).",
+      "mathContext": "Roadmap for short, medium, and long-term formalization goals (most short-term goals now complete)."
     }
   ],
   "conclusion": {
@@ -184,12 +192,12 @@
     {
       "id": "hodge-conjecture",
       "relationship": "thematic",
-      "description": "Both concern the algebraic geometry of complex varieties — the Hodge conjecture asks about algebraic cycles on smooth pr"
+      "description": "Both concern the algebraic geometry of complex varieties — the Hodge conjecture asks about algebraic cycles on smooth projective varieties, while motivic classes encode the K-theory of maps between flag varieties"
     },
     {
       "id": "fundamental-theorem-algebra",
       "relationship": "foundational",
-      "description": "The fundamental theorem of algebra (every polynomial has a root) underpins the algebraic framework — the q-binomial coef"
+      "description": "The fundamental theorem of algebra (every polynomial has a root) underpins the algebraic framework — the q-binomial coefficients and Gaussian polynomials in the motivic class computation rely on polynomial factorization over algebraically closed fields"
     }
   ],
   "references": [

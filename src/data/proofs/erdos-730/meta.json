@@ -50,70 +50,80 @@
       "title": "Problem Statement and References",
       "startLine": 1,
       "endLine": 20,
-      "summary": "Module docstring introducing Erdős Problem #730: are there infinitely many pairs of central binomials sharing prime divisor sets? Cites EGRS (1975), known examples, and OEIS A129515."
+      "summary": "Module docstring introducing Erdős Problem #730: are there infinitely many pairs of central binomials sharing prime divisor sets? Cites EGRS (1975), known examples, and OEIS A129515.",
+      "mathContext": "Module docstring introducing Erdős Problem #730: are there infinitely many pairs of central binomials sharing prime divisor sets? Cites EGRS (1975), known examples, and OEIS A129515."
     },
     {
       "id": "imports",
       "title": "Library Imports",
       "startLine": 21,
       "endLine": 25,
-      "summary": "Imports `Nat.Choose.Central` for $\\binom{2n}{n}$, `Nat.Prime.Basic` and `Nat.Factors` for prime factorization, and general Mathlib tactics."
+      "summary": "Imports `Nat.Choose.Central` for $\\binom{2n}{n}$, `Nat.Prime.Basic` and `Nat.Factors` for prime factorization, and general Mathlib tactics.",
+      "mathContext": "Imports `Nat.Choose.Central` for $\\binom{2n}{n}$, `Nat.Prime.Basic` and `Nat.Factors` for prime factorization, and general Mathlib tactics."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 26,
       "endLine": 43,
-      "summary": "Defines `centralBinom n = Nat.choose (2*n) n`, `primeDivisors n = n.primeFactors`, the relation `SamePrimeDivisors` (equality of prime divisor Finsets), and `CentralBinomPairs` (the set of pairs $(n,m)$ with $n < m$ and matching divisors)."
+      "summary": "Defines `centralBinom n = Nat.choose (2*n) n`, `primeDivisors n = n.primeFactors`, the relation `SamePrimeDivisors` (equality of prime divisor Finsets), and `CentralBinomPairs` (the set of pairs $(n,m)$ with $n < m$ and matching divisors).",
+      "mathContext": "Defines `centralBinom n = Nat.choose (2*n) n`, `primeDivisors n = n.primeFactors`, the relation `SamePrimeDivisors` (equality of prime divisor Finsets), and `CentralBinomPairs` (the set of pairs $(n,m"
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 44,
       "endLine": 49,
-      "summary": "Axiomatizes the EGRS conjecture: `Set.Infinite CentralBinomPairs`. Stated as an axiom reflecting the open status of the problem."
+      "summary": "Axiomatizes the EGRS conjecture: `Set.Infinite CentralBinomPairs`. Stated as an axiom reflecting the open status of the problem.",
+      "mathContext": "Axiomatizes the EGRS conjecture: `Set.Infinite CentralBinomPairs`. Stated as an axiom reflecting the open status of the problem."
     },
     {
       "id": "examples",
       "title": "Known Examples",
       "startLine": 50,
       "endLine": 69,
-      "summary": "Axiomatizes the known pairs $(87,88)$ and $(607,608)$, the triple $(10003, 10004, 10005)$ with all pairwise matches, and proves `delta_ne_one`: a non-consecutive pair exists (gap 2 via the triple)."
+      "summary": "Axiomatizes the known pairs $(87,88)$ and $(607,608)$, the triple $(10003, 10004, 10005)$ with all pairwise matches, and proves `delta_ne_one`: a non-consecutive pair exists (gap 2 via the triple).",
+      "mathContext": "Axiomatizes the known pairs $(87,88)$ and $(607,608)$, the triple $(10003, 10004, 10005)$ with all pairwise matches, and proves `delta_ne_one`: a non-consecutive pair exists (gap 2 via the triple)."
     },
     {
       "id": "kummer",
       "title": "Kummer's Divisibility Criterion",
       "startLine": 70,
       "endLine": 76,
-      "summary": "Axiomatizes Kummer's theorem specialized to central binomials: $p \\mid \\binom{2n}{n}$ iff $\\exists k,\\; (n / p^k) \\bmod p \\ge \\lceil p/2 \\rceil$, capturing the carry condition in base-$p$ addition."
+      "summary": "Axiomatizes Kummer's theorem specialized to central binomials: $p \\mid \\binom{2n}{n}$ iff $\\exists k,\\; (n / p^k) \\bmod p \\ge \\lceil p/2 \\rceil$, capturing the carry condition in base-$p$ addition.",
+      "mathContext": "Axiomatizes Kummer's theorem specialized to central binomials: $p \\mid \\binom{2n}{n}$ iff $\\exists k,\\; (n / p^k) \\bmod p \\ge \\lceil p/2 \\rceil$, capturing the carry condition in base-$p$ addition."
     },
     {
       "id": "structure",
       "title": "Prime Divisor Structure",
       "startLine": 77,
       "endLine": 88,
-      "summary": "Three structural results: (1) $2 \\mid \\binom{2n}{n}$ for $n \\ge 1$, (2) primes $p > 2n$ never divide $\\binom{2n}{n}$, (3) primes in $(n, 2n]$ always divide $\\binom{2n}{n}$ with multiplicity 1 (Bertrand/Legendre)."
+      "summary": "Three structural results: (1) $2 \\mid \\binom{2n}{n}$ for $n \\ge 1$, (2) primes $p > 2n$ never divide $\\binom{2n}{n}$, (3) primes in $(n, 2n]$ always divide $\\binom{2n}{n}$ with multiplicity 1 (Bertrand/Legendre).",
+      "mathContext": "Three structural results: (1) $2 \\mid \\binom{2n}{n}$ for $n \\ge 1$, (2) primes $p > 2n$ never divide $\\binom{2n}{n}$, (3) primes in $(n, 2n]$ always divide $\\binom{2n}{n}$ with multiplicity 1 (Bertran"
     },
     {
       "id": "spacing",
       "title": "Spacing Conjecture",
       "startLine": 89,
       "endLine": 96,
-      "summary": "The stronger conjecture: for every $k \\ge 1$, infinitely many $n$ satisfy $\\mathrm{rad}\\binom{2n}{n} = \\mathrm{rad}\\binom{2(n+k)}{n+k}$."
+      "summary": "The stronger conjecture: for every $k \\ge 1$, infinitely many $n$ satisfy $\\mathrm{rad}\\binom{2n}{n} = \\mathrm{rad}\\binom{2(n+k)}{n+k}$.",
+      "mathContext": "The stronger conjecture: for every $k \\ge 1$, infinitely many $n$ satisfy $\\mathrm{rad}\\binom{2n}{n} = \\mathrm{rad}\\binom{2(n+k)}{n+k}$."
     },
     {
       "id": "reduction",
       "title": "Spacing-1 Implies Main Conjecture",
       "startLine": 97,
       "endLine": 107,
-      "summary": "Proved theorem: the spacing-1 case implies the main conjecture, via injective image $n \\mapsto (n, n+1)$ into `CentralBinomPairs` using `Set.Infinite.mono` and `omega`."
+      "summary": "Proved theorem: the spacing-1 case implies the main conjecture, via injective image $n \\mapsto (n, n+1)$ into `CentralBinomPairs` using `Set.Infinite.mono` and `omega`.",
+      "mathContext": "Proved theorem: the spacing-1 case implies the main conjecture, via injective image $n \\mapsto (n, n+1)$ into `CentralBinomPairs` using `Set.Infinite.mono` and `omega`."
     },
     {
       "id": "heuristic",
       "title": "Heuristic Argument",
       "startLine": 108,
       "endLine": 118,
-      "summary": "Heuristic axiom encoding the observation that consecutive central binomials have 'close' prime divisor sets: the intervals $(n, 2n]$ and $(n+1, 2n+2]$ differ by at most one prime at each boundary."
+      "summary": "Heuristic axiom encoding the observation that consecutive central binomials have 'close' prime divisor sets: the intervals $(n, 2n]$ and $(n+1, 2n+2]$ differ by at most one prime at each boundary.",
+      "mathContext": "Heuristic axiom encoding the observation that consecutive central binomials have 'close' prime divisor sets: the intervals $(n, 2n]$ and $(n+1, 2n+2]$ differ by at most one prime at each boundary."
     }
   ],
   "conclusion": {

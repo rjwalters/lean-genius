@@ -82,63 +82,72 @@
       "title": "Imports and Setup",
       "summary": "Imports Mathlib modules for $\\text{Nat.log}$, `Finset.Powerset`, and `BigOperators`. Opens the `Finset` and `BigOperators` namespaces for clean syntax.",
       "startLine": 25,
-      "endLine": 36
+      "endLine": 36,
+      "mathContext": "Imports Mathlib modules for $\\text{Nat.log}$, `Finset.Powerset`, and `BigOperators`. Opens the `Finset` and `BigOperators` namespaces for clean syntax."
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Defines the core objects: $\\text{Icc1n}(n) = \\{1,\\ldots,n\\}$, $\\text{nonemptySubsets}(A) = \\mathcal{P}(A) \\setminus \\{\\emptyset\\}$, $\\Sigma(A) = \\text{subsetSums}(A)$, `DivisibilityFree` (antichain in $(\\mathbb{N},\\mid)$), and `ValidSubset` combining membership and antichain constraints.",
       "startLine": 37,
-      "endLine": 61
+      "endLine": 61,
+      "mathContext": "Defines the core objects: $\\text{Icc1n}(n) = \\{1,\\ldots,n\\}$, $\\text{nonemptySubsets}(A) = \\mathcal{P}(A) \\setminus \\{\\emptyset\\}$, $\\Sigma(A) = \\text{subsetSums}(A)$, `DivisibilityFree` (antichain in"
     },
     {
       "id": "optimization",
       "title": "The Optimization Problem",
       "summary": "Defines $f(n) = \\text{maxValidSize}(n) = \\max\\{|A| : \\text{ValidSubset}(n,A)\\}$ using `Nat.find`. Marked `noncomputable` since computing the maximum requires exponential search.",
       "startLine": 62,
-      "endLine": 75
+      "endLine": 75,
+      "mathContext": "Defines $f(n) = \\text{maxValidSize}(n) = \\max\\{|A| : \\text{ValidSubset}(n,A)\\}$ using `Nat.find`. Marked `noncomputable` since computing the maximum requires exponential search."
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
       "summary": "Three constructions: (1) Greedy gives $|A| \\geq \\log_3 n - 1$. (2) Sándor's $A = \\{2^i + m \\cdot 2^m\\}$ gives $|A| = m \\sim \\log_2 n$. (3) ELRSS $A = [2^{m-1}, 2^m - 1]$ gives $|A| > \\log_2 n - 1$ with distinct sums.",
       "startLine": 76,
-      "endLine": 103
+      "endLine": 103,
+      "mathContext": "Three constructions: (1) Greedy gives $|A| \\geq \\log_3 n - 1$. (2) Sándor's $A = \\{2^i + m \\cdot 2^m\\}$ gives $|A| = m \\sim \\log_2 n$. (3) ELRSS $A = [2^{m-1}, 2^m - 1]$ gives $|A| > \\log_2 n - 1$ wit"
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "summary": "Establishes the upper bound chain: `DivisibilityFree` $\\Rightarrow$ `DistinctSubsetSums` $\\Rightarrow$ $|A| \\leq \\log_2(\\sigma(A)) + 1$ $\\Rightarrow$ $|A| \\leq \\log_2 n + \\frac{1}{2}\\log_2 \\log_2 n + 3$. Includes the only fully proved lemma (`sum_bound`) and the conjectured $\\log_2 n + O(1)$ bound.",
       "startLine": 104,
-      "endLine": 139
+      "endLine": 139,
+      "mathContext": "Establishes the upper bound chain: `DivisibilityFree` $\\Rightarrow$ `DistinctSubsetSums` $\\Rightarrow$ $|A| \\leq \\log_2(\\sigma(A)) + 1$ $\\Rightarrow$ $|A| \\leq \\log_2 n + \\frac{1}{2}\\log_2 \\log_2 n + "
     },
     {
       "id": "the-answer",
       "title": "The Answer",
       "summary": "Combines lower and upper bounds: $\\log_2 n - 2 \\leq f(n) \\leq \\log_2 n + \\frac{1}{2}\\log_2 \\log_2 n + 3$ for $n \\geq 16$, confirming $f(n) = (1+o(1))\\log_2 n$.",
       "startLine": 140,
-      "endLine": 157
+      "endLine": 157,
+      "mathContext": "Combines lower and upper bounds: $\\log_2 n - 2 \\leq f(n) \\leq \\log_2 n + \\frac{1}{2}\\log_2 \\log_2 n + 3$ for $n \\geq 16$, confirming $f(n) = (1+o(1))\\log_2 n$."
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "Concrete examples: $A = \\{1\\}$ is trivially valid (singleton antichain); $A = \\{2,3\\}$ has subset sums $\\{2,3,5\\}$ which form an antichain since $\\gcd$ pairs prevent divisibility.",
       "startLine": 158,
-      "endLine": 170
+      "endLine": 170,
+      "mathContext": "Concrete examples: $A = \\{1\\}$ is trivially valid (singleton antichain); $A = \\{2,3\\}$ has subset sums $\\{2,3,5\\}$ which form an antichain since $\\gcd$ pairs prevent divisibility."
     },
     {
       "id": "connections",
       "title": "Connection to Erdős Problems",
       "summary": "Links to Erdős #1 (distinct subset sums, providing the upper bound) and Erdős #13 (Sidon sets, a thematic relative from additive combinatorics with maximum size $\\sim \\sqrt{n}$ rather than $\\sim \\log n$).",
       "startLine": 171,
-      "endLine": 184
+      "endLine": 184,
+      "mathContext": "Links to Erdős #1 (distinct subset sums, providing the upper bound) and Erdős #13 (Sidon sets, a thematic relative from additive combinatorics with maximum size $\\sim \\sqrt{n}$ rather than $\\sim \\log "
     },
     {
       "id": "main-results",
       "title": "Main Results",
       "summary": "The definitive theorems `erdos_882_statement` and `erdos_882_summary`, both expressing the sandwich bound $\\log_2 n - 2 \\leq f(n) \\leq \\log_2 n + \\frac{1}{2}\\log_2 \\log_2 n + 3$. The summary serves as the canonical SOLVED marker.",
       "startLine": 185,
-      "endLine": 216
+      "endLine": 216,
+      "mathContext": "The definitive theorems `erdos_882_statement` and `erdos_882_summary`, both expressing the sandwich bound $\\log_2 n - 2 \\leq f(n) \\leq \\log_2 n + \\frac{1}{2}\\log_2 \\log_2 n + 3$. The summary serves as"
     }
   ],
   "conclusion": {
@@ -183,14 +192,14 @@
   },
   "relatedProofs": [
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-1",
+      "relationship": "The distinct subset sums problem (Erdős #1) provides the upper bound for Problem #882, since divisibility-free subset sums must be distinct. The ELRSS construction also satisfies the distinct sums property.",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-13",
+      "relationship": "Sidon sets (Erdős #13) require distinct pairwise sums, a related but different additive constraint. Both problems study extremal sizes of subsets of {1,...,n} with restricted additive structure, but Sidon sets have maximum size ~√n vs ~log n here.",
+      "description": ""
     }
   ]
 }

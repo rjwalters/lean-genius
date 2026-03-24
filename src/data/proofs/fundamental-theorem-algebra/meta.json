@@ -227,27 +227,67 @@
     {
       "id": "abel-ruffini",
       "relationship": "complementary",
-      "description": "FTA guarantees roots exist in C; Abel-Ruffini shows they cannot always be expressed by radicals — existence does not imp"
+      "description": "FTA guarantees roots exist in C; Abel-Ruffini shows they cannot always be expressed by radicals — existence does not imply explicit formulas"
     },
     {
       "id": "angle-trisection",
       "relationship": "complementary",
-      "description": "FTA guarantees the polynomial 8x³-6x-1 has roots in C; the angle trisection impossibility shows those roots lie outside "
+      "description": "FTA guarantees the polynomial 8x³-6x-1 has roots in C; the angle trisection impossibility shows those roots lie outside the constructible field (degree 2^n extensions)"
     },
     {
       "id": "inverse-galois",
       "relationship": "related",
-      "description": "FTA shows every polynomial splits over C, so every Galois group embeds in some S_n. The Inverse Galois Problem asks whic"
+      "description": "FTA shows every polynomial splits over C, so every Galois group embeds in some S_n. The Inverse Galois Problem asks which groups arise over Q — a question that presupposes FTA's guarantee that roots exist"
     },
     {
       "id": "solution-of-cubic",
       "relationship": "specializes",
-      "description": "Cardano's cubic formula provides explicit complex roots for degree-3 polynomials; FTA guarantees such roots exist withou"
+      "description": "Cardano's cubic formula provides explicit complex roots for degree-3 polynomials; FTA guarantees such roots exist without needing an explicit formula"
     },
     {
       "id": "liouville-theorem",
       "relationship": "uses",
-      "description": "The Mathlib proof of FTA relies on Liouville's theorem (bounded entire function is constant): if p(z) ≠ 0 everywhere, th"
+      "description": "The Mathlib proof of FTA relies on Liouville's theorem (bounded entire function is constant): if p(z) ≠ 0 everywhere, then 1/p is bounded entire, hence constant — contradiction"
+    },
+    {
+      "id": "general-quartic",
+      "relationship": "specializes",
+      "description": "Ferrari's quartic formula provides explicit complex roots for degree-4 polynomials; FTA guarantees such roots exist for any degree, subsuming all explicit formula results"
+    },
+    {
+      "id": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem on subgroup orders underpins the group-theoretic proof of FTA via Sylow theory: the non-existence of degree-2 extensions of C follows from the fact that [C:R] = 2 and every odd-degree polynomial over R has a real root"
+    },
+    {
+      "id": "vietas-formulas",
+      "relationship": "complementary",
+      "description": "Vieta's formulas express polynomial coefficients as elementary symmetric functions of roots: $a_{n-k}/a_n = (-1)^k e_k(r_1,\\ldots,r_n)$. FTA guarantees these $n$ roots exist in $\\mathbb{C}$, making Vieta's formulas universally applicable over $\\mathbb{C}$ — without FTA, the roots might not exist and the formulas would be vacuous"
+    },
+    {
+      "id": "intermediate-value-theorem",
+      "relationship": "foundational",
+      "description": "Gauss's algebraic proof of FTA (1849) reduces to IVT: every odd-degree real polynomial has a real root (by IVT, since it tends to $\\pm\\infty$), and every complex number has a square root. These two facts, both consequences of the completeness of $\\mathbb{R}$, suffice to prove FTA — making IVT one of the minimal prerequisites"
+    },
+    {
+      "id": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "Both FTA and Brouwer's fixed point theorem are topological results about continuous maps on compact sets. The topological proof of FTA via winding numbers (the degree of $p(z)/|p(z)|$ on a large circle is $n$) uses the same homotopy-theoretic tools that prove Brouwer's theorem — both are consequences of the non-triviality of $\\pi_1(S^1) \\cong \\mathbb{Z}$"
+    },
+    {
+      "id": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's identity $e^{i\\pi} = -1$ reveals the structure of $\\mathbb{C}$ that makes FTA true: the complex exponential $e^{i\\theta}$ parameterizes the unit circle, giving $\\mathbb{C}^*$ a connected compact subgroup. The winding number proof of FTA uses this parameterization: $p(Re^{i\\theta})/|p(Re^{i\\theta})|$ winds $n$ times around the origin for large $R$, and this winding cannot unwind to 0 by continuity"
+    },
+    {
+      "id": "area-of-circle",
+      "relationship": "complementary",
+      "description": "FTA guarantees that all polynomial roots exist in $\\mathbb{C}$, while the area-of-circle formalization uses $\\mathbb{C} \\cong \\mathbb{R}^2$ as its ambient space for computing Lebesgue measure. Both entries exploit the identification of $\\mathbb{C}$ with $\\mathbb{R}^2$: FTA for the topology (completeness, connectedness) and area-of-circle for the measure theory (product Lebesgue measure)"
+    },
+    {
+      "id": "cayley-hamilton",
+      "relationship": "related",
+      "description": "The Cayley-Hamilton theorem ($p_A(A) = 0$ for the characteristic polynomial $p_A$) combined with FTA guarantees every complex matrix has an eigenvalue: FTA gives a root $\\lambda$ of $p_A$, making $A - \\lambda I$ singular. This is why linear algebra over $\\mathbb{C}$ admits Jordan normal form — a direct consequence of algebraic closure"
     }
   ],
   "references": [

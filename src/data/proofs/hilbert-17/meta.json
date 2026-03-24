@@ -71,70 +71,80 @@
       "title": "Module Docstring",
       "startLine": 8,
       "endLine": 82,
-      "summary": "Historical exposition covering Hilbert (1888, 1900), Artin (1927), Motzkin (1967), and the proof strategy. Documents Mathlib dependencies and references."
+      "summary": "Historical exposition covering Hilbert (1888, 1900), Artin (1927), Motzkin (1967), and the proof strategy. Documents Mathlib dependencies and references.",
+      "mathContext": "Historical exposition covering Hilbert (1888, 1900), Artin (1927), Motzkin (1967), and the proof strategy. Documents Mathlib dependencies and references."
     },
     {
       "id": "definitions",
       "title": "Part I: Basic Definitions",
       "startLine": 92,
       "endLine": 133,
-      "summary": "Defines IsSumOfSquaresPolynomial, IsSumOfSquaresMvPolynomial, IsSumOfSquaresRatFunc, IsPositiveSemidefinite, and IsPositiveSemidefiniteMv using existential quantification over Fin m."
+      "summary": "Defines IsSumOfSquaresPolynomial, IsSumOfSquaresMvPolynomial, IsSumOfSquaresRatFunc, IsPositiveSemidefinite, and IsPositiveSemidefiniteMv using existential quantification over Fin m.",
+      "mathContext": "Defines IsSumOfSquaresPolynomial, IsSumOfSquaresMvPolynomial, IsSumOfSquaresRatFunc, IsPositiveSemidefinite, and IsPositiveSemidefiniteMv using existential quantification over Fin m."
     },
     {
       "id": "artin-theorem",
       "title": "Part II: Artin's Theorem",
       "startLine": 134,
       "endLine": 183,
-      "summary": "Axiomatizes artin_hilbert17 (multivariate PSD → rational-SOS) and artin_univariate (univariate PSD → rational-SOS, which is actually polynomial-SOS)."
+      "summary": "Axiomatizes artin_hilbert17 (multivariate PSD → rational-SOS) and artin_univariate (univariate PSD → rational-SOS, which is actually polynomial-SOS).",
+      "mathContext": "Axiomatizes artin_hilbert17 (multivariate PSD → rational-SOS) and artin_univariate (univariate PSD → rational-SOS, which is actually polynomial-SOS)."
     },
     {
       "id": "motzkin",
       "title": "Part III: Motzkin Counterexample",
       "startLine": 184,
       "endLine": 268,
-      "summary": "Defines motzkin polynomial, axiomatizes non-negativity (via AM-GM) and non-polynomial-SOS (via degree analysis), then derives motzkin_sos_ratfunc by applying Artin's theorem."
+      "summary": "Defines motzkin polynomial, axiomatizes non-negativity (via AM-GM) and non-polynomial-SOS (via degree analysis), then derives motzkin_sos_ratfunc by applying Artin's theorem.",
+      "mathContext": "Defines motzkin polynomial, axiomatizes non-negativity (via AM-GM) and non-polynomial-SOS (via degree analysis), then derives motzkin_sos_ratfunc by applying Artin's theorem."
     },
     {
       "id": "hilbert-1888",
       "title": "Part IV: Hilbert's 1888 Classification",
       "startLine": 269,
       "endLine": 343,
-      "summary": "Axiomatizes univariate_psd_is_sos (complex factorization) and quadratic_psd_is_sos (Gram matrix / Cholesky) — the two tractable cases from Hilbert's classification."
+      "summary": "Axiomatizes univariate_psd_is_sos (complex factorization) and quadratic_psd_is_sos (Gram matrix / Cholesky) — the two tractable cases from Hilbert's classification.",
+      "mathContext": "Axiomatizes univariate_psd_is_sos (complex factorization) and quadratic_psd_is_sos (Gram matrix / Cholesky) — the two tractable cases from Hilbert's classification."
     },
     {
       "id": "pfister",
       "title": "Part V: Pfister's Quantitative Bound",
       "startLine": 344,
       "endLine": 396,
-      "summary": "Axiomatizes pfister_bound (at most 2^n rational function squares for n variables) and cassels_bound_bivariate (4 squares for bivariate)."
+      "summary": "Axiomatizes pfister_bound (at most 2^n rational function squares for n variables) and cassels_bound_bivariate (4 squares for bivariate).",
+      "mathContext": "Axiomatizes pfister_bound (at most 2^n rational function squares for n variables) and cassels_bound_bivariate (4 squares for bivariate)."
     },
     {
       "id": "real-closed",
       "title": "Part VI: Real Closed Fields",
       "startLine": 397,
       "endLine": 439,
-      "summary": "Documents the role of real closed fields in Artin's proof. Includes placeholder real_is_real_closed and axiomatized real_closed_transfer principle."
+      "summary": "Documents the role of real closed fields in Artin's proof. Includes placeholder real_is_real_closed and axiomatized real_closed_transfer principle.",
+      "mathContext": "Documents the role of real closed fields in Artin's proof. Includes placeholder real_is_real_closed and axiomatized real_closed_transfer principle."
     },
     {
       "id": "applications",
       "title": "Part VII: Modern Applications",
       "startLine": 440,
       "endLine": 480,
-      "summary": "Documents SOS programming via SDP, Positivstellensatz, Stengle's and Schmüdgen's theorems, and applications to control theory, robotics, and formal verification."
+      "summary": "Documents SOS programming via SDP, Positivstellensatz, Stengle's and Schmüdgen's theorems, and applications to control theory, robotics, and formal verification.",
+      "mathContext": "Documents SOS programming via SDP, Positivstellensatz, Stengle's and Schmüdgen's theorems, and applications to control theory, robotics, and formal verification."
     },
     {
       "id": "counterexamples",
       "title": "Part VIII: Additional Counterexamples",
       "startLine": 481,
       "endLine": 542,
-      "summary": "Defines Robinson's 3-variable degree-6 polynomial (axiomatized PSD and non-SOS) and Choi-Lam's 4-variable degree-4 polynomial (defined only)."
+      "summary": "Defines Robinson's 3-variable degree-6 polynomial (axiomatized PSD and non-SOS) and Choi-Lam's 4-variable degree-4 polynomial (defined only).",
+      "mathContext": "Defines Robinson's 3-variable degree-6 polynomial (axiomatized PSD and non-SOS) and Choi-Lam's 4-variable degree-4 polynomial (defined only)."
     },
     {
       "id": "summary",
       "title": "Part IX: Summary",
       "startLine": 543,
       "endLine": 572,
-      "summary": "Uses #check to verify main theorems and provides a final prose overview of the complete picture: PSD → rational-SOS (Artin), but PSD ↛ polynomial-SOS (Motzkin), with Pfister's 2^n bound."
+      "summary": "Uses #check to verify main theorems and provides a final prose overview of the complete picture: PSD → rational-SOS (Artin), but PSD ↛ polynomial-SOS (Motzkin), with Pfister's 2^n bound.",
+      "mathContext": "Uses #check to verify main theorems and provides a final prose overview of the complete picture: PSD → rational-SOS (Artin), but PSD ↛ polynomial-SOS (Motzkin), with Pfister's 2^n bound."
     }
   ],
   "conclusion": {
@@ -182,21 +192,6 @@
   },
   "relatedProofs": [
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
       "id": "fundamental-theorem-algebra",
       "relationship": "The univariate case of Hilbert 17 relies on complex root factorization, which is a consequence of the fundamental theorem of algebra",
       "description": ""
@@ -204,6 +199,11 @@
     {
       "id": "hilbert-10",
       "relationship": "Fellow Hilbert problem — Problem 10 (Diophantine equations) involves polynomial decidability, while Problem 17 involves polynomial positivity",
+      "description": ""
+    },
+    {
+      "id": "hilbert-16",
+      "relationship": "Adjacent Hilbert problem — Problem 16 (limit cycles) also concerns real polynomial geometry, specifically the topology of real algebraic curves",
       "description": ""
     }
   ],

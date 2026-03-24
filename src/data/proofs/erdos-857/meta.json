@@ -87,63 +87,72 @@
       "title": "Imports and Setup",
       "summary": "Imports `Finset`, `Finset.Powerset`, `Nat.Choose`, `Real.Basic`, and `Combinatorics.SetFamily.Shadow` from Mathlib. Opens the `Finset` namespace for convenient notation.",
       "startLine": 36,
-      "endLine": 45
+      "endLine": 45,
+      "mathContext": "Imports `Finset`, `Finset.Powerset`, `Nat.Choose`, `Real.Basic`, and `Combinatorics.SetFamily.Shadow` from Mathlib. Opens the `Finset` namespace for convenient notation."
     },
     {
       "id": "basic-definitions",
       "title": "Core Sunflower Definitions",
       "summary": "Defines `IsSunflower` requiring $A \\cap B = C$ for all distinct members, `ContainsSunflower` as the existential $k$-sunflower predicate, and `Petal` as $A \\setminus C$. Proves `sunflower_petals_disjoint` by extensionality and the intersection-equals-core property.",
       "startLine": 46,
-      "endLine": 88
+      "endLine": 88,
+      "mathContext": "Defines `IsSunflower` requiring $A \\cap B = C$ for all distinct members, `ContainsSunflower` as the existential $k$-sunflower predicate, and `Petal` as $A \\setminus C$. Proves `sunflower_petals_disjoi"
     },
     {
       "id": "sunflower-function",
       "title": "The Sunflower Function $m(n,k)$",
       "summary": "Axiomatizes `sunflower_number_exists` (the pigeonhole-based existence of $m(n,k)$) and defines `sunflowerNumber` as $\\mathrm{min}\\{m : \\forall \\mathcal{F} \\subseteq 2^{[n]},\\, |\\mathcal{F}| \\geq m \\implies k\\text{-sunflower in } \\mathcal{F}\\}$ via `Nat.find`.",
       "startLine": 89,
-      "endLine": 108
+      "endLine": 108,
+      "mathContext": "Axiomatizes `sunflower_number_exists` (the pigeonhole-based existence of $m(n,k)$) and defines `sunflowerNumber` as $\\mathrm{min}\\{m : \\forall \\mathcal{F} \\subseteq 2^{[n]},\\, |\\mathcal{F}| \\geq m \\im"
     },
     {
       "id": "erdos-ko-rado",
       "title": "Classical Erdős-Ko-Rado Sunflower Lemma",
       "summary": "Axiomatizes the classical bound: $|\\mathcal{F}| > (k-1)! \\cdot \\ell^\\ell$ with $|A| \\leq \\ell$ for all $A \\in \\mathcal{F}$ implies $\\mathcal{F}$ contains a $k$-sunflower. Derives the corollary `bounded_sets_sunflower` for exactly-$\\ell$-sized sets using $k! \\geq (k-1)!$.",
       "startLine": 109,
-      "endLine": 143
+      "endLine": 143,
+      "mathContext": "Axiomatizes the classical bound: $|\\mathcal{F}| > (k-1)! \\cdot \\ell^\\ell$ with $|A| \\leq \\ell$ for all $A \\in \\mathcal{F}$ implies $\\mathcal{F}$ contains a $k$-sunflower. Derives the corollary `bounde"
     },
     {
       "id": "naslund-sawin",
       "title": "Naslund-Sawin Bound and Cap Set Connection",
       "summary": "States the 2017 breakthrough: $m(n,3) \\leq (3/2^{2/3} + \\varepsilon)^n$ for large $n$. Links this to the cap set problem via `cap_set_connection`: the density of 3-AP-free subsets of $\\mathbb{F}_3^n$ controls $m(n,3)$ up to polynomial factors.",
       "startLine": 144,
-      "endLine": 170
+      "endLine": 170,
+      "mathContext": "States the 2017 breakthrough: $m(n,3) \\leq (3/2^{2/3} + \\varepsilon)^n$ for large $n$. Links this to the cap set problem via `cap_set_connection`: the density of 3-AP-free subsets of $\\mathbb{F}_3^n$ "
     },
     {
       "id": "sunflower-conjecture",
       "title": "The Sunflower Conjecture and Bounds",
       "summary": "States the Erdős-Rado Sunflower Conjecture ($m(n,k) \\leq c(k)^n$), the trivial upper bound $m(n,k) \\leq 2^n + 1$ from the pigeonhole principle, and the exponential lower bound $m(n,k) \\geq c^n$ for $c > 1$ from random constructions.",
       "startLine": 171,
-      "endLine": 201
+      "endLine": 201,
+      "mathContext": "States the Erdős-Rado Sunflower Conjecture ($m(n,k) \\leq c(k)^n$), the trivial upper bound $m(n,k) \\leq 2^n + 1$ from the pigeonhole principle, and the exponential lower bound $m(n,k) \\geq c^n$ for $c"
     },
     {
       "id": "examples",
       "title": "Concrete Sunflower Examples",
       "summary": "Provides verified and axiomatized examples: `singleton_sunflower_example` proves $\\{\\{0\\},\\{1\\},\\{2\\}\\}$ is a 3-sunflower with core $\\emptyset$; `nonempty_core_example` asserts a 3-sunflower with 2-element core; `sunflower_free_family_bound` asserts a maximal 3-sunflower-free family of 2-sets from $[4]$.",
       "startLine": 202,
-      "endLine": 234
+      "endLine": 234,
+      "mathContext": "Provides verified and axiomatized examples: `singleton_sunflower_example` proves $\\{\\{0\\},\\{1\\},\\{2\\}\\}$ is a 3-sunflower with core $\\emptyset$; `nonempty_core_example` asserts a 3-sunflower with 2-el"
     },
     {
       "id": "weak-vs-strong",
       "title": "Weak vs Strong Sunflower Problem",
       "summary": "Defines `strong_sunflower_bound` for $\\ell$-uniform families (Erdős Problem #20), states `weak_from_strong` bounding $m(n,k) \\leq (n+1)(k-1)!n^n$ by summing over set sizes, and axiomatizes the equivalence of intersection and union formulations of sunflowers.",
       "startLine": 235,
-      "endLine": 276
+      "endLine": 276,
+      "mathContext": "Defines `strong_sunflower_bound` for $\\ell$-uniform families (Erdős Problem #20), states `weak_from_strong` bounding $m(n,k) \\leq (n+1)(k-1)!n^n$ by summing over set sizes, and axiomatizes the equival"
     },
     {
       "id": "summary-theorem",
       "title": "Summary and Main Theorem",
       "summary": "The `erdos_857` theorem synthesizes both results: the classical Erdős-Ko-Rado bound for bounded families and the Naslund-Sawin bound for $k=3$, packaged as a conjunction $\\langle \\texttt{erdos\\_ko\\_rado\\_sunflower}, \\texttt{naslund\\_sawin\\_bound} \\rangle$.",
       "startLine": 277,
-      "endLine": 324
+      "endLine": 324,
+      "mathContext": "The `erdos_857` theorem synthesizes both results: the classical Erdős-Ko-Rado bound for bounded families and the Naslund-Sawin bound for $k=3$, packaged as a conjunction $\\langle \\texttt{erdos\\_ko\\_ra"
     }
   ],
   "conclusion": {

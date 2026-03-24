@@ -160,7 +160,7 @@
     {
       "id": "chinese-remainder-non-coprime",
       "relationship": "extends",
-      "description": "Extends the non-coprime CRT formalization with Dirichlet's approximation theorem, connecting lattice geometry to Diophan"
+      "description": "Extends the non-coprime CRT formalization with Dirichlet's approximation theorem, connecting lattice geometry to Diophantine approximation"
     },
     {
       "id": "chinese-remainder-non-coprime-oq-01",
@@ -170,17 +170,17 @@
     {
       "id": "chinese-remainder-constructive",
       "relationship": "related",
-      "description": "The constructive CRT computes solutions for coprime moduli; this file extends to non-coprime solvability and Diophantine"
+      "description": "The constructive CRT computes solutions for coprime moduli; this file extends to non-coprime solvability and Diophantine approximation"
     },
     {
       "id": "bezout-identity",
       "relationship": "foundational",
-      "description": "Bézout's identity provides the coefficient witness for CRT solvability: the examples use 6·(-1) + 4·2 = gcd(6,4) to cons"
+      "description": "Bézout's identity provides the coefficient witness for CRT solvability: the examples use 6·(-1) + 4·2 = gcd(6,4) to construct solutions"
     },
     {
       "id": "infinitude-primes",
       "relationship": "related",
-      "description": "The pigeonhole principle used in Dirichlet's theorem is the same combinatorial tool that yields Euclid's proof of infini"
+      "description": "The pigeonhole principle used in Dirichlet's theorem is the same combinatorial tool that yields Euclid's proof of infinite primes via counting arguments"
     }
   ],
   "conclusion": {
@@ -198,7 +198,7 @@
     ]
   },
   "leanFile": {
-    "lineCount": 240,
+    "lineCount": 239,
     "structureCount": 0,
     "axiomCount": 0,
     "theoremCount": 11,

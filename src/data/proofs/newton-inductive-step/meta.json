@@ -196,17 +196,17 @@
     {
       "id": "amgm-inequality",
       "relationship": "related",
-      "description": "Newton's inequalities generalize the AM-GM inequality: for the all-ones sequence, the log-concavity condition reduces to"
+      "description": "Newton's inequalities generalize the AM-GM inequality: for the all-ones sequence, the log-concavity condition reduces to the AM-GM of appropriate means. This module provides the inductive step that enables the connection"
     },
     {
       "id": "amgm-inequality-oq-02",
       "relationship": "foundational",
-      "description": "Provides the key binomial inequality used in the AM-GM extension, which leverages Newton's log-concavity of symmetric po"
+      "description": "Provides the key binomial inequality used in the AM-GM extension, which leverages Newton's log-concavity of symmetric polynomials"
     },
     {
       "id": "binomial-theorem",
       "relationship": "related",
-      "description": "The binomial theorem generates the coefficients C(m,k) that this module proves are log-concave. The absorption identity "
+      "description": "The binomial theorem generates the coefficients C(m,k) that this module proves are log-concave. The absorption identity k*C(m,k) = (m-k+1)*C(m,k-1) is a fundamental recurrence for binomial coefficients, closely related to Pascal's rule"
     },
     {
       "id": "binomial-theorem-oq-02",
@@ -216,7 +216,7 @@
     {
       "id": "combinations-formula",
       "relationship": "foundational",
-      "description": "The combinations formula C(n,k) = n!/(k!(n-k)!) underlies the absorption identity used throughout this proof: k*C(m,k) ="
+      "description": "The combinations formula C(n,k) = n!/(k!(n-k)!) underlies the absorption identity used throughout this proof: k*C(m,k) = (m-k+1)*C(m,k-1) follows directly from the factorial definition"
     }
   ]
 }

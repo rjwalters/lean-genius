@@ -100,77 +100,88 @@
       "title": "Graphs and Basic Definitions",
       "summary": "Defines cliqueNumber ω(G) using Mathlib's cliqueNum, independenceNumber α(G) as ω(Gᶜ) exploiting Ramsey symmetry, and NoLargeHomogeneousSet requiring both ω, α ≤ k. The complement-based definition of α is elegant and fundamental to Ramsey theory.",
       "startLine": 34,
-      "endLine": 57
+      "endLine": 57,
+      "mathContext": "Defines cliqueNumber ω(G) using Mathlib's cliqueNum, independenceNumber α(G) as ω(Gᶜ) exploiting Ramsey symmetry, and NoLargeHomogeneousSet requiring both ω, α ≤ k. The complement-based definition of "
     },
     {
       "id": "induced",
       "title": "Induced Subgraphs",
       "summary": "Defines inducedSubgraph G S via Mathlib's induce, inducedEdgeCount via edge finset cardinality, and the central Signature type as ℕ × ℕ pairs. The getSignature function maps vertex subsets to their (|S|, |E(G[S])|) pair.",
       "startLine": 58,
-      "endLine": 80
+      "endLine": 80,
+      "mathContext": "Defines inducedSubgraph G S via Mathlib's induce, inducedEdgeCount via edge finset cardinality, and the central Signature type as ℕ × ℕ pairs. The getSignature function maps vertex subsets to their (|"
     },
     {
       "id": "counting",
       "title": "Counting Distinct Signatures",
       "summary": "Defines allSignatures as the image of all vertex subsets under getSignature, and distinctSignatureCount as its cardinality. Also defines DifferentSignatures for pairwise distinctness. The image-based definition cleanly captures the counting problem.",
       "startLine": 81,
-      "endLine": 101
+      "endLine": 101,
+      "mathContext": "Defines allSignatures as the image of all vertex subsets under getSignature, and distinctSignatureCount as its cardinality. Also defines DifferentSignatures for pairwise distinctness. The image-based "
     },
     {
       "id": "ramsey",
       "title": "The Ramsey Condition",
       "summary": "Defines ramseyBound k = 2^(2k) as a rough R(k,k) upper bound, axiomatizes existence of Ramsey graphs, and defines IsRamseyGraph G C requiring ω(G), α(G) ≤ ⌈C log n⌉. Random graphs G(n, 1/2) satisfy this condition with high probability.",
       "startLine": 102,
-      "endLine": 119
+      "endLine": 119,
+      "mathContext": "Defines ramseyBound k = 2^(2k) as a rough R(k,k) upper bound, axiomatizes existence of Ramsey graphs, and defines IsRamseyGraph G C requiring ω(G), α(G) ≤ ⌈C log n⌉. Random graphs G(n, 1/2) satisfy th"
     },
     {
       "id": "efs",
       "title": "Erdős-Faudree-Sós Result",
       "summary": "Axiomatizes the original lower bound: Ramsey graphs have ≥ cn^(3/2) distinct signatures. The exponent 3/2 comes from summing Ω(v^(1/2)) achievable edge counts per vertex count v. This was the state of the art before Kwan-Sudakov.",
       "startLine": 120,
-      "endLine": 134
+      "endLine": 134,
+      "mathContext": "Axiomatizes the original lower bound: Ramsey graphs have ≥ cn^(3/2) distinct signatures. The exponent 3/2 comes from summing Ω(v^(1/2)) achievable edge counts per vertex count v. This was the state of"
     },
     {
       "id": "kwan-sudakov",
       "title": "Kwan-Sudakov Theorem",
       "summary": "Axiomatizes the optimal lower bound cn^(5/2) and formally verifies ks_improves_efs (5/2 > 3/2) by norm_num. The dramatic improvement from 3/2 to 5/2 comes from showing Ω(v^(3/2)) edge counts per vertex count, not Ω(v^(1/2)).",
       "startLine": 135,
-      "endLine": 152
+      "endLine": 152,
+      "mathContext": "Axiomatizes the optimal lower bound cn^(5/2) and formally verifies ks_improves_efs (5/2 > 3/2) by norm_num. The dramatic improvement from 3/2 to 5/2 comes from showing Ω(v^(3/2)) edge counts per verte"
     },
     {
       "id": "optimality",
       "title": "Optimality",
       "summary": "Axiomatizes the matching upper bound O(n^(5/2)) and proves theta_bound by extracting existential witnesses from both axioms. The proof is a clean combination: obtain c₁ from Kwan-Sudakov, c₂ from the upper bound, and package them together.",
       "startLine": 153,
-      "endLine": 177
+      "endLine": 177,
+      "mathContext": "Axiomatizes the matching upper bound O(n^(5/2)) and proves theta_bound by extracting existential witnesses from both axioms. The proof is a clean combination: obtain c₁ from Kwan-Sudakov, c₂ from the "
     },
     {
       "id": "techniques",
       "title": "Proof Techniques",
       "summary": "Axiomatizes key proof ideas: probabilistic method (random subset sampling), signature distribution (well-spread in the (v,e) plane), and establishes vertex_count_range (|S| ≤ n) and edge_count_range (|E(G[S])| ≤ |S|(|S|-1)/2).",
       "startLine": 178,
-      "endLine": 204
+      "endLine": 204,
+      "mathContext": "Axiomatizes key proof ideas: probabilistic method (random subset sampling), signature distribution (well-spread in the (v,e) plane), and establishes vertex_count_range (|S| ≤ n) and edge_count_range ("
     },
     {
       "id": "ramsey-theory",
       "title": "Connections to Ramsey Theory",
       "summary": "Shows the Ramsey condition is essential: non-Ramsey graphs can have fewer signatures, and extreme cases (complete graphs, empty graphs) have only n+1 signatures. Axiomatizes that the Ramsey condition forces local complexity driving signature diversity.",
       "startLine": 205,
-      "endLine": 233
+      "endLine": 233,
+      "mathContext": "Shows the Ramsey condition is essential: non-Ramsey graphs can have fewer signatures, and extreme cases (complete graphs, empty graphs) have only n+1 signatures. Axiomatizes that the Ramsey condition "
     },
     {
       "id": "related",
       "title": "Related Problems",
       "summary": "Connects to counting isomorphism types (much harder than signatures), the Erdős-Hajnal conjecture (forbidden induced subgraphs force large homogeneous sets — the converse direction), and counting specific induced structures like paths.",
       "startLine": 234,
-      "endLine": 256
+      "endLine": 256,
+      "mathContext": "Connects to counting isomorphism types (much harder than signatures), the Erdős-Hajnal conjecture (forbidden induced subgraphs force large homogeneous sets — the converse direction), and counting spec"
     },
     {
       "id": "main-result",
       "title": "Main Result",
       "summary": "The final theorem erdos_636 directly invokes kwan_sudakov, cleanly stating: for any C > 0, there exists c > 0 such that every (C)-Ramsey graph on n ≥ 10 vertices has ≥ ⌊cn^(5/2)⌋ distinct signatures. Includes utility definitions for the answer string and optimal exponent.",
       "startLine": 257,
-      "endLine": 293
+      "endLine": 293,
+      "mathContext": "The final theorem erdos_636 directly invokes kwan_sudakov, cleanly stating: for any C > 0, there exists c > 0 such that every (C)-Ramsey graph on n ≥ 10 vertices has ≥ ⌊cn^(5/2)⌋ distinct signatures. "
     }
   ],
   "conclusion": {
@@ -214,17 +225,17 @@
     {
       "id": "ramseys-theorem",
       "relationship": "foundational",
-      "description": "The Ramsey condition (ω(G), α(G) ≤ C log n) is the defining hypothesis — Ramsey's theorem guarantees such graphs exist. "
+      "description": "The Ramsey condition (ω(G), α(G) ≤ C log n) is the defining hypothesis — Ramsey's theorem guarantees such graphs exist. This problem quantifies the induced subgraph complexity that Ramsey graphs must exhibit"
     },
     {
       "id": "erdos-1",
       "relationship": "related",
-      "description": "Both are foundational Erdős problems in Ramsey theory: #1 concerns Ramsey numbers R(k,k), while #636 concerns structural"
+      "description": "Both are foundational Erdős problems in Ramsey theory: #1 concerns Ramsey numbers R(k,k), while #636 concerns structural properties (induced subgraph diversity) of Ramsey graphs"
     },
     {
       "id": "szemeredi-regularity",
       "relationship": "related",
-      "description": "The regularity lemma provides pseudorandom decompositions relevant to analyzing induced subgraph structure in dense grap"
+      "description": "The regularity lemma provides pseudorandom decompositions relevant to analyzing induced subgraph structure in dense graphs; Ramsey graphs have density near 1/2 making regularity tools particularly applicable"
     },
     {
       "id": "erdos-635",
@@ -234,7 +245,7 @@
     {
       "id": "combinations-formula",
       "relationship": "foundational",
-      "description": "The binomial coefficient C(n,2) bounds the number of edges and appears in the signature (v,e) counting: for a v-vertex i"
+      "description": "The binomial coefficient C(n,2) bounds the number of edges and appears in the signature (v,e) counting: for a v-vertex induced subgraph, e ranges from 0 to C(v,2)"
     }
   ],
   "leanFile": {

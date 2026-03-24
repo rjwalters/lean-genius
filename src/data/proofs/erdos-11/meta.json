@@ -73,63 +73,72 @@
       "title": "Problem Description and Imports",
       "summary": "Documents Erdős Problem #11: is every odd $n > 1$ the sum of a squarefree number and a power of 2? Notes the Wieferich prime connection and Hercher's (2024) computational verification up to $2^{50}$. Imports Mathlib.",
       "startLine": 1,
-      "endLine": 20
+      "endLine": 20,
+      "mathContext": "Documents Erdős Problem #11: is every odd $n > 1$ the sum of a squarefree number and a power of 2? Notes the Wieferich prime connection and Hercher's (2024) computational verification up to $2^{50}$. "
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "summary": "Defines `IsSquarefree n` (wrapping Mathlib's `Squarefree`), `IsPowerOfTwo n` ($\\exists k, n = 2^k$), and `IsSquarefreePlusPow2 n` ($\\exists s, p: \\text{Squarefree}(s) \\wedge \\text{Pow2}(p) \\wedge n = s + p$).",
       "startLine": 21,
-      "endLine": 32
+      "endLine": 32,
+      "mathContext": "Defines `IsSquarefree n` (wrapping Mathlib's `Squarefree`), `IsPowerOfTwo n` ($\\exists k, n = 2^k$), and `IsSquarefreePlusPow2 n` ($\\exists s, p: \\text{Squarefree}(s) \\wedge \\text{Pow2}(p) \\wedge n = "
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "summary": "Proves foundational lemmas: $1$ is squarefree (`squarefree_one`), $1 = 2^0$ and $2 = 2^1$ are powers of 2, and every prime is squarefree (`hp.squarefree`).",
       "startLine": 33,
-      "endLine": 47
+      "endLine": 47,
+      "mathContext": "Proves foundational lemmas: $1$ is squarefree (`squarefree_one`), $1 = 2^0$ and $2 = 2^1$ are powers of 2, and every prime is squarefree (`hp.squarefree`)."
     },
     {
       "id": "examples",
       "title": "Small Examples",
       "summary": "Fully proves representations for $3 = 1 + 2$, $5 = 1 + 2^2$, $7 = 5 + 2$, $9 = 1 + 2^3$ using `decide` and `rfl`.",
       "startLine": 48,
-      "endLine": 65
+      "endLine": 65,
+      "mathContext": "Fully proves representations for $3 = 1 + 2$, $5 = 1 + 2^2$, $7 = 5 + 2$, $9 = 1 + 2^3$ using `decide` and `rfl`."
     },
     {
       "id": "wieferich",
       "title": "Wieferich Primes",
       "summary": "Defines `IsWieferichPrime p` as $p$ prime $\\wedge 2^{p-1} \\equiv 1 \\pmod{p^2}$. Axiomatizes the two known Wieferich primes (1093, 3511) and defines `InfinitelyManyNonWieferich`.",
       "startLine": 66,
-      "endLine": 79
+      "endLine": 79,
+      "mathContext": "Defines `IsWieferichPrime p` as $p$ prime $\\wedge 2^{p-1} \\equiv 1 \\pmod{p^2}$. Axiomatizes the two known Wieferich primes (1093, 3511) and defines `InfinitelyManyNonWieferich`."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture and Variants",
       "summary": "States `Erdos11Conjecture`: $\\forall n$ odd, $n > 1 \\Rightarrow \\exists$ squarefree $s$, power of 2 $p$ with $n = s + p$. Also states the weak version (not divisible by 4) and the two-powers-of-2 variant.",
       "startLine": 80,
-      "endLine": 93
+      "endLine": 93,
+      "mathContext": "States `Erdos11Conjecture`: $\\forall n$ odd, $n > 1 \\Rightarrow \\exists$ squarefree $s$, power of 2 $p$ with $n = s + p$. Also states the weak version (not divisible by 4) and the two-powers-of-2 vari"
     },
     {
       "id": "connection",
       "title": "Granville-Soundararajan Connection",
       "summary": "Axiomatizes the 1998 result: `Erdos11Conjecture → InfinitelyManyNonWieferich`. This connects additive representation theory to multiplicative number theory via Fermat quotients.",
       "startLine": 94,
-      "endLine": 99
+      "endLine": 99,
+      "mathContext": "Axiomatizes the 1998 result: `Erdos11Conjecture → InfinitelyManyNonWieferich`. This connects additive representation theory to multiplicative number theory via Fermat quotients."
     },
     {
       "id": "verification",
       "title": "Computational Verification",
       "summary": "Axiomatizes Hercher's (2024) verification for all odd $n < 2^{50}$ and Odlyzko's earlier bound of $10^7$, both confirming the conjecture holds in their respective ranges.",
       "startLine": 100,
-      "endLine": 109
+      "endLine": 109,
+      "mathContext": "Axiomatizes Hercher's (2024) verification for all odd $n < 2^{50}$ and Odlyzko's earlier bound of $10^7$, both confirming the conjecture holds in their respective ranges."
     },
     {
       "id": "density",
       "title": "Density Result",
       "summary": "Axiomatizes Erdős's proof that the set of odd $n$ satisfying the conjecture has natural density 1, using `Filter.Tendsto` to express the limiting density.",
       "startLine": 110,
-      "endLine": 117
+      "endLine": 117,
+      "mathContext": "Axiomatizes Erdős's proof that the set of odd $n$ satisfying the conjecture has natural density 1, using `Filter.Tendsto` to express the limiting density."
     }
   ],
   "conclusion": {
@@ -180,29 +189,24 @@
   },
   "relatedProofs": [
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
       "id": "infinitude-primes",
       "relationship": "foundation",
-      "description": "Euclid's infinitude of primes is a prerequisite; the Wieferich prime connection requires understanding prime distributio"
+      "description": "Euclid's infinitude of primes is a prerequisite; the Wieferich prime connection requires understanding prime distribution"
+    },
+    {
+      "id": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "The divergence of $\\sum 1/p$ relates to squarefree density: the density of squarefree numbers is $\\prod_p (1 - 1/p^2) = 6/\\pi^2$"
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate ensures primes in $(n, 2n]$; Erdős gave elementary proofs of both this and the density result for Problem #11"
+    },
+    {
+      "id": "erdos-1",
+      "relationship": "sibling",
+      "description": "Another Erdős problem formalization; Problem #1 concerns infinite Sidon sets, also connecting combinatorics with number theory"
     }
   ]
 }

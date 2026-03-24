@@ -211,22 +211,22 @@
     {
       "id": "erdos-68",
       "relationship": "related",
-      "description": "Both concern interactions between factorials and other arithmetic structures: #68 asks about irrationality of ∑ 1/(n!−1)"
+      "description": "Both concern interactions between factorials and other arithmetic structures: #68 asks about irrationality of ∑ 1/(n!−1), while #403 asks about representing powers of 2 as sums of distinct factorials"
     },
     {
       "id": "erdos-728-factorial-divisibility",
       "relationship": "related",
-      "description": "Both study divisibility properties of factorial expressions: #728 concerns factorial divisibility patterns while #403 us"
+      "description": "Both study divisibility properties of factorial expressions: #728 concerns factorial divisibility patterns while #403 uses 2-adic valuations of factorial sums"
     },
     {
       "id": "stirling-formula",
       "relationship": "foundational",
-      "description": "Stirling's approximation n! ~ √(2πn)(n/e)^n provides the super-exponential growth that bounds the search space: for larg"
+      "description": "Stirling's approximation n! ~ √(2πn)(n/e)^n provides the super-exponential growth that bounds the search space: for large a, a! vastly exceeds any power of 2, constraining max(S) ≤ 13"
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "Unique prime factorization underpins the 2-adic valuation analysis: v₂(Σa!) depends on the prime factorization of each f"
+      "description": "Unique prime factorization underpins the 2-adic valuation analysis: v₂(Σa!) depends on the prime factorization of each factorial term, analyzed via Legendre's formula"
     }
   ],
   "references": [

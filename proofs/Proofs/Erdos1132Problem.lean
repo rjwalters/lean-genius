@@ -100,12 +100,26 @@ The maximum of the Lebesgue function over the interval. -/
 noncomputable def lebesgueConstant (nodes : Fin n → ℝ) : ℝ :=
   ⨆ x ∈ Set.Icc (-1 : ℝ) 1, lebesgueFunction nodes x
 
+/-- **Partition of unity:** Lagrange basis polynomials sum to 1 for distinct nodes.
+This is a standard polynomial identity: the Lagrange interpolant of the constant
+function 1 is identically 1, i.e., Σₖ lₖ(x) = 1 for all x. -/
+lemma lagrangeBasis_sum_eq_one (nodes : Fin n → ℝ) (x : ℝ)
+    (hdistinct : ∀ i j, i ≠ j → nodes i ≠ nodes j) :
+    ∑ k : Fin n, lagrangeBasis nodes k x = 1 := by sorry
+
 /-- **Lebesgue function is always at least 1.**
-At any node xₖ, Lₙ(xₖ) ≥ |lₖ(xₖ)| = 1. -/
-axiom lebesgueFunction_ge_one (nodes : Fin n → ℝ) (x : ℝ)
+Proof: By partition of unity, Σₖ lₖ(x) = 1. By triangle inequality,
+Σₖ |lₖ(x)| ≥ |Σₖ lₖ(x)| = |1| = 1. -/
+theorem lebesgueFunction_ge_one (nodes : Fin n → ℝ) (x : ℝ)
     (hdistinct : ∀ i j, i ≠ j → nodes i ≠ nodes j)
     (hn : n ≥ 1) :
-    lebesgueFunction nodes x ≥ 1
+    lebesgueFunction nodes x ≥ 1 := by
+  unfold lebesgueFunction
+  have hsum := lagrangeBasis_sum_eq_one nodes x hdistinct
+  have htri := norm_sum_le (f := fun k => lagrangeBasis nodes k x) Finset.univ
+  simp only [Real.norm_eq_abs] at htri
+  rw [hsum, abs_one] at htri
+  linarith
 
 /- ## Part III: Growth of Lebesgue Constants
 
@@ -128,9 +142,12 @@ noncomputable def chebyshevNodes (n : ℕ) : Fin n → ℝ :=
   fun k => Real.cos ((2 * (k.val + 1) - 1) * Real.pi / (2 * n))
 
 /-- **Chebyshev Nodes in [-1,1]:**
-All Chebyshev nodes lie in the interval [-1,1]. -/
-axiom chebyshevNodes_in_interval (n : ℕ) (hn : n ≥ 1) (k : Fin n) :
-    chebyshevNodes n k ∈ Set.Icc (-1 : ℝ) 1
+All Chebyshev nodes lie in the interval [-1,1].
+Proved: cos maps to [-1,1] by definition. -/
+theorem chebyshevNodes_in_interval (n : ℕ) (hn : n ≥ 1) (k : Fin n) :
+    chebyshevNodes n k ∈ Set.Icc (-1 : ℝ) 1 := by
+  unfold chebyshevNodes
+  exact Set.mem_Icc.mpr ⟨Real.neg_one_le_cos _, Real.cos_le_one _⟩
 
 /-- **Optimal Growth Rate:**
 For Chebyshev nodes, the Lebesgue constant grows as (2/π) log(n) + O(1).

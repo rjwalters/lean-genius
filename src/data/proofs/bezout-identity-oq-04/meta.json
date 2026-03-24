@@ -168,7 +168,7 @@
     {
       "id": "bezout-identity",
       "relationship": "extends",
-      "description": "Parent entry proving gcd = ax + by — this file extends from solvability criterion to complete parametric description of "
+      "description": "Parent entry proving gcd = ax + by — this file extends from solvability criterion to complete parametric description of all solutions"
     },
     {
       "id": "bezout-identity-oq-02",
@@ -178,7 +178,7 @@
     {
       "id": "bezout-identity-oq-02-oq-01",
       "relationship": "sibling",
-      "description": "FTA from Euclid's lemma — both are deep consequences of Bézout: FTA gives unique factorization, this file gives solution"
+      "description": "FTA from Euclid's lemma — both are deep consequences of Bézout: FTA gives unique factorization, this file gives solution lattice structure"
     },
     {
       "id": "bezout-identity-oq-03",
@@ -188,7 +188,7 @@
     {
       "id": "bezout-identity-oq-03-oq-01",
       "relationship": "related",
-      "description": "CRT ring isomorphism — both characterize solution sets: CRT gives ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ, this file gives {(x₀+bt/d, y₀-at/"
+      "description": "CRT ring isomorphism — both characterize solution sets: CRT gives ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ, this file gives {(x₀+bt/d, y₀-at/d) : t ∈ ℤ} for Diophantine equations"
     }
   ],
   "leanFile": {

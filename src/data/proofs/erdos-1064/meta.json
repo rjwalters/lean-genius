@@ -146,17 +146,17 @@
     {
       "id": "euler-totient",
       "relationship": "foundational",
-      "description": "Euler's totient function $\\phi(n)$ and its basic properties (multiplicativity, formula $\\phi(n) = n \\prod_{p|n}(1-1/p)$)"
+      "description": "Euler's totient function $\\phi(n)$ and its basic properties (multiplicativity, formula $\\phi(n) = n \\prod_{p|n}(1-1/p)$) are the foundation of this problem. The multiplicativity $\\phi(mn) = \\phi(m)\\phi(n)$ for $\\gcd(m,n) = 1$ is the key tool for the explicit counterexample family $15 \\cdot 2^k$"
     },
     {
       "id": "perfect-numbers",
       "relationship": "related",
-      "description": "Perfect numbers satisfy $\\sigma(n) = 2n$, which relates to the iteration $n \\mapsto n - \\phi(n)$ studied here. For even "
+      "description": "Perfect numbers satisfy $\\sigma(n) = 2n$, which relates to the iteration $n \\mapsto n - \\phi(n)$ studied here. For even perfect numbers $n = 2^{p-1}(2^p-1)$, $\\phi(n) = 2^{p-2}(2^p-2)$, making them natural test cases for the $\\phi(n)$ vs $\\phi(n-\\phi(n))$ comparison"
     },
     {
       "id": "prime-number-theorem",
       "relationship": "related",
-      "description": "The density-1 result for $A_>$ relies on the distribution of prime factors of typical integers, which is governed by the"
+      "description": "The density-1 result for $A_>$ relies on the distribution of prime factors of typical integers, which is governed by the prime number theorem and its refinements. The PNT implies that a random integer near $N$ has $\\sim \\log\\log N$ distinct prime factors, controlling the average behavior of $\\phi(n)$"
     }
   ],
   "references": [

@@ -171,27 +171,32 @@
     {
       "id": "divisibility-truncation-general",
       "relationship": "extends",
-      "description": "Unifies the separate positive and negative osculator theorems from the parent proof into a single theorem with signed os"
+      "description": "Unifies the separate positive and negative osculator theorems from the parent proof into a single theorem with signed osculator $c \\in \\mathbb{Z}$, reducing two theorems to one"
     },
     {
       "id": "bezout-identity",
       "relationship": "foundational",
-      "description": "Bézout's identity guarantees the existence of the osculator $c$: since $\\gcd(10, d) = 1$, there exist $s, t$ with $10s +"
+      "description": "Bézout's identity guarantees the existence of the osculator $c$: since $\\gcd(10, d) = 1$, there exist $s, t$ with $10s + dt = 1$, giving $c = s$ as the multiplicative inverse of 10 mod $d$"
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "Unique prime factorization underpins the coprimality condition $\\gcd(d, 10) = 1$, which is necessary for the osculator t"
+      "description": "Unique prime factorization underpins the coprimality condition $\\gcd(d, 10) = 1$, which is necessary for the osculator to exist. Divisors sharing factors with 10 (i.e., multiples of 2 or 5) require the last-$k$-digits framework instead"
     },
     {
       "id": "divisibility-by-3",
       "relationship": "related",
-      "description": "The digit-sum rule for divisibility by 3 (and 9) is the simplest osculator rule: since $10 \\equiv 1 \\pmod{3}$, the oscul"
+      "description": "The digit-sum rule for divisibility by 3 (and 9) is the simplest osculator rule: since $10 \\equiv 1 \\pmod{3}$, the osculator $c = 1$ gives $3 \\mid n \\iff 3 \\mid (\\lfloor n/10 \\rfloor + 1 \\cdot (n \\bmod 10))$, which iterates to the digit sum"
     },
     {
       "id": "euler-totient",
       "relationship": "related",
-      "description": "Euler's totient function $\\varphi(d)$ counts invertible elements in $\\mathbb{Z}/d\\mathbb{Z}$. The osculator $c$ is the m"
+      "description": "Euler's totient function $\\varphi(d)$ counts invertible elements in $\\mathbb{Z}/d\\mathbb{Z}$. The osculator $c$ is the multiplicative inverse of 10 mod $d$, which exists iff $\\gcd(10, d) = 1$ — a condition guaranteed by Euler's theorem: $10^{\\varphi(d)} \\equiv 1 \\pmod{d}$"
+    },
+    {
+      "id": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "CRT provides an alternative approach to osculator construction: for composite $d = d_1 d_2$ with $\\gcd(d_1, d_2) = 1$, the osculator can be computed via the Chinese Remainder Theorem from the osculators of $d_1$ and $d_2$"
     }
   ],
   "leanFile": {

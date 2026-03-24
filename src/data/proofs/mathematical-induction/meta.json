@@ -228,27 +228,62 @@
     {
       "id": "binomial-theorem",
       "relationship": "related",
-      "description": "The standard proof of the binomial theorem by induction on n uses Pascal's identity at the inductive step. Induction is "
+      "description": "The standard proof of the binomial theorem by induction on n uses Pascal's identity at the inductive step. Induction is the natural proof method for identities indexed by natural numbers."
     },
     {
       "id": "infinitude-primes",
       "relationship": "related",
-      "description": "Euclid's proof of infinite primes uses a form of induction (given any finite list, construct a new prime). Strong induct"
+      "description": "Euclid's proof of infinite primes uses a form of induction (given any finite list, construct a new prime). Strong induction and well-ordering — equivalent to induction — appear throughout number theory."
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "The uniqueness of prime factorization is proved by strong induction: assuming uniqueness for all $m < n$, if $n = p_1 \\c"
+      "description": "The uniqueness of prime factorization is proved by strong induction: assuming uniqueness for all $m < n$, if $n = p_1 \\cdots p_r = q_1 \\cdots q_s$, then $p_1 \\mid q_j$ for some $j$, so $p_1 = q_j$, and induction on $n/p_1 < n$ gives the result. Without strong induction, FTA cannot be proved"
     },
     {
       "id": "fundamental-theorem-calculus",
       "relationship": "related",
-      "description": "Repeated application of FTC via induction gives Taylor's theorem: $f(x) = \\sum_{k=0}^n f^{(k)}(a)(x-a)^k/k! + R_n(x)$, w"
+      "description": "Repeated application of FTC via induction gives Taylor's theorem: $f(x) = \\sum_{k=0}^n f^{(k)}(a)(x-a)^k/k! + R_n(x)$, where each step integrates by parts using FTC. The induction step increases the order of the Taylor expansion by one"
     },
     {
       "id": "arithmetic-series",
       "relationship": "related",
-      "description": "The sum formula $\\sum_{k=1}^n k = n(n+1)/2$ is the classic first example of proof by induction, attributed to Gauss. Thi"
+      "description": "The sum formula $\\sum_{k=1}^n k = n(n+1)/2$ is the classic first example of proof by induction, attributed to Gauss. This formalization includes this example, connecting induction to combinatorial identities"
+    },
+    {
+      "id": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Godel's incompleteness theorems concern the limits of Peano arithmetic, whose induction axiom schema is precisely the principle formalized here. The first incompleteness theorem shows that no consistent extension of PA can prove all true arithmetic statements, while the second shows PA cannot prove its own consistency — both results critically depend on the strength (and limitations) of the induction schema"
+    },
+    {
+      "id": "lagrange-theorem",
+      "relationship": "related",
+      "description": "Lagrange's theorem on subgroup orders is proved by induction on the index of the subgroup, using the coset decomposition at each step. This is a prototypical application of strong induction in algebra, where the inductive step requires information about all proper subgroups, not just the immediately preceding case"
+    },
+    {
+      "id": "gcd-algorithm",
+      "relationship": "related",
+      "description": "The Euclidean algorithm's correctness and termination are proved by strong induction on the pair (a, b) ordered by the second component. Each step reduces gcd(a, b) to gcd(b, a mod b) with strictly smaller second argument — a canonical example of well-founded induction, equivalent to the strong induction principle formalized here"
+    },
+    {
+      "id": "factor-remainder-theorem",
+      "relationship": "related",
+      "description": "The factor theorem connects to induction through polynomial division: proving that a degree-n polynomial has at most n roots uses strong induction on the degree, factoring out (x - r) at each step and applying the inductive hypothesis to the quotient of lower degree"
+    },
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "While the Pythagorean theorem itself does not use induction, many of its extensions do: counting Pythagorean triples, proving Fermat's characterization of sums of two squares, and the generation of all primitive triples via parametrization all involve inductive arguments on the size of the integers involved"
+    },
+    {
+      "id": "subset-count",
+      "relationship": "related",
+      "description": "The proof that a set with n elements has 2^n subsets is a textbook application of weak induction: removing one element splits each subset of the (n+1)-element set into those containing the element and those not, establishing a bijection with pairs from the n-element case"
+    },
+    {
+      "id": "schroeder-bernstein",
+      "relationship": "related",
+      "description": "The Schroeder-Bernstein theorem uses a chain of iterated function applications that terminates by well-ordering — the same principle shown equivalent to induction in this formalization. Both are Wiedijk 100 theorems formalized in Lean 4 via Mathlib"
     }
   ]
 }

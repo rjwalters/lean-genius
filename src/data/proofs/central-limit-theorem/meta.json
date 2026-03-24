@@ -13,7 +13,8 @@
       "topology",
       "analysis",
       "advanced",
-      "characteristic-functions"
+      "characteristic-functions",
+      "wiedijk-100"
     ],
     "badge": "axiom",
     "sorries": 0,
@@ -79,70 +80,120 @@
       "title": "Introduction and Imports",
       "startLine": 1,
       "endLine": 25,
-      "summary": "Module documentation explaining both perspectives, with imports for measure theory and probability."
+      "summary": "Module documentation explaining both perspectives, with imports for measure theory and probability.",
+      "mathContext": "Module documentation explaining both perspectives, with imports for measure theory and probability."
     },
     {
       "id": "characteristic-functions",
       "title": "Characteristic Functions",
       "startLine": 27,
       "endLine": 58,
-      "summary": "Defining characteristic functions and their key multiplicative property for sums."
+      "summary": "Defining characteristic functions and their key multiplicative property for sums.",
+      "mathContext": "Defining characteristic functions and their key multiplicative property for sums."
     },
     {
       "id": "taylor-expansion",
       "title": "Taylor Expansion of Characteristic Functions",
       "startLine": 60,
       "endLine": 95,
-      "summary": "The crucial expansion showing how moments appear in characteristic functions."
+      "summary": "The crucial expansion showing how moments appear in characteristic functions.",
+      "mathContext": "The crucial expansion showing how moments appear in characteristic functions."
     },
     {
       "id": "limit-computation",
       "title": "Computing the Limit",
       "startLine": 97,
       "endLine": 135,
-      "summary": "Showing the normalized characteristic function converges to the Gaussian."
+      "summary": "Showing the normalized characteristic function converges to the Gaussian.",
+      "mathContext": "Showing the normalized characteristic function converges to the Gaussian."
     },
     {
       "id": "levy-continuity",
       "title": "Lévy Continuity Theorem",
       "startLine": 137,
       "endLine": 165,
-      "summary": "The bridge from characteristic function convergence to distributional convergence."
+      "summary": "The bridge from characteristic function convergence to distributional convergence.",
+      "mathContext": "The bridge from characteristic function convergence to distributional convergence."
     },
     {
       "id": "main-theorem",
       "title": "Central Limit Theorem",
       "startLine": 167,
       "endLine": 195,
-      "summary": "The main theorem combining all ingredients: sums converge to Normal distribution."
+      "summary": "The main theorem combining all ingredients: sums converge to Normal distribution.",
+      "mathContext": "The main theorem combining all ingredients: sums converge to Normal distribution."
     },
     {
       "id": "topological-interpretation",
       "title": "Topological Interpretation",
       "startLine": 197,
       "endLine": 255,
-      "summary": "Understanding CLT through the lens of dynamical systems and fixed point theory."
+      "summary": "Understanding CLT through the lens of dynamical systems and fixed point theory.",
+      "mathContext": "Understanding CLT through the lens of dynamical systems and fixed point theory."
     },
     {
       "id": "renormalization-flow",
       "title": "The Renormalization Group Flow",
       "startLine": 257,
       "endLine": 300,
-      "summary": "Formalizing the convolution-rescaling operation as a dynamical system on measure space."
+      "summary": "Formalizing the convolution-rescaling operation as a dynamical system on measure space.",
+      "mathContext": "Formalizing the convolution-rescaling operation as a dynamical system on measure space."
     },
     {
       "id": "gaussian-as-attractor",
       "title": "Gaussian as Universal Attractor",
       "startLine": 302,
       "endLine": 345,
-      "summary": "Why the Gaussian emerges: it is the unique stable fixed point of the renormalization flow."
+      "summary": "Why the Gaussian emerges: it is the unique stable fixed point of the renormalization flow.",
+      "mathContext": "Why the Gaussian emerges: it is the unique stable fixed point of the renormalization flow."
     },
     {
       "id": "connections",
       "title": "Connections and Generalizations",
       "startLine": 347,
       "endLine": 390,
-      "summary": "Links to information geometry, stable distributions, and modern applied topology."
+      "summary": "Links to information geometry, stable distributions, and modern applied topology.",
+      "mathContext": "Links to information geometry, stable distributions, and modern applied topology."
+    },
+    {
+      "id": "general-clt-proof",
+      "title": "General CLT via Standardization",
+      "startLine": 380,
+      "endLine": 409,
+      "summary": "Proves the general CLT for non-standard distributions by reducing to the standardized case via the affine transformation $Y_i = (X_i - \\mu)/\\sigma$. The normalized sum $(X_1 + \\cdots + X_n - n\\mu)/(\\sigma\\sqrt{n})$ equals $(Y_1 + \\cdots + Y_n)/\\sqrt{n}$, so `charFun_converges_to_gaussian` applies.",
+      "mathContext": "The standardization: if $X$ has mean $\\mu$ and variance $\\sigma^2$, then $Y = (X-\\mu)/\\sigma$ has mean 0 and variance 1. Characteristic function: $\\varphi_Y(s) = e^{-is\\mu/\\sigma} \\varphi_X(s/\\sigma)$."
+    },
+    {
+      "id": "renormalization-space",
+      "title": "Wasserstein Space and Renormalization Map",
+      "startLine": 411,
+      "endLine": 484,
+      "summary": "Defines the renormalization map $T_n(\\mu)$ as the distribution of $(X_1 + \\cdots + X_n)/\\sqrt{n}$ where $X_i \\sim \\mu$ i.i.d. Axiomatizes `renormalization_measure` and proves `gaussian_is_fixed_point`: the Gaussian is invariant under $T_n$ (since the sum of $n$ i.i.d. $N(0,1)$ scaled by $1/\\sqrt{n}$ is $N(0,1)$).",
+      "mathContext": "The renormalization: $T_n(\\mu) = (\\mu^{*n})_{\\text{scale}(1/\\sqrt{n})}$ where $\\mu^{*n}$ is $n$-fold convolution. Fixed point: $T_n(N(0,1)) = N(0,1)$ because $\\text{Var}(\\bar{X}_n) = \\sigma^2/n \\cdot n = \\sigma^2$."
+    },
+    {
+      "id": "gaussian-attractor",
+      "title": "Gaussian as Attractor of Renormalization Flow",
+      "startLine": 486,
+      "endLine": 521,
+      "summary": "Axiomatizes and proves `gaussian_is_attractor`: all standardized distributions with finite third moment converge to $N(0,1)$ under iterated renormalization $T_n$. This is the CLT restated as a dynamical systems theorem — the Gaussian is the global attractor in the space of probability measures.",
+      "mathContext": "The dynamical CLT: $T_n(\\mu) \\xrightarrow{n \\to \\infty} N(0,1)$ in the weak topology for all $\\mu$ with $\\mathbb{E}[X] = 0$, $\\mathbb{E}[X^2] = 1$, $\\mathbb{E}[|X|^3] < \\infty$. The basin of attraction is all of $\\mathcal{P}_2(\\mathbb{R})$ minus the degenerate measures."
+    },
+    {
+      "id": "why-gaussian",
+      "title": "Why the Gaussian: Max Entropy and Self-Duality",
+      "startLine": 523,
+      "endLine": 560,
+      "summary": "Five characterizations of the Gaussian: (1) fixed point of renormalization, (2) maximum entropy at fixed variance, (3) minimum Fisher information, (4) self-dual under Fourier transform, (5) $\\alpha = 2$ stable distribution. Proves `gaussian_self_dual`: $\\varphi_{N(0,1)}(t) = e^{-t^2/2}$ via `gaussian_charFun`.",
+      "mathContext": "Self-duality: $\\hat{g}(t) = \\frac{1}{\\sqrt{2\\pi}} \\int e^{-x^2/2} e^{-itx} dx = e^{-t^2/2} = g(t)$. The Gaussian is the unique normalized eigenfunction of the Fourier transform with eigenvalue 1."
+    },
+    {
+      "id": "extensions",
+      "title": "Extensions: Berry-Esseen and Stable Distributions",
+      "startLine": 562,
+      "endLine": 618,
+      "summary": "Berry-Esseen bound (placeholder): the rate of convergence in CLT is $O(\\rho/\\sqrt{n})$ where $\\rho$ is the third absolute moment. Stable distributions (placeholder): for $0 < \\alpha \\leq 2$, $\\alpha$-stable laws replace the Gaussian when variance is infinite. Conclusion comments.",
+      "mathContext": "Berry-Esseen: $\\sup_x |F_n(x) - \\Phi(x)| \\leq \\frac{C \\rho}{\\sqrt{n}}$ where $C \\leq 0.4748$ (Shevtsova 2011). For $\\alpha$-stable laws: $(X_1 + \\cdots + X_n)/n^{1/\\alpha}$ converges when $\\mathbb{E}[|X|^\\alpha] < \\infty$ but $\\mathbb{E}[|X|^2] = \\infty$ for $\\alpha < 2$."
     }
   ],
   "references": [
@@ -253,27 +304,57 @@
     {
       "id": "birthday-problem",
       "relationship": "related",
-      "description": "Both are fundamental results in probability theory. The birthday problem illustrates combinatorial probability, while CL"
+      "description": "Both are fundamental results in probability theory. The birthday problem illustrates combinatorial probability, while CLT explains why the normal distribution dominates averaged statistics"
     },
     {
       "id": "buffons-needle",
       "relationship": "related",
-      "description": "Buffon's needle uses random variable theory; CLT explains why repeated needle-dropping experiments converge to a normal "
+      "description": "Buffon's needle uses random variable theory; CLT explains why repeated needle-dropping experiments converge to a normal distribution of π estimates with rate 1/√n"
     },
     {
       "id": "stirling-formula",
       "relationship": "foundational",
-      "description": "Stirling's formula n! ≈ √(2πn)(n/e)^n provides the √(2π) factor in the Gaussian density — the binomial distribution appr"
+      "description": "Stirling's formula n! ≈ √(2πn)(n/e)^n provides the √(2π) factor in the Gaussian density — the binomial distribution approaches the normal via Stirling, giving de Moivre's original CLT (1733)"
     },
     {
       "id": "area-of-circle",
       "relationship": "thematic",
-      "description": "Both reveal π in unexpected contexts: the area formula gives π geometrically, while the CLT's Gaussian density (2πσ²)^{-"
+      "description": "Both reveal π in unexpected contexts: the area formula gives π geometrically, while the CLT's Gaussian density (2πσ²)^{-1/2}·exp(-x²/2σ²) contains π through the normalization constant ∫e^{-x²}dx = √π"
     },
     {
       "id": "central-limit-theorem-oq-01",
       "relationship": "extended-by",
-      "description": "Explores what happens when variance is infinite — leading to stable distributions (Lévy $\\alpha$-stable) with heavier ta"
+      "description": "Explores what happens when variance is infinite — leading to stable distributions (Lévy $\\alpha$-stable) with heavier tails than the Gaussian, answering the first open question"
+    },
+    {
+      "id": "central-limit-theorem-oq-03",
+      "relationship": "extended-by",
+      "description": "Investigates the categorical structure of probability distributions under convolution, connecting CLT to operad theory and higher categories"
+    },
+    {
+      "id": "cauchy-schwarz",
+      "relationship": "foundational",
+      "description": "Cauchy-Schwarz bounds $|\\mathbb{E}[XY]| \\leq \\sqrt{\\mathbb{E}[X^2]\\mathbb{E}[Y^2]}$ are used throughout the CLT proof: bounding characteristic function differences, controlling truncation errors, and establishing moment conditions. The $L^2$ inner product structure that Cauchy-Schwarz governs is the natural framework for variance and covariance calculations"
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The binomial distribution $P(X = k) = \\binom{n}{k}p^k(1-p)^{n-k}$ arises directly from the binomial theorem with $x = p, y = 1-p$. De Moivre's original CLT (1733) showed this binomial distribution converges to the Gaussian, making the binomial theorem the algebraic foundation for the first limit theorem in probability"
+    },
+    {
+      "id": "euler-identity",
+      "relationship": "related",
+      "description": "The CLT proof via characteristic functions uses $\\varphi_X(t) = \\mathbb{E}[e^{itX}]$, where $e^{itX} = \\cos(tX) + i\\sin(tX)$ (Euler's formula). The Gaussian characteristic function $\\varphi(t) = e^{-t^2/2}$ — the CLT's limit — is the real-valued case, connecting Euler's formula to the universality of the normal distribution"
+    },
+    {
+      "id": "central-limit-theorem-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "The Gnedenko-Kolmogorov domain of attraction theorem: classifies which distributions converge to each stable law $S_\\alpha$ under normalized sums. Generalizes the CLT's Gaussian convergence (the $\\alpha = 2$ case) to all stable distributions, answering when and how the CLT fails for heavy-tailed distributions"
+    },
+    {
+      "id": "central-limit-theorem-oq-01-oq-02",
+      "relationship": "extended-by",
+      "description": "The Lévy-Khintchine representation: every infinitely divisible distribution has a unique triplet $(b, \\sigma^2, \\nu)$ decomposing it into drift, Gaussian component, and jump measure. The CLT's Gaussian limit corresponds to the pure Gaussian case $(0, \\sigma^2, 0)$, placing the CLT within the broader framework of infinitely divisible distributions and Lévy processes"
     }
   ],
   "leanFile": {

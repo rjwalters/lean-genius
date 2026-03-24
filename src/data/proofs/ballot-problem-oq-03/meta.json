@@ -99,98 +99,112 @@
       "title": "Lattice Path Definitions",
       "startLine": 62,
       "endLine": 106,
-      "summary": "LPath as List Bool (false=East, true=North), eastSteps, northSteps, pathType subtype with Fintype instance via List.Vector equivalence."
+      "summary": "LPath as List Bool (false=East, true=North), eastSteps, northSteps, pathType subtype with Fintype instance via List.Vector equivalence.",
+      "mathContext": "LPath as List Bool (false=East, true=North), eastSteps, northSteps, pathType subtype with Fintype instance via List.Vector equivalence."
     },
     {
       "id": "north-before-east",
       "title": "northBeforeEast and Column Entry",
       "startLine": 107,
       "endLine": 198,
-      "summary": "northBeforeEast l k counts North steps before k-th East step. colEntry l k is the y-offset at column k. Key lemmas: monotonicity, northBeforeEast ≤ northSteps, colEntry ≤ northSteps."
+      "summary": "northBeforeEast l k counts North steps before k-th East step. colEntry l k is the y-offset at column k. Key lemmas: monotonicity, northBeforeEast ≤ northSteps, colEntry ≤ northSteps.",
+      "mathContext": "northBeforeEast l k counts North steps before k-th East step. colEntry l k is the y-offset at column k. Key lemmas: monotonicity, northBeforeEast ≤ northSteps, colEntry ≤ northSteps."
     },
     {
       "id": "non-intersecting",
       "title": "Column Ranges and Non-Intersecting",
       "startLine": 199,
       "endLine": 213,
-      "summary": "colYRange: y-values visited at column x. finalRange: y-values at final column. NonIntersecting: column-wise disjoint y-ranges for two paths."
+      "summary": "colYRange: y-values visited at column x. finalRange: y-values at final column. NonIntersecting: column-wise disjoint y-ranges for two paths.",
+      "mathContext": "colYRange: y-values visited at column x. finalRange: y-values at final column. NonIntersecting: column-wise disjoint y-ranges for two paths."
     },
     {
       "id": "crossing-lemma",
       "title": "The 2D Crossing Lemma",
       "startLine": 214,
       "endLine": 290,
-      "summary": "FULLY PROVED: If y₁ < y₂ and y₂+n₂ < y₁+n₁, paths cannot be non-intersecting. Proof via column-by-column induction using nonIntersecting_entry_order (disjoint interval preservation)."
+      "summary": "FULLY PROVED: If y₁ < y₂ and y₂+n₂ < y₁+n₁, paths cannot be non-intersecting. Proof via column-by-column induction using nonIntersecting_entry_order (disjoint interval preservation).",
+      "mathContext": "FULLY PROVED: If y₁ < y₂ and y₂+n₂ < y₁+n₁, paths cannot be non-intersecting. Proof via column-by-column induction using nonIntersecting_entry_order (disjoint interval preservation)."
     },
     {
       "id": "path-count",
       "title": "Path Count Formula",
       "startLine": 291,
       "endLine": 394,
-      "summary": "FULLY PROVED: |pathType m n| = C(m+n, m). pathSplitEquiv bijects pathType (m+1) (n+1) ≃ pathType m (n+1) ⊕ pathType (m+1) n, giving Pascal's recurrence."
+      "summary": "FULLY PROVED: |pathType m n| = C(m+n, m). pathSplitEquiv bijects pathType (m+1) (n+1) ≃ pathType m (n+1) ⊕ pathType (m+1) n, giving Pascal's recurrence.",
+      "mathContext": "FULLY PROVED: |pathType m n| = C(m+n, m). pathSplitEquiv bijects pathType (m+1) (n+1) ≃ pathType m (n+1) ⊕ pathType (m+1) n, giving Pascal's recurrence."
     },
     {
       "id": "lgv-count",
       "title": "NI Pair Count and LGV Statement",
       "startLine": 395,
       "endLine": 425,
-      "summary": "niPairCount via Classical decidability. lgvDet 2×2 determinant. lgv_lemma_2x2 (sorry: needs Lindström involution bijection)."
+      "summary": "niPairCount via Classical decidability. lgvDet 2×2 determinant. lgv_lemma_2x2 (sorry: needs Lindström involution bijection).",
+      "mathContext": "niPairCount via Classical decidability. lgvDet 2×2 determinant. lgv_lemma_2x2 (sorry: needs Lindström involution bijection)."
     },
     {
       "id": "vandermonde",
       "title": "Vandermonde's Identity",
       "startLine": 426,
       "endLine": 437,
-      "summary": "FULLY PROVED: C(m+n, r) = Σ C(m,k)*C(n,r-k) via Nat.add_choose_eq and Finset.Nat.sum_antidiagonal."
+      "summary": "FULLY PROVED: C(m+n, r) = Σ C(m,k)*C(n,r-k) via Nat.add_choose_eq and Finset.Nat.sum_antidiagonal.",
+      "mathContext": "FULLY PROVED: C(m+n, r) = Σ C(m,k)*C(n,r-k) via Nat.add_choose_eq and Finset.Nat.sum_antidiagonal."
     },
     {
       "id": "catalan",
       "title": "Catalan Numbers",
       "startLine": 438,
       "endLine": 489,
-      "summary": "FULLY PROVED: Catalan formula Cn(n)*(n+1) = C(2n,n) via absorption identity. Verified for n=0..6."
+      "summary": "FULLY PROVED: Catalan formula Cn(n)*(n+1) = C(2n,n) via absorption identity. Verified for n=0..6.",
+      "mathContext": "FULLY PROVED: Catalan formula Cn(n)*(n+1) = C(2n,n) via absorption identity. Verified for n=0..6."
     },
     {
       "id": "ballot",
       "title": "Ballot Theorem",
       "startLine": 490,
       "endLine": 571,
-      "summary": "FULLY PROVED: ballotSeqCount p q * (p+q) = (p-q) * C(p+q,p) via absorption identity. Verified for several (p,q) pairs. ballot_via_path_count: ballot = path count difference (1D reflection)."
+      "summary": "FULLY PROVED: ballotSeqCount p q * (p+q) = (p-q) * C(p+q,p) via absorption identity. Verified for several (p,q) pairs. ballot_via_path_count: ballot = path count difference (1D reflection).",
+      "mathContext": "FULLY PROVED: ballotSeqCount p q * (p+q) = (p-q) * C(p+q,p) via absorption identity. Verified for several (p,q) pairs. ballot_via_path_count: ballot = path count difference (1D reflection)."
     },
     {
       "id": "involution-infra",
       "title": "Involution Infrastructure",
       "startLine": 572,
       "endLine": 771,
-      "summary": "splitAfterEast splits a path after k East steps. Key theorem: northSteps(prefix) = northBeforeEast l k. swapTails exchanges suffixes for the Lindström involution. lgvDet = 0 for same start/end degenerate cases."
+      "summary": "splitAfterEast splits a path after k East steps. Key theorem: northSteps(prefix) = northBeforeEast l k. swapTails exchanges suffixes for the Lindström involution. lgvDet = 0 for same start/end degenerate cases.",
+      "mathContext": "splitAfterEast splits a path after k East steps. Key theorem: northSteps(prefix) = northBeforeEast l k. swapTails exchanges suffixes for the Lindström involution. lgvDet = 0 for same start/end degener"
     },
     {
       "id": "path-transposition",
       "title": "Path Transposition",
       "startLine": 1083,
       "endLine": 1161,
-      "summary": "FULLY PROVED: pathFlip bijection (East↔North swap) gives pathType m n ≃ pathType n m. Proves C(m+n,m) = C(m+n,n) via combinatorial path bijection."
+      "summary": "FULLY PROVED: pathFlip bijection (East↔North swap) gives pathType m n ≃ pathType n m. Proves C(m+n,m) = C(m+n,n) via combinatorial path bijection.",
+      "mathContext": "FULLY PROVED: pathFlip bijection (East↔North swap) gives pathType m n ≃ pathType n m. Proves C(m+n,m) = C(m+n,n) via combinatorial path bijection."
     },
     {
       "id": "lgv-det-algebra",
       "title": "LGV Determinant Algebra",
       "startLine": 1162,
       "endLine": 1189,
-      "summary": "FULLY PROVED: LGV determinant antisymmetry (source/target swaps negate), non-negativity under proper ordering, double swap invariance."
+      "summary": "FULLY PROVED: LGV determinant antisymmetry (source/target swaps negate), non-negativity under proper ordering, double swap invariance.",
+      "mathContext": "FULLY PROVED: LGV determinant antisymmetry (source/target swaps negate), non-negativity under proper ordering, double swap invariance."
     },
     {
       "id": "catalan-ballot-unification",
       "title": "Catalan-Ballot Unification",
       "startLine": 1190,
       "endLine": 1215,
-      "summary": "FULLY PROVED: Cn(n) = ballotSeqCount(n+1,n) unifying the two reflection-based formulas. catalan_ballot_division: ballotSeqCount(n+1,n)*(n+1) = C(2n,n)."
+      "summary": "FULLY PROVED: Cn(n) = ballotSeqCount(n+1,n) unifying the two reflection-based formulas. catalan_ballot_division: ballotSeqCount(n+1,n)*(n+1) = C(2n,n).",
+      "mathContext": "FULLY PROVED: Cn(n) = ballotSeqCount(n+1,n) unifying the two reflection-based formulas. catalan_ballot_division: ballotSeqCount(n+1,n)*(n+1) = C(2n,n)."
     },
     {
       "id": "entry-gap-analysis",
       "title": "Entry Gap Analysis and swapTails Properties",
       "startLine": 1215,
       "endLine": 2878,
-      "summary": "FULLY PROVED: Entry gap framework (NI preserves positive gap, gap positive at all columns under NI + y₁<y₂). swapTails East step count preservation. Suffix North step count decomposition."
+      "summary": "FULLY PROVED: Entry gap framework (NI preserves positive gap, gap positive at all columns under NI + y₁<y₂). swapTails East step count preservation. Suffix North step count decomposition.",
+      "mathContext": "FULLY PROVED: Entry gap framework (NI preserves positive gap, gap positive at all columns under NI + y₁<y₂). swapTails East step count preservation. Suffix North step count decomposition."
     }
   ],
   "conclusion": {
@@ -238,27 +252,32 @@
     {
       "id": "ballot-problem",
       "relationship": "extends",
-      "description": "Extends the classical ballot problem's 1D reflection principle to 2D lattice path pairs, providing the combinatorial fou"
+      "description": "Extends the classical ballot problem's 1D reflection principle to 2D lattice path pairs, providing the combinatorial foundation for the LGV lemma"
     },
     {
       "id": "ballot-problem-oq-01",
       "relationship": "extends",
-      "description": "The generalized k-fold ballot problem — this file extends the lattice path framework from 1D to 2D pairs with the Lindst"
+      "description": "The generalized k-fold ballot problem — this file extends the lattice path framework from 1D to 2D pairs with the Lindström involution"
     },
     {
       "id": "combinations-formula",
       "relationship": "foundational",
-      "description": "Path counts use C(m+n, m) for the number of monotone lattice paths from (0,0) to (m,n) — the binomial coefficient is the"
+      "description": "Path counts use C(m+n, m) for the number of monotone lattice paths from (0,0) to (m,n) — the binomial coefficient is the fundamental building block"
     },
     {
       "id": "binomial-theorem",
       "relationship": "related",
-      "description": "The Vandermonde identity C(m+n,r) = ∑C(m,j)C(n,r-j) proved here via lattice path decomposition has a natural connection "
+      "description": "The Vandermonde identity C(m+n,r) = ∑C(m,j)C(n,r-j) proved here via lattice path decomposition has a natural connection to the binomial expansion (x+y)^n"
     },
     {
       "id": "ballot-problem-oq-03-oq-02",
       "relationship": "extended-by",
-      "description": "Extends the 2×2 LGV determinant to the general r×r case, computing determinants of path-count matrices for r non-crossin"
+      "description": "Extends the 2×2 LGV determinant to the general r×r case, computing determinants of path-count matrices for r non-crossing lattice paths — the full generalization of the reflection principle used in this file's 2D case"
+    },
+    {
+      "id": "ballot-problem-oq-02",
+      "relationship": "sibling",
+      "description": "Continuous-time ballot problem via Brownian motion — the stochastic complement to this file's discrete lattice path approach. Both generalize ballot counting: this file via non-crossing determinants, the sibling via stochastic processes and the reflection principle in continuous time"
     }
   ],
   "references": [

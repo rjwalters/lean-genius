@@ -88,56 +88,64 @@
       "title": "Sequence Definitions",
       "summary": "IsStrictlyIncreasing, StartsAtOne, IsValidSequence",
       "startLine": 25,
-      "endLine": 43
+      "endLine": 43,
+      "mathContext": "IsStrictlyIncreasing, StartsAtOne, IsValidSequence"
     },
     {
       "id": "density",
       "title": "Density of Sequences",
       "summary": "countingFunc, indexUpTo, HasDensity, HasDensityOne",
       "startLine": 44,
-      "endLine": 65
+      "endLine": 65,
+      "mathContext": "countingFunc, indexUpTo, HasDensity, HasDensityOne"
     },
     {
       "id": "products",
       "title": "Interval Products",
       "summary": "intervalProduct, AllIntervalProducts, ValidPairs, productMap",
       "startLine": 66,
-      "endLine": 86
+      "endLine": 86,
+      "mathContext": "intervalProduct, AllIntervalProducts, ValidPairs, productMap"
     },
     {
       "id": "distinctness",
       "title": "Distinctness of Products",
       "summary": "HasDistinctProducts, HasDistinctProductsAlt, distinct_equiv",
       "startLine": 87,
-      "endLine": 112
+      "endLine": 112,
+      "mathContext": "HasDistinctProducts, HasDistinctProductsAlt, distinct_equiv"
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
       "summary": "ErdosConjecture421, erdos_421_statement",
       "startLine": 113,
-      "endLine": 129
+      "endLine": 129,
+      "mathContext": "ErdosConjecture421, erdos_421_statement"
     },
     {
       "id": "selfridge",
       "title": "Selfridge's Construction",
       "summary": "selfridgeDensity, selfridge_construction, selfridge_achieves_one_over_e",
       "startLine": 130,
-      "endLine": 150
+      "endLine": 150,
+      "mathContext": "selfridgeDensity, selfridge_construction, selfridge_achieves_one_over_e"
     },
     {
       "id": "bounds",
       "title": "Upper Bounds and Obstructions",
       "summary": "numProductsUpToLength, density constraints",
       "startLine": 151,
-      "endLine": 165
+      "endLine": 165,
+      "mathContext": "numProductsUpToLength, density constraints"
     },
     {
       "id": "examples",
       "title": "Simple Examples",
       "summary": "Natural numbers fail, primes work but sparse",
       "startLine": 166,
-      "endLine": 185
+      "endLine": 185,
+      "mathContext": "Natural numbers fail, primes work but sparse"
     },
     {
       "id": "related",
@@ -151,7 +159,8 @@
       "title": "Problem Status",
       "summary": "erdos_421_status, OEIS references",
       "startLine": 195,
-      "endLine": 237
+      "endLine": 237,
+      "mathContext": "erdos_421_status, OEIS references"
     }
   ],
   "conclusion": {

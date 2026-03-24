@@ -382,7 +382,7 @@ theorem normalizedGap_pos {n : ℕ} (hn : 2 ≤ n) : 0 < normalizedGap n := by
     Since normalizedGap n ≥ 0 for all n, any subsequential limit is ≥ 0. -/
 theorem limitPoint_nonneg {C : ℝ} (hC : IsLimitPoint C) : 0 ≤ C := by
   obtain ⟨f, _, hf_lim⟩ := hC
-  exact le_of_tendsto' hf_lim (Eventually.of_forall fun i => normalizedGap_nonneg (f i))
+  exact ge_of_tendsto hf_lim (Eventually.of_forall fun i => normalizedGap_nonneg (f i))
 
 /-- The set S of limit points is contained in [0, ∞). -/
 theorem limitPointSet_subset_nonneg : limitPointSet ⊆ Set.Ici 0 :=
@@ -414,7 +414,25 @@ theorem limitPointSet_unbounded_above (M : ℝ) (hM : M > 0) :
   obtain ⟨C, hCM, hCLP⟩ := hildebrand_maier_large_limit_points M hM
   exact ⟨C, hCLP, hCM⟩
 
-/- ## Part X: The Conjecture as Set Equality -/
+/- ## Part X: Closedness of S -/
+
+/-- **The set S of limit points is closed.**
+    Proof outline: the complement is open. If C is not a limit point, then
+    no subsequence of normalizedGap converges to C. Equivalently (in ℝ),
+    ∃ ε > 0 such that only finitely many n have normalizedGap(n) ∈ ball(C, ε).
+    For any C' ∈ ball(C, ε/2), by triangle inequality only finitely many n have
+    normalizedGap(n) ∈ ball(C', ε/2), so C' is also not a limit point.
+    The diagonalization: if ∀ ε > 0, infinitely many terms within ε of C,
+    pick n_k with normalizedGap(n_k) within 1/(k+1) of C and n_k > n_{k-1}. -/
+theorem limitPointSet_isClosed : IsClosed limitPointSet := by
+  rw [← isOpen_compl_iff, Metric.isOpen_iff]
+  intro C hC
+  -- C is not a limit point → ∃ ε > 0, eventually normalizedGap stays away from C
+  -- (contrapositive of diagonalization argument above)
+  -- Then ball C (ε/2) ⊆ limitPointSetᶜ by triangle inequality
+  sorry
+
+/- ## Part XI: The Conjecture as Set Equality -/
 
 /-- Erdős Problem #5 is equivalent to: S = [0, ∞) and ∞ is a limit point.
     The forward direction: if erdos_5 holds, then limitPointSet = Set.Ici 0. -/

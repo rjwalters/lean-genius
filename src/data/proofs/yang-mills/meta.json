@@ -8,7 +8,7 @@
     "author": "Yang & Mills (1954)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Yang%E2%80%93Mills_existence_and_mass_gap",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "millennium-prize",
       "mathematical-physics",
@@ -21,8 +21,8 @@
       "research",
       "advanced"
     ],
-    "badge": "verified",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 58,
     "mathlibDependencies": [
       {
         "theorem": "Lie.Basic",
@@ -57,7 +57,7 @@
     ],
     "dateAdded": "2025-12-29",
     "millenniumProblem": "yang-mills",
-    "axiomCount": 0,
+    "axiomCount": 16,
     "assumptions": "1 explicit axiom declaration: gaugeTransform (gauge-transformed field). ~15 structure-encoded assumptions in: CompactSimpleGaugeGroup (compact, connected, simple), GaugeLieAlgebra (bracket_anticomm, bracket_jacobi), WightmanQFT (vacuum_normalized, energy_bounded_below, vacuum_lowest_energy), YangMillsAction (coupling_pos, action_nonneg), FieldStrength (antisymmetric), Instanton (action_formula, bogomolny_bound), EnergyMomentumTensor (symmetric, energy_density_nonneg, conservation). The Yang-Mills 4D mass gap conjecture remains OPEN.",
     "lineCount": 48,
     "mathlib_version": "4.26.0"
@@ -270,27 +270,37 @@
     {
       "id": "poincare-conjecture",
       "relationship": "related",
-      "description": "Perelman's resolution via Ricci flow uses geometric evolution equations analogous to Yang-Mills flow; both involve curva"
+      "description": "Perelman's resolution via Ricci flow uses geometric evolution equations analogous to Yang-Mills flow; both involve curvature-driven dynamics on manifolds."
     },
     {
       "id": "riemann-hypothesis",
       "relationship": "related",
-      "description": "Both are Millennium Prize Problems. The Riemann zeta function appears in quantum field theory via zeta function regulari"
+      "description": "Both are Millennium Prize Problems. The Riemann zeta function appears in quantum field theory via zeta function regularization of determinants."
     },
     {
       "id": "hilbert-5",
       "relationship": "foundational",
-      "description": "Hilbert's 5th Problem on Lie groups provides the mathematical foundation for gauge groups — compact simple Lie groups li"
+      "description": "Hilbert's 5th Problem on Lie groups provides the mathematical foundation for gauge groups — compact simple Lie groups like SU(2) and SU(3) are the gauge groups of the Standard Model."
     },
     {
       "id": "brouwer-fixed-point",
       "relationship": "related",
-      "description": "Fixed point theorems are used in functional analysis proofs relevant to constructive QFT and the existence of vacuum sta"
+      "description": "Fixed point theorems are used in functional analysis proofs relevant to constructive QFT and the existence of vacuum states."
     },
     {
       "id": "yang-mills-transfer-matrix",
       "relationship": "has-submodule",
-      "description": "Proven finite-volume mass gap via transfer matrix / Perron-Frobenius — the strongest rigorous result in this formalizati"
+      "description": "Proven finite-volume mass gap via transfer matrix / Perron-Frobenius — the strongest rigorous result in this formalization"
+    },
+    {
+      "id": "yang-mills-lattice",
+      "relationship": "has-submodule",
+      "description": "Lattice gauge theory with proven plaquette gauge invariance and action bounds"
+    },
+    {
+      "id": "yang-mills-2d",
+      "relationship": "has-submodule",
+      "description": "Exact 2D Yang-Mills solution via Migdal formula with proven area law and mass gap"
     }
   ],
   "leanFile": {
@@ -323,7 +333,7 @@
     ],
     "namespace": "YangMillsMassGap",
     "lineCount": 48,
-    "axiomCount": 0,
+    "axiomCount": 16,
     "theoremCount": 1818,
     "definitionCount": 260
   },

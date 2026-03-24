@@ -58,63 +58,72 @@
       "title": "Part I: Hypergraph Basics",
       "summary": "3-uniform hypergraphs, (v,e)-configurations, and the (6,3)-free condition",
       "startLine": 48,
-      "endLine": 79
+      "endLine": 79,
+      "mathContext": "3-uniform hypergraphs, (v,e)-configurations, and the (6,3)-free condition"
     },
     {
       "id": "extremal-numbers",
       "title": "Part II: Extremal Numbers",
       "summary": "extremalHypergraph, ex63 definitions, trivial O(n²) bound",
       "startLine": 80,
-      "endLine": 94
+      "endLine": 94,
+      "mathContext": "extremalHypergraph, ex63 definitions, trivial O(n²) bound"
     },
     {
       "id": "graph-formulation",
       "title": "Part III: Graph Formulation",
       "summary": "RS graphs (every edge in unique triangle), hypergraph equivalence",
       "startLine": 95,
-      "endLine": 115
+      "endLine": 115,
+      "mathContext": "RS graphs (every edge in unique triangle), hypergraph equivalence"
     },
     {
       "id": "main-theorem",
       "title": "Part IV: The Main Theorem",
       "summary": "Ruzsa-Szemerédi theorem: ex₃(n; 6, 3) = o(n²). Tight bounds n² · e^{±c√(log n)}",
       "startLine": 116,
-      "endLine": 143
+      "endLine": 143,
+      "mathContext": "Ruzsa-Szemerédi theorem: ex₃(n; 6, 3) = o(n²). Tight bounds n² · e^{±c√(log n)}"
     },
     {
       "id": "triangle-removal",
       "title": "Part V: The Triangle Removal Lemma",
       "summary": "Triangle removal lemma and its derivation of the RS theorem",
       "startLine": 144,
-      "endLine": 162
+      "endLine": 162,
+      "mathContext": "Triangle removal lemma and its derivation of the RS theorem"
     },
     {
       "id": "arithmetic-progressions",
       "title": "Part VI: Connection to Arithmetic Progressions",
       "summary": "3-AP-free sets, Roth's theorem, Behrend construction, RS implies Roth",
       "startLine": 163,
-      "endLine": 197
+      "endLine": 197,
+      "mathContext": "3-AP-free sets, Roth's theorem, Behrend construction, RS implies Roth"
     },
     {
       "id": "bes-conjecture",
       "title": "Part VII: The Brown-Erdős-Sós Conjecture",
       "summary": "BES conjecture definition, k=3 is erdos-716, k=4 by Glock, general by Delcourt-Postle",
       "startLine": 198,
-      "endLine": 221
+      "endLine": 221,
+      "mathContext": "BES conjecture definition, k=3 is erdos-716, k=4 by Glock, general by Delcourt-Postle"
     },
     {
       "id": "stronger-question",
       "title": "Part VIII: Erdős's Stronger Question",
       "summary": "f^(3)(n; k+3, k) ≍ n · r_{k-3}(n)? Ruzsa's lower bound for k = 6, 7, 8",
       "startLine": 222,
-      "endLine": 241
+      "endLine": 241,
+      "mathContext": "f^(3)(n; k+3, k) ≍ n · r_{k-3}(n)? Ruzsa's lower bound for k = 6, 7, 8"
     },
     {
       "id": "summary",
       "title": "Part IX: Summary",
       "summary": "erdos_716 (proved from RS theorem) and erdos_716_summary combining main result with tight bounds",
       "startLine": 242,
-      "endLine": 265
+      "endLine": 265,
+      "mathContext": "erdos_716 (proved from RS theorem) and erdos_716_summary combining main result with tight bounds"
     }
   ],
   "conclusion": {

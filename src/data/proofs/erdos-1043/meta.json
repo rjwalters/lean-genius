@@ -74,84 +74,96 @@
       "title": "Level Sets of Polynomials",
       "startLine": 43,
       "endLine": 63,
-      "summary": "$L_f(r) = \\{z \\in \\mathbb{C} : \\|f(z)\\| \\le r\\}$ and unit lemniscate $L_f = L_f(1)$"
+      "summary": "$L_f(r) = \\{z \\in \\mathbb{C} : \\|f(z)\\| \\le r\\}$ and unit lemniscate $L_f = L_f(1)$",
+      "mathContext": "$L_f(r) = \\{z \\in \\mathbb{C} : \\|f(z)\\| \\le r\\}$ and unit lemniscate $L_f = L_f(1)$"
     },
     {
       "id": "projections",
       "title": "Projections onto Lines",
       "startLine": 64,
       "endLine": 81,
-      "summary": "Direction $u$, projection $\\pi_u(z) = \\operatorname{Re}(z\\bar{u})$, projection measure $\\mu(\\pi_u(S))$"
+      "summary": "Direction $u$, projection $\\pi_u(z) = \\operatorname{Re}(z\\bar{u})$, projection measure $\\mu(\\pi_u(S))$",
+      "mathContext": "Direction $u$, projection $\\pi_u(z) = \\operatorname{Re}(z\\bar{u})$, projection measure $\\mu(\\pi_u(S))$"
     },
     {
       "id": "examples",
       "title": "Basic Examples",
       "startLine": 82,
       "endLine": 93,
-      "summary": "Unit disk $\\overline{B}(0,1)$ projects to $[-1,1]$ with measure 2 in every direction"
+      "summary": "Unit disk $\\overline{B}(0,1)$ projects to $[-1,1]$ with measure 2 in every direction",
+      "mathContext": "Unit disk $\\overline{B}(0,1)$ projects to $[-1,1]$ with measure 2 in every direction"
     },
     {
       "id": "ehp-question",
       "title": "The EHP Question",
       "startLine": 94,
       "endLine": 108,
-      "summary": "EHP Conjecture: $\\forall f$ monic, $\\exists u$ with $\\mu(\\pi_u(L_f)) \\le 2$; min/max projection measures"
+      "summary": "EHP Conjecture: $\\forall f$ monic, $\\exists u$ with $\\mu(\\pi_u(L_f)) \\le 2$; min/max projection measures",
+      "mathContext": "EHP Conjecture: $\\forall f$ monic, $\\exists u$ with $\\mu(\\pi_u(L_f)) \\le 2$; min/max projection measures"
     },
     {
       "id": "counterexample",
       "title": "Pommerenke's Counterexample",
       "startLine": 109,
       "endLine": 135,
-      "summary": "Pommerenke (1961): $\\exists f$ monic with $\\mu(\\pi_u(L_f)) \\ge 2.386$ for all $u$; Pommerenke constant $\\mathcal{P}$"
+      "summary": "Pommerenke (1961): $\\exists f$ monic with $\\mu(\\pi_u(L_f)) \\ge 2.386$ for all $u$; Pommerenke constant $\\mathcal{P}$",
+      "mathContext": "Pommerenke (1961): $\\exists f$ monic with $\\mu(\\pi_u(L_f)) \\ge 2.386$ for all $u$; Pommerenke constant $\\mathcal{P}$"
     },
     {
       "id": "upper-bound",
       "title": "Pommerenke's Upper Bound",
       "startLine": 136,
       "endLine": 149,
-      "summary": "$\\forall f$ monic, $\\exists u$ with $\\mu(\\pi_u(L_f)) \\le 3.3$; $\\inf_u \\mu \\le 3.3$"
+      "summary": "$\\forall f$ monic, $\\exists u$ with $\\mu(\\pi_u(L_f)) \\le 3.3$; $\\inf_u \\mu \\le 3.3$",
+      "mathContext": "$\\forall f$ monic, $\\exists u$ with $\\mu(\\pi_u(L_f)) \\le 3.3$; $\\inf_u \\mu \\le 3.3$"
     },
     {
       "id": "level-set-properties",
       "title": "Properties of Level Sets",
       "startLine": 150,
       "endLine": 166,
-      "summary": "$\\operatorname{cap}(L_f) = 1$, connected iff all roots $\\in L_f$, $L_f$ compact"
+      "summary": "$\\operatorname{cap}(L_f) = 1$, connected iff all roots $\\in L_f$, $L_f$ compact",
+      "mathContext": "$\\operatorname{cap}(L_f) = 1$, connected iff all roots $\\in L_f$, $L_f$ compact"
     },
     {
       "id": "width-function",
       "title": "The Width Function",
       "startLine": 167,
       "endLine": 185,
-      "summary": "Width $w(S,u) = \\mu(\\pi_u(S))$, $w_{\\min}(S) = \\inf_u w$, $w_{\\max}(S) = \\sup_u w$"
+      "summary": "Width $w(S,u) = \\mu(\\pi_u(S))$, $w_{\\min}(S) = \\inf_u w$, $w_{\\max}(S) = \\sup_u w$",
+      "mathContext": "Width $w(S,u) = \\mu(\\pi_u(S))$, $w_{\\min}(S) = \\inf_u w$, $w_{\\max}(S) = \\sup_u w$"
     },
     {
       "id": "lemniscates",
       "title": "Lemniscates",
       "startLine": 186,
       "endLine": 201,
-      "summary": "`IsLemniscate` predicate, Bernoulli lemniscate $\\{z : |z^2 - 1| = c\\}$ (figure-eight, Bernoulli 1694)"
+      "summary": "`IsLemniscate` predicate, Bernoulli lemniscate $\\{z : |z^2 - 1| = c\\}$ (figure-eight, Bernoulli 1694)",
+      "mathContext": "`IsLemniscate` predicate, Bernoulli lemniscate $\\{z : |z^2 - 1| = c\\}$ (figure-eight, Bernoulli 1694)"
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "startLine": 202,
       "endLine": 217,
-      "summary": "Transfinite diameter $d_\\infty(L_f) = 1$, Chebyshev optimality $\\|T_n\\|_{[-1,1]} = 2^{1-n}$, roots $\\in L_f$"
+      "summary": "Transfinite diameter $d_\\infty(L_f) = 1$, Chebyshev optimality $\\|T_n\\|_{[-1,1]} = 2^{1-n}$, roots $\\in L_f$",
+      "mathContext": "Transfinite diameter $d_\\infty(L_f) = 1$, Chebyshev optimality $\\|T_n\\|_{[-1,1]} = 2^{1-n}$, roots $\\in L_f$"
     },
     {
       "id": "bounds",
       "title": "Quantitative Bounds",
       "startLine": 218,
       "endLine": 229,
-      "summary": "$\\text{Area}(L_f) \\le \\pi$, $\\text{diam}(L_f) \\le 4$ for monic polynomials"
+      "summary": "$\\text{Area}(L_f) \\le \\pi$, $\\text{diam}(L_f) \\le 4$ for monic polynomials",
+      "mathContext": "$\\text{Area}(L_f) \\le \\pi$, $\\text{diam}(L_f) \\le 4$ for monic polynomials"
     },
     {
       "id": "summary",
       "title": "Main Theorem",
       "startLine": 230,
       "endLine": 280,
-      "summary": "`erdos_1043_answer`: $\\neg\\text{EHP} \\wedge (\\forall f,\\, \\exists u,\\, \\mu(\\pi_u(L_f)) \\le 3.3)$"
+      "summary": "`erdos_1043_answer`: $\\neg\\text{EHP} \\wedge (\\forall f,\\, \\exists u,\\, \\mu(\\pi_u(L_f)) \\le 3.3)$",
+      "mathContext": "`erdos_1043_answer`: $\\neg\\text{EHP} \\wedge (\\forall f,\\, \\exists u,\\, \\mu(\\pi_u(L_f)) \\le 3.3)$"
     }
   ],
   "conclusion": {
@@ -193,30 +205,30 @@
   ],
   "relatedProofs": [
     {
-      "targetId": "erdos-1042",
-      "description": "Connected Components of Polynomial Lemniscates — direct sibling in the EHP series on lemniscate geometry"
+      "id": "erdos-1042",
+      "relationship": "sibling",
+      "description": "Both problems study the geometry of polynomial lemniscates {z : |f(z)| < 1}; #1042 asks how many connected components such a level set can have, while #1043 asks how wide (in projection) those components are."
     },
     {
-      "targetId": "erdos-1044",
-      "description": "Boundary Length of Polynomial Level Sets — sibling problem measuring arc length instead of projection measure"
+      "id": "erdos-1044",
+      "relationship": "sibling",
+      "description": "Companion problem on boundary length of polynomial level sets; together #1043 (projection measure) and #1044 (boundary arc length) probe complementary geometric measurements of the same lemniscate family."
     },
     {
-      "targetId": "erdos-1040",
-      "description": "Transfinite Diameter and Sublevel Set Measure — related potential-theoretic framing of the same lemniscate family"
+      "id": "erdos-1040",
+      "relationship": "related",
+      "description": "Asks whether the infimum of sublevel set measures is determined by transfinite diameter alone; shares the potential-theoretic backdrop of capacity-1 lemniscates that underlies the 3.3 upper bound in #1043."
     },
     {
-      "targetId": "erdos-1046",
-      "description": "Lemniscate Containment in a Disc — Pommerenke's disc bound, key tool in the 3.3 upper-bound argument"
+      "id": "erdos-1046",
+      "relationship": "related",
+      "description": "Pommerenke's 1959 disc-containment theorem (if {|f(z)| < 1} is connected it fits in a disc of radius 2) is used in the proof of the 3.3 upper bound in #1043 and cites the same Pommerenke 1959 paper."
     },
     {
-      "targetId": "erdos-509",
-      "description": "Covering Polynomial Sublevel Sets with Discs — complementary covering approach to measuring lemniscate spread"
-    },
-    "erdos-1042",
-    "erdos-1044",
-    "erdos-1040",
-    "erdos-1046",
-    "erdos-509"
+      "id": "erdos-509",
+      "relationship": "related",
+      "description": "Asks whether {z : |f(z)| ≤ 1} can be covered by discs of total radius ≤ 2 (Cartan's lemma direction); the covering and projection perspectives on lemniscate 'spread' are closely dual to the EHP conjecture in #1043."
+    }
   ],
   "references": [
     {

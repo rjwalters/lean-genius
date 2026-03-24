@@ -167,7 +167,7 @@
     {
       "id": "bezout-identity",
       "relationship": "extends",
-      "description": "Root ancestor: Bézout's identity $\\gcd(a,b) = ax + by$ over $\\mathbb{Z}$. The coprimality condition $I + J = R$ in the i"
+      "description": "Root ancestor: Bézout's identity $\\gcd(a,b) = ax + by$ over $\\mathbb{Z}$. The coprimality condition $I + J = R$ in the ideal CRT is the direct generalization of $\\gcd(m,n) = 1 \\Leftrightarrow \\exists a,b: am + bn = 1$."
     },
     {
       "id": "bezout-identity-oq-03",
@@ -182,12 +182,27 @@
     {
       "id": "bezout-identity-oq-03-oq-01-oq-01",
       "relationship": "extends",
-      "description": "Direct parent: the k-fold CRT for ℤ/nℤ (concrete case). This entry generalizes from integers to arbitrary commutative ri"
+      "description": "Direct parent: the k-fold CRT for ℤ/nℤ (concrete case). This entry generalizes from integers to arbitrary commutative rings."
     },
     {
       "id": "chinese-remainder-non-coprime-oq-02",
       "relationship": "related",
       "description": "The non-coprime CRT for Euclidean domains with the ideal bridge IsCoprime ↔ Ideal.span coprime."
+    },
+    {
+      "id": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "Constructive CRT providing an explicit solution algorithm for simultaneous congruences, complementing the abstract isomorphism established here."
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient function $\\varphi(mn) = \\varphi(m)\\varphi(n)$ for coprime $m,n$ is a direct corollary of the integer CRT $(\\mathbb{Z}/mn\\mathbb{Z})^\\times \\cong (\\mathbb{Z}/m\\mathbb{Z})^\\times \\times (\\mathbb{Z}/n\\mathbb{Z})^\\times$, which is a special case of the ideal-theoretic CRT proved here."
+    },
+    {
+      "id": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "The CRT underlies the proof of quadratic reciprocity via Gauss sums: decomposing $\\mathbb{Z}/p\\mathbb{Z}$-computations through the CRT isomorphism is a standard technique in algebraic number theory."
     }
   ],
   "leanFile": {

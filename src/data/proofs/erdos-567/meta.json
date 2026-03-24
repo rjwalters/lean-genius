@@ -29,63 +29,72 @@
       "title": "Problem Statement and Context",
       "startLine": 1,
       "endLine": 18,
-      "summary": "Module docstring introducing Erdős Problem #567: are $Q_3$, $K_{3,3}$, and $H_5$ Ramsey size linear? Notes this is a special case of #566 and cites Bradač–Gishboliner–Sudakov progress on $K_4$-subdivisions."
+      "summary": "Module docstring introducing Erdős Problem #567: are $Q_3$, $K_{3,3}$, and $H_5$ Ramsey size linear? Notes this is a special case of #566 and cites Bradač–Gishboliner–Sudakov progress on $K_4$-subdivisions.",
+      "mathContext": "Module docstring introducing Erdős Problem #567: are $Q_3$, $K_{3,3}$, and $H_5$ Ramsey size linear? Notes this is a special case of #566 and cites Bradač–Gishboliner–Sudakov progress on $K_4$-subdivi"
     },
     {
       "id": "imports",
       "title": "Library Imports",
       "startLine": 20,
       "endLine": 22,
-      "summary": "Imports Mathlib tactics, $\\mathbb{N}$, and $\\text{Finset}$ for defining concrete finite graphs with decidable adjacency."
+      "summary": "Imports Mathlib tactics, $\\mathbb{N}$, and $\\text{Finset}$ for defining concrete finite graphs with decidable adjacency.",
+      "mathContext": "Imports Mathlib tactics, $\\mathbb{N}$, and $\\text{Finset}$ for defining concrete finite graphs with decidable adjacency."
     },
     {
       "id": "graph-infrastructure",
       "title": "Graph Infrastructure",
       "startLine": 26,
       "endLine": 36,
-      "summary": "Defines the polymorphic $\\text{Graph}'(V)$ structure (symmetric, irreflexive adjacency) and edge counting $|E(G)| = \\frac{1}{2}|\\{(u,v) : \\text{adj}(u,v)\\}|$ for finite types."
+      "summary": "Defines the polymorphic $\\text{Graph}'(V)$ structure (symmetric, irreflexive adjacency) and edge counting $|E(G)| = \\frac{1}{2}|\\{(u,v) : \\text{adj}(u,v)\\}|$ for finite types.",
+      "mathContext": "Defines the polymorphic $\\text{Graph}'(V)$ structure (symmetric, irreflexive adjacency) and edge counting $|E(G)| = \\frac{1}{2}|\\{(u,v) : \\text{adj}(u,v)\\}|$ for finite types."
     },
     {
       "id": "q3-definition",
       "title": "Q₃: The 3-Dimensional Hypercube",
       "startLine": 38,
       "endLine": 48,
-      "summary": "Constructs $Q_3$ on $\\{0,1\\}^3$ with Hamming-distance-1 adjacency. Proves symmetry (coordinate differences commute) and irreflexivity ($d_H(v,v) = 0$). Has 8 vertices, 12 edges."
+      "summary": "Constructs $Q_3$ on $\\{0,1\\}^3$ with Hamming-distance-1 adjacency. Proves symmetry (coordinate differences commute) and irreflexivity ($d_H(v,v) = 0$). Has 8 vertices, 12 edges.",
+      "mathContext": "Constructs $Q_3$ on $\\{0,1\\}^3$ with Hamming-distance-1 adjacency. Proves symmetry (coordinate differences commute) and irreflexivity ($d_H(v,v) = 0$). Has 8 vertices, 12 edges."
     },
     {
       "id": "k33-definition",
       "title": "K₃,₃: Complete Bipartite Graph",
       "startLine": 50,
       "endLine": 57,
-      "summary": "Constructs $K_{3,3}$ on $\\text{Fin}\\;3 \\oplus \\text{Fin}\\;3$ with cross-part adjacency. The sum type naturally encodes the bipartition. Has 6 vertices, 9 edges."
+      "summary": "Constructs $K_{3,3}$ on $\\text{Fin}\\;3 \\oplus \\text{Fin}\\;3$ with cross-part adjacency. The sum type naturally encodes the bipartition. Has 6 vertices, 9 edges.",
+      "mathContext": "Constructs $K_{3,3}$ on $\\text{Fin}\\;3 \\oplus \\text{Fin}\\;3$ with cross-part adjacency. The sum type naturally encodes the bipartition. Has 6 vertices, 9 edges."
     },
     {
       "id": "h5-definition",
       "title": "H₅ = K₄*: Cycle with Chords",
       "startLine": 59,
       "endLine": 65,
-      "summary": "Constructs $H_5$ on $\\text{Fin}\\;5$ as the 5-cycle plus chords $\\{0\\text{-}2, 1\\text{-}3\\}$. Adjacency uses modular arithmetic for cycle edges. Has 5 vertices, 7 edges."
+      "summary": "Constructs $H_5$ on $\\text{Fin}\\;5$ as the 5-cycle plus chords $\\{0\\text{-}2, 1\\text{-}3\\}$. Adjacency uses modular arithmetic for cycle edges. Has 5 vertices, 7 edges.",
+      "mathContext": "Constructs $H_5$ on $\\text{Fin}\\;5$ as the 5-cycle plus chords $\\{0\\text{-}2, 1\\text{-}3\\}$. Adjacency uses modular arithmetic for cycle edges. Has 5 vertices, 7 edges."
     },
     {
       "id": "size-ramsey-defs",
       "title": "Size Ramsey Number and Linearity",
       "startLine": 67,
       "endLine": 78,
-      "summary": "Axiomatizes $\\hat{r}(G,H) : \\mathbb{N}$ and defines Ramsey size linearity: $\\exists C > 0,\\;\\forall H,\\;\\hat{r}(G,H) \\le C \\cdot |E(H)|$."
+      "summary": "Axiomatizes $\\hat{r}(G,H) : \\mathbb{N}$ and defines Ramsey size linearity: $\\exists C > 0,\\;\\forall H,\\;\\hat{r}(G,H) \\le C \\cdot |E(H)|$.",
+      "mathContext": "Axiomatizes $\\hat{r}(G,H) : \\mathbb{N}$ and defines Ramsey size linearity: $\\exists C > 0,\\;\\forall H,\\;\\hat{r}(G,H) \\le C \\cdot |E(H)|$."
     },
     {
       "id": "main-questions",
       "title": "Three Open Questions",
       "startLine": 80,
       "endLine": 89,
-      "summary": "States the three axioms: $Q_3$, $K_{3,3}$, and $H_5$ are Ramsey size linear. Each is open — axiom form reflects the conjectural status."
+      "summary": "States the three axioms: $Q_3$, $K_{3,3}$, and $H_5$ are Ramsey size linear. Each is open — axiom form reflects the conjectural status.",
+      "mathContext": "States the three axioms: $Q_3$, $K_{3,3}$, and $H_5$ are Ramsey size linear. Each is open — axiom form reflects the conjectural status."
     },
     {
       "id": "partial-results",
       "title": "Partial Results",
       "startLine": 91,
       "endLine": 103,
-      "summary": "Records Bradač–Gishboliner–Sudakov ($K_4$-subdivisions with $\\ge 6$ vertices are linear) and EFRS ($\\le n+1$ edges implies linearity). Both fall short of resolving the three specific cases."
+      "summary": "Records Bradač–Gishboliner–Sudakov ($K_4$-subdivisions with $\\ge 6$ vertices are linear) and EFRS ($\\le n+1$ edges implies linearity). Both fall short of resolving the three specific cases.",
+      "mathContext": "Records Bradač–Gishboliner–Sudakov ($K_4$-subdivisions with $\\ge 6$ vertices are linear) and EFRS ($\\le n+1$ edges implies linearity). Both fall short of resolving the three specific cases."
     }
   ],
   "overview": {

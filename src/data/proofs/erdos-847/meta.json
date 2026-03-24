@@ -107,63 +107,72 @@
       "title": "Arithmetic Progression Definitions",
       "summary": "isThreeTermAP, isAPFree, isAPFree' definitions",
       "startLine": 39,
-      "endLine": 61
+      "endLine": 61,
+      "mathContext": "isThreeTermAP, isAPFree, isAPFree' definitions"
     },
     {
       "id": "enr-condition",
       "title": "The ENR Condition",
       "summary": "hasENRCondition, hasENRProperty definitions",
       "startLine": 62,
-      "endLine": 79
+      "endLine": 79,
+      "mathContext": "hasENRCondition, hasENRProperty definitions"
     },
     {
       "id": "finite-union",
       "title": "Finite Union Characterization",
       "summary": "isFiniteAPFreeUnion, hasFiniteAPFreePartition definitions",
       "startLine": 80,
-      "endLine": 96
+      "endLine": 96,
+      "mathContext": "isFiniteAPFreeUnion, hasFiniteAPFreePartition definitions"
     },
     {
       "id": "conjecture",
       "title": "The Conjecture (Disproved)",
       "summary": "ENRConjecture, enr_conjecture_false, counterexample_exists",
       "startLine": 97,
-      "endLine": 122
+      "endLine": 122,
+      "mathContext": "ENRConjecture, enr_conjecture_false, counterexample_exists"
     },
     {
       "id": "szemeredi",
       "title": "Szemeredi's Theorem",
       "summary": "szemeredi_theorem, apfree_zero_density",
       "startLine": 123,
-      "endLine": 144
+      "endLine": 144,
+      "mathContext": "szemeredi_theorem, apfree_zero_density"
     },
     {
       "id": "why-fails",
       "title": "Why the Conjecture Fails",
       "summary": "key_insight, finite_union_implies_enr",
       "startLine": 145,
-      "endLine": 170
+      "endLine": 170,
+      "mathContext": "key_insight, finite_union_implies_enr"
     },
     {
       "id": "related",
       "title": "Related Problems",
       "summary": "Problems #774 and #846",
       "startLine": 171,
-      "endLine": 184
+      "endLine": 184,
+      "mathContext": "Problems #774 and #846"
     },
     {
       "id": "bounds",
       "title": "Roth's Theorem and Bounds",
       "summary": "roth_theorem, kelley_meka_bound",
       "startLine": 185,
-      "endLine": 204
+      "endLine": 204,
+      "mathContext": "roth_theorem, kelley_meka_bound"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_847_disproved, erdos_847_counterexample",
       "startLine": 205,
-      "endLine": 254
+      "endLine": 254,
+      "mathContext": "erdos_847_disproved, erdos_847_counterexample"
     }
   ],
   "conclusion": {
@@ -187,13 +196,13 @@
     {
       "title": "On certain sets of integers",
       "author": "Roth, K. F.",
-      "year": 1953,
+      "year": "1953",
       "description": "First density result for 3-term AP-free sets; foundational for the ENR condition analysis"
     },
     {
       "title": "Strong bounds for 3-progressions",
       "author": "Kelley, Z. and Meka, R.",
-      "year": 2023,
+      "year": "2023",
       "description": "Best known bounds for AP-free sets: |A| <= N exp(-c(log N)^{1/12}), sharpening the quantitative landscape for Problem #847"
     }
   ],
@@ -223,12 +232,12 @@
     {
       "id": "erdos-774",
       "relationship": "related",
-      "description": "Both ask whether a proportionality condition on subsets forces finite union decomposition; #774 for dissociated sets (op"
+      "description": "Both ask whether a proportionality condition on subsets forces finite union decomposition; #774 for dissociated sets (open), #847 for AP-free sets (disproved)"
     },
     {
       "id": "szemeredi-theorem",
       "relationship": "foundational",
-      "description": "Szemeredi's theorem (dense sets contain APs) is the fundamental result underlying the ENR condition and AP-free set anal"
+      "description": "Szemeredi's theorem (dense sets contain APs) is the fundamental result underlying the ENR condition and AP-free set analysis"
     }
   ],
   "leanFile": {

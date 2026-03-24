@@ -104,49 +104,56 @@
       "title": "Basic Graph Definitions",
       "summary": "Graph, numEdges, containsSubgraph, isHFree",
       "startLine": 41,
-      "endLine": 60
+      "endLine": 60,
+      "mathContext": "Graph, numEdges, containsSubgraph, isHFree"
     },
     {
       "id": "turan",
       "title": "The Turán Number",
       "summary": "ex(n;H) = max edges in H-free graph",
       "startLine": 61,
-      "endLine": 70
+      "endLine": 70,
+      "mathContext": "ex(n;H) = max edges in H-free graph"
     },
     {
       "id": "f-function",
       "title": "The Function f(n;k,l)",
       "summary": "min ex over graphs with k vertices, l edges",
       "startLine": 71,
-      "endLine": 84
+      "endLine": 84,
+      "mathContext": "min ex over graphs with k vertices, l edges"
     },
     {
       "id": "range",
       "title": "Range of Interest",
       "summary": "k < l ≤ k²/4 (bipartite threshold)",
       "startLine": 85,
-      "endLine": 95
+      "endLine": 95,
+      "mathContext": "k < l ≤ k²/4 (bipartite threshold)"
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "summary": "Dirac-Erdős and Turán's theorem",
       "startLine": 96,
-      "endLine": 124
+      "endLine": 124,
+      "mathContext": "Dirac-Erdős and Turán's theorem"
     },
     {
       "id": "monotonicity",
       "title": "The Monotonicity Question",
       "summary": "Is f strictly increasing in l? (OPEN)",
       "startLine": 125,
-      "endLine": 143
+      "endLine": 143,
+      "mathContext": "Is f strictly increasing in l? (OPEN)"
     },
     {
       "id": "bounds",
       "title": "Bounds and Estimates",
       "summary": "Upper/lower bounds, tree case, bipartite threshold",
       "startLine": 144,
-      "endLine": 166
+      "endLine": 166,
+      "mathContext": "Upper/lower bounds, tree case, bipartite threshold"
     },
     {
       "id": "special-cases",
@@ -160,14 +167,16 @@
       "title": "Turán Density",
       "summary": "Asymptotic density π(H), dense graph triangles",
       "startLine": 187,
-      "endLine": 206
+      "endLine": 206,
+      "mathContext": "Asymptotic density π(H), dense graph triangles"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Main results and open questions",
       "startLine": 207,
-      "endLine": 245
+      "endLine": 245,
+      "mathContext": "Main results and open questions"
     }
   ],
   "conclusion": {
@@ -217,17 +226,17 @@
     {
       "id": "ramseys-theorem",
       "relationship": "related",
-      "description": "Both are foundational results in extremal/Ramsey graph theory: Ramsey guarantees monochromatic cliques in edge-colored c"
+      "description": "Both are foundational results in extremal/Ramsey graph theory: Ramsey guarantees monochromatic cliques in edge-colored complete graphs, while extremal numbers quantify the threshold for forced subgraph copies in dense graphs"
     },
     {
       "id": "szemeredi-regularity",
       "relationship": "related",
-      "description": "The Szemerédi regularity lemma is the main structural tool for proving extremal graph theory results: it decomposes dens"
+      "description": "The Szemerédi regularity lemma is the main structural tool for proving extremal graph theory results: it decomposes dense graphs into pseudorandom bipartite pairs, enabling subgraph counting that underlies Turán-type bounds like those studied here"
     },
     {
       "id": "erdos-1009",
       "relationship": "related",
-      "description": "Both concern edge-counting thresholds in extremal graph theory: #766 studies the minimum extremal number over graphs wit"
+      "description": "Both concern edge-counting thresholds in extremal graph theory: #766 studies the minimum extremal number over graphs with given vertex and edge counts, while #1009 studies edge-disjoint subgraph packing beyond the Turán threshold"
     },
     {
       "id": "erdos-767",
@@ -238,6 +247,11 @@
       "id": "erdos-765",
       "relationship": "related",
       "description": "Adjacent Erdős problem studying related extremal graph theory questions about edge density thresholds"
+    },
+    {
+      "id": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The binomial coefficient C(n,2) = n(n-1)/2 counts the maximum possible edges in an n-vertex graph and appears throughout extremal graph theory as the normalizing quantity for edge density"
     }
   ],
   "leanFile": {

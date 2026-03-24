@@ -20,7 +20,7 @@
     "erdosUrl": "https://erdosproblems.com/1165",
     "erdosProblemStatus": "solved",
     "axiomCount": 8,
-    "lineCount": 175,
+    "lineCount": 188,
     "assumptions": "8 axioms: VisitCount and FavouriteSites (random walk infrastructure), prob_favourite_count_io with bounds (probability events), toth_favourite_sites_geq_4 (Tóth 2001), hao_li_okada_zheng_three_favourite_sites (Hao et al. 2024), bass_griffin_1d_unique (background). All theorems fully proved from axioms (0 sorries).",
     "mathlib_version": "4.26.0"
   },
@@ -107,12 +107,12 @@
         "Bálint Tóth"
       ],
       "title": "No more than three favourite sites for simple random walk",
-      "journal": "Annals of Probability",
       "volume": "29",
       "issue": "1",
-      "year": 2001,
+      "year": "2001",
       "pages": "484–503",
-      "note": "Proves P(|F(n)| = r i.o.) = 0 for r ≥ 4 in the 2D random walk, establishing the upper bound of 3 favourite sites."
+      "note": "Proves P(|F(n)| = r i.o.) = 0 for r ≥ 4 in the 2D random walk, establishing the upper bound of 3 favourite sites.",
+      "venue": "Annals of Probability"
     },
     {
       "authors": [
@@ -122,7 +122,7 @@
         "Chen Zheng"
       ],
       "title": "Three favourite sites occurs infinitely often for one-dimensional simple random walk",
-      "year": 2024,
+      "year": "2024",
       "note": "Proves P(|F(n)| = 3 i.o.) = 1, matching Tóth's upper bound and completely resolving Erdős Problem #1165."
     },
     {
@@ -131,11 +131,11 @@
         "Philip S. Griffin"
       ],
       "title": "The most visited site of Brownian motion and simple random walk",
-      "journal": "Zeitschrift für Wahrscheinlichkeitstheorie und verwandte Gebiete",
       "volume": "70",
-      "year": 1985,
+      "year": "1985",
       "pages": "417–436",
-      "note": "Establishes uniqueness of the favourite site in 1D, motivating the question about higher dimensions."
+      "note": "Establishes uniqueness of the favourite site in 1D, motivating the question about higher dimensions.",
+      "venue": "Zeitschrift für Wahrscheinlichkeitstheorie und verwandte Gebiete"
     }
   ],
   "crossReferences": [
@@ -161,11 +161,16 @@
     }
   ],
   "relatedProofs": [
-    "central-limit-theorem",
-    "erdos-1139",
-    "prob-method-second-moment",
-    "bertrands-postulate",
-    "buffons-needle"
+    {
+      "id": "central-limit-theorem",
+      "title": "Central Limit Theorem",
+      "relationship": "background — CLT gives the Gaussian scaling of the 2D walk"
+    },
+    {
+      "id": "erdos-1144",
+      "title": "Erdős Problem #1144: Partial Sums of Random Multiplicative Functions",
+      "relationship": "sibling Erdős problem involving probabilistic analysis"
+    }
   ],
   "leanFile": {
     "imports": [
@@ -177,22 +182,10 @@
       "MeasureTheory"
     ],
     "namespace": "Erdos1165",
-    "lineCount": 175,
+    "lineCount": 188,
     "axiomCount": 8,
     "theoremCount": 5,
     "definitionCount": 2,
     "sorryCount": 0
-  },
-  "relatedProofs": [
-    {
-      "id": "central-limit-theorem",
-      "title": "Central Limit Theorem",
-      "relationship": "background — CLT gives the Gaussian scaling of the 2D walk"
-    },
-    {
-      "id": "erdos-1144",
-      "title": "Erdős Problem #1144: Partial Sums of Random Multiplicative Functions",
-      "relationship": "sibling Erdős problem involving probabilistic analysis"
-    }
-  ]
+  }
 }

@@ -27,7 +27,8 @@
       "Set.ncard for cardinality of sets of pairs",
       "Asymptotic density of integer sets"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "lineCount": 333
   },
   "sections": [
     {
@@ -178,12 +179,12 @@
     {
       "id": "erdos-28",
       "relationship": "generalizes",
-      "description": "Problem #1145 generalizes #28: setting A = B recovers the Erdős–Turán conjecture. The implication is proved as erdos_114"
+      "description": "Problem #1145 generalizes #28: setting A = B recovers the Erdős–Turán conjecture. The implication is proved as erdos_1145_implies_28."
     },
     {
       "id": "erdos-331",
       "relationship": "related",
-      "description": "Problem #331 (disproved by Ruzsa) provides the counterexample showing the ratio condition aₙ/bₙ → 1 is necessary in Prob"
+      "description": "Problem #331 (disproved by Ruzsa) provides the counterexample showing the ratio condition aₙ/bₙ → 1 is necessary in Problem #1145."
     }
   ],
   "leanFile": {
@@ -197,7 +198,7 @@
       "Pointwise"
     ],
     "namespace": "Erdos1145",
-    "lineCount": 337,
+    "lineCount": 333,
     "axiomCount": 10,
     "theoremCount": 10,
     "definitionCount": 10

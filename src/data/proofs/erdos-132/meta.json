@@ -106,70 +106,80 @@
       "title": "Header, Imports, and Namespace",
       "startLine": 1,
       "endLine": 39,
-      "summary": "Module documentation citing the problem statement, known results, and references; imports of InnerProductSpace.PiL2, Finset.Basic, Finset.Card, Real.Sqrt, and Topology.MetricSpace.Basic"
+      "summary": "Module documentation citing the problem statement, known results, and references; imports of InnerProductSpace.PiL2, Finset.Basic, Finset.Card, Real.Sqrt, and Topology.MetricSpace.Basic",
+      "mathContext": "Module documentation citing the problem statement, known results, and references; imports of InnerProductSpace.PiL2, Finset.Basic, Finset.Card, Real.Sqrt, and Topology.MetricSpace.Basic"
     },
     {
       "id": "basic-definitions",
       "title": "Part I: Basic Definitions",
       "startLine": 40,
       "endLine": 55,
-      "summary": "Defines Point = EuclideanSpace ℝ (Fin 2), dist p q = ‖p - q‖; proves dist_symm (via norm_neg) and dist_nonneg (via norm_nonneg)"
+      "summary": "Defines Point = EuclideanSpace ℝ (Fin 2), dist p q = ‖p - q‖; proves dist_symm (via norm_neg) and dist_nonneg (via norm_nonneg)",
+      "mathContext": "Defines Point = EuclideanSpace ℝ (Fin 2), dist p q = ‖p - q‖; proves dist_symm (via norm_neg) and dist_nonneg (via norm_nonneg)"
     },
     {
       "id": "distance-multiplicity",
       "title": "Part II: Distance Multiplicity",
       "startLine": 56,
       "endLine": 67,
-      "summary": "Defines pairsAtDistance A d by filtering A.powerset for 2-element subsets at distance d, and multiplicity A d as the cardinality"
+      "summary": "Defines pairsAtDistance A d by filtering A.powerset for 2-element subsets at distance d, and multiplicity A d as the cardinality",
+      "mathContext": "Defines pairsAtDistance A d by filtering A.powerset for 2-element subsets at distance d, and multiplicity A d as the cardinality"
     },
     {
       "id": "rare-distances",
       "title": "Part III: Rare Distances and Problem Statements",
       "startLine": 68,
       "endLine": 102,
-      "summary": "Defines isRareDistance (d > 0, 1 ≤ mult ≤ n); formalizes erdos132_question1 (two rare distances), erdos132_question2 (count → ∞), and erdos132_strong_conjecture (n^{1-ε} rare distances)"
+      "summary": "Defines isRareDistance (d > 0, 1 ≤ mult ≤ n); formalizes erdos132_question1 (two rare distances), erdos132_question2 (count → ∞), and erdos132_strong_conjecture (n^{1-ε} rare distances)",
+      "mathContext": "Defines isRareDistance (d > 0, 1 ≤ mult ≤ n); formalizes erdos132_question1 (two rare distances), erdos132_question2 (count → ∞), and erdos132_strong_conjecture (n^{1-ε} rare distances)"
     },
     {
       "id": "hopf-pannwitz",
       "title": "Part IV: Hopf-Pannwitz Theorem (1934)",
       "startLine": 103,
       "endLine": 115,
-      "summary": "Axiomatizes the foundational result: for |A| ≥ 2, there exists a rare distance (the diameter occurs at most n times)"
+      "summary": "Axiomatizes the foundational result: for |A| ≥ 2, there exists a rare distance (the diameter occurs at most n times)",
+      "mathContext": "Axiomatizes the foundational result: for |A| ≥ 2, there exists a rare distance (the diameter occurs at most n times)"
     },
     {
       "id": "counterexample",
       "title": "Part V: Counterexample for n = 4",
       "startLine": 116,
       "endLine": 129,
-      "summary": "Axiomatizes existence of a 4-point set (double equilateral triangle) with only one rare distance"
+      "summary": "Axiomatizes existence of a 4-point set (double equilateral triangle) with only one rare distance",
+      "mathContext": "Axiomatizes existence of a 4-point set (double equilateral triangle) with only one rare distance"
     },
     {
       "id": "positive-results",
       "title": "Part VI: Positive Results (Erdős-Fishburn 1996)",
       "startLine": 130,
       "endLine": 145,
-      "summary": "Separate axioms for n = 5 and n = 6: two rare distances always exist, proved by exhaustive case analysis"
+      "summary": "Separate axioms for n = 5 and n = 6: two rare distances always exist, proved by exhaustive case analysis",
+      "mathContext": "Separate axioms for n = 5 and n = 6: two rare distances always exist, proved by exhaustive case analysis"
     },
     {
       "id": "convex-position",
       "title": "Part VII: Convex Position (CDL 2025)",
       "startLine": 146,
       "endLine": 163,
-      "summary": "Defines inConvexPosition via convex hull exclusion; axiomatizes Clemen-Dumitrescu-Liu result for |A| ≥ 5 in convex position"
+      "summary": "Defines inConvexPosition via convex hull exclusion; axiomatizes Clemen-Dumitrescu-Liu result for |A| ≥ 5 in convex position",
+      "mathContext": "Defines inConvexPosition via convex hull exclusion; axiomatizes Clemen-Dumitrescu-Liu result for |A| ≥ 5 in convex position"
     },
     {
       "id": "related-bounds",
       "title": "Part VIII: Related Bounds",
       "startLine": 164,
       "endLine": 185,
-      "summary": "Axiomatizes Spencer-Szemerédi-Trotter unit distance bound O(n^{4/3}) and Guth-Katz distinct distances Ω(n/log n) for context"
+      "summary": "Axiomatizes Spencer-Szemerédi-Trotter unit distance bound O(n^{4/3}) and Guth-Katz distinct distances Ω(n/log n) for context",
+      "mathContext": "Axiomatizes Spencer-Szemerédi-Trotter unit distance bound O(n^{4/3}) and Guth-Katz distinct distances Ω(n/log n) for context"
     },
     {
       "id": "summary",
       "title": "Part IX: Summary Theorem",
       "startLine": 186,
       "endLine": 217,
-      "summary": "erdos_132_summary combines Hopf-Pannwitz, n=4 counterexample, n=5 and n=6 results into a single conjunction, proved by exact tuple construction"
+      "summary": "erdos_132_summary combines Hopf-Pannwitz, n=4 counterexample, n=5 and n=6 results into a single conjunction, proved by exact tuple construction",
+      "mathContext": "erdos_132_summary combines Hopf-Pannwitz, n=4 counterexample, n=5 and n=6 results into a single conjunction, proved by exact tuple construction"
     }
   ],
   "conclusion": {
@@ -216,12 +226,12 @@
     {
       "id": "erdos-1083",
       "relationship": "related",
-      "description": "Distinct distances in higher dimensions — Problem #1083 asks for the growth rate of f_d(n), the minimum distinct distanc"
+      "description": "Distinct distances in higher dimensions — Problem #1083 asks for the growth rate of f_d(n), the minimum distinct distances in ℝ^d. Both concern the structure of distance spectra."
     },
     {
       "id": "erdos-1088",
       "relationship": "related",
-      "description": "Distinct distance subsets — Problem #1088 asks for subsets with many distinct distances. Complementary to #132 which ask"
+      "description": "Distinct distance subsets — Problem #1088 asks for subsets with many distinct distances. Complementary to #132 which asks about distances with few occurrences."
     }
   ]
 }

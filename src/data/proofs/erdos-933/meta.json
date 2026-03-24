@@ -83,70 +83,80 @@
       "title": "Erdős Problem #933: Smooth Part of Consecutive Products",
       "startLine": 1,
       "endLine": 33,
-      "summary": "File header with problem statement, references [Er76d], and imports: Mathlib.Data.Nat.Factorization.Basic, Mathlib.Analysis.SpecialFunctions.Log.Basic, Mathlib.NumberTheory.Padics.PadicVal. Opens `Nat` and `Real` namespaces."
+      "summary": "File header with problem statement, references [Er76d], and imports: Mathlib.Data.Nat.Factorization.Basic, Mathlib.Analysis.SpecialFunctions.Log.Basic, Mathlib.NumberTheory.Padics.PadicVal. Opens `Nat` and `Real` namespaces.",
+      "mathContext": "File header with problem statement, references [Er76d], and imports: Mathlib.Data.Nat.Factorization.Basic, Mathlib.Analysis.SpecialFunctions.Log.Basic, Mathlib.NumberTheory.Padics.PadicVal. Opens `Nat"
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 34,
       "endLine": 60,
-      "summary": "Six definitions building the smooth part machinery: `power2 n = 2^(n.factorization 2)`, `power3 n = 3^(n.factorization 3)`, `smoothPart23 = power2 * power3`, `consecutiveSmoothPart n = smoothPart23(n*(n+1))`, `exp2Consecutive`/`exp3Consecutive` (exponent extractors), and noncomputable `smoothRatio` with n≤1 guard."
+      "summary": "Six definitions building the smooth part machinery: `power2 n = 2^(n.factorization 2)`, `power3 n = 3^(n.factorization 3)`, `smoothPart23 = power2 * power3`, `consecutiveSmoothPart n = smoothPart23(n*(n+1))`, `exp2Consecutive`/`exp3Consecutive` (exponent extractors), and noncomputable `smoothRatio` with n≤1 guard.",
+      "mathContext": "Six definitions building the smooth part machinery: `power2 n = 2^(n.factorization 2)`, `power3 n = 3^(n.factorization 3)`, `smoothPart23 = power2 * power3`, `consecutiveSmoothPart n = smoothPart23(n*"
     },
     {
       "id": "the-erd-s-question",
       "title": "The Erdős Question",
       "startLine": 61,
       "endLine": 68,
-      "summary": "Defines `ErdosQuestion933 := ∀ M : ℝ, ∃ n : ℕ, n ≥ 2 ∧ smoothRatio n > M` — the sequential characterization of limsup smoothRatio = ∞, avoiding Filter-based limsup."
+      "summary": "Defines `ErdosQuestion933 := ∀ M : ℝ, ∃ n : ℕ, n ≥ 2 ∧ smoothRatio n > M` — the sequential characterization of limsup smoothRatio = ∞, avoiding Filter-based limsup.",
+      "mathContext": "Defines `ErdosQuestion933 := ∀ M : ℝ, ∃ n : ℕ, n ≥ 2 ∧ smoothRatio n > M` — the sequential characterization of limsup smoothRatio = ∞, avoiding Filter-based limsup."
     },
     {
       "id": "mahler-s-upper-bound",
       "title": "Mahler's Upper Bound",
       "startLine": 69,
       "endLine": 83,
-      "summary": "Axiomatizes `mahler_upper_bound`: ∀ ε > 0, ∃ N, ∀ n ≥ N, consecutiveSmoothPart n < n^{1+ε}. Placeholder `mahlerSUnitConnection` notes the S-unit equation origin. From Baker-Evertse theory."
+      "summary": "Axiomatizes `mahler_upper_bound`: ∀ ε > 0, ∃ N, ∀ n ≥ N, consecutiveSmoothPart n < n^{1+ε}. Placeholder `mahlerSUnitConnection` notes the S-unit equation origin. From Baker-Evertse theory.",
+      "mathContext": "Axiomatizes `mahler_upper_bound`: ∀ ε > 0, ∃ N, ∀ n ≥ N, consecutiveSmoothPart n < n^{1+ε}. Placeholder `mahlerSUnitConnection` notes the S-unit equation origin. From Baker-Evertse theory."
     },
     {
       "id": "erd-s-s-lower-bound",
       "title": "Erdős's Lower Bound",
       "startLine": 84,
       "endLine": 112,
-      "summary": "Axiomatizes `erdos_lower_bound` (i.o. > n·log n). Theorem `limsup_infinite` attempts to derive ErdosQuestion933 from the axiom but has 2 sorries in the ratio manipulation (div_gt_iff + bound restructuring)."
+      "summary": "Axiomatizes `erdos_lower_bound` (i.o. > n·log n). Theorem `limsup_infinite` attempts to derive ErdosQuestion933 from the axiom but has 2 sorries in the ratio manipulation (div_gt_iff + bound restructuring).",
+      "mathContext": "Axiomatizes `erdos_lower_bound` (i.o. > n·log n). Theorem `limsup_infinite` attempts to derive ErdosQuestion933 from the axiom but has 2 sorries in the ratio manipulation (div_gt_iff + bound restructu"
     },
     {
       "id": "steinerberger-s-construction",
       "title": "Steinerberger's Construction",
       "startLine": 113,
       "endLine": 140,
-      "summary": "Defines `steinerbergerN r = 2^(3^r)`. Proves `steinerberger_n_plus_1` (rfl). Axiomatizes `steinerberger_divisibility` (3^{r+1} | 2^{3^r}+1). States `steinerberger_gives_large_smooth` (sorry). Axiomatizes `steinerberger_proof : ErdosQuestion933`."
+      "summary": "Defines `steinerbergerN r = 2^(3^r)`. Proves `steinerberger_n_plus_1` (rfl). Axiomatizes `steinerberger_divisibility` (3^{r+1} | 2^{3^r}+1). States `steinerberger_gives_large_smooth` (sorry). Axiomatizes `steinerberger_proof : ErdosQuestion933`.",
+      "mathContext": "Defines `steinerbergerN r = 2^(3^r)`. Proves `steinerberger_n_plus_1` (rfl). Axiomatizes `steinerberger_divisibility` (3^{r+1} | 2^{3^r}+1). States `steinerberger_gives_large_smooth` (sorry). Axiomati"
     },
     {
       "id": "why-the-construction-works",
       "title": "Why the Construction Works",
       "startLine": 141,
       "endLine": 160,
-      "summary": "Axiomatizes `power2_mod3` (2^{3^r} ≡ 2 mod 3) and `lifting_the_exponent` (3^{r+1} | 2^{3^r}+1). Defines `LTEConnection` explaining the LTE application: v_p(a^n+b^n) = v_p(a+b) + v_p(n) with p=3, a=2, b=1, n=3^r."
+      "summary": "Axiomatizes `power2_mod3` (2^{3^r} ≡ 2 mod 3) and `lifting_the_exponent` (3^{r+1} | 2^{3^r}+1). Defines `LTEConnection` explaining the LTE application: v_p(a^n+b^n) = v_p(a+b) + v_p(n) with p=3, a=2, b=1, n=3^r.",
+      "mathContext": "Axiomatizes `power2_mod3` (2^{3^r} ≡ 2 mod 3) and `lifting_the_exponent` (3^{r+1} | 2^{3^r}+1). Defines `LTEConnection` explaining the LTE application: v_p(a^n+b^n) = v_p(a+b) + v_p(n) with p=3, a=2, "
     },
     {
       "id": "properties-of-n-n-1",
       "title": "Properties of n(n+1)",
       "startLine": 161,
       "endLine": 180,
-      "summary": "Proves `consecutive_coprime` (one-line: `Nat.coprime_self_add_one n`). States `power2_consecutive` and `power3_consecutive` (factorization additivity for coprime products, both sorry) showing v_p(n(n+1)) = v_p(n) + v_p(n+1)."
+      "summary": "Proves `consecutive_coprime` (one-line: `Nat.coprime_self_add_one n`). States `power2_consecutive` and `power3_consecutive` (factorization additivity for coprime products, both sorry) showing v_p(n(n+1)) = v_p(n) + v_p(n+1).",
+      "mathContext": "Proves `consecutive_coprime` (one-line: `Nat.coprime_self_add_one n`). States `power2_consecutive` and `power3_consecutive` (factorization additivity for coprime products, both sorry) showing v_p(n(n+"
     },
     {
       "id": "examples",
       "title": "Examples",
       "startLine": 181,
       "endLine": 198,
-      "summary": "Two concrete examples verified by `native_decide`: steinerbergerN 1 = 8 (8·9=72=2³·3², ratio≈4.33), steinerbergerN 2 = 512 (512·513=2⁹·3³·19, smooth=13824). Defines `exampleSequence := steinerbergerN`."
+      "summary": "Two concrete examples verified by `native_decide`: steinerbergerN 1 = 8 (8·9=72=2³·3², ratio≈4.33), steinerbergerN 2 = 512 (512·513=2⁹·3³·19, smooth=13824). Defines `exampleSequence := steinerbergerN`.",
+      "mathContext": "Two concrete examples verified by `native_decide`: steinerbergerN 1 = 8 (8·9=72=2³·3², ratio≈4.33), steinerbergerN 2 = 512 (512·513=2⁹·3³·19, smooth=13824). Defines `exampleSequence := steinerbergerN`"
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 199,
       "endLine": 230,
-      "summary": "Three equivalent main results: `erdos_933 := steinerberger_proof` (one-line), `erdos_933_main` (explicit ∀M∃n unfolding), `erdos_933_solved` (synonym). Docstring summarizes: YES, Steinerberger's proof via n=2^{3^r}, k=3^r, l=r+1, Mahler upper bound."
+      "summary": "Three equivalent main results: `erdos_933 := steinerberger_proof` (one-line), `erdos_933_main` (explicit ∀M∃n unfolding), `erdos_933_solved` (synonym). Docstring summarizes: YES, Steinerberger's proof via n=2^{3^r}, k=3^r, l=r+1, Mahler upper bound.",
+      "mathContext": "Three equivalent main results: `erdos_933 := steinerberger_proof` (one-line), `erdos_933_main` (explicit ∀M∃n unfolding), `erdos_933_solved` (synonym). Docstring summarizes: YES, Steinerberger's proof"
     }
   ],
   "conclusion": {

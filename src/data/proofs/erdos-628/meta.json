@@ -77,84 +77,96 @@
       "title": "Header, Imports, and Namespace",
       "summary": "Module docstring with conjecture statement and known results, Mathlib import, opening of Finset/Function/SimpleGraph/Nat namespaces, and type variable declarations",
       "startLine": 1,
-      "endLine": 30
+      "endLine": 30,
+      "mathContext": "Module docstring with conjecture statement and known results, Mathlib import, opening of Finset/Function/SimpleGraph/Nat namespaces, and type variable declarations"
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Sorry'd noncomputable chromaticNumber and cliqueNumber, IsCliqueFree (ω < k) and AreDisjoint (vertex set disjointness) predicates",
       "startLine": 31,
-      "endLine": 48
+      "endLine": 48,
+      "mathContext": "Sorry'd noncomputable chromaticNumber and cliqueNumber, IsCliqueFree (ω < k) and AreDisjoint (vertex set disjointness) predicates"
     },
     {
       "id": "splittability",
       "title": "The (a,b)-Splittability Property",
       "summary": "IsSplittable definition (disjoint vertex sets with χ ≥ a and χ ≥ b on induced subgraphs), plus equivalent HasDisjointHighChromatic formulation using S ∩ T = ∅",
       "startLine": 49,
-      "endLine": 65
+      "endLine": 65,
+      "mathContext": "IsSplittable definition (disjoint vertex sets with χ ≥ a and χ ≥ b on induced subgraphs), plus equivalent HasDisjointHighChromatic formulation using S ∩ T = ∅"
     },
     {
       "id": "tihany-conjecture",
       "title": "The Tihany Conjecture",
       "summary": "Full TihanyConjecture definition (universal over k ≥ 5 and valid (a,b) pairs) and TihanyForPair (per-pair version with k = a + b - 1)",
       "startLine": 66,
-      "endLine": 86
+      "endLine": 86,
+      "mathContext": "Full TihanyConjecture definition (universal over k ≥ 5 and valid (a,b) pairs) and TihanyForPair (per-pair version with k = a + b - 1)"
     },
     {
       "id": "brown-jung",
       "title": "Brown–Jung Theorem (a = b = 3)",
       "summary": "Axiomatized brown_jung_theorem (TihanyForPair 3 3), proved tihany_3_3 instantiation, and axiomatized brown_jung_odd_cycles (two disjoint odd cycles formulation)",
       "startLine": 87,
-      "endLine": 110
+      "endLine": 110,
+      "mathContext": "Axiomatized brown_jung_theorem (TihanyForPair 3 3), proved tihany_3_3 instantiation, and axiomatized brown_jung_odd_cycles (two disjoint odd cycles formulation)"
     },
     {
       "id": "quasi-line",
       "title": "Quasi-Line Graphs",
       "summary": "Sorry'd IsLineGraph, IsQuasiLine definition (neighborhoods as union of two cliques), and axiomatized balogh_quasi_line (Tihany for all pairs on quasi-line graphs)",
       "startLine": 111,
-      "endLine": 134
+      "endLine": 134,
+      "mathContext": "Sorry'd IsLineGraph, IsQuasiLine definition (neighborhoods as union of two cliques), and axiomatized balogh_quasi_line (Tihany for all pairs on quasi-line graphs)"
     },
     {
       "id": "alpha-2",
       "title": "Independence Number 2",
       "summary": "Sorry'd independenceNumber definition and axiomatized balogh_alpha_2 (Tihany for all pairs when α = 2)",
       "startLine": 135,
-      "endLine": 151
+      "endLine": 151,
+      "mathContext": "Sorry'd independenceNumber definition and axiomatized balogh_alpha_2 (Tihany for all pairs when α = 2)"
     },
     {
       "id": "critical-graphs",
       "title": "Critical Graphs",
       "summary": "IsCritical definition (χ = k, removing any vertex drops χ), sorry'd contains_critical (k-critical subgraph existence), sorry'd critical_min_degree (δ ≥ k-1)",
       "startLine": 152,
-      "endLine": 169
+      "endLine": 169,
+      "mathContext": "IsCritical definition (χ = k, removing any vertex drops χ), sorry'd contains_critical (k-critical subgraph existence), sorry'd critical_min_degree (δ ≥ k-1)"
     },
     {
       "id": "perfect-graphs",
       "title": "Perfect Graphs — Tihany Vacuous",
       "summary": "IsPerfect definition, sorry'd perfect_clique_free (K_{χ+1}-free), sorry'd perfect_tihany_vacuous (perfect graphs satisfy Tihany hypothesis vacuously)",
       "startLine": 170,
-      "endLine": 186
+      "endLine": 186,
+      "mathContext": "IsPerfect definition, sorry'd perfect_clique_free (K_{χ+1}-free), sorry'd perfect_tihany_vacuous (perfect graphs satisfy Tihany hypothesis vacuously)"
     },
     {
       "id": "partial-results",
       "title": "Bounds and Partial Results",
       "summary": "Sorry'd weak_splittability (single high-χ part), sorry'd tihany_a_eq_2 (easy a=2 case), and TihanySymmetric definition (a = b case)",
       "startLine": 187,
-      "endLine": 203
+      "endLine": 203,
+      "mathContext": "Sorry'd weak_splittability (single high-χ part), sorry'd tihany_a_eq_2 (easy a=2 case), and TihanySymmetric definition (a = b case)"
     },
     {
       "id": "odd-cycles",
       "title": "Odd Cycles and (3,3)-Splittability",
       "summary": "Sorry'd odd_cycle_chi_3 (χ(C_{2k+1}) = 3), sorry'd disjoint_odd_cycles_splittable with sorry'd cycle hypotheses connecting cycle theory to splittability",
       "startLine": 204,
-      "endLine": 220
+      "endLine": 220,
+      "mathContext": "Sorry'd odd_cycle_chi_3 (χ(C_{2k+1}) = 3), sorry'd disjoint_odd_cycles_splittable with sorry'd cycle hypotheses connecting cycle theory to splittability"
     },
     {
       "id": "main-status",
       "title": "Main Problem Status and Verification",
       "summary": "erdos_628_status combining Brown–Jung, quasi-line, and α=2 results (proved from three axioms), plus #check verifications of key declarations",
       "startLine": 221,
-      "endLine": 246
+      "endLine": 246,
+      "mathContext": "erdos_628_status combining Brown–Jung, quasi-line, and α=2 results (proved from three axioms), plus #check verifications of key declarations"
     }
   ],
   "conclusion": {
@@ -204,28 +216,23 @@
   },
   "relatedProofs": [
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
       "id": "erdos-627",
       "relationship": "Problem #627 studies the maximum χ/ω ratio over n-vertex graphs. Tihany concerns the structural consequences when this ratio is at its extreme (χ = k, ω < k).",
+      "description": ""
+    },
+    {
+      "id": "erdos-626",
+      "relationship": "Problem #626 explores the chromatic number–girth trade-off, another facet of how high chromatic number arises without large cliques.",
+      "description": ""
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "Ramsey theory underpins the α = 2 case (bounding graph size via R(3,k)) and provides structural constraints on K_k-free graphs.",
+      "description": ""
+    },
+    {
+      "id": "erdos-1",
+      "relationship": "Erdős Problem #1 on Ramsey numbers relates through the fundamental question of how graph parameters (χ, ω, α) interact under extremal constraints.",
       "description": ""
     }
   ]

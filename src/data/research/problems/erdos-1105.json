@@ -29,13 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: 8 axioms (mostly deep results), 1 sorry. No quick wins.",
-    "builtItems": [],
+    "progressSummary": "SESSION 2: Fixed pre-existing build error (turan DecidableRel). Added 2 new proved theorems: monochromatic avoidance, numColors bound. ar_upper_bound sorry remains (needs edge_pairs_card identity). 5 theorems, 8 axioms, 1 sorry, 291 lines.",
+    "builtItems": [
+      "monochromatic_avoids_rainbow: constant coloring avoids rainbow (proved)",
+      "numColors_le_edges: numColors bounded by edge count (proved)",
+      "Fixed turan definition (added DecidableRel G for Finset.filter)"
+    ],
     "insights": [
       "8 axioms: ar_triangle, simonovits_sos_path, yuan_path_announced, ar_lower_bound (oversimplified), ar_mono_n, ar_turan_lower, ar_path_3, ar_k3",
       "1 sorry: ar_upper_bound (AR ≤ C(n,2))",
       "ar_lower_bound is oversimplified (says ≥ 1 instead of proper bound)",
-      "yuan_path_announced axiomatizes an announced result"
+      "yuan_path_announced axiomatizes an announced result",
+      "Pre-existing bug: turan definition lacked DecidableRel G, causing build failure - fixed",
+      "monochromatic_avoids_rainbow: constant coloring avoids rainbow for H with >= 2 edges (proved)",
+      "numColors_le_edges: card_image_le gives numColors <= edge slot count (proved)",
+      "ar_upper_bound: proof roadmap is Nat.sSup_le + numColors_le_edges + edge_pairs_card identity"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -63,8 +71,8 @@
     {
       "path": "Proofs/Erdos1105Problem.lean",
       "filename": "Erdos1105Problem.lean",
-      "lineCount": 276,
-      "theoremCount": 3,
+      "lineCount": 291,
+      "theoremCount": 5,
       "axiomCount": 8,
       "defCount": 25,
       "sorryCount": 1,

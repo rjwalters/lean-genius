@@ -87,70 +87,80 @@
       "title": "Problem Statement",
       "summary": "Fibonacci reciprocal sum irrationality conjecture, partially solved cases",
       "startLine": 1,
-      "endLine": 19
+      "endLine": 19,
+      "mathContext": "Fibonacci reciprocal sum irrationality conjecture, partially solved cases"
     },
     {
       "id": "fibonacci-background",
       "title": "Fibonacci Background",
       "summary": "Fibonacci sequence definition, golden ratio, exponential growth",
       "startLine": 27,
-      "endLine": 48
+      "endLine": 48,
+      "mathContext": "Fibonacci sequence definition, golden ratio, exponential growth"
     },
     {
       "id": "verified-values",
       "title": "Verified Fibonacci Values",
       "summary": "fib_one through fib_twelve verified by rfl — direct computation in Lean 4 confirming F₁=1, F₂=1, ..., F₁₂=144.",
       "startLine": 49,
-      "endLine": 72
+      "endLine": 72,
+      "mathContext": "fib_one through fib_twelve verified by rfl — direct computation in Lean 4 confirming F₁=1, F₂=1, ..., F₁₂=144."
     },
     {
       "id": "golden-ratio",
       "title": "Golden Ratio and Fibonacci Growth",
       "summary": "Defines goldenRatio = (1+√5)/2, proves goldenRatio_gt_one (needed for convergence), and fib_pos from Mathlib's Nat.fib_pos.",
       "startLine": 73,
-      "endLine": 95
+      "endLine": 95,
+      "mathContext": "Defines goldenRatio = (1+√5)/2, proves goldenRatio_gt_one (needed for convergence), and fib_pos from Mathlib's Nat.fib_pos."
     },
     {
       "id": "convergence",
       "title": "Series Convergence",
       "summary": "fibonacci_reciprocal_summable axiom, comparison with geometric series",
       "startLine": 96,
-      "endLine": 107
+      "endLine": 107,
+      "mathContext": "fibonacci_reciprocal_summable axiom, comparison with geometric series"
     },
     {
       "id": "solved-cases",
       "title": "Solved Cases",
       "summary": "good_bicknell_hoggatt (2^n indices), andre_jeannin (full sum) axioms",
       "startLine": 108,
-      "endLine": 129
+      "endLine": 129,
+      "mathContext": "good_bicknell_hoggatt (2^n indices), andre_jeannin (full sum) axioms"
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture (OPEN)",
       "summary": "HasRatioBoundedBelow, Erdos267Conjecture, erdos_267_open by classical EM",
       "startLine": 130,
-      "endLine": 169
+      "endLine": 169,
+      "mathContext": "HasRatioBoundedBelow, Erdos267Conjecture, erdos_267_open by classical EM"
     },
     {
       "id": "weaker-variant",
       "title": "Weaker Variant (OPEN)",
       "summary": "HasSuperlinearGrowth, Erdos267WeakerVariant — n_k/k → ∞ might suffice",
       "startLine": 170,
-      "endLine": 190
+      "endLine": 190,
+      "mathContext": "HasSuperlinearGrowth, Erdos267WeakerVariant — n_k/k → ∞ might suffice"
     },
     {
       "id": "numerical",
       "title": "Numerical Observations",
       "summary": "pow_two_series_first_terms (verified by native_decide), sum ≈ 3.3598",
       "startLine": 191,
-      "endLine": 217
+      "endLine": 217,
+      "mathContext": "pow_two_series_first_terms (verified by native_decide), sum ≈ 3.3598"
     },
     {
       "id": "related-problems",
       "title": "Related Problems",
       "summary": "Problems #250 and #259, connections to continued fractions and transcendence",
       "startLine": 218,
-      "endLine": 233
+      "endLine": 233,
+      "mathContext": "Problems #250 and #259, connections to continued fractions and transcendence"
     }
   ],
   "conclusion": {
@@ -189,12 +199,12 @@
     {
       "id": "erdos-250",
       "relationship": "related",
-      "description": "Part of Erdős's irrationality cluster: #250 asks about Σ σ(n)/2^n (solved by Nesterenko 1996), while #267 asks about Σ 1"
+      "description": "Part of Erdős's irrationality cluster: #250 asks about Σ σ(n)/2^n (solved by Nesterenko 1996), while #267 asks about Σ 1/F_{n_k}"
     },
     {
       "id": "erdos-259",
       "relationship": "related",
-      "description": "Another Erdős irrationality problem: #259 concerns Σ μ(n)²n/2^n. Both probe when 'natural' arithmetic series produce irr"
+      "description": "Another Erdős irrationality problem: #259 concerns Σ μ(n)²n/2^n. Both probe when 'natural' arithmetic series produce irrational sums"
     }
   ],
   "leanFile": {

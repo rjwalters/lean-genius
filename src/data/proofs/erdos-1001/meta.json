@@ -96,63 +96,72 @@
       "title": "The Approximation Set",
       "summary": "Definition of isApproximable, approximationSet, and S(N,A,c)",
       "startLine": 32,
-      "endLine": 50
+      "endLine": 50,
+      "mathContext": "Definition of isApproximable, approximationSet, and S(N,A,c)"
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "summary": "S bounds between 0 and 1, monotonicity in A and c",
       "startLine": 51,
-      "endLine": 71
+      "endLine": 71,
+      "mathContext": "S bounds between 0 and 1, monotonicity in A and c"
     },
     {
       "id": "limit-function",
       "title": "The Limit Function",
       "summary": "Definition of f(A,c) = 12A log(c)/π² and limitExists",
       "startLine": 72,
-      "endLine": 85
+      "endLine": 85,
+      "mathContext": "Definition of f(A,c) = 12A log(c)/π² and limitExists"
     },
     {
       "id": "est-result",
       "title": "Erdős-Szüsz-Turán Result (1958)",
       "summary": "Explicit formula in the EST regime",
       "startLine": 86,
-      "endLine": 107
+      "endLine": 107,
+      "mathContext": "Explicit formula in the EST regime"
     },
     {
       "id": "boundedness",
       "title": "Boundedness Away from 0 and 1",
       "summary": "EST boundedness when min(A,c) > 10",
       "startLine": 108,
-      "endLine": 117
+      "endLine": 117,
+      "mathContext": "EST boundedness when min(A,c) > 10"
     },
     {
       "id": "kesten-sos",
       "title": "Kesten-Sós Result (1966)",
       "summary": "Limit exists for all valid A, c",
       "startLine": 118,
-      "endLine": 140
+      "endLine": 140,
+      "mathContext": "Limit exists for all valid A, c"
     },
     {
       "id": "alternative-proofs",
       "title": "Alternative Proofs",
       "summary": "Boca (2008) and Xiong-Zaharescu (2006) approaches",
       "startLine": 141,
-      "endLine": 158
+      "endLine": 158,
+      "mathContext": "Boca (2008) and Xiong-Zaharescu (2006) approaches"
     },
     {
       "id": "farey-connection",
       "title": "Connection to Farey Fractions",
       "summary": "Why π² appears in the formula",
       "startLine": 159,
-      "endLine": 177
+      "endLine": 177,
+      "mathContext": "Why π² appears in the formula"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Problem status and main theorem erdos_1001",
       "startLine": 176,
-      "endLine": 205
+      "endLine": 205,
+      "mathContext": "Problem status and main theorem erdos_1001"
     }
   ],
   "conclusion": {
@@ -195,12 +204,12 @@
     {
       "id": "prime-reciprocal-divergence",
       "relationship": "related",
-      "description": "Both concern the distribution and density of number-theoretic objects; the divergence of prime reciprocals relates to th"
+      "description": "Both concern the distribution and density of number-theoretic objects; the divergence of prime reciprocals relates to the Euler product that produces the π² constant"
     },
     {
       "id": "infinitude-primes",
       "relationship": "related",
-      "description": "The density of coprime pairs (6/π²) underlying the EST formula depends on the distribution of primes via Euler's product"
+      "description": "The density of coprime pairs (6/π²) underlying the EST formula depends on the distribution of primes via Euler's product formula"
     },
     {
       "id": "lebesgue-measure",
@@ -210,12 +219,12 @@
     {
       "id": "basel-problem",
       "relationship": "related",
-      "description": "The Basel problem's result ζ(2) = π²/6 directly explains the π² in the EST formula f(A,c) = 12A log(c)/π² via coprime pa"
+      "description": "The Basel problem's result ζ(2) = π²/6 directly explains the π² in the EST formula f(A,c) = 12A log(c)/π² via coprime pair density 6/π²"
     },
     {
       "id": "hurwitz-theorem",
       "relationship": "related",
-      "description": "Hurwitz's theorem gives the optimal constant 1/√5 for Diophantine approximation quality, providing context for the appro"
+      "description": "Hurwitz's theorem gives the optimal constant 1/√5 for Diophantine approximation quality, providing context for the approximability threshold A/y² used here"
     }
   ],
   "leanFile": {

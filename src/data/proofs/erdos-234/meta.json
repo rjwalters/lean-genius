@@ -48,70 +48,80 @@
       "title": "Imports and Namespace",
       "startLine": 15,
       "endLine": 36,
-      "summary": "Imports Mathlib for `Nat.Nth` (prime enumeration), `Real.log`/`Real.exp` (analysis), `Filter.Tendsto` (limits), and `Proofs.RiemannHypothesis`. Opens `Nat`, `Filter`, `Real`, `Set`."
+      "summary": "Imports Mathlib for `Nat.Nth` (prime enumeration), `Real.log`/`Real.exp` (analysis), `Filter.Tendsto` (limits), and `Proofs.RiemannHypothesis`. Opens `Nat`, `Filter`, `Real`, `Set`.",
+      "mathContext": "Imports Mathlib for `Nat.Nth` (prime enumeration), `Real.log`/`Real.exp` (analysis), `Filter.Tendsto` (limits), and `Proofs.RiemannHypothesis`. Opens `Nat`, `Filter`, `Real`, `Set`."
     },
     {
       "id": "basic-definitions",
       "title": "Prime Gap Definitions",
       "startLine": 37,
       "endLine": 50,
-      "summary": "Defines nthPrime$(n) = p_n$ via `Nat.nth`, primeGap$(n) = p_{n+1} - p_n$, and normalizedGap$(n) = g_n / \\log n$ (with $0$ for $n \\leq 1$)."
+      "summary": "Defines nthPrime$(n) = p_n$ via `Nat.nth`, primeGap$(n) = p_{n+1} - p_n$, and normalizedGap$(n) = g_n / \\log n$ (with $0$ for $n \\leq 1$).",
+      "mathContext": "Defines nthPrime$(n) = p_n$ via `Nat.nth`, primeGap$(n) = p_{n+1} - p_n$, and normalizedGap$(n) = g_n / \\log n$ (with $0$ for $n \\leq 1$)."
     },
     {
       "id": "counting-functions",
       "title": "Counting Functions",
       "startLine": 51,
       "endLine": 62,
-      "summary": "Defines countSmallNormGaps$(N, c) = |\\{n < N : g_n/\\log n < c\\}|$ via `Finset.filter` and gapProportion as the count divided by $N$."
+      "summary": "Defines countSmallNormGaps$(N, c) = |\\{n < N : g_n/\\log n < c\\}|$ via `Finset.filter` and gapProportion as the count divided by $N$.",
+      "mathContext": "Defines countSmallNormGaps$(N, c) = |\\{n < N : g_n/\\log n < c\\}|$ via `Finset.filter` and gapProportion as the count divided by $N$."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "startLine": 63,
       "endLine": 82,
-      "summary": "States ErdosProblem234: $\\forall c \\geq 0$, the density $f(c) = \\lim_{N} \\text{gapProportion}(N, c)$ exists and $f$ is continuous. Uses `Tendsto` with `atTop` and `nhds`."
+      "summary": "States ErdosProblem234: $\\forall c \\geq 0$, the density $f(c) = \\lim_{N} \\text{gapProportion}(N, c)$ exists and $f$ is continuous. Uses `Tendsto` with `atTop` and `nhds`.",
+      "mathContext": "States ErdosProblem234: $\\forall c \\geq 0$, the density $f(c) = \\lim_{N} \\text{gapProportion}(N, c)$ exists and $f$ is continuous. Uses `Tendsto` with `atTop` and `nhds`."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 83,
       "endLine": 142,
-      "summary": "Proves $f_N(0) = 0$, $0 \\leq f_N(c) \\leq 1$, monotonicity $c_1 \\leq c_2 \\implies f_N(c_1) \\leq f_N(c_2)$, and $f(0) = 0$."
+      "summary": "Proves $f_N(0) = 0$, $0 \\leq f_N(c) \\leq 1$, monotonicity $c_1 \\leq c_2 \\implies f_N(c_1) \\leq f_N(c_2)$, and $f(0) = 0$.",
+      "mathContext": "Proves $f_N(0) = 0$, $0 \\leq f_N(c) \\leq 1$, monotonicity $c_1 \\leq c_2 \\implies f_N(c_1) \\leq f_N(c_2)$, and $f(0) = 0$."
     },
     {
       "id": "markov-density",
       "title": "Proving density_at_infinity via Markov's Inequality",
       "startLine": 143,
       "endLine": 263,
-      "summary": "**Key result**: Proves (previously axiom) density_at_infinity from average_normalized_gap via finite Markov inequality. For non-negative normalizedGap and $c > 0$: $|\\{n : \\text{gap}(n) \\geq c\\}| \\cdot c \\leq \\sum \\text{gap}(n)$, so gapProportion$(N,c) \\geq 1 - (\\text{avg gap})/c$. Choosing $c_0 = 2/\\varepsilon + 1$ gives the result. Reduces axiom count from 5 to 4."
+      "summary": "**Key result**: Proves (previously axiom) density_at_infinity from average_normalized_gap via finite Markov inequality. For non-negative normalizedGap and $c > 0$: $|\\{n : \\text{gap}(n) \\geq c\\}| \\cdot c \\leq \\sum \\text{gap}(n)$, so gapProportion$(N,c) \\geq 1 - (\\text{avg gap})/c$. Choosing $c_0 = 2/\\varepsilon + 1$ gives the result. Reduces axiom count from 5 to 4.",
+      "mathContext": "**Key result**: Proves (previously axiom) density_at_infinity from average_normalized_gap via finite Markov inequality. For non-negative normalizedGap and $c > 0$: $|\\{n : \\text{gap}(n) \\geq c\\}| \\cdo"
     },
     {
       "id": "cramer-model",
       "title": "Cramér's Exponential Model",
       "startLine": 265,
       "endLine": 303,
-      "summary": "Defines cramerPrediction$(c) = 1 - e^{-c}$ for $c \\geq 0$. Proves continuity via `Continuous.if_lt` and validates CDF bounds $0 \\leq f(c) \\leq 1$."
+      "summary": "Defines cramerPrediction$(c) = 1 - e^{-c}$ for $c \\geq 0$. Proves continuity via `Continuous.if_lt` and validates CDF bounds $0 \\leq f(c) \\leq 1$.",
+      "mathContext": "Defines cramerPrediction$(c) = 1 - e^{-c}$ for $c \\geq 0$. Proves continuity via `Continuous.if_lt` and validates CDF bounds $0 \\leq f(c) \\leq 1$."
     },
     {
       "id": "gallagher-result",
       "title": "Gallagher's Conditional Result",
       "startLine": 304,
       "endLine": 323,
-      "summary": "Axiomatizes Gallagher (1976): RH $\\implies \\text{gapProportion}(N, c) \\to 1 - e^{-c}$. Proves gallagher_implies_conjecture: RH $\\implies$ ErdosProblem234."
+      "summary": "Axiomatizes Gallagher (1976): RH $\\implies \\text{gapProportion}(N, c) \\to 1 - e^{-c}$. Proves gallagher_implies_conjecture: RH $\\implies$ ErdosProblem234.",
+      "mathContext": "Axiomatizes Gallagher (1976): RH $\\implies \\text{gapProportion}(N, c) \\to 1 - e^{-c}$. Proves gallagher_implies_conjecture: RH $\\implies$ ErdosProblem234."
     },
     {
       "id": "partial-results",
       "title": "Partial Results on Gap Distribution",
       "startLine": 324,
       "endLine": 341,
-      "summary": "Axiomatizes: (1) small_gaps_exist (GPY/Maynard–Tao: infinitely many $g_n < (1+\\varepsilon)\\log p_n$), (2) large_gaps_exist (FGKT: unbounded $g_n/\\log n$), (3) average $g_n/\\log n \\to 1$ by PNT."
+      "summary": "Axiomatizes: (1) small_gaps_exist (GPY/Maynard–Tao: infinitely many $g_n < (1+\\varepsilon)\\log p_n$), (2) large_gaps_exist (FGKT: unbounded $g_n/\\log n$), (3) average $g_n/\\log n \\to 1$ by PNT.",
+      "mathContext": "Axiomatizes: (1) small_gaps_exist (GPY/Maynard–Tao: infinitely many $g_n < (1+\\varepsilon)\\log p_n$), (2) large_gaps_exist (FGKT: unbounded $g_n/\\log n$), (3) average $g_n/\\log n \\to 1$ by PNT."
     },
     {
       "id": "cramer-properties",
       "title": "Cramér Model Properties",
       "startLine": 342,
       "endLine": 363,
-      "summary": "Proves $f(0) = 0$, $f(c) \\geq 0$, $f(c) \\leq 1$, and monotonicity $c_1 \\leq c_2 \\implies f(c_1) \\leq f(c_2)$ using $e^{-c_2} \\leq e^{-c_1}$."
+      "summary": "Proves $f(0) = 0$, $f(c) \\geq 0$, $f(c) \\leq 1$, and monotonicity $c_1 \\leq c_2 \\implies f(c_1) \\leq f(c_2)$ using $e^{-c_2} \\leq e^{-c_1}$.",
+      "mathContext": "Proves $f(0) = 0$, $f(c) \\geq 0$, $f(c) \\leq 1$, and monotonicity $c_1 \\leq c_2 \\implies f(c_1) \\leq f(c_2)$ using $e^{-c_2} \\leq e^{-c_1}$."
     }
   ],
   "crossReferences": [
@@ -145,17 +155,17 @@
     {
       "id": "prime-number-theorem",
       "relationship": "foundational",
-      "description": "PNT provides the baseline: average prime gap is log p_n. Problem 234 asks about the distribution of gaps normalized by t"
+      "description": "PNT provides the baseline: average prime gap is log p_n. Problem 234 asks about the distribution of gaps normalized by this average, making PNT the zeroth-order framework."
     },
     {
       "id": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's postulate (a prime in [n,2n]) gives a crude upper bound on prime gaps: g_n < p_n. The normalized gap distribu"
+      "description": "Bertrand's postulate (a prime in [n,2n]) gives a crude upper bound on prime gaps: g_n < p_n. The normalized gap distribution studied here refines this to a precise statistical law."
     },
     {
       "id": "twin-primes-special",
       "relationship": "related",
-      "description": "Twin primes correspond to the smallest possible gap g_n = 2, i.e., f(c) near c = 2/log n -> 0. The twin prime conjecture"
+      "description": "Twin primes correspond to the smallest possible gap g_n = 2, i.e., f(c) near c = 2/log n -> 0. The twin prime conjecture is a special case of understanding the small-gap tail of the density f(c)."
     }
   ],
   "leanFile": {

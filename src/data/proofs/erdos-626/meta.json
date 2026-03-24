@@ -80,84 +80,96 @@
       "title": "Header and Imports",
       "summary": "Module docstring with problem history and bounds, plus import of the full Mathlib library",
       "startLine": 1,
-      "endLine": 29
+      "endLine": 29,
+      "mathContext": "Module docstring with problem history and bounds, plus import of the full Mathlib library"
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Chromatic number (sorry'd), k-colorability via proper coloring, girth (sorry'd), and HasGirthGT predicate",
       "startLine": 30,
-      "endLine": 47
+      "endLine": 47,
+      "mathContext": "Chromatic number (sorry'd), k-colorability via proper coloring, girth (sorry'd), and HasGirthGT predicate"
     },
     {
       "id": "g-function",
       "title": "The g_k(n) Function",
       "summary": "Noncomputable definition of g_k(n) via supremum, with axiomatized well-definedness for k ≥ 4",
       "startLine": 48,
-      "endLine": 63
+      "endLine": 63,
+      "mathContext": "Noncomputable definition of g_k(n) via supremum, with axiomatized well-definedness for k ≥ 4"
     },
     {
       "id": "erdos-constructions",
       "title": "Erdős's 1959 Construction",
       "summary": "Axiomatized existence of high-chromatic, high-girth graphs, plus sorry'd corollary g_k(n) → ∞",
       "startLine": 64,
-      "endLine": 76
+      "endLine": 76,
+      "mathContext": "Axiomatized existence of high-chromatic, high-girth graphs, plus sorry'd corollary g_k(n) → ∞"
     },
     {
       "id": "upper-bound",
       "title": "Upper Bound (Erdős)",
       "summary": "Axiomatized bound g_k(n) ≤ (2/log(k-2))·log n + 1 with coefficient definition and k=4 evaluation",
       "startLine": 77,
-      "endLine": 93
+      "endLine": 93,
+      "mathContext": "Axiomatized bound g_k(n) ≤ (2/log(k-2))·log n + 1 with coefficient definition and k=4 evaluation"
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound (Kostochka)",
       "summary": "Axiomatized bound g_k(n) ≥ (1/(4 log k))·log n with coefficient definition and k=4 evaluation",
       "startLine": 94,
-      "endLine": 110
+      "endLine": 110,
+      "mathContext": "Axiomatized bound g_k(n) ≥ (1/(4 log k))·log n with coefficient definition and k=4 evaluation"
     },
     {
       "id": "main-question",
       "title": "The Limit Question (OPEN)",
       "summary": "Ratio g_k(n)/log n, limit existence via Filter.Tendsto, sorry'd boundedness, and formal open status",
       "startLine": 111,
-      "endLine": 131
+      "endLine": 131,
+      "mathContext": "Ratio g_k(n)/log n, limit existence via Filter.Tendsto, sorry'd boundedness, and formal open status"
     },
     {
       "id": "gap-analysis",
       "title": "Gap Analysis",
       "summary": "Bound ratio formula 8·log k/log(k-2), sorry'd positivity of gap, and sorry'd limit to 8 as k → ∞",
       "startLine": 132,
-      "endLine": 152
+      "endLine": 152,
+      "mathContext": "Bound ratio formula 8·log k/log(k-2), sorry'd positivity of gap, and sorry'd limit to 8 as k → ∞"
     },
     {
       "id": "dual-problem",
       "title": "Dual Problem h^(m)(n)",
       "summary": "Maximum chromatic number for given girth, sorry'd duality g↔h, and axiomatized polynomial bounds",
       "startLine": 153,
-      "endLine": 171
+      "endLine": 171,
+      "mathContext": "Maximum chromatic number for given girth, sorry'd duality g↔h, and axiomatized polynomial bounds"
     },
     {
       "id": "special-cases",
       "title": "Special Cases and Probabilistic Bounds",
       "summary": "k=4 bounds, triangle-free unbounded chromatic (sorry'd), Erdős 1959 axiom, and probabilistic lower bound construction",
       "startLine": 172,
-      "endLine": 203
+      "endLine": 203,
+      "mathContext": "k=4 bounds, triangle-free unbounded chromatic (sorry'd), Erdős 1959 axiom, and probabilistic lower bound construction"
     },
     {
       "id": "ramsey-connection",
       "title": "Ramsey Connection",
       "summary": "Off-diagonal Ramsey number definition and sorry'd connection g_k(n) ≤ C·log R(k,n)",
       "startLine": 204,
-      "endLine": 216
+      "endLine": 216,
+      "mathContext": "Off-diagonal Ramsey number definition and sorry'd connection g_k(n) ≤ C·log R(k,n)"
     },
     {
       "id": "main-status",
       "title": "Main Problem Status",
       "summary": "Combined bounds theorem erdos_626_status packaging logarithmic bounds and existence, with #check verifications",
       "startLine": 217,
-      "endLine": 244
+      "endLine": 244,
+      "mathContext": "Combined bounds theorem erdos_626_status packaging logarithmic bounds and existence, with #check verifications"
     }
   ],
   "conclusion": {
@@ -203,21 +215,6 @@
   },
   "relatedProofs": [
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
       "id": "ramseys-theorem",
       "relationship": "Ramsey numbers provide upper bounds on g_k(n) through the connection between chromatic number and independence",
       "description": ""
@@ -225,6 +222,11 @@
     {
       "id": "erdos-620",
       "relationship": "The Erdős-Rogers problem (Problem #620) also explores extremal graph structure with forbidden subgraph constraints",
+      "description": ""
+    },
+    {
+      "id": "erdos-1",
+      "relationship": "Erdős Problem #1 concerns Ramsey-type phenomena that underlie the chromatic-girth trade-off",
       "description": ""
     }
   ]

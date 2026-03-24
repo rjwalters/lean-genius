@@ -97,84 +97,96 @@
       "title": "Basic Definitions",
       "summary": "IntegerSet, EdgeColoring, SimpleEdgeColoring",
       "startLine": 37,
-      "endLine": 62
+      "endLine": 62,
+      "mathContext": "IntegerSet, EdgeColoring, SimpleEdgeColoring"
     },
     {
       "id": "monochromatic",
       "title": "Monochromatic Subsets",
       "summary": "IsMonochromatic, HasMonochromaticSubset, IsClique",
       "startLine": 63,
-      "endLine": 86
+      "endLine": 86,
+      "mathContext": "IsMonochromatic, HasMonochromaticSubset, IsClique"
     },
     {
       "id": "weighted-sum",
       "title": "The Weighted Sum Function",
       "summary": "logInverseSum definition and properties",
       "startLine": 87,
-      "endLine": 116
+      "endLine": 116,
+      "mathContext": "logInverseSum definition and properties"
     },
     {
       "id": "problem-statement",
       "title": "The Main Problem Statement",
       "summary": "MonochromaticWithLargeSum, erdos191Conjecture",
       "startLine": 117,
-      "endLine": 135
+      "endLine": 135,
+      "mathContext": "MonochromaticWithLargeSum, erdos191Conjecture"
     },
     {
       "id": "solution",
       "title": "Rödl's Theorem",
       "summary": "erdos_191 axiom (main solution)",
       "startLine": 136,
-      "endLine": 153
+      "endLine": 153,
+      "mathContext": "erdos_191 axiom (main solution)"
     },
     {
       "id": "tight-bounds",
       "title": "Tight Bounds",
       "summary": "tripleLog, rodl_upper_construction, conlon_fox_sudakov_bound",
       "startLine": 154,
-      "endLine": 195
+      "endLine": 195,
+      "mathContext": "tripleLog, rodl_upper_construction, conlon_fox_sudakov_bound"
     },
     {
       "id": "derivation",
       "title": "Derivation from CFS Bound",
       "summary": "erdos_191_from_cfs theorem",
       "startLine": 196,
-      "endLine": 224
+      "endLine": 224,
+      "mathContext": "erdos_191_from_cfs theorem"
     },
     {
       "id": "ramsey-connection",
       "title": "Connection to Ramsey Theory",
       "summary": "RamseyStyleProperty, classical_ramsey_connection",
       "startLine": 225,
-      "endLine": 247
+      "endLine": 247,
+      "mathContext": "RamseyStyleProperty, classical_ramsey_connection"
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "small_n_bound, monochromatic_pair_exists, sum asymptotic",
       "startLine": 248,
-      "endLine": 283
+      "endLine": 283,
+      "mathContext": "small_n_bound, monochromatic_pair_exists, sum asymptotic"
     },
     {
       "id": "generalizations",
       "title": "Generalizations",
       "summary": "r-coloring, different weight functions",
       "startLine": 284,
-      "endLine": 313
+      "endLine": 313,
+      "mathContext": "r-coloring, different weight functions"
     },
     {
       "id": "asymptotic",
       "title": "Asymptotic Analysis",
       "summary": "tight_asymptotic theorem",
       "startLine": 314,
-      "endLine": 338
+      "endLine": 338,
+      "mathContext": "tight_asymptotic theorem"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_191_summary, erdos_191_answer",
       "startLine": 339,
-      "endLine": 371
+      "endLine": 371,
+      "mathContext": "erdos_191_summary, erdos_191_answer"
     }
   ],
   "conclusion": {

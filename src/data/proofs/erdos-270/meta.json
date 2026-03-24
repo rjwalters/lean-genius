@@ -84,56 +84,64 @@
       "title": "The Product-Reciprocal Series",
       "summary": "Definitions of risingProduct, seriesTerm, and productReciprocalSeries",
       "startLine": 49,
-      "endLine": 78
+      "endLine": 78,
+      "mathContext": "Definitions of risingProduct, seriesTerm, and productReciprocalSeries"
     },
     {
       "id": "limit-condition",
       "title": "The Limit Condition",
       "summary": "TendsToInfinity and IsNondecreasing predicates",
       "startLine": 79,
-      "endLine": 98
+      "endLine": 98,
+      "mathContext": "TendsToInfinity and IsNondecreasing predicates"
     },
     {
       "id": "original-conjecture",
       "title": "The Original Conjecture",
       "summary": "ErdosGrahamConjecture stating the series is always irrational",
       "startLine": 99,
-      "endLine": 114
+      "endLine": 114,
+      "mathContext": "ErdosGrahamConjecture stating the series is always irrational"
     },
     {
       "id": "disproof",
       "title": "The Crmarić-Kovač Disproof (2025)",
       "summary": "Any positive real is achievable; conjecture is false",
       "startLine": 115,
-      "endLine": 155
+      "endLine": 155,
+      "mathContext": "Any positive real is achievable; conjecture is false"
     },
     {
       "id": "hansen",
       "title": "Special Case f(n) = n",
       "summary": "Hansen's transcendental result and central binomial connection",
       "startLine": 156,
-      "endLine": 194
+      "endLine": 194,
+      "mathContext": "Hansen's transcendental result and central binomial connection"
     },
     {
       "id": "nondecreasing",
       "title": "The Non-decreasing Case (Still Open)",
       "summary": "NondecreasingConjecture and measure zero result",
       "startLine": 195,
-      "endLine": 222
+      "endLine": 222,
+      "mathContext": "NondecreasingConjecture and measure zero result"
     },
     {
       "id": "bounds",
       "title": "Examples and Bounds",
       "summary": "Convergence, upper and lower bounds",
       "startLine": 223,
-      "endLine": 244
+      "endLine": 244,
+      "mathContext": "Convergence, upper and lower bounds"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Main theorem combining disproof and related results",
       "startLine": 245,
-      "endLine": 274
+      "endLine": 274,
+      "mathContext": "Main theorem combining disproof and related results"
     }
   ],
   "conclusion": {
@@ -208,22 +216,22 @@
     {
       "id": "harmonic-divergence",
       "relationship": "related",
-      "description": "The harmonic series Σ 1/n diverges, while the product-reciprocal series Σ 1/((n+1)···(n+f(n))) converges for f(n) → ∞. T"
+      "description": "The harmonic series Σ 1/n diverges, while the product-reciprocal series Σ 1/((n+1)···(n+f(n))) converges for f(n) → ∞. The convergence behavior depends on the growth rate of f(n), connecting to the study of partial products and their reciprocal sums"
     },
     {
       "id": "e-transcendental",
       "relationship": "related",
-      "description": "The transcendence of e (Hermite 1873) is the archetype of irrationality results for series. The series e = Σ 1/n! involv"
+      "description": "The transcendence of e (Hermite 1873) is the archetype of irrationality results for series. The series e = Σ 1/n! involves factorial denominators, while this problem studies products of consecutive integers — a related class of rapidly growing denominators"
     },
     {
       "id": "sqrt2-irrational",
       "relationship": "thematic",
-      "description": "Both address irrationality questions: √2 ∉ ℚ via the descent method, while this problem asks when series with product de"
+      "description": "Both address irrationality questions: √2 ∉ ℚ via the descent method, while this problem asks when series with product denominators yield irrational sums. The disproof shows that any positive real is achievable, contrasting with the definitive irrationality of √2"
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "Unique prime factorization of the product (n+1)(n+2)···(n+f(n)) = (n+f(n))!/n! determines the denominator structure and "
+      "description": "Unique prime factorization of the product (n+1)(n+2)···(n+f(n)) = (n+f(n))!/n! determines the denominator structure and affects whether the series sum is rational or irrational"
     }
   ]
 }

@@ -142,27 +142,27 @@
     {
       "id": "cantor-diagonalization",
       "relationship": "related",
-      "description": "Both are foundational results about the expressive power of formal systems—this entry shows natural numbers are primitiv"
+      "description": "Both are foundational results about the expressive power of formal systems—this entry shows natural numbers are primitive in type theory while Cantor's diagonal argument shows the limits of any enumeration of a richer structure"
     },
     {
       "id": "derangements",
       "relationship": "related",
-      "description": "Derangements formalizes combinatorial arithmetic over Lean's built-in `Nat`, directly built on the same `Nat.add` shown "
+      "description": "Derangements formalizes combinatorial arithmetic over Lean's built-in `Nat`, directly built on the same `Nat.add` shown here to be definitionally equivalent to `Peano.add`; the two entries together span elementary and advanced Nat reasoning"
     },
     {
       "id": "arithmetic-series",
       "relationship": "related",
-      "description": "Arithmetic series relies on the commutativity and associativity of `Nat.add` proved here from scratch; this entry is the"
+      "description": "Arithmetic series relies on the commutativity and associativity of `Nat.add` proved here from scratch; this entry is the foundational layer on which closed-form sum formulas rest"
     },
     {
       "id": "bezout-identity",
       "relationship": "related",
-      "description": "Bézout's identity uses the divisibility and GCD structure of `ℤ`, which ultimately rests on the same Peano-style arithme"
+      "description": "Bézout's identity uses the divisibility and GCD structure of `ℤ`, which ultimately rests on the same Peano-style arithmetic proved here; the two entries are separated by the integer extension step"
     },
     {
       "id": "sqrt2-irrational",
       "relationship": "related",
-      "description": "Both are classic entries in the gallery demonstrating that verified proofs of 'obvious' mathematical facts often reveal "
+      "description": "Both are classic entries in the gallery demonstrating that verified proofs of 'obvious' mathematical facts often reveal deep structural reasoning—here definitional equality, there proof by contradiction on rational squares"
     }
   ],
   "conclusion": {

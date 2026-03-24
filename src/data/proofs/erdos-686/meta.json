@@ -22,17 +22,19 @@
     "erdosNumber": 686,
     "erdosUrl": "https://erdosproblems.com/686",
     "erdosProblemStatus": "open",
-    "axiomCount": 2,
+    "axiomCount": 1,
     "prerequisites": [
       "Nat.factorial",
       "Nat.choose",
       "Finset.prod",
       "Rational arithmetic (ℚ)",
       "Set.Infinite",
+      "Set.infinite_range_of_injective",
+      "Nat.cast_div",
       "native_decide"
     ],
-    "lineCount": 174,
-    "assumptions": "2 axiom(s). No sorries.",
+    "lineCount": 292,
+    "assumptions": "1 axiom (erdos_686_conjecture, the open problem). representable_set_infinite proved.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -115,11 +117,51 @@
     },
     {
       "id": "summary",
-      "title": "Part VIII: Summary",
+      "title": "Part VIII: Summary and Integer Ratio Theorem",
       "startLine": 165,
       "endLine": 174,
-      "summary": "Proves erdos_686_equiv by simp: the conjecture unfolds to its explicit ∀∃ form. Problem remains OPEN.",
+      "summary": "Proves erdos_686_equiv by simp: the conjecture unfolds to its explicit ∀∃ form. Proves integer_ratio_at_multiples: for $m = n + (t+1) P(n,k)$, the ratio is always an integer.",
       "mathContext": "The equivalence theorem confirms the formalization correctly captures the intended mathematical statement by unfolding all definition layers."
+    },
+    {
+      "id": "factorial-bounds",
+      "title": "Factorial and Product Bounds",
+      "startLine": 176,
+      "endLine": 199,
+      "summary": "Three lemmas: `consecutiveProduct_ge_factorial` ($P(n,k) \\geq k!$ since $P(n,k) = k! \\binom{n+k}{k}$), `factorial_ge_self` ($k! \\geq k$ for $k \\geq 1$, by induction), and `shift_ge_gap` ($n + (t+1)P(n,k) \\geq n + k$ for $k \\geq 2$, combining the previous bounds).",
+      "mathContext": "The chain: $P(n,k) = k! \\binom{n+k}{k} \\geq k! \\geq k$ for $k \\geq 1$, so $(t+1) P(n,k) \\geq k$, giving $m = n + (t+1)P(n,k) \\geq n + k$. This ensures the shifted index satisfies the non-overlapping constraint."
+    },
+    {
+      "id": "ratio-and-injectivity",
+      "title": "Ratio Expression and Injectivity",
+      "startLine": 201,
+      "endLine": 216,
+      "summary": "Proves `ratioExpression_eq_nat_div` (the rational ratio equals the natural division when divisibility holds) and `consecutiveProduct_inj` ($P(n_1,k) = P(n_2,k) \\Rightarrow n_1 = n_2$ for $k \\geq 1$, by strict monotonicity).",
+      "mathContext": "Injectivity of $n \\mapsto P(n,k)$: if $n_1 < n_2$, then $P(n_1,k) < P(n_2,k)$ by `numerator_gt_denominator`, so $P(n_1,k) = P(n_2,k)$ forces $n_1 = n_2$. This is essential for proving the representable set is infinite (distinct inputs give distinct outputs)."
+    },
+    {
+      "id": "verified-examples-ext",
+      "title": "Verified Examples (Extended)",
+      "startLine": 218,
+      "endLine": 243,
+      "summary": "Four verified examples by `decide`/`native_decide`: $N = 2$ ($P(2,2)/P(1,2) = 12/6$), $N = 6$ ($P(2,2)/P(0,2) = 12/2$), $N = 3$ ($P(1,2)/P(0,2) = 6/2$), $N = 10$ ($P(3,2)/P(0,2) = 20/2$).",
+      "mathContext": "The examples verify small cases of the conjecture: $2 = \\frac{3 \\cdot 4}{2 \\cdot 3}$, $3 = \\frac{2 \\cdot 3}{1 \\cdot 2}$, $6 = \\frac{3 \\cdot 4}{1 \\cdot 2}$, $10 = \\frac{4 \\cdot 5}{1 \\cdot 2}$. All use $k = 2$ (products of 2 consecutive integers)."
+    },
+    {
+      "id": "followup-proved",
+      "title": "Follow-Up: Representable Set Is Infinite (PROVED)",
+      "startLine": 245,
+      "endLine": 283,
+      "summary": "**Previously axiomatized, now fully proved.** Defines `repValue n k t` as the natural quotient at the $t$-th shifted index. Proves `repValue_mem` (each value is in the representable set) and `repValue_injective` (distinct $t$ give distinct quotients, via `consecutiveProduct_inj`). Combines these to prove `representable_set_infinite` via `Set.infinite_range_of_injective`.",
+      "mathContext": "The injection $t \\mapsto P(n + (t+1)P(n,k), k) / P(n,k)$ into the representable set has infinite domain $\\mathbb{N}$, so the representable set is infinite. Injectivity: $\\text{repValue}(t_1) = \\text{repValue}(t_2) \\Rightarrow P(m_1, k) = P(m_2, k) \\Rightarrow m_1 = m_2 \\Rightarrow t_1 = t_2$."
+    },
+    {
+      "id": "connections-ext",
+      "title": "Connection to Problem #677",
+      "startLine": 285,
+      "endLine": 292,
+      "summary": "Defines `problem_677_special_case`: $N = P(n,k)$ for some $n, k$ with $k \\geq 2$. This is the special case of #686 where the denominator product is trivial ($n = 0$). Closes the `Erdos686` namespace.",
+      "mathContext": "Problem #677 asks: which positive integers are products of $k$ consecutive integers? Since $P(n,k) = (n+1)(n+2)\\cdots(n+k) = k! \\binom{n+k}{k}$, this is equivalent to asking which $N$ are $k!$ times a binomial coefficient."
     }
   ],
   "conclusion": {
@@ -169,9 +211,9 @@
       "Nat"
     ],
     "namespace": "Erdos686",
-    "lineCount": 174,
-    "axiomCount": 2,
-    "theoremCount": 10,
-    "definitionCount": 7
+    "lineCount": 292,
+    "axiomCount": 1,
+    "theoremCount": 23,
+    "definitionCount": 8
   }
 }

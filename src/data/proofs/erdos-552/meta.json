@@ -52,70 +52,80 @@
       "title": "Problem Statement, Known Bounds, and Imports",
       "summary": "Documentation header with problem statement, $100 prize, BEFRS/Parsons bounds, exact values for prime powers, Cramér connection, and Mathlib imports for SimpleGraph and real analysis",
       "startLine": 1,
-      "endLine": 37
+      "endLine": 37,
+      "mathContext": "Documentation header with problem statement, $100 prize, BEFRS/Parsons bounds, exact values for prime powers, Cramér connection, and Mathlib imports for SimpleGraph and real analysis"
     },
     {
       "id": "graphs",
       "title": "Graph Definitions: C_4 and Star Graph S_n",
       "summary": "cycleGraph C_n via modular adjacency with symmetry/loopless proofs, C4 as cycleGraph 4, starGraph S_n = K_{1,n} with center vertex 0 adjacent to all leaves",
       "startLine": 38,
-      "endLine": 58
+      "endLine": 58,
+      "mathContext": "cycleGraph C_n via modular adjacency with symmetry/loopless proofs, C4 as cycleGraph 4, starGraph S_n = K_{1,n} with center vertex 0 adjacent to all leaves"
     },
     {
       "id": "ramsey",
       "title": "Ramsey Number R(C_4, S_n)",
       "summary": "ContainsSubgraph via injective adjacency-preserving maps, complement graph definition, ramseyNumber via sInf, R_C4_Sn specializing to the cycle-star pair",
       "startLine": 59,
-      "endLine": 82
+      "endLine": 82,
+      "mathContext": "ContainsSubgraph via injective adjacency-preserving maps, complement graph definition, ramseyNumber via sInf, R_C4_Sn specializing to the cycle-star pair"
     },
     {
       "id": "bounds",
       "title": "Known Bounds: Parsons Upper and BEFRS Lower",
       "summary": "parsons_upper_bound (1975): R ≤ n + ⌈√n⌉ + 1. befrs_lower_bound (1989): R ≥ n + √n - 6n^{11/40} via Filter.atTop. asymptotic_bounds combining both into R = n + √n + O(n^{11/40})",
       "startLine": 83,
-      "endLine": 102
+      "endLine": 102,
+      "mathContext": "parsons_upper_bound (1975): R ≤ n + ⌈√n⌉ + 1. befrs_lower_bound (1989): R ≥ n + √n - 6n^{11/40} via Filter.atTop. asymptotic_bounds combining both into R = n + √n + O(n^{11/40})"
     },
     {
       "id": "exact",
       "title": "Exact Values for Prime Power Parameters",
       "summary": "exact_value_q2_plus_1: R = n + q for n = q²+1. exact_value_q2: R = n + q + 1 for n = q². exact_value_q2_minus_t: R = q²-t+q+1 for 0 ≤ t ≤ q. All via projective plane constructions",
       "startLine": 103,
-      "endLine": 120
+      "endLine": 120,
+      "mathContext": "exact_value_q2_plus_1: R = n + q for n = q²+1. exact_value_q2: R = n + q + 1 for n = q². exact_value_q2_minus_t: R = q²-t+q+1 for 0 ≤ t ≤ q. All via projective plane constructions"
     },
     {
       "id": "main-question",
       "title": "The Erdős Question ($100 Prize)",
       "summary": "ErdosQuestion: infinitely many n with R ≤ n + √n - c. ErdosConjecture: holds for ALL c > 0. ErdosConjectureNegation: eventual lower bound n + √n - c₀",
       "startLine": 121,
-      "endLine": 135
+      "endLine": 135,
+      "mathContext": "ErdosQuestion: infinitely many n with R ≤ n + √n - c. ErdosConjecture: holds for ALL c > 0. ErdosConjectureNegation: eventual lower bound n + √n - c₀"
     },
     {
       "id": "prime-gaps",
       "title": "Prime Gap Connection and Cramér's Conjecture",
       "summary": "primeGap function via sInf of primes exceeding p, CramerConjecture as O((log p)²), cramer_implies_better_bound: conditionally R ≥ n + √n - n^ε for any ε > 0",
       "startLine": 136,
-      "endLine": 154
+      "endLine": 154,
+      "mathContext": "primeGap function via sInf of primes exceeding p, CramerConjecture as O((log p)²), cramer_implies_better_bound: conditionally R ≥ n + √n - n^ε for any ε > 0"
     },
     {
       "id": "f-function",
       "title": "The Function f(n) = R(C_4, S_n)",
       "summary": "f = R_C4_Sn convenience wrapper, ConsecutiveEqualQuestion (f(n+1) = f(n) infinitely often?), BoundedIncreaseQuestion (f(n+1) ≤ f(n) + 2?), f_eventually_increasing",
       "startLine": 155,
-      "endLine": 172
+      "endLine": 172,
+      "mathContext": "f = R_C4_Sn convenience wrapper, ConsecutiveEqualQuestion (f(n+1) = f(n) infinitely often?), BoundedIncreaseQuestion (f(n+1) ≤ f(n) + 2?), f_eventually_increasing"
     },
     {
       "id": "constructions",
       "title": "Parsons Construction and Extremal Results",
       "summary": "parsons_construction via PG(2,q) for prime q, polarityGraph definition (sorry), c4_minimum_degree Dirac-type condition, c4_star_extremal weaker bound R ≤ n + 2√n + 3",
       "startLine": 173,
-      "endLine": 198
+      "endLine": 198,
+      "mathContext": "parsons_construction via PG(2,q) for prime q, polarityGraph definition (sorry), c4_minimum_degree Dirac-type condition, c4_star_extremal weaker bound R ≤ n + 2√n + 3"
     },
     {
       "id": "summary",
       "title": "Summary and Open Questions",
       "summary": "Overview of formalized results: OPEN status, $100 prize, known bounds, exact values, prime gap connection, key sorries, open dependence on prime gaps",
       "startLine": 199,
-      "endLine": 238
+      "endLine": 238,
+      "mathContext": "Overview of formalized results: OPEN status, $100 prize, known bounds, exact values, prime gap connection, key sorries, open dependence on prime gaps"
     }
   ],
   "conclusion": {

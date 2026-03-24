@@ -138,56 +138,64 @@
       "title": "The Depressed Cubic",
       "summary": "Defines depressedCubic (p q : ℂ) : ℂ[X] as X³ + C p * X + C q, discriminant as q²/4 + p³/27, and cubeRoot via Complex.cpow. All noncomputable.",
       "startLine": 49,
-      "endLine": 69
+      "endLine": 69,
+      "mathContext": "Defines depressedCubic (p q : ℂ) : ℂ[X] as X³ + C p * X + C q, discriminant as q²/4 + p³/27, and cubeRoot via Complex.cpow. All noncomputable."
     },
     {
       "id": "algebraic-identities",
       "title": "Key Algebraic Identities",
       "summary": "Proves cube_of_sum by ring and cardano_verification_core via calc chain: the heart of the proof showing if u³+v³=-q and 3uv=-p then (u+v)³+p(u+v)+q=0.",
       "startLine": 70,
-      "endLine": 94
+      "endLine": 94,
+      "mathContext": "Proves cube_of_sum by ring and cardano_verification_core via calc chain: the heart of the proof showing if u³+v³=-q and 3uv=-p then (u+v)³+p(u+v)+q=0."
     },
     {
       "id": "cardano-properties",
       "title": "Properties of Cardano's Components",
       "summary": "Three lemmas: cardano_sum_property (conjugate cube roots sum to -q), cardano_product_under_roots (difference of squares), cardano_product_simplified (product equals -p³/27). All by ring.",
       "startLine": 95,
-      "endLine": 118
+      "endLine": 118,
+      "mathContext": "Three lemmas: cardano_sum_property (conjugate cube roots sum to -q), cardano_product_under_roots (difference of squares), cardano_product_simplified (product equals -p³/27). All by ring."
     },
     {
       "id": "main-theorem",
       "title": "Cardano's Formula (Main Theorem)",
       "summary": "Proves depressedCubic_eval (unfolds polynomial evaluation) and cardano_formula: the main Wiedijk #37 result. Converts uv = -p/3 to 3uv = -p via calc, then applies cardano_verification_core.",
       "startLine": 119,
-      "endLine": 145
+      "endLine": 145,
+      "mathContext": "Proves depressedCubic_eval (unfolds polynomial evaluation) and cardano_formula: the main Wiedijk #37 result. Converts uv = -p/3 to 3uv = -p via calc, then applies cardano_verification_core."
     },
     {
       "id": "special-cases",
       "title": "Verified Examples",
       "summary": "Four concrete examples verified by norm_num: x³-6x-40=0 (root 4), x³+6x-20=0 (root 2), x³-1=0 (root 1), and discriminant vanishes when p=0.",
       "startLine": 146,
-      "endLine": 165
+      "endLine": 165,
+      "mathContext": "Four concrete examples verified by norm_num: x³-6x-40=0 (root 4), x³+6x-20=0 (root 2), x³-1=0 (root 1), and discriminant vanishes when p=0."
     },
     {
       "id": "cube-roots-unity",
       "title": "Cube Roots of Unity",
       "summary": "Defines omega := exp(2πi/3). Proves omega_cubed (via exp_two_pi_mul_I), omega_ne_one (via sin(2π/3) = √3/2 ≠ 0, the hardest proof in file), and omega_sum : 1+ω+ω²=0 (via factorization x³-1 = (x-1)(x²+x+1)).",
       "startLine": 166,
-      "endLine": 227
+      "endLine": 227,
+      "mathContext": "Defines omega := exp(2πi/3). Proves omega_cubed (via exp_two_pi_mul_I), omega_ne_one (via sin(2π/3) = √3/2 ≠ 0, the hardest proof in file), and omega_sum : 1+ω+ω²=0 (via factorization x³-1 = (x-1)(x²+"
     },
     {
       "id": "other-roots",
       "title": "The Second Root via Omega",
       "summary": "Proves omega_root_product (product condition preserved under ω-twist since ω³=1) and second_root (ωu+ω²v is a root by the same verification lemma). The third root ω²u+ωv follows by symmetry.",
       "startLine": 228,
-      "endLine": 268
+      "endLine": 268,
+      "mathContext": "Proves omega_root_product (product condition preserved under ω-twist since ω³=1) and second_root (ωu+ω²v is a root by the same verification lemma). The third root ω²u+ωv follows by symmetry."
     },
     {
       "id": "historical-significance",
       "title": "Historical Significance",
       "summary": "Commentary on mathematical impact: first radical formula beyond quadratics, led to complex numbers via casus irreducibilis, motivated Galois theory. Connections to Wiedijk #46, #16, #80. Exports six key results via #check.",
       "startLine": 269,
-      "endLine": 297
+      "endLine": 297,
+      "mathContext": "Commentary on mathematical impact: first radical formula beyond quadratics, led to complex numbers via casus irreducibilis, motivated Galois theory. Connections to Wiedijk #46, #16, #80. Exports six k"
     }
   ],
   "conclusion": {
@@ -205,27 +213,32 @@
     {
       "id": "general-quartic",
       "relationship": "generalizes",
-      "description": "Ferrari's quartic solution (Wiedijk #46) uses a cubic resolvent — the quartic reduces to a cubic, making Cardano's formu"
+      "description": "Ferrari's quartic solution (Wiedijk #46) uses a cubic resolvent — the quartic reduces to a cubic, making Cardano's formula a prerequisite for solving degree 4."
     },
     {
       "id": "abel-ruffini",
       "relationship": "related-problem",
-      "description": "The Abel-Ruffini theorem (Wiedijk #16) proves no general radical formula exists for degree ≥ 5. The cubic and quartic fo"
+      "description": "The Abel-Ruffini theorem (Wiedijk #16) proves no general radical formula exists for degree ≥ 5. The cubic and quartic formulas are the last cases where radicals suffice."
     },
     {
       "id": "abel-ruffini-oq-04",
       "relationship": "complementary",
-      "description": "The A₅ simplicity proof chain shows exactly why no radical formula exists for degree ≥ 5: S₄ is solvable (so cubics and "
+      "description": "The A₅ simplicity proof chain shows exactly why no radical formula exists for degree ≥ 5: S₄ is solvable (so cubics and quartics yield to radical formulas) but S₅ is not — making the cubic formula one of the last explicit radical solutions"
     },
     {
       "id": "fundamental-theorem-algebra",
       "relationship": "foundation",
-      "description": "The Fundamental Theorem of Algebra (Wiedijk #80) guarantees cubic roots exist in ℂ. Cardano's formula constructs them ex"
+      "description": "The Fundamental Theorem of Algebra (Wiedijk #80) guarantees cubic roots exist in ℂ. Cardano's formula constructs them explicitly."
     },
     {
       "id": "de-moivre",
       "relationship": "uses-same-technique",
-      "description": "De Moivre's theorem connects complex exponentials to trigonometry. The cube roots of unity ω = e^(2πi/3) central to expr"
+      "description": "De Moivre's theorem connects complex exponentials to trigonometry. The cube roots of unity ω = e^(2πi/3) central to expressing all three cubic roots are a direct application."
+    },
+    {
+      "id": "angle-trisection",
+      "relationship": "related-problem",
+      "description": "The impossibility of angle trisection reduces to showing cos(20°) satisfies an irreducible cubic — the same cubic equation theory, applied to a geometric impossibility proof."
     }
   ],
   "references": [

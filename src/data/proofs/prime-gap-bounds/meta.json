@@ -200,7 +200,7 @@
     {
       "id": "bounded-prime-gaps",
       "relationship": "foundational",
-      "description": "Provides prime gap infrastructure (nth prime bounds, prime counting bounds) imported directly by the Bounded Prime Gaps "
+      "description": "Provides prime gap infrastructure (nth prime bounds, prime counting bounds) imported directly by the Bounded Prime Gaps formalization"
     },
     {
       "id": "bertrands-postulate-oq-03",
@@ -215,7 +215,7 @@
     {
       "id": "prime-number-theorem",
       "relationship": "related",
-      "description": "The PNT gives p_n ~ n log n asymptotically; this module provides the weaker but elementary bound p_n <= 2^(n+1) provable"
+      "description": "The PNT gives p_n ~ n log n asymptotically; this module provides the weaker but elementary bound p_n <= 2^(n+1) provable from Bertrand alone"
     }
   ]
 }

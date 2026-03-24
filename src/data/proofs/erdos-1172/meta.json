@@ -66,7 +66,7 @@
       "omega2_lt_omega3"
     ],
     "axiomCount": 8,
-    "lineCount": 204,
+    "lineCount": 241,
     "assumptions": "8 axioms encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
@@ -94,77 +94,88 @@
       "title": "Ordinal and Cardinal Setup",
       "summary": "Defines ω₁, ω₂, ω₃ as the ordinals of the first three uncountable alephs, and ω as the first limit ordinal.",
       "startLine": 38,
-      "endLine": 44
+      "endLine": 44,
+      "mathContext": "Defines ω₁, ω₂, ω₃ as the ordinals of the first three uncountable alephs, and ω as the first limit ordinal."
     },
     {
       "id": "partition-relation",
       "title": "Partition Relations",
       "summary": "Introduces the unbalanced ordinal partition relation α → (β, γ)² as an axiom and defines the balanced variant α → (β)₂².",
       "startLine": 45,
-      "endLine": 53
+      "endLine": 53,
+      "mathContext": "Introduces the unbalanced ordinal partition relation α → (β, γ)² as an axiom and defines the balanced variant α → (β)₂²."
     },
     {
       "id": "set-theoretic-hypotheses",
       "title": "Set-Theoretic Hypotheses",
       "summary": "Formalizes GCH as 2^ℵ_α = ℵ_{α+1} for all α, CH as the special case 2^ℵ₀ = ℵ₁, and proves GCH implies CH.",
       "startLine": 54,
-      "endLine": 67
+      "endLine": 67,
+      "mathContext": "Formalizes GCH as 2^ℵ_α = ℵ_{α+1} for all α, CH as the special case 2^ℵ₀ = ℵ₁, and proves GCH implies CH."
     },
     {
       "id": "the-four-open-questions",
       "title": "The Four Open Questions",
       "summary": "States the four open partition relations from Erdős-Hajnal as Lean definitions, three under GCH and one under CH.",
       "startLine": 68,
-      "endLine": 81
+      "endLine": 81,
+      "mathContext": "States the four open partition relations from Erdős-Hajnal as Lean definitions, three under GCH and one under CH."
     },
     {
       "id": "basic-ordinal-arithmetic",
       "title": "Basic Ordinal Arithmetic",
       "summary": "Proves the ordering chain ω < ω₁ < ω₂ < ω₃ and positivity of all three uncountable ordinals using Mathlib's aleph lemmas.",
       "startLine": 82,
-      "endLine": 115
+      "endLine": 115,
+      "mathContext": "Proves the ordering chain ω < ω₁ < ω₂ < ω₃ and positivity of all three uncountable ordinals using Mathlib's aleph lemmas."
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity Principles",
       "summary": "Axiomatizes source monotonicity (enlarging the source preserves the relation) and target monotonicity (shrinking targets preserves it).",
       "startLine": 116,
-      "endLine": 123
+      "endLine": 123,
+      "mathContext": "Axiomatizes source monotonicity (enlarging the source preserves the relation) and target monotonicity (shrinking targets preserves it)."
     },
     {
       "id": "known-results",
       "title": "Known Classical Results",
       "summary": "States the Erdős-Dushnik-Miller theorem (1941) and the Erdős-Rado strengthening for regular uncountable cardinals as axioms.",
       "startLine": 124,
-      "endLine": 134
+      "endLine": 134,
+      "mathContext": "States the Erdős-Dushnik-Miller theorem (1941) and the Erdős-Rado strengthening for regular uncountable cardinals as axioms."
     },
     {
       "id": "proved-theorems",
       "title": "Derived Partition Relations",
       "summary": "Derives six consequences including weak forms of Q1 via EDM + monotonicity, target weakening implications, and the unfolding of Q4's balanced definition.",
       "startLine": 135,
-      "endLine": 172
+      "endLine": 172,
+      "mathContext": "Derives six consequences including weak forms of Q1 via EDM + monotonicity, target weakening implications, and the unfolding of Q4's balanced definition."
     },
     {
       "id": "stepping-up-lemma",
       "title": "Stepping-Up Lemma",
       "summary": "Axiomatizes the negative stepping-up lemma: failure of a partition relation at κ propagates to κ + 1 with modified targets.",
       "startLine": 173,
-      "endLine": 178
+      "endLine": 178,
+      "mathContext": "Axiomatizes the negative stepping-up lemma: failure of a partition relation at κ propagates to κ + 1 with modified targets."
     },
     {
       "id": "independence-results",
       "title": "Independence Results",
       "summary": "Demonstrates ZFC-independence of ω₁ → (ω₁, ω + 2)² via Todorcevic's negative result under b = ω₁ and PFA's positive result.",
       "startLine": 179,
-      "endLine": 194
+      "endLine": 194,
+      "mathContext": "Demonstrates ZFC-independence of ω₁ → (ω₁, ω + 2)² via Todorcevic's negative result under b = ω₁ and PFA's positive result."
     },
     {
       "id": "summary",
       "title": "Summary and Auxiliary Facts",
       "summary": "Packages all four questions into one conjunction and verifies consistency bounds on the targets appearing in Q2 and Q3.",
       "startLine": 195,
-      "endLine": 204
+      "endLine": 204,
+      "mathContext": "Packages all four questions into one conjunction and verifies consistency bounds on the targets appearing in Q2 and Q3."
     }
   ],
   "conclusion": {
@@ -190,7 +201,7 @@
       "Cardinal"
     ],
     "namespace": "Erdos1172",
-    "lineCount": 204,
+    "lineCount": 241,
     "axiomCount": 8,
     "theoremCount": 16,
     "definitionCount": 12

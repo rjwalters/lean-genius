@@ -78,63 +78,72 @@
       "title": "Zeta Values at Natural Numbers",
       "startLine": 30,
       "endLine": 36,
-      "summary": "Definition of zetaValue(s) = ∑ 1/n^s as a tsum over ℕ."
+      "summary": "Definition of zetaValue(s) = ∑ 1/n^s as a tsum over ℕ.",
+      "mathContext": "Definition of zetaValue(s) = ∑ 1/n^s as a tsum over ℕ."
     },
     {
       "id": "even-closed-forms",
       "title": "Known Even Zeta Values",
       "startLine": 38,
       "endLine": 46,
-      "summary": "ζ(2) = π²/6 and ζ(4) = π⁴/90 proved directly from Mathlib."
+      "summary": "ζ(2) = π²/6 and ζ(4) = π⁴/90 proved directly from Mathlib.",
+      "mathContext": "ζ(2) = π²/6 and ζ(4) = π⁴/90 proved directly from Mathlib."
     },
     {
       "id": "deep-axioms",
       "title": "Deep Axioms",
       "startLine": 48,
       "endLine": 59,
-      "summary": "Lindemann's theorem (π transcendental) and Apéry's theorem (ζ(3) irrational) axiomatized."
+      "summary": "Lindemann's theorem (π transcendental) and Apéry's theorem (ζ(3) irrational) axiomatized.",
+      "mathContext": "Lindemann's theorem (π transcendental) and Apéry's theorem (ζ(3) irrational) axiomatized."
     },
     {
       "id": "conjectures",
       "title": "The Open Conjectures",
       "startLine": 61,
       "endLine": 75,
-      "summary": "Transcendence and irrationality conjectures for odd zeta values."
+      "summary": "Transcendence and irrationality conjectures for odd zeta values.",
+      "mathContext": "Transcendence and irrationality conjectures for odd zeta values."
     },
     {
       "id": "structural-part1",
       "title": "Basic Structural Relationships",
       "startLine": 77,
       "endLine": 96,
-      "summary": "Transcendence ⟹ irrationality, conjecture specializes to Apéry and ζ(3)∧ζ(5)."
+      "summary": "Transcendence ⟹ irrationality, conjecture specializes to Apéry and ζ(3)∧ζ(5).",
+      "mathContext": "Transcendence ⟹ irrationality, conjecture specializes to Apéry and ζ(3)∧ζ(5)."
     },
     {
       "id": "even-odd-contrast",
       "title": "Even vs Odd Zeta Values",
       "startLine": 98,
       "endLine": 107,
-      "summary": "Definition of the rational multiple property for even zeta values."
+      "summary": "Definition of the rational multiple property for even zeta values.",
+      "mathContext": "Definition of the rational multiple property for even zeta values."
     },
     {
       "id": "even-transcendence",
       "title": "Even Zeta Transcendence",
       "startLine": 109,
       "endLine": 128,
-      "summary": "ζ(2) and ζ(4) transcendence theorems, fully proved from Lindemann axiom via transcendental_pow_of_transcendental."
+      "summary": "ζ(2) and ζ(4) transcendence theorems, fully proved from Lindemann axiom via transcendental_pow_of_transcendental.",
+      "mathContext": "ζ(2) and ζ(4) transcendence theorems, fully proved from Lindemann axiom via transcendental_pow_of_transcendental."
     },
     {
       "id": "rivoal-zudilin",
       "title": "Deep Results on Odd Zeta Irrationality",
       "startLine": 130,
       "endLine": 145,
-      "summary": "Even-odd hierarchy theorem connecting ζ(2) transcendence, ζ(3) irrationality (Apéry), and structural relationships."
+      "summary": "Even-odd hierarchy theorem connecting ζ(2) transcendence, ζ(3) irrationality (Apéry), and structural relationships.",
+      "mathContext": "Even-odd hierarchy theorem connecting ζ(2) transcendence, ζ(3) irrationality (Apéry), and structural relationships."
     },
     {
       "id": "irrationality-landscape",
       "title": "The Irrationality Landscape",
       "startLine": 146,
       "endLine": 185,
-      "summary": "Proved: irrationality conjecture implies Rivoal and Zudilin; transcendence conjecture recovers all known results."
+      "summary": "Proved: irrationality conjecture implies Rivoal and Zudilin; transcendence conjecture recovers all known results.",
+      "mathContext": "Proved: irrationality conjecture implies Rivoal and Zudilin; transcendence conjecture recovers all known results."
     }
   ],
   "conclusion": {
@@ -178,17 +187,17 @@
     {
       "id": "basel-problem",
       "relationship": "extends",
-      "description": "Parent entry proving ζ(2) = π²/6 — this file explores the transcendence landscape of all zeta values at positive integer"
+      "description": "Parent entry proving ζ(2) = π²/6 — this file explores the transcendence landscape of all zeta values at positive integers"
     },
     {
       "id": "basel-problem-oq-01",
       "relationship": "related",
-      "description": "Sibling open question focusing specifically on ζ(5) irrationality; this entry takes the broader view of ALL odd zeta val"
+      "description": "Sibling open question focusing specifically on ζ(5) irrationality; this entry takes the broader view of ALL odd zeta values"
     },
     {
       "id": "e-transcendental",
       "relationship": "related",
-      "description": "Both concern transcendence of fundamental constants — e's transcendence is proved while odd zeta transcendence remains o"
+      "description": "Both concern transcendence of fundamental constants — e's transcendence is proved while odd zeta transcendence remains open"
     },
     {
       "id": "pi-transcendental",
@@ -198,7 +207,7 @@
     {
       "id": "sqrt2-irrational",
       "relationship": "related",
-      "description": "Irrationality of √2 is the classical prototype for irrationality proofs — Apéry's proof of ζ(3) irrationality uses a far"
+      "description": "Irrationality of √2 is the classical prototype for irrationality proofs — Apéry's proof of ζ(3) irrationality uses a far more sophisticated descendant of the same diophantine approximation tradition"
     }
   ],
   "leanFile": {

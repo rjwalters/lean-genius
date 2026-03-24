@@ -150,44 +150,57 @@
   ],
   "relatedProofs": [
     {
-      "target": "erdos-1053",
-      "description": "Studies σ(n)/n for k-perfect numbers, a parallel ratio problem using the full divisor sum instead of the partial ordered sum used in Problem 1054."
+      "id": "fundamental-arithmetic",
+      "relationship": "prerequisite",
+      "description": "Divisor structure underlying f(n) relies on the fundamental theorem of arithmetic; smallest divisors of m are determined by its prime factorization."
     },
     {
-      "target": "erdos-1049",
-      "description": "Explores arithmetic properties of series built from divisor counts; shares the theme of extracting asymptotic or algebraic information from divisor-indexed sequences."
+      "id": "infinitude-primes",
+      "relationship": "related",
+      "description": "Primes play a key role in the divisor sum structure: for a prime product m = pq the divisors are {1, p, q, pq}, giving the connection to Goldbach-type representations."
     },
     {
-      "target": "fundamental-arithmetic",
-      "description": "Provides the algebraic foundation for the ordered-divisor structure that defines f(n): smallest divisors are exactly the prime-power factors in increasing order."
+      "id": "erdos-1053",
+      "relationship": "related",
+      "description": "Erdős Problem #1053 studies the ratio σ(n)/n for k-perfect numbers; both problems investigate how sums of divisors (total or partial) can be controlled asymptotically."
+    },
+    {
+      "id": "erdos-1049",
+      "relationship": "related",
+      "description": "Erdős Problem #1049 connects divisor counts τ(n) to series involving divisor sums; both problems arise from Erdős's broader program on the arithmetic of divisor functions."
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "The Euler totient function is a sibling multiplicative function; techniques for bounding φ(n)/n and σ(n)/n inform density arguments relevant to f(n..."
     }
   ],
   "references": [
     {
       "title": "Unsolved Problems in Number Theory (3rd ed.), Problem B2",
       "author": "Richard K. Guy",
-      "year": 2004,
+      "year": "2004",
       "venue": "Springer",
       "description": "Original published formulation of Erdős Problem 1054 on the function f(n) as the minimum m whose k smallest divisors sum to n."
     },
     {
       "title": "A note on a problem of Erdős on divisor sums",
       "author": "Terence Tao",
-      "year": 2016,
+      "year": "2016",
       "url": "https://terrytao.wordpress.com/2016/06/06/a-note-on-a-problem-of-erdos-on-divisor-sums/",
       "description": "Tao's blog post establishing that the strong conjecture f(n) = o(n) is false, showing the density of {n : f(n) ≤ δn} is at most O(δ²)."
     },
     {
       "title": "On the density of some sets of integers",
       "author": "Paul Erdős",
-      "year": 1935,
+      "year": "1935",
       "venue": "Bulletin of the American Mathematical Society",
       "description": "Early Erdős paper developing density methods for sets defined by divisibility conditions, providing foundational techniques used in the analysis of f(n)."
     },
     {
       "title": "The distribution of integers with a divisor in a given interval",
       "author": "Kevin Ford",
-      "year": 2008,
+      "year": "2008",
       "venue": "Annals of Mathematics, 168(2), 367–433",
       "url": "https://doi.org/10.4007/annals.2008.168.367",
       "description": "Ford's landmark work on the distribution of smooth and friable numbers and their divisors; provides analytic tools directly applicable to questions about which values n can be represented as ordered divisor sums."
@@ -195,7 +208,7 @@
     {
       "title": "Multiplicative Number Theory I: Classical Theory",
       "author": "Hugh L. Montgomery, Robert C. Vaughan",
-      "year": 2006,
+      "year": "2006",
       "venue": "Cambridge University Press",
       "description": "Standard reference for analytic techniques involving divisor functions, Dirichlet series, and density results used in studying asymptotic behavior of f(n)/n."
     }

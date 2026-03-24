@@ -152,22 +152,22 @@
     {
       "id": "erdos-340",
       "relationship": "related",
-      "description": "Both are extremal combinatorics problems: Erdős #340 concerns Sidon sets (sets with distinct pairwise sums), while #1010"
+      "description": "Both are extremal combinatorics problems: Erdős #340 concerns Sidon sets (sets with distinct pairwise sums), while #1010 concerns triangle supersaturation beyond the Turán threshold. Both use counting arguments central to extremal graph theory"
     },
     {
       "id": "ramseys-theorem",
       "relationship": "foundational",
-      "description": "Ramsey theory guarantees unavoidable substructures in large graphs; triangle supersaturation quantifies this by counting"
+      "description": "Ramsey theory guarantees unavoidable substructures in large graphs; triangle supersaturation quantifies this by counting how many triangles are forced when the edge count exceeds the Turán bound. The Kruskal-Katona theorem extends this counting to general cliques"
     },
     {
       "id": "erdos-1010-oq-02",
       "relationship": "generalization",
-      "description": "Generalizes triangle supersaturation to K_r: how many r-cliques must appear in a graph exceeding the Turán threshold ex("
+      "description": "Generalizes triangle supersaturation to K_r: how many r-cliques must appear in a graph exceeding the Turán threshold ex(n, K_r)? This is the natural next question after resolving the triangle case (r=3) in Problem #1010"
     },
     {
       "id": "szemeredi-regularity",
       "relationship": "technique",
-      "description": "The Szemerédi regularity lemma provides the partition machinery underlying the stability method used in the Lovász-Simon"
+      "description": "The Szemerédi regularity lemma provides the partition machinery underlying the stability method used in the Lovász-Simonovits proof. Regularity partitions decompose graphs into quasi-random parts, enabling supersaturation arguments for general subgraph counts"
     }
   ],
   "references": [
@@ -195,28 +195,28 @@
     {
       "title": "On a theorem of Rademacher-Turán",
       "authors": "P. Erdős",
-      "year": 1962,
+      "year": "1962",
       "venue": "Illinois Journal of Mathematics, 6:122–127",
       "note": "Erdős proved supersaturation for t < cn (constant c) and conjectured the full result for t < floor(n/2), which became Problem #1010"
     },
     {
       "title": "On the number of complete subgraphs of a graph II",
       "authors": "L. Lovász, M. Simonovits",
-      "year": 1976,
+      "year": "1976",
       "venue": "Studies in Pure Mathematics (Turán memorial volume), pp. 459–495",
       "note": "First proof of Problem #1010; introduced the stability method showing near-extremal graphs must structurally resemble the Turán graph"
     },
     {
       "title": "Solution of a problem of P. Erdős about the number of triangles",
       "authors": "V. Nikiforov, N. Khadzhiivanov",
-      "year": 1981,
+      "year": "1981",
       "venue": "C. R. Acad. Bulgare Sci., 34(7):969–970",
       "note": "Independent proof of Problem #1010 via different combinatorial methods"
     },
     {
       "title": "On the number of complete subgraphs contained in certain graphs",
       "authors": "P. Turán",
-      "year": 1941,
+      "year": "1941",
       "venue": "J. Math. Phys., 20:33–38 (in Hungarian; translated 1970)",
       "note": "English translation of Turán's original extremal graph theory result; establishes ex(n, K₃) = floor(n²/4), the threshold central to Problem #1010"
     }

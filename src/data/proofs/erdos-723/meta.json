@@ -58,77 +58,88 @@
       "title": "Problem Overview and Imports",
       "startLine": 1,
       "endLine": 24,
-      "summary": "Module docstring stating Erdős Problem #723, its open status, and known partial results. Imports Mathlib and opens the Configuration namespace for projective plane access."
+      "summary": "Module docstring stating Erdős Problem #723, its open status, and known partial results. Imports Mathlib and opens the Configuration namespace for projective plane access.",
+      "mathContext": "Module docstring stating Erdős Problem #723, its open status, and known partial results. Imports Mathlib and opens the Configuration namespace for projective plane access."
     },
     {
       "id": "background-on-projective-planes",
       "title": "Background on Projective Planes",
       "startLine": 25,
       "endLine": 37,
-      "summary": "Defines the axioms of a finite projective plane of order n: the counting formulas (n²+n+1 points and lines), incidence properties, and the connection to Mathlib's Configuration.ProjectivePlane type."
+      "summary": "Defines the axioms of a finite projective plane of order n: the counting formulas (n²+n+1 points and lines), incidence properties, and the connection to Mathlib's Configuration.ProjectivePlane type.",
+      "mathContext": "Defines the axioms of a finite projective plane of order n: the counting formulas (n²+n+1 points and lines), incidence properties, and the connection to Mathlib's Configuration.ProjectivePlane type."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture (Open)",
       "startLine": 38,
       "endLine": 60,
-      "summary": "States the Prime Power Conjecture as a Lean Prop: for every finite projective plane, the order must be a prime power. Correctly encoded as a definition rather than an axiom, since the conjecture is open."
+      "summary": "States the Prime Power Conjecture as a Lean Prop: for every finite projective plane, the order must be a prime power. Correctly encoded as a definition rather than an axiom, since the conjecture is open.",
+      "mathContext": "States the Prime Power Conjecture as a Lean Prop: for every finite projective plane, the order must be a prime power. Correctly encoded as a definition rather than an axiom, since the conjecture is op"
     },
     {
       "id": "existence-prime-power-orders",
       "title": "Existence for Prime Power Orders",
       "startLine": 61,
       "endLine": 74,
-      "summary": "Axiom asserting that projective planes exist for all prime power orders, via the classical PG(2,q) construction from finite fields. This is a deep algebraic result not formalized in Mathlib."
+      "summary": "Axiom asserting that projective planes exist for all prime power orders, via the classical PG(2,q) construction from finite fields. This is a deep algebraic result not formalized in Mathlib.",
+      "mathContext": "Axiom asserting that projective planes exist for all prime power orders, via the classical PG(2,q) construction from finite fields. This is a deep algebraic result not formalized in Mathlib."
     },
     {
       "id": "verified-small-orders",
       "title": "Verified for Small Orders",
       "startLine": 75,
       "endLine": 87,
-      "summary": "Axiom recording that the conjecture holds for all orders up to 11. Each case uses different methods: direct construction for prime powers, Bruck-Ryser for 6, and Lam's computation for 10."
+      "summary": "Axiom recording that the conjecture holds for all orders up to 11. Each case uses different methods: direct construction for prime powers, Bruck-Ryser for 6, and Lam's computation for 10.",
+      "mathContext": "Axiom recording that the conjecture holds for all orders up to 11. Each case uses different methods: direct construction for prime powers, Bruck-Ryser for 6, and Lam's computation for 10."
     },
     {
       "id": "bruck-ryser-theorem",
       "title": "The Bruck-Ryser Theorem",
       "startLine": 88,
       "endLine": 104,
-      "summary": "States the Bruck-Ryser theorem as an axiom: if a projective plane of order n exists and n ≡ 1 or 2 (mod 4), then n is a sum of two squares. This necessary condition rules out infinitely many orders including 6, 14, 21, and 22."
+      "summary": "States the Bruck-Ryser theorem as an axiom: if a projective plane of order n exists and n ≡ 1 or 2 (mod 4), then n is a sum of two squares. This necessary condition rules out infinitely many orders including 6, 14, 21, and 22.",
+      "mathContext": "States the Bruck-Ryser theorem as an axiom: if a projective plane of order n exists and n ≡ 1 or 2 (mod 4), then n is a sum of two squares. This necessary condition rules out infinitely many orders in"
     },
     {
       "id": "lam-order-10",
       "title": "The Lam Result for Order 10",
       "startLine": 105,
       "endLine": 119,
-      "summary": "Axiom recording Lam, Thiel, and Swiercz's 1989 computational proof that no order-10 projective plane exists. Notable because Bruck-Ryser does not rule out order 10 (since 10 = 1² + 3²)."
+      "summary": "Axiom recording Lam, Thiel, and Swiercz's 1989 computational proof that no order-10 projective plane exists. Notable because Bruck-Ryser does not rule out order 10 (since 10 = 1² + 3²).",
+      "mathContext": "Axiom recording Lam, Thiel, and Swiercz's 1989 computational proof that no order-10 projective plane exists. Notable because Bruck-Ryser does not rule out order 10 (since 10 = 1² + 3²)."
     },
     {
       "id": "order-12-open",
       "title": "Order 12 Remains Open",
       "startLine": 120,
       "endLine": 128,
-      "summary": "Documents that order 12 is the smallest open case: 12 ≡ 0 (mod 4) so Bruck-Ryser does not apply, 12 is not a prime power, and no computer search has succeeded due to the enormous search space."
+      "summary": "Documents that order 12 is the smallest open case: 12 ≡ 0 (mod 4) so Bruck-Ryser does not apply, 12 is not a prime power, and no computer search has succeeded due to the enormous search space.",
+      "mathContext": "Documents that order 12 is the smallest open case: 12 ≡ 0 (mod 4) so Bruck-Ryser does not apply, 12 is not a prime power, and no computer search has succeeded due to the enormous search space."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties (Verified)",
       "startLine": 129,
       "endLine": 140,
-      "summary": "Two verified theorems extracting counting formulas from Mathlib's ProjectivePlane API: plane_points and plane_lines both proving |P| = |L| = n² + n + 1, reflecting projective point-line duality."
+      "summary": "Two verified theorems extracting counting formulas from Mathlib's ProjectivePlane API: plane_points and plane_lines both proving |P| = |L| = n² + n + 1, reflecting projective point-line duality.",
+      "mathContext": "Two verified theorems extracting counting formulas from Mathlib's ProjectivePlane API: plane_points and plane_lines both proving |P| = |L| = n² + n + 1, reflecting projective point-line duality."
     },
     {
       "id": "small-order-examples",
       "title": "Examples of Small Orders",
       "startLine": 141,
       "endLine": 168,
-      "summary": "Verified computations: IsPrimePow for orders 1-5 via decide (with order 4 needing explicit 4=2² rewrite), and ¬IsPrimePow for 6, 10, 12 confirming these are not prime powers."
+      "summary": "Verified computations: IsPrimePow for orders 1-5 via decide (with order 4 needing explicit 4=2² rewrite), and ¬IsPrimePow for 6, 10, 12 confirming these are not prime powers.",
+      "mathContext": "Verified computations: IsPrimePow for orders 1-5 via decide (with order 4 needing explicit 4=2² rewrite), and ¬IsPrimePow for 6, 10, 12 confirming these are not prime powers."
     },
     {
       "id": "bruck-ryser-applications",
       "title": "Bruck-Ryser Applications (Verified)",
       "startLine": 169,
       "endLine": 187,
-      "summary": "The crown jewel: a complete verified proof chain ruling out order 6. Proves 6 mod 4 = 2, then that 6 is not a sum of two squares via interval_cases, then applies Bruck-Ryser to conclude no order-6 plane exists."
+      "summary": "The crown jewel: a complete verified proof chain ruling out order 6. Proves 6 mod 4 = 2, then that 6 is not a sum of two squares via interval_cases, then applies Bruck-Ryser to conclude no order-6 plane exists.",
+      "mathContext": "The crown jewel: a complete verified proof chain ruling out order 6. Proves 6 mod 4 = 2, then that 6 is not a sum of two squares via interval_cases, then applies Bruck-Ryser to conclude no order-6 pla"
     }
   ],
   "conclusion": {
@@ -185,17 +196,17 @@
     {
       "id": "desargues-theorem",
       "relationship": "foundational",
-      "description": "Desargues' theorem holds in all projective planes of prime power order (since these are Desarguesian planes coordinatize"
+      "description": "Desargues' theorem holds in all projective planes of prime power order (since these are Desarguesian planes coordinatized by fields). A non-prime-power plane, if it exists, would necessarily be non-Desarguesian."
     },
     {
       "id": "fermat-two-squares",
       "relationship": "technique",
-      "description": "The Bruck-Ryser theorem's sum-of-two-squares condition connects directly to Fermat's theorem on primes of the form 4k+1."
+      "description": "The Bruck-Ryser theorem's sum-of-two-squares condition connects directly to Fermat's theorem on primes of the form 4k+1. The same number-theoretic obstruction that governs which primes are sums of two squares governs which orders are ruled out by Bruck-Ryser."
     },
     {
       "id": "erdos-483",
       "relationship": "related",
-      "description": "Both are fundamental combinatorics problems posed by Erdős: #483 studies Schur numbers (partition regularity), while #72"
+      "description": "Both are fundamental combinatorics problems posed by Erdős: #483 studies Schur numbers (partition regularity), while #723 asks about projective plane orders"
     }
   ],
   "leanFile": {

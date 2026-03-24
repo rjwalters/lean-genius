@@ -53,7 +53,7 @@
       "single_eventual_orbit: equivalent formulation — there exists a single sequence S that all orbits eventually follow",
       "orbits_get_close: ∀ m, n ≥ 1, ∀ D, ∃ i, j: |h^i(m) - h^j(n)| < D — weaker proximity statement (also open)"
     ],
-    "lineCount": 155
+    "lineCount": 171
   },
   "sections": [
     {
@@ -185,26 +185,51 @@
     {
       "id": "collatz-structured",
       "relationship": "related",
-      "description": "Both study iterated function dynamics on integers asking whether all orbits merge; unlike Collatz, h is strictly increasing, eliminating cycle complications"
+      "description": "Both study iterated function dynamics on integers: Collatz iterates $n \\mapsto 3n+1$ or $n/2$, while #414 iterates $n \\mapsto n + \\tau(n)$. Both ask whether all orbits merge. Unlike Collatz, $h$ is strictly increasing, eliminating cycle complications"
     },
     {
       "id": "erdos-413",
       "relationship": "related",
-      "description": "Erdős #413 studies barriers for omega(n); the divisor function tau(n) is determined by the prime factorization, so omega(n) fluctuations directly influence h(n) = n + tau(n)"
+      "description": "Erdős #413 studies barriers for $\\omega(n)$ (number of distinct prime factors). The divisor function $\\tau(n) = \\prod(e_i + 1)$ is determined by the prime factorization, so the behavior of $\\omega(n)$ and its fluctuations directly influence the dynamics of $h(n) = n + \\tau(n)$"
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "The divisor function tau(n) = prod(e_i + 1) is defined via unique prime factorization; orbit coalescence requires controlling how tau transforms the factorization at each step"
+      "description": "The divisor function $\\tau(n) = \\prod (e_i + 1)$ is defined via unique prime factorization $n = p_1^{e_1} \\cdots p_k^{e_k}$. Understanding when $h^i(m) = h^j(n)$ (orbit coalescence) requires controlling how $\\tau$ transforms the prime factorization structure at each step"
     },
     {
       "id": "prime-number-theorem",
       "relationship": "foundational",
-      "description": "The PNT controls prime distribution governing tau(n); the Dirichlet divisor problem provides the average-case behavior of h(n) = n + tau(n)"
+      "description": "The PNT controls the distribution of primes, which in turn governs the divisor function: $\\tau(n)$ depends on the exponents in $n$'s prime factorization, and the typical factorization structure of a random integer near $N$ is governed by the PNT via the Hardy-Ramanujan theorem ($\\omega(n) \\sim \\log\\log n$ for typical $n$). The Dirichlet divisor problem ($\\sum_{n \\leq N} \\tau(n) = N\\log N + (2\\gamma - 1)N + O(N^\\theta)$, with $\\theta$ unknown) provides the average-case behavior of $h(n) = n + \\tau(n)$"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Both involve fundamental multiplicative arithmetic functions: $\\tau(n)$ counts all divisors while Euler's $\\phi(n)$ counts coprime residues. Erdős #413 studies the related iteration $n \\mapsto n - \\phi(n)$"
+    },
+    {
+      "id": "erdos-415",
+      "relationship": "related",
+      "description": "Erdős #415 studies ordering patterns in $\\varphi(n)$. Both $\\tau$ and $\\varphi$ are multiplicative functions whose local behavior determines the dynamics of arithmetic iterations: $h(n) = n + \\tau(n)$ here vs. questions about $\\varphi$ ordering in #415"
+    },
+    {
+      "id": "perfect-numbers",
+      "relationship": "related",
+      "description": "Perfect numbers satisfy $\\sigma(n) = 2n$, making them fixed points of the iteration $n \\mapsto \\sigma(n) - n$. The open question mentions $h(n) = n + \\sigma(n)$ (Erdős #412) as a variant, connecting divisor sum dynamics to the classical theory of perfect and abundant numbers"
+    },
+    {
+      "id": "harmonic-divergence",
+      "relationship": "related",
+      "description": "The average of $\\tau(n)$ over $[1, N]$ is $\\sim \\log N$ (Dirichlet's divisor problem), so the iteration $h(n) = n + \\tau(n)$ advances by $\\sim \\log n$ on average. The divergence of the harmonic series underlies the heuristic that orbits grow linearly with logarithmic corrections"
+    },
+    {
+      "id": "riemann-hypothesis",
+      "relationship": "thematic",
+      "description": "The Riemann Hypothesis controls the error term in the Dirichlet divisor problem ($\\sum_{n \\leq N} \\tau(n) = N\\log N + O(N^{1/4+\\varepsilon})$ under RH) and more generally governs the fluctuations of multiplicative functions around their means. Understanding orbit coalescence for $h(n) = n + \\tau(n)$ requires controlling these fluctuations — specifically, whether two trajectories can maintain different $\\tau$ values indefinitely despite their sums growing at similar rates"
     }
   ],
   "conclusion": {
-    "summary": "This 155-line formalization captures the OPEN Erdős Problem #414: do all orbits of the iteration $h(n) = n + \\tau(n)$ eventually merge, where $\\tau(n)$ is the divisor count function? The formalization defines the orbit structure, proves basic properties (e.g., $h(n) > n$ so orbits are strictly increasing), axiomatizes the coalescence conjecture, and verifies small-case mergers computationally. The problem's difficulty is irreducibility: the divisor function $\\tau(n) = \\prod(e_i + 1)$ fluctuates wildly with the prime factorization of $n$, and proving two trajectories $h^i(m), h^j(n)$ eventually collide requires controlling cumulative irregularities across arbitrarily many steps. The heuristic that $\\tau(n)$ averages $\\ln n$ suggests orbits grow like $n + c \\cdot n\\ln n$ and should merge, but the gap between average behavior and pointwise control of specific trajectories remains unbridged.",
+    "summary": "This 171-line formalization captures the OPEN Erdős Problem #414: do all orbits of the iteration $h(n) = n + \\tau(n)$ eventually merge, where $\\tau(n)$ is the divisor count function? The formalization defines the orbit structure, proves basic properties (e.g., $h(n) > n$ so orbits are strictly increasing), axiomatizes the coalescence conjecture, and verifies small-case mergers computationally. The problem's difficulty is irreducibility: the divisor function $\\tau(n) = \\prod(e_i + 1)$ fluctuates wildly with the prime factorization of $n$, and proving two trajectories $h^i(m), h^j(n)$ eventually collide requires controlling cumulative irregularities across arbitrarily many steps. The heuristic that $\\tau(n)$ averages $\\ln n$ suggests orbits grow like $n + c \\cdot n\\ln n$ and should merge, but the gap between average behavior and pointwise control of specific trajectories remains unbridged.",
     "implications": "A resolution would advance the theory of arithmetic dynamics — understanding when simple number-theoretic iterations have universal limiting behavior. The problem connects divisor function regularity (Dirichlet divisor problem), additive combinatorics (collision conditions), and discrete dynamical systems (orbit coalescence). Techniques developed for this problem could apply to the broader family of 'n + f(n)' iterations for multiplicative arithmetic functions f. The collision mechanism h(a) = h(b) when τ(a) - τ(b) = b - a connects to the distribution of values of τ, a classical topic in multiplicative number theory",
     "openQuestions": [
       "Does the merging conjecture hold? Can any pair of orbits be shown to collide?",
@@ -215,7 +240,7 @@
     ]
   },
   "leanFile": {
-    "lineCount": 155,
+    "lineCount": 171,
     "structureCount": 0,
     "axiomCount": 2,
     "theoremCount": 13,

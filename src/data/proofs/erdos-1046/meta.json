@@ -93,63 +93,72 @@
       "title": "Basic Definitions",
       "startLine": 42,
       "endLine": 77,
-      "summary": "Monic polynomials, sublevel sets, open/closed discs"
+      "summary": "Monic polynomials, sublevel sets, open/closed discs",
+      "mathContext": "Monic polynomials, sublevel sets, open/closed discs"
     },
     {
       "id": "roots-centroid",
       "title": "Roots and Centroid",
       "startLine": 78,
       "endLine": 100,
-      "summary": "Root multiset, centroid, Vieta's formulas"
+      "summary": "Root multiset, centroid, Vieta's formulas",
+      "mathContext": "Root multiset, centroid, Vieta's formulas"
     },
     {
       "id": "connectivity",
       "title": "Connectivity Characterization",
       "startLine": 101,
       "endLine": 116,
-      "summary": "E is connected ⟺ E contains critical points"
+      "summary": "E is connected ⟺ E contains critical points",
+      "mathContext": "E is connected ⟺ E contains critical points"
     },
     {
       "id": "ehp-question",
       "title": "Erdős-Herzog-Piranian Question",
       "startLine": 117,
       "endLine": 125,
-      "summary": "EHPQuestion definition"
+      "summary": "EHPQuestion definition",
+      "mathContext": "EHPQuestion definition"
     },
     {
       "id": "pommerenke-theorem",
       "title": "Pommerenke's Theorem",
       "startLine": 126,
       "endLine": 145,
-      "summary": "Main result: E ⊆ D(centroid, 2)"
+      "summary": "Main result: E ⊆ D(centroid, 2)",
+      "mathContext": "Main result: E ⊆ D(centroid, 2)"
     },
     {
       "id": "width-counterexample",
       "title": "Width Counterexample",
       "startLine": 146,
       "endLine": 177,
-      "summary": "Width conjecture is FALSE, axiomatized counterexample"
+      "summary": "Width conjecture is FALSE, axiomatized counterexample",
+      "mathContext": "Width conjecture is FALSE, axiomatized counterexample"
     },
     {
       "id": "diameter",
       "title": "Diameter Bounds",
       "startLine": 178,
       "endLine": 194,
-      "summary": "Diameter ≤ 2 by Pommerenke"
+      "summary": "Diameter ≤ 2 by Pommerenke",
+      "mathContext": "Diameter ≤ 2 by Pommerenke"
     },
     {
       "id": "related-concepts",
       "title": "Related Concepts",
       "startLine": 195,
       "endLine": 218,
-      "summary": "Lemniscate, filled lemniscate, Bernoulli lemniscate"
+      "summary": "Lemniscate, filled lemniscate, Bernoulli lemniscate",
+      "mathContext": "Lemniscate, filled lemniscate, Bernoulli lemniscate"
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 219,
       "endLine": 248,
-      "summary": "erdos_1046_summary theorem"
+      "summary": "erdos_1046_summary theorem",
+      "mathContext": "erdos_1046_summary theorem"
     }
   ],
   "conclusion": {
@@ -195,19 +204,34 @@
   ],
   "relatedProofs": [
     {
-      "target": "erdos-1047",
-      "relationship": "sibling",
-      "description": "Both problems study the geometry of connected sublevel sets of monic polynomials. #1047 asks about convexity of those sets; #1046 asks about their containment in a disc."
+      "id": "erdos-1043",
+      "relationship": "companion",
+      "description": "Erdős #1043 concerns projections of polynomial level sets {z : |f(z)| ≤ 1} — the same sublevel set studied here. Pommerenke's 1961 counterexample there parallels his 1959 disc-containment theorem here."
     },
     {
-      "target": "erdos-1048",
-      "relationship": "sibling",
-      "description": "Erdős #1048 is a direct companion: it asks for an upper bound on the diameter of the same lemniscate L(f,1), assuming roots lie close to the origin, sharpening the containment bound of #1046."
+      "id": "erdos-1044",
+      "relationship": "companion",
+      "description": "Erdős #1044 studies the boundary length of polynomial level sets for polynomials with roots in the unit disk — a closely related geometric question about lemniscates of monic polynomials."
     },
     {
-      "target": "erdos-1043",
-      "relationship": "sibling",
-      "description": "Erdős #1043 studies measure-theoretic properties (projection lengths) of the same polynomial sublevel sets, and its resolution by Pommerenke in 1961 is the natural sequel to his 1959 result in #1046."
+      "id": "erdos-1047",
+      "relationship": "companion",
+      "description": "Erdős #1047 asks whether connected components of {z : |f(z)| ≤ c} must be convex for small c. It shares the lemniscate connectivity theme and the role of Pommerenke as key contributor."
+    },
+    {
+      "id": "erdos-1048",
+      "relationship": "companion",
+      "description": "Erdős #1048 asks about the diameter of L(f,1) = {z : |f(z)| < 1} for monic f with roots near the origin — a direct diameter question complementing the disc-containment (radius 2) result here."
+    },
+    {
+      "id": "erdos-1045",
+      "relationship": "related",
+      "description": "Erdős #1045 maximizes the product of pairwise distances among n complex points, intersecting themes of complex geometry and the transfinite diameter that underlies the capacity-1 lemniscate setting."
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "prerequisite",
+      "description": "The Fundamental Theorem of Algebra guarantees that monic degree-n polynomials over ℂ split completely; the root multiset and centroid used in Pommerenke's theorem rely on this existence of roots."
     }
   ],
   "references": [
@@ -218,55 +242,55 @@
         "G. Piranian"
       ],
       "title": "On the geometric properties of level curves of polynomials",
-      "journal": "Illinois Journal of Mathematics",
       "volume": "2",
       "year": "1958",
       "pages": "553–563",
-      "description": "Original paper posing the disc containment and width conjectures for connected lemniscates of monic polynomials."
+      "description": "Original paper posing the disc containment and width conjectures for connected lemniscates of monic polynomials.",
+      "venue": "Illinois Journal of Mathematics"
     },
     {
       "authors": [
         "Ch. Pommerenke"
       ],
       "title": "On the derivative of a polynomial",
-      "journal": "Michigan Mathematical Journal",
       "volume": "6",
       "year": "1959",
       "pages": "373–396",
-      "description": "Proves the disc containment theorem (E ⊆ D(centroid, 2)) and provides a counterexample disproving the width conjecture."
+      "description": "Proves the disc containment theorem (E ⊆ D(centroid, 2)) and provides a counterexample disproving the width conjecture.",
+      "venue": "Michigan Mathematical Journal"
     },
     {
       "authors": [
         "Ch. Pommerenke"
       ],
       "title": "On the coefficients and Hankel determinants of univalent functions",
-      "journal": "Journal of the London Mathematical Society",
       "volume": "41",
       "year": "1966",
       "pages": "111–122",
-      "description": "Subsequent work by Pommerenke on polynomial geometry and function theory in the complex plane, building on the lemniscate results."
+      "description": "Subsequent work by Pommerenke on polynomial geometry and function theory in the complex plane, building on the lemniscate results.",
+      "venue": "Journal of the London Mathematical Society"
     },
     {
       "authors": [
         "M. Marden"
       ],
       "title": "Geometry of Polynomials",
-      "journal": "Mathematical Surveys and Monographs, American Mathematical Society",
       "volume": "3",
       "year": "1966",
       "pages": "–",
-      "description": "Comprehensive reference on the geometry of polynomial zero sets, including lemniscate containment, critical points, and the Gauss–Lucas theorem used in characterizing connectivity."
+      "description": "Comprehensive reference on the geometry of polynomial zero sets, including lemniscate containment, critical points, and the Gauss–Lucas theorem used in characterizing connectivity.",
+      "venue": "Mathematical Surveys and Monographs, American Mathematical Society"
     },
     {
       "authors": [
         "T. Ransford"
       ],
       "title": "Potential Theory in the Complex Plane",
-      "journal": "London Mathematical Society Student Texts, Cambridge University Press",
       "volume": "28",
       "year": "1995",
       "pages": "–",
-      "description": "Standard reference for transfinite diameter, logarithmic capacity, and the potential-theoretic framework underlying the capacity-1 lemniscate setting of this problem."
+      "description": "Standard reference for transfinite diameter, logarithmic capacity, and the potential-theoretic framework underlying the capacity-1 lemniscate setting of this problem.",
+      "venue": "London Mathematical Society Student Texts, Cambridge University Press"
     }
   ],
   "leanFile": {

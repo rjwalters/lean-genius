@@ -146,17 +146,17 @@
     {
       "id": "cantor-diagonalization",
       "relationship": "extends",
-      "description": "The root formalization: Cantor's diagonalization proves $|\\mathbb{R}| > |\\mathbb{N}|$. This entry builds on that uncount"
+      "description": "The root formalization: Cantor's diagonalization proves $|\\mathbb{R}| > |\\mathbb{N}|$. This entry builds on that uncountability result to characterize the first uncountable ordinal."
     },
     {
       "id": "cantor-diagonalization-oq-02",
       "relationship": "extends",
-      "description": "The direct parent: proves $|\\{\\text{countable ordinals}\\}| = \\aleph_1$ via a Cantor-style diagonal argument. This entry "
+      "description": "The direct parent: proves $|\\{\\text{countable ordinals}\\}| = \\aleph_1$ via a Cantor-style diagonal argument. This entry characterizes the structural properties of $\\omega_1$ beyond cardinality."
     },
     {
       "id": "continuum-hypothesis",
       "relationship": "related",
-      "description": "The Continuum Hypothesis asks whether $2^{\\aleph_0} = \\aleph_1$. The properties of $\\aleph_1$ established here (regulari"
+      "description": "The Continuum Hypothesis asks whether $2^{\\aleph_0} = \\aleph_1$. The properties of $\\aleph_1$ established here (regularity, successor structure) are foundational to understanding CH and its independence."
     }
   ],
   "leanFile": {

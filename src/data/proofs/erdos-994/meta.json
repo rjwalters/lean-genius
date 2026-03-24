@@ -76,70 +76,80 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 39,
-      "summary": "Module docstring stating the problem, its status (DISPROVED by Marstrand 1970), and key references. Imports `Mathlib.Data.Real.Basic`, `MeasureTheory.Measure.Lebesgue.Basic`, `Order.Filter.Basic`, and `Topology.Basic`."
+      "summary": "Module docstring stating the problem, its status (DISPROVED by Marstrand 1970), and key references. Imports `Mathlib.Data.Real.Basic`, `MeasureTheory.Measure.Lebesgue.Basic`, `Order.Filter.Basic`, and `Topology.Basic`.",
+      "mathContext": "Module docstring stating the problem, its status (DISPROVED by Marstrand 1970), and key references. Imports `Mathlib.Data.Real.Basic`, `MeasureTheory.Measure.Lebesgue.Basic`, `Order.Filter.Basic`, and"
     },
     {
       "id": "basic-definitions",
       "title": "Fractional Parts and Indicator",
       "startLine": 40,
       "endLine": 61,
-      "summary": "Defines `frac x = x - ⌊x⌋` with proved bounds $0 \\leq \\{x\\} < 1$ (via `Int.floor_le` and `Int.sub_one_lt_floor`). Defines `fracSequence α k = \\{k\\alpha\\}$ and the indicator function for set membership."
+      "summary": "Defines `frac x = x - ⌊x⌋` with proved bounds $0 \\leq \\{x\\} < 1$ (via `Int.floor_le` and `Int.sub_one_lt_floor`). Defines `fracSequence α k = \\{k\\alpha\\}$ and the indicator function for set membership.",
+      "mathContext": "Defines `frac x = x - ⌊x⌋` with proved bounds $0 \\leq \\{x\\} < 1$ (via `Int.floor_le` and `Int.sub_one_lt_floor`). Defines `fracSequence α k = \\{k\\alpha\\}$ and the indicator function for set membership"
     },
     {
       "id": "counting-hits",
       "title": "Counting Hits and Empirical Frequency",
       "startLine": 62,
       "endLine": 77,
-      "summary": "Defines `countInE α E n` using `Finset.filter` to count $|\\{k \\leq n : \\{k\\alpha\\} \\in E\\}|$. Defines `empiricalFrequency` as this count divided by $n$, and `IsEquidistributed α E μ` as the `Tendsto` limit condition."
+      "summary": "Defines `countInE α E n` using `Finset.filter` to count $|\\{k \\leq n : \\{k\\alpha\\} \\in E\\}|$. Defines `empiricalFrequency` as this count divided by $n$, and `IsEquidistributed α E μ` as the `Tendsto` limit condition.",
+      "mathContext": "Defines `countInE α E n` using `Finset.filter` to count $|\\{k \\leq n : \\{k\\alpha\\} \\in E\\}|$. Defines `empiricalFrequency` as this count divided by $n$, and `IsEquidistributed α E μ` as the `Tendsto` "
     },
     {
       "id": "weyl-theorem",
       "title": "Weyl's Theorem (What IS True)",
       "startLine": 78,
       "endLine": 97,
-      "summary": "Axiomatizes Weyl's equidistribution theorem: for fixed measurable $E \\subseteq (0,1)$, $\\forall^{\\text{a.e.}} \\alpha$, the empirical frequency converges to $\\lambda(E)$. Defines `WeylStatement` and proves `weyl_is_true` from the axiom."
+      "summary": "Axiomatizes Weyl's equidistribution theorem: for fixed measurable $E \\subseteq (0,1)$, $\\forall^{\\text{a.e.}} \\alpha$, the empirical frequency converges to $\\lambda(E)$. Defines `WeylStatement` and proves `weyl_is_true` from the axiom.",
+      "mathContext": "Axiomatizes Weyl's equidistribution theorem: for fixed measurable $E \\subseteq (0,1)$, $\\forall^{\\text{a.e.}} \\alpha$, the empirical frequency converges to $\\lambda(E)$. Defines `WeylStatement` and pr"
     },
     {
       "id": "khintchine-conjecture",
       "title": "Khintchine's Conjecture (What Was Conjectured)",
       "startLine": 98,
       "endLine": 114,
-      "summary": "Defines `KhintchineConjecture` as $\\forall^{\\text{a.e.}} \\alpha,\\; \\forall E$ (the quantifier-exchanged version of Weyl). Provides an equivalent formulation `KhintchineConjecture'` with an explicit null set $S$ of measure zero."
+      "summary": "Defines `KhintchineConjecture` as $\\forall^{\\text{a.e.}} \\alpha,\\; \\forall E$ (the quantifier-exchanged version of Weyl). Provides an equivalent formulation `KhintchineConjecture'` with an explicit null set $S$ of measure zero.",
+      "mathContext": "Defines `KhintchineConjecture` as $\\forall^{\\text{a.e.}} \\alpha,\\; \\forall E$ (the quantifier-exchanged version of Weyl). Provides an equivalent formulation `KhintchineConjecture'` with an explicit nu"
     },
     {
       "id": "key-difference",
       "title": "The Key Quantifier Difference",
       "startLine": 115,
       "endLine": 133,
-      "summary": "Defines `WeylOrder` ($\\forall E,\\; \\forall^{\\text{a.e.}} \\alpha$) and `KhintchineOrder` ($\\forall^{\\text{a.e.}} \\alpha,\\; \\forall E$) side by side. Axiomatizes `quantifier_exchange_fails`: Weyl being true does NOT imply Khintchine is true."
+      "summary": "Defines `WeylOrder` ($\\forall E,\\; \\forall^{\\text{a.e.}} \\alpha$) and `KhintchineOrder` ($\\forall^{\\text{a.e.}} \\alpha,\\; \\forall E$) side by side. Axiomatizes `quantifier_exchange_fails`: Weyl being true does NOT imply Khintchine is true.",
+      "mathContext": "Defines `WeylOrder` ($\\forall E,\\; \\forall^{\\text{a.e.}} \\alpha$) and `KhintchineOrder` ($\\forall^{\\text{a.e.}} \\alpha,\\; \\forall E$) side by side. Axiomatizes `quantifier_exchange_fails`: Weyl being "
     },
     {
       "id": "marstrand-disproof",
       "title": "Marstrand's Disproof",
       "startLine": 134,
       "endLine": 153,
-      "summary": "Axiomatizes `marstrand_disproof` ($\\neg$`KhintchineConjecture`), `marstrand_construction` (existential witness of $\\alpha$ and $E$), and `bad_set_exists` (for any irrational $\\alpha$, a measurable $E$ can be constructed where equidistribution fails)."
+      "summary": "Axiomatizes `marstrand_disproof` ($\\neg$`KhintchineConjecture`), `marstrand_construction` (existential witness of $\\alpha$ and $E$), and `bad_set_exists` (for any irrational $\\alpha$, a measurable $E$ can be constructed where equidistribution fails).",
+      "mathContext": "Axiomatizes `marstrand_disproof` ($\\neg$`KhintchineConjecture`), `marstrand_construction` (existential witness of $\\alpha$ and $E$), and `bad_set_exists` (for any irrational $\\alpha$, a measurable $E$"
     },
     {
       "id": "what-goes-wrong",
       "title": "Analysis of Failure Mechanism",
       "startLine": 154,
       "endLine": 170,
-      "summary": "Defines placeholder propositions `exceptionalSetIssue` (the uncountable union of null sets problem) and `avoidanceConstruction` (Marstrand's continued-fraction-based construction of bad sets). Currently `True` placeholders documenting the ideas."
+      "summary": "Defines placeholder propositions `exceptionalSetIssue` (the uncountable union of null sets problem) and `avoidanceConstruction` (Marstrand's continued-fraction-based construction of bad sets). Currently `True` placeholders documenting the ideas.",
+      "mathContext": "Defines placeholder propositions `exceptionalSetIssue` (the uncountable union of null sets problem) and `avoidanceConstruction` (Marstrand's continued-fraction-based construction of bad sets). Current"
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "startLine": 171,
       "endLine": 191,
-      "summary": "Axiomatizes `weyl_equidistribution`: for irrational $\\alpha$, equidistribution holds in all intervals $(a,b)$ with limit $b - a$. Defines placeholders for the interval-vs-general-set distinction and the discrepancy issue."
+      "summary": "Axiomatizes `weyl_equidistribution`: for irrational $\\alpha$, equidistribution holds in all intervals $(a,b)$ with limit $b - a$. Defines placeholders for the interval-vs-general-set distinction and the discrepancy issue.",
+      "mathContext": "Axiomatizes `weyl_equidistribution`: for irrational $\\alpha$, equidistribution holds in all intervals $(a,b)$ with limit $b - a$. Defines placeholders for the interval-vs-general-set distinction and t"
     },
     {
       "id": "summary-theorems",
       "title": "Summary Theorems",
       "startLine": 192,
       "endLine": 222,
-      "summary": "Proves `erdos_994 : ¬KhintchineConjecture` from `marstrand_disproof`, `erdos_994_disproof` pairing the negative result with `weyl_is_true`, and `weyl_vs_khintchine` combining both directions into a single conjunction."
+      "summary": "Proves `erdos_994 : ¬KhintchineConjecture` from `marstrand_disproof`, `erdos_994_disproof` pairing the negative result with `weyl_is_true`, and `weyl_vs_khintchine` combining both directions into a single conjunction.",
+      "mathContext": "Proves `erdos_994 : ¬KhintchineConjecture` from `marstrand_disproof`, `erdos_994_disproof` pairing the negative result with `weyl_is_true`, and `weyl_vs_khintchine` combining both directions into a si"
     }
   ],
   "conclusion": {

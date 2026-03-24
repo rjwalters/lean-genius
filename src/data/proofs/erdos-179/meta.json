@@ -50,70 +50,80 @@
       "title": "Imports and Setup",
       "startLine": 25,
       "endLine": 30,
-      "summary": "import Mathlib, Erdos179 namespace, open Finset."
+      "summary": "import Mathlib, Erdos179 namespace, open Finset.",
+      "mathContext": "import Mathlib, Erdos179 namespace, open Finset."
     },
     {
       "id": "arithmetic-progressions",
       "title": "Arithmetic Progressions",
       "startLine": 31,
       "endLine": 48,
-      "summary": "arithmeticProgression (Finset.image), ContainsAP (∃ AP ⊆ A), countAPs (powerset filter)."
+      "summary": "arithmeticProgression (Finset.image), ContainsAP (∃ AP ⊆ A), countAPs (powerset filter).",
+      "mathContext": "arithmeticProgression (Finset.image), ContainsAP (∃ AP ⊆ A), countAPs (powerset filter)."
     },
     {
       "id": "supersaturation-function",
       "title": "The Supersaturation Function",
       "startLine": 49,
       "endLine": 69,
-      "summary": "F_k(N, ℓ) via Nat.find (sorry for existence), SupersaturationProperty."
+      "summary": "F_k(N, ℓ) via Nat.find (sorry for existence), SupersaturationProperty.",
+      "mathContext": "F_k(N, ℓ) via Nat.find (sorry for existence), SupersaturationProperty."
     },
     {
       "id": "trivial-bounds",
       "title": "Trivial Bounds",
       "startLine": 70,
       "endLine": 88,
-      "summary": "F_lower_bound ≥ N^{1.99} (axiom), F_upper_trivial ≤ N² (sorry), random_set_APs (sorry)."
+      "summary": "F_lower_bound ≥ N^{1.99} (axiom), F_upper_trivial ≤ N² (sorry), random_set_APs (sorry).",
+      "mathContext": "F_lower_bound ≥ N^{1.99} (axiom), F_upper_trivial ≤ N² (sorry), random_set_APs (sorry)."
     },
     {
       "id": "erdos-questions",
       "title": "Erdős's Questions",
       "startLine": 89,
       "endLine": 104,
-      "summary": "Question1: F₃(N,4) = o(N²). Question2: lim log F₃(N,ℓ)/log N = 2."
+      "summary": "Question1: F₃(N,4) = o(N²). Question2: lim log F₃(N,ℓ)/log N = 2.",
+      "mathContext": "Question1: F₃(N,4) = o(N²). Question2: lim log F₃(N,ℓ)/log N = 2."
     },
     {
       "id": "fox-pohoata",
       "title": "Fox-Pohoata Theorem (2020)",
       "startLine": 105,
       "endLine": 131,
-      "summary": "fox_pohoata_theorem: F ≤ N²/(log log N)^C. question1_solved (1 sorry). question2_solved (sorry)."
+      "summary": "fox_pohoata_theorem: F ≤ N²/(log log N)^C. question1_solved (1 sorry). question2_solved (sorry).",
+      "mathContext": "fox_pohoata_theorem: F ≤ N²/(log log N)^C. question1_solved (1 sorry). question2_solved (sorry)."
     },
     {
       "id": "leng-sah-sawhney",
       "title": "Leng-Sah-Sawhney Improvement (2024)",
       "startLine": 132,
       "endLine": 149,
-      "summary": "leng_sah_sawhney: F ≤ N²/exp((log log N)^c). improvement_significant (sorry)."
+      "summary": "leng_sah_sawhney: F ≤ N²/exp((log log N)^c). improvement_significant (sorry).",
+      "mathContext": "leng_sah_sawhney: F ≤ N²/exp((log log N)^c). improvement_significant (sorry)."
     },
     {
       "id": "szemeredi-connection",
       "title": "Connection to Szemerédi and Roth",
       "startLine": 150,
       "endLine": 191,
-      "summary": "szemeredi_theorem, roth_theorem, behrend_construction (axioms). Dense set AP counting."
+      "summary": "szemeredi_theorem, roth_theorem, behrend_construction (axioms). Dense set AP counting.",
+      "mathContext": "szemeredi_theorem, roth_theorem, behrend_construction (axioms). Dense set AP counting."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 192,
       "endLine": 208,
-      "summary": "F_2_well_defined (sorry), exponent_is_2 (sorry)."
+      "summary": "F_2_well_defined (sorry), exponent_is_2 (sorry).",
+      "mathContext": "F_2_well_defined (sorry), exponent_is_2 (sorry)."
     },
     {
       "id": "main-result",
       "title": "Main Results",
       "startLine": 209,
       "endLine": 234,
-      "summary": "erdos_179: Question1 ∧ Question2. erdos_179_answer (String def). #check statements."
+      "summary": "erdos_179: Question1 ∧ Question2. erdos_179_answer (String def). #check statements.",
+      "mathContext": "erdos_179: Question1 ∧ Question2. erdos_179_answer (String def). #check statements."
     }
   ],
   "conclusion": {
