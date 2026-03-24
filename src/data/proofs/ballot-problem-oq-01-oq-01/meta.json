@@ -99,12 +99,20 @@
       "mathContext": "The Dvoretzky-Motzkin Cycle Lemma (1947): for a sequence with $a$ copies of $+1$ and $b$ copies of $-k$ satisfying $a > kb$, exactly $a - kb$ of the $a+b$ cyclic rotations have all partial sums positive. The prefix sum $P(i) = \\sum_{j=0}^{i-1} l_j$ tracks cumulative value at each position."
     },
     {
-      "id": "ballot-discrete-ivt",
-      "title": "Discrete IVT for Ballot Sequences",
+      "id": "ballot-discrete-ivt-statement",
+      "title": "Discrete IVT: Theorem Statement",
       "startLine": 39,
+      "endLine": 53,
+      "summary": "Statement of `ballot_discrete_ivt`: for a {+1,-k}-list, if some position achieves prefix sum v and the total sum exceeds v, then some strict prefix (j < l.length) also achieves prefix sum exactly v. The hypotheses bundle: `hmem` restricts elements to {+1,-k}, `hv_achieved` gives an initial witness, and `hv_exceeded` ensures the sum eventually surpasses v.",
+      "mathContext": "For $l \\in \\{+1, -k\\}^*$: if $\\exists i_0 \\leq |l|,\\; P(i_0) = v$ and $v < P(|l|) = \\sum l$, then $\\exists j < |l|,\\; P(j) = v$. This is a discrete analog of the intermediate value theorem for step functions with bounded jumps."
+    },
+    {
+      "id": "ballot-discrete-ivt-proof",
+      "title": "Discrete IVT: Proof via Finset.max' Extremal Argument",
+      "startLine": 54,
       "endLine": 90,
-      "summary": "Theorem `ballot_discrete_ivt`: For a {+1,-k}-list, if some position achieves prefix sum v and the final sum exceeds v, then a strict prefix achieves prefix sum exactly v. Proved via `Finset.max'` of positions with prefix sum ≤ v; the maximal such position must be followed by +1 (not -k), forcing its prefix sum to equal exactly v.",
-      "mathContext": "For $l \\in \\{+1, -k\\}^*$, define $S = \\{i \\in [0, |l|] : P(i) \\leq v\\}$. Let $j = \\max S$. Then $j < |l|$ (since $P(|l|) > v$), $P(j+1) > v$ (by maximality), and $l[j] = 1$ (else $P(j+1) = P(j)-k \\leq v-k < v$). So $P(j) = P(j+1)-1 \\geq v$ and $P(j) \\leq v$ give $P(j) = v$."
+      "summary": "The proof introduces $S = \\{i \\in [0, |l|] : P(i) \\leq v\\}$ and takes $j = \\max S$ via `Finset.max'`. Maximality of $j$ forces $P(j+1) > v$. Since elements are $+1$ or $-k$, if $l[j] = -k$ then $P(j+1) = P(j) - k \\leq v - k$, contradicting $P(j+1) > v$. So $l[j] = 1$ and $P(j+1) = P(j) + 1 > v$ with $P(j) \\leq v$ gives $P(j) = v$.",
+      "mathContext": "Define $S = \\{i \\in [0, |l|] : P(i) \\leq v\\}$. Let $j = \\max S$. Then $j < |l|$ (since $P(|l|) > v$), $P(j+1) > v$ (by maximality), $l[j] = 1$ (else $P(j+1) = P(j) - k \\leq v - k < v$). So $P(j) = P(j+1) - 1 \\geq v$ and $P(j) \\leq v$ give $P(j) = v$."
     },
     {
       "id": "lower-bound-sketch",
