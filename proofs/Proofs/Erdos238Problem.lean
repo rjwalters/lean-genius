@@ -151,17 +151,57 @@ gap exceeds c (as a natural number threshold).
 noncomputable def maxRunLength (x c : ℕ) : ℕ :=
   sSup {k | ∃ m, allPrimesLeX m k x ∧ allGapsLarge m k c}
 
+/-- Strict monotonicity of the prime enumeration. -/
+private theorem nthPrime_strictMono : StrictMono nthPrime :=
+  fun _ _ h => Nat.nth_strictMono Nat.infinite_setOf_prime h
+
+/-- Every natural number n is at most nthPrime n. -/
+private lemma nthPrime_id_le (n : ℕ) : n ≤ nthPrime n :=
+  nthPrime_strictMono.id_le n
+
 /--
 **The conjecture implies maxRunLength grows as log x**
 
 If the conjecture holds, then for any c₁, c₂ > 0, eventually
 maxRunLength(x, ⌈c₂⌉) > c₁·log(x).
 -/
-axiom conjecture_implies_run_growth :
+theorem conjecture_implies_run_growth :
     mainConjecture →
     ∀ c₁ > 0, ∀ c₂ : ℕ, c₂ ≥ 1 →
       ∀ᶠ (x : ℕ) in atTop,
-        c₁ * Real.log (x : ℝ) < (maxRunLength x c₂ : ℝ)
+        c₁ * Real.log (x : ℝ) < (maxRunLength x c₂ : ℝ) := by
+  intro hConj c₁ hc₁ c₂ hc₂
+  -- Convert c₂ ≥ 1 to (c₂ : ℝ) > 0 for mainConjecture
+  have hc₂_pos : (0 : ℝ) < (↑c₂ : ℝ) := Nat.cast_pos.mpr (by omega)
+  -- Get the Eventually from mainConjecture
+  have hEvent := hConj c₁ hc₁ (↑c₂) hc₂_pos
+  rw [Filter.Eventually, Filter.mem_atTop_sets] at hEvent ⊢
+  obtain ⟨N, hN⟩ := hEvent
+  -- Transfer from ∀ᶠ (x : ℝ) to ∀ᶠ (x : ℕ) via Archimedean property
+  obtain ⟨M, hM⟩ := exists_nat_ge N
+  refine ⟨M, fun n hn => ?_⟩
+  have hn_real : N ≤ (↑n : ℝ) := le_trans hM (Nat.cast_le.mpr hn)
+  -- Apply conjecture to get witness (k, m)
+  obtain ⟨k, m, hk, hBound, hGaps⟩ := hN (↑n) hn_real
+  -- Show k ≤ maxRunLength n c₂ via sSup
+  suffices h : k ≤ maxRunLength n c₂ by
+    calc c₁ * Real.log (↑n : ℝ) < (↑k : ℝ) := hk
+      _ ≤ (↑(maxRunLength n c₂) : ℝ) := Nat.cast_le.mpr h
+  unfold maxRunLength
+  apply le_csSup
+  · -- BddAbove: the set of valid run lengths is bounded by n + 1
+    refine ⟨n + 1, fun k' hk' => ?_⟩
+    obtain ⟨m', hP', _⟩ := hk'
+    by_cases hk0 : k' = 0
+    · omega
+    · have hk_pos : 0 < k' := Nat.pos_of_ne_zero hk0
+      have hLast := hP' ⟨k' - 1, by omega⟩
+      simp only [consecutivePrimes] at hLast
+      have h1 : nthPrime (m' + (k' - 1)) ≤ n := by exact_mod_cast hLast
+      have h2 : m' + (k' - 1) ≤ nthPrime (m' + (k' - 1)) := nthPrime_id_le _
+      omega
+  · -- k is in the set (witnessed by m)
+    exact ⟨m, hBound, hGaps⟩
 
 -- ## Part 8: Heuristic Analysis
 
