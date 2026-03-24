@@ -35,7 +35,7 @@
   "overview": {
     "historicalContext": "Bollobás and Erdős conjectured this result about edge-triangle multiplicity. It was independently proved by Edwards (unpublished) and Hadziivanov-Nikiforov in 1979. The problem connects to Turán's classical theorem on triangle-free graphs. Turán's theorem (1941) established that the complete bipartite graph K_{⌊n/2⌋,⌈n/2⌉} is the unique triangle-free graph on n vertices maximizing the number of edges, at exactly ⌊n²/4⌋. The question posed by Bollobás and Erdős pushed beyond mere existence of triangles to ask about their concentration: once the Turán bound is exceeded, must some edge bear a disproportionate share of the triangle count? The answer n/6 is tight, achieved by graphs close to the balanced complete bipartite graph with a small clique added. Nikiforov subsequently extended these ideas into a broader program on the distribution of cliques above Turán thresholds.",
     "problemStatement": "Every graph with n vertices and more than n²/4 edges contains an edge which is in at least n/6 triangles.",
-    "text": "Every graph with n vertices and > n²/4 edges contains an edge which is in at least n/6 triangles. Proved by Edwards (unpublished) and Hadziivanov-Nikiforov (1979).",
+    "text": "This formalization captures Erdős Problem #905, a result in extremal graph theory conjectured by Bollobás and Erdős and independently proved by Edwards (unpublished) and Hadziivanov and Nikiforov (1979). The statement asserts that every graph on n vertices with more than n²/4 edges must contain an edge participating in at least n/6 triangles. The Lean development builds a self-contained graph-theoretic framework: it defines a custom Graph structure with symmetric irreflexive edge sets, introduces IsTriangle and triangleCountEdge to count the number of triangles through a given edge, and defines maxTriangleMultiplicity as the supremum over all edges. The Turán threshold n²/4 is formalized as turanNumber, and the main result BollobasErdosConjecture is axiomatized as the proved statement bollobas_erdos_theorem. The formalization also captures the tightness of the constant n/6, showing it cannot be improved asymptotically, and includes supporting material on the Turán graph T(n,2) and a key quantitative lemma bounding the total triangle count in terms of the excess edges above the Turán threshold.",
     "proofStrategy": "The formalization defines a custom Graph structure with symmetric, irreflexive edge sets. It introduces IsTriangle, triangleCountEdge, and maxTriangleMultiplicity. The Turán threshold n²/4 is defined, and the main Bollobás-Erdős conjecture is axiomatized as proved. Tightness of the constant n/6 and connections to Turán theory are included.",
     "keyInsights": [
       "n²/4 is the Turán threshold for triangle-free graphs",
@@ -105,7 +105,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #905 is SOLVED. Every graph exceeding the Turán threshold n²/4 edges has some edge in at least n/6 triangles. Proved by Edwards (unpublished) and Hadziivanov-Nikiforov (1979).",
-    "implications": "The result shows that exceeding Turán's triangle-free threshold forces not just the existence of triangles, but high edge-triangle multiplicity. This is fundamental to extremal graph theory.",
+    "implications": "Erdős Problem #905 reveals a striking quantitative refinement of Turán's theorem. Where Turán's classical result (1941) tells us that exceeding n²/4 edges forces the mere existence of a triangle, the Bollobás-Erdős theorem shows that the triangle structure is far more pervasive: some edge must participate in at least n/6 triangles. This transition from existential to quantitative is a hallmark of the supersaturation phenomenon in extremal combinatorics.\n\nThe tightness of the constant n/6 is especially noteworthy. Graphs just above the Turán threshold -- obtained by adding a small clique to one part of the balanced complete bipartite graph K_{⌊n/2⌋,⌈n/2⌉} -- achieve edge-triangle multiplicity close to n/6, showing the bound cannot be improved. This tight example illuminates the structure of near-extremal graphs and connects to the broader study of stability in extremal graph theory.\n\nThe key quantitative lemma axiomatized in the formalization, T(G) ≥ (e(G) - n²/4) · n/6, provides a linear relationship between excess edges and total triangle count. This is closely related to the triangle supersaturation results formalized in Erdős Problem #1010, which gives the more precise bound of t·⌊n/2⌋ triangles for t excess edges. Together, these results form a coherent picture of how triangle density grows beyond the Turán threshold.\n\nThe problem sits at the intersection of several active research directions. Erdős Problem #1009 asks about edge-disjoint triangles above the Turán threshold, while Problem #1034 poses a stronger structural question about triangle neighborhoods in dense graphs. Problem #80 generalizes to books (fans of triangles sharing an edge), asking how large the maximum book must be when every edge lies in a triangle. These connections place Problem #905 at the heart of a rich web of extremal graph problems.\n\nFrom a formalization perspective, the development demonstrates how to axiomatize solved combinatorial results in Lean 4. The 7 axioms capture Turán's theorem, the main Bollobás-Erdős result, tightness, and structural properties of the Turán graph, providing a complete logical framework for the problem even though the detailed proofs of Edwards and Hadziivanov-Nikiforov are not yet mechanized.",
     "openQuestions": [
       "What are the exact extremal graphs for this problem?",
       "How does multiplicity grow as edges exceed n²/4?",
@@ -119,17 +119,87 @@
       "year": "1980",
       "venue": "Monographies de L'Enseignement Mathématique 28",
       "note": "[ErGr80]"
+    },
+    {
+      "authors": "Khadzhiivanov, Nikola; Nikiforov, Vladimir",
+      "title": "Solution of a problem of P. Erdős about the maximum number of triangles with a common edge in a graph",
+      "year": "1979",
+      "venue": "Comptes Rendus de l'Académie Bulgare des Sciences 32(10)",
+      "note": "[KhNi79] The paper that proved the Bollobás-Erdős conjecture."
+    },
+    {
+      "authors": "Turán, Pál",
+      "title": "Eine Extremalaufgabe aus der Graphentheorie",
+      "year": "1941",
+      "venue": "Matematikai és Fizikai Lapok 48",
+      "note": "The foundational result on triangle-free graphs that the Bollobás-Erdős conjecture extends."
+    },
+    {
+      "authors": "Nikiforov, Vladimir",
+      "title": "The number of cliques in graphs of given order and size",
+      "year": "2011",
+      "venue": "Transactions of the American Mathematical Society 363(3), 1599-1618",
+      "note": "Extended the Bollobás-Erdős approach to general clique supersaturation above Turán thresholds."
+    },
+    {
+      "authors": "Razborov, Alexander",
+      "title": "On the minimal density of triangles in graphs",
+      "year": "2010",
+      "venue": "Combinatorics, Probability and Computing 19(4), 603-618",
+      "note": "Used flag algebras to determine the exact minimum triangle density as a function of edge density, extending the supersaturation theme."
     }
   ],
   "crossReferences": [
     {
       "targetId": "erdos-904",
+      "relationship": "sibling",
+      "description": "Erdős #904 concerns triangles with high degree sum above the Turán threshold, a complementary structural constraint to the edge-triangle multiplicity studied here"
+    },
+    {
+      "targetId": "erdos-1009",
       "relationship": "related",
-      "description": "Nearby Erdős problem in the combinatorial number theory collection"
+      "description": "Erdős #1009 asks about edge-disjoint triangles above the Turán threshold -- a packing analogue of the multiplicity question in #905"
+    },
+    {
+      "targetId": "erdos-1010",
+      "relationship": "related",
+      "description": "Erdős #1010 formalizes triangle supersaturation: t excess edges above n²/4 force at least t·⌊n/2⌋ triangles, directly related to the quantitative lower bound in #905"
+    },
+    {
+      "targetId": "erdos-1034",
+      "relationship": "extends",
+      "description": "Erdős #1034 is a stronger structural version of #905, asking whether a triangle exists with many vertices adjacent to at least two of its vertices"
+    },
+    {
+      "targetId": "erdos-80",
+      "relationship": "generalizes",
+      "description": "Erdős #80 generalizes from single triangles to books (fans of triangles sharing an edge) in dense graphs, extending the multiplicity theme of #905"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey's theorem provides the foundational existence paradigm for monochromatic substructures that Turán-type results refine into extremal density thresholds"
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "thematic",
+      "description": "Szemerédi's theorem exemplifies the same supersaturation philosophy in additive combinatorics: dense sets are forced to contain structured subsets"
+    },
+    {
+      "targetId": "roth-theorem-k3",
+      "relationship": "thematic",
+      "description": "Roth's theorem (Szemerédi k=3) parallels #905's approach of quantifying forced substructure density above a critical threshold"
     }
   ],
   "relatedProofs": [
-    "erdos-904"
+    "erdos-904",
+    "erdos-1009",
+    "erdos-1010",
+    "erdos-1034",
+    "erdos-80",
+    "ramseys-theorem",
+    "szemeredi-theorem",
+    "roth-theorem-k3"
   ],
   "leanFile": {
     "imports": [
