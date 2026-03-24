@@ -1,0 +1,147 @@
+{
+  "id": "erdos-490-oq-01",
+  "title": "Does lim max|A||B|·log N/N² Exist?",
+  "slug": "erdos-490-oq-01",
+  "description": "Investigates whether the limit of the normalized maximum product size exists. Proves the product ratio sequence is sandwiched between positive constants, establishes that any limit must lie in this interval, and provides structural bounds.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://erdosproblems.com/490",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos490OQ01.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "multiplicative-structures",
+      "product-sets",
+      "limits",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.log_pos",
+        "description": "log(x) > 0 for x > 1.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Finset.card_Icc",
+        "description": "Cardinality of closed interval [a, b] in ℕ.",
+        "module": "Mathlib.Data.Finset.LocallyFinite"
+      }
+    ],
+    "originalContributions": [
+      "Abstract formalization of maxProd(N) via existential axiom with achieved maximum",
+      "Product ratio sequence productRatio'(N) = maxProd(N)·log(N)/N²",
+      "Proved product ratio bounded above from Szemerédi bound",
+      "Proved product ratio bounded below from optimal example",
+      "Proved: if limit exists, it lies in [c, C] (sandwich theorem)",
+      "Proved: product ratio is nonneg for N ≥ 2",
+      "Proved: cardinality bound |A| ≤ N for A ⊆ {1,...,N}",
+      "Proved: maxProd(N) ≤ N² (trivial bound from cardinality)",
+      "Proved: full sandwich — positive constants c ≤ C bracket all ratios"
+    ],
+    "axiomCount": 3,
+    "lineCount": 229,
+    "assumptions": "3 axioms: Szemerédi upper bound, optimal example lower bound, maxProd existence. All encode deep number-theoretic results.",
+    "mathlib_version": "4.26.0"
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "Defines `IsSubsetUpTo'` (A ⊆ {1,...,N}), `HasDistinctProducts'` (product map injective), `maxProd` (maximum product size), and `productRatio'` (normalized ratio maxProd·log N/N²).",
+      "startLine": 30,
+      "endLine": 80
+    },
+    {
+      "id": "bounds",
+      "title": "Bounds on the Product Ratio",
+      "summary": "Proves the product ratio is bounded above (from Szemerédi's theorem) and below (from the optimal prime example), establishing it stays in a fixed interval [c, C] for all N ≥ 2.",
+      "startLine": 84,
+      "endLine": 125
+    },
+    {
+      "id": "limit-question",
+      "title": "The Limit Question",
+      "summary": "States the open question (does the limit exist?) and proves that if it does, the limit value L satisfies c ≤ L ≤ C. Uses ε-δ characterization with contradiction arguments.",
+      "startLine": 129,
+      "endLine": 165
+    },
+    {
+      "id": "structural",
+      "title": "Structural Analysis",
+      "summary": "Proves nonnegativity of the product ratio, the cardinality bound |A| ≤ N for subsets of {1,...,N}, and the trivial bound maxProd(N) ≤ N². Establishes the full sandwich theorem.",
+      "startLine": 168,
+      "endLine": 229
+    }
+  ],
+  "overview": {
+    "historicalContext": "Szemerédi (1976) proved that if A, B ⊆ {1,...,N} have all products ab distinct, then |A||B| ≤ C·N²/log N. The optimal example (A = [1,N/2], B = primes in (N/2,N]) achieves ~N²/(2 log N). Erdős (1972) asked whether the ratio max|A||B|·log N/N² has a limit as N→∞.",
+    "problemStatement": "Does the limit L = lim_{N→∞} max_{A,B} |A||B|·log N/N² exist, where the maximum is over pairs (A,B) ⊆ {1,...,N}² with all products ab distinct? If so, what is L?",
+    "text": "Formalizes the limit question for the normalized maximum product size, proving the sequence is bounded in a positive interval.",
+    "proofStrategy": "We axiomatize the key bounds (Szemerédi upper, optimal lower) and derive consequences for the product ratio sequence. The sandwich theorem is proved by contradiction: if the limit violates a bound, the ε-δ definition yields a contradictory inequality.",
+    "keyInsights": [
+      "The product ratio is **bounded between positive constants**: 0 < c ≤ productRatio(N) ≤ C for all N ≥ 2.",
+      "The **limit, if it exists, is unique** and lies in [c, C] — proved via ε-δ contradiction.",
+      "The **trivial bound** maxProd(N) ≤ N² follows from |A| ≤ N and |B| ≤ N for subsets of {1,...,N}.",
+      "The **critical question** is whether the sequence oscillates or converges — boundedness alone doesn't settle this."
+    ],
+    "prerequisites": [
+      "Number theory (primes, unique factorization)",
+      "Real analysis (limits, bounded sequences)",
+      "Combinatorics (Finset cardinality)"
+    ]
+  },
+  "conclusion": {
+    "summary": "We formalize the limit question for Erdős #490's product ratio and prove the sequence is sandwiched between positive constants. The limit (if it exists) must lie in [c, C]. All 9 theorems proved with 0 sorries.",
+    "implications": "The bounded sandwich establishes the limit question as genuinely about oscillation vs. convergence, not about divergence.\nA proof that the sequence is eventually monotone would resolve the question positively.",
+    "openQuestions": [
+      "Does lim max|A||B|·log N/N² exist?",
+      "If the limit exists, is it 1/2 (matching the prime example)?",
+      "Is the productRatio sequence eventually monotone?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Real",
+      "Filter"
+    ],
+    "namespace": null,
+    "lineCount": 229,
+    "axiomCount": 3,
+    "theoremCount": 9,
+    "definitionCount": 5
+  },
+  "crossReferences": [
+    {
+      "relationship": "Parent formalization of Erdős Problem #490; this OQ investigates the limit question",
+      "targetId": "erdos-490"
+    }
+  ],
+  "references": [
+    {
+      "authors": "E. Szemerédi",
+      "title": "On a problem of P. Erdős",
+      "year": "1976",
+      "venue": "J. Number Theory",
+      "note": "Proved |A||B| ≤ C·N²/log N for distinct products"
+    },
+    {
+      "authors": "P. Erdős",
+      "title": "Extremal problems in number theory",
+      "year": "1972",
+      "venue": "Proceedings of the 1972 Number Theory Conference",
+      "note": "Posed the limit question"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-490"
+  ]
+}
