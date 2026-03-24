@@ -208,33 +208,6 @@
       "targetId": "erdos-1031"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "ramseys-theorem",
-      "relationship": "foundation",
-      "description": "Ramsey's Theorem establishes that R(k,ℓ) is finite for all k,ℓ ≥ 2 — the foundational existence result that makes the growth rate question meaningful."
-    },
-    {
-      "id": "erdos-544",
-      "relationship": "direct-generalization",
-      "description": "Erdős Problem #544 asks about consecutive Ramsey number differences R(k+1,k) - R(k,k); #1030 asks whether this difference grows fast enough to push the ratio R(k+1,k)/R(k,k) above 1+c."
-    },
-    {
-      "id": "erdos-1014",
-      "relationship": "generalization",
-      "description": "Erdős Problem #1014 asks the same ratio question for R(k+j,k)/R(k,k) with arbitrary fixed j ≥ 1; #1030 is the j=1 special case."
-    },
-    {
-      "id": "erdos-1029",
-      "relationship": "related-bound",
-      "description": "Erdős Problem #1029 concerns the diagonal growth rate R(k)/(k·2^{k/2}) → ∞; sharp bounds on R(k,k) are needed to convert the BEFS linear difference bound into the ratio bound of #1030."
-    },
-    {
-      "id": "erdos-1031",
-      "relationship": "adjacent-problem",
-      "description": "Erdős Problem #1031 studies induced regular subgraphs in graphs with no large homogeneous sets — part of the broader Ramsey-theoretic program on graph structure."
-    }
-  ],
   "references": [
     {
       "key": "BEFS1989",

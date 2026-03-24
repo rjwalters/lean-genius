@@ -151,23 +151,6 @@
       "Formalize the binary entropy function h(p) = -p*log(p) - (1-p)*log(1-p) and its properties"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "shannon-entropy",
-      "relationship": "depends-on",
-      "description": "Channel capacity is defined via mutual information, which is built from Shannon entropy"
-    },
-    {
-      "id": "shannon-source-coding",
-      "relationship": "related",
-      "description": "Source coding and channel coding are the two fundamental theorems, connected by the separation theorem: source coding then channel coding is optimal"
-    },
-    {
-      "id": "prob-method-expectation",
-      "relationship": "related",
-      "description": "Random coding is a probabilistic method argument: a random codebook achieves capacity with high probability"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

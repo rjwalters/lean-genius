@@ -184,38 +184,6 @@
       "description": "Sub-entry extending the simplicial number framework with additional results or applications"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "arithmetic-series",
-      "relationship": "extends",
-      "description": "Parent entry proving ∑k = n(n+1)/2 — this file shows it's the k=1 case of the Hockey Stick Identity ∑C(i+k,k) = C(n+k+1,"
-    },
-    {
-      "id": "binomial-theorem",
-      "relationship": "related",
-      "description": "Both involve binomial coefficients C(n,k): the binomial theorem expands (1+x)^n, while simplicial numbers use C(n+k,k) as building blocks of Pascal's triangle diagonals"
-    },
-    {
-      "id": "combinations-formula",
-      "relationship": "foundational",
-      "description": "The combinatorial identity C(n+1,k+1) = C(n,k) + C(n,k+1) (Pascal's recurrence) is the key inductive step in the Hockey Stick Identity proof"
-    },
-    {
-      "id": "sum-of-kth-powers",
-      "relationship": "related",
-      "description": "Power sums $\\sum i^k$ and simplicial numbers $\\sum \\binom{i+k}{k}$ are dual descriptions of summing polynomial sequences. Faulhaber's formulas express $\\sum i^k$ as a polynomial in $n$, while the hockey stick identity does the same for simplicial numbers — both are polynomial summation formulas, related by the Stirling number transformation between the monomial basis $\\{i^k\\}$ and the falling factorial basis $\\{\\binom{i}{k}\\}$"
-    },
-    {
-      "id": "arithmetic-series-oq-02-oq-02",
-      "relationship": "extended-by",
-      "description": "Sub-entry extending the simplicial number framework with additional results or applications"
-    },
-    {
-      "id": "mathematical-induction",
-      "relationship": "foundational",
-      "description": "Both the hockey stick identity and the closed formulas are proved by mathematical induction on n — the hockey stick inductive step uses the Pascal recurrence, while the closed forms use nlinarith to discharge the nonlinear arithmetic goals"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Choose.Basic",

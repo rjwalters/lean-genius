@@ -148,33 +148,6 @@
       "targetId": "euler-totient"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "fundamental-arithmetic",
-      "relationship": "prerequisite",
-      "description": "Divisor structure underlying f(n) relies on the fundamental theorem of arithmetic; smallest divisors of m are determined by its prime factorization."
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "related",
-      "description": "Primes play a key role in the divisor sum structure: for a prime product m = pq the divisors are {1, p, q, pq}, giving the connection to Goldbach-type representations."
-    },
-    {
-      "id": "erdos-1053",
-      "relationship": "related",
-      "description": "Erdős Problem #1053 studies the ratio σ(n)/n for k-perfect numbers; both problems investigate how sums of divisors (total or partial) can be controlled asymptotically."
-    },
-    {
-      "id": "erdos-1049",
-      "relationship": "related",
-      "description": "Erdős Problem #1049 connects divisor counts τ(n) to series involving divisor sums; both problems arise from Erdős's broader program on the arithmetic of divisor functions."
-    },
-    {
-      "id": "euler-totient",
-      "relationship": "related",
-      "description": "The Euler totient function is a sibling multiplicative function; techniques for bounding φ(n)/n and σ(n)/n inform density arguments relevant to f(n..."
-    }
-  ],
   "references": [
     {
       "title": "Unsolved Problems in Number Theory (3rd ed.), Problem B2",

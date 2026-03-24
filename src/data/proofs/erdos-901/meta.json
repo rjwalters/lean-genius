@@ -192,22 +192,5 @@
       "Is there an algorithmic version: can a proper 2-coloring be found efficiently for hypergraphs with $< m(n)$ edges?",
       "What is the relationship between $m(n)$ and the cover number $\\tau(n)$ (minimum vertices to hit all edges)?"
     ]
-  },
-  "relatedProofs": [
-    {
-      "id": "erdos-629",
-      "relationship": "related",
-      "description": "List chromatic number problem — m(k) ≤ n(k) ≤ m(k+1) connects Property B to list coloring"
-    },
-    {
-      "id": "erdos-533",
-      "relationship": "related",
-      "description": "Hypergraph coloring and Ramsey-type bounds — related extremal problems on set families"
-    },
-    {
-      "id": "erdos-117",
-      "relationship": "related",
-      "description": "Combinatorial bounds via the probabilistic method — shares proof techniques using random coloring arguments"
-    }
-  ]
+  }
 }

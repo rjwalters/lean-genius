@@ -185,18 +185,6 @@
       "description": "Related Erdős problem involving factorials and prime decomposition."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-728-factorial-divisibility",
-      "relationship": "related",
-      "description": "Both concern divisibility properties of factorials by prime powers. Problem #728 studies factorial divisibility from a different angle."
-    },
-    {
-      "id": "erdos-728",
-      "relationship": "related",
-      "description": "Related Erdős problem involving factorials and prime decomposition."
-    }
-  ],
   "conclusion": {
     "summary": "Erdős Problem #646 asked whether for any finite set of primes, infinitely many n exist where n! is divisible by an even power of each prime. The answer is YES, proved by Berend (1997). The sequence of such n has bounded gaps, implying positive density. For example, n=31 satisfies this for primes 2 and 3.",
     "implications": "**Theoretical Significance**: **Number-Theoretic Connections**\n\n1. **Legendre's Formula:** Central to understanding factorial prime powers\n\n2. **Digit Sums:** vₚ(n!) = (n - sₚ(n))/(p-1) connects to base-p representations\n\n**3. Kummer's Theorem:** Carries in base-p addition count vₚ(C(m+n,n))\n\n4. **Bounded Gaps:** Stronger than mere infinitude\n\n5. **Arbitrary Parities:** Any assignment of even/odd to primes works.",

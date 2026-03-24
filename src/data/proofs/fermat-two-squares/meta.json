@@ -216,58 +216,6 @@
       "description": "Elementary QR provides the criterion $\\left(\\frac{-1}{p}\\right) = (-1)^{(p-1)/2}$ which directly determines whether $p$ is a sum of two squares. The two-squares theorem is in fact equivalent to evaluating the Legendre symbol $\\left(\\frac{-1}{p}\\right)$"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "lagrange-four-squares",
-      "relationship": "extends",
-      "description": "Lagrange's four-squares theorem (every positive integer is a sum of four squares) directly generalizes Fermat's two-squares theorem. Fermat characterizes primes representable as $a^2+b^2$; Lagrange shows $a^2+b^2+c^2+d^2$ always suffices. The two-squares obstruction at $p \\equiv 3 \\pmod{4}$ motivates the need for additional squares"
-    },
-    {
-      "id": "quadratic-reciprocity",
-      "relationship": "related",
-      "description": "Fermat's theorem is equivalent to: $-1$ is a quadratic residue mod $p$ iff $p \\equiv 1 \\pmod{4}$. This is the special case $a = -1$ of quadratic reciprocity. Euler's criterion gives $(-1)^{(p-1)/2} \\equiv \\left(\\frac{-1}{p}\\right) \\pmod{p}$, which equals $+1$ iff $p \\equiv 1 \\pmod{4}$"
-    },
-    {
-      "id": "bezout-identity",
-      "relationship": "foundational",
-      "description": "The Gaussian integer proof uses Bezout's identity: since $\\gcd(p, a+bi) \\neq 1$ and $\\gcd(p, a+bi) \\neq p$ in $\\mathbb{Z}[i]$ (when $p \\equiv 1 \\pmod{4}$ and $a^2 \\equiv -1 \\pmod{p}$), the GCD yields a non-trivial factor $\\pi$ with $N(\\pi) = p$, giving $p = a^2+b^2$"
-    },
-    {
-      "id": "wilsons-theorem",
-      "relationship": "related",
-      "description": "Wilson's theorem provides the square root of $-1$ needed for the Gaussian integer proof: for $p \\equiv 1 \\pmod{4}$, the element $((p-1)/2)!$ satisfies $((p-1)/2)!^2 \\equiv -1 \\pmod{p}$ (by pairing $k$ with $p-k$ in Wilson's product). This $\\sqrt{-1} \\pmod{p}$ is the key ingredient for factoring $p$ in $\\mathbb{Z}[i]$"
-    },
-    {
-      "id": "euler-totient",
-      "relationship": "related",
-      "description": "Euler's criterion ($a^{(p-1)/2} \\equiv \\left(\\frac{a}{p}\\right) \\pmod{p}$) determines whether $-1$ is a QR mod $p$: $(-1)^{(p-1)/2} = 1$ iff $4 \\mid (p-1)$ iff $p \\equiv 1 \\pmod{4}$. This connects Fermat's two-squares theorem to the structure of the multiplicative group $(\\mathbb{Z}/p\\mathbb{Z})^*$ of order $\\phi(p) = p-1$"
-    },
-    {
-      "id": "fundamental-arithmetic",
-      "relationship": "foundational",
-      "description": "Unique factorization in $\\mathbb{Z}[i]$ (the Gaussian integers form a UFD) implies the uniqueness of the two-square representation: if $p = a^2+b^2 = (a+bi)(a-bi)$, uniqueness of factorization in $\\mathbb{Z}[i]$ gives $a+bi = \\epsilon \\pi$ for a unit $\\epsilon$ and Gaussian prime $\\pi$"
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "related",
-      "description": "Dirichlet's theorem on primes in arithmetic progressions (generalizing the infinitude of primes) guarantees infinitely many primes $\\equiv 1 \\pmod{4}$ and infinitely many $\\equiv 3 \\pmod{4}$. The Fermat two-squares theorem classifies which infinite family is representable"
-    },
-    {
-      "id": "pythagorean-theorem",
-      "relationship": "related",
-      "description": "Pythagorean triples $(a,b,c)$ with $a^2+b^2 = c^2$ are intimately connected to the two-squares theorem: a prime $p$ divides some $a^2+b^2$ with $\\gcd(a,b)=1$ iff $p = 2$ or $p \\equiv 1 \\pmod{4}$ — exactly the representable primes"
-    },
-    {
-      "id": "abel-ruffini",
-      "relationship": "thematic",
-      "description": "Both theorems concern the arithmetic of algebraic number rings: Fermat's theorem uses $\\mathbb{Z}[i]$ (norm $a^2+b^2$), while Abel-Ruffini uses Galois groups of field extensions. The splitting behavior of primes in number rings — $p$ splits in $\\mathbb{Z}[i]$ iff $p \\equiv 1 \\pmod{4}$ — is a prototype for the Langlands program"
-    },
-    {
-      "id": "elementary-quadratic-reciprocity",
-      "relationship": "related",
-      "description": "Elementary QR provides the criterion $\\left(\\frac{-1}{p}\\right) = (-1)^{(p-1)/2}$ which directly determines whether $p$ is a sum of two squares. The two-squares theorem is in fact equivalent to evaluating the Legendre symbol $\\left(\\frac{-1}{p}\\right)$"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.NumberTheory.SumTwoSquares",

@@ -178,38 +178,6 @@
     "theoremCount": 4,
     "definitionCount": 1
   },
-  "relatedProofs": [
-    {
-      "id": "erdos-191",
-      "relationship": "related",
-      "description": "Both involve reciprocal sums of natural numbers; #191 studies monochromatic sets with large $1/\\log$ sum while #316 studies partition constraints on $\\sum 1/n$ sums"
-    },
-    {
-      "id": "erdos-315",
-      "relationship": "related",
-      "description": "Adjacent problem in the Erdős unit fractions series — #315 and #316 both concern partitioning constraints on sets of unit fractions"
-    },
-    {
-      "id": "erdos-317",
-      "relationship": "related",
-      "description": "Adjacent problem in the Erdős conjecture series — #317 explores related partitioning questions for sets with reciprocal sum constraints"
-    },
-    {
-      "id": "harmonic-divergence",
-      "relationship": "foundational",
-      "description": "The divergence of $\\sum 1/n$ implies that large finite sets of natural numbers have arbitrarily large reciprocal sums. The threshold $\\sum 1/n < 2$ in Erdős #316 is a finite-set constraint within this divergent series"
-    },
-    {
-      "id": "prime-reciprocal-divergence",
-      "relationship": "related",
-      "description": "The divergence of $\\sum 1/p$ over primes shows that even prime-restricted reciprocal sums grow without bound. The counterexample set $\\{2,3,5,7,11,13\\}$ uses primes because their reciprocals are the 'largest' unit fractions for their size, creating tighter partition constraints"
-    },
-    {
-      "id": "erdos-305",
-      "relationship": "related",
-      "description": "Another Erdős problem on arithmetic structure of natural number subsets — both concern how combinatorial properties interact with the additive/multiplicative structure of finite subsets of $\\mathbb{N}$"
-    }
-  ],
   "references": [
     {
       "authors": "Sándor, Csaba",

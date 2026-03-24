@@ -154,18 +154,6 @@
       "What is the analogue for functions on $\\mathbb{R}^n$ or on locally compact abelian groups?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "erdos-1166",
-      "relationship": "related-problem",
-      "description": "Erdős #1166 also concerns functional equations and measure-theoretic regularity conditions"
-    },
-    {
-      "id": "erdos-994",
-      "relationship": "thematic",
-      "description": "Erdős #994 (equidistribution) also explores the tension between 'for all' and 'for almost all' quantifiers, with a negative outcome (Marstrand disproof)"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Real.Basic",

@@ -185,33 +185,6 @@
       "description": "The Szemerédi Regularity Lemma is a fundamental tool for analyzing dense subsets: it decomposes any graph (or subset of integers) into pseudo-random parts. Bloom's 2021 proof of Problem #47 employs structural results about dense sets—related in spirit to regularity methods—to find unit fraction subsets. The regularity machinery formalised here provides the theoretical backdrop for understanding how density forces structure in combinatorial arguments."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-1",
-      "relationship": "related",
-      "description": "Problem #1 (distinct subset sums) and Problem #47 (unit fraction subsets) are companion questions about what arithmetic structure is forced on dense sets. Both ask: given a density condition on a set A, must a specific subset-sum pattern appear? Problem #1 demands all subset sums be distinct (an avoidance property), while Problem #47 demands a specific target value of 1 (an achievement property). Both are resolved using the interplay between combinatorial density and additive structure."
-    },
-    {
-      "id": "erdos-40",
-      "relationship": "related",
-      "description": "Problem #40 (representation function and dense sets) asks how density of A ⊆ {1,…,N} forces arithmetic richness in the additive structure of A. Problem #47 likewise connects harmonic density (∑ 1/a > δ log N) to forced subset-sum structure. Both probe the general theme of density thresholds above which arithmetic patterns must appear, and both remain quantitatively open at the optimal threshold."
-    },
-    {
-      "id": "erdos-41",
-      "relationship": "related",
-      "description": "Problem #41 (B_h sequences and density bounds) studies sets in {1,…,N} with constraints on how sums of h-element subsets can coincide — the density of such sets is bounded by N^{1/h}. Problem #47 uses a harmonic density condition (∑ 1/a > δ log N) to force a specific subset sum equal to 1. Both problems belong to the broader study of density-vs-additive-structure tradeoffs in combinatorial number theory."
-    },
-    {
-      "id": "erdos-43",
-      "relationship": "related",
-      "description": "Problem #43 (Sidon sets with disjoint difference sets) studies extremal additive combinatorics: how large can Sidon sets be while maintaining difference-set disjointness? Problem #47 studies a different extremal question: what harmonic density threshold forces a specific additive equation (∑ 1/n = 1)? Both problems arise from Erdős's systematic exploration of the boundaries between additive structure and combinatorial freedom."
-    },
-    {
-      "id": "szemeredi-regularity",
-      "relationship": "technique",
-      "description": "The Szemerédi Regularity Lemma is a fundamental tool for analyzing dense subsets: it decomposes any graph (or subset of integers) into pseudo-random parts. Bloom's 2021 proof of Problem #47 employs structural results about dense sets—related in spirit to regularity methods—to find unit fraction subsets. The regularity machinery formalised here provides the theoretical backdrop for understanding how density forces structure in combinatorial arguments."
-    }
-  ],
   "references": [
     {
       "authors": "Bloom, Thomas F.",

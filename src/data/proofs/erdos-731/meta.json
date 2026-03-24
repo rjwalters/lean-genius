@@ -123,23 +123,6 @@
       "description": "The primorial asymptotic and density arguments rely on the prime number theorem"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "kummer-theorem",
-      "relationship": "depends-on",
-      "description": "Kummer's theorem on p-adic valuations of binomial coefficients is the foundational tool connecting divisibility to base-p carries"
-    },
-    {
-      "id": "erdos-700",
-      "relationship": "related",
-      "description": "Problem 700 also studies gcd structure of binomial coefficients, from the complementary perspective of gcd(n, C(n,k))"
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "related",
-      "description": "The primorial asymptotic and density arguments rely on the prime number theorem"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Choose.Central",

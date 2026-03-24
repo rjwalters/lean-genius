@@ -165,38 +165,6 @@
       "description": "The combinatorial formula C(n,k) = n!/(k!(n-k)!) underlies all prime factor analysis of binomial coefficients"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-384",
-      "relationship": "strengthens",
-      "description": "Problem 1094 strengthens Problem 384 by bounding the *least* prime factor, not just requiring existence of a small prime divisor"
-    },
-    {
-      "id": "erdos-1093",
-      "relationship": "related",
-      "description": "Problem 1093 studies deficiency (smoothness) of binomial coefficients, the complementary question to small prime factor existence"
-    },
-    {
-      "id": "erdos-1095",
-      "relationship": "related",
-      "description": "Problem 1095 defines the Erdős-Selfridge function g(k), the threshold where all prime factors of C(n,k) exceed k"
-    },
-    {
-      "id": "kummer-theorem",
-      "relationship": "technique",
-      "description": "Kummer's theorem on p-adic valuations of binomial coefficients provides the key tool for analyzing which primes divide C(n,k)"
-    },
-    {
-      "id": "bertrands-postulate",
-      "relationship": "foundation",
-      "description": "Bertrand's postulate guarantees primes in [n, 2n], relevant to bounding prime factors in the central binomial coefficient"
-    },
-    {
-      "id": "combinations-formula",
-      "relationship": "foundation",
-      "description": "The combinatorial formula C(n,k) = n!/(k!(n-k)!) underlies all prime factor analysis of binomial coefficients"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

@@ -17,7 +17,12 @@
       "prime-powers",
       "limsup"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.choose",
+      "Filter.limsup",
+      "Nat.Prime",
+      "Lucas' theorem for binomial coefficients modulo primes"
+    ]
   },
   {
     "id": "ann-e379-maxprimepowerexp",
@@ -36,7 +41,12 @@
       "divisibility",
       "prime-power"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.choose",
+      "Nat.Prime.dvd_of_dvd_pow",
+      "Nat.sSup (ConditionallyCompleteLattice)",
+      "prime power divisibility of integers"
+    ]
   },
   {
     "id": "ann-e379-S-def",
@@ -55,7 +65,12 @@
       "uniform-bound",
       "minimum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.sInf (ConditionallyCompleteLattice)",
+      "Finset.Ico",
+      "maxPrimePowerExp (local definition)",
+      "infimum over a finite set"
+    ]
   },
   {
     "id": "ann-e379-S-alt",
@@ -74,7 +89,12 @@
       "alternative",
       "formal-conjectures"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.sSup (ConditionallyCompleteLattice)",
+      "Finset.Ico",
+      "min-max duality for finite sets",
+      "S(n) definition (local)"
+    ]
   },
   {
     "id": "ann-e379-basic-props",
@@ -93,7 +113,12 @@
       "optimality",
       "characterization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.Prime.one_le",
+      "Nat.choose_pos",
+      "Nat.one_lt_iff_ne_one",
+      "S(n) definition and sInf characterization (local)"
+    ]
   },
   {
     "id": "ann-e379-witnessseq",
@@ -112,7 +137,12 @@
       "construction",
       "powers-of-3"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.pow (exponentiation)",
+      "geometric sequences in number theory",
+      "base-3 representation of prime powers",
+      "Lucas' theorem for prime 3"
+    ]
   },
   {
     "id": "ann-e379-witness-div",
@@ -131,7 +161,12 @@
       "base-3",
       "divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.digits (base-p representation)",
+      "Lucas' theorem: $\\binom{m}{n} \\equiv \\prod_i \\binom{m_i}{n_i} \\pmod{p}$",
+      "Nat.dvd_of_eq",
+      "witnessSeq definition (local)"
+    ]
   },
   {
     "id": "ann-e379-S-witness-bound",
@@ -150,7 +185,12 @@
       "growth",
       "unbounded"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "S_is_max axiom (local)",
+      "witness_divisibility axiom (local)",
+      "Nat.le_of_dvd",
+      "unbounded sequences in filter theory"
+    ]
   },
   {
     "id": "ann-e379-example-n3",
@@ -169,7 +209,12 @@
       "base-case",
       "native-decide"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.choose 3 1 = 3 (computation)",
+      "Nat.dvd_refl",
+      "native_decide tactic",
+      "witnessSeq 0 = 3 (local)"
+    ]
   },
   {
     "id": "ann-e379-example-n9",
@@ -188,7 +233,12 @@
       "decide",
       "uniform"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.Ico membership",
+      "decide tactic for decidable propositions",
+      "Nat.choose (binomial coefficients)",
+      "witness_divisibility for m = 1 (local)"
+    ]
   },
   {
     "id": "ann-e379-example-not-9",
@@ -207,7 +257,12 @@
       "limitation",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.choose 9 3 = 84 (computation)",
+      "Nat.not_dvd_of_pos_of_lt",
+      "native_decide tactic",
+      "84 = 4 · 21 = 4 · 3 · 7 (prime factorization)"
+    ]
   },
   {
     "id": "ann-e379-main-theorem",
@@ -226,7 +281,12 @@
       "infinity",
       "main-result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Filter.limsup (Mathlib.Order.Filter.AtTopBot)",
+      "ENat (extended natural numbers)",
+      "S_witness_bound axiom (local)",
+      "atTop filter and unbounded sequences"
+    ]
   },
   {
     "id": "ann-e379-small-s",
@@ -245,7 +305,12 @@
       "existential",
       "comparison"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.sSup (ConditionallyCompleteLattice)",
+      "maxPrimePowerExp definition (local)",
+      "Finset.Ico",
+      "existential vs universal quantifiers in divisibility"
+    ]
   },
   {
     "id": "ann-e379-s-comparison",
@@ -264,7 +329,12 @@
       "logarithmic",
       "easier"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Filter.Tendsto (topological convergence)",
+      "Real.log (natural logarithm)",
+      "s_ge_S relationship (local)",
+      "prime factorization of central binomial coefficients"
+    ]
   },
   {
     "id": "ann-e379-lucas",
@@ -283,7 +353,12 @@
       "modular-arithmetic",
       "digits"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.digits (base-p digit representation)",
+      "Nat.ModEq (congruence modulo n)",
+      "List.map and List.prod (for digit products)",
+      "Nat.choose multiplicativity modulo a prime"
+    ]
   },
   {
     "id": "ann-e379-base3",
@@ -302,7 +377,12 @@
       "structure",
       "cancellation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.digits 3 (base-3 representation)",
+      "Finset.card (cardinality of digit positions)",
+      "witnessSeq definition: $3^{2^m}$ in base 3 = 1 followed by $2^m$ zeros",
+      "List.getD (safe list indexing)"
+    ]
   },
   {
     "id": "ann-e379-summary",
@@ -321,6 +401,11 @@
       "packaging",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "erdos_379 axiom (limsup result, local)",
+      "S_witness_bound axiom (local)",
+      "native_decide tactic for concrete computations",
+      "witnessSeq values: $3^1=3$, $3^2=9$, $3^4=81$"
+    ]
   }
 ]

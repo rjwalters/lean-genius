@@ -167,28 +167,6 @@
     "theoremCount": 12,
     "definitionCount": 5
   },
-  "relatedProofs": [
-    {
-      "id": "roth-theorem-k3",
-      "relationship": "depends-on",
-      "description": "The k=3 case (Roth's theorem) is the proved component of this formalization, using Mathlib's roth_3ap_theorem_nat"
-    },
-    {
-      "id": "szemeredi-regularity",
-      "relationship": "related",
-      "description": "The Szemerédi Regularity Lemma is the key tool in the original proof for k≥4 and is a major target for Mathlib formalization"
-    },
-    {
-      "id": "szemeredi-counting",
-      "relationship": "related",
-      "description": "The counting lemma complements the regularity lemma to give density-based AP results"
-    },
-    {
-      "id": "erdos-817",
-      "relationship": "applied-in",
-      "description": "Szemerédi's theorem is axiomatized in erdos-817 to provide density bounds forcing exponential growth of g_k(n)"
-    }
-  ],
   "references": [
     {
       "authors": "Szemerédi, Endre",

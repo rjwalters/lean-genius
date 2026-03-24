@@ -183,33 +183,6 @@
       "description": "Irrationality of √2 is the classical prototype for irrationality proofs — Apéry's proof of ζ(3) irrationality uses a far more sophisticated descendant of the same diophantine approximation tradition"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "basel-problem",
-      "relationship": "extends",
-      "description": "Parent entry proving ζ(2) = π²/6 — this file explores the transcendence landscape of all zeta values at positive integers"
-    },
-    {
-      "id": "basel-problem-oq-01",
-      "relationship": "related",
-      "description": "Sibling open question focusing specifically on ζ(5) irrationality; this entry takes the broader view of ALL odd zeta values"
-    },
-    {
-      "id": "e-transcendental",
-      "relationship": "related",
-      "description": "Both concern transcendence of fundamental constants — e's transcendence is proved while odd zeta transcendence remains open"
-    },
-    {
-      "id": "pi-transcendental",
-      "relationship": "uses",
-      "description": "Lindemann's theorem (π transcendental) is axiomatized here as the key ingredient for even-zeta transcendence"
-    },
-    {
-      "id": "sqrt2-irrational",
-      "relationship": "related",
-      "description": "Irrationality of √2 is the classical prototype for irrationality proofs — Apéry's proof of ζ(3) irrationality uses a far more sophisticated descendant of the same diophantine approximation tradition"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.NumberTheory.ZetaValues",

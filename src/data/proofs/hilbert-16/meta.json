@@ -170,33 +170,6 @@
       "description": "Hilbert's 21st Problem on Fuchsian systems with prescribed monodromy connects to the qualitative theory of differential equations and singular point analysis."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "brouwer-fixed-point",
-      "relationship": "foundational",
-      "description": "Brouwer's fixed point theorem implies existence of equilibria for continuous vector fields on compact domains, foundational to analyzing limit cycles and phase portraits."
-    },
-    {
-      "id": "schauder-fixed-point",
-      "relationship": "related",
-      "description": "Schauder's theorem generalizes Brouwer to infinite dimensions and directly implies the Peano existence theorem for ODE solutions, foundational to the trajectory theory used here."
-    },
-    {
-      "id": "poincare-conjecture",
-      "relationship": "related",
-      "description": "Perelman's resolution via Ricci flow connects to dynamical systems through geometric evolution equations; both problems concern deep topological structure."
-    },
-    {
-      "id": "hilbert-19",
-      "relationship": "parallel",
-      "description": "Hilbert's 19th Problem on PDE regularity connects to limit cycle analysis through smoothness of solutions to differential equations."
-    },
-    {
-      "id": "hilbert-21",
-      "relationship": "parallel",
-      "description": "Hilbert's 21st Problem on Fuchsian systems with prescribed monodromy connects to the qualitative theory of differential equations and singular point analysis."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.ODE.Gronwall",

@@ -194,58 +194,6 @@
       "description": "IVT relies on the completeness of $\\mathbb{R}$ (which has uncountably many points, by Cantor's argument). Over $\\mathbb{Q}$ (countable), IVT fails: there are 'gaps' where intermediate values should exist but don't. Cantor's proof that $\\mathbb{R}$ is uncountable ensures that $\\mathbb{R}$ has 'no gaps' — the topological completeness that IVT requires"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "brouwer-fixed-point",
-      "relationship": "extends",
-      "description": "The fixed point theorem for continuous self-maps of $[a,b]$ (proved here as a corollary of IVT) is the 1-dimensional case of Brouwer's fixed point theorem, which generalizes to continuous self-maps of $[0,1]^n$"
-    },
-    {
-      "id": "borsuk-ulam",
-      "relationship": "related",
-      "description": "The $n=1$ case of Borsuk-Ulam — every continuous $f: S^1 \\to \\mathbb{R}$ has $f(x) = f(-x)$ — is equivalent to IVT applied to $g(\\theta) = f(\\theta) - f(\\theta + \\pi)$ on the circle. Borsuk-Ulam is the higher-dimensional generalization"
-    },
-    {
-      "id": "mean-value-theorem",
-      "relationship": "related",
-      "description": "Both are consequences of the completeness of $\\mathbb{R}$: IVT uses connectedness of intervals, MVT uses compactness (via the extreme value theorem). MVT extends IVT to derivatives: the mean value $\\frac{f(b)-f(a)}{b-a}$ is achieved by $f'$ at some interior point"
-    },
-    {
-      "id": "fundamental-theorem-calculus",
-      "relationship": "extends",
-      "description": "The Fundamental Theorem of Calculus uses continuity of the integrand and the IVT-style reasoning that continuous functions on intervals attain all intermediate values, connecting antiderivatives to definite integrals"
-    },
-    {
-      "id": "sqrt2-irrational",
-      "relationship": "related",
-      "description": "The failure of IVT over $\\mathbb{Q}$ is witnessed by $f(x) = x^2 - 2$: $f(1) < 0 < f(2)$ but $\\sqrt{2} \\notin \\mathbb{Q}$. The irrationality of $\\sqrt{2}$ thus demonstrates why completeness is essential for IVT"
-    },
-    {
-      "id": "fundamental-theorem-algebra",
-      "relationship": "foundational",
-      "description": "Gauss's algebraic proof of FTA (1849) reduces to IVT: every odd-degree real polynomial has a real root because $\\lim_{x \\to \\pm\\infty} f(x) = \\pm\\infty$, so $f$ takes both positive and negative values — IVT gives a root. This is the minimal analytic prerequisite for FTA"
-    },
-    {
-      "id": "area-of-circle",
-      "relationship": "related",
-      "description": "Archimedes' method of exhaustion — the ancient precursor to IVT — proved $A = \\pi r^2$ by showing the difference between area and $\\pi r^2$ is less than any positive quantity. IVT formalizes this type of continuity argument rigorously using the completeness of $\\mathbb{R}$"
-    },
-    {
-      "id": "angle-trisection",
-      "relationship": "related",
-      "description": "IVT guarantees that $\\cos(\\theta/3)$ exists for any angle $\\theta$ (as a real value between -1 and 1). The impossibility of angle trisection is not about existence of the value but about constructibility — $\\cos(20°)$ exists by IVT but is not constructible because its minimal polynomial has degree 3"
-    },
-    {
-      "id": "schroeder-bernstein",
-      "relationship": "thematic",
-      "description": "Both establish existence of 'intermediate' objects: IVT proves a continuous function attains all values between $f(a)$ and $f(b)$, while Schröder-Bernstein proves a bijection exists between sets with injections in both directions. Both are powerful existence theorems that avoid explicit construction"
-    },
-    {
-      "id": "cantor-diagonalization",
-      "relationship": "thematic",
-      "description": "IVT relies on the completeness of $\\mathbb{R}$ (which has uncountably many points, by Cantor's argument). Over $\\mathbb{Q}$ (countable), IVT fails: there are 'gaps' where intermediate values should exist but don't. Cantor's proof that $\\mathbb{R}$ is uncountable ensures that $\\mathbb{R}$ has 'no gaps' — the topological completeness that IVT requires"
-    }
-  ],
   "references": [
     {
       "authors": "Bolzano, Bernard",

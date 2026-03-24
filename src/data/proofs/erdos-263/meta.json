@@ -176,18 +176,6 @@
       "description": "Problem #264 concerns bounded additive perturbations (b_n = a_n + O(1)). Kovač-Tao (2024) showed 2^n fails for bounded perturbations, connecting to the threshold behavior at the quadratic recurrence"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-262",
-      "relationship": "related",
-      "description": "Problem #262 asks for growth lower bounds on irrationality sequences (Hančl 1991). This file formalizes the connection: growth conditions from #262 are necessary conditions for the irrationality sequence property studied in #263"
-    },
-    {
-      "id": "erdos-264",
-      "relationship": "related",
-      "description": "Problem #264 concerns bounded additive perturbations (b_n = a_n + O(1)). Kovač-Tao (2024) showed 2^n fails for bounded perturbations, connecting to the threshold behavior at the quadratic recurrence"
-    }
-  ],
   "references": [
     {
       "authors": "Erdős, Paul; Graham, Ronald L.",

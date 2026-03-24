@@ -190,43 +190,6 @@
       "description": "The binomial coefficient C(n,3) normalizes the Turán density π(K₄³) = lim ex₃(n)/C(n,3). The combinatorial identity C(n,3) = n(n-1)(n-2)/6 counts the total number of possible 3-edges"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "ramseys-theorem",
-      "relationship": "related",
-      "description": "Both are foundational results in extremal combinatorics: Ramsey theory guarantees monochromatic substructures, while the Turán problem maximizes edges avoiding substructures. Turán's graph theorem (1941) was motivated by Ramsey's theorem"
-    },
-    {
-      "id": "erdos-1009",
-      "relationship": "related",
-      "description": "Erdős #1009 concerns edge-disjoint triangles beyond the Turán threshold — directly related to the extremal graph/hypergraph paradigm. Both problems study how substructure avoidance constrains edge density"
-    },
-    {
-      "id": "erdos-1010",
-      "relationship": "related",
-      "description": "Erdős #1010 on triangle supersaturation: once edge density exceeds the Turán threshold, how many copies of the forbidden subgraph must appear? The supersaturation phenomenon is the complement of Turán's question"
-    },
-    {
-      "id": "erdos-1008",
-      "relationship": "related",
-      "description": "Erdős #1008 on C₄-free subgraphs — another extremal problem asking for maximum edge density avoiding a specific forbidden subgraph, paralleling the K₄³ avoidance in Problem #500"
-    },
-    {
-      "id": "szemeredi-regularity",
-      "relationship": "related",
-      "description": "Szemerédi's regularity lemma is the key structural tool in extremal graph theory. While it applies to graphs (2-uniform), the hypergraph regularity lemma (Gowers, Rödl et al.) is a major tool for attacking hypergraph Turán problems like #500"
-    },
-    {
-      "id": "erdos-1",
-      "relationship": "related",
-      "description": "Erdős #1 (distinct subset sums) is another flagship Erdős problem in combinatorics. Both exemplify the characteristic Erdős style: simple to state, extraordinarily difficult to resolve"
-    },
-    {
-      "id": "binomial-theorem",
-      "relationship": "foundational",
-      "description": "The binomial coefficient C(n,3) normalizes the Turán density π(K₄³) = lim ex₃(n)/C(n,3). The combinatorial identity C(n,3) = n(n-1)(n-2)/6 counts the total number of possible 3-edges"
-    }
-  ],
   "references": [
     {
       "authors": "Turán, Pál",

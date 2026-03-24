@@ -160,24 +160,6 @@
       "relationship": "The Hardy–Ramanujan theorem ($\\omega(n) \\sim \\log\\log n$ for almost all $n$), which underpins the interpretation of Question 1 of #1100, follows from the Prime Number Theorem via a Turán-type variance estimate. Understanding whether $\\tau^\\perp(n)/\\omega(n) \\to \\infty$ is therefore implicitly a question about the distribution of primes, linking back to PNT-level analytic machinery."
     }
   ],
-  "relatedProofs": [
-    {
-      "slug": "erdos-1099",
-      "connection": "The companion problem about divisor ratio sums $h_\\alpha(n)$, originating in the same 1978 Erdős–Hall paper. The two problems together give a comprehensive picture of how consecutive divisors relate: #1099 via weighted ratio sums, #1100 via coprime pair counts."
-    },
-    {
-      "slug": "bezout-identity",
-      "connection": "Bézout's identity characterizes coprimality ($\\gcd(a,b) = 1$) via the existence of integer linear combinations. The coprimality condition $\\gcd(d_i, d_{i+1}) = 1$ at the heart of #1100 is exactly the Bézout-coprimality relation between consecutive divisors."
-    },
-    {
-      "slug": "infinitude-primes",
-      "connection": "The trivial lower bound $\\tau^\\perp(n) \\geq \\omega(n)$ in #1100 depends on having at least $\\omega(n)$ distinct prime factors. Euclid's proof that there are infinitely many primes guarantees an unbounded supply of integers with large $\\omega(n)$, making the question of whether $\\tau^\\perp(n)/\\omega(n) \\to \\infty$ non-vacuous."
-    },
-    {
-      "slug": "prime-number-theorem",
-      "connection": "Question 1 of #1100 asks whether $\\tau^\\perp(n)/\\omega(n) \\to \\infty$ for almost all $n$. By the Hardy–Ramanujan theorem (a consequence of PNT), $\\omega(n) \\approx \\log\\log n$ for almost all $n$, so this is equivalent to $\\tau^\\perp(n) \\gg \\log\\log n$. The PNT provides the asymptotic scale against which $\\tau^\\perp$ must be measured."
-    }
-  ],
   "references": [
     {
       "authors": [

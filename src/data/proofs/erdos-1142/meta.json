@@ -212,33 +212,6 @@
       "description": "The Prime Number Theorem gives the heuristic probability that n - 2^k is prime as approximately 1/ln(n). The probability that ALL log_2(n) differences are simultaneously prime is roughly (1/ln n)^{log_2 n}, which decreases super-polynomially, supporting the finiteness conjecture."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-236",
-      "relationship": "strengthens",
-      "description": "Problem #236 asks whether the count of prime n - 2^k is o(log n), which is the stronger conjecture formalized here. The o(log n) bound implies finiteness of Problem #1142's solution set."
-    },
-    {
-      "id": "bertrands-postulate",
-      "relationship": "related",
-      "description": "Bertrand's postulate guarantees a prime between n and 2n, ensuring that n - 2^k can be prime for the largest power of two below n. The Erdos 1142 property requires ALL such differences to be prime, not just the largest."
-    },
-    {
-      "id": "bounded-prime-gaps",
-      "relationship": "related",
-      "description": "The bounded gaps result (Zhang 2013, Maynard-Tao 2014) shows primes cluster infinitely often. Problem #1142 asks about primes at specific exponentially-spaced locations n - 2^k, a much more rigid constraint than bounded gaps."
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "foundational",
-      "description": "The infinitude of primes is a prerequisite for the problem to be meaningful: without infinitely many primes, the primality conditions on n - 2^k could never be satisfied for large n."
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "related",
-      "description": "The Prime Number Theorem gives the heuristic probability that n - 2^k is prime as approximately 1/ln(n). The probability that ALL log_2(n) differences are simultaneously prime is roughly (1/ln n)^{log_2 n}, which decreases super-polynomially, supporting the finiteness conjecture."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Tactic",

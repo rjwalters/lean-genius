@@ -156,38 +156,6 @@
       "description": "Vieta's formulas show that polynomial coefficients are symmetric functions of roots, so the Galois group permutes roots while preserving the symmetric functions — the foundation for Galois theory and the Inverse Galois Problem"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "abel-ruffini",
-      "relationship": "foundational",
-      "description": "Vieta's formulas express coefficients as elementary symmetric functions of roots, which is why the Galois group acts by permutations on roots — the key structural fact underlying Abel-Ruffini"
-    },
-    {
-      "id": "fundamental-theorem-algebra",
-      "relationship": "related",
-      "description": "The FTA guarantees that polynomials factor completely over C, providing the roots that Vieta's formulas relate to coefficients"
-    },
-    {
-      "id": "quadratic-reciprocity",
-      "relationship": "related",
-      "description": "The quadratic formula, a special case of Vieta's formulas for degree 2, connects to quadratic residues and reciprocity"
-    },
-    {
-      "id": "solution-of-cubic",
-      "relationship": "related",
-      "description": "Cardano's cubic formula uses Vieta's formulas in reverse: the substitution $x = t - b/(3a)$ eliminates the $x^2$ term using $r_1 + r_2 + r_3 = -b/a$ (Vieta for degree 3)"
-    },
-    {
-      "id": "general-quartic",
-      "relationship": "related",
-      "description": "Ferrari's quartic resolution uses Vieta's formulas for the resolvent cubic — relating quartic root sums/products to the coefficients of an auxiliary degree-3 polynomial"
-    },
-    {
-      "id": "inverse-galois",
-      "relationship": "related",
-      "description": "Vieta's formulas show that polynomial coefficients are symmetric functions of roots, so the Galois group permutes roots while preserving the symmetric functions — the foundation for Galois theory and the Inverse Galois Problem"
-    }
-  ],
   "references": [
     {
       "authors": "Viète, François",

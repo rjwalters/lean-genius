@@ -186,58 +186,6 @@
       "description": "The second moment method (Chebyshev/Paley-Zygmund inequalities) provides the concentration bounds needed to convert the first-moment lower bound on common differences into a high-probability statement. The Erdős-Spencer $\\Omega(n^{3/2})$ lower bound uses precisely this: the variance of the common-difference count in a random subset is controlled by the second moment, proving that the lower bound holds with positive probability"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "roth-theorem-k3",
-      "relationship": "related",
-      "description": "Roth's theorem guarantees 3-term APs in dense subsets of $\\{1,\\ldots,N\\}$. Problem #1097 goes further: given that 3-APs exist, how many distinct common differences must they have? Both are central problems in additive combinatorics"
-    },
-    {
-      "id": "erdos-3",
-      "relationship": "related",
-      "description": "Erdős #3 concerns APs in primes; #1097 asks about APs in general n-element integer sets"
-    },
-    {
-      "id": "szemeredi-theorem",
-      "relationship": "related",
-      "description": "Szemerédi's theorem guarantees APs in dense sets; Erdős #1097 asks about the common differences that must appear in 3-term APs"
-    },
-    {
-      "id": "erdos-1096",
-      "relationship": "related",
-      "description": "Sister problem in additive combinatorics on arithmetic progressions in integer sets. Both arise from the Asilomar sessions and concern quantitative bounds on AP structure"
-    },
-    {
-      "id": "prob-method-expectation",
-      "relationship": "related",
-      "description": "The first moment method underlies the $\\Omega(n^{3/2})$ lower bound on common differences: a random subset of $\\{1,\\ldots,N\\}$ of size $n$ has expected $\\sim cn^3/N$ three-term APs, distributed over $\\sim N$ possible common differences. The pigeonhole principle then shows at least $\\sim n^3/N^2$ distinct common differences occur, which for optimal $N \\sim n^2$ gives $\\Omega(n)$ — but more sophisticated counting via the second moment or Cauchy-Schwarz improves this to $\\Omega(n^{3/2})$"
-    },
-    {
-      "id": "arithmetic-series",
-      "relationship": "foundational",
-      "description": "Basic arithmetic series formulas underlie the counting of arithmetic progressions in intervals"
-    },
-    {
-      "id": "szemeredi-regularity",
-      "relationship": "related",
-      "description": "The regularity lemma provides pseudorandom decompositions used in counting arithmetic progressions. The 3-AP counting approach underlying Roth's theorem and its extensions connects to the common-differences question through energy increment arguments"
-    },
-    {
-      "id": "szemeredi-counting",
-      "relationship": "related",
-      "description": "The counting lemma quantifies substructure (including APs) in regular pairs. Counting 3-APs by common difference is the key to bounding $|D(A)|$ — the counting lemma provides the tool for extracting structured counts from pseudorandom decompositions"
-    },
-    {
-      "id": "szemeredi-full",
-      "relationship": "related",
-      "description": "The full Szemerédi theorem guarantees $k$-term APs in dense sets for all $k$. This problem specializes to $k = 3$ but strengthens the conclusion: not just existence of 3-APs, but a lower bound on the number of distinct common differences they exhibit"
-    },
-    {
-      "id": "prob-method-second-moment",
-      "relationship": "related",
-      "description": "The second moment method (Chebyshev/Paley-Zygmund inequalities) provides the concentration bounds needed to convert the first-moment lower bound on common differences into a high-probability statement. The Erdős-Spencer $\\Omega(n^{3/2})$ lower bound uses precisely this: the variance of the common-difference count in a random subset is controlled by the second moment, proving that the lower bound holds with positive probability"
-    }
-  ],
   "leanFile": {
     "lineCount": 374,
     "structureCount": 0,

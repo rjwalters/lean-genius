@@ -205,48 +205,6 @@
       "description": "The Borsuk-Ulam theorem and the isoperimetric inequality are both topological/geometric results about the structure of continuous maps on spheres. While the isoperimetric inequality characterizes the circle as the area-optimal curve, Borsuk-Ulam provides topological constraints on continuous mappings of spheres — both reveal deep geometric rigidity phenomena"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "area-of-circle",
-      "relationship": "extends",
-      "description": "The circle's isoperimetric optimality extends the basic area formula"
-    },
-    {
-      "id": "area-of-circle-oq-01",
-      "relationship": "extends",
-      "description": "OQ01 proves C = dA/dr; OQ03 proves C is isoperimetrically optimal"
-    },
-    {
-      "id": "area-of-circle-oq-01-oq-02",
-      "relationship": "extends",
-      "description": "OQ01-OQ02 proves A = ∫C dρ; OQ03 proves C²≥4πA completes the circle"
-    },
-    {
-      "id": "area-of-circle-oq-01-oq-02-oq-02",
-      "relationship": "uses",
-      "description": "The IBP formula for Fourier coefficients ĉₙ(f') = in·ĉₙ(f) proved there is a key ingredient in Hurwitz's Fourier-analytic proof of the isoperimetric inequality"
-    },
-    {
-      "id": "isoperimetric-theorem",
-      "relationship": "extends",
-      "description": "Wiedijk #43: the abstract version is in IsoperimetricTheorem.lean; this file provides the OQ-chain approach"
-    },
-    {
-      "id": "fourier-series",
-      "relationship": "foundational",
-      "description": "The Fourier decomposition and Parseval's identity from Fourier series theory underpin the spectral proof: the isoperimetric inequality reduces to comparing Fourier coefficient norms"
-    },
-    {
-      "id": "cauchy-schwarz",
-      "relationship": "uses",
-      "description": "The 2D Cauchy-Schwarz inequality (xv-yu)² ≤ (x²+y²)(u²+v²) proved here as cross_product_sq_le is used in the arithmetic kernel of the isoperimetric proof"
-    },
-    {
-      "id": "borsuk-ulam",
-      "relationship": "thematic",
-      "description": "The Borsuk-Ulam theorem and the isoperimetric inequality are both topological/geometric results about the structure of continuous maps on spheres. While the isoperimetric inequality characterizes the circle as the area-optimal curve, Borsuk-Ulam provides topological constraints on continuous mappings of spheres — both reveal deep geometric rigidity phenomena"
-    }
-  ],
   "references": [
     {
       "authors": "Hurwitz, Adolf",

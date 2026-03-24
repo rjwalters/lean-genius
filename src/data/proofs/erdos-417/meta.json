@@ -168,23 +168,6 @@
       "description": "Parallel Erdős problem on growth rates of multiplicative arithmetic functions (iterated sum of divisors)"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-416",
-      "relationship": "directly-related",
-      "description": "Problem #416 studies V(x) directly; #417 studies the ratio V(x)/V'(x)"
-    },
-    {
-      "id": "euler-totient",
-      "relationship": "foundational",
-      "description": "Foundational theorem for Euler's totient function φ(n) and its properties"
-    },
-    {
-      "id": "erdos-410",
-      "relationship": "thematic",
-      "description": "Parallel Erdős problem on growth rates of multiplicative arithmetic functions (iterated sum of divisors)"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Totient",

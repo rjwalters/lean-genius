@@ -162,23 +162,6 @@
       "What is the answer to Problem #839 (the infinite/asymptotic density version)?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "erdos-1136",
-      "relationship": "related",
-      "description": "Related Erdős problem sharing themes: additive-combinatorics, sum-free-sets"
-    },
-    {
-      "id": "erdos-198",
-      "relationship": "related",
-      "description": "Related Erdős problem sharing themes: additive-combinatorics, disproved"
-    },
-    {
-      "id": "erdos-32",
-      "relationship": "related",
-      "description": "Related Erdős problem sharing themes: additive-combinatorics, density-bounds"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Finset.Basic",

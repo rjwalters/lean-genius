@@ -179,48 +179,6 @@
       "description": "Unique prime factorization enables inclusion-exclusion over prime divisors: φ(n) = n·∏(1-1/p) uses I-E with sets A_p = {k ≤ n : p | k} for each prime p | n"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "derangements",
-      "relationship": "applies",
-      "description": "The derangement formula D(n) = n!·Σ(-1)^k/k! is a direct application of inclusion-exclusion to count permutations with no fixed points"
-    },
-    {
-      "id": "euler-totient",
-      "relationship": "applies",
-      "description": "Euler's totient φ(n) = n·Π(1-1/p) uses inclusion-exclusion to count integers coprime to n"
-    },
-    {
-      "id": "binomial-theorem",
-      "relationship": "related",
-      "description": "The binomial theorem explains why the alternating sum counts each element exactly once: Σ(-1)^(k+1)C(k,j) = 1 for k ≥ 1"
-    },
-    {
-      "id": "combinations-formula",
-      "relationship": "prerequisite",
-      "description": "Binomial coefficients C(n,k) appear in the general n-set inclusion-exclusion formula as weights on intersection terms"
-    },
-    {
-      "id": "subset-count",
-      "relationship": "related",
-      "description": "The number of subsets of a finite set connects to inclusion-exclusion through the power set structure"
-    },
-    {
-      "id": "birthday-problem",
-      "relationship": "applies",
-      "description": "The birthday problem can be solved via inclusion-exclusion: P(at least one shared birthday) = 1 - P(all distinct), where P(all distinct) avoids the overcounting that inclusion-exclusion corrects"
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "related",
-      "description": "The sieve of Eratosthenes is an inclusion-exclusion argument: count integers not divisible by any prime up to √n by alternately subtracting and adding multiples of prime products"
-    },
-    {
-      "id": "fundamental-arithmetic",
-      "relationship": "foundational",
-      "description": "Unique prime factorization enables inclusion-exclusion over prime divisors: φ(n) = n·∏(1-1/p) uses I-E with sets A_p = {k ≤ n : p | k} for each prime p | n"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Finset.Card",

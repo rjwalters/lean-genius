@@ -182,22 +182,5 @@
       "What constraints exist on the prime factorization of unitary perfect numbers?",
       "Are there infinitely many odd abundant numbers (σ*(n) > 2n) that are squarefree?"
     ]
-  },
-  "relatedProofs": [
-    {
-      "id": "erdos-544",
-      "relationship": "related-problem",
-      "description": "Erdős #544 concerns odd perfect numbers (σ(n) = 2n with standard divisors). Both problems ask about parity constraints on number-theoretic perfection conditions."
-    },
-    {
-      "id": "erdos-987",
-      "relationship": "uses-same-technique",
-      "description": "Both use Finset-based divisor computations with filter predicates and coprimality conditions, demonstrating the Finset API for number-theoretic problems."
-    },
-    {
-      "id": "euclid-euler",
-      "relationship": "related-problem",
-      "description": "Euclid-Euler characterizes even ordinary perfect numbers as 2^{p-1}(2^p-1) where 2^p-1 is Mersenne prime. No analogous characterization is known for unitary perfect numbers."
-    }
-  ]
+  }
 }

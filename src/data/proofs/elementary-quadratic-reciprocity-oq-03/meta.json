@@ -155,43 +155,6 @@
       "description": "Fermat's two-squares theorem (p = a² + b² iff p ≡ 1 mod 4) follows from (-1/p) = 1 iff p ≡ 1 mod 4, the first supplement extended by this formalization"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "elementary-quadratic-reciprocity",
-      "relationship": "extends",
-      "description": "Parent proof establishing elementary quadratic reciprocity for prime moduli. This OQ-03 extends the Legendre symbol to the Jacobi symbol for composite moduli"
-    },
-    {
-      "id": "elementary-quadratic-reciprocity-oq-01",
-      "relationship": "related",
-      "description": "Sibling open question exploring Zolotarev's proof of quadratic reciprocity via the sign homomorphism on symmetric groups, providing an alternative approach to the same theorem"
-    },
-    {
-      "id": "quadratic-reciprocity",
-      "relationship": "related",
-      "description": "The main quadratic reciprocity formalization using Mathlib's infrastructure, which this elementary approach complements with a more self-contained proof path"
-    },
-    {
-      "id": "euler-totient",
-      "relationship": "foundational",
-      "description": "Euler's totient φ(n) = |(ℤ/nℤ)*| counts units modulo n, the domain of the Jacobi symbol. The CRT decomposition (ℤ/nℤ)* ≅ ∏(ℤ/pᵢᵉⁱℤ)* connects the Jacobi symbol's multiplicativity to unit group structure"
-    },
-    {
-      "id": "primitive-roots",
-      "relationship": "foundational",
-      "description": "Primitive roots establish that (ℤ/pℤ)* is cyclic, fundamental to the Legendre symbol: a is a QR mod p iff a^((p-1)/2) ≡ 1 (Euler's criterion)"
-    },
-    {
-      "id": "wilsons-theorem",
-      "relationship": "related",
-      "description": "Wilson's theorem (p-1)! ≡ -1 (mod p) connects to the first supplement of QR: (-1/p) = (-1)^((p-1)/2). Both characterize the multiplicative structure of (ℤ/pℤ)*"
-    },
-    {
-      "id": "fermat-two-squares",
-      "relationship": "related",
-      "description": "Fermat's two-squares theorem (p = a² + b² iff p ≡ 1 mod 4) follows from (-1/p) = 1 iff p ≡ 1 mod 4, the first supplement extended by this formalization"
-    }
-  ],
   "references": [
     {
       "authors": "Ireland, Kenneth; Rosen, Michael",

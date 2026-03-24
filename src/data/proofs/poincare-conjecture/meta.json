@@ -341,38 +341,6 @@
     "theoremCount": 941,
     "definitionCount": 369
   },
-  "relatedProofs": [
-    {
-      "id": "hurwitz-theorem",
-      "relationship": "thematic",
-      "description": "Both establish classification theorems: Hurwitz classifies normed division algebras ($n \\in \\{1,2,4,8\\}$), Poincaré classifies simply connected closed 3-manifolds (only $S^3$). Both use biconditional characterizations"
-    },
-    {
-      "id": "brouwer-fixed-point",
-      "relationship": "foundational",
-      "description": "The Brouwer fixed point theorem is a cornerstone of algebraic topology — the same homotopy-theoretic machinery (fundamental group, simple connectivity) that underlies the Poincaré conjecture's statement"
-    },
-    {
-      "id": "borsuk-ulam",
-      "relationship": "foundational",
-      "description": "The Borsuk-Ulam theorem ($f: S^n \\to \\mathbb{R}^n$ has a point with $f(x) = f(-x)$) is another deep result about sphere topology — both rely on the topological properties of $S^n$ that the Poincaré conjecture characterizes"
-    },
-    {
-      "id": "navier-stokes",
-      "relationship": "thematic",
-      "description": "Both are Clay Millennium Prize Problems — the Poincaré conjecture (solved by Perelman, 2003) and Navier-Stokes existence/smoothness (open) represent the pinnacle of mathematical challenges in topology and PDE theory respectively"
-    },
-    {
-      "id": "hodge-conjecture",
-      "relationship": "thematic",
-      "description": "Another Clay Millennium Prize Problem — the Hodge conjecture concerns the algebraic topology of complex manifolds, complementing the Poincaré conjecture's classification of topological manifolds"
-    },
-    {
-      "id": "godel-incompleteness",
-      "relationship": "thematic",
-      "description": "Gödel's incompleteness theorems constrain what formal systems can prove — Perelman's proof of the Poincaré conjecture was verified in this formalization using axiomatized deep results (Ricci flow, surgery), raising questions about the boundary between verified and axiomatized mathematics"
-    }
-  ],
   "references": [
     {
       "authors": "Perelman, Grigori",

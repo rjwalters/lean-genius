@@ -200,27 +200,5 @@
       "Can the main infinitude theorem be proved in Lean by showing infinitely many $m = 2^k$ yield $\\operatorname{gpf}((2^k-1)(2^k+1)) < 2^k$?",
       "What is the exact critical exponent below which the Erdős-Graham problem requires constructive rather than density-based proofs?"
     ]
-  },
-  "relatedProofs": [
-    {
-      "id": "erdos-1136",
-      "relationship": "related-problem",
-      "description": "Both are Erdős problems about sets of integers satisfying arithmetic constraints, resolved by clever constructions. Erdős #1136 uses binary structure; #370 uses difference of squares."
-    },
-    {
-      "id": "erdos-984",
-      "relationship": "related-problem",
-      "description": "Both are Erdős problems in combinatorial number theory where extremal constructions play a central role in resolving density/existence questions."
-    },
-    {
-      "id": "erdos-527",
-      "relationship": "thematic",
-      "description": "Both involve density and structure questions where the answer depends on a critical threshold parameter (the exponent $1/\\sqrt{e}$ in #370, analogous thresholds in #527)."
-    },
-    {
-      "id": "prime-reciprocal-divergence",
-      "relationship": "foundational",
-      "description": "Prime distribution underlies smooth number theory. The density of smooth numbers is governed by the Dickman function, which depends on the distribution of prime factors."
-    }
-  ]
+  }
 }

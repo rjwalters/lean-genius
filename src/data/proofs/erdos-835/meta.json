@@ -141,23 +141,6 @@
       "What is the fractional chromatic number $\\chi_f(J(2k,k))$? For Kneser graphs, $\\chi_f(K(n,k)) = n/k$, but the Johnson analogue is open."
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "erdos-57",
-      "relationship": "related",
-      "description": "Related Erdős problem sharing themes: chromatic-number, combinatorics, graph-theory, solved"
-    },
-    {
-      "id": "erdos-58",
-      "relationship": "related",
-      "description": "Related Erdős problem sharing themes: chromatic-number, combinatorics, graph-theory, solved"
-    },
-    {
-      "id": "erdos-19",
-      "relationship": "related",
-      "description": "Related Erdős problem sharing themes: chromatic-number, combinatorics, graph-theory"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Coloring",

@@ -133,18 +133,6 @@
       "description": "Erdős #105 (lines avoiding a point set) studies related point-line incidence questions in discrete geometry, complementing the point-circle incidence focus of Problem 104."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-102",
-      "relationship": "related",
-      "description": "Erdős #102 (maximum collinear points forced by many rich lines) studies incidence geometry for lines, the prototypical setting for Szemerédi-Trotter bounds that inspire the approach to Problem 104."
-    },
-    {
-      "id": "erdos-105",
-      "relationship": "related",
-      "description": "Erdős #105 (lines avoiding a point set) studies related point-line incidence questions in discrete geometry, complementing the point-circle incidence focus of Problem 104."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

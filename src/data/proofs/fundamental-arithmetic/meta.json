@@ -193,28 +193,6 @@
       "Can the connection to the Riemann zeta function Euler product ζ(s) = Π(1-p^{-s})^{-1} be formalized as a consequence of the FTA?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "bezout-identity",
-      "relationship": "foundational",
-      "description": "Bezout's identity (gcd(a,b) = ax + by) is the key lemma for proving Euclid's lemma (p|ab implies p|a or p|b), which underpins the uniqueness of prime factorization."
-    },
-    {
-      "id": "gcd-algorithm",
-      "relationship": "foundational",
-      "description": "The Euclidean algorithm computes GCDs, providing the constructive backbone for the division and factorization steps in FTA."
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "extends",
-      "description": "The existence part of FTA guarantees every integer > 1 has a prime factor; the infinitude of primes shows no finite set of primes suffices for all integers."
-    },
-    {
-      "id": "euler-totient",
-      "relationship": "related",
-      "description": "Euler's totient function phi(n) = n * prod(1-1/p) is computed from the unique prime factorization guaranteed by FTA."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Factorization.Basic",

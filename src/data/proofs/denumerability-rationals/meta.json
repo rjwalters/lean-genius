@@ -206,33 +206,6 @@
       "Is there a constructive proof of the denumerability of the algebraic numbers $\\overline{\\mathbb{Q}}$ that avoids the axiom of choice, and can it be formalized using Lean's `Denumerable` typeclass?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "cantor-diagonalization",
-      "relationship": "related-problem",
-      "description": "Cantor's diagonalization (Wiedijk #22) proves ℝ is UNcountable, establishing |ℚ| = ℵ₀ < 2^ℵ₀ = |ℝ|. Together these two results launch the theory of infinite cardinalities."
-    },
-    {
-      "id": "cantors-theorem",
-      "relationship": "generalizes",
-      "description": "Cantor's theorem (Wiedijk #63) proves |A| < |P(A)| for any set A, extending the cardinality hierarchy far beyond ℵ₀ vs 2^ℵ₀ to a proper class of infinite cardinals."
-    },
-    {
-      "id": "schroeder-bernstein",
-      "relationship": "related",
-      "description": "Schroeder-Bernstein (Wiedijk #25) turns mutual injections into bijections — a key tool for cardinality equalities that complements the direct equivalence approach used here. Note: this file does NOT use Schroeder-Bernstein; it extracts all formulations from the single Denumerable equivalence."
-    },
-    {
-      "id": "continuum-hypothesis",
-      "relationship": "related-problem",
-      "description": "Directly motivated by denumerability: is 2^ℵ₀ = ℵ₁? The gap between |ℚ| = ℵ₀ and |ℝ| = 2^ℵ₀ raised the question that Godel (1940) and Cohen (1963) resolved as independent of ZFC."
-    },
-    {
-      "id": "sqrt2-irrational",
-      "relationship": "related-problem",
-      "description": "The irrationality of √2 shows that ℚ ≠ ℝ — there are 'gaps' in the rationals. Combined with denumerability, this means the irrationals (which fill those gaps) are uncountable and form the 'bulk' of the real line."
-    }
-  ],
   "references": [
     {
       "key": "Ca91",

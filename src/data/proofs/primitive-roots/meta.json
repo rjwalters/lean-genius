@@ -175,28 +175,6 @@
     "theoremCount": 7,
     "definitionCount": 2
   },
-  "relatedProofs": [
-    {
-      "id": "euler-totient",
-      "relationship": "prerequisite",
-      "description": "Euler's totient φ(n) counts primitive roots: there are φ(p-1) of them modulo prime p"
-    },
-    {
-      "id": "quadratic-reciprocity",
-      "relationship": "related",
-      "description": "Quadratic residues mod p are determined by primitive roots: a is a QR iff its discrete log is even"
-    },
-    {
-      "id": "fermat-two-squares",
-      "relationship": "related",
-      "description": "Fermat's two-square theorem uses quadratic residues, which are characterized via primitive roots"
-    },
-    {
-      "id": "abel-ruffini",
-      "relationship": "foundational",
-      "description": "Primitive roots establish that $(\\mathbb{Z}/p\\mathbb{Z})^{\\times}$ is cyclic — the structural property that makes radical extensions work in the Galois bridge theorem. Each radical step $K_i \\to K_i(\\sqrt[n]{a})$ factors through the cyclotomic extension $K_i(\\zeta_n)$, whose Galois group is cyclic. Abel-Ruffini's impossibility arises because the composition of such cyclic quotients cannot produce the non-solvable group $S_5$"
-    }
-  ],
   "references": [
     {
       "authors": "Gauss, Carl Friedrich",

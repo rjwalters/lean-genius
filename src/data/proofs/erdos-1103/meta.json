@@ -155,23 +155,6 @@
       "Does the exponent 11/15 in Konyagin's finite bound have a natural interpretation in terms of the Chinese Remainder Theorem structure of squarefree residues?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "infinitude-primes",
-      "relationship": "foundational",
-      "description": "Squarefreeness depends on the prime factorization structure. The infinitude of primes means the squarefree-sumset condition imposes constraints modulo p^2 for infinitely many primes simultaneously."
-    },
-    {
-      "id": "bertrands-postulate",
-      "relationship": "related",
-      "description": "Bertrand's postulate guarantees primes in [n, 2n], providing density information relevant to the sieve methods used in van Doorn-Tao's lower bound for squarefree sumset growth."
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "related",
-      "description": "The prime number theorem governs the density of primes, which determines the density of squarefree numbers (6/pi^2) via Euler's product formula and underpins the sieve estimates in the growth bounds."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Squarefree",

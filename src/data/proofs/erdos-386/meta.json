@@ -145,38 +145,6 @@
       "description": "Unique prime factorization is the basis for asking whether $\\binom{n}{k}$ equals a product of consecutive primes — without FTA, the question is not well-defined"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-384",
-      "relationship": "related",
-      "description": "Problem #384 (Sylvester-Schur: the largest prime dividing $\\binom{n}{k}$ exceeds $n/2$ for $k \\ge 2$) studies the same prime factorization structure of binomial coefficients. The axiom `choose_largest_prime_le` in this file is a weaker form of that bound"
-    },
-    {
-      "id": "erdos-385",
-      "relationship": "related",
-      "description": "Problem #385 concerns smooth numbers in products of consecutive integers — closely related since $\\binom{n}{k} = \\prod_{i=1}^{k} (n-k+i)/i$ and the 'consecutive prime product' condition is a strong form of smoothness"
-    },
-    {
-      "id": "erdos-387",
-      "relationship": "related",
-      "description": "Problem #387 asks about divisors of $\\binom{n}{k}$ in the interval $(cn, n]$. Together with Problems 384-386, these form a cluster in Erdős-Graham (1980) studying the prime structure of binomial coefficients"
-    },
-    {
-      "id": "binomial-theorem",
-      "relationship": "foundational",
-      "description": "The binomial theorem provides the algebraic context for $\\binom{n}{k}$. Problem 386 asks when these coefficients have the maximally structured factorization of being a product of consecutive primes"
-    },
-    {
-      "id": "bertrands-postulate",
-      "relationship": "related",
-      "description": "Bertrand's postulate ($\\exists$ prime in $(n, 2n)$) constrains prime gaps and hence the spacing of consecutive prime products. For large $n$, the gap between consecutive primes ensures primorial quotients grow rapidly"
-    },
-    {
-      "id": "fundamental-arithmetic",
-      "relationship": "foundational",
-      "description": "Unique prime factorization is the basis for asking whether $\\binom{n}{k}$ equals a product of consecutive primes — without FTA, the question is not well-defined"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

@@ -228,27 +228,5 @@
       "relationship": "related",
       "description": "AllOffsetsPrime {2} n gives twin primes; the $k$-tuple conjecture generalizes the twin prime conjecture"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "prime-number-theorem",
-      "relationship": "uses",
-      "description": "The PNT gives $\\pi(n) \\sim n/\\ln n$, the asymptotic for the denominator of primeDensityRatio"
-    },
-    {
-      "id": "bertrands-postulate",
-      "relationship": "related",
-      "description": "Bertrand's postulate guarantees $\\pi(n) \\to \\infty$, essential for finite_set_zero_density"
-    },
-    {
-      "id": "erdos-427",
-      "relationship": "sibling",
-      "description": "Consecutive Erdős-Graham problem on prime sums divisibility, both from the same 1980 monograph"
-    },
-    {
-      "id": "twin-primes-special",
-      "relationship": "related",
-      "description": "AllOffsetsPrime {2} n gives twin primes; the $k$-tuple conjecture generalizes the twin prime conjecture"
-    }
   ]
 }

@@ -269,68 +269,6 @@
       "type": "book"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "lagrange-theorem",
-      "relationship": "extends",
-      "description": "Sylow theorems refine Lagrange's theorem: not only does |H| divide |G|, but for each prime power dividing |G|, a subgroup of that order exists"
-    },
-    {
-      "id": "abel-ruffini-oq-04",
-      "relationship": "related",
-      "description": "Sylow analysis of A₅ is fundamental to proving its simplicity: |A₅| = 60 = 2²·3·5, and Sylow counting shows the conjugacy class sizes are {1, 12, 12, 15, 20}. Any normal subgroup must be a union of conjugacy classes including {e} with order dividing 60, and the only valid sub-sums are 1 and 60 — proving A₅ is simple, the cornerstone of the Abel-Ruffini theorem"
-    },
-    {
-      "id": "abel-ruffini",
-      "relationship": "related",
-      "description": "Sylow subgroups provide structural information complementing the solvability analysis central to Abel-Ruffini"
-    },
-    {
-      "id": "fundamental-arithmetic",
-      "relationship": "foundational",
-      "description": "Unique prime factorization of |G| determines the Sylow subgroup structure via Sylow's theorems"
-    },
-    {
-      "id": "euler-totient",
-      "relationship": "related",
-      "description": "Euler's totient $\\phi(n)$ determines the structure of $(\\mathbb{Z}/n\\mathbb{Z})^\\times$, whose Sylow $p$-subgroups are cyclic of order $p^{v_p(\\phi(n))}$. The Sylow decomposition of this group underlies the Chinese Remainder Theorem structure of $\\mathbb{Z}/n\\mathbb{Z}$"
-    },
-    {
-      "id": "cayley-hamilton",
-      "relationship": "related",
-      "description": "The Cayley-Hamilton theorem connects to Sylow theory through the Jordan canonical form: the primary decomposition of a linear operator into $p$-primary components mirrors the Sylow decomposition of a group into $p$-subgroups, with the characteristic polynomial's factorization playing the role of $|G|$'s prime factorization"
-    },
-    {
-      "id": "fermats-last-theorem",
-      "relationship": "related",
-      "description": "Wiles's proof uses the structure of Galois representations $\\text{Gal}(\\overline{\\mathbb{Q}}/\\mathbb{Q}) \\to GL_2(\\mathbb{Z}_p)$. The analysis of deformation rings and Hecke algebras requires detailed knowledge of $p$-adic group structure, where Sylow-type arguments (pro-$p$ subgroups) are fundamental"
-    },
-    {
-      "id": "wilsons-theorem",
-      "relationship": "related",
-      "description": "Wilson's theorem — (p−1)! ≡ −1 (mod p) — is a statement about the group (ℤ/pℤ)* of order p−1. The Sylow p-subgroups of (ℤ/nℤ)* are cyclic, and Wilson's theorem can be derived by pairing each element with its inverse in the group product. The Sylow structure of (ℤ/nℤ)* underlies the Chinese Remainder decomposition"
-    },
-    {
-      "id": "derangements",
-      "relationship": "related",
-      "description": "Derangements are fixed-point-free permutations in Sₙ. The Sylow p-subgroups of Sₙ have a recursive wreath product structure: Syl_p(Sₚₙ) ≅ (ℤ/pℤ) ≀ Syl_p(Sₙ). The proportion of derangements (~1/e) is independent of the Sylow structure, illustrating how different group-theoretic properties (fixed-point statistics vs. p-subgroup structure) can be orthogonal"
-    },
-    {
-      "id": "partition-theorem",
-      "relationship": "related",
-      "description": "Integer partitions of n index the conjugacy classes of Sₙ by cycle type. Sylow counting in Sₙ depends on the prime factorization of n!, and the sizes of conjugacy classes (determined by cycle-type partitions) are central to Sylow-based simplicity proofs — e.g., proving A₅ is simple requires the conjugacy class sizes, which are determined by the partition structure of 5"
-    },
-    {
-      "id": "inverse-galois",
-      "relationship": "related",
-      "description": "The inverse Galois problem asks which groups occur as Galois groups over ℚ. Sylow subgroups constrain realizability: if G is realizable over ℚ, so are all its Sylow subgroups (as Galois groups of subextensions). The Shafarevich conjecture asserts every solvable group is an inverse Galois group — the solvable case reduces to understanding towers of abelian extensions, where the Sylow structure controls each layer"
-    },
-    {
-      "id": "quadratic-reciprocity",
-      "relationship": "related",
-      "description": "Quadratic reciprocity governs the structure of (ℤ/pℤ)*, whose Sylow 2-subgroup determines the quadratic residue structure. The Legendre symbol (a/p) detects membership in the unique subgroup of index 2 (the quadratic residues), which is the Sylow 2-complement when p ≡ 1 (mod 4) or relates to the Sylow 2-subgroup when p ≡ 3 (mod 4)"
-    }
-  ],
   "leanFile": {
     "lineCount": 246,
     "structureCount": 0,

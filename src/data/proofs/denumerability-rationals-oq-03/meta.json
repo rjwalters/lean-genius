@@ -211,17 +211,5 @@
       "citation": "Graham, R.L., Knuth, D.E., Patashnik, O., Concrete Mathematics, 2nd edition, Addison-Wesley (1994), Section 4.5.",
       "type": "book"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "denumerability-rationals",
-      "relationship": "parent",
-      "description": "The parent entry proving rationals are countable. This OQ-03 provides an alternative enumeration via the Stern-Brocot tree that lists each rational exactly once in lowest terms"
-    },
-    {
-      "id": "cantor-diagonalization",
-      "relationship": "contrasts",
-      "description": "Cantor showed the reals are uncountable; this entry shows the rationals ARE countable, using a constructive tree enumeration rather than a bijection with ℕ"
-    }
   ]
 }

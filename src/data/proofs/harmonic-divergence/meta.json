@@ -186,43 +186,6 @@
       "description": "Both $H_n = \\ln n + \\gamma + O(1/n)$ and $\\ln(n!) = n\\ln n - n + O(\\ln n)$ are logarithmic estimates proved by Euler-Maclaurin summation"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "basel-problem",
-      "relationship": "contrasts",
-      "description": "The harmonic series (p=1) diverges while the Basel series (p=2) converges to π²/6. The p-series boundary at p=1 is a fundamental divide in analysis"
-    },
-    {
-      "id": "erdos-486",
-      "relationship": "applied-in",
-      "description": "Logarithmic density is defined as logSum(A,x)/log(x), where logSum uses harmonic-type sums Σ 1/n; the divergence of the harmonic series is why log(x) normalization yields a nontrivial density"
-    },
-    {
-      "id": "erdos-25",
-      "relationship": "applied-in",
-      "description": "The Davenport-Erdős theorem on logarithmic density of congruence-sieved sets relies on harmonic sum asymptotics"
-    },
-    {
-      "id": "prime-reciprocal-divergence",
-      "relationship": "related",
-      "description": "Euler proved $\\sum 1/p$ diverges (1737) — far subtler than harmonic divergence since primes are sparse. The rate $\\sum_{p \\leq x} 1/p \\sim \\ln\\ln x$ is much slower than $H_n \\sim \\ln n$"
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "related",
-      "description": "PNT explains WHY the harmonic series diverges logarithmically: the integral test gives $H_n \\sim \\int_1^n dx/x = \\ln n$. PNT provides the prime-theoretic context for harmonic sums via the Euler product"
-    },
-    {
-      "id": "geometric-series",
-      "relationship": "contrasts",
-      "description": "Geometric $\\sum r^n$ converges (exponential decay) vs harmonic $\\sum 1/n$ diverges (polynomial decay). The boundary between summable and non-summable decay rates"
-    },
-    {
-      "id": "stirling-formula",
-      "relationship": "related",
-      "description": "Both $H_n = \\ln n + \\gamma + O(1/n)$ and $\\ln(n!) = n\\ln n - n + O(\\ln n)$ are logarithmic estimates proved by Euler-Maclaurin summation"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.PSeries",

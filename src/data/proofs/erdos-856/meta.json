@@ -135,18 +135,6 @@
       "Is there a polynomial-time algorithm to compute (or approximate) $f_k(N)$ for given $k$ and $N$?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "erdos-855",
-      "relationship": "related",
-      "description": "Related Erdős problem sharing themes: number-neighbor"
-    },
-    {
-      "id": "erdos-857",
-      "relationship": "related",
-      "description": "Related Erdős problem sharing themes: number-neighbor"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

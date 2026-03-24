@@ -176,22 +176,5 @@
     "OEIS A014197: Inverse totient counting function |{n : φ(n) = a}|",
     "OEIS A058277: Smallest n with φ(n) = a for totient values a",
     "https://erdosproblems.com/51"
-  ],
-  "relatedProofs": [
-    {
-      "id": "erdos-48",
-      "relationship": "related",
-      "description": "Problem #48 also concerns Euler's totient function. Both study the fine properties of φ(n) — Problem #48 asks about φ(n) = σ(m), while Problem #51 asks about the growth of |φ⁻¹(n)|"
-    },
-    {
-      "id": "erdos-49",
-      "relationship": "related",
-      "description": "Problem #49 on sets with increasing totient values is another problem in the φ(n) family. All three (#48, #49, #51) concern the distribution and structure of Euler's totient"
-    },
-    {
-      "id": "euler-totient",
-      "relationship": "foundational",
-      "description": "Euler's totient function and its properties are the foundational object for Problem #51"
-    }
   ]
 }

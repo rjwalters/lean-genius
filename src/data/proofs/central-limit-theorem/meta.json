@@ -300,63 +300,6 @@
       "description": "The Lévy-Khintchine representation: every infinitely divisible distribution has a unique triplet $(b, \\sigma^2, \\nu)$ decomposing it into drift, Gaussian component, and jump measure. The CLT's Gaussian limit corresponds to the pure Gaussian case $(0, \\sigma^2, 0)$, placing the CLT within the broader framework of infinitely divisible distributions and Lévy processes"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "birthday-problem",
-      "relationship": "related",
-      "description": "Both are fundamental results in probability theory. The birthday problem illustrates combinatorial probability, while CLT explains why the normal distribution dominates averaged statistics"
-    },
-    {
-      "id": "buffons-needle",
-      "relationship": "related",
-      "description": "Buffon's needle uses random variable theory; CLT explains why repeated needle-dropping experiments converge to a normal distribution of π estimates with rate 1/√n"
-    },
-    {
-      "id": "stirling-formula",
-      "relationship": "foundational",
-      "description": "Stirling's formula n! ≈ √(2πn)(n/e)^n provides the √(2π) factor in the Gaussian density — the binomial distribution approaches the normal via Stirling, giving de Moivre's original CLT (1733)"
-    },
-    {
-      "id": "area-of-circle",
-      "relationship": "thematic",
-      "description": "Both reveal π in unexpected contexts: the area formula gives π geometrically, while the CLT's Gaussian density (2πσ²)^{-1/2}·exp(-x²/2σ²) contains π through the normalization constant ∫e^{-x²}dx = √π"
-    },
-    {
-      "id": "central-limit-theorem-oq-01",
-      "relationship": "extended-by",
-      "description": "Explores what happens when variance is infinite — leading to stable distributions (Lévy $\\alpha$-stable) with heavier tails than the Gaussian, answering the first open question"
-    },
-    {
-      "id": "central-limit-theorem-oq-03",
-      "relationship": "extended-by",
-      "description": "Investigates the categorical structure of probability distributions under convolution, connecting CLT to operad theory and higher categories"
-    },
-    {
-      "id": "cauchy-schwarz",
-      "relationship": "foundational",
-      "description": "Cauchy-Schwarz bounds $|\\mathbb{E}[XY]| \\leq \\sqrt{\\mathbb{E}[X^2]\\mathbb{E}[Y^2]}$ are used throughout the CLT proof: bounding characteristic function differences, controlling truncation errors, and establishing moment conditions. The $L^2$ inner product structure that Cauchy-Schwarz governs is the natural framework for variance and covariance calculations"
-    },
-    {
-      "id": "binomial-theorem",
-      "relationship": "foundational",
-      "description": "The binomial distribution $P(X = k) = \\binom{n}{k}p^k(1-p)^{n-k}$ arises directly from the binomial theorem with $x = p, y = 1-p$. De Moivre's original CLT (1733) showed this binomial distribution converges to the Gaussian, making the binomial theorem the algebraic foundation for the first limit theorem in probability"
-    },
-    {
-      "id": "euler-identity",
-      "relationship": "related",
-      "description": "The CLT proof via characteristic functions uses $\\varphi_X(t) = \\mathbb{E}[e^{itX}]$, where $e^{itX} = \\cos(tX) + i\\sin(tX)$ (Euler's formula). The Gaussian characteristic function $\\varphi(t) = e^{-t^2/2}$ — the CLT's limit — is the real-valued case, connecting Euler's formula to the universality of the normal distribution"
-    },
-    {
-      "id": "central-limit-theorem-oq-01-oq-01",
-      "relationship": "extended-by",
-      "description": "The Gnedenko-Kolmogorov domain of attraction theorem: classifies which distributions converge to each stable law $S_\\alpha$ under normalized sums. Generalizes the CLT's Gaussian convergence (the $\\alpha = 2$ case) to all stable distributions, answering when and how the CLT fails for heavy-tailed distributions"
-    },
-    {
-      "id": "central-limit-theorem-oq-01-oq-02",
-      "relationship": "extended-by",
-      "description": "The Lévy-Khintchine representation: every infinitely divisible distribution has a unique triplet $(b, \\sigma^2, \\nu)$ decomposing it into drift, Gaussian component, and jump measure. The CLT's Gaussian limit corresponds to the pure Gaussian case $(0, \\sigma^2, 0)$, placing the CLT within the broader framework of infinitely divisible distributions and Lévy processes"
-    }
-  ],
   "leanFile": {
     "lineCount": 618,
     "structureCount": 0,

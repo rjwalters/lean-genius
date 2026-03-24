@@ -172,23 +172,6 @@
       "Can Kelley-Meka techniques improve k ≥ 4 bounds?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "erdos-16",
-      "relationship": "related",
-      "description": "Erdős #16 concerns Szemerédi regularity and density of arithmetic progressions — the same circle of problems that includes 3-AP density bounds"
-    },
-    {
-      "id": "szemeredi-theorem",
-      "relationship": "generalization",
-      "description": "Szemerédi's theorem ($r_k(N) = o(N)$ for all $k$) is the qualitative predecessor. Our gallery's Szemerédi entry proves the $k{=}3$ case (Roth's theorem) via Mathlib's corners theorem chain. Erdős #140 strengthens this with quantitative bounds."
-    },
-    {
-      "id": "ramseys-theorem",
-      "relationship": "related",
-      "description": "Ramsey's theorem is the foundational result in the broader Ramsey theory program. Szemerédi's theorem and AP density bounds can be viewed as density analogues of Ramsey-type results: structure emerges from sufficient density rather than from partitions."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

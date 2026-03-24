@@ -211,27 +211,5 @@
       "citation": "Tao, T. and Vu, V.H., Additive Combinatorics, Cambridge University Press (2006).",
       "type": "book"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "harmonic-divergence",
-      "relationship": "related",
-      "description": "The harmonic series Σ 1/n diverges, while the product-reciprocal series Σ 1/((n+1)···(n+f(n))) converges for f(n) → ∞. The convergence behavior depends on the growth rate of f(n), connecting to the study of partial products and their reciprocal sums"
-    },
-    {
-      "id": "e-transcendental",
-      "relationship": "related",
-      "description": "The transcendence of e (Hermite 1873) is the archetype of irrationality results for series. The series e = Σ 1/n! involves factorial denominators, while this problem studies products of consecutive integers — a related class of rapidly growing denominators"
-    },
-    {
-      "id": "sqrt2-irrational",
-      "relationship": "thematic",
-      "description": "Both address irrationality questions: √2 ∉ ℚ via the descent method, while this problem asks when series with product denominators yield irrational sums. The disproof shows that any positive real is achievable, contrasting with the definitive irrationality of √2"
-    },
-    {
-      "id": "fundamental-arithmetic",
-      "relationship": "foundational",
-      "description": "Unique prime factorization of the product (n+1)(n+2)···(n+f(n)) = (n+f(n))!/n! determines the denominator structure and affects whether the series sum is rational or irrational"
-    }
   ]
 }

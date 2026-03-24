@@ -168,23 +168,6 @@
       "What is the exact value of $\\sum f(u)^2$ for the regular $n$-gon as a function of $n$ (connecting to OEIS A387858)?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "erdos-982",
-      "relationship": "related",
-      "description": "Related Erdős problem sharing themes: convex, discrete-geometry, distances, geometry"
-    },
-    {
-      "id": "erdos-605",
-      "relationship": "related",
-      "description": "Related Erdős problem sharing themes: discrete-geometry, distances, geometry"
-    },
-    {
-      "id": "erdos-654",
-      "relationship": "related",
-      "description": "Related Erdős problem sharing themes: discrete-geometry, distances, geometry"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.InnerProductSpace.PiL2",

@@ -210,37 +210,5 @@
     "axiomCount": 8,
     "theoremCount": 11,
     "definitionCount": 0
-  },
-  "relatedProofs": [
-    {
-      "id": "hermite-lindemann",
-      "relationship": "generalizes",
-      "description": "The Hermite-Lindemann theorem ($e^\\alpha$ transcendental for algebraic $\\alpha \\neq 0$) is the key lemma axiomatized here; π's transcendence is a direct corollary"
-    },
-    {
-      "id": "e-transcendental",
-      "relationship": "related",
-      "description": "Hermite's 1873 proof of $e$'s transcendence introduced the auxiliary polynomial method that Lindemann extended to prove $\\pi$ transcendental in 1882"
-    },
-    {
-      "id": "euler-identity",
-      "relationship": "uses",
-      "description": "Euler's identity $e^{i\\pi} = -1$ is the critical bridge: it converts the transcendence of exponentials into a statement about $\\pi$"
-    },
-    {
-      "id": "gelfond-schneider",
-      "relationship": "related",
-      "description": "The Gelfond-Schneider theorem (1934) extended transcendence theory beyond exponentials to $\\alpha^\\beta$, resolving Hilbert's 7th problem"
-    },
-    {
-      "id": "angle-trisection",
-      "relationship": "parallel",
-      "description": "Another classical impossibility result using field-theoretic arguments; angle trisection fails because some angles require degree-3 extensions, while circle squaring fails because $\\pi$ is transcendental"
-    },
-    {
-      "id": "sqrt2-irrational",
-      "relationship": "foundation",
-      "description": "Irrationality of $\\sqrt{2}$ is the simplest case of showing a number is not rational; transcendence of $\\pi$ is the much stronger statement that $\\pi$ is not algebraic"
-    }
-  ]
+  }
 }

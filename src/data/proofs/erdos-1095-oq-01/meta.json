@@ -161,38 +161,6 @@
       "description": "The infinitude of primes ensures that for any $k$, there exist primes exceeding $k$ that could divide $\\binom{n}{k}$, making the AllPrimesExceed condition achievable"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-1095",
-      "title": "Erdős Problem #1095: The Erdős-Selfridge Function",
-      "relationship": "parent problem — this is an open question about the growth rate of g(k)",
-      "description": "Open question derived from Erdős #1095 on g(k)"
-    },
-    {
-      "id": "kummer-theorem",
-      "title": "Kummer's Theorem on Binomial Coefficients",
-      "relationship": "foundational — Kummer's theorem characterizes p-adic valuations of C(n,k)",
-      "description": "Kummer's theorem characterizes $\\nu_p(\\binom{n}{k})$ as the number of carries when adding $k$ and $n-k$ in base $p$. This directly constrains which $n$ satisfy AllPrimesExceed: $\\binom{n}{k}$ is odd iff there are no carries in binary addition of $k$ and $n-k$"
-    },
-    {
-      "id": "binomial-theorem",
-      "title": "The Binomial Theorem",
-      "relationship": "background — provides the algebraic framework for binomial coefficients",
-      "description": "Provides the algebraic framework for binomial coefficients $\\binom{n}{k}$ central to this problem"
-    },
-    {
-      "id": "bertrands-postulate",
-      "title": "Bertrand's Postulate",
-      "relationship": "thematic inverse — Erdős' proof shows C(2n,n) always has prime factors in (n,2n], while g(k) asks when C(n,k) avoids ALL primes ≤ k",
-      "description": "Bertrand's postulate guarantees primes in $(k, 2k]$, relevant to understanding the prime factorization of $\\binom{n}{k} = \\frac{n!}{k!(n-k)!}$ — primes in $(k, n]$ divide the numerator but not $k!$"
-    },
-    {
-      "id": "infinitude-primes",
-      "title": "Infinitude of Primes",
-      "relationship": "foundational — ensures primes exceeding k exist, making the AllPrimesExceed condition achievable",
-      "description": "The infinitude of primes ensures that for any $k$, there exist primes exceeding $k$ that could divide $\\binom{n}{k}$, making the AllPrimesExceed condition achievable"
-    }
-  ],
   "references": [
     {
       "authors": "Ecklund, Earl F.; Erdős, Paul; Selfridge, John L.",

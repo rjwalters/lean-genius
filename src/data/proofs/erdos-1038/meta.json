@@ -149,38 +149,6 @@
       "targetId": "lebesgue-measure"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-1039",
-      "relationship": "sibling",
-      "description": "Closely related: asks for the largest disc contained in the sublevel set {z: |f(z)| < 1} for polynomials with roots in the unit disc. Together problems #1038 and #1039 form a pair studying metric properties of polynomial sublevel sets."
-    },
-    {
-      "id": "erdos-1040",
-      "relationship": "sibling",
-      "description": "Direct generalization: extends the sublevel set measure question to arbitrary closed infinite sets F ⊆ ℂ via transfinite diameter. Problem #1038 is the special case F = [-1,1]."
-    },
-    {
-      "id": "erdos-1041",
-      "relationship": "sibling",
-      "description": "Studies path connectivity within polynomial sublevel sets {z : |f(z)| < 1}, a topological companion to the measure-theoretic questions of #1038."
-    },
-    {
-      "id": "erdos-1043",
-      "relationship": "sibling",
-      "description": "Asks about linear projections of the sublevel set {z : |f(z)| ≤ 1}, complementing #1038's study of the total Lebesgue measure of the real sublevel ..."
-    },
-    {
-      "id": "erdos-1046",
-      "relationship": "sibling",
-      "description": "Studies disc containment for connected lemniscates {z: |f(z)| < 1}, providing geometric context for the measure bounds proved in #1038."
-    },
-    {
-      "id": "lebesgue-measure",
-      "relationship": "uses",
-      "description": "The formalization relies on Lebesgue measure on ℝ to define the measure of the sublevel set {x : |f(x)| < 1}."
-    }
-  ],
   "references": [
     {
       "authors": [

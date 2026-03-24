@@ -134,18 +134,6 @@
       "What is the formal relationship between the Cayley-Dickson construction (reals $\\to$ complex $\\to$ quaternions $\\to$ octonions) and the existence of $n$-square identities?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "fermat-two-squares",
-      "relationship": "extends",
-      "description": "Extends Fermat's characterization of two-square primes to Lagrange's universal four-square representation for all naturals."
-    },
-    {
-      "id": "lagrange-four-squares",
-      "relationship": "related",
-      "description": "Companion formalization focusing on the algebraic connection (quaternion norm) and the contrast between conditional two-squares and universal four-squares."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.NumberTheory.SumFourSquares",

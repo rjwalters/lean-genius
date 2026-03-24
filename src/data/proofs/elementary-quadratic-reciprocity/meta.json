@@ -203,38 +203,6 @@
       "description": "Wilson's theorem ($(p-1)! \\equiv -1 \\pmod{p}$) is closely related to quadratic residues: pairing each residue with its inverse in $(p-1)!$ leaves the self-inverse elements ($\\pm 1$), and the quadratic residue structure governs which elements are self-inverse in $(\\mathbb{Z}/p\\mathbb{Z})^\\times$"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "quadratic-reciprocity",
-      "relationship": "related",
-      "description": "The main quadratic reciprocity entry — this file provides an alternative elementary proof via Eisenstein's method, complementing the standard Gauss-sum approach"
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "related",
-      "description": "Euler's proof of infinitely many primes uses the divergence of ∑1/p; Dirichlet extended this using quadratic characters (from QR) to prove infinitely many primes in arithmetic progressions"
-    },
-    {
-      "id": "lagrange-theorem",
-      "relationship": "foundational",
-      "description": "Lagrange's theorem (subgroup order divides group order) underpins the structure of (ℤ/pℤ)× — the multiplicative group whose quadratic residue structure QR describes"
-    },
-    {
-      "id": "abel-ruffini",
-      "relationship": "thematic",
-      "description": "Both concern the algebraic structure of number-theoretic objects: QR describes the splitting behavior of primes in quadratic extensions, while Abel-Ruffini concerns solvability of polynomial equations. The Artin reciprocity law unifies both"
-    },
-    {
-      "id": "primitive-roots",
-      "relationship": "foundational",
-      "description": "Primitive roots establish that $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic of order $p-1$. The quadratic residues are precisely the even powers of a primitive root, forming the unique subgroup of index 2. This group structure is what makes the Legendre symbol a group homomorphism"
-    },
-    {
-      "id": "wilsons-theorem",
-      "relationship": "related",
-      "description": "Wilson's theorem ($(p-1)! \\equiv -1 \\pmod{p}$) is closely related to quadratic residues: pairing each residue with its inverse in $(p-1)!$ leaves the self-inverse elements ($\\pm 1$), and the quadratic residue structure governs which elements are self-inverse in $(\\mathbb{Z}/p\\mathbb{Z})^\\times$"
-    }
-  ],
   "references": [
     {
       "authors": "Gauss, Carl Friedrich",

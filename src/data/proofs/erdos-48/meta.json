@@ -214,38 +214,6 @@
       "description": "Unique factorization is required for the multiplicativity of both φ and σ; the multiplicative structure exploited throughout the proof rests on the Fundamental Theorem of Arithmetic."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "euler-totient",
-      "relationship": "uses",
-      "description": "Euler's totient function φ(n) is one of the two arithmetic functions at the heart of this problem; the formalization imports Nat.totient from Mathlib and relies on its multiplicativity and prime-value formula."
-    },
-    {
-      "id": "erdos-49",
-      "relationship": "related",
-      "description": "Erdős #49 also studies sets defined by totient values and uses the same range Im(φ); understanding which values appear in Im(φ) is central to both problems."
-    },
-    {
-      "id": "erdos-1003",
-      "relationship": "related",
-      "description": "Erdős #1003 asks about consecutive equal totient values φ(n) = φ(n+1); the twin-prime construction used in erdos-48 (φ(p+2) = σ(p) = p+1 for twin primes) directly connects the two problems."
-    },
-    {
-      "id": "erdos-1004",
-      "relationship": "related",
-      "description": "Erdős #1004 studies the distribution of distinct consecutive totient values; the density and value-distribution techniques (EPS bounds) are closely related to the Garaev density improvement axiomatized here."
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "uses",
-      "description": "The infinite supply of twin primes (conjectural) and ordinary primes underpins the Ford-Luca-Pomerance construction; the infinitude of primes is the foundational fact that makes the argument work."
-    },
-    {
-      "id": "fundamental-arithmetic",
-      "relationship": "uses",
-      "description": "Unique factorization is required for the multiplicativity of both φ and σ; the multiplicative structure exploited throughout the proof rests on the Fundamental Theorem of Arithmetic."
-    }
-  ],
   "references": [
     {
       "authors": [
