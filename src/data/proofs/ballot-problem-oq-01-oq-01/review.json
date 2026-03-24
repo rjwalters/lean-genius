@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "proofId": "ballot-problem-oq-01-oq-01",
+  "reviewDate": "2026-03-24T18:00:00Z",
+  "reviewer": "peer-reviewer",
+
+  "overallAssessment": {
+    "grade": "B-",
+    "oneLiner": "Genuinely substantive main theorem (ballot_discrete_ivt) with excellent pedagogy, undermined by two placeholder theorems that prove 1+1=2 while claiming to address the cycle lemma lower bound",
+    "tier": "A",
+    "tierJustification": "ballot_discrete_ivt is a fully original 35-line proof using Finset.max' extremal argument, case split on ballot constraints, and contradiction — genuine mathematical formalization with no Mathlib crutch for the core reasoning. The two placeholders do not affect the tier since they are documented as non-content."
+  },
+
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "ballot_discrete_ivt, lines 48-89",
+      "finding": "The main theorem is a genuinely substantive 35-line proof with multi-step reasoning: Finset construction (line 56), max' extraction (line 61), strict bound via contradiction (lines 68-71), maximality argument via Finset.le_max' (lines 73-78), case split on l[j] ∈ {+1, -k} (lines 80-85), and final linarith squeeze (lines 87-88). This is real proof work — not a Mathlib wrapper — using an elegant extremal-element technique that avoids induction entirely.",
+      "recommendation": "Preserve this proof. It is the entry's core value and a good example of the Finset.max' technique in Lean 4."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "meta.json overview.proofStrategy and overview.keyInsights",
+      "finding": "The proof strategy is explained with exceptional clarity: the 7-step outline (define S, show nonempty, take max, prove j < l.length, prove P(j+1) > v, prove l[j] = 1, conclude P(j) = v) matches the actual proof structure line-by-line. The key insights are mathematically precise and genuinely illuminate the proof technique.",
+      "recommendation": "Preserve the proof strategy and key insights — they are exemplary pedagogical writing that accurately reflects the formal content."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "meta.json assumptions field",
+      "finding": "The assumptions field explicitly states: 'The two auxiliary theorems (cycle_lemma_lower_bound_via_ivt, rightmost_is_good_sketch) are trivially proved placeholders (rfl), not open sorries.' This is commendably honest and prevents readers from being misled by the 0-sorry count.",
+      "recommendation": "Preserve this honesty. Other entries should follow this pattern when they contain placeholders."
+    },
+    {
+      "severity": "major",
+      "category": "filler",
+      "location": "cycle_lemma_lower_bound_via_ivt, line 108; rightmost_is_good_sketch, line 130",
+      "finding": "Both theorems prove `(1 : ℕ) + 1 = 2 := rfl` — a statement completely unrelated to their names and docstrings. The theorem names suggest they address the cycle lemma lower bound and the rightmost-is-good argument, but they prove arithmetic trivia. While the header checklist and assumptions field acknowledge these as placeholders, their presence inflates the theoremCount (3 when only 1 is substantive) and their inclusion in originalContributions is misleading.",
+      "recommendation": "Replace with honest placeholders: either (1) change to `sorry`-based stubs that state the actual intended theorem, so the sorry count reflects reality, or (2) remove entirely and move the docstring content into comments. A theorem named `cycle_lemma_lower_bound_via_ivt` that proves `1 + 1 = 2` is worse than a sorry — it actively disguises incompleteness."
+    },
+    {
+      "severity": "moderate",
+      "category": "overclaim",
+      "location": "meta.json conclusion.summary",
+      "finding": "The conclusion states: 'Combined with the infrastructure in BallotProblemOQ01.lean, the full Dvoretzky-Motzkin Cycle Lemma (cycle_lemma: |goodRotations l| = a - k*b) is proved with 0 sorries.' This file only proves ballot_discrete_ivt. The claim that the full cycle lemma is now proved depends on the parent file, which this review cannot verify. The two placeholder theorems in THIS file do not contribute to that goal.",
+      "recommendation": "Rewrite conclusion to: 'This file proves ballot_discrete_ivt, the discrete intermediate value theorem for {+1,-k}-sequences. The theorem provides the key analytic lemma for the cycle lemma lower bound; integration with BallotProblemOQ01.lean is documented but not yet formalized in this file.'"
+    },
+    {
+      "severity": "moderate",
+      "category": "overclaim",
+      "location": "meta.json originalContributions[1] and [2]",
+      "finding": "originalContributions lists 'cycle_lemma_lower_bound_via_ivt: informal derivation...' and 'rightmost_is_good_sketch: formal sketch...'. These prove 1+1=2. Calling a `1+1=2` proof an 'original contribution' — even qualified with 'informal' or 'sketch' — overstates the file's content. The docstrings are valuable exposition, but the theorems themselves contribute nothing.",
+      "recommendation": "Remove items [1] and [2] from originalContributions. Instead add: 'Detailed proof sketches in docstrings for the cycle lemma lower bound and rightmost-is-good arguments (not yet formalized)'. This distinguishes exposition from formalization."
+    },
+    {
+      "severity": "moderate",
+      "category": "precision",
+      "location": "meta.json badge field",
+      "finding": "Badge is 'verified' but 'original' would be more appropriate. ballot_discrete_ivt is genuinely original proof work — a 35-line argument that does not wrap any existing Mathlib theorem. The 'verified' badge understates the entry's actual contribution by suggesting mere verification rather than original formalization.",
+      "recommendation": "Change badge from 'verified' to 'original' to accurately reflect the genuine proof work in ballot_discrete_ivt."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json sections",
+      "finding": "Three sections overlap significantly: 'lower-bound-corollary' (91-131), 'rightmost-good' (110-131), and 'placeholder-theorems' (108-131). These describe different aspects of essentially the same 40 lines of code (two placeholder theorems with long docstrings). The overlapping boundaries make it unclear which section a given line belongs to.",
+      "recommendation": "Consolidate into two non-overlapping sections: 'lower-bound-sketch' (91-108) for cycle_lemma_lower_bound_via_ivt and 'rightmost-good-sketch' (110-131) for rightmost_is_good_sketch. Remove the 'placeholder-theorems' section as redundant."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json leanFile.theoremCount",
+      "finding": "theoremCount is 3, which is technically correct but misleading when 2 of 3 theorems prove 1+1=2. A reader seeing 'theoremCount: 3' alongside 'verified' status would reasonably assume 3 substantive theorems.",
+      "recommendation": "Either add a 'substantiveTheoremCount' field or add a note: 'theoremCount: 3 (1 substantive, 2 placeholders)'."
+    }
+  ],
+
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Replace the two placeholder theorems (lines 108 and 130) with either (a) properly sorry'd theorem stubs stating the actual intended theorems, or (b) remove the theorem declarations entirely and keep the docstring content as comments. Update meta.json theoremCount, originalContributions, and sorries count accordingly.",
+      "status": "open"
+    },
+    {
+      "id": "ai-2",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Rewrite conclusion.summary to remove the claim about the full cycle lemma being 'proved with 0 sorries'. Focus on what THIS file proves: ballot_discrete_ivt. Note the connection to BallotProblemOQ01.lean without claiming completeness.",
+      "status": "open"
+    },
+    {
+      "id": "ai-3",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Rewrite originalContributions: keep item [0] (ballot_discrete_ivt — genuinely original), replace items [1] and [2] with a single item noting the detailed proof sketches in docstrings are not yet formalized.",
+      "status": "open"
+    },
+    {
+      "id": "ai-4",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Change badge from 'verified' to 'original' to reflect genuine proof work in ballot_discrete_ivt.",
+      "status": "open"
+    },
+    {
+      "id": "ai-5",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Fix overlapping section boundaries: consolidate into non-overlapping 'lower-bound-sketch' (91-108) and 'rightmost-good-sketch' (110-131), remove redundant 'placeholder-theorems' section.",
+      "status": "open"
+    }
+  ],
+
+  "qualityScores": {
+    "mathematicalSubstance": 7,
+    "originalityAccuracy": 6,
+    "completeness": 6,
+    "framingPrecision": 7,
+    "pedagogicalQuality": 8,
+    "internalConsistency": 7,
+    "overall": 6.8
+  },
+
+  "suggestedBestFraming": "A fully original proof of the discrete intermediate value theorem for ballot-type {+1,-k}-sequences, using a Finset.max' extremal argument to show that prefix sums hitting a target value v at any position must also hit v at a strict prefix — the key analytic lemma for the Dvoretzky-Motzkin Cycle Lemma lower bound."
+}
