@@ -975,26 +975,22 @@
       "issues": []
     },
     "erdos-463": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:03:06Z",
       "result": "clean",
-      "date": "2026-03-23",
-      "auditor": "auditor-2",
-      "cycle": 7
+      "issues": []
     },
     "erdos-493": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:03:06Z",
       "result": "clean",
-      "date": "2026-03-23",
-      "auditor": "auditor-2",
-      "cycle": 7
+      "issues": []
     },
     "euler-polyhedral-formula-oq-02-oq-01": {
-      "result": "issues-fixed",
-      "date": "2026-03-23",
-      "auditor": "auditor-2",
-      "cycle": 7,
-      "issues": [
-        "CRITICAL: status \"verified\" \u2192 \"axiomatized\", badge \"verified\" \u2192 \"axiom\", axiomCount 0\u219210 (10 structure-encoded assumptions)"
-      ],
-      "pr": 5700
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:03:06Z",
+      "result": "clean",
+      "issues": []
     },
     "fair-games-theorem-oq-01": {
       "auditCount": 1,
@@ -1003,10 +999,10 @@
       "issues": []
     },
     "feuerbachs-theorem-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:03:07Z",
       "result": "clean",
-      "date": "2026-03-23",
-      "auditor": "auditor-2",
-      "cycle": 7
+      "issues": []
     },
     "intermediate-value-theorem-oq-01": {
       "auditCount": 1,
@@ -1033,16 +1029,16 @@
       "issues": []
     },
     "lebesgue-measure-oq-01": {
-      "result": "clean",
-      "date": "2026-03-23",
-      "auditor": "auditor-2",
-      "cycle": 7
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:04:35Z",
+      "result": "issues-fixed",
+      "issues": []
     },
     "lebesgue-measure-oq-02": {
-      "result": "clean",
-      "date": "2026-03-23",
-      "auditor": "auditor-2",
-      "cycle": 7
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:04:35Z",
+      "result": "issues-fixed",
+      "issues": []
     },
     "leibniz-pi-oq-01": {
       "auditCount": 1,
@@ -1068,29 +1064,47 @@
       "result": "clean",
       "issues": []
     },
-    "erdos-602": {
-      "result": "clean",
-      "date": "2026-03-23",
-      "auditor": "auditor-2",
-      "cycle": 7
+    "erdos-1072": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:24:08Z",
+      "result": "issues-fixed",
+      "issues": []
     },
-    "erdos-728-factorial-divisibility": {
+    "erdos-96": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:24:08Z",
       "result": "clean",
-      "date": "2026-03-23",
-      "auditor": "auditor-2",
-      "cycle": 7
+      "issues": []
     },
-    "euler-polyhedral-formula-oq-01": {
+    "hilbert-21": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:24:08Z",
       "result": "clean",
-      "date": "2026-03-23",
-      "auditor": "auditor-2",
-      "cycle": 7
+      "issues": []
     },
-    "friendship-theorem": {
+    "schroeder-bernstein": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:24:49Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "erdos-504": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:35:58Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "shannon-channel-coding-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:36:34Z",
       "result": "clean",
-      "date": "2026-03-23",
-      "auditor": "auditor-2",
-      "cycle": 7
+      "issues": []
+    },
+    "sum-of-kth-powers": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:36:34Z",
+      "result": "clean",
+      "issues": []
     }
   }
 }
