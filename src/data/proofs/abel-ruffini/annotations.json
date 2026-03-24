@@ -296,7 +296,7 @@
     },
     "type": "theorem",
     "title": "Existence of Degree-5 Polynomials",
-    "content": "`exists_quintic` provides a trivial witness that degree-5 polynomials exist over $\\mathbb{Q}$: the polynomial $X^5$ has `natDegree = 5`. The Lean proof uses `simp only` with two rewrite lemmas — `Polynomial.natDegree_pow` (which computes $\\text{natDegree}(p^n) = n \\cdot \\text{natDegree}(p)$) and `Polynomial.natDegree_X` (which establishes $\\text{natDegree}(X) = 1$) — followed by `mul_one` to simplify $5 \\cdot 1 = 5$.\n\nWhile mathematically trivial, this theorem serves a structural role: it establishes that the degree-5 threshold identified in Parts III–IV (where $S_n$ transitions from solvable to non-solvable) is actually realized by polynomials over $\\mathbb{Q}$. The substantive impossibility is in `not_solvable_by_rad_of_not_solvable_gal` that follows.",
+    "content": "`exists_quintic` provides a trivial witness that degree-5 polynomials exist over $\\mathbb{Q}$: the polynomial $X^5$ has `natDegree = 5`. The Lean proof uses `simp only` with two rewrite lemmas — `Polynomial.natDegree_pow` (which computes $\\text{natDegree}(p^n) = n \\cdot \\text{natDegree}(p)$) and `Polynomial.natDegree_X` (which establishes $\\text{natDegree}(X) = 1$) — followed by `mul_one` to simplify $5 \\cdot 1 = 5$.\n\nThis is mathematically trivial and is **not** the statement Abel-Ruffini actually needs. The substantive requirement — exhibiting a specific polynomial $q \\in \\mathbb{Q}[X]$ with $\\text{Gal}(q) \\cong S_5$ (e.g., $x^5 - x - 1$) — remains an open formalization challenge noted in the conclusion. The real impossibility result is in `not_solvable_by_rad_of_not_solvable_gal` that follows.",
     "mathContext": "$\\exists p \\in \\mathbb{Q}[X],\\; \\deg(p) = 5$. Witness: $p = X^5$.\n\n$\\text{natDegree}(X^n) = n \\cdot \\text{natDegree}(X) = n \\cdot 1 = n$.",
     "significance": "supporting",
     "prerequisites": [
@@ -338,7 +338,7 @@
     "proofId": "abel-ruffini",
     "range": {
       "startLine": 151,
-      "endLine": 183
+      "endLine": 163
     },
     "type": "insight",
     "title": "Part VI: Why Degree 5 Is the Exact Threshold",
@@ -365,7 +365,7 @@
     "id": "ann-part-vii-historical",
     "proofId": "abel-ruffini",
     "range": {
-      "startLine": 151,
+      "startLine": 164,
       "endLine": 183
     },
     "type": "context",
