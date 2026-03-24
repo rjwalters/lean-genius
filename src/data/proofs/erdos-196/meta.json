@@ -55,56 +55,64 @@
       "title": "Arithmetic Progression Definitions",
       "startLine": 33,
       "endLine": 42,
-      "summary": "Defines IsAP3, IsAP4, IsAP5 via constant differences $b - a = c - b = \\cdots$ with strict ordering $a < b < c < \\cdots$."
+      "summary": "Defines IsAP3, IsAP4, IsAP5 via constant differences $b - a = c - b = \\cdots$ with strict ordering $a < b < c < \\cdots$.",
+      "mathContext": "A $k$-term arithmetic progression: $a, a+d, a+2d, \\ldots, a+(k-1)d$ with common difference $d > 0$. Here $a < b < c$ and $b - a = c - b$."
     },
     {
       "id": "monotone-aps",
       "title": "Monotone APs in Permutations",
       "startLine": 47,
       "endLine": 60,
-      "summary": "HasMonotone$k$AP$(\\pi)$: $\\exists$ monotone indices with values forming a $k$-AP. Covers 3, 4, and 5-term variants."
+      "summary": "HasMonotone$k$AP$(\\pi)$: $\\exists$ monotone indices with values forming a $k$-AP. Covers 3, 4, and 5-term variants.",
+      "mathContext": "$\\text{HasMonotone4AP}(\\pi) \\iff \\exists i_1 < i_2 < i_3 < i_4$ with $\\pi(i_1), \\pi(i_2), \\pi(i_3), \\pi(i_4)$ forming an AP (either increasing or decreasing)."
     },
     {
       "id": "conjecture",
       "title": "The Open Conjecture ($k = 4$)",
       "startLine": 64,
       "endLine": 67,
-      "summary": "ErdosProblem196: $\\forall \\pi: \\mathbb{N} \\equiv \\mathbb{N},$ HasMonotone4AP$(\\pi)$. The critical threshold question."
+      "summary": "ErdosProblem196: $\\forall \\pi: \\mathbb{N} \\equiv \\mathbb{N},$ HasMonotone4AP$(\\pi)$. The critical threshold question.",
+      "mathContext": "Conjecture: every permutation $\\pi : \\mathbb{N} \\to \\mathbb{N}$ contains a monotone 4-term AP. OPEN."
     },
     {
       "id": "degs-results",
       "title": "DEGS Results ($k = 3$ and $k = 5$)",
       "startLine": 72,
       "endLine": 77,
-      "summary": "DEGS (1977): $k = 3$ always exists (axiom), $k = 5$ can be avoided (axiom). Establishes the $k = 4$ threshold."
+      "summary": "DEGS (1977): $k = 3$ always exists (axiom), $k = 5$ can be avoided (axiom). Establishes the $k = 4$ threshold.",
+      "mathContext": "DEGS (1977): $k = 3$ — every permutation has a monotone 3-AP. $k = 5$ — there exists a permutation avoiding all monotone 5-APs. So $k = 4$ is the threshold candidate."
     },
     {
       "id": "implication",
       "title": "4-AP Implies 3-AP (Proved)",
       "startLine": 80,
       "endLine": 89,
-      "summary": "Lean proof that the 4-AP conjecture implies the 3-AP theorem by extracting three terms and using `omega`."
+      "summary": "Lean proof that the 4-AP conjecture implies the 3-AP theorem by extracting three terms and using `omega`.",
+      "mathContext": "If $\\pi$ has a monotone 4-AP $(a, a+d, a+2d, a+3d)$, then $(a, a+d, a+2d)$ is a monotone 3-AP. Proved in Lean via index extraction and `omega`."
     },
     {
       "id": "parity",
       "title": "Common Difference Parity Analysis",
       "startLine": 94,
       "endLine": 114,
-      "summary": "Odd/even CD definitions, LeSaulnier–Vijay odd-CD avoidance (2011), parity dichotomy (proved), and the structural equivalence to even-CD forcing."
+      "summary": "Odd/even CD definitions, LeSaulnier–Vijay odd-CD avoidance (2011), parity dichotomy (proved), and the structural equivalence to even-CD forcing.",
+      "mathContext": "LeSaulnier-Vijay (2011): odd-CD monotone 4-APs can be avoided. So the conjecture reduces to: can *even-CD* monotone 4-APs be avoided? Parity dichotomy proved in Lean."
     },
     {
       "id": "non-extendability",
       "title": "Non-Extendability Constraints",
       "startLine": 128,
       "endLine": 134,
-      "summary": "If no 4-AP exists, each 3-AP forbids a value at all later monotone positions — accumulating constraints toward a contradiction."
+      "summary": "If no 4-AP exists, each 3-AP forbids a value at all later monotone positions — accumulating constraints toward a contradiction.",
+      "mathContext": "If $(a, a+d, a+2d)$ is a monotone 3-AP in $\\pi$, then $a+3d$ cannot appear at a monotone position — a forbidden value constraint."
     },
     {
       "id": "erdos-szekeres",
       "title": "Erdős–Szekeres Connection",
       "startLine": 138,
       "endLine": 145,
-      "summary": "Erdős–Szekeres (1935): $n > (r-1)(s-1) \\implies$ monotone subsequence of length $r$ or $s$. Gives long monotone subsequences but not APs."
+      "summary": "Erdős–Szekeres (1935): $n > (r-1)(s-1) \\implies$ monotone subsequence of length $r$ or $s$. Gives long monotone subsequences but not APs.",
+      "mathContext": "Erdős-Szekeres: every sequence of $> (r-1)(s-1)$ distinct reals has an increasing subsequence of length $r$ or decreasing of length $s$. Gives structure but not AP structure."
     }
   ],
   "conclusion": {
@@ -136,10 +144,39 @@
     {
       "targetId": "erdos-34",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorics, permutations"
+      "description": "Related Erdős combinatorial problem involving permutation structure"
+    },
+    {
+      "targetId": "arithmetic-series",
+      "relationship": "foundational",
+      "description": "Arithmetic progressions are the core object: this problem asks which k-term APs are unavoidable in permutations of ℕ"
+    },
+    {
+      "targetId": "erdos-szekeres",
+      "relationship": "foundational",
+      "description": "The Erdős-Szekeres theorem (monotone subsequences in sequences) is a structural cousin — both guarantee structured subsequences, but Erdős-Szekeres gives monotone subsequences while #196 asks about monotone APs"
     }
   ],
   "relatedProofs": [
-    "erdos-34"
+    "erdos-34",
+    "arithmetic-series",
+    "erdos-szekeres"
+  ],
+  "references": [
+    {
+      "authors": "Davis, J.A.; Entringer, R.C.; Graham, R.L.; Simmons, G.J.",
+      "title": "On permutations containing no long arithmetic progressions",
+      "year": "1977",
+      "venue": "Acta Arithmetica, vol. 34, pp. 81–90",
+      "note": "Proved k=3 always exists and k=5 can be avoided; left k=4 as the critical open case"
+    },
+    {
+      "authors": "LeSaulnier, T.D.; Vijay, S.",
+      "title": "Monotone arithmetic progressions in permutations",
+      "year": "2011",
+      "venue": "Preprint",
+      "note": "Showed odd common-difference 4-APs can be avoided, reducing the conjecture to the even-CD case"
+    },
+    "https://erdosproblems.com/196"
   ]
 }
