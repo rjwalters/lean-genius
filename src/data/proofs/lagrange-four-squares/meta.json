@@ -66,6 +66,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module docstring documenting the problem statement, background, and references; imports `SumFourSquares`, `Tactic`; namespace `LagrangeFourSquares`",
+      "mathContext": "Every natural number can be expressed as the sum of four integer squares: $$n = a^2 + b^2 + c^2 + d^2$$ This is one of the most beautiful results in number theory, proved by Lagrange in 1770."
+    },
+    {
       "id": "euler-identity",
       "title": "Euler's Four-Square Identity",
       "startLine": 44,

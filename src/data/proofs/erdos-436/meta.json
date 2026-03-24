@@ -46,6 +46,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring documenting the problem statement, background, and references; 6 Mathlib imports covering required modules; `open` declarations (Nat Classical)",
+      "mathContext": "For prime p and k, m ≥ 2, let r(k,m,p) be the minimal r such that r, r+1, ..., r+m-1 are all kth power residues modulo p. Let Λ(k,m) = lim sup_{p→∞} r(k,m,p). Questions: 1. Is Λ(k,2) finite for all k?"
+    },
+    {
       "id": "definitions",
       "title": "Power Residue Definitions",
       "startLine": 45,

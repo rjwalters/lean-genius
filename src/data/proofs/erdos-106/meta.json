@@ -48,6 +48,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Module docstring documenting the problem statement, background, and references; single `import Mathlib` for full Mathlib access; `open` declarations (Set Real)",
+      "mathContext": "Draw n squares inside the unit square with no common interior point. Let f(n) be the maximum possible sum of the side-lengths. Is f(k²+1) = k?"
+    },
+    {
       "id": "squares",
       "title": "Squares in the Plane",
       "summary": "Defines the `Square` structure with center and positive side length, its interior (open) and closure (closed) sets, and the `DisjointInteriors` predicate using Lean's `Disjoint` on sets. All squares are axis-parallel.",

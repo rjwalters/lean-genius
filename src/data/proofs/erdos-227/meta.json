@@ -76,6 +76,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Module docstring documenting the problem statement, background, and references; 6 Mathlib imports covering required modules; `open` declarations (Complex Filter Topology); namespace `Erdos227`",
+      "mathContext": "Let f = Σ aₙzⁿ be an entire function which is not a polynomial. Is it true that if lim(r→∞) max_n|aₙrⁿ| / max_{|z|=r}|f(z)| exists, then it must be 0?"
+    },
+    {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Defines EntireFunction as a structure with power series coefficients and infinitely-many-nonzero guarantee. Defines maxTerm μ(r) = ⨆ₙ |aₙ|rⁿ, maxModulus M(r) = ⨆θ |f(re^{iθ})|, and their ratio termModulusRatio.",

@@ -90,6 +90,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring documenting the problem statement, background, and references; 6 Mathlib imports covering required modules; `open` declarations (Cardinal SimpleGraph); namespace `Erdos736`",
+      "mathContext": "Let G be a graph with chromatic number ℵ₁. Is there, for every cardinal m, some graph G_m of chromatic number m such that every finite subgraph of G_m is a subgraph of G?"
+    },
+    {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 45,

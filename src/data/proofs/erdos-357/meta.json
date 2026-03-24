@@ -70,6 +70,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Module docstring documenting the problem statement, background, and references; 8 Mathlib imports covering required modules; `open` declarations (Nat Filter Asymptotics Finset); namespace `Erdos357`",
+      "mathContext": "Let 1 ≤ a₁ < a₂ < ... < aₖ ≤ n be integers such that all sums of the form Σᵢ₌ᵤᵛ aᵢ are distinct. Let f(n) be the maximal such k. How does f(n) grow? Is f(n) = o(n)?"
+    },
+    {
       "id": "consecutive-sums",
       "title": "Consecutive Sums Property",
       "startLine": 40,

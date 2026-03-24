@@ -94,6 +94,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Module docstring documenting the problem statement, background, and references; single `import Mathlib` for full Mathlib access; `open` declarations (Nat BigOperators Finset Classical)",
+      "mathContext": "Let C(x) count Carmichael numbers in [1,x]. Is C(x) = x^{1-o(1)}?"
+    },
+    {
       "id": "carmichael",
       "title": "Definitions: Korselt and Carmichael",
       "summary": "Defines `satisfiesKorselt` (squarefree + divisibility), `IsCarmichael` (composite + Korselt), `satisfiesFermat` ($a^n \\equiv a \\pmod{n}$ for all $a$), and axiomatizes Korselt's 1899 equivalence theorem.",

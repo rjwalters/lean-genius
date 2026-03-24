@@ -114,6 +114,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 19,
+      "summary": "Module docstring documenting the problem statement, background, and references",
+      "mathContext": "For a positive integer $m$, let $p(m)$ denote its least prime factor. Is it true that for all sufficiently large $n$, there exists $k \\geq 1$ with $p(n+k) > k^2 + 1$? Connected to Cramér's conjecture on prime gaps."
+    },
+    {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 20,

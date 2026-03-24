@@ -77,6 +77,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Module docstring documenting the problem statement, background, and references; 4 Mathlib imports covering required modules; `open` declarations (Finset Nat BigOperators); namespace `Erdos403`",
+      "mathContext": "Does the equation 2^m = a₁! + a₂! + ... + aₖ! with a₁ < a₂ < ... < aₖ have only finitely many solutions?"
+    },
+    {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Defines `sumFactorials(S) = Σₐ∈S a!` as the core function over `Finset ℕ`, along with `isStrictlyIncreasing`, `IsPowerOfTwoFactorialSum(m)` (∃S≠∅: sumFactorials(S) = 2^m), and `IsPrimePowerFactorialSum(p,m)` for the generalized predicate. Using `Finset ℕ` automatically enforces distinctness.",

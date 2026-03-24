@@ -87,6 +87,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Module docstring documenting the problem statement, background, and references; 6 Mathlib imports covering required modules; `open` declarations (Finset BigOperators); namespace `Erdos1026`",
+      "mathContext": "Let x₁, ..., xₙ be a sequence of distinct real numbers. Determine max(Σ x_{i_r}) where the maximum is taken over all monotonic subsequences. Precise Formulation (van Doorn): What is the largest consta"
+    },
+    {
       "id": "sequences",
       "title": "Sequences and Monotonicity",
       "summary": "RealSeq, Subsequence, IsIncreasing, IsDecreasing, IsMonotonic, subsequenceSum",

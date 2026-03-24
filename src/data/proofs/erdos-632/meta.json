@@ -73,6 +73,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Module docstring documenting the problem statement, background, and references; single `import Mathlib` for full Mathlib access; `open` declarations (Finset Function); namespace `Erdos632`",
+      "mathContext": "A graph is (a,b)-choosable if for any assignment of a colors to each vertex, one can select b colors from each list such that adjacent vertices have disjoint color subsets. Conjecture: If G is (a,b)-c"
+    },
+    {
       "id": "color-lists",
       "title": "Graphs and Color Lists",
       "summary": "Defines `Graph V` as `SimpleGraph V`, `ColorAssignment V a` as $V \\to \\text{Finset}(\\text{Fin}\\, a)$ assigning $a$ colors per vertex, `ColorSelection` for choosing subsets, and validity predicates (`IsValidAssignment`, `IsValidSelection`) ensuring correct cardinalities.",

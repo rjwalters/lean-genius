@@ -79,6 +79,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "Module docstring documenting the problem statement, background, and references; 4 Mathlib imports covering required modules",
+      "mathContext": "Let Q_n be the n-dimensional hypercube graph (2^n vertices, edges between strings differing in exactly one bit). Prove that R(Q_n) ≪ 2^n, where R(Q_n) is the 2-color Ramsey number."
+    },
+    {
       "id": "hypercube-graph",
       "title": "Hypercube Graph Q_n",
       "startLine": 33,

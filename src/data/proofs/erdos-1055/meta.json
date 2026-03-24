@@ -29,6 +29,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Module docstring documenting the problem statement, background, and references; 5 Mathlib imports covering required modules",
+      "mathContext": "Classify primes by factorization of $p+1$: class 1 if $p+1$ is 3-smooth, class $r$ if prime factors of $p+1$ are all in classes $\\leq r-1$. Are there infinitely many primes in each class? Does $p_r^{1/r} \\to \\infty$?"
+    },
+    {
       "id": "termination",
       "title": "Termination Lemma",
       "startLine": 30,

@@ -81,6 +81,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Module docstring documenting the problem statement, background, and references; 5 Mathlib imports covering required modules; `open` declarations (Set Filter Topology); namespace `Erdos268`",
+      "mathContext": "Let X ⊆ ℝ^d be the set of all points of the form (Σ_{n∈A} 1/n, Σ_{n∈A} 1/(n+1), ..., Σ_{n∈A} 1/(n+d-1)) as A ranges over infinite subsets of ℕ with Σ_{n∈A} 1/n < ∞. Does X have nonempty interior?"
+    },
+    {
       "id": "harmonic",
       "title": "Harmonic Subseries",
       "summary": "Defines HasConvergentHarmonicSubseries as Summable (fun n : A => 1/n) and shiftedHarmonicSum for the k-shifted variant. Proves finite sets trivially converge (sorry) and shifted summability follows from comparison (sorry). The subtype-based summation pattern is standard Mathlib.",

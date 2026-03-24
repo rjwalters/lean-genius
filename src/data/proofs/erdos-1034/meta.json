@@ -50,6 +50,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Module docstring documenting the problem statement, background, and references; single `import Mathlib` for full Mathlib access",
+      "mathContext": "Erdős Problem #1034: Turán-type density bounds for graph properties. Aristotle proved numerical approximations for the Ma-Tang constant, $K_4$-free Turán constant, and negated the Erdős-Faudree conjecture."
+    },
+    {
       "id": "graph-setup",
       "title": "Graph Setup",
       "summary": "$|E(G)|$, $\\lfloor n^2/4 \\rfloor$ Turán threshold, and `isAboveTuran` predicate",

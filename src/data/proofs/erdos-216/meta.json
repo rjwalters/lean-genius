@@ -98,6 +98,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Module docstring documenting the problem statement, background, and references; 5 Mathlib imports covering required modules; `open` declarations (Finset); namespace `Erdos216`",
+      "mathContext": "Let g(k) be the smallest integer (if it exists) such that any g(k) points in ℝ² contains an empty convex k-gon (a convex k-gon with no point in its interior). Does g(k) exist? If so, estimate g(k)."
+    },
+    {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Defines Point as EuclideanSpace ℝ (Fin 2) and PointSet as Finset Point. Axiomatizes InGeneralPosition (no three collinear) and IsConvexKGon (k vertices in convex position) with the cardinality axiom convexKGon_card.",

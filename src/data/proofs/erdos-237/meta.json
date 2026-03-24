@@ -83,6 +83,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Module docstring documenting the problem statement, background, and references; 4 Mathlib imports covering required modules; namespace `Erdos237`",
+      "mathContext": "Let A ⊆ ℕ be a set such that |A ∩ {1,...,N}| ≫ log(N) for all large N. Let f(n) count the number of solutions to n = p + a for p prime and a ∈ A. Is it true that limsup f(n) = ∞?"
+    },
+    {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Defines representationCount f_A(n) as Nat.card of pairs (p, a) with p prime, a ∈ A, p + a = n. Defines HasLogDensity via |A ∩ [1,N]| ≥ c·log(N). Defines HasUnboundedLimsup as ∀ M, ∃ n, f(n) > M.",

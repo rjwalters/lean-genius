@@ -101,6 +101,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "Module docstring documenting the problem statement, background, and references; single `import Mathlib` for full Mathlib access; `open` declarations (Real MeasureTheory); namespace `NDimVolumeIntegral`; `noncomputable section` declaration",
+      "mathContext": "Generalizes the 2D circumference-area duality to $n$ dimensions: $V_n(r) = \\int_0^r S_n(\\rho)\\,d\\rho$ where $S_n(\\rho) = n \\omega_n \\rho^{n-1}$ is the surface area and $\\omega_n = \\pi^{n/2}/\\Gamma(n/2+1)$ is the unit ball volume."
+    },
+    {
       "id": "definitions",
       "title": "Volume and Surface Area Functions",
       "startLine": 33,
