@@ -61,7 +61,7 @@ namespace HolderGeneralizesCS
 
 variable {α : Type*} [MeasurableSpace α] {μ : Measure α}
 
-/-!
+/-
 ## Part 1: Young's Inequality (Background)
 
 Young's inequality ab ≤ a^p/p + b^q/q is the fundamental pointwise estimate
@@ -79,7 +79,7 @@ theorem young_p2q2 (a b : ℝ≥0) :
   have hkey : (2 : ℝ) * a * b ≤ a ^ 2 + b ^ 2 := by nlinarith
   exact_mod_cast hkey
 
-/-!
+/-
 ## Part 2: Hölder's Inequality (Main Theorem)
 
 The Hölder inequality for the extended Lebesgue integral (lintegral).
@@ -105,7 +105,7 @@ theorem holder_nnreal_lintegral {p q : ℝ} (hpq : p.HolderConjugate q)
       (∫⁻ a, (g a : ℝ≥0∞) ^ q ∂μ) ^ (1 / q) :=
   holder_lintegral hpq hf.coe_nnreal_ennreal hg.coe_nnreal_ennreal
 
-/-!
+/-
 ## Part 3: Cauchy-Schwarz as the p=q=2 Special Case
 
 **The central result of this file**: Hölder's inequality with p=q=2 is exactly
@@ -146,7 +146,7 @@ theorem cauchy_schwarz_nnreal_from_holder
       (∫⁻ a, (g a : ℝ≥0∞) ^ (2 : ℝ) ∂μ) ^ ((1 : ℝ) / 2) :=
   holder_nnreal_lintegral holder_conj_2_2 hf hg
 
-/-!
+/-
 ## Part 4: Hölder's Inequality for Real-Valued Functions
 
 For real-valued measurable functions, we apply Hölder to the pointwise
@@ -179,7 +179,7 @@ theorem cauchy_schwarz_real_from_holder
       (∫⁻ a, (‖g a‖₊ : ℝ≥0∞) ^ (2 : ℝ) ∂μ) ^ ((1 : ℝ) / 2) :=
   holder_real_lintegral holder_conj_2_2 hf hg
 
-/-!
+/-
 ## Part 5: Minkowski's Inequality
 
 Minkowski's inequality (the triangle inequality for Lp norms) follows
@@ -200,7 +200,7 @@ theorem minkowski_l2 (f g : Lp ℝ 2 μ) :
 -- so the norm triangle inequality gives Minkowski directly.
 -- The Lp norm (snorm) satisfies the triangle inequality by Hölder's inequality.
 
-/-!
+/-
 ## Summary
 
 This file proves that Hölder's inequality is the correct integral
