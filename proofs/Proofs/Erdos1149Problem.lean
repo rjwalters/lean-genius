@@ -230,21 +230,86 @@ Step 3: countCoprimePairs N / N² → 6/π² (asymptotic analysis)
 theorem moebius_sum_divisors_eq (n : ℕ) (hn : 0 < n) :
     ∑ d ∈ n.divisors, (ArithmeticFunction.moebius d : ℤ) =
       if n = 1 then 1 else 0 := by
-  -- From (ζ * μ) = 1 (Dirichlet convolution identity)
-  -- (ζ * μ)(n) = ∑_{d|n} ζ(d) · μ(n/d) = ∑_{d|n} μ(n/d) = 1(n)
-  -- By change of variable over divisors, ∑_{d|n} μ(d) = 1(n) as well
-  sorry
+  -- Proof via μ * ζ = ε (Dirichlet identity in ArithmeticFunction ℤ)
+  trans (((ArithmeticFunction.moebius : ArithmeticFunction ℤ) *
+         ↑(ArithmeticFunction.zeta : ArithmeticFunction ℕ)) n)
+  · rw [ArithmeticFunction.mul_apply]
+    simp_rw [ArithmeticFunction.natCoe_apply, ArithmeticFunction.zeta_apply]
+    have h_simp : ∀ x ∈ n.divisorsAntidiagonal,
+        ArithmeticFunction.moebius x.1 * (↑(if x.2 = 0 then (0 : ℕ) else 1) : ℤ) =
+        ArithmeticFunction.moebius x.1 := by
+      intro x hx
+      have hmem := Nat.mem_divisorsAntidiagonal.mp hx
+      have hx2 : x.2 ≠ 0 := by
+        intro h; exact hmem.2 (by rw [← hmem.1, h, mul_zero])
+      simp [hx2]
+    rw [Finset.sum_congr rfl h_simp]
+    symm
+    apply Finset.sum_nbij Prod.fst
+    · intro x hx
+      have hmem := Nat.mem_divisorsAntidiagonal.mp hx
+      exact Nat.mem_divisors.mpr ⟨⟨x.2, hmem.1.symm⟩, hmem.2⟩
+    · intro x₁ hx₁ x₂ hx₂ h
+      have h1 := (Nat.mem_divisorsAntidiagonal.mp hx₁).1
+      have h2 := (Nat.mem_divisorsAntidiagonal.mp hx₂).1
+      have h2_ne := (Nat.mem_divisorsAntidiagonal.mp hx₂).2
+      have h_ne : x₂.1 ≠ 0 := by
+        intro hz; exact h2_ne (by rw [← h2, hz, zero_mul])
+      have h_eq : x₁.1 * x₁.2 = x₂.1 * x₂.2 := h1.trans h2.symm
+      ext
+      · exact h
+      · exact mul_left_cancel₀ h_ne (by rwa [h] at h_eq)
+    · intro d hd
+      exact ⟨(d, n / d), Nat.mem_divisorsAntidiagonal.mpr
+        ⟨Nat.mul_div_cancel' (Nat.dvd_of_mem_divisors hd), hn.ne'⟩, rfl⟩
+    · intro _ _; rfl
+  · rw [ArithmeticFunction.moebius_mul_coe_zeta, ArithmeticFunction.one_apply]
 
 /-- The number of multiples of d in {1, ..., N} is ⌊N/d⌋. -/
 theorem card_multiples (d N : ℕ) (hd : 0 < d) :
     (Finset.filter (fun a => d ∣ a) (Finset.Icc 1 N)).card = N / d := by
-  sorry -- Routine Finset counting, good Aristotle candidate
+  -- Bijection: multiples of d in [1,N] ↔ {0,...,N/d-1} via a ↦ a/d - 1
+  have h_eq : Finset.filter (fun a => d ∣ a) (Finset.Icc 1 N) =
+      (Finset.range (N / d)).image (fun j => (j + 1) * d) := by
+    ext a
+    simp only [Finset.mem_filter, Finset.mem_Icc, Finset.mem_image, Finset.mem_range]
+    constructor
+    · rintro ⟨⟨ha1, haN⟩, ⟨k, rfl⟩⟩
+      have hk_pos : 0 < k := by
+        by_contra h; push_neg at h; interval_cases k; simp at ha1
+      have hk_le : k ≤ N / d := by
+        rw [Nat.le_div_iff_mul_le hd]
+        calc k * d = d * k := mul_comm k d
+          _ ≤ N := haN
+      exact ⟨k - 1, by omega, by rw [Nat.sub_add_cancel (by omega : 1 ≤ k), mul_comm]⟩
+    · rintro ⟨j, hj, rfl⟩
+      refine ⟨⟨?_, ?_⟩, dvd_mul_left d (j + 1)⟩
+      · exact Nat.one_le_iff_ne_zero.mpr (mul_ne_zero (by omega) hd.ne')
+      · calc (j + 1) * d ≤ N / d * d := by nlinarith
+          _ ≤ N := Nat.div_mul_le_self N d
+  rw [h_eq]
+  rw [Finset.card_image_of_injective _ (fun a b h => by
+    have := mul_right_cancel₀ hd.ne' h; omega)]
+  exact Finset.card_range _
 
 /-- For prime p, exactly ⌊N/p⌋² pairs (a,b) in [1,N]² have p | gcd(a,b). -/
 theorem pairs_with_common_factor (p N : ℕ) (hp : Nat.Prime p) :
     ((Finset.Icc 1 N ×ˢ Finset.Icc 1 N).filter
       (fun ab => p ∣ Nat.gcd ab.1 ab.2)).card = (N / p) ^ 2 := by
-  sorry -- Counts pairs where p | a and p | b
+  -- p | gcd(a,b) ↔ p | a ∧ p | b: factor the product set
+  have h_filter : (Finset.Icc 1 N ×ˢ Finset.Icc 1 N).filter
+      (fun ab => p ∣ Nat.gcd ab.1 ab.2) =
+      Finset.filter (fun a => p ∣ a) (Finset.Icc 1 N) ×ˢ
+      Finset.filter (fun b => p ∣ b) (Finset.Icc 1 N) := by
+    ext ⟨a, b⟩
+    simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_Icc]
+    constructor
+    · rintro ⟨⟨ha, hb⟩, hdvd⟩
+      exact ⟨⟨ha, dvd_trans hdvd (Nat.gcd_dvd_left a b)⟩,
+             ⟨hb, dvd_trans hdvd (Nat.gcd_dvd_right a b)⟩⟩
+    · rintro ⟨⟨ha, hdva⟩, ⟨hb, hdvb⟩⟩
+      exact ⟨⟨ha, hb⟩, Nat.dvd_gcd hdva hdvb⟩
+  rw [h_filter, Finset.card_product, card_multiples p N hp.pos, sq]
 
 /-- The "probability" interpretation: 6/π² = 1/ζ(2).
     Since ζ(2) = π²/6 (Basel problem), we have 6/π² = 1/ζ(2). -/
