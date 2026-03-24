@@ -40,6 +40,8 @@ import Mathlib.Tactic
 
 open Nat Finset
 
+attribute [local instance] Classical.propDecidable
+
 namespace Erdos932
 
 /- ## Part I: Basic Definitions -/
@@ -53,16 +55,21 @@ Using Mathlib's `Nat.nth Nat.Prime`.
 noncomputable def nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
 
 /-- nthPrime 0 = 2 -/
-axiom nthPrime_zero : nthPrime 0 = 2
+theorem nthPrime_zero : nthPrime 0 = 2 := by
+  unfold nthPrime; exact Nat.nth_prime_zero_eq_two
 
 /-- nthPrime 1 = 3 -/
-axiom nthPrime_one : nthPrime 1 = 3
+theorem nthPrime_one : nthPrime 1 = 3 := by
+  unfold nthPrime; exact Nat.nth_prime_one_eq_three
 
 /-- The n-th prime is prime. -/
-axiom nthPrime_prime (n : ℕ) : (nthPrime n).Prime
+theorem nthPrime_prime (n : ℕ) : (nthPrime n).Prime := by
+  unfold nthPrime; exact Nat.nth_mem_of_infinite Nat.infinite_setOf_prime n
 
 /-- The sequence of primes is strictly increasing. -/
-axiom nthPrime_strictMono : StrictMono nthPrime
+theorem nthPrime_strictMono : StrictMono nthPrime := by
+  intro a b hab; unfold nthPrime
+  exact Nat.nth_strictMono Nat.infinite_setOf_prime hab
 
 /- ## Part II: Prime Gap -/
 
@@ -71,17 +78,31 @@ axiom nthPrime_strictMono : StrictMono nthPrime
 
 The gap between the n-th and (n+1)-th prime: g_n = p_{n+1} - p_n
 -/
-def primeGap (n : ℕ) : ℕ := nthPrime (n + 1) - nthPrime n
+noncomputable def primeGap (n : ℕ) : ℕ := nthPrime (n + 1) - nthPrime n
 
 /-- The first prime gap: p_1 - p_0 = 3 - 2 = 1. -/
-axiom primeGap_zero : primeGap 0 = 1
+theorem primeGap_zero : primeGap 0 = 1 := by
+  unfold primeGap nthPrime
+  simp [Nat.nth_prime_zero_eq_two, Nat.nth_prime_one_eq_three]
 
 /-- Prime gaps are positive. -/
-theorem primeGap_pos (n : ℕ) : primeGap n > 0 := by
-  simp [primeGap]
-  exact Nat.sub_pos_of_lt (nthPrime_strictMono (Nat.lt_succ_self n))
+theorem primeGap_pos (n : ℕ) : primeGap n > 0 :=
+  Nat.sub_pos_of_lt (nthPrime_strictMono (Nat.lt_succ_self n))
 
 /- ## Part III: Smooth Numbers -/
+
+/-- Maximum of a list of natural numbers via foldr. Returns 0 for empty list. -/
+private def listMax (l : List ℕ) : ℕ := l.foldr max 0
+
+private lemma listMax_le {l : List ℕ} {B : ℕ} (h : ∀ x ∈ l, x ≤ B) :
+    listMax l ≤ B := by
+  induction l with
+  | nil => simp [listMax, List.foldr]
+  | cons hd tl ih =>
+    simp only [listMax, List.foldr]
+    apply max_le
+    · exact h hd (by simp)
+    · exact ih (fun x hx => h x (by simp [hx]))
 
 /--
 **Maximum Prime Factor**
@@ -89,14 +110,17 @@ theorem primeGap_pos (n : ℕ) : primeGap n > 0 := by
 The largest prime dividing n, or 0 if n ≤ 1.
 -/
 noncomputable def maxPrimeFactor (n : ℕ) : ℕ :=
-  if h : n > 1 then (n.primeFactorsList).maximum?.getD 0 else 0
+  if _ : n > 1 then listMax n.primeFactorsList else 0
 
 /-- 1 has no prime factors, so maxPrimeFactor 1 = 0. -/
 theorem maxPrimeFactor_one : maxPrimeFactor 1 = 0 := by
   simp [maxPrimeFactor]
 
 /-- For prime p, maxPrimeFactor p = p. -/
-axiom maxPrimeFactor_prime (p : ℕ) (hp : p.Prime) : maxPrimeFactor p = p
+theorem maxPrimeFactor_prime (p : ℕ) (hp : p.Prime) : maxPrimeFactor p = p := by
+  unfold maxPrimeFactor
+  rw [dif_pos hp.one_lt, Nat.primeFactorsList_prime hp]
+  simp [listMax, List.foldr]
 
 /-- maxPrimeFactor(ab) = max(maxPrimeFactor(a), maxPrimeFactor(b)) for coprime a, b > 1. -/
 axiom maxPrimeFactor_mul (a b : ℕ) (ha : a > 1) (hb : b > 1) (hcop : Nat.Coprime a b) :
@@ -115,8 +139,17 @@ theorem one_isSmooth (B : ℕ) : isSmooth B 1 := by
   simp [isSmooth, maxPrimeFactor_one]
 
 /-- Powers of primes ≤ B are B-smooth. -/
-axiom prime_power_isSmooth (p k B : ℕ) (hp : p.Prime) (hpB : p ≤ B) (hk : k > 0) :
-    isSmooth B (p ^ k)
+theorem prime_power_isSmooth (p k B : ℕ) (hp : p.Prime) (hpB : p ≤ B) (hk : k > 0) :
+    isSmooth B (p ^ k) := by
+  unfold isSmooth maxPrimeFactor
+  rw [dif_pos (one_lt_pow (by omega : k ≠ 0) hp.one_lt)]
+  apply listMax_le
+  intro q hq
+  have hqp : q.Prime := Nat.prime_of_mem_primeFactorsList hq
+  have hqd : q ∣ p ^ k := Nat.dvd_of_mem_primeFactorsList hq
+  have hqdp : q ∣ p := hqp.dvd_of_dvd_pow hqd
+  have : q = p := (hp.eq_one_or_self_of_dvd q hqdp).resolve_left hqp.one_lt.ne'
+  omega
 
 /- ## Part IV: Smooth Numbers in Prime Gap -/
 
@@ -125,24 +158,21 @@ axiom prime_power_isSmooth (p k B : ℕ) (hp : p.Prime) (hpB : p ≤ B) (hk : k 
 
 The integers strictly between p_r and p_{r+1}.
 -/
-def primesGapInterval (r : ℕ) : Finset ℕ :=
+noncomputable def primesGapInterval (r : ℕ) : Finset ℕ :=
   Finset.Ioo (nthPrime r) (nthPrime (r + 1))
 
 /-- The gap interval is nonempty iff the prime gap is > 1. -/
 theorem primesGapInterval_nonempty_iff (r : ℕ) :
     (primesGapInterval r).Nonempty ↔ primeGap r > 1 := by
-  simp [primesGapInterval, primeGap]
+  simp only [primesGapInterval, primeGap]
   constructor
   · intro ⟨x, hx⟩
-    simp [Finset.mem_Ioo] at hx
+    simp only [Finset.mem_Ioo] at hx
     omega
   · intro h
-    use nthPrime r + 1
-    simp [Finset.mem_Ioo]
-    constructor
-    · exact Nat.lt_succ_self _
-    · have := nthPrime_strictMono (Nat.lt_succ_self r)
-      omega
+    have hlt : nthPrime r < nthPrime (r + 1) :=
+      nthPrime_strictMono (Nat.lt_succ_self r)
+    exact ⟨nthPrime r + 1, Finset.mem_Ioo.mpr ⟨by omega, by omega⟩⟩
 
 /--
 **Smooth Numbers in Gap**
@@ -150,7 +180,7 @@ theorem primesGapInterval_nonempty_iff (r : ℕ) :
 The set of numbers in the prime gap (p_r, p_{r+1}) that are smooth
 relative to the gap size (i.e., all prime factors < p_{r+1} - p_r).
 -/
-def smoothInGap (r : ℕ) : Finset ℕ :=
+noncomputable def smoothInGap (r : ℕ) : Finset ℕ :=
   (primesGapInterval r).filter (fun n => maxPrimeFactor n < primeGap r)
 
 /--
@@ -158,7 +188,7 @@ def smoothInGap (r : ℕ) : Finset ℕ :=
 
 How many numbers in the gap are smooth relative to the gap size.
 -/
-def smoothCount (r : ℕ) : ℕ := (smoothInGap r).card
+noncomputable def smoothCount (r : ℕ) : ℕ := (smoothInGap r).card
 
 /- ## Part V: The Main Conjecture (OPEN) -/
 
@@ -178,9 +208,7 @@ axiom erdos_932 : { r : ℕ | erdos932Condition r }.Infinite
 theorem erdos_932_alt :
     { r : ℕ | 2 ≤ (Finset.Ioo (nthPrime r) (nthPrime (r + 1)) |>.filter
       (fun m => maxPrimeFactor m < nthPrime (r + 1) - nthPrime r)).card }.Infinite := by
-  convert erdos_932 using 2
-  ext r
-  simp [erdos932Condition, smoothCount, smoothInGap, primesGapInterval, primeGap]
+  convert erdos_932 using 1
 
 /- ## Part VI: The Density-Zero Result (SOLVED) -/
 
@@ -190,9 +218,9 @@ theorem erdos_932_alt :
 A set S ⊆ ℕ has natural density d if
   lim_{N→∞} |{ n ∈ S : n ≤ N }| / N = d
 -/
-def HasDensity (S : Set ℕ) (d : ℝ) : Prop :=
+noncomputable def HasDensity (S : Set ℕ) (d : ℝ) : Prop :=
   Filter.Tendsto
-    (fun N => (Finset.filter (· ∈ S) (Finset.range (N + 1))).card / (N + 1 : ℝ))
+    (fun N : ℕ => ((Finset.filter (· ∈ S) (Finset.range (N + 1))).card : ℝ) / (↑N + 1))
     Filter.atTop
     (nhds d)
 
@@ -214,12 +242,10 @@ theorem erdos_932_variants_one_le :
     HasDensity { r : ℕ | 1 ≤ (Finset.Ioo (nthPrime r) (nthPrime (r + 1)) |>.filter
       (fun m => maxPrimeFactor m < nthPrime (r + 1) - nthPrime r)).card } 0 := by
   convert erdos_932_density_zero using 1
-  ext r
-  simp [erdos932WeakCondition, smoothCount, smoothInGap, primesGapInterval, primeGap]
 
 /- ## Part VII: Examples and Analysis -/
 
-/--
+/-
 **Example Analysis**
 
 For small primes, let's see what the gaps look like:
@@ -238,13 +264,11 @@ axiom example_r3 : smoothCount 3 = 2
 
 /-- This confirms r = 3 satisfies the Erdős condition. -/
 theorem example_satisfies : erdos932Condition 3 := by
-  simp [erdos932Condition]
-  have := example_r3
-  omega
+  unfold erdos932Condition; have := example_r3; omega
 
 /- ## Part VIII: Why This Is Hard -/
 
-/--
+/-
 **The Difficulty**
 
 The challenge is proving INFINITELY MANY r exist with smoothCount r ≥ 2.
@@ -263,7 +287,7 @@ interplay between gap size and smooth number distribution is subtle.
 
 /- ## Part IX: Connection to Smooth Number Distribution -/
 
-/--
+/-
 **Smooth Number Counting Function**
 
 Ψ(x, y) = |{ n ≤ x : n is y-smooth }|
@@ -280,12 +304,16 @@ noncomputable def smoothCountUpTo (x y : ℕ) : ℕ :=
   (Finset.Icc 1 x).filter (isSmooth y) |>.card
 
 /-- Smooth numbers become rarer as the smoothness bound decreases. -/
-axiom smoothCountUpTo_mono (x y₁ y₂ : ℕ) (h : y₁ ≤ y₂) :
-    smoothCountUpTo x y₁ ≤ smoothCountUpTo x y₂
+theorem smoothCountUpTo_mono (x y₁ y₂ : ℕ) (h : y₁ ≤ y₂) :
+    smoothCountUpTo x y₁ ≤ smoothCountUpTo x y₂ := by
+  apply Finset.card_le_card
+  intro n hn
+  simp only [Finset.mem_filter] at hn ⊢
+  exact ⟨hn.1, le_trans hn.2 h⟩
 
 /- ## Part X: Summary -/
 
-/--
+/-
 **Erdős Problem #932: Summary**
 
 **Question:** For infinitely many r, are there at least 2 integers in (p_r, p_{r+1})
@@ -301,15 +329,8 @@ whose prime factors are all smaller than the gap p_{r+1} - p_r?
 Proving infinitely many such gaps exist despite their density being zero.
 -/
 theorem erdos_932_summary :
-    -- The density result is known
     HasDensity { r : ℕ | smoothCount r ≥ 1 } 0 ∧
-    -- r = 3 is an example
-    smoothCount 3 ≥ 2 := by
-  refine ⟨?_, ?_⟩
-  · convert erdos_932_density_zero
-    ext r
-    simp [erdos932WeakCondition]
-  · have := example_r3
-    omega
+    smoothCount 3 ≥ 2 :=
+  ⟨erdos_932_density_zero, by have := example_r3; omega⟩
 
 end Erdos932
