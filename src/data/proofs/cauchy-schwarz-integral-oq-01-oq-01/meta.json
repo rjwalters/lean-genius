@@ -157,6 +157,43 @@
       "description": "Minkowski's inequality (Lp triangle inequality) is proved using Hölder's inequality; together they establish Lp as a normed space"
     }
   ],
+  "references": [
+    {
+      "authors": "Hölder, O.",
+      "title": "Über einen Mittelwertsatz",
+      "year": "1889",
+      "venue": "Nachrichten von der Königlichen Gesellschaft der Wissenschaften und der Georg-Augusts-Universität zu Göttingen, 38–47",
+      "note": "Original paper proving Hölder's inequality for finite sums; generalizes the Cauchy-Schwarz inequality from p=q=2 to arbitrary conjugate exponents 1/p + 1/q = 1"
+    },
+    {
+      "authors": "Young, W. H.",
+      "title": "On classes of summable functions and their Fourier series",
+      "year": "1912",
+      "venue": "Proceedings of the Royal Society of London A, 87(594), 225–229",
+      "note": "Proves Young's inequality ab ≤ a^p/p + b^q/q as the pointwise foundation for Hölder's inequality; the p=q=2 case reduces to the AM-GM inequality formalized in this file"
+    },
+    {
+      "authors": "Minkowski, H.",
+      "title": "Geometrie der Zahlen",
+      "year": "1896",
+      "venue": "Teubner, Leipzig",
+      "note": "Proves the Lp triangle inequality ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p using Hölder's inequality as a bootstrap; establishes Lp as a normed space, formalized here via eLpNorm_add_le"
+    },
+    {
+      "authors": "Lieb, E. H. and Loss, M.",
+      "title": "Analysis",
+      "year": "2001",
+      "venue": "American Mathematical Society, Graduate Studies in Mathematics, Vol. 14, 2nd edition",
+      "note": "Modern treatment of Young, Hölder, and Minkowski inequalities in the Lp setting; Chapter 2 develops the complete hierarchy Young → Hölder → Minkowski that this Lean formalization captures"
+    },
+    {
+      "authors": "Folland, G. B.",
+      "title": "Real Analysis: Modern Techniques and Their Applications",
+      "year": "1999",
+      "venue": "Wiley, 2nd edition",
+      "note": "Standard graduate real analysis reference; Section 6.2 covers Hölder and Minkowski inequalities for Lp spaces including the measure-theoretic lintegral formulation used in this Mathlib formalization"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.MeasureTheory.Function.L2Space",

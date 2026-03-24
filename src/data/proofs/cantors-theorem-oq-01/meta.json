@@ -208,6 +208,43 @@
       "description": "Gödel's work on CH consistency (1940) and Cohen's forcing independence proof (1963) show that the exact value of |P(ℝ)| is independent of ZFC — a manifestation of incompleteness at the set-theoretic level"
     }
   ],
+  "references": [
+    {
+      "authors": "Cantor, G.",
+      "title": "Über eine elementare Frage der Mannigfaltigkeitslehre",
+      "year": "1891",
+      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung, 1, 75–78",
+      "note": "Original diagonal argument establishing |S| < |𝒫(S)| for any set S; applied to S = ℝ this gives |𝒫(ℝ)| = 2^𝔠 > 𝔠, the core result of this formalization"
+    },
+    {
+      "authors": "Easton, W. B.",
+      "title": "Powers of Regular Cardinals",
+      "year": "1970",
+      "venue": "Annals of Mathematical Logic, 1(2), 139–178",
+      "note": "Proves that for regular cardinals κ, the value of 2^κ is essentially unconstrained (subject only to König's cofinality bound cf(2^κ) > κ); directly explains why the aleph-index of ℶ₂ = |𝒫(ℝ)| is independent of ZFC"
+    },
+    {
+      "authors": "Sierpiński, W.",
+      "title": "Hypothèse du Continu",
+      "year": "1956",
+      "venue": "Chelsea Publishing Company, 2nd edition (original 1934, Warsaw)",
+      "note": "Systematic study of consequences of CH and its negation; introduces and develops the beth number hierarchy ℶ₀, ℶ₁, ℶ₂, … that organizes |𝒫(ℝ)| = ℶ₂"
+    },
+    {
+      "authors": "Kunen, K.",
+      "title": "Set Theory: An Introduction to Independence Proofs",
+      "year": "1980",
+      "venue": "North-Holland, Studies in Logic and the Foundations of Mathematics, Vol. 102",
+      "note": "Standard reference for forcing and the independence of CH and GCH; König's theorem and its role in constraining 2^𝔠 is treated thoroughly"
+    },
+    {
+      "authors": "Jech, T.",
+      "title": "Set Theory: The Third Millennium Edition",
+      "year": "2003",
+      "venue": "Springer Monographs in Mathematics",
+      "note": "Comprehensive treatment of cardinal arithmetic including beth numbers, GCH, and Easton's theorem; reference for all set-theoretic facts used in this formalization"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.SetTheory.Cardinal.Basic",
