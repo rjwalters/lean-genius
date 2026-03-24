@@ -144,10 +144,10 @@
     "summary": "L'Hopital's Rule is fully verified using Mathlib's calculus infrastructure. We provide the theorem in multiple forms: right limits, left limits, and limits at infinity.",
     "implications": "L'Hopital's Rule is one of the most practical tools in calculus:\n\n**1. Evaluating limits**\nTransforms indeterminate forms into tractable ones.\n\n**2. Asymptotic analysis**\nComparing growth rates of functions.\n\n**3. Series expansions**\nHelps derive Taylor series coefficients.\n\n**4. Physics and engineering**\nUbiquitous in rate calculations.",
     "openQuestions": [
-      "When does L'Hopital's rule fail even though the original limit exists?",
-      "What are the most efficient strategies for repeatedly applying the rule?",
-      "How does this generalize to multivariate calculus?",
-      "What is the relationship to Taylor series methods for limits?"
+      "When does L'Hopital's rule fail even though the original limit exists? Classic example: $f(x) = x + \\sin x$, $g(x) = x$; $\\lim f/g = 1$ but $\\lim f'/g' = \\lim (1 + \\cos x)/1$ does not exist",
+      "Formalize the $\\infty/\\infty$ form of L'Hopital's rule in Lean — Mathlib currently provides mainly the $0/0$ variants",
+      "How does L'Hopital's rule generalize to multivariate calculus? The naive extension fails, but directional derivatives along curves preserve the rule",
+      "Formalize the relationship to Taylor series: repeated L'Hopital on $f/g$ with $f^{(k)}(a) = g^{(k)}(a) = 0$ for $k < n$ gives $\\lim f/g = f^{(n)}(a)/g^{(n)}(a)$, which is exactly the leading-term ratio from Taylor expansion"
     ]
   },
   "leanFile": {
@@ -174,7 +174,21 @@
       "title": "Analyse des Infiniment Petits pour l'Intelligence des Lignes Courbes",
       "year": "1696",
       "venue": "Paris: Imprimerie Royale",
-      "note": "The first calculus textbook, containing L'Hôpital's rule — actually discovered by Johann Bernoulli and purchased by L'Hôpital"
+      "note": "The first calculus textbook, containing L'Hôpital's rule as Proposition 163 — actually discovered by Johann Bernoulli and communicated privately"
+    },
+    {
+      "authors": "Bernoulli, Johann",
+      "title": "Letter to L'Hôpital (correspondence, 1694)",
+      "year": "1694",
+      "venue": "Private correspondence",
+      "note": "Original communication of the rule. Bernoulli's priority claim was supported by the discovery of these letters. Published posthumously in Opera Omnia (1742)"
+    },
+    {
+      "authors": "Cauchy, Augustin-Louis",
+      "title": "Résumé des leçons données à l'École royale polytechnique sur le calcul infinitésimal",
+      "year": "1823",
+      "venue": "Paris: Imprimerie Royale",
+      "note": "Rigorous foundation for L'Hôpital's rule via the generalized Mean Value Theorem (Cauchy MVT), placing the 18th-century result on firm analytical ground"
     }
   ]
 }

@@ -85,51 +85,58 @@
     {
       "id": "admissible-sets",
       "title": "Admissible Sets",
-      "summary": "IsAdmissible, setSum, admissibleSetsUpTo definitions",
+      "summary": "Defines `IsAdmissible S`: all pairs in $S$ are coprime ($\\gcd(a,b) = 1$ for $a \\neq b$). `setSum`: $\\sum_{a \\in S} a$. `admissibleSetsUpTo n`: all admissible subsets of $\\{1, \\ldots, n\\}$.",
       "startLine": 39,
-      "endLine": 60
+      "endLine": 60,
+      "mathContext": "A set $S \\subseteq \\{1, \\ldots, n\\}$ is admissible if $\\gcd(a,b) = 1$ for all distinct $a, b \\in S$. The primes $\\leq n$ form an admissible set, but optimal sets also include 1 and some prime powers."
     },
     {
       "id": "functions",
       "title": "The Functions G(n) and H(n)",
-      "summary": "G, primeCountingFn, sumOfPrimes, H definitions",
+      "summary": "Defines $G(n) = \\max\\{\\sum S : S \\text{ admissible in } [n]\\}$ and the comparison function $H(n) = \\sum_{p \\leq n} p + n \\cdot \\pi(\\sqrt{n})$, where $\\pi$ is the prime counting function.",
       "startLine": 61,
-      "endLine": 90
+      "endLine": 90,
+      "mathContext": "$G(n) = \\max_{S \\text{ admissible}} \\sum_{a \\in S} a$. $H(n) = \\sum_{p \\leq n} p + n \\cdot \\pi(\\sqrt{n})$. By PNT: $H(n) \\sim n^2/(2\\ln n)$, so $G(n) \\sim n^2/(2\\ln n)$."
     },
     {
       "id": "bounds",
       "title": "The Erdős-Van Lint Bounds",
-      "summary": "G_upper_bound, G_lower_bound, gap_grows axioms",
+      "summary": "Axiomatizes: $H(n) - n^{3/2} < G(n) < H(n)$ and that the gap $H(n) - G(n)$ grows superlinearly (faster than any linear function of $n$).",
       "startLine": 91,
-      "endLine": 116
+      "endLine": 116,
+      "mathContext": "Erdős-Van Lint: $H(n) - n^{3/2} < G(n) < H(n)$. The gap $H(n) - G(n)$ grows as $\\omega(n)$ (faster than linear). Upper bound: optimal set $\\subseteq$ primes $\\cup$ {1, prime powers near $n$}."
     },
     {
       "id": "question1",
       "title": "Question 1 (Open)",
-      "summary": "Question1 definition: tighter lower bound conjecture",
+      "summary": "Is $G(n) > H(n) - n^{1+o(1)}$? This asks whether the gap is subpolynomial. Conditionally true under strong prime gap assumptions.",
       "startLine": 117,
-      "endLine": 127
+      "endLine": 127,
+      "mathContext": "Question 1: Is $H(n) - G(n) = o(n^{1+\\varepsilon})$ for all $\\varepsilon > 0$? Equivalently, is the gap subpolynomial? Connected to prime gap conjectures."
     },
     {
       "id": "question2",
       "title": "Question 2 (Partially Solved)",
-      "summary": "numPrimeFactors, hasManyPrimeFactors, Question2, question2_k2",
+      "summary": "Does the optimal admissible set contain integers with $k$ prime factors for each $k$? Solved for $k = 2$ (yes: includes semiprimes $pq$ near $n$). Open for $k \\geq 3$.",
       "startLine": 128,
-      "endLine": 161
+      "endLine": 161,
+      "mathContext": "Question 2: $\\forall k$, does the optimal set contain an element with $\\omega(a) = k$ distinct prime factors? For $k = 2$: yes, semiprimes $pq \\leq n$ with $p, q > \\sqrt{n}$ can be added to the prime set. For $k \\geq 3$: open."
     },
     {
       "id": "optimal-structure",
       "title": "Optimal Admissible Set Structure",
-      "summary": "primes_admissible theorem: constructive proof",
+      "summary": "Constructively proves `primes_admissible`: the set of primes $\\leq n$ is admissible (since distinct primes are coprime). This provides a concrete lower bound $G(n) \\geq \\sum_{p \\leq n} p$.",
       "startLine": 162,
-      "endLine": 175
+      "endLine": 175,
+      "mathContext": "Primes are pairwise coprime: $\\gcd(p, q) = 1$ for distinct primes $p, q$. So $G(n) \\geq \\sum_{p \\leq n} p \\sim n^2/(2\\ln n)$ by PNT."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_879_summary: combines all known results",
+      "summary": "`erdos_879_summary`: combines the Erdős-Van Lint bounds, the solved $k=2$ case of Question 2, and the admissibility of primes into a single conjunction.",
       "startLine": 176,
-      "endLine": 192
+      "endLine": 192,
+      "mathContext": "Known: $H(n) - n^{3/2} < G(n) < H(n)$, optimal sets contain semiprimes, primes are admissible. Open: tighter gap bounds, $k \\geq 3$ structure."
     }
   ],
   "conclusion": {

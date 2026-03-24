@@ -89,42 +89,48 @@
       "title": "Egyptian Fraction Representations",
       "startLine": 34,
       "endLine": 63,
-      "summary": "UnitFraction, IsEgyptianRep, RepresentsOne, minElement definitions."
+      "summary": "Defines `UnitFraction` (a positive rational $1/n$), `IsEgyptianRep` (a set of distinct unit fractions), `RepresentsOne` (their sum equals 1), and `minElement` (the smallest denominator). These formalize the building blocks: an Egyptian representation of 1 with $k$ terms is a set $\\{n_1 < \\cdots < n_k\\}$ with $\\sum 1/n_i = 1$.",
+      "mathContext": "Egyptian decomposition: distinct $n_1 < \\cdots < n_k$ with $\\sum_{i=1}^k 1/n_i = 1$. Example: $1 = 1/2 + 1/3 + 1/6$. The function $f(k) = \\max\\{\\min(n_i)\\}$ over all $k$-term Egyptian representations of 1."
     },
     {
       "id": "f-function",
       "title": "The Function f(k)",
       "startLine": 64,
       "endLine": 83,
-      "summary": "Axiomatized f(k) and well-definedness for k ≥ 2."
+      "summary": "Axiomatizes the function $f(k)$: the maximum possible value of the smallest denominator in a $k$-term Egyptian representation of 1. Well-definedness for $k \\geq 2$ follows from the existence of at least one representation (e.g., the greedy Sylvester-Fibonacci algorithm).",
+      "mathContext": "$f(k) = \\max\\{\\min(n_i) : \\{n_1, \\ldots, n_k\\}$ is a $k$-term Egyptian representation of $1\\}$. For $k = 3$: $1 = 1/2 + 1/3 + 1/6$, so $f(3) \\geq 2$."
     },
     {
       "id": "upper-bound",
       "title": "Upper Bound",
       "startLine": 84,
       "endLine": 116,
-      "summary": "Harmonic interval, f_upper_bound, and the constant e-1."
+      "summary": "The harmonic series gives the upper bound: if $\\min(n_i) = m$, then $\\sum 1/n_i \\leq \\sum_{n=m}^{m+k-1} 1/n \\approx \\ln(1 + k/m)$. For this to reach 1, we need $k/m \\geq e - 1$, giving $f(k) \\leq k/(e-1) + o(k)$. The constant $e - 1 \\approx 1.718$ arises from $\\int_1^e 1/x\\,dx = 1$.",
+      "mathContext": "Upper bound: $f(k) \\leq (1+o(1)) \\cdot k/(e-1)$ where $e - 1 = \\int_1^e 1/x\\,dx$. Proof: if all $n_i \\geq m$, then $1 = \\sum 1/n_i \\leq \\sum_{n=m}^{\\infty} 1/n$; the harmonic tail forces $m \\leq k/(e-1) + O(\\log k)$."
     },
     {
       "id": "croot",
       "title": "Croot's Lower Bound (2001)",
       "startLine": 117,
       "endLine": 146,
-      "summary": "Croot's theorem, f_lower_bound, and f_asymptotic."
+      "summary": "Ernie Croot (2001) proved the matching lower bound $f(k) \\geq (1-o(1)) \\cdot k/(e-1)$, establishing $f(k) \\sim k/(e-1)$. Croot's constructive proof finds $k$-term representations of 1 with all denominators in the interval $[m, m+k-1]$ for $m \\approx k/(e-1)$.",
+      "mathContext": "Croot (2001): $f(k) \\geq (1-o(1)) \\cdot k/(e-1)$. Combined with the upper bound: $f(k) = (1+o(1)) \\cdot k/(e-1) \\approx 0.582k$. The asymptotic is sharp: the constant $1/(e-1)$ is exact."
     },
     {
       "id": "examples",
       "title": "Examples",
       "startLine": 147,
       "endLine": 157,
-      "summary": "Example: k=4 with 1 = 1/2 + 1/4 + 1/5 + 1/20."
+      "summary": "Verified example: $k = 4$ with $1 = 1/2 + 1/4 + 1/5 + 1/20$, giving $\\min(n_i) = 2$ and $f(4) \\geq 2$. The representation is verified via `native_decide` on the rational arithmetic.",
+      "mathContext": "$1/2 + 1/4 + 1/5 + 1/20 = 10/20 + 5/20 + 4/20 + 1/20 = 20/20 = 1$."
     },
     {
       "id": "summary",
       "title": "Summary Theorems",
       "startLine": 158,
       "endLine": 194,
-      "summary": "erdos_284_summary and erdos_284 combining both bounds."
+      "summary": "`erdos_284_summary` combines both bounds into a single theorem: $(1-\\varepsilon)k/(e-1) \\leq f(k) \\leq (1+\\varepsilon)k/(e-1)$ for large $k$. `erdos_284` wraps this as the definitive resolution of the problem.",
+      "mathContext": "The final result: $\\lim_{k \\to \\infty} f(k) \\cdot (e-1)/k = 1$. Formalized as: $\\forall \\varepsilon > 0$, $\\exists K$, $\\forall k \\geq K$: $(1-\\varepsilon)k/(e-1) \\leq f(k) \\leq (1+\\varepsilon)k/(e-1)$."
     }
   ],
   "conclusion": {
