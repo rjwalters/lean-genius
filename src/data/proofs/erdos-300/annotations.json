@@ -17,7 +17,11 @@
       "subset-sums",
       "harmonic-series"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "unit fractions",
+      "Egyptian fractions",
+      "harmonic series"
+    ]
   },
   {
     "id": "ann-e300-definitions",
@@ -36,7 +40,11 @@
       "supremum",
       "unit-fractions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset operations",
+      "rational arithmetic",
+      "supremum"
+    ]
   },
   {
     "id": "ann-e300-conjecture",
@@ -55,7 +63,11 @@
       "density-arguments",
       "filter-eventually"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "Filter.atTop",
+      "density arguments"
+    ]
   },
   {
     "id": "ann-e300-lower-bound",
@@ -74,7 +86,11 @@
       "density",
       "greedy-algorithm"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "exponential function",
+      "density estimation",
+      "harmonic series"
+    ]
   },
   {
     "id": "ann-e300-liu-sawhney",
@@ -93,7 +109,11 @@
       "filter-upwards",
       "sandwich-theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Filter.atTop",
+      "filter_upwards",
+      "sandwich inequalities"
+    ]
   },
   {
     "id": "ann-e300-egyptian",
@@ -112,7 +132,11 @@
       "rational-numbers",
       "unit-fractions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "rational arithmetic",
+      "Egyptian fractions",
+      "greedy algorithms"
+    ]
   },
   {
     "id": "ann-e300-summary",
@@ -131,6 +155,10 @@
       "axiom-composition",
       "problem-resolution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "liu_sawhney_theorem",
+      "croot_theorem",
+      "logical conjunction"
+    ]
   }
 ]
