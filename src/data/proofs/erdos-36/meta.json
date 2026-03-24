@@ -95,7 +95,7 @@
       "id": "header",
       "title": "Module Header",
       "startLine": 1,
-      "endLine": 17,
+      "endLine": 18,
       "summary": "Problem statement: partition {1,...,2N} into equal halves, minimize maximum overlap. Known bounds 0.379 < c < 0.381. Status: OPEN.",
       "mathContext": "Partition $\\{1, \\ldots, 2N\\}$ into $A \\sqcup B$ with $|A| = |B| = N$. Define $M(N) = \\min_{(A,B)} \\max_k |\\{(a,b) : a - b = k\\}|$. The limit $c = \\lim_{N \\to \\infty} M(N)/N$ exists with $0.379005 < c < 0.380876$."
     },
@@ -103,7 +103,7 @@
       "id": "imports",
       "title": "Imports",
       "startLine": 19,
-      "endLine": 23,
+      "endLine": 24,
       "summary": "Imports Mathlib's **Nat.Basic**, **Int.Basic**, **Finset.Basic**, **Real.Basic**, and **Tactic** for integer differences, finite set cardinality, and real-valued asymptotic bounds.",
       "mathContext": "Imports: `Finset.filter`/`Finset.card` for counting overlaps, `Real.sqrt` for Scherk's $1 - 1/\\sqrt{2}$ bound, standard arithmetic for the minimax definition."
     },
@@ -111,7 +111,7 @@
       "id": "definition",
       "title": "Core Definitions",
       "startLine": 25,
-      "endLine": 38,
+      "endLine": 39,
       "summary": "Defines **overlap**(A,B,k) as the representation function $r_{A-B}(k)$, **maxOverlap** as $\\max_k r_{A-B}(k)$, and **minMaxOverlap** $M(N) = \\min_{(A,B)} \\max_k \\text{overlap}(A,B,k)$.",
       "mathContext": "$\\text{overlap}(A,B,k) = |\\{(a,b) \\in A \\times B : a - b = k\\}| = r_{A-B}(k)$. $M(N) = \\min_{A \\sqcup B = [2N],\\,|A|=|B|=N} \\max_k r_{A-B}(k)$."
     },
@@ -119,7 +119,7 @@
       "id": "main-question",
       "title": "Main Question: The Asymptotic Constant",
       "startLine": 40,
-      "endLine": 47,
+      "endLine": 48,
       "summary": "States the existence of $c = \\lim M(N)/N > 0$ via $\\varepsilon$-$N_0$ definition. The exact value of $c$ is the central open question.",
       "mathContext": "$c = \\lim_{N \\to \\infty} M(N)/N$ exists and $c > 0$. Currently $0.379005 < c < 0.380876$."
     },
@@ -127,7 +127,7 @@
       "id": "known-bounds",
       "title": "Known Bounds",
       "startLine": 49,
-      "endLine": 70,
+      "endLine": 71,
       "summary": "Axiomatizes four bounds: **Erdős** ($> 1/4$, 1955), **Scherk** ($> 1 - 1/\\sqrt{2}$, 1955), **White** ($> 0.379005$, 2022 via Fourier/SDP), **Haugland-TTT** ($< 0.380876$, 2016/2026 via step functions).",
       "mathContext": "$1/4 < 1 - 1/\\sqrt{2} \\approx 0.293 < 0.379005 < c < 0.380876 < 0.381$. Four progressively tighter bounds spanning 70 years of research."
     },
@@ -135,7 +135,7 @@
       "id": "small-values",
       "title": "Small Values",
       "startLine": 72,
-      "endLine": 78,
+      "endLine": 79,
       "summary": "Records $M(1)=1, M(2)=1, M(3)=2, M(4)=2, M(5)=3$. Computed by exhaustive enumeration; the ratios $M(N)/N$ oscillate toward $c \\approx 0.38$.",
       "mathContext": "$M(1)/1 = 1, M(2)/2 = 0.5, M(3)/3 \\approx 0.667, M(4)/4 = 0.5, M(5)/5 = 0.6$. The ratios oscillate and converge toward $c \\approx 0.38$."
     },
