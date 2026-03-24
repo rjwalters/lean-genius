@@ -13,33 +13,53 @@ m < nᵢ or m ≢ aᵢ (mod nᵢ). Must the logarithmic density of A exist?
 - Special case of Problem 486
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Topology.Basic
-import Mathlib.Data.Int.ModEq
+import Proofs.Erdos25LogDensity
 import Mathlib.Tactic
+
+open Erdos25 Filter
 
 /-
 ## Section I: Logarithmic Density
 -/
 
 /-- The logarithmic density of a set S ⊆ ℕ is the limit of
-(Σ_{m ∈ S, 1 ≤ m ≤ x} 1/m) / (Σ_{m=1}^{x} 1/m) as x → ∞.
-We axiomatize this concept. -/
-axiom logDensity : Set ℕ → ℝ → Prop
+(Σ_{m ∈ S, 1 ≤ m ≤ x} 1/m) / log(x) as x → ∞.
+Defined constructively via Erdos25LogDensity.lean.
+Previously axiomatized; now derived from the constructive definition. -/
+def logDensity : Set ℕ → ℝ → Prop := HasLogDensity
 
 /-- The logarithmic density of S exists if there is some d
 with logDensity S d. -/
 def LogDensityExists (S : Set ℕ) : Prop :=
   ∃ d : ℝ, logDensity S d
 
-/-- Logarithmic density values lie in [0, 1]. -/
-axiom logDensity_mem_unit (S : Set ℕ) (d : ℝ) (h : logDensity S d) :
-  0 ≤ d ∧ d ≤ 1
+/-- Logarithmic density values lie in [0, 1].
+Previously axiomatized; now proved from the constructive definition.
+- d ≥ 0: all density ratios are non-negative, so their limit is ≥ 0.
+- d ≤ 1: density ratios are bounded by harmonicSum/log → 1. -/
+theorem logDensity_mem_unit (S : Set ℕ) (d : ℝ) (h : logDensity S d) :
+    0 ≤ d ∧ d ≤ 1 := by
+  have htend : Tendsto (logDensityRatio S) atTop (nhds d) := h
+  constructor
+  · -- d ≥ 0: logDensityRatio is always ≥ 0
+    exact ge_of_tendsto' htend (logDensityRatio_nonneg S)
+  · -- d ≤ 1: logDensityRatio ≤ harmonicSum/log, which → 1
+    calc d = limsup (logDensityRatio S) atTop := htend.limsup_eq.symm
+      _ ≤ limsup (fun N : ℕ => harmonicSum N / Real.log (↑N)) atTop := by
+          exact limsup_le_limsup
+            (eventually_atTop.mpr ⟨2, fun N hN =>
+              logDensityRatio_le_harmonic_ratio S N hN⟩)
+            (logDensityRatio_isCoboundedUnder S)
+            ⟨2, (tendsto_harmonic_div_log.eventually
+              (Iio_mem_nhds (by norm_num : (1 : ℝ) < 2))).mono
+              fun _ h => le_of_lt h⟩
+      _ = 1 := tendsto_harmonic_div_log.limsup_eq
 
-/-- Logarithmic density is unique when it exists. -/
-axiom logDensity_unique (S : Set ℕ) (d₁ d₂ : ℝ)
-    (h₁ : logDensity S d₁) (h₂ : logDensity S d₂) : d₁ = d₂
+/-- Logarithmic density is unique when it exists.
+Previously axiomatized; now proved via uniqueness of limits in ℝ. -/
+theorem logDensity_unique (S : Set ℕ) (d₁ d₂ : ℝ)
+    (h₁ : logDensity S d₁) (h₂ : logDensity S d₂) : d₁ = d₂ :=
+  tendsto_nhds_unique h₁ h₂
 
 /-
 ## Section II: Congruence Sieve

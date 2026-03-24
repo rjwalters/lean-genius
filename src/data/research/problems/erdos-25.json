@@ -29,27 +29,47 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated sieved_set_nonempty axiom (was unsound, proved with corrected hypothesis). Added zero_in_sieved and small_in_sieved theorems. Fixed stale import. Axioms: 6→5, Theorems: 1→4.",
+    "progressSummary": "PROGRESS: Eliminated 4 axioms total from Erdos25Problem.lean. Session 1: sieved_set_nonempty proved with corrected hypothesis. Session 2: logDensity/logDensity_mem_unit/logDensity_unique proved via constructive HasLogDensity. Problem file axioms: 6->2. Build verified via Docker.",
     "builtItems": [
-      "zero_in_sieved: proved 0 ∈ sievedSet σ always (Erdos25Problem.lean:95)",
-      "small_in_sieved: proved m < seq_n 0 → m ∈ sievedSet σ (Erdos25Problem.lean:102)",
-      "sieved_set_nonempty: PROVED (was axiom, added hypothesis seq_n 0 ≥ 2) (Erdos25Problem.lean:113)",
-      "Fixed stale import: Mathlib.Data.Int.ModCast → Mathlib.Data.Int.ModEq"
+      "Proved logWeightedCount_nonneg in Erdos25LogDensity.lean",
+      "Proved logWeightedCount_mono in Erdos25LogDensity.lean",
+      "Proved logWeightedCount_le_harmonicSum in Erdos25LogDensity.lean",
+      "Proved logDensityRatio_nonneg in Erdos25LogDensity.lean",
+      "Proved logDensityRatio_mono in Erdos25LogDensity.lean",
+      "Proved logDensityRatio_le_harmonic_ratio in Erdos25LogDensity.lean",
+      "Proved logDensityRatio_eventually_le_two in Erdos25LogDensity.lean",
+      "Proved logDensityRatio_isBoundedUnder in Erdos25LogDensity.lean",
+      "Proved logDensityRatio_isCoboundedUnder in Erdos25LogDensity.lean",
+      "Proved logDensityRatio_isBoundedUnder_ge in Erdos25LogDensity.lean",
+      "Converted upperLogDensity_mono from axiom to theorem in Erdos25LogDensity.lean",
+      "Converted hasLogDensity_iff_eq from axiom to theorem in Erdos25LogDensity.lean",
+      "Fixed incorrect logDensityRatio_bounded axiom (upper bound <=1 was false for H_N/log N > 1)",
+      "Proved logDensity_odds from logDensity_evens + logDensity_full (axiom: 6->5 in LogDensity.lean)",
+      "Added logWeightedCount_union_disjoint: splitting lemma for disjoint unions",
+      "Added even_odd_partition: N+ = evens+ U odds",
+      "Added even_odd_disjoint: evens and odds are disjoint",
+      "zero_in_sieved: proved 0 in sievedSet always",
+      "small_in_sieved: proved m < seq_n 0 implies m in sievedSet",
+      "sieved_set_nonempty: PROVED (was axiom, added hypothesis seq_n 0 >= 2)",
+      "Converted logDensity from axiom to def (= Erdos25.HasLogDensity) in Erdos25Problem.lean",
+      "Proved logDensity_mem_unit: d>=0 via ge_of_tendsto, d<=1 via limsup_le_limsup + harmonic ratio comparison",
+      "Proved logDensity_unique via tendsto_nhds_unique in Erdos25Problem.lean"
     ],
     "insights": [
-      "sieved_set_nonempty axiom was unsound: false when seq_n 0 = 1 (mod 1 excludes everything)",
-      "Fixed: added hypothesis seq_n 0 ≥ 2, proved via small_in_sieved with m=1",
-      "zero_in_sieved is trivially true: 0 < every modulus (from moduli_pos)",
-      "small_in_sieved proved: any m < seq_n 0 passes all sieve conditions (strict mono)",
-      "Import Mathlib.Data.Int.ModCast was stale — replaced with Mathlib.Data.Int.ModEq",
-      "Remaining 5 axioms: 3 are opaque predicate properties (logDensity), 1 is deep (finite_sieve), 1 is deep (density_positive)",
-      "LogDensity companion file (Erdos25LogDensity.lean) has proper definitions + many proved theorems — much richer formalization"
+      "The axiom logDensityRatio_bounded claiming ratio <= 1 for N >= 2 is mathematically incorrect since H_N/log N > 1 for all finite N",
+      "Filter.IsCoboundedUnder and Filter.IsBoundedUnder are different types in Mathlib",
+      "logDensity_odds is derivable from logDensity_evens + logDensity_full via complementation",
+      "logWeightedCount splits additively over disjoint unions",
+      "The Problem file axiomatized logDensity separately from LogDensity files constructive HasLogDensity - unifying them eliminated 3 axioms at once",
+      "d<=1 proof requires limsup comparison (not pointwise bound) because harmonicSum/log > 1 for all finite N",
+      "sieved_set_nonempty axiom was unsound: false when seq_n 0 = 1 (mod 1 excludes everything)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Consider defining logDensity concretely (using LogDensity files HasLogDensity) to eliminate opaque predicate axioms",
-      "finite_sieve_density_exists could be proved if logDensity was concrete (periodicity argument)",
-      "Merge insights from Erdos25LogDensity.lean into main file for unified formalization"
+      "Prove naturalDensity_implies_logDensity via Abel summation (axiom in LogDensity.lean)",
+      "Prove logDensity_avoid_one_residue via residue class splitting (axiom in LogDensity.lean)",
+      "Prove finite_sieve_density_exists via periodicity argument (now tractable with constructive logDensity)",
+      "Reduce remaining 2 axioms in Problem file (finite_sieve, positive_density)"
     ],
     "markdown": "# Erdős #25 - Knowledge Base\n\n## Problem Statement\n\nLet $n_1 View the LaTeX source\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #60\n- Problem #486\n- Problem #24\n- Problem #26\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er95\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
