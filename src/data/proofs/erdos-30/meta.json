@@ -185,5 +185,35 @@
     "axiomCount": 12,
     "theoremCount": 4,
     "definitionCount": 8
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Turán, Pál",
+      "title": "On a problem of Sidon in additive number theory, and on some related problems",
+      "year": "1941",
+      "venue": "Journal of the London Mathematical Society, vol. 16, pp. 212–215",
+      "note": "Foundational paper proving that Sidon sets in {1,...,N} have at most (1+o(1))√N elements. Introduced systematic study of B_2 sets"
+    },
+    {
+      "authors": "Lindström, Bernt",
+      "title": "An inequality for B_2-sequences",
+      "year": "1969",
+      "venue": "Journal of Combinatorial Theory, vol. 6, pp. 211–212",
+      "note": "Sharp upper bound for Sidon sets: |A| ≤ √N + √[4]{N} + 1 for A ⊆ {1,...,N}"
+    },
+    {
+      "authors": "Cilleruelo, Javier",
+      "title": "Infinite Sidon sets",
+      "year": "2010",
+      "venue": "Advances in Mathematics, vol. 225, pp. 2786–2803",
+      "note": "Constructed dense infinite Sidon sets using polynomial constructions, advancing the Erdős-Turán program on B_2 sets"
+    },
+    {
+      "authors": "O'Bryant, Kevin",
+      "title": "A complete annotated bibliography of work related to Sidon sets",
+      "year": "2004",
+      "venue": "Electronic Journal of Combinatorics, Dynamic Survey DS11",
+      "note": "Comprehensive survey of all known results on Sidon sets, B_h sets, and related combinatorial number theory"
+    }
+  ]
 }
