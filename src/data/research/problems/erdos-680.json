@@ -29,11 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "SURVEYED: 2 axioms. quadratic_weaker_than_exponential is provable via Taylor/exp-dominates-poly but requires ~30 lines of analysis. cramer_implies_large_lpf is conditional on Cramér conjecture.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "quadratic_weaker_than_exponential is provable using Taylor expansion: exp(cx) ≥ (cx)^5/120 > x^4+1 for large x",
+      "Approach: let x=√k, need exp(c·x) > x^4+1. Use exp(y) ≥ y^5/120 from Taylor, then c^5·x^5/120 > x^4+1 for large x",
+      "cramer_implies_large_lpf requires Cramér conjecture which is an unproven hypothesis — cannot eliminate",
+      "File builds cleanly on current Mathlib"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove quadratic_weaker_than_exponential: exp(c√k) > k²+1 via Taylor bound exp(x)≥x^5/120",
+      "May need to import Mathlib.Analysis.SpecialFunctions.ExpDeriv for exp bounds"
+    ],
     "markdown": "# Erdős #680 - Knowledge Base\n\n## Problem Statement\n\nIs it true that, for all sufficiently large $n$, there exists some $k$ such that\\[p(n+k)>k^2+1,\\]where $p(m)$ denotes the least prime factor of $m$? Can one prove this is false if we replace $k^2+1$ by $e^{(1+\\epsilon)\\sqrt{k}}+C_\\epsilon$, for all $\\epsilon>0$, where $C_\\epsilon>0$ is some constant? This follows from 'plausible assumptions on the distribution of primes' (as does the question with $k^2$ replaced by $k^d$ for any $d$); the challenge is to prove this unconditionally. Erdős observed that Cramer's conjecture\\[\\limsup_{k\\to \\infty} \\frac{p_{k+1}-p_k}{(\\log k)^2}=1\\]implies that for all $\\epsilon>0$ and all sufficiently large $n$ there exists some $k$ such that\\[p(n+k)>e^{(1-\\epsilon)\\sqrt{k}}.\\]There is now evidence, however, that Cramer's conjecture is false; a more refined heuristic by Granville [Gr95] suggests this $\\limsup$ is $2e^{-\\gamma}\\approx 1.119\\cdots$, and so perhaps the $1+\\epsilon$ in the second question should be replaced by $2e^{-\\gamma}+\\epsilon$. See also\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #62\n- Problem #681\n- Problem #682\n- Problem #679\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79d\n- Gr95\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "tags": [
@@ -50,7 +58,7 @@
     "mathlib": []
   },
   "started": "2026-01-14T18:07:47.345Z",
-  "lastUpdate": "2026-03-13T07:52:17.051Z",
+  "lastUpdate": "2026-03-24T09:45:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
