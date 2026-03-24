@@ -140,5 +140,51 @@
       "Filter.Eventually",
       "Existential quantification"
     ]
+  },
+  {
+    "id": "ann-e311-gap-analysis",
+    "proofId": "erdos-311",
+    "type": "insight",
+    "range": {
+      "startLine": 37,
+      "endLine": 51
+    },
+    "title": "The Enormous Gap Between Bounds",
+    "content": "The lower and upper bounds on $\\delta(N)$ leave a vast unexplained gap:\n\n- **Lower**: $\\delta(N) \\geq e^{-(1+\\varepsilon)N}$ (from lcm/PNT)\n- **Upper**: $\\delta(N) \\leq \\exp(-cN/(\\log N \\cdot \\log\\log N)^3)$ (Tang)\n\nThe gap is roughly $(\\log N)^3$ orders of magnitude in the exponent. To see how large this is: for $N = 10^6$, the lower bound exponent is $\\approx -10^6$ while Tang's upper bound exponent is $\\approx -10^6 / (6 \\cdot 2.6)^3 \\approx -10^6 / 3900 \\approx -256$. The conjectured exponent $-cN$ with $c \\in (0,1)$ lies between these, but neither bound comes close to determining $c$.\n\n**Why is this hard?** The lower bound uses only the *arithmetic* of denominators (clearing to lcm). The upper bound requires *constructing* explicit subsets with near-1 sums — a combinatorial optimization over $2^N$ subsets. Bridging this gap requires understanding which subsets of $\\{1,\\ldots,N\\}$ produce near-optimal unit fraction approximations to 1, connecting to the theory of smooth numbers and greedy algorithms for Egyptian fractions.",
+    "mathContext": "Gap: $e^{-(1+o(1))N} \\leq \\delta(N) \\leq \\exp(-cN/(\\log N \\cdot \\log\\log N)^3)$. The exponent ratio is $\\approx (\\log N \\cdot \\log\\log N)^3$, tending to infinity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exponential gap",
+      "smooth numbers",
+      "greedy algorithm",
+      "Chebyshev function"
+    ],
+    "prerequisites": [
+      "lower and upper bounds",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-e311-axiom-design",
+    "proofId": "erdos-311",
+    "type": "context",
+    "range": {
+      "startLine": 30,
+      "endLine": 35
+    },
+    "title": "Axiomatization Design: δ as an Opaque Function",
+    "content": "The function $\\delta(N)$ is axiomatized rather than defined because computing it requires minimizing over all $2^N$ subsets of $\\{1,\\ldots,N\\}$ — a noncomputable operation in Lean's constructive type theory. The positivity axiom `delta_pos` encodes a non-trivial fact: $\\delta(N) > 0$ requires showing that no subset of $\\{1,\\ldots,N\\}$ sums to exactly 1, except the trivially exact case $\\{1\\}$ (which sums to 1, so it's excluded by the $\\sum \\neq 1$ condition).\n\nActually, for $N \\geq 2$, many subsets DO sum to 1 (e.g., $\\{2, 3, 6\\}$ since $1/2 + 1/3 + 1/6 = 1$). So `delta_pos` encodes the subtler claim that the minimum over subsets with $\\sum \\neq 1$ and $\\sum \\leq 1$ is achieved at a positive value — which follows because there are only finitely many subsets and the minimum of a finite nonempty set of positive reals is positive.",
+    "mathContext": "$\\delta(N) > 0$ because $\\{|1 - \\text{unitFracSum}(A)| : A \\subseteq \\{1,\\ldots,N\\},\\, \\text{sum} \\leq 1,\\, \\text{sum} \\neq 1\\}$ is a finite nonempty subset of $(0, \\infty)$, so its minimum exists and is positive.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "noncomputable definition",
+      "axiomatization strategy",
+      "finite minimization",
+      "constructive vs classical"
+    ],
+    "prerequisites": [
+      "Lean's noncomputable framework",
+      "Finset operations"
+    ]
   }
 ]
