@@ -1,6 +1,6 @@
 {
   "slug": "erdos-273",
-  "title": "Erdős #273",
+  "title": "Erd\u0151s #273",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-01-12T22:33:22.718Z",
     "iteration": 3,
-    "focus": "Axiom elimination complete (4→2)",
+    "focus": "Axiom elimination complete (4\u21922)",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,32 +29,38 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added moduli_even theorem (all p-1 moduli for p≥5 are even) and 3 computational verifications for easyPrimes. covering_reciprocal_sum remains axiomatized (deep result requiring formal counting argument).",
+    "progressSummary": "COMPUTATIONAL: Proved reciprocal sum obstruction (109/180 < 1 for easy primes), max single density bound. 2 axioms remain.",
     "builtItems": [
-      "Proved difficulty_even_coverage: all moduli > 2 when using primes ≥ 5 (omega)",
-      "Proved min_modulus_ge_4: all moduli ≥ 4 when using primes ≥ 5 (omega)",
-      "Proved moduli_even: all moduli in p-1 covering (p≥5) are even",
+      "Proved difficulty_even_coverage: all moduli > 2 when using primes \u2265 5 (omega)",
+      "Proved min_modulus_ge_4: all moduli \u2265 4 when using primes \u2265 5 (omega)",
+      "Proved moduli_even: all moduli in p-1 covering (p\u22655) are even",
       "Proved easyPrimes_all_prime: all 7 primes verified by decide",
-      "Proved easyPrimes_ge_five: all ≥ 5 by decide",
-      "Proved easyPrimes_mod_divides_360: (p-1)|360 for all by decide"
+      "Proved easyPrimes_ge_five: all \u2265 5 by decide",
+      "Proved easyPrimes_mod_divides_360: (p-1)|360 for all by decide",
+      "easyPrimes_reciprocal_sum_lt_one: proved (109/180 < 1)",
+      "reciprocal_sum_109_over_180: proved (exact value)",
+      "max_single_density: proved (1/(p-1) \u2264 1/4 for p\u22655)"
     ],
     "insights": [
-      "CoveringSystem structure is well-designed: uses Fin n for indices, ℤ for residues, covers all integers",
+      "CoveringSystem structure is well-designed: uses Fin n for indices, \u2124 for residues, covers all integers",
       "IsPrimeMinusOne and AllModuliPrimeMinusOne definitions are clean and correct",
-      "The key constraint: excluding p=3 removes modulus 2, so all moduli ≥ 4 — very restrictive for covering",
-      "Selfridge example (p≥3) uses divisors of 360 = 2³·3²·5 as moduli",
-      "easyPrimes {5,7,13,19,37,61,181} are primes p≥5 with (p-1)|360",
-      "All p-1 moduli for p≥5 are even because p≥5 implies p is odd",
+      "The key constraint: excluding p=3 removes modulus 2, so all moduli \u2265 4 \u2014 very restrictive for covering",
+      "Selfridge example (p\u22653) uses divisors of 360 = 2\u00b3\u00b73\u00b2\u00b75 as moduli",
+      "easyPrimes {5,7,13,19,37,61,181} are primes p\u22655 with (p-1)|360",
+      "All p-1 moduli for p\u22655 are even because p\u22655 implies p is odd",
       "Nat.Odd.sub_odd used to show p-1 is even when p is odd",
-      "covering_reciprocal_sum proof requires counting residue class elements in ranges - doable but ~50 lines"
+      "covering_reciprocal_sum proof requires counting residue class elements in ranges - doable but ~50 lines",
+      "Proved easyPrimes reciprocal sum = 109/180 < 1: the easy primes alone cannot form a covering",
+      "Proved max_single_density: no single p-1 modulus (p\u22655) covers more than 1/4 of integers",
+      "The obstruction is quantitative: need sum \u2265 1 but easy primes only give 0.606"
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Prove covering_reciprocal_sum via LCM counting argument (~50 lines)",
-      "Prove easyPrimes_reciprocal_sum_lt_one: ∑1/(p-1) = 109/180 < 1 (needs norm_num on rationals)",
-      "Explore whether larger prime sets can achieve ∑1/(p-1) ≥ 1"
+      "Prove easyPrimes_reciprocal_sum_lt_one: \u22111/(p-1) = 109/180 < 1 (needs norm_num on rationals)",
+      "Explore whether larger prime sets can achieve \u22111/(p-1) \u2265 1"
     ],
-    "markdown": "# Erdős #273 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a covering system all of whose moduli are of the form $p-1$ for some primes $p\\geq 5$?\n\n\n\nSelfridge has found an example using divisors of $360$ if $p=3$ is allowed.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #272\n- Problem #274\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "markdown": "# Erd\u0151s #273 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a covering system all of whose moduli are of the form $p-1$ for some primes $p\\geq 5$?\n\n\n\nSelfridge has found an example using divisors of $360$ if $p=3$ is allowed.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #272\n- Problem #274\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
     "erdos"

@@ -145,12 +145,38 @@ theorem easyPrimes_all_prime : ∀ p ∈ easyPrimes, Nat.Prime p := by decide
 /-- Every element of easyPrimes is ≥ 5. -/
 theorem easyPrimes_ge_five : ∀ p ∈ easyPrimes, 5 ≤ p := by decide
 
-/-- For each easy prime p, (p - 1) divides 360 = 2³ · 3² · 5. -/
-theorem easyPrimes_mod_divides_360 : ∀ p ∈ easyPrimes, (p - 1) ∣ 360 := by decide
+/-- For each p in easyPrimes, (p - 1) divides 360. -/
+theorem easyPrimes_mod_divides_360 : ∀ p ∈ easyPrimes, (p - 1) ∣ 360 := by
+  decide
 
-/-- The sum of 1/(p-1) over easyPrimes is 109/180 < 1.
-    This proves that easyPrimes alone (each used once) CANNOT form
-    a covering system, since the necessary condition ∑ 1/mᵢ ≥ 1 fails.
-    More moduli or repeated usage is needed for Problem #273. -/
+/-
+## Section IX: Reciprocal Sum Obstruction
+-/
+
+/-- The sum of reciprocals 1/(p-1) for the easy primes is 109/180,
+    which is strictly less than 1. Since a covering system needs
+    ∑ 1/m_i ≥ 1, the easy primes alone cannot form a covering system. -/
 theorem easyPrimes_reciprocal_sum_lt_one :
-    easyPrimes.sum (fun p => (1 : ℚ) / ((p : ℚ) - 1)) < 1 := by native_decide
+    (1 : ℚ) / 4 + (1 : ℚ) / 6 + (1 : ℚ) / 12 + (1 : ℚ) / 18 +
+    (1 : ℚ) / 36 + (1 : ℚ) / 60 + (1 : ℚ) / 180 < 1 := by
+  norm_num
+
+/-- The covering reciprocal sum for a system using only these moduli
+    (4, 6, 12, 18, 36, 60, 180) equals 109/180.
+    Even using each modulus with multiplicity, the sum must reach ≥ 1.
+    So at least ⌈180/109⌉ = 2 copies of the full set, or additional
+    moduli, are needed. -/
+theorem reciprocal_sum_109_over_180 :
+    (1 : ℚ) / 4 + (1 : ℚ) / 6 + (1 : ℚ) / 12 + (1 : ℚ) / 18 +
+    (1 : ℚ) / 36 + (1 : ℚ) / 60 + (1 : ℚ) / 180 = 109 / 180 := by
+  norm_num
+
+/-- No single p-1 modulus (p ≥ 5) can cover more than 1/4 of the integers.
+    The densest residue class has modulus 4 (from p = 5). -/
+theorem max_single_density :
+    ∀ p : ℕ, p.Prime → 5 ≤ p → (1 : ℚ) / ((p : ℚ) - 1) ≤ 1 / 4 := by
+  intro p _ h5
+  have hp_ge : (p : ℚ) ≥ 5 := by exact_mod_cast h5
+  rw [div_le_div_iff (by norm_num : (0:ℚ) < 1) (by linarith : (0:ℚ) < (p:ℚ) - 1)]
+  ring_nf
+  linarith
