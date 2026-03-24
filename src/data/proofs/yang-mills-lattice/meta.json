@@ -7,7 +7,7 @@
     "proofRepoPath": "Proofs/YangMills/Exploration.lean",
     "author": "Formalized in Lean 4 (Mathlib)",
     "date": "2026",
-    "status": "axiomatized",
+    "status": "formalized",
     "tags": [
       "mathematical-physics",
       "lattice-gauge-theory",
@@ -15,7 +15,7 @@
       "gauge-invariance",
       "strong-coupling"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 58,
     "axiomCount": 0,
     "assumptions": "Structure-encoded assumptions: WilsonLatticeAction requires coupling beta > 0 and character function. LinkVariable, LatticeGaugeTransform, and Plaquette encode lattice geometry. Wilson loop structures assume gauge-invariant trace. All lattice proofs (gauge invariance, bounds) are fully verified given these structures.",
