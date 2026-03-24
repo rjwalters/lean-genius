@@ -2,10 +2,6 @@
   {
     "id": "ann-1005-imports",
     "proofId": "erdos-1005",
-    "range": {
-      "startLine": 16,
-      "endLine": 22
-    },
     "type": "concept",
     "title": "Imports and Namespace",
     "content": "Imports rational numbers (`Rat.Defs`), finite sets (`Finset`), divisor functions (`NumberTheory.Divisors`), real numbers, and core tactics. The entire formalization lives in the `Erdos1005` namespace. The divisors import supports the Euler totient function $\\varphi(n)$, which controls $|F_n| = 1 + \\sum_{k=1}^{n} \\varphi(k)$.",
@@ -24,10 +20,6 @@
   {
     "id": "ann-1005-fareyfrac",
     "proofId": "erdos-1005",
-    "range": {
-      "startLine": 34,
-      "endLine": 39
-    },
     "type": "definition",
     "title": "Farey Fraction Structure",
     "content": "A `FareyFraction` is a structure with fields `num` and `denom` (both natural numbers), equipped with proofs that the denominator is positive, the numerator does not exceed the denominator (so the fraction lies in $[0,1]$), and that $\\gcd(a,b) = 1$. This models the reduced fractions $a/b$ with $0 \\leq a/b \\leq 1$ that comprise Farey sequences.",
@@ -48,10 +40,6 @@
   {
     "id": "ann-1005-fareyseq",
     "proofId": "erdos-1005",
-    "range": {
-      "startLine": 41,
-      "endLine": 43
-    },
     "type": "definition",
     "title": "Farey Sequence of Order n",
     "content": "The Farey sequence $F_n$ as a `Finset FareyFraction`: all Farey fractions with denominator at most $n$, ordered by value. The construction is left as `sorry` because building the ordered sequence computationally from the coprimality condition is non-trivial. In practice, $F_n$ can be built by inserting mediants: $F_{n+1}$ is obtained from $F_n$ by inserting the mediant $(a+c)/(b+d)$ whenever $b + d = n+1$ for adjacent fractions $a/b, c/d$ in $F_n$.",
@@ -70,10 +58,6 @@
   {
     "id": "ann-1005-count",
     "proofId": "erdos-1005",
-    "range": {
-      "startLine": 48,
-      "endLine": 50
-    },
     "type": "technique",
     "title": "Farey Count Asymptotic",
     "content": "The number of Farey fractions of order $n$ satisfies $|F_n| = \\frac{3n^2}{\\pi^2} + O(n \\log n)$. This follows from the identity $|F_n| = 1 + \\sum_{k=1}^{n} \\varphi(k)$ and the classical estimate $\\sum_{k=1}^{n} \\varphi(k) = \\frac{3n^2}{\\pi^2} + O(n \\log n)$, which in turn relies on the Möbius inversion formula and the zeta function value $\\zeta(2) = \\pi^2/6$.",
@@ -93,10 +77,6 @@
   {
     "id": "ann-1005-simord",
     "proofId": "erdos-1005",
-    "range": {
-      "startLine": 60,
-      "endLine": 63
-    },
     "type": "definition",
     "title": "Similarly Ordered Fractions",
     "content": "Two Farey fractions $a/b$ and $c/d$ are **similarly ordered** if $(a - c)(b - d) \\geq 0$, meaning numerator and denominator change in the same direction. Equivalently, either $a \\geq c$ and $b \\geq d$, or $a \\leq c$ and $b \\leq d$. In the lattice point interpretation, the points $(a, b)$ and $(c, d)$ in $\\mathbb{Z}^2$ are comparable in the product order. This is the central concept of Problem 1005.",
@@ -116,10 +96,6 @@
   {
     "id": "ann-1005-symm",
     "proofId": "erdos-1005",
-    "range": {
-      "startLine": 65,
-      "endLine": 73
-    },
     "type": "technique",
     "title": "Symmetry of Similar Ordering",
     "content": "The similarly ordered relation is symmetric: `similarlyOrdered f g ↔ similarlyOrdered g f`. This is proved by case analysis on the two disjuncts, swapping the direction of inequalities. Together with reflexivity (proved below), this shows `similarlyOrdered` is an equivalence-like relation, though it is not transitive (which is what makes the run-length question non-trivial).",
@@ -137,10 +113,6 @@
   {
     "id": "ann-1005-issimord",
     "proofId": "erdos-1005",
-    "range": {
-      "startLine": 91,
-      "endLine": 96
-    },
     "type": "definition",
     "title": "Pairwise Similarly Ordered Run",
     "content": "A run of $k$ consecutive Farey fractions starting at index $i$ is **pairwise similarly ordered** if every pair of fractions in the run satisfies `similarlyOrdered`. This is stronger than requiring only adjacent pairs to be similarly ordered, because the relation is not transitive. The non-transitivity is what makes long runs difficult: each new fraction must be comparable with *all* previous fractions in the run.",
@@ -159,10 +131,6 @@
   {
     "id": "ann-1005-mayerf",
     "proofId": "erdos-1005",
-    "range": {
-      "startLine": 104,
-      "endLine": 107
-    },
     "type": "definition",
     "title": "The Mayer–Erdős Function f(n)",
     "content": "The function $f(n) = \\sup\\{k : \\exists i,\\ \\text{isSimOrdered}(n, i, k)\\}$ measures the longest run of consecutive pairwise similarly ordered Farey fractions in $F_n$. Defined using `sSup` (supremum in $\\mathbb{N}$). This is the central quantity of Erdős Problem 1005. The existence of the supremum is guaranteed since the Farey sequence is finite.",
@@ -181,10 +149,6 @@
   {
     "id": "ann-1005-mayer",
     "proofId": "erdos-1005",
-    "range": {
-      "startLine": 115,
-      "endLine": 116
-    },
     "type": "technique",
     "title": "Mayer's Theorem (1942)",
     "content": "Mayer (1942) proved that $f(n) \\to \\infty$ as $n \\to \\infty$: the longest similarly ordered run grows without bound. This was the first result on the problem, showing that the phenomenon Erdős later quantified is real. Stated via `Filter.Tendsto` to express that `mayerErdosF` tends to infinity along the `atTop` filter.",
@@ -203,10 +167,6 @@
   {
     "id": "ann-1005-erdos43",
     "proofId": "erdos-1005",
-    "range": {
-      "startLine": 118,
-      "endLine": 119
-    },
     "type": "technique",
     "title": "Erdős's Linear Growth (1943)",
     "content": "Erdős (1943) strengthened Mayer's result by proving $f(n) \\geq cn$ for some absolute constant $c > 0$: the longest run grows at least linearly in $n$. This established the correct order of magnitude and motivated the search for the precise asymptotic constant. The proof used a probabilistic/counting argument to show that a linear-length run must exist somewhere in $F_n$.",
@@ -225,10 +185,6 @@
   {
     "id": "ann-1005-vdlower",
     "proofId": "erdos-1005",
-    "range": {
-      "startLine": 127,
-      "endLine": 129
-    },
     "type": "technique",
     "title": "van Doorn Lower Bound (2025)",
     "content": "van Doorn (2025) proved $f(n) \\geq (1/12 - o(1))n$: the explicit lower bound constant $1/12$. The proof constructs explicit long similarly ordered runs by analyzing the local structure of Farey fractions near specific denominators. The $o(1)$ term means: for every $\\varepsilon > 0$, there exists $N$ such that for $n \\geq N$, $f(n) \\geq (1/12 - \\varepsilon)n$.",
@@ -247,10 +203,6 @@
   {
     "id": "ann-1005-vdupper",
     "proofId": "erdos-1005",
-    "range": {
-      "startLine": 131,
-      "endLine": 133
-    },
     "type": "technique",
     "title": "van Doorn Upper Bound (2025)",
     "content": "van Doorn (2025) proved $f(n) \\leq n/4 + O(1)$: no similarly ordered run can exceed $n/4$ plus a bounded constant. The proof analyzes obstructions to similar ordering using the mediant property: adjacent Farey fractions satisfy $|ad - bc| = 1$, which constrains how long a chain of pairwise similarly ordered fractions can be. The upper bound argument identifies a pigeonhole obstruction at length $\\sim n/4$.",
@@ -269,10 +221,6 @@
   {
     "id": "ann-1005-combined",
     "proofId": "erdos-1005",
-    "range": {
-      "startLine": 135,
-      "endLine": 140
-    },
     "type": "technique",
     "title": "Combined van Doorn Bounds",
     "content": "A theorem packaging both van Doorn bounds into a single statement: $(1/12 - o(1))n \\leq f(n) \\leq n/4 + O(1)$. The proof simply pairs the lower and upper bound axioms. The factor of 3 gap between $1/12$ and $1/4$ is the central remaining challenge.",
@@ -290,10 +238,6 @@
   {
     "id": "ann-1005-hasconst",
     "proofId": "erdos-1005",
-    "range": {
-      "startLine": 147,
-      "endLine": 150
-    },
     "type": "definition",
     "title": "Existence of Asymptotic Constant (OPEN)",
     "content": "The central open question: does $f(n)/n$ converge to a constant $c > 0$ as $n \\to \\infty$? Written as $\\exists c > 0,\\ \\forall \\varepsilon > 0,\\ \\exists N,\\ \\forall n \\geq N,\\ |f(n)/n - c| < \\varepsilon$. This is a genuine open problem — it is not even known whether the limit exists, let alone its value. The van Doorn bounds constrain $c \\in [1/12, 1/4]$ if it exists.",
@@ -312,10 +256,6 @@
   {
     "id": "ann-1005-vdconj",
     "proofId": "erdos-1005",
-    "range": {
-      "startLine": 152,
-      "endLine": 154
-    },
     "type": "definition",
     "title": "van Doorn's Conjecture: c = 1/4",
     "content": "van Doorn conjectures that $c = 1/4$, meaning the upper bound is tight: $f(n)/n \\to 1/4$. This would mean the upper bound obstruction (based on the mediant/pigeonhole argument) is the true limiting factor, and the lower bound construction can be improved from $1/12$ to $1/4$.",
@@ -334,10 +274,6 @@
   {
     "id": "ann-1005-mediant",
     "proofId": "erdos-1005",
-    "range": {
-      "startLine": 168,
-      "endLine": 170
-    },
     "type": "definition",
     "title": "Mediant of Farey Fractions",
     "content": "The mediant of $a/b$ and $c/d$ is $(a+c)/(b+d)$. The mediant property is fundamental to Farey sequences: if $a/b$ and $c/d$ are adjacent in $F_n$, their mediant $(a+c)/(b+d)$ is the first fraction to appear between them in $F_{b+d}$. The mediant lies strictly between the two fractions and is in lowest terms when the original fractions are adjacent.",
@@ -356,10 +292,6 @@
   {
     "id": "ann-1005-adjacent",
     "proofId": "erdos-1005",
-    "range": {
-      "startLine": 172,
-      "endLine": 177
-    },
     "type": "technique",
     "title": "Farey Adjacent Determinant Property",
     "content": "Adjacent Farey fractions $a/b$ and $c/d$ in $F_n$ satisfy $|ad - bc| = 1$. This is equivalent to saying the $2 \\times 2$ matrix $\\begin{pmatrix} a & c \\\\ b & d \\end{pmatrix}$ has determinant $\\pm 1$, i.e., it lies in $GL_2(\\mathbb{Z})$. This determinant condition is what makes Farey fractions so structured and is key to van Doorn's upper bound: it constrains how many consecutive fractions can be pairwise similarly ordered.",
@@ -379,10 +311,6 @@
   {
     "id": "ann-1005-monotone",
     "proofId": "erdos-1005",
-    "range": {
-      "startLine": 189,
-      "endLine": 208
-    },
     "type": "technique",
     "title": "Geometric Characterization: Monotone in Both Coordinates",
     "content": "The similarly ordered condition is equivalent to monotonicity in both coordinates when viewing fractions as lattice points: `similarlyOrdered f g ↔ (f.num ≤ g.num ∧ f.denom ≤ g.denom) ∨ (f.num ≥ g.num ∧ f.denom ≥ g.denom)`. This is the product order on $\\mathbb{Z}^2$. The proof proceeds by case analysis on the disjuncts and uses `omega` for the integer arithmetic. A pairwise similarly ordered run thus corresponds to a chain in the product order — connecting to Dilworth's theorem and longest chain problems.",
@@ -403,10 +331,6 @@
   {
     "id": "ann-1005-gap",
     "proofId": "erdos-1005",
-    "range": {
-      "startLine": 217,
-      "endLine": 226
-    },
     "type": "insight",
     "title": "The 3:1 Gap Between Bounds",
     "content": "Two simple verified computations: $\\frac{1/4}{1/12} = 3$ and $1/4 - 1/12 = 1/6$, quantifying the gap between van Doorn's bounds. The factor of 3 suggests that the lower bound construction captures only about a third of the true behavior. Closing this gap likely requires either finding longer explicit constructions (improving $1/12$) or identifying sharper obstructions (improving $1/4$). van Doorn conjectures the upper bound is tight, meaning the lower bound must be tripled.",
