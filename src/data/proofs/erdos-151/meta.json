@@ -59,7 +59,8 @@
         "relationship": "Both involve graph coloring/independence structure; the four-color theorem guarantees large independent sets in planar graphs"
       }
     ],
-    "lineCount": 194
+    "lineCount": 194,
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Paul Erdős and Tibor Gallai proposed this conjecture connecting two fundamental graph-theoretic quantities: the clique transversal number $\\tau(G)$ and the triangle-free independence function $H(n)$. The function $H(n)$, defined as the largest $k$ such that every triangle-free graph on $n$ vertices has an independent set of size $\\ge k$, is intimately tied to the Ramsey number $R(3,t)$. Kim (1995) proved $R(3,t) = \\Theta(t^2/\\log t)$, implying $H(n) = \\Theta(\\sqrt{n \\log n})$. The easy bound $\\tau(G) \\le n - \\sqrt{n}$ follows from the Ramsey-theoretic lower bound on independence numbers: every graph on $n$ vertices has $\\alpha(G) \\ge \\sqrt{n}$ (since $R(\\omega+1, t) \\ge t$ for some $t \\sim \\sqrt{n}$), and the complement of any independent set is a clique transversal. Erdős famously described this conjecture as 'perhaps completely wrongheaded,' expressing genuine uncertainty about its truth — unusual for Erdős, who typically had strong intuitions. Even the restricted case for $K_4$-free graphs remains open, suggesting the problem is fundamentally hard.",
@@ -91,14 +92,14 @@
       "id": "graph-properties",
       "title": "Graph Properties",
       "startLine": 26,
-      "endLine": 40,
+      "endLine": 41,
       "summary": "Axiomatised cliques, maximal cliques, independence, and triangle-freeness."
     },
     {
       "id": "clique-transversal",
       "title": "Clique Transversal Number",
       "startLine": 42,
-      "endLine": 53,
+      "endLine": 54,
       "summary": "Definition of clique transversal and axiomatisation of τ(G)."
     },
     {
@@ -112,7 +113,7 @@
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 78,
-      "endLine": 88,
+      "endLine": 194,
       "summary": "Erdős–Gallai: τ(G) ≤ n − H(n) for all n-vertex graphs."
     }
   ],
