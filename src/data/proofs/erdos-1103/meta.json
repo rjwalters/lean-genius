@@ -148,9 +148,21 @@
     ]
   },
   "relatedProofs": [
-    "infinitude-primes",
-    "bertrands-postulate",
-    "prime-number-theorem"
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "Squarefreeness depends on the prime factorization structure. The infinitude of primes means the squarefree-sumset condit"
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate guarantees primes in [n, 2n], providing density information relevant to the sieve methods used in v"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The prime number theorem governs the density of primes, which determines the density of squarefree numbers (6/pi^2) via "
+    }
   ],
   "leanFile": {
     "imports": [

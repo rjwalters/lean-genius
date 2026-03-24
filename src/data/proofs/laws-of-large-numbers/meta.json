@@ -181,11 +181,31 @@
     }
   ],
   "relatedProofs": [
-    "central-limit-theorem",
-    "fair-games-theorem",
-    "birthday-problem",
-    "prob-method-second-moment",
-    "randomized-maxcut"
+    {
+      "id": "central-limit-theorem",
+      "relationship": "extends",
+      "description": "The CLT refines the LLN by quantifying the fluctuations: $\\sqrt{n}(\\bar{X}_n - \\mu) \\xrightarrow{d} N(0, \\sigma^2)$. LLN"
+    },
+    {
+      "id": "fair-games-theorem",
+      "relationship": "related",
+      "description": "The martingale convergence theorem generalizes the SLLN from i.i.d. sums to martingales. The partial sums $S_n = \\sum_{i"
+    },
+    {
+      "id": "birthday-problem",
+      "relationship": "related",
+      "description": "Both are fundamental probability results illustrating different regimes: the birthday problem shows that rare events can"
+    },
+    {
+      "id": "prob-method-second-moment",
+      "relationship": "related",
+      "description": "The second moment method uses variance bounds (Chebyshev's inequality) to prove existence — the same Chebyshev inequalit"
+    },
+    {
+      "id": "randomized-maxcut",
+      "relationship": "related",
+      "description": "The randomized MaxCut algorithm's expected performance guarantee ($E[\\text{cut}] \\geq |E|/2$) is meaningful precisely be"
+    }
   ],
   "references": [
     {

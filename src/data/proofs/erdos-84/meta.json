@@ -165,8 +165,16 @@
     }
   ],
   "relatedProofs": [
-    "erdos-85",
-    "erdos-86"
+    {
+      "id": "erdos-85",
+      "relationship": "related",
+      "description": "Problem #85 concerns minimum degree conditions for 4-cycles, connecting cycle existence to graph density -- the same the"
+    },
+    {
+      "id": "erdos-86",
+      "relationship": "related",
+      "description": "Problem #86 studies C₄-free subgraphs of hypercubes, another problem where specific cycle lengths interact with graph st"
+    }
   ],
   "leanFile": {
     "imports": [

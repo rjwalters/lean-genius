@@ -2,9 +2,9 @@
   "id": "erdos-731",
   "title": "Least Non-Divisor of Central Binomial Coefficients",
   "slug": "erdos-731",
-  "description": "Find f(n) such that for almost all n, the least m with m \u2224 C(2n,n) satisfies m ~ f(n). EGRS (1975): m = exp((log n)^{1/2+o(1)}) for almost all n.",
+  "description": "Find f(n) such that for almost all n, the least m with m ∤ C(2n,n) satisfies m ~ f(n). EGRS (1975): m = exp((log n)^{1/2+o(1)}) for almost all n.",
   "meta": {
-    "author": "Erd\u0151s, Graham, Ruzsa, Straus",
+    "author": "Erdős, Graham, Ruzsa, Straus",
     "sourceUrl": "https://erdosproblems.com/731",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos731Problem.lean",
@@ -43,9 +43,9 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Erd\u0151s, Graham, Ruzsa, and Straus (1975) studied the divisibility properties of central binomial coefficients $\\binom{2n}{n}$ and observed that the least integer not dividing $\\binom{2n}{n}$ is typically $\\exp((\\log n)^{1/2+o(1)})$. This observation connects deeply to Kummer's theorem (1852), which states that $v_p(\\binom{m+n}{m})$ equals the number of carries in base-$p$ addition of $m$ and $n$. For $\\binom{2n}{n}$, the carries arise when doubling $n$ in base $p$, which happens precisely when some base-$p$ digit of $n$ is $\\geq \\lceil p/2 \\rceil$. The heuristic is that a random $n$ has each base-$p$ digit independently uniform, so the probability of no carry (and hence $p \\nmid \\binom{2n}{n}$) is approximately $(1/2)^{\\log n/\\log p}$, which transitions from negligible to significant when $\\log p \\approx (\\log n)^{1/2}$. The sequence of least non-divisors appears as OEIS A006197.",
+    "historicalContext": "Erdős, Graham, Ruzsa, and Straus (1975) studied the divisibility properties of central binomial coefficients $\\binom{2n}{n}$ and observed that the least integer not dividing $\\binom{2n}{n}$ is typically $\\exp((\\log n)^{1/2+o(1)})$. This observation connects deeply to Kummer's theorem (1852), which states that $v_p(\\binom{m+n}{m})$ equals the number of carries in base-$p$ addition of $m$ and $n$. For $\\binom{2n}{n}$, the carries arise when doubling $n$ in base $p$, which happens precisely when some base-$p$ digit of $n$ is $\\geq \\lceil p/2 \\rceil$. The heuristic is that a random $n$ has each base-$p$ digit independently uniform, so the probability of no carry (and hence $p \\nmid \\binom{2n}{n}$) is approximately $(1/2)^{\\log n/\\log p}$, which transitions from negligible to significant when $\\log p \\approx (\\log n)^{1/2}$. The sequence of least non-divisors appears as OEIS A006197.",
     "problemStatement": "Find a reasonable function $f(n)$ such that for almost all $n$, the least integer $m$ with $m \\nmid \\binom{2n}{n}$ satisfies $m \\sim f(n)$.",
-    "text": "Find f(n) such that for almost all n, the least m with m \u2224 C(2n,n) satisfies m ~ f(n). EGRS (1975): m = exp((log n)^{1/2+o(1)}) for almost all n.",
+    "text": "Find f(n) such that for almost all n, the least m with m ∤ C(2n,n) satisfies m ~ f(n). EGRS (1975): m = exp((log n)^{1/2+o(1)}) for almost all n.",
     "proofStrategy": "The formalization defines `centralBinom n` via `Nat.choose (2*n) n`, constructs `leastNonDivisor` using `Nat.find`, and specializes to `leastNonDivCentral`. Kummer's theorem and the prime divisibility criterion are axiomatized, connecting divisibility to base-$p$ digit structure. The EGRS asymptotic, Bertrand's postulate application, and exponential lower bounds for $\\binom{2n}{n}$ are stated as supporting results.",
     "keyInsights": [
       "$p \\mid \\binom{2n}{n}$ iff some base-$p$ digit of $n$ is $\\geq \\lceil p/2 \\rceil$, by Kummer's theorem applied to the carries in $n + n$ in base $p$",
@@ -65,7 +65,7 @@
       "title": "Preamble: Problem Context and Imports",
       "startLine": 1,
       "endLine": 24,
-      "summary": "File docstring establishing the problem: find f(n) approximating the least m with m \u2224 C(2n,n). Cites the EGRS (1975) result m = exp((log n)^{1/2+o(1)}), Kummer's theorem on carries, and OEIS A006197. Imports Mathlib.Data.Nat.Choose.Central for central binomial coefficients, Mathlib.Data.Nat.Prime.Basic for primality, and Mathlib.Tactic for proof automation."
+      "summary": "File docstring establishing the problem: find f(n) approximating the least m with m ∤ C(2n,n). Cites the EGRS (1975) result m = exp((log n)^{1/2+o(1)}), Kummer's theorem on carries, and OEIS A006197. Imports Mathlib.Data.Nat.Choose.Central for central binomial coefficients, Mathlib.Data.Nat.Prime.Basic for primality, and Mathlib.Tactic for proof automation."
     },
     {
       "id": "definitions",
@@ -97,7 +97,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Formalizes Erd\u0151s Problem 731 on the least non-divisor of central binomial coefficients. The EGRS heuristic $\\exp((\\log n)^{1/2+o(1)})$ is driven by Kummer's theorem and the digit structure of $n$ in various bases. The formalization includes the core definitions, the divisibility criterion, supporting bounds, and the Bertrand connection, with all structural properties axiomatized.",
+    "summary": "Formalizes Erdős Problem 731 on the least non-divisor of central binomial coefficients. The EGRS heuristic $\\exp((\\log n)^{1/2+o(1)})$ is driven by Kummer's theorem and the digit structure of $n$ in various bases. The formalization includes the core definitions, the divisibility criterion, supporting bounds, and the Bertrand connection, with all structural properties axiomatized.",
     "implications": "A precise asymptotic for $f(n)$ would unify the digit-theoretic and probabilistic perspectives on central binomial divisibility. It would connect to the distribution of smooth numbers (via the $\\exp((\\log n)^{1/2})$ threshold), to Dickman's function in the theory of friable integers, and to the more general study of arithmetic functions along special sequences.",
     "openQuestions": [
       "What is the precise function $f(n)$ with $\\text{leastNonDivCentral}(n) \\sim f(n)$ for almost all $n$? Is it $\\exp(c(\\log n)^{1/2})$ for a specific constant $c$?",
@@ -124,9 +124,21 @@
     }
   ],
   "relatedProofs": [
-    "kummer-theorem",
-    "erdos-700",
-    "prime-number-theorem"
+    {
+      "id": "kummer-theorem",
+      "relationship": "depends-on",
+      "description": "Kummer's theorem on p-adic valuations of binomial coefficients is the foundational tool connecting divisibility to base-"
+    },
+    {
+      "id": "erdos-700",
+      "relationship": "related",
+      "description": "Problem 700 also studies gcd structure of binomial coefficients, from the complementary perspective of gcd(n, C(n,k))"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The primorial asymptotic and density arguments rely on the prime number theorem"
+    }
   ],
   "leanFile": {
     "imports": [
@@ -143,7 +155,7 @@
   },
   "references": [
     {
-      "authors": "P. Erd\u0151s, R. L. Graham, I. Z. Ruzsa, E. G. Straus",
+      "authors": "P. Erdős, R. L. Graham, I. Z. Ruzsa, E. G. Straus",
       "title": "On the prime factors of $\\binom{2n}{n}$",
       "year": "1975",
       "venue": "Mathematische Zeitschrift, 148(3), pp. 287-295",
@@ -151,9 +163,9 @@
     },
     {
       "authors": "E. E. Kummer",
-      "title": "\u00dcber die Erg\u00e4nzungss\u00e4tze zu den allgemeinen Reciprocit\u00e4tsgesetzen",
+      "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
       "year": "1852",
-      "venue": "Journal f\u00fcr die reine und angewandte Mathematik, 44, pp. 93-146",
+      "venue": "Journal für die reine und angewandte Mathematik, 44, pp. 93-146",
       "note": "Proves that v_p(C(m+n,m)) equals the number of carries in base-p addition of m and n"
     }
   ]

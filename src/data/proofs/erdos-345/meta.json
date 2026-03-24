@@ -182,14 +182,31 @@
     "definitionCount": 4
   },
   "relatedProofs": [
-    "erdos-323",
-    "erdos-344",
-    "erdos-346",
-    "erdos-818",
-    "erdos-25",
-    "erdos-143",
-    "prime-number-theorem",
-    "erdos-316"
+    {
+      "id": "erdos-323",
+      "relationship": "Both study counting functions for sums of k-th powers; Problem 323 asks about f_{k,m}(x) while Problem 345 asks about completeness thresholds T(n^k)",
+      "description": ""
+    },
+    {
+      "id": "erdos-344",
+      "relationship": "Problem 344 studies subcomplete sequences — Problem 345 extends to completeness thresholds for power sequences, a related structural question about when subset sums cover all large integers",
+      "description": ""
+    },
+    {
+      "id": "erdos-346",
+      "relationship": "Problem 346 also studies complete sequences (completeness relative to the golden ratio and Fibonacci numbers), sharing the core definitions of subsetSums and IsComplete used in Problem 345",
+      "description": ""
+    },
+    {
+      "id": "erdos-818",
+      "relationship": "Product-set and sum-set structure in additive combinatorics; Problem 818 studies how small sumsets force large product sets, while Problem 345 studies how additive richness (completeness) depends on the generating sequence",
+      "description": ""
+    },
+    {
+      "id": "erdos-25",
+      "relationship": "Both problems concern density and additive structure of integer sequences; Problem 25 studies logarithmic density under congruence sieves, while Problem 345 studies how the density of power sequences (counting function ~x^{1/k}) affects completeness thresholds",
+      "description": ""
+    }
   ],
   "references": [
     {

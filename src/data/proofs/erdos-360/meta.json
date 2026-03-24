@@ -183,8 +183,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1136",
-    "erdos-179",
-    "erdos-328"
+    {
+      "id": "erdos-1136",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, solved, sum-free-sets"
+    },
+    {
+      "id": "erdos-179",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, ramsey-theory, solved"
+    },
+    {
+      "id": "erdos-328",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, partition, ramsey-theory"
+    }
   ]
 }

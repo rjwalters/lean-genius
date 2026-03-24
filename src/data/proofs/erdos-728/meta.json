@@ -186,8 +186,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-404",
-    "erdos-646",
-    "erdos-400"
+    {
+      "id": "erdos-404",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, factorials, number-theory, p-adic-valuation"
+    },
+    {
+      "id": "erdos-646",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: factorials, number-theory, p-adic-valuation, solved"
+    },
+    {
+      "id": "erdos-400",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, factorials, number-theory"
+    }
   ]
 }

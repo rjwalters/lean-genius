@@ -99,7 +99,11 @@
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "R(3,k) is a special case of Ramsey numbers; the base theory is formalized in the gallery"
+    }
   ],
   "leanFile": {
     "imports": [

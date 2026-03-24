@@ -177,14 +177,31 @@
     }
   ],
   "relatedProofs": [
-    "infinitude-primes",
-    "bounded-prime-gaps",
-    "binomial-theorem",
-    "prime-number-theorem",
-    "fundamental-arithmetic",
-    "bertrands-postulate-oq-03",
-    "riemann-hypothesis",
-    "prime-reciprocal-divergence"
+    {
+      "id": "infinitude-primes",
+      "relationship": "implied-by",
+      "description": "Bertrand's Postulate immediately implies infinitude of primes (for any n, there's a prime > n), giving an alternative to"
+    },
+    {
+      "id": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Both concern prime gaps: Bertrand gives gaps < p (elementary), while Zhang-Maynard-Tao show infinitely many gaps ≤ 246 ("
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "technique",
+      "description": "Erdős's proof hinges on analyzing the central binomial coefficient C(2n,n), using properties of binomial coefficients an"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "related",
+      "description": "PNT gives π(n) ~ n/ln(n), which implies Bertrand's postulate for sufficiently large n. Bertrand's postulate is an elemen"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization underpins Erdős's proof: the prime factorization of C(2n,n) is analyzed to show large primes "
+    }
   ],
   "leanFile": {
     "imports": [

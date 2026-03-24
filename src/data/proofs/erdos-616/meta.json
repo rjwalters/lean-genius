@@ -208,10 +208,26 @@
     "definitionCount": 11
   },
   "relatedProofs": [
-    "ramseys-theorem",
-    "erdos-610",
-    "erdos-20",
-    "erdos-644"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey theory provides the broader framework for local-to-global combinatorial phenomena, paralleling the local covering"
+    },
+    {
+      "id": "erdos-610",
+      "relationship": "related",
+      "description": "Sister Erdős problem on covering and transversal properties of hypergraphs"
+    },
+    {
+      "id": "erdos-20",
+      "relationship": "related",
+      "description": "The sunflower lemma (Erdős-Ko-Rado), whose structural insights about set intersections underlie the local covering condi"
+    },
+    {
+      "id": "erdos-644",
+      "relationship": "related",
+      "description": "Related extremal problem on covering numbers in combinatorial settings"
+    }
   ],
   "references": [
     {

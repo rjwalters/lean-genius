@@ -214,8 +214,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-21",
-    "erdos-272",
-    "erdos-701"
+    {
+      "id": "erdos-21",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, intersecting-families, solved"
+    },
+    {
+      "id": "erdos-272",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-set-theory, solved"
+    },
+    {
+      "id": "erdos-701",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-set-theory, intersecting-families"
+    }
   ]
 }

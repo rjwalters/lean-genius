@@ -168,8 +168,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-982",
-    "erdos-1082",
-    "erdos-660"
+    {
+      "id": "erdos-982",
+      "relationship": "related",
+      "description": "Stronger variant: one point determines ⌊n/2⌋ distances (OPEN)"
+    },
+    {
+      "id": "erdos-1082",
+      "relationship": "related",
+      "description": "Szemerédi's generalization: no three collinear (OPEN)"
+    },
+    {
+      "id": "erdos-660",
+      "relationship": "related",
+      "description": "Related distinct distances problem"
+    }
   ]
 }

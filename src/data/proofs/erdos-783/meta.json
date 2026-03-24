@@ -112,9 +112,21 @@
     ]
   },
   "relatedProofs": [
-    "erdos-1065",
-    "erdos-1072",
-    "erdos-385"
+    {
+      "id": "erdos-1065",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-numbers"
+    },
+    {
+      "id": "erdos-1072",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-numbers"
+    },
+    {
+      "id": "erdos-385",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, sieve-theory"
+    }
   ],
   "leanFile": {
     "imports": [

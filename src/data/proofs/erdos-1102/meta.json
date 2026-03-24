@@ -147,12 +147,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1103",
-    "erdos-969",
-    "erdos-208",
-    "erdos-378",
-    "erdos-11",
-    "basel-problem"
+    {
+      "id": "erdos-1103",
+      "relationship": "related",
+      "description": "Squarefree Sumsets (Erdős #1103) asks whether every sumset A + B contains a squarefree element, directly complementing P"
+    },
+    {
+      "id": "erdos-969",
+      "relationship": "foundational",
+      "description": "Error Term in Squarefree Integer Counting (Erdős #969) concerns the precision of the squarefree density 6/π², which is t"
+    },
+    {
+      "id": "erdos-208",
+      "relationship": "related",
+      "description": "Gaps Between Squarefree Numbers (Erdős #208) studies the local distribution of squarefree integers; Problem #1102 relies"
+    },
+    {
+      "id": "erdos-378",
+      "relationship": "related",
+      "description": "Density of Squarefree Binomial Coefficients (Erdős #378) asks whether infinitely many central binomial coefficients are "
+    },
+    {
+      "id": "erdos-11",
+      "relationship": "related",
+      "description": "Squarefree + Power of 2 (Erdős #11) studies whether every integer can be written as the sum of a squarefree number and a"
+    }
   ],
   "references": [
     {

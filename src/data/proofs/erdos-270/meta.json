@@ -205,9 +205,25 @@
     }
   ],
   "relatedProofs": [
-    "harmonic-divergence",
-    "e-transcendental",
-    "sqrt2-irrational",
-    "fundamental-arithmetic"
+    {
+      "id": "harmonic-divergence",
+      "relationship": "related",
+      "description": "The harmonic series Σ 1/n diverges, while the product-reciprocal series Σ 1/((n+1)···(n+f(n))) converges for f(n) → ∞. T"
+    },
+    {
+      "id": "e-transcendental",
+      "relationship": "related",
+      "description": "The transcendence of e (Hermite 1873) is the archetype of irrationality results for series. The series e = Σ 1/n! involv"
+    },
+    {
+      "id": "sqrt2-irrational",
+      "relationship": "thematic",
+      "description": "Both address irrationality questions: √2 ∉ ℚ via the descent method, while this problem asks when series with product de"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization of the product (n+1)(n+2)···(n+f(n)) = (n+f(n))!/n! determines the denominator structure and "
+    }
   ]
 }

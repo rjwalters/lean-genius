@@ -143,9 +143,21 @@
     }
   ],
   "relatedProofs": [
-    "euler-totient",
-    "perfect-numbers",
-    "prime-number-theorem"
+    {
+      "id": "euler-totient",
+      "relationship": "foundational",
+      "description": "Euler's totient function $\\phi(n)$ and its basic properties (multiplicativity, formula $\\phi(n) = n \\prod_{p|n}(1-1/p)$)"
+    },
+    {
+      "id": "perfect-numbers",
+      "relationship": "related",
+      "description": "Perfect numbers satisfy $\\sigma(n) = 2n$, which relates to the iteration $n \\mapsto n - \\phi(n)$ studied here. For even "
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The density-1 result for $A_>$ relies on the distribution of prime factors of typical integers, which is governed by the"
+    }
   ],
   "references": [
     {

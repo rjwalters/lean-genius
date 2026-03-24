@@ -147,9 +147,21 @@
     }
   ],
   "relatedProofs": [
-    "erdos-58",
-    "erdos-744",
-    "four-color-theorem"
+    {
+      "id": "erdos-58",
+      "relationship": "related",
+      "description": "Erdős Problem #58 concerns chromatic number vs odd cycle lengths, a closely related question about how chromatic number "
+    },
+    {
+      "id": "erdos-744",
+      "relationship": "related",
+      "description": "Erdős Problem #744 on critical graphs and bipartition explores related themes about graph structure and chromatic number"
+    },
+    {
+      "id": "four-color-theorem",
+      "relationship": "broader-context",
+      "description": "The Four Color Theorem is the most famous result in graph coloring. Problem #740 extends chromatic number questions to t"
+    }
   ],
   "leanFile": {
     "imports": [

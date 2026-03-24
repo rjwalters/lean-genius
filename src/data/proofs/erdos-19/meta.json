@@ -234,10 +234,26 @@
     }
   ],
   "relatedProofs": [
-    "erdos-21",
-    "erdos-22",
-    "erdos-24",
-    "erdos-1011"
+    {
+      "id": "erdos-21",
+      "relationship": "related",
+      "description": "Problem #21 on covering intersecting families is another Erdős problem in extremal set theory. Both concern colorings of"
+    },
+    {
+      "id": "erdos-22",
+      "relationship": "related",
+      "description": "Problem #22 on Ramsey-Turán numbers for $K_4$ concerns extremal graph theory with Ramsey-type constraints. Both problems"
+    },
+    {
+      "id": "erdos-24",
+      "relationship": "related",
+      "description": "Problem #24 on pentagons in triangle-free graphs is another extremal graph theory problem. The EFL conjecture's resoluti"
+    },
+    {
+      "id": "erdos-1011",
+      "relationship": "related",
+      "description": "Problem #1011 on chromatic numbers is directly related: both concern the chromatic number of graphs with specific struct"
+    }
   ],
   "leanFile": {
     "imports": [

@@ -69,7 +69,10 @@
     "content": "**de_bruijn_erdos (1951):** If χ(G) ≥ ℵ₀, then for every n, G contains a finite n-chromatic subgraph.\n\n**de_bruijn_erdos_compactness:** The compactness formulation—if every finite subgraph is k-colorable, so is G.\n\n**Crucial limitation:** These say nothing about the SIZE of n-chromatic subgraphs!",
     "mathContext": "The de Bruijn-Erdős theorem is a compactness result. It guarantees existence but not uniform bounds, which is exactly the gap the conjecture tried to fill.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "limits",
+      "graph theory"
+    ],
     "prerequisites": []
   },
   {
@@ -84,7 +87,10 @@
     "content": "**ErdosHajnalSzemerediConjecture (1982):** For ℵ₁-chromatic graphs, there exists F : ℕ → ℕ such that for large n, an n-chromatic subgraph exists on ≤ F(n) vertices.\n\n**conjecture_fails_aleph0:** Already known to fail for ℵ₀-chromatic graphs.\n\nThe conjecture tried to leverage ℵ₁ > ℵ₀ to obtain uniform bounds.",
     "mathContext": "The hope was that uncountable chromatic number would be 'strong enough' to guarantee efficient finite approximations.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "graph theory"
+    ],
     "prerequisites": []
   },
   {
@@ -118,7 +124,11 @@
     "content": "**LambieHansonGraph:** A structure capturing the three key properties:\n1. χ(G) = ℵ₁ exactly\n2. Defeats all proposed bounds F\n3. Still has n-chromatic subgraphs (by de Bruijn-Erdős)\n\n**lambie_hanson_graph_exists:** Proved from the counterexample axiom and de Bruijn-Erdős.",
     "mathContext": "The existence proof combines Lambie-Hanson's counterexample with de Bruijn-Erdős to show all three properties hold simultaneously.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "ring theory",
+      "graph theory"
+    ],
     "prerequisites": []
   },
   {
@@ -133,7 +143,11 @@
     "content": "**erdos_110:** ¬ErdosHajnalSzemerediConjecture (the conjecture is FALSE).\n\n**erdos_110_summary:** Combines the disproof with the existence of the counterexample graph:\n```lean\n⟨erdos_110_disproved, lambie_hanson_graph_exists⟩\n```\n\nThe answer to Problem #110 is NO: no uniform bound F(n) exists.",
     "mathContext": "A complete resolution via counterexample, answering a question that stood open for nearly 40 years (1982-2020).",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "graph theory",
+      "combinatorics"
+    ],
     "prerequisites": []
   }
 ]

@@ -164,8 +164,16 @@
     }
   ],
   "relatedProofs": [
-    "greens-theorem",
-    "fundamental-theorem-calculus"
+    {
+      "id": "greens-theorem",
+      "relationship": "extends",
+      "description": "This entry replaces the abstract stubs in greens-theorem with concrete Mathlib intervalIntegral definitions, making the "
+    },
+    {
+      "id": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "Green's theorem for rectangles is fundamentally two applications of FTC — once for $\\partial Q/\\partial x$ in $x$ and on"
+    }
   ],
   "references": [
     {

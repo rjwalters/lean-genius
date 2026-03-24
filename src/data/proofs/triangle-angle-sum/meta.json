@@ -179,8 +179,20 @@
     }
   ],
   "relatedProofs": [
-    "pythagorean-theorem",
-    "area-of-circle",
-    "euler-polyhedral-formula"
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "Both are fundamental Euclidean geometry results. The Pythagorean theorem relates side lengths; the angle sum property re"
+    },
+    {
+      "id": "area-of-circle",
+      "relationship": "related",
+      "description": "The angle sum of π radians connects to circular geometry: the area formula A = πr² arises from the same relationship bet"
+    },
+    {
+      "id": "euler-polyhedral-formula",
+      "relationship": "extends",
+      "description": "Euler's formula V - E + F = 2 generalizes angle-sum properties to polyhedra: the angle defect at each vertex of a convex"
+    }
   ]
 }

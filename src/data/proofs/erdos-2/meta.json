@@ -230,11 +230,31 @@
     "https://erdosproblems.com/2"
   ],
   "relatedProofs": [
-    "erdos-3",
-    "erdos-7",
-    "erdos-8",
-    "erdos-27",
-    "chinese-remainder-constructive"
+    {
+      "id": "erdos-3",
+      "relationship": "related",
+      "description": "Problem #3 (arithmetic progressions in sets with divergent reciprocal sum) shares the theme of density constraints in nu"
+    },
+    {
+      "id": "erdos-7",
+      "relationship": "extends",
+      "description": "Problem #7 asks whether odd covering systems exist — the Erdős-Selfridge conjecture that every covering system must cont"
+    },
+    {
+      "id": "erdos-8",
+      "relationship": "extends",
+      "description": "Problem #8 asks about monochromatic covering systems, extending the covering systems framework by adding coloring constr"
+    },
+    {
+      "id": "erdos-27",
+      "relationship": "extends",
+      "description": "Almost covering systems relax the covering condition to allow a density-zero set of uncovered integers. This generalizat"
+    },
+    {
+      "id": "chinese-remainder-constructive",
+      "relationship": "foundational",
+      "description": "The Chinese Remainder Theorem underpins covering systems: congruence classes $a \\bmod n$ partition integers, and the CRT"
+    }
   ],
   "leanFile": {
     "imports": [

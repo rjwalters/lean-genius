@@ -186,9 +186,21 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1049",
-    "erdos-1051",
-    "erdos-257"
+    {
+      "id": "erdos-1049",
+      "relationship": "sibling",
+      "description": "Problem #1049 asks about irrationality of ∑ 1/(t^n - 1) for rational t > 1. This is the special case T(t, -1) of the fam"
+    },
+    {
+      "id": "erdos-1051",
+      "relationship": "related",
+      "description": "Problem #1051 studies irrationality of ∑ 1/(aₙ·aₙ₊₁) for rapidly growing sequences — a different family of irrationality"
+    },
+    {
+      "id": "erdos-257",
+      "relationship": "related",
+      "description": "Problem #257 asks whether ∑_{n∈A} 1/(2^n - 1) is irrational for every infinite set A of positive integers. This is a 'su"
+    }
   ],
   "leanFile": {
     "imports": [],

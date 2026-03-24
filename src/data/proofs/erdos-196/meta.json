@@ -158,9 +158,21 @@
     }
   ],
   "relatedProofs": [
-    "erdos-34",
-    "arithmetic-series",
-    "erdos-szekeres"
+    {
+      "id": "erdos-34",
+      "relationship": "related",
+      "description": "Related Erdős combinatorial problem involving permutation structure"
+    },
+    {
+      "id": "arithmetic-series",
+      "relationship": "foundational",
+      "description": "Arithmetic progressions are the core object: this problem asks which k-term APs are unavoidable in permutations of ℕ"
+    },
+    {
+      "id": "erdos-szekeres",
+      "relationship": "foundational",
+      "description": "The Erdős-Szekeres theorem (monotone subsequences in sequences) is a structural cousin — both guarantee structured subse"
+    }
   ],
   "references": [
     {

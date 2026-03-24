@@ -161,13 +161,31 @@
     ]
   },
   "relatedProofs": [
-    "prob-method-expectation",
-    "prob-method-lovasz-local",
-    "prob-method-applications",
-    "prob-method-second-moment",
-    "ramseys-theorem",
-    "friendship-theorem",
-    "binomial-theorem"
+    {
+      "id": "prob-method-expectation",
+      "relationship": "depends-on",
+      "description": "The alteration method builds on the first moment principle as its foundation"
+    },
+    {
+      "id": "prob-method-lovasz-local",
+      "relationship": "related",
+      "description": "The Lovasz Local Lemma provides an alternative approach to sparse dependency structures that the alteration method also "
+    },
+    {
+      "id": "prob-method-applications",
+      "relationship": "used-by",
+      "description": "The alteration method is applied in the independent set and Property B results of the applications module"
+    },
+    {
+      "id": "prob-method-second-moment",
+      "relationship": "related",
+      "description": "The second moment method provides concentration results that can sharpen alteration bounds by showing the random constru"
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey-type problems are a primary motivation for the alteration method — the probabilistic lower bound on Ramsey number"
+    }
   ],
   "leanFile": {
     "imports": [

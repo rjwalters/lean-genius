@@ -138,8 +138,16 @@
     }
   ],
   "relatedProofs": [
-    "irrationality-sqrt2",
-    "abel-ruffini"
+    {
+      "id": "irrationality-sqrt2",
+      "relationship": "generalizes",
+      "description": "Generalizes the irrationality of √2 to nth roots: ⁿ√k is irrational unless k is a perfect nth power."
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "foundational",
+      "description": "The irrationality of $\\sqrt[n]{m}$ for non-perfect-power $m$ is the simplest case of the radical extension phenomenon ce"
+    }
   ],
   "leanFile": {
     "imports": [

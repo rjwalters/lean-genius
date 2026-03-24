@@ -188,14 +188,31 @@
     }
   ],
   "relatedProofs": [
-    "fundamental-theorem-calculus",
-    "area-of-circle",
-    "navier-stokes",
-    "cauchy-schwarz-integral",
-    "euler-identity",
-    "isoperimetric-theorem",
-    "pythagorean-theorem",
-    "mean-value-theorem"
+    {
+      "id": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "The Fundamental Theorem of Calculus is the 1D special case of Stokes' theorem and the key tool in proving Green's theore"
+    },
+    {
+      "id": "area-of-circle",
+      "relationship": "application",
+      "description": "The area of a circle (πr²) can be derived via Green's theorem using the vector field (0, x) and parametrizing the circle"
+    },
+    {
+      "id": "navier-stokes",
+      "relationship": "broader-context",
+      "description": "The Navier-Stokes equations use Green's theorem (and its 3D generalization) to convert between differential and integral"
+    },
+    {
+      "id": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "Both theorems concern integral inequalities/equalities in analysis. Cauchy-Schwarz bounds inner products of functions, w"
+    },
+    {
+      "id": "euler-identity",
+      "relationship": "related",
+      "description": "Cauchy's integral theorem — every holomorphic function satisfies $\\oint_C f(z)\\,dz = 0$ — is a direct consequence of Gre"
+    }
   ],
   "leanFile": {
     "imports": [

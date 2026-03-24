@@ -161,8 +161,16 @@
     ]
   },
   "relatedProofs": [
-    "euler-totient",
-    "erdos-409"
+    {
+      "id": "euler-totient",
+      "relationship": "uses",
+      "description": "Schoenberg's distribution function is built from the totient ratio φ(n)/n, directly using Euler's totient function"
+    },
+    {
+      "id": "erdos-409",
+      "relationship": "related",
+      "description": "Both study iteration/distribution properties of Euler's totient function: #409 studies φ iteration dynamics, #50 studies"
+    }
   ],
   "references": [
     {

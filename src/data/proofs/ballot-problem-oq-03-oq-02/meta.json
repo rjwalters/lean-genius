@@ -216,9 +216,25 @@
     "definitionCount": 16
   },
   "relatedProofs": [
-    "ballot-problem-oq-03",
-    "ballot-problem",
-    "combinations-formula",
-    "ballot-problem-oq-02"
+    {
+      "id": "ballot-problem-oq-03",
+      "relationship": "extends",
+      "description": "Extends the 2×2 LGV lemma to the full r×r case using permutations and Matrix.det"
+    },
+    {
+      "id": "ballot-problem",
+      "relationship": "ancestor",
+      "description": "The ballot problem's reflection principle is the 1D precursor to the LGV lemma's crossing argument"
+    },
+    {
+      "id": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The path matrix entries C(m+bⱼ-aᵢ, m) are binomial coefficients counting lattice paths between grid points"
+    },
+    {
+      "id": "ballot-problem-oq-02",
+      "relationship": "related",
+      "description": "The continuous-time ballot problem via Brownian motion provides the probabilistic counterpart to the general LGV determi"
+    }
   ]
 }

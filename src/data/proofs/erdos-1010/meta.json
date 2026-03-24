@@ -149,10 +149,26 @@
     }
   ],
   "relatedProofs": [
-    "erdos-340",
-    "ramseys-theorem",
-    "erdos-1010-oq-02",
-    "szemeredi-regularity"
+    {
+      "id": "erdos-340",
+      "relationship": "related",
+      "description": "Both are extremal combinatorics problems: Erdős #340 concerns Sidon sets (sets with distinct pairwise sums), while #1010"
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey theory guarantees unavoidable substructures in large graphs; triangle supersaturation quantifies this by counting"
+    },
+    {
+      "id": "erdos-1010-oq-02",
+      "relationship": "generalization",
+      "description": "Generalizes triangle supersaturation to K_r: how many r-cliques must appear in a graph exceeding the Turán threshold ex("
+    },
+    {
+      "id": "szemeredi-regularity",
+      "relationship": "technique",
+      "description": "The Szemerédi regularity lemma provides the partition machinery underlying the stability method used in the Lovász-Simon"
+    }
   ],
   "references": [
     {

@@ -181,7 +181,11 @@
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both concern guaranteed substructures: Ramsey theory guarantees monochromatic complete graphs, #578 guarantees hypercube"
+    }
   ],
   "leanFile": {
     "imports": [

@@ -172,12 +172,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1126",
-    "erdos-907",
-    "erdos-908",
-    "erdos-1122",
-    "lebesgue-measure",
-    "erdos-1124"
+    {
+      "id": "erdos-1126",
+      "relationship": "thematic",
+      "description": "Erdős #1126 (Almost Additive Functions) is the closest sibling: it asks whether a function satisfying f(x+y) = f(x) + f("
+    },
+    {
+      "id": "erdos-907",
+      "relationship": "thematic",
+      "description": "Erdős #907 (Decomposition of Functions with Continuous Differences) concerns functions where f(x+h) - f(x) is continuous"
+    },
+    {
+      "id": "erdos-908",
+      "relationship": "thematic",
+      "description": "Erdős #908 (Functions with Measurable Differences) asks for a decomposition when f(x+h) - f(x) is measurable for all h. "
+    },
+    {
+      "id": "erdos-1122",
+      "relationship": "related",
+      "description": "Erdős #1122 (Additive Functions and Monotonicity Defects) asks when an additive arithmetic function f : ℕ → ℝ satisfying"
+    },
+    {
+      "id": "lebesgue-measure",
+      "relationship": "foundational",
+      "description": "Lebesgue measure is the foundation for Kemperman's 1969 partial result: measurability of f (in the Lebesgue sense) was t"
+    }
   ],
   "references": [
     {

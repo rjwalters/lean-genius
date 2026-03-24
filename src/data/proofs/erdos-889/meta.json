@@ -165,9 +165,21 @@
     }
   ],
   "relatedProofs": [
-    "prime-number-theorem",
-    "erdos-795",
-    "erdos-892"
+    {
+      "id": "prime-number-theorem",
+      "relationship": "foundation",
+      "description": "The prime number theorem governs the asymptotic density of primes, which determines how many 'new' prime factors are ava"
+    },
+    {
+      "id": "erdos-795",
+      "relationship": "related",
+      "description": "Erdős #795 (distinct subset products) also studies the multiplicative structure of integers through prime factorization,"
+    },
+    {
+      "id": "erdos-892",
+      "relationship": "related",
+      "description": "Erdős #892 (primitive sequence domination) studies antichains in the divisibility order, directly relevant to understand"
+    }
   ],
   "leanFile": {
     "imports": [

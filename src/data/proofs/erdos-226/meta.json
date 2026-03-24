@@ -171,8 +171,16 @@
     }
   ],
   "relatedProofs": [
-    "dirichlets-theorem",
-    "abel-ruffini"
+    {
+      "id": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Both address arithmetic structure in analytic settings — Dirichlet's theorem controls primes in arithmetic progressions,"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "related",
+      "description": "Both involve the boundary between algebraic and transcendental: Abel-Ruffini shows polynomial roots can be non-algebraic"
+    }
   ],
   "leanFile": {
     "imports": [

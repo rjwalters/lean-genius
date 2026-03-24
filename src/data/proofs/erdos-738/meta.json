@@ -150,9 +150,21 @@
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem",
-    "four-color-theorem",
-    "erdos-1011"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey-type arguments underlie the path and star special cases; the Ramsey theorem connects chromatic number to induced "
+    },
+    {
+      "id": "four-color-theorem",
+      "relationship": "thematic",
+      "description": "Graph coloring theory provides the foundation; the four-color theorem concerns planar graphs while this concerns triangl"
+    },
+    {
+      "id": "erdos-1011",
+      "relationship": "related",
+      "description": "Problem #1011 studies triangles in graphs with high chromatic number — the complementary perspective to triangle-free gr"
+    }
   ],
   "leanFile": {
     "imports": [

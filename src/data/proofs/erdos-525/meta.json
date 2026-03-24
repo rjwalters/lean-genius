@@ -206,8 +206,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-523",
-    "erdos-228",
-    "erdos-395"
+    {
+      "id": "erdos-523",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: littlewood, polynomials, probability, random-polynomials, solved"
+    },
+    {
+      "id": "erdos-228",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, littlewood, polynomials"
+    },
+    {
+      "id": "erdos-395",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, probability, solved"
+    }
   ]
 }

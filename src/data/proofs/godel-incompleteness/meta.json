@@ -226,20 +226,31 @@
     }
   ],
   "relatedProofs": [
-    "halting-problem",
-    "cantor-diagonalization",
-    "abel-ruffini",
-    "continuum-hypothesis",
-    "hilbert-10",
-    "mathematical-induction",
-    "parallel-postulate-independence",
-    "fermats-last-theorem",
-    "russell-1-plus-1",
-    "fundamental-arithmetic",
-    "infinitude-primes",
-    "angle-trisection",
-    "sqrt2-irrational",
-    "cantors-theorem"
+    {
+      "id": "halting-problem",
+      "relationship": "related",
+      "description": "Turing's halting problem (1936) is the computability-theoretic analog: no algorithm can decide whether an arbitrary prog"
+    },
+    {
+      "id": "cantor-diagonalization",
+      "relationship": "foundational",
+      "description": "Cantor's diagonal argument (1891) is the prototype for Gödel's technique: both construct objects that differ from every "
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "thematic",
+      "description": "Both are impossibility results about formal methods: Abel-Ruffini shows no radical formula solves all quintics, Gödel sh"
+    },
+    {
+      "id": "continuum-hypothesis",
+      "relationship": "related",
+      "description": "CH is independent of ZFC (Gödel 1940, Cohen 1963) — an example of a natural mathematical statement unprovable in standar"
+    },
+    {
+      "id": "hilbert-10",
+      "relationship": "extends",
+      "description": "Matiyasevich's theorem (1970) shows no algorithm decides Diophantine solvability. This extends Gödel's impossibility fro"
+    }
   ],
   "references": [
     {

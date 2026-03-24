@@ -235,12 +235,30 @@
     }
   ],
   "relatedProofs": [
-    "erdos-213",
-    "erdos-216",
-    "erdos-171",
-    "erdos-508",
-    "erdos-100",
-    "erdos-107",
-    "erdos-705"
+    {
+      "id": "erdos-213",
+      "relationship": "related",
+      "description": "Companion problem: integer distance sets in general position (n points, all distances integers, no three collinear, no f"
+    },
+    {
+      "id": "erdos-216",
+      "relationship": "related",
+      "description": "Empty convex polygons in point sets: related combinatorial geometry of planar configurations and Ramsey-type existence r"
+    },
+    {
+      "id": "erdos-171",
+      "relationship": "related",
+      "description": "Unit distance chromatic number (Hadwiger-Nelson problem): each color class is unit-distance-free, directly connecting to"
+    },
+    {
+      "id": "erdos-508",
+      "relationship": "related",
+      "description": "Another formulation of the Hadwiger-Nelson problem: bounds χ(ℝ²) ∈ {5,...,7} via de Grey's 1581-vertex graph"
+    },
+    {
+      "id": "erdos-100",
+      "relationship": "related",
+      "description": "Point sets with restricted distances: n points in ℝ² with distance constraints, sharing the distance geometry framework"
+    }
   ]
 }

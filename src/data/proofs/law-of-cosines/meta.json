@@ -166,13 +166,31 @@
     }
   ],
   "relatedProofs": [
-    "pythagorean-theorem",
-    "triangle-inequality",
-    "cauchy-schwarz",
-    "area-of-circle",
-    "angle-trisection",
-    "cayley-hamilton",
-    "euler-identity"
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "generalizes",
+      "description": "The Law of Cosines generalizes the Pythagorean theorem: when $\\theta = \\pi/2$, $\\cos\\theta = 0$ and $\\|v - w\\|^2 = \\|v\\|"
+    },
+    {
+      "id": "triangle-inequality",
+      "relationship": "related",
+      "description": "The triangle inequality $c \\leq a + b$ follows from the Law of Cosines since $\\cos C \\geq -1$ gives $c^2 = a^2 + b^2 - 2"
+    },
+    {
+      "id": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "The Cauchy-Schwarz inequality $|\\langle v, w \\rangle| \\leq \\|v\\|\\|w\\|$ ensures $|\\cos\\theta| \\leq 1$ in the Law of Cosin"
+    },
+    {
+      "id": "area-of-circle",
+      "relationship": "related",
+      "description": "The Law of Cosines defines the metric ball $\\{w : \\|v - w\\| \\leq r\\}$ whose area $\\pi r^2$ is formalized in the area-of-"
+    },
+    {
+      "id": "angle-trisection",
+      "relationship": "related",
+      "description": "Both concern angle measurement in Euclidean geometry. The Law of Cosines recovers angles from side lengths ($\\cos C = (a"
+    }
   ],
   "leanFile": {
     "imports": [

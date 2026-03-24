@@ -217,6 +217,10 @@
     }
   ],
   "relatedProofs": [
-    "lagrange-theorem"
+    {
+      "id": "lagrange-theorem",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    }
   ]
 }

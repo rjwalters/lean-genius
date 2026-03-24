@@ -160,9 +160,21 @@
     }
   ],
   "relatedProofs": [
-    "erdos-738",
-    "four-color-theorem",
-    "ramseys-theorem"
+    {
+      "id": "erdos-738",
+      "relationship": "related",
+      "description": "Erdős #738 studies triangle-free graphs with infinite chromatic number—a graph coloring problem that parallels the hyper"
+    },
+    {
+      "id": "four-color-theorem",
+      "relationship": "technique",
+      "description": "Graph coloring theory provides the foundation; the Four Color Theorem concerns planar graphs while #834 concerns hypergr"
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey theory underlies many extremal hypergraph results, connecting unavoidable structures to the degree constraints in"
+    }
   ],
   "leanFile": {
     "imports": [

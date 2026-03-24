@@ -175,10 +175,26 @@
     ]
   },
   "relatedProofs": [
-    "erdos-203",
-    "erdos-246",
-    "erdos-248",
-    "erdos-233"
+    {
+      "id": "erdos-203",
+      "relationship": "technique",
+      "description": "Both involve covering systems and coprimality constraints: Problem #203 uses covering congruences to avoid primes, Probl"
+    },
+    {
+      "id": "erdos-246",
+      "relationship": "related",
+      "description": "Both study reciprocal sums with greedy selection: Problem #246 on greedy unit fractions, Problem #460 on greedy coprime "
+    },
+    {
+      "id": "erdos-248",
+      "relationship": "technique",
+      "description": "Both involve sieve methods in number theory: Problem #248 uses sieve bounds for prime distribution, Problem #460 applies"
+    },
+    {
+      "id": "erdos-233",
+      "relationship": "thematic",
+      "description": "Both concern asymptotic behavior of prime-related sums: Problem #233 on sum of squares of prime gaps, Problem #460 on re"
+    }
   ],
   "references": [
     {

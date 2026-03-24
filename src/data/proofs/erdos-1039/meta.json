@@ -162,8 +162,16 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1038",
-    "erdos-1040"
+    {
+      "id": "erdos-1038",
+      "relationship": "related",
+      "description": "Erdős #1038 (sublevel sets of monic polynomials) studies the measure-theoretic properties of the same sublevel sets whos"
+    },
+    {
+      "id": "erdos-1040",
+      "relationship": "related",
+      "description": "Erdős #1040 (transfinite diameter and sublevel set measure) connects to Problem 1039 through potential theory: the trans"
+    }
   ],
   "leanFile": {
     "imports": [

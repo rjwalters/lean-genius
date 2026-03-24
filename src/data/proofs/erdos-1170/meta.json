@@ -218,14 +218,30 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1169",
-    "erdos-1171",
-    "erdos-1167",
-    "continuum-hypothesis",
-    "cantor-diagonalization-oq-02-oq-01",
-    "erdos-1014",
-    "ramseys-theorem",
-    "erdos-szekeres",
-    "partition-theorem"
+    {
+      "id": "erdos-1169",
+      "relationship": "related",
+      "description": "Related ordinal partition calculus problem involving ω₁²"
+    },
+    {
+      "id": "erdos-1171",
+      "relationship": "related",
+      "description": "Multicolor partition relation for ω₁², closely related problem"
+    },
+    {
+      "id": "erdos-1167",
+      "relationship": "related",
+      "description": "Stepping-down partition relations for cardinals, closely related Erdős-Hajnal-Rado program"
+    },
+    {
+      "id": "continuum-hypothesis",
+      "relationship": "conceptual",
+      "description": "Both problems involve set-theoretic independence: CH via forcing and partition properties via iterated forcing with larg"
+    },
+    {
+      "id": "cantor-diagonalization-oq-02-oq-01",
+      "relationship": "prerequisite",
+      "description": "Properties of ω₁ (aleph hierarchy, regularity, cofinality) used in the ordinal setup and cardinal arithmetic"
+    }
   ]
 }

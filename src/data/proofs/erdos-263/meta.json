@@ -177,8 +177,16 @@
     }
   ],
   "relatedProofs": [
-    "erdos-262",
-    "erdos-264"
+    {
+      "id": "erdos-262",
+      "relationship": "related",
+      "description": "Problem #262 asks for growth lower bounds on irrationality sequences (Hančl 1991). This file formalizes the connection: "
+    },
+    {
+      "id": "erdos-264",
+      "relationship": "related",
+      "description": "Problem #264 concerns bounded additive perturbations (b_n = a_n + O(1)). Kovač-Tao (2024) showed 2^n fails for bounded p"
+    }
   ],
   "references": [
     {

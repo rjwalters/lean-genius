@@ -166,12 +166,31 @@
     ]
   },
   "relatedProofs": [
-    "szemeredi-core",
-    "szemeredi-regularity",
-    "szemeredi-full",
-    "szemeredi-theorem",
-    "roth-theorem-k3",
-    "ramseys-theorem"
+    {
+      "id": "szemeredi-core",
+      "relationship": "depends-on",
+      "description": "Uses shared definitions from the core infrastructure module"
+    },
+    {
+      "id": "szemeredi-regularity",
+      "relationship": "depends-on",
+      "description": "The counting and removal lemmas are direct applications of the Regularity Lemma"
+    },
+    {
+      "id": "szemeredi-full",
+      "relationship": "used-by",
+      "description": "The counting/removal lemma is used in the regularity proof of Szemeredi's theorem"
+    },
+    {
+      "id": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    },
+    {
+      "id": "roth-theorem-k3",
+      "relationship": "related",
+      "description": "Triangle removal implies Roth's theorem via encoding 3-APs as triangles"
+    }
   ],
   "leanFile": {
     "imports": [

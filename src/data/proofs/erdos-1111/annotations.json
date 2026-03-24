@@ -181,7 +181,10 @@
     "content": "**Erdos Problem #1111: OPEN**\n\n**Known:**\n- Exact values: d(2,2)=2, d(3,2)=4, d(4,2)=5 (erdos_1111_known_values)\n- Upper bounds: d(t,2) <= C(t,2)+1, d(3,3) <= 8\n- Existence: NSS 2024 proves existence with degree constraint (erdos_1111_summary)\n\n**Open:** Determine d(t, c) for general t, c.\n\nThe summary theorem combines Wagon's bound, El Zahar-Erdos bound, and NSS existence.",
     "mathContext": "The problem requires new structural insights to determine exact values. Progress requires infinite analysis, not finite computation.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "combinatorics"
+    ],
     "prerequisites": []
   }
 ]

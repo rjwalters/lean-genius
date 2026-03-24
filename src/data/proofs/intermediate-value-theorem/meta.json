@@ -194,16 +194,31 @@
     }
   ],
   "relatedProofs": [
-    "brouwer-fixed-point",
-    "borsuk-ulam",
-    "mean-value-theorem",
-    "fundamental-theorem-calculus",
-    "sqrt2-irrational",
-    "fundamental-theorem-algebra",
-    "area-of-circle",
-    "angle-trisection",
-    "schroeder-bernstein",
-    "cantor-diagonalization"
+    {
+      "id": "brouwer-fixed-point",
+      "relationship": "extends",
+      "description": "The fixed point theorem for continuous self-maps of $[a,b]$ (proved here as a corollary of IVT) is the 1-dimensional cas"
+    },
+    {
+      "id": "borsuk-ulam",
+      "relationship": "related",
+      "description": "The $n=1$ case of Borsuk-Ulam — every continuous $f: S^1 \\to \\mathbb{R}$ has $f(x) = f(-x)$ — is equivalent to IVT appli"
+    },
+    {
+      "id": "mean-value-theorem",
+      "relationship": "related",
+      "description": "Both are consequences of the completeness of $\\mathbb{R}$: IVT uses connectedness of intervals, MVT uses compactness (vi"
+    },
+    {
+      "id": "fundamental-theorem-calculus",
+      "relationship": "extends",
+      "description": "The Fundamental Theorem of Calculus uses continuity of the integrand and the IVT-style reasoning that continuous functio"
+    },
+    {
+      "id": "sqrt2-irrational",
+      "relationship": "related",
+      "description": "The failure of IVT over $\\mathbb{Q}$ is witnessed by $f(x) = x^2 - 2$: $f(1) < 0 < f(2)$ but $\\sqrt{2} \\notin \\mathbb{Q}"
+    }
   ],
   "references": [
     {

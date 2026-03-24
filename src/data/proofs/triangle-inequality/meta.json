@@ -181,16 +181,31 @@
     }
   ],
   "relatedProofs": [
-    "cauchy-schwarz",
-    "pythagorean-theorem",
-    "law-of-cosines",
-    "herons-formula",
-    "intermediate-value-theorem",
-    "mean-value-theorem",
-    "brouwer-fixed-point",
-    "schauder-fixed-point",
-    "isoperimetric-theorem",
-    "cauchy-schwarz-integral"
+    {
+      "id": "cauchy-schwarz",
+      "relationship": "complementary",
+      "description": "The Cauchy-Schwarz inequality $|\\langle x,y\\rangle| \\leq \\|x\\|\\|y\\|$ implies the triangle inequality in inner product sp"
+    },
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "The Pythagorean theorem $a^2 + b^2 = c^2$ for right triangles is a special case of the law of cosines, which in turn pro"
+    },
+    {
+      "id": "law-of-cosines",
+      "relationship": "foundational",
+      "description": "The law of cosines $c^2 = a^2 + b^2 - 2ab\\cos\\theta$ directly implies the triangle inequality: since $\\cos\\theta \\leq 1$"
+    },
+    {
+      "id": "herons-formula",
+      "relationship": "related",
+      "description": "Heron's formula for triangle area requires the triangle inequality as a precondition: the sides $a, b, c$ form a valid t"
+    },
+    {
+      "id": "intermediate-value-theorem",
+      "relationship": "related",
+      "description": "The intermediate value theorem and the triangle inequality are both foundational results for real analysis. The triangle"
+    }
   ],
   "leanFile": {
     "imports": [

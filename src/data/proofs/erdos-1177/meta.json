@@ -125,9 +125,21 @@
     ]
   },
   "relatedProofs": [
-    "erdos-1176",
-    "erdos-1171",
-    "erdos-1104"
+    {
+      "id": "erdos-1176",
+      "relationship": "Both are open problems about chromatic number at aleph_1 level involving set-theoretic considerations.",
+      "description": ""
+    },
+    {
+      "id": "erdos-1171",
+      "relationship": "Both involve partition/coloring problems where the answer may depend on set-theoretic axioms.",
+      "description": ""
+    },
+    {
+      "id": "erdos-1104",
+      "relationship": "Problem #1104 studies the analogous finite question: max chromatic number of triangle-free graphs on n vertices.",
+      "description": ""
+    }
   ],
   "leanFile": {
     "imports": [

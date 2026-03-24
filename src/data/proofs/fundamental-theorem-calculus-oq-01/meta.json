@@ -123,7 +123,11 @@
     ]
   },
   "relatedProofs": [
-    "fundamental-theorem-calculus"
+    {
+      "id": "fundamental-theorem-calculus",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    }
   ],
   "leanFile": {
     "imports": [

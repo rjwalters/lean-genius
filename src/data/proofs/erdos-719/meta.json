@@ -207,8 +207,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-720",
-    "erdos-76",
-    "erdos-746"
+    {
+      "id": "erdos-720",
+      "relationship": "related",
+      "description": "Turán densities for higher uniformity — the Turán number in the conjecture is itself open for r ≥ 3"
+    },
+    {
+      "id": "erdos-76",
+      "relationship": "related",
+      "description": "Monochromatic triangle packings — related edge-disjoint decomposition in colored complete graphs"
+    },
+    {
+      "id": "erdos-746",
+      "relationship": "related",
+      "description": "Hamiltonicity and random graphs — structural decomposition questions in extremal graph theory"
+    }
   ]
 }

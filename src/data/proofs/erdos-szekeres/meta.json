@@ -146,10 +146,26 @@
     ]
   },
   "relatedProofs": [
-    "ramseys-theorem",
-    "combinations-formula",
-    "erdos-1",
-    "mathematical-induction"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "generalization",
+      "description": "Ramsey's theorem generalizes the Erdős-Szekeres result: the ES theorem is a special case for ordered 2-colorings of pair"
+    },
+    {
+      "id": "combinations-formula",
+      "relationship": "supports",
+      "description": "The binomial coefficient $\\binom{n}{2}$ counts the pairs in a sequence whose comparisons define the 2-coloring in the Ra"
+    },
+    {
+      "id": "erdos-1",
+      "relationship": "related",
+      "description": "Both are foundational Erdős results in combinatorics. The Erdős-Szekeres theorem on monotone subsequences and Problem #1"
+    },
+    {
+      "id": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "The alternative proof of the Erdős-Szekeres theorem uses strong induction: if the longest increasing subsequence has len"
+    }
   ],
   "references": [
     {

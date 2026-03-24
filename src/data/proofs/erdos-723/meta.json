@@ -182,9 +182,21 @@
     }
   ],
   "relatedProofs": [
-    "desargues-theorem",
-    "fermat-two-squares",
-    "erdos-483"
+    {
+      "id": "desargues-theorem",
+      "relationship": "foundational",
+      "description": "Desargues' theorem holds in all projective planes of prime power order (since these are Desarguesian planes coordinatize"
+    },
+    {
+      "id": "fermat-two-squares",
+      "relationship": "technique",
+      "description": "The Bruck-Ryser theorem's sum-of-two-squares condition connects directly to Fermat's theorem on primes of the form 4k+1."
+    },
+    {
+      "id": "erdos-483",
+      "relationship": "related",
+      "description": "Both are fundamental combinatorics problems posed by Erdős: #483 studies Schur numbers (partition regularity), while #72"
+    }
   ],
   "leanFile": {
     "imports": [

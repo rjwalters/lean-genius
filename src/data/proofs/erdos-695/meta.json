@@ -168,7 +168,11 @@
     }
   ],
   "relatedProofs": [
-    "erdos-368"
+    {
+      "id": "erdos-368",
+      "relationship": "related",
+      "description": "Both study prime factor structure of integers: #368 concerns largest prime factor of n(n+1), #695 concerns prime chains "
+    }
   ],
   "leanFile": {
     "imports": [

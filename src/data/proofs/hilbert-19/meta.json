@@ -159,9 +159,21 @@
     }
   ],
   "relatedProofs": [
-    "hilbert-20",
-    "hilbert-23",
-    "navier-stokes"
+    {
+      "id": "hilbert-20",
+      "relationship": "related",
+      "description": "Problems 19 and 20 are deeply intertwined: Problem 19 asks about regularity of variational solutions, while Problem 20 a"
+    },
+    {
+      "id": "hilbert-23",
+      "relationship": "related",
+      "description": "Problem 19 is essentially a regularity question within the calculus of variations (Problem 23): Hilbert asked whether mi"
+    },
+    {
+      "id": "navier-stokes",
+      "relationship": "related",
+      "description": "The De Giorgi-Nash-Moser regularity theory developed for Hilbert's 19th problem directly informs the Navier-Stokes regul"
+    }
   ],
   "references": [
     {

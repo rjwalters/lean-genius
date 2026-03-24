@@ -258,12 +258,30 @@
     }
   ],
   "relatedProofs": [
-    "prime-number-theorem",
-    "basel-problem",
-    "cauchy-schwarz",
-    "isoperimetric-theorem",
-    "euler-identity",
-    "area-of-circle",
-    "fundamental-theorem-calculus"
+    {
+      "id": "prime-number-theorem",
+      "relationship": "related",
+      "description": "PNT can be proved using Fourier-analytic methods (Selberg-Erdős elementary proof, or complex analysis on Dirichlet serie"
+    },
+    {
+      "id": "basel-problem",
+      "relationship": "related",
+      "description": "Euler's $\\sum 1/n^2 = \\pi^2/6$ can be proved via Parseval's theorem applied to $f(x) = x$ on $[-\\pi, \\pi]$: $\\sum|c_n|^2"
+    },
+    {
+      "id": "cauchy-schwarz",
+      "relationship": "foundational",
+      "description": "The $L^2$ inner product $\\langle f, g \\rangle = \\int f\\bar{g}\\, d\\mu$ satisfies Cauchy-Schwarz, which is the foundation "
+    },
+    {
+      "id": "isoperimetric-theorem",
+      "relationship": "related",
+      "description": "The isoperimetric inequality ($4\\pi A \\leq L^2$) can be proved using Fourier series: parametrize the curve, expand in Fo"
+    },
+    {
+      "id": "euler-identity",
+      "relationship": "foundational",
+      "description": "Euler's formula $e^{ix} = \\cos x + i\\sin x$ is the foundation of the complex exponential form of Fourier series: the bas"
+    }
   ]
 }

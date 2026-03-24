@@ -141,6 +141,7 @@
     "type": "example",
     "title": "Worked Examples",
     "content": "**Example 1**: Circle of radius 5, point P at distance 3 from center.\n- Power = $5^2 - 3^2 = 16$\n- For any chord: $PA \\cdot PB = 16$\n- If PA = 2, then PB = 8\n\n**Example 2**: If one chord gives segments 2 and 8:\n- Product = 16\n- Other chord: if PC = 4, then PD = 4\n- (The chord is bisected at P!)\n\n**Example 3**: Segments 1 and 12:\n- Product = 12\n- Other chord: segments could be 2 and 6, or 3 and 4",
+    "mathContext": "Illustrates $PA \\cdot PB = r^2 - d^2$ with $r=5$, $d=3$: power $= 25 - 9 = 16$, so every chord through $P$ has segment product 16.",
     "significance": "supporting",
     "relatedConcepts": [
       "numerical verification",
@@ -157,6 +158,7 @@
     "type": "insight",
     "title": "From Euclid to Steiner",
     "content": "**Euclid (300 BCE)**: The theorem appears as Proposition 35 in Book III of the Elements. Euclid proved it using similar triangles formed by the chords.\n\n**Jakob Steiner (1826)**: Systematized the \"power of a point\" concept, unifying:\n- Intersecting chords (interior point)\n- Two secants (exterior point)\n- Secant and tangent\n- Two tangents\n\nAll are manifestations of the same invariant!",
+    "mathContext": "Euclid proved $\\triangle APC \\sim \\triangle DPB$ via inscribed angles, giving $PA/PD = PC/PB$, hence $PA \\cdot PB = PC \\cdot PD$. Steiner unified this as the single invariant $\\text{pow}(P) = \\|P-O\\|^2 - r^2$.",
     "significance": "supporting",
     "prerequisites": [
       "similar triangles",

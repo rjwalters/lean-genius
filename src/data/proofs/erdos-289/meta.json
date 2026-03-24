@@ -106,9 +106,21 @@
     ]
   },
   "relatedProofs": [
-    "harmonic-divergence",
-    "geometric-series",
-    "bertrands-postulate"
+    {
+      "id": "harmonic-divergence",
+      "relationship": "foundational",
+      "description": "The divergence of the harmonic series is the necessary condition ensuring enough reciprocal sum is available from any ta"
+    },
+    {
+      "id": "geometric-series",
+      "relationship": "related",
+      "description": "Geometric series provide comparison bounds for harmonic subsums over intervals: sum_{n=a}^{b} 1/n is bounded by (b-a+1)/"
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate guarantees primes in [n,2n], relevant to the Hickerson-Montgomery construction which uses intervals"
+    }
   ],
   "leanFile": {
     "imports": [

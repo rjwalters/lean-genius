@@ -222,8 +222,20 @@
     "definitionCount": 15
   },
   "relatedProofs": [
-    "erdos-847",
-    "erdos-340-greedy-sidon",
-    "szemeredi-theorem"
+    {
+      "id": "erdos-847",
+      "relationship": "related",
+      "description": "Both ask whether a proportionality condition on subsets forces finite union decomposition; #847 concerns AP-free sets (d"
+    },
+    {
+      "id": "erdos-340-greedy-sidon",
+      "relationship": "related",
+      "description": "Both involve Sidon-type sets in additive combinatorics; Sidon sets are closely related to dissociated sets through uniqu"
+    },
+    {
+      "id": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Szemeredi's theorem provides context for the density-zero nature of structured sets; dissociated sets have density zero "
+    }
   ]
 }

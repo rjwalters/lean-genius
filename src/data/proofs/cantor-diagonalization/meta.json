@@ -238,18 +238,31 @@
     }
   ],
   "relatedProofs": [
-    "cantors-theorem",
-    "continuum-hypothesis",
-    "halting-problem",
-    "godel-incompleteness",
-    "schroeder-bernstein",
-    "infinitude-primes",
-    "cantor-diagonalization-oq-01",
-    "cantor-diagonalization-oq-02",
-    "abel-ruffini",
-    "sqrt2-irrational",
-    "hilbert-10",
-    "russell-1-plus-1"
+    {
+      "id": "cantors-theorem",
+      "relationship": "generalizes",
+      "description": "Cantor's theorem that |S| < |P(S)| for any set S is the generalization of diagonalization from binary sequences to arbit"
+    },
+    {
+      "id": "continuum-hypothesis",
+      "relationship": "motivates",
+      "description": "Diagonalization proves |ℕ| < |ℝ|, but leaves open whether any cardinality lies between them. The Continuum Hypothesis (i"
+    },
+    {
+      "id": "halting-problem",
+      "relationship": "technique",
+      "description": "Turing's proof of the halting problem (1936) uses the same diagonal construction: assume a program H decides halting, th"
+    },
+    {
+      "id": "godel-incompleteness",
+      "relationship": "technique",
+      "description": "Gödel's incompleteness theorems (1931) use diagonalization via self-referential sentences: 'This statement is not provab"
+    },
+    {
+      "id": "schroeder-bernstein",
+      "relationship": "complementary",
+      "description": "The Schröder-Bernstein theorem (injections in both directions imply bijection) provides the positive tool for establishi"
+    }
   ],
   "alternativeInterpretation": {
     "title": "The Constructivist View: Why the Reals Don't Exist",

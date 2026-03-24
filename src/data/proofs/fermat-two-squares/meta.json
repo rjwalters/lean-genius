@@ -217,16 +217,31 @@
     }
   ],
   "relatedProofs": [
-    "lagrange-four-squares",
-    "quadratic-reciprocity",
-    "bezout-identity",
-    "wilsons-theorem",
-    "euler-totient",
-    "fundamental-arithmetic",
-    "infinitude-primes",
-    "pythagorean-theorem",
-    "abel-ruffini",
-    "elementary-quadratic-reciprocity"
+    {
+      "id": "lagrange-four-squares",
+      "relationship": "extends",
+      "description": "Lagrange's four-squares theorem (every positive integer is a sum of four squares) directly generalizes Fermat's two-squa"
+    },
+    {
+      "id": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Fermat's theorem is equivalent to: $-1$ is a quadratic residue mod $p$ iff $p \\equiv 1 \\pmod{4}$. This is the special ca"
+    },
+    {
+      "id": "bezout-identity",
+      "relationship": "foundational",
+      "description": "The Gaussian integer proof uses Bezout's identity: since $\\gcd(p, a+bi) \\neq 1$ and $\\gcd(p, a+bi) \\neq p$ in $\\mathbb{Z"
+    },
+    {
+      "id": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem provides the square root of $-1$ needed for the Gaussian integer proof: for $p \\equiv 1 \\pmod{4}$, the "
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's criterion ($a^{(p-1)/2} \\equiv \\left(\\frac{a}{p}\\right) \\pmod{p}$) determines whether $-1$ is a QR mod $p$: $(-1"
+    }
   ],
   "leanFile": {
     "imports": [

@@ -211,11 +211,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-89",
-    "erdos-90",
-    "erdos-651",
-    "erdos-653",
-    "erdos-98"
+    {
+      "id": "erdos-89",
+      "relationship": "foundational",
+      "description": "Problem #89 is the Erdős distinct distances problem (1946): what is the minimum number of distinct distances among n poi"
+    },
+    {
+      "id": "erdos-90",
+      "relationship": "related",
+      "description": "Problem #90 on unit distances is the complementary question: how many times can one specific distance occur? While #652 "
+    },
+    {
+      "id": "erdos-651",
+      "relationship": "related",
+      "description": "Problem #651 studies convex configurations in point sets, sharing the theme of extremal properties of finite planar poin"
+    },
+    {
+      "id": "erdos-653",
+      "relationship": "extends",
+      "description": "Problem #653 studies the number of distinct R-values g(n) in an n-point set — a complementary question about the distanc"
+    },
+    {
+      "id": "erdos-98",
+      "relationship": "related",
+      "description": "Problem #98 addresses distinct distances under general position constraints (no 3 collinear, no 4 concyclic), a structur"
+    }
   ],
   "leanFile": {
     "imports": [

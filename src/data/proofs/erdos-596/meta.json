@@ -244,16 +244,31 @@
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem",
-    "erdos-595",
-    "szemeredi-regularity",
-    "szemeredi-theorem",
-    "erdos-544",
-    "erdos-1009",
-    "erdos-1010",
-    "erdos-637",
-    "erdos-905",
-    "prob-method-lovasz-local"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey's theorem is the prototype result: any 2-coloring of $K_n$ for large $n$ contains a monochromatic $K_k$. Problem "
+    },
+    {
+      "id": "erdos-595",
+      "relationship": "related",
+      "description": "Problem #595 asks specifically whether $(K_4, K_3)$ satisfies the dichotomy — a key test case for #596. Both are formali"
+    },
+    {
+      "id": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "The Szemerédi regularity lemma provides tools for understanding the structure of dense graphs, which is relevant to prov"
+    },
+    {
+      "id": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Both are classification problems in extremal combinatorics: Szemerédi's theorem classifies sets containing arithmetic pr"
+    },
+    {
+      "id": "erdos-544",
+      "relationship": "related",
+      "description": "Problem #544 studies consecutive Ramsey number differences, another question about the fine structure of Ramsey theory. "
+    }
   ],
   "leanFile": {
     "imports": [

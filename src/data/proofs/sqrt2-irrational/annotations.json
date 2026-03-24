@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import from Mathlib: `Data.Rat.Basic` for rational number operations, `Data.Int.Parity` for even/odd predicates on integers, and `Tactic` for proof automation.",
+    "mathContext": "Uses Mathlib's $\\mathbb{Q}$ type with `Rat.num`/`Rat.den`, the `Even`/`Odd` predicates on $\\mathbb{Z}$, and `Irrational` defined as $x \\notin \\mathbb{Q}$.",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",

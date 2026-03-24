@@ -189,7 +189,15 @@
     }
   ],
   "relatedProofs": [
-    "erdos-3",
-    "erdos-28"
+    {
+      "id": "erdos-3",
+      "relationship": "related",
+      "description": "Problem #3 (APs in sets with divergent reciprocal sum) directly uses bounds on AP-free sets. Problem #26 studies the con"
+    },
+    {
+      "id": "erdos-28",
+      "relationship": "related",
+      "description": "The density of AP-free sets relates to additive basis theory. Thick sequences (Problem #26) and additive bases (Problem "
+    }
   ]
 }

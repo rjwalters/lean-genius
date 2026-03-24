@@ -252,19 +252,31 @@
     ]
   },
   "relatedProofs": [
-    "abel-ruffini",
-    "fundamental-theorem-algebra",
-    "inverse-galois",
-    "pythagorean-theorem",
-    "pi-transcendental",
-    "lagrange-theorem",
-    "e-transcendental",
-    "sqrt2-irrational",
-    "solution-of-cubic",
-    "angle-trisection-oq-02",
-    "angle-trisection-oq-02-oq-01",
-    "nth-root-irrational",
-    "angle-trisection-oq-02-oq-03"
+    {
+      "id": "abel-ruffini",
+      "relationship": "related",
+      "description": "Both are impossibility results via Galois theory: Abel-Ruffini shows quintics are unsolvable by radicals, angle trisecti"
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "FTA guarantees the polynomial 8x³-6x-1 has roots in C; the impossibility is about whether those roots lie in the constru"
+    },
+    {
+      "id": "inverse-galois",
+      "relationship": "related",
+      "description": "Constructibility is determined by the Galois group of the minimal polynomial — the constructible numbers have Galois gro"
+    },
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "Pythagoras is the cornerstone of Euclidean geometry that underpins compass-and-straightedge constructions — every constr"
+    },
+    {
+      "id": "pi-transcendental",
+      "relationship": "uses",
+      "description": "This file directly imports the pi transcendence proof to establish that squaring the circle is impossible — Lindemann's "
+    }
   ],
   "references": [
     {

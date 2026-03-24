@@ -260,18 +260,31 @@
     "defCount": 0
   },
   "relatedProofs": [
-    "amgm-inequality-oq-03",
-    "amgm-inequality-oq-03-oq-01",
-    "amgm-inequality",
-    "amgm-inequality-oq-02",
-    "lhopital",
-    "shannon-entropy",
-    "mean-value-theorem",
-    "triangle-inequality",
-    "cauchy-schwarz",
-    "harmonic-divergence",
-    "taylor-theorem",
-    "fundamental-theorem-calculus"
+    {
+      "id": "amgm-inequality-oq-03",
+      "relationship": "extends",
+      "description": "Parent file containing power mean definitions and positive/negative monotonicity — this file establishes the r=0 limit c"
+    },
+    {
+      "id": "amgm-inequality-oq-03-oq-01",
+      "relationship": "related",
+      "description": "Negative power mean monotonicity — together with this limit, only the mixed-sign crossing (r < 0 < s) remains"
+    },
+    {
+      "id": "amgm-inequality",
+      "relationship": "related",
+      "description": "AM-GM is the coarsest case M₁ ≥ M₀: the limit here shows M₀ = GM, giving AM ≥ GM"
+    },
+    {
+      "id": "amgm-inequality-oq-02",
+      "relationship": "related",
+      "description": "Maclaurin's inequalities via elementary symmetric polynomials give an alternative chain between AM and GM — this limit r"
+    },
+    {
+      "id": "lhopital",
+      "relationship": "related",
+      "description": "The limit uses the same derivative-based approach as L'Hopital's rule: f(r)/r → f'(0) when f(0) = 0, formalized via hasD"
+    }
   ],
   "references": [
     {

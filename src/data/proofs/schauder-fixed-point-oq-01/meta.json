@@ -142,8 +142,16 @@
     }
   ],
   "relatedProofs": [
-    "schauder-fixed-point",
-    "brouwer-fixed-point"
+    {
+      "id": "schauder-fixed-point",
+      "relationship": "used-by",
+      "description": "The projection lemma is the key technical ingredient for the Schauder fixed point theorem"
+    },
+    {
+      "id": "brouwer-fixed-point",
+      "relationship": "depends-on",
+      "description": "The Schauder theorem leverages Brouwer's theorem on the finite-dimensional convex hull produced by this projection"
+    }
   ],
   "conclusion": {
     "summary": "The Schauder projection lemma has been proved completely from first principles, with zero sorries and zero axioms. The proof constructs an explicit partition of unity using bump functions and verifies all required properties: continuity, convex hull membership, and epsilon-approximation.",

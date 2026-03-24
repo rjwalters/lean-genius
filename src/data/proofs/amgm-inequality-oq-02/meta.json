@@ -271,18 +271,31 @@
     "defCount": 3
   },
   "relatedProofs": [
-    "amgm-inequality",
-    "amgm-inequality-oq-03",
-    "cauchy-schwarz",
-    "binomial-theorem",
-    "triangle-inequality",
-    "sum-of-kth-powers",
-    "fundamental-theorem-algebra",
-    "amgm-inequality-oq-03-oq-02",
-    "cauchy-schwarz-integral",
-    "amgm-inequality-oq-03-oq-01",
-    "vietas-formulas",
-    "inclusion-exclusion"
+    {
+      "id": "amgm-inequality",
+      "relationship": "extends",
+      "description": "Base AM-GM inequality — this file extends it by showing AM-GM is the coarsest case of Maclaurin's chain M₁ ≥ M₂ ≥ ... ≥ "
+    },
+    {
+      "id": "amgm-inequality-oq-03",
+      "relationship": "related",
+      "description": "Power mean inequalities — another refinement of AM-GM, connecting to Maclaurin means via different averaging methods"
+    },
+    {
+      "id": "cauchy-schwarz",
+      "relationship": "uses",
+      "description": "The Cauchy-Schwarz sum inequality n·∑xᵢ² ≥ (∑xᵢ)² is the key engine for proving M₁² ≥ M₂ in the general case"
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "related",
+      "description": "Binomial coefficients C(n,k) normalize the elementary symmetric polynomials to form Maclaurin means"
+    },
+    {
+      "id": "triangle-inequality",
+      "relationship": "related",
+      "description": "Both are fundamental inequalities formalized from first principles — the triangle inequality controls absolute sums whil"
+    }
   ],
   "references": [
     {

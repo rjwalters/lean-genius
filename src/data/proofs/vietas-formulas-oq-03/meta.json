@@ -203,14 +203,31 @@
     }
   ],
   "relatedProofs": [
-    "vietas-formulas",
-    "cayley-hamilton",
-    "cayley-hamilton-minpoly",
-    "abel-ruffini",
-    "solution-of-cubic",
-    "general-quartic",
-    "fundamental-arithmetic",
-    "lagrange-four-squares"
+    {
+      "id": "vietas-formulas",
+      "relationship": "extends",
+      "description": "Parent formalization of Vieta's formulas (coefficients ↔ roots). Newton's identities extend Vieta by expressing all powe"
+    },
+    {
+      "id": "cayley-hamilton",
+      "relationship": "related",
+      "description": "The Cayley-Hamilton theorem (every matrix satisfies its characteristic polynomial) is intimately connected: Newton's sec"
+    },
+    {
+      "id": "cayley-hamilton-minpoly",
+      "relationship": "related",
+      "description": "The minimal polynomial, whose relation to the characteristic polynomial is governed by the Cayley-Hamilton framework, co"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "related",
+      "description": "The discriminant formulas proved here (quadratic and cubic Δ via elementary symmetric polynomials) are essential tools i"
+    },
+    {
+      "id": "solution-of-cubic",
+      "relationship": "complementary",
+      "description": "Cardano's cubic formula explicitly uses Newton's identity p₃ = e₁³ − 3e₁e₂ + 3e₃ via the sum-of-cubes factorization: the"
+    }
   ],
   "references": [
     {

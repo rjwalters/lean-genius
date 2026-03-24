@@ -156,7 +156,15 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1",
-    "erdos-52"
+    {
+      "id": "erdos-1",
+      "relationship": "related",
+      "description": "Problem #1 (distinct subset sums) and Problem #53 both concern distinctness conditions on sums of sets. The sum-product "
+    },
+    {
+      "id": "erdos-52",
+      "relationship": "related",
+      "description": "Problem #52 (the sum-product conjecture) is the main problem in this family. Problem #53 studies the distinct-element va"
+    }
   ]
 }

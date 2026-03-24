@@ -175,11 +175,31 @@
     }
   ],
   "relatedProofs": [
-    "intermediate-value-theorem",
-    "mean-value-theorem",
-    "abel-ruffini",
-    "binomial-theorem",
-    "sum-of-kth-powers"
+    {
+      "id": "intermediate-value-theorem",
+      "relationship": "foundational",
+      "description": "The intermediate value theorem guarantees that sign changes in polynomial values correspond to real roots — a prerequisi"
+    },
+    {
+      "id": "mean-value-theorem",
+      "relationship": "foundational",
+      "description": "Rolle's theorem (a special case of MVT) is the key lemma: between any two roots of $p(x)$, there exists a root of $p'(x)"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "thematic",
+      "description": "Both concern polynomial roots: Descartes's rule bounds how many positive roots exist, while Abel-Ruffini shows those roo"
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial coefficients arise in the Taylor expansion approach to Descartes's rule (Budan's generalization), and the a"
+    },
+    {
+      "id": "sum-of-kth-powers",
+      "relationship": "related",
+      "description": "Both are Wiedijk-100 results about polynomial structure: Faulhaber's formulas concern polynomial evaluation (power sums "
+    }
   ],
   "leanFile": {
     "imports": [

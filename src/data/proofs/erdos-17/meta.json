@@ -190,13 +190,31 @@
     }
   ],
   "relatedProofs": [
-    "bounded-prime-gaps",
-    "erdos-16",
-    "twin-primes-special",
-    "infinitude-primes",
-    "dirichlets-theorem",
-    "prime-number-theorem",
-    "bertrands-postulate"
+    {
+      "id": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Bounded prime gaps (Maynard-Tao) ensure small differences exist, but cluster primes require ALL small even differences —"
+    },
+    {
+      "id": "erdos-16",
+      "relationship": "related",
+      "description": "Both are Erdős problems about prime distribution: #16 concerns representing odds as $2^k + p$, while #17 concerns coveri"
+    },
+    {
+      "id": "twin-primes-special",
+      "relationship": "related",
+      "description": "Twin primes $(p, p+2)$ provide the smallest prime differences; cluster primes require ALL small even differences to be r"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "uses",
+      "description": "The infinitude of primes is a prerequisite; the cluster prime question asks whether a specific sparse subset of primes i"
+    },
+    {
+      "id": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Dirichlet's theorem guarantees primes in arithmetic progressions have positive relative density $1/\\varphi(d)$; the form"
+    }
   ],
   "leanFile": {
     "imports": [

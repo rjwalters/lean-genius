@@ -248,16 +248,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-52",
-    "erdos-36",
-    "erdos-143",
-    "szemeredi-theorem",
-    "roth-theorem-k3",
-    "prime-number-theorem",
-    "harmonic-divergence",
-    "prob-method-second-moment",
-    "erdos-801",
-    "erdos-4"
+    {
+      "id": "erdos-52",
+      "relationship": "specializes",
+      "description": "Problem #818 is the conditional version of Problem #52 (the Erdős-Szemerédi sum-product conjecture): given small sumset,"
+    },
+    {
+      "id": "erdos-36",
+      "relationship": "related",
+      "description": "Both concern additive combinatorics and the structure of sumsets; Problem #36 studies minimum overlap in partitions, rel"
+    },
+    {
+      "id": "erdos-143",
+      "relationship": "related",
+      "description": "Both study density constraints on sets with prescribed arithmetic structure; Problem #143 concerns dilation-avoiding set"
+    },
+    {
+      "id": "szemeredi-theorem",
+      "relationship": "technique",
+      "description": "Szemerédi's theorem and Problem #818 both concern the interplay between structure and expansion in finite sets; the Szem"
+    },
+    {
+      "id": "roth-theorem-k3",
+      "relationship": "technique",
+      "description": "Roth's theorem on 3-term arithmetic progressions shares additive combinatorics foundations; Fourier-analytic and energy "
+    }
   ],
   "leanFile": {
     "imports": [

@@ -207,12 +207,30 @@
     }
   ],
   "relatedProofs": [
-    "inverse-galois",
-    "angle-trisection-oq-02",
-    "sqrt2-irrational",
-    "nth-root-irrational",
-    "hermite-lindemann",
-    "abel-ruffini",
-    "e-transcendental"
+    {
+      "id": "inverse-galois",
+      "relationship": "foundational",
+      "description": "Provides irrationality and irreducibility infrastructure imported by the Inverse Galois Problem formalization for Galois"
+    },
+    {
+      "id": "angle-trisection-oq-02",
+      "relationship": "foundational",
+      "description": "Imported by the angle trisection impossibility proof: constructibility requires the minimal polynomial to have degree a "
+    },
+    {
+      "id": "sqrt2-irrational",
+      "relationship": "extends",
+      "description": "The base sqrt(2) irrationality proof uses a direct parity/counting argument (Level 1-2). This module provides a strictly"
+    },
+    {
+      "id": "nth-root-irrational",
+      "relationship": "extends",
+      "description": "The base nth-root irrationality uses irrational_nrt_of_notint_nrt (counting argument). This module provides the algebrai"
+    },
+    {
+      "id": "hermite-lindemann",
+      "relationship": "related",
+      "description": "Hermite-Lindemann proves e^alpha is transcendental for algebraic alpha != 0, a strictly stronger result than irrationali"
+    }
   ]
 }

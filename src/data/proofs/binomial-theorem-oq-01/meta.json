@@ -176,11 +176,31 @@
     }
   ],
   "relatedProofs": [
-    "binomial-theorem",
-    "geometric-series",
-    "e-transcendental",
-    "combinations-formula",
-    "binomial-theorem-oq-01-oq-01"
+    {
+      "id": "binomial-theorem",
+      "relationship": "extends",
+      "description": "Extends the standard binomial theorem (a+b)^n to Newton's generalized series (1+x)^α for real α, replacing finite sums w"
+    },
+    {
+      "id": "geometric-series",
+      "relationship": "specializes-to",
+      "description": "The geometric series 1/(1-x) = Σxⁿ is the α = -1 case of Newton's theorem: (1+(-x))^(-1) = Σ(-1)^k·(-x)^k = Σxⁿ"
+    },
+    {
+      "id": "e-transcendental",
+      "relationship": "related",
+      "description": "Newton's binomial series for (1+x/n)^n as n→∞ connects to e^x — the exponential function shares the power series structu"
+    },
+    {
+      "id": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The generalized binomial coefficient C(α,k) = α(α-1)...(α-k+1)/k! extends the standard combinatorial C(n,k) to non-integ"
+    },
+    {
+      "id": "binomial-theorem-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    }
   ],
   "leanFile": {
     "imports": [

@@ -146,10 +146,26 @@
     ]
   },
   "relatedProofs": [
-    "pythagorean-theorem",
-    "triangle-angle-sum",
-    "triangle-inequality",
-    "herons-formula"
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "The Pythagorean theorem characterizes right triangles via side lengths. An isosceles right triangle (45-45-90) combines "
+    },
+    {
+      "id": "triangle-angle-sum",
+      "relationship": "related",
+      "description": "The angle sum theorem (angles sum to pi) combined with Pons Asinorum determines the apex angle: if base angles are both "
+    },
+    {
+      "id": "triangle-inequality",
+      "relationship": "related",
+      "description": "The triangle inequality constrains side lengths. For isosceles triangles with equal sides a and base b, the constraint r"
+    },
+    {
+      "id": "herons-formula",
+      "relationship": "related",
+      "description": "Heron's formula simplifies for isosceles triangles: with sides a, a, b, the semi-perimeter is s = a + b/2 and the area b"
+    }
   ],
   "leanFile": {
     "imports": [

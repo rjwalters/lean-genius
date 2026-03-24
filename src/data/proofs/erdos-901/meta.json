@@ -184,8 +184,20 @@
     ]
   },
   "relatedProofs": [
-    "erdos-629",
-    "erdos-533",
-    "erdos-117"
+    {
+      "id": "erdos-629",
+      "relationship": "related",
+      "description": "List chromatic number problem — m(k) ≤ n(k) ≤ m(k+1) connects Property B to list coloring"
+    },
+    {
+      "id": "erdos-533",
+      "relationship": "related",
+      "description": "Hypergraph coloring and Ramsey-type bounds — related extremal problems on set families"
+    },
+    {
+      "id": "erdos-117",
+      "relationship": "related",
+      "description": "Combinatorial bounds via the probabilistic method — shares proof techniques using random coloring arguments"
+    }
   ]
 }

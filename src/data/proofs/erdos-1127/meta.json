@@ -175,12 +175,31 @@
     }
   ],
   "relatedProofs": [
-    "continuum-hypothesis",
-    "cantors-theorem",
-    "erdos-1128",
-    "erdos-97",
-    "cantor-diagonalization",
-    "erdos-100"
+    {
+      "id": "continuum-hypothesis",
+      "relationship": "foundational",
+      "description": "The Continuum Hypothesis is the central set-theoretic axiom on which the entire #1127 result depends. Erdős-Kakutani pro"
+    },
+    {
+      "id": "cantors-theorem",
+      "relationship": "thematic",
+      "description": "Cantor's theorem |S| < |P(S)| establishes the cardinal hierarchy that makes CH meaningful. The countable decomposition i"
+    },
+    {
+      "id": "erdos-1128",
+      "relationship": "sibling-problem",
+      "description": "Both #1127 and #1128 are Erdős-Hajnal problems resolved through set-theoretic methods at the level of ℵ₁. #1128 asks whe"
+    },
+    {
+      "id": "erdos-97",
+      "relationship": "thematic",
+      "description": "Erdős #97 concerns equidistant vertices in convex polygons — the finite, purely geometric side of distance problems. #11"
+    },
+    {
+      "id": "cantor-diagonalization",
+      "relationship": "foundational",
+      "description": "Cantor's diagonal argument establishes that ℝ is uncountable (|ℝ| = 2^ℵ₀ > ℵ₀). This is the reason the decomposition in "
+    }
   ],
   "references": [
     {

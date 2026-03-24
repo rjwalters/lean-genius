@@ -129,9 +129,21 @@
     }
   ],
   "relatedProofs": [
-    "erdos-933",
-    "erdos-931",
-    "erdos-928"
+    {
+      "id": "erdos-933",
+      "relationship": "related",
+      "description": "Smooth part of n(n+1): both problems study the prime factorization structure of products of consecutive integers"
+    },
+    {
+      "id": "erdos-931",
+      "relationship": "related",
+      "description": "Same prime factor sets in consecutive products; related multiplicative structure of consecutive blocks"
+    },
+    {
+      "id": "erdos-928",
+      "relationship": "related",
+      "description": "Consecutive smooth numbers; shares the theme of prime factor constraints on consecutive integers"
+    }
   ],
   "leanFile": {
     "imports": [

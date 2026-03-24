@@ -176,10 +176,26 @@
     "definitionCount": 2
   },
   "relatedProofs": [
-    "euler-totient",
-    "quadratic-reciprocity",
-    "fermat-two-squares",
-    "abel-ruffini"
+    {
+      "id": "euler-totient",
+      "relationship": "prerequisite",
+      "description": "Euler's totient φ(n) counts primitive roots: there are φ(p-1) of them modulo prime p"
+    },
+    {
+      "id": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Quadratic residues mod p are determined by primitive roots: a is a QR iff its discrete log is even"
+    },
+    {
+      "id": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Fermat's two-square theorem uses quadratic residues, which are characterized via primitive roots"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "foundational",
+      "description": "Primitive roots establish that $(\\mathbb{Z}/p\\mathbb{Z})^{\\times}$ is cyclic — the structural property that makes radica"
+    }
   ],
   "references": [
     {

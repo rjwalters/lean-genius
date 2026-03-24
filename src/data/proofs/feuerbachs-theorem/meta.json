@@ -170,11 +170,30 @@
     }
   ],
   "relatedProofs": [
-    "cevas-theorem",
-    "pythagorean-theorem",
-    "herons-formula",
-    "euler-polyhedral-formula",
-    "law-of-cosines",
-    "triangle-angle-sum"
+    {
+      "id": "cevas-theorem",
+      "relationship": "related",
+      "description": "Both are classical triangle geometry theorems: Ceva's characterizes cevian concurrency, while Feuerbach's establishes th"
+    },
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "The Pythagorean theorem provides the distance formula needed to compute the nine-point circle's radius (R/2) and the inc"
+    },
+    {
+      "id": "herons-formula",
+      "relationship": "related",
+      "description": "Heron's formula provides the triangle area A = sqrt(s(s-a)(s-b)(s-c)), from which the inradius r = A/s is derived — this"
+    },
+    {
+      "id": "euler-polyhedral-formula",
+      "relationship": "thematic",
+      "description": "Both are named after pioneering mathematicians and concern fundamental geometric structures: Euler's formula for polyhed"
+    },
+    {
+      "id": "law-of-cosines",
+      "relationship": "foundational",
+      "description": "The law of cosines provides the computational foundation for establishing the nine-point circle's properties, including "
+    }
   ]
 }

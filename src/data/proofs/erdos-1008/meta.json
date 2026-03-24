@@ -124,9 +124,21 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1009",
-    "erdos-613",
-    "erdos-1006"
+    {
+      "id": "erdos-1009",
+      "relationship": "related",
+      "description": "Erdős #1009 (edge-disjoint triangles beyond Turán) studies related extremal graph questions about finding structured sub"
+    },
+    {
+      "id": "erdos-613",
+      "relationship": "related",
+      "description": "Erdős #613 (graph decomposition and size Ramsey numbers) connects to the problem of partitioning graphs into forbidden-s"
+    },
+    {
+      "id": "erdos-1006",
+      "relationship": "related",
+      "description": "Erdős #1006 (robust acyclic orientations) uses the probabilistic method in graph theory, sharing the dependent random ch"
+    }
   ],
   "leanFile": {
     "imports": [],

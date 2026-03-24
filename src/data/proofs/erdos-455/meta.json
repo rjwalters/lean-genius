@@ -158,8 +158,20 @@
     ]
   },
   "relatedProofs": [
-    "prime-number-theorem",
-    "bertrands-postulate",
-    "infinitude-primes"
+    {
+      "id": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The PNT gives average prime gap ~ log p; Richter's bound relies on prime distribution estimates that ultimately flow fro"
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate bounds maximal prime gaps, providing context for how large gaps in monotone-gap sequences can be"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes ensures that monotone-gap prime sequences can be constructed to arbitrary length"
+    }
   ]
 }

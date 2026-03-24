@@ -171,11 +171,31 @@
     }
   ],
   "relatedProofs": [
-    "bounded-prime-gaps",
-    "bounded-prime-gaps-oq-03-oq-01",
-    "infinitude-primes",
-    "prime-number-theorem",
-    "prime-reciprocal-divergence"
+    {
+      "id": "bounded-prime-gaps",
+      "relationship": "extends",
+      "description": "Base bounded prime gaps formalization — this file extends it by proving the 246 bound is sieve-optimal via Engelsma's ex"
+    },
+    {
+      "id": "bounded-prime-gaps-oq-03-oq-01",
+      "relationship": "extended-by",
+      "description": "Further extension exploring related computations and consequences of the 246 optimality result"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "Euclid's theorem on infinitely many primes is the prerequisite: bounded prime gaps strengthens this from 'infinitely man"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "related",
+      "description": "PNT gives the average prime gap ~log n — the Maynard-Tao result shows infinitely many gaps of size ≤ 246, dramatically b"
+    },
+    {
+      "id": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "The divergence of ∑1/p (Euler, 1737) shows primes are not too sparse — this file quantifies how close consecutive primes"
+    }
   ],
   "leanFile": {
     "imports": [

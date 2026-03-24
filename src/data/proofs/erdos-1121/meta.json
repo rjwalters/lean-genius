@@ -156,12 +156,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1046",
-    "isoperimetric-theorem",
-    "minkowski-theorem",
-    "erdos-505",
-    "kepler-conjecture",
-    "area-of-circle"
+    {
+      "id": "erdos-1046",
+      "relationship": "thematic",
+      "description": "Lemniscate Containment in a Disc (Pommerenke 1959) establishes that a connected polynomial sublevel set E = {z : |f(z)| "
+    },
+    {
+      "id": "isoperimetric-theorem",
+      "relationship": "thematic",
+      "description": "The Isoperimetric Theorem characterizes the circle as the shape of minimum perimeter for a given area, establishing the "
+    },
+    {
+      "id": "minkowski-theorem",
+      "relationship": "related",
+      "description": "Minkowski's Fundamental Theorem concerns convex, centrally symmetric bodies in ℝⁿ and their interaction with lattices. T"
+    },
+    {
+      "id": "erdos-505",
+      "relationship": "thematic",
+      "description": "Borsuk's Conjecture asks whether every diameter-1 set in ℝⁿ can be partitioned into ≤ n+1 parts of smaller diameter — a "
+    },
+    {
+      "id": "kepler-conjecture",
+      "relationship": "related",
+      "description": "The Kepler Conjecture (Hales 1998) determines the densest sphere packing in ℝ³. While sphere packing asks how efficientl"
+    }
   ],
   "references": [
     {

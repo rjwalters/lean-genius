@@ -180,8 +180,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-240",
-    "erdos-48",
-    "erdos-1004"
+    {
+      "id": "erdos-240",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: gaps, number-theory, solved"
+    },
+    {
+      "id": "erdos-48",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, solved, totient"
+    },
+    {
+      "id": "erdos-1004",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, totient"
+    }
   ]
 }

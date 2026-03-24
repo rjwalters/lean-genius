@@ -159,9 +159,21 @@
     }
   ],
   "relatedProofs": [
-    "divisibility-by-3",
-    "divisibility-by-3-oq-02",
-    "chinese-remainder-constructive"
+    {
+      "id": "divisibility-by-3",
+      "relationship": "extends",
+      "description": "Applies the parent's digit-sum congruence (n ≡ digitsum(n) mod 3 and 9) to prove that arithmetic operations transfer thr"
+    },
+    {
+      "id": "divisibility-by-3-oq-02",
+      "relationship": "extends",
+      "description": "Uses the same base-b generalization (from OQ-02) to extend casting out beyond base 10: casting out sevens (octal), fifte"
+    },
+    {
+      "id": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "Both formalize modular arithmetic applications: CRT combines congruences mod coprime moduli, while casting out nines use"
+    }
   ],
   "references": [
     {

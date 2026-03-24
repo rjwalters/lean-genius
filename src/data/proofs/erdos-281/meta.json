@@ -180,8 +180,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-688",
-    "erdos-10",
-    "erdos-278"
+    {
+      "id": "erdos-688",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: congruences, covering systems, number theory"
+    },
+    {
+      "id": "erdos-10",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number theory"
+    },
+    {
+      "id": "erdos-278",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: congruences, density"
+    }
   ]
 }

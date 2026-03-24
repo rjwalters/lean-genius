@@ -179,13 +179,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-58",
-    "erdos-61",
-    "erdos-1011",
-    "erdos-1013",
-    "erdos-1091",
-    "ramseys-theorem",
-    "four-color-theorem"
+    {
+      "id": "erdos-58",
+      "relationship": "related",
+      "description": "Erdős Problem #58 asks which odd cycle lengths must appear in graphs with high chromatic number. Both problems explore w"
+    },
+    {
+      "id": "erdos-61",
+      "relationship": "related",
+      "description": "The Erdős–Hajnal Conjecture asks whether forbidding an induced subgraph H forces a clique or independent set of polynomi"
+    },
+    {
+      "id": "erdos-1011",
+      "relationship": "related",
+      "description": "Erdős Problem #1011 asks how many triangles a graph with high chromatic number must contain. Problem #1111 asks about an"
+    },
+    {
+      "id": "erdos-1013",
+      "relationship": "related",
+      "description": "Erdős Problem #1013 studies triangle-free graphs with high chromatic number (the Mycielski construction family). Problem"
+    },
+    {
+      "id": "erdos-1091",
+      "relationship": "related",
+      "description": "Erdős Problem #1091 studies K_4-free graphs with high chromatic number, asking about odd cycles with diagonals. Problem "
+    }
   ],
   "references": [
     {

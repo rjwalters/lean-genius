@@ -267,13 +267,31 @@
     }
   ],
   "relatedProofs": [
-    "poincare-conjecture",
-    "riemann-hypothesis",
-    "hilbert-5",
-    "brouwer-fixed-point",
-    "yang-mills-transfer-matrix",
-    "yang-mills-lattice",
-    "yang-mills-2d"
+    {
+      "id": "poincare-conjecture",
+      "relationship": "related",
+      "description": "Perelman's resolution via Ricci flow uses geometric evolution equations analogous to Yang-Mills flow; both involve curva"
+    },
+    {
+      "id": "riemann-hypothesis",
+      "relationship": "related",
+      "description": "Both are Millennium Prize Problems. The Riemann zeta function appears in quantum field theory via zeta function regulari"
+    },
+    {
+      "id": "hilbert-5",
+      "relationship": "foundational",
+      "description": "Hilbert's 5th Problem on Lie groups provides the mathematical foundation for gauge groups — compact simple Lie groups li"
+    },
+    {
+      "id": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "Fixed point theorems are used in functional analysis proofs relevant to constructive QFT and the existence of vacuum sta"
+    },
+    {
+      "id": "yang-mills-transfer-matrix",
+      "relationship": "has-submodule",
+      "description": "Proven finite-volume mass gap via transfer matrix / Perron-Frobenius — the strongest rigorous result in this formalizati"
+    }
   ],
   "leanFile": {
     "imports": [

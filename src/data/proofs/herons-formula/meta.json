@@ -142,11 +142,31 @@
     ]
   },
   "relatedProofs": [
-    "cayley-hamilton",
-    "pythagorean-theorem",
-    "triangle-angle-sum",
-    "triangle-inequality",
-    "ptolemys-theorem"
+    {
+      "id": "cayley-hamilton",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    },
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "Heron's formula can be derived from the Pythagorean theorem by expressing the triangle altitude in terms of side lengths"
+    },
+    {
+      "id": "triangle-angle-sum",
+      "relationship": "related",
+      "description": "Both are fundamental triangle geometry results. The triangle angle sum (180 degrees) and Heron's formula together charac"
+    },
+    {
+      "id": "triangle-inequality",
+      "relationship": "foundational",
+      "description": "The triangle inequality ensures s(s-a)(s-b)(s-c) >= 0 for valid triangles, making the square root in Heron's formula wel"
+    },
+    {
+      "id": "ptolemys-theorem",
+      "relationship": "related",
+      "description": "Both are classical geometry results from antiquity. Heron (c. 60 AD) and Ptolemy (c. 150 AD) developed foundational geom"
+    }
   ],
   "leanFile": {
     "imports": [

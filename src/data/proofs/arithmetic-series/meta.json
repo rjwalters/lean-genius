@@ -207,17 +207,31 @@
     }
   ],
   "relatedProofs": [
-    "geometric-series",
-    "mathematical-induction",
-    "binomial-theorem",
-    "arithmetic-series-oq-02",
-    "sum-of-kth-powers",
-    "harmonic-divergence",
-    "triangular-reciprocals",
-    "basel-problem",
-    "pythagorean-theorem",
-    "perfect-numbers",
-    "arithmetic-series-oq-02-oq-02"
+    {
+      "id": "geometric-series",
+      "relationship": "complementary",
+      "description": "The two fundamental series formulas: arithmetic series ∑(a+kd) = n(2a+(n-1)d)/2 and geometric series ∑ar^k = a(r^n-1)/(r"
+    },
+    {
+      "id": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "The arithmetic series formula ∑k = n(n+1)/2 is one of the canonical examples of proof by mathematical induction — though"
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial theorem generalizes finite sum identities: ∑C(n,k) = 2^n, while the arithmetic series ∑k = n(n+1)/2 is the "
+    },
+    {
+      "id": "arithmetic-series-oq-02",
+      "relationship": "extended-by",
+      "description": "Generalizes the arithmetic series to simplicial numbers and higher-dimensional arithmetic sums, extending $\\sum k = n(n+"
+    },
+    {
+      "id": "sum-of-kth-powers",
+      "relationship": "extended-by",
+      "description": "Faulhaber's formulas generalize the arithmetic series from $\\sum k$ (degree 1) to $\\sum k^p$ for arbitrary $p$ — the ari"
+    }
   ],
   "references": [
     {

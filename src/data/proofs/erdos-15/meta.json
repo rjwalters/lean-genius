@@ -184,8 +184,20 @@
     "https://erdosproblems.com/15"
   ],
   "relatedProofs": [
-    "erdos-6",
-    "erdos-10",
-    "infinitude-primes"
+    {
+      "id": "erdos-6",
+      "relationship": "related",
+      "description": "Problem #6 on monotone prime gap sequences and Problem #15 on alternating prime series both study the fine distribution "
+    },
+    {
+      "id": "erdos-10",
+      "relationship": "related",
+      "description": "Problem #10 studies representations involving primes and powers of 2. Both problems concern how primes interact with str"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes guarantees the alternating prime series is well-defined. The distribution of primes determines "
+    }
   ]
 }

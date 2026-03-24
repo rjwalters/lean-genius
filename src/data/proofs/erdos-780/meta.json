@@ -203,11 +203,31 @@
     "definitionCount": 11
   },
   "relatedProofs": [
-    "borsuk-ulam",
-    "ramseys-theorem",
-    "combinations-formula",
-    "erdos-1104",
-    "szemeredi-regularity"
+    {
+      "id": "borsuk-ulam",
+      "relationship": "foundational",
+      "description": "The Borsuk-Ulam theorem is the key topological tool in Lovász's 1978 proof of Kneser's conjecture and the AFL 1986 gener"
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both are Ramsey-type results: Ramsey's theorem guarantees monochromatic complete subgraphs in colored complete graphs, w"
+    },
+    {
+      "id": "combinations-formula",
+      "relationship": "supports",
+      "description": "The binomial coefficient $\\binom{n}{r}$ counts the vertices of the Kneser graph (the $r$-subsets of $[n]$), and $\\binom{"
+    },
+    {
+      "id": "erdos-1104",
+      "relationship": "related",
+      "description": "Both concern chromatic numbers of combinatorially defined graphs. The Kneser graph chromatic number $\\chi(KG(n,r)) = n -"
+    },
+    {
+      "id": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "Both are powerful tools for analyzing structure in large combinatorial objects. Szemerédi regularity gives pseudorandom "
+    }
   ],
   "references": [
     {

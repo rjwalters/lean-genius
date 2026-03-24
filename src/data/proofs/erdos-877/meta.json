@@ -156,8 +156,16 @@
     ]
   },
   "relatedProofs": [
-    "erdos-748",
-    "erdos-863"
+    {
+      "id": "erdos-748",
+      "relationship": "related",
+      "description": "Problem #748 asks about f(n), the count of all sum-free subsets. This problem asks about f_m(n), the count of maximal on"
+    },
+    {
+      "id": "erdos-863",
+      "relationship": "technique",
+      "description": "Both problems study extremal counting in additive combinatorics, using container methods and structural decomposition."
+    }
   ],
   "leanFile": {
     "imports": [

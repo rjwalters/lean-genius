@@ -202,7 +202,15 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1007",
-    "erdos-1007-oq-01"
+    {
+      "id": "erdos-1007",
+      "relationship": "Grandparent: original Erdős problem on minimum edges for dimension 4",
+      "description": ""
+    },
+    {
+      "id": "erdos-1007-oq-01",
+      "relationship": "Direct parent: this OQ investigates the monotonicity conjecture stated in the parent OQ-01 formalization",
+      "description": ""
+    }
   ]
 }

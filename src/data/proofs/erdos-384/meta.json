@@ -189,8 +189,16 @@
     }
   ],
   "relatedProofs": [
-    "erdos-382",
-    "erdos-383"
+    {
+      "id": "erdos-382",
+      "relationship": "related",
+      "description": "Both concern prime factorization of combinatorial/factorial products: #382 studies prime powers in factorial products, #"
+    },
+    {
+      "id": "erdos-383",
+      "relationship": "related",
+      "description": "Both concern largest prime divisors of number-theoretic products: #383 studies P(∏(p²+i)), #384 studies small primes div"
+    }
   ],
   "leanFile": {
     "imports": [

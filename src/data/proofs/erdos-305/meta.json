@@ -180,13 +180,30 @@
     }
   ],
   "relatedProofs": [
-    "erdos-304",
-    "erdos-306",
-    "erdos-307",
-    "erdos-308",
-    "erdos-309",
-    "erdos-300",
-    "harmonic-divergence",
-    "prime-reciprocal-divergence"
+    {
+      "id": "erdos-304",
+      "relationship": "related",
+      "description": "Sibling problem on the minimum number of terms N(b) in Egyptian fractions (complexity rather than max denominator)"
+    },
+    {
+      "id": "erdos-306",
+      "relationship": "related",
+      "description": "Sibling problem on Egyptian fractions with semiprime denominator constraints"
+    },
+    {
+      "id": "erdos-307",
+      "relationship": "related",
+      "description": "Prime reciprocal products ∑1/p · ∑1/q = 1, extending Egyptian fraction structure to primes"
+    },
+    {
+      "id": "erdos-308",
+      "relationship": "related",
+      "description": "Bounded denominator representability: smallest integer not expressible as unit fraction sum from {1,...,N}"
+    },
+    {
+      "id": "erdos-309",
+      "relationship": "related",
+      "description": "Counting representable integers from unit fractions, F(N) = Θ(log N) via Yokota-Croot"
+    }
   ]
 }

@@ -156,8 +156,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-340",
-    "erdos-782",
-    "erdos-1148"
+    {
+      "id": "erdos-340",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, open, sidon-sets"
+    },
+    {
+      "id": "erdos-782",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, open, squares"
+    },
+    {
+      "id": "erdos-1148",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, open"
+    }
   ]
 }

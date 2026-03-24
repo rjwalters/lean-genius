@@ -292,16 +292,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1",
-    "erdos-5",
-    "erdos-6",
-    "erdos-369",
-    "bertrands-postulate",
-    "prime-number-theorem",
-    "infinitude-primes",
-    "bounded-prime-gaps",
-    "bounded-prime-gaps-oq-03",
-    "dirichlets-theorem"
+    {
+      "id": "bounded-prime-gaps",
+      "relationship": "complementary",
+      "description": "The dual problem: Maynard's sieve proving liminf g_n <= 246 uses the same framework applied in reverse to prove limsup g_n/f(n) = infinity"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "uses",
+      "description": "The PNT gives the average gap log n and the asymptotic p_n ~ n log n used in average_gap_asymptotic"
+    },
+    {
+      "id": "erdos-369",
+      "relationship": "related",
+      "description": "Consecutive smooth numbers problem; smooth number distribution is related to prime gap structure since large gaps correspond to intervals with small prime factors"
+    },
+    {
+      "id": "erdos-5",
+      "relationship": "related",
+      "description": "Erdős #5 asks about the set of limit points of g_n/log p_n; #4 proves limsup g_n/f(n) = infinity — a finer question about prime gap distribution"
+    },
+    {
+      "id": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions is used in Rankin's construction to create large prime-free intervals"
+    }
   ],
   "leanFile": {
     "lineCount": 243,

@@ -233,16 +233,31 @@
     }
   ],
   "relatedProofs": [
-    "angle-trisection",
-    "angle-trisection-oq-02",
-    "angle-trisection-oq-02-oq-03",
-    "angle-trisection-oq-02-oq-03-oq-01",
-    "inverse-galois",
-    "abel-ruffini",
-    "lagrange-theorem",
-    "sqrt2-irrational",
-    "nth-root-irrational",
-    "factor-remainder-theorem"
+    {
+      "id": "angle-trisection",
+      "relationship": "ancestor",
+      "description": "The original angle trisection impossibility proof using the degree criterion (deg 3 is not a power of 2). This file prov"
+    },
+    {
+      "id": "angle-trisection-oq-02",
+      "relationship": "parent",
+      "description": "The parent Galois-theoretic formalization with 6 axioms. This file eliminates 1 axiom (galois_2group_implies_degree_pow2"
+    },
+    {
+      "id": "angle-trisection-oq-02-oq-03",
+      "relationship": "sibling",
+      "description": "Sibling open question on the Gauss-Wantzel theorem for regular polygon constructibility — also addresses axiom eliminati"
+    },
+    {
+      "id": "angle-trisection-oq-02-oq-03-oq-01",
+      "relationship": "related",
+      "description": "Bridges Gauss-Wantzel to Mathlib's cyclotomic infrastructure, paralleling this file's bridge between Galois groups and M"
+    },
+    {
+      "id": "inverse-galois",
+      "relationship": "related",
+      "description": "Comprehensive Galois group realizations (S₃, A₅, D₄, etc.) — the inverse direction of the Galois correspondence. Where t"
+    }
   ],
   "leanFile": {
     "imports": [

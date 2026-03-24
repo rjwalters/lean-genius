@@ -202,10 +202,26 @@
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem",
-    "szemeredi-theorem",
-    "erdos-781",
-    "erdos-780"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both concern unavoidable structure in large combinatorial objects. Ramsey theory guarantees monochromatic substructures "
+    },
+    {
+      "id": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Szemerédi's theorem guarantees arithmetic progressions in dense subsets of integers. The squares have density $\\sim n^{-"
+    },
+    {
+      "id": "erdos-781",
+      "relationship": "related",
+      "description": "Adjacent Erdős problem in the same series on structured monochromatic/additive configurations in integer sequences"
+    },
+    {
+      "id": "erdos-780",
+      "relationship": "related",
+      "description": "Nearby Erdős problem in the combinatorics series; both concern extremal properties of structured mathematical objects"
+    }
   ],
   "references": [
     {

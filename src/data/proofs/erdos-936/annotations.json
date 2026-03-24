@@ -49,7 +49,10 @@
     "content": "**one_powerful:** The number 1 is powerful.\n\nThis is vacuously true: 1 has no prime divisors, so the condition \"for every prime p dividing 1, p² divides 1\" is satisfied with no primes to check.\n\nThis is a boundary case that makes 2^1 - 1 = 1 technically powerful.",
     "mathContext": "$1$ is powerful vacuously: $\\forall p$ prime, $p \\mid 1 \\Rightarrow p^2 \\mid 1$ is vacuously true since no prime divides $1$.",
     "significance": "supporting",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "prime numbers"
+    ],
     "prerequisites": []
   },
   {
@@ -64,7 +67,10 @@
     "content": "**sq_powerful:** Every perfect square n² is powerful.\n\n**Proof idea:** If prime p divides n², then p divides n (since p is prime). Therefore p² divides (n)² = n².\n\nThis gives us many examples: 4, 9, 16, 25, 36, 49, 64, 81, 100, ...",
     "significance": "key",
     "mathContext": "See annotation content for formal details of perfect squares are powerful",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "prime numbers"
+    ],
     "prerequisites": []
   },
   {
@@ -79,7 +85,10 @@
     "content": "**prime_not_powerful:** No prime number is powerful.\n\n**Proof:** If p is prime, then p divides p. For p to be powerful, we'd need p² to divide p. But p² > p for p ≥ 2, so p² cannot divide p.\n\nThis is fundamental: most values of 2^n + 1, n! + 1, etc. are either prime or have prime factors with exponent 1, making them not powerful.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of primes are not powerful",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "prime numbers"
+    ],
     "prerequisites": []
   },
   {
@@ -94,7 +103,10 @@
     "content": "**EventuallyNotPowerful(a):** A sequence a : ℕ → ℕ is eventually not powerful if there exists N such that for all n ≥ N, a(n) is not powerful.\n\n**Formalization:** Uses Filter.atTop to express \"for all sufficiently large n\":\n```lean\ndef EventuallyNotPowerful (a : ℕ → ℕ) : Prop :=\n  atTop.Eventually (fun n => ¬Powerful (a n))\n```\n\nThis is exactly what Erdős #936 asks about the four sequences.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of eventually not powerful",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -109,7 +121,10 @@
     "content": "**Concrete computations** for small values of n:\n\n**2^n + 1:**\n- n=0: 2 (not powerful - prime)\n- n=1: 3 (not powerful - prime)\n- n=2: 5 (not powerful - prime)\n\n**2^n - 1:**\n- n=1: 1 (powerful - vacuously)\n- n=2: 3 (not powerful - prime)\n\n**n! + 1:**\n- n=1: 2 (not powerful)\n- n=2: 3 (not powerful)\n- n=3: 7 (not powerful - prime)\n\n**n! - 1:**\n- n=2: 1 (powerful)\n- n=3: 5 (not powerful - prime)\n\nNo non-trivial powerful values found!",
     "significance": "key",
     "mathContext": "See annotation content for formal details of verified small cases",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "prime numbers"
+    ],
     "prerequisites": []
   },
   {
@@ -143,7 +158,10 @@
     "content": "**cushing_pascoe_theorem:** Assuming the ABC conjecture, n! ± 1 is powerful for only finitely many n.\n\nMore generally, for any fixed k ≥ 0, there exist only finitely many n and powerful numbers x satisfying |x - n!| ≤ k.\n\nThe actual paper title is \"The abc conjecture implies that n! ± 1 is squarefree for large n\" - an even stronger result than just not being powerful.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of cushing-pascoe theorem (2016)",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
     "prerequisites": []
   },
   {
@@ -158,7 +176,10 @@
     "content": "**crowdmath_theorem:** Assuming the ABC conjecture, 2^n ± 1 is powerful for only finitely many n.\n\nThis was proved through the CrowdMath collaborative mathematics project, demonstrating the power of distributed mathematical research.\n\nThe proof extends techniques from Cushing-Pascoe to exponential sequences.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of crowdmath theorem (2020)",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
     "prerequisites": []
   },
   {
@@ -173,7 +194,10 @@
     "content": "**Four axioms** capture the conditional resolution of Erdős #936:\n\n1. **erdos_936_two_pow_add_one:** ABC → 2^n + 1 eventually not powerful\n2. **erdos_936_two_pow_sub_one:** ABC → 2^n - 1 eventually not powerful\n3. **erdos_936_factorial_add_one:** ABC → n! + 1 eventually not powerful\n4. **erdos_936_factorial_sub_one:** ABC → n! - 1 eventually not powerful\n\n**Combined theorem:** erdos_936_all_variants shows all four follow from ABC.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of the four variants",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "factorial function",
+      "combinatorics"
+    ],
     "prerequisites": []
   },
   {
@@ -207,7 +231,10 @@
     "content": "**erdos_936_summary:** Complete status of Erdős Problem #936.\n\n**Main result:** Assuming the ABC conjecture, all four sequences (2^n ± 1, n! ± 1) are eventually not powerful.\n\n**Also established:**\n- 2 and 3 are not powerful (primes)\n- 1, 4, and 9 are powerful\n\n**Status:** OPEN (conditionally resolved)\n\nThe problem joins the rare category of results that are \"known\" assuming a major conjecture but have no unconditional proof.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of problem summary",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "prime numbers"
+    ],
     "prerequisites": []
   }
 ]

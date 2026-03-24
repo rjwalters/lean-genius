@@ -163,10 +163,26 @@
     }
   ],
   "relatedProofs": [
-    "erdos-957",
-    "erdos-958",
-    "erdos-960",
-    "erdos-504"
+    {
+      "id": "erdos-957",
+      "relationship": "related",
+      "description": "Erdős problem #957 studies the product of extreme distance frequencies — a closely related combinatorial geometry proble"
+    },
+    {
+      "id": "erdos-958",
+      "relationship": "related",
+      "description": "Erdős problem #958 concerns distance multiplicities and point configurations — another variant of the distance frequency"
+    },
+    {
+      "id": "erdos-960",
+      "relationship": "related",
+      "description": "Erdős problem #960 on ordinary lines and collinear Ramsey thresholds — a sibling combinatorial geometry problem in the s"
+    },
+    {
+      "id": "erdos-504",
+      "relationship": "thematic",
+      "description": "Both are extremal problems on finite planar point configurations — #504 optimizes angles while #959 optimizes distance f"
+    }
   ],
   "references": [
     {

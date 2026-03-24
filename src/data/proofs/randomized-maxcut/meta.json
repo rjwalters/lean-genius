@@ -196,11 +196,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-196",
-    "ramseys-theorem",
-    "birthday-problem",
-    "randomized-maxcut-oq-01",
-    "halting-problem"
+    {
+      "id": "erdos-196",
+      "relationship": "related",
+      "description": "Erdős problem on graph coloring — both concern extremal properties of graph partitions, with MaxCut seeking the largest "
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "thematic",
+      "description": "Ramsey theory guarantees monochromatic substructures in large graphs — the complementary perspective to MaxCut, which se"
+    },
+    {
+      "id": "birthday-problem",
+      "relationship": "foundational",
+      "description": "The birthday problem illustrates probabilistic counting over combinatorial structures — the same linearity of expectatio"
+    },
+    {
+      "id": "randomized-maxcut-oq-01",
+      "relationship": "extended-by",
+      "description": "Extends the 1/2-approximation result with additional analysis of the MaxCut algorithm"
+    },
+    {
+      "id": "halting-problem",
+      "relationship": "thematic",
+      "description": "MaxCut is NP-Complete — its computational intractability motivates the approximation approach. The halting problem estab"
+    }
   ],
   "leanFile": {
     "imports": [

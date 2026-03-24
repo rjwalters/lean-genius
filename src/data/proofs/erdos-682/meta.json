@@ -224,8 +224,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-4",
-    "erdos-1055",
-    "erdos-1137"
+    {
+      "id": "erdos-4",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory, prime-gaps, solved"
+    },
+    {
+      "id": "erdos-1055",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-gaps, smooth-numbers"
+    },
+    {
+      "id": "erdos-1137",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory, prime-gaps"
+    }
   ]
 }

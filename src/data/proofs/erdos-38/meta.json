@@ -146,8 +146,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-28",
-    "erdos-35",
-    "erdos-37"
+    {
+      "id": "erdos-28",
+      "relationship": "related",
+      "description": "Additive bases (Problem #28) and essential components (Problem #38) are related: an essential component can convert any "
+    },
+    {
+      "id": "erdos-35",
+      "relationship": "related",
+      "description": "Problem #35 on Schnirelmann density is the foundation. Essential components (Problems #37-38) study which sets can boost"
+    },
+    {
+      "id": "erdos-37",
+      "relationship": "related",
+      "description": "Problem #37 on essential components and lacunary sets is the companion problem. Both concern the density-boosting proper"
+    }
   ]
 }

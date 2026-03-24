@@ -179,8 +179,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-13",
-    "erdos-329",
-    "erdos-711"
+    {
+      "id": "erdos-13",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, sum-free-sets"
+    },
+    {
+      "id": "erdos-329",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-number-theory, combinatorics"
+    },
+    {
+      "id": "erdos-711",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, partially-solved"
+    }
   ]
 }

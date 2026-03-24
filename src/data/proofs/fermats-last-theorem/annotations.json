@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import from Mathlib's FLT modules: `FLT.Basic` for the theorem statement, `FLT.Four` for Fermat's descent proof of the n=4 case, and ring theory for integer properties.",
+    "mathContext": "Uses Mathlib's `FermatLastTheoremFor n` predicate ($\\forall a\\,b\\,c \\in \\mathbb{Z},\\; abc \\neq 0 \\to a^n + b^n \\neq c^n$) and the formalized descent proof for $n=4$.",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",

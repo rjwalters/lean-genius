@@ -152,10 +152,26 @@
     }
   ],
   "relatedProofs": [
-    "halting-problem",
-    "godel-incompleteness",
-    "pell-equation",
-    "abel-ruffini"
+    {
+      "id": "halting-problem",
+      "relationship": "foundational",
+      "description": "H10 undecidability is proved by reduction from the halting problem; the halting problem proof is embedded in this formal"
+    },
+    {
+      "id": "godel-incompleteness",
+      "relationship": "thematic",
+      "description": "Both demonstrate fundamental limits of formal systems — Gödel shows incompleteness of arithmetic, MRDP shows undecidabil"
+    },
+    {
+      "id": "pell-equation",
+      "relationship": "technical",
+      "description": "Matiyasevich's proof uses Pell equations to show exponential relations are Diophantine — the key technical step"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "thematic",
+      "description": "Abel-Ruffini (1824) pioneered the impossibility-proof paradigm for polynomial equations: no radical formula solves all q"
+    }
   ],
   "references": [
     {

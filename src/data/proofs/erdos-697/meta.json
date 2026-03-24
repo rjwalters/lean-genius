@@ -184,8 +184,16 @@
     ]
   },
   "relatedProofs": [
-    "erdos-696",
-    "erdos-698"
+    {
+      "id": "erdos-696",
+      "relationship": "related",
+      "description": "Problem #696 concerns chains of prime divisors with congruence conditions $d \\equiv 1 \\pmod{m}$. Both problems arise fro"
+    },
+    {
+      "id": "erdos-698",
+      "relationship": "related",
+      "description": "Adjacent problem in Erdős's collection. While #697 concerns divisor density with modular constraints, #698 addresses GCD"
+    }
   ],
   "leanFile": {
     "imports": [

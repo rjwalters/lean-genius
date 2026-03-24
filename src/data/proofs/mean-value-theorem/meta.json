@@ -207,14 +207,31 @@
     }
   ],
   "relatedProofs": [
-    "fundamental-theorem-calculus",
-    "intermediate-value-theorem",
-    "greens-theorem",
-    "brouwer-fixed-point",
-    "cauchy-schwarz",
-    "harmonic-divergence",
-    "taylor-theorem",
-    "e-transcendental"
+    {
+      "id": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "The MVT is a key ingredient in proving the Fundamental Theorem of Calculus Part II: $F(b) - F(a) = \\int_a^b F'(x)\\,dx$ u"
+    },
+    {
+      "id": "intermediate-value-theorem",
+      "relationship": "related",
+      "description": "IVT and MVT are the two central existence theorems for continuous/differentiable functions on intervals. IVT guarantees "
+    },
+    {
+      "id": "greens-theorem",
+      "relationship": "foundational",
+      "description": "MVT is used in the proof of Green's theorem for rectangles: the Fubini + FTC approach applies MVT to estimate $\\int_a^b "
+    },
+    {
+      "id": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "Both guarantee existence of special points for continuous/differentiable functions: MVT finds $c$ where the derivative e"
+    },
+    {
+      "id": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "The Cauchy form of MVT ($\\frac{f(b)-f(a)}{g(b)-g(a)} = \\frac{f'(c)}{g'(c)}$) is used in L'Hôpital's rule, which evaluate"
+    }
   ],
   "leanFile": {
     "imports": [

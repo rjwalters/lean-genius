@@ -187,16 +187,31 @@
     }
   ],
   "relatedProofs": [
-    "szemeredi-theorem",
-    "szemeredi-counting",
-    "szemeredi-full",
-    "szemeredi-regularity",
-    "erdos-3",
-    "erdos-1096",
-    "arithmetic-series",
-    "roth-theorem-k3",
-    "prob-method-expectation",
-    "prob-method-second-moment"
+    {
+      "id": "roth-theorem-k3",
+      "relationship": "related",
+      "description": "Roth's theorem guarantees 3-term APs in dense subsets; this problem goes further, bounding how many distinct common differences must appear"
+    },
+    {
+      "id": "erdos-3",
+      "relationship": "related",
+      "description": "Erdős #3 concerns APs in primes; #1097 asks about APs in general n-element integer sets"
+    },
+    {
+      "id": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Szemerédi's theorem guarantees APs in dense sets; #1097 asks about the common differences that must appear in 3-term APs"
+    },
+    {
+      "id": "erdos-1096",
+      "relationship": "related",
+      "description": "Sister problem in additive combinatorics on arithmetic progressions; both arise from the Asilomar sessions and concern quantitative AP structure"
+    },
+    {
+      "id": "prob-method-expectation",
+      "relationship": "related",
+      "description": "The first moment method underlies the Omega(n^{3/2}) lower bound on common differences via random subset counting"
+    }
   ],
   "leanFile": {
     "lineCount": 374,

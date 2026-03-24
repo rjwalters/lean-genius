@@ -177,8 +177,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-440",
-    "erdos-1101",
-    "erdos-243"
+    {
+      "id": "erdos-440",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: lcm, multiplicative-structure, number-theory"
+    },
+    {
+      "id": "erdos-1101",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, sequences"
+    },
+    {
+      "id": "erdos-243",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, sequences"
+    }
   ]
 }

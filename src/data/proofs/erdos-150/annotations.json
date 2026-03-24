@@ -68,7 +68,10 @@
     "content": "**maxMinimalCuts c(n):**\n\nThe maximum number of minimal cuts any graph on n vertices can have.\n\n**Definition:**\n```lean\nnoncomputable def maxMinimalCuts (n : N) : N :=\n  sSup {k : N | exists (V : Type), Fintype.card V = n and\n                 exists G : SimpleGraph V, (minimalCuts G).ncard = k}\n```\n\nThis is the central function of Erdos Problem #150.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of maximum minimal cuts function c(n)",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "graph theory"
+    ],
     "prerequisites": []
   },
   {
@@ -102,7 +105,10 @@
     "content": "**seymour_lower_bound:**\n\nalpha >= 3^{1/3} = 1.442...\n\n**Derivation:**\nFrom c(3m+2) >= 3^m, taking the (3m+2)th root:\nc(3m+2)^{1/(3m+2)} >= 3^{m/(3m+2)}\n\nAs m -> infinity, m/(3m+2) -> 1/3, so:\nalpha >= 3^{1/3}",
     "significance": "key",
     "mathContext": "See annotation content for formal details of lower bound on alpha",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
     "prerequisites": []
   },
   {
@@ -136,7 +142,10 @@
     "content": "**limit_exists:**\n\nThe limit alpha = lim c(n)^{1/n} exists.\n\n**Statement:**\n```lean\naxiom limit_exists :\n  exists alpha : R, Filter.Tendsto\n    (fun n : N => (c(n) : R) ^ (1/n))\n    Filter.atTop\n    (nhds alpha)\n```\n\nThis is the first part of Bradac's theorem - the limit is well-defined.",
     "mathContext": "Limit existence for such extremal functions often follows from sub/superadditivity arguments.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "limits",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -151,7 +160,10 @@
     "content": "**bradac_upper_bound:**\n\nalpha <= 2^{H(1/3)} = 1.8899...\n\nThis is the key result from Bradac's 2024 paper, showing that alpha < 2.\n\nThe upper bound involves sophisticated counting and entropy arguments.",
     "mathContext": "The appearance of binary entropy suggests counting arguments involving subsets or binary choices.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
     "prerequisites": []
   },
   {
@@ -166,7 +178,10 @@
     "content": "**alpha_less_than_two:**\n\nalpha < 2\n\nThis answers Erdos's question affirmatively.\n\n**Proof outline:**\n1. alpha <= 2^{H(1/3)} (Bradac's upper bound)\n2. H(1/3) < 1, so 2^{H(1/3)} < 2\n3. Therefore alpha < 2\n\nThe proof uses one sorry for the numerical inequality H(1/3) < 1.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of alpha less than two",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -181,7 +196,10 @@
     "content": "**erdos_150:**\n\nThe complete answer to Erdos's question.\n\n**Statement:**\n```lean\ntheorem erdos_150 :\n  exists alpha : R, alpha < 2 and\n    Filter.Tendsto (fun n => (c(n))^(1/n)) Filter.atTop (nhds alpha)\n```\n\n**Answer:** YES, c(n)^{1/n} converges to some alpha < 2.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of erdos problem #150: solved",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -196,7 +214,10 @@
     "content": "**alpha_bounds:**\n\n3^{1/3} <= alpha <= 2^{H(1/3)}\n\nNumerically: 1.442... <= alpha <= 1.890...\n\n**Sources:**\n- Lower bound: Seymour's construction\n- Upper bound: Bradac's theorem\n\nThe gap of about 0.45 remains to be closed.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of complete bounds on alpha",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -229,7 +250,10 @@
     "content": "**Seymour lower bounds for specific values:**\n\n- **c(5) >= 3:** m=1 gives c(5) >= 3^1 = 3\n- **c(8) >= 9:** m=2 gives c(8) >= 3^2 = 9  \n- **c(11) >= 27:** m=3 gives c(11) >= 3^3 = 27\n\nThese follow directly from Seymour's construction with m = 1, 2, 3 paths.",
     "significance": "supporting",
     "mathContext": "See annotation content for formal details of concrete examples",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -244,7 +268,11 @@
     "content": "**erdos_150_summary:**\n\nComplete characterization of the solution:\n\n1. **Existence:** The limit alpha = lim c(n)^{1/n} exists\n2. **Upper bound:** alpha < 2 (answering the question)\n3. **Bounds:** 3^{1/3} <= alpha <= 2^{H(1/3)}\n4. **Convergence:** c(n)^{1/n} -> alpha\n\n**erdos_150_answer:** Confirms the answer is YES.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of complete solution summary",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "ring theory",
+      "convergence"
+    ],
     "prerequisites": []
   }
 ]

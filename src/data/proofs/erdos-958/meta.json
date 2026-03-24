@@ -142,8 +142,16 @@
     }
   ],
   "relatedProofs": [
-    "pythagorean-theorem",
-    "law-of-cosines"
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "The Euclidean distance $\\|p-q\\| = \\sqrt{(p_1-q_1)^2 + (p_2-q_2)^2}$ underlying the distance set computation is derived f"
+    },
+    {
+      "id": "law-of-cosines",
+      "relationship": "foundational",
+      "description": "Distances between points on a circle relate via the law of cosines: for arc points at angles $\\theta_j, \\theta_k$ on the"
+    }
   ],
   "references": [
     {

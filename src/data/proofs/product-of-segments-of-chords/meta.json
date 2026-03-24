@@ -149,9 +149,21 @@
     }
   ],
   "relatedProofs": [
-    "ptolemys-theorem",
-    "cevas-theorem",
-    "area-of-circle"
+    {
+      "id": "ptolemys-theorem",
+      "relationship": "related",
+      "description": "Ptolemy's theorem on cyclic quadrilaterals — both are fundamental results about circles relating products of distances"
+    },
+    {
+      "id": "cevas-theorem",
+      "relationship": "related",
+      "description": "Ceva's theorem on concurrent cevians — related triangle-circle geometry using similar ratio arguments"
+    },
+    {
+      "id": "area-of-circle",
+      "relationship": "related",
+      "description": "Circle area formalization using the same Mathlib Euclidean geometry infrastructure"
+    }
   ],
   "leanFile": {
     "imports": [

@@ -170,9 +170,21 @@
     }
   ],
   "relatedProofs": [
-    "erdos-szekeres",
-    "four-color-theorem",
-    "ramseys-theorem"
+    {
+      "id": "erdos-szekeres",
+      "relationship": "related",
+      "description": "The Erdos-Szekeres theorem is another foundational result in combinatorial geometry, sharing the theme of geometric stru"
+    },
+    {
+      "id": "four-color-theorem",
+      "relationship": "related",
+      "description": "Both are landmark results in geometry/topology with multiple proof approaches and rich history, demonstrating different "
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "technique",
+      "description": "Ramsey-type arguments appear in generalizations of the Erdos-Mordell inequality to higher dimensions and in extremal geo"
+    }
   ],
   "leanFile": {
     "imports": [

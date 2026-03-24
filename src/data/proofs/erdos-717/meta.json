@@ -201,7 +201,11 @@
     }
   ],
   "relatedProofs": [
-    "erdos-637"
+    {
+      "id": "erdos-637",
+      "relationship": "related",
+      "description": "Both concern structural properties of graphs with bounded clique/independence: #637 studies distinct degrees, #717 studi"
+    }
   ],
   "leanFile": {
     "imports": [

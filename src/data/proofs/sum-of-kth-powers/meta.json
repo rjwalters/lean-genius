@@ -150,11 +150,31 @@
     }
   ],
   "relatedProofs": [
-    "binomial-theorem",
-    "arithmetic-series",
-    "geometric-series",
-    "fundamental-arithmetic",
-    "euler-totient"
+    {
+      "id": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The binomial theorem is used in the inductive proofs of power sum formulas: expanding $(i+1)^{k+1} - i^{k+1}$ via the bi"
+    },
+    {
+      "id": "arithmetic-series",
+      "relationship": "complementary",
+      "description": "The arithmetic series formula $\\sum_{i=1}^n i = n(n+1)/2$ (Gauss's formula) is the $k=1$ case of Faulhaber's formulas — "
+    },
+    {
+      "id": "geometric-series",
+      "relationship": "related",
+      "description": "While geometric series $\\sum r^i = (r^{n+1}-1)/(r-1)$ sums powers of a fixed ratio, Faulhaber sums $\\sum i^k$ raise the "
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The divisibility lemmas in the power sum formulas (e.g., $6 \\mid n(n+1)(2n+1)$) rely on properties of products of consec"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient function connects to Bernoulli numbers via the von Staudt-Clausen theorem: the denominator of $B_{2k}$ i"
+    }
   ],
   "leanFile": {
     "imports": [

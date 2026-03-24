@@ -234,9 +234,21 @@
     }
   ],
   "relatedProofs": [
-    "pythagorean-theorem",
-    "law-of-cosines",
-    "area-of-circle"
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "parent",
+      "description": "The original Euclidean Pythagorean theorem (a^2 + b^2 = c^2) that posed the open question answered by this non-Euclidean"
+    },
+    {
+      "id": "law-of-cosines",
+      "relationship": "related",
+      "description": "The law of cosines generalizes the Pythagorean theorem to non-right triangles. Both the spherical and hyperbolic laws of"
+    },
+    {
+      "id": "area-of-circle",
+      "relationship": "related",
+      "description": "Hyperbolic and spherical area formulas connect to circle area through the angular defect/excess: hyperbolic triangle are"
+    }
   ],
   "leanFile": {
     "imports": [

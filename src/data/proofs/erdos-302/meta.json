@@ -226,10 +226,26 @@
     }
   ],
   "relatedProofs": [
-    "erdos-23",
-    "erdos-285",
-    "erdos-288",
-    "erdos-303"
+    {
+      "id": "erdos-23",
+      "relationship": "related",
+      "description": "Both are Erdős extremal combinatorics problems about maximum/minimum sizes of sets satisfying structural constraints"
+    },
+    {
+      "id": "erdos-285",
+      "relationship": "related",
+      "description": "Both concern Egyptian fraction / unit fraction structure: #285 studies asymptotics of Egyptian fraction representations,"
+    },
+    {
+      "id": "erdos-288",
+      "relationship": "related",
+      "description": "Both concern unit fraction sums and finiteness: #288 asks about finitely many interval pairs with integer harmonic sums,"
+    },
+    {
+      "id": "erdos-303",
+      "relationship": "related",
+      "description": "The coloring version of #302: can {1,...,N} be 2-colored with no monochromatic solution to 1/a = 1/b + 1/c? Solved by Br"
+    }
   ],
   "leanFile": {
     "imports": [

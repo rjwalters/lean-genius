@@ -273,8 +273,20 @@
     "definitionCount": 18
   },
   "relatedProofs": [
-    "erdos-248",
-    "erdos-413",
-    "erdos-878"
+    {
+      "id": "erdos-248",
+      "relationship": "related",
+      "description": "Both study ω bounds on shifted integers; #248 asks about forward shifts ω(n+k) (solved by Tao-Teräväinen), #679 about ba"
+    },
+    {
+      "id": "erdos-413",
+      "relationship": "related",
+      "description": "Both study structural constraints on ω; #413 formalizes ω-barriers (m + ω(m) <= n), #679 asks about simultaneous smallne"
+    },
+    {
+      "id": "erdos-878",
+      "relationship": "related",
+      "description": "Both study prime factorization functions with unusual asymptotic behavior; #878 defines unconventional additive function"
+    }
   ]
 }

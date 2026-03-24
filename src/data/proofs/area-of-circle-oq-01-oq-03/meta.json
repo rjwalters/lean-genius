@@ -197,14 +197,31 @@
     }
   ],
   "relatedProofs": [
-    "area-of-circle",
-    "area-of-circle-oq-01",
-    "area-of-circle-oq-01-oq-02",
-    "area-of-circle-oq-01-oq-02-oq-02",
-    "isoperimetric-theorem",
-    "fourier-series",
-    "cauchy-schwarz",
-    "borsuk-ulam"
+    {
+      "id": "area-of-circle",
+      "relationship": "extends",
+      "description": "The circle's isoperimetric optimality extends the basic area formula"
+    },
+    {
+      "id": "area-of-circle-oq-01",
+      "relationship": "extends",
+      "description": "OQ01 proves C = dA/dr; OQ03 proves C is isoperimetrically optimal"
+    },
+    {
+      "id": "area-of-circle-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "OQ01-OQ02 proves A = ∫C dρ; OQ03 proves C²≥4πA completes the circle"
+    },
+    {
+      "id": "area-of-circle-oq-01-oq-02-oq-02",
+      "relationship": "uses",
+      "description": "The IBP formula for Fourier coefficients ĉₙ(f') = in·ĉₙ(f) proved there is a key ingredient in Hurwitz's Fourier-analyti"
+    },
+    {
+      "id": "isoperimetric-theorem",
+      "relationship": "extends",
+      "description": "Wiedijk #43: the abstract version is in IsoperimetricTheorem.lean; this file provides the OQ-chain approach"
+    }
   ],
   "references": [
     {

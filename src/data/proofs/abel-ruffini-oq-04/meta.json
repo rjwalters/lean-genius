@@ -359,19 +359,30 @@
     }
   ],
   "relatedProofs": [
-    "abel-ruffini",
-    "angle-trisection",
-    "fundamental-theorem-algebra",
-    "inverse-galois",
-    "lagrange-theorem",
-    "sylow-theorems",
-    "solution-of-cubic",
-    "general-quartic",
-    "quadratic-reciprocity",
-    "vietas-formulas",
-    "puiseux-theorem",
-    "primitive-roots",
-    "kummer-theorem",
-    "hilbert-13"
+    {
+      "id": "abel-ruffini",
+      "relationship": "extends",
+      "description": "Base Abel-Ruffini theorem using Mathlib's solvableByRad — this file exposes the internal proof chain with each step as a"
+    },
+    {
+      "id": "angle-trisection",
+      "relationship": "related",
+      "description": "Both are Galois-theoretic impossibility results: Abel-Ruffini shows quintics are unsolvable by radicals (Galois group no"
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "complementary",
+      "description": "FTA guarantees every polynomial has complex roots; this file shows those roots cannot always be expressed with radicals "
+    },
+    {
+      "id": "inverse-galois",
+      "relationship": "related",
+      "description": "The inverse Galois problem asks which groups occur as Galois groups — Sₙ occurs as Gal(generic degree-n polynomial), con"
+    },
+    {
+      "id": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem on subgroup orders is used throughout: |Aₙ| = n!/2, and the derived series quotients have predictable"
+    }
   ]
 }

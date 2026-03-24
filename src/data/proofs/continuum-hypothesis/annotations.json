@@ -163,7 +163,10 @@
     "content": "Fully formalizing L would require:\n\n1. Transfinite recursion over all ordinals\n2. Gödel operations (8 operations for definability)\n3. Verification of each ZFC axiom in L\n4. ~1000+ lines of formal proof\n\nWe capture this as an axiom to focus on the *structure* of the independence proof.",
     "significance": "supporting",
     "mathContext": "Gödel's constructible universe $L$: the minimal inner model of ZFC, built by transfinite recursion $L_0 = \\emptyset$, $L_{\\alpha+1} = \\text{Def}(L_\\alpha)$, $L_\\lambda = \\bigcup_{\\alpha<\\lambda} L_\\alpha$, $L = \\bigcup_{\\alpha \\in \\text{Ord}} L_\\alpha$. In $L$: $\\text{GCH}$ holds ($2^{\\aleph_\\alpha} = \\aleph_{\\alpha+1}$).",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -197,7 +200,10 @@
     "content": "Formalizing Cohen forcing requires:\n\n1. Complete posets and dense sets\n2. Generic filters (via Rasiowa-Sikorski lemma)\n3. Names and interpretation\n4. Truth lemma and definability\n5. ~2000+ lines of machinery\n\nCohen's breakthrough was showing this construction preserves ZFC while changing the value of the continuum.",
     "significance": "supporting",
     "mathContext": "Cohen forcing: given a model $M \\models \\text{ZFC}$, adjoin a 'generic' set $G$ to get $M[G] \\models \\text{ZFC} + \\neg\\text{CH}$. The key: the forcing poset $\\text{Fn}(\\aleph_2 \\times \\omega, 2)$ adds $\\aleph_2$ new reals, making $2^{\\aleph_0} \\geq \\aleph_2 > \\aleph_1$.",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "mathematical context",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {

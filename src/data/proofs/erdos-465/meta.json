@@ -226,12 +226,30 @@
     }
   ],
   "relatedProofs": [
-    "erdos-466",
-    "erdos-953",
-    "erdos-464",
-    "erdos-100",
-    "erdos-254",
-    "erdos-1127",
-    "erdos-1000"
+    {
+      "id": "erdos-466",
+      "relationship": "related",
+      "description": "Direct companion: provides the matching lower bound N(X,δ) ≫_δ X^{1/2}, proving the exponent 1/2 is optimal. Together wi"
+    },
+    {
+      "id": "erdos-953",
+      "relationship": "related",
+      "description": "Measure-theoretic variant: asks for the maximum measure M(r) of a measurable set in B(0,r) avoiding integer distances, w"
+    },
+    {
+      "id": "erdos-464",
+      "relationship": "related",
+      "description": "Shares Diophantine approximation techniques: studies density of fractional parts {θn_k} for lacunary sequences, solved b"
+    },
+    {
+      "id": "erdos-100",
+      "relationship": "related",
+      "description": "Distance geometry companion: asks if diameter must grow with n for points with integer distances and spacing constraints"
+    },
+    {
+      "id": "erdos-254",
+      "relationship": "related",
+      "description": "Connects additive combinatorics with Diophantine approximation: subset sum representation involving fractional parts {θn"
+    }
   ]
 }

@@ -194,8 +194,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-683",
-    "erdos-1055",
-    "erdos-1063"
+    {
+      "id": "erdos-683",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory, open, primes"
+    },
+    {
+      "id": "erdos-1055",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, smooth-numbers"
+    },
+    {
+      "id": "erdos-1063",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory, open"
+    }
   ]
 }

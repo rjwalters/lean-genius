@@ -247,11 +247,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-414",
-    "erdos-415",
-    "erdos-412",
-    "euler-totient",
-    "fundamental-arithmetic"
+    {
+      "id": "erdos-414",
+      "relationship": "related",
+      "description": "Erdős #414 studies merging orbits of h(n) = n + τ(n), closely related to the ω-barrier dynamics here. Both concern itera"
+    },
+    {
+      "id": "erdos-415",
+      "relationship": "related",
+      "description": "Erdős #415 extends the barrier question to other arithmetic functions, part of the same cluster of problems on additive "
+    },
+    {
+      "id": "erdos-412",
+      "relationship": "related",
+      "description": "Erdős #412 is a sibling problem in the barrier cluster, studying related additive combinatorics of arithmetic functions"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "The Euler totient φ(n) is shown to have no barriers beyond 3 (since φ(n) ≥ 2 for n ≥ 3), contrasting with ω(n) which con"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization underlies ω(n): the count of distinct prime factors requires knowing the full factorization. "
+    }
   ],
   "references": [
     {

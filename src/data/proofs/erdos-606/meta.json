@@ -154,10 +154,26 @@
     }
   ],
   "relatedProofs": [
-    "erdos-607",
-    "erdos-604",
-    "erdos-605",
-    "combinations-formula"
+    {
+      "id": "erdos-607",
+      "relationship": "extends",
+      "description": "Erdős Problem #607 studies incidence signatures of point configurations, a natural refinement of the line-counting quest"
+    },
+    {
+      "id": "erdos-604",
+      "relationship": "related",
+      "description": "The pinned distance problem (#604) is another Erdős problem about point configurations in the plane, using similar incid"
+    },
+    {
+      "id": "erdos-605",
+      "relationship": "related",
+      "description": "Repeated distances on a sphere (#605) explores similar distance/incidence themes in a spherical setting"
+    },
+    {
+      "id": "combinations-formula",
+      "relationship": "uses",
+      "description": "The maximum line count C(n,2) = n(n-1)/2 is the binomial coefficient formalized in the combinations formula"
+    }
   ],
   "leanFile": {
     "imports": [

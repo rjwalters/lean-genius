@@ -193,11 +193,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-613",
-    "erdos-883",
-    "erdos-1091",
-    "erdos-625",
-    "erdos-622"
+    {
+      "id": "erdos-613",
+      "relationship": "thematic",
+      "description": "Both study Ramsey-type coloring problems on graphs. #613 concerns size Ramsey numbers for stars vs odd cycles; #609 conc"
+    },
+    {
+      "id": "erdos-883",
+      "relationship": "thematic",
+      "description": "Both involve cycles in structured graphs. #883 asks about cycles in the coprime graph on subsets of $\\{1, \\ldots, n\\}$; "
+    },
+    {
+      "id": "erdos-1091",
+      "relationship": "thematic",
+      "description": "Both connect chromatic number to cycle structure. #1091 asks whether $K_4$-free graphs with $\\chi = 4$ contain odd cycle"
+    },
+    {
+      "id": "erdos-625",
+      "relationship": "methodological",
+      "description": "Both study chromatic properties of graphs. #625 compares chromatic and cochromatic numbers of random graphs; #609 studie"
+    },
+    {
+      "id": "erdos-622",
+      "relationship": "methodological",
+      "description": "Both use extremal combinatorics and counting arguments on complete-like graphs. #622 studies cycle-spanning subsets in r"
+    }
   ],
   "leanFile": {
     "imports": [

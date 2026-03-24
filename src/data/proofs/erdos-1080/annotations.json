@@ -49,7 +49,10 @@
     "content": "**bipartition_edges_between:**\n\nIn a bipartite graph with bipartition (X, Y), every edge connects a vertex in X to a vertex in Y (or vice versa).\n\nThis is the defining property of bipartite graphs: there are no edges within X or within Y.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of edges between parts",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "graph theory"
+    ],
     "prerequisites": []
   },
   {
@@ -139,7 +142,10 @@
     "content": "**deCaen_szekely_lower_bound:**\n\nf(n, ⌊n^(2/3)⌋) = Omega(n^(58/57 + o(1)))\n\nSince 58/57 > 1, this shows f grows superlinearly.\n\n**Consequence:** There cannot exist a constant c such that cn edges guarantee a C_6.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of de caen-szekely lower bound",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "mathematical context",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -173,7 +179,11 @@
     "content": "**erdos_conjecture_false:**\n\nThe answer to Erdos's question is NO.\n\n**Proof idea:**\n1. Suppose constant c > 0 existed such that cn edges force a C_6\n2. Then any C_4,C_6-free graph has < cn edges\n3. So f(n, ⌊n^(2/3)⌋) < cn for all n\n4. But Lazebnik-Ustimenko-Woldar shows f >= c' * n^(16/15)\n5. For large n, c' * n^(16/15) > cn, contradiction",
     "significance": "key",
     "mathContext": "See annotation content for formal details of erdos's conjecture is false",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "graph theory",
+      "proof by contradiction"
+    ],
     "prerequisites": []
   },
   {
@@ -188,7 +198,10 @@
     "content": "**erdos_1080:**\n\nThe main theorem formalizing the negative answer to Erdos's question.\n\n```lean\ntheorem erdos_1080 :\n    answer(false) <->\n    exists c > (0 : R), forall G bipartite with ⌊n^(2/3)⌋ in one part,\n      |E(G)| >= cn -> G has a C_6\n```\n\nThe answer is NO because C_4,C_6-free graphs can have Omega(n^(16/15)) edges.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of erdos problem #1080: disproved",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "graph theory"
+    ],
     "prerequisites": []
   },
   {
@@ -241,7 +254,10 @@
     "content": "**c4_free_iff_no_K22:**\n\nA bipartite graph is C_4-free if and only if it contains no K_{2,2}.\n\nThis is because a 4-cycle in a bipartite graph is exactly a complete bipartite subgraph K_{2,2}:\n- Two vertices a_1, a_2 in one part\n- Two vertices b_1, b_2 in the other part\n- All four edges present: a_1-b_1, a_1-b_2, a_2-b_1, a_2-b_2",
     "significance": "supporting",
     "mathContext": "See annotation content for formal details of c_4-free equivalence",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "graph theory"
+    ],
     "prerequisites": []
   },
   {
@@ -256,7 +272,10 @@
     "content": "**erdos_1080_summary:**\n\nCombines the main results:\n\n1. **C_6 NOT forced:** No constant c makes cn edges guarantee a 6-cycle\n\n2. **C_8 IS forced:** There exists c such that cn edges guarantee an 8-cycle\n\n```lean\ntheorem erdos_1080_summary :\n    (not exists c > 0, cn edges -> C_6) and\n    (exists c > 0, cn edges -> C_8)\n```\n\nThis captures the complete picture of Erdos Problem #1080.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of summary theorem",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "combinatorics"
+    ],
     "prerequisites": []
   }
 ]

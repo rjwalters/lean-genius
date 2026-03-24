@@ -168,12 +168,31 @@
     ]
   },
   "relatedProofs": [
-    "cevas-theorem",
-    "cevas-theorem-oq-02",
-    "cevas-theorem-oq-02-oq-02",
-    "cevas-theorem-oq-04",
-    "law-of-cosines",
-    "pythagorean-theorem"
+    {
+      "id": "cevas-theorem",
+      "relationship": "ancestor",
+      "description": "The classical (planar) Ceva theorem using length ratios — this file gives the spherical generalization using unit-vector"
+    },
+    {
+      "id": "cevas-theorem-oq-02",
+      "relationship": "parent",
+      "description": "The parent open question on non-Euclidean Ceva formulations — this file answers OQ-02-OQ-01 specifically for unit-vector"
+    },
+    {
+      "id": "cevas-theorem-oq-02-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling entry exploring another aspect of the non-Euclidean Ceva question from the same parent OQ-02."
+    },
+    {
+      "id": "cevas-theorem-oq-04",
+      "relationship": "sibling",
+      "description": "Another open question from Ceva's theorem exploring different directions — together these entries map the full landscape"
+    },
+    {
+      "id": "law-of-cosines",
+      "relationship": "foundational",
+      "description": "The spherical law of cosines $\\cos c = \\cos a \\cos b + \\sin a \\sin b \\cos C$ is the fundamental identity relating angles"
+    }
   ],
   "leanFile": {
     "imports": [

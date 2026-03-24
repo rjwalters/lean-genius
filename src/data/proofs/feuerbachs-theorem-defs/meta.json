@@ -216,9 +216,25 @@
     }
   ],
   "relatedProofs": [
-    "feuerbachs-theorem-oq-01",
-    "feuerbachs-theorem",
-    "pythagorean-theorem",
-    "isosceles-triangle"
+    {
+      "id": "feuerbachs-theorem-oq-01",
+      "relationship": "foundational",
+      "description": "Provides all definitions, special point formulas, and nine-point circle membership proofs imported by the main Feuerbach"
+    },
+    {
+      "id": "feuerbachs-theorem",
+      "relationship": "foundational",
+      "description": "Provides the definitional infrastructure assembled by the top-level Feuerbach's Theorem entry"
+    },
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "The Euclidean distance formula used throughout this module is a direct application of the Pythagorean theorem"
+    },
+    {
+      "id": "isosceles-triangle",
+      "relationship": "related",
+      "description": "Circumcenter equidistance from vertices is the defining property used in this module; the isosceles triangle proof share"
+    }
   ]
 }

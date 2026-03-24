@@ -175,8 +175,16 @@
     ]
   },
   "relatedProofs": [
-    "combinations-formula",
-    "erdos-1063"
+    {
+      "id": "combinations-formula",
+      "relationship": "related",
+      "description": "The binomial coefficient C(n,k) is the fundamental object used as a generator in this Frobenius problem. Problem #435 as"
+    },
+    {
+      "id": "erdos-1063",
+      "relationship": "related",
+      "description": "Problem #1063 studies divisibility of C(n,k) by factors of n, directly connected to the prime power analysis in the Hwan"
+    }
   ],
   "leanFile": {
     "imports": [

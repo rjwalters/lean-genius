@@ -245,10 +245,30 @@
     }
   ],
   "relatedProofs": [
-    "gcd-algorithm",
-    "bezout-identity",
-    "fundamental-arithmetic",
-    "geometric-series",
-    "binomial-theorem"
+    {
+      "id": "gcd-algorithm",
+      "relationship": "foundational",
+      "description": "The GCD algorithm tests coprimality gcd(a,b) = 1, the essential hypothesis of Birch's theorem. Without coprimality, the "
+    },
+    {
+      "id": "bezout-identity",
+      "relationship": "foundational",
+      "description": "Bézout's identity (sa + tb = 1 for coprime a,b) is central to Birch's proof: coprimality ensures that a^k b^l generates "
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique factorization ensures that products a^k b^l are distinct when gcd(a,b) = 1: two such products equal implies the s"
+    },
+    {
+      "id": "geometric-series",
+      "relationship": "related",
+      "description": "Powers of 2 form the prototypical complete sequence (binary representation). The geometric growth rate 2^k means the par"
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial theorem counts subset sums: a set of n elements generates at most 2^n distinct subset sums. For powerSet(a,"
+    }
   ]
 }

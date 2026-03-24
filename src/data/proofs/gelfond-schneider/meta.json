@@ -184,13 +184,31 @@
     ]
   },
   "relatedProofs": [
-    "e-transcendental",
-    "prime-number-theorem",
-    "abel-ruffini",
-    "hermite-lindemann",
-    "pi-transcendental",
-    "sqrt2-irrational",
-    "liouville-theorem"
+    {
+      "id": "e-transcendental",
+      "relationship": "related",
+      "description": "Hermite proved e is transcendental (1873); Gelfond-Schneider extends transcendence theory to exponential expressions"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "technique",
+      "description": "Both use analytic methods; Baker's generalization of Gelfond-Schneider has applications to prime distribution"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "related",
+      "description": "Abel-Ruffini (1824) sits below Gelfond-Schneider (1934) in the expressibility hierarchy: Abel-Ruffini shows certain poly"
+    },
+    {
+      "id": "hermite-lindemann",
+      "relationship": "foundational",
+      "description": "Hermite-Lindemann ($e^\\alpha$ transcendental for algebraic $\\alpha \\neq 0$) is the precursor. Gelfond-Schneider handles "
+    },
+    {
+      "id": "pi-transcendental",
+      "relationship": "related",
+      "description": "Gelfond-Schneider proves $e^\\pi = (-1)^{-i}$ is transcendental ($\\alpha = -1$, $\\beta = -i$), an elegant alternative to "
+    }
   ],
   "references": [
     {

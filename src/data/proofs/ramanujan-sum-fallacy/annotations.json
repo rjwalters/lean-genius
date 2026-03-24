@@ -45,6 +45,7 @@
     "type": "definition",
     "title": "Defining the Natural Number Series",
     "content": "We define `naturals n = n + 1` to get the sequence $1, 2, 3, 4, \\ldots$ (offset by 1 because $\\mathbb{N}$ starts at 0 in Lean).",
+    "mathContext": "Defines $f(n) = n+1$ so that $\\sum_{n=0}^{\\infty} f(n) = \\sum_{k=1}^{\\infty} k$, adjusting for Lean's zero-indexed $\\mathbb{N}$.",
     "significance": "supporting",
     "relatedConcepts": [
       "natural numbers",
@@ -131,6 +132,7 @@
     "type": "lemma",
     "title": "Alternating Naturals Don't Converge Either",
     "content": "The series $1-2+3-4+5-6+\\cdots$ also diverges. Its partial sums grow without bound in absolute value: $1, -1, 2, -2, 3, -3, \\ldots$",
+    "mathContext": "The partial sums $S_N = \\sum_{n=1}^{N}(-1)^{n+1}n$ satisfy $|S_N| = \\lceil N/2 \\rceil \\to \\infty$, so the series is not summable in Mathlib's `tsum` sense.",
     "significance": "key",
     "relatedConcepts": [
       "divergence",
@@ -164,6 +166,7 @@
     "type": "theorem",
     "title": "FALLACY: Shift-Add Blocked by Type System",
     "content": "When we try to apply the shift-and-add manipulation to our divergent series, **Lean blocks us**. We would need `Summable alternatingNaturals`, but we proved this is false!",
+    "mathContext": "Lean requires a proof of `Summable f` to apply `tsum_eq_zero_add`, enforcing that $\\sum |f(n)| < \\infty$ before any index-shifting identity $\\sum_{n=0}^\\infty f(n) = f(0) + \\sum_{n=0}^\\infty f(n+1)$ is valid.",
     "significance": "key",
     "relatedConcepts": [
       "type checking",
@@ -232,6 +235,7 @@
     "type": "theorem",
     "title": "Step 2 Fails: Cannot Shift Divergent Series",
     "content": "The second step uses the shift-and-add manipulation. **BLOCKED**: This requires `Summable` which we cannot prove for divergent series.",
+    "mathContext": "Attempts to derive $S_2 + S_2' = S_1$ where $S_2' = \\sum_{n=0}^\\infty (-1)^n(n+1)$ is a shifted copy, but the required `Summable` hypothesis for $\\sum(-1)^{n+1}n$ cannot be discharged.",
     "significance": "key",
     "relatedConcepts": [
       "second fallacy",
@@ -265,6 +269,7 @@
     "type": "concept",
     "title": "Conclusion: Type Systems Enforce Rigor",
     "content": "Lean's type system and Mathlib's design choices enforce mathematical rigor automatically:\n\n1. **Summable typeclass**: Acts as proof obligation before series manipulation\n2. **tsum = 0 convention**: Prevents arithmetic on divergent 'values'\n3. **Distinct types**: Regularization would be a different function entirely\n\nThe -1/12 result is useful in physics, but it requires different mathematical machinery that Lean would model with appropriate types.",
+    "mathContext": "Mathlib's `tsum_eq_zero_of_not_summable` forces $\\text{tsum}\\,f = 0$ when $\\neg\\,\\text{Summable}\\,f$, cleanly separating convergent sums from regularized values like $\\zeta(-1) = -\\tfrac{1}{12}$.",
     "significance": "key",
     "relatedConcepts": [
       "formal verification",

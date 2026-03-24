@@ -211,18 +211,31 @@
     }
   ],
   "relatedProofs": [
-    "fundamental-theorem-algebra",
-    "abel-ruffini",
-    "vietas-formulas",
-    "bezout-identity",
-    "gcd-algorithm",
-    "binomial-theorem",
-    "solution-of-cubic",
-    "general-quartic",
-    "fundamental-arithmetic",
-    "chinese-remainder-constructive",
-    "mathematical-induction",
-    "lagrange-theorem"
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "extends",
+      "description": "The Factor Theorem is the key induction step for FTA: each root produces a linear factor, and iterating over all roots ("
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "foundational",
+      "description": "The Factor Theorem underlies Galois theory: splitting fields are built by repeatedly adjoining roots and factoring out l"
+    },
+    {
+      "id": "vietas-formulas",
+      "relationship": "complementary",
+      "description": "Vieta's formulas express coefficients as elementary symmetric functions of roots — a consequence of the Factor Theorem's"
+    },
+    {
+      "id": "bezout-identity",
+      "relationship": "related",
+      "description": "Bézout's identity for polynomial GCD ($\\gcd(p,q) = ap + bq$) relies on the Euclidean algorithm for polynomials, which us"
+    },
+    {
+      "id": "gcd-algorithm",
+      "relationship": "related",
+      "description": "The Euclidean algorithm for polynomial GCD computes $\\gcd(p,q)$ by repeated division with remainder — each step applies "
+    }
   ],
   "references": [
     {

@@ -49,7 +49,10 @@
     "content": "**IsProperColoring c:**\n\nA coloring c : V → ℕ is proper if adjacent vertices have different colors.\n\n**Definition:**\n```lean\ndef IsProperColoring (c : V → ℕ) : Prop :=\n  ∀ u v, G.Adj u v → c u ≠ c v\n```\n\nEach color class in a proper coloring is an independent set.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of proper coloring",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "ring theory"
+    ],
     "prerequisites": []
   },
   {
@@ -102,7 +105,10 @@
     "content": "**hasFolkmanPropertyZero:**\n\nEvery subgraph has α ≥ n/2.\n\n**Key observation:** This forces the graph to be bipartite!\n\n**Why:** An odd cycle Cₙ has α = (n-1)/2 < n/2, so odd cycles are forbidden.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of the k = 0 case",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "graph theory"
+    ],
     "prerequisites": []
   },
   {
@@ -117,7 +123,10 @@
     "content": "**folkman_zero_implies_bipartite:**\n\nIf every subgraph has α ≥ n/2, then χ(G) ≤ 2.\n\n**Proof idea:**\n- No odd cycles exist (they violate the condition)\n- A graph is bipartite iff it has no odd cycles\n- Bipartite graphs are 2-colorable",
     "significance": "key",
     "mathContext": "See annotation content for formal details of k = 0 implies bipartiteness",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "graph theory"
+    ],
     "prerequisites": []
   },
   {
@@ -132,7 +141,10 @@
     "content": "**folkman_theorem:**\n\nIf G has the Folkman property with parameter k, then χ(G) ≤ k+2.\n\n**Statement:**\n```lean\naxiom folkman_theorem :\n  ∀ (k : ℕ), hasFolkmanPropertyInduced G k → χ(G) ≤ k + 2\n```\n\nThis is the main result, proved by Jon Folkman in 1970.",
     "mathContext": "Folkman's original proof uses induction and careful analysis of graph structure.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
     "prerequisites": []
   },
   {
@@ -147,7 +159,10 @@
     "content": "**erdos_922:**\n\nThe statement of the problem, now a theorem:\n\n∀ k ≥ 0, Folkman property with k → χ(G) ≤ k+2\n\n**Answer: YES** - proved by Folkman (1970).",
     "significance": "key",
     "mathContext": "See annotation content for formal details of erdős problem #922: solved",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -162,7 +177,10 @@
     "content": "**folkman_bound_tight:**\n\nFor every k ≥ 0, there exist graphs achieving χ(G) = k+2 while satisfying the Folkman property.\n\nThe bound k+2 cannot be improved in general.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of the bound is tight",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "graph theory",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -177,7 +195,10 @@
     "content": "**folkman_k1:**\n\nFor k = 1: Folkman property implies χ(G) ≤ 3.\n\nThis is the first non-trivial case that Erdős and Hajnal couldn't prove themselves.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of the k = 1 case",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -192,7 +213,10 @@
     "content": "**independenceRatio:**\n\nα(G)/n - the fraction of vertices in a maximum independent set.\n\nThe Folkman property with k says: for all subgraphs H on m vertices, α(H)/m ≥ (m-k)/(2m).",
     "significance": "supporting",
     "mathContext": "See annotation content for formal details of independence ratio",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "graph theory"
+    ],
     "prerequisites": []
   },
   {
@@ -207,7 +231,10 @@
     "content": "**greedy_coloring_bound:**\n\nχ(G) ≤ Δ(G) + 1 where Δ(G) is the maximum degree.\n\nGreedy coloring always uses at most Δ+1 colors. Folkman graphs have special degree structure.",
     "significance": "supporting",
     "mathContext": "See annotation content for formal details of greedy coloring bound",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "ring theory",
+      "graph theory"
+    ],
     "prerequisites": []
   },
   {
@@ -222,7 +249,10 @@
     "content": "**erdosHajnalQuestion k:**\n\nThe original 1967 question:\n\nIf every subgraph H has an independent set of size ≥ (|V(H)|-k)/2, must χ(G) ≤ k+2?\n\nErdős and Hajnal couldn't prove even k=1. Folkman resolved all cases in 1970.",
     "mathContext": "Published in Magyar Tudomanyos Akademia Matematikai Lapok (1967).",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "graph theory"
+    ],
     "prerequisites": []
   },
   {
@@ -255,7 +285,10 @@
     "content": "**brooks_theorem:**\n\nχ(G) ≤ Δ(G) unless G is complete or an odd cycle.\n\nBrooks' theorem improves greedy coloring for most graphs. It's related but distinct from Folkman's result.",
     "mathContext": "Proved by R. L. Brooks in 1941.",
     "significance": "supporting",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "ring theory",
+      "graph theory"
+    ],
     "prerequisites": []
   },
   {
@@ -270,7 +303,10 @@
     "content": "**erdos_922_summary:**\n\nCombines the main results:\n1. Folkman's theorem: property with k → χ ≤ k+2\n2. Tightness: bound is achieved for all k\n3. Special case: k=0 gives bipartiteness\n\nThe answer to Erdős Problem #922 is YES.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of summary theorem",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "combinatorics"
+    ],
     "prerequisites": []
   }
 ]

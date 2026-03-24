@@ -183,8 +183,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-134",
-    "erdos-23",
-    "erdos-1021"
+    {
+      "id": "erdos-134",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, solved, triangle-free"
+    },
+    {
+      "id": "erdos-23",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, extremal-combinatorics, graph-theory, triangle-free"
+    },
+    {
+      "id": "erdos-1021",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, extremal-combinatorics, graph-theory"
+    }
   ]
 }

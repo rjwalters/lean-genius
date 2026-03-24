@@ -101,8 +101,16 @@
     }
   ],
   "relatedProofs": [
-    "prime-number-theorem",
-    "infinitude-primes"
+    {
+      "id": "prime-number-theorem",
+      "relationship": "depends-on",
+      "description": "The prime density heuristic relies on the prime number theorem and Mertens' theorem for the sum of reciprocals of primes"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "related",
+      "description": "The infinitude of primes ensures that more primes become available as n grows, making r-fold covering increasingly plaus"
+    }
   ],
   "leanFile": {
     "imports": [

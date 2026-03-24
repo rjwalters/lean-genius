@@ -196,11 +196,31 @@
     ]
   },
   "relatedProofs": [
-    "bertrands-postulate",
-    "erdos-216",
-    "erdos-233",
-    "erdos-218",
-    "erdos-203"
+    {
+      "id": "bertrands-postulate",
+      "relationship": "foundational",
+      "description": "Bertrand's postulate bounds prime gaps; the prime gap structure underlies the prime number graph used in Pomerance's pro"
+    },
+    {
+      "id": "erdos-216",
+      "relationship": "technique",
+      "description": "Both use convex hull geometry — Problem #216 for empty convex polygons in point sets, Problem #453 for the prime number "
+    },
+    {
+      "id": "erdos-233",
+      "relationship": "related",
+      "description": "Both study prime gap structure: Problem #233 on sum of squares of gaps, Problem #453 on product inequalities from convex"
+    },
+    {
+      "id": "erdos-218",
+      "relationship": "related",
+      "description": "Both concern local behavior of the prime sequence: Problem #218 on gap comparison densities, Problem #453 on product com"
+    },
+    {
+      "id": "erdos-203",
+      "relationship": "thematic",
+      "description": "Both are solved Erdős problems about prime distribution: Problem #203 on covering systems avoiding primes, Problem #453 "
+    }
   ],
   "references": [
     {

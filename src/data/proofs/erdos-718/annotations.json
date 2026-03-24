@@ -49,7 +49,10 @@
     "content": "**MaderConjecture**: there exists a universal constant C > 0 such that any graph on n vertices with at least Cr²n edges must contain a subdivision of Kᵣ. This conjectures a quadratic dependence on r, vastly improving the exponential bound.",
     "mathContext": "The quadratic bound is optimal up to the constant C.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "formal definition",
+      "graph theory"
+    ],
     "prerequisites": []
   },
   {
@@ -64,7 +67,10 @@
     "content": "**dirac_1960**: 2n-2 edges forces a K₄ subdivision (initiated the field). **mader_1967**: 2^{r(r-1)/2} · n edges suffices for Kᵣ subdivision. This exponential bound stood for nearly 30 years before the quadratic improvement.",
     "mathContext": "These results established the systematic study of edge thresholds for topological cliques.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "field theory",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -79,7 +85,10 @@
     "content": "**komlos_szemeredi_1996** and **bollobas_thomason_1996**: Two independent proofs that the Mader Conjecture holds. Komlós-Szemerédi used extremal methods; Bollobás-Thomason used highly linked graph characterizations. **mader_conjecture_true** follows directly.",
     "mathContext": "One of the landmark results in extremal graph theory, proven independently by two groups in the same year.",
     "significance": "key",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "graph theory",
+      "Lean 4 formalization"
+    ],
     "prerequisites": []
   },
   {
@@ -131,7 +140,10 @@
     "content": "**erdos_718_solved**: MaderConjecture is true (via Komlós-Szemerédi). **erdos_718_summary** and **erdos_718**: combine the quadratic bound with the earlier exponential bound, proved via exact ⟨komlos_szemeredi_1996, mader_1967⟩. The trivial True := trivial pattern has been replaced with a meaningful summary.",
     "significance": "key",
     "mathContext": "See annotation content for formal details of main results and summary",
-    "relatedConcepts": [],
+    "relatedConcepts": [
+      "proof technique",
+      "combinatorics"
+    ],
     "prerequisites": []
   }
 ]

@@ -132,11 +132,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-486",
-    "chinese-remainder-constructive",
-    "prime-number-theorem",
-    "infinitude-primes",
-    "fundamental-arithmetic"
+    {
+      "id": "erdos-486",
+      "relationship": "specialization",
+      "description": "Problem #486 is the general version: does logarithmic density exist for a broader class of sieve constructions? Problem "
+    },
+    {
+      "id": "chinese-remainder-constructive",
+      "relationship": "foundational",
+      "description": "CRT provides the independence framework for coprime sieves: when moduli are pairwise coprime, the exclusion events $m \\e"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "related",
+      "description": "PNT establishes that $\\pi(x) \\sim x/\\ln x$, and the logarithmic density framework used here is closely related to the Di"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "related",
+      "description": "The sieve of Eratosthenes (excluding residue 0 mod each prime) is the prototypical congruence sieve. Its sieved set is t"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization underpins the multiplicative structure that makes coprime sieve analysis via CRT possible. Th"
+    }
   ],
   "leanFile": {
     "imports": [

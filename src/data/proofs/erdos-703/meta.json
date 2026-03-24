@@ -155,8 +155,16 @@
     ]
   },
   "relatedProofs": [
-    "erdos-702",
-    "erdos-1030"
+    {
+      "id": "erdos-702",
+      "relationship": "related",
+      "description": "Problem #702 asks the k-uniform version: maximum k-uniform family avoiding r-intersection."
+    },
+    {
+      "id": "erdos-1030",
+      "relationship": "technique",
+      "description": "Both problems use probabilistic and algebraic methods in extremal combinatorics."
+    }
   ],
   "leanFile": {
     "imports": [

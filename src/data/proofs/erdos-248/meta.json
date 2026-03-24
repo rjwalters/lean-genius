@@ -182,10 +182,30 @@
     }
   ],
   "relatedProofs": [
-    "fundamental-arithmetic",
-    "infinitude-primes",
-    "bounded-prime-gaps",
-    "bertrands-postulate",
-    "euler-totient"
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization gives meaning to ω(n) (the number of distinct prime factors). The problem asks about the join"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes means ω(n) can grow without bound (for n with many small prime factors). The Hardy-Ramanujan th"
+    },
+    {
+      "id": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Both concern the local distribution of prime-related quantities: bounded prime gaps constrains p_{n+1} - p_n, while this"
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate ensures a prime in every interval (n, 2n], constraining the distribution of prime factors among con"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient φ(n) = n ∏_{p|n} (1 - 1/p) connects directly to ω(n): more prime factors mean smaller φ(n)/n. Erdős's 19"
+    }
   ]
 }

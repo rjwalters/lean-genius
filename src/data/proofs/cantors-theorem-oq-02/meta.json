@@ -180,12 +180,31 @@
     ]
   },
   "relatedProofs": [
-    "cantors-theorem",
-    "cantors-theorem-oq-01",
-    "cantor-diagonalization",
-    "godel-incompleteness",
-    "brouwer-fixed-point",
-    "schauder-fixed-point"
+    {
+      "id": "cantors-theorem",
+      "relationship": "parent",
+      "description": "The base Cantor's theorem proof; this entry derives it as a corollary of Lawvere's fixed-point theorem"
+    },
+    {
+      "id": "cantors-theorem-oq-01",
+      "relationship": "sibling",
+      "description": "OQ-01 explores cardinality aspects of Cantor's theorem; OQ-02 explores the categorical unification via Lawvere"
+    },
+    {
+      "id": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "The direct diagonalization proof for uncountability of the reals; Part V of this entry reproduces the diagonal witness c"
+    },
+    {
+      "id": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Gödel's incompleteness theorem; Part IV of this entry shows the core diagonal mechanism underlying it"
+    },
+    {
+      "id": "brouwer-fixed-point",
+      "relationship": "contrast",
+      "description": "Brouwer's fixed-point theorem guarantees fixed points for continuous maps on compact convex sets — a topological analog,"
+    }
   ],
   "leanFile": {
     "imports": [

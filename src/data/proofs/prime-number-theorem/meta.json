@@ -179,15 +179,31 @@
     }
   ],
   "relatedProofs": [
-    "infinitude-primes",
-    "riemann-hypothesis",
-    "basel-problem",
-    "prime-reciprocal-divergence",
-    "bertrands-postulate",
-    "dirichlets-theorem",
-    "euler-totient",
-    "stirling-formula",
-    "fermats-last-theorem"
+    {
+      "id": "infinitude-primes",
+      "relationship": "strengthens",
+      "description": "The PNT provides the quantitative density π(x) ~ x/ln(x) that strengthens Euclid's qualitative result that primes are in"
+    },
+    {
+      "id": "riemann-hypothesis",
+      "relationship": "related",
+      "description": "The Riemann Hypothesis implies the strongest known error term in the PNT: π(x) = Li(x) + O(√x log x)."
+    },
+    {
+      "id": "basel-problem",
+      "relationship": "related",
+      "description": "Both concern the distribution of primes. The Basel problem ζ(2) = π²/6 is an early evaluation of the Riemann zeta functi"
+    },
+    {
+      "id": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "Euler's proof that $\\sum 1/p$ diverges (1737) was the first quantitative result on prime distribution. PNT refines this:"
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate ($\\exists$ prime in $(n, 2n]$) is an elementary consequence of PNT: $\\pi(2n) - \\pi(n) \\sim n/\\ln n "
+    }
   ],
   "references": [
     {

@@ -156,8 +156,16 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1036",
-    "erdos-1031"
+    {
+      "id": "erdos-1036",
+      "relationship": "related",
+      "description": "Erdős #1036 (distinct induced subgraphs in non-Ramsey graphs) explores the complementary question: non-Ramsey graphs mus"
+    },
+    {
+      "id": "erdos-1031",
+      "relationship": "related",
+      "description": "Erdős #1031 (induced regular subgraphs in non-Ramsey graphs) studies universality properties of non-Ramsey graphs. Probl"
+    }
   ],
   "leanFile": {
     "imports": [
