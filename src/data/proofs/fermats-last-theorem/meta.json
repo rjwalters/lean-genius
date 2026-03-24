@@ -2,7 +2,7 @@
   "id": "fermats-last-theorem",
   "title": "Fermat's Last Theorem",
   "slug": "fermats-last-theorem",
-  "description": "Andrew Wiles' monumental proof that there are no three positive integers a, b, c such that a^n + b^n = c^n for any integer n > 2, resolving a 358-year-old conjecture through the modularity of elliptic curves.",
+  "description": "Fermat's Last Theorem: no positive integers $a, b, c$ satisfy $a^n + b^n = c^n$ for $n > 2$. Proved by Andrew Wiles (1995) via the modularity of semistable elliptic curves, settling a 358-year conjecture. Formalized in Lean 4 with 5 axioms encoding the key steps of the Frey-Ribet-Wiles proof chain (modularity theorem, level-lowering, Frey curve, Mazur torsion). Status: axiomatized.",
   "meta": {
     "author": "Andrew Wiles (1995), with Richard Taylor",
     "date": "1995",
