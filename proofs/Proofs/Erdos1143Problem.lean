@@ -72,7 +72,28 @@ theorem single_prime_lower (p k : ℕ) (hp : Nat.Prime p) (hk : k ≥ 1) :
 
 theorem single_prime_upper (p k : ℕ) (hp : Nat.Prime p) :
     coveringFunction {p} k ≤ k / p + 1 := by
-  sorry
+  unfold coveringFunction
+  apply ciInf_le_of_le ⟨0, fun _ ⟨_, h⟩ => h ▸ Nat.zero_le _⟩ 0
+  unfold coveredInInterval
+  simp only [Nat.zero_add, Finset.mem_singleton, exists_eq_left]
+  -- Multiples of p in Ico 0 k: inject n ↦ n/p into range(k/p+1)
+  have h_inj : (Finset.Ico 0 k |>.filter (p ∣ ·) |>.image (· / p)) ⊆ Finset.range (k / p + 1) := by
+    intro m hm
+    rw [Finset.mem_image] at hm
+    obtain ⟨n, hn, rfl⟩ := hm
+    rw [Finset.mem_filter, Finset.mem_Ico] at hn
+    rw [Finset.mem_range]
+    exact Nat.lt_succ_of_le (Nat.div_le_div_right (by omega))
+  calc (Finset.Ico 0 k |>.filter (p ∣ ·)).card
+      ≤ ((Finset.range (k / p + 1)).image (· * p)).card := by
+        apply Finset.card_le_card; intro n hn
+        rw [Finset.mem_filter, Finset.mem_Ico] at hn
+        obtain ⟨⟨_, hn_lt⟩, ⟨m, rfl⟩⟩ := hn
+        rw [Finset.mem_image]
+        refine ⟨m, Finset.mem_range.mpr (Nat.lt_succ_of_le ?_), by ring⟩
+        exact (Nat.le_div_iff_mul_le hp.pos).mpr (le_of_lt (by linarith))
+    _ ≤ (Finset.range (k / p + 1)).card := Finset.card_image_le
+    _ = k / p + 1 := Finset.card_range _
 
 /-
 ## The Inclusion-Exclusion Bound
