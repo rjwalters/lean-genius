@@ -1,0 +1,173 @@
+{
+  "id": "erdos-1145",
+  "title": "Erdős Problem #1145: The Erdős–Sárközy Conjecture on Two-Set Bases",
+  "slug": "erdos-1145",
+  "description": "If A, B ⊆ ℕ are infinite with aₙ/bₙ → 1 and A + B covers all large integers, must the two-set representation function r_{A,B}(n) be unbounded? Status: OPEN.",
+  "meta": {
+    "erdosNumber": 1145,
+    "status": "axiomatized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "additive-bases",
+      "representation-functions",
+      "open"
+    ],
+    "sorries": 0,
+    "sourceUrl": "https://erdosproblems.com/1145",
+    "erdosUrl": "https://erdosproblems.com/1145",
+    "proofRepoPath": "Proofs/Erdos1145Problem.lean",
+    "axiomCount": 10,
+    "assumptions": "10 axiom declarations: erdos_sarkozy_conjecture (main open conjecture), ruzsaA_infinite, ruzsaB_infinite, ruzsa_unique_rep, ruzsa_rep_bounded, ruzsa_is_basis, ruzsa_ratio_not_one (Ruzsa counterexample properties from Problem #331), sum_of_reps_bound, average_rep_grows, grekos_two_set (partial results). All 10 theorems/lemmas proved without sorry.",
+    "badge": "axiom",
+    "prerequisites": [
+      "Additive number theory (sumsets, representation functions)",
+      "Filter convergence and limits in Lean (Tendsto, atTop)",
+      "Set.ncard for cardinality of sets of pairs",
+      "Asymptotic density of integer sets"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 28,
+      "endLine": 52,
+      "summary": "Foundational definitions: the **two-set representation function** $r_{A,B}(n) = |\\{(a,b) \\in A \\times B : a+b=n\\}|$, the **sumset** $A+B$, the **two-set basis** condition ($A+B$ covers all large integers), and the **counting function** $A(N) = |A \\cap [1,N]|$.",
+      "mathContext": "$r_{A,B}(n) = |\\{(a,b) \\in A \\times B : a + b = n\\}|$; basis iff $(A+B)^c$ finite; $A(N) = |A \\cap [1,N]|$."
+    },
+    {
+      "id": "asymptotic-ratio",
+      "title": "Asymptotic Density Condition",
+      "startLine": 54,
+      "endLine": 65,
+      "summary": "The key condition $a_n/b_n \\to 1$ expressed via counting functions: $|A \\cap [1,N]| / |B \\cap [1,N]| \\to 1$. This forces the two sets to have asymptotically equal enumerations.",
+      "mathContext": "$a_n/b_n \\to 1 \\iff A(N)/B(N) \\to 1$ for the counting functions."
+    },
+    {
+      "id": "basis-equivalence",
+      "title": "Basis Definition Equivalence",
+      "startLine": 67,
+      "endLine": 99,
+      "summary": "**Proved**: The two definitions of two-set basis are equivalent: $\\exists N_0, \\forall n \\geq N_0, n \\in A+B$ iff $(A+B)^c$ is finite.",
+      "mathContext": "$\\exists N_0\\,\\forall n \\geq N_0\\,(n \\in A+B) \\iff (A+B)^c \\text{ finite}$. Proved via sup of the finite complement."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 95,
+      "endLine": 146,
+      "summary": "Four proved structural results: (1) pairs summing to $n$ form a finite set; (2) $n \\in A+B \\Rightarrow r_{A,B}(n) \\geq 1$; (3) monotonicity in both sets; (4) $r_{A,B}(n) = 0$ when $n < \\min(A) + \\min(B)$.",
+      "mathContext": "Finiteness, positivity, monotonicity, and vanishing for small $n$ — all proved from definitions."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 142,
+      "endLine": 155,
+      "summary": "**Erdős–Sárközy Conjecture**: If $A, B$ infinite with $a_n/b_n \\to 1$ and $A+B$ is a basis, then $\\forall k, \\exists n: r_{A,B}(n) > k$. Stated as axiom (OPEN problem).",
+      "mathContext": "Axiom: $A^\\infty \\wedge B^\\infty \\wedge a_n/b_n \\to 1 \\wedge (A+B \\supseteq [N_0,\\infty)) \\Rightarrow \\limsup r_{A,B}(n) = \\infty$."
+    },
+    {
+      "id": "erdos-turan-connection",
+      "title": "Connection to Erdős–Turán (Problem #28)",
+      "startLine": 157,
+      "endLine": 188,
+      "summary": "**Proved**: When $A = B$, the ratio condition $a_n/a_n = 1$ is trivially satisfied, so Problem #1145 implies Problem #28. The proof constructs an eventually-equal-to-1 sequence using the infinitude of $A$.",
+      "mathContext": "$A = B \\Rightarrow a_n/b_n = 1$, so #1145 specializes to the Erdős–Turán conjecture. Corollary: `erdos_1145_implies_28`."
+    },
+    {
+      "id": "ruzsa-counterexample",
+      "title": "Necessity via Ruzsa's Counterexample",
+      "startLine": 190,
+      "endLine": 263,
+      "summary": "**Proved** (from axiomatized Ruzsa properties): The ratio condition $a_n/b_n \\to 1$ is **necessary**. Ruzsa's binary digit construction gives $A, B$ with $A+B = \\mathbb{N}$ but $r_{A,B}(n) = 1$ for all $n \\geq 1$, and $a_n/b_n \\to 1/2 \\neq 1$.",
+      "mathContext": "Ruzsa: $A$ = even binary positions, $B$ = odd positions. Unique representations, bounded $r = 1$, $a_n/b_n \\to 1/2$."
+    },
+    {
+      "id": "structural-results",
+      "title": "Structural Results",
+      "startLine": 293,
+      "endLine": 336,
+      "summary": "**Proved**: (1) Symmetry: $r_{A,B}(n) = r_{B,A}(n)$ via a bijection $(a,b) \\mapsto (b,a)$. (2) Vanishing: $r_{A,B}(n) = 0$ for $n > 2N$ when $A, B \\subseteq [0,N]$.",
+      "mathContext": "Commutativity via pair-swap bijection; large-$n$ vanishing by bound on components."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Sárközy conjectured this generalization of the Erdős–Turán conjecture on additive bases (Problem #28). While Problem #28 asks whether r_{A,A}(n) must be unbounded when A + A is a basis, Problem #1145 extends to two different sets A, B with the constraint that their enumerations grow at the same rate (aₙ/bₙ → 1). The condition is necessary: Ruzsa showed (solving Problem #331) that without it, one can construct A, B with A + B = ℕ where every integer has exactly one representation. The problem appears in Varga's 1999 collection [Va99, 1.17] and remains completely open.",
+    "problemStatement": "Let $A = \\{a_1 < a_2 < \\cdots\\}$ and $B = \\{b_1 < b_2 < \\cdots\\}$ be infinite sets of positive integers with $a_n/b_n \\to 1$. If $A + B$ contains all sufficiently large integers, must $\\limsup_{n \\to \\infty} r_{A,B}(n) = \\infty$?",
+    "text": "The Erdős–Sárközy conjecture generalizes the famous Erdős–Turán conjecture from A + A to A + B, requiring that the two sets grow at the same rate.",
+    "proofStrategy": "We formalize the two-set representation function, state the conjecture as an axiom, and prove: (1) this implies the Erdős–Turán conjecture when A = B; (2) the ratio condition is necessary via Ruzsa's counterexample; (3) basic structural properties (symmetry, monotonicity, positivity, vanishing).",
+    "keyInsights": [
+      "**Generalizes Erdős–Turán**: Setting A = B recovers Problem #28, proved as `erdos_1145_implies_28`",
+      "**Ratio condition is necessary**: Without aₙ/bₙ → 1, Ruzsa gives A + B = ℕ with r = 1 everywhere, proved as `ratio_condition_necessary`",
+      "**Ruzsa's key insight**: Binary digit interleaving creates sets where every sum is unique, showing the conjecture is sharp",
+      "**Symmetry of representations**: r_{A,B}(n) = r_{B,A}(n) via explicit pair-swap bijection"
+    ],
+    "prerequisites": [
+      "Additive number theory (sumsets, representation functions)",
+      "Filter convergence and limits in Lean (Tendsto, atTop)",
+      "Set.ncard for cardinality of sets of pairs",
+      "Asymptotic density of integer sets"
+    ]
+  },
+  "conclusion": {
+    "summary": "This formalization establishes the Erdős–Sárközy conjecture in Lean 4, connecting it to both the Erdős–Turán conjecture (Problem #28) as a special case and to Ruzsa's counterexample (Problem #331) showing the ratio condition is necessary. All 10 theorems are proved without sorry; the open conjecture and known results are axiomatized.",
+    "implications": "A proof of this conjecture would simultaneously resolve the Erdős–Turán conjecture ($500 bounty), since it is strictly stronger. The formalization makes precise exactly what condition distinguishes the true conjecture from its false generalization.",
+    "openQuestions": [
+      "Can the asymptotic ratio condition aₙ/bₙ → 1 be weakened while preserving the conjecture?",
+      "Does the conjecture hold for A + B covering a positive density subset (not necessarily all large integers)?",
+      "What is the relationship between the growth rates of A and B and the growth rate of r_{A,B}(n)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-28",
+      "relationship": "generalizes",
+      "description": "Problem #1145 generalizes #28: setting A = B recovers the Erdős–Turán conjecture. The implication is proved as erdos_1145_implies_28."
+    },
+    {
+      "targetId": "erdos-331",
+      "relationship": "related",
+      "description": "Problem #331 (disproved by Ruzsa) provides the counterexample showing the ratio condition aₙ/bₙ → 1 is necessary in Problem #1145."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Sárközy, András",
+      "title": "Problems and results on additive properties of general sequences, II",
+      "year": "1986",
+      "venue": "Acta Mathematica Hungarica, vol. 48, pp. 201–211",
+      "note": "Origin of the conjecture on two-set bases with asymptotically equal enumerations"
+    },
+    {
+      "authors": "Erdős, Paul; Turán, Paul",
+      "title": "On a problem of Sidon in additive number theory",
+      "year": "1941",
+      "venue": "Journal of the London Mathematical Society, vol. 16, pp. 212–215",
+      "note": "The single-set version (Problem #28) that Problem #1145 generalizes"
+    },
+    {
+      "authors": "Ruzsa, Imre Z.",
+      "title": "On the number of sums and differences",
+      "year": "1992",
+      "venue": "Séminaire de Théorie des Nombres de Paris, 1988–89",
+      "note": "Binary digit construction giving unique representations: the counterexample showing the ratio condition is necessary"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-28",
+    "erdos-331"
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Filter", "Set", "Classical", "Pointwise"],
+    "namespace": "Erdos1145",
+    "lineCount": 337,
+    "axiomCount": 10,
+    "theoremCount": 10,
+    "definitionCount": 10
+  }
+}
