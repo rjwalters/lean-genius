@@ -24,7 +24,7 @@
     "erdosUrl": "https://erdosproblems.com/370",
     "erdosProblemStatus": "solved",
     "dateUpdated": "2026-01-17",
-    "mathlib_version": "4.24.0",
+    "mathlib_version": "4.26.0",
     "aristotle": {
       "uuid": "b29022e9-7828-4445-bb20-31e0fe4ca2c9",
       "proved": [
@@ -93,7 +93,12 @@
     ],
     "axiomCount": 11,
     "theoremCount": 4,
-    "sorryCount": 2
+    "sorryCount": 2,
+    "opens": [
+      "Nat",
+      "Finset",
+      "BigOperators"
+    ]
   },
   "crossReferences": [
     {

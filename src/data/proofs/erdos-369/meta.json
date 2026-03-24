@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/369",
     "sourceUrl": "https://erdosproblems.com/369",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "proofRepoPath": "Proofs/Erdos369Problem.lean",
     "dateAdded": "2026-01-23",
     "relatedProblems": [
@@ -226,7 +226,8 @@
       "Mathlib.Data.Nat.Prime.Basic",
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Tactic"
-    ]
+    ],
+    "namespace": "Erdos369"
   },
   "references": [
     {

@@ -21,7 +21,7 @@
     "erdosNumber": 1137,
     "erdosUrl": "https://erdosproblems.com/1137",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.nth_strictMono",
@@ -89,7 +89,14 @@
       "erdosRatio"
     ],
     "axiomCount": 3,
-    "theoremCount": 17
+    "theoremCount": 17,
+    "opens": [
+      "Finset",
+      "Filter",
+      "Nat",
+      "scoped",
+      "Topology"
+    ]
   },
   "crossReferences": [
     {

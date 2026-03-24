@@ -365,6 +365,11 @@
     "defCount": 6,
     "imports": [
       "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "SimpleGraph",
+      "Finset"
     ]
   },
   "conclusion": {
