@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1095-oq-01",
-  "title": "Is log g(k) ~ c·k/log k for some constant c",
-  "phase": "NEW",
+  "title": "Is log g(k) ~ c\u00b7k/log k for some constant c",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-03-24T00:48:59.904Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Session 1: Fixed 4 incorrect axiom values, fixed g definition (sorry\u2192axiom), fixed build errors",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Fixed critical bugs - 4 axiom values were wrong (shifted from OEIS), g definition had sorry causing build failure. Fixed g to use erdosSelfridge_exists axiom + Classical.decPred. File now builds clean with 11 axioms.",
+    "builtItems": [
+      "Fixed g definition: sorry\u2192erdosSelfridge_exists axiom + Classical.decPred for Nat.find",
+      "Fixed g_2: 3\u21926 (C(6,2)=15=3\u00b75 is 2-rough, C(4,2)=6=2\u00b73 and C(5,2)=10=2\u00b75 are not)",
+      "Fixed g_4: 23\u21927 (C(7,4)=35=5\u00b77 is 4-rough, C(6,4)=15=3\u00b75 is not)",
+      "Fixed g_5: 62\u219223 (C(23,5)=33649=7\u00b711\u00b719\u00b723 is 5-rough)",
+      "Fixed g_6: 143\u219262 (C(62,6) is 6-rough)",
+      "Updated meta.json axiomCount 10\u219211, fixed assumptions text"
+    ],
+    "insights": [
+      "Original axiom values were SHIFTED from OEIS A003458 sequence - likely stub generation bug",
+      "g definition used sorry for witness existence, breaking Nat.find. Classical.decPred solves the DecidablePred requirement",
+      "OEIS A003458 definition matches Lean: least n > k+1 with C(n,k) k-rough",
+      "Computed value axioms (g_2 through g_6) could potentially be proved by native_decide or interval_cases on small n"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove g_3=7 and g_4=7 by exhaustive check (interval_cases on n\u2208{5,...,7})",
+      "Prove g_2=6 by checking C(4,2)=6 NOT 2-rough and C(6,2)=15 IS 2-rough",
+      "Consider proving erdosSelfridge_exists for specific k values to eliminate that axiom"
+    ]
   },
   "tags": [
     "erdos",
@@ -55,7 +71,7 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.904Z",
-  "lastUpdate": "2026-03-24T00:48:59.904Z",
+  "lastUpdate": "2026-03-24T05:00:00Z",
   "significance": 6,
   "tractability": 6
 }

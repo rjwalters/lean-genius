@@ -74,22 +74,28 @@ def binomIsKRough (n k : ℕ) : Prop :=
 g(k) = smallest n > k+1 such that C(n,k) is k-rough.
 -/
 
-/-- g(k): the Erdős-Selfridge function -/
+/-- Existence of k-rough binomial coefficients: for every k, there exists
+    n > k+1 such that C(n,k) has all prime factors > k.
+    This is proved by Ecklund-Erdős-Selfridge (1974). -/
+axiom erdosSelfridge_exists (k : ℕ) :
+  ∃ n, n > k + 1 ∧ binomIsKRough n k
+
+/-- g(k): the Erdős-Selfridge function — smallest n > k+1 with C(n,k) k-rough. -/
 noncomputable def g (k : ℕ) : ℕ :=
-  Nat.find (⟨Nat.factorial k + k + 1, by sorry⟩ :
-    ∃ n, n > k + 1 ∧ binomIsKRough n k)
+  @Nat.find (fun n => n > k + 1 ∧ binomIsKRough n k) (Classical.decPred _)
+    (erdosSelfridge_exists k)
 
 /-- g(k) > k + 1 by definition -/
 theorem g_gt_k_plus_one (k : ℕ) : g k > k + 1 := by
-  have h := Nat.find_spec (⟨Nat.factorial k + k + 1, by sorry⟩ :
-    ∃ n, n > k + 1 ∧ binomIsKRough n k)
-  exact h.1
+  unfold g
+  exact (@Nat.find_spec (fun n => n > k + 1 ∧ binomIsKRough n k)
+    (Classical.decPred _) (erdosSelfridge_exists k)).1
 
 /-- C(g(k), k) is k-rough -/
 theorem g_is_k_rough (k : ℕ) : binomIsKRough (g k) k := by
-  have h := Nat.find_spec (⟨Nat.factorial k + k + 1, by sorry⟩ :
-    ∃ n, n > k + 1 ∧ binomIsKRough n k)
-  exact h.2
+  unfold g
+  exact (@Nat.find_spec (fun n => n > k + 1 ∧ binomIsKRough n k)
+    (Classical.decPred _) (erdosSelfridge_exists k)).2
 
 /-
 ## Known Bounds
@@ -160,25 +166,35 @@ axiom els_consensus_bound :
     (g k : ℝ) ≥ Real.exp (c * k / Real.log k)
 
 /-
-## Known Values
+## Known Values (OEIS A003458)
 
-Some computed values of g(k) for small k.
+Computed values of g(k) for small k.
+g(1)=3, g(2)=6, g(3)=7, g(4)=7, g(5)=23, g(6)=62, g(7)=143, g(8)=44, ...
+
+Verification:
+• g(2) = 6: C(4,2)=6 has factor 2≤2, C(5,2)=10 has factor 2≤2,
+  C(6,2)=15=3·5 is 2-rough ✓
+• g(3) = 7: C(5,3)=10=2·5 (2≤3), C(6,3)=20=2²·5 (2≤3),
+  C(7,3)=35=5·7 is 3-rough ✓
+• g(4) = 7: C(6,4)=15=3·5 (3≤4), C(7,4)=35=5·7 is 4-rough ✓
+• g(5) = 23: first n>6 with C(n,5) having all prime factors > 5
+• g(6) = 62: first n>7 with C(n,6) having all prime factors > 6
 -/
 
-/-- g(2) = 3 since C(3,2) = 3 is 2-rough -/
-axiom g_2 : g 2 = 3
+/-- g(2) = 6 since C(6,2) = 15 = 3·5 is 2-rough (OEIS A003458) -/
+axiom g_2 : g 2 = 6
 
 /-- g(3) = 7 since C(7,3) = 35 = 5·7 is 3-rough -/
 axiom g_3 : g 3 = 7
 
-/-- g(4) = 23 -/
-axiom g_4 : g 4 = 23
+/-- g(4) = 7 since C(7,4) = 35 = 5·7 is 4-rough -/
+axiom g_4 : g 4 = 7
 
-/-- g(5) = 62 -/
-axiom g_5 : g 5 = 62
+/-- g(5) = 23 since C(23,5) = 33649 = 7·11·19·23 is 5-rough -/
+axiom g_5 : g 5 = 23
 
-/-- g(6) = 143 -/
-axiom g_6 : g 6 = 143
+/-- g(6) = 62 since C(62,6) = 61474519 is 6-rough -/
+axiom g_6 : g 6 = 62
 
 /-
 ## Main Open Problem
