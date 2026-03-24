@@ -58,7 +58,8 @@
         "relationship": "Sub-entry exposing the complete proof chain from A₅ simplicity through S₅ non-solvability to Abel-Ruffini"
       }
     ],
-    "lineCount": 185
+    "lineCount": 185,
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The quest to solve polynomial equations drove mathematics for centuries. Quadratic equations were solved in antiquity, cubic equations by Cardano (1545), and quartic equations by Ferrari (1545). For 300 years, mathematicians sought a quintic formula. Joseph-Louis Lagrange's 1770 *Réflexions sur la résolution algébrique des équations* was the crucial precursor: he analyzed why the classical formulas for degrees 2–4 worked by studying permutations of roots ('resolvents'), and noticed that his method broke down for degree 5 — the resolvent of a quintic had degree 6, not lower.\n\nPaolo Ruffini gave an incomplete proof in 1799 that no such formula exists. His 516-page *Teoria generale delle equazioni* attempted to show that no rational function of the roots could serve as a resolvent, but the proof had gaps — notably an incomplete treatment of permutation groups (the concept barely existed). Augustin-Louis Cauchy, who proved key results on permutation groups in 1815 (including that a primitive subgroup of $S_p$ containing a $p$-cycle equals $S_p$), acknowledged Ruffini's priority but did not endorse the proof.\n\nNiels Henrik Abel provided the first rigorous proof in 1824, at age 21. Living in poverty in Norway, Abel could not afford journal publication and self-published a six-page pamphlet (*Mémoire sur les équations algébriques*), compressed to save printing costs, which he sent to leading mathematicians — Gauss reportedly never read it. Abel refined the argument in an 1826 *Journal für die reine und angewandte Mathematik* paper. He died of tuberculosis in 1829 at age 26, two days before a letter arrived offering him a professorship in Berlin.\n\nBut it was Évariste Galois who revealed the deeper truth: the solvability of a polynomial is determined by the structure of its symmetry group. His theory explains not just why quintics are unsolvable, but precisely which polynomials can be solved by radicals. Galois submitted his work twice to the Académie des Sciences — Cauchy lost or forgot the first manuscript (1829), and Poisson rejected the second (1831) as 'incomprehensible.' Tragically killed in a duel at age 20 in 1832, Galois spent the night before writing a letter to Auguste Chevalier summarizing his theory, with marginal notes including the famous 'je n'ai pas le temps' ('I have not the time').\n\nGalois's manuscripts were finally published by Joseph Liouville in 1846, fourteen years after his death. It took another generation — through the work of Camille Jordan (*Traité des substitutions*, 1870) and others — for the full power of Galois theory to be understood. Today it is fundamental to modern algebra, connecting field extensions to group theory and underpinning algebraic number theory, algebraic geometry, and the Langlands program.",
@@ -238,6 +239,31 @@
       "targetId": "hilbert-10",
       "relationship": "related",
       "description": "Matiyasevich's negative resolution of Hilbert's 10th problem (MRDP theorem, 1970) extends the impossibility paradigm inaugurated by Abel-Ruffini: Abel-Ruffini shows certain polynomial roots cannot be named by radicals, while MRDP shows the existence of integer solutions to Diophantine equations cannot be decided algorithmically — a deeper level of the expressibility/decidability hierarchy"
+    },
+    {
+      "targetId": "fermats-last-theorem",
+      "relationship": "related",
+      "description": "Both are landmark impossibility/nonexistence results in algebra: Abel-Ruffini proves no radical formula exists for general quintics, while FLT proves no integer solutions exist for $x^n + y^n = z^n$ ($n \\geq 3$). Wiles's proof of FLT (1995) uses Galois representations — the same Galois-theoretic framework that underpins Abel-Ruffini, elevated from polynomial solvability to modularity of elliptic curves"
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "related",
+      "description": "Sits one level above Abel-Ruffini in the expressibility hierarchy: Abel-Ruffini shows certain algebraic numbers escape radical expressions, while Hermite-Lindemann shows $e^\\alpha$ is transcendental for nonzero algebraic $\\alpha$, proving $e$ and $\\pi$ escape all polynomial equations over $\\mathbb{Q}$. Hermite himself showed the quintic IS solvable via elliptic modular functions (1858), demonstrating the barrier is specific to radicals"
+    },
+    {
+      "targetId": "gelfond-schneider",
+      "relationship": "related",
+      "description": "Extends the transcendence hierarchy beyond Hermite-Lindemann: Gelfond-Schneider proves $\\alpha^\\beta$ is transcendental when $\\alpha \\neq 0,1$ is algebraic and $\\beta$ is algebraic irrational (e.g., $2^{\\sqrt{2}}$, $e^\\pi$). Together with Abel-Ruffini and Hermite-Lindemann, this illustrates progressively stronger barriers on expressing mathematical quantities in closed form"
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Abel-Ruffini (1824) and Gödel's incompleteness (1931) are both impossibility results showing that natural questions ('find a formula', 'prove all truths') admit no universal solution within a given formal framework. Abel-Ruffini's framework is radical operations; Gödel's is consistent axiomatic systems. Both inaugurated paradigm shifts from seeking solutions to proving their nonexistence"
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "related",
+      "description": "Turing's halting problem (1936) extends the impossibility paradigm to computation: no algorithm can decide whether an arbitrary program halts, just as no radical formula can solve the general quintic. Abel-Ruffini → Gödel → Turing form a chain of progressively general impossibility results, each showing that a natural class of problems escapes a natural class of methods"
     }
   ],
   "relatedProofs": [
@@ -257,7 +283,12 @@
     "primitive-roots",
     "kummer-theorem",
     "hilbert-13",
-    "hilbert-10"
+    "hilbert-10",
+    "fermats-last-theorem",
+    "hermite-lindemann",
+    "gelfond-schneider",
+    "godel-incompleteness",
+    "halting-problem"
   ],
   "references": [
     {
