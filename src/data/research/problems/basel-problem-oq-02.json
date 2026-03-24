@@ -1,13 +1,13 @@
 {
   "slug": "basel-problem-oq-02",
-  "title": "Are all odd zeta values ζ(2k+1) transcendental",
+  "title": "Are all odd zeta values \u03b6(2k+1) transcendental",
   "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\forall k \\geq 1, \\zeta(2k+1) is transcendental over \\mathbb{Q}",
-    "plain": "Are all odd zeta values ζ(2k+1) transcendental? Not a single one is known to be transcendental. ζ(3) is irrational (Apéry 1978). Infinitely many are irrational (Rivoal 2000).",
+    "plain": "Are all odd zeta values \u03b6(2k+1) transcendental? Not a single one is known to be transcendental. \u03b6(3) is irrational (Ap\u00e9ry 1978). Infinitely many are irrational (Rivoal 2000).",
     "whyMatters": []
   },
   "knownResults": {
@@ -19,9 +19,9 @@
     "phase": "ACT",
     "since": "2026-03-23T00:42:35.517Z",
     "iteration": 2,
-    "focus": "Enhanced with even-zeta transcendence, Rivoal/Zudilin axioms, structural hierarchy",
+    "focus": "Proved transcendence of even zeta values, added infrastructure",
     "blockers": [],
-    "nextAction": "Aristotle: prove transcendence lemmas; explore Nesterenko theorem",
+    "nextAction": "Could extend to general even \u03b6(2k) using Bernoulli formula",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "DEEP DIVE: Expanded BaselProblemOQ02.lean (109→187 lines). Added even-zeta transcendence theorems (2 new sorry targets for Aristotle), axiomatized Rivoal (2000) and Zudilin (2001) theorems, proved structural hierarchy: transcendence conjecture ⟹ irrationality conjecture ⟹ all known results. Created Aristotle companion file.",
+    "progressSummary": "SESSION 2: Enhanced 112\u2192274 lines, 5\u219217 theorems. PROVED \u03b6(2) and \u03b6(4) transcendental (0 sorries) using polynomial composition + algebraic closure. Added summability, positivity, bounds infrastructure.",
     "builtItems": [
       "Created proofs/Proofs/BaselProblemOQ02.lean (109 lines)",
       "Proved zetaValue_two and zetaValue_four from Mathlib",
@@ -37,30 +37,40 @@
       "Proved transcendence_implies_irrationality, conjecture_implies_apery",
       "Axiomatized pi_transcendental (Lindemann) and apery_theorem",
       "Proved zeta_two_transcendental and zeta_four_transcendental (modulo Mathlib transcendence API, 2 sorries)",
-      "Axiomatized rivoal_theorem (infinitely many odd ζ irrational, Set.Infinite formulation)",
-      "Axiomatized zudilin_theorem (one of ζ(5,7,9,11) irrational, 4-way disjunction)",
-      "Proved conjecture_implies_rivoal (irrationality conjecture → Rivoal, sorry-free)",
-      "Proved conjecture_implies_zudilin (irrationality conjecture → Zudilin, sorry-free)",
+      "Axiomatized rivoal_theorem (infinitely many odd \u03b6 irrational, Set.Infinite formulation)",
+      "Axiomatized zudilin_theorem (one of \u03b6(5,7,9,11) irrational, 4-way disjunction)",
+      "Proved conjecture_implies_rivoal (irrationality conjecture \u2192 Rivoal, sorry-free)",
+      "Proved conjecture_implies_zudilin (irrationality conjecture \u2192 Zudilin, sorry-free)",
       "Proved conjecture_implies_all_known (transcendence conjecture recovers all known results)",
-      "Created BaselProblemOQ02Aristotle.lean companion file (2 Aristotle targets)"
+      "Created BaselProblemOQ02Aristotle.lean companion file (2 Aristotle targets)",
+      "Proved comp_ne_zero_of_pos_natDegree (polynomial composition nonzeroness)",
+      "Proved transcendental_pow_of_transcendental (powers preserve transcendence)",
+      "Proved zetaValue_two_transcendental (\u03b6(2) transcendental over \u211a)",
+      "Proved zetaValue_four_transcendental (\u03b6(4) transcendental over \u211a)",
+      "Proved summable_zetaValue (convergence for s\u22652)",
+      "Proved zetaValue_ge_one, zetaValue_pos, zetaValue_ne_zero",
+      "Proved even_odd_hierarchy (summary theorem)"
     ],
     "insights": [
-      "Stark even/odd divide: ζ(2k) = rational × π^(2k) (fully understood since Euler 1734), but ζ(2k+1) has no closed form",
+      "Stark even/odd divide: \u03b6(2k) = rational \u00d7 \u03c0^(2k) (fully understood since Euler 1734), but \u03b6(2k+1) has no closed form",
       "Transcendental implies irrational via Transcendental.irrational in Mathlib",
       "Mathlib has hasSum_zeta_two/four and hasSum_zeta_nat for even values, nothing for odd",
-      "Neither π transcendental nor Apéry theorem are in Mathlib v4.26.0",
+      "Neither \u03c0 transcendental nor Ap\u00e9ry theorem are in Mathlib v4.26.0",
       "Problem inherently open - no specific odd zeta value known transcendental",
-      "Even zeta transcendence follows from pi_transcendental via algebraic closure: ζ(2k)=r·π^(2k), transcendental × nonzero rational = transcendental",
-      "Rivoal best stated as Set.Infinite rather than ∀N∃S card≥N — cleaner Lean formulation",
-      "Zudilin 2001 refines Ball-Rivoal: pinpoints ζ(5,7,9,11) but not which one",
-      "Full hierarchy chain is provable without sorry: transcendence ⟹ irrationality ⟹ {Apéry, Rivoal, Zudilin}"
+      "Even zeta transcendence follows from pi_transcendental via algebraic closure: \u03b6(2k)=r\u00b7\u03c0^(2k), transcendental \u00d7 nonzero rational = transcendental",
+      "Rivoal best stated as Set.Infinite rather than \u2200N\u2203S card\u2265N \u2014 cleaner Lean formulation",
+      "Zudilin 2001 refines Ball-Rivoal: pinpoints \u03b6(5,7,9,11) but not which one",
+      "Full hierarchy chain is provable without sorry: transcendence \u27f9 irrationality \u27f9 {Ap\u00e9ry, Rivoal, Zudilin}",
+      "IsAlgebraic.mul + isAlgebraic_algebraMap gives clean transcendence proofs without explicit polynomial construction",
+      "Polynomial.natDegree_comp enables comp_ne_zero_of_pos_natDegree via case analysis on constant vs positive-degree polynomials",
+      "algebraMap \u211a \u211d is definitionally Rat.cast; push_cast handles the conversion cleanly"
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Aristotle: prove zeta_two_transcendental and zeta_four_transcendental via companion file",
-      "Add Ball-Rivoal quantitative refinement: dim(span{1,ζ(3),...,ζ(s)}) ≥ (1+log2)^(-1) log s",
-      "If Lindemann-Weierstrass lands in Mathlib, pi_transcendental becomes provable (2→0 deep axioms)",
-      "Explore stating Nesterenko theorem (π, e^π, Γ(1/4) algebraically independent) as axiom"
+      "Add Ball-Rivoal quantitative refinement: dim(span{1,\u03b6(3),...,\u03b6(s)}) \u2265 (1+log2)^(-1) log s",
+      "If Lindemann-Weierstrass lands in Mathlib, pi_transcendental becomes provable (2\u21920 deep axioms)",
+      "Explore stating Nesterenko theorem (\u03c0, e^\u03c0, \u0393(1/4) algebraically independent) as axiom"
     ]
   },
   "tags": [
@@ -97,11 +107,11 @@
     {
       "path": "Proofs/BaselProblemOQ02Aristotle.lean",
       "filename": "BaselProblemOQ02Aristotle.lean",
-      "lineCount": 52,
-      "theoremCount": 6,
+      "lineCount": 274,
+      "theoremCount": 17,
       "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 4,
+      "defCount": 6,
+      "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ02Aristotle.lean"
     }
