@@ -1255,15 +1255,30 @@ theorem density_increment_lemma {N : ℕ} (hN : 0 < N) (A : Finset (ZMod N))
           apply mul_le_mul_of_nonneg_right _ (by positivity)
           nlinarith [sq_nonneg delta]
   · -- N ≤ 1: with 0 < N, N = 1.
-    -- KNOWN GAP: density_increment_lemma requires the output density
-    -- delta + delta²/100 ≤ 1, which fails when delta > ~0.99 and N = 1.
-    -- In the main proof (roth_density_bound), this case is unreachable
-    -- when N₀ is chosen large enough, since the coset decomposition
-    -- gives M = gcd(val(r), N) which stays ≥ 2 for N ≥ N₀.
-    -- A proper fix requires either (a) adding 1 < N as a hypothesis
-    -- and adjusting the iteration chain, or (b) using Dirichlet
-    -- approximation to bound M from below.
-    sorry
+    have hN1 : N = 1 := by omega
+    subst hN1
+    -- In ZMod 1 (singleton type), every element is 0, so delta ≤ |A| ≤ 1
+    have hdelta_le : delta ≤ 1 := by
+      have h1 := card_le_nat_real A
+      simp only [Nat.cast_one] at hdensity h1
+      linarith
+    by_cases hle : delta + delta ^ 2 / 100 ≤ 1
+    · -- Output density ≤ 1: witnessed by the unique element of ZMod 1
+      refine ⟨1, Finset.univ, one_pos, ?_, ?_⟩
+      · -- APFree is vacuous on ZMod 1 (no nonzero d exists in the singleton type)
+        intro a d hd
+        exact absurd (Subsingleton.elim d 0) hd
+      · simp only [Finset.card_univ, ZMod.card, Nat.cast_one, mul_one]
+        linarith
+    · -- ARCHITECTURAL GAP: delta + delta²/100 > 1 (requires delta > ~0.99)
+      -- with N = 1. The conclusion needs |B| > M for any (M, B), which
+      -- is impossible for finite sets. This case arises in the density
+      -- iteration when the coset decomposition reduces the universe to
+      -- size 1 (e.g., for prime N where gcd(val(r), N) = 1).
+      -- Resolution requires Dirichlet approximation or Bohr sets to
+      -- guarantee subprogression length ≥ √N at each step, ensuring
+      -- M ≥ 2 throughout the iteration.
+      sorry
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART VI: ROTH'S THEOREM (MAIN RESULT)

@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-21",
-    "iteration": 10,
-    "focus": "Session 10: Proved mul_L_r_eq_zero (ZMod round-trip). Added apFree_filter_affine. 6→5 sorries.",
+    "iteration": 11,
+    "focus": "Session 11: Proved N=1 subcase (delta+delta²/100≤1). Documented architectural gap. Pre-existing Mathlib breakages identified.",
     "blockers": [
       "coset_char_sum_zero: character sum vanishes",
       "coset_density_increment: pigeonhole formalization",
@@ -34,7 +34,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 0 axioms, 4 sorries remain. N=1 edge case is unprovable as stated (need N>1 guard). coset_partition_sum needs bijection proof. Total sorry count: 4.",
+    "progressSummary": "PROGRESS: Session 11 proved density_increment_lemma N=1 subcase for small delta. Identified and documented architectural gap: coset decomposition produces M=1 for prime N, blocking iteration. ~20 pre-existing Mathlib API breakages in fourier_large_coefficient.",
     "builtItems": [
       "Fixed apFree_singleton proof, Complex.abs -> norm, added apFree_subset, removed incorrect apFree_pair",
       "Build now succeeds: 0 axioms, 3 sorries",
@@ -96,13 +96,17 @@
       "N=1 edge case in density_increment_lemma is UNPROVABLE as stated: when delta=1 and N=1, need B.card >= 1.01*M but B.card <= M. Fix: require N>1 (or fold into the by_cases already there)",
       "coset_partition_sum requires bijection between A and disjoint union of cosets. Needs map a↦(a.val%g, a.val/g) and its inverse",
       "fourier_coset_decomp requires regrouping Fourier sums by coset; ψ(r·) constant on cosets when (N/g) | val(r)",
-      "Pigeonhole sorry: standard averaging argument, find coset with density above mean+delta²/4N/g"
+      "Pigeonhole sorry: standard averaging argument, find coset with density above mean+delta²/4N/g",
+      "density_increment_lemma N=1 case: for delta+delta²/100≤1, use (M=1, B=Finset.univ) as witness. APFree vacuous on ZMod 1 (Subsingleton).",
+      "density_increment_lemma N=1 case: for delta>~0.995, conclusion requires density>1, genuinely impossible — theorem statement false for these inputs",
+      "Pre-existing Mathlib breakages: ZMod.val_one_lt_of_lt removed, Exists.some→choose, exact_mod_cast changes, linarith fails on ℂ, card_sdiff API change",
+      "Coset decomposition gives M=gcd(val(r),N)=1 for prime N. All subsequent iterations stall at M=1. Fix needs Dirichlet approximation or Bohr sets for M≥√N guarantee."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Fix fourier_large_coefficient: add hypothesis δ²N≥2 (bound δ²N/2 fails for N=1 since ZMod 1 has no r≠0)",
-      "Prove fourier_large_coefficient: AP-free → tripleCount=0, Fourier identity gives Σ_{r≠0}Â(r)²conj(Â(2r)) = N|A|-|A|³, triangle inequality + Parseval extracts large coefficient",
-      "Prove density_increment_lemma: use fourier_large_coefficient to find large Â(r), partition Z/NZ by character r into APs of length ~√N, pigeonhole for density increment, preserve AP-freeness"
+      "Fix ~20 pre-existing Mathlib API breakages in fourier_large_coefficient (interactive Lean session needed)",
+      "Implement Dirichlet approximation to guarantee subprogression length ≥ √N, fixing the architectural gap",
+      "Alternative: change proof architecture to triangle removal / regularity-based approach"
     ]
   },
   "tags": [

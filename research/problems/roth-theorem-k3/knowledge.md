@@ -253,5 +253,50 @@ coset_char_sum_zero (sorry) ──→ coset_density_increment (sorry)
                                   ──→ density_increment_lemma
 g<√N box partition (sorry) ────→    └→ density_increment_step (PROVED)
 N even (sorry) ────────────────→        └→ density_iteration (PROVED)
-N=1 (sorry, FALSE) ───────────→            └→ roth_density_bound (PROVED)
+N=1, δ+δ²/100≤1 (PROVED, S11)─→            └→ roth_density_bound (PROVED)
+N=1, δ+δ²/100>1 (sorry, FALSE)→
 ```
+
+## Session 11 (2026-03-23, researcher-8)
+
+### What Was Done
+1. **Proved N=1 subcase for small delta**: When delta + delta²/100 ≤ 1 (i.e., delta ≤ ~0.995),
+   the N=1 case of density_increment_lemma is proved using the witness (M=1, B=Finset.univ).
+   - APFree on ZMod 1 is vacuously true (Subsingleton.elim d 0)
+   - Cardinality: |ZMod 1| = 1 ≥ delta + delta²/100 (from hle)
+2. **Documented architectural gap**: For delta > ~0.995 at N=1, the conclusion requires
+   density > 1 on some (M, B), which is impossible for finite sets. This is a genuine
+   theorem-statement-level gap, not a proof gap.
+
+### Architectural Analysis
+The coset-based density increment can reduce the universe to size 1 when N is prime
+(since gcd(val(r), N) = 1 for all r ≠ 0). This means:
+- For prime starting N, M₁ = 1 after one step
+- All subsequent iterations have M = 1
+- The density approaches 1 but the iteration stalls at delta + delta²/100 > 1
+
+**Resolution requires one of:**
+1. **Dirichlet approximation**: Find arithmetic progressions of length ≥ √N where
+   the character χ_r is approximately constant, giving M ≥ √N at each step
+2. **Bohr sets**: Generalization of APs to higher dimensions, giving larger substructures
+3. **Different proof architecture**: Triangle removal lemma or regularity-based proof
+
+### Pre-existing Build Failures
+The file has ~20 Mathlib API breakages in `fourier_large_coefficient` and related code:
+- `ZMod.val_one_lt_of_lt` removed (need alternative for `1 ≠ 0` in ZMod N)
+- `Finset.card_sdiff` / `Finset.sdiff_eq_empty_iff_subset` API changes
+- `Exists.some` / `.some_mem` → need `.choose` / `.choose_spec`
+- `exact_mod_cast` / `push_cast` behavior changes
+- `linarith` on ℂ goals (ℂ not linearly ordered)
+- Various `rw` pattern matching failures
+
+These were NOT introduced by this session — they are pre-existing from Mathlib updates.
+
+### Attempted Fixes (Reverted)
+Attempted to fix the Mathlib breakages but could not verify without interactive Lean:
+- `Finset.eq_univ_of_card` → use `refine` + `rw [ZMod.card]`
+- `ZMod.val_one_lt_of_lt` → use `ZMod.natCast_zmod_eq_zero_iff_dvd` for `1 ≠ 0`
+- `Exists.some` → `Exists.choose`
+- `push_cast; linarith` → explicit `Nat.cast_sub` + `linarith`
+- `linarith` on ℂ → `linear_combination`
+Reverted these changes as the full fix requires an interactive Lean session.
