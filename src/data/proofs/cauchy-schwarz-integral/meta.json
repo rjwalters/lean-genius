@@ -115,7 +115,8 @@
     "openQuestions": [
       "Can Holder's inequality be formalized as a generalization, recovering Cauchy-Schwarz for p=q=2?",
       "Can the Minkowski inequality for integrals be derived as a corollary?",
-      "Can the bridge theorem be extended to complex-valued L2 functions?"
+      "Can the bridge theorem be extended to complex-valued L2 functions? (Answered: yes, see cauchy-schwarz-oq-01 which shows Mathlib's `norm_inner_le_norm` works for all `RCLike` fields.)",
+      "Can the Heisenberg uncertainty principle $\\Delta x \\cdot \\Delta p \\geq \\hbar/2$ be formalized as a direct corollary of Cauchy-Schwarz in $L^2(\\mathbb{R}^3, \\mathbb{C})$, making the connection between integral inequalities and quantum mechanics formally explicit in Lean?"
     ]
   },
   "crossReferences": [
@@ -143,14 +144,32 @@
       "targetId": "amgm-inequality-oq-03",
       "relationship": "related",
       "description": "Power mean monotonicity M₁ ≤ M₂ is the discrete Cauchy-Schwarz for equal weights; the integral analog extends this to continuous power means on measure spaces, connecting power mean theory to L^p analysis"
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-01",
+      "relationship": "extended-by",
+      "description": "Extends Cauchy-Schwarz to complex inner product spaces: $\\|\\langle u, v \\rangle_{\\mathbb{C}}\\| \\leq \\|u\\| \\cdot \\|v\\|$. Mathlib's `norm_inner_le_norm` works uniformly for all `RCLike` fields, answering the open question about complex-valued $L^2$ functions and providing the foundation for complex Fourier analysis and quantum mechanics"
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Equality characterization for complex inner product spaces: $\\|\\langle u, v \\rangle\\| = \\|u\\| \\cdot \\|v\\|$ iff $u$ and $v$ are linearly dependent. Extends the real equality characterization (`cauchy_schwarz_L2_eq_iff`) to the complex setting, completing the Cauchy-Schwarz trilogy across real, complex, and general `RCLike` fields"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "related",
+      "description": "FTC connects differentiation and integration — the same Lebesgue integral framework that defines the $L^2$ inner product $\\langle f, g \\rangle = \\int fg\\,d\\mu$. Both theorems rely on Mathlib's Bochner integration infrastructure"
     }
   ],
   "relatedProofs": [
     "cauchy-schwarz",
+    "cauchy-schwarz-oq-01",
+    "cauchy-schwarz-oq-01-oq-01",
     "fourier-series",
     "basel-problem",
     "triangle-inequality",
-    "amgm-inequality-oq-03"
+    "amgm-inequality-oq-03",
+    "fundamental-theorem-calculus"
   ],
   "leanFile": {
     "imports": [
