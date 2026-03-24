@@ -23,7 +23,7 @@
     "dateAdded": "2025-01-01",
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
-    "lineCount": 280,
+    "lineCount": 360,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
@@ -36,7 +36,9 @@
       "**Fourth-power constraint**: For composite n+k, the condition k² < p(n+k) ≤ √(n+k) forces k⁴ < n+k. This is proved as composite_constraint.",
       "**General monotonicity**: If the d₂-exponent version holds, then so does the d₁-exponent version for d₁ ≤ d₂. Proved as general_monotone.",
       "**d=0 case proved**: ErdosProblem681General(0) is fully proved by picking k = n (so n+k = 2n is composite for n ≥ 2, and k⁰ = 1 < 2 ≤ p(2n)).",
-      "**Connection to Problem #680**: The LPF condition via IsLeastPrimeFactor is equivalent to a bound on Nat.minFac, proved as lpf_condition_equiv."
+      "**Connection to Problem #680**: The LPF condition via IsLeastPrimeFactor is equivalent to a bound on Nat.minFac, proved as lpf_condition_equiv.",
+      "**Witness parity**: When n+1 is an odd prime (n ≥ 2), any witness k ≥ 2 must be odd. Even k gives minFac(n+k) = 2 ≤ k^d, ruling it out for d ≥ 1.",
+      "**Residue class resolution**: For primes p ≡ 2 (mod 3) with p+2 composite, k = 3 resolves d=1 since minFac(n+3) ≥ 5 > 3 (odd, not divisible by 2 or 3)."
     ],
     "mathlibDependencies": [
       "Mathlib.Data.Nat.Prime.Basic",
@@ -63,7 +65,12 @@
       "d1_k1_trivial: proved d=1, k=1 case",
       "general_d0_trivial: proved d=0 case completely",
       "general_monotone: proved monotonicity in d",
-      "lpf_condition_equiv: proved equivalence with minFac bound"
+      "lpf_condition_equiv: proved equivalence with minFac bound",
+      "minFac_of_even: proved minFac = 2 for even m ≥ 4",
+      "even_of_prime_succ: proved n is even when n+1 is odd prime",
+      "even_offset_excluded: proved even offsets fail for d ≥ 1 when n is even",
+      "witness_must_be_odd: proved witnesses must be odd when n+1 is prime",
+      "d1_at_2_mod_3: proved d=1 case for primes p ≡ 2 (mod 3) with p+2 composite"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -100,15 +107,29 @@
       "summary": "Proves prime_offset_gives_large_lpf, composite_constraint (k⁴ < n+k), d1_k1_trivial, general_d0_trivial (fully proved), and general_monotone."
     },
     {
+      "id": "witness-parity",
+      "title": "Witness Parity Constraints",
+      "startLine": 249,
+      "endLine": 298,
+      "summary": "Proves that when n+1 is an odd prime, any witness k ≥ 2 must be odd. Even offsets produce even composites with minFac = 2, but k^d ≥ 2 for d ≥ 1. Includes minFac_of_even, even_of_prime_succ, even_offset_excluded, and witness_must_be_odd."
+    },
+    {
+      "id": "d1-residue-class",
+      "title": "d=1 Residue Class Resolution",
+      "startLine": 316,
+      "endLine": 348,
+      "summary": "Proves d1_at_2_mod_3: for primes p ≡ 2 (mod 3) with p+2 composite, k=3 witnesses the d=1 case via minFac(n+3) ≥ 5 > 3."
+    },
+    {
       "id": "connection-680",
       "title": "Connection to Problem #680",
-      "startLine": 186,
-      "endLine": 199,
+      "startLine": 350,
+      "endLine": 360,
       "summary": "Proves lpf_condition_equiv: IsLeastPrimeFactor bound ↔ Nat.minFac bound, connecting Problems #680 and #681."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 681 asks for composites near n with large least prime factor. The formalization at 200 lines proves 12 structural theorems including LPF infrastructure, the d=0 case, monotonicity, and the connection to Problem #680. 0 sorries.",
+    "summary": "Erdős Problem 681 asks for composites near n with large least prime factor. The formalization at 360 lines proves 27 structural theorems including LPF infrastructure, the d=0 case, monotonicity, witness parity constraints, residue class resolution for d=1, and the connection to Problem #680. 0 sorries.",
     "implications": "An affirmative answer would reveal structure in the distribution of smooth numbers near arbitrary integers, connecting prime factor size to additive shifts.",
     "openQuestions": [
       "Does p(n+k) > k² hold for all large n and some composite n+k?",
@@ -125,9 +146,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 280,
+    "lineCount": 360,
     "axiomCount": 0,
-    "theoremCount": 23,
+    "theoremCount": 27,
     "definitionCount": 4
   },
   "crossReferences": [
