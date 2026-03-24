@@ -154,7 +154,7 @@ theorem nthPrime_ge (n : ℕ) : n ≤ nthPrime n := by
 theorem gapSet_finite (x : ℕ) : Set.Finite (gapSet x) := by
   apply Set.Finite.subset ((Set.finite_Iio (x + 1)).image primeGap)
   intro t ⟨n, _, hn2, hn3⟩
-  exact ⟨n, Set.mem_Iio.mpr (Nat.lt_succ_of_le (le_trans (nthPrime_ge n) hn2)), hn3.symm⟩
+  exact ⟨n, Set.mem_Iio.mpr (Nat.lt_succ_of_le (le_trans (nthPrime_ge n) hn2)), hn3⟩
 
 /-- There exists an even integer ≥ 2 not in gapSet(x). -/
 theorem exists_even_not_in_gapSet (x : ℕ) (_hx : x ≥ 3) :
@@ -165,11 +165,11 @@ theorem exists_even_not_in_gapSet (x : ℕ) (_hx : x ≥ 3) :
   have h_range_inf : Set.Infinite (Set.range (fun k : ℕ => 2 * k + 2)) :=
     Set.infinite_range_of_injective (fun a b hab => by omega)
   have h_sub_gap : Set.range (fun k : ℕ => 2 * k + 2) ⊆ gapSet x := by
-    rintro t ⟨k, rfl⟩
-    refine h _ (by omega) ?_
-    show (2 * k + 2) % 2 = 0
-    rw [show 2 * k + 2 = 2 * (k + 1) from by ring]
-    exact Nat.mul_mod_right 2 _
+    rintro _ ⟨k, rfl⟩
+    have h1 : 2 * k + 2 ≥ 2 := by omega
+    have h2 : (2 * k + 2) % 2 = 0 := by
+      rw [show 2 * k + 2 = 2 * (k + 1) from by ring]; exact Nat.mul_mod_right 2 _
+    exact h _ h1 h2
   exact (h_range_inf.mono h_sub_gap) (gapSet_finite x)
 
 noncomputable instance decidableMemGapSet (x t : ℕ) : Decidable (t ∈ gapSet x) :=
