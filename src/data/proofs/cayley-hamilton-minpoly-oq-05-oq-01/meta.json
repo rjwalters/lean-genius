@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Nonderogatory_matrix",
     "date": "2026",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ05OQ01.lean",
     "tags": [
       "linear-algebra",
@@ -17,8 +17,8 @@
       "union-avoidance",
       "research"
     ],
-    "badge": "verified",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 1,
     "mathlibDependencies": [
       {
         "theorem": "minpoly.aeval",
