@@ -29,8 +29,10 @@ def centralBinom (n : ℕ) : ℕ := Nat.choose (2 * n) n
 
 /-- The least positive integer that does not divide m. -/
 noncomputable def leastNonDivisor (m : ℕ) : ℕ :=
-  if m = 0 then 1
-  else Nat.find (⟨m + 1, by omega⟩ : ∃ k : ℕ, k > 0 ∧ ¬(k ∣ m))
+  if hm : m = 0 then 1
+  else Nat.find (⟨m + 1, ⟨by omega, fun h =>
+    absurd (Nat.le_of_dvd (Nat.pos_of_ne_zero hm) h) (by omega)⟩⟩ :
+    ∃ k : ℕ, k > 0 ∧ ¬(k ∣ m))
 
 /-- The least non-divisor of C(2n, n). -/
 noncomputable def leastNonDivCentral (n : ℕ) : ℕ :=
@@ -39,19 +41,16 @@ noncomputable def leastNonDivCentral (n : ℕ) : ℕ :=
 /- ## Main Conjecture -/
 
 /-- **Erdős Problem #731** (OPEN): For almost all n, the least m with
-    m ∤ C(2n, n) satisfies m = exp((log n)^{1/2 + o(1)}). -/
-axiom erdos_731_conjecture :
-  -- For all ε > 0, the density of n where the least non-divisor deviates
-  -- from exp((log n)^{1/2}) by more than (log n)^ε is zero.
-  True  -- Precise formulation requires asymptotic density and real analysis
+    m ∤ C(2n, n) satisfies m = exp((log n)^{1/2 + o(1)}).
+    Placeholder: precise formulation requires asymptotic density. -/
+theorem erdos_731_conjecture : True := trivial
 
 /- ## Divisibility Properties of Central Binomials -/
 
 /-- **Kummer's Theorem**: The p-adic valuation of C(m+n, m) equals the
-    number of carries when adding m and n in base p. -/
-axiom kummer_carries (p m n : ℕ) (hp : Nat.Prime p) :
-  -- v_p(C(m+n, m)) = number of carries in base-p addition of m and n
-  True
+    number of carries when adding m and n in base p.
+    Placeholder: full formalization needs p-adic valuations. -/
+theorem kummer_carries (p m n : ℕ) (hp : Nat.Prime p) : True := trivial
 
 /-- For prime p ≤ 2n, we have p | C(2n, n) iff there is at least one
     carry when adding n to itself in base p. -/
@@ -67,10 +66,9 @@ axiom small_primes_divide (p : ℕ) (hp : Nat.Prime p) :
 /-- C(2n, n) is always even for n ≥ 1. -/
 axiom two_divides_central (n : ℕ) (hn : n ≥ 1) : 2 ∣ centralBinom n
 
-/-- The product of all primes ≤ x is roughly e^x (prime number theorem). -/
-axiom primorial_asymptotic :
-  -- ∏_{p ≤ x} p = e^{x(1+o(1))} as x → ∞
-  True
+/-- The product of all primes ≤ x is roughly e^x (prime number theorem).
+    Placeholder: full formalization needs Chebyshev functions. -/
+theorem primorial_asymptotic : True := trivial
 
 /- ## Asymptotic Analysis -/
 
@@ -81,24 +79,16 @@ axiom least_nondiv_is_prime (n : ℕ) (hn : centralBinom n > 0) :
 
 /-- **EGRS (1975)**: The typical behavior is
     log(leastNonDivCentral n) ~ (log n)^{1/2}.
-    Heuristic: a prime p divides C(2n,n) unless all log_p(n) digits of n
-    are small. The probability of this is roughly (1/2)^{log n / log p},
-    which becomes significant when log p ~ (log n)^{1/2}. -/
-axiom egrs_typical_behavior :
-  -- For density-1 set of n:
-  -- (log n)^{1/2 - ε} ≤ log(leastNonDivCentral n) ≤ (log n)^{1/2 + ε}
-  True
+    Placeholder: full formalization needs probabilistic number theory. -/
+theorem egrs_typical_behavior : True := trivial
 
 /- ## Bounds -/
 
-/-- Lower bound: the least non-divisor is at least 2 for n ≥ 1 (since
-    2 | C(2n, n) for n ≥ 1). More generally, all primes up to a threshold
-    divide C(2n, n) for most n. -/
-axiom lower_bound_most_n :
-  ∀ (P : ℕ), ∃ (D : ℕ), D > 0 ∧
-    -- For at least (1 - 1/D) fraction of n ≤ N:
-    -- leastNonDivCentral n > P
-    True
+/-- Lower bound: for any P, there exists a density threshold.
+    Placeholder: the actual density claim requires measure theory. -/
+theorem lower_bound_most_n :
+    ∀ (P : ℕ), ∃ (D : ℕ), D > 0 ∧ True :=
+  fun _ => ⟨1, by omega, trivial⟩
 
 /-- Upper bound: there always exists a prime p ≤ 2n+1 not dividing C(2n, n),
     namely p = 2n+1 when it is prime and n+1 < p. -/
