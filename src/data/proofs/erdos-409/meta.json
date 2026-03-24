@@ -21,9 +21,9 @@
     "erdosNumber": 409,
     "erdosUrl": "https://erdosproblems.com/409",
     "erdosProblemStatus": "open",
-    "axiomCount": 7,
-    "assumptions": "7 axiom declarations: erdos_409_upper_bound (F(n) = o(n) bound), erdos_409_same_prime (infinite basin existence), erdos_409_density (basin natural density), prime_zero_iterations (F(p) = 0 for primes), one_iteration_criterion (F(n) = 1 condition), sigma_growing (sigma non-decreasing), one_iteration_infinite (infinitely many F=1). Proved: iterate_decreasing (Finset-based), iteration_terminates (strong induction), totient_plus_one_odd (from Nat.totient_even).",
-    "lineCount": 205,
+    "axiomCount": 4,
+    "assumptions": "4 axiom declarations: erdos_409_upper_bound (F(n) = o(n) bound, open), erdos_409_same_prime (infinite basin existence, open), erdos_409_density (basin natural density, open), one_iteration_infinite (infinitely many F=1). Proved (11 theorems): iterate_decreasing, iteration_terminates (strong induction), prime_zero_iterations (sSup reasoning on {0}), one_iteration_criterion (sSup on {0,1}, requires ¬n.Prime), sigma_growing (Finset.divisors subset bound), totient_plus_one_odd, totientIterate_zero, totientIterate_one, two_fixed_point, four_to_three, sigma_variant_question.",
+    "lineCount": 271,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -129,19 +129,16 @@
   },
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Nat.Totient",
-      "Mathlib.Data.Nat.Prime.Basic",
-      "Mathlib.Order.Filter.Basic",
-      "Mathlib.Tactic"
+      "Mathlib"
     ],
     "opens": [
       "Filter",
       "Nat"
     ],
     "namespace": null,
-    "lineCount": 205,
-    "axiomCount": 7,
-    "theoremCount": 6,
+    "lineCount": 271,
+    "axiomCount": 4,
+    "theoremCount": 11,
     "definitionCount": 3
   },
   "crossReferences": [
