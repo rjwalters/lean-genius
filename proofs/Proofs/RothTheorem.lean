@@ -972,9 +972,62 @@ private lemma coset_fiber_card_eq {N : ℕ} [NeZero N] (A : Finset (ZMod N))
     let M := N / g
     let idx : ZMod N → Fin g := fun x => ⟨ZMod.val x % g, Nat.mod_lt _ hg⟩
     cosetCardFin A g hg hgN ⟨j, hj⟩ = (A.filter (fun x => idx x = ⟨j, hj⟩)).card := by
-  -- FIXME: Mathlib v4.26.0 API regression (previously proved)
-  -- Finset.card_nbij/card_bij API changed: now uses Set coercion (↑s) instead of Finset membership
-  sorry
+  set M := N / g with hM_def
+  haveI : NeZero M := ⟨(Nat.div_pos (Nat.le_of_dvd (NeZero.pos N) hgN) hg).ne'⟩
+  have hMg : M * g = N := Nat.div_mul_cancel hgN
+  -- The map φ : ZMod M → ZMod N sends k ↦ j + val(k)*g
+  set φ : ZMod M → ZMod N := fun k => (↑j + ↑(ZMod.val k) * ↑g : ZMod N) with hφ_def
+  -- Key fact: val(φ(k)) = j + val(k)*g (no modular reduction since < N)
+  have hval_phi : ∀ k : ZMod M, ZMod.val (φ k) = j + ZMod.val k * g := by
+    intro k
+    have h1 : j + ZMod.val k * g < N := by
+      calc j + ZMod.val k * g < g + ZMod.val k * g := by omega
+        _ = (ZMod.val k + 1) * g := by ring
+        _ ≤ M * g := Nat.mul_le_mul_right g (by omega)
+        _ = N := hMg
+    rw [hφ_def]
+    show ZMod.val ((↑j : ZMod N) + ↑(ZMod.val k) * ↑g) = j + ZMod.val k * g
+    rw [show (↑j : ZMod N) + ↑(ZMod.val k) * ↑g = ↑(j + ZMod.val k * g) from by push_cast; ring]
+    exact ZMod.val_natCast_of_lt h1
+  -- Injectivity of φ
+  have hφ_inj : Function.Injective φ := by
+    intro a b hab
+    have h := congr_arg ZMod.val hab
+    rw [hval_phi, hval_phi] at h
+    have hv : ZMod.val a = ZMod.val b := Nat.eq_of_mul_eq_left hg (by omega)
+    exact ZMod.val_injective M hv
+  -- φ maps to the right fiber: val(φ(k)) % g = j
+  have hφ_fiber : ∀ k : ZMod M, ZMod.val (φ k) % g = j := by
+    intro k
+    rw [hval_phi, Nat.add_mul_mod_self_right]
+    exact Nat.mod_eq_of_lt hj
+  -- Establish the bijection using card_nbij
+  simp only [cosetCardFin, cosetRestrict]
+  apply Finset.card_nbij (fun k : ZMod M => φ k)
+  · -- Forward: if k makes φ(k) ∈ A, then φ(k) is in the fiber filter
+    intro k hk
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hk ⊢
+    exact ⟨hk, Fin.ext (hφ_fiber k)⟩
+  · -- Injectivity
+    intro a ha b hb hab
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at ha hb
+    exact hφ_inj hab
+  · -- Surjectivity: each x with val(x) % g = j comes from some k
+    intro x hx
+    simp only [Finset.mem_filter] at hx
+    obtain ⟨hxA, hxmod⟩ := hx
+    have hxmod' : ZMod.val x % g = j := congr_arg Fin.val hxmod
+    set q := ZMod.val x / g with hq_def
+    have hq_lt : q < M := Nat.div_lt_of_lt_mul (hMg ▸ ZMod.val_lt x)
+    have hval_q : ZMod.val ((q : ℕ) : ZMod M) = q := ZMod.val_natCast_of_lt hq_lt
+    have hval_eq : j + q * g = ZMod.val x := by
+      rw [hq_def]; have := Nat.div_add_mod (ZMod.val x) g; omega
+    have hφq_eq : φ ((q : ℕ) : ZMod M) = x := by
+      rw [hφ_def, show (↑j + ↑(ZMod.val ((q : ℕ) : ZMod M)) * ↑g : ZMod N) =
+        (↑(j + ZMod.val ((q : ℕ) : ZMod M) * g) : ZMod N) from by push_cast; ring]
+      rw [hval_q, hval_eq, ZMod.natCast_zmod_val]
+    exact ⟨(q : ℕ), Finset.mem_filter.mpr
+      ⟨Finset.mem_univ _, by rw [hφq_eq]; exact hxA⟩, hφq_eq⟩
 
 /-- Partition: sum of coset cardinalities = |A|. -/
 private lemma coset_partition_sum {N : ℕ} [NeZero N] (A : Finset (ZMod N))

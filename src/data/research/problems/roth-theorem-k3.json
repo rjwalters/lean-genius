@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-21",
-    "iteration": 11,
-    "focus": "Session 11: Proved density_increment_lemma sorry-free (1<N, M<N). Restructured roth_density_bound. Fixed multiple Mathlib API breakages.",
+    "iteration": 14,
+    "focus": "Session 14: Proved coset_fiber_card_eq sorry (Mathlib API regression). 1 sorry remaining.",
     "blockers": [
       "Pre-existing Mathlib API breakages in fourier_large_coefficient (lines 583-800)",
       "Dirichlet approximation needed for N=1 iteration case (in density_increment_iter)"
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 0 axioms, 2 sorries (1 Mathlib API regression in coset_fiber_card_eq, 1 edge case N=1 delta>0.99). Fixed 20+ Mathlib v4.26.0 API breakages. Proved N=1 easy case of density_increment_lemma.",
+    "progressSummary": "PROGRESS: Session 14 proved coset_fiber_card_eq sorry (Mathlib API regression fix), reducing sorry count from 2 to 1. Used Finset.card_nbij with explicit bijection φ(k)=j+val(k)*g. Remaining sorry: density_increment_lemma N=1 high-delta case (genuinely FALSE as stated, requires Dirichlet-based density increment). File: 0 axioms, 1 sorry.",
     "builtItems": [
       "Fixed apFree_singleton proof, Complex.abs -> norm, added apFree_subset, removed incorrect apFree_pair",
       "Build now succeeds: 0 axioms, 3 sorries",
@@ -68,7 +68,8 @@
       "Fixed 20+ Mathlib v4.26.0 API breakages in RothTheorem.lean — file compiles again",
       "Proved density_increment_lemma N=1 easy case (delta+delta²/100≤1) via (1,{0:ZMod 1})",
       "Replaced ZMod.val_one_lt_of_lt with CharP.cast_eq_zero_iff approach for 1≠0 proofs",
-      "Fixed Finset.card_sdiff, Nat.cast_sub, norm_star, ZMod.natCast_eq_zero_iff signatures"
+      "Fixed Finset.card_sdiff, Nat.cast_sub, norm_star, ZMod.natCast_eq_zero_iff signatures",
+      "PROVED coset_fiber_card_eq: bijection ZMod M ↔ fiber via φ(k)=j+val(k)*g, using Finset.card_nbij + ZMod.val_natCast_of_lt"
     ],
     "insights": [
       "RothTheorem.lean had 3 build errors: deprecated Finset.not_mem_empty, broken apFree_singleton, non-existent Complex.abs",
@@ -118,7 +119,10 @@
       "Fix requires AP-based density increment (Dirichlet approximation) to guarantee M≥√N≥2",
       "For delta≤0.99 with N=1: easy case proved by constructing (1, {0:ZMod 1})",
       "Mathlib v4.26.0 broke 20+ proofs: Finset.card_sdiff, Nat.cast_sub, norm_star, Finset.card_nbij APIs changed",
-      "CharP.cast_eq_zero_iff (ZMod N) N proves 1≠0 in ZMod N: ((1:ℕ):ZMod N)=0 iff N∣1"
+      "CharP.cast_eq_zero_iff (ZMod N) N proves 1≠0 in ZMod N: ((1:ℕ):ZMod N)=0 iff N∣1",
+      "coset_fiber_card_eq proof strategy: define φ(k)=↑j+↑(val k)*↑g, show val(φ(k))=j+val(k)*g (no mod reduction since <N), prove injectivity via Nat.eq_of_mul_eq_left, surjectivity via q=val(x)/g",
+      "Finset.card_congr does NOT exist in Mathlib v4.26.0 — use Finset.card_nbij instead (takes function + 3 proofs: maps-into, injective, surjective)",
+      "ZMod.val_natCast_of_lt is the key lemma for val(↑n : ZMod M) = n when n < M"
     ],
     "mathlibGaps": [],
     "nextSteps": [
