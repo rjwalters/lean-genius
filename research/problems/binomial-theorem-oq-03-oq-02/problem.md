@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization contributing to the Mathlib library in mathematical analysis: Contribute (1+x/n)^n -> e^x limit to Mathlib.
 
 ### Formal Statement
 $$

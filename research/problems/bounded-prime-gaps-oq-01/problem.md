@@ -15,7 +15,7 @@ $$
 
 ### Plain Language
 
-[Explain what we're trying to prove in accessible terms]
+Formal mathematical investigation: [Problem Title].
 
 ### Why This Matters
 

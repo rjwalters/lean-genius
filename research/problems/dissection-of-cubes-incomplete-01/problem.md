@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization completing a partial formalization in geometry: Complete proof of Dissection of Cubes (2 sorries).
 
 ### Formal Statement
 $$

@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Extends the Erdos 1138 prime gap formalization with proved bounds: prime gaps are bounded above (BddAbove via gap <= x), Bertrand's postulate gives gap <= prev_prime, maxPrimeGap <= x/2 for x >= 25, Cramer's C*(log x)^2 = o(x) sublinearity, and monotonicity. All former axioms and sorries resolved. Baker-Harman-Pintz x^0.525 bound axiomized.
 
 ### Formal Statement
 $$

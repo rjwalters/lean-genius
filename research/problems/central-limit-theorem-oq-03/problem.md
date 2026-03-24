@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalizes the commutative monoid structure of probability distributions under convolution, with the CLT interpreted as convergence to the Gaussian fixed point. Includes Cramér's indecomposability theorem and domain of attraction formalization.
 
 ### Formal Statement
 $$

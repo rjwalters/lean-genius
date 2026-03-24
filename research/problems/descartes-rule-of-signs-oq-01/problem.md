@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Descartes' Rule of Signs (1637) states that the number of positive real roots of a polynomial (counted with multiplicity) is at most the number of sign variations in the coefficient sequence, and differs from it by an even number. The upper bound is now in Mathlib as `roots_countP_pos_le_signVariations`. The parity result — that the difference is always even — requires the Fundamental Theorem of Algebra plus analysis of complex conjugate pairs, and is not yet formalized in Mathlib.
 
 ### Formal Statement
 $$

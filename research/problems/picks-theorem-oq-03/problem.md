@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Ehrhart polynomials generalize Pick's formula to higher dimensions: for a d-dimensional lattice polytope P, the lattice point count of nP is a polynomial of degree d in n. Verified on cubes, simplices, cross-polytopes (octahedra), and their products, with Ehrhart-Macdonald reciprocity, h*-vector palindromy, and reflexive polytope characterization.
 
 ### Formal Statement
 $$

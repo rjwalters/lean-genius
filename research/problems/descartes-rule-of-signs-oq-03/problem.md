@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization extending an existing formalization in algebra: Constructive Root Bounds from Descartes Rule of Signs.
 
 ### Formal Statement
 $$

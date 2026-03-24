@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+For prime p and k,m >= 2, let r(k,m,p) be the minimal r such that r,...,r+m-1 are kth power residues mod p. Let Lambda(k,m) = lim sup r(k,m,p). Hildebrand (1991) proved Lambda(k,2) finite for all k. Lambda(k,3) for odd k >= 5 remains OPEN.
 
 ### Formal Statement
 $$

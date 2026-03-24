@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization extending an existing formalization in combinatorics: Ramsey R(4,k) Probabilistic Method Extensions.
 
 ### Formal Statement
 $$

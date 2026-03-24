@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization extending an existing formalization: What is the analog of Cayley-Hamilton for infinite-dimensional operators.
 
 ### Formal Statement
 $$

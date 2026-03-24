@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization extending an existing formalization in mathematical analysis: Closed Form for Sum of First n Cubes.
 
 ### Formal Statement
 $$

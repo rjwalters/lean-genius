@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization extending an existing formalization: What is the computational complexity of determining constructibility.
 
 ### Formal Statement
 $$

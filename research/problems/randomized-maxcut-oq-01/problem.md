@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization of the Goemans-Williamson (1995) semidefinite programming approach to MaxCut, achieving an approximation ratio of α_GW ≈ 0.878 via hyperplane rounding of SDP relaxation.
 
 ### Formal Statement
 $$

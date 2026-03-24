@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Extend the Abel-Ruffini theorem formalization with explicit proofs connecting solvability by radicals to group-theoretic solvability, and characterizing the degree-5 threshold.
 
 ### Formal Statement
 $$

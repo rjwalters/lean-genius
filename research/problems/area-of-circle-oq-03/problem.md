@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalizes Archimedes' method of exhaustion: regular inscribed and circumscribed n-gons sandwich the circle area πr², with both converging to πr² as n → ∞. The limits sin(2π/n)·n → 2π and tan(π/n)·n → π follow from HasDerivAt sin 1 0 and HasDerivAt tan 1 0. All 17 theorems proved with 0 sorries.
 
 ### Formal Statement
 $$

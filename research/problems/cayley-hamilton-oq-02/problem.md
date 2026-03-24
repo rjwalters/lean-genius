@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization extending an existing formalization in linear algebra: Computing Matrix Exponentials via Cayley-Hamilton.
 
 ### Formal Statement
 $$

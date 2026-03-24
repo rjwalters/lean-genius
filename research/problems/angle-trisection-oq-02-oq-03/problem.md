@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+A regular n-gon is constructible by compass and straightedge if and only if Euler's totient φ(n) is a power of 2. Equivalently, n = 2^k · p₁ · ... · p_r where p₁,...,p_r are distinct Fermat primes. This is the third level of the constructibility OQ chain: OQ01 (degree criterion) → OQ02 (Galois criterion) → OQ02-OQ03 (regular polygon characterization).
 
 ### Formal Statement
 $$

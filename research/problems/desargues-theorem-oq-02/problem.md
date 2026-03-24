@@ -15,7 +15,7 @@ $$
 
 ### Plain Language
 
-[Explain what we're trying to prove in accessible terms]
+How can we formalize non-Desarguesian planes in Lean to demonstrate when Desargues's theorem fails? YES — by constructing the Moulton plane, an affine plane where lines with negative slope bend at the y-axis, and exhibiting a concrete 6-point counterexample. Two triangles are perspective from a point O but their three side-intersection points are NOT Moulton-collinear, proving Desargues fails.
 
 ### Why This Matters
 

@@ -184,5 +184,10 @@
     "ballot-problem-oq-03",
     "ballot-problem-oq-03-oq-02"
   ],
-  "tags": []
+  "tags": [],
+  "problemStatement": {
+    "formal": "",
+    "plain": "Generalizes the 2×2 LGV lemma to the full r×r case: the number of r-tuples of pairwise non-intersecting lattice paths equals det[e(Aᵢ,Bⱼ)], the determinant of the path count matrix. Formalizes LGVConfig, PathTuple, permutation path tuples, and the Gessel-Viennot sign-reversing involution infrastructure.",
+    "whyMatters": []
+  }
 }

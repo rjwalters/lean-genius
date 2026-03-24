@@ -133,5 +133,10 @@
     "cayley-hamilton-minpoly-oq-05",
     "cayley-hamilton-minpoly-oq-05-oq-01"
   ],
-  "tags": []
+  "tags": [],
+  "problemStatement": {
+    "formal": "",
+    "plain": "Formalizes modular reduction via the minimal polynomial in general K-algebras: evaluating f at x equals evaluating f mod minpoly(x). Also proves base change behavior in algebra towers K ⊂ L ⊂ A, showing degree can only decrease when extending the base field.",
+    "whyMatters": []
+  }
 }

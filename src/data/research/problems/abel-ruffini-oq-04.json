@@ -69,5 +69,10 @@
     "abel-ruffini",
     "abel-ruffini-oq-04"
   ],
-  "tags": []
+  "tags": [],
+  "problemStatement": {
+    "formal": "",
+    "plain": "Exposes the key group-theoretic steps of the Abel-Ruffini proof chain with each step as a named theorem: A₅ is simple → Sₙ (n≥5) not solvable, plus a 2-line type-coercion bridge from Mathlib's cardinal-level statement to natural numbers. Steps 4–5 (Galois bridge, generic quintic Galois group) are documented but not formalized here. Part of Wiedijk's 100 Theorems (#16, Insolvability of General Higher Degree Equations). Fully verified with 0 sorries and 0 axioms.",
+    "whyMatters": []
+  }
 }

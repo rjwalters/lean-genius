@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+A formal proof of the discrete intermediate value theorem for ballot-type sequences, establishing that prefix sums of {+1, -k}-lists hit every integer value in a range. This is the key analytic lemma used to prove the lower bound in the Dvoretzky-Motzkin Cycle Lemma.
 
 ### Formal Statement
 $$

@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalizes the smooth Gauss-Bonnet theorem ∫_M K dA = 2πχ(M) and its consequences for compact Riemannian surfaces. The core theorem is axiomatized (Mathlib lacks Riemannian geometry infrastructure), with 20+ consequence theorems fully proved: genus determination from curvature sign, curvature-topology constraints, average curvature formulas, and connections to the discrete case.
 
 ### Formal Statement
 $$

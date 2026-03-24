@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Newton's generalization of the binomial theorem to fractional and negative exponents: for any real α and |x| < 1, (1+x)^α = Σ C(α,k) x^k where C(α,k) = α(α-1)···(α-k+1)/k! are the generalized binomial coefficients.
 
 ### Formal Statement
 $$

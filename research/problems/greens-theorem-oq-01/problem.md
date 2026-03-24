@@ -15,7 +15,7 @@ $$
 
 ### Plain Language
 
-[Explain what we're trying to prove in accessible terms]
+Green's theorem for rectangles formalized using Mathlib's intervalIntegral machinery, replacing the abstract stub definitions with genuine FTC-based computations. The proof uses only FTC, Fubini (as hypothesis), linearity of integration, and ring arithmetic — demonstrating that Mathlib's analysis library is powerful enough for multivariable calculus.
 
 ### Why This Matters
 

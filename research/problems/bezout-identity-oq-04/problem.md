@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+The complete parametric structure of all integer solutions to ax + by = c: the solution set forms a 1D arithmetic lattice {(x₀ + (b/d)t, y₀ - (a/d)t) : t ∈ ℤ} where d = gcd(a,b). Includes three-variable Diophantine criterion, GCD minimality, and the ideal characterization of GCD.
 
 ### Formal Statement
 $$

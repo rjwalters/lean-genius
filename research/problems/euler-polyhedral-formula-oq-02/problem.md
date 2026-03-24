@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Proves the discrete Gauss-Bonnet theorem connecting angular deficiency to topology: the total angular deficiency at vertices of a polyhedral surface equals 2πχ, where χ is the Euler characteristic. Includes Descartes' theorem for convex polyhedra (4π), genus generalization, curvature-topology correspondence, all five Platonic solid computations, and the classification of regular polyhedra. 37+ theorems, 0 sorries, 0 axioms.
 
 ### Formal Statement
 $$

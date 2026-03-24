@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+A direct Lean 4 proof of the Fisher-Fraughnaugh-Langley-West (FFLLW) theorem from Mathlib primitives: if χ(G) < girth(G), then G admits a robustly acyclic orientation. The proof constructs the coloring orientation (orient u→v when col(u) < col(v)) and shows it is always robustly acyclic. Key insight: under the rank-based formulation, ANY properly colorable finite graph has a robust orientation, making the girth condition unnecessary.
 
 ### Formal Statement
 $$

@@ -90,17 +90,68 @@ function registryToPoolStatus(entry: RegistryEntry): PoolCandidate['status'] {
   return 'in-progress'
 }
 
+// Status prefixes that indicate placeholder notes (not real descriptions)
+const STATUS_PREFIXES = ['AVAILABLE', 'IN-PROGRESS', 'IN PROGRESS', 'COMPLETED', 'SKIPPED', 'SURVEYED']
+
+/**
+ * Check if a candidate's notes field is just a status placeholder
+ */
+function isStatusPlaceholder(notes: string): boolean {
+  const trimmed = notes.trim().replace(/\.$/, '').trim()
+  if (!trimmed) return true
+  const upper = trimmed.toUpperCase()
+  for (const prefix of STATUS_PREFIXES) {
+    if (upper === prefix) return true
+  }
+  return false
+}
+
+/**
+ * Generate a plain language description from candidate data.
+ * Falls back to the candidate name when notes are just a status placeholder.
+ */
+function generatePlainDescription(candidate: PoolCandidate): string {
+  // If notes contain real content (not just a status), use the first sentence
+  if (!isStatusPlaceholder(candidate.notes)) {
+    const firstSentence = candidate.notes.split('.')[0]
+    if (firstSentence && firstSentence.trim().length > 5) {
+      return `${firstSentence.trim()}.`
+    }
+  }
+
+  // Generate from name and tags
+  const mathAreas: Record<string, string> = {
+    'number-theory': 'number theory', 'combinatorics': 'combinatorics',
+    'algebra': 'algebra', 'analysis': 'analysis', 'geometry': 'geometry',
+    'topology': 'topology', 'graph-theory': 'graph theory',
+    'probability': 'probability theory', 'group-theory': 'group theory',
+    'galois-theory': 'Galois theory', 'measure-theory': 'measure theory',
+    'set-theory': 'set theory', 'field-theory': 'field theory',
+  }
+  const area = candidate.tags.find(t => mathAreas[t])
+  const areaStr = area ? mathAreas[area] : null
+
+  if (areaStr) {
+    return `Formal investigation in ${areaStr}: ${candidate.name}.`
+  }
+  return `Formal mathematical investigation: ${candidate.name}.`
+}
+
 /**
  * Create a minimal problem.md file for a problem
  */
 function createMinimalProblemMd(candidate: PoolCandidate): string {
   const tierMap: Record<string, string> = { 'A': 'A', 'B': 'B', 'C': 'C', 'S': 'S' }
+  const plainDesc = generatePlainDescription(candidate)
+  const researchValue = isStatusPlaceholder(candidate.notes)
+    ? 'Important mathematical result'
+    : (candidate.notes.split('.')[0] || 'Important mathematical result')
   return `# Problem: ${candidate.name}
 
 ## Statement
 
 ### Plain Language
-${candidate.notes.split('.')[0] || candidate.name}.
+${plainDesc}
 
 ### Formal Statement
 $$
@@ -122,7 +173,7 @@ ${candidate.tags.map(t => `  - ${t}`).join('\n')}
 
 ## Why This Matters
 
-1. **Research value** - ${candidate.notes.split('.')[0] || 'Important mathematical result'}
+1. **Research value** - ${researchValue}
 
 ## Related Gallery Proofs
 

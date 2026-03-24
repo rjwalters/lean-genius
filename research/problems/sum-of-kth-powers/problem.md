@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Closed-form formulas for sums of consecutive kth powers (k=1 through k=5), including the remarkable identity that the sum of cubes equals the square of the sum.
 
 ### Formal Statement
 $$

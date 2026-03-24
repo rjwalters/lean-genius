@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Constructs the Beltrami-Klein disk model of hyperbolic geometry with explicit coordinate geometry and proves the hyperbolic parallel property concretely, establishing independence of the parallel postulate via model construction.
 
 ### Formal Statement
 $$

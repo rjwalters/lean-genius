@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Studies the function minEdges(d) giving the minimum number of edges in a graph of dimension exactly d. Formalizes known values (d=0..5), proves structural results including a constructive simplex embedding of K_n in ℝⁿ, shows the complete graph optimality conjecture implies monotonicity, analyzes growth rates, and introduces the deficiency function.
 
 ### Formal Statement
 $$

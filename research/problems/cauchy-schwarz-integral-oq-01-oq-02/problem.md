@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalizes the connection between Hölder's inequality and the Riesz-Thorin interpolation theorem, showing Hölder provides endpoint estimates while the full proof requires the three-lines lemma.
 
 ### Formal Statement
 $$

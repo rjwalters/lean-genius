@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization extending an existing formalization in graph theory: Directed Euler paths: in-degree equals out-degree characterization for directed graphs.
 
 ### Formal Statement
 $$

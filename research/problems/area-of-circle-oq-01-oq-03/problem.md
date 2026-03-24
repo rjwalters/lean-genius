@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+For any closed curve with circumference C enclosing area A, the isoperimetric inequality C² ≥ 4πA holds, with equality iff the curve is a circle. Proves 29 theorems (4 sorries, 0 axioms) including Wirtinger's inequality (proved from Fourier decomposition), the general isoperimetric inequality, equality characterization, and concrete verification for circles, squares, regular n-gons, and equilateral triangles.
 
 ### Formal Statement
 $$

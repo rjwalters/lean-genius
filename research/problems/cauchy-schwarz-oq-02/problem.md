@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formal investigation in mathematical analysis: Bunyakovsky-Schwarz Integral Inequality Formalization.
 
 ### Formal Statement
 $$

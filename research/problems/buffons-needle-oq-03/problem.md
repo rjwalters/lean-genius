@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization generalizing a known result: Can the higher-dimensional generalization (random needles on a grid in ℝ³) be....
 
 ### Formal Statement
 $$

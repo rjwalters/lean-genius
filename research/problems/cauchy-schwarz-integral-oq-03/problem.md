@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Extends the Bunyakovsky-Schwarz integral inequality from real to complex L2 spaces via a bridge theorem connecting the abstract inner product to the integral of pointwise inner products.
 
 ### Formal Statement
 $$

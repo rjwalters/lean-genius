@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization completing a partial formalization in combinatorics: Complete Generalized Ballot Problem: k-Fold Dominance (3 sorries).
 
 ### Formal Statement
 $$

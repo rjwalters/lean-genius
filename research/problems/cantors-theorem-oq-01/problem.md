@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+The power set of the reals has cardinality 2^𝔠 = 2^(2^ℵ₀) = ℶ₂, the second beth number. This is definitively provable in ZFC via Cantor's theorem and the beth hierarchy. The residual open question — what is the aleph-index of ℶ₂? — is independent of ZFC (Easton's theorem). Under GCH + CH, |𝒫(ℝ)| = ℵ₂; without GCH, König's constraint rules out many values but the exact index remains undetermined.
 
 ### Formal Statement
 $$

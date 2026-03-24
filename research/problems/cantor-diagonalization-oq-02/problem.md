@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+What is the cardinality of the set of all countable ordinals? A Cantor-style diagonal argument shows this set is uncountable: any countable enumeration of countable ordinals misses a countable ordinal, proving the set has cardinality ℵ₁.
 
 ### Formal Statement
 $$

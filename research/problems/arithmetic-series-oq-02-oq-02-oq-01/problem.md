@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formal mathematical investigation: arithmetic-series-oq-02-oq-02-oq-01.
 
 ### Formal Statement
 $$

@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization generalizing a known result in algebra: Non-coprime CRT extension to polynomial rings and PIDs.
 
 ### Formal Statement
 $$

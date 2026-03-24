@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+The Continuum Hypothesis is independent of ZFC, raising a natural question: should we extend our axiom system to settle it? This exploration formalizes the CH axiom landscape — V=L (implies CH) vs forcing axioms like PFA (implies ¬CH) — and reveals a key asymmetry: CH-deciding axioms are incompatible with large cardinals, while ¬CH-deciding axioms are not.
 
 ### Formal Statement
 $$

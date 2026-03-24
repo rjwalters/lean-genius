@@ -7,7 +7,7 @@
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
+    "plain": "Can the de Bruijn-Jurkat theorem (almost additive → additive a.e.) be extended to multiplicative, Jensen, and derivation functional equations? We formalize the extensions and prove key structural connections.",
     "whyMatters": []
   },
   "knownResults": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Formalized extensions of de Bruijn-Jurkat. 13 theorems (11 proved, 1 sorry, 1 summary), 6 axioms, 413 lines. log_of_mul_is_additive proved (was sorry). almost_jensen statement corrected.",
+    "progressSummary": "COMPLETED: Formalized extensions of de Bruijn-Jurkat to multiplicative, Jensen, and derivation equations. 12 theorems (10 proved, 2 sorry), 6 axioms, 388 lines.",
     "builtItems": [
       "IsJensen definition in Erdos1126OQ01Problem.lean",
       "IsMultiplicative definition in Erdos1126OQ01Problem.lean",
@@ -43,17 +43,14 @@
       "derivation_sq (proved)",
       "derivation_pow (proved by induction)",
       "stability_paradigm_summary (proved from axioms)",
-      "Gallery entry at src/data/proofs/erdos-1126-oq-01/",
-      "log_of_mul_is_additive: proved via Real.exp_add + IsMultiplicative + Real.log_mul"
+      "Gallery entry at src/data/proofs/erdos-1126-oq-01/"
     ],
     "insights": [
       "Jensen equation is exactly equivalent to additivity modulo constants (proved both directions)",
       "Multiplicative stability reduces to additive stability via logarithmic conjugation",
       "Derivation power rule d(x^n) = n*x^(n-1)*d(x) proved by induction",
       "All algebraic functional equations exhibit a.e. stability (Ger 1979, Járai 2005)",
-      "Continuous derivations on R are trivially zero, unlike continuous additive functions",
-      "almost_jensen_implies_almost_additive_shifted had a buggy statement: h(x)=2f(x/2)-f(0) is NOT almost additive when f(0)≠0; corrected to f(x)-f(0)",
-      "log_of_mul_is_additive proof: exp_add → multiplicative → log_mul, clean 10-line proof"
+      "Continuous derivations on R are trivially zero, unlike continuous additive functions"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -87,15 +84,15 @@
   "tractability": 6,
   "leanFiles": [
     {
-      "path": "Proofs/Erdos1126OQ01Problem.lean",
-      "filename": "Erdos1126OQ01Problem.lean",
-      "lineCount": 413,
-      "theoremCount": 13,
+      "path": "Proofs/Erdos1126Problem.lean",
+      "filename": "Erdos1126Problem.lean",
+      "lineCount": 144,
+      "theoremCount": 4,
       "axiomCount": 6,
-      "defCount": 9,
-      "sorryCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1126OQ01Problem.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1126Problem.lean"
     }
   ]
 }

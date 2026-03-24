@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Extends De Moivre's theorem to fractional exponents z^(p/q), proving root enumeration, distinctness, and principal value consistency via Mathlib's cpow.
 
 ### Formal Statement
 $$

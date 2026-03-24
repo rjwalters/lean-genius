@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Extends Euler's polyhedral formula V-E+F=2 to planar graph theory: spanning tree approach, graph degeneracy (5-degenerate), and the Six Color Theorem via degeneracy coloring.
 
 ### Formal Statement
 $$

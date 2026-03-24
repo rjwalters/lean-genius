@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+A complete formalization of Hölder's inequality in the measure-theoretic setting, replacing the placeholder in the parent Lebesgue Measure proof. Covers Young's inequality, the Lebesgue integral Hölder bound, Cauchy-Schwarz as the p=q=2 specialization, Minkowski's inequality for Lp spaces, and L² as an inner product space. 10 theorems, 0 sorries.
 
 ### Formal Statement
 $$
