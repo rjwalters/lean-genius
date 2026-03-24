@@ -124,6 +124,11 @@
       "targetId": "shannon-channel-coding",
       "relationship": "related",
       "description": "Source coding (compression) and channel coding (reliable transmission) are the two fundamental theorems of information theory, connected by the separation theorem"
+    },
+    {
+      "targetId": "shannon-source-coding-oq-02",
+      "relationship": "extended-by",
+      "description": "Extends the source coding theorem to explore connections with Kolmogorov complexity and algorithmic information theory"
     }
   ],
   "conclusion": {
@@ -137,7 +142,8 @@
   },
   "relatedProofs": [
     "shannon-entropy",
-    "shannon-channel-coding"
+    "shannon-channel-coding",
+    "shannon-source-coding-oq-02"
   ],
   "leanFile": {
     "imports": [
