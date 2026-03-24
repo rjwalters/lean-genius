@@ -56,7 +56,7 @@
     {
       "id": "nc-probability-spaces",
       "title": "Non-Commutative Probability Spaces",
-      "summary": "Defines NCDistribution as a moment sequence with extensionality theorem and Dirac distribution at 0.",
+      "summary": "Defines `NCDistribution` as a moment sequence $\\{m_n\\}$ with normalization $m_0 = 1$. Proves extensionality (`nc_dist_ext`: equal moments implies equal distributions) and defines `diracNC` ($m_n = 0$ for $n \\geq 1$).",
       "startLine": 66,
       "endLine": 108
     },
@@ -77,42 +77,42 @@
     {
       "id": "free-convolution",
       "title": "Free Convolution",
-      "summary": "Axiomatizes free convolution as a commutative monoid with cumulant linearization. Proves freeConvPow_add and freeConvPow_cumulant by induction.",
+      "summary": "Axiomatizes free convolution $\\boxplus$ as a commutative monoid with $\\kappa_n(\\mu \\boxplus \\nu) = \\kappa_n(\\mu) + \\kappa_n(\\nu)$. Proves `freeConvPow_add` ($\\mu^{\\boxplus(m+n)} = \\mu^{\\boxplus m} \\boxplus \\mu^{\\boxplus n}$) and `freeConvPow_cumulant` ($\\kappa_k(\\mu^{\\boxplus n}) = n \\kappa_k(\\mu)$) by induction.",
       "startLine": 171,
       "endLine": 259
     },
     {
       "id": "r-transform",
       "title": "The R-Transform",
-      "summary": "Axiomatizes the R-transform (Voiculescu's free analog of the log-characteristic function), proves Rtransform_freeConvPow scaling by induction.",
+      "summary": "Axiomatizes the R-transform as the generating function of free cumulants: $R_\\mu(z) = \\sum \\kappa_n z^{n-1}$. Proves `Rtransform_freeConvPow` ($R_{\\mu^{\\boxplus n}} = n \\cdot R_\\mu$) by induction, paralleling the `freeConvPow_cumulant` proof.",
       "startLine": 260,
-      "endLine": 310
+      "endLine": 305
     },
     {
       "id": "semicircle",
-      "title": "The Semicircle Distribution",
-      "summary": "Defines the semicircle distribution with Catalan number moments, axiomatizes its free cumulant structure (only kappa_2 = 1 nonzero), and its linear R-transform.",
-      "startLine": 311,
+      "title": "The Semicircle Distribution (Wigner's Law)",
+      "summary": "Defines the Wigner semicircle distribution with Catalan number moments ($m_{2k} = C_k$, odd moments zero). Axiomatizes its free cumulant structure: $\\kappa_2 = 1$ and $\\kappa_n = 0$ for $n \\neq 2$, giving R-transform $R_w(z) = z$.",
+      "startLine": 306,
       "endLine": 371
     },
     {
       "id": "dilation",
       "title": "Dilation and Normalized Free Convolution",
-      "summary": "Axiomatizes dilation of distributions and defines the normalized free convolution power D_{1/sqrt(n)}(mu^{boxplus n}).",
+      "summary": "Axiomatizes dilation $D_c$ with cumulant scaling $\\kappa_n(D_c(\\mu)) = c^n \\kappa_n(\\mu)$ and R-transform scaling. Defines the normalized free convolution power $D_{1/\\sqrt{n}}(\\mu^{\\boxplus n})$ — the distribution of $(a_1 + \\cdots + a_n)/\\sqrt{n}$.",
       "startLine": 372,
       "endLine": 401
     },
     {
       "id": "free-clt",
       "title": "The Free CLT: Semicircle as Fixed Point and Attractor",
-      "summary": "States the Free CLT: semicircle is a fixed point of free renormalization and the global attractor for all centered unit-variance distributions.",
+      "summary": "Defines the free renormalization map $T(\\mu) = D_{1/\\sqrt{2}}(\\mu \\boxplus \\mu)$, axiomatizes the semicircle as its fixed point, defines moment convergence, states the Free CLT (`free_clt`), and proves `semicircle_is_attractor`.",
       "startLine": 402,
       "endLine": 483
     },
     {
       "id": "structural-parallel",
       "title": "Classical-Free Structural Parallel",
-      "summary": "Defines CLTStructure capturing the universal CLT pattern, instantiates it for free probability, and proves structural verification theorems.",
+      "summary": "Defines `CLTStructure` abstracting the universal pattern: convolution monoid + cumulant linearization + limit law with only $\\kappa_2 \\neq 0$. Instantiates `freeCLTStructure` and proves structural verification theorems (`clt_structure_double_variance`, `clt_structure_double_higher`).",
       "startLine": 484,
       "endLine": 588
     },
@@ -219,9 +219,14 @@
       "description": "Sibling: what happens when variance is infinite (stable distributions)"
     },
     {
+      "targetId": "central-limit-theorem-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling: Gnedenko-Kolmogorov domain of attraction theorem — characterizes which distributions are attracted to each stable law via regular variation"
+    },
+    {
       "targetId": "central-limit-theorem-oq-01-oq-02",
       "relationship": "sibling",
-      "description": "Sibling: Levy-Khintchine representation for infinitely divisible distributions"
+      "description": "Sibling: Lévy-Khintchine representation for infinitely divisible distributions"
     }
   ],
   "relatedProofs": [
