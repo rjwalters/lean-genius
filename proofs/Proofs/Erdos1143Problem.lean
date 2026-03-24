@@ -72,7 +72,26 @@ theorem single_prime_lower (p k : ℕ) (hp : Nat.Prime p) (hk : k ≥ 1) :
 
 theorem single_prime_upper (p k : ℕ) (hp : Nat.Prime p) :
     coveringFunction {p} k ≤ k / p + 1 := by
-  sorry
+  unfold coveringFunction
+  apply ciInf_le_of_le ⟨0, fun _ ⟨_, h⟩ => h ▸ Nat.zero_le _⟩ 0
+  unfold coveredInInterval
+  simp only [zero_add, Finset.mem_singleton, exists_eq_left]
+  have hp_pos := hp.pos
+  -- Multiples of p in [0, k) ⊆ image of (· * p) on range (k/p + 1)
+  have hsub : (Finset.Ico 0 k).filter (fun n => p ∣ n) ⊆
+      Finset.image (· * p) (Finset.range (k / p + 1)) := by
+    intro n hn
+    simp only [Finset.mem_filter, Finset.mem_Ico, Nat.zero_le, true_and] at hn
+    obtain ⟨hn_lt, j, rfl⟩ := hn
+    simp only [Finset.mem_image, Finset.mem_range]
+    refine ⟨j, ?_, by ring⟩
+    have hjp : j * p ≤ k := by rw [mul_comm]; exact le_of_lt hn_lt
+    have : j ≤ k / p := (Nat.le_div_iff_mul_le hp_pos).mpr hjp
+    omega
+  calc ((Finset.Ico 0 k).filter (fun n => p ∣ n)).card
+      ≤ (Finset.image (· * p) (Finset.range (k / p + 1))).card := Finset.card_le_card hsub
+    _ ≤ (Finset.range (k / p + 1)).card := Finset.card_image_le
+    _ = k / p + 1 := Finset.card_range _
 
 /-
 ## The Inclusion-Exclusion Bound
@@ -93,7 +112,30 @@ theorem expectedDensity_pos (primes : Finset ℕ) (hne : primes.Nonempty)
     0 < expectedDensity primes := by
   unfold expectedDensity
   simp only [sub_pos]
-  sorry -- Need Finset.prod_lt_one: each factor < 1, nonempty → product < 1
+  obtain ⟨q, hq⟩ := hne
+  have hq_prime := hprime q hq
+  have hq_pos : (0 : ℝ) < (q : ℝ) := by exact_mod_cast hq_prime.pos
+  have hq_one_lt : (1 : ℝ) < (q : ℝ) := by exact_mod_cast hq_prime.one_lt
+  have hfq_pos : 0 < 1 - 1 / (q : ℝ) := by
+    rw [sub_pos, div_lt_one hq_pos]; linarith
+  have hfq_lt : 1 - 1 / (q : ℝ) < 1 := by linarith [div_pos one_pos hq_pos]
+  calc ∏ p ∈ primes, (1 - 1 / (p : ℝ))
+      = (1 - 1 / (q : ℝ)) * ∏ p ∈ primes.erase q, (1 - 1 / (p : ℝ)) :=
+        (Finset.mul_prod_erase primes _ hq).symm
+    _ ≤ (1 - 1 / (q : ℝ)) * 1 := by
+        apply mul_le_mul_of_nonneg_left _ (le_of_lt hfq_pos)
+        apply Finset.prod_le_one
+        · intro p hp
+          have hp' := hprime p (Finset.mem_of_mem_erase hp)
+          have hp_pos : (0 : ℝ) < p := by exact_mod_cast hp'.pos
+          have h1_le : (1 : ℝ) ≤ p := by exact_mod_cast hp'.one_lt.le
+          linarith [(div_le_one hp_pos).mpr h1_le]
+        · intro p hp
+          have hp' := hprime p (Finset.mem_of_mem_erase hp)
+          have hp_pos : (0 : ℝ) < p := by exact_mod_cast hp'.pos
+          exact sub_le_self _ (div_nonneg zero_le_one (le_of_lt hp_pos))
+    _ = 1 - 1 / (q : ℝ) := mul_one _
+    _ < 1 := hfq_lt
 
 theorem expectedDensity_lt_one (primes : Finset ℕ) (hne : primes.Nonempty)
     (hprime : ∀ p ∈ primes, Nat.Prime p) :

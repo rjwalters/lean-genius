@@ -29,9 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "Proved single_prime_upper (image injection into range(k/p+1)) and expectedDensity_pos (factored product, each factor ≤ 1). Sorries: 1 (was 3). Axioms: 3 (deep). Theorems: 10 (was 8).",
+    "builtItems": [
+      "single_prime_upper: PROVED via card_le_card of filter ⊆ image, Nat.le_div_iff_mul_le",
+      "expectedDensity_pos: PROVED by factoring product, Finset.prod_le_one, sub_le_self for factors ≤ 1"
+    ],
+    "insights": [
+      "omega cant handle ℕ multiplication commutativity — use explicit mul_comm before omega",
+      "Finset.prod_le_one needs both 0 ≤ f and f ≤ 1 as separate hypotheses"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Erdős #1143 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
@@ -59,10 +65,10 @@
       "path": "Proofs/Erdos1143Problem.lean",
       "filename": "Erdos1143Problem.lean",
       "lineCount": 169,
-      "theoremCount": 8,
+      "theoremCount": 10,
       "axiomCount": 3,
       "defCount": 3,
-      "sorryCount": 7,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1143Problem.lean"
     }
