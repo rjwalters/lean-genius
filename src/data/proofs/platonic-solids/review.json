@@ -3,14 +3,12 @@
   "proofId": "platonic-solids",
   "reviewDate": "2026-03-24T12:00:00Z",
   "reviewer": "peer-reviewer",
-
   "overallAssessment": {
     "grade": "B+",
     "oneLiner": "A well-structured, genuinely original classification proof with minimal Mathlib dependency, marred by a mismatched badge and inflated prerequisites list.",
     "tier": "A",
     "tierJustification": "Fully formalized with 0 sorries, 0 axioms. The main classification theorem platonic_classification is a complete biconditional proved by exhaustive case analysis. All definitions are filled in. No mathematical assumptions."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -76,42 +74,41 @@
       "recommendation": "Consider downgrading pythagorean-theorem from 'foundational' to 'thematic'. The golden ratio connection mentioned in the description is mathematically true but not present in the formalization."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
       "priority": "high",
       "target": "enricher",
       "description": "Change meta.json badge from 'mathlib' to 'original'. The proof has minimal Mathlib dependency — the classification logic is entirely original case analysis.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "high",
       "target": "enricher",
       "description": "Remove 'Symmetry groups of polyhedra and SO(3)' and 'Classification of convex regular polyhedra' from both meta.prerequisites and overview.prerequisites. These are not used in the Lean proof.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "medium",
       "target": "enricher",
       "description": "Fix broken formatting in conclusion.implications: item 2 is empty with a stray newline. Produce a clean numbered list.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "medium",
       "target": "enricher",
       "description": "Reframe originalContributions items 3-4 to accurately reflect they are computational verifications (rfl/norm_num proofs), not substantive derivations.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",
       "priority": "low",
       "target": "enricher",
       "description": "Update leanFile.definitionCount from 10 to 12.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-6",
@@ -125,10 +122,9 @@
       "priority": "low",
       "target": "enricher",
       "description": "Downgrade pythagorean-theorem cross-reference from 'foundational' to 'thematic' — the golden ratio connection is real mathematics but absent from the formalization.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 8,
     "originalityAccuracy": 8,
@@ -138,6 +134,5 @@
     "internalConsistency": 7,
     "overall": 7.8
   },
-
   "suggestedBestFraming": "A complete Lean 4 formalization proving that exactly five integer pairs (p,q) with p,q >= 3 satisfy the regularity constraint (p-2)(q-2) < 4, classifying the Platonic solids by their Schläfli symbols via exhaustive case analysis, with bonus sections on geometric properties (V,E,F computation) and duality."
 }

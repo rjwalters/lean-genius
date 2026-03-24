@@ -3,14 +3,12 @@
   "proofId": "herons-formula",
   "reviewDate": "2026-03-24T16:00:00Z",
   "reviewer": "peer-reviewer-1",
-
   "overallAssessment": {
     "grade": "B",
     "oneLiner": "Honest Mathlib wrapper with well-structured pedagogical content, but originalContributions are overstated and a phantom 'law of cosines connection' is claimed but never formalized.",
     "tier": "B",
     "tierJustification": "The main theorem (heron_formula, line 91) is a single direct call to Theorems100.heron from the Mathlib Archive. The file adds definitions, algebraic expansions proved by ring, numerical verifications by norm_num, and one substantive helper lemma (heron_product_nonneg). This is a well-organized Mathlib bridge with genuine supporting content, but the core mathematical work is imported."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -76,28 +74,27 @@
       "recommendation": "Remove the law of cosines reference from proofStrategy. The strategy should accurately describe what the file does: restate Mathlib's theorem, provide definitions, prove algebraic expansions, verify examples, and prove non-negativity."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
       "priority": "medium",
       "target": "enricher",
       "description": "Fix originalContributions in meta.json: replace 'Connection to law of cosines' (not in the Lean file) with 'Non-negativity proof via triangle inequality (heron_product_nonneg)'. Reword 'Multiple formulations' to 'Computable definitions and algebraic expansions'.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "low",
       "target": "enricher",
       "description": "Remove the cayley-hamilton entry from relatedProofs in meta.json. It is a spurious cross-reference with no mathematical basis.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "low",
       "target": "enricher",
       "description": "Remove the 'law of cosines' reference from overview.proofStrategy. The sine area formula is distinct from the law of cosines.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
@@ -114,7 +111,6 @@
       "status": "open"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 5,
     "originalityAccuracy": 6,
@@ -124,6 +120,5 @@
     "internalConsistency": 7,
     "overall": 6.8
   },
-
   "suggestedBestFraming": "A pedagogical Mathlib wrapper presenting Heron's formula (Wiedijk #57) from the Mathlib Archive, with computable definitions of the semi-perimeter and Heron product, algebraic expansions proved by ring, three worked numerical examples, and an original non-negativity proof via the triangle inequality."
 }

@@ -3,14 +3,12 @@
   "proofId": "fundamental-theorem-algebra",
   "reviewDate": "2026-03-24T12:00:00Z",
   "reviewer": "peer-reviewer",
-
   "overallAssessment": {
     "grade": "B-",
     "oneLiner": "Honest Mathlib curation with excellent pedagogy, undermined by phantom theorem names in overview.text and several metadata inaccuracies.",
     "tier": "B",
     "tierJustification": "Core theorem (fundamental_theorem_of_algebra) is a one-line call to Mathlib's Complex.exists_root. Corollaries (splits_over_complex, card_roots_eq_degree, monic_prod_roots) are thin wrappers around Mathlib. The file's value lies in pedagogical arrangement, not original proof work. no_roots_implies_constant is the only theorem with substantive multi-step reasoning."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -90,7 +88,6 @@
       "recommendation": "Verify declaration count and correct. The file has 6 theorems, 3 examples, and 3 #check lines."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
@@ -104,7 +101,7 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Fix leanFile.theoremCount from 4 to 6. Fix section line numbers to match current Lean source. Fix annotation ranges for ann-monic-factorization (should be 144-155) and ann-quadratic-case (should be 174-208 or removed in favor of ann-quadratic-theorem).",
-      "status": "partial"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
@@ -121,7 +118,6 @@
       "status": "resolved"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 5,
     "originalityAccuracy": 6,
@@ -131,6 +127,5 @@
     "internalConsistency": 5,
     "overall": 6.3
   },
-
   "suggestedBestFraming": "A pedagogical curation of the Fundamental Theorem of Algebra via Mathlib: the core theorem delegates to Complex.exists_root, while this file provides the contrapositive formulation, complete factorization corollaries, and a worked quadratic example with extensive historical exposition."
 }

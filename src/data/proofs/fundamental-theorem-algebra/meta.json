@@ -82,49 +82,41 @@
   "sections": [
     {
       "id": "introduction",
-      "title": "Introduction",
+      "title": "Introduction and Imports",
       "startLine": 1,
-      "endLine": 23,
+      "endLine": 43,
       "summary": "Overview of the Fundamental Theorem of Algebra and its historical significance as the foundation of algebraic closure.",
       "mathContext": "Every non-constant polynomial $p(z) \\in \\mathbb{C}[z]$ has a root: $\\exists z_0 \\in \\mathbb{C},\\, p(z_0) = 0$. Equivalently, $\\mathbb{C}$ is algebraically closed."
     },
     {
-      "id": "mathlib-imports",
-      "title": "Mathlib Imports",
-      "startLine": 24,
-      "endLine": 33,
-      "summary": "Importing the complex polynomial theory from Mathlib, which provides the formalized theorem.",
-      "mathContext": "Imports `Mathlib.Analysis.SpecificLimits.Complex` and `Polynomial` modules providing `Complex.exists_root` and `IsAlgClosed`"
-    },
-    {
       "id": "polynomial-basics",
       "title": "Polynomial Foundations",
-      "startLine": 34,
-      "endLine": 56,
+      "startLine": 45,
+      "endLine": 63,
       "summary": "Setting up polynomial notation and reviewing key concepts: degree, evaluation, and what it means to be a root.",
       "mathContext": "`Polynomial.eval₂` for evaluation $p(z_0)$, `Polynomial.degree` for $\\deg p$, `Polynomial.IsRoot` for $p(z_0) = 0$"
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
-      "startLine": 57,
-      "endLine": 83,
+      "startLine": 65,
+      "endLine": 90,
       "summary": "Stating and proving the Fundamental Theorem of Algebra using Mathlib's Complex.exists_root theorem.",
       "mathContext": "$\\forall p \\in \\mathbb{C}[z],\\, \\deg p \\geq 1 \\implies \\exists z_0 \\in \\mathbb{C},\\, p(z_0) = 0$. Proof via Liouville: if $p(z) \\neq 0$ everywhere, then $1/p$ is bounded entire, hence constant — contradiction."
     },
     {
       "id": "algebraic-closure",
       "title": "Algebraic Closure",
-      "startLine": 84,
-      "endLine": 106,
+      "startLine": 92,
+      "endLine": 130,
       "summary": "The powerful consequence: the complex numbers form an algebraically closed field.",
       "mathContext": "$\\mathbb{C}$ is algebraically closed: `IsAlgClosed \\mathbb{C}`. Every polynomial over $\\mathbb{C}$ of degree $\\geq 1$ has a root, so no proper algebraic extension of $\\mathbb{C}$ exists."
     },
     {
       "id": "complete-factorization",
       "title": "Complete Factorization",
-      "startLine": 107,
-      "endLine": 156,
+      "startLine": 132,
+      "endLine": 172,
       "summary": "Root counting (card_roots_eq_degree) and monic factorization (monic_prod_roots) — a degree-n polynomial has exactly n roots with multiplicity, and monic polynomials equal the product of their linear factors.",
       "mathContext": "$p(z) = a_n \\prod_{i=1}^{n} (z - z_i)$ where $z_1, \\ldots, z_n$ are the roots (with multiplicity). Uses `Polynomial.roots`, `natDegree_eq_card_roots`, and `prod_multiset_X_sub_C_of_monic_of_roots_card_eq`."
     },
@@ -139,8 +131,8 @@
     {
       "id": "quadratic-case",
       "title": "Quadratic Special Case",
-      "startLine": 174,
-      "endLine": 214,
+      "startLine": 176,
+      "endLine": 210,
       "summary": "Worked example: quadratic_has_root proves every quadratic az²+bz+c with a≠0 has a complex root, applying FTA after establishing degree = 2 > 0. Concludes with #check verification of the main theorems.",
       "mathContext": "The quadratic formula $z = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$ gives roots explicitly. This proof instead derives existence from FTA, demonstrating the theorem's power: it avoids the explicit formula entirely."
     }

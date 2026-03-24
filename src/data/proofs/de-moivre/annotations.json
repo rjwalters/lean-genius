@@ -58,7 +58,7 @@
     "title": "Exponential Form",
     "content": "**Two equivalent exponential formulations**:\n\n1. $(e^{\\theta I})^n = e^{n\\theta I}$ — with $\\theta I$ ordering\n2. $(e^{I\\theta})^n = e^{I \\cdot n\\theta}$ — with $I\\theta$ ordering\n\nBoth reduce to `exp_nat_mul` plus `ring` (to rearrange the exponent). These are the 'cleanest' statements because they avoid the trigonometric functions entirely — the identity is purely about the exponential function.\n\n**Why two versions**: Mathlib's `exp_mul_I` uses $\\theta \\cdot I$ ordering, but mathematical convention often writes $e^{i\\theta}$ with $I$ first. Both orderings are provided for convenience.",
     "mathContext": "(exp(θI))^n = exp(nθI)",
-    "significance": "key",
+    "significance": "supporting",
     "relatedConcepts": [
       "exponential function",
       "complex analysis",
@@ -104,7 +104,7 @@
     "title": "Double and Triple Angle Formulas",
     "content": "**n = 2** (double angle):\n$$\\cos(2\\theta) + i\\sin(2\\theta) = (\\cos\\theta + i\\sin\\theta)^2$$\n\nExpanding the RHS and comparing real/imaginary parts:\n$$\\cos(2\\theta) = \\cos^2\\theta - \\sin^2\\theta, \\quad \\sin(2\\theta) = 2\\sin\\theta\\cos\\theta$$\n\n**n = 3** (triple angle):\n$$\\cos(3\\theta) = 4\\cos^3\\theta - 3\\cos\\theta, \\quad \\sin(3\\theta) = 3\\sin\\theta - 4\\sin^3\\theta$$\n\n**Lean**: Both are one-liners — just `exact de_moivre θ 2` and `exact de_moivre θ 3`. The binomial expansion and real/imaginary separation are not formalized here, but the complex-valued identities follow immediately. This demonstrates the power of De Moivre: all multiple-angle formulas are special cases of a single theorem.",
     "mathContext": "cos(2θ) = cos²θ - sin²θ, sin(2θ) = 2 sin θ cos θ",
-    "significance": "key",
+    "significance": "supporting",
     "relatedConcepts": [
       "trig identities",
       "angle formulas",
