@@ -120,3 +120,34 @@ theorem min_modulus_ge_4 :
   intro cs h i
   obtain ⟨p, _, h5, hm⟩ := h i
   omega
+
+/-- All moduli in a p-1 covering (p ≥ 5) are even.
+    Since p ≥ 5 implies p is odd, p - 1 is even. -/
+theorem moduli_even :
+    ∀ cs : CoveringSystem, AllModuliPrimeMinusOne 5 cs →
+      ∀ i, Even (cs.moduli i) := by
+  intro cs h i
+  obtain ⟨p, hp, h5, hm⟩ := h i
+  have hodd : Odd p := by
+    rcases Nat.Prime.eq_two_or_odd hp with h2 | hodd
+    · omega
+    · exact hodd
+  rw [hm]
+  exact Nat.Odd.sub_odd hodd odd_one
+
+
+/-
+## Section VIII: Computational Verifications
+-/
+
+/-- All elements of easyPrimes are indeed prime. -/
+theorem easyPrimes_all_prime : ∀ p ∈ easyPrimes, Nat.Prime p := by
+  decide
+
+/-- All elements of easyPrimes are ≥ 5. -/
+theorem easyPrimes_ge_five : ∀ p ∈ easyPrimes, 5 ≤ p := by
+  decide
+
+/-- For each p in easyPrimes, (p - 1) divides 360. -/
+theorem easyPrimes_mod_divides_360 : ∀ p ∈ easyPrimes, (p - 1) ∣ 360 := by
+  decide
