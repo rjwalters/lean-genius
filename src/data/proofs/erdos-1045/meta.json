@@ -208,30 +208,30 @@
         "G. Piranian"
       ],
       "title": "Metric properties of polynomials",
-      "journal": "Journal d'Analyse Mathématique",
-      "year": 1958,
+      "year": "1958",
       "volume": 6,
       "pages": "125–148",
-      "description": "The founding paper: introduces the problem of maximizing ∏|z_i - z_j| subject to diameter ≤ 2, proves EHP 1958 (connected sublevel set ⟹ Δ < n^n), and conjectures the regular polygon is optimal."
+      "description": "The founding paper: introduces the problem of maximizing ∏|z_i - z_j| subject to diameter ≤ 2, proves EHP 1958 (connected sublevel set ⟹ Δ < n^n), and conjectures the regular polygon is optimal.",
+      "venue": "Journal d'Analyse Mathématique"
     },
     {
       "authors": [
         "Ch. Pommerenke"
       ],
       "title": "On metric properties of complex polynomials",
-      "journal": "The Michigan Mathematical Journal",
-      "year": 1961,
+      "year": "1961",
       "volume": 8,
       "issue": 2,
       "pages": "97–115",
-      "description": "Proves the upper bound Δ ≤ 2^{Cn}·n^n using potential theory and transfinite diameter; also proves the projection bound (Problem #1043) and lemniscate containment results related to Problem #1046."
+      "description": "Proves the upper bound Δ ≤ 2^{Cn}·n^n using potential theory and transfinite diameter; also proves the projection bound (Problem #1043) and lemniscate containment results related to Problem #1046.",
+      "venue": "The Michigan Mathematical Journal"
     },
     {
       "authors": [
         "Siraphong Cambie"
       ],
       "title": "Counterexamples for even n in the Erdős–Herzog–Piranian problem",
-      "year": 2023,
+      "year": "2023",
       "note": "Proves that the regular n-gon is not optimal for all even n ≥ 4, generalizing the Hu–Tang n = 4, 6 counterexamples. Available at arXiv:2305.xxxxx.",
       "description": "The key structural result captured in the formalization: establishes cambie_even_not_optimal for all even n ≥ 4 by analyzing deformation modes of antipodal vertex pairs."
     },
@@ -242,7 +242,7 @@
         "Xiaoyu Tang"
       ],
       "title": "Quantitative lower bounds for the maximum product of distances",
-      "year": 2024,
+      "year": "2024",
       "note": "Preprint.",
       "description": "Establishes liminf_{n even} MaxDelta(n)/n^n ≥ 1.304 when 6 | n and ≥ 1.269 for all even n, using algebraic configurations related to cyclotomic fields. These are the bounds axiomatized as cambie_dong_tang_even in the formalization."
     },
@@ -251,7 +251,7 @@
         "Natthaphon Sothanaphan"
       ],
       "title": "On the maximum product of distances between complex points",
-      "year": 2025,
+      "year": "2025",
       "note": "Preprint.",
       "description": "Proves the earlier quantitative lower bound liminf_{n even} MaxDelta(n)/n^n ≥ 1.0378, a stepping stone toward the sharper Cambie–Dong–Tang bound. Axiomatized as sothanaphan_2025 in the formalization."
     }

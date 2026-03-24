@@ -233,15 +233,15 @@
   "references": [
     {
       "citation": "Barbeau, E.J. (1976). 'Computer challenge corner: Problem 477: A brute force program.' Journal of Recreational Mathematics.",
-      "relevance": "Original problem statement asking for prime sets P, Q with (∑1/p)(∑1/q) = 1"
+      "note": "Original problem statement asking for prime sets P, Q with (∑1/p)(∑1/q) = 1"
     },
     {
       "citation": "Mertens, F. (1874). 'Ein Beitrag zur analytischen Zahlentheorie.' Journal für die reine und angewandte Mathematik 78, 46-62.",
-      "relevance": "Established ∑_{p≤x} 1/p = ln ln x + M + O(1/ln x), the key asymptotic behind the 60-prime lower bound"
+      "note": "Established ∑_{p≤x} 1/p = ln ln x + M + O(1/ln x), the key asymptotic behind the 60-prime lower bound"
     },
     {
       "citation": "Euler, L. (1737). 'Variae observationes circa series infinitas.' Commentarii academiae scientiarum Petropolitanae 9, 160-188.",
-      "relevance": "First proof that ∑1/p diverges, axiomatized in the file as prime_reciprocal_divergence"
+      "note": "First proof that ∑1/p diverges, axiomatized in the file as prime_reciprocal_divergence"
     }
   ],
   "conclusion": {
