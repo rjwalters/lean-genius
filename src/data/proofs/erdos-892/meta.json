@@ -16,7 +16,7 @@
       "sequences"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 2,
     "erdosNumber": 892,
     "erdosUrl": "https://erdosproblems.com/892",
     "erdosProblemStatus": "open",
@@ -51,9 +51,9 @@
       "Defined IsGCDFree and formalized the GCD-free variant of the problem",
       "Axiomatized primitive counting bound |A ∩ [N]| ≤ C·N/√(log N)"
     ],
-    "axiomCount": 4,
-    "lineCount": 121,
-    "assumptions": "4 axioms: erdos_1935_necessary, ess_1967_necessary, primitive_counting_bound, and 1 more. See Lean source for complete statements.",
+    "axiomCount": 3,
+    "lineCount": 161,
+    "assumptions": "3 axioms: ess_1967_necessary, primitive_counting_bound, primitive_reciprocal_log_convergent. 2 sorries: reciprocal_log_comparison (comparison test step), erdos_1935_necessary (comparison argument). See Lean source.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -173,9 +173,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 121,
-    "axiomCount": 4,
-    "theoremCount": 0,
+    "lineCount": 161,
+    "axiomCount": 3,
+    "theoremCount": 2,
     "definitionCount": 6
   }
 }
