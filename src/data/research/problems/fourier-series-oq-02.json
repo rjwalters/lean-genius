@@ -30,10 +30,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-23T18:00:00Z",
-    "iteration": 6,
-    "focus": "4 axioms, 2 sorries. Converted sq_summable and riemann_lebesgue from axiom to theorem.",
+    "iteration": 7,
+    "focus": "4 axioms, 1 sorry. Proved riemannLebesgue_of_holder (both sorries filled). Only sq_summable sorry remains.",
     "blockers": [],
-    "nextAction": "Fill riemannLebesgue sorry (rpow arithmetic) or prove fourierCoeff_smooth_decay",
+    "nextAction": "Fill fourierCoeff_sq_summable_of_holder via Parseval (need Lp API: Memℒp/MemLp naming in this Mathlib version)",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -41,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Converted 2 axioms to theorem stubs (sq_summable, riemann_lebesgue). Now: 4 axioms, 2 sorries, 382 lines.",
+    "progressSummary": "PROGRESS: Proved riemannLebesgue_of_holder fully (h_rpow via rpow_const, h_frac_le via div_le_div + natAbs cast). Now: 4 axioms, 1 sorry, 430 lines.",
     "builtItems": [
       "fourier_norm_one: proved via simp [fourier_apply] — toCircle maps to unit circle",
       "fourier_translate_halfperiod: proved via fourier_neg + fourier_add_half_inv_index + map_neg",
@@ -51,7 +51,9 @@
       "Eliminated sorry in fourierCoeff_difference_formula: added Continuous f hypothesis, proved non-integrable case impossible via ContinuousOn.integrableOn_compact isCompact_univ",
       "Added 0 < α to fourierCoeff_holder_decay: derives Continuous f from holder_continuous, passes to difference formula",
       "Converted fourierCoeff_sq_summable_of_holder: axiom -> theorem with sorry",
-      "Converted riemannLebesgue_of_holder: axiom -> theorem with sorry (Metric.tendsto_nhds + Filter.eventually_cofinite)"
+      "Converted riemannLebesgue_of_holder: axiom -> theorem with sorry (Metric.tendsto_nhds + Filter.eventually_cofinite)",
+      "riemannLebesgue_of_holder h_rpow: Tendsto.rpow_const (Or.inr hα_pos.le) composes filter with rpow at 0",
+      "riemannLebesgue_of_holder h_frac_le: div_le_div_of_nonneg_left + Nat.cast_natAbs + Int.cast_abs for ℤ→ℝ abs conversion"
     ],
     "insights": [
       "fourier_apply unfolds to ↑(n • x).toCircle, which immediately gives unit norm via simp",
@@ -70,15 +72,19 @@
       "Metric.tendsto_nhds unfolds Tendsto into epsilon-delta form; Filter.eventually_cofinite characterizes the cofinite filter",
       "riemannLebesgue: proof via tendsto_const_nhds.div_atTop + rpow_const + Set.finite_Icc; main blocker is rpow monotonicity + ℤ↔ℕ casts",
       "fourierCoeff_sq_summable: proof via Real.summable_nat_rpow_inv + Summable.of_nonneg_of_le; main blocker is ℤ-sum conversion",
-      "All 4 remaining axioms are deep (Weierstrass, Sobolev, IBP, complex analysis) — no routine eliminations possible"
+      "All 4 remaining axioms are deep (Weierstrass, Sobolev, IBP, complex analysis) — no routine eliminations possible",
+      "Tendsto.rpow_const signature: (0 ≤ a ∨ 0 ≤ p), not (0 ≤ a ∨ p ≠ 0) — use Or.inr hα_pos.le, not Or.inr hα_pos.ne",
+      "div_le_div_of_nonneg_left needs 0 ≤ T (not 0 < T) — use hT.out.le",
+      "Nat.cast_natAbs + Int.cast_abs chain: ↑(n.natAbs : ℕ) = |↑(n : ℤ)| as ℝ values",
+      "Memℒp identifier not found in this Mathlib version — may be renamed to MemLp. Continuous.memℒp also missing. Need to find correct Lp API for continuous → L² on compact.",
+      "Parseval approach for sq_summable: hasSum_sq_fourierCoeff takes Lp element, need ContinuousMap.toLp or similar to lift continuous f"
     ],
     "mathlibGaps": [
       "No obvious dist(x, x+↑s) ≤ |s| lemma found for AddCircle quotient metric"
     ],
     "nextSteps": [
-      "Fill riemannLebesgue sorry: C=0 case is trivial, C>0 needs tendsto+rpow composition (detailed strategy in knowledge.md)",
-      "Fill sq_summable sorry: comparison with p-series via Real.summable_nat_rpow_inv",
-      "fourierCoeff_smooth_decay axiom is moderate difficulty (IBP on AddCircle) but still substantial"
+      "Fill fourierCoeff_sq_summable_of_holder: find Lp API (MemLp? Continuous → Lp?), then use hasSum_sq_fourierCoeff + ae equality transfer",
+      "Alternative: explicit comparison with p-series via decay bound + ℤ summability conversion"
     ]
   },
   "tags": [
@@ -121,11 +127,11 @@
     {
       "path": "Proofs/FourierSeriesOQ02.lean",
       "filename": "FourierSeriesOQ02.lean",
-      "lineCount": 382,
+      "lineCount": 430,
       "theoremCount": 13,
       "axiomCount": 4,
       "defCount": 3,
-      "sorryCount": 2,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02.lean"
     },

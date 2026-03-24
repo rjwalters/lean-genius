@@ -270,8 +270,9 @@ theorem fourierCoeff_sq_summable_of_holder (C : ℝ≥0) (α : ℝ≥0)
     (f : AddCircle T → ℂ) (hf : IsHolderOnCircle C α f)
     (hα : (1 : ℝ) / 2 < (α : ℝ)) :
     Summable (fun n : ℤ => ‖fourierCoeff f n‖ ^ 2) := by
-  -- ‖ĉ_n‖² ≤ ((C/2)(T/(2|n|))^α)² = K/|n|^{2α}
-  -- Σ 1/|n|^{2α} < ∞ for 2α > 1 (via Real.summable_nat_rpow_inv)
+  -- Strategy: Hölder(α>0) → continuous on compact AddCircle → L² → Parseval
+  -- Blocked on API: need Lp.mk from continuous function (Memℒp/MemLp naming issue)
+  -- Alternative: explicit comparison with p-series via decay bound + ℤ summability
   sorry
 
 /-- **Riemann-Lebesgue from Hölder**: ‖ĉ_n‖ = O(1/|n|^α) → 0.
@@ -301,8 +302,8 @@ theorem riemannLebesgue_of_holder (C : ℝ≥0) (α : ℝ≥0)
       exact (tendsto_atTop_add_const_right atTop (1 : ℝ) tendsto_natCast_atTop_atTop).const_mul_atTop
         (show (0 : ℝ) < 2 by norm_num)
     have h_rpow : Tendsto (fun k : ℕ => (T / (2 * ((↑k : ℝ) + 1))) ^ (↑α : ℝ)) atTop (𝓝 0) := by
-      -- rpow continuous at 0 with α > 0, composed with h_base
-      sorry
+      rw [show (0 : ℝ) = 0 ^ (↑α : ℝ) from (Real.zero_rpow hα_pos.ne').symm]
+      exact h_base.rpow_const (Or.inr hα_pos.le)
     have h_tend : Tendsto (fun k : ℕ =>
         (↑C / 2 : ℝ) * (T / (2 * ((↑k : ℝ) + 1))) ^ (↑α : ℝ)) atTop (𝓝 0) := by
       rw [show (0 : ℝ) = ↑C / 2 * 0 from by ring]
@@ -317,8 +318,13 @@ theorem riemannLebesgue_of_holder (C : ℝ≥0) (α : ℝ≥0)
     have hn0 : n ≠ 0 := by omega
     -- For n ≠ 0 with |n| > N₀+1: decay bound ≤ a(N₀) < ε, contradicting ε ≤ ‖ĉ_n‖
     have h_frac_le : T / (2 * |(↑n : ℝ)|) ≤ T / (2 * ((↑N₀ : ℝ) + 1)) := by
-      -- |n| > N₀+1 so T/(2|n|) ≤ T/(2(N₀+1)): larger denom gives smaller fraction
-      sorry
+      apply div_le_div_of_nonneg_left hT.out.le (by positivity)
+      calc 2 * ((↑N₀ : ℝ) + 1)
+          ≤ 2 * ↑(n.natAbs : ℕ) := by
+            apply mul_le_mul_of_nonneg_left _ (by norm_num : (0:ℝ) ≤ 2)
+            exact_mod_cast h_large.le
+        _ = 2 * |(↑n : ℝ)| := by
+            congr 1; rw [Nat.cast_natAbs, Int.cast_abs]
     have h_rpow_le : (T / (2 * |(↑n : ℝ)|)) ^ (↑α : ℝ) ≤
         (T / (2 * ((↑N₀ : ℝ) + 1))) ^ (↑α : ℝ) :=
       Real.rpow_le_rpow (div_nonneg hT.out.le (by positivity)) h_frac_le hα_pos.le
