@@ -18,13 +18,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-21",
-    "iteration": 13,
-    "focus": "Session 13: Added density_bound_from_increment and apFree_density_lt_two_thirds lemmas. Fixed 4 linter warnings. Documented fix path for remaining sorry.",
+    "iteration": 14,
+    "focus": "Session 14: Verified build, assessed sorry. Fix requires ~220 lines Dirichlet integration.",
     "blockers": [
       "Pre-existing Mathlib API breakages in fourier_large_coefficient (lines 583-800)",
       "Dirichlet approximation needed for N=1 iteration case (in density_increment_iter)"
     ],
-    "nextAction": "Integrate DirichletApproximation.lean to close last sorry",
+    "nextAction": "Integrate DirichletApproximation.lean: (1) Dirichlet-based subprogression partition, (2) approximate character constancy, (3) density increment under constancy, (4) modified lemma guaranteeing M≥2.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -115,7 +115,10 @@
       "density_bound_from_increment proves d+d²/100≤1 for ANY application of density_increment_lemma — this is the exact threshold L≈0.99 that the iteration cannot cross at M=1",
       "apFree_card_le_two_thirds (3|A|≤2N for N≥3) gives δ≤2/3 directly — handles Roth for δ>2/3 without any iteration",
       "The sorry is provably FALSE as stated (hypotheses consistent, conclusion unsatisfiable) — NOT a missing proof technique but a wrong theorem statement requiring Dirichlet",
-      "Without Dirichlet, density_increment_lemma can produce M=1 from ANY N≥2 (M=gcd(val(r),N)=1 for prime N), allowing descent to reach N=1 in one step"
+      "Without Dirichlet, density_increment_lemma can produce M=1 from ANY N≥2 (M=gcd(val(r),N)=1 for prime N), allowing descent to reach N=1 in one step",
+      "The sorry at density_increment_iter line 1408 is provably unreachable via Dirichlet approximation, but the formal proof requires restructuring the iteration to track M≥√N at each step",
+      "density_bound_from_increment already proves d+d²/100≤1 for N≥2, so density never exceeds ~0.99 while M≥2. The issue is that M can drop to 1 in a single step, where density=1 and the next increment exceeds 1.",
+      "DirichletApproximation.lean is fully proved (0 sorries, 142 lines) and ready for integration"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -140,7 +143,7 @@
     "mathlib": []
   },
   "started": "2026-03-22T06:10:36.236Z",
-  "lastUpdate": "2026-03-23T22:00:00Z",
+  "lastUpdate": "2026-03-23T04:30:00Z",
   "significance": 9,
   "tractability": 6
 }
