@@ -86,6 +86,7 @@
       }
     ],
     "lineCount": 176,
+    "mathlib_version": "4.26.0",
     "leanFile": {
       "lineCount": 176,
       "structureCount": 0,
@@ -112,7 +113,9 @@
       "**Coefficient sum as subset counting**: Setting $x = y = 1$ gives $2^n = \\sum \\binom{n}{k}$, which says the total number of subsets of an $n$-element set is $2^n$. This connection between algebra and combinatorics is one of the most elegant in mathematics",
       "**The alternating sum requires careful case analysis**: `Int.alternating_sum_range_choose` returns `if n = 0 then 1 else 0`, so the $n \\geq 1$ hypothesis is genuinely needed. For $n = 0$: $\\binom{0}{0} \\cdot (-1)^0 = 1 \\neq 0$",
       "**Pascal's triangle encodes the full theorem**: Pascal's identity $\\binom{n+1}{k+1} = \\binom{n}{k} + \\binom{n}{k+1}$ recursively defines all binomial coefficients, and with the boundary values $\\binom{n}{0} = \\binom{n}{n} = 1$, completely determines the expansion coefficients. The symmetry $\\binom{n}{k} = \\binom{n}{n-k}$ reflects the symmetry of the triangle",
-      "**The binomial theorem is the ur-generating function identity**: viewing $(1+x)^n = \\sum \\binom{n}{k} x^k$ as a generating function for the binomial coefficients is the prototype for all of enumerative combinatorics — exponential generating functions, $q$-binomial coefficients (Gaussian binomials counting subspaces of $\\mathbb{F}_q^n$), and the umbral calculus all generalize this single identity"
+      "**The binomial theorem is the ur-generating function identity**: viewing $(1+x)^n = \\sum \\binom{n}{k} x^k$ as a generating function for the binomial coefficients is the prototype for all of enumerative combinatorics — exponential generating functions, $q$-binomial coefficients (Gaussian binomials counting subspaces of $\\mathbb{F}_q^n$), and the umbral calculus all generalize this single identity",
+      "**Proof automation eliminates routine algebra**: The `ring` tactic alone proves the square and cube expansions, demonstrating that for fixed small $n$, the binomial theorem is a decidable algebraic identity requiring no combinatorial reasoning. Similarly, `native_decide` evaluates concrete computations ($\\binom{10}{5} = 252$) by running the Lean evaluator as a calculator. This division of labor — Mathlib for the general theorem, `ring` for special cases, `native_decide` for numerics — illustrates how formalization leverages different proof strategies for different complexity regimes",
+      "**Cross-civilizational convergent discovery**: The binomial coefficients were independently discovered by Pingala (India, c. 200 BCE), al-Karaji (Persia, c. 1000), Yang Hui (China, 1261), and Pascal (France, 1654), making the binomial theorem one of the most multiply-discovered results in mathematics. This convergence suggests the theorem captures a deeply natural mathematical structure — the combinatorics of binary choices — that different mathematical traditions inevitably encounter when analyzing polynomial expansions, probability, or counting problems"
     ],
     "prerequisites": [
       "Abstract algebra",
@@ -253,6 +256,16 @@
       "targetId": "taylor-theorem",
       "relationship": "extends",
       "description": "Taylor's theorem provides the framework for Newton's generalized binomial series: $(1+x)^\\alpha = \\sum_{k=0}^\\infty \\frac{f^{(k)}(0)}{k!} x^k$ where $f^{(k)}(0) = \\alpha(\\alpha-1)\\cdots(\\alpha-k+1)$, giving the generalized binomial coefficient $\\binom{\\alpha}{k}$. The finite binomial theorem (proved here) is the special case where $\\alpha = n \\in \\mathbb{N}$ and the Taylor series terminates after $n+1$ terms"
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "related",
+      "description": "The birthday problem's exact probability $1 - \\frac{365!}{365^n (365-n)!}$ involves the same factorial and combinatorial counting that underlies binomial coefficients. The binomial approximation $(1-1/365)^{\\binom{n}{2}} \\approx e^{-n(n-1)/730}$ directly uses binomial coefficients to count collision pairs"
+    },
+    {
+      "targetId": "derangements",
+      "relationship": "related",
+      "description": "The derangement formula $D_n = n! \\sum_{k=0}^n \\frac{(-1)^k}{k!}$ uses inclusion-exclusion with binomial coefficients $\\binom{n}{k}$ to count permutations fixing exactly $k$ points. The alternating sum identity proved here ($\\sum (-1)^k \\binom{n}{k} = 0$) is the simplest instance of this alternation pattern"
     }
   ],
   "relatedProofs": [
@@ -267,7 +280,9 @@
     "mathematical-induction",
     "binomial-theorem-oq-04",
     "geometric-series",
-    "taylor-theorem"
+    "taylor-theorem",
+    "birthday-problem",
+    "derangements"
   ],
   "references": [
     {
