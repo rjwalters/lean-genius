@@ -22,7 +22,7 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 3,
     "assumptions": "3 axiom declarations: vanDoorn_upper_bound (0.108N upper bound via prime density), sawhney_solution (exact answer N/25 for large N), sawhney_structure (extremal set uniqueness). Previously axiomatized maxNonSqfreeSet, maxNonSqfreeSet_le, and lower_bound are now proved.",
-    "lineCount": 176,
+    "lineCount": 254,
     "dateAdded": "2026-02-10",
     "mathlibDependencies": [
       {
@@ -35,11 +35,16 @@
       "IsSquarefree: constructive definition via ∀ p, p.Prime → ¬(p * p ∣ n)",
       "HasNonSqfreeProductProp: formal property requiring ¬IsSquarefree(ab+1) for all pairs",
       "maxNonSqfreeSet: proper noncomputable def via Finset.sup over powerset (was axiom)",
-      "maxNonSqfreeSet_le: proved via injection x↦x-1 from Icc 1 N to range N (was axiom)",
+      "maxNonSqfreeSet_le: proved via injection x↦x-1 from Icc 1 N to range N (was axiom, fixed for Mathlib API update)",
       "mod25_achieves: proved 5² | ab+1 when a ≡ b ≡ 7 (mod 25) via ring arithmetic",
       "lower_bound: proved N/25 ≤ maxNonSqfreeSet N via witness construction k↦25k+7 (was axiom)",
       "sawhney_solution: axiom encoding the exact answer N/25 for large N",
-      "sawhney_structure: axiom encoding uniqueness of extremal sets (mod 25 residue classes)"
+      "sawhney_structure: axiom encoding uniqueness of extremal sets (mod 25 residue classes)",
+      "self_condition: every element a of valid A has a²+1 not squarefree",
+      "no_four_dvd_sq_plus_one: 4 never divides a²+1 (prime 2 excluded from sieve)",
+      "no_nine_dvd_sq_plus_one: 9 never divides a²+1 (prime 3 excluded from sieve)",
+      "mod25_incompatible: mixing {7 mod 25} and {18 mod 25} breaks the 5² guarantee",
+      "mod25_characterization: complete iff: 25|a²+1 ↔ a≡7 or 18 (mod 25)"
     ],
     "prerequisites": [
       "Number theory: squarefree numbers, prime factorization, density 6/π²",
@@ -128,16 +133,24 @@
       "mathContext": "The injection $k \\mapsto 25k+7$ maps $\\{0,\\ldots,\\lfloor N/25\\rfloor - 1\\}$ into $\\{n \\in \\{1,\\ldots,N\\} : n \\equiv 7 \\pmod{25}\\}$. Combined with Finset.le_sup, this gives the lower bound on the extremal function."
     },
     {
+      "id": "structural-results",
+      "title": "Structural Results",
+      "startLine": 156,
+      "endLine": 235,
+      "summary": "Five new proved theorems establishing the complete elementary picture: self_condition (self-pairing constraint), no_four_dvd_sq_plus_one (p=2 excluded), no_nine_dvd_sq_plus_one (p=3 excluded), mod25_incompatible (mixed classes break 5² mechanism), mod25_characterization (complete iff: 25|a²+1 ↔ a≡7 or 18 mod 25).",
+      "mathContext": "Establishes that $p=5$ is the smallest prime usable in the sieve ($p=2,3$ are provably excluded since $a^2+1 \\not\\equiv 0 \\pmod{4}$ and $\\pmod{9}$ always). The two square roots of $-1$ in $\\mathbb{Z}/25\\mathbb{Z}$ are 7 and 18. Mixing elements from the two classes gives $ab+1 \\equiv 2 \\pmod{25}$, breaking the $5^2$ guarantee."
+    },
+    {
       "id": "deep-results",
       "title": "Deep Results (Axiomatized)",
-      "startLine": 155,
-      "endLine": 176,
+      "startLine": 237,
+      "endLine": 254,
       "summary": "vanDoorn_upper_bound (0.108N), sawhney_solution (exact N/25), sawhney_structure (uniqueness of extremal sets). These require deep analytic/combinatorial arguments beyond current Lean formalization.",
       "mathContext": "Van Doorn: $|A|/N \\leq 2\\sum_{p \\equiv 1(4)} 1/p^2 \\approx 0.108$. Sawhney: $\\forall N \\geq N_0,\\ \\max|A| = \\lfloor N/25\\rfloor$, achieved only by $\\{n \\equiv 7\\}$ or $\\{n \\equiv 18\\} \\pmod{25}$."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #848 is formalized in 176 lines with 3 axioms (down from 6). The extremal function maxNonSqfreeSet is now properly defined via Finset.sup, with both bounds proved: maxNonSqfreeSet_le (upper, via injection) and lower_bound (via witness construction). Only deep results remain axiomatized: Van Doorn's upper bound, Sawhney's exact solution, and the structural characterization.",
+    "summary": "Erdős Problem #848 is formalized in 254 lines with 13 theorems and 3 axioms (down from 6). Beyond the extremal function bounds, five new structural theorems establish the complete elementary picture: the self-condition, prime exclusion for p=2 and p=3, incompatibility of mixed residue classes, and the complete characterization of 25|a²+1 as the square roots of -1 in Z/25Z. Only deep analytic results remain axiomatized.",
     "implications": "The result reveals a surprising connection between squarefree numbers and modular arithmetic: the extremal configuration is determined entirely by the quadratic residue structure of Z/25Z. The rigidity of the extremal sets (uniqueness up to the 7 ↔ 18 symmetry) suggests deep structural constraints beyond simple density arguments.",
     "openQuestions": [
       "What is the exact value of maxNonSqfreeSet(N) for small N? Sawhney's result only applies for sufficiently large N",
@@ -154,9 +167,9 @@
     ],
     "opens": [],
     "namespace": "Erdos848",
-    "lineCount": 176,
+    "lineCount": 254,
     "axiomCount": 3,
-    "theoremCount": 8,
+    "theoremCount": 13,
     "definitionCount": 4
   },
   "references": [

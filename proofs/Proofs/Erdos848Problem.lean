@@ -44,15 +44,14 @@ theorem maxNonSqfreeSet_le (N : ℕ) : maxNonSqfreeSet N ≤ N := by
   apply Finset.sup_le
   intro A hA
   simp only [Finset.mem_filter, Finset.mem_powerset] at hA
-  -- |A| ≤ |Icc 1 N| ≤ N via injection x ↦ x - 1 from Icc 1 N to range N
-  have hIcc_le : (Finset.Icc 1 N).card ≤ N := by
-    calc (Finset.Icc 1 N).card
-        ≤ (Finset.range N).card := Finset.card_le_card_of_injOn (· - 1)
-          (fun x hx => by simp only [Finset.mem_Icc] at hx; simp only [Finset.mem_range]; omega)
-          (fun a ha b hb h => by
-            simp only [Finset.coe_Icc, Set.mem_Icc] at ha hb; omega)
-      _ = N := Finset.card_range N
-  linarith [Finset.card_le_card hA.1]
+  -- |A| ≤ |Icc 1 N| ≤ |range N| = N via injection x ↦ x - 1
+  calc A.card
+      ≤ (Finset.Icc 1 N).card := Finset.card_le_card hA.1
+    _ ≤ (Finset.range N).card := by
+        apply Finset.card_le_card_of_injOn (· - 1)
+        · intro x hx; simp at hx ⊢; omega
+        · intro a ha b hb hab; simp at ha hb; dsimp at hab; omega
+    _ = N := Finset.card_range N
 
 /- ## Known Results -/
 
@@ -152,6 +151,85 @@ theorem lower_bound (N : ℕ) (hN : 25 ≤ N) :
     exact ⟨Finset.mem_powerset.mpr (mod7Set_sub N), mod7Set_prop N⟩
   calc N / 25 ≤ (mod7Set N).card := mod7Set_card_ge N hN
     _ ≤ _ := Finset.le_sup hmem
+
+/- ## Structural Results -/
+
+/-- Self-condition: every element of a valid set must have a²+1 not squarefree.
+    This follows immediately from the property with a = b. -/
+theorem self_condition (A : Finset ℕ) (h : HasNonSqfreeProductProp A)
+    (a : ℕ) (ha : a ∈ A) : ¬IsSquarefree (a * a + 1) :=
+  h a ha a ha
+
+/-- 4 never divides a²+1 for any natural number a.
+    This means p = 2 can never provide the p² factor needed for non-squarefreeness.
+    Proof: a² ≡ 0 or 1 (mod 4), so a²+1 ≡ 1 or 2 (mod 4). -/
+theorem no_four_dvd_sq_plus_one (a : ℕ) : ¬(2 * 2 ∣ a * a + 1) := by
+  intro ⟨k, hk⟩
+  rcases Nat.even_or_odd a with ⟨m, rfl⟩ | ⟨m, rfl⟩
+  · -- a = m + m: (m+m)²+1 = 4m²+1 ≡ 1 (mod 4)
+    have : (m + m) * (m + m) + 1 = 4 * (m * m) + 1 := by ring
+    rw [this] at hk; omega
+  · -- a = 2m+1: (2m+1)²+1 = 4m²+4m+2 ≡ 2 (mod 4)
+    have : (2 * m + 1) * (2 * m + 1) + 1 = 4 * (m * m + m) + 2 := by ring
+    rw [this] at hk; omega
+
+/-- 9 never divides a²+1 for any natural number a.
+    This means p = 3 can never provide the p² factor.
+    Proof: a² mod 3 ∈ {0, 1}, so a²+1 mod 3 ∈ {1, 2}, hence 3 ∤ a²+1, so 9 ∤ a²+1. -/
+theorem no_nine_dvd_sq_plus_one (a : ℕ) : ¬(3 * 3 ∣ a * a + 1) := by
+  intro ⟨k, hk⟩
+  have : a % 3 = 0 ∨ a % 3 = 1 ∨ a % 3 = 2 := by omega
+  rcases this with h | h | h
+  all_goals (
+    have ha : a = 3 * (a / 3) + a % 3 := (Nat.div_add_mod a 3).symm
+    rw [h] at ha; rw [ha] at hk; set q := a / 3 with hq_def)
+  · -- a ≡ 0: 9q²+1 = 9k
+    have : (3 * q + 0) * (3 * q + 0) + 1 = 9 * (q * q) + 1 := by ring
+    rw [this] at hk; omega
+  · -- a ≡ 1: 9q²+6q+2 = 9k
+    have : (3 * q + 1) * (3 * q + 1) + 1 = 9 * (q * q) + 6 * q + 2 := by ring
+    rw [this] at hk; omega
+  · -- a ≡ 2: 9q²+12q+5 = 9k
+    have : (3 * q + 2) * (3 * q + 2) + 1 = 9 * (q * q) + 12 * q + 5 := by ring
+    rw [this] at hk; omega
+
+/-- Mixing elements from {7 mod 25} and {18 mod 25}: 5² does NOT divide ab+1.
+    This shows the two extremal classes are incompatible via the 5² mechanism,
+    a key step toward understanding why extremal sets must be homogeneous. -/
+theorem mod25_incompatible (a b : ℕ) (ha : a % 25 = 7) (hb : b % 25 = 18) :
+    ¬(5 * 5 ∣ a * b + 1) := by
+  intro ⟨k, hk⟩
+  have ha' : a = 25 * (a / 25) + 7 := by omega
+  have hb' : b = 25 * (b / 25) + 18 := by omega
+  rw [ha', hb'] at hk
+  have : (25 * (a / 25) + 7) * (25 * (b / 25) + 18) + 1 =
+         25 * (25 * (a / 25) * (b / 25) + 18 * (a / 25) + 7 * (b / 25) + 5) + 2 := by ring
+  rw [this] at hk
+  omega
+
+/-- Complete characterization: 25 divides a²+1 if and only if a ≡ 7 or 18 (mod 25).
+    These are the two square roots of -1 in ℤ/25ℤ, since 7² = 49 ≡ -1 and 18² = 324 ≡ -1 (mod 25).
+    This establishes that the mod-25 residue classes are the ONLY way to use p = 5. -/
+theorem mod25_characterization (a : ℕ) :
+    5 * 5 ∣ (a * a + 1) ↔ (a % 25 = 7 ∨ a % 25 = 18) := by
+  constructor
+  · -- Forward: 25 | a²+1 → a ≡ 7 or 18 (mod 25)
+    intro ⟨k, hk⟩
+    have ha : a = 25 * (a / 25) + a % 25 := (Nat.div_add_mod a 25).symm
+    have hr : a % 25 < 25 := Nat.mod_lt a (by norm_num)
+    set r := a % 25 with hr_def
+    rw [ha] at hk
+    -- (25q + r)² + 1 = 25(25q² + 2qr) + (r² + 1)
+    have hring : (25 * (a / 25) + r) * (25 * (a / 25) + r) + 1 =
+        25 * (25 * (a / 25) * (a / 25) + 2 * r * (a / 25)) + (r * r + 1) := by ring
+    rw [hring] at hk
+    -- So 25 | r²+1, with r < 25. Check all 25 residues.
+    interval_cases r <;> omega
+  · -- Backward: a ≡ 7 or 18 (mod 25) → 25 | a²+1
+    intro h
+    rcases h with h | h
+    · exact mod25_achieves a a h h
+    · exact mod25_achieves_18 a a h h
 
 /- ## Deep Results (Axiomatized) -/
 
