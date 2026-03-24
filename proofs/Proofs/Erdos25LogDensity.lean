@@ -336,13 +336,137 @@ theorem hasLogDensity_iff_eq (A : Set ℕ) (d : ℝ) :
 
 /- ## Part V: Examples -/
 
-/-- **Axiom: Even numbers have log density 1/2**.
+/-- logWeightedCount increments by the conditional term at N+1. -/
+private theorem logWeightedCount_succ (A : Set ℕ) (N : ℕ) :
+    logWeightedCount A (N + 1) = logWeightedCount A N +
+    (if (N + 1) ∈ A ∧ (N + 1) ≠ 0 then (1 : ℝ) / (↑(N + 1)) else 0) := by
+  simp only [logWeightedCount, Finset.sum_range_succ]
 
-Proof sketch: Σ_{n even, n ≤ N} 1/n = Σ_{k ≤ N/2} 1/(2k) = (1/2) · H_{N/2}
-Ratio: (1/2) · H_{N/2} / log(N) → 1/2 since H_{N/2} ~ log(N/2) ~ log(N).
+/-- harmonicSum stepping in ℝ. -/
+private theorem harmonicSum_succ' (k : ℕ) :
+    harmonicSum (k + 1) = harmonicSum k + 1 / ((↑k : ℝ) + 1) := by
+  show (↑(harmonic (k + 1)) : ℝ) = ↑(harmonic k) + 1 / (↑k + 1)
+  rw [harmonic_succ]
+  push_cast
+  ring
 
-**Proof status**: HARD (~60 lines) - requires harmonic sum asymptotics. -/
-axiom logDensity_evens : HasLogDensity {n : ℕ | Even n ∧ n ≠ 0} (1/2)
+/-- The weighted count of even positive numbers equals half the harmonic sum of ⌊N/2⌋.
+    Proof: induction on N. Even steps add 1/(2k) = (1/2)·(1/k), odd steps add nothing. -/
+theorem logWeightedCount_evens (N : ℕ) :
+    logWeightedCount {n : ℕ | Even n ∧ n ≠ 0} N = (1 / 2 : ℝ) * harmonicSum (N / 2) := by
+  induction N with
+  | zero => simp [logWeightedCount, harmonicSum, harmonic_zero]
+  | succ n ih =>
+    rw [logWeightedCount_succ]
+    by_cases heven : Even (n + 1)
+    · -- n+1 is even: contributes 1/(n+1), and (n+1)/2 = n/2 + 1
+      have hmem : (n + 1) ∈ {m : ℕ | Even m ∧ m ≠ 0} ∧ (n + 1) ≠ 0 :=
+        ⟨⟨heven, Nat.succ_ne_zero n⟩, Nat.succ_ne_zero n⟩
+      rw [if_pos hmem, ih]
+      have hdiv : (n + 1) / 2 = n / 2 + 1 := by
+        obtain ⟨k, hk⟩ := heven; omega
+      rw [hdiv, harmonicSum_succ', mul_add]
+      congr 1
+      -- 1 / ↑(n+1) = 1/2 * (1 / (↑(n/2) + 1))
+      have h2k : n + 1 = 2 * (n / 2 + 1) := by omega
+      have hN : (↑(n + 1) : ℝ) = 2 * ((↑(n / 2) : ℝ) + 1) := by exact_mod_cast h2k
+      rw [hN]; field_simp
+    · -- n+1 is odd: no contribution, (n+1)/2 = n/2
+      have hmem : ¬((n + 1) ∈ {m : ℕ | Even m ∧ m ≠ 0} ∧ (n + 1) ≠ 0) := by
+        intro ⟨⟨he, _⟩, _⟩; exact heven he
+      rw [if_neg hmem, add_zero, ih]
+      have hne : Even n := by rwa [Nat.even_add_one, not_not] at heven
+      have hdiv : (n + 1) / 2 = n / 2 := by obtain ⟨k, hk⟩ := hne; omega
+      rw [hdiv]
+
+/-- ⌊N/2⌋ → ∞ as N → ∞. -/
+private theorem tendsto_nat_div_two : Tendsto (fun n : ℕ => n / 2) atTop atTop := by
+  rw [Filter.tendsto_atTop_atTop]
+  intro b
+  exact ⟨2 * b + 1, fun n hn => by omega⟩
+
+/-- log(⌊N/2⌋) / log(N) → 1 as N → ∞.
+    Proof: squeeze between 1 - log(3)/log(N) and 1. -/
+private theorem tendsto_log_half_div_log :
+    Tendsto (fun N : ℕ => Real.log (↑(N / 2) : ℝ) / Real.log (↑N)) atTop (nhds 1) := by
+  have hlog_atTop : Tendsto (fun N : ℕ => Real.log (↑N : ℝ)) atTop atTop :=
+    Tendsto.comp tendsto_log_atTop tendsto_natCast_atTop_atTop
+  -- Write as 1 - correction, show correction → 0
+  rw [show (1 : ℝ) = 1 - 0 from by ring]
+  have h_eq : (fun N : ℕ => 1 - (Real.log (↑N) - Real.log (↑(N / 2) : ℝ)) / Real.log (↑N)) =ᶠ[atTop]
+      (fun N : ℕ => Real.log (↑(N / 2) : ℝ) / Real.log (↑N)) := by
+    filter_upwards [eventually_gt_atTop 1] with N hN
+    have hlog : Real.log (↑N : ℝ) ≠ 0 :=
+      Real.log_ne_zero_of_pos_of_ne_one (by positivity) (ne_of_gt (by exact_mod_cast hN))
+    field_simp; ring
+  apply Filter.Tendsto.congr' h_eq
+  apply Tendsto.sub tendsto_const_nhds
+  -- (log N - log(N/2)) / log N → 0
+  -- Squeeze: ‖f(N)‖ ≤ log(3)/log(N) → 0
+  have h_norm_bound : ∀ᶠ (N : ℕ) in atTop,
+      ‖(Real.log (↑N : ℝ) - Real.log (↑(N / 2) : ℝ)) / Real.log (↑N)‖ ≤
+      Real.log 3 / Real.log (↑N) := by
+    filter_upwards [eventually_ge_atTop (4 : ℕ)] with N (hN : 4 ≤ N)
+    have hN2_pos : (0 : ℝ) < ↑(N / 2) := by exact_mod_cast (show 0 < N / 2 by omega)
+    have hNr_pos : (0 : ℝ) < ↑N := by exact_mod_cast (show 0 < N by omega)
+    have hlog_pos : 0 < Real.log (↑N : ℝ) :=
+      Real.log_pos (by exact_mod_cast (show 1 < N by omega))
+    have h_sub_nn : 0 ≤ Real.log (↑N : ℝ) - Real.log (↑(N / 2) : ℝ) := by
+      apply sub_nonneg.mpr; apply Real.log_le_log hN2_pos
+      exact_mod_cast (Nat.div_le_self N 2)
+    rw [Real.norm_eq_abs, abs_of_nonneg (div_nonneg h_sub_nn hlog_pos.le)]
+    -- a/c ≤ b/c via a * c⁻¹ ≤ b * c⁻¹
+    simp only [div_eq_mul_inv]
+    apply mul_le_mul_of_nonneg_right _ (inv_nonneg.mpr hlog_pos.le)
+    -- log N - log(N/2) ≤ log 3
+    calc Real.log (↑N : ℝ) - Real.log (↑(N / 2) : ℝ)
+        = Real.log ((↑N : ℝ) / ↑(N / 2)) :=
+          (Real.log_div (ne_of_gt hNr_pos) (ne_of_gt hN2_pos)).symm
+      _ ≤ Real.log 3 := by
+          apply Real.log_le_log (div_pos hNr_pos hN2_pos)
+          have h3 : (↑N : ℝ) ≤ 3 * ↑(N / 2) := by exact_mod_cast (show N ≤ 3 * (N / 2) by omega)
+          calc (↑N : ℝ) / ↑(N / 2) = ↑N * (↑(N / 2))⁻¹ := div_eq_mul_inv _ _
+            _ ≤ 3 * ↑(N / 2) * (↑(N / 2))⁻¹ :=
+                mul_le_mul_of_nonneg_right h3 (inv_nonneg.mpr hN2_pos.le)
+            _ = 3 := by field_simp [ne_of_gt hN2_pos]
+  exact squeeze_zero_norm' h_norm_bound
+    (Tendsto.div_atTop tendsto_const_nhds hlog_atTop)
+
+/-- harmonicSum(⌊N/2⌋) / log(N) → 1 as N → ∞.
+    Proof: factor as (harmonicSum(N/2) / log(N/2)) · (log(N/2) / log(N)), both → 1. -/
+private theorem tendsto_harmonicSum_half_div_log :
+    Tendsto (fun N : ℕ => harmonicSum (N / 2) / Real.log (↑N)) atTop (nhds 1) := by
+  have hfactor : (fun N : ℕ => harmonicSum (N / 2) / Real.log (↑(N / 2) : ℝ) *
+      (Real.log (↑(N / 2) : ℝ) / Real.log (↑N))) =ᶠ[atTop]
+      (fun N : ℕ => harmonicSum (N / 2) / Real.log (↑N)) := by
+    filter_upwards [eventually_ge_atTop 6] with N hN
+    have hlog : Real.log (↑(N / 2) : ℝ) ≠ 0 := by
+      have h2 : 1 < (↑(N / 2) : ℝ) := by exact_mod_cast (show 1 < N / 2 by omega)
+      exact ne_of_gt (Real.log_pos h2)
+    field_simp
+  rw [show (1 : ℝ) = 1 * 1 from by ring]
+  exact Filter.Tendsto.congr' hfactor
+    (Tendsto.mul
+      (tendsto_harmonic_div_log.comp tendsto_nat_div_two)
+      tendsto_log_half_div_log)
+
+/-- **Even numbers have log density 1/2**.
+    Proof: logWeightedCount(evens, N) = (1/2) · H_{⌊N/2⌋} and H_{⌊N/2⌋}/log(N) → 1. -/
+theorem logDensity_evens : HasLogDensity {n : ℕ | Even n ∧ n ≠ 0} (1/2) := by
+  unfold HasLogDensity logDensityRatio
+  have h_eq : (fun N : ℕ => (1 / 2 : ℝ) * (harmonicSum (N / 2) / Real.log (↑N))) =ᶠ[atTop]
+      (fun N => if N ≤ 1 then (0 : ℝ)
+        else logWeightedCount {n : ℕ | Even n ∧ n ≠ 0} N / Real.log (↑N)) := by
+    filter_upwards [eventually_gt_atTop 1] with N hN
+    simp only [show ¬(N ≤ 1) by omega, ↓reduceIte]
+    rw [logWeightedCount_evens]; ring
+  have h_tend : Tendsto (fun N : ℕ => (1 / 2 : ℝ) * (harmonicSum (N / 2) / Real.log (↑N)))
+      atTop (nhds (1 / 2 : ℝ)) := by
+    have h := Tendsto.mul (tendsto_const_nhds (x := (1 / 2 : ℝ)))
+      tendsto_harmonicSum_half_div_log
+    simp only [mul_one] at h
+    exact h
+  exact Filter.Tendsto.congr' h_eq h_tend
 
 /-- Splitting: logWeightedCount of a disjoint union equals the sum of parts. -/
 theorem logWeightedCount_union_disjoint {A B : Set ℕ} (h : Disjoint A B) (N : ℕ) :
