@@ -1,0 +1,94 @@
+{
+  "slug": "abel-ruffini-oq-04-oq-01",
+  "title": "Formalize the Galois group computation for the generic quintic: Gal(x⁵ + a₁x⁴...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-24T00:48:59.816Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "algebra",
+    "group-theory",
+    "galois-theory",
+    "solvability",
+    "alternating-group",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "abel-ruffini",
+    "abel-ruffini-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-24T00:48:59.815Z",
+  "lastUpdate": "2026-03-24T00:48:59.816Z",
+  "significance": 8,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/AbelRuffini.lean",
+      "filename": "AbelRuffini.lean",
+      "lineCount": 186,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffini.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniGaloisExtensions.lean",
+      "filename": "AbelRuffiniGaloisExtensions.lean",
+      "lineCount": 535,
+      "theoremCount": 57,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensions.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04.lean",
+      "filename": "AbelRuffiniOQ04.lean",
+      "lineCount": 164,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04.lean"
+    }
+  ]
+}
