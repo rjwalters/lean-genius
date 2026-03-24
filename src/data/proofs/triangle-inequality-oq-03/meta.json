@@ -144,7 +144,12 @@
     {
       "targetId": "isosceles-triangle",
       "relationship": "related",
-      "description": "The classical isosceles triangle theorem deals with Euclidean triangles; here ALL triangles are isosceles in ultrametric spaces"
+      "description": "The classical isosceles triangle theorem deals with Euclidean triangles; the ultrametric triangle inequality implies ALL ultrametric triangles are isosceles — the two longest sides must be equal, a striking departure from Euclidean geometry"
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "Cauchy-Schwarz gives $|\\langle x,y \\rangle| \\leq \\|x\\| \\cdot \\|y\\|$, which implies the Euclidean triangle inequality via $\\|x+y\\| \\leq \\|x\\| + \\|y\\|$. The ultrametric inequality $d(x,z) \\leq \\max(d(x,y), d(y,z))$ is strictly stronger — it replaces the additive bound with a maximum, reflecting the non-Archimedean nature of $p$-adic and formal power series valuations"
     }
   ],
   "references": [
