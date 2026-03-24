@@ -240,17 +240,17 @@
     {
       "id": "inclusion-exclusion",
       "relationship": "foundational",
-      "description": "The derangement formula D(n) = n! * sum((-1)^k/k!) is a direct application of the inclusion-exclusion principle, countin"
+      "description": "The derangement formula D(n) = n! * sum((-1)^k/k!) is a direct application of the inclusion-exclusion principle, counting permutations that avoid all n fixed-point events."
     },
     {
       "id": "euler-totient",
       "relationship": "related",
-      "description": "Both use inclusion-exclusion over arithmetic/combinatorial structures: derangements over permutation fixed points, Euler"
+      "description": "Both use inclusion-exclusion over arithmetic/combinatorial structures: derangements over permutation fixed points, Euler's totient over prime divisibility."
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "related",
-      "description": "The factorial n! in the derangement formula connects to prime factorization: D(n)/n! converges to 1/e, linking combinato"
+      "description": "The factorial n! in the derangement formula connects to prime factorization: D(n)/n! converges to 1/e, linking combinatorics to analysis via the Fundamental Theorem of Arithmetic."
     },
     {
       "id": "binomial-theorem",
@@ -260,7 +260,7 @@
     {
       "id": "e-transcendental",
       "relationship": "related",
-      "description": "The derangement probability D_n/n! = ∑(-1)^k/k! converges to 1/e as n→∞ — the Taylor series of e^{-1} truncated at the n"
+      "description": "The derangement probability D_n/n! = ∑(-1)^k/k! converges to 1/e as n→∞ — the Taylor series of e^{-1} truncated at the n-th term. The transcendence of e means D_n/n! is never exactly 1/e for finite n"
     }
   ],
   "leanFile": {

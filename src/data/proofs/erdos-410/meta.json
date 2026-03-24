@@ -249,7 +249,7 @@
     {
       "id": "infinitude-primes",
       "relationship": "foundational",
-      "description": "The infinitude of primes ensures that σ(n) has non-trivial behavior for all n ≥ 2: σ(p) = p + 1 for primes, and the mult"
+      "description": "The infinitude of primes ensures that σ(n) has non-trivial behavior for all n ≥ 2: σ(p) = p + 1 for primes, and the multiplicativity σ(mn) = σ(m)σ(n) for coprime m,n reduces computation to prime powers"
     },
     {
       "id": "fundamental-arithmetic",
@@ -259,12 +259,12 @@
     {
       "id": "geometric-series",
       "relationship": "foundational",
-      "description": "The formula σ(p^k) = 1 + p + p² + ··· + p^k = (p^{k+1} - 1)/(p - 1) is a geometric series. This explicit formula for σ a"
+      "description": "The formula σ(p^k) = 1 + p + p² + ··· + p^k = (p^{k+1} - 1)/(p - 1) is a geometric series. This explicit formula for σ at prime powers, combined with multiplicativity, determines σ completely"
     },
     {
       "id": "euler-totient",
       "relationship": "related",
-      "description": "Euler's totient φ(n) and the sum of divisors σ(n) are both multiplicative arithmetic functions. They satisfy the identit"
+      "description": "Euler's totient φ(n) and the sum of divisors σ(n) are both multiplicative arithmetic functions. They satisfy the identity Σ_{d|n} φ(d) = n, and Robin's inequality σ(n) < e^γ n ln ln n (for n > 5040, equivalent to RH) parallels Ramanujan's work on highly composite numbers"
     }
   ]
 }

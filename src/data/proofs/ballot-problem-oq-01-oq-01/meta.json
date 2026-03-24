@@ -170,7 +170,7 @@
     {
       "id": "ballot-problem-oq-01",
       "relationship": "parent",
-      "description": "Parent proof containing the full Dvoretzky-Motzkin Cycle Lemma (cycle_lemma: |goodRotations l| = a - k*b) that uses this"
+      "description": "Parent proof containing the full Dvoretzky-Motzkin Cycle Lemma (cycle_lemma: |goodRotations l| = a - k*b) that uses this discrete IVT as a key ingredient"
     },
     {
       "id": "ballot-problem",
@@ -180,7 +180,7 @@
     {
       "id": "intermediate-value-theorem",
       "relationship": "related",
-      "description": "This file proves a discrete analog of the IVT: for {+1,-k}-sequences, prefix sums that start below and end above a targe"
+      "description": "This file proves a discrete analog of the IVT: for {+1,-k}-sequences, prefix sums that start below and end above a target value v must achieve exactly v at some intermediate position — the same 'crossing' principle as the continuous IVT"
     },
     {
       "id": "ballot-problem-oq-02",
@@ -190,7 +190,7 @@
     {
       "id": "ballot-problem-oq-03",
       "relationship": "sibling",
-      "description": "The Lindström-Gessel-Viennot lemma via 2D reflection — a different combinatorial approach to ballot-type counting. While"
+      "description": "The Lindström-Gessel-Viennot lemma via 2D reflection — a different combinatorial approach to ballot-type counting. While this file uses cyclic rotation (Dvoretzky-Motzkin), LGV uses lattice path non-intersection, providing a dual perspective on the same counting problems"
     }
   ],
   "leanFile": {

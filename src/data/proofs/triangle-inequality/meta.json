@@ -184,12 +184,12 @@
     {
       "id": "cauchy-schwarz",
       "relationship": "complementary",
-      "description": "The Cauchy-Schwarz inequality $|\\langle x,y\\rangle| \\leq \\|x\\|\\|y\\|$ implies the triangle inequality in inner product sp"
+      "description": "The Cauchy-Schwarz inequality $|\\langle x,y\\rangle| \\leq \\|x\\|\\|y\\|$ implies the triangle inequality in inner product spaces: $\\|x+y\\|^2 = \\|x\\|^2 + 2\\langle x,y\\rangle + \\|y\\|^2 \\leq (\\|x\\|+\\|y\\|)^2$. Cauchy-Schwarz also characterizes the equality case (linear dependence)"
     },
     {
       "id": "pythagorean-theorem",
       "relationship": "related",
-      "description": "The Pythagorean theorem $a^2 + b^2 = c^2$ for right triangles is a special case of the law of cosines, which in turn pro"
+      "description": "The Pythagorean theorem $a^2 + b^2 = c^2$ for right triangles is a special case of the law of cosines, which in turn proves the triangle inequality in Euclidean spaces. The triangle inequality becomes equality when the angle between sides is 0 (degenerate triangle)"
     },
     {
       "id": "law-of-cosines",
@@ -199,12 +199,12 @@
     {
       "id": "herons-formula",
       "relationship": "related",
-      "description": "Heron's formula for triangle area requires the triangle inequality as a precondition: the sides $a, b, c$ form a valid t"
+      "description": "Heron's formula for triangle area requires the triangle inequality as a precondition: the sides $a, b, c$ form a valid triangle iff $a \\leq b + c$, $b \\leq a + c$, $c \\leq a + b$, which ensures the semi-perimeter expression yields a non-negative area"
     },
     {
       "id": "intermediate-value-theorem",
       "relationship": "related",
-      "description": "The intermediate value theorem and the triangle inequality are both foundational results for real analysis. The triangle"
+      "description": "The intermediate value theorem and the triangle inequality are both foundational results for real analysis. The triangle inequality is used in proofs of uniform continuity and the IVT's generalization to metric spaces"
     }
   ],
   "leanFile": {

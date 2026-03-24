@@ -280,12 +280,12 @@
     {
       "id": "basel-problem",
       "relationship": "related",
-      "description": "Both are crown jewels of Euler's work. The Basel identity ζ(2) = π²/6 and Euler's identity e^(iπ) + 1 = 0 both connect f"
+      "description": "Both are crown jewels of Euler's work. The Basel identity ζ(2) = π²/6 and Euler's identity e^(iπ) + 1 = 0 both connect fundamental constants in unexpected ways"
     },
     {
       "id": "pi-transcendental",
       "relationship": "uses",
-      "description": "Euler's identity uses π as a specific value. The transcendence of π (Lindemann 1882) means e^(iπ) = -1 is an equation re"
+      "description": "Euler's identity uses π as a specific value. The transcendence of π (Lindemann 1882) means e^(iπ) = -1 is an equation relating transcendental quantities to a rational number"
     },
     {
       "id": "pythagorean-theorem",
@@ -300,7 +300,7 @@
     {
       "id": "fundamental-theorem-algebra",
       "relationship": "related",
-      "description": "Euler's formula $e^{2\\pi ik/n}$ generates the $n$th roots of unity — the roots of $z^n - 1$. FTA guarantees these $n$ ro"
+      "description": "Euler's formula $e^{2\\pi ik/n}$ generates the $n$th roots of unity — the roots of $z^n - 1$. FTA guarantees these $n$ roots exist in $\\mathbb{C}$, and Euler's formula provides them explicitly, giving the cleanest demonstration that $\\mathbb{C}$ is algebraically closed for cyclotomic polynomials"
     }
   ],
   "leanFile": {

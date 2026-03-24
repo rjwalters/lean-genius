@@ -207,22 +207,22 @@
     {
       "id": "pi-transcendental",
       "relationship": "related",
-      "description": "The factor √(2π) in Stirling's formula connects to the Wallis product and the Gaussian integral ∫e^{-x²}dx = √π. The tra"
+      "description": "The factor √(2π) in Stirling's formula connects to the Wallis product and the Gaussian integral ∫e^{-x²}dx = √π. The transcendence of π (Lindemann 1882) means Stirling's constant is transcendental"
     },
     {
       "id": "binomial-theorem",
       "relationship": "complementary",
-      "description": "Stirling's formula gives the asymptotic form of binomial coefficients: C(n,k) ≈ (n/k)^k · (n/(n-k))^{n-k} · √(n/(2πk(n-k"
+      "description": "Stirling's formula gives the asymptotic form of binomial coefficients: C(n,k) ≈ (n/k)^k · (n/(n-k))^{n-k} · √(n/(2πk(n-k))), essential for the central limit theorem and information theory"
     },
     {
       "id": "central-limit-theorem",
       "relationship": "related",
-      "description": "De Moivre originally discovered Stirling's formula while proving the CLT for the binomial distribution. Stirling's appro"
+      "description": "De Moivre originally discovered Stirling's formula while proving the CLT for the binomial distribution. Stirling's approximation for C(n,k) gives the Gaussian density as the limit of the binomial"
     },
     {
       "id": "euler-identity",
       "relationship": "related",
-      "description": "Euler's formula e^{iπ} + 1 = 0 connects the same constants (e, π) that appear in Stirling's formula. Both reveal deep re"
+      "description": "Euler's formula e^{iπ} + 1 = 0 connects the same constants (e, π) that appear in Stirling's formula. Both reveal deep relationships between exponential growth and circular geometry"
     }
   ]
 }

@@ -223,7 +223,7 @@
     {
       "id": "infinitude-primes",
       "relationship": "foundational",
-      "description": "Both concern infinitude of prime sets; this conjectures infinitude of a structured subset"
+      "description": "Both prove or conjecture infinitude of a special set of primes; the main conjecture asserts Set.Infinite for factorial-avoiding primes"
     },
     {
       "id": "wilsons-theorem",
@@ -233,17 +233,17 @@
     {
       "id": "bertrands-postulate",
       "relationship": "related",
-      "description": "Both concern prime distribution in structured ranges"
+      "description": "Both concern prime distribution; Bertrand guarantees primes in intervals while this asks about factorial-prime interactions"
     },
     {
       "id": "erdos-1057",
       "relationship": "sibling",
-      "description": "Sister Erdős problem about special prime sets using Set.Infinite"
+      "description": "Sister Erdős problem about prime-related counting; both use Set.Infinite for open conjectures about special prime sets"
     },
     {
       "id": "erdos-1058",
       "relationship": "sibling",
-      "description": "Studies prime divisors of n!+1, complementary factorial-prime interaction"
+      "description": "Both problems concern the interplay between primes and factorials: #1058 studies prime divisors of $n!+1$ between consecutive primes, while #1059 studies primality of $p - k!$. Both exploit the super-exponential growth of factorials to reduce infinite problems to finite case analysis"
     }
   ],
   "leanFile": {

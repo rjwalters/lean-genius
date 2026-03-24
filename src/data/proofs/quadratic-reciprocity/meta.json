@@ -190,17 +190,17 @@
     {
       "id": "elementary-quadratic-reciprocity",
       "relationship": "related",
-      "description": "An alternative formalization of quadratic reciprocity using elementary methods. Both establish the same law relating $(p"
+      "description": "An alternative formalization of quadratic reciprocity using elementary methods. Both establish the same law relating $(p/q)$ and $(q/p)$, but with different proof techniques and Mathlib dependencies."
     },
     {
       "id": "euler-totient",
       "relationship": "foundational",
-      "description": "Euler's totient function $\\phi(n)$ counts units in $\\mathbb{Z}/n\\mathbb{Z}$. The Legendre symbol $(a/p) = a^{(p-1)/2} \\b"
+      "description": "Euler's totient function $\\phi(n)$ counts units in $\\mathbb{Z}/n\\mathbb{Z}$. The Legendre symbol $(a/p) = a^{(p-1)/2} \\bmod p$ uses $\\phi(p) = p - 1$, and Euler's criterion connecting quadratic residues to this exponent is the starting point for reciprocity."
     },
     {
       "id": "wilsons-theorem",
       "relationship": "related",
-      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ is closely related: both concern the multiplicative structure of $\\mathbb{Z"
+      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ is closely related: both concern the multiplicative structure of $\\mathbb{Z}/p\\mathbb{Z}$. Gauss's first proof of quadratic reciprocity used Gauss sums, which generalize factorials in $\\mathbb{Z}/p\\mathbb{Z}$."
     },
     {
       "id": "infinitude-primes",
@@ -210,7 +210,7 @@
     {
       "id": "abel-ruffini",
       "relationship": "related",
-      "description": "Both are landmarks of 19th-century algebra: Abel-Ruffini uses Galois groups to prove quintic unsolvability, while quadra"
+      "description": "Both are landmarks of 19th-century algebra: Abel-Ruffini uses Galois groups to prove quintic unsolvability, while quadratic reciprocity reveals deep structure in $\\mathbb{Z}/p\\mathbb{Z}$. Artin reciprocity law unifies both into class field theory."
     }
   ],
   "leanFile": {

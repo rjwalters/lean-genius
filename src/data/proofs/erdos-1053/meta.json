@@ -138,27 +138,27 @@
     {
       "id": "euler-totient",
       "relationship": "related",
-      "description": "Euler's totient φ(n) and the sum-of-divisors σ(n) are both fundamental multiplicative arithmetic functions. Their interp"
+      "description": "Euler's totient φ(n) and the sum-of-divisors σ(n) are both fundamental multiplicative arithmetic functions. Their interplay governs the structure of perfect numbers: for primes p, σ(p) = p+1 while φ(p) = p−1, and highly composite numbers extremize both."
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "depends-on",
-      "description": "The multiplicativity of σ — the key property σ(mn) = σ(m)σ(n) for gcd(m,n) = 1 — follows directly from the Fundamental T"
+      "description": "The multiplicativity of σ — the key property σ(mn) = σ(m)σ(n) for gcd(m,n) = 1 — follows directly from the Fundamental Theorem of Arithmetic. This multiplicativity is what allows the abundancy index σ(n)/n to be analyzed prime-factor by prime-factor."
     },
     {
       "id": "infinitude-primes",
       "relationship": "related",
-      "description": "Gronwall's extremal bound σ(n)/n ~ e^γ · log log n is achieved along primorial-type numbers (products of the first k pri"
+      "description": "Gronwall's extremal bound σ(n)/n ~ e^γ · log log n is achieved along primorial-type numbers (products of the first k primes). The infinitude of primes ensures this sequence grows without bound, setting the asymptotic ceiling that Erdős asks whether k-perfect numbers can approach."
     },
     {
       "id": "erdos-1054",
       "relationship": "related",
-      "description": "Erdős Problem #1054 concerns the distribution and density of multiply-perfect numbers, directly complementing the growth"
+      "description": "Erdős Problem #1054 concerns the distribution and density of multiply-perfect numbers, directly complementing the growth-rate question here. Together they form a two-part study of the k-perfect number sequence."
     },
     {
       "id": "erdos-1003",
       "relationship": "related",
-      "description": "Erdős Problem #1003 concerns the distribution of the abundancy index σ(n)/n over integers, studying when large values oc"
+      "description": "Erdős Problem #1003 concerns the distribution of the abundancy index σ(n)/n over integers, studying when large values occur. The k-perfect numbers — where σ(n)/n is exactly an integer — are a special discrete sub-problem within this continuous distribution question."
     }
   ],
   "references": [

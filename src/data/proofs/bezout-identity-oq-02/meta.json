@@ -172,7 +172,7 @@
     {
       "id": "bezout-identity",
       "relationship": "extends",
-      "description": "Parent entry proving gcd(a,b) = ax + by and coprime_iff_linear_combination — this file uses the coprimality characteriza"
+      "description": "Parent entry proving gcd(a,b) = ax + by and coprime_iff_linear_combination — this file uses the coprimality characterization to prove Euclid's lemma"
     },
     {
       "id": "bezout-identity-oq-03",
@@ -182,12 +182,12 @@
     {
       "id": "fundamental-arithmetic",
       "relationship": "extended-by",
-      "description": "Euclid's lemma (p|ab → p|a or p|b) is the key step toward unique prime factorization — FTA follows by induction using th"
+      "description": "Euclid's lemma (p|ab → p|a or p|b) is the key step toward unique prime factorization — FTA follows by induction using this result"
     },
     {
       "id": "infinitude-primes",
       "relationship": "related",
-      "description": "Euclid's original proof of infinite primes can be strengthened using Euclid's lemma: the product p₁p₂...pₙ + 1 must have"
+      "description": "Euclid's original proof of infinite primes can be strengthened using Euclid's lemma: the product p₁p₂...pₙ + 1 must have a prime factor not in the list"
     },
     {
       "id": "bezout-identity-oq-02-oq-01",

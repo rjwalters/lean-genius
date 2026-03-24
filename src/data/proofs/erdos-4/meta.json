@@ -295,12 +295,12 @@
     {
       "id": "bounded-prime-gaps",
       "relationship": "complementary",
-      "description": "The dual problem: Maynard's sieve proving liminf g_n <= 246 uses the same framework applied in reverse to prove limsup g_n/f(n) = infinity"
+      "description": "The dual problem: Maynard's multidimensional sieve proving $\\liminf g_n \\leq 246$ (bounded gaps) uses the same framework he applied in reverse to prove $\\limsup g_n / f(n) = \\infty$ (unbounded large gaps). Together they show prime gaps are both sometimes very small and sometimes very large"
     },
     {
       "id": "prime-number-theorem",
       "relationship": "uses",
-      "description": "The PNT gives the average gap log n and the asymptotic p_n ~ n log n used in average_gap_asymptotic"
+      "description": "The Prime Number Theorem gives the average gap log n and the asymptotic p_n ~ n log n used in average_gap_asymptotic"
     },
     {
       "id": "erdos-369",
@@ -310,12 +310,12 @@
     {
       "id": "erdos-5",
       "relationship": "related",
-      "description": "Erdős #5 asks about the set of limit points of g_n/log p_n; #4 proves limsup g_n/f(n) = infinity — a finer question about prime gap distribution"
+      "description": "Erdős #5 asks about the set of limit points of $g_n / \\log p_n$ (normalized prime gaps). While #4 proves $\\limsup g_n / f(n) = \\infty$ for specific growth functions $f$, #5 asks for the full accumulation structure of the normalized gap sequence — a finer question about the distribution of prime gaps"
     },
     {
       "id": "dirichlets-theorem",
       "relationship": "related",
-      "description": "Dirichlet's theorem on primes in arithmetic progressions is used in Rankin's construction to create large prime-free intervals"
+      "description": "Dirichlet's theorem on primes in arithmetic progressions is used in Rankin's construction: to create large prime-free intervals, one exploits that primes in specific residue classes can be avoided, requiring control over how primes distribute in progressions"
     }
   ],
   "leanFile": {

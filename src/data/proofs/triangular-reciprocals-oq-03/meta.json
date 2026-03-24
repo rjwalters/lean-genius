@@ -138,22 +138,22 @@
     {
       "id": "triangular-reciprocals",
       "relationship": "extends",
-      "description": "Extends the non-alternating result ∑2/(n(n+1)) = 2 to its alternating variant. Both use partial fractions and telescopin"
+      "description": "Extends the non-alternating result ∑2/(n(n+1)) = 2 to its alternating variant. Both use partial fractions and telescoping ideas."
     },
     {
       "id": "geometric-series",
       "relationship": "related",
-      "description": "Both are classical infinite series with exact closed-form sums. The alternating geometric series ∑(-1)^n·r^n = 1/(1+r) a"
+      "description": "Both are classical infinite series with exact closed-form sums. The alternating geometric series ∑(-1)^n·r^n = 1/(1+r) and alternating triangular reciprocals both involve sign-alternating terms."
     },
     {
       "id": "leibniz-pi",
       "relationship": "related",
-      "description": "Both are alternating series with transcendental closed forms. The Leibniz series ∑(-1)^n/(2n+1) = π/4 uses odd reciproca"
+      "description": "Both are alternating series with transcendental closed forms. The Leibniz series ∑(-1)^n/(2n+1) = π/4 uses odd reciprocals while this series uses triangular reciprocals. Both involve boundary evaluations of power series."
     },
     {
       "id": "harmonic-divergence",
       "relationship": "related",
-      "description": "The harmonic series ∑1/n diverges, but alternating it (∑(-1)^{n+1}/n = ln 2) converges — this alternating harmonic serie"
+      "description": "The harmonic series ∑1/n diverges, but alternating it (∑(-1)^{n+1}/n = ln 2) converges — this alternating harmonic series is the key building block axiomatized in the present proof."
     },
     {
       "id": "basel-problem",

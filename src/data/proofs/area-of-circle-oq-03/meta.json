@@ -158,27 +158,27 @@
     {
       "id": "area-of-circle",
       "relationship": "extends",
-      "description": "The base area-of-circle proof establishes πr² directly. This OQ-03 file shows how Archimedes arrived at the formula thro"
+      "description": "The base area-of-circle proof establishes πr² directly. This OQ-03 file shows how Archimedes arrived at the formula through the method of exhaustion, giving the constructive limiting argument behind the result."
     },
     {
       "id": "area-of-circle-oq-01",
       "relationship": "technique",
-      "description": "Both proofs rely on the key limit n·sin(2π/n) → 2π. The isoperimetric approach in OQ-01 and the exhaustion approach here"
+      "description": "Both proofs rely on the key limit n·sin(2π/n) → 2π. The isoperimetric approach in OQ-01 and the exhaustion approach here share this fundamental trigonometric limit, revealing deep structural connections."
     },
     {
       "id": "pythagorean-theorem",
       "relationship": "foundational",
-      "description": "Inscribed polygon areas use right triangles with hypotenuse r — the Pythagorean theorem underpins the r²·sin(2π/n)/2 are"
+      "description": "Inscribed polygon areas use right triangles with hypotenuse r — the Pythagorean theorem underpins the r²·sin(2π/n)/2 area formula for each isosceles triangle of the inscribed polygon"
     },
     {
       "id": "pi-transcendental",
       "relationship": "related",
-      "description": "Archimedes' exhaustion defines π as the limit of polygon areas — the same constant later proved transcendental by Lindem"
+      "description": "Archimedes' exhaustion defines π as the limit of polygon areas — the same constant later proved transcendental by Lindemann (1882), making the circle area πr² involve a transcendental constant"
     },
     {
       "id": "area-of-circle-oq-03-oq-02",
       "relationship": "extended-by",
-      "description": "Extends Archimedes' method of exhaustion with his explicit computational bounds $223/71 < \\pi < 22/7$, obtained by bound"
+      "description": "Extends Archimedes' method of exhaustion with his explicit computational bounds $223/71 < \\pi < 22/7$, obtained by bounding the circle's area between inscribed and circumscribed regular 96-gons — the quantitative complement to this file's qualitative exhaustion proof"
     }
   ],
   "leanFile": {

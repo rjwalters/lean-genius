@@ -153,7 +153,7 @@
     {
       "id": "cauchy-schwarz",
       "relationship": "generalizes",
-      "description": "AM-GM implies Cauchy-Schwarz via $2ab \\leq a^2 + b^2$; both are consequences of the non-negativity of squared difference"
+      "description": "AM-GM implies Cauchy-Schwarz via $2ab \\leq a^2 + b^2$; both are consequences of the non-negativity of squared differences."
     },
     {
       "id": "cauchy-schwarz-integral",
@@ -168,12 +168,12 @@
     {
       "id": "shannon-entropy",
       "relationship": "supports",
-      "description": "AM-GM underlies the log-sum inequality used to bound Shannon entropy: the maximum entropy $H \\leq \\log n$ for $n$ outcom"
+      "description": "AM-GM underlies the log-sum inequality used to bound Shannon entropy: the maximum entropy $H \\leq \\log n$ for $n$ outcomes follows from AM-GM applied to logarithms, showing the uniform distribution uniquely maximizes entropy."
     },
     {
       "id": "triangle-inequality",
       "relationship": "related",
-      "description": "Both AM-GM and the triangle inequality are fundamental non-negativity results: AM-GM exploits $(\\sqrt{a}-\\sqrt{b})^2 \\ge"
+      "description": "Both AM-GM and the triangle inequality are fundamental non-negativity results: AM-GM exploits $(\\sqrt{a}-\\sqrt{b})^2 \\geq 0$ while the triangle inequality exploits $|x+y| \\leq |x|+|y|$. Together they form the backbone of analytic estimation."
     }
   ],
   "sections": [

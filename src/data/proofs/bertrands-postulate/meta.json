@@ -180,7 +180,7 @@
     {
       "id": "infinitude-primes",
       "relationship": "implied-by",
-      "description": "Bertrand's Postulate immediately implies infinitude of primes (for any n, there's a prime > n), giving an alternative to"
+      "description": "Bertrand's Postulate immediately implies infinitude of primes (for any n, there's a prime > n), giving an alternative to Euclid's proof via a much stronger quantitative result"
     },
     {
       "id": "bounded-prime-gaps",
@@ -190,12 +190,12 @@
     {
       "id": "binomial-theorem",
       "relationship": "technique",
-      "description": "Erdős's proof hinges on analyzing the central binomial coefficient C(2n,n), using properties of binomial coefficients an"
+      "description": "Erdős's proof hinges on analyzing the central binomial coefficient C(2n,n), using properties of binomial coefficients and their prime factorizations"
     },
     {
       "id": "prime-number-theorem",
       "relationship": "related",
-      "description": "PNT gives π(n) ~ n/ln(n), which implies Bertrand's postulate for sufficiently large n. Bertrand's postulate is an elemen"
+      "description": "PNT gives π(n) ~ n/ln(n), which implies Bertrand's postulate for sufficiently large n. Bertrand's postulate is an elementary precursor: always a prime between n and 2n, without asymptotics"
     },
     {
       "id": "fundamental-arithmetic",

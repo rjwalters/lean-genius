@@ -193,7 +193,7 @@
     {
       "id": "binomial-theorem",
       "relationship": "related",
-      "description": "Both involve binomial coefficients C(n,k): the binomial theorem expands (1+x)^n, while simplicial numbers use C(n+k,k) a"
+      "description": "Both involve binomial coefficients C(n,k): the binomial theorem expands (1+x)^n, while simplicial numbers use C(n+k,k) as building blocks of Pascal's triangle diagonals"
     },
     {
       "id": "combinations-formula",
@@ -203,7 +203,7 @@
     {
       "id": "sum-of-kth-powers",
       "relationship": "related",
-      "description": "Power sums $\\sum i^k$ and simplicial numbers $\\sum \\binom{i+k}{k}$ are dual descriptions of summing polynomial sequences"
+      "description": "Power sums $\\sum i^k$ and simplicial numbers $\\sum \\binom{i+k}{k}$ are dual descriptions of summing polynomial sequences. Faulhaber's formulas express $\\sum i^k$ as a polynomial in $n$, while the hockey stick identity does the same for simplicial numbers — both are polynomial summation formulas, related by the Stirling number transformation between the monomial basis $\\{i^k\\}$ and the falling factorial basis $\\{\\binom{i}{k}\\}$"
     },
     {
       "id": "arithmetic-series-oq-02-oq-02",

@@ -260,7 +260,7 @@
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "Bézout's identity is a key ingredient in proving unique prime factorization: from gcd(a,b) = ax + by, one derives Euclid"
+      "description": "Bézout's identity is a key ingredient in proving unique prime factorization: from gcd(a,b) = ax + by, one derives Euclid's lemma (p|ab → p|a or p|b), which gives uniqueness"
     },
     {
       "id": "infinitude-primes",
@@ -270,7 +270,7 @@
     {
       "id": "chinese-remainder-constructive",
       "relationship": "extended-by",
-      "description": "The Chinese Remainder Theorem uses Bézout coefficients to construct simultaneous solutions: from gcd(m,n) = 1 and mx + n"
+      "description": "The Chinese Remainder Theorem uses Bézout coefficients to construct simultaneous solutions: from gcd(m,n) = 1 and mx + ny = 1, the CRT solution is built by scaling"
     },
     {
       "id": "lagrange-theorem",
@@ -280,7 +280,7 @@
     {
       "id": "bezout-identity-oq-02",
       "relationship": "extended-by",
-      "description": "Proves Euclid's lemma ($p \\mid ab \\Rightarrow p \\mid a$ or $p \\mid b$) using the coprime_iff_linear_combination characte"
+      "description": "Proves Euclid's lemma ($p \\mid ab \\Rightarrow p \\mid a$ or $p \\mid b$) using the coprime_iff_linear_combination characterization from Bézout — answering one of this file's open questions"
     }
   ],
   "references": [

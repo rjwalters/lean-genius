@@ -226,17 +226,17 @@
     {
       "id": "erdos-4",
       "relationship": "related",
-      "description": "Both connect smooth numbers to prime gaps; #4 uses smooth number constructions for large prime-free intervals, while #369 directly studies consecutive smooth numbers"
+      "description": "Both problems connect smooth numbers to prime gaps. Problem #4 (large prime gaps) uses smooth number constructions (products of small primes create long prime-free intervals), while #369 directly studies consecutive smooth numbers. Rankin's large gap construction exploits the same smooth number density estimates"
     },
     {
       "id": "prime-number-theorem",
       "relationship": "foundational",
-      "description": "PNT gives the density of primes; the Dickman function governing smooth number density is derived from PNT-like analytic methods"
+      "description": "PNT gives the density of primes as π(x) ~ x/log x. The smooth number counting function Ψ(x,y) is the multiplicative analog — both concern the distribution of numbers with restricted prime factorization. The Dickman function ρ(u) governing smooth number density is derived from PNT-like analytic methods"
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "Unique prime factorization is the foundation of smooth number theory: P+(n) is well-defined by FTA, and smoothness is defined in terms of factorization structure"
+      "description": "Unique prime factorization is the foundation of smooth number theory: P⁺(n) (the largest prime factor) is well-defined by FTA, and smoothness is defined in terms of the factorization structure that FTA guarantees"
     }
   ],
   "leanFile": {

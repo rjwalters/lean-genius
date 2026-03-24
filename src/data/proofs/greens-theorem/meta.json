@@ -191,27 +191,27 @@
     {
       "id": "fundamental-theorem-calculus",
       "relationship": "foundational",
-      "description": "The Fundamental Theorem of Calculus is the 1D special case of Stokes' theorem and the key tool in proving Green's theore"
+      "description": "The Fundamental Theorem of Calculus is the 1D special case of Stokes' theorem and the key tool in proving Green's theorem for rectangles: FTC evaluates the inner integrals at boundary points."
     },
     {
       "id": "area-of-circle",
       "relationship": "application",
-      "description": "The area of a circle (πr²) can be derived via Green's theorem using the vector field (0, x) and parametrizing the circle"
+      "description": "The area of a circle (πr²) can be derived via Green's theorem using the vector field (0, x) and parametrizing the circle, demonstrating the area-as-line-integral technique."
     },
     {
       "id": "navier-stokes",
       "relationship": "broader-context",
-      "description": "The Navier-Stokes equations use Green's theorem (and its 3D generalization) to convert between differential and integral"
+      "description": "The Navier-Stokes equations use Green's theorem (and its 3D generalization) to convert between differential and integral formulations of fluid conservation laws."
     },
     {
       "id": "cauchy-schwarz-integral",
       "relationship": "related",
-      "description": "Both theorems concern integral inequalities/equalities in analysis. Cauchy-Schwarz bounds inner products of functions, w"
+      "description": "Both theorems concern integral inequalities/equalities in analysis. Cauchy-Schwarz bounds inner products of functions, while Green's theorem equates two different integrals of vector field data."
     },
     {
       "id": "euler-identity",
       "relationship": "related",
-      "description": "Cauchy's integral theorem — every holomorphic function satisfies $\\oint_C f(z)\\,dz = 0$ — is a direct consequence of Gre"
+      "description": "Cauchy's integral theorem — every holomorphic function satisfies $\\oint_C f(z)\\,dz = 0$ — is a direct consequence of Green's theorem applied to the real and imaginary parts of $f$. Euler's formula $e^{ix} = \\cos x + i\\sin x$ defines the key holomorphic function $e^z$, and the residue theorem (generalization of Cauchy's theorem) evaluates contour integrals by analyzing singularities of $e^z$-related functions"
     }
   ],
   "leanFile": {

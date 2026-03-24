@@ -179,7 +179,7 @@
     {
       "id": "cauchy-schwarz",
       "relationship": "related",
-      "description": "The Cauchy-Schwarz inequality $|\\langle v, w \\rangle| \\leq \\|v\\|\\|w\\|$ ensures $|\\cos\\theta| \\leq 1$ in the Law of Cosin"
+      "description": "The Cauchy-Schwarz inequality $|\\langle v, w \\rangle| \\leq \\|v\\|\\|w\\|$ ensures $|\\cos\\theta| \\leq 1$ in the Law of Cosines. Both are fundamental identities of inner product spaces — Cauchy-Schwarz bounds the inner product, while the Law of Cosines expands the squared distance"
     },
     {
       "id": "area-of-circle",
@@ -189,7 +189,7 @@
     {
       "id": "angle-trisection",
       "relationship": "related",
-      "description": "Both concern angle measurement in Euclidean geometry. The Law of Cosines recovers angles from side lengths ($\\cos C = (a"
+      "description": "Both concern angle measurement in Euclidean geometry. The Law of Cosines recovers angles from side lengths ($\\cos C = (a^2+b^2-c^2)/(2ab)$), while the angle trisection impossibility shows certain angles cannot be constructed — the cosine formula connects the algebraic and geometric perspectives on angles"
     }
   ],
   "leanFile": {

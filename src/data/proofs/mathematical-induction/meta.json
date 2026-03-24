@@ -233,22 +233,22 @@
     {
       "id": "infinitude-primes",
       "relationship": "related",
-      "description": "Euclid's proof of infinite primes uses a form of induction (given any finite list, construct a new prime). Strong induct"
+      "description": "Euclid's proof of infinite primes uses a form of induction (given any finite list, construct a new prime). Strong induction and well-ordering — equivalent to induction — appear throughout number theory."
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "The uniqueness of prime factorization is proved by strong induction: assuming uniqueness for all $m < n$, if $n = p_1 \\c"
+      "description": "The uniqueness of prime factorization is proved by strong induction: assuming uniqueness for all $m < n$, if $n = p_1 \\cdots p_r = q_1 \\cdots q_s$, then $p_1 \\mid q_j$ for some $j$, so $p_1 = q_j$, and induction on $n/p_1 < n$ gives the result. Without strong induction, FTA cannot be proved"
     },
     {
       "id": "fundamental-theorem-calculus",
       "relationship": "related",
-      "description": "Repeated application of FTC via induction gives Taylor's theorem: $f(x) = \\sum_{k=0}^n f^{(k)}(a)(x-a)^k/k! + R_n(x)$, w"
+      "description": "Repeated application of FTC via induction gives Taylor's theorem: $f(x) = \\sum_{k=0}^n f^{(k)}(a)(x-a)^k/k! + R_n(x)$, where each step integrates by parts using FTC. The induction step increases the order of the Taylor expansion by one"
     },
     {
       "id": "arithmetic-series",
       "relationship": "related",
-      "description": "The sum formula $\\sum_{k=1}^n k = n(n+1)/2$ is the classic first example of proof by induction, attributed to Gauss. Thi"
+      "description": "The sum formula $\\sum_{k=1}^n k = n(n+1)/2$ is the classic first example of proof by induction, attributed to Gauss. This formalization includes this example, connecting induction to combinatorial identities"
     }
   ]
 }

@@ -376,27 +376,27 @@
     {
       "id": "erdos-1155",
       "relationship": "parent",
-      "description": "Parent formalization of Erdős Problem #1155; this file extends with exact asymptotic gap analysis between BFL and the co"
+      "description": "Parent formalization of Erdős Problem #1155; this file extends with exact asymptotic gap analysis between BFL and the conjecture"
     },
     {
       "id": "ramseys-theorem",
       "relationship": "related",
-      "description": "Ramsey theory provides related combinatorial bounds for structural properties of random graphs; both use probabilistic a"
+      "description": "Ramsey theory provides related combinatorial bounds for structural properties of random graphs; both use probabilistic arguments"
     },
     {
       "id": "szemeredi-regularity",
       "relationship": "related",
-      "description": "The Szemerédi regularity lemma is the foundation of the triangle removal lemma (distinct from the triangle removal *proc"
+      "description": "The Szemerédi regularity lemma is the foundation of the triangle removal lemma (distinct from the triangle removal *process*). Both concern triangle counting in graphs, but via different mechanisms: regularity via deterministic decomposition, the process via random greedy algorithms"
     },
     {
       "id": "erdos-1009",
       "relationship": "related",
-      "description": "Edge-disjoint triangles beyond Turán: both problems concern triangle structure in dense graphs. Erdős #1009 asks how man"
+      "description": "Edge-disjoint triangles beyond Turán: both problems concern triangle structure in dense graphs. Erdős #1009 asks how many edge-disjoint triangles exist beyond the Turán threshold, while #1155 asks how many edges survive random triangle removal — dual perspectives on triangle packing and covering"
     },
     {
       "id": "erdos-1010",
       "relationship": "related",
-      "description": "Triangle supersaturation counts triangles in graphs with more than Turán-many edges. The triangle removal process starts"
+      "description": "Triangle supersaturation counts triangles in graphs with more than Turán-many edges. The triangle removal process starts from the complete graph (maximum supersaturation) and greedily reduces triangles to zero — the edge count at termination is governed by the rate of triangle depletion, connecting supersaturation bounds to the removal process dynamics"
     }
   ]
 }

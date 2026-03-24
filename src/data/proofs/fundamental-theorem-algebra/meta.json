@@ -227,7 +227,7 @@
     {
       "id": "abel-ruffini",
       "relationship": "complementary",
-      "description": "FTA guarantees roots exist in C; Abel-Ruffini shows they cannot always be expressed by radicals — existence does not imp"
+      "description": "FTA guarantees roots exist in C; Abel-Ruffini shows they cannot always be expressed by radicals — existence does not imply explicit formulas"
     },
     {
       "id": "angle-trisection",
@@ -237,17 +237,17 @@
     {
       "id": "inverse-galois",
       "relationship": "related",
-      "description": "FTA shows every polynomial splits over C, so every Galois group embeds in some S_n. The Inverse Galois Problem asks whic"
+      "description": "FTA shows every polynomial splits over C, so every Galois group embeds in some S_n. The Inverse Galois Problem asks which groups arise over Q — a question that presupposes FTA's guarantee that roots exist"
     },
     {
       "id": "solution-of-cubic",
       "relationship": "specializes",
-      "description": "Cardano's cubic formula provides explicit complex roots for degree-3 polynomials; FTA guarantees such roots exist withou"
+      "description": "Cardano's cubic formula provides explicit complex roots for degree-3 polynomials; FTA guarantees such roots exist without needing an explicit formula"
     },
     {
       "id": "liouville-theorem",
       "relationship": "uses",
-      "description": "The Mathlib proof of FTA relies on Liouville's theorem (bounded entire function is constant): if p(z) ≠ 0 everywhere, th"
+      "description": "The Mathlib proof of FTA relies on Liouville's theorem (bounded entire function is constant): if p(z) ≠ 0 everywhere, then 1/p is bounded entire, hence constant — contradiction"
     }
   ],
   "references": [

@@ -238,17 +238,17 @@
     {
       "id": "ballot-problem",
       "relationship": "extends",
-      "description": "Extends the classical ballot problem's 1D reflection principle to 2D lattice path pairs, providing the combinatorial fou"
+      "description": "Extends the classical ballot problem's 1D reflection principle to 2D lattice path pairs, providing the combinatorial foundation for the LGV lemma"
     },
     {
       "id": "ballot-problem-oq-01",
       "relationship": "extends",
-      "description": "The generalized k-fold ballot problem — this file extends the lattice path framework from 1D to 2D pairs with the Lindst"
+      "description": "The generalized k-fold ballot problem — this file extends the lattice path framework from 1D to 2D pairs with the Lindström involution"
     },
     {
       "id": "combinations-formula",
       "relationship": "foundational",
-      "description": "Path counts use C(m+n, m) for the number of monotone lattice paths from (0,0) to (m,n) — the binomial coefficient is the"
+      "description": "Path counts use C(m+n, m) for the number of monotone lattice paths from (0,0) to (m,n) — the binomial coefficient is the fundamental building block"
     },
     {
       "id": "binomial-theorem",
@@ -258,7 +258,7 @@
     {
       "id": "ballot-problem-oq-03-oq-02",
       "relationship": "extended-by",
-      "description": "Extends the 2×2 LGV determinant to the general r×r case, computing determinants of path-count matrices for r non-crossin"
+      "description": "Extends the 2×2 LGV determinant to the general r×r case, computing determinants of path-count matrices for r non-crossing lattice paths — the full generalization of the reflection principle used in this file's 2D case"
     }
   ],
   "references": [

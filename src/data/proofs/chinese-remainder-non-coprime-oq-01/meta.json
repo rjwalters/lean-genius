@@ -197,12 +197,12 @@
     {
       "id": "chinese-remainder-non-coprime",
       "relationship": "extends",
-      "description": "Parent formalization establishing the non-coprime CRT existence theorem. This entry proves the three efficiency improvem"
+      "description": "Parent formalization establishing the non-coprime CRT existence theorem. This entry proves the three efficiency improvements: LCM bounds, Bézout reduction, and Garner decomposition"
     },
     {
       "id": "chinese-remainder-constructive",
       "relationship": "related",
-      "description": "The standard (coprime) CRT formalization. This entry shows how the non-coprime case reduces to the coprime case via Bézo"
+      "description": "The standard (coprime) CRT formalization. This entry shows how the non-coprime case reduces to the coprime case via Bézout reduction on $m/\\gcd$ and $n/\\gcd$"
     },
     {
       "id": "bezout-identity",

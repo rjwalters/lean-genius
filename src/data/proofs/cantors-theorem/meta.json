@@ -201,7 +201,7 @@
     {
       "id": "cantor-diagonalization",
       "relationship": "related",
-      "description": "Cantor's diagonalization (uncountability of ℝ) uses the same diagonal technique; Cantor's theorem generalizes it to show"
+      "description": "Cantor's diagonalization (uncountability of ℝ) uses the same diagonal technique; Cantor's theorem generalizes it to show |S| < |P(S)| for ALL sets S, not just ℕ"
     },
     {
       "id": "continuum-hypothesis",
@@ -211,12 +211,12 @@
     {
       "id": "schroeder-bernstein",
       "relationship": "complementary",
-      "description": "Schröder-Bernstein establishes cardinality equality from mutual injections; Cantor's theorem shows the injection A → P(A"
+      "description": "Schröder-Bernstein establishes cardinality equality from mutual injections; Cantor's theorem shows the injection A → P(A) (singletons) has no reverse, giving strict inequality"
     },
     {
       "id": "halting-problem",
       "relationship": "related",
-      "description": "The halting problem's undecidability proof is structurally identical to Cantor's theorem: the 'diagonal machine' that as"
+      "description": "The halting problem's undecidability proof is structurally identical to Cantor's theorem: the 'diagonal machine' that asks 'does this machine halt on itself?' is the Turing machine analog of the set {x : x ∉ f(x)}"
     },
     {
       "id": "cantors-theorem-oq-01",

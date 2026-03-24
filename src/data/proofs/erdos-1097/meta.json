@@ -190,7 +190,7 @@
     {
       "id": "roth-theorem-k3",
       "relationship": "related",
-      "description": "Roth's theorem guarantees 3-term APs in dense subsets; this problem goes further, bounding how many distinct common differences must appear"
+      "description": "Roth's theorem guarantees 3-term APs in dense subsets of $\\{1,\\ldots,N\\}$. Problem #1097 goes further: given that 3-APs exist, how many distinct common differences must they have? Both are central problems in additive combinatorics"
     },
     {
       "id": "erdos-3",
@@ -200,17 +200,17 @@
     {
       "id": "szemeredi-theorem",
       "relationship": "related",
-      "description": "Szemerédi's theorem guarantees APs in dense sets; #1097 asks about the common differences that must appear in 3-term APs"
+      "description": "Szemerédi's theorem guarantees APs in dense sets; Erdős #1097 asks about the common differences that must appear in 3-term APs"
     },
     {
       "id": "erdos-1096",
       "relationship": "related",
-      "description": "Sister problem in additive combinatorics on arithmetic progressions; both arise from the Asilomar sessions and concern quantitative AP structure"
+      "description": "Sister problem in additive combinatorics on arithmetic progressions in integer sets. Both arise from the Asilomar sessions and concern quantitative bounds on AP structure"
     },
     {
       "id": "prob-method-expectation",
       "relationship": "related",
-      "description": "The first moment method underlies the Omega(n^{3/2}) lower bound on common differences via random subset counting"
+      "description": "The first moment method underlies the $\\Omega(n^{3/2})$ lower bound on common differences: a random subset of $\\{1,\\ldots,N\\}$ of size $n$ has expected $\\sim cn^3/N$ three-term APs, distributed over $\\sim N$ possible common differences. The pigeonhole principle then shows at least $\\sim n^3/N^2$ distinct common differences occur, which for optimal $N \\sim n^2$ gives $\\Omega(n)$ — but more sophisticated counting via the second moment or Cauchy-Schwarz improves this to $\\Omega(n^{3/2})$"
     }
   ],
   "leanFile": {

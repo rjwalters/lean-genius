@@ -157,22 +157,22 @@
     {
       "id": "erdos-65",
       "relationship": "related",
-      "description": "Erdős #65 concerns general cycle lengths in graphs with large chromatic number. Problem #57 specializes to odd cycle len"
+      "description": "Erdős #65 concerns general cycle lengths in graphs with large chromatic number. Problem #57 specializes to odd cycle lengths with $\\chi(G) = \\infty$ — both probe the relationship between chromatic complexity and cycle structure"
     },
     {
       "id": "four-color-theorem",
       "relationship": "thematic",
-      "description": "The four color theorem shows all planar graphs have $\\chi(G) \\leq 4$. Problem #57 concerns the opposite extreme: $\\chi(G"
+      "description": "The four color theorem shows all planar graphs have $\\chi(G) \\leq 4$. Problem #57 concerns the opposite extreme: $\\chi(G) = \\infty$. Both illustrate how structural graph properties constrain the chromatic number, and vice versa"
     },
     {
       "id": "erdos-1104",
       "relationship": "related",
-      "description": "Maximum chromatic number of triangle-free graphs is related: $\\chi(G) = \\infty$ forces many odd cycles (#57), while tria"
+      "description": "Maximum chromatic number of triangle-free graphs is related: $\\chi(G) = \\infty$ forces many odd cycles (#57), while triangle-free ($K_3$-free) graphs can still have arbitrarily large finite $\\chi$ (Mycielski's construction) but never $\\chi = \\infty$ in the hereditary sense"
     },
     {
       "id": "roth-theorem-k3",
       "relationship": "thematic",
-      "description": "Both use density and counting arguments in combinatorics: Roth's theorem guarantees 3-term APs in dense sets via Fourier"
+      "description": "Both use density and counting arguments in combinatorics: Roth's theorem guarantees 3-term APs in dense sets via Fourier analysis, while #57 guarantees dense odd cycle lengths via dependent random choice. Both show that 'sufficiently large' combinatorial objects contain unavoidable substructure"
     }
   ],
   "leanFile": {

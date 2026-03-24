@@ -242,27 +242,27 @@
     {
       "id": "cayley-hamilton",
       "relationship": "extends",
-      "description": "Cayley-Hamilton ($\\chi_M(M) = 0$) implies $\\mu_M | \\chi_M$. This proof shows that when equality holds (nonderogatory), t"
+      "description": "Cayley-Hamilton ($\\chi_M(M) = 0$) implies $\\mu_M | \\chi_M$. This proof shows that when equality holds (nonderogatory), the matrix has a cyclic vector — connecting the algebraic condition to the geometric structure of the Krylov space"
     },
     {
       "id": "cayley-hamilton-minpoly",
       "relationship": "extends",
-      "description": "Root entry for the minimal polynomial/Cayley-Hamilton family. This OQ-05-OQ-01 result completes the backward direction o"
+      "description": "Root entry for the minimal polynomial/Cayley-Hamilton family. This OQ-05-OQ-01 result completes the backward direction of the nonderogatory characterization"
     },
     {
       "id": "bezout-identity",
       "relationship": "uses",
-      "description": "Bezout's identity in Euclidean domains ($d = ap + b\\mu$) is the key algebraic tool: it converts the GCD into a linear co"
+      "description": "Bezout's identity in Euclidean domains ($d = ap + b\\mu$) is the key algebraic tool: it converts the GCD into a linear combination that annihilates the vector via $d(M)v = a(M)p(M)v + b(M)\\mu(M)v = 0$"
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "uses",
-      "description": "Unique factorization in $K[X]$ (a Euclidean domain, hence UFD) provides the irreducible factor decomposition of the mini"
+      "description": "Unique factorization in $K[X]$ (a Euclidean domain, hence UFD) provides the irreducible factor decomposition of the minimal polynomial, which drives the union avoidance construction"
     },
     {
       "id": "cayley-hamilton-reduction",
       "relationship": "related",
-      "description": "Both extend the Cayley-Hamilton theorem in different directions: reduction develops computational aspects, while this pr"
+      "description": "Both extend the Cayley-Hamilton theorem in different directions: reduction develops computational aspects, while this proof develops the structural characterization via cyclic vectors"
     }
   ],
   "references": [

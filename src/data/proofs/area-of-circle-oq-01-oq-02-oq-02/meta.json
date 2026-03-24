@@ -181,17 +181,17 @@
     {
       "id": "area-of-circle",
       "relationship": "extends",
-      "description": "Root ancestor: the area of a circle $A = \\pi r^2$ via integration. This entry provides Fourier infrastructure toward the"
+      "description": "Root ancestor: the area of a circle $A = \\pi r^2$ via integration. This entry provides Fourier infrastructure toward the isoperimetric inequality $L^2 \\geq 4\\pi A$, which characterizes the circle as the shape maximizing area for a given perimeter."
     },
     {
       "id": "area-of-circle-oq-01-oq-02",
       "relationship": "extends",
-      "description": "The parent entry proves A = ∫C via FTC. This entry builds Fourier infrastructure needed for the isoperimetric generaliza"
+      "description": "The parent entry proves A = ∫C via FTC. This entry builds Fourier infrastructure needed for the isoperimetric generalization C² ≥ 4πA."
     },
     {
       "id": "area-of-circle-oq-01-oq-03",
       "relationship": "supports",
-      "description": "The Wirtinger inequality entry uses Fourier decomposition for the isoperimetric proof; this IBP formula is a key ingredi"
+      "description": "The Wirtinger inequality entry uses Fourier decomposition for the isoperimetric proof; this IBP formula is a key ingredient."
     },
     {
       "id": "area-of-circle-oq-01-oq-02-oq-01",
@@ -201,7 +201,7 @@
     {
       "id": "fourier-series",
       "relationship": "specializes",
-      "description": "The general Fourier series theory provides the foundation; this entry proves a specific derivative property of Fourier c"
+      "description": "The general Fourier series theory provides the foundation; this entry proves a specific derivative property of Fourier coefficients used in geometric applications."
     }
   ],
   "leanFile": {
