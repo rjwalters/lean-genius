@@ -29,11 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Proved expectedDensity_pos and expectedDensity_lt_one (2 sorries eliminated, 2 remain: single_prime_lower, single_prime_upper). Also proved product positivity for expectedDensity_lt_one.",
+    "builtItems": [
+      "Proved expectedDensity_pos: product of (1-1/p) in (0,1) is < 1 via mul_prod_erase + mul_le_of_le_one_right",
+      "Proved expectedDensity_lt_one: product of (1-1/p) > 0 via Finset.prod_pos"
+    ],
+    "insights": [
+      "Finset.prod_lt_one requires IsOrderedCancelMonoid which ℝ lacks - use mul_prod_erase + mul_le_of_le_one_right instead",
+      "Finset.prod_pos works for ℝ (StrictOrderedSemiring)",
+      "single_prime_lower/upper need counting multiples of p in [a,a+k) - more involved"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove single_prime_lower: use Nat.count_divisors_le or manual counting of multiples in Ico",
+      "Prove single_prime_upper: similar approach with ceiling bound"
+    ],
     "markdown": "# Erdős #1143 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
