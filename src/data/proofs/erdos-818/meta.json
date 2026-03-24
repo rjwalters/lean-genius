@@ -67,7 +67,7 @@
   "overview": {
     "historicalContext": "This problem is part of the sum-product phenomenon, a central topic in additive combinatorics. Erdős-Szemerédi conjectured that finite sets cannot have both small sumsets AND small product sets. This problem explores a conditional version: if the sumset is small, how large must the product set be? Solymosi's 2009 paper resolved this completely. The sum-product conjecture (1983) was proved in quantitative forms by Elekes (1997) using the Szemerédi-Trotter incidence theorem, and by Solymosi and others achieving exponent 4/3. The conditional question asks whether small additive structure forces large multiplicative structure, refining the unconditional sum-product estimates.",
     "problemStatement": "Let A be a finite set of integers such that |A+A| ≤ K·|A| for some constant K. Is it true that |A·A| ≥ |A|²/(log|A|)^C for some constant C > 0?",
-    "text": "If |A+A| ≤ K|A| (small sumset), is |AA| ≥ |A|²/(log|A|)^C for some C? Answer: YES. Solymosi (2009) proved the stronger bound |AA| ≥ c·|A|²/log|A|.",
+    "text": "This formalization captures Erdős Problem #818, a conditional form of the sum-product phenomenon in additive combinatorics. The Lean file defines sumsets, product sets, additive and multiplicative energy, and the small sumset condition |A+A| ≤ K|A|, then states both the original conjecture (product set at least |A|²/(log|A|)^C for some C) and Solymosi's 2009 resolution, which proves the stronger bound |AA| ≥ c|A|²/log|A| with C = 1. The proof architecture formalizes the energy sandwich argument: a Cauchy-Schwarz lower bound on multiplicative energy (E×(A) ≥ |A|⁴/|AA|) combined with Solymosi's upper bound (E×(A) ≤ |A|²·|A+A|·log|A|) yields the product set estimate. The file also formalizes the tightness of the logarithmic factor via arithmetic progression examples, connects the result to Erdős Problem #52 (the unconditional sum-product conjecture), and states the sum-product dichotomy. The formalization has 7 definitions, 5 theorems, and 10 axioms encoding deep results (Solymosi's theorem, energy bounds, extremal examples) with 4 remaining sorries in the deductive steps.",
     "proofStrategy": "The formalization defines sumsets, product sets, and the small sumset condition. Solymosi's theorem is stated as the main result, with the proof strategy outlined: bound multiplicative energy from below (Cauchy-Schwarz) and above (Solymosi's lemma), then combine to get the product set bound.",
     "keyInsights": [
       "Sets cannot have both strong additive AND multiplicative structure",
@@ -151,7 +151,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #818 asked whether small sumsets force large product sets. Solymosi (2009) proved YES: if |A+A| ≤ K|A|, then |AA| ≥ c·|A|²/log|A|. This is a quantitative form of the sum-product dichotomy.",
-    "implications": "This result shows the power of energy methods in additive combinatorics. By bounding multiplicative energy from both directions, one obtains strong structural information about product sets.",
+    "implications": "Solymosi's resolution of Erdős Problem #818 demonstrates the power of energy methods as a bridge between additive and multiplicative structure. The proof technique -- sandwiching multiplicative energy between a Cauchy-Schwarz lower bound and a sumset-dependent upper bound -- has become a paradigmatic argument in additive combinatorics. This 'energy method' reduces a difficult structural question (how large is the product set?) to a tractable counting problem (how many quadruples have equal products?).\n\nThe result has deep connections to the broader Erdős-Szemerédi sum-product conjecture (Problem #52), which asserts that max(|A+A|, |AA|) ≥ |A|^{2-ε} for any ε > 0. Problem #818 can be viewed as the conditional version: once one side (the sumset) is constrained, the other (the product set) must compensate almost quadratically. Solymosi's bound implies that if |A+A| ≤ K|A|, then |AA| ≥ c|A|²/log|A|, which is nearly quadratic and much stronger than the unconditional sum-product lower bound of |A|^{4/3}.\n\nThe tightness of the logarithmic factor is itself a notable result. The set {1, 2, ..., n} has |A+A| = 2n-1 (small sumset with K = 2) but |AA| is asymptotic to n²/log n by the Erdős multiplication table problem. This means no improvement beyond C = 1 is possible in general, and Solymosi's bound is essentially best possible.\n\nFrom a formalization perspective, the Lean file illustrates how axiomatized deep results (Solymosi's theorem, energy bounds, extremal constructions) can be composed to derive consequences in a machine-checked framework. The 10 axioms encode results that are mathematically established but would require substantial Mathlib infrastructure to prove from scratch. The 4 remaining sorries represent gaps in the deductive chain where constant-management arguments are needed.\n\nThe energy method pioneered here has influenced subsequent work across combinatorics, including applications to incidence geometry (via the Szemerédi-Trotter theorem), exponential sum estimates in analytic number theory, and sum-product phenomena over finite fields (Bourgain-Katz-Tao). The formalization thus captures not just one solved problem but a cornerstone technique of modern combinatorial number theory.",
     "openQuestions": [
       "Can the log factor be improved to log^{1-ε}?",
       "What is the optimal constant c in Solymosi's bound?",
@@ -165,17 +165,99 @@
       "year": "1980",
       "venue": "Monographies de L'Enseignement Mathématique 28",
       "note": "[ErGr80] original formulation"
+    },
+    {
+      "authors": "Solymosi, József",
+      "title": "Bounding multiplicative energy by the sumset",
+      "year": "2009",
+      "venue": "Advances in Mathematics 222(2), 402-408",
+      "note": "[So09d] Proved |AA| ≥ c|A|²/log|A| under small sumset hypothesis"
+    },
+    {
+      "authors": "Erdős, Paul; Szemerédi, Endre",
+      "title": "On sums and products of integers",
+      "year": "1983",
+      "venue": "Studies in Pure Mathematics, Birkhäuser, 213-218",
+      "note": "[ErSz83] Original sum-product conjecture: max(|A+A|, |AA|) ≫ |A|^{1+ε}"
+    },
+    {
+      "authors": "Elekes, György",
+      "title": "On the number of sums and products",
+      "year": "1997",
+      "venue": "Acta Arithmetica 81(4), 365-367",
+      "note": "[El97] First sum-product exponent > 1 via Szemerédi-Trotter"
+    },
+    {
+      "authors": "Tao, Terence; Vu, Van",
+      "title": "Additive Combinatorics",
+      "year": "2006",
+      "venue": "Cambridge University Press",
+      "note": "Standard reference for sum-product theory and energy methods"
     }
   ],
   "crossReferences": [
     {
+      "targetId": "erdos-52",
+      "relationship": "specializes",
+      "description": "Problem #818 is the conditional version of Problem #52 (the Erdős-Szemerédi sum-product conjecture): given small sumset, how large is the product set?"
+    },
+    {
+      "targetId": "erdos-36",
+      "relationship": "related",
+      "description": "Both concern additive combinatorics and the structure of sumsets; Problem #36 studies minimum overlap in partitions, related to additive doubling"
+    },
+    {
+      "targetId": "erdos-143",
+      "relationship": "related",
+      "description": "Both study density constraints on sets with prescribed arithmetic structure; Problem #143 concerns dilation-avoiding sets, another form of multiplicative restriction"
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "technique",
+      "description": "Szemerédi's theorem and Problem #818 both concern the interplay between structure and expansion in finite sets; the Szemerédi-Trotter incidence theorem underlies the Elekes approach to sum-product bounds"
+    },
+    {
+      "targetId": "roth-theorem-k3",
+      "relationship": "technique",
+      "description": "Roth's theorem on 3-term arithmetic progressions shares additive combinatorics foundations; Fourier-analytic and energy methods appear in both contexts"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "context",
+      "description": "The Erdős multiplication table problem (which proves the log factor in Problem #818 is tight) uses the prime number theorem to estimate the number of distinct products in {1,...,n}"
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "context",
+      "description": "The logarithmic factor in Solymosi's bound reflects the same log-growth that appears in the harmonic series; the multiplication table problem's n²/log n estimate connects to prime counting"
+    },
+    {
+      "targetId": "prob-method-second-moment",
+      "relationship": "technique",
+      "description": "The energy method in Problem #818 is analogous to second-moment arguments: multiplicative energy counts pair collisions, paralleling variance-based probabilistic estimates"
+    },
+    {
       "targetId": "erdos-801",
       "relationship": "related",
-      "description": "Both are Erdős problems from the 800s family of combinatorial number theory"
+      "description": "Both are Erdős problems in combinatorial number theory concerning expansion properties of finite sets"
+    },
+    {
+      "targetId": "erdos-4",
+      "relationship": "context",
+      "description": "Problem #4 on prime gaps uses analytic number theory tools; the multiplication table problem connecting to Problem #818's tightness also relies on prime distribution"
     }
   ],
   "relatedProofs": [
-    "erdos-801"
+    "erdos-52",
+    "erdos-36",
+    "erdos-143",
+    "szemeredi-theorem",
+    "roth-theorem-k3",
+    "prime-number-theorem",
+    "harmonic-divergence",
+    "prob-method-second-moment",
+    "erdos-801",
+    "erdos-4"
   ],
   "leanFile": {
     "imports": [
