@@ -141,6 +141,36 @@
       "targetId": "chinese-remainder-non-coprime",
       "relationship": "related",
       "description": "The Chinese Remainder Theorem decomposes Z/qZ into prime-power components, paralleling how Dirichlet characters factor"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "extended-by",
+      "description": "PNT ($\\pi(x) \\sim x/\\ln x$) is the quantitative refinement of the infinitude of primes. Dirichlet's theorem is the equidistribution refinement: primes are not only infinite but spread uniformly across coprime residue classes. PNT for arithmetic progressions ($\\pi(x; q, a) \\sim x/(\\varphi(q) \\ln x)$) combines both, proved via Dirichlet L-functions"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Both are foundational results in algebraic number theory. Dirichlet's theorem uses characters mod $q$ to detect primes in residue classes; quadratic reciprocity determines when $p$ is a quadratic residue mod $q$. The quadratic (Legendre) symbol $\\left(\\frac{\\cdot}{p}\\right)$ is the simplest Dirichlet character, and $L(1, \\chi_{\\text{quad}}) \\neq 0$ is the key non-vanishing result"
+    },
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Zhang's bounded prime gaps proof requires the Bombieri-Vinogradov theorem, which is a mean-value estimate for the error term in Dirichlet's theorem applied to many moduli simultaneously. Dirichlet's theorem guarantees primes in each residue class; Bombieri-Vinogradov quantifies how uniformly distributed they are on average"
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "Euler's proof that $\\sum 1/p$ diverges was the prototype for Dirichlet's method: Dirichlet showed $\\sum_{p \\equiv a \\pmod{q}} 1/p$ diverges for each coprime $a$, using L-functions to separate the contribution of each residue class via character orthogonality"
+    },
+    {
+      "targetId": "kroneckers-jugendtraum",
+      "relationship": "extends",
+      "description": "Kronecker-Weber (every abelian extension of $\\mathbb{Q}$ is contained in a cyclotomic field) provides the class field theory framework that generalizes Dirichlet's theorem. Dirichlet characters are the Galois-theoretic data of cyclotomic extensions, and the splitting of primes in these extensions is governed by Artin reciprocity"
+    },
+    {
+      "targetId": "hilbert-9-reciprocity",
+      "relationship": "extends",
+      "description": "Hilbert's 9th problem asks for the most general reciprocity law in algebraic number fields. Dirichlet's theorem is the first major application of reciprocity to prime distribution: the non-vanishing $L(1, \\chi) \\neq 0$ for non-principal characters is equivalent to certain reciprocity statements, and Artin reciprocity generalizes this to arbitrary abelian extensions"
     }
   ],
   "conclusion": {
@@ -156,7 +186,13 @@
     "sophie-germain",
     "infinitude-primes",
     "fermats-last-theorem",
-    "chinese-remainder-non-coprime"
+    "chinese-remainder-non-coprime",
+    "prime-number-theorem",
+    "quadratic-reciprocity",
+    "bounded-prime-gaps",
+    "prime-reciprocal-divergence",
+    "kroneckers-jugendtraum",
+    "hilbert-9-reciprocity"
   ],
   "leanFile": {
     "imports": [
