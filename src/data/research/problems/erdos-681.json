@@ -29,21 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Full survey of Erdős #681. Added 4 new structural theorems (all proved). k=1 resolves conjecture whenever n+1 composite; the hard case is n+1 prime. Constraint k^(2d) < n+k proved. 21 theorems, 0 sorries, 0 axioms, 246 lines.",
+    "progressSummary": "PROGRESS: Added general_d1_odd and general_constraint (2 new theorems), fixed broken nlinarith in hard_case_constraint. File now 280 lines, 23 theorems, 0 axioms, 0 sorries.",
     "builtItems": [
-      "k1_resolves_all_d: k=1 works for ALL d when n+1 composite (proved)",
-      "general_d1_at_composite_succ: d=1 generalization at composite successors (proved)",
-      "conjecture_at_composite_succ: d=2 conjecture at composite successors (proved)",
-      "hard_case_constraint: when k >= 2, forces k^(2d) < n+k (proved)",
-      "All 21 theorems fully proved, 0 sorries, 0 axioms"
+      "general_d1_odd: proved d=1 for all odd n≥3 (Erdos681Problem.lean)",
+      "general_constraint: proved k^{2d}<n+k with hk:0<k (Erdos681Problem.lean)",
+      "Fixed hard_case_constraint nlinarith failure on current Mathlib"
     ],
     "insights": [
-      "k=1 trivially resolves the conjecture for ALL d whenever n+1 is composite (p(m) >= 2 > 1^d)",
-      "The conjecture is open ONLY for n where n+1 is prime (n = p-1 for some prime p)",
-      "For k >= 2: the constraint forces k^(2d) < n+k, bounding k to roughly n^(1/(2d))",
-      "The d=0 case is trivially true (k=n gives 2n composite, p(2n) >= 2 > 1)",
-      "Connected to problems 680 (p(n+k) > k^2+1) and 682 (rough numbers in prime gaps, solved by Gafni-Tao 2025)",
-      "Infrastructure is complete: leastPrimeFactor, IsLeastPrimeFactor, uniqueness, sqrt bound all proved from Mathlib"
+      "d=0 case fully proved (general_d0_trivial): pick k=n, then 2n is composite and k^0=1<2≤p(2n)",
+      "d=1 proved for all odd n≥3 (general_d1_odd): n+1 is even and ≥4 hence composite, p(n+1)≥2>1",
+      "k=1 resolves ALL d when n+1 is composite (k1_resolves_all_d): 1^d=1<2≤p(n+1)",
+      "d=1 hard case reduces to: even n with n+1 prime — requires sieve-theoretic methods",
+      "Generalised constraint k^{2d}<n+k (general_constraint) bounds search range at O(n^{1/(2d)})",
+      "Fixed nlinarith failure in hard_case_constraint by using explicit Nat.mul_lt_mul_of_pos_left",
+      "For d=2 original problem: search range is k∈[1, n^{1/4}]"
     ],
     "mathlibGaps": [],
     "nextSteps": [
