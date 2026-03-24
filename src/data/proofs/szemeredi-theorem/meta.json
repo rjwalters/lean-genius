@@ -48,7 +48,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Szemeredi's theorem is one of the crown jewels of combinatorics. The progression of proofs reflects major developments:\n\n- 1936: Erdos-Turan conjecture formulated\n- 1953: Roth proves k=3 (analytic method)\n- 1969: Szemeredi proves k=4 (combinatorial tour de force)\n- 1975: Szemeredi proves general case (regularity lemma)\n- 1977: Furstenberg proves via ergodic theory\n- 2001: Gowers proves with improved bounds (Fourier analysis)\n\nThe regularity lemma, developed for this proof, became a fundamental tool in combinatorics.",
+    "historicalContext": "Szemerédi's theorem is one of the crown jewels of combinatorics. The progression of proofs reflects major developments across mathematics:\n\n- 1936: Erdős and Turán conjecture that any set of integers with positive upper density contains arbitrarily long arithmetic progressions\n- 1953: Roth proves k=3 using exponential sums (analytic number theory), establishing a bound of $|S| \\leq CN / \\log\\log N$\n- 1969: Szemerédi proves k=4 via an intricate combinatorial argument\n- 1975: Szemerédi proves the general case, introducing the Regularity Lemma — which became one of the most influential tools in combinatorics\n- 1977: Furstenberg gives an entirely different proof via ergodic theory, launching the field of ergodic Ramsey theory\n- 2001: Gowers proves the theorem with the first effective bounds for general k using higher-order Fourier analysis and the Gowers uniformity norms\n- 2004: Green and Tao use Szemerédi's theorem (via a transference principle) to prove the primes contain arbitrarily long APs\n- 2020: Bloom and Sisask improve Roth's bound to $|S| \\leq N(\\log N)^{-1+\\varepsilon}$\n- 2023: Kelley and Meka achieve a breakthrough bound of $|S| \\leq N \\exp(-c(\\log N)^{1/12})$ for 3-AP-free sets, nearly matching the Behrend lower bound of $N \\exp(-c\\sqrt{\\log N})$\n\nThe Regularity Lemma, developed for the 1975 proof, became a foundational tool in graph theory, property testing, and theoretical computer science. Szemerédi received the Abel Prize in 2012 for his contributions.",
     "problemStatement": "**Szemeredi's Theorem (1975)**: For any k >= 1 and delta > 0, there exists N_0 such that any subset of {1,...,N} with at least delta*N elements contains a k-term arithmetic progression.\n\n**k-term AP**: A sequence a, a+d, a+2d, ..., a+(k-1)d with d > 0.\n\n**Special Cases**:\n- k=1: Trivial (any element is a 1-AP)\n- k=2: Trivial (any two distinct elements form a 2-AP)\n- k=3: Roth's theorem (1953) - PROVED in Mathlib\n- k>=4: Requires hypergraph regularity (not in Mathlib)",
     "text": "Dense subsets of natural numbers contain arbitrarily long arithmetic progressions. The k=3 case (Roth's theorem) is fully proved using Mathlib's corners theorem chain.",
     "proofStrategy": "**Mathlib's Chain for k=3**:\n\nRegularity Lemma -> Triangle Removal -> Corners Theorem -> Roth's Theorem\n\nThis formalization:\n1. Defines general k-AP predicate `HasAPOfLength`\n2. Proves trivial cases k=1, k=2 directly (including density versions)\n3. Proves equivalence between our `IsAPFree` and Mathlib's `ThreeAPFree`\n4. Applies `roth_3ap_theorem_nat` for the k=3 case\n5. Assembles full theorem by cases: k=1,2,3 proved + k>=4 axiom\n\nOnly k >= 4 remains axiomatized (requires hypergraph regularity).",
@@ -57,7 +57,9 @@
       "Corners theorem bridges 2D grid patterns to 1D progressions",
       "The k=3 proof chain is complete in Mathlib",
       "k >= 4 requires hypergraph regularity (open in Mathlib)",
-      "The axiom reduction strategy proves the full theorem from just one axiom (k>=4), minimizing the formalization gap to exactly what Mathlib currently lacks"
+      "The axiom reduction strategy proves the full theorem from just one axiom (k>=4), minimizing the formalization gap to exactly what Mathlib currently lacks",
+      "The definition bridge between ThreeAPFree (Mathlib's $a + c = 2b$ formulation) and IsAPFree (explicit AP formulation) illustrates a common pattern in Lean formalizations: library predicates use different but equivalent definitions, and the equivalence must be proved before library results can be applied",
+      "The proof chain Regularity → Triangle Removal → Corners → Roth is one of Mathlib's most impressive achievements: each step is a deep theorem, and together they constitute a fully machine-checked proof of a result that originally required 50+ pages of argument"
     ],
     "prerequisites": [
       "Combinatorics (counting, extremal problems)",
@@ -148,9 +150,11 @@
     "summary": "This formalization proves Szemeredi's theorem by combining proved cases (k=1,2 trivial, k=3 Roth via Mathlib) with an axiom for k>=4. The key achievements are: the equivalence `threeAPFree_iff_isAPFree` connecting to Mathlib, density lemmas for k=1,2, and axiom reduction from the full theorem to just k>=4.\n\nOnly k >= 4 remains axiomatized, awaiting hypergraph regularity in Mathlib.",
     "implications": "Szemeredi's theorem has deep connections to:\n1. **Ergodic Theory**: Furstenberg's proof initiated the field of ergodic Ramsey theory\n**2. Fourier Analysis**: Gowers' proof introduced influential new techniques\n3. **Regularity Lemma**: Became a fundamental tool in graph theory\n\n**The Green-Tao Theorem**\n\nBuilding on Szemeredi, Green and Tao (2004) proved the primes contain arbitrarily long arithmetic progressions. This is one of the most celebrated results in 21st century mathematics.",
     "openQuestions": [
-      "What is the optimal bound for Szemeredi's theorem?",
-      "Can the regularity lemma be avoided for small k?",
-      "When will hypergraph regularity be formalized in Mathlib?"
+      "What is the optimal bound for 3-AP-free sets? Kelley-Meka (2023) achieved $N \\exp(-c(\\log N)^{1/12})$; the Behrend barrier at $N \\exp(-c\\sqrt{\\log N})$ remains unmatched",
+      "Can the regularity lemma be avoided for small k? Density increment and energy increment methods give better quantitative bounds but are harder to formalize",
+      "When will hypergraph regularity be formalized in Mathlib, removing the single axiom in this file?",
+      "Can Furstenberg's ergodic proof (which gives no quantitative bounds but proves more general results) be formalized in Lean 4?",
+      "What are the best bounds for k-AP-free sets for general k? Green-Tao (2017) improved Gowers' tower bounds for k >= 4"
     ]
   },
   "leanFile": {
@@ -176,11 +180,46 @@
       "note": "Proved that any set of integers with positive upper density contains arbitrarily long arithmetic progressions — won the Abel Prize in 2012"
     },
     {
+      "authors": "Roth, Klaus F.",
+      "title": "On certain sets of integers",
+      "year": "1953",
+      "venue": "Journal of the London Mathematical Society 28, 104–109",
+      "note": "First proof of the k=3 case using exponential sums — the case proved in Mathlib via the corners theorem chain"
+    },
+    {
+      "authors": "Gowers, W. T.",
+      "title": "A new proof of Szemerédi's theorem",
+      "year": "2001",
+      "venue": "Geometric and Functional Analysis 11, 465–588",
+      "note": "Introduced Gowers uniformity norms and gave the first effective bounds for general k — would be needed for removing the k>=4 axiom"
+    },
+    {
+      "authors": "Green, Ben; Tao, Terence",
+      "title": "The primes contain arbitrarily long arithmetic progressions",
+      "year": "2008",
+      "venue": "Annals of Mathematics 167, 481–547",
+      "note": "Used Szemerédi's theorem via a transference principle to prove that the primes contain arbitrarily long APs"
+    },
+    {
+      "authors": "Kelley, Zander; Meka, Raghu",
+      "title": "Strong bounds for 3-progressions",
+      "year": "2023",
+      "venue": "FOCS 2023",
+      "note": "Breakthrough bound for 3-AP-free sets: |S| <= N exp(-c(log N)^{1/12}), nearly matching the Behrend lower bound"
+    },
+    {
       "authors": "Tao, Terence",
       "title": "Szemerédi's regularity lemma revisited",
       "year": "2006",
       "venue": "Contributions to Discrete Mathematics 1(1), 8–28",
       "note": "Modern exposition of Szemerédi's regularity lemma and its applications"
+    },
+    {
+      "authors": "Dillies, Yaël; Mehta, Bhavik",
+      "title": "Formalising Szemerédi's Regularity Lemma in Lean",
+      "year": "2022",
+      "venue": "ITP 2022",
+      "note": "The Mathlib formalization of the regularity lemma that underpins the k=3 proof chain used in this file"
     }
   ]
 }
