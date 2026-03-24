@@ -29,15 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: 2 sorries provable with number theory (counting multiples). 3 axioms deep. 8 theorems already proved.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: Proved single_prime_lower (1→0 sorries). File: 260 lines, 9 theorems, 3 axioms, 0 sorries.",
+    "builtItems": [
+      "Proved single_prime_lower via ceiling-division injection (Erdos1143Problem.lean:69-110)"
+    ],
     "insights": [
       "2 sorries (single_prime_lower/upper) are provable: count of multiples of p in [a,a+k) is in [k/p, k/p+1]",
       "Key approach for upper bound: filter(p∣·)(range k) ⊆ image(·*p)(range(k/p+1)), use card_image_le",
       "Key approach for lower bound: partition [a,a+k) into ⌊k/p⌋ blocks of p integers, each contains ≥1 multiple",
       "3 axioms are deep: covering_asymptotic (main term), erdos_selfridge_exact (solved 2<α<3), alpha_gt_3_open",
       "8 existing theorems well-proved: density bounds expectedDensity_pos/lt_one are clean",
-      "covering_complement_relation is a placeholder (proves True)"
+      "covering_complement_relation is a placeholder (proves True)",
+      "Injection i to (ceil(a/p)+i)*p maps range(k/p) into multiples of p in [a,a+k), giving lower bound floor(k/p)"
     ],
     "mathlibGaps": [],
     "nextSteps": [

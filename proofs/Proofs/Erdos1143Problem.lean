@@ -68,7 +68,47 @@ theorem covering_le_k (primes : Finset ℕ) (k : ℕ) :
     divisible by p, and at most ⌈k/p⌉. -/
 theorem single_prime_lower (p k : ℕ) (hp : Nat.Prime p) (hk : k ≥ 1) :
     coveringFunction {p} k ≥ k / p := by
-  sorry
+  unfold coveringFunction
+  apply le_ciInf
+  intro a
+  unfold coveredInInterval
+  simp only [Finset.mem_singleton, exists_eq_left]
+  -- m₀ = ⌈a/p⌉: the smallest m with m*p ≥ a
+  set m₀ := (a + (p - 1)) / p
+  have hp_pos : 0 < p := hp.pos
+  have h_lo : a ≤ m₀ * p := by
+    have h_eq : p * m₀ + (a + (p - 1)) % p = a + (p - 1) := Nat.div_add_mod _ _
+    have h_mod : (a + (p - 1)) % p < p := Nat.mod_lt _ hp_pos
+    have h_comm : m₀ * p = p * m₀ := mul_comm _ _
+    omega
+  have h_hi : m₀ * p ≤ a + (p - 1) := Nat.div_mul_le_self _ _
+  -- Inject Finset.range(k/p) via i ↦ (m₀ + i) * p into multiples of p in [a, a+k)
+  calc k / p
+      = (Finset.range (k / p)).card := (Finset.card_range _).symm
+    _ = ((Finset.range (k / p)).image (fun i => (m₀ + i) * p)).card := by
+        have hinj : Function.Injective (fun i : ℕ => (m₀ + i) * p) := by
+          intro i j h
+          have := mul_right_cancel₀ (show (p : ℕ) ≠ 0 by omega) h
+          omega
+        rw [Finset.card_image_of_injective _ hinj]
+    _ ≤ ((Finset.Ico a (a + k)).filter (p ∣ ·)).card := by
+        apply Finset.card_le_card
+        intro n hn
+        rw [Finset.mem_image] at hn
+        obtain ⟨i, hi, rfl⟩ := hn
+        rw [Finset.mem_range] at hi
+        simp only [Finset.mem_filter, Finset.mem_Ico]
+        refine ⟨⟨?_, ?_⟩, dvd_mul_left _ _⟩
+        · -- a ≤ (m₀ + i) * p
+          have : (m₀ + i) * p = m₀ * p + i * p := by ring
+          omega
+        · -- (m₀ + i) * p < a + k
+          have h_ip : (i + 1) * p ≤ k :=
+            le_trans (Nat.mul_le_mul_right p (show i + 1 ≤ k / p by omega))
+              (Nat.div_mul_le_self k p)
+          have : (m₀ + i) * p = m₀ * p + i * p := by ring
+          have : (i + 1) * p = i * p + p := by ring
+          omega
 
 theorem single_prime_upper (p k : ℕ) (hp : Nat.Prime p) :
     coveringFunction {p} k ≤ k / p + 1 := by
