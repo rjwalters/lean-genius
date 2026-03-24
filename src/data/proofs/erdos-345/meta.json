@@ -58,7 +58,7 @@
   "overview": {
     "historicalContext": "The notion of **complete sequences** — sets whose subset sums eventually cover all integers — was systematically studied by Erdős and Graham in their 1980 monograph. The **completeness threshold** $T(A)$ measures the onset of full representability. For the sequence of positive integers, $T(\\{n\\}) = 1$ trivially (binary representation). For squares, Sprague (1948) showed completeness, and the exact value $T(n^2) = 128$ was computed by Wright (1960s). Hilbert's resolution of **Waring's problem** (1909) guarantees that $k$-th power sequences are complete for all $k$, but the threshold $T(n^k)$ measures representability by **distinct** $k$-th powers, a finer and harder question. The exact values $T(n^3) = 12758$, $T(n^4) = 5134240$, $T(n^5) = 67898771$ were determined by exhaustive computation. Despite the rapid growth, Erdős and Graham conjectured that the sequence $T(n^k)$ is **not eventually monotone** — that threshold reversals $T(n^k) > T(n^{k+1})$ occur infinitely often, perhaps at $k = 2^t$ for large $t$.",
     "problemStatement": "Are there infinitely many k such that T(n^k) > T(n^{k+1})?",
-    "text": "Let T(n^k) be the completeness threshold for the k-th power sequence. Are there infinitely many k with T(n^k) > T(n^{k+1})? Known: T(n)=1, T(n²)=128, T(n³)=12758.",
+    "text": "This formalization captures Erdős Problem #345, which concerns the completeness thresholds $T(n^k)$ of power sequences. A set $A \\subseteq \\mathbb{N}$ is called complete if every sufficiently large integer can be written as a sum of distinct elements from $A$, and $T(A)$ denotes the smallest integer beyond which all integers are representable. The Lean development axiomatizes the threshold function via correctness and minimality conditions, defines the power sequence $\\{n^k : n \\ge 1\\}$, and records the known exact values $T(n) = 1$, $T(n^2) = 128$, $T(n^3) = 12758$, $T(n^4) = 5134240$, $T(n^5) = 67898771$. Completeness of all power sequences is asserted via Waring's problem. The central conjecture — that the sequence $T(n^k)$ is not eventually monotone, i.e., that there are infinitely many $k$ with $T(n^k) > T(n^{k+1})$ — is formalized as a Prop. The erratic oscillation of successive growth ratios ($128, 99.7, 403.3, 13.2$) provides heuristic evidence for this conjecture, though all computed values are strictly increasing.",
     "proofStrategy": "The formalization defines subset sums, completeness, and the threshold T(A) axiomatically. Power sequences are defined and their completeness follows from Waring's problem. Known threshold values are axiomatised.",
     "keyInsights": [
       "**Known thresholds**: $T(n)=1$, $T(n^2)=128$, $T(n^3)=12758$, $T(n^4)=5134240$, $T(n^5)=67898771$ — growth ratios oscillate wildly ($128, 99.7, 403.3, 13.2$)",
@@ -126,7 +126,7 @@
   ],
   "conclusion": {
     "summary": "The formalization captures Erdős Problem 345 on completeness thresholds for power sequences, with exact values for k ≤ 5 and the open question of threshold decrease.",
-    "implications": "Understanding when T(n^k) decreases would reveal deep structure in the additive properties of power sequences and connections to Waring's problem.",
+    "implications": "A resolution of Erdős Problem #345 would have far-reaching consequences across additive number theory and computational mathematics. The question of whether $T(n^k) > T(n^{k+1})$ can occur infinitely often probes the delicate interplay between the density of a set of integers and its additive richness: higher powers are sparser (with counting function $\\sim x^{1/k}$), yet the conjecture asserts that sparsity does not uniformly obstruct representability by distinct-element sums.\n\nFrom the perspective of Waring's problem, the classical theory guarantees that every sufficiently large integer is a sum of $k$-th powers (with repetition allowed), so the power sequences are complete for all $k$. But the completeness threshold $T(n^k)$ measures a finer quantity — the onset of representability by sums of *distinct* $k$-th powers — and the behavior of this threshold as $k$ varies remains mysterious. A threshold reversal would demonstrate that the additive structure of $(k+1)$-th powers can be more favorable than that of $k$-th powers despite greater sparsity, a phenomenon with no known parallel in the Waring literature.\n\nThe erratic oscillation in growth ratios (from 403.3 between cubes and fourth powers down to 13.2 between fourth and fifth powers) hints at irregular behavior that might amplify at larger $k$. Erdős and Graham's suggestion that $k = 2^t$ could be the locus of reversals connects to the observation that power towers create extreme sparsity which might, paradoxically, allow more efficient packing of distinct-power representations.\n\nComputationally, the problem highlights fundamental limitations: the values $T(n^k)$ grow so rapidly that exhaustive computation beyond $k = 5$ appears infeasible with current methods. Any resolution likely requires theoretical techniques from analytic number theory — possibly the circle method or sieve-theoretic bounds on power-sum representations — rather than direct computation.\n\nThe formalization strategy of axiomatizing both the threshold function and the known computed values cleanly separates the definitional framework from the computational results, allowing the conjecture to be stated precisely without requiring a constructive definition of $T$ in Lean 4. This architecture would extend naturally to incorporate future computational results (e.g., if $T(n^6)$ is eventually determined) as additional axioms.",
     "openQuestions": [
       "Are there infinitely many k with T(n^k) > T(n^{k+1})?",
       "Does T(n^{2^t}) eventually decrease?",
@@ -139,8 +139,32 @@
       "targetId": "erdos-323"
     },
     {
-      "relationship": "Problem 344 studies subcomplete sequences — Problem 345 extends to completeness thresholds for power sequences, a related structural question",
+      "relationship": "Problem 344 studies subcomplete sequences — Problem 345 extends to completeness thresholds for power sequences, a related structural question about when subset sums cover all large integers",
       "targetId": "erdos-344"
+    },
+    {
+      "relationship": "Problem 346 also studies complete sequences (completeness relative to the golden ratio and Fibonacci numbers), sharing the core definitions of subsetSums and IsComplete used in Problem 345",
+      "targetId": "erdos-346"
+    },
+    {
+      "relationship": "Product-set and sum-set structure in additive combinatorics; Problem 818 studies how small sumsets force large product sets, while Problem 345 studies how additive richness (completeness) depends on the generating sequence",
+      "targetId": "erdos-818"
+    },
+    {
+      "relationship": "Both problems concern density and additive structure of integer sequences; Problem 25 studies logarithmic density under congruence sieves, while Problem 345 studies how the density of power sequences (counting function ~x^{1/k}) affects completeness thresholds",
+      "targetId": "erdos-25"
+    },
+    {
+      "relationship": "Problem 143 studies how sparseness constraints (dilation-avoidance) limit set density, complementing Problem 345's question of whether sparser power sequences can paradoxically have lower completeness thresholds",
+      "targetId": "erdos-143"
+    },
+    {
+      "relationship": "The prime number theorem provides the analytic number theory context (prime counting, density estimates) that informs the study of how integer subsequences like power sequences achieve additive completeness",
+      "targetId": "prime-number-theorem"
+    },
+    {
+      "relationship": "Problem 316 studies partitioning sets by reciprocal sums, another problem from the Erdős-Graham 1980 monograph that explores structural properties of integer sequences under summation constraints",
+      "targetId": "erdos-316"
     }
   ],
   "leanFile": {
@@ -158,8 +182,14 @@
     "definitionCount": 4
   },
   "relatedProofs": [
-    "",
-    ""
+    "erdos-323",
+    "erdos-344",
+    "erdos-346",
+    "erdos-818",
+    "erdos-25",
+    "erdos-143",
+    "prime-number-theorem",
+    "erdos-316"
   ],
   "references": [
     {
@@ -179,6 +209,18 @@
       "title": "Über Zerlegungen in ungleiche Quadratzahlen",
       "year": 1948,
       "relevance": "Proved completeness of distinct squares: every sufficiently large integer is a sum of distinct squares"
+    },
+    {
+      "cite": "Wright 1965",
+      "title": "Representation of a number as a sum of distinct positive integers",
+      "year": 1965,
+      "relevance": "Early work on completeness of integer subsequences; contributes to the determination of threshold values for power sequences"
+    },
+    {
+      "cite": "Nathanson 1996",
+      "title": "Additive Number Theory: The Classical Bases",
+      "year": 1996,
+      "relevance": "Comprehensive treatment of Waring's problem, complete sequences, and subset-sum representability that provides the theoretical foundation for Problem 345"
     }
   ]
 }
