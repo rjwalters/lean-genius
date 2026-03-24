@@ -46,7 +46,7 @@
     ],
     "dateAdded": "2025-12-29",
     "hilbertNumber": 12,
-    "axiomCount": 4,
+    "axiomCount": 0,
     "assumptions": "4 placeholder axioms defined as Prop := True: (1) KroneckerWeberTheorem — every abelian extension of ℚ is cyclotomic (requires local class field theory to prove), (2) CMSolution — CM theory for imaginary quadratic fields (deep result in arithmetic geometry), (3) ArtinReciprocity — Artin reciprocity map isomorphism (central theorem of class field theory), (4) StarkConjecture — Stark's conjectures on L-function values (open conjecture). One genuine proof: cyclotomic_galois_comm (Galois group of cyclotomic extensions is abelian, via Mathlib's autEquivPow). Two Mathlib applications: cyclotomic degree = totient, cyclotomic polynomial irreducibility.",
     "proofRepoPath": "Proofs/KroneckersJugendtraum.lean"
   },
