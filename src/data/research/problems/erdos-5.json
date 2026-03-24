@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-12T03:37:20.406Z",
-    "iteration": 2,
-    "focus": "Session 2: Replaced True placeholders with proper Merikoski axiom, proved 5 structural theorems, updated gallery to main file",
+    "iteration": 3,
+    "focus": "Fixed build failure, added limitPointSet_isClosed outline",
     "blockers": [],
-    "nextAction": "Prove limitPointSet_isClosed (S is closed). Consider proving Hildebrand-Maier from westzynthius+merikoski.",
+    "nextAction": "Prove limitPointSet_isClosed: implement diagonalization (cluster_implies_limitPoint) + triangle inequality for complement openness",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 2 replaced 2 dishonest True-placeholder theorems with proper Merikoski bounded-gaps axiom. Proved 5 new structural theorems: westzynthius_implies_frequently_large, limitPointSet_nonempty, limitPointSet_unbounded, erdos5_from_full, erdos5_known_partial. Updated gallery metadata to point to main file (Erdos5PrimeGaps.lean, 3 axioms) instead of legacy stub (Erdos5Problem.lean, 8 axioms).",
+    "progressSummary": "PROGRESS: Session 3 fixed pre-existing build failure (Mathlib API change) and added limitPointSet_isClosed statement with documented proof strategy. Proof reduces to diagonalization + triangle inequality.",
     "builtItems": [
       "Proved goldston_pintz_yildirim_small_gaps: derived from zhang_implies_zero_limit (already proved from zhang_bounded_gaps axiom)",
       "Proved erdos_ricci_positive_measure: trivially True placeholder (needs measure theory for real content)",
@@ -42,7 +42,9 @@
       "Added merikoski_bounded_gaps axiom: proper formalization of S having bounded gaps",
       "Removed erdos_ricci_positive_measure True placeholder (was ∃ ε > 0, True)",
       "Removed merikoski_density True placeholder (was ∃ d ≥ 1/3, True)",
-      "Updated gallery meta.json: proofRepoPath → Erdos5PrimeGaps.lean, axiomCount 8→3"
+      "Updated gallery meta.json: proofRepoPath → Erdos5PrimeGaps.lean, axiomCount 8→3",
+      "Fixed limitPoint_nonneg: le_of_tendsto → ge_of_tendsto (Mathlib API change)",
+      "Added limitPointSet_isClosed statement with proof outline (sorry, 1 remaining)"
     ],
     "insights": [
       "Erdos5PrimeGaps.lean is the main file (343L, well-structured); Erdos5Problem.lean is legacy (81L, all axiomatized)",
@@ -54,7 +56,9 @@
       "erdos_ricci_positive_measure and merikoski_density were vacuous: they proved ∃ x, P(x) ∧ True which says nothing about the mathematical content",
       "Merikoski bounded gaps axiom enables proving S unbounded (for any M, limit point > M exists)",
       "westzynthius_large_gaps + filter API gives infinitely-often large gaps via Tendsto.atTop decomposition",
-      "Gallery was pointing to legacy Erdos5Problem.lean (8 axioms, 80 lines) instead of main Erdos5PrimeGaps.lean (3 axioms, 380 lines, 19 theorems)"
+      "Gallery was pointing to legacy Erdos5Problem.lean (8 axioms, 80 lines) instead of main Erdos5PrimeGaps.lean (3 axioms, 380 lines, 19 theorems)",
+      "limitPoint_nonneg was broken by Mathlib API change: le_of_tendsto renamed to ge_of_tendsto",
+      "limitPointSet_isClosed proof strategy documented: show complement is open via cluster point characterization + triangle inequality"
     ],
     "mathlibGaps": [],
     "nextSteps": [
