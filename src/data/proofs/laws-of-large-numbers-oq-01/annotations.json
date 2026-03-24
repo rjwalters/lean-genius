@@ -102,6 +102,30 @@
     "content": "`slln_necessity` is axiomatized as the converse: if there exists c such that n⁻¹·∑Xᵢ(ω) → c a.s., then E[|X₀|] < ∞. This completes Kolmogorov's 1930 biconditional characterization. The axiom is well-motivated: the proof requires the Borel-Cantelli lemma applied to tail events {|Xₙ| > nε}, not directly available in Mathlib's `strong_law_ae`. The Cauchy example in the docstring illustrates why the condition is tight: by 1-stability, Cauchy sample means are always Cauchy(0,1), so no concentration ever occurs."
   },
   {
+    "id": "ann-pareto-l2-bridge",
+    "range": {
+      "startLine": 154,
+      "endLine": 189
+    },
+    "type": "insight",
+    "title": "The Pareto Example and L² → L¹ Bridge",
+    "mathContext": "The Pareto distribution $\\text{Pareto}(\\alpha, x_m)$ has $E[X^k] < \\infty \\iff \\alpha > k$. For $1 < \\alpha \\leq 2$: $E[|X|] < \\infty$ but $E[X^2] = \\infty$. The bridge theorem `Memℒp.integrable` shows $L^2 \\subseteq L^1$: $E[X^2] < \\infty \\Rightarrow E[|X|] < \\infty$. So Chebyshev's WLLN is a strict special case of Kolmogorov's SLLN.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Pareto distribution",
+      "Memℒp.integrable",
+      "L² ⊂ L¹ inclusion",
+      "heavy-tailed examples",
+      "moment existence threshold"
+    ],
+    "prerequisites": [
+      "Memℒp in Mathlib",
+      "Pareto distribution moments"
+    ],
+    "proofId": "laws-of-large-numbers-oq-01",
+    "content": "The Pareto distribution illustrates the gap between Chebyshev's L² requirement and Kolmogorov's L¹ threshold. For shape parameter α ∈ (1,2), we have E[|X|] < ∞ but E[X²] = ∞ — Chebyshev's inequality cannot even bound P(|S_n/n - μ| > ε), yet the SLLN guarantees S_n/n → μ a.s. The theorem `finite_variance_implies_slln_applicable` is a one-liner: `(hL2 0).integrable (by norm_num)`, using Mathlib's `Memℒp.integrable` to show L² ⊆ L¹. This makes explicit that the Chebyshev approach is strictly weaker."
+  },
+  {
     "id": "ann-iff-characterization",
     "range": {
       "startLine": 191,

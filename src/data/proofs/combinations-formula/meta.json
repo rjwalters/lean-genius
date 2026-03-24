@@ -61,7 +61,9 @@
       "The generating function (1+x)^n = ∑_k C(n,k) x^k connects binomial coefficients to polynomial algebra, and Vandermonde's identity ∑_j C(m,j)C(n,k-j) = C(m+n,k) encodes convolution of subset counts — making C(n,k) a bridge between combinatorics and generating function calculus"
     ],
     "prerequisites": [
-      "Combinatorics (counting, extremal problems)"
+      "Factorial function and its basic properties",
+      "Divisibility in natural numbers ($k!(n-k)! \\mid n!$)",
+      "Finite set counting and subset enumeration"
     ]
   },
   "sections": [
@@ -71,7 +73,7 @@
       "startLine": 55,
       "endLine": 73,
       "summary": "The fundamental formula C(n,k) = n! / (k!(n-k)!) and divisibility property.",
-      "mathContext": "The fundamental formula C(n,k) = n! / (k!(n-k)!) and divisibility property."
+      "mathContext": "$\\binom{n}{k} = \\frac{n!}{k!(n-k)!}$ for $k \\leq n$, and $\\binom{n}{k} = 0$ for $k > n$. The divisibility $k!(n-k)! \\mid n!$ (Mathlib: `Nat.factorial_mul_factorial_dvd_factorial`) ensures the quotient is a natural number."
     },
     {
       "id": "properties",
@@ -79,7 +81,7 @@
       "startLine": 74,
       "endLine": 100,
       "summary": "Symmetry, boundary cases (k=0, k=n, k=1), and their combinatorial interpretations.",
-      "mathContext": "Symmetry, boundary cases (k=0, k=n, k=1), and their combinatorial interpretations."
+      "mathContext": "Symmetry: $\\binom{n}{k} = \\binom{n}{n-k}$ (choosing $k$ to include = choosing $n-k$ to exclude). Boundary: $\\binom{n}{0} = 1$ (empty set), $\\binom{n}{n} = 1$ (full set), $\\binom{n}{1} = n$ ($n$ singleton subsets)."
     },
     {
       "id": "pascal",
@@ -87,7 +89,7 @@
       "startLine": 101,
       "endLine": 110,
       "summary": "Pascal's identity: each entry is the sum of two entries above it.",
-      "mathContext": "Pascal's identity: each entry is the sum of two entries above it."
+      "mathContext": "Pascal's recurrence: $\\binom{n+1}{k+1} = \\binom{n}{k} + \\binom{n}{k+1}$. Combinatorial proof: the $(k+1)$-element subsets of $\\{1,\\ldots,n+1\\}$ either contain $n+1$ ($\\binom{n}{k}$ ways to choose the remaining $k$) or don't ($\\binom{n}{k+1}$ subsets of $\\{1,\\ldots,n\\}$)."
     },
     {
       "id": "factorial-interpretation",
@@ -95,7 +97,7 @@
       "startLine": 111,
       "endLine": 129,
       "summary": "Connection between permutations P(n,k) and combinations C(n,k) via the falling factorial.",
-      "mathContext": "Connection between permutations P(n,k) and combinations C(n,k) via the falling factorial."
+      "mathContext": "$P(n,k) = n^{\\underline{k}} = n!/(n-k)!$ counts ordered selections (permutations). Since $P(n,k) = k! \\cdot \\binom{n}{k}$ (each $k$-subset has $k!$ orderings), $\\binom{n}{k} = P(n,k)/k! = n^{\\underline{k}}/k!$."
     },
     {
       "id": "examples",
@@ -103,7 +105,7 @@
       "startLine": 130,
       "endLine": 400,
       "summary": "Concrete examples verifying the formula and properties for specific values.",
-      "mathContext": "Concrete examples verifying the formula and properties for specific values."
+      "mathContext": "Verification: $\\binom{4}{2} = 6$, $\\binom{5}{3} = 10$, $\\binom{10}{5} = 252$. Row sums: $\\sum_k \\binom{n}{k} = 2^n$ (total subsets). Connection to `Finset.powersetCard`: $|\\{S \\subseteq \\text{Fin}(n) : |S| = k\\}| = \\binom{n}{k}$."
     }
   ],
   "conclusion": {

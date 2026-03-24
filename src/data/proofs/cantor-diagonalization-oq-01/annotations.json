@@ -123,6 +123,31 @@
     ]
   },
   {
+    "id": "ann-cantor-oq01-05b-not-ch-consequences",
+    "proofId": "cantor-diagonalization-oq-01",
+    "range": {
+      "startLine": 231,
+      "endLine": 276
+    },
+    "type": "technique",
+    "title": "Consequences of ¬CH: The Gap is at Least ℵ₂ Wide",
+    "content": "Under ¬CH, several concrete consequences follow. `not_ch_means_gap` proves ℵ₁ < 2^ℵ₀ by case analysis on the inequality ℵ₁ ≤ 2^ℵ₀ (which is ZFC-provable). The key theorem `not_ch_gives_aleph_two_bound` shows the gap is at least ℵ₂ wide: since ℵ₂ = succ(ℵ₁) and ℵ₁ < 2^ℵ₀, we get ℵ₂ ≤ 2^ℵ₀ via `Order.succ_le_of_lt`. The final `ch_iff_no_intermediate` proves the clean equivalence: CH holds if and only if no intermediate cardinal exists between ℵ₀ and 2^ℵ₀. The backward direction uses `le_antisymm`: if no intermediate exists and ℵ₁ > continuum were possible, ℵ₁ itself would be intermediate — contradiction.",
+    "mathContext": "Under $\\neg$CH: $\\aleph_1 < 2^{\\aleph_0}$, so $\\aleph_2 = \\text{succ}(\\aleph_1) \\leq 2^{\\aleph_0}$. By Easton's theorem (1970), $2^{\\aleph_0}$ can consistently equal $\\aleph_n$ for any $n \\geq 1$, or even $\\aleph_{\\omega_1}$. The only ZFC constraint is König's cofinality bound.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Easton's theorem",
+      "cardinal successor",
+      "Order.succ_le_of_lt",
+      "le_antisymm",
+      "by_contra"
+    ],
+    "prerequisites": [
+      "aleph_one_le_continuum",
+      "not_ch_means_gap",
+      "Order.succ API"
+    ]
+  },
+  {
     "id": "ann-cantor-oq01-06-konig",
     "proofId": "cantor-diagonalization-oq-01",
     "range": {
@@ -156,7 +181,7 @@
     },
     "type": "insight",
     "title": "The Limit of Diagonalization: ZFC vs. Independence",
-    "content": "The section doc enumerates 4 ZFC-provable facts vs. 3 ZFC-undecidable facts. diagonal_reaches_its_limit packages the ZFC-provable chain as a conjunction. cantor_diagonal_open_question_summary is the comprehensive four-part result: cantor_gap + aleph_one_le_continuum + (forall n, beth n < beth (n+1)) + ch_iff_no_intermediate. The conclusion comment summarizes: the diagonal reveals the gap exists and generates the beth tower, but cannot measure the width of the first gap \u2014 that question requires the forcing machinery of Cohen 1963. This file is unique in providing the formal statement of what ZFC can and cannot prove about CH in Lean 4.",
+    "content": "Two clean summary theorems capture what the diagonal argument can and cannot prove. `diagonal_reaches_its_limit` packages three ZFC-provable facts: (1) ℵ₀ < 2^ℵ₀, (2) ℵ₁ ≤ 2^ℵ₀, (3) the first three beth levels are strictly increasing. `cantor_diagonal_open_question_summary` is the comprehensive four-part result adding ch_iff_no_intermediate. The conclusion summarizes: the diagonal reveals the gap but cannot measure it — that requires Cohen's forcing (1963).",
     "mathContext": "ZFC proves: $\\aleph_0 < \\aleph_1 \\leq 2^{\\aleph_0}$, $\\text{cf}(2^{\\aleph_0}) > \\aleph_0$, $\\beth_n$ strictly increasing. ZFC does not prove: $2^{\\aleph_0} = \\aleph_1$ (Con(ZFC+CH), G\u00f6del 1940) or $2^{\\aleph_0} > \\aleph_1$ (Con(ZFC+\u00acCH), Cohen 1963).",
     "significance": "supporting",
     "relatedConcepts": [

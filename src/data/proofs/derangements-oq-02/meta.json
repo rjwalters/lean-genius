@@ -85,7 +85,9 @@
       "**Bijection proof structure**: `permSupportEqEquiv` proves the Equiv by using `ofSubtype_subtypePerm` for left_inv (providing only the h2 hypothesis, as h1 is automatic) and plain `simp` for right_inv."
     ],
     "prerequisites": [
-      "Combinatorics (counting, extremal problems)"
+      "Permutation groups and the symmetric group $S_n$",
+      "Derangements and the subfactorial $D(n) = n! \\sum_{k=0}^n (-1)^k/k!$",
+      "Mathlib's `Equiv.Perm.support`, `subtypePerm`, and `ofSubtype` API"
     ]
   },
   "sections": [
@@ -192,6 +194,13 @@
       "year": "1958",
       "venue": "Wiley, New York",
       "note": "Classical treatment of subfactorials and partial derangements"
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Enumerative Combinatorics, Volume 1",
+      "year": "2012",
+      "venue": "Cambridge University Press, 2nd edition, Chapter 2",
+      "note": "Modern treatment of permutation enumeration by fixed-point structure, including the Poisson(1) limit for fixed-point counts under uniform random permutations"
     }
   ],
   "crossReferences": [

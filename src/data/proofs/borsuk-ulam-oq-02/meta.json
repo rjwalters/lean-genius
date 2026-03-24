@@ -103,7 +103,9 @@
       "Compact Lie groups (SO(n), U(n), Sp(n)) acting on spheres give equivariant maps that are studied by K-theory and representation theory — the optimal vanishing dimensions are controlled by representation rings, which are rich objects not captured by simple index theory."
     ],
     "prerequisites": [
-      "Point-set topology"
+      "Point-set topology (continuous maps, spheres, antipodal maps)",
+      "Group actions (free actions, ℤ/p actions, orbit spaces)",
+      "Algebraic topology (equivariant cohomology, index theory)"
     ]
   },
   "sections": [
@@ -259,6 +261,36 @@
       "targetId": "borsuk-ulam-oq-03-oq-01-oq-01",
       "relationship": "sibling",
       "description": "Sibling open question from the same parent: Tucker 2D Lemma via Graph-Theoretic Path-Following"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Borsuk, Karol",
+      "title": "Drei Sätze über die n-dimensionale euklidische Sphäre",
+      "year": "1933",
+      "venue": "Fundamenta Mathematicae 20, 177–190",
+      "note": "Original statement and proof of the Borsuk-Ulam theorem for the antipodal ℤ/2 action on Sⁿ"
+    },
+    {
+      "authors": "Yang, Chung-Tao",
+      "title": "On theorems of Borsuk-Ulam, Kakutani-Yamabe-Yujobô and Dyson",
+      "year": "1954",
+      "venue": "Annals of Mathematics 60, 262–282",
+      "note": "Extended Borsuk-Ulam to free ℤ/p actions on odd-dimensional spheres, proving the Yang-Bourgin theorem formalized in this file"
+    },
+    {
+      "authors": "Dold, Albrecht",
+      "title": "Simple proofs of some Borsuk-Ulam results",
+      "year": "1983",
+      "venue": "Contemporary Mathematics 19, 65–69",
+      "note": "Introduced the cohomological index approach for general finite group actions, giving the framework axiomatized here"
+    },
+    {
+      "authors": "Matoušek, Jiří",
+      "title": "Using the Borsuk-Ulam Theorem",
+      "year": "2003",
+      "venue": "Springer, Universitext",
+      "note": "Comprehensive treatment of Borsuk-Ulam and its applications to combinatorics, with equivariant topology background"
     }
   ],
   "relatedProofs": [

@@ -51,7 +51,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Cantor's 1891 diagonal argument proved the reals are uncountable, establishing the gap ℵ₀ < 2^ℵ₀. Cantor had conjectured in 1878 that no cardinality exists between countable and the continuum — the Continuum Hypothesis (CH). After 62 years, Gödel (1940) proved CH is consistent with ZFC using the constructible universe L, and Cohen (1963) proved ¬CH is also consistent using forcing. Together they showed CH is *independent* of ZFC — the diagonal argument cannot determine whether the jump from ℵ₀ to 2^ℵ₀ is minimal.",
+    "historicalContext": "Cantor's 1891 diagonal argument proved the reals are uncountable, establishing the gap ℵ₀ < 2^ℵ₀. Cantor had conjectured in 1878 that no cardinality exists between countable and the continuum — the Continuum Hypothesis (CH), which became Hilbert's first problem (1900).\n\nAfter 62 years, Gödel (1940) proved CH is consistent with ZFC using the constructible universe L. Cohen (1963) proved ¬CH is also consistent using his revolutionary forcing technique, earning the Fields Medal. Together they showed CH is *independent* of ZFC.\n\nEaston (1970) showed the independence is dramatic: for regular alephs, 2^ℵ_α can consistently equal any ℵ_β with cf(β) > ℵ_α. König's theorem (1905) that cf(2^ℵ₀) > ℵ₀ is essentially the only ZFC constraint. Shelah's pcf theory (1990s) provides the deepest known analysis of cardinal arithmetic under ZFC alone.\n\nThe question remains philosophically alive: Woodin's Ultimate-L program (2010s) argues for CH from the perspective of inner model theory, while forcing axioms like Martin's Maximum suggest ¬CH with 2^ℵ₀ = ℵ₂.",
     "problemStatement": "**Open Question**: Does Cantor's diagonalization argument tell us whether any cardinality lies between ℵ₀ and 2^ℵ₀?\n\n**Answer**: The diagonal proves ℵ₀ < 2^ℵ₀ and generates the beth number tower ℵ₀ < 2^ℵ₀ < 2^(2^ℵ₀) < ⋯, but cannot determine whether intermediate cardinals exist. CH (no intermediate) and ¬CH (intermediate exists) are both consistent with ZFC.",
     "text": "Cantor's diagonal argument proves aleph_0 < 2^aleph_0, but can it tell us whether any cardinal lies between them? This extension explores the beth number hierarchy, König's constraint, and why CH is independent of the diagonal argument.",
     "proofStrategy": "Formally establish what the diagonal argument CAN prove: the beth number hierarchy (strict monotonicity via Cardinal.cantor applied iteratively), the bound ℵ₁ ≤ 2^ℵ₀, and the equivalence CH ↔ no intermediate cardinal. Then use König's theorem and ZFC independence to show the diagonal cannot determine the exact size of the jump.",
@@ -60,7 +60,8 @@
       "The beth number hierarchy shows the diagonal generates infinitely many distinct cardinals via iteration",
       "CH is equivalent to: the diagonal jump from ℵ₀ to 2^ℵ₀ has no intermediate cardinal",
       "König's theorem gives ZFC-provable constraints: cf(2^ℵ₀) > ℵ₀, ruling out singular alephs like ℵ_ω",
-      "Under ¬CH, ℵ₁ itself is an intermediate cardinal between ℵ₀ and 2^ℵ₀"
+      "Under ¬CH, ℵ₁ itself is an intermediate cardinal between ℵ₀ and 2^ℵ₀",
+      "Easton's theorem (1970) shows the independence is maximal: for regular cardinals, the power function can be essentially any non-decreasing function satisfying König's cofinality constraint — making CH just one point in a vast landscape of consistent set theories"
     ],
     "prerequisites": [
       "Set theory and cardinality"

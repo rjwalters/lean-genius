@@ -75,7 +75,9 @@
       "Cauchy distribution (no finite moments at all) is the canonical LLN failure: by 1-stability, the sample mean's distribution is Cauchy(0,1) for ALL n"
     ],
     "prerequisites": [
-      "Probability theory"
+      "Probability theory (i.i.d. random variables, expectation, variance)",
+      "Measure theory (integrability, convergence in measure, a.s. convergence)",
+      "Chebyshev's inequality and its limitations"
     ]
   },
   "sections": [
@@ -85,7 +87,7 @@
       "startLine": 1,
       "endLine": 56,
       "summary": "Overview of LLN for heavy-tailed distributions. Key insight: Kolmogorov's SLLN requires only E[|X|] < ∞, not finite variance.",
-      "mathContext": "Overview of LLN for heavy-tailed distributions. Key insight: Kolmogorov's SLLN requires only E[|X|] < ∞, not finite variance."
+      "mathContext": "The moment hierarchy: $E[X^2] < \\infty \\Rightarrow E[|X|] < \\infty \\Rightarrow$ SLLN $\\Rightarrow$ WLLN. Chebyshev's approach uses $P(|\\bar{X}_n - \\mu| > \\varepsilon) \\leq \\text{Var}(X)/(n\\varepsilon^2)$, requiring $E[X^2] < \\infty$. Kolmogorov's theorem only needs $E[|X|] < \\infty$."
     },
     {
       "id": "slln",
@@ -93,7 +95,7 @@
       "startLine": 57,
       "endLine": 92,
       "summary": "slln_under_finite_mean_only: direct application of strong_law_ae. Requires only Integrable, not L².",
-      "mathContext": "slln_under_finite_mean_only: direct application of strong_law_ae. Requires only Integrable, not L²."
+      "mathContext": "For i.i.d. $X_i$ with $E[|X_0|] < \\infty$: $\\frac{1}{n}\\sum_{i=0}^{n-1} X_i(\\omega) \\to E[X_0]$ for a.e. $\\omega$. Mathlib's `strong_law_ae` requires only `Integrable (X 0) \\mu$, not `Memℒp 2`."
     },
     {
       "id": "wlln",
@@ -101,7 +103,7 @@
       "startLine": 93,
       "endLine": 117,
       "summary": "wlln_for_heavy_tails: derives WLLN (convergence in probability) from SLLN via tendstoInMeasure_of_tendsto_ae.",
-      "mathContext": "wlln_for_heavy_tails: derives WLLN (convergence in probability) from SLLN via tendstoInMeasure_of_tendsto_ae."
+      "mathContext": "A.s. convergence $\\Rightarrow$ convergence in measure: $X_n \\to X$ a.s. implies $\\mu(|X_n - X| > \\varepsilon) \\to 0$. On probability spaces, convergence in measure = convergence in probability."
     },
     {
       "id": "necessity",
@@ -109,7 +111,7 @@
       "startLine": 118,
       "endLine": 153,
       "summary": "slln_necessity (axiom): SLLN ⟹ E[|X|] < ∞. Completes Kolmogorov's characterization. Requires Borel-Cantelli.",
-      "mathContext": "slln_necessity (axiom): SLLN ⟹ E[|X|] < ∞. Completes Kolmogorov's characterization. Requires Borel-Cantelli."
+      "mathContext": "Converse: if $\\bar{X}_n \\to c$ a.s. for some $c$, then $E[|X_0|] < \\infty$. Proof: $E[|X|] = \\infty \\Rightarrow \\sum_n P(|X_n| > n) = \\infty \\Rightarrow |X_n/n| > 1$ i.o. (Borel-Cantelli) $\\Rightarrow$ Cesàro diverges."
     },
     {
       "id": "pareto",
@@ -117,7 +119,7 @@
       "startLine": 154,
       "endLine": 168,
       "summary": "pareto_lln_analysis: documents the α > 1 threshold for Pareto. Chebyshev requires α > 2; Kolmogorov only α > 1.",
-      "mathContext": "pareto_lln_analysis: documents the α > 1 threshold for Pareto. Chebyshev requires α > 2; Kolmogorov only α > 1."
+      "mathContext": "Pareto$(\\alpha, x_m)$: $E[X] = \\alpha x_m/(\\alpha-1)$ (finite iff $\\alpha > 1$), $E[X^2] = \\alpha x_m^2/(\\alpha-2)$ (finite iff $\\alpha > 2$). For $1 < \\alpha \\leq 2$: Chebyshev fails ($E[X^2] = \\infty$) but Kolmogorov's SLLN holds ($E[|X|] < \\infty$)."
     },
     {
       "id": "main-theorem",
@@ -176,6 +178,34 @@
       "targetId": "laws-of-large-numbers",
       "relationship": "extends",
       "description": "Parent formalization; this entry extends it with further exploration"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "related",
+      "description": "The CLT provides the rate of convergence (normal approximation) for finite-variance distributions; for heavy tails with α ∈ (1,2), the Stable CLT replaces the normal with an α-stable law"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Kolmogorov, A.N.",
+      "title": "Sur la loi forte des grands nombres",
+      "year": "1930",
+      "venue": "Comptes Rendus de l'Académie des Sciences 191, 910–912",
+      "note": "Proved the SLLN under E[|X|] < ∞ only — the characterization formalized here"
+    },
+    {
+      "authors": "Etemadi, Nasrollah",
+      "title": "An elementary proof of the strong law of large numbers",
+      "year": "1981",
+      "venue": "Zeitschrift für Wahrscheinlichkeitstheorie und verwandte Gebiete 55, 119–122",
+      "note": "Elementary proof of SLLN using subsequence + monotonicity, avoiding truncation — the approach used in Mathlib's strong_law_ae"
+    },
+    {
+      "authors": "Feller, William",
+      "title": "An Introduction to Probability Theory and Its Applications, Vol. II",
+      "year": "1971",
+      "venue": "Wiley",
+      "note": "Chapter VIII: comprehensive treatment of strong laws, stable distributions, and the role of moments in convergence"
     }
   ]
 }
