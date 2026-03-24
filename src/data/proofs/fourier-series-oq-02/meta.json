@@ -19,7 +19,7 @@
       "open-question"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 3,
     "dateAdded": "2026-03-23",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -74,9 +74,9 @@
       "fourierCoeff_difference_formula: difference formula for coefficients",
       "full regularity-decay hierarchy: Hölder → C^k → C^∞ → analytic"
     ],
-    "axiomCount": 9,
-    "lineCount": 280,
-    "assumptions": "10 axiom(s) encoding analytical infrastructure: difference formula, integral bounds, Hölder translation bound, summability, optimality, partial converse, smooth/analytic decay. Two formerly axiomatized results now proved: fourier_norm_one (‖e_n(x)‖ = 1 via toCircle) and fourier_translate_halfperiod (half-period negation via fourier_add_half_inv_index)."
+    "axiomCount": 4,
+    "lineCount": 384,
+    "assumptions": "4 axioms (optimality, regularity converse, smooth decay, analytic decay). 3 sorries (1 non-integrable edge case, 2 former axioms being proved: sq summability, Riemann-Lebesgue)."
   },
   "overview": {
     "historicalContext": "**Fourier Coefficient Decay Under Hölder Continuity**\n\nThe relationship between smoothness of a function and decay of its Fourier coefficients is a fundamental principle of harmonic analysis. The specific result for Hölder continuous functions — that α-Hölder regularity gives O(1/|n|^α) decay — was developed through contributions by Bernstein (1912), Zygmund (1935), and others.\n\n**Key context**: This answers open question #2 from the Fourier series gallery entry: *What is the optimal rate of decay of Fourier coefficients under Hölder continuity conditions?*\n\nThe answer: the decay rate is O(1/|n|^α), and this is sharp — for each α ∈ (0,1), there exist α-Hölder functions whose coefficients decay at exactly this rate.",

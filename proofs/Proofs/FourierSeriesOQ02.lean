@@ -262,16 +262,32 @@ theorem fourierCoeff_lipschitz_decay (C : ℝ≥0) (f : AddCircle T → ℂ)
   exact h
 
 /-- **Square-Summability for α > 1/2**: ‖ĉ_n‖ = O(1/|n|^α), so
-    ‖ĉ_n‖² = O(1/|n|^{2α}), and Σ 1/|n|^{2α} < ∞ when 2α > 1. -/
-axiom fourierCoeff_sq_summable_of_holder (C : ℝ≥0) (α : ℝ≥0)
+    ‖ĉ_n‖² = O(1/|n|^{2α}), and Σ 1/|n|^{2α} < ∞ when 2α > 1.
+    From fourierCoeff_holder_decay + Summable.of_nonneg_of_le +
+    Real.summable_nat_rpow_inv. -/
+theorem fourierCoeff_sq_summable_of_holder (C : ℝ≥0) (α : ℝ≥0)
     (f : AddCircle T → ℂ) (hf : IsHolderOnCircle C α f)
     (hα : (1 : ℝ) / 2 < (α : ℝ)) :
-    Summable (fun n : ℤ => ‖fourierCoeff f n‖ ^ 2)
+    Summable (fun n : ℤ => ‖fourierCoeff f n‖ ^ 2) := by
+  -- ‖ĉ_n‖² ≤ ((C/2)*(T/(2|n|))^α)² = K/|n|^{2α} for n ≠ 0
+  -- Σ 1/|n|^{2α} < ∞ for 2α > 1 (Real.summable_nat_rpow_inv)
+  -- Apply Summable.of_nonneg_of_le for the comparison
+  sorry
 
-/-- **Riemann-Lebesgue from Hölder**: ‖ĉ_n‖ = O(1/|n|^α) → 0. -/
-axiom riemannLebesgue_of_holder (C : ℝ≥0) (α : ℝ≥0)
+/-- **Riemann-Lebesgue from Hölder**: ‖ĉ_n‖ = O(1/|n|^α) → 0.
+    From fourierCoeff_holder_decay: ‖ĉ_n‖ ≤ (C/2)·(T/(2|n|))^α → 0 as |n| → ∞.
+    Proof via Metric.tendsto_nhds: for any ε > 0, the set {n : ‖ĉ_n‖ ≥ ε} is finite
+    because it's contained in {0} ∪ {n : |n| ≤ N₀} for suitable N₀. -/
+theorem riemannLebesgue_of_holder (C : ℝ≥0) (α : ℝ≥0)
     (f : AddCircle T → ℂ) (hf : IsHolderOnCircle C α f) (hα : 0 < α) :
-    Tendsto (fun n : ℤ => fourierCoeff f n) cofinite (𝓝 0)
+    Tendsto (fun n : ℤ => fourierCoeff f n) cofinite (𝓝 0) := by
+  rw [Metric.tendsto_nhds]
+  intro ε hε
+  rw [Filter.eventually_cofinite]
+  -- {n : ε ≤ dist (ĉ_n) 0} = {n : ε ≤ ‖ĉ_n‖} is finite because:
+  -- for n ≠ 0, ‖ĉ_n‖ ≤ (C/2)*(T/(2|n|))^α < ε when |n| is large enough.
+  -- So the bad set ⊆ {0} ∪ {n : |n| ≤ N₀}, which is finite.
+  sorry
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════

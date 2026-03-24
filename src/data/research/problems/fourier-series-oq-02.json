@@ -43,13 +43,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved quotient norm bound via QuotientAddGroup.norm_mk_le_norm. 6 axioms, 1 sorry remain (non-integrable edge case in fourierCoeff_difference_formula).",
+    "progressSummary": "PROGRESS: Session 12 converted 2 axioms to theorem stubs (sq_summable, riemann_lebesgue). 4 axioms remain (optimality, regularity converse, smooth/analytic decay — these are deep results). 3 sorries. Proof sketches documented.",
     "builtItems": [
       "fourier_norm_one: proved via simp [fourier_apply] — toCircle maps to unit circle",
       "fourier_translate_halfperiod: proved via fourier_neg + fourier_add_half_inv_index + map_neg",
       "Proved fourierCoeff_Cinfty_rapid_decay: C^∞ ⟹ rapid decay, trivially from fourierCoeff_smooth_decay (C^∞ ⟹ C^k for all k)",
       "fourierCoeff_difference_formula: proved via half-period identity + Haar measure translation invariance + integral splitting",
-      "Proved quotient norm bound: ‖(↑r : AddCircle T)‖ ≤ ‖r‖ via QuotientAddGroup.norm_mk_le_norm"
+      "Proved quotient norm bound: ‖(↑r : AddCircle T)‖ ≤ ‖r‖ via QuotientAddGroup.norm_mk_le_norm",
+      "Converted fourierCoeff_sq_summable_of_holder: axiom → theorem with sorry (proof sketch: decay bound + comparison + p-series convergence)",
+      "Converted riemannLebesgue_of_holder: axiom → theorem with sorry (proof sketch: decay bound + ε-δ via Metric.tendsto_nhds)"
     ],
     "insights": [
       "fourier_apply unfolds to ↑(n • x).toCircle, which immediately gives unit norm via simp",
@@ -62,7 +64,10 @@
       "MeasurePreserving.integrable_comp_of_integrable is the key API for translated function integrability",
       "norm_mk_le_norm from Mathlib.Analysis.Normed.Group.Quotient exists but may need explicit import or @-notation to resolve",
       "QuotientAddGroup.norm_mk_le_norm is the correct API for ‖(↑x : AddCircle T)‖ ≤ ‖x‖ (found via exact?)",
-      "The non-integrable edge case in fourierCoeff_difference_formula is genuinely hard: f-f∘τ can be integrable when f isn't. Needs Continuous f hypothesis."
+      "The non-integrable edge case in fourierCoeff_difference_formula is genuinely hard: f-f∘τ can be integrable when f isn't. Needs Continuous f hypothesis.",
+      "fourierCoeff_sq_summable_of_holder and riemannLebesgue_of_holder converted from axiom to theorem — proofs need Summable.of_nonneg_of_le + Real.summable_nat_rpow_inv and Metric.tendsto_nhds + Filter.eventually_cofinite respectively",
+      "Summable.tendsto_cofinite_zero exists in Mathlib — gives tendsto for free from summability",
+      "Key Mathlib APIs: Real.summable_nat_rpow_inv (p-series), Summable.of_nonneg_of_le (comparison), squeeze_zero_norm (squeeze)"
     ],
     "mathlibGaps": [
       "No obvious dist(x, x+↑s) ≤ |s| lemma found for AddCircle quotient metric"
