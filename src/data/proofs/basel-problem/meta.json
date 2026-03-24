@@ -59,7 +59,11 @@
     "relatedProblems": [
       {
         "id": "basel-problem-oq-01",
-        "relationship": "Extensions and open questions arising from the Basel problem"
+        "relationship": "Open question: is ζ(5) irrational? The next frontier after Apéry's proof that ζ(3) is irrational"
+      },
+      {
+        "id": "basel-problem-oq-02",
+        "relationship": "Open question: are all odd zeta values transcendental? Proves even zeta transcendence from Lindemann"
       }
     ],
     "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and no structure-encoded assumptions. All nine theorems are proved from Mathlib (hasSum_zeta_two, hasSum_zeta_four, hasSum_zeta_nat, Real.summable_nat_rpow_inv) with no custom axioms and no definition sorries. The file's original contributions (summable_one_div_sq, summable_nat_sq_inv, positivity lemmas, zeta_general) are pedagogical wrappers composing Mathlib lemmas.",
@@ -283,6 +287,16 @@
       "targetId": "central-limit-theorem",
       "relationship": "related",
       "description": "The Central Limit Theorem's Gaussian density $\\frac{1}{\\sqrt{2\\pi}} e^{-x^2/2}$ contains $\\pi$ for the same deep reason as the Basel identity: the Fourier transform of the Gaussian is itself Gaussian, and $\\zeta(2) = \\pi^2/6$ emerges from Parseval's theorem applied to periodic functions — both results flow from the self-duality of the Gaussian under Fourier analysis"
+    },
+    {
+      "targetId": "de-moivre",
+      "relationship": "foundational",
+      "description": "De Moivre's formula $(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$ underpins the Fourier analysis that proves the Basel identity. The Fourier expansion of Bernoulli polynomials $B_n(x) = -n! \\sum_{k \\neq 0} e^{2\\pi ikx}/(2\\pi ik)^n$ uses complex exponentials $e^{i\\theta} = \\cos\\theta + i\\sin\\theta$ (De Moivre's formula), and evaluating at $x = 0$ extracts $\\zeta(2k)$. Parseval's identity — the alternative one-line proof — similarly decomposes $f(x) = x$ into Fourier modes $e^{inx}$ whose orthogonality is governed by De Moivre"
+    },
+    {
+      "targetId": "basel-problem-oq-02",
+      "relationship": "extended-by",
+      "description": "Explores whether all odd zeta values $\\zeta(2k+1)$ are transcendental — the natural next question after the Basel identity proves $\\zeta(2) = \\pi^2/6$ is transcendental (as a rational multiple of $\\pi^2$). Proves even zeta transcendence from the Lindemann axiom"
     }
   ],
   "relatedProofs": [
@@ -393,6 +407,28 @@
     "theoremCount": 9,
     "lemmaCount": 0,
     "defCount": 0,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "substantiveTheoremCount": 3,
+    "trivialSpecializations": 6,
+    "mainTheorems": [
+      {
+        "name": "basel_hasSum",
+        "type": "wrapper",
+        "description": "HasSum (fun n => 1/(n:ℝ)^2) (π²/6) — the Basel identity as a HasSum statement",
+        "leanType": "HasSum (fun n : ℕ => 1 / (↑n : ℝ) ^ 2) (π ^ 2 / 6)"
+      },
+      {
+        "name": "zeta_four_hasSum",
+        "type": "wrapper",
+        "description": "HasSum (fun n => 1/(n:ℝ)^4) (π⁴/90) — ζ(4) evaluation",
+        "leanType": "HasSum (fun n : ℕ => 1 / (↑n : ℝ) ^ 4) (π ^ 4 / 90)"
+      },
+      {
+        "name": "zeta_general",
+        "type": "wrapper",
+        "description": "General formula ζ(2k) = (-1)^(k+1) · 2^(2k-1) · π^(2k) · B_{2k} / (2k)!",
+        "leanType": "(k : ℕ) → HasSum (fun n : ℕ => 1 / (↑n : ℝ) ^ (2 * k)) (ζ_value k)"
+      }
+    ]
   }
 }
