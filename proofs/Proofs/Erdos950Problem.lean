@@ -22,15 +22,7 @@ Source: https://erdosproblems.com/950
 Adapted from erdosproblems.com (Apache 2.0 License)
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Topology.Order.Basic
-import Mathlib.Topology.Algebra.Order.LiminfLimsup
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Filter Real
 
@@ -71,9 +63,10 @@ def question1 : Prop :=
 axiom erdos_950_q1 : question1
 
 /-- Question 2 (OPEN): Is lim sup f(n) = ∞?
-    This asks whether f(n) is unbounded — can it be arbitrarily large? -/
+    This asks whether f(n) is unbounded — can it be arbitrarily large?
+    Formulated as: for every M, f(n) > M for infinitely many n. -/
 def question2 : Prop :=
-  Filter.limsup (fun n => f n) atTop = ⊤
+  ∀ M : ℝ, ∃ᶠ n in atTop, f n > M
 
 /-- Question 2 stated as a conjecture. -/
 axiom erdos_950_q2 : question2
@@ -130,35 +123,24 @@ lemma f_nonneg (n : ℕ) : f n ≥ 0 := by
   unfold f
   apply Finset.sum_nonneg
   intro p _
-  simp only [one_div, inv_nonneg]
-  exact Nat.cast_nonneg _
+  exact div_nonneg zero_le_one (Nat.cast_nonneg _)
 
 /-- f(2) = 0 since there are no primes < 2. -/
 lemma f_two : f 2 = 0 := by
   unfold f primesLessThan
-  simp [Finset.filter_eq_empty_iff, Finset.mem_range]
-  intro p hp
-  interval_cases p <;> simp [Nat.Prime] at *
+  have h : (Finset.range 2).filter Nat.Prime = ∅ := by native_decide
+  rw [h]; simp
 
 /-- f(3) = 1 since 2 is the only prime < 3, and 1/(3−2) = 1. -/
 theorem f_three : f 3 = 1 := by
   unfold f primesLessThan
-  -- primesLessThan 3 = {2}
-  have h : (Finset.range 3).filter Nat.Prime = {2} := by
-    ext p; simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_singleton]
-    constructor
-    · intro ⟨hp_lt, hp_prime⟩; interval_cases p <;> simp_all [Nat.Prime]
-    · intro h; subst h; exact ⟨by omega, Nat.prime_iff.mpr ⟨by omega, by omega⟩⟩
+  have h : (Finset.range 3).filter Nat.Prime = {2} := by native_decide
   rw [h, Finset.sum_singleton]; norm_num
 
 /-- f(4) = 3/2 since primes < 4 are 2, 3 with distances 2, 1. -/
 theorem f_four : f 4 = 3 / 2 := by
   unfold f primesLessThan
-  have h : (Finset.range 4).filter Nat.Prime = {2, 3} := by
-    ext p; simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_insert, Finset.mem_singleton]
-    constructor
-    · intro ⟨hp_lt, hp_prime⟩; interval_cases p <;> simp_all [Nat.Prime]
-    · intro h; rcases h with rfl | rfl <;> exact ⟨by omega, by omega⟩
+  have h : (Finset.range 4).filter Nat.Prime = {2, 3} := by native_decide
   rw [h, Finset.sum_pair (by omega : (2 : ℕ) ≠ 3)]; norm_num
 
 /-
@@ -185,30 +167,37 @@ axiom weaker_implies_bound : weakerConjecture →
 ## Part 6: Connection to Prime Distribution
 -/
 
-/-- The gap between the m-th and (m+1)-th primes. -/
-noncomputable def primeGap (m : ℕ) : ℕ :=
-  Nat.nth Nat.Prime (m + 1) - Nat.nth Nat.Prime m
-
 /-- Having primes in [n−k, n) guarantees f(n) ≥ 1/k.
-    Proof: some prime p has distance n-p ≤ k, so 1/(n-p) ≥ 1/k. -/
-theorem dense_primes_increase_f (n k : ℕ) (hk : k > 0) :
+    Proof: extract a prime p with n-k ≤ p < n from the sum;
+    its contribution 1/(n-p) ≥ 1/k since n-p ≤ k. -/
+theorem dense_primes_increase_f (n k : ℕ) (_hk : k > 0) :
     (primesLessThan n ∩ Finset.Ico (n - k) n).card > 0 →
     f n ≥ 1 / k := by
-  sorry -- Elementary: extract prime p with n-k ≤ p < n, then f(n) ≥ 1/(n-p) ≥ 1/k
+  intro hcard
+  obtain ⟨p, hp_mem⟩ := Finset.card_pos.mp hcard
+  simp only [Finset.mem_inter, Finset.mem_Ico] at hp_mem
+  obtain ⟨hp_primes, hp_ge, hp_lt⟩ := hp_mem
+  -- hp_primes : p ∈ primesLessThan n, hp_ico : n - k ≤ p ∧ p < n
+  unfold f
+  have hle : (1 : ℝ) / ↑(n - p) ≤ ∑ q ∈ primesLessThan n, (1 : ℝ) / ↑(n - q) :=
+    Finset.single_le_sum (f := fun q => (1 : ℝ) / ↑(n - q))
+      (fun q _ => div_nonneg zero_le_one (Nat.cast_nonneg _)) hp_primes
+  have hbound : (1 : ℝ) / ↑k ≤ 1 / ↑(n - p) :=
+    one_div_le_one_div_of_le (Nat.cast_pos.mpr (by omega)) (Nat.cast_le.mpr (by omega))
+  linarith
 
 /-- The existence of c > 0 with ≫ n^c/log n primes in [n, n+n^c]
     implies lim inf f(n) > 0 (Erdős's observation). -/
 axiom dense_short_intervals_imply_liminf_pos :
-    (∃ c : ℝ, c > 0 ∧ ∃ C > 0, ∀ᶠ n in atTop,
-      (primesLessThan (n + ⌊(n : ℝ) ^ c⌋₊) \ primesLessThan n).card ≥
-        C * (n : ℝ) ^ c / Real.log n) →
-    ∃ δ > 0, ∀ᶠ n in atTop, f n ≥ δ
+    (∃ c : ℝ, c > 0 ∧ ∃ C > 0, ∀ᶠ (n : ℕ) in atTop,
+      ((primesLessThan (n + ⌊(↑n : ℝ) ^ c⌋₊) \ primesLessThan n).card : ℝ) ≥
+        C * (↑n : ℝ) ^ c / Real.log ↑n) →
+    ∃ δ > 0, ∀ᶠ (n : ℕ) in atTop, f n ≥ δ
 
 /-- Erdős could not prove ∑_{p<x} f(p)² ~ π(x), where the sum is
     restricted to prime arguments. This remains open. -/
 axiom f_at_primes_open :
-    -- The conjecture: ∑_{p<x, p prime} f(p)² ~ π(x)
-    ∃ g : ℕ → ℝ, (∀ n, g n = ∑ p ∈ primesLessThan n |>.filter Nat.Prime,
+    ∃ g : ℕ → ℝ, (∀ n, g n = ∑ p ∈ (primesLessThan n).filter Nat.Prime,
       (f p)^2 / primeCountingFunction n) ∧
     Tendsto g atTop (nhds 1)
 

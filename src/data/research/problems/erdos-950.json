@@ -1,7 +1,7 @@
 {
   "slug": "erdos-950",
   "title": "Erdős #950",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-15T12:22:36.006Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Repaired build + proved sorry",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "All 9 axioms are deep published results or open conjectures - no further elimination possible",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,19 +29,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Converted f_three and f_four from axioms to theorems. Converted dense_primes_increase_f from axiom to theorem (sorry). Fixed f_two simp failure. 12→9 axioms (3 eliminated). Pre-existing build failures remain (Nat.nth, simp).",
+    "progressSummary": "REPAIR+PROVE: Fixed all pre-existing build failures (question2 ⊤→∀M, f_two/f_three/f_four native_decide, removed unused primeGap/Nat.nth, fixed type mismatch in axiom). Proved dense_primes_increase_f sorry. Switched to import Mathlib. File compiles: 7 theorems, 9 axioms (all deep/open), 0 sorries.",
     "builtItems": [
       "Converted f_three axiom to theorem (explicit primesLessThan 3 = {2} computation)",
       "Converted f_four axiom to theorem (explicit primesLessThan 4 = {2,3} computation)",
       "Converted dense_primes_increase_f axiom to theorem (1 sorry, elementary proof outlined)",
       "Fixed f_two: simp failure, replaced with interval_cases approach",
-      "Documented pre-existing build failures: Nat.nth unknown, f_nonneg simp issue"
+      "Documented pre-existing build failures: Nat.nth unknown, f_nonneg simp issue",
+      "Proved dense_primes_increase_f: primes in [n-k,n) → f(n) ≥ 1/k (was sorry)",
+      "Fixed question2: ℝ has no ⊤, reformulated as ∀ M, ∃ᶠ n, f n > M",
+      "Simplified f_two/f_three/f_four proofs with native_decide",
+      "Removed unused primeGap def (depended on deleted Nat.nth)",
+      "Fixed type mismatch in dense_short_intervals_imply_liminf_pos axiom"
     ],
     "insights": [
       "f_three and f_four are pure computations: evaluate primesLessThan n, sum the terms",
       "Finset.range n filter Nat.Prime can be proved equal to explicit sets via interval_cases + Nat.Prime",
       "native_decide fails for Finset equality with Nat.Prime - use ext + interval_cases instead",
-      "Pre-existing build failures: Nat.nth not found (may need import or was renamed), f_nonneg simp regression"
+      "Pre-existing build failures: Nat.nth not found (may need import or was renamed), f_nonneg simp regression",
+      "Nat.nth was removed from Mathlib - primeGap def was dead code",
+      "question2 = limsup f = ⊤ fails because ℝ has no Top instance; use ∀ M, ∃ᶠ n, f n > M",
+      "native_decide handles Finset.range n |>.filter Nat.Prime = {concrete set} cleanly",
+      "dense_primes_increase_f proved via Finset.single_le_sum + one_div_le_one_div_of_le"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -61,15 +70,15 @@
     "mathlib": []
   },
   "started": "2026-01-15T12:22:36.006Z",
-  "lastUpdate": "2026-03-13T07:52:17.055Z",
+  "lastUpdate": "2026-03-23T03:50:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos950Problem.lean",
       "filename": "Erdos950Problem.lean",
-      "lineCount": 209,
-      "theoremCount": 4,
+      "lineCount": 216,
+      "theoremCount": 7,
       "axiomCount": 9,
       "defCount": 10,
       "sorryCount": 0,
