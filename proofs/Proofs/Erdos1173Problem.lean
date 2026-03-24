@@ -164,4 +164,39 @@ def erdos_1173_weak : Prop :=
     AlmostDisjoint omega_omega_succ f aleph_omega →
     HasFreeSetOfCard omega_omega_succ f aleph_omega
 
+-- ============================================================
+-- PART 7: Basic Properties
+-- ============================================================
+
+/-- ℵ_ω < ℵ_{ω+1}: the successor cardinal is strictly larger. -/
+theorem aleph_omega_lt_succ : aleph_omega < aleph_omega_succ := by
+  unfold aleph_omega aleph_omega_succ
+  exact Cardinal.aleph_lt_aleph.mpr (Ordinal.lt_succ_iff.mpr le_rfl)
+
+/-- Under GCH, 2^{ℵ_ω} = ℵ_{ω+1}. -/
+theorem gch_power : GCH → (2 : Cardinal) ^ aleph_omega = aleph_omega_succ := by
+  intro hgch
+  exact hgch Ordinal.omega0
+
+/-- The empty set is trivially free for any set mapping. -/
+theorem free_set_empty (γ : Ordinal) (f : SetMapping γ) :
+    IsFreeSet γ f ∅ := by
+  intro a _ ha
+  exact absurd ha (Set.not_mem_empty a)
+
+/-- Any singleton is a free set (no distinct pair to check). -/
+theorem free_set_singleton (γ : Ordinal) (f : SetMapping γ)
+    (x : { α : Ordinal // α < γ }) :
+    IsFreeSet γ f {x} := by
+  intro a b ha hb hab
+  rw [Set.mem_singleton_iff] at ha hb
+  subst ha; subst hb
+  exact absurd rfl hab
+
+/-- A subset of a free set is free. -/
+theorem free_set_subset (γ : Ordinal) (f : SetMapping γ)
+    (S T : Set { α : Ordinal // α < γ }) (hfree : IsFreeSet γ f S) (hTS : T ⊆ S) :
+    IsFreeSet γ f T :=
+  fun a b ha hb hab => hfree a b (hTS ha) (hTS hb) hab
+
 end Erdos1173
