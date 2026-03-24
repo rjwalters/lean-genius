@@ -38,9 +38,10 @@
       "The formalization uses Lean's `StrictMono` and `Int.ModEq` to capture the sieve structure cleanly, with the proved monotonicity theorem as verified mathematical content"
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Number theory (primes, divisibility)",
-      "Asymptotic density and counting"
+      "Analytic number theory (logarithmic density, harmonic sums)",
+      "Modular arithmetic and congruences (`Int.ModEq`)",
+      "Sieve theory (Eratosthenes, inclusion-exclusion)",
+      "Real analysis (limits of ratios, infinite products)"
     ]
   },
   "sections": [
@@ -49,42 +50,48 @@
       "title": "Logarithmic Density",
       "startLine": 23,
       "endLine": 44,
-      "summary": "Axiomatizes `logDensity S d` (the limit $\\frac{\\sum_{m \\in S, m \\le x} 1/m}{\\sum_{m \\le x} 1/m} \\to d$), `LogDensityExists`, uniqueness of the density value, and the $[0,1]$ bound."
+      "summary": "Axiomatizes `logDensity S d` (the limit $\\frac{\\sum_{m \\in S, m \\le x} 1/m}{\\sum_{m \\le x} 1/m} \\to d$), `LogDensityExists`, uniqueness of the density value, and the $[0,1]$ bound.",
+      "mathContext": "Three axioms: `logDensity : \\text{Set}\\,\\mathbb{N} \\to \\mathbb{R} \\to \\text{Prop}$ (the density relation), `logDensity_mem_unit` ($0 \\le d \\le 1$), and `logDensity_unique` (density is unique when it exists). The definition `LogDensityExists S := \\exists d, \\text{logDensity}\\,S\\,d$."
     },
     {
       "id": "congruence-sieve",
       "title": "Congruence Sieve",
       "startLine": 45,
       "endLine": 61,
-      "summary": "Defines `CongruenceSieve` (strictly increasing moduli + residues) and `sievedSet`: $\\{m : \\forall i,\\ m < n_i \\text{ or } m \\not\\equiv a_i \\pmod{n_i}\\}$ using `Int.ModEq`."
+      "summary": "Defines `CongruenceSieve` (strictly increasing moduli + residues) and `sievedSet`: $\\{m : \\forall i,\\ m < n_i \\text{ or } m \\not\\equiv a_i \\pmod{n_i}\\}$ using `Int.ModEq`.",
+      "mathContext": "Structure `CongruenceSieve` with fields `seq_n : \\mathbb{N} \\to \\mathbb{N}`, `seq_a : \\mathbb{N} \\to \\mathbb{Z}$, `moduli_pos`, `strictly_mono : \\text{StrictMono}\\,\\text{seq\\_n}$. The sieved set: $A(\\sigma) = \\{m : \\forall i,\\, (m : \\mathbb{Z}) < n_i \\lor \\neg(m \\equiv a_i \\pmod{n_i})\\}$."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "startLine": 62,
       "endLine": 70,
-      "summary": "States ErdosProblem25: $\\forall \\sigma,\\ \\text{LogDensityExists}(A(\\sigma))$. The universal quantification over all sieve configurations is the core difficulty."
+      "summary": "States ErdosProblem25: $\\forall \\sigma,\\ \\text{LogDensityExists}(A(\\sigma))$. The universal quantification over all sieve configurations is the core difficulty.",
+      "mathContext": "$\\text{ErdosProblem25} := \\forall \\sigma : \\text{CongruenceSieve},\\, \\exists d,\\, \\text{logDensity}(A(\\sigma), d)$. The conjecture is stated as a definition, not an axiom — it can be instantiated to `True` or `False` depending on whether the problem is resolved positively or negatively."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 71,
       "endLine": 90,
-      "summary": "Defines the prime-residue case (moduli are all primes). Axiomatizes finite sieve density existence (eventual periodicity). Notes the relationship to Problem 486."
+      "summary": "Defines the prime-residue case (moduli are all primes). Axiomatizes finite sieve density existence (eventual periodicity). Notes the relationship to Problem 486.",
+      "mathContext": "`PrimeResidueCase`: $\\forall \\sigma,\\, (\\forall i,\\, \\text{Prime}(n_i)) \\Rightarrow \\text{LogDensityExists}(A(\\sigma))$. Axiom `finite_sieve_density_exists`: if $n_i = n_N$ for $i \\ge N$, then $A(\\sigma)$ is eventually periodic and its density exists. The tautology `erdos_486_implies_25` records that Problem 486 generalizes Problem 25."
     },
     {
       "id": "density-bounds",
       "title": "Density Bounds",
       "startLine": 91,
       "endLine": 106,
-      "summary": "Axiomatizes nonemptiness of sieved sets (small integers pass all conditions) and positive density under pairwise coprimality of moduli."
+      "summary": "Axiomatizes nonemptiness of sieved sets (small integers pass all conditions) and positive density under pairwise coprimality of moduli.",
+      "mathContext": "Axiom `sieved_set_nonempty`: $\\exists m > 0,\\, m \\in A(\\sigma)$ (integers $m < n_1$ pass all conditions). Axiom `sieve_density_positive`: if $\\gcd(n_i, n_j) = 1$ for $i \\ne j$ and $\\delta_\\ell(A(\\sigma)) = d$, then $d > 0$. By CRT, coprime exclusions are independent: $\\delta_\\ell \\approx \\prod_i (1 - 1/n_i)$."
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity Properties",
       "startLine": 107,
       "endLine": 118,
-      "summary": "Proves `sieve_monotone`: removing any modulus from the sieve enlarges the sieved set ($A(\\sigma) \\subseteq A(\\sigma \\setminus \\{k\\})$). A one-line proof via `exact hm i`."
+      "summary": "Proves `sieve_monotone`: removing any modulus from the sieve enlarges the sieved set ($A(\\sigma) \\subseteq A(\\sigma \\setminus \\{k\\})$). A one-line proof via `exact hm i`.",
+      "mathContext": "Proved theorem: $A(\\sigma) \\subseteq \\{m : \\forall i \\ne k,\\, m < n_i \\lor m \\not\\equiv a_i \\pmod{n_i}\\}$. Proof: `intro m hm i hi; exact hm i`. This is the only non-axiom mathematical content in the file — a simple set-theoretic monotonicity from dropping conditions."
     }
   ],
   "conclusion": {
@@ -101,11 +108,35 @@
     {
       "targetId": "erdos-486",
       "relationship": "specialization",
-      "description": "Problem #486 is the general version: does logarithmic density exist for a broader class of sieve constructions? Problem #25 is a special case with congruence exclusions."
+      "description": "Problem #486 is the general version: does logarithmic density exist for a broader class of sieve constructions? Problem #25 is a special case with congruence exclusions"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "foundational",
+      "description": "CRT provides the independence framework for coprime sieves: when moduli are pairwise coprime, the exclusion events $m \\equiv a_i \\pmod{n_i}$ are independent, so $\\delta_\\ell(A) \\approx \\prod(1 - 1/n_i)$. The axiom `sieve_density_positive` relies on this CRT-based analysis"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "PNT establishes that $\\pi(x) \\sim x/\\ln x$, and the logarithmic density framework used here is closely related to the Dirichlet density used in the proof of PNT for arithmetic progressions. Both involve harmonic-type sums weighted by $1/m$"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "The sieve of Eratosthenes (excluding residue 0 mod each prime) is the prototypical congruence sieve. Its sieved set is the primes (augmented by 1), which have logarithmic density 0 by Mertens' theorem — an instance of Problem 25 where the density exists"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization underpins the multiplicative structure that makes coprime sieve analysis via CRT possible. The coprimality hypothesis in `sieve_density_positive` is meaningful precisely because of FTA"
     }
   ],
   "relatedProofs": [
-    "erdos-486"
+    "erdos-486",
+    "chinese-remainder-constructive",
+    "prime-number-theorem",
+    "infinitude-primes",
+    "fundamental-arithmetic"
   ],
   "leanFile": {
     "imports": [
@@ -122,5 +153,35 @@
     "axiomCount": 6,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "Some of my favourite problems which recently have been solved",
+      "year": "1995",
+      "venue": "Proceedings of the International Conference on Discrete Mathematics and Applications",
+      "note": "Contains the original formulation of Problem 25 on logarithmic density of congruence-sieved sets, referenced as [Er95] in the Lean docstring"
+    },
+    {
+      "authors": "Halberstam, Heini; Richert, Hans-Egon",
+      "title": "Sieve Methods",
+      "year": "1974",
+      "venue": "Academic Press, London Mathematical Society Monographs No. 4",
+      "note": "Standard reference on sieve theory, including the Selberg sieve and large sieve, which provide the analytic framework for understanding how congruence exclusions affect set density"
+    },
+    {
+      "authors": "Tenenbaum, Gérald",
+      "title": "Introduction to Analytic and Probabilistic Number Theory",
+      "year": "2015",
+      "venue": "American Mathematical Society, Graduate Studies in Mathematics vol. 163, 3rd edition",
+      "note": "Comprehensive treatment of logarithmic density, natural density, and their relationship. Chapter I.3 covers asymptotic density theory including the key fact that logarithmic density exists whenever natural density does"
+    },
+    {
+      "authors": "Erdős, Paul; Mian, Abdul Majid; Turán, Pál",
+      "title": "On some problems of sieve theory",
+      "year": "1948",
+      "venue": "Journal of the Indian Mathematical Society",
+      "note": "Early work by Erdős on sieve-theoretic problems, establishing the research program that eventually led to Problems 25 and 486 on density existence for sieved sets"
+    }
+  ]
 }
