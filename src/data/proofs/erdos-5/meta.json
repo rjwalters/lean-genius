@@ -21,15 +21,15 @@
     "erdosUrl": "https://erdosproblems.com/5",
     "erdosProblemStatus": "open",
     "axiomCount": 3,
-    "lineCount": 417,
-    "assumptions": "3 axioms: (1) westzynthius_large_gaps - ∞ ∈ S via arbitrarily large prime gaps (Westzynthius 1931), (2) zhang_bounded_gaps - infinitely many bounded prime gaps (Zhang 2013), (3) hildebrand_maier_large_limit_points - S contains arbitrarily large finite limit points (Hildebrand-Maier 1988). All are deep results in analytic number theory.",
+    "lineCount": 380,
+    "assumptions": "3 axioms: westzynthius_large_gaps (∞ ∈ S, 1931), zhang_bounded_gaps (bounded prime gaps, 2013), merikoski_bounded_gaps (S has bounded gaps, 2020). 0 sorries. Proves 19 theorems including: zhang_implies_zero_limit, twin_prime_implies_zero_limit, limitPointSet_unbounded, westzynthius_implies_frequently_large. Gallery metadata now points to main formalization (Erdos5PrimeGaps.lean) instead of legacy stub.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős studied the distribution of prime gaps normalized by log(p_n) throughout his career, building on the prime number theorem's prediction that the average gap is ~log(p_n). The question of which values arise as limit points of g(n) = (p_{n+1} − p_n)/log(p_n) captures the full range of prime gap fluctuations. Westzynthius (1931) first showed the gaps can be arbitrarily large (∞ ∈ S). The landmark GPY theorem (2009) proved lim inf g(n) = 0, establishing 0 ∈ S and initiating the chain of breakthroughs: Zhang (2013, first finite bound on gap), Maynard-Tao (2013, gap ≤ 600), Polymath 8 (gap ≤ 246). For the interior of S, Erdős and Ricci showed S has positive Lebesgue measure, Banks-Freiberg-Maynard improved this to ≥ 12.5%, and Merikoski (2020) reached ≥ 1/3 of [0, ∞). The conjecture S = [0, ∞) remains one of the most fundamental open problems about prime distribution, closely related to the Hardy-Littlewood prime k-tuples conjecture and Cramér's probabilistic model of primes.",
     "problemStatement": "Is the set S of all limit points of (p_{n+1} - p_n)/log(p_n) equal to [0, ∞)? Equivalently, for every C ≥ 0, does there exist an infinite sequence of indices n_i with g(n_i) → C?",
     "text": "Is the set S of limit points of (p_{n+1} - p_n)/log(p_n) equal to [0, ∞)? Known: 0 ∈ S (GPY), ∞ ∈ S (Westzynthius), S has positive measure (Erdős–Ricci), at least 1/3 coverage (Merikoski). Open.",
-    "proofStrategy": "The formalization axiomatizes nthPrime with strict monotonicity and primality, defines normalizedGap as the real-valued ratio, and specifies IsLimitPointOfGaps via the standard ε-N formulation. Known partial results are recorded as axioms: GPY for 0 ∈ S, Westzynthius for ∞ ∈ S, Hildebrand-Maier for large finite limit points, and Merikoski's 1/3 density bound (approximated via Finset). The full conjecture is stated as a universal quantification over all C ≥ 0.",
+    "proofStrategy": "The main formalization (Erdos5PrimeGaps.lean) uses Mathlib's Nat.nth for prime enumeration, defines normalizedGap g(n) = primeGap(n)/log(n), and characterizes limit points via subsequential convergence (Filter/Tendsto). Three axioms encode deep results: Westzynthius (∞ ∈ S), Zhang (bounded gaps), and Merikoski (S has bounded gaps). From these, 19 theorems are proved including: 0 ∈ S derived from Zhang, S is unbounded (from Merikoski), gaps exceed any bound infinitely often (from Westzynthius), and the conjecture reduces to showing all C ≥ 0 are limit points.",
     "keyInsights": [
       "**PNT normalization**: Dividing by log(p_n) gives average value 1 by the prime number theorem, so the question is about the full fluctuation spectrum",
       "**GPY breakthrough**: The proof that 0 ∈ S (2009) used a novel combination of Bombieri-Vinogradov and Selberg sieve, later leading to bounded gaps proofs",
@@ -44,64 +44,64 @@
   },
   "sections": [
     {
-      "id": "imports",
-      "title": "Mathlib Imports",
-      "startLine": 23,
-      "endLine": 27,
-      "summary": "Imports Nat.Prime, Real.Basic (for logarithm), and Topology.Basic from Mathlib."
+      "id": "definitions",
+      "title": "Part I: Basic Definitions",
+      "startLine": 46,
+      "endLine": 59,
+      "summary": "nthPrime via Nat.nth, primeGap = p_{n+1} - p_n, normalizedGap = gap/log(n)"
     },
     {
-      "id": "definitions",
-      "title": "Definitions: Primes, Gaps, Limit Points",
-      "startLine": 46,
-      "endLine": 81,
-      "summary": "Defines nthPrime via Nat.nth, primeGap, normalizedGap (g(n)/log n), IsLimitPoint via subsequential convergence, limitPointSet S, InfinityIsLimitPoint, and the main conjecture erdos_5."
+      "id": "limit-points",
+      "title": "Part II: The Set of Limit Points",
+      "startLine": 60,
+      "endLine": 73,
+      "summary": "IsLimitPoint via subsequential convergence, limitPointSet, InfinityIsLimitPoint"
+    },
+    {
+      "id": "conjecture",
+      "title": "Part III: The Main Conjecture",
+      "startLine": 74,
+      "endLine": 82,
+      "summary": "erdos_5: every C ≥ 0 is a limit point ∧ ∞ is a limit point"
     },
     {
       "id": "known-results",
-      "title": "Known Results (Axiomatized)",
+      "title": "Part IV: Known Results (Axioms)",
       "startLine": 83,
-      "endLine": 104,
-      "summary": "Axiomatizes Westzynthius (∞ ∈ S), with placeholder statements for Erdős-Ricci (positive measure) and Merikoski (≥ 1/3 density)."
+      "endLine": 105,
+      "summary": "Westzynthius (∞ ∈ S), Erdős-Ricci (positive measure, noted), Merikoski (bounded gaps in S)"
     },
     {
       "id": "basic-properties",
-      "title": "Basic Properties of Primes and Gaps",
+      "title": "Part V: Basic Properties",
       "startLine": 106,
-      "endLine": 176,
-      "summary": "Proves nthPrime values (p₀=2, p₁=3, p₂=5), gap positivity, gap computations (g₀=1, g₁=2), primality, monotonicity, and p_n ≥ n+2."
+      "endLine": 166,
+      "summary": "nthPrime values, primeGap positivity, strict monotonicity, growth bounds"
+    },
+    {
+      "id": "gap-distribution",
+      "title": "Part VI: Gap Distribution",
+      "startLine": 167,
+      "endLine": 177,
+      "summary": "averageGap, Cramér's conjecture definition"
     },
     {
       "id": "connections",
-      "title": "Connections to Other Results",
+      "title": "Part VII: Connections",
       "startLine": 178,
-      "endLine": 341,
-      "summary": "Key theorems: strictly_increasing_from_frequently (extracts StrictMono subsequence), twin_prime_implies_zero_limit (twin primes ⟹ 0 ∈ S), zhang_bounded_gaps (axiom), zhang_implies_zero_limit (Zhang ⟹ 0 ∈ S), goldston_pintz_yildirim_small_gaps."
+      "endLine": 340,
+      "summary": "strictly_increasing_from_frequently, twin_prime_implies_zero_limit, zhang_implies_zero_limit, GPY derived from Zhang"
     },
     {
-      "id": "structural-properties",
-      "title": "Structural Properties of S",
-      "startLine": 343,
-      "endLine": 395,
-      "summary": "Proves normalizedGap_nonneg (gaps ≥ 0), normalizedGap_pos (gaps > 0 for n ≥ 2), limitPoint_nonneg (limit points ≥ 0), limitPointSet_subset_nonneg (S ⊆ [0,∞)), zero_mem_limitPointSet (0 ∈ S), limitPointSet_nonempty (S ≠ ∅)."
-    },
-    {
-      "id": "hildebrand-maier",
-      "title": "Hildebrand-Maier and Large Limit Points",
-      "startLine": 397,
-      "endLine": 410,
-      "summary": "Axiomatizes Hildebrand-Maier (S has arbitrarily large finite limit points) and proves S is unbounded above."
-    },
-    {
-      "id": "set-equality",
-      "title": "The Conjecture as Set Equality",
-      "startLine": 412,
-      "endLine": 417,
-      "summary": "Proves erdos_5 ⟹ limitPointSet = [0,∞), connecting the conjecture to formal set equality."
+      "id": "structural",
+      "title": "Part VIII: Structural Results",
+      "startLine": 341,
+      "endLine": 380,
+      "summary": "westzynthius_implies_frequently_large, limitPointSet_nonempty, limitPointSet_unbounded, erdos5_from_full, erdos5_known_partial"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #5 asks whether every non-negative real number is a limit point of normalized prime gaps. The formalization proves structural properties of S: S ⊆ [0,∞) (from non-negativity of normalized gaps), 0 ∈ S (from Zhang's bounded gaps), S is non-empty, and S is unbounded above (from Hildebrand-Maier). The extremes are settled: 0 ∈ S (GPY/Zhang, proved from axiom) and ∞ ∈ S (Westzynthius, axiomatized). Three deep results are axiomatized: Westzynthius large gaps, Zhang bounded gaps, and Hildebrand-Maier large limit points.",
+    "summary": "Erdős Problem #5 asks whether every non-negative real number is a limit point of normalized prime gaps. This formalization proves 19 theorems from 3 axioms with 0 sorries. The extremes are settled: 0 ∈ S (derived from Zhang's bounded gaps) and ∞ ∈ S (Westzynthius). Structural results include: S is nonempty, S is unbounded (from Merikoski), and normalized gaps exceed any bound infinitely often. The conjecture reduces to showing all C ≥ 0 are limit points.",
     "implications": "Resolution would provide a complete understanding of prime gap fluctuations at the logarithmic scale, confirming the prediction of Cramér's probabilistic model. It connects to the Hardy-Littlewood prime k-tuples conjecture (which would imply S = [0, ∞)), sieve methods (the GPY-Maynard-Tao framework), and the distribution of primes in short intervals.",
     "openQuestions": [
       "Is every C ≥ 0 a limit point of (p_{n+1} - p_n)/log(p_n)?",
@@ -155,12 +155,16 @@
       "Mathlib.Topology.MetricSpace.Basic",
       "Mathlib.Tactic"
     ],
-    "opens": ["Filter", "Real", "Topology"],
+    "opens": [
+      "Filter",
+      "Real",
+      "Topology"
+    ],
     "namespace": "Erdos5",
-    "lineCount": 417,
+    "lineCount": 380,
     "axiomCount": 3,
-    "theoremCount": 18,
-    "definitionCount": 8
+    "theoremCount": 19,
+    "definitionCount": 9
   },
   "references": [
     "Goldston–Pintz–Yıldırım: 0 ∈ S (2009)",
