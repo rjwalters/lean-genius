@@ -60,56 +60,64 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 35,
-      "summary": "Header documenting Erdős Problem #10 with references to Gallagher (1975), Granville-Soundararajan (1998), Grechuk, Romanoff (1934), and covering congruence arguments. Imports `Tactic`, `Nat.Prime.Basic`, `InfiniteSum.Real`, `AtTopBot.Group`. Opens `Set` and `Filter` namespaces."
+      "summary": "Header documenting Erdős Problem #10 with references to Gallagher (1975), Granville-Soundararajan (1998), Grechuk, Romanoff (1934), and covering congruence arguments. Imports `Tactic`, `Nat.Prime.Basic`, `InfiniteSum.Real`, `AtTopBot.Group`. Opens `Set` and `Filter` namespaces.",
+      "mathContext": "Establishes foundational framework for studying representations $n = p + \\sum 2^{a_i}$ where $p$ is prime and the exponent multiset has bounded cardinality."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 36,
       "endLine": 49,
-      "summary": "Defines `sumPrimeAndTwoPows k : Set \\mathbb{N}` as $\\{n : \\exists p \\text{ prime},\\, \\exists \\text{pows} : \\text{Multiset}\\,\\mathbb{N},\\, |\\text{pows}| \\leq k \\land n = p + \\sum 2^{a_i}\\}$. Defines `Set.lowerDensity S = \\liminf_{n \\to \\infty} |S \\cap [0,n]| / (n+1)$ via `Filter.liminf` along `atTop`."
+      "summary": "Defines `sumPrimeAndTwoPows k : Set \\mathbb{N}` as $\\{n : \\exists p \\text{ prime},\\, \\exists \\text{pows} : \\text{Multiset}\\,\\mathbb{N},\\, |\\text{pows}| \\leq k \\land n = p + \\sum 2^{a_i}\\}$. Defines `Set.lowerDensity S = \\liminf_{n \\to \\infty} |S \\cap [0,n]| / (n+1)$ via `Filter.liminf` along `atTop`.",
+      "mathContext": "$S_k = \\{n : n = p + \\sum_{i=1}^j 2^{a_i},\\; p \\text{ prime},\\; j \\leq k\\}$. Lower density $\\underline{d}(S_k) = \\liminf_{N \\to \\infty} |S_k \\cap [1,N]|/N$."
     },
     {
       "id": "main-conjecture",
       "title": "Erdős-Graham Conjecture",
       "startLine": 50,
       "endLine": 60,
-      "summary": "Axiomatizes `erdos_10_conjecture`: $\\neg \\exists k,\\, \\{n > 1\\} \\subseteq S_k$. The Erdős-Graham conjecture that no finite $k$ suffices for all integers. Equivalently: $\\forall k,\\, \\{n > 1\\} \\setminus S_k \\neq \\emptyset$."
+      "summary": "Axiomatizes `erdos_10_conjecture`: $\\neg \\exists k,\\, \\{n > 1\\} \\subseteq S_k$. The Erdős-Graham conjecture that no finite $k$ suffices for all integers. Equivalently: $\\forall k,\\, \\{n > 1\\} \\setminus S_k \\neq \\emptyset$.",
+      "mathContext": "$\\forall k \\in \\mathbb{N},\\; \\exists n > 1,\\; n \\notin S_k$: no finite number of powers of 2 added to a prime can represent all integers."
     },
     {
       "id": "gallagher",
       "title": "Gallagher's Density Theorem",
       "startLine": 61,
       "endLine": 68,
-      "summary": "Axiomatizes `gallagher_density`: $\\forall \\varepsilon > 0,\\, \\exists k: \\underline{d}(S_k) \\geq 1 - \\varepsilon$. The strongest unconditional result — 'almost all' integers are representable for large enough $k$. Proved via the large sieve (1975)."
+      "summary": "Axiomatizes `gallagher_density`: $\\forall \\varepsilon > 0,\\, \\exists k: \\underline{d}(S_k) \\geq 1 - \\varepsilon$. The strongest unconditional result — 'almost all' integers are representable for large enough $k$. Proved via the large sieve (1975).",
+      "mathContext": "Gallagher (1975): $\\underline{d}(S_k) \\to 1$ as $k \\to \\infty$, proved via the large sieve inequality and Bombieri-Vinogradov theorem."
     },
     {
       "id": "granville-soundararajan",
       "title": "Granville-Soundararajan Conjectures",
       "startLine": 69,
       "endLine": 80,
-      "summary": "Axiomatizes `granville_soundararajan_odd`: $\\{n \\text{ odd},\\, n > 1\\} \\subseteq S_3$, and `granville_soundararajan_even`: $\\{n \\text{ even},\\, n \\neq 0\\} \\subseteq S_4$. Conjectured 1998; computationally verified for large ranges."
+      "summary": "Axiomatizes `granville_soundararajan_odd`: $\\{n \\text{ odd},\\, n > 1\\} \\subseteq S_3$, and `granville_soundararajan_even`: $\\{n \\text{ even},\\, n \\neq 0\\} \\subseteq S_4$. Conjectured 1998; computationally verified for large ranges.",
+      "mathContext": "Conjectured: every odd $n > 1$ is $p + 2^a + 2^b + 2^c$ ($k=3$) and every even $n > 0$ is $p + 2^a + 2^b + 2^c + 2^d$ ($k=4$)."
     },
     {
       "id": "counterexample",
       "title": "Grechuk's Counterexample",
       "startLine": 81,
       "endLine": 87,
-      "summary": "Axiomatizes `grechuk_counterexample`: $1117175146 \\notin S_3$. Since $1117175146$ is even, this is consistent with $S_3 \\supseteq \\{n \\text{ odd},\\, n > 1\\}$ but shows $k = 3$ fails for even integers."
+      "summary": "Axiomatizes `grechuk_counterexample`: $1117175146 \\notin S_3$. Since $1117175146$ is even, this is consistent with $S_3 \\supseteq \\{n \\text{ odd},\\, n > 1\\}$ but shows $k = 3$ fails for even integers.",
+      "mathContext": "$1117175146 \\notin S_3$: this even number cannot be $p + 2^a + 2^b + 2^c$ for any prime $p$, establishing the parity barrier for $k = 3$."
     },
     {
       "id": "exceptions",
       "title": "Infinitely Many Exceptions",
       "startLine": 88,
       "endLine": 102,
-      "summary": "Axiomatizes `infinitely_many_exceptions_k2`: $\\{n \\text{ even}\\} \\setminus S_2$ is infinite (proved via covering congruences), and `infinitely_many_exceptions_k3`: $\\{n \\text{ even}\\} \\setminus S_3$ is infinite (conjectured)."
+      "summary": "Axiomatizes `infinitely_many_exceptions_k2`: $\\{n \\text{ even}\\} \\setminus S_2$ is infinite (proved via covering congruences), and `infinitely_many_exceptions_k3`: $\\{n \\text{ even}\\} \\setminus S_3$ is infinite (conjectured).",
+      "mathContext": "Erdős's covering congruence argument: infinitely many even integers are not in $S_2 = \\{p + 2^a + 2^b\\}$. Extension to $S_3$ remains open."
     },
     {
       "id": "romanoff",
       "title": "Romanoff's Theorem",
       "startLine": 103,
       "endLine": 109,
-      "summary": "Axiomatizes `romanoff_positive_density`: $\\underline{d}(S_1) > 0$. Romanoff (1934) showed a positive proportion of integers are $p + 2^a$, using sieve methods. One of the earliest results on prime-plus-lacunary bases."
+      "summary": "Axiomatizes `romanoff_positive_density`: $\\underline{d}(S_1) > 0$. Romanoff (1934) showed a positive proportion of integers are $p + 2^a$, using sieve methods. One of the earliest results on prime-plus-lacunary bases.",
+      "mathContext": "Romanoff (1934): $\\underline{d}(S_1) > 0$ via sieve methods — a positive proportion of integers have the form $p + 2^a$."
     }
   ],
   "conclusion": {
