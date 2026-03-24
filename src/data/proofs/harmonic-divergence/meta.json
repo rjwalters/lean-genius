@@ -164,12 +164,36 @@
       "targetId": "erdos-25",
       "relationship": "applied-in",
       "description": "The Davenport-Erdős theorem on logarithmic density of congruence-sieved sets relies on harmonic sum asymptotics"
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "Euler proved $\\sum 1/p$ diverges (1737) — far subtler than harmonic divergence since primes are sparse. The rate $\\sum_{p \\leq x} 1/p \\sim \\ln\\ln x$ is much slower than $H_n \\sim \\ln n$"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "PNT explains WHY the harmonic series diverges logarithmically: the integral test gives $H_n \\sim \\int_1^n dx/x = \\ln n$. PNT provides the prime-theoretic context for harmonic sums via the Euler product"
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "contrasts",
+      "description": "Geometric $\\sum r^n$ converges (exponential decay) vs harmonic $\\sum 1/n$ diverges (polynomial decay). The boundary between summable and non-summable decay rates"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Both $H_n = \\ln n + \\gamma + O(1/n)$ and $\\ln(n!) = n\\ln n - n + O(\\ln n)$ are logarithmic estimates proved by Euler-Maclaurin summation"
     }
   ],
   "relatedProofs": [
     "basel-problem",
     "erdos-486",
-    "erdos-25"
+    "erdos-25",
+    "prime-reciprocal-divergence",
+    "prime-number-theorem",
+    "geometric-series",
+    "stirling-formula"
   ],
   "leanFile": {
     "imports": [

@@ -1,5 +1,50 @@
 [
   {
+    "id": "ann-docstring",
+    "proofId": "harmonic-divergence",
+    "range": {
+      "startLine": 5,
+      "endLine": 42
+    },
+    "type": "concept",
+    "title": "Module Overview and Historical Context",
+    "content": "The harmonic series $\\sum 1/n$ diverges — its partial sums grow without bound despite the terms approaching zero. This is one of the most counterintuitive results in analysis.\n\n**Nicole Oresme's proof (~1350)** is among the oldest in analysis: group terms as $1/3 + 1/4 > 1/2$, $1/5 + \\cdots + 1/8 > 1/2$, etc. Each group of $2^k$ terms exceeds $1/2$, so $H_n > n/2 \\to \\infty$. This predates formal calculus by 300 years.\n\nThe Mathlib approach uses `Real.not_summable_one_div_natCast` (the series is not summable in the `Summable` framework) and `Real.tendsto_sum_range_one_div_nat_succ_atTop` (partial sums tend to infinity).",
+    "mathContext": "$H_n = \\sum_{k=1}^{n} 1/k \\sim \\ln n + \\gamma$, where $\\gamma \\approx 0.5772$ is the Euler-Mascheroni constant. The growth rate $H_n = \\ln n + \\gamma + O(1/n)$ shows divergence is logarithmically slow: reaching $H_n > 100$ requires $n > e^{100} \\approx 2.7 \\times 10^{43}$.",
+    "significance": "key",
+    "prerequisites": [
+      "series convergence",
+      "comparison test"
+    ],
+    "relatedConcepts": [
+      "Euler-Mascheroni constant",
+      "Oresme's proof",
+      "logarithmic growth",
+      "p-series test"
+    ]
+  },
+  {
+    "id": "ann-alternative-forms",
+    "proofId": "harmonic-divergence",
+    "range": {
+      "startLine": 54,
+      "endLine": 65
+    },
+    "type": "technique",
+    "title": "Two Equivalent Non-Summability Statements",
+    "content": "`harmonic_not_summable` and `harmonic_not_summable'` prove the same fact in two notations: $\\sum 1/n$ using division ($1/n$) and using multiplicative inverse ($n^{-1}$). Both delegate to Mathlib one-liners.\n\nThe section header introduces the equivalent formulation via partial sums: $\\neg\\text{Summable}(f) \\iff \\text{partial sums of } f \\text{ are unbounded}$. For the harmonic series specifically, the partial sums $H_n = \\sum_{k=1}^n 1/k$ satisfy $H_n \\to \\infty$.",
+    "mathContext": "$\\neg\\text{Summable}(1/n) \\iff \\sup_N \\sum_{n=1}^N 1/n = \\infty \\iff \\sum_{n=1}^N 1/n \\xrightarrow{N \\to \\infty} \\infty$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Summable predicate",
+      "Real.not_summable_one_div_natCast"
+    ],
+    "relatedConcepts": [
+      "summability",
+      "partial sums",
+      "multiplicative inverse"
+    ]
+  },
+  {
     "id": "ann-harmonic-imports",
     "proofId": "harmonic-divergence",
     "range": {
