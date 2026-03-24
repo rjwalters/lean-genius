@@ -70,19 +70,19 @@
     "relatedProblems": [
       {
         "id": "binomial-theorem-oq-01",
-        "relationship": "Sub-entry exploring extensions of the binomial theorem"
+        "relationship": "Extensions including Newton's generalized binomial series for non-integer exponents"
       },
       {
         "id": "binomial-theorem-oq-02",
-        "relationship": "Sub-entry on further generalizations or applications"
+        "relationship": "Generalizations: multinomial theorem and probabilistic interpretation (binomial distribution)"
       },
       {
         "id": "binomial-theorem-oq-03",
-        "relationship": "Sub-entry on additional binomial identities"
+        "relationship": "Additional identities: Vandermonde convolution, hockey stick identity, Chu-Vandermonde"
       },
       {
         "id": "binomial-theorem-oq-04",
-        "relationship": "Sub-entry on advanced binomial coefficient properties"
+        "relationship": "Advanced properties: Lucas' theorem, Kummer's theorem, q-binomial coefficients"
       }
     ],
     "lineCount": 176,
@@ -115,8 +115,10 @@
       "**The binomial theorem is the ur-generating function identity**: viewing $(1+x)^n = \\sum \\binom{n}{k} x^k$ as a generating function for the binomial coefficients is the prototype for all of enumerative combinatorics — exponential generating functions, $q$-binomial coefficients (Gaussian binomials counting subspaces of $\\mathbb{F}_q^n$), and the umbral calculus all generalize this single identity"
     ],
     "prerequisites": [
-      "Abstract algebra",
-      "Combinatorics (counting, extremal problems)"
+      "Commutative semirings (ring axioms, distributivity, commutativity of multiplication)",
+      "Finite sums and the BigOperators notation ($\\sum_{k \\in S} f(k)$)",
+      "Binomial coefficients $\\binom{n}{k}$ and their recursive definition via Pascal's identity",
+      "Basic combinatorics (counting subsets, inclusion-exclusion)"
     ]
   },
   "sections": [
