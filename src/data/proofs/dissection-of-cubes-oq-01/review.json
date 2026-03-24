@@ -3,14 +3,12 @@
   "proofId": "dissection-of-cubes-oq-01",
   "reviewDate": "2026-03-23T23:00:00Z",
   "reviewer": "peer-reviewer",
-
   "overallAssessment": {
     "grade": "B-",
     "oneLiner": "Genuine original proof work extending Wiedijk #82 with a clean open question formalization, but 'verified' status is misleading — the theorems depend transitively on 2 axioms in the imported DissectionOfCubes.lean and the covering constraint is trivially True.",
     "tier": "B",
     "tierJustification": "Tier B: Formalized using Mathlib with imported axiom-dependent base. The file's own proofs are genuine multi-step Lean reasoning (not wrappers), but the foundation — dissection_of_cubes — depends on 2 axioms (smaller_cube_above_axiom, all_different_implies_long_chains_axiom) in the parent file. Additionally, CubeDissection.covers_unit_cube is defined as True, so results apply to any disjoint arrangement of cubes, not actual dissections."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -69,28 +67,27 @@
       "recommendation": "Consider removing or replacing with a more relevant cross-reference (e.g., a combinatorial geometry entry if one exists)."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
       "priority": "high",
       "target": "enricher",
       "description": "Change status from 'verified' to 'axiomatized' and badge from 'verified' to 'axiom'. The file's theorems depend transitively on 2 axioms in DissectionOfCubes.lean. Update axiomCount to 2 (inherited) and rewrite the assumptions field to document the transitive dependency.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "medium",
       "target": "enricher",
       "description": "Add note about covers_unit_cube : True placeholder to meta.json assumptions. Results apply to disjoint cube arrangements, not just actual dissections. This limitation is already acknowledged in the Lean file but not in the metadata.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "medium",
       "target": "enricher",
       "description": "Fix relatedProofs array format: first element is an object while others are strings. Standardize to all strings.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
@@ -104,10 +101,9 @@
       "priority": "low",
       "target": "enricher",
       "description": "Review euler-polyhedral-formula cross-reference — the connection is tenuous. Consider replacing with a more relevant entry.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 7,
     "originalityAccuracy": 7,
@@ -117,6 +113,5 @@
     "internalConsistency": 6,
     "overall": 6.8
   },
-
   "suggestedBestFraming": "An original extension of Wiedijk #82 (impossibility of perfect cube dissections) proving a quantitative lower bound: every nonempty cube dissection has at least 2 cubes sharing the same size. The file introduces clean definitions for collision pairs, size classes, and colliding cubes, with a genuine multi-step proof. The open question — whether exactly 2 is achievable — is formally stated. Results are axiom-dependent through the imported base file (2 axioms for the geometric descent argument) and the covering constraint is a placeholder."
 }
