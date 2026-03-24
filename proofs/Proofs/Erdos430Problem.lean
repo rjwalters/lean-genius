@@ -23,28 +23,51 @@ import Mathlib.Data.Finset.Basic
 /- ## Definitions -/
 
 /-- The smallest prime factor of n, or n itself if n ≤ 1. -/
-noncomputable def minPrimeFactor (n : ℕ) : ℕ :=
-  if h : 2 ≤ n then (Nat.minFac n) else n
+def minPrimeFactor (n : ℕ) : ℕ :=
+  if 2 ≤ n then Nat.minFac n else n
 
 /-- All prime factors of m exceed a given bound k. -/
 def allPrimeFactorsExceed (m k : ℕ) : Prop :=
   ∀ p : ℕ, p.Prime → p ∣ m → k < p
+
+/-- Decidability of allPrimeFactorsExceed via bounded quantification.
+    For m > 0, any divisor p satisfies p ≤ m, so we check p ∈ [0, m].
+    For m = 0, every prime divides 0, so the condition reduces to k < 2. -/
+instance decidableAllPrimeFactorsExceed (m k : ℕ) :
+    Decidable (allPrimeFactorsExceed m k) :=
+  if hm : m = 0 then
+    if hk : k < 2 then
+      .isTrue (by subst hm; intro p hp _; exact lt_of_lt_of_le hk hp.two_le)
+    else
+      .isFalse (by subst hm; intro h; exact hk (h 2 Nat.prime_two (dvd_zero 2)))
+  else
+    decidable_of_iff
+      (∀ p ∈ Finset.range (m + 1), p.Prime → p ∣ m → k < p)
+      ⟨fun h p hp hd =>
+         h p (Finset.mem_range.mpr
+           (Nat.lt_succ_of_le (Nat.le_of_dvd (Nat.pos_of_ne_zero hm) hd))) hp hd,
+       fun h p _ hp hd => h p hp hd⟩
 
 /-- An integer m ∈ [1, n) is admissible at level n if all prime factors
     of m exceed n - m. -/
 def IsAdmissible (n m : ℕ) : Prop :=
   1 ≤ m ∧ m < n ∧ allPrimeFactorsExceed m (n - m)
 
+/-- Decidability of IsAdmissible, using the decidability of allPrimeFactorsExceed. -/
+instance decidableIsAdmissible (n m : ℕ) : Decidable (IsAdmissible n m) :=
+  inferInstanceAs (Decidable (1 ≤ m ∧ m < n ∧ allPrimeFactorsExceed m (n - m)))
+
 /-- The greedy next element: the greatest integer in [1, prev) that is
     admissible at level n. Returns 0 if no such element exists. -/
-noncomputable def greedyNext (n prev : ℕ) : ℕ :=
-  Finset.sup ((Finset.Icc 1 (prev - 1)).filter (fun m => decide (IsAdmissible n m) = true)) id
+def greedyNext (n prev : ℕ) : ℕ :=
+  Finset.sup ((Finset.Icc 1 (prev - 1)).filter
+    (fun m => decide (IsAdmissible n m) = true)) id
 
 /- ## The Greedy Sequence -/
 
 /-- The greedy large-factor sequence starting from n-1.
     greedySeq n 0 = n - 1, and greedySeq n (k+1) = greedyNext n (greedySeq n k). -/
-noncomputable def greedySeq (n : ℕ) : ℕ → ℕ
+def greedySeq (n : ℕ) : ℕ → ℕ
   | 0 => n - 1
   | k + 1 => greedyNext n (greedySeq n k)
 
@@ -60,8 +83,9 @@ def hasComposite (n : ℕ) : Prop :=
 
 /-- For n = 8: a₁ = 7 (prime, all factors > 8-7=1),
     a₂ = 5 (prime, all factors > 8-5=3), then sequence terminates.
-    No composite appears. Small n may not have composites. -/
-axiom example_n8 : greedySeq 8 0 = 7 ∧ greedySeq 8 1 = 5
+    No composite appears. Small n may not have composites.
+    PROVED by native_decide (greedySeq is now computable). -/
+theorem example_n8 : greedySeq 8 0 = 7 ∧ greedySeq 8 1 = 5 := by native_decide
 
 /- ## Connection to Problem #385 -/
 

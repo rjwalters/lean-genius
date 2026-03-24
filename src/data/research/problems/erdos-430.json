@@ -29,12 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: 4 axioms. greedySeq is noncomputable (decide on universal), example_n8 not provable by native_decide.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: Made greedySeq computable. Proved example_n8 by native_decide. Axioms 4->3.",
+    "builtItems": [
+      "Decidable instance for allPrimeFactorsExceed in Erdos430Problem.lean:37-49",
+      "Decidable instance for IsAdmissible in Erdos430Problem.lean:56-57",
+      "Proved example_n8 in Erdos430Problem.lean:86"
+    ],
     "insights": [
       "greedySeq uses noncomputable Finset.sup with decide on universal quantifier - not computable",
       "example_n8 would need greedySeq to be computable, or a manual proof",
-      "Main conjecture is open, erdos_385_equivalence would need significant proof"
+      "Main conjecture is open, erdos_385_equivalence would need significant proof",
+      "Provided Decidable instance for allPrimeFactorsExceed via bounded quantification over Finset.range",
+      "Added explicit Decidable instance for IsAdmissible",
+      "Removed noncomputable from greedyNext, greedySeq - now fully computable",
+      "example_n8 proved by native_decide (greedySeq 8 0 = 7, greedySeq 8 1 = 5)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
