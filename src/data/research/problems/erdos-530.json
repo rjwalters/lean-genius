@@ -29,13 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 1 axiom (sidon_upper_bound 5→4), proved 3 new theorems, fixed 2 pre-existing issues (compilation error, deprecation).",
+    "progressSummary": "PROGRESS: Proved sidon_sum_count (previously axiom). Only 3 axioms remain: erdos_lower_bound (deep), KSS (deep), alon_erdos_partition (open conjecture). File at 236 lines.",
     "builtItems": [
       "maxSidonSize_le_card: proved maxSidonSize A ≤ A.card (Erdos530Problem.lean:87)",
       "sidon_upper_bound: PROVED (was axiom) — trivial bound from subset property (Erdos530Problem.lean:95)",
       "sidon_sum_injective: proved injectivity of sum map on sorted pairs of Sidon sets (Erdos530Problem.lean:147)",
       "Fixed compilation: added open Classical for DecidablePred IsSidon (Erdos530Problem.lean:34)",
-      "Fixed deprecated: Finset.not_mem_empty → Finset.notMem_empty (Erdos530Problem.lean:44)"
+      "Fixed deprecated: Finset.not_mem_empty → Finset.notMem_empty (Erdos530Problem.lean:44)",
+      "Proved card_sorted_pairs: |(S×S).filter(a≤b)| = n(n+1)/2 via partition+swap",
+      "Proved sidon_sum_count from sidon_sum_injective + card_sorted_pairs (axiom: 4→3)"
     ],
     "insights": [
       "sidon_upper_bound was trivially true (maxSidonSize A ≤ A.card, squared) — eliminated as axiom",
@@ -43,7 +45,11 @@
       "sidon_sum_count partially proved: injectivity (sidon_sum_injective) follows directly from IsSidon definition; pair counting identity k(k+1)/2 remains as axiom",
       "erdos_lower_bound and komlos_sulyok_szemeredi are deep combinatorial results — not provable from Mathlib",
       "alon_erdos_partition_conjecture is an open conjecture — not provable",
-      "Remaining axiom sidon_sum_count could potentially be eliminated: need to prove |(S×S filtered a≤b)| = |S|*(|S|+1)/2 for Finset"
+      "Remaining axiom sidon_sum_count could potentially be eliminated: need to prove |(S×S filtered a≤b)| = |S|*(|S|+1)/2 for Finset",
+      "card_sorted_pairs proved via partition + swap symmetry: S×S splits into upper/diagonal/lower triangles",
+      "Swap bijection (a,b)↦(b,a) gives |upper|=|lower|, diagonal gives |diag|=|S|",
+      "Finset.card_bij cleaner than Finset.map for bijection proofs in this context",
+      "sidon_sum_count = card_image_of_injOn + card_sorted_pairs — clean decomposition"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -67,7 +73,7 @@
     "mathlib": []
   },
   "started": "2026-01-13T04:39:49.623Z",
-  "lastUpdate": "2026-03-13T07:52:17.049Z",
+  "lastUpdate": "2026-03-24T09:00:00.000Z",
   "significance": 5,
   "tractability": 3,
   "leanFiles": [
