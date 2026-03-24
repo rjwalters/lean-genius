@@ -1,5 +1,28 @@
 [
   {
+    "id": "ann-dissect-00-namespace",
+    "proofId": "dissection-of-cubes",
+    "range": {
+      "startLine": 73,
+      "endLine": 85
+    },
+    "type": "context",
+    "title": "Namespace and Proof Architecture",
+    "content": "The `DissectionOfCubes` namespace scopes the entire 366-line development into five logical parts:\n\n- **Part 1** (lines 86-143): Basic definitions — `Cube` structure, `CubeDissection`, `allDifferentSizes`\n- **Part 2** (lines 144-181): The floor argument — `cubesTouchingBottom`, `smallest_cube_top_is_floor`\n- **Part 3** (lines 182-257): Infinite descent — `hasDecreasingChain`, two axioms, and the proved `chain_length_bounded`\n- **Part 4** (lines 258-298): Main theorem — `dissection_of_cubes` and `two_cubes_same_size`\n- **Part 5** (lines 299-366): Historical contrast — `squaring_the_square_exists` and commentary\n\nThe modular structure mirrors the proof's logic: definitions → geometric lemma → descent machinery → contradiction → context. The Lean file uses `noncomputable` in several places due to `Classical.propDecidable` (real number equality is not decidable), and the two axioms are clearly separated from the proved results.",
+    "mathContext": "The five-part structure mirrors the mathematical argument: (1) formalize the geometric objects; (2) establish the key lemma about the smallest cube on each floor; (3) build the infinite descent machinery via chain injectivity; (4) derive the contradiction; (5) contrast with the 2D case. The namespace ensures all 7 theorems and 8 definitions are scoped under `DissectionOfCubes.*`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "proof architecture",
+      "Lean 4 namespaces",
+      "noncomputable sections",
+      "Classical.propDecidable"
+    ],
+    "prerequisites": [
+      "Lean 4 namespace system",
+      "module organization"
+    ]
+  },
+  {
     "id": "ann-dissect-01-header",
     "proofId": "dissection-of-cubes",
     "range": {
