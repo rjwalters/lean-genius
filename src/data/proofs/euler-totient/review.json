@@ -69,21 +69,21 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Rewrite originalContributions in meta.json to distinguish genuine proof steps from pedagogical curation. Keep 'Derives Fermat's Little Theorem as corollary' as a contribution; reframe Mathlib wrappers and rfl/native_decide examples as 'pedagogical curation' rather than 'original contributions.'",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "low",
       "target": "enricher",
       "description": "Downgrade significance of et-totient-prime and et-totient-prime-pow annotations from 'key' to 'supporting,' since both are single-line Mathlib re-exports.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "low",
       "target": "enricher",
       "description": "Fix section line-range overlap: imports section endLine should be ~41 and main-theorem startLine should be ~42 to avoid the 10-line overlap at lines 44-53.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",

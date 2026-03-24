@@ -111,21 +111,21 @@
       "priority": "high",
       "target": "enricher",
       "description": "Fix wiedijkNumber from 98 to 43 in meta.json. Update Lean file docstring line 47 from '#98' to '#43'. Bertrand's Postulate is Wiedijk #43, not #98.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "high",
       "target": "enricher",
       "description": "Fix overview.text: change '13 declarations' to '7 theorems'. Fix 'prime_gap_bound' to 'prime_gap_bounded'. Remove or qualify the claim about 'concrete verifications' since the examples section is comments-only.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "medium",
       "target": "enricher",
       "description": "Remove 'opens Nat' from sections[0].summary. Fix sections[5] description to note 6 of 7 theorems are #checked (bertrand_large is omitted).",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
@@ -139,7 +139,7 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Reframe originalContributions to distinguish genuine derivations (primes_infinite_via_bertrand, no_largest_prime_via_bertrand) from trivial restatements (exists_prime_between, prime_gap_bounded) and commentary (PNT connection). Fix description 'n > 1' to 'n >= 1' to match Lean.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-6",

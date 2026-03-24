@@ -85,7 +85,7 @@
     "relatedProblems": [
       {
         "id": "erdos-1",
-        "relationship": "Foundational Erdős problem on sumset structure; both concern extremal properties of integer sequences"
+        "relationship": "Erdős's first serious problem on distinct subset sums; both are landmark Erdős problems at the interface of combinatorics and number theory"
       },
       {
         "id": "erdos-369",
@@ -230,7 +230,7 @@
   },
   "conclusion": {
     "summary": "This 243-line formalization captures the SOLVED Erdős Problem #4: for any $C > 0$, infinitely many prime gaps satisfy $g_n > C \\cdot \\frac{\\log p_n \\cdot \\log\\log p_n \\cdot \\log\\log\\log\\log p_n}{(\\log\\log\\log p_n)^2}$, proved independently by Maynard and Ford-Green-Konyagin-Tao (2016). The formalization axiomatizes the prime gap function, the Cramér and Erdős conjectures, the FGKT resolution, and the related $\\$10{,}000$ Erdős prize conjecture ($g_n > (\\log n)^{1+c}$, still OPEN). The key structural insight: the solution required combining sieve methods (Maynard-Tao multidimensional sieve producing bounded prime gaps) with Green-Tao-type machinery for long arithmetic progressions in primes — neither technique alone suffices, and the synthesis resolved a 75-year-old question about the growth rate of maximal prime gaps.",
-    "implications": "Prime gaps can far exceed the average gap of log n, with Rankin's amplification factor growing without bound — answering a question open since the 1930s. Maynard's multidimensional sieve techniques became fundamental tools in analytic number theory, leading to his Fields Medal-winning work on bounded gaps (p_{n+1} - p_n ≤ 246 infinitely often). The FGKT probabilistic hypergraph covering approach bridges combinatorics and analytic number theory, with applications to additive combinatorics and Ramsey theory. Under the Riemann Hypothesis, the maximum gap below x is O(√x log x), far below the unconditional (log x)² prediction — the gap between conditional and unconditional results remains a central mystery. The $10,000 prize for gaps exceeding (log n)^{1+c} remains open and would require fundamentally new ideas beyond current sieve methods",
+    "implications": "Prime gaps can far exceed the average gap of log n, with Rankin's amplification factor growing without bound — answering a question open since the 1930s. Maynard's multidimensional sieve techniques became fundamental tools in analytic number theory, leading to his Fields Medal-winning work on bounded gaps (p_{n+1} - p_n ≤ 246 infinitely often). The FGKT probabilistic hypergraph covering approach bridges combinatorics and analytic number theory, with applications to additive combinatorics and Ramsey theory. Under the Riemann Hypothesis, the maximum gap below x is O(√x log x), far below the unconditional (log x)² prediction — the gap between conditional and unconditional results remains a central mystery. The $10,000 prize for gaps exceeding (log n)^{1+c} remains open and would require fundamentally new ideas beyond current sieve methods.",
     "openQuestions": [
       "Erdős's $10,000 conjecture: Does p_{n+1} - p_n > (log n)^{1+c} hold for some c > 0 and infinitely many n?",
       "Cramér's conjecture: Is p_{n+1} - p_n = O((log p_n)²)?",
@@ -242,8 +242,8 @@
   "crossReferences": [
     {
       "targetId": "erdos-1",
-      "relationship": "complement",
-      "description": "Erdős #1 concerns small gaps between primes (Bertrand's postulate), the complementary question to the large gaps studied here"
+      "relationship": "related",
+      "description": "Erdős #1 on distinct subset sums is another landmark Erdős problem; both concern extremal questions in number theory and carry substantial Erdős prizes"
     },
     {
       "targetId": "erdos-369",
@@ -320,12 +320,12 @@
     {
       "id": "erdos-1",
       "relationship": "complement",
-      "description": "Erdős #1 concerns small gaps between primes (Bertrand's postulate), the complementary question to the large gaps studied"
+      "description": "Erdős #1 on distinct subset sums is another landmark Erdős problem; both concern extremal questions in number theory and carry substantial Erdős prizes"
     },
     {
       "id": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's postulate gives p_{n+1} < 2p_n, a weak upper bound on prime gaps that contrasts with the large gaps studied h"
+      "description": "Bertrand's postulate gives p_{n+1} < 2p_n, a weak upper bound on prime gaps that contrasts with the large gaps studied here"
     },
     {
       "id": "infinitude-primes",

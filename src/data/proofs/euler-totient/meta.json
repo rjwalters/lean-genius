@@ -42,13 +42,15 @@
       }
     ],
     "originalContributions": [
-      "Euler's theorem via ZMod.pow_totient",
-      "Fermat's Little Theorem as corollary via totient_prime",
-      "Fermat's full form a^p = a via ZMod.pow_card",
-      "Totient value examples verified by rfl",
-      "Euler's theorem examples verified by native_decide",
-      "Non-coprime counterexample (2^φ(4) ≠ 1 mod 4)",
-      "Totient of prime power formula"
+      "Derives Fermat's Little Theorem as a 3-line corollary of Euler's theorem via totient_prime substitution"
+    ],
+    "pedagogicalCuration": [
+      "Curates Mathlib's ZMod.pow_totient as a one-line proof of Euler's theorem",
+      "Applies ZMod.pow_card for the unconditional form a^p = a",
+      "Verifies totient values φ(1)–φ(6) by rfl computation",
+      "Confirms Euler's theorem for small cases via native_decide",
+      "Demonstrates necessity of coprimality with 2^φ(4) ≠ 1 (mod 4) counterexample",
+      "Provides totient formulas for primes and prime powers from Mathlib"
     ],
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 10,
@@ -79,7 +81,7 @@
       "title": "Imports and Documentation",
       "summary": "Imports `ZMod.Basic`, `Nat.Totient`, `RingTheory.Int.Basic`, and `Tactic`. Docstring with $a^{\\varphi(n)} \\equiv 1$, approach via Lagrange's theorem, and historical note (Euler 1763, Wiedijk #10).",
       "startLine": 1,
-      "endLine": 53
+      "endLine": 43
     },
     {
       "id": "main-theorem",
