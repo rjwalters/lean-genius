@@ -44,6 +44,47 @@ theorem collatz_two : collatz 2 = 1 := by decide
 /-- 1 reaches 1 trivially. -/
 theorem one_reaches_one : ReachesOne 1 := ⟨0, rfl⟩
 
+/- ## Structural Properties -/
+
+/-- Composition: k iterations starting from collatz m equals k+1 iterations from m. -/
+theorem collatzIter_collatz (k m : ℕ) :
+    collatzIter k (collatz m) = collatzIter (k + 1) m := by
+  induction k with
+  | zero => simp [collatzIter]
+  | succ n ih => simp [collatzIter, ih]
+
+/-- The Collatz function preserves positivity. -/
+theorem collatz_pos {m : ℕ} (hm : 0 < m) : 0 < collatz m := by
+  unfold collatz; split_ifs with h
+  · exact Nat.div_pos (by omega) (by omega)
+  · exact Nat.div_pos (by omega) (by omega)
+
+/-- Even case: collatz m = m / 2. -/
+theorem collatz_even_eq (m : ℕ) (h : m % 2 = 0) : collatz m = m / 2 := by
+  simp [collatz, h]
+
+/-- Odd case: collatz m = (3m + 1) / 2. -/
+theorem collatz_odd_eq (m : ℕ) (h : m % 2 ≠ 0) : collatz m = (3 * m + 1) / 2 := by
+  simp [collatz, h, if_neg]
+
+/-- An even step always reduces: collatz m < m for even m > 0. -/
+theorem collatz_even_lt (m : ℕ) (hm : 0 < m) (h : m % 2 = 0) : collatz m < m := by
+  rw [collatz_even_eq m h]; exact Nat.div_lt_self hm (by omega)
+
+/-- If collatz m reaches 1, then m reaches 1. -/
+theorem reachesOne_of_collatz {m : ℕ} (h : ReachesOne (collatz m)) : ReachesOne m := by
+  obtain ⟨k, hk⟩ := h
+  exact ⟨k + 1, by rw [← collatzIter_collatz]; exact hk⟩
+
+/- ## Concrete Verifications -/
+
+theorem two_reaches_one : ReachesOne 2 := ⟨1, by native_decide⟩
+theorem three_reaches_one : ReachesOne 3 := ⟨5, by native_decide⟩
+theorem four_reaches_one : ReachesOne 4 := ⟨2, by native_decide⟩
+theorem five_reaches_one : ReachesOne 5 := ⟨4, by native_decide⟩
+theorem six_reaches_one : ReachesOne 6 := ⟨6, by native_decide⟩
+theorem seven_reaches_one : ReachesOne 7 := ⟨11, by native_decide⟩
+
 /- ## Partial Results -/
 
 /-- Tao (2019): For almost all m, the orbit goes below any function tending to ∞.
