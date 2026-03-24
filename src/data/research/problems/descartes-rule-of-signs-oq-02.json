@@ -29,17 +29,17 @@
     "phase": "ACT",
     "since": "2026-03-24T20:00:00Z",
     "iteration": 2,
-    "focus": "Proving infrastructure sorries: iterDeriv_eval_zero, budanCount_le_natDegree, rootsInInterval_split",
+    "focus": "Proved key infrastructure: iterDeriv_eval_zero, budanCount_le_natDegree, rootsInInterval_split (7→4 sorries)",
     "blockers": [],
-    "nextAction": "Prove 4 remaining sorries: descartes_from_budan, budanCount_smul, budanCount_zero_eq_coeff_sign_changes, chainVariation_budanChain",
+    "nextAction": "Prove 4 remaining sorries: descartes_from_budan (needs root containment), budanCount_zero_eq_coeff_sign_changes (needs positive scaling preserves signs), budanCount_smul (needs sign change preservation under scaling), chainVariation_budanChain (finRange↔range conversion)",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "ACT: DescartesRuleOfSignsOQ02.lean — 502 lines, 45 theorems, 9 definitions, 3 axioms, 4 sorries (down from 7). Session 2 proved: iterDeriv_eval_zero, budanCount_le_natDegree, rootsInInterval_split, plus infrastructure (iterDeriv_coeff, countAdjacentDiffs_le, poly_eval_at_zero, iterDeriv_C_mul, iterDeriv_eq_iterate).",
+    "progressSummary": "ACT: 502 lines, 45 theorems, 8 definitions, 3 axioms, 4 sorries (was 7). Session 2 proved 3 key sorries + 6 infrastructure lemmas. Key: iterDeriv_coeff (general coefficient formula via descFactorial induction), iterDeriv_eval_zero (Taylor coefficient extraction), budanCount_le_natDegree (structural bound via countAdjacentDiffs_le).",
     "builtItems": [
       "iterDeriv: k-th iterated derivative with degree bounds (DescartesRuleOfSignsOQ02.lean:68-108)",
       "budanSequence: [p(x), p'(x), ..., p^(n)(x)] evaluation list (DescartesRuleOfSignsOQ02.lean:110-117)",

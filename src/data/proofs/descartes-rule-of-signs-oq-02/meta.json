@@ -19,7 +19,7 @@
       "research"
     ],
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 4,
     "mathlibDependencies": [
       {
         "theorem": "Polynomial.derivative",
@@ -56,13 +56,20 @@
       "n_roots_derivative_roots: n+1 ordered roots → n derivative roots (fully proved)",
       "descartes_from_budan: Descartes' rule as special case of Budan (a=0, b→∞)",
       "iterDeriv_eq_zero: iterated derivative beyond degree is zero (fully proved)",
+      "iterDeriv_coeff: general coefficient formula (p^(k)).coeff j = descFactorial(j+k,k) * p.coeff(j+k) (fully proved)",
+      "iterDeriv_eval_zero: p^(k)(0) = k! * coeff k (fully proved via iterDeriv_coeff)",
+      "poly_eval_at_zero: polynomial evaluation at 0 equals constant coefficient (fully proved)",
+      "budanCount_le_natDegree: V_p(x) ≤ deg(p) structural bound (fully proved)",
+      "rootsInInterval_split: root count additivity over interval splits (fully proved)",
+      "iterDeriv_C_mul: scalar multiplication commutes with iterated derivative (fully proved)",
+      "countAdjacentDiffs_le: sign changes bounded by list length - 1 (fully proved)",
       "budanCount_diff_split: V(a)-V(b) = (V(a)-V(c)) + (V(c)-V(b)) additivity"
     ],
     "dateAdded": "2026-03-24",
     "axiomCount": 3,
-    "lineCount": 491,
-    "theoremCount": 33,
-    "defCount": 9,
+    "lineCount": 502,
+    "theoremCount": 45,
+    "defCount": 8,
     "assumptions": "3 axioms: budan_upper_bound (Rolle induction), budan_parity (conjugate pairs), budanCount_large (leading coefficient dominance). See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
