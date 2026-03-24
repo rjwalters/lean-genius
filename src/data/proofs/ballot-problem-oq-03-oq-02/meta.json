@@ -64,7 +64,7 @@
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
     "lineCount": 1885,
-    "theoremCount": 28,
+    "theoremCount": 76,
     "prerequisites": [
       "Matrix determinants and permutation signs (Mathlib)",
       "Binomial coefficients (Mathlib)",
@@ -78,7 +78,7 @@
   "overview": {
     "historicalContext": "The Lindström-Gessel-Viennot (LGV) lemma is one of the most versatile tools in enumerative combinatorics. Bernt Lindström proved a general version for vector matroids in 1973, building on ideas from Karlin and McGregor's 1959 work on coincidence probabilities of Markov chains. Ira Gessel and Gérard Viennot independently rediscovered and popularized the result in their influential 1985 paper, providing the elegant sign-reversing involution proof that has become the standard approach. The lemma connects non-intersecting lattice paths to determinants: the number of $r$-tuples of pairwise non-intersecting paths equals $\\det[e(A_i, B_j)]_{i,j}$. This determinantal structure has profound consequences—it underlies the Jacobi-Trudi identity for Schur polynomials, the Cauchy-Binet identity in linear algebra, and the Kasteleyn method for perfect matchings. The GV involution is a paradigmatic example of the 'cancellation via involution' technique that pervades algebraic combinatorics.",
     "problemStatement": "**The r×r LGV Lemma**: Given strictly increasing source points A₁,...,Aᵣ and target points B₁,...,Bᵣ on a lattice grid of width m, the number of r-tuples of pairwise non-intersecting lattice paths (Pᵢ: Aᵢ→Bᵢ) equals\n\n  det[ e(Aᵢ, Bⱼ) ]_{i,j=1}^r\n\nwhere e(A,B) = C(m + (bⱼ - aᵢ), m) is the number of monotone lattice paths from A to B.",
-    "text": "Generalizes the 2×2 LGV lemma to the full r×r case: the number of r-tuples of pairwise non-intersecting lattice paths equals det[e(Aᵢ,Bⱼ)], the determinant of the path count matrix. Formalizes LGVConfig, PathTuple, permutation path tuples, and the Gessel-Viennot sign-reversing involution infrastructure.",
+    "text": "This formalization builds the complete infrastructure for the r×r Lindström-Gessel-Viennot determinant identity in Lean 4. Starting from lattice paths as Boolean lists, it constructs the PathMN type with a Fintype instance, defines the r×r path weight matrix over ℤ, and introduces permutation-indexed path tuples. The proof architecture connects the Leibniz determinant expansion (via Matrix.det_apply) to the combinatorial signed sum over permutation path tuples, then applies the Gessel-Viennot sign-reversing involution to cancel all non-identity contributions. Key proved components include a discrete intermediate value theorem for lattice path crossings, cardinality of PathMN via double induction on Pascal's rule, and the algebraic bridge equating det M with the signed permutation sum. Two sorries remain in the canonical involution's membership and self-inverse properties.",
     "proofStrategy": "**Gessel-Viennot Involution**:\n1. Expand det M = Σ_σ sign(σ) ∏ᵢ M_{i,σ(i)} where M_{i,j} = e(Aᵢ, Bⱼ)\n2. Each term ∏ M_{i,σ(i)} counts σ-path tuples (Pᵢ: Aᵢ→B_{σ(i)})\n3. For σ ≠ id: find smallest i with σ(i) ≠ i; paths Pᵢ and P_{σ(i)} must cross\n4. Swap tails at first crossing point → maps σ-tuple to (swap(i,σ(i))∘σ)-tuple\n5. sign changes (transposition): terms cancel pairwise\n6. Only σ = id survives; non-NI id-tuples also cancel → niTupleCount = det M",
     "keyInsights": [
       "The sign-reversing involution pairs each σ-tuple with a τ-tuple where τ = swap(i,σ(i))∘σ has opposite sign, causing pairwise cancellation",
@@ -86,7 +86,9 @@
       "The 2×2 case is the base case; the r×r generalization uses the SAME involution mechanism but on r-tuples indexed by Equiv.Perm (Fin r)",
       "pathMatrix determinant non-negativity follows immediately from the LGV lemma since niTupleCount is a natural number",
       "The LGV lemma connects combinatorics to linear algebra: non-intersecting lattice paths encode determinantal identities",
-      "The sole remaining axiom (gv_involution_cancellation) isolates the hardest part: showing the involution is well-defined, is its own inverse, and has exactly the NI identity tuples as fixed points"
+      "The crossing lemma (lattice_paths_must_cross) is a discrete intermediate value theorem: if two monotone lattice paths start on opposite sides and end on opposite sides, they must share a column entry — proved via Finset.max' on the set of columns where the first path is still below",
+      "The canonical GV involution uses Nat.find with a lexicographic encoding (column, i, j) to deterministically select the 'first' crossing pair, ensuring the involution is canonical and self-inverse",
+      "The two remaining sorries are purely technical: showing the tail-swapped paths still share a lattice point (membership) and that double tail-swap recovers the original paths (self-inverse)"
     ],
     "prerequisites": [
       "Matrix determinants and permutation signs (Mathlib)",
@@ -99,88 +101,105 @@
     {
       "id": "lattice-path-foundations",
       "title": "Part 1: Lattice Path Foundations",
-      "startLine": 49,
-      "endLine": 82,
+      "startLine": 77,
+      "endLine": 110,
       "summary": "LPath (List Bool), PathMN subtype with Fintype instance (via Vector equivalence), pathCount as binomial coefficient.",
-      "mathContext": "$\\mathrm{PathMN}(m,n) \\cong \\{S \\subseteq \\mathrm{Fin}(m+n) : |S|=m\\}$, so $|\\mathrm{PathMN}(m,n)| = \\binom{m+n}{m}$"
+      "mathContext": "$\\mathrm{PathMN}(m,n) \\cong \\{v \\in \\mathrm{Vector}(\\mathrm{Bool}, m{+}n) : v.\\mathrm{countP}(\\text{East}) = m\\}$, so $|\\mathrm{PathMN}(m,n)| = \\binom{m+n}{m}$"
     },
     {
       "id": "non-intersection",
       "title": "Part 2: Column Entry and Non-Intersection",
-      "startLine": 83,
-      "endLine": 109,
-      "summary": "northBeforeEast (recursive y-tracking), colEntry, colYRange, and NonIntersecting predicate via column-disjointness.",
-      "mathContext": "For a lattice path $P$, $\\mathrm{colEntry}(P, c)$ gives the $y$-coordinate when $P$ enters column $c$. Two paths are non-intersecting iff $\\mathrm{colYRange}(P_i, c) \\cap \\mathrm{colYRange}(P_j, c) = \\emptyset$ for all columns $c$."
+      "startLine": 111,
+      "endLine": 222,
+      "summary": "northBeforeEast (recursive y-tracking), colEntry, colYRange, and NonIntersecting predicate via column-disjointness. Includes monotonicity lemma for colEntry and the bound colEntry_le_north.",
+      "mathContext": "For a lattice path $P$, $\\mathrm{colEntry}(P, c)$ gives the $y$-coordinate when $P$ enters column $c$. Two paths are non-intersecting iff $\\mathrm{colYRange}(P_i, c) \\cap \\mathrm{colYRange}(P_j, c) = \\emptyset$ for all columns $c$ and their final $y$-coordinates differ."
     },
     {
       "id": "r-tuple-infrastructure",
       "title": "Part 3: r-Tuple Infrastructure",
-      "startLine": 110,
-      "endLine": 136,
+      "startLine": 223,
+      "endLine": 251,
       "summary": "LGVConfig structure (sources/targets strictly monotone), PathTuple (dependent r-tuple), IsNonIntersecting (pairwise non-intersection).",
-      "mathContext": "$\\mathrm{LGVConfig}(r, m)$: sources $a_1 < \\cdots < a_r$, targets $b_1 < \\cdots < b_r$, grid width $m$. $\\mathrm{PathTuple}$: $(P_1,\\ldots,P_r)$ with $P_i \\in \\mathrm{PathMN}(m, b_i - a_i)$."
+      "mathContext": "$\\mathrm{LGVConfig}(r) = (m, (a_i)_{i=1}^r, (b_i)_{i=1}^r)$ with $a_1 < \\cdots < a_r$, $b_1 < \\cdots < b_r$, $a_i \\leq b_i$. $\\mathrm{PathTuple}$: $(P_1,\\ldots,P_r)$ with $P_i \\in \\mathrm{PathMN}(m, b_i - a_i)$."
     },
     {
       "id": "path-weight-matrix",
       "title": "Part 4: Path Weight Matrix",
-      "startLine": 137,
-      "endLine": 146,
-      "summary": "pathMatrix: r×r integer matrix M_{i,j} = C(m+(b_j-a_i), m) counting paths from source i to target j.",
+      "startLine": 252,
+      "endLine": 261,
+      "summary": "pathMatrix: r×r integer matrix M_{i,j} = C(m+(b_j-a_i), m) counting paths from source i to target j. Cast to ℤ for determinant sign compatibility.",
       "mathContext": "$M_{i,j} = \\binom{m + (b_j - a_i)}{m} = e(A_i, B_j)$, the number of monotone lattice paths from source $A_i$ to target $B_j$."
     },
     {
       "id": "permutation-path-tuples",
       "title": "Part 5: Permutation Path Tuples",
-      "startLine": 147,
-      "endLine": 165,
+      "startLine": 262,
+      "endLine": 280,
       "summary": "PermPathTuple (σ-indexed path tuples), signedPermCount (sign(σ) × product of binomial coefficients).",
       "mathContext": "$\\mathrm{PermPathTuple}(\\sigma)$: $r$-tuple $(P_1,\\ldots,P_r)$ with $P_i: A_i \\to B_{\\sigma(i)}$. Signed count: $\\mathrm{sgn}(\\sigma)\\prod_{i=1}^r \\binom{m+(b_{\\sigma(i)}-a_i)}{m}$."
     },
     {
       "id": "ni-tuple-count",
       "title": "Part 6: Non-Intersecting Tuple Count",
-      "startLine": 166,
-      "endLine": 174,
+      "startLine": 281,
+      "endLine": 289,
       "summary": "niTupleCount: cardinality of non-intersecting identity path tuples, the left-hand side of the LGV lemma.",
-      "mathContext": "$\\mathrm{niTupleCount} = |\\{(P_1,\\ldots,P_r) : P_i \\in \\mathrm{PathMN}(m, b_i{-}a_i),\\; P_i \\cap P_j = \\emptyset\\ \\forall\\, i \\neq j\\}|$"
+      "mathContext": "$\\mathrm{niTupleCount} = |\\{(P_1,\\ldots,P_r) : P_i \\in \\mathrm{PathMN}(m, b_i{-}a_i),\\; \\text{pairwise NI}\\}|$"
     },
     {
-      "id": "gv-involution",
-      "title": "Part 7: Gessel-Viennot Involution Infrastructure",
-      "startLine": 175,
-      "endLine": 264,
-      "summary": "swapTailsAt operation with length preservation, transposition sign theorem, firstNonFixed (smallest non-fixed point with minimality and upward-mapping proofs).",
+      "id": "gv-involution-core",
+      "title": "Part 7: Gessel-Viennot Involution (Core)",
+      "startLine": 290,
+      "endLine": 378,
+      "summary": "swapTailsAt operation with length preservation, transposition sign theorem (gessel_viennot_transposition_sign), firstNonFixed (smallest non-fixed point with minimality and upward-mapping proofs).",
       "mathContext": "$\\mathrm{sgn}((i\\;\\sigma(i)) \\cdot \\sigma) = -\\mathrm{sgn}(\\sigma)$; for $\\sigma \\neq \\mathrm{id}$, $\\mathrm{firstNonFixed}(\\sigma) < \\sigma(\\mathrm{firstNonFixed}(\\sigma))$"
     },
     {
       "id": "algebraic-bridge",
-      "title": "Parts 7b–7c: PathMN Cardinality and Algebraic Bridge",
-      "startLine": 265,
-      "endLine": 317,
-      "summary": "pathMN_card (PROVED: C(m+n,m) via double induction + Pascal's rule + cons decomposition), permPathTuple_card (product factorization), det_pathMatrix_eq_signed_sum (det = Σ sign(σ)·|PermPathTuple(σ)|).",
-      "mathContext": "$\\det M = \\sum_{\\sigma} \\mathrm{sgn}(\\sigma) \\prod_{i} \\binom{m+(b_{\\sigma(i)}-a_i)}{m}$"
+      "title": "Parts 7b–7d: PathMN Cardinality, Algebraic Bridge, and Identity Infrastructure",
+      "startLine": 380,
+      "endLine": 599,
+      "summary": "pathMN_card (proved via double induction + Pascal's rule), permPathTuple_card (product factorization), det_pathMatrix_eq_signed_sum (det = Σ sign(σ)·|PermPathTuple(σ)|), identity permutation equivalence, and GV cancellation for r=0 and r=1.",
+      "mathContext": "$\\det M = \\sum_{\\sigma \\in S_r} \\mathrm{sgn}(\\sigma) \\prod_{i} M_{i,\\sigma(i)} = \\sum_\\sigma \\mathrm{sgn}(\\sigma) \\cdot |\\mathrm{PermPathTuple}(\\sigma)|$"
+    },
+    {
+      "id": "crossing-lemma",
+      "title": "Part 7e: Crossing Lemma (Discrete IVT)",
+      "startLine": 649,
+      "endLine": 735,
+      "summary": "crossing_column_exists (discrete IVT via Finset.max') and lattice_paths_must_cross: if path from lower source reaches higher target and vice versa, they must share a column entry point.",
+      "mathContext": "If $y_1 < y_2$ and $y_1 + n_1 > y_2 + n_2$, then $\\exists\\, c < m$ with $\\mathrm{colEntry}(P_1, c) + y_1 \\geq \\mathrm{colEntry}(P_2, c) + y_2$ — a discrete IVT for monotone lattice paths."
+    },
+    {
+      "id": "gv-involution-construction",
+      "title": "Parts 7f–7l: Full GV Involution Construction",
+      "startLine": 736,
+      "endLine": 1835,
+      "summary": "wellFormed condition, non-identity permutation crossing theorem, tagged path tuples (sigma type), GV involution via northThenEast paths, canonical crossing selection (Nat.find + lex encoding), tail-swap PathMN construction with length/East-count preservation, and final involution properties. Contains 2 sorries: gvCanon_membership and gvCanon_self_inverse.",
+      "mathContext": "The canonical involution $\\iota$ maps $(\\sigma, \\vec{P})$ to $((i\\;j) \\circ \\sigma, \\vec{P'})$ where $(i,j)$ is the lexicographically first crossing pair and $\\vec{P'}$ swaps tails of paths $i$ and $j$ at the crossing column. $\\iota$ is sign-reversing, fixed-point-free on cancellable tuples, and (modulo 2 sorries) self-inverse."
     },
     {
       "id": "lgv-lemma",
       "title": "Part 8: The r×r LGV Lemma",
-      "startLine": 318,
-      "endLine": 354,
-      "summary": "gv_involution_cancellation (axiom: signed sum = NI count) and lgv_lemma_rxr (theorem: niTupleCount = det pathMatrix, proved in 2 lines from algebraic bridge + GV cancellation).",
-      "mathContext": "$|\\{\\text{NI tuples}\\}| = \\det[\\binom{m+(b_j-a_i)}{m}]_{i,j=1}^r$"
+      "startLine": 1798,
+      "endLine": 1835,
+      "summary": "gv_involution_cancellation (proved via Finset.sum_involution from cancellable_sum_eq_zero + NI counting bijection) and lgv_lemma_rxr (theorem: niTupleCount = det pathMatrix).",
+      "mathContext": "$|\\{\\text{NI tuples}\\}| = \\det\\bigl[\\binom{m + (b_j - a_i)}{m}\\bigr]_{i,j=1}^r$"
     },
     {
       "id": "corollaries",
       "title": "Parts 9–10: Corollaries and Applications",
-      "startLine": 355,
-      "endLine": 896,
-      "summary": "Non-negativity of det, r=1 vacuous NI, and lgv_universality. Applications survey: Schur polynomials (Jacobi-Trudi), Catalan numbers, Aztec diamond tilings, plane partitions."
+      "startLine": 1836,
+      "endLine": 1885,
+      "summary": "Non-negativity of det, r=1 vacuous NI, lgv_universality, and an applications survey: Schur polynomials (Jacobi-Trudi), Catalan numbers, Aztec diamond tilings, plane partitions.",
+      "mathContext": "$\\det M \\geq 0$ since $\\det M = \\mathrm{niTupleCount} \\in \\mathbb{N}$. For $r=1$, every singleton path tuple is vacuously non-intersecting, so $\\mathrm{niTupleCount} = \\binom{m + (b_1-a_1)}{m}$."
     }
   ],
   "conclusion": {
     "summary": "Comprehensive formalization of the general r×r LGV lemma infrastructure. Defines the path tuple structures, weight matrix, and non-intersection predicate for arbitrary r. Proves the key sign-change lemma (transposition reverses permutation sign) and establishes non-negativity of the path matrix determinant. The main LGV equality is axiomatized pending the full Gessel-Viennot involution proof.",
     "implications": "**Theoretical Significance**: **Applications of the r×r LGV lemma:**\n1. **Schur polynomials**: Via Jacobi-Trudi, s_λ = det[h_{λᵢ-i+j}] counts NI lattice paths (semistandard Young tableaux)\n**2. Plane partitions**: MacMahon's box formula via LGV on 3D lattice\n3. **Aztec diamond**: 2^{n(n+1)/2} tilings via NI path determinant\n4. **Random matrices**: Eigenvalue spacing via NI random walk paths.",
     "openQuestions": [
-      "Prove lgv_lemma_rxr by formalizing the full Gessel-Viennot sign-reversing involution",
+      "Close the 2 remaining sorries in gvCanon_membership and gvCanon_self_inverse to complete the GV involution proof (lgv_lemma_rxr itself is proved modulo these)",
       "Connect to Mathlib's Schur polynomial infrastructure for the Jacobi-Trudi identity",
       "Extend to weighted lattice paths (generating function version of LGV)"
     ]
@@ -207,6 +226,28 @@
       "description": "The continuous-time ballot problem via Brownian motion provides the probabilistic counterpart to the general LGV determinant: where this file computes determinants of path-count matrices for r non-crossing discrete paths, the Brownian motion approach computes analogous crossing probabilities in continuous time using the Karlin-McGregor theorem"
     }
   ],
+  "references": [
+    {
+      "key": "Li73",
+      "citation": "Lindström, B., On the Vector Representations of Induced Matroids, Bulletin of the London Mathematical Society 5 (1973), 85–90.",
+      "type": "paper"
+    },
+    {
+      "key": "GV85",
+      "citation": "Gessel, I. and Viennot, G., Binomial Determinants, Paths, and Hook Length Formulae, Advances in Mathematics 58 (1985), 300–321.",
+      "type": "paper"
+    },
+    {
+      "key": "KM59",
+      "citation": "Karlin, S. and McGregor, J., Coincidence Probabilities, Pacific Journal of Mathematics 9 (1959), 1141–1164.",
+      "type": "paper"
+    },
+    {
+      "key": "Ai07",
+      "citation": "Aigner, M., A Course in Enumeration, Springer, 2007, Chapter 10.",
+      "type": "book"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
@@ -217,8 +258,8 @@
     "namespace": "LGV",
     "lineCount": 1885,
     "axiomCount": 0,
-    "theoremCount": 31,
-    "definitionCount": 16
+    "theoremCount": 76,
+    "definitionCount": 29
   },
   "relatedProofs": [
     {
