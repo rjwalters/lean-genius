@@ -21,9 +21,9 @@
     "erdosNumber": 1013,
     "erdosUrl": "https://erdosproblems.com/1013",
     "erdosProblemStatus": "open",
-    "axiomCount": 9,
-    "lineCount": 159,
-    "assumptions": "11 axioms: erdos_1013_asymptotic, erdos_1013_ratio_convergence, lower_bound, and 8 more. See Lean source for complete statements.",
+    "axiomCount": 6,
+    "lineCount": 220,
+    "assumptions": "6 axioms: lower_bound, upper_bound, graver_yackel_bound (known results), threshold_three (h₃(3)=5, C₅), threshold_four (h₃(4)=11, Grötzsch), mycielski_construction (existence). threshold_mono, threshold_one, threshold_two now proved. Open conjectures stated as Prop defs.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -272,9 +272,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 159,
-    "axiomCount": 11,
-    "theoremCount": 0,
-    "definitionCount": 4
+    "lineCount": 220,
+    "axiomCount": 6,
+    "theoremCount": 12,
+    "definitionCount": 6
   }
 }
