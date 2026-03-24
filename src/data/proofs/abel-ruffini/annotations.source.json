@@ -303,8 +303,8 @@
       "kind": "theorem"
     },
     "type": "theorem",
-    "title": "Part V Setup: Existence of Quintics and the Main Theorem Preamble",
-    "content": "Part V combines the Galois bridge (Part II) with non-solvability of $S_n$ (Part III) to state the Abel-Ruffini theorem.\n\n`exists_quintic` provides a trivial witness that degree-5 polynomials exist: $X^5$ has `natDegree = 5`, proved by `simp` on `Polynomial.natDegree_pow` and `Polynomial.natDegree_X`. This is a sanity check — the substantive content is in `not_solvable_by_rad_of_not_solvable_gal` that follows.\n\nThe Part V docstring frames the logical structure: the contrapositive of `galois_bridge` converts \"solvable by radicals → solvable Galois group\" into \"unsolvable Galois group → not solvable by radicals.\" Since $S_5$ is not solvable, any polynomial with Galois group $S_5$ has roots that are not expressible by radicals.",
+    "title": "Existence of Degree-5 Polynomials",
+    "content": "`exists_quintic` provides a trivial witness that degree-5 polynomials exist over $\\mathbb{Q}$: the polynomial $X^5$ has `natDegree = 5`. The Lean proof uses `simp only` with two rewrite lemmas — `Polynomial.natDegree_pow` (which computes $\\text{natDegree}(p^n) = n \\cdot \\text{natDegree}(p)$) and `Polynomial.natDegree_X` (which establishes $\\text{natDegree}(X) = 1$) — followed by `mul_one` to simplify $5 \\cdot 1 = 5$.\n\nWhile mathematically trivial, this theorem serves a structural role: it establishes that the degree-5 threshold identified in Parts III–IV (where $S_n$ transitions from solvable to non-solvable) is actually realized by polynomials over $\\mathbb{Q}$. The substantive impossibility is in `not_solvable_by_rad_of_not_solvable_gal` that follows.",
     "mathContext": "$\\exists p \\in \\mathbb{Q}[X],\\; \\deg(p) = 5$. Witness: $p = X^5$.\n\n$\\text{natDegree}(X^n) = n \\cdot \\text{natDegree}(X) = n \\cdot 1 = n$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -327,7 +327,7 @@
     },
     "type": "theorem",
     "title": "The Abel-Ruffini Contrapositive: The Main Event",
-    "content": "`not_solvable_by_rad_of_not_solvable_gal` is the logical heart of the formalization. It takes the contrapositive of `galois_bridge`: if the Galois group of an irreducible polynomial $q$ is **not** solvable and $\\alpha$ is a root, then $\\alpha$ is **not** solvable by radicals. The proof is a 2-line proof term: `intro hrad; exact hns (galois_bridge α q hq hroot hrad)` — assuming $\\alpha$ is solvable by radicals, applying the bridge to get `IsSolvable q.Gal`, and deriving a contradiction with `hns`.\n\n`exists_quintic` provides a trivial witness ($X^5$) that degree-5 polynomials exist. To complete the Abel-Ruffini theorem for a *specific* quintic, one would need to exhibit $q \\in \\mathbb{Q}[X]$ of degree 5 with $\\text{Gal}(q) \\cong S_5$. The standard example is $x^5 - x - 1$, whose Galois group over $\\mathbb{Q}$ is $S_5$ (verified by checking irreducibility mod 2 and that the discriminant has non-square part, forcing the full symmetric group).",
+    "content": "`not_solvable_by_rad_of_not_solvable_gal` is the logical heart of the formalization. It takes the contrapositive of `galois_bridge`: if the Galois group of an irreducible polynomial $q$ is **not** solvable and $\\alpha$ is a root, then $\\alpha$ is **not** solvable by radicals.\n\nThe Lean proof is a textbook example of contrapositive reasoning in tactic mode: `intro hrad` assumes the negated conclusion ($\\alpha$ is solvable by radicals), then `exact hns (galois_bridge α q hq hroot hrad)` applies the forward direction of the bridge to obtain `IsSolvable q.Gal`, which contradicts hypothesis `hns`. This 2-line proof compresses centuries of mathematics — from Lagrange's 1770 analysis of resolvents through Abel's 1824 impossibility to Galois's 1832 group-theoretic framework — into a single `intro`/`exact` pair.\n\nTo instantiate Abel-Ruffini for a *specific* unsolvable quintic, one would exhibit $q \\in \\mathbb{Q}[X]$ with $\\text{Gal}(q) \\cong S_5$. The standard example is $x^5 - x - 1$: irreducibility mod 2, a non-square discriminant ($\\Delta = 2869 = 19 \\times 151$), and the existence of exactly three real roots (contributing a transposition to the Galois group) together force $\\text{Gal}(x^5 - x - 1/\\mathbb{Q}) = S_5$.",
     "mathContext": "$\\neg\\,\\text{IsSolvable}(q.\\text{Gal}) \\Rightarrow \\neg\\,\\text{IsSolvableByRad}\\,F\\,\\alpha$.\n\nProof: Assume $\\text{IsSolvableByRad}\\,F\\,\\alpha$. By `galois_bridge`, $\\text{IsSolvable}(q.\\text{Gal})$. Contradiction with $\\neg\\,\\text{IsSolvable}(q.\\text{Gal})$. $\\square$\n\nFor the general quintic: $q = x^5 - x - 1$ over $\\mathbb{Q}$ has $\\text{Gal}(q) \\cong S_5$, so its roots are not expressible by radicals.",
     "significance": "key",
     "relatedConcepts": [
@@ -343,30 +343,59 @@
     ]
   },
   {
-    "id": "ann-threshold-commentary",
+    "id": "ann-part-vi-threshold",
     "proofId": "abel-ruffini",
     "anchor": {
       "type": "section-doc",
       "contains": "Part VI: The Threshold at Degree 5"
     },
     "type": "insight",
-    "title": "Why Degree 5 and the Historical Revolution",
-    "content": "The closing commentary (Parts VI–VII) explains *why* degree 5 is the exact threshold and places the result in historical context. The derived series of $S_4$ terminates because $A_4$ has the Klein four-group $V_4$ as a normal subgroup, while $A_5$ has no proper normal subgroups at all (it is simple).\n\nHistorically, Abel-Ruffini was revolutionary as one of the first major **impossibility proofs** — showing that something *cannot* be done. This methodology later influenced Lindemann's proof that $\\pi$ is transcendental (1882), Gödel's incompleteness theorems (1931), and Turing's halting problem (1936). The commentary also makes a subtle but important distinction: quintic equations **do** have solutions (by the Fundamental Theorem of Algebra — see `fundamental-theorem-algebra` in the gallery), they just cannot be expressed using radicals.\n\nThe impossibility framework pioneered here — proving that a natural class of problems admits no solution within a given formal system — also connects to the angle trisection impossibility (see `angle-trisection`), which uses the same Galois-theoretic machinery to show that constructibility requires the minimal polynomial's degree to be a power of 2.",
-    "mathContext": "The conjugacy classes of $A_5$ have sizes $1, 12, 12, 15, 20$ (summing to 60), corresponding to: identity (1), products of two disjoint transpositions (15), 3-cycles (20), and two classes of 5-cycles (12 each). A normal subgroup must be a union of conjugacy classes including $\\{e\\}$ (size 1), and its order must divide $|A_5| = 60$. The possible sub-sums starting with 1 yield no proper divisor of 60 except 1 itself, proving $A_5$ has no proper nontrivial normal subgroups.\n\nThis combinatorial fact also proves $A_5$ is perfect: since $[A_5, A_5]$ is a normal subgroup and $A_5$ is simple, either $[A_5, A_5] = \\{e\\}$ (impossible since $A_5$ is non-abelian) or $[A_5, A_5] = A_5$.",
+    "title": "Part VI: Why Degree 5 Is the Exact Threshold",
+    "content": "Part VI explains the sharp transition at degree 5 by comparing the derived series of $S_4$ and $S_5$.\n\nFor $S_4$: the derived series terminates because $A_4$ contains the Klein four-group $V_4 = \\{e, (12)(34), (13)(24), (14)(23)\\}$ as a normal subgroup. The full chain is $S_4 \\triangleright A_4 \\triangleright V_4 \\triangleright \\langle(12)(34)\\rangle \\triangleright \\{e\\}$, with all quotients abelian. Each abelian quotient in the composition series corresponds to a radical extraction step in Cardano/Ferrari's formulas: $S_4/A_4 \\cong \\mathbb{Z}/2$ gives the discriminant square root, $A_4/V_4 \\cong \\mathbb{Z}/3$ gives the cube root in Cardano's resolvent, and so on.\n\nFor $S_5$: the derived series stalls at $A_5$ because $A_5$ is simple and non-abelian. $[S_5, S_5] = A_5$ and $[A_5, A_5] = A_5$ (since $A_5$ is perfect), so $D^k(S_5) = A_5$ for all $k \\geq 1$. No abelian quotient can be extracted, so no radical step can proceed.\n\nThe Lean formalization captures this transition implicitly: `inferInstance` succeeds for $S_0, S_1$ (Part IV) but `Equiv.Perm.not_solvable` blocks $S_n$ for $n \\geq 5$ (Part III). The gap — $S_2, S_3, S_4$ — awaits Mathlib `IsSolvable` instances.",
+    "mathContext": "The transition is governed by the structure of $A_n$:\n- $A_3 \\cong \\mathbb{Z}/3$ (cyclic, hence abelian and solvable)\n- $A_4$: has normal subgroup $V_4$ with $A_4/V_4 \\cong \\mathbb{Z}/3$ and $V_4 \\cong (\\mathbb{Z}/2)^2$ (abelian quotients → solvable)\n- $A_5$: simple, $|A_5| = 60$, conjugacy classes of sizes $1, 15, 20, 12, 12$. No proper nontrivial normal subgroup (no sub-sum including 1 divides 60). The jump from $A_4$ (solvable) to $A_5$ (simple) is the structural cause of Abel-Ruffini's impossibility.\n\n$A_5$ is also perfect: $[A_5, A_5] = A_5$ since the only normal subgroups are $\\{e\\}$ and $A_5$ itself, and $[A_5, A_5] \\neq \\{e\\}$ because $A_5$ is non-abelian.",
+    "significance": "key",
+    "relatedConcepts": [
+      "perfect group",
+      "Jordan-Hölder theorem",
+      "abelian quotient",
+      "radical extraction",
+      "Cardano's formula",
+      "Ferrari's formula"
+    ],
+    "prerequisites": [
+      "derived series",
+      "composition series",
+      "Klein four-group",
+      "simple groups",
+      "conjugacy classes"
+    ]
+  },
+  {
+    "id": "ann-part-vii-historical",
+    "proofId": "abel-ruffini",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Part VII: Historical Significance"
+    },
+    "type": "context",
+    "title": "Part VII: The Impossibility Paradigm and Historical Significance",
+    "content": "Part VII frames Abel-Ruffini as the prototype of **impossibility proofs** — a methodological revolution in mathematics. The commentary identifies five distinct contributions:\n\n1. **Conceptual shift**: Before Abel, mathematicians sought a quintic formula. Abel showed the search was futile — a qualitative change in mathematical reasoning from constructive to existential impossibility.\n\n2. **Birth of abstract algebra**: Galois's group-theoretic framework for solvability was the first major instance of studying algebraic structures for their own sake, independent of any specific equation. This launched group theory, field theory, and eventually all of modern algebra.\n\n3. **Impossibility methodology**: The technique of proving something *cannot* be done became a recurring theme: Lindemann's transcendence of $\\pi$ (1882, impossibility of squaring the circle), Gödel's incompleteness (1931, impossibility of complete consistent arithmetic), Turing's halting problem (1936, impossibility of universal decidability), Matiyasevich's negative resolution of Hilbert's 10th (1970, impossibility of Diophantine decision procedures).\n\n4. **Existence vs. expressibility**: A subtle but crucial distinction — quintic equations **do** have solutions in $\\mathbb{C}$ (by the Fundamental Theorem of Algebra, see `fundamental-theorem-algebra`), and can be approximated numerically to arbitrary precision. Abel-Ruffini shows only that the roots cannot be *named* using the specific symbolic vocabulary of $+, -, \\times, \\div, \\sqrt[n]{\\phantom{x}}$.\n\n5. **Precise characterization**: Galois theory doesn't merely say 'quintics are unsolvable' — it classifies which polynomials of *any* degree are solvable by radicals: exactly those with solvable Galois groups.\n\nThe `end AbelRuffini` on line 185 closes the namespace, completing a self-contained modular development that can be imported and reused via `import Proofs.AbelRuffini`.",
+    "mathContext": "Abel-Ruffini sits in an expressibility hierarchy:\n- **Irrationality** ($\\sqrt{2} \\notin \\mathbb{Q}$, c. 500 BCE): certain quantities escape rational expressions\n- **Radical inexpressibility** (Abel-Ruffini, 1824): certain algebraic quantities escape radical expressions\n- **Algebraic inexpressibility** (Hermite-Lindemann, 1882): $e, \\pi \\notin \\overline{\\mathbb{Q}}$ — certain quantities escape all polynomial equations\n- **Computational undecidability** (Turing, 1936): certain predicates escape all algorithms\n\nNotably, the impossibility is framework-specific: Hermite (1858) solved the general quintic via elliptic modular functions $j(\\tau)$, and Puiseux series always express algebraic roots. The barrier is about the operations allowed, not about the roots themselves.",
     "significance": "supporting",
     "relatedConcepts": [
       "impossibility proof",
       "Fundamental Theorem of Algebra",
       "transcendence of pi",
       "Gödel incompleteness",
+      "Turing halting problem",
       "angle trisection",
-      "perfect group"
+      "Puiseux series",
+      "elliptic modular functions"
     ],
     "prerequisites": [
-      "derived series",
-      "composition series",
-      "simple groups",
-      "conjugacy classes"
+      "impossibility proofs",
+      "Fundamental Theorem of Algebra",
+      "expressibility hierarchies"
     ]
   }
 ]
