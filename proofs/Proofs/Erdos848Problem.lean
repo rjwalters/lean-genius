@@ -17,6 +17,7 @@ Reference: https://erdosproblems.com/848
 import Mathlib.Tactic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.NumberTheory.SumTwoSquares
 
 /- ## Definitions -/
 
@@ -46,12 +47,15 @@ theorem maxNonSqfreeSet_le (N : ℕ) : maxNonSqfreeSet N ≤ N := by
   simp only [Finset.mem_filter, Finset.mem_powerset] at hA
   -- |A| ≤ |Icc 1 N| ≤ N via injection x ↦ x - 1 from Icc 1 N to range N
   have hIcc_le : (Finset.Icc 1 N).card ≤ N := by
-    calc (Finset.Icc 1 N).card
-        ≤ (Finset.range N).card := Finset.card_le_card_of_injOn (· - 1)
-          (fun x hx => by simp only [Finset.mem_Icc] at hx; simp only [Finset.mem_range]; omega)
-          (fun a ha b hb h => by
-            simp only [Finset.coe_Icc, Set.mem_Icc] at ha hb; omega)
-      _ = N := Finset.card_range N
+    have hle : (Finset.Icc 1 N).card ≤ (Finset.range N).card := by
+      apply Finset.card_le_card_of_injOn (fun x => x - 1)
+      · intro x hx
+        simp only [Finset.mem_coe] at hx ⊢
+        rw [Finset.mem_Icc] at hx; rw [Finset.mem_range]; omega
+      · intro a ha b hb hab
+        simp only [Finset.mem_coe, Finset.mem_Icc] at ha hb
+        dsimp only at hab; omega
+    linarith [Finset.card_range N]
   linarith [Finset.card_le_card hA.1]
 
 /- ## Known Results -/
@@ -152,6 +156,81 @@ theorem lower_bound (N : ℕ) (hN : 25 ≤ N) :
     exact ⟨Finset.mem_powerset.mpr (mod7Set_sub N), mod7Set_prop N⟩
   calc N / 25 ≤ (mod7Set N).card := mod7Set_card_ge N hN
     _ ≤ _ := Finset.le_sup hmem
+
+/- ## Van Doorn's Argument: Key Intermediate Steps
+
+Van Doorn's density bound proceeds by showing every a ∈ A must satisfy
+a² ≡ -1 (mod p²) for some prime p ≡ 1 (mod 4), then applying a union bound
+over such primes. We formalize the key constraint here. -/
+
+/-- Diagonal constraint: the product property implies every element satisfies
+    ∃ p prime, p² | a² + 1. This is the starting point for Van Doorn's argument. -/
+theorem diagonal_constraint (A : Finset ℕ) (hA : HasNonSqfreeProductProp A)
+    (a : ℕ) (ha : a ∈ A) :
+    ∃ p : ℕ, p.Prime ∧ p * p ∣ a * a + 1 := by
+  have h := hA a ha a ha
+  unfold IsSquarefree at h
+  push_neg at h
+  exact h
+
+/-- 4 never divides a² + 1: since a² mod 4 ∈ {0, 1}, we have a² + 1 mod 4 ∈ {1, 2}. -/
+theorem not_four_dvd_sq_succ (a : ℕ) : ¬(2 * 2 ∣ a * a + 1) := by
+  intro ⟨k, hk⟩
+  rcases Nat.even_or_odd a with ⟨m, rfl⟩ | ⟨m, rfl⟩
+  · -- a = m+m: (m+m)² + 1 = 4m² + 1 = 4k is impossible (1 ≢ 0 mod 4)
+    have : (m + m) * (m + m) + 1 = 4 * (m * m) + 1 := by ring
+    rw [this] at hk; set n := m * m; omega
+  · -- a = 2m+1: (2m+1)² + 1 = 4m²+4m+2 = 4k is impossible (2 ≢ 0 mod 4)
+    have : (2 * m + 1) * (2 * m + 1) + 1 = 4 * (m * m + m) + 2 := by ring
+    rw [this] at hk; set n := m * m + m; omega
+
+/-- If p is prime and p² | a² + 1, then p ≠ 2. -/
+theorem prime_sq_dvd_sq_succ_ne_two {p a : ℕ} (hp : p.Prime)
+    (hdvd : p * p ∣ a * a + 1) : p ≠ 2 := by
+  intro heq; rw [heq] at hdvd; exact not_four_dvd_sq_succ a hdvd
+
+/-- If p is prime and p² | a² + 1, then p ≡ 1 (mod 4).
+    This is the key step in Van Doorn's density argument: -1 must be a quadratic
+    residue mod p, which by the first supplement forces p ≡ 1 (mod 4). -/
+theorem prime_sq_dvd_sq_succ_mod_four {p a : ℕ} (hp : p.Prime)
+    (hdvd : p * p ∣ a * a + 1) : p % 4 = 1 := by
+  have hp2 : p ≠ 2 := prime_sq_dvd_sq_succ_ne_two hp hdvd
+  -- p | a² + 1 since p² | a² + 1
+  have hpdvd : p ∣ a * a + 1 := dvd_trans ⟨p, rfl⟩ hdvd
+  -- Construct: -1 is a square mod p (since a² ≡ -1 mod p)
+  haveI : Fact (Nat.Prime p) := ⟨hp⟩
+  have hsq : IsSquare (-1 : ZMod p) := by
+    use (a : ZMod p)
+    -- Cast a * a + 1 to ZMod p and show it equals 0
+    have hpdvd' : p ∣ a ^ 2 + 1 := by rwa [sq]
+    have hzero : ((a ^ 2 + 1 : ℕ) : ZMod p) = 0 := by
+      rw [ZMod.natCast_zmod_eq_zero_iff_dvd]; exact hpdvd'
+    simp only [Nat.cast_add, Nat.cast_pow, Nat.cast_one] at hzero
+    have h : (a : ZMod p) ^ 2 = -1 := by
+      have h0 : (a : ZMod p) ^ 2 + 1 = 0 := hzero
+      calc (a : ZMod p) ^ 2 = (a : ZMod p) ^ 2 + 1 - 1 := by ring
+        _ = 0 - 1 := by rw [h0]
+        _ = -1 := by ring
+    rw [sq] at h; exact h.symm
+  -- Apply first supplement to quadratic reciprocity: IsSquare (-1) ↔ p % 4 ≠ 3
+  have hne3 : p % 4 ≠ 3 := ZMod.exists_sq_eq_neg_one_iff.mp hsq
+  -- p is odd prime, so p % 4 ∈ {1, 3}; exclude 3
+  have hodd : Odd p := hp.odd_of_ne_two hp2
+  have hmod : p % 4 = 1 ∨ p % 4 = 3 := by
+    obtain ⟨m, hm⟩ := hodd
+    have : p ≥ 3 := by have := hp.two_le; omega
+    omega
+  exact hmod.resolve_right hne3
+
+/-- Van Doorn's key constraint: for any set with the non-squarefree product property,
+    every element a must satisfy a² ≡ -1 (mod p²) for some prime p ≡ 1 (mod 4).
+    The full density bound follows from a union bound: each such p contributes ≤ 2/p²
+    density, giving |A|/N ≤ 2·Σ_{p≡1(4)} 1/p² ≈ 0.108. -/
+theorem vanDoorn_constraint (A : Finset ℕ) (hA : HasNonSqfreeProductProp A)
+    (a : ℕ) (ha : a ∈ A) :
+    ∃ p : ℕ, p.Prime ∧ p % 4 = 1 ∧ p * p ∣ a * a + 1 := by
+  obtain ⟨p, hp, hdvd⟩ := diagonal_constraint A hA a ha
+  exact ⟨p, hp, prime_sq_dvd_sq_succ_mod_four hp hdvd, hdvd⟩
 
 /- ## Deep Results (Axiomatized) -/
 
