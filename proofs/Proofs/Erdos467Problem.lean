@@ -24,6 +24,8 @@ n ≡ a_q (mod q) for some q ∈ B.
 -/
 
 import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Nat.ModEq
+import Mathlib.Data.Int.GCD
 import Mathlib.Tactic
 
 /-
@@ -85,7 +87,7 @@ theorem even_or_odd (n : ℕ) : n % 2 = 0 ∨ n % 2 = 1 := by omega
 /-- Within any p consecutive integers, exactly one is in each residue class mod p. -/
 theorem coverage_density (p a : ℕ) (hp : p > 0) :
     ∀ k : ℕ, (a + k * p) % p = a % p := by
-  intro k; rw [Nat.add_mul_mod_self_left]
+  intro k; rw [mul_comm, Nat.add_mul_mod_self_left]
 
 /-- Every n ≥ 2 has a prime factor. -/
 theorem has_prime_factor (n : ℕ) (hn : n ≥ 2) :
@@ -101,6 +103,7 @@ theorem prime_factor_le (n p : ℕ) (hp : p.Prime) (hdvd : p ∣ n) (hn : n > 0)
 theorem prime_factor_le_x (n x : ℕ) (hn : n ≥ 2) (hlt : n < x) :
     ∃ p, p.Prime ∧ p ∣ n ∧ p ≤ x := by
   obtain ⟨p, hp, hdvd⟩ := has_prime_factor n hn
+  have hle := Nat.le_of_dvd (by omega) hdvd
   exact ⟨p, hp, hdvd, by omega⟩
 
 /-
@@ -113,8 +116,9 @@ theorem zero_covered_by_all (p : ℕ) (hp : p.Prime) : 0 % p = 0 := by simp
 /-- n = 1 is NOT covered by residue class 0 for any prime. -/
 theorem one_not_covered_by_zero (p : ℕ) (hp : p.Prime) : 1 % p ≠ 0 := by
   intro h
-  have := Nat.dvd_of_mod_eq_zero h
-  have := Nat.le_of_dvd (by omega) this
+  have hdvd := Nat.dvd_of_mod_eq_zero h
+  have hle := Nat.le_of_dvd (by omega) hdvd
+  have hp2 := hp.two_le
   omega
 
 /-- Using residue class 0 for each prime, every n ≥ 2 is covered by its
@@ -209,24 +213,29 @@ theorem num_residue_classes (p : ℕ) (hp : p > 0) :
     ∀ n, n % p < p := fun n => Nat.mod_lt n hp
 
 /-
-## CRT for Distinct Primes (Axiomatized)
+## CRT for Distinct Primes
 -/
 
 /-- For distinct primes p, q and any residues a, b,
-    the CRT guarantees n with n ≡ a (mod p) and n ≡ b (mod q). -/
-axiom crt_for_primes (p q a b : ℕ) (hp : p.Prime) (hq : q.Prime) (hne : p ≠ q) :
-  ∃ n, n % p = a % p ∧ n % q = b % q
+    the CRT guarantees n with n ≡ a (mod p) and n ≡ b (mod q).
+    Proved via Mathlib's `Nat.chineseRemainder`. -/
+theorem crt_for_primes (p q a b : ℕ) (hp : p.Prime) (hq : q.Prime) (hne : p ≠ q) :
+    ∃ n, n % p = a % p ∧ n % q = b % q := by
+  have hcop : Nat.Coprime p q := (Nat.coprime_primes hp hq).mpr hne
+  let sol := Nat.chineseRemainder hcop a b
+  exact ⟨sol.val, sol.property.1, sol.property.2⟩
 
 /-
-## Mertens-type Estimates (Axiomatized)
+## Mertens-type Estimates
 -/
 
-/-- By Mertens' third theorem, ∏_{p ≤ x} (1 - 1/p) ~ e^{-γ}/log x.
-    This means the "uncovered probability" by primes ≤ x decays as 1/log x. -/
-axiom mertens_product :
-  ∃ c : ℝ, c > 0 ∧ ∀ ε > 0, ∃ X : ℕ, ∀ x ≥ X,
-    -- The Euler product over primes ≤ x satisfies the Mertens estimate
-    (x : ℝ) > 0
+/-- Placeholder for Mertens' third theorem. The formal conclusion here is
+    trivially true (it only asserts x > 0 for large x). A proper Mertens
+    estimate would require formalizing the Euler product over primes. -/
+theorem mertens_product :
+    ∃ c : ℝ, c > 0 ∧ ∀ ε > 0, ∃ X : ℕ, ∀ x ≥ X,
+      (x : ℝ) > 0 :=
+  ⟨1, one_pos, fun _ _ => ⟨1, fun x hx => Nat.cast_pos.mpr (by omega)⟩⟩
 
 /-
 ## Problem Summary
