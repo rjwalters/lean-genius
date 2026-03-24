@@ -142,9 +142,29 @@
       "description": "The ballot problem studies first-passage times of random walks, which are stopping times for martingales — the Optional Stopping Theorem provides the framework for analyzing such hitting-time expectations"
     },
     {
-      "targetId": "law-of-large-numbers",
+      "targetId": "central-limit-theorem",
       "relationship": "related",
-      "description": "LLN shows sample averages converge to the mean; the Optional Stopping Theorem shows that stopping strategies cannot exploit transient deviations from the mean in a fair game"
+      "description": "CLT characterizes distributional convergence of sums; martingale CLT extends this to dependent sequences adapted to filtrations. Together with the Optional Stopping Theorem, these are the two pillars of limit theory for stochastic processes"
+    },
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "related",
+      "description": "The probabilistic method uses expectation arguments to prove existence results — the Optional Stopping Theorem ensures that stopped expectations of martingales equal initial values, a key tool in probabilistic combinatorics via the martingale method"
+    },
+    {
+      "targetId": "randomized-maxcut",
+      "relationship": "related",
+      "description": "Randomized algorithms like MAX-CUT exploit expectation arguments analogous to martingale reasoning — the Derandomization Lemma uses conditional expectations that form a martingale (Doob martingale), connecting the Optional Stopping Theorem to algorithmic applications"
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "related",
+      "description": "The birthday problem's waiting-time analysis connects to stopping times: the first collision is a stopping time for the occupancy process, and martingale techniques provide sharp bounds on collision probabilities"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "foundational",
+      "description": "Stirling's approximation is used in sharp bounds for random walk probabilities and gambler's ruin estimates — the combinatorial constants in martingale stopping problems often require factorial asymptotics"
     }
   ],
   "conclusion": {
@@ -188,7 +208,49 @@
       "title": "Probability with Martingales",
       "year": "1991",
       "venue": "Cambridge University Press",
-      "note": "Modern treatment of martingale theory including the fair game interpretation"
+      "note": "Modern treatment of martingale theory including the fair game interpretation and the sub/supermartingale sandwich proof used in this formalization"
+    },
+    {
+      "authors": "Ville, Jean",
+      "title": "Étude critique de la notion de collectif",
+      "year": "1939",
+      "venue": "Gauthier-Villars, Paris",
+      "note": "Ville's doctoral thesis that formalized the mathematical concept of a martingale and coined the term — the foundational work connecting gambling strategies to measure-theoretic probability"
+    },
+    {
+      "authors": "Bachelier, Louis",
+      "title": "Théorie de la spéculation",
+      "year": "1900",
+      "venue": "Annales Scientifiques de l'École Normale Supérieure, Sér. 3, 17, pp. 21–86",
+      "note": "First mathematical model of financial markets as random walks, anticipating martingale theory and the efficient market hypothesis by over 50 years"
+    },
+    {
+      "authors": "Harrison, J. Michael; Pliska, Stanley R.",
+      "title": "Martingales and stochastic integrals in the theory of continuous trading",
+      "year": "1981",
+      "venue": "Stochastic Processes and their Applications, 11(3), pp. 215–260",
+      "note": "Established the First Fundamental Theorem of Asset Pricing: a market is arbitrage-free if and only if there exists an equivalent martingale measure — making the Optional Stopping Theorem the theoretical foundation of derivative pricing"
+    },
+    {
+      "authors": "Revuz, Daniel; Yor, Marc",
+      "title": "Continuous Martingales and Brownian Motion",
+      "year": "1999",
+      "venue": "Springer, 3rd edition",
+      "note": "Comprehensive reference for continuous-time martingale theory, including optional stopping for continuous martingales and connections to Brownian motion"
+    },
+    {
+      "authors": "Durrett, Rick",
+      "title": "Probability: Theory and Examples",
+      "year": "2019",
+      "venue": "Cambridge University Press, 5th edition",
+      "note": "Standard graduate text with a complete treatment of discrete-time martingales, the optional stopping theorem, and applications to random walks and branching processes"
+    },
+    {
+      "authors": "Wiedijk, Freek",
+      "title": "Formalizing 100 Theorems",
+      "year": "2008",
+      "venue": "https://www.cs.ru.nl/~freek/100/",
+      "note": "The Fair Games Theorem is #62 on Wiedijk's list of 100 well-known mathematical theorems: 'You cannot beat a fair game with any strategy'"
     }
   ]
 }

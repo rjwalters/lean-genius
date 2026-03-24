@@ -234,58 +234,60 @@
   ],
   "references": [
     {
-      "key": "Sy72",
-      "citation": "Sylow, L., Théorèmes sur les groupes de substitutions, Mathematische Annalen 5 (1872), 584–594.",
-      "type": "paper"
+      "authors": "Sylow, Peter Ludwig Mejdell",
+      "title": "Théorèmes sur les groupes de substitutions",
+      "year": "1872",
+      "venue": "Mathematische Annalen, vol. 5, pp. 584–594",
+      "note": "The original paper establishing all three Sylow theorems for permutation groups — existence, conjugacy, and counting of p-subgroups"
     },
     {
-      "key": "Wi59",
-      "citation": "Wielandt, H., Ein Beweis für die Existenz der Sylowgruppen, Archiv der Mathematik 10 (1959), 401–402.",
-      "type": "paper"
+      "authors": "Frobenius, Georg",
+      "title": "Neuer Beweis des Sylowschen Satzes",
+      "year": "1887",
+      "venue": "Journal für die reine und angewandte Mathematik, vol. 100, pp. 179–181",
+      "note": "Streamlined alternative proofs of the Sylow theorems using counting arguments, strengthening the divisibility conditions"
     },
     {
-      "key": "Ro95",
-      "citation": "Rotman, J.J., An Introduction to the Theory of Groups, 4th ed., Springer GTM 148 (1995), Chapter 4: The Sylow Theorems.",
-      "type": "book"
+      "authors": "Wielandt, Helmut",
+      "title": "Ein Beweis für die Existenz der Sylowgruppen",
+      "year": "1959",
+      "venue": "Archiv der Mathematik, vol. 10, pp. 401–402",
+      "note": "Elegant combinatorial proof of Sylow I avoiding induction: G acts on subsets of size p^k, and Kummer's theorem ensures some orbit has size coprime to p"
     },
     {
-      "key": "DF04",
-      "citation": "Dummit, D.S. and Foote, R.M., Abstract Algebra, 3rd ed., Wiley (2004), Section 4.5: The Sylow Theorems.",
-      "type": "book"
+      "authors": "Burnside, William",
+      "title": "On groups of order p^α q^β",
+      "year": "1904",
+      "venue": "Proceedings of the London Mathematical Society, 2(1), pp. 388–392",
+      "note": "Proved that every group of order p^a·q^b (two primes) is solvable, using Sylow subgroups and character theory — a landmark application of Sylow's theorems"
     },
     {
-      "key": "Fr87",
-      "citation": "Frobenius, G., Neuer Beweis des Sylowschen Satzes, Journal für die reine und angewandte Mathematik 100 (1887), 179–181.",
-      "type": "paper"
+      "authors": "Rotman, Joseph J.",
+      "title": "An Introduction to the Theory of Groups",
+      "year": "1995",
+      "venue": "Springer GTM 148, 4th edition",
+      "note": "Chapter 4 provides a complete treatment of the Sylow theorems with multiple proof approaches and classification applications"
     },
     {
-      "key": "Bu04",
-      "citation": "Burnside, W., On groups of order p^α q^β, Proceedings of the London Mathematical Society 2(1) (1904), 388–392.",
-      "type": "paper"
+      "authors": "Dummit, David S.; Foote, Richard M.",
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "John Wiley & Sons, 3rd edition",
+      "note": "Section 4.5 covers the Sylow theorems with numerous worked examples of group classification via Sylow counting arguments"
     },
     {
-      "key": "Wu07",
-      "citation": "Wussing, H., The Genesis of the Abstract Group Concept, Dover (2007, reprint of 1984 MIT Press edition).",
-      "type": "book"
+      "authors": "Wussing, Hans",
+      "title": "The Genesis of the Abstract Group Concept",
+      "year": "2007",
+      "venue": "Dover (reprint of 1984 MIT Press edition)",
+      "note": "Historical study tracing the development of abstract group theory from permutation groups through Sylow, Frobenius, and Burnside"
+    },
+    {
+      "authors": "Wiedijk, Freek",
+      "title": "Formalizing 100 Theorems",
+      "year": "2008",
+      "venue": "https://www.cs.ru.nl/~freek/100/",
+      "note": "The Sylow Theorems are #72 on Wiedijk's list of 100 well-known mathematical theorems and their formalization status across proof assistants"
     }
-  ],
-  "leanFile": {
-    "lineCount": 246,
-    "structureCount": 0,
-    "axiomCount": 0,
-    "theoremCount": 10,
-    "lemmaCount": 0,
-    "defCount": 0,
-    "imports": [
-      "Mathlib.GroupTheory.Sylow",
-      "Mathlib.GroupTheory.Coset.Basic",
-      "Mathlib.GroupTheory.Index",
-      "Mathlib.GroupTheory.OrderOfElement",
-      "Mathlib.Data.Nat.Factorization.Basic",
-      "Mathlib.Tactic"
-    ],
-    "opens": [
-      "Subgroup"
-    ]
-  }
+  ]
 }
