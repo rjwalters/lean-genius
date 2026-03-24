@@ -138,34 +138,34 @@
   ],
   "crossReferences": [
     {
-      "id": "cantors-theorem",
       "relationship": "parent",
-      "description": "The base Cantor's theorem proof; this entry derives it as a corollary of Lawvere's fixed-point theorem"
+      "description": "The base Cantor's theorem proof; this entry derives it as a corollary of Lawvere's fixed-point theorem",
+      "targetId": "cantors-theorem"
     },
     {
-      "id": "cantors-theorem-oq-01",
       "relationship": "sibling",
-      "description": "OQ-01 explores cardinality aspects of Cantor's theorem; OQ-02 explores the categorical unification via Lawvere"
+      "description": "OQ-01 explores cardinality aspects of Cantor's theorem; OQ-02 explores the categorical unification via Lawvere",
+      "targetId": "cantors-theorem-oq-01"
     },
     {
-      "id": "cantor-diagonalization",
       "relationship": "related",
-      "description": "The direct diagonalization proof for uncountability of the reals; Part V of this entry reproduces the diagonal witness construction"
+      "description": "The direct diagonalization proof for uncountability of the reals; Part V of this entry reproduces the diagonal witness construction",
+      "targetId": "cantor-diagonalization"
     },
     {
-      "id": "godel-incompleteness",
       "relationship": "related",
-      "description": "Gödel's incompleteness theorem; Part IV of this entry shows the core diagonal mechanism underlying it"
+      "description": "Gödel's incompleteness theorem; Part IV of this entry shows the core diagonal mechanism underlying it",
+      "targetId": "godel-incompleteness"
     },
     {
-      "id": "brouwer-fixed-point",
       "relationship": "contrast",
-      "description": "Brouwer's fixed-point theorem guarantees fixed points for continuous maps on compact convex sets — a topological analog, whereas Lawvere's theorem forces fixed points from surjectivity"
+      "description": "Brouwer's fixed-point theorem guarantees fixed points for continuous maps on compact convex sets — a topological analog, whereas Lawvere's theorem forces fixed points from surjectivity",
+      "targetId": "brouwer-fixed-point"
     },
     {
-      "id": "schauder-fixed-point",
       "relationship": "contrast",
-      "description": "Schauder's fixed-point theorem extends Brouwer to infinite dimensions; both contrast with Lawvere's algebraic/categorical fixed-point result"
+      "description": "Schauder's fixed-point theorem extends Brouwer to infinite dimensions; both contrast with Lawvere's algebraic/categorical fixed-point result",
+      "targetId": "schauder-fixed-point"
     }
   ],
   "conclusion": {

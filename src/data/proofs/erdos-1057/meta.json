@@ -245,34 +245,34 @@
   },
   "crossReferences": [
     {
-      "id": "euler-totient",
       "relationship": "foundational result",
-      "description": "Euler's generalization of Fermat's little theorem ($a^{\\phi(n)} \\equiv 1 \\pmod{n}$ for $\\gcd(a,n)=1$) is the number-theoretic bedrock exploited by Carmichael: Carmichael numbers are precisely composites $n$ where $\\lambda(n) \\mid n-1$, an analogue of Euler's totient condition."
+      "description": "Euler's generalization of Fermat's little theorem ($a^{\\phi(n)} \\equiv 1 \\pmod{n}$ for $\\gcd(a,n)=1$) is the number-theoretic bedrock exploited by Carmichael: Carmichael numbers are precisely composites $n$ where $\\lambda(n) \\mid n-1$, an analogue of Euler's totient condition.",
+      "targetId": "euler-totient"
     },
     {
-      "id": "wilsons-theorem",
       "relationship": "complementary primality criterion",
-      "description": "Wilson's theorem gives a perfect primality test ($n$ prime iff $(n-1)! \\equiv -1 \\pmod{n}$), while Carmichael numbers show the Fermat criterion $a^{n-1} \\equiv 1$ is not sufficient; together they illustrate the difficulty of fast primality testing."
+      "description": "Wilson's theorem gives a perfect primality test ($n$ prime iff $(n-1)! \\equiv -1 \\pmod{n}$), while Carmichael numbers show the Fermat criterion $a^{n-1} \\equiv 1$ is not sufficient; together they illustrate the difficulty of fast primality testing.",
+      "targetId": "wilsons-theorem"
     },
     {
-      "id": "prime-number-theorem",
       "relationship": "asymptotic comparison",
-      "description": "The Prime Number Theorem gives $\\pi(x) \\sim x/\\log x$. Erdős's problem asks whether $C(x) = x^{1-o(1)}$, which would put Carmichael numbers in a density regime between primes and composites — making the relative growth rate a central open question."
+      "description": "The Prime Number Theorem gives $\\pi(x) \\sim x/\\log x$. Erdős's problem asks whether $C(x) = x^{1-o(1)}$, which would put Carmichael numbers in a density regime between primes and composites — making the relative growth rate a central open question.",
+      "targetId": "prime-number-theorem"
     },
     {
-      "id": "fundamental-arithmetic",
       "relationship": "structural prerequisite",
-      "description": "The Fundamental Theorem of Arithmetic underpins both Korselt's criterion and the squarefreeness requirement: Carmichael numbers must factor as products of distinct primes, and the Lean proofs rely on Mathlib's prime factorization infrastructure."
+      "description": "The Fundamental Theorem of Arithmetic underpins both Korselt's criterion and the squarefreeness requirement: Carmichael numbers must factor as products of distinct primes, and the Lean proofs rely on Mathlib's prime factorization infrastructure.",
+      "targetId": "fundamental-arithmetic"
     },
     {
-      "id": "bertrands-postulate",
       "relationship": "sieve-method context",
-      "description": "Bertrand's postulate (a prime between $n$ and $2n$) and the AGP Carmichael lower bound both use sieve-theoretic and analytic number theory arguments; the AGP construction builds Carmichael numbers from primes satisfying simultaneous divisibility conditions."
+      "description": "Bertrand's postulate (a prime between $n$ and $2n$) and the AGP Carmichael lower bound both use sieve-theoretic and analytic number theory arguments; the AGP construction builds Carmichael numbers from primes satisfying simultaneous divisibility conditions.",
+      "targetId": "bertrands-postulate"
     },
     {
-      "id": "dirichlets-theorem",
       "relationship": "prime distribution tool",
-      "description": "The AGP (Alford-Granville-Pomerance) construction of infinitely many Carmichael numbers uses Dirichlet's theorem to find primes $p \\equiv 1 \\pmod{L}$ in arithmetic progressions, ensuring the Korselt divisibility condition $(p-1)\\mid(n-1)$."
+      "description": "The AGP (Alford-Granville-Pomerance) construction of infinitely many Carmichael numbers uses Dirichlet's theorem to find primes $p \\equiv 1 \\pmod{L}$ in arithmetic progressions, ensuring the Korselt divisibility condition $(p-1)\\mid(n-1)$.",
+      "targetId": "dirichlets-theorem"
     }
   ],
   "relatedProofs": [
