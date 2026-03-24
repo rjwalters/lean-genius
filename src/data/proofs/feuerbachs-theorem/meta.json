@@ -91,7 +91,7 @@
     {
       "id": "tangency-defs",
       "title": "Tangency Definitions",
-      "startLine": 212,
+      "startLine": 164,
       "endLine": 164,
       "summary": "Internal tangency (d = |r₁-r₂|) and external tangency (d = r₁+r₂) for circles.",
       "mathContext": "Two circles are **internally tangent** if $d(O_1, O_2) = |r_1 - r_2|$ (one inside the other, touching at exactly one point). **Externally tangent** if $d(O_1, O_2) = r_1 + r_2$ (touching at one point, neither inside the other)."
@@ -99,7 +99,7 @@
     {
       "id": "euler-line",
       "title": "Euler Line Relations (Proved)",
-      "startLine": 226,
+      "startLine": 164,
       "endLine": 164,
       "summary": "Proves G = (O+2H)/3 (Euler line relation) and N = midpoint(O,H) by coordinate computation with ring tactic.",
       "mathContext": "The Euler line passes through $O$, $G$, $H$, $N$ with ratios $OG:GH = 1:2$ and $N = (O+H)/2$. Proved by coordinate computation: if $O$ is the origin, then $H = A+B+C$ and $G = (A+B+C)/3 = H/3 = (O + 2H)/3$."
@@ -107,7 +107,7 @@
     {
       "id": "distance-relations",
       "title": "Feuerbach Distance Relations (Proved)",
-      "startLine": 245,
+      "startLine": 164,
       "endLine": 164,
       "summary": "Four theorems proved by coordinate computation: d(N,I) = |R/2-r| (incircle), d(N,I_k) = R/2+r_k for k=a,b,c (excircles). Proofs in FeuerbachsTheoremOQ01.lean.",
       "mathContext": "The four Feuerbach distances: $d(N, I) = |R/2 - r|$ (tangent to incircle), $d(N, I_a) = R/2 + r_a$, $d(N, I_b) = R/2 + r_b$, $d(N, I_c) = R/2 + r_c$ (tangent to excircles). Since $R_9 = R/2$: incircle tangency is internal ($d = |R_9 - r|$), excircle tangencies are external ($d = R_9 + r_k$)."
@@ -115,7 +115,7 @@
     {
       "id": "nine-point-props",
       "title": "Nine-Point Circle Membership (Proved)",
-      "startLine": 272,
+      "startLine": 164,
       "endLine": 164,
       "summary": "All nine points proved to lie on the nine-point circle: d(N,P) = R/2 for side midpoints, Euler points, and altitude feet.",
       "mathContext": "Membership proofs: for each of the 9 points $P$, show $d(N, P) = R/2$ by coordinate computation. For side midpoints: $M_a = (B+C)/2$ and $d((O+H)/2, (B+C)/2) = R/2$. Similar for Euler points and altitude feet."
@@ -123,7 +123,7 @@
     {
       "id": "main-theorem",
       "title": "Feuerbach's Theorem: Complete Statement",
-      "startLine": 304,
+      "startLine": 164,
       "endLine": 164,
       "summary": "Combines the four proved distance relations into the full theorem: internal tangency with incircle ∧ external tangency with all three excircles. Fully proved.",
       "mathContext": "**Feuerbach's Theorem (1822)**: The nine-point circle of any triangle is internally tangent to the incircle and externally tangent to all three excircles. Formally: $d(N,I) = |R/2 - r|$ and $d(N,I_k) = R/2 + r_k$ for $k = a, b, c$. The tangent point with the incircle is the **Feuerbach point** $X(11)$ in Kimberling's notation."
@@ -131,7 +131,7 @@
     {
       "id": "equilateral",
       "title": "Equilateral Triangle Special Case",
-      "startLine": 366,
+      "startLine": 164,
       "endLine": 164,
       "summary": "Proves R = 2r for equilateral triangles via coordinate computation, implying the nine-point circle and incircle coincide (degenerate tangency).",
       "mathContext": "For equilateral triangles: $R = 2r$ (circumradius = twice inradius), so $d(N, I) = |R/2 - r| = |r - r| = 0$, meaning the nine-point circle and incircle coincide. This is the degenerate case where internal tangency becomes coincidence. Also $O = H = I = G = N$ (all centers coincide)."
@@ -139,7 +139,7 @@
     {
       "id": "numerical",
       "title": "Numerical Verification: 3-4-5 Triangle",
-      "startLine": 405,
+      "startLine": 164,
       "endLine": 164,
       "summary": "Fully proves area = 6, semiperimeter = 6, inradius = 1 for the 3-4-5 right triangle using norm_num and sqrt computations.",
       "mathContext": "3-4-5 right triangle: $a = 3, b = 4, c = 5$, $s = 6$, $\\Delta = 6$, $r = \\Delta/s = 1$, $R = c/2 = 5/2$ (right triangle formula). Feuerbach: $d(N, I) = |5/4 - 1| = 1/4 = R/2 - r = 5/4 - 1$. Verified by `norm_num` in Lean."

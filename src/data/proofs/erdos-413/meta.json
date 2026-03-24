@@ -191,7 +191,7 @@
     {
       "id": "strong-prime-power",
       "title": "Strong Prime Power Predecessor",
-      "startLine": 1078,
+      "startLine": 1024,
       "endLine": 1047,
       "summary": "Proves the strong form: at any barrier n ≥ 3, n-1 is necessarily a prime power p^k with k ≥ 1, using the fact that ω(n-1) = 1 for n ≥ 3 at a barrier.",
       "mathContext": "At any barrier $n \\geq 3$: $n - 1$ is a prime power $p^k$. Proof: if $n-1 = ab$ with $a,b > 1$ coprime, then $\\omega(n-1) \\geq 2$, violating the barrier condition."

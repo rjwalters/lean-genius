@@ -56,70 +56,70 @@
     {
       "id": "farey-fractions",
       "title": "Farey Fraction Definitions",
-      "startLine": 25,
+      "startLine": 1,
       "endLine": 1,
       "summary": "Defines `FareyFraction` structure with coprimality invariant, `fareySequence` $F_n$ as a `Finset` (construction sorry'd), `fareyCount`, and the asymptotic $|F_n| = \\frac{3n^2}{\\pi^2} + O(n \\log n)$."
     },
     {
       "id": "similarly-ordered",
       "title": "Similarly Ordered Relation",
-      "startLine": 52,
+      "startLine": 1,
       "endLine": 1,
       "summary": "Defines `similarlyOrdered`: $(a-c)(b-d) \\geq 0$ as a disjunction of coordinate-wise inequalities. Proves symmetry (`similarlyOrdered_symm`) and reflexivity (`similarlyOrdered_refl`). Non-transitivity is the key structural feature."
     },
     {
       "id": "consecutive-runs",
       "title": "Consecutive Similarly Ordered Runs",
-      "startLine": 82,
+      "startLine": 1,
       "endLine": 1,
       "summary": "Defines `fareyList` (ordered list of $F_n$) and `isSimOrdered`: a pairwise similarly ordered property over a consecutive run of $k$ fractions starting at index $i$."
     },
     {
       "id": "function-f",
       "title": "The Function $f(n)$",
-      "startLine": 98,
+      "startLine": 1,
       "endLine": 1,
       "summary": "Defines `mayerErdosF` as the supremum of $\\{k : \\exists i,\\ \\text{isSimOrdered}(n, i, k)\\}$ — the longest run of consecutive pairwise similarly ordered Farey fractions in $F_n$."
     },
     {
       "id": "historical",
       "title": "Historical Results: Mayer (1942) and Erdős (1943)",
-      "startLine": 109,
+      "startLine": 1,
       "endLine": 1,
       "summary": "Axiomatizes Mayer's theorem ($f(n) \\to \\infty$ via `Filter.Tendsto`) and Erdős's 1943 linear lower bound ($\\exists c > 0,\\ f(n) \\geq cn$)."
     },
     {
       "id": "van-doorn",
       "title": "van Doorn's Bounds (2025)",
-      "startLine": 121,
+      "startLine": 1,
       "endLine": 1,
       "summary": "Axiomatizes the lower bound $f(n) \\geq (1/12 - \\varepsilon)n$ and upper bound $f(n) \\leq n/4 + C$. The combined `vanDoorn_bounds` theorem packages both."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture (OPEN)",
-      "startLine": 142,
+      "startLine": 1,
       "endLine": 1,
       "summary": "States `hasAsymptoticConstant` ($\\exists c > 0 : f(n)/n \\to c$) and `vanDoornConjecture` ($c = 1/4$). Both are `def`s producing `Prop` since the problem is open."
     },
     {
       "id": "mediant",
       "title": "Mediant and Farey Adjacent Property",
-      "startLine": 162,
+      "startLine": 1,
       "endLine": 1,
       "summary": "Defines `mediant` of two Farey fractions as $(a+c)/(b+d)$ and axiomatizes the $|ad - bc| = 1$ determinant property for adjacent fractions — the key structural constraint underlying van Doorn's upper bound."
     },
     {
       "id": "geometric",
       "title": "Geometric Interpretation",
-      "startLine": 179,
+      "startLine": 1,
       "endLine": 1,
       "summary": "Maps Farey fractions to lattice points via `toPoint`. Proves `similarlyOrdered_iff_monotone`: similarly ordered $\\iff$ comparable in the product order on $\\mathbb{Z}^2$, connecting to chain/antichain theory."
     },
     {
       "id": "bounds-gap",
       "title": "Analysis of the Bounds Gap",
-      "startLine": 210,
+      "startLine": 1,
       "endLine": 1,
       "summary": "Verified computations: $\\frac{1/4}{1/12} = 3$ and $1/4 - 1/12 = 1/6$, quantifying the factor-of-3 gap between van Doorn's bounds. Closing this gap is the central remaining challenge."
     }

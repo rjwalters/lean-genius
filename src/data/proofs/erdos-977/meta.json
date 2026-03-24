@@ -47,70 +47,70 @@
       "id": "gpf",
       "title": "Greatest Prime Factor",
       "summary": "Defines $P(n)$ as the greatest prime factor of $n$ (returning 0 for $n \\le 1$), and proves basic properties: $P(n) \\mid n$ and $P(n)$ is prime for $n \\ge 2$.",
-      "startLine": 30,
+      "startLine": 1,
       "endLine": 1
     },
     {
       "id": "mersenne",
       "title": "Mersenne Numbers",
       "summary": "Defines the Mersenne sequence $M_n = 2^n - 1$ and establishes basic properties including $M_n > 0$ and divisibility relations.",
-      "startLine": 54,
+      "startLine": 1,
       "endLine": 1
     },
     {
       "id": "main",
       "title": "Main Question and Stewart's Answer",
       "summary": "States the central question $P(2^n - 1)/n \\to \\infty$ and axiomatizes Stewart's 2013 affirmative answer.",
-      "startLine": 72,
+      "startLine": 1,
       "endLine": 1
     },
     {
       "id": "schinzel",
       "title": "Schinzel's Bound",
       "summary": "Axiomatizes Schinzel's 1962 result: $P(2^n - 1) > 2n$ for $n > 12$, the first linear-beating bound.",
-      "startLine": 82,
+      "startLine": 1,
       "endLine": 1
     },
     {
       "id": "stewart",
       "title": "Stewart's Quantitative Bound",
       "summary": "Axiomatizes the precise growth rate $P(2^n - 1) \\ge n^{1 + 1/(104 \\log\\log n)}$ from Stewart (2013), giving super-polynomial growth.",
-      "startLine": 94,
+      "startLine": 1,
       "endLine": 1
     },
     {
       "id": "small",
       "title": "Small Cases",
       "summary": "Provides explicit computations of $P(2^n - 1)$ for small $n$: $P(M_2) = 3$, $P(M_3) = 7$, etc., verifying the bound for initial cases.",
-      "startLine": 109,
+      "startLine": 1,
       "endLine": 1
     },
     {
       "id": "mersenne-primes",
       "title": "Mersenne Primes",
       "summary": "Defines Mersenne primes and proves that when $M_n$ is prime, $P(M_n) = M_n = 2^n - 1$, the extreme case where the bound is trivially satisfied.",
-      "startLine": 131,
+      "startLine": 1,
       "endLine": 1
     },
     {
       "id": "factorial",
       "title": "Related: $P(n! + 1)$",
       "summary": "States the open analogue: does $P(n! + 1)/(n \\log n) \\to \\infty$? Axiomatizes Lai's (2021) partial result on the limsup.",
-      "startLine": 146,
+      "startLine": 1,
       "endLine": 1
     },
     {
       "id": "zsygmondy",
       "title": "Primitive Prime Factors (Zsygmondy)",
       "summary": "Defines primitive prime factors ($p \\mid 2^n - 1$ with $p \\nmid 2^k - 1$ for $k < n$) and axiomatizes Zsygmondy's theorem: existence for $n > 6$.",
-      "startLine": 163,
+      "startLine": 1,
       "endLine": 1
     },
     {
       "id": "order",
       "title": "Multiplicative Order Connection",
       "summary": "Defines $\\text{ord}_p(2)$ and axiomatizes the connection: $p \\mid 2^n - 1 \\iff \\text{ord}_p(2) \\mid n$, linking prime factors to the algebraic structure of $\\mathbb{F}_p^\\times$.",
-      "startLine": 180,
+      "startLine": 1,
       "endLine": 1
     }
   ],

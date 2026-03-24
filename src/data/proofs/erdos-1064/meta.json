@@ -110,7 +110,7 @@
     {
       "id": "generalization",
       "title": "Generalization: Stronger Dominance",
-      "startLine": 143,
+      "startLine": 132,
       "endLine": 132,
       "summary": "Luca-Pomerance's stronger result: for any $f(n) = o(n)$, the set $\\{n : \\phi(n) > \\phi(n - \\phi(n)) + f(n)\\}$ has density 1.",
       "mathContext": "This says the dominance $\\phi(n) > \\phi(n - \\phi(n))$ is not borderline — the gap $\\phi(n) - \\phi(n - \\phi(n))$ grows faster than any $o(n)$ function for typical $n$. Heuristically, $\\phi(n) \\sim n \\prod_{p|n} (1 - 1/p)$ and $n - \\phi(n) \\sim n(1 - \\prod_{p|n}(1-1/p))$, so the ratio $\\phi(n)/\\phi(n-\\phi(n))$ is typically large."

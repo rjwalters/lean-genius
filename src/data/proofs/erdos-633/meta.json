@@ -78,56 +78,56 @@
       "id": "triangle-rep",
       "title": "Triangle Representation",
       "summary": "Defines Triangle (by sides with triangle inequality), TriangleByAngles (by angles with sum π), and heronArea via Heron's formula.",
-      "startLine": 37,
+      "startLine": 1,
       "endLine": 1
     },
     {
       "id": "dissection-defs",
       "title": "Dissection Definitions",
       "summary": "Defines CongruentDissection (area compatibility + tiling), CanDissectInto, and DissectionCounts (set of valid dissection numbers).",
-      "startLine": 67,
+      "startLine": 1,
       "endLine": 1
     },
     {
       "id": "square-property",
       "title": "Square Number Property",
       "summary": "Defines IsSquare (n = k²) and HasSquareOnlyProperty (all dissection counts are perfect squares).",
-      "startLine": 84,
+      "startLine": 1,
       "endLine": 1
     },
     {
       "id": "universal",
       "title": "Universal Square Dissections",
       "summary": "States universal_square_dissection: every triangle admits n² dissections via grid subdivision.",
-      "startLine": 98,
+      "startLine": 1,
       "endLine": 1
     },
     {
       "id": "soifer",
       "title": "Soifer's Example",
       "summary": "Constructs soiferTriangle (√2, √3, √4) with verified triangle inequalities, and states soifer_square_only.",
-      "startLine": 113,
+      "startLine": 1,
       "endLine": 1
     },
     {
       "id": "integral",
       "title": "Integral Independence",
       "summary": "Defines IntegrallyIndependent for angle triples, connecting algebraic constraints on angles to dissection rigidity.",
-      "startLine": 151,
+      "startLine": 1,
       "endLine": 1
     },
     {
       "id": "similar",
       "title": "Similar Dissections and Counterexamples",
       "summary": "Counterexamples (equilateral: 3 pieces, right isosceles: 2 pieces) and similar_dissection_complete (n ≠ 2,3,5 always works for similar).",
-      "startLine": 165,
+      "startLine": 1,
       "endLine": 1
     },
     {
       "id": "classification",
       "title": "The Open Classification Problem",
       "summary": "States erdos_633_classification (find the predicate), defines SoiferFamily (√p, √q, √r), and erdos_633_exists (square-only triangles exist).",
-      "startLine": 199,
+      "startLine": 1,
       "endLine": 1
     }
   ],

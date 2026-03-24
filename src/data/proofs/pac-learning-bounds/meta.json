@@ -111,7 +111,7 @@
     {
       "id": "vc-dimension",
       "title": "VC Dimension Properties",
-      "startLine": 170,
+      "startLine": 104,
       "endLine": 104,
       "summary": "Seven theorems: monotonicity in d, anti-monotonicity in H, VCDim=0 characterization, empty family, singleton family (VCDim=0).",
       "mathContext": "VCDim $\\leq d$ is monotone in $d$ and anti-monotone in $H$ (subfamilies have $\\leq$ VC dimension)."
@@ -119,7 +119,7 @@
     {
       "id": "sauer-shelah",
       "title": "Sauer-Shelah Lemma",
-      "startLine": 212,
+      "startLine": 104,
       "endLine": 104,
       "summary": "The central result: if VCDim(F) ≤ d, then |F| ≤ Σ C(n,i). Both family and trace versions stated. Polynomial corollary (n+1)^d. Three sorries remain (the induction proof).",
       "mathContext": "$|F| \\leq \\sum_{i=0}^d \\binom{n}{i} \\leq (n+1)^d$ when $\\operatorname{VCdim}(F) \\leq d$ and $F \\subseteq \\mathcal{P}([n])$."
@@ -127,7 +127,7 @@
     {
       "id": "pac-complexity",
       "title": "PAC Sample Complexity",
-      "startLine": 252,
+      "startLine": 104,
       "endLine": 104,
       "summary": "States the PAC sample complexity bound as an axiom: m ≤ (8d + 4 ln(2/δ)) / ε² samples suffice. Requires measure-theoretic probability for full proof.",
       "mathContext": "$m(\\varepsilon, \\delta) = O\\left(\\frac{d + \\log(1/\\delta)}{\\varepsilon^2}\\right)$"
@@ -135,7 +135,7 @@
     {
       "id": "examples",
       "title": "VC Dimension Examples",
-      "startLine": 280,
+      "startLine": 104,
       "endLine": 104,
       "summary": "Concrete VC computations: powerset 𝒫(S) shatters S, singleton can't shatter nonempty set, VCDim(𝒫(Ω)) ≤ |Ω|, growth function definition and trivial bound.",
       "mathContext": "$\\operatorname{VCdim}(\\mathcal{P}(\\Omega)) = |\\Omega|$ and $\\Pi_H(n) \\leq 2^n$."
