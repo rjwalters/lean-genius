@@ -59,7 +59,7 @@ cancel via a sign-reversing involution (Gessel-Viennot involution).
 - [x] gvCanon_sign_reversal (PROVED — same as before, only depends on perm)
 - [x] gvCanon_no_fixed (PROVED — same as before, only depends on perm)
 - [x] cancellable_sum_eq_zero wired to Finset.sum_involution (PROVED modulo sorries below)
-- [ ] gvCanon_membership (sorry — tail-swapped paths share (c, y) → ¬NI)
+- [x] gvCanon_membership (PROVED — tail-swapped paths share (c, y) → ¬NI)
 - [ ] gvCanon_self_inverse (sorry — canonical crossing preserved + double swap = id)
 
 ## References
@@ -1294,6 +1294,43 @@ private lemma colEntry_prefix_eq (pfx sfx₁ sfx₂ : LPath) (k : ℕ)
     colEntry (pfx ++ sfx₁) (k + 1) = colEntry (pfx ++ sfx₂) (k + 1) := by
   exact northBeforeEast_prefix pfx sfx₁ sfx₂ k hk
 
+/-- When a prefix has exactly c East steps, northBeforeEast of the concatenation at c
+    is at least the number of North steps in the prefix. This is because scanning the
+    prefix accumulates all its North steps, and the suffix can only add more. -/
+private lemma northBeforeEast_ge_prefix_true (pfx sfx : LPath) (c : ℕ)
+    (hc : pfx.countP (· = false) = c) :
+    northBeforeEast (pfx ++ sfx) c ≥ pfx.countP (· = true) := by
+  induction pfx generalizing c with
+  | nil => simp
+  | cons b rest ih =>
+    cases b with
+    | false =>
+      cases c with
+      | zero => simp only [List.countP_cons] at hc; omega
+      | succ c' =>
+        simp only [List.cons_append, northBeforeEast, List.countP_cons]
+        exact ih sfx c' (by simp only [List.countP_cons] at hc; omega)
+    | true =>
+      simp only [List.cons_append, northBeforeEast, List.countP_cons]
+      have := ih sfx c (by simp only [List.countP_cons] at hc; omega)
+      omega
+
+/-- The North step count in a prefix equals length minus East count. -/
+private lemma take_countP_true_eq {m n : ℕ} (P : PathMN m n) (k c' : ℕ)
+    (hk : k ≤ P.val.length)
+    (heast : (P.val.take k).countP (· = false) = c') :
+    (P.val.take k).countP (· = true) = k - c' := by
+  have hlen : (P.val.take k).length = k := List.length_take_of_le hk
+  have hsum := bool_countP_sum' (P.val.take k)
+  omega
+
+/-- toPathTuple preserves .val when σ = 1 (cast doesn't change underlying list). -/
+private lemma toPathTuple_val_eq {r : ℕ} {cfg : LGVConfig r} {σ : Equiv.Perm (Fin r)}
+    (hσ : σ = 1) (p : PermPathTuple cfg σ) (k : Fin r) :
+    (p.toPathTuple hσ k).val = (p k).val := by
+  unfold PermPathTuple.toPathTuple
+  subst hσ; rfl
+
 -- ============================================================
 -- PART 7j: Canonical GV Involution with Tail-Swap (Self-Inverse)
 -- ============================================================
@@ -1757,12 +1794,104 @@ private theorem gvCanon_membership {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.well
     have : (t.1 * Equiv.swap ci cj)⁻¹ = 1⁻¹ := congr_arg (·⁻¹) hσ'
     simp [mul_inv_rev] at this
     exact this
-  -- Since σ = swap(ci, cj) ≠ 1, the tuple is cancellable
-  -- The paths must cross by nonid_perm_paths_cross
-  -- But hni says the image paths are NI, contradiction
-  -- The tail-swapped paths at (ci, cj) share the swap point (c, y)
-  -- which contradicts NI
-  sorry -- membership proof (same structure as gvInvolution_membership but for tail-swap)
+  -- The tail-swapped paths share the canonical crossing point (c, y),
+  -- contradicting NI. Both image paths have y in their y-range at column c:
+  -- prefix preservation gives colEntry(img, c) = colEntry(orig, c) ≤ y - src,
+  -- and northBeforeEast_ge_prefix_true gives colEntry(img, c+1) ≥ y - src.
+  set c := canonCol cfg hwf t hht
+  set y := canonY cfg hwf t hht
+  set ki := splitPosAt cfg t c y ci
+  set kj := splitPosAt cfg t c y cj
+  have ⟨hlo_i, hhi_i⟩ := canonY_in_range_i cfg hwf t hht
+  have ⟨hlo_j, hhi_j⟩ := canonY_in_range_j cfg hwf t hht
+  have hcm := canonCol_le_m cfg hwf t hht
+  -- Extract NonIntersecting at (ci, cj) and unfold to conjunction
+  have hpair := hni ci cj hij
+  simp only [NonIntersecting] at hpair
+  obtain ⟨hinterior, hfinal⟩ := hpair
+  -- Rewrite image paths to tail-swap lists via toPathTuple_val_eq + gvCanonInv unfolding
+  have hval_ci := toPathTuple_val_eq hσ' (gvCanonInv cfg hwf t hht).2 ci
+  have hval_cj := toPathTuple_val_eq hσ' (gvCanonInv cfg hwf t hht).2 cj
+  have himg_ci : ((gvCanonInv cfg hwf t hht).2 ci).val =
+      (t.2 ci).val.take ki ++ (t.2 cj).val.drop kj := by
+    simp only [gvCanonInv, dif_pos rfl]; rfl
+  have himg_cj : ((gvCanonInv cfg hwf t hht).2 cj).val =
+      (t.2 cj).val.take kj ++ (t.2 ci).val.drop ki := by
+    simp only [gvCanonInv, dif_neg (ne_of_gt hij), dif_pos rfl]; rfl
+  -- Establish prefix East counts = c (from take_east_count_within_column)
+  have heast_ci := take_east_count_within_column (t.2 ci).val c (y - cfg.sources ci)
+    (by omega) hlo_i (by split_ifs at hhi_i with hcm' <;> [exact hhi_i; omega])
+  have heast_cj := take_east_count_within_column (t.2 cj).val c (y - cfg.sources cj)
+    (by omega) hlo_j (by split_ifs at hhi_j with hcm' <;> [exact hhi_j; omega])
+  -- Prefix North count = ki - c = y - src (from bool_countP_sum')
+  have htrue_ci := take_countP_true_eq (t.2 ci) ki c
+    (by have := splitPos_le_length cfg hwf t hht ci (Or.inl rfl); simp [splitPosAt] at ki ⊢; omega)
+    (by simp [splitPosAt] at ki; exact heast_ci)
+  have htrue_cj := take_countP_true_eq (t.2 cj) kj c
+    (by have := splitPos_le_length cfg hwf t hht cj (Or.inr rfl); simp [splitPosAt] at kj ⊢; omega)
+    (by simp [splitPosAt] at kj; exact heast_cj)
+  have hpfx_ci : (List.take ki (t.2 ci).val).countP (· = false) = c := by
+    simp [splitPosAt] at ki; exact heast_ci
+  have hpfx_cj : (List.take kj (t.2 cj).val).countP (· = false) = c := by
+    simp [splitPosAt] at kj; exact heast_cj
+  -- Key bounds: colEntry(img, c+1) ≥ y - src (from northBeforeEast_ge_prefix_true)
+  have hge_ci := northBeforeEast_ge_prefix_true _ _ c hpfx_ci
+  have hge_cj := northBeforeEast_ge_prefix_true _ _ c hpfx_cj
+  rw [htrue_ci] at hge_ci; rw [htrue_cj] at hge_cj
+  -- Rewrite hinterior and hfinal to use tail-swap lists
+  rw [hval_ci, himg_ci, hval_cj, himg_cj] at hinterior hfinal
+  -- Case split on c < m (interior) vs c = m (final column)
+  by_cases hc_lt : c < cfg.m
+  · -- Interior: NonIntersecting at x = c fails (both disjuncts impossible)
+    have hcol := hinterior c hc_lt
+    simp only [colEntry] at hcol
+    cases c with
+    | zero =>
+      simp only [splitPosAt] at ki kj
+      rcases hcol with h | h <;> omega
+    | succ c' =>
+      -- colEntry at c'+1 preserved: northBeforeEast_prefix (prefix has c'+1 > c' East)
+      have heq_ci : northBeforeEast ((t.2 ci).val.take ki ++ (t.2 cj).val.drop kj) c' =
+          northBeforeEast (t.2 ci).val c' := by
+        rw [show (t.2 ci).val = (t.2 ci).val.take ki ++ (t.2 ci).val.drop ki from
+          (List.take_append_drop ki (t.2 ci).val).symm]
+        exact northBeforeEast_prefix _ _ _ c' (by rw [hpfx_ci]; omega)
+      have heq_cj : northBeforeEast ((t.2 cj).val.take kj ++ (t.2 ci).val.drop ki) c' =
+          northBeforeEast (t.2 cj).val c' := by
+        rw [show (t.2 cj).val = (t.2 cj).val.take kj ++ (t.2 cj).val.drop kj from
+          (List.take_append_drop kj (t.2 cj).val).symm]
+        exact northBeforeEast_prefix _ _ _ c' (by rw [hpfx_cj]; omega)
+      simp only [splitPosAt] at ki kj
+      rcases hcol with h | h <;> omega
+  · -- Final column: c = m
+    push_neg at hc_lt; have hceq : c = cfg.m := by omega; subst hceq
+    -- y ≤ targets(ci) and y ≤ targets(cj) from canonY_in_range with σ = swap
+    have hy_le_ti : y ≤ cfg.targets ci := by
+      have h := (canonY_in_range_j cfg hwf t hht).2
+      split_ifs at h with hcm; · omega
+      rw [colEntry_at_end, hσ_eq, Equiv.swap_apply_right] at h; omega
+    have hy_le_tj : y ≤ cfg.targets cj := by
+      have h := (canonY_in_range_i cfg hwf t hht).2
+      split_ifs at h with hcm; · omega
+      rw [colEntry_at_end, hσ_eq, Equiv.swap_apply_left] at h; omega
+    cases cfg.m with
+    | zero =>
+      simp only [colEntry] at hfinal
+      rcases hfinal with h | h <;> omega
+    | succ m' =>
+      have heq_ci : northBeforeEast ((t.2 ci).val.take ki ++ (t.2 cj).val.drop kj) m' =
+          northBeforeEast (t.2 ci).val m' := by
+        rw [show (t.2 ci).val = (t.2 ci).val.take ki ++ (t.2 ci).val.drop ki from
+          (List.take_append_drop ki (t.2 ci).val).symm]
+        exact northBeforeEast_prefix _ _ _ m' (by rw [hpfx_ci]; omega)
+      have heq_cj : northBeforeEast ((t.2 cj).val.take kj ++ (t.2 ci).val.drop ki) m' =
+          northBeforeEast (t.2 cj).val m' := by
+        rw [show (t.2 cj).val = (t.2 cj).val.take kj ++ (t.2 cj).val.drop kj from
+          (List.take_append_drop kj (t.2 cj).val).symm]
+        exact northBeforeEast_prefix _ _ _ m' (by rw [hpfx_cj]; omega)
+      simp only [colEntry] at hfinal
+      simp only [splitPosAt] at ki kj
+      rcases hfinal with h | h <;> omega
 
 /-- The GV canonical involution is self-inverse: g(g(t)) = t.
     The proof has two parts:

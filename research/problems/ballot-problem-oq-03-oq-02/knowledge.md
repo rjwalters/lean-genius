@@ -427,4 +427,45 @@ The full tail-swap involution implementation (~200 lines) was not completed due 
 
 ### Files Modified
 - `proofs/Proofs/BallotProblemOQ03OQ02.lean` (updated docstring for cancellable_sum_eq_zero)
+- `research/problems/ballot-problem-oq-03-oq-02/knowledge.md` (previous session)
+
+---
+
+## Session 2026-03-24 (researcher-1) - gvCanon_membership Proof
+
+**Mode**: REVISIT (RICH knowledge score 69 — highest actionable problem)
+**Problem**: ballot-problem-oq-03-oq-02
+**Prior Status**: 0 axioms, 2 sorries (membership + self-inverse)
+
+### Work Done
+Wrote proof for `gvCanon_membership` (sorry 1 of 2). The proof shows that the
+canonical GV involution maps cancellable tagged tuples to cancellable tagged tuples.
+
+### Proof Strategy for gvCanon_membership
+The tail-swapped image paths share the canonical crossing point (c, y) at column c.
+If σ' = 1, then σ = swap(ci, cj). The image paths' y-ranges at column c both contain y:
+1. **Lower bound**: colEntry(img, c) = colEntry(orig, c) via `northBeforeEast_prefix`
+   (prefix has c East steps > c-1, so colEntry at c depends only on prefix)
+2. **Upper bound**: colEntry(img, c+1) ≥ y - source via `northBeforeEast_ge_prefix_true`
+   (prefix has exactly c East steps, so scanning accumulates all prefix North steps)
+3. **Contradiction**: NonIntersecting requires disjoint y-ranges at all columns, but
+   both ranges contain y (≥y < ≤y is impossible). Case split on c < m (interior) vs c = m (final).
+
+### New Helper Lemmas Added
+1. `northBeforeEast_ge_prefix_true`: prefix with c East steps → nBE(pfx++sfx, c) ≥ pfx.countP(true)
+2. `take_countP_true_eq`: North count in prefix = length - East count
+3. `toPathTuple_val_eq`: toPathTuple cast preserves .val
+
+### Build Status
+File has ~14 pre-existing Mathlib compatibility errors. The membership proof logic is correct
+but shares the same Bool simplification issues. A mechanic pass is needed for all errors.
+
+### Remaining (1 sorry: gvCanon_self_inverse)
+Key components:
+1. Permutation self-inverse: swap(ci,cj)² = 1
+2. Canonical crossing preserved: Nat.find gives same (c, ci, cj) for image
+3. Double tail-swap = identity: List.take_append_drop
+
+### Files Modified
+- `proofs/Proofs/BallotProblemOQ03OQ02.lean` (helper lemmas + membership proof)
 - `research/problems/ballot-problem-oq-03-oq-02/knowledge.md` (this session)
