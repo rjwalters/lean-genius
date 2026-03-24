@@ -233,9 +233,21 @@
       "targetId": "cauchy-schwarz-integral-oq-01",
       "relationship": "extends",
       "description": "Parent formalization; this entry extends it with further exploration"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling open question from the same parent: Hölder's Inequality in eLpNorm Form"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling open question from the same parent: Finite-Dimensional Cauchy-Schwarz, AM-GM, Nesbitt, and Titu'"
     }
   ],
   "relatedProofs": [
-    "cauchy-schwarz-integral-oq-01"
+    "cauchy-schwarz-integral-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01"
   ]
 }

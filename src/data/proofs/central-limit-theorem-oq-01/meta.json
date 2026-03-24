@@ -162,9 +162,27 @@
       "targetId": "central-limit-theorem",
       "relationship": "extends",
       "description": "Parent formalization; this entry extends it with further exploration"
+    },
+    {
+      "targetId": "central-limit-theorem-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling open question from the same parent: The Gnedenko-Kolmogorov Domain of Attraction Theorem"
+    },
+    {
+      "targetId": "central-limit-theorem-oq-01-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling open question from the same parent: Lévy-Khintchine Representation: Triplets, Decomposition, and"
+    },
+    {
+      "targetId": "central-limit-theorem-oq-03",
+      "relationship": "sibling",
+      "description": "Sibling open question from the same parent: Categorical Structure of Distributions Under Convolution"
     }
   ],
   "relatedProofs": [
-    "central-limit-theorem"
+    "central-limit-theorem",
+    "central-limit-theorem-oq-01-oq-01",
+    "central-limit-theorem-oq-01-oq-02",
+    "central-limit-theorem-oq-03"
   ]
 }
