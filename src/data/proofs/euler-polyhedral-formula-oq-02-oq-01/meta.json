@@ -86,7 +86,8 @@
       "title": "Curvature Sign and Topology",
       "summary": "Three fundamental constraints: $\\int K\\,dA > 0 \\Rightarrow \\chi > 0$, $\\int K\\,dA < 0 \\Rightarrow \\chi < 0$, $\\int K\\,dA = 0 \\Rightarrow \\chi = 0$. Each proof uses `nlinarith` after substituting $\\int K\\,dA = 2\\pi\\chi$ with $\\pi > 0$.",
       "startLine": 107,
-      "endLine": 133
+      "endLine": 133,
+      "mathContext": "$\\text{sign}(\\int K\\,dA) = \\text{sign}(\\chi)$. Since $\\chi = 2 - 2g$: positive curvature $\\Rightarrow$ sphere, zero $\\Rightarrow$ torus, negative $\\Rightarrow$ genus $\\geq 2$."
     },
     {
       "id": "special-surfaces",
@@ -156,7 +157,8 @@
       "title": "Girard's Formula (Spherical Triangles)",
       "summary": "Formalizes Girard's 1629 formula: on a surface of constant curvature $K$, a geodesic triangle has $\\text{Area} = (\\alpha + \\beta + \\gamma - \\pi) / K$. Proves the complete trichotomy: $K > 0$ gives angular excess, $K = 0$ gives angle sum $\\pi$, $K < 0$ gives angular deficit.",
       "startLine": 522,
-      "endLine": 582
+      "endLine": 582,
+      "mathContext": "Girard: $\\text{Area} = (\\alpha + \\beta + \\gamma - \\pi)/K$. Sphere ($K>0$): angle sum $> \\pi$. Flat ($K=0$): $= \\pi$. Hyperbolic ($K<0$): $< \\pi$."
     },
     {
       "id": "hyperbolic-triangles",
@@ -170,14 +172,16 @@
       "title": "Poincaré-Hopf Index Theorem",
       "summary": "Axiomatizes the Poincaré-Hopf theorem ($\\sum \\text{index}(V, p_i) = \\chi(M)$) and derives the **hairy ball theorem**: no nowhere-vanishing vector field on $S^2$ ($\\chi = 2 \\neq 0$). Complete classification: only $\\chi = 0$ surfaces (torus) support non-vanishing fields.",
       "startLine": 612,
-      "endLine": 680
+      "endLine": 680,
+      "mathContext": "Poincaré-Hopf: $\\sum_i \\text{ind}(V, p_i) = \\chi(M)$. Hairy ball: $\\chi(S^2) = 2 \\neq 0$, so every vector field on $S^2$ vanishes somewhere."
     },
     {
       "id": "morse-theory",
       "title": "Morse Theory Connection",
       "summary": "Formalizes the Morse relation $\\chi(M) = \\#\\text{min} - \\#\\text{saddles} + \\#\\text{max}$ and derives critical point lower bounds: sphere needs $\\geq 2$ extrema, torus needs $\\geq 2$ saddles, genus-$g$ satisfies $\\#\\text{min} + \\#\\text{max} - \\#\\text{saddles} = 2 - 2g$.",
       "startLine": 682,
-      "endLine": 750
+      "endLine": 750,
+      "mathContext": "Weak Morse: $\\chi(M) = m_0 - m_1 + m_2$ where $m_i$ counts index-$i$ critical points. Sphere: $m_0 + m_2 \\geq 2$."
     }
   ],
   "overview": {
