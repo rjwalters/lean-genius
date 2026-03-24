@@ -102,7 +102,10 @@ axiom erdos_265_singleExp_achievable :
     hasBothRationalSums a ∧
     Filter.Tendsto (singleExpGrowth a) Filter.atTop Filter.atTop
 
-/-- Erdős's second conjecture: double exponential implies limit 1 -/
+/-- Erdős's second conjecture: double exponential implies limit 1
+    NOTE: This is still an OPEN CONJECTURE (not a proven result).
+    The Kovač-Tao result (2024) only shows β > 1 is achievable, not β = 2.
+    The remaining question is whether limsup aₙ^(1/2ⁿ) > 1 is possible. -/
 axiom erdos_265_doubleExp_necessary :
   ∀ a : ℕ → ℕ, IsPositiveIntSeq a → IsStrictlyIncreasing a →
     hasBothRationalSums a →
@@ -192,7 +195,9 @@ Kovač-Tao: ∃ β > 1 with aₙ^(1/βⁿ) → ∞ achievable.
 
 Remaining: Can we have limsup aₙ^(1/2ⁿ) > 1?
 -/
-axiom erdos_265_main :
+-- Proved by law of excluded middle: either ∃ a with limsup > 1, or ∀ a limsup ≤ 1.
+-- This is a logical tautology, not a mathematical result.
+theorem erdos_265_main :
   -- Either β = 2 works (answering NO to Erdős's second conjecture)
   (∃ a : ℕ → ℕ, IsPositiveIntSeq a ∧ IsStrictlyIncreasing a ∧
     hasBothRationalSums a ∧
@@ -200,6 +205,13 @@ axiom erdos_265_main :
   -- Or β = 2 is the threshold (answering YES)
   (∀ a : ℕ → ℕ, IsPositiveIntSeq a → IsStrictlyIncreasing a →
     hasBothRationalSums a →
-    Filter.limsup (doubleExpGrowth a) Filter.atTop ≤ 1)
+    Filter.limsup (doubleExpGrowth a) Filter.atTop ≤ 1) := by
+  by_cases h : ∃ a : ℕ → ℕ, IsPositiveIntSeq a ∧ IsStrictlyIncreasing a ∧
+    hasBothRationalSums a ∧ Filter.limsup (doubleExpGrowth a) Filter.atTop > 1
+  · exact Or.inl h
+  · right
+    intro a ha1 ha2 ha3
+    by_contra hc
+    exact h ⟨a, ha1, ha2, ha3, not_le.mp hc⟩
 
 end Erdos265
