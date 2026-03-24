@@ -183,17 +183,17 @@
     {
       "id": "basel-problem",
       "relationship": "related",
-      "description": "Euler's $\\sum 1/n^2 = \\pi^2/6$ is a convergent relative of the Ramanujan sum — the Riemann zeta function $\\zeta(s) = \\su"
+      "description": "Euler's $\\sum 1/n^2 = \\pi^2/6$ is a convergent relative of the Ramanujan sum — the Riemann zeta function $\\zeta(s) = \\sum n^{-s}$ connects both: convergent for $s > 1$ (Basel at $s=2$), needing analytic continuation for $s = -1$ (Ramanujan)"
     },
     {
       "id": "euler-identity",
       "relationship": "thematic",
-      "description": "Euler's identity $e^{i\\pi}+1=0$ connects fundamental constants — similarly, $\\zeta(-1) = -1/12$ connects the integers to"
+      "description": "Euler's identity $e^{i\\pi}+1=0$ connects fundamental constants — similarly, $\\zeta(-1) = -1/12$ connects the integers to the zeta function's analytic continuation, both revealing unexpected structure"
     },
     {
       "id": "godel-incompleteness",
       "relationship": "thematic",
-      "description": "Both expose limitations of formal systems: Gödel shows not everything true is provable, while the Ramanujan fallacy show"
+      "description": "Both expose limitations of formal systems: Gödel shows not everything true is provable, while the Ramanujan fallacy shows that naive algebraic manipulation of infinite series can produce 'results' that contradict basic analysis"
     }
   ],
   "references": [

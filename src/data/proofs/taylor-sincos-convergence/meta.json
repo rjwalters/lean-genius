@@ -200,22 +200,22 @@
     {
       "id": "taylor-theorem",
       "relationship": "related",
-      "description": "Uses the same Taylor remainder framework (Lagrange form) but exploits the specific structure of trig functions — the per"
+      "description": "Uses the same Taylor remainder framework (Lagrange form) but exploits the specific structure of trig functions — the period-4 derivative cycle — to obtain a uniform bound independent of $x$."
     },
     {
       "id": "taylor-theorem-oq-03",
       "relationship": "extends",
-      "description": "Answers the open question from the parent entry: extending Taylor convergence from exp to sin and cos, using the same re"
+      "description": "Answers the open question from the parent entry: extending Taylor convergence from exp to sin and cos, using the same remainder-bound approach with a tighter constant."
     },
     {
       "id": "euler-identity",
       "relationship": "related",
-      "description": "The convergence of the sin, cos, and exp Taylor series together provides the real-analytic foundation for Euler's formul"
+      "description": "The convergence of the sin, cos, and exp Taylor series together provides the real-analytic foundation for Euler's formula $e^{ix} = \\cos x + i\\sin x$, obtained by substituting $ix$ into the exp series."
     },
     {
       "id": "fourier-series",
       "relationship": "supports",
-      "description": "Fourier series expand functions in terms of $\\sin(nx)$ and $\\cos(nx)$; the convergence of the Taylor series for these ba"
+      "description": "Fourier series expand functions in terms of $\\sin(nx)$ and $\\cos(nx)$; the convergence of the Taylor series for these basis functions is a prerequisite for the pointwise convergence theory of Fourier series."
     }
   ],
   "references": [

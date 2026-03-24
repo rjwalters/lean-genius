@@ -232,7 +232,7 @@
     {
       "id": "szemeredi-theorem",
       "relationship": "related",
-      "description": "Both concern arithmetic structure in dense sets. Szemerédi's theorem guarantees APs in dense sets; Problem #331 asks abo"
+      "description": "Both concern arithmetic structure in dense sets. Szemerédi's theorem guarantees APs in dense sets; Problem #331 asks about common differences between two sets of density $\\sim \\sqrt{N}$"
     },
     {
       "id": "szemeredi-counting",
@@ -242,7 +242,7 @@
     {
       "id": "erdos-1097",
       "relationship": "related",
-      "description": "Both study common differences and additive structure: #1097 asks about the number of common differences in 3-term APs wi"
+      "description": "Both study common differences and additive structure: #1097 asks about the number of common differences in 3-term APs within a single set, while #331 asks about common differences between two distinct sets"
     },
     {
       "id": "erdos-3",
@@ -252,7 +252,7 @@
     {
       "id": "arithmetic-series",
       "relationship": "foundational",
-      "description": "Arithmetic progressions and their common differences are the central objects. The difference set $A - A$ is precisely th"
+      "description": "Arithmetic progressions and their common differences are the central objects. The difference set $A - A$ is precisely the set of common differences of 2-term APs in $A$"
     }
   ],
   "leanFile": {

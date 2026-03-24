@@ -242,7 +242,7 @@
     {
       "id": "geometric-series",
       "relationship": "extends",
-      "description": "The parent proof establishes the scalar geometric series ∑ r^n = 1/(1-r) for |r| < 1. This OQ generalizes from scalars t"
+      "description": "The parent proof establishes the scalar geometric series ∑ r^n = 1/(1-r) for |r| < 1. This OQ generalizes from scalars to arbitrary complete normed rings, including matrices and bounded linear operators."
     },
     {
       "id": "geometric-series-oq-01",
@@ -252,17 +252,17 @@
     {
       "id": "harmonic-divergence",
       "relationship": "related",
-      "description": "Contrast in convergence behavior: the harmonic series diverges despite scalar terms tending to zero, while the Neumann s"
+      "description": "Contrast in convergence behavior: the harmonic series diverges despite scalar terms tending to zero, while the Neumann series converges when ‖T‖ < 1 because the norm decay is geometric (exponential) rather than polynomial."
     },
     {
       "id": "cayley-hamilton",
       "relationship": "related",
-      "description": "Both involve matrix polynomial identities. Cayley-Hamilton says a matrix satisfies its own characteristic polynomial; th"
+      "description": "Both involve matrix polynomial identities. Cayley-Hamilton says a matrix satisfies its own characteristic polynomial; the Neumann series provides an explicit power series for the inverse (I-T)⁻¹. Together they illustrate two ways polynomial identities interact with matrix algebra."
     },
     {
       "id": "cauchy-schwarz",
       "relationship": "foundational",
-      "description": "The Cauchy-Schwarz inequality underpins the norm estimates used throughout: ‖T^n‖ ≤ ‖T‖^n relies on the submultiplicativ"
+      "description": "The Cauchy-Schwarz inequality underpins the norm estimates used throughout: ‖T^n‖ ≤ ‖T‖^n relies on the submultiplicativity of the operator norm, which in turn derives from Cauchy-Schwarz in Hilbert space settings."
     }
   ]
 }

@@ -229,7 +229,7 @@
     {
       "id": "halting-problem",
       "relationship": "related",
-      "description": "Turing's halting problem (1936) is the computability-theoretic analog: no algorithm can decide whether an arbitrary prog"
+      "description": "Turing's halting problem (1936) is the computability-theoretic analog: no algorithm can decide whether an arbitrary program halts. Both are proved by diagonalization — Gödel's self-referential sentence 'I am unprovable' parallels the program that asks 'do I halt?'"
     },
     {
       "id": "cantor-diagonalization",
@@ -239,17 +239,17 @@
     {
       "id": "abel-ruffini",
       "relationship": "thematic",
-      "description": "Both are impossibility results about formal methods: Abel-Ruffini shows no radical formula solves all quintics, Gödel sh"
+      "description": "Both are impossibility results about formal methods: Abel-Ruffini shows no radical formula solves all quintics, Gödel shows no formal system proves all arithmetic truths. Each reveals fundamental limits of a class of mathematical tools"
     },
     {
       "id": "continuum-hypothesis",
       "relationship": "related",
-      "description": "CH is independent of ZFC (Gödel 1940, Cohen 1963) — an example of a natural mathematical statement unprovable in standar"
+      "description": "CH is independent of ZFC (Gödel 1940, Cohen 1963) — an example of a natural mathematical statement unprovable in standard axioms, illustrating incompleteness in practice rather than via self-reference"
     },
     {
       "id": "hilbert-10",
       "relationship": "extends",
-      "description": "Matiyasevich's theorem (1970) shows no algorithm decides Diophantine solvability. This extends Gödel's impossibility fro"
+      "description": "Matiyasevich's theorem (1970) shows no algorithm decides Diophantine solvability. This extends Gödel's impossibility from provability to decidability: the set of true Diophantine statements is not recursively enumerable"
     }
   ],
   "references": [

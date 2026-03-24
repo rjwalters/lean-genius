@@ -178,17 +178,17 @@
     {
       "id": "fundamental-arithmetic",
       "relationship": "related",
-      "description": "The Fundamental Theorem of Arithmetic (unique prime factorization) provides the canonical pairwise coprime decomposition"
+      "description": "The Fundamental Theorem of Arithmetic (unique prime factorization) provides the canonical pairwise coprime decomposition $n = p_1^{a_1} \\cdots p_k^{a_k}$, making the $k$-fold CRT applicable to any modulus."
     },
     {
       "id": "euler-totient",
       "relationship": "related",
-      "description": "The Euler totient function $\\varphi(n)$. This file proves the $k$-fold multiplicativity $\\varphi(\\prod n_i) = \\prod \\var"
+      "description": "The Euler totient function $\\varphi(n)$. This file proves the $k$-fold multiplicativity $\\varphi(\\prod n_i) = \\prod \\varphi(n_i)$ as a CRT corollary, extending Euler's classical result."
     },
     {
       "id": "primitive-roots",
       "relationship": "related",
-      "description": "Primitive roots modulo primes: $(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic. The CRT decomposes $(\\mathbb{Z}/n\\mathbb{Z})^* \\c"
+      "description": "Primitive roots modulo primes: $(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic. The CRT decomposes $(\\mathbb{Z}/n\\mathbb{Z})^* \\cong \\prod (\\mathbb{Z}/p_i^{a_i}\\mathbb{Z})^*$, reducing unit group structure to prime power components."
     }
   ],
   "leanFile": {

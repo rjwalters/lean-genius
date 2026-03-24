@@ -253,7 +253,7 @@
     {
       "id": "infinitude-primes",
       "relationship": "foundational",
-      "description": "The infinitude of primes is foundational, but the deeper question — whether infinitely many Mersenne primes $2^p - 1$ ex"
+      "description": "The infinitude of primes is foundational, but the deeper question — whether infinitely many Mersenne primes $2^p - 1$ exist — remains open. Each new Mersenne prime yields a new even perfect number via the Euclid-Euler theorem. The Lenstra-Pomerance-Wagstaff conjecture predicts $e^\\gamma \\log 2 \\cdot \\log \\log x / \\log 2$ Mersenne primes below $x$"
     },
     {
       "id": "bertrands-postulate",
@@ -263,12 +263,12 @@
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "Unique prime factorization is essential to the proof: $\\sigma_1$ is multiplicative because of the unique factorization o"
+      "description": "Unique prime factorization is essential to the proof: $\\sigma_1$ is multiplicative because of the unique factorization of $n$ into prime powers, and the Euclid-Euler proof repeatedly uses that $\\gcd(2^k, 2^{k+1}-1) = 1$. The sigma function's value $\\sigma_1(p^a) = (p^{a+1}-1)/(p-1)$ follows from summing the geometric series of divisors"
     },
     {
       "id": "lagrange-four-squares",
       "relationship": "related",
-      "description": "Both concern representation problems in number theory: which numbers are sums of squares (Lagrange) vs which satisfy $\\s"
+      "description": "Both concern representation problems in number theory: which numbers are sums of squares (Lagrange) vs which satisfy $\\sigma(n) = 2n$ (perfect numbers). The sigma function $\\sigma_k$ for different $k$ connects both: $\\sigma_0(n)$ counts divisors, $\\sigma_1(n)$ sums divisors (perfect numbers), and $r_4(n) = 8\\sigma_1(n) - 32\\sigma_1(n/4)$ counts four-square representations (Jacobi)"
     }
   ]
 }

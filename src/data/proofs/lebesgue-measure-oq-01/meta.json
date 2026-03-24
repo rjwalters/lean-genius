@@ -176,12 +176,12 @@
     {
       "id": "lebesgue-measure",
       "relationship": "extends",
-      "description": "This proof resolves Open Question #1 from the parent Lebesgue Measure entry, replacing the axiom dirichlet_integral_zero"
+      "description": "This proof resolves Open Question #1 from the parent Lebesgue Measure entry, replacing the axiom dirichlet_integral_zero with a complete proof via countability of ℚ, measure zero, and integral_eq_zero_of_ae"
     },
     {
       "id": "lebesgue-measure-oq-02",
       "relationship": "related",
-      "description": "Sibling open question from the same parent proof (Lebesgue Measure), exploring other aspects of Lebesgue integration and"
+      "description": "Sibling open question from the same parent proof (Lebesgue Measure), exploring other aspects of Lebesgue integration and measure theory"
     },
     {
       "id": "cantor-diagonalization",
@@ -191,12 +191,12 @@
     {
       "id": "fundamental-theorem-calculus",
       "relationship": "foundational",
-      "description": "The FTC connects Riemann integration to differentiation; this proof demonstrates a function (the Dirichlet function) tha"
+      "description": "The FTC connects Riemann integration to differentiation; this proof demonstrates a function (the Dirichlet function) that lies beyond the FTC's scope since it is not Riemann integrable, motivating the Lebesgue integral that this formalization uses"
     },
     {
       "id": "harmonic-divergence",
       "relationship": "related",
-      "description": "Both proofs use measure-theoretic or analytic techniques to resolve questions about integration: harmonic divergence sho"
+      "description": "Both proofs use measure-theoretic or analytic techniques to resolve questions about integration: harmonic divergence shows ∑1/n diverges (related to the integral test), while this proof shows ∫𝟙_ℚ = 0 via measure-theoretic methods unavailable to classical analysis"
     }
   ],
   "leanFile": {

@@ -289,27 +289,27 @@
     {
       "id": "harmonic-divergence",
       "relationship": "contrasts",
-      "description": "The harmonic series ∑ 1/n diverges (p = 1), while the Basel series ∑ 1/n² converges (p = 2). The boundary between conver"
+      "description": "The harmonic series ∑ 1/n diverges (p = 1), while the Basel series ∑ 1/n² converges (p = 2). The boundary between convergence and divergence at p = 1 is a fundamental fact in analysis."
     },
     {
       "id": "riemann-hypothesis",
       "relationship": "foundational",
-      "description": "The Basel identity ζ(2) = π²/6 is the simplest special value of the Riemann zeta function. The Riemann Hypothesis concer"
+      "description": "The Basel identity ζ(2) = π²/6 is the simplest special value of the Riemann zeta function. The Riemann Hypothesis concerns the zeros of this same function, connecting the Basel problem to the deepest unsolved problem in mathematics."
     },
     {
       "id": "fourier-series",
       "relationship": "technique",
-      "description": "The modern rigorous proof of the Basel identity uses Parseval's theorem from Fourier analysis: applying it to f(x) = x o"
+      "description": "The modern rigorous proof of the Basel identity uses Parseval's theorem from Fourier analysis: applying it to f(x) = x on [-π, π] directly yields ∑ 1/n² = π²/6."
     },
     {
       "id": "euler-identity",
       "relationship": "related",
-      "description": "Both are crown jewels of Euler's mathematical legacy. Euler's identity e^(iπ) + 1 = 0 connects the same fundamental cons"
+      "description": "Both are crown jewels of Euler's mathematical legacy. Euler's identity e^(iπ) + 1 = 0 connects the same fundamental constants (e, π, i) that appear in the analytic continuation of the zeta function."
     },
     {
       "id": "prime-reciprocal-divergence",
       "relationship": "related",
-      "description": "Euler proved ∑ 1/p diverges using the Euler product ζ(s) = ∏(1-p⁻ˢ)⁻¹ — the same zeta function framework. The divergence"
+      "description": "Euler proved ∑ 1/p diverges using the Euler product ζ(s) = ∏(1-p⁻ˢ)⁻¹ — the same zeta function framework. The divergence of ∑ 1/p contrasts with the convergence of ∑ 1/n² = π²/6, highlighting how prime density differs from integer density"
     }
   ],
   "leanFile": {

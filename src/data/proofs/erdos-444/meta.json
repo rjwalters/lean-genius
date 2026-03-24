@@ -201,22 +201,22 @@
     {
       "id": "fundamental-arithmetic",
       "relationship": "supports",
-      "description": "Unique prime factorization underlies the extremal product construction: d_A(n) = prod(e_i + 1) where primes are in A, so maximizing d_A reduces to optimizing exponents"
+      "description": "The unique prime factorization $n = p_1^{e_1} \\cdots p_k^{e_k}$ underlies the extremal product construction: $d_A(n) = \\prod (e_i + 1)$ where the product runs over primes in $A$, so maximizing $d_A$ reduces to optimizing exponents"
     },
     {
       "id": "harmonic-divergence",
       "relationship": "foundational",
-      "description": "The divergence of the harmonic series is the prototype for H_A(x); the theorem says extremal divisor counts grow faster than any power of this harmonic measure"
+      "description": "The divergence of the harmonic series $\\sum 1/n$ is the prototype for the harmonic sums $H_A(x) = \\sum_{a \\in A, a \\leq x} 1/a$ that measure the 'density' of A. The theorem's key comparison $M_A(x) \\gg H_A(x)^k$ says extremal divisor counts grow faster than any power of this harmonic measure"
     },
     {
       "id": "prime-number-theorem",
       "relationship": "related",
-      "description": "Mertens' theorem governs the harmonic sum over primes, and the PNT provides pi(x) needed for exponent optimization in the extremal construction"
+      "description": "Mertens' theorem ($\\sum_{p \\leq x} 1/p \\sim \\log \\log x$) governs the harmonic sum over primes, and the PNT provides the prime counting function $\\pi(x) \\sim x/\\log x$ needed for the exponent optimization in the extremal construction"
     },
     {
       "id": "euler-totient",
       "relationship": "related",
-      "description": "Both involve fundamental multiplicative arithmetic functions: tau(n) and its generalizations d_A(n) count divisors, while phi(n) counts coprime residues"
+      "description": "Both involve fundamental multiplicative arithmetic functions: $\\tau(n)$ and its generalizations $d_A(n)$ count divisors, while $\\phi(n)$ counts coprime residues. The multiplicativity property $f(mn) = f(m)f(n)$ for $\\gcd(m,n)=1$ is key to both"
     }
   ],
   "leanFile": {

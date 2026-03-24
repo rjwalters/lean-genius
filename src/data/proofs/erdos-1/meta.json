@@ -225,17 +225,17 @@
     {
       "id": "erdos-109",
       "relationship": "related",
-      "description": "The sumset conjecture concerns the size of $A + A$ for sets $A$ with special structure. Problem #1 asks about subset sum"
+      "description": "The sumset conjecture concerns the size of $A + A$ for sets $A$ with special structure. Problem #1 asks about subset sums (over all subsets), while Problem #109 studies pairwise sums. Both are foundational questions in additive combinatorics about how sums of a structured set behave"
     },
     {
       "id": "erdos-123",
       "relationship": "complementary",
-      "description": "$d$-complete sequences ask when every sufficiently large integer is representable as a sum of distinct elements from a s"
+      "description": "$d$-complete sequences ask when every sufficiently large integer is representable as a sum of distinct elements from a sequence. This complements Problem #1: complete sequences have redundant (non-distinct) subset sums covering all integers, while Problem #1 studies sets whose subset sums are maximally spread out (all distinct)"
     },
     {
       "id": "erdos-347",
       "relationship": "related",
-      "description": "Complete sequences with ratio tending to 2 concern sets whose subset sums cover all sufficiently large integers. Problem"
+      "description": "Complete sequences with ratio tending to 2 concern sets whose subset sums cover all sufficiently large integers. Problem #1 asks when subset sums are all different; Problem #347 asks when they cover everything. The powers of 2 are extremal for both: they give distinct sums with maximum N, and their subset sums cover exactly $\\{0, 1, \\ldots, 2^n - 1\\}$"
     }
   ],
   "leanFile": {

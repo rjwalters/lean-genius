@@ -194,22 +194,22 @@
     {
       "id": "e-transcendental",
       "relationship": "specializes",
-      "description": "e's transcendence is the α=1 case: e^1 = e is transcendental since 1 is algebraic and nonzero"
+      "description": "The transcendence of $e$ (Wiedijk #67) is the $\\alpha = 1$ special case of Hermite-Lindemann; Hermite's 1873 proof was the first application"
     },
     {
       "id": "pi-transcendental",
       "relationship": "specializes",
-      "description": "π's transcendence follows: if π were algebraic, e^(iπ) = -1 would be transcendental by H-L, contradiction"
+      "description": "The transcendence of $\\pi$ (Wiedijk #53) follows from Hermite-Lindemann via Euler's identity: $e^{i\\pi} = -1$ is algebraic, so $i\\pi$ must be transcendental"
     },
     {
       "id": "angle-trisection",
       "relationship": "related",
-      "description": "H-L proves π transcendental, which proves squaring the circle is impossible"
+      "description": "Both resolve classical impossibility problems via algebraic number theory; squaring the circle fails because $\\pi$ is transcendental (Hermite-Lindemann), angle trisection because some angles need degree-3 extensions"
     },
     {
       "id": "gelfond-schneider",
       "relationship": "related",
-      "description": "Gelfond-Schneider (1934) extends H-L: a^b is transcendental for algebraic a≠0,1 and irrational algebraic b"
+      "description": "The Gelfond-Schneider theorem (1934) extends transcendence theory from exponentials to $\\alpha^\\beta$, using techniques inspired by Hermite-Lindemann"
     },
     "e-transcendental",
     "pi-transcendental",

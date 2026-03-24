@@ -161,12 +161,12 @@
     {
       "id": "prob-method-expectation",
       "relationship": "depends-on",
-      "description": "The second moment method builds on the first moment framework, extending Markov's inequality with variance analysis to g"
+      "description": "The second moment method builds on the first moment framework, extending Markov's inequality with variance analysis to get concentration"
     },
     {
       "id": "prob-method-lovasz-local",
       "relationship": "related",
-      "description": "Both handle dependencies in probabilistic arguments: the second moment method via variance/covariance control, the LLL v"
+      "description": "Both handle dependencies in probabilistic arguments: the second moment method via variance/covariance control, the LLL via dependency graph structure"
     },
     {
       "id": "prob-method-applications",
@@ -181,7 +181,7 @@
     {
       "id": "prob-method-alteration",
       "relationship": "related",
-      "description": "The alteration method often combines with second moment bounds: first prove a structure exists with high probability, th"
+      "description": "The alteration method often combines with second moment bounds: first prove a structure exists with high probability, then alter it to achieve additional properties"
     }
   ],
   "leanFile": {

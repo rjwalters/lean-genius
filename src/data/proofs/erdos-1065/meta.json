@@ -226,17 +226,17 @@
     {
       "id": "erdos-1059",
       "relationship": "related",
-      "description": "Both concern infinitude of primes with special arithmetic properties and use decidable arithmetic for computational verification"
+      "description": "Both concern infinitude of primes with special arithmetic properties: #1059 requires $p - k!$ composite for all $k! < p$, while #1065 requires $p - 1$ to have restricted prime factorization. Both use decidable arithmetic for computational verification and probabilistic heuristics for the infinitude prediction"
     },
     {
       "id": "infinitude-primes",
       "relationship": "foundational",
-      "description": "Euclid's theorem guarantees infinitely many primes; this problem asks whether the subset with restricted p-1 factorization is also infinite"
+      "description": "Euclid's theorem guarantees infinitely many primes; this problem asks whether the subset with restricted $p-1$ factorization is also infinite — a natural refinement of the basic infinitude result"
     },
     {
       "id": "prime-number-theorem",
       "relationship": "foundational",
-      "description": "The PNT underlies the density heuristic for Form A primes via the probability that 2^k·q + 1 is prime"
+      "description": "The prime number theorem $\\pi(x) \\sim x/\\ln x$ underlies the density heuristic: the probability that $2^k q + 1$ is prime is $\\sim 1/\\ln(2^k q)$, and summing over valid $(k, q)$ pairs predicts the count of Form A primes up to $x$"
     }
   ],
   "leanFile": {

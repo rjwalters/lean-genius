@@ -172,7 +172,7 @@
     {
       "id": "fundamental-theorem-calculus",
       "relationship": "foundational",
-      "description": "Green's theorem for rectangles is fundamentally two applications of FTC — once for $\\partial Q/\\partial x$ in $x$ and on"
+      "description": "Green's theorem for rectangles is fundamentally two applications of FTC — once for $\\partial Q/\\partial x$ in $x$ and once for $\\partial P/\\partial y$ in $y$. The Mathlib FTC lemma `integral_eq_sub_of_hasDerivAt` is the core tool in both `ftc_partial_x` and `ftc_partial_y`"
     }
   ],
   "references": [

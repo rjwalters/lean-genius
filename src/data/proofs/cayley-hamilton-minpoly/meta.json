@@ -232,17 +232,17 @@
     {
       "id": "cayley-hamilton",
       "relationship": "extends",
-      "description": "Cayley-Hamilton proves p(M) = 0 for the characteristic polynomial p. This file shows the minimal polynomial μ_M provides"
+      "description": "Cayley-Hamilton proves p(M) = 0 for the characteristic polynomial p. This file shows the minimal polynomial μ_M provides a tighter reduction: every matrix polynomial reduces mod μ_M, and μ_M divides p"
     },
     {
       "id": "fundamental-theorem-algebra",
       "relationship": "foundational",
-      "description": "Over ℂ (or any algebraically closed field), FTA ensures both the characteristic and minimal polynomials split into linea"
+      "description": "Over ℂ (or any algebraically closed field), FTA ensures both the characteristic and minimal polynomials split into linear factors, connecting matrix polynomial theory to eigenvalue decomposition"
     },
     {
       "id": "abel-ruffini",
       "relationship": "thematic",
-      "description": "For n ≥ 5, Abel-Ruffini implies the eigenvalues (roots of the characteristic polynomial) cannot always be expressed in r"
+      "description": "For n ≥ 5, Abel-Ruffini implies the eigenvalues (roots of the characteristic polynomial) cannot always be expressed in radicals — yet the minimal polynomial reduction works regardless, algebraically rather than numerically"
     }
   ],
   "references": [

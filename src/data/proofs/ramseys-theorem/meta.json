@@ -195,12 +195,12 @@
     {
       "id": "prob-method-alteration",
       "relationship": "related",
-      "description": "The probabilistic lower bound on Ramsey numbers R(k,k) ≥ 2^{k/2} uses an alteration/expectation argument on random 2-col"
+      "description": "The probabilistic lower bound on Ramsey numbers R(k,k) ≥ 2^{k/2} uses an alteration/expectation argument on random 2-colorings"
     },
     {
       "id": "pigeonhole-principle",
       "relationship": "depends-on",
-      "description": "The neighborhood partition step relies on pigeonhole: n-1 vertices split into two sets, so one has at least ⌈(n-1)/2⌉ el"
+      "description": "The neighborhood partition step relies on pigeonhole: n-1 vertices split into two sets, so one has at least ⌈(n-1)/2⌉ elements"
     },
     {
       "id": "kummer-theorem",
@@ -210,7 +210,7 @@
     {
       "id": "binomial-theorem",
       "relationship": "foundational",
-      "description": "The Ramsey bound $R(r,s) \\leq \\binom{r+s-2}{r-1}$ directly uses binomial coefficients, and the recurrence $R(r,s) \\leq R"
+      "description": "The Ramsey bound $R(r,s) \\leq \\binom{r+s-2}{r-1}$ directly uses binomial coefficients, and the recurrence $R(r,s) \\leq R(r-1,s) + R(r,s-1)$ mirrors Pascal's identity $\\binom{n}{k} = \\binom{n-1}{k-1} + \\binom{n-1}{k}$ — the same combinatorial structure underlying both results"
     },
     {
       "id": "mathematical-induction",

@@ -246,12 +246,12 @@
     {
       "id": "gcd-algorithm",
       "relationship": "foundational",
-      "description": "The coprimality hypothesis $\\gcd(m,n) = 1$ is verified by the Euclidean algorithm. The extended GCD simultaneously compu"
+      "description": "The coprimality hypothesis $\\gcd(m,n) = 1$ is verified by the Euclidean algorithm. The extended GCD simultaneously computes the Bezout coefficients needed for the CRT solution formula"
     },
     {
       "id": "euler-totient",
       "relationship": "related",
-      "description": "CRT gives the ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ when"
+      "description": "CRT gives the ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ when $\\gcd(m,n)=1$. Taking unit groups: $(\\mathbb{Z}/mn\\mathbb{Z})^* \\cong (\\mathbb{Z}/m\\mathbb{Z})^* \\times (\\mathbb{Z}/n\\mathbb{Z})^*$, which gives the multiplicativity $\\phi(mn) = \\phi(m)\\phi(n)$ for Euler's totient"
     },
     {
       "id": "factor-remainder-theorem",

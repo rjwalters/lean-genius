@@ -198,7 +198,7 @@
     {
       "id": "euler-totient",
       "relationship": "related",
-      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ and Euler's theorem $a^{\\phi(n)} \\equiv 1 \\pmod{n}$ both describe the multi"
+      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ and Euler's theorem $a^{\\phi(n)} \\equiv 1 \\pmod{n}$ both describe the multiplicative group $(\\mathbb{Z}/p\\mathbb{Z})^*$. Wilson computes the product of all group elements; Euler describes the order. For prime $p$, $\\phi(p) = p-1$ is both the group order and the factorial index"
     },
     {
       "id": "quadratic-reciprocity",
@@ -208,7 +208,7 @@
     {
       "id": "lagrange-theorem",
       "relationship": "foundational",
-      "description": "Lagrange's theorem ($|H|$ divides $|G|$) applied to $(\\mathbb{Z}/p\\mathbb{Z})^*$ gives $\\text{ord}(a) \\mid (p-1)$ for al"
+      "description": "Lagrange's theorem ($|H|$ divides $|G|$) applied to $(\\mathbb{Z}/p\\mathbb{Z})^*$ gives $\\text{ord}(a) \\mid (p-1)$ for all $a$, hence $a^{p-1} \\equiv 1$ (Fermat's little theorem). Wilson's theorem uses a different group-theoretic fact: the product of all elements equals the unique element of order 2"
     },
     {
       "id": "infinitude-primes",

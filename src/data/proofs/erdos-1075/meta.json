@@ -184,27 +184,27 @@
     {
       "id": "erdos-1076",
       "relationship": "thematic",
-      "description": "Erdős #1076 concerns extremal numbers for 3-uniform hypergraphs (Steiner-system-adjacent constructions, the Bohman-Warnk"
+      "description": "Erdős #1076 concerns extremal numbers for 3-uniform hypergraphs (Steiner-system-adjacent constructions, the Bohman-Warnke / Glock-Kühn result). Both problems ask how many edges an r-uniform hypergraph can have before a prescribed dense substructure is forced — they are adjacent questions in the extremal hypergraph programme."
     },
     {
       "id": "erdos-1157",
       "relationship": "thematic",
-      "description": "The Brown-Erdős-Sós conjecture (erdos-1157) determines extremal numbers f^(r)(n; k, s) for r-uniform hypergraphs. Proble"
+      "description": "The Brown-Erdős-Sós conjecture (erdos-1157) determines extremal numbers f^(r)(n; k, s) for r-uniform hypergraphs. Problem #1075 asks about dense subgraph density constants once a global density threshold is met; #1157 characterises the threshold itself. Together they bound the two sides of the same supersaturation question."
     },
     {
       "id": "erdos-1020",
       "relationship": "related",
-      "description": "The Erdős Matching Conjecture (erdos-1020) determines the maximum number of edges in an r-uniform hypergraph with no k i"
+      "description": "The Erdős Matching Conjecture (erdos-1020) determines the maximum number of edges in an r-uniform hypergraph with no k independent edges — a Turán-type extremal result for matchings. The probabilistic arguments and Katona-style averaging techniques used there are closely related to the random-sampling argument Erdős employed to prove the r^{-r} baseline in #1075."
     },
     {
       "id": "erdos-1024",
       "relationship": "related",
-      "description": "Independent sets in linear hypergraphs (erdos-1024) study structural properties of r-uniform hypergraphs via forbidden c"
+      "description": "Independent sets in linear hypergraphs (erdos-1024) study structural properties of r-uniform hypergraphs via forbidden configurations. The container method and independence-number bounds developed for linear hypergraphs are among the tools considered for attacking Problem #1075, though controlling density constants has proven elusive."
     },
     {
       "id": "erdos-1078",
       "relationship": "thematic",
-      "description": "Erdős #1078 (minimum degree for K_r in r-partite graphs, solved by Haxell 2001) uses threshold conditions on edge or deg"
+      "description": "Erdős #1078 (minimum degree for K_r in r-partite graphs, solved by Haxell 2001) uses threshold conditions on edge or degree density to force complete subgraphs. The structural threshold machinery — showing a density condition forces a specific substructure — is the same paradigm as Problem #1075, and the r-partite setting provides explicit constructions that could inform extremal examples."
     }
   ],
   "references": [

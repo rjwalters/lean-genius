@@ -167,7 +167,7 @@
     {
       "id": "bezout-identity",
       "relationship": "extends",
-      "description": "Root ancestor: Bézout's identity $\\gcd(a,b) = ax + by$ over $\\mathbb{Z}$. The coprimality condition $I + J = R$ in the i"
+      "description": "Root ancestor: Bézout's identity $\\gcd(a,b) = ax + by$ over $\\mathbb{Z}$. The coprimality condition $I + J = R$ in the ideal CRT is the direct generalization of $\\gcd(m,n) = 1 \\Leftrightarrow \\exists a,b: am + bn = 1$."
     },
     {
       "id": "bezout-identity-oq-03",
@@ -182,7 +182,7 @@
     {
       "id": "bezout-identity-oq-03-oq-01-oq-01",
       "relationship": "extends",
-      "description": "Direct parent: the k-fold CRT for ℤ/nℤ (concrete case). This entry generalizes from integers to arbitrary commutative ri"
+      "description": "Direct parent: the k-fold CRT for ℤ/nℤ (concrete case). This entry generalizes from integers to arbitrary commutative rings."
     },
     {
       "id": "chinese-remainder-non-coprime-oq-02",

@@ -153,7 +153,7 @@
     {
       "id": "binomial-theorem",
       "relationship": "foundational",
-      "description": "The binomial theorem is used in the inductive proofs of power sum formulas: expanding $(i+1)^{k+1} - i^{k+1}$ via the bi"
+      "description": "The binomial theorem is used in the inductive proofs of power sum formulas: expanding $(i+1)^{k+1} - i^{k+1}$ via the binomial theorem and telescoping yields the recurrence relating $\\sum i^k$ to lower-order sums"
     },
     {
       "id": "arithmetic-series",
@@ -168,12 +168,12 @@
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "The divisibility lemmas in the power sum formulas (e.g., $6 \\mid n(n+1)(2n+1)$) rely on properties of products of consec"
+      "description": "The divisibility lemmas in the power sum formulas (e.g., $6 \\mid n(n+1)(2n+1)$) rely on properties of products of consecutive integers, which connect to unique factorization and modular arithmetic"
     },
     {
       "id": "euler-totient",
       "relationship": "related",
-      "description": "Euler's totient function connects to Bernoulli numbers via the von Staudt-Clausen theorem: the denominator of $B_{2k}$ i"
+      "description": "Euler's totient function connects to Bernoulli numbers via the von Staudt-Clausen theorem: the denominator of $B_{2k}$ is $\\prod_{p-1 \\mid 2k} p$, involving primes whose relationship to $\\phi$ governs the arithmetic of power sums"
     }
   ],
   "leanFile": {

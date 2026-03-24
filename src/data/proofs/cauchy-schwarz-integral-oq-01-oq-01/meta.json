@@ -155,7 +155,7 @@
     {
       "id": "cauchy-schwarz-integral-oq-01",
       "relationship": "extends",
-      "description": "Parent proof: Hölder's inequality in the classical integral form — this file reformulates using Mathlib's eLpNorm (exten"
+      "description": "Parent proof: Hölder's inequality in the classical integral form — this file reformulates using Mathlib's eLpNorm (extended Lp norm) infrastructure"
     },
     {
       "id": "cauchy-schwarz-integral",
@@ -170,12 +170,12 @@
     {
       "id": "amgm-inequality",
       "relationship": "foundational",
-      "description": "Young's inequality (ab ≤ a^p/p + b^q/q) used in the Hölder proof is derived from the AM-GM inequality via convexity of e"
+      "description": "Young's inequality (ab ≤ a^p/p + b^q/q) used in the Hölder proof is derived from the AM-GM inequality via convexity of exp"
     },
     {
       "id": "triangle-inequality",
       "relationship": "related",
-      "description": "Minkowski's inequality (Lp triangle inequality) is proved using Hölder's inequality; together they establish Lp as a nor"
+      "description": "Minkowski's inequality (Lp triangle inequality) is proved using Hölder's inequality; together they establish Lp as a normed space"
     }
   ],
   "leanFile": {

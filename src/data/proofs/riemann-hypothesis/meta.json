@@ -205,22 +205,22 @@
     {
       "id": "infinitude-primes",
       "relationship": "extends",
-      "description": "RH quantifies the distribution of primes beyond mere infinitude — it gives the optimal error term π(x) = Li(x) + O(√x lo"
+      "description": "RH quantifies the distribution of primes beyond mere infinitude — it gives the optimal error term π(x) = Li(x) + O(√x log x), the sharpest form of the Prime Number Theorem"
     },
     {
       "id": "basel-problem",
       "relationship": "foundational",
-      "description": "The Basel identity ζ(2) = π²/6 is the first non-trivial value of the Riemann zeta function whose zeros are the subject o"
+      "description": "The Basel identity ζ(2) = π²/6 is the first non-trivial value of the Riemann zeta function whose zeros are the subject of RH"
     },
     {
       "id": "prime-number-theorem",
       "relationship": "extends",
-      "description": "RH implies the strongest form of PNT: π(x) = Li(x) + O(√x log x). PNT is equivalent to ζ(s) ≠ 0 on Re(s) = 1, while RH i"
+      "description": "RH implies the strongest form of PNT: π(x) = Li(x) + O(√x log x). PNT is equivalent to ζ(s) ≠ 0 on Re(s) = 1, while RH is the much stronger ζ(s) ≠ 0 for Re(s) > 1/2"
     },
     {
       "id": "euler-identity",
       "relationship": "related",
-      "description": "Euler's identity connects e, i, π — the same constants that appear in the functional equation ξ(s) = ξ(1-s) of the compl"
+      "description": "Euler's identity connects e, i, π — the same constants that appear in the functional equation ξ(s) = ξ(1-s) of the completed zeta function"
     },
     {
       "id": "prime-reciprocal-divergence",

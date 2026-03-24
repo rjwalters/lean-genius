@@ -209,17 +209,17 @@
     {
       "id": "szemeredi-counting",
       "relationship": "related",
-      "description": "The counting lemma complements Szemerédi regularity by counting subgraph copies in regular partitions. Roth's Fourier ap"
+      "description": "The counting lemma complements Szemerédi regularity by counting subgraph copies in regular partitions. Roth's Fourier approach achieves the k=3 case directly without regularity, but the regularity-based proof of Roth's theorem uses the counting lemma applied to the Ruzsa-Szemerédi triangle removal graph"
     },
     {
       "id": "szemeredi-core",
       "relationship": "related",
-      "description": "The core Szemerédi infrastructure (density, regularity partitions) underpins the alternative graph-theoretic proof of Ro"
+      "description": "The core Szemerédi infrastructure (density, regularity partitions) underpins the alternative graph-theoretic proof of Roth's theorem. The Fourier approach here is more direct for k=3 but does not generalize to k≥4 where the regularity method (or hypergraph generalizations) is needed"
     },
     {
       "id": "szemeredi-theorem",
       "relationship": "extends",
-      "description": "Roth's theorem is the k=3 base case of Szemerédi's theorem (1975): every set of positive upper density contains arithmet"
+      "description": "Roth's theorem is the k=3 base case of Szemerédi's theorem (1975): every set of positive upper density contains arithmetic progressions of every length. The density increment strategy introduced by Roth was a precursor to Szemerédi's far more complex regularity-based proof"
     }
   ],
   "leanFile": {

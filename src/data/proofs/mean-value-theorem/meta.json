@@ -210,7 +210,7 @@
     {
       "id": "fundamental-theorem-calculus",
       "relationship": "foundational",
-      "description": "The MVT is a key ingredient in proving the Fundamental Theorem of Calculus Part II: $F(b) - F(a) = \\int_a^b F'(x)\\,dx$ u"
+      "description": "The MVT is a key ingredient in proving the Fundamental Theorem of Calculus Part II: $F(b) - F(a) = \\int_a^b F'(x)\\,dx$ uses $F(x_{i+1}) - F(x_i) = F'(c_i)(x_{i+1} - x_i)$ on each partition interval. Without MVT, the bridge from pointwise derivatives to accumulated change would be missing"
     },
     {
       "id": "intermediate-value-theorem",
@@ -225,12 +225,12 @@
     {
       "id": "brouwer-fixed-point",
       "relationship": "related",
-      "description": "Both guarantee existence of special points for continuous/differentiable functions: MVT finds $c$ where the derivative e"
+      "description": "Both guarantee existence of special points for continuous/differentiable functions: MVT finds $c$ where the derivative equals the secant slope, Brouwer finds $c$ where $f(c) = c$. In 1D, Brouwer follows from IVT (which also implies MVT via Rolle's theorem), so both existence theorems share the same topological root"
     },
     {
       "id": "cauchy-schwarz",
       "relationship": "related",
-      "description": "The Cauchy form of MVT ($\\frac{f(b)-f(a)}{g(b)-g(a)} = \\frac{f'(c)}{g'(c)}$) is used in L'Hôpital's rule, which evaluate"
+      "description": "The Cauchy form of MVT ($\\frac{f(b)-f(a)}{g(b)-g(a)} = \\frac{f'(c)}{g'(c)}$) is used in L'Hôpital's rule, which evaluates indeterminate forms. Cauchy-Schwarz and Cauchy's MVT both bear Cauchy's name and both provide bounds on ratios — Cauchy-Schwarz on $\\langle u,v\\rangle/(\\|u\\|\\|v\\|)$ and Cauchy's MVT on $\\Delta f/\\Delta g$"
     }
   ],
   "leanFile": {

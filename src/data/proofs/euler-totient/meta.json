@@ -179,17 +179,17 @@
     {
       "id": "chinese-remainder-non-coprime",
       "relationship": "related",
-      "description": "The Chinese Remainder Theorem gives the multiplicativity of Euler's totient: phi(mn) = phi(m)*phi(n) for coprime m,n, wh"
+      "description": "The Chinese Remainder Theorem gives the multiplicativity of Euler's totient: phi(mn) = phi(m)*phi(n) for coprime m,n, which is key to computing phi for arbitrary integers."
     },
     {
       "id": "infinitude-primes",
       "relationship": "related",
-      "description": "Euler's product formula phi(n) = n * prod(1 - 1/p) connects the totient function to the prime factorization of n, relati"
+      "description": "Euler's product formula phi(n) = n * prod(1 - 1/p) connects the totient function to the prime factorization of n, relating to the infinitude of primes."
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "The unique prime factorization from FTA is essential for computing phi(n) = n * prod(1 - 1/p) over the prime divisors of"
+      "description": "The unique prime factorization from FTA is essential for computing phi(n) = n * prod(1 - 1/p) over the prime divisors of n."
     },
     {
       "id": "gcd-algorithm",
@@ -199,7 +199,7 @@
     {
       "id": "wilsons-theorem",
       "relationship": "related",
-      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ and Euler's theorem $a^{\\varphi(n)} \\equiv 1$ both describe the multiplicat"
+      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ and Euler's theorem $a^{\\varphi(n)} \\equiv 1$ both describe the multiplicative group $(\\mathbb{Z}/n\\mathbb{Z})^*$. Wilson gives the product of all elements; Euler gives the exponent of any single element. For $n = p$ prime, $\\varphi(p) = p-1$, recovering Fermat's little theorem"
     }
   ],
   "leanFile": {

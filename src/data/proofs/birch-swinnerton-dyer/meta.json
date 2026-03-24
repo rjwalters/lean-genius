@@ -683,27 +683,27 @@
     {
       "id": "fundamental-theorem-algebra",
       "relationship": "related",
-      "description": "Both concern deep connections between algebraic and analytic properties: FTA proves polynomial roots exist in $\\mathbb{C"
+      "description": "Both concern deep connections between algebraic and analytic properties: FTA proves polynomial roots exist in $\\mathbb{C}$, while BSD connects rational points on elliptic curves (algebra) with the analytic behavior of L-functions at $s = 1$"
     },
     {
       "id": "riemann-hypothesis",
       "relationship": "related",
-      "description": "The Hasse bound $|\\#E(\\mathbb{F}_p) - p - 1| \\leq 2\\sqrt{p}$ (axiomatized in this file) is equivalent to the Riemann Hyp"
+      "description": "The Hasse bound $|\\#E(\\mathbb{F}_p) - p - 1| \\leq 2\\sqrt{p}$ (axiomatized in this file) is equivalent to the Riemann Hypothesis for the zeta function of $E$ over $\\mathbb{F}_p$, proved by Hasse (1936). The full RH for the Riemann zeta function is a Millennium Prize sibling of BSD, and the Generalized RH for Dirichlet L-functions is intimately connected to BSD via the Langlands program"
     },
     {
       "id": "p-vs-np",
       "relationship": "related",
-      "description": "Fellow Millennium Prize Problem — both remain open and carry a $1,000,000 prize from the Clay Mathematics Institute. Whi"
+      "description": "Fellow Millennium Prize Problem — both remain open and carry a $1,000,000 prize from the Clay Mathematics Institute. While P vs NP concerns computational complexity, BSD concerns the arithmetic of elliptic curves — two very different mathematical domains united by the Clay Prize's recognition of their fundamental importance"
     },
     {
       "id": "continuum-hypothesis",
       "relationship": "related",
-      "description": "Both are famous mathematical problems whose resolution has required fundamentally new ideas. CH was proved independent o"
+      "description": "Both are famous mathematical problems whose resolution has required fundamentally new ideas. CH was proved independent of ZFC by Gödel (consistency, 1940) and Cohen (independence, 1963), while BSD remains open with only partial results (ranks 0 and 1 proved by Kolyvagin and Gross-Zagier)"
     },
     {
       "id": "e-transcendental",
       "relationship": "related",
-      "description": "Transcendence theory connects to BSD via the Schneider-Lang theorem and periods of elliptic curves. The real period $\\Om"
+      "description": "Transcendence theory connects to BSD via the Schneider-Lang theorem and periods of elliptic curves. The real period $\\Omega_E$ appearing in the BSD formula is a transcendental number (by Schneider's theorem on elliptic integrals), and its arithmetic significance is a key ingredient in the exact BSD formula"
     }
   ],
   "references": [
