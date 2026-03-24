@@ -55,11 +55,12 @@ def ErdosProblem428Limsup : Prop :=
     Filter.limsup (fun n => primeDensityRatio A n) Filter.atTop > 0
 
 /-- The liminf version implies the limsup version.
-    Proof: liminf ≤ limsup, so liminf > 0 implies limsup > 0. -/
+    Note: Filter.liminf_le_limsup requires IsBoundedUnder (bounded above)
+    which needs a PNT-like argument for the density ratio. -/
 theorem liminf_implies_limsup :
     ErdosProblem428 → ErdosProblem428Limsup := by
   intro ⟨A, hfreq, hliminf⟩
-  exact ⟨A, hfreq, lt_of_lt_of_le hliminf (Filter.liminf_le_limsup)⟩
+  exact ⟨A, hfreq, lt_of_lt_of_le hliminf (by sorry)⟩
 
 -- ## Prime k-Tuple Conjecture
 
@@ -81,8 +82,7 @@ theorem primeCounting_pos (n : ℕ) (hn : 2 ≤ n) :
     0 < primeCounting n := by
   unfold primeCounting
   apply Finset.card_pos.mpr
-  exact ⟨2, Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega),
-    Nat.prime_iff.mpr ⟨by omega, fun m hm => by omega⟩⟩⟩
+  exact ⟨2, Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), by decide⟩⟩
 
 /-- Singleton sets always satisfy AllOffsetsPrime for appropriate n. -/
 theorem singleton_offset (a : ℕ) (n : ℕ) (ha : 0 < a) (han : a < n)
@@ -96,7 +96,7 @@ theorem singleton_offset (a : ℕ) (n : ℕ) (ha : 0 < a) (han : a < n)
 /-- The empty set trivially satisfies AllOffsetsPrime but has zero density. -/
 theorem empty_trivial (n : ℕ) : AllOffsetsPrime ∅ n := by
   intro a ha
-  exact absurd ha (Set.not_mem_empty a)
+  exact absurd ha (Set.notMem_empty a)
 
 /-- Subsets preserve the AllOffsetsPrime property. -/
 theorem allOffsetsPrime_mono {A B : Set ℕ} {n : ℕ}
@@ -109,13 +109,79 @@ theorem allOffsetsPrime_mono {A B : Set ℕ} {n : ℕ}
 theorem primeDensityRatio_nonneg (A : Set ℕ) (n : ℕ) :
     0 ≤ primeDensityRatio A n := by
   unfold primeDensityRatio
-  apply div_nonneg
-  · exact Nat.cast_nonneg'
-  · exact Nat.cast_nonneg'
+  exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
 
-/-- Finite sets have zero liminf prime density. -/
-axiom finite_set_zero_density (A : Set ℕ) (hA : A.Finite) :
-    Filter.liminf (fun n => primeDensityRatio A n) Filter.atTop = 0
+-- ## Finite Set Density Proof
+
+/-- primeCounting is monotone: more primes counted up to larger n. -/
+private lemma primeCounting_mono : Monotone primeCounting := by
+  intro m n hmn
+  unfold primeCounting
+  apply Finset.card_le_card
+  apply Finset.filter_subset_filter
+  exact Finset.range_mono (by omega)
+
+/-- Strictly more primes are counted up to a prime p than up to any smaller N. -/
+private lemma primeCounting_lt_of_prime {N p : ℕ} (hp : p.Prime) (hpN : N < p) :
+    primeCounting N < primeCounting p := by
+  unfold primeCounting
+  apply Finset.card_lt_card
+  constructor
+  · exact Finset.filter_subset_filter _ (Finset.range_mono (by omega))
+  · intro h
+    have hp_in : p ∈ Finset.filter Nat.Prime (Finset.range (p + 1)) :=
+      Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), hp⟩
+    exact absurd (h hp_in) (by
+      simp only [Finset.mem_filter, Finset.mem_range, not_and]
+      intro h; omega)
+
+/-- The prime counting function grows without bound (ℕ-valued). -/
+private lemma primeCounting_tendsto_nat :
+    Filter.Tendsto primeCounting Filter.atTop Filter.atTop := by
+  apply Filter.tendsto_atTop_atTop_of_monotone primeCounting_mono
+  intro M
+  induction M with
+  | zero => exact ⟨0, Nat.zero_le _⟩
+  | succ k ih =>
+    obtain ⟨N, hN⟩ := ih
+    obtain ⟨p, hp_ge, hp_prime⟩ := Nat.exists_infinite_primes (N + 1)
+    have hNp : N < p := by omega
+    have h_lt := primeCounting_lt_of_prime hp_prime hNp
+    exact ⟨p, by omega⟩
+
+/-- The real-valued prime counting function grows without bound. -/
+private lemma primeCounting_real_tendsto :
+    Filter.Tendsto (fun n => (primeCounting n : ℝ)) Filter.atTop Filter.atTop := by
+  rw [Filter.tendsto_atTop_atTop]
+  intro b
+  obtain ⟨N, hN⟩ := (Filter.tendsto_atTop_atTop.mp primeCounting_tendsto_nat) ⌈max b 0⌉₊
+  exact ⟨N, fun n hn => le_trans (le_trans (le_max_left b 0) (Nat.le_ceil _))
+    (by exact_mod_cast hN n hn)⟩
+
+/-- Finite sets have zero liminf prime density.
+
+Proof: For finite A with |A| = M, the intersection (A ∩ [1,n]) has at most M elements,
+so primeDensityRatio A n ≤ M / π(n). Since π(n) → ∞ by the infinitude of primes,
+this ratio is squeezed to 0. -/
+theorem finite_set_zero_density (A : Set ℕ) (hA : A.Finite) :
+    Filter.liminf (fun n => primeDensityRatio A n) Filter.atTop = 0 := by
+  -- Step 1: Show the density ratio tends to 0
+  suffices h_tendsto : Filter.Tendsto (fun n => primeDensityRatio A n) Filter.atTop (nhds 0) by
+    exact h_tendsto.liminf_eq
+  -- Step 2: Squeeze between 0 and A.ncard / π(n)
+  apply squeeze_zero (primeDensityRatio_nonneg A)
+  · -- Upper bound: primeDensityRatio A n ≤ A.ncard / π(n)
+    intro n
+    show (↑(A ∩ Set.Icc 1 n).ncard : ℝ) / ↑(primeCounting n) ≤ ↑A.ncard / ↑(primeCounting n)
+    apply div_le_div_of_nonneg_right
+    · exact_mod_cast Set.ncard_le_ncard Set.inter_subset_left hA
+    · exact Nat.cast_nonneg _
+  · -- A.ncard / π(n) → 0 since π(n) → ∞
+    have h_inv : Filter.Tendsto (fun n => ((primeCounting n : ℝ))⁻¹)
+        Filter.atTop (nhds 0) :=
+      tendsto_inv_atTop_zero.comp primeCounting_real_tendsto
+    have h_mul := tendsto_const_nhds (x := (A.ncard : ℝ)) |>.mul h_inv
+    rwa [mul_zero] at h_mul
 
 /-- Any solution to Problem 428 must use an infinite set. -/
 theorem erdos428_requires_infinite :

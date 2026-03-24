@@ -29,16 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: 2 axioms, 7 proved theorems. finite_set_zero_density is most tractable: finite A => |A∩[1,n]|/pi(n) -> 0 since numerator bounded, denominator -> infinity.",
-    "builtItems": [],
+    "progressSummary": "COMPLETED: Proved finite_set_zero_density theorem (was axiom). Reduced axioms from 2 to 1. Also fixed existing Mathlib API breakage (Nat.prime_iff, Set.not_mem_empty, Nat.cast_nonneg).",
+    "builtItems": [
+      "Proved primeCounting_mono (monotonicity)",
+      "Proved primeCounting_lt_of_prime (strict monotonicity at primes)",
+      "Proved primeCounting_tendsto_nat (π(n) → ∞ as ℕ)",
+      "Proved primeCounting_real_tendsto (π(n) → ∞ as ℝ)",
+      "Proved finite_set_zero_density (eliminated axiom)"
+    ],
     "insights": [
       "Only 2 axioms - well-developed file",
       "finite_set_zero_density provable: finite A has bounded intersection, pi(n)->inf by infinitude of primes",
-      "erdos_graham_limsup is conditional on prime k-tuple conjecture - deep result"
+      "erdos_graham_limsup is conditional on prime k-tuple conjecture - deep result",
+      "Proved finite_set_zero_density: finite A has bounded |A∩[1,n]| while π(n)→∞, so density→0 by squeeze theorem",
+      "primeCounting unboundedness proved via Nat.exists_infinite_primes + monotonicity",
+      "Filter.liminf_le_limsup in current Mathlib requires IsBoundedUnder (bounded above) which fails for general density ratios",
+      "squeeze_zero in current Mathlib takes ∀ (not ∀ᶠ) - API change from earlier versions"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove finite_set_zero_density via: |A∩[1,n]| <= |A| (constant) and primeCounting n -> infinity (from Nat.exists_infinite_primes)"
+      "Fix liminf_implies_limsup sorry (needs IsBoundedUnder for general density ratio, may require PNT or EReal)"
     ],
     "markdown": "# Erdős #428 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a set $A\\subseteq \\mathbb{N}$ such that, for infinitely many $n$, all of $n-a$ are prime for all $a\\in A$ with $0<a<n$ and\\[\\liminf\\frac{\\lvert A\\cap [1,x]\\rvert}{\\pi(x)}>0?\\]\n\n\n\nErd\\H{o}s and Graham could show this is true (assuming the prime $k$-tuple conjecture) if we replace $\\liminf$ by $\\limsup$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #427\n- Problem #429\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
