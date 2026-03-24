@@ -17,7 +17,7 @@
       "divisibility"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 3,
     "erdosNumber": 400,
     "erdosUrl": "https://erdosproblems.com/400",
     "erdosProblemStatus": "open",
@@ -56,8 +56,8 @@
       "`g2_excess_characterization` (axiom): supremum attained for $k = 2$",
       "`average_g2_growth` (axiom): average growth constant $c_2$ exists"
     ],
-    "axiomCount": 5,
-    "lineCount": 113,
+    "axiomCount": 3,
+    "lineCount": 155,
     "assumptions": "5 axioms: gExcess_upper_bound, gExcess_nonneg, g2_binomial_connection, and 2 more. See Lean source for complete statements."
   },
   "overview": {
@@ -165,9 +165,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 113,
-    "axiomCount": 5,
-    "theoremCount": 0,
+    "lineCount": 155,
+    "axiomCount": 3,
+    "theoremCount": 5,
     "definitionCount": 6
   },
   "crossReferences": [
