@@ -40,10 +40,9 @@
       }
     ],
     "originalContributions": [
-      "Complete formalization of A = πr² using Lebesgue measure in ℂ ≅ ℝ²",
-      "Proof that open and closed disks have equal area (boundary has measure zero)",
-      "Special cases: unit disk (area π), zero radius (area 0), negative radius (empty)",
-      "Pedagogical documentation connecting to Archimedes' method of exhaustion"
+      "Pedagogical wrapper around Mathlib's Complex.volume_ball/volume_closedBall for A = πr²",
+      "Five edge-case corollaries (unit disk, zero radius open/closed, negative radius) exercising the formula",
+      "Pedagogical documentation connecting the measure-theoretic proof to Archimedes' method of exhaustion and the annular ring integration"
     ],
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 9,
@@ -65,7 +64,7 @@
       "Trigonometric functions and pi",
       "Topology of R^2 (discs, circles)"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. All seven theorems are pedagogical wrappers around Mathlib's Complex.volume_ball/volume_closedBall and standard metric ball lemmas (ball_zero, closedBall_zero, ball_eq_empty). No custom axioms or structure-encoded assumptions.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -206,6 +205,21 @@
       "targetId": "lebesgue-measure",
       "relationship": "foundational",
       "description": "This proof formalizes area as Lebesgue measure $\\lambda^2$. The Lebesgue measure entry provides the measure-theoretic infrastructure underpinning `MeasureTheory.volume` and the $n$-dimensional ball volume formula $V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2+1)$ that specializes to $\\pi r^2$ for $n=2$"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "The annular ring derivation of $A = \\pi r^2$ is a direct application of the Fundamental Theorem of Calculus: $A(r) = \\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$, and the derivative relationship $A'(r) = C(r) = 2\\pi r$ is FTC in action. The measure-theoretic proof in this file uses Fubini's theorem (the higher-dimensional analog) rather than FTC directly, but the connection between area and circumference via differentiation is a central pedagogical theme"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "The general $n$-dimensional ball volume $V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2+1)$ that underpins this proof uses the Gamma function $\\Gamma$, whose asymptotic behavior is governed by Stirling's formula $\\Gamma(n+1) \\sim \\sqrt{2\\pi n}(n/e)^n$. For the 2D case, $\\Gamma(2) = 1! = 1$ makes the formula simplest, but Stirling's approximation is essential for understanding the volume of high-dimensional balls (which shrinks to 0 as $n \\to \\infty$ — a counterintuitive consequence of the $\\Gamma$ denominator's factorial growth)"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "The transcendence of $e$ connects to the circle area formula through the Gaussian integral: $\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$, proved by squaring and converting to polar coordinates where the area element $r\\, dr\\, d\\theta$ derives from $A = \\pi r^2$. The appearance of both $e$ and $\\pi$ in this integral reflects their deep algebraic independence (both transcendental) and analytic interconnection via the complex exponential $e^{i\\theta}$"
     }
   ],
   "relatedProofs": [
@@ -221,7 +235,10 @@
     "area-of-circle-oq-01-oq-02",
     "area-of-circle-oq-01-oq-03",
     "area-of-circle-oq-03-oq-02",
-    "lebesgue-measure"
+    "lebesgue-measure",
+    "fundamental-theorem-calculus",
+    "stirling-formula",
+    "e-transcendental"
   ],
   "leanFile": {
     "imports": [
