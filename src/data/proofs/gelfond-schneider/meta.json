@@ -151,6 +151,26 @@
       "targetId": "abel-ruffini",
       "relationship": "related",
       "description": "Abel-Ruffini (1824) sits below Gelfond-Schneider (1934) in the expressibility hierarchy: Abel-Ruffini shows certain polynomial roots are not expressible by radicals (a field-theoretic barrier), while Gelfond-Schneider shows $\\alpha^\\beta$ escapes the algebraic numbers entirely for algebraic $\\alpha \\neq 0,1$ and irrational algebraic $\\beta$ — a strictly stronger transcendence barrier"
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "foundational",
+      "description": "Hermite-Lindemann ($e^\\alpha$ transcendental for algebraic $\\alpha \\neq 0$) is the precursor. Gelfond-Schneider handles $\\alpha^\\beta = e^{\\beta\\ln\\alpha}$ for algebraic irrational $\\beta$ — a different slice of the transcendence landscape"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "Gelfond-Schneider proves $e^\\pi = (-1)^{-i}$ is transcendental ($\\alpha = -1$, $\\beta = -i$), an elegant alternative to direct methods. The transcendence of $\\pi$ itself follows from Hermite-Lindemann"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "related",
+      "description": "The irrationality of $\\sqrt{2}$ is the first level of the expressibility hierarchy. Gelfond-Schneider operates at the algebraic/transcendental boundary: $2^{\\sqrt{2}}$ is transcendental despite both base and exponent being algebraic"
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "foundational",
+      "description": "Liouville's Diophantine approximation theorem (1844) gave the first transcendence results. Gelfond-Schneider uses a different technique (auxiliary functions) but both exploit algebraic vs transcendental approximation gaps"
     }
   ],
   "conclusion": {
@@ -166,7 +186,11 @@
   "relatedProofs": [
     "e-transcendental",
     "prime-number-theorem",
-    "abel-ruffini"
+    "abel-ruffini",
+    "hermite-lindemann",
+    "pi-transcendental",
+    "sqrt2-irrational",
+    "liouville-theorem"
   ],
   "references": [
     {

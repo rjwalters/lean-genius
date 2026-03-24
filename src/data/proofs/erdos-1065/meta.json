@@ -54,7 +54,7 @@
     ],
     "axiomCount": 2,
     "assumptions": "2 axiom declarations: erdos_1065a (Set.Infinite for primes of the form 2^k·q + 1), erdos_1065b (Set.Infinite for primes of the form 2^k·3^l·q + 1). Both encode the open conjectures themselves.",
-    "lineCount": 162,
+    "lineCount": 163,
     "relatedProblems": [
       {
         "id": "erdos-1057",
@@ -105,7 +105,7 @@
       "title": "Form A Verified Examples",
       "startLine": 44,
       "endLine": 87,
-      "summary": "Eight Form A primes $\\leq 100$ verified via `decide` + `norm_num`: each proof constructs the witness $(q, k)$ and checks primality of both $p$ and $q$. Proofs follow the pattern: `constructor` (split primality and existence), `decide` (verify $p$ prime), `exact ⟨q, k, by decide, by norm_num⟩` (exhibit and verify the decomposition).",
+      "summary": "Seven Form A primes verified via `decide` + `norm_num` in this section: $3, 5, 7, 13, 11, 29, 41$. Each proof constructs the witness $(q, k)$ and checks primality of both $p$ and $q$. Proofs follow the pattern: `constructor` (split primality and existence), `decide` (verify $p$ prime), `exact ⟨q, k, by decide, by norm_num⟩`. (The eighth, $p = 97$, appears after the Form B example due to file ordering.)",
       "mathContext": "$(p, k, q)$: $(3,0,2), (5,1,2), (7,1,3), (11,1,5), (13,2,3), (29,2,7), (41,3,5), (97,5,3)$. These are all Form A primes $\\leq 100$; the 16 primes $17, 19, 23, 31, 37, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89$ are excluded."
     },
     {
@@ -113,7 +113,7 @@
       "title": "Form B Separating Example and Non-Example",
       "startLine": 88,
       "endLine": 105,
-      "summary": "Proves $61 = 2^2 \\cdot 3^1 \\cdot 5 + 1$ is Form B but not Form A (since $60 = 4 \\cdot 15$ and $15$ is not prime). Comments document the non-example $p = 37$: $36 = 2^2 \\cdot 3^2$ is $\\{2,3\\}$-smooth with no additional prime factor, so $37$ satisfies neither form.",
+      "summary": "Proves $61 = 2^2 \\cdot 3^1 \\cdot 5 + 1$ is Form B but not Form A (since $60 = 4 \\cdot 15$ and $15$ is not prime). Also includes $97 = 2^5 \\cdot 3 + 1$ (Form A, out of numerical order in the file). Comments document the non-example $p = 37$: $36 = 2^2 \\cdot 3^2$ is $\\{2,3\\}$-smooth with no additional prime factor, so $37$ satisfies neither form.",
       "mathContext": "$61 - 1 = 60 = 2^2 \\cdot 3 \\cdot 5$: Form B witness $(q,k,l) = (5,2,1)$ but no Form A decomposition exists since $60/2^k$ for $k=0,1,2$ gives $60, 30, 15$ (all composite). $37 - 1 = 36 = 2^2 \\cdot 3^2$: completely $\\{2,3\\}$-smooth."
     },
     {
@@ -224,7 +224,7 @@
     "prime-number-theorem"
   ],
   "leanFile": {
-    "lineCount": 162,
+    "lineCount": 163,
     "structureCount": 0,
     "axiomCount": 2,
     "theoremCount": 14,
