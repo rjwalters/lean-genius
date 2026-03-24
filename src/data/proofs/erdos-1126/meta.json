@@ -155,8 +155,16 @@
     ]
   },
   "relatedProofs": [
-    "erdos-1166",
-    "erdos-994"
+    {
+      "id": "erdos-1166",
+      "relationship": "related-problem",
+      "description": "Erdős #1166 also concerns functional equations and measure-theoretic regularity conditions"
+    },
+    {
+      "id": "erdos-994",
+      "relationship": "thematic",
+      "description": "Erdős #994 (equidistribution) also explores the tension between 'for all' and 'for almost all' quantifiers, with a negat"
+    }
   ],
   "leanFile": {
     "imports": [

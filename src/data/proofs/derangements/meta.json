@@ -237,14 +237,31 @@
     }
   ],
   "relatedProofs": [
-    "inclusion-exclusion",
-    "euler-totient",
-    "fundamental-arithmetic",
-    "binomial-theorem",
-    "e-transcendental",
-    "stirling-formula",
-    "birthday-problem",
-    "buffons-needle"
+    {
+      "id": "inclusion-exclusion",
+      "relationship": "foundational",
+      "description": "The derangement formula D(n) = n! * sum((-1)^k/k!) is a direct application of the inclusion-exclusion principle, countin"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Both use inclusion-exclusion over arithmetic/combinatorial structures: derangements over permutation fixed points, Euler"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "related",
+      "description": "The factorial n! in the derangement formula connects to prime factorization: D(n)/n! converges to 1/e, linking combinato"
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    },
+    {
+      "id": "e-transcendental",
+      "relationship": "related",
+      "description": "The derangement probability D_n/n! = ∑(-1)^k/k! converges to 1/e as n→∞ — the Taylor series of e^{-1} truncated at the n"
+    }
   ],
   "leanFile": {
     "imports": [

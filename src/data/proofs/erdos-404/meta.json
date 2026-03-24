@@ -187,8 +187,16 @@
     }
   ],
   "relatedProofs": [
-    "erdos-382",
-    "erdos-384"
+    {
+      "id": "erdos-382",
+      "relationship": "related",
+      "description": "Both concern prime power divisibility in factorial-related expressions: #382 studies prime powers in factorial products,"
+    },
+    {
+      "id": "erdos-384",
+      "relationship": "related",
+      "description": "Both involve prime divisibility of factorial/binomial quantities: #384 studies prime divisors of C(n,k), #404 studies p-"
+    }
   ],
   "leanFile": {
     "imports": [

@@ -229,23 +229,31 @@
     }
   ],
   "relatedProofs": [
-    "angle-trisection",
-    "pi-transcendental",
-    "pythagorean-theorem",
-    "hermite-lindemann",
-    "basel-problem",
-    "area-of-circle-oq-01",
-    "area-of-circle-oq-03",
-    "intermediate-value-theorem",
-    "isoperimetric-theorem",
-    "area-of-circle-oq-01-oq-02",
-    "area-of-circle-oq-01-oq-03",
-    "area-of-circle-oq-03-oq-02",
-    "lebesgue-measure",
-    "fundamental-theorem-calculus",
-    "stirling-formula",
-    "e-transcendental",
-    "euler-identity"
+    {
+      "id": "angle-trisection",
+      "relationship": "related",
+      "description": "Both involve pi and circle geometry — squaring the circle (constructing sqrt(pi)) is impossible by Lindemann's theorem"
+    },
+    {
+      "id": "pi-transcendental",
+      "relationship": "related",
+      "description": "π is transcendental (Lindemann 1882) — the same constant whose geometric meaning as the area-to-radius-squared ratio thi"
+    },
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "The circle x²+y²=r² is defined by the Pythagorean relation — the equation underpinning the Lebesgue measure computation "
+    },
+    {
+      "id": "hermite-lindemann",
+      "relationship": "related",
+      "description": "The Hermite-Lindemann theorem proves π is transcendental, meaning the area πr² is transcendental for all nonzero algebra"
+    },
+    {
+      "id": "basel-problem",
+      "relationship": "related",
+      "description": "Euler's Basel problem (∑1/n² = π²/6) provides another unexpected appearance of π — the same constant whose geometric mea"
+    }
   ],
   "leanFile": {
     "imports": [

@@ -161,7 +161,11 @@
     ]
   },
   "relatedProofs": [
-    "erdos-1126"
+    {
+      "id": "erdos-1126",
+      "relationship": "parent",
+      "description": "Parent problem: the de Bruijn-Jurkat theorem for almost additive functions"
+    }
   ],
   "leanFile": {
     "path": "proofs/Proofs/Erdos1126OQ01Problem.lean",

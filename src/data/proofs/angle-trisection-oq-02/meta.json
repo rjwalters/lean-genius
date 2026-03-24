@@ -281,20 +281,31 @@
     "definitionCount": 1
   },
   "relatedProofs": [
-    "angle-trisection",
-    "abel-ruffini",
-    "inverse-galois",
-    "lagrange-theorem",
-    "sqrt2-irrational",
-    "angle-trisection-oq-02-oq-03",
-    "angle-trisection-oq-02-oq-01",
-    "primitive-roots",
-    "euler-totient",
-    "nth-root-irrational",
-    "solution-of-cubic",
-    "angle-trisection-oq-02-oq-03-oq-01",
-    "pi-transcendental",
-    "fundamental-theorem-algebra"
+    {
+      "id": "angle-trisection",
+      "relationship": "extends",
+      "description": "Parent file with the degree criterion (necessary condition) — this file upgrades it to a biconditional via Galois groups"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "related",
+      "description": "Both use Galois groups to prove impossibility: Abel-Ruffini via solvable groups, constructibility via 2-groups"
+    },
+    {
+      "id": "inverse-galois",
+      "relationship": "related",
+      "description": "The Galois group realizations (S₃ for x³-2, D₄ for x⁴-2) are concrete instances of the inverse Galois problem"
+    },
+    {
+      "id": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "The tower law [K:ℚ] = ∏[Kᵢ₊₁:Kᵢ] — a consequence of Lagrange's theorem — underpins galois_2group_implies_degree_pow2: th"
+    },
+    {
+      "id": "sqrt2-irrational",
+      "relationship": "complementary",
+      "description": "√2 is the canonical constructible irrational: |Gal(x²-2/ℚ)| = 2 = 2¹, proved here by divisibility squeeze. Its irrationa"
+    }
   ],
   "references": [
     {

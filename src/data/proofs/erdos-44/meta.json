@@ -182,9 +182,25 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1",
-    "erdos-28",
-    "erdos-39",
-    "erdos-42"
+    {
+      "id": "erdos-1",
+      "relationship": "related",
+      "description": "Problem #1 (distinct subset sums) generalizes the Sidon condition. The extension question of Problem #44 has natural ana"
+    },
+    {
+      "id": "erdos-28",
+      "relationship": "related",
+      "description": "Sidon sets (r ≤ 1) are the extremal case for the Erdős-Turán conjecture on additive bases. Understanding their extensibi"
+    },
+    {
+      "id": "erdos-39",
+      "relationship": "related",
+      "description": "Problem #39 asks about infinite Sidon set growth, while Problem #44 asks whether finite Sidon sets can always be extende"
+    },
+    {
+      "id": "erdos-42",
+      "relationship": "related",
+      "description": "Problem #42 studies Sidon sets via their difference sets, while Problem #44 studies how Sidon sets can be extended. Both"
+    }
   ]
 }

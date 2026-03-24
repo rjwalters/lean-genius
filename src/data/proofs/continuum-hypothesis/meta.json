@@ -149,11 +149,31 @@
     }
   ],
   "relatedProofs": [
-    "cantor-diagonalization",
-    "cantors-theorem",
-    "godel-incompleteness",
-    "halting-problem",
-    "schroeder-bernstein"
+    {
+      "id": "cantor-diagonalization",
+      "relationship": "foundational",
+      "description": "Cantor's diagonal argument proves |ℕ| < |ℝ|, the starting point for CH. The continuum hypothesis asks whether any cardin"
+    },
+    {
+      "id": "cantors-theorem",
+      "relationship": "foundational",
+      "description": "Cantor's theorem |S| < |P(S)| gives |ℕ| < |P(ℕ)| = |ℝ|. CH asserts this is the NEXT cardinal: ℵ₁ = 2^ℵ₀. The generalized"
+    },
+    {
+      "id": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Both reveal fundamental limitations of formal systems: Gödel's incompleteness shows ZFC cannot prove all arithmetic trut"
+    },
+    {
+      "id": "halting-problem",
+      "relationship": "thematic",
+      "description": "Both are undecidability results in their respective domains: the halting problem shows no algorithm decides all computat"
+    },
+    {
+      "id": "schroeder-bernstein",
+      "relationship": "related",
+      "description": "Schröder-Bernstein establishes cardinality equality from mutual injections. CH concerns the question of which cardinalit"
+    }
   ],
   "references": [
     {

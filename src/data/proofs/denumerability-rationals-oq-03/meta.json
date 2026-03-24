@@ -213,7 +213,15 @@
     }
   ],
   "relatedProofs": [
-    "denumerability-rationals",
-    "cantor-diagonalization"
+    {
+      "id": "denumerability-rationals",
+      "relationship": "parent",
+      "description": "The parent entry proving rationals are countable. This OQ-03 provides an alternative enumeration via the Stern-Brocot tr"
+    },
+    {
+      "id": "cantor-diagonalization",
+      "relationship": "contrasts",
+      "description": "Cantor showed the reals are uncountable; this entry shows the rationals ARE countable, using a constructive tree enumera"
+    }
   ]
 }

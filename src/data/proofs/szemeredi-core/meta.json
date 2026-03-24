@@ -198,11 +198,30 @@
     }
   ],
   "relatedProofs": [
-    "szemeredi-regularity",
-    "szemeredi-counting",
-    "szemeredi-full",
-    "szemeredi-theorem",
-    "roth-theorem-k3",
-    "ramseys-theorem"
+    {
+      "id": "szemeredi-regularity",
+      "relationship": "foundational",
+      "description": "Provides the core definitions (edge density, epsilon-regularity, regular partition, partition energy) imported by the re"
+    },
+    {
+      "id": "szemeredi-counting",
+      "relationship": "foundational",
+      "description": "Provides the core definitions imported by the counting and triangle removal lemmas, which use epsilon-regularity to coun"
+    },
+    {
+      "id": "szemeredi-full",
+      "relationship": "foundational",
+      "description": "The full Szemerédi theorem on arithmetic progressions depends on the regularity pipeline that begins with these core def"
+    },
+    {
+      "id": "szemeredi-theorem",
+      "relationship": "foundational",
+      "description": "The main Szemerédi theorem statement imports and uses the regularity infrastructure built on these definitions"
+    },
+    {
+      "id": "roth-theorem-k3",
+      "relationship": "related",
+      "description": "Roth's theorem (1953) on 3-term arithmetic progressions was the first major application of regularity-type ideas. While "
+    }
   ]
 }

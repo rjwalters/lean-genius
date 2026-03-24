@@ -192,9 +192,25 @@
     }
   ],
   "relatedProofs": [
-    "erdos-28",
-    "erdos-39",
-    "erdos-41",
-    "erdos-44"
+    {
+      "id": "erdos-28",
+      "relationship": "related",
+      "description": "The Erdős-Turán conjecture on additive bases uses Sidon sets as the extremal case. Understanding Sidon set structure (vi"
+    },
+    {
+      "id": "erdos-39",
+      "relationship": "related",
+      "description": "Problem #39 asks about the growth rate of infinite Sidon sets, while Problem #42 concerns the structural compatibility o"
+    },
+    {
+      "id": "erdos-41",
+      "relationship": "extends",
+      "description": "Problem #41 on B_h sequence bounds generalizes the Sidon set density theory. The difference set structure studied in Pro"
+    },
+    {
+      "id": "erdos-44",
+      "relationship": "related",
+      "description": "Problem #44 asks about extending Sidon sets to near-optimal density. Both problems concern how individual Sidon sets can"
+    }
   ]
 }

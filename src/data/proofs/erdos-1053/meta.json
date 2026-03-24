@@ -135,14 +135,31 @@
     }
   ],
   "relatedProofs": [
-    "euler-totient",
-    "fundamental-arithmetic",
-    "infinitude-primes",
-    "erdos-1054",
-    "erdos-1003",
-    "erdos-1004",
-    "perfect-numbers",
-    "riemann-hypothesis"
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient φ(n) and the sum-of-divisors σ(n) are both fundamental multiplicative arithmetic functions. Their interp"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "depends-on",
+      "description": "The multiplicativity of σ — the key property σ(mn) = σ(m)σ(n) for gcd(m,n) = 1 — follows directly from the Fundamental T"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "related",
+      "description": "Gronwall's extremal bound σ(n)/n ~ e^γ · log log n is achieved along primorial-type numbers (products of the first k pri"
+    },
+    {
+      "id": "erdos-1054",
+      "relationship": "related",
+      "description": "Erdős Problem #1054 concerns the distribution and density of multiply-perfect numbers, directly complementing the growth"
+    },
+    {
+      "id": "erdos-1003",
+      "relationship": "related",
+      "description": "Erdős Problem #1003 concerns the distribution of the abundancy index σ(n)/n over integers, studying when large values oc"
+    }
   ],
   "references": [
     {

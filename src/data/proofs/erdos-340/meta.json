@@ -109,8 +109,16 @@
     }
   ],
   "relatedProofs": [
-    "erdos-30",
-    "erdos-156"
+    {
+      "id": "erdos-30",
+      "relationship": "related",
+      "description": "Problem #30 asks whether h(N) = N^{1/2} + O_ε(N^ε) for general Sidon sets. Problem #340 specifically concerns the greedy"
+    },
+    {
+      "id": "erdos-156",
+      "relationship": "related",
+      "description": "Problem #156 concerns the slow growth of maximal Sidon subsets. Both problems study how construction methods affect Sido"
+    }
   ],
   "leanFile": {
     "imports": [

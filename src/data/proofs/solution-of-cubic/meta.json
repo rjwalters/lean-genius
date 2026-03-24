@@ -202,12 +202,31 @@
     ]
   },
   "relatedProofs": [
-    "general-quartic",
-    "abel-ruffini",
-    "abel-ruffini-oq-04",
-    "fundamental-theorem-algebra",
-    "de-moivre",
-    "angle-trisection"
+    {
+      "id": "general-quartic",
+      "relationship": "generalizes",
+      "description": "Ferrari's quartic solution (Wiedijk #46) uses a cubic resolvent — the quartic reduces to a cubic, making Cardano's formu"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "related-problem",
+      "description": "The Abel-Ruffini theorem (Wiedijk #16) proves no general radical formula exists for degree ≥ 5. The cubic and quartic fo"
+    },
+    {
+      "id": "abel-ruffini-oq-04",
+      "relationship": "complementary",
+      "description": "The A₅ simplicity proof chain shows exactly why no radical formula exists for degree ≥ 5: S₄ is solvable (so cubics and "
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "foundation",
+      "description": "The Fundamental Theorem of Algebra (Wiedijk #80) guarantees cubic roots exist in ℂ. Cardano's formula constructs them ex"
+    },
+    {
+      "id": "de-moivre",
+      "relationship": "uses-same-technique",
+      "description": "De Moivre's theorem connects complex exponentials to trigonometry. The cube roots of unity ω = e^(2πi/3) central to expr"
+    }
   ],
   "references": [
     {

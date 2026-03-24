@@ -171,9 +171,21 @@
     ]
   },
   "relatedProofs": [
-    "erdos-501",
-    "erdos-603",
-    "erdos-739"
+    {
+      "id": "erdos-501",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, independence, set-theory"
+    },
+    {
+      "id": "erdos-603",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cardinals, combinatorics, set-theory"
+    },
+    {
+      "id": "erdos-739",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cardinals, independence, set-theory"
+    }
   ],
   "leanFile": {
     "imports": [

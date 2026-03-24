@@ -198,11 +198,30 @@
     ]
   },
   "relatedProofs": [
-    "erdos-990",
-    "erdos-992",
-    "erdos-988",
-    "erdos-989",
-    "erdos-995",
-    "fourier-series"
+    {
+      "id": "erdos-990",
+      "relationship": "uses-same-technique",
+      "description": "Uses the Erdős-Turán exponential sum inequality to study angular distribution of polynomial roots — the same machinery t"
+    },
+    {
+      "id": "erdos-992",
+      "relationship": "related-problem",
+      "description": "Studies discrepancy of sequences mod 1 using Weyl's criterion and exponential sums — the same Erdős-Turán framework unde"
+    },
+    {
+      "id": "erdos-988",
+      "relationship": "related-problem",
+      "description": "Sphere discrepancy problem using Schmidt's theorem (1969). Applies discrepancy theory bounds in spherical geometry, comp"
+    },
+    {
+      "id": "erdos-989",
+      "relationship": "uses-same-technique",
+      "description": "Beck's circle discrepancy theorem uses Fourier analysis and Bessel functions — the same harmonic analysis framework that"
+    },
+    {
+      "id": "erdos-995",
+      "relationship": "related-problem",
+      "description": "Lacunary sequences and fractional parts: the quasi-independence from exponential gaps prevents accumulation, relating to"
+    }
   ]
 }

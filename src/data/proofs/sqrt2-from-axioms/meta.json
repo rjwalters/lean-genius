@@ -136,10 +136,26 @@
     }
   ],
   "relatedProofs": [
-    "sqrt2-irrational",
-    "infinitude-primes",
-    "mathematical-induction",
-    "gcd-algorithm"
+    {
+      "id": "sqrt2-irrational",
+      "relationship": "related",
+      "description": "The standard formalization of $\\sqrt{2}$ irrationality using Mathlib — this entry proves the same result from first prin"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "Both are classical number-theoretic results proved from basic properties of integers — the infinitude of primes and irra"
+    },
+    {
+      "id": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "The well-ordering principle (equivalent to induction) underpins the infinite descent argument used in the classic proof "
+    },
+    {
+      "id": "gcd-algorithm",
+      "relationship": "foundational",
+      "description": "The GCD algorithm and the notion of coprimality ($\\gcd(p,q)=1$) are central to the standard proof: if $p^2 = 2q^2$ with "
+    }
   ],
   "references": [
     {

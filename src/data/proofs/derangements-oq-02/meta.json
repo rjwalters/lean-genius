@@ -217,9 +217,25 @@
     }
   ],
   "relatedProofs": [
-    "derangements",
-    "binomial-theorem",
-    "inclusion-exclusion",
-    "birthday-problem"
+    {
+      "id": "derangements",
+      "relationship": "extends",
+      "description": "Parent formalization of basic derangement count D(n); this entry generalizes to S(n,k) = C(n,k)·D(n-k) for permutations "
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "uses",
+      "description": "The binomial coefficient C(n,k) appears as the number of ways to choose which k elements are fixed points; formalized vi"
+    },
+    {
+      "id": "inclusion-exclusion",
+      "relationship": "related",
+      "description": "The classical proof of S(n,k) = C(n,k)·D(n-k) uses inclusion-exclusion; this formalization uses a bijective proof instea"
+    },
+    {
+      "id": "birthday-problem",
+      "relationship": "related",
+      "description": "Both involve counting permutations with specific coincidence properties: the birthday problem counts collisions in rando"
+    }
   ]
 }

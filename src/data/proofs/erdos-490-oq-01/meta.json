@@ -172,8 +172,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-490",
-    "infinitude-primes",
-    "harmonic-divergence"
+    {
+      "id": "erdos-490",
+      "relationship": "Parent formalization of Erdős Problem #490; this OQ investigates the limit question for the normalized maximum product size",
+      "description": ""
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "The prime construction for the lower bound uses primes in (N/2, N], whose density comes from the prime number theorem — a consequence of the infinitude of primes",
+      "description": ""
+    },
+    {
+      "id": "harmonic-divergence",
+      "relationship": "The divergence of the harmonic series is related to the density of primes (Euler's proof uses $\\sum 1/p = \\infty$), which underlies the $\\log N$ factor in Szemerédi's bound",
+      "description": ""
+    }
   ]
 }

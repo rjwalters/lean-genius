@@ -224,8 +224,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-256",
-    "erdos-484",
-    "erdos-510"
+    {
+      "id": "erdos-256",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: harmonic-analysis, solved"
+    },
+    {
+      "id": "erdos-484",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: fourier-analysis, solved"
+    },
+    {
+      "id": "erdos-510",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: exponential-sums, harmonic-analysis"
+    }
   ]
 }

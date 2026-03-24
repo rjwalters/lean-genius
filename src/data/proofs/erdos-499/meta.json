@@ -192,7 +192,15 @@
     }
   ],
   "relatedProofs": [
-    "cayley-hamilton",
-    "amgm-inequality"
+    {
+      "id": "cayley-hamilton",
+      "relationship": "related",
+      "description": "Both concern matrix algebra: Cayley-Hamilton studies the characteristic polynomial while this problem studies diagonal p"
+    },
+    {
+      "id": "amgm-inequality",
+      "relationship": "foundational",
+      "description": "The AM-GM inequality is the key tool: the product of n nonneg reals summing to 1 is maximized at 1/n each, giving the bo"
+    }
   ]
 }

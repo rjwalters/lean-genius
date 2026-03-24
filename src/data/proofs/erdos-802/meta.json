@@ -205,8 +205,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-925",
-    "erdos-1029",
-    "erdos-163"
+    {
+      "id": "erdos-925",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, independent-sets, ramsey-theory, solved"
+    },
+    {
+      "id": "erdos-1029",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, probabilistic-method, ramsey-theory"
+    },
+    {
+      "id": "erdos-163",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory, solved"
+    }
   ]
 }

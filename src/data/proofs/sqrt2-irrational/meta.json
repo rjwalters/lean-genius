@@ -179,18 +179,31 @@
     }
   ],
   "relatedProofs": [
-    "nth-root-irrational",
-    "fundamental-arithmetic",
-    "pythagorean-theorem",
-    "infinitude-primes",
-    "abel-ruffini",
-    "e-transcendental",
-    "pi-transcendental",
-    "hermite-lindemann",
-    "angle-trisection",
-    "cantor-diagonalization",
-    "gelfond-schneider",
-    "mathematical-induction"
+    {
+      "id": "nth-root-irrational",
+      "relationship": "generalizes",
+      "description": "Generalizes to nth roots: √[n]{m} is irrational iff m is not a perfect nth power"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "uses",
+      "description": "Unique prime factorization underlies the argument: if p² | a² then p | a, which requires that prime multiplicities in a²"
+    },
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "The irrationality of √2 was historically discovered through the Pythagorean theorem: the diagonal of a unit square has l"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "related",
+      "description": "Both are foundational number theory results proved by contradiction with deep consequences for the structure of numbers"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "foundational",
+      "description": "The irrationality of $\\sqrt{2}$ is the earliest impossibility result in mathematics — showing $\\sqrt{2} \\notin \\mathbb{Q"
+    }
   ],
   "references": [
     {

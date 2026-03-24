@@ -148,8 +148,16 @@
     }
   ],
   "relatedProofs": [
-    "triangle-inequality",
-    "isosceles-triangle"
+    {
+      "id": "triangle-inequality",
+      "relationship": "extends",
+      "description": "Extends the standard triangle inequality to the ultrametric setting, where max replaces addition"
+    },
+    {
+      "id": "isosceles-triangle",
+      "relationship": "related",
+      "description": "The classical isosceles triangle theorem deals with Euclidean triangles; here ALL triangles are isosceles in ultrametric"
+    }
   ],
   "references": [
     {

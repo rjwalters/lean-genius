@@ -20,7 +20,7 @@
       "liminf-limsup"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 428,
     "erdosUrl": "https://erdosproblems.com/428",
     "erdosProblemStatus": "open",
@@ -70,7 +70,6 @@
     ],
     "axiomCount": 1,
     "lineCount": 196,
-    "sorries": 1,
     "assumptions": "1 axiom: erdos_graham_limsup (k-tuple conjecture implies limsup variant). 1 sorry in liminf_implies_limsup (needs IsBoundedUnder for Mathlib's Filter.liminf_le_limsup)."
   },
   "leanFile": {
@@ -207,9 +206,25 @@
     }
   ],
   "relatedProofs": [
-    "prime-number-theorem",
-    "bertrands-postulate",
-    "erdos-427",
-    "twin-primes-special"
+    {
+      "id": "prime-number-theorem",
+      "relationship": "uses",
+      "description": "The PNT gives $\\pi(n) \\sim n/\\ln n$, the asymptotic for the denominator of primeDensityRatio"
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate guarantees $\\pi(n) \\to \\infty$, essential for finite_set_zero_density"
+    },
+    {
+      "id": "erdos-427",
+      "relationship": "sibling",
+      "description": "Consecutive Erdős-Graham problem on prime sums divisibility, both from the same 1980 monograph"
+    },
+    {
+      "id": "twin-primes-special",
+      "relationship": "related",
+      "description": "AllOffsetsPrime {2} n gives twin primes; the $k$-tuple conjecture generalizes the twin prime conjecture"
+    }
   ]
 }

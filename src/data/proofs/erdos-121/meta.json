@@ -120,9 +120,21 @@
     }
   ],
   "relatedProofs": [
-    "infinitude-primes",
-    "fundamental-arithmetic",
-    "basel-problem"
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes underlies the squarefree-part decomposition: each integer $n$ factors uniquely as $n = \\text{sq"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization is essential: the squarefree-part map $\\text{sqf}(n) = \\prod_{p \\mid n, v_p(n) \\text{ odd}} p"
+    },
+    {
+      "id": "basel-problem",
+      "relationship": "related",
+      "description": "The density $6/\\pi^2 = 1/\\zeta(2)$ for $F_2(N)$ (squarefree integers) connects directly to Euler's Basel problem: $\\zeta"
+    }
   ],
   "references": [
     {

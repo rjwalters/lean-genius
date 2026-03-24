@@ -236,7 +236,15 @@
     }
   ],
   "relatedProofs": [
-    "erdos-22",
-    "erdos-24"
+    {
+      "id": "erdos-22",
+      "relationship": "related",
+      "description": "Problem #22 (Ramsey-Turán for K₄) and Problem #60 (supersaturation of C₄) are both extremal graph theory problems about "
+    },
+    {
+      "id": "erdos-24",
+      "relationship": "related",
+      "description": "Problem #24 (pentagons in triangle-free) and Problem #60 (4-cycles) both concern counting short cycles in graphs with de"
+    }
   ]
 }

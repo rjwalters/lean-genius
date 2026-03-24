@@ -190,11 +190,31 @@
     }
   ],
   "relatedProofs": [
-    "cayley-hamilton",
-    "cayley-hamilton-minpoly",
-    "cayley-hamilton-minpoly-oq-02",
-    "cayley-hamilton-minpoly-oq-02-oq-01",
-    "cayley-hamilton-reduction"
+    {
+      "id": "cayley-hamilton",
+      "relationship": "foundational",
+      "description": "The Cayley-Hamilton theorem provides the connection between matrices and their characteristic/minimal polynomials, which"
+    },
+    {
+      "id": "cayley-hamilton-minpoly",
+      "relationship": "extends",
+      "description": "Root formalization connecting Cayley-Hamilton to minimal polynomials; the Skolem-Noether theorem shows all automorphisms"
+    },
+    {
+      "id": "cayley-hamilton-minpoly-oq-02",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    },
+    {
+      "id": "cayley-hamilton-minpoly-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Parent file proving minimal polynomial preservation under algebra equivalences; this file extends to the full Skolem-Noe"
+    },
+    {
+      "id": "cayley-hamilton-reduction",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    }
   ],
   "relatedProblems": [
     {

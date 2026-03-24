@@ -144,9 +144,21 @@
     ]
   },
   "relatedProofs": [
-    "pythagorean-theorem",
-    "herons-formula",
-    "triangle-angle-sum"
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "Ptolemy's theorem generalizes the Pythagorean theorem: when the cyclic quadrilateral is a rectangle, AC*BD = AB*CD + BC*"
+    },
+    {
+      "id": "herons-formula",
+      "relationship": "related",
+      "description": "Both are foundational classical geometry results. Ptolemy's theorem (c. 150 AD) and Heron's formula (c. 60 AD) provide a"
+    },
+    {
+      "id": "triangle-angle-sum",
+      "relationship": "related",
+      "description": "The inscribed angle theorem, closely related to the triangle angle sum, underpins the proof that opposite angles in a cy"
+    }
   ],
   "leanFile": {
     "imports": [

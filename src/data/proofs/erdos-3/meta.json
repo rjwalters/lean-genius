@@ -221,11 +221,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1",
-    "erdos-2",
-    "erdos-26",
-    "erdos-28",
-    "arithmetic-series"
+    {
+      "id": "erdos-1",
+      "relationship": "related",
+      "description": "Problem #1 (distinct subset sums) and Problem #3 (APs in dense sets) are both foundational problems in additive combinat"
+    },
+    {
+      "id": "erdos-2",
+      "relationship": "related",
+      "description": "Both problems share the theme of density constraints in number theory. Covering systems (Problem #2) require $\\sum 1/n_i"
+    },
+    {
+      "id": "erdos-26",
+      "relationship": "related",
+      "description": "Problem #26 on thick sequences and Behrend sets directly concerns the AP-free constructions that provide lower bounds fo"
+    },
+    {
+      "id": "erdos-28",
+      "relationship": "related",
+      "description": "The Erdős-Turán conjecture on additive bases (Problem #28) asks about the representation function of bases of order 2. B"
+    },
+    {
+      "id": "arithmetic-series",
+      "relationship": "foundational",
+      "description": "The arithmetic series formula underlies the counting arguments for arithmetic progressions. A $k$-term AP $\\{a, a+d, \\ld"
+    }
   ],
   "leanFile": {
     "imports": [

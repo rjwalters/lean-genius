@@ -211,11 +211,31 @@
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem",
-    "erdos-1",
-    "szemeredi-regularity",
-    "erdos-635",
-    "combinations-formula"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "The Ramsey condition (ω(G), α(G) ≤ C log n) is the defining hypothesis — Ramsey's theorem guarantees such graphs exist. "
+    },
+    {
+      "id": "erdos-1",
+      "relationship": "related",
+      "description": "Both are foundational Erdős problems in Ramsey theory: #1 concerns Ramsey numbers R(k,k), while #636 concerns structural"
+    },
+    {
+      "id": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "The regularity lemma provides pseudorandom decompositions relevant to analyzing induced subgraph structure in dense grap"
+    },
+    {
+      "id": "erdos-635",
+      "relationship": "related",
+      "description": "Adjacent Erdős problem in the same series on induced subgraph properties of Ramsey graphs"
+    },
+    {
+      "id": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The binomial coefficient C(n,2) bounds the number of edges and appears in the signature (v,e) counting: for a v-vertex i"
+    }
   ],
   "leanFile": {
     "imports": [

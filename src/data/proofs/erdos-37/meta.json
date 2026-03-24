@@ -249,7 +249,15 @@
     }
   ],
   "relatedProofs": [
-    "erdos-35",
-    "erdos-38"
+    {
+      "id": "erdos-35",
+      "relationship": "related",
+      "description": "Problem #35 on Schnirelmann density provides the foundational framework. Essential components (Problems #37-38) study wh"
+    },
+    {
+      "id": "erdos-38",
+      "relationship": "related",
+      "description": "Problem #38 on essential components and density boosting is the companion problem. Both concern how adding a set A can b"
+    }
   ]
 }

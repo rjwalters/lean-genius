@@ -165,10 +165,26 @@
     ]
   },
   "relatedProofs": [
-    "prob-method-expectation",
-    "prob-method-alteration",
-    "prob-method-second-moment",
-    "prob-method-applications"
+    {
+      "id": "prob-method-expectation",
+      "relationship": "depends-on",
+      "description": "The LLL extends the first moment framework to handle dependent events"
+    },
+    {
+      "id": "prob-method-alteration",
+      "relationship": "related",
+      "description": "The alteration method and LLL both handle dependencies, with the LLL being more powerful for sparse dependency structure"
+    },
+    {
+      "id": "prob-method-second-moment",
+      "relationship": "related",
+      "description": "The second moment method and LLL offer complementary approaches to concentration with dependencies"
+    },
+    {
+      "id": "prob-method-applications",
+      "relationship": "used-by",
+      "description": "The LLL is applied in several results in the applications module, including hypergraph coloring and Ramsey bounds"
+    }
   ],
   "leanFile": {
     "imports": [

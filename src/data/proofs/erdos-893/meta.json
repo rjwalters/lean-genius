@@ -165,9 +165,21 @@
     }
   ],
   "relatedProofs": [
-    "perfect-numbers",
-    "prime-number-theorem",
-    "prime-reciprocal-divergence"
+    {
+      "id": "perfect-numbers",
+      "relationship": "related",
+      "description": "Perfect numbers are intimately connected to Mersenne primes via the Euclid-Euler theorem: even perfect numbers have the "
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "foundation",
+      "description": "The prime number theorem and its generalizations govern the asymptotic behavior of divisor sums, providing context for t"
+    },
+    {
+      "id": "prime-reciprocal-divergence",
+      "relationship": "technique",
+      "description": "The divergence of prime reciprocals (Euler) is an analogue: both study cumulative sums over multiplicative quantities, w"
+    }
   ],
   "leanFile": {
     "imports": [

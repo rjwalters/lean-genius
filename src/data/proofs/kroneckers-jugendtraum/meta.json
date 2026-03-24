@@ -204,15 +204,31 @@
     ]
   },
   "relatedProofs": [
-    "continuum-hypothesis",
-    "hilbert-9-reciprocity",
-    "hilbert-11",
-    "quadratic-reciprocity",
-    "euler-totient",
-    "inverse-galois",
-    "fermats-last-theorem",
-    "abel-ruffini",
-    "primitive-roots"
+    {
+      "id": "continuum-hypothesis",
+      "relationship": "Hilbert Problems",
+      "description": "Both are Hilbert problems (12th and 1st respectively). Hilbert's 12th connects number theory to analysis; Hilbert's 1st "
+    },
+    {
+      "id": "hilbert-9-reciprocity",
+      "relationship": "Reciprocity Laws",
+      "description": "Hilbert's 9th problem asks for the most general reciprocity law in number fields. Artin reciprocity, which underlies Kro"
+    },
+    {
+      "id": "hilbert-11",
+      "relationship": "Algebraic Number Theory",
+      "description": "Hilbert's 11th problem concerns quadratic forms over number fields. Both problems require deep understanding of number f"
+    },
+    {
+      "id": "quadratic-reciprocity",
+      "relationship": "Reciprocity Laws",
+      "description": "Quadratic reciprocity is the simplest reciprocity law and a precursor to Artin reciprocity. Kronecker-Weber generalizes "
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "Cyclotomic Fields",
+      "description": "Euler's totient function φ(n) gives the degree [ℚ(ζₙ):ℚ] = φ(n) and the order of the Galois group (ℤ/nℤ)×, both proved i"
+    }
   ],
   "references": [
     {

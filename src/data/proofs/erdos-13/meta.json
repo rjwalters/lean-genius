@@ -219,7 +219,15 @@
     }
   ],
   "relatedProofs": [
-    "erdos-12",
-    "fundamental-arithmetic"
+    {
+      "id": "erdos-12",
+      "relationship": "related",
+      "description": "Problem #12 is the companion problem on divisibility-free sets. Both study antichains in the divisor lattice with differ"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization determines the divisor lattice structure that governs divisibility-free sets"
+    }
   ]
 }

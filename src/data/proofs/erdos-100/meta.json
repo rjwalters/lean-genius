@@ -237,11 +237,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-89",
-    "erdos-94",
-    "erdos-104",
-    "erdos-1066",
-    "erdos-1007"
+    {
+      "id": "erdos-89",
+      "relationship": "foundation",
+      "description": "Erdős #89 (distinct distances) provides the current best lower bound via Guth-Katz: $\\Delta(A) \\geq cn/\\log n$ implies $"
+    },
+    {
+      "id": "erdos-94",
+      "relationship": "related",
+      "description": "Erdős #94 (distance multiplicities in convex polygons) studies distance multiplicity bounds $\\sum f(u)^2 = O(n^3)$, shar"
+    },
+    {
+      "id": "erdos-104",
+      "relationship": "related",
+      "description": "Erdős #104 (unit circles through points) shares the discrete geometry setting and incidence-counting techniques."
+    },
+    {
+      "id": "erdos-1066",
+      "relationship": "related",
+      "description": "Erdős #1066 (independence number of unit distance graphs) studies graph-theoretic properties of the same unit distance s"
+    },
+    {
+      "id": "erdos-1007",
+      "relationship": "related",
+      "description": "Erdős #1007 (graph dimension and unit distance embedding) connects to the geometric embedding questions underlying restr"
+    }
   ],
   "leanFile": {
     "imports": [

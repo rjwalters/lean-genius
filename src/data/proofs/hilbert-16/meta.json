@@ -160,11 +160,31 @@
     }
   ],
   "relatedProofs": [
-    "brouwer-fixed-point",
-    "schauder-fixed-point",
-    "poincare-conjecture",
-    "hilbert-19",
-    "hilbert-21"
+    {
+      "id": "brouwer-fixed-point",
+      "relationship": "foundational",
+      "description": "Brouwer's fixed point theorem implies existence of equilibria for continuous vector fields on compact domains, foundatio"
+    },
+    {
+      "id": "schauder-fixed-point",
+      "relationship": "related",
+      "description": "Schauder's theorem generalizes Brouwer to infinite dimensions and directly implies the Peano existence theorem for ODE s"
+    },
+    {
+      "id": "poincare-conjecture",
+      "relationship": "related",
+      "description": "Perelman's resolution via Ricci flow connects to dynamical systems through geometric evolution equations; both problems "
+    },
+    {
+      "id": "hilbert-19",
+      "relationship": "parallel",
+      "description": "Hilbert's 19th Problem on PDE regularity connects to limit cycle analysis through smoothness of solutions to differentia"
+    },
+    {
+      "id": "hilbert-21",
+      "relationship": "parallel",
+      "description": "Hilbert's 21st Problem on Fuchsian systems with prescribed monodromy connects to the qualitative theory of differential "
+    }
   ],
   "leanFile": {
     "imports": [

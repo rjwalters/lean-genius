@@ -150,15 +150,31 @@
     }
   ],
   "relatedProofs": [
-    "cauchy-schwarz",
-    "cauchy-schwarz-integral",
-    "isoperimetric-theorem",
-    "shannon-entropy",
-    "triangle-inequality",
-    "amgm-inequality-oq-02",
-    "amgm-inequality-oq-03",
-    "amgm-inequality-oq-03-oq-01",
-    "amgm-inequality-oq-03-oq-02"
+    {
+      "id": "cauchy-schwarz",
+      "relationship": "generalizes",
+      "description": "AM-GM implies Cauchy-Schwarz via $2ab \\leq a^2 + b^2$; both are consequences of the non-negativity of squared difference"
+    },
+    {
+      "id": "cauchy-schwarz-integral",
+      "relationship": "extends",
+      "description": "The integral Cauchy-Schwarz inequality generalizes the discrete AM-GM to $L^2$ function spaces; AM-GM for two variables "
+    },
+    {
+      "id": "isoperimetric-theorem",
+      "relationship": "supports",
+      "description": "The product-sum corollary $ab \\leq ((a+b)/2)^2$ proves that among rectangles with fixed perimeter, the square maximizes "
+    },
+    {
+      "id": "shannon-entropy",
+      "relationship": "supports",
+      "description": "AM-GM underlies the log-sum inequality used to bound Shannon entropy: the maximum entropy $H \\leq \\log n$ for $n$ outcom"
+    },
+    {
+      "id": "triangle-inequality",
+      "relationship": "related",
+      "description": "Both AM-GM and the triangle inequality are fundamental non-negativity results: AM-GM exploits $(\\sqrt{a}-\\sqrt{b})^2 \\ge"
+    }
   ],
   "sections": [
     {

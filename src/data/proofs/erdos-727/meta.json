@@ -194,9 +194,25 @@
     }
   ],
   "relatedProofs": [
-    "erdos-728-factorial-divisibility",
-    "wilsons-theorem",
-    "erdos-1059",
-    "fundamental-arithmetic"
+    {
+      "id": "erdos-728-factorial-divisibility",
+      "relationship": "related",
+      "description": "Sister Erdős problem on factorial divisibility patterns"
+    },
+    {
+      "id": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem connects primes to factorials; both problems concern factorial-prime interactions"
+    },
+    {
+      "id": "erdos-1059",
+      "relationship": "related",
+      "description": "Both Erdős problems concern factorial-prime interactions from different angles"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique factorization underlies the divisibility analysis"
+    }
   ]
 }

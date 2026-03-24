@@ -158,13 +158,31 @@
     ]
   },
   "relatedProofs": [
-    "area-of-circle",
-    "area-of-circle-oq-01",
-    "fundamental-theorem-calculus",
-    "isoperimetric-theorem",
-    "pi-transcendental",
-    "area-of-circle-oq-01-oq-02-oq-01",
-    "area-of-circle-oq-01-oq-02-oq-02"
+    {
+      "id": "area-of-circle",
+      "relationship": "extends",
+      "description": "The foundational Area of a Circle entry proves A = πr² via Lebesgue measure. This entry derives the same formula by inte"
+    },
+    {
+      "id": "area-of-circle-oq-01",
+      "relationship": "companion",
+      "description": "The companion entry proves C = dA/dr (differentiation direction). This entry proves A = ∫C dr (integration direction). T"
+    },
+    {
+      "id": "fundamental-theorem-calculus",
+      "relationship": "uses",
+      "description": "This proof is a direct application of FTC Part 2 (integral_eq_sub_of_hasDerivAt) from the Fundamental Theorem of Calculu"
+    },
+    {
+      "id": "isoperimetric-theorem",
+      "relationship": "related",
+      "description": "The annulus area formula ∫_{r₁}^{r₂} 2πρ dρ = π(r₂²-r₁²) proved here relates to the isoperimetric inequality: the circle"
+    },
+    {
+      "id": "pi-transcendental",
+      "relationship": "related",
+      "description": "Both use Mathlib's π: the integral ∫₀ʳ 2πρ dρ = πr² involves the same transcendental constant whose properties are estab"
+    }
   ],
   "leanFile": {
     "imports": [

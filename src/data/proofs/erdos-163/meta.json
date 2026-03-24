@@ -182,11 +182,31 @@
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem",
-    "szemeredi-theorem",
-    "four-color-theorem",
-    "erdos-569",
-    "erdos-61"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "extends",
+      "description": "Ramsey's theorem guarantees $R(H)$ exists for all $H$; the Burr-Erdős conjecture gives tight linear bounds for the degen"
+    },
+    {
+      "id": "szemeredi-theorem",
+      "relationship": "technique",
+      "description": "Lee's proof uses the Szemerédi regularity lemma, the same foundational tool underlying Szemerédi's theorem on arithmetic"
+    },
+    {
+      "id": "four-color-theorem",
+      "relationship": "related",
+      "description": "Planar graphs are 5-degenerate and have chromatic number $\\le 4$; the Burr-Erdős conjecture gives $R(H) = O(n)$ for plan"
+    },
+    {
+      "id": "erdos-569",
+      "relationship": "related",
+      "description": "Problem #569 asks about Ramsey numbers of odd cycles vs general graphs, a complementary Ramsey-theoretic question about "
+    },
+    {
+      "id": "erdos-61",
+      "relationship": "related",
+      "description": "The Erdős-Hajnal Conjecture also connects graph structure (being $H$-free) to Ramsey-type coloring properties, complemen"
+    }
   ],
   "leanFile": {
     "imports": [

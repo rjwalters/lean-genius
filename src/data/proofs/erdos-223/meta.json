@@ -216,8 +216,20 @@
     "definitionCount": 14
   },
   "relatedProofs": [
-    "erdos-340",
-    "borsuk-ulam",
-    "erdos-340-greedy-sidon"
+    {
+      "id": "erdos-340",
+      "relationship": "related",
+      "description": "Both are extremal problems in discrete/combinatorial geometry about distance configurations in point sets"
+    },
+    {
+      "id": "borsuk-ulam",
+      "relationship": "related",
+      "description": "Both involve combinatorial-geometric phenomena with striking dimensional transitions; Borsuk's conjecture also concerns "
+    },
+    {
+      "id": "erdos-340-greedy-sidon",
+      "relationship": "related",
+      "description": "Both study extremal properties of finite point configurations; Sidon sets relate to distance-uniqueness while #223 count"
+    }
   ]
 }

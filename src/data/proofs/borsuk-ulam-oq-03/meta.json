@@ -189,12 +189,31 @@
     }
   ],
   "relatedProofs": [
-    "borsuk-ulam",
-    "borsuk-ulam-oq-02",
-    "brouwer-fixed-point",
-    "brouwer-fixed-point-oq-02",
-    "intermediate-value-theorem",
-    "schauder-fixed-point"
+    {
+      "id": "borsuk-ulam",
+      "relationship": "extends",
+      "description": "Base Borsuk-Ulam formalization — this file extends it by proving the 1D case constructively via IVT and establishing a c"
+    },
+    {
+      "id": "borsuk-ulam-oq-02",
+      "relationship": "related",
+      "description": "Another extension of the base BU formalization exploring different aspects of the theorem"
+    },
+    {
+      "id": "brouwer-fixed-point",
+      "relationship": "proves",
+      "description": "This file proves Brouwer's fixed-point theorem as a corollary of the no-retraction theorem, which in turn follows from B"
+    },
+    {
+      "id": "brouwer-fixed-point-oq-02",
+      "relationship": "related",
+      "description": "Another Brouwer FP extension — this file's axiom reduction independently proves the 1D Brouwer FP from IVT"
+    },
+    {
+      "id": "intermediate-value-theorem",
+      "relationship": "uses",
+      "description": "The IVT is the fundamental engine for the constructive 1D proof: applied to the antisymmetric difference g(x) = f(x) - f"
+    }
   ],
   "leanFile": {
     "imports": [

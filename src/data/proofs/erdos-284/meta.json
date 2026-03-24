@@ -199,9 +199,25 @@
     }
   ],
   "relatedProofs": [
-    "harmonic-divergence",
-    "euler-totient",
-    "fundamental-arithmetic",
-    "e-transcendental"
+    {
+      "id": "harmonic-divergence",
+      "relationship": "foundational",
+      "description": "The divergence of the harmonic series Σ 1/n is directly connected to Egyptian fractions: the greedy algorithm for writin"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient function φ(n) appears in counting the number of reduced fractions with denominator ≤ n, which connects t"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique factorization determines which denominators can combine to give integer numerators when added, a key constraint i"
+    },
+    {
+      "id": "e-transcendental",
+      "relationship": "thematic",
+      "description": "The constant e appears naturally in the solution f(k) = (1+o(1))·k/(e-1): this connects Egyptian fractions to the expone"
+    }
   ]
 }

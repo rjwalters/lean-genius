@@ -123,7 +123,11 @@
     }
   ],
   "relatedProofs": [
-    "erdos-603"
+    {
+      "id": "erdos-603",
+      "relationship": "related",
+      "description": "Both concern set family combinatorics: #603 studies colorings of set families, #701 studies intersecting subfamilies"
+    }
   ],
   "leanFile": {
     "imports": [

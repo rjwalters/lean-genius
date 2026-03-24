@@ -135,11 +135,31 @@
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem",
-    "erdos-921",
-    "erdos-923",
-    "erdos-924",
-    "erdos-925"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey's theorem provides the foundational framework; bounds on R(k,m) directly translate to bounds on g_k(n) via the Ra"
+    },
+    {
+      "id": "erdos-921",
+      "relationship": "parallel",
+      "description": "Problem #921 studies the parallel extremal function f_k(n) measuring chromatic number vs. odd girth, resolved by Kierste"
+    },
+    {
+      "id": "erdos-923",
+      "relationship": "related",
+      "description": "Problem #923 asks about triangle-free subgraphs with high chromatic number, directly connecting clique-free structure to"
+    },
+    {
+      "id": "erdos-924",
+      "relationship": "related",
+      "description": "Problem #924 (Folkman-Nešetřil-Rödl) studies Ramsey properties of K_{l+1}-free graphs, exploring the same clique-free vs"
+    },
+    {
+      "id": "erdos-925",
+      "relationship": "related",
+      "description": "Problem #925 studies R(3,3,m) bounds via independent sets in non-Ramsey graphs, connecting to the same Ramsey-theoretic "
+    }
   ],
   "leanFile": {
     "imports": [

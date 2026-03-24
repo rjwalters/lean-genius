@@ -196,15 +196,31 @@
     ]
   },
   "relatedProofs": [
-    "szemeredi-regularity",
-    "szemeredi-full",
-    "szemeredi-counting",
-    "szemeredi-core",
-    "szemeredi-theorem",
-    "prob-method-expectation",
-    "erdos-1155",
-    "erdos-1155-oq-01",
-    "bounded-prime-gaps"
+    {
+      "id": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "Roth's theorem can also be proved via the regularity lemma and triangle removal, connecting Fourier and graph-theoretic "
+    },
+    {
+      "id": "szemeredi-full",
+      "relationship": "used-by",
+      "description": "Roth's theorem is the k=3 base case of the full Szemeredi theorem"
+    },
+    {
+      "id": "szemeredi-counting",
+      "relationship": "related",
+      "description": "The counting lemma complements Szemerédi regularity by counting subgraph copies in regular partitions. Roth's Fourier ap"
+    },
+    {
+      "id": "szemeredi-core",
+      "relationship": "related",
+      "description": "The core Szemerédi infrastructure (density, regularity partitions) underpins the alternative graph-theoretic proof of Ro"
+    },
+    {
+      "id": "szemeredi-theorem",
+      "relationship": "extends",
+      "description": "Roth's theorem is the k=3 base case of Szemerédi's theorem (1975): every set of positive upper density contains arithmet"
+    }
   ],
   "leanFile": {
     "imports": [

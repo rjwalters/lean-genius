@@ -140,10 +140,26 @@
     }
   ],
   "relatedProofs": [
-    "mean-value-theorem",
-    "fundamental-theorem-calculus",
-    "taylor-theorem",
-    "leibniz-pi"
+    {
+      "id": "mean-value-theorem",
+      "relationship": "depends-on",
+      "description": "L'Hopital's rule is proved via Cauchy's generalized Mean Value Theorem, which is an extension of the standard MVT"
+    },
+    {
+      "id": "fundamental-theorem-calculus",
+      "relationship": "related",
+      "description": "Both are pillars of differential calculus; the FTC connects integrals and derivatives while L'Hopital connects limits an"
+    },
+    {
+      "id": "taylor-theorem",
+      "relationship": "related",
+      "description": "Taylor's theorem provides an alternative approach to evaluating limits by expanding functions in power series — often mo"
+    },
+    {
+      "id": "leibniz-pi",
+      "relationship": "related",
+      "description": "The Leibniz series involves limits and series convergence, areas where L'Hopital's rule provides useful asymptotic tools"
+    }
   ],
   "conclusion": {
     "summary": "L'Hopital's Rule is fully verified using Mathlib's calculus infrastructure. We provide the theorem in multiple forms: right limits, left limits, and limits at infinity.",

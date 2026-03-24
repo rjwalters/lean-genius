@@ -176,8 +176,20 @@
     ]
   },
   "relatedProofs": [
-    "erdos-544",
-    "erdos-987",
-    "euclid-euler"
+    {
+      "id": "erdos-544",
+      "relationship": "related-problem",
+      "description": "Erdős #544 concerns odd perfect numbers (σ(n) = 2n with standard divisors). Both problems ask about parity constraints o"
+    },
+    {
+      "id": "erdos-987",
+      "relationship": "uses-same-technique",
+      "description": "Both use Finset-based divisor computations with filter predicates and coprimality conditions, demonstrating the Finset A"
+    },
+    {
+      "id": "euclid-euler",
+      "relationship": "related-problem",
+      "description": "Euclid-Euler characterizes even ordinary perfect numbers as 2^{p-1}(2^p-1) where 2^p-1 is Mersenne prime. No analogous c"
+    }
   ]
 }

@@ -182,18 +182,31 @@
     }
   ],
   "relatedProofs": [
-    "area-of-circle",
-    "basel-problem",
-    "euler-identity",
-    "intermediate-value-theorem",
-    "mean-value-theorem",
-    "pythagorean-theorem",
-    "harmonic-divergence",
-    "cauchy-schwarz-integral",
-    "mathematical-induction",
-    "brouwer-fixed-point",
-    "greens-theorem",
-    "stirling-formula"
+    {
+      "id": "area-of-circle",
+      "relationship": "foundational",
+      "description": "The area of a circle A = πr² can be derived via FTC by integrating the circumference function 2πr from 0 to R. FTC provi"
+    },
+    {
+      "id": "basel-problem",
+      "relationship": "related",
+      "description": "The Basel identity ∑1/n² = π²/6 is proved via Fourier analysis which relies on integration theory built on FTC. Parseval"
+    },
+    {
+      "id": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's formula e^(ix) = cos(x) + i·sin(x) is proved via Taylor series of exp, which are defined using the derivatives t"
+    },
+    {
+      "id": "intermediate-value-theorem",
+      "relationship": "foundational",
+      "description": "IVT is used in the proof of FTC Part I: the antiderivative $F(x) = \\int_a^x f(t)\\,dt$ is continuous by construction, and"
+    },
+    {
+      "id": "mean-value-theorem",
+      "relationship": "related",
+      "description": "MVT is the key tool in proving FTC Part II: $F(b) - F(a) = \\int_a^b F'(x)\\,dx$ uses $F(x_{i+1}) - F(x_i) = F'(c_i)(x_{i+"
+    }
   ],
   "references": [
     {

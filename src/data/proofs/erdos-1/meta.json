@@ -212,16 +212,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-28",
-    "erdos-106",
-    "erdos-109",
-    "erdos-123",
-    "erdos-347",
-    "erdos-533",
-    "erdos-867",
-    "erdos-1179",
-    "erdos-340-greedy-sidon",
-    "binomial-theorem"
+    {
+      "id": "erdos-28",
+      "relationship": "related",
+      "description": "The Erdős-Turán conjecture on additive bases asks whether every basis of order 2 has unbounded representation function. "
+    },
+    {
+      "id": "erdos-106",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    },
+    {
+      "id": "erdos-109",
+      "relationship": "related",
+      "description": "The sumset conjecture concerns the size of $A + A$ for sets $A$ with special structure. Problem #1 asks about subset sum"
+    },
+    {
+      "id": "erdos-123",
+      "relationship": "complementary",
+      "description": "$d$-complete sequences ask when every sufficiently large integer is representable as a sum of distinct elements from a s"
+    },
+    {
+      "id": "erdos-347",
+      "relationship": "related",
+      "description": "Complete sequences with ratio tending to 2 concern sets whose subset sums cover all sufficiently large integers. Problem"
+    }
   ],
   "leanFile": {
     "imports": [

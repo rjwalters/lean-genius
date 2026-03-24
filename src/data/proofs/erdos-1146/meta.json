@@ -227,8 +227,20 @@
     "definitionCount": 2
   },
   "relatedProofs": [
-    "erdos-37",
-    "erdos-30",
-    "erdos-35"
+    {
+      "id": "erdos-37",
+      "relationship": "Parent problem -- Erdos #37 resolves the lacunary case and provides all infrastructure (Schnirelmann density, essential components, sumsets)",
+      "description": ""
+    },
+    {
+      "id": "erdos-30",
+      "relationship": "Sidon sets (B2 sets) concern additive structure of sparse sets; both ask how sparse a set can be while maintaining a strong additive property",
+      "description": ""
+    },
+    {
+      "id": "erdos-35",
+      "relationship": "Schnirelmann density improvements for additive bases; closely related density concepts and techniques",
+      "description": ""
+    }
   ]
 }

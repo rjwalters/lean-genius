@@ -162,9 +162,21 @@
     ]
   },
   "relatedProofs": [
-    "erdos-16",
-    "szemeredi-theorem",
-    "ramseys-theorem"
+    {
+      "id": "erdos-16",
+      "relationship": "related",
+      "description": "Erdős #16 concerns Szemerédi regularity and density of arithmetic progressions — the same circle of problems that includ"
+    },
+    {
+      "id": "szemeredi-theorem",
+      "relationship": "generalization",
+      "description": "Szemerédi's theorem ($r_k(N) = o(N)$ for all $k$) is the qualitative predecessor. Our gallery's Szemerédi entry proves t"
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey's theorem is the foundational result in the broader Ramsey theory program. Szemerédi's theorem and AP density bou"
+    }
   ],
   "leanFile": {
     "imports": [

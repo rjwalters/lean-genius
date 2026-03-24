@@ -259,9 +259,21 @@
     }
   ],
   "relatedProofs": [
-    "partition-theorem",
-    "euler-identity",
-    "ramanujan-sum-fallacy"
+    {
+      "id": "partition-theorem",
+      "relationship": "parent",
+      "description": "Parent formalization of Euler's partition theorem (distinct parts equal odd parts), which this extends to the deeper Rog"
+    },
+    {
+      "id": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's identity and q-series connections: the Rogers-Ramanujan identities are fundamentally q-series identities whose g"
+    },
+    {
+      "id": "ramanujan-sum-fallacy",
+      "relationship": "related",
+      "description": "Ramanujan's broader work in number theory: Ramanujan independently rediscovered the Rogers-Ramanujan identities c. 1913 "
+    }
   ],
   "references": [
     {

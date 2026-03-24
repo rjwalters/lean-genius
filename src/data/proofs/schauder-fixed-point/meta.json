@@ -180,11 +180,31 @@
     }
   ],
   "relatedProofs": [
-    "brouwer-fixed-point",
-    "borsuk-ulam",
-    "intermediate-value-theorem",
-    "navier-stokes",
-    "poincare-conjecture"
+    {
+      "id": "brouwer-fixed-point",
+      "relationship": "foundational",
+      "description": "Brouwer's fixed point theorem is the finite-dimensional special case — Schauder generalizes it to infinite-dimensional B"
+    },
+    {
+      "id": "borsuk-ulam",
+      "relationship": "thematic",
+      "description": "The Borsuk-Ulam theorem is another topological fixed point result for spheres — both belong to the family of theorems sh"
+    },
+    {
+      "id": "intermediate-value-theorem",
+      "relationship": "foundational",
+      "description": "The intermediate value theorem is the 1-dimensional fixed point theorem: continuous $f: [a,b] \\to [a,b]$ has a fixed poi"
+    },
+    {
+      "id": "navier-stokes",
+      "relationship": "thematic",
+      "description": "The Schauder theorem is a key tool in PDE existence theory — proving that Navier-Stokes and other nonlinear PDE systems "
+    },
+    {
+      "id": "poincare-conjecture",
+      "relationship": "thematic",
+      "description": "Both concern topological properties of manifolds and spaces — the Poincaré conjecture classifies 3-spheres, while Schaud"
+    }
   ],
   "references": [
     {

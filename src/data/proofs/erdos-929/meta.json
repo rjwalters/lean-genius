@@ -123,11 +123,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-240",
-    "erdos-369",
-    "erdos-1055",
-    "erdos-218",
-    "erdos-334"
+    {
+      "id": "erdos-240",
+      "relationship": "related",
+      "description": "Erdős #240 studies gaps between P-smooth numbers, the complementary question to smooth number density in intervals"
+    },
+    {
+      "id": "erdos-369",
+      "relationship": "related",
+      "description": "Erdős #369 on consecutive smooth numbers directly parallels this problem's focus on smooth blocks"
+    },
+    {
+      "id": "erdos-1055",
+      "relationship": "related",
+      "description": "Erdős #1055 classifies primes by smoothness of p+1, connecting smooth numbers to prime structure"
+    },
+    {
+      "id": "erdos-218",
+      "relationship": "related",
+      "description": "Erdős #218 on prime gap densities — the FGKMT result used here originated from prime gap research"
+    },
+    {
+      "id": "erdos-334",
+      "relationship": "related",
+      "description": "Erdős #334 on smooth number representation explores additive properties of smooth numbers"
+    }
   ],
   "leanFile": {
     "imports": [

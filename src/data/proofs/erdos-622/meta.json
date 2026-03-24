@@ -176,8 +176,16 @@
     ]
   },
   "relatedProofs": [
-    "friendship-theorem",
-    "erdos-1036"
+    {
+      "id": "friendship-theorem",
+      "relationship": "related",
+      "description": "The Friendship Theorem (Erdős-Rényi-Sós 1966) is another structural result about graphs with specific local conditions f"
+    },
+    {
+      "id": "erdos-1036",
+      "relationship": "related",
+      "description": "Problem #1036 counts distinct induced subgraphs in non-Ramsey graphs (≥ 2^{Ω(n)} non-isomorphic subgraphs). Both problem"
+    }
   ],
   "leanFile": {
     "imports": [

@@ -198,16 +198,31 @@
     }
   ],
   "relatedProofs": [
-    "cantor-diagonalization",
-    "continuum-hypothesis",
-    "schroeder-bernstein",
-    "halting-problem",
-    "cantors-theorem-oq-01",
-    "cantors-theorem-oq-02",
-    "godel-incompleteness",
-    "abel-ruffini",
-    "infinitude-primes",
-    "mathematical-induction"
+    {
+      "id": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "Cantor's diagonalization (uncountability of ℝ) uses the same diagonal technique; Cantor's theorem generalizes it to show"
+    },
+    {
+      "id": "continuum-hypothesis",
+      "relationship": "extends",
+      "description": "Cantor's theorem shows |ℕ| < |P(ℕ)| = |ℝ|. The continuum hypothesis asks whether any cardinality lies strictly between —"
+    },
+    {
+      "id": "schroeder-bernstein",
+      "relationship": "complementary",
+      "description": "Schröder-Bernstein establishes cardinality equality from mutual injections; Cantor's theorem shows the injection A → P(A"
+    },
+    {
+      "id": "halting-problem",
+      "relationship": "related",
+      "description": "The halting problem's undecidability proof is structurally identical to Cantor's theorem: the 'diagonal machine' that as"
+    },
+    {
+      "id": "cantors-theorem-oq-01",
+      "relationship": "extended-by",
+      "description": "Investigates the cardinality of $\\mathcal{P}(\\mathbb{R})$ — iterated application of Cantor's theorem gives the tower $|\\"
+    }
   ],
   "references": [
     {

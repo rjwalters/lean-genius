@@ -191,8 +191,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-31",
-    "erdos-333",
-    "erdos-337"
+    {
+      "id": "erdos-31",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-bases, additive-combinatorics, sumsets"
+    },
+    {
+      "id": "erdos-333",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, disproved, sumsets"
+    },
+    {
+      "id": "erdos-337",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-bases, additive-combinatorics, sumsets"
+    }
   ]
 }

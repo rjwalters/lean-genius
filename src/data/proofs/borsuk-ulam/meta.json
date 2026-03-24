@@ -241,15 +241,31 @@
     ]
   },
   "relatedProofs": [
-    "brouwer-fixed-point",
-    "intermediate-value-theorem",
-    "prob-method-lovasz-local",
-    "schauder-fixed-point",
-    "borsuk-ulam-oq-02",
-    "borsuk-ulam-oq-03",
-    "poincare-conjecture",
-    "four-color-theorem",
-    "fundamental-theorem-algebra"
+    {
+      "id": "brouwer-fixed-point",
+      "relationship": "implication",
+      "description": "Borsuk-Ulam implies Brouwer's Fixed Point Theorem: the retraction proof shows that a continuous map without a fixed poin"
+    },
+    {
+      "id": "intermediate-value-theorem",
+      "relationship": "related",
+      "description": "The n=1 case of Borsuk-Ulam (every continuous f: S¹ → ℝ has f(x) = f(-x)) is equivalent to the intermediate value theore"
+    },
+    {
+      "id": "prob-method-lovasz-local",
+      "relationship": "related",
+      "description": "Lovász's 1978 proof of Kneser's conjecture used Borsuk-Ulam as the key topological ingredient, connecting the chromatic "
+    },
+    {
+      "id": "schauder-fixed-point",
+      "relationship": "related",
+      "description": "Schauder's theorem generalizes Brouwer's fixed point theorem to infinite dimensions. Since Borsuk-Ulam implies Brouwer, "
+    },
+    {
+      "id": "borsuk-ulam-oq-02",
+      "relationship": "extended-by",
+      "description": "Explores equivariant extensions of Borsuk-Ulam to group actions beyond the $\\mathbb{Z}/2\\mathbb{Z}$ antipodal action — a"
+    }
   ],
   "leanFile": {
     "imports": [

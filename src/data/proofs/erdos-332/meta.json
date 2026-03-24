@@ -175,10 +175,26 @@
     }
   ],
   "relatedProofs": [
-    "erdos-23",
-    "erdos-331",
-    "erdos-333",
-    "erdos-340"
+    {
+      "id": "erdos-23",
+      "relationship": "related",
+      "description": "Both study how density forces combinatorial structure: #23 concerns covering congruences and minimum modulus, #332 conce"
+    },
+    {
+      "id": "erdos-331",
+      "relationship": "related",
+      "description": "Consecutive Erdős problem on additive structure of dense sets. Both #331 and #332 study how arithmetic properties of A p"
+    },
+    {
+      "id": "erdos-333",
+      "relationship": "related",
+      "description": "Consecutive Erdős problem. Both #332 and #333 concern structural consequences of density conditions on subsets of ℕ in t"
+    },
+    {
+      "id": "erdos-340",
+      "relationship": "related",
+      "description": "Both involve density and extremal problems in additive combinatorics: #340 studies sum-free sets and their maximum densi"
+    }
   ],
   "leanFile": {
     "imports": [

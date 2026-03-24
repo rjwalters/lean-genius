@@ -215,16 +215,31 @@
     }
   ],
   "relatedProofs": [
-    "sylow-theorems",
-    "abel-ruffini",
-    "fermats-last-theorem",
-    "fundamental-arithmetic",
-    "euler-totient",
-    "angle-trisection",
-    "inverse-galois",
-    "wilsons-theorem",
-    "quadratic-reciprocity",
-    "primitive-roots"
+    {
+      "id": "sylow-theorems",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem is a prerequisite for the Sylow theorems: Sylow's first theorem provides a partial converse, showing "
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem underpins the Abel-Ruffini analysis: |A₅| = 60 = 5!/2 (index 2 in S₅), and the derived series quotien"
+    },
+    {
+      "id": "fermats-last-theorem",
+      "relationship": "foundational",
+      "description": "Fermat's Little Theorem ($a^p \\equiv a \\pmod{p}$) is a corollary of Lagrange's theorem applied to the multiplicative gro"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "related",
+      "description": "The Chinese Remainder Theorem and unique factorization in Z connect to Lagrange via the structure of cyclic groups: Z/nZ"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "extends",
+      "description": "Euler's theorem (a^φ(n) ≡ 1 mod n) is a direct corollary of Lagrange applied to (Z/nZ)× of order φ(n). The formalization"
+    }
   ],
   "references": [
     {

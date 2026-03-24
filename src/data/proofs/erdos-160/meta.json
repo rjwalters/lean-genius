@@ -146,8 +146,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-187",
-    "erdos-142",
-    "erdos-169"
+    {
+      "id": "erdos-187",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, open, van-der-waerden"
+    },
+    {
+      "id": "erdos-142",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, open"
+    },
+    {
+      "id": "erdos-169",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, van-der-waerden"
+    }
   ]
 }

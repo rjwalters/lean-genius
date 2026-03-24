@@ -168,12 +168,31 @@
     ]
   },
   "relatedProofs": [
-    "divisibility-truncation-general",
-    "bezout-identity",
-    "fundamental-arithmetic",
-    "divisibility-by-3",
-    "euler-totient",
-    "chinese-remainder-constructive"
+    {
+      "id": "divisibility-truncation-general",
+      "relationship": "extends",
+      "description": "Unifies the separate positive and negative osculator theorems from the parent proof into a single theorem with signed os"
+    },
+    {
+      "id": "bezout-identity",
+      "relationship": "foundational",
+      "description": "Bézout's identity guarantees the existence of the osculator $c$: since $\\gcd(10, d) = 1$, there exist $s, t$ with $10s +"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization underpins the coprimality condition $\\gcd(d, 10) = 1$, which is necessary for the osculator t"
+    },
+    {
+      "id": "divisibility-by-3",
+      "relationship": "related",
+      "description": "The digit-sum rule for divisibility by 3 (and 9) is the simplest osculator rule: since $10 \\equiv 1 \\pmod{3}$, the oscul"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient function $\\varphi(d)$ counts invertible elements in $\\mathbb{Z}/d\\mathbb{Z}$. The osculator $c$ is the m"
+    }
   ],
   "leanFile": {
     "imports": [

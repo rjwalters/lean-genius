@@ -168,9 +168,21 @@
     ]
   },
   "relatedProofs": [
-    "erdos-1111",
-    "erdos-626",
-    "erdos-1011"
+    {
+      "id": "erdos-1111",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, clique-number, graph-theory"
+    },
+    {
+      "id": "erdos-626",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotics, chromatic-number, graph-theory"
+    },
+    {
+      "id": "erdos-1011",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory"
+    }
   ],
   "leanFile": {
     "imports": [

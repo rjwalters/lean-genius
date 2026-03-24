@@ -181,8 +181,16 @@
     }
   ],
   "relatedProofs": [
-    "hodge-conjecture",
-    "fundamental-theorem-algebra"
+    {
+      "id": "hodge-conjecture",
+      "relationship": "thematic",
+      "description": "Both concern the algebraic geometry of complex varieties — the Hodge conjecture asks about algebraic cycles on smooth pr"
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "foundational",
+      "description": "The fundamental theorem of algebra (every polynomial has a root) underpins the algebraic framework — the q-binomial coef"
+    }
   ],
   "references": [
     {

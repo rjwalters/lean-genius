@@ -192,7 +192,15 @@
     ]
   },
   "relatedProofs": [
-    "erdos-491",
-    "erdos-1052"
+    {
+      "id": "erdos-491",
+      "relationship": "related-problem",
+      "description": "Erdős #491 concerns additive functions in short intervals, directly related to the monotonicity defect approach. Mangere"
+    },
+    {
+      "id": "erdos-1052",
+      "relationship": "uses-same-technique",
+      "description": "Both use number-theoretic functions (additive for #1122, divisor sums for #1052) with Finset-based computations and copr"
+    }
   ]
 }

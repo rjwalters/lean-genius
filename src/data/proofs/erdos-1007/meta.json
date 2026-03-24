@@ -144,10 +144,26 @@
     }
   ],
   "relatedProofs": [
-    "erdos-135",
-    "erdos-1007-oq-01",
-    "erdos-1008",
-    "ramseys-theorem"
+    {
+      "id": "erdos-135",
+      "relationship": "related",
+      "description": "Both are Erdős problems connecting graph combinatorics with Euclidean distance geometry: #135 concerns distinct distance"
+    },
+    {
+      "id": "erdos-1007-oq-01",
+      "relationship": "extended-by",
+      "description": "OQ-01 generalizes the main result by studying $e(d) = \\min\\{|E(G)| : \\dim(G) = d\\}$ for arbitrary dimension $d$, extendi"
+    },
+    {
+      "id": "erdos-1008",
+      "relationship": "related",
+      "description": "Both are Erdős problems about extremal graph properties: #1008 asks about C₄-free subgraphs of dense graphs, while #1007"
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey theory and graph dimension both study how combinatorial structure forces geometric or structural properties. The "
+    }
   ],
   "references": [
     {

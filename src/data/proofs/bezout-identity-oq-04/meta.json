@@ -165,11 +165,31 @@
     }
   ],
   "relatedProofs": [
-    "bezout-identity",
-    "bezout-identity-oq-02",
-    "bezout-identity-oq-02-oq-01",
-    "bezout-identity-oq-03",
-    "bezout-identity-oq-03-oq-01"
+    {
+      "id": "bezout-identity",
+      "relationship": "extends",
+      "description": "Parent entry proving gcd = ax + by — this file extends from solvability criterion to complete parametric description of "
+    },
+    {
+      "id": "bezout-identity-oq-02",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    },
+    {
+      "id": "bezout-identity-oq-02-oq-01",
+      "relationship": "sibling",
+      "description": "FTA from Euclid's lemma — both are deep consequences of Bézout: FTA gives unique factorization, this file gives solution"
+    },
+    {
+      "id": "bezout-identity-oq-03",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    },
+    {
+      "id": "bezout-identity-oq-03-oq-01",
+      "relationship": "related",
+      "description": "CRT ring isomorphism — both characterize solution sets: CRT gives ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ, this file gives {(x₀+bt/d, y₀-at/"
+    }
   ],
   "leanFile": {
     "imports": [

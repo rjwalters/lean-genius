@@ -154,9 +154,21 @@
     }
   ],
   "relatedProofs": [
-    "hilbert-13",
-    "hilbert-23",
-    "hilbert-20"
+    {
+      "id": "hilbert-13",
+      "relationship": "related",
+      "description": "Both address algebraic structural questions from Hilbert's programme: Problem 14 concerns finite generation of invariant"
+    },
+    {
+      "id": "hilbert-23",
+      "relationship": "related",
+      "description": "Invariant theory and the calculus of variations share deep connections through symmetry and Noether's theorem, which lin"
+    },
+    {
+      "id": "hilbert-20",
+      "relationship": "related",
+      "description": "Both problems involve functional analysis and existence questions: Problem 14 asks when invariant rings are finitely gen"
+    }
   ],
   "references": [
     {

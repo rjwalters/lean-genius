@@ -200,8 +200,20 @@
     "definitionCount": 2
   },
   "relatedProofs": [
-    "buffons-needle",
-    "buffons-needle-oq-01",
-    "area-of-circle"
+    {
+      "id": "buffons-needle",
+      "relationship": "extends",
+      "description": "Extends the original Buffon's needle formalization by resolving the open question about the smooth curve case"
+    },
+    {
+      "id": "buffons-needle-oq-01",
+      "relationship": "extends",
+      "description": "Directly resolves the open question from buffons-needle-oq-01 by proving the axiomatic smooth case with a concrete verif"
+    },
+    {
+      "id": "area-of-circle",
+      "relationship": "related",
+      "description": "Both involve pi through integral geometry; the Buffon-Barbier formula E[crossings] = 2L/(pi*d) provides a geometric-prob"
+    }
   ]
 }

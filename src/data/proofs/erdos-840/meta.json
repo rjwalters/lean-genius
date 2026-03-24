@@ -114,9 +114,21 @@
     ]
   },
   "relatedProofs": [
-    "erdos-14",
-    "erdos-152",
-    "erdos-153"
+    {
+      "id": "erdos-14",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sidon-sets, sumsets"
+    },
+    {
+      "id": "erdos-152",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sidon-sets, sumsets"
+    },
+    {
+      "id": "erdos-153",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sidon-sets, sumsets"
+    }
   ],
   "leanFile": {
     "imports": [],

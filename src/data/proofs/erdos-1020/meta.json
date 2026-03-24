@@ -163,9 +163,21 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1021",
-    "erdos-1008",
-    "erdos-530"
+    {
+      "id": "erdos-1021",
+      "relationship": "related",
+      "description": "Erdős #1021 (extremal numbers for bipartite pair graphs G_k) studies related Turán-type extremal questions about forbidd"
+    },
+    {
+      "id": "erdos-1008",
+      "relationship": "related",
+      "description": "Erdős #1008 (C₄-free subgraphs with m^{2/3} edges) uses related extremal techniques including dependent random choice."
+    },
+    {
+      "id": "erdos-530",
+      "relationship": "related",
+      "description": "Erdős #530 (maximum Sidon subsets) studies analogous extremal problems in additive combinatorics, where the probabilisti"
+    }
   ],
   "leanFile": {
     "imports": [

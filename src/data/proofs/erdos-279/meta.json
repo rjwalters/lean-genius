@@ -157,9 +157,25 @@
     }
   ],
   "relatedProofs": [
-    "infinitude-primes",
-    "bertrands-postulate",
-    "bounded-prime-gaps",
-    "quadratic-reciprocity"
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes provides the infinite family of moduli used in the covering system. The question asks whether s"
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate (prime in (n, 2n]) constrains the distribution of primes used as moduli. The density of primes affe"
+    },
+    {
+      "id": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Bounded gaps between primes (Maynard-Tao) affects the efficiency of covering with prime-modulus progressions. Small gaps"
+    },
+    {
+      "id": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Quadratic reciprocity and its generalizations constrain which residue classes are achievable modulo different primes. Th"
+    }
   ]
 }

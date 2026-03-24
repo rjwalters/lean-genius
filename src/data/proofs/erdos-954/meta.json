@@ -141,9 +141,21 @@
     ]
   },
   "relatedProofs": [
-    "erdos-340",
-    "erdos-28",
-    "erdos-30"
+    {
+      "id": "erdos-340",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, greedy-algorithms, number-theory, sidon-sets"
+    },
+    {
+      "id": "erdos-28",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, representation-functions"
+    },
+    {
+      "id": "erdos-30",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, sidon-sets"
+    }
   ],
   "leanFile": {
     "imports": [

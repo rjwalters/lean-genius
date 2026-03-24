@@ -253,13 +253,30 @@
     }
   ],
   "relatedProofs": [
-    "erdos-340",
-    "erdos-44",
-    "erdos-1",
-    "roth-theorem-k3",
-    "szemeredi-theorem",
-    "prob-method-expectation",
-    "combinations-formula",
-    "partition-theorem"
+    {
+      "id": "erdos-340",
+      "relationship": "extends",
+      "description": "This infrastructure module provides the full Sidon set library (definitions, closure, counting, bounds) for the main Erd"
+    },
+    {
+      "id": "erdos-44",
+      "relationship": "foundational",
+      "description": "Erdos #44 concerns Sidon sets (B2 sequences) — this module's IsSidon definition, subset closure, and counting infrastruc"
+    },
+    {
+      "id": "erdos-1",
+      "relationship": "thematic",
+      "description": "Both are foundational results in additive combinatorics: Erdos #1 (Erdos-Ginzburg-Ziv, zero-sum subsequences) constrains"
+    },
+    {
+      "id": "roth-theorem-k3",
+      "relationship": "related",
+      "description": "Roth's theorem (dense sets contain 3-term APs) is complementary: Sidon sets constrain pairwise sums (additive energy zer"
+    },
+    {
+      "id": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Szemeredi's theorem (dense sets contain arbitrarily long APs) and Sidon theory represent dual aspects of additive combin"
+    }
   ]
 }

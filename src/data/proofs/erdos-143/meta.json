@@ -180,16 +180,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-369",
-    "prime-reciprocal-divergence",
-    "harmonic-divergence",
-    "prime-number-theorem",
-    "erdos-4",
-    "erdos-36",
-    "roth-theorem-k3",
-    "szemeredi-theorem",
-    "bertrands-postulate",
-    "erdos-25"
+    {
+      "id": "erdos-369",
+      "relationship": "related",
+      "description": "Both concern structural constraints on number-theoretic sets: #369 requires smoothness of consecutive integers, #143 for"
+    },
+    {
+      "id": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "The divergence of $\\sum 1/p$ over primes contrasts with the convergence of $\\sum 1/(p \\log p)$ — Erdős's 1935 result sho"
+    },
+    {
+      "id": "harmonic-divergence",
+      "relationship": "foundational",
+      "description": "The harmonic series $\\sum 1/n$ diverges, providing the benchmark against which well-separated sets are measured: the KLL"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "related",
+      "description": "PNT gives $\\pi(x) \\sim x/\\log x$, establishing the density of primes. The primes form a primitive set (no prime divides "
+    },
+    {
+      "id": "erdos-4",
+      "relationship": "related",
+      "description": "Erdős #4 concerns the additive structure of sets with constraints on sums and differences. Like #143, it asks how algebr"
+    }
   ],
   "references": [
     {

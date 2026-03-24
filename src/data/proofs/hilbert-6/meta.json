@@ -186,11 +186,30 @@
     }
   ],
   "relatedProofs": [
-    "hilbert-5",
-    "central-limit-theorem",
-    "hilbert-19",
-    "hilbert-20",
-    "navier-stokes-existence",
-    "shannon-entropy"
+    {
+      "id": "hilbert-5",
+      "relationship": "related",
+      "description": "The 5th (Lie groups) and 6th (axiomatization of physics) are directly connected: the resolution of the 5th guarantees th"
+    },
+    {
+      "id": "central-limit-theorem",
+      "relationship": "related",
+      "description": "Hilbert's 6th problem specifically calls for axiomatization of probability and statistical mechanics. The central limit "
+    },
+    {
+      "id": "hilbert-19",
+      "relationship": "thematic",
+      "description": "Both concern the mathematical foundations of physical theories: the 6th asks for axioms, while the 19th asks about regul"
+    },
+    {
+      "id": "hilbert-20",
+      "relationship": "thematic",
+      "description": "Both concern the solvability of physical equations: the 20th asks about boundary value problems (arising in physics), wh"
+    },
+    {
+      "id": "navier-stokes-existence",
+      "relationship": "related",
+      "description": "The Navier-Stokes equations are one of the key examples in Hilbert's program: axiomatizing fluid mechanics requires unde"
+    }
   ]
 }

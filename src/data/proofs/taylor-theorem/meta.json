@@ -187,14 +187,31 @@
     }
   ],
   "relatedProofs": [
-    "mean-value-theorem",
-    "fundamental-theorem-calculus",
-    "binomial-theorem",
-    "e-transcendental",
-    "basel-problem",
-    "fourier-series",
-    "pi-transcendental",
-    "intermediate-value-theorem"
+    {
+      "id": "mean-value-theorem",
+      "relationship": "foundational",
+      "description": "The Mean Value Theorem is the $n=0$ case of Taylor's theorem (Lagrange remainder). Taylor's theorem generalizes MVT from"
+    },
+    {
+      "id": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "FTC provides the integral form of the Taylor remainder: $R_n = \\frac{1}{n!}\\int_a^x (x-t)^n f^{(n+1)}(t)\\,dt$. Repeated "
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "related",
+      "description": "Newton's generalized binomial theorem $(1+x)^\\alpha = \\sum \\binom{\\alpha}{k} x^k$ is the Taylor series of $(1+x)^\\alpha$"
+    },
+    {
+      "id": "e-transcendental",
+      "relationship": "related",
+      "description": "The Taylor series $e^x = \\sum x^n/n!$ converging everywhere is a key application of Taylor's theorem. Hermite's proof th"
+    },
+    {
+      "id": "basel-problem",
+      "relationship": "related",
+      "description": "Euler's evaluation $\\zeta(2) = \\pi^2/6$ can be proved via the Taylor series $\\sin(x)/x = \\prod(1 - x^2/(n\\pi)^2)$ — comp"
+    }
   ],
   "leanFile": {
     "imports": [

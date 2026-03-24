@@ -205,11 +205,31 @@
     }
   ],
   "relatedProofs": [
-    "binomial-theorem",
-    "binomial-theorem-oq-01",
-    "binomial-theorem-oq-02",
-    "birthday-problem",
-    "combinations-formula"
+    {
+      "id": "binomial-theorem",
+      "relationship": "extends",
+      "description": "All distribution properties derive from the algebraic identity (p+(1-p))^n = 1 — the binomial theorem is the single sour"
+    },
+    {
+      "id": "binomial-theorem-oq-01",
+      "relationship": "sibling",
+      "description": "Newton's generalized binomial series — both extend the binomial theorem in different directions: this file to probabilit"
+    },
+    {
+      "id": "binomial-theorem-oq-02",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    },
+    {
+      "id": "birthday-problem",
+      "relationship": "related",
+      "description": "The birthday problem uses binomial/Poisson approximations: P(collision) ≈ 1 - e^(-n²/2·365) is a Poisson limit of the bi"
+    },
+    {
+      "id": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The binomial PMF C(n,k)p^k(1-p)^(n-k) uses binomial coefficients — the absorption identity kC(n,k) = nC(n-1,k-1) is the "
+    }
   ],
   "leanFile": {
     "imports": [

@@ -228,7 +228,15 @@
     }
   ],
   "relatedProofs": [
-    "erdos-439",
-    "erdos-587"
+    {
+      "id": "erdos-439",
+      "relationship": "related",
+      "description": "Similar question for kth powers"
+    },
+    {
+      "id": "erdos-587",
+      "relationship": "related",
+      "description": "Variant with A-A instead of A+A"
+    }
   ]
 }

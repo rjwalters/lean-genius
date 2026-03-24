@@ -212,8 +212,20 @@
     ]
   },
   "relatedProofs": [
-    "erdos-618",
-    "hales-jewett",
-    "erdos-22"
+    {
+      "id": "erdos-618",
+      "relationship": "uses-same-technique",
+      "description": "Both use Ramsey-theoretic arguments for geometric configurations. Erdős #618 concerns triangle-free diameter-2 graphs, a"
+    },
+    {
+      "id": "hales-jewett",
+      "relationship": "related-problem",
+      "description": "The Hales-Jewett theorem is the key ingredient: monochromatic combinatorial lines in [k]ⁿ project to monochromatic geome"
+    },
+    {
+      "id": "erdos-22",
+      "relationship": "uses-same-technique",
+      "description": "Erdős #22 (Ramsey-Turán numbers) uses similar Ramsey-theoretic reasoning about unavoidable monochromatic structures in c"
+    }
   ]
 }

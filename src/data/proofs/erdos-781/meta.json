@@ -212,9 +212,21 @@
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem",
-    "erdos-782",
-    "erdos-780"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Descending waves generalize monochromatic subsequences; Ramsey's theorem guarantees monochromatic cliques in edge-colori"
+    },
+    {
+      "id": "erdos-782",
+      "relationship": "related",
+      "description": "Adjacent Erdős problem in the same series on Ramsey-type coloring questions about structured monochromatic configuration"
+    },
+    {
+      "id": "erdos-780",
+      "relationship": "related",
+      "description": "Adjacent Erdős problem studying related coloring properties of integers under Ramsey-type constraints"
+    }
   ],
   "references": [
     {

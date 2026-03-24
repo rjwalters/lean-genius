@@ -216,12 +216,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1103",
-    "erdos-1108",
-    "erdos-1110",
-    "basel-problem",
-    "bertrands-postulate",
-    "prime-number-theorem"
+    {
+      "id": "erdos-1103",
+      "relationship": "related",
+      "description": "The infinite analogue of #1109: if every pairwise sum a+b (a,b ∈ A, a ≠ b) is squarefree, how fast must A grow? A polylo"
+    },
+    {
+      "id": "erdos-1108",
+      "relationship": "related",
+      "description": "Adjacent Erdős problem (#1108) on factorial sums and perfect powers, part of the same series on multiplicative constrain"
+    },
+    {
+      "id": "erdos-1110",
+      "relationship": "related",
+      "description": "Adjacent Erdős problem (#1110) on representability by sums of p^k q^l, part of the same series exploring how multiplicat"
+    },
+    {
+      "id": "basel-problem",
+      "relationship": "related",
+      "description": "The squarefree density 6/π² = 1/ζ(2) connects directly to the Basel problem ∑ 1/k² = π²/6: the probability that a random"
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate guarantees a prime in every interval [n, 2n], providing the density information about prime distrib"
+    }
   ],
   "references": [
     {

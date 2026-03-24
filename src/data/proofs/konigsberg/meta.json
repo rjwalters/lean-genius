@@ -191,10 +191,30 @@
     }
   ],
   "relatedProofs": [
-    "four-color-theorem",
-    "euler-polyhedral-formula",
-    "euler-totient",
-    "infinitude-primes",
-    "pascals-hexagon"
+    {
+      "id": "four-color-theorem",
+      "relationship": "related",
+      "description": "Both are foundational results in graph theory: the Konigsberg bridges problem (1736) established graph theory as a disci"
+    },
+    {
+      "id": "euler-polyhedral-formula",
+      "relationship": "related",
+      "description": "Both are due to Euler and concern topological invariants: the polyhedral formula V-E+F=2 and the Konigsberg bridges crit"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "thematic",
+      "description": "Both are named after Euler: the totient function concerns number-theoretic structure, while the Konigsberg problem conce"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "thematic",
+      "description": "Both are accessibility results that introduced powerful mathematical paradigms: Euclid's infinitude of primes establishe"
+    },
+    {
+      "id": "pascals-hexagon",
+      "relationship": "thematic",
+      "description": "Both concern geometric configurations analyzed via combinatorial structure: Pascal's hexagon theorem uses projective geo"
+    }
   ]
 }

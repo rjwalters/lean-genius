@@ -183,8 +183,20 @@
     }
   ],
   "relatedProofs": [
-    "infinitude-primes",
-    "erdos-9",
-    "erdos-15"
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes is a basic prerequisite. Problem #6 studies the fine structure of gaps between consecutive prim"
+    },
+    {
+      "id": "erdos-9",
+      "relationship": "related",
+      "description": "Problem #9 on integers not of the form p + 2^k + 2^l concerns the interplay between primes and structured sequences, rel"
+    },
+    {
+      "id": "erdos-15",
+      "relationship": "related",
+      "description": "Problem #15 on alternating prime series also concerns the distribution of primes. Both study how primes are spaced and d"
+    }
   ]
 }

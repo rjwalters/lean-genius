@@ -238,16 +238,31 @@
     }
   ],
   "relatedProofs": [
-    "bezout-identity",
-    "gcd-algorithm",
-    "euler-totient",
-    "factor-remainder-theorem",
-    "wilsons-theorem",
-    "quadratic-reciprocity",
-    "fundamental-arithmetic",
-    "chinese-remainder-non-coprime",
-    "fermat-two-squares",
-    "perfect-numbers"
+    {
+      "id": "bezout-identity",
+      "relationship": "foundational",
+      "description": "The constructive CRT solution uses Bezout coefficients: given $\\gcd(m,n) = 1$, find $u,v$ with $mu + nv = 1$, then $x = "
+    },
+    {
+      "id": "gcd-algorithm",
+      "relationship": "foundational",
+      "description": "The coprimality hypothesis $\\gcd(m,n) = 1$ is verified by the Euclidean algorithm. The extended GCD simultaneously compu"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "CRT gives the ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ when"
+    },
+    {
+      "id": "factor-remainder-theorem",
+      "relationship": "related",
+      "description": "CRT for polynomial rings gives $R[x]/(f_1 \\cdots f_k) \\cong \\prod R[x]/(f_i)$ when the $f_i$ are pairwise coprime. When "
+    },
+    {
+      "id": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ uses the structure of $(\\mathbb{Z}/p\\mathbb{Z})^*$, while CRT decomposes $("
+    }
   ],
   "references": [
     {

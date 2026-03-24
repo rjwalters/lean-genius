@@ -222,13 +222,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1047",
-    "erdos-1046",
-    "erdos-1042",
-    "erdos-1039",
-    "erdos-1041",
-    "erdos-1038",
-    "erdos-1040"
+    {
+      "id": "erdos-1047",
+      "relationship": "sibling",
+      "description": "Erdős #1047 asks whether lemniscate components must be convex for small c — another geometric property of polynomial sub"
+    },
+    {
+      "id": "erdos-1046",
+      "relationship": "sibling",
+      "description": "Erdős #1046 asks whether a connected lemniscate L(f,1) is contained in a disc of radius 2, answered YES by Pommerenke (1"
+    },
+    {
+      "id": "erdos-1042",
+      "relationship": "related",
+      "description": "Erdős #1042 studies how many connected components L(f,1) can have depending on root set geometry, solved by Ghosh-Ramach"
+    },
+    {
+      "id": "erdos-1039",
+      "relationship": "related",
+      "description": "Erdős #1039 asks for the radius of the largest inscribed disc in L(f,1) for polynomials with roots in the unit disc — a "
+    },
+    {
+      "id": "erdos-1041",
+      "relationship": "related",
+      "description": "Erdős #1041 studies path lengths within lemniscate components connecting roots, complementing #1048's diameter analysis "
+    }
   ],
   "leanFile": {
     "imports": [

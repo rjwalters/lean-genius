@@ -223,22 +223,31 @@
     }
   ],
   "relatedProofs": [
-    "fundamental-arithmetic",
-    "riemann-hypothesis",
-    "bertrands-postulate",
-    "prime-number-theorem",
-    "prime-reciprocal-divergence",
-    "dirichlets-theorem",
-    "euler-totient",
-    "bounded-prime-gaps",
-    "twin-primes-special",
-    "wilsons-theorem",
-    "sqrt2-irrational",
-    "fermats-last-theorem",
-    "quadratic-reciprocity",
-    "basel-problem",
-    "gcd-algorithm",
-    "mathematical-induction"
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The infinitude of primes ensures the prime factorization guaranteed by FTA never runs out of prime factors"
+    },
+    {
+      "id": "riemann-hypothesis",
+      "relationship": "related",
+      "description": "The distribution of primes (how many up to N) is governed by the prime number theorem, and the precise error term depend"
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "extends",
+      "description": "Bertrand's postulate strengthens the infinitude: there is always a prime between n and 2n, guaranteeing primes are not j"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "extends",
+      "description": "The PNT quantifies the infinitude: π(n) ~ n/ln(n), giving the asymptotic density of primes"
+    },
+    {
+      "id": "prime-reciprocal-divergence",
+      "relationship": "extends",
+      "description": "Euler's proof that Σ 1/p diverges gives an analytic proof of infinitely many primes and shows primes are 'denser' than p"
+    }
   ],
   "leanFile": {
     "imports": [

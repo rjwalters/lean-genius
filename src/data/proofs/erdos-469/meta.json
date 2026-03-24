@@ -124,8 +124,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-313",
-    "erdos-412",
-    "erdos-884"
+    {
+      "id": "erdos-313",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, pseudoperfect-numbers"
+    },
+    {
+      "id": "erdos-412",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: convergence, number-theory, open"
+    },
+    {
+      "id": "erdos-884",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisors, number-theory, open"
+    }
   ]
 }

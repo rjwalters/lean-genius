@@ -278,11 +278,30 @@
     }
   ],
   "relatedProofs": [
-    "prime-number-theorem",
-    "erdos-1055",
-    "erdos-1095",
-    "bertrands-postulate",
-    "erdos-4",
-    "prime-reciprocal-divergence"
+    {
+      "id": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The prime number theorem $\\pi(x) \\sim x/\\ln x$ is essential for counting available primes in Cambie's bound. The number "
+    },
+    {
+      "id": "erdos-1055",
+      "relationship": "related",
+      "description": "Both problems study the interplay between prime factorization structure and classification. Erdős #1055 classifies prime"
+    },
+    {
+      "id": "erdos-1095",
+      "relationship": "related",
+      "description": "The Erdős-Selfridge function also involves greatest prime factors of combinatorial objects (binomial coefficients), conn"
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate (proved by Erdős in 1932) guarantees prime existence in intervals — relevant for ensuring enough di"
+    },
+    {
+      "id": "erdos-4",
+      "relationship": "related",
+      "description": "Both are solved Erdős problems involving prime distribution asymptotics. Erdős #4 (large prime gaps, solved by Maynard 2"
+    }
   ]
 }

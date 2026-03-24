@@ -331,20 +331,31 @@
     }
   ],
   "relatedProofs": [
-    "borsuk-ulam",
-    "intermediate-value-theorem",
-    "fundamental-theorem-algebra",
-    "cantor-diagonalization",
-    "schauder-fixed-point",
-    "poincare-conjecture",
-    "mean-value-theorem",
-    "brouwer-fixed-point-oq-02",
-    "pythagorean-theorem",
-    "area-of-circle",
-    "halting-problem",
-    "konigsberg",
-    "cauchy-schwarz",
-    "isoperimetric-theorem"
+    {
+      "id": "borsuk-ulam",
+      "relationship": "related",
+      "description": "Borsuk-Ulam implies Brouwer: if no fixed point exists, the retraction from the disk to its boundary would yield an antip"
+    },
+    {
+      "id": "intermediate-value-theorem",
+      "relationship": "related",
+      "description": "IVT is the 1-dimensional Brouwer fixed point theorem: a continuous f:[a,b]→[a,b] must have f(x)=x for some x. Brouwer ge"
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "FTA can be proved using Brouwer's fixed point theorem or closely related degree theory — both show that continuous maps "
+    },
+    {
+      "id": "cantor-diagonalization",
+      "relationship": "thematic",
+      "description": "Both are non-constructive existence proofs: Brouwer proves a fixed point exists without locating it, Cantor proves uncou"
+    },
+    {
+      "id": "schauder-fixed-point",
+      "relationship": "extended-by",
+      "description": "Schauder's fixed point theorem (1930) generalizes Brouwer from finite-dimensional balls to compact convex subsets of Ban"
+    }
   ],
   "leanFile": {
     "lineCount": 249,

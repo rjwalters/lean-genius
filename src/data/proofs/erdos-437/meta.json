@@ -232,8 +232,20 @@
     "definitionCount": 9
   },
   "relatedProofs": [
-    "erdos-841",
-    "erdos-786",
-    "birch-swinnerton-dyer"
+    {
+      "id": "erdos-841",
+      "relationship": "related",
+      "description": "Companion problem on related multiplicative structures; both concern counting structured products in integer sequences"
+    },
+    {
+      "id": "erdos-786",
+      "relationship": "related",
+      "description": "Both study multiplicative properties of integer sets; #786 concerns factor count uniqueness while #437 concerns squarene"
+    },
+    {
+      "id": "birch-swinnerton-dyer",
+      "relationship": "related",
+      "description": "Both connect to the theory of algebraic curves; #437's precise bounds come from counting integral points on hyperellipti"
+    }
   ]
 }

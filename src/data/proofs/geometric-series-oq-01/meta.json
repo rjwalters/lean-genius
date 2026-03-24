@@ -217,10 +217,26 @@
     }
   ],
   "relatedProofs": [
-    "geometric-series",
-    "geometric-series-oq-02",
-    "harmonic-divergence",
-    "taylor-sincos-convergence"
+    {
+      "id": "geometric-series",
+      "relationship": "parent",
+      "description": "This entry investigates the boundary behavior at $|r| = 1$ for the geometric series $\\sum r^n$, which the parent entry p"
+    },
+    {
+      "id": "geometric-series-oq-02",
+      "relationship": "sibling",
+      "description": "The Neumann series $(I-T)^{-1} = \\sum T^k$ generalizes the scalar geometric series to bounded operators. This entry trea"
+    },
+    {
+      "id": "harmonic-divergence",
+      "relationship": "contrasts",
+      "description": "Both entries study divergent series, but through different mechanisms: the harmonic series $\\sum 1/n$ diverges despite t"
+    },
+    {
+      "id": "taylor-sincos-convergence",
+      "relationship": "related",
+      "description": "The Taylor series for $\\sin$ and $\\cos$ converge for all real $x$ (infinite radius of convergence), in sharp contrast to"
+    }
   ],
   "leanFile": {
     "lineCount": 251,

@@ -191,8 +191,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-722",
-    "erdos-1076",
-    "erdos-780"
+    {
+      "id": "erdos-722",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, design-theory, solved, steiner-systems"
+    },
+    {
+      "id": "erdos-1076",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: hypergraphs, solved, steiner-systems"
+    },
+    {
+      "id": "erdos-780",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, hypergraphs, solved"
+    }
   ]
 }

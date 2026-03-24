@@ -186,13 +186,31 @@
     "definitionCount": 1
   },
   "relatedProofs": [
-    "basel-problem",
-    "pi-transcendental",
-    "harmonic-divergence",
-    "euler-identity",
-    "taylor-theorem",
-    "fourier-series",
-    "geometric-series"
+    {
+      "id": "basel-problem",
+      "relationship": "related",
+      "description": "The Basel problem (π²/6 = Σ1/n²) is another famous infinite series for π, converging much faster than Leibniz's series"
+    },
+    {
+      "id": "pi-transcendental",
+      "relationship": "related",
+      "description": "π is transcendental (Lindemann 1882), making the Leibniz series a rational approximation scheme for a non-algebraic numb"
+    },
+    {
+      "id": "harmonic-divergence",
+      "relationship": "contrasts",
+      "description": "The harmonic series Σ1/n diverges, but alternating signs in Σ(-1)^n/(2n+1) create enough cancellation for convergence — "
+    },
+    {
+      "id": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's identity e^(iπ) = -1 connects π to complex exponentials; the Leibniz series connects π to real arctangent — both"
+    },
+    {
+      "id": "taylor-theorem",
+      "relationship": "foundational",
+      "description": "The Leibniz series is the Taylor expansion of $\\arctan(x)$ at $x = 0$ evaluated at $x = 1$: $\\arctan(x) = x - x^3/3 + x^"
+    }
   ],
   "references": [
     {

@@ -173,9 +173,21 @@
     ]
   },
   "relatedProofs": [
-    "four-color-theorem",
-    "konigsberg",
-    "platonic-solids"
+    {
+      "id": "four-color-theorem",
+      "relationship": "foundational",
+      "description": "Euler's formula $V - E + F = 2$ is the starting point for the Four Color Theorem's discharging method: assigning charge "
+    },
+    {
+      "id": "konigsberg",
+      "relationship": "foundational",
+      "description": "Both are founding results of graph theory by Euler. Königsberg (1736) introduced graph-theoretic thinking; the polyhedra"
+    },
+    {
+      "id": "platonic-solids",
+      "relationship": "related",
+      "description": "Euler's formula constrains the possible regular polyhedra: combining $V - E + F = 2$ with regularity conditions ($p$ fac"
+    }
   ],
   "references": [
     {

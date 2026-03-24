@@ -188,8 +188,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-179",
-    "erdos-187",
-    "erdos-645"
+    {
+      "id": "erdos-179",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, ramsey-theory, solved"
+    },
+    {
+      "id": "erdos-187",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, ramsey-theory, van-der-waerden"
+    },
+    {
+      "id": "erdos-645",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, ramsey-theory, solved, van-der-waerden"
+    }
   ]
 }

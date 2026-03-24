@@ -215,8 +215,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-210",
-    "erdos-224",
-    "erdos-654"
+    {
+      "id": "erdos-210",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, incidence-geometry, solved"
+    },
+    {
+      "id": "erdos-224",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, geometry, solved"
+    },
+    {
+      "id": "erdos-654",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, distances, geometry"
+    }
   ]
 }

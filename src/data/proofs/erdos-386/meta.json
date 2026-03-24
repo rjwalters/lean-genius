@@ -146,12 +146,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-384",
-    "erdos-385",
-    "erdos-387",
-    "binomial-theorem",
-    "bertrands-postulate",
-    "fundamental-arithmetic"
+    {
+      "id": "erdos-384",
+      "relationship": "related",
+      "description": "Problem #384 (Sylvester-Schur: the largest prime dividing $\\binom{n}{k}$ exceeds $n/2$ for $k \\ge 2$) studies the same p"
+    },
+    {
+      "id": "erdos-385",
+      "relationship": "related",
+      "description": "Problem #385 concerns smooth numbers in products of consecutive integers — closely related since $\\binom{n}{k} = \\prod_{"
+    },
+    {
+      "id": "erdos-387",
+      "relationship": "related",
+      "description": "Problem #387 asks about divisors of $\\binom{n}{k}$ in the interval $(cn, n]$. Together with Problems 384-386, these form"
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The binomial theorem provides the algebraic context for $\\binom{n}{k}$. Problem 386 asks when these coefficients have th"
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate ($\\exists$ prime in $(n, 2n)$) constrains prime gaps and hence the spacing of consecutive prime pro"
+    }
   ],
   "leanFile": {
     "imports": [

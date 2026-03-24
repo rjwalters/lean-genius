@@ -160,10 +160,26 @@
     ]
   },
   "relatedProofs": [
-    "erdos-461",
-    "erdos-463",
-    "erdos-460",
-    "prime-number-theorem"
+    {
+      "id": "erdos-461",
+      "relationship": "related",
+      "description": "Both are short-interval equidistribution problems from the same section of Erdős-Graham: Problem #461 for smooth number "
+    },
+    {
+      "id": "erdos-463",
+      "relationship": "related",
+      "description": "Both involve the least prime factor: Problem #463 studies composites near their least prime factor, using the same p(n) "
+    },
+    {
+      "id": "erdos-460",
+      "relationship": "technique",
+      "description": "Both use sieve-theoretic analysis of least prime factors: Problem #460 for coprime sieve reciprocals, Problem #462 for w"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "technique",
+      "description": "PNT is the paradigmatic equidistribution result; Problem #462 asks an analogous question for the least prime factor sum "
+    }
   ],
   "references": [
     {

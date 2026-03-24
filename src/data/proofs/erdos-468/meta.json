@@ -153,8 +153,16 @@
     }
   ],
   "relatedProofs": [
-    "erdos-66",
-    "erdos-444"
+    {
+      "id": "erdos-66",
+      "relationship": "related",
+      "description": "Both study representation functions of divisor-related sets; #66 concerns sums r_A(n) while #468 concerns partial sums o"
+    },
+    {
+      "id": "erdos-444",
+      "relationship": "related",
+      "description": "Both formalize properties of the divisor function τ(n); #444 studies τ-iteration while #468 studies partial sums of orde"
+    }
   ],
   "leanFile": {
     "imports": [

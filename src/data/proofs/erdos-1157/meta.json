@@ -156,12 +156,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-716",
-    "erdos-1076",
-    "erdos-714",
-    "erdos-1075",
-    "erdos-1155",
-    "erdos-1078"
+    {
+      "id": "erdos-716",
+      "relationship": "specializes",
+      "description": "Problem #716 (Ruzsa-Szemerédi (6,3)-problem) is the t=2, r=s=3, k=6 case of the BES conjecture, resolved in 1978 via the"
+    },
+    {
+      "id": "erdos-1076",
+      "relationship": "related",
+      "description": "Problem #1076 (3-uniform extremal for k=s+2) lies beyond the BES threshold, solved by Bohman-Warnke (2019) using Steiner"
+    },
+    {
+      "id": "erdos-714",
+      "relationship": "related",
+      "description": "Problem #714 (Zarankiewicz for K_{r,r}) is a related bipartite extremal problem; the K_{2,2} case connects to hypergraph"
+    },
+    {
+      "id": "erdos-1075",
+      "relationship": "related",
+      "description": "Problem #1075 (dense subgraphs in r-uniform hypergraphs) studies the density constant c_r, complementing the extremal nu"
+    },
+    {
+      "id": "erdos-1155",
+      "relationship": "technique",
+      "description": "Problem #1155 (triangle removal process) involves the Triangle Removal Lemma, which is the key technique for the (6,3)-c"
+    }
   ],
   "leanFile": {
     "imports": [

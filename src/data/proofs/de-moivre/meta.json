@@ -161,9 +161,21 @@
     ]
   },
   "relatedProofs": [
-    "euler-identity",
-    "law-of-cosines",
-    "angle-trisection"
+    {
+      "id": "euler-identity",
+      "relationship": "related",
+      "description": "De Moivre's theorem is equivalent to Euler's formula e^{iθ} = cos θ + i sin θ raised to the nth power. Euler's identity "
+    },
+    {
+      "id": "law-of-cosines",
+      "relationship": "related",
+      "description": "De Moivre's theorem generates multiple-angle formulas (cos 2θ, cos 3θ, etc.) which connect to the law of cosines through"
+    },
+    {
+      "id": "angle-trisection",
+      "relationship": "related",
+      "description": "De Moivre's theorem shows cos(θ/3) satisfies a cubic equation, providing the algebraic framework for proving the impossi"
+    }
   ],
   "leanFile": {
     "imports": [

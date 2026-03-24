@@ -168,12 +168,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-101",
-    "erdos-588",
-    "erdos-669",
-    "desargues-theorem",
-    "szemeredi-theorem",
-    "erdos-100"
+    {
+      "id": "erdos-101",
+      "relationship": "companion",
+      "description": "Problem #101 asks whether a planar point set with no 5 collinear points can have cn² four-point lines. The bridge theore"
+    },
+    {
+      "id": "erdos-588",
+      "relationship": "generalizes",
+      "description": "Problem #588 studies k-rich lines (lines containing ≥ k points) in general position. Erdős #102 is the specialization to"
+    },
+    {
+      "id": "erdos-669",
+      "relationship": "related",
+      "description": "The Orchard Problem (#669) asks for the maximum number of 3-point lines among n points — the k = 3 analogue. The Szemeré"
+    },
+    {
+      "id": "desargues-theorem",
+      "relationship": "foundational",
+      "description": "Desargues's theorem characterizes collinearity in projective planes and underlies the algebraic structure of collinear p"
+    },
+    {
+      "id": "szemeredi-theorem",
+      "relationship": "thematic",
+      "description": "Szemerédi's theorem (on arithmetic progressions) and the Szemerédi–Trotter incidence theorem are distinct results by the"
+    }
   ],
   "references": [
     {

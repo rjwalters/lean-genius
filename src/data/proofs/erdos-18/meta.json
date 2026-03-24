@@ -278,8 +278,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-12",
-    "erdos-48",
-    "erdos-1107"
+    {
+      "id": "erdos-12",
+      "relationship": "related",
+      "description": "Problem #12 on divisibility-free sets concerns how sets of integers relate to divisibility. Practical numbers are define"
+    },
+    {
+      "id": "erdos-48",
+      "relationship": "related",
+      "description": "Problem #48 concerns Euler's totient and sigma functions, sharing the theme of arithmetic functions and their representa"
+    },
+    {
+      "id": "erdos-1107",
+      "relationship": "related",
+      "description": "Problem #1107 on sums of powerful numbers shares the theme of representability: practical numbers represent all integers"
+    }
   ]
 }

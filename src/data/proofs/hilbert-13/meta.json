@@ -158,9 +158,21 @@
     }
   ],
   "relatedProofs": [
-    "hilbert-14",
-    "hilbert-23",
-    "abel-ruffini"
+    {
+      "id": "hilbert-14",
+      "relationship": "related",
+      "description": "Both address structural questions from Hilbert's 1900 list about the nature of algebraic and analytic objects: Problem 1"
+    },
+    {
+      "id": "hilbert-23",
+      "relationship": "related",
+      "description": "The Kolmogorov-Arnold representation theorem connects to the calculus of variations through approximation theory and the"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "related",
+      "description": "Hilbert's 13th problem was motivated by the unsolvability of the general septic by radicals (Abel-Ruffini); the Bring-Je"
+    }
   ],
   "references": [
     {

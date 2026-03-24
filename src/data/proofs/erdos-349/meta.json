@@ -184,9 +184,25 @@
     ]
   },
   "relatedProofs": [
-    "erdos-345",
-    "erdos-346",
-    "erdos-322",
-    "erdos-267"
+    {
+      "id": "erdos-345",
+      "relationship": "related",
+      "description": "Studies completeness thresholds for power sequences — a closely related completeness problem sharing the additive combin"
+    },
+    {
+      "id": "erdos-346",
+      "relationship": "related",
+      "description": "Studies lacunary complete sequences with golden ratio limit, sharing the $\\varphi$ threshold that is central to Problem "
+    },
+    {
+      "id": "erdos-322",
+      "relationship": "related",
+      "description": "Waring's problem for sums of $k$-th powers, connected through the Ideal Waring formula $g(k) = 2^k + \\lfloor (3/2)^k \\rf"
+    },
+    {
+      "id": "erdos-267",
+      "relationship": "related",
+      "description": "Irrationality of Fibonacci reciprocal sums, connecting Fibonacci sequences and the golden ratio that appears as the crit"
+    }
   ]
 }

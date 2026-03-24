@@ -178,10 +178,26 @@
     }
   ],
   "relatedProofs": [
-    "cayley-hamilton",
-    "cayley-hamilton-minpoly",
-    "cauchy-schwarz",
-    "fundamental-arithmetic"
+    {
+      "id": "cayley-hamilton",
+      "relationship": "related",
+      "description": "The adjugate identity A * adj(A) = det(A) * I, central to Cramer's rule, is also the algebraic foundation of the Cayley-"
+    },
+    {
+      "id": "cayley-hamilton-minpoly",
+      "relationship": "related",
+      "description": "The minimal polynomial annihilator theory extends the Cayley-Hamilton framework that shares the adjugate-determinant mac"
+    },
+    {
+      "id": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "Both are foundational linear algebra results formalized via Mathlib's abstract algebraic infrastructure. Cauchy-Schwarz "
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "related",
+      "description": "Both demonstrate the power of working over abstract algebraic structures in Lean 4: Cramer's rule over CommRing, FTA ove"
+    }
   ],
   "leanFile": {
     "imports": [

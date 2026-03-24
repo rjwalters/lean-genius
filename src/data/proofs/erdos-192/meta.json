@@ -165,10 +165,30 @@
     }
   ],
   "relatedProofs": [
-    "erdos-231",
-    "erdos-188",
-    "erdos-966",
-    "erdos-984",
-    "ramseys-theorem"
+    {
+      "id": "erdos-231",
+      "relationship": "related",
+      "description": "Equivalent problem: #231 asks directly about abelian squares over d-letter alphabets, which is the combinatorial reformu"
+    },
+    {
+      "id": "erdos-188",
+      "relationship": "related",
+      "description": "Both concern unit distance geometry and arithmetic progressions: #188 asks about unit distance colorings with AP constra"
+    },
+    {
+      "id": "erdos-966",
+      "relationship": "related",
+      "description": "Both concern arithmetic progressions in combinatorial structures: #966 studies Ramsey-type AP properties, #192 studies a"
+    },
+    {
+      "id": "erdos-984",
+      "relationship": "related",
+      "description": "Both address coloring/avoidance problems in combinatorial structures: #984 asks about 2-colorings controlling monochroma"
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Abelian-square avoidance in infinite sequences is a Ramsey-type question: does every long enough sequence necessarily co"
+    }
   ]
 }

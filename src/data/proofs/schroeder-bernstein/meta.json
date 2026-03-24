@@ -229,14 +229,31 @@
     }
   ],
   "relatedProofs": [
-    "cantor-diagonalization",
-    "continuum-hypothesis",
-    "denumerability-rationals",
-    "cantors-theorem",
-    "mathematical-induction",
-    "abel-ruffini",
-    "infinitude-primes",
-    "fundamental-theorem-algebra"
+    {
+      "id": "cantor-diagonalization",
+      "relationship": "complementary",
+      "description": "Cantor's diagonal argument shows strict inequality $|\\mathbb{N}| < |\\mathbb{R}|$. Schroeder-Bernstein shows when mutual "
+    },
+    {
+      "id": "continuum-hypothesis",
+      "relationship": "related",
+      "description": "Schroeder-Bernstein establishes equality from mutual injections. The Continuum Hypothesis asks whether strict inequality"
+    },
+    {
+      "id": "denumerability-rationals",
+      "relationship": "related",
+      "description": "Denumerability of $\\mathbb{Q}$ exemplifies SB: $\\mathbb{N} \\hookrightarrow \\mathbb{Q}$ and $\\mathbb{Q} \\hookrightarrow \\"
+    },
+    {
+      "id": "cantors-theorem",
+      "relationship": "complementary",
+      "description": "Cantor's theorem ($|A| < |\\mathcal{P}(A)|$) gives strict inequality. SB gives equality from mutual injections. Together "
+    },
+    {
+      "id": "mathematical-induction",
+      "relationship": "related",
+      "description": "The Knaster-Tarski fixed point $S^* = \\bigcup_n T^n(\\emptyset)$ is constructed by iterated application of the monotone o"
+    }
   ],
   "leanFile": {
     "imports": [

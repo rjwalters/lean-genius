@@ -171,8 +171,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-28",
-    "erdos-29",
-    "erdos-31"
+    {
+      "id": "erdos-28",
+      "relationship": "related",
+      "description": "Problem #28 (Erdős-Turán on bases) and Problem #35 both concern additive bases. Schnirelmann density provides the founda"
+    },
+    {
+      "id": "erdos-29",
+      "relationship": "related",
+      "description": "Problem #29 asks for explicit economical bases. Schnirelmann's theorem (Problem #35) guarantees existence; Problem #29 d"
+    },
+    {
+      "id": "erdos-31",
+      "relationship": "related",
+      "description": "Additive complements (Problem #31) and Schnirelmann density (Problem #35) are closely related: a set with positive Schni"
+    }
   ]
 }

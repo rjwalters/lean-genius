@@ -164,12 +164,31 @@
     }
   ],
   "relatedProofs": [
-    "kummer-theorem",
-    "erdos-1094",
-    "erdos-1093",
-    "bertrands-postulate",
-    "prime-number-theorem",
-    "binomial-theorem"
+    {
+      "id": "kummer-theorem",
+      "relationship": "technique",
+      "description": "Kummer's theorem on p-adic valuations — ν_p(C(n,k)) equals the number of carries when adding k and n-k in base p — is th"
+    },
+    {
+      "id": "erdos-1094",
+      "relationship": "related",
+      "description": "Problem 1094 studies the least prime factor of C(n,k) from the opposite direction: how small can it be? Together with Pr"
+    },
+    {
+      "id": "erdos-1093",
+      "relationship": "related",
+      "description": "Problem 1093 studies deficiency of binomial coefficients — the count of k-smooth terms among n, n-1, …, n-k+1 when C(n,k"
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Erdős's proof of Bertrand's postulate analyzes prime factors of the central binomial coefficient C(2n,n) using the same "
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The Prime Number Theorem via Chebyshev's ψ-function gives log L_k = ψ(k) ~ k, establishing the asymptotic log L_k / k → "
+    }
   ],
   "references": [
     {

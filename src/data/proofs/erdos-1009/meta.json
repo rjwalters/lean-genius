@@ -170,12 +170,31 @@
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem",
-    "erdos-1008",
-    "erdos-1010",
-    "erdos-1012",
-    "szemeredi-regularity",
-    "erdos-1"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey theory provides the backdrop for extremal graph problems: just as Ramsey numbers bound unavoidable monochromatic "
+    },
+    {
+      "id": "erdos-1008",
+      "relationship": "thematic",
+      "description": "Erdős #1008 studies C₄-free subgraphs with many edges in dense graphs; both problems ask how much of a forbidden-subgrap"
+    },
+    {
+      "id": "erdos-1010",
+      "relationship": "thematic",
+      "description": "Erdős #1010 is a neighboring problem in the same cluster of Turán-type and packing questions. Both #1009 and #1010 conce"
+    },
+    {
+      "id": "erdos-1012",
+      "relationship": "thematic",
+      "description": "Erdős #1012 concerns another extremal problem on triangle-related structure in dense graphs. Together with #1009, it for"
+    },
+    {
+      "id": "szemeredi-regularity",
+      "relationship": "complementary",
+      "description": "Szemerédi's Regularity Lemma is the primary modern tool for analyzing triangle structure in dense graphs. Györi's proof "
+    }
   ],
   "references": [
     {

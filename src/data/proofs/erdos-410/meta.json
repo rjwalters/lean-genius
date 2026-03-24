@@ -241,10 +241,30 @@
     }
   ],
   "relatedProofs": [
-    "perfect-numbers",
-    "infinitude-primes",
-    "fundamental-arithmetic",
-    "geometric-series",
-    "euler-totient"
+    {
+      "id": "perfect-numbers",
+      "relationship": "related",
+      "description": "Perfect numbers satisfy σ(n) = 2n, the fixed-point equation for the 'excess' σ(n)/n. This file studies iterates σ_k(n); "
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes ensures that σ(n) has non-trivial behavior for all n ≥ 2: σ(p) = p + 1 for primes, and the mult"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization is essential: σ is multiplicative, so σ(n) = ∏ σ(p^a) where n = ∏ p^a. The formula σ(p^a) = ("
+    },
+    {
+      "id": "geometric-series",
+      "relationship": "foundational",
+      "description": "The formula σ(p^k) = 1 + p + p² + ··· + p^k = (p^{k+1} - 1)/(p - 1) is a geometric series. This explicit formula for σ a"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient φ(n) and the sum of divisors σ(n) are both multiplicative arithmetic functions. They satisfy the identit"
+    }
   ]
 }

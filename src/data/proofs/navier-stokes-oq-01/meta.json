@@ -219,14 +219,31 @@
     }
   ],
   "relatedProofs": [
-    "navier-stokes",
-    "navier-stokes-oq-02",
-    "navier-stokes-existence",
-    "fundamental-theorem-calculus",
-    "fundamental-theorem-calculus-oq-01",
-    "cauchy-schwarz-integral",
-    "lebesgue-measure",
-    "poincare-conjecture"
+    {
+      "id": "navier-stokes",
+      "relationship": "extends",
+      "description": "Extends the base Navier-Stokes formalization with quantitative enstrophy decay estimates and the energy identity for 2D "
+    },
+    {
+      "id": "navier-stokes-oq-02",
+      "relationship": "related",
+      "description": "Companion formalization covering additional aspects of the 2D Navier-Stokes regularity theory"
+    },
+    {
+      "id": "navier-stokes-existence",
+      "relationship": "related",
+      "description": "Existence theory for Navier-Stokes solutions — the solutions whose enstrophy decay properties are formalized here"
+    },
+    {
+      "id": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "The enstrophy integral identity directly applies the FTC (integral_eq_sub_of_hasDerivAt_of_le) to convert the pointwise "
+    },
+    {
+      "id": "fundamental-theorem-calculus-oq-01",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    }
   ],
   "references": [
     {

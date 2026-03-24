@@ -188,12 +188,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-1039",
-    "erdos-1038",
-    "erdos-1041",
-    "erdos-1042",
-    "lebesgue-measure",
-    "fundamental-theorem-algebra"
+    {
+      "id": "erdos-1039",
+      "relationship": "sibling",
+      "description": "Erdős #1039 (polynomial lemniscate disc radius) asks for the largest inscribed disc in sublevel sets {z: |f(z)| < 1}, th"
+    },
+    {
+      "id": "erdos-1038",
+      "relationship": "related",
+      "description": "Erdős #1038 (sublevel sets of monic polynomials) studies measure properties of the same polynomial sublevel sets, provid"
+    },
+    {
+      "id": "erdos-1041",
+      "relationship": "related",
+      "description": "Erdős #1041 (paths in polynomial level sets) investigates connectivity and path structure within level curves of polynom"
+    },
+    {
+      "id": "erdos-1042",
+      "relationship": "related",
+      "description": "Erdős #1042 (connected components of polynomial lemniscates) studies the topology of polynomial level sets from the same"
+    },
+    {
+      "id": "lebesgue-measure",
+      "relationship": "foundational",
+      "description": "The definition of μ(F) as the Lebesgue measure of sublevel sets in the complex plane relies directly on MeasureTheory.vo"
+    }
   ],
   "references": [
     {

@@ -156,13 +156,31 @@
     }
   ],
   "relatedProofs": [
-    "elementary-quadratic-reciprocity",
-    "elementary-quadratic-reciprocity-oq-01",
-    "quadratic-reciprocity",
-    "euler-totient",
-    "primitive-roots",
-    "wilsons-theorem",
-    "fermat-two-squares"
+    {
+      "id": "elementary-quadratic-reciprocity",
+      "relationship": "extends",
+      "description": "Parent proof establishing elementary quadratic reciprocity for prime moduli. This OQ-03 extends the Legendre symbol to t"
+    },
+    {
+      "id": "elementary-quadratic-reciprocity-oq-01",
+      "relationship": "related",
+      "description": "Sibling open question exploring Zolotarev's proof of quadratic reciprocity via the sign homomorphism on symmetric groups"
+    },
+    {
+      "id": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "The main quadratic reciprocity formalization using Mathlib's infrastructure, which this elementary approach complements "
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "foundational",
+      "description": "Euler's totient φ(n) = |(ℤ/nℤ)*| counts units modulo n, the domain of the Jacobi symbol. The CRT decomposition (ℤ/nℤ)* ≅"
+    },
+    {
+      "id": "primitive-roots",
+      "relationship": "foundational",
+      "description": "Primitive roots establish that (ℤ/pℤ)* is cyclic, fundamental to the Legendre symbol: a is a QR mod p iff a^((p-1)/2) ≡ "
+    }
   ],
   "references": [
     {

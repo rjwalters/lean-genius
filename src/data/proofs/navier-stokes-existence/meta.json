@@ -308,11 +308,30 @@
     }
   ],
   "relatedProofs": [
-    "navier-stokes",
-    "yang-mills",
-    "poincare-conjecture",
-    "hilbert-19",
-    "hilbert-20",
-    "birch-swinnerton-dyer"
+    {
+      "id": "navier-stokes",
+      "relationship": "complementary",
+      "description": "The main Navier-Stokes formalization defines the equations and basic properties, while this entry focuses specifically o"
+    },
+    {
+      "id": "yang-mills",
+      "relationship": "thematic",
+      "description": "Both are Clay Millennium Prize problems concerning PDEs from physics: Navier-Stokes asks about fluid dynamics regularity"
+    },
+    {
+      "id": "poincare-conjecture",
+      "relationship": "thematic",
+      "description": "Both are (former) Millennium Prize problems: Poincare was resolved by Perelman (2003) using Ricci flow (a PDE technique)"
+    },
+    {
+      "id": "hilbert-19",
+      "relationship": "related",
+      "description": "Hilbert's 19th (regularity of variational minimizers) was resolved by De Giorgi-Nash for elliptic PDEs. Navier-Stokes re"
+    },
+    {
+      "id": "hilbert-20",
+      "relationship": "related",
+      "description": "Hilbert's 20th (boundary value problem existence) was resolved via Lax-Milgram for elliptic PDEs. Navier-Stokes existenc"
+    }
   ]
 }

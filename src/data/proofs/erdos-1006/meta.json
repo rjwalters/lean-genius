@@ -131,12 +131,31 @@
     }
   ],
   "relatedProofs": [
-    "four-color-theorem",
-    "ramseys-theorem",
-    "erdos-1006-oq-02",
-    "erdos-1008",
-    "erdos-1011",
-    "randomized-maxcut"
+    {
+      "id": "four-color-theorem",
+      "relationship": "related",
+      "description": "Both concern structural properties of graph colorings. The four-color theorem constrains planar graph colorings; Erdős #"
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey theory and this problem share the theme of unavoidable structures: Ramsey shows large enough graphs must contain "
+    },
+    {
+      "id": "erdos-1006-oq-02",
+      "relationship": "extended-by",
+      "description": "Sub-entry investigating the minimum chromatic number $\\chi$ such that a graph with girth $g$ and $\\chi(G) \\geq \\chi$ nec"
+    },
+    {
+      "id": "erdos-1008",
+      "relationship": "related",
+      "description": "Both concern extremal graph theory with forbidden substructures: #1006 forbids short cycles (high girth) and asks about "
+    },
+    {
+      "id": "erdos-1011",
+      "relationship": "related",
+      "description": "Both connect chromatic number to structural graph properties: #1006 shows high chromatic number obstructs robust orienta"
+    }
   ],
   "references": [
     {

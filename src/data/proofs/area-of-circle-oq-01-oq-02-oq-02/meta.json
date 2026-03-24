@@ -178,14 +178,31 @@
     ]
   },
   "relatedProofs": [
-    "area-of-circle",
-    "area-of-circle-oq-01-oq-02",
-    "area-of-circle-oq-01-oq-03",
-    "area-of-circle-oq-01-oq-02-oq-01",
-    "fourier-series",
-    "isoperimetric-theorem",
-    "fundamental-theorem-calculus",
-    "fundamental-theorem-calculus-oq-01"
+    {
+      "id": "area-of-circle",
+      "relationship": "extends",
+      "description": "Root ancestor: the area of a circle $A = \\pi r^2$ via integration. This entry provides Fourier infrastructure toward the"
+    },
+    {
+      "id": "area-of-circle-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "The parent entry proves A = ∫C via FTC. This entry builds Fourier infrastructure needed for the isoperimetric generaliza"
+    },
+    {
+      "id": "area-of-circle-oq-01-oq-03",
+      "relationship": "supports",
+      "description": "The Wirtinger inequality entry uses Fourier decomposition for the isoperimetric proof; this IBP formula is a key ingredi"
+    },
+    {
+      "id": "area-of-circle-oq-01-oq-02-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling entry generalizing circumference integration to n-dimensional volume from surface area — both extend the parent'"
+    },
+    {
+      "id": "fourier-series",
+      "relationship": "specializes",
+      "description": "The general Fourier series theory provides the foundation; this entry proves a specific derivative property of Fourier c"
+    }
   ],
   "leanFile": {
     "imports": [

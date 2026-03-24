@@ -228,8 +228,20 @@
     }
   ],
   "relatedProofs": [
-    "cayley-hamilton-minpoly",
-    "cayley-hamilton-minpoly-oq-02-oq-01",
-    "cayley-hamilton-minpoly-oq-02-oq-01-oq-01"
+    {
+      "id": "cayley-hamilton-minpoly",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    },
+    {
+      "id": "cayley-hamilton-minpoly-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Parent: K-algebra invariance of minpoly under AlgEquiv/AlgHom"
+    },
+    {
+      "id": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Sibling: Skolem-Noether theorem for matrix automorphisms"
+    }
   ]
 }

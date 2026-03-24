@@ -129,8 +129,16 @@
     ]
   },
   "relatedProofs": [
-    "intermediate-value-theorem",
-    "cauchy-schwarz-integral-oq-01-oq-01-oq-01"
+    {
+      "id": "intermediate-value-theorem",
+      "relationship": "extends",
+      "description": "Constructive companion to the non-constructive IVT. The parent proves $\\exists c, f(c) = 0$; this entry provides an algo"
+    },
+    {
+      "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Both entries formalize classical analysis from first principles using Lean 4 automation tactics (nlinarith, linarith, no"
+    }
   ],
   "leanFile": {
     "imports": [

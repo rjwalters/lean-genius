@@ -183,13 +183,31 @@
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem",
-    "erdos-1009",
-    "erdos-1010",
-    "erdos-1008",
-    "szemeredi-regularity",
-    "erdos-1",
-    "binomial-theorem"
+    {
+      "id": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both are foundational results in extremal combinatorics: Ramsey theory guarantees monochromatic substructures, while the"
+    },
+    {
+      "id": "erdos-1009",
+      "relationship": "related",
+      "description": "Erdős #1009 concerns edge-disjoint triangles beyond the Turán threshold — directly related to the extremal graph/hypergr"
+    },
+    {
+      "id": "erdos-1010",
+      "relationship": "related",
+      "description": "Erdős #1010 on triangle supersaturation: once edge density exceeds the Turán threshold, how many copies of the forbidden"
+    },
+    {
+      "id": "erdos-1008",
+      "relationship": "related",
+      "description": "Erdős #1008 on C₄-free subgraphs — another extremal problem asking for maximum edge density avoiding a specific forbidde"
+    },
+    {
+      "id": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "Szemerédi's regularity lemma is the key structural tool in extremal graph theory. While it applies to graphs (2-uniform)"
+    }
   ],
   "references": [
     {

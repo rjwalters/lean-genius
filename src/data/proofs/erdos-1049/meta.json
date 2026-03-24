@@ -220,14 +220,31 @@
     }
   ],
   "relatedProofs": [
-    "e-transcendental",
-    "sqrt2-irrational",
-    "euler-totient",
-    "fundamental-arithmetic",
-    "erdos-1003",
-    "erdos-1051",
-    "erdos-1048",
-    "erdos-1050"
+    {
+      "id": "e-transcendental",
+      "relationship": "thematic",
+      "description": "Both problems concern the transcendence of naturally-arising constants: $e$ was proved transcendental by Hermite (1873) "
+    },
+    {
+      "id": "sqrt2-irrational",
+      "relationship": "thematic",
+      "description": "The irrationality of $\\sqrt{2}$ (attributed to the Pythagoreans) and Erdős's 1948 result are foundational irrationality "
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient $\\varphi(n)$ and the divisor function $\\tau(n)$ are both classical multiplicative functions in analytic "
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The Fundamental Theorem of Arithmetic underpins the multiplicativity of $\\tau(n)$: because every integer has a unique pr"
+    },
+    {
+      "id": "erdos-1003",
+      "relationship": "sibling",
+      "description": "Erdős Problem #1003 is another number-theoretic problem from the Erdős collection involving divisibility and arithmetic "
+    }
   ],
   "references": [
     {

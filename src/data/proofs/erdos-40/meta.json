@@ -136,14 +136,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-41",
-    "erdos-43",
-    "erdos-47",
-    "erdos-500",
-    "erdos-1",
-    "szemeredi-regularity",
-    "ramseys-theorem",
-    "binomial-theorem"
+    {
+      "id": "erdos-41",
+      "relationship": "related",
+      "description": "Erdős Problem #41 also concerns additive bases and representation functions, exploring threshold densities for covering "
+    },
+    {
+      "id": "erdos-43",
+      "relationship": "related",
+      "description": "Erdős Problem #43 on Sidon sets (B_2 sequences) directly underpins Problem #40: Sidon sets achieve density $\\approx \\sqr"
+    },
+    {
+      "id": "erdos-47",
+      "relationship": "related",
+      "description": "Erdős Problem #47 concerns $B_h$ sets and multiplicities in sumsets. The $B_2[g]$ bound ($r_A(n) \\leq g \\Rightarrow A(N)"
+    },
+    {
+      "id": "erdos-500",
+      "relationship": "related",
+      "description": "Erdős Problem #500, also carrying a high bounty, shares the theme of quantitative density conditions in additive number "
+    },
+    {
+      "id": "erdos-1",
+      "relationship": "related",
+      "description": "Related gallery proof"
+    }
   ],
   "references": [
     {

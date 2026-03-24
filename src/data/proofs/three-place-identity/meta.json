@@ -183,12 +183,31 @@
     }
   ],
   "relatedProofs": [
-    "godel-incompleteness",
-    "russell-1-plus-1",
-    "cantors-theorem",
-    "cantor-diagonalization",
-    "schroeder-bernstein",
-    "halting-problem"
+    {
+      "id": "godel-incompleteness",
+      "relationship": "thematic",
+      "description": "Gödel's incompleteness theorems demonstrate the limits of formal foundations — the meta-level/object-level distinction c"
+    },
+    {
+      "id": "russell-1-plus-1",
+      "relationship": "foundational",
+      "description": "Russell and Whitehead's proof that 1+1=2 in Principia Mathematica exemplifies the traditional set-theoretic foundation t"
+    },
+    {
+      "id": "cantors-theorem",
+      "relationship": "thematic",
+      "description": "Cantor's theorem ($|S| < |\\mathcal{P}(S)|$) is a core result of ZF set theory — the system whose axioms Etter's bridges "
+    },
+    {
+      "id": "cantor-diagonalization",
+      "relationship": "thematic",
+      "description": "Cantor's diagonal argument establishes the uncountability of the reals within set-theoretic foundations — a result that "
+    },
+    {
+      "id": "schroeder-bernstein",
+      "relationship": "thematic",
+      "description": "The Schröder-Bernstein theorem on set bijections relies on the membership relation that Etter's D1 bridge derives from i"
+    }
   ],
   "leanFile": {
     "imports": [

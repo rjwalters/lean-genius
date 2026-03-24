@@ -210,9 +210,25 @@
     }
   ],
   "relatedProofs": [
-    "sum-of-kth-powers",
-    "lagrange-four-squares",
-    "harmonic-divergence",
-    "binomial-theorem"
+    {
+      "id": "sum-of-kth-powers",
+      "relationship": "related",
+      "description": "Waring's problem asks about representing integers as sums of k-th powers, directly related to this problem which asks ab"
+    },
+    {
+      "id": "lagrange-four-squares",
+      "relationship": "related",
+      "description": "Lagrange's four squares theorem (every positive integer is a sum of four squares) is the k=2 case of Waring's problem. T"
+    },
+    {
+      "id": "harmonic-divergence",
+      "relationship": "foundational",
+      "description": "The divergence of the harmonic series Σ 1/n connects to Egyptian fractions: partial sums of 1/n can approximate any posi"
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial theorem provides polynomial identities used in analyzing polynomial values p(n). When p(x) = x^k, the numbe"
+    }
   ]
 }

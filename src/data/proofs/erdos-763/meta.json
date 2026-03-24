@@ -187,8 +187,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-764",
-    "erdos-198",
-    "erdos-200"
+    {
+      "id": "erdos-764",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, analytic-number-theory, representation-functions"
+    },
+    {
+      "id": "erdos-198",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, disproved"
+    },
+    {
+      "id": "erdos-200",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, analytic-number-theory"
+    }
   ]
 }

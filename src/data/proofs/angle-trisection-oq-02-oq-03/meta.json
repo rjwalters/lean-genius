@@ -297,18 +297,31 @@
     ]
   },
   "relatedProofs": [
-    "angle-trisection",
-    "angle-trisection-oq-02",
-    "angle-trisection-oq-02-oq-01",
-    "combinations-formula",
-    "abel-ruffini",
-    "quadratic-reciprocity",
-    "inverse-galois",
-    "euler-totient",
-    "primitive-roots",
-    "de-moivre",
-    "kroneckers-jugendtraum",
-    "lagrange-theorem"
+    {
+      "id": "angle-trisection",
+      "relationship": "extends",
+      "description": "Main impossibility proof for angle trisection; OQ02-OQ03 gives the complete constructibility characterization for regula"
+    },
+    {
+      "id": "angle-trisection-oq-02",
+      "relationship": "extends",
+      "description": "OQ02 proves the Galois criterion (α constructible ↔ Gal is 2-group); OQ02-OQ03 applies it to cos(2π/n) to characterize c"
+    },
+    {
+      "id": "angle-trisection-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Proves natDegree | |Gal| via the tower law — the same structural argument that connects the Galois 2-group criterion to "
+    },
+    {
+      "id": "combinations-formula",
+      "relationship": "related",
+      "description": "The combinations formula underpins binomial coefficient computations; Euler's totient involves counting coprime residues"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "related",
+      "description": "Both link impossibility results to Galois group structure: Abel-Ruffini via solvability (S₅ not solvable), Gauss-Wantzel"
+    }
   ],
   "leanFile": {
     "imports": [

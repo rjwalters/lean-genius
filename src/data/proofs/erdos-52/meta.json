@@ -177,7 +177,15 @@
     }
   ],
   "relatedProofs": [
-    "erdos-53",
-    "erdos-101"
+    {
+      "id": "erdos-53",
+      "relationship": "related",
+      "description": "Problem #53 on sums and products of distinct elements is the companion problem. Both concern the fundamental sum-product"
+    },
+    {
+      "id": "erdos-101",
+      "relationship": "related",
+      "description": "Problem #101 on incidence geometry shares techniques with the sum-product conjecture: the Szemerédi-Trotter incidence th"
+    }
   ]
 }

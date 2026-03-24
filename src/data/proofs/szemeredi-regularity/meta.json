@@ -213,12 +213,30 @@
     }
   ],
   "relatedProofs": [
-    "szemeredi-core",
-    "szemeredi-counting",
-    "szemeredi-full",
-    "szemeredi-theorem",
-    "roth-theorem-k3",
-    "ramseys-theorem",
-    "prob-method-alteration"
+    {
+      "id": "szemeredi-core",
+      "relationship": "foundational",
+      "description": "Imports core definitions (edgeDensity, IsEpsilonRegular, IsRegularPartition, partitionEnergy) and re-exports them for do"
+    },
+    {
+      "id": "szemeredi-counting",
+      "relationship": "extends",
+      "description": "The counting and removal lemmas are the primary applications of regularity — they use epsilon-regular pairs to count and"
+    },
+    {
+      "id": "szemeredi-full",
+      "relationship": "extends",
+      "description": "The full Szemerédi theorem on arithmetic progressions uses this regularity lemma as its structural backbone"
+    },
+    {
+      "id": "szemeredi-theorem",
+      "relationship": "extends",
+      "description": "The main Szemerédi theorem statement depends on the partition infrastructure provided by this file"
+    },
+    {
+      "id": "roth-theorem-k3",
+      "relationship": "related",
+      "description": "Roth's theorem (1953) on 3-term APs can be proved via regularity + triangle removal — the regularity lemma provides the "
+    }
   ]
 }

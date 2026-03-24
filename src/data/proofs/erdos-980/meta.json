@@ -100,7 +100,11 @@
     }
   ],
   "relatedProofs": [
-    "prime-number-theorem"
+    {
+      "id": "prime-number-theorem",
+      "relationship": "uses",
+      "description": "The prime number theorem π(x) ~ x/log x is foundational to interpreting the asymptotic Σ n_k(p) ~ c_k · x/log x."
+    }
   ],
   "leanFile": {
     "imports": [

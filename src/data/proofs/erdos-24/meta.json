@@ -189,8 +189,20 @@
     }
   ],
   "relatedProofs": [
-    "erdos-19",
-    "erdos-22",
-    "erdos-533"
+    {
+      "id": "erdos-19",
+      "relationship": "related",
+      "description": "Problem #19 (EFL) was resolved via the absorbing method. Problems #22 and #24 are also targets for modern extremal graph"
+    },
+    {
+      "id": "erdos-22",
+      "relationship": "related",
+      "description": "Problem #22 (Ramsey-Turán for K₄) is another extremal problem about forbidden subgraphs in dense graphs. Both study the "
+    },
+    {
+      "id": "erdos-533",
+      "relationship": "related",
+      "description": "Problem #533 concerns triangle-free subsets in dense graphs. Problem #24 studies pentagons (C₅) in triangle-free graphs "
+    }
   ]
 }

@@ -206,21 +206,31 @@
     ]
   },
   "relatedProofs": [
-    "sophie-germain",
-    "infinitude-primes",
-    "chinese-remainder-non-coprime",
-    "dirichlets-theorem",
-    "pythagorean-theorem",
-    "fundamental-theorem-algebra",
-    "fermat-two-squares",
-    "abel-ruffini",
-    "lagrange-theorem",
-    "pythagorean-triples",
-    "quadratic-reciprocity",
-    "fundamental-arithmetic",
-    "godel-incompleteness",
-    "euler-identity",
-    "hilbert-10"
+    {
+      "id": "sophie-germain",
+      "relationship": "related",
+      "description": "Sophie Germain primes are named for their connection to FLT: she proved the first case holds for Sophie Germain prime ex"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "related",
+      "description": "The reduction to prime exponents relies on the structure of primes; FLT for n=4 and odd primes covers all n ≥ 3"
+    },
+    {
+      "id": "chinese-remainder-non-coprime",
+      "relationship": "related",
+      "description": "Modular arithmetic techniques used in Kummer's proof for regular primes and in the reduction arguments"
+    },
+    {
+      "id": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions provides context for the distribution of primes relevant to FLT"
+    },
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "The Pythagorean theorem establishes $a^2 + b^2 = c^2$ — Fermat's Last Theorem generalizes this from $n=2$ (infinitely ma"
+    }
   ],
   "references": [
     {

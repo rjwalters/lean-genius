@@ -122,9 +122,21 @@
     }
   ],
   "relatedProofs": [
-    "erdos-949",
-    "erdos-795",
-    "erdos-530"
+    {
+      "id": "erdos-949",
+      "relationship": "related",
+      "description": "Erdős #949 studies sum-free sets and continuum-sized sumset avoidance, sharing the theme of additive structure in sets w"
+    },
+    {
+      "id": "erdos-795",
+      "relationship": "related",
+      "description": "Erdős #795 investigates multiplicative Sidon sets (distinct subset products), the multiplicative analogue of the B₂[1] p"
+    },
+    {
+      "id": "erdos-530",
+      "relationship": "related",
+      "description": "Erdős #530 studies maximum Sidon subsets of finite sets, directly related to the B₂[1] baseline case where c₁ = c'₁ = 1."
+    }
   ],
   "leanFile": {
     "imports": [

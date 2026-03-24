@@ -250,17 +250,31 @@
     }
   ],
   "relatedProofs": [
-    "birthday-problem",
-    "buffons-needle",
-    "stirling-formula",
-    "area-of-circle",
-    "central-limit-theorem-oq-01",
-    "central-limit-theorem-oq-01-oq-01",
-    "central-limit-theorem-oq-01-oq-02",
-    "central-limit-theorem-oq-03",
-    "cauchy-schwarz",
-    "binomial-theorem",
-    "euler-identity"
+    {
+      "id": "birthday-problem",
+      "relationship": "related",
+      "description": "Both are fundamental results in probability theory. The birthday problem illustrates combinatorial probability, while CL"
+    },
+    {
+      "id": "buffons-needle",
+      "relationship": "related",
+      "description": "Buffon's needle uses random variable theory; CLT explains why repeated needle-dropping experiments converge to a normal "
+    },
+    {
+      "id": "stirling-formula",
+      "relationship": "foundational",
+      "description": "Stirling's formula n! ≈ √(2πn)(n/e)^n provides the √(2π) factor in the Gaussian density — the binomial distribution appr"
+    },
+    {
+      "id": "area-of-circle",
+      "relationship": "thematic",
+      "description": "Both reveal π in unexpected contexts: the area formula gives π geometrically, while the CLT's Gaussian density (2πσ²)^{-"
+    },
+    {
+      "id": "central-limit-theorem-oq-01",
+      "relationship": "extended-by",
+      "description": "Explores what happens when variance is infinite — leading to stable distributions (Lévy $\\alpha$-stable) with heavier ta"
+    }
   ],
   "leanFile": {
     "lineCount": 618,

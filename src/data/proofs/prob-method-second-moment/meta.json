@@ -158,12 +158,31 @@
     ]
   },
   "relatedProofs": [
-    "prob-method-expectation",
-    "prob-method-lovasz-local",
-    "prob-method-applications",
-    "cauchy-schwarz",
-    "prob-method-alteration",
-    "ramseys-theorem"
+    {
+      "id": "prob-method-expectation",
+      "relationship": "depends-on",
+      "description": "The second moment method builds on the first moment framework, extending Markov's inequality with variance analysis to g"
+    },
+    {
+      "id": "prob-method-lovasz-local",
+      "relationship": "related",
+      "description": "Both handle dependencies in probabilistic arguments: the second moment method via variance/covariance control, the LLL v"
+    },
+    {
+      "id": "prob-method-applications",
+      "relationship": "used-by",
+      "description": "Threshold results from the second moment method are applied in random graph and Ramsey theory applications"
+    },
+    {
+      "id": "cauchy-schwarz",
+      "relationship": "depends-on",
+      "description": "The Paley-Zygmund inequality is proved via the Cauchy-Schwarz inequality applied to $X \\cdot \\mathbf{1}_{X>0}$"
+    },
+    {
+      "id": "prob-method-alteration",
+      "relationship": "related",
+      "description": "The alteration method often combines with second moment bounds: first prove a structure exists with high probability, th"
+    }
   ],
   "leanFile": {
     "imports": [

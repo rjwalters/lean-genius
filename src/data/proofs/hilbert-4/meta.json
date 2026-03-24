@@ -141,7 +141,11 @@
     ]
   },
   "relatedProofs": [
-    "desargues-theorem"
+    {
+      "id": "desargues-theorem",
+      "relationship": "related",
+      "description": "Desargues' theorem is central to Hamel's 2D characterization: Desarguesian projective metrics are exactly Minkowski metr"
+    }
   ],
   "leanFile": {
     "imports": [

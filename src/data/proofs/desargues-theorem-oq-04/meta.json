@@ -249,8 +249,20 @@
     }
   ],
   "relatedProofs": [
-    "desargues-theorem-oq-01",
-    "desargues-theorem-oq-02",
-    "desargues-theorem"
+    {
+      "id": "desargues-theorem-oq-01",
+      "relationship": "extends",
+      "description": "Builds on the algebraic cross-product framework introduced in OQ-01 (Desargues over any CommRing) to prove the self-dual"
+    },
+    {
+      "id": "desargues-theorem-oq-02",
+      "relationship": "complementary",
+      "description": "OQ-02 exhibits the Moulton plane where Desargues fails; this OQ-04 establishes self-duality in coordinatizable (Desargue"
+    },
+    {
+      "id": "desargues-theorem",
+      "relationship": "extends",
+      "description": "The base Desargues formalization; this entry adds self-duality (collinear = concurrent by rfl in homogeneous coordinates"
+    }
   ]
 }

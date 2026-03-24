@@ -199,11 +199,31 @@
     }
   ],
   "relatedProofs": [
-    "erdos-310",
-    "erdos-321",
-    "erdos-148",
-    "e-transcendental",
-    "basel-problem"
+    {
+      "id": "erdos-310",
+      "relationship": "related",
+      "description": "Related Erdős problem on Egyptian fractions — shares the theme of unit fraction decompositions and the combinatorial con"
+    },
+    {
+      "id": "erdos-321",
+      "relationship": "related",
+      "description": "Related Erdős problem on subset sums of unit fractions — a different quantitative question about the same family of Egyp"
+    },
+    {
+      "id": "erdos-148",
+      "relationship": "related",
+      "description": "Related Erdős problem on unit fraction representations — another facet of the Egyptian fraction theory that underpins th"
+    },
+    {
+      "id": "e-transcendental",
+      "relationship": "related",
+      "description": "The constant $e$ appears in the answer $A(N) = (1-1/e+o(1))N$ through its connection to the harmonic series $\\sum 1/n \\a"
+    },
+    {
+      "id": "basel-problem",
+      "relationship": "related",
+      "description": "Both involve sums of reciprocals: the Basel problem evaluates $\\sum 1/n^2 = \\pi^2/6$, while Problem #300 concerns subset"
+    }
   ],
   "references": [
     {

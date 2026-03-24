@@ -122,7 +122,11 @@
     }
   ],
   "relatedProofs": [
-    "angle-trisection"
+    {
+      "id": "angle-trisection",
+      "relationship": "related",
+      "description": "Both concern independence/impossibility results in classical geometry. Angle trisection is impossible with compass and s"
+    }
   ],
   "leanFile": {
     "imports": [

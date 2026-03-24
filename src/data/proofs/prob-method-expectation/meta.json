@@ -153,10 +153,26 @@
     ]
   },
   "relatedProofs": [
-    "prob-method-alteration",
-    "prob-method-second-moment",
-    "prob-method-lovasz-local",
-    "prob-method-applications"
+    {
+      "id": "prob-method-alteration",
+      "relationship": "extends",
+      "description": "The alteration method extends the first moment method by allowing a deterministic fix-up step after random construction"
+    },
+    {
+      "id": "prob-method-second-moment",
+      "relationship": "extends",
+      "description": "The second moment method provides concentration bounds beyond what the first moment method can achieve"
+    },
+    {
+      "id": "prob-method-lovasz-local",
+      "relationship": "extends",
+      "description": "The Lovasz Local Lemma handles dependencies that the simple first moment method cannot"
+    },
+    {
+      "id": "prob-method-applications",
+      "relationship": "used-by",
+      "description": "The first moment principle is used throughout the applications module for Ramsey bounds and chromatic number estimates"
+    }
   ],
   "leanFile": {
     "imports": [

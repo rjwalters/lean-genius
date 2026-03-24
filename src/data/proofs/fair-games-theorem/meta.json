@@ -157,8 +157,16 @@
     ]
   },
   "relatedProofs": [
-    "ballot-problem",
-    "law-of-large-numbers"
+    {
+      "id": "ballot-problem",
+      "relationship": "related",
+      "description": "The ballot problem studies first-passage times of random walks, which are stopping times for martingales — the Optional "
+    },
+    {
+      "id": "law-of-large-numbers",
+      "relationship": "related",
+      "description": "LLN shows sample averages converge to the mean; the Optional Stopping Theorem shows that stopping strategies cannot expl"
+    }
   ],
   "leanFile": {
     "imports": [

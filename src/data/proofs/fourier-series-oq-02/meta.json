@@ -193,7 +193,15 @@
     }
   ],
   "relatedProofs": [
-    "fourier-series",
-    "fourier-series-oq-03"
+    {
+      "id": "fourier-series",
+      "relationship": "extends",
+      "description": "Provides quantitative decay rates for Fourier coefficients under Hölder regularity, extending the qualitative Riemann-Le"
+    },
+    {
+      "id": "fourier-series-oq-03",
+      "relationship": "related",
+      "description": "Both study Fourier convergence under regularity conditions. OQ-03 addresses pointwise convergence for BV functions; OQ-0"
+    }
   ]
 }

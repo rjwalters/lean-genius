@@ -224,8 +224,20 @@
     "https://erdosproblems.com/27"
   ],
   "relatedProofs": [
-    "erdos-2",
-    "erdos-7",
-    "erdos-8"
+    {
+      "id": "erdos-2",
+      "relationship": "extends",
+      "description": "Problem #2 concerns exact covering systems. Problem #27 relaxes the coverage requirement, asking about systems that cove"
+    },
+    {
+      "id": "erdos-7",
+      "relationship": "related",
+      "description": "Problem #7 (odd coverings) and Problem #27 (almost coverings) are both structural extensions of the basic covering syste"
+    },
+    {
+      "id": "erdos-8",
+      "relationship": "related",
+      "description": "Problem #8 (monochromatic coverings) is another variant of covering systems. Problems #2, #7, #8, and #27 form a family "
+    }
   ]
 }

@@ -194,11 +194,30 @@
     }
   ],
   "relatedProofs": [
-    "herons-formula",
-    "pythagorean-theorem",
-    "law-of-cosines",
-    "triangle-angle-sum",
-    "feuerbachs-theorem",
-    "isosceles-triangle"
+    {
+      "id": "herons-formula",
+      "relationship": "related",
+      "description": "Both concern triangle geometry: Heron's formula computes area from side lengths, while Ceva's theorem characterizes when"
+    },
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "The Pythagorean theorem provides the metric foundation for triangle geometry, while Ceva's theorem adds the affine-proje"
+    },
+    {
+      "id": "law-of-cosines",
+      "relationship": "related",
+      "description": "Both are fundamental triangle theorems: the law of cosines generalizes Pythagoras metrically, while Ceva's theorem chara"
+    },
+    {
+      "id": "triangle-angle-sum",
+      "relationship": "foundational",
+      "description": "The angle sum property (180 degrees) is the most basic triangle theorem, while Ceva's theorem is a deeper structural res"
+    },
+    {
+      "id": "feuerbachs-theorem",
+      "relationship": "related",
+      "description": "Both are classical triangle geometry results: Ceva's theorem concerns cevian concurrency, while Feuerbach's theorem conc"
+    }
   ]
 }

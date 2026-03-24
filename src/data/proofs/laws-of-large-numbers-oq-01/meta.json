@@ -171,6 +171,10 @@
     }
   ],
   "relatedProofs": [
-    "laws-of-large-numbers"
+    {
+      "id": "laws-of-large-numbers",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    }
   ]
 }

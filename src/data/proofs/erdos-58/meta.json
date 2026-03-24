@@ -161,7 +161,15 @@
     "https://erdosproblems.com/58"
   ],
   "relatedProofs": [
-    "erdos-19",
-    "erdos-1011"
+    {
+      "id": "erdos-19",
+      "relationship": "related",
+      "description": "Problem #19 (EFL) and Problem #58 both concern chromatic numbers of graphs with structural constraints. EFL constrains e"
+    },
+    {
+      "id": "erdos-1011",
+      "relationship": "related",
+      "description": "Problem #1011 on chromatic numbers is directly related: both study how graph structure constrains the chromatic number"
+    }
   ]
 }

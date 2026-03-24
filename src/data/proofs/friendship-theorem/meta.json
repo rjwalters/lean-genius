@@ -145,8 +145,16 @@
     }
   ],
   "relatedProofs": [
-    "friendship-theorem-oq-01",
-    "erdos-szekeres"
+    {
+      "id": "friendship-theorem-oq-01",
+      "relationship": "extended-by",
+      "description": "Sub-entry proving the regularity dichotomy and spectral analysis components used by the main theorem"
+    },
+    {
+      "id": "erdos-szekeres",
+      "relationship": "related",
+      "description": "Both are celebrated results in combinatorics by Erdős and collaborators — Erdős-Szekeres uses pigeonhole while friendshi"
+    }
   ],
   "leanFile": {
     "imports": [

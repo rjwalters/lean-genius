@@ -167,8 +167,16 @@
     }
   ],
   "relatedProofs": [
-    "erdos-23",
-    "chinese-remainder-constructive"
+    {
+      "id": "erdos-23",
+      "relationship": "related",
+      "description": "Problem #23 asks about the minimum modulus of covering systems with distinct moduli — directly related to the structural"
+    },
+    {
+      "id": "chinese-remainder-constructive",
+      "relationship": "foundational",
+      "description": "The Chinese Remainder Theorem is the key tool for constructing covering systems from residue classes. Any covering syste"
+    }
   ],
   "references": [
     {

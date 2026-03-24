@@ -239,10 +239,30 @@
     }
   ],
   "relatedProofs": [
-    "geometric-series",
-    "geometric-series-oq-01",
-    "harmonic-divergence",
-    "cayley-hamilton",
-    "cauchy-schwarz"
+    {
+      "id": "geometric-series",
+      "relationship": "extends",
+      "description": "The parent proof establishes the scalar geometric series ∑ r^n = 1/(1-r) for |r| < 1. This OQ generalizes from scalars t"
+    },
+    {
+      "id": "geometric-series-oq-01",
+      "relationship": "related",
+      "description": "Sibling OQ analyzing boundary behavior at |r| = 1 (divergence, Grandi's series, Cesàro summability). This file works in "
+    },
+    {
+      "id": "harmonic-divergence",
+      "relationship": "related",
+      "description": "Contrast in convergence behavior: the harmonic series diverges despite scalar terms tending to zero, while the Neumann s"
+    },
+    {
+      "id": "cayley-hamilton",
+      "relationship": "related",
+      "description": "Both involve matrix polynomial identities. Cayley-Hamilton says a matrix satisfies its own characteristic polynomial; th"
+    },
+    {
+      "id": "cauchy-schwarz",
+      "relationship": "foundational",
+      "description": "The Cauchy-Schwarz inequality underpins the norm estimates used throughout: ‖T^n‖ ≤ ‖T‖^n relies on the submultiplicativ"
+    }
   ]
 }

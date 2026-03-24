@@ -253,13 +253,30 @@
     }
   ],
   "relatedProofs": [
-    "hilbert-10",
-    "angle-trisection",
-    "dissection-of-cubes-oq-01",
-    "dissection-of-cubes-oq-02",
-    "abel-ruffini",
-    "erdos-szekeres",
-    "ramseys-theorem",
-    "hilbert-3"
+    {
+      "id": "hilbert-10",
+      "relationship": "thematic",
+      "description": "Both are impossibility results: cube dissection shows no finite decomposition into distinct smaller cubes exists, while "
+    },
+    {
+      "id": "angle-trisection",
+      "relationship": "thematic",
+      "description": "Both are geometric impossibility results: angle trisection shows certain constructions are impossible with compass and s"
+    },
+    {
+      "id": "dissection-of-cubes-oq-01",
+      "relationship": "extended-by",
+      "description": "OQ-01 formalizes collision pairs and minimum collision lower bounds — extending the cube dissection impossibility with q"
+    },
+    {
+      "id": "dissection-of-cubes-oq-02",
+      "relationship": "extended-by",
+      "description": "OQ-02 explores further extensions and variations of the cube dissection impossibility"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "thematic",
+      "description": "Both are structural impossibility results where the proof identifies a fundamental obstruction: Abel-Ruffini's obstructi"
+    }
   ]
 }

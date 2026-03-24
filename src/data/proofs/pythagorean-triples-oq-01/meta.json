@@ -243,9 +243,21 @@
     }
   ],
   "relatedProofs": [
-    "pythagorean-theorem",
-    "infinitude-primes",
-    "euler-totient"
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "extends",
+      "description": "The Pythagorean theorem establishes a^2 + b^2 = c^2; this entry counts how many primitive solutions exist with c <= N, g"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The coprime fraction 6/pi^2 = 1/zeta(2) arises from the probability that two random integers are coprime, which depends "
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient function underlies the coprimality analysis: the density of coprime pairs in the lattice point count use"
+    }
   ],
   "references": [
     {

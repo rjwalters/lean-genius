@@ -113,9 +113,21 @@
     }
   ],
   "relatedProofs": [
-    "erdos-38",
-    "erdos-469",
-    "lagrange-four-squares"
+    {
+      "id": "erdos-38",
+      "relationship": "related",
+      "description": "Both concern additive bases and density: #38 studies essential components and density boosting via Schnirelmann's method"
+    },
+    {
+      "id": "erdos-469",
+      "relationship": "related",
+      "description": "Both ask about density/convergence properties of number-theoretic sets defined by divisor/representability conditions"
+    },
+    {
+      "id": "lagrange-four-squares",
+      "relationship": "foundational",
+      "description": "Lagrange's four-square theorem proves that the squares form an additive basis of order 4. This is the classical example "
+    }
   ],
   "leanFile": {
     "imports": [],

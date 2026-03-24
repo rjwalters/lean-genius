@@ -184,9 +184,21 @@
     }
   ],
   "relatedProofs": [
-    "infinitude-primes",
-    "prime-number-theorem",
-    "bertrands-postulate"
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "PNT and prime distribution underpin the representation counting; the infinitude of primes ensures f_A(n) is well-defined"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "uses",
+      "description": "The PNT ($\\pi(n) \\sim n/\\log n$) is the core tool: it ensures enough primes below $n$ to provide many representations $n"
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Both concern prime distribution guarantees. Bertrand provides at least one prime in $(n, 2n)$; Problem #237 uses the ful"
+    }
   ],
   "leanFile": {
     "imports": [

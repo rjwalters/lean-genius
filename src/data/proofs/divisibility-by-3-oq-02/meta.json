@@ -180,11 +180,31 @@
     }
   ],
   "relatedProofs": [
-    "divisibility-by-3",
-    "divisibility-by-3-oq-01",
-    "chinese-remainder-constructive",
-    "divisibility-truncation-general",
-    "wilsons-theorem"
+    {
+      "id": "divisibility-by-3",
+      "relationship": "extends",
+      "description": "Generalizes the parent base-10 divisibility-by-3 and divisibility-by-9 rules to arbitrary bases b ≥ 3, with consistency "
+    },
+    {
+      "id": "divisibility-by-3-oq-01",
+      "relationship": "related",
+      "description": "OQ-01 extends the base-10 divisibility rule in a different direction; this OQ-02 generalizes to arbitrary bases, while O"
+    },
+    {
+      "id": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "Both formalize modular arithmetic: CRT shows how to combine congruences mod coprime moduli, while the base-b divisibilit"
+    },
+    {
+      "id": "divisibility-truncation-general",
+      "relationship": "complementary",
+      "description": "Truncation-based divisibility tests complement digit-sum tests: truncation works for divisors d where b ≡ 0 (mod d), whi"
+    },
+    {
+      "id": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Both connect number theory to modular arithmetic: Wilson's theorem characterizes primes via factorial congruences, while"
+    }
   ],
   "references": [
     {

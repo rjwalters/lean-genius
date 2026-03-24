@@ -180,14 +180,31 @@
     }
   ],
   "relatedProofs": [
-    "derangements",
-    "euler-totient",
-    "binomial-theorem",
-    "combinations-formula",
-    "subset-count",
-    "birthday-problem",
-    "infinitude-primes",
-    "fundamental-arithmetic"
+    {
+      "id": "derangements",
+      "relationship": "applies",
+      "description": "The derangement formula D(n) = n!·Σ(-1)^k/k! is a direct application of inclusion-exclusion to count permutations with n"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "applies",
+      "description": "Euler's totient φ(n) = n·Π(1-1/p) uses inclusion-exclusion to count integers coprime to n"
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial theorem explains why the alternating sum counts each element exactly once: Σ(-1)^(k+1)C(k,j) = 1 for k ≥ 1"
+    },
+    {
+      "id": "combinations-formula",
+      "relationship": "prerequisite",
+      "description": "Binomial coefficients C(n,k) appear in the general n-set inclusion-exclusion formula as weights on intersection terms"
+    },
+    {
+      "id": "subset-count",
+      "relationship": "related",
+      "description": "The number of subsets of a finite set connects to inclusion-exclusion through the power set structure"
+    }
   ],
   "leanFile": {
     "imports": [

@@ -210,11 +210,30 @@
     }
   ],
   "relatedProofs": [
-    "de-moivre",
-    "de-moivre-oq-01",
-    "de-moivre-oq-03",
-    "euler-identity",
-    "fourier-series",
-    "primitive-roots"
+    {
+      "id": "de-moivre",
+      "relationship": "ancestor",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    },
+    {
+      "id": "de-moivre-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling OQ-01 establishes T_n(cos θ) = cos(nθ) and computes explicit Chebyshev polynomials; this entry derives algebraic"
+    },
+    {
+      "id": "de-moivre-oq-03",
+      "relationship": "sibling",
+      "description": "Another sibling open question from De Moivre's theorem exploring further extensions."
+    },
+    {
+      "id": "euler-identity",
+      "relationship": "foundational",
+      "description": "Euler's formula e^{iθ} = cos θ + i sin θ is the foundation from which De Moivre's theorem follows, and thus underpins th"
+    },
+    {
+      "id": "fourier-series",
+      "relationship": "related",
+      "description": "The product-to-sum identity 2·T_m(x)·T_n(x) = T_{m+n}(x) + T_{m-n}(x) is the Chebyshev analogue of the trigonometric pro"
+    }
   ]
 }

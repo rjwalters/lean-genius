@@ -185,7 +185,15 @@
     }
   ],
   "relatedProofs": [
-    "erdos-22",
-    "erdos-24"
+    {
+      "id": "erdos-22",
+      "relationship": "related",
+      "description": "Problem #22 (Ramsey-Turán) and Problem #61 (Erdős-Hajnal) both study the interaction between forbidden subgraphs and gra"
+    },
+    {
+      "id": "erdos-24",
+      "relationship": "related",
+      "description": "Problem #24 and Problem #61 both concern extremal properties of graphs avoiding specific substructures"
+    }
   ]
 }

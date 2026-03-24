@@ -177,13 +177,31 @@
     ]
   },
   "relatedProofs": [
-    "erdos-507",
-    "erdos-506",
-    "erdos-1026",
-    "erdos-500",
-    "law-of-cosines",
-    "pythagorean-theorem",
-    "area-of-circle"
+    {
+      "id": "erdos-507",
+      "relationship": "related",
+      "description": "Heilbronn's triangle problem — another extremal problem on point configurations in the plane, asking for the smallest tr"
+    },
+    {
+      "id": "erdos-506",
+      "relationship": "related",
+      "description": "Minimum circles from n points — a sibling discrete geometry problem on point set configurations and incidence geometry"
+    },
+    {
+      "id": "erdos-1026",
+      "relationship": "related",
+      "description": "Monotonic subsequence optimization — uses the classical Erdős–Szekeres theorem (1935), which shares foundational roots w"
+    },
+    {
+      "id": "erdos-500",
+      "relationship": "related",
+      "description": "Another Erdős discrete geometry problem in the 500-series — part of the same cluster of extremal point-set problems that"
+    },
+    {
+      "id": "law-of-cosines",
+      "relationship": "foundational",
+      "description": "The law of cosines $c^2 = a^2 + b^2 - 2ab\\cos C$ provides the algebraic foundation for computing angles between points v"
+    }
   ],
   "references": [
     {
