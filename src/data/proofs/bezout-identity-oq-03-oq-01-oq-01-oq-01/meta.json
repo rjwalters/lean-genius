@@ -16,7 +16,7 @@
       "chinese-remainder",
       "research"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -49,7 +49,7 @@
     "dateAdded": "2026-03-22",
     "axiomCount": 0,
     "lineCount": 161,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "0 axioms, 0 sorries. Core isomorphism derived from Mathlib's Ideal.quotientInfRingEquivPiQuotient."
   },
   "overview": {
     "historicalContext": "The Chinese Remainder Theorem was first generalized from integers to arbitrary rings by Emmy Noether's school in the early 20th century. In modern commutative algebra, the CRT is stated for ideals: if I and J are coprime (meaning I + J = R), then R/(I ∩ J) ≅ R/I × R/J. This is Proposition 1.10 in Atiyah-Macdonald. The k-fold version states R/(⨅ Iᵢ) ≅ ∏ R/Iᵢ for pairwise coprime ideals. The key structural insight is that coprime ideals satisfy I ∩ J = I · J, connecting the intersection (lattice operation) with the product (ring operation).",
