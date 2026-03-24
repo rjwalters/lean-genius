@@ -126,10 +126,42 @@
     },
     {
       "id": "computational",
-      "title": "Computational Verification",
+      "title": "Computational Verification (Part 1)",
       "startLine": 138,
-      "endLine": 162,
-      "summary": "Decidable check function for Form A membership and collective verification of all eight examples.",
+      "endLine": 166,
+      "summary": "Verified examples and non-examples via `interval_cases` + `decide`. Includes the exhaustive case analysis showing $37$ is not Form A ($36 = 2^k \\cdot q$ for $k = 0,\\ldots,4$ gives non-prime $q$)."
+    },
+    {
+      "id": "non-examples",
+      "title": "Non-Form-A and Non-Form-B Proofs",
+      "startLine": 167,
+      "endLine": 219,
+      "summary": "Proves $61$ and $71$ are not Form A ($60 = 2^2 \\cdot 15$, $70 = 2 \\cdot 35$ have composite odd parts). Proves $71$ is not Form B either ($3 \\nmid 70$, so no factorization $2^k \\cdot 3^l \\cdot q$ with $q$ prime). Uses `interval_cases` on bounded exponents with primality refutation by `decide`.",
+      "mathContext": "For $p = 61$: $60 = 2^k \\cdot q$ gives $q \\in \\{60, 30, 15\\}$ (all composite) for $k \\leq 2$, and $2^k > 60$ for $k \\geq 6$. For $p = 71$: $70 = 2 \\cdot 5 \\cdot 7$ is $3$-free, so no factorization $2^k \\cdot 3^l \\cdot q$ with $q$ prime and $l > 0$ exists."
+    },
+    {
+      "id": "strict-inclusion",
+      "title": "Strict Inclusion: Form A ⊊ Form B",
+      "startLine": 221,
+      "endLine": 231,
+      "summary": "Combines verified examples to give two witnesses for the strict inclusion Form A $\\subsetneq$ Form B: $37$ and $61$ are each Form B but not Form A.",
+      "mathContext": "$\\{p : \\texttt{IsTwoTimePrimePlusOne}\\, p\\} \\subsetneq \\{p : \\texttt{IsTwoThreeTimePrimePlusOne}\\, p\\}$ witnessed by $37 = 2^2 \\cdot 3^2 + 1$ and $61 = 2^2 \\cdot 3 \\cdot 5 + 1$."
+    },
+    {
+      "id": "structural-2",
+      "title": "Structural Theorems (Extended)",
+      "startLine": 233,
+      "endLine": 268,
+      "summary": "Five structural results: `form_a_implies_b` ($l = 0$ specialization), `sophie_germain_case` (safe primes embed into Form A via $k = 1$), `safe_prime_is_form_a`, `smooth_structure` ($p - 1 = 2^k q$), and `conjecture_a_implies_b` (Set.Infinite monotonicity).",
+      "mathContext": "The inclusion chain $\\{\\text{safe primes}\\} \\xrightarrow{k=1} \\{\\text{Form A}\\} \\xrightarrow{l=0} \\{\\text{Form B}\\}$ gives $\\text{Conj A} \\Rightarrow \\text{Conj B}$. `smooth_structure` extracts $p - 1 = 2^k q$ from the Form A predicate, exposing the $\\{2, q\\}$-smooth factorization of $p - 1$."
+    },
+    {
+      "id": "computational-2",
+      "title": "Decidable Check and Bulk Verification",
+      "startLine": 270,
+      "endLine": 301,
+      "summary": "Defines `checkTwoTimePrime` as a decidable Bool check via `List.range` over possible exponents $k$. Proves `fourteen_examples_le_100`: all 14 Form A primes $\\leq 100$ ($3, 5, 7, 11, 13, 23, 29, 41, 47, 53, 59, 83, 89, 97$) satisfy `IsTwoTimePrimePlusOne`, collecting the individual verified examples.",
+      "mathContext": "The 14 Form A primes $\\leq 100$ are verified by case analysis on the list membership. The decidable check iterates $k$ from $0$ to $p-1$, computing $2^k$ and testing whether $(p-1)/2^k$ is prime. Six additional examples beyond the earlier eight: $23 = 2 \\cdot 11 + 1$, $47 = 2 \\cdot 23 + 1$, $53 = 2^2 \\cdot 13 + 1$, $59 = 2 \\cdot 29 + 1$, $83 = 2 \\cdot 41 + 1$, $89 = 2^3 \\cdot 11 + 1$.",
       "mathContext": "Algorithm: for each $k = 0, \\ldots, p-1$, check if $2^k \\mid (p-1)$ and $(p-1)/2^k$ is prime. Collectively verifies $\\forall p \\in \\{3,5,7,11,13,29,41,97\\}: \\text{IsTwoTimePrimePlusOne}(p)$."
     }
   ],
