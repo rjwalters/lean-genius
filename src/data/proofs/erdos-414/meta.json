@@ -68,6 +68,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Problem statement: do orbits of $h(n) = n + \\tau(n)$ all eventually merge? Module docstring describes the iteration $n \\to n + \\tau(n)$, OEIS A064491, and the single-orbit conjecture. Imports Mathlib for natural number basics, divisor counting, and Finset.",
+      "mathContext": "$h : \\mathbb{N} \\to \\mathbb{N}$, $h(n) = n + \\tau(n)$ where $\\tau(n) = \\sum_{d \\mid n} 1$. The iteration produces orbits $n, h(n), h^2(n), \\ldots$ conjectured to all merge into a single trajectory."
+    },
+    {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 26,
@@ -97,7 +105,7 @@
       "startLine": 113,
       "endLine": 125,
       "summary": "**orbit_1_start**: 1 → 2 → 4 → 7 → 9 → ... (OEIS A064491). **orbit_3_merges_with_1**: h²(3) = h³(1) = 7, the simplest non-trivial merge. The collision occurs because h(4) = h(5) = 7 — different inputs producing the same output.",
-      "mathContext": "Orbit from 1: $1 \\to 2 \\to 4 \\to 7 \\to 9 \\to \\ldots$ Merge: $h^2(3) = h(5) = 7 = h(4) = h^3(1)$."
+      "mathContext": "Orbit from 1: $1 \\to 2 \\to 4 \\to 7 \\to 9 \\to 12 \\to 18 \\to 24 \\to \\ldots$ (OEIS A064491). Orbit from 3: $3 \\to 5 \\to 7 \\to \\ldots$ Merge at step 2/3: $h^2(3) = h(5) = 7 = h(4) = h^3(1)$. The collision $h(4) = h(5) = 7$ is a 'collision point' — two inputs mapping to the same output because $\\tau(4) = 3$ and $\\tau(5) = 2$ compensate."
     },
     {
       "id": "growth-rate",
