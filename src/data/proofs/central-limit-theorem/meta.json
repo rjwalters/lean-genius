@@ -154,6 +154,46 @@
       "endLine": 390,
       "summary": "Links to information geometry, stable distributions, and modern applied topology.",
       "mathContext": "Links to information geometry, stable distributions, and modern applied topology."
+    },
+    {
+      "id": "general-clt-proof",
+      "title": "General CLT via Standardization",
+      "startLine": 380,
+      "endLine": 409,
+      "summary": "Proves the general CLT for non-standard distributions by reducing to the standardized case via the affine transformation $Y_i = (X_i - \\mu)/\\sigma$. The normalized sum $(X_1 + \\cdots + X_n - n\\mu)/(\\sigma\\sqrt{n})$ equals $(Y_1 + \\cdots + Y_n)/\\sqrt{n}$, so `charFun_converges_to_gaussian` applies.",
+      "mathContext": "The standardization: if $X$ has mean $\\mu$ and variance $\\sigma^2$, then $Y = (X-\\mu)/\\sigma$ has mean 0 and variance 1. Characteristic function: $\\varphi_Y(s) = e^{-is\\mu/\\sigma} \\varphi_X(s/\\sigma)$."
+    },
+    {
+      "id": "renormalization-space",
+      "title": "Wasserstein Space and Renormalization Map",
+      "startLine": 411,
+      "endLine": 484,
+      "summary": "Defines the renormalization map $T_n(\\mu)$ as the distribution of $(X_1 + \\cdots + X_n)/\\sqrt{n}$ where $X_i \\sim \\mu$ i.i.d. Axiomatizes `renormalization_measure` and proves `gaussian_is_fixed_point`: the Gaussian is invariant under $T_n$ (since the sum of $n$ i.i.d. $N(0,1)$ scaled by $1/\\sqrt{n}$ is $N(0,1)$).",
+      "mathContext": "The renormalization: $T_n(\\mu) = (\\mu^{*n})_{\\text{scale}(1/\\sqrt{n})}$ where $\\mu^{*n}$ is $n$-fold convolution. Fixed point: $T_n(N(0,1)) = N(0,1)$ because $\\text{Var}(\\bar{X}_n) = \\sigma^2/n \\cdot n = \\sigma^2$."
+    },
+    {
+      "id": "gaussian-attractor",
+      "title": "Gaussian as Attractor of Renormalization Flow",
+      "startLine": 486,
+      "endLine": 521,
+      "summary": "Axiomatizes and proves `gaussian_is_attractor`: all standardized distributions with finite third moment converge to $N(0,1)$ under iterated renormalization $T_n$. This is the CLT restated as a dynamical systems theorem — the Gaussian is the global attractor in the space of probability measures.",
+      "mathContext": "The dynamical CLT: $T_n(\\mu) \\xrightarrow{n \\to \\infty} N(0,1)$ in the weak topology for all $\\mu$ with $\\mathbb{E}[X] = 0$, $\\mathbb{E}[X^2] = 1$, $\\mathbb{E}[|X|^3] < \\infty$. The basin of attraction is all of $\\mathcal{P}_2(\\mathbb{R})$ minus the degenerate measures."
+    },
+    {
+      "id": "why-gaussian",
+      "title": "Why the Gaussian: Max Entropy and Self-Duality",
+      "startLine": 523,
+      "endLine": 560,
+      "summary": "Five characterizations of the Gaussian: (1) fixed point of renormalization, (2) maximum entropy at fixed variance, (3) minimum Fisher information, (4) self-dual under Fourier transform, (5) $\\alpha = 2$ stable distribution. Proves `gaussian_self_dual`: $\\varphi_{N(0,1)}(t) = e^{-t^2/2}$ via `gaussian_charFun`.",
+      "mathContext": "Self-duality: $\\hat{g}(t) = \\frac{1}{\\sqrt{2\\pi}} \\int e^{-x^2/2} e^{-itx} dx = e^{-t^2/2} = g(t)$. The Gaussian is the unique normalized eigenfunction of the Fourier transform with eigenvalue 1."
+    },
+    {
+      "id": "extensions",
+      "title": "Extensions: Berry-Esseen and Stable Distributions",
+      "startLine": 562,
+      "endLine": 618,
+      "summary": "Berry-Esseen bound (placeholder): the rate of convergence in CLT is $O(\\rho/\\sqrt{n})$ where $\\rho$ is the third absolute moment. Stable distributions (placeholder): for $0 < \\alpha \\leq 2$, $\\alpha$-stable laws replace the Gaussian when variance is infinite. Conclusion comments.",
+      "mathContext": "Berry-Esseen: $\\sup_x |F_n(x) - \\Phi(x)| \\leq \\frac{C \\rho}{\\sqrt{n}}$ where $C \\leq 0.4748$ (Shevtsova 2011). For $\\alpha$-stable laws: $(X_1 + \\cdots + X_n)/n^{1/\\alpha}$ converges when $\\mathbb{E}[|X|^\\alpha] < \\infty$ but $\\mathbb{E}[|X|^2] = \\infty$ for $\\alpha < 2$."
     }
   ],
   "references": [

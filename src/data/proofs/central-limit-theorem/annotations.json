@@ -336,5 +336,75 @@
       "emergence",
       "mathematical inevitability"
     ]
+  },
+  {
+    "id": "ann-clt-fixed-point",
+    "proofId": "central-limit-theorem",
+    "range": {
+      "startLine": 478,
+      "endLine": 484
+    },
+    "type": "theorem",
+    "title": "Gaussian Fixed Point of Renormalization",
+    "content": "`gaussian_is_fixed_point` proves $T_n(N(0,1)) = N(0,1)$: the Gaussian is invariant under the renormalization map. The proof delegates to `gaussian_fixed_point_axiom`, which encodes that the sum of $n$ i.i.d. $N(0,1)$ variables, scaled by $1/\\sqrt{n}$, is again $N(0,1)$.\n\nThis is the topological essence of the CLT: the Gaussian is special because it is the *only* fixed point of $T_n$ among probability measures with variance 1 (up to scaling).",
+    "mathContext": "Fixed point property: if $X_i \\sim N(0,1)$ i.i.d., then $\\frac{X_1 + \\cdots + X_n}{\\sqrt{n}} \\sim N(0, n/n) = N(0,1)$. Uniqueness: the Gaussian is the only stable distribution with $\\alpha = 2$, hence the only fixed point in $\\mathcal{P}_2(\\mathbb{R})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fixed point",
+      "renormalization group",
+      "stable distributions",
+      "Wasserstein space"
+    ],
+    "prerequisites": [
+      "renormalizationMap",
+      "stdGaussian",
+      "gaussian_fixed_point_axiom"
+    ]
+  },
+  {
+    "id": "ann-clt-attractor",
+    "proofId": "central-limit-theorem",
+    "range": {
+      "startLine": 506,
+      "endLine": 519
+    },
+    "type": "theorem",
+    "title": "Gaussian as Global Attractor",
+    "content": "`gaussian_is_attractor` proves that every standardized distribution with finite third moment converges to $N(0,1)$ under the renormalization flow $T_n$. This is the CLT reformulated as a dynamical systems theorem: the Gaussian is not just *a* limit but the *universal attractor* in the space of probability measures.\n\nThe proof delegates to `gaussian_attractor_axiom`, which encodes the convergence $T_n(\\mu) \\to N(0,1)$ in the weak topology via `Filter.Tendsto` and `nhds`.",
+    "mathContext": "The CLT as dynamics: $T_n(\\mu) \\to N(0,1)$ for all $\\mu \\in \\mathcal{P}_2(\\mathbb{R})$ with $\\int x\\, d\\mu = 0$, $\\int x^2\\, d\\mu = 1$. This perspective, due to Sinai and others, reveals the CLT as a universality phenomenon analogous to the renormalization group in statistical mechanics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "attractor",
+      "universality",
+      "renormalization group",
+      "dynamical systems"
+    ],
+    "prerequisites": [
+      "gaussian_attractor_axiom",
+      "MeasureTheory.IsProbabilityMeasure"
+    ]
+  },
+  {
+    "id": "ann-clt-self-dual",
+    "proofId": "central-limit-theorem",
+    "range": {
+      "startLine": 554,
+      "endLine": 558
+    },
+    "type": "insight",
+    "title": "Gaussian Self-Duality Under Fourier Transform",
+    "content": "`gaussian_self_dual` proves $\\varphi_{N(0,1)}(t) = e^{-t^2/2}$: the Gaussian's characteristic function has the same functional form as the Gaussian itself. This self-duality is a key characterization — the Gaussian is (up to scaling) the unique $L^2$ eigenfunction of the Fourier transform with eigenvalue 1.\n\nThe one-line proof `exact gaussian_charFun t` delegates to the axiomatized characteristic function formula.",
+    "mathContext": "Self-duality: $\\mathcal{F}[e^{-x^2/2}](t) = e^{-t^2/2}$. More precisely, $e^{-x^2/2}$ is a fixed point of the Fourier transform on $L^2(\\mathbb{R})$. The four eigenfunctions of $\\mathcal{F}$ (Hermite functions) have eigenvalues $1, -i, -1, i$; the Gaussian is the $\\lambda = 1$ case.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fourier transform",
+      "self-duality",
+      "Hermite functions",
+      "eigenfunction"
+    ],
+    "prerequisites": [
+      "gaussian_charFun",
+      "characteristicFunction"
+    ]
   }
 ]
