@@ -20,7 +20,8 @@
     "axiomCount": 4,
     "assumptions": "4 axiom declarations: bleicher_erdos_lower (R(N) >= N/log N), bleicher_erdos_upper (R(N) <= C*(N/log N)*log log N), main_term_n_over_log_n (R(N) = Theta(N/log N)), erdos_321_asymptotics (precise asymptotic form exists)",
     "badge": "axiom",
-    "proofRepoPath": "Proofs/Erdos321Problem.lean"
+    "proofRepoPath": "Proofs/Erdos321Problem.lean",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
