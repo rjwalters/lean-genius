@@ -133,7 +133,7 @@
     {
       "id": "smooth-numbers",
       "title": "Part I: Smooth Numbers",
-      "startLine": 37,
+      "startLine": 36,
       "endLine": 48,
       "summary": "Defines **IsSmooth m B** (line 42–43: $m \\geq 1$ and all prime factors $\\leq B$) and axiomatizes **largestPrimeFactor** (line 48: `noncomputable axiom`). The Dickman-de Bruijn function governs the density of $B$-smooth numbers: $\\Psi(x, x^{1/u}) \\sim x\\rho(u)$.",
       "mathContext": "$\\text{IsSmooth}(m, B) \\iff m \\geq 1 \\wedge \\forall p \\mid m,\\, p\\text{ prime} \\implies p \\leq B$. Density: $\\Psi(x, x^{1/u}) \\sim x\\rho(u)$ where $\\rho$ satisfies $u\\rho'(u) = -\\rho(u-1)$, $\\rho(u) = 1$ for $u \\in [0,1]$. Note: `largestPrimeFactor` is a definitional axiom — `IsSmooth` does not depend on it."
@@ -141,7 +141,7 @@
     {
       "id": "consecutive-runs",
       "title": "Part II: Consecutive Smooth Runs",
-      "startLine": 50,
+      "startLine": 49,
       "endLine": 67,
       "summary": "Defines **ConsecutiveSmoothRun m k B** (line 55–56: $k \\geq 2$ consecutive $B$-smooth integers from $m$) and **HasConsecutiveSmoothRun** (line 66–67: existence within $\\{1,\\ldots,n\\}$). Coprimality of consecutive integers makes joint smoothness a multiplicatively independent condition.",
       "mathContext": "$\\text{ConsecutiveSmoothRun}(m, k, B) \\iff k \\geq 2 \\wedge \\forall i < k: \\text{IsSmooth}(m+i, B)$. $\\text{HasConsecutiveSmoothRun}(n,k,B) \\iff \\exists m \\geq 1: m+k-1 \\leq n \\wedge \\text{ConsecutiveSmoothRun}(m,k,B)$. Key difficulty: $\\gcd(m, m+1) = 1$ makes their smoothness multiplicatively independent."
@@ -149,7 +149,7 @@
     {
       "id": "conjecture",
       "title": "Part III: The Erdős-Graham Conjecture",
-      "startLine": 69,
+      "startLine": 68,
       "endLine": 87,
       "summary": "**ErdosConjecture369** (lines 79–87): parametrized by `smoothBound : ℕ → ℕ` (divergent, $\\leq n$), asserts $\\forall k \\geq 2, \\exists N_0, \\forall n \\geq N_0$, a $k$-run of smooth integers exists. Elegantly avoids real exponentiation. Important subtlety: as stated for $\\{1,\\ldots,n\\}$, the small integers $\\{1,\\ldots,k\\}$ would trivially form a smooth run — the non-trivial interpretation requires each $m$ to lie in $[n/2,n]$ or be $m^\\varepsilon$-smooth.",
       "mathContext": "Parametrized: given $B : \\mathbb{N} \\to \\mathbb{N}$ with $B(n) \\to \\infty$ and $B(n) \\leq n$: $\\forall k \\geq 2, \\exists N_0, \\forall n \\geq N_0: \\text{HasConsecutiveSmoothRun}(n,k,B(n))$. The two conditions on `smoothBound` ensure it captures $n^\\varepsilon$ for any fixed $\\varepsilon > 0$ without using real arithmetic."
@@ -157,7 +157,7 @@
     {
       "id": "k2-case",
       "title": "Part IV: The k = 2 Case",
-      "startLine": 89,
+      "startLine": 88,
       "endLine": 105,
       "summary": "**ErdosConjecture369_k2** (lines 99–105): the simplest open instance, fixing $k = 2$ in the general conjecture. Even two consecutive smooth numbers for all large $n$ is unresolved. Erdős-Graham: 'the answer should be affirmative but the problem seems very hard.' The k=2 case is equivalent to: for all large $n$, $\\{1,\\ldots,n\\}$ contains a pair $(m, m+1)$ both $B(n)$-smooth.",
       "mathContext": "$k = 2$: $\\exists N_0, \\forall n \\geq N_0, \\exists m \\leq n: \\text{IsSmooth}(m, B(n)) \\wedge \\text{IsSmooth}(m+1, B(n))$. Note: `ErdosConjecture369_k2` is strictly weaker than `ErdosConjecture369` (the latter implies the former by taking $k=2$), so any proof of `ErdosConjecture369` automatically proves this."
@@ -165,7 +165,7 @@
     {
       "id": "balog-wooley",
       "title": "Part V: Balog-Wooley Partial Result (1998)",
-      "startLine": 107,
+      "startLine": 106,
       "endLine": 120,
       "summary": "Axiomatizes **balog_wooley_infinitely_many** (lines 116–120): for any divergent smoothness bound, infinitely many $n$ have both $n$ and $n+1$ smooth. Uses sieve methods and exponential sums. Falls short of 'all sufficiently large $n$.' This is the `axiom` that encodes a deep mathematical theorem as a Lean assumption.",
       "mathContext": "Balog-Wooley (1998): $\\forall B: \\mathbb{N}\\to\\mathbb{N}$ diverging, $\\forall N_0, \\exists n \\geq N_0: \\text{IsSmooth}(n, B(n)) \\wedge \\text{IsSmooth}(n+1, B(n+1))$. This is the $\\exists^\\infty$ statement, not the $\\forall^\\infty$ conjecture. The proof uses Type I/II exponential sum estimates and the Selberg sieve on arithmetic progressions."
@@ -173,7 +173,7 @@
     {
       "id": "summary",
       "title": "Part VI: Summary",
-      "startLine": 122,
+      "startLine": 121,
       "endLine": 131,
       "summary": "Closing comment (lines 124–129) summarizing the formalization structure: definitions of smooth numbers and consecutive runs, the parametrized conjecture statement, and the Balog-Wooley axiom as the strongest known partial result. Status: OPEN even for $k = 2$.",
       "mathContext": "Current state: $\\exists^\\infty n: \\text{IsSmooth}(n, B(n)) \\wedge \\text{IsSmooth}(n+1, B(n+1))$ (proved, Balog-Wooley) vs. $\\forall^\\infty n: \\text{HasConsecutiveSmoothRun}(n,k,B(n))$ (open for all $k \\geq 2$). Difficulty hierarchy: infinitely many < positive density < all large $n$ — each step requires fundamentally new tools."
