@@ -4,15 +4,15 @@
     "proofId": "erdos-620",
     "range": {
       "startLine": 1,
-      "endLine": 30
+      "endLine": 31
     },
     "type": "concept",
     "title": "Problem Statement",
-    "content": "The Erd\u0151s-Rogers problem (1962): In any $K_4$-free graph on $n$ vertices, how large a triangle-free induced subgraph must exist? Current bounds: $\\sqrt{n} \\cdot \\sqrt{\\log n}/\\log\\log n \\ll f(n) \\ll \\sqrt{n} \\cdot \\log n$. The exact growth rate is unknown.",
-    "mathContext": "The function $f(n) = \\min_{G \\text{ is } K_4\\text{-free on } n \\text{ vertices}} \\max_{S \\subseteq V(G)} \\{|S| : G[S] \\text{ is triangle-free}\\}$ captures the worst-case guarantee. The problem is a special case of the general Erd\u0151s-Rogers function $f_{s,t}(n)$ with $s = 4$, $t = 3$.",
+    "content": "The Erdős-Rogers problem (1962): In any $K_4$-free graph on $n$ vertices, how large a triangle-free induced subgraph must exist? Current bounds: $\\sqrt{n} \\cdot \\sqrt{\\log n}/\\log\\log n \\ll f(n) \\ll \\sqrt{n} \\cdot \\log n$. The exact growth rate is unknown.",
+    "mathContext": "The function $f(n) = \\min_{G \\text{ is } K_4\\text{-free on } n \\text{ vertices}} \\max_{S \\subseteq V(G)} \\{|S| : G[S] \\text{ is triangle-free}\\}$ captures the worst-case guarantee. The problem is a special case of the general Erdős-Rogers function $f_{s,t}(n)$ with $s = 4$, $t = 3$.",
     "significance": "key",
     "relatedConcepts": [
-      "Erd\u0151s-Rogers function",
+      "Erdős-Rogers function",
       "Ramsey theory",
       "extremal graph theory",
       "induced subgraphs"
@@ -28,7 +28,7 @@
     "proofId": "erdos-620",
     "range": {
       "startLine": 32,
-      "endLine": 43
+      "endLine": 47
     },
     "type": "concept",
     "title": "Imports and Setup",
@@ -50,7 +50,7 @@
     "proofId": "erdos-620",
     "range": {
       "startLine": 48,
-      "endLine": 52
+      "endLine": 54
     },
     "type": "definition",
     "title": "Triangles and Triangle-Free",
@@ -73,21 +73,21 @@
     "proofId": "erdos-620",
     "range": {
       "startLine": 55,
-      "endLine": 60
+      "endLine": 62
     },
     "type": "definition",
-    "title": "K\u2084 and K\u2084-Free",
-    "content": "$K_4$ is the complete graph on 4 vertices (6 edges, 4 triangles). A graph is **$K_4$-free** if it contains no $K_4$ as a subgraph. By Tur\u00e1n's theorem (1941), the maximum number of edges in a $K_4$-free graph on $n$ vertices is $\\text{ex}(n, K_4) = \\lfloor n^2/3 \\rfloor$ (the Tur\u00e1n graph $T(n,3)$).",
+    "title": "K₄ and K₄-Free",
+    "content": "$K_4$ is the complete graph on 4 vertices (6 edges, 4 triangles). A graph is **$K_4$-free** if it contains no $K_4$ as a subgraph. By Turán's theorem (1941), the maximum number of edges in a $K_4$-free graph on $n$ vertices is $\\text{ex}(n, K_4) = \\lfloor n^2/3 \\rfloor$ (the Turán graph $T(n,3)$).",
     "mathContext": "`HasK4 G` asserts $\\exists a, b, c, d$ pairwise distinct with all $\\binom{4}{2} = 6$ edges present. `K4Free G` is $\\neg\\text{HasK4}(G)$. The Kruskal-Katona theorem gives additional structural constraints on $K_4$-free graphs.",
     "significance": "key",
     "relatedConcepts": [
-      "Tur\u00e1n's theorem",
+      "Turán's theorem",
       "extremal number ex(n, K_4)",
       "Kruskal-Katona theorem"
     ],
     "prerequisites": [
       "complete graphs",
-      "Tur\u00e1n theory"
+      "Turán theory"
     ]
   },
   {
@@ -95,11 +95,11 @@
     "proofId": "erdos-620",
     "range": {
       "startLine": 63,
-      "endLine": 67
+      "endLine": 71
     },
     "type": "technique",
-    "title": "Triangle-Free Implies K\u2084-Free",
-    "content": "Every triangle-free graph is automatically $K_4$-free, since $K_4$ contains 4 triangles. This is one of the few theorems in the file with a complete Lean proof \u2014 it destructs the $K_4$ witness and extracts a triangle. This gives the problem content: we measure how much of a $K_4$-free graph can avoid the 'next level' of clique structure.",
+    "title": "Triangle-Free Implies K₄-Free",
+    "content": "Every triangle-free graph is automatically $K_4$-free, since $K_4$ contains 4 triangles. This is one of the few theorems in the file with a complete Lean proof — it destructs the $K_4$ witness and extracts a triangle. This gives the problem content: we measure how much of a $K_4$-free graph can avoid the 'next level' of clique structure.",
     "mathContext": "The proof destructs $\\langle a, b, c, d, \\ldots \\rangle$ from `HasK4 G` and constructs a triangle from the first three vertices. Formally: $K_4 \\supseteq K_3$, so $\\neg K_3 \\Rightarrow \\neg K_4$. This is the monotonicity of the clique-free property.",
     "significance": "key",
     "relatedConcepts": [
@@ -117,11 +117,11 @@
     "proofId": "erdos-620",
     "range": {
       "startLine": 72,
-      "endLine": 86
+      "endLine": 87
     },
     "type": "definition",
     "title": "Induced Subgraphs",
-    "content": "The **induced subgraph** $G[S]$ on $S \\subseteq V$ keeps all edges of $G$ between vertices in $S$. This is crucial \u2014 we measure the maximum size of a **triangle-free induced** subgraph, not just any triangle-free subgraph. Induced subgraphs preserve the local structure of $G$, making the problem harder than finding triangle-free spanning subgraphs.",
+    "content": "The **induced subgraph** $G[S]$ on $S \\subseteq V$ keeps all edges of $G$ between vertices in $S$. This is crucial — we measure the maximum size of a **triangle-free induced** subgraph, not just any triangle-free subgraph. Induced subgraphs preserve the local structure of $G$, making the problem harder than finding triangle-free spanning subgraphs.",
     "mathContext": "`inducedSubgraph G S` creates a `SimpleGraph S` where adjacency is inherited: $x \\sim_{G[S]} y \\iff x.\\text{val} \\sim_G y.\\text{val}$. The `maxTriangleFreeInduced G` takes the supremum $\\sup\\{|S| : G[S] \\text{ is triangle-free}\\}$. Note: deleting edges can always make a graph triangle-free, but induced subgraphs only allow vertex deletion.",
     "significance": "key",
     "relatedConcepts": [
@@ -139,10 +139,10 @@
     "proofId": "erdos-620",
     "range": {
       "startLine": 88,
-      "endLine": 103
+      "endLine": 104
     },
     "type": "definition",
-    "title": "The Erd\u0151s-Rogers Function",
+    "title": "The Erdős-Rogers Function",
     "content": "$f(n) = \\min$ over $K_4$-free graphs $G$ on $n$ vertices of $\\max$ triangle-free induced subgraph size. This minimax formulation captures the **worst-case guarantee**: we want the largest $k$ such that EVERY $K_4$-free graph on $n$ vertices has a triangle-free induced subgraph of size $\\ge k$.",
     "mathContext": "`erdosRogers n` is defined as $\\inf\\{k : \\forall G \\text{ on } \\text{Fin}(n),\\, K_4\\text{-free}(G) \\Rightarrow \\text{maxTriangleFreeInduced}(G) \\ge k\\}$. The alternative `ErdosRogersProperty n k` makes the universal quantification explicit. The infimum formulation ensures we capture the tightest bound.",
     "significance": "key",
@@ -162,11 +162,11 @@
     "proofId": "erdos-620",
     "range": {
       "startLine": 105,
-      "endLine": 115
+      "endLine": 116
     },
     "type": "definition",
     "title": "Main Problem Statement",
-    "content": "The formal problem asks for a function $f : \\mathbb{N} \\to \\mathbb{N}$ that is both an upper and lower bound: (1) every $K_4$-free graph achieves $\\ge f(n)$, and (2) some $K_4$-free graph achieves exactly $f(n)$. Determining this $f$ exactly, or even its asymptotic growth rate, is the content of Erd\u0151s Problem #620.",
+    "content": "The formal problem asks for a function $f : \\mathbb{N} \\to \\mathbb{N}$ that is both an upper and lower bound: (1) every $K_4$-free graph achieves $\\ge f(n)$, and (2) some $K_4$-free graph achieves exactly $f(n)$. Determining this $f$ exactly, or even its asymptotic growth rate, is the content of Erdős Problem #620.",
     "mathContext": "`Erdos620Statement` asserts $\\exists f,\\, \\forall n,\\, (\\forall G,\\, K_4\\text{-free}(G) \\Rightarrow \\text{maxTF}(G) \\ge f(n)) \\wedge (\\exists G,\\, K_4\\text{-free}(G) \\wedge \\text{maxTF}(G) = f(n))$. The existence of $f$ follows from finiteness, but computing $f(n)$ even for small $n$ is challenging.",
     "significance": "key",
     "relatedConcepts": [
@@ -183,7 +183,7 @@
     "proofId": "erdos-620",
     "range": {
       "startLine": 117,
-      "endLine": 125
+      "endLine": 126
     },
     "type": "axiom",
     "title": "Trivial Lower Bound",
@@ -205,16 +205,16 @@
     "proofId": "erdos-620",
     "range": {
       "startLine": 127,
-      "endLine": 133
+      "endLine": 134
     },
     "type": "axiom",
     "title": "Shearer's Lower Bound",
-    "content": "$f(n) \\gg \\sqrt{n} \\cdot \\sqrt{\\log n}/\\log\\log n$. This improves the trivial $\\sqrt{n}$ bound by a factor of $\\sqrt{\\log n}/\\log\\log n$. Shearer's method uses entropy and the **Lov\u00e1sz Local Lemma** to find large triangle-free subsets in $K_4$-free graphs, exploiting local structure constraints.",
+    "content": "$f(n) \\gg \\sqrt{n} \\cdot \\sqrt{\\log n}/\\log\\log n$. This improves the trivial $\\sqrt{n}$ bound by a factor of $\\sqrt{\\log n}/\\log\\log n$. Shearer's method uses entropy and the **Lovász Local Lemma** to find large triangle-free subsets in $K_4$-free graphs, exploiting local structure constraints.",
     "mathContext": "The axiom states $\\exists c > 0,\\, \\forall n \\ge 16,\\, f(n) \\ge c \\cdot \\sqrt{n} \\cdot \\sqrt{\\log n} / \\log\\log n$. The condition $n \\ge 16$ ensures $\\log\\log n > 0$. The bound uses iterated dependent random choice: sample a random vertex, condition on its neighborhood, and recurse.",
     "significance": "key",
     "relatedConcepts": [
       "Shearer's entropy method",
-      "Lov\u00e1sz Local Lemma",
+      "Lovász Local Lemma",
       "dependent random choice"
     ],
     "prerequisites": [
@@ -228,11 +228,11 @@
     "proofId": "erdos-620",
     "range": {
       "startLine": 135,
-      "endLine": 141
+      "endLine": 142
     },
     "type": "axiom",
-    "title": "Bollob\u00e1s-Hind (1991)",
-    "content": "The first non-trivial upper bound: $f(n) \\ll n^{7/10 + o(1)}$. B\u00e9la Bollob\u00e1s and Hugh Hind constructed $K_4$-free graphs where every large induced subgraph contains a triangle, using algebraic and probabilistic methods. The exponent $7/10$ was the starting point for three decades of improvements.",
+    "title": "Bollobás-Hind (1991)",
+    "content": "The first non-trivial upper bound: $f(n) \\ll n^{7/10 + o(1)}$. Béla Bollobás and Hugh Hind constructed $K_4$-free graphs where every large induced subgraph contains a triangle, using algebraic and probabilistic methods. The exponent $7/10$ was the starting point for three decades of improvements.",
     "mathContext": "The axiom states $\\forall \\varepsilon > 0,\\, \\exists C > 0,\\, \\forall n \\ge 1,\\, f(n) \\le C \\cdot n^{7/10 + \\varepsilon}$. The $o(1)$ in the exponent is formalized by quantifying over all $\\varepsilon > 0$. The construction uses random $K_4$-free graph models with pervasive triangles.",
     "significance": "key",
     "relatedConcepts": [
@@ -250,7 +250,7 @@
     "proofId": "erdos-620",
     "range": {
       "startLine": 143,
-      "endLine": 149
+      "endLine": 150
     },
     "type": "axiom",
     "title": "Krivelevich (1994)",
@@ -270,12 +270,12 @@
     "proofId": "erdos-620",
     "range": {
       "startLine": 151,
-      "endLine": 157
+      "endLine": 158
     },
     "type": "axiom",
     "title": "Wolfovitz (2013)",
-    "content": "Further improved to $f(n) \\ll \\sqrt{n} \\cdot (\\log n)^{120}$. Wolfovitz was the first to achieve the **optimal base exponent** $1/2$, matching the lower bound's $\\sqrt{n}$ factor. However, the enormous logarithmic factor $(\\log n)^{120}$ left a huge gap \u2014 120 was an artifact of iterated regularity lemma applications.",
-    "mathContext": "The axiom states $\\exists C > 0,\\, \\forall n \\ge 2,\\, f(n) \\le C \\cdot \\sqrt{n} \\cdot (\\log n)^{120}$. The exponent 120 arises from iterated Szemer\u00e9di regularity applications. This showed the base exponent is $1/2$ but left open the logarithmic correction.",
+    "content": "Further improved to $f(n) \\ll \\sqrt{n} \\cdot (\\log n)^{120}$. Wolfovitz was the first to achieve the **optimal base exponent** $1/2$, matching the lower bound's $\\sqrt{n}$ factor. However, the enormous logarithmic factor $(\\log n)^{120}$ left a huge gap — 120 was an artifact of iterated regularity lemma applications.",
+    "mathContext": "The axiom states $\\exists C > 0,\\, \\forall n \\ge 2,\\, f(n) \\le C \\cdot \\sqrt{n} \\cdot (\\log n)^{120}$. The exponent 120 arises from iterated Szemerédi regularity applications. This showed the base exponent is $1/2$ but left open the logarithmic correction.",
     "significance": "key",
     "relatedConcepts": [
       "optimal base exponent",
@@ -283,7 +283,7 @@
       "iterated probabilistic argument"
     ],
     "prerequisites": [
-      "Szemer\u00e9di regularity lemma",
+      "Szemerédi regularity lemma",
       "probabilistic method"
     ]
   },
@@ -292,17 +292,17 @@
     "proofId": "erdos-620",
     "range": {
       "startLine": 159,
-      "endLine": 167
+      "endLine": 168
     },
     "type": "axiom",
     "title": "Mubayi-Verstraete (2024)",
-    "content": "Current best upper bound: $f(n) \\ll \\sqrt{n} \\cdot \\log n$. Dhruv Mubayi and Jacques Verstra\u00ebte dramatically reduced Wolfovitz's $(\\log n)^{120}$ to just $\\log n$, a breakthrough. Their construction uses a novel **graph blowup technique** applied to carefully chosen base graphs, avoiding the regularity lemma entirely.",
-    "mathContext": "The axiom states $\\exists C > 0,\\, \\forall n \\ge 2,\\, f(n) \\le C \\cdot \\sqrt{n} \\cdot \\log n$. Combined with Shearer's lower bound, the gap is now $\\sqrt{\\log n} \\cdot \\log\\log n$ \u2014 a remarkable narrowing from the original $n^{1/5}$ gap between $\\sqrt{n}$ and $n^{7/10}$.",
+    "content": "Current best upper bound: $f(n) \\ll \\sqrt{n} \\cdot \\log n$. Dhruv Mubayi and Jacques Verstraëte dramatically reduced Wolfovitz's $(\\log n)^{120}$ to just $\\log n$, a breakthrough. Their construction uses a novel **graph blowup technique** applied to carefully chosen base graphs, avoiding the regularity lemma entirely.",
+    "mathContext": "The axiom states $\\exists C > 0,\\, \\forall n \\ge 2,\\, f(n) \\le C \\cdot \\sqrt{n} \\cdot \\log n$. Combined with Shearer's lower bound, the gap is now $\\sqrt{\\log n} \\cdot \\log\\log n$ — a remarkable narrowing from the original $n^{1/5}$ gap between $\\sqrt{n}$ and $n^{7/10}$.",
     "significance": "key",
     "relatedConcepts": [
       "graph blowup",
       "regularity-free methods",
-      "Mubayi-Verstra\u00ebte theorem"
+      "Mubayi-Verstraëte theorem"
     ],
     "prerequisites": [
       "graph product constructions",
@@ -314,7 +314,7 @@
     "proofId": "erdos-620",
     "range": {
       "startLine": 169,
-      "endLine": 187
+      "endLine": 188
     },
     "type": "technique",
     "title": "Current Gap Analysis",
@@ -336,11 +336,11 @@
     "proofId": "erdos-620",
     "range": {
       "startLine": 189,
-      "endLine": 195
+      "endLine": 197
     },
     "type": "technique",
     "title": "Sparse Graph Case",
-    "content": "For very sparse $K_4$-free graphs with $|E(G)| \\le n$, a triangle-free induced subgraph of size $\\ge n/3$ exists. Sparse graphs have small average degree, so greedy or Tur\u00e1n-type arguments find large independent (hence triangle-free) sets. This is much larger than the general $\\sqrt{n}$ bound.",
+    "content": "For very sparse $K_4$-free graphs with $|E(G)| \\le n$, a triangle-free induced subgraph of size $\\ge n/3$ exists. Sparse graphs have small average degree, so greedy or Turán-type arguments find large independent (hence triangle-free) sets. This is much larger than the general $\\sqrt{n}$ bound.",
     "mathContext": "The theorem states: for $G$ on $\\text{Fin}(n)$ with $|E| \\le n$ and $K_4$-free, $\\exists S$ with $|S| \\ge n/3$ and $G[S]$ triangle-free. A possible proof: by handshaking, average degree $\\le 2$, so a greedy algorithm finds an independent set of size $\\ge n/3$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -358,15 +358,15 @@
     "proofId": "erdos-620",
     "range": {
       "startLine": 198,
-      "endLine": 204
+      "endLine": 205
     },
     "type": "definition",
-    "title": "Tur\u00e1n Graph T(n,3)",
-    "content": "The **Tur\u00e1n graph** $T(n,3)$ partitions $n$ vertices into 3 balanced parts with all edges between distinct parts. It is the densest $K_4$-free graph by Tur\u00e1n's theorem (1941), with $\\lfloor n^2/3 \\rfloor$ edges. Every triple from different parts forms a triangle, making it a natural candidate for small $f(n)$ values.",
-    "mathContext": "The definition uses `i.val % 3 \u2260 j.val % 3` for adjacency \u2014 vertices in different residue classes mod 3 are connected. The theorem `turan_is_K4Free` (sorry'd) would verify that no four vertices from three parts can all be pairwise adjacent.",
+    "title": "Turán Graph T(n,3)",
+    "content": "The **Turán graph** $T(n,3)$ partitions $n$ vertices into 3 balanced parts with all edges between distinct parts. It is the densest $K_4$-free graph by Turán's theorem (1941), with $\\lfloor n^2/3 \\rfloor$ edges. Every triple from different parts forms a triangle, making it a natural candidate for small $f(n)$ values.",
+    "mathContext": "The definition uses `i.val % 3 ≠ j.val % 3` for adjacency — vertices in different residue classes mod 3 are connected. The theorem `turan_is_K4Free` (sorry'd) would verify that no four vertices from three parts can all be pairwise adjacent.",
     "significance": "supporting",
     "relatedConcepts": [
-      "Tur\u00e1n's theorem",
+      "Turán's theorem",
       "complete multipartite graph",
       "extremal graph"
     ],
@@ -380,11 +380,11 @@
     "proofId": "erdos-620",
     "range": {
       "startLine": 206,
-      "endLine": 224
+      "endLine": 225
     },
     "type": "definition",
     "title": "Ramsey Number R(3,k)",
-    "content": "$R(3,k)$ is the minimum $n$ such that every graph on $n$ vertices has a triangle or an independent set of size $k$. **Kim (1995)** proved $R(3,k) = \\Theta(k^2/\\log k)$, resolving a famous Erd\u0151s conjecture. This connects to the Erd\u0151s-Rogers problem: finding triangle-free induced subgraphs in $K_4$-free graphs generalizes finding independent sets. The theorem `erdos_rogers_ramsey_connection` formalizes this link: if $n \\ge R(3,k)$, then either $f(n) \\ge k$ or every $K_4$-free graph on $n$ vertices contains a triangle.",
+    "content": "$R(3,k)$ is the minimum $n$ such that every graph on $n$ vertices has a triangle or an independent set of size $k$. **Kim (1995)** proved $R(3,k) = \\Theta(k^2/\\log k)$, resolving a famous Erdős conjecture. This connects to the Erdős-Rogers problem: finding triangle-free induced subgraphs in $K_4$-free graphs generalizes finding independent sets. The theorem `erdos_rogers_ramsey_connection` formalizes this link: if $n \\ge R(3,k)$, then either $f(n) \\ge k$ or every $K_4$-free graph on $n$ vertices contains a triangle.",
     "mathContext": "The axiom `ramsey_3k_bound` states $c \\cdot k^2/\\log k \\le R(3,k) \\le C \\cdot k^2/\\log k$. Kim's lower bound used the **triangle-free process** (random greedy algorithm). Bohman (2009) and Bohman-Keevash (2010) refined the analysis. The theorem `erdos_rogers_ramsey_connection` (sorry'd) states the dichotomy: for $n \\ge R(3,k)$, either $f(n) \\ge k$ or all $K_4$-free graphs on $n$ vertices have a triangle.",
     "significance": "key",
     "relatedConcepts": [
@@ -402,12 +402,12 @@
     "proofId": "erdos-620",
     "range": {
       "startLine": 226,
-      "endLine": 242
+      "endLine": 243
     },
     "type": "axiom",
     "title": "Probabilistic Methods",
     "content": "Both upper and lower bounds rely on probabilistic techniques. The axiom `probabilistic_upper_bound` shows for any $\\varepsilon > 0$ and large $n$, $K_4$-free graphs exist with max triangle-free induced subgraph $\\le (1+\\varepsilon)\\sqrt{n}\\log n$. The `dependent_random_choice_lower` gives the $c\\sqrt{n}$ baseline via randomized vertex selection.",
-    "mathContext": "The upper bound axiom asserts $\\forall \\varepsilon > 0,\\, \\exists N,\\, \\forall n \\ge N,\\, \\exists G$ $K_4$-free with $\\text{maxTF}(G) \\le (1+\\varepsilon)\\sqrt{n}\\log n$. This near-tight construction shows the Mubayi-Verstra\u00ebte bound is essentially achieved. The dependent random choice technique (Alon-Fox-Zhao) underlies the lower bound.",
+    "mathContext": "The upper bound axiom asserts $\\forall \\varepsilon > 0,\\, \\exists N,\\, \\forall n \\ge N,\\, \\exists G$ $K_4$-free with $\\text{maxTF}(G) \\le (1+\\varepsilon)\\sqrt{n}\\log n$. This near-tight construction shows the Mubayi-Verstraëte bound is essentially achieved. The dependent random choice technique (Alon-Fox-Zhao) underlies the lower bound.",
     "significance": "key",
     "relatedConcepts": [
       "dependent random choice",
@@ -416,7 +416,7 @@
     ],
     "prerequisites": [
       "probabilistic method",
-      "Lov\u00e1sz Local Lemma"
+      "Lovász Local Lemma"
     ]
   },
   {
@@ -424,17 +424,17 @@
     "proofId": "erdos-620",
     "range": {
       "startLine": 244,
-      "endLine": 262
+      "endLine": 263
     },
     "type": "definition",
-    "title": "Generalized Erd\u0151s-Rogers",
-    "content": "The **generalized Erd\u0151s-Rogers function** $f_{s,t}(n)$ asks: in any $K_s$-free graph on $n$ vertices, what is the guaranteed size of a $K_t$-free induced subgraph? The original problem is $f_{4,3}(n)$. The case $f_{s,2}(n)$ (independent sets in $K_s$-free graphs) is well-understood: $f_{s,2}(n) \\asymp n^{1/(s-1)} \\cdot (\\log n)^{O(1)}$ by Ramsey theory.",
+    "title": "Generalized Erdős-Rogers",
+    "content": "The **generalized Erdős-Rogers function** $f_{s,t}(n)$ asks: in any $K_s$-free graph on $n$ vertices, what is the guaranteed size of a $K_t$-free induced subgraph? The original problem is $f_{4,3}(n)$. The case $f_{s,2}(n)$ (independent sets in $K_s$-free graphs) is well-understood: $f_{s,2}(n) \\asymp n^{1/(s-1)} \\cdot (\\log n)^{O(1)}$ by Ramsey theory.",
     "mathContext": "`generalizedErdosRogers s t n` uses `G.CliqueFree s` from Mathlib. The theorem `original_is_f43` (sorry'd) establishes $f(n) = f_{4,3}(n)$. The axiom `ramsey_independent_set` gives $f_{s,2}(n) = \\Theta(n^{1/(s-1)} \\cdot (\\log n)^{O(1)})$.",
     "significance": "key",
     "relatedConcepts": [
       "clique-free graphs",
       "generalized Ramsey",
-      "Erd\u0151s-Rogers hierarchy"
+      "Erdős-Rogers hierarchy"
     ],
     "prerequisites": [
       "Ramsey theory for cliques",
@@ -446,7 +446,7 @@
     "proofId": "erdos-620",
     "range": {
       "startLine": 264,
-      "endLine": 280
+      "endLine": 314
     },
     "type": "insight",
     "title": "Open Status",

@@ -4,7 +4,7 @@
     "proofId": "erdos-331",
     "range": {
       "startLine": 1,
-      "endLine": 35
+      "endLine": 40
     },
     "type": "context",
     "title": "Header, Imports, and Namespace",
@@ -20,11 +20,37 @@
     "prerequisites": []
   },
   {
+    "id": "ann-331-counting",
+    "proofId": "erdos-331",
+    "range": {
+      "startLine": 41,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "Counting Function and Density",
+    "content": "The counting function |A ∩ {1,...,N}| measures the growth rate of a set A ⊆ ℕ. Implemented via Finset.filter over Finset.Icc 1 N, giving exact counts as natural numbers. HasDensityAtLeast(A, α) formalizes |A ∩ {1,...,N}| ≥ c · N^α for some c > 0 and all sufficiently large N — this is 'lower density at least α' in the asymptotic sense. The critical special case HasSqrtDensity means α = 1/2: the set grows at least as fast as √N. The finer HasExactSqrtDensity requires the counting function to be asymptotic to c · √N via Filter.Tendsto to nhds c.",
+    "mathContext": "$$|A \\cap \\{1,\\ldots,N\\}| \\ge c \\cdot N^\\alpha \\quad \\text{for all large } N$$\nThe counting function $A(N) = |A \\cap \\{1,\\ldots,N\\}|$ grows like $N^\\alpha$. The critical case $\\alpha = 1/2$: $A(N) \\gg N^{1/2}$ means $A(N) \\ge c\\sqrt{N}$ for some $c > 0$. **Exact asymptotic**: $A(N) \\sim c\\sqrt{N}$ means $\\lim_{N \\to \\infty} A(N)/\\sqrt{N} = c$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counting function",
+      "asymptotic density",
+      "lower density",
+      "Filter.Tendsto",
+      "nhds"
+    ],
+    "prerequisites": [
+      "Finset.Icc",
+      "Finset.filter",
+      "Finset.card",
+      "Real.rpow"
+    ]
+  },
+  {
     "id": "ann-331-sqrt-density",
     "proofId": "erdos-331",
     "range": {
       "startLine": 50,
-      "endLine": 55
+      "endLine": 60
     },
     "type": "definition",
     "title": "Sqrt Density and Exact Asymptotics",
@@ -41,6 +67,266 @@
       "HasDensityAtLeast",
       "countingFunction",
       "Filter.Tendsto"
+    ]
+  },
+  {
+    "id": "ann-331-commondiff",
+    "proofId": "erdos-331",
+    "range": {
+      "startLine": 61,
+      "endLine": 77
+    },
+    "type": "definition",
+    "title": "Common Differences",
+    "content": "A common difference d ≠ 0 between sets A and B requires a₁ − a₂ = d for some a₁, a₂ ∈ A AND b₁ − b₂ = d for some b₁, b₂ ∈ B. Equivalently, d ∈ (A − A) ∩ (B − B) \\ {0} where A − A = {a − a' : a, a' ∈ A} is the difference set. The set commonDifferences(A, B) collects all such d, and HasInfinitelyManyCommonDifferences requires this set to be infinite (Set.Infinite). Erdős's question was whether sufficient density of A and B forces this intersection to be infinite.",
+    "mathContext": "A **common difference** is $d \\neq 0$ with $d \\in (A - A) \\cap (B - B)$, where\n$$A - A = \\{a_1 - a_2 : a_1, a_2 \\in A\\}$$\nThe set of common differences is $\\text{CD}(A,B) = (A - A) \\cap (B - B) \\setminus \\{0\\}$. The question: if $|A(N)|, |B(N)| \\gg N^{1/2}$, must $\\text{CD}(A,B)$ be infinite?",
+    "significance": "key",
+    "relatedConcepts": [
+      "difference set",
+      "sumset",
+      "additive combinatorics",
+      "Set.Infinite"
+    ],
+    "prerequisites": [
+      "Set ℤ",
+      "Int.sub",
+      "Set.Infinite"
+    ]
+  },
+  {
+    "id": "ann-331-conjecture",
+    "proofId": "erdos-331",
+    "range": {
+      "startLine": 78,
+      "endLine": 88
+    },
+    "type": "definition",
+    "title": "The Original Conjecture",
+    "content": "ErdosConjecture331 formalizes: for all A, B ⊆ ℕ with HasSqrtDensity A and HasSqrtDensity B, the sets must have infinitely many common differences. This was posed by Erdős and Graham (1980, p. 50) as a natural extension of the philosophy that 'density forces structure.' The conjecture would have implied that difference sets of dense sets necessarily overlap heavily. Ruzsa showed this is FALSE.",
+    "mathContext": "$$\\forall A, B \\subseteq \\mathbb{N},\\quad |A(N)|, |B(N)| \\gg N^{1/2} \\implies |\\text{CD}(A,B)| = \\infty$$\nThis is a **false** conjecture. The heuristic: $|A - A| \\approx |A|^2 \\sim N$ and similarly $|B - B| \\sim N$, so $(A-A) \\cap (B-B)$ 'should' be large. But Ruzsa showed the structure of $A$ and $B$ can prevent any overlap.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Graham conjecture",
+      "density implies structure",
+      "additive combinatorics",
+      "disproved conjectures"
+    ],
+    "prerequisites": [
+      "HasSqrtDensity",
+      "HasInfinitelyManyCommonDifferences"
+    ]
+  },
+  {
+    "id": "ann-331-ruzsa-construction",
+    "proofId": "erdos-331",
+    "range": {
+      "startLine": 89,
+      "endLine": 104
+    },
+    "type": "definition",
+    "title": "Ruzsa's Binary Digit Construction",
+    "content": "Ruzsa's counterexample uses the binary representation of natural numbers. evenBinaryPositions consists of numbers whose binary digits are nonzero only in positions 0, 2, 4, ... (i.e., only in 4^k places). Formally, n ∈ evenBinaryPositions iff (n / 2^(2k+1)) % 2 = 0 for all k — every odd-position bit is 0. Similarly, oddBinaryPositions has digits only in positions 1, 3, 5, ... These are 'orthogonal' in the sense that their binary representations use disjoint bit positions, so addition is carry-free: n = a + b with a ∈ A, b ∈ B is the same as interleaving the binary digits of a and b.",
+    "mathContext": "Write $n = \\sum_{i \\ge 0} d_i \\cdot 2^i$ in binary. Then:\n$$A = \\{n : d_{2k+1} = 0 \\text{ for all } k\\} = \\left\\{\\sum_k a_k \\cdot 4^k : a_k \\in \\{0,1\\}\\right\\}$$\n$$B = \\{n : d_{2k} = 0 \\text{ for all } k\\} = \\left\\{\\sum_k b_k \\cdot 2 \\cdot 4^k : b_k \\in \\{0,1\\}\\right\\}$$\nSince $A$ uses only even bit positions and $B$ uses only odd bit positions, their binary representations are **disjoint**: $a + b$ is a **carry-free** addition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binary representation",
+      "carry-free addition",
+      "digit sets",
+      "Sidon-like sets"
+    ],
+    "prerequisites": [
+      "Nat.Digits",
+      "binary representation",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-331-density-axioms",
+    "proofId": "erdos-331",
+    "range": {
+      "startLine": 105,
+      "endLine": 110
+    },
+    "type": "technique",
+    "title": "Density of Ruzsa's Sets",
+    "content": "Both ruzsaA and ruzsaB have density ≫ N^{1/2}, axiomatized as ruzsaA_has_sqrt_density and ruzsaB_has_sqrt_density. The counting argument: elements of A up to N are sums ∑ aₖ · 4^k with aₖ ∈ {0,1} and ∑ aₖ · 4^k ≤ N. The number of such sums is approximately √N because 4^k grows exponentially and the 'effective length' of the binary expansion is ~ log₄ N = ½ log₂ N, giving 2^(½ log₂ N) = √N choices. The same holds for B by the same argument with a factor-of-2 shift.",
+    "mathContext": "$$|A \\cap \\{1,\\ldots,N\\}| \\sim \\sqrt{N}, \\quad |B \\cap \\{1,\\ldots,N\\}| \\sim \\sqrt{N}$$\nThe elements of $A$ up to $N$ are $\\sum_{k=0}^{\\lfloor \\log_4 N \\rfloor} a_k \\cdot 4^k$ with $a_k \\in \\{0,1\\}$. There are $2^{\\lfloor \\log_4 N \\rfloor + 1} \\approx N^{\\log_4 2} = N^{1/2}$ such elements.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counting in base 4",
+      "exponential growth",
+      "density calculation"
+    ],
+    "prerequisites": [
+      "HasSqrtDensity",
+      "ruzsaA",
+      "ruzsaB"
+    ]
+  },
+  {
+    "id": "ann-331-unique",
+    "proofId": "erdos-331",
+    "range": {
+      "startLine": 111,
+      "endLine": 119
+    },
+    "type": "technique",
+    "title": "Unique Representation Property",
+    "content": "The key structural property: every positive integer n has a UNIQUE decomposition n = a + b with a ∈ ruzsaA and b ∈ ruzsaB. This follows from the binary orthogonality: writing n = ∑ dᵢ · 2^i, the unique decomposition is a = ∑ d₂ₖ · 4^k (even-position digits) and b = ∑ d₂ₖ₊₁ · 2 · 4^k (odd-position digits). Since addition is carry-free, this is the only way to split n. Axiomatized using ExistsUnique (∃!) on pairs (a, b).",
+    "mathContext": "$$\\forall n \\ge 1,\\; \\exists! (a, b) \\in A \\times B : a + b = n$$\n**Proof sketch**: Write $n = \\sum_{i \\ge 0} d_i \\cdot 2^i$. Then $a = \\sum_{k \\ge 0} d_{2k} \\cdot 4^k$ and $b = \\sum_{k \\ge 0} d_{2k+1} \\cdot 2 \\cdot 4^k$. Since even and odd bit positions are disjoint, $a + b = n$ with **no carries**, and this is the unique such decomposition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unique representation",
+      "ExistsUnique",
+      "direct sum decomposition",
+      "carry-free addition"
+    ],
+    "prerequisites": [
+      "ruzsaA",
+      "ruzsaB",
+      "binary representation",
+      "ExistsUnique"
+    ]
+  },
+  {
+    "id": "ann-331-nocommon",
+    "proofId": "erdos-331",
+    "range": {
+      "startLine": 120,
+      "endLine": 135
+    },
+    "type": "technique",
+    "title": "No Common Differences",
+    "content": "The crucial consequence: Ruzsa's sets have NO nontrivial common differences at all — the set commonDifferences(A, B) is empty, not just finite. The proof: if a₁ − a₂ = b₁ − b₂ = d ≠ 0, then a₁ + b₂ = a₂ + b₁. By unique representation, since both sides decompose the same number into A + B, we get a₁ = a₂ and b₂ = b₁, contradicting d ≠ 0. This is axiomatized. The theorem ruzsa_counterexample is genuinely proved from this axiom by combining the density and emptiness results, then using Set.not_infinite_empty.",
+    "mathContext": "$$\\text{CD}(A, B) = (A - A) \\cap (B - B) \\setminus \\{0\\} = \\emptyset$$\n**Proof**: Suppose $a_1 - a_2 = b_1 - b_2 = d \\neq 0$. Then $a_1 + b_2 = a_2 + b_1 = n$. By unique representation, $(a_1, b_2)$ and $(a_2, b_1)$ are the same pair, so $a_1 = a_2$ and $b_2 = b_1$, giving $d = 0$. Contradiction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "empty difference intersection",
+      "unique representation implies no common differences",
+      "Set.not_infinite_empty"
+    ],
+    "prerequisites": [
+      "ruzsa_unique_representation",
+      "commonDifferences",
+      "Set.Infinite"
+    ]
+  },
+  {
+    "id": "ann-331-disproof",
+    "proofId": "erdos-331",
+    "range": {
+      "startLine": 136,
+      "endLine": 146
+    },
+    "type": "technique",
+    "title": "The Disproof",
+    "content": "The theorem erdos_331_disproved is genuinely proved in Lean: it assumes ErdosConjecture331, instantiates with ruzsaA and ruzsaB (which have sqrt density by axiom), obtains HasInfinitelyManyCommonDifferences, but ruzsa_counterexample.2.2 gives the negation. This clean proof-by-contradiction demonstrates the power of the formalization: three axioms (two density, one no-common-differences) combine to refute the universal statement.",
+    "mathContext": "**Proof**: Assume $\\forall A, B$ with $A(N), B(N) \\gg \\sqrt{N}$, $|\\text{CD}(A,B)| = \\infty$. Apply to $(A, B) = (\\text{ruzsaA}, \\text{ruzsaB})$. Then $\\text{CD} = \\emptyset$ is infinite — contradiction. $\\square$\n\nThe Lean proof: `intro h; have := h ruzsaA ruzsaB ...; exact ruzsa_counterexample.2.2 this`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "proof by contradiction",
+      "universal statement negation",
+      "existential witness"
+    ],
+    "prerequisites": [
+      "ErdosConjecture331",
+      "ruzsa_counterexample",
+      "ruzsaA_has_sqrt_density",
+      "ruzsaB_has_sqrt_density"
+    ]
+  },
+  {
+    "id": "ann-331-characterization",
+    "proofId": "erdos-331",
+    "range": {
+      "startLine": 147,
+      "endLine": 165
+    },
+    "type": "insight",
+    "title": "Understanding the Counterexample",
+    "content": "Three structural insights explain why Ruzsa's construction works. First, ruzsaA_characterization shows A consists of sums of powers of 4 (base-4 numbers with digits {0,1}), giving A a Sidon-like structure. Second, ruzsaB_eq_double_ruzsaA (axiom) shows B = 2·A: every element of B is exactly twice an element of A, reflecting the 1-bit shift between even and odd positions. Third, ruzsa_exact_growth (axiom) confirms the density is exactly ~c·√N (not just ≫ √N), showing the counterexample just barely meets the density threshold.",
+    "mathContext": "$A = \\{\\sum_k a_k \\cdot 4^k : a_k \\in \\{0,1\\}\\}$ and $B = 2A = \\{2a : a \\in A\\}$. The map $a \\mapsto 2a$ shifts all binary digits one position to the left, converting even-position digits to odd-position digits. The exact density: $|A \\cap \\{1,\\ldots,N\\}| \\sim c \\cdot N^{1/2}$ for a specific constant $c > 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "base-4 representation",
+      "Sidon set",
+      "doubling map",
+      "exact asymptotics"
+    ],
+    "prerequisites": [
+      "ruzsaA",
+      "ruzsaB",
+      "HasExactSqrtDensity"
+    ]
+  },
+  {
+    "id": "ann-331-variant",
+    "proofId": "erdos-331",
+    "range": {
+      "startLine": 166,
+      "endLine": 183
+    },
+    "type": "definition",
+    "title": "Ruzsa's Stronger Variant (Open)",
+    "content": "Ruzsa himself suggested a stronger variant: if we require the EXACT asymptotic |A ∩ {1,...,N}| ~ cₐ · N^{1/2} (convergence, not just lower bound), must A and B share infinitely many common differences? This is formalized as RuzsaVariant and remains OPEN. The axiom ruzsaVariantOpen represents the open status. Ruzsa's own construction has exact √N density, so it cannot serve as a counterexample to the ≫ version while also having exact density — but the subtle point is that the variant asks about ALL sets with exact density, which might have additional structure.",
+    "mathContext": "**Ruzsa's Variant (OPEN)**: If $\\lim_{N \\to \\infty} |A(N)|/\\sqrt{N} = c_A > 0$ and $\\lim_{N \\to \\infty} |B(N)|/\\sqrt{N} = c_B > 0$, must $|\\text{CD}(A,B)| = \\infty$?\n\nThe difference from the original: $\\gg \\sqrt{N}$ (lower bound) vs $\\sim c\\sqrt{N}$ (exact asymptotic). The exact condition imposes more regularity on the sets.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exact asymptotics",
+      "open problem",
+      "density regularity",
+      "Ruzsa variant"
+    ],
+    "prerequisites": [
+      "HasExactSqrtDensity",
+      "HasInfinitelyManyCommonDifferences"
+    ]
+  },
+  {
+    "id": "ann-331-diffset",
+    "proofId": "erdos-331",
+    "range": {
+      "startLine": 184,
+      "endLine": 203
+    },
+    "type": "definition",
+    "title": "Difference Set Sparseness",
+    "content": "The difference set A − A = {a − a' : a, a' ∈ A} for Ruzsa's A is sparse: it has only ~√N elements up to N (axiom ruzsaA_sparse_differences). This is because A − A consists of numbers whose base-4 digits lie in {−1, 0, 1}, giving |{d ∈ A−A : |d| ≤ N}| ~ N^{1/2}. For generic sets of density √N, the difference set would have ~N elements (Plünnecke-Ruzsa inequality gives |A−A| ≤ |A|² ≈ N). The extreme sparseness of A−A is what allows (A−A) ∩ (B−B) to be empty.",
+    "mathContext": "The difference set $A - A = \\{a_1 - a_2 : a_1, a_2 \\in A\\}$ has $|\\{d \\in A - A : |d| \\le N\\}| \\le c \\cdot N^{1/2}$. Compare: a random set of density $\\sqrt{N}$ would have $|A - A| \\sim N$ by the **Plünnecke-Ruzsa inequality**. Ruzsa's $A$ has $|A - A| \\sim \\sqrt{N}$ — it is a **Sidon-like** set with very few repeated differences.",
+    "significance": "key",
+    "relatedConcepts": [
+      "difference set",
+      "Plünnecke-Ruzsa inequality",
+      "Sidon set",
+      "sparse structure"
+    ],
+    "prerequisites": [
+      "differenceSet",
+      "ruzsaA",
+      "Finset.filter"
+    ]
+  },
+  {
+    "id": "ann-331-largerdensity",
+    "proofId": "erdos-331",
+    "range": {
+      "startLine": 204,
+      "endLine": 214
+    },
+    "type": "technique",
+    "title": "Larger Density Forces Common Differences",
+    "content": "The axiom larger_density_common_differences states that for density > N^α with α > 1/2, common differences are guaranteed. This establishes √N as a sharp threshold: above it, common differences are forced; at it, counterexamples exist. The proof (not formalized) uses a pigeonhole/counting argument: if |A−A| ≫ N^(2α) and |B−B| ≫ N^(2α) with 2α > 1, then |(A−A) ∩ (B−B)| must be infinite since both difference sets are 'large' relative to {1,...,N}.",
+    "mathContext": "For $\\alpha > 1/2$: if $|A(N)| \\gg N^\\alpha$ and $|B(N)| \\gg N^\\alpha$, then $|\\text{CD}(A,B)| = \\infty$.\n\n**Heuristic**: $|A - A| \\gtrsim |A|^2 \\sim N^{2\\alpha}$. For $2\\alpha > 1$, the difference sets have positive density in $\\{-N,\\ldots,N\\}$, so their intersection must be infinite by a pigeonhole argument.",
+    "significance": "key",
+    "relatedConcepts": [
+      "threshold phenomenon",
+      "pigeonhole principle",
+      "sumset growth",
+      "positive density intersection"
+    ],
+    "prerequisites": [
+      "HasDensityAtLeast",
+      "HasInfinitelyManyCommonDifferences"
     ]
   },
   {
@@ -66,297 +352,11 @@
     ]
   },
   {
-    "id": "ann-331-counting",
-    "proofId": "erdos-331",
-    "range": {
-      "startLine": 41,
-      "endLine": 48
-    },
-    "type": "definition",
-    "title": "Counting Function and Density",
-    "content": "The counting function |A ∩ {1,...,N}| measures the growth rate of a set A ⊆ ℕ. Implemented via Finset.filter over Finset.Icc 1 N, giving exact counts as natural numbers. HasDensityAtLeast(A, α) formalizes |A ∩ {1,...,N}| ≥ c · N^α for some c > 0 and all sufficiently large N — this is 'lower density at least α' in the asymptotic sense. The critical special case HasSqrtDensity means α = 1/2: the set grows at least as fast as √N. The finer HasExactSqrtDensity requires the counting function to be asymptotic to c · √N via Filter.Tendsto to nhds c.",
-    "mathContext": "$$|A \\cap \\{1,\\ldots,N\\}| \\ge c \\cdot N^\\alpha \\quad \\text{for all large } N$$\nThe counting function $A(N) = |A \\cap \\{1,\\ldots,N\\}|$ grows like $N^\\alpha$. The critical case $\\alpha = 1/2$: $A(N) \\gg N^{1/2}$ means $A(N) \\ge c\\sqrt{N}$ for some $c > 0$. **Exact asymptotic**: $A(N) \\sim c\\sqrt{N}$ means $\\lim_{N \\to \\infty} A(N)/\\sqrt{N} = c$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "counting function",
-      "asymptotic density",
-      "lower density",
-      "Filter.Tendsto",
-      "nhds"
-    ],
-    "prerequisites": [
-      "Finset.Icc",
-      "Finset.filter",
-      "Finset.card",
-      "Real.rpow"
-    ]
-  },
-  {
-    "id": "ann-331-commondiff",
-    "proofId": "erdos-331",
-    "range": {
-      "startLine": 61,
-      "endLine": 72
-    },
-    "type": "definition",
-    "title": "Common Differences",
-    "content": "A common difference d ≠ 0 between sets A and B requires a₁ − a₂ = d for some a₁, a₂ ∈ A AND b₁ − b₂ = d for some b₁, b₂ ∈ B. Equivalently, d ∈ (A − A) ∩ (B − B) \\ {0} where A − A = {a − a' : a, a' ∈ A} is the difference set. The set commonDifferences(A, B) collects all such d, and HasInfinitelyManyCommonDifferences requires this set to be infinite (Set.Infinite). Erdős's question was whether sufficient density of A and B forces this intersection to be infinite.",
-    "mathContext": "A **common difference** is $d \\neq 0$ with $d \\in (A - A) \\cap (B - B)$, where\n$$A - A = \\{a_1 - a_2 : a_1, a_2 \\in A\\}$$\nThe set of common differences is $\\text{CD}(A,B) = (A - A) \\cap (B - B) \\setminus \\{0\\}$. The question: if $|A(N)|, |B(N)| \\gg N^{1/2}$, must $\\text{CD}(A,B)$ be infinite?",
-    "significance": "key",
-    "relatedConcepts": [
-      "difference set",
-      "sumset",
-      "additive combinatorics",
-      "Set.Infinite"
-    ],
-    "prerequisites": [
-      "Set ℤ",
-      "Int.sub",
-      "Set.Infinite"
-    ]
-  },
-  {
-    "id": "ann-331-conjecture",
-    "proofId": "erdos-331",
-    "range": {
-      "startLine": 78,
-      "endLine": 83
-    },
-    "type": "definition",
-    "title": "The Original Conjecture",
-    "content": "ErdosConjecture331 formalizes: for all A, B ⊆ ℕ with HasSqrtDensity A and HasSqrtDensity B, the sets must have infinitely many common differences. This was posed by Erdős and Graham (1980, p. 50) as a natural extension of the philosophy that 'density forces structure.' The conjecture would have implied that difference sets of dense sets necessarily overlap heavily. Ruzsa showed this is FALSE.",
-    "mathContext": "$$\\forall A, B \\subseteq \\mathbb{N},\\quad |A(N)|, |B(N)| \\gg N^{1/2} \\implies |\\text{CD}(A,B)| = \\infty$$\nThis is a **false** conjecture. The heuristic: $|A - A| \\approx |A|^2 \\sim N$ and similarly $|B - B| \\sim N$, so $(A-A) \\cap (B-B)$ 'should' be large. But Ruzsa showed the structure of $A$ and $B$ can prevent any overlap.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Erdős-Graham conjecture",
-      "density implies structure",
-      "additive combinatorics",
-      "disproved conjectures"
-    ],
-    "prerequisites": [
-      "HasSqrtDensity",
-      "HasInfinitelyManyCommonDifferences"
-    ]
-  },
-  {
-    "id": "ann-331-ruzsa-construction",
-    "proofId": "erdos-331",
-    "range": {
-      "startLine": 89,
-      "endLine": 103
-    },
-    "type": "definition",
-    "title": "Ruzsa's Binary Digit Construction",
-    "content": "Ruzsa's counterexample uses the binary representation of natural numbers. evenBinaryPositions consists of numbers whose binary digits are nonzero only in positions 0, 2, 4, ... (i.e., only in 4^k places). Formally, n ∈ evenBinaryPositions iff (n / 2^(2k+1)) % 2 = 0 for all k — every odd-position bit is 0. Similarly, oddBinaryPositions has digits only in positions 1, 3, 5, ... These are 'orthogonal' in the sense that their binary representations use disjoint bit positions, so addition is carry-free: n = a + b with a ∈ A, b ∈ B is the same as interleaving the binary digits of a and b.",
-    "mathContext": "Write $n = \\sum_{i \\ge 0} d_i \\cdot 2^i$ in binary. Then:\n$$A = \\{n : d_{2k+1} = 0 \\text{ for all } k\\} = \\left\\{\\sum_k a_k \\cdot 4^k : a_k \\in \\{0,1\\}\\right\\}$$\n$$B = \\{n : d_{2k} = 0 \\text{ for all } k\\} = \\left\\{\\sum_k b_k \\cdot 2 \\cdot 4^k : b_k \\in \\{0,1\\}\\right\\}$$\nSince $A$ uses only even bit positions and $B$ uses only odd bit positions, their binary representations are **disjoint**: $a + b$ is a **carry-free** addition.",
-    "significance": "key",
-    "relatedConcepts": [
-      "binary representation",
-      "carry-free addition",
-      "digit sets",
-      "Sidon-like sets"
-    ],
-    "prerequisites": [
-      "Nat.Digits",
-      "binary representation",
-      "modular arithmetic"
-    ]
-  },
-  {
-    "id": "ann-331-density-axioms",
-    "proofId": "erdos-331",
-    "range": {
-      "startLine": 105,
-      "endLine": 109
-    },
-    "type": "technique",
-    "title": "Density of Ruzsa's Sets",
-    "content": "Both ruzsaA and ruzsaB have density ≫ N^{1/2}, axiomatized as ruzsaA_has_sqrt_density and ruzsaB_has_sqrt_density. The counting argument: elements of A up to N are sums ∑ aₖ · 4^k with aₖ ∈ {0,1} and ∑ aₖ · 4^k ≤ N. The number of such sums is approximately √N because 4^k grows exponentially and the 'effective length' of the binary expansion is ~ log₄ N = ½ log₂ N, giving 2^(½ log₂ N) = √N choices. The same holds for B by the same argument with a factor-of-2 shift.",
-    "mathContext": "$$|A \\cap \\{1,\\ldots,N\\}| \\sim \\sqrt{N}, \\quad |B \\cap \\{1,\\ldots,N\\}| \\sim \\sqrt{N}$$\nThe elements of $A$ up to $N$ are $\\sum_{k=0}^{\\lfloor \\log_4 N \\rfloor} a_k \\cdot 4^k$ with $a_k \\in \\{0,1\\}$. There are $2^{\\lfloor \\log_4 N \\rfloor + 1} \\approx N^{\\log_4 2} = N^{1/2}$ such elements.",
-    "significance": "key",
-    "relatedConcepts": [
-      "counting in base 4",
-      "exponential growth",
-      "density calculation"
-    ],
-    "prerequisites": [
-      "HasSqrtDensity",
-      "ruzsaA",
-      "ruzsaB"
-    ]
-  },
-  {
-    "id": "ann-331-unique",
-    "proofId": "erdos-331",
-    "range": {
-      "startLine": 111,
-      "endLine": 114
-    },
-    "type": "technique",
-    "title": "Unique Representation Property",
-    "content": "The key structural property: every positive integer n has a UNIQUE decomposition n = a + b with a ∈ ruzsaA and b ∈ ruzsaB. This follows from the binary orthogonality: writing n = ∑ dᵢ · 2^i, the unique decomposition is a = ∑ d₂ₖ · 4^k (even-position digits) and b = ∑ d₂ₖ₊₁ · 2 · 4^k (odd-position digits). Since addition is carry-free, this is the only way to split n. Axiomatized using ExistsUnique (∃!) on pairs (a, b).",
-    "mathContext": "$$\\forall n \\ge 1,\\; \\exists! (a, b) \\in A \\times B : a + b = n$$\n**Proof sketch**: Write $n = \\sum_{i \\ge 0} d_i \\cdot 2^i$. Then $a = \\sum_{k \\ge 0} d_{2k} \\cdot 4^k$ and $b = \\sum_{k \\ge 0} d_{2k+1} \\cdot 2 \\cdot 4^k$. Since even and odd bit positions are disjoint, $a + b = n$ with **no carries**, and this is the unique such decomposition.",
-    "significance": "key",
-    "relatedConcepts": [
-      "unique representation",
-      "ExistsUnique",
-      "direct sum decomposition",
-      "carry-free addition"
-    ],
-    "prerequisites": [
-      "ruzsaA",
-      "ruzsaB",
-      "binary representation",
-      "ExistsUnique"
-    ]
-  },
-  {
-    "id": "ann-331-nocommon",
-    "proofId": "erdos-331",
-    "range": {
-      "startLine": 120,
-      "endLine": 134
-    },
-    "type": "technique",
-    "title": "No Common Differences",
-    "content": "The crucial consequence: Ruzsa's sets have NO nontrivial common differences at all — the set commonDifferences(A, B) is empty, not just finite. The proof: if a₁ − a₂ = b₁ − b₂ = d ≠ 0, then a₁ + b₂ = a₂ + b₁. By unique representation, since both sides decompose the same number into A + B, we get a₁ = a₂ and b₂ = b₁, contradicting d ≠ 0. This is axiomatized. The theorem ruzsa_counterexample is genuinely proved from this axiom by combining the density and emptiness results, then using Set.not_infinite_empty.",
-    "mathContext": "$$\\text{CD}(A, B) = (A - A) \\cap (B - B) \\setminus \\{0\\} = \\emptyset$$\n**Proof**: Suppose $a_1 - a_2 = b_1 - b_2 = d \\neq 0$. Then $a_1 + b_2 = a_2 + b_1 = n$. By unique representation, $(a_1, b_2)$ and $(a_2, b_1)$ are the same pair, so $a_1 = a_2$ and $b_2 = b_1$, giving $d = 0$. Contradiction.",
-    "significance": "key",
-    "relatedConcepts": [
-      "empty difference intersection",
-      "unique representation implies no common differences",
-      "Set.not_infinite_empty"
-    ],
-    "prerequisites": [
-      "ruzsa_unique_representation",
-      "commonDifferences",
-      "Set.Infinite"
-    ]
-  },
-  {
-    "id": "ann-331-disproof",
-    "proofId": "erdos-331",
-    "range": {
-      "startLine": 136,
-      "endLine": 141
-    },
-    "type": "technique",
-    "title": "The Disproof",
-    "content": "The theorem erdos_331_disproved is genuinely proved in Lean: it assumes ErdosConjecture331, instantiates with ruzsaA and ruzsaB (which have sqrt density by axiom), obtains HasInfinitelyManyCommonDifferences, but ruzsa_counterexample.2.2 gives the negation. This clean proof-by-contradiction demonstrates the power of the formalization: three axioms (two density, one no-common-differences) combine to refute the universal statement.",
-    "mathContext": "**Proof**: Assume $\\forall A, B$ with $A(N), B(N) \\gg \\sqrt{N}$, $|\\text{CD}(A,B)| = \\infty$. Apply to $(A, B) = (\\text{ruzsaA}, \\text{ruzsaB})$. Then $\\text{CD} = \\emptyset$ is infinite — contradiction. $\\square$\n\nThe Lean proof: `intro h; have := h ruzsaA ruzsaB ...; exact ruzsa_counterexample.2.2 this`.",
-    "significance": "key",
-    "relatedConcepts": [
-      "proof by contradiction",
-      "universal statement negation",
-      "existential witness"
-    ],
-    "prerequisites": [
-      "ErdosConjecture331",
-      "ruzsa_counterexample",
-      "ruzsaA_has_sqrt_density",
-      "ruzsaB_has_sqrt_density"
-    ]
-  },
-  {
-    "id": "ann-331-characterization",
-    "proofId": "erdos-331",
-    "range": {
-      "startLine": 147,
-      "endLine": 161
-    },
-    "type": "insight",
-    "title": "Understanding the Counterexample",
-    "content": "Three structural insights explain why Ruzsa's construction works. First, ruzsaA_characterization shows A consists of sums of powers of 4 (base-4 numbers with digits {0,1}), giving A a Sidon-like structure. Second, ruzsaB_eq_double_ruzsaA (axiom) shows B = 2·A: every element of B is exactly twice an element of A, reflecting the 1-bit shift between even and odd positions. Third, ruzsa_exact_growth (axiom) confirms the density is exactly ~c·√N (not just ≫ √N), showing the counterexample just barely meets the density threshold.",
-    "mathContext": "$A = \\{\\sum_k a_k \\cdot 4^k : a_k \\in \\{0,1\\}\\}$ and $B = 2A = \\{2a : a \\in A\\}$. The map $a \\mapsto 2a$ shifts all binary digits one position to the left, converting even-position digits to odd-position digits. The exact density: $|A \\cap \\{1,\\ldots,N\\}| \\sim c \\cdot N^{1/2}$ for a specific constant $c > 0$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "base-4 representation",
-      "Sidon set",
-      "doubling map",
-      "exact asymptotics"
-    ],
-    "prerequisites": [
-      "ruzsaA",
-      "ruzsaB",
-      "HasExactSqrtDensity"
-    ]
-  },
-  {
-    "id": "ann-331-variant",
-    "proofId": "erdos-331",
-    "range": {
-      "startLine": 166,
-      "endLine": 178
-    },
-    "type": "definition",
-    "title": "Ruzsa's Stronger Variant (Open)",
-    "content": "Ruzsa himself suggested a stronger variant: if we require the EXACT asymptotic |A ∩ {1,...,N}| ~ cₐ · N^{1/2} (convergence, not just lower bound), must A and B share infinitely many common differences? This is formalized as RuzsaVariant and remains OPEN. The axiom ruzsaVariantOpen represents the open status. Ruzsa's own construction has exact √N density, so it cannot serve as a counterexample to the ≫ version while also having exact density — but the subtle point is that the variant asks about ALL sets with exact density, which might have additional structure.",
-    "mathContext": "**Ruzsa's Variant (OPEN)**: If $\\lim_{N \\to \\infty} |A(N)|/\\sqrt{N} = c_A > 0$ and $\\lim_{N \\to \\infty} |B(N)|/\\sqrt{N} = c_B > 0$, must $|\\text{CD}(A,B)| = \\infty$?\n\nThe difference from the original: $\\gg \\sqrt{N}$ (lower bound) vs $\\sim c\\sqrt{N}$ (exact asymptotic). The exact condition imposes more regularity on the sets.",
-    "significance": "key",
-    "relatedConcepts": [
-      "exact asymptotics",
-      "open problem",
-      "density regularity",
-      "Ruzsa variant"
-    ],
-    "prerequisites": [
-      "HasExactSqrtDensity",
-      "HasInfinitelyManyCommonDifferences"
-    ]
-  },
-  {
-    "id": "ann-331-diffset",
-    "proofId": "erdos-331",
-    "range": {
-      "startLine": 184,
-      "endLine": 198
-    },
-    "type": "definition",
-    "title": "Difference Set Sparseness",
-    "content": "The difference set A − A = {a − a' : a, a' ∈ A} for Ruzsa's A is sparse: it has only ~√N elements up to N (axiom ruzsaA_sparse_differences). This is because A − A consists of numbers whose base-4 digits lie in {−1, 0, 1}, giving |{d ∈ A−A : |d| ≤ N}| ~ N^{1/2}. For generic sets of density √N, the difference set would have ~N elements (Plünnecke-Ruzsa inequality gives |A−A| ≤ |A|² ≈ N). The extreme sparseness of A−A is what allows (A−A) ∩ (B−B) to be empty.",
-    "mathContext": "The difference set $A - A = \\{a_1 - a_2 : a_1, a_2 \\in A\\}$ has $|\\{d \\in A - A : |d| \\le N\\}| \\le c \\cdot N^{1/2}$. Compare: a random set of density $\\sqrt{N}$ would have $|A - A| \\sim N$ by the **Plünnecke-Ruzsa inequality**. Ruzsa's $A$ has $|A - A| \\sim \\sqrt{N}$ — it is a **Sidon-like** set with very few repeated differences.",
-    "significance": "key",
-    "relatedConcepts": [
-      "difference set",
-      "Plünnecke-Ruzsa inequality",
-      "Sidon set",
-      "sparse structure"
-    ],
-    "prerequisites": [
-      "differenceSet",
-      "ruzsaA",
-      "Finset.filter"
-    ]
-  },
-  {
-    "id": "ann-331-largerdensity",
-    "proofId": "erdos-331",
-    "range": {
-      "startLine": 204,
-      "endLine": 213
-    },
-    "type": "technique",
-    "title": "Larger Density Forces Common Differences",
-    "content": "The axiom larger_density_common_differences states that for density > N^α with α > 1/2, common differences are guaranteed. This establishes √N as a sharp threshold: above it, common differences are forced; at it, counterexamples exist. The proof (not formalized) uses a pigeonhole/counting argument: if |A−A| ≫ N^(2α) and |B−B| ≫ N^(2α) with 2α > 1, then |(A−A) ∩ (B−B)| must be infinite since both difference sets are 'large' relative to {1,...,N}.",
-    "mathContext": "For $\\alpha > 1/2$: if $|A(N)| \\gg N^\\alpha$ and $|B(N)| \\gg N^\\alpha$, then $|\\text{CD}(A,B)| = \\infty$.\n\n**Heuristic**: $|A - A| \\gtrsim |A|^2 \\sim N^{2\\alpha}$. For $2\\alpha > 1$, the difference sets have positive density in $\\{-N,\\ldots,N\\}$, so their intersection must be infinite by a pigeonhole argument.",
-    "significance": "key",
-    "relatedConcepts": [
-      "threshold phenomenon",
-      "pigeonhole principle",
-      "sumset growth",
-      "positive density intersection"
-    ],
-    "prerequisites": [
-      "HasDensityAtLeast",
-      "HasInfinitelyManyCommonDifferences"
-    ]
-  },
-  {
     "id": "ann-331-summary",
     "proofId": "erdos-331",
     "range": {
       "startLine": 234,
-      "endLine": 243
+      "endLine": 245
     },
     "type": "technique",
     "title": "Summary: Main Theorems",
