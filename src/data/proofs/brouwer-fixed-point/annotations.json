@@ -200,5 +200,29 @@
       "stirring",
       "intuitive mathematics"
     ]
+  },
+  {
+    "id": "ann-1d-ivt",
+    "proofId": "brouwer-fixed-point",
+    "range": {
+      "startLine": 227,
+      "endLine": 243
+    },
+    "type": "technique",
+    "title": "The 1D Case: Axiom-Free via Intermediate Value Theorem",
+    "content": "The 1-dimensional Brouwer theorem is proved **without axioms** using Mathlib's `exists_mem_Icc_isFixedPt_of_mapsTo`. For continuous $f: [0,1] \\to [0,1]$, the proof constructs `ContinuousOn f (Set.Icc 0 1)` from global continuity, verifies the boundary condition `(0 : \\mathbb{R}) \\leq 1`, and supplies `Set.MapsTo f (Set.Icc 0 1) (Set.Icc 0 1)` from the hypothesis. Mathlib's lemma applies the IVT to $g(x) = f(x) - x$ (which satisfies $g(0) \\geq 0$ and $g(1) \\leq 0$) to produce the fixed point.\n\nThis axiom-free 1D proof contrasts with the general $n$-dimensional case: the IVT argument fails in higher dimensions because the intermediate value property is inherently one-dimensional. For $n \\geq 2$, one needs the full machinery of algebraic topology (homology or degree theory) to establish the no-retraction theorem.",
+    "mathContext": "$f: [0,1] \\to [0,1]$ continuous. Define $g(x) = f(x) - x$. Then $g(0) = f(0) \\geq 0$ and $g(1) = f(1) - 1 \\leq 0$. By IVT, $\\exists c \\in [0,1],\\; g(c) = 0$, i.e., $f(c) = c$. Lean: `exists_mem_Icc_isFixedPt_of_mapsTo` packages this argument.",
+    "significance": "supporting",
+    "prerequisites": [
+      "intermediate value theorem",
+      "ContinuousOn in Mathlib",
+      "Set.MapsTo"
+    ],
+    "relatedConcepts": [
+      "intermediate value theorem",
+      "ContinuousOn",
+      "1D fixed point",
+      "axiom-free proof"
+    ]
   }
 ]
