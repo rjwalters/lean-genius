@@ -191,10 +191,25 @@ General bounds on anti-Ramsey numbers.
 axiom ar_lower_bound : ∀ (n k : ℕ) (H : SimpleGraph k),
   antiRamsey n k H ≥ 1  -- Simplified; actual bound depends on H
 
+/-- A monochromatic coloring avoids rainbow copies of any graph with ≥ 2 edges. -/
+theorem monochromatic_avoids_rainbow (n k : ℕ) (H : SimpleGraph k)
+    (he : ∃ e₁ e₂ : Fin k × Fin k, e₁ ≠ e₂ ∧ H e₁.1 e₁.2 ∧ H e₂.1 e₂.2) :
+    AvoidsRainbow n (fun _ => (0 : ℕ)) k H := by
+  intro emb hR
+  obtain ⟨e₁, e₂, hne, he1, he2⟩ := he
+  exact absurd (hR e₁ e₂ he1 he2 hne) (by simp)
+
+/-- The number of colors is at most the number of edge slots (by card_image_le). -/
+theorem numColors_le_edges (n : ℕ) (coloring : (Fin n × Fin n) → ℕ) :
+    numColors n coloring ≤
+      (Finset.univ.filter (fun e : Fin n × Fin n => e.1 < e.2)).card :=
+  Finset.card_image_le
+
 -- Upper bound: AR(n, G) ≤ |E(K_n)| = C(n,2)
+-- Proof strategy: Nat.sSup_le + numColors_le_edges + edge_pairs_card
 theorem ar_upper_bound (n k : ℕ) (H : SimpleGraph k) :
     antiRamsey n k H ≤ numEdgesKn n := by
-  sorry -- Each edge can have its own color at most
+  sorry
 
 -- Monotonicity in n
 axiom ar_mono_n : ∀ (n₁ n₂ k : ℕ) (H : SimpleGraph k),
@@ -207,9 +222,10 @@ Anti-Ramsey numbers relate to extremal graph theory.
 -/
 
 -- Turán number ex(n, H): max edges in H-free graph on n vertices
+-- Note: requires decidability of the graph predicate for Finset.filter
 noncomputable def turan (n k : ℕ) (H : SimpleGraph k) : ℕ :=
-  sSup {e : ℕ | ∃ G : SimpleGraph n,
-    (∀ emb : GraphEmbedding n k H, False) ∧ e = (Finset.univ.filter
+  sSup {e : ℕ | ∃ (G : SimpleGraph n) (_ : DecidableRel G),
+    (∀ _emb : GraphEmbedding n k H, False) ∧ e = (Finset.univ.filter
       (fun p : Fin n × Fin n => p.1 < p.2 ∧ G p.1 p.2)).card}
 
 -- AR(n, H) ≥ ex(n, H) + 1 (give H-free graph rainbow, one color for complement)
