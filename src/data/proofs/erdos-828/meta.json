@@ -18,7 +18,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 828,
     "erdosUrl": "https://erdosproblems.com/828",
     "erdosProblemStatus": "open",
@@ -78,9 +78,9 @@
       "totient_prime_pow_formula: proved from Nat.totient_prime_pow",
       "erdos_828_summary theorem"
     ],
-    "axiomCount": 1,
+    "axiomCount": 0,
     "lineCount": 132,
-    "assumptions": "1 axiom: totient_dvd_self_iff (deep characterization of when φ(n) | n, not in Mathlib). 4 former axioms proved from Mathlib."
+    "assumptions": "0 axioms. totient_dvd_self_iff backward direction proved. Forward direction (1 sorry): if φ(n)|n then n=2^a·3^b (proof sketch documented)."
   },
   "overview": {
     "historicalContext": "Erdős Problem #828, from [Er83], asks a sweeping question about Euler's totient function: for every integer a, must there be infinitely many n with φ(n) | n + a? The conjecture is attributed to Graham and appears as Problem B37 in Guy's 'Unsolved Problems in Number Theory' (2004). It unifies several classical problems about totient divisibility into a single framework.\n\nThe case a = 0 is completely understood: φ(n) | n if and only if n ≤ 1 or n = 2^a · 3^b for some a > 0 (the 3-smooth numbers with a factor of 2). This characterization follows from the multiplicative formula φ(n)/n = ∏_{p|n}(1 - 1/p), which yields an integer ratio only when the prime factors are 2 and 3. The case a = -1 is far more famous: asking when φ(n) | n - 1 is essentially Lehmer's conjecture (1932), which asserts that the only solutions with n > 1 are the primes (where φ(p) = p - 1 trivially divides p - 1).\n\nThe general conjecture remains wide open. While the a = 0 and a = -1 cases have rich structure, extending the analysis to arbitrary a ∈ ℤ requires understanding the arithmetic of the totient function at a much deeper level. The problem connects to Carmichael's totient conjecture and to the Fermat-Euler theorem, which shows a^{φ(n)} ≡ 1 (mod n) for gcd(a,n) = 1.",
