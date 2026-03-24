@@ -73,42 +73,48 @@
       "title": "Module Documentation",
       "startLine": 1,
       "endLine": 17,
-      "summary": "States the open question (generalizing the hockey stick to multi-dimensional sums), and outlines the three main results: 1D hockey stick, parallel Vandermonde, and 2D hockey stick."
+      "summary": "States the open question (generalizing the hockey stick to multi-dimensional sums), and outlines the three main results: 1D hockey stick, parallel Vandermonde, and 2D hockey stick.",
+      "mathContext": "Introduces the generalization program: from the 1D hockey stick $\\sum_{i=0}^{n} \\binom{i+k}{k} = \\binom{n+k+1}{k+1}$ to the 2D identity $\\sum_{i+j \\leq n} \\binom{i+a}{a}\\binom{j+b}{b} = \\binom{n+a+b+2}{a+b+2}$, with the parallel Vandermonde convolution $\\sum_{i+j=n} \\binom{i+a}{a}\\binom{j+b}{b} = \\binom{n+a+b+1}{a+b+1}$ as the key intermediate identity."
     },
     {
       "id": "simplicial",
       "title": "Simplicial Numbers",
       "startLine": 18,
       "endLine": 48,
-      "summary": "Self-contained definitions: simplicial k n = C(n+k, k), base cases (simp lemmas), Pascal recurrence, and the 1D hockey stick identity. All proved by straightforward induction."
+      "summary": "Self-contained definitions: simplicial k n = C(n+k, k), base cases (simp lemmas), Pascal recurrence, and the 1D hockey stick identity. All proved by straightforward induction.",
+      "mathContext": "Defines $S_k(n) = \\binom{n+k}{k}$, the $k$-th simplicial number sequence. Establishes Pascal's recurrence $S_{k+1}(n+1) = S_{k+1}(n) + S_k(n+1)$ and the 1D hockey stick $\\sum_{i=0}^{n} S_k(i) = S_{k+1}(n)$. These are the figurate numbers: $S_0(n) = 1$, $S_1(n) = n+1$ (counting), $S_2(n) = \\binom{n+2}{2}$ (triangular), $S_3(n) = \\binom{n+3}{3}$ (tetrahedral)."
     },
     {
       "id": "parallel-vandermonde",
       "title": "Parallel Vandermonde Identity",
       "startLine": 49,
       "endLine": 99,
-      "summary": "The main result: Σ_{i+j=n} S_a(i)·S_b(j) = S_{a+b+1}(n). Proved by nested induction on (b, n) with Pascal decomposition of S_{b+1}(n+1-i) into two terms, each resolved by a different induction hypothesis."
+      "summary": "The main result: Σ_{i+j=n} S_a(i)·S_b(j) = S_{a+b+1}(n). Proved by nested induction on (b, n) with Pascal decomposition of S_{b+1}(n+1-i) into two terms, each resolved by a different induction hypothesis.",
+      "mathContext": "Proves the parallel Vandermonde convolution: $\\sum_{i+j=n} \\binom{i+a}{a}\\binom{j+b}{b} = \\binom{n+a+b+1}{a+b+1}$. The nested induction uses Pascal's identity $\\binom{j+b+1}{b+1} = \\binom{j+b}{b+1} + \\binom{j+b}{b}$ to split each summand, yielding two sums resolved by the inner hypothesis (on $n$) and outer hypothesis (on $b$). This is equivalent to the Cauchy product of generating functions $(1-x)^{-(a+1)} \\cdot (1-x)^{-(b+1)} = (1-x)^{-(a+b+2)}$."
     },
     {
       "id": "2d-hockey-stick",
       "title": "2D Hockey Stick Identity",
       "startLine": 100,
       "endLine": 114,
-      "summary": "hockey_stick_2d: Σ_{i+j≤n} S_a(i)·S_b(j) = S_{a+b+2}(n). Elegant two-line proof composing parallel_vandermonde with hockey_stick via simp_rw."
+      "summary": "hockey_stick_2d: Σ_{i+j≤n} S_a(i)·S_b(j) = S_{a+b+2}(n). Elegant two-line proof composing parallel_vandermonde with hockey_stick via simp_rw.",
+      "mathContext": "The 2D hockey stick: $\\sum_{i+j \\leq n} \\binom{i+a}{a}\\binom{j+b}{b} = \\binom{n+a+b+2}{a+b+2}$. The proof rewrites the triangular sum $\\sum_{m=0}^{n} \\left(\\sum_{i+j=m} S_a(i) S_b(j)\\right)$ using the parallel Vandermonde to get $\\sum_{m=0}^{n} S_{a+b+1}(m)$, then applies the 1D hockey stick. This two-line composition demonstrates that the 2D identity is simply $\\texttt{hockey\\_stick} \\circ \\texttt{parallel\\_vandermonde}$."
     },
     {
       "id": "special-cases",
       "title": "Special Cases and Verification",
       "startLine": 115,
       "endLine": 131,
-      "summary": "parallel_vandermonde_left (a=0 reduces to hockey stick), plus concrete native_decide checks: S_2(2) = 6 and S_3(2) = 10."
+      "summary": "parallel_vandermonde_left (a=0 reduces to hockey stick), plus concrete native_decide checks: S_2(2) = 6 and S_3(2) = 10.",
+      "mathContext": "Verifies degenerate cases: when $a = 0$, the parallel Vandermonde reduces to $\\sum_{i+j=n} \\binom{j+b}{b} = \\binom{n+b+1}{b+1}$, recovering the 1D hockey stick. Concrete checks: $S_2(2) = \\binom{4}{2} = 6$ (the 2nd triangular number) and $S_3(2) = \\binom{5}{3} = 10$ (the 2nd tetrahedral number), verified by $\\texttt{native\\_decide}$."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 132,
       "endLine": 154,
-      "summary": "Recapitulates all 12 theorems with 0 sorries and 0 axioms, highlighting the nested induction strategy and the compositional proof of the 2D identity."
+      "summary": "Recapitulates all 12 theorems with 0 sorries and 0 axioms, highlighting the nested induction strategy and the compositional proof of the 2D identity.",
+      "mathContext": "Summarizes the complete chain: $S_k(n) = \\binom{n+k}{k}$ (definition) $\\to$ Pascal's recurrence $\\to$ 1D hockey stick $\\sum S_k(i) = S_{k+1}(n)$ $\\to$ parallel Vandermonde $\\sum_{i+j=n} S_a(i) S_b(j) = S_{a+b+1}(n)$ $\\to$ 2D hockey stick $\\sum_{i+j \\leq n} S_a(i) S_b(j) = S_{a+b+2}(n)$. All 12 theorems verified with 0 sorries and 0 axioms."
     }
   ],
   "conclusion": {
