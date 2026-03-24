@@ -29,21 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: 2 sorries provable with number theory (counting multiples). 3 axioms deep. 8 theorems already proved.",
-    "builtItems": [],
+    "progressSummary": "COMPLETED: 0 sorries, 3 deep axioms (open problem). All 9 theorems proved. single_prime_lower proved via injection of range(k/p) into multiples of p in [a,a+k).",
+    "builtItems": [
+      "Proved single_prime_lower via ceiling-division injection: i ↦ (⌈a/p⌉+i)*p maps range(k/p) into filter(p∣·)(Ico a (a+k))"
+    ],
     "insights": [
-      "2 sorries (single_prime_lower/upper) are provable: count of multiples of p in [a,a+k) is in [k/p, k/p+1]",
+      "single_prime_lower proved: inject range(k/p) → multiples via i ↦ (⌈a/p⌉+i)*p, key: Nat.div_add_mod + mul_comm for omega",
+      "omega treats (n/k)*k as opaque — must provide Nat.div_add_mod with rw [mul_comm] to match goal form",
       "Key approach for upper bound: filter(p∣·)(range k) ⊆ image(·*p)(range(k/p+1)), use card_image_le",
-      "Key approach for lower bound: partition [a,a+k) into ⌊k/p⌋ blocks of p integers, each contains ≥1 multiple",
       "3 axioms are deep: covering_asymptotic (main term), erdos_selfridge_exact (solved 2<α<3), alpha_gt_3_open",
-      "8 existing theorems well-proved: density bounds expectedDensity_pos/lt_one are clean",
+      "9 theorems fully proved: single_prime_lower/upper, covering_le_k, density bounds, concrete examples",
       "covering_complement_relation is a placeholder (proves True)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove single_prime_upper: ciInf_le_of_le at a=0, count ≤ k/p+1 via image injection",
-      "Prove single_prime_lower: show ∀ a, count ≥ k/p via block partition argument",
-      "Replace covering_complement_relation placeholder with actual Jacobsthal connection"
+      "Replace covering_complement_relation placeholder with actual Jacobsthal connection",
+      "Consider proving covering_asymptotic from Mathlib if sufficient sieve lemmas exist"
     ],
     "markdown": "# Erdős #1143 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
@@ -69,11 +70,11 @@
     {
       "path": "Proofs/Erdos1143Problem.lean",
       "filename": "Erdos1143Problem.lean",
-      "lineCount": 169,
-      "theoremCount": 8,
+      "lineCount": 273,
+      "theoremCount": 9,
       "axiomCount": 3,
       "defCount": 3,
-      "sorryCount": 7,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1143Problem.lean"
     }
