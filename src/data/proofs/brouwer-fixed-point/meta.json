@@ -355,6 +355,51 @@
       "id": "schauder-fixed-point",
       "relationship": "extended-by",
       "description": "Schauder's fixed point theorem (1930) generalizes Brouwer from finite-dimensional balls to compact convex subsets of Banach spaces: every continuous self-map of a compact convex set in a Banach space has a fixed point. This infinite-dimensional extension is essential for differential equations (Leray-Schauder degree theory) and functional analysis"
+    },
+    {
+      "id": "poincare-conjecture",
+      "relationship": "thematic",
+      "description": "Both are landmark results in topology requiring sophisticated machinery: Brouwer uses homology (or degree theory) to pro"
+    },
+    {
+      "id": "mean-value-theorem",
+      "relationship": "related",
+      "description": "Both guarantee existence of special points for continuous functions. The 1D Brouwer theorem follows from IVT (which also"
+    },
+    {
+      "id": "brouwer-fixed-point-oq-02",
+      "relationship": "extended-by",
+      "description": "Explores the computational complexity of finding approximate fixed points (PPAD-completeness) — the constructive dimensi"
+    },
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "The Pythagorean theorem defines the Euclidean metric $\\|x\\|^2 = x_1^2 + \\cdots + x_n^2$ that determines the closed ball "
+    },
+    {
+      "id": "area-of-circle",
+      "relationship": "related",
+      "description": "The area formula $A = \\pi r^2$ gives the measure of the 2-disk $B^2$ where the 2-dimensional Brouwer theorem applies. Th"
+    },
+    {
+      "id": "halting-problem",
+      "relationship": "thematic",
+      "description": "Both are non-constructive existence/impossibility results: Brouwer proves a fixed point exists without exhibiting it, wh"
+    },
+    {
+      "id": "konigsberg",
+      "relationship": "thematic",
+      "description": "Both are pioneering results in topology: Euler's solution of the Königsberg bridge problem (1736) launched graph theory "
+    },
+    {
+      "id": "cauchy-schwarz",
+      "relationship": "foundational",
+      "description": "Cauchy-Schwarz provides the triangle inequality $\\|u+v\\| \\leq \\|u\\| + \\|v\\|$ that makes the closed ball $B^n = \\{x : \\|x"
+    },
+    {
+      "id": "isoperimetric-theorem",
+      "relationship": "thematic",
+      "description": "Both characterize fundamental properties of the ball/sphere: the isoperimetric theorem shows the ball maximizes volume f"
     }
   ],
   "leanFile": {
