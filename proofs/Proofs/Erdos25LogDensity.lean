@@ -344,12 +344,79 @@ Ratio: (1/2) · H_{N/2} / log(N) → 1/2 since H_{N/2} ~ log(N/2) ~ log(N).
 **Proof status**: HARD (~60 lines) - requires harmonic sum asymptotics. -/
 axiom logDensity_evens : HasLogDensity {n : ℕ | Even n ∧ n ≠ 0} (1/2)
 
-/-- **Axiom: Odd numbers have log density 1/2**.
+/-- Splitting: logWeightedCount of a disjoint union equals the sum of parts. -/
+theorem logWeightedCount_union_disjoint {A B : Set ℕ} (h : Disjoint A B) (N : ℕ) :
+    logWeightedCount (A ∪ B) N = logWeightedCount A N + logWeightedCount B N := by
+  unfold logWeightedCount
+  rw [← Finset.sum_add_distrib]
+  apply Finset.sum_congr rfl
+  intro n _
+  by_cases hn : n = 0
+  · subst hn; simp
+  · by_cases hA : n ∈ A
+    · have hB : n ∉ B := fun hb => Set.disjoint_left.mp h hA hb
+      rw [if_pos ⟨Set.mem_union_left B hA, hn⟩, if_pos ⟨hA, hn⟩,
+          if_neg (show ¬(n ∈ B ∧ n ≠ 0) from fun ⟨hb, _⟩ => hB hb)]
+      ring
+    · by_cases hB : n ∈ B
+      · rw [if_pos ⟨Set.mem_union_right A hB, hn⟩,
+            if_neg (show ¬(n ∈ A ∧ n ≠ 0) from fun ⟨ha, _⟩ => hA ha),
+            if_pos ⟨hB, hn⟩]
+        ring
+      · rw [if_neg (show ¬(n ∈ (A ∪ B) ∧ n ≠ 0) from fun ⟨hab, _⟩ => hab.elim hA hB),
+            if_neg (show ¬(n ∈ A ∧ n ≠ 0) from fun ⟨ha, _⟩ => hA ha),
+            if_neg (show ¬(n ∈ B ∧ n ≠ 0) from fun ⟨hb, _⟩ => hB hb)]
+        ring
 
-Follows from logDensity_full and logDensity_evens via complementation.
+/-- Every positive natural number is either even or odd. -/
+private theorem even_odd_partition :
+    (Set.univ : Set ℕ) \ {0} = {n : ℕ | Even n ∧ n ≠ 0} ∪ {n : ℕ | Odd n} := by
+  ext n
+  simp only [Set.mem_diff, Set.mem_univ, Set.mem_singleton_iff, true_and,
+    Set.mem_union, Set.mem_setOf_eq]
+  constructor
+  · intro hne
+    rcases Nat.even_or_odd n with he | ho
+    · exact Or.inl ⟨he, hne⟩
+    · exact Or.inr ho
+  · rintro (⟨_, hne⟩ | ho)
+    · exact hne
+    · obtain ⟨k, hk⟩ := ho; omega
 
-**Proof status**: HARD (~40 lines) - requires density complementation lemma. -/
-axiom logDensity_odds : HasLogDensity {n : ℕ | Odd n} (1/2)
+/-- Even and odd positive numbers are disjoint. -/
+private theorem even_odd_disjoint :
+    Disjoint {n : ℕ | Even n ∧ n ≠ 0} {n : ℕ | Odd n} := by
+  rw [Set.disjoint_left]
+  intro n ⟨he, _⟩ ho
+  obtain ⟨k, hk⟩ := he; obtain ⟨j, hj⟩ := ho; omega
+
+/-- Odd numbers have log density 1/2.
+    Proved from logDensity_full and logDensity_evens via complementation:
+    {evens⁺} ∪ {odds} = ℕ⁺, so density(odds) = 1 - 1/2 = 1/2.
+    (Previously axiomatized; now derived.) -/
+theorem logDensity_odds : HasLogDensity {n : ℕ | Odd n} (1/2) := by
+  -- Strategy: show odds = ℕ⁺ \ evens⁺, then use density subtraction
+  have hfull := logDensity_full
+  have hevens := logDensity_evens
+  have hunion := even_odd_partition
+  have hdisj := even_odd_disjoint
+  -- logDensityRatio of odds = logDensityRatio of ℕ⁺ - logDensityRatio of evens⁺
+  -- because logDensityRatio of (A ∪ B) = logDensityRatio A + logDensityRatio B (for N > 1)
+  suffices h : HasLogDensity {n : ℕ | Odd n} (1 - 1/2) by
+    norm_num at h; exact h
+  unfold HasLogDensity at *
+  -- Eventually, the ratios split
+  have hev_split : ∀ᶠ N in atTop,
+      logDensityRatio {n : ℕ | Odd n} N =
+      logDensityRatio (Set.univ \ {0}) N - logDensityRatio {n | Even n ∧ n ≠ 0} N := by
+    filter_upwards [eventually_gt_atTop 1] with N hN
+    have h1 : ¬(N ≤ 1) := by omega
+    unfold logDensityRatio
+    simp only [h1, ↓reduceIte]
+    rw [hunion, logWeightedCount_union_disjoint hdisj N, add_div]
+    ring
+  refine Filter.Tendsto.congr' ?_ (Tendsto.sub hfull hevens)
+  exact hev_split.mono (fun N hN => hN.symm)
 
 /-- **Axiom: Numbers ≢ 0 (mod m) have log density (m-1)/m**.
 
