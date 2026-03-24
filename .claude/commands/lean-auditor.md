@@ -161,7 +161,7 @@ If `mathlibDependencies` lists a major theorem AND the Lean file directly calls 
 When you find a mismatch, create an issue:
 
 ```bash
-gh issue create --title "Gallery integrity: [slug] overstates [status/sorries/contributions]" --body "$(cat <<'EOF'
+gh issue create --title "Gallery integrity: [slug] overstates [status/sorries/contributions]" --label "loom:auditor" --body "$(cat <<'EOF'
 ## Integrity Issue
 
 **Proof**: [slug]
