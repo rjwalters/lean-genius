@@ -79,7 +79,9 @@
       "In practice, for moduli like m = n = 2^64 with gcd = 2^32: the representation needs 65 bits (not 128), the Bézout step works on 32-bit numbers, and Garner reconstruction stays within 64 bits"
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Number theory (GCD, LCM, Bézout's identity, modular arithmetic)",
+      "Computational number theory (mixed-radix representation, CRT algorithms)",
+      "Lean 4 Mathlib (`Nat.gcd_mul_lcm`, `Int.gcdA`, `Int.ModEq`)"
     ]
   },
   "sections": [
@@ -88,56 +90,64 @@
       "title": "Problem Statement and Efficiency Strategy",
       "startLine": 1,
       "endLine": 35,
-      "summary": "Open question: can non-coprime CRT be efficient? Three efficiency improvements outlined: LCM bound, Bézout reduction, Garner decomposition."
+      "summary": "Open question: can non-coprime CRT be efficient? Three efficiency improvements outlined: LCM bound, Bézout reduction, Garner decomposition.",
+      "mathContext": "Given $x \\equiv a \\pmod{m}$ and $x \\equiv b \\pmod{n}$ with $\\gcd(m,n) \\mid (a-b)$, the solution lives in $\\mathbb{Z}/\\text{lcm}(m,n)\\mathbb{Z}$ rather than $\\mathbb{Z}/mn\\mathbb{Z}$. Three efficiency gains: LCM $\\le mn/\\gcd$, Bézout on reduced coprime pair, Garner mixed-radix."
     },
     {
       "id": "lcm-efficiency",
       "title": "Part I: LCM vs Product — Core Efficiency Gain",
       "startLine": 36,
       "endLine": 73,
-      "summary": "gcd_lcm_product, lcm_lt_mul_of_gcd_gt_one (lcm < m*n when gcd > 1), efficiency_ratio, lcm_le_half_product."
+      "summary": "gcd_lcm_product, lcm_lt_mul_of_gcd_gt_one (lcm < m*n when gcd > 1), efficiency_ratio, lcm_le_half_product.",
+      "mathContext": "$\\gcd(m,n) \\cdot \\text{lcm}(m,n) = mn$, so $\\text{lcm}(m,n) = mn/\\gcd(m,n)$. When $\\gcd > 1$: $\\text{lcm} < mn$ strictly. When $\\gcd \\ge 2$: $\\text{lcm} \\le mn/2$, saving at least 1 bit of representation."
     },
     {
       "id": "canonical-form",
       "title": "Part II: Canonical Solution in [0, lcm(m,n))",
       "startLine": 74,
       "endLine": 100,
-      "summary": "modEq_emod_of_dvd helper; noncoprime_crt_canonical_form: any CRT solution reduces to [0, lcm(m,n))."
+      "summary": "modEq_emod_of_dvd helper; noncoprime_crt_canonical_form: any CRT solution reduces to [0, lcm(m,n)).",
+      "mathContext": "Any solution $x$ satisfying $x \\equiv a \\pmod{m}$ and $x \\equiv b \\pmod{n}$ can be reduced to $x' = x \\mod \\text{lcm}(m,n) \\in [0, \\text{lcm}(m,n))$ preserving both congruences. This is the canonical form."
     },
     {
       "id": "bezout-reduction",
       "title": "Part III: Bézout Reduction on Smaller Moduli",
       "startLine": 101,
       "endLine": 132,
-      "summary": "bezout_reduction_coprime (m/g and n/g are coprime), bezout_reduction_strictly_smaller (m/g < m when g > 1), reduced_product_le_lcm."
+      "summary": "bezout_reduction_coprime (m/g and n/g are coprime), bezout_reduction_strictly_smaller (m/g < m when g > 1), reduced_product_le_lcm.",
+      "mathContext": "Let $g = \\gcd(m,n)$. Then $\\gcd(m/g, n/g) = 1$ (coprime), so standard CRT applies to the reduced pair. Moreover $m/g < m$ when $g > 1$, and $(m/g)(n/g) = mn/g^2 \\le \\text{lcm}(m,n)$. Bézout coefficients for $m/g$ and $n/g$ are computed via `Int.gcdA`."
     },
     {
       "id": "garner-decomposition",
       "title": "Part IV: Garner's Mixed-Radix Decomposition",
       "startLine": 133,
       "endLine": 168,
-      "summary": "garner_mixed_radix: x = c₁ + c₂*m with c₁ < m, c₂ < n (existence and uniqueness). garner_coefficients_bounded: c₁ = x%m, c₂ = x/m < n."
+      "summary": "garner_mixed_radix: x = c₁ + c₂*m with c₁ < m, c₂ < n (existence and uniqueness). garner_coefficients_bounded: c₁ = x%m, c₂ = x/m < n.",
+      "mathContext": "Garner's representation: $x = c_1 + c_2 m$ with $0 \\le c_1 < m$ and $0 \\le c_2 < n$. This is the mixed-radix form: $c_1 = x \\bmod m$ (the 'digit') and $c_2 = \\lfloor x/m \\rfloor$ (the 'carry'). Reconstruction uses only word-sized arithmetic."
     },
     {
       "id": "efficiency-summary",
       "title": "Part V: Main Efficiency Theorem",
       "startLine": 169,
       "endLine": 226,
-      "summary": "noncoprime_crt_efficiency_summary: given gcd(m,n) | (a-b), constructs canonical solution in [0, lcm(m,n)) using Bézout on reduced coprime moduli."
+      "summary": "noncoprime_crt_efficiency_summary: given gcd(m,n) | (a-b), constructs canonical solution in [0, lcm(m,n)) using Bézout on reduced coprime moduli.",
+      "mathContext": "Main theorem: given $g \\mid (a-b)$, construct $x \\in [0, \\text{lcm}(m,n))$ with $x \\equiv a \\pmod{m}$ and $x \\equiv b \\pmod{n}$ by: (1) solve CRT on coprime pair $m/g, n/g$; (2) lift to $[0, \\text{lcm})$. All intermediate arithmetic bounded by $\\max(m,n)$."
     },
     {
       "id": "examples",
       "title": "Part VI: Concrete Efficiency Examples",
       "startLine": 229,
       "endLine": 264,
-      "summary": "Concrete examples: gcd(6,4)=2, gcd(12,8)=4, Garner on (6,7), and large power-of-2 moduli showing factor-1024 saving."
+      "summary": "Concrete examples: gcd(6,4)=2, gcd(12,8)=4, Garner on (6,7), and large power-of-2 moduli showing factor-1024 saving.",
+      "mathContext": "Examples: $\\gcd(6,4) = 2$, $\\text{lcm}(6,4) = 12 < 24 = 6 \\cdot 4$; $\\gcd(12,8) = 4$, $\\text{lcm} = 24 < 96$. For $m = 2^{20}, n = 2^{20}$ with $g = 2^{10}$: $\\text{lcm} = 2^{30}$ vs $mn = 2^{40}$, a 1024× saving."
     },
     {
       "id": "three-moduli",
       "title": "Part VII: Extension to Three Non-Coprime Moduli",
       "startLine": 265,
       "endLine": 308,
-      "summary": "noncoprime_crt_three_canonical: iterated lcm gives canonical form for three moduli. iterated_lcm_le_product: lcm(lcm(m₁,m₂),m₃) ≤ m₁*m₂*m₃."
+      "summary": "noncoprime_crt_three_canonical: iterated lcm gives canonical form for three moduli. iterated_lcm_le_product: lcm(lcm(m₁,m₂),m₃) ≤ m₁*m₂*m₃.",
+      "mathContext": "For three moduli: $\\text{lcm}(\\text{lcm}(m_1, m_2), m_3) \\le m_1 m_2 m_3$. The canonical solution $x \\in [0, \\text{lcm}(m_1, m_2, m_3))$ is constructed by iterating the two-moduli algorithm."
     }
   ],
   "conclusion": {
@@ -170,10 +180,45 @@
     {
       "targetId": "chinese-remainder-non-coprime",
       "relationship": "extends",
-      "description": "Parent formalization; this entry extends it with further exploration"
+      "description": "Parent formalization establishing the non-coprime CRT existence theorem. This entry proves the three efficiency improvements: LCM bounds, Bézout reduction, and Garner decomposition"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "The standard (coprime) CRT formalization. This entry shows how the non-coprime case reduces to the coprime case via Bézout reduction on $m/\\gcd$ and $n/\\gcd$"
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "foundational",
+      "description": "Bézout's identity ($\\gcd(m,n) = sm + tn$) underpins both the coprime CRT construction and the reduction step that makes non-coprime CRT efficient"
     }
   ],
   "relatedProofs": [
-    "chinese-remainder-non-coprime"
+    "chinese-remainder-non-coprime",
+    "chinese-remainder-constructive",
+    "bezout-identity"
+  ],
+  "references": [
+    {
+      "authors": "Garner, Harvey L.",
+      "title": "The residue number system",
+      "year": "1959",
+      "venue": "IRE Transactions on Electronic Computers, vol. EC-8, no. 2, pp. 140–147",
+      "note": "Introduced the mixed-radix decomposition for converting between residue and positional representations. The Garner algorithm formalized here as garner_mixed_radix is now standard in hardware arithmetic and cryptographic implementations"
+    },
+    {
+      "authors": "Shoup, Victor",
+      "title": "A Computational Introduction to Number Theory and Algebra",
+      "year": "2009",
+      "venue": "Cambridge University Press, 2nd edition",
+      "note": "Comprehensive treatment of CRT algorithms including the non-coprime case and computational complexity. Chapter 2 covers the LCM-based formulation and Garner's algorithm used in this formalization"
+    },
+    {
+      "authors": "Knuth, Donald E.",
+      "title": "The Art of Computer Programming, Vol. 2: Seminumerical Algorithms",
+      "year": "1997",
+      "venue": "Addison-Wesley, 3rd edition",
+      "note": "Section 4.3.2 covers modular arithmetic and CRT with detailed analysis of Garner's mixed-radix conversion, including the efficiency analysis for non-coprime moduli"
+    }
   ]
 }
