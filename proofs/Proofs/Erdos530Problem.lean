@@ -155,10 +155,82 @@ theorem sidon_sum_injective (S : Finset ℤ) (hS : IsSidon S) :
   have := hS a haS b hbS c hcS d hdS hab_le hcd_le heq
   exact Prod.ext this.1 this.2
 
+/-- The number of sorted pairs (a,b) with a ≤ b from a Finset of ℤ of size n
+    is exactly n*(n+1)/2. This counts ordered pairs with repetition allowed. -/
+theorem card_sorted_pairs (S : Finset ℤ) :
+    ((S ×ˢ S).filter (fun p => p.1 ≤ p.2)).card = S.card * (S.card + 1) / 2 := by
+  -- Strategy: partition S×S, use swap symmetry to relate upper/lower triangles
+  -- le + gt = |S|²
+  have h_total : ((S ×ˢ S).filter (fun p : ℤ × ℤ => p.1 ≤ p.2)).card +
+      ((S ×ˢ S).filter (fun p : ℤ × ℤ => ¬(p.1 ≤ p.2))).card = S.card * S.card := by
+    rw [Finset.filter_card_add_filter_neg_card_eq_card, Finset.card_product]
+  -- Key: |gt| + |S| = |le|
+  suffices h_key : ((S ×ˢ S).filter (fun p : ℤ × ℤ => ¬(p.1 ≤ p.2))).card + S.card =
+      ((S ×ˢ S).filter (fun p : ℤ × ℤ => p.1 ≤ p.2)).card by
+    -- From h_total and h_key, derive the result
+    have h2 : 2 * ((S ×ˢ S).filter (fun p : ℤ × ℤ => p.1 ≤ p.2)).card =
+        S.card * S.card + S.card := by omega
+    have h3 : S.card * S.card + S.card = S.card * (S.card + 1) := by ring
+    rw [h3] at h2
+    omega
+  -- Decompose le = lt ∪ eq (disjoint)
+  have h_decomp : (S ×ˢ S).filter (fun p : ℤ × ℤ => p.1 ≤ p.2) =
+      (S ×ˢ S).filter (fun p : ℤ × ℤ => p.1 < p.2) ∪
+      (S ×ˢ S).filter (fun p : ℤ × ℤ => p.1 = p.2) := by
+    ext ⟨a, b⟩
+    simp only [Finset.mem_filter, Finset.mem_union, Finset.mem_product]
+    constructor
+    · intro ⟨⟨ha, hb⟩, hab⟩
+      rcases lt_or_eq_of_le hab with h | h
+      · exact Or.inl ⟨⟨ha, hb⟩, h⟩
+      · exact Or.inr ⟨⟨ha, hb⟩, h⟩
+    · rintro (⟨⟨ha, hb⟩, h⟩ | ⟨⟨ha, hb⟩, h⟩)
+      · exact ⟨⟨ha, hb⟩, le_of_lt h⟩
+      · exact ⟨⟨ha, hb⟩, le_of_eq h⟩
+  have h_disj : Disjoint ((S ×ˢ S).filter (fun p : ℤ × ℤ => p.1 < p.2))
+      ((S ×ˢ S).filter (fun p : ℤ × ℤ => p.1 = p.2)) := by
+    rw [Finset.disjoint_filter]
+    intro ⟨a, b⟩ _ h1 h2; linarith
+  -- |gt| = |lt| via swap bijection (a,b) ↦ (b,a)
+  have h_swap : ((S ×ˢ S).filter (fun p : ℤ × ℤ => ¬(p.1 ≤ p.2))).card =
+      ((S ×ˢ S).filter (fun p : ℤ × ℤ => p.1 < p.2)).card := by
+    symm
+    apply Finset.card_bij (fun p _ => Prod.swap p)
+    · intro ⟨a, b⟩ h
+      simp only [Finset.mem_filter, Finset.mem_product, not_le, Prod.swap] at h ⊢
+      exact ⟨⟨h.1.2, h.1.1⟩, h.2⟩
+    · intro ⟨a1, b1⟩ _ ⟨a2, b2⟩ _ h
+      simp only [Prod.swap, Prod.mk.injEq] at h
+      exact Prod.ext h.2 h.1
+    · intro ⟨a, b⟩ h
+      simp only [Finset.mem_filter, Finset.mem_product, not_le] at h
+      exact ⟨⟨b, a⟩, by simp only [Finset.mem_filter, Finset.mem_product]; exact ⟨⟨h.1.2, h.1.1⟩, h.2⟩,
+        by simp [Prod.swap]⟩
+  -- |eq| = |S| (diagonal bijection (a,a) ↦ a)
+  have h_diag : ((S ×ˢ S).filter (fun p : ℤ × ℤ => p.1 = p.2)).card = S.card := by
+    symm
+    apply Finset.card_bij (fun x _ => (x, x))
+    · intro a ha; exact Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨ha, ha⟩, rfl⟩
+    · intro a1 _ a2 _ h; exact (Prod.mk.inj h).1
+    · intro p h
+      have hf := Finset.mem_filter.mp h
+      have hp := Finset.mem_product.mp hf.1
+      refine ⟨p.1, hp.1, ?_⟩
+      ext
+      · rfl
+      · exact hf.2
+  -- Combine: |le| = |lt| + |eq| = |gt| + |S|
+  rw [h_decomp, Finset.card_union_of_disjoint h_disj, h_swap, h_diag]
+
 /-- The number of distinct pairwise sums from a Sidon set S of size k
-    is exactly k(k+1)/2 (all sums are distinct). -/
-axiom sidon_sum_count (S : Finset ℤ) (hS : IsSidon S) :
+    is exactly k(k+1)/2 (all sums are distinct).
+    Proved from sidon_sum_injective (distinct pairs ↦ distinct sums) and
+    card_sorted_pairs (counting the sorted pairs).
+    (Previously axiomatized; now derived.) -/
+theorem sidon_sum_count (S : Finset ℤ) (hS : IsSidon S) :
   (((S ×ˢ S).filter (fun p => p.1 ≤ p.2)).image (fun p => p.1 + p.2)).card =
-    S.card * (S.card + 1) / 2
+    S.card * (S.card + 1) / 2 := by
+  rw [Finset.card_image_of_injOn (sidon_sum_injective S hS)]
+  exact card_sorted_pairs S
 
 end Erdos530
