@@ -31,7 +31,7 @@
     "phase": "ACT",
     "since": "2026-03-23T18:00:00Z",
     "iteration": 6,
-    "focus": "4 axioms, 2 sorries. Converted sq_summable and riemann_lebesgue from axiom to theorem.",
+    "focus": "0 sorries, 4 axioms. All remaining axioms are deep results.",
     "blockers": [],
     "nextAction": "Fill riemannLebesgue sorry (rpow arithmetic) or prove fourierCoeff_smooth_decay",
     "attemptCounts": {
@@ -41,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Converted 2 axioms to theorem stubs (sq_summable, riemann_lebesgue). Now: 4 axioms, 2 sorries, 382 lines.",
+    "progressSummary": "PROGRESS: Eliminated both sorries. Now: 4 axioms, 0 sorries, ~420 lines. Axioms are deep results (optimality, converse, C^k decay, analytic decay).",
     "builtItems": [
       "fourier_norm_one: proved via simp [fourier_apply] — toCircle maps to unit circle",
       "fourier_translate_halfperiod: proved via fourier_neg + fourier_add_half_inv_index + map_neg",
@@ -51,7 +51,9 @@
       "Eliminated sorry in fourierCoeff_difference_formula: added Continuous f hypothesis, proved non-integrable case impossible via ContinuousOn.integrableOn_compact isCompact_univ",
       "Added 0 < α to fourierCoeff_holder_decay: derives Continuous f from holder_continuous, passes to difference formula",
       "Converted fourierCoeff_sq_summable_of_holder: axiom -> theorem with sorry",
-      "Converted riemannLebesgue_of_holder: axiom -> theorem with sorry (Metric.tendsto_nhds + Filter.eventually_cofinite)"
+      "Converted riemannLebesgue_of_holder: axiom -> theorem with sorry (Metric.tendsto_nhds + Filter.eventually_cofinite)",
+      "Proved riemannLebesgue_of_holder: explicit N via limit of bound function, set ⊆ Icc argument",
+      "Proved fourierCoeff_sq_summable_of_holder: Hölder→continuous→L²→Parseval via MemLp.mono_exponent"
     ],
     "insights": [
       "fourier_apply unfolds to ↑(n • x).toCircle, which immediately gives unit norm via simp",
@@ -67,16 +69,21 @@
       "The non-integrable edge case in fourierCoeff_difference_formula is genuinely hard: f-f∘τ can be integrable when f isn't. Needs Continuous f hypothesis.",
       "ContinuousOn.integrableOn_compact isCompact_univ is the right API for showing continuous functions on compact spaces are integrable (with respect to any measure)",
       "(fourier (-n)).continuous.smul hf_cont gives continuity of fun x => fourier(-n) x • f x in Lean 4 Mathlib",
-      "Metric.tendsto_nhds unfolds Tendsto into epsilon-delta form; Filter.eventually_cofinite characterizes the cofinite filter"
+      "Metric.tendsto_nhds unfolds Tendsto into epsilon-delta form; Filter.eventually_cofinite characterizes the cofinite filter",
+      "MemLp (not Memℒp) is the current Lean 4 Mathlib name for Lp membership",
+      "Continuous.aestronglyMeasurable + isCompact_range + isBounded.subset_closedBall gives bounded continuous → L∞",
+      "MemLp.mono_exponent converts L∞ to L² on finite measure spaces (probability measure)",
+      "tendsto_one_div_add_atTop_nhds_zero_nat is a clean base for T/(2*(k+1)) → 0 limit",
+      "fourierCoeff ae-equality: integral_congr_ae + MemLp.coeFn_toLp connects Lp and raw function Fourier coefficients"
     ],
     "mathlibGaps": [
       "No obvious dist(x, x+↑s) ≤ |s| lemma found for AddCircle quotient metric"
     ],
     "nextSteps": [
-      "Prove riemannLebesgue_of_holder: either via Mathlib R-L for L¹ or squeeze theorem with decay bound",
-      "Prove fourierCoeff_sq_summable_of_holder: decay bound + p-series convergence",
-      "Prove fourierCoeff_smooth_decay: integration by parts for C^k functions",
-      "holder_decay_is_optimal and decay_implies_regularity are deep results — likely stay as axioms"
+      "fourierCoeff_smooth_decay axiom: integration by parts for C^k — most tractable remaining axiom",
+      "holder_decay_is_optimal: constructive Weierstrass function example — hard",
+      "decay_implies_regularity: Sobolev embedding on circle — hard",
+      "fourierCoeff_analytic_decay: exponential decay for analytic functions — hard"
     ]
   },
   "tags": [
@@ -119,11 +126,11 @@
     {
       "path": "Proofs/FourierSeriesOQ02.lean",
       "filename": "FourierSeriesOQ02.lean",
-      "lineCount": 382,
+      "lineCount": 437,
       "theoremCount": 13,
       "axiomCount": 4,
       "defCount": 3,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02.lean"
     },

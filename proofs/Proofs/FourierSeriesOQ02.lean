@@ -270,9 +270,27 @@ theorem fourierCoeff_sq_summable_of_holder (C : ℝ≥0) (α : ℝ≥0)
     (f : AddCircle T → ℂ) (hf : IsHolderOnCircle C α f)
     (hα : (1 : ℝ) / 2 < (α : ℝ)) :
     Summable (fun n : ℤ => ‖fourierCoeff f n‖ ^ 2) := by
-  -- ‖ĉ_n‖² ≤ ((C/2)(T/(2|n|))^α)² = K/|n|^{2α}
-  -- Σ 1/|n|^{2α} < ∞ for 2α > 1 (via Real.summable_nat_rpow_inv)
-  sorry
+  -- Hölder (α > 1/2 > 0) ⟹ continuous ⟹ L²
+  have hα_pos : 0 < α := by rw [← NNReal.coe_pos]; linarith
+  have hcont := holder_continuous hf hα_pos
+  -- Continuous on compact + finite measure ⟹ f ∈ L²
+  have hmem : MeasureTheory.MemLp f 2 (haarAddCircle (T := T)) := by
+    -- Continuous on compact → bounded
+    obtain ⟨r, hr⟩ := (isCompact_range hcont).isBounded.subset_closedBall 0
+    have hM : ∀ x : AddCircle T, ‖f x‖ ≤ r := fun x => by
+      have hx := hr (Set.mem_range.mpr ⟨x, rfl⟩)
+      rwa [Metric.mem_closedBall, dist_zero_right] at hx
+    -- L∞ → L² via exponent monotonicity (probability measure)
+    exact MeasureTheory.MemLp.mono_exponent
+      (MeasureTheory.memLp_top_of_bound hcont.aestronglyMeasurable r (ae_of_all _ hM))
+      le_top
+  -- Parseval: Σ ‖ĉ_n(g)‖² converges for the Lp representative
+  have hsumm := (hasSum_sq_fourierCoeff (hmem.toLp f)).summable
+  -- fourierCoeff of Lp representative = fourierCoeff of f (ae equality)
+  have hcoeff : ∀ n, fourierCoeff (↑↑(hmem.toLp f)) n = fourierCoeff f n := fun n => by
+    simp only [fourierCoeff]
+    exact integral_congr_ae (hmem.coeFn_toLp.mono fun x hx => by dsimp only; rw [hx])
+  exact hsumm.congr fun n => by rw [hcoeff n]
 
 /-- **Riemann-Lebesgue from Hölder**: ‖ĉ_n‖ = O(1/|n|^α) → 0.
     From fourierCoeff_holder_decay: for any ε > 0, the set {n : ‖ĉ_n‖ ≥ ε}
@@ -284,8 +302,47 @@ theorem riemannLebesgue_of_holder (C : ℝ≥0) (α : ℝ≥0)
   intro ε hε
   simp only [dist_zero_right]
   rw [Filter.eventually_cofinite]
-  -- {n | ε ≤ ‖ĉ_n‖} is finite: for n ≠ 0, ‖ĉ_n‖ ≤ K/|n|^α < ε when |n| large
-  sorry
+  -- Goal: {n : ℤ | ¬(‖fourierCoeff f n‖ < ε)}.Finite
+  have hα_pos : (0 : ℝ) < (↑α : ℝ) := NNReal.coe_pos.mpr hα
+  -- The bound B(k) = (C/2) * (T/(2*(k+1)))^α → 0 as k → ∞
+  have h_tend : Tendsto (fun k : ℕ => (↑C / 2 : ℝ) * (T / (2 * ((↑k : ℝ) + 1))) ^ (↑α : ℝ))
+      atTop (𝓝 0) := by
+    suffices h : Tendsto (fun k : ℕ => (T / (2 * ((↑k : ℝ) + 1))) ^ (↑α : ℝ)) atTop (𝓝 0) by
+      have : (0 : ℝ) = (↑C / 2) * 0 := by ring
+      rw [this]; exact h.const_mul _
+    rw [show (0 : ℝ) = 0 ^ (↑α : ℝ) from by simp [ne_of_gt hα_pos]]
+    apply Filter.Tendsto.rpow _ tendsto_const_nhds (Or.inr hα_pos)
+    -- T / (2*(k+1)) = (T/2) * (1/(k+1)) → 0
+    have h1 : Tendsto (fun k : ℕ => (T / 2 : ℝ) * (1 / ((↑k : ℝ) + 1))) atTop (𝓝 ((T / 2) * 0)) :=
+      tendsto_const_nhds.mul tendsto_one_div_add_atTop_nhds_zero_nat
+    simp only [mul_zero] at h1
+    exact h1.congr fun k => by field_simp
+  -- Extract N₀: B(k) < ε for all k ≥ N₀
+  have h_ev := h_tend.eventually (gt_mem_nhds hε)
+  rw [Filter.eventually_atTop] at h_ev
+  obtain ⟨N₀, hN₀⟩ := h_ev
+  -- The set ⊆ Icc (-(N₀+1)) (N₀+1)
+  apply (Set.finite_Icc (-(↑(N₀ + 1) : ℤ)) ↑(N₀ + 1)).subset
+  intro n hn
+  simp only [Set.mem_setOf_eq, not_lt] at hn
+  simp only [Set.mem_Icc]
+  by_contra h_out
+  push_neg at h_out
+  -- n outside Icc means |n| ≥ N₀ + 2
+  have hna : n.natAbs ≥ N₀ + 2 := by omega
+  have hn0 : n ≠ 0 := by omega
+  -- ‖ĉ_n‖ ≤ (C/2) * (T/(2|↑n|))^α
+  have hbd := fourierCoeff_holder_decay C α f hf hα n hn0
+  -- B(n.natAbs - 1) < ε
+  have hB := hN₀ (n.natAbs - 1) (by omega)
+  -- B(n.natAbs - 1) = (C/2) * (T/(2*n.natAbs))^α = (C/2) * (T/(2*|↑n|))^α
+  have hkey : (↑C / 2 : ℝ) * (T / (2 * ((↑(n.natAbs - 1) : ℝ) + 1))) ^ (↑α : ℝ) =
+      (↑C / 2) * (T / (2 * |↑n|)) ^ (↑α : ℝ) := by
+    congr 1; congr 1; congr 1; congr 1
+    have : (↑(n.natAbs - 1) : ℝ) + 1 = ↑n.natAbs := by
+      rw [Nat.cast_sub (by omega : 1 ≤ n.natAbs)]; ring
+    rw [this, Nat.cast_natAbs, Int.cast_abs]
+  linarith [hkey ▸ hB]
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
