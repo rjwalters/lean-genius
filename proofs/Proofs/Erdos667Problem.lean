@@ -25,7 +25,7 @@ Adapted from erdosproblems.com (Apache 2.0 License)
 
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Data.Rat.Basic
+import Mathlib.Data.Rat.Defs
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Clique
 import Mathlib.Tactic
@@ -43,7 +43,7 @@ We formalize the edge density condition: every p-subset spans at least q edges.
 /-- The number of edges a graph G induces on a subset S of vertices. -/
 def edgeCount {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] (S : Finset V) : ℕ :=
-  (S.product S).filter (fun p => p.1 ≠ p.2 ∧ G.Adj p.1 p.2) |>.card / 2
+  ((S ×ˢ S).filter (fun p => p.1 ≠ p.2 ∧ G.Adj p.1 p.2)).card / 2
 
 /-- A graph satisfies the (p,q)-density condition if every p-element subset
     spans at least q edges. -/
@@ -64,10 +64,6 @@ H(n; p, q) is the largest m such that every n-vertex graph with the
 axiom cliqueGuarantee : ℕ → ℕ → ℕ → ℕ
 
 -- Notation: H(n; p, q) = cliqueGuarantee n p q
-
-/-- H(n; p, q) ≥ 1 for any non-empty graph. -/
-axiom cliqueGuarantee_pos (n p q : ℕ) (hn : 1 ≤ n) :
-    1 ≤ cliqueGuarantee n p q
 
 /-- H is monotone in n: more vertices can only help. -/
 axiom cliqueGuarantee_mono_n (p q n : ℕ) :
@@ -96,6 +92,22 @@ axiom cliqueGuarantee_max (n p : ℕ) (hp : 2 ≤ p) :
     (every graph has at least one vertex, forming a trivial clique). -/
 axiom cliqueGuarantee_zero (n p : ℕ) (hn : 1 ≤ n) :
     cliqueGuarantee n p 0 = 1
+
+/-- Extended monotonicity: H(n; p, q1) ≤ H(n; p, q2) for q1 ≤ q2. -/
+theorem cliqueGuarantee_mono_q_general (n p q1 q2 : ℕ) (h : q1 ≤ q2) :
+    cliqueGuarantee n p q1 ≤ cliqueGuarantee n p q2 := by
+  induction h with
+  | refl => exact le_refl _
+  | step _ ih => exact le_trans ih (cliqueGuarantee_mono_q n p _)
+
+/-- H(n; p, q) ≥ 1 for any non-empty graph.
+    Proved: H(n,p,0) = 1 and H is monotone in q, so H(n,p,q) ≥ 1 for all q.
+    (Previously axiomatized; now derived from cliqueGuarantee_zero + monotonicity.) -/
+theorem cliqueGuarantee_pos (n p q : ℕ) (hn : 1 ≤ n) :
+    1 ≤ cliqueGuarantee n p q := by
+  have h0 : cliqueGuarantee n p 0 = 1 := cliqueGuarantee_zero n p hn
+  have hmono := cliqueGuarantee_mono_q_general n p 0 q (Nat.zero_le q)
+  linarith
 
 /-
 ## Part IV: The Exponent c(p, q)
@@ -174,7 +186,7 @@ theorem cpq_pos_at_one (p : ℕ) (hp : 3 ≤ p) : (0 : ℚ) < cpq p 1 := by
 theorem cpq_mono_q_general (p q1 q2 : ℕ) (h : q1 ≤ q2) :
     cpq p q1 ≤ cpq p q2 := by
   induction h with
-  | refl => le_refl _
+  | refl => exact le_refl _
   | step _ ih => exact le_trans ih (cpq_mono_q p _)
 
 /-- The Ramsey bound interval: for p ≥ 2, c(p,1) lies in [1/(p-1), 2/(p+1)]. -/
@@ -214,6 +226,30 @@ theorem p4_efrs : cpq 4 (Nat.choose 3 2) ≤ (1 : ℚ) / 2 :=
 theorem p4_strict_at_top : cpq 4 (Nat.choose 3 2) < cpq 4 (Nat.choose 3 2 + 1) :=
   cpq_strict_at_top 4 (by omega)
 
+/-- For p = 5: C(4,2) + 1 = 7. So q ranges over {1, 2, 3, 4, 5, 6, 7}.
+    c(5,7) = 1. -/
+theorem p5_max : cpq 5 (Nat.choose 4 2 + 1) = 1 := cpq_at_max 5 (by omega)
+
+/-- For p = 5: EFRS gives c(5,6) ≤ 1/2. -/
+theorem p5_efrs : cpq 5 (Nat.choose 4 2) ≤ (1 : ℚ) / 2 :=
+  efrs_bound 5 (by omega)
+
+/-- For p = 5: strict increase at the top: c(5,6) < c(5,7) = 1. -/
+theorem p5_strict_at_top : cpq 5 (Nat.choose 4 2) < cpq 5 (Nat.choose 4 2 + 1) :=
+  cpq_strict_at_top 5 (by omega)
+
+/-- For p = 5: the Ramsey lower bound gives c(5,1) ≥ 1/4. -/
+theorem p5_ramsey_lower : (1 : ℚ) / 4 ≤ cpq 5 1 := by
+  have h := cpq_lower_ramsey 5 (by omega)
+  norm_num at h ⊢
+  exact h
+
+/-- For p = 5: the Ramsey upper bound gives c(5,1) ≤ 1/3. -/
+theorem p5_ramsey_upper : cpq 5 1 ≤ (1 : ℚ) / 3 := by
+  have h := cpq_upper_ramsey 5 (by omega)
+  norm_num at h ⊢
+  exact h
+
 /-
 ## Part VIII: The Main Conjecture (Erdos Problem 667)
 -/
@@ -221,7 +257,7 @@ theorem p4_strict_at_top : cpq 4 (Nat.choose 3 2) < cpq 4 (Nat.choose 3 2 + 1) :
 /-- Erdos Problem 667 (OPEN): c(p, q) is strictly increasing in q for
     1 ≤ q ≤ C(p-1, 2) + 1. -/
 def ErdosProblem667 : Prop :=
-    ∀ (p : ℕ) (hp : 3 ≤ p),
+    ∀ (p : ℕ) (_ : 3 ≤ p),
       ∀ (q : ℕ), 1 ≤ q → q < Nat.choose (p - 1) 2 + 1 →
         cpq p q < cpq p (q + 1)
 
@@ -236,6 +272,38 @@ theorem erdos667_weak_evidence (p : ℕ) (hp : 3 ≤ p) :
     rw [div_lt_one (by linarith : (0 : ℚ) < (p : ℚ) + 1)]
     linarith
   linarith
+
+/-
+## Part IX: Structural Consequences
+
+General results about the gap structure of c(p,q).
+-/
+
+/-- The total gap: for p ≥ 3, c(p,1) is bounded away from c(p,q_max) = 1.
+    Specifically, c(p,q_max) - c(p,1) ≥ 1 - 2/(p+1). -/
+theorem cpq_total_gap (p : ℕ) (hp : 3 ≤ p) :
+    1 - (2 : ℚ) / ((p : ℚ) + 1) ≤
+    cpq p (Nat.choose (p - 1) 2 + 1) - cpq p 1 := by
+  have h1 := cpq_at_max p (le_trans (by omega : 2 ≤ 3) hp)
+  have h2 := cpq_upper_ramsey p (le_trans (by omega : 2 ≤ 3) hp)
+  linarith
+
+/-- The gap is positive: c(p,q_max) - c(p,1) > 0 for p ≥ 3. -/
+theorem cpq_gap_pos (p : ℕ) (hp : 3 ≤ p) :
+    (0 : ℚ) < cpq p (Nat.choose (p - 1) 2 + 1) - cpq p 1 := by
+  linarith [erdos667_weak_evidence p hp]
+
+/-- For p ≥ 3, there exists at least one strict step in c(p,·).
+    The EFRS bound ensures c(p, C(p-1,2)) < c(p, C(p-1,2)+1) = 1. -/
+theorem erdos667_at_least_one_strict_step (p : ℕ) (hp : 3 ≤ p) :
+    ∃ q, 1 ≤ q ∧ q ≤ Nat.choose (p - 1) 2 ∧ cpq p q < cpq p (q + 1) := by
+  exact ⟨Nat.choose (p - 1) 2,
+    Nat.one_le_iff_ne_zero.mpr (by
+      intro h
+      have := Nat.choose_pos (by omega : 2 ≤ p - 1)
+      simp [h] at this),
+    le_refl _,
+    cpq_strict_at_top p hp⟩
 
 /-- Summary of known results for c(p,q). -/
 theorem erdos667_summary (p : ℕ) (hp : 3 ≤ p) :
