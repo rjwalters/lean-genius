@@ -68,8 +68,8 @@
         "relationship": "foundational result (ω → (ω,n)² for all n)"
       }
     ],
-    "axiomCount": 0,
-    "assumptions": "None. Formalized with 0 axioms and 0 sorries.",
+    "axiomCount": 10,
+    "assumptions": "10 axiom declarations: ordinalPartition, specker_beta_two, specker_finite_fail, chang_beta_omega, galvin_larson_necessary, cantorNFLength, schipperus_leq_two, schipperus_geq_four, erdos_592_open_case, partition_ordinal_classification",
     "proofRepoPath": "Proofs/Erdos592Problem.lean"
   },
   "sections": [
