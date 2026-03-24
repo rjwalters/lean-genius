@@ -197,19 +197,17 @@
     "prob-method-second-moment"
   ],
   "leanFile": {
+    "lineCount": 374,
+    "structureCount": 0,
+    "axiomCount": 6,
+    "theoremCount": 20,
+    "lemmaCount": 0,
+    "defCount": 8,
     "imports": [
       "Mathlib.Tactic",
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Analysis.SpecialFunctions.Pow.Real"
-    ],
-    "opens": [
-      "Finset"
-    ],
-    "namespace": null,
-    "lineCount": 374,
-    "axiomCount": 6,
-    "theoremCount": 20,
-    "definitionCount": 8
+    ]
   },
   "references": [
     {

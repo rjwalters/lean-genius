@@ -215,19 +215,19 @@
     "stirling-formula"
   ],
   "leanFile": {
+    "lineCount": 143,
+    "structureCount": 0,
+    "axiomCount": 3,
+    "theoremCount": 6,
+    "lemmaCount": 0,
+    "defCount": 1,
     "imports": [
       "Mathlib.Data.Nat.Prime.Basic",
       "Mathlib.Data.Nat.Factorial.Basic",
       "Mathlib.Data.Set.Basic",
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Tactic"
-    ],
-    "opens": [],
-    "namespace": "Erdos1059",
-    "lineCount": 143,
-    "axiomCount": 3,
-    "theoremCount": 6,
-    "definitionCount": 1
+    ]
   },
   "conclusion": {
     "summary": "Erdős Problem #1059 remains open. The formalization verifies two concrete witnesses ($p = 101, 211$) and one counterexample ($p = 89$) using Lean's `decide` tactic, demonstrates the sparsity of factorials below $n$, and axiomatizes both the main conjecture and Erdős's potentially more tractable smooth-number variant.",
