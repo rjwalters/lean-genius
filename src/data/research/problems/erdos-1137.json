@@ -42,7 +42,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 2 eliminated erdosRatio_le_one axiom (3→2). Proved it from Finset.sup_le + Nat.mul_le_mul. Added dvd_factorial and not_prime_factorial_add infrastructure for future maxGap_tendsto_atTop proof.",
+    "progressSummary": "AXIOM ELIMINATION: maxGap_tendsto_atTop proved (2->1 axioms). File: 22 theorems, 1 axiom (open conjecture), 0 sorries, 314 lines.",
     "builtItems": [
       "proofs/Proofs/Erdos1137Problem.lean - 210 lines, 17 theorems, 3 axioms",
       "src/data/proofs/erdos-1137/ - complete gallery entry",
@@ -51,7 +51,9 @@
       "PROVED erdosRatio_le_one: ratio ≤ 1 (axiom → theorem via Finset.sup properties)",
       "PROVED dvd_factorial: k | n! for 1 ≤ k ≤ n (by induction on n)",
       "PROVED not_prime_factorial_add: n!+k is composite for 2 ≤ k ≤ n",
-      "Updated gallery metadata: axiomCount 3→2, theoremCount 17→20"
+      "Updated gallery metadata: axiomCount 3→2, theoremCount 17→20",
+      "PROVED primeGap_unbounded: for all B, exists n with primeGap n >= B",
+      "PROVED maxGap_tendsto_atTop: Tendsto maxGap atTop atTop (from primeGap_unbounded)"
     ],
     "insights": [
       "d_0 = 1 is the unique odd prime gap (transition from even prime 2 to odd prime 3)",
@@ -63,16 +65,15 @@
       "erdosRatio_le_one proof: key is Finset.sup_le + both factors ≤ maxGap x since n-1 < x when n < x",
       "dvd_factorial proved by induction: if k = n+1 use dvd_mul_right, if k ≤ n use IH + dvd_mul_of_dvd_right",
       "not_prime_factorial_add: k | (n!+k) and 2 ≤ k < n!+k contradicts primality via eq_one_or_self_of_dvd",
-      "Finset.le_sup needs explicit (f := primeGap) annotation when function is ambiguous in context"
+      "Finset.le_sup needs explicit (f := primeGap) annotation when function is ambiguous in context",
+      "maxGap_tendsto_atTop PROVED via factorial composites and Galois connection Nat.nth/Nat.count"
     ],
     "mathlibGaps": [
       "No direct nth_prime_one theorem in Mathlib (proved via Nat.nth_count + decide)",
       "Nat.even_sub signature should be verified against current Mathlib version"
     ],
     "nextSteps": [
-      "Prove maxGap_tendsto_atTop: connect factorial composites to primeGap enumeration via Nat.nth properties",
-      "Need: exists_large_primeGap B ≥ 2 : ∃ n, primeGap n ≥ B (factorial composites → gap witness)",
-      "Key missing step: finding n such that nth Prime n ≤ B!+1 < nth Prime (n+1)"
+      "Only erdos_1137 (open conjecture) remains as axiom"
     ],
     "markdown": "# Erdős #1137 - Knowledge Base\n\n## Problem Statement\n\nLet $d_n = p_{n+1} - p_n$, where $p_n$ is the $n$th prime. Is it true that\n$$\\frac{\\max_{n<x} d_n d_{n-1}}{(\\max_{n<x} d_n)^2} \\to 0$$\nas $x \\to \\infty$?\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Reference**: [Va99, §1.2]\n\n**Tractability Score**: 6/10 (open conjecture, but basic properties provable)\n**Aristotle Suitable**: Partially (basic lemmas yes, main conjecture no)\n\n## Session 1 (2026-03-23, researcher-5)\n\n**Decision**: DEEP DIVE\n**Outcome**: Created complete formalization with 17 theorems proved\n\nKey results:\n- Defined primeGap, maxGap, erdosRatio\n- Proved gap positivity, parity, and specific values\n- Stated main conjecture as axiom\n- Created gallery entry\n\n## Tags\n\n- erdos\n- number-theory\n- prime-gaps\n- analytic-number-theory\n\n## Related Problems\n\n- Erdős #6 (Cramér's conjecture on maximal prime gaps)\n- PrimeGapBounds.lean (Bertrand postulate infrastructure)\n\n## References\n\n- [Va99] Varga (1999), Survey §1.2\n- Cramér, H. (1936). On the order of magnitude of the difference between consecutive prime numbers.\n- Google DeepMind formal-conjectures: FormalConjectures/ErdosProblems/1137.lean\n"
   },
