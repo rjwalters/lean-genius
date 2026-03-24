@@ -72,20 +72,20 @@ private theorem factorial_lt_bound_211 (k : ℕ) (h : Nat.factorial k < 211) : k
 theorem example_101 : AllFactorialSubtractionsComposite 101 := by
   intro k hk
   have hle := factorial_lt_bound k hk
-  interval_cases k <;> simp [Nat.factorial] <;> constructor <;> (first | decide | omega)
+  interval_cases k <;> simp [Nat.factorial] <;> decide
 
 /-- p = 211 satisfies the property: 211 - k! is composite for all k! < 211. -/
 theorem example_211 : AllFactorialSubtractionsComposite 211 := by
   intro k hk
   have hle := factorial_lt_bound_211 k hk
-  interval_cases k <;> simp [Nat.factorial] <;> constructor <;> (first | decide | omega)
+  interval_cases k <;> simp [Nat.factorial] <;> native_decide
 
 /-- p = 89 does NOT satisfy the property: 89 - 3! = 89 - 6 = 83 is prime. -/
 theorem counterexample_89 : ¬AllFactorialSubtractionsComposite 89 := by
   intro h
-  have ⟨h83, _⟩ := h 3 (by simp [Nat.factorial]; omega)
-  simp [Nat.factorial] at h83
-  exact h83 (by decide)
+  have h3 := h 3 (by simp [Nat.factorial])
+  simp [Nat.factorial] at h3
+  exact h3 (by decide)
 
 /-
 ## Main Conjecture
@@ -102,8 +102,24 @@ axiom erdos_1059_conjecture :
 
 /-- Factorials grow super-exponentially: for n ≥ 2 there exists l
     such that l! < n ≤ (l+1)!, and only l+1 factorials are less than n. -/
-axiom factorial_count_bound (n : ℕ) (hn : n ≥ 2) :
-  ∃ l : ℕ, Nat.factorial l < n ∧ n ≤ Nat.factorial (l + 1)
+theorem factorial_count_bound (n : ℕ) (hn : n ≥ 2) :
+    ∃ l : ℕ, Nat.factorial l < n ∧ n ≤ Nat.factorial (l + 1) := by
+  -- Find the smallest m with m! ≥ n
+  have h_exists : ∃ m : ℕ, n ≤ Nat.factorial m := ⟨n, Nat.self_le_factorial n⟩
+  have hm_val := Nat.find_spec h_exists
+  have hm_pos : Nat.find h_exists ≥ 1 := by
+    by_contra h
+    push_neg at h
+    have : Nat.find h_exists = 0 := by omega
+    rw [this] at hm_val
+    simp [Nat.factorial] at hm_val
+    omega
+  refine ⟨Nat.find h_exists - 1, ?_, ?_⟩
+  · -- (find - 1)! < n by minimality
+    have := Nat.find_min h_exists (by omega : Nat.find h_exists - 1 < Nat.find h_exists)
+    omega
+  · -- n ≤ find! = (find-1+1)!
+    rwa [Nat.sub_add_cancel hm_pos]
 
 /-
 ## Erdős's Alternative Approach
@@ -134,7 +150,7 @@ are witnesses for the conjecture.
 theorem prime_101 : Nat.Prime 101 := by decide
 
 /-- 211 is prime -/
-theorem prime_211 : Nat.Prime 211 := by decide
+theorem prime_211 : Nat.Prime 211 := by native_decide
 
 /-- 101 and 211 are both witnesses for the conjecture -/
 theorem two_witnesses :
