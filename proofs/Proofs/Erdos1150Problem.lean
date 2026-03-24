@@ -104,19 +104,16 @@ theorem conjecture_implies_no_ultraflat :
   -- From the conjecture: eventually supNorm(P n) > (1+c)√n
   -- Since P n has degree n and is Littlewood, eventually ratio > 1+c
   have hev' : ∀ᶠ n in atTop, supNorm (P n) / Real.sqrt n > 1 + c := by
-    apply hev.mono
-    intro n hn
+    apply (hev.and (Filter.eventually_atTop.mpr ⟨1, fun n hn => hn⟩)).mono
+    intro n ⟨hn, hn_pos⟩
     have hspecial := hn (P n) (hdeg n) (hlit n)
     have hsqrt_pos : (0 : ℝ) < Real.sqrt n := by
-      apply Real.sqrt_pos_of_pos
-      exact_mod_cast Nat.pos_of_ne_zero (by
-        intro heq; subst heq
-        simp [supNorm] at hspecial)
+      apply Real.sqrt_pos_of_pos; exact_mod_cast (show 0 < n by omega)
     exact lt_div_iff₀ hsqrt_pos |>.mpr (by linarith)
   -- From ultraflat: supNorm(P n)/√n → 1, so eventually < 1 + c
   have hlt : ∀ᶠ n in atTop, supNorm (P n) / Real.sqrt n < 1 + c := by
     have hmem : Set.Iio (1 + c) ∈ nhds (1 : ℝ) := Iio_mem_nhds (by linarith)
-    exact (htend hmem).mono fun n hn => hn
+    exact Filter.Eventually.mono (htend hmem) fun n hn => hn
   -- Contradiction: eventually > 1+c AND eventually < 1+c
   have hboth := hev'.and hlt
   obtain ⟨n, hgt, hlt'⟩ := hboth.exists
@@ -178,8 +175,8 @@ theorem bbmst_upper_bound_exists :
   obtain ⟨_, c₂, _, hc₂, hflat⟩ := bbmst_flat
   refine ⟨c₂, hc₂, hflat.mono fun n ⟨p, hdeg, hlit, hbound⟩ => ⟨p, hdeg, hlit, ?_⟩⟩
   -- supNorm p = ⨆ z on unit circle of ‖p.eval z‖ ≤ c₂ * √n
-  -- since hbound z hz gives ‖p.eval z‖ ≤ c₂ * √n for each z
-  sorry
+  -- since hbound z hz gives ‖p.eval z‖ ≤ c₂ * √n for each z on the unit circle
+  sorry -- supNorm p ≤ c₂√n from pointwise bound (ciSup API issue with ConditionallyCompleteLattice)
 
 /-
 ## The Gap Between Flat and Ultraflat
