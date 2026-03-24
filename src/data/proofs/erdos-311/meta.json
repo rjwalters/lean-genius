@@ -165,5 +165,17 @@
       "authors": "Kovac",
       "note": "Showed the variant asking about exact representation of 1 is equivalent"
     }
+  ],
+  "relatedProofs": [
+    {
+      "id": "erdos-316",
+      "relationship": "related-problem",
+      "description": "Both involve unit fraction sums: #311 asks about approximating 1, while #316 asks about partitioning sets with reciprocal sum < 2"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "uses-result",
+      "description": "The lower bound δ(N) ≥ 1/lcm(1,...,N) uses lcm(1,...,N) = e^{ψ(N)} where ψ(N) ~ N by PNT"
+    }
   ]
 }

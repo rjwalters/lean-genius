@@ -293,5 +293,52 @@
       "venue": "Cambridge University Press",
       "note": "Standard reference; Chapter 2 covers sumset estimates and density conditions for additive structure"
     }
+  ],
+  "relatedProofs": [
+    {
+      "id": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Both concern arithmetic structure in dense sets. Szemerédi's theorem guarantees APs in dense sets; Problem #331 asks about common differences between two sets of density $\\sim \\sqrt{N}$"
+    },
+    {
+      "id": "erdos-1097",
+      "relationship": "related",
+      "description": "Both study common differences and additive structure: #1097 asks about the number of common differences in 3-term APs within a single set, while #331 asks about common differences between two distinct sets"
+    },
+    {
+      "id": "roth-theorem-k3",
+      "relationship": "related",
+      "description": "Both study density thresholds for additive structure. Roth's theorem shows density $\\gg N/\\log\\log N$ forces 3-term APs; Problem #331 shows density $\\sim \\sqrt{N}$ does NOT force common differences between two sets — a sharp contrast in the 'density implies structure' paradigm"
+    },
+    {
+      "id": "erdos-30",
+      "relationship": "related",
+      "description": "Ruzsa's counterexample sets have Sidon-like properties ($|A - A| \\sim |A|$), connecting to Erdős #30 on $B_2$ sequences (sets with distinct pairwise sums). Both exploit extremal additive structure to achieve unusual combinatorial properties"
+    },
+    {
+      "id": "erdos-3",
+      "relationship": "related",
+      "description": "Erdős #3 asks about arithmetic progressions in the primes (a density condition on a specific set). Both #3 and #331 ask when density forces structured arithmetic patterns, but #331's negative answer shows the forcing depends sensitively on the structure of the set, not just its density"
+    },
+    {
+      "id": "szemeredi-counting",
+      "relationship": "related",
+      "description": "The counting lemma quantifies how many structured subpatterns exist in dense sets. The density threshold $\\sqrt{N}$ in #331 is precisely where counting arguments via Plünnecke-Ruzsa fail to guarantee common differences"
+    },
+    {
+      "id": "arithmetic-series",
+      "relationship": "foundational",
+      "description": "Arithmetic progressions and their common differences are the central objects. The difference set $A - A$ is precisely the set of common differences of 2-term APs in $A$"
+    },
+    {
+      "id": "erdos-1145",
+      "relationship": "related",
+      "description": "Problem #1145 (Erdős–Sárközy conjecture) cites Ruzsa's counterexample from #331 to show the ratio condition $a_n/b_n \\to 1$ is necessary: without it, one can have $A + B = \\mathbb{N}$ with $r_{A,B}(n) = 1$ for all $n$"
+    },
+    {
+      "id": "erdos-28",
+      "relationship": "related",
+      "description": "Problem #28 (Erdős–Turán conjecture on additive bases) is the $A = B$ case of the two-set conjecture #1145. Ruzsa's counterexample (#331) shows the two-set generalization requires the additional ratio condition"
+    }
   ]
 }

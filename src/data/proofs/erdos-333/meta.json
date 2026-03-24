@@ -214,5 +214,17 @@
       "venue": "Monographies de L'Enseignement Mathématique 28",
       "note": "[ErGr80] where Problem 333 appears, apparently overlooking the implicit negative answer in Erdős-Newman 1977"
     }
+  ],
+  "relatedProofs": [
+    {
+      "id": "erdos-302",
+      "relationship": "related",
+      "description": "Both are Erdős combinatorial density problems about extremal sizes of structured subsets of integers"
+    },
+    {
+      "id": "erdos-806",
+      "relationship": "related",
+      "description": "Directly related: #806 asks about small bases for sumsets (B+B covering). Both explore the minimum size of B needed so that A ⊆ B+B"
+    }
   ]
 }

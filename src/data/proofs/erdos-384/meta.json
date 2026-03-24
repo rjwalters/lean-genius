@@ -204,5 +204,17 @@
     "axiomCount": 13,
     "theoremCount": 12,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    {
+      "id": "erdos-382",
+      "relationship": "related",
+      "description": "Both concern prime factorization of combinatorial/factorial products: #382 studies prime powers in factorial products, #384 studies prime divisors of binomial coefficients"
+    },
+    {
+      "id": "erdos-383",
+      "relationship": "related",
+      "description": "Both concern largest prime divisors of number-theoretic products: #383 studies P(∏(p²+i)), #384 studies small primes dividing C(n,k)"
+    }
+  ]
 }

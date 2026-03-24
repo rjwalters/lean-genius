@@ -185,5 +185,22 @@
       "venue": "Archiv der Mathematik, vol. 15, pp. 210–214",
       "note": "Early results on density of additive complements"
     }
+  ],
+  "relatedProofs": [
+    {
+      "id": "erdos-32",
+      "relationship": "related",
+      "description": "Problem #32 asks specifically about additive complements of primes, a special case of Problem #31's general question about additive complements"
+    },
+    {
+      "id": "erdos-33",
+      "relationship": "related",
+      "description": "Problem #33 asks about additive complements of squares, another special case. Problems #31, #32, #33 form a trio studying additive complements of different structured sets"
+    },
+    {
+      "id": "erdos-28",
+      "relationship": "related",
+      "description": "Additive bases (Problem #28) and additive complements (Problem #31) are dual concepts: a complement B of A satisfies A + B ⊇ all large integers, making A ∪ B a basis-like structure"
+    }
   ]
 }

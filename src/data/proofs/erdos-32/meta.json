@@ -220,5 +220,22 @@
       "venue": "Doklady Akademii Nauk SSSR, vol. 15, pp. 291–294",
       "note": "Goldbach-type results showing primes are nearly self-complementary"
     }
+  ],
+  "relatedProofs": [
+    {
+      "id": "erdos-31",
+      "relationship": "specializes",
+      "description": "Problem #31 asks about additive complements in general; Problem #32 specializes to additive complements of the primes"
+    },
+    {
+      "id": "erdos-33",
+      "relationship": "related",
+      "description": "Problem #33 (complements of squares) is the parallel question for a different structured set. Both ask: how thin can a complement of a natural sequence be?"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The distribution of primes (density ~1/log N) determines the minimum density of their additive complements"
+    }
   ]
 }
