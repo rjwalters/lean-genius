@@ -16,13 +16,13 @@
       "infinite-connectivity"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 2,
     "erdosNumber": 1068,
     "erdosUrl": "https://erdosproblems.com/1068",
     "erdosProblemStatus": "open",
-    "axiomCount": 6,
+    "axiomCount": 3,
     "lineCount": 205,
-    "assumptions": "6 axioms: erdos_1068, soukup_uncountable_not_inf_connected, problem_1067_disproved, and 3 more. See Lean source for complete statements.",
+    "assumptions": "3 axioms: erdos_1068 (OPEN conjecture), soukup_uncountable_not_inf_connected (research result), problem_1067_disproved (research result). 2 sorries in proof of inf_connected_no_finite_separator.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -230,9 +230,10 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos1068",
-    "lineCount": 205,
-    "axiomCount": 6,
-    "theoremCount": 2,
-    "definitionCount": 6
+    "lineCount": 241,
+    "axiomCount": 3,
+    "theoremCount": 5,
+    "definitionCount": 6,
+    "sorryCount": 2
   }
 }

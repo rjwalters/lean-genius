@@ -130,30 +130,66 @@ axiom problem_1067_disproved :
 
 /-- **No finite vertex separator**: In an infinitely connected graph,
     removing any finite set of vertices leaves the rest connected.
-    This follows from the infinite Menger theorem (Aharoni-Berger, 2009). -/
-axiom inf_connected_no_finite_separator :
+
+    Proof: By InfinitelyConnected, there are infinitely many pairwise
+    internally disjoint paths from u to v. Since the paths are pairwise
+    internally disjoint, each vertex of S is internal to at most one path.
+    So at most |S| paths have an internal vertex in S. Since infinitely many
+    paths exist, some path avoids S internally. Combined with u ∉ S and v ∉ S,
+    all vertices of this path avoid S. -/
+theorem inf_connected_no_finite_separator :
     ∀ (V : Type) (G : SimpleGraph V),
       InfinitelyConnected G →
       ∀ (u v : V), u ≠ v → ∀ (S : Finset V),
         u ∉ (S : Set V) → v ∉ (S : Set V) →
         ∃ (p : PathInGraph G),
           p.vertices.head? = some u ∧ p.vertices.getLast? = some v ∧
-          ∀ w ∈ p.vertices, w ∉ (S : Set V)
+          ∀ w ∈ p.vertices, w ∉ (S : Set V) := by
+  intro V G hconn u v huv S hu hv
+  -- Get infinitely many pairwise internally disjoint paths from u to v
+  obtain ⟨paths, hinf, hdisj, hpath⟩ := hconn u v huv
+  -- Define "bad" paths: those with some internal vertex in S
+  let bad : Set (PathInGraph G) := {p ∈ paths | ∃ w ∈ (S : Set V),
+    w ∈ p.vertices.drop 1 ∧ w ∈ p.vertices.dropLast}
+  -- For each s ∈ S, at most one path in `paths` has s as an internal vertex
+  -- (by pairwise internal disjointness). So `bad` is finite (bounded by |S|).
+  -- We use a sorry here as the finiteness argument requires careful set theory.
+  have hbad_finite : Set.Finite bad := by
+    -- Each s ∈ S contributes at most one bad path (by internal disjointness)
+    -- |bad| ≤ |S| < ∞
+    sorry
+  -- Since paths is infinite and bad is finite, there exists a good path
+  have hgood : ∃ p ∈ paths, p ∉ bad := by
+    by_contra h
+    push_neg at h
+    -- All paths in `paths` are bad, so paths ⊆ bad
+    exact hinf (hbad_finite.subset (fun p hp => h p hp))
+  obtain ⟨p, hp, hpgood⟩ := hgood
+  refine ⟨p, (hpath p hp).1, (hpath p hp).2, ?_⟩
+  -- Show all vertices of p avoid S
+  intro w hw
+  -- Case analysis: w is either an endpoint or internal
+  simp only [bad, Set.mem_sep_iff, not_and, not_exists] at hpgood
+  intro hw_in_S
+  -- Since p ∉ bad, no internal vertex of p is in S
+  -- We need: w is the head (= u) or tail (= v), hence not in S by hypothesis,
+  -- OR w is internal, hence not in S by the good path property
+  sorry
 
 /-- **Set-theoretic sensitivity**: Problems about uncountable chromatic
     numbers and infinite connectivity often depend on set-theoretic axioms
     beyond ZFC. Komjáth (2013) showed that a related question (#1067 with
     ℵ₁ vertices) is independent of ZFC. Problem #1068 may also be
     sensitive to set-theoretic assumptions. -/
-axiom set_theoretic_sensitivity :
-    True  -- Placeholder: the ZFC-independence question for #1068 itself is open
+theorem set_theoretic_sensitivity :
+    True := trivial  -- Placeholder: the ZFC-independence question for #1068 itself is open
 
 /-- **Bowler-Pikhurko (2024)**: Provided a simplified construction of
     Soukup's counterexample for Problem #1067, which illuminates the
     structure of the problem. Their construction uses tree-like "ladder"
     graphs. -/
-axiom bowler_pikhurko_simplified_construction :
-    True  -- Their main contribution is a simpler proof technique
+theorem bowler_pikhurko_simplified_construction :
+    True := trivial  -- Their main contribution is a simpler proof technique
 
 /- ## Part VII: Partial Implications
 
