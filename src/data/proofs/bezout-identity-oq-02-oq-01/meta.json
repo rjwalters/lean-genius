@@ -205,5 +205,27 @@
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 0
-  }
+  },
+  "relatedProofs": [
+    {
+      "id": "bezout-identity-oq-02",
+      "relationship": "extends",
+      "description": "Parent entry proving Euclid's lemma from Bézout — this file completes the chain by deriving the Fundamental Theorem of Arithmetic from Euclid's lemma"
+    },
+    {
+      "id": "bezout-identity",
+      "relationship": "ancestor",
+      "description": "The original Bézout identity gcd(a,b) = ax + by — the start of the chain Bézout → Euclid's Lemma → FTA that this file completes"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "related",
+      "description": "Both formalize unique prime factorization, but via different proof architectures: this file derives FTA explicitly from Euclid's lemma, while the gallery FTA entry may use Mathlib's UFD infrastructure"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "extended-by",
+      "description": "The infinity of primes (no_finite_list_contains_all_primes) is proved here as a corollary of FTA, complementing Euclid's original proof"
+    }
+  ]
 }
