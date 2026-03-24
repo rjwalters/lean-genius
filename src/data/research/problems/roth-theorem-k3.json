@@ -18,13 +18,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-21",
-    "iteration": 14,
-    "focus": "Session 14: Verified build, assessed sorry. Fix requires ~220 lines Dirichlet integration.",
+    "iteration": 16,
+    "focus": "Session 16: Partially proved density_increment_large_M — delegated M≥2 case to density_increment_lemma, sorry reduced to coprime case only.",
     "blockers": [
       "Pre-existing Mathlib API breakages in fourier_large_coefficient (lines 583-800)",
       "Dirichlet approximation needed for N=1 iteration case (in density_increment_iter)"
     ],
-    "nextAction": "Integrate DirichletApproximation.lean: (1) Dirichlet-based subprogression partition, (2) approximate character constancy, (3) density increment under constancy, (4) modified lemma guaranteeing M≥2.",
+    "nextAction": "Prove density_increment_large_M: (1) partition ZMod N into APs of length ~sqrt(N) using Dirichlet, (2) bound approximation error of Fourier decomposition on APs, (3) pigeonhole for density boost on best AP, (4) restructure roth_density_bound with N0=4^{2^K}.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 13 added density_bound_from_increment lemma (d+d²/100≤1 from density_increment_lemma+card_le_nat), apFree_density_lt_two_thirds lemma (δ≤2/3 for N≥3), fixed 4 linter warnings, improved sorry documentation with detailed fix path. File: 0 axioms, 1 sorry, 1476 lines.",
+    "progressSummary": "PROGRESS: Session 16 reduced density_increment_large_M sorry to coprime case only. When gcd(val(r),N)≥2, the existing density_increment_lemma provides M≥2 directly. Remaining sorry only fires when r is coprime to N (all primes, some composites). File: 0 axioms, 2 sorries (both reduced), 1526 lines.",
     "builtItems": [
       "Fixed apFree_singleton proof, Complex.abs -> norm, added apFree_subset, removed incorrect apFree_pair",
       "Build now succeeds: 0 axioms, 3 sorries",
@@ -67,7 +67,10 @@
       "Split nlinarith timeout into intermediate lemma hcaseN + linarith",
       "PROVED density_bound_from_increment: δ+δ²/100≤1 from density_increment_lemma+card_le_nat",
       "PROVED apFree_density_lt_two_thirds: δ≤2/3 for APFree on ZMod N with N≥3",
-      "Fixed 4 linter warnings: unused simp args (true_and, Finset.mem_univ), unused vars (_hg, _hAP, _hdelta1, _hdelta)"
+      "Fixed 4 linter warnings: unused simp args (true_and, Finset.mem_univ), unused vars (_hg, _hAP, _hdelta1, _hdelta)",
+      "density_increment_large_M: TRUE sorry for Dirichlet-based density increment (M>=2, M<N) in RothTheorem.lean",
+      "Comprehensive documentation of elimination strategy for FALSE sorry in density_increment_iter",
+      "Partial proof of density_increment_large_M: M≥2 case via density_increment_lemma (sorry only for coprime/M=1 case)"
     ],
     "insights": [
       "RothTheorem.lean had 3 build errors: deprecated Finset.not_mem_empty, broken apFree_singleton, non-existent Complex.abs",
@@ -116,9 +119,10 @@
       "apFree_card_le_two_thirds (3|A|≤2N for N≥3) gives δ≤2/3 directly — handles Roth for δ>2/3 without any iteration",
       "The sorry is provably FALSE as stated (hypotheses consistent, conclusion unsatisfiable) — NOT a missing proof technique but a wrong theorem statement requiring Dirichlet",
       "Without Dirichlet, density_increment_lemma can produce M=1 from ANY N≥2 (M=gcd(val(r),N)=1 for prime N), allowing descent to reach N=1 in one step",
-      "The sorry at density_increment_iter line 1408 is provably unreachable via Dirichlet approximation, but the formal proof requires restructuring the iteration to track M≥√N at each step",
-      "density_bound_from_increment already proves d+d²/100≤1 for N≥2, so density never exceeds ~0.99 while M≥2. The issue is that M can drop to 1 in a single step, where density=1 and the next increment exceeds 1.",
-      "DirichletApproximation.lean is fully proved (0 sorries, 142 lines) and ready for integration"
+      "density_increment_iter sorry (N=1, delta>0.99) is FALSE: conclusion requires |B|>M, impossible. Standard fix: Dirichlet approximation ensures M>=2",
+      "density_increment_large_M (TRUE sorry): For N>=4, Dirichlet gives APs of length >=sqrt(N)>=2. Approximate Fourier analysis on APs gives density boost.",
+      "To eliminate FALSE sorry: restructure roth_density_bound with N0=4^{2^K} so chain stays at M>=4. Requires density_increment_large_M proved.",
+      "For prime N: coset approach gives M=gcd(val(r),N)=1. AP-based (Dirichlet) approach gives M=floor(N/q)>=sqrt(N) instead."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -143,7 +147,7 @@
     "mathlib": []
   },
   "started": "2026-03-22T06:10:36.236Z",
-  "lastUpdate": "2026-03-23T04:30:00Z",
+  "lastUpdate": "2026-03-23T22:00:00Z",
   "significance": 9,
   "tractability": 6
 }
