@@ -14,7 +14,8 @@
       "Hilbert's Program",
       "formal systems",
       "metamathematics"
-    ]
+    ],
+    "mathContext": "For any consistent, recursively axiomatizable theory $T$ extending Robinson arithmetic $Q$: $\\text{Con}(T) \\implies \\exists\\, \\sigma \\in \\mathcal{L}_T$ such that $T \\nvdash \\sigma$ and $T \\nvdash \\neg\\sigma$."
   },
   {
     "id": "ann-formula-type",
@@ -31,7 +32,8 @@
       "formal syntax",
       "first-order logic",
       "Peano Arithmetic"
-    ]
+    ],
+    "mathContext": "The language $\\mathcal{L}_{\\text{PA}} = \\{0, S, +, \\times, =, <\\}$ with standard logical connectives $\\{\\neg, \\land, \\lor, \\to, \\forall, \\exists\\}$. Here simplified to a `Structure` wrapping a `Nat` code."
   },
   {
     "id": "ann-provability",
@@ -86,7 +88,8 @@
     "relatedConcepts": [
       "prime factorization",
       "encoding schemes"
-    ]
+    ],
+    "mathContext": "Gödel's encoding: $\\ulcorner(a_1, \\ldots, a_n)\\urcorner = \\prod_{i=1}^{n} p_i^{a_i}$. Injectivity: $\\ulcorner\\phi\\urcorner = \\ulcorner\\psi\\urcorner \\implies \\phi = \\psi$, by unique prime factorization."
   },
   {
     "id": "ann-prov-formula",
@@ -246,7 +249,8 @@
       "Hilbert",
       "formalism",
       "finitism"
-    ]
+    ],
+    "mathContext": "Hilbert's Program (1900): formalize all mathematics in a system $T$ such that $T$ is (1) complete ($\\forall \\sigma,\\; T \\vdash \\sigma$ or $T \\vdash \\neg\\sigma$), (2) consistent ($\\nexists \\sigma,\\; T \\vdash \\sigma \\land T \\vdash \\neg\\sigma$), and (3) $T \\vdash \\text{Con}(T)$ via finitistic methods. Gödel showed (1) and (3) are impossible."
   },
   {
     "id": "ann-limits",
@@ -263,7 +267,8 @@
       "axiom extension",
       "ordinal analysis",
       "transfinite hierarchy"
-    ]
+    ],
+    "mathContext": "Iteration: $T_0 = T$, $T_{n+1} = T_n + G_n$ where $G_n$ is the Gödel sentence of $T_n$. Each $T_n$ is consistent but incomplete. Even $T_\\omega = \\bigcup_n T_n$ has its own Gödel sentence."
   },
   {
     "id": "ann-mechanism-debate",
@@ -280,6 +285,7 @@
       "mechanism",
       "Lucas-Penrose argument",
       "philosophy of mind"
-    ]
+    ],
+    "mathContext": "The Lucas-Penrose argument: if the mind is a Turing machine $M$, then by Gödel's theorem there exists $G_M$ such that $\\mathbb{N} \\models G_M$ but $M$ cannot prove $G_M$. Yet we can 'see' $G_M$ is true. Counterargument: our 'seeing' assumes $\\text{Con}(M)$, which we cannot verify if we are $M$."
   }
 ]
