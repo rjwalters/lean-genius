@@ -63,13 +63,13 @@
       "orbit_linear_lower: orbit values grow at least linearly",
       "orbits_get_close: weaker statement that orbits get arbitrarily close"
     ],
-    "lineCount": 145
+    "lineCount": 155
   },
   "sections": [
     {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "startLine": 24,
+      "startLine": 26,
       "endLine": 34,
       "summary": "Defines **h(n) = n + τ(n)** using `Nat.divisors.card` and the orbit sequence **hOrbit(n, k) = h^k(n)** by recursion. These form the basic objects of the dynamical system on ℕ.",
       "mathContext": "$h(n) = n + \\tau(n)$ where $\\tau(n) = |\\{d : d \\mid n\\}|$. Orbit: $h^0(n) = n$, $h^{k+1}(n) = h(h^k(n))$."
@@ -78,31 +78,31 @@
       "id": "basic-properties",
       "title": "Basic Properties of h",
       "startLine": 36,
-      "endLine": 61,
+      "endLine": 96,
       "summary": "**h_strictly_increasing**: h(n) > n since τ(n) ≥ 1. **h_upper**: h(n) ≤ 2n. **h_prime**: h(p) = p + 2 for primes. Concrete values: h(1) = 2, h(2) = 4, h(3) = 5. These establish that orbits are strictly increasing, eliminating cycles and fixed points.",
       "mathContext": "$h(n) > n$ (since $\\tau(n) \\geq 1$), $h(n) \\leq 2n$ (since $\\tau(n) \\leq n$), $h(p) = p + 2$ for primes $p$ (since $\\tau(p) = 2$). No fixed points or cycles."
     },
     {
       "id": "main-conjecture",
       "title": "The Merging Conjecture (OPEN)",
-      "startLine": 63,
-      "endLine": 76,
+      "startLine": 98,
+      "endLine": 111,
       "summary": "**erdos_414_conjecture**: ∀ m, n ≥ 1, ∃ i, j with h^i(m) = h^j(n). Equivalently, **single_eventual_orbit**: all orbits merge into one trajectory. The directed graph n → h(n) is conjectured to be a tree with a single trunk.",
       "mathContext": "$\\forall m, n \\geq 1, \\exists i, j \\in \\mathbb{N}: h^i(m) = h^j(n)$. Equivalently, the directed graph $n \\to h(n)$ has a single connected component."
     },
     {
       "id": "orbit-examples",
       "title": "Orbit Computations and Merging",
-      "startLine": 78,
-      "endLine": 88,
+      "startLine": 113,
+      "endLine": 125,
       "summary": "**orbit_1_start**: 1 → 2 → 4 → 7 → 9 → ... (OEIS A064491). **orbit_3_merges_with_1**: h²(3) = h³(1) = 7, the simplest non-trivial merge. The collision occurs because h(4) = h(5) = 7 — different inputs producing the same output.",
       "mathContext": "Orbit from 1: $1 \\to 2 \\to 4 \\to 7 \\to 9 \\to \\ldots$ Merge: $h^2(3) = h(5) = 7 = h(4) = h^3(1)$."
     },
     {
       "id": "growth-rate",
       "title": "Growth Rate and Heuristic Analysis",
-      "startLine": 90,
-      "endLine": 109,
+      "startLine": 127,
+      "endLine": 155,
       "summary": "**average_divisor_count**: Dirichlet's theorem gives average τ(n) ∼ log n. **orbit_linear_lower**: h^k(n) ≥ n + k. **orbits_get_close**: any two orbits eventually come within distance D (a weaker unproven statement). The heuristic: orbit spacing ∼ log V near value V, so collision probability ∼ 1/(log V)², and Σ 1/(log V)² diverges.",
       "mathContext": "Dirichlet: $\\sum_{k \\leq n} \\tau(k) \\sim n \\log n$. Hence $h^k(n) \\approx n + k \\log n$ on average. Collision probability per step $\\sim 1/(\\log V)^2$; $\\sum 1/(\\log V)^2 = \\infty$."
     }
@@ -202,24 +202,46 @@
     ]
   },
   "leanFile": {
+    "lineCount": 155,
+    "structureCount": 0,
+    "axiomCount": 4,
+    "theoremCount": 10,
+    "lemmaCount": 0,
+    "defCount": 2,
     "imports": [
-      "Mathlib.Data.Nat.Divisors",
+      "Mathlib.NumberTheory.Divisors",
       "Mathlib.Data.Nat.Basic",
       "Mathlib.Tactic"
-    ],
-    "opens": [],
-    "namespace": null,
-    "lineCount": 145,
-    "axiomCount": 4,
-    "theoremCount": 0,
-    "definitionCount": 2
+    ]
   },
   "references": [
-    "Erdős, P. and Graham, R.L. (1980): 'Old and new problems and results in combinatorial number theory', Monographies de L'Enseignement Mathématique 28, p. 82",
-    "OEIS A064491: Iterates of n + τ(n) starting from 1",
-    "Dirichlet, P.G.L. (1849): 'Über die Bestimmung der mittleren Werthe in der Zahlentheorie', Abhandlungen der Preußischen Akademie der Wissenschaften, 69–83",
-    "Huxley, M.N. (2003): 'Exponential sums and lattice points III', Proc. London Math. Soc. 87, 591–609 (best Dirichlet divisor problem bound)",
-    "Ramanujan, S. (1915): 'Highly composite numbers', Proc. London Math. Soc. 14, 347–409",
-    "https://erdosproblems.com/414"
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "L'Enseignement Mathématique, Université de Genève, Monographie No. 28",
+      "note": "Problem #414 on p. 82: orbit merging for h(n) = n + τ(n)"
+    },
+    {
+      "authors": "Dirichlet, Peter Gustav Lejeune",
+      "title": "Über die Bestimmung der mittleren Werthe in der Zahlentheorie",
+      "year": "1849",
+      "venue": "Abhandlungen der Preußischen Akademie der Wissenschaften, pp. 69-83",
+      "note": "Establishes the average order of the divisor function: Σ_{n≤N} τ(n) = N log N + (2γ-1)N + O(√N)"
+    },
+    {
+      "authors": "Huxley, Martin N.",
+      "title": "Exponential sums and lattice points III",
+      "year": "2003",
+      "venue": "Proceedings of the London Mathematical Society, vol. 87, pp. 591-609",
+      "note": "Best known bound on the Dirichlet divisor problem error term: Δ(N) = O(N^{131/416})"
+    },
+    {
+      "authors": "Ramanujan, Srinivasa",
+      "title": "Highly composite numbers",
+      "year": "1915",
+      "venue": "Proceedings of the London Mathematical Society, vol. 14, pp. 347-409",
+      "note": "Systematic study of numbers with many divisors — highly composite numbers dominate the orbit step size h(n) - n = τ(n)"
+    }
   ]
 }
