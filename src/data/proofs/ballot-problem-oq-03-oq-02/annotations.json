@@ -3,8 +3,8 @@
     "id": "ann-lgv-lpath",
     "proofId": "ballot-problem-oq-03-oq-02",
     "range": {
-      "startLine": 1,
-      "endLine": 86
+      "startLine": 77,
+      "endLine": 110
     },
     "type": "definition",
     "title": "Lattice Path Foundations",
@@ -27,8 +27,8 @@
     "id": "ann-lgv-nonintersect",
     "proofId": "ballot-problem-oq-03-oq-02",
     "range": {
-      "startLine": 87,
-      "endLine": 113
+      "startLine": 111,
+      "endLine": 222
     },
     "type": "definition",
     "title": "Column-Based Non-Intersection Predicate",
@@ -49,8 +49,8 @@
     "id": "ann-lgv-config",
     "proofId": "ballot-problem-oq-03-oq-02",
     "range": {
-      "startLine": 114,
-      "endLine": 140
+      "startLine": 223,
+      "endLine": 251
     },
     "type": "definition",
     "title": "LGVConfig and Path Tuples",
@@ -73,8 +73,8 @@
     "id": "ann-lgv-pathmatrix",
     "proofId": "ballot-problem-oq-03-oq-02",
     "range": {
-      "startLine": 141,
-      "endLine": 150
+      "startLine": 252,
+      "endLine": 261
     },
     "type": "concept",
     "title": "The Path Weight Matrix",
@@ -96,8 +96,8 @@
     "id": "ann-lgv-permtuples",
     "proofId": "ballot-problem-oq-03-oq-02",
     "range": {
-      "startLine": 151,
-      "endLine": 178
+      "startLine": 262,
+      "endLine": 289
     },
     "type": "concept",
     "title": "Permutation Path Tuples and Signed Counts",
@@ -118,8 +118,8 @@
     "id": "ann-lgv-swaptails",
     "proofId": "ballot-problem-oq-03-oq-02",
     "range": {
-      "startLine": 179,
-      "endLine": 227
+      "startLine": 290,
+      "endLine": 338
     },
     "type": "concept",
     "title": "Tail-Swap Operation and Sign Reversal",
@@ -142,8 +142,8 @@
     "id": "ann-lgv-firstnonfixed",
     "proofId": "ballot-problem-oq-03-oq-02",
     "range": {
-      "startLine": 228,
-      "endLine": 281
+      "startLine": 339,
+      "endLine": 378
     },
     "type": "definition",
     "title": "First Non-Fixed Point of a Permutation",
@@ -165,8 +165,8 @@
     "id": "ann-lgv-algebraic-bridge",
     "proofId": "ballot-problem-oq-03-oq-02",
     "range": {
-      "startLine": 282,
-      "endLine": 321
+      "startLine": 380,
+      "endLine": 599
     },
     "type": "insight",
     "title": "Algebraic Bridge: det = Signed Permutation Sum",
@@ -189,8 +189,8 @@
     "id": "ann-lgv-main-theorem",
     "proofId": "ballot-problem-oq-03-oq-02",
     "range": {
-      "startLine": 322,
-      "endLine": 358
+      "startLine": 1798,
+      "endLine": 1835
     },
     "type": "insight",
     "title": "The r×r LGV Lemma (Main Result)",
@@ -208,16 +208,41 @@
     ]
   },
   {
+    "id": "ann-lgv-crossing-lemma",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": {
+      "startLine": 649,
+      "endLine": 735
+    },
+    "type": "insight",
+    "title": "Crossing Lemma (Discrete Intermediate Value Theorem)",
+    "content": "The theorem `lattice_paths_must_cross` proves that if two monotone lattice paths start with $y_1 < y_2$ but end with $y_1 + n_1 > y_2 + n_2$, there must exist a column $c < m$ where the lower path's $y$-coordinate catches up to the upper path's. The proof constructs the set $S = \\{x \\leq m : y_1 + \\mathrm{colEntry}(P_1, x) < y_2 + \\mathrm{colEntry}(P_2, x)\\}$, shows $0 \\in S$ (from the starting condition) and $m \\notin S$ (from the ending condition), then takes $c = \\max(S)$ via `Finset.max'` to get the crossing column. This is a discrete analogue of the continuous intermediate value theorem, specialized to lattice path geometry.",
+    "mathContext": "If $y_1 < y_2$ and $y_1 + n_1 > y_2 + n_2$, then $\\exists\\, c < m$ such that $y_1 + \\mathrm{colEntry}(P_1, c) \\geq y_2 + \\mathrm{colEntry}(P_2, c)$, i.e., the paths share a column entry height.",
+    "significance": "key",
+    "relatedConcepts": [
+      "intermediate value theorem",
+      "Finset.max'",
+      "lattice path crossing",
+      "monotone function"
+    ],
+    "prerequisites": [
+      "colEntry_mono",
+      "colEntry_le_north",
+      "Finset.max'",
+      "Nat.lt_of_lt_of_le"
+    ]
+  },
+  {
     "id": "ann-lgv-corollaries",
     "proofId": "ballot-problem-oq-03-oq-02",
     "range": {
-      "startLine": 359,
+      "startLine": 1836,
       "endLine": 1885
     },
     "type": "concept",
     "title": "Corollaries and Applications",
     "content": "Three corollaries: (1) `niTupleCount_nonneg`: the NI count is trivially non-negative as a natural number; (2) `pathMatrix_det_nonneg`: the determinant is non-negative (since it equals a count); (3) `isNonIntersecting_of_r_one`: for $r=1$, every path tuple is vacuously non-intersecting. The `lgv_universality` theorem restates the lemma for all $r$. The docstring on the applications theorem surveys four major consequences: Schur polynomials (Jacobi-Trudi), Catalan numbers, Aztec diamond tilings, and plane partitions.",
-    "mathContext": "$\\det M \\geq 0$ (since $\\det M = |\\{\\text{NI tuples}\\}| \\in \\mathbb{N}$); for $r=1$, every singleton tuple is NI",
+    "mathContext": "$\\det M \\geq 0$ since $\\det M = \\mathrm{niTupleCount} \\in \\mathbb{N}$. For $r=1$, every singleton path tuple is vacuously non-intersecting, so $\\mathrm{niTupleCount} = \\binom{m + (b_1-a_1)}{m}$.",
     "significance": "supporting",
     "relatedConcepts": [
       "Schur polynomial",
