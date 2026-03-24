@@ -160,7 +160,9 @@
       "Are there infinitely many primes $p = 2^k \\cdot q + 1$ (Conjecture A)?",
       "Are there infinitely many safe primes $p = 2q + 1$? (Open, implies Conjecture A)",
       "What is the density of Form A primes among all primes? Heuristics suggest positive lower density",
-      "Does allowing the factor $3^l$ in Form B significantly increase the density, or are most Form B primes already Form A?"
+      "Does allowing the factor $3^l$ in Form B significantly increase the density, or are most Form B primes already Form A?",
+      "Can Schinzel's Hypothesis H or the Bateman-Horn conjecture provide quantitative density predictions for Form A primes? The heuristic count $\\sum_{k \\geq 0} \\sum_{q \\leq x} \\frac{1}{\\ln(2^k q + 1)}$ should predict the number of Form A primes up to $x$ — can this be formalized?",
+      "What is the relationship between Form A primes and Cunningham chains? A Cunningham chain of the first kind is a sequence $p_1, p_2 = 2p_1 + 1, p_3 = 2p_2 + 1, \\ldots$ where each term is prime — each link produces a Form A prime with $k = 1$. Can the existence of long Cunningham chains be formalized?"
     ]
   },
   "crossReferences": [
@@ -233,7 +235,9 @@
       "Mathlib.Data.Set.Finite.Basic",
       "Mathlib.Data.Nat.Basic",
       "Mathlib.Tactic"
-    ]
+    ],
+    "opens": [],
+    "namespace": null
   },
   "references": [
     {
