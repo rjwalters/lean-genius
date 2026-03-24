@@ -25,12 +25,32 @@
     ]
   },
   {
+    "id": "erdos-462-imports",
+    "proofId": "erdos-462",
+    "type": "concept",
+    "range": {
+      "startLine": 14,
+      "endLine": 18
+    },
+    "title": "Imports and Setup",
+    "content": "Imports all of Mathlib via `import Mathlib`. The proof uses `Nat.minFac` and related API from `Mathlib.Data.Nat.Prime.Basic`, `Finset.Icc` from `Mathlib.Data.Finset.LocallyFiniteOrder`, and `Real.log` / `Real.sqrt` from the analysis library.",
+    "significance": "supporting",
+    "mathContext": "Single bulk import pulls in the full Mathlib dependency graph. The relevant modules are Nat.Prime (minFac API), Finset (Icc for bounded summation), and Real (log, sqrt, rpow for asymptotic expressions).",
+    "relatedConcepts": [
+      "Mathlib",
+      "Nat.minFac",
+      "Finset.Icc",
+      "Real.log"
+    ],
+    "prerequisites": []
+  },
+  {
     "id": "erdos-462-lpf",
     "proofId": "erdos-462",
     "type": "definition",
     "range": {
-      "startLine": 21,
-      "endLine": 24
+      "startLine": 19,
+      "endLine": 22
     },
     "title": "Least Prime Factor Definition",
     "content": "The least prime factor $p(n)$ returns 0 for $n \\leq 1$ and `Nat.minFac n` otherwise. For $n \\geq 2$, $p(n)$ is the smallest prime dividing $n$. For primes, $p(p) = p$; for composites, $p(n) \\leq \\sqrt{n}$.",
@@ -54,13 +74,13 @@
     "proofId": "erdos-462",
     "type": "technique",
     "range": {
-      "startLine": 26,
-      "endLine": 36
+      "startLine": 24,
+      "endLine": 41
     },
     "title": "Least Prime Factor Properties",
-    "content": "Three axiomatized properties for $n \\geq 2$: (1) `leastPrimeFactor_prime`: $p(n)$ is prime. (2) `leastPrimeFactor_dvd`: $p(n) \\mid n$. (3) `leastPrimeFactor_le`: $p(n) \\leq q$ for any prime $q \\mid n$ (minimality). These are all provable from `Nat.minFac_prime`, `Nat.minFac_dvd`, and `Nat.minFac_le`.",
+    "content": "Three proved properties for $n \\geq 2$: (1) `leastPrimeFactor_prime`: $p(n)$ is prime, proved via `Nat.minFac_prime`. (2) `leastPrimeFactor_dvd`: $p(n) \\mid n$, proved via `Nat.minFac_dvd`. (3) `leastPrimeFactor_le`: $p(n) \\leq q$ for any prime $q \\mid n$ (minimality), proved via `Nat.minFac_le_of_dvd`.",
     "significance": "key",
-    "mathContext": "p(n) \\text{ prime},\\quad p(n) \\mid n,\\quad \\forall q \\text{ prime},\\, q \\mid n \\Rightarrow p(n) \\leq q: All three properties are provable from Mathlib's Nat.minFac API (good Aristotle candidates). Axiomatized here for simplicity, but could be replaced with direct proofs.",
+    "mathContext": "p(n) \\text{ prime},\\quad p(n) \\mid n,\\quad \\forall q \\text{ prime},\\, q \\mid n \\Rightarrow p(n) \\leq q: All three properties are fully proved from Mathlib's Nat.minFac API. Each proof unfolds leastPrimeFactor, applies dif_neg to eliminate the n ≤ 1 case, then invokes the corresponding Mathlib lemma.",
     "relatedConcepts": [
       "Nat.minFac_prime",
       "Nat.minFac_dvd",
@@ -78,8 +98,8 @@
     "proofId": "erdos-462",
     "type": "definition",
     "range": {
-      "startLine": 40,
-      "endLine": 44
+      "startLine": 42,
+      "endLine": 48
     },
     "title": "Composite Sum Definition",
     "content": "Defines `compositeSum(x) = \\sum_{n=2}^{x-1} [n \\text{ composite}] \\cdot p(n)/n`. Sums over `Finset.Icc 2 (x-1)`, filtering out primes by setting their contribution to 0. This captures the global behavior: the sum over composites grows as $\\Theta(\\sqrt{x}/(\\log x)^2)$.",
@@ -102,8 +122,8 @@
     "proofId": "erdos-462",
     "type": "definition",
     "range": {
-      "startLine": 46,
-      "endLine": 49
+      "startLine": 50,
+      "endLine": 53
     },
     "title": "Interval Sum Definition",
     "content": "Defines `intervalSum(a, b) = \\sum_{n=a}^{b} p(n)/n` over `Finset.Icc a b`. Unlike `compositeSum`, this includes primes (for which $p(n)/n = 1$). The conjecture asks whether this sum is bounded below on intervals of the natural length scale.",
@@ -126,8 +146,8 @@
     "proofId": "erdos-462",
     "type": "technique",
     "range": {
-      "startLine": 53,
-      "endLine": 59
+      "startLine": 55,
+      "endLine": 63
     },
     "title": "Known Asymptotic: $\\Theta(\\sqrt{x}/(\\log x)^2)$",
     "content": "The composite sum satisfies $c_1 \\cdot \\sqrt{x}/(\\log x)^2 \\leq S(x) \\leq c_2 \\cdot \\sqrt{x}/(\\log x)^2$ for constants $0 < c_1 \\leq c_2$ and all $x \\geq x_0$. This two-sided bound establishes the growth rate and motivates the interval length $C\\sqrt{x}(\\log x)^2$ in the conjecture.",
@@ -151,8 +171,8 @@
     "proofId": "erdos-462",
     "type": "concept",
     "range": {
-      "startLine": 63,
-      "endLine": 70
+      "startLine": 65,
+      "endLine": 74
     },
     "title": "Main Conjecture: Short Interval Equidistribution",
     "content": "There exist $C > 0$ and $\\delta > 0$ such that $\\sum_{x \\leq n \\leq x + C\\sqrt{x}(\\log x)^2} p(n)/n \\geq \\delta$ for all sufficiently large $x$. This asks whether the least prime factor sum is equidistributed on its natural scale: intervals of length $\\sqrt{x}(\\log x)^2$ should capture a bounded-below fraction of the global sum.",
@@ -176,13 +196,13 @@
     "proofId": "erdos-462",
     "type": "technique",
     "range": {
-      "startLine": 74,
-      "endLine": 76
+      "startLine": 78,
+      "endLine": 84
     },
     "title": "Least Prime Factor of a Prime",
-    "content": "For a prime $p$, $p(p) = p$ — the least prime factor of a prime is itself. Axiomatized; provable from `Nat.Prime.minFac_eq`.",
+    "content": "For a prime $p$, $p(p) = p$ — the least prime factor of a prime is itself. Proved by unfolding leastPrimeFactor and applying `Nat.Prime.minFac_eq`.",
     "significance": "supporting",
-    "mathContext": "p \\text{ prime} \\implies p(p) = p: Direct from Nat.Prime.minFac_eq. Good Aristotle candidate — provable with simp [leastPrimeFactor, Nat.Prime.minFac_eq hp].",
+    "mathContext": "p \\text{ prime} \\implies p(p) = p: Proved via unfold leastPrimeFactor, dif_neg, and hp.minFac_eq. The proof pattern matches the three property theorems above: eliminate the n ≤ 1 case, then invoke the Mathlib lemma.",
     "relatedConcepts": [
       "Nat.Prime.minFac_eq",
       "prime self-divisibility",
@@ -198,8 +218,8 @@
     "proofId": "erdos-462",
     "type": "technique",
     "range": {
-      "startLine": 78,
-      "endLine": 80
+      "startLine": 86,
+      "endLine": 90
     },
     "title": "Lower Bound: $p(n) \\geq 2$",
     "content": "For $n \\geq 2$, the least prime factor satisfies $p(n) \\geq 2$. This is immediate since the smallest prime is 2. Bounds individual terms in the sum: $p(n)/n \\geq 2/n$.",
@@ -220,8 +240,8 @@
     "proofId": "erdos-462",
     "type": "technique",
     "range": {
-      "startLine": 82,
-      "endLine": 84
+      "startLine": 92,
+      "endLine": 101
     },
     "title": "Upper Bound: $p(n) \\leq \\sqrt{n}$ for Composites",
     "content": "For composite $n \\geq 2$, $p(n) \\leq \\sqrt{n}$. This is because a composite $n$ has a factor $\\leq \\sqrt{n}$, and the least prime factor is the smallest such factor. This bounds individual terms: $p(n)/n \\leq 1/\\sqrt{n}$ for composites, explaining why the sum converges slowly.",
