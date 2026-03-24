@@ -2,7 +2,7 @@
   "id": "amgm-inequality-oq-03",
   "title": "Power Mean Interpolation: How Do Weighted Power Means Relate to AM and GM?",
   "slug": "amgm-inequality-oq-03",
-  "description": "The weighted power mean M_r(z,w) = (∑ wᵢzᵢ^r)^(1/r) forms a continuous monotone family as r varies: HM = M_{-1} ≤ GM = lim_{r→0} M_r ≤ AM = M_1 ≤ M_2 ≤ ... This formalization proves HM ≤ GM directly via AM-GM on inverse values, M_r ≤ M_s for 0 < r ≤ s via Jensen's inequality, and M_r ≤ M_s for r ≤ s < 0 via the duality identity M_r(z) = M_{-r}(z⁻¹)⁻¹. Fully verified with 0 sorries and 0 axioms.",
+  "description": "The weighted power mean M_r(z,w) = (∑ wᵢzᵢ^r)^(1/r) forms a continuous monotone family as r varies: HM = M_{-1} ≤ GM = lim_{r→0} M_r ≤ AM = M_1 ≤ M_2 ≤ ... This formalization proves HM ≤ GM directly via AM-GM on inverse values, M_r ≤ M_s for 0 < r ≤ s via Jensen's inequality, and M_r ≤ M_s for r ≤ s < 0 via the duality identity M_r(z) = M_{-r}(z⁻¹)⁻¹. Core building blocks (AM-GM, Jensen) from Mathlib; original proofs for HM ≤ GM and power mean monotonicity. 0 sorries and 0 axioms.",
   "meta": {
     "author": "Hardy, Littlewood, Pólya (1934); formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/Power_mean",
@@ -17,7 +17,7 @@
       "research",
       "open-problem"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -58,7 +58,7 @@
       "Finset product and sum operations"
     ],
     "lineCount": 372,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "0 axioms, 0 sorries. Core building blocks (AM-GM, Jensen, AM ≤ M_p) from Mathlib; original proofs for HM ≤ GM, power mean monotonicity (positive and negative exponents), and duality identity."
   },
   "crossReferences": [
     {
