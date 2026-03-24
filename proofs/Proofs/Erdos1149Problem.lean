@@ -215,4 +215,41 @@ functions along polynomial sequences (Bergelson-Richter 2017).
 **Related**: 6/π² = 1/ζ(2) = ∏_p (1 - 1/p²) (Euler product formula).
 -/
 
+/-
+## Möbius Inversion Infrastructure
+
+Path to proving random_coprime_density:
+Step 1: ∑_{d|n} μ(d) = [n=1] (Möbius inversion principle)
+Step 2: countCoprimePairs N = ∑_{d=1}^N μ(d)⌊N/d⌋² (counting identity)
+Step 3: countCoprimePairs N / N² → 6/π² (asymptotic analysis)
+-/
+
+/-- Key identity: ∑_{d | gcd(a,b)} μ(d) = 1 if gcd(a,b) = 1, else 0.
+    This is the Möbius inversion principle applied to coprimality detection.
+    Follows from (ζ * μ) = 1 in the Dirichlet convolution ring. -/
+theorem moebius_sum_divisors_eq (n : ℕ) (hn : 0 < n) :
+    ∑ d ∈ n.divisors, (ArithmeticFunction.moebius d : ℤ) =
+      if n = 1 then 1 else 0 := by
+  -- From (ζ * μ) = 1 (Dirichlet convolution identity)
+  -- (ζ * μ)(n) = ∑_{d|n} ζ(d) · μ(n/d) = ∑_{d|n} μ(n/d) = 1(n)
+  -- By change of variable over divisors, ∑_{d|n} μ(d) = 1(n) as well
+  sorry
+
+/-- The number of multiples of d in {1, ..., N} is ⌊N/d⌋. -/
+theorem card_multiples (d N : ℕ) (hd : 0 < d) :
+    (Finset.filter (fun a => d ∣ a) (Finset.Icc 1 N)).card = N / d := by
+  sorry -- Routine Finset counting, good Aristotle candidate
+
+/-- For prime p, exactly ⌊N/p⌋² pairs (a,b) in [1,N]² have p | gcd(a,b). -/
+theorem pairs_with_common_factor (p N : ℕ) (hp : Nat.Prime p) :
+    ((Finset.Icc 1 N ×ˢ Finset.Icc 1 N).filter
+      (fun ab => p ∣ Nat.gcd ab.1 ab.2)).card = (N / p) ^ 2 := by
+  sorry -- Counts pairs where p | a and p | b
+
+/-- The "probability" interpretation: 6/π² = 1/ζ(2).
+    Since ζ(2) = π²/6 (Basel problem), we have 6/π² = 1/ζ(2). -/
+theorem six_div_pi_sq_eq_inv_zeta_two :
+    6 / Real.pi ^ 2 = (Real.pi ^ 2 / 6)⁻¹ := by
+  rw [inv_div]
+
 end Erdos1149
