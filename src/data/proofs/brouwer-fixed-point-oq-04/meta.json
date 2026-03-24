@@ -143,9 +143,10 @@
     "summary": "This formalization captures the Kakutani Fixed Point Theorem, its relationship to Brouwer, and its application to Nash equilibrium. 0 sorries, 2 axioms (Brouwer for compact convex sets and Kakutani FPT). The 1D case is fully proved via IVT.",
     "implications": "Kakutani's theorem is the bridge between pure topology and applied mathematics. It transforms Brouwer's abstract existence result into a tool for economics (equilibrium existence), game theory (Nash equilibria), and control theory (differential inclusions). The formalization demonstrates this bridge explicitly.",
     "openQuestions": [
-      "Can the main Kakutani FPT be proved from Brouwer using only Mathlib's current topology?",
-      "Can the Nash equilibrium existence theorem be fully formalized using the Kakutani axiom?",
-      "What is needed to extend to infinite-dimensional Kakutani (Glicksberg-Fan theorem)?"
+      "Can the main Kakutani FPT be proved from Brouwer using only Mathlib's current topology (requires triangulation and simplicial approximation)?",
+      "Can the Nash equilibrium existence theorem be fully formalized using the Kakutani axiom (requires defining best-response correspondences and proving their UHC)?",
+      "What is needed to extend to infinite-dimensional Kakutani (Glicksberg-Fan theorem) — locally convex spaces and appropriate compactness?",
+      "Can the constructive content of Kakutani's theorem be extracted — is there an effective algorithm to approximate fixed points of correspondences?"
     ],
     "crossReferences": [
       {
@@ -216,6 +217,20 @@
       "year": "1959",
       "venue": "Oliver & Boyd",
       "note": "Standard definition of upper hemicontinuity used in this formalization"
+    },
+    {
+      "authors": "Kenneth Arrow, Gerard Debreu",
+      "title": "Existence of an Equilibrium for a Competitive Economy",
+      "year": "1954",
+      "venue": "Econometrica",
+      "note": "Used Kakutani FPT to prove existence of general competitive equilibrium"
+    },
+    {
+      "authors": "Irving Glicksberg",
+      "title": "A Further Generalization of the Kakutani Fixed Point Theorem, with Application to Nash Equilibrium Points",
+      "year": "1952",
+      "venue": "Proceedings of the AMS",
+      "note": "Extended Kakutani to locally convex topological vector spaces"
     }
   ]
 }
