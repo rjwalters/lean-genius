@@ -187,29 +187,135 @@ axiom yuan_path_announced : PathConjecture
 General bounds on anti-Ramsey numbers.
 -/
 
--- Lower bound: AR(n, G) ≥ |E(G)| - 1 (need |E(G)| - 1 edges same color)
-axiom ar_lower_bound : ∀ (n k : ℕ) (H : SimpleGraph k),
-  antiRamsey n k H ≥ 1  -- Simplified; actual bound depends on H
+-- Constant coloring uses exactly 1 color when n ≥ 2
+private lemma numColors_const_one (n : ℕ) (hn : n ≥ 2) :
+    numColors n (fun _ => (0 : ℕ)) = 1 := by
+  unfold numColors
+  set S := Finset.univ.filter (fun e : Fin n × Fin n => e.1 < e.2) with hS_def
+  have hne : S.Nonempty := by
+    use (⟨0, by omega⟩, ⟨1, by omega⟩)
+    simp only [hS_def, Finset.mem_filter, Finset.mem_univ, true_and, Fin.mk_lt_mk]
+    omega
+  have himg : S.image (fun _ => (0 : ℕ)) = {0} := by
+    ext x
+    simp only [Finset.mem_image, Finset.mem_singleton]
+    exact ⟨fun ⟨_, _, h⟩ => h.symm, fun h => ⟨hne.choose, hne.choose_spec, h.symm⟩⟩
+  rw [himg, Finset.card_singleton]
 
-/-- A monochromatic coloring avoids rainbow copies of any graph with ≥ 2 edges. -/
-theorem monochromatic_avoids_rainbow (n k : ℕ) (H : SimpleGraph k)
-    (he : ∃ e₁ e₂ : Fin k × Fin k, e₁ ≠ e₂ ∧ H e₁.1 e₁.2 ∧ H e₂.1 e₂.2) :
+-- Constant coloring avoids rainbow for graphs with ≥ 2 directed edge pairs
+private lemma const_avoids_rainbow (n k : ℕ) (H : SimpleGraph k)
+    (hedge : ∃ i j : Fin k, H i j ∧ H j i ∧ i ≠ j) :
     AvoidsRainbow n (fun _ => (0 : ℕ)) k H := by
-  intro emb hR
-  obtain ⟨e₁, e₂, hne, he1, he2⟩ := he
-  exact absurd (hR e₁ e₂ he1 he2 hne) (by simp)
+  intro emb h_rainbow
+  obtain ⟨i, j, hij, hji, hne⟩ := hedge
+  exact absurd rfl (h_rainbow (i, j) (j, i) hij hji (fun h => hne (congr_arg Prod.fst h)))
 
-/-- The number of colors is at most the number of edge slots (by card_image_le). -/
-theorem numColors_le_edges (n : ℕ) (coloring : (Fin n × Fin n) → ℕ) :
-    numColors n coloring ≤
-      (Finset.univ.filter (fun e : Fin n × Fin n => e.1 < e.2)).card :=
-  Finset.card_image_le
+-- Lower bound: AR(n, H) ≥ 1 for n ≥ 2 and H with symmetric edges
+-- (Eliminates oversimplified ar_lower_bound axiom which was false for n < 2)
+theorem ar_lower_bound (n k : ℕ) (H : SimpleGraph k)
+    (hn : n ≥ 2)
+    (hedge : ∃ i j : Fin k, H i j ∧ H j i ∧ i ≠ j) :
+    antiRamsey n k H ≥ 1 := by
+  unfold antiRamsey
+  have hmem : 1 ∈ {c : ℕ | ∃ coloring : (Fin n × Fin n) → ℕ,
+    numColors n coloring = c ∧ AvoidsRainbow n coloring k H} :=
+    ⟨fun _ => 0, numColors_const_one n hn, const_avoids_rainbow n k H hedge⟩
+  have hbdd : BddAbove {c : ℕ | ∃ coloring : (Fin n × Fin n) → ℕ,
+    numColors n coloring = c ∧ AvoidsRainbow n coloring k H} :=
+    ⟨n * n, fun c ⟨coloring, hc_eq, _⟩ => by
+      rw [← hc_eq]; unfold numColors
+      calc (Finset.image coloring _).card
+          ≤ (Finset.univ.filter _).card := Finset.card_image_le
+        _ ≤ Finset.univ.card := Finset.card_filter_le _ _
+        _ = n * n := by simp [Finset.card_univ, Fintype.card_prod, Fintype.card_fin]⟩
+  exact le_csSup hbdd hmem
+
+-- Helper: n.choose 2 * 2 + n = n * n (subtraction-free form)
+private lemma choose_two_add_eq (n : ℕ) : n.choose 2 * 2 + n = n * n := by
+  induction n with
+  | zero => simp
+  | succ m ih =>
+    rw [Nat.choose_succ_succ, Nat.choose_one_right, add_mul,
+        show m * 2 + m.choose 2 * 2 + (m + 1) =
+             (m.choose 2 * 2 + m) + (m * 2 + 1) from by ring, ih]
+    ring
+
+-- Helper: |{(i,j) : Fin n × Fin n | i < j}| = C(n,2)
+-- Proof via trichotomy: every pair is in exactly one of {i<j}, {i=j}, {i>j}
+private lemma card_edges_eq_choose (n : ℕ) :
+    (Finset.univ.filter (fun e : Fin n × Fin n => e.1 < e.2)).card = n.choose 2 := by
+  set S_lt := Finset.univ.filter (fun e : Fin n × Fin n => e.1 < e.2)
+  set S_gt := Finset.univ.filter (fun e : Fin n × Fin n => e.2 < e.1)
+  set S_eq := Finset.univ.filter (fun e : Fin n × Fin n => e.1 = e.2)
+  -- Pairwise disjointness
+  have hdisj_lt_eq : Disjoint S_lt S_eq := by
+    rw [Finset.disjoint_left]; intro ⟨a, b⟩ h1 h2
+    simp only [S_lt, S_eq, Finset.mem_filter] at h1 h2; exact absurd h2.2 (ne_of_lt h1.2)
+  have hdisj_lt_gt : Disjoint S_lt S_gt := by
+    rw [Finset.disjoint_left]; intro ⟨a, b⟩ h1 h2
+    simp only [S_lt, S_gt, Finset.mem_filter] at h1 h2
+    exact absurd (lt_trans h1.2 h2.2) (lt_irrefl _)
+  have hdisj_eq_gt : Disjoint S_eq S_gt := by
+    rw [Finset.disjoint_left]; intro ⟨a, b⟩ h1 h2
+    simp only [S_eq, S_gt, Finset.mem_filter] at h1 h2; exact absurd h1.2 (ne_of_gt h2.2)
+  -- Union = Finset.univ (trichotomy)
+  have hunion : S_lt ∪ S_eq ∪ S_gt = Finset.univ := by
+    ext ⟨a, b⟩
+    simp only [Finset.mem_union, S_lt, S_eq, S_gt, Finset.mem_filter, Finset.mem_univ, true_and,
+               iff_true]
+    rcases lt_trichotomy a b with h | h | h
+    · exact Or.inl (Or.inl h)
+    · exact Or.inl (Or.inr h)
+    · exact Or.inr h
+  -- |S_lt| = |S_gt| via Prod.swap bijection
+  have hswap : S_lt.card = S_gt.card := by
+    apply Finset.card_bij (fun e _ => (e.2, e.1))
+    · intro ⟨a, b⟩ ha
+      simp only [S_lt, S_gt, Finset.mem_filter, Finset.mem_univ, true_and] at ha ⊢; exact ha
+    · intro ⟨a₁, b₁⟩ _ ⟨a₂, b₂⟩ _ h
+      simp only [Prod.mk.injEq] at h; exact Prod.ext h.2 h.1
+    · intro ⟨a, b⟩ hb
+      exact ⟨(b, a), by
+        simp only [S_lt, S_gt, Finset.mem_filter, Finset.mem_univ, true_and] at hb ⊢
+        exact hb, rfl⟩
+  -- |S_eq| = n (diagonal)
+  have hdiag : S_eq.card = n := by
+    suffices h : S_eq = Finset.univ.image (fun x : Fin n => (x, x)) by
+      rw [h, Finset.card_image_of_injective _ (fun a b h => (Prod.mk.inj h).1), Finset.card_fin]
+    ext ⟨a, b⟩; simp [S_eq, Finset.mem_image, Prod.mk.injEq, eq_comm]
+  -- |Fin n × Fin n| = n²
+  have htotal : (Finset.univ : Finset (Fin n × Fin n)).card = n * n := by
+    simp [Finset.card_univ, Fintype.card_prod, Fintype.card_fin]
+  -- Combine: 2 * |S_lt| + n = n * n
+  have h_count : S_lt.card * 2 + n = n * n := by
+    have hdisj_outer : Disjoint (S_lt ∪ S_eq) S_gt := by
+      rw [Finset.disjoint_left]; intro x hx hgt
+      rcases Finset.mem_union.mp hx with hlt | heq
+      · exact (Finset.disjoint_left.mp hdisj_lt_gt) hlt hgt
+      · exact (Finset.disjoint_left.mp hdisj_eq_gt) heq hgt
+    have h3 : (S_lt ∪ S_eq ∪ S_gt).card = S_lt.card + S_eq.card + S_gt.card := by
+      rw [Finset.card_union_of_disjoint hdisj_outer,
+          Finset.card_union_of_disjoint hdisj_lt_eq]
+    rw [hunion, htotal] at h3; linarith [hdiag, hswap]
+  -- n.choose 2 * 2 + n = n * n, so S_lt.card = n.choose 2
+  linarith [choose_two_add_eq n]
+
+-- Helper: numColors ≤ numEdgesKn
+private lemma numColors_le_edges (n : ℕ) (coloring : (Fin n × Fin n) → ℕ) :
+    numColors n coloring ≤ numEdgesKn n := by
+  unfold numColors numEdgesKn
+  exact le_trans Finset.card_image_le (le_of_eq (card_edges_eq_choose n))
 
 -- Upper bound: AR(n, G) ≤ |E(K_n)| = C(n,2)
--- Proof strategy: Nat.sSup_le + numColors_le_edges + edge_pairs_card
 theorem ar_upper_bound (n k : ℕ) (H : SimpleGraph k) :
     antiRamsey n k H ≤ numEdgesKn n := by
-  sorry
+  unfold antiRamsey
+  rcases Set.eq_empty_or_nonempty {c : ℕ | ∃ coloring : (Fin n × Fin n) → ℕ,
+    numColors n coloring = c ∧ AvoidsRainbow n coloring k H} with h | h
+  · -- Empty set: sSup ∅ = 0 ≤ numEdgesKn n
+    rw [h]; simp
+  · -- Nonempty: each element ≤ numEdgesKn n, so sSup ≤ numEdgesKn n
+    exact csSup_le h (fun c ⟨coloring, hc, _⟩ => hc ▸ numColors_le_edges n coloring)
 
 -- Monotonicity in n
 axiom ar_mono_n : ∀ (n₁ n₂ k : ℕ) (H : SimpleGraph k),
@@ -222,10 +328,10 @@ Anti-Ramsey numbers relate to extremal graph theory.
 -/
 
 -- Turán number ex(n, H): max edges in H-free graph on n vertices
--- Note: requires decidability of the graph predicate for Finset.filter
+open Classical in
 noncomputable def turan (n k : ℕ) (H : SimpleGraph k) : ℕ :=
-  sSup {e : ℕ | ∃ (G : SimpleGraph n) (_ : DecidableRel G),
-    (∀ _emb : GraphEmbedding n k H, False) ∧ e = (Finset.univ.filter
+  sSup {e : ℕ | ∃ G : SimpleGraph n,
+    (∀ emb : GraphEmbedding n k H, False) ∧ e = (Finset.univ.filter
       (fun p : Fin n × Fin n => p.1 < p.2 ∧ G p.1 p.2)).card}
 
 -- AR(n, H) ≥ ex(n, H) + 1 (give H-free graph rainbow, one color for complement)
