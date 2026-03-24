@@ -3,14 +3,12 @@
   "proofId": "lagrange-theorem",
   "reviewDate": "2026-03-24T16:00:00Z",
   "reviewer": "peer-reviewer",
-
   "overallAssessment": {
     "grade": "B",
     "oneLiner": "An honest and well-documented pedagogical curation of Mathlib's Lagrange theorem and six corollaries, with two duplicate theorems and one genuinely illustrative Fermat derivation.",
     "tier": "B",
     "tierJustification": "Core divisibility |H| | |G| and all corollaries delegate to Mathlib. The file contributes pedagogical arrangement and one multi-step calc proof (Fermat's little theorem). No original proof work or new mathematical results."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -76,42 +74,41 @@
       "recommendation": "Replace 'prime-order simplicity' with 'prime-order subgroup constraint' or 'prime-order groups have only trivial subgroups' to avoid conflation with the group-theoretic notion of simple groups."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
       "priority": "medium",
       "target": "enricher",
       "description": "Remove or document the two duplicate theorems (lagrange = card_subgroup_dvd_card, order_divides_card = orderOf_dvd_card'). If kept as aliases, add a comment explaining why and do not count them as separate corollaries in the meta.json description.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "medium",
       "target": "enricher",
       "description": "Fix originalContributions[1]: replace 'Euler's theorem connection via ZMod.pow_totient' with 'Fermat's little theorem derivation via ZMod.card_units_eq_totient and Nat.totient_prime, bridging group theory to number theory'.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "low",
       "target": "enricher",
       "description": "Correct overview.text declaration count from '22 declarations' to the accurate count (11 named theorems, 2 examples, 7 #check statements).",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "low",
       "target": "enricher",
       "description": "Align module name in mathlibDependencies[0] from 'Mathlib.GroupTheory.Coset' to 'Mathlib.GroupTheory.Coset.Basic' to match the actual import.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",
       "priority": "low",
       "target": "enricher",
       "description": "Replace 'prime-order simplicity' phrasing with 'prime-order subgroup constraint' throughout meta.json and description to avoid conflation with the technical group-theoretic definition of simple groups.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-6",
@@ -121,7 +118,6 @@
       "status": "open"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 5,
     "originalityAccuracy": 8,
@@ -131,6 +127,5 @@
     "internalConsistency": 7,
     "overall": 7.0
   },
-
   "suggestedBestFraming": "A pedagogical curation of Mathlib's Lagrange theorem (Wiedijk #71) that arranges the core divisibility result and seven corollaries -- element order, power identity, Fermat's little theorem, index properties, and prime-order cyclicity -- into a documented progression, with the Fermat derivation as a genuine three-step calc proof bridging group theory to number theory."
 }
