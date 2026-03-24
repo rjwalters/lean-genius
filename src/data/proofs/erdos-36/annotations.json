@@ -99,7 +99,7 @@
     },
     "type": "definition",
     "title": "M(N): Minimum Maximum Overlap",
-    "content": "**minMaxOverlap N** = $M(N) = \\min_{(A,B)} \\max_k \\text{overlap}(A, B, k)$ where the minimum is over all equal partitions $\\{A, B\\}$ of $\\{1, \\ldots, 2N\\}$. This is the central quantity of Erdős Problem #36.",
+    "content": "**minMaxOverlap N** = $M(N) = \\min_{(A,B)} \\max_k \\text{overlap}(A, B, k)$ where the minimum is over all equal partitions $\\{A, B\\}$ of $\\{1, \\ldots, 2N\\}$. This is the central quantity of Erdős Problem #36. Like `maxOverlap`, the Lean definition is a placeholder (`fun _ => 0`) — the actual mathematical content is carried by the axioms: `erdos_36_limit_exists`, `small_values`, and the bounds.",
     "significance": "key",
     "mathContext": "The min-max nature of $M(N)$ makes this a two-player game: the partitioner tries to spread the differences evenly, while the adversary picks the most concentrated shift $k$. The asymptotic ratio $M(N)/N$ converges to a constant $c \\in (0.379, 0.381)$. Computing $M(N)$ exactly is feasible only for small $N$; the problem is NP-hard in general. Known exact values $(M(1)=1, M(2)=1, M(3)=2, M(4)=2, M(5)=3)$ were computed by exhaustive search.",
     "relatedConcepts": [
