@@ -180,5 +180,27 @@
     "axiomCount": 0,
     "theoremCount": 18,
     "definitionCount": 2
-  }
+  },
+  "relatedProofs": [
+    {
+      "id": "area-of-circle",
+      "relationship": "extends",
+      "description": "This proof answers the open question from the Area of a Circle entry: whether $C = 2\\pi r$ can be derived by differentiating $A = \\pi r^2$. It extends that formalization from the integral/measure-theoretic direction to the differential calculus direction."
+    },
+    {
+      "id": "isoperimetric-theorem",
+      "relationship": "related",
+      "description": "The isoperimetric equality $C^2 = 4\\pi A$ proved here as a corollary is the equality case of the full isoperimetric inequality formalized in the Isoperimetric Theorem entry."
+    },
+    {
+      "id": "pi-transcendental",
+      "relationship": "related",
+      "description": "Both formalizations use $\\pi$ as defined in Mathlib's trigonometric module. The transcendence of $\\pi$ ensures the circumference $2\\pi r$ is transcendental for any nonzero rational radius."
+    },
+    {
+      "id": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "The central insight — C = dA/dr — is a direct application of the fundamental theorem of calculus: differentiating the area function πr² yields the circumference 2πr, and integrating the circumference recovers the area"
+    }
+  ]
 }
