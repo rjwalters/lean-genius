@@ -48,18 +48,6 @@ def ErdosProblem488 : Prop :=
           n < m →
             multiplesRatio A m < 2 * multiplesRatio A n
 
-/- ## Optimality of constant 2 -/
-
-/-- The constant 2 is optimal: for `A = {a}`, `n = 2a-1`, `m = 2a`,
-the ratio approaches 2 as `a → ∞`. -/
-axiom constant_2_optimal :
-    ∀ (ε : ℚ), 0 < ε →
-      ∃ a : ℕ, 2 ≤ a ∧
-        let A := ({a} : Finset ℕ)
-        let n := 2 * a - 1
-        let m := 2 * a
-        2 - ε < multiplesRatio A m / multiplesRatio A n
-
 /- ## Inclusion–exclusion for multiples -/
 
 /-- For a singleton `A = {a}`, `|B ∩ [1,N]| = ⌊N/a⌋`.
@@ -128,6 +116,60 @@ theorem multiplesCount_subset (A B : Finset ℕ) (h : A ⊆ B) (N : ℕ) :
   intro n hn
   simp only [Finset.mem_filter] at *
   exact ⟨hn.1, let ⟨a, haA, hdvd⟩ := hn.2; ⟨a, h haA, hdvd⟩⟩
+
+/- ## Optimality of constant 2 -/
+
+/-- The constant 2 is optimal: for `A = {a}`, `n = 2a-1`, `m = 2a`,
+the ratio approaches 2 as `a → ∞`.
+
+For singleton `{a}`: `multiplesCount {a} (2a) = 2` and
+`multiplesCount {a} (2a-1) = 1`, so the ratio is
+`(2/(2a)) / (1/(2a-1)) = (2a-1)/a = 2 - 1/a → 2`. -/
+theorem constant_2_optimal :
+    ∀ (ε : ℚ), 0 < ε →
+      ∃ a : ℕ, 2 ≤ a ∧
+        let A := ({a} : Finset ℕ)
+        let n := 2 * a - 1
+        let m := 2 * a
+        2 - ε < multiplesRatio A m / multiplesRatio A n := by
+  intro ε hε
+  -- Choose a > 1/ε with a ≥ 2
+  obtain ⟨a₀, ha₀⟩ := exists_nat_gt (1 / ε)
+  refine ⟨max a₀ 2, le_max_right _ _, ?_⟩
+  set a := max a₀ 2
+  have ha2 : 2 ≤ a := le_max_right _ _
+  have ha_pos : (0 : ℚ) < ↑a := by exact_mod_cast (show 0 < a by omega)
+  -- Compute multiplesCount values
+  show 2 - ε < multiplesRatio ({a} : Finset ℕ) (2 * a) /
+               multiplesRatio ({a} : Finset ℕ) (2 * a - 1)
+  have ha1 : 1 ≤ a := by omega
+  have ha0 : 0 < a := by omega
+  simp only [multiplesRatio]
+  rw [singleton_multiplesCount a (2 * a) ha1,
+      singleton_multiplesCount a (2 * a - 1) ha1,
+      show 2 * a / a = 2 from Nat.mul_div_cancel 2 ha0,
+      show (2 * a - 1) / a = 1 from
+        Nat.div_eq_of_lt_le (by omega) (by omega)]
+  -- Goal: 2 - ε < ((2 : ℚ) / ↑(2 * a)) / ((1 : ℚ) / ↑(2 * a - 1))
+  -- Suffices to show 2 - ε < (2*a-1)/a = 2 - 1/a
+  suffices h : 2 - ε < (2 * (↑a : ℚ) - 1) / ↑a by
+    have h2a_ne : (↑(2 * a) : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+    have h2a1_ne : (↑(2 * a - 1) : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+    have ha_ne : (↑a : ℚ) ≠ 0 := ne_of_gt ha_pos
+    convert h using 1
+    field_simp
+    rw [Nat.cast_sub (show 1 ≤ 2 * a by omega), Nat.cast_mul, Nat.cast_ofNat]
+    ring
+  -- Prove: 2 - ε < (2*↑a - 1) / ↑a = 2 - 1/↑a
+  have heq : (2 * (↑a : ℚ) - 1) / ↑a = 2 - 1 / ↑a := by field_simp
+  rw [heq]
+  -- Goal: 2 - ε < 2 - 1 / ↑a
+  -- Key: 1/↑a < ε follows from 1/ε < a
+  have h_inv : (1 : ℚ) / ↑a < ε := by
+    have h : 1 / ε < ↑a := lt_of_lt_of_le ha₀ (Nat.cast_le.mpr (le_max_left _ _))
+    have h1 : 1 < ↑a * ε := by rwa [div_lt_iff₀ hε] at h
+    exact (div_lt_iff₀ ha_pos).mpr (by linarith [mul_comm (↑a : ℚ) ε])
+  linarith
 
 /- ## Davenport's density -/
 
