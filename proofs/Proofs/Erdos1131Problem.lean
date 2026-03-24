@@ -17,17 +17,30 @@ In particular, is it true that min I = 2 - (1 + o(1))/n?
 Erdős first conjectured the minimum was achieved by equally-spaced points,
 then by Chebyshev nodes. The problem remains open.
 
+Key results:
+- Lower bound: I ≥ 2/n (Cauchy-Schwarz on partition of unity)
+- Chebyshev nodes: I ≈ 2 - c/n
+- ESVV94: 2 - O((log n)²/n) ≤ min I ≤ 2 - 2/(2n-1)
+
+## Proved Theorems
+
+- `lagrangeBasis_self`: l_k(x_k) = 1 (interpolation property)
+- `lagrangeBasis_other`: l_k(x_j) = 0 for j ≠ k (orthogonality)
+- `chebyshevNodes_in_range`: Chebyshev nodes lie in [-1, 1]
+- `chebyshevNodes_distinct`: Chebyshev nodes are pairwise distinct
+
 References:
 - Erdős: Original problem formulation
 - Turetskii (1940): Early results on Lebesgue constants
 - Kilgore, de Boor, Pinkus: Optimal interpolation nodes
+- ESVV (1994): Best known bounds
 -/
 
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
+import Mathlib
 
 namespace Erdos1131
+
+open MeasureTheory
 
 /-
 ## Part I: Definitions
@@ -52,11 +65,11 @@ noncomputable def lagrangeBasis (n : ℕ) (nodes : Fin n → ℝ) (k : Fin n) (x
   (Finset.univ.filter (· ≠ k)).prod (fun i => (x - nodes i) / (nodes k - nodes i))
 
 /--
-I(x₁,...,xₙ) = ∫₋₁¹ Σₖ |l_k(x)|² dx
-The integral of the sum of squared Lagrange basis polynomials.
-Axiomatized since Lagrange interpolation infrastructure is required.
+I(x₁,...,xₙ) = ∫₋₁¹ Σₖ l_k(x)² dx.
+The integral of the sum of squared Lagrange basis polynomials over [-1, 1].
 -/
-axiom lagrangeIntegral (n : ℕ) (nodes : Fin n → ℝ) : ℝ
+noncomputable def lagrangeIntegral (n : ℕ) (nodes : Fin n → ℝ) : ℝ :=
+  ∫ x in (-1 : ℝ)..1, ∑ k : Fin n, (lagrangeBasis n nodes k x) ^ 2
 
 /-
 ## Part II: Basic Properties
@@ -64,15 +77,28 @@ axiom lagrangeIntegral (n : ℕ) (nodes : Fin n → ℝ) : ℝ
 
 /--
 **Interpolation property**: l_k(xₖ) = 1 for each k.
+
+Each factor in the product is (xₖ - xᵢ)/(xₖ - xᵢ) = 1 since nodes are distinct.
 -/
-axiom lagrangeBasis_self (n : ℕ) (nodes : Fin n → ℝ) (hd : AreDistinct n nodes)
-    (k : Fin n) : lagrangeBasis n nodes k (nodes k) = 1
+theorem lagrangeBasis_self (n : ℕ) (nodes : Fin n → ℝ) (hd : AreDistinct n nodes)
+    (k : Fin n) : lagrangeBasis n nodes k (nodes k) = 1 := by
+  simp only [lagrangeBasis]
+  apply Finset.prod_eq_one
+  intro i hi
+  rw [Finset.mem_filter] at hi
+  exact div_self (sub_ne_zero.mpr (hd k i (Ne.symm hi.2)))
 
 /--
 **Orthogonality**: l_k(xⱼ) = 0 for j ≠ k.
+
+The product contains the factor (xⱼ - xⱼ)/(xₖ - xⱼ) = 0, zeroing the whole product.
 -/
-axiom lagrangeBasis_other (n : ℕ) (nodes : Fin n → ℝ) (hd : AreDistinct n nodes)
-    (k j : Fin n) (hkj : k ≠ j) : lagrangeBasis n nodes k (nodes j) = 0
+theorem lagrangeBasis_other (n : ℕ) (nodes : Fin n → ℝ) (_hd : AreDistinct n nodes)
+    (k j : Fin n) (hkj : k ≠ j) : lagrangeBasis n nodes k (nodes j) = 0 := by
+  simp only [lagrangeBasis]
+  apply Finset.prod_eq_zero
+  · exact Finset.mem_filter.mpr ⟨Finset.mem_univ j, fun h => hkj h.symm⟩
+  · simp [sub_self]
 
 /--
 **Lower bound**: I(x₁,...,xₙ) ≥ 2/n for any configuration.
@@ -85,7 +111,7 @@ axiom lagrangeIntegral_lower_bound (n : ℕ) (hn : n ≥ 1) (nodes : Fin n → �
     lagrangeIntegral n nodes ≥ 2 / n
 
 /--
-**Upper bound for equidistant nodes**: I is bounded above by 2 for any n.
+**Upper bound**: I is bounded above by 2n for any configuration.
 -/
 axiom lagrangeIntegral_upper_bound (n : ℕ) (hn : n ≥ 1) (nodes : Fin n → ℝ)
     (hd : AreDistinct n nodes) (hrange : ∀ i, -1 ≤ nodes i ∧ nodes i ≤ 1) :
@@ -103,16 +129,45 @@ noncomputable def chebyshevNodes (n : ℕ) : Fin n → ℝ :=
   fun k => Real.cos ((2 * (k : ℝ) + 1) * Real.pi / (2 * n))
 
 /--
-Chebyshev nodes lie in [-1, 1].
+Chebyshev nodes lie in [-1, 1] since cos maps to [-1, 1].
 -/
-axiom chebyshevNodes_in_range (n : ℕ) (hn : n ≥ 1) (k : Fin n) :
-    -1 ≤ chebyshevNodes n k ∧ chebyshevNodes n k ≤ 1
+theorem chebyshevNodes_in_range (n : ℕ) (_hn : n ≥ 1) (k : Fin n) :
+    -1 ≤ chebyshevNodes n k ∧ chebyshevNodes n k ≤ 1 :=
+  ⟨Real.neg_one_le_cos _, Real.cos_le_one _⟩
 
 /--
 Chebyshev nodes are distinct.
+
+The arguments θₖ = (2k+1)π/(2n) lie in (0, π) and are strictly increasing in k.
+Since cos is strictly decreasing on [0, π], distinct indices give distinct values.
 -/
-axiom chebyshevNodes_distinct (n : ℕ) (hn : n ≥ 2) :
-    AreDistinct n (chebyshevNodes n)
+theorem chebyshevNodes_distinct (n : ℕ) (hn : n ≥ 2) :
+    AreDistinct n (chebyshevNodes n) := by
+  intro i j hij heq
+  simp only [chebyshevNodes] at heq
+  apply hij
+  -- Key setup
+  have hpi_pos := Real.pi_pos
+  have hpi_ne : Real.pi ≠ 0 := ne_of_gt hpi_pos
+  have hn_pos : (n : ℝ) > 0 := Nat.cast_pos.mpr (by omega)
+  have h2n_pos : (0 : ℝ) < 2 * n := by linarith
+  have h2n_ne : (2 : ℝ) * n ≠ 0 := ne_of_gt h2n_pos
+  -- All Chebyshev arguments lie in [0, π]
+  have arg_mem : ∀ k : Fin n,
+      (2 * (k : ℝ) + 1) * Real.pi / (2 * n) ∈ Set.Icc (0 : ℝ) Real.pi := by
+    intro k
+    refine ⟨by positivity, ?_⟩
+    have hk : (k : ℝ) + 1 ≤ n := by exact_mod_cast k.is_lt
+    have h1 : 2 * (k : ℝ) + 1 ≤ 2 * ↑n := by linarith
+    calc (2 * (k : ℝ) + 1) * Real.pi / (2 * ↑n)
+        ≤ 2 * ↑n * Real.pi / (2 * ↑n) := by gcongr
+      _ = Real.pi := by field_simp
+  -- cos is injective on [0, π], so equal cos values → equal arguments
+  have h_arg_eq := Real.strictAntiOn_cos.injOn (arg_mem i) (arg_mem j) heq
+  -- Equal arguments → equal indices: cancel denominator 2n and factor π
+  suffices h : (i : ℝ) = (j : ℝ) from Fin.ext (by exact_mod_cast h)
+  field_simp at h_arg_eq
+  linarith
 
 /--
 For Chebyshev nodes, I ≈ 2 - c/n for some constant c.
