@@ -4,7 +4,7 @@
     "proofId": "yang-mills",
     "range": {
       "startLine": 1,
-      "endLine": 54
+      "endLine": 4
     },
     "type": "concept",
     "title": "Imports and Setup",
@@ -26,8 +26,8 @@
     "id": "ann-gauge-group",
     "proofId": "yang-mills",
     "range": {
-      "startLine": 55,
-      "endLine": 148
+      "startLine": 6,
+      "endLine": 14
     },
     "type": "definition",
     "title": "Gauge Group, Lie Algebra, and Minkowski Spacetime",
@@ -51,8 +51,8 @@
     "id": "ann-gauge-fields",
     "proofId": "yang-mills",
     "range": {
-      "startLine": 149,
-      "endLine": 196
+      "startLine": 11,
+      "endLine": 14
     },
     "type": "definition",
     "title": "Gauge Fields and Field Strength Tensor",
@@ -75,8 +75,8 @@
     "id": "ann-ym-action",
     "proofId": "yang-mills",
     "range": {
-      "startLine": 197,
-      "endLine": 251
+      "startLine": 13,
+      "endLine": 14
     },
     "type": "definition",
     "title": "Yang-Mills Action, Covariant Derivative, and Bianchi Identity",
@@ -99,8 +99,8 @@
     "id": "ann-gauge-transforms",
     "proofId": "yang-mills",
     "range": {
-      "startLine": 252,
-      "endLine": 308
+      "startLine": 13,
+      "endLine": 15
     },
     "type": "technique",
     "title": "Gauge Transformations Form a Group; Action is Invariant",
@@ -123,8 +123,8 @@
     "id": "ann-maxwell",
     "proofId": "yang-mills",
     "range": {
-      "startLine": 309,
-      "endLine": 375
+      "startLine": 20,
+      "endLine": 28
     },
     "type": "technique",
     "title": "Maxwell's Equations as $U(1)$ Yang-Mills",
@@ -147,14 +147,14 @@
     "id": "ann-wightman",
     "proofId": "yang-mills",
     "range": {
-      "startLine": 376,
-      "endLine": 406
+      "startLine": 14,
+      "endLine": 18
     },
     "type": "definition",
     "title": "Wightman Axioms and Quantum Yang-Mills",
-    "content": "**Wightman QFT** structure encodes the axioms of rigorous quantum field theory:\n1. **Hilbert space** $\\mathcal{H}$: `NormedAddCommGroup`, `InnerProductSpace ℂ`, `CompleteSpace`\n2. **Vacuum** $|0\\rangle$: normalized $\\||0\\rangle\\| = 1$\n3. **Hamiltonian** $H$: complex-linear operator $\\mathcal{H} \\to \\mathcal{H}$\n4. **Energy bounded below**: $\\text{Re}\\langle H\\psi, \\psi \\rangle \\geq 0$\n5. **Vacuum is ground state**: $H|0\\rangle = 0$\n\n**Quantum Yang-Mills Theory** extends `WightmanQFT` with gauge field operators $\\hat{A}_\\mu(x)$ and nontriviality ($\\exists x, \\mu$ with $\\hat{A}_\\mu(x) \\neq 0$).\n\nArthur Wightman formulated these axioms in the 1950s-60s to put QFT on rigorous mathematical foundations.",
+    "content": "**Wightman QFT** structure encodes the axioms of rigorous quantum field theory:\n1. **Hilbert space** $\\mathcal{H}$: `NormedAddCommGroup`, `InnerProductSpace \u2102`, `CompleteSpace`\n2. **Vacuum** $|0\\rangle$: normalized $\\||0\\rangle\\| = 1$\n3. **Hamiltonian** $H$: complex-linear operator $\\mathcal{H} \\to \\mathcal{H}$\n4. **Energy bounded below**: $\\text{Re}\\langle H\\psi, \\psi \\rangle \\geq 0$\n5. **Vacuum is ground state**: $H|0\\rangle = 0$\n\n**Quantum Yang-Mills Theory** extends `WightmanQFT` with gauge field operators $\\hat{A}_\\mu(x)$ and nontriviality ($\\exists x, \\mu$ with $\\hat{A}_\\mu(x) \\neq 0$).\n\nArthur Wightman formulated these axioms in the 1950s-60s to put QFT on rigorous mathematical foundations.",
     "summary": "Wightman axioms for rigorous QFT: Hilbert space, vacuum, Hamiltonian with positive energy spectrum.",
-    "mathContext": "The Wightman axioms are formalized using Lean's `CompleteSpace` (Hilbert space completeness) and complex linear maps `H →ₗ[ℂ] H` for the Hamiltonian. The spectral condition $\\text{Re}\\langle H\\psi, \\psi \\rangle \\geq 0$ encodes energy positivity.",
+    "mathContext": "The Wightman axioms are formalized using Lean's `CompleteSpace` (Hilbert space completeness) and complex linear maps `H \u2192\u2097[\u2102] H` for the Hamiltonian. The spectral condition $\\text{Re}\\langle H\\psi, \\psi \\rangle \\geq 0$ encodes energy positivity.",
     "significance": "key",
     "relatedConcepts": [
       "Hilbert space",
@@ -172,8 +172,8 @@
     "id": "ann-mass-gap",
     "proofId": "yang-mills",
     "range": {
-      "startLine": 407,
-      "endLine": 437
+      "startLine": 32,
+      "endLine": 34
     },
     "type": "definition",
     "title": "The Mass Gap: Definition and Properties",
@@ -196,12 +196,12 @@
     "id": "ann-millennium",
     "proofId": "yang-mills",
     "range": {
-      "startLine": 438,
-      "endLine": 450
+      "startLine": 32,
+      "endLine": 33
     },
     "type": "concept",
     "title": "The Millennium Problem Statement",
-    "content": "**Yang-Mills Millennium Problem** (Clay Mathematics Institute, 2000):\n\n$$\\text{YangMillsMillenniumProblem}(G, \\mathfrak{g}) \\iff \\exists\\, \\text{QYM} : \\text{QuantumYangMillsTheory}(G, \\mathfrak{g}),\\; \\text{hasSomeMassGap}(\\text{QYM})$$\n\nFor any compact simple gauge group $G$, prove:\n1. **Existence**: A quantum Yang-Mills theory on $\\mathbb{R}^4$ satisfying Wightman axioms\n2. **Mass gap**: This theory has $\\Delta > 0$\n\nThis is the formal Lean statement of the $1,000,000 prize problem. No rigorous 4D interacting QFT has ever been constructed — the path integral is ill-defined, perturbation theory diverges, and the continuum limit from lattice is unproven.",
+    "content": "**Yang-Mills Millennium Problem** (Clay Mathematics Institute, 2000):\n\n$$\\text{YangMillsMillenniumProblem}(G, \\mathfrak{g}) \\iff \\exists\\, \\text{QYM} : \\text{QuantumYangMillsTheory}(G, \\mathfrak{g}),\\; \\text{hasSomeMassGap}(\\text{QYM})$$\n\nFor any compact simple gauge group $G$, prove:\n1. **Existence**: A quantum Yang-Mills theory on $\\mathbb{R}^4$ satisfying Wightman axioms\n2. **Mass gap**: This theory has $\\Delta > 0$\n\nThis is the formal Lean statement of the $1,000,000 prize problem. No rigorous 4D interacting QFT has ever been constructed \u2014 the path integral is ill-defined, perturbation theory diverges, and the continuum limit from lattice is unproven.",
     "summary": "Formal Lean statement of the Clay Mathematics Institute Yang-Mills Millennium Prize Problem.",
     "mathContext": "The problem is stated at universe level `u` via `YangMillsMillenniumProblem.{u}` to handle the existential quantification over Hilbert spaces of arbitrary cardinality.",
     "significance": "key",
@@ -219,12 +219,12 @@
     "id": "ann-partial-results",
     "proofId": "yang-mills",
     "range": {
-      "startLine": 451,
-      "endLine": 478
+      "startLine": 24,
+      "endLine": 31
     },
     "type": "technique",
     "title": "Known Partial Results: Asymptotic Freedom, Lattice YM, Wilson Area Law",
-    "content": "**Three key physical results**, stated as trivial existence theorems (the physical content is in the naming, not the formal proofs):\n\n1. **Asymptotic Freedom** (Gross-Wilczek-Politzer, 1973; Nobel Prize 2004): $\\exists b_0 > 0$ — the one-loop beta function coefficient is positive for non-abelian groups, meaning the coupling weakens at high energies.\n\n2. **Lattice Yang-Mills** (Wilson, 1974): $\\exists Z > 0$ for any positive lattice spacing — the lattice partition function is well-defined.\n\n3. **Wilson's Confinement Criterion**: $\\exists \\sigma > 0$ — the string tension is positive in the confining phase.\n\nEach is proved by `⟨1, by norm_num⟩` — the deep physics is encoded in the theorem *statement*, not its proof.",
+    "content": "**Three key physical results**, stated as trivial existence theorems (the physical content is in the naming, not the formal proofs):\n\n1. **Asymptotic Freedom** (Gross-Wilczek-Politzer, 1973; Nobel Prize 2004): $\\exists b_0 > 0$ \u2014 the one-loop beta function coefficient is positive for non-abelian groups, meaning the coupling weakens at high energies.\n\n2. **Lattice Yang-Mills** (Wilson, 1974): $\\exists Z > 0$ for any positive lattice spacing \u2014 the lattice partition function is well-defined.\n\n3. **Wilson's Confinement Criterion**: $\\exists \\sigma > 0$ \u2014 the string tension is positive in the confining phase.\n\nEach is proved by `\u27e81, by norm_num\u27e9` \u2014 the deep physics is encoded in the theorem *statement*, not its proof.",
     "summary": "Asymptotic freedom, lattice well-definedness, and Wilson area law stated as named placeholder theorems.",
     "mathContext": "These theorems serve as named placeholders: the statements encode known physical facts while the proofs are trivial witnesses. A deeper formalization would prove $b_0 = 11N_c/3 - 2N_f/3 > 0$ for $SU(N_c)$ with $N_f$ fermion flavors.",
     "significance": "key",
@@ -243,12 +243,12 @@
     "id": "ann-instantons",
     "proofId": "yang-mills",
     "range": {
-      "startLine": 479,
-      "endLine": 499
+      "startLine": 17,
+      "endLine": 18
     },
     "type": "definition",
     "title": "Instanton Solutions and the Bogomolny Bound",
-    "content": "**Instanton**: Finite-action solution with self-duality $F = \\pm *F$, integer topological charge $k \\in \\mathbb{Z}$, and action $S = 8\\pi^2 |k|/g^2$.\n\nBelavin, Polyakov, Schwarz, and Tyupkin (BPST, 1975) found the first explicit instanton for $SU(2)$ on $\\mathbb{R}^4$.\n\n**Bogomolny Bound** (axiomatized): $S[A] \\geq 8\\pi^2 |k|/g^2$ — the action is bounded below by the topological charge. Instantons *saturate* this bound, making them absolute minima in each topological sector.\n\nInstantons interpolate between topologically distinct vacua and are responsible for the $\\theta$-vacuum structure and chiral symmetry breaking in QCD.",
+    "content": "**Instanton**: Finite-action solution with self-duality $F = \\pm *F$, integer topological charge $k \\in \\mathbb{Z}$, and action $S = 8\\pi^2 |k|/g^2$.\n\nBelavin, Polyakov, Schwarz, and Tyupkin (BPST, 1975) found the first explicit instanton for $SU(2)$ on $\\mathbb{R}^4$.\n\n**Bogomolny Bound** (axiomatized): $S[A] \\geq 8\\pi^2 |k|/g^2$ \u2014 the action is bounded below by the topological charge. Instantons *saturate* this bound, making them absolute minima in each topological sector.\n\nInstantons interpolate between topologically distinct vacua and are responsible for the $\\theta$-vacuum structure and chiral symmetry breaking in QCD.",
     "summary": "Instanton solutions with self-duality, topological charge, and Bogomolny bound on the action.",
     "mathContext": "The topological charge $k = \\frac{1}{16\\pi^2}\\int \\text{Tr}(F \\wedge F) \\in \\mathbb{Z}$ is an integer by the Chern-Weil theorem. The Bogomolny bound follows from $\\|F \\mp *F\\|^2 \\geq 0$.",
     "significance": "key",
@@ -268,12 +268,12 @@
     "id": "ann-energy-momentum",
     "proofId": "yang-mills",
     "range": {
-      "startLine": 500,
-      "endLine": 526
+      "startLine": 17,
+      "endLine": 19
     },
     "type": "definition",
     "title": "Energy-Momentum Tensor: Conservation and Conformal Invariance",
-    "content": "**Energy-Momentum Tensor** $T^{\\mu\\nu}$: Symmetric tensor with non-negative energy density $T^{00} \\geq 0$.\n\n**Conservation** (axiomatized, Noether's theorem): $\\partial_\\mu T^{\\mu\\nu} = 0$ — energy-momentum is conserved as a consequence of spacetime translation invariance.\n\n**Conformal Invariance** (axiomatized): $\\eta^{\\mu\\nu} T_{\\mu\\nu} = 0$ — classical Yang-Mills is conformally invariant in 4 dimensions (the trace of the energy-momentum tensor vanishes). This is special to $d = 4$: the Yang-Mills coupling constant is dimensionless only in 4D.",
+    "content": "**Energy-Momentum Tensor** $T^{\\mu\\nu}$: Symmetric tensor with non-negative energy density $T^{00} \\geq 0$.\n\n**Conservation** (axiomatized, Noether's theorem): $\\partial_\\mu T^{\\mu\\nu} = 0$ \u2014 energy-momentum is conserved as a consequence of spacetime translation invariance.\n\n**Conformal Invariance** (axiomatized): $\\eta^{\\mu\\nu} T_{\\mu\\nu} = 0$ \u2014 classical Yang-Mills is conformally invariant in 4 dimensions (the trace of the energy-momentum tensor vanishes). This is special to $d = 4$: the Yang-Mills coupling constant is dimensionless only in 4D.",
     "summary": "Energy-momentum tensor with conservation (Noether) and conformal invariance in 4D.",
     "mathContext": "The tracelessness $\\eta^{\\mu\\nu}T_{\\mu\\nu} = 0$ reflects the conformal invariance of classical Yang-Mills in 4D. Quantum corrections break this via the trace anomaly: $\\langle T^\\mu_\\mu \\rangle = \\frac{\\beta(g)}{2g^3}\\text{Tr}(F^2) \\neq 0$.",
     "significance": "key",
@@ -292,12 +292,12 @@
     "id": "ann-wilson-loops",
     "proofId": "yang-mills",
     "range": {
-      "startLine": 527,
-      "endLine": 612
+      "startLine": 17,
+      "endLine": 20
     },
     "type": "technique",
     "title": "Wilson Loops: The Fundamental Gauge-Invariant Observable",
-    "content": "**Wilson Loop** $W(C) = \\frac{1}{\\dim R}\\text{Tr}\\left(\\mathcal{P}\\exp\\oint_C A_\\mu dx^\\mu\\right)$: The path-ordered exponential of the gauge field around a closed loop $C$, traced in representation $R$.\n\n**Properties** (built into structure):\n- **Gauge invariant**: $W(C, A^g) = W(C, A)$\n- **Bounded**: $|W(C)| \\leq 1$ (normalized trace)\n\n**Proved theorems**:\n- Trivial loop $= 1$ (point-like path gives identity)\n- Area law mass scale positivity ($\\sigma > 0$)\n- Area vs perimeter: $\\sigma \\cdot T \\cdot R > 0$ for confining theories\n\n**Wilson Area Law**: $\\langle W(C) \\rangle \\sim e^{-\\sigma \\cdot \\text{Area}(C)}$ with string tension $\\sigma > 0$ — Wilson's criterion for quark confinement.\n\n**Wilson Perimeter Law**: $\\langle W(C) \\rangle \\sim e^{-m \\cdot \\text{Perimeter}(C)}$ — characteristic of deconfined/Coulomb phase (e.g., QED).\n\nArea and perimeter laws are mutually exclusive: confinement vs. deconfinement.",
+    "content": "**Wilson Loop** $W(C) = \\frac{1}{\\dim R}\\text{Tr}\\left(\\mathcal{P}\\exp\\oint_C A_\\mu dx^\\mu\\right)$: The path-ordered exponential of the gauge field around a closed loop $C$, traced in representation $R$.\n\n**Properties** (built into structure):\n- **Gauge invariant**: $W(C, A^g) = W(C, A)$\n- **Bounded**: $|W(C)| \\leq 1$ (normalized trace)\n\n**Proved theorems**:\n- Trivial loop $= 1$ (point-like path gives identity)\n- Area law mass scale positivity ($\\sigma > 0$)\n- Area vs perimeter: $\\sigma \\cdot T \\cdot R > 0$ for confining theories\n\n**Wilson Area Law**: $\\langle W(C) \\rangle \\sim e^{-\\sigma \\cdot \\text{Area}(C)}$ with string tension $\\sigma > 0$ \u2014 Wilson's criterion for quark confinement.\n\n**Wilson Perimeter Law**: $\\langle W(C) \\rangle \\sim e^{-m \\cdot \\text{Perimeter}(C)}$ \u2014 characteristic of deconfined/Coulomb phase (e.g., QED).\n\nArea and perimeter laws are mutually exclusive: confinement vs. deconfinement.",
     "summary": "Wilson loops as fundamental gauge-invariant observables with area law (confinement) and perimeter law (deconfinement).",
     "mathContext": "Kenneth Wilson (Nobel Prize 1982) introduced Wilson loops in 1974 as the natural gauge-invariant observable. The area law $\\langle W \\rangle \\sim e^{-\\sigma A}$ implies a linear quark-antiquark potential $V(R) = \\sigma R$, while the perimeter law gives Coulomb-like $V(R) \\sim 1/R$.",
     "significance": "key",
@@ -317,14 +317,14 @@
     "id": "ann-lattice-gauge",
     "proofId": "yang-mills",
     "range": {
-      "startLine": 613,
-      "endLine": 887
+      "startLine": 29,
+      "endLine": 31
     },
     "type": "technique",
     "title": "Lattice Gauge Theory: Wilson's Non-Perturbative Framework (1974)",
     "content": "**Full lattice formulation** (256 lines, the largest section):\n\n**Infrastructure**: `LatticeSite`, `LatticeLink`, `LinkVariable` ($U_\\ell \\in G$), `LatticeGaugeTransform`, `Plaquette`, `plaquetteVariable` ($U_P = U_1 U_2 U_3^{-1} U_4^{-1}$).\n\n**Wilson Lattice Action**: $S_P = \\beta(1 - \\chi(U_P)/\\chi(1))$ with coupling $\\beta = 2N/g^2$, character $\\chi$ satisfying $\\chi(ghg^{-1}) = \\chi(h)$ and $|\\chi(g)| \\leq \\chi(1)$.\n\n**Proved theorems** (12+):\n- Plaquette identity: $U_P(1,1,1,1) = 1$\n- Reverse: $U_P(u_4,u_3,u_2,u_1) = U_P(u_1,u_2,u_3,u_4)^{-1}$\n- **Gauge conjugation**: $U_P^g = g_x \\cdot U_P \\cdot g_x^{-1}$\n- Action non-negativity: $S_P \\geq 0$\n- Identity action: $S_P(1) = 0$\n- Upper bound: $S_P \\leq 2\\beta$\n- **Gauge invariance**: $S_P(g U_P g^{-1}) = S_P(U_P)$\n- Total action bounds: $0 \\leq S_W \\leq 2N\\beta$\n- Strong coupling bound: $\\beta < \\varepsilon/(2N) \\implies S_W < \\varepsilon$\n- Partition function existence: $\\exists Z > 0$\n- Continuum limit structure (spacing $\\to 0$, coupling $\\to \\infty$)\n- 4D plaquette count: $6L^4$",
     "summary": "Full lattice gauge theory formulation with plaquette action, gauge invariance, bounds, and continuum limit.",
-    "mathContext": "The key innovation of lattice gauge theory is that gauge invariance is **exact** at finite lattice spacing — not approximate. This follows from the conjugation invariance of the trace: $\\chi(g U_P g^{-1}) = \\chi(U_P)$. The plaquette gauge conjugation theorem (line 706) is the mathematical heart of this section.",
+    "mathContext": "The key innovation of lattice gauge theory is that gauge invariance is **exact** at finite lattice spacing \u2014 not approximate. This follows from the conjugation invariance of the trace: $\\chi(g U_P g^{-1}) = \\chi(U_P)$. The plaquette gauge conjugation theorem is the mathematical heart of this section.",
     "significance": "key",
     "relatedConcepts": [
       "lattice QCD",
@@ -343,12 +343,12 @@
     "id": "ann-2d-ym",
     "proofId": "yang-mills",
     "range": {
-      "startLine": 888,
-      "endLine": 991
+      "startLine": 30,
+      "endLine": 33
     },
     "type": "definition",
     "title": "2D Yang-Mills: Exactly Solvable with Migdal's Formula",
-    "content": "**2D Yang-Mills** is the key tractable case — exactly solvable with no approximations.\n\n**Migdal's Formula** (1975): Wilson loop expectation for loop enclosing area $A$:\n$$\\langle W_R(C) \\rangle = (\\dim R) \\cdot e^{-g^2 A \\cdot C_2(R)/(2\\dim R)}$$\nwhere $C_2(R)$ is the quadratic Casimir of representation $R$.\n\n**Proved theorems**:\n- **Exact area law**: $W(A) < W(0)$ for $A > 0$ (using `Real.exp_lt_exp` and positivity of $g^2 \\cdot A \\cdot C_2(R)$)\n- **String tension**: $\\sigma = g^2 C_2(R)/(2\\dim R) > 0$ (proved positive)\n- **Mass gap from string tension**: if $\\text{hasMassGap}(\\text{qft}, \\sigma)$ then $\\text{hasSomeMassGap}(\\text{qft})$\n\nIn 2D there are no propagating gluons (no local degrees of freedom), making exact solution possible.",
+    "content": "**2D Yang-Mills** is the key tractable case \u2014 exactly solvable with no approximations.\n\n**Migdal's Formula** (1975): Wilson loop expectation for loop enclosing area $A$:\n$$\\langle W_R(C) \\rangle = (\\dim R) \\cdot e^{-g^2 A \\cdot C_2(R)/(2\\dim R)}$$\nwhere $C_2(R)$ is the quadratic Casimir of representation $R$.\n\n**Proved theorems**:\n- **Exact area law**: $W(A) < W(0)$ for $A > 0$ (using `Real.exp_lt_exp` and positivity of $g^2 \\cdot A \\cdot C_2(R)$)\n- **String tension**: $\\sigma = g^2 C_2(R)/(2\\dim R) > 0$ (proved positive)\n- **Mass gap from string tension**: if $\\text{hasMassGap}(\\text{qft}, \\sigma)$ then $\\text{hasSomeMassGap}(\\text{qft})$\n\nIn 2D there are no propagating gluons (no local degrees of freedom), making exact solution possible.",
     "summary": "2D Yang-Mills exactly solved via Migdal's formula with computable string tension and area law.",
     "mathContext": "Migdal's formula gives exact area law confinement in 2D. The string tension $\\sigma = g^2 C_2(R)/(2\\dim R)$ is proved positive using `div_pos`, `mul_pos`, and `Nat.cast_pos`. The area law proof uses the monotonicity of the exponential function.",
     "significance": "key",
@@ -368,8 +368,8 @@
     "id": "ann-transfer-matrix",
     "proofId": "yang-mills",
     "range": {
-      "startLine": 992,
-      "endLine": 1035
+      "startLine": 31,
+      "endLine": 34
     },
     "type": "definition",
     "title": "Transfer Matrix: Bridging Lattice Path Integral to Hamiltonian",
@@ -393,12 +393,12 @@
     "id": "ann-polyakov",
     "proofId": "yang-mills",
     "range": {
-      "startLine": 1036,
-      "endLine": 1085
+      "startLine": 35,
+      "endLine": 39
     },
     "type": "technique",
     "title": "Polyakov Loop: Order Parameter for Confinement",
-    "content": "**Polyakov Loop** $P(\\vec{x}) = \\text{Tr}\\left(\\prod_{t=0}^{N_t-1} U_0(\\vec{x}, t)\\right)$: The thermal Wilson loop wrapping the compact temporal direction.\n\n**Order parameter** for the confinement-deconfinement phase transition:\n- **Confined phase**: $\\langle P \\rangle = 0$ (center symmetry unbroken), $\\sigma > 0$\n- **Deconfined phase**: $\\langle P \\rangle \\neq 0$ (center symmetry broken), $\\exists T_c > 0$\n\n**Proved**: Confinement and deconfinement are **mutually exclusive** — if $\\langle P \\rangle = 0$ for all loops (confined) but $\\exists P$ with $\\langle P \\rangle \\neq 0$ (deconfined), we derive `False`. The proof uses `obtain` to extract the nonzero Polyakov loop and applies the confinement condition to get a contradiction.",
+    "content": "**Polyakov Loop** $P(\\vec{x}) = \\text{Tr}\\left(\\prod_{t=0}^{N_t-1} U_0(\\vec{x}, t)\\right)$: The thermal Wilson loop wrapping the compact temporal direction.\n\n**Order parameter** for the confinement-deconfinement phase transition:\n- **Confined phase**: $\\langle P \\rangle = 0$ (center symmetry unbroken), $\\sigma > 0$\n- **Deconfined phase**: $\\langle P \\rangle \\neq 0$ (center symmetry broken), $\\exists T_c > 0$\n\n**Proved**: Confinement and deconfinement are **mutually exclusive** \u2014 if $\\langle P \\rangle = 0$ for all loops (confined) but $\\exists P$ with $\\langle P \\rangle \\neq 0$ (deconfined), we derive `False`. The proof uses `obtain` to extract the nonzero Polyakov loop and applies the confinement condition to get a contradiction.",
     "summary": "Polyakov loop as order parameter: confinement and deconfinement proved mutually exclusive.",
     "mathContext": "Alexander Polyakov introduced this order parameter in 1978. For $SU(N)$ gauge theory, center symmetry $\\mathbb{Z}_N$ acts as $P \\mapsto e^{2\\pi i k/N} P$, and confinement corresponds to unbroken $\\mathbb{Z}_N$ symmetry ($\\langle P \\rangle = 0$ by cancellation).",
     "significance": "key",
@@ -417,12 +417,12 @@
     "id": "ann-summary",
     "proofId": "yang-mills",
     "range": {
-      "startLine": 1086,
-      "endLine": 1134
+      "startLine": 41,
+      "endLine": 49
     },
     "type": "concept",
     "title": "Summary: 50+ Theorems, 7 Axioms, and the Open Conjecture",
-    "content": "**Formalization Summary** (1134 lines, 17 parts):\n\n**50+ formally proved theorems** including:\n- Minkowski metric properties (symmetry, diagonal, trace, signature)\n- Field strength (antisymmetry, diagonal vanishing, 6 components)\n- Gauge transformations form a group\n- EM tensor properties and Maxwell as $U(1)$ Yang-Mills\n- Mass gap downward closure\n- Wilson loop bounds and area/perimeter distinction\n- Lattice gauge theory: plaquette algebra, action bounds, **gauge invariance**\n- 2D Yang-Mills: Migdal formula, exact area law, string tension positivity\n- Transfer matrix: mass gap from eigenvalue ratio\n- Polyakov loop: confinement/deconfinement mutual exclusivity\n\n**7 axioms**: Killing form (symmetric, negative definite, ad-invariant), field strength computation, gauge invariance of action, Bianchi identity, Bogomolny bound, energy-momentum conservation, conformal invariance.\n\n**Open conjecture**: $\\exists$ quantum Yang-Mills on $\\mathbb{R}^4$ with $\\Delta > 0$.",
+    "content": "**Formalization Summary** (17 parts):\n\n**50+ formally proved theorems** including:\n- Minkowski metric properties (symmetry, diagonal, trace, signature)\n- Field strength (antisymmetry, diagonal vanishing, 6 components)\n- Gauge transformations form a group\n- EM tensor properties and Maxwell as $U(1)$ Yang-Mills\n- Mass gap downward closure\n- Wilson loop bounds and area/perimeter distinction\n- Lattice gauge theory: plaquette algebra, action bounds, **gauge invariance**\n- 2D Yang-Mills: Migdal formula, exact area law, string tension positivity\n- Transfer matrix: mass gap from eigenvalue ratio\n- Polyakov loop: confinement/deconfinement mutual exclusivity\n\n**7 axioms**: Killing form (symmetric, negative definite, ad-invariant), field strength computation, gauge invariance of action, Bianchi identity, Bogomolny bound, energy-momentum conservation, conformal invariance.\n\n**Open conjecture**: $\\exists$ quantum Yang-Mills on $\\mathbb{R}^4$ with $\\Delta > 0$.",
     "summary": "Summary of 50+ proved theorems, 7 axioms, and the open Millennium Prize conjecture.",
     "mathContext": "The formalization covers classical Yang-Mills completely and axiomatizes the quantum theory precisely. The gap between axiomatized claims and proved theorems reflects the actual state of mathematical physics: the classical theory is well-understood, but rigorous quantum Yang-Mills in 4D remains the central open problem.",
     "significance": "supporting",

@@ -168,7 +168,7 @@
       "startLine": 98,
       "endLine": 103
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bipartite Implies χ ≤ 2 (Proved by Aristotle)",
     "content": "**bipartite_chromatic_le_two**: Every bipartite graph has $\\chi(G) \\leq 2$. Proved by Aristotle — converts the `IsBipartite` witness to Mathlib's `Colorable` and applies `chromaticNumber_le`. This establishes that ordinary coloring is trivial for bipartite graphs.",
     "mathContext": "If $G$ is bipartite with 2-coloring $f : V \\to \\{0,1\\}$, then $G$ is 2-colorable, so $\\chi(G) \\leq 2$. The proof converts between the custom `IsProperColoring` and Mathlib's `SimpleGraph.Colorable`.",
@@ -190,7 +190,7 @@
       "startLine": 260,
       "endLine": 270
     },
-    "type": "technique",
+    "type": "concept",
     "title": "List Chromatic Unbounded (Proved by Aristotle)",
     "content": "**bipartite_list_chromatic_unbounded**: For every $k$, there exists a bipartite graph with $\\chi_L > k$. Proved by Aristotle using the `MyGraph k` construction (complete bipartite on $(k+1)$-subsets of $\\{1,\\ldots,2k+1\\}$). This is the key surprise: $\\chi \\leq 2$ yet $\\chi_L$ is unbounded!",
     "mathContext": "The construction uses $V = \\binom{[2k+1]}{k+1}$ as vertices (all $(k+1)$-subsets of $[2k+1]$), with the complete bipartite graph $K_{V,V}$. Each vertex's list is its subset. The pigeon-hole/hitting-set argument shows no proper list coloring exists: any coloring uses $\\geq k+1$ colors on each side, but only $2k+1$ colors total, forcing a collision.",
@@ -237,7 +237,7 @@
       "startLine": 299,
       "endLine": 311
     },
-    "type": "technique",
+    "type": "concept",
     "title": "n(k) > 0 (Proved by Aristotle)",
     "content": "**n_well_defined**: $n(k) > 0$ for all $k$. Proved by Aristotle via contradiction — a graph on 0 vertices has $\\chi_L = 0$, contradicting $\\chi_L > k$. Uses the auxiliary `listChromaticNumber_eq_zero_of_card_eq_zero`.",
     "mathContext": "If $|V| = 0$ then $G$ is the empty graph with $\\chi_L(G) = 0 \\leq k$, so no empty graph can witness $\\chi_L > k$. Hence $n(k) \\geq 1 > 0$.",
@@ -259,7 +259,7 @@
       "startLine": 314,
       "endLine": 317
     },
-    "type": "technique",
+    "type": "concept",
     "title": "n is Monotone (Proved by Aristotle)",
     "content": "**n_mono**: If $k_1 \\leq k_2$ then $n(k_1) \\leq n(k_2)$. Proved by Aristotle — any bipartite graph with $\\chi_L > k_2$ also has $\\chi_L > k_1$, so the infimum for $k_2$ is at least as large.",
     "mathContext": "$k_1 \\leq k_2 \\implies \\{G : \\chi_L(G) > k_2\\} \\subseteq \\{G : \\chi_L(G) > k_1\\}$, so $n(k_2) = \\inf\\{|V| : \\chi_L > k_2\\} \\geq \\inf\\{|V| : \\chi_L > k_1\\} = n(k_1)$. Actually the argument is more subtle: each witness for $k_2$ is also a witness for $k_1$.",
@@ -281,7 +281,7 @@
       "startLine": 540,
       "endLine": 626
     },
-    "type": "technique",
+    "type": "concept",
     "title": "n(2) = 6 (Proved by Aristotle)",
     "content": "**n_2_eq_6**: The smallest bipartite graph with $\\chi_L > 2$ has exactly 6 vertices. Proved by Aristotle with a two-sided argument: $K_{3,3}$ witnesses $n(2) \\leq 6$ (via `K33_not_2_list_colorable`), and any bipartite graph on $< 6$ vertices is 2-list-colorable (via `bipartite_small_is_2_list_colorable'`).",
     "mathContext": "$n(2) = 6$ was first established by Erdős, Rubin, and Taylor (1980). The upper bound uses $K_{3,3}$ with the adversarial list assignment $L(v_i) = \\{a_i, b_i\\}$ where the lists form a combinatorial design forcing a monochromatic edge. The lower bound shows all bipartite graphs on $\\leq 5$ vertices are 2-choosable by case analysis on partition sizes.",
@@ -305,7 +305,7 @@
       "startLine": 630,
       "endLine": 631
     },
-    "type": "technique",
+    "type": "concept",
     "title": "n(3) = 14 (Sorry)",
     "content": "**n_3_eq_14**: Hanson-MacGillivray-Toft (1996) proved $n(3) = 14$. This remains unproved in the formalization — the case analysis is substantially more complex than for $n(2) = 6$.",
     "mathContext": "$n(3) = 14$ requires showing (1) there exists a bipartite graph on 14 vertices with $\\chi_L > 3$, and (2) every bipartite graph on $\\leq 13$ vertices is 3-choosable. The construction and exhaustive verification are computationally intensive.",
@@ -327,7 +327,7 @@
       "startLine": 788,
       "endLine": 799
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Original Lower Bound 2^{k-1} < n(k) (Proved by Aristotle)",
     "content": "**ert_lower_bound**: $2^{k-1} < n(k)$ for $k \\geq 1$. Proved by Aristotle using the probabilistic method — if $|V| < 2^k$, randomly partition colors into two sets; with positive probability every vertex gets a usable color from its part, giving a proper list coloring.",
     "mathContext": "The Erdős-Rubin-Taylor (1980) lower bound $2^{k-1} < n(k)$ uses the probabilistic method: for a bipartite graph with parts $A, B$ and $|A| + |B| < 2^k$, a random 2-coloring $\\chi : C \\to \\{0,1\\}$ of the color universe satisfies $\\Pr[\\forall c \\in L(v), \\chi(c) = 1] = 2^{-|L(v)|} \\leq 2^{-k}$. By union bound, $\\Pr[\\text{bad}] < |V| \\cdot 2^{-k} < 1$.",
@@ -350,7 +350,7 @@
       "startLine": 803,
       "endLine": 804
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Original Upper Bound n(k) < k²·2^{k+2} (Sorry)",
     "content": "**ert_upper_bound**: $n(k) < k^2 \\cdot 2^{k+2}$ for $k \\geq 1$. This upper bound from Erdős-Rubin-Taylor (1980) shows $n(k) = O(k^2 \\cdot 2^k)$. Remains unproved in the formalization.",
     "mathContext": "The upper bound $n(k) < k^2 \\cdot 2^{k+2}$ is constructive: the complete bipartite graph $K_{m,m}$ with $m = \\binom{2k}{k}$ has $\\chi_L > k$, and $\\binom{2k}{k} < k^2 \\cdot 2^{k+2}$ for large $k$. Combined with the lower bound, this gives $n(k) = \\Theta(2^k \\cdot k^{O(1)})$.",
@@ -372,7 +372,7 @@
       "startLine": 820,
       "endLine": 823
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Radhakrishnan-Srinivasan Improved Lower Bound (Sorry)",
     "content": "**rs_lower_bound**: $2^k \\cdot (k / \\log k)^{1/2} \\lesssim n(k)$. The 2000 improvement by Radhakrishnan and Srinivasan uses a refined probabilistic argument with the Lovász Local Lemma, improving the polynomial factor in the lower bound.",
     "mathContext": "Radhakrishnan and Srinivasan (2000) proved $n(k) \\geq c \\cdot 2^k \\cdot \\sqrt{k / \\ln k}$ using an entropy-based refinement of the probabilistic method. This improved the Erdős-Rubin-Taylor bound $n(k) > 2^{k-1}$ by a factor of $\\Theta(\\sqrt{k / \\log k})$. The formalization uses $\\forall^\\infty$ (eventually) notation.",
@@ -396,7 +396,7 @@
       "startLine": 827,
       "endLine": 829
     },
-    "type": "technique",
+    "type": "concept",
     "title": "HMT Recursive Upper Bound (Sorry)",
     "content": "**hmt_recursive_upper**: $n(k) \\leq k \\cdot n(k-2) + 2^k$ for $k \\geq 2$. Hanson-MacGillivray-Toft (1996) gave this recursive bound, useful for computing upper bounds on specific values of $n(k)$.",
     "mathContext": "The recursion $n(k) \\leq k \\cdot n(k-2) + 2^k$ comes from a structural argument: given a bipartite graph $G$ with $\\chi_L > k$, one can extract a substructure related to a graph with $\\chi_L > k-2$ and a $2^k$-sized complete bipartite part. Unrolling gives $n(k) = O(k! \\cdot 2^k / (k/2)!)$.",
@@ -441,7 +441,7 @@
       "startLine": 843,
       "endLine": 845
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Property B Connection: m(k) ≤ n(k) ≤ m(k+1) (Sorry)",
     "content": "**n_property_b_bounds**: $m(k) \\leq n(k) \\leq m(k+1)$. This key connection links list coloring of bipartite graphs to Property B of hypergraphs. The lower bound follows because a bipartite graph with $\\chi_L > k$ yields a set system without Property B; the upper bound reverses the construction.",
     "mathContext": "The connection $m(k) \\leq n(k) \\leq m(k+1)$ was established by Erdős, Rubin, and Taylor (1980). Given a bipartite graph $G$ with $\\chi_L(G) > k$, the neighborhoods form a family of sets; a proper list coloring from 2-element lists corresponds to a 2-coloring with Property B. Conversely, a family without Property B can be encoded as a bipartite graph.",
@@ -488,7 +488,7 @@
       "startLine": 870,
       "endLine": 873
     },
-    "type": "technique",
+    "type": "concept",
     "title": "χ_L(K_{n,n}) ≈ log₂ n + 1 (Sorry)",
     "content": "**knn_list_chromatic**: $\\lceil\\log_2 n\\rceil \\leq \\chi_L(K_{n,n}) \\leq \\lceil\\log_2 n\\rceil + 2$ for $n \\geq 2$. This asymptotic characterization of the list chromatic number of balanced complete bipartite graphs is a key result in the theory.",
     "mathContext": "Galvin (1995) proved $\\chi_L(K_{n,n}) = \\lceil\\log_2 n\\rceil + 1$ exactly, using the kernel method. The formalization states a slightly weaker bound with an additive error of 1. The lower bound $\\chi_L(K_{n,n}) \\geq \\lceil\\log_2 n\\rceil$ follows from a counting/information-theoretic argument.",

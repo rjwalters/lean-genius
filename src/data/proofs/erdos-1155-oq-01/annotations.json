@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Module Header and Imports",
-    "content": "Documents the file's scope: extending the parent Erdos1155Problem.lean formalization to analyze the gap between the Bohman-Frieze-Lubetzky (BFL) $n^{3/2+o(1)}$ result and Erd\u0151s's conjectured $\\Theta(n^{3/2})$. Imports all of Mathlib to access filters, real powers, simple graph clique theory, and topological convergence.",
+    "content": "Documents the file's scope: extending the parent Erdos1155Problem.lean formalization to analyze the gap between the Bohman-Frieze-Lubetzky (BFL) $n^{3/2+o(1)}$ result and Erdős's conjectured $\\Theta(n^{3/2})$. Imports all of Mathlib to access filters, real powers, simple graph clique theory, and topological convergence.",
     "mathContext": "Uses Mathlib's filter-based asymptotics: $\\forall^\\infty n$ means `Filter.Eventually` in `atTop`, and convergence uses `Filter.Tendsto` into `nhds`.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -48,7 +48,7 @@
     "id": "ann-e1155-axioms",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 77,
+      "startLine": 83,
       "endLine": 96
     },
     "type": "concept",
@@ -98,10 +98,10 @@
     "id": "ann-e1155-gap-intro",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 104,
+      "startLine": 110,
       "endLine": 110
     },
-    "type": "context",
+    "type": "concept",
     "title": "§ 3: The Gap Between BFL and the Conjecture",
     "content": "This section begins the core analytical contribution of the file: dissecting the precise mathematical gap between Bohman-Frieze-Lubetzky's $n^{3/2+o(1)}$ result and Erdős's conjectured $\\Theta(n^{3/2})$. The gap is not merely quantitative (tighter constants) but qualitative: BFL allows the ratio $f(n)/n^{3/2}$ to drift at sub-polynomial speed, while the conjecture pins it between fixed constants. This section proves the conjecture strictly implies BFL via a constant-to-sub-polynomial reduction: any fixed constant $C$ is eventually dominated by $n^\\varepsilon$ for any $\\varepsilon > 0$, since $n^\\varepsilon \\to \\infty$.",
     "mathContext": "The gap: BFL gives $n^{-\\varepsilon} \\leq f(n)/n^{3/2} \\leq n^{\\varepsilon}$ (sub-polynomial bounds) while the conjecture needs $c_1 \\leq f(n)/n^{3/2} \\leq c_2$ (constant bounds). The proof that Conjecture $\\Rightarrow$ BFL uses: $\\forall C > 0,\\; \\forall \\varepsilon > 0,\\; C \\leq n^\\varepsilon$ eventually.",
@@ -124,7 +124,7 @@
       "startLine": 111,
       "endLine": 183
     },
-    "type": "technique",
+    "type": "concept",
     "title": "BFL Sandwich and Conjecture Implications",
     "content": "`bfl_sandwich` combines the two BFL bounds into a single statement: for any $\\varepsilon > 0$, eventually $n^{3/2-\\varepsilon} \\leq f(n) \\leq n^{3/2+\\varepsilon}$, using `Filter.Eventually.and`.\n\nThe implication theorems prove Conjecture $\\Longrightarrow$ BFL in both directions: `conjecture_implies_bfl_upper` shows $f(n) \\leq C n^{3/2} \\leq n^{\\varepsilon} n^{3/2}$ for large $n$, and the lower direction is symmetric. The key idea: a fixed constant $C$ is eventually dominated by $n^{\\varepsilon}$ for any $\\varepsilon > 0$, since $n^{\\varepsilon} \\to \\infty$.",
     "mathContext": "The gap: BFL gives $n^{-\\varepsilon} \\leq f(n)/n^{3/2} \\leq n^{\\varepsilon}$ (bounds that grow/shrink with $n$), while the conjecture needs $c_1 \\leq f(n)/n^{3/2} \\leq c_2$ (fixed constants independent of $n$).",
@@ -194,10 +194,10 @@
     "id": "ann-e1155-exponent-intro",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 220,
+      "startLine": 226,
       "endLine": 225
     },
-    "type": "context",
+    "type": "concept",
     "title": "§ 4: Pinpointing the Exact Critical Exponent",
     "content": "This section establishes $3/2$ as the exact critical exponent of the triangle removal process via two complementary results. The upper characterization (`bfl_exponent_is_three_halves`) shows $f(n) = O(n^\\alpha)$ for all $\\alpha > 3/2$; the lower tightness (`bfl_lower_tight`) shows $f(n) \\neq O(n^\\beta)$ for any $\\beta < 3/2$. Together: $\\inf\\{\\alpha : f(n) = O(n^\\alpha)\\} = 3/2$. This formalizes the BFL result at the level of exponents rather than bounds, extracting the sharpest possible exponent-level consequence of the BFL theorem.",
     "mathContext": "Critical exponent: $\\inf\\{\\alpha : f(n) = O(n^\\alpha)\\} = 3/2$. This is the strongest exponent-level consequence of BFL. The gap with the conjecture: BFL fixes the exponent but not the multiplicative constant.",
@@ -220,8 +220,8 @@
       "startLine": 226,
       "endLine": 237
     },
-    "type": "technique",
-    "title": "Upper Exponent: f(n) = O(n^\u03b1) for \u03b1 > 3/2",
+    "type": "concept",
+    "title": "Upper Exponent: f(n) = O(n^α) for α > 3/2",
     "content": "`bfl_exponent_is_three_halves`: for any $\\alpha > 3/2$, $f(n) \\leq n^\\alpha$ eventually. Proved by substituting $\\varepsilon = \\alpha - 3/2 > 0$ into the BFL upper bound. This abstracts the BFL result to its exponent-level content: any power law above $n^{3/2}$ eventually bounds $f(n)$.",
     "mathContext": "$\\forall \\alpha > 3/2: \\; f(n) \\leq n^\\alpha$ eventually. Take $\\varepsilon = \\alpha - 3/2$ in BFL upper: $f(n) \\leq n^{3/2 + \\varepsilon} = n^\\alpha$.",
     "significance": "key",
@@ -262,7 +262,7 @@
     "id": "ann-e1155-small-values",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 254,
+      "startLine": 260,
       "endLine": 307
     },
     "type": "concept",
@@ -285,10 +285,10 @@
     "id": "ann-e1155-limit-sufficient",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 305,
+      "startLine": 311,
       "endLine": 329
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Limit Convergence Implies Conjecture",
     "content": "`limit_implies_conjecture`: if $f(n)/n^{3/2} \\to L > 0$, then the full Erdős conjecture holds with explicit constants $c_1 = L/2$, $c_2 = 3L/2$. The proof uses topological convergence: the closed interval $[L/2, 3L/2]$ is a neighborhood of $L$ (via `Icc_mem_nhds`), so `Filter.Tendsto` guarantees the ratio eventually lands in this interval.\n\nThis is the strongest sufficient condition in the formalization — it reduces the open conjecture to a convergence question about the ratio sequence. Simulations suggest $L \\approx 1.2$ but this is not rigorously established. If the limit exists and is positive, the constants $L/2$ and $3L/2$ provide a factor-of-3 window, which is generous — tighter intervals would also work but $[L/2, 3L/2]$ simplifies the Lean proof.",
     "mathContext": "$f(n)/n^{3/2} \\to L > 0 \\implies \\text{erdos\\_1155\\_conjecture}$ with $c_1 = L/2$, $c_2 = 3L/2$.\n\nProof: $[L/2, 3L/2] \\in \\text{nhds}(L)$ since $L/2 < L < 3L/2$. By `Tendsto`, $f(n)/n^{3/2} \\in [L/2, 3L/2]$ eventually. Multiply through by $n^{3/2} > 0$.",
@@ -334,10 +334,10 @@
     "id": "ann-e1155-lower-exponent",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 356,
+      "startLine": 362,
       "endLine": 369
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lower Exponent: f Exceeds Any Sub-3/2 Power",
     "content": "`bfl_eventually_exceeds_power`: for any $\\alpha < 3/2$, eventually $n^\\alpha \\leq f(n)$. Proved by taking $\\varepsilon = 3/2 - \\alpha$ in the BFL lower bound. The proof is a single-line substitution followed by a ring rewrite.\n\nThis is the 'lower critical exponent' result: $f(n) = \\omega(n^\\alpha)$ for every $\\alpha < 3/2$, meaning no sub-$3/2$ power bound is eventually valid from above. Together with `bfl_exponent_is_three_halves` from § 4, this establishes $3/2$ as the exact critical exponent from both sides.\n\n**Physical interpretation:** The superlinearity ($f(n) \\gg n$, taking $\\alpha = 1$) means the terminal graph is far from being a forest (which would have at most $n - 1$ edges). The $n^{5/4}$ case (taking $\\alpha = 5/4$) shows the process preserves significantly more structure than random edge-deletion models suggest. In the language of random graph processes, the terminal graph occupies a 'sweet spot' between sparse (tree-like) and dense (Turán-like) regimes, with the $n^{3/2}$ scaling reflecting the balance between triangle creation rate and deletion rate during the critical phase of the process.",
     "mathContext": "For $\\alpha < 3/2$: take $\\varepsilon = 3/2 - \\alpha > 0$, then $n^{3/2 - \\varepsilon} = n^\\alpha \\leq f(n)$ eventually. This shows $f(n) = \\omega(n^\\alpha)$ for all $\\alpha < 3/2$.",
@@ -357,21 +357,21 @@
     "id": "ann-e1155-mantel",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 370,
+      "startLine": 382,
       "endLine": 403
     },
     "type": "concept",
-    "title": "Mantel/Tur\u00e1n Connection",
-    "content": "Connects the triangle removal process to Mantel's theorem (1907): the terminal graph is triangle-free, so $f(n) \\leq n^2/4$. The BFL bound $f(n) \\leq n^{7/4}$ (taking $\\varepsilon = 1/4$) is much tighter. The hierarchy: $n^{3/2} \\ll n^{7/4} \\ll n^2/4$.\n\nMantel's theorem is the $r = 2$ case of Tur\u00e1n's theorem (1941): the maximum number of edges in a $K_{r+1}$-free graph on $n$ vertices is $(1 - 1/r)n^2/2$, achieved by the complete $r$-partite Tur\u00e1n graph $T(n, r)$.\n\n**Why the terminal graph is not Tur\u00e1n-optimal:** While the terminal graph is triangle-free and thus has at most $n^2/4$ edges by Mantel, the random removal process does not produce anything close to the Tur\u00e1n graph $T(n, 2) = K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. Instead, the process terminates much earlier \u2014 at $\\Theta(n^{3/2})$ edges \u2014 because the greedy random deletion removes edges far more aggressively than an optimal triangle-free subgraph selection. The ratio $f(n)/\\text{ex}(n, K_3) \\approx n^{3/2}/(n^2/4) = O(n^{-1/2})$ captures how far the random process is from the extremal optimum.\n\n**Historical significance:** Mantel's 1907 result was published as a recreational problem in a Dutch mathematics magazine (*Wiskundige Opgaven*). It was the first result in what became extremal graph theory \u2014 a field later systematized by Tur\u00e1n, Erd\u0151s, and the Szemer\u00e9di school.",
+    "title": "Mantel/Turán Connection",
+    "content": "Connects the triangle removal process to Mantel's theorem (1907): the terminal graph is triangle-free, so $f(n) \\leq n^2/4$. The BFL bound $f(n) \\leq n^{7/4}$ (taking $\\varepsilon = 1/4$) is much tighter. The hierarchy: $n^{3/2} \\ll n^{7/4} \\ll n^2/4$.\n\nMantel's theorem is the $r = 2$ case of Turán's theorem (1941): the maximum number of edges in a $K_{r+1}$-free graph on $n$ vertices is $(1 - 1/r)n^2/2$, achieved by the complete $r$-partite Turán graph $T(n, r)$.\n\n**Why the terminal graph is not Turán-optimal:** While the terminal graph is triangle-free and thus has at most $n^2/4$ edges by Mantel, the random removal process does not produce anything close to the Turán graph $T(n, 2) = K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. Instead, the process terminates much earlier — at $\\Theta(n^{3/2})$ edges — because the greedy random deletion removes edges far more aggressively than an optimal triangle-free subgraph selection. The ratio $f(n)/\\text{ex}(n, K_3) \\approx n^{3/2}/(n^2/4) = O(n^{-1/2})$ captures how far the random process is from the extremal optimum.\n\n**Historical significance:** Mantel's 1907 result was published as a recreational problem in a Dutch mathematics magazine (*Wiskundige Opgaven*). It was the first result in what became extremal graph theory — a field later systematized by Turán, Erdős, and the Szemerédi school.",
     "mathContext": "Mantel's theorem (1907): a triangle-free graph on $n$ vertices has at most $\\lfloor n^2/4 \\rfloor$ edges. Applied to the terminal graph of the removal process: $f(n) \\leq n^2/4$.",
     "significance": "supporting",
     "relatedConcepts": [
       "Mantel's theorem",
-      "Tur\u00e1n's theorem",
+      "Turán's theorem",
       "extremal graph theory",
       "triangle supersaturation",
       "flag algebras",
-      "Tur\u00e1n graph"
+      "Turán graph"
     ],
     "prerequisites": [
       "triangle-free graphs",
@@ -382,12 +382,12 @@
     "id": "ann-e1155-hierarchy",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 404,
+      "startLine": 411,
       "endLine": 433
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Strict Hierarchy: Conjecture > BFL > Grable",
-    "content": "Proves the strict weakening chain: Conjecture $\\Longrightarrow$ BFL $\\Longrightarrow$ Grable. Each step loses information about the multiplicative constant: the conjecture fixes constants, BFL allows sub-polynomial growth, and Grable allows polynomial growth ($n^{7/4+\\varepsilon}$).\n\nThis hierarchy provides a roadmap for incremental progress: each strengthening requires tighter control of the multiplicative constants. Proving the conjecture means tightening BFL's sub-polynomial bounds to constants \u2014 the gap between $n^{\\pm\\varepsilon}$ and $O(1)$.",
+    "content": "Proves the strict weakening chain: Conjecture $\\Longrightarrow$ BFL $\\Longrightarrow$ Grable. Each step loses information about the multiplicative constant: the conjecture fixes constants, BFL allows sub-polynomial growth, and Grable allows polynomial growth ($n^{7/4+\\varepsilon}$).\n\nThis hierarchy provides a roadmap for incremental progress: each strengthening requires tighter control of the multiplicative constants. Proving the conjecture means tightening BFL's sub-polynomial bounds to constants — the gap between $n^{\\pm\\varepsilon}$ and $O(1)$.",
     "mathContext": "Strict hierarchy: $\\Theta(n^{3/2}) \\Longrightarrow n^{3/2 \\pm o(1)} \\Longrightarrow n^{7/4+o(1)}$. Each weakening relaxes the multiplicative constant control.",
     "significance": "key",
     "relatedConcepts": [
@@ -406,12 +406,12 @@
     "id": "ann-e1155-tightness",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 434,
+      "startLine": 441,
       "endLine": 489
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Ratio Tightness and Compactness Characterization",
-    "content": "`conjecture_tightness`: under the conjecture, $f(n)/(c_1 n^{3/2}) \\in [1, c_2/c_1]$ eventually. `conjecture_ratio_bounded`: $f(n)/n^{3/2} \\in [c_1, c_2]$ eventually.\n\nTogether these characterize the conjecture as: the normalized ratio $f(n)/n^{3/2}$ has a compact limit set in $(0, \\infty)$ \u2014 a topological reformulation of the number-theoretic conjecture. This is the sharpest formulation of the BFL-conjecture gap: BFL says the ratio eventually avoids $\\{0, \\infty\\}$ at sub-polynomial rate; the conjecture says it eventually stays in a compact interval.",
+    "content": "`conjecture_tightness`: under the conjecture, $f(n)/(c_1 n^{3/2}) \\in [1, c_2/c_1]$ eventually. `conjecture_ratio_bounded`: $f(n)/n^{3/2} \\in [c_1, c_2]$ eventually.\n\nTogether these characterize the conjecture as: the normalized ratio $f(n)/n^{3/2}$ has a compact limit set in $(0, \\infty)$ — a topological reformulation of the number-theoretic conjecture. This is the sharpest formulation of the BFL-conjecture gap: BFL says the ratio eventually avoids $\\{0, \\infty\\}$ at sub-polynomial rate; the conjecture says it eventually stays in a compact interval.",
     "mathContext": "The conjecture is equivalent to $\\{f(n)/n^{3/2}\\}_{n \\geq N}$ being bounded in $(0, \\infty)$: a compactness condition. This is the sharpest formulation of the BFL-conjecture gap.",
     "significance": "key",
     "relatedConcepts": [

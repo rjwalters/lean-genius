@@ -30,7 +30,7 @@
     },
     "type": "concept",
     "title": "Problem Statement and Historical Context",
-    "content": "Module docstring describing Erd\u0151s Problem #1065 (Guy's B46): are there infinitely many primes $p$ with $p - 1 = 2^k q$ ($q$ prime)? Lists known examples, connections to safe primes and Artin's conjecture, and the more general $2^k 3^l q + 1$ variant. References OEIS A074781 (safe primes) and A339465.",
+    "content": "Module docstring describing Erdős Problem #1065 (Guy's B46): are there infinitely many primes $p$ with $p - 1 = 2^k q$ ($q$ prime)? Lists known examples, connections to safe primes and Artin's conjecture, and the more general $2^k 3^l q + 1$ variant. References OEIS A074781 (safe primes) and A339465.",
     "mathContext": "The problem asks about the density of primes whose predecessor $p-1$ has restricted factorization. Connected to Hardy-Littlewood Conjecture F (1923) on the density of safe primes: $\\pi_{\\text{safe}}(x) \\sim 2C_2 x/(\\log x)^2$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -47,7 +47,7 @@
     "id": "two-time-prime",
     "proofId": "erdos-1065",
     "range": {
-      "startLine": 24,
+      "startLine": 27,
       "endLine": 29
     },
     "type": "definition",
@@ -94,12 +94,12 @@
     "id": "conjecture-a",
     "proofId": "erdos-1065",
     "range": {
-      "startLine": 34,
+      "startLine": 37,
       "endLine": 39
     },
     "type": "concept",
     "title": "Conjecture A: Infinitely Many $2^k q + 1$ Primes",
-    "content": "The stronger variant of Erd\u0151s Problem #1065: the set $\\{p \\text{ prime} : p - 1 = 2^k q,\\; q \\text{ prime}\\}$ is infinite. This implies the safe primes conjecture as a special case ($k = 1$). The conjecture relates to the distribution of prime values of the polynomial $2^k q + 1$ as $q$ ranges over primes and $k$ over non-negative integers.",
+    "content": "The stronger variant of Erdős Problem #1065: the set $\\{p \\text{ prime} : p - 1 = 2^k q,\\; q \\text{ prime}\\}$ is infinite. This implies the safe primes conjecture as a special case ($k = 1$). The conjecture relates to the distribution of prime values of the polynomial $2^k q + 1$ as $q$ ranges over primes and $k$ over non-negative integers.",
     "mathContext": "$|\\{p \\in \\mathbb{P} : \\exists q \\in \\mathbb{P},\\, k \\in \\mathbb{N}: p = 2^k q + 1\\}| = \\infty$.",
     "significance": "key",
     "relatedConcepts": [
@@ -122,7 +122,7 @@
     },
     "type": "concept",
     "title": "Conjecture B: Infinitely Many $2^k 3^l q + 1$ Primes",
-    "content": "The weaker variant of Problem #1065: the set of primes $p$ with $p - 1 = 2^k \\cdot 3^l \\cdot q$ ($q$ prime) is infinite. This is implied by Conjecture A (set $l = 0$). The extra factor of $3^l$ significantly enlarges the candidate set \u2014 for example, $p = 61$ satisfies Form B ($60 = 2^2 \\cdot 3 \\cdot 5$) but not Form A.\n\n**Why 3 is special:** The choice of 3 as the additional smooth factor is natural: the $\\{2,3\\}$-smooth numbers (regular numbers, studied since Babylonian mathematics) are the densest smooth number set after powers of 2. Requiring $p - 1$ to be $\\{2,3\\}$-smooth times a prime is the mildest relaxation of Form A's $2$-smooth condition, and the density of Form B primes among all primes is predicted to exceed Form A's by a factor reflecting the additional ways to factor $p - 1$ via powers of 3.",
+    "content": "The weaker variant of Problem #1065: the set of primes $p$ with $p - 1 = 2^k \\cdot 3^l \\cdot q$ ($q$ prime) is infinite. This is implied by Conjecture A (set $l = 0$). The extra factor of $3^l$ significantly enlarges the candidate set — for example, $p = 61$ satisfies Form B ($60 = 2^2 \\cdot 3 \\cdot 5$) but not Form A.\n\n**Why 3 is special:** The choice of 3 as the additional smooth factor is natural: the $\\{2,3\\}$-smooth numbers (regular numbers, studied since Babylonian mathematics) are the densest smooth number set after powers of 2. Requiring $p - 1$ to be $\\{2,3\\}$-smooth times a prime is the mildest relaxation of Form A's $2$-smooth condition, and the density of Form B primes among all primes is predicted to exceed Form A's by a factor reflecting the additional ways to factor $p - 1$ via powers of 3.",
     "mathContext": "$|\\{p \\in \\mathbb{P} : \\exists q \\in \\mathbb{P},\\, k, l \\in \\mathbb{N}: p = 2^k \\cdot 3^l \\cdot q + 1\\}| = \\infty$.",
     "significance": "key",
     "relatedConcepts": [
@@ -139,10 +139,10 @@
     "id": "verified-examples",
     "proofId": "erdos-1065",
     "range": {
-      "startLine": 44,
+      "startLine": 47,
       "endLine": 87
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Computationally Verified Form A Examples",
     "content": "Proves seven Form A primes: $3 = 2^0 \\cdot 2 + 1$, $5 = 2^1 \\cdot 2 + 1$, $7 = 2^1 \\cdot 3 + 1$, $13 = 2^2 \\cdot 3 + 1$, $11 = 2^1 \\cdot 5 + 1$, $29 = 2^2 \\cdot 7 + 1$, $41 = 2^3 \\cdot 5 + 1$ (the eighth, $97 = 2^5 \\cdot 3 + 1$, appears after the Form B example due to file ordering). Each proof constructs the witness $(q, k)$ and checks primality of both $p$ and $q$ using `decide` and `norm_num`.\n\nThe pattern is uniform: `constructor` splits the conjunction into a primality check (`decide`) and an existence witness. The witness is provided as `⟨q, k, by decide, by norm_num⟩`, where `by decide` verifies primality of $q$ and `by norm_num` checks the arithmetic equation $p = 2^k \\cdot q + 1$ computationally. This reflects Lean 4's strength in verified finite computation: despite the conjecture being open, the individual instances are decidable and machine-checkable in milliseconds.",
     "mathContext": "Form A decompositions: $(p, k, q) \\in \\{(3,0,2), (5,1,2), (7,1,3), (11,1,5), (13,2,3), (29,2,7), (41,3,5)\\}$. Note the non-monotone ordering: $p = 13$ appears before $p = 11$ in the file (likely written in discovery order). All 16 primes between 3 and 41 not in this list either have $p - 1$ completely $\\{2,3\\}$-smooth (e.g., $19 - 1 = 18 = 2 \\cdot 3^2$) or have an odd composite factor (e.g., $23 - 1 = 22 = 2 \\cdot 11$, which is Form A since $11$ is prime — so $23$ should actually be Form A!).",
@@ -188,10 +188,10 @@
     "id": "form-a-implies-b",
     "proofId": "erdos-1065",
     "range": {
-      "startLine": 106,
+      "startLine": 109,
       "endLine": 112
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Form A Implies Form B",
     "content": "Proves that every prime of the $2^k q + 1$ form is also of the $2^k 3^l q + 1$ form, by taking $l = 0$ (so $3^0 = 1$). The proof destructures the Form A hypothesis and applies the trivial embedding. This establishes a set inclusion $\\{\\text{Form A primes}\\} \\subseteq \\{\\text{Form B primes}\\}$.",
     "mathContext": "$p = 2^k q + 1 \\implies p = 2^k \\cdot 3^0 \\cdot q + 1$, so $\\text{IsTwoTimePrimePlusOne}(p) \\implies \\text{IsTwoThreeTimePrimePlusOne}(p)$.",
@@ -214,13 +214,13 @@
     },
     "type": "technique",
     "title": "Connection to Sophie Germain / Safe Primes",
-    "content": "Proves that the infinitude of safe primes ($p = 2q + 1$ with $q$ prime, see `sophie-germain`) would imply Conjecture A. A safe prime $p = 2q + 1$ is exactly a Form A prime with $k = 1$. The safe primes conjecture is itself wide open \u2014 heuristically, Hardy-Littlewood Conjecture F predicts $\\sim 2C_2 \\cdot x / (\\log x)^2$ safe primes up to $x$ where $C_2 \\approx 0.66$ is the twin primes constant.\n\nThe connection to Dirichlet's theorem (see `dirichlets-theorem`) is instructive: Dirichlet proved infinitely many primes in $a + nd$ (arithmetic progressions), while this conjecture asks about primes in $2^k q + 1$ where $q$ varies over primes \u2014 a much more restrictive structured set requiring two simultaneous primality conditions ($p$ and $q$ both prime).",
-    "mathContext": "$\\{p \\in \\mathbb{P} : \\exists q \\in \\mathbb{P},\\, p = 2q+1\\} \\subseteq \\{p : \\text{IsTwoTimePrimePlusOne}(p)\\}$ via $k = 1$. Hardy\u2013Littlewood predict $\\pi_{\\text{safe}}(x) \\sim 2C_2 x/(\\ln x)^2$.",
+    "content": "Proves that the infinitude of safe primes ($p = 2q + 1$ with $q$ prime, see `sophie-germain`) would imply Conjecture A. A safe prime $p = 2q + 1$ is exactly a Form A prime with $k = 1$. The safe primes conjecture is itself wide open — heuristically, Hardy-Littlewood Conjecture F predicts $\\sim 2C_2 \\cdot x / (\\log x)^2$ safe primes up to $x$ where $C_2 \\approx 0.66$ is the twin primes constant.\n\nThe connection to Dirichlet's theorem (see `dirichlets-theorem`) is instructive: Dirichlet proved infinitely many primes in $a + nd$ (arithmetic progressions), while this conjecture asks about primes in $2^k q + 1$ where $q$ varies over primes — a much more restrictive structured set requiring two simultaneous primality conditions ($p$ and $q$ both prime).",
+    "mathContext": "$\\{p \\in \\mathbb{P} : \\exists q \\in \\mathbb{P},\\, p = 2q+1\\} \\subseteq \\{p : \\text{IsTwoTimePrimePlusOne}(p)\\}$ via $k = 1$. Hardy–Littlewood predict $\\pi_{\\text{safe}}(x) \\sim 2C_2 x/(\\ln x)^2$.",
     "significance": "key",
     "relatedConcepts": [
       "Sophie Germain prime",
       "safe prime",
-      "Hardy\u2013Littlewood conjecture",
+      "Hardy–Littlewood conjecture",
       "twin primes constant"
     ],
     "prerequisites": [
@@ -278,7 +278,7 @@
     "id": "decidable-check",
     "proofId": "erdos-1065",
     "range": {
-      "startLine": 138,
+      "startLine": 141,
       "endLine": 148
     },
     "type": "definition",
@@ -303,7 +303,7 @@
       "startLine": 149,
       "endLine": 162
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Collective Verification of Eight Examples",
     "content": "Proves that all eight identified primes $\\leq 100$ satisfy `IsTwoTimePrimePlusOne`, packaging the individual examples into a single universally quantified statement over a list. Uses `List.mem_cons` and case splitting to dispatch each element to its previously proved instance.",
     "mathContext": "$\\forall p \\in \\{3, 5, 7, 11, 13, 29, 41, 97\\}: \\text{IsTwoTimePrimePlusOne}(p)$. These are all Form A primes $\\leq 100$; note 17, 19, 23, 31, 37, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89 are excluded.",

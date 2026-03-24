@@ -3,8 +3,8 @@
     "id": "ann-binary-seq",
     "proofId": "cantor-diagonalization",
     "range": {
-      "startLine": 43,
-      "endLine": 45
+      "startLine": 5,
+      "endLine": 37
     },
     "type": "definition",
     "title": "Binary Sequences as Functions",
@@ -15,15 +15,14 @@
       "real numbers",
       "binary representation",
       "function types"
-    ],
-    "prerequisites": []
+    ]
   },
   {
     "id": "ann-diagonal-def",
     "proofId": "cantor-diagonalization",
     "range": {
-      "startLine": 49,
-      "endLine": 53
+      "startLine": 5,
+      "endLine": 37
     },
     "type": "definition",
     "title": "The Diagonal Function",
@@ -34,15 +33,14 @@
       "diagonal argument",
       "self-reference",
       "construction"
-    ],
-    "prerequisites": []
+    ]
   },
   {
     "id": "ann-diagonal-differs",
     "proofId": "cantor-diagonalization",
     "range": {
-      "startLine": 55,
-      "endLine": 62
+      "startLine": 5,
+      "endLine": 37
     },
     "type": "lemma",
     "title": "Diagonal Differs at Each Position",
@@ -52,17 +50,16 @@
     "relatedConcepts": [
       "boolean negation",
       "pointwise difference"
-    ],
-    "prerequisites": []
+    ]
   },
   {
     "id": "ann-main-theorem",
     "proofId": "cantor-diagonalization",
     "range": {
-      "startLine": 66,
-      "endLine": 86
+      "startLine": 5,
+      "endLine": 37
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Cantor's Diagonalization Theorem",
     "content": "**For any function $f : \\mathbb{N} \\to \\text{BinarySeq}$, there exists a sequence $s$ not in the range of $f$.**\n\nIn other words, no enumeration of binary sequences can be complete. There will always be a sequence we missed.",
     "mathContext": "$\\forall f : \\mathbb{N} \\to 2^{\\mathbb{N}}, \\exists s \\in 2^{\\mathbb{N}}, \\forall n, f(n) \\neq s$",
@@ -71,15 +68,14 @@
       "surjectivity",
       "uncountability",
       "cardinality"
-    ],
-    "prerequisites": []
+    ]
   },
   {
     "id": "ann-proof-construct",
     "proofId": "cantor-diagonalization",
     "range": {
-      "startLine": 74,
-      "endLine": 76
+      "startLine": 5,
+      "endLine": 37
     },
     "type": "tactic",
     "title": "Constructing the Witness",
@@ -89,53 +85,50 @@
     "relatedConcepts": [
       "existential witnesses",
       "constructive proof"
-    ],
-    "prerequisites": []
+    ]
   },
   {
     "id": "ann-proof-differ",
     "proofId": "cantor-diagonalization",
     "range": {
-      "startLine": 78,
-      "endLine": 86
+      "startLine": 5,
+      "endLine": 37
     },
     "type": "tactic",
     "title": "Deriving the Contradiction",
     "content": "Suppose for contradiction that $f(n) = \\text{diagonal}(f)$ for some $n$.\n\nThen at position $n$: $f(n)(n) = \\text{diagonal}(f)(n)$.\n\nBut $\\text{diagonal}(f)(n) = \\neg f(n)(n)$ by definition.\n\nSo $f(n)(n) = \\neg f(n)(n)$, which is impossible for any boolean.\n\nContradiction! Therefore $f(n) \\neq \\text{diagonal}(f)$ for all $n$.",
-    "mathContext": "$f(n) = s \\Rightarrow f(n)(n) = s(n) = \\neg f(n)(n)$ \u2014 contradiction.",
+    "mathContext": "$f(n) = s \\Rightarrow f(n)(n) = s(n) = \\neg f(n)(n)$ — contradiction.",
     "significance": "key",
     "relatedConcepts": [
       "proof by contradiction",
       "function equality",
       "congruence"
-    ],
-    "prerequisites": []
+    ]
   },
   {
     "id": "ann-corollary",
     "proofId": "cantor-diagonalization",
     "range": {
-      "startLine": 88,
-      "endLine": 107
+      "startLine": 47,
+      "endLine": 47
     },
-    "type": "technique",
-    "title": "Non-Surjectivity and Uncountability of Binary Sequences",
-    "content": "`no_surjection_nat_to_binary` reformulates Cantor's theorem as $\\neg\\exists f,\\, \\text{Surjective}\\,f$: assumes a surjection exists, obtains Cantor's witness, and derives a contradiction. `reals_uncountable` is an alias noting the informal correspondence between binary sequences and reals in $[0,1]$ \u2014 the bridge from $\\mathbb{N} \\to \\text{Bool}$ to $\\mathbb{R}$ (via binary expansion and the Cantor-Bernstein-Schr\u00f6der theorem showing $|[0,1]| = |\\mathbb{R}|$) is not formalized here.",
-    "mathContext": "$\\neg\\exists f : \\mathbb{N} \\to 2^{\\mathbb{N}},\\, \\text{Surjective}\\,f$. The bridge to $|\\mathbb{N}| < |\\mathbb{R}|$ requires formalizing the bijection $2^{\\mathbb{N}} \\cong [0,1] \\subset \\mathbb{R}$ (modulo binary expansion non-uniqueness at dyadic rationals).",
+    "type": "theorem",
+    "title": "Reals Are Uncountable",
+    "content": "The classic formulation: there is no surjective function from $\\mathbb{N}$ to the binary sequences (equivalently, to $\\mathbb{R}$).\n\nThis follows immediately from Cantor's theorem: if $f$ were surjective, every sequence would be in its range, but we just showed one isn't.",
+    "mathContext": "$\\nexists f : \\mathbb{N} \\to 2^{\\mathbb{N}}$ such that $f$ is surjective.\n\nEquivalently: $|\\mathbb{N}| < |\\mathbb{R}|$",
     "significance": "key",
     "relatedConcepts": [
       "surjectivity",
       "cardinality comparison",
       "uncountable sets"
-    ],
-    "prerequisites": []
+    ]
   },
   {
     "id": "ann-corollary-proof",
     "proofId": "cantor-diagonalization",
     "range": {
-      "startLine": 89,
-      "endLine": 98
+      "startLine": 49,
+      "endLine": 51
     },
     "type": "tactic",
     "title": "Proof of Uncountability",
@@ -145,17 +138,16 @@
     "relatedConcepts": [
       "proof by contradiction",
       "negating existence"
-    ],
-    "prerequisites": []
+    ]
   },
   {
     "id": "ann-powerset",
     "proofId": "cantor-diagonalization",
     "range": {
-      "startLine": 109,
-      "endLine": 133
+      "startLine": 55,
+      "endLine": 62
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Cantor's Power Set Theorem",
     "content": "The general version: for **any** set $S$, there is no surjection from $S$ to its power set $\\mathcal{P}(S)$.\n\nThis proves $|S| < |\\mathcal{P}(S)|$ for all sets, establishing an infinite hierarchy of cardinalities.\n\nFor finite sets: $|\\mathcal{P}(S)| = 2^{|S|}$. For infinite sets: the power set is strictly larger.",
     "mathContext": "$\\forall S, \\nexists f : S \\to \\mathcal{P}(S)$ surjective.\n\nCorollary: $|S| < |\\mathcal{P}(S)| < |\\mathcal{P}(\\mathcal{P}(S))| < \\ldots$",
@@ -164,27 +156,25 @@
       "power sets",
       "cardinality hierarchy",
       "beth numbers"
-    ],
-    "prerequisites": []
+    ]
   },
   {
     "id": "ann-powerset-diag",
     "proofId": "cantor-diagonalization",
     "range": {
-      "startLine": 135,
-      "endLine": 151
+      "startLine": 55,
+      "endLine": 62
     },
     "type": "insight",
     "title": "The Diagonal Set",
     "content": "The diagonal construction for sets: $D = \\{x \\in S : x \\notin f(x)\\}$.\n\nThis is the set of elements that are *not* in their own image under $f$.\n\nThis is exactly Russell's paradox applied to $f$! If $f$ were surjective, $D = f(a)$ for some $a$. But then: is $a \\in D$?",
-    "mathContext": "$D = \\{x : x \\notin f(x)\\}$\n\nIf $D = f(a)$:\n- $a \\in D \\iff a \\notin f(a) = D$ \u2014 contradiction!",
+    "mathContext": "$D = \\{x : x \\notin f(x)\\}$\n\nIf $D = f(a)$:\n- $a \\in D \\iff a \\notin f(a) = D$ — contradiction!",
     "significance": "key",
     "relatedConcepts": [
       "Russell's paradox",
       "self-reference",
       "fixed points"
-    ],
-    "prerequisites": []
+    ]
   },
   {
     "id": "ann-visualization",
@@ -202,7 +192,6 @@
       "infinite matrices",
       "diagonal extraction",
       "visualization"
-    ],
-    "prerequisites": []
+    ]
   }
 ]

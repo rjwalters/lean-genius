@@ -75,7 +75,7 @@
       "startLine": 76,
       "endLine": 155
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Structural Properties of Power Residues",
     "content": "A suite of proved structural results: $0$ and $1$ are always $k$th power residues; perfect $k$th powers are residues; single-element runs are trivial; runs can be extended, shortened, and shifted. These establish the basic algebraic framework. Also proves $k = 1$ is trivial (every integer is a 1st power residue).",
     "mathContext": "$0^k \\equiv 0$, $1^k \\equiv 1$, $(a^k)^k \\equiv a^{k^2}$. For runs: extend by checking one more element, shorten by taking a prefix, shift by dropping the first element.",
@@ -162,7 +162,7 @@
       "startLine": 207,
       "endLine": 237
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Known Exact Values of $\\Lambda(k, 2)$",
     "content": "Machine computations from the 1960s established: $\\Lambda(2,2) = 9$ (Lehmer-Lehmer 1962), $\\Lambda(3,2) = 77$ (Dunton 1965), $\\Lambda(4,2) = 1224$ (Bierstedt-Mills 1963), $\\Lambda(5,2) = 7888$ (Lehmer-Lehmer-Mills 1963), $\\Lambda(6,2) = 202124$ (Lehmer-Lehmer-Mills 1963), $\\Lambda(7,2) = 1649375$ (Brillhart-Lehmer-Lehmer 1964). These were among the earliest applications of electronic computers to number theory.",
     "mathContext": "$\\Lambda(2,2) = 9,\\; \\Lambda(3,2) = 77,\\; \\Lambda(4,2) = 1224,\\; \\Lambda(5,2) = 7888,\\; \\Lambda(6,2) = 202124,\\; \\Lambda(7,2) = 1649375$.",
@@ -184,7 +184,7 @@
       "startLine": 251,
       "endLine": 251
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hildebrand's Theorem (1991): $\\Lambda(k,2)$ Finite",
     "content": "Hildebrand (1991) proved that $\\Lambda(k, 2)$ is finite for all $k \\geq 2$, completely resolving Question 1. The proof uses character sum estimates: expressing the count of consecutive $k$th power residues via multiplicative characters $\\chi$ of order dividing $k$, then applying the large sieve inequality to bound the character sum contribution.",
     "mathContext": "$\\forall k \\geq 2,\\; \\Lambda(k, 2) < \\infty$. Proof uses $\\sum_{\\chi^k = 1} \\chi(r)\\chi(r+1)$ and the large sieve inequality.",
@@ -208,7 +208,7 @@
       "startLine": 268,
       "endLine": 268
     },
-    "type": "technique",
+    "type": "concept",
     "title": "$\\Lambda(3, 3) = 23532$",
     "content": "Lehmer, Lehmer, Mills, and Selfridge (1962) proved $\\Lambda(3, 3) = 23532$ using extensive machine computation. This was one of the early triumphs of computer-assisted mathematics.",
     "mathContext": "$\\Lambda(3, 3) = 23532$. For all sufficiently large primes $p$, three consecutive cubic residues exist within $[1, 23532]$.",
@@ -230,7 +230,7 @@
       "startLine": 276,
       "endLine": 277
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Parity Dichotomy: $\\Lambda(k, 3) = \\infty$ for Even $k$",
     "content": "Lehmer and Lehmer (1962) proved that for even $k$, no uniform bound exists for three consecutive $k$th power residues. The key insight: for even $k$, $-1$ is always a $k$th power residue (since $(-1)^k = 1$), creating a structural obstruction that prevents uniform boundedness.",
     "mathContext": "$k \\geq 2,\\; 2 \\mid k \\Rightarrow \\Lambda(k, 3) = \\infty$. For odd $k$: $\\Lambda(3, 3) = 23532$ (finite), $\\Lambda(5, 3)$ and $\\Lambda(7, 3)$ unknown.",
@@ -274,7 +274,7 @@
       "startLine": 298,
       "endLine": 299
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Graham's Theorem (1964): $\\Lambda(k, m) = \\infty$ for $m \\geq 4$",
     "content": "Graham (1964) proved that for all $k \\geq 2$ and $m \\geq 4$, $\\Lambda(k, m) = \\infty$: no uniform bound exists for four or more consecutive $k$th power residues. This makes $m \\leq 3$ the only interesting cases.",
     "mathContext": "$k \\geq 2,\\; m \\geq 4 \\Rightarrow \\neg\\texttt{LambdaFinite}(k, m)$. Corollary: $\\texttt{LambdaFinite}(k, m) \\Rightarrow m \\leq 3$.",
@@ -296,7 +296,7 @@
       "startLine": 325,
       "endLine": 327
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Elegant Proof: $\\Lambda(2, 2) \\leq 9$",
     "content": "The Lehmer-Lehmer argument: $9 = 3^2$ is always a QR. If $10$ is not a QR, then $10 = 2 \\cdot 5$ and $(10/p) = (2/p)(5/p)$. If $(10/p) = -1$, exactly one of $(2/p), (5/p)$ equals $-1$: if $(2/p) = 1$, pair $\\{1, 2\\}$ works; if $(5/p) = 1$, pair $\\{4, 5\\}$ works (since $4 = 2^2$ is always QR).",
     "mathContext": "$9 = 3^2$ is QR. $(10/p) = (2/p)(5/p)$. Cases: $(10/p) = 1 \\Rightarrow \\{9,10\\}$; $(2/p) = 1 \\Rightarrow \\{1,2\\}$; $(5/p) = 1 \\Rightarrow \\{4,5\\}$.",
@@ -319,7 +319,7 @@
       "startLine": 346,
       "endLine": 356
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Growth Rate of $\\Lambda(k, 2)$",
     "content": "The known values $9, 77, 1224, 7888, 202124, 1649375$ grow rapidly and apparently super-polynomially. The gaps are irregular. The formalization axiomatizes super-polynomial growth and proves monotonicity and gap computations via $\\texttt{native\\_decide}$.",
     "mathContext": "$\\Lambda(k+1, 2)/\\Lambda(k, 2) \\approx 8.6, 15.9, 6.4, 25.6, 8.2$ for $k = 2, \\ldots, 6$.",
@@ -341,7 +341,7 @@
       "startLine": 369,
       "endLine": 403
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary: Partially Solved Status",
     "content": "The complete picture: (1) $\\Lambda(k, 2) < \\infty$ for all $k$ (Hildebrand, SOLVED); (2) $\\Lambda(k, m) = \\infty$ for $m \\geq 4$ (Graham, PROVED); (3) $\\Lambda(k, 3) = \\infty$ for even $k$ (Lehmer-Lehmer, PROVED); (4) $\\Lambda(k, 3)$ for odd $k \\geq 5$ (OPEN). Proved as a conjunction of the component results.",
     "mathContext": "$\\forall k \\geq 2: \\Lambda(k, 2) < \\infty \\wedge \\forall m \\geq 4: \\Lambda(k, m) = \\infty \\wedge 2 \\mid k \\Rightarrow \\Lambda(k, 3) = \\infty$.",
@@ -364,7 +364,7 @@
       "startLine": 453,
       "endLine": 471
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Fermat's Little Theorem (Proved from Mathlib)",
     "content": "Fermat's little theorem $r^{p-1} \\equiv 1 \\pmod{p}$ for $\\gcd(r, p) = 1$, proved by leveraging Mathlib's $\\texttt{ZMod.pow\\_card\\_sub\\_one\\_eq\\_one}$. The proof lifts the $\\texttt{ZMod}$ statement to a natural number congruence. This is a genuine proof (not axiom).",
     "mathContext": "$r^{p-1} \\bmod p = 1$ when $p$ prime and $p \\nmid r$. Proved via $\\texttt{ZMod.pow\\_card\\_sub\\_one\\_eq\\_one}$.",
@@ -385,10 +385,10 @@
     "id": "erdos-436-ann-euler",
     "proofId": "erdos-436",
     "range": {
-      "startLine": 547,
+      "startLine": 557,
       "endLine": 579
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Euler's Criterion (Forward Direction Proved)",
     "content": "Euler's criterion: $r$ is a QR mod odd prime $p$ iff $r^{(p-1)/2} \\equiv 1 \\pmod{p}$. The forward direction is proved via a calc chain: if $r \\equiv x^2$, then $r^{(p-1)/2} \\equiv x^{p-1} \\equiv 1$ by FLT. The backward direction is axiomatized. The full equivalence combines both.",
     "mathContext": "$r$ is QR mod $p \\iff r^{(p-1)/2} \\equiv 1 \\pmod{p}$. Forward: $r = x^2 \\Rightarrow r^{(p-1)/2} = x^{p-1} = 1$.",
