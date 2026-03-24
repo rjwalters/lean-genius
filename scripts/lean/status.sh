@@ -140,6 +140,7 @@ gather_status() {
     local deployer_status="stopped"
     local tester_status="stopped"
     local herald_status="stopped"
+    local mechanic_sessions=()
 
     # Enrichers
     for i in 1 2 3 4 5; do
@@ -178,6 +179,16 @@ gather_status() {
     # Herald
     if session_exists "herald-agent"; then
         herald_status="running:$(get_session_uptime "herald-agent")"
+    fi
+
+    # Mechanics
+    for i in 1 2 3; do
+        if session_exists "mechanic-$i"; then
+            mechanic_sessions+=("mechanic-$i:$(get_session_uptime "mechanic-$i")")
+        fi
+    done
+    if session_exists "mechanic-agent"; then
+        mechanic_sessions+=("mechanic-agent:$(get_session_uptime "mechanic-agent")")
     fi
 
     # Work queue counts
@@ -262,6 +273,10 @@ gather_status() {
     "herald": {
       "status": "${herald_status%%:*}",
       "uptime": "${herald_status#*:}"
+    },
+    "mechanic": {
+      "count": ${#mechanic_sessions[@]},
+      "sessions": $(printf '%s\n' "${mechanic_sessions[@]:-}" | jq -R -s -c 'split("\n") | map(select(length > 0))')
     }
   },
   "session_stats": {
@@ -375,6 +390,19 @@ EOF
             echo "      herald-agent: Running (${herald_status#*:})"
         else
             echo -e "    ${BOLD}Herald:${NC} ${YELLOW}0/1 active${NC}"
+        fi
+
+        # Mechanic
+        local mechanic_count=${#mechanic_sessions[@]}
+        if [[ $mechanic_count -gt 0 ]]; then
+            echo -e "    ${BOLD}Mechanic:${NC} ${GREEN}$mechanic_count active${NC}"
+            for session in "${mechanic_sessions[@]}"; do
+                local name="${session%%:*}"
+                local uptime="${session#*:}"
+                echo "      $name: Running ($uptime)"
+            done
+        else
+            echo -e "    ${BOLD}Mechanic:${NC} ${YELLOW}0 active${NC}"
         fi
         echo ""
 
