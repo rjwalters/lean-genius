@@ -86,6 +86,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Problem statement: for infinite $A \\subseteq \\mathbb{N}$ and generalized divisor function $d_A(n)$, is $\\limsup_{x \\to \\infty} \\max_{n < x} d_A(n) / H_A(x)^k = \\infty$ for every $k$? Resolved YES by Erdős-Sárközy (1980). Imports Mathlib for natural numbers, reals, and sets.",
+      "mathContext": "Let $d_A(n) = |\\{a \\in A : a \\mid n\\}|$ and $H_A(x) = \\sum_{a \\in A, a \\leq x} 1/a$. The problem asks whether $\\max_{n < x} d_A(n)$ grows faster than any polynomial in $H_A(x)$. Solved: $\\limsup M_A(x)/H_A(x)^k = \\infty$ for every $k$ (Erdős-Sárközy 1980)."
+    },
+    {
       "id": "section-1",
       "title": "Basic Definitions",
       "startLine": 31,
