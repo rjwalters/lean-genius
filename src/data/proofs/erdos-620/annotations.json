@@ -138,7 +138,7 @@
     "id": "ann-620-function",
     "proofId": "erdos-620",
     "range": {
-      "startLine": 95,
+      "startLine": 88,
       "endLine": 103
     },
     "type": "definition",
@@ -161,7 +161,7 @@
     "id": "ann-620-statement",
     "proofId": "erdos-620",
     "range": {
-      "startLine": 112,
+      "startLine": 105,
       "endLine": 115
     },
     "type": "definition",
@@ -182,7 +182,7 @@
     "id": "ann-620-trivial",
     "proofId": "erdos-620",
     "range": {
-      "startLine": 124,
+      "startLine": 117,
       "endLine": 125
     },
     "type": "axiom",
@@ -204,7 +204,7 @@
     "id": "ann-620-shearer",
     "proofId": "erdos-620",
     "range": {
-      "startLine": 131,
+      "startLine": 127,
       "endLine": 133
     },
     "type": "axiom",
@@ -227,7 +227,7 @@
     "id": "ann-620-bollobas",
     "proofId": "erdos-620",
     "range": {
-      "startLine": 139,
+      "startLine": 135,
       "endLine": 141
     },
     "type": "axiom",
@@ -249,7 +249,7 @@
     "id": "ann-620-krivelevich",
     "proofId": "erdos-620",
     "range": {
-      "startLine": 147,
+      "startLine": 143,
       "endLine": 149
     },
     "type": "axiom",
@@ -269,7 +269,7 @@
     "id": "ann-620-wolfovitz",
     "proofId": "erdos-620",
     "range": {
-      "startLine": 155,
+      "startLine": 151,
       "endLine": 157
     },
     "type": "axiom",
@@ -291,7 +291,7 @@
     "id": "ann-620-mubayi",
     "proofId": "erdos-620",
     "range": {
-      "startLine": 165,
+      "startLine": 159,
       "endLine": 167
     },
     "type": "axiom",
@@ -313,7 +313,7 @@
     "id": "ann-620-gap",
     "proofId": "erdos-620",
     "range": {
-      "startLine": 172,
+      "startLine": 169,
       "endLine": 187
     },
     "type": "theorem",
@@ -335,7 +335,7 @@
     "id": "ann-620-sparse",
     "proofId": "erdos-620",
     "range": {
-      "startLine": 192,
+      "startLine": 189,
       "endLine": 195
     },
     "type": "theorem",
@@ -379,13 +379,13 @@
     "id": "ann-620-ramsey",
     "proofId": "erdos-620",
     "range": {
-      "startLine": 210,
-      "endLine": 219
+      "startLine": 206,
+      "endLine": 224
     },
     "type": "definition",
     "title": "Ramsey Number R(3,k)",
-    "content": "$R(3,k)$ is the minimum $n$ such that every graph on $n$ vertices has a triangle or an independent set of size $k$. **Kim (1995)** proved $R(3,k) = \\Theta(k^2/\\log k)$, resolving a famous Erdős conjecture. This connects to the Erdős-Rogers problem: finding triangle-free induced subgraphs in $K_4$-free graphs generalizes finding independent sets.",
-    "mathContext": "The axiom `ramsey_3k_bound` states $c \\cdot k^2/\\log k \\le R(3,k) \\le C \\cdot k^2/\\log k$. Kim's lower bound used the **triangle-free process** (random greedy algorithm). Bohman (2009) and Bohman-Keevash (2010) refined the analysis. The Ramsey connection: if the triangle-free induced subgraph has independence number $\\ge \\ell$, then $n \\ge R(3, \\ell)$.",
+    "content": "$R(3,k)$ is the minimum $n$ such that every graph on $n$ vertices has a triangle or an independent set of size $k$. **Kim (1995)** proved $R(3,k) = \\Theta(k^2/\\log k)$, resolving a famous Erdős conjecture. This connects to the Erdős-Rogers problem: finding triangle-free induced subgraphs in $K_4$-free graphs generalizes finding independent sets. The theorem `erdos_rogers_ramsey_connection` formalizes this link: if $n \\ge R(3,k)$, then either $f(n) \\ge k$ or every $K_4$-free graph on $n$ vertices contains a triangle.",
+    "mathContext": "The axiom `ramsey_3k_bound` states $c \\cdot k^2/\\log k \\le R(3,k) \\le C \\cdot k^2/\\log k$. Kim's lower bound used the **triangle-free process** (random greedy algorithm). Bohman (2009) and Bohman-Keevash (2010) refined the analysis. The theorem `erdos_rogers_ramsey_connection` (sorry'd) states the dichotomy: for $n \\ge R(3,k)$, either $f(n) \\ge k$ or all $K_4$-free graphs on $n$ vertices have a triangle.",
     "significance": "key",
     "relatedConcepts": [
       "Kim's theorem",
@@ -401,7 +401,7 @@
     "id": "ann-620-probabilistic",
     "proofId": "erdos-620",
     "range": {
-      "startLine": 233,
+      "startLine": 226,
       "endLine": 242
     },
     "type": "axiom",
@@ -423,7 +423,7 @@
     "id": "ann-620-generalized",
     "proofId": "erdos-620",
     "range": {
-      "startLine": 248,
+      "startLine": 244,
       "endLine": 262
     },
     "type": "definition",
@@ -445,8 +445,8 @@
     "id": "ann-620-open",
     "proofId": "erdos-620",
     "range": {
-      "startLine": 271,
-      "endLine": 278
+      "startLine": 264,
+      "endLine": 280
     },
     "type": "insight",
     "title": "Open Status",

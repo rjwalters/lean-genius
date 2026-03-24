@@ -114,7 +114,7 @@
     "proofId": "erdos-432",
     "type": "concept",
     "range": {
-      "startLine": 86,
+      "startLine": 75,
       "endLine": 98
     },
     "title": "Erdős Problem #432 (OPEN)",
@@ -139,8 +139,8 @@
     "proofId": "erdos-432",
     "type": "concept",
     "range": {
-      "startLine": 106,
-      "endLine": 111
+      "startLine": 100,
+      "endLine": 117
     },
     "title": "Prime Divides at Most One Element",
     "content": "If A + B is pairwise coprime, then each prime p divides at most one element of A + B. The elements of A + B partition the primes: their factorizations are disjoint.",
@@ -164,7 +164,7 @@
     "type": "concept",
     "range": {
       "startLine": 118,
-      "endLine": 121
+      "endLine": 127
     },
     "title": "Coprime Set Density Bound",
     "content": "A pairwise coprime subset of {1,...,n} has at most π(n) + 1 elements. Each element > 1 has a distinct smallest prime factor, and there are π(n) primes ≤ n.\n\n**Discrepancy**: The Lean axiom states `countingFn S n ≤ n`, which is trivially true for any subset of {1,...,n} — it provides NO non-trivial information. The mathematical bound of π(n) + 1 described here is NOT formalized. To be useful, the axiom should state `countingFn S n ≤ primeCounting n + 1` where `primeCounting` is Nat.primeCounting or equivalent.",

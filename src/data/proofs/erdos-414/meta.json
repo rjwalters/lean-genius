@@ -22,7 +22,7 @@
     "sourceUrl": "https://erdosproblems.com/414",
     "erdosUrl": "https://erdosproblems.com/414",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "date": "1980",
     "dateAdded": "2026-01-23",
     "relatedProblems": [
@@ -49,20 +49,9 @@
     ],
     "axiomCount": 3,
     "assumptions": [
-      "h_strictly_increasing: h(n) > n for n ≥ 1",
-      "orbit_strictly_increasing: orbits are strictly increasing sequences",
-      "h_upper: h(n) ≤ 2n for n ≥ 1",
-      "h_prime: h(p) = p + 2 for primes p",
-      "h_one: h(1) = 2",
-      "h_two: h(2) = 4",
-      "h_three: h(3) = 5",
-      "erdos_414_conjecture: all orbits eventually merge (main open question)",
-      "single_eventual_orbit: equivalent single-orbit formulation",
-      "orbit_1_start: orbit from 1 is 1, 2, 4, 7, 9, ...",
-      "orbit_3_merges_with_1: orbit from 3 reaches 7, merging with orbit from 1",
-      "average_divisor_count: PLACEHOLDER — declares `True`, not the actual Dirichlet asymptotic. Contributes no mathematical content",
-      "orbit_linear_lower: orbit values grow at least linearly",
-      "orbits_get_close: weaker statement that orbits get arbitrarily close"
+      "erdos_414_conjecture: ∀ m, n ≥ 1, ∃ i, j: h^i(m) = h^j(n) — all orbits eventually merge (main open question)",
+      "single_eventual_orbit: equivalent formulation — there exists a single sequence S that all orbits eventually follow",
+      "orbits_get_close: ∀ m, n ≥ 1, ∀ D, ∃ i, j: |h^i(m) - h^j(n)| < D — weaker proximity statement (also open)"
     ],
     "lineCount": 155
   },
@@ -213,8 +202,8 @@
   "leanFile": {
     "lineCount": 155,
     "structureCount": 0,
-    "axiomCount": 4,
-    "theoremCount": 10,
+    "axiomCount": 3,
+    "theoremCount": 13,
     "lemmaCount": 0,
     "defCount": 2,
     "imports": [
