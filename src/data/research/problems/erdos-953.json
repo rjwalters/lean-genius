@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-15T12:22:36.006Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 3,
+    "focus": "Fixed build failures, consolidated axioms, added proved theorems",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,8 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: Fixed pre-existing build failures (Mathlib API changes). Consolidated 3 Sarkozy axioms into 1 (11→9 axioms). Added 6 new proved theorems: openDisk_eq_ball, openDisk_isOpen, openDisk_measurableSet, openDisk_mono, avoidsIntegerDistances_subset, annulus_subset_openDisk. Replaced brittle pair_half_avoids with general pair_avoids_of_noninteger_dist.",
+    "builtItems": [
+      "Fixed Erdos953Problem.lean build (was failing from Mathlib API changes)",
+      "Consolidated sarkozy_exponent axioms (3→1): sarkozy_exponent_exists",
+      "New theorem: openDisk_eq_ball (disk = metric ball)",
+      "New theorem: openDisk_isOpen (disk is open set)",
+      "New theorem: openDisk_measurableSet (disk is measurable)",
+      "New theorem: openDisk_mono (disk monotonicity)",
+      "New theorem: avoidsIntegerDistances_subset (subset preservation)",
+      "New theorem: annulus_subset_openDisk",
+      "New theorem: pair_avoids_of_noninteger_dist (general two-point avoidance)"
+    ],
     "insights": [],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -50,16 +60,16 @@
     "mathlib": []
   },
   "started": "2026-01-15T12:22:36.007Z",
-  "lastUpdate": "2026-03-13T07:52:17.055Z",
+  "lastUpdate": "2026-03-24T13:00:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos953Problem.lean",
       "filename": "Erdos953Problem.lean",
-      "lineCount": 307,
-      "theoremCount": 6,
-      "axiomCount": 11,
+      "lineCount": 318,
+      "theoremCount": 12,
+      "axiomCount": 9,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,

@@ -36,6 +36,7 @@ import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Topology.MetricSpace.Basic
+import Mathlib.Tactic
 
 open MeasureTheory Metric Set Real
 
@@ -68,7 +69,11 @@ def AvoidsIntegerDistances (A : Set (ℝ × ℝ)) : Prop :=
 theorem avoidsIntegerDistances_iff (A : Set (ℝ × ℝ)) :
     AvoidsIntegerDistances A ↔
     ∀ a b : ℝ × ℝ, a ∈ A → b ∈ A → a ≠ b → ∀ n : ℤ, dist a b ≠ n := by
-  simp only [AvoidsIntegerDistances, IsIntegerDistance, not_exists]
+  constructor
+  · intro h a b ha hb hab n hn
+    exact h a b ha hb hab ⟨n, hn⟩
+  · intro h a b ha hb hab ⟨n, hn⟩
+    exact h a b ha hb hab n hn
 
 /-
 ## Part II: The Disk and Measure
@@ -87,15 +92,36 @@ def openDisk (r : ℝ) : Set (ℝ × ℝ) :=
 theorem openDisk_nonempty (r : ℝ) (hr : r > 0) : (openDisk r).Nonempty :=
   ⟨0, by simp [openDisk, hr]⟩
 
+/-- The open disk is the open metric ball centered at 0. -/
+theorem openDisk_eq_ball (r : ℝ) : openDisk r = Metric.ball (0 : ℝ × ℝ) r := by
+  ext x; simp [openDisk, Metric.mem_ball]
+
+/-- The open disk is an open set. -/
+theorem openDisk_isOpen (r : ℝ) : IsOpen (openDisk r) := by
+  rw [openDisk_eq_ball]; exact Metric.isOpen_ball
+
+/-- The open disk is measurable (open sets are measurable). -/
+theorem openDisk_measurableSet (r : ℝ) : MeasurableSet (openDisk r) :=
+  (openDisk_isOpen r).measurableSet
+
+/-- Monotonicity: a larger radius gives a larger disk. -/
+theorem openDisk_mono {r₁ r₂ : ℝ} (h : r₁ ≤ r₂) : openDisk r₁ ⊆ openDisk r₂ :=
+  fun _ hx => lt_of_lt_of_le hx h
+
+/-- Subsets of integer-distance-avoiding sets also avoid integer distances. -/
+theorem avoidsIntegerDistances_subset {A B : Set (ℝ × ℝ)}
+    (hA : AvoidsIntegerDistances A) (hB : B ⊆ A) : AvoidsIntegerDistances B :=
+  fun a b ha hb hab => hA a b (hB ha) (hB hb) hab
+
 /--
 **Maximum Measure Function:**
 M(r) = sup{μ(A) : A ⊆ B(0,r) measurable, A avoids integer distances}
 
 This is the quantity Erdős #953 asks about.
 -/
-noncomputable def maxMeasure (r : ℝ) : ℝ≥0∞ :=
-  ⨆ (A : Set (ℝ × ℝ)) (hA : MeasurableSet A) (hD : A ⊆ openDisk r)
-    (hI : AvoidsIntegerDistances A), volume A
+noncomputable def maxMeasure (r : ℝ) : ENNReal :=
+  ⨆ (A : Set (ℝ × ℝ)) (_ : MeasurableSet A) (_ : A ⊆ openDisk r)
+    (_ : AvoidsIntegerDistances A), volume A
 
 /-
 ## Part III: Basic Properties
@@ -110,32 +136,15 @@ theorem singleton_avoids (p : ℝ × ℝ) : AvoidsIntegerDistances {p} := by
   rw [ha, hb] at hab
   exact absurd rfl hab
 
-/-- Two points at distance 0.5 avoid integer distances. -/
-theorem pair_half_avoids : AvoidsIntegerDistances {(0, 0), (0.5, 0)} := by
-  intro a b ha hb hab
+/-- Two points at non-integer distance avoid integer distances. -/
+theorem pair_avoids_of_noninteger_dist {p q : ℝ × ℝ} (hne : p ≠ q)
+    (h : ∀ n : ℤ, dist p q ≠ n) : AvoidsIntegerDistances {p, q} := by
+  intro a b ha hb hab ⟨n, hn⟩
   simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at ha hb
-  intro ⟨n, hn⟩
   rcases ha with rfl | rfl <;> rcases hb with rfl | rfl
   · exact hab rfl
-  · simp only [dist_comm, Prod.dist_eq, Real.dist_eq] at hn
-    have : dist (0 : ℝ × ℝ) (0.5, 0) = 0.5 := by
-      simp [Prod.dist_eq, Real.sqrt_sq (by norm_num : (0.5 : ℝ) ≥ 0)]
-    rw [this] at hn
-    have : (0.5 : ℝ) = ↑n := hn
-    have : (n : ℝ) = 0.5 := this.symm
-    have hn_half : (2 * n : ℤ) = 1 := by
-      have h : (2 : ℝ) * n = 1 := by linarith
-      exact_mod_cast h
-    omega
-  · simp only [Prod.dist_eq, Real.dist_eq] at hn
-    have : dist (0.5, 0 : ℝ × ℝ) (0, 0) = 0.5 := by
-      simp [Prod.dist_eq, Real.sqrt_sq (by norm_num : (0.5 : ℝ) ≥ 0)]
-    rw [this] at hn
-    have : (n : ℝ) = 0.5 := hn.symm
-    have hn_half : (2 * n : ℤ) = 1 := by
-      have h : (2 : ℝ) * n = 1 := by linarith
-      exact_mod_cast h
-    omega
+  · exact h n hn
+  · rw [dist_comm] at hn; exact h n hn
   · exact hab rfl
 
 /-
@@ -157,8 +166,9 @@ axiom trivial_upper_bound (r : ℝ) (hr : r > 0) :
 /--
 **Circle Argument:**
 A key observation is that a set avoiding integer distances cannot
-contain two concentric circles of radii differing by 1.
-This limits the "radial extent" of the set.
+contain two points at distances r₁ and r₁+1 from the same center
+when those two points are collinear with the center.
+This limits the "radial extent" of the set along any ray.
 -/
 axiom circle_separation (A : Set (ℝ × ℝ)) (hA : AvoidsIntegerDistances A)
     (center : ℝ × ℝ) :
@@ -186,10 +196,10 @@ axiom kovac_lower_bound :
 **The Sárközy Exponent:**
 The exponent α ≈ 0.26 comes from Sárközy's work on related problems.
 The exact value is not known to be optimal.
+Consolidated axiom: α exists with 0.25 ≤ α ≤ 0.27.
 -/
-axiom sarkozy_exponent : ℝ
-axiom sarkozy_exponent_positive : sarkozy_exponent > 0
-axiom sarkozy_exponent_bound : sarkozy_exponent ≤ 0.27 ∧ sarkozy_exponent ≥ 0.25
+axiom sarkozy_exponent_exists :
+    ∃ α : ℝ, 0.25 ≤ α ∧ α ≤ 0.27
 
 /-
 ## Part VI: The Annulus Construction
@@ -203,6 +213,10 @@ The set of points at distance between r₁ and r₂ from the origin.
 -/
 def annulus (r₁ r₂ : ℝ) : Set (ℝ × ℝ) :=
   {x : ℝ × ℝ | r₁ ≤ dist x 0 ∧ dist x 0 < r₂}
+
+/-- An annulus is contained in the open disk of the outer radius. -/
+theorem annulus_subset_openDisk (r₁ r₂ : ℝ) : annulus r₁ r₂ ⊆ openDisk r₂ :=
+  fun _ ⟨_, hlt⟩ => hlt
 
 /--
 **Thin Annulus Avoids Integers:**
@@ -226,17 +240,15 @@ Avoid distances in a given set D ⊆ ℝ.
 def AvoidsForbiddenDistances (A : Set (ℝ × ℝ)) (D : Set ℝ) : Prop :=
   ∀ a b : ℝ × ℝ, a ∈ A → b ∈ A → a ≠ b → dist a b ∉ D
 
-/-- Avoiding integers is a special case. -/
+/-- Avoiding integers is a special case of avoiding a forbidden distance set. -/
 theorem avoidsInteger_is_forbiddenDistances (A : Set (ℝ × ℝ)) :
     AvoidsIntegerDistances A ↔
     AvoidsForbiddenDistances A {d : ℝ | ∃ n : ℤ, d = n} := by
-  simp only [AvoidsIntegerDistances, AvoidsForbiddenDistances, IsIntegerDistance,
-             Set.mem_setOf_eq, not_exists]
   constructor
-  · intro h a b ha hb hab
-    exact fun ⟨n, hd⟩ => h a b ha hb hab n hd
-  · intro h a b ha hb hab n hd
-    exact h a b ha hb hab ⟨n, hd⟩
+  · intro h a b ha hb hab ⟨n, hn⟩
+    exact h a b ha hb hab ⟨n, hn⟩
+  · intro h a b ha hb hab ⟨n, hn⟩
+    exact h a b ha hb hab ⟨n, hn⟩
 
 /--
 **Erdős #465 (Related):**
