@@ -22,7 +22,8 @@
     "badge": "axiom",
     "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
     "proofRepoPath": "Proofs/Erdos557Problem.lean",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "lineCount": 129
   },
   "sections": [
     {
@@ -108,5 +109,22 @@
     "Gerencsér–Gyárfás (1967): path Ramsey numbers",
     "Lee (2017): Burr–Erdős conjecture",
     "https://erdosproblems.com/557"
-  ]
+  ],
+  "leanFile": {
+    "lineCount": 129,
+    "structureCount": 1,
+    "axiomCount": 10,
+    "theoremCount": 0,
+    "lemmaCount": 0,
+    "defCount": 3,
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ]
+  }
 }

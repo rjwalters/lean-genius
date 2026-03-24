@@ -178,5 +178,19 @@
       "What is the formal relationship between the Stern-Brocot mediant operation and the convergents of continued fraction expansions — can this be unified in Lean's Mathlib?",
       "The Littlewood conjecture (1930, still open): for all real α, β, is it true that lim inf n·‖nα‖·‖nβ‖ = 0? This is the natural two-dimensional extension of Dirichlet's theorem."
     ]
+  },
+  "leanFile": {
+    "lineCount": 240,
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "lemmaCount": 4,
+    "defCount": 0,
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ]
   }
 }

@@ -221,5 +221,24 @@
     "geometric-series-oq-02",
     "harmonic-divergence",
     "taylor-sincos-convergence"
-  ]
+  ],
+  "leanFile": {
+    "lineCount": 251,
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "lemmaCount": 0,
+    "defCount": 0,
+    "imports": [
+      "Mathlib.Algebra.GeomSum",
+      "Mathlib.Analysis.SpecificLimits.Normed",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Filter"
+    ]
+  }
 }

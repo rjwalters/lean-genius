@@ -21,7 +21,8 @@
     "badge": "axiom",
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
     "proofRepoPath": "Proofs/Erdos562Problem.lean",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "lineCount": 104
   },
   "sections": [
     {
@@ -133,5 +134,19 @@
       "Is R_3(5) equal to 43, 44, ... or 48? (Current best bounds: 43 ≤ R₃(5) ≤ 48)",
       "Can algebraic or topological methods yield better hypergraph Ramsey lower bounds for r ≥ 4?"
     ]
+  },
+  "leanFile": {
+    "lineCount": 104,
+    "structureCount": 0,
+    "axiomCount": 7,
+    "theoremCount": 3,
+    "lemmaCount": 0,
+    "defCount": 1,
+    "imports": [
+      "Mathlib.Combinatorics.Ramsey",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": []
   }
 }

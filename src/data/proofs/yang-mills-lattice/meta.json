@@ -144,5 +144,28 @@
     "yang-mills",
     "yang-mills-transfer-matrix",
     "yang-mills-2d"
-  ]
+  ],
+  "leanFile": {
+    "lineCount": 28002,
+    "structureCount": 365,
+    "axiomCount": 0,
+    "theoremCount": 1786,
+    "lemmaCount": 0,
+    "defCount": 251,
+    "imports": [
+      "Proofs.YangMills.Classical",
+      "Proofs.YangMills.Quantum"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Real",
+      "Set",
+      "Filter",
+      "Topology",
+      "scoped",
+      "Topology",
+      "BigOperators",
+      "Matrix"
+    ]
+  }
 }

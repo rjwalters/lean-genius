@@ -26,7 +26,8 @@
     "badge": "axiom",
     "assumptions": "4 axiom declarations: known_lower_bound, erdos_654_conjecture, erdos_pach_weaker, guth_katz_context. See the Lean source for details.",
     "proofRepoPath": "Proofs/Erdos654Problem.lean",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "lineCount": 135
   },
   "sections": [
     {
@@ -127,5 +128,20 @@
     "Guth–Katz (2015): Ω(n/log n) distinct distances via polynomial partitioning",
     "Szemerédi–Trotter (1983): point-line incidence bound",
     "https://erdosproblems.com/654"
-  ]
+  ],
+  "leanFile": {
+    "lineCount": 135,
+    "structureCount": 0,
+    "axiomCount": 4,
+    "theoremCount": 1,
+    "lemmaCount": 0,
+    "defCount": 3,
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": []
+  }
 }

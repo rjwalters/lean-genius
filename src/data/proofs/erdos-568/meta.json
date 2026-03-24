@@ -24,7 +24,8 @@
     "badge": "axiom",
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
     "proofRepoPath": "Proofs/Erdos568Problem.lean",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "lineCount": 88
   },
   "sections": [
     {
@@ -119,5 +120,19 @@
     "Chvátal, Rödl, Szemerédi & Trotter (1983): The Ramsey number of a graph with bounded maximum degree",
     "Beck (1983): On size Ramsey number of paths, trees, and circuits I",
     "https://erdosproblems.com/568"
-  ]
+  ],
+  "leanFile": {
+    "lineCount": 88,
+    "structureCount": 1,
+    "axiomCount": 3,
+    "theoremCount": 0,
+    "lemmaCount": 0,
+    "defCount": 6,
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": []
+  }
 }

@@ -282,5 +282,24 @@
     "partition-theorem",
     "inverse-galois",
     "quadratic-reciprocity"
-  ]
+  ],
+  "leanFile": {
+    "lineCount": 247,
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "lemmaCount": 0,
+    "defCount": 0,
+    "imports": [
+      "Mathlib.GroupTheory.Sylow",
+      "Mathlib.GroupTheory.Coset.Basic",
+      "Mathlib.GroupTheory.Index",
+      "Mathlib.GroupTheory.OrderOfElement",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Subgroup"
+    ]
+  }
 }

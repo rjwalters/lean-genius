@@ -41,7 +41,8 @@
     ],
     "dateAdded": "2026-03-22",
     "proofRepoPath": "Proofs/BirthdayProblemOQ02.lean",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "lineCount": 301
   },
   "overview": {
     "historicalContext": "The birthday problem was first posed by Richard von Mises in 1939 and popularized by mathematical recreationists. The exponential approximation $P \\approx 1 - e^{-k^2/(2d)}$ became central to cryptography after Yuval (1979) showed that birthday-style attacks reduce the cost of finding hash collisions from $O(2^n)$ to $O(2^{n/2})$. The underlying inequality $1 - x \\le e^{-x}$, a consequence of the convexity of the exponential function, was known to Euler and appears in Cauchy's 1821 Cours d'Analyse. This formalization makes the one-sided bound rigorous: the exact collision probability is always at least as large as the exponential approximation predicts, a fact implicitly assumed in security proofs for hash functions, digital signatures, and pseudorandom generators.",
@@ -171,5 +172,19 @@
     "birthday-problem",
     "combinations-formula",
     "binomial-theorem-oq-03"
-  ]
+  ],
+  "leanFile": {
+    "lineCount": 301,
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "lemmaCount": 5,
+    "defCount": 0,
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ]
+  }
 }

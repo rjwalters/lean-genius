@@ -225,5 +225,17 @@
       "venue": "Advances in Cryptology – CRYPTO 2004, LNCS 3152, pp. 306-316",
       "note": "Showed that k-way collisions (multicollisions) in iterated hash functions are surprisingly easy to find, extending the birthday attack from k=2 to arbitrary k with cost only k times the pairwise birthday bound"
     }
-  ]
+  ],
+  "leanFile": {
+    "lineCount": 369,
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 19,
+    "lemmaCount": 0,
+    "defCount": 3,
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": []
+  }
 }
