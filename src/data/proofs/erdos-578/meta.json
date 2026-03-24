@@ -69,7 +69,7 @@
   "overview": {
     "historicalContext": "Erdős and Béla Bollobás conjectured that random graphs $G(2^d, 1/2)$ almost surely contain the $d$-dimensional hypercube $Q_d$ as a subgraph. This was part of the broader program initiated by Erdős and Rényi (1959-1960) studying threshold phenomena in random graphs: at what edge probability does a given subgraph first appear? For spanning subgraphs like $Q_d$ (which uses all $2^d$ vertices), the question is particularly delicate because the expected number of copies involves a subtle cancellation between the $\\binom{2^d}{2^d} = 1$ ways to choose the vertex set and the $d! \\cdot 2^d$ automorphisms of $Q_d$. Oliver Riordan (2000) resolved the conjecture affirmatively in 'Spanning subgraphs of random graphs' (Combinatorics, Probability & Computing), proving the stronger result that $p > 1/4$ suffices. His proof uses the second moment method: showing the variance of the number of $Q_d$ copies is dominated by the square of the expected value. The threshold $p = 1/4$ is essentially tight. Riordan also established that the number of $Q_d$ copies converges to a normal distribution, a distributional refinement going well beyond mere almost-sure existence.",
     "problemStatement": "**Problem Statement (SOLVED: YES)**\n\nThe d-dimensional hypercube Q_d has 2^d vertices and d·2^{d-1} edges.\n\n**Question:** If G is a random graph on 2^d vertices with edge probability p = 1/2, does G almost surely contain a copy of Q_d?\n\n**Answer:** YES (Riordan 2000)\n\n**Strengthening:** Even p > 1/4 suffices (Riordan 2000)",
-    "text": "If G is a random graph on 2^d vertices with edge probability 1/2, does G almost surely contain Q_d? Answer: YES (Riordan 2000). Threshold p > 1/4 suffices, and copies are normally distributed.",
+    "text": "This formalization captures Erdős Problem #578, a conjecture of Erdős and Bollobás asking whether a random graph G(2^d, 1/2) almost surely contains the d-dimensional hypercube Q_d as a spanning subgraph. The Lean file defines the hypercube structure (with verified vertex count 2^d and edge count d*2^{d-1}), the Erdős-Rényi random graph model G(n,p) with enforced probability constraints, and a deterministic formulation of 'almost surely' as eventual truth for all sufficiently large d. Riordan's 2000 theorem -- that any edge probability p > 1/4 suffices -- is axiomatized along with the threshold optimality at 1/4 and the asymptotic normality of the copy count. The summary theorem packages the conjecture's affirmative resolution and the threshold result into a single conjunction, proved from the axiomatized statements. The formalization also records structural properties of Q_d: d-regularity and an automorphism group of order d! * 2^d (the hyperoctahedral group), which enters the expected copy count formula central to Riordan's second moment argument.",
     "proofStrategy": "The formalization defines the hypercube Q_d, random graph model G(n,p), and 'almost surely' containment. Riordan's theorem is axiomatized for p > 1/4, from which the original p = 1/2 conjecture follows. The threshold optimality at 1/4 and normal distribution of copies are also axiomatized. The summary theorem proves the conjunction of the conjecture and threshold result.",
     "keyInsights": [
       "**Hypercube Q_d:** 2^d vertices (binary strings), d·2^{d-1} edges",
@@ -151,7 +151,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #578 is SOLVED with answer YES. Random graphs G(2^d, 1/2) almost surely contain the hypercube Q_d. Riordan strengthened this to any p > 1/4 and showed the number of copies is normally distributed. The threshold 1/4 is essentially optimal.",
-    "implications": "This result is fundamental in probabilistic combinatorics, showing that hypercubes are 'likely' subgraphs of random graphs with moderate edge density.",
+    "implications": "Riordan's resolution of the Erdős-Bollobás conjecture is a landmark in the theory of random graphs and threshold phenomena. The result demonstrates that the d-dimensional hypercube Q_d, despite being a highly structured spanning subgraph with 2^d vertices and d*2^{d-1} edges, appears almost surely in G(2^d, p) as soon as p exceeds 1/4. This is remarkable because Q_d is a spanning subgraph -- it uses every vertex -- yet the threshold is a fixed constant independent of d, in contrast to subgraph containment thresholds that typically depend on the graph parameters.\n\nThe proof technique, based on the second moment method, has had lasting influence. Riordan's approach requires a delicate variance computation: bounding the second moment of the random variable X counting labeled copies of Q_d. The key difficulty is enumerating pairs of overlapping copies, which involves understanding the intersection structure of hypercubes. The automorphism group of Q_d (the hyperoctahedral group of order d! * 2^d) plays a central role in these calculations, as it determines the expected number of copies via the formula E[X] = n! / (|Aut(Q_d)| * (n - 2^d)!) * p^{|E(Q_d)|}.\n\nThe distributional refinement -- that the standardized copy count converges to a normal distribution -- goes significantly beyond mere almost-sure existence. It implies that the number of Q_d copies concentrates around its mean, with fluctuations governed by a central limit theorem. This type of distributional result, pioneered by Rucinski (1988) for small subgraphs, was extended by Riordan to spanning subgraphs.\n\nProblem #578 belongs to the broader program of determining appearance thresholds for structured subgraphs in G(n,p). Related results include the Johansson-Kahn-Vu theorem on the threshold for perfect matchings and Hamilton cycles, and the Kahn-Kalai conjecture (proved by Park and Pham, 2024) relating the threshold to the expectation threshold. The specific value p_0 = 1/4 for hypercubes remains one of the cleanest known thresholds for spanning subgraph containment.\n\nFrom a formalization perspective, the axiomatized approach correctly treats the deep probabilistic arguments (second moment bounds, normal approximation) as assumptions while verifying the logical structure: that Riordan's theorem implies the original conjecture, and that the conjunction of the affirmative answer with the threshold result constitutes a complete resolution of Problem #578.",
     "openQuestions": [
       "What is the exact threshold probability for hypercube containment?",
       "What are the precise constants in the normal distribution?",
@@ -172,16 +172,72 @@
       "year": "2001",
       "venue": "Cambridge University Press, 2nd edition",
       "note": "Background on G(n,p) random graph model and threshold phenomena"
+    },
+    {
+      "authors": "Erdős, Paul; Rényi, Alfréd",
+      "title": "On random graphs I",
+      "year": "1959",
+      "venue": "Publicationes Mathematicae Debrecen 6, pp. 290-297",
+      "note": "Foundational paper introducing the G(n,p) random graph model used throughout this formalization"
+    },
+    {
+      "authors": "Alon, Noga; Spencer, Joel H.",
+      "title": "The Probabilistic Method",
+      "year": "2016",
+      "venue": "Wiley, 4th edition",
+      "note": "Standard reference for the second moment method and threshold phenomena in random graphs"
+    },
+    {
+      "authors": "Janson, Svante; Łuczak, Tomasz; Rucinski, Andrzej",
+      "title": "Random Graphs",
+      "year": "2000",
+      "venue": "Wiley-Interscience",
+      "note": "Comprehensive treatment of subgraph containment thresholds and normal approximation for subgraph counts"
     }
   ],
   "crossReferences": [
     {
       "targetId": "ramseys-theorem",
-      "description": "Both concern guaranteed substructures: Ramsey theory guarantees monochromatic complete graphs, #578 guarantees hypercube subgraphs in random graphs"
+      "description": "Both concern guaranteed substructures in graphs: Ramsey theory guarantees monochromatic complete subgraphs in edge-colorings, while #578 guarantees hypercube subgraphs in random graphs. The probabilistic method, pioneered by Erdős, connects the two areas by providing lower bounds for Ramsey numbers."
+    },
+    {
+      "targetId": "prob-method-second-moment",
+      "description": "Riordan's proof of the Erdős-Bollobás conjecture is a direct application of the second moment method. The key step shows E[X^2] / (E[X])^2 -> 1 where X counts Q_d copies, requiring delicate analysis of overlapping hypercube pairs."
+    },
+    {
+      "targetId": "prob-method-lovasz-local",
+      "description": "The Lovász Local Lemma provides an alternative probabilistic tool for guaranteeing substructure existence when events have limited dependence. While Riordan used the second moment method for #578, the LLL applies to related problems where bad events (missing edges) have bounded dependency neighborhoods."
+    },
+    {
+      "targetId": "erdos-544",
+      "description": "Both problems concern structural properties of random graphs. Problem #544 addresses Ramsey number gaps r(k+1) - r(k), while #578 asks about hypercube subgraph containment. Both sit in the intersection of extremal graph theory and probabilistic combinatorics."
+    },
+    {
+      "targetId": "erdos-905",
+      "description": "Both are graph-theoretic Erdős problems involving density thresholds. Problem #905 concerns edge-triangle multiplicity above the Turán density, while #578 identifies the edge probability threshold for hypercube containment in random graphs."
+    },
+    {
+      "targetId": "erdos-1010",
+      "description": "Supersaturation (#1010) and hypercube containment (#578) both ask: once a graph exceeds a density threshold, how many copies of a given substructure must appear? Problem #578's normal distribution result is a form of supersaturation for Q_d copies."
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "description": "Szemerédi's theorem and Problem #578 both exemplify the principle that sufficient density forces structured subconfigurations. Szemerédi's regularity lemma, which underpins many proofs in the area, has also been applied to random graph substructure problems."
+    },
+    {
+      "targetId": "erdos-1009",
+      "description": "Problem #1009 (edge-disjoint triangles) and #578 both involve guaranteed subgraph copies beyond a density threshold. The counting and packing aspects of #1009 parallel the copy-counting distributional result in #578."
     }
   ],
   "relatedProofs": [
-    "ramseys-theorem"
+    "ramseys-theorem",
+    "prob-method-second-moment",
+    "prob-method-lovasz-local",
+    "erdos-544",
+    "erdos-905",
+    "erdos-1010",
+    "szemeredi-theorem",
+    "erdos-1009"
   ],
   "leanFile": {
     "imports": [
