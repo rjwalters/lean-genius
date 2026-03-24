@@ -61,7 +61,7 @@
     "mathlib_version": "4.26.0",
     "axiomCount": 1,
     "lineCount": 1162,
-    "assumptions": "2 axiom(s) and 1 sorry(s). See the Lean source for details."
+    "assumptions": "1 axiom (Tucker's lemma in 2D and n-D axiomatized). No sorries."
   },
   "overview": {
     "historicalContext": "**Quantitative Borsuk-Ulam and Tucker's Lemma**\n\nThe parent file (borsuk-ulam-oq-03) proved the 1D Borsuk-Ulam theorem constructively via IVT. This extension explores the quantitative and computational aspects: How fast can we locate antipodal pairs? What bounds does Lipschitz continuity impose? How does the modulus of continuity control the deviation |f(x) - f(-x)|?\n\nTucker's lemma (1946) is the combinatorial analog of Borsuk-Ulam: any signed labeling of a triangulated interval with antipodal boundary condition (f(0) = -f(last)) must have a complementary edge (adjacent vertices with opposite labels). In 1D, Tucker's lemma and BU are equivalent.\n\nThe higher-dimensional generalization of Tucker's lemma (to triangulated disks B^n with labels from {+-1,...,+-n}) implies the full n-dimensional Borsuk-Ulam theorem. The 2D and n-D cases are axiomized here, awaiting simplicial complex infrastructure in Mathlib.",
