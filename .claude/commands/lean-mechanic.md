@@ -104,8 +104,10 @@ git reset --hard origin/main 2>/dev/null
 ### 3. Find work
 
 ```bash
-# Priority 1: Auditor issues
+# Priority 1: Auditor issues (by label OR title prefix)
 gh issue list --label="loom:auditor" --state=open --limit=10 --json number,title
+# Fallback if no labeled issues found:
+gh issue list --state=open --search="Gallery integrity:" --limit=10 --json number,title
 
 # Priority 2: Unaddressed peer review comments
 gh pr list --state=open --json number,title,reviewDecision \
