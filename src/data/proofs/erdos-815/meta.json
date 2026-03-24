@@ -56,24 +56,6 @@
       "evenKConjecture: open conjecture for even k",
       "erdos_815_summary: combines disproof with EFGS short cycle theorem"
     ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-814",
-        "relationship": "Both concern minimum degree conditions in graphs; #814 studies dense graphs containing smaller min-degree-k subgraphs, while #815 studies the cycle structure of graphs on the min-degree-3 boundary"
-      },
-      {
-        "proofId": "erdos-57",
-        "relationship": "Both concern cycle existence in graphs under structural constraints; #57 studies odd cycles in graphs with high chromatic number"
-      },
-      {
-        "proofId": "erdos-207",
-        "relationship": "Both concern cycle avoidance in structured combinatorial objects; #207 studies high-girth Steiner triple systems"
-      },
-      {
-        "proofId": "erdos-816",
-        "relationship": "Consecutive problem in the Erdős collection; #816 concerns equal-degree vertices and paths, sharing the theme of degree conditions forcing subgraph structure"
-      }
-    ],
     "axiomCount": 4,
     "lineCount": 252,
     "assumptions": "4 axiom(s) and 1 sorry(s). See the Lean source for details."

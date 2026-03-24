@@ -56,22 +56,6 @@
         "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
       }
     ],
-    "crossReferences": [
-      {
-        "targetId": "erdos-535",
-        "relationship": "related",
-        "description": "Both study extremal problems with pairwise constraints; #549 uses edge-coloring Ramsey, #535 uses GCD structure"
-      },
-      {
-        "targetId": "erdos-1020",
-        "relationship": "related",
-        "description": "Parallel extremal hypergraph problem: #1020 studies maximum edges avoiding k independent edges, #549 studies tree Ramsey numbers"
-      }
-    ],
-    "relatedProofs": [
-      "erdos-535",
-      "erdos-1020"
-    ],
     "originalContributions": [
       "Formal definition of BipartiteTree structure with (k, 2k) partition",
       "Definition of graph Ramsey numbers R(H) via Nat.find",

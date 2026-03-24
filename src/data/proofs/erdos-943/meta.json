@@ -20,36 +20,6 @@
     "sourceUrl": "https://erdosproblems.com/943",
     "erdosUrl": "https://erdosproblems.com/943",
     "erdosProblemStatus": "open",
-    "crossReferences": [
-      {
-        "proofId": "erdos-941",
-        "relationship": "Companion problem: Heath-Brown (1988) showed every large integer is the sum of at most 3 powerful numbers, the ternary analogue of this binary question"
-      },
-      {
-        "proofId": "erdos-942",
-        "relationship": "Studies the distribution of powerful numbers between consecutive squares, providing local density information relevant to the representation count"
-      },
-      {
-        "proofId": "erdos-940",
-        "relationship": "Generalizes the additive representation question to r-powerful numbers; the density-zero result of Baker-Brüdern (1994) for r=2 sums is closely related"
-      },
-      {
-        "proofId": "erdos-939",
-        "relationship": "Studies whether coprime r-powerful numbers can sum to an r-powerful number; complementary Diophantine question about powerful number sums"
-      },
-      {
-        "proofId": "erdos-938",
-        "relationship": "Studies arithmetic progressions among consecutive powerful numbers; shares the theme of additive structure in the powerful number sequence"
-      },
-      {
-        "proofId": "lagrange-four-squares",
-        "relationship": "Foundation: every integer is a sum of four squares; squares are a subset of powerful numbers and the classical case where additive representation is fully understood"
-      },
-      {
-        "proofId": "minkowski-theorem",
-        "relationship": "Lattice point counting techniques underlie the density estimate |A ∩ [1,x]| ~ c√x for powerful numbers"
-      }
-    ],
     "axiomCount": 4,
     "lineCount": 87,
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",

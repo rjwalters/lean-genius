@@ -17,28 +17,6 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/574",
     "erdosUrl": "https://erdosproblems.com/574",
-    "crossReferences": [
-      {
-        "id": "erdos-573",
-        "relationship": "specialization",
-        "description": "Problem #573 is the k=2 case: ex(n; {C₃, C₄}) ~ (n/2)^{3/2}"
-      },
-      {
-        "id": "erdos-575",
-        "relationship": "generalization",
-        "description": "Problem #575 asks whether bipartite Turán numbers dominate for families containing a bipartite graph"
-      },
-      {
-        "id": "erdos-113",
-        "relationship": "related",
-        "description": "Problem #113 on extremal numbers and degeneracy of bipartite graphs, connecting to the bipartite structure underlying cycle extremal theory"
-      },
-      {
-        "id": "erdos-180",
-        "relationship": "related",
-        "description": "Problem #180 on Turán numbers for graph families, the general framework for this problem"
-      }
-    ],
     "axiomCount": 4,
     "badge": "axiom",
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",

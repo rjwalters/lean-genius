@@ -51,38 +51,6 @@
       "Proved case analysis for p = 3 and p = 5 from the Yu-Liu characterization",
       "Formalized the Erdős-Graham perfect-power generalization"
     ],
-    "crossReferences": [
-      {
-        "targetProofId": "wilsons-theorem",
-        "relationship": "uses",
-        "description": "Wilson's theorem (p-1)! ≡ -1 (mod p) provides the key modular constraint on the factorial term, enabling the divisibility argument that p divides the sum"
-      },
-      {
-        "targetProofId": "kummer-theorem",
-        "relationship": "uses-same-technique",
-        "description": "Kummer's theorem on p-adic valuations of binomial coefficients — the same p-adic machinery (Legendre's formula) used to analyze v_p((p-1)!)"
-      },
-      {
-        "targetProofId": "erdos-404",
-        "relationship": "related",
-        "description": "Neighboring Erdős problem on factorial divisibility properties — shares the factorial arithmetic and p-adic analysis framework"
-      },
-      {
-        "targetProofId": "erdos-407",
-        "relationship": "related",
-        "description": "Erdős problem on exponential Diophantine equations — same family of problems combining growth-rate arguments with Baker's method"
-      },
-      {
-        "targetProofId": "erdos-400",
-        "relationship": "related",
-        "description": "Erdős problem involving prime power representations — connected through the study of when arithmetic expressions equal prime powers"
-      },
-      {
-        "targetProofId": "pell-equation",
-        "relationship": "uses-same-technique",
-        "description": "Pell equations arise in the case analysis for p = 3: the equation 2 + a² = 3^k reduces to a Pellian recurrence for the solutions"
-      }
-    ],
     "axiomCount": 12,
     "relatedProblems": [
       {

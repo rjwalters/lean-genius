@@ -52,24 +52,6 @@
       "Connection to erdos-908 via decomposition_continuous_additive characterization",
       "Summary theorem packaging de Bruijn + continuous direction + additive constancy as conjunction"
     ],
-    "crossReferences": [
-      {
-        "id": "erdos-908",
-        "relationship": "Direct companion problem: erdos-908 extends the continuous differences question to measurable differences, with Laczkovich providing a finer decomposition. The two problems share the same framework of difference operators and additive functions."
-      },
-      {
-        "id": "erdos-1126",
-        "relationship": "Studies almost-everywhere additive functions via the de Bruijn-Jurkat theorem: a.e. additivity implies true additivity up to a null set. Shares the Cauchy equation and regularity-forces-structure theme."
-      },
-      {
-        "id": "erdos-1125",
-        "relationship": "Kemperman's inequality and monotonicity (Laczkovich's resolution): functional inequalities forcing regularity of additive functions, extending the regularity theory underlying de Bruijn's decomposition."
-      },
-      {
-        "id": "intermediate-value-theorem",
-        "relationship": "Foundational continuity result (Bolzano-Cauchy); the continuous component g in de Bruijn's decomposition inherits all classical properties of continuous functions."
-      }
-    ],
     "axiomCount": 10,
     "lineCount": 272,
     "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."

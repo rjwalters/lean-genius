@@ -42,32 +42,6 @@
       "cantorNFLength: CNF-length axiom",
       "partition_ordinal_classification: complete classification summary"
     ],
-    "relatedProofs": [
-      {
-        "id": "erdos-590",
-        "relationship": "sibling problem in ordinal Ramsey theory"
-      },
-      {
-        "id": "erdos-591",
-        "relationship": "companion partition ordinal problem"
-      },
-      {
-        "id": "erdos-597",
-        "relationship": "related ordinal partition relation question"
-      },
-      {
-        "id": "erdos-598",
-        "relationship": "ordinal Ramsey theory extension"
-      },
-      {
-        "id": "erdos-474",
-        "relationship": "connected partition calculus problem"
-      },
-      {
-        "id": "ramseys-theorem",
-        "relationship": "foundational result (ω → (ω,n)² for all n)"
-      }
-    ],
     "axiomCount": 10,
     "assumptions": "10 axiom declarations: ordinalPartition, specker_beta_two, specker_finite_fail, chang_beta_omega, galvin_larson_necessary, cantorNFLength, schipperus_leq_two, schipperus_geq_four, erdos_592_open_case, partition_ordinal_classification",
     "proofRepoPath": "Proofs/Erdos592Problem.lean",

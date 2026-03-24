@@ -53,38 +53,6 @@
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "crossReferences": [
-      {
-        "proofId": "area-of-circle-oq-03",
-        "title": "Archimedes' Method of Exhaustion: Area of a Circle",
-        "relationship": "parent",
-        "note": "The method of exhaustion framework from which these bounds derive"
-      },
-      {
-        "proofId": "area-of-circle",
-        "title": "Area of a Circle",
-        "relationship": "related",
-        "note": "The area formula A = πr² that motivates computing π precisely"
-      },
-      {
-        "proofId": "pi-transcendental",
-        "title": "Transcendence of Pi",
-        "relationship": "extends",
-        "note": "π is not only irrational but transcendental — no polynomial with rational coefficients has π as a root"
-      },
-      {
-        "proofId": "leibniz-pi",
-        "title": "Leibniz's Series for Pi",
-        "relationship": "related",
-        "note": "The series π/4 = 1 − 1/3 + 1/5 − ··· provides another approach to computing π, though it converges very slowly"
-      },
-      {
-        "proofId": "basel-problem",
-        "title": "The Basel Problem: Sum of Reciprocal Squares",
-        "relationship": "related",
-        "note": "Euler's π²/6 = Σ 1/n² connects π to number theory via the Riemann zeta function"
-      }
-    ],
     "lineCount": 102,
     "mathlib_version": "4.26.0"
   },

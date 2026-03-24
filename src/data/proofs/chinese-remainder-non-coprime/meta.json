@@ -51,23 +51,6 @@
       "Extension to three non-coprime moduli (pairwise gcd conditions)",
       "LCM-product bound: lcm(m,n) | m*n gives tighter uniqueness"
     ],
-    "crossReferences": [
-      {
-        "proofId": "chinese-remainder-constructive",
-        "relationship": "generalizes",
-        "description": "The non-coprime CRT generalizes the constructive CRT: when gcd(m,n)=1, solvability is automatic and lcm=mn, recovering the classical statement exactly"
-      },
-      {
-        "proofId": "bezout-identity",
-        "relationship": "uses",
-        "description": "The sufficiency proof reduces to coprime moduli m/g, n/g and applies Bezout's identity to construct the solution"
-      },
-      {
-        "proofId": "bezout-identity-oq-02",
-        "relationship": "related",
-        "description": "Extended GCD algorithms compute the Bezout coefficients used in the constructive solution formula"
-      }
-    ],
     "dateAdded": "2026-02-09",
     "axiomCount": 0,
     "lineCount": 305,

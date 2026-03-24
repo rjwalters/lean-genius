@@ -42,24 +42,6 @@
       ],
       "significance": "Resolves the Berge-Sauer question with a sharp threshold: r = 4 is the minimum regularity degree forcing a 3-regular subgraph. K₄ and the Petersen graph show r = 3 fails. The Alon-Friedland-Kalai strengthening (4-regular + one edge suffices) reveals remarkable structural rigidity in 4-regular graphs. The general threshold problem for k-regular subgraphs remains open for k ≥ 4."
     },
-    "relatedProofs": [
-      {
-        "id": "erdos-577",
-        "relationship": "Problem #577 asks about vertex-disjoint 4-cycles in dense graphs (Wang 2010). Both study extraction of regular substructures from graphs satisfying degree conditions"
-      },
-      {
-        "id": "erdos-64",
-        "relationship": "Problem #64 asks about power-of-two cycles under minimum degree ≥ 3 (open, $1000). Both concern structural consequences of degree constraints, with similar threshold phenomena"
-      },
-      {
-        "id": "erdos-65",
-        "relationship": "Problem #65 studies cycle length diversity in dense graphs. Both involve extracting cycle-based substructures from graphs with degree/regularity constraints"
-      },
-      {
-        "id": "erdos-716",
-        "relationship": "Problem #716 (Ruzsa-Szemerédi) uses the regularity lemma for triangle structure in graphs. Both concern regular structure extraction, though #716 works in the hypergraph setting"
-      }
-    ],
     "mathlibDependencies": [
       {
         "theorem": "Finset.filter",

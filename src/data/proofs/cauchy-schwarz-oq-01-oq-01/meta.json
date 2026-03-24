@@ -58,28 +58,6 @@
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
-    "crossReferences": [
-      {
-        "proofId": "cauchy-schwarz",
-        "relationship": "extends",
-        "description": "The base Cauchy-Schwarz inequality; this file characterizes when equality holds"
-      },
-      {
-        "proofId": "cauchy-schwarz-oq-01",
-        "relationship": "answers",
-        "description": "Parent open question asking whether CS equality extends to complex inner product spaces"
-      },
-      {
-        "proofId": "cauchy-schwarz-oq-03",
-        "relationship": "related",
-        "description": "Hölder's inequality as a generalization of CS; analogous equality conditions exist"
-      },
-      {
-        "proofId": "cauchy-schwarz-integral",
-        "relationship": "related",
-        "description": "Integral form of CS; the equality condition (f = cg a.e.) is the continuous analogue"
-      }
-    ],
     "lineCount": 185,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0"

@@ -24,13 +24,6 @@
     "relatedProblems": [
       1039
     ],
-    "relatedProofs": [
-      {
-        "id": "erdos-1039",
-        "relationship": "sibling",
-        "description": "Related Erdős problem on polynomial root distribution and extremal configurations"
-      }
-    ],
     "axiomCount": 8,
     "assumptions": "8 axiom declarations: transfiniteDiameter_eq (definition of transfinite diameter as limit of nth root of max product), problem_open (open status marker), lineSegment_determined and disc_determined (transfinite diameters for specific sets), lineSegment_diameter and disc_diameter (known diameter values for segments and discs), small_diameter_disc (disc containment for small transfinite diameter), erdos_netanyahu (Erdős-Netanyahu quantitative measure bound for sublevel sets). These encode established results from potential theory (Fekete 1923, Erdős-Herzog-Piranian 1958, Erdős-Netanyahu 1960) and the open status of the conjecture.",
     "prerequisites": [
@@ -38,12 +31,6 @@
       "Potential theory: transfinite diameter and logarithmic capacity",
       "Measure theory: Lebesgue measure in the complex plane",
       "Approximation theory: Chebyshev polynomials and extremal polynomials"
-    ],
-    "crossReferences": [
-      {
-        "target": "erdos-1039",
-        "context": "Both problems concern extremal properties of polynomial configurations in the complex plane"
-      }
     ],
     "lineCount": 249,
     "mathlib_version": "4.26.0"

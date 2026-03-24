@@ -54,18 +54,6 @@
       "Similar definition and similarity_preserves_ramsey axiom",
       "erdos_173_summary combining all results"
     ],
-    "crossReferences": [
-      {
-        "proofId": "ramseys-theorem",
-        "relationship": "extends",
-        "description": "Erdős #173 extends Ramsey theory from graphs to Euclidean geometry: instead of monochromatic cliques in colored complete graphs, it asks for monochromatic congruent copies in colored ℝ²."
-      },
-      {
-        "proofId": "erdos-szekeres",
-        "relationship": "related",
-        "description": "Both results concern the emergence of ordered structure (monotonic subsequences vs monochromatic geometric copies) in sufficiently large combinatorial objects."
-      }
-    ],
     "axiomCount": 4,
     "lineCount": 234,
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."

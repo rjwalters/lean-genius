@@ -49,32 +49,6 @@
     ],
     "dateAdded": "2026-03-22",
     "axiomCount": 0,
-    "crossReferences": [
-      {
-        "proofId": "binomial-theorem",
-        "title": "The Binomial Theorem",
-        "relationship": "parent",
-        "note": "The binomial theorem (1+X)^n = Σ C(n,k) X^k provides the coefficient extraction that connects polynomial identities to combinatorial ones"
-      },
-      {
-        "proofId": "arithmetic-series-oq-02-oq-02",
-        "title": "2D Hockey Stick Identity",
-        "relationship": "related",
-        "note": "Uses the parallel Vandermonde identity Σ_{i+j=n} C(i+a,a)·C(j+b,b) = C(n+a+b+1,a+b+1), a shifted variant of the standard Vandermonde"
-      },
-      {
-        "proofId": "combinations-formula",
-        "title": "Formula for the Number of Combinations",
-        "relationship": "uses",
-        "note": "The foundation C(n,k) = n!/(k!(n-k)!) upon which the identity is built"
-      },
-      {
-        "proofId": "pascals-hexagon",
-        "title": "Pascal's Hexagon Theorem",
-        "relationship": "related",
-        "note": "Another deep structural property of Pascal's triangle derived from binomial coefficient identities"
-      }
-    ],
     "lineCount": 111,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0"

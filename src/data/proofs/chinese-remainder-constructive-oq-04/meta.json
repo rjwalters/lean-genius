@@ -78,38 +78,6 @@
         "note": "Modern treatment generalizing CRT to non-coprime moduli with compatibility conditions"
       }
     ],
-    "crossReferences": [
-      {
-        "proofId": "chinese-remainder-constructive",
-        "relationship": "extends",
-        "description": "Generalizes the parent's crt_three and crt_four from hardcoded sizes to arbitrary-length lists via induction"
-      },
-      {
-        "proofId": "bezout-identity",
-        "relationship": "uses",
-        "description": "Bezout coefficients provide the constructive solution witness via Nat.chineseRemainder at each inductive step"
-      },
-      {
-        "proofId": "chinese-remainder-non-coprime",
-        "relationship": "complementary",
-        "description": "Handles the non-coprime case where gcd(m,n) > 1 with compatibility conditions — the complementary extension direction to this proof's arbitrary-length generalization"
-      },
-      {
-        "proofId": "gcd-algorithm",
-        "relationship": "foundational",
-        "description": "The Euclidean algorithm computes GCDs that determine coprimality — the coprime_prod_of_forall lemma ultimately rests on GCD computations"
-      },
-      {
-        "proofId": "euler-totient",
-        "relationship": "related",
-        "description": "Euler's totient function is multiplicative for coprime arguments: φ(mn) = φ(m)φ(n) when gcd(m,n)=1. CRT provides the structural explanation: (Z/mnZ)× ≅ (Z/mZ)× × (Z/nZ)× for coprime m,n"
-      },
-      {
-        "proofId": "fundamental-arithmetic",
-        "relationship": "foundational",
-        "description": "Unique prime factorization guarantees that distinct primes are pairwise coprime — the standard source of CRT-applicable moduli systems"
-      }
-    ],
     "dateAdded": "2026-03-23",
     "axiomCount": 0,
     "lineCount": 156,

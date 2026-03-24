@@ -51,16 +51,6 @@
       "erdos_szemeredi_upper: F(A,X,3) ≪ X^{1/3} log X for all strictly increasing A — Erdős-Szemerédi (1992)",
       "erdos_szemeredi_lower: There exists A with F(A,X,3) ≫ X^{1/3} log X infinitely often — Erdős-Szemerédi (1992)"
     ],
-    "crossReferences": [
-      {
-        "targetId": "erdos-486",
-        "relationship": "thematic",
-        "description": "Both problems study density and counting functions for arithmetically-defined subsets of integers"
-      }
-    ],
-    "relatedProofs": [
-      "erdos-486"
-    ],
     "dateAdded": "2025-12-22",
     "prerequisites": [
       "LCM and GCD from Mathlib",

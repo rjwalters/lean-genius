@@ -43,16 +43,6 @@
       "Proved uniqueProductCount_empty_left",
       "Stated ExactOrderConjecture and van_doorn_implies_lower"
     ],
-    "crossReferences": [
-      {
-        "targetProof": "erdos-490",
-        "relationship": "Problem #490 asks whether |A||B| ≪ N²/log N when all products ab are distinct. This is the 'all-unique' case of Problem #896: if every product has unique representation, then F(A,B) = |A·B| and the question reduces to bounding the product set. Szemerédi's 1976 solution confirms this, providing context for the #896 lower bound."
-      },
-      {
-        "targetProof": "szemeredi-theorem",
-        "relationship": "Szemerédi's regularity lemma and combinatorial techniques underpin many results in multiplicative combinatorics. The counting arguments used in Van Doorn's bounds share structural similarities with regularity-based approaches to arithmetic structure in dense sets."
-      }
-    ],
     "axiomCount": 3,
     "lineCount": 146,
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."

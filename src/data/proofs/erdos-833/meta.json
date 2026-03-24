@@ -64,36 +64,6 @@
       "f_2_achieved axiom: triangle achieves f(2)=2",
       "contrapositive_form axiom: low degree implies 2-colorable"
     ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-901",
-        "relationship": "Both use the Lovász Local Lemma for hypergraph 2-colorability (Property B); erdos-901 studies minimum edges for non-2-colorable hypergraphs"
-      },
-      {
-        "proofId": "erdos-1022",
-        "relationship": "Property B under local sparseness — the LLL dependency condition that erdos-833 exploits for its contrapositive argument"
-      },
-      {
-        "proofId": "erdos-1027",
-        "relationship": "Abundance of 2-colorings for bounded uniform families, quantifying the probabilistic argument underlying erdos-833"
-      },
-      {
-        "proofId": "erdos-58",
-        "relationship": "Chromatic number bounds for graphs; erdos-833 extends chromatic constraints to hypergraphs"
-      },
-      {
-        "proofId": "erdos-799",
-        "relationship": "Uses the Lovász Local Lemma for list coloring of random graphs — same probabilistic technique as erdos-833"
-      },
-      {
-        "proofId": "erdos-629",
-        "relationship": "List coloring and choosability bridge to Property B via the inequality m(k) ≤ n(k) ≤ m(k+1)"
-      },
-      {
-        "proofId": "erdos-165",
-        "relationship": "Ramsey number R(3,k) bounds use the probabilistic method; related extremal combinatorics"
-      }
-    ],
     "axiomCount": 11,
     "lineCount": 265,
     "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."

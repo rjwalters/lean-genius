@@ -163,34 +163,34 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-1043",
       "relationship": "companion",
-      "description": "Erdős #1043 concerns projections of polynomial level sets {z : |f(z)| ≤ 1} — the same sublevel set studied here. Pommerenke's 1961 counterexample there parallels his 1959 disc-containment theorem here."
+      "description": "Erdős #1043 concerns projections of polynomial level sets {z : |f(z)| ≤ 1} — the same sublevel set studied here. Pommerenke's 1961 counterexample there parallels his 1959 disc-containment theorem here.",
+      "targetId": "erdos-1043"
     },
     {
-      "target": "erdos-1044",
       "relationship": "companion",
-      "description": "Erdős #1044 studies the boundary length of polynomial level sets for polynomials with roots in the unit disk — a closely related geometric question about lemniscates of monic polynomials."
+      "description": "Erdős #1044 studies the boundary length of polynomial level sets for polynomials with roots in the unit disk — a closely related geometric question about lemniscates of monic polynomials.",
+      "targetId": "erdos-1044"
     },
     {
-      "target": "erdos-1047",
       "relationship": "companion",
-      "description": "Erdős #1047 asks whether connected components of {z : |f(z)| ≤ c} must be convex for small c. It shares the lemniscate connectivity theme and the role of Pommerenke as key contributor."
+      "description": "Erdős #1047 asks whether connected components of {z : |f(z)| ≤ c} must be convex for small c. It shares the lemniscate connectivity theme and the role of Pommerenke as key contributor.",
+      "targetId": "erdos-1047"
     },
     {
-      "target": "erdos-1048",
       "relationship": "companion",
-      "description": "Erdős #1048 asks about the diameter of L(f,1) = {z : |f(z)| < 1} for monic f with roots near the origin — a direct diameter question complementing the disc-containment (radius 2) result here."
+      "description": "Erdős #1048 asks about the diameter of L(f,1) = {z : |f(z)| < 1} for monic f with roots near the origin — a direct diameter question complementing the disc-containment (radius 2) result here.",
+      "targetId": "erdos-1048"
     },
     {
-      "target": "erdos-1045",
       "relationship": "related",
-      "description": "Erdős #1045 maximizes the product of pairwise distances among n complex points, intersecting themes of complex geometry and the transfinite diameter that underlies the capacity-1 lemniscate setting."
+      "description": "Erdős #1045 maximizes the product of pairwise distances among n complex points, intersecting themes of complex geometry and the transfinite diameter that underlies the capacity-1 lemniscate setting.",
+      "targetId": "erdos-1045"
     },
     {
-      "target": "fundamental-theorem-algebra",
       "relationship": "prerequisite",
-      "description": "The Fundamental Theorem of Algebra guarantees that monic degree-n polynomials over ℂ split completely; the root multiset and centroid used in Pommerenke's theorem rely on this existence of roots."
+      "description": "The Fundamental Theorem of Algebra guarantees that monic degree-n polynomials over ℂ split completely; the root multiset and centroid used in Pommerenke's theorem rely on this existence of roots.",
+      "targetId": "fundamental-theorem-algebra"
     }
   ],
   "relatedProofs": [

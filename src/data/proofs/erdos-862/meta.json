@@ -49,20 +49,6 @@
       "question2_positive and question1_negative: answers to both questions",
       "IsBhSet: B_h sequence generalization"
     ],
-    "crossReferences": [
-      {
-        "targetProof": "erdos-857",
-        "relationship": "Both problems were resolved using the hypergraph container method of Saxton-Thomason (2015). Problem #857 concerns sunflower-free families; #862 concerns Sidon sets, but both require counting independent sets in structured hypergraphs."
-      },
-      {
-        "targetProof": "ramseys-theorem",
-        "relationship": "Sidon sets are a Ramsey-type object: the condition that all pairwise sums are distinct is an avoidance condition on a 4-uniform hypergraph, analogous to how Ramsey theory avoids monochromatic complete subgraphs."
-      },
-      {
-        "targetProof": "combinations-formula",
-        "relationship": "Binomial coefficients appear in counting Sidon subsets and in the container method's probabilistic arguments about random subsets of {1,...,N}."
-      }
-    ],
     "axiomCount": 11,
     "lineCount": 171,
     "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",

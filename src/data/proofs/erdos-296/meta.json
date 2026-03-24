@@ -65,28 +65,6 @@
       "k_not_sublogarithmic: NOT o(log N) (proved, answers Erdős's question)",
       "k_infinitely_often_large: infinitely many N with k(N) > ε·log N (proved)"
     ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-282",
-        "relationship": "Greedy algorithm for Egyptian fractions — the greedy approach is also used in Hunter-Sawhney's packing construction"
-      },
-      {
-        "proofId": "erdos-283",
-        "relationship": "Egyptian fractions with polynomial denominators — variant denominator constraints on unit fraction sums"
-      },
-      {
-        "proofId": "erdos-284",
-        "relationship": "Maximum first denominator for Egyptian fractions of 1 — quantitative structure of unit sets"
-      },
-      {
-        "proofId": "erdos-285",
-        "relationship": "Egyptian fractions asymptotics — counting representations, complementary to packing"
-      },
-      {
-        "proofId": "erdos-313",
-        "relationship": "Primary pseudoperfect numbers — special Egyptian fractions of 1 with prime denominators"
-      }
-    ],
     "axiomCount": 6,
     "lineCount": 173,
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."

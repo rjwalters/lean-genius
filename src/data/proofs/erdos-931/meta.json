@@ -20,36 +20,6 @@
     "erdosNumber": 931,
     "erdosUrl": "https://erdosproblems.com/931",
     "erdosProblemStatus": "open",
-    "crossReferences": [
-      {
-        "proofId": "erdos-388",
-        "relationship": "Directly related: Problem #388 asks when products of consecutive integers from disjoint blocks can be equal, the stronger condition of product equality vs. prime factor equality"
-      },
-      {
-        "proofId": "erdos-929",
-        "relationship": "Studies smooth numbers in short intervals; smooth blocks of k consecutive integers require all factors bounded, complementary to studying which primes appear"
-      },
-      {
-        "proofId": "erdos-930",
-        "relationship": "Studies whether products of disjoint intervals of consecutive integers can be perfect powers, another structural question about consecutive-integer products"
-      },
-      {
-        "proofId": "erdos-933",
-        "relationship": "Examines the smooth part of products of consecutive integers n(n+1); shares the theme of extracting prime factor structure from consecutive products"
-      },
-      {
-        "proofId": "erdos-928",
-        "relationship": "Studies density of consecutive smooth number pairs; bounded prime factors in consecutive integers is the smoothness analogue of this problem"
-      },
-      {
-        "proofId": "erdos-935",
-        "relationship": "Studies the powerful part of products of consecutive integers, analyzing prime power structure rather than prime support"
-      },
-      {
-        "proofId": "prime-number-theorem",
-        "relationship": "Foundation: the distribution of primes governs how prime factor sets of consecutive products can overlap across distant blocks"
-      }
-    ],
     "axiomCount": 2,
     "lineCount": 199,
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",

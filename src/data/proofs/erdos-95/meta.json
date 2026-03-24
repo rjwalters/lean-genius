@@ -53,18 +53,6 @@
       "convex_polygon_case: Fishburn/Altman axiom",
       "erdos_95: combined main theorem"
     ],
-    "crossReferences": [
-      {
-        "targetId": "erdos-94",
-        "relationship": "companion",
-        "description": "Problem #94 is the main distinct distances conjecture (Ω(n/log n) distinct distances), solved in the same Guth-Katz 2015 paper. The squared multiplicity sum ∑f(d)² is dual to the distinct distances count via Cauchy-Schwarz"
-      },
-      {
-        "targetId": "erdos-93",
-        "relationship": "specialization",
-        "description": "Problem #93 studies distinct distances for convex polygons, corresponding to the convex_polygon_case axiom in this formalization where the O(n³) bound holds without the log factor"
-      }
-    ],
     "axiomCount": 2,
     "lineCount": 186,
     "assumptions": "2 axiom(s) and 2 sorry(s). See the Lean source for details."

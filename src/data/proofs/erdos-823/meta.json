@@ -72,36 +72,6 @@
       "Perfect number examples: σ(6)=12, σ(28)=56",
       "erdos_823_statement: complete resolution (proved)"
     ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-824",
-        "relationship": "Coprime pairs with equal σ: counts h(x) of coprime (a,b) with σ(a) = σ(b), proved h(x)/x → ∞ (Pollack-Pomerance 2016)"
-      },
-      {
-        "proofId": "erdos-48",
-        "relationship": "Pairs with φ(n) = σ(m): infinitely many exist (Ford-Luca-Pomerance 2010) — connects the two functions"
-      },
-      {
-        "proofId": "erdos-830",
-        "relationship": "Amicable pairs (σ(n)-n = m, σ(m)-m = n): a related problem on the structure of σ"
-      },
-      {
-        "proofId": "perfect-numbers",
-        "relationship": "Euclid-Euler theorem on perfect numbers (σ(n) = 2n); σ-fiber structure"
-      },
-      {
-        "proofId": "euler-totient",
-        "relationship": "Euler's totient function formalization; the 'easy' φ-analogue mentioned by Erdős"
-      },
-      {
-        "proofId": "fundamental-arithmetic",
-        "relationship": "Fundamental Theorem of Arithmetic — prime factorization underlying σ's multiplicativity"
-      },
-      {
-        "proofId": "erdos-826",
-        "relationship": "Divisor function growth along shifts — another problem on arithmetic function behavior"
-      }
-    ],
     "relatedProblems": [
       "erdos-824",
       "erdos-48",

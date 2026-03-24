@@ -60,18 +60,6 @@
       "erdos_853_weak: weak conjecture r(x) → ∞",
       "erdos_853_strong: strong conjecture r(x)/log x → ∞"
     ],
-    "crossReferences": [
-      {
-        "targetId": "prime-number-theorem",
-        "relationship": "foundational",
-        "description": "PNT gives average gap size ~log x, providing context for the strong conjecture r(x)/log x → ∞ which asks for the smallest missing gap to grow faster than the average gap"
-      },
-      {
-        "targetId": "twin-primes-special",
-        "relationship": "thematic",
-        "description": "Twin primes (gap = 2) are the smallest possible gap; Problem 853 asks whether ALL even gaps eventually appear, generalizing the twin prime question to arbitrary even gaps"
-      }
-    ],
     "axiomCount": 9,
     "lineCount": 237,
     "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."

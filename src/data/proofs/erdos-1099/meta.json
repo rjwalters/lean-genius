@@ -166,34 +166,34 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-673",
       "relationship": "sibling",
-      "description": "Erdős #673 studies G(n) = Σ dᵢ/dᵢ₊₁ (inverse consecutive ratios), directly complementary to the ratio sums in #1099. Both measure divisor gap regularity from different angles, and both were solved by analyzing smoothly-distributed divisors."
+      "description": "Erdős #673 studies G(n) = Σ dᵢ/dᵢ₊₁ (inverse consecutive ratios), directly complementary to the ratio sums in #1099. Both measure divisor gap regularity from different angles, and both were solved by analyzing smoothly-distributed divisors.",
+      "targetId": "erdos-673"
     },
     {
-      "target": "erdos-1100",
       "relationship": "sibling",
-      "description": "Erdős #1100 investigates coprimality of consecutive divisors τ⊥(n), another structural property of the divisor sequence d₁ < d₂ < ... < d_τ(n). Both problems study how consecutive divisors relate to each other and both were posed in the same period."
+      "description": "Erdős #1100 investigates coprimality of consecutive divisors τ⊥(n), another structural property of the divisor sequence d₁ < d₂ < ... < d_τ(n). Both problems study how consecutive divisors relate to each other and both were posed in the same period.",
+      "targetId": "erdos-1100"
     },
     {
-      "target": "erdos-1049",
       "relationship": "related",
-      "description": "Erdős #1049 concerns the irrationality of Σ τ(n)/t^n where τ(n) is the divisor count, the same τ used in #1099. Both problems exploit properties of the divisor function τ and its analytic behavior."
+      "description": "Erdős #1049 concerns the irrationality of Σ τ(n)/t^n where τ(n) is the divisor count, the same τ used in #1099. Both problems exploit properties of the divisor function τ and its analytic behavior.",
+      "targetId": "erdos-1049"
     },
     {
-      "target": "erdos-1062",
       "relationship": "related",
-      "description": "Erdős #1062 asks for the maximum antichain under divisibility in {1,…,n}. The structure of divisor chains and antichains is intimately connected to how consecutive divisors are spaced, the subject of #1099."
+      "description": "Erdős #1062 asks for the maximum antichain under divisibility in {1,…,n}. The structure of divisor chains and antichains is intimately connected to how consecutive divisors are spaced, the subject of #1099.",
+      "targetId": "erdos-1062"
     },
     {
-      "target": "erdos-1054",
       "relationship": "related",
-      "description": "Erdős #1054 studies f(n) = minimum m such that n equals the sum of the k smallest divisors of m. Both problems concern extremal properties of the ordered divisor sequence and the smallest divisors of integers."
+      "description": "Erdős #1054 studies f(n) = minimum m such that n equals the sum of the k smallest divisors of m. Both problems concern extremal properties of the ordered divisor sequence and the smallest divisors of integers.",
+      "targetId": "erdos-1054"
     },
     {
-      "target": "erdos-1101",
       "relationship": "related",
-      "description": "Erdős #1101 studies gaps in sieved integers (integers not divisible by elements of a pairwise coprime sequence). The gap structure of sieved sets is closely related to how smoothly divisors can be distributed, the core of Vose's construction in #1099."
+      "description": "Erdős #1101 studies gaps in sieved integers (integers not divisible by elements of a pairwise coprime sequence). The gap structure of sieved sets is closely related to how smoothly divisors can be distributed, the core of Vose's construction in #1099.",
+      "targetId": "erdos-1101"
     }
   ],
   "relatedProofs": [

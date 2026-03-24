@@ -51,32 +51,6 @@
       "small_cases_exist theorem: n = 4..8 work",
       "ErdosConjecture217: impossibility for large n"
     ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-98",
-        "relationship": "Directly related: Problem #98 asks for the minimum number of distinct distances among n points in general position. Problem #217 constrains the multiplicity pattern of those distances."
-      },
-      {
-        "proofId": "erdos-94",
-        "relationship": "Studies distance multiplicities in convex polygons — a closely related extremal question about how distances distribute in structured point sets."
-      },
-      {
-        "proofId": "erdos-95",
-        "relationship": "Analyzes the sum of squared distance multiplicities, another way to measure how 'spread out' the distance spectrum is."
-      },
-      {
-        "proofId": "erdos-213",
-        "relationship": "Asks whether n points in general position (no 3 collinear, no 4 concyclic) can have all pairwise distances be integers. Shares identical general position constraints."
-      },
-      {
-        "proofId": "erdos-90",
-        "relationship": "The unit distance problem: foundational distance-counting problem that motivates the study of distance multiplicities."
-      },
-      {
-        "proofId": "erdos-91",
-        "relationship": "Studies uniqueness of optimal distance configurations — relevant since Problem #217 asks whether distance patterns can be realized at all."
-      }
-    ],
     "axiomCount": 4,
     "lineCount": 100,
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."

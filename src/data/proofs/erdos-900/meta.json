@@ -49,16 +49,6 @@
       "Axiomatization of the Ajtai-Komlós-Szemerédi theorem",
       "Subcritical regime analysis (O(log n) paths)"
     ],
-    "crossReferences": [
-      {
-        "targetProof": "ramseys-theorem",
-        "relationship": "Ramsey theory and random graph theory are deeply intertwined: the Erdős-Rényi model was partly motivated by probabilistic lower bounds for Ramsey numbers. Both problems concern structure emerging from combinatorial constraints — Ramsey from coloring, random graphs from probability."
-      },
-      {
-        "targetProof": "randomized-maxcut",
-        "relationship": "Both problems study random graphs and the probabilistic method. The randomized MaxCut algorithm exploits the same expansion properties of random graphs that the AKS theorem uses to find long paths. Both demonstrate that random graphs have near-optimal combinatorial properties."
-      }
-    ],
     "relatedProblems": [],
     "axiomCount": 19,
     "lineCount": 285,

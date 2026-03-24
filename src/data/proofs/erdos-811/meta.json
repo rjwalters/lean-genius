@@ -53,24 +53,6 @@
       "ErdosChallenge: C_6 or K_4 in balanced 6-colorings",
       "erdos_811: main theorem combining Clemen-Wagner and Axenovich-Clemen"
     ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-809",
-        "relationship": "Companion problem on rainbow colorings of odd cycles; both concern which subgraphs are unavoidable as rainbow copies in edge-colorings"
-      },
-      {
-        "proofId": "erdos-810",
-        "relationship": "Related rainbow C₄ problem in dense edge-colored graphs; both explore rainbow subgraph existence under structural constraints on colorings"
-      },
-      {
-        "proofId": "erdos-812",
-        "relationship": "Consecutive Ramsey number problem in the same Erdős collection; shares Ramsey-theoretic foundations"
-      },
-      {
-        "proofId": "erdos-129",
-        "relationship": "Ramsey numbers avoiding monochromatic cliques; both concern unavoidable substructures under coloring constraints"
-      }
-    ],
     "axiomCount": 9,
     "lineCount": 193,
     "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."

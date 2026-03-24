@@ -67,23 +67,6 @@
       "erdos1057Conjecture, pomeranceConjecture: formal conjectures"
     ],
     "dateAdded": "2026-01-19",
-    "crossReferences": [
-      {
-        "id": "subset-count",
-        "relationship": "uses similar technique",
-        "description": "Foundational counting technique; both use Finset.filter for cardinality arguments"
-      },
-      {
-        "id": "fermats-little-theorem",
-        "relationship": "foundational result",
-        "description": "Fermat's little theorem is the basis: Carmichael numbers are composites that satisfy a^n ≡ a (mod n) for all a, the same congruence primes satisfy by Fermat's theorem"
-      },
-      {
-        "id": "erdos-1166",
-        "relationship": "related Erdős problem",
-        "description": "Erdős #1166 on pseudoprime counting also studies composites that mimic primes under modular exponentiation tests"
-      }
-    ],
     "axiomCount": 6,
     "lineCount": 1113,
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."

@@ -67,16 +67,6 @@
       "ErdosQuestion664_Original: balanced block design version",
       "minimum_blocking_set_size: Bruen's bound q + √q + 1 for projective planes"
     ],
-    "relatedProofs": [
-      {
-        "id": "erdos-1159",
-        "relationship": "Stronger variant: #1159 asks whether O(log n)-bounded blocking sets exist in projective planes specifically, while #664 asked about O(1)-bounded blockers in general near-linear families"
-      },
-      {
-        "id": "erdos-661",
-        "relationship": "Both involve extremal questions about structured combinatorial configurations; #661 studies bipartite distinct distances while #664 studies blocking sets in near-linear families"
-      }
-    ],
     "axiomCount": 10,
     "lineCount": 281,
     "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."

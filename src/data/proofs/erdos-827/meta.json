@@ -51,20 +51,6 @@
       "erdosClaimedBound: Erdős's original (incorrect) bound",
       "nk_three, nk_monotone, nk_ge_k: basic properties"
     ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-97",
-        "relationship": "Both concern geometric configurations in the plane; #97 studies equidistant vertices in convex polygons, sharing the theme of distance/radius constraints on point sets"
-      },
-      {
-        "proofId": "erdos-100",
-        "relationship": "Both concern point sets with restricted distance properties; #100 studies point sets with restricted distances, while #827 studies circumradii distinctness"
-      },
-      {
-        "proofId": "erdos-104",
-        "relationship": "Both involve circles determined by point triples; #104 studies unit circles through three points, connecting to the circumradius framework"
-      }
-    ],
     "axiomCount": 7,
     "lineCount": 111,
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."

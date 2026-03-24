@@ -48,12 +48,6 @@
       "Connection to Ramsey numbers R(3,k)",
       "Generalization to f_{s,t}(n) using Mathlib CliqueFree"
     ],
-    "relatedProofs": [
-      {
-        "id": "ramseys-theorem",
-        "relationship": "The Erdős-Rogers function f(n) is intimately connected to Ramsey numbers R(3,k). The lower bound uses Ramsey-theoretic arguments, and the axiom `ramsey_3k_bound` formalizes Kim's theorem R(3,k) = Θ(k²/log k)."
-      }
-    ],
     "axiomCount": 10,
     "assumptions": "10 axiom declarations: trivial_lower_bound (f(n) >= c*sqrt(n)), shearer_lower_bound (f(n) >> sqrt(n)*sqrt(log n)/log log n), bollobas_hind_upper (f(n) << n^{7/10+o(1)}), krivelevich_upper (f(n) << n^{2/3}*(log n)^{1/3}), wolfovitz_upper (f(n) << sqrt(n)*(log n)^120), mubayi_verstraete_upper (f(n) << sqrt(n)*log n), ramsey_3k_bound (R(3,k) ~ k^2/log k), probabilistic_upper_bound (near-tight construction), dependent_random_choice_lower (c*sqrt(n) baseline), ramsey_independent_set (f_{s,2}(n) ~ n^{1/(s-1)})",
     "lineCount": 314,

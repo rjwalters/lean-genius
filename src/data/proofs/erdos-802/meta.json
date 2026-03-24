@@ -55,28 +55,6 @@
       "conjecture_true_for_r3: derived theorem",
       "alon_1996: local chromatic version"
     ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-800",
-        "relationship": "Both concern Ramsey-theoretic properties of sparse graph families; #800 treats subdivided graphs, #802 treats K_r-free graphs"
-      },
-      {
-        "proofId": "erdos-73",
-        "relationship": "Both concern independent sets in graphs with structural constraints"
-      },
-      {
-        "proofId": "erdos-750",
-        "relationship": "Related independent set problem in the Erdős collection"
-      },
-      {
-        "proofId": "erdos-107",
-        "relationship": "Ramsey theory connection — the AKS bound implies R(3,k) ≥ ck²/log k"
-      },
-      {
-        "proofId": "erdos-799",
-        "relationship": "Both involve the probabilistic method for graph coloring/independence in random-like settings"
-      }
-    ],
     "axiomCount": 7,
     "lineCount": 203,
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."

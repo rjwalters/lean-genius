@@ -49,23 +49,6 @@
       "even_card_odd_degree_vertices: general graph theory result — any finite simple graph has even count of odd-degree vertices",
       "tucker_parity_from_graph: strengthened Tucker parity eliminating handshaking hypothesis via SimpleGraph structure"
     ],
-    "relatedProofs": [
-      {
-        "id": "borsuk-ulam",
-        "relationship": "extends",
-        "description": "The Borsuk-Ulam theorem — Tucker's lemma is its combinatorial equivalent"
-      },
-      {
-        "id": "borsuk-ulam-oq-03",
-        "relationship": "extends",
-        "description": "Constructive Borsuk-Ulam and equivalences"
-      },
-      {
-        "id": "borsuk-ulam-oq-03-oq-01",
-        "relationship": "extends",
-        "description": "Quantitative Borsuk-Ulam and 1D Tucker (parent file providing boundary result)"
-      }
-    ],
     "lineCount": 434,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0"

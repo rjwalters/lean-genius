@@ -43,24 +43,6 @@
       ],
       "significance": "One of the most prominent open problems in extremal graph theory, carrying a $1000 Erdős prize. The set {2^k : k ≥ 2} is exponentially sparse yet conjectured to be unavoidable for minimum degree 3. Liu-Montgomery (2020) resolved the large-degree case by showing every graph with δ(G) ≥ D contains all even cycle lengths in a geometric range, but the critical case δ = 3 remains completely open. The difficulty is concentrated entirely in the sparse regime."
     },
-    "relatedProofs": [
-      {
-        "id": "erdos-63",
-        "relationship": "Problem #63 (cycles of length 2^n in infinite chromatic graphs) was solved by Liu-Montgomery using the same even-cycle theorem that is central to #64. The proof chains de Bruijn-Erdős compactness with Liu-Montgomery's cycle spectrum result"
-      },
-      {
-        "id": "erdos-65",
-        "relationship": "Problem #65 studies cycle length diversity in dense graphs via Σ 1/aᵢ. Both involve Gyárfás's work on cycle structure and show that edge density forces specific cycle lengths"
-      },
-      {
-        "id": "erdos-705",
-        "relationship": "Problem #705 asks whether large girth in unit distance graphs forces χ ≤ 3. Both concern the interplay between cycle constraints (specific lengths vs. minimum length) and graph parameters"
-      },
-      {
-        "id": "erdos-704",
-        "relationship": "Problem #704 studies chromatic numbers of unit distance graphs in ℝⁿ. The Frankl-Wilson exponential bounds used there also appear in the exponential upper bound for multi-distance chromatic numbers (#706)"
-      }
-    ],
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",

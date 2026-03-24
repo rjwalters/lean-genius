@@ -49,32 +49,6 @@
       "Triangle-free base case validation",
       "Special cases: path, cycle, complete, bipartite graphs"
     ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-65",
-        "relationship": "Cycle lengths in dense graphs: related extremal question about how graph density forces structural properties like short cycles"
-      },
-      {
-        "proofId": "erdos-914",
-        "relationship": "Hajnal-Szemerédi theorem on vertex-disjoint cliques: uses similar minimum degree thresholds to force graph structure"
-      },
-      {
-        "proofId": "erdos-60",
-        "relationship": "Supersaturation of 4-cycles: extremal density conditions for subgraph appearance, related to clique-free constraints"
-      },
-      {
-        "proofId": "ramseys-theorem",
-        "relationship": "Ramsey theory: foundational for understanding clique-free graph structure and the trade-off between clique number and independence number"
-      },
-      {
-        "proofId": "friendship-theorem",
-        "relationship": "Graph structure with universal vertex: spectral methods for analyzing diameter and degree in structured graphs"
-      },
-      {
-        "proofId": "four-color-theorem",
-        "relationship": "Graph coloring: the verified cases of the amended conjecture require chromatic number assumptions, connecting to graph coloring theory"
-      }
-    ],
     "axiomCount": 6,
     "lineCount": 268,
     "assumptions": "6 axiom(s) and 16 sorry(s). See the Lean source for details.",

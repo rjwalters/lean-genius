@@ -68,28 +68,6 @@
       "Under optimality conjecture, successive differences equal d+1",
       "Linear lower bound from rigidity and quadratic upper bound from complete graphs"
     ],
-    "relatedProofs": [
-      {
-        "id": "erdos-1007",
-        "relationship": "parent",
-        "description": "Parent formalization of Erdős Problem #1007; this OQ-01 extends the investigation to the general minEdges(d) function"
-      },
-      {
-        "id": "binomial-theorem",
-        "relationship": "uses",
-        "description": "Binomial coefficients C(d+1,2) are central to the analysis; the quadratic upper bound and deficiency function both rely on binomial coefficient identities"
-      },
-      {
-        "id": "ramseys-theorem",
-        "relationship": "related",
-        "description": "Ramsey theory provides another extremal function (R(s,t)) where exact values are known for small parameters and open for large ones, paralleling the structure of minEdges(d)"
-      },
-      {
-        "id": "erdos-924",
-        "relationship": "related",
-        "description": "The Folkman–Nešetřil–Rödl theorem concerns Ramsey properties of graphs avoiding large cliques; both problems study the interplay between graph structure and extremal constraints"
-      }
-    ],
     "axiomCount": 0,
     "lineCount": 1337,
     "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",

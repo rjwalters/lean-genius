@@ -66,16 +66,6 @@
       "alon_tarsi_theorem, outerplanar_3_choosable, planar_girth_5_choosable: restricted bounds",
       "erdos_631_status: complete resolution ⟨Thomassen, Voigt⟩ (proved from axioms)"
     ],
-    "relatedProofs": [
-      {
-        "id": "erdos-58",
-        "relationship": "Both concern chromatic numbers of structured graph classes; #58 studies chromatic number of triangle-free graphs while #631 studies list chromatic number of planar graphs"
-      },
-      {
-        "id": "erdos-664",
-        "relationship": "Both are resolved Erdős combinatorics problems; #664 studies blocking sets (disproved by Alon) while #631 studies list coloring (proved by Thomassen, tight by Voigt)"
-      }
-    ],
     "axiomCount": 17,
     "lineCount": 277,
     "assumptions": "17 axiom(s) and 11 sorry(s). See the Lean source for details.",

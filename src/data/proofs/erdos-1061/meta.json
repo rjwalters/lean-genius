@@ -162,34 +162,34 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-1060",
       "relationship": "sibling",
-      "description": "Both problems study equations involving σ(k) and counting solution pairs; #1060 asks how many k satisfy k·σ(k) = n while #1061 asks about pairs with σ(a)+σ(b) = σ(a+b)"
+      "description": "Both problems study equations involving σ(k) and counting solution pairs; #1060 asks how many k satisfy k·σ(k) = n while #1061 asks about pairs with σ(a)+σ(b) = σ(a+b)",
+      "targetId": "erdos-1060"
     },
     {
-      "target": "erdos-1052",
       "relationship": "related",
-      "description": "Unitary perfect numbers satisfy σ*(n) = 2n; the additive divisor equation σ(a)+σ(b) = σ(a+b) belongs to the same family of problems probing when σ achieves prescribed values"
+      "description": "Unitary perfect numbers satisfy σ*(n) = 2n; the additive divisor equation σ(a)+σ(b) = σ(a+b) belongs to the same family of problems probing when σ achieves prescribed values",
+      "targetId": "erdos-1052"
     },
     {
-      "target": "erdos-1053",
       "relationship": "related",
-      "description": "k-perfect numbers satisfy σ(n) = k·n; both problems ask about density and growth rates of sets defined by divisor-sum equalities"
+      "description": "k-perfect numbers satisfy σ(n) = k·n; both problems ask about density and growth rates of sets defined by divisor-sum equalities",
+      "targetId": "erdos-1053"
     },
     {
-      "target": "erdos-277",
       "relationship": "related",
-      "description": "Abundancy (σ(n)/n) is central to both problems; #277 connects covering systems to σ-values while #1061 probes additive identities of σ"
+      "description": "Abundancy (σ(n)/n) is central to both problems; #277 connects covering systems to σ-values while #1061 probes additive identities of σ",
+      "targetId": "erdos-277"
     },
     {
-      "target": "erdos-250",
       "relationship": "related",
-      "description": "Both involve analytic properties of the sigma function; #250 studies irrationality of Σ σ(n)/n^s while #1061 studies additive identities of σ at consecutive integers"
+      "description": "Both involve analytic properties of the sigma function; #250 studies irrationality of Σ σ(n)/n^s while #1061 studies additive identities of σ at consecutive integers",
+      "targetId": "erdos-250"
     },
     {
-      "target": "erdos-122",
       "relationship": "related",
-      "description": "Distribution of n + f(n) in short intervals uses similar arithmetic-function counting methods to those needed for the asymptotic S(x) ~ cx question in #1061"
+      "description": "Distribution of n + f(n) in short intervals uses similar arithmetic-function counting methods to those needed for the asymptotic S(x) ~ cx question in #1061",
+      "targetId": "erdos-122"
     }
   ],
   "relatedProofs": [

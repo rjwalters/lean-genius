@@ -46,10 +46,6 @@
       "Legendre's formula: v_p(n!) = ∑_{i≥1} ⌊n/pⁱ⌋ for prime p",
       "Combinatorics: partitions and set counting"
     ],
-    "relatedProofs": [
-      "infinitude-primes",
-      "fundamental-arithmetic"
-    ],
     "assumptions": "5 axiom(s) encoding deep results from Erdős-Graham 1976. bigF and bigF_ge_two replaced with definition and proof. See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },

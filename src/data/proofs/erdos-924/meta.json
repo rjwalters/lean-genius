@@ -55,43 +55,6 @@
       "nesetril_rodl_1976 axiom: general k case",
       "erdos_924 theorem: main result"
     ],
-    "crossReferences": [
-      {
-        "targetProofId": "erdos-920",
-        "relationship": "related",
-        "description": "Studies chromatic numbers of K_k-free graphs — the twin problem of high chromatic complexity in clique-free graphs"
-      },
-      {
-        "targetProofId": "erdos-922",
-        "relationship": "same-author",
-        "description": "Another result by Jon Folkman (1970) on chromatic number bounds via independent sets"
-      },
-      {
-        "targetProofId": "erdos-923",
-        "relationship": "same-author",
-        "description": "Result by Rödl (1977) on triangle-free subgraphs with high chromatic number"
-      },
-      {
-        "targetProofId": "erdos-925",
-        "relationship": "related",
-        "description": "Studies independent sets in non-Ramsey graphs, directly addressing Ramsey-type bounds"
-      },
-      {
-        "targetProofId": "erdos-1090",
-        "relationship": "uses-same-technique",
-        "description": "Also uses the Hales-Jewett theorem (central to the Nešetřil-Rödl proof) for monochromatic collinear points"
-      },
-      {
-        "targetProofId": "erdos-927",
-        "relationship": "related",
-        "description": "Studies distinct clique sizes in graphs — complementary perspective on clique structure"
-      },
-      {
-        "targetProofId": "ramseys-theorem",
-        "relationship": "uses",
-        "description": "The classical Ramsey theorem provides the foundation; Folkman graphs achieve Ramsey-type forcing without large cliques"
-      }
-    ],
     "axiomCount": 5,
     "lineCount": 317,
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."

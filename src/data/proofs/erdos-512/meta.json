@@ -68,20 +68,6 @@
       "erdos_512, erdos_512_main, erdos_512_solved: main theorems",
       "konyagin_equals_mps: logical equivalence of the two proofs"
     ],
-    "relatedProofs": [
-      {
-        "id": "erdos-169",
-        "relationship": "Erdős-169 studies harmonic sums of AP-free sets — both problems involve logarithmic bounds arising from harmonic series structure"
-      },
-      {
-        "id": "erdos-66",
-        "relationship": "Erdős-66 concerns representation function asymptotics r_A(n) — related Fourier-analytic questions about the L^2 structure of sets"
-      },
-      {
-        "id": "erdos-490",
-        "relationship": "Erdős-490 concerns distinct products with a log N factor from prime density — both feature logarithmic bounds from number-theoretic structure"
-      }
-    ],
     "axiomCount": 7,
     "lineCount": 261,
     "assumptions": "7 axiom(s) and 2 sorry(s). See the Lean source for details."

@@ -59,46 +59,6 @@
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
-    "crossReferences": [
-      {
-        "proofId": "buffons-needle",
-        "relationship": "generalizes",
-        "description": "The classical 2D Buffon's needle problem with crossing factor α₂ = 2/π"
-      },
-      {
-        "proofId": "buffons-needle-oq-01",
-        "relationship": "related",
-        "description": "The Buffon-Barbier smooth noodle theorem (C¹ curves in 2D)"
-      },
-      {
-        "proofId": "buffons-needle-oq-01-oq-01",
-        "relationship": "related",
-        "description": "Angular average formulation of the smooth curve crossing formula"
-      },
-      {
-        "proofId": "buffons-needle-oq-02",
-        "relationship": "generalizes",
-        "description": "The 3D Buffon formula E = L/(2d) with α₃ = 1/2, which this file extends to all dimensions"
-      },
-      {
-        "proofId": "stirling-formula",
-        "relationship": "related",
-        "description": "Stirling's approximation for Γ(n), relevant to the asymptotic rate αₙ ~ √(2/(πn))"
-      },
-      {
-        "proofId": "area-of-circle",
-        "relationship": "related",
-        "description": "π appears in both formulas: the crossing factor α₂ = 2/π connects Buffon's needle to the circle area formula"
-      }
-    ],
-    "relatedProofs": [
-      "buffons-needle",
-      "buffons-needle-oq-02",
-      "area-of-circle",
-      "buffons-needle-oq-01",
-      "buffons-needle-oq-01-oq-01",
-      "stirling-formula"
-    ],
     "lineCount": 309,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0"

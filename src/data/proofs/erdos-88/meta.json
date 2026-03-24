@@ -50,28 +50,6 @@
       "Formalization of induced subgraph edge counts and the edge count range property",
       "Axiomatization of Ramsey number existence, probabilistic Ramsey graphs, and KSSS optimality"
     ],
-    "crossReferences": [
-      {
-        "id": "ramseys-theorem",
-        "relationship": "The foundational combinatorial principle underlying erdos-88; Ramsey's theorem guarantees that ε-Ramsey graphs have bounded size, which is axiomatized here as ramsey_size_bound"
-      },
-      {
-        "id": "erdos-87",
-        "relationship": "Adjacent Erdős problem studying Ramsey numbers and chromatic number; both problems explore structural consequences of Ramsey-type constraints on graphs"
-      },
-      {
-        "id": "erdos-165",
-        "relationship": "Studies asymptotic Ramsey number bounds R(3,k); shares the probabilistic method and Ramsey theory framework, with erdos-88 studying induced subgraph structure in Ramsey graphs"
-      },
-      {
-        "id": "erdos-1031",
-        "relationship": "Studies induced regular subgraphs in non-Ramsey graphs (Prömel-Rödl universality); complementary to erdos-88 which studies edge count flexibility in Ramsey graphs"
-      },
-      {
-        "id": "erdos-szekeres",
-        "relationship": "Foundational extremal combinatorics result in the Ramsey theory tradition; the Erdős-Szemerédi density result used in erdos-88 extends this line of inquiry"
-      }
-    ],
     "axiomCount": 9,
     "lineCount": 298,
     "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."

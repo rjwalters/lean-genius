@@ -42,24 +42,6 @@
       ],
       "significance": "Generalizes the Hadwiger-Nelson problem from one forbidden distance to r distances. The gap between the known exponential upper bound L(r) ≤ C^r and the conjectured polynomial bound L(r) ≤ r^{O(1)} is vast. Even the r = 1 case (5 ≤ L(1) ≤ 7) remains unsolved after 75 years, making the general question one of the hardest open problems in chromatic geometry."
     },
-    "relatedProofs": [
-      {
-        "id": "erdos-508",
-        "relationship": "The r = 1 case of Problem #706 is exactly the Hadwiger-Nelson problem (#508): what is the chromatic number of the unit distance graph of ℝ²?"
-      },
-      {
-        "id": "erdos-704",
-        "relationship": "Problem #704 studies chromatic numbers of unit distance graphs in ℝⁿ (higher dimensions), where Frankl-Wilson gives exponential lower bounds. #706 generalizes in a different direction: multiple distances in the plane"
-      },
-      {
-        "id": "erdos-705",
-        "relationship": "Problem #705 asks whether large girth forces the chromatic number of unit distance graphs down to 3 (Wormald constructed 4-chromatic examples with girth 5). Both concern structural constraints on distance graphs"
-      },
-      {
-        "id": "erdos-640",
-        "relationship": "Both involve chromatic number problems on geometric graphs; #640 studies edge-coloring of intersection graphs while #706 studies vertex-coloring of distance graphs"
-      }
-    ],
     "mathlibDependencies": [
       {
         "theorem": "Finset",

@@ -196,29 +196,29 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-905",
       "relationship": "foundational",
-      "description": "Erdős #905 establishes that every dense graph (above Turán threshold) has an edge in at least n/6 triangles. This codegree result is a prerequisite for understanding triangle degree-sum guarantees and underlies the book lemma used in related lower bound arguments."
+      "description": "Erdős #905 establishes that every dense graph (above Turán threshold) has an edge in at least n/6 triangles. This codegree result is a prerequisite for understanding triangle degree-sum guarantees and underlies the book lemma used in related lower bound arguments.",
+      "targetId": "erdos-905"
     },
     {
-      "target": "erdos-1034",
       "relationship": "companion",
-      "description": "Erdős #1034 asks about triangle neighbor counts in dense graphs and is directly companion to #1033. Both probe the structure of triangles above the Turán threshold, with #1034 measuring neighborhood size and #1033 measuring degree sums of triangle vertices."
+      "description": "Erdős #1034 asks about triangle neighbor counts in dense graphs and is directly companion to #1033. Both probe the structure of triangles above the Turán threshold, with #1034 measuring neighborhood size and #1033 measuring degree sums of triangle vertices.",
+      "targetId": "erdos-1034"
     },
     {
-      "target": "erdos-1032",
       "relationship": "related",
-      "description": "Erdős #1032 studies 4-chromatic critical graphs with linear minimum degree, connecting the Turán-type threshold with chromatic criticality. Minimum degree conditions are closely tied to degree-sum phenomena in dense graphs."
+      "description": "Erdős #1032 studies 4-chromatic critical graphs with linear minimum degree, connecting the Turán-type threshold with chromatic criticality. Minimum degree conditions are closely tied to degree-sum phenomena in dense graphs.",
+      "targetId": "erdos-1032"
     },
     {
-      "target": "ramseys-theorem",
       "relationship": "context",
-      "description": "Ramsey's theorem guarantees clique or independent set structure in dense graphs. Triangle existence above the Turán threshold is the r=3 instance of Ramsey-type problems, and the degree-sum question refines the structural information forced by Ramsey thresholds."
+      "description": "Ramsey's theorem guarantees clique or independent set structure in dense graphs. Triangle existence above the Turán threshold is the r=3 instance of Ramsey-type problems, and the degree-sum question refines the structural information forced by Ramsey thresholds.",
+      "targetId": "ramseys-theorem"
     },
     {
-      "target": "erdos-1031",
       "relationship": "related",
-      "description": "Erdős #1031 studies induced regular subgraphs in graphs below the Ramsey threshold. The interplay between degree regularity and extremal thresholds is shared with #1033's analysis of degree sums in triangles near the Turán threshold."
+      "description": "Erdős #1031 studies induced regular subgraphs in graphs below the Ramsey threshold. The interplay between degree regularity and extremal thresholds is shared with #1033's analysis of degree sums in triangles near the Turán threshold.",
+      "targetId": "erdos-1031"
     }
   ],
   "relatedProofs": [
