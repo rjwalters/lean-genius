@@ -9,12 +9,17 @@
     "type": "concept",
     "title": "Dual Perspectives on CLT",
     "content": "This proof presents the Central Limit Theorem through two complementary lenses. The **classical approach** uses characteristic functions (Fourier transforms) to show convergence. The **topological approach** reveals why the Gaussian emerges: it is a fixed-point attractor in the dynamics of averaging.",
-    "mathContext": "Establishes $\\frac{S_n - n\\mu}{\\sigma\\sqrt{n}} \\xrightarrow{d} N(0,1)$ via characteristic functions $\\varphi(t) = \\mathbb{E}[e^{itX}]$ and fixed-point analysis on the Wasserstein space $\\mathcal{P}_2(\\mathbb{R})$.",
+    "mathContext": "Classical: $\\varphi_{S_n}(t) = [\\varphi_X(t/\\sqrt{n})]^n \\to e^{-t^2/2}$. Topological: $T_n(\\mu) = (\\mu^{*n})_{1/\\sqrt{n}} \\to N(0,1)$ in $\\mathcal{P}_2(\\mathbb{R})$.",
     "significance": "key",
     "relatedConcepts": [
       "characteristic functions",
       "fixed point theory",
       "renormalization group"
+    ],
+    "prerequisites": [
+      "probability theory",
+      "Fourier analysis",
+      "metric space topology"
     ]
   },
   {
@@ -24,23 +29,28 @@
       "startLine": 12,
       "endLine": 52
     },
-    "type": "concept",
-    "title": "Mathlib Dependencies",
-    "content": "We import from multiple Mathlib domains: **Probability.Distributions.Gaussian** for the Gaussian measure, **Fourier.FourierTransform** for characteristic functions, and **Topology.MetricSpace** for the geometric interpretation. This interdisciplinary foundation reflects the theorem's broad reach.",
-    "mathContext": "Uses Mathlib's Gaussian measure $\\mathcal{N}(\\mu, \\sigma^2)$, Fourier transform $\\hat{f}(\\xi) = \\int f(x)e^{-2\\pi i x\\xi}\\,dx$, and metric space topology for convergence.",
+    "type": "context",
+    "title": "Module Docstring and Mathlib Dependencies",
+    "content": "Ten Mathlib imports span probability, measure theory, Fourier analysis, and calculus: **Probability.Distributions.Gaussian** for the Gaussian measure, **Fourier.FourierTransform** for characteristic functions $\\varphi_X(t) = \\mathbb{E}[e^{itX}]$, **MeasureTheory.Integral.Bochner** for Lebesgue integration of Banach-valued functions, **Analysis.Calculus.Taylor** for the remainder bound, and **Topology.MetricSpace** for the Wasserstein geometry. The module docstring outlines the characteristic function approach and notes the 13 axioms encoding measure-theoretic convergence results. Wiedijk 100 Theorems #47.",
+    "mathContext": "Key Mathlib infrastructure: `MeasureTheory.Measure`, `IsProbabilityMeasure`, `MeasureTheory.Integrable`, `FourierTransform`, `GaussianIntegral` ($\\int_{-\\infty}^\\infty e^{-x^2/2}dx = \\sqrt{2\\pi}$).",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
       "measure theory",
-      "Fourier analysis"
+      "Fourier analysis",
+      "Bochner integration"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib library structure"
     ]
   },
   {
     "id": "ann-clt-charfun-def",
     "proofId": "central-limit-theorem",
     "range": {
-      "startLine": 12,
-      "endLine": 52
+      "startLine": 56,
+      "endLine": 86
     },
     "type": "definition",
     "title": "Characteristic Functions",
@@ -57,8 +67,8 @@
     "id": "ann-clt-charfun-zero",
     "proofId": "central-limit-theorem",
     "range": {
-      "startLine": 12,
-      "endLine": 52
+      "startLine": 75,
+      "endLine": 86
     },
     "type": "lemma",
     "title": "Characteristic Function at Zero",
@@ -74,18 +84,23 @@
     "id": "ann-clt-taylor-expansion",
     "proofId": "central-limit-theorem",
     "range": {
-      "startLine": 70,
-      "endLine": 73
+      "startLine": 120,
+      "endLine": 178
     },
     "type": "insight",
-    "title": "Moments from Derivatives",
-    "content": "Taking derivatives of the characteristic function at $t=0$ extracts moments: $\\varphi'(0) = i\\mu$ (mean), $\\varphi''(0) = i^2(\\mu^2 + \\sigma^2)$ (second moment). The Taylor expansion $\\varphi(t) = 1 + it\\mu - t^2\\sigma^2/2 + O(t^3)$ encodes the distribution's shape in its coefficients.",
-    "mathContext": "The expansion $\\varphi_X(t) = 1 + it\\mu - \\frac{t^2(\\mu^2+\\sigma^2)}{2} + O(t^3)$ is derived from $\\varphi^{(k)}(0) = i^k\\mathbb{E}[X^k]$, encoding moments as Taylor coefficients.",
+    "title": "Moments from Characteristic Function Derivatives",
+    "content": "Taking derivatives of the characteristic function at $t=0$ extracts moments: $\\varphi'(0) = i\\mu$ (mean), $\\varphi''(0) = i^2(\\mu^2 + \\sigma^2)$ (second moment). The Taylor expansion $\\varphi(t) = 1 + it\\mu - t^2\\sigma^2/2 + O(t^3)$ encodes the distribution's shape in its coefficients. The Lean proof of `charFun_deriv_mean` uses differentiation under the integral (axiomatized), simplifies the integrand at $t=0$, converts multiplication to `smul` for Mathlib's integral linearity, and applies the real-to-complex coercion lemma.",
     "significance": "key",
     "relatedConcepts": [
       "Taylor series",
       "moments",
-      "cumulants"
+      "cumulants",
+      "differentiation under integral"
+    ],
+    "prerequisites": [
+      "characteristic function definition",
+      "calculus of complex exponentials",
+      "Bochner integration"
     ]
   },
   {
@@ -113,26 +128,29 @@
     "id": "ann-clt-limit-setup",
     "proofId": "central-limit-theorem",
     "range": {
-      "startLine": 104,
-      "endLine": 116
+      "startLine": 219,
+      "endLine": 277
     },
     "type": "concept",
     "title": "The Product-to-Exponential Limit",
     "content": "The classical limit $(1 + x/n)^n \\to e^x$ is the engine of CLT. For the normalized sum $S_n = (X_1 + \\cdots + X_n)/\\sqrt{n}$, we have $\\varphi_{S_n}(t) = [\\varphi_X(t/\\sqrt{n})]^n$. Taylor expansion gives $\\varphi_X(t/\\sqrt{n}) \\approx 1 - t^2/(2n)$, and $(1 - t^2/(2n))^n \\to e^{-t^2/2}$.",
-    "mathContext": "The key computation: $\\left[\\varphi_X\\!\\left(\\frac{t}{\\sqrt{n}}\\right)\\right]^n \\approx \\left(1 - \\frac{t^2}{2n}\\right)^n \\to e^{-t^2/2}$, which is the characteristic function of $N(0,1)$.",
     "significance": "key",
     "relatedConcepts": [
       "exponential limit",
       "compound interest",
       "Euler's definition of e"
+    ],
+    "prerequisites": [
+      "Taylor expansion of characteristic functions",
+      "exponential limit $(1+x/n)^n \\to e^x$"
     ]
   },
   {
     "id": "ann-clt-key-convergence",
     "proofId": "central-limit-theorem",
     "range": {
-      "startLine": 133,
-      "endLine": 134
+      "startLine": 248,
+      "endLine": 277
     },
     "type": "theorem",
     "title": "Heart of CLT: Characteristic Function Convergence",
@@ -153,8 +171,8 @@
     "id": "ann-clt-levy-theorem",
     "proofId": "central-limit-theorem",
     "range": {
-      "startLine": 180,
-      "endLine": 190
+      "startLine": 288,
+      "endLine": 336
     },
     "type": "theorem",
     "title": "Lévy Continuity Theorem",
@@ -171,8 +189,8 @@
     "id": "ann-clt-main-theorem",
     "proofId": "central-limit-theorem",
     "range": {
-      "startLine": 207,
-      "endLine": 217
+      "startLine": 365,
+      "endLine": 408
     },
     "type": "theorem",
     "title": "The Central Limit Theorem",
@@ -193,13 +211,12 @@
     "id": "ann-clt-topological-intro",
     "proofId": "central-limit-theorem",
     "range": {
-      "startLine": 235,
-      "endLine": 246
+      "startLine": 411,
+      "endLine": 437
     },
     "type": "concept",
     "title": "The Topological Viewpoint",
     "content": "Now we shift perspective: instead of computing limits, we ask WHY the Gaussian emerges. The answer: **it is a fixed point attractor** of the renormalization group flow on the space of probability distributions.\n\nThis dynamical systems perspective reveals that CLT is not an accident of computation but a consequence of the structure of the convolution operation.",
-    "mathContext": "The renormalization map $T_n(\\mu) = \\frac{1}{\\sqrt{n}}\\mu^{*n}$ has the Gaussian $\\mathcal{N}(0,1)$ as its unique fixed point in $\\mathcal{P}_2(\\mathbb{R})$, with all finite-variance distributions in its basin of attraction.",
     "significance": "key",
     "relatedConcepts": [
       "dynamical systems",
@@ -211,8 +228,8 @@
     "id": "ann-clt-wasserstein",
     "proofId": "central-limit-theorem",
     "range": {
-      "startLine": 248,
-      "endLine": 276
+      "startLine": 439,
+      "endLine": 458
     },
     "type": "concept",
     "title": "The Geometry of Probability Distributions",
@@ -226,11 +243,35 @@
     ]
   },
   {
+    "id": "ann-clt-fixed-point",
+    "proofId": "central-limit-theorem",
+    "range": {
+      "startLine": 460,
+      "endLine": 484
+    },
+    "type": "theorem",
+    "title": "Gaussian Fixed Point of Renormalization",
+    "content": "**Key Result**: The Gaussian is invariant under the renormalization map: $T_n(N(0,1)) = N(0,1)$ for all $n$. This is because the sum of $n$ i.i.d. $N(0,1)$ variables has distribution $N(0,n)$, and scaling by $1/\\sqrt{n}$ gives $N(0,1)$ back. In the language of dynamical systems, the Gaussian is a **fixed point** of the discrete-time dynamics $T_n$ on the space of probability measures.\n\nThis fixed-point property is the topological reason the Gaussian appears in CLT: it is the only distribution unchanged by the averaging operation, and the CLT asserts that all other distributions in $\\mathcal{P}_2(\\mathbb{R})$ flow toward it.",
+    "mathContext": "$T_n(N(0,1)) = N(0,1)$ since $\\text{Var}\\left(\\frac{X_1 + \\cdots + X_n}{\\sqrt{n}}\\right) = \\frac{n \\cdot 1}{n} = 1$ for $X_i \\sim N(0,1)$ i.i.d.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fixed point",
+      "renormalization",
+      "stability",
+      "variance additivity"
+    ],
+    "prerequisites": [
+      "renormalization map definition",
+      "Gaussian distribution properties",
+      "variance of sums"
+    ]
+  },
+  {
     "id": "ann-clt-attractor",
     "proofId": "central-limit-theorem",
     "range": {
-      "startLine": 297,
-      "endLine": 316
+      "startLine": 486,
+      "endLine": 519
     },
     "type": "theorem",
     "title": "Gaussian as Universal Attractor",
@@ -250,8 +291,8 @@
     "id": "ann-clt-why-gaussian-entropy",
     "proofId": "central-limit-theorem",
     "range": {
-      "startLine": 347,
-      "endLine": 363
+      "startLine": 540,
+      "endLine": 550
     },
     "type": "insight",
     "title": "Maximum Entropy Characterization",
@@ -268,8 +309,8 @@
     "id": "ann-clt-self-duality",
     "proofId": "central-limit-theorem",
     "range": {
-      "startLine": 347,
-      "endLine": 363
+      "startLine": 552,
+      "endLine": 558
     },
     "type": "theorem",
     "title": "Fourier Self-Duality",
@@ -286,8 +327,8 @@
     "id": "ann-clt-berry-esseen",
     "proofId": "central-limit-theorem",
     "range": {
-      "startLine": 365,
-      "endLine": 401
+      "startLine": 576,
+      "endLine": 590
     },
     "type": "theorem",
     "title": "Berry-Esseen: Rate of Convergence",
@@ -304,8 +345,8 @@
     "id": "ann-clt-stable",
     "proofId": "central-limit-theorem",
     "range": {
-      "startLine": 365,
-      "endLine": 401
+      "startLine": 592,
+      "endLine": 601
     },
     "type": "insight",
     "title": "Stable Distributions: Beyond Gaussian",
@@ -323,88 +364,17 @@
     "id": "ann-clt-conclusion",
     "proofId": "central-limit-theorem",
     "range": {
-      "startLine": 411,
-      "endLine": 419
+      "startLine": 603,
+      "endLine": 618
     },
     "type": "concept",
     "title": "Synthesis: Why the Gaussian is Universal",
     "content": "The Central Limit Theorem reveals the Gaussian as a **mathematical necessity**, not an accident:\n\n1. **Dynamically**: It is the unique fixed-point attractor of the averaging operation\n2. **Information-theoretically**: It maximizes entropy at fixed variance\n3. **Analytically**: It is self-dual under Fourier transform\n4. **Probabilistically**: It is the only finite-variance stable distribution\n\nWherever we see many small independent effects being summed—measurement errors, thermal fluctuations, stock prices, IQ scores—the Gaussian emerges because averaging dynamics demand it.",
-    "mathContext": "The Gaussian $\\frac{1}{\\sqrt{2\\pi}}e^{-x^2/2}$ is uniquely characterized by four independent properties: fixed point of $T_n$, maximum entropy at fixed $\\sigma^2$, Fourier self-duality $\\hat{f} = f$, and $\\alpha=2$ stability.",
     "significance": "key",
     "relatedConcepts": [
       "universality",
       "emergence",
       "mathematical inevitability"
-    ]
-  },
-  {
-    "id": "ann-clt-fixed-point",
-    "proofId": "central-limit-theorem",
-    "range": {
-      "startLine": 478,
-      "endLine": 484
-    },
-    "type": "theorem",
-    "title": "Gaussian Fixed Point of Renormalization",
-    "content": "`gaussian_is_fixed_point` proves $T_n(N(0,1)) = N(0,1)$: the Gaussian is invariant under the renormalization map. The proof delegates to `gaussian_fixed_point_axiom`, which encodes that the sum of $n$ i.i.d. $N(0,1)$ variables, scaled by $1/\\sqrt{n}$, is again $N(0,1)$.\n\nThis is the topological essence of the CLT: the Gaussian is special because it is the *only* fixed point of $T_n$ among probability measures with variance 1 (up to scaling).",
-    "mathContext": "Fixed point property: if $X_i \\sim N(0,1)$ i.i.d., then $\\frac{X_1 + \\cdots + X_n}{\\sqrt{n}} \\sim N(0, n/n) = N(0,1)$. Uniqueness: the Gaussian is the only stable distribution with $\\alpha = 2$, hence the only fixed point in $\\mathcal{P}_2(\\mathbb{R})$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "fixed point",
-      "renormalization group",
-      "stable distributions",
-      "Wasserstein space"
-    ],
-    "prerequisites": [
-      "renormalizationMap",
-      "stdGaussian",
-      "gaussian_fixed_point_axiom"
-    ]
-  },
-  {
-    "id": "ann-clt-attractor",
-    "proofId": "central-limit-theorem",
-    "range": {
-      "startLine": 506,
-      "endLine": 519
-    },
-    "type": "theorem",
-    "title": "Gaussian as Global Attractor",
-    "content": "`gaussian_is_attractor` proves that every standardized distribution with finite third moment converges to $N(0,1)$ under the renormalization flow $T_n$. This is the CLT reformulated as a dynamical systems theorem: the Gaussian is not just *a* limit but the *universal attractor* in the space of probability measures.\n\nThe proof delegates to `gaussian_attractor_axiom`, which encodes the convergence $T_n(\\mu) \\to N(0,1)$ in the weak topology via `Filter.Tendsto` and `nhds`.",
-    "mathContext": "The CLT as dynamics: $T_n(\\mu) \\to N(0,1)$ for all $\\mu \\in \\mathcal{P}_2(\\mathbb{R})$ with $\\int x\\, d\\mu = 0$, $\\int x^2\\, d\\mu = 1$. This perspective, due to Sinai and others, reveals the CLT as a universality phenomenon analogous to the renormalization group in statistical mechanics.",
-    "significance": "key",
-    "relatedConcepts": [
-      "attractor",
-      "universality",
-      "renormalization group",
-      "dynamical systems"
-    ],
-    "prerequisites": [
-      "gaussian_attractor_axiom",
-      "MeasureTheory.IsProbabilityMeasure"
-    ]
-  },
-  {
-    "id": "ann-clt-self-dual",
-    "proofId": "central-limit-theorem",
-    "range": {
-      "startLine": 554,
-      "endLine": 558
-    },
-    "type": "insight",
-    "title": "Gaussian Self-Duality Under Fourier Transform",
-    "content": "`gaussian_self_dual` proves $\\varphi_{N(0,1)}(t) = e^{-t^2/2}$: the Gaussian's characteristic function has the same functional form as the Gaussian itself. This self-duality is a key characterization — the Gaussian is (up to scaling) the unique $L^2$ eigenfunction of the Fourier transform with eigenvalue 1.\n\nThe one-line proof `exact gaussian_charFun t` delegates to the axiomatized characteristic function formula.",
-    "mathContext": "Self-duality: $\\mathcal{F}[e^{-x^2/2}](t) = e^{-t^2/2}$. More precisely, $e^{-x^2/2}$ is a fixed point of the Fourier transform on $L^2(\\mathbb{R})$. The four eigenfunctions of $\\mathcal{F}$ (Hermite functions) have eigenvalues $1, -i, -1, i$; the Gaussian is the $\\lambda = 1$ case.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Fourier transform",
-      "self-duality",
-      "Hermite functions",
-      "eigenfunction"
-    ],
-    "prerequisites": [
-      "gaussian_charFun",
-      "characteristicFunction"
     ]
   }
 ]
