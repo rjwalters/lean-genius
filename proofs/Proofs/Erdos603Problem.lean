@@ -133,10 +133,33 @@ theorem lower_bound_2 {α I : Type*} (A : I → Set α)
     rw [← Fintype.card_le_one_iff_subsingleton]; omega
   exact Subsingleton.elim _ _
 
--- Countably many colors is an upper bound (trivially)
--- Each element gets a different color
-axiom countable_suffices_trivial : ∀ {α I : Type*} (A : I → Set α),
-  IsValidFamily A → SufficientColors A (Cardinal.mk ℕ)
+-- Countably many colors suffice when the index set is countable.
+-- Proof: the union is countable, so we inject it into ℕ; the injection
+-- assigns distinct colors to distinct elements, preventing monochromaticity
+-- on any infinite set.
+theorem countable_suffices {α I : Type*} [Countable I] (A : I → Set α)
+    (hv : IsValidFamily A) : SufficientColors A (Cardinal.mk ℕ) := by
+  classical
+  -- The union is countable (countable union of countable sets)
+  have hU : (⋃ i, A i).Countable := Set.countable_iUnion (fun i => (hv.1 i).1)
+  -- Get Countable and Encodable instances on the union subtype
+  haveI : Countable ↥(⋃ i, A i) := hU.to_subtype
+  haveI : Encodable ↥(⋃ i, A i) := Encodable.ofCountable _
+  -- Coloring: encode elements in the union into ℕ, 0 elsewhere
+  refine ⟨ℕ, le_refl _, fun x =>
+    if h : x ∈ ⋃ i, A i then Encodable.encode (⟨x, h⟩ : ↥(⋃ i, A i)) else 0, ?_⟩
+  -- No A_i is monochromatic: encoding is injective, so all-same-color ⟹ singleton
+  intro i ⟨color, hcolor⟩
+  apply (hv.1 i).2
+  apply Set.Subsingleton.finite
+  intro x hx y hy
+  have hxU : x ∈ ⋃ j, A j := Set.mem_iUnion.mpr ⟨i, hx⟩
+  have hyU : y ∈ ⋃ j, A j := Set.mem_iUnion.mpr ⟨i, hy⟩
+  have hcx := hcolor x hx
+  have hcy := hcolor y hy
+  simp only [dif_pos hxU] at hcx
+  simp only [dif_pos hyU] at hcy
+  exact congr_arg Subtype.val (Encodable.encode_injective (hcx.trans hcy.symm))
 
 -- The question: can we do better than ℵ₀?
 def CanDoBetterThanAleph0 : Prop :=
