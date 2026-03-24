@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-13T17:14:37.756Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Axiom elimination",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "AXIOM ELIMINATION: Proved 2 of 3 axioms (complete_graphs_ramsey, triangle_ramsey_mono). Only ramsey_triangle remains. Axiom count: 3→1.",
+    "builtItems": [
+      "theorem complete_graphs_ramsey: proved from ramsey_triangle via Set.mem_singleton",
+      "theorem triangle_ramsey_mono: proved via Fin.castLE injection"
+    ],
+    "insights": [
+      "complete_graphs_ramsey follows directly from ramsey_triangle: just instantiate with K_N",
+      "triangle_ramsey_mono provable via Fin.castLE: embed m-coloring into n-coloring, use injectivity to transfer monochromaticity",
+      "Only ramsey_triangle (classical Ramsey theorem) needs to remain as axiom — deep result not in Mathlib"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "ramsey_triangle is the classical Ramsey theorem — check if Mathlib has it formalized",
+      "The main conjecture ErdosProblem638 remains open"
+    ],
     "markdown": "# Erdős #638 - Knowledge Base\n\n## Problem Statement\n\nLet S\" role=\"presentation\" style=\"position: relative;\">SSS be a family of finite graphs such that for every n\" role=\"presentation\" style=\"position: relative;\">nnn there is some Gn&#x2208;S\" role=\"presentation\" style=\"position: relative;\">Gn∈SGn∈SG_n\\in S such that if the edges of Gn\" role=\"presentation\" style=\"position: relative;\">GnGnG_n are coloured with n\" role=\"presentation\" style=\"position: relative;\">nnn colours then there is a monochromatic triangle. Is it true that for every infinite cardinal &#x2135;\" role=\"presentation\" style=\"position: relative;\">ℵℵ\\aleph there is a graph G\" role=\"presentation\" style=\"position: relative;\">GGG of which every finite subgraph is in S\" role=\"presentation\" style=\"position: relative;\">SSS and if the edges of G\" role=\"presentation\" style=\"position: relative;\">GGG are coloured with &#x2135;\" role=\"presentation\" style=\"position: relative;\">ℵℵ\\aleph many colours then there is a monochromatic triangle. Erdős writes 'if the answer is affirmative many ex\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #637\n- Problem #639\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er97d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
@@ -57,9 +67,9 @@
     {
       "path": "Proofs/Erdos638Problem.lean",
       "filename": "Erdos638Problem.lean",
-      "lineCount": 85,
-      "theoremCount": 0,
-      "axiomCount": 3,
+      "lineCount": 98,
+      "theoremCount": 2,
+      "axiomCount": 1,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
