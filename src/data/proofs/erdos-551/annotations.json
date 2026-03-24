@@ -21,7 +21,8 @@
       "graph theory",
       "modular arithmetic",
       "injective functions"
-    ]
+    ],
+    "importance": "high"
   },
   {
     "id": "ann-551-ramsey",
@@ -44,7 +45,8 @@
       "Ramsey theory",
       "Nat.find",
       "complete graphs"
-    ]
+    ],
+    "importance": "high"
   },
   {
     "id": "ann-551-lower-bound",
@@ -68,7 +70,8 @@
       "graph products",
       "clique number bounds",
       "Ramsey lower bounds"
-    ]
+    ],
+    "importance": "high"
   },
   {
     "id": "ann-551-progression",
@@ -92,7 +95,8 @@
       "graph Ramsey theory",
       "eigenvalue methods",
       "logarithmic functions"
-    ]
+    ],
+    "importance": "high"
   },
   {
     "id": "ann-551-special",
@@ -114,28 +118,78 @@
     "prerequisites": [
       "Hamiltonian cycle theory",
       "minimum degree conditions"
-    ]
+    ],
+    "importance": "high"
   },
   {
-    "id": "ann-551-related-summary",
+    "id": "ann-551-monotonicity",
     "proofId": "erdos-551",
     "range": {
-      "startLine": 425,
+      "startLine": 479,
+      "endLine": 511
+    },
+    "type": "technique",
+    "title": "Monotonicity Properties (formula_mono Proved)",
+    "content": "**ramsey_mono_k** and **ramsey_mono_n**: $R(C_k, K_n)$ is non-decreasing in both $k$ and $n$ (sorry). A longer cycle is harder to avoid; a larger clique is harder to find in the complement.\n\n**formula_mono** (**PROVED** by `nlinarith`): The conjectured formula $(k-1)(n-1)+1$ is monotone in both arguments. This is a basic arithmetic fact: $(k_1-1)(n_1-1) \\leq (k_2-1)(n_2-1)$ when $k_1 \\leq k_2$ and $n_1 \\leq n_2$. The proof by `nlinarith` uses nonlinear arithmetic to verify this product inequality.",
+    "mathContext": "$k_1 \\leq k_2, n_1 \\leq n_2 \\implies (k_1-1)(n_1-1)+1 \\leq (k_2-1)(n_2-1)+1$. This is proved automatically by `nlinarith` from the expansion $(k_1-1)(n_1-1) = k_1 n_1 - k_1 - n_1 + 1 \\leq k_2 n_2 - k_2 - n_2 + 1 = (k_2-1)(n_2-1)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotonicity of Ramsey numbers",
+      "nlinarith tactic",
+      "product inequalities"
+    ],
+    "prerequisites": [
+      "natural number arithmetic",
+      "Ramsey number definitions"
+    ],
+    "importance": "medium"
+  },
+  {
+    "id": "ann-551-upper-bound",
+    "proofId": "erdos-551",
+    "range": {
+      "startLine": 522,
+      "endLine": 542
+    },
+    "type": "technique",
+    "title": "Upper Bound: Path-Cycle Method",
+    "content": "The path-cycle method establishes the upper bound $R(C_k, K_n) \\leq (k-1)(n-1)+1$. The idea: in a graph $G$ on $(k-1)(n-1)+1$ vertices with no $K_n$ in the complement, the complement has independence number $< n$, so $G$ has large minimum degree. By Dirac-type theorems, $G$ contains long paths, which can be closed into cycles of length $\\geq k$. Combined with the lower bound from disjoint cliques, this gives the exact formula.",
+    "mathContext": "Upper bound proof strategy: Let $G$ be a graph on $N = (k-1)(n-1)+1$ vertices with $\\bar{G}$ being $K_n$-free (independence number $\\leq n-1$). Then $\\alpha(G) \\leq n-1$, so by Ramsey-type pigeonholing, $G$ has minimum degree $\\geq k-1$. By the path-cycle method (extending Dirac's theorem), $G$ contains $C_k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "path-cycle method",
+      "Dirac's theorem",
+      "minimum degree and cycles",
+      "Ramsey upper bounds"
+    ],
+    "prerequisites": [
+      "lower bound construction",
+      "minimum degree conditions for cycles",
+      "complement graph"
+    ],
+    "importance": "high"
+  },
+  {
+    "id": "ann-551-main-theorem",
+    "proofId": "erdos-551",
+    "range": {
+      "startLine": 560,
       "endLine": 604
     },
     "type": "insight",
-    "title": "Related Questions, Monotonicity, and Summary",
-    "content": "**SmallestValidK**: For fixed $n$, the smallest $k$ where the formula holds. KLS shows this is at most $O(\\log n / \\log \\log n)$.\n\n**MinRamseyValue**: For fixed $n$, the minimum of $R(C_k, K_n)$ over $k \\geq n$.\n\n**Monotonicity**: $R(C_k, K_n)$ is non-decreasing in both $k$ and $n$. The formula $(k-1)(n-1)+1$ is also monotone.\n\n**Upper bound**: The path-cycle method shows $R(C_k, K_n) \\leq (k-1)(n-1)+1$ for $k \\geq n \\geq 3$, $(k,n) \\neq (3,3)$.\n\n**main_theorem**: The formula holds iff $k \\geq \\text{SmallestValidK}(n)$.\n\n**solved_asymptotically**: For each $n \\geq 3$, the formula holds for all sufficiently large $k$.",
-    "mathContext": "The main theorem establishes $R(C_k, K_n) = (k-1)(n-1)+1 \\iff k \\geq k_0(n)$ where $k_0(n) \\leq \\lceil C \\log n / \\log \\log n \\rceil$. The problem is considered SOLVED: for any fixed $n$, the formula holds for all but finitely many $k$. The remaining question is determining $k_0(n)$ exactly.",
+    "title": "Main Theorem: Asymptotic Resolution of Problem #551",
+    "content": "**main_theorem**: $R(C_k, K_n) = (k-1)(n-1)+1 \\iff k \\geq k_0(n)$ where $k_0(n)$ is the SmallestValidK. This characterizes exactly when the formula holds.\n\n**current_best**: KLS (2021) shows $k_0(n) \\leq \\lceil C \\log n / \\log \\log n \\rceil$ for an explicit constant $C > 0$.\n\n**solved_asymptotically**: For every $n \\geq 3$, the formula holds for all but finitely many $k$. This means the problem is SOLVED in the sense that the conjectured formula is correct for sufficiently large parameters — the only remaining question is the exact value of $k_0(n)$.",
+    "mathContext": "The problem is resolved: $R(C_k, K_n) = (k-1)(n-1)+1$ for all $k \\geq k_0(n)$, $n \\geq 3$, $(k,n) \\neq (3,3)$, where $k_0(n) = O(\\log n / \\log \\log n)$. For practical purposes: $k_0(3) = 4$, $k_0(4) \\leq 18$ (Nikiforov), and the KLS bound gives $k_0(n) \\leq 3C$ for $n = 100$.",
     "significance": "key",
     "relatedConcepts": [
-      "monotonicity of Ramsey numbers",
-      "path-cycle method",
-      "asymptotic Ramsey theory"
+      "asymptotic Ramsey theory",
+      "threshold phenomena",
+      "solved problems in combinatorics"
     ],
     "prerequisites": [
-      "all preceding sections",
-      "ceiling function"
-    ]
+      "all preceding results",
+      "KLS threshold bound"
+    ],
+    "importance": "high"
   }
 ]
