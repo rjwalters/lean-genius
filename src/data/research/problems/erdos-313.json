@@ -29,11 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: 6 of 11 axioms proved (11→5). All 5 solution axioms proved via verify_solution helper + simp/norm_num/decide. egyptian_fraction_form proved via linarith.",
+    "builtItems": [
+      "Proved solution_2/6/42/1806/47058 via verify_solution + simp + norm_num + decide",
+      "Proved egyptian_fraction_form from definition via linarith"
+    ],
+    "insights": [
+      "native_decide fails on Set membership (no Decidable instance for set-builder sets)",
+      "Solution proofs require manual unfolding: norm_num for m≥2, simp for Nonempty, decide for Prime, simp [sum_insert/pair] + norm_num for sum",
+      "product_constraint provable: each p|m + primes coprime ⟹ ∏P|m; denominator of ∑1/p = m ⟹ m|∏P",
+      "uniqueness provable from product_constraint: P = squarefree prime factors of m"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove product_constraint (m = ∏P) via coprimality/denominator argument",
+      "Prove uniqueness from product_constraint",
+      "Derive primary_pseudoperfect_infinite from conjecture + uniqueness"
+    ],
     "markdown": "# Erdős #313 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many solutions to\\[\\frac{1}{p_1}+\\cdots+\\frac{1}{p_k}=1-\\frac{1}{m},\\]where $m\\geq 2$ is an integer and $p_1<\\cdots<p_k$ are distinct primes?\n\n\n\nFor example,\\[\\frac{1}{2}+\\frac{1}{3}=1-\\frac{1}{6}\\]and\\[\\frac{1}{2}+\\frac{1}{3}+\\frac{1}{7}=1-\\frac{1}{42}.\\]It is clear that we must have $m=p_1\\cdots p_k$, and hence in particular there is at most one solution for each $m$. The integers $m$ for which there is such a solution are known as primary pseudoperfect numbers, and there are $8$ known, listed in A054377 at the OEIS.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #312\n- Problem #314\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
@@ -57,9 +69,9 @@
     {
       "path": "Proofs/Erdos313Problem.lean",
       "filename": "Erdos313Problem.lean",
-      "lineCount": 105,
-      "theoremCount": 0,
-      "axiomCount": 11,
+      "lineCount": 120,
+      "theoremCount": 7,
+      "axiomCount": 5,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,

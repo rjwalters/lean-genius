@@ -61,21 +61,49 @@ axiom primary_pseudoperfect_infinite :
 
 /- ## Verified Examples -/
 
+/-- Helper: verify solution membership by unfolding the set definition. -/
+private theorem verify_solution (m : ℕ) (P : Finset ℕ) (hm : 2 ≤ m)
+    (hne : P.Nonempty) (hp : ∀ p ∈ P, p.Prime)
+    (hsum : ∑ p ∈ P, (1 : ℚ) / p = 1 - 1 / m) :
+    (m, P) ∈ erdos313Solutions :=
+  ⟨hm, hne, hp, hsum⟩
+
 /-- m = 2, P = {2}: 1/2 = 1 − 1/2. -/
-axiom solution_2 : (2, ({2} : Finset ℕ)) ∈ erdos313Solutions
+theorem solution_2 : (2, ({2} : Finset ℕ)) ∈ erdos313Solutions :=
+  verify_solution 2 {2} (by norm_num) ⟨2, by simp⟩
+    (fun p hp => by simp at hp; subst hp; decide)
+    (by simp [Finset.sum_singleton]; norm_num)
 
 /-- m = 6, P = {2, 3}: 1/2 + 1/3 = 5/6 = 1 − 1/6. -/
-axiom solution_6 : (6, ({2, 3} : Finset ℕ)) ∈ erdos313Solutions
+theorem solution_6 : (6, ({2, 3} : Finset ℕ)) ∈ erdos313Solutions :=
+  verify_solution 6 {2, 3} (by norm_num) ⟨2, by simp⟩
+    (fun p hp => by simp [Finset.mem_insert, Finset.mem_singleton] at hp; rcases hp with rfl | rfl <;> decide)
+    (by simp [Finset.sum_pair (by norm_num : (2:ℕ) ≠ 3)]; norm_num)
 
 /-- m = 42, P = {2, 3, 7}: 1/2 + 1/3 + 1/7 = 41/42 = 1 − 1/42. -/
-axiom solution_42 : (42, ({2, 3, 7} : Finset ℕ)) ∈ erdos313Solutions
+theorem solution_42 : (42, ({2, 3, 7} : Finset ℕ)) ∈ erdos313Solutions :=
+  verify_solution 42 {2, 3, 7} (by norm_num) ⟨2, by simp⟩
+    (fun p hp => by simp [Finset.mem_insert, Finset.mem_singleton] at hp; rcases hp with rfl | rfl | rfl <;> decide)
+    (by simp [Finset.sum_insert (by simp : (2:ℕ) ∉ ({3, 7} : Finset ℕ)),
+             Finset.sum_pair (by norm_num : (3:ℕ) ≠ 7)]; norm_num)
 
 /-- m = 1806, P = {2, 3, 7, 43}: 1/2 + 1/3 + 1/7 + 1/43 = 1 − 1/1806. -/
-axiom solution_1806 : (1806, ({2, 3, 7, 43} : Finset ℕ)) ∈ erdos313Solutions
+theorem solution_1806 : (1806, ({2, 3, 7, 43} : Finset ℕ)) ∈ erdos313Solutions :=
+  verify_solution 1806 {2, 3, 7, 43} (by norm_num) ⟨2, by simp⟩
+    (fun p hp => by simp [Finset.mem_insert, Finset.mem_singleton] at hp; rcases hp with rfl | rfl | rfl | rfl <;> decide)
+    (by simp [Finset.sum_insert (by simp : (2:ℕ) ∉ ({3, 7, 43} : Finset ℕ)),
+             Finset.sum_insert (by simp : (3:ℕ) ∉ ({7, 43} : Finset ℕ)),
+             Finset.sum_pair (by norm_num : (7:ℕ) ≠ 43)]; norm_num)
 
 /-- m = 47058, P = {2, 3, 11, 23, 31}:
   1/2 + 1/3 + 1/11 + 1/23 + 1/31 = 1 − 1/47058. -/
-axiom solution_47058 : (47058, ({2, 3, 11, 23, 31} : Finset ℕ)) ∈ erdos313Solutions
+theorem solution_47058 : (47058, ({2, 3, 11, 23, 31} : Finset ℕ)) ∈ erdos313Solutions :=
+  verify_solution 47058 {2, 3, 11, 23, 31} (by norm_num) ⟨2, by simp⟩
+    (fun p hp => by simp [Finset.mem_insert, Finset.mem_singleton] at hp; rcases hp with rfl | rfl | rfl | rfl | rfl <;> decide)
+    (by simp [Finset.sum_insert (by simp : (2:ℕ) ∉ ({3, 11, 23, 31} : Finset ℕ)),
+             Finset.sum_insert (by simp : (3:ℕ) ∉ ({11, 23, 31} : Finset ℕ)),
+             Finset.sum_insert (by simp : (11:ℕ) ∉ ({23, 31} : Finset ℕ)),
+             Finset.sum_pair (by norm_num : (23:ℕ) ≠ 31)]; norm_num)
 
 /- ## Structural Properties -/
 
@@ -100,5 +128,7 @@ axiom at_least_eight :
   1/p₁ + ··· + 1/pₖ + 1/m = 1,
 which is an Egyptian fraction representation of 1 using distinct
 denominators where all but possibly m are prime. -/
-axiom egyptian_fraction_form (m : ℕ) (P : Finset ℕ) (h : (m, P) ∈ erdos313Solutions) :
-  ∑ p ∈ P, (1 : ℚ) / p + 1 / m = 1
+theorem egyptian_fraction_form (m : ℕ) (P : Finset ℕ) (h : (m, P) ∈ erdos313Solutions) :
+    ∑ p ∈ P, (1 : ℚ) / p + 1 / m = 1 := by
+  have heq := h.2.2.2
+  linarith

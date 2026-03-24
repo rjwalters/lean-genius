@@ -74,9 +74,9 @@
         "relationship": "Egyptian fractions asymptotics — counting representations as sums of unit fractions"
       }
     ],
-    "axiomCount": 11,
-    "lineCount": 104,
-    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "axiomCount": 5,
+    "lineCount": 120,
+    "assumptions": "erdos_313_conjecture (OPEN), primary_pseudoperfect_infinite (OPEN equiv), product_constraint, uniqueness, at_least_eight. 5 solutions and egyptian_fraction_form proved."
   },
   "sections": [
     {
@@ -161,9 +161,9 @@
       "BigOperators"
     ],
     "namespace": null,
-    "lineCount": 104,
-    "axiomCount": 11,
-    "theoremCount": 0,
+    "lineCount": 120,
+    "axiomCount": 5,
+    "theoremCount": 7,
     "definitionCount": 2
   },
   "references": [
