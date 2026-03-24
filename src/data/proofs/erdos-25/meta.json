@@ -20,16 +20,16 @@
     "erdosNumber": 25,
     "erdosUrl": "https://erdosproblems.com/25",
     "erdosProblemStatus": "open",
-    "axiomCount": 5,
-    "lineCount": 137,
-    "assumptions": "5 axioms: logDensity (opaque predicate), logDensity_mem_unit, logDensity_unique, finite_sieve_density_exists, sieve_density_positive. Previously 6: sieved_set_nonempty eliminated (proved as theorem with corrected hypothesis).",
+    "axiomCount": 2,
+    "lineCount": 158,
+    "assumptions": "2 axioms: finite_sieve_density_exists, sieve_density_positive. Previously 6: logDensity/logDensity_mem_unit/logDensity_unique proved via constructive HasLogDensity; sieved_set_nonempty proved with corrected hypothesis (seq_n 0 ≥ 2).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1995 (reference [Er95]), asking about a fundamental property of sets defined by congruence exclusions. The question connects to a rich tradition in analytic number theory: the study of how sieve-theoretic constructions interact with different notions of density. Logarithmic density, which weights each integer $m$ by $1/m$, is a weaker notion than natural density—it exists more often. For example, the set of integers whose prime factorization has an odd number of factors (related to the Liouville function) has logarithmic density $1/2$ even though its natural density oscillates. The classical sieve of Eratosthenes produces congruence-sieved sets (with prime moduli and residue 0), and the density of primes can be understood through this lens. Erdős's question generalizes this to arbitrary moduli and residues, asking whether the logarithmic density is always well-defined. The problem is a special case of the broader Problem 486, which asks the same question for more general sieve constructions. The key difficulty is that while finite sieves yield periodic sets (whose density trivially exists), infinite sieves can produce sets with complex, non-periodic structure where the limit defining the density may oscillate.",
     "problemStatement": "Let $1 \\le n_1 < n_2 < \\cdots$ be a strictly increasing sequence of positive integers, each with an associated residue class $a_i \\pmod{n_i}$. Let $A = \\{m \\in \\mathbb{N} : \\forall i,\\ m < n_i \\text{ or } m \\not\\equiv a_i \\pmod{n_i}\\}$. Must the logarithmic density $\\delta_\\ell(A) = \\lim_{x \\to \\infty} \\frac{\\sum_{m \\in A, m \\le x} 1/m}{\\ln x}$ exist?",
     "text": "Let n₁ < n₂ < ⋯ be a strictly increasing sequence of positive integers with associated residue classes aᵢ (mod nᵢ). Let A be the set of integers m such that for every i, either m < nᵢ or m ≢ aᵢ (mod nᵢ). Must the logarithmic density of A exist? OPEN.",
-    "proofStrategy": "We axiomatize logarithmic density (logDensity) as a relation $S \\to \\mathbb{R} \\to \\text{Prop}$ with uniqueness and $[0,1]$ bounds. A CongruenceSieve structure packages the moduli sequence (with `StrictMono`) and residue sequence. The sievedSet is defined using `Int.ModEq` (ZMOD). ErdosProblem25 universally quantifies over all sieves. Special cases (prime moduli, finite sieves) and structural properties (positive density under coprimality, monotonicity under sieve removal) are formalized. The monotonicity theorem `sieve_monotone` is proved from first principles.",
+    "proofStrategy": "Logarithmic density is defined constructively via `Erdos25LogDensity.lean` as the limit of weighted counts $(\\sum_{n \\in A, n \\le N} 1/n) / \\log N$. The $[0,1]$ bound and uniqueness are proved theorems (not axioms): $d \\ge 0$ from non-negativity of density ratios, $d \\le 1$ by limsup comparison with harmonicSum/log → 1, uniqueness by limit uniqueness. A CongruenceSieve structure packages the moduli sequence (with `StrictMono`) and residue sequence. The sievedSet is defined using `Int.ModEq` (ZMOD). ErdosProblem25 universally quantifies over all sieves. Special cases (prime moduli, finite sieves) and structural properties (positive density under coprimality, monotonicity under sieve removal) are formalized. The monotonicity theorem `sieve_monotone` is proved from first principles.",
     "keyInsights": [
       "Logarithmic density is strictly weaker than natural density: it exists for sets like $\\{n : \\Omega(n) \\text{ odd}\\}$ where natural density oscillates. This makes the conjecture more plausible but still open",
       "The progressive sieve condition ($m < n_i$ exempts $m$) means each integer is tested against only finitely many congruences, preventing trivial contradictions and ensuring $A(\\sigma)$ is always nonempty",
@@ -48,10 +48,10 @@
     {
       "id": "log-density",
       "title": "Logarithmic Density",
-      "startLine": 23,
-      "endLine": 44,
-      "summary": "Axiomatizes `logDensity S d` (the limit $\\frac{\\sum_{m \\in S, m \\le x} 1/m}{\\sum_{m \\le x} 1/m} \\to d$), `LogDensityExists`, uniqueness of the density value, and the $[0,1]$ bound.",
-      "mathContext": "Three axioms: `logDensity : \\text{Set}\\,\\mathbb{N} \\to \\mathbb{R} \\to \\text{Prop}$ (the density relation), `logDensity_mem_unit` ($0 \\le d \\le 1$), and `logDensity_unique` (density is unique when it exists). The definition `LogDensityExists S := \\exists d, \\text{logDensity}\\,S\\,d$."
+      "startLine": 26,
+      "endLine": 67,
+      "summary": "Defines `logDensity` constructively via `HasLogDensity` from `Erdos25LogDensity.lean` (the limit of weighted counts over log). Proves `logDensity_mem_unit` ($0 \\le d \\le 1$) and `logDensity_unique` (limit uniqueness). Previously axiomatized; now fully proved.",
+      "mathContext": "Definition `logDensity := HasLogDensity` (constructive, from Erdos25LogDensity.lean). Theorem `logDensity_mem_unit`: $d \\ge 0$ via `ge_of_tendsto'` on non-negative density ratios; $d \\le 1$ via limsup comparison with harmonicSum/log → 1. Theorem `logDensity_unique`: by `tendsto_nhds_unique` (limit uniqueness in ℝ). Definition `LogDensityExists S := \\exists d, \\text{logDensity}\\,S\\,d$."
     },
     {
       "id": "congruence-sieve",
@@ -140,19 +140,15 @@
   ],
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Order.Filter.Basic",
-      "Mathlib.Topology.Basic",
-      "Mathlib.Data.Int.ModCast",
-      "Mathlib.Data.Int.Lemmas",
+      "Proofs.Erdos25LogDensity",
       "Mathlib.Tactic"
     ],
-    "opens": [],
+    "opens": ["Erdos25", "Filter"],
     "namespace": null,
-    "lineCount": 118,
-    "axiomCount": 6,
-    "theoremCount": 1,
-    "definitionCount": 5
+    "lineCount": 137,
+    "axiomCount": 3,
+    "theoremCount": 3,
+    "definitionCount": 6
   },
   "references": [
     {
