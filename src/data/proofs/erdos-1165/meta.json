@@ -101,7 +101,9 @@
   },
   "references": [
     {
-      "authors": ["Bálint Tóth"],
+      "authors": [
+        "Bálint Tóth"
+      ],
       "title": "No more than three favourite sites for simple random walk",
       "journal": "Annals of Probability",
       "volume": "29",
@@ -111,13 +113,21 @@
       "note": "Proves P(|F(n)| = r i.o.) = 0 for r ≥ 4 in the 2D random walk, establishing the upper bound of 3 favourite sites."
     },
     {
-      "authors": ["Zhonghao Hao", "Yifan Li", "Ryo Okada", "Chen Zheng"],
+      "authors": [
+        "Zhonghao Hao",
+        "Yifan Li",
+        "Ryo Okada",
+        "Chen Zheng"
+      ],
       "title": "Three favourite sites occurs infinitely often for one-dimensional simple random walk",
       "year": 2024,
       "note": "Proves P(|F(n)| = 3 i.o.) = 1, matching Tóth's upper bound and completely resolving Erdős Problem #1165."
     },
     {
-      "authors": ["Richard F. Bass", "Philip S. Griffin"],
+      "authors": [
+        "Richard F. Bass",
+        "Philip S. Griffin"
+      ],
       "title": "The most visited site of Brownian motion and simple random walk",
       "journal": "Zeitschrift für Wahrscheinlichkeitstheorie und verwandte Gebiete",
       "volume": "70",
@@ -132,12 +142,26 @@
       "Mathlib.Data.Int.Basic",
       "Mathlib.Data.Finset.Card"
     ],
-    "opens": ["MeasureTheory"],
+    "opens": [
+      "MeasureTheory"
+    ],
     "namespace": "Erdos1165",
     "lineCount": 175,
     "axiomCount": 8,
     "theoremCount": 5,
     "definitionCount": 2,
     "sorryCount": 0
-  }
+  },
+  "relatedProofs": [
+    {
+      "id": "central-limit-theorem",
+      "title": "Central Limit Theorem",
+      "relationship": "background — CLT gives the Gaussian scaling of the 2D walk"
+    },
+    {
+      "id": "erdos-1144",
+      "title": "Erdős Problem #1144: Partial Sums of Random Multiplicative Functions",
+      "relationship": "sibling Erdős problem involving probabilistic analysis"
+    }
+  ]
 }

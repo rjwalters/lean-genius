@@ -205,5 +205,22 @@
       "relationship": "The regularity lemma is a standard tool in extremal graph theory; the iterative argument in Janzer-Sudakov's resolution uses regularity-type structural decompositions",
       "targetId": "szemeredi-regularity"
     }
+  ],
+  "relatedProofs": [
+    {
+      "id": "erdos-180",
+      "title": "Erdős Problem #180: Turán Numbers for Graph Families",
+      "relationship": "sibling — both study extremal graph theory and forbidden subgraph density"
+    },
+    {
+      "id": "erdos-181",
+      "title": "Erdős Problem #181",
+      "relationship": "sibling — related extremal graph problem"
+    },
+    {
+      "id": "szemeredi-regularity",
+      "title": "Szemerédi Regularity Lemma",
+      "relationship": "technique — central to extremal graph theory"
+    }
   ]
 }

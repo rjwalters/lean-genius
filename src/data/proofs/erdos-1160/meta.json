@@ -165,5 +165,27 @@
       "relationship": "related",
       "description": "The Abel–Ruffini theorem connects to group theory through the non-solvability of the symmetric group S₅. The distinction between solvable and non-solvable groups is relevant to Pantelidakis's approach, which exploits solvability of odd-order groups."
     }
+  ],
+  "relatedProofs": [
+    {
+      "id": "sylow-theorems",
+      "title": "Sylow's Theorems",
+      "relationship": "foundation — Sylow theorems provide the structural decomposition underpinning group enumeration"
+    },
+    {
+      "id": "lagrange-theorem",
+      "title": "Lagrange's Theorem",
+      "relationship": "foundation — subgroup order divides group order, basic ingredient in group enumeration"
+    },
+    {
+      "id": "inverse-galois",
+      "title": "The Inverse Galois Problem",
+      "relationship": "related — both concern the structure and diversity of finite groups"
+    },
+    {
+      "id": "abel-ruffini",
+      "title": "Abel-Ruffini Theorem",
+      "relationship": "related — the solvable/non-solvable distinction is relevant to Pantelidakis's approach"
+    }
   ]
 }
