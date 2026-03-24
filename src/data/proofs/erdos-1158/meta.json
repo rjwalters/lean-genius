@@ -17,7 +17,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 1158,
     "erdosUrl": "https://erdosproblems.com/1158",
     "erdosProblemStatus": "open",
@@ -45,10 +45,16 @@
       "erdos_upper_bound axiom: Erdős (1964) upper bound",
       "erdos_lower_bound axiom: weaker lower bound with constant gap",
       "stepping_up_lemma axiom: Erdős-Hajnal stepping-up for uniformities",
-      "erdos_1158_known_cases theorem: t=2 with r=2,3 solved"
+      "erdos_1158_known_cases theorem: t=2 with r=2,3 solved",
+      "exponent_t2 theorem: KST exponent 2-1/r from general formula (proved)",
+      "exponent_t2_r2 theorem: exponent 3/2 for C₄ (proved)",
+      "exponent_t2_r3 theorem: exponent 5/3 for K_{3,3} (proved)",
+      "exponent_lt_t theorem: exponent strictly less than t (proved)",
+      "exponent_ge_t_sub_one theorem: exponent at least t-1 (proved)",
+      "exponent_pos theorem: exponent positive for t≥2 (proved)"
     ],
     "axiomCount": 5,
-    "lineCount": 279,
+    "lineCount": 320,
     "assumptions": "5 axiom(s): erdos_upper_bound (hypergraph KST), erdos_lower_bound (weaker probabilistic bound), conjecture_t2_r2 and conjecture_t2_r3 (known cases), stepping_up_lemma (Erdős-Hajnal)."
   },
   "overview": {
@@ -122,7 +128,7 @@
     {
       "id": "graph-reduction",
       "title": "Reduction to the Graph Case ($t = 2$)",
-      "summary": "Proves the exponent specializes correctly for graphs: `exponent_t2` shows $\\alpha(2, r) = 2 - 1/r$ (with one sorry for rpow simplification), and `exponent_t2_r2`/`exponent_t2_r3` verify the $r = 2$ and $r = 3$ special cases via `norm_num`. This connects Problem #1158 to Problem #714 (Zarankiewicz).",
+      "summary": "Proves the exponent specializes correctly for graphs: `exponent_t2` proves $\\alpha(2, r) = 2 - 1/r$ using `Real.rpow_neg_one`, and `exponent_t2_r2`/`exponent_t2_r3` compute the exact values $3/2$ and $5/3$. This connects Problem #1158 to Problem #714 (Zarankiewicz).",
       "startLine": 182,
       "endLine": 215
     },
@@ -132,6 +138,13 @@
       "summary": "Axiomatizes the two solved cases ($t = 2, r \\in \\{2, 3\\}$ via algebraic constructions) and the Erdős–Hajnal stepping-up lemma that lifts $(t-1)$-uniform bounds to $t$-uniform bounds with exponent $\\alpha + 1$. The final theorem `erdos_1158_known_cases` packages both solved cases. Stepping-up is the only tool for $t \\geq 3$ but compounds the constant gap.",
       "startLine": 217,
       "endLine": 279
+    },
+    {
+      "id": "structural-properties",
+      "title": "Structural Properties of the Exponent",
+      "summary": "Three fully proved theorems bounding `hypergraphExponent`: `exponent_lt_t` ($\\alpha < t$), `exponent_ge_t_sub_one` ($\\alpha \\geq t - 1$), and `exponent_pos` ($\\alpha > 0$ for $t \\geq 2$). Together these show the exponent lies in the interval $(t-1, t)$, matching combinatorial intuition.",
+      "startLine": 280,
+      "endLine": 320
     }
   ],
   "conclusion": {
@@ -162,9 +175,9 @@
     ],
     "opens": [],
     "namespace": "Erdos1158",
-    "lineCount": 279,
+    "lineCount": 320,
     "axiomCount": 5,
-    "theoremCount": 4,
+    "theoremCount": 7,
     "definitionCount": 7
   }
 }

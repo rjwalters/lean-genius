@@ -113,7 +113,7 @@
     "range": { "startLine": 192, "endLine": 215 },
     "type": "technique",
     "title": "Reduction to the Graph Case (t = 2)",
-    "content": "When $t = 2$, a $2$-uniform hypergraph is simply a graph, $K_2(r) = K_{r,r}$, and the problem reduces to the Zarankiewicz problem (Erdős #714). The theorems `exponent_t2_r2` and `exponent_t2_r3` verify that the general exponent formula specializes correctly to $3/2$ and $5/3$ respectively. The `exponent_t2` theorem shows the general reduction $t - r^{1-t} \\mapsto 2 - 1/r$ (with one sorry for `rpow` simplification).",
+    "content": "When $t = 2$, a $2$-uniform hypergraph is simply a graph, $K_2(r) = K_{r,r}$, and the problem reduces to the Zarankiewicz problem (Erdős #714). The theorem `exponent_t2` proves $\\alpha(2, r) = 2 - 1/r$ using `Real.rpow_neg_one`. The special case theorems `exponent_t2_r2` and `exponent_t2_r3` compute the exact numerical values $3/2$ and $5/3$.",
     "mathContext": "For $t = 2$: $\\alpha(2, r) = 2 - r^{1-2} = 2 - r^{-1} = 2 - 1/r$. Special cases: $\\alpha(2,2) = 3/2$ and $\\alpha(2,3) = 5/3$. The Zarankiewicz number $z(n; r) = \\mathrm{ex}_2(n, K_{2,2}(r)) = \\mathrm{ex}(n; K_{r,r})$.",
     "significance": "supporting",
     "relatedConcepts": ["Zarankiewicz problem", "erdos-714", "norm_num tactic", "real power simplification"],
@@ -154,5 +154,17 @@
     "significance": "supporting",
     "relatedConcepts": ["And.intro", "axiom pairing", "problem status documentation"],
     "prerequisites": ["conjecture_t2_r2", "conjecture_t2_r3"]
+  },
+  {
+    "id": "structural-properties",
+    "proofId": "erdos-1158",
+    "range": { "startLine": 280, "endLine": 320 },
+    "type": "technique",
+    "title": "Structural Properties of the Exponent",
+    "content": "Three proved structural theorems about `hypergraphExponent`: (1) `exponent_lt_t` shows $\\alpha(t,r) < t$ since $r^{1-t} > 0$; (2) `exponent_ge_t_sub_one` shows $\\alpha(t,r) \\geq t - 1$ since $r^{1-t} \\leq 1$ for $r \\geq 1$; (3) `exponent_pos` shows $\\alpha(t,r) > 0$ for $t \\geq 2$. These bounds confirm the exponent lies in the interval $(t-1, t)$, which matches the combinatorial intuition that $K_t(r)$-free hypergraphs can have nearly $n^t$ edges but not quite.",
+    "mathContext": "$t - 1 \\leq \\alpha(t,r) < t$ for $t \\geq 1$ and $r \\geq 1$. The upper bound uses $r^{1-t} > 0$ for $r > 0$. The lower bound uses $r^{1-t} \\leq r^0 = 1$ for $r \\geq 1$ and $1-t \\leq 0$ (monotonicity of $x \\mapsto x^y$ for $x \\geq 1$).",
+    "significance": "supporting",
+    "relatedConcepts": ["Real.rpow_pos_of_pos", "Real.rpow_le_rpow_of_exponent_le", "exponent bounds"],
+    "prerequisites": ["hypergraphExponent", "Real.rpow monotonicity", "linarith"]
   }
 ]

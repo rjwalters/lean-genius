@@ -30,6 +30,7 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 namespace Erdos1158
 
@@ -66,11 +67,9 @@ hyperedges is r^t.
 A t-uniform hypergraph H on vertex set V contains K_t(r) as a sub-hypergraph
 if there exist t disjoint sets A₁, ..., A_t each of size r such that every
 transversal (one vertex from each Aᵢ) forms a hyperedge of H.
-
-We model this for the specific case of t = 2 (bipartite) for concreteness,
-and axiomatize the general case.
 -/
-def containsKtr (H : UniformHypergraph V t) [Fintype V] [DecidableEq V] (r : ℕ) : Prop :=
+def containsKtr {V : Type*} [Fintype V] [DecidableEq V] {t : ℕ}
+    (H : UniformHypergraph V t) (r : ℕ) : Prop :=
   ∃ (parts : Fin t → Finset V),
     -- Each part has exactly r vertices
     (∀ i, (parts i).card = r) ∧
@@ -83,7 +82,8 @@ def containsKtr (H : UniformHypergraph V t) [Fintype V] [DecidableEq V] (r : ℕ
 /--
 A t-uniform hypergraph is K_t(r)-free if it does not contain K_t(r).
 -/
-def isKtrFree (H : UniformHypergraph V t) [Fintype V] [DecidableEq V] (r : ℕ) : Prop :=
+def isKtrFree {V : Type*} [Fintype V] [DecidableEq V] {t : ℕ}
+    (H : UniformHypergraph V t) (r : ℕ) : Prop :=
   ¬containsKtr H r
 
 /-
@@ -98,9 +98,11 @@ The hypergraph Turán number ex_t(n, K_t(r)):
 the maximum number of edges in a K_t(r)-free t-uniform hypergraph on n vertices.
 -/
 noncomputable def exHypergraph (t n r : ℕ) : ℕ :=
-  sSup {m : ℕ | ∃ (V : Type) [Fintype V] [DecidableEq V],
-    ∃ (H : UniformHypergraph V t),
-      Fintype.card V = n ∧ isKtrFree H r ∧ H.edgeCount = m}
+  sSup {m : ℕ | ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V),
+    ∃ (H : @UniformHypergraph V ‹Fintype V› ‹DecidableEq V› t),
+      @Fintype.card V ‹Fintype V› = n ∧
+      @isKtrFree V ‹Fintype V› ‹DecidableEq V› t H r ∧
+      @UniformHypergraph.edgeCount V ‹Fintype V› ‹DecidableEq V› t H = m}
 
 /-
 ## Part IV: Known Upper Bound
@@ -119,7 +121,7 @@ The conjectured exponent for the hypergraph Turán number:
 For t=2: this gives 2 - r^{-1} = 2 - 1/r (the KST exponent).
 For t=3, r=2: this gives 3 - 2^{-2} = 3 - 1/4 = 11/4 = 2.75.
 -/
-def hypergraphExponent (t r : ℕ) : ℝ :=
+noncomputable def hypergraphExponent (t r : ℕ) : ℝ :=
   (t : ℝ) - (r : ℝ)^(1 - (t : ℝ))
 
 /--
@@ -191,28 +193,26 @@ This is exactly Erdős Problem #714.
 
 /--
 The t=2 exponent simplifies to the Kővári-Sós-Turán exponent:
-  hypergraphExponent 2 r = 2 - r^{-1} = 2 - 1/r
+  hypergraphExponent 2 r = 2 - 1/r
 -/
-theorem exponent_t2 (r : ℕ) (hr : r ≥ 1) :
+theorem exponent_t2 (r : ℕ) (_hr : r ≥ 1) :
     hypergraphExponent 2 r = 2 - (r : ℝ)⁻¹ := by
   unfold hypergraphExponent
-  simp [Real.rpow_natCast]
-  ring_nf
-  sorry -- requires rpow simplification for r^(-1 : ℝ) = r⁻¹
+  have h : (1 : ℝ) - (↑(2 : ℕ) : ℝ) = -1 := by norm_num
+  rw [h, Real.rpow_neg_one]
+  push_cast; ring
 
 /--
-For t=2, r=2: the exponent is 3/2.
+For t=2, r=2: the exponent is 3/2 (the Zarankiewicz exponent for C₄).
 -/
-theorem exponent_t2_r2 : hypergraphExponent 2 2 = 2 - (2 : ℝ)^((1 : ℝ) - 2) := by
-  unfold hypergraphExponent
-  norm_num
+theorem exponent_t2_r2 : hypergraphExponent 2 2 = 3 / 2 := by
+  rw [exponent_t2 2 (by norm_num)]; norm_num
 
 /--
-For t=2, r=3: the exponent is 5/3.
+For t=2, r=3: the exponent is 5/3 (Brown's exponent for K_{3,3}).
 -/
-theorem exponent_t2_r3 : hypergraphExponent 2 3 = 2 - (3 : ℝ)^((1 : ℝ) - 2) := by
-  unfold hypergraphExponent
-  norm_num
+theorem exponent_t2_r3 : hypergraphExponent 2 3 = 5 / 3 := by
+  rw [exponent_t2 3 (by norm_num)]; norm_num
 
 /-
 ## Part VIII: Known Cases of the Conjecture
@@ -275,5 +275,46 @@ axiom stepping_up_lemma (t r : ℕ) (ht : t ≥ 3) (hr : r ≥ 2)
 theorem erdos_1158_known_cases :
     erdos1158Conjecture 2 2 ∧ erdos1158Conjecture 2 3 := by
   exact ⟨conjecture_t2_r2, conjecture_t2_r3⟩
+
+/-
+## Part XI: Structural Properties of the Exponent
+-/
+
+/--
+The hypergraph exponent is strictly less than t for any r ≥ 2.
+This follows because r^{1-t} > 0 for positive r, so subtracting it gives less than t.
+-/
+theorem exponent_lt_t (t r : ℕ) (_ht : t ≥ 2) (hr : r ≥ 2) :
+    hypergraphExponent t r < (t : ℝ) := by
+  unfold hypergraphExponent
+  linarith [Real.rpow_pos_of_pos (show (0 : ℝ) < (r : ℝ) by positivity) ((1 : ℝ) - (t : ℝ))]
+
+/--
+The hypergraph exponent is at least t - 1 for r ≥ 1, t ≥ 1.
+Since r ≥ 1 and 1 - t ≤ 0, we have r^{1-t} ≤ r^0 = 1, giving t - r^{1-t} ≥ t - 1.
+-/
+theorem exponent_ge_t_sub_one (t r : ℕ) (ht : t ≥ 1) (hr : r ≥ 1) :
+    hypergraphExponent t r ≥ (t : ℝ) - 1 := by
+  unfold hypergraphExponent
+  have hr_cast : (1 : ℝ) ≤ (r : ℝ) := by exact_mod_cast hr
+  have ht_cast : (1 : ℝ) ≤ (t : ℝ) := by exact_mod_cast ht
+  have h_rpow_le : (r : ℝ) ^ ((1 : ℝ) - (t : ℝ)) ≤ 1 := by
+    calc (r : ℝ) ^ ((1 : ℝ) - (t : ℝ))
+        ≤ (r : ℝ) ^ (0 : ℝ) := by
+          apply Real.rpow_le_rpow_of_exponent_le hr_cast; linarith
+      _ = 1 := Real.rpow_zero _
+  linarith
+
+/--
+The hypergraph exponent is positive for t ≥ 2 and r ≥ 1.
+Combining t ≥ 2 with r^{1-t} ≤ 1 gives t - r^{1-t} ≥ 2 - 1 = 1 > 0.
+-/
+theorem exponent_pos (t r : ℕ) (ht : t ≥ 2) (hr : r ≥ 1) :
+    0 < hypergraphExponent t r := by
+  have h := exponent_ge_t_sub_one t r (by omega) hr
+  have : (1 : ℝ) ≤ (t : ℝ) - 1 := by
+    have : (2 : ℝ) ≤ (t : ℝ) := by exact_mod_cast ht
+    linarith
+  linarith
 
 end Erdos1158
