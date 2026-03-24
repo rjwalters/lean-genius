@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-02-08T00:55:03.568Z",
-    "iteration": 2,
+    "iteration": 3,
     "focus": "Initial formalization of almost-prime gap problem",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,11 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: New formalization created. 11 proved theorems, 2 axioms (open conjecture + Hardy-Ramanujan), 3 sorries in supporting lemmas. Builds clean.",
+    "progressSummary": "PROGRESS: Session 3 eliminated 2/3 sorries. Proved semiprime_isAlmostPrime (Ω additivity) and cube_gap_obstruction (Ω(8k) ≥ 3). Only almostPrimeGap definition sorry remains.",
     "builtItems": [
       "Created Erdos1139Problem.lean (157 lines, 11 theorems, 2 axioms, 3 sorries)",
       "Proved prime_isAlmostPrime, four_isAlmostPrime, eight_not_almostPrime",
-      "Proved almostPrimes_contain_primes (primes ⊆ almost-primes)"
+      "Proved almostPrimes_contain_primes (primes ⊆ almost-primes)",
+      "Proved semiprime_isAlmostPrime: Ω(pq) = Ω(p) + Ω(q) = 2 via factorization_mul + sum_add_index",
+      "Proved cube_gap_obstruction: Ω(8k) = Ω(8) + Ω(k) ≥ 3 > 2 via bigOmega additivity"
     ],
     "insights": [
       "Ω(n) available via n.factorization.sum in Mathlib",
@@ -61,5 +63,11 @@
   "started": "2026-02-08T00:55:03.569Z",
   "lastUpdate": "2026-03-13T07:52:17.061Z",
   "significance": 7,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "sorryCount": 1,
+      "theoremCount": 11
+    }
+  ]
 }
