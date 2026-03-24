@@ -360,7 +360,9 @@ NOTE: This uses `primorialComp` which is only defined for k ≤ 5.
 For a fully general statement, a proper primorial function using
 prime enumeration (e.g., via Nat.nth) would be needed.
 -/
-axiom erdos_891 (k : ℕ) (hk : k ≥ 2) :
-    ∃ N : ℕ, ∀ n ≥ N, HasManyFactorsComp n k
+/-- **Erdős Problem #891 (OPEN):**
+    Stated as a definition since this is an open conjecture. -/
+def ErdosProblem891 : Prop :=
+    ∀ k : ℕ, k ≥ 2 → ∃ N : ℕ, ∀ n ≥ N, HasManyFactorsComp n k
 
 end Erdos891
