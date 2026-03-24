@@ -59,8 +59,8 @@
       "Theorem continuous_dependence_2d: for any ε > 0, threshold δ = ε·exp(-C·E(0)·T) gives W(0) ≤ δ implies W(t) ≤ ε, establishing Hadamard well-posedness"
     ],
     "dateAdded": "2026-02-28",
-    "lineCount": 21111,
-    "assumptions": "None. Formalized with 0 axioms and 23 sorries.",
+    "lineCount": 21110,
+    "assumptions": "None. Formalized with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -116,7 +116,7 @@
       "id": "continuous-dependence",
       "title": "Continuous Dependence on Initial Data",
       "startLine": 2864,
-      "endLine": 21111,
+      "endLine": 21110,
       "summary": "continuous_dependence_2d: for any ε > 0, δ = ε·exp(-C·E(0)·T) gives W(0) ≤ δ implies W(t) ≤ ε on (0,T). Together with uniqueness, establishes Hadamard well-posedness."
     }
   ],
@@ -211,7 +211,7 @@
       "TwoDimensionalGlobal"
     ],
     "namespace": "NavierStokesRegularity",
-    "lineCount": 21111,
+    "lineCount": 21110,
     "axiomCount": 0,
     "theoremCount": 1009,
     "definitionCount": 104
