@@ -22,7 +22,10 @@
       "forbidden-subgraphs",
       "open-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory basics",
+      "graph coloring terminology"
+    ]
   },
   {
     "id": "ann-e596-definitions",
@@ -33,13 +36,14 @@
       "endLine": 52
     },
     "title": "Dichotomy Definitions",
-    "content": "**GraphProperty** is a predicate on SimpleGraph ℕ. **FiniteRamseyProperty**: for all n ≥ 1, there exists a G₁-free graph H such that every n-coloring of H's edges contains a monochromatic G₂. **CountableColoringProperty**: every G₁-free graph H admits a countable edge coloring with no monochromatic G₂. **HasDichotomy**: both properties hold simultaneously.",
-    "mathContext": "The two properties are complementary: finite colors are insufficient to avoid monochromatic copies, but countably many suffice. This finite/countable gap is what makes the dichotomy remarkable.",
+    "content": "**GraphProperty** is a predicate on SimpleGraph ℕ. **FiniteRamseyProperty**: for all n ≥ 1, there exists a G₁-free graph H such that every n-coloring of H's edges contains a monochromatic G₂. **CountableColoringProperty**: every G₁-free graph H admits a countable edge coloring with no monochromatic G₂. **HasDichotomy**: both properties hold simultaneously.\n\nThe coloring is typed as `(Σ v w : ℕ, H.Adj v w) → Fin n` for finite and `→ ℕ` for countable, encoding edge colorings as functions from the adjacency relation.",
+    "mathContext": "The two properties are complementary: finite colors are insufficient to avoid monochromatic copies, but countably many suffice. This finite/countable gap is what makes the dichotomy remarkable. Formally: FiniteRamseyProperty $\\equiv \\forall n \\geq 1, \\exists H\\;(G_1\\text{-free}),\\; \\forall c : E(H) \\to [n],\\; \\exists$ monochromatic $G_2$; CountableColoringProperty $\\equiv \\forall H\\;(G_1\\text{-free}),\\; \\exists c : E(H) \\to \\mathbb{N},\\; \\nexists$ monochromatic $G_2$.",
     "significance": "key",
     "relatedConcepts": [
       "SimpleGraph",
       "edge coloring",
-      "Ramsey property"
+      "Ramsey property",
+      "partition regularity"
     ],
     "tags": [
       "definition",
@@ -47,7 +51,11 @@
       "edge-coloring",
       "ramsey-property"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "SimpleGraph ℕ",
+      "Fin n type",
+      "dependent sum types"
+    ]
   },
   {
     "id": "ann-e596-c4c6",
@@ -72,7 +80,10 @@
       "cycle-graphs",
       "tree-decomposition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nešetřil-Rödl theorem",
+      "tree decomposition of sparse graphs"
+    ]
   },
   {
     "id": "ann-e596-conjecture",
@@ -95,7 +106,10 @@
       "classification",
       "structural-characterization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "HasDichotomy definition",
+      "structural characterization"
+    ]
   },
   {
     "id": "ann-e596-k4k3",
@@ -120,7 +134,11 @@
       "related-problem",
       "open-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complete graph K₄",
+      "triangle K₃",
+      "Ramsey theory for cliques"
+    ]
   },
   {
     "id": "ann-e596-summary",
@@ -145,6 +163,9 @@
       "dichotomy",
       "open-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "c4_c6_dichotomy",
+      "dichotomy_pairs_exist"
+    ]
   }
 ]
