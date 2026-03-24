@@ -89,42 +89,48 @@
       "title": "Density Definitions",
       "startLine": 28,
       "endLine": 48,
-      "summary": "Define counting function, HasDensity, HasDensityZero, and upperDensity."
+      "summary": "Define counting function, HasDensity, HasDensityZero, and upperDensity.",
+      "mathContext": "$d(A) = \\lim_{N\\to\\infty} \\frac{|A \\cap \\{1,\\ldots,N\\}|}{N}$"
     },
     {
       "id": "sumsets",
       "title": "Sumsets",
       "startLine": 49,
       "endLine": 61,
-      "summary": "Define sumsets A +ₛ B and CoversAllButFinitely predicate."
+      "summary": "Define sumsets A +ₛ B and CoversAllButFinitely predicate.",
+      "mathContext": "$A +_s B = \\{a + b \\mid a \\in A,\\, b \\in B\\} \\subseteq \\mathbb{N}$"
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 79,
       "endLine": 107,
-      "summary": "State Erdős Problem #31 and axiomatize Lorentz's theorem with the strengthened bound."
+      "summary": "State Erdős Problem #31 and axiomatize Lorentz's theorem with the strengthened bound.",
+      "mathContext": "$\\forall A \\subseteq \\mathbb{N},\\, A \\text{ infinite} \\Rightarrow \\exists B,\\, d(B)=0 \\wedge (\\mathbb{N} \\setminus (A+B) \\text{ finite})$"
     },
     {
       "id": "optimal-density",
       "title": "Optimal Density",
       "startLine": 132,
       "endLine": 165,
-      "summary": "Define OptimalBDensity and prove it equals 0 for infinite A."
+      "summary": "Define OptimalBDensity and prove it equals 0 for infinite A.",
+      "mathContext": "$\\text{OptimalBDensity}(A) = \\inf\\{d(B) \\mid B \\text{ covers cofinitely}\\} = 0$"
     },
     {
       "id": "coverage-requirements",
       "title": "Coverage Requirements",
       "startLine": 172,
       "endLine": 219,
-      "summary": "Prove that finite A and finite B cannot achieve cofinite coverage."
+      "summary": "Prove that finite A and finite B cannot achieve cofinite coverage.",
+      "mathContext": "$A, B \\text{ finite} \\Rightarrow |A +_s B| \\leq |A| \\cdot |B| < \\infty$, so $A +_s B$ cannot be cofinite"
     },
     {
       "id": "additive-bases",
       "title": "Connection to Additive Bases",
       "startLine": 220,
       "endLine": 726,
-      "summary": "Show that the result implies A ∪ B is an asymptotic basis of order 2."
+      "summary": "Show that the result implies A ∪ B is an asymptotic basis of order 2.",
+      "mathContext": "$A \\cup B$ is an asymptotic basis of order 2: $\\forall n \\gg 1,\\, n \\in (A \\cup B) + (A \\cup B)$"
     }
   ],
   "conclusion": {
