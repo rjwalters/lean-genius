@@ -23,9 +23,9 @@
     "relatedProblems": [
       592
     ],
-    "axiomCount": 7,
-    "lineCount": 93,
-    "assumptions": "8 axioms: ordPartition, counter_partition_3, counter_not_partition_5, and 5 more. See Lean source for complete statements.",
+    "axiomCount": 6,
+    "lineCount": 120,
+    "assumptions": "6 axioms: ordPartition, counter_partition_3, counter_not_partition_5, partitionThreshold, partition_monotone_down, threshold_exact. omega_omega2_threshold proved from threshold_exact + monotonicity + counterexamples. relation_to_592 proved directly from counterexamples.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -102,9 +102,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 93,
-    "axiomCount": 7,
-    "theoremCount": 2,
+    "lineCount": 120,
+    "axiomCount": 6,
+    "theoremCount": 3,
     "definitionCount": 3
   },
   "references": [
