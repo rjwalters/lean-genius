@@ -110,7 +110,7 @@
       "id": "closed-form",
       "title": "Closed-Form Formula",
       "startLine": 101,
-      "endLine": 121,
+      "endLine": 127,
       "summary": "The sum formula $D_n = \\sum_{k=0}^n (-1)^k (k+1)^{\\overline{n-k}}$ via `numDerangements_sum` and cardinality results bridging `derangements α` with `numDerangements`.",
       "mathContext": "Mathlib uses ascending factorials: $(k+1)^{\\overline{n-k}} = (k+1)(k+2)\\cdots n = n!/k!$. So $\\sum_{k=0}^n (-1)^k (k+1)^{\\overline{n-k}} = \\sum_{k=0}^n (-1)^k n!/k! = n! \\sum_{k=0}^n (-1)^k/k!$, recovering the classical formula. The `card_derangements_eq_numDerangements` bridge connects the set-cardinality definition to this numerical formula."
     },

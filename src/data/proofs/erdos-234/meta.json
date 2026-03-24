@@ -47,56 +47,56 @@
       "id": "imports",
       "title": "Imports and Namespace",
       "startLine": 15,
-      "endLine": 30,
+      "endLine": 36,
       "summary": "Imports Mathlib for `Nat.Nth` (prime enumeration), `Real.log`/`Real.exp` (analysis), `Filter.Tendsto` (limits), and `Proofs.RiemannHypothesis`. Opens `Nat`, `Filter`, `Real`, `Set`."
     },
     {
       "id": "basic-definitions",
       "title": "Prime Gap Definitions",
       "startLine": 37,
-      "endLine": 44,
+      "endLine": 50,
       "summary": "Defines nthPrime$(n) = p_n$ via `Nat.nth`, primeGap$(n) = p_{n+1} - p_n$, and normalizedGap$(n) = g_n / \\log n$ (with $0$ for $n \\leq 1$)."
     },
     {
       "id": "counting-functions",
       "title": "Counting Functions",
       "startLine": 51,
-      "endLine": 56,
+      "endLine": 62,
       "summary": "Defines countSmallNormGaps$(N, c) = |\\{n < N : g_n/\\log n < c\\}|$ via `Finset.filter` and gapProportion as the count divided by $N$."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "startLine": 63,
-      "endLine": 76,
+      "endLine": 82,
       "summary": "States ErdosProblem234: $\\forall c \\geq 0$, the density $f(c) = \\lim_{N} \\text{gapProportion}(N, c)$ exists and $f$ is continuous. Uses `Tendsto` with `atTop` and `nhds`."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 83,
-      "endLine": 145,
+      "endLine": 152,
       "summary": "Proves $f_N(0) = 0$, $0 \\leq f_N(c) \\leq 1$, monotonicity $c_1 \\leq c_2 \\implies f_N(c_1) \\leq f_N(c_2)$, and $f(0) = 0$. Axiomatizes $f(c) \\to 1$ as $c \\to \\infty$."
     },
     {
       "id": "cramer-model",
       "title": "Cramér's Exponential Model",
       "startLine": 153,
-      "endLine": 178,
+      "endLine": 186,
       "summary": "Defines cramerPrediction$(c) = 1 - e^{-c}$ for $c \\geq 0$. Proves continuity via `Continuous.if_lt` and validates CDF bounds $0 \\leq f(c) \\leq 1$."
     },
     {
       "id": "gallagher-result",
       "title": "Gallagher's Conditional Result",
       "startLine": 187,
-      "endLine": 202,
+      "endLine": 209,
       "summary": "Axiomatizes Gallagher (1976): RH $\\implies \\text{gapProportion}(N, c) \\to 1 - e^{-c}$. Proves gallagher_implies_conjecture: RH $\\implies$ ErdosProblem234."
     },
     {
       "id": "partial-results",
       "title": "Partial Results on Gap Distribution",
       "startLine": 210,
-      "endLine": 220,
+      "endLine": 226,
       "summary": "Axiomatizes: (1) small_gaps_exist (GPY/Maynard–Tao: infinitely many $g_n < (1+\\varepsilon)\\log p_n$), (2) large_gaps_exist (FGKT: unbounded $g_n/\\log n$), (3) average $g_n/\\log n \\to 1$ by PNT."
     },
     {
