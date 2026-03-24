@@ -16,6 +16,7 @@ Reference: https://erdosproblems.com/265
 -/
 
 import Mathlib
+import Proofs.TriangularNumberReciprocals
 
 namespace Erdos265
 
@@ -61,9 +62,24 @@ theorem cantorSeq_increasing : ∀ n ≥ 1, cantorSeq n < cantorSeq (n + 1) := b
   ring_nf
   omega
 
-/-- Cantor's sequence has rational reciprocal sum -/
-axiom cantorSeq_rational_sum :
-  ∃ q : ℚ, reciprocalSum cantorSeq = q
+/-- Cantor's sequence has rational reciprocal sum.
+    Proof: cantorSeq n = n(n+1)/2 = triangular n, so ∑ 1/cantorSeq n = ∑ 2/(n(n+1)) = 2.
+    Uses the telescoping series proof from TriangularNumberReciprocals. -/
+theorem cantorSeq_rational_sum :
+    ∃ q : ℚ, reciprocalSum cantorSeq = q := by
+  refine ⟨2, ?_⟩
+  unfold reciprocalSum
+  -- Show the functions are pointwise equal
+  have key : (fun n : ℕ => (1 : ℝ) / ↑(cantorSeq n)) =
+             (fun n : ℕ => if n = 0 then 0 else (2 : ℝ) / (↑n * (↑n + 1))) := by
+    ext n
+    by_cases hn : n = 0
+    · simp [hn, cantorSeq]
+    · simp only [hn, ↓reduceIte]
+      -- cantorSeq n = triangular n (definitionally equal: n*(n+1)/2)
+      exact TriangularNumberReciprocals.reciprocal_triangular n hn
+  rw [key, TriangularNumberReciprocals.tsum_reciprocals_triangular]
+  norm_num
 
 /-- Cantor's sequence has rational shifted reciprocal sum -/
 axiom cantorSeq_shifted_rational :
