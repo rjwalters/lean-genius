@@ -78,7 +78,7 @@
   "overview": {
     "historicalContext": "**Chinese Remainder Theorem as Ring Isomorphism**\n\nThe Chinese Remainder Theorem (CRT) dates to Sun Zi's Suanjing (~3rd century). In its modern algebraic form, for coprime ideals $I, J$ of a ring $R$, the natural map $R/(I \\cap J) \\to R/I \\times R/J$ is a ring isomorphism. For $R = \\mathbb{Z}$, $I = m\\mathbb{Z}$, $J = n\\mathbb{Z}$ with $\\gcd(m,n) = 1$: $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$.\n\nThis formalization wraps Mathlib's `ZMod.chineseRemainder` and extends it with applications: orthogonal idempotent decomposition, explicit Bézout solutions, and unit group characterization.",
     "problemStatement": "**Theorem**: For coprime natural numbers $m, n$, the canonical ring homomorphism $\\varphi: \\mathbb{Z}/mn\\mathbb{Z} \\to \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ defined by $x \\mapsto (x \\bmod m, x \\bmod n)$ is a ring isomorphism.",
-    "text": "Formalizes the Chinese Remainder Theorem as a ring isomorphism: for coprime m, n, the natural map ℤ/mnℤ → ℤ/mℤ × ℤ/nℤ is a ring isomorphism. Wraps Mathlib's ZMod.chineseRemainder and proves applications: orthogonal idempotent decomposition, Bézout-based explicit solutions, cardinality preservation, Euler totient multiplicativity, and unit group characterization.",
+    "text": "A 315-line formalization of the Chinese Remainder Theorem as a ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ for coprime $m, n$. Wraps Mathlib's `ZMod.chineseRemainder` and develops five applications: (1) orthogonal idempotent decomposition $e_1 = nv, e_2 = mu$ from Bézout coefficients with $e_1 + e_2 = 1$ and $e_1 e_2 = 0$; (2) explicit CRT solutions via Bézout-based formulas; (3) cardinality preservation $|\\mathbb{Z}/mn\\mathbb{Z}| = |\\mathbb{Z}/m\\mathbb{Z}| \\times |\\mathbb{Z}/n\\mathbb{Z}|$; (4) Euler totient multiplicativity $\\varphi(mn) = \\varphi(m) \\varphi(n)$; (5) unit group characterization $(\\mathbb{Z}/mn\\mathbb{Z})^\\times \\cong (\\mathbb{Z}/m\\mathbb{Z})^\\times \\times (\\mathbb{Z}/n\\mathbb{Z})^\\times$. Connects to the Bézout identity (parent), constructive CRT, and Euler totient entries in the gallery.",
     "proofStrategy": "The proof uses Mathlib's `ZMod.chineseRemainder` for the core isomorphism, then develops applications:\n\n1. **Ring isomorphism properties**: additivity, multiplicativity, bijectivity\n2. **Inverse map and round-trips**: explicit inverse via `.symm`\n3. **Idempotent decomposition**: $e_1 = \\varphi^{-1}(1,0)$ and $e_2 = \\varphi^{-1}(0,1)$ satisfy $e_1 + e_2 = 1$, $e_1 e_2 = 0$, $e_i^2 = e_i$\n4. **Bézout connection**: explicit solution $x = a \\cdot n \\cdot v + b \\cdot m \\cdot u$ where $mu + nv = 1$\n5. **Cardinality and units**: $|\\mathbb{Z}/mn\\mathbb{Z}| = mn$, $\\varphi(m \\cdot n) = \\varphi(m) \\cdot \\varphi(n)$, unit characterization",
     "keyInsights": [
       "The CRT isomorphism is a ring isomorphism (not just a group isomorphism) — it preserves both addition and multiplication",
@@ -180,6 +180,29 @@
     "chinese-remainder-constructive",
     "chinese-remainder-non-coprime",
     "angle-trisection-oq-02-oq-03"
+  ],
+  "references": [
+    {
+      "authors": "Sun Tzu (Sunzi)",
+      "title": "Sunzi Suanjing (Master Sun's Mathematical Manual)",
+      "year": "400",
+      "venue": "~3rd–5th century CE, Problem 26",
+      "note": "Earliest known statement of the CRT: find a number that leaves remainders 2, 3, 2 when divided by 3, 5, 7. The systematic algorithm for solving such systems was developed by Qin Jiushao (1247)"
+    },
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Gerhard Fleischer, Leipzig, §36",
+      "note": "First modern formulation of the CRT for modular arithmetic, establishing the isomorphism ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ for coprime m, n as part of the foundations of number theory"
+    },
+    {
+      "authors": "Lang, Serge",
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "Springer Graduate Texts in Mathematics 211, 3rd edition, Chapter II §2",
+      "note": "Modern algebraic treatment of the CRT as a ring isomorphism, including the idempotent decomposition and applications to structure theory of commutative rings"
+    }
   ],
   "leanFile": {
     "imports": [
