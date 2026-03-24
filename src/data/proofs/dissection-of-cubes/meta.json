@@ -165,6 +165,16 @@
       "targetId": "angle-trisection",
       "relationship": "thematic",
       "description": "Both are impossibility results in geometry: angle trisection shows certain constructions are impossible with compass and straightedge, while cube dissection shows certain geometric decompositions are impossible"
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-01",
+      "relationship": "extended-by",
+      "description": "OQ-01 explores extensions and variations of the cube dissection impossibility, including higher-dimensional analogues and related open problems in combinatorial geometry"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "thematic",
+      "description": "Both are structural impossibility results: Abel-Ruffini reduces quintic unsolvability to the non-solvability of $S_5$, while cube dissection reduces geometric impossibility to infinite descent on the smallest cube — each identifies a fundamental structural obstruction"
     }
   ],
   "references": [
@@ -206,6 +216,8 @@
   ],
   "relatedProofs": [
     "hilbert-10",
-    "angle-trisection"
+    "angle-trisection",
+    "dissection-of-cubes-oq-01",
+    "abel-ruffini"
   ]
 }
