@@ -97,8 +97,10 @@ axiom van_doorn_bounds : VanDoornLowerBound ∧ VanDoornUpperBound
 theorem uniqueProductCount_le_product (A B : Finset ℕ) :
     uniqueProductCount A B ≤ A.card * B.card := by
   unfold uniqueProductCount
-  calc ((A ×ˢ B).image (fun p => p.1 * p.2)).filter
-        (fun m => reprCount A B m = 1) |>.card
+  show (((A ×ˢ B).image (fun p => p.1 * p.2)).filter
+        (fun m => reprCount A B m = 1)).card ≤ A.card * B.card
+  calc (((A ×ˢ B).image (fun p => p.1 * p.2)).filter
+        (fun m => reprCount A B m = 1)).card
       ≤ ((A ×ˢ B).image (fun p => p.1 * p.2)).card :=
         Finset.card_filter_le _ _
     _ ≤ (A ×ˢ B).card := Finset.card_image_le
