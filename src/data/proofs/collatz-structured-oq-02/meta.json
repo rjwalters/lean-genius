@@ -143,19 +143,19 @@
   },
   "crossReferences": [
     {
-      "id": "collatz-structured",
       "relationship": "parent",
-      "description": "Parent formalization proving Collatz conjecture for powers of 2 and closure under multiplication by 2^k"
+      "description": "Parent formalization proving Collatz conjecture for powers of 2 and closure under multiplication by 2^k",
+      "targetId": "collatz-structured"
     },
     {
-      "id": "dirichlets-theorem",
       "relationship": "related",
-      "description": "Dirichlet's theorem on primes in arithmetic progressions — the residue class analysis (mod 4) used in the 3/4 contraction connects to the distribution of primes in residue classes"
+      "description": "Dirichlet's theorem on primes in arithmetic progressions — the residue class analysis (mod 4) used in the 3/4 contraction connects to the distribution of primes in residue classes",
+      "targetId": "dirichlets-theorem"
     },
     {
-      "id": "fermat-two-squares",
       "relationship": "related",
-      "description": "Fermat's two-squares theorem uses mod 4 residue analysis in a different number-theoretic context, illustrating how parity and divisibility arguments appear across number theory"
+      "description": "Fermat's two-squares theorem uses mod 4 residue analysis in a different number-theoretic context, illustrating how parity and divisibility arguments appear across number theory",
+      "targetId": "fermat-two-squares"
     }
   ]
 }
