@@ -9,7 +9,6 @@
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import key Mathlib modules: `Finset.Basic` for finite set operations and summation, `SimpleGraph.Basic` and `SimpleGraph.Finite` for graph structure and edge sets, and `Data.Real.Basic` for real number arithmetic in probability calculations.",
-    "mathContext": "Imports: `SimpleGraph` provides `edgeFinset` (edges as `Sym2` pairs), `Finset` provides `sum` and `card` for counting, `Data.Real.Basic` for probability arithmetic.",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
@@ -87,13 +86,11 @@
     "type": "tactic",
     "title": "Sym2 Induction",
     "content": "To prove something about an unordered pair $e$, we use `induction e using Sym2.ind` to get representatives $u, v$. The hypothesis `h : ¬e.IsDiag` ensures $u \\neq v$ (edges don't have both endpoints the same).",
-    "mathContext": "`Sym2 V` is the type of unordered pairs $\\{u, v\\}$ from $V$, defined as $V \\times V / \\sim$ where $(u,v) \\sim (v,u)$. `Sym2.ind` provides case analysis: given $e : \\text{Sym2}\\, V$, obtain $u, v : V$ with $e = \\{u,v\\}$. `¬e.IsDiag` ensures $u \\neq v$.",
     "significance": "supporting",
     "relatedConcepts": [
       "quotient induction",
       "Sym2",
-      "diagonal",
-      "unordered pairs"
+      "diagonal"
     ]
   },
   {

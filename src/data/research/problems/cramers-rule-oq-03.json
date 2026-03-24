@@ -1,0 +1,105 @@
+{
+  "slug": "cramers-rule-oq-03",
+  "title": "Can the result extend to non-commutative settings using quasideterminants (Ge...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-24T00:48:59.817Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "linear-algebra",
+    "matrices",
+    "classic",
+    "intermediate",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "cramers-rule",
+    "cramers-rule-oq-01",
+    "cramers-rule-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-24T00:48:59.817Z",
+  "lastUpdate": "2026-03-24T00:48:59.817Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/CramersRule.lean",
+      "filename": "CramersRule.lean",
+      "lineCount": 162,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRule.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ01.lean",
+      "filename": "CramersRuleOQ01.lean",
+      "lineCount": 283,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ02.lean",
+      "filename": "CramersRuleOQ02.lean",
+      "lineCount": 208,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ02.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ04.lean",
+      "filename": "CramersRuleOQ04.lean",
+      "lineCount": 176,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ04.lean"
+    }
+  ]
+}
