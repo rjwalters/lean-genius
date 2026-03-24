@@ -151,12 +151,29 @@
   ],
   "crossReferences": [
     {
-      "relationship": "The Borsuk-Ulam theorem is the key topological tool in Lovász's 1978 proof of Kneser's conjecture and the AFL 1986 generalization. The topological argument shows the neighborhood/independence complex has high connectivity, forcing the chromatic lower bound.",
-      "targetId": "borsuk-ulam"
+      "targetId": "borsuk-ulam",
+      "relationship": "foundational",
+      "description": "The Borsuk-Ulam theorem is the key topological tool in Lovász's 1978 proof of Kneser's conjecture and the AFL 1986 generalization. The topological argument shows the neighborhood/independence complex has high connectivity, forcing the chromatic lower bound"
     },
     {
-      "relationship": "Both are Ramsey-type results: Ramsey's theorem guarantees monochromatic complete subgraphs in colored complete graphs, while the AFL theorem guarantees monochromatic matchings in colored hypergraphs. Both establish unavoidable monochromatic substructures.",
-      "targetId": "ramseys-theorem"
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both are Ramsey-type results: Ramsey's theorem guarantees monochromatic complete subgraphs in colored complete graphs, while the AFL theorem guarantees monochromatic matchings in colored hypergraphs. Both establish unavoidable monochromatic substructures"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "supports",
+      "description": "The binomial coefficient $\\binom{n}{r}$ counts the vertices of the Kneser graph (the $r$-subsets of $[n]$), and $\\binom{n-1}{r-1}$ gives the Erdős-Ko-Rado independence number bound — central to the chromatic number computation"
+    },
+    {
+      "targetId": "erdos-1104",
+      "relationship": "related",
+      "description": "Both concern chromatic numbers of combinatorially defined graphs. The Kneser graph chromatic number $\\chi(KG(n,r)) = n - 2r + 2$ and triangle-free chromatic bounds are both instances of topological lower bound methods in graph coloring"
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "Both are powerful tools for analyzing structure in large combinatorial objects. Szemerédi regularity gives pseudorandom graph decompositions, while the AFL theorem gives chromatic structure in Kneser-type hypergraphs — both are used to prove existence of substructures in large systems"
     }
   ],
   "conclusion": {
@@ -186,7 +203,54 @@
     "definitionCount": 10
   },
   "relatedProofs": [
-    "",
-    ""
+    "borsuk-ulam",
+    "ramseys-theorem",
+    "combinations-formula",
+    "erdos-1104",
+    "szemeredi-regularity"
+  ],
+  "references": [
+    {
+      "authors": "Lovász, László",
+      "title": "Kneser's conjecture, chromatic number, and homotopy",
+      "year": "1978",
+      "venue": "Journal of Combinatorial Theory, Series A, vol. 25, pp. 319–324",
+      "note": "First proof of Kneser's conjecture using the Borsuk-Ulam theorem via the neighborhood complex — the landmark paper that founded topological combinatorics"
+    },
+    {
+      "authors": "Alon, Noga; Frankl, Peter; Lovász, László",
+      "title": "The chromatic number of Kneser hypergraphs",
+      "year": "1986",
+      "venue": "Transactions of the American Mathematical Society, vol. 298, pp. 359–370",
+      "note": "Extended Lovász's topological method to r-uniform hypergraphs, proving the exact threshold n₀ = kr + (t-1)(k-1) for monochromatic k-matchings in t-colored hypergraphs"
+    },
+    {
+      "authors": "Kneser, Martin",
+      "title": "Aufgabe 360",
+      "year": "1955",
+      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung, vol. 58, p. 27",
+      "note": "Original conjecture: χ(KG(n,r)) = n - 2r + 2, proposed as a problem in the journal of the German Mathematical Society"
+    },
+    {
+      "authors": "Matoušek, Jiří",
+      "title": "A combinatorial proof of Kneser's conjecture",
+      "year": "2004",
+      "venue": "Combinatorica, vol. 24, pp. 163–170",
+      "note": "Purely combinatorial proof using Tucker's lemma, avoiding the topological machinery of Lovász's original proof — potentially more amenable to formalization in Lean"
+    },
+    {
+      "authors": "Schrijver, Alexander",
+      "title": "Vertex-critical subgraphs of Kneser graphs",
+      "year": "1978",
+      "venue": "Nieuw Archief voor Wiskunde, vol. 26, pp. 454–461",
+      "note": "Found the stable Kneser graph — a vertex-critical subgraph of KG(n,r) with the same chromatic number, using only 'stable' r-subsets (no two consecutive elements)"
+    },
+    {
+      "authors": "Erdős, Paul; Ko, Chao; Rado, Richard",
+      "title": "Intersection theorems for systems of finite sets",
+      "year": "1961",
+      "venue": "Quarterly Journal of Mathematics, vol. 12, pp. 313–320",
+      "note": "Proved the maximum size of an intersecting family of r-subsets of [n] is C(n-1,r-1) for n ≥ 2r — gives the independence number α(KG(n,r)) and hence the fractional chromatic number"
+    }
   ]
 }
