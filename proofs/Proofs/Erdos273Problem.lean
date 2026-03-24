@@ -104,12 +104,19 @@ def easyPrimes : Finset ℕ :=
 /-- For p ≥ 5, the allowed moduli (p - 1 values) all have
 smallest prime factor ≥ 2. The difficulty is that 2 = 3 - 1
 is excluded, making it hard to cover all even integers. -/
-axiom difficulty_even_coverage :
-  ∀ cs : CoveringSystem, AllModuliPrimeMinusOne 5 cs →
-    ∀ i, 2 < cs.moduli i
+theorem difficulty_even_coverage :
+    ∀ cs : CoveringSystem, AllModuliPrimeMinusOne 5 cs →
+      ∀ i, 2 < cs.moduli i := by
+  intro cs h i
+  obtain ⟨p, _, h5, hm⟩ := h i
+  -- p ≥ 5 and cs.moduli i = p - 1, so cs.moduli i ≥ 4 > 2
+  omega
 
 /-- The key obstacle: without modulus 2 (since 3 is excluded),
 every modulus is ≥ 4. This severely constrains the covering. -/
-axiom min_modulus_ge_4 :
-  ∀ cs : CoveringSystem, AllModuliPrimeMinusOne 5 cs →
-    ∀ i, cs.moduli i ≥ 4
+theorem min_modulus_ge_4 :
+    ∀ cs : CoveringSystem, AllModuliPrimeMinusOne 5 cs →
+      ∀ i, cs.moduli i ≥ 4 := by
+  intro cs h i
+  obtain ⟨p, _, h5, hm⟩ := h i
+  omega

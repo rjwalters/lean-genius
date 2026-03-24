@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-12T22:33:22.718Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Axiom elimination complete (4→2)",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "AXIOM ELIMINATION: Proved difficulty_even_coverage and min_modulus_ge_4 (trivial: p≥5 ⟹ p-1≥4>2). Axioms 4→2. CoveringSystem structure well-formalized.",
+    "builtItems": [
+      "Proved difficulty_even_coverage: all moduli > 2 when using primes ≥ 5 (omega)",
+      "Proved min_modulus_ge_4: all moduli ≥ 4 when using primes ≥ 5 (omega)"
+    ],
+    "insights": [
+      "CoveringSystem structure is well-designed: uses Fin n for indices, ℤ for residues, covers all integers",
+      "IsPrimeMinusOne and AllModuliPrimeMinusOne definitions are clean and correct",
+      "The key constraint: excluding p=3 removes modulus 2, so all moduli ≥ 4 — very restrictive for covering",
+      "Selfridge example (p≥3) uses divisors of 360 = 2³·3²·5 as moduli",
+      "easyPrimes {5,7,13,19,37,61,181} are primes p≥5 with (p-1)|360"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "covering_reciprocal_sum is mathematically provable from the covering property (pigeonhole)",
+      "selfridge_example requires explicit construction of ~20 residue classes — tedious but feasible",
+      "Could add theorem: sum of 1/(p-1) over easyPrimes = computatible rational — check if ≥ 1"
+    ],
     "markdown": "# Erdős #273 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a covering system all of whose moduli are of the form $p-1$ for some primes $p\\geq 5$?\n\n\n\nSelfridge has found an example using divisors of $360$ if $p=3$ is allowed.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #272\n- Problem #274\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
@@ -50,17 +63,17 @@
     "mathlib": []
   },
   "started": "2026-01-12T22:33:22.718Z",
-  "lastUpdate": "2026-03-13T07:52:17.045Z",
+  "lastUpdate": "2026-03-24T08:10:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos273Problem.lean",
       "filename": "Erdos273Problem.lean",
-      "lineCount": 116,
-      "theoremCount": 0,
-      "axiomCount": 4,
-      "defCount": 6,
+      "lineCount": 120,
+      "theoremCount": 2,
+      "axiomCount": 2,
+      "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos273Problem.lean"
