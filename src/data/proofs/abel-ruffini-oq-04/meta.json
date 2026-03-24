@@ -1,6 +1,6 @@
 {
   "id": "abel-ruffini-oq-04",
-  "title": "The A₅ Simplicity Proof Chain",
+  "title": "Abel-Ruffini Proof Chain: From A₅ Simplicity to Non-Solvability",
   "slug": "abel-ruffini-oq-04",
   "description": "Exposes the key group-theoretic steps of the Abel-Ruffini proof chain with each step as a named theorem: A₅ is simple → Sₙ (n≥5) not solvable, plus a 2-line type-coercion bridge from Mathlib's cardinal-level statement to natural numbers. Steps 4–5 (Galois bridge, generic quintic Galois group) are documented but not formalized here. Part of Wiedijk's 100 Theorems (#83). Fully verified with 0 sorries and 0 axioms.",
   "meta": {
@@ -40,19 +40,6 @@
       "Bridge theorem (symmetric_not_solvable): 2-line type coercion converting Mathlib's cardinal-level Equiv.Perm.not_solvable to a natural number bound via simp + exact_mod_cast",
       "Pedagogical organization: names each step in the A₅ → Abel-Ruffini chain as an independently verifiable theorem",
       "Documentation: structured 5-step proof chain exposition with 'Why Exactly 5?' and 'Crucial Asymmetry' degree-by-degree comparison tables"
-    ],
-    "relatedProofs": [
-      "abel-ruffini",
-      "angle-trisection",
-      "fundamental-theorem-algebra",
-      "inverse-galois",
-      "lagrange-theorem",
-      "sylow-theorems",
-      "solution-of-cubic",
-      "general-quartic",
-      "quadratic-reciprocity",
-      "vietas-formulas",
-      "puiseux-theorem"
     ],
     "prerequisites": [
       "Group theory (normal subgroups, derived series, solvability)",
