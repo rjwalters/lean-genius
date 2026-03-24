@@ -145,7 +145,32 @@ noncomputable def signChangesInList (l : List ℝ) : ℕ :=
 
 @[simp]
 theorem signChangesInList_nil : signChangesInList [] = 0 := by
-  simp [signChangesInList, countAdjacentDiffs]
+  simp [signChangesInList]
+
+/-- The number of adjacent differences in a list is at most the list length minus 1. -/
+private theorem countAdjacentDiffs_le : ∀ (l : List ℤ),
+    countAdjacentDiffs l ≤ l.length - 1
+  | [] => by simp
+  | [_] => by simp
+  | _ :: b :: rest => by
+    simp only [countAdjacentDiffs, List.length_cons]
+    have ih := countAdjacentDiffs_le (b :: rest)
+    simp only [List.length_cons] at ih
+    split <;> omega
+
+/-- Sign changes in a list are bounded by the list length minus 1. -/
+private theorem signChangesInList_le_pred_length (l : List ℝ) :
+    signChangesInList l ≤ l.length - 1 := by
+  have : signChangesInList l =
+      countAdjacentDiffs ((l.filter (· ≠ 0)).map
+        (fun x => if x > 0 then (1 : ℤ) else -1)) := rfl
+  rw [this]
+  calc countAdjacentDiffs ((l.filter (· ≠ 0)).map _)
+      ≤ ((l.filter (· ≠ 0)).map (fun x => if x > 0 then (1 : ℤ) else -1)).length - 1 :=
+        countAdjacentDiffs_le _
+    _ ≤ l.length - 1 := by
+        simp only [List.length_map]
+        exact Nat.sub_le_sub_right (List.length_filter_le _ l) 1
 
 /-
 ## Part III: The Budan-Fourier Count V_p(x)
@@ -159,7 +184,7 @@ noncomputable def budanCount (p : ℝ[X]) (x : ℝ) : ℕ :=
 @[simp]
 theorem budanCount_zero (x : ℝ) : budanCount (0 : ℝ[X]) x = 0 := by
   unfold budanCount budanSequence
-  simp [signChangesInList, countAdjacentDiffs]
+  simp [signChangesInList]
 
 /-- V_p(x) for a constant polynomial is 0 (one entry, no sign changes). -/
 theorem budanCount_C (c : ℝ) (x : ℝ) : budanCount (C c) x = 0 := by
@@ -168,7 +193,7 @@ theorem budanCount_C (c : ℝ) (x : ℝ) : budanCount (C c) x = 0 := by
     List.map_cons, List.map_nil]
   unfold signChangesInList
   simp only [List.filter_cons, List.filter_nil]
-  split <;> simp [countAdjacentDiffs]
+  split <;> simp
 
 /-
 ## Part IV: Count of Roots in Intervals
@@ -310,12 +335,55 @@ V_p(0) relates to the coefficient sign variation count because
 p⁽ᵏ⁾(0) = k! · aₖ, and k! > 0 preserves signs.
 -/
 
+/-- iterDeriv equals Mathlib's iterated derivative via Function.iterate. -/
+theorem iterDeriv_eq_iterate (p : ℝ[X]) (k : ℕ) :
+    iterDeriv p k = derivative^[k] p := by
+  induction k with
+  | zero => rfl
+  | succ k ih =>
+    rw [iterDeriv_succ, ih]
+    -- derivative (derivative^[k] p) = derivative^[k+1] p
+    -- by Function.iterate_succ' : f^[n+1] = f ∘ f^[n]
+    exact (congrFun (Function.iterate_succ' derivative k) p).symm
+
+/-- General coefficient formula for iterated derivatives.
+    (p⁽ᵏ⁾).coeff j = descFactorial(j+k, k) * p.coeff(j+k) -/
+private theorem iterDeriv_coeff (p : ℝ[X]) (k j : ℕ) :
+    (iterDeriv p k).coeff j =
+      (↑((j + k).descFactorial k) : ℝ) * p.coeff (j + k) := by
+  induction k generalizing j with
+  | zero => simp [Nat.descFactorial]
+  | succ k ih =>
+    simp only [iterDeriv_succ, coeff_derivative]
+    rw [ih (j + 1)]
+    -- Goal involves nsmul and cast arithmetic
+    -- (↑(j + 1) : ℝ) * (↑((j + 1 + k).descFactorial k) * p.coeff (j + 1 + k))
+    -- = ↑((j + (k + 1)).descFactorial (k + 1)) * p.coeff (j + (k + 1))
+    have hj1k : j + 1 + k = j + k + 1 := by omega
+    have hjk1 : j + (k + 1) = j + k + 1 := by omega
+    rw [hj1k, hjk1]
+    -- Use descFactorial recurrence: n.descFactorial (k+1) = (n-k) * n.descFactorial k
+    have hdf : (j + k + 1).descFactorial (k + 1) =
+        (j + k + 1 - k) * (j + k + 1).descFactorial k :=
+      Nat.descFactorial_succ (j + k + 1) k
+    have hjk : j + k + 1 - k = j + 1 := by omega
+    rw [hdf, hjk]
+    push_cast
+    ring
+
 /-- p⁽ᵏ⁾(0) = k! · (coefficient k of p).
 
     The k-th derivative at 0 extracts the k-th coefficient up to factorial. -/
+private theorem poly_eval_at_zero (q : ℝ[X]) : q.eval 0 = q.coeff 0 := by
+  rw [Polynomial.eval_eq_sum_range]
+  rw [Finset.sum_eq_single_of_mem 0 (Finset.mem_range.mpr (Nat.zero_lt_succ _))
+    (fun b _ hb => by simp [zero_pow hb])]
+  simp
+
 theorem iterDeriv_eval_zero (p : ℝ[X]) (k : ℕ) :
     (iterDeriv p k).eval 0 = (k.factorial : ℝ) * p.coeff k := by
-  sorry
+  rw [poly_eval_at_zero, iterDeriv_coeff]
+  simp [Nat.descFactorial_self]
 
 /-- Since k! > 0, the sign of p⁽ᵏ⁾(0) equals the sign of aₖ.
     Therefore V_p(0) = signVariations of the coefficient sequence. -/
@@ -332,7 +400,17 @@ theorem budanCount_zero_eq_coeff_sign_changes (p : ℝ[X]) (hp : p ≠ 0) :
     (A list of n+1 entries has at most n sign changes.) -/
 theorem budanCount_le_natDegree (p : ℝ[X]) (x : ℝ) :
     budanCount p x ≤ p.natDegree := by
-  sorry
+  unfold budanCount
+  have := signChangesInList_le_pred_length (budanSequence p p.natDegree x)
+  simp [budanSequence_length] at this
+  exact this
+
+/-- Iterated derivative commutes with constant multiplication. -/
+theorem iterDeriv_C_mul (c : ℝ) (p : ℝ[X]) (k : ℕ) :
+    iterDeriv (C c * p) k = C c * iterDeriv p k := by
+  induction k with
+  | zero => simp
+  | succ k ih => simp only [iterDeriv_succ, ih, derivative_C_mul]
 
 /-- Scaling by a nonzero constant preserves the Budan count.
     Since (c·p)⁽ᵏ⁾ = c·p⁽ᵏ⁾ and c ≠ 0 preserves all signs. -/
@@ -346,9 +424,15 @@ theorem budanCount_smul (p : ℝ[X]) (c : ℝ) (hc : c ≠ 0) (x : ℝ) :
 
 /-- Root counts are additive when splitting an interval at a point. -/
 theorem rootsInInterval_split (p : ℝ[X]) (hp : p ≠ 0) (a c b : ℝ)
-    (_hac : a < c) (hcb : c < b) :
+    (hac : a < c) (hcb : c < b) :
     rootsInInterval p a b = rootsInInterval p a c + rootsInInterval p c b := by
-  sorry
+  simp only [rootsInInterval, hp, ↓reduceIte]
+  rw [← Multiset.card_add]
+  congr 1
+  ext x
+  simp only [Multiset.count_add, Multiset.count_filter]
+  by_cases ha : a < x <;> by_cases hc1 : x ≤ c <;> by_cases hb : x ≤ b <;>
+      by_cases hc2 : c < x <;> simp_all <;> linarith
 
 /-- Budan count differences are additive: V(a) - V(b) = (V(a) - V(c)) + (V(c) - V(b)).
     This is just arithmetic: the V(c) terms cancel. -/
@@ -413,6 +497,6 @@ noncomputable def budanChain (p : ℝ[X]) : PolyChain p.natDegree where
 /-- The Budan chain's variation equals budanCount. -/
 theorem chainVariation_budanChain (p : ℝ[X]) (x : ℝ) :
     chainVariation (budanChain p) x = budanCount p x := by
-  sorry
+  sorry -- Definitionally equal up to List.finRange ↔ List.range conversion
 
 end BudanTheorem
