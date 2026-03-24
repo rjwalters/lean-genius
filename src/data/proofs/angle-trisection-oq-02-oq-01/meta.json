@@ -230,6 +230,11 @@
       "targetId": "factor-remainder-theorem",
       "relationship": "foundational",
       "description": "The factor theorem ($\\alpha$ is a root of $p(x)$ iff $(x - \\alpha) \\mid p(x)$) underpins the crucial step `minpoly.dvd`: the minimal polynomial divides any polynomial vanishing at $\\alpha$, which yields $\\text{minpoly}(F, \\alpha) \\mid p$ in the tower law argument. The mutual divisibility of irreducible polynomials — the crux of showing $\\deg(\\text{minpoly}) = \\deg(p)$ — rests on this factorization principle"
+    },
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "foundational",
+      "description": "The concept of $p$-groups (`IsPGroup`) used in this file — that $\\text{Gal}(p)$ is a 2-group iff $|\\text{Gal}(p)| = 2^n$ — is a consequence of Sylow theory. The Sylow theorems provide the structural decomposition of finite groups into $p$-group components, and the constructibility criterion specifically requires the $p=2$ case: the Galois group must be a 2-group (all Sylow subgroups trivial except the 2-Sylow)"
     }
   ],
   "leanFile": {
