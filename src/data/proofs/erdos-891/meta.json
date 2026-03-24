@@ -32,14 +32,14 @@
         "module": "Mathlib.Data.Nat.Prime.Basic"
       },
       {
+        "theorem": "Nat.nth",
+        "description": "n-th element of an infinite set (used for prime enumeration)",
+        "module": "Mathlib.Data.Nat.Prime.Nth"
+      },
+      {
         "theorem": "Nat.factorization",
         "description": "Prime factorization of natural numbers",
         "module": "Mathlib.Data.Nat.Factorization.Basic"
-      },
-      {
-        "theorem": "Nat.primorial",
-        "description": "Product of first k primes",
-        "module": "Mathlib.NumberTheory.Primorial"
       },
       {
         "theorem": "Finset.prod",
@@ -50,21 +50,24 @@
     "originalContributions": [
       "bigOmega definition: count prime factors with multiplicity",
       "littleOmega definition: count distinct prime factors",
-      "nthPrime definition: k-th prime (1-indexed)",
-      "primorial definition: product of first k primes",
-      "HasManyFactors predicate: interval contains number with > k factors",
-      "erdos891_conjecture: main statement formalized",
+      "nthPrime via Nat.nth Nat.Prime: k-th prime (0-indexed, general for all k)",
+      "primorial via Finset.prod: product of first k primes (works for all k)",
+      "primorial_pos: primorial is always positive",
+      "nthPrime_prime: every nthPrime is prime",
+      "nthPrime_strictMono: prime sequence is strictly increasing",
+      "HasManyFactors: general predicate using proper primorial",
+      "HasManyFactorsComp: computable predicate for decidable verification",
+      "ErdosProblem891: main conjecture using general primorial (correct for all k)",
+      "k2_verified_range: computational verification of k=2 case for n ∈ [3, 1002]",
       "Concrete examples: Ω(8) = 3, Ω(12) = 3, Ω(24) = 4",
-      "example_interval_8_14: verified instance of the conjecture",
-      "schinzel_theorem axiom: weaker result with modified primorial",
-      "DicksonsConjecture definition: proper formalization of Dickson's conjecture on simultaneous primality of linear forms",
-      "weisenberg_conditional axiom: conditional counterexample",
-      "isSmooth definition: k-smooth numbers",
-      "polya_theorem axiom: gaps in smooth numbers are unbounded"
+      "schinzel_theorem_statement axiom: Schinzel's weaker result with modified primorial",
+      "DicksonsConjecture definition: proper formalization of Dickson's conjecture",
+      "weisenberg_conditional axiom: conditional counterexample using general primorial",
+      "isSmoothComp definition: k-smooth numbers with examples"
     ],
     "axiomCount": 2,
-    "lineCount": 344,
-    "assumptions": "4 axioms: erdos_891 (main open conjecture), schinzel_theorem_statement (Schinzel's weaker result), dicksons_conjecture (Dickson's conjecture, properly formalized as DicksonsConjecture), weisenberg_conditional (conditional counterexample using Dickson's). Note: primorialComp is only defined for k ≤ 5."
+    "lineCount": 409,
+    "assumptions": "2 axioms: schinzel_theorem_statement (Schinzel's weaker result via Pólya's theorem), weisenberg_conditional (conditional counterexample using Dickson's conjecture). The main conjecture ErdosProblem891 is a def (open problem). DicksonsConjecture is a def (properly formalized). primorial now uses Nat.nth Nat.Prime for all k."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #891**\n\nThis problem was posed by Erdős and Selfridge in 1967 [ErSe67, p.430] and connects the distribution of prime factors to the structure of short intervals.\n\n**Key History:**\n- Erdős-Selfridge (1967): Original problem formulation\n- Schinzel: Proved a weaker version using Pólya's theorem on smooth numbers\n- Weisenberg: Showed conditional counterexample with interval length p₁···pₖ - 1\n\n**Mathematical Setting:**\nThe primorial p₁···pₖ (product of first k primes) gives natural interval lengths: 2, 6, 30, 210, 2310, ...\nThe question asks whether these specific lengths guarantee finding integers with many prime factors.\n\nThe problem remains open even for k = 2, asking whether every interval of 6 consecutive integers (for large n) contains a number with at least 3 prime factors.",
@@ -163,9 +166,11 @@
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Prime.Nth",
       "Mathlib.Data.Nat.Factorization.Basic",
       "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
-      "Mathlib.Data.Set.Finite.Basic"
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Tactic"
     ],
     "opens": [
       "Nat",
@@ -173,10 +178,10 @@
       "Finset"
     ],
     "namespace": "Erdos891",
-    "lineCount": 344,
-    "axiomCount": 4,
-    "theoremCount": 26,
-    "definitionCount": 6
+    "lineCount": 409,
+    "axiomCount": 2,
+    "theoremCount": 32,
+    "definitionCount": 11
   },
   "crossReferences": [
     {

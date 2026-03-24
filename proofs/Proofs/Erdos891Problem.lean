@@ -29,9 +29,11 @@ References:
 -/
 
 import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Nat.Prime.Nth
 import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Set.Finite.Basic
+import Mathlib.Tactic
 
 open Nat BigOperators Finset
 
@@ -112,10 +114,54 @@ theorem bigOmega_twentyseven : bigOmega 27 = 3 := by native_decide
 theorem bigOmega_zero : bigOmega 0 = 0 := by native_decide
 
 /-
-## Part II: Primorial (Product of First k Primes)
+## Part II: Prime Enumeration and General Primorial
 
-The primorial p₁···pₖ is the product of the first k primes.
-We define it computably for small k.
+We define the primorial function for ALL k using Mathlib's `Nat.nth` prime
+enumeration. This is noncomputable but mathematically general.
+-/
+
+/-- The n-th prime (0-indexed: nthPrime 0 = 2, nthPrime 1 = 3, ...). -/
+noncomputable def nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
+
+/-- Each nthPrime is indeed prime. -/
+lemma nthPrime_prime (n : ℕ) : (nthPrime n).Prime :=
+  Nat.nth_mem_of_infinite Nat.infinite_setOf_prime n
+
+/-- The nthPrime sequence is strictly increasing. -/
+lemma nthPrime_strictMono : StrictMono nthPrime :=
+  Nat.nth_strictMono Nat.infinite_setOf_prime
+
+/--
+**Primorial function (general):**
+The product of the first k primes: primorial k = p₁ · p₂ · ... · pₖ.
+- primorial 0 = 1 (empty product)
+- primorial 1 = 2
+- primorial 2 = 2 · 3 = 6
+- primorial k = ∏_{i=0}^{k-1} nthPrime(i)
+
+This is noncomputable but defined for all k ∈ ℕ. -/
+noncomputable def primorial (k : ℕ) : ℕ :=
+  ∏ i ∈ Finset.range k, nthPrime i
+
+/-- The primorial is always positive. -/
+lemma primorial_pos (k : ℕ) : 0 < primorial k := by
+  unfold primorial
+  apply Finset.prod_pos
+  intro i _
+  exact (nthPrime_prime i).pos
+
+/--
+**HasManyFactors n k (general):**
+There exists m ∈ [n, n + primorial(k)) with Ω(m) > k.
+Uses the general primorial, valid for all k. -/
+def HasManyFactors (n k : ℕ) : Prop :=
+  ∃ m : ℕ, n ≤ m ∧ m < n + primorial k ∧ bigOmega m > k
+
+/-
+## Part III: Computable Primorial (for decidable verification)
+
+For small k, we define primorial computably so that `native_decide` can verify
+the conjecture on specific ranges.
 -/
 
 /--
@@ -147,7 +193,7 @@ theorem primorialComp_four : primorialComp 4 = 210 := rfl
 theorem primorialComp_five : primorialComp 5 = 2310 := rfl
 
 /-
-## Part III: The Main Conjecture
+## Part IV: The Main Conjecture
 -/
 
 /--
@@ -159,7 +205,7 @@ def HasManyFactorsComp (n k : ℕ) : Prop :=
   ∃ m : ℕ, n ≤ m ∧ m < n + primorialComp k ∧ bigOmega m > k
 
 /-
-## Part IV: Computational Verification of k = 2 Case
+## Part V: Computational Verification of k = 2 Case
 
 The k = 2 case asks: does every interval [n, n+6) contain
 an integer with ≥ 3 prime factors (counted with multiplicity)?
@@ -207,7 +253,7 @@ theorem example_interval_100 : HasManyFactorsComp 100 2 := by
   native_decide
 
 /-
-## Part V: Structural Observations
+## Part VI: Structural Observations
 
 Key structural facts that help understand why the conjecture
 should hold for k = 2.
@@ -226,7 +272,7 @@ theorem interval_contains_mult4 (n : ℕ) :
   refine ⟨by omega, by omega, dvd_mul_right 4 _⟩
 
 /-
-## Part VI: Schinzel's Weaker Result
+## Part VII: Schinzel's Weaker Result
 
 Schinzel proved that the statement holds with a slightly larger interval:
 p₁···pₖ₋₁·pₖ₊₁ instead of p₁···pₖ (the product skipping pₖ and including pₖ₊₁).
@@ -256,7 +302,7 @@ axiom schinzel_theorem_statement : ∀ k ≥ 2,
     ∃ N : ℕ, ∀ n ≥ N, ∃ m : ℕ, n ≤ m ∧ m < n + Q ∧ bigOmega m > k
 
 /-
-## Part VII: Weisenberg's Conditional Counterexample
+## Part VIII: Weisenberg's Conditional Counterexample
 
 Weisenberg observed that under Dickson's conjecture, if the interval
 length is reduced by just 1 (from p₁···pₖ to p₁···pₖ - 1), then
@@ -289,14 +335,15 @@ def DicksonsConjecture : Prop :=
 **Weisenberg's Observation:**
 Under Dickson's conjecture, the interval length p₁···pₖ is sharp.
 Reducing it by 1 gives infinitely many counterexamples.
--/
+
+Uses the general `primorial` so the statement is correct for all k ≥ 2. -/
 axiom weisenberg_conditional (k : ℕ) (hk : k ≥ 2) :
     DicksonsConjecture →
     ∃ S : Set ℕ, S.Infinite ∧ ∀ n ∈ S, ∀ m : ℕ,
-      n ≤ m → m < n + primorialComp k - 1 → bigOmega m ≤ k
+      n ≤ m → m < n + primorial k - 1 → bigOmega m ≤ k
 
 /-
-## Part VIII: Smooth Numbers Connection
+## Part IX: Smooth Numbers
 
 The problem relates to the distribution of k-smooth numbers.
 A number is k-smooth if all its prime factors are at most the k-th prime.
@@ -331,14 +378,8 @@ theorem seven_not_3smooth : ¬ isSmoothComp 7 3 := by
   omega
 
 /-
-## Part IX: Summary
--/
+## Part X: Summary and Main Conjecture
 
-/-
-## Part IX: Summary
--/
-
-/--
 **Erdős Problem #891: OPEN**
 
 Is it true that for k ≥ 2 and all sufficiently large n,
@@ -356,13 +397,13 @@ Key insight: The primorial p₁···pₖ appears to be the exact threshold.
 Below it (p₁···pₖ - 1), the statement fails conditionally.
 Above it (p₁···pₖ₋₁·pₖ₊₁), the statement holds unconditionally.
 
-NOTE: This uses `primorialComp` which is only defined for k ≤ 5.
-For a fully general statement, a proper primorial function using
-prime enumeration (e.g., via Nat.nth) would be needed.
+Uses `primorial` (via Nat.nth Nat.Prime), which is valid for all k.
+The computable `HasManyFactorsComp` is used only for decidable k=2 verification.
 -/
 /-- **Erdős Problem #891 (OPEN):**
-    Stated as a definition since this is an open conjecture. -/
+    Stated as a definition since this is an open conjecture.
+    Uses the general `primorial` so the statement is mathematically correct for all k. -/
 def ErdosProblem891 : Prop :=
-    ∀ k : ℕ, k ≥ 2 → ∃ N : ℕ, ∀ n ≥ N, HasManyFactorsComp n k
+    ∀ k : ℕ, k ≥ 2 → ∃ N : ℕ, ∀ n ≥ N, HasManyFactors n k
 
 end Erdos891
