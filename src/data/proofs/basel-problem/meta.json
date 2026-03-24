@@ -56,7 +56,6 @@
     ],
     "axiomCount": 0,
     "lineCount": 164,
-    "mathlib_version": "4.26.0",
     "relatedProblems": [
       {
         "id": "basel-problem-oq-01",
@@ -259,6 +258,21 @@
       "targetId": "prime-number-theorem",
       "relationship": "extends",
       "description": "The Prime Number Theorem ($\\pi(x) \\sim x/\\ln x$) is proved by analyzing the Riemann zeta function $\\zeta(s)$ in the complex plane — the same function whose value $\\zeta(2) = \\pi^2/6$ is the Basel identity. Riemann's 1859 memoir showed that the distribution of primes is encoded in the zeros of $\\zeta(s)$, transforming Euler's product formula $\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$ from a curiosity into the central tool of analytic number theory. Basel was the first hint that $\\zeta$ carries deep arithmetic information"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "The Bernoulli numbers that produce $\\zeta(2) = \\pi^2/6$ are defined by the exponential generating function $t/(e^t - 1) = \\sum B_n t^n/n!$, directly involving Euler's number $e$. Hermite's 1873 proof that $e$ is transcendental was the first transcendence result for a 'naturally occurring' constant — the same $e$ whose generating function encodes the Bernoulli numbers $B_{2k}$ appearing in all even zeta values $\\zeta(2k)$"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation $n! \\approx \\sqrt{2\\pi n}(n/e)^n$ is another instance where $\\pi$ emerges from a purely integer-valued function (the factorial). The $\\sqrt{2\\pi}$ factor comes from the Gaussian integral $\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$, while the Basel identity's $\\pi^2/6$ comes from Fourier analysis of periodic functions — both reveal $\\pi$ as an intrinsic constant governing the transition from discrete (integers, factorials) to continuous (limits, sums) mathematics"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "extends",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions (1837) uses Dirichlet $L$-functions $L(s, \\chi) = \\sum \\chi(n) n^{-s}$, which generalize the Riemann zeta function $\\zeta(s) = \\sum n^{-s}$ whose simplest non-trivial value is the Basel identity $\\zeta(2) = \\pi^2/6$. Euler's product formula for $\\zeta$ inspired Dirichlet's product formula for $L$-functions, extending the connection between arithmetic and analysis that the Basel problem first revealed"
     }
   ],
   "relatedProofs": [
@@ -273,7 +287,10 @@
     "leibniz-pi",
     "geometric-series",
     "taylor-theorem",
-    "prime-number-theorem"
+    "prime-number-theorem",
+    "e-transcendental",
+    "stirling-formula",
+    "dirichlets-theorem"
   ],
   "leanFile": {
     "imports": [
