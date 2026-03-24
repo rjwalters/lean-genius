@@ -117,26 +117,48 @@
     ]
   },
   {
-    "id": "ann-e1155-exponent",
+    "id": "ann-e1155-exponent-upper",
     "proofId": "erdos-1155-oq-01",
     "range": {
       "startLine": 226,
-      "endLine": 260
+      "endLine": 237
     },
     "type": "theorem",
-    "title": "Exponent Characterization: 3/2 is Critical",
-    "content": "`bfl_exponent_is_three_halves`: for any $\\alpha > 3/2$, $f(n) \\leq n^\\alpha$ eventually (substituting $\\varepsilon = \\alpha - 3/2$). `bfl_lower_tight`: NO exponent $\\beta < 3/2$ gives $f(n) \\leq n^\\beta$ eventually (contradiction via BFL lower bound).\n\nTogether: $3/2$ is the exact critical exponent separating polynomial upper bounds from growth rates. This is the exponent-level content of BFL, abstracting away the sub-polynomial corrections.",
-    "mathContext": "$f(n) = O(n^\\alpha)$ for all $\\alpha > 3/2$, but $f(n) \\neq O(n^\\beta)$ for any $\\beta < 3/2$. The critical exponent $3/2$ is exact: it is the infimum of exponents $\\alpha$ for which $f(n) = O(n^\\alpha)$.",
+    "title": "Upper Exponent: f(n) = O(n^α) for α > 3/2",
+    "content": "`bfl_exponent_is_three_halves`: for any $\\alpha > 3/2$, $f(n) \\leq n^\\alpha$ eventually. Proved by substituting $\\varepsilon = \\alpha - 3/2 > 0$ into the BFL upper bound. This abstracts the BFL result to its exponent-level content: any power law above $n^{3/2}$ eventually bounds $f(n)$.",
+    "mathContext": "$\\forall \\alpha > 3/2: \\; f(n) \\leq n^\\alpha$ eventually. Take $\\varepsilon = \\alpha - 3/2$ in BFL upper: $f(n) \\leq n^{3/2 + \\varepsilon} = n^\\alpha$.",
     "significance": "key",
     "relatedConcepts": [
       "critical exponent",
-      "Real.rpow monotonicity",
-      "growth rate threshold",
-      "order of growth"
+      "big-O notation",
+      "Real.rpow monotonicity"
     ],
     "prerequisites": [
-      "BFL bounds",
-      "Real.rpow comparison"
+      "BFL upper bound",
+      "Real.rpow substitution"
+    ]
+  },
+  {
+    "id": "ann-e1155-exponent-lower",
+    "proofId": "erdos-1155-oq-01",
+    "range": {
+      "startLine": 239,
+      "endLine": 252
+    },
+    "type": "theorem",
+    "title": "Lower Tightness: No Sub-3/2 Exponent Bound Holds",
+    "content": "`bfl_lower_tight`: for $\\beta < 3/2$, $f(n) \\leq n^\\beta$ eventually is **false**. Proof by contradiction: if $f(n) \\leq n^\\beta$ eventually, combine with BFL lower bound $n^{3/2 - \\varepsilon'} \\leq f(n)$ where $\\varepsilon' = (3/2 - \\beta)/2$, yielding $n^{3/2 - \\varepsilon'} \\leq n^\\beta$ for large $n$. But $3/2 - \\varepsilon' > \\beta$ (since $\\varepsilon' < 3/2 - \\beta$), contradicting `rpow_lt_rpow_of_exponent_lt` for $n > 1$.\n\nTogether with `bfl_exponent_is_three_halves`, this establishes $3/2$ as the exact critical exponent: the infimum of exponents $\\alpha$ such that $f(n) = O(n^\\alpha)$.",
+    "mathContext": "$f(n) \\neq O(n^\\beta)$ for $\\beta < 3/2$. Critical exponent: $\\inf\\{\\alpha : f(n) = O(n^\\alpha)\\} = 3/2$. The proof uses the intermediate exponent trick: $\\beta < 3/2 - \\varepsilon' < 3/2$, so $n^{3/2-\\varepsilon'} > n^\\beta$ for large $n$, contradicting the assumed bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "critical exponent",
+      "proof by contradiction",
+      "Real.rpow strict monotonicity",
+      "infimum characterization"
+    ],
+    "prerequisites": [
+      "BFL lower bound",
+      "rpow_lt_rpow_of_exponent_lt"
     ]
   },
   {
