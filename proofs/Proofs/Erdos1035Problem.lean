@@ -84,16 +84,28 @@ def ErdosProblem1035_alt2 : Prop :=
 
 /- ## Basic properties -/
 
-/-- The hypercube `Q_n` is a subgraph of itself. -/
-axiom hypercube_self_subgraph (n : ℕ) :
-    ContainsAsSubgraph (hypercubeGraph n) (hypercubeGraph n)
+/-- The hypercube `Q_n` is a subgraph of itself (via the identity embedding). -/
+theorem hypercube_self_subgraph (n : ℕ) :
+    ContainsAsSubgraph (hypercubeGraph n) (hypercubeGraph n) :=
+  ⟨id, Function.injective_id, fun _ _ h => h⟩
 
-/-- The complete graph on `2^n` vertices contains `Q_n`. -/
-axiom complete_contains_hypercube (n : ℕ) :
+/-- The complete graph on `2^n` vertices contains `Q_n` (via the identity map,
+    since every non-diagonal pair is adjacent in a complete graph). -/
+theorem complete_contains_hypercube (n : ℕ) :
     ∀ (G : SimpleGraph (Fin (2 ^ n))),
       (∀ u v : Fin (2 ^ n), u ≠ v → G.Adj u v) →
-        ContainsAsSubgraph G (hypercubeGraph n)
+        ContainsAsSubgraph G (hypercubeGraph n) := by
+  intro G hG
+  exact ⟨id, Function.injective_id, fun u v huv => hG u v huv.1⟩
 
-/-- `Q_1` is the single edge graph on 2 vertices. -/
-axiom hypercube_one_is_edge :
-    ∀ u v : Fin (2 ^ 1), (hypercubeGraph 1).Adj u v ↔ u ≠ v
+/-- `Q_1` is the complete graph on `Fin 2`: two vertices are adjacent iff distinct.
+    Proved by case analysis on `Fin 2`. -/
+theorem hypercube_one_is_edge :
+    ∀ u v : Fin (2 ^ 1), (hypercubeGraph 1).Adj u v ↔ u ≠ v := by
+  intro u v
+  constructor
+  · exact fun h => h.1
+  · intro hne
+    refine ⟨hne, ⟨0, by omega⟩, ?_⟩
+    simp [Pow.pow]
+    fin_cases u <;> fin_cases v <;> simp_all

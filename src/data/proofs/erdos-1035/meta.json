@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/1035",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos1035Problem.lean",
     "tags": [
       "erdos",
@@ -15,7 +15,7 @@
       "extremal-graph-theory",
       "minimum-degree"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 1035,
     "erdosUrl": "https://erdosproblems.com/1035",
@@ -27,9 +27,9 @@
       "Graph density and extremal graph theory",
       "Turán-type bounds"
     ],
-    "axiomCount": 3,
-    "lineCount": 99,
-    "assumptions": "3 axiom(s): hypercube_self_subgraph, complete_contains_hypercube, hypercube_one_is_edge. See Lean source for complete statements.",
+    "axiomCount": 0,
+    "lineCount": 106,
+    "assumptions": "None. All auxiliary theorems proved: hypercube_self_subgraph (identity embedding), complete_contains_hypercube (identity on complete graph), hypercube_one_is_edge (case analysis on Fin 2). Main conjecture stated as Prop definition (open problem).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -220,9 +220,9 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 99,
-    "axiomCount": 3,
-    "theoremCount": 0,
+    "lineCount": 106,
+    "axiomCount": 0,
+    "theoremCount": 3,
     "definitionCount": 7
   }
 }
