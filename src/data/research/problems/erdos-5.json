@@ -1,7 +1,7 @@
 {
   "slug": "erdos-5",
   "title": "Erdős #5",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 3 fixed pre-existing build failure (Mathlib API change) and added limitPointSet_isClosed statement with documented proof strategy. Proof reduces to diagonalization + triangle inequality.",
+    "progressSummary": "COMPLETED: All sorries eliminated. 20 theorems, 3 axioms (deep results), 0 sorries. limitPointSet_isClosed proved via diagonal extraction + triangle inequality.",
     "builtItems": [
       "Proved goldston_pintz_yildirim_small_gaps: derived from zhang_implies_zero_limit (already proved from zhang_bounded_gaps axiom)",
       "Proved erdos_ricci_positive_measure: trivially True placeholder (needs measure theory for real content)",
@@ -44,7 +44,8 @@
       "Removed merikoski_density True placeholder (was ∃ d ≥ 1/3, True)",
       "Updated gallery meta.json: proofRepoPath → Erdos5PrimeGaps.lean, axiomCount 8→3",
       "Fixed limitPoint_nonneg: le_of_tendsto → ge_of_tendsto (Mathlib API change)",
-      "Added limitPointSet_isClosed statement with proof outline (sorry, 1 remaining)"
+      "Added limitPointSet_isClosed statement with proof outline (sorry, 1 remaining)",
+      "PROVED limitPointSet_isClosed: S is closed as subset of ℝ (Erdos5PrimeGaps.lean:427)"
     ],
     "insights": [
       "Erdos5PrimeGaps.lean is the main file (343L, well-structured); Erdos5Problem.lean is legacy (81L, all axiomatized)",
@@ -58,11 +59,11 @@
       "westzynthius_large_gaps + filter API gives infinitely-often large gaps via Tendsto.atTop decomposition",
       "Gallery was pointing to legacy Erdos5Problem.lean (8 axioms, 80 lines) instead of main Erdos5PrimeGaps.lean (3 axioms, 380 lines, 19 theorems)",
       "limitPoint_nonneg was broken by Mathlib API change: le_of_tendsto renamed to ge_of_tendsto",
-      "limitPointSet_isClosed proof strategy documented: show complement is open via cluster point characterization + triangle inequality"
+      "limitPointSet_isClosed proof strategy documented: show complement is open via cluster point characterization + triangle inequality",
+      "limitPointSet_isClosed proved: complement is open via contrapositive diagonal extraction (build strictly increasing subsequence from infinite ε-neighborhoods) + triangle inequality (ε/2-ball argument)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove limitPointSet_isClosed: S is closed (diagonal argument on subsequential limits)",
       "Consider proving Hildebrand-Maier from westzynthius + merikoski (large finite limit points)",
       "Consider if merikoski_bounded_gaps can derive erdos_ricci (infinitely many distinct limit points)",
       "Deprecate Erdos5Problem.lean or add note pointing to Erdos5PrimeGaps.lean"
