@@ -19,9 +19,9 @@
     "erdosNumber": 544,
     "erdosUrl": "https://erdosproblems.com/544",
     "erdosProblemStatus": "open",
-    "axiomCount": 12,
+    "axiomCount": 11,
     "lineCount": 93,
-    "assumptions": "12 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "assumptions": "11 axiom(s): ramsey3 (function), ramsey3_mono (monotonicity), 7 known values, kim_lower_bound, shearer_upper_bound. Former axiom ramsey3_ge_six now proved.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -103,16 +103,13 @@
   ],
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Rat.Basic",
-      "Mathlib.Tactic"
+      "Mathlib"
     ],
     "opens": [],
     "namespace": null,
     "lineCount": 93,
-    "axiomCount": 12,
-    "theoremCount": 0,
+    "axiomCount": 11,
+    "theoremCount": 1,
     "definitionCount": 4
   }
 }
