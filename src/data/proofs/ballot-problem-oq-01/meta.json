@@ -71,7 +71,8 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 60,
-      "summary": "Module docstring establishing the generalized ballot problem for $k$-fold dominance, imports from `Archive.Wiedijk100Theorems.BallotProblem` and `Mathlib.Tactic`"
+      "summary": "Module docstring establishing the generalized ballot problem for $k$-fold dominance, imports from `Archive.Wiedijk100Theorems.BallotProblem` and `Mathlib.Tactic`",
+      "mathContext": "Imports Mathlib's Wiedijk #30 (Ballot Problem) for the classical $k=1$ case and validation. The generalization: probability of $k$-fold dominance is $(a - kb)/(a + b)$ rather than $(p-q)/(p+q)$."
     },
     {
       "id": "definitions",
@@ -94,28 +95,32 @@
       "title": "Part III: Basic Properties",
       "startLine": 103,
       "endLine": 149,
-      "summary": "Derives sum $= a - kb$, length $= a + b$, permutation characterization $l \\sim \\text{replicate}(a,1) \\mathbin{\\|} \\text{replicate}(b,-k)$, finiteness, and nonemptiness"
+      "summary": "Derives sum $= a - kb$, length $= a + b$, permutation characterization $l \\sim \\text{replicate}(a,1) \\mathbin{\\|} \\text{replicate}(b,-k)$, finiteness, and nonemptiness",
+      "mathContext": "A $k$-ballot sequence $l$ is fully determined by its permutation class: $l \\sim [\\underbrace{1,\\ldots,1}_{a}, \\underbrace{-k,\\ldots,-k}_{b}]$. The finiteness proof uses the permutation characterization to bound the set size by $\\binom{a+b}{a}$ (the multinomial coefficient)."
     },
     {
       "id": "classical-connection",
       "title": "Part IV: Connection to Classical Ballot Problem",
       "startLine": 150,
       "endLine": 159,
-      "summary": "Shows $\\text{kCountedSequence}(1, a, b) = \\text{Ballot.countedSequence}(a, b)$ via `simpa`, validating against Wiedijk #30"
+      "summary": "Shows $\\text{kCountedSequence}(1, a, b) = \\text{Ballot.countedSequence}(a, b)$ via `simpa`, validating against Wiedijk #30",
+      "mathContext": "When $k = 1$: a $+1/-1$ lattice path with $a$ up-steps and $b$ down-steps reduces to the classical ballot sequence. The formula $(a - 1 \\cdot b)/(a+b) = (p-q)/(p+q)$ recovers Bertrand's 1887 result."
     },
     {
       "id": "ballot-theorem",
       "title": "Part V: The Generalized Ballot Theorem",
       "startLine": 160,
       "endLine": 182,
-      "summary": "States the counting formula (1 sorry: double counting) and proves $P = (a - kb)/(a + b) > 0$; verified examples with `norm_num`"
+      "summary": "States the counting formula (1 sorry: double counting) and proves $P = (a - kb)/(a + b) > 0$; verified examples with `norm_num`",
+      "mathContext": "The counting formula: $|\\{l \\in \\text{kCountedSequence} : \\text{kStaysPositive}(l)\\}| = \\frac{a - kb}{a + b} \\cdot |\\text{kCountedSequence}|$. One sorry remains on the double-counting step that connects cycle lemma good rotations to favorable ballot orderings."
     },
     {
       "id": "cyclic-rotations",
       "title": "Part VII: Cyclic Rotation Infrastructure",
       "startLine": 183,
       "endLine": 236,
-      "summary": "Defines $\\text{rotate}(l, i) = l[i:] \\mathbin{\\|} l[:i]$ and proves sum/length preservation, identity, membership in kCountedSequence, and composition"
+      "summary": "Defines $\\text{rotate}(l, i) = l[i:] \\mathbin{\\|} l[:i]$ and proves sum/length preservation, identity, membership in kCountedSequence, and composition",
+      "mathContext": "The cyclic rotation $\\text{rot}(l, i) = l[i:] \\mathbin{\\|} l[:i]$ is the key symmetry operation. Invariant: $\\text{rot}(l, i)$ has the same multiset of values as $l$, so it remains in $\\text{kCountedSequence}(k, a, b)$. The $n$ rotations of $l$ partition into 'good' (all prefix sums positive) and 'bad' — the cycle lemma counts exactly $S = a - kb$ good ones."
     },
     {
       "id": "prefix-sums",
@@ -130,7 +135,8 @@
       "title": "Rightmost Minimum Infrastructure",
       "startLine": 335,
       "endLine": 420,
-      "summary": "Defines `rightmostMinPos` as the last position achieving $\\min(\\sigma)$; proves it is a good rotation when $S > 0$, giving $|\\text{goodRotations}| \\geq 1$"
+      "summary": "Defines `rightmostMinPos` as the last position achieving $\\min(\\sigma)$; proves it is a good rotation when $S > 0$, giving $|\\text{goodRotations}| \\geq 1$",
+      "mathContext": "The rightmost minimum $i^* = \\max\\{i : \\sigma(i) = \\min_j \\sigma(j)\\}$ is always a good rotation: rotating to start after $i^*$ places the minimum at the beginning, so all subsequent prefix sums exceed it. This existence argument bootstraps the cycle lemma's lower bound."
     },
     {
       "id": "upper-bound",
@@ -153,7 +159,8 @@
       "title": "Part VIII: Lattice Path Interpretation",
       "startLine": 702,
       "endLine": 710,
-      "summary": "Interprets prefix sums as lattice path heights: A-vote $= (+1)$ step, B-vote $= (-k)$ step; path stays above $x$-axis iff all prefix sums are positive"
+      "summary": "Interprets prefix sums as lattice path heights: A-vote $= (+1)$ step, B-vote $= (-k)$ step; path stays above $x$-axis iff all prefix sums are positive",
+      "mathContext": "The lattice path interpretation: a ballot sequence $l = [l_1, \\ldots, l_n]$ defines a path in $\\mathbb{Z}^2$ from $(0,0)$ to $(n, a-kb)$, with height at time $j$ equal to $\\sigma(j) = \\sum_{i=1}^{j} l_i$. The $k$-fold dominance condition 'A always has > k times B's votes' translates to $\\sigma(j) > 0$ for all $j$, i.e., the path stays strictly above the $x$-axis."
     }
   ],
   "conclusion": {
