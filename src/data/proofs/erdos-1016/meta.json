@@ -21,9 +21,9 @@
     "erdosNumber": 1016,
     "erdosUrl": "https://erdosproblems.com/1016",
     "erdosProblemStatus": "open",
-    "axiomCount": 10,
-    "lineCount": 110,
-    "assumptions": "10 axioms: erdos_1016_conjecture, excess_beyond_log, bondy_lower_bound, and 7 more. See Lean source for complete statements.",
+    "axiomCount": 7,
+    "lineCount": 114,
+    "assumptions": "7 axioms: erdos_1016_conjecture, excess_beyond_log, bondy_lower_bound, gkw_upper_bound, bondy_quadratic_threshold, triangle_pancyclic, small_case_4. Three former axioms proved: hamiltonian_edge_count (trivial for ℕ), pancyclic_monotone (IsPancyclic doesn't use edgeCount), bounds_gap (a ≤ a + C). bondy_quadratic_threshold fixed from n≥3 to n≥7 (was false for small n).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -234,9 +234,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 110,
-    "axiomCount": 10,
-    "theoremCount": 0,
+    "lineCount": 114,
+    "axiomCount": 7,
+    "theoremCount": 3,
     "definitionCount": 3
   }
 }
