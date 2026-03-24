@@ -149,8 +149,12 @@ theorem pommerenkePolynomial_monic (k : ℕ) (a : ℂ) :
   exact Monic.mul (monic_X_pow k) (monic_X_sub_C a)
 
 /-- Pommerenke's polynomial has degree k+1 -/
-axiom pommerenkePolynomial_degree (k : ℕ) (a : ℂ) (ha : a ≠ 0) :
-    (pommerenkePolynomial k a).natDegree = k + 1
+theorem pommerenkePolynomial_degree (k : ℕ) (a : ℂ) (ha : a ≠ 0) :
+    (pommerenkePolynomial k a).natDegree = k + 1 := by
+  unfold pommerenkePolynomial
+  rw [Polynomial.natDegree_mul (pow_ne_zero k X_ne_zero) (X_sub_C_ne_zero a),
+      Polynomial.natDegree_pow, Polynomial.natDegree_X, Polynomial.natDegree_X_sub_C,
+      mul_one]
 
 /-- For large k and specific a, Pommerenke's polynomial gives a non-convex component.
     This is the first counterexample to Grunsky's conjecture. -/
@@ -176,7 +180,10 @@ noncomputable def goodmanPolynomial : ℂ[X] :=
   (X ^ 2 + 1) * (X - 2) ^ 2
 
 /-- Goodman's polynomial is monic of degree 4 -/
-axiom goodmanPolynomial_monic : goodmanPolynomial.Monic
+theorem goodmanPolynomial_monic : goodmanPolynomial.Monic := by
+  unfold goodmanPolynomial
+  exact Monic.mul (monic_X_pow_add_C 1 (by norm_num : (2 : ℕ) ≠ 0))
+    ((monic_X_sub_C (2 : ℂ)).pow 2)
 
 /-- Goodman's critical value: c = 5^(3/2)/4 ≈ 2.795 -/
 noncomputable def goodmanCriticalValue : ℝ :=
@@ -206,7 +213,9 @@ noncomputable def refereePolynomial : ℂ[X] :=
   X * (X ^ 5 - 1)
 
 /-- Referee's polynomial is monic of degree 6 -/
-axiom refereePolynomial_monic : refereePolynomial.Monic
+theorem refereePolynomial_monic : refereePolynomial.Monic := by
+  unfold refereePolynomial
+  exact monic_X.mul (monic_X_pow_sub_C 1 (by norm_num : (5 : ℕ) ≠ 0))
 
 /-- Referee's critical value: 5.6^(-6/5) -/
 noncomputable def refereeCriticalValue : ℝ :=
