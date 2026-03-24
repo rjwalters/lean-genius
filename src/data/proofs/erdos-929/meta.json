@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/929",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos929Problem.lean",
     "tags": [
       "erdos",
@@ -15,14 +15,14 @@
       "sieve methods",
       "prime gaps"
     ],
-    "badge": "formalized",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 929,
     "erdosUrl": "https://erdosproblems.com/929",
     "erdosProblemStatus": "open",
-    "axiomCount": 6,
-    "lineCount": 109,
-    "assumptions": "6 axiom(s) and 1 sorry(s). See the Lean source for details.",
+    "axiomCount": 7,
+    "lineCount": 110,
+    "assumptions": "7 axiom(s) and 0 sorry(s). See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -159,9 +159,9 @@
       "Filter"
     ],
     "namespace": null,
-    "lineCount": 109,
-    "axiomCount": 6,
-    "theoremCount": 0,
+    "lineCount": 110,
+    "axiomCount": 7,
+    "theoremCount": 1,
     "definitionCount": 5
   }
 }
