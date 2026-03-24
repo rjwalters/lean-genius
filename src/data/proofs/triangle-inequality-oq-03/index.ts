@@ -2,7 +2,7 @@ import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOvervi
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
 import sourceRaw from '../../../../proofs/Proofs/TriangleInequalityOQ03.lean?raw'
-const meta = metaJson as { id: string; title: string; slug: string; description: string; meta: ProofMeta; sections: ProofSection[]; overview?: ProofOverview; conclusion?: ProofConclusion, CrossReference }
-export const triangleInequalityOq03Proof: Proof = { id: meta.id, title: meta.title, slug: meta.slug, description: meta.description, meta: meta.meta, sections: meta.sections, source: sourceRaw, overview: meta.overview, conclusion: meta.conclusion }
+const meta = metaJson as { id: string; title: string; slug: string; description: string; meta: ProofMeta; sections: ProofSection[]; overview?: ProofOverview; conclusion?: ProofConclusion; crossReferences?: CrossReference[] }
+export const triangleInequalityOq03Proof: Proof = { id: meta.id, title: meta.title, slug: meta.slug, description: meta.description, meta: meta.meta, sections: meta.sections, source: sourceRaw, overview: meta.overview, conclusion: meta.conclusion, crossReferences: meta.crossReferences }
 export const triangleInequalityOq03Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const triangleInequalityOq03Data: ProofData = { proof: triangleInequalityOq03Proof, annotations: triangleInequalityOq03Annotations }
