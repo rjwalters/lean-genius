@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SESSION 3: Fixed threshold_r2 semantic bug (=0 not =1). Discovered multiple pre-existing Mathlib API breakages preventing build. File needs mechanic repair.",
+    "progressSummary": "PROGRESS: Eliminated 2 of 4 sorries (4→2). Proved trivial_bound (offDiag counting) and completed linear_implies_littleo (ceil/toNat arithmetic). Remaining: turan_upper_bound (deep), threshold_r2 (needs Sylvester-Gallai extraction).",
     "builtItems": [
       "Proved trivial_bound: ordinaryLineCount P ≤ P.n * (P.n - 1) / 2",
       "Identified bug in threshold_r2 (claims 1, should be 0)",
@@ -37,7 +37,9 @@
       "linear_implies_littleo: fixed N₀ from C+1 to ⌈C/ε⌉+1 (was wrong for ε < 1)",
       "green_tao_ordinary_lines: correctly reclassified as axiom (Green-Tao 2013 deep result)",
       "threshold_r2: documented semantic bug (sSup definition gives 0, not 1)",
-      "Fixed threshold_r2 statement: = 0 (was incorrectly = 1)"
+      "Fixed threshold_r2 statement: = 0 (was incorrectly = 1)",
+      "trivial_bound: ordinaryLineCount P ≤ P.n*(P.n-1)/2 proved via offDiag subset (Erdos960Problem.lean:107-124)",
+      "linear_implies_littleo: arithmetic sorry eliminated via ceil/toNat chain + nlinarith (Erdos960Problem.lean:155-181)"
     ],
     "insights": [
       "trivial_bound provable: filter_le on offDiag + card_offDiag + omega",
@@ -53,7 +55,9 @@
       "threshold_r2 statement was WRONG: should be =0 not =1 (sSup of empty counterexample set = 0)",
       "File has pre-existing Mathlib API breakages: Rat.toNat missing, Finset.card_offDiag renamed, projection issues",
       "linear_implies_littleo N₀ has edge case bug for C=0 (needs ε*n²≥1 guarantee)",
-      "For r=2 with any k≥2: Sylvester-Gallai implies ordinary lines exist, so 2-element all-ordinary subsets always exist"
+      "For r=2 with any k≥2: Sylvester-Gallai implies ordinary lines exist, so 2-element all-ordinary subsets always exist",
+      "Int.ceil notation ⌈x⌉ and dot notation x.ceil resolve to different instances in Lean 4 — must use consistent notation",
+      "trivial_bound follows from Finset.offDiag_card + Nat.mul_succ after case split on P.n"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -77,7 +81,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T12:36:36.408Z",
-  "lastUpdate": "2026-03-24T16:30:00Z",
+  "lastUpdate": "2026-03-24T19:30:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
