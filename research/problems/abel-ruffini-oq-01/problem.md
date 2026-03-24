@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization extending an existing formalization in algebra: The Inverse Galois Problem: Does every finite group appear as a Galois group ....
 
 ### Formal Statement
 $$

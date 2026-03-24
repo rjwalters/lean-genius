@@ -15,7 +15,7 @@ $$
 
 ### Plain Language
 
-[Explain what we're trying to prove in accessible terms]
+Lawvere's Fixed-Point Theorem (1969) reveals that Cantor's theorem, Russell's paradox, Gödel's incompleteness, and Girard's paradox are all instances of a single categorical diagonal argument: if f : α → (α → β) is surjective, then every g : β → β has a fixed point. Paradoxes arise because certain functions (like ¬ : Prop → Prop) have no fixed points, making surjection impossible.
 
 ### Why This Matters
 

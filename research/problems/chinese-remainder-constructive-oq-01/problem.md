@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization extending an existing formalization: What are the best algorithms for computing Bezout coefficients in multi-preci....
 
 ### Formal Statement
 $$

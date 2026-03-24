@@ -125,5 +125,10 @@
     "area-of-circle-oq-01-oq-03",
     "area-of-circle-oq-03-oq-02"
   ],
-  "tags": []
+  "tags": [],
+  "problemStatement": {
+    "formal": "",
+    "plain": "Proves the integration by parts formula for Fourier coefficients: for a C¹ periodic function f with period 2π, the Fourier coefficient of the derivative satisfies ĉₙ(f') = i·n·ĉₙ(f). This is key infrastructure for the Fourier-analytic proof of the isoperimetric inequality.",
+    "whyMatters": []
+  }
 }

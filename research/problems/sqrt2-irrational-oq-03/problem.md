@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization generalizing a known result in number theory: Irrationality of nth Roots of Non-Perfect Powers.
 
 ### Formal Statement
 $$

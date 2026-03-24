@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization extending an existing formalization in mathematical analysis: Stirling Approximation for the Gamma Function.
 
 ### Formal Statement
 $$

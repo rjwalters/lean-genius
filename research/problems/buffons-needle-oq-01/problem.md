@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Proves the Buffon-Barbier theorem for C¹ smooth planar curves: any curve γ : ℝ → ℝ × ℝ of arc length L dropped on a parallel line grid (spacing d) has expected crossings 2L/(πd). This file fills the gap from BuffonsNeedleOQ01OQ01.lean by proving that C¹ smoothness automatically gives the required integrability, requiring no additional hypotheses beyond `ContDiff ℝ 1 γ`.
 
 ### Formal Statement
 $$

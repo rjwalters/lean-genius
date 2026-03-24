@@ -98,5 +98,10 @@
     "birthday-problem-oq-02",
     "birthday-problem-oq-03"
   ],
-  "tags": []
+  "tags": [],
+  "problemStatement": {
+    "formal": "",
+    "plain": "Proves the asymptotic upper bound for the birthday collision probability: ∏(1-i/n) ≤ exp(-k(k-1)/(2n)). Fully proved from Mathlib with 0 axioms and 0 sorries, using the fundamental inequality 1-x ≤ exp(-x) and Gauss's summation formula.",
+    "whyMatters": []
+  }
 }

@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Let C(x) count Carmichael numbers in [1,x]. Is C(x) = x^{1-o(1)}? Known: x^{0.3389} < C(x) < x·exp(-c·log x·log log log x / log log x). OPEN.
 
 ### Formal Statement
 $$

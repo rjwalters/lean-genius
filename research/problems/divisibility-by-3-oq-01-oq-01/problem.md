@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization generalizing a known result in number theory: Can the truncation method be generalized to a single parametric theorem for a....
 
 ### Formal Statement
 $$

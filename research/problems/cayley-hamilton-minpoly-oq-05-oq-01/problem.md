@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Over an infinite field K, if M ∈ M_n(K) is nonderogatory (minpoly = charpoly), then M has a cyclic vector. Proved via union avoidance over irreducible factor kernels, with GCD/Bezout annihilation and normalizedFactors from UniqueFactorizationMonoid.
 
 ### Formal Statement
 $$

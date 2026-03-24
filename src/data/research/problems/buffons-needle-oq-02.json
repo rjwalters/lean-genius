@@ -7,7 +7,7 @@
   "path": "fast",
   "problemStatement": {
     "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
+    "plain": "Proves the 3D Buffon formula: a polygonal curve of total length L dropped on a family of parallel planes (spacing d) has expected crossing count E[crossings] = L/(2d). The key is the sphere average E_{S²}[|cos φ|] = 1/2, proved by computing ∫₀^π sin θ |cos θ| dθ = 1 via the substitution |cos θ| = cos θ on [0,π/2] and |cos θ| = -cos θ on [π/2,π]. Compares with the 2D Buffon formula 2L/(πd), proving the 3D crossing factor α₃ = 1/2 is strictly less than the 2D factor α₂ = 2/π.",
     "whyMatters": []
   },
   "knownResults": {

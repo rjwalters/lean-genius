@@ -7,7 +7,7 @@
   "path": "fast",
   "problemStatement": {
     "formal": "",
-    "plain": "",
+    "plain": "Generalizes divisibility rules to arbitrary bases: for b ≥ 3, (b-1) | n iff (b-1) | digit_sum_b(n). Covers hexadecimal (mod 15), octal (mod 7), factor tests, and cross-base divisibility. All 15 theorems fully verified.",
     "whyMatters": []
   },
   "knownResults": {

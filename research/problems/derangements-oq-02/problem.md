@@ -15,7 +15,7 @@ $$
 
 ### Plain Language
 
-[Explain what we're trying to prove in accessible terms]
+Proves S(n,k) = C(n,k)·D(n-k): the number of permutations of n elements with exactly k fixed points equals the binomial coefficient C(n,k) times the derangement number D(n-k). Verified for n=3,4,5 via native_decide. Proved via bijection between {σ | support = S} and derangements of S.
 
 ### Why This Matters
 

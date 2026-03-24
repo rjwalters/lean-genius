@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formal investigation in combinatorics: Derangement Convergence Rate to 1/e Formalization.
 
 ### Formal Statement
 $$

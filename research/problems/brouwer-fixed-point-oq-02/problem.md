@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+A comprehensive formalization of the computational complexity landscape for finding approximate fixed points. Covers binary search optimality (O(log 1/epsilon) in 1D), contraction mapping convergence with explicit error bounds, PPAD structure and solution existence via pigeonhole, Sperner's lemma, fixed point stability under perturbation, and Krasnoselskii-Mann averaged iteration.
 
 ### Formal Statement
 $$

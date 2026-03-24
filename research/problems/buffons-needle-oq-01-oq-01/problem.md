@@ -15,7 +15,7 @@ $$
 
 ### Plain Language
 
-[Explain what we're trying to prove in accessible terms]
+Proves the Buffon-Barbier smooth curve theorem (E[crossings] = 2L/(πd)) from first principles using the angular average identity ∫_0^π |a sin θ + b cos θ| dθ = 2√(a²+b²). This resolves the open question in buffons-needle-oq-01 by replacing the axiomatic smooth case with a concrete verified proof.
 
 ### Why This Matters
 

@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Euclid's lemma proved formally using coprime_iff_linear_combination: if gcd(a,b)=1 and a|b·c, then a|c. The witness x·c+y·k is constructed directly from Bézout coefficients and the divisibility assumption.
 
 ### Formal Statement
 $$

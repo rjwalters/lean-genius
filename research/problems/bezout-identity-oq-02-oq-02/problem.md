@@ -15,7 +15,7 @@ $$
 
 ### Plain Language
 
-[Explain what we're trying to prove in accessible terms]
+Euclid's lemma generalized from ℤ to any commutative ring via IsCoprime, with the IsBezout connection: IsRelPrime ↔ IsCoprime in Bézout rings. A single proof covers ℤ, ℚ[X], ℤ[i], and all Euclidean domains.
 
 ### Why This Matters
 

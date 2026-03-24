@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization extending an existing formalization in mathematical analysis: Weighted Cauchy-Schwarz for Finite Sum Inner Products.
 
 ### Formal Statement
 $$

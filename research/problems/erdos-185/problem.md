@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Is f₃(n) = o(3^n) where f₃(n) is the max cap set in {0,1,2}^n? YES - Proved via density Hales-Jewett (Furstenberg-Katznelson 1991).
 
 ### Formal Statement
 $$

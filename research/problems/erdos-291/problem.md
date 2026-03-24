@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Do both gcd(a_n, L_n) = 1 and gcd(a_n, L_n) > 1 occur infinitely often, where H_n = a_n/L_n? Part 2 trivially YES; Part 1 OPEN.
 
 ### Formal Statement
 $$

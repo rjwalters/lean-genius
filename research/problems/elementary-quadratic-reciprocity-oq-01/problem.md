@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Zolotarev's 1872 proof of quadratic reciprocity via permutation signatures — the Legendre symbol (a/p) equals the sign of the multiplication-by-a permutation on (ZMod p)ˣ.
 
 ### Formal Statement
 $$

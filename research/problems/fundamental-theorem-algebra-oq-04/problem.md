@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formal investigation in algebra: FTA: C is the unique algebraic closure of R.
 
 ### Formal Statement
 $$

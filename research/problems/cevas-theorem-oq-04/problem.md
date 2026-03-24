@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Mass point geometry provides a constructive algebraic certificate for concurrent cevians: assign positive masses mA, mB, mC to vertices, and the induced ratios automatically satisfy d·e·f = (1-d)·(1-e)·(1-f). The converse is constructive: any Ceva configuration admits an explicit mass assignment.
 
 ### Formal Statement
 $$

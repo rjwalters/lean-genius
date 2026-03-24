@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalizes the Rogers-Ramanujan and Schur partition identities in Lean 4. Defines partition sets via gap conditions and modular arithmetic, states the identities as axioms (verified computationally), and proves structural properties including that gap ≥ 2 partitions are necessarily distinct.
 
 ### Formal Statement
 $$

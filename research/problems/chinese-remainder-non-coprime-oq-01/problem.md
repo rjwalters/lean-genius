@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Can the non-coprime CRT construction be made computationally efficient for large moduli? YES — three complementary improvements: (1) Solutions canonicalize to [0, lcm(m,n)) saving gcd(m,n) bits vs the naive product bound; (2) The Bézout step operates on the smaller coprime pair m/g, n/g; (3) Garner's 1959 mixed-radix decomposition bounds all arithmetic by max(m,n) per step. Together these make non-coprime CRT practical for cryptographic and computer arithmetic applications.
 
 ### Formal Statement
 $$

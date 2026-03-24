@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+A comprehensive collection of formally verified divisibility rules: general last-k-digits framework, power-of-2/5 generalizations, truncation methods for 7, 11, 13, 17, and 19, casting out nines/threes, digital root theory, and coprime factorization rules.
 
 ### Formal Statement
 $$

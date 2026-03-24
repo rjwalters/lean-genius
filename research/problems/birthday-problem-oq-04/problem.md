@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization extending an existing formalization in probability theory: Birthday Problem: Threshold for 99% Match Probability.
 
 ### Formal Statement
 $$

@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Every natural number can be expressed as the sum of four squares, a profound result connecting number theory to quaternion algebra.
 
 ### Formal Statement
 $$

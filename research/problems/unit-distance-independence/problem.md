@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization extending an existing formalization in graph theory: Unit Distance Graph Independence Number Bounds.
 
 ### Formal Statement
 $$

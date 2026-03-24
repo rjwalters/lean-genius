@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+The Chinese Remainder Theorem generalized from ℤ/nℤ to arbitrary commutative rings: for pairwise coprime ideals I₁, ..., Iₖ in a commutative ring R, the quotient R/(⨅ Iᵢ) is isomorphic to the product ∏ R/Iᵢ as rings. This formalization wraps Mathlib's quotientInfRingEquivPiQuotient with explicit coprimality characterizations, proves that coprime ideals have I ∩ J = I · J, and establishes coprimality inheritance (coprime to both J and K implies coprime to J ∩ K).
 
 ### Formal Statement
 $$

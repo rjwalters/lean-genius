@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalizes the extension of Hilbert's 19th problem to fully nonlinear elliptic equations. Defines fully nonlinear elliptic operators with uniform ellipticity conditions, proves properties of Pucci extremal operators (M⁺ ≤ M⁻, superadditivity, sign cases, uniform ellipticity), establishes a viscosity solution framework with touching functions, and states the Evans-Krylov theorem (C^{2,α} regularity for convex uniformly elliptic equations). Proves the full regularity chain: Evans-Krylov + Schauder bootstrap = C^∞ for smooth convex F.
 
 ### Formal Statement
 $$

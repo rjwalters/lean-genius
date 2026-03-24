@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+The Cayley-Hamilton reduction is computationally efficient for structured sparse matrices: upper triangular matrices have charpoly = ∏(X - diagonal), block triangular matrices decompose into independent reductions, and nilpotent matrices have bounded polynomial basis.
 
 ### Formal Statement
 $$

@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formal investigation in probability theory: CLT Generalization to Dependent Random Variables.
 
 ### Formal Statement
 $$

@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+The classical MVT equality f'(c) = slope generalizes to the mean value inequality for vector-valued functions: ‖f(b) - f(a)‖ ≤ C·(b-a) when ‖f'(t)‖ ≤ C. Proves 17 theorems with 0 sorries covering the core inequality, scalar MVT as special case, circular counterexample, Lipschitz consequences, ODE uniqueness bounds, and Banach space generalizations.
 
 ### Formal Statement
 $$

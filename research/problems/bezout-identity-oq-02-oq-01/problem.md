@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+The Fundamental Theorem of Arithmetic (unique prime factorization) derived explicitly from euclids_lemma_prime. The proof chain: Bézout → Euclid's Lemma → FTA Uniqueness. The uniqueness half of FTA is proved via induction, with euclids_lemma_prime as the key step showing a prime divides exactly one factor in a prime product.
 
 ### Formal Statement
 $$

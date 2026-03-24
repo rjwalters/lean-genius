@@ -15,7 +15,7 @@ $$
 
 ### Plain Language
 
-[Explain what we're trying to prove in accessible terms]
+Proves the sharp convergence rate |D(n)/n! - 1/e| ≤ 1/(n+1)! using the alternating series estimation theorem. The ratio D(n)/n! equals the n-th partial sum of the Taylor series for e^{-1}, and the error is bounded by the first omitted term. Also proves D(n)/n! → 1/e and the alternating property: even partial sums overshoot 1/e from above, odd partial sums undershoot from below.
 
 ### Why This Matters
 

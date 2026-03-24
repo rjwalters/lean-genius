@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Is the number e + π = 5.8598... transcendental? Despite both e (Hermite, 1873) and π (Lindemann, 1882) being individually transcendental, the transcendence of their sum remains one of the most tantalizing open problems in mathematics. We prove what IS known: at least one of e+π or e·π must be transcendental — a clean consequence of e's transcendence via the Vieta symmetric polynomial identity.
 
 ### Formal Statement
 $$

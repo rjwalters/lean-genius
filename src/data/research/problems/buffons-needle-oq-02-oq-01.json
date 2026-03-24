@@ -81,5 +81,10 @@
     "buffons-needle-oq-02",
     "buffons-needle-oq-02-oq-01"
   ],
-  "tags": []
+  "tags": [],
+  "problemStatement": {
+    "formal": "",
+    "plain": "Formalizes the general n-dimensional Buffon noodle formula E[crossings] = αₙ · L/d, where the crossing factor αₙ = E_{S^{n-1}}[|u₁|] = Γ(n/2)/(√π·Γ((n+1)/2)) satisfies the recurrence α_{n+2} = (n/(n+1))·αₙ. Verifies α₂ = 2/π, α₃ = 1/2, α₄ = 4/(3π), α₅ = 3/8. Proves the crossing factor strictly decreases with dimension (each 2-step reduces by factor n/(n+1) < 1) and establishes the general noodle theorem (additivity, scaling, monotonicity) in arbitrary dimension.",
+    "whyMatters": []
+  }
 }

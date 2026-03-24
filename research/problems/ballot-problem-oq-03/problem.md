@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Higher-dimensional lattice path problems via the 2D reflection principle. Proves the Crossing Lemma (2D version of ballot's reflection argument), the path count formula C(m+n,m), Catalan numbers, ballot formula, and Vandermonde's identity. Develops infrastructure toward the full Lindström-Gessel-Viennot lemma.
 
 ### Formal Statement
 $$

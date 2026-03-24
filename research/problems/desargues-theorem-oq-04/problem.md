@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalizes the self-duality of Desargues's theorem in projective geometry over arbitrary commutative rings. Shows that collinearity and concurrence are the same predicate in homogeneous coordinates (rfl), that the dual configuration's perspective-from-a-point equals the original's perspective-from-a-line (rfl), and that the Desargues identity is symmetric in the two triangles. Includes algebraic converse over integral domains.
 
 ### Formal Statement
 $$

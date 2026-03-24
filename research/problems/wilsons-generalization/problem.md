@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization extending an existing formalization in number theory: Wilson Theorem Generalizations for Composite Moduli.
 
 ### Formal Statement
 $$

@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Replaces the abstract GreenRegion placeholder with concrete TypeI and TypeII region structures. Proves the Inner FTC for both region types — the P contribution (∬∂P/∂y = ∫[P(x,g(x))-P(x,f(x))]dx) and Q contribution (∬∂Q/∂x = ∫[Q(k(y),y)-Q(h(y),y)]dy) — which are the two halves of Green's theorem. Includes disk and semicircle as concrete TypeI examples with membership characterization via x²+y²≤r².
 
 ### Formal Statement
 $$

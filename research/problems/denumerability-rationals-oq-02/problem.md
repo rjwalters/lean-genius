@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization generalizing a known result in set theory: Countability of Algebraic Numbers of Bounded Degree.
 
 ### Formal Statement
 $$

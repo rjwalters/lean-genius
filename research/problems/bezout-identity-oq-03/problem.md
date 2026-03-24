@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+A clean formalization of the Chinese Remainder Theorem building directly on bezout_int: the explicit CRT solution x = a·n·v + b·m·u follows immediately from Bézout coefficients.
 
 ### Formal Statement
 $$

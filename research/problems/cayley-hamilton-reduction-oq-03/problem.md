@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization extending an existing formalization: What is the analog for infinite-dimensional operators (compact operators on H....
 
 ### Formal Statement
 $$

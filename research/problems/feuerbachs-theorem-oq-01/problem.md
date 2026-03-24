@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Fully proves all 8 axioms from the main Feuerbach formalization by coordinate computation: altitude feet on the nine-point circle, equilateral R = 2r, and all four Feuerbach distance relations (incircle tangency and three excircle tangencies) for general triangles. Also develops Heron's formula, the extended law of sines, triangle inequalities, and the NI bilinear expansion as supporting machinery.
 
 ### Formal Statement
 $$
