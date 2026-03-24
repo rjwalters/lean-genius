@@ -125,7 +125,7 @@
       "startLine": 100,
       "endLine": 101
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Upper Half Cardinality (PROVED)",
     "content": "Proves `upperHalf_card : (upperHalf N).card = N - N/2` by simplifying with `Finset.card_Ioc`. This is a genuine Lean proof using the Mathlib lemma that `|Ioc a b| = b - a` for natural numbers. For even N, this gives exactly N/2; for odd N, it gives (N+1)/2.",
     "mathContext": "$(\\text{Ioc}\\,(N/2)\\,N).\\text{card} = N - \\lfloor N/2 \\rfloor$. By `Finset.card_Ioc`: $|\\{a+1, \\ldots, b\\}| = b - a$ when $a \\leq b$. Since $\\lfloor N/2 \\rfloor \\leq N$, the result follows.",
@@ -147,7 +147,7 @@
       "startLine": 106,
       "endLine": 115
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Upper Half Density and Sum-Free Property",
     "content": "Two axiomatized properties: (1) `upperHalf_density`: for N >= 2, |upperHalf(N)| >= N/2 - 1, confirming density approaches 1/2. (2) `upperHalf_sumFree`: for N >= 4 and distinct a, b in upperHalf(N), a + b > N. The sum-free property follows because any consecutive sum of 2+ elements exceeds N and thus cannot lie in {1, ..., N}.",
     "mathContext": "For $a, b \\in (N/2, N]$ with $a \\neq b$: $a + b > 2 \\cdot (N/2) = N$. More generally, $\\sum_{k=i}^{j} a_k \\geq 2 \\cdot (N/2 + 1) > N$ for $j > i$, so $\\text{upperHalf}(N)$ is consecutive sum-free.",
@@ -169,7 +169,7 @@
       "startLine": 130,
       "endLine": 143
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Adenwalla's Dyadic Upper Bound",
     "content": "Axiomatizes two results: (1) The dyadic lemma: if |A intersect [x, 2x]| = t, then the t-1 consecutive pair sums land in (2x, 4x] and are forbidden, giving |A intersect [x, 4x]| <= t + 2x - t + 1 = 2x + 1. (2) The global bound: |A| <= (2/3)N + log_2(N) + 1 for any consecutive sum-free A in {1, ..., N}. The O(log N) term comes from summing over O(log N) dyadic intervals.",
     "mathContext": "Partition $\\{1, \\ldots, N\\}$ into $\\sim \\log_2 N$ dyadic intervals $[2^k, 2^{k+1})$. In each pair of adjacent intervals $[2^k, 2^{k+2})$: if $t$ elements lie in $[2^k, 2^{k+1})$, the $t-1$ pair sums are distinct and lie in $(2^{k+1}, 2^{k+2}]$. So $|A \\cap [2^k, 2^{k+2})| \\leq 2^{k+1} + 1$, giving density $\\leq 2/3 + O(1/2^k)$.",
@@ -193,7 +193,7 @@
       "startLine": 157,
       "endLine": 165
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Freud's Construction (1993)",
     "content": "Axiomatizes Freud's 1993 disproof: there exists a function f : N -> List N such that for all N >= 36, f(N) is a sorted subset of {1, ..., N}, is consecutive sum-free, and has |f(N)| * 36 >= 19 * N - 36, achieving density >= 19/36 ~ 0.5278. This is the key counterexample to Erdős's conjecture, published in the James Cook Mathematical Notes.",
     "mathContext": "Freud constructed explicit sets $A_N \\subseteq \\{1, \\ldots, N\\}$ with $|A_N| \\geq \\frac{19}{36}N - O(1)$. The integer arithmetic $|A| \\cdot 36 \\geq 19N - 36$ avoids rational division. Since $19/36 > 1/2$, this disproves $|A| \\leq N/2 + O(1)$.",
@@ -217,7 +217,7 @@
       "startLine": 171,
       "endLine": 172
     },
-    "type": "technique",
+    "type": "concept",
     "title": "19/36 > 1/2 (PROVED)",
     "content": "Proves `nineteen_thirty_sixth_gt_half : (19 : Q) / 36 > 1 / 2` via `norm_num`. This single line formally verifies that Freud's density exceeds the conjectured threshold, completing the disproof. The `norm_num` tactic handles rational arithmetic automatically.",
     "mathContext": "$\\frac{19}{36} = 0.527\\overline{7} > 0.5 = \\frac{1}{2}$. Equivalently, $19 \\cdot 2 = 38 > 36 = 36 \\cdot 1$. This is the critical numerical fact that turns Freud's construction into a formal disproof.",
@@ -239,7 +239,7 @@
       "startLine": 186,
       "endLine": 202
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Coppersmith-Phillips Bounds (1996)",
     "content": "Axiomatizes the state-of-the-art bounds from SIAM J. Discrete Math: (1) Lower: for N >= 24, there exists A in {1, ..., N} with |A| * 24 >= 13 * N - 24, achieving density >= 13/24 ~ 0.5417. (2) Upper: for any consecutive sum-free A in {1, ..., N}, |A| * 512 * 3 <= (2*512 - 3) * N + 512 * 3 * log_2(N), giving density <= 2/3 - 1/512 ~ 0.6647. The integer formulations avoid rational arithmetic in the axiom statements.",
     "mathContext": "Lower: $|A| \\geq \\frac{13}{24}N - O(1)$, i.e., $13/24 \\leq \\liminf \\mu(N)$. Upper: $|A| \\leq (\\frac{2}{3} - \\frac{1}{512})N + O(\\log N)$, i.e., $\\limsup \\mu(N) \\leq 2/3 - 1/512 = 341/512$. The gap $[13/24, 341/512] = [0.5417, 0.6660]$ remains open.",
@@ -263,7 +263,7 @@
       "startLine": 208,
       "endLine": 210
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bounds Consistency (PROVED)",
     "content": "Proves `best_bounds_fractions : (13 : Q) / 24 < 2/3 - 1/512` via `norm_num`. This verifies that the lower bound 13/24 is strictly less than the upper bound 2/3 - 1/512, confirming the Coppersmith-Phillips bounds are consistent (there is a genuine gap between them).",
     "mathContext": "$\\frac{13}{24} = \\frac{277}{512} < \\frac{341}{512} = \\frac{2}{3} - \\frac{1}{512}$. Equivalently, $13 \\cdot 512 = 6656 < 8184 = 341 \\cdot 24$. The gap $341/512 - 277/512 = 64/512 = 1/8$ is substantial.",
@@ -309,7 +309,7 @@
       "startLine": 248,
       "endLine": 267
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Concrete Examples (PROVED)",
     "content": "Three computationally verified examples: (1) {3, 4, 5} is a subset of Icc 1 5, proved via `simp` and `omega`. (2) |{3, 4, 5}| = 3, proved via `native_decide`. (3) {6, 7, 8, 9, 10} = upperHalf 10, proved via `ext`, `simp`, and `omega`. These demonstrate the definitions work correctly on small inputs. The set {3, 4, 5} achieves density 3/5 = 0.6, exceeding both 1/2 and 13/24.",
     "mathContext": "For $A = \\{3, 4, 5\\}$: sums are $3+4=7$, $4+5=9$, $3+4+5=12$, none in $A$. Density $= 3/5 = 0.6$. For $\\text{upperHalf}(10) = \\{6,7,8,9,10\\}$: minimum pair sum $= 6+7 = 13 > 10$, density $= 1/2$.",
@@ -333,7 +333,7 @@
       "startLine": 279,
       "endLine": 282
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős's Conjecture is False",
     "content": "Axiomatizes `erdos_867_conjecture_false`: the negation of the claim that for all N >= 2 and all A in {1, ..., N} with the required properties, |A| * 2 <= N + 2. This is axiomatized because the full proof requires exhibiting Freud's explicit construction and verifying its consecutive sum-free property.",
     "mathContext": "The axiom states $\\neg(\\forall N \\geq 2,\\, \\forall A \\subseteq \\{1, \\ldots, N\\},\\, |A| \\cdot 2 \\leq N + 2)$. The witness is Freud's construction with $|A| \\geq (19/36)N - O(1)$, giving $|A| \\cdot 2 \\geq (19/18)N - O(1) > N + 2$ for large $N$.",
@@ -355,7 +355,7 @@
       "startLine": 290,
       "endLine": 303
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem: Erdős #867 (PROVED)",
     "content": "Proves `erdos_867`: there exist rationals lb = 13/24 and ub = 2/3 - 1/512 such that lb > 1/2 and lb < ub. The proof witnesses lb and ub, then verifies the four conditions (two equalities via `rfl` and `ring`, two inequalities via `norm_num`). This packages the current state of knowledge into a single theorem.",
     "mathContext": "$\\exists\\, lb = \\frac{13}{24},\\, ub = \\frac{2}{3} - \\frac{1}{512}: lb > \\frac{1}{2} \\land lb < ub$. The first inequality ($13/24 > 1/2$) disproves the conjecture. The second ($13/24 < 2/3 - 1/512$) shows the exact answer is unknown.",
@@ -379,7 +379,7 @@
       "startLine": 312,
       "endLine": 320
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Answer is NO (PROVED)",
     "content": "Proves `erdos_867_answer`: there exists c = 13/24 > 1/2 such that for all N >= 24, Coppersmith-Phillips constructions witness consecutive sum-free sets with |A| * 24 >= 13 * N - 24. The proof uses `norm_num` for c > 1/2 and delegates the construction to `coppersmith_phillips_lower`. This directly contradicts Erdős's conjecture.",
     "mathContext": "$\\exists\\, c > 1/2,\\, \\forall N \\geq 24,\\, \\exists A \\subseteq \\{1, \\ldots, N\\}: |A| \\geq \\frac{13}{24}N - O(1)$. With $c = 13/24 = 0.5417 > 0.5$, the answer to Erdős's question is definitively NO.",
