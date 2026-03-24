@@ -178,10 +178,8 @@ theorem holder_translation_bound (C : ℝ≥0) (α : ℝ≥0) (f : AddCircle T �
   calc dist x (x + (↑(T / (2 * ↑n)) : AddCircle T))
       = ‖(↑(T / (2 * (↑n : ℝ))) : AddCircle T)‖ := by
         rw [dist_comm, dist_eq_norm, add_comm, add_sub_cancel_right]
-    _ ≤ ‖T / (2 * (↑n : ℝ))‖ := by
-        -- ‖mk x‖ ≤ ‖x‖ for AddCircle = ℝ ⧸ zmultiples T
-        -- (norm_mk_le_norm from Mathlib.Analysis.Normed.Group.Quotient)
-        sorry
+    _ ≤ ‖T / (2 * (↑n : ℝ))‖ :=
+        QuotientAddGroup.norm_mk_le_norm
     _ = |T / (2 * (↑n : ℝ))| := Real.norm_eq_abs _
     _ = T / (2 * |(↑n : ℝ)|) := by
         rw [abs_div, abs_of_pos hT.out, abs_mul,
