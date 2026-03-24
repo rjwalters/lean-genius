@@ -1411,31 +1411,15 @@ private theorem density_increment_dirichlet {N : ℕ} (hN : 4 ≤ N)
       _ ≥ (delta + delta ^ 2 / 100) * (↑N / ↑g) := by
           apply mul_le_mul_of_nonneg_right _ (by positivity)
           nlinarith [sq_nonneg delta]
-  · -- N ≤ 1: with 0 < N, N = 1.
-    have hN1 : N = 1 := by omega
-    subst hN1
-    -- In ZMod 1 (singleton type), every element is 0, so delta ≤ |A| ≤ 1
-    have hdelta_le : delta ≤ 1 := by
-      have h1 := card_le_nat_real A
-      simp only [Nat.cast_one] at hdensity h1
-      linarith
-    by_cases hle : delta + delta ^ 2 / 100 ≤ 1
-    · -- Output density ≤ 1: witnessed by the unique element of ZMod 1
-      refine ⟨1, Finset.univ, one_pos, ?_, ?_⟩
-      · -- APFree is vacuous on ZMod 1 (no nonzero d exists in the singleton type)
-        intro a d hd
-        exact absurd (Subsingleton.elim d 0) hd
-      · simp only [Finset.card_univ, ZMod.card, Nat.cast_one, mul_one]
-        linarith
-    · -- ARCHITECTURAL GAP: delta + delta²/100 > 1 (requires delta > ~0.99)
-      -- with N = 1. The conclusion needs |B| > M for any (M, B), which
-      -- is impossible for finite sets. This case arises in the density
-      -- iteration when the coset decomposition reduces the universe to
-      -- size 1 (e.g., for prime N where gcd(val(r), N) = 1).
-      -- Resolution requires Dirichlet approximation or Bohr sets to
-      -- guarantee subprogression length ≥ √N at each step, ensuring
-      -- M ≥ 2 throughout the iteration.
-      sorry
+  · -- CASE 2: gcd(val(r), N) < √N → coset partition gives M = d < √N,
+    -- which does not satisfy the conclusion Nat.sqrt N ≤ M.
+    -- This case requires Dirichlet approximation: apply DirichletApproximation
+    -- to α = val(r)/N with Q = Nat.sqrt N to get q ≤ √N with |qα - p| < 1/√N.
+    -- Then partition ZMod N into APs of step q, each of length ⌊N/q⌋ ≥ √N.
+    -- The large Fourier coefficient provides a density increment on the
+    -- densest AP. (Not implemented — main theorem roth_density_bound uses
+    -- Mathlib's corners-based proof instead.)
+    sorry
 
 /-- Tower-of-squares threshold for Roth's theorem.
     roth_threshold 0 = 4, roth_threshold (k+1) = (roth_threshold k)².
