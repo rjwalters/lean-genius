@@ -16,13 +16,13 @@
       "infinite-connectivity"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 1068,
     "erdosUrl": "https://erdosproblems.com/1068",
     "erdosProblemStatus": "open",
     "axiomCount": 3,
-    "lineCount": 205,
-    "assumptions": "3 axioms: erdos_1068 (OPEN conjecture), soukup_uncountable_not_inf_connected (research result), problem_1067_disproved (research result). 2 sorries in proof of inf_connected_no_finite_separator.",
+    "lineCount": 280,
+    "assumptions": "3 axioms: erdos_1068 (OPEN conjecture), soukup_uncountable_not_inf_connected (Soukup 2015), problem_1067_disproved (Soukup 2015). All theorems fully proved (0 sorries).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -91,14 +91,14 @@
       "title": "Structural Observations",
       "startLine": 129,
       "endLine": 157,
-      "summary": "Axiomatizes the no-finite-separator property (consequence of Aharoni–Berger infinite Menger theorem), set-theoretic sensitivity (Komjáth 2013), and Bowler–Pitz (2024) simplified construction. The latter two are `True` placeholders."
+      "summary": "Proves the no-finite-separator theorem (if G is infinitely connected, removing any finite vertex set leaves the rest connected), set-theoretic sensitivity (Komjáth 2013, `True` placeholder), and Bowler–Pitz (2024) simplified construction (`True` placeholder). The no-finite-separator theorem is fully proved using an injection argument for finiteness and case analysis on path endpoints."
     },
     {
       "id": "proved-implications",
       "title": "Proved Structural Implications",
       "startLine": 158,
       "endLine": 180,
-      "summary": "Two fully proved theorems: $\\infty$-connected implies path existence between any two vertices, and the same for induced subgraphs. These are the only non-axiomatized results in the file."
+      "summary": "Two fully proved theorems: $\\infty$-connected implies path existence between any two vertices, and the same for induced subgraphs. All theorems in the file are now fully proved (0 sorries)."
     },
     {
       "id": "summary",
@@ -230,10 +230,10 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos1068",
-    "lineCount": 241,
+    "lineCount": 280,
     "axiomCount": 3,
     "theoremCount": 5,
     "definitionCount": 6,
-    "sorryCount": 2
+    "sorryCount": 0
   }
 }

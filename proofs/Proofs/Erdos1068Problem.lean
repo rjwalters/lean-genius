@@ -153,11 +153,24 @@ theorem inf_connected_no_finite_separator :
     w ∈ p.vertices.drop 1 ∧ w ∈ p.vertices.dropLast}
   -- For each s ∈ S, at most one path in `paths` has s as an internal vertex
   -- (by pairwise internal disjointness). So `bad` is finite (bounded by |S|).
-  -- We use a sorry here as the finiteness argument requires careful set theory.
+  -- The finiteness argument uses an injection from bad paths into S.
   have hbad_finite : Set.Finite bad := by
-    -- Each s ∈ S contributes at most one bad path (by internal disjointness)
-    -- |bad| ≤ |S| < ∞
-    sorry
+    -- Inject bad into S (a Finset, hence Finite) via witness selection.
+    -- For each bad path, choose a vertex s ∈ S internal to it.
+    -- Pairwise internal disjointness makes this injection injective.
+    have hmem : ∀ p ∈ bad, ∃ s ∈ (S : Set V),
+        s ∈ p.vertices.drop 1 ∧ s ∈ p.vertices.dropLast :=
+      fun p ⟨_, s, hs, hint⟩ => ⟨s, hs, hint⟩
+    choose f hf_S hf_int using hmem
+    let g : ↥bad → ↥(S : Set V) := fun ⟨p, hp⟩ => ⟨f p hp, hf_S p hp⟩
+    have hg_inj : Function.Injective g := by
+      intro ⟨p1, hp1⟩ ⟨p2, hp2⟩ heq
+      simp only [g, Subtype.mk.injEq] at heq ⊢
+      by_contra hne
+      exact hdisj p1 hp1.1 p2 hp2.1 hne (f p1 hp1)
+        (hf_int p1 hp1) (heq ▸ hf_int p2 hp2)
+    haveI : Finite ↥bad := Finite.of_injective g hg_inj
+    exact Set.toFinite bad
   -- Since paths is infinite and bad is finite, there exists a good path
   have hgood : ∃ p ∈ paths, p ∉ bad := by
     by_contra h
@@ -167,14 +180,40 @@ theorem inf_connected_no_finite_separator :
   obtain ⟨p, hp, hpgood⟩ := hgood
   refine ⟨p, (hpath p hp).1, (hpath p hp).2, ?_⟩
   -- Show all vertices of p avoid S
-  intro w hw
-  -- Case analysis: w is either an endpoint or internal
-  simp only [bad, Set.mem_sep_iff, not_and, not_exists] at hpgood
-  intro hw_in_S
-  -- Since p ∉ bad, no internal vertex of p is in S
-  -- We need: w is the head (= u) or tail (= v), hence not in S by hypothesis,
-  -- OR w is internal, hence not in S by the good path property
-  sorry
+  intro w hw hw_in_S
+  -- p ∉ bad and p ∈ paths → no vertex of S is internal to p
+  have hpclean : ¬(w ∈ p.vertices.drop 1 ∧ w ∈ p.vertices.dropLast) :=
+    fun ⟨h1, h2⟩ => hpgood ⟨hp, w, hw_in_S, h1, h2⟩
+  -- w ∈ p.vertices but not internal → w is first or last vertex
+  -- Both endpoints (u, v) are not in S, giving a contradiction
+  rcases not_and_or.mp hpclean with h_not_drop | h_not_dropLast
+  · -- Case: w ∉ p.vertices.drop 1 → w is the first vertex = u ∉ S
+    have hne : p.vertices ≠ [] := List.ne_nil_of_mem hw
+    obtain ⟨a, t, h_eq⟩ := List.exists_cons_of_ne_nil hne
+    rw [h_eq] at hw h_not_drop
+    simp only [List.drop_succ_cons, List.drop_zero] at h_not_drop
+    have hhead := (hpath p hp).1
+    rw [h_eq] at hhead
+    simp only [List.head?_cons] at hhead
+    rcases List.mem_cons.mp hw with rfl | hmem
+    · -- w = a = u (from head? = some u)
+      exact hu (Option.some.inj hhead ▸ hw_in_S)
+    · -- w ∈ t = p.vertices.drop 1, contradicting h_not_drop
+      exact absurd hmem h_not_drop
+  · -- Case: w ∉ p.vertices.dropLast → w is the last vertex = v ∉ S
+    have hne : p.vertices ≠ [] := List.ne_nil_of_mem hw
+    have h_split := List.dropLast_append_getLast hne
+    rw [← h_split] at hw
+    rcases List.mem_append.mp hw with h_init | h_last
+    · -- w ∈ p.vertices.dropLast, contradicting h_not_dropLast
+      exact absurd h_init h_not_dropLast
+    · -- w ∈ [p.vertices.getLast hne], so w = getLast = v
+      rw [List.mem_singleton] at h_last
+      have hget := (hpath p hp).2
+      rw [List.getLast?_eq_some_getLast hne] at hget
+      have h_eq : p.vertices.getLast hne = v := Option.some.inj hget
+      rw [h_last, h_eq] at hw_in_S
+      exact hv hw_in_S
 
 /-- **Set-theoretic sensitivity**: Problems about uncountable chromatic
     numbers and infinite connectivity often depend on set-theoretic axioms
