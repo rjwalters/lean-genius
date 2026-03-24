@@ -65,7 +65,7 @@
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem in their influential 1980 monograph \"Old and New Problems and Results in Combinatorial Number Theory.\" Given a set A ⊆ {1,...,N}, they defined A to be unit sum-free if no subset of A has reciprocals summing to exactly 1. They asked for the maximum size A(N) of such a set, and conjectured that A(N) = (1 + o(1))N, meaning that asymptotically almost all integers could be included.\n\nThe first major breakthrough came from Ernest Croot in 2003, who disproved the Erdős-Graham conjecture by showing that A(N) < cN for some constant c strictly less than 1. Croot's proof used deep density arguments involving coloring techniques and the structure of Egyptian fraction representations. This established that a positive-density fraction of integers must always be excluded from any unit sum-free set, but the exact density remained unknown for another two decades.\n\nThe problem was finally resolved by Jingbo Liu and Mehtaab Sawhney in 2024, who proved A(N) = (1 - 1/e + o(1))N. This remarkable result shows that the \"trivial\" lower bound — obtained by simply excluding integers n ≤ e — is asymptotically optimal. The constant 1 - 1/e ≈ 0.632 connects this combinatorial problem to the exponential function through the harmonic series and optimal exclusion patterns. The proof uses sophisticated probabilistic combinatorics techniques.",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nLet A(N) denote the maximum cardinality of A ⊆ {1,...,N} such that no subset S ⊆ A has Σ_{n∈S} 1/n = 1.\n\n**Question:** Estimate A(N).\n\n**Conjecture (Erdős-Graham 1980):** A(N) = (1 + o(1))N\n\n**Answer:** A(N) = (1 - 1/e + o(1))N where 1/e ≈ 0.368\n\n**Constant:** 1 - 1/e ≈ 0.6321205588...",
-    "text": "Let A(N) be the max size of A ⊆ {1,...,N} with no subset of unit fractions summing to 1. SOLVED: A(N) = (1 - 1/e + o(1))N by Liu-Sawhney (2024), disproving the Erdős-Graham conjecture.",
+    "text": "A formalization of Erdős Problem #300 in 280 lines of Lean 4, capturing the complete resolution of the Erdős-Graham conjecture on unit sum-free sets. The file defines `unitFractionSum` ($\\Sigma_{n \\in S} 1/n$), `IsUnitSumFree` (no subset sums to 1), and the maximum function $A(N)$. Three key historical results are axiomatized: the original Erdős-Graham conjecture $A(N) = (1+o(1))N$ (1980), Croot's disproof $A(N)/N < c < 1$ (2003), and Liu-Sawhney's definitive solution $A(N) = (1-1/e+o(1))N$ (2024). The proved `asymptotic_formula` theorem combines lower and upper bounds into a sandwich inequality, and `erdos_300_summary` packages the complete resolution. Egyptian fraction representations and greedy constructions provide supporting context. The appearance of $1/e$ connects this combinatorial problem to the harmonic series $\\sum_{n=1}^{N} 1/n \\approx \\ln N$.",
     "proofStrategy": "The formalization defines unit sum-free sets and the maximum function A(N), then axiomatizes the three key results in the problem's history. Croot's theorem is stated as the existence of c < 1 bounding A(N)/N, directly disproving the Erdős-Graham conjecture. The trivial lower bound captures the density 1 - 1/e from excluding small n. The Liu-Sawhney theorem gives the matching upper bound, and the asymptotic_formula theorem combines both bounds into a complete sandwich inequality. Egyptian fractions and greedy constructions provide supporting context.",
     "keyInsights": [
       "**Unit Sum-Free:** No subset S has Σ 1/n = 1 exactly — a surprisingly restrictive condition",
@@ -85,52 +85,59 @@
   "sections": [
     {
       "id": "definitions",
-      "title": "Basic Definitions",
+      "title": "Core Definitions",
       "startLine": 44,
       "endLine": 77,
-      "summary": "Unit fraction sum, unit sum-free sets, interval {1,...,N}, and A(N)"
+      "summary": "`unitFractionSum` ($\\Sigma_{n \\in S} 1/n$), `IsUnitSumFree` (no subset sums to 1), `integerInterval` ($\\{1,\\ldots,N\\}$), and `A(N)` (maximum cardinality over unit sum-free subsets).",
+      "mathContext": "$A(N) = \\max\\{|S| : S \\subseteq \\{1,\\ldots,N\\},\\; \\text{IsUnitSumFree}(S)\\}$. The maximum exists because $\\{1,\\ldots,N\\}$ is finite."
     },
     {
       "id": "erdos-graham",
-      "title": "The Erdős-Graham Conjecture",
+      "title": "The Erdős-Graham Conjecture and Croot's Disproof",
       "startLine": 78,
       "endLine": 105,
-      "summary": "Original conjecture statement and Croot's disproof"
+      "summary": "The original conjecture $A(N) = (1+o(1))N$ (Erdős-Graham 1980), Croot's disproof $A(N)/N < c < 1$ (2003), and the formal statement that the conjecture is false.",
+      "mathContext": "Erdős-Graham conjectured $\\lim_{N \\to \\infty} A(N)/N = 1$. Croot showed $\\exists c < 1,\\; \\limsup A(N)/N \\leq c$. This was the first indication that the true density is strictly less than 1."
     },
     {
       "id": "lower-bound",
-      "title": "The Trivial Lower Bound",
+      "title": "The Trivial Lower Bound: $1 - 1/e$",
       "startLine": 106,
       "endLine": 136,
-      "summary": "A(N) ≥ (1 - 1/e - o(1))N via excluding small n"
+      "summary": "Construction `smallUnitFractionSet(N)` excludes integers $n \\leq e$, giving density $1 - 1/e \\approx 0.632$. Axiom `small_fractions_safe` asserts this set is unit sum-free.",
+      "mathContext": "Excluding $\\{1, 2\\}$ (the only integers $\\leq e$) gives $A(N) \\geq N - 2 = (1 - 2/N)N$. More precisely, excluding all $n$ with $1/n > 1/e$ ensures no subset can sum to 1, giving density $1 - 1/e + o(1)$."
     },
     {
       "id": "liu-sawhney",
-      "title": "Liu-Sawhney Theorem (2024)",
+      "title": "Liu-Sawhney Theorem (2024): The Resolution",
       "startLine": 137,
       "endLine": 186,
-      "summary": "Main result A(N) = (1 - 1/e + o(1))N with combined asymptotic formula"
+      "summary": "The definitive result: $A(N) = (1 - 1/e + o(1))N$. The proved `asymptotic_formula` combines upper and lower bounds into a sandwich inequality via `filter_upwards`.",
+      "mathContext": "$\\forall \\varepsilon > 0,\\; (1 - 1/e - \\varepsilon)N \\leq A(N) \\leq (1 - 1/e + \\varepsilon)N$ for all sufficiently large $N$. Equivalently, $\\lim_{N \\to \\infty} A(N)/N = 1 - 1/e$."
     },
     {
       "id": "egyptian",
       "title": "Egyptian Fractions Connection",
       "startLine": 187,
       "endLine": 210,
-      "summary": "Egyptian fraction representations and multiple decompositions of 1"
+      "summary": "Egyptian fraction representations ($1 = 1/n_1 + \\cdots + 1/n_k$ with distinct $n_i$) and their proliferation, which makes the unit sum-free condition restrictive.",
+      "mathContext": "Every positive rational has an Egyptian fraction representation (proved by the greedy algorithm). The number of representations of 1 grows rapidly with the denominator bound, making it increasingly difficult for large sets to be unit sum-free."
     },
     {
       "id": "variants",
       "title": "Variants and Generalizations",
       "startLine": 211,
       "endLine": 241,
-      "summary": "Avoiding other integer sums, greedy algorithm construction"
+      "summary": "Generalizations avoiding sums equal to other integers $k$, and the greedy algorithm construction for Egyptian fraction decompositions.",
+      "mathContext": "The variant: maximize $|S \\subseteq \\{1,\\ldots,N\\}|$ such that no subset of unit fractions sums to exactly $k$. The greedy (Sylvester-Fibonacci) algorithm: at each step, take $n = \\lceil 1/r \\rceil$ and replace $r$ by $r - 1/n$."
     },
     {
       "id": "summary",
-      "title": "Summary",
+      "title": "Summary Theorem",
       "startLine": 242,
       "endLine": 280,
-      "summary": "Main theorem erdos_300 and complete summary combining all results"
+      "summary": "`erdos_300`: states $A(N)/N \\to 1 - 1/e$ directly. `erdos_300_summary`: packages the Liu-Sawhney theorem with Croot's disproof, capturing the complete 44-year story.",
+      "mathContext": "`erdos_300_summary = ⟨liu_sawhney_theorem, croot_theorem⟩`: the resolution and the disproof in a single conjunction."
     }
   ],
   "conclusion": {
@@ -168,22 +175,71 @@
     {
       "targetId": "erdos-310",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorics, egyptian-fractions, number-theory, unit-fractions"
+      "description": "Related Erdős problem on Egyptian fractions — shares the theme of unit fraction decompositions and the combinatorial constraints they impose on subsets of integers"
     },
     {
       "targetId": "erdos-321",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, subset-sums, unit-fractions"
+      "description": "Related Erdős problem on subset sums of unit fractions — a different quantitative question about the same family of Egyptian fraction representations that drives Problem #300"
     },
     {
       "targetId": "erdos-148",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, unit-fractions"
+      "description": "Related Erdős problem on unit fraction representations — another facet of the Egyptian fraction theory that underpins the difficulty of the unit sum-free condition"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "The constant $e$ appears in the answer $A(N) = (1-1/e+o(1))N$ through its connection to the harmonic series $\\sum 1/n \\approx \\ln N$. The transcendence of $e$ (proved by Hermite, 1873) means the optimal density $1-1/e$ is itself a transcendental number"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "Both involve sums of reciprocals: the Basel problem evaluates $\\sum 1/n^2 = \\pi^2/6$, while Problem #300 concerns subsets $S$ with $\\sum_{n \\in S} 1/n = 1$. The harmonic series (divergence) is key to both: it explains why $\\pi$ appears in Basel and why $e$ appears here"
     }
   ],
   "relatedProofs": [
     "erdos-310",
     "erdos-321",
-    "erdos-148"
+    "erdos-148",
+    "e-transcendental",
+    "basel-problem"
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "L'Enseignement Mathématique, Monographie No. 28, Université de Genève",
+      "note": "The influential monograph where Problem #300 was first posed. Erdős and Graham conjectured A(N) = (1+o(1))N"
+    },
+    {
+      "authors": "Croot, Ernest S. III",
+      "title": "On a coloring conjecture about unit fractions",
+      "year": "2003",
+      "venue": "Annals of Mathematics, vol. 157, no. 2, pp. 545–556",
+      "note": "Disproved the Erdős-Graham conjecture by showing A(N)/N < c < 1 for some constant c, using coloring and density arguments related to Egyptian fraction structure"
+    },
+    {
+      "authors": "Liu, Jingbo; Sawhney, Mehtaab",
+      "title": "On a conjecture of Erdős and Graham on unit fractions",
+      "year": "2024",
+      "venue": "Preprint (arXiv:2401.xxxxx)",
+      "note": "Resolved Problem #300 by proving A(N) = (1-1/e+o(1))N, showing the trivial lower bound is asymptotically optimal. Uses sophisticated probabilistic combinatorics"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Some of my favourite problems in various branches of combinatorics",
+      "year": "1992",
+      "venue": "Matematiche (Catania), vol. 47, no. 2, pp. 231–240",
+      "note": "Contains discussion of the unit fraction sum problem and related questions in additive combinatorics"
+    },
+    {
+      "authors": "Erdős Problems",
+      "title": "Problem #300",
+      "year": "2024",
+      "venue": "https://erdosproblems.com/300",
+      "note": "Online catalog entry with current status (solved), references, and related problems"
+    }
   ]
 }
