@@ -211,34 +211,14 @@
       "description": "Strengthens the equality characterization to give the exact proportionality constant $c = \\langle u,v\\rangle/\\|v\\|^2$ when $u = cv$ — answering the resolved open question"
     },
     {
-      "targetId": "pythagorean-theorem",
-      "relationship": "related",
-      "description": "Both are fundamental inner product space identities: the Pythagorean theorem gives $\\|u+v\\|^2 = \\|u\\|^2 + \\|v\\|^2$ when $\\langle u,v \\rangle = 0$ (equality case), while Cauchy-Schwarz gives the general bound $|\\langle u,v \\rangle| \\leq \\|u\\|\\|v\\|$. The Pythagorean theorem is the 'orthogonal' special case where the Cauchy-Schwarz bound is loose"
-    },
-    {
-      "targetId": "law-of-cosines",
-      "relationship": "related",
-      "description": "The law of cosines $\\|u-v\\|^2 = \\|u\\|^2 + \\|v\\|^2 - 2\\langle u,v \\rangle$ gives the geometric interpretation of Cauchy-Schwarz: since $\\langle u,v \\rangle = \\|u\\|\\|v\\|\\cos\\theta$, the inequality $|\\langle u,v\\rangle| \\leq \\|u\\|\\|v\\|$ is equivalent to $|\\cos\\theta| \\leq 1$ — the fundamental bound on the angle between vectors"
-    },
-    {
       "targetId": "randomized-maxcut",
       "relationship": "related",
       "description": "The randomized MAX-CUT approximation algorithm uses semidefinite programming relaxations where Cauchy-Schwarz bounds constrain the objective function. The Goemans-Williamson 0.878-approximation ratio arises from analyzing $\\arccos(\\langle v_i, v_j \\rangle)$ subject to Cauchy-Schwarz constraints"
     },
     {
-      "targetId": "euler-identity",
-      "relationship": "related",
-      "description": "In complex inner product spaces, $|\\langle u,v \\rangle_{\\mathbb{C}}| \\leq \\|u\\|\\|v\\|$ where the inner product involves $e^{i\\theta}$ phases. Euler's formula connects the complex inner product to the real one: $\\text{Re}(e^{i\\theta}\\langle u,v \\rangle) = |\\langle u,v \\rangle|\\cos(\\arg\\langle u,v \\rangle + \\theta)$, and the Cauchy-Schwarz bound ensures this is at most $\\|u\\|\\|v\\|$"
-    },
-    {
       "targetId": "central-limit-theorem",
       "relationship": "foundational",
       "description": "Cauchy-Schwarz underpins key steps in proving the Central Limit Theorem: bounding characteristic function differences $|\\varphi_n(t) - e^{-t^2/2}|$ uses $|\\mathbb{E}[XY]| \\leq \\sqrt{\\mathbb{E}[X^2]\\mathbb{E}[Y^2]}$, and the variance decomposition $\\text{Var}(S_n/\\sqrt{n}) = 1$ relies on the inner product structure of $L^2$. The CLT's normal limit $\\mathcal{N}(0,1)$ has density proportional to $e^{-x^2/2}$, whose normalization $\\int e^{-x^2} dx = \\sqrt{\\pi}$ connects to the Gaussian integral"
-    },
-    {
-      "targetId": "brouwer-fixed-point",
-      "relationship": "related",
-      "description": "Brouwer's fixed point theorem uses topological properties of the closed unit ball $\\{x : \\|x\\| \\leq 1\\}$, where the norm $\\|\\cdot\\|$ satisfies the triangle inequality derived from Cauchy-Schwarz. The inner product structure that Cauchy-Schwarz governs is what makes the unit ball convex and compact — the topological prerequisites for the fixed point theorem"
     }
   ],
   "conclusion": {
@@ -264,12 +244,8 @@
     "yang-mills",
     "amgm-inequality-oq-03",
     "amgm-inequality-oq-02",
-    "pythagorean-theorem",
-    "law-of-cosines",
     "randomized-maxcut",
-    "euler-identity",
-    "central-limit-theorem",
-    "brouwer-fixed-point"
+    "central-limit-theorem"
   ],
   "references": [
     {

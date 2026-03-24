@@ -115,19 +115,9 @@
       "description": "Pythagoras is the cornerstone of Euclidean geometry that underpins compass-and-straightedge constructions — every constructible length arises from iterated application of the Pythagorean theorem via intersections of circles and lines"
     },
     {
-      "targetId": "halting-problem",
-      "relationship": "related",
-      "description": "Both are impossibility results: angle trisection shows a geometric construction is impossible, the halting problem shows a computational decision is impossible — each resolves a long-standing question by proving non-existence"
-    },
-    {
       "targetId": "pi-transcendental",
       "relationship": "uses",
       "description": "This file directly imports the pi transcendence proof to establish that squaring the circle is impossible — Lindemann's 1882 result that π is transcendental means √π has no minimal polynomial over ℚ"
-    },
-    {
-      "targetId": "quadratic-reciprocity",
-      "relationship": "related",
-      "description": "Gauss's constructibility theorem for regular n-gons requires n to be a product of a power of 2 and distinct Fermat primes — the same degree-over-ℚ framework as angle trisection, and Fermat prime structure connects to quadratic residues"
     },
     {
       "targetId": "lagrange-theorem",
@@ -145,54 +135,14 @@
       "description": "√2 IS constructible (as the diagonal of a unit square, a basic compass-and-straightedge construction) because its minimal polynomial x²-2 has degree 2 = 2¹ — contrasting with cos(20°) whose degree 3 ≠ 2ⁿ blocks constructibility"
     },
     {
-      "targetId": "hermite-lindemann",
-      "relationship": "uses",
-      "description": "This formalization directly imports the Hermite-Lindemann result (π transcendental) to prove squaring the circle impossible — Lindemann's 1882 theorem provides a strictly stronger impossibility than the degree argument used for trisection and cube doubling"
-    },
-    {
       "targetId": "solution-of-cubic",
       "relationship": "complementary",
       "description": "Cardano's formula solves the general cubic by radicals — the trisection polynomial 8x³-6x-1 is a specific cubic whose roots CAN be expressed using cube roots (via Cardano's formula involving complex numbers), but this expression involves cube roots of complex numbers (casus irreducibilis), so it does not yield a compass-straightedge construction"
     },
     {
-      "targetId": "abel-ruffini-oq-04",
-      "relationship": "related",
-      "description": "Both use the non-solvability of specific groups to prove impossibility: Abel-Ruffini-OQ-04 proves S₅ is not solvable (blocking quintic radical solutions), while this file proves degree-3 extensions are incompatible with the 2-group structure required for constructibility — different group-theoretic obstructions within the same Galois framework"
-    },
-    {
       "targetId": "angle-trisection-oq-02",
       "relationship": "extended-by",
       "description": "OQ-02 extends the degree argument to a complete Galois characterization: α is constructible iff Gal(minpoly(α)/ℚ) is a 2-group. This strengthens Wantzel's degree criterion (degree divides 2ⁿ) to a group-theoretic criterion that captures all obstructions"
-    },
-    {
-      "targetId": "fundamental-arithmetic",
-      "relationship": "foundational",
-      "description": "Unique prime factorization underpins the core number-theoretic argument: since $3$ is prime and $\\gcd(3,2) = 1$, we have $3 \\nmid 2^n$ for all $n$ — this is the arithmetic fact that makes degree 3 incompatible with constructibility (degree $2^n$). The induction step uses primality of 3 via `Nat.Prime.dvd_mul`"
-    },
-    {
-      "targetId": "euler-totient",
-      "relationship": "related",
-      "description": "Euler's totient function determines Gauss's constructibility criterion for regular $n$-gons: the $n$-gon is constructible iff $\\phi(n)$ is a power of 2, which happens iff $n = 2^k p_1 \\cdots p_m$ for distinct Fermat primes $p_i$. The degree of $\\cos(2\\pi/n)$ over $\\mathbb{Q}$ is $\\phi(n)/2$, and constructibility requires this to be a power of 2"
-    },
-    {
-      "targetId": "godel-incompleteness",
-      "relationship": "thematic",
-      "description": "Both are foundational impossibility results: Wantzel proved no compass-straightedge procedure can trisect a general angle (1837), Gödel proved no consistent formal system can prove all arithmetic truths (1931). Both resolve long-standing questions by showing that certain natural-seeming capabilities are provably unachievable within a given formal framework"
-    },
-    {
-      "targetId": "area-of-circle",
-      "relationship": "related",
-      "description": "Both involve the geometry of circles and the constant $\\pi$: the area formula $A = \\pi r^2$ is the first circle theorem formalized in this gallery, while this file proves that $\\sqrt{\\pi}$ is not constructible — connecting the geometric formula to the impossibility of squaring the circle"
-    },
-    {
-      "targetId": "vietas-formulas",
-      "relationship": "foundational",
-      "description": "Vieta's formulas relate the roots and coefficients of the trisection polynomial $8x^3 - 6x - 1 = 0$: the three roots $\\cos(20°)$, $\\cos(140°)$, $\\cos(260°)$ satisfy $r_1 + r_2 + r_3 = 0$, $r_1 r_2 + r_1 r_3 + r_2 r_3 = -3/4$, $r_1 r_2 r_3 = 1/8$ — these symmetric function relations are implicit in the rational root test used to prove irreducibility"
-    },
-    {
-      "targetId": "cantor-diagonalization",
-      "relationship": "thematic",
-      "description": "Both belong to the impossibility proof tradition: Cantor's diagonal argument proves no enumeration reaches all reals (1891), Wantzel's argument proves no compass-straightedge construction trisects all angles (1837). Both show that natural-seeming operations (enumeration, geometric construction) have provable limitations"
     },
     {
       "targetId": "angle-trisection-oq-02-oq-01",
@@ -297,25 +247,15 @@
   },
   "relatedProofs": [
     "abel-ruffini",
-    "abel-ruffini-oq-04",
     "fundamental-theorem-algebra",
     "inverse-galois",
     "pythagorean-theorem",
-    "halting-problem",
     "pi-transcendental",
-    "quadratic-reciprocity",
     "lagrange-theorem",
     "e-transcendental",
     "sqrt2-irrational",
-    "hermite-lindemann",
     "solution-of-cubic",
     "angle-trisection-oq-02",
-    "fundamental-arithmetic",
-    "euler-totient",
-    "godel-incompleteness",
-    "area-of-circle",
-    "vietas-formulas",
-    "cantor-diagonalization",
     "angle-trisection-oq-02-oq-01",
     "nth-root-irrational"
   ],

@@ -100,11 +100,6 @@
       "description": "The Galois group realizations (S₃ for x³-2, D₄ for x⁴-2) are concrete instances of the inverse Galois problem"
     },
     {
-      "targetId": "sylow-theorems",
-      "relationship": "foundational",
-      "description": "Sylow theory provides structure theorems for p-groups; the 2-group characterization of constructibility relies on 2-Sylow subgroups"
-    },
-    {
       "targetId": "lagrange-theorem",
       "relationship": "foundational",
       "description": "The tower law [K:ℚ] = ∏[Kᵢ₊₁:Kᵢ] — a consequence of Lagrange's theorem — underpins galois_2group_implies_degree_pow2: the minimal polynomial degree divides |Gal| = 2^k"
@@ -115,34 +110,9 @@
       "description": "√2 is the canonical constructible irrational: |Gal(x²-2/ℚ)| = 2 = 2¹, proved here by divisibility squeeze. Its irrationality is the first step beyond ℚ in the constructible tower"
     },
     {
-      "targetId": "pi-transcendental",
-      "relationship": "related",
-      "description": "π is transcendental (Lindemann 1882), so it is not constructible — a strictly stronger impossibility than the Galois-theoretic criterion (constructibility requires algebraic). Squaring the circle reduces to constructing √π, which is also transcendental"
-    },
-    {
-      "targetId": "fundamental-theorem-algebra",
-      "relationship": "foundational",
-      "description": "FTA guarantees that every polynomial over ℚ splits over ℂ, ensuring that the Galois group of minpoly(ℚ,α) is well-defined as Aut(splitting field/ℚ) — the foundation for the Galois characterization of constructibility"
-    },
-    {
       "targetId": "angle-trisection-oq-02-oq-03",
       "relationship": "extended-by",
       "description": "Sub-entry extending the Galois characterization of constructibility with additional results or concrete examples"
-    },
-    {
-      "targetId": "general-quartic",
-      "relationship": "complementary",
-      "description": "Ferrari's quartic formula shows all quartics are solvable by radicals (S₄ solvable), while this file shows 2^(1/4) is constructible because Gal(x⁴-2/ℚ) ≅ D₄ has order 8 = 2³ — the quartic sits at the intersection of radical solvability and constructibility"
-    },
-    {
-      "targetId": "abel-ruffini-oq-04",
-      "relationship": "related",
-      "description": "Both expose Galois group obstructions: OQ-04 shows A₅ simplicity → S₅ not solvable → quintics unsolvable by radicals, while this file shows non-2-group Galois groups → non-constructibility. Same framework (Galois groups control algebraic capabilities), different group-theoretic criteria (solvable vs 2-group)"
-    },
-    {
-      "targetId": "quadratic-reciprocity",
-      "relationship": "related",
-      "description": "Gauss's constructibility theorem for regular n-gons requires φ(n) = 2^k, which forces n = 2^a · p₁···pₘ with distinct Fermat primes pᵢ = 2^(2^eᵢ) + 1. Fermat prime structure connects to quadratic residues: the Gauss periods that build the constructive tower are indexed by quadratic residue classes mod p"
     },
     {
       "targetId": "angle-trisection-oq-02-oq-01",
@@ -165,11 +135,6 @@
       "description": "The irrationality of $\\sqrt[n]{m}$ for non-perfect-power $m$ is the simplest case of the constructibility question: $\\sqrt[n]{m}$ is constructible iff $\\text{Gal}(x^n - m / \\mathbb{Q})$ is a 2-group. For $n = 2$, $\\text{Gal}(x^2 - m) \\cong \\mathbb{Z}/2\\mathbb{Z}$ (a 2-group), so $\\sqrt{m}$ is always constructible. For $n = 3$, $\\text{Gal}(x^3 - m) \\cong S_3$ (order 6, not a 2-group), so $\\sqrt[3]{m}$ is never constructible"
     },
     {
-      "targetId": "e-transcendental",
-      "relationship": "related",
-      "description": "The transcendence of $e$ (Hermite 1873) is a strictly stronger impossibility than non-constructibility: transcendental numbers are not just non-constructible but satisfy no polynomial over $\\mathbb{Q}$ at all. The Galois criterion applies only to algebraic numbers — for transcendental numbers, even the Galois group framework does not apply"
-    },
-    {
       "targetId": "solution-of-cubic",
       "relationship": "complementary",
       "description": "Cardano's cubic formula solves cubics by radicals (S₃ is solvable), but cos(20°) satisfies the cubic 8x³-6x-1=0 yet is NOT constructible — because S₃ is solvable but not a 2-group. This is the key distinction: solvability by radicals (solvable Galois group) is strictly weaker than constructibility (2-group Galois group). Cardano's formula gives cos(20°) in terms of cube roots, confirming it is solvable by radicals, yet the Galois 2-group criterion blocks constructibility"
@@ -178,21 +143,6 @@
       "targetId": "angle-trisection-oq-02-oq-03-oq-01",
       "relationship": "extended-by",
       "description": "Bridges the Gauss-Wantzel constructibility theorem to Mathlib's cyclotomic field infrastructure. Connects the 2-group Galois criterion proved here to the concrete setting of $\\zeta_n = e^{2\\pi i/n}$ and Chebyshev polynomials, showing how the abstract group-theoretic characterization manifests in the cyclotomic world that governs regular polygon constructibility"
-    },
-    {
-      "targetId": "de-moivre",
-      "relationship": "foundational",
-      "description": "De Moivre's formula $(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$ expresses the $n$th roots of unity $\\zeta_n = e^{2\\pi i/n}$ that generate cyclotomic extensions. The Gauss-Wantzel theorem is a direct application: the regular $p$-gon is constructible iff $\\text{Gal}(\\mathbb{Q}(\\zeta_p)/\\mathbb{Q}) \\cong (\\mathbb{Z}/p\\mathbb{Z})^{\\times}$ is a 2-group, i.e., $p-1 = 2^k$. Gauss's construction of the 17-gon used the 2-group structure to recursively extract square roots of the Gauss periods $\\eta_i = \\sum_{j} \\zeta_{17}^{g^{2j+i}}$, which are real numbers expressed via De Moivre's formula"
-    },
-    {
-      "targetId": "kroneckers-jugendtraum",
-      "relationship": "extends",
-      "description": "Kronecker-Weber (every abelian extension of $\\mathbb{Q}$ is contained in a cyclotomic field) explains why all constructible numbers live inside cyclotomic fields: the degree-2 tower generating a constructible number produces an abelian extension, which Kronecker-Weber places inside $\\mathbb{Q}(\\zeta_n)$ for some $n$. This connects the local geometric construction (compass-and-straightedge) to the global arithmetic of cyclotomic fields"
-    },
-    {
-      "targetId": "hilbert-13",
-      "relationship": "related",
-      "description": "Hilbert's 13th problem asked whether the solution of degree-7 equations requires functions of 3 variables after Bring-Jerrard reduction. This extends the expressibility hierarchy formalized here: constructible (2-group Galois) $\\subsetneq$ solvable by radicals (solvable Galois) $\\subsetneq$ solvable by algebraic functions of bounded variables. The Kolmogorov-Arnold theorem (1957) resolved the continuous version but the algebraic question remains open — connecting the 2-group constructibility barrier to deeper algebraic complexity"
     }
   ],
   "overview": {
@@ -323,25 +273,15 @@
     "angle-trisection",
     "abel-ruffini",
     "inverse-galois",
-    "sylow-theorems",
     "lagrange-theorem",
     "sqrt2-irrational",
-    "pi-transcendental",
-    "fundamental-theorem-algebra",
     "angle-trisection-oq-02-oq-03",
-    "general-quartic",
-    "abel-ruffini-oq-04",
-    "quadratic-reciprocity",
     "angle-trisection-oq-02-oq-01",
     "primitive-roots",
     "euler-totient",
     "nth-root-irrational",
-    "e-transcendental",
     "solution-of-cubic",
-    "angle-trisection-oq-02-oq-03-oq-01",
-    "de-moivre",
-    "kroneckers-jugendtraum",
-    "hilbert-13"
+    "angle-trisection-oq-02-oq-03-oq-01"
   ],
   "references": [
     {

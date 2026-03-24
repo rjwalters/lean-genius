@@ -110,6 +110,16 @@
       "targetId": "puiseux-theorem",
       "relationship": "complementary",
       "description": "Puiseux series always solve polynomial equations, contrasting with Abel-Ruffini: radicals cannot solve the generic quintic, but Puiseux series can — situating Abel-Ruffini as a statement about the specific class of radical expressions"
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "foundational",
+      "description": "Primitive roots of unity are essential to Kummer theory, which underlies Step 4 (the Galois bridge): each radical extraction creates a Kummer extension K(ⁿ√a)/K whose Galois group is cyclic, provided K contains primitive nth roots of unity"
+    },
+    {
+      "targetId": "kummer-theorem",
+      "relationship": "foundational",
+      "description": "Kummer theory provides the mechanism for Step 4: radical extensions are towers of Kummer (cyclic) extensions, so their Galois groups are solvable — connecting the algebraic notion of radical solvability to the group-theoretic notion of solvability"
     }
   ],
   "overview": {
@@ -353,6 +363,8 @@
     "general-quartic",
     "quadratic-reciprocity",
     "vietas-formulas",
-    "puiseux-theorem"
+    "puiseux-theorem",
+    "primitive-roots",
+    "kummer-theorem"
   ]
 }

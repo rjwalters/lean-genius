@@ -157,11 +157,6 @@
       "description": "FTA guarantees roots exist in C; Abel-Ruffini shows they cannot always be expressed by radicals — existence does not imply explicit formulas"
     },
     {
-      "targetId": "fermats-last-theorem",
-      "relationship": "related",
-      "description": "FLT uses algebraic number theory over number fields — FTA ensures these fields embed in C, providing the complex-analytic tools needed for Wiles's proof via modular forms"
-    },
-    {
       "targetId": "liouville-theorem",
       "relationship": "uses",
       "description": "The Mathlib proof of FTA relies on Liouville's theorem (bounded entire function is constant): if p(z) ≠ 0 everywhere, then 1/p is bounded entire, hence constant — contradiction"
@@ -182,11 +177,6 @@
       "description": "FTA shows every polynomial splits over C, so every Galois group embeds in some S_n. The Inverse Galois Problem asks which groups arise over Q — a question that presupposes FTA's guarantee that roots exist"
     },
     {
-      "targetId": "hermite-lindemann",
-      "relationship": "related",
-      "description": "Hermite-Lindemann proves e^α is transcendental for algebraic α ≠ 0. FTA concerns algebraic numbers (roots of polynomials); transcendental numbers like e and π lie permanently outside the algebraic closure of Q but inside C"
-    },
-    {
       "targetId": "general-quartic",
       "relationship": "specializes",
       "description": "Ferrari's quartic formula provides explicit complex roots for degree-4 polynomials; FTA guarantees such roots exist for any degree, subsuming all explicit formula results"
@@ -202,11 +192,6 @@
       "description": "Vieta's formulas express polynomial coefficients as elementary symmetric functions of roots: $a_{n-k}/a_n = (-1)^k e_k(r_1,\\ldots,r_n)$. FTA guarantees these $n$ roots exist in $\\mathbb{C}$, making Vieta's formulas universally applicable over $\\mathbb{C}$ — without FTA, the roots might not exist and the formulas would be vacuous"
     },
     {
-      "targetId": "cayley-hamilton",
-      "relationship": "related",
-      "description": "The Cayley-Hamilton theorem ($p(A) = 0$ where $p$ is the characteristic polynomial) combined with FTA yields the eigenvalue decomposition: FTA factors $p(\\lambda) = \\prod(\\lambda - \\lambda_i)^{m_i}$ over $\\mathbb{C}$, then Cayley-Hamilton gives $\\prod(A - \\lambda_i I)^{m_i} = 0$, which implies each $A - \\lambda_i I$ is singular on some subspace — the foundation of spectral theory"
-    },
-    {
       "targetId": "intermediate-value-theorem",
       "relationship": "foundational",
       "description": "Gauss's algebraic proof of FTA (1849) reduces to IVT: every odd-degree real polynomial has a real root (by IVT, since it tends to $\\pm\\infty$), and every complex number has a square root. These two facts, both consequences of the completeness of $\\mathbb{R}$, suffice to prove FTA — making IVT one of the minimal prerequisites"
@@ -215,21 +200,6 @@
       "targetId": "brouwer-fixed-point",
       "relationship": "related",
       "description": "Both FTA and Brouwer's fixed point theorem are topological results about continuous maps on compact sets. The topological proof of FTA via winding numbers (the degree of $p(z)/|p(z)|$ on a large circle is $n$) uses the same homotopy-theoretic tools that prove Brouwer's theorem — both are consequences of the non-triviality of $\\pi_1(S^1) \\cong \\mathbb{Z}$"
-    },
-    {
-      "targetId": "euler-identity",
-      "relationship": "related",
-      "description": "Euler's formula $e^{i\\theta} = \\cos\\theta + i\\sin\\theta$ parametrizes the unit circle in $\\mathbb{C}$, and the $n$th roots of unity $e^{2\\pi ik/n}$ are the roots of $z^n - 1 = 0$ — the simplest application of FTA. The algebraic closure of $\\mathbb{C}$ guaranteed by FTA means all cyclotomic polynomials split completely over $\\mathbb{C}$"
-    },
-    {
-      "targetId": "quadratic-reciprocity",
-      "relationship": "thematic",
-      "description": "Both were proved by Gauss: quadratic reciprocity in Disquisitiones Arithmeticae (1801) and FTA in his doctoral thesis (1799). Gauss gave four proofs of FTA (1799, 1816, 1816, 1849) and eight proofs of QR, reflecting his conviction that fundamental theorems deserve multiple proofs revealing different facets"
-    },
-    {
-      "targetId": "pi-transcendental",
-      "relationship": "related",
-      "description": "FTA guarantees all algebraic numbers live in $\\mathbb{C}$, while Lindemann (1882) proves $\\pi \\notin \\overline{\\mathbb{Q}}$ — transcendental numbers exist in $\\mathbb{C}$ but are unreachable by polynomial equations. The algebraic closure $\\overline{\\mathbb{Q}}$ is a countable subfield of the uncountable $\\mathbb{C}$, so 'most' complex numbers are transcendental"
     }
   ],
   "relatedProofs": [
@@ -237,18 +207,12 @@
     "angle-trisection",
     "inverse-galois",
     "solution-of-cubic",
-    "fermats-last-theorem",
     "liouville-theorem",
-    "hermite-lindemann",
     "general-quartic",
     "lagrange-theorem",
     "vietas-formulas",
-    "cayley-hamilton",
     "intermediate-value-theorem",
-    "brouwer-fixed-point",
-    "euler-identity",
-    "quadratic-reciprocity",
-    "pi-transcendental"
+    "brouwer-fixed-point"
   ],
   "references": [
     {
