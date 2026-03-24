@@ -230,6 +230,13 @@ theorem powers_of_2_avoid_3AP :
   have hi : 0 < 2 ^ i := pow_pos (by omega : (0 : ℕ) < 2) i
   linarith
 
+/-- A subsequence of a 3-AP-free sequence is 3-AP-free.
+    Key implication: if a set has a 3-AP-free enumeration, any infinite subset does too. -/
+theorem avoids3AP_of_comp {f g : ℕ → ℕ} (hf : avoids3AP f) (hg : StrictMono g) :
+    avoids3AP (f ∘ g) := by
+  intro ⟨i, j, k, hij, hjk, hap⟩
+  exact hf ⟨g i, g j, g k, hg hij, hg hjk, hap⟩
+
 /-
 ## Part VIII: Computational Intractability
 
@@ -263,6 +270,11 @@ By construction.
 -/
 axiom stanley_avoids_3AP :
     ∃ f : ℕ → ℕ, isStanleySequence f ∧ avoids3AP f
+
+/-- The Stanley sequence property already implies 3-AP avoidance.
+    The `∧ avoids3AP f` in stanley_avoids_3AP is redundant. -/
+theorem stanley_implies_avoids3AP {f : ℕ → ℕ} (h : isStanleySequence f) : avoids3AP f :=
+  h.2.2.1
 
 /-
 ## Part X: Main Results Summary
