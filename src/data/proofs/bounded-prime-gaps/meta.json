@@ -94,7 +94,9 @@
       "**Zhang $\\to$ Polymath:** Zhang's bound $7 \\times 10^7$ and the Polymath bound 246 both follow from the Maynard-Tao sieve axiom parameterized by the admissible tuple. Larger tuples give weaker bounds; smaller tuples need deeper sieve theory.",
       "**Even Gaps:** For $n \\geq 1$, $p_{n+1} - p_n$ is even because both $p_n, p_{n+1} \\geq 3$ are odd. The twin prime conjecture asks whether $p_{n+1} - p_n = 2$ infinitely often.",
       "**Unbounded Gaps (Elementary):** $N! + k$ is composite for $2 \\leq k \\leq N$ (since $k \\mid N! + k$), giving arbitrarily long gaps: $\\limsup_{n \\to \\infty}(p_{n+1} - p_n) = \\infty$.",
-      "**Oscillation:** $\\liminf \\leq 246$ (Polymath) and $\\limsup = \\infty$ (factorial) together imply prime gaps oscillate non-monotonically — they are bounded below infinitely often yet unbounded above."
+      "**Oscillation:** $\\liminf \\leq 246$ (Polymath) and $\\limsup = \\infty$ (factorial) together imply prime gaps oscillate non-monotonically — they are bounded below infinitely often yet unbounded above.",
+      "**Twin Prime Equivalence:** The formalization establishes $\\text{TPC} \\iff \\text{Dickson}(\\{0,2\\})$: the twin prime conjecture is exactly the Dickson conjecture for the simplest admissible tuple. This clarifies what 'twin primes' means from the sieve perspective — it is the $k=2$ case of the Hardy-Littlewood prime constellation conjecture.",
+      "**Bertrand Bound on Gaps:** From Bertrand's postulate ($\\exists$ prime in $(n, 2n]$), the formalization derives $g(n) \\leq p_n$. This classical upper bound contrasts with the Polymath *lower frequency* result ($g(n) \\leq 246$ infinitely often): Bertrand bounds every gap, while Polymath bounds infinitely many."
     ],
     "prerequisites": [
       "Analytic number theory: sieve methods and the Maynard-Tao GPY sieve",
@@ -153,12 +155,44 @@
       "mathContext": "$p_n$ = `Nat.nth Nat.Prime n` (the $n$-th prime). $g_n = p_{n+1} - p_n$ (prime gap). Properties: $g_n \\geq 1$ (primes are distinct), $g_n$ is even for $n \\geq 1$ (both primes are odd), $g_n \\geq 2$ for $n \\geq 1$. Non-admissibility: $\\{0,1,\\ldots,p-1\\}$ is not admissible for any prime $p$ (covers all residues). EH implication: `maynard_tao_sieve_eh` on $\\{0,2,6,8,12\\}$ (admissible 5-tuple of diameter 12) gives $\\liminf g_n \\leq 12$."
     },
     {
-      "id": "oscillation-more-tuples",
-      "title": "Gap Oscillation and Additional Admissible Tuples",
+      "id": "oscillation-sextuples",
+      "title": "Gap Oscillation and Admissible Sextuples",
       "startLine": 641,
+      "endLine": 720,
+      "summary": "Proves prime_gaps_unbounded via factorial construction (N!+k is composite for 2≤k≤N) and prime_gaps_oscillate (bounded liminf but infinite gaps). Verifies admissible sextuples {0,2,6,8,12,18} and {0,4,6,10,12,16} by case analysis over primes up to 7.",
+      "mathContext": "Unbounded gaps: $N! + k$ is composite for $2 \\leq k \\leq N$ (since $k \\mid N! + k$), giving a gap of $\\geq N - 1$. Therefore $\\limsup_{n \\to \\infty} g_n = \\infty$. Combined with $\\liminf g_n \\leq 246$: prime gaps oscillate — infinitely often $\\leq 246$ yet infinitely often arbitrarily large."
+    },
+    {
+      "id": "gap-bounds-estimates",
+      "title": "Prime Gap Bounds and Estimates",
+      "startLine": 720,
+      "endLine": 930,
+      "summary": "Restates gap minimum (≥ 2 for n ≥ 1), nthPrime lower bounds (≥ n+2), admissible 7-tuples {0,2,6,8,12,18,20} and {0,2,8,12,18,20,26}. Dickson sextuplet consequence: if {0,2,6,8,12,18} satisfies Dickson, infinitely many prime sextuplets exist.",
+      "mathContext": "The gap bound hierarchy: $\\text{primeGap}(n) \\geq 2$ for $n \\geq 1$ (consecutive odd primes differ by at least 2), and $p_n \\geq n + 2$ (strict monotonicity from $p_0 = 2$). Admissible 7-tuples verified by case analysis on primes $\\leq 7$ with `native_decide`, then cardinality bound for $p \\geq 11$."
+    },
+    {
+      "id": "larger-tuples-bertrand",
+      "title": "Larger Admissible Tuples and Bertrand Gap Bound",
+      "startLine": 930,
+      "endLine": 1460,
+      "summary": "Verifies admissible 10-tuple {0,2,6,8,12,18,20,26,30,32} (diameter 32). Proves primeGap_le_nthPrime from Bertrand's postulate (p_{n+1} ≤ 2p_n implies gap ≤ p_n). Establishes TwinPrimeConjecture ↔ DicksonConjecture {0,2} equivalence: the forward direction via gap=2 translates to Dickson witnesses, the reverse via Dickson prime pairs.",
+      "mathContext": "Bertrand gap bound: $p_{n+1} \\leq 2p_n$ gives $g(n) = p_{n+1} - p_n \\leq p_n$. The twin prime equivalence: $\\text{TPC} \\iff \\text{Dickson}(\\{0,2\\})$. Forward: if gap $= 2$ at index $n$, then $p_n$ and $p_n + 2$ are both prime. Reverse: Dickson gives infinitely many $n$ with both $n$ and $n+2$ prime, which implies gap $= 2$ infinitely often."
+    },
+    {
+      "id": "related-conjectures",
+      "title": "Related Conjectures: Polignac, Legendre, Hardy-Littlewood, Firoozbakht",
+      "startLine": 1458,
+      "endLine": 1835,
+      "summary": "Formalizes Polignac's conjecture (gap = 2k infinitely often for each even 2k), Legendre's conjecture (prime between n² and (n+1)²), Hardy-Littlewood Conjecture A (density of prime constellations with singular series $C_H$), and Firoozbakht's conjecture ($p_n^{1/n}$ strictly decreasing). Proves firoozbakht_implies_gap_bound: Firoozbakht gives gap < p_n^{1+1/n} - p_n.",
+      "mathContext": "Polignac ($k=1$): twin primes. Hardy-Littlewood A: $\\pi_H(x) \\sim C_H \\cdot x/(\\log x)^k$ with singular series $C_H = \\prod_p \\frac{1 - \\nu_H(p)/p}{(1-1/p)^k}$. Firoozbakht: $p_{n+1}^{1/(n+1)} < p_n^{1/n}$, implying $g(n) < (\\log p_n)^2 - \\log p_n$ asymptotically. All remain open; Firoozbakht verified to $10^{18}$."
+    },
+    {
+      "id": "brun-constant-summary",
+      "title": "Brun's Constant, Gap Hierarchy, and Summary",
+      "startLine": 1836,
       "endLine": 2017,
-      "summary": "Proves prime_gaps_unbounded via factorial construction (N!+k is composite for 2≤k≤N), prime_gaps_oscillate (bounded liminf but infinite gaps exist). Additional admissible sextuples: {0,2,6,8,12,18}, {0,4,6,10,12,16}. Further admissibility/non-admissibility results.",
-      "mathContext": "Unbounded gaps: $N! + k$ is composite for $2 \\leq k \\leq N$ (since $k \\mid N! + k$), giving a gap of $\\geq N - 1$ after $p = $ the largest prime $\\leq N!+1$. Therefore $\\limsup_{n \\to \\infty} g_n = \\infty$. Combined with $\\liminf g_n \\leq 246$: prime gaps oscillate — they are infinitely often $\\leq 246$ yet infinitely often arbitrarily large."
+      "summary": "Defines Brun's constant $B \\approx 1.9022$ (sum of reciprocals of twin primes converges) and the twin prime constant $C_2 \\approx 1.3203$ (product formula for Hardy-Littlewood density). Proves twin_prime_factor_lt_one: each factor $p(p-2)/(p-1)^2 < 1$. States the full gap bound hierarchy: $2 \\leq 6 \\leq 12 \\leq 246 \\leq 4680 \\leq 70000000$. File summary listing 128 theorems from 3 axioms.",
+      "mathContext": "Brun's constant: $B = \\sum_{p,\\, p+2 \\text{ prime}} (1/p + 1/(p+2)) \\approx 1.9022$. The convergence of this sum (Brun 1919) contrasts with $\\sum 1/p = \\infty$ — twin primes are 'sparse' even if infinite. The gap hierarchy: TPC ($H=2$) $\\Rightarrow$ GEH ($H \\leq 6$) $\\Rightarrow$ EH ($H \\leq 12$) $\\Rightarrow$ Polymath ($H \\leq 246$) $\\Rightarrow$ Maynard ($H \\leq 600$) $\\Rightarrow$ Zhang ($H \\leq 7 \\times 10^7$)."
     }
   ],
   "conclusion": {
@@ -167,7 +201,9 @@
     "openQuestions": [
       "Can the Polymath 8b axiom be reduced to a statement provable from Mathlib's sieve theory infrastructure?",
       "Can the Elliott-Halberstam conjecture be formalized as an axiom-free statement (as it's a conjecture, not a theorem)?",
-      "Can the exact 246 bound be verified constructively by finding the optimal 50-admissible-tuple and verifying Maynard's sieve applies?"
+      "Can the exact 246 bound be verified constructively by finding the optimal 50-admissible-tuple and verifying Maynard's sieve applies?",
+      "Can the Bombieri-Vinogradov theorem be formalized in Lean/Mathlib? This is the key analytic ingredient missing from the proof chain — Zhang's breakthrough required a weakened variant (BV with smooth moduli), and its formalization would bring the bounded gaps proof significantly closer to axiom-free.",
+      "Can Firoozbakht's conjecture ($p_n^{1/n}$ strictly decreasing, verified to $10^{18}$) be connected to the bounded gaps formalization? If true, it implies Cramér's conjecture ($g(n) = O((\\log p_n)^2)$) — a far stronger result than the Polymath bound of 246 for infinitely many gaps."
     ]
   },
   "crossReferences": [
@@ -220,10 +256,16 @@
       "targetId": "prime-gap-bounds",
       "relationship": "depends-on",
       "description": "Imports prime gap infrastructure: nth prime bounds (p_n <= 2^(n+1)), prime counting bounds (pi(2n) > pi(n)), and the order-preserving enumeration property of primes used in the prime gap analysis"
+    },
+    {
+      "targetId": "bertrands-postulate-oq-03",
+      "relationship": "related",
+      "description": "Sub-entry extending Bertrand's postulate with refined prime counting bounds. The bounded prime gaps formalization uses Bertrand to prove primeGap_le_nthPrime ($g(n) \\leq p_n$), connecting the classical upper bound on every gap to the modern Polymath lower-frequency result ($g(n) \\leq 246$ infinitely often)"
     }
   ],
   "relatedProofs": [
     "bertrands-postulate",
+    "bertrands-postulate-oq-03",
     "infinitude-primes",
     "prime-gap-bounds",
     "prime-number-theorem",

@@ -86,21 +86,6 @@
       }
     ],
     "lineCount": 176,
-    "mathlib_version": "4.26.0",
-    "leanFile": {
-      "lineCount": 176,
-      "structureCount": 0,
-      "axiomCount": 0,
-      "theoremCount": 9,
-      "lemmaCount": 0,
-      "defCount": 0,
-      "imports": [
-        "Mathlib.Algebra.BigOperators.Ring.Finset",
-        "Mathlib.Data.Nat.Choose.Sum",
-        "Mathlib.Algebra.Ring.Basic",
-        "Mathlib.Tactic"
-      ]
-    },
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -267,6 +252,11 @@
       "targetId": "derangements",
       "relationship": "related",
       "description": "The derangement formula $D_n = n! \\sum_{k=0}^n \\frac{(-1)^k}{k!}$ uses inclusion-exclusion with binomial coefficients $\\binom{n}{k}$ to count permutations fixing exactly $k$ points. The alternating sum identity proved here ($\\sum (-1)^k \\binom{n}{k} = 0$) is the simplest instance of this alternation pattern"
+    },
+    {
+      "targetId": "sum-of-kth-powers",
+      "relationship": "related",
+      "description": "Faulhaber's formulas for $\\sum_{i=1}^n i^k$ use the binomial theorem in their derivation via the telescoping identity $(i+1)^{k+1} - i^{k+1} = \\sum_{j=0}^k \\binom{k+1}{j} i^j$, which expands the left side using the binomial theorem and rearranges to solve for $\\sum i^k$ in terms of lower power sums"
     }
   ],
   "relatedProofs": [
@@ -283,7 +273,8 @@
     "geometric-series",
     "taylor-theorem",
     "birthday-problem",
-    "derangements"
+    "derangements",
+    "sum-of-kth-powers"
   ],
   "references": [
     {
