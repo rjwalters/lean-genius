@@ -149,5 +149,27 @@
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-02",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "related",
+      "description": "Uses the same minimal polynomial infrastructure at the abstract K-algebra level"
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "Foundational: Cayley-Hamilton provides integrality of matrices, enabling minpoly theory"
+    }
+  ],
+  "relatedProofs": [
+    "cayley-hamilton-minpoly-oq-02",
+    "cayley-hamilton-minpoly",
+    "cayley-hamilton"
+  ]
 }
