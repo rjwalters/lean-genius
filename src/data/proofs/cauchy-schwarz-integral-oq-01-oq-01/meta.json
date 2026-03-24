@@ -78,42 +78,48 @@
       "title": "Part I: Hölder at Lintegral Level",
       "startLine": 38,
       "endLine": 62,
-      "summary": "Hölder's inequality and its p=q=2 CS specialization at the ENNReal lintegral level."
+      "summary": "Hölder's inequality and its p=q=2 CS specialization at the ENNReal lintegral level.",
+      "mathContext": "$\\int f\\,g\\,d\\mu \\le \\left(\\int f^p\\,d\\mu\\right)^{1/p}\\left(\\int g^q\\,d\\mu\\right)^{1/q}$ for $\\frac{1}{p}+\\frac{1}{q}=1$. At $p=q=2$: $\\int f\\,g\\,d\\mu \\le \\left(\\int f^2\\,d\\mu\\right)^{1/2}\\left(\\int g^2\\,d\\mu\\right)^{1/2}$."
     },
     {
       "id": "minkowski-elpnorm",
       "title": "Part II: Minkowski in eLpNorm Form",
       "startLine": 63,
       "endLine": 82,
-      "summary": "Triangle inequality for eLpNorm via eLpNorm_add_le, with p=2 specialization."
+      "summary": "Triangle inequality for eLpNorm via eLpNorm_add_le, with p=2 specialization.",
+      "mathContext": "$\\|f+g\\|_p \\le \\|f\\|_p + \\|g\\|_p$ (Minkowski). Here $\\|f\\|_p = \\left(\\int |f|^p\\,d\\mu\\right)^{1/p}$ is the $\\mathrm{eLpNorm}$."
     },
     {
       "id": "l2-cauchy-schwarz",
       "title": "Part III: L² Inner Product CS",
       "startLine": 83,
       "endLine": 100,
-      "summary": "Cauchy-Schwarz for L² functions via abs_real_inner_le_norm."
+      "summary": "Cauchy-Schwarz for L² functions via abs_real_inner_le_norm.",
+      "mathContext": "$|\\langle f, g \\rangle_{L^2}| \\le \\|f\\|_{L^2}\\,\\|g\\|_{L^2}$ where $\\langle f,g\\rangle = \\int f\\,g\\,d\\mu$."
     },
     {
       "id": "minkowski-from-cs",
       "title": "Part IV: Minkowski from CS",
       "startLine": 101,
       "endLine": 118,
-      "summary": "L² triangle inequality derived from CS via norm-squared identity."
+      "summary": "L² triangle inequality derived from CS via norm-squared identity.",
+      "mathContext": "$\\|f+g\\|^2 = \\|f\\|^2 + 2\\langle f,g\\rangle + \\|g\\|^2 \\le \\|f\\|^2 + 2\\|f\\|\\|g\\| + \\|g\\|^2 = (\\|f\\|+\\|g\\|)^2$, using $\\langle f,g\\rangle \\le \\|f\\|\\|g\\|$."
     },
     {
       "id": "young",
       "title": "Part V: Young's Inequality",
       "startLine": 119,
       "endLine": 133,
-      "summary": "Young's inequality in real and NNReal forms — the pointwise foundation."
+      "summary": "Young's inequality in real and NNReal forms — the pointwise foundation.",
+      "mathContext": "$ab \\le \\frac{a^p}{p} + \\frac{b^q}{q}$ for $\\frac{1}{p}+\\frac{1}{q}=1$. At $p=q=2$: $ab \\le \\frac{a^2}{2}+\\frac{b^2}{2}$ (AM-GM)."
     },
     {
       "id": "hierarchy",
       "title": "Part VI: Complete Hierarchy",
       "startLine": 134,
       "endLine": 153,
-      "summary": "Summary and API verification confirming all key Mathlib 4.26+ lemmas exist."
+      "summary": "Summary and API verification confirming all key Mathlib 4.26+ lemmas exist.",
+      "mathContext": "Complete chain: Young ($ab \\le a^p/p + b^q/q$) $\\Rightarrow$ H\\\"older ($\\int fg \\le \\|f\\|_p\\|g\\|_q$) $\\Rightarrow$ Cauchy-Schwarz ($p{=}q{=}2$) $\\Rightarrow$ Minkowski ($\\|f{+}g\\|_p \\le \\|f\\|_p{+}\\|g\\|_p$)."
     }
   ],
   "conclusion": {

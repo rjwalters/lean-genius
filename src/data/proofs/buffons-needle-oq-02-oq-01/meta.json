@@ -86,49 +86,56 @@
       "title": "Part I: The Crossing Factor Recurrence",
       "startLine": 41,
       "endLine": 62,
-      "summary": "Defines crossingFactor with base cases α₀=α₁=1 (degenerate), α₂=2/π, α₃=1/2, and recurrence α_{n+4} = ((n+2)/(n+3))·α_{n+2}. Provides simp lemmas for evaluation."
+      "summary": "Defines crossingFactor with base cases α₀=α₁=1 (degenerate), α₂=2/π, α₃=1/2, and recurrence α_{n+4} = ((n+2)/(n+3))·α_{n+2}. Provides simp lemmas for evaluation.",
+      "mathContext": "$\\alpha_2 = \\frac{2}{\\pi},\\; \\alpha_3 = \\frac{1}{2},\\; \\alpha_{n+2} = \\frac{n}{n+1}\\,\\alpha_n \\quad (n \\ge 2)$. Closed form: $\\alpha_n = \\frac{\\Gamma(n/2)}{\\sqrt{\\pi}\\,\\Gamma((n+1)/2)}$."
     },
     {
       "id": "part-ii-values",
       "title": "Part II: Computed Values",
       "startLine": 63,
       "endLine": 85,
-      "summary": "Verifies α₄ = 4/(3π) ≈ 0.424 and α₅ = 3/8 = 0.375 by unfolding the recurrence with explicit ℕ numeral rewrites and field_simp."
+      "summary": "Verifies α₄ = 4/(3π) ≈ 0.424 and α₅ = 3/8 = 0.375 by unfolding the recurrence with explicit ℕ numeral rewrites and field_simp.",
+      "mathContext": "$\\alpha_4 = \\frac{2}{3}\\,\\alpha_2 = \\frac{4}{3\\pi} \\approx 0.424,\\quad \\alpha_5 = \\frac{3}{4}\\,\\alpha_3 = \\frac{3}{8} = 0.375$"
     },
     {
       "id": "part-iii-positivity",
       "title": "Part III: Positivity",
       "startLine": 86,
       "endLine": 102,
-      "summary": "Proves crossingFactor_pos: αₙ > 0 for n ≥ 2 by structural recursion. Base cases use positivity (2/π > 0) and norm_num (1/2 > 0). Recursive step uses mul_pos with div_pos for the ratio."
+      "summary": "Proves crossingFactor_pos: αₙ > 0 for n ≥ 2 by structural recursion. Base cases use positivity (2/π > 0) and norm_num (1/2 > 0). Recursive step uses mul_pos with div_pos for the ratio.",
+      "mathContext": "$\\alpha_n > 0$ for all $n \\ge 2$. Induction: $\\alpha_{n+2} = \\frac{n}{n+1}\\,\\alpha_n > 0$ since $\\frac{n}{n+1} > 0$ and $\\alpha_n > 0$."
     },
     {
       "id": "part-iv-formula",
       "title": "Part IV: The General N-Dimensional Buffon Formula",
       "startLine": 103,
       "endLine": 156,
-      "summary": "Defines buffonNd(n,L,d) = αₙ·L/d. Proves: buffonNd_two recovers 2L/(πd), buffonNd_three recovers L/(2d), additivity (noodle theorem), length scaling, noodle theorem for polygonal paths, and monotonicity."
+      "summary": "Defines buffonNd(n,L,d) = αₙ·L/d. Proves: buffonNd_two recovers 2L/(πd), buffonNd_three recovers L/(2d), additivity (noodle theorem), length scaling, noodle theorem for polygonal paths, and monotonicity.",
+      "mathContext": "$E[\\text{crossings}] = \\alpha_n \\cdot \\frac{L}{d}$. Specializations: $\\alpha_2 L/d = \\frac{2L}{\\pi d}$ (2D), $\\alpha_3 L/d = \\frac{L}{2d}$ (3D). Noodle theorem: $E[\\sum_i \\text{crossings}_i] = \\alpha_n \\sum_i \\frac{L_i}{d}$."
     },
     {
       "id": "part-v-comparison",
       "title": "Part V: Dimension Comparison",
       "startLine": 157,
       "endLine": 187,
-      "summary": "Proves crossing factor ordering: α₃ < α₂ (via π < 4), α₄ < α₃ (via π > 3), α₅ < α₃ (3/8 < 1/2), α₄ < α₂ (transitive). Higher dimensions always have fewer expected crossings."
+      "summary": "Proves crossing factor ordering: α₃ < α₂ (via π < 4), α₄ < α₃ (via π > 3), α₅ < α₃ (3/8 < 1/2), α₄ < α₂ (transitive). Higher dimensions always have fewer expected crossings.",
+      "mathContext": "$\\alpha_3 = \\tfrac{1}{2} < \\tfrac{2}{\\pi} = \\alpha_2$ (since $\\pi < 4$); $\\alpha_4 = \\tfrac{4}{3\\pi} < \\tfrac{1}{2} = \\alpha_3$ (since $\\pi > 3$). Chain: $\\alpha_5 < \\alpha_4 < \\alpha_3 < \\alpha_2$."
     },
     {
       "id": "part-vi-ratio",
       "title": "Part VI: The Recurrence Ratio",
       "startLine": 188,
       "endLine": 223,
-      "summary": "Proves the recurrence ratio (n+2)/(n+3) < 1 for all n, the ratio formula α_{n+4}/α_{n+2} = (n+2)/(n+3), and the general strict decrease α_{n+2} < αₙ for n ≥ 2."
+      "summary": "Proves the recurrence ratio (n+2)/(n+3) < 1 for all n, the ratio formula α_{n+4}/α_{n+2} = (n+2)/(n+3), and the general strict decrease α_{n+2} < αₙ for n ≥ 2.",
+      "mathContext": "$\\frac{\\alpha_{n+2}}{\\alpha_n} = \\frac{n}{n+1} < 1$ for all $n \\ge 2$, so $\\{\\alpha_n\\}$ is strictly decreasing. The ratio approaches 1 as $n \\to \\infty$."
     },
     {
       "id": "part-vii-asymptotic",
       "title": "Part VII: Asymptotic Behavior",
       "startLine": 224,
       "endLine": 309,
-      "summary": "Proves that αₙ → 0 as n → ∞: in high dimensions, the expected projection of a random unit vector onto any fixed axis vanishes. Uses a squeeze argument with 1/√n bound."
+      "summary": "Proves that αₙ → 0 as n → ∞: in high dimensions, the expected projection of a random unit vector onto any fixed axis vanishes. Uses a squeeze argument with 1/√n bound.",
+      "mathContext": "$\\alpha_n \\to 0$ as $n \\to \\infty$. Squeeze: $0 < \\alpha_n \\le \\frac{1}{\\sqrt{n}}$. Asymptotically $\\alpha_n \\sim \\sqrt{\\frac{2}{\\pi n}}$ (concentration of measure on $S^{n-1}$)."
     }
   ],
   "conclusion": {
