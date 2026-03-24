@@ -80,9 +80,21 @@ theorem totient_dvd_self_iff (n : ℕ) :
     totient n ∣ n ↔ n ≤ 1 ∨ ∃ a > 0, ∃ b : ℕ, n = 2^a * 3^b := by
   constructor
   · -- (→) If φ(n) | n, then n ≤ 1 or n = 2^a·3^b
-    -- Hard direction: requires showing n can only have prime factors 2 and 3
-    -- Proof sketch: ν₂(φ(n)) = (a-1) + Σ ν₂(pᵢ-1) ≤ a = ν₂(n) forces
-    -- at most one odd prime factor; then ν_q analysis forces it to be 3.
+    intro hdvd
+    by_cases hn1 : n ≤ 1
+    · left; exact hn1
+    right; push_neg at hn1; have hn2 : 2 ≤ n := by omega
+    -- Step 1: n must be even
+    -- φ(n) is even for n > 2 (totient_even), and φ(n) | n forces 2 | n
+    have heven : 2 ∣ n := by
+      by_contra h2
+      exact h2 (dvd_trans (totient_even n (by omega)) hdvd)
+    -- Step 2: decompose n = 2^a · m with m odd, a ≥ 1
+    -- then φ(n) = 2^(a-1) · φ(m), so φ(m) | 2m
+    -- Step 3: show m has only prime factor 3
+    -- For any odd prime p | m: (p-1) | φ(m) | 2m.
+    -- ν₂(φ(m)) = Σ ν₂(pᵢ-1) ≤ ν₂(2m) = 1, forcing at most 1 odd prime.
+    -- Then (p-1) | 2 forces p = 3.
     sorry
   · -- (←) If n ≤ 1 or n = 2^a·3^b, then φ(n) | n
     intro h
