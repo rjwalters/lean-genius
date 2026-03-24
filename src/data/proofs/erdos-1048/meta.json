@@ -90,6 +90,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Module docstring describing Erdős Problem #1048 on polynomial lemniscate diameter. Records the disproof status (Pommerenke 1961): for monic f with roots in |z| ≤ r where r > 1, the set {z : |f(z)| < 1} can have all components with diameter < 2 − r. Summarizes Pommerenke's positive results for r ≤ 1 in three regimes separated at r = 1/2 and r = (√5−1)/2. Imports the full Mathlib library, declares the Erdos1048 namespace, and opens Complex, Polynomial, Set, and Metric.",
+      "mathContext": "The polynomial lemniscate L(f,c) = {z ∈ ℂ : |f(z)| < c} for a monic polynomial f is a bounded open set whose topology depends on the root distribution. The Erdős-Herzog-Piranian (1958) conjecture that L(f,1) must have a component with diameter > 2 − r was disproved by Pommerenke using f(z) = zⁿ − rⁿ. The opened namespaces Complex, Polynomial, Set, and Metric provide the algebraic and topological infrastructure for defining lemniscates, connected components, and diameter."
+    },
+    {
       "id": "polynomials",
       "title": "Polynomials and Roots",
       "summary": "Defines IsMonic (leading coefficient = 1), roots (zero set of polynomial evaluation), RootsBoundedBy (all roots in |z| ≤ r), and the BoundedMonicPoly structure bundling polynomial, monicity, root bound, and nontriviality (degree ≥ 1)",

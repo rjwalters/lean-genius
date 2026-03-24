@@ -89,17 +89,17 @@
     {
       "id": "introduction",
       "title": "Introduction: The Fair Games Paradox",
-      "startLine": 8,
+      "startLine": 1,
       "endLine": 84,
-      "summary": "Overview: in a fair game, no betting strategy changes expected value. Explains why 'quit while ahead' is a fallacy and why casinos profit even from near-fair games.",
+      "summary": "Imports Mathlib's martingale and measure theory APIs, then provides an overview: in a fair game, no betting strategy changes expected value. Explains why 'quit while ahead' is a fallacy and why casinos profit even from near-fair games.",
       "mathContext": "Optional Stopping: $E[X_\\tau] = E[X_0]$ for bounded $\\tau$. A martingale has $E[X_{n+1} \\mid \\mathcal{F}_n] = X_n$."
     },
     {
       "id": "martingale-definition",
       "title": "Martingale Framework",
-      "startLine": 88,
+      "startLine": 85,
       "endLine": 162,
-      "summary": "Formal definitions of martingales (fair games), stopping times, and bounded strategies. isFairGame uses Mathlib's Martingale typeclass.",
+      "summary": "Establishes FairGamesTheorem namespace and provides formal definitions of martingales (fair games), stopping times, and bounded strategies. isFairGame uses Mathlib's Martingale typeclass.",
       "mathContext": "$\\text{Martingale}(f, \\mathcal{F}, \\mu)$: $E[f_{n+1} \\mid \\mathcal{F}_n] = f_n$ a.s. $\\text{IsStoppingTime}(\\mathcal{F}, \\tau)$: $\\{\\tau \\leq n\\} \\in \\mathcal{F}_n$. Bounded: $\\exists N, \\forall \\omega, \\tau(\\omega) \\leq N$."
     },
     {
@@ -113,7 +113,7 @@
     {
       "id": "characterization",
       "title": "Submartingale Characterization via Optional Stopping",
-      "startLine": 269,
+      "startLine": 267,
       "endLine": 348,
       "summary": "Part IV: the equivalence between being a submartingale and having monotone stopped expectations. Forward direction from Mathlib (`expected_stoppedValue_mono`), converse axiomatized (`submartingale_of_stoppedValue_mono`). For martingales, both directions of inequality hold, giving equality (`martingale_equality_characterization`).",
       "mathContext": "$\\text{Submartingale}(f, \\mathcal{F}, \\mu) \\Leftrightarrow \\forall \\tau \\leq \\pi \\leq N,\\; E[f_\\tau] \\leq E[f_\\pi]$. The single axiom in the file is for the $\\Leftarrow$ direction. For martingales, the stopped-value condition becomes equality."
@@ -121,7 +121,7 @@
     {
       "id": "applications",
       "title": "Applications (Placeholder Theorems)",
-      "startLine": 350,
+      "startLine": 349,
       "endLine": 428,
       "summary": "Five placeholder theorems proving `(1:ℕ)+1=2` with substantive docstrings discussing gambler's ruin, betting systems, option pricing, and Doob's inequality. The mathematical applications described are accurate but NOT formalized — these are future targets.",
       "mathContext": "Docstrings describe: gambler's ruin $P(\\text{success}) = W_0/(W_0 + a)$, Doob's inequality $P(\\max_{n \\leq N} f_n \\geq \\lambda) \\leq E[f_N]/\\lambda$, and Black-Scholes pricing. The formal content is trivial (`rfl`)."

@@ -76,6 +76,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "Module docstring describing Erdős Problem #781 on descending waves in 2-colorings of integers. States the problem, records the disproof status (Alon-Spencer 1989 showed f(k) grows cubically, not quadratically), and cites Brown-Erdős-Freedman (1990) and Alon-Spencer (1989). Imports Mathlib modules for finite sets, natural numbers, real numbers, and filters. Opens Finset and declares the Erdos781 namespace.",
+      "mathContext": "A descending wave x₁ < x₂ < ··· < xₖ satisfies x_j ≥ (x_{j-1} + x_{j+1})/2, equivalently the gaps are non-increasing. The function f(k) = min{n : every 2-coloring of {1,…,n} has a monochromatic k-wave} satisfies k² − k + 1 ≤ f(k) = Θ(k³). The imports provide Finset for finite set operations, ℕ and ℝ for arithmetic, and filters for asymptotic growth statements."
+    },
+    {
       "id": "definitions",
       "title": "Basic Definitions",
       "summary": "Defines `TwoColoring n = Fin n → Bool` (abbrev), `StrictlyIncreasing` ($\\forall i < j : \\text{seq}(i) < \\text{seq}(j)$), `IsDescendingWave` ($2x_j \\geq x_{j-1} + x_{j+1}$ for interior points), `HasNonIncreasingGaps` (gap sequence non-increasing), and axiomatizes their equivalence via `descending_wave_equiv_gaps`.",
