@@ -21,10 +21,7 @@ triangle-free graph on n vertices. (By Ramsey theory, H(n) ~ √n.)
 Reference: https://erdosproblems.com/151
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Rat.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos151
 
@@ -147,12 +144,23 @@ def ErdosProblem151 : Prop :=
 /-- The conjecture holds trivially for triangle-free graphs:
     by definition, H(n) ≤ α(G) for triangle-free G, and
     V \ (independent set) is a transversal. -/
-axiom erdos_151_triangle_free (G : Type) (n : ℕ)
+theorem erdos_151_triangle_free (G : Type) (n : ℕ)
     (hv : vertexCount G = n) (htf : IsTriangleFree G) :
-    cliqueTransversal G ≤ n - triangleFreeIndep n
+    cliqueTransversal G ≤ n - triangleFreeIndep n := by
+  -- Get independent set I with |I| ≥ H(n)
+  obtain ⟨I, hI_indep, hI_card⟩ := triangleFreeIndep_spec n G hv htf
+  -- Get transversal T from complement of I with |T| ≤ n - |I|
+  have hI_le : I.card ≤ n := by
+    have := triangleFreeIndep_le n
+    omega
+  obtain ⟨T, hT_card, hT_trans⟩ := complement_of_indep_is_transversal G I n hv hI_indep hI_le
+  -- τ(G) ≤ |T| ≤ n - |I| ≤ n - H(n)
+  calc cliqueTransversal G ≤ T.card := cliqueTransversal_min G T hT_trans
+    _ ≤ n - I.card := hT_card
+    _ ≤ n - triangleFreeIndep n := by omega
 
 /-- Even the K₄-free case remains open. -/
-axiom erdos_151_K4free_open :
+theorem erdos_151_K4free_open :
     -- This is a statement that the K₄-free restriction doesn't make
     -- the conjecture easy; formalized as: IF K₄-free implies the bound,
     -- then a non-trivial argument is needed.
@@ -160,7 +168,8 @@ axiom erdos_151_K4free_open :
       cliqueTransversal G ≤ n - triangleFreeIndep n) →
     -- (This implication is stated but not proved; Erdős and Gallai
     --  were unable to make progress even in this restricted case.)
-    True
+    True := by
+  tauto
 
 /- ## Part VII: Corollaries and Summary -/
 

@@ -20,8 +20,8 @@
     "erdosNumber": 151,
     "erdosUrl": "https://erdosproblems.com/151",
     "erdosProblemStatus": "open",
-    "axiomCount": 18,
-    "assumptions": "18 axioms encoding graph-theoretic predicates (IsClique, IsMaximalClique, IsIndependent, IsTriangleFree, IsK4Free) and their properties, plus specifications for τ(G) and H(n). These axiomatize standard graph theory since the formalization uses abstract types rather than Mathlib's SimpleGraph.",
+    "axiomCount": 16,
+    "assumptions": "16 axioms encoding graph-theoretic predicates and their properties. 2 former axioms proved: erdos_151_K4free_open (trivially True), erdos_151_triangle_free (from triangleFreeIndep_spec + complement_of_indep_is_transversal).",
     "prerequisites": [
       "Graph theory basics (cliques, independent sets)",
       "Ramsey theory (R(3,t) bounds)",
@@ -136,8 +136,8 @@
     "opens": [],
     "namespace": "Erdos151",
     "lineCount": 194,
-    "axiomCount": 18,
-    "theoremCount": 6,
+    "axiomCount": 16,
+    "theoremCount": 8,
     "definitionCount": 2
   },
   "crossReferences": [
