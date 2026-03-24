@@ -198,8 +198,9 @@ The exponent α ≈ 0.26 comes from Sárközy's work on related problems.
 The exact value is not known to be optimal.
 Consolidated axiom: α exists with 0.25 ≤ α ≤ 0.27.
 -/
-axiom sarkozy_exponent_exists :
-    ∃ α : ℝ, 0.25 ≤ α ∧ α ≤ 0.27
+theorem sarkozy_exponent_exists :
+    ∃ α : ℝ, 0.25 ≤ α ∧ α ≤ 0.27 :=
+  ⟨0.26, by norm_num, by norm_num⟩
 
 /-
 ## Part VI: The Annulus Construction
