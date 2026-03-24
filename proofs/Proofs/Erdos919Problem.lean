@@ -100,8 +100,13 @@ generalize to higher cardinals.
 -/
 
 /-- The Erdős-Hajnal graph on ω₁²:
-    (x_α, y_β) is adjacent to (x_γ, y_δ) iff α < γ and β > δ or α > γ and β < δ -/
-axiom erdosHajnalGraph : GraphOn omega1Squared
+    (x_α, y_β) is adjacent to (x_γ, y_δ) iff α < γ and β > δ or α > γ and β < δ.
+    This is a "shift graph" where adjacency requires the two coordinates to move
+    in opposite directions. (Previously axiomatized; now concretely defined.) -/
+def erdosHajnalGraph : GraphOn omega1Squared where
+  adj := fun p q => (p.1 < q.1 ∧ q.2 < p.2) ∨ (q.1 < p.1 ∧ p.2 < q.2)
+  symm := fun _ _ h => h.symm
+  loopless := fun _ h => by rcases h with ⟨h, _⟩ | ⟨h, _⟩ <;> exact lt_irrefl _ h
 
 /-- The E-H graph has chromatic number ℵ₁ -/
 axiom erdosHajnal_chromatic : chromaticNumber erdosHajnalGraph = ℵ₁
