@@ -77,24 +77,33 @@ theorem sum_odd_parity {s : Finset ℕ} (hs : ∀ x ∈ s, Odd x) :
   induction s using Finset.induction with
   | empty => simp
   | @insert a s ha ih =>
-    rw [Finset.sum_insert ha, Finset.card_insert_of_not_mem ha]
+    rw [Finset.sum_insert ha, Finset.card_insert_of_notMem ha]
     have ha_odd : Odd a := hs a (Finset.mem_insert_self a s)
     have hs' : ∀ x ∈ s, Odd x := fun x hx => hs x (Finset.mem_insert_of_mem hx)
+    -- Helper: Even n and Odd n cannot both hold
+    have even_odd_absurd : ∀ n : ℕ, Even n → Odd n → False := by
+      intro n ⟨r, hr⟩ ⟨k, hk⟩; omega
     constructor
     · intro h_odd
       have h_sum_even : Even (s.sum id) := by
         by_contra h_sum_not_even
-        have h_sum_odd : Odd (s.sum id) := Nat.not_even_iff_odd.mp h_sum_not_even
-        exact (ha_odd.add_odd h_sum_odd).not_odd h_odd
+        have h_sum_odd : Odd (s.sum id) :=
+          (Nat.even_or_odd _).resolve_left h_sum_not_even
+        exact even_odd_absurd _ (ha_odd.add_odd h_sum_odd) h_odd
       have h_card_even : Even s.card := by
-        rw [Nat.even_iff_not_odd]
-        exact fun h => h_sum_even.not_odd ((ih hs').mpr h)
+        by_contra h_card_not_even
+        have h_card_odd : Odd s.card :=
+          (Nat.even_or_odd _).resolve_left h_card_not_even
+        exact even_odd_absurd _ h_sum_even ((ih hs').mpr h_card_odd)
       exact h_card_even.add_one
     · intro h_succ_odd
-      have h_card_even : Even s.card := Nat.Odd.of_succ h_succ_odd
+      have h_card_even : Even s.card := by
+        obtain ⟨k, hk⟩ := h_succ_odd; exact ⟨k, by omega⟩
       have h_sum_even : Even (s.sum id) := by
-        rw [Nat.even_iff_not_odd]
-        exact fun h => h_card_even.not_odd ((ih hs').mp h)
+        by_contra h_sum_not_even
+        have h_sum_odd : Odd (s.sum id) :=
+          (Nat.even_or_odd _).resolve_left h_sum_not_even
+        exact even_odd_absurd _ h_card_even ((ih hs').mp h_sum_odd)
       exact ha_odd.add_even h_sum_even
 
 /-
@@ -169,9 +178,40 @@ theorem isUnitaryPerfect_90 : IsUnitaryPerfect 90 := by native_decide
 ## Further Properties
 -/
 
-/-- For prime powers p^k, the only unitary divisors are 1 and p^k. -/
-axiom unitaryDivisors_primePow {p k : ℕ} (hp : p.Prime) (hk : 0 < k) :
-    (Finset.Ico 1 (p^k + 1)).filter (fun d => d ∣ p^k ∧ d.Coprime (p^k / d)) = {1, p^k}
+/-- For prime powers p^k, the only unitary divisors are 1 and p^k.
+Proof: d ∣ p^k means d = p^j for some j ≤ k. Then p^k/d = p^(k-j).
+If 0 < j < k, then p divides both p^j and p^(k-j), contradicting coprimality. -/
+theorem unitaryDivisors_primePow {p k : ℕ} (hp : p.Prime) (hk : 0 < k) :
+    (Finset.Ico 1 (p^k + 1)).filter (fun d => d ∣ p^k ∧ d.Coprime (p^k / d)) = {1, p^k} := by
+  ext d
+  simp only [Finset.mem_filter, Finset.mem_Ico, Finset.mem_insert, Finset.mem_singleton]
+  constructor
+  · -- Forward: d in filter → d = 1 or d = p^k
+    rintro ⟨⟨h1le, hlt⟩, hdvd, hcop⟩
+    obtain ⟨j, hjk, rfl⟩ := (Nat.dvd_prime_pow hp).mp hdvd
+    by_cases hj0 : j = 0
+    · left; simp [hj0]
+    · right
+      by_cases hjk' : j = k
+      · exact congr_arg _ hjk'
+      · -- 0 < j < k: p divides both p^j and p^(k-j)
+        exfalso
+        have hj_pos : 0 < j := Nat.pos_of_ne_zero hj0
+        have hkj_pos : 0 < k - j := by omega
+        have hdiv : p ^ k / p ^ j = p ^ (k - j) := Nat.pow_div hjk hp.pos
+        rw [hdiv] at hcop
+        have h_pdvd_j : p ∣ p ^ j := dvd_pow_self p (by omega)
+        have h_pdvd_kj : p ∣ p ^ (k - j) := dvd_pow_self p (by omega)
+        exact (hp.coprime_iff_not_dvd.mp (hcop.coprime_dvd_left h_pdvd_j)) h_pdvd_kj
+  · -- Backward: d = 1 or d = p^k → d in filter
+    rintro (rfl | rfl)
+    · -- d = 1
+      exact ⟨⟨le_refl 1, by linarith [Nat.one_le_pow k p hp.pos]⟩, one_dvd _,
+        by simp [Nat.Coprime]⟩
+    · -- d = p^k
+      refine ⟨⟨Nat.one_le_pow k p hp.pos, Nat.lt_add_one _⟩, dvd_refl _, ?_⟩
+      rw [Nat.div_self (Nat.pos_of_ne_zero (pow_ne_zero k hp.ne_zero))]
+      exact Nat.coprime_one_right _
 
 /-- The unitary divisor sum is multiplicative for coprime arguments. -/
 axiom unitaryDivisorSum_mul_coprime {m n : ℕ} (hm : 0 < m) (hn : 0 < n) (hcop : m.Coprime n) :
