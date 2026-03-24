@@ -54,7 +54,7 @@
   "overview": {
     "historicalContext": "The alteration method, also called the deletion method, is a refinement of the basic probabilistic method developed by Erdos and collaborators in the 1960s and 1970s. While the first moment method requires the random construction to satisfy all constraints simultaneously, the alteration method relaxes this: start with a random object that is close to what we want, then deterministically fix the few violations.\n\nThe key insight is that if a random construction has few expected defects, we can afford to delete or modify the problematic parts while retaining most of the desirable structure. This two-phase approach -- random construction followed by deterministic alteration -- dramatically expands the range of existence results the probabilistic method can prove.\n\nClassic applications include the best known bounds for independent set size in sparse graphs, Property B of hypergraphs (2-colorability), and Ramsey multiplicity problems. The alteration method is particularly effective when we want a large structure (like an independent set) but the random approach occasionally includes unwanted elements (like adjacent vertices).",
     "problemStatement": "Alteration Principle: Let $\\Omega$ be a random structure with a desired property measured by a value function $v(\\omega)$ and a defect count $d(\\omega)$. If $E[v(\\omega) - d(\\omega)] > t$, then there exists an altered structure with value exceeding $t$ and zero defects.\n\nApplication: Every graph $G$ on $n$ vertices with $m$ edges has an independent set of size at least $n^2/(2m + n)$.",
-    "text": "Random construction + deterministic fix-up for existence proofs in graph theory and combinatorics.",
+    "text": "A formalization of the alteration (deletion) method, one of the core techniques in the probabilistic method toolkit. The file establishes three results in 61 lines with 0 sorries: (1) an `alteration_principle` theorem capturing the deterministic heart of the method — if $\\sum(\\text{good}(a) - \\text{bad}(a)) > 0$ over a nonempty finite set, then some element has positive net value; (2) an `independent_set_bound` proving that $d$-regular graphs on $n$ vertices have independent sets of size $\\geq \\lfloor n/(2d) \\rfloor$; and (3) a `property_b_bound` placeholder for the result that $k$-uniform hypergraphs with $m < 2^{k-1}$ edges are 2-colorable. The alteration principle is proved by contradiction via `Finset.sum_le_sum` and `linarith`. The independent set bound uses `Nat.max` to construct a witness. The Property B theorem currently proves `True` pending a Mathlib hypergraph type. The file is organized in the `ProbMethod.Alteration` namespace alongside the companion files for the expectation method, second moment method, Lovász Local Lemma, and applications.",
     "proofStrategy": "The proof proceeds in two phases:\n\n1. **Random phase**: Select each vertex independently with probability $p$ (to be optimized). The expected number of selected vertices is $np$, and the expected number of edges within the selected set is $mp^2$.\n\n2. **Alteration phase**: For each edge within the selected set, delete one endpoint. This removes at most $mp^2$ vertices (in expectation) but eliminates all edges, yielding an independent set.\n\n3. **Counting**: The expected size of the resulting independent set is at least $np - mp^2$. By the first moment principle, some outcome achieves this bound.\n\n4. **Optimization**: Setting $p = n/(2m + n)$ maximizes $np - mp^2$, yielding the bound $n^2/(2m + n)$.\n\nFor Property B, the argument is similar: randomly 2-color vertices of a hypergraph, count monochromatic edges, and alter by recoloring vertices to break monochromatic edges.",
     "keyInsights": [
       "The two-phase approach (random + deterministic fix) handles constraints that pure randomness cannot satisfy simultaneously",
@@ -138,6 +138,16 @@
       "targetId": "ramseys-theorem",
       "relationship": "related",
       "description": "Ramsey-type problems are a primary motivation for the alteration method — the probabilistic lower bound on Ramsey numbers uses an alteration argument to handle edge colorings"
+    },
+    {
+      "targetId": "friendship-theorem",
+      "relationship": "related",
+      "description": "The friendship theorem is a graph-theoretic existence/uniqueness result that, like the independent set bound here, connects structural properties of graphs to the existence of specific substructures — both are cornerstones of extremal graph theory"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "Binomial coefficients underpin the probability calculations in the alteration method: random subset selection with probability $p$ creates a binomially distributed vertex count, and the expected edge count within the subset uses $\\binom{d}{2} p^2$ style calculations"
     }
   ],
   "conclusion": {
@@ -154,7 +164,9 @@
     "prob-method-lovasz-local",
     "prob-method-applications",
     "prob-method-second-moment",
-    "ramseys-theorem"
+    "ramseys-theorem",
+    "friendship-theorem",
+    "binomial-theorem"
   ],
   "leanFile": {
     "imports": [
@@ -183,7 +195,28 @@
       "title": "The Probabilistic Method",
       "year": "2016",
       "venue": "Wiley, 4th edition",
-      "note": "The definitive textbook on the probabilistic method in combinatorics, covering all major techniques"
+      "note": "The definitive textbook on the probabilistic method in combinatorics. Chapter 3 covers the alteration method, including the independent set bound and Property B applications"
+    },
+    {
+      "authors": "Shearer, James B.",
+      "title": "A note on the independence number of triangle-free graphs",
+      "year": "1983",
+      "venue": "Discrete Mathematics 46(1), 83–87",
+      "note": "Improved the alteration-based independent set bound for triangle-free graphs to alpha(G) >= Omega(n sqrt(log d)/d), surpassing the general n/(2d) bound proved here"
+    },
+    {
+      "authors": "Radhakrishnan, Jaikumar; Srinivasan, Aravind",
+      "title": "Improved bounds and algorithms for hypergraph two-coloring",
+      "year": "2000",
+      "venue": "Random Structures & Algorithms 16(1), 4–32",
+      "note": "Resolved the Erdos conjecture on Property B up to logarithmic factors, showing the threshold for k-uniform hypergraphs is Theta(sqrt(k/ln k) * 2^k)"
+    },
+    {
+      "authors": "Turán, Pál",
+      "title": "Eine Extremalaufgabe aus der Graphentheorie",
+      "year": "1941",
+      "venue": "Matematikai és Fizikai Lapok 48, 436–452",
+      "note": "Turán's theorem gives the maximum number of edges in a K_{r+1}-free graph. The independent set bound alpha(G) >= n^2/(2m+n) proved via alteration can be seen as a dual to Turán's result"
     }
   ]
 }
