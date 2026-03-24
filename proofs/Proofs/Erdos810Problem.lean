@@ -29,6 +29,7 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Finite
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic
 
 namespace Erdos810
@@ -120,9 +121,55 @@ theorem dense_graph_has_C4_large_n (ε : ℝ) (hε : ε > 0) :
   -- For n > (C/ε)²: ε·n² > C·n^{3/2}, so a graph with ≥ εn² edges
   -- cannot be C₄-free. The N₀ depends on C and ε.
   obtain ⟨C, hC_pos, hKST⟩ := kovari_sos_turan_C4
-  -- We need N₀ such that for n ≥ N₀: C·n^{3/2} < ε·n²
-  -- i.e., C < ε·n^{1/2}, i.e., n > (C/ε)²
-  sorry
+  -- Choose N₀ so that n ≥ N₀ implies ε·n² > C·n^{3/2}
+  refine ⟨Nat.ceil ((C / ε) ^ 2) + 2, fun n hn G _ hd => ?_⟩
+  -- By contradiction: suppose G has no C₄
+  by_contra h_no
+  simp only [not_exists, not_true_eq_false] at h_no
+  -- h_no : ∀ C4 : CycleFour G, False  (G is C₄-free)
+  have hn1 : 1 ≤ n := by omega
+  have hE := hKST n hn1 G h_no  -- |E| ≤ C·n^{3/2}
+  -- Combined: ε·n² ≤ C·n^{3/2}
+  have h_combined : ε * (↑n : ℝ) ^ 2 ≤ C * (↑n : ℝ) ^ ((3 : ℝ) / 2) :=
+    le_trans hd hE
+  -- But n is large enough that C·n^{3/2} < ε·n²: contradiction
+  -- Key: n > (C/ε)², so √n > C/ε, so ε·√n > C
+  have hn_pos : (0 : ℝ) < (↑n : ℝ) := Nat.cast_pos.mpr (by omega)
+  have h_sqrt_pos : (0 : ℝ) < Real.sqrt (↑n : ℝ) := Real.sqrt_pos.mpr hn_pos
+  -- n > (C/ε)²
+  have h_n_large : (C / ε) ^ 2 < (↑n : ℝ) := by
+    have h1 : (C / ε) ^ 2 ≤ ↑(Nat.ceil ((C / ε) ^ 2)) :=
+      Nat.le_ceil ((C / ε) ^ 2)
+    have h2 : (↑(Nat.ceil ((C / ε) ^ 2) + 2) : ℝ) ≤ (↑n : ℝ) := by exact_mod_cast hn
+    push_cast at h2
+    linarith
+  -- √n > C/ε
+  have h_sqrt_large : C / ε < Real.sqrt (↑n : ℝ) := by
+    rw [← Real.sqrt_sq (le_of_lt (div_pos hC_pos hε))]
+    exact Real.sqrt_lt_sqrt (sq_nonneg _) h_n_large
+  -- ε·√n > C
+  have h_key : C < ε * Real.sqrt (↑n : ℝ) := by
+    have := h_sqrt_large
+    rw [div_lt_iff₀ hε] at this
+    linarith
+  -- Decompose: n^{3/2} = n · √n, n² = n · n
+  have h32 : (↑n : ℝ) ^ ((3 : ℝ) / 2) = ↑n * Real.sqrt ↑n := by
+    rw [show (3 : ℝ) / 2 = 1 + 1 / 2 from by norm_num]
+    rw [Real.rpow_add hn_pos]
+    rw [Real.rpow_one, ← Real.sqrt_eq_rpow]
+  have h_sq : (↑n : ℝ) ^ 2 = ↑n * ↑n := sq (↑n : ℝ)
+  rw [h32, h_sq] at h_combined
+  -- h_combined : ε * (↑n * ↑n) ≤ C * (↑n * √↑n)
+  -- Cancel ↑n > 0 from both sides
+  have h_cancel1 : ε * ↑n ≤ C * Real.sqrt ↑n := by
+    nlinarith [mul_comm (↑n : ℝ) (Real.sqrt ↑n)]
+  -- Use n = √n * √n to cancel √n > 0
+  have h_cancel2 : ε * Real.sqrt ↑n ≤ C := by
+    have hsq : (↑n : ℝ) = Real.sqrt ↑n * Real.sqrt ↑n :=
+      (Real.mul_self_sqrt (Nat.cast_nonneg n)).symm
+    nlinarith [mul_comm (ε * Real.sqrt ↑n) (Real.sqrt ↑n)]
+  -- Contradiction: h_cancel2 says ε·√n ≤ C, h_key says C < ε·√n
+  linarith
 
 -- ## Part V: Structural Observations
 
