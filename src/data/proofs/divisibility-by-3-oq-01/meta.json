@@ -16,7 +16,7 @@
       "comprehensive"
     ],
     "proofRepoPath": "Proofs/DivisibilityByThreeOQ01.lean",
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -52,7 +52,7 @@
     "dateAdded": "2026-02-10",
     "axiomCount": 0,
     "lineCount": 550,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "0 axioms, 0 sorries. Core digit-sum congruence from Mathlib's Nat.modEq_digits_sum and Nat.dvd_iff_dvd_digits_sum."
   },
   "overview": {
     "historicalContext": "Divisibility rules have been known since ancient times. This extension formalizes a comprehensive collection of such rules in Lean 4, going far beyond the basic divisibility-by-3 rule.\n\nThe rules fall into three families:\n1. **Last-k-digits rules**: When d divides the base power (e.g., 4|100), check the last k digits\n2. **Digit-sum rules**: When base ≡ 1 (mod d), check the digit sum\n3. **Truncation rules**: Reduce the number by removing a digit and adjusting (e.g., for 7 and 13)\n\nAll three families are unified through modular arithmetic.",
