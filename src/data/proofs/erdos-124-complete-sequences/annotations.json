@@ -16,7 +16,12 @@
       "formal verification"
     ],
     "mathContext": "See annotation content for formal details of the first ai-solved open problem",
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.sum (finite sums over indexed families)",
+      "Nat.digits (digit representation in arbitrary bases)",
+      "subset sum representation",
+      "Erdős conjecture framework"
+    ]
   },
   {
     "id": "ann-problem-statement",
@@ -35,7 +40,12 @@
       "bases",
       "complete sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.digits (positional notation in arbitrary bases)",
+      "Finset.sum (summation over finite index sets)",
+      "Nat.pow (integer powers dᵢ^eᵢ)",
+      "complete sequences (every natural number is a subset sum)"
+    ]
   },
   {
     "id": "ann-two-versions",
@@ -54,7 +64,12 @@
       "ambiguity",
       "strong conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.Coprime / Nat.gcd (greatest common divisor for strong version)",
+      "Nat.digits (base-d digit representation)",
+      "Brown's criterion for complete sequences",
+      "Baker's theorem (transcendence theory, needed for strong version)"
+    ]
   },
   {
     "id": "ann-ai-story",
@@ -73,7 +88,12 @@
       "AI mathematics"
     ],
     "mathContext": "See annotation content for formal details of the ai story",
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 formal verification system",
+      "Brown's criterion for complete sequences",
+      "greedy algorithm for sequence construction",
+      "automated theorem proving"
+    ]
   },
   {
     "id": "ann-proof-strategy",
@@ -92,7 +112,12 @@
       "Brown's criterion",
       "greedy algorithm"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Brown's criterion (gap condition implies completeness)",
+      "greedy algorithm analysis",
+      "Finset.sum / Finset.range (partial sums)",
+      "Nat.digits (digit decomposition)"
+    ]
   },
   {
     "id": "ann-namespace",
@@ -111,7 +136,12 @@
       "Mathlib imports",
       "namespaces"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 namespace and open syntax",
+      "Mathlib.Data.Nat.Digits (Nat.digits)",
+      "Mathlib.Algebra.BigOperators.Group.Finset (Finset.sum)",
+      "Mathlib.Order.Filter.Basic (Filter.Eventually, atTop)"
+    ]
   },
   {
     "id": "ann-algebraic-gap",
@@ -130,7 +160,12 @@
       "reciprocal condition",
       "gap bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.sum_le_sum (monotonicity of sums)",
+      "div_le_div_of_nonneg_right (division preserves inequality with nonneg denominator)",
+      "mul_le_mul_of_nonneg_left (scaling inequalities)",
+      "Rat / ℚ arithmetic (rational number calculations)"
+    ]
   },
   {
     "id": "ann-reciprocal-condition",
@@ -149,7 +184,12 @@
       "gap control",
       "necessity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "harmonic series and partial sums (∑ 1/(dᵢ-1) convergence)",
+      "Finset.sum over Fin k (indexed finite summation)",
+      "Nat.cast to ℚ (embedding naturals into rationals)",
+      "geometric series identity: ∑ dⁱ = (d^n - 1)/(d-1)"
+    ]
   },
   {
     "id": "ann-browns-criterion",
@@ -168,7 +208,12 @@
       "complete sequences",
       "gap condition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Monotone (order-preserving functions in Mathlib)",
+      "Finset.range (finite initial segments {0, …, n})",
+      "Finset.sum (partial sums of a sequence)",
+      "strong induction on ℕ (induction' tactic)"
+    ]
   },
   {
     "id": "ann-browns-proof-structure",
@@ -187,7 +232,12 @@
       "partial sums",
       "case analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.sum_range_succ (unfolding one step of a partial sum)",
+      "Finset.Subset.trans (subset transitivity for extending the answer set)",
+      "Nat.le_succ (n ≤ n+1 used to grow the range)",
+      "tactic: by_cases (classical case split on a decidable proposition)"
+    ]
   },
   {
     "id": "ann-min-index",
@@ -206,7 +256,12 @@
       "Classical.choose",
       "noncomputable"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.exists_min_image (existence of argmin over a nonempty finset)",
+      "Classical.choose / Classical.choose_spec (noncomputable witness extraction)",
+      "Finset.univ for Fin k (the complete finite index set)",
+      "Fin.pos_iff_nonempty (Fin k is nonempty iff k > 0)"
+    ]
   },
   {
     "id": "ann-next-e",
@@ -225,7 +280,12 @@
       "exponent tracking",
       "state update"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Function.update (point-wise function modification)",
+      "Function.update_apply (evaluation of Function.update at a point)",
+      "dite / decidable if-then-else (dependent if for k = 0 guard)",
+      "min_index (choosing which base to increment)"
+    ]
   },
   {
     "id": "ann-e-seq",
@@ -244,7 +304,12 @@
       "state sequence",
       "exponent tracking"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "structural recursion on ℕ (Lean pattern matching on Nat.zero / Nat.succ)",
+      "next_e (single-step exponent update)",
+      "Fin k → ℕ (functions from a finite index type)",
+      "e_seq_succ / e_seq_zero (key lemmas about the sequence)"
+    ]
   },
   {
     "id": "ann-u-seq",
@@ -263,7 +328,12 @@
       "power selection",
       "Brown's criterion input"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "e_seq (exponent state at step n)",
+      "min_index (argmin of current powers)",
+      "Nat.pow (integer exponentiation dᵢ^eᵢ)",
+      "u_seq_monotone and u_seq_gap (the two key properties)"
+    ]
   },
   {
     "id": "ann-greedy-construction",
@@ -282,7 +352,12 @@
       "sequence construction",
       "power selection"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "min_index (selecting the base with the smallest current power)",
+      "next_e (advancing the chosen base's exponent)",
+      "e_seq (tracking the full exponent state over time)",
+      "greedy algorithm correctness (locally optimal choices yield global completeness)"
+    ]
   },
   {
     "id": "ann-u-seq-monotone",
@@ -301,7 +376,12 @@
       "Brown's criterion",
       "greedy property"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Monotone (order-preserving predicate in Mathlib)",
+      "pow_le_pow_right₀ (monotonicity of exponentiation in the exponent)",
+      "Finset.min' and Finset.image (computing the minimum over a finite image set)",
+      "e_seq_succ (how exponents change at each step)"
+    ]
   },
   {
     "id": "ann-u-seq-gap",
@@ -320,7 +400,12 @@
       "reciprocal sum",
       "bound propagation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "algebraic_gap (core inequality: m ≤ 1 + ∑(yᵢ-1)/(dᵢ-1))",
+      "sum_u_seq_eq_geom (∑ u_seq j = ∑ (dⱼ^eⱼ-1)/(dⱼ-1) geometric identity)",
+      "Nat.cast_le (comparing ℕ and ℚ inequalities)",
+      "geom_sum_mul (geometric series factorization: (d^n-1) = (d-1)·∑dⁱ)"
+    ]
   },
   {
     "id": "ann-chosen-index-exponent",
@@ -339,7 +424,12 @@
       "exponent recording",
       "provenance"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "min_index (argmin selection from the current exponent state)",
+      "e_seq (exponent state at step n)",
+      "chosen_pair_injective (injectivity of the (index, exponent) map)",
+      "u_seq_eq_power (connecting u_seq to the (index, exponent) pair)"
+    ]
   },
   {
     "id": "ann-u-seq-eq-power",
@@ -357,7 +447,12 @@
       "definitional equality",
       "power representation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "u_seq (definition as min power over all bases)",
+      "chosen_index / chosen_exponent (definitions wrapping min_index and e_seq)",
+      "Nat.pow (dᵢ^eᵢ exponentiation)",
+      "definitional unfolding (aesop / unfold tactics)"
+    ]
   },
   {
     "id": "ann-chosen-pair-injective",
@@ -376,7 +471,12 @@
       "uniqueness",
       "digit constraint"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Function.Injective (injectivity of a function between types)",
+      "chosen_exponent_strict_mono (exponent strictly increases when same base is chosen again)",
+      "lt_or_gt_of_ne (trichotomy for ordering natural numbers)",
+      "Prod.ext_iff (equality of pairs iff both components equal)"
+    ]
   },
   {
     "id": "ann-digit-decomposition",
@@ -395,7 +495,12 @@
       "unique exponents",
       "base decomposition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.digits and Nat.ofDigits (positional representation and its inverse)",
+      "Finset.image (mapping exponents to the index-filtered subset)",
+      "chosen_pair_injective (each (base, exponent) pair used exactly once)",
+      "Nat.digits_ofDigits (round-trip identity for digit representation)"
+    ]
   },
   {
     "id": "ann-u-seq-zero",
@@ -414,7 +519,12 @@
       "Brown's criterion",
       "d^0 = 1"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "pow_zero (d^0 = 1 for any d)",
+      "e_seq_zero (all exponents start at 0)",
+      "u_seq (definition in terms of e_seq and min_index)",
+      "Nat.one_le_pow (d^n ≥ 1 for d ≥ 1)"
+    ]
   },
   {
     "id": "ann-k-nonzero",
@@ -433,7 +543,12 @@
       "bound tactic",
       "hypothesis derivation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.sum_empty (empty sum equals zero)",
+      "Fin 0 is empty (vacuous quantification over Fin 0)",
+      "linarith / bound tactic (automated numerical reasoning)",
+      "Nat.pos_of_ne_zero (k ≠ 0 ↔ 0 < k)"
+    ]
   },
   {
     "id": "ann-main-theorem-structure",
@@ -452,7 +567,12 @@
       "proof assembly",
       "Brown's criterion"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "browns_criterion (complete sequence from gap condition)",
+      "digits_of_subset_sum_u_seq (subset sum → 0/1 digit representation)",
+      "u_seq_monotone, u_seq_gap, u_seq_zero (the three Brown criterion hypotheses)",
+      "k_ne_zero_of_sum_eq_one (deriving k > 0 from the reciprocal condition)"
+    ]
   },
   {
     "id": "ann-erdos-124-strengthened",
@@ -471,7 +591,12 @@
       "unnecessary hypotheses",
       "clean statement"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "erdos_conjecture_true (the assembled main theorem it wraps)",
+      "Nat.digits and List.toFinset (digit extraction and set conversion)",
+      "Finset.subset_insert / Finset.mem_insert (subset reasoning for {0, 1})",
+      "formal conjecture minimality (removing redundant hypotheses)"
+    ]
   },
   {
     "id": "ann-formal-conjectures",
@@ -491,7 +616,12 @@
       "DeepMind",
       "filters"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Filter.Eventually (∀ᶠ n in atTop, P n means P holds for all sufficiently large n)",
+      "Filter.atTop (the cofinite filter on ℕ, capturing 'eventually')",
+      "erdos_124 / erdos_conjecture_true (the theorems being repackaged)",
+      "Finset.sum over Fin k with ℚ coercion (rational reciprocal sums)"
+    ]
   },
   {
     "id": "ann-worked-example",
@@ -510,6 +640,11 @@
       "representation",
       "digit check"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.digits 2 7 = [1, 1, 1] (binary digit extraction)",
+      "Nat.digits 3 3 = [0, 1] (ternary digit extraction)",
+      "subset sum selection from u_seq (which subset covers the target n)",
+      "digit decomposition (converting subset sums to per-base 0/1 representations)"
+    ]
   }
 ]

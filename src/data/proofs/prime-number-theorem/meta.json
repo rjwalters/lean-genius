@@ -77,49 +77,56 @@
       "title": "Basic Definitions",
       "startLine": 66,
       "endLine": 91,
-      "summary": "Defines primePi (via Mathlib's Nat.primeCounting), primeApprox (x/ln x), and logIntegral Li(x) = ∫₂ˣ dt/ln t."
+      "summary": "Defines primePi (via Mathlib's Nat.primeCounting), primeApprox (x/ln x), and logIntegral Li(x) = ∫₂ˣ dt/ln t.",
+      "mathContext": "\\(\\pi(x) = \\#\\{p \\leq x : p \\text{ prime}\\}\\), \\(\\text{primeApprox}(x) = x/\\ln x\\), \\(\\text{Li}(x) = \\int_2^x \\frac{dt}{\\ln t}\\)"
     },
     {
       "id": "main-theorem",
       "title": "The Prime Number Theorem",
       "startLine": 92,
       "endLine": 130,
-      "summary": "Four equivalent formulations: ratio (π·ln x/x → 1), asymptotic (π ~ x/ln x), error (π − x/ln x = o(x/ln x)), and Li form (π ~ Li)."
+      "summary": "Four equivalent formulations: ratio (π·ln x/x → 1), asymptotic (π ~ x/ln x), error (π − x/ln x = o(x/ln x)), and Li form (π ~ Li).",
+      "mathContext": "\\(\\lim_{x\\to\\infty}\\frac{\\pi(x)\\ln x}{x} = 1\\); equivalently \\(\\pi(x) \\sim x/\\ln x\\), \\(\\pi(x) - x/\\ln x = o(x/\\ln x)\\), and \\(\\pi(x) \\sim \\mathrm{Li}(x)\\)"
     },
     {
       "id": "equivalences",
       "title": "Equivalence of Formulations",
       "startLine": 127,
       "endLine": 189,
-      "summary": "Axiomatized equivalences between all four PNT formulations, including Li(x) ~ x/ln(x) via asymptotic expansion."
+      "summary": "Axiomatized equivalences between all four PNT formulations, including Li(x) ~ x/ln(x) via asymptotic expansion.",
+      "mathContext": "\\(f \\sim g \\iff f - g = o(g)\\); transitivity: \\(\\pi \\sim x/\\ln x \\sim \\mathrm{Li}(x)\\) because \\(\\mathrm{Li}(x) = x/\\ln x + x/\\ln^2 x + \\cdots\\)"
     },
     {
       "id": "main-axiom",
       "title": "The Main Theorem (Axiomatized)",
       "startLine": 190,
       "endLine": 217,
-      "summary": "PNT axiomatized based on PrimeNumberTheoremAnd project; corollaries derive asymptotic and Li forms."
+      "summary": "PNT axiomatized based on PrimeNumberTheoremAnd project; corollaries derive asymptotic and Li forms.",
+      "mathContext": "\\(\\texttt{axiom primeNumberTheorem}\\colon \\text{Tendsto}(\\lambda x,\\, \\pi(x)\\ln x/x)\\;\\texttt{atTop}\\;(\\mathcal{N}\\,1)\\); key step: \\(\\zeta(1+it)\\neq 0\\) via \\(3+4\\cos\\theta+\\cos 2\\theta\\geq 0\\)"
     },
     {
       "id": "consequences",
       "title": "Consequences of PNT",
       "startLine": 218,
       "endLine": 310,
-      "summary": "Prime density → 0, nth prime ~ n ln n, Mertens' sum of reciprocals ~ ln ln x, and prime gaps are sublinear."
+      "summary": "Prime density → 0, nth prime ~ n ln n, Mertens' sum of reciprocals ~ ln ln x, and prime gaps are sublinear.",
+      "mathContext": "\\(\\pi(x)/x \\to 0\\); \\(p_n \\sim n\\ln n\\); \\(\\sum_{p\\leq x}1/p = \\ln\\ln x + M + o(1)\\) where \\(M\\approx 0.2615\\); prime gaps \\(= o(x)\\)"
     },
     {
       "id": "rh-connection",
       "title": "Stronger Versions (Conditional on RH)",
       "startLine": 308,
       "endLine": 352,
-      "summary": "Riemann Hypothesis stated; von Koch's theorem gives |π(x)−Li(x)| = O(√x ln x) conditionally."
+      "summary": "Riemann Hypothesis stated; von Koch's theorem gives |π(x)−Li(x)| = O(√x ln x) conditionally.",
+      "mathContext": "RH: all non-trivial zeros of \\(\\zeta(s)\\) satisfy \\(\\operatorname{Re}(s)=1/2\\). Von Koch (1901): RH \\(\\Rightarrow |\\pi(x)-\\mathrm{Li}(x)| = O(\\sqrt{x}\\ln x)\\)"
     },
     {
       "id": "elementary-bounds",
       "title": "Elementary Bounds",
       "startLine": 353,
       "endLine": 463,
-      "summary": "Chebyshev's pre-PNT bounds (0.92 < π·ln x/x < 1.11), infinitude of primes, and Euler product connection."
+      "summary": "Chebyshev's pre-PNT bounds (0.92 < π·ln x/x < 1.11), infinitude of primes, and Euler product connection.",
+      "mathContext": "Chebyshev (1852): \\(0.92 < \\pi(x)\\ln x/x < 1.11\\) for large \\(x\\). Euler product: \\(\\zeta(s) = \\prod_p (1-p^{-s})^{-1}\\) for \\(\\operatorname{Re}(s)>1\\)"
     }
   ],
   "conclusion": {
