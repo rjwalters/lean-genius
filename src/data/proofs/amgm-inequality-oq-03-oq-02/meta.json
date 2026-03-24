@@ -178,7 +178,7 @@
     {
       "id": "sum-positivity",
       "title": "Sum Positivity Lemma",
-      "startLine": 52,
+      "startLine": 49,
       "endLine": 73,
       "summary": "sum_weighted_rpow_pos: ∑ wᵢzᵢ^r > 0 when ∑ wᵢ = 1 and all zᵢ > 0. Finds a positive weight via contrapositive; uses single_le_sum.",
       "mathContext": "$\\sum w_i = 1 > 0 \\Rightarrow \\exists i_0, w_{i_0} > 0 \\Rightarrow \\sum w_i z_i^r \\geq w_{i_0} z_{i_0}^r > 0$."
@@ -186,7 +186,7 @@
     {
       "id": "derivative",
       "title": "Derivative at r = 0",
-      "startLine": 76,
+      "startLine": 74,
       "endLine": 139,
       "summary": "hasDerivAt_sum_weighted_rpow_zero: d/dr[∑ wᵢzᵢ^r]|_{r=0} = ∑ wᵢ log zᵢ. log_sum_weighted_rpow_zero: f(0) = 0. hasDerivAt_log_sum_weighted_rpow: chain rule gives HasDerivAt for log(∑ wᵢzᵢ^r).",
       "mathContext": "$\\frac{d}{dr}\\sum w_i z_i^r\\big|_{r=0} = \\sum w_i z_i^0 \\log z_i = \\sum w_i \\log z_i$. Chain rule: $(\\log \\circ h)'(0) = h'(0)/h(0) = \\sum w_i \\log z_i$."
@@ -194,7 +194,7 @@
     {
       "id": "main-limit",
       "title": "Core Slope Limit via Derivative Definition",
-      "startLine": 143,
+      "startLine": 139,
       "endLine": 172,
       "summary": "tendsto_log_sum_div_rpow: the key intermediate limit (log ∑ wᵢzᵢ^r)/r → ∑ wᵢ log zᵢ. Uses hasDerivAt_iff_tendsto_slope to convert HasDerivAt at r=0 (with g(0) = 0) into the slope limit g(r)/r → g'(0).",
       "mathContext": "$\\frac{g(r)}{r} = \\frac{g(r) - g(0)}{r - 0} \\to g'(0) = \\sum w_i \\log z_i$ by the definition of derivative, since $g(0) = 0$."
@@ -211,7 +211,7 @@
       "id": "main-theorem",
       "title": "Main Theorem: lim_{r→0} M_r = GM",
       "startLine": 216,
-      "endLine": 248,
+      "endLine": 249,
       "summary": "tendsto_powerMean_zero: the headline result proving Filter.Tendsto (fun r => (∑ wᵢzᵢ^r)^(1/r)) (nhdsWithin 0 {0}ᶜ) (nhds (∏ zᵢ^wᵢ)). Proof: rewrite both sides to exp form, compose the slope limit with Real.continuous_exp.",
       "mathContext": "$\\lim_{r \\to 0} M_r = \\lim_{r \\to 0} e^{f(r)/r} = e^{\\sum w_i \\log z_i} = \\prod z_i^{w_i} = \\text{GM}$. The proof is a 4-step composition: (1) get the slope limit, (2) rewrite GM to exp form, (3) rewrite M_r to exp form via congr, (4) apply continuity of exp."
     },
