@@ -135,19 +135,22 @@ theorem moduli_even :
   rw [hm]
   exact Nat.Odd.sub_odd hodd odd_one
 
-
 /-
-## Section VIII: Computational Verifications
+## Section VII: Verified Properties of Easy Primes
 -/
 
-/-- All elements of easyPrimes are indeed prime. -/
-theorem easyPrimes_all_prime : ∀ p ∈ easyPrimes, Nat.Prime p := by
-  decide
+/-- Every element of easyPrimes is prime. -/
+theorem easyPrimes_all_prime : ∀ p ∈ easyPrimes, Nat.Prime p := by decide
 
-/-- All elements of easyPrimes are ≥ 5. -/
-theorem easyPrimes_ge_five : ∀ p ∈ easyPrimes, 5 ≤ p := by
-  decide
+/-- Every element of easyPrimes is ≥ 5. -/
+theorem easyPrimes_ge_five : ∀ p ∈ easyPrimes, 5 ≤ p := by decide
 
-/-- For each p in easyPrimes, (p - 1) divides 360. -/
-theorem easyPrimes_mod_divides_360 : ∀ p ∈ easyPrimes, (p - 1) ∣ 360 := by
-  decide
+/-- For each easy prime p, (p - 1) divides 360 = 2³ · 3² · 5. -/
+theorem easyPrimes_mod_divides_360 : ∀ p ∈ easyPrimes, (p - 1) ∣ 360 := by decide
+
+/-- The sum of 1/(p-1) over easyPrimes is 109/180 < 1.
+    This proves that easyPrimes alone (each used once) CANNOT form
+    a covering system, since the necessary condition ∑ 1/mᵢ ≥ 1 fails.
+    More moduli or repeated usage is needed for Problem #273. -/
+theorem easyPrimes_reciprocal_sum_lt_one :
+    easyPrimes.sum (fun p => (1 : ℚ) / ((p : ℚ) - 1)) < 1 := by native_decide
