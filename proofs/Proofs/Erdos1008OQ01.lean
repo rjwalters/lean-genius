@@ -229,7 +229,26 @@ axiom cfs_admissible_exists : ∃ c : ℝ, IsAdmissibleConstant c
 
 /-- The optimal constant is positive (follows from CFS admissibility) -/
 theorem optimal_constant_pos : optimalConstant > 0 := by
-  sorry -- Requires showing sSup is positive given cfs_admissible_exists
+  obtain ⟨c₀, hc₀⟩ := cfs_admissible_exists
+  -- Show the set of admissible constants is bounded above by 1
+  have hbdd : BddAbove {c : ℝ | IsAdmissibleConstant c} := by
+    refine ⟨1, fun c hc => ?_⟩
+    -- Specialize to Fin 2, completeGraph (which has exactly 1 edge)
+    obtain ⟨H, hdr, hsub, _, hge⟩ := hc.2 (Fin 2) (completeGraph (Fin 2))
+    letI := hdr
+    -- completeGraph (Fin 2) has 1 edge
+    have hone : (completeGraph (Fin 2)).edgeFinset.card = 1 := by native_decide
+    -- H is a subgraph, so H has ≤ 1 edge
+    have hle : H ≤ completeGraph (Fin 2) := hsub
+    have hH_sub : H.edgeFinset ⊆ (completeGraph (Fin 2)).edgeFinset := by
+      intro e he; rw [SimpleGraph.mem_edgeFinset] at he ⊢
+      exact SimpleGraph.edgeSet_mono hle he
+    have hH_card : H.edgeFinset.card ≤ 1 := by linarith [Finset.card_le_card hH_sub]
+    -- From hge: (H.edgeFinset.card : ℝ) ≥ c * (1 : ℝ) ^ (2/3) = c
+    simp only [hone, Nat.cast_one, Real.one_rpow, mul_one] at hge
+    linarith [show (H.edgeFinset.card : ℝ) ≤ 1 from by exact_mod_cast hH_card]
+  -- c₀ is in the set and is positive; sSup ≥ c₀ > 0
+  exact lt_of_lt_of_le hc₀.1 (le_csSup hbdd hc₀)
 
 /-
 ## Part VI: The Open Question
@@ -260,7 +279,47 @@ theorem c4free_mono {G H : SimpleGraph V} (hle : H ≤ G) (hG : IsC4Free G) : Is
 /-- A graph with at most 3 edges is C₄-free -/
 theorem c4free_of_few_edges (G : SimpleGraph V) [DecidableRel G.Adj]
     (h : G.edgeFinset.card ≤ 3) : IsC4Free G := by
-  sorry -- A C₄ requires at least 4 edges
+  intro ⟨a, b, c, d, hab, hbc, hcd, hda, hac, hbd, e_ab, e_bc, e_cd, e_da⟩
+  -- The 4 cycle edges are in G.edgeFinset
+  have m1 : s(a, b) ∈ G.edgeFinset := G.mem_edgeFinset.mpr e_ab
+  have m2 : s(b, c) ∈ G.edgeFinset := G.mem_edgeFinset.mpr e_bc
+  have m3 : s(c, d) ∈ G.edgeFinset := G.mem_edgeFinset.mpr e_cd
+  have m4 : s(d, a) ∈ G.edgeFinset := G.mem_edgeFinset.mpr e_da
+  -- The 4 edges are pairwise distinct (via Sym2.eq_iff)
+  have ne12 : s(a, b) ≠ s(b, c) := by
+    intro heq; rcases Sym2.eq_iff.mp heq with ⟨rfl, _⟩ | ⟨rfl, _⟩ <;> contradiction
+  have ne13 : s(a, b) ≠ s(c, d) := by
+    intro heq; rcases Sym2.eq_iff.mp heq with ⟨rfl, _⟩ | ⟨h1, _⟩
+    · exact hac rfl
+    · exact hda h1.symm
+  have ne14 : s(a, b) ≠ s(d, a) := by
+    intro heq; rcases Sym2.eq_iff.mp heq with ⟨h1, _⟩ | ⟨_, h2⟩
+    · exact hda h1.symm
+    · exact hbd h2
+  have ne23 : s(b, c) ≠ s(c, d) := by
+    intro heq; rcases Sym2.eq_iff.mp heq with ⟨rfl, _⟩ | ⟨rfl, _⟩ <;> contradiction
+  have ne24 : s(b, c) ≠ s(d, a) := by
+    intro heq; rcases Sym2.eq_iff.mp heq with ⟨rfl, _⟩ | ⟨h1, _⟩
+    · exact hbd rfl
+    · exact hab h1.symm
+  have ne34 : s(c, d) ≠ s(d, a) := by
+    intro heq; rcases Sym2.eq_iff.mp heq with ⟨rfl, _⟩ | ⟨h1, _⟩
+    · exact hcd rfl
+    · exact hac h1.symm
+  -- 4 distinct elements in G.edgeFinset ⟹ card ≥ 4
+  have hsub : ({s(a, b), s(b, c), s(c, d), s(d, a)} : Finset (Sym2 V)) ⊆ G.edgeFinset := by
+    intro e he
+    simp only [Finset.mem_insert, Finset.mem_singleton] at he
+    rcases he with rfl | rfl | rfl | rfl <;> assumption
+  have nm3 : s(c, d) ∉ ({s(d, a)} : Finset (Sym2 V)) := Finset.notMem_singleton.mpr ne34
+  have nm2 : s(b, c) ∉ insert s(c, d) ({s(d, a)} : Finset (Sym2 V)) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton, not_or]; exact ⟨ne23, ne24⟩
+  have nm1 : s(a, b) ∉ insert s(b, c) (insert s(c, d) ({s(d, a)} : Finset (Sym2 V))) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton, not_or]; exact ⟨ne12, ne13, ne14⟩
+  have hcard : ({s(a, b), s(b, c), s(c, d), s(d, a)} : Finset (Sym2 V)).card = 4 := by
+    simp only [Finset.card_insert_of_notMem nm1, Finset.card_insert_of_notMem nm2,
+      Finset.card_insert_of_notMem nm3, Finset.card_singleton]
+  linarith [Finset.card_le_card hsub]
 
 omit [Fintype V] [DecidableEq V] in
 /-- In a C₄-free graph, any two vertices have at most one common neighbor -/
