@@ -67,9 +67,19 @@ theorem orbit_strictly_increasing (n : ℕ) (hn : n ≥ 1) (k : ℕ) :
   exact h_strictly_increasing (hOrbit n k) (hOrbit_pos n hn k)
 
 /-- h(n) ≤ 2n for all n ≥ 1 (since τ(n) ≤ n).
-    The bound τ(n) ≤ n requires Finset.Icc card lemmas not easily accessible. -/
-axiom h_upper (n : ℕ) (hn : n ≥ 1) :
-    h n ≤ 2 * n
+    Proof: divisors of n are in [1, n], so |divisors| ≤ |[1,n]| = n. -/
+theorem h_upper (n : ℕ) (hn : n ≥ 1) :
+    h n ≤ 2 * n := by
+  simp only [h]
+  suffices (Nat.divisors n).card ≤ n by omega
+  calc (Nat.divisors n).card
+      ≤ (Finset.Icc 1 n).card := by
+        apply Finset.card_le_card
+        intro d hd
+        simp only [Finset.mem_Icc]
+        have hdvd := (Nat.mem_divisors.mp hd).1
+        exact ⟨Nat.pos_of_dvd_of_pos hdvd (by omega), Nat.le_of_dvd (by omega) hdvd⟩
+    _ = n := by simp [Nat.card_Icc]
 
 /-- For primes p, h(p) = p + 2 (since τ(p) = 2). -/
 theorem h_prime (p : ℕ) (hp : p.Prime) :
