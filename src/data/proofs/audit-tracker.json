@@ -302,7 +302,7 @@
       "lastAudited": "2026-03-24T09:38:41Z",
       "result": "clean",
       "issues": [
-        "Stale axiom annotation: section 'countable-ordinals' summary says 'States the axiom α < ω₁ ↔ IsCountableOrdinal α' but lt_omega1_iff_countable is a fully proved theorem, not an axiom"
+        "Stale axiom annotation: section 'countable-ordinals' summary says 'States the axiom \u03b1 < \u03c9\u2081 \u2194 IsCountableOrdinal \u03b1' but lt_omega1_iff_countable is a fully proved theorem, not an axiom"
       ]
     },
     "cantor-diagonalization-oq-02-oq-01": {
@@ -322,7 +322,7 @@
       "lastAudited": "2026-03-24T20:00:00Z",
       "result": "issues-fixed",
       "issues": [
-        "Uses /-! docstring sections (6 occurrences) which cause Aristotle parsing errors — fix PR #6341 pending"
+        "Uses /-! docstring sections (6 occurrences) which cause Aristotle parsing errors \u2014 fix PR #6341 pending"
       ]
     },
     "cauchy-schwarz-integral-oq-01-oq-01": {
