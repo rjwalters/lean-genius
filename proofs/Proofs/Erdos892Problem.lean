@@ -215,12 +215,60 @@ theorem erdos_1935_necessary (b : ℕ → ℕ) :
     by_contra hlt; push_neg at hlt
     have h1 : C * b n < C * C := mul_lt_mul_of_pos_left hlt hCpos
     linarith [hdom n, hN₀ n hn]
-  -- Bound: head ≤ N₀/(2·log 2), tail ≤ 2C · Sa
-  use ↑N₀ * (1 / (2 * Real.log 2)) + 2 * ↑C * Sa
+  -- Head bound: use actual finite sum of first N₀ terms (independent of N)
+  use (∑ n ∈ Finset.range N₀,
+    (if b n ≥ 2 then (1 : ℝ) / ((b n : ℝ) * Real.log (b n : ℝ)) else 0))
+    + 2 * ↑C * Sa
   intro N
-  -- TODO: Split sum at min N N₀, bound head terms by 1/(2·log 2),
-  -- bound tail terms using reciprocal_log_comparison
-  sorry
+  -- Non-negativity of original sum terms
+  have hf_nonneg : ∀ n, 0 ≤
+      (if b n ≥ 2 then (1 : ℝ) / ((b n : ℝ) * Real.log (b n : ℝ)) else 0) := by
+    intro n; split_ifs with hbn
+    · exact div_nonneg zero_le_one (mul_nonneg (Nat.cast_nonneg _)
+        (Real.log_nonneg (by exact_mod_cast (show 1 ≤ b n by omega))))
+    · norm_num
+  -- Non-negativity of comparison bound terms
+  have hg_nonneg : ∀ n, 0 ≤
+      2 * (C : ℝ) * ((1 : ℝ) / ((a n : ℝ) * Real.log (a n : ℝ))) := by
+    intro n
+    apply mul_nonneg (mul_nonneg (by norm_num) (Nat.cast_nonneg _))
+    exact div_nonneg zero_le_one (mul_nonneg (Nat.cast_nonneg _)
+      (Real.log_nonneg (by exact_mod_cast (show 1 ≤ a n by have := hge n; omega))))
+  -- Split sum at N₀ using filter decomposition
+  have hsplit := (Finset.sum_filter_add_sum_filter_not (Finset.range N) (· < N₀)
+    (fun n => if b n ≥ 2 then (1 : ℝ) / ((b n : ℝ) * Real.log (b n : ℝ)) else 0)).symm
+  rw [hsplit]
+  apply add_le_add
+  -- Part 1 (Head): filter (· < N₀) ⊆ range N₀, all terms non-negative
+  · apply Finset.sum_le_sum_of_subset_of_nonneg
+    · intro n hn
+      simp only [Finset.mem_filter, Finset.mem_range] at hn ⊢
+      exact hn.2
+    · intro n _ _; exact hf_nonneg n
+  -- Part 2 (Tail): termwise comparison, then factor out 2C and bound by Sa
+  · calc ∑ n ∈ (Finset.range N).filter (fun n => ¬(n < N₀)),
+          (if b n ≥ 2 then (1 : ℝ) / ((b n : ℝ) * Real.log (b n : ℝ)) else 0)
+        ≤ ∑ n ∈ (Finset.range N).filter (fun n => ¬(n < N₀)),
+          (2 * (C : ℝ) * ((1 : ℝ) / ((a n : ℝ) * Real.log (a n : ℝ)))) := by
+          apply Finset.sum_le_sum
+          intro n hn
+          simp only [Finset.mem_filter, Finset.mem_range] at hn
+          have hn_ge : n ≥ N₀ := by omega
+          split_ifs with hbn
+          · rw [mul_one_div]
+            exact reciprocal_log_comparison (a n) (b n) C (hdom n) (hge n) hbn (hb_large n hn_ge)
+          · exact hg_nonneg n
+      _ ≤ ∑ n ∈ Finset.range N,
+          (2 * (C : ℝ) * ((1 : ℝ) / ((a n : ℝ) * Real.log (a n : ℝ)))) := by
+          apply Finset.sum_le_sum_of_subset_of_nonneg
+          · exact Finset.filter_subset _ _
+          · intro n _ _; exact hg_nonneg n
+      _ = 2 * ↑C * ∑ n ∈ Finset.range N,
+          ((1 : ℝ) / ((a n : ℝ) * Real.log (a n : ℝ))) := by
+          rw [← Finset.mul_sum]
+      _ ≤ 2 * ↑C * Sa := by
+          exact mul_le_mul_of_nonneg_left (hSa N)
+            (mul_nonneg (by norm_num) (Nat.cast_nonneg _))
 
 /-
 ## Section VII: GCD Condition
