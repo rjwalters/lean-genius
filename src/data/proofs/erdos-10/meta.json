@@ -24,9 +24,9 @@
     "crossReferences": [
       "erdos-949"
     ],
-    "axiomCount": 5,
-    "assumptions": "5 axioms: grechuk_not_3_powers (k=3 counterexample, computational), crocker_theorem_odd (infinite odd de Polignac), infinite_even_not_two_powers (infinite even non-representable), erdos_covering_congruence (covering congruence), chen_minimal_modulus (minimality of 11184810). Former trivial axioms (romanoff, gallagher, chen_density) proved.",
-    "lineCount": 647,
+    "axiomCount": 8,
+    "assumptions": "8 axiom declarations: erdos_10_conjecture (main conjecture), gallagher_density (density result), granville_soundararajan_odd/even (representation conjectures), grechuk_counterexample (k=3 counterexample), infinitely_many_exceptions_k2/k3 (exception existence), romanoff_positive_density (positive density). All results are deep number-theoretic facts axiomatized in the formalization.",
+    "lineCount": 109,
     "prerequisites": [
       "Prime numbers and their distribution",
       "Density of sets of integers (lower density, natural density)",
