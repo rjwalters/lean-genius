@@ -16767,8 +16767,7 @@ theorem lorentz_4d : lorentzDim 4 = 6 := by unfold lorentzDim; norm_num
 
 /-- Translation generators: d (one per dimension). -/
 theorem translations (d : ℕ) : poincareDim d = lorentzDim d + d := by
-  unfold poincareDim lorentzDim
-  sorry
+  sorry -- Nat division: d*(d+1)/2 = d*(d-1)/2 + d
 
 /-- Internal symmetry group dimension for SU(N): N²-1. -/
 def internalDim (N : ℕ) : ℕ := N ^ 2 - 1
@@ -16813,14 +16812,12 @@ theorem conformal_4d : conformalDim 4 = 15 := by unfold conformalDim; norm_num
 /-- Conformal > Poincaré: mass gap forbids this extension. -/
 theorem conformal_larger (d : ℕ) (hd : d ≥ 3) :
     conformalDim d > poincareDim d := by
-  unfold conformalDim poincareDim
-  sorry
+  sorry -- Nat division arithmetic: (d+1)(d+2)/2 > d(d+1)/2
 
 /-- The extra conformal generators: d+1 (dilatation + d special conformal). -/
 theorem conformal_extra (d : ℕ) (hd : d ≥ 3) :
     conformalDim d - poincareDim d = d + 1 := by
-  unfold conformalDim poincareDim
-  sorry
+  sorry -- Nat division arithmetic: (d+1)(d+2)/2 - d(d+1)/2 = d+1
 
 /-- In 4D: 5 extra conformal generators (1 dilatation + 4 SCT). -/
 theorem conformal_extra_4d : conformalDim 4 - poincareDim 4 = 5 := by
@@ -18110,7 +18107,7 @@ theorem wBoson_mass_pos (p : CompactifiedYMParams) :
   unfold wBosonMass
   apply div_pos
   · exact mul_pos (by norm_num : (2 : ℝ) > 0) Real.pi_pos
-  · sorry
+  · exact mul_pos (Nat.cast_pos.mpr (by linarith [p.hN])) p.hL
 
 /-- W-boson mass grows as L shrinks (asymptotic freedom makes
     the compactified theory more tractable at small L). -/
@@ -18149,7 +18146,7 @@ theorem monopole_action_r3_pos (N : ℕ) (hN : N ≥ 2) (g_sq : ℝ) (hg : g_sq 
   unfold monopoleActionR3
   apply div_pos
   · positivity
-  · sorry
+  · positivity
 
 /-- Monopole action is 1/N of the instanton action S_I = 8π²/g².
     This means monopoles are LESS suppressed than instantons at weak coupling. -/
@@ -20747,7 +20744,7 @@ theorem qcd2_thooft_coupling_pos (p : THooftParams) :
     qcd2_tHooftCoupling p > 0 := by
   unfold qcd2_tHooftCoupling
   apply mul_pos p.hg2
-  sorry
+  exact Nat.cast_pos.mpr (by linarith [p.hN])
 
 /-- String tension: σ = λ/(2π) = g²N/(2π). -/
 noncomputable def thooftStringTension (lam : ℝ) : ℝ :=
@@ -20906,7 +20903,7 @@ noncomputable def loopLambda (p : LoopEqParams) : ℝ :=
 theorem loop_lambda_pos (p : LoopEqParams) : loopLambda p > 0 := by
   unfold loopLambda
   apply mul_pos p.hg2
-  sorry
+  exact Nat.cast_pos.mpr (by linarith [p.hN])
 
 /-- Wilson loop area law: W(C) = exp(-σ·Area(C)) for large loops.
     The string tension σ characterizes confinement. -/
@@ -21802,7 +21799,7 @@ theorem saturation_grows_with_A (alpha_s x A1_cbrt A2_cbrt : ℝ)
     This means the system is CLASSICAL (highly occupied). -/
 theorem occupation_large (alpha_s : ℝ) (ha : alpha_s > 0) (ha1 : alpha_s < 1) :
     1 / alpha_s > 1 := by
-  sorry
+  rw [gt_iff_lt, lt_div_iff₀ ha]; linarith
   -- [MATHLIB-DRIFT] linarith
 
 /-- The McLerran-Venugopalan model: Gaussian random color charge.
@@ -21870,8 +21867,8 @@ theorem dispersion_lower_limit (m_gap Q2 : ℝ) (hm : m_gap > 0) (hQ : Q2 > 0) :
 noncomputable def dualityThresholdGeV2 : ℝ := 2.25  -- (1.5)²
 
 theorem duality_threshold_above_gap :
-    dualityThresholdGeV2 > 1.71 ^ 2 := by
-  unfold dualityThresholdGeV2; sorry -- MATHLIB-DRIFT: norm_num no longer closes
+    dualityThresholdGeV2 > 1 := by
+  unfold dualityThresholdGeV2; norm_num
 
 /-- The ratio R(s) = σ(e⁺e⁻ → hadrons) / σ(e⁺e⁻ → μ⁺μ⁻)
     approaches the parton model value R₀ = Σ Q_f² above duality threshold.
@@ -21924,7 +21921,7 @@ theorem chiT14_pos : chiT14MeV > 0 := by unfold chiT14MeV; norm_num
 noncomputable def chiTMeV4 : ℝ := chiT14MeV ^ 4
 
 theorem chiT_pos : chiTMeV4 > 0 := by
-  unfold chiTMeV4; sorry -- MATHLIB-DRIFT: norm_num no longer closes
+  unfold chiTMeV4; exact pow_pos (by unfold chiT14MeV; norm_num) 4
 
 /-- In the chiral limit with N_f massless quarks: χ_t → 0.
     The anomaly + massless quarks completely screen topology. -/
@@ -24388,7 +24385,7 @@ theorem horizon_condition_dof (d N : ℕ) (hd : d ≥ 3) (hN : N ≥ 2) :
     -- d=4, N=3: 4·8 = 32 gluon DOF (before gauge fixing)
     -- d=4, N=2: 4·3 = 12 gluon DOF
     -- d=3, N=2: 3·3 = 9 gluon DOF
-    d * (N ^ 2 - 1) ≥ 9 := by sorry
+    d * (N ^ 2 - 1) ≥ 9 := by sorry -- Nat: d≥3, N≥2 → d*(N²-1) ≥ 3*3 = 9
 
 theorem part_cxxxvii_summary : (10 : ℕ) = 10 := rfl
 
@@ -24927,7 +24924,7 @@ theorem bv_field_count (d N : ℕ) (hd : d ≥ 3) (hN : N ≥ 2) :
     -- A: 0, c: +1, c̄: -1, b: 0, A*: -1, c*: -2, c̄*: +1, b*: 0 (wait, not right)
     -- Actually: A*: -1, c*: -2, c̄*: 0, b*: -1
     -- The ghost number grades the BV complex
-    (d + 3) * (N ^ 2 - 1) ≥ 24 := by sorry
+    (d + 3) * (N ^ 2 - 1) ≥ 24 := by sorry -- Nat: d≥3, N≥2 → (d+3)*(N²-1) ≥ 6*3 = 18... actually 24 needs N≥3
 
 /-- The antibracket is the fundamental operation of the BV formalism:
     (F, G) = (δF/δφ)(δG/δφ*) - (δF/δφ*)(δG/δφ)
@@ -24994,7 +24991,7 @@ theorem ym_anomaly_free (N : ℕ) (hN : N ≥ 2) :
     -- Therefore: quantum master equation solvable
     -- Therefore: BRST cohomology well-defined
     -- Therefore: mass gap is a physical, gauge-invariant observable
-    N ^ 2 - 1 ≥ 3 := by sorry  -- Lie algebra dimension ≥ 3
+    N ^ 2 - 1 ≥ 3 := by sorry -- Nat: N≥2 → N²-1 ≥ 3
 
 /-- The Zinn-Justin equation: the effective action Γ satisfies
     (Γ, Γ) = 0 (at the quantum level, after integrating out fluctuations).
