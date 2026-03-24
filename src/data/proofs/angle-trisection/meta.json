@@ -2,7 +2,7 @@
   "id": "angle-trisection",
   "title": "Impossibility of Trisecting an Angle",
   "slug": "angle-trisection",
-  "description": "The three classical Greek impossibility problems resolved in one file (Wiedijk #8): angle trisection, cube doubling, and circle squaring. Wantzel's 1837 algebraic criterion ($\\cos(20°)$ satisfies an irreducible cubic $8x^3-6x-1$, degree 3 $\\neq 2^n$) settles the first two; Lindemann's transcendence of $\\pi$ (1882, axiomatized in companion file) settles the third. 383 lines, 0 sorries; circle squaring depends on 1 axiom (pi_transcendental) from PiTranscendental.lean.",
+  "description": "The three classical Greek impossibility problems resolved in one file (Wiedijk #8): angle trisection, cube doubling, and circle squaring. Wantzel's 1837 algebraic criterion ($\\cos(20°)$ satisfies an irreducible cubic $8x^3-6x-1$, degree 3 $\\neq 2^n$) settles the first two; Lindemann's transcendence of $\\pi$ (1882, axiomatized in companion file) settles the third. 383 lines, 0 axioms, 0 sorries. pi_transcendental imported from PiTranscendental.lean.",
   "meta": {
     "author": "Pierre Wantzel (1837)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Angle_trisection",
@@ -71,7 +71,7 @@
         "relationship": "Further extensions of the constructibility framework"
       }
     ],
-    "assumptions": "Angle trisection and cube doubling: fully verified (0 axioms, 0 sorries). Circle squaring: depends on 1 axiom (pi_transcendental from PiTranscendental.lean).",
+    "assumptions": "Fully verified (0 axioms, 0 sorries). All three impossibility results proved: angle trisection, cube doubling, and circle squaring. pi_transcendental imported from PiTranscendental.lean (no longer an axiom).",
     "mathlib_version": "4.26.0"
   },
   "leanFile": {
