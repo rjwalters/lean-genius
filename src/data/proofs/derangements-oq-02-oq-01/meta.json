@@ -84,35 +84,40 @@
       "title": "Module Header and Imports",
       "startLine": 1,
       "endLine": 20,
-      "summary": "Documents the open question (generalizing S(n,k) = C(n,k)·D(n-k) from Fin n to arbitrary Fintype α) and imports DerangementsOQ02 for the Fin n result. Opens Finset, Fintype, Nat, and Equiv.Perm namespaces and declares the type variable α with DecidableEq and Fintype instances."
+      "summary": "Documents the open question (generalizing S(n,k) = C(n,k)·D(n-k) from Fin n to arbitrary Fintype α) and imports DerangementsOQ02 for the Fin n result. Opens Finset, Fintype, Nat, and Equiv.Perm namespaces and declares the type variable α with DecidableEq and Fintype instances.",
+      "mathContext": "Import `PartialDerangements.card_perms_with_kfixed` from OQ-02: $|\\{\\sigma \\in S_n : |\\text{Fix}(\\sigma)| = k\\}| = \\binom{n}{k} D(n-k)$ for $\\text{Fin}\\;n$."
     },
     {
       "id": "section-i",
       "title": "Fixed-Point Count Preservation",
       "startLine": 23,
       "endLine": 37,
-      "summary": "fixedPoint_count_permCongr: permutation conjugation via permCongr preserves the number of fixed points. Proved by explicit bijection between fixed-point subtypes."
+      "summary": "fixedPoint_count_permCongr: permutation conjugation via permCongr preserves the number of fixed points. Proved by explicit bijection between fixed-point subtypes.",
+      "mathContext": "$|\\{x : \\alpha \\mid \\sigma(x) = x\\}| = |\\{y : \\beta \\mid (e \\circ \\sigma \\circ e^{-1})(y) = y\\}|$ via the bijection $x \\mapsto e(x)$."
     },
     {
       "id": "section-ii",
       "title": "Filter Bijection for k-Fixed Permutations",
       "startLine": 42,
       "endLine": 60,
-      "summary": "card_kfixed_permCongr: the k-fixed-point filter on Perm α bijects with the filter on Perm β via permCongr, giving equal cardinalities."
+      "summary": "card_kfixed_permCongr: the k-fixed-point filter on Perm α bijects with the filter on Perm β via permCongr, giving equal cardinalities.",
+      "mathContext": "$\\{\\sigma \\in \\text{Perm}\\;\\alpha : |\\text{Fix}(\\sigma)| = k\\} \\cong \\{\\tau \\in \\text{Perm}\\;\\beta : |\\text{Fix}(\\tau)| = k\\}$ via $\\sigma \\mapsto e \\circ \\sigma \\circ e^{-1}$."
     },
     {
       "id": "section-iii",
       "title": "Main Generalization",
       "startLine": 65,
       "endLine": 79,
-      "summary": "card_perms_with_kfixed_fintype: main theorem S(α,k) = C(|α|,k)·D(|α|-k) for arbitrary Fintype α, via transport from Fin |α|."
+      "summary": "card_perms_with_kfixed_fintype: main theorem S(α,k) = C(|α|,k)·D(|α|-k) for arbitrary Fintype α, via transport from Fin |α|.",
+      "mathContext": "$S(\\alpha, k) = \\binom{|\\alpha|}{k} \\cdot D(|\\alpha| - k)$ for any Fintype $\\alpha$. Two-line proof: transport via $\\alpha \\simeq \\text{Fin}\\;|\\alpha|$, then apply the $\\text{Fin}\\;n$ result."
     },
     {
       "id": "section-iv",
       "title": "Corollaries for Arbitrary Fintype",
       "startLine": 84,
       "endLine": 123,
-      "summary": "Three corollaries: S(α,|α|-1) = 0 (for |α| ≥ 2), S(α,|α|) = 1 (only identity), and ∑ S(α,k) = |α|!."
+      "summary": "Three corollaries: S(α,|α|-1) = 0 (for |α| ≥ 2), S(α,|α|) = 1 (only identity), and ∑ S(α,k) = |α|!.",
+      "mathContext": "$S(\\alpha, |\\alpha|-1) = 0$ (can't fix all but one), $S(\\alpha, |\\alpha|) = 1$ (only $\\text{id}$), $\\sum_{k=0}^{|\\alpha|} S(\\alpha, k) = |\\alpha|!$ (partition of $S_{|\\alpha|}$)."
     }
   ],
   "conclusion": {
