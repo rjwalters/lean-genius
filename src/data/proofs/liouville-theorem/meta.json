@@ -35,7 +35,7 @@
     "originalContributions": [
       "Pedagogical presentation of Liouville's approximation theorem",
       "Connection to Roth's theorem and Diophantine approximation",
-      "Properties of Liouville numbers (uncountable, measure zero)"
+      "Properties of Liouville numbers (uncountable, measure zero) (axiomatized, not proved)"
     ],
     "dateAdded": "2025-12-29",
     "axiomCount": 6,
@@ -162,7 +162,7 @@
     },
     {
       "targetId": "hermite-lindemann",
-      "relationship": "generalizes",
+      "relationship": "related",
       "description": "The Hermite-Lindemann theorem provides a much more powerful transcendence criterion (e^α transcendental for algebraic α ≠ 0), superseding Liouville's approximation approach for specific constants"
     },
     {
@@ -172,7 +172,7 @@
     },
     {
       "targetId": "sqrt2-irrational",
-      "relationship": "specializes",
+      "relationship": "related",
       "description": "Irrationality of √2 is the simplest case of the algebraic-transcendental hierarchy: √2 is algebraic of degree 2, hence not Liouville, while Liouville numbers go further and are transcendental"
     },
     {

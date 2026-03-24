@@ -131,7 +131,7 @@
     "title": "Unique Factorization Monoid",
     "content": "**Algebraic Structure**: $\\mathbb{N}$ is a `UniqueFactorizationMonoid`.\n\n**Definition**: A monoid where every nonzero element has a unique factorization into irreducibles (up to associates).\n\n**For $\\mathbb{N}$**: Irreducibles = Primes (this equivalence holds in all UFDs but fails in general integral domains). The only unit is $1$, so 'up to associates' means 'up to ordering'.\n\n**Lean**: `inferInstance` — Mathlib already has the instance `UniqueFactorizationMonoid ℕ`, so no proof is needed.\n\n**Generalization hierarchy**: UFD $\\supset$ PID $\\supset$ Euclidean domain. Examples: $\\mathbb{Z}[x]$ is a UFD (by Gauss's Lemma), $\\mathbb{Z}[i]$ is a Euclidean domain (hence UFD). But $\\mathbb{Z}[\\sqrt{-5}]$ is NOT a UFD.",
     "mathContext": "UniqueFactorizationMonoid ℕ: every n ≥ 1 factors uniquely into irreducibles. For ℕ, irreducible ↔ prime (Nat.irreducible_iff_nat_prime). The instance is automatic via inferInstance since Mathlib provides it.",
-    "significance": "key",
+    "significance": "supporting",
     "relatedConcepts": [
       "UFD",
       "PID",

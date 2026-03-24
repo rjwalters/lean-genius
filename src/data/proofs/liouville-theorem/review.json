@@ -3,14 +3,12 @@
   "proofId": "liouville-theorem",
   "reviewDate": "2026-03-24T12:30:00Z",
   "reviewer": "peer-reviewer",
-
   "overallAssessment": {
     "grade": "B-",
     "oneLiner": "Superb pedagogical exposition of Liouville's theorem with honest axiom labeling, but formal content is thin — all theorems are one-liners and one axiom is provably unnecessary",
     "tier": "B/C",
     "tierJustification": "Core Wiedijk #18 result (Liouville numbers are transcendental) comes from Mathlib one-liner. File extends with 6 axiomatized results (approximation theorem, closure properties, uncountability, Roth's theorem) and extensive exposition. Formal substance is Tier B for the Mathlib core, Tier C for the axiomatized extensions."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -83,7 +81,6 @@
       "recommendation": "Change relationship to 'related' and simplify the description to note the contrast: sqrt(2) is algebraic (resists approximation beyond c/q^2 by Liouville's theorem), while Liouville numbers are transcendental."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
@@ -97,21 +94,21 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Reframe originalContributions[2] to honestly describe axiomatized properties rather than implying they are proved. Also update theoremCount to distinguish genuine theorems from axiom wrappers.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "medium",
       "target": "enricher",
       "description": "Fix cross-reference relationships: change hermite-lindemann from 'generalizes' to 'related' or 'supersedes', and change sqrt2-irrational from 'specializes' to 'related' with corrected description.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "low",
       "target": "enricher",
       "description": "Correct the historical claim in ann-roth annotation about the 'large sieve method' — Roth used the polynomial/index method, not the large sieve.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",
@@ -121,7 +118,6 @@
       "status": "open"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 5,
     "originalityAccuracy": 7,
@@ -131,6 +127,5 @@
     "internalConsistency": 6,
     "overall": 6.5
   },
-
   "suggestedBestFraming": "A pedagogical Mathlib wrapper for Wiedijk #18 (Liouville's theorem) that proves Liouville numbers are transcendental and constructs the Liouville constant via Mathlib, then axiomatizes five additional properties (approximation bound, uncountability, closure properties, Roth's theorem) with extensive exposition covering the Thue-Siegel-Roth progression and measure-category duality."
 }
