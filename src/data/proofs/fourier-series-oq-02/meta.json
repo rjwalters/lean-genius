@@ -19,7 +19,7 @@
       "open-question"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 0,
     "dateAdded": "2026-03-23",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -74,9 +74,9 @@
       "fourierCoeff_difference_formula: difference formula for coefficients",
       "full regularity-decay hierarchy: Hölder → C^k → C^∞ → analytic"
     ],
-    "axiomCount": 4,
-    "lineCount": 384,
-    "assumptions": "4 axioms (optimality, regularity converse, smooth decay, analytic decay). 3 sorries (1 non-integrable edge case, 2 former axioms being proved: sq summability, Riemann-Lebesgue)."
+    "axiomCount": 6,
+    "lineCount": 371,
+    "assumptions": "6 axiom(s): square-summability (α > 1/2), Riemann-Lebesgue from Hölder, optimality (Weierstrass construction), partial converse (Sobolev embedding), C^k decay, analytic exponential decay. All core infrastructure proved: fourier_norm_one, fourier_translate_halfperiod, fourierCoeff_difference_formula, holder_translation_bound, integral_product_bound."
   },
   "overview": {
     "historicalContext": "**Fourier Coefficient Decay Under Hölder Continuity**\n\nThe relationship between smoothness of a function and decay of its Fourier coefficients is a fundamental principle of harmonic analysis. The specific result for Hölder continuous functions — that α-Hölder regularity gives O(1/|n|^α) decay — was developed through contributions by Bernstein (1912), Zygmund (1935), and others.\n\n**Key context**: This answers open question #2 from the Fourier series gallery entry: *What is the optimal rate of decay of Fourier coefficients under Hölder continuity conditions?*\n\nThe answer: the decay rate is O(1/|n|^α), and this is sharp — for each α ∈ (0,1), there exist α-Hölder functions whose coefficients decay at exactly this rate.",
@@ -172,8 +172,8 @@
     "summary": "This formalization establishes the optimal Fourier coefficient decay rate for Hölder continuous functions: ‖ĉ_n‖ = O(1/|n|^α) for α-Hölder f, proved via the half-period translation trick. The main theorem is proved from axiomatized analytical infrastructure (difference formula, integral bounds). The formalization also establishes optimality, a partial converse via Sobolev embedding, and places the result in the full regularity-decay hierarchy from L² through analytic.",
     "implications": "**Theoretical Significance**: The Hölder decay theorem is a cornerstone of harmonic analysis, quantifying the fundamental principle that smoothness ↔ spectral decay.\n\nThe half-period translation trick generalizes to prove decay rates in other settings (torus, locally compact abelian groups). The critical threshold α = 1/2 connects to Sobolev embedding theory and the circle of ideas around Carleson's theorem.",
     "openQuestions": [
-      "Can the axiomatized integral bounds be proved from Mathlib's integration API?",
-      "Can the half-period identity be proved from Mathlib's AddCircle API?",
+      "Can riemannLebesgue_of_holder be proved from Mathlib's Riemann-Lebesgue for L¹ (Hölder → continuous → integrable)?",
+      "Can fourierCoeff_sq_summable_of_holder be proved using p-series convergence from Mathlib?",
       "What is the sharp constant in the decay bound for specific α?",
       "Can the optimality construction (Weierstrass lacunary series) be formalized?"
     ]
