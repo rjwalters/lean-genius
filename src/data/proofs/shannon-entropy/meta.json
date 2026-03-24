@@ -44,7 +44,7 @@
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
-    "lineCount": 410,
+    "lineCount": 459,
     "prerequisites": [
       "Probability distributions and discrete random variables",
       "Logarithm and convexity (Jensen's inequality)",
@@ -57,7 +57,7 @@
   "overview": {
     "historicalContext": "Claude Shannon's 1948 paper 'A Mathematical Theory of Communication' founded information theory and introduced entropy as the fundamental measure of information content. Shannon showed that the quantity H(X) = -sum p(x) log p(x) is the unique function (up to a constant) satisfying natural axioms for an information measure: continuity, monotonicity in the number of equally likely outcomes, and a composition law for sequential experiments.\n\nShannon entropy quantifies the irreducible uncertainty in a random variable, measured in bits (when using log base 2). A fair coin has entropy 1 bit; a deterministic variable has entropy 0. The entropy of English text is approximately 1.0-1.5 bits per character, far below the 4.7 bits per character of uniform random text, reflecting the redundancy of natural language.\n\nBeyond its foundational role in information theory, Shannon entropy has deep connections to thermodynamic entropy (via Boltzmann's formula), combinatorics (via the method of types), statistics (via maximum entropy distributions), and even pure mathematics (via the entropy method in additive combinatorics, used by Tao and others to prove sumset bounds).",
     "problemStatement": "Shannon Entropy: For a discrete random variable $X$ with probability mass function $p$, define $H(X) = -\\sum_{x} p(x) \\log_2 p(x)$, with the convention $0 \\log 0 = 0$.\n\nKey properties:\n- Non-negativity: $H(X) \\geq 0$, with equality iff $X$ is deterministic.\n- Maximum: $H(X) \\leq \\log_2 |\\mathcal{X}|$, with equality iff $X$ is uniform.\n- Chain rule: $H(X, Y) = H(X) + H(Y|X)$.\n- Gibbs inequality: $D(p \\| q) = \\sum p(x) \\log(p(x)/q(x)) \\geq 0$.",
-    "text": "H(X) = -sum p(x) log p(x). Foundation of information theory: non-negativity, chain rule, data processing inequality.",
+    "text": "A 459-line formalization of discrete Shannon entropy and its core properties in Lean 4, building from the definition $H(X) = -\\sum p(x) \\ln p(x)$ through the full hierarchy of information-theoretic inequalities. The development proceeds bottom-up: entropy non-negativity from $\\ln t \\leq 0$ for $t \\leq 1$; the pointwise KL bound $p \\ln(p/q) \\geq p - q$ from the fundamental inequality $\\ln t \\leq t - 1$; KL divergence non-negativity $D(p \\| q) \\geq 0$ by summing pointwise bounds; Gibbs inequality $H(p) \\leq -\\sum p \\ln q$ as a corollary; maximum entropy $H(X) \\leq \\ln |\\mathcal{X}|$ via Gibbs with uniform $q$; mutual information non-negativity $I(X;Y) \\geq 0$ by the same pointwise technique on the product space; and the chain rule $I(X;Y) = H(X) - H(X|Y)$ via detailed log-division and marginal telescoping. The culminating corollary $H(X|Y) \\leq H(X)$ — conditioning reduces entropy — follows in one line. All 16 theorems are fully proved with 0 sorries and 0 axioms.",
     "proofStrategy": "The formalization builds entropy theory from the ground up:\n\n1. **Entropy definition**: Define H(X) = -sum p(x) log p(x) for discrete distributions over a Fintype, handling the convention 0 log 0 = 0 via a custom function that extends x * log x continuously to 0.\n\n2. **Non-negativity**: Since each term -p(x) log p(x) >= 0 for p(x) in [0,1], the sum is non-negative. Equality holds iff every term is 0, which requires p(x) in {0, 1}.\n\n3. **Gibbs inequality**: The key inequality D(p || q) >= 0 follows from Jensen's inequality applied to the convex function -log. This is the master inequality from which most entropy inequalities follow.\n\n4. **Conditional entropy and chain rule**: Define H(Y|X) = sum_x p(x) H(Y|X=x) and prove H(X,Y) = H(X) + H(Y|X) by expanding the joint entropy.\n\n5. **Mutual information**: Define I(X;Y) = H(X) + H(Y) - H(X,Y) = H(X) - H(X|Y) >= 0. Non-negativity follows from Gibbs inequality.\n\n6. **Data processing inequality**: If X -> Y -> Z is a Markov chain, then I(X;Z) <= I(X;Y). Information cannot be created by processing.",
     "keyInsights": [
       "The convention 0 log 0 = 0 is essential and arises from continuity: lim_{p->0} p log p = 0",
@@ -161,8 +161,10 @@
     "summary": "Shannon entropy H(X) = -sum p(x) log p(x) is formalized as the fundamental measure of information content, along with conditional entropy, mutual information, and KL divergence. The Gibbs inequality serves as the master inequality from which all other entropy inequalities follow, and the chain rule provides the compositional structure that makes entropy theory practical.",
     "implications": "This formalization provides:\n\n**1. Foundation for Information Theory**\nShannon entropy is the base layer for source coding and channel coding theorems, both formalized in companion modules.\n\n**2. Gibbs Inequality as Master Tool**\nThe non-negativity of KL divergence implies maximum entropy, subadditivity, and data processing -- providing a single inequality from which the entire theory follows.\n\n**3. Connections to Combinatorics**\nThe entropy method, used by Tao and others for sumset bounds and Ruzsa-type inequalities, builds directly on the formalized chain rule and subadditivity.\n\n**4. Statistical Learning**\nKL divergence and mutual information are fundamental to PAC learning bounds and model selection, connecting to the learning theory formalization.\n\n**5. Formal Mathematics Infrastructure**\nA complete discrete entropy library in Lean 4 is a significant contribution to the formal mathematics ecosystem.",
     "openQuestions": [
-      "Can differential entropy for continuous distributions be formalized?",
-      "What is the relationship between Shannon entropy and Kolmogorov complexity in Lean?"
+      "Can differential entropy $h(X) = -\\int f(x) \\ln f(x)\\,dx$ for continuous distributions be formalized in Lean using Mathlib's measure theory? The main challenge is handling the $0 \\ln 0$ convention in the integral setting and proving the continuous analog of the Gibbs inequality.",
+      "Kolmogorov complexity $K(x)$ is the length of the shortest program producing $x$. The noiseless coding theorem links Shannon entropy to Kolmogorov complexity: $H(X) = \\mathbb{E}[K(X)] + O(1)$ for computable distributions. Can this relationship be formalized, connecting information-theoretic and algorithmic notions of information?",
+      "Strong subadditivity $H(X,Y,Z) + H(Y) \\leq H(X,Y) + H(Y,Z)$ is a deeper inequality than subadditivity. Lieb and Ruskai proved it for von Neumann entropy (quantum). Can the classical version be derived from the log-sum inequality formalized here?",
+      "The entropy method in additive combinatorics (Tao, Ruzsa) uses the chain rule and subadditivity of entropy to prove sumset bounds like $|A + B| \\geq |A|^{1/2}|B|^{1/2}$. Can these combinatorial applications be formalized using the entropy infrastructure developed here?"
     ]
   },
   "relatedProofs": [
@@ -188,6 +190,27 @@
       "year": "1948",
       "venue": "Bell System Technical Journal 27(3), 379–423 and 27(4), 623–656",
       "note": "The founding paper of information theory — introduced entropy, channel capacity, and the source/channel coding theorems"
+    },
+    {
+      "authors": "Cover, Thomas M.; Thomas, Joy A.",
+      "title": "Elements of Information Theory",
+      "year": "2006",
+      "venue": "Wiley-Interscience, 2nd edition",
+      "note": "The standard graduate textbook — Chapter 2 covers entropy, relative entropy, and mutual information with the same bottom-up development used in this formalization"
+    },
+    {
+      "authors": "Csiszar, Imre; Korner, Janos",
+      "title": "Information Theory: Coding Theorems for Discrete Memoryless Systems",
+      "year": "2011",
+      "venue": "Cambridge University Press, 2nd edition",
+      "note": "Rigorous treatment emphasizing the method of types and the role of KL divergence as the master inequality — the same perspective taken in this formalization"
+    },
+    {
+      "authors": "Khinchin, A. I.",
+      "title": "Mathematical Foundations of Information Theory",
+      "year": "1957",
+      "venue": "Dover Publications (translation of 1953 Russian original)",
+      "note": "First rigorous axiomatic characterization of Shannon entropy: the unique function satisfying continuity, maximality for uniform distributions, and the grouping axiom"
     }
   ]
 }
