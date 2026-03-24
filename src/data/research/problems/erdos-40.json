@@ -16,24 +16,39 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-12T06:58:30.838Z",
+    "phase": "ACT",
+    "since": "2026-03-23T06:00:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Axiom cleanup and prove basic properties",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Prove problem_40_implies_28 from definitions (requires showing basis implies density)",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "PROGRESS: Eliminated 2 trivial True axioms (7→5). Added 3 proved theorems: repUnbounded_iff, bounded_rep_not_unbounded, basis2_iff.",
+    "builtItems": [
+      "bounded_rep_not_unbounded: contrapositive of unboundedness — if rep ≤ B for all n then ¬RepUnbounded",
+      "Removed random_heuristic and threshold_heuristic (were axiom : True, now comments)",
+      "repUnbounded_iff and basis2_iff: definition unfoldings for API"
+    ],
+    "insights": [
+      "random_heuristic and threshold_heuristic were literally True — pure comment axioms adding to count for zero value",
+      "problem_40_implies_28 requires showing a basis of order 2 has density ≥ N^{1/2}/g(N) for some g→∞; argument: use g(N)=N, then density condition becomes trivial since basis is infinite",
+      "Sidon set bound axiom is a classical result — likely not in Mathlib but deep",
+      "The $500 prize is for the strongest form (all g→∞); weaker forms may be approachable"
+    ],
+    "mathlibGaps": [
+      "Set.ncard reasoning needed for counting function properties",
+      "No Sidon set machinery in Mathlib"
+    ],
+    "nextSteps": [
+      "Prove problem_40_implies_28: show basis implies HasDensity for g(N)=N",
+      "Add countingFn monotonicity theorem"
+    ],
     "markdown": "# Erdős #40 - Knowledge Base\n\n## Problem Statement\n\nFor what functions $g(N)\\to \\infty$ is it true that\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\gg \\frac{N^{1/2}}{g(N)}\\]implies $\\limsup 1_A\\ast 1_A(n)=\\infty$? This is a stronger form of the Erdős-Turán conjecture [28] (since establishing this for any function $g(N)\\to \\infty$ would imply a positive solution to [28]). View the LaTeX source\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Prize**: $500\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #2\n- Problem #28\n- Problem #39\n- Problem #41\n- Problem #1\n\n## References\n\n- Er95\n- Er97c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
