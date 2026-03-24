@@ -93,7 +93,8 @@ def grimmsConjecture : Prop :=
 **Erdős Problem #375:**
 Grimm's Conjecture - currently OPEN.
 -/
-axiom erdos_375_open : ¬ (grimmsConjecture ∨ ¬grimmsConjecture → False)
+theorem erdos_375_open : ¬ (grimmsConjecture ∨ ¬grimmsConjecture → False) :=
+  fun h => h (Classical.em _)
 
 /-
 ## Part III: Trivial Cases

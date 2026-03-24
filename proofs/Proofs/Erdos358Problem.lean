@@ -140,7 +140,7 @@ def PositiveDensityConjecture : Prop :=
   ∃ δ > 0, ∀ᶠ N in atTop, (representableCount primesSeq N : ℝ) / N ≥ δ
 
 /-- We don't even know if the density is positive. -/
-axiom density_unknown : PositiveDensityConjecture ∨ ¬PositiveDensityConjecture
+theorem density_unknown : PositiveDensityConjecture ∨ ¬PositiveDensityConjecture := Classical.em _
 
 /- ## Part VII: Connection to Related Problems
 
@@ -170,7 +170,7 @@ convex sumsets (sums of arithmetic progressions within the set).
 "This problem can perhaps be rightly criticized as being artificial and in the
 backwater of Mathematics but it seems very strange and attractive to me."
 -/
-axiom erdos_358_open : Erdos358Strong ∨ ¬Erdos358Strong
+theorem erdos_358_open : Erdos358Strong ∨ ¬Erdos358Strong := Classical.em _
 
 /- ## Part IX: Summary Theorems -/
 

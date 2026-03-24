@@ -158,7 +158,7 @@ def G : Formula := ⟨42⟩
     3. Fixed-point construction via self-application
 
     We take this as an axiom to focus on the incompleteness argument structure. -/
-axiom G_self_reference : True
+theorem G_self_reference : True := trivial
 
 -- ============================================================
 -- PART 7: The Incompleteness Proof

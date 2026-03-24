@@ -79,13 +79,13 @@ axiom main_term_n_over_log_n :
     representations of rationals as sums of distinct unit fractions.
     R(N) measures how many denominators from {1,...,N} can be used
     while keeping all partial sums distinguishable. -/
-axiom egyptian_fraction_connection : True
+theorem egyptian_fraction_connection : True := trivial
 
 /-- **Greedy construction**: A natural construction takes all n
     with certain divisibility properties, ensuring subset sums
     separate. The challenge is optimizing the selection criterion. -/
-axiom greedy_construction : True
+theorem greedy_construction : True := trivial
 
 /-- **OEIS sequences**: Related sequences A384927 and A391592
     track computed values of R(N) for small N. -/
-axiom oeis_sequences : True
+theorem oeis_sequences : True := trivial
