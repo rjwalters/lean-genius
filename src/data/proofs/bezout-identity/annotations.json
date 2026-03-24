@@ -57,7 +57,7 @@
     "title": "Bézout's Identity for Natural Numbers",
     "content": "Two theorems for the ℕ case:\n\n1. **`bezout_nat`**: The existential form — for $a, b \\in \\mathbb{N}$, $\\exists x, y \\in \\mathbb{Z}: (\\gcd(a,b) : \\mathbb{Z}) = a \\cdot x + b \\cdot y$. Proved by providing `Nat.gcdA a b` and `Nat.gcdB a b` as explicit witnesses.\n\n2. **`bezout_nat_explicit`**: The equation form — directly states $\\gcd(a,b) = a \\cdot \\text{gcdA} + b \\cdot \\text{gcdB}$ without an existential quantifier.\n\n**Key subtlety**: The coefficients $x, y$ must be integers (not naturals) because one is typically negative. For example, $\\gcd(12, 8) = 4 = 12 \\cdot 1 + 8 \\cdot (-1)$.",
     "mathContext": "$\\forall a, b \\in \\mathbb{N},\\; \\exists x, y \\in \\mathbb{Z}: \\gcd(a,b) = ax + by$. The cast $(\\text{Nat.gcd}\\, a\\, b : \\mathbb{Z})$ is needed because the left side is a natural number while the right side involves integer arithmetic.",
-    "significance": "key",
+    "significance": "supporting",
     "relatedConcepts": [
       "Nat.gcd_eq_gcd_ab",
       "Nat.gcdA",
@@ -81,7 +81,7 @@
     "title": "Bézout's Identity for Integers",
     "content": "Two theorems extending Bézout to $\\mathbb{Z}$:\n\n1. **`bezout_int`**: For $a, b \\in \\mathbb{Z}$, $\\exists x, y \\in \\mathbb{Z}: \\gcd(a,b) = ax + by$. Handles negative inputs.\n\n2. **`bezout_int_explicit`**: Direct equation using `Int.gcdA` and `Int.gcdB`.\n\n**Why separate ℕ and ℤ versions?** Mathlib defines `Nat.gcd` and `Int.gcd` as separate functions with their own APIs. The integer GCD reduces to the natural number case via absolute values: $\\gcd(a, b) = \\gcd(|a|, |b|)$.",
     "mathContext": "`Int.gcd a b` is defined as `Nat.gcd (Int.natAbs a) (Int.natAbs b)`, so $\\gcd(-12, 8) = \\gcd(12, 8) = 4$. The Bézout coefficients adjust signs accordingly.",
-    "significance": "key",
+    "significance": "supporting",
     "relatedConcepts": [
       "Int.gcd_eq_gcd_ab",
       "Int.gcdA",

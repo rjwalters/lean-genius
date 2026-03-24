@@ -90,35 +90,35 @@
       "priority": "high",
       "target": "enricher",
       "description": "Remove the fabricated Euclid's lemma claim from overview.text. The file does not contain a theorem proving Euclid's lemma. Replace with a note that coprime_iff_linear_combination provides a key ingredient that could be used to prove Euclid's lemma (and point to bezout-identity-oq-02 which actually proves it).",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "medium",
       "target": "enricher",
       "description": "Reframe originalContributions items 1-3 as pedagogical wrappers rather than original contributions. Suggested replacement: 'Pedagogical wrapper theorems (bezout_nat, bezout_int, bezout_nat_explicit, bezout_int_explicit, extended_gcd_components) providing accessible entry points to Mathlib's gcd_eq_gcd_ab with explicit witnesses and named components.'",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "medium",
       "target": "enricher",
       "description": "Fix the off-by-one line count in conclusion.summary: change '238-line' to '237-line'.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "low",
       "target": "enricher",
       "description": "Downgrade annotations ann-bezout-nat and ann-bezout-int significance from 'key' to 'supporting' to properly distinguish wrapper theorems from the substantive coprimality, modular inverse, and Diophantine proofs.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",
       "priority": "low",
       "target": "enricher",
       "description": "Move item 8 of originalContributions ('Documentation connecting Bezout to Euclid's lemma...') to a separate pedagogical contributions category or explicitly label it as expository rather than mathematical.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
 
