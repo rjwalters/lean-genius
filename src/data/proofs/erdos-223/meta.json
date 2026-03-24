@@ -60,7 +60,7 @@
     ],
     "axiomCount": 14,
     "lineCount": 277,
-    "assumptions": "14 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "14 axioms: hopf_pannwitz_1934, f2_upper_bound, f2_lower_bound, and 11 more. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #223: Maximum Diameter Pairs**\n\nThis problem, originally a conjecture of Vázsonyi, asks: in an n-point set with diameter 1, how many pairs can be at distance exactly 1?\n\n**Key History:**\n- Vázsonyi: Original conjecture\n- Hopf-Pannwitz (1934): Solved 2D case, f₂(n) = n\n- Grünbaum, Heppes, Strasziewicz (1956-57): Independently solved 3D, f₃(n) = 2n-2\n- Erdős (1960): Showed quadratic growth for d ≥ 4\n- Swanepoel (2009): Complete characterization with extremal configurations\n\n**Dimensional Transition:**\nThe most striking feature is the phase transition at d = 4: linear growth in 2D/3D becomes quadratic in 4D+.",

@@ -49,70 +49,70 @@
       "id": "graph-basics",
       "title": "Graph Basics",
       "summary": "Defines `edgeCount G` via `G.edgeFinset.card` and `vertexCount` via `Fintype.card V` within Mathlib's `SimpleGraph` framework. These are the parameters $(n,k)$ for $f(n,k)$.",
-      "startLine": 25,
+      "startLine": 1,
       "endLine": 1
     },
     {
       "id": "cliques",
       "title": "Complete Subgraphs (Cliques)",
       "summary": "Defines `isClique G S` (pairwise adjacency in $S$) and `completeOn S` (the complete graph $K_S$ as a `SimpleGraph`). These are the atomic pieces of any clique partition.",
-      "startLine": 40,
+      "startLine": 1,
       "endLine": 1
     },
     {
       "id": "partitions",
       "title": "Edge-Disjoint Clique Partitions",
       "summary": "Defines `edgeDisjoint`, `isPairwiseEdgeDisjoint`, `cliqueUnion` (graph union of complete subgraphs), and `isCliquePartition` (pairwise disjoint with union $= G$). The central predicate for the entire formalization.",
-      "startLine": 56,
+      "startLine": 1,
       "endLine": 1
     },
     {
       "id": "partition-number",
       "title": "The Clique Partition Number $f(n,k)$",
       "summary": "Defines `canPartitionInto n k m` (universal over all $(n,k)$-graphs) and `cliquePartitionNumber` via `Nat.find`. The trivial bound $m = n^2$ serves as the existence witness.",
-      "startLine": 82,
+      "startLine": 1,
       "endLine": 1
     },
     {
       "id": "egp",
       "title": "Erdős-Goodman-Pósa Theorem (1966)",
       "summary": "Axiomatizes the EGP bound: $f(n,k) \\le \\lfloor n^2/4 \\rfloor$ using only edges and triangles. Defines `usesOnlyEdgesAndTriangles` and derives `cliquePartitionNumber_le`.",
-      "startLine": 104,
+      "startLine": 1,
       "endLine": 1
     },
     {
       "id": "extremal",
       "title": "Extremal Example: Complete Bipartite Graph",
       "summary": "Constructs `completeBipartite A B` as the Turán graph $T(n,2) = K_{n/2, n/2}$, proves it has no triangles, and shows it requires $n^2/4$ edge-cliques—establishing tightness of the EGP bound.",
-      "startLine": 130,
+      "startLine": 1,
       "endLine": 1
     },
     {
       "id": "open-problem",
       "title": "The Open Problem: $k > n^2/4$",
       "summary": "States `canImproveForDenseGraphs` and `erdos_1017_question`: can $f(n,k) < n^2/4$ when $k > n^2/4$? This is the core open question.",
-      "startLine": 158,
+      "startLine": 1,
       "endLine": 1
     },
     {
       "id": "lovasz",
       "title": "Lovász's Covering Result (1968)",
       "summary": "Axiomatizes Lovász's result: $G$ is the union of $\\binom{n}{2} - k + t$ cliques where $t \\approx \\sqrt{\\binom{n}{2} - k}$. This is a covering (not partition) result, providing a related but weaker bound.",
-      "startLine": 175,
+      "startLine": 1,
       "endLine": 1
     },
     {
       "id": "k4free",
       "title": "$K_4$-Free Case: Győri-Keszegh (2017)",
       "summary": "Axiomatizes the complete solution for $K_4$-free graphs: $\\lfloor n^2/4 \\rfloor + m$ edges $\\Rightarrow m$ edge-disjoint triangles. Derives the partition count formula $\\lfloor n^2/4 \\rfloor - m$.",
-      "startLine": 195,
+      "startLine": 1,
       "endLine": 1
     },
     {
       "id": "general-harder",
       "title": "Why the General Case Is Harder",
       "summary": "Illustrates with `larger_cliques_help`: $K_r$ with $r \\ge 4$ saves $\\binom{r}{2} - 1$ over edge-by-edge partitioning, but global optimization of overlapping cliques is the open challenge.",
-      "startLine": 229,
+      "startLine": 1,
       "endLine": 1
     }
   ],

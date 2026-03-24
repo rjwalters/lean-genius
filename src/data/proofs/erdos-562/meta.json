@@ -19,10 +19,10 @@
     "erdosUrl": "https://erdosproblems.com/562",
     "axiomCount": 7,
     "badge": "axiom",
-    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "assumptions": "7 axioms: erdos_szekeres_lower, erdos_szekeres_upper, erdos_rado_stepping_up, and 4 more. See Lean source for complete statements.",
     "proofRepoPath": "Proofs/Erdos562Problem.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 104
+    "lineCount": 103
   },
   "sections": [
     {
@@ -132,7 +132,7 @@
     ]
   },
   "leanFile": {
-    "lineCount": 104,
+    "lineCount": 103,
     "structureCount": 0,
     "axiomCount": 7,
     "theoremCount": 3,

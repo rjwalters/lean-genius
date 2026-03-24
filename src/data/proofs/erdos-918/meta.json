@@ -49,7 +49,7 @@
     ],
     "axiomCount": 7,
     "lineCount": 148,
-    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "7 axioms: Question1, Question2, erdos_hajnal_finite, and 4 more. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "This problem originates from Erdős and Hajnal's 1968 paper 'On chromatic number of infinite graphs'. They proved a remarkable result for finite ordinals: for every finite k, there exists a graph with ℵ_k vertices and chromatic number ℵ₁ such that every subgraph on fewer than ℵ_k vertices has chromatic number at most ℵ₀.\n\nThe construction uses transfinite induction and diagonal arguments. The question asks whether this phenomenon extends to infinite ordinals, specifically ℵ₂ and ℵ_{ω+1}.\n\nIn Erdős's 1969 paper 'Problems and results in chromatic graph theory', the problem was originally stated with chromatic number exactly ℵ₀ instead of at most ℵ₀. However, this is trivially impossible since any graph contains finite subgraphs with finite chromatic number. The corrected version asks for chromatic number ≤ ℵ₀.",

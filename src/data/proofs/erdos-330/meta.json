@@ -19,7 +19,7 @@
     "erdosUrl": "https://erdosproblems.com/330",
     "axiomCount": 7,
     "badge": "axiom",
-    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "assumptions": "7 axioms: upperDensity, upperDensity_nonneg, upperDensity_le_one, and 4 more. See Lean source for complete statements.",
     "proofRepoPath": "Proofs/Erdos330Problem.lean",
     "mathlib_version": "4.26.0"
   },
@@ -52,15 +52,15 @@
       "id": "open-question",
       "title": "The Open Question",
       "startLine": 74,
-      "endLine": 85,
+      "endLine": 84,
       "summary": "Does a minimal basis with positive density exist where each element's removal leaves a positive-density set unrepresentable?",
       "mathContext": "Does a minimal basis with positive density exist where each element's removal leaves a positive-density set unrepresentable?"
     },
     {
       "id": "implications",
       "title": "Implications and Context",
-      "startLine": 86,
-      "endLine": 100,
+      "startLine": 84,
+      "endLine": 84,
       "summary": "Connection to Erdős-Nathanson theory, quantitative minimality, and broader additive combinatorics.",
       "mathContext": "Connection to Erdős-Nathanson theory, quantitative minimality, and broader additive combinatorics."
     }

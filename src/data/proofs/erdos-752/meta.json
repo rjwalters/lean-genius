@@ -64,7 +64,7 @@
     ],
     "axiomCount": 14,
     "lineCount": 246,
-    "assumptions": "14 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "14 axioms: erdos_faudree_schelp_s2, sudakov_verstrate_2008, min_degree_le_avg, and 11 more. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #752** was posed by Erdős, Faudree, and Schelp about cycle lengths in graphs with high girth.\n\n**Historical Development:**\n- **Erdős-Faudree-Schelp (original):** Proved the case s = 2 and conjectured the general result.\n- **Sudakov-Verstraëte (2008):** Proved the full conjecture and a stronger version: under average degree k and girth > 2s, there are Ω(k^s) consecutive even cycle lengths.\n\n**Key Insight:** The tension between high girth (no short cycles) and high degree (forcing many cycles) creates structure that guarantees many distinct cycle lengths.\n\nThe result is tight up to constants: Moore graphs show that Ω(k^s) cannot be improved.",

@@ -66,7 +66,7 @@
       "Euclidean geometry: closed balls, spheres, ray-casting constructions",
       "Proof by contradiction"
     ],
-    "lineCount": 250,
+    "lineCount": 249,
     "mathlib_version": "4.26.0",
     "leanFile": {
       "imports": [
@@ -94,8 +94,7 @@
         "id": "brouwer-fixed-point-oq-02",
         "relationship": "Extension of brouwer fixed point"
       }
-    ],
-    "mathlib_version": "4.26.0"
+    ]
   },
   "overview": {
     "historicalContext": "Luitzen Egbertus Jan Brouwer proved this theorem in 1911 in *Mathematische Annalen*. Earlier special cases were known: Poincaré proved a version for smooth maps in 1886, and Hadamard proved the 2D case in 1910 using degree theory. Brouwer's contribution was the full generalization to continuous maps in arbitrary dimension.\n\nThe result is beautifully intuitive: no matter how you continuously 'stir' a disk, some point must end up exactly where it started. Multiple proofs exist: Brouwer's original via degree theory, Sperner's 1928 combinatorial proof via his lemma on triangulations, Milnor's 1965 differential topology proof via Sard's theorem, and modern proofs via singular homology.\n\nThe theorem's applications are vast. John Nash used it in 1950 to prove equilibrium existence in non-cooperative games (Nobel Prize 1994). It guarantees solutions to differential equations via Schauder's extension to Banach spaces. In computational complexity, finding Brouwer fixed points is PPAD-complete (Papadimitriou 1994), explaining why Nash equilibrium computation is hard.\n\nIronically, Brouwer later founded **intuitionism** (1920s), rejecting the law of excluded middle and the non-constructive proof-by-contradiction his own theorem relies upon. He came to view the theorem as an example of mathematics that proves existence without construction — precisely what intuitionists object to.",
@@ -172,7 +171,7 @@
       "id": "applications",
       "title": "Part 6: Applications and 1D Example",
       "startLine": 204,
-      "endLine": 250,
+      "endLine": 249,
       "summary": "Docstring on applications (Nash equilibrium, Perron-Frobenius, differential equations, economics). Then a fully proved `example` showing the 1D case: for continuous $f: [0,1] \\to [0,1]$, `exists_mem_Icc_isFixedPt_of_mapsTo` gives a fixed point directly from Mathlib's IVT infrastructure. Closes namespace, exports `#check` for main theorems.",
       "mathContext": "1D case proved from Mathlib: $f: [0,1] \\to [0,1]$ continuous $\\Rightarrow \\exists c \\in [0,1],\\ f(c) = c$. Uses `exists_mem_Icc_isFixedPt_of_mapsTo` which applies IVT to $g(x) = f(x) - x$: $g(0) \\geq 0$, $g(1) \\leq 0$, so $g(c) = 0$ for some $c$."
     }
@@ -348,7 +347,7 @@
     "isoperimetric-theorem"
   ],
   "leanFile": {
-    "lineCount": 250,
+    "lineCount": 249,
     "structureCount": 2,
     "axiomCount": 2,
     "theoremCount": 5,

@@ -49,7 +49,7 @@
     ],
     "axiomCount": 6,
     "lineCount": 159,
-    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "6 axioms: discrete_condition_necessary, barth_schneider_theorem, barth_schneider_explicit, and 3 more. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "This problem appears as Problem 2.30 in Hayman's 'Research problems in function theory: new problems' (1974), attributed to Erdős. It asks about the flexibility of entire transcendental functions in prescribing zeros of their derivatives.\n\nBarth and Schneider resolved the problem affirmatively in 1972, published in the Proceedings of the American Mathematical Society. Their construction shows that for any sequence of discrete sets, one can find a transcendental entire function whose successive derivatives vanish on these sets.\n\nThe key constraint is that each set must have no finite limit point (be discrete), which is necessary by the identity theorem for analytic functions.",

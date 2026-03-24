@@ -58,7 +58,7 @@
     ],
     "axiomCount": 16,
     "lineCount": 290,
-    "assumptions": "16 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "16 axioms: RamseyNumber, ramseyNumber_pos, ramsey_1, and 13 more. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "This is one of the most famous problems in Ramsey theory. Erdos introduced the probabilistic method in 1947 by proving R(k) >= 2^{k/2}. The upper bound R(k) <= 4^{k-1} from the Erdos-Szekeres recurrence stood for ~90 years until Campos, Griffiths, Morris, and Sahasrabudhe (2023) proved R(k) <= (4 - 1/128)^k, later improved to (3.7993)^k by Gupta et al. (2024).\n\nErdos offered $100 for proving the limit exists and $10000 for proving it doesn't (calling this 'a joke' since he believed it exists). He suspected the limit might be 2 but said 'we have no real evidence for this.'",

@@ -65,7 +65,7 @@
     ],
     "axiomCount": 3,
     "lineCount": 128,
-    "assumptions": "31 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "3 axiom(s): z_1, z_12, known_values_correct. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #758: Cochromatic Number**\n\nThis problem was posed by Erdős and Gimbel and concerns the cochromatic number of graphs.\n\n**Key History:**\n- **Erdős-Gimbel:** Established 4 ≤ z(12) ≤ 5 and 5 ≤ z(15) ≤ 6\n- **Gimbel [Gi86]:** Proved z(n) ~ n/log n asymptotically\n- **Bhavik Mehta:** Computationally verified z(12) = 4 by finding the unique extremal graph\n\n**Mathematical Context:**\nThe cochromatic number generalizes both chromatic number (independent sets only) and clique cover number (cliques only). It connects to Ramsey theory since R(3) = 6 and R(4) = 18 control the growth of z(n).",
@@ -110,42 +110,42 @@
       "id": "value-table",
       "title": "Complete Sequence",
       "summary": "knownValues function and verification",
-      "startLine": 169,
+      "startLine": 128,
       "endLine": 128
     },
     {
       "id": "asymptotics",
       "title": "Asymptotic Behavior",
       "summary": "Gimbel's z(n) ~ n/log n result",
-      "startLine": 190,
+      "startLine": 128,
       "endLine": 128
     },
     {
       "id": "erdos-gimbel-bounds",
       "title": "Erdős-Gimbel Bounds",
       "summary": "Original bounds for z(12) and z(15)",
-      "startLine": 212,
+      "startLine": 128,
       "endLine": 128
     },
     {
       "id": "mehta-proof",
       "title": "Mehta's Proof Method",
       "summary": "Unique extremal graph and verification",
-      "startLine": 234,
+      "startLine": 128,
       "endLine": 128
     },
     {
       "id": "ramsey-connection",
       "title": "Connection to Ramsey Theory",
       "summary": "How Ramsey numbers constrain z(n)",
-      "startLine": 260,
+      "startLine": 128,
       "endLine": 128
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Final theorem and problem solved status",
-      "startLine": 273,
+      "startLine": 128,
       "endLine": 128
     }
   ],

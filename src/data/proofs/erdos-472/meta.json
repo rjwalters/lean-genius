@@ -22,8 +22,8 @@
     "erdosUrl": "https://erdosproblems.com/472",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "lineCount": 226,
-    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "lineCount": 223,
+    "assumptions": "1 axiom: ulam35_contains_all_odd_primes_conjecture. See Lean source for the complete statement.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -111,7 +111,7 @@
       "id": "extended-verification",
       "title": "Extended Verification and Growth",
       "startLine": 201,
-      "endLine": 226,
+      "endLine": 223,
       "summary": "Extends verification to 8 terms [3,5,7,11,13,17,19,23] and states the all-odd-primes conjecture."
     }
   ],
@@ -134,7 +134,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 226,
+    "lineCount": 223,
     "axiomCount": 1,
     "theoremCount": 19,
     "definitionCount": 8

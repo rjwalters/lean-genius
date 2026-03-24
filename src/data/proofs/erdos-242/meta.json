@@ -49,7 +49,7 @@
     ],
     "axiomCount": 5,
     "lineCount": 186,
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "5 axioms: four_fractions_suffice, erdos_straus_almost_all, computational_verification, and 2 more. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "The Erdős-Straus conjecture was posed by Paul Erdős and Ernst Straus in 1948. It asks whether every fraction 4/n with n > 2 can be written as a sum of exactly three unit fractions with distinct denominators.\n\nThis is one of the most famous unsolved problems in elementary number theory. Despite its simple statement, it has resisted proof for over 75 years. The conjecture has been verified computationally for all n up to 10^17 (over 100 quadrillion values), yet no general proof exists.\n\nThe problem is related to ancient Egyptian mathematics, where fractions were always written as sums of distinct unit fractions. The conjecture essentially asks: can the Egyptians always express 4/n using exactly three unit fractions?",

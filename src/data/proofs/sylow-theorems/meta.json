@@ -43,7 +43,7 @@
     ],
     "dateAdded": "2025-12-27",
     "axiomCount": 0,
-    "lineCount": 247,
+    "lineCount": 246,
     "leanFile": {
       "imports": [
         "Mathlib.GroupTheory.Sylow",
@@ -154,7 +154,7 @@
       "id": "verification",
       "title": "Verification",
       "startLine": 234,
-      "endLine": 247,
+      "endLine": 246,
       "summary": "Type-checks all 10 theorems and 1 definition: sylow_existence, sylow_card, sylow_conjugacy, sylow_isomorphic, sylow_count_mod_p, sylow_count_dvd_index, sylow_normal_of_eq, sylow_normal_of_unique, sylow_unique_of_normal, cauchy_from_sylow, group_of_prime_order_cyclic.",
       "mathContext": "All theorems verified via `#check`: existence, cardinality, conjugacy, isomorphism, counting mod $p$, divisibility, two normality directions, Cauchy, and prime-order cyclicity."
     }
@@ -284,7 +284,7 @@
     "quadratic-reciprocity"
   ],
   "leanFile": {
-    "lineCount": 247,
+    "lineCount": 246,
     "structureCount": 0,
     "axiomCount": 0,
     "theoremCount": 10,

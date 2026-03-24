@@ -62,8 +62,8 @@
       "Barrier comparison hierarchy: F >> ω >> Ω verified computationally"
     ],
     "axiomCount": 4,
-    "lineCount": 1102,
-    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "lineCount": 1047,
+    "assumptions": "4 axioms: erdos_413_conjecture, all_trajectories_meet, erdos_expProd_positive_density, and 1 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -176,7 +176,7 @@
       "id": "omega-multiplicativity",
       "title": "ω Multiplicativity and Subadditivity",
       "startLine": 1025,
-      "endLine": 1077,
+      "endLine": 1047,
       "summary": "Proves ω(mn) = ω(m) + ω(n) for coprime m,n, derives ω(6) = 2 and ω(30) = 3, and proves the subadditive bound ω(mn) ≤ ω(m) + ω(n) for general products.",
       "mathContext": "$\\omega(mn) = \\omega(m) + \\omega(n)$ for $\\gcd(m,n) = 1$. Derives $\\omega(6) = 2$, $\\omega(30) = 3$."
     },
@@ -191,8 +191,8 @@
     {
       "id": "strong-prime-power",
       "title": "Strong Prime Power Predecessor",
-      "startLine": 1078,
-      "endLine": 1102,
+      "startLine": 1024,
+      "endLine": 1047,
       "summary": "Proves the strong form: at any barrier n ≥ 3, n-1 is necessarily a prime power p^k with k ≥ 1, using the fact that ω(n-1) = 1 for n ≥ 3 at a barrier.",
       "mathContext": "At any barrier $n \\geq 3$: $n - 1$ is a prime power $p^k$. Proof: if $n-1 = ab$ with $a,b > 1$ coprime, then $\\omega(n-1) \\geq 2$, violating the barrier condition."
     }
@@ -214,7 +214,7 @@
     ],
     "opens": [],
     "namespace": "Erdos413",
-    "lineCount": 1102,
+    "lineCount": 1047,
     "axiomCount": 6,
     "theoremCount": 116,
     "definitionCount": 17

@@ -51,7 +51,7 @@
     ],
     "axiomCount": 1,
     "assumptions": "1 axiom: compositeSum_asymptotic (deep analytic number theory: Θ(√x/(log x)²) two-sided bound for composite least-prime-factor sum, Alladi–Erdős 1977)",
-    "lineCount": 101
+    "lineCount": 100
   },
   "leanFile": {
     "path": "Proofs/Erdos462Problem.lean",
@@ -60,7 +60,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 101,
+    "lineCount": 100,
     "axiomCount": 1,
     "theoremCount": 6,
     "definitionCount": 4
@@ -137,7 +137,7 @@
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 76,
-      "endLine": 101,
+      "endLine": 100,
       "summary": "p(p) = p for primes, p(n) ≥ 2, p(n) ≤ √n for composites — all proved from Mathlib"
     }
   ],

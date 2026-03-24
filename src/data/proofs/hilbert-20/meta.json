@@ -46,7 +46,7 @@
     "hilbertNumber": 20,
     "axiomCount": 4,
     "lineCount": 244,
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "assumptions": "4 axioms: IsHarmonic, H1_zero, WeakPoisson, and 1 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -104,7 +104,7 @@
     {
       "id": "modern",
       "title": "Modern Understanding",
-      "startLine": 262,
+      "startLine": 244,
       "endLine": 244,
       "summary": "Summary of positive and negative results, the complete resolution of Hilbert's twentieth problem."
     }

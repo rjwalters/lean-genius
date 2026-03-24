@@ -28,8 +28,8 @@
       "Natural density and asymptotic analysis",
       "Lean 4 Set.Infinite and Filter.Tendsto"
     ],
-    "lineCount": 181,
-    "assumptions": "15 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "lineCount": 180,
+    "assumptions": "14 axioms: ulamSeq, ulamSeq_zero, ulamSeq_one, and 11 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -112,7 +112,7 @@
       "id": "summary",
       "title": "Part IX: Summary",
       "startLine": 154,
-      "endLine": 181,
+      "endLine": 180,
       "summary": "Proved: erdos_342_statement (simp), erdos_342_status (trivial). Problem remains OPEN."
     }
   ],
@@ -139,7 +139,7 @@
       "Finset"
     ],
     "namespace": "Erdos342",
-    "lineCount": 181,
+    "lineCount": 180,
     "axiomCount": 14,
     "theoremCount": 3,
     "definitionCount": 8

@@ -24,8 +24,8 @@
     "erdosUrl": "https://erdosproblems.com/1011",
     "erdosProblemStatus": "open",
     "axiomCount": 15,
-    "lineCount": 219,
-    "assumptions": "15 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "lineCount": 213,
+    "assumptions": "15 axioms: f_well_defined, turan_theorem, turan_graph_optimal, and 12 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -116,7 +116,7 @@
       "title": "The Main Conjecture",
       "summary": "Determining the exact asymptotic of g(r)",
       "startLine": 197,
-      "endLine": 219
+      "endLine": 213
     }
   ],
   "conclusion": {
@@ -230,7 +230,7 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 219,
+    "lineCount": 213,
     "axiomCount": 15,
     "theoremCount": 0,
     "definitionCount": 11

@@ -57,7 +57,7 @@
       "erdos_910_both_false: combined result disproving both conjectures"
     ],
     "lineCount": 155,
-    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "assumptions": "1 axiom: rudin_theorem_ch. See Lean source for the complete statement.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -125,7 +125,7 @@
     {
       "id": "disproving",
       "title": "Disproving Erdős's Conjectures",
-      "startLine": 156,
+      "startLine": 155,
       "endLine": 155,
       "summary": "All three theorems fully proved (0 sorries): `rudin_set_no_diverse_subset`, `erdos_first_conjecture_false`, and `erdos_second_conjecture_false`. Combined in `erdos_910_both_false`."
     }

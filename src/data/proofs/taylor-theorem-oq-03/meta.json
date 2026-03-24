@@ -57,7 +57,7 @@
     ],
     "dateAdded": "2026-03-23",
     "axiomCount": 0,
-    "lineCount": 301,
+    "lineCount": 268,
     "theoremCount": 20,
     "definitionCount": 2,
     "assumptions": "0 axioms, 0 sorries. Core Taylor remainder estimates (taylor_mean_remainder_lagrange, taylor_mean_remainder_cauchy) from Mathlib; original work is exponential convergence analysis.",
@@ -135,7 +135,7 @@
       "id": "cauchy-remainder",
       "title": "Section VII: The Cauchy Remainder Form",
       "startLine": 240,
-      "endLine": 301,
+      "endLine": 268,
       "summary": "Applies the Cauchy remainder theorem to exp: for x > 0, there exists xi in (0,x) with remainder = exp(xi)(x-xi)^n/n! * x. Proves the bound |remainder| <= exp(x) * x^{n+1}/n! using monotonicity of exp and (x-xi)^n <= x^n."
     }
   ],
@@ -202,7 +202,7 @@
       "Nat"
     ],
     "namespace": "TaylorExpConvergence",
-    "lineCount": 301,
+    "lineCount": 268,
     "axiomCount": 2,
     "theoremCount": 20,
     "definitionCount": 2

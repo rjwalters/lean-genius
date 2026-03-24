@@ -70,7 +70,7 @@
     ],
     "axiomCount": 5,
     "lineCount": 228,
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "5 axioms: K_counterexample, chen_ma_theorem, erdos_816_for_large_n, and 2 more. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #816: Equal-Degree Paths**\n\nThis problem was posed by Erdős and Hajnal and concerns the interplay between degree sequences and path connectivity in graphs.\n\n**The Question:**\nGiven enough edges, must a graph contain two vertices of the same degree that are connected by a path of length 3?\n\n**Key Insight:**\nThe complete bipartite graph K_{n,n+1} has exactly n² + n edges and fails this property: vertices of equal degree are in the same part, but paths of length 3 between same-part vertices don't exist (paths alternate between parts).\n\n**Resolution:**\nChen and Ma (2025, arXiv:2503.19569) proved that one additional edge (n² + n + 1 total) forces the property. They proved the stronger result that for n ≥ 600, even n² + n edges suffice except for K_{n,n+1}.",

@@ -19,10 +19,10 @@
     "erdosUrl": "https://erdosproblems.com/574",
     "axiomCount": 4,
     "badge": "axiom",
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "assumptions": "4 axioms: erdos_574_conjecture, even_cycle_turan, bondy_simonovits, and 1 more. See Lean source for complete statements.",
     "proofRepoPath": "Proofs/Erdos574Problem.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 96
+    "lineCount": 95
   },
   "sections": [
     {
@@ -57,7 +57,7 @@
       "id": "observations",
       "title": "Observations and Constructions",
       "startLine": 86,
-      "endLine": 96,
+      "endLine": 95,
       "summary": "Commentary on why the conjecture is plausible: forbidding $C_{2k-1}$ should be 'free' because algebraic constructions from finite geometry (incidence graphs of projective planes and generalized polygons) naturally avoid both $C_{2k-1}$ and $C_{2k}$."
     }
   ],
@@ -99,7 +99,7 @@
     "https://erdosproblems.com/574"
   ],
   "leanFile": {
-    "lineCount": 96,
+    "lineCount": 95,
     "structureCount": 1,
     "axiomCount": 4,
     "theoremCount": 0,

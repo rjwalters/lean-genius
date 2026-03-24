@@ -20,10 +20,10 @@
     "erdosProblemStatus": "open",
     "axiomCount": 10,
     "badge": "axiom",
-    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "assumptions": "10 axioms: ramseyTree, ramseyTree_spec, ramseyTree_minimal, and 7 more. See Lean source for complete statements.",
     "proofRepoPath": "Proofs/Erdos557Problem.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 129
+    "lineCount": 128
   },
   "sections": [
     {
@@ -71,7 +71,7 @@
       "title": "Burr-Erdős Connection and Problem #548",
       "summary": "burr_erdos_trees: Lee (2017) proved R(G;2) = O(n) for bounded degeneracy. problem_548_implies_557: multicolor Burr-Erdős for degeneracy d would resolve #557 for trees (d=1)",
       "startLine": 114,
-      "endLine": 129,
+      "endLine": 128,
       "mathContext": "Burr-Erdős: $R(G; 2) = O(n)$ for degeneracy-$d$ graphs (Lee 2017). Trees have $d = 1$."
     }
   ],
@@ -111,7 +111,7 @@
     "https://erdosproblems.com/557"
   ],
   "leanFile": {
-    "lineCount": 129,
+    "lineCount": 128,
     "structureCount": 1,
     "axiomCount": 10,
     "theoremCount": 0,

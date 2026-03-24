@@ -64,7 +64,7 @@
       "Chinese Remainder Theorem",
       "Least common multiples and divisibility"
     ],
-    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "assumptions": "3 axiom(s): balister_odd_squarefree, hough_nielsen, odd_covering_lcm_constraint. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

@@ -21,8 +21,8 @@
     "erdosUrl": "https://erdosproblems.com/932",
     "erdosProblemStatus": "open",
     "axiomCount": 4,
-    "lineCount": 314,
-    "assumptions": "12 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "lineCount": 336,
+    "assumptions": "4 axioms: maxPrimeFactor_mul, erdos_932, erdos_932_density_zero, and 1 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -138,7 +138,7 @@
       "Finset"
     ],
     "namespace": "Erdos932",
-    "lineCount": 314,
+    "lineCount": 336,
     "axiomCount": 12,
     "theoremCount": 8,
     "definitionCount": 11

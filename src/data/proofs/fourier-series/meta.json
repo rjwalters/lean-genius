@@ -76,8 +76,8 @@
       "fourier_coeff_tendsto_zero_of_L2: Riemann-Lebesgue lemma for L²"
     ],
     "axiomCount": 0,
-    "lineCount": 466,
-    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "lineCount": 452,
+    "assumptions": "0 axioms. Fully verified."
   },
   "overview": {
     "historicalContext": "**Fourier Series — Wiedijk #76**\n\nFourier series are one of the most important tools in mathematical analysis, decomposing periodic functions into sums of sines and cosines (or complex exponentials).\n\n**Historical Development:**\n- **Joseph Fourier (1807)** introduced the series in his work on heat conduction, published fully in *Théorie analytique de la chaleur* (1822)\n- **Dirichlet (1829)** gave the first rigorous convergence proof for piecewise smooth functions\n- **Paul du Bois-Reymond (1876)** showed a continuous function whose Fourier series diverges at a point\n- **Lennart Carleson (1966)** proved the landmark result that Fourier series of $L^2$ functions converge pointwise almost everywhere\n\n**Modern formalization:** Mathlib formalizes Fourier series on `AddCircle T` (= $\\mathbb{R}/T\\mathbb{Z}$) with normalized Haar measure. The key objects are `fourierCoeff`, `fourier` (monomials), and `fourierBasis` (Hilbert basis for $L^2$). This formalization proves $L^2$ convergence, Parseval's theorem, Bessel's inequality, and uniqueness.",
@@ -188,8 +188,8 @@
     {
       "id": "verification",
       "title": "Type Verification",
-      "startLine": 456,
-      "endLine": 466,
+      "startLine": 450,
+      "endLine": 452,
       "summary": "Uses `#check` to verify all main theorems are well-typed: orthonormality, $L^2$ convergence, Parseval, Bessel, uniform convergence, uniqueness, Riemann-Lebesgue.",
       "mathContext": "Type verification confirms the formalization typechecks: `orthonormal_fourier`, `hasSum_fourier_series_L2`, `parseval_fourier`, `bessel_fourier`, `hasSum_fourier_series_of_summable`, `fourier_uniqueness`, `fourierCoeff_tendsto_zero`. All 7 main results are well-typed with 0 sorries."
     }

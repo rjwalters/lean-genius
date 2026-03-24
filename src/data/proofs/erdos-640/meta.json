@@ -21,8 +21,8 @@
     "erdosUrl": "https://erdosproblems.com/640",
     "erdosProblemStatus": "open",
     "axiomCount": 2,
-    "lineCount": 279,
-    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "lineCount": 259,
+    "assumptions": "2 axioms: steiner_equivalence, trivial_case_k3. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -92,7 +92,7 @@
       "title": "Part VI: Summary Theorem",
       "summary": "Proves `erdos_640_summary`: the conjecture is equivalent to Steiner's path variant, directly applying the `steiner_equivalence` axiom.",
       "startLine": 150,
-      "endLine": 279
+      "endLine": 259
     }
   ],
   "conclusion": {
@@ -120,7 +120,7 @@
       "in"
     ],
     "namespace": "Erdos640",
-    "lineCount": 279,
+    "lineCount": 259,
     "axiomCount": 2,
     "theoremCount": 11,
     "definitionCount": 8

@@ -50,7 +50,7 @@
     ],
     "axiomCount": 5,
     "lineCount": 166,
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "5 axioms: erdos_930_conjecture, erdos_selfridge_consecutive_integers, erdos_selfridge_prime_multiplicity, and 2 more. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "This problem asks about products of integers from multiple disjoint intervals. Erdős and Selfridge famously proved in 1975 that the product of two or more consecutive positive integers is NEVER a perfect power. This resolved the r=1 case of Problem #930.\n\nThe general case asks: for r disjoint intervals of consecutive integers, all sufficiently long, is their combined product never a perfect power? The condition that intervals be 'sufficiently long' (length at least k, where k depends on r) is necessary—without it, counterexamples exist for r=2.\n\nThe Erdős-Selfridge proof uses sophisticated arguments about prime multiplicities. The key insight is that for any product of consecutive integers, there exists a prime whose multiplicity is not divisible by any given l > 1, preventing the product from being a perfect l-th power.",

@@ -56,7 +56,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 126,
-    "assumptions": "23 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "1 axiom: maxUnitDistances. See Lean source for the complete statement."
   },
   "overview": {
     "historicalContext": "The **Unit Distance Problem** is one of the most celebrated problems in combinatorial geometry. Given n points in ℝ^d, how many pairs can be at distance exactly 1?\n\n**Historical Timeline**:\n- **1946**: Erdős posed the 2D problem and proved the lower bound n^(1+c/log log n)\n- **1960**: Erdős extended to d=3 with lower bound n^(4/3) log log n\n- **1984**: Spencer, Szemerédi, and Trotter proved the landmark O(n^(4/3)) upper bound using the crossing number inequality\n- **1990**: Clarkson et al. achieved O(n^(3/2) β(n)) for d=3; Erdős-Pach settled odd d≥5\n- **1997**: Brass found the exact formula for d=4\n- **2009**: Swanepoel determined exact formulas for all even d≥6\n\n**The Lenz Construction**: For d≥4, place points on orthogonal unit circles. Points on different circles are at distance √2, but a clever arrangement makes them distance 1. This achieves ~(p-1)/(2p)·n² unit distances where p=⌊d/2⌋.\n\n**Connection to Erdős #90**: The d=2 case is sometimes listed as Problem #90. The gap between n^(1+o(1)) and n^(4/3) has been open for 80 years!",
@@ -107,42 +107,42 @@
     {
       "id": "dimension-3",
       "title": "Dimension 3",
-      "startLine": 133,
+      "startLine": 126,
       "endLine": 126,
       "summary": "Erdős 1960 lower bound, Clarkson et al. 1990 upper bound, partially open."
     },
     {
       "id": "high-dimensions",
       "title": "Dimension ≥ 4: High-Dimensional Case",
-      "startLine": 163,
+      "startLine": 126,
       "endLine": 126,
       "summary": "Lenz construction, Erdős-Stone upper bound - essentially solved."
     },
     {
       "id": "exact-results",
       "title": "Exact Results for d ≥ 4",
-      "startLine": 190,
+      "startLine": 126,
       "endLine": 126,
       "summary": "Brass d=4, Swanepoel even d≥6, Erdős-Pach odd d≥5."
     },
     {
       "id": "examples",
       "title": "Examples and Special Values",
-      "startLine": 216,
+      "startLine": 126,
       "endLine": 126,
       "summary": "Small cases: f_2(3)=3, f_2(4)=5, f_2(5)=7, f_3(4)=6."
     },
     {
       "id": "connections",
       "title": "Connections to Other Problems",
-      "startLine": 233,
+      "startLine": 126,
       "endLine": 126,
       "summary": "Relations to crossing numbers, incidence geometry, distinct distances."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 252,
+      "startLine": 126,
       "endLine": 126,
       "summary": "Overall status: high dimensions solved, d=2,3 partially open."
     }
