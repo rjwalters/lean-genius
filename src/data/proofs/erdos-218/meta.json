@@ -21,7 +21,7 @@
     "erdosNumber": 218,
     "erdosUrl": "https://erdosproblems.com/218",
     "erdosProblemStatus": "open",
-    "axiomCount": 22,
+    "axiomCount": 8,
     "prerequisites": [
       "Prime numbers and basic properties of Nat.Prime",
       "Prime Number Theorem (average gap growth)",
@@ -30,7 +30,7 @@
       "Green-Tao theorem (arbitrarily long APs in primes)",
       "Cramér probabilistic model for primes"
     ],
-    "lineCount": 340,
+    "lineCount": 373,
     "assumptions": "22 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
@@ -160,8 +160,8 @@
       "Filter"
     ],
     "namespace": "Erdos218",
-    "lineCount": 340,
-    "axiomCount": 22,
+    "lineCount": 373,
+    "axiomCount": 8,
     "theoremCount": 5,
     "definitionCount": 12
   }

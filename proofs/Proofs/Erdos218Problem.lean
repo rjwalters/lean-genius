@@ -30,8 +30,8 @@ References:
 -/
 
 import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Nat.Prime.Nth
 import Mathlib.Data.Set.Finite.Basic
-import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Data.Real.Basic
 import Mathlib.Topology.Algebra.Order.LiminfLimsup
 import Mathlib.Tactic
@@ -39,6 +39,8 @@ import Mathlib.Tactic
 open Nat Set Filter
 
 namespace Erdos218
+
+open Classical
 
 /- ## Part I: Prime Enumeration and Gaps -/
 
@@ -51,20 +53,33 @@ The nth prime number (0-indexed).
 -/
 noncomputable def nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
 
-/-- The nth prime is indeed prime. -/
-axiom nthPrime_prime (n : ℕ) : (nthPrime n).Prime
+/-- The nth prime is indeed prime (from Mathlib's Nat.nth API). -/
+theorem nthPrime_prime (n : ℕ) : (nthPrime n).Prime :=
+  Nat.nth_mem_of_infinite Nat.infinite_setOf_prime n
 
-/-- nthPrime is strictly increasing. -/
-axiom nthPrime_strictMono : StrictMono nthPrime
+/-- nthPrime is strictly increasing (from Mathlib's Nat.nth API). -/
+theorem nthPrime_strictMono : StrictMono nthPrime :=
+  fun _ _ h => Nat.nth_strictMono Nat.infinite_setOf_prime h
 
 /-- The first prime is 2. -/
-axiom nthPrime_zero : nthPrime 0 = 2
+theorem nthPrime_zero : nthPrime 0 = 2 := by
+  unfold nthPrime; exact Nat.nth_prime_zero_eq_two
 
 /-- The second prime is 3. -/
-axiom nthPrime_one : nthPrime 1 = 3
+theorem nthPrime_one : nthPrime 1 = 3 := by
+  unfold nthPrime; exact Nat.nth_prime_one_eq_three
 
 /-- The third prime is 5. -/
-axiom nthPrime_two : nthPrime 2 = 5
+theorem nthPrime_two : nthPrime 2 = 5 := by
+  unfold nthPrime; exact Nat.nth_prime_two_eq_five
+
+/-- The fourth prime is 7. -/
+private theorem nthPrime_three : nthPrime 3 = 7 := by
+  unfold nthPrime; exact Nat.nth_count (by decide : Nat.Prime 7)
+
+/-- The fifth prime is 11. -/
+private theorem nthPrime_four : nthPrime 4 = 11 := by
+  unfold nthPrime; exact Nat.nth_count (by decide : Nat.Prime 11)
 
 /- ## Part II: Prime Gaps -/
 
@@ -84,20 +99,27 @@ noncomputable def primeGap (n : ℕ) : ℕ := nthPrime (n + 1) - nthPrime n
 /-- Prime gaps are positive. -/
 theorem primeGap_pos (n : ℕ) : primeGap n > 0 := by
   unfold primeGap
-  have h := nthPrime_strictMono (Nat.lt_succ_self n)
-  omega
+  exact Nat.sub_pos_of_lt (nthPrime_strictMono (Nat.lt_succ_self n))
 
 /-- The first prime gap is 1 (gap from 2 to 3). -/
-axiom primeGap_zero : primeGap 0 = 1
+theorem primeGap_zero : primeGap 0 = 1 := by
+  show nthPrime 1 - nthPrime 0 = 1
+  rw [nthPrime_zero, nthPrime_one]
 
 /-- The second prime gap is 2 (gap from 3 to 5). -/
-axiom primeGap_one : primeGap 1 = 2
+theorem primeGap_one : primeGap 1 = 2 := by
+  show nthPrime 2 - nthPrime 1 = 2
+  rw [nthPrime_one, nthPrime_two]
 
 /-- The third prime gap is 2 (gap from 5 to 7). -/
-axiom primeGap_two : primeGap 2 = 2
+theorem primeGap_two : primeGap 2 = 2 := by
+  show nthPrime 3 - nthPrime 2 = 2
+  rw [nthPrime_two, nthPrime_three]
 
 /-- The fourth prime gap is 4 (gap from 7 to 11). -/
-axiom primeGap_three : primeGap 3 = 4
+theorem primeGap_three : primeGap 3 = 4 := by
+  show nthPrime 4 - nthPrime 3 = 4
+  rw [nthPrime_three, nthPrime_four]
 
 /- ## Part III: Natural Density -/
 
@@ -110,16 +132,16 @@ A set S ⊆ ℕ has natural density d if:
 This measures the "proportion" of natural numbers in S.
 -/
 def HasDensity (S : Set ℕ) (d : ℝ) : Prop :=
-  Tendsto (fun N => (Finset.filter (· ∈ S) (Finset.range N)).card / N)
+  Tendsto (fun N : ℕ => ((Finset.filter (· ∈ S) (Finset.range N)).card : ℝ) / (↑N : ℝ))
     atTop (nhds d)
 
 /-- Upper natural density. -/
 noncomputable def upperDensity (S : Set ℕ) : ℝ :=
-  limsup (fun N => (Finset.filter (· ∈ S) (Finset.range N)).card / N) atTop
+  limsup (fun N : ℕ => ((Finset.filter (· ∈ S) (Finset.range N)).card : ℝ) / (↑N : ℝ)) atTop
 
 /-- Lower natural density. -/
 noncomputable def lowerDensity (S : Set ℕ) : ℝ :=
-  liminf (fun N => (Finset.filter (· ∈ S) (Finset.range N)).card / N) atTop
+  liminf (fun N : ℕ => ((Finset.filter (· ∈ S) (Finset.range N)).card : ℝ) / (↑N : ℝ)) atTop
 
 /-- A set has density d iff upper and lower densities both equal d. -/
 axiom hasDensity_iff_upper_lower (S : Set ℕ) (d : ℝ) :
@@ -153,11 +175,15 @@ This means p_n, p_{n+1}, p_{n+2} form an arithmetic progression!
 -/
 def gapEqualSet : Set ℕ := { n | primeGap n = primeGap (n + 1) }
 
-/-- 0 is in gapIncreasingSet since primeGap 0 = 1 < 2 = primeGap 1. -/
-axiom zero_mem_gapIncreasingSet : 0 ∈ gapIncreasingSet
+/-- 0 is in gapIncreasingSet since primeGap 0 = 1 ≤ 2 = primeGap 1. -/
+theorem zero_mem_gapIncreasingSet : 0 ∈ gapIncreasingSet := by
+  show primeGap 0 ≤ primeGap 1
+  rw [primeGap_zero, primeGap_one]; norm_num
 
 /-- 1 is in gapEqualSet since primeGap 1 = primeGap 2 = 2. -/
-axiom one_mem_gapEqualSet : 1 ∈ gapEqualSet
+theorem one_mem_gapEqualSet : 1 ∈ gapEqualSet := by
+  show primeGap 1 = primeGap 2
+  rw [primeGap_one, primeGap_two]
 
 /-- gapEqualSet is the intersection of gapIncreasingSet and gapDecreasingSet. -/
 theorem gapEqualSet_eq_inter :
@@ -213,8 +239,15 @@ def threePrimesInAP (n : ℕ) : Prop :=
   nthPrime n + nthPrime (n + 2) = 2 * nthPrime (n + 1)
 
 /-- Equal gaps iff three consecutive primes form AP. -/
-axiom gapEqual_iff_ap (n : ℕ) :
-    n ∈ gapEqualSet ↔ threePrimesInAP n
+theorem gapEqual_iff_ap (n : ℕ) :
+    n ∈ gapEqualSet ↔ threePrimesInAP n := by
+  simp only [gapEqualSet, mem_setOf_eq, primeGap, threePrimesInAP]
+  set a := nthPrime n
+  set b := nthPrime (n + 1)
+  set c := nthPrime (n + 2)
+  have hab : a < b := nthPrime_strictMono (by omega)
+  have hbc : b < c := nthPrime_strictMono (by omega)
+  constructor <;> intro h <;> omega
 
 /-- If 218c holds, there are infinitely many 3-term APs of consecutive primes. -/
 theorem infinitely_many_3ap_from_218c (h : gapEqualSet.Infinite) :
@@ -226,13 +259,13 @@ theorem infinitely_many_3ap_from_218c (h : gapEqualSet.Infinite) :
 /- ## Part VII: Known Examples of Equal Gaps -/
 
 /-- n=1: primes 3,5,7 form AP with common difference 2. -/
-axiom example_ap_1 : 1 ∈ gapEqualSet
+theorem example_ap_1 : 1 ∈ gapEqualSet := one_mem_gapEqualSet
 
 /-- The set of n where (p_n, p_{n+1}, p_{n+2}) forms an AP. -/
 def apTriples : Set ℕ := { n | threePrimesInAP n }
 
 /-- Known arithmetic progressions of 3 consecutive primes include (3,5,7). -/
-axiom ap_357 : 1 ∈ apTriples
+theorem ap_357 : 1 ∈ apTriples := (gapEqual_iff_ap 1).mp one_mem_gapEqualSet
 
 /- ## Part VIII: Connection to Green-Tao -/
 
@@ -249,7 +282,7 @@ axiom green_tao (k : ℕ) : ∃ a d : ℕ, d > 0 ∧
 
 /- ## Part IX: Partial Results -/
 
-/--
+/-
 **Lower Bound on Upper Density**
 
 While exact density 1/2 is unknown, we can show that both
@@ -272,7 +305,7 @@ axiom average_gap_growth (n : ℕ) (hn : n > 0) :
 
 /- ## Part X: Symmetry Argument (Heuristic) -/
 
-/--
+/-
 **Why Density 1/2 is Plausible**
 
 Heuristically, if gap comparisons were "random", we'd expect:
@@ -297,7 +330,7 @@ theorem partition : strictlyIncreasing ∪ strictlyDecreasing ∪ gapEqualSet = 
     by_cases h' : primeGap (n + 1) < primeGap n
     · left; right; exact h'
     · push_neg at h'
-      right; exact le_antisymm h h'
+      right; exact le_antisymm h' h
 
 /- ## Part XI: Summary -/
 
@@ -335,6 +368,6 @@ theorem erdos_218_summary :
       ext n
       exact gapEqual_iff_ap n
 
-/-- The problem remains OPEN (Tao: "looks difficult"). -/
+/- The problem remains OPEN (Tao: "looks difficult"). -/
 
 end Erdos218
