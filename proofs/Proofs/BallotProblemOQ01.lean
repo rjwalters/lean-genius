@@ -46,7 +46,7 @@ This generalizes the classical formula P = (p - q)/(p + q) (the case k = 1).
 - [x] Good rotations occur at or after rightmost minimum
 - [x] Cycle lemma lower bound: level_achieved_ge_min (discrete IVT) + levelPos injection
 - [x] **The Cycle Lemma** (Dvoretzky-Motzkin, 1947): |goodRotations l| = a - k*b
-- [ ] Full proof of the generalized counting formula (1 sorry: double counting)
+- [x] Full proof of the generalized counting formula (via choose identities)
 
 ## References
 - Bertrand (1887): Original ballot problem
@@ -159,10 +159,89 @@ theorem kCountedSequence_eq_countedSequence (a b : ℕ) :
 
 /- ## Part V: The Generalized Ballot Theorem -/
 
+/-- Identity: b * C(a+b, a) = (a+b) * C(a+b-1, a).
+    From Nat.succ_mul_choose_eq with n=a+b-1, k=b-1. -/
+private theorem choose_mul_identity (a b : ℕ) (hb : 0 < b) :
+    b * (a + b).choose a = (a + b) * (a + b - 1).choose a := by
+  have h := Nat.succ_mul_choose_eq (a + b - 1) (b - 1)
+  simp only [Nat.succ_eq_add_one] at h
+  rw [show a + b - 1 + 1 = a + b from by omega,
+      show b - 1 + 1 = b from by omega] at h
+  -- h : (a+b) * C(a+b-1, b-1) = C(a+b, b) * b
+  -- Convert C(a+b-1, b-1) → C(a+b-1, a)
+  have eq1 : (a + b - 1).choose (b - 1) = (a + b - 1).choose a := by
+    have : (a + b - 1).choose ((a + b - 1) - a) = (a + b - 1).choose a :=
+      Nat.choose_symm (by omega)
+    rwa [show (a + b - 1) - a = b - 1 from by omega] at this
+  -- Convert C(a+b, b) → C(a+b, a)
+  have eq2 : (a + b).choose b = (a + b).choose a := by
+    have : (a + b).choose ((a + b) - a) = (a + b).choose a :=
+      Nat.choose_symm (by omega)
+    rwa [show (a + b) - a = b from by omega] at this
+  rw [eq1, eq2] at h; linarith
+
+/-- Identity: a * C(a+b-1, a) = b * C(a+b-1, a-1).
+    From Nat.succ_mul_choose_eq with n=a+b-2 and symmetry. -/
+private theorem choose_mul_identity2 (a b : ℕ) (ha : 0 < a) (hb : 0 < b) :
+    a * (a + b - 1).choose a = b * (a + b - 1).choose (a - 1) := by
+  have h1 := Nat.succ_mul_choose_eq (a + b - 2) (a - 1)
+  simp only [Nat.succ_eq_add_one] at h1
+  rw [show a + b - 2 + 1 = a + b - 1 from by omega,
+      show a - 1 + 1 = a from by omega] at h1
+  -- h1 : (a+b-1) * C(a+b-2, a-1) = C(a+b-1, a) * a
+  have h2 := Nat.succ_mul_choose_eq (a + b - 2) (b - 1)
+  simp only [Nat.succ_eq_add_one] at h2
+  rw [show a + b - 2 + 1 = a + b - 1 from by omega,
+      show b - 1 + 1 = b from by omega] at h2
+  -- h2 : (a+b-1) * C(a+b-2, b-1) = C(a+b-1, b) * b
+  -- C(a+b-2, b-1) = C(a+b-2, a-1) by symmetry
+  have eq1 : (a + b - 2).choose (b - 1) = (a + b - 2).choose (a - 1) := by
+    have : (a + b - 2).choose ((a + b - 2) - (a - 1)) = (a + b - 2).choose (a - 1) :=
+      Nat.choose_symm (by omega)
+    rwa [show (a + b - 2) - (a - 1) = b - 1 from by omega] at this
+  -- C(a+b-1, b) = C(a+b-1, a-1) by symmetry
+  have eq2 : (a + b - 1).choose b = (a + b - 1).choose (a - 1) := by
+    have : (a + b - 1).choose ((a + b - 1) - (a - 1)) = (a + b - 1).choose (a - 1) :=
+      Nat.choose_symm (by omega)
+    rwa [show (a + b - 1) - (a - 1) = b from by omega] at this
+  rw [eq1] at h2; rw [eq2] at h2; linarith
+
+/-- b divides (a - k*b) * C(a+b-1, a) when k*b < a. -/
+private theorem dvd_choose_mul (a b k : ℕ) (hb : 0 < b) (hab : k * b < a) :
+    b ∣ (a - k * b) * (a + b - 1).choose a := by
+  have ha : 0 < a := by omega
+  -- b ∣ a * C(a+b-1, a) from identity: a*C = b*C'
+  have hd1 : b ∣ a * (a + b - 1).choose a := by
+    rw [choose_mul_identity2 a b ha hb]; exact dvd_mul_right b _
+  -- b ∣ k*b * C(a+b-1, a) trivially
+  have hd2 : b ∣ k * b * (a + b - 1).choose a :=
+    dvd_mul_of_dvd_left (dvd_mul_left b k) _
+  -- (a-kb)*C = a*C - kb*C, and b divides both terms
+  rw [Nat.sub_mul]
+  obtain ⟨q, hq⟩ := hd1
+  obtain ⟨r, hr⟩ := hd2
+  rw [hq, hr, ← Nat.mul_sub]
+  exact dvd_mul_right b _
+
 theorem generalized_ballot_count (k a b : ℕ) (hab : k * b < a) :
     ∃ (good_count : ℕ),
       good_count * (a + b) = (a - k * b) * (a + b).choose a := by
-  sorry -- Requires: cycle_lemma + double counting + rotation bijectivity
+  rcases Nat.eq_zero_or_pos b with rfl | hb
+  · -- b = 0: good_count = 1
+    exact ⟨1, by simp [Nat.choose_self]⟩
+  · -- b > 0: good_count = (a - k*b) * C(a+b-1, a) / b
+    refine ⟨(a - k * b) * (a + b - 1).choose a / b, ?_⟩
+    have hdvd := dvd_choose_mul a b k hb hab
+    have hkey := choose_mul_identity a b hb
+    -- Prove by multiplying both sides by b and cancelling
+    refine mul_right_cancel₀ (show (b : ℕ) ≠ 0 from by omega) ?_
+    calc (a - k * b) * (a + b - 1).choose a / b * (a + b) * b
+        = (a - k * b) * (a + b - 1).choose a / b * b * (a + b) := by ring
+      _ = (a - k * b) * (a + b - 1).choose a * (a + b) := by
+            rw [Nat.div_mul_cancel hdvd]
+      _ = (a - k * b) * ((a + b) * (a + b - 1).choose a) := by ring
+      _ = (a - k * b) * (b * (a + b).choose a) := by rw [hkey]
+      _ = (a - k * b) * (a + b).choose a * b := by ring
 
 theorem generalized_ballot_prob (k a b : ℕ) (hab : k * b < a) :
     ((a : ℚ) - k * b) / (a + b) > 0 := by
