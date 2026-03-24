@@ -284,8 +284,50 @@ theorem riemannLebesgue_of_holder (C : ℝ≥0) (α : ℝ≥0)
   intro ε hε
   simp only [dist_zero_right]
   rw [Filter.eventually_cofinite]
-  -- {n | ε ≤ ‖ĉ_n‖} is finite: for n ≠ 0, ‖ĉ_n‖ ≤ K/|n|^α < ε when |n| large
-  sorry
+  -- For n ≠ 0: ‖ĉ_n‖ ≤ (C/2)(T/(2|n|))^α, which → 0 as |n| → ∞
+  by_cases hC : (C : ℝ) = 0
+  · -- C = 0: bound is 0, so bad set ⊆ {0}
+    apply (Set.finite_singleton (0 : ℤ)).subset
+    intro n hn; simp only [Set.mem_setOf_eq, not_lt] at hn; simp only [Set.mem_singleton_iff]
+    by_contra hn0
+    linarith [fourierCoeff_holder_decay C α f hf hα n hn0, norm_nonneg (fourierCoeff f n),
+              show (↑C / 2 : ℝ) * (T / (2 * |↑n|)) ^ (↑α : ℝ) = 0 from by simp [hC]]
+  · -- C > 0: bound tends to 0, extract N₀, show bad set is bounded
+    have hα_pos : (0 : ℝ) < (↑α : ℝ) := by exact_mod_cast hα
+    -- Step 1: The bound sequence a(k) := (C/2)(T/(2(k+1)))^α → 0 as k → ∞
+    -- Decompose: T/(2(k+1)) → 0 (inverse growth), then x^α continuous at 0, then mul const
+    have h_base : Tendsto (fun k : ℕ => T / (2 * ((↑k : ℝ) + 1))) atTop (𝓝 0) := by
+      apply Filter.Tendsto.div_atTop tendsto_const_nhds
+      exact (tendsto_atTop_add_const_right atTop (1 : ℝ) tendsto_natCast_atTop_atTop).const_mul_atTop
+        (show (0 : ℝ) < 2 by norm_num)
+    have h_rpow : Tendsto (fun k : ℕ => (T / (2 * ((↑k : ℝ) + 1))) ^ (↑α : ℝ)) atTop (𝓝 0) := by
+      -- rpow continuous at 0 with α > 0, composed with h_base
+      sorry
+    have h_tend : Tendsto (fun k : ℕ =>
+        (↑C / 2 : ℝ) * (T / (2 * ((↑k : ℝ) + 1))) ^ (↑α : ℝ)) atTop (𝓝 0) := by
+      rw [show (0 : ℝ) = ↑C / 2 * 0 from by ring]
+      exact h_rpow.const_mul _
+    -- Step 2: Extract N₀ such that a(N₀) < ε
+    obtain ⟨N₀, hN₀⟩ := Filter.eventually_atTop.mp (h_tend.eventually (Iio_mem_nhds hε))
+    -- Step 3: Bad set ⊆ {n | n.natAbs ≤ N₀ + 1}, which is finite
+    apply (Set.finite_Icc (-(↑(N₀ + 1) : ℤ)) ↑(N₀ + 1)).subset
+    intro n hn; simp only [Set.mem_setOf_eq, not_lt] at hn; simp only [Set.mem_Icc]
+    suffices h : n.natAbs ≤ N₀ + 1 by constructor <;> omega
+    by_contra h_large; push_neg at h_large
+    have hn0 : n ≠ 0 := by omega
+    -- For n ≠ 0 with |n| > N₀+1: decay bound ≤ a(N₀) < ε, contradicting ε ≤ ‖ĉ_n‖
+    have h_frac_le : T / (2 * |(↑n : ℝ)|) ≤ T / (2 * ((↑N₀ : ℝ) + 1)) := by
+      -- |n| > N₀+1 so T/(2|n|) ≤ T/(2(N₀+1)): larger denom gives smaller fraction
+      sorry
+    have h_rpow_le : (T / (2 * |(↑n : ℝ)|)) ^ (↑α : ℝ) ≤
+        (T / (2 * ((↑N₀ : ℝ) + 1))) ^ (↑α : ℝ) :=
+      Real.rpow_le_rpow (div_nonneg hT.out.le (by positivity)) h_frac_le hα_pos.le
+    have h_bound_le : (↑C / 2 : ℝ) * (T / (2 * |(↑n : ℝ)|)) ^ (↑α : ℝ) ≤
+        (↑C / 2 : ℝ) * (T / (2 * ((↑N₀ : ℝ) + 1))) ^ (↑α : ℝ) :=
+      mul_le_mul_of_nonneg_left h_rpow_le (div_nonneg (NNReal.coe_nonneg C) (by norm_num))
+    have h_a_lt := hN₀ N₀ le_rfl  -- a(N₀) ∈ Set.Iio ε, i.e., a(N₀) < ε
+    simp only [Set.mem_Iio] at h_a_lt
+    linarith [fourierCoeff_holder_decay C α f hf hα n hn0]
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
