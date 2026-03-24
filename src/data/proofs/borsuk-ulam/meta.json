@@ -213,16 +213,31 @@
       "targetId": "borsuk-ulam-oq-03",
       "relationship": "extended-by",
       "description": "Develops constructive versions of the Borsuk-Ulam theorem and equivalent formulations (Tucker's lemma, Lusternik-Schnirelman) — addressing the open question about intuitionistic proofs"
+    },
+    {
+      "targetId": "poincare-conjecture",
+      "relationship": "thematic",
+      "description": "Both are landmark results in the topology of spheres. Borsuk-Ulam concerns the symmetry structure of $S^n$ (no odd map $S^n \\to S^{n-1}$), while the Poincaré conjecture characterizes $S^3$ among 3-manifolds by its fundamental group. Both rely on homotopy-theoretic invariants ($\\pi_1$ for Borsuk-Ulam's covering space argument, the full homotopy type for Poincaré) and both were solved using deep analytic/topological methods"
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "thematic",
+      "description": "Both connect topology to combinatorics. Borsuk-Ulam implies Kneser's conjecture on graph chromatic numbers via Lovász's 1978 proof, founding topological combinatorics. The four-color theorem concerns the chromatic number of planar graphs. Together they illustrate how topology constrains coloring: Borsuk-Ulam provides lower bounds ($\\chi(K(n,k)) \\geq n - 2k + 2$) while the four-color theorem provides an upper bound ($\\chi(G) \\leq 4$ for planar $G$)"
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "Both use topological arguments about continuous maps on spheres. FTA can be proved via the winding number (degree theory on $S^1$), while Borsuk-Ulam uses degree theory on $S^n$. Both show that topological constraints (non-contractibility of spheres) force the existence of special points (roots, antipodal pairs)"
     }
   ],
   "conclusion": {
     "summary": "The Borsuk-Ulam Theorem demonstrates that any continuous function from the n-sphere to n-dimensional Euclidean space must map some pair of antipodal points to the same value. The proof ingeniously transforms the antipodal pair problem into showing no odd map from S^n to S^(n-1) can exist, which follows from covering space theory.",
     "implications": "This theorem has far-reaching consequences:\n\n**1. Fair Division**\nThe Ham Sandwich Theorem guarantees n objects in R^n can be bisected by one cut. Necklace splitting problems become tractable.\n\n**2. Topological Combinatorics**\nLovasz's proof of Kneser's conjecture launched an entire field connecting topology and combinatorics.\n\n**3. Fixed Point Theory**\nBorsuk-Ulam implies Brouwer's Fixed Point Theorem, connecting different branches of topology.\n\n**4. Computer Science**\nTucker's Lemma (the discrete version) has applications in computational complexity.\n\n**5. Economics**\nRelated techniques appear in equilibrium theory and mechanism design.",
     "openQuestions": [
-      "What is the computational complexity of finding an approximately antipodal pair?",
-      "How do equivariant versions of Borsuk-Ulam extend to other group actions?",
-      "Can the theorem be made constructive (intuitionistic)?",
-      "What are the higher categorical analogues of the covering space argument?"
+      "What is the computational complexity of finding an $\\epsilon$-approximate antipodal pair for a Lipschitz-continuous function $f: S^n \\to \\mathbb{R}^n$? The problem is PPAD-complete in discrete analogs (Tucker's lemma), connecting Borsuk-Ulam to algorithmic game theory and equilibrium computation.",
+      "Can the key axiom `no_continuous_odd_nonzero_on_sphere` be fully proved in Lean once Mathlib gains covering space theory? This requires formalizing $\\pi_1(\\mathbb{R}P^n) \\cong \\mathbb{Z}/2\\mathbb{Z}$, the lifting criterion for covering spaces, and the induced homomorphism on fundamental groups.",
+      "Formalize the Ham Sandwich Theorem in Lean as a consequence of Borsuk-Ulam: for $n$ bounded measurable sets in $\\mathbb{R}^n$, there exists a hyperplane simultaneously bisecting all $n$ sets. This requires connecting the sphere parametrization of hyperplanes to the continuous function framework.",
+      "Formalize Lovász's proof that the Kneser graph $K(n,k)$ has chromatic number $n - 2k + 2$: the key step maps independent sets to points on $S^{n-2k}$ and applies Borsuk-Ulam. This would be a landmark application of algebraic topology in formalized combinatorics."
     ]
   },
   "relatedProofs": [
@@ -231,7 +246,10 @@
     "prob-method-lovasz-local",
     "schauder-fixed-point",
     "borsuk-ulam-oq-02",
-    "borsuk-ulam-oq-03"
+    "borsuk-ulam-oq-03",
+    "poincare-conjecture",
+    "four-color-theorem",
+    "fundamental-theorem-algebra"
   ],
   "leanFile": {
     "imports": [
