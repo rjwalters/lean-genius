@@ -82,49 +82,56 @@
       "title": "Imports and Setup",
       "startLine": 1,
       "endLine": 37,
-      "summary": "Header documentation with problem statement and references, Mathlib imports for `Cardinal.Basic`, `Cardinal.Ordinal`, and `Mathlib.Tactic`. Opens the `Cardinal` and `Ordinal` namespaces."
+      "summary": "Header documentation with problem statement and references, Mathlib imports for `Cardinal.Basic`, `Cardinal.Ordinal`, and `Mathlib.Tactic`. Opens the `Cardinal` and `Ordinal` namespaces.",
+      "mathContext": "Imports `Mathlib.SetTheory.Cardinal.Basic` and `Mathlib.SetTheory.Cardinal.Ordinal` for the $\\aleph$ function, ordinal arithmetic, and cardinal comparison. The `Cardinal` namespace provides `aleph : Ordinal → Cardinal` for defining $\\aleph_\\omega$ and $\\aleph_{\\omega+1}$."
     },
     {
       "id": "cardinal-setup",
       "title": "Cardinal and Ordinal Constants",
       "startLine": 38,
       "endLine": 55,
-      "summary": "Defines $\\aleph_\\omega = \\text{aleph}(\\omega_0)$, $\\aleph_{\\omega+1} = \\text{aleph}(\\omega_0 + 1)$, the initial ordinal $\\omega_{\\omega+1}$, and the Generalized Continuum Hypothesis as $\\forall \\alpha,\\; 2^{\\aleph_\\alpha} = \\aleph_{\\alpha+1}$."
+      "summary": "Defines $\\aleph_\\omega = \\text{aleph}(\\omega_0)$, $\\aleph_{\\omega+1} = \\text{aleph}(\\omega_0 + 1)$, the initial ordinal $\\omega_{\\omega+1}$, and the Generalized Continuum Hypothesis as $\\forall \\alpha,\\; 2^{\\aleph_\\alpha} = \\aleph_{\\alpha+1}$.",
+      "mathContext": "$\\aleph_\\omega = \\sup_{n < \\omega} \\aleph_n$ is the first singular aleph with $\\text{cf}(\\aleph_\\omega) = \\omega$. GCH is $\\forall \\alpha,\\; 2^{\\aleph_\\alpha} = \\aleph_{\\alpha+1}$. The initial ordinal $\\omega_{\\omega+1}$ has cardinality $\\aleph_{\\omega+1}$; set mappings are defined on this ordinal."
     },
     {
       "id": "set-mappings",
       "title": "Set Mappings and Free Sets",
       "startLine": 56,
       "endLine": 89,
-      "summary": "Defines `SetMapping` on ordinals, `BoundedImageSize` ($|f(\\alpha)| \\leq \\kappa$), `AlmostDisjoint` ($|f(\\alpha) \\cap f(\\beta)| < \\kappa$ for $\\alpha \\neq \\beta$), `IsFreeSet` ($\\alpha \\notin f(\\beta)$ for distinct $\\alpha, \\beta \\in S$), and `HasFreeSetOfCard`."
+      "summary": "Defines `SetMapping` on ordinals, `BoundedImageSize` ($|f(\\alpha)| \\leq \\kappa$), `AlmostDisjoint` ($|f(\\alpha) \\cap f(\\beta)| < \\kappa$ for $\\alpha \\neq \\beta$), `IsFreeSet` ($\\alpha \\notin f(\\beta)$ for distinct $\\alpha, \\beta \\in S$), and `HasFreeSetOfCard`.",
+      "mathContext": "Core vocabulary: `SetMapping f` := $f : \\text{Ordinal} \\to \\text{Set Ordinal}$. `BoundedImageSize f κ` := $\\forall \\alpha,\\; |f(\\alpha)| \\le \\kappa$. `AlmostDisjoint f κ` := $\\forall \\alpha \\ne \\beta,\\; |f(\\alpha) \\cap f(\\beta)| < \\kappa$. `IsFreeSet S f` := $\\forall \\alpha, \\beta \\in S,\\; \\alpha \\ne \\beta \\Rightarrow \\alpha \\notin f(\\beta)$. Free sets are the key object: subsets where no element maps to another."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "startLine": 90,
       "endLine": 108,
-      "summary": "Formalizes `erdos_1173`: under GCH, every set mapping $f : \\omega_{\\omega+1} \\to [\\omega_{\\omega+1}]^{\\leq \\aleph_\\omega}$ with almost-disjoint images has a free set of cardinality $\\aleph_{\\omega+1}$."
+      "summary": "Formalizes `erdos_1173`: under GCH, every set mapping $f : \\omega_{\\omega+1} \\to [\\omega_{\\omega+1}]^{\\leq \\aleph_\\omega}$ with almost-disjoint images has a free set of cardinality $\\aleph_{\\omega+1}$.",
+      "mathContext": "`erdos_1173` := $\\text{GCH} \\Rightarrow \\forall f,\\; \\text{SetMapping}\\,f \\wedge \\text{BoundedImageSize}\\,f\\,\\aleph_\\omega \\wedge \\text{AlmostDisjoint}\\,f\\,\\aleph_\\omega \\Rightarrow \\text{HasFreeSetOfCard}\\,f\\,\\aleph_{\\omega+1}$. Status: OPEN. The difficulty: $\\aleph_\\omega$ is singular, so Hajnal's theorem (which requires regular $\\kappa$) does not directly apply."
     },
     {
       "id": "hajnal-theorem",
       "title": "The Hajnal Free Set Theorem",
       "startLine": 109,
       "endLine": 125,
-      "summary": "Axiomatizes the Hajnal free set theorem for regular $\\kappa$: if $|f(\\alpha)| < \\kappa$ for all $\\alpha < \\kappa^+$, then there exists a free set of size $\\kappa^+$. This is the known result that Problem #1173 seeks to generalize."
+      "summary": "Axiomatizes the Hajnal free set theorem for regular $\\kappa$: if $|f(\\alpha)| < \\kappa$ for all $\\alpha < \\kappa^+$, then there exists a free set of size $\\kappa^+$. This is the known result that Problem #1173 seeks to generalize.",
+      "mathContext": "**Hajnal (1961):** For regular $\\kappa$, if $f : \\kappa^+ \\to [\\kappa^+]^{<\\kappa}$ is a set mapping, then $\\exists S \\subseteq \\kappa^+$ with $|S| = \\kappa^+$ and $S$ free for $f$. The proof uses a transfinite induction argument that relies on $\\text{cf}(\\kappa) = \\kappa$ (regularity). For singular $\\kappa = \\aleph_\\omega$, this induction breaks down."
     },
     {
       "id": "gch-observations",
       "title": "Observations under GCH",
       "startLine": 126,
       "endLine": 144,
-      "summary": "Two axioms: (1) GCH implies $\\aleph_\\omega$ is a strong limit ($2^{\\aleph_n} < \\aleph_\\omega$ for all $n$). (2) Almost-disjointness with bound $\\aleph_\\omega$ implies each pairwise overlap is bounded by some $\\aleph_n$, using $\\mathrm{cf}(\\aleph_\\omega) = \\omega$."
+      "summary": "Two axioms: (1) GCH implies $\\aleph_\\omega$ is a strong limit ($2^{\\aleph_n} < \\aleph_\\omega$ for all $n$). (2) Almost-disjointness with bound $\\aleph_\\omega$ implies each pairwise overlap is bounded by some $\\aleph_n$, using $\\mathrm{cf}(\\aleph_\\omega) = \\omega$.",
+      "mathContext": "(1) GCH $\\Rightarrow$ $\\aleph_\\omega$ is a strong limit: $2^{\\aleph_n} = \\aleph_{n+1} < \\aleph_\\omega$ for all $n < \\omega$. (2) $|f(\\alpha) \\cap f(\\beta)| < \\aleph_\\omega$ implies $|f(\\alpha) \\cap f(\\beta)| \\le \\aleph_n$ for some $n < \\omega$, by $\\text{cf}(\\aleph_\\omega) = \\omega$ (a cardinal below $\\aleph_\\omega$ is below some $\\aleph_n$). This gives a countable stratification of the overlap structure."
     },
     {
       "id": "related-results",
       "title": "Related Results and Weak Form",
       "startLine": 145,
       "endLine": 167,
-      "summary": "Axiomatizes the Erdős–Hajnal theorem for $\\aleph_1$ (free sets of size $\\aleph_1$ for countably bounded mappings on $\\omega_1$). Defines `erdos_1173_weak`: the weak conjecture asking for a free set of size $\\aleph_\\omega$ instead of $\\aleph_{\\omega+1}$."
+      "summary": "Axiomatizes the Erdős–Hajnal theorem for $\\aleph_1$ (free sets of size $\\aleph_1$ for countably bounded mappings on $\\omega_1$). Defines `erdos_1173_weak`: the weak conjecture asking for a free set of size $\\aleph_\\omega$ instead of $\\aleph_{\\omega+1}$.",
+      "mathContext": "The $\\aleph_1$ case (Erdős-Hajnal): $f : \\omega_1 \\to [\\omega_1]^{\\le \\aleph_0}$ with $|f(\\alpha) \\cap f(\\beta)| < \\aleph_0$ has a free set of size $\\aleph_1$. Here $\\aleph_0$ is regular, so Hajnal's theorem applies directly. `erdos_1173_weak`: replace the conclusion $|S| = \\aleph_{\\omega+1}$ with $|S| = \\aleph_\\omega$ — a weaker (but potentially more tractable) target."
     }
   ],
   "conclusion": {
