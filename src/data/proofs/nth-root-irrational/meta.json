@@ -135,6 +135,16 @@
       "targetId": "abel-ruffini",
       "relationship": "foundational",
       "description": "The irrationality of $\\sqrt[n]{m}$ for non-perfect-power $m$ is the simplest case of the radical extension phenomenon central to Abel-Ruffini: each adjunction $\\mathbb{Q}(\\sqrt[n]{m})/\\mathbb{Q}$ produces a cyclic Galois quotient, and Abel-Ruffini's impossibility at degree 5 arises because the composition of cyclic quotients cannot build the non-solvable group $S_5$"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "technique",
+      "description": "The unique prime factorization theorem underlies the 'not a perfect power' test: $m$ is a perfect $n$-th power iff every prime in its factorization appears with multiplicity divisible by $n$. The irrationality of $\\sqrt[n]{m}$ thus reduces to a divisibility condition on prime exponents"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "extends",
+      "description": "Nth root irrationality sits at the bottom of the expressibility hierarchy: irrationality ($\\sqrt[n]{m} \\notin \\mathbb{Q}$) is weaker than transcendence ($e \\notin \\overline{\\mathbb{Q}}$). Hermite's proof that $e$ is transcendental (1873) shows $e$ is not even an algebraic number, while this file proves certain algebraic numbers ($\\sqrt[n]{m}$) escape the rationals"
     }
   ],
   "leanFile": {
