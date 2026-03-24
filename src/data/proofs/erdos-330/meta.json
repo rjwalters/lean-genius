@@ -38,7 +38,7 @@
       "startLine": 23,
       "endLine": 55,
       "summary": "IsRepresentable, IsAsympBasis, upperDensity, HasPosDensity, IsMinimalBasis, unrepresentableWithout.",
-      "mathContext": "IsRepresentable, IsAsympBasis, upperDensity, HasPosDensity, IsMinimalBasis, unrepresentableWithout."
+      "mathContext": "Six definitions building the formal framework: $\\text{IsRepresentable}(A, h, m)$ iff $m = \\sum_{i=1}^k f(i)$ with $k \\leq h$ and $f(i) \\in A$; $\\text{IsAsympBasis}(A, h)$ iff all sufficiently large $m$ are representable; $\\bar{d}(S) = \\limsup |S \\cap [1,n]|/n$; $\\text{IsMinimalBasis}$ iff removing any element destroys the basis."
     },
     {
       "id": "known-results",
@@ -46,7 +46,7 @@
       "startLine": 57,
       "endLine": 72,
       "summary": "Minimal bases have infinitely many unrep. integers upon removal; minimal bases with positive density exist (Härtter-Stöhr).",
-      "mathContext": "Minimal bases have infinitely many unrep. integers upon removal; minimal bases with positive density exist (Härtter-Stöhr)."
+      "mathContext": "Known hierarchy: (1) minimal basis exists for all $h \\geq 2$ (elementary), (2) minimal basis with $\\bar{d}(A) > 0$ exists (Härtter 1956, Stöhr 1955), (3) minimal basis with quantitative criticality (Problem #330, open). Each level strengthens the notion of how 'essential' individual elements are."
     },
     {
       "id": "open-question",
@@ -54,7 +54,7 @@
       "startLine": 74,
       "endLine": 84,
       "summary": "Does a minimal basis with positive density exist where each element's removal leaves a positive-density set unrepresentable?",
-      "mathContext": "Does a minimal basis with positive density exist where each element's removal leaves a positive-density set unrepresentable?"
+      "mathContext": "$\\exists A, h : \\text{IsMinimalBasis}(A, h) \\wedge \\bar{d}(A) > 0 \\wedge \\forall n \\in A,\\; \\bar{d}(\\{m : m \\notin h\\text{-sumset}(A \\setminus \\{n\\})\\}) > 0$. Axiomatized since the problem remains open — no construction or impossibility proof is known."
     },
     {
       "id": "implications",
@@ -62,7 +62,7 @@
       "startLine": 84,
       "endLine": 84,
       "summary": "Connection to Erdős-Nathanson theory, quantitative minimality, and broader additive combinatorics.",
-      "mathContext": "Connection to Erdős-Nathanson theory, quantitative minimality, and broader additive combinatorics."
+      "mathContext": "The problem connects to Schnirelmann's theorem (every set with $\\sigma(A) > 0$ is an additive basis), the Erdős-Ginzburg-Ziv theorem, and the broader theory of how density interacts with additive structure in $\\mathbb{N}$."
     }
   ],
   "overview": {
@@ -75,7 +75,9 @@
       "Minimal bases with positive density exist (Härtter 1956, Stöhr 1955)",
       "The question strengthens 'infinitely many' to 'positive density' of unrepresentable integers",
       "This connects the structure of individual elements to the global density of the basis",
-      "A positive answer would show each element of the basis is quantitatively critical"
+      "A positive answer would show each element of the basis is quantitatively critical",
+      "**Axiomatized density**: Upper density is axiomatized (not computed) because computing $\\limsup$ of counting functions is noncomputable. The axioms $0 \\leq \\bar{d}(S) \\leq 1$ capture the essential properties needed for the formalization.",
+      "**Order matters**: For $h = 1$, the only basis is $A = \\mathbb{N}$ (trivially minimal and dense). The problem is interesting for $h \\geq 2$, where bases can be sparse yet minimal"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -86,7 +88,7 @@
   },
   "conclusion": {
     "summary": "Erdős Problem #330 asks whether a minimal additive basis can simultaneously have positive density and the property that each element's removal leaves a positive-density set of unrepresentable integers. The basic existence of minimal bases with positive density is known, but the strengthened condition is open.",
-    "implications": "Resolution would clarify the fine structure of additive bases, connecting individual element criticality to density, with implications for the Erdős–Nathanson theory of minimal bases.",
+    "implications": "**Additive Basis Theory**: A positive resolution would establish that dense minimal bases can have 'uniformly strong' minimality — every element accounts for a positive proportion of representable integers. This would be a structural result about the density-minimality interaction.\n\n**Quantitative Combinatorics**: The problem exemplifies the transition from qualitative to quantitative in combinatorial number theory: knowing that 'infinitely many' integers become unrepresentable is weaker than knowing 'a positive density' does. This gap between infinite and dense is central to modern additive combinatorics.\n\n**Connection to Schnirelmann-Goldbach Theory**: Schnirelmann's theorem shows that sets with positive Schnirelmann density are additive bases. Problem #330 asks about the reverse direction: can a positive-density basis be constructed so that each element is quantitatively critical for maintaining the basis property?",
     "openQuestions": [
       "Does such a minimal basis exist for any order h ≥ 2?",
       "If it exists, what is the smallest possible order h?",
@@ -97,17 +99,23 @@
     {
       "targetId": "erdos-38",
       "relationship": "related",
-      "description": "Both concern additive bases and density: #38 on essential components and density boosting, #330 on minimal bases where each element's removal creates positive-density gaps"
+      "description": "Both concern additive bases and density: #38 studies essential components and density boosting via Schnirelmann's method, while #330 asks about minimal bases where each element's removal creates positive-density gaps"
     },
     {
       "targetId": "erdos-469",
       "relationship": "related",
       "description": "Both ask about density/convergence properties of number-theoretic sets defined by divisor/representability conditions"
+    },
+    {
+      "targetId": "lagrange-four-squares",
+      "relationship": "foundational",
+      "description": "Lagrange's four-square theorem proves that the squares form an additive basis of order 4. This is the classical example motivating additive basis theory — Problem #330 asks about the minimality structure of general bases, not just classical ones like squares"
     }
   ],
   "relatedProofs": [
     "erdos-38",
-    "erdos-469"
+    "erdos-469",
+    "lagrange-four-squares"
   ],
   "leanFile": {
     "imports": [],
@@ -119,10 +127,40 @@
     "definitionCount": 0
   },
   "references": [
-    "Erdős–Graham (1980), p.50",
-    "Erdős–Nathanson: original formulation",
-    "Härtter (1956): minimal bases with positive density exist",
-    "Stöhr (1955): minimal bases of order 2",
-    "https://erdosproblems.com/330"
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "L'Enseignement Mathématique, Monographie 28",
+      "note": "Problem #330 appears on p. 50 in the context of additive basis theory and minimal representations"
+    },
+    {
+      "authors": "Erdős, Paul; Nathanson, Melvyn B.",
+      "title": "Minimal asymptotic bases with prescribed densities",
+      "year": "1988",
+      "venue": "Illinois Journal of Mathematics, vol. 32, no. 3",
+      "note": "Original formulation of the problem asking for strong quantitative minimality in additive bases"
+    },
+    {
+      "authors": "Härtter, Ernst",
+      "title": "Ein Beitrag zur Theorie der Minimalbasen",
+      "year": "1956",
+      "venue": "Journal für die reine und angewandte Mathematik, vol. 196",
+      "note": "Proved existence of minimal asymptotic bases with positive density for all orders h ≥ 2"
+    },
+    {
+      "authors": "Stöhr, Alfred",
+      "title": "Gelöste und ungelöste Fragen über Basen der natürlichen Zahlenreihe",
+      "year": "1955",
+      "venue": "Journal für die reine und angewandte Mathematik, vol. 194",
+      "note": "Foundational work on minimal bases of order 2, establishing existence and basic properties"
+    },
+    {
+      "authors": "Nathanson, Melvyn B.",
+      "title": "Additive Number Theory: The Classical Bases",
+      "year": "1996",
+      "venue": "Springer GTM 164",
+      "note": "Standard reference for additive basis theory including Waring's problem, minimal bases, and the Erdős-Nathanson program"
+    }
   ]
 }
