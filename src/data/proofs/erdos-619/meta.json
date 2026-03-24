@@ -56,7 +56,7 @@
     ],
     "axiomCount": 7,
     "lineCount": 227,
-    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "7 axioms: h3_upper_bound, h3_lower_bound, h5_upper_bound, and 4 more. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "This problem studies how to decrease graph diameter by adding edges while preserving triangle-freeness. Erdős, Gyárfás, and Ruszinkó (1998) introduced h_r(G) as the minimum number of edges needed to reduce the diameter of a connected triangle-free graph G to r, while maintaining the triangle-free property. They proved that h₃(G) ≤ n for all such graphs, and that this is essentially tight: there exist graphs requiring nearly n edges. They also showed the much smaller bound h₅(G) ≤ (n-1)/2.\n\nThe key open question is about the intermediate case h₄. The problem asks whether there exists a constant c > 0 such that h₄(G) < (1-c)n for all connected triangle-free G on n vertices — that is, whether one can always save a constant fraction of edges compared to h₃.\n\nWithout the triangle-free constraint, Alon, Gyárfás, and Ruszinkó (2000) proved that n/2 edges always suffice for diameter 4. The triangle-free requirement fundamentally changes the problem: it prevents using the most natural shortcut edges (which often create triangles), making diameter reduction much harder.",

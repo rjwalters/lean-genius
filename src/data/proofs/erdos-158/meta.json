@@ -47,7 +47,7 @@
     ],
     "axiomCount": 5,
     "lineCount": 135,
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "5 axioms: b2_one_iff_sidon, ess_1994_log_bound, sidon_liminf_zero, and 2 more. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "This problem concerns B₂[g] sets, a generalization of Sidon sets (B₂ sequences). A Sidon set has all pairwise sums distinct - equivalently, each sum n has at most 1 representation a + b = n with a ≤ b. B₂[g] sets allow up to g representations per sum.\n\nErdős proved a fundamental result for Sidon sets: any infinite Sidon set A must have liminf A(N)/√N = 0. This means the counting function cannot stay uniformly above c√N. While finite Sidon subsets of {1,...,N} can have ~√N elements, infinite ones must thin out.\n\nErdős, Sárközy, and Sós (1994) strengthened this to show liminf A(N)/√N · (log N)^{1/2} < ∞. Problem #158 asks if the same conclusion (liminf = 0) holds when we relax to B₂[2] sets.",

@@ -56,7 +56,7 @@
     ],
     "axiomCount": 14,
     "lineCount": 217,
-    "assumptions": "14 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "14 axioms: OrdinaryLineCount, f, sylvester_gallai, and 11 more. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #210: Ordinary Lines**\n\nThis classic problem in discrete geometry asks about the minimum number of 'ordinary lines' (lines through exactly 2 points) in any point configuration.\n\n**Historical Timeline:**\n- 1893: Sylvester conjectured f(n) ≥ 1\n- 1933: Erdős rediscovered the problem\n- 1944: Gallai proved Sylvester-Gallai theorem (f(n) ≥ 1)\n- 1951: Motzkin proved f(n) → ∞\n- 1958: Kelly-Moser proved f(n) ≥ 3n/7\n- 1993: Csima-Sawyer improved to f(n) ≥ 6n/13\n- 2013: Green-Tao resolved asymptotic: f(n) ≥ n/2 for large even n (tight!)\n\n**The Problem:** How many ordinary lines must exist? The answer depends delicately on n's parity.",

@@ -56,7 +56,7 @@
     ],
     "axiomCount": 5,
     "lineCount": 188,
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "5 axioms: maier_tenenbaum_theorem, maier_tenenbaum_strong, erdos_hall_theorem, and 2 more. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1979, asking whether almost all integers have two divisors within a factor of 2 of each other. He initially claimed a proof in 1964 [Er64h], but retracted it in 1979 when an error was found. Together with Hall, Erdős proved the complementary result: for β > log 3 - 1, the density of integers with (β)-close divisors is 0.\n\nMaier and Tenenbaum completed the picture in 1984 [MaTe84], proving that the density of integers with close divisors (d₁ < d₂ < 2d₁) is indeed 1. They also proved the strong version: for any constant c > 1, the density of c-close divisors equals 1. This vindicated Erdős's original conjecture despite the flawed proof.\n\nThe refined version reveals a sharp phase transition at the critical exponent β* = log 3 - 1 ≈ 0.0986. For β < β*, density equals 1; for β > β*, density equals 0. Tenenbaum reportedly received $650 for the solution, exceeding the advertised $250 prize, likely because both the basic and strong versions were resolved.",

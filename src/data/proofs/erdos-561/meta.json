@@ -60,7 +60,7 @@
     ],
     "axiomCount": 8,
     "lineCount": 237,
-    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "8 axioms: hasMonochromaticCopy, sizeRamseyNumber, sizeRamseyNumber_exists, and 5 more. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "Size Ramsey numbers were introduced by Erdős, Faudree, Rousseau, and Schelp in their 1978 paper in Periodica Mathematica Hungarica, measuring the minimum number of edges (rather than vertices) needed in a host graph to guarantee a monochromatic copy. The same group, together with Burr, proved the conjectured formula for uniform star unions in Indagationes Mathematicae (1978). Beck's celebrated 1983 result showed that size Ramsey numbers are linear for all bounded-degree graphs, but the exact formulas remain unknown for most graph families. Stars are among the few families where exact values are conjectured, making this a key test problem for the theory.",

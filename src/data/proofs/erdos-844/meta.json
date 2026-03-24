@@ -58,7 +58,7 @@
     ],
     "axiomCount": 16,
     "lineCount": 246,
-    "assumptions": "16 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "16 axioms: even_times_odd_nonsquarefree, optimal_set_has_property, maximal_contains_nonsquarefree, and 13 more. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #844: Non-Squarefree Products**\n\nThis problem appears in Erdős-Sárközy [Er92b, p.239] and concerns extremal sets with multiplicative constraints.\n\n**Key History:**\n- **Erdős-Sárközy (1992):** Posed the original problem\n- **Weisenberg:** First proof using Chvátal's intersecting families result\n- **Alexeev-Mixon-Sawin [AMS25]:** Independent alternative proof\n\n**The Connection:**\nThe problem reduces to finding the largest 'intersecting family' of squarefree numbers - subsets where any two elements share a prime factor. Chvátal's 1974 result on intersecting hypergraph families provides the answer.",

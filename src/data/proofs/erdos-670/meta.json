@@ -66,7 +66,7 @@
       "Pigeonhole principle"
     ],
     "lineCount": 186,
-    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "9 axioms: trivial_lower_bound, trivial_gives_half, erdos_1997_d1, and 6 more. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "Erdős Problem #670 asks whether n points in ℝ^d with all pairwise distances differing by at least 1 must have diameter (1+o(1))n². The trivial bound gives diameter ≥ n(n-1)/2 from C(n,2) distances spread ≥ 1 apart. Erdős proved the conjecture for d = 1 in 1997 using the ordering of the real line. Higher dimensions remain open. The problem is closely related to the broader Erdős program on distinct distances, initiated in his 1946 paper where he first asked how few distinct distances an n-point set must determine. The condition that distances differ by at least 1 is a quantitative strengthening of the distinct distances condition, and the arithmetic progression {0, n, 2n, ..., (n-1)n} in ℝ shows the (1+o(1))n² diameter bound is tight when it holds.",

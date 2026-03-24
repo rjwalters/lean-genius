@@ -57,7 +57,7 @@
     ],
     "axiomCount": 4,
     "lineCount": 197,
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "4 axioms: minDegreeForC4_upperBound, minDegreeForC4_asymptotic, minDegreeForC4_base, and 1 more. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "This problem concerns the extremal theory of even cycles in graphs. The 4-cycle (C₄) is the simplest even cycle and appears throughout graph theory, including the Kővári–Sós–Turán theorem and the Zarankiewicz problem.\n\nLet f(n) be the smallest integer such that every n-vertex graph with minimum degree at least f(n) contains a 4-cycle. It is known that f(n) = (1 + o(1))√n asymptotically.\n\nErdős asked whether f is eventually monotone: does f(n+1) ≥ f(n) hold for all sufficiently large n? This subtle question remains open. Adding vertices to a graph might create 'room' for high minimum-degree configurations that avoid 4-cycles.",

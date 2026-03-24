@@ -47,7 +47,7 @@
     ],
     "axiomCount": 6,
     "lineCount": 145,
-    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "6 axioms: erdos_1951, hooley_1973, greaves_harman_huxley_1997, and 3 more. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "This problem concerns the distribution of gaps between consecutive squarefree numbers. A number is squarefree if it is not divisible by any perfect square greater than 1. The density of squarefrees is 6/π² ≈ 60.8%, but the finer structure of gaps is more subtle.\n\nThe question asks whether the αth moment of these gaps, normalized by x, has a limit as x → ∞. The progression of results shows the power of increasingly sophisticated analytic number theory techniques:\n\n- **Erdős (1951)**: Proved for α ≤ 2 using elementary sieve methods\n- **Hooley (1973)**: Extended to α ≤ 3 via exponential sums\n- **Greaves-Harman-Huxley (1997)**: Reached α ≤ 11/3 ≈ 3.67 using sieve methods and exponential sums\n- **Chan (2023)**: Current record of α ≤ 3.75\n- **Granville (1998)**: Complete resolution (all α ≥ 0) conditional on the ABC conjecture",

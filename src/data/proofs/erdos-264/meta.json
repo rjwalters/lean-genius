@@ -53,7 +53,7 @@
     ],
     "axiomCount": 4,
     "lineCount": 152,
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "4 axioms: powers_of_two_not_irrationality_seq, double_exp_is_irrationality_seq, kovac_tao_negative_criterion, and 1 more. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "This problem explores the concept of 'irrationality sequences' — sequences so robust that perturbing them by any bounded amount still yields irrational sums. Erdős and Graham introduced this concept in 1980.\n\nErdős asked specifically about 2ⁿ and n!, and initially speculated that polynomial-growth sequences might work. He later retracted this, noting irrationality sequences must grow at least exponentially.\n\nIn 2024, Vjekoslav Kovač and Terence Tao made breakthrough progress, proving 2ⁿ is NOT an irrationality sequence and establishing precise criteria for when sequences can or cannot be irrationality sequences. Their paper unified many related Erdős problems about irrationality.",

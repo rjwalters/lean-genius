@@ -49,7 +49,7 @@
     ],
     "axiomCount": 5,
     "lineCount": 171,
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "5 axioms: exists_egyptian_representation, k, k_achieves, and 2 more. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "Egyptian fractions—representations of rationals as sums of distinct unit fractions—date back to ancient Egypt's Rhind Mathematical Papyrus (c. 1650 BCE). The Egyptians exclusively used unit fractions (except 2/3), and finding efficient representations became a rich mathematical problem.\n\nThis problem asks about the minimum number of unit fractions needed to represent 1 when all denominators must be at least N. As N grows larger, the available fractions (1/N, 1/(N+1), ...) become smaller, so more terms are needed.\n\nErdős and Graham posed this problem in their influential 1980 book 'Old and New Problems and Results in Combinatorial Number Theory.' In 1971, Erdős and Straus established that k(N) ≈ (e-1)N, proving tight bounds around this value. The question of whether the difference k(N) - (e-1)N tends to infinity remains OPEN.",
