@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1008-oq-01",
   "title": "What are the optimal constants in the Ω(m^{2/3}) bound",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,34 +16,46 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-24T00:48:59.901Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "ACT",
+    "since": "2026-03-24T17:30:00Z",
+    "iteration": 2,
+    "focus": "Formalized optimal constant framework and proved structural theorems",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Prove remaining sorries (optimal_constant_pos, c4free_of_few_edges)",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Provable file has broken syntax (theorem type/body split incorrectly). k22_is_c4 is most tractable sorry (finite combinatorial). Deep results (CFS14, KST) not provable from Mathlib.",
+    "progressSummary": "PROGRESS: Created Erdos1008OQ01.lean (296 lines). Proved 15 theorems including K_{2,2}=C₄ equivalence, common neighbor uniqueness, Folkman ratio. 2 axioms (CFS theorem, Folkman upper bound), 2 sorries remaining.",
     "builtItems": [
-      "Surveyed: identified syntax issues and tractable vs deep sorries"
+      "Created proofs/Proofs/Erdos1008OQ01.lean (296 lines, 15 proved theorems)",
+      "Proved k22_implies_c4: K_{2,2} → C₄ direction",
+      "Proved c4_implies_k22: C₄ → K_{2,2} direction",
+      "Proved c4free_common_neighbor_unique: structural theorem",
+      "Proved folkman_ratio_rpow: (n³)^{2/3} = n²",
+      "Proved c4free_of_subgraph, c4free_mono, empty_isC4Free",
+      "Defined IsAdmissibleConstant framework and optimalConstant",
+      "Created gallery metadata src/data/proofs/erdos-1008-oq-01/meta.json"
     ],
     "insights": [
-      "Erdos1008ProblemProvable.lean has broken syntax: theorem signatures have := by sorry before the type on next line",
-      "k22_is_c4 (K_{2,2} ↔ C₄) has 2 sorries - most tractable, finite combinatorial argument",
-      "kovari_sos_turan, erdos_1008_c4free_subgraph are deep results not in Mathlib",
-      "File uses SimpleGraph from Mathlib, good integration with graph theory library"
+      "K_{2,2}=C₄ equivalence proved via Finset.card_eq_two destructuring",
+      "Common neighbor uniqueness is key structural constraint driving KST bounds",
+      "The optimal constant c* ∈ (0,1] -- upper bound from Folkman, lower from CFS",
+      "rpow_mul + norm_num sufficient for real power arithmetic (n³)^{2/3}=n²",
+      "SimpleGraph.ne_of_adj gives distinctness from adjacency (for irreflexive graphs)"
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "No Kővári-Sós-Turán theorem in Mathlib -- would need custom formalization",
+      "No dependent random choice lemma -- needed for CFS proof"
+    ],
     "nextSteps": [
-      "Fix syntax in Erdos1008ProblemProvable.lean (move := by sorry after type)",
-      "Prove k22_is_c4 both directions (finite case analysis on 4 vertices)",
-      "Complete bipartite edges theorem already proved (ring)"
+      "Prove optimal_constant_pos from cfs_admissible_exists (sSup argument)",
+      "Prove c4free_of_few_edges (edge counting argument with Sym2)",
+      "Create Aristotle companion file for routine lemmas",
+      "Investigate whether c* = 1/2 matching KST coefficient"
     ]
   },
   "tags": [
@@ -61,12 +73,15 @@
     "erdos-1008"
   ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Conlon-Fox-Sudakov 2014: Large subgraphs without complete bipartite graphs (arXiv:1401.6711)",
+      "Kővári-Sós-Turán 1954: On a problem of K. Zarankiewicz"
+    ],
     "urls": [],
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.901Z",
-  "lastUpdate": "2026-03-24T00:48:59.901Z",
+  "lastUpdate": "2026-03-24T17:30:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -91,6 +106,17 @@
       "sorryCount": 7,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1008ProblemProvable.lean"
+    },
+    {
+      "path": "Proofs/Erdos1008OQ01.lean",
+      "filename": "Erdos1008OQ01.lean",
+      "lineCount": 296,
+      "theoremCount": 17,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1008OQ01.lean"
     }
   ]
 }
