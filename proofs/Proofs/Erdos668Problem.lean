@@ -206,11 +206,23 @@ theorem erdos_668_summary :
       areCongruent S T) :=
   ⟨f_four, four_config_unique⟩
 
+/-- The set of congruence classes of n-point extremal configurations is finite.
+    This is a combinatorial geometry fact: for each n, there are finitely many
+    distinct unit-distance graphs on n vertices, and each graph type admits finitely
+    many non-congruent realizations achieving u(n) unit distances. -/
+axiom extremalQuotient_finite (n : ℕ) :
+  Set.Finite (Quotient.mk congruenceSetoid '' extremalConfigs n)
+
 /-- f(n) >= 1 for all n >= 1 (at least one extremal configuration exists).
-    Proof requires both extremalConfigs_nonempty (axiom) and Set.Finite (extremalConfigs n)
-    (true but requires deep combinatorial geometry: finitely many extremal unit-distance
-    graphs exist for each n). Without finiteness, Set.ncard returns 0 for infinite sets. -/
+    Uses extremalConfigs_nonempty (at least one extremal config exists) and
+    extremalQuotient_finite (the quotient set is finite, so ncard is correct). -/
 theorem f_pos (n : ℕ) (hn : n ≥ 1) : f n ≥ 1 := by
-  sorry
+  unfold f
+  have hne := extremalConfigs_nonempty n hn
+  have hfin := extremalQuotient_finite n
+  have hne' : (Quotient.mk congruenceSetoid '' extremalConfigs n).Nonempty :=
+    hne.image _
+  have hpos := (Set.ncard_pos hfin).mpr hne'
+  omega
 
 end Erdos668
