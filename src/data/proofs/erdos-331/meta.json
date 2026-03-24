@@ -216,6 +216,16 @@
       "targetId": "arithmetic-series",
       "relationship": "foundational",
       "description": "Arithmetic progressions and their common differences are the central objects. The difference set $A - A$ is precisely the set of common differences of 2-term APs in $A$"
+    },
+    {
+      "targetId": "erdos-1145",
+      "relationship": "related",
+      "description": "Problem #1145 (Erdős–Sárközy conjecture) cites Ruzsa's counterexample from #331 to show the ratio condition $a_n/b_n \\to 1$ is necessary: without it, one can have $A + B = \\mathbb{N}$ with $r_{A,B}(n) = 1$ for all $n$"
+    },
+    {
+      "targetId": "erdos-28",
+      "relationship": "related",
+      "description": "Problem #28 (Erdős–Turán conjecture on additive bases) is the $A = B$ case of the two-set conjecture #1145. Ruzsa's counterexample (#331) shows the two-set generalization requires the additional ratio condition"
     }
   ],
   "relatedProofs": [
@@ -225,7 +235,9 @@
     "erdos-3",
     "arithmetic-series",
     "roth-theorem-k3",
-    "erdos-30"
+    "erdos-30",
+    "erdos-1145",
+    "erdos-28"
   ],
   "leanFile": {
     "imports": [
