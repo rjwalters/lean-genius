@@ -43,7 +43,7 @@
     "historicalContext": "The algebraic structure of probability distributions under convolution has been studied since Lévy (1925). Cramér's theorem (1936) revealed that the Gaussian is 'indecomposable' in this structure, and the CLT can be interpreted as a convergence statement in the convolution monoid.",
     "axiomCount": 14,
     "lineCount": 241,
-    "assumptions": "15 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "assumptions": "14 axioms: convolution, convolution_assoc, convolution_dirac_left, and 11 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
