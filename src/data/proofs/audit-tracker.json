@@ -3,7 +3,7 @@
   "entries": {
     "pythagorean-triples": {
       "auditCount": 5,
-      "lastAudited": "2026-03-24T07:54:26Z",
+      "lastAudited": "2026-03-24T07:54:23Z",
       "result": "clean",
       "issues": []
     },
@@ -15,8 +15,8 @@
     },
     "angle-trisection": {
       "auditCount": 2,
-      "lastAudited": "2026-03-24T07:58:08Z",
-      "result": "issues-fixed",
+      "lastAudited": "2026-03-24T07:58:26Z",
+      "result": "issues-found",
       "issues": []
     },
     "angle-trisection-oq-02": {
@@ -45,31 +45,31 @@
     },
     "angle-trisection-oq-02-oq-01": {
       "auditCount": 2,
-      "lastAudited": "2026-03-24T07:59:29Z",
+      "lastAudited": "2026-03-24T07:57:39Z",
       "result": "clean",
       "issues": []
     },
     "angle-trisection-oq-02-oq-03": {
       "auditCount": 2,
-      "lastAudited": "2026-03-24T08:00:04Z",
+      "lastAudited": "2026-03-24T07:57:39Z",
       "result": "clean",
       "issues": []
     },
     "area-of-circle-oq-03": {
       "auditCount": 2,
-      "lastAudited": "2026-03-24T07:58:55Z",
+      "lastAudited": "2026-03-24T07:57:39Z",
       "result": "clean",
       "issues": []
     },
     "angle-trisection-oq-02-oq-03-oq-01": {
       "auditCount": 2,
-      "lastAudited": "2026-03-24T08:01:42Z",
+      "lastAudited": "2026-03-24T07:57:39Z",
       "result": "clean",
       "issues": []
     },
     "area-of-circle-oq-01-oq-02": {
       "auditCount": 2,
-      "lastAudited": "2026-03-24T08:01:15Z",
+      "lastAudited": "2026-03-24T07:57:39Z",
       "result": "clean",
       "issues": []
     },
@@ -81,7 +81,7 @@
     },
     "arithmetic-series-oq-02": {
       "auditCount": 2,
-      "lastAudited": "2026-03-24T08:00:27Z",
+      "lastAudited": "2026-03-24T07:57:39Z",
       "result": "clean",
       "issues": []
     },
@@ -110,8 +110,8 @@
       "issues": []
     },
     "arithmetic-series-oq-02-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-03-24T02:59:23Z",
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T07:57:39Z",
       "result": "clean",
       "issues": []
     },
@@ -152,8 +152,8 @@
       "issues": []
     },
     "ballot-problem-oq-03": {
-      "auditCount": 1,
-      "lastAudited": "2026-03-24T03:33:31Z",
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T07:57:39Z",
       "result": "clean",
       "issues": []
     },
@@ -188,8 +188,8 @@
       "issues": []
     },
     "bezout-identity-oq-02-oq-02-oq-01-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-03-24T03:46:52Z",
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T07:59:25Z",
       "result": "clean",
       "issues": []
     },
@@ -1208,46 +1208,34 @@
       "result": "issues-fixed",
       "issues": []
     },
-    "cevas-theorem": {
+    "cantor-diagonalization": {
       "auditCount": 1,
-      "lastAudited": "2026-03-24T08:13:39Z",
+      "lastAudited": "2026-03-24T08:00:55Z",
       "result": "clean",
       "issues": []
     },
-    "collatz-structured-oq-02": {
+    "birthday-problem-oq-03": {
       "auditCount": 1,
-      "lastAudited": "2026-03-24T08:13:39Z",
+      "lastAudited": "2026-03-24T08:00:55Z",
       "result": "clean",
       "issues": []
     },
-    "desargues-theorem-oq-01": {
+    "central-limit-theorem-oq-01-oq-02": {
       "auditCount": 1,
-      "lastAudited": "2026-03-24T08:13:39Z",
+      "lastAudited": "2026-03-24T08:00:56Z",
       "result": "clean",
       "issues": []
     },
-    "borsuk-ulam-oq-03-oq-01-oq-01": {
+    "borsuk-ulam": {
       "auditCount": 1,
-      "lastAudited": "2026-03-24T08:13:39Z",
+      "lastAudited": "2026-03-24T08:00:56Z",
       "result": "clean",
       "issues": []
     },
-    "borsuk-ulam-oq-02": {
+    "basel-problem-oq-02": {
       "auditCount": 1,
-      "lastAudited": "2026-03-24T08:13:39Z",
-      "result": "clean",
-      "issues": []
-    },
-    "basel-problem-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-03-24T08:13:39Z",
-      "result": "clean",
-      "issues": []
-    },
-    "cevas-theorem-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-03-24T08:13:40Z",
-      "result": "clean",
+      "lastAudited": "2026-03-24T08:00:56Z",
+      "result": "issues-found",
       "issues": []
     }
   }
