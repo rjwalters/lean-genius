@@ -20,12 +20,7 @@ Note: σ(k) is the sum of all divisors of k. For example:
 Tags: Number theory, Divisor functions, Counting solutions
 -/
 
-import Mathlib.NumberTheory.Divisors
-import Mathlib.NumberTheory.ArithmeticFunction
-import Mathlib.Data.Nat.Defs
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib
 
 open Nat Finset
 
@@ -43,15 +38,15 @@ abbrev sigma (k : ℕ) : ℕ := (Nat.divisors k).sum id
 /--
 σ(1) = 1
 -/
-theorem sigma_one : sigma 1 = 1 := by
-  simp [sigma, Nat.divisors]
+theorem sigma_one : sigma 1 = 1 := by native_decide
 
 /--
 For prime p, σ(p) = p + 1
 -/
 theorem sigma_prime (p : ℕ) (hp : p.Prime) : sigma p = p + 1 := by
-  simp [sigma, Nat.Prime.divisors hp]
-  ring
+  unfold sigma
+  rw [Nat.Prime.divisors hp]
+  simp
 
 /--
 σ is multiplicative on coprime arguments.
@@ -97,6 +92,19 @@ Note: We need to show this is finite for n > 0 to define f(n) properly.
 -/
 noncomputable def f (n : ℕ) : ℕ := (solutionSet n).ncard
 
+/-- σ(k) ≥ 1 for k > 0, since k ∈ divisors(k). -/
+theorem sigma_pos (k : ℕ) (hk : 0 < k) : 1 ≤ sigma k := by
+  unfold sigma
+  have : k ∈ k.divisors := Nat.mem_divisors.mpr ⟨dvd_refl k, hk.ne'⟩
+  calc 1 ≤ id k := hk
+    _ ≤ k.divisors.sum id := Finset.single_le_sum (fun _ _ => Nat.zero_le _) this
+
+/-- k ≤ g(k) for k > 0, since g(k) = k · σ(k) ≥ k · 1 = k. -/
+theorem k_le_g (k : ℕ) (hk : 0 < k) : k ≤ g k := by
+  unfold g
+  calc k = k * 1 := (mul_one k).symm
+    _ ≤ k * sigma k := Nat.mul_le_mul_left k (sigma_pos k hk)
+
 /--
 The solution set is finite for any n > 0.
 Proof: k·σ(k) ≥ k·1 = k (since 1 | k for k > 0), so k ≤ n.
@@ -114,7 +122,10 @@ theorem solutionSet_finite (n : ℕ) (hn : n > 0) : (solutionSet n).Finite := by
     simp [g, sigma] at hk
     omega
   · -- k ≤ n: since k·σ(k) ≥ k (as σ(k) ≥ 1 for k > 0)
-    sorry
+    have hk_pos : 0 < k := by
+      by_contra h; push_neg at h; interval_cases k; simp [g, sigma] at hk; omega
+    calc k ≤ g k := k_le_g k hk_pos
+      _ = n := hk
 
 /--
 Alternative definition using Finset for finite n.
@@ -136,14 +147,42 @@ theorem f_eq_f' (n : ℕ) (hn : n > 0) : f n = f' n := by
 f(1) = 1: The only solution to k·σ(k) = 1 is k = 1.
 -/
 theorem f_of_one : f 1 = 1 := by
-  sorry
+  unfold f
+  have h_eq : solutionSet 1 = {1} := by
+    ext k
+    simp only [solutionSet, Set.mem_setOf_eq, Set.mem_singleton_iff]
+    constructor
+    · intro hk
+      unfold g at hk
+      have : k ≤ 1 := by
+        calc k ≤ k * sigma k := le_mul_of_one_le_right (Nat.zero_le _)
+                (by rcases k with _ | k
+                    · simp [sigma] at hk
+                    · exact sigma_pos (k + 1) (by omega))
+          _ = 1 := hk
+      interval_cases k
+      · simp [g, sigma] at hk
+      · rfl
+    · intro hk; subst hk; native_decide
+  rw [h_eq, Set.ncard_singleton]
 
 /--
-f(0) = 0: There are no solutions to k·σ(k) = 0 for k > 0.
-(For k = 0, g(0) = 0, but we typically exclude k = 0.)
+f(0) = 1: The only solution to k·σ(k) = 0 is k = 0 (g(0) = 0·σ(0) = 0).
+For k > 0, σ(k) ≥ 1, so g(k) = k·σ(k) ≥ k > 0.
 -/
-theorem f_of_zero : f 0 = 0 := by
-  sorry
+theorem f_of_zero : f 0 = 1 := by
+  unfold f
+  have h_eq : solutionSet 0 = {0} := by
+    ext k
+    simp only [solutionSet, Set.mem_setOf_eq, Set.mem_singleton_iff]
+    constructor
+    · intro hk
+      by_contra hne
+      have hk_pos : 0 < k := Nat.pos_of_ne_zero hne
+      have : 0 < g k := lt_of_lt_of_le hk_pos (k_le_g k hk_pos)
+      omega
+    · intro hk; subst hk; simp [g, sigma]
+  rw [h_eq, Set.ncard_singleton]
 
 /-
 ## Part V: Upper Bound Conjectures (OPEN)
@@ -186,19 +225,7 @@ Membership in A327153.
 -/
 theorem mem_A327153_iff (n : ℕ) :
     n ∈ oeis_A327153 ↔ ∃ k > 0, g k = n := by
-  simp [oeis_A327153, f, solutionSet, Set.ncard_pos]
-  constructor
-  · intro ⟨hne, _⟩
-    obtain ⟨k, hk⟩ := Set.nonempty_of_ncard_ne_zero (fun h => hne h)
-    use k
-    sorry -- Need to show k > 0 from k ∈ solutionSet n
-  · intro ⟨k, hk_pos, hgk⟩
-    constructor
-    · intro h
-      have : k ∈ solutionSet n := hgk
-      rw [h] at this
-      simp at this
-    · exact ⟨k, hgk⟩
+  sorry
 
 /-
 ## Part VII: Examples and Computations
