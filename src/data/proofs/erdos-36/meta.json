@@ -238,11 +238,6 @@
       "targetId": "prob-method-expectation",
       "relationship": "related",
       "description": "The first moment method provides the baseline lower bound on the minimum overlap: a random equal partition of $\\{1,\\ldots,2N\\}$ has expected overlap $\\sim N/2$ at each shift, and the maximum over $O(N)$ shifts is at least the average. Carefully optimizing the partition reduces the overlap from $N/2$ to $\\sim 0.380 N$, but the probabilistic baseline shows that random partitions already achieve overlap $\\sim N/2$ — the problem asks how much better structured partitions can do"
-    },
-    {
-      "targetId": "combinations-formula",
-      "relationship": "foundational",
-      "description": "The binomial coefficient $\\binom{2N}{N}$ counts the number of equal partitions of $\\{1,\\ldots,2N\\}$, providing the size of the optimization domain for $M(N)$. The Stirling-level asymptotics $\\binom{2N}{N} \\sim 4^N/\\sqrt{\\pi N}$ show the partition space grows exponentially, making exhaustive search infeasible and motivating the Fourier-analytic approach"
     }
   ],
   "relatedProofs": [
@@ -255,8 +250,7 @@
     "erdos-1",
     "roth-theorem-k3",
     "szemeredi-theorem",
-    "prob-method-expectation",
-    "combinations-formula"
+    "prob-method-expectation"
   ],
   "references": [
     {

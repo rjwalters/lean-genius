@@ -135,5 +135,57 @@
     "axiomCount": 1,
     "theoremCount": 3,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-304",
+      "relationship": "related",
+      "description": "Sibling problem on the minimum number of terms N(b) in Egyptian fractions (complexity rather than max denominator)"
+    },
+    {
+      "targetId": "erdos-306",
+      "relationship": "related",
+      "description": "Sibling problem on Egyptian fractions with semiprime denominator constraints"
+    },
+    {
+      "targetId": "erdos-307",
+      "relationship": "related",
+      "description": "Prime reciprocal products ∑1/p · ∑1/q = 1, extending Egyptian fraction structure to primes"
+    },
+    {
+      "targetId": "erdos-308",
+      "relationship": "related",
+      "description": "Bounded denominator representability: smallest integer not expressible as unit fraction sum from {1,...,N}"
+    },
+    {
+      "targetId": "erdos-309",
+      "relationship": "related",
+      "description": "Counting representable integers from unit fractions, F(N) = Θ(log N) via Yokota-Croot"
+    },
+    {
+      "targetId": "erdos-300",
+      "relationship": "related",
+      "description": "Maximum subsets avoiding unit fraction sum equal to 1 (Liu-Sawhney 2024)"
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "related",
+      "description": "Foundational result H_n ~ log n explaining why logarithms appear in D(b) bounds"
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "Euler's theorem ∑1/p = ∞, underlying the prime structure in Egyptian fraction bounds"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-304",
+    "erdos-306",
+    "erdos-307",
+    "erdos-308",
+    "erdos-309",
+    "erdos-300",
+    "harmonic-divergence",
+    "prime-reciprocal-divergence"
+  ]
 }

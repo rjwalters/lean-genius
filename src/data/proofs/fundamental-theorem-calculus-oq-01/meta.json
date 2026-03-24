@@ -122,9 +122,7 @@
     ]
   },
   "relatedProofs": [
-    "fundamental-theorem-calculus",
-    "lebesgue-measure",
-    "cauchy-schwarz-integral"
+    "fundamental-theorem-calculus"
   ],
   "leanFile": {
     "imports": [
@@ -150,5 +148,12 @@
     "axiomCount": 2,
     "theoremCount": 7,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    }
+  ]
 }

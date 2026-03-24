@@ -96,16 +96,6 @@
       "targetId": "stirling-formula",
       "relationship": "foundational",
       "description": "Stirling's approximation $k! \\sim \\sqrt{2\\pi k}(k/e)^k$ is essential to the Dickman function analysis: the differential-delay equation $u\\rho'(u) = -\\rho(u-1)$ governing smooth number density requires precise factorial/gamma function asymptotics for its saddle-point analysis. The asymptotic $\\rho(u) \\sim u^{-u(1+o(1))}$ — which determines the density of $n^\\varepsilon$-smooth numbers — is derived via Laplace-type estimates that depend on Stirling's formula"
-    },
-    {
-      "targetId": "euler-totient",
-      "relationship": "related",
-      "description": "Euler's totient $\\varphi(n)$ connects to smooth numbers through the structure of $(\\mathbb{Z}/n\\mathbb{Z})^*$: the largest prime factor of $\\varphi(n)$ governs the group structure. An integer $n$ is $B$-smooth iff all prime factors of $n$ are $\\leq B$, and $\\varphi(n)$ for smooth $n$ has a restricted factorization that influences Pollard's p-1 factoring algorithm — which succeeds precisely when $p-1$ is smooth for a prime factor $p$ of $n$"
-    },
-    {
-      "targetId": "gcd-algorithm",
-      "relationship": "foundational",
-      "description": "The Euclidean algorithm for GCD computation is the basic tool for factorization and smoothness testing: trial division to determine whether an integer is $B$-smooth uses repeated GCD or division by primes up to $B$. The complexity of testing $B$-smoothness is $O(B)$ by trial division, or $O(\\sqrt{B})$ by sieving — and the Euclidean algorithm underlies the modular arithmetic operations in more advanced factoring algorithms (quadratic sieve, GNFS) that exploit smooth numbers"
     }
   ],
   "sections": [
@@ -209,9 +199,7 @@
     "bertrands-postulate",
     "fundamental-arithmetic",
     "infinitude-primes",
-    "stirling-formula",
-    "euler-totient",
-    "gcd-algorithm"
+    "stirling-formula"
   ],
   "leanFile": {
     "imports": [

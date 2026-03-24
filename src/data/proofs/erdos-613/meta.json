@@ -210,5 +210,15 @@
       "citation": "Tao, T. Lean verification of counterexample to Erdős Problem #613 at n = 5.",
       "type": "software"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Size Ramsey numbers generalize classical Ramsey numbers by minimizing edge count rather than vertex count. The formalization explicitly connects via `size_ramsey_generalizes`."
+    }
+  ],
+  "relatedProofs": [
+    "ramseys-theorem"
   ]
 }

@@ -173,5 +173,15 @@
       "venue": "Cambridge University Press",
       "note": "Standard reference for the O(n³/3) complexity of Gaussian elimination"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cramers-rule",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    }
+  ],
+  "relatedProofs": [
+    "cramers-rule"
   ]
 }

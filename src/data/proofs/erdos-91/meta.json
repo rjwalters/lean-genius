@@ -120,5 +120,15 @@
     "axiomCount": 5,
     "theoremCount": 2,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-89",
+      "relationship": "related",
+      "description": "The minimal number of distinct distances (the value being minimized here)"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-89"
+  ]
 }

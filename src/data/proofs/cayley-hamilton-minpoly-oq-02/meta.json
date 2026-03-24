@@ -161,5 +161,21 @@
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "Parent result: Cayley-Hamilton theorem shows characteristic polynomial annihilates M; minimal polynomial is the monic divisor of least degree"
+    }
+  ],
+  "relatedProofs": [
+    "cayley-hamilton-minpoly",
+    "cayley-hamilton"
+  ]
 }
