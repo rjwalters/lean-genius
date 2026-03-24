@@ -89,49 +89,56 @@
       "title": "Problem Statement and Context",
       "startLine": 1,
       "endLine": 45,
-      "summary": "Overview of the ζ(5) irrationality question, known results, and mathematical context."
+      "summary": "Overview of the ζ(5) irrationality question, known results, and mathematical context.",
+      "mathContext": "The Riemann zeta function $\\zeta(s) = \\sum_{n=1}^{\\infty} n^{-s}$ converges for $\\text{Re}(s) > 1$. The irrationality of $\\zeta(5)$ is a major open problem in analytic number theory, sitting between the solved $\\zeta(3)$ case (Apery 1978) and the general conjecture that all odd zeta values are irrational."
     },
     {
       "id": "definition-convergence",
       "title": "Definition and Convergence",
       "startLine": 49,
       "endLine": 66,
-      "summary": "zetaFive defined as ∑ 1/n^5 with summability proved via p-series criterion (p=5 > 1)."
+      "summary": "zetaFive defined as ∑ 1/n^5 with summability proved via p-series criterion (p=5 > 1).",
+      "mathContext": "$\\zeta(5) = \\sum_{n=1}^{\\infty} \\frac{1}{n^5} \\approx 1.0369277551$. Convergence follows from the $p$-series test: $\\sum 1/n^p$ converges for $p > 1$. In Lean: `Real.summable_nat_rpow_inv` with $p = 5$."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 67,
       "endLine": 95,
-      "summary": "zetaFive ≥ 1 (from n=1 term), zetaFive > 0, zetaFive ≠ 0. The lower bound uses hasSum_ite_eq + hasSum_le."
+      "summary": "zetaFive ≥ 1 (from n=1 term), zetaFive > 0, zetaFive ≠ 0. The lower bound uses hasSum_ite_eq + hasSum_le.",
+      "mathContext": "$\\zeta(5) \\geq 1/1^5 = 1$ since the first term alone contributes 1. The proof uses `hasSum_ite_eq` (sum of indicator at $n=1$) compared with `hasSum_le` (term-by-term comparison). The strict positivity $\\zeta(5) > 0$ follows immediately."
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "startLine": 96,
       "endLine": 135,
-      "summary": "ζ(5) ≤ π⁴/90 = ζ(4) and ζ(5) ≤ π²/6 = ζ(2) by term-by-term comparison using 1/n^5 ≤ 1/n^k for k ≤ 5."
+      "summary": "ζ(5) ≤ π⁴/90 = ζ(4) and ζ(5) ≤ π²/6 = ζ(2) by term-by-term comparison using 1/n^5 ≤ 1/n^k for k ≤ 5.",
+      "mathContext": "For $n \\geq 1$: $1/n^5 \\leq 1/n^4 \\leq 1/n^2$, so $\\zeta(5) \\leq \\zeta(4) = \\pi^4/90 \\approx 1.0823$ and $\\zeta(5) \\leq \\zeta(2) = \\pi^2/6 \\approx 1.6449$. Combined with the lower bound: $1 \\leq \\zeta(5) \\leq \\pi^4/90$."
     },
     {
       "id": "open-conjecture",
       "title": "The Open Conjecture",
       "startLine": 136,
       "endLine": 153,
-      "summary": "zeta_five_irrational is stated with sorry — this is a genuine open problem, unknown as of 2026."
+      "summary": "zeta_five_irrational is stated with sorry — this is a genuine open problem, unknown as of 2026.",
+      "mathContext": "Conjecture: $\\zeta(5) \\notin \\mathbb{Q}$. This is expected to be true (all evidence suggests odd zeta values are irrational and transcendental), but no proof exists. The `sorry` here represents genuine mathematical ignorance, not a formalization gap."
     },
     {
       "id": "partial-results",
-      "title": "Known Partial Results (Apéry, Rivoal, Zudilin)",
+      "title": "Known Partial Results (Apery, Rivoal, Zudilin)",
       "startLine": 153,
       "endLine": 191,
-      "summary": "Three landmark theorems axiomatized: Apéry (ζ(3) irrational), Rivoal (infinitely many irrational odd zetas), Zudilin (at least one of four consecutive odd zetas irrational)."
+      "summary": "Three landmark theorems axiomatized: Apéry (ζ(3) irrational), Rivoal (infinitely many irrational odd zetas), Zudilin (at least one of four consecutive odd zetas irrational).",
+      "mathContext": "Apery (1978): $\\zeta(3) \\notin \\mathbb{Q}$. Rivoal (2000): $\\dim_{\\mathbb{Q}} \\text{span}\\{1, \\zeta(3), \\zeta(5), \\ldots, \\zeta(2n+1)\\} \\geq \\frac{1+o(1)}{1+\\log 2} \\log n$. Zudilin (2001): at least one of $\\zeta(5), \\zeta(7), \\zeta(9), \\zeta(11)$ is irrational. All three are axiomatized since their proofs (involving Pade approximants and hypergeometric series) are far beyond current Mathlib."
     },
     {
       "id": "consequences",
       "title": "Consequences of Partial Results",
       "startLine": 192,
       "endLine": 244,
-      "summary": "Derived results from Rivoal and Zudilin: infinitely many irrational odd zeta values exist; not all of ζ(5), ζ(7), ζ(9), ζ(11) are rational; zudilin_witness locates an irrational in the set {5,7,9,11}."
+      "summary": "Derived results from Rivoal and Zudilin: infinitely many irrational odd zeta values exist; not all of ζ(5), ζ(7), ζ(9), ζ(11) are rational; zudilin_witness locates an irrational in the set {5,7,9,11}.",
+      "mathContext": "From Zudilin's axiom: $\\exists k \\in \\{5,7,9,11\\},\\, \\zeta(k) \\notin \\mathbb{Q}$. The proof derives this from the axiomatized statement by contradiction: if all four were rational, the axiom's conclusion would fail. This is a non-constructive existence proof — we know one of the four is irrational, but not which one."
     }
   ],
   "conclusion": {

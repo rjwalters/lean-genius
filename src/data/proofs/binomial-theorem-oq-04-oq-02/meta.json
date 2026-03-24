@@ -76,42 +76,48 @@
       "title": "Module Documentation",
       "summary": "States the open question (can the algebraic coefficient-comparison proof be formalized?), outlines the four components, and lists references.",
       "startLine": 1,
-      "endLine": 24
+      "endLine": 24,
+      "mathContext": "The algebraic proof of Vandermonde's identity: extract $[X^r]$ from both sides of $(1+X)^{m+n} = (1+X)^m \\cdot (1+X)^n$ to get $\\binom{m+n}{r} = \\sum_{i+j=r} \\binom{m}{i}\\binom{n}{j}$. This is the generating function approach to combinatorial identities."
     },
     {
       "id": "exponent-law",
       "title": "Exponent Law",
       "summary": "The polynomial identity (1+X)^(m+n) = (1+X)^m · (1+X)^n, proved in one line via pow_add — the monoid exponent law applied to ℕ[X].",
       "startLine": 28,
-      "endLine": 37
+      "endLine": 37,
+      "mathContext": "$(1+X)^{m+n} = (1+X)^m \\cdot (1+X)^n$ in $\\mathbb{N}[X]$. This is the monoid law $a^{m+n} = a^m \\cdot a^n$ applied to the commutative monoid $(\\mathbb{N}[X], \\cdot)$. The one-line proof `pow_add` encapsulates the algebraic foundation of the entire file."
     },
     {
       "id": "vandermonde",
       "title": "Vandermonde's Identity",
       "summary": "The antidiagonal convolution formula C(m+n,r) = Σ_{i+j=r} C(m,i)·C(n,j) via Nat.add_choose_eq, plus the symmetry theorem.",
       "startLine": 38,
-      "endLine": 55
+      "endLine": 55,
+      "mathContext": "Vandermonde's identity: $\\binom{m+n}{r} = \\sum_{k=0}^{r} \\binom{m}{k}\\binom{n}{r-k} = \\sum_{i+j=r} \\binom{m}{i}\\binom{n}{j}$. The sum runs over the antidiagonal $\\{(i,j) : i+j=r\\}$ of the grid $[0,m] \\times [0,n]$. Combinatorially: choosing $r$ items from $m+n$ is equivalent to choosing $i$ from the first $m$ and $j = r-i$ from the last $n$."
     },
     {
       "id": "cauchy",
       "title": "Cauchy Product Structure",
       "summary": "The Cauchy product formula, coefficient comparison principle, and the algebraic proof structure connecting all three layers.",
       "startLine": 56,
-      "endLine": 78
+      "endLine": 78,
+      "mathContext": "The Cauchy product: if $f(X) = \\sum a_n X^n$ and $g(X) = \\sum b_n X^n$, then $(fg)(X) = \\sum_r (\\sum_{i+j=r} a_i b_j) X^r$. Applying this to $(1+X)^m \\cdot (1+X)^n$ with $a_i = \\binom{m}{i}$ and $b_j = \\binom{n}{j}$, the $r$th coefficient is $\\sum_{i+j=r} \\binom{m}{i}\\binom{n}{j}$, which must equal $[X^r](1+X)^{m+n} = \\binom{m+n}{r}$."
     },
     {
       "id": "corollaries",
       "title": "Corollaries",
       "summary": "Equal parameters case C(2n,r) = Σ C(n,i)·C(n,j) and Pascal's rule as the m=1 specialization of Vandermonde.",
       "startLine": 79,
-      "endLine": 93
+      "endLine": 93,
+      "mathContext": "Setting $m = n$: $\\binom{2n}{r} = \\sum_{i+j=r} \\binom{n}{i}\\binom{n}{j}$. The central case $r = n$ gives $\\binom{2n}{n} = \\sum_{k=0}^{n} \\binom{n}{k}^2$ (Chu-Vandermonde). Setting $m = 1$: $\\binom{1+n}{r} = \\binom{n}{r-1} + \\binom{n}{r}$, which is Pascal's rule."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Packaging theorem bundling the exponent law, Vandermonde identity, and Cauchy product into a single conjunction.",
       "startLine": 94,
-      "endLine": 111
+      "endLine": 111,
+      "mathContext": "The bundled result: $(1+X)^{m+n} = (1+X)^m(1+X)^n$ $\\wedge$ $\\binom{m+n}{r} = \\sum_{i+j=r} \\binom{m}{i}\\binom{n}{j}$ $\\wedge$ Cauchy product structure. Provides a single import point for downstream proofs needing generating function techniques."
     }
   ],
   "conclusion": {

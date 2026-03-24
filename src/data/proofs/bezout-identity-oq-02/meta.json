@@ -81,49 +81,56 @@
       "title": "Imports",
       "startLine": 1,
       "endLine": 6,
-      "summary": "Imports GCD basics for naturals, GCD for integers (Bézout coefficients), coprime ring theory (IsCoprime), prime number basics, and Tactic (linear_combination, exact_mod_cast)."
+      "summary": "Imports GCD basics for naturals, GCD for integers (Bézout coefficients), coprime ring theory (IsCoprime), prime number basics, and Tactic (linear_combination, exact_mod_cast).",
+      "mathContext": "Imports the Mathlib modules needed to work with $\\gcd(a,b)$ in $\\mathbb{N}$, Bezout coefficients $x, y \\in \\mathbb{Z}$ satisfying $ax + by = \\gcd(a,b)$, the $\\text{IsCoprime}$ typeclass ($\\exists u\\, v,\\; ua + vb = 1$), and the $\\texttt{linear\\_combination}$ tactic for closing ring-arithmetic goals."
     },
     {
       "id": "module-docstring",
       "title": "Module Documentation",
       "startLine": 7,
       "endLine": 39,
-      "summary": "Documents the open question (can coprime_iff_linear_combination prove Euclid's lemma?), the answer (yes!), the key proof idea with the explicit witness x*c + y*k, and proof status (0 sorries)."
+      "summary": "Documents the open question (can coprime_iff_linear_combination prove Euclid's lemma?), the answer (yes!), the key proof idea with the explicit witness x*c + y*k, and proof status (0 sorries).",
+      "mathContext": "Frames the open question: given the equivalence $\\gcd(a,b) = 1 \\iff \\exists x,y \\in \\mathbb{Z},\\; ax + by = 1$, can we derive Euclid's lemma ($\\gcd(a,b) = 1 \\land a \\mid bc \\Rightarrow a \\mid c$) by constructing the explicit witness $c = a(xc + yk)$ where $bc = ak$?"
     },
     {
       "id": "coprime-iff",
       "title": "coprime_iff_linear_combination (Core Tool)",
       "startLine": 42,
       "endLine": 78,
-      "summary": "Re-proves coprime_iff_linear_combination: Nat.Coprime a b ↔ ∃ x y : ℤ, a*x + b*y = 1. Forward direction uses Nat.gcdA/gcdB and push_cast/linarith. Backward direction shows gcd | 1 via exact_mod_cast and Nat.eq_one_of_dvd_one."
+      "summary": "Re-proves coprime_iff_linear_combination: Nat.Coprime a b ↔ ∃ x y : ℤ, a*x + b*y = 1. Forward direction uses Nat.gcdA/gcdB and push_cast/linarith. Backward direction shows gcd | 1 via exact_mod_cast and Nat.eq_one_of_dvd_one.",
+      "mathContext": "Establishes the equivalence $\\text{Nat.Coprime}\\; a\\; b \\iff \\exists x, y \\in \\mathbb{Z},\\; ax + by = 1$. The forward direction extracts the extended Euclidean algorithm witnesses $\\texttt{gcdA}(a,b)$ and $\\texttt{gcdB}(a,b)$ satisfying $\\gcd(a,b) = a \\cdot \\texttt{gcdA} + b \\cdot \\texttt{gcdB}$ and uses $\\gcd(a,b) = 1$. The backward direction shows $\\gcd(a,b) \\mid 1$ in $\\mathbb{N}$, forcing $\\gcd(a,b) = 1$."
     },
     {
       "id": "euclids-int",
       "title": "Euclid's Lemma for Integers",
       "startLine": 81,
       "endLine": 102,
-      "summary": "euclids_lemma_int: IsCoprime version. Unpacks IsCoprime to get u, v with u*a + v*b = 1. Gets k with b*c = a*k. Witness u*c + v*k, proved by linear_combination v * hk - c * huv."
+      "summary": "euclids_lemma_int: IsCoprime version. Unpacks IsCoprime to get u, v with u*a + v*b = 1. Gets k with b*c = a*k. Witness u*c + v*k, proved by linear_combination v * hk - c * huv.",
+      "mathContext": "Proves Euclid's lemma over $\\mathbb{Z}$: if $\\text{IsCoprime}(a,b)$ (i.e., $\\exists u,v,\\; ua + vb = 1$) and $a \\mid bc$, then $a \\mid c$. From $bc = ak$ and $ua + vb = 1$, the witness is $c = a(uc + vk)$, verified by the ring identity $v(bc - ak) - c(ua + vb - 1) = 0$."
     },
     {
       "id": "euclids-nat",
       "title": "Euclid's Lemma for Naturals (Main Result)",
       "startLine": 103,
       "endLine": 131,
-      "summary": "euclids_lemma_nat: the main answer to the OQ. Uses coprime_iff_linear_combination to get Bézout coefficients x, y over ℤ. Casts divisibility to ℤ with exact_mod_cast. Constructs witness x*c + y*k by linear_combination y * hk - c * hbez."
+      "summary": "euclids_lemma_nat: the main answer to the OQ. Uses coprime_iff_linear_combination to get Bézout coefficients x, y over ℤ. Casts divisibility to ℤ with exact_mod_cast. Constructs witness x*c + y*k by linear_combination y * hk - c * hbez.",
+      "mathContext": "The main result: $\\gcd(a,b) = 1 \\land a \\mid bc \\Rightarrow a \\mid c$ over $\\mathbb{N}$. The proof lifts to $\\mathbb{Z}$ to access Bezout coefficients $x, y$ with $ax + by = 1$, constructs $c = a(xc + yk)$ using $bc = ak$, and casts back via $\\texttt{Int.natCast\\_dvd\\_natCast}$. The key step avoids $\\mathbb{N}$ subtraction pitfalls since $x, y$ may be negative."
     },
     {
       "id": "euclids-prime",
       "title": "Prime Version of Euclid's Lemma",
       "startLine": 132,
       "endLine": 153,
-      "summary": "euclids_lemma_prime: if p prime and p | a*b then p|a or p|b. Case splits on p | a. If p ∤ a, uses Nat.Prime.coprime_iff_not_dvd to get Nat.Coprime p a, then applies euclids_lemma_nat."
+      "summary": "euclids_lemma_prime: if p prime and p | a*b then p|a or p|b. Case splits on p | a. If p ∤ a, uses Nat.Prime.coprime_iff_not_dvd to get Nat.Coprime p a, then applies euclids_lemma_nat.",
+      "mathContext": "The classical form of Euclid's lemma: if $p$ is prime and $p \\mid ab$, then $p \\mid a$ or $p \\mid b$. Uses the equivalence $p \\nmid a \\iff \\gcd(p, a) = 1$ (since $p$ is prime, its only divisors are $1$ and $p$), then applies $\\texttt{euclids\\_lemma\\_nat}$. This is Proposition VII.30 of Euclid's *Elements* and the essential ingredient for unique prime factorization."
     },
     {
       "id": "examples",
       "title": "Worked Examples",
       "startLine": 154,
       "endLine": 192,
-      "summary": "Four examples: (3,7,6), (5,8,15), prime 7|14*3, and direct witness verification 3*(5*6+(-2)*14) = 6."
+      "summary": "Four examples: (3,7,6), (5,8,15), prime 7|14*3, and direct witness verification 3*(5*6+(-2)*14) = 6.",
+      "mathContext": "Concrete verifications: $\\gcd(3,7)=1$ and $3 \\mid 42$ gives $3 \\mid 6$; $\\gcd(5,8)=1$ and $5 \\mid 120$ gives $5 \\mid 15$; prime $7 \\mid 14 \\cdot 3 = 42$ gives $7 \\mid 14$ or $7 \\mid 3$. The witness check $3 \\cdot (5 \\cdot 6 + (-2) \\cdot 14) = 3 \\cdot 2 = 6$ demonstrates the explicit Bezout construction: $x = 5$, $y = -2$ from $3 \\cdot 5 + 7 \\cdot (-2) = 1$."
     }
   ],
   "conclusion": {
