@@ -94,49 +94,56 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 38,
-      "summary": "Overview of S(n,k) = C(n,k)·D(n-k), proof strategy (bijection via support decomposition), and key Mathlib API (Equiv.Perm.subtypePerm, ofSubtype, support, derangements)."
+      "summary": "Overview of S(n,k) = C(n,k)·D(n-k), proof strategy (bijection via support decomposition), and key Mathlib API (Equiv.Perm.subtypePerm, ofSubtype, support, derangements).",
+      "mathContext": "$S(n,k) = \\binom{n}{k} \\cdot D(n-k)$ where $D(m) = m! \\sum_{j=0}^m (-1)^j/j!$ is the subfactorial."
     },
     {
       "id": "section-i",
       "title": "Fixed Points vs Support",
       "startLine": 44,
       "endLine": 65,
-      "summary": "kFixed_iff_support_card: |Fix(σ)| = k ↔ |σ.support| = n-k (for k ≤ n). support_mem_iff_smul_mem: σ-invariance of support (x ∈ support ↔ σ x ∈ support)."
+      "summary": "kFixed_iff_support_card: |Fix(σ)| = k ↔ |σ.support| = n-k (for k ≤ n). support_mem_iff_smul_mem: σ-invariance of support (x ∈ support ↔ σ x ∈ support).",
+      "mathContext": "$|\\text{Fix}(\\sigma)| = k \\iff |\\sigma.\\text{support}| = n-k$ (requires $k \\leq n$ for $\\mathbb{N}$ subtraction)."
     },
     {
       "id": "section-ii",
       "title": "Bijection Components",
       "startLine": 66,
       "endLine": 95,
-      "summary": "subtypePerm_of_support_is_derangement: σ.subtypePerm h ∈ derangements ↑S when σ.support = S. ofSubtype_derangement_support: (ofSubtype τ).support = S when τ ∈ derangements ↑S."
+      "summary": "subtypePerm_of_support_is_derangement: σ.subtypePerm h ∈ derangements ↑S when σ.support = S. ofSubtype_derangement_support: (ofSubtype τ).support = S when τ ∈ derangements ↑S.",
+      "mathContext": "$\\sigma|_S \\in \\text{derangements}(S)$ when $\\sigma.\\text{support} = S$; conversely, extending $\\tau \\in \\text{derangements}(S)$ by identity gives support $= S$."
     },
     {
       "id": "section-iii",
       "title": "The Bijection",
       "startLine": 96,
       "endLine": 150,
-      "summary": "permSupportEqEquiv: explicit Equiv between {σ | σ.support = S} and derangements ↑S. card_perms_with_support_eq: cardinality equals numDerangements |S|. card_perms_with_kfixed: main S(n,k) = C(n,k)·D(n-k) theorem."
+      "summary": "permSupportEqEquiv: explicit Equiv between {σ | σ.support = S} and derangements ↑S. card_perms_with_support_eq: cardinality equals numDerangements |S|. card_perms_with_kfixed: main S(n,k) = C(n,k)·D(n-k) theorem.",
+      "mathContext": "$\\{\\sigma \\mid \\sigma.\\text{support} = S\\} \\cong \\text{derangements}(S)$, so $|\\{\\sigma \\mid \\sigma.\\text{support} = S\\}| = D(|S|)$."
     },
     {
       "id": "section-iv",
       "title": "Concrete Verifications",
       "startLine": 194,
       "endLine": 242,
-      "summary": "11 native_decide verifications: S(3,k) for k=0..3 gives {2,3,0,1}, S(4,k) for k=0..4 gives {9,8,6,0,1}, and S(5,2) = 20 = C(5,2)·D(3)."
+      "summary": "11 native_decide verifications: S(3,k) for k=0..3 gives {2,3,0,1}, S(4,k) for k=0..4 gives {9,8,6,0,1}, and S(5,2) = 20 = C(5,2)·D(3).",
+      "mathContext": "$S(3,0)=2, S(3,1)=3, S(3,2)=0, S(3,3)=1$. Check: $2+3+0+1 = 6 = 3!$."
     },
     {
       "id": "section-v",
       "title": "Special Cases",
       "startLine": 243,
       "endLine": 300,
-      "summary": "permsWithZeroFixed_eq_derangement_count: S(n,0) = D(n). permsWithAllFixed_card_eq_one: S(n,n) = 1 (only identity). permsWithNMinus1Fixed_eq_zero: S(n,n-1) = 0 via card_support_ne_one."
+      "summary": "permsWithZeroFixed_eq_derangement_count: S(n,0) = D(n). permsWithAllFixed_card_eq_one: S(n,n) = 1 (only identity). permsWithNMinus1Fixed_eq_zero: S(n,n-1) = 0 via card_support_ne_one.",
+      "mathContext": "$S(n,0) = D(n)$, $S(n,n) = 1$, $S(n,n-1) = 0$ (no permutation has exactly $n-1$ fixed points)."
     },
     {
       "id": "section-vi",
       "title": "Algebraic Identity",
       "startLine": 301,
       "endLine": 357,
-      "summary": "sum_permsWithKFixed_eq_factorial: ∑_{k=0}^n S(n,k) = n! via biUnion cover of all permutations."
+      "summary": "sum_permsWithKFixed_eq_factorial: ∑_{k=0}^n S(n,k) = n! via biUnion cover of all permutations.",
+      "mathContext": "$\\sum_{k=0}^n S(n,k) = n!$ — every permutation has some number of fixed points."
     }
   ],
   "conclusion": {
@@ -191,10 +198,28 @@
     {
       "targetId": "derangements",
       "relationship": "extends",
-      "description": "Parent formalization; this entry extends it with further exploration"
+      "description": "Parent formalization of basic derangement count D(n); this entry generalizes to S(n,k) = C(n,k)·D(n-k) for permutations with exactly k fixed points"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "uses",
+      "description": "The binomial coefficient C(n,k) appears as the number of ways to choose which k elements are fixed points; formalized via Finset.powersetCard"
+    },
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "related",
+      "description": "The classical proof of S(n,k) = C(n,k)·D(n-k) uses inclusion-exclusion; this formalization uses a bijective proof instead, avoiding alternating sums"
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "related",
+      "description": "Both involve counting permutations with specific coincidence properties: the birthday problem counts collisions in random selections, while partial derangements count fixed points in random permutations"
     }
   ],
   "relatedProofs": [
-    "derangements"
+    "derangements",
+    "binomial-theorem",
+    "inclusion-exclusion",
+    "birthday-problem"
   ]
 }
