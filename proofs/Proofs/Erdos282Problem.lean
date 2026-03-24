@@ -108,5 +108,6 @@ axiom erdos_graham_squares_conjecture :
     x must be representable using denominators from A. The greedy
     algorithm is a specific strategy; representability is necessary
     but not sufficient for greedy termination. -/
-axiom greedy_implies_representable (x : ℚ) (A : Set ℕ)
-    (hterm : GreedyTerminates x A) : IsRepresentable x A
+theorem greedy_implies_representable (x : ℚ) (A : Set ℕ)
+    (hterm : GreedyTerminates x A) : IsRepresentable x A :=
+  hterm  -- GreedyTerminates and IsRepresentable have identical definitions
