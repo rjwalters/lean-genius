@@ -237,7 +237,34 @@
       "Mathlib.Tactic"
     ],
     "opens": [],
-    "namespace": null
+    "namespace": null,
+    "mainTheorems": [
+      {
+        "name": "example_101_formA",
+        "type": "verified",
+        "description": "8 Form A primes ≤ 100 verified: 3, 5, 7, 11, 13, 29, 41, 97"
+      },
+      {
+        "name": "example_61_formB_not_A",
+        "type": "verified",
+        "description": "61 = 2²·3·5 + 1 is Form B but not Form A (separating example)"
+      },
+      {
+        "name": "form_a_implies_form_b",
+        "type": "proved",
+        "description": "Form A ⊆ Form B via l = 0 specialization"
+      },
+      {
+        "name": "erdos_1065a",
+        "type": "axiom",
+        "description": "Set.Infinite {p prime | ∃ q prime, k : p = 2^k·q + 1}"
+      },
+      {
+        "name": "erdos_1065b",
+        "type": "axiom",
+        "description": "Set.Infinite {p prime | ∃ q prime, k, l : p = 2^k·3^l·q + 1}"
+      }
+    ]
   },
   "references": [
     {
