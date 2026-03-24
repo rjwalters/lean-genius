@@ -16,7 +16,12 @@
       "Turan's theorem",
       "Forbidden subgraphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Turán-type extremal problems",
+      "SimpleGraph in Mathlib",
+      "Forbidden subgraph problems",
+      "Kővári–Sós–Turán theorem"
+    ]
   },
   {
     "id": "ann-e572-cycle-def",
@@ -34,7 +39,12 @@
       "formal definition",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Function.Injective",
+      "Fin k indexing in Lean 4",
+      "SimpleGraph.Adj"
+    ]
   },
   {
     "id": "ann-e572-cycle-free",
@@ -52,7 +62,12 @@
       "formal definition",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "hasCycleOfLength definition",
+      "Proposition negation in Lean 4",
+      "Girth of a graph",
+      "Bipartite graphs and even cycles"
+    ]
   },
   {
     "id": "ann-e572-edge-count",
@@ -70,7 +85,12 @@
       "formal definition",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "SimpleGraph.edgeFinset",
+      "Finset.card",
+      "DecidableRel"
+    ]
   },
   {
     "id": "ann-e572-extremal-func",
@@ -88,7 +108,12 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set.sSup in Lean 4",
+      "isCycleFree definition",
+      "edgeCount definition",
+      "Fintype.card for vertex set size"
+    ]
   },
   {
     "id": "ann-e572-bondy-simonovits",
@@ -106,7 +131,12 @@
       "Random graph methods",
       "Cycle counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "exCycle definition",
+      "Real.rpow for fractional exponents",
+      "Bondy–Simonovits theorem (1974)",
+      "Even cycle counting in graphs"
+    ]
   },
   {
     "id": "ann-e572-benson-k3",
@@ -124,7 +154,12 @@
       "graph theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Generalized hexagons (incidence geometry)",
+      "exCycle n 3 for C_6-free graphs",
+      "Real.rpow with exponent 4/3",
+      "Benson (1966) construction"
+    ]
   },
   {
     "id": "ann-e572-benson-k5",
@@ -142,7 +177,12 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Generalized decagons (incidence geometry)",
+      "exCycle n 5 for C_10-free graphs",
+      "Real.rpow with exponent 6/5",
+      "Benson (1966) construction"
+    ]
   },
   {
     "id": "ann-e572-luw",
@@ -160,7 +200,12 @@
       "Algebraic graphs",
       "Finite fields"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "luwExponent definition",
+      "Algebraic graph constructions over GF(q)",
+      "Parity condition ν = [2 | k]",
+      "Lazebnik–Ustimenko–Woldar (1995)"
+    ]
   },
   {
     "id": "ann-e572-conjecture",
@@ -178,7 +223,12 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "exCycle definition",
+      "Real.rpow for n^{1+1/k}",
+      "Asymptotic big-Omega notation",
+      "Bondy–Simonovits upper bound"
+    ]
   },
   {
     "id": "ann-e572-k3-proof",
@@ -196,7 +246,12 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "erdosConjectureLowerBound definition",
+      "benson_k3 axiom",
+      "norm_num tactic for 4/3 = 1+1/3",
+      "Lean 4 obtain pattern matching"
+    ]
   },
   {
     "id": "ann-e572-k5-proof",
@@ -214,7 +269,12 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "erdosConjectureLowerBound definition",
+      "benson_k5 axiom",
+      "norm_num tactic for 6/5 = 1+1/5",
+      "Lean 4 convert tactic"
+    ]
   },
   {
     "id": "ann-e572-exponents",
@@ -232,7 +292,12 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "luwExponent definition",
+      "Real division in Lean 4",
+      "Asymptotic growth rates of power functions",
+      "Relationship between LUW and Benson exponents"
+    ]
   },
   {
     "id": "ann-e572-luw-matches-k3",
@@ -250,7 +315,12 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "luwExponent definition",
+      "conjecturedExponent definition",
+      "norm_num tactic for numeric equality",
+      "k odd parity: ν = 0 for k=3"
+    ]
   },
   {
     "id": "ann-e572-gap-k4",
@@ -268,7 +338,12 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "luwExponent definition",
+      "conjecturedExponent definition",
+      "norm_num tactic for numeric inequality",
+      "k even parity: ν = 1 for k=4"
+    ]
   },
   {
     "id": "ann-e572-erdos-klein",
@@ -286,7 +361,12 @@
       "Zarankiewicz problem",
       "Projective planes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Zarankiewicz problem Z(n; 2,2)",
+      "Finite projective planes of order q",
+      "exCycle n 2 for C_4-free graphs",
+      "Kővári–Sós–Turán theorem"
+    ]
   },
   {
     "id": "ann-e572-odd-cycles",
@@ -304,7 +384,12 @@
       "graph theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Turán's theorem for bipartite extremal graphs",
+      "Complete bipartite graphs K_{n/2, n/2}",
+      "Bipartite graphs contain no odd cycles",
+      "Floor function n²/4 in Lean 4"
+    ]
   },
   {
     "id": "ann-e572-summary",
@@ -322,7 +407,12 @@
       "proof technique",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "erdos_572_k3 and erdos_572_k5 theorems",
+      "luw_matches_k3 theorem",
+      "And.intro in Lean 4",
+      "Partial solutions to open problems"
+    ]
   },
   {
     "id": "ann-e572-best-bounds",
@@ -340,6 +430,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "benson_k3 and benson_k5 axioms",
+      "lazebnik_ustimenko_woldar axiom",
+      "luwExponent vs conjecturedExponent gap",
+      "Asymptotics of extremal graph densities"
+    ]
   }
 ]
