@@ -140,6 +140,21 @@
       "targetId": "euler-identity",
       "relationship": "related",
       "description": "Euler's identity e^(iπ) = -1 connects π to complex exponentials; the Leibniz series connects π to real arctangent — both reveal π's role in analysis"
+    },
+    {
+      "targetId": "taylor-theorem",
+      "relationship": "foundational",
+      "description": "The Leibniz series is the Taylor expansion of $\\arctan(x)$ at $x = 0$ evaluated at $x = 1$: $\\arctan(x) = x - x^3/3 + x^5/5 - \\cdots$ converges for $|x| \\leq 1$. Abel's theorem on power series justifies evaluation at the boundary $x = 1$"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "related",
+      "description": "The Leibniz series $\\pi/4 = 1 - 1/3 + 1/5 - \\cdots$ is the value $L(1, \\chi_4)$ of the Dirichlet $L$-function for the non-principal character mod 4 — a Fourier-analytic object. The Fourier series of the square wave $f(x) = \\text{sgn}(\\sin x)$ similarly yields $4/\\pi \\sum \\sin((2k+1)x)/(2k+1)$"
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "foundational",
+      "description": "The derivation of $\\arctan(x) = \\int_0^x 1/(1+t^2)\\,dt$ starts from the geometric series $1/(1+t^2) = 1 - t^2 + t^4 - \\cdots$ (setting $r = -t^2$), then integrates term by term to get $\\arctan(x) = x - x^3/3 + x^5/5 - \\cdots$"
     }
   ],
   "conclusion": {
@@ -174,7 +189,10 @@
     "basel-problem",
     "pi-transcendental",
     "harmonic-divergence",
-    "euler-identity"
+    "euler-identity",
+    "taylor-theorem",
+    "fourier-series",
+    "geometric-series"
   ],
   "references": [
     {
