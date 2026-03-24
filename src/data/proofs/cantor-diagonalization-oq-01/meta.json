@@ -72,49 +72,56 @@
       "title": "Module Header and Setup",
       "startLine": 1,
       "endLine": 57,
-      "summary": "Imports, problem description, and overview of what the diagonal argument can and cannot prove about CH."
+      "summary": "Imports, problem description, and overview of what the diagonal argument can and cannot prove about CH.",
+      "mathContext": "Cantor's diagonal argument (1891) proves $|S| < |\\mathcal{P}(S)|$ for any set $S$. Applied to $S = \\mathbb{N}$, it gives $\\aleph_0 < 2^{\\aleph_0}$. The Continuum Hypothesis (CH) asserts $2^{\\aleph_0} = \\aleph_1$, i.e., no cardinal $\\kappa$ satisfies $\\aleph_0 < \\kappa < 2^{\\aleph_0}$. CH is independent of ZFC (Gödel 1940, Cohen 1963)."
     },
     {
       "id": "diagonal-gap",
       "title": "The Diagonal Gap",
       "startLine": 58,
       "endLine": 108,
-      "summary": "The fundamental diagonal gap ℵ₀ < 2^ℵ₀ and the power set inequality |A| < |P(A)| for any set A."
+      "summary": "The fundamental diagonal gap ℵ₀ < 2^ℵ₀ and the power set inequality |A| < |P(A)| for any set A.",
+      "mathContext": "The diagonal gap: for any set $A$, there is no surjection $A \\to \\mathcal{P}(A)$ (consider $D = \\{a \\in A : a \\notin f(a)\\}$). For cardinals, $\\kappa < 2^\\kappa$ for all $\\kappa$ (Mathlib: `Cardinal.cantor`). Applied to $\\kappa = \\aleph_0$: $\\aleph_0 < 2^{\\aleph_0} = \\mathfrak{c}$."
     },
     {
       "id": "aleph-one-bound",
       "title": "ℵ₁ ≤ 2^ℵ₀ — The Minimal Uncountable Bound",
       "startLine": 109,
       "endLine": 156,
-      "summary": "ℵ₁ is the smallest uncountable cardinal, so ℵ₁ ≤ 2^ℵ₀ from the diagonal gap and successor structure."
+      "summary": "ℵ₁ is the smallest uncountable cardinal, so ℵ₁ ≤ 2^ℵ₀ from the diagonal gap and successor structure.",
+      "mathContext": "Since $\\aleph_1 = \\operatorname{succ}(\\aleph_0)$ is the least cardinal $> \\aleph_0$, and $2^{\\aleph_0} > \\aleph_0$, we get $\\aleph_1 \\leq 2^{\\aleph_0}$ via `Order.succ_le_of_lt`. CH is precisely the assertion that this inequality is an equality: $\\aleph_1 = 2^{\\aleph_0}$."
     },
     {
       "id": "beth-tower",
       "title": "The Beth Number Tower",
       "startLine": 157,
       "endLine": 230,
-      "summary": "The iterated diagonal hierarchy: beth_n < beth_{n+1} = 2^(beth_n) for all n, with beth_0 = ℵ₀."
+      "summary": "The iterated diagonal hierarchy: beth_n < beth_{n+1} = 2^(beth_n) for all n, with beth_0 = ℵ₀.",
+      "mathContext": "The beth number hierarchy: $\\beth_0 = \\aleph_0$, $\\beth_{n+1} = 2^{\\beth_n}$. Strict monotonicity $\\beth_n < \\beth_{n+1}$ follows from iterating Cantor's theorem. The tower $\\aleph_0 < 2^{\\aleph_0} < 2^{2^{\\aleph_0}} < \\cdots$ gives $\\beth_0 < \\beth_1 < \\beth_2 < \\cdots$, producing infinitely many distinct infinite cardinals."
     },
     {
       "id": "ch-analysis",
       "title": "CH — Minimal Jump or Gap?",
       "startLine": 231,
       "endLine": 324,
-      "summary": "CH is equivalent to no intermediate cardinal. Under ¬CH, ℵ₁ is explicitly intermediate. Key equivalence proved."
+      "summary": "CH is equivalent to no intermediate cardinal. Under ¬CH, ℵ₁ is explicitly intermediate. Key equivalence proved.",
+      "mathContext": "The key equivalence: $\\mathrm{CH} \\iff \\neg\\exists\\, \\kappa\\,(\\aleph_0 < \\kappa < 2^{\\aleph_0})$. Under $\\neg\\mathrm{CH}$: $2^{\\aleph_0} > \\aleph_1$, so $\\aleph_1$ is explicitly an intermediate cardinal with $\\aleph_0 < \\aleph_1 < 2^{\\aleph_0}$. The diagonal argument establishes the gap but cannot determine its size."
     },
     {
       "id": "konig-constraint",
       "title": "König's Constraint on 2^ℵ₀",
       "startLine": 325,
       "endLine": 384,
-      "summary": "König's theorem: cf(2^ℵ₀) > ℵ₀, ruling out singular alephs like ℵ_ω as the continuum."
+      "summary": "König's theorem: cf(2^ℵ₀) > ℵ₀, ruling out singular alephs like ℵ_ω as the continuum.",
+      "mathContext": "König's theorem: $\\operatorname{cf}(2^{\\aleph_0}) > \\aleph_0$. This rules out $2^{\\aleph_0} = \\aleph_\\omega$ since $\\operatorname{cf}(\\aleph_\\omega) = \\omega = \\aleph_0$. More generally, $2^{\\aleph_0}$ cannot be any singular cardinal with countable cofinality. This is the strongest ZFC-provable constraint on the value of the continuum."
     },
     {
       "id": "diagonal-limit",
       "title": "The Limit of Diagonalization",
       "startLine": 385,
       "endLine": 442,
-      "summary": "Summary: the diagonal proves the gap exists and generates the beth tower, but cannot determine whether CH holds."
+      "summary": "Summary: the diagonal proves the gap exists and generates the beth tower, but cannot determine whether CH holds.",
+      "mathContext": "The diagonal argument proves: (1) $\\aleph_0 < 2^{\\aleph_0}$, (2) the beth tower $\\beth_0 < \\beth_1 < \\beth_2 < \\cdots$, (3) $\\aleph_1 \\leq 2^{\\aleph_0}$, (4) $\\operatorname{cf}(2^{\\aleph_0}) > \\aleph_0$. It cannot determine whether $2^{\\aleph_0} = \\aleph_1$ (CH) or $2^{\\aleph_0} > \\aleph_1$ ($\\neg$CH) — this is independent of ZFC."
     }
   ],
   "conclusion": {

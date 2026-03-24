@@ -87,49 +87,56 @@
       "title": "Problem Statement and Overview",
       "startLine": 1,
       "endLine": 48,
-      "summary": "Imports, module comment explaining the ZFC-provable answer (ℶ₂) and the open aleph-index question, with historical context."
+      "summary": "Imports, module comment explaining the ZFC-provable answer (ℶ₂) and the open aleph-index question, with historical context.",
+      "mathContext": "Central question: what is $|\\mathcal{P}(\\mathbb{R})|$? ZFC proves $|\\mathcal{P}(\\mathbb{R})| = 2^{\\mathfrak{c}} = 2^{2^{\\aleph_0}} = \\beth_2$. The residual open question — which $\\aleph_\\alpha$ equals $\\beth_2$ — is independent of ZFC by Easton's theorem (1970)."
     },
     {
       "id": "cardinality-of-reals",
       "title": "Part 1: The Cardinality of ℝ",
       "startLine": 50,
       "endLine": 63,
-      "summary": "card_real_eq_continuum: |ℝ| = 𝔠 via Cardinal.mk_real. card_real_gt_aleph_zero: 𝔠 > ℵ₀ via aleph0_lt_continuum."
+      "summary": "card_real_eq_continuum: |ℝ| = 𝔠 via Cardinal.mk_real. card_real_gt_aleph_zero: 𝔠 > ℵ₀ via aleph0_lt_continuum.",
+      "mathContext": "The cardinality of $\\mathbb{R}$ is the continuum: $|\\mathbb{R}| = \\mathfrak{c} = 2^{\\aleph_0}$. Mathlib's `Cardinal.mk_real` identifies $\\#\\mathbb{R} = \\mathfrak{c}$, and `aleph0_lt_continuum` gives $\\aleph_0 < \\mathfrak{c}$."
     },
     {
       "id": "power-set-formula",
       "title": "Part 2-3: Power Set Formula and Cantor's Theorem",
       "startLine": 65,
       "endLine": 95,
-      "summary": "card_powerSet_real_formula: |𝒫(ℝ)| = 2^𝔠. card_real_lt_card_powerSet_real: |ℝ| < |𝒫(ℝ)| via Cardinal.cantor. continuum_lt_card_powerSet_real: 𝔠 < |𝒫(ℝ)|."
+      "summary": "card_powerSet_real_formula: |𝒫(ℝ)| = 2^𝔠. card_real_lt_card_powerSet_real: |ℝ| < |𝒫(ℝ)| via Cardinal.cantor. continuum_lt_card_powerSet_real: 𝔠 < |𝒫(ℝ)|.",
+      "mathContext": "From `Cardinal.mk_set`: $\\#(\\text{Set}\\;\\alpha) = 2^{\\#\\alpha}$, so $|\\mathcal{P}(\\mathbb{R})| = 2^{\\mathfrak{c}}$. By Cantor's theorem $\\kappa < 2^\\kappa$ applied to $\\kappa = \\mathfrak{c}$: $|\\mathbb{R}| < |\\mathcal{P}(\\mathbb{R})|$, i.e., $\\mathfrak{c} < 2^{\\mathfrak{c}}$."
     },
     {
       "id": "beth-numbers",
       "title": "Part 4: Beth Number Interpretation",
       "startLine": 97,
       "endLine": 125,
-      "summary": "beth_one_eq_continuum: ℶ₁ = 𝔠 by unrolling beth_succ at 1 = Order.succ 0. card_powerSet_real_eq_beth_two: |𝒫(ℝ)| = ℶ₂. beth_two_gt_beth_one: ℶ₂ > ℶ₁ via beth_strictMono."
+      "summary": "beth_one_eq_continuum: ℶ₁ = 𝔠 by unrolling beth_succ at 1 = Order.succ 0. card_powerSet_real_eq_beth_two: |𝒫(ℝ)| = ℶ₂. beth_two_gt_beth_one: ℶ₂ > ℶ₁ via beth_strictMono.",
+      "mathContext": "The beth hierarchy: $\\beth_0 = \\aleph_0$, $\\beth_1 = 2^{\\beth_0} = 2^{\\aleph_0} = \\mathfrak{c}$, $\\beth_2 = 2^{\\beth_1} = 2^{\\mathfrak{c}}$. So $|\\mathcal{P}(\\mathbb{R})| = \\beth_2$. Strict monotonicity $\\beth_1 < \\beth_2$ follows from `Cardinal.beth_strictMono`. Key Lean4 technique: rewrite $(2 : \\text{Ordinal}) = \\text{Order.succ}\\,1$ via `Order.succ_eq_add_one` since `omega` fails for Ordinal arithmetic."
     },
     {
       "id": "aleph-hierarchy",
       "title": "Part 5: Position in the Aleph Hierarchy",
       "startLine": 126,
       "endLine": 160,
-      "summary": "aleph_one_le_continuum_zfc, aleph_one_lt_card_powerSet_real, CH definition, not_ch_continuum_gt_aleph_one, aleph_two_le_card_powerSet_real_of_not_CH."
+      "summary": "aleph_one_le_continuum_zfc, aleph_one_lt_card_powerSet_real, CH definition, not_ch_continuum_gt_aleph_one, aleph_two_le_card_powerSet_real_of_not_CH.",
+      "mathContext": "ZFC proves $\\aleph_1 \\leq \\mathfrak{c}$ and thus $\\aleph_1 < 2^{\\mathfrak{c}} = \\beth_2$. Under $\\neg\\mathrm{CH}$: $\\mathfrak{c} > \\aleph_1$ implies $\\mathfrak{c} \\geq \\aleph_2$, so $\\beth_2 = 2^{\\mathfrak{c}} \\geq 2^{\\aleph_2} \\geq \\aleph_2$. The CH definition used: $\\mathrm{CH} \\iff \\mathfrak{c} = \\aleph_1$."
     },
     {
       "id": "gch-question",
       "title": "Part 6: The GCH Question — Open in ZFC",
       "startLine": 161,
       "endLine": 212,
-      "summary": "GCH_at_continuum definition. gch_and_ch_implies_powerSet_real_eq_aleph_two: |𝒫(ℝ)| = ℵ₂ under CH+GCH. not_gch_at_continuum_implies_gt_aleph_two: ℵ₂ < |𝒫(ℝ)| when GCH fails."
+      "summary": "GCH_at_continuum definition. gch_and_ch_implies_powerSet_real_eq_aleph_two: |𝒫(ℝ)| = ℵ₂ under CH+GCH. not_gch_at_continuum_implies_gt_aleph_two: ℵ₂ < |𝒫(ℝ)| when GCH fails.",
+      "mathContext": "GCH at $\\mathfrak{c}$: $2^{\\mathfrak{c}} = \\mathfrak{c}^+$ (successor cardinal). Under CH ($\\mathfrak{c} = \\aleph_1$) and GCH: $|\\mathcal{P}(\\mathbb{R})| = 2^{\\aleph_1} = \\aleph_1^+ = \\aleph_2$. Without GCH, $2^{\\mathfrak{c}} > \\mathfrak{c}^+$, so $|\\mathcal{P}(\\mathbb{R})| > \\aleph_2$. Easton's theorem: for regular $\\kappa$, $2^\\kappa$ can be any cardinal with $\\operatorname{cf}(2^\\kappa) > \\kappa$."
     },
     {
       "id": "summary",
       "title": "Part 7-8: König's Constraint and Summary",
       "startLine": 213,
       "endLine": 272,
-      "summary": "König's constraint axiom: cf(|𝒫(ℝ)|) > 𝔠. cantors_theorem_oq01_summary bundles all four ZFC facts. #check exports confirm all key theorems."
+      "summary": "König's constraint axiom: cf(|𝒫(ℝ)|) > 𝔠. cantors_theorem_oq01_summary bundles all four ZFC facts. #check exports confirm all key theorems.",
+      "mathContext": "König's cofinality bound: $\\operatorname{cf}(2^{\\mathfrak{c}}) > \\mathfrak{c}$. This rules out values like $\\aleph_\\omega$ (since $\\operatorname{cf}(\\aleph_\\omega) = \\omega \\leq \\mathfrak{c}$). Summary structure bundles four ZFC facts: (1) $|\\mathcal{P}(\\mathbb{R})| = 2^{\\mathfrak{c}}$, (2) $|\\mathbb{R}| < |\\mathcal{P}(\\mathbb{R})|$, (3) $|\\mathcal{P}(\\mathbb{R})| = \\beth_2$, (4) $\\aleph_1 < |\\mathcal{P}(\\mathbb{R})|$."
     }
   ],
   "conclusion": {

@@ -88,49 +88,56 @@
       "title": "Higher-Dimensional Buffon: Proof Strategy",
       "startLine": 1,
       "endLine": 45,
-      "summary": "Documents the 3D Buffon formula E = L/(2d), the sphere-average approach, and connection to BuffonsNeedle.lean, BuffonsNoodle.lean, and BuffonsNeedleOQ01.lean."
+      "summary": "Documents the 3D Buffon formula E = L/(2d), the sphere-average approach, and connection to BuffonsNeedle.lean, BuffonsNoodle.lean, and BuffonsNeedleOQ01.lean.",
+      "mathContext": "3D Buffon formula: a curve of length $L$ dropped on parallel planes (spacing $d$) has $E[\\text{crossings}] = \\frac{L}{2d}$. The 3D crossing factor $\\alpha_3 = \\frac{1}{2}$ arises from $E_{S^2}[|\\cos\\varphi|] = \\frac{1}{2}$, computed via $\\frac{1}{4\\pi}\\int_0^{2\\pi}d\\theta\\int_0^\\pi |\\cos\\varphi|\\sin\\varphi\\,d\\varphi$."
     },
     {
       "id": "part-i-abs-cos-lemmas",
       "title": "Part I: Sign Lemmas for |cos θ|",
       "startLine": 46,
       "endLine": 62,
-      "summary": "abs_cos_eq_cos_on_Icc_zero_half_pi (|cos θ| = cos θ on [0,π/2]) and abs_cos_eq_neg_cos_on_Icc_half_pi_pi (|cos θ| = -cos θ on [π/2,π]) via Mathlib's trigonometric sign lemmas."
+      "summary": "abs_cos_eq_cos_on_Icc_zero_half_pi (|cos θ| = cos θ on [0,π/2]) and abs_cos_eq_neg_cos_on_Icc_half_pi_pi (|cos θ| = -cos θ on [π/2,π]) via Mathlib's trigonometric sign lemmas.",
+      "mathContext": "Sign decomposition of $|\\cos\\theta|$: on $[0, \\pi/2]$, $\\cos\\theta \\geq 0$ so $|\\cos\\theta| = \\cos\\theta$ (via `cos_nonneg_of_mem_Icc`). On $[\\pi/2, \\pi]$, $\\cos\\theta \\leq 0$ so $|\\cos\\theta| = -\\cos\\theta$ (via `cos_nonpos_of_pi_div_two_le_of_le`)."
     },
     {
       "id": "part-i-sub-integrals",
       "title": "Part I: Sub-Integrals by FTC",
       "startLine": 63,
       "endLine": 99,
-      "summary": "integral_sin_cos_zero_half_pi (= 1/2) and integral_sin_neg_cos_half_pi_pi (= 1/2) via integral_eq_sub_of_hasDerivAt with antiderivatives sin²θ/2 and cos²θ/2."
+      "summary": "integral_sin_cos_zero_half_pi (= 1/2) and integral_sin_neg_cos_half_pi_pi (= 1/2) via integral_eq_sub_of_hasDerivAt with antiderivatives sin²θ/2 and cos²θ/2.",
+      "mathContext": "Two sub-integrals by FTC: $\\int_0^{\\pi/2} \\sin\\theta\\cos\\theta\\,d\\theta = \\left[\\frac{\\sin^2\\theta}{2}\\right]_0^{\\pi/2} = \\frac{1}{2}$ and $\\int_{\\pi/2}^{\\pi} \\sin\\theta(-\\cos\\theta)\\,d\\theta = \\left[\\frac{\\cos^2\\theta}{2}\\right]_{\\pi/2}^{\\pi} = \\frac{1}{2}$. Each uses `integral_eq_sub_of_hasDerivAt` with the respective antiderivative."
     },
     {
       "id": "part-i-main",
       "title": "Part I: Key 3D Integral = 1",
       "startLine": 100,
       "endLine": 130,
-      "summary": "integral_sin_abs_cos: ∫₀^π sin θ |cos θ| dθ = 1. Proved by splitting at π/2 via integral_add_adjacent_intervals, rewriting |cos θ| on each piece, and combining the 1/2 + 1/2 results."
+      "summary": "integral_sin_abs_cos: ∫₀^π sin θ |cos θ| dθ = 1. Proved by splitting at π/2 via integral_add_adjacent_intervals, rewriting |cos θ| on each piece, and combining the 1/2 + 1/2 results.",
+      "mathContext": "The fundamental 3D integral: $\\int_0^\\pi \\sin\\theta\\,|\\cos\\theta|\\,d\\theta = 1$. Proved by splitting: $\\int_0^\\pi = \\int_0^{\\pi/2} + \\int_{\\pi/2}^\\pi$ via `integral_add_adjacent_intervals`, then substituting $|\\cos\\theta|$ on each piece and summing $\\frac{1}{2} + \\frac{1}{2} = 1$."
     },
     {
       "id": "part-ii",
       "title": "Part II: 3D Sphere Average = 1/2",
       "startLine": 131,
       "endLine": 150,
-      "summary": "sphere_average_abs_cos: (1/4π)(2π)(1) = 1/2. The sphere-averaged absolute cosine equals 1/2, identifying the 3D crossing factor α₃."
+      "summary": "sphere_average_abs_cos: (1/4π)(2π)(1) = 1/2. The sphere-averaged absolute cosine equals 1/2, identifying the 3D crossing factor α₃.",
+      "mathContext": "Sphere average: $E_{S^2}[|\\cos\\varphi|] = \\frac{1}{4\\pi}\\int_0^{2\\pi}d\\theta\\int_0^\\pi |\\cos\\varphi|\\sin\\varphi\\,d\\varphi = \\frac{1}{4\\pi} \\cdot 2\\pi \\cdot 1 = \\frac{1}{2}$. This identifies the 3D crossing factor $\\alpha_3 = \\frac{1}{2}$, analogous to the 2D factor $\\alpha_2 = \\frac{2}{\\pi}$."
     },
     {
       "id": "part-iii",
       "title": "Part III: 3D Buffon Noodle Theorem",
       "startLine": 151,
       "endLine": 214,
-      "summary": "buffon3d definition (L/(2d)), properties (nonneg, scale_L, scale_d, additive, mono), and buffon3d_noodle: ∑ buffon3d(Lᵢ,d) = buffon3d(∑ Lᵢ,d). The noodle theorem follows directly from linearity of expectation."
+      "summary": "buffon3d definition (L/(2d)), properties (nonneg, scale_L, scale_d, additive, mono), and buffon3d_noodle: ∑ buffon3d(Lᵢ,d) = buffon3d(∑ Lᵢ,d). The noodle theorem follows directly from linearity of expectation.",
+      "mathContext": "Define $\\text{buffon3d}(L, d) = \\frac{L}{2d}$. Properties: additivity $\\text{buffon3d}(L_1 + L_2, d) = \\text{buffon3d}(L_1, d) + \\text{buffon3d}(L_2, d)$, scaling $\\text{buffon3d}(cL, d) = c \\cdot \\text{buffon3d}(L, d)$, monotonicity $L_1 \\leq L_2 \\implies \\text{buffon3d}(L_1,d) \\leq \\text{buffon3d}(L_2,d)$. The 3D noodle theorem: $\\sum_i \\text{buffon3d}(L_i, d) = \\text{buffon3d}(\\sum_i L_i, d)$ by linearity of expectation."
     },
     {
       "id": "part-iv",
       "title": "Part IV: Dimension Comparison",
       "startLine": 215,
       "endLine": 262,
-      "summary": "crossing_factor_3d_lt_2d (1/2 < 2/π via (4-π)/(2π) > 0), buffon3d_lt_buffon2d (L/(2d) < 2L/(πd)), buffon3d_to_buffon2d_ratio (= 4/π). The 3D model predicts fewer crossings than 2D."
+      "summary": "crossing_factor_3d_lt_2d (1/2 < 2/π via (4-π)/(2π) > 0), buffon3d_lt_buffon2d (L/(2d) < 2L/(πd)), buffon3d_to_buffon2d_ratio (= 4/π). The 3D model predicts fewer crossings than 2D.",
+      "mathContext": "Dimension comparison: $\\alpha_3 = \\frac{1}{2} < \\frac{2}{\\pi} = \\alpha_2$ since $\\frac{2}{\\pi} - \\frac{1}{2} = \\frac{4 - \\pi}{2\\pi} > 0$ (using $\\pi < 4$). For any $L, d > 0$: $\\frac{L}{2d} < \\frac{2L}{\\pi d}$. The 2D-to-3D crossing ratio is $\\frac{2L/(\\pi d)}{L/(2d)} = \\frac{4}{\\pi} \\approx 1.273$: curves cross more lines in 2D than planes in 3D."
     }
   ],
   "conclusion": {
