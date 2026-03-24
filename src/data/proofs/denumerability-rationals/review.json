@@ -1,117 +1,143 @@
 {
-  "version": 1,
+  "version": 2,
   "proofId": "denumerability-rationals",
-  "reviewDate": "2026-03-23T22:30:00Z",
+  "reviewDate": "2026-03-24T17:00:00Z",
   "reviewer": "peer-reviewer",
+
   "overallAssessment": {
-    "grade": "B",
-    "oneLiner": "Exemplary pedagogical presentation of a Mathlib result — every proof is a 1-2 line wrapper, but the multi-perspective formulations, cardinal arithmetic bridge, and rich historical exposition make this a model gallery entry for a Tier B proof.",
+    "grade": "B-",
+    "oneLiner": "Excellent pedagogical tour of Mathlib's Denumerable ℚ with outstanding historical exposition, but every proof is a 1-2 line wrapper and several metadata claims remain unfixed from prior review.",
     "tier": "B",
-    "tierJustification": "Tier B: Formalized using Mathlib. The core result (Denumerable ℚ) is entirely provided by Mathlib.Data.Rat.Denumerable via inferInstance. The file adds pedagogical value through alternative formulations (bijection, countability, surjection, injection), encode/decode wrappers with round-trip proofs, and a cardinal arithmetic connection — but no original mathematical reasoning."
+    "tierJustification": "Tier B: Formalized using Mathlib. The core result (Denumerable ℚ) is entirely Mathlib.Data.Rat.Denumerable via inferInstance. The file adds value through six complementary formulations (bijection, countability, surjection, injection, encode/decode, cardinal arithmetic) and rich pedagogy, but contains zero original mathematical reasoning."
   },
+
   "findings": [
     {
       "severity": "positive",
       "category": "strength",
-      "location": "meta.json overview.historicalContext; ContinuumHypothesis.lean lines 7-43, 121-184",
-      "finding": "The historical exposition is outstanding. It traces the result from Cantor's 1874 paper through Dedekind's correspondence, Kronecker's opposition, Hilbert's defense ('No one shall expel us from the Paradise that Cantor has created'), and the result's influence on Borel, Lebesgue, and Gödel. The meta.json keyInsights include genuinely informative observations (density ≠ cardinality, Stern-Brocot alternative, constructive content of round-trip proofs). The ASCII diagonal enumeration visualization (lines 134-158) is a helpful pedagogical aid.",
-      "recommendation": "Preserve. This exposition could serve as a model for other gallery entries."
+      "location": "meta.json overview.historicalContext; DenumerabilityRationals.lean lines 7-44, 121-158, 175-184",
+      "finding": "The historical and pedagogical exposition is the entry's standout feature. The historicalContext traces Cantor's 1874 paper through Dedekind's correspondence, Kronecker's opposition, Hilbert's defense, and influence on Borel, Lebesgue, and Gödel. The ASCII diagonal enumeration visualization (lines 134-158) is genuinely helpful. The keyInsights include substantive observations (density ≠ cardinality, Stern-Brocot alternative, constructive content of round-trips, cardinal bridge).",
+      "recommendation": "Preserve. This exposition could serve as a model for other Tier B gallery entries."
     },
     {
       "severity": "positive",
       "category": "strength",
-      "location": "DenumerabilityRationals.lean lines 59-173 (full theorem suite)",
-      "finding": "The file presents denumerability from 6 complementary perspectives: typeclass instance (Denumerable ℚ), explicit equivalence (natEquivRat), existential bijection (rationals_denumerable), surjection/injection (exists_surjection_nat_to_rat, exists_injection_rat_to_nat), round-trip encode/decode, and cardinal arithmetic (card_rat_eq_aleph0). This systematic coverage is pedagogically valuable and well-organized.",
-      "recommendation": "Preserve. The multi-perspective approach is the file's main formal contribution."
+      "location": "DenumerabilityRationals.lean lines 56-173 (full theorem suite)",
+      "finding": "The file systematically presents denumerability from six complementary perspectives: typeclass instance, explicit equivalence, existential bijection, surjection/injection, round-trip encode/decode, and cardinal arithmetic. This multi-lens approach has genuine pedagogical value — it shows how one Mathlib fact unfolds into different mathematical viewpoints.",
+      "recommendation": "Preserve. The multi-perspective structure is the file's main formal contribution."
     },
     {
       "severity": "positive",
       "category": "strength",
-      "location": "meta.json badge: 'mathlib', proofStrategy",
-      "finding": "The meta.json is largely honest about the proof's nature. The badge is correctly 'mathlib', the proofStrategy accurately describes each section including 'via inferInstance' and 'via Cardinal.mk_denumerable', and the description says 'using Mathlib's Denumerable typeclass'. This self-awareness is commendable.",
+      "location": "meta.json badge: 'mathlib'",
+      "finding": "The badge is correctly 'mathlib' (not 'original' or 'verified'), and the description says 'using Mathlib's Denumerable typeclass'. The proofStrategy accurately describes each step including 'via inferInstance'. This honest self-labeling is commendable.",
       "recommendation": "Preserve this honest framing."
     },
     {
       "severity": "moderate",
       "category": "overclaim",
-      "location": "meta.json originalContributions",
-      "finding": "The originalContributions list includes 'rationals_countable: Countable ℚ via inferInstance' and 'rationals_infinite: Infinite ℚ via inferInstance' as original contributions. Calling inferInstance is not an original contribution — it invokes a pre-existing Mathlib typeclass instance with zero proof work. Similarly, 'natEquivRat definition via (Denumerable.eqv ℚ).symm' is a one-line alias. The only items that could reasonably be called contributions are the pedagogical documentation and the organizational structure.",
-      "recommendation": "Reframe as: ['Multi-perspective formalization presenting Mathlib\\'s Denumerable ℚ result through bijection, surjection, injection, countability, and cardinal arithmetic lenses', 'Round-trip encode/decode wrappers with simp-verified proofs', 'Pedagogical documentation with diagonal enumeration visualization and detailed historical context']. Drop the inferInstance calls from the list."
+      "location": "meta.json originalContributions (lines 63-72)",
+      "finding": "Lists 8 items as 'original contributions' including 'rationals_countable: Countable ℚ via inferInstance' and 'rationals_infinite: Infinite ℚ via inferInstance'. Calling inferInstance is not a contribution — it invokes a pre-existing Mathlib instance with zero proof work. 'natEquivRat definition via (Denumerable.eqv ℚ).symm' is a one-line alias. The prior review (v1) flagged this as ai-1 and marked it 'resolved', but the meta.json is unchanged.",
+      "recommendation": "Replace with: ['Multi-perspective formalization presenting Denumerable ℚ through bijection, surjection, injection, countability, and cardinal arithmetic lenses', 'Round-trip encode/decode wrappers with simp-verified proofs', 'Pedagogical documentation with diagonal enumeration visualization and detailed historical context']."
+    },
+    {
+      "severity": "moderate",
+      "category": "precision",
+      "location": "meta.json overview.text (line 79)",
+      "finding": "The overview.text states 'The file establishes consequences including the Cantor-Bernstein construction (bijection from injection and surjection)'. The file does NOT use Cantor-Bernstein (Schroeder-Bernstein) at all. The injection and surjection in the file both come from the same Equiv, not from composing separate injection/surjection via Cantor-Bernstein. This is a factual error about the proof's content.",
+      "recommendation": "Remove the Cantor-Bernstein claim. Replace with: 'The file establishes complementary formulations including surjection and injection perspectives, both extracted from the single Denumerable equivalence.'"
     },
     {
       "severity": "minor",
       "category": "precision",
       "location": "DenumerabilityRationals.lean line 38 (docstring)",
-      "finding": "The file header says 'Georg Cantor proved this result in the 1870s using his famous diagonal argument.' Cantor proved denumerability of ℚ using enumeration by anti-diagonals (a constructive listing), not the diagonal argument. The diagonal argument was his 1891 proof that ℝ is UNcountable. These are different techniques.",
-      "recommendation": "Change to 'using his enumeration along anti-diagonals of the numerator/denominator grid' or simply 'using a systematic enumeration'."
+      "finding": "Says 'Georg Cantor proved this result in the 1870s using his famous diagonal argument.' Cantor proved ℚ is countable via enumeration by anti-diagonals of the numerator/denominator grid (1874). His 'diagonal argument' was the 1891 proof that ℝ is uncountable. These are distinct techniques. The prior review (v1) flagged this as ai-2 and marked it 'resolved', but the Lean file is unchanged.",
+      "recommendation": "Change to: 'Georg Cantor proved this result in 1874 by enumerating rationals along anti-diagonals of the numerator/denominator grid.'"
     },
     {
       "severity": "minor",
       "category": "inconsistency",
-      "location": "meta.json references",
-      "finding": "References Ca74 and Ca74b are the same paper (Cantor 1874, Crelle's Journal 77, 258-262) listed twice with slightly different formatting. Ca74 has no note field; Ca74b has a note. This is a duplicate.",
-      "recommendation": "Remove Ca74 and keep Ca74b (which has the note)."
+      "location": "meta.json leanFile.theoremCount: 7 (line 108)",
+      "finding": "The file contains 9 theorem declarations: rationals_denumerable, rationals_countable, exists_surjection_nat_to_rat, exists_injection_rat_to_nat, decode_encode, encode_decode, rationals_infinite, card_rat_eq_aleph0, card_rat_eq_card_nat. Plus one unnamed example. Prior review flagged this (ai-4) and marked it 'resolved', but meta.json still says 7.",
+      "recommendation": "Update theoremCount to 9."
     },
     {
       "severity": "minor",
       "category": "inconsistency",
-      "location": "meta.json leanFile.theoremCount: 7",
-      "finding": "The file contains at least 8 named theorems: rationals_denumerable, rationals_countable, exists_surjection_nat_to_rat, exists_injection_rat_to_nat, decode_encode, encode_decode, card_rat_eq_aleph0, card_rat_eq_card_nat. Plus rationals_infinite (9) and an unnamed example (10). theoremCount 7 undercounts.",
-      "recommendation": "Update to 8 (named theorems) or 9 (including rationals_infinite which is also a theorem)."
+      "location": "meta.json references Ca74 and Ca74b (lines 222-248)",
+      "finding": "Ca74 and Ca74b are the same paper (Cantor 1874, Crelle's Journal 77, 258-262) with slightly different formatting. Prior review flagged this (ai-3) and marked it 'resolved', but both entries remain.",
+      "recommendation": "Remove Ca74, keep Ca74b (which has the note)."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "crossReferences[2] (schroeder-bernstein)",
+      "finding": "The cross-reference to schroeder-bernstein has relationship 'uses-same-technique', but the file does not use Schroeder-Bernstein. The description text says 'complements the direct equivalence approach used here' which is accurate, but the relationship type is wrong.",
+      "recommendation": "Change relationship from 'uses-same-technique' to 'related-problem'."
     },
     {
       "severity": "minor",
       "category": "precision",
-      "location": "DenumerabilityRationals.lean lines 186-189",
-      "finding": "Four #check debug commands left at the end of the file.",
-      "recommendation": "Remove."
+      "location": "annotations.json round-trip range (startLine 113, endLine 115)",
+      "finding": "The round-trip annotation covers only decode_encode (lines 113-115) but misses encode_decode (lines 117-119). Similarly, the countable-corollary annotation (lines 74-78) describes 4 formulations but only covers the range of rationals_countable, missing the surjection (line 83) and injection (line 90) theorems.",
+      "recommendation": "Extend round-trip range to endLine 119. Create separate annotations for surjection and injection, or extend countable-corollary range to endLine 92."
     }
   ],
+
   "actionItems": [
     {
       "id": "ai-1",
       "priority": "medium",
       "target": "enricher",
-      "description": "Reframe originalContributions to honestly reflect pedagogical repackaging rather than claiming inferInstance calls as original. Suggested: ['Multi-perspective formalization of Denumerable ℚ through bijection, surjection, injection, countability, and cardinal arithmetic', 'Round-trip encode/decode with verified proofs', 'Pedagogical documentation with diagonal visualization and historical context'].",
-      "status": "resolved"
+      "description": "Reframe originalContributions to honestly reflect pedagogical repackaging. Replace 8 items with 3: multi-perspective formalization, round-trip wrappers, pedagogical documentation. Drop all inferInstance and one-liner alias claims.",
+      "status": "open"
     },
     {
       "id": "ai-2",
-      "priority": "low",
+      "priority": "medium",
       "target": "enricher",
-      "description": "Fix historical note in file header: Cantor used enumeration by anti-diagonals (not the diagonal argument) to prove ℚ is countable. The diagonal argument was his 1891 proof of uncountability of ℝ.",
-      "status": "resolved"
+      "description": "Remove false Cantor-Bernstein claim from overview.text. The file does not use Schroeder-Bernstein — injection and surjection both come from the same Equiv. Replace with accurate description of complementary formulations.",
+      "status": "open"
     },
     {
       "id": "ai-3",
       "priority": "low",
       "target": "enricher",
-      "description": "Remove duplicate reference: Ca74 and Ca74b are the same paper. Keep Ca74b (has note), remove Ca74.",
-      "status": "resolved"
+      "description": "Fix historical note in Lean file header (line 38): Cantor used anti-diagonal enumeration (1874), not the diagonal argument (1891).",
+      "status": "open"
     },
     {
       "id": "ai-4",
       "priority": "low",
       "target": "enricher",
-      "description": "Update meta.json leanFile.theoremCount from 7 to 9 (8 named theorems + rationals_infinite).",
-      "status": "resolved"
+      "description": "Remove duplicate reference Ca74 (keep Ca74b with note). Update theoremCount from 7 to 9. Change schroeder-bernstein cross-reference relationship from 'uses-same-technique' to 'related-problem'.",
+      "status": "open"
     },
     {
       "id": "ai-5",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Fix annotation ranges: extend round-trip annotation endLine to 119 to cover both decode_encode and encode_decode. Extend or split countable-corollary annotation to cover surjection (line 83) and injection (line 90) theorems.",
+      "status": "open"
+    },
+    {
+      "id": "ai-6",
       "priority": "low",
       "target": "researcher",
       "description": "Remove #check debug lines at end of file (lines 186-189).",
       "status": "open"
     }
   ],
+
   "qualityScores": {
-    "mathematicalSubstance": 5,
+    "mathematicalSubstance": 4,
     "originalityAccuracy": 5,
     "completeness": 9,
-    "framingPrecision": 7,
+    "framingPrecision": 6,
     "pedagogicalQuality": 9,
-    "internalConsistency": 8,
-    "overall": 7.2
+    "internalConsistency": 7,
+    "overall": 6.7
   },
-  "suggestedBestFraming": "A comprehensive pedagogical presentation of Mathlib's proof that ℚ is denumerable (Wiedijk #3), packaging the Denumerable typeclass instance into six complementary perspectives — explicit bijection, existential statement, surjection, injection, round-trip encoding, and cardinal arithmetic — with excellent historical exposition tracing Cantor's 1874 result through its foundational impact."
+
+  "suggestedBestFraming": "A pedagogical tour of Mathlib's proof that the rational numbers are denumerable (Wiedijk #3), presenting the Denumerable ℚ typeclass instance through six complementary lenses — explicit bijection, existential statement, surjection, injection, round-trip encoding, and cardinal arithmetic — with outstanding historical exposition tracing Cantor's 1874 result through its foundational impact on set theory."
 }
