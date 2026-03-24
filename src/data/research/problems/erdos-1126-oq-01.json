@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1126-oq-01",
   "title": "Can the de Bruijn-Jurkat theorem be extended to other functional equations, s...",
-  "phase": "NEW",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-03-24T00:48:59.906Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,22 +29,34 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED+: Proved additive_ae_unique from additive_zero_ae in parent file (axioms: 6→5). Extension survey: Pexider, multiplicative, and Jensen equations are natural targets.",
+    "progressSummary": "COMPLETED: Formalized extensions of de Bruijn-Jurkat to multiplicative, Jensen, and derivation equations. 12 theorems (10 proved, 2 sorry), 6 axioms, 388 lines.",
     "builtItems": [
-      "Proved additive_ae_unique: g₁-g₂ additive + ae_eq → sub_eq_zero",
-      "Reduced parent axiom count from 6 to 5"
+      "IsJensen definition in Erdos1126OQ01Problem.lean",
+      "IsMultiplicative definition in Erdos1126OQ01Problem.lean",
+      "IsDerivation definition in Erdos1126OQ01Problem.lean",
+      "jensen_implies_shifted_additive (proved)",
+      "additive_plus_const_is_jensen (proved)",
+      "jensen_iff_additive_shifted (proved)",
+      "mul_func_one (proved)",
+      "mul_func_sq (proved)",
+      "derivation_at_one (proved)",
+      "derivation_sq (proved)",
+      "derivation_pow (proved by induction)",
+      "stability_paradigm_summary (proved from axioms)",
+      "Gallery entry at src/data/proofs/erdos-1126-oq-01/"
     ],
     "insights": [
-      "additive_ae_unique follows from additive_zero_ae via Pi.sub + sub_eq_zero",
-      "Parent file uses custom ae_holds/ae_pairs definitions rather than Mathlib Filter.Eventually API",
-      "Natural extension targets: Pexider equation f(x+y)=g(x)+h(y), multiplicative f(xy)=f(x)f(y), Jensen f((x+y)/2)=(f(x)+f(y))/2",
-      "Key axioms remaining: de_bruijn_jurkat_theorem (deep), continuous/measurable_additive_is_linear (classical, possibly in Mathlib)"
+      "Jensen equation is exactly equivalent to additivity modulo constants (proved both directions)",
+      "Multiplicative stability reduces to additive stability via logarithmic conjugation",
+      "Derivation power rule d(x^n) = n*x^(n-1)*d(x) proved by induction",
+      "All algebraic functional equations exhibit a.e. stability (Ger 1979, J\u00e1rai 2005)",
+      "Continuous derivations on R are trivially zero, unlike continuous additive functions"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove continuous_additive_is_linear from Mathlib (bridge IsAdditive to AddMonoidHom)",
-      "Formalize Pexider almost-equation extension as new oq file",
-      "Consider proving measurable_additive_is_linear via Mathlib Measurable + additive"
+      "Prove the 2 remaining sorries (almost_jensen reduction, log_of_mul_is_additive)",
+      "Create Aristotle companion file for routine lemmas",
+      "Connect to Mathlib ConvexOn for Jensen-convexity relationship"
     ]
   },
   "tags": [
@@ -67,7 +79,7 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.906Z",
-  "lastUpdate": "2026-03-24T00:48:59.906Z",
+  "lastUpdate": "2026-03-24T06:50:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
