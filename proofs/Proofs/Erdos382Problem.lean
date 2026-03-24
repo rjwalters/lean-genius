@@ -59,8 +59,16 @@ theorem prodInterval_singleton (n : ℕ) (hn : n > 0) :
   simp [prodInterval, Finset.Icc_self]
 
 /-- prod_interval(1, n) = n!. -/
-axiom prodInterval_factorial (n : ℕ) :
-    prodInterval 1 n = n.factorial
+theorem prodInterval_factorial (n : ℕ) :
+    prodInterval 1 n = n.factorial := by
+  unfold prodInterval
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    have h : Finset.Icc 1 (n + 1) = insert (n + 1) (Finset.Icc 1 n) := by
+      ext x; simp only [Finset.mem_Icc, Finset.mem_insert]; omega
+    rw [h, Finset.prod_insert (by simp [Finset.mem_Icc])]
+    rw [ih, Nat.factorial_succ, mul_comm]
 
 /- ## Part II: Largest Prime Divisor -/
 
@@ -71,7 +79,7 @@ The largest prime that divides n, or 0 if n ≤ 1.
 -/
 noncomputable def largestPrimeDivisor (n : ℕ) : ℕ :=
   if h : n > 1 then
-    (n.primeFactorsList).maximum?.getD 0
+    n.primeFactorsList.foldl max 0
   else 0
 
 /-- The largest prime divisor divides n. -/
@@ -182,9 +190,8 @@ The gap between consecutive primes p_n and p_{n+1} is O((log p_n)²).
 This famous conjecture would imply Question 1 has answer YES.
 -/
 def cramersConjecture : Prop :=
-  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n > 0 →
-    let p := Nat.nth Nat.Prime n
-    let q := Nat.nth Nat.Prime (n + 1)
+  ∃ C : ℝ, C > 0 ∧ ∀ p q : ℕ, p.Prime → q.Prime → p < q →
+    (∀ r, p < r → r < q → ¬r.Prime) →
     (q - p : ℝ) ≤ C * (Real.log p) ^ 2
 
 /-- Under Cramér's conjecture, Question 1 is true. -/
@@ -196,9 +203,6 @@ axiom cramer_implies_q1 : cramersConjecture → question1
 example : prodInterval 2 4 = 24 := by
   simp [prodInterval]
   native_decide
-
-/-- Example: [2, 8] has product = 8!/1! = 40320 = 2⁷ · 3² · 5 · 7.
-    Largest prime is 7, but 7 has exponent 1. -/
 
 /-- For [u, v] to satisfy the condition, we need no prime in (√v, v]. -/
 axiom no_prime_in_upper_half (u v : ℕ) (hu : u > 0) (huv : u ≤ v)
