@@ -143,6 +143,16 @@
       "targetId": "angle-trisection-oq-02-oq-03-oq-01",
       "relationship": "extended-by",
       "description": "Bridges the Gauss-Wantzel constructibility theorem to Mathlib's cyclotomic field infrastructure. Connects the 2-group Galois criterion proved here to the concrete setting of $\\zeta_n = e^{2\\pi i/n}$ and Chebyshev polynomials, showing how the abstract group-theoretic characterization manifests in the cyclotomic world that governs regular polygon constructibility"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "complementary",
+      "description": "The transcendence of $\\pi$ (Lindemann 1882) proves the third classical impossibility — squaring the circle — by a different mechanism than the Galois 2-group criterion used here. Angle trisection and cube doubling fail because the relevant algebraic numbers have non-2-group Galois groups; squaring the circle fails because $\\pi$ is not even algebraic, lying entirely outside the constructible $\\subsetneq$ algebraic hierarchy. Together, the three classical impossibilities span two levels: algebraic obstruction (2-group criterion) and transcendence"
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "complementary",
+      "description": "FTA guarantees every polynomial has roots in $\\mathbb{C}$, so constructibility is never about existence of solutions — only about which geometric operations can produce them. The 2-group criterion characterizes which algebraic numbers (all of which exist by FTA) happen to lie in the compass-and-straightedge closure of $\\mathbb{Q}$"
     }
   ],
   "overview": {
@@ -281,7 +291,9 @@
     "euler-totient",
     "nth-root-irrational",
     "solution-of-cubic",
-    "angle-trisection-oq-02-oq-03-oq-01"
+    "angle-trisection-oq-02-oq-03-oq-01",
+    "pi-transcendental",
+    "fundamental-theorem-algebra"
   ],
   "references": [
     {
