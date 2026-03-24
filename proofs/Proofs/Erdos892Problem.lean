@@ -215,12 +215,95 @@ theorem erdos_1935_necessary (b : ℕ → ℕ) :
     by_contra hlt; push_neg at hlt
     have h1 : C * b n < C * C := mul_lt_mul_of_pos_left hlt hCpos
     linarith [hdom n, hN₀ n hn]
+  -- Each term with b n ≥ 2 is bounded above by 1/(2·log 2)
+  have hterm_bound : ∀ n, b n ≥ 2 →
+      (1 : ℝ) / ((b n : ℝ) * Real.log (b n : ℝ)) ≤ 1 / (2 * Real.log 2) := by
+    intro n hbn
+    have h2_pos : (0 : ℝ) < 2 * Real.log 2 :=
+      mul_pos (by norm_num) (Real.log_pos (by norm_num))
+    have hblog_pos : (0 : ℝ) < (b n : ℝ) * Real.log (b n : ℝ) :=
+      mul_pos (Nat.cast_pos.mpr (by omega))
+        (Real.log_pos (by exact_mod_cast (show 1 < b n by omega)))
+    rw [div_le_div_iff₀ hblog_pos h2_pos]
+    simp only [one_mul]
+    have hb_cast : (2 : ℝ) ≤ (b n : ℝ) := by exact_mod_cast hbn
+    have hlog_mono : Real.log 2 ≤ Real.log (b n : ℝ) :=
+      Real.log_le_log (by norm_num) hb_cast
+    exact mul_le_mul hb_cast hlog_mono (le_of_lt (Real.log_pos (by norm_num)))
+      (by linarith)
+  -- For n ≥ N₀ with b n ≥ 2: comparison gives termwise bound
+  have htail_comp : ∀ n, n ≥ N₀ → b n ≥ 2 →
+      (1 : ℝ) / ((b n : ℝ) * Real.log (b n : ℝ)) ≤
+        2 * ↑C / ((a n : ℝ) * Real.log (a n : ℝ)) :=
+    fun n hn hbn => reciprocal_log_comparison (a n) (b n) C (hdom n) (hge n) hbn (hb_large n hn)
   -- Bound: head ≤ N₀/(2·log 2), tail ≤ 2C · Sa
   use ↑N₀ * (1 / (2 * Real.log 2)) + 2 * ↑C * Sa
   intro N
-  -- TODO: Split sum at min N N₀, bound head terms by 1/(2·log 2),
-  -- bound tail terms using reciprocal_log_comparison
-  sorry
+  -- Pull constant 2C out of the tail sum
+  have htail : ∀ N₁,
+      (∑ n ∈ Finset.range N₁, 2 * ↑C * ((1 : ℝ) / ((a n : ℝ) * Real.log (a n : ℝ))))
+        ≤ 2 * ↑C * Sa := by
+    intro N₁
+    calc ∑ n ∈ Finset.range N₁, 2 * ↑C * ((1 : ℝ) / ((a n : ℝ) * Real.log (a n : ℝ)))
+        = 2 * ↑C * ∑ n ∈ Finset.range N₁,
+            (1 : ℝ) / ((a n : ℝ) * Real.log (a n : ℝ)) := by
+          rw [Finset.mul_sum]
+      _ ≤ 2 * ↑C * Sa := by
+          apply mul_le_mul_of_nonneg_left (hSa N₁)
+          exact mul_nonneg (by positivity) (Nat.cast_nonneg C)
+  -- Termwise bound: each term ≤ indicator·headBound + tailBound
+  have hbound : ∀ n ∈ Finset.range N,
+      (if b n ≥ 2 then (1 : ℝ) / ((b n : ℝ) * Real.log (b n : ℝ)) else 0) ≤
+        (if n < N₀ then 1 / (2 * Real.log 2) else 0) +
+        2 * ↑C * ((1 : ℝ) / ((a n : ℝ) * Real.log (a n : ℝ))) := by
+    intro n _
+    have ha_nn : 0 ≤ 2 * (↑C : ℝ) * ((1 : ℝ) / ((a n : ℝ) * Real.log (a n : ℝ))) := by
+      apply mul_nonneg (mul_nonneg (by positivity) (Nat.cast_nonneg C))
+      apply div_nonneg one_pos.le
+      exact le_of_lt (mul_pos (Nat.cast_pos.mpr (by have := hge n; omega))
+        (Real.log_pos (by exact_mod_cast (show 1 < a n by have := hge n; omega))))
+    split_ifs with hbn hnN₀
+    · -- b n ≥ 2, n < N₀: head bound suffices
+      linarith [hterm_bound n hbn]
+    · -- b n ≥ 2, n ≥ N₀: comparison bound
+      push_neg at hnN₀
+      have h := htail_comp n (by omega) hbn
+      -- Convert 2C/(x) to 2C*(1/x) for linarith
+      have heq : 2 * (↑C : ℝ) / ((↑(a n) : ℝ) * Real.log ↑(a n)) =
+                 2 * (↑C : ℝ) * (1 / ((↑(a n) : ℝ) * Real.log ↑(a n))) := by ring
+      linarith
+    · -- b n < 2, n < N₀: 0 ≤ positive
+      have : 0 ≤ 1 / (2 * Real.log 2) := div_nonneg one_pos.le
+        (le_of_lt (mul_pos (by positivity) (Real.log_pos (by norm_num))))
+      linarith
+    · -- b n < 2, n ≥ N₀: 0 ≤ 2C/(a n · log(a n))
+      linarith
+  -- Apply termwise bound then split the sum
+  calc (∑ n ∈ Finset.range N,
+          if b n ≥ 2 then (1 : ℝ) / ((b n : ℝ) * Real.log (b n : ℝ)) else 0)
+      ≤ ∑ n ∈ Finset.range N,
+          ((if n < N₀ then 1 / (2 * Real.log 2) else 0) +
+           2 * ↑C * ((1 : ℝ) / ((a n : ℝ) * Real.log (a n : ℝ)))) :=
+        Finset.sum_le_sum hbound
+    _ = (∑ n ∈ Finset.range N, if n < N₀ then 1 / (2 * Real.log 2) else (0 : ℝ)) +
+        (∑ n ∈ Finset.range N, 2 * ↑C * ((1 : ℝ) / ((a n : ℝ) * Real.log (a n : ℝ)))) := by
+        rw [← Finset.sum_add_distrib]
+    _ ≤ ↑N₀ * (1 / (2 * Real.log 2)) + 2 * ↑C * Sa := by
+        apply add_le_add
+        · -- Head: sum of indicator ≤ N₀ terms × constant
+          have hc_nonneg : (0 : ℝ) ≤ 1 / (2 * Real.log 2) :=
+            div_nonneg one_pos.le (le_of_lt (mul_pos (by positivity) (Real.log_pos (by norm_num))))
+          -- ∑ (if n < N₀ then c else 0) = ∑_{filter} c = |filter| • c
+          rw [← Finset.sum_filter]
+          -- card of {n ∈ range N | n < N₀} ≤ N₀
+          have hfilt_sub : (Finset.range N).filter (fun n => n < N₀) ⊆ Finset.range N₀ := by
+            intro x; simp [Finset.mem_filter, Finset.mem_range]
+          have hcard_le : ((Finset.range N).filter (fun n => n < N₀)).card ≤ N₀ :=
+            le_trans (Finset.card_le_card hfilt_sub) (by simp [Finset.card_range])
+          -- ∑ c = |filter| • c, and |filter| ≤ N₀, so ∑ c ≤ N₀ * c
+          rw [Finset.sum_const, nsmul_eq_mul]
+          exact mul_le_mul_of_nonneg_right (Nat.cast_le.mpr hcard_le) hc_nonneg
+        · exact htail N
 
 /-
 ## Section VII: GCD Condition

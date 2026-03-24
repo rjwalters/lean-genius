@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Proved reciprocal_log_comparison (cross-multiplication from product_log_comparison). Added 3 helper theorems (strict_inc_lower_bound, strict_inc_eventually_ge, product_log_comparison). Axioms: 3, sorries: 1 (was 2), theorems: 6 (was 2). erdos_1935_necessary proof structured with threshold and bound.",
+    "progressSummary": "FULLY PROVED erdos_1935_necessary (Erdős 1935 necessary condition). 0 sorries, 3 axioms, 6 theorems, 325 lines. Comparison test: a·log(a) ≤ 2C·(b·log(b)), Finset sum splitting, head/tail bound.",
     "builtItems": [
       "primitive_elements_ge_two: proved from primitivity (0 divides everything, 1 divides everything)",
       "erdos_1935_necessary: converted from axiom to theorem (Steps 1-2 complete, Step 3 sorry for comparison arithmetic)",
@@ -38,7 +38,8 @@
       "product_log_comparison: proved a·log(a) ≤ 2C·(b·log(b)) via log monotonicity",
       "strict_inc_lower_bound: proved a(n) ≥ n+2 by induction",
       "strict_inc_eventually_ge: proved sequence eventually exceeds any bound M",
-      "reciprocal_log_comparison: PROVED from product_log_comparison via div_le_div_iff₀"
+      "reciprocal_log_comparison: PROVED from product_log_comparison via div_le_div_iff₀",
+      "erdos_1935_necessary: FULLY PROVED via comparison test + Finset sum splitting"
     ],
     "insights": [
       "erdos_1935_necessary is logically derivable from primitive_reciprocal_log_convergent: if a ≤ C*b, then 1/(b·log b) ≤ 2C/(a·log a) for large n, so convergence transfers",
@@ -54,7 +55,7 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Complete erdos_1935_necessary: Finset.sum_range_add_sum_Ico splitting at N₀, termwise bound via reciprocal_log_comparison",
+      "Consider eliminating primitive_counting_bound axiom (may not be used)",
       "Consider whether ess_1967_necessary can be derived from other axioms"
     ],
     "markdown": "# Erdős #892 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a necessary and sufficient condition for a sequence of integers $b_1<b_2<\\cdots$ that ensures there exists a primitive sequence $a_1<a_2<\\cdots$ (i.e. no element divides another) with $a_n \\ll b_n$ for all $n$?\n\nIn particular, is this always possible if there are no non-trivial solutions to $(b_i,b_j)=b_k$?\n\n\n\nA problem of Erd\\H{o}s, S\\'{a}rk\\\"{o}zy, and Szemer\\'{e}di \\cite{ESS68}. It is known that\\[\\sum \\frac{1}{b_n\\log b_n}<\\infty\\]and\\[\\sum_{b_n<x}\\frac{1}{b_n} =o\\left(\\frac{\\log x}{\\sqrt{\\log\\log x}}\\right)\\]are both necessary. (The former is due to Erd\\H{o}s \\cite{Er35}, the latter to Erd\\H{o}s, S\\'{a}rk\\\"{o}zy, and Szemer\\'{e}di \\cite{ESS67}.)\n\nOne can ask a similar question for sequences of real numbers, as in [143].\n\n\n\n\nReferences\n\n\n[ESS67] Erd\\H{o}s, P. and S\\'{a}rk\\\"ozy, A. and Szemer\\'{e}di, E., On a theorem of Behrend. J. Austral. Math. Soc. (1967), 9--16.\n\n[ESS68] Erd\\H{o}s, P. and S\\'{a}rk\\\"ozi, A. and Szemer\\'{e}di, E., On the solvability of certain equations in sequences of\npositive upper logarithmic density. J. London Math. Soc. (1968), 71--78.\n\n[Er35] Erd\\\"{o}s, Paul, Note on Sequences of Integers No One of Which is Divisible By Any Other. J. London Math. Soc. (1935), 126-128.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #143\n- Problem #891\n- Problem #893\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er98\n- ESS68\n- Er35\n- ESS67\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
