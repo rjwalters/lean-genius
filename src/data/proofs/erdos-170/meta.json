@@ -182,5 +182,22 @@
       "relationship": "Both involve arithmetic structure and optimal covering/balancing of integer ranges; difference bases cover all residues while discrepancy bounds measure uniformity",
       "targetId": "erdos-176"
     }
+  ],
+  "relatedProofs": [
+    {
+      "id": "erdos-340-greedy-sidon",
+      "title": "Greedy Sidon Sequence Infrastructure (Erdős Problem #340)",
+      "relationship": "both study difference-based combinatorial structures — Sidon sets require distinct pairwise differences, rulers require all differences 1..N"
+    },
+    {
+      "id": "erdos-169",
+      "title": "Erdős Problem #169: Harmonic Sum of AP-Free Sets",
+      "relationship": "both concern extremal problems on integer sets with additive structure constraints"
+    },
+    {
+      "id": "erdos-176",
+      "title": "Erdős Problem #176: Discrepancy of Arithmetic Progressions",
+      "relationship": "both involve arithmetic structure and optimal covering/balancing of integer ranges"
+    }
   ]
 }

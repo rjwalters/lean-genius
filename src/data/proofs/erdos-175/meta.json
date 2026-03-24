@@ -203,5 +203,22 @@
       "relationship": "The binomial theorem provides the algebraic foundation for binomial coefficients whose squarefreeness is studied in this problem",
       "targetId": "binomial-theorem"
     }
+  ],
+  "relatedProofs": [
+    {
+      "id": "kummer-theorem",
+      "title": "Kummer's Theorem on Binomial Coefficients",
+      "relationship": "central tool — Kummer's theorem governs the p-adic valuations that determine squarefreeness of C(2n,n)"
+    },
+    {
+      "id": "erdos-728-factorial-divisibility",
+      "title": "Erdős Problem #728: Factorial Divisibility",
+      "relationship": "sibling — both study p-adic valuations of combinatorial quantities"
+    },
+    {
+      "id": "binomial-theorem",
+      "title": "The Binomial Theorem",
+      "relationship": "foundation — provides the algebraic framework for binomial coefficients"
+    }
   ]
 }
