@@ -169,38 +169,6 @@
       "description": "Erdős Problem #1 is a central problem in Erdős's extremal combinatorics program. Like #1009, it exemplifies Erdős's approach of asking precise quantitative questions about forced combinatorial structure in dense or large discrete systems."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "ramseys-theorem",
-      "relationship": "foundational",
-      "description": "Ramsey theory provides the backdrop for extremal graph problems: just as Ramsey numbers bound unavoidable monochromatic cliques, Turán's theorem bounds unavoidable triangles. Györi's result extends this by quantifying how many edge-disjoint triangles are forced by edge density above the Turán threshold."
-    },
-    {
-      "id": "erdos-1008",
-      "relationship": "thematic",
-      "description": "Erdős #1008 studies C₄-free subgraphs with many edges in dense graphs; both problems ask how much of a forbidden-subgraph-free structure can be extracted from a graph that just exceeds the corresponding Turán threshold, and both rely on Kővári–Sós–Turán-type arguments."
-    },
-    {
-      "id": "erdos-1010",
-      "relationship": "thematic",
-      "description": "Erdős #1010 is a neighboring problem in the same cluster of Turán-type and packing questions. Both #1009 and #1010 concern the fine structure of graphs near the Turán threshold and were motivated by similar 1971–1975 Erdős problems on extremal graph theory."
-    },
-    {
-      "id": "erdos-1012",
-      "relationship": "thematic",
-      "description": "Erdős #1012 concerns another extremal problem on triangle-related structure in dense graphs. Together with #1009, it forms part of Erdős's systematic study of what happens just beyond Turán's theorem and how triangles pack in graphs of given density."
-    },
-    {
-      "id": "szemeredi-regularity",
-      "relationship": "complementary",
-      "description": "Szemerédi's Regularity Lemma is the primary modern tool for analyzing triangle structure in dense graphs. Györi's proof of the edge-disjoint triangle packing bound relies on regularity-type ideas; the Regularity Lemma generalizes these to arbitrary dense subgraph patterns via the triangle removal lemma."
-    },
-    {
-      "id": "erdos-1",
-      "relationship": "thematic",
-      "description": "Erdős Problem #1 is a central problem in Erdős's extremal combinatorics program. Like #1009, it exemplifies Erdős's approach of asking precise quantitative questions about forced combinatorial structure in dense or large discrete systems."
-    }
-  ],
   "references": [
     {
       "authors": [

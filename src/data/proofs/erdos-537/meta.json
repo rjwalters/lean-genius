@@ -175,13 +175,6 @@
       "description": "Erdős #536 asks whether dense sets contain two numbers with equal prime products. Problem #537 was posed as a stepping stone — a positive answer would have implied #536. Ruzsa's counterexample blocks this approach."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-536",
-      "relationship": "related",
-      "description": "Erdős #536 asks whether dense sets contain two numbers with equal prime products. Problem #537 was posed as a stepping stone — a positive answer would have implied #536. Ruzsa's counterexample blocks this approach."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Prime.Basic",

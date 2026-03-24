@@ -193,38 +193,6 @@
       "description": "Ramsey's theorem provides the foundational framework for forbidden subgraph problems. The extremal number ex(n;H) studied in Problem #113 is the Turán-type analog of Ramsey numbers: both ask how graph structure is forced by density or coloring constraints."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-146",
-      "relationship": "related",
-      "description": "Problem #146 asks whether ex(n;H) ≪ n^{2-1/r} for bipartite r-degenerate H — a direct generalization of the forward direction of Problem #113. The 2-degenerate case (r=2) of #146 gives ex ≪ n^{3/2}, the same threshold appearing in the Erdős-Simonovits Conjecture."
-    },
-    {
-      "id": "erdos-147",
-      "relationship": "related",
-      "description": "Problem #147 asks whether bipartite graphs with minimum degree r have ex(n;H) ≫ n^{2-1/(r-1)+ε}. Janzer's 2023 counterexample to Problem #113 also resolves the backward direction of #147 (disproved), making these two problems directly connected through the same construction."
-    },
-    {
-      "id": "erdos-127",
-      "relationship": "thematic",
-      "description": "Problem #127 concerns Edwards' bound for bipartite subgraphs of m-edge graphs. Both #113 and #127 study the interaction between bipartite structure and extremal edge counts, illustrating the central role of bipartiteness in extremal graph theory."
-    },
-    {
-      "id": "erdos-128",
-      "relationship": "thematic",
-      "description": "Problem #128 investigates when dense induced subgraphs force triangles (a Turán-type result). Together with #113, these problems show how local density conditions (triangle-freeness, degeneracy) control global extremal numbers."
-    },
-    {
-      "id": "erdos-133",
-      "relationship": "thematic",
-      "description": "Problem #133 studies maximum degree in triangle-free diameter-2 graphs, with answer f(n) = Θ(√n). The Kővári-Sós-Turán bound ex(n; K_{2,2}) = O(n^{3/2}) that anchors #113's threshold is also fundamental to degree/diameter trade-offs studied in #133."
-    },
-    {
-      "id": "ramseys-theorem",
-      "relationship": "foundational",
-      "description": "Ramsey's theorem provides the foundational framework for forbidden subgraph problems. The extremal number ex(n;H) studied in Problem #113 is the Turán-type analog of Ramsey numbers: both ask how graph structure is forced by density or coloring constraints."
-    }
-  ],
   "references": [
     {
       "authors": "Kővári, T.; Sós, Vera T.; Turán, Pál",

@@ -145,23 +145,6 @@
       "description": "Erdős's proof analyzes the prime factorization of C(2n,n), the central binomial coefficient — the combinations formula gives the factorial representation that enables this analysis"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "binomial-theorem",
-      "relationship": "foundational",
-      "description": "The binomial theorem (x+y)^n = Σ C(n,k) x^k y^{n-k} directly uses the combinations formula — C(n,k) are exactly the expansion coefficients"
-    },
-    {
-      "id": "derangements",
-      "relationship": "related",
-      "description": "The derangement formula D_n = n! Σ (-1)^k/k! uses C(n,k) via inclusion-exclusion — binomial coefficients count the subsets whose fixed points are excluded"
-    },
-    {
-      "id": "bertrands-postulate",
-      "relationship": "related",
-      "description": "Erdős's proof analyzes the prime factorization of C(2n,n), the central binomial coefficient — the combinations formula gives the factorial representation that enables this analysis"
-    }
-  ],
   "references": [
     {
       "authors": "Pascal, Blaise",

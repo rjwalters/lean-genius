@@ -233,23 +233,6 @@
       "description": "The Cauchy-Schwarz inequality underpins the SDP relaxation: inner products v_i . v_j of unit vectors satisfy |v_i . v_j| <= 1, and the SDP optimizes over these inner products"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "randomized-maxcut",
-      "relationship": "extends",
-      "description": "The simple 1/2-approximation via independent random assignment. The GW algorithm improves this from 0.5 to 0.878 by using SDP-guided correlations between vertex assignments"
-    },
-    {
-      "id": "p-vs-np",
-      "relationship": "related",
-      "description": "MaxCut is NP-hard, so exact polynomial-time solutions are unlikely. The GW algorithm achieves the best possible polynomial-time approximation (under UGC), illustrating how approximation algorithms circumvent NP-hardness"
-    },
-    {
-      "id": "cauchy-schwarz",
-      "relationship": "foundational",
-      "description": "The Cauchy-Schwarz inequality underpins the SDP relaxation: inner products v_i . v_j of unit vectors satisfy |v_i . v_j| <= 1, and the SDP optimizes over these inner products"
-    }
-  ],
   "references": [
     {
       "authors": "Goemans, Michel X.; Williamson, David P.",

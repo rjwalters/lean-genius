@@ -190,32 +190,5 @@
       "description": "Both proofs rely on fundamental properties of prime numbers—this one uses the multiplicative (Euclid) property, while infinitude uses the divisor property",
       "targetId": "infinitude-primes"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "sqrt2-from-axioms",
-      "relationship": "generalizes",
-      "description": "This proof generalizes the parent √2 formalization to all primes, replacing Even/Odd with general divisibility by p"
-    },
-    {
-      "id": "sqrt2-irrational",
-      "relationship": "alternative-approach",
-      "description": "Uses Mathlib's irrational_sqrt_natCast_iff for a different approach to square root irrationality, covering non-square composites as well"
-    },
-    {
-      "id": "bezout-identity",
-      "relationship": "related",
-      "description": "Bézout's identity is the key theorem needed to prove equivalence of Euclid's criterion with the classical prime definition, which this proof deliberately avoids"
-    },
-    {
-      "id": "nth-root-irrational",
-      "relationship": "extends-to",
-      "description": "The nth root irrationality proof extends beyond square roots, using similar descent arguments for higher powers"
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "uses-concept",
-      "description": "Both proofs rely on fundamental properties of prime numbers—this one uses the multiplicative (Euclid) property, while infinitude uses the divisor property"
-    }
   ]
 }

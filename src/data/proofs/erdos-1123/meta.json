@@ -156,33 +156,6 @@
       "description": "Hindman's theorem (Erdős #532) is deeply connected to the combinatorial structure of P(ℕ): its algebraic proof uses the Stone-Čech compactification βℕ, whose points are ultrafilters on ℕ. Ultrafilter quotients of P(ℕ) are closely related to the Boolean algebra quotients P(ℕ)/I studied in Problem #1123."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "continuum-hypothesis",
-      "relationship": "depends-on",
-      "description": "The Just-Krawczyk isomorphism B₁ ≅ B₂ holds precisely under the Continuum Hypothesis (CH). The independence of CH from ZFC — proved by Gödel and Cohen — directly explains why this problem is set-theoretically undecidable. Understanding CH independence is prerequisite to interpreting the conditional result."
-    },
-    {
-      "id": "cantor-diagonalization-oq-01",
-      "relationship": "related-concept",
-      "description": "The CH question (is |ℝ| = ℵ₁?) bears directly on the cardinality and saturation properties of P(ℕ)/I₁ and P(ℕ)/I₂. Under CH both quotient algebras have cardinality ℵ₁ and become ω₁-saturated, which is the mechanism enabling Just-Krawczyk's isomorphism proof."
-    },
-    {
-      "id": "erdos-1102",
-      "relationship": "uses-same-technique",
-      "description": "Erdős #1102 also studies density-zero subsets of ℕ, analyzing how squarefree properties interact with natural density. Both problems use the natural density framework d(A) = lim |A ∩ {1,…,N}|/N and the ideal of density-zero sets as a central object."
-    },
-    {
-      "id": "erdos-47",
-      "relationship": "related-concept",
-      "description": "Erdős #47 (Bloom 2021) works with subsets of ℕ satisfying density-type conditions (∑ 1/a > δ log N). The density-zero ideal I₁ used in Problem #1123 is closely related: both probe the structure of large and small subsets of ℕ under different notions of size."
-    },
-    {
-      "id": "erdos-532",
-      "relationship": "related-concept",
-      "description": "Hindman's theorem (Erdős #532) is deeply connected to the combinatorial structure of P(ℕ): its algebraic proof uses the Stone-Čech compactification βℕ, whose points are ultrafilters on ℕ. Ultrafilter quotients of P(ℕ) are closely related to the Boolean algebra quotients P(ℕ)/I studied in Problem #1123."
-    }
-  ],
   "references": [
     {
       "key": "JK84",

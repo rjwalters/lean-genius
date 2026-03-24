@@ -221,32 +221,5 @@
       "What is the asymptotic behavior in the 'transition' regime $k \\approx n^{1/3}$ to $k \\approx n^{6/7}$ where the formula changes character?",
       "Can the permanent bounds of Godsil-McKay be sharpened to yield exact asymptotics rather than multiplicative constants?"
     ]
-  },
-  "relatedProofs": [
-    {
-      "id": "derangements",
-      "relationship": "uses",
-      "description": "L(2,n) = n! · D(n) where D(n) counts derangements — the second row of a 2×n Latin rectangle must be a derangement of the first"
-    },
-    {
-      "id": "erdos-724",
-      "relationship": "related",
-      "description": "Erdős #724 concerns mutually orthogonal Latin squares (MOLS), which are pairs of Latin squares satisfying an additional orthogonality condition. Latin rectangles generalize Latin squares by allowing k < n rows"
-    },
-    {
-      "id": "inclusion-exclusion",
-      "relationship": "uses",
-      "description": "The Erdős-Kaplansky proof uses inclusion-exclusion over column collision events to derive the asymptotic formula"
-    },
-    {
-      "id": "stirling-formula",
-      "relationship": "related",
-      "description": "Stirling's approximation n! ~ √(2πn)(n/e)^n is essential for analyzing the asymptotic behavior of (n!)^k in the Erdős-Kaplansky formula"
-    },
-    {
-      "id": "combinations-formula",
-      "relationship": "uses",
-      "description": "The binomial coefficient C(k,2) = k(k-1)/2 appears in the exponential correction factor of the Erdős-Kaplansky formula"
-    }
-  ]
+  }
 }

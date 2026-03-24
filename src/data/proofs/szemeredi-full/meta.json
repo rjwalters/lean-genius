@@ -173,28 +173,6 @@
       "Is a formalization of the Green-Tao theorem feasible building on this infrastructure?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "roth-theorem-k3",
-      "relationship": "depends-on",
-      "description": "Roth's theorem provides the k=3 base case for Szemeredi's induction"
-    },
-    {
-      "id": "szemeredi-regularity",
-      "relationship": "depends-on",
-      "description": "The Regularity Lemma provides the structural decomposition at each inductive step"
-    },
-    {
-      "id": "szemeredi-counting",
-      "relationship": "depends-on",
-      "description": "The counting/removal lemma translates regularity structure into AP counts"
-    },
-    {
-      "id": "prob-method-lovasz-local",
-      "relationship": "related",
-      "description": "Both are landmark results bridging probability and combinatorics, forming the Phase 1 and Phase 3 anchors of the marquee program"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Prime.Basic",

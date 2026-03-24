@@ -177,38 +177,6 @@
       "description": "Problem #509 asks whether the sublevel set {|f(z)| ≤ 1} of a degree-n monic polynomial can always be covered by discs with total radius ≤ 2 (Cartan's lemma gives total radius ≤ 2e). Disc-cover bounds on the sublevel set directly constrain the geometry through which any path from 0 to |z| = 1 must navigate, providing complementary estimates to the path-length problem."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-1041",
-      "relationship": "companion",
-      "description": "The most directly linked problem: #1041 asks whether a path of length less than 2 always exists within {|f(z)| < 1} connecting two roots of a unit-disk-rooted monic polynomial. Both problems concern path geometry in polynomial sublevel sets; #1041 gives an upper bound on path length while #1120 asks whether the infimal path length to the unit circle diverges with degree."
-    },
-    {
-      "id": "erdos-1040",
-      "relationship": "related",
-      "description": "Problem #1040 studies the transfinite diameter and Lebesgue measure of sublevel sets {|f(z)| < 1}, connecting lemniscate geometry to potential theory via equilibrium measures and logarithmic capacity. The capacity of the lemniscate is the same quantity that controls the Green's function appearing in the path-length problem, making the two problems parts of the same potential-theoretic story."
-    },
-    {
-      "id": "erdos-1042",
-      "relationship": "related",
-      "description": "Problem #1042 counts connected components of polynomial lemniscates {|f(z)| < 1}. The Clunie-Netanyahu existence theorem used in #1120 relies on the connectivity structure of the sublevel set E: knowing how components merge as roots cluster near the unit circle is essential for bounding path lengths through narrow bottlenecks."
-    },
-    {
-      "id": "erdos-114",
-      "relationship": "thematic",
-      "description": "Problem #114 asks whether the arc length of the level curve {|p(z)| = 1} is maximized by z^n - 1 among monic degree-n polynomials. Both problems concern extremal geometry of polynomial lemniscates; #114 optimizes boundary arc length while #1120 optimizes interior path length to the unit circle, and both expect z^n (or z^n - 1) to be near-extremal."
-    },
-    {
-      "id": "erdos-1115",
-      "relationship": "analogous",
-      "description": "Problem #1115 asks for the growth rate of paths to infinity along which an entire function of finite order grows slowly (analogous to shortest paths in sublevel sets for entire rather than polynomial functions). Both probe how efficiently one can traverse regions where a complex function stays bounded, and results for entire functions (Gol'dberg-Eremenko disproof) inform expectations for the polynomial case."
-    },
-    {
-      "id": "erdos-509",
-      "relationship": "related",
-      "description": "Problem #509 asks whether the sublevel set {|f(z)| ≤ 1} of a degree-n monic polynomial can always be covered by discs with total radius ≤ 2 (Cartan's lemma gives total radius ≤ 2e). Disc-cover bounds on the sublevel set directly constrain the geometry through which any path from 0 to |z| = 1 must navigate, providing complementary estimates to the path-length problem."
-    }
-  ],
   "references": [
     {
       "authors": "Clunie, James; Netanyahu, Elisha",

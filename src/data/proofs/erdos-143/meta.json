@@ -179,58 +179,6 @@
       "description": "Erdős #25 concerns the distribution of prime gaps. Both #25 and #143 study how number-theoretic constraints affect the spacing and density of elements in structured sets"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-369",
-      "relationship": "related",
-      "description": "Both concern structural constraints on number-theoretic sets: #369 requires smoothness of consecutive integers, #143 forbids integer dilations. Both ask how these constraints force sparseness in different senses"
-    },
-    {
-      "id": "prime-reciprocal-divergence",
-      "relationship": "related",
-      "description": "The divergence of $\\sum 1/p$ over primes contrasts with the convergence of $\\sum 1/(p \\log p)$ — Erdős's 1935 result shows primitive sets (which include well-separated integer sets) have convergent $\\sum 1/(n \\log n)$, while the primes themselves form the 'densest' primitive set"
-    },
-    {
-      "id": "harmonic-divergence",
-      "relationship": "foundational",
-      "description": "The harmonic series $\\sum 1/n$ diverges, providing the benchmark against which well-separated sets are measured: the KLL theorem proves $\\sum_{x < n, x \\in A} 1/x = o(\\log n)$, meaning well-separated sets are strictly sparser than the integers"
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "related",
-      "description": "PNT gives $\\pi(x) \\sim x/\\log x$, establishing the density of primes. The primes form a primitive set (no prime divides another prime), and Erdős's 1935 theorem implies $\\sum 1/(p \\log p)$ converges — the same type of series convergence conjectured for well-separated sets in conjecture (ii)"
-    },
-    {
-      "id": "erdos-4",
-      "relationship": "related",
-      "description": "Erdős #4 concerns the additive structure of sets with constraints on sums and differences. Like #143, it asks how algebraic constraints (here dilation-avoidance, there sum-free conditions) force sparseness of the underlying set"
-    },
-    {
-      "id": "erdos-36",
-      "relationship": "related",
-      "description": "Both are Erdős problems about density constraints on number-theoretic sets. #36 concerns sets avoiding arithmetic progressions, #143 concerns sets avoiding integer dilation proximity — both instantiate the general theme of structural constraints forcing sparseness"
-    },
-    {
-      "id": "roth-theorem-k3",
-      "relationship": "related",
-      "description": "Roth's theorem bounds the density of sets avoiding 3-term arithmetic progressions. Like #143, it shows that a combinatorial constraint (no 3-AP vs no dilation proximity) forces sparseness. Both use analytic number theory techniques (Roth: Fourier analysis; KLL: GCD graphs and multiplicative functions)"
-    },
-    {
-      "id": "szemeredi-theorem",
-      "relationship": "related",
-      "description": "Szemerédi's theorem (sets of positive upper density contain arbitrarily long arithmetic progressions) provides the paradigm for density-vs-structure results. Problem #143 asks a similar question: does the structural constraint of dilation-avoidance force zero density? The KLL result gives a partial answer"
-    },
-    {
-      "id": "bertrands-postulate",
-      "relationship": "related",
-      "description": "Bertrand's postulate (there is always a prime between $n$ and $2n$) implies that primes have positive lower density in logarithmic scale. For well-separated sets, the open conjecture (i) asks whether the lower density must be zero — a much stronger sparseness condition than what primes satisfy"
-    },
-    {
-      "id": "erdos-25",
-      "relationship": "related",
-      "description": "Erdős #25 concerns the distribution of prime gaps. Both #25 and #143 study how number-theoretic constraints affect the spacing and density of elements in structured sets"
-    }
-  ],
   "references": [
     {
       "authors": "Koukoulopoulos, Dimitris; Lamzouri, Youness; Lichtman, Jared Duker",

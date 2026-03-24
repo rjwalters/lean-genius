@@ -195,48 +195,6 @@
       "description": "The mean value theorem is used in the proof of Green's theorem for rectangles: the Fubini + FTC approach applies MVT to estimate the integral of partial derivatives over small rectangles, then takes limits. MVT also connects to the mean value property of harmonic functions, which follows from Green's theorem applied to $\\nabla^2 u = 0$"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "fundamental-theorem-calculus",
-      "relationship": "foundational",
-      "description": "The Fundamental Theorem of Calculus is the 1D special case of Stokes' theorem and the key tool in proving Green's theorem for rectangles: FTC evaluates the inner integrals at boundary points."
-    },
-    {
-      "id": "area-of-circle",
-      "relationship": "application",
-      "description": "The area of a circle (πr²) can be derived via Green's theorem using the vector field (0, x) and parametrizing the circle, demonstrating the area-as-line-integral technique."
-    },
-    {
-      "id": "navier-stokes",
-      "relationship": "broader-context",
-      "description": "The Navier-Stokes equations use Green's theorem (and its 3D generalization) to convert between differential and integral formulations of fluid conservation laws."
-    },
-    {
-      "id": "cauchy-schwarz-integral",
-      "relationship": "related",
-      "description": "Both theorems concern integral inequalities/equalities in analysis. Cauchy-Schwarz bounds inner products of functions, while Green's theorem equates two different integrals of vector field data."
-    },
-    {
-      "id": "euler-identity",
-      "relationship": "related",
-      "description": "Cauchy's integral theorem — every holomorphic function satisfies $\\oint_C f(z)\\,dz = 0$ — is a direct consequence of Green's theorem applied to the real and imaginary parts of $f$. Euler's formula $e^{ix} = \\cos x + i\\sin x$ defines the key holomorphic function $e^z$, and the residue theorem (generalization of Cauchy's theorem) evaluates contour integrals by analyzing singularities of $e^z$-related functions"
-    },
-    {
-      "id": "isoperimetric-theorem",
-      "relationship": "related",
-      "description": "The isoperimetric inequality $4\\pi A \\leq L^2$ can be proved using Green's theorem: the area $A = \\frac{1}{2}\\oint (x\\,dy - y\\,dx)$ is a line integral (by Green's), and applying Cauchy-Schwarz to this parametric integral yields the isoperimetric bound. Equality holds for circles, connecting Green's theorem to the characterization of optimal shapes"
-    },
-    {
-      "id": "pythagorean-theorem",
-      "relationship": "foundational",
-      "description": "The Pythagorean theorem defines the Euclidean metric $ds^2 = dx^2 + dy^2$ underlying Green's theorem. The area element $dA = dx\\,dy$ and the line element $ds = \\sqrt{dx^2 + dy^2}$ both derive from the Pythagorean distance, and the curl $\\partial Q/\\partial x - \\partial P/\\partial y$ is defined using partial derivatives in the Euclidean coordinate system"
-    },
-    {
-      "id": "mean-value-theorem",
-      "relationship": "foundational",
-      "description": "The mean value theorem is used in the proof of Green's theorem for rectangles: the Fubini + FTC approach applies MVT to estimate the integral of partial derivatives over small rectangles, then takes limits. MVT also connects to the mean value property of harmonic functions, which follows from Green's theorem applied to $\\nabla^2 u = 0$"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Real.Basic",

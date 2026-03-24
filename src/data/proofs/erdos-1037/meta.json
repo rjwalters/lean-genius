@@ -167,18 +167,6 @@
       "targetId": "erdos-1031"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-1036",
-      "relationship": "related",
-      "description": "Erdős #1036 (distinct induced subgraphs in non-Ramsey graphs) explores the complementary question: non-Ramsey graphs must have exponentially many distinct induced subgraphs (Shelah 1998), while Problem 1037 shows degree diversity alone does not help improve Ramsey bounds."
-    },
-    {
-      "id": "erdos-1031",
-      "relationship": "related",
-      "description": "Erdős #1031 (induced regular subgraphs in non-Ramsey graphs) studies universality properties of non-Ramsey graphs. Problem 1037 shows that degree diversity, unlike Ramsey deficiency, does not force structural complexity."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

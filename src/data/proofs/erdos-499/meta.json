@@ -199,17 +199,5 @@
       "relationship": "foundational",
       "description": "The AM-GM inequality is the key tool: the product of n nonneg reals summing to 1 is maximized at 1/n each, giving the bound n^{-n}. The doubly stochastic constraint (rows and columns sum to 1) interacts with AM-GM through the permanent"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "cayley-hamilton",
-      "relationship": "related",
-      "description": "Both concern matrix algebra: Cayley-Hamilton studies the characteristic polynomial while this problem studies diagonal products in doubly stochastic matrices. The permanent (which bounds diagonal products) is a matrix invariant complementary to the determinant"
-    },
-    {
-      "id": "amgm-inequality",
-      "relationship": "foundational",
-      "description": "The AM-GM inequality is the key tool: the product of n nonneg reals summing to 1 is maximized at 1/n each, giving the bound n^{-n}. The doubly stochastic constraint (rows and columns sum to 1) interacts with AM-GM through the permanent"
-    }
   ]
 }

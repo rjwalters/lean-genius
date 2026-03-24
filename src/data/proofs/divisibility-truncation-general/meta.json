@@ -173,20 +173,5 @@
       "relationship": "foundational",
       "description": "The IsCoprime condition (gcd(d,10)=1) enabling the key cancellation step is the same coprimality machinery used in the Chinese Remainder Theorem"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "divisibility-by-3-oq-01",
-      "relationship": "Companion that proves specific truncation rules; this entry provides the unifying parametric theorem answering the open question posed there",
-      "description": "OQ-01 proves specific truncation rules for 7, 11, 13, 17, 19 individually; this entry answers its open question by unifying all cases into a single parametric theorem"
-    },
-    {
-      "id": "divisibility-by-3",
-      "relationship": "Base formalization of divisibility-by-3; the digit-sum approach there is the d=3 case of the general osculator framework here",
-      "description": "The divisibility-by-3 rule is the simplest digit-sum instance; this entry generalizes the truncation approach to a parametric theorem covering all primes coprime to 10"
-    },
-    "divisibility-by-3",
-    "divisibility-by-3-oq-01",
-    "chinese-remainder-constructive"
   ]
 }

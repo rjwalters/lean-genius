@@ -219,34 +219,6 @@
       "description": "The Fundamental Theorem of Algebra shows every non-constant polynomial has all superlevel sets bounded (T(f) = (0,∞)), the simplest case of #1118's threshold classification. This contrasts with transcendental entire functions like e^z whose superlevel sets are half-planes."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-1115",
-      "relationship": "Both appear in Hayman's 1974 Problem 2.40 collection; Gol'dberg was a principal solver of both, studying path length and superlevel set measure for entire functions.",
-      "description": "Both problems concern entire functions and the Gol'dberg-Eremenko school; #1115 studies path length L(r) for finite-order entire functions while #1118 studies planar measure of superlevel sets. Hayman's 1974 Problem 2.40 collection frames both."
-    },
-    {
-      "id": "erdos-1116",
-      "relationship": "Both concern value distribution of entire functions via Nevanlinna theory; #1116 uses counting functions n(r,a), #1118 uses the maximum modulus M(r) and planar measure of level sets.",
-      "description": "Erdős Problem #1116 uses Nevanlinna counting functions n(r,a) to study value distribution of entire functions; Problem #1118's maximum modulus M(r) and growth integral place both problems in the Nevanlinna-Wiman-Valiron framework of value distribution theory."
-    },
-    {
-      "id": "erdos-1117",
-      "relationship": "Both problems involve the maximum modulus function M(r); #1117 studies the geometry of maximum modulus points on circles while #1118 uses M(r) as the central quantity controlling growth and finite-measure thresholds.",
-      "description": "Erdős Problem #1117 asks about maximum modulus points on circles |z|=r; #1118 directly uses the maximum modulus function M(r) = max_{|z|=r} |f(z)| as its central analytic quantity, making the two problems natural companions in maximum modulus theory."
-    },
-    {
-      "id": "lebesgue-measure",
-      "relationship": "Problem #1118's finite-measure superlevel set condition is a direct application of Lebesgue measure on the complex plane; the Lebesgue measure proof provides the foundational infrastructure used in the formalization.",
-      "description": "The finite-measure condition λ(E(c)) < ∞ in Problem #1118 is a direct application of Lebesgue (planar) measure on ℂ ≅ ℝ². The formalization uses Mathlib's MeasureTheory.Measure.Lebesgue and the HasFiniteMeasure predicate."
-    },
-    "erdos-1115",
-    "erdos-1116",
-    "erdos-1117",
-    "erdos-1119",
-    "lebesgue-measure",
-    "fundamental-theorem-algebra"
-  ],
   "references": [
     {
       "key": "Ha74",

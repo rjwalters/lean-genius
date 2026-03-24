@@ -123,33 +123,6 @@
       "description": "The twin prime conjecture is the k=2 case of this framework, asking whether D(2) = 2 is achievable infinitely often"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "bounded-prime-gaps",
-      "relationship": "extends",
-      "description": "Extends the core bounded prime gaps framework with the general D(k) theory and barrier analysis"
-    },
-    {
-      "id": "bounded-prime-gaps-oq-03",
-      "relationship": "extends",
-      "description": "Builds on the Engelsma 246 optimality proof to analyze why the barrier cannot be broken by k-tuple methods"
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "uses",
-      "description": "The upper bound D(k) <= C * k * (log k)^2 relies on the prime number theorem for greedy tuple construction"
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "strengthens",
-      "description": "Bounded prime gaps dramatically strengthens infinitude of primes: not only are there infinitely many primes, but infinitely many pairs with gap at most 246"
-    },
-    {
-      "id": "twin-primes-special",
-      "relationship": "related",
-      "description": "The twin prime conjecture is the k=2 case of this framework, asking whether D(2) = 2 is achievable infinitely often"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib",

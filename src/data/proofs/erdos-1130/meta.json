@@ -150,18 +150,6 @@
       "Can the equioscillation characterization be extended to weighted Lebesgue functions Λ_w(x) = Σ w(x_k)|l_k(x)|?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "taylor-theorem",
-      "relationship": "related",
-      "description": "Taylor's theorem provides the polynomial approximation framework that Lagrange interpolation generalizes. The Lebesgue function measures how much worse interpolation is compared to best polynomial approximation."
-    },
-    {
-      "id": "fourier-series",
-      "relationship": "related",
-      "description": "The Lebesgue constant for interpolation is analogous to the Lebesgue constant for partial Fourier sums. Both measure operator norm growth and both achieve optimal O(log n) rates with appropriate node/coefficient choices."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.SpecialFunctions.Log.Basic",

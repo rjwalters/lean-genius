@@ -136,38 +136,6 @@
       "description": "Hilbert's 22nd (uniformization of analytic relations) and 21st both concern complex analysis and Riemann surfaces: uniformization parametrizes Riemann surfaces, while the 21st reconstructs differential equations from monodromy data on punctured surfaces"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "riemann-hypothesis",
-      "relationship": "thematic",
-      "description": "Both are named after Riemann and concern deep analytic structures: the Riemann hypothesis concerns the zeta function's zeros, while the Riemann-Hilbert problem concerns monodromy of differential equations. The Riemann-Hilbert method is also used in approaches to random matrix theory, which connects to RH via the Montgomery-Odlyzko law"
-    },
-    {
-      "id": "hilbert-10",
-      "relationship": "thematic",
-      "description": "Both are Hilbert problems with surprising negative resolutions: Hilbert's 10th was resolved negatively by Matiyasevich (1970, no algorithm for Diophantine equations), while the 21st was partially negative (Bolibrukh, 1989, not all monodromy representations are Fuchsian-realizable)"
-    },
-    {
-      "id": "hilbert-5",
-      "relationship": "thematic",
-      "description": "Hilbert's 5th (characterizing Lie groups) and 21st both concern the structure of continuous symmetry groups — the 5th asks about topological groups, while the 21st asks about monodromy groups of differential equations, which are representations of the fundamental group into Lie groups like GL(n,C)"
-    },
-    {
-      "id": "hilbert-9-reciprocity",
-      "relationship": "thematic",
-      "description": "Hilbert's 9th (most general reciprocity law) and 21st both contributed to the Langlands program: the 9th via class field theory and Artin reciprocity, the 21st via the geometric Langlands correspondence (Riemann-Hilbert as categorical equivalence between D-modules and local systems)"
-    },
-    {
-      "id": "hilbert-19",
-      "relationship": "thematic",
-      "description": "Hilbert's 19th (regularity of solutions of variational problems) and 21st both concern differential equations: the 19th asks about regularity of elliptic PDE solutions, while the 21st asks about realizability of monodromy for linear ODE systems"
-    },
-    {
-      "id": "hilbert-22",
-      "relationship": "thematic",
-      "description": "Hilbert's 22nd (uniformization of analytic relations) and 21st both concern complex analysis and Riemann surfaces: uniformization parametrizes Riemann surfaces, while the 21st reconstructs differential equations from monodromy data on punctured surfaces"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Tactic",

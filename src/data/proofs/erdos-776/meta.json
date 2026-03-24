@@ -146,33 +146,6 @@
       "description": "The binomial coefficient formula C(n,k) underlies layer sizes and the Sperner bound"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-777",
-      "relationship": "related",
-      "description": "Problem #777 studies comparable pairs in families of sets — the dual perspective to antichains, where Problem #776 forbids comparability"
-    },
-    {
-      "id": "erdos-497",
-      "relationship": "related",
-      "description": "Problem #497 (Dedekind's Problem) counts the total number of antichains in 2^[n], the enumerative counterpart to this extremal question"
-    },
-    {
-      "id": "erdos-447",
-      "relationship": "related",
-      "description": "Problem #447 studies union-free collections of sets, another extremal set family problem with structural constraints"
-    },
-    {
-      "id": "kummer-theorem",
-      "relationship": "related",
-      "description": "Kummer's theorem on binomial coefficient divisibility determines which layers have enough sets for multiplicity r"
-    },
-    {
-      "id": "combinations-formula",
-      "relationship": "prerequisite",
-      "description": "The binomial coefficient formula C(n,k) underlies layer sizes and the Sperner bound"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Finset.Basic",

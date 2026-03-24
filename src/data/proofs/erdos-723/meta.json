@@ -192,23 +192,6 @@
       "description": "Both are fundamental combinatorics problems posed by Erdős: #483 studies Schur numbers (partition regularity), while #723 asks about projective plane orders"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "desargues-theorem",
-      "relationship": "foundational",
-      "description": "Desargues' theorem holds in all projective planes of prime power order (since these are Desarguesian planes coordinatized by fields). A non-prime-power plane, if it exists, would necessarily be non-Desarguesian."
-    },
-    {
-      "id": "fermat-two-squares",
-      "relationship": "technique",
-      "description": "The Bruck-Ryser theorem's sum-of-two-squares condition connects directly to Fermat's theorem on primes of the form 4k+1. The same number-theoretic obstruction that governs which primes are sums of two squares governs which orders are ruled out by Bruck-Ryser."
-    },
-    {
-      "id": "erdos-483",
-      "relationship": "related",
-      "description": "Both are fundamental combinatorics problems posed by Erdős: #483 studies Schur numbers (partition regularity), while #723 asks about projective plane orders"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

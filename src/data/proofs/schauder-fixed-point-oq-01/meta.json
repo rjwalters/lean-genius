@@ -141,18 +141,6 @@
       "description": "The Schauder theorem leverages Brouwer's theorem on the finite-dimensional convex hull produced by this projection"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "schauder-fixed-point",
-      "relationship": "used-by",
-      "description": "The projection lemma is the key technical ingredient for the Schauder fixed point theorem"
-    },
-    {
-      "id": "brouwer-fixed-point",
-      "relationship": "depends-on",
-      "description": "The Schauder theorem leverages Brouwer's theorem on the finite-dimensional convex hull produced by this projection"
-    }
-  ],
   "conclusion": {
     "summary": "The Schauder projection lemma has been proved completely from first principles, with zero sorries and zero axioms. The proof constructs an explicit partition of unity using bump functions and verifies all required properties: continuity, convex hull membership, and epsilon-approximation.",
     "implications": "**Theoretical Significance**: This result is the key technical ingredient for proving the Schauder fixed point theorem.\n\nCombined with the Brouwer fixed point theorem in finite dimensions, it yields: every continuous self-map of a nonempty compact convex subset of a normed space has a fixed point. The proof also provides convex hull compactness results that resolve a sorry in the existing SchauderFixedPoint.lean formalization.",

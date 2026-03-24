@@ -187,22 +187,5 @@
       "relationship": "extends",
       "description": "Euler's formula V - E + F = 2 generalizes angle-sum properties to polyhedra: the angle defect at each vertex of a convex polyhedron sums to 4π (Descartes's theorem), a polyhedral analog of the triangle angle sum."
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "pythagorean-theorem",
-      "relationship": "related",
-      "description": "Both are fundamental Euclidean geometry results. The Pythagorean theorem relates side lengths; the angle sum property relates angles. Together they characterize planar triangles."
-    },
-    {
-      "id": "area-of-circle",
-      "relationship": "related",
-      "description": "The angle sum of π radians connects to circular geometry: the area formula A = πr² arises from the same relationship between angles and arc length that underlies the triangle angle sum."
-    },
-    {
-      "id": "euler-polyhedral-formula",
-      "relationship": "extends",
-      "description": "Euler's formula V - E + F = 2 generalizes angle-sum properties to polyhedra: the angle defect at each vertex of a convex polyhedron sums to 4π (Descartes's theorem), a polyhedral analog of the triangle angle sum."
-    }
   ]
 }

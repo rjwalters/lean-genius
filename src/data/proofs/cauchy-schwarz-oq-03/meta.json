@@ -81,49 +81,56 @@
       "title": "Imports and Setup",
       "summary": "Imports Mathlib (for NNReal, ENNReal, Finset, MeasureTheory) and opens Finset, NNReal, Real, MeasureTheory, ENNReal namespaces.",
       "startLine": 1,
-      "endLine": 25
+      "endLine": 25,
+      "mathContext": "Module docstring outlines the proof chain: Young's inequality $ab \\leq a^p/p + b^q/q$ $\\to$ Normalized Hölder $\\to$ General Hölder $\\to$ Cauchy-Schwarz. References Hölder (1889), Hardy-Littlewood-Pólya (1934), Lagrange (1773)."
     },
     {
       "id": "holder-nnreal",
       "title": "Hölder's Inequality for NNReal",
       "summary": "General Hölder (holder_nnreal) via Mathlib's NNReal.inner_le_Lp_mul_Lq. Normalized Hölder (holder_normalized) for unit-norm inputs. Educational Young-normalization derivation in comments.",
       "startLine": 26,
-      "endLine": 82
+      "endLine": 82,
+      "mathContext": "Young's inequality $ab \\leq a^p/p + b^q/q$ is applied to normalized inputs $F_i = f_i/\\|f\\|_p$, $G_i = g_i/\\|g\\|_q$. Summing: $\\sum F_i G_i \\leq 1/p + 1/q = 1$ when $1/p + 1/q = 1$. Scaling back gives $\\sum f_i g_i \\leq \\|f\\|_p \\|g\\|_q$."
     },
     {
       "id": "cauchy-schwarz-lagrange",
       "title": "Cauchy-Schwarz via Lagrange's Identity",
       "summary": "Elementary proof of Cauchy-Schwarz (cauchy_schwarz_finite) via Lagrange's identity: 2[(∑f²)(∑g²)-(∑fg)²] = ∑_i∑_j(f_i·g_j-f_j·g_i)² ≥ 0. The Hölder bridge (cauchy_schwarz_from_holder) shows CS = Hölder at p=q=2.",
       "startLine": 83,
-      "endLine": 133
+      "endLine": 133,
+      "mathContext": "Lagrange's identity (1773): $2[(\\sum f_i^2)(\\sum g_j^2) - (\\sum f_i g_i)^2] = \\sum_i \\sum_j (f_i g_j - f_j g_i)^2 \\geq 0$. The RHS is a sum of squares, giving Cauchy-Schwarz directly. The proof expands $(a-b)^2$, computes three sub-sums via `Finset.mul_sum` and `Finset.sum_comm`, and combines with `linarith`."
     },
     {
       "id": "holder-real",
       "title": "Hölder for Real-Valued Functions",
       "summary": "Holder_real: |∑f_i·g_i| ≤ (∑|f_i|^p)^(1/p)·(∑|g_i|^q)^(1/q) for signed reals. Proved by lifting |f_i|, |g_i| to NNReal and applying the NNReal Hölder inequality.",
       "startLine": 134,
-      "endLine": 164
+      "endLine": 164,
+      "mathContext": "$|\\sum f_i g_i| \\leq \\sum |f_i||g_i| \\leq (\\sum |f_i|^p)^{1/p} (\\sum |g_i|^q)^{1/q}$. The first step is the triangle inequality; the second applies NNReal Hölder to $|f_i|, |g_i|$ packaged as `\\langle |f_i|, \\text{abs\\_nonneg}\\rangle : \\mathbb{R}_{\\geq 0}$."
     },
     {
       "id": "holder-lintegral",
       "title": "Hölder for Lebesgue Integral",
       "summary": "Holder_lintegral: ∫f·g dμ ≤ (∫f^p dμ)^(1/p)·(∫g^q dμ)^(1/q) for ENNReal-valued measurable functions. Mathlib's ENNReal.lintegral_mul_le_Lp_mul_Lq provides this directly.",
       "startLine": 165,
-      "endLine": 184
+      "endLine": 184,
+      "mathContext": "$\\int f \\cdot g\\, d\\mu \\leq (\\int f^p\\, d\\mu)^{1/p} (\\int g^q\\, d\\mu)^{1/q}$ for $[0,\\infty]$-valued measurable functions. The continuous analogue of `holder_nnreal`, fundamental to $L^p$ space theory: Minkowski $\\to$ $L^p$ is Banach $\\to$ Riesz-Fischer $\\to$ Fourier analysis."
     },
     {
       "id": "cauchy-schwarz-abstract",
       "title": "Cauchy-Schwarz for Inner Product Spaces",
       "summary": "Abstract CS (cauchy_schwarz_inner): |⟪u,v⟫_ℝ| ≤ ‖u‖·‖v‖ via abs_real_inner_le_norm. The Hölder bridge (cauchy_schwarz_holder_bridge): CS = Hölder at p=q=2 for NNReal, proved by HolderConjugate 2 2.",
       "startLine": 185,
-      "endLine": 214
+      "endLine": 214,
+      "mathContext": "Abstract Cauchy-Schwarz: $|\\langle u, v \\rangle| \\leq \\|u\\| \\cdot \\|v\\|$ in any real inner product space. Proved from $\\|u + tv\\|^2 \\geq 0$ for all $t \\in \\mathbb{R}$, which gives a non-negative discriminant. The bridge theorem verifies $\\text{HolderConjugate}\\,2\\,2$ via $1/2 + 1/2 = 1$ (`norm_num`)."
     },
     {
       "id": "summary",
       "title": "Summary: The Full Proof Chain",
       "summary": "Documents the complete hierarchy: Young → Normalized Hölder → General Hölder → Hölder for reals → CS via Lagrange → Abstract inner product CS → Integral Hölder. All 8 theorems proved with 0 sorries.",
       "startLine": 215,
-      "endLine": 242
+      "endLine": 242,
+      "mathContext": "The chain: $ab \\leq a^p/p + b^q/q$ (Young) $\\to$ $\\|f\\|_p = \\|g\\|_q = 1 \\Rightarrow \\sum f_i g_i \\leq 1$ (Normalized Hölder) $\\to$ $\\sum f_i g_i \\leq \\|f\\|_p \\|g\\|_q$ (General Hölder) $\\to$ $(\\sum f_i g_i)^2 \\leq (\\sum f_i^2)(\\sum g_i^2)$ (Cauchy-Schwarz at $p=q=2$). The conjugate condition $1/p + 1/q = 1$ appears naturally in step 3."
     }
   ],
   "conclusion": {
@@ -203,38 +210,6 @@
     },
     {
       "targetId": "cauchy-schwarz-oq-03-oq-01",
-      "relationship": "extended-by",
-      "description": "Sub-entry further exploring consequences or refinements of the Hölder generalization established here."
-    }
-  ],
-  "relatedProofs": [
-    {
-      "id": "cauchy-schwarz",
-      "relationship": "extends",
-      "description": "Parent formalization proving Cauchy-Schwarz as an inner product space result. This entry generalizes it by showing CS is the $p=q=2$ special case of Hölder's inequality."
-    },
-    {
-      "id": "cauchy-schwarz-oq-04",
-      "relationship": "sibling",
-      "description": "Sibling entry exploring other generalizations/applications of Cauchy-Schwarz; both extend the parent from different angles."
-    },
-    {
-      "id": "cauchy-schwarz-integral",
-      "relationship": "related",
-      "description": "The integral form of Cauchy-Schwarz. This entry's holder_lintegral provides the Hölder generalization of the integral CS inequality."
-    },
-    {
-      "id": "amgm-inequality",
-      "relationship": "related",
-      "description": "AM-GM and Hölder are both proved via convexity arguments. Young's inequality $ab \\leq a^p/p + b^q/q$ (the engine behind Hölder) is itself a weighted AM-GM: the point $(a^p, b^q)$ lies above the secant line of the concave function $t \\mapsto t^{1/p}$ (resp. $t^{1/q}$)."
-    },
-    {
-      "id": "triangle-inequality",
-      "relationship": "related",
-      "description": "Hölder's inequality implies Minkowski's inequality (the triangle inequality for $L^p$ spaces): $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$. The proof applies Hölder to $|f+g|^{p-1}$ paired with $f$ and $g$ separately."
-    },
-    {
-      "id": "cauchy-schwarz-oq-03-oq-01",
       "relationship": "extended-by",
       "description": "Sub-entry further exploring consequences or refinements of the Hölder generalization established here."
     }

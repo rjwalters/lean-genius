@@ -190,18 +190,6 @@
       "description": "The Chinese Remainder Theorem is the key tool for constructing covering systems from residue classes. Any covering system modulo coprime m_i can be verified by checking finitely many residues mod lcm(m_i)"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-23",
-      "relationship": "related",
-      "description": "Problem #23 asks about the minimum modulus of covering systems with distinct moduli — directly related to the structural constraints on covering systems in #273. Hough's resolution of the minimum modulus conjecture constrains both problems"
-    },
-    {
-      "id": "chinese-remainder-constructive",
-      "relationship": "foundational",
-      "description": "The Chinese Remainder Theorem is the key tool for constructing covering systems from residue classes. Any covering system modulo coprime m_i can be verified by checking finitely many residues mod lcm(m_i)"
-    }
-  ],
   "references": [
     {
       "authors": "Erdős, Paul; Graham, Ronald L.",

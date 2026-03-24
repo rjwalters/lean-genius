@@ -195,53 +195,6 @@
       "Can the Fourier infrastructure be extended to handle polynomial progressions and other additive patterns?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "szemeredi-regularity",
-      "relationship": "related",
-      "description": "Roth's theorem can also be proved via the regularity lemma and triangle removal, connecting Fourier and graph-theoretic approaches"
-    },
-    {
-      "id": "szemeredi-full",
-      "relationship": "used-by",
-      "description": "Roth's theorem is the k=3 base case of the full Szemeredi theorem"
-    },
-    {
-      "id": "szemeredi-counting",
-      "relationship": "related",
-      "description": "The counting lemma complements Szemerédi regularity by counting subgraph copies in regular partitions. Roth's Fourier approach achieves the k=3 case directly without regularity, but the regularity-based proof of Roth's theorem uses the counting lemma applied to the Ruzsa-Szemerédi triangle removal graph"
-    },
-    {
-      "id": "szemeredi-core",
-      "relationship": "related",
-      "description": "The core Szemerédi infrastructure (density, regularity partitions) underpins the alternative graph-theoretic proof of Roth's theorem. The Fourier approach here is more direct for k=3 but does not generalize to k≥4 where the regularity method (or hypergraph generalizations) is needed"
-    },
-    {
-      "id": "szemeredi-theorem",
-      "relationship": "extends",
-      "description": "Roth's theorem is the k=3 base case of Szemerédi's theorem (1975): every set of positive upper density contains arithmetic progressions of every length. The density increment strategy introduced by Roth was a precursor to Szemerédi's far more complex regularity-based proof"
-    },
-    {
-      "id": "prob-method-expectation",
-      "relationship": "related",
-      "description": "Both use counting arguments over structured combinatorial objects"
-    },
-    {
-      "id": "erdos-1155-oq-01",
-      "relationship": "related",
-      "description": "The triangle removal process (Erdős #1155) is connected through the triangle removal lemma: Ruzsa-Szemerédi (1978) showed that the triangle removal lemma implies Roth's theorem by encoding 3-term APs as triangles in a tripartite graph. The removal process is the random greedy counterpart of the deterministic triangle removal"
-    },
-    {
-      "id": "erdos-1155",
-      "relationship": "related",
-      "description": "Parent formalization of the triangle removal process — connected via the triangle removal lemma which provides an alternative graph-theoretic proof of Roth's theorem"
-    },
-    {
-      "id": "bounded-prime-gaps",
-      "relationship": "thematic",
-      "description": "Both are landmark results in analytic/additive number theory about structure in the integers. The Green-Tao theorem (2004) extended Roth's density increment method to prove the primes contain arbitrarily long APs, and Zhang's bounded gaps result (2013) uses similar sieve-theoretic density arguments"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

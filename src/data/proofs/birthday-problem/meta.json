@@ -235,68 +235,6 @@
       "description": "The number of birthday collisions among $n$ people follows a distribution that converges to Poisson (and thence to Gaussian via CLT) as $n$ grows. The Poisson approximation $P \\approx 1 - e^{-n^2/(2m)}$ for $m$ buckets is the CLT-style limit that explains the $\\sqrt{m}$ scaling of the birthday threshold"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "birthday-problem-oq-03",
-      "relationship": "extended-by",
-      "description": "Extended with more sophisticated probability bounds and approximations."
-    },
-    {
-      "id": "birthday-problem-oq-02",
-      "relationship": "extended-by",
-      "description": "Sub-entry exploring further birthday problem variants and generalizations"
-    },
-    {
-      "id": "ballot-problem",
-      "relationship": "related",
-      "description": "Fellow combinatorial probability problem: both use counting arguments over structured finite sample spaces — the ballot problem counts lattice paths, the birthday problem counts injective functions"
-    },
-    {
-      "id": "buffons-needle",
-      "relationship": "related",
-      "description": "Fellow classic probability problem: Buffon's needle involves geometric probability with π, while the birthday problem uses discrete counting and produces the surprising 23-person threshold"
-    },
-    {
-      "id": "binomial-theorem",
-      "relationship": "uses",
-      "description": "Binomial coefficients C(n,2) = n(n-1)/2 count the number of pairs, which is why 23 people have 253 pairs — the quadratic growth of pairs is the key to the birthday 'paradox'"
-    },
-    {
-      "id": "arithmetic-series",
-      "relationship": "related",
-      "description": "The number of pairs C(n,2) = n(n-1)/2 is a triangular number — the same formula as the arithmetic series sum, connecting the birthday problem to elementary number theory"
-    },
-    {
-      "id": "derangements",
-      "relationship": "related",
-      "description": "Both are classic combinatorial problems counting structured functions: the birthday problem counts injective functions (all-distinct assignments) while derangements count fixed-point-free permutations. Both use complement counting — $P(\\text{match}) = 1 - P(\\text{all distinct})$ parallels the inclusion-exclusion for derangement count $D_n = n! \\sum_{k=0}^{n} (-1)^k/k!$"
-    },
-    {
-      "id": "inclusion-exclusion",
-      "relationship": "uses",
-      "description": "The birthday formula $P(n) = 1 - \\prod_{i=0}^{n-1}(1 - i/365)$ is a complement-counting argument, the simplest form of inclusion-exclusion. For the generalized birthday problem (counting exact number of collisions), full inclusion-exclusion over overlapping pair events is needed"
-    },
-    {
-      "id": "stirling-formula",
-      "relationship": "related",
-      "description": "Stirling's approximation $n! \\approx \\sqrt{2\\pi n}(n/e)^n$ enables the Poisson approximation $P(n) \\approx 1 - e^{-n^2/(2 \\cdot 365)}$, which gives the asymptotic threshold $n \\approx \\sqrt{2 \\cdot 365 \\cdot \\ln 2} \\approx 22.5$ for the 50% crossover — explaining why 23 is the exact threshold"
-    },
-    {
-      "id": "combinations-formula",
-      "relationship": "uses",
-      "description": "The binomial coefficient $\\binom{n}{2} = n(n-1)/2$ counts the number of person-pairs, which is the key to the birthday 'paradox': 23 people yield 253 pairs, and each pair has probability $1/365$ of matching. The expected number of matching pairs is $\\binom{n}{2}/365$"
-    },
-    {
-      "id": "prob-method-expectation",
-      "relationship": "related",
-      "description": "The probabilistic method uses expectation to prove existence: in the birthday problem, the expected number of matching pairs is $\\binom{n}{2}/365 > 1$ for $n \\geq 28$, guaranteeing a match exists in expectation. The birthday bound is a key ingredient in probabilistic method arguments for hash collisions and random graph coloring"
-    },
-    {
-      "id": "central-limit-theorem",
-      "relationship": "related",
-      "description": "The number of birthday collisions among $n$ people follows a distribution that converges to Poisson (and thence to Gaussian via CLT) as $n$ grows. The Poisson approximation $P \\approx 1 - e^{-n^2/(2m)}$ for $m$ buckets is the CLT-style limit that explains the $\\sqrt{m}$ scaling of the birthday threshold"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Fintype.BigOperators",

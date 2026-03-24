@@ -170,23 +170,6 @@
       "description": "Both concern additive representations of integers: #333 asks about sumset covering A ⊆ B+B, #334 asks about representing n = a + b with smooth summands"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "prime-number-theorem",
-      "relationship": "uses",
-      "description": "PNT underpins the distribution of smooth numbers via the Dickman function and Selberg-Delange method"
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "related",
-      "description": "Smooth numbers are defined by their largest prime factor; infinitude of primes ensures the problem is nontrivial"
-    },
-    {
-      "id": "erdos-333",
-      "relationship": "related",
-      "description": "Both concern additive representations of integers: #333 asks about sumset covering A ⊆ B+B, #334 asks about representing n = a + b with smooth summands"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Prime.Basic",

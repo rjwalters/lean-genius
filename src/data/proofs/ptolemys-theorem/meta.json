@@ -153,23 +153,6 @@
       "Can the derivation of the sine addition formula from Ptolemy's theorem be formalized, showing the historical connection between chord tables and modern trigonometry?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "pythagorean-theorem",
-      "relationship": "related",
-      "description": "Ptolemy's theorem generalizes the Pythagorean theorem: when the cyclic quadrilateral is a rectangle, AC*BD = AB*CD + BC*DA reduces to the Pythagorean relation on the diagonal."
-    },
-    {
-      "id": "herons-formula",
-      "relationship": "related",
-      "description": "Both are foundational classical geometry results. Ptolemy's theorem (c. 150 AD) and Heron's formula (c. 60 AD) provide algebraic tools for geometric computation from antiquity."
-    },
-    {
-      "id": "triangle-angle-sum",
-      "relationship": "related",
-      "description": "The inscribed angle theorem, closely related to the triangle angle sum, underpins the proof that opposite angles in a cyclic quadrilateral sum to 180 degrees."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Geometry.Euclidean.Sphere.Ptolemy",

@@ -161,18 +161,6 @@
       "How do higher-dimensional analogues (norm equations in number fields of degree > 2) behave?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "quadratic-reciprocity",
-      "relationship": "related-theory",
-      "description": "Quadratic reciprocity determines when $D$ is a quadratic residue, which affects solvability of generalized Pell equations $x^2 - Dy^2 = N$"
-    },
-    {
-      "id": "continued-fractions",
-      "relationship": "technique",
-      "description": "The fundamental solution is computed from the periodic continued fraction expansion of $\\sqrt{D}$"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.NumberTheory.Pell",

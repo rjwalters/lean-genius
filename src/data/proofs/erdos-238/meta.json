@@ -183,23 +183,6 @@
       "citation": "R. C. Baker, G. Harman, J. Pintz, 'The difference between consecutive primes, II', Proc. London Math. Soc. 83 (2001), 532-562"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-218",
-      "relationship": "related",
-      "description": "Both concern prime gap distribution: #218 asks about the density of d_{n+1} ≥ d_n vs d_{n+1} ≤ d_n, while #238 asks about long runs where all gaps exceed a threshold"
-    },
-    {
-      "id": "bounded-prime-gaps",
-      "relationship": "related",
-      "description": "Complementary perspectives on prime gaps: bounded-prime-gaps (Zhang/Maynard-Tao) shows gaps can be arbitrarily SMALL, while #238 asks about long runs where gaps are all LARGE"
-    },
-    {
-      "id": "erdos-219",
-      "relationship": "related",
-      "description": "Both concern long structured sequences among primes: #219 asks for arithmetic progressions (Green-Tao), #238 asks for consecutive primes with uniformly large gaps"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Prime.Basic",

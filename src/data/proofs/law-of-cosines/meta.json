@@ -165,43 +165,6 @@
       "description": "Euler's formula $e^{i\\theta} = \\cos\\theta + i\\sin\\theta$ provides the connection between the inner product $\\langle v, w \\rangle = \\|v\\|\\|w\\|\\cos\\theta$ used in the Law of Cosines and the complex exponential — the cosine function that appears in $c^2 = a^2 + b^2 - 2ab\\cos C$ is the real part of $e^{iC}$"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "pythagorean-theorem",
-      "relationship": "generalizes",
-      "description": "The Law of Cosines generalizes the Pythagorean theorem: when $\\theta = \\pi/2$, $\\cos\\theta = 0$ and $\\|v - w\\|^2 = \\|v\\|^2 + \\|w\\|^2$. The formalization proves this reduction explicitly as `law_of_cosines_perpendicular`"
-    },
-    {
-      "id": "triangle-inequality",
-      "relationship": "related",
-      "description": "The triangle inequality $c \\leq a + b$ follows from the Law of Cosines since $\\cos C \\geq -1$ gives $c^2 = a^2 + b^2 - 2ab\\cos C \\leq a^2 + b^2 + 2ab = (a+b)^2$"
-    },
-    {
-      "id": "cauchy-schwarz",
-      "relationship": "related",
-      "description": "The Cauchy-Schwarz inequality $|\\langle v, w \\rangle| \\leq \\|v\\|\\|w\\|$ ensures $|\\cos\\theta| \\leq 1$ in the Law of Cosines. Both are fundamental identities of inner product spaces — Cauchy-Schwarz bounds the inner product, while the Law of Cosines expands the squared distance"
-    },
-    {
-      "id": "area-of-circle",
-      "relationship": "related",
-      "description": "The Law of Cosines defines the metric ball $\\{w : \\|v - w\\| \\leq r\\}$ whose area $\\pi r^2$ is formalized in the area-of-circle entry. The circle $x^2 + y^2 = r^2$ is the locus where $\\|v\\| = r$, the norm used throughout the Law of Cosines"
-    },
-    {
-      "id": "angle-trisection",
-      "relationship": "related",
-      "description": "Both concern angle measurement in Euclidean geometry. The Law of Cosines recovers angles from side lengths ($\\cos C = (a^2+b^2-c^2)/(2ab)$), while the angle trisection impossibility shows certain angles cannot be constructed — the cosine formula connects the algebraic and geometric perspectives on angles"
-    },
-    {
-      "id": "cayley-hamilton",
-      "relationship": "related",
-      "description": "Both are foundational results in linear algebra. The inner product form of the Law of Cosines uses the same bilinear structure that underlies the characteristic polynomial in Cayley-Hamilton — both exploit the algebraic properties of linear operators on inner product spaces"
-    },
-    {
-      "id": "euler-identity",
-      "relationship": "related",
-      "description": "Euler's formula $e^{i\\theta} = \\cos\\theta + i\\sin\\theta$ provides the connection between the inner product $\\langle v, w \\rangle = \\|v\\|\\|w\\|\\cos\\theta$ used in the Law of Cosines and the complex exponential — the cosine function that appears in $c^2 = a^2 + b^2 - 2ab\\cos C$ is the real part of $e^{iC}$"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.InnerProductSpace.Basic",

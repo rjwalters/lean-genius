@@ -168,23 +168,6 @@
       "Can the source coding theorem for variable-length codes be connected to the AEP-based fixed-length result?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "shannon-entropy",
-      "relationship": "depends-on",
-      "description": "Uses Shannon entropy definition and the pointwise KL bound log(p/q) >= 1 - q/p"
-    },
-    {
-      "id": "shannon-source-coding",
-      "relationship": "extends",
-      "description": "Provides the constructive complement to the source coding theorem: Huffman coding achieves the entropy bound"
-    },
-    {
-      "id": "shannon-channel-coding",
-      "relationship": "related",
-      "description": "Source coding (compression) and channel coding (reliability) are dual halves of Shannon theory"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

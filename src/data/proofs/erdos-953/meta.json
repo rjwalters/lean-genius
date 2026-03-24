@@ -186,18 +186,6 @@
       "description": "Erdős #466 provides lower bounds for unit-distance-avoiding sets; Kovač adapted Sárközy's methods from this problem to obtain the $r^{0.26}$ lower bound for #953"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-465",
-      "relationship": "related",
-      "description": "Erdős #465 provides upper bounds for sets avoiding the unit distance, the single-distance case of Problem #953's integer-distance avoidance"
-    },
-    {
-      "id": "erdos-466",
-      "relationship": "related",
-      "description": "Erdős #466 provides lower bounds for unit-distance-avoiding sets; Kovač adapted Sárközy's methods from this problem to obtain the $r^{0.26}$ lower bound for #953"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.InnerProductSpace.Basic",

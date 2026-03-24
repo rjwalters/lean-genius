@@ -291,58 +291,6 @@
       "description": "Large gaps (this entry) and bounded gaps (OQ-03 on Engelsma's optimal 246 bound) are dual perspectives on prime gap distribution: FGKT proves $\\limsup g_n/f(n) = \\infty$ while Zhang-Maynard-Polymath prove $\\liminf g_n \\leq 246$. Together they show prime gaps are simultaneously infinitely large and infinitely small relative to their expected size"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "bounded-prime-gaps",
-      "relationship": "complementary",
-      "description": "The dual problem: Maynard's multidimensional sieve proving $\\liminf g_n \\leq 246$ (bounded gaps) uses the same framework he applied in reverse to prove $\\limsup g_n / f(n) = \\infty$ (unbounded large gaps). Together they show prime gaps are both sometimes very small and sometimes very large"
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "uses",
-      "description": "The Prime Number Theorem gives the average gap log n and the asymptotic p_n ~ n log n used in average_gap_asymptotic"
-    },
-    {
-      "id": "erdos-369",
-      "relationship": "related",
-      "description": "Consecutive smooth numbers problem; smooth number distribution is related to prime gap structure since large gaps correspond to intervals with small prime factors"
-    },
-    {
-      "id": "erdos-5",
-      "relationship": "related",
-      "description": "Erdős #5 asks about the set of limit points of $g_n / \\log p_n$ (normalized prime gaps). While #4 proves $\\limsup g_n / f(n) = \\infty$ for specific growth functions $f$, #5 asks for the full accumulation structure of the normalized gap sequence — a finer question about the distribution of prime gaps"
-    },
-    {
-      "id": "dirichlets-theorem",
-      "relationship": "related",
-      "description": "Dirichlet's theorem on primes in arithmetic progressions is used in Rankin's construction: to create large prime-free intervals, one exploits that primes in specific residue classes can be avoided, requiring control over how primes distribute in progressions"
-    },
-    {
-      "id": "erdos-1",
-      "relationship": "complement",
-      "description": "Erdős #1 on distinct subset sums is another landmark Erdős problem; both concern extremal questions in number theory and carry substantial Erdős prizes"
-    },
-    {
-      "id": "bertrands-postulate",
-      "relationship": "related",
-      "description": "Bertrand's postulate gives p_{n+1} < 2p_n, a weak upper bound on prime gaps that contrasts with the large gaps studied here"
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "foundational",
-      "description": "The infinitude of primes is a prerequisite for studying prime gaps — the problem only makes sense because there are infinitely many primes to have gaps between"
-    },
-    {
-      "id": "erdos-6",
-      "relationship": "related",
-      "description": "Erdős #6 studies related questions about prime gap statistics. Together #4, #5, and #6 form a cluster of Erdős problems probing different aspects of prime gap distribution: maximum size (#4), limit points of ratios (#5), and statistical behavior (#6)"
-    },
-    {
-      "id": "bounded-prime-gaps-oq-03",
-      "relationship": "complementary",
-      "description": "Large gaps (this entry) and bounded gaps (OQ-03 on Engelsma's optimal 246 bound) are dual perspectives on prime gap distribution: FGKT proves $\\limsup g_n/f(n) = \\infty$ while Zhang-Maynard-Polymath prove $\\liminf g_n \\leq 246$. Together they show prime gaps are simultaneously infinitely large and infinitely small relative to their expected size"
-    }
-  ],
   "leanFile": {
     "lineCount": 243,
     "structureCount": 0,

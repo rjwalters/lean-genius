@@ -229,33 +229,6 @@
     "theoremCount": 7,
     "definitionCount": 15
   },
-  "relatedProofs": [
-    {
-      "id": "angle-trisection",
-      "relationship": "Morley's theorem requires angle trisection (impossible with compass/straightedge by Wantzel 1837, Wiedijk #8). The triple angle formula cos(3θ) = 4cos³θ - 3cosθ connects both results algebraically",
-      "description": ""
-    },
-    {
-      "id": "triangle-angle-sum",
-      "relationship": "The angle sum α + β + γ = π (Wiedijk #27) is the foundational constraint for TriangleAngles, implying the trisected angle sum α/3 + β/3 + γ/3 = π/3",
-      "description": ""
-    },
-    {
-      "id": "de-moivre",
-      "relationship": "De Moivre's formula (Wiedijk #17) provides the complex exponential framework used for equilateral triangle vertices as cube roots of unity",
-      "description": ""
-    },
-    {
-      "id": "feuerbachs-theorem",
-      "relationship": "Both are advanced triangle geometry results on Wiedijk's 100 list involving surprising hidden structures (nine-point circle tangency vs equilateral Morley triangle)",
-      "description": ""
-    },
-    {
-      "id": "law-of-cosines",
-      "relationship": "The law of cosines (Wiedijk #94) and law of sines are used in deriving the Morley side length formula 8R·sin(α/3)·sin(β/3)·sin(γ/3)",
-      "description": ""
-    }
-  ],
   "references": [
     {
       "authors": "Morley, Frank",

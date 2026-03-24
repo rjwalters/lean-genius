@@ -148,33 +148,6 @@
       "description": "Ramsey's theorem provides the combinatorial foundation underlying many extremal graph results. The compactness argument Erdős used (1962) to prove f(k) exists for all k echoes Ramsey-type reasoning, and pancyclicity (all cycle lengths 3 to n−k) is a Ramsey-flavored completeness result for cycle structure."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "szemeredi-regularity",
-      "relationship": "foundational",
-      "description": "Szemerédi's Regularity Lemma is the central tool of modern extremal graph theory. Woodall's long cycle theorem belongs to the same Turán-type program: both characterize graph structure under edge density constraints, and regularity arguments underlie many generalizations of pancyclicity results."
-    },
-    {
-      "id": "erdos-1010",
-      "relationship": "thematic",
-      "description": "Both problems study what happens when a graph's edge count exceeds the Turán threshold ⌊n²/4⌋. Erdős #1010 asks how many triangles are forced (supersaturation), while #1012 asks which cycle lengths are forced. Both confirm that exceeding a threshold has strong structural consequences beyond the minimum required."
-    },
-    {
-      "id": "erdos-1009",
-      "relationship": "thematic",
-      "description": "Erdős #1009 studies edge-disjoint triangles in graphs just above the Turán threshold ⌊n²/4⌋ + k. This is analogous to #1012's study of long cycles forced by the threshold T(n,k). Both problems quantify how structure is forced by edge density in the same extremal graph-theoretic framework."
-    },
-    {
-      "id": "erdos-1008",
-      "relationship": "related",
-      "description": "Erdős #1008 asks about C₄-free subgraphs of dense graphs, connecting to the broader extremal program on cycle-free or cycle-rich subgraphs. Both #1008 and #1012 work with extremal constructions (Zarankiewicz-type and Turán-type respectively) to establish tight edge thresholds for cycle containment."
-    },
-    {
-      "id": "ramseys-theorem",
-      "relationship": "foundational",
-      "description": "Ramsey's theorem provides the combinatorial foundation underlying many extremal graph results. The compactness argument Erdős used (1962) to prove f(k) exists for all k echoes Ramsey-type reasoning, and pancyclicity (all cycle lengths 3 to n−k) is a Ramsey-flavored completeness result for cycle structure."
-    }
-  ],
   "references": [
     {
       "authors": [

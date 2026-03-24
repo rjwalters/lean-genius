@@ -316,37 +316,5 @@
       "relationship": "thematic",
       "description": "Both are unsolved Clay Millennium Prize problems: BSD concerns L-functions of elliptic curves, while Navier-Stokes concerns fluid dynamics — both represent frontier challenges in their respective fields"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "navier-stokes",
-      "relationship": "complementary",
-      "description": "The main Navier-Stokes formalization defines the equations and basic properties, while this entry focuses specifically on the Millennium Prize existence and smoothness question — whether smooth solutions exist globally in 3D"
-    },
-    {
-      "id": "yang-mills",
-      "relationship": "thematic",
-      "description": "Both are Clay Millennium Prize problems concerning PDEs from physics: Navier-Stokes asks about fluid dynamics regularity, while Yang-Mills asks about existence of a mass gap in quantum gauge theory — both remain open"
-    },
-    {
-      "id": "poincare-conjecture",
-      "relationship": "thematic",
-      "description": "Both are (former) Millennium Prize problems: Poincare was resolved by Perelman (2003) using Ricci flow (a PDE technique), while Navier-Stokes remains open — Ricci flow shares the nonlinear PDE regularity challenges of Navier-Stokes"
-    },
-    {
-      "id": "hilbert-19",
-      "relationship": "related",
-      "description": "Hilbert's 19th (regularity of variational minimizers) was resolved by De Giorgi-Nash for elliptic PDEs. Navier-Stokes regularity is the analogous open question for parabolic-hyperbolic Navier-Stokes — the methods overlap but the Navier-Stokes nonlinearity poses additional obstacles"
-    },
-    {
-      "id": "hilbert-20",
-      "relationship": "related",
-      "description": "Hilbert's 20th (boundary value problem existence) was resolved via Lax-Milgram for elliptic PDEs. Navier-Stokes existence is the analogous question for incompressible fluid equations — Leray's weak solutions exist but global regularity is unknown"
-    },
-    {
-      "id": "birch-swinnerton-dyer",
-      "relationship": "thematic",
-      "description": "Both are unsolved Clay Millennium Prize problems: BSD concerns L-functions of elliptic curves, while Navier-Stokes concerns fluid dynamics — both represent frontier challenges in their respective fields"
-    }
   ]
 }

@@ -245,33 +245,6 @@
       "description": "Bertrand's postulate guarantees primes in [n, 2n], relevant to understanding prime density and the 'sparseness' condition Tijdeman requires"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "infinitude-primes",
-      "relationship": "uses",
-      "description": "The infinitude of primes is the foundation — the question asks whether an infinite SUBSET of primes can still force smooth number gaps to diverge"
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "related",
-      "description": "PNT governs prime density, which affects how many P-smooth numbers exist in intervals. The density of smooth numbers is studied via analytic methods building on PNT"
-    },
-    {
-      "id": "erdos-205",
-      "relationship": "related",
-      "description": "Both problems involve prime factor counts and additive representations: #205 asks about Ω(m) for remainders n - 2^k, while #240 concerns integers whose prime factors are restricted to a set P"
-    },
-    {
-      "id": "erdos-4",
-      "relationship": "related",
-      "description": "Both connect to the distribution of primes: #4 asks about large prime gaps, while #240 uses the sparseness of primes in P to create gaps between P-smooth numbers"
-    },
-    {
-      "id": "bertrands-postulate",
-      "relationship": "related",
-      "description": "Bertrand's postulate guarantees primes in [n, 2n], relevant to understanding prime density and the 'sparseness' condition Tijdeman requires"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Prime.Basic",

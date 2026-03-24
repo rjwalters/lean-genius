@@ -182,33 +182,6 @@
       "description": "The randomized MaxCut algorithm's expected performance guarantee ($E[\\text{cut}] \\geq |E|/2$) is meaningful precisely because the LLN ensures that the actual cut value concentrates near its expectation for large graphs — the practical reliability of randomized algorithms rests on laws of large numbers"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "central-limit-theorem",
-      "relationship": "extends",
-      "description": "The CLT refines the LLN by quantifying the fluctuations: $\\sqrt{n}(\\bar{X}_n - \\mu) \\xrightarrow{d} N(0, \\sigma^2)$. LLN is the first-order result (convergence of the mean), CLT is the second-order result (the Gaussian shape of the deviations). Together they form the backbone of statistical inference"
-    },
-    {
-      "id": "fair-games-theorem",
-      "relationship": "related",
-      "description": "The martingale convergence theorem generalizes the SLLN from i.i.d. sums to martingales. The partial sums $S_n = \\sum_{i=1}^n (X_i - \\mu)$ form a martingale when $X_i$ are i.i.d. with mean $\\mu$, and LLN is the special case of martingale convergence for i.i.d. increments"
-    },
-    {
-      "id": "birthday-problem",
-      "relationship": "related",
-      "description": "Both are fundamental probability results illustrating different regimes: the birthday problem shows that rare events can become likely with moderate samples (a finite-sample phenomenon), while LLN shows that averages stabilize in large samples (an asymptotic phenomenon)"
-    },
-    {
-      "id": "prob-method-second-moment",
-      "relationship": "related",
-      "description": "The second moment method uses variance bounds (Chebyshev's inequality) to prove existence — the same Chebyshev inequality that powers the WLLN proof. Both exploit the $\\text{Var}(X)/\\varepsilon^2$ tail bound, applied in different contexts: LLN for convergence of averages, the second moment method for concentration of random combinatorial structures"
-    },
-    {
-      "id": "randomized-maxcut",
-      "relationship": "related",
-      "description": "The randomized MaxCut algorithm's expected performance guarantee ($E[\\text{cut}] \\geq |E|/2$) is meaningful precisely because the LLN ensures that the actual cut value concentrates near its expectation for large graphs — the practical reliability of randomized algorithms rests on laws of large numbers"
-    }
-  ],
   "references": [
     {
       "authors": "Bernoulli, Jacob",

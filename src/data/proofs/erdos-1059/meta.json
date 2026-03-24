@@ -219,58 +219,6 @@
       "description": "Stirling's approximation $k! \\sim \\sqrt{2\\pi k}(k/e)^k$ quantifies the super-exponential growth of factorials that makes the factorial-subtraction condition mild: only $O(\\log n / \\log \\log n)$ factorials lie below $n$"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "infinitude-primes",
-      "relationship": "foundational",
-      "description": "Both prove or conjecture infinitude of a special set of primes; the main conjecture asserts Set.Infinite for factorial-avoiding primes"
-    },
-    {
-      "id": "wilsons-theorem",
-      "relationship": "technique",
-      "description": "Wilson's theorem connects primes to factorials via $(p-1)! \\equiv -1 \\pmod{p}$. This problem subtracts smaller factorials $k!$ for $k! < p$"
-    },
-    {
-      "id": "bertrands-postulate",
-      "relationship": "related",
-      "description": "Both concern prime distribution; Bertrand guarantees primes in intervals while this asks about factorial-prime interactions"
-    },
-    {
-      "id": "erdos-1057",
-      "relationship": "sibling",
-      "description": "Sister Erdős problem about prime-related counting; both use Set.Infinite for open conjectures about special prime sets"
-    },
-    {
-      "id": "erdos-1058",
-      "relationship": "sibling",
-      "description": "Both problems concern the interplay between primes and factorials: #1058 studies prime divisors of $n!+1$ between consecutive primes, while #1059 studies primality of $p - k!$. Both exploit the super-exponential growth of factorials to reduce infinite problems to finite case analysis"
-    },
-    {
-      "id": "erdos-728-factorial-divisibility",
-      "relationship": "related",
-      "description": "Both concern factorial-prime interactions: #728 studies factorial divisibility patterns while #1059 studies factorial subtractions from primes"
-    },
-    {
-      "id": "erdos-68",
-      "relationship": "related",
-      "description": "Both involve interactions between primes and factorials: #68 asks about irrationality of $\\sum 1/(n!-1)$ while #1059 asks about primality of $p - k!$. The super-exponential growth of factorials is the structural feature exploited in both problems"
-    },
-    {
-      "id": "fundamental-arithmetic",
-      "relationship": "supports",
-      "description": "Unique prime factorization underlies the compositeness checks: verifying $n - k!$ is composite requires exhibiting a non-trivial factorization, which the `decide` tactic performs by trial division"
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "foundational",
-      "description": "The probabilistic heuristic for this problem relies on the PNT: the probability that a random integer near $p$ is prime is $\\sim 1/\\ln p$. With $O(\\log p / \\log \\log p)$ factorial subtractions to check, the expected number of prime subtractions is $O(\\log p / (\\log p \\cdot \\log \\log p)) \\to 0$, suggesting almost all large primes satisfy the property"
-    },
-    {
-      "id": "stirling-formula",
-      "relationship": "foundational",
-      "description": "Stirling's approximation $k! \\sim \\sqrt{2\\pi k}(k/e)^k$ quantifies the super-exponential growth of factorials that makes the factorial-subtraction condition mild: only $O(\\log n / \\log \\log n)$ factorials lie below $n$"
-    }
-  ],
   "leanFile": {
     "lineCount": 160,
     "namespace": null,

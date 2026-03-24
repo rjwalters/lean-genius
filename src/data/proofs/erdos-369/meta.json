@@ -212,58 +212,6 @@
       "Can the Dickman function heuristic be made rigorous via moment methods or the circle method adapted to smooth numbers?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "erdos-370",
-      "relationship": "related",
-      "description": "Erdős #370 asks about smooth numbers in short intervals — a closely related distributional question about how smooth numbers cluster"
-    },
-    {
-      "id": "erdos-368",
-      "relationship": "related",
-      "description": "Erdős #368 studies the largest prime factor of $n(n+1)$, directly related to the smoothness of consecutive integers. If $P^+(n(n+1)) \\leq n^\\varepsilon$, then both $n$ and $n+1$ are $n^\\varepsilon$-smooth — exactly the $k=2$ case of #369"
-    },
-    {
-      "id": "erdos-4",
-      "relationship": "related",
-      "description": "Both problems connect smooth numbers to prime gaps. Problem #4 (large prime gaps) uses smooth number constructions (products of small primes create long prime-free intervals), while #369 directly studies consecutive smooth numbers. Rankin's large gap construction exploits the same smooth number density estimates"
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "foundational",
-      "description": "PNT gives the density of primes as π(x) ~ x/log x. The smooth number counting function Ψ(x,y) is the multiplicative analog — both concern the distribution of numbers with restricted prime factorization. The Dickman function ρ(u) governing smooth number density is derived from PNT-like analytic methods"
-    },
-    {
-      "id": "fundamental-arithmetic",
-      "relationship": "foundational",
-      "description": "Unique prime factorization is the foundation of smooth number theory: P⁺(n) (the largest prime factor) is well-defined by FTA, and smoothness is defined in terms of the factorization structure that FTA guarantees"
-    },
-    {
-      "id": "erdos-143",
-      "relationship": "related",
-      "description": "Erdős #143 studies dilation-avoiding sets, another problem where prime factorization structure controls combinatorial de"
-    },
-    {
-      "id": "bertrands-postulate",
-      "relationship": "related",
-      "description": "Bertrand's postulate guarantees a prime in (n, 2n). Erdős #369 asks a complementary question: are there consecutive composite-like (smooth) numbers near n? Both concern the local distribution of numbers with extreme factorization properties"
-    },
-    {
-      "id": "erdos-371",
-      "relationship": "related",
-      "description": "Erdős #371 studies the density of integers where $P^+(n) < P^+(n+1)$ (the largest prime factor increases). Both #369 and #371 probe the multiplicative structure of consecutive integers: #369 asks for simultaneous smoothness, #371 asks for relative prime factor ordering"
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "foundational",
-      "description": "The infinitude of primes is foundational: smooth numbers are defined by having all prime factors below a threshold, and the distribution of primes (via PNT) governs the Dickman function $\\rho(u)$ that predicts smooth number density"
-    },
-    {
-      "id": "stirling-formula",
-      "relationship": "foundational",
-      "description": "Stirling's approximation $k! \\sim \\sqrt{2\\pi k}(k/e)^k$ is essential to the Dickman function analysis: the differential-delay equation $u\\rho'(u) = -\\rho(u-1)$ governing smooth number density requires precise factorial/gamma function asymptotics for its saddle-point analysis. The asymptotic $\\rho(u) \\sim u^{-u(1+o(1))}$ — which determines the density of $n^\\varepsilon$-smooth numbers — is derived via Laplace-type estimates that depend on Stirling's formula"
-    }
-  ],
   "leanFile": {
     "lineCount": 131,
     "structureCount": 0,

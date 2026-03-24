@@ -211,33 +211,6 @@
       "What is the analog of Cambie's result for the 'at least k divisors' density δ_k(n,m) with k ≥ 2?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "erdos-446",
-      "relationship": "foundational",
-      "description": "Ford (2008) resolved Problem #446 on the density of integers with a divisor in $(n,2n)$, providing the asymptotic framework $H(x,y,z) \\asymp x \\cdot \\delta(u)$ that underpins the analysis of $\\delta_1$ in Problem #692"
-    },
-    {
-      "id": "erdos-690",
-      "relationship": "parallel",
-      "description": "Parallel unimodality question for $k$-th prime factor density $d_k(p)$, also resolved by Cambie (2025): YES for $k \\leq 3$, NO for $4 \\leq k \\leq 20$ — contrasting answer to #692's universal NO"
-    },
-    {
-      "id": "erdos-693",
-      "relationship": "related",
-      "description": "Studies gaps between integers in $[n, n^k]$ having a divisor in $(n,2n)$; shares the divisor-in-interval theme and cites Problem #446's Ford framework"
-    },
-    {
-      "id": "erdos-648",
-      "relationship": "methodology",
-      "description": "Cambie (2025) also resolved Problem #648 on decreasing greatest prime factors using Dickman function $\\rho(u)$ and smooth number theory, the same analytic tools underlying Ford's divisor distribution bounds"
-    },
-    {
-      "id": "erdos-691",
-      "relationship": "thematic",
-      "description": "Studies density of multiples (Behrend sequences) with Tenenbaum's sharp threshold; shares the multiplicative number theory and density-theoretic methodology"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

@@ -202,32 +202,5 @@
       "Extensions to K_r-free graphs for r > 3 — does the critical exponent change with the forbidden clique size?",
       "For the counterexample at degree C√n, what is the exact constant C where the transition occurs?"
     ]
-  },
-  "relatedProofs": [
-    {
-      "id": "erdos-618",
-      "relationship": "related-problem",
-      "description": "Essentially the same problem in a different formulation — both concern extending triangle-free graphs to diameter 2 and were solved by Alon."
-    },
-    {
-      "id": "erdos-133",
-      "relationship": "related-problem",
-      "description": "The dual problem: what is the maximum degree achievable in a triangle-free diameter-2 graph? Complementary perspective on the same degree-diameter tradeoff."
-    },
-    {
-      "id": "erdos-612",
-      "relationship": "generalizes",
-      "description": "Generalizes the triangle-free constraint to clique-free graphs, studying diameter bounds for K_r-free graphs."
-    },
-    {
-      "id": "erdos-742",
-      "relationship": "related-problem",
-      "description": "Studies the maximum number of edges in minimal diameter-2 graphs — the edge-counting complement to #134's extension question."
-    },
-    {
-      "id": "erdos-22",
-      "relationship": "uses-same-technique",
-      "description": "Ramsey-Turán numbers for K₄ use similar extremal combinatorics techniques — bounding edge density under forbidden subgraph constraints."
-    }
-  ]
+  }
 }

@@ -141,18 +141,6 @@
       "description": "Erdos #65 relates edge density to cycle variety; #59 counts graphs avoiding a fixed subgraph"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-57",
-      "relationship": "related",
-      "description": "Both study structural properties of graphs with forbidden subgraphs -- #57 via cycle lengths, #59 via counting"
-    },
-    {
-      "id": "erdos-65",
-      "relationship": "related",
-      "description": "Erdos #65 relates edge density to cycle variety; #59 counts graphs avoiding a fixed subgraph"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

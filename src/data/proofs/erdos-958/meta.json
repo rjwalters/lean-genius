@@ -141,18 +141,6 @@
       "description": "Distances between points on a circle relate via the law of cosines: for arc points at angles $\\theta_j, \\theta_k$ on the unit circle, $d_{jk} = 2\\sin(|\\theta_j - \\theta_k|/2)$. This formula governs the distance structure of the arc+center counterexample"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "pythagorean-theorem",
-      "relationship": "foundational",
-      "description": "The Euclidean distance $\\|p-q\\| = \\sqrt{(p_1-q_1)^2 + (p_2-q_2)^2}$ underlying the distance set computation is derived from the Pythagorean theorem. The inner product space structure of $\\mathbb{R}^2$ used in the formalization rests on this identity"
-    },
-    {
-      "id": "law-of-cosines",
-      "relationship": "foundational",
-      "description": "Distances between points on a circle relate via the law of cosines: for arc points at angles $\\theta_j, \\theta_k$ on the unit circle, $d_{jk} = 2\\sin(|\\theta_j - \\theta_k|/2)$. This formula governs the distance structure of the arc+center counterexample"
-    }
-  ],
   "references": [
     {
       "authors": "Clemen, Felix; Dumitrescu, Adrian; Liu, Dingyuan",

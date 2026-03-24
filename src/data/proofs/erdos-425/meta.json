@@ -173,23 +173,6 @@
       "description": "Distinct polynomial pair sums; maximal sumset property parallels the multiplicative Sidon condition"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-30",
-      "relationship": "directly-related",
-      "description": "Additive Sidon sets (B₂ sequences); logarithmic conversion links multiplicative to additive. $1000 prize for √n + O(n^ε) bound"
-    },
-    {
-      "id": "erdos-340",
-      "relationship": "thematic",
-      "description": "Growth of the greedy Sidon sequence (Mian-Chowla), another extremal problem on additive Sidon sets"
-    },
-    {
-      "id": "erdos-324",
-      "relationship": "thematic",
-      "description": "Distinct polynomial pair sums; maximal sumset property parallels the multiplicative Sidon condition"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Prime.Basic",

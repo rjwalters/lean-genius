@@ -183,23 +183,6 @@
       "description": "Both concern prime distribution guarantees. Bertrand provides at least one prime in $(n, 2n)$; Problem #237 uses the full density of primes to guarantee unbounded representation counts"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "infinitude-primes",
-      "relationship": "foundational",
-      "description": "PNT and prime distribution underpin the representation counting; the infinitude of primes ensures f_A(n) is well-defined"
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "uses",
-      "description": "The PNT ($\\pi(n) \\sim n/\\log n$) is the core tool: it ensures enough primes below $n$ to provide many representations $n = p + a$. Chen-Ding's proof uses PNT directly rather than sieve methods"
-    },
-    {
-      "id": "bertrands-postulate",
-      "relationship": "related",
-      "description": "Both concern prime distribution guarantees. Bertrand provides at least one prime in $(n, 2n)$; Problem #237 uses the full density of primes to guarantee unbounded representation counts"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Prime.Basic",

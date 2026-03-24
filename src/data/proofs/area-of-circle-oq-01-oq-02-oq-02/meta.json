@@ -177,48 +177,6 @@
       "Can the periodicity hypothesis be weakened to compact support using Fourier transforms instead of Fourier series?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "area-of-circle",
-      "relationship": "extends",
-      "description": "Root ancestor: the area of a circle $A = \\pi r^2$ via integration. This entry provides Fourier infrastructure toward the isoperimetric inequality $L^2 \\geq 4\\pi A$, which characterizes the circle as the shape maximizing area for a given perimeter."
-    },
-    {
-      "id": "area-of-circle-oq-01-oq-02",
-      "relationship": "extends",
-      "description": "The parent entry proves A = ∫C via FTC. This entry builds Fourier infrastructure needed for the isoperimetric generalization C² ≥ 4πA."
-    },
-    {
-      "id": "area-of-circle-oq-01-oq-03",
-      "relationship": "supports",
-      "description": "The Wirtinger inequality entry uses Fourier decomposition for the isoperimetric proof; this IBP formula is a key ingredient."
-    },
-    {
-      "id": "area-of-circle-oq-01-oq-02-oq-01",
-      "relationship": "sibling",
-      "description": "Sibling entry generalizing circumference integration to n-dimensional volume from surface area — both extend the parent's radial integration technique, with this file applying it to periodic function analysis via IBP and the sibling extending to higher-dimensional geometry"
-    },
-    {
-      "id": "fourier-series",
-      "relationship": "specializes",
-      "description": "The general Fourier series theory provides the foundation; this entry proves a specific derivative property of Fourier coefficients used in geometric applications."
-    },
-    {
-      "id": "isoperimetric-theorem",
-      "relationship": "supports",
-      "description": "This IBP formula is a key analytical ingredient in the Fourier-analytic proof of the isoperimetric inequality $C^2 \\geq 4\\pi A$."
-    },
-    {
-      "id": "fundamental-theorem-calculus",
-      "relationship": "foundational",
-      "description": "Integration by parts is derived from the product rule and FTC — the IBP formula fourierCoeffOn_of_hasDerivAt used here is Mathlib's formalization of this principle for interval integrals"
-    },
-    {
-      "id": "fundamental-theorem-calculus-oq-01",
-      "relationship": "related",
-      "description": "Integration by parts — the core technique in this proof — is a direct corollary of the product rule and FTC. The Fourier IBP formula specializes general IBP to the setting of exponential basis functions $e^{-int}$."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

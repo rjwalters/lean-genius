@@ -172,38 +172,6 @@
       "targetId": "erdos-1"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "euler-totient",
-      "relationship": "The Farey sequence $F_n$ has cardinality $1 + \\sum_{k=1}^{n} \\varphi(k) \\sim 3n^2/\\pi^2$, so Euler's totient function directly governs the density of Farey fractions and the proportion that any similarly ordered run can occupy.",
-      "description": ""
-    },
-    {
-      "id": "erdos-1003",
-      "relationship": "Erdős Problem 1003 concerns Farey fractions and their distribution, making it a close companion to Problem 1005 within Erdős's broader program on the structure and spacing of rational approximations.",
-      "description": ""
-    },
-    {
-      "id": "erdos-1004",
-      "relationship": "Erdős Problem 1004 addresses consecutive Farey fraction differences, directly adjacent in Erdős's sequence to Problem 1005 and sharing the combinatorial analysis of runs within the Farey sequence.",
-      "description": ""
-    },
-    {
-      "id": "fundamental-arithmetic",
-      "relationship": "Coprimality of numerator and denominator is the defining constraint of a Farey fraction; the fundamental theorem of arithmetic underpins the unique reduced-fraction representation on which the Farey sequence is built.",
-      "description": ""
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "The $3n^2/\\pi^2$ asymptotic for $|F_n|$ depends on the distribution of $\\varphi(k)$, which in turn relies on the infinitude and distribution of primes — a foundational number-theoretic fact connecting Farey density to prime structure.",
-      "description": ""
-    },
-    {
-      "id": "erdos-1",
-      "relationship": "Erdős Problem 1 is emblematic of Erdős's combinatorial number theory and uses probabilistic/extremal arguments that are methodologically analogous to the linear-growth result $f(n) \\gg n$ Erdős proved in 1943 for Farey runs.",
-      "description": ""
-    }
-  ],
   "references": [
     {
       "authors": [

@@ -205,23 +205,6 @@
       "description": "The Fermat–Euler theorem on sums of two squares is the key theoretical tool for the structural equivalence proved in this formalization"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-1094",
-      "relationship": "related",
-      "description": "Both problems involve bounding quantities associated with quadratic expressions and share techniques from the theory of quadratic forms"
-    },
-    {
-      "id": "pythagorean-triples",
-      "relationship": "foundation",
-      "description": "The equation x² + y² = z² + n generalizes Pythagorean triples (n = 0 case), and representability analysis builds on similar structural insights"
-    },
-    {
-      "id": "sum-of-squares",
-      "relationship": "technique",
-      "description": "The Fermat–Euler theorem on sums of two squares is the key theoretical tool for the structural equivalence proved in this formalization"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Prime.Basic",

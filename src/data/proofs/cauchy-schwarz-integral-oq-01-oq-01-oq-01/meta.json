@@ -144,23 +144,6 @@
       "Formalize the full power mean inequality chain: min ≤ HM ≤ GM ≤ AM ≤ QM ≤ max"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "cauchy-schwarz-integral-oq-01-oq-01",
-      "relationship": "extends",
-      "description": "Extends the measure-theoretic Hölder hierarchy with concrete finite-dimensional applications and competition-mathematics results"
-    },
-    {
-      "id": "cauchy-schwarz-integral",
-      "relationship": "related",
-      "description": "The original integral Cauchy-Schwarz inequality $\\left(\\int fg\\right)^2 \\leq \\int f^2 \\cdot \\int g^2$. This entry proves the discrete coordinate versions."
-    },
-    {
-      "id": "amgm-inequality",
-      "relationship": "related",
-      "description": "The general AM-GM inequality for $n$ variables. This entry proves the $n=2$ case from first principles as a corollary of Cauchy-Schwarz."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

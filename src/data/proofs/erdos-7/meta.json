@@ -239,28 +239,6 @@
       "note": "Offered $2000 for an explicit construction of an odd covering system"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-2",
-      "relationship": "extends",
-      "description": "Problem #2 asked whether the minimum modulus of a covering system can be arbitrarily large (answered NO by Hough 2015). Problem #7 is the natural companion: must every covering system include an even modulus? Both constrain the fundamental structure of covering systems"
-    },
-    {
-      "id": "erdos-8",
-      "relationship": "related",
-      "description": "Problem #8 asks about monochromatic covering systems, adding coloring constraints to the covering framework. Problems #2, #7, and #8 form a trio of structural questions about covering systems"
-    },
-    {
-      "id": "erdos-27",
-      "relationship": "related",
-      "description": "Problem #27 on almost covering systems relaxes the coverage requirement. Understanding the parity constraints of Problem #7 informs what near-coverings with odd moduli might look like"
-    },
-    {
-      "id": "chinese-remainder-constructive",
-      "relationship": "foundational",
-      "description": "The Chinese Remainder Theorem governs how congruence classes with coprime moduli interact, which is essential for constructing or ruling out covering systems with constrained moduli"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

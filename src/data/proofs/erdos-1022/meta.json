@@ -171,38 +171,6 @@
       "targetId": "erdos-562"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "prob-method-lovasz-local",
-      "relationship": "The Lovász Local Lemma (1975) is the direct probabilistic successor to the sparseness condition in Problem #1022. The LLL proves property B when each hyperedge shares elements with few others; Problem #1022 asks whether a global subset-density bound (sparseness) likewise guarantees property B. The two conditions are formally related: sparseness bounds the expected number of 'bad' monochromatic events, while the LLL handles dependent bad events explicitly.",
-      "description": ""
-    },
-    {
-      "id": "prob-method-applications",
-      "relationship": "This library demonstrates the classical applications of the probabilistic method, including the Erdős (1963) first-moment proof that families of t-sets with fewer than 2^{t-1} members have property B — the global-size predecessor to Problem #1022's local-density (sparseness) condition. Property B is one of the canonical showcases for the probabilistic method.",
-      "description": ""
-    },
-    {
-      "id": "erdos-836",
-      "relationship": "Erdős Problem #836 studies intersecting hypergraphs with chromatic number 3, citing the Erdős-Lovász (1975) paper that established the Lovász Local Lemma. The bound ≫ r/log r on edge intersections comes from an early LLL application. Problem #1022 was posed in the same 1968–1975 period by Erdős and Lovász and sits in the same circle of hypergraph coloring questions.",
-      "description": ""
-    },
-    {
-      "id": "erdos-1020",
-      "relationship": "The Erdős Matching Conjecture (Problem #1020) is a parallel r-uniform hypergraph extremal problem: bounding the maximum number of edges in a hypergraph with no k independent edges. Both problems impose structural constraints on set families — matching-freeness versus sparseness — and both are open for r ≥ 4, reflecting the difficulty of r-uniform hypergraph combinatorics.",
-      "description": ""
-    },
-    {
-      "id": "erdos-1023",
-      "relationship": "Problem #1023 on union-free families is complementary: it asks how large a set family can be if no member is the union of others (a 'union-free' condition). Both problems constrain set families via inclusion/union structure. Problem #1022's sparseness bounds the number of sub-family members inside any superset; #1023 forbids unions entirely. The solved answer F(n) = C(n,n/2) for #1023 contrasts with the open status of #1022.",
-      "description": ""
-    },
-    {
-      "id": "erdos-562",
-      "relationship": "Problem #562 on hypergraph Ramsey tower growth concerns r-uniform hypergraph Ramsey numbers, where r-colorings of complete hypergraphs are forced to contain monochromatic cliques. The tower-growth phenomenon arises from the difficulty of r-uniform hypergraph coloring, the same difficulty underlying Problem #1022's open cases for t ≥ 3.",
-      "description": ""
-    }
-  ],
   "references": [
     {
       "authors": [

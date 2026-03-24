@@ -265,37 +265,5 @@
       "relationship": "related",
       "description": "Erdős #1055 classifies primes by smoothness of $p+1$, connecting to the least prime factor of $p + 1$. Both problems relate to the distribution of prime factors of integers in structured positions."
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "erdos-4",
-      "relationship": "related",
-      "description": "Erdős #4 asks about large prime gaps — directly relevant since #680 reduces to prime gap bounds. The Maynard-Tao theorem (2016) on large gaps provides partial context for understanding when $p(n+k)$ can be large."
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "related",
-      "description": "The PNT $\\pi(x) \\sim x/\\ln x$ underlies both Cramér's conjecture and the expected density of primes near $n$. The prime gap reduction in #680 implicitly uses the PNT to estimate how far one must search for a prime."
-    },
-    {
-      "id": "bertrands-postulate",
-      "relationship": "related",
-      "description": "Bertrand's postulate guarantees a prime in $(n, 2n]$, giving a weak version of the prime gap bound needed for #680: with $k \\le n$ and $n + k$ prime, we need $k^2 + 1 < n + k$, which holds for $k \\le \\sqrt{n}$."
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "related",
-      "description": "The infinitude of primes (Euclid) is used directly in the formalization: `Nat.exists_infinite_primes (p + 1)` finds the next prime after $p$, enabling the definition of CramerConjecture."
-    },
-    {
-      "id": "erdos-648",
-      "relationship": "related",
-      "description": "Erdős #648 studies the greatest prime factor $P(n)$ while #680 studies the least prime factor $p(n)$. They are dual perspectives on the same arithmetic function: the prime factorization structure of integers near $n$."
-    },
-    {
-      "id": "erdos-1055",
-      "relationship": "related",
-      "description": "Erdős #1055 classifies primes by smoothness of $p+1$, connecting to the least prime factor of $p + 1$. Both problems relate to the distribution of prime factors of integers in structured positions."
-    }
   ]
 }

@@ -241,33 +241,6 @@
     "Hough, Nielsen (2019): Odd covering systems must have minimum modulus > 10^18",
     "https://erdosproblems.com/2"
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-3",
-      "relationship": "related",
-      "description": "Problem #3 (arithmetic progressions in sets with divergent reciprocal sum) shares the theme of density constraints in number theory. Both problems involve the reciprocal sum $\\sum 1/n_i$ as a key measure: covering systems require reciprocal sum $\\geq 1$, while Problem #3 asks about sets with divergent reciprocal sum"
-    },
-    {
-      "id": "erdos-7",
-      "relationship": "extends",
-      "description": "Problem #7 asks whether odd covering systems exist — the Erdős-Selfridge conjecture that every covering system must contain an even modulus. This is the most important open problem directly spawned by the covering systems framework of Problem #2"
-    },
-    {
-      "id": "erdos-8",
-      "relationship": "extends",
-      "description": "Problem #8 asks about monochromatic covering systems, extending the covering systems framework by adding coloring constraints. Both problems concern the fundamental structural limitations of covering systems"
-    },
-    {
-      "id": "erdos-27",
-      "relationship": "extends",
-      "description": "Almost covering systems relax the covering condition to allow a density-zero set of uncovered integers. This generalization of Problem #2 explores the boundary between covering and non-covering"
-    },
-    {
-      "id": "chinese-remainder-constructive",
-      "relationship": "foundational",
-      "description": "The Chinese Remainder Theorem underpins covering systems: congruence classes $a \\bmod n$ partition integers, and the CRT governs how they interact when moduli are coprime. Covering systems are precisely collections of congruence classes whose union is all of $\\mathbb{Z}$"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

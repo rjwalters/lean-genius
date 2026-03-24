@@ -193,37 +193,5 @@
       "relationship": "foundational",
       "description": "The isosceles triangle theorem is the simplest symmetry result in triangle geometry, while Ceva's theorem handles the general asymmetric case — both concern the interplay of vertices and sides"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "herons-formula",
-      "relationship": "related",
-      "description": "Both concern triangle geometry: Heron's formula computes area from side lengths, while Ceva's theorem characterizes when three cevians (lines through vertices) are concurrent — both use ratios and products involving triangle side lengths"
-    },
-    {
-      "id": "pythagorean-theorem",
-      "relationship": "foundational",
-      "description": "The Pythagorean theorem provides the metric foundation for triangle geometry, while Ceva's theorem adds the affine-projective layer — together they span from metric to projective properties of triangles"
-    },
-    {
-      "id": "law-of-cosines",
-      "relationship": "related",
-      "description": "Both are fundamental triangle theorems: the law of cosines generalizes Pythagoras metrically, while Ceva's theorem characterizes concurrency of cevians — the law of cosines can be used to derive coordinate proofs of Ceva's theorem"
-    },
-    {
-      "id": "triangle-angle-sum",
-      "relationship": "foundational",
-      "description": "The angle sum property (180 degrees) is the most basic triangle theorem, while Ceva's theorem is a deeper structural result — both concern the fundamental geometry of triangles"
-    },
-    {
-      "id": "feuerbachs-theorem",
-      "relationship": "related",
-      "description": "Both are classical triangle geometry results: Ceva's theorem concerns cevian concurrency, while Feuerbach's theorem concerns the tangency of the nine-point circle and incircle — both reveal deep structure in triangle configurations"
-    },
-    {
-      "id": "isosceles-triangle",
-      "relationship": "foundational",
-      "description": "The isosceles triangle theorem is the simplest symmetry result in triangle geometry, while Ceva's theorem handles the general asymmetric case — both concern the interplay of vertices and sides"
-    }
   ]
 }

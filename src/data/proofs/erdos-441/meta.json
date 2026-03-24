@@ -246,47 +246,5 @@
       "relationship": "related",
       "description": "Fundamental Euclidean algorithm for computing gcd; the core operation underlying the LCM constraint lcm(a,b) = ab/gcd(a,b)"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "erdos-440",
-      "relationship": "related",
-      "description": "Sibling LCM problem studying liminf of counting function A(x) for sets where consecutive elements have small LCM; same multiplicative structure"
-    },
-    {
-      "id": "erdos-442",
-      "relationship": "related",
-      "description": "Tao's 2024 result on density-LCM relationship with sharp threshold exp(√(log log x)·log log log x); extends LCM analysis to dense sets"
-    },
-    {
-      "id": "erdos-536",
-      "relationship": "related",
-      "description": "Density threshold for three elements with equal pairwise LCMs [a,b]=[b,c]=[a,c]; directly addresses LCM pairwise conditions in dense sets"
-    },
-    {
-      "id": "erdos-542",
-      "relationship": "related",
-      "description": "Schinzel-Szekeres tight bound (31/30) for reciprocal sums of sets with lcm(a,b) > n; extremal bound under complementary LCM constraint"
-    },
-    {
-      "id": "erdos-534",
-      "relationship": "related",
-      "description": "Ahlswede-Khachatrian characterization of sets with pairwise gcd > 1; dual problem via the GCD-LCM identity lcm(a,b) = ab/gcd(a,b)"
-    },
-    {
-      "id": "erdos-487",
-      "relationship": "related",
-      "description": "Kleitman's 1971 theorem: dense sets must contain a,b,c with lcm(a,b)=c; connects LCM constraints to density-Ramsey theor"
-    },
-    {
-      "id": "erdos-402",
-      "relationship": "related",
-      "description": "Graham's GCD conjecture (solved): for any set A, ∃a,b with gcd(a,b) ≤ a/|A|; uses divisibility structure underlying LCM problems"
-    },
-    {
-      "id": "gcd-algorithm",
-      "relationship": "related",
-      "description": "Fundamental Euclidean algorithm for computing gcd; the core operation underlying the LCM constraint lcm(a,b) = ab/gcd(a,"
-    }
   ]
 }

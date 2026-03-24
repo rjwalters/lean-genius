@@ -159,28 +159,6 @@
       "Is there a Maier-type phenomenon for the least prime factor sum?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "erdos-461",
-      "relationship": "related",
-      "description": "Both are short-interval equidistribution problems from the same section of Erdős-Graham: Problem #461 for smooth number components, Problem #462 for least prime factor sums"
-    },
-    {
-      "id": "erdos-463",
-      "relationship": "related",
-      "description": "Both involve the least prime factor: Problem #463 studies composites near their least prime factor, using the same p(n) ≤ √n bound central to Problem #462"
-    },
-    {
-      "id": "erdos-460",
-      "relationship": "technique",
-      "description": "Both use sieve-theoretic analysis of least prime factors: Problem #460 for coprime sieve reciprocals, Problem #462 for weighted sums in short intervals"
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "technique",
-      "description": "PNT is the paradigmatic equidistribution result; Problem #462 asks an analogous question for the least prime factor sum on its natural scale"
-    }
-  ],
   "references": [
     {
       "key": "erdosgraham1980",

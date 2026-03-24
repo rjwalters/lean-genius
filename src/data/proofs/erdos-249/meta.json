@@ -167,23 +167,6 @@
       "description": "Both concern exact values of infinite series with number-theoretic significance (∑ 1/n² = π²/6 vs ∑ φ(n)/2^n ≈ 1.324)"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "infinitude-primes",
-      "relationship": "related",
-      "description": "Euler's totient function is defined via primes; φ(n) = n·∏(1-1/p) over p|n"
-    },
-    {
-      "id": "erdos-23",
-      "relationship": "related",
-      "description": "Both are Erdős problems involving deep number-theoretic structure and open conjectures"
-    },
-    {
-      "id": "basel-problem",
-      "relationship": "related",
-      "description": "Both concern exact values of infinite series with number-theoretic significance (∑ 1/n² = π²/6 vs ∑ φ(n)/2^n ≈ 1.324)"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Totient",
