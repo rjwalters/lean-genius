@@ -19,7 +19,7 @@
       "extension",
       "research"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -79,7 +79,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 131,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "0 axioms, 0 sorries. Uses Mathlib's minpoly.unique for minimal polynomial characterization and wraps Matrix.minpoly_dvd_charpoly.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
