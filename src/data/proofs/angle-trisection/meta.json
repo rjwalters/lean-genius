@@ -49,7 +49,7 @@
     ],
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 8,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "prerequisites": [
       "Field extensions and algebraic degree",
       "Polynomial rings and irreducibility over Q",
@@ -206,8 +206,8 @@
       "title": "Constructible Numbers and Axioms",
       "startLine": 155,
       "endLine": 214,
-      "summary": "Part IV: defines `IsConstructible` (degree divides $2^n$), states `wantzel_theorem` (axiom 1), `trisectionPolynomial_irreducible` (axiom 2), and proves `lindemann_pi_transcendental` from the PiTranscendental import.",
-      "mathContext": "Wantzel's criterion: $\\alpha$ constructible $\\Rightarrow [\\mathbb{Q}(\\alpha) : \\mathbb{Q}]$ divides $2^n$. The two axioms encode deep results not in Mathlib: Wantzel's theorem connecting geometry to algebra, and the irreducibility of $8x^3 - 6x - 1$."
+      "summary": "Part IV: defines `IsConstructible` (degree divides $2^n$), proves `wantzel_theorem` (from the definition of constructibility and degree theory), proves `trisectionPolynomial_irreducible` (via Eisenstein criterion, imported from AngleTrisectionCos20Gal), and obtains `lindemann_pi_transcendental` from the PiTranscendental import. Both wantzel_theorem and trisectionPolynomial_irreducible were originally axiomatized but are now fully proved.",
+      "mathContext": "Wantzel's criterion: $\\alpha$ constructible $\\Rightarrow [\\mathbb{Q}(\\alpha) : \\mathbb{Q}]$ divides $2^n$. Both key results (Wantzel's theorem and trisection polynomial irreducibility) are now proved, not axiomatized. The only remaining axiom is transitive: `pi_transcendental` from PiTranscendental.lean, used for circle squaring."
     },
     {
       "id": "number-theory",
