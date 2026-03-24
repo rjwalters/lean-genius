@@ -212,6 +212,30 @@
   "relatedProofs": [
     "erdos-547",
     "erdos-549",
-    "erdos-557"
+    "erdos-557",
+    "ramseys-theorem"
+  ],
+  "references": [
+    {
+      "authors": "Chvátal, Václav",
+      "title": "Tree-complete graph Ramsey numbers",
+      "year": "1977",
+      "venue": "Journal of Graph Theory, vol. 1, pp. 93–93",
+      "note": "Proved R(T_n, K_m) = (m-1)(n-1)+1 for all trees T_n on n vertices — the exact result that Problem #550 seeks to generalize to multipartite graphs"
+    },
+    {
+      "authors": "Burr, Stefan A.; Erdős, Paul",
+      "title": "On the magnitude of generalized Ramsey numbers for graphs",
+      "year": "1975",
+      "venue": "Combinatorics (Colloquia Mathematica Societatis János Bolyai, vol. 10), pp. 215–240",
+      "note": "Initiated the study of Ramsey numbers for sparse graphs, conjecturing that bounded-degree graphs have linear Ramsey numbers — context for the tree Ramsey problems"
+    },
+    {
+      "authors": "Erdős Problems",
+      "title": "Problem #550",
+      "year": "2024",
+      "venue": "https://erdosproblems.com/550",
+      "note": "Online catalog entry with current status and related problems"
+    }
   ]
 }
