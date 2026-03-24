@@ -93,17 +93,33 @@ axiom b2g_density_bound (g : ℕ) :
   ∃ c : ℝ, c > 0 ∧ ∀ A : Set ℕ, (∀ n : ℕ, repCount A n ≤ g) →
     ∀ N : ℕ, N ≥ 1 → (countingFn A N : ℝ) ≤ c * Real.sqrt N
 
+/- ## Proved Properties -/
+
+/-- If representation is unbounded, then for every bound M there exists n
+    with at least M representations. (Definition unfolding.) -/
+theorem repUnbounded_iff (A : Set ℕ) :
+    RepUnbounded A ↔ ∀ M : ℕ, ∃ n : ℕ, repCount A n ≥ M :=
+  Iff.rfl
+
+/-- If repCount is bounded by some constant B for all n, then A is NOT
+    RepUnbounded. Contrapositive of unboundedness. -/
+theorem bounded_rep_not_unbounded (A : Set ℕ) (B : ℕ) (hB : ∀ n, repCount A n ≤ B) :
+    ¬RepUnbounded A := by
+  intro h
+  obtain ⟨n, hn⟩ := h (B + 1)
+  have := hB n
+  omega
+
+/-- An additive basis of order 2 represents every large n at least once.
+    (Definition unfolding.) -/
+theorem basis2_iff (A : Set ℕ) :
+    IsAdditiveBasis2 A ↔ ∃ N₀, ∀ n, n ≥ N₀ → repCount A n ≥ 1 :=
+  Iff.rfl
+
 /- ## Probabilistic Heuristic -/
 
-/-- Heuristic: a random set A ⊆ {1,...,N} with |A| ~ N^{1/2}/g(N)
-    has expected representation count
-    E[r_A(n)] ~ |A|²/N ~ 1/g(N)² for typical n.
-    If g(N) → ∞, this goes to 0, so most n have r_A(n) = 0.
-    But fluctuations may produce occasional large values. -/
-axiom random_heuristic :
-  True  -- Random models suggest the answer depends on g's growth rate
-
-/-- The critical threshold: if g(N) = (log N)^{1/2+ε} the conjecture
-    is expected to hold; if g(N) grows polynomially it may fail. -/
-axiom threshold_heuristic :
-  True  -- The exact threshold function is unknown
+-- Probabilistic heuristic: a random set A ⊆ {1,...,N} with |A| ~ N^{1/2}/g(N)
+-- has E[r_A(n)] ~ |A|²/N ~ 1/g(N)² for typical n.
+-- If g(N) → ∞, E → 0, so most n have r_A(n) = 0.
+-- But fluctuations may produce occasional large values.
+-- Critical threshold conjecture: g(N) = (log N)^{1/2+ε} should suffice.
