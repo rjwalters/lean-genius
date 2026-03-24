@@ -40,7 +40,7 @@ Define point configurations with minimum separation and diameter constraints.
 abbrev PointConfig (n : ℕ) := Fin n → ℝ × ℝ
 
 -- Distance between two points in ℝ²
-def pointDist (p q : ℝ × ℝ) : ℝ :=
+noncomputable def pointDist (p q : ℝ × ℝ) : ℝ :=
   Real.sqrt ((p.1 - q.1)^2 + (p.2 - q.2)^2)
 
 -- A configuration has minimum separation 1
@@ -108,7 +108,9 @@ theorem congruent_symm (n : ℕ) (P Q : PointConfig n) :
 theorem congruent_trans (n : ℕ) (P Q R : PointConfig n) :
     AreCongruent n P Q → AreCongruent n Q R → AreCongruent n P R := by
   intro ⟨σ₁, hσ₁⟩ ⟨σ₂, hσ₂⟩
-  sorry -- Requires composition of isometries
+  exact ⟨⟨σ₂.toFun ∘ σ₁.toFun, fun p q => by
+    simp only [Function.comp]; rw [σ₂.preserves_dist, σ₁.preserves_dist]⟩,
+    fun i => by simp only [Function.comp]; rw [hσ₂ i, hσ₁ i]⟩
 
 /-
 # Part 4: Counting Incongruent Optimal Configurations
@@ -118,9 +120,13 @@ The function h(n) counts equivalence classes of optimal configurations.
 
 -- The quotient of optimal configurations by congruence
 -- This represents the set of incongruent optimal configurations
-def IncongruentOptimal (n : ℕ) := Quotient
-  (⟨AreCongruent n, congruent_refl n, congruent_symm n, congruent_trans n⟩ :
-   Setoid (PointConfig n))
+noncomputable instance congruenceSetoid (n : ℕ) : Setoid (PointConfig n) where
+  r := AreCongruent n
+  iseqv := ⟨congruent_refl n,
+            fun h => congruent_symm n _ _ h,
+            fun h₁ h₂ => congruent_trans n _ _ _ h₁ h₂⟩
+
+def IncongruentOptimal (n : ℕ) := Quotient (congruenceSetoid n)
 
 -- h(n) = number of incongruent optimal configurations
 -- We axiomatize this as a function (actual computation is complex)
@@ -207,9 +213,14 @@ Erdős Problem #99 is cited as related.
 
 -- Problem 99: related question about optimal configurations
 -- Both problems concern the structure of extremal point sets in the plane
--- Problem 99 asks about point sets maximizing the number of unit distances
-axiom related_to_problem_99 :
-  ∀ n ≥ 2, h n ≥ 1 → ∃ P : PointConfig n, IsOptimal n P
+-- Proof: h(n) ≥ 1 means Nat.card of optimal configs ≥ 1, so the type is nonempty.
+theorem related_to_problem_99 :
+    ∀ n ≥ 2, h n ≥ 1 → ∃ P : PointConfig n, IsOptimal n P := by
+  intro n _ hhn
+  have hcard : 0 < Nat.card {P : PointConfig n // IsOptimal n P} := by
+    rw [← h_counts_optimal]; omega
+  obtain ⟨hne, _⟩ := Nat.card_pos_iff.mp hcard
+  exact ⟨hne.some.val, hne.some.property⟩
 
 /-
 # Part 9: Problem Status
