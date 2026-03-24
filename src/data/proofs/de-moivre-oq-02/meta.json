@@ -80,7 +80,12 @@
       "**conv_lhs prevents unwanted rewrites**: When rewriting (-1) as cos(π), conv_lhs restricts the rewrite to the LHS, preventing the RHS (-1)^n from being affected.",
       "**field_simp for rational expressions**: The root theorem requires simplifying n · ((2k+1)π/(2n)) = (2k+1)π/2, which field_simp handles after establishing n ≠ 0."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Chebyshev polynomial definition ($T_n(\\cos\\theta) = \\cos(n\\theta)$)",
+      "Trigonometric addition formulas ($\\cos(A \\pm B)$)",
+      "Integer exponentiation of $-1$: $(-1)^n = \\cos(n\\pi)$",
+      "Lean 4 and Mathlib basics (push_cast, ring, field_simp)"
+    ]
   },
   "sections": [
     {
@@ -88,42 +93,48 @@
       "title": "Composition Identity",
       "summary": "Proves T_m(T_n(cos θ)) = T_{mn}(cos θ): Chebyshev polynomials form a commutative monoid under composition. Also proves commutativity, identity (T_1), associativity, and special cases T_2 ∘ T_n and T_n ∘ T_n.",
       "startLine": 25,
-      "endLine": 61
+      "endLine": 61,
+      "mathContext": "$T_m \\circ T_n = T_{mn}$: the map $n \\mapsto T_n$ is a monoid homomorphism $(\\mathbb{Z}, \\times) \\to (\\mathbb{R}[X], \\circ)$. Commutativity: $T_m \\circ T_n = T_n \\circ T_m$ since $mn = nm$. Identity: $T_1(x) = x$."
     },
     {
       "id": "product-to-sum",
       "title": "Product-to-Sum Formula",
       "summary": "Proves 2·T_m(cos θ)·T_n(cos θ) = T_{m+n}(cos θ) + T_{m-n}(cos θ) from cos_add and cos_sub. Also derives the squaring identity 2·T_n²(cos θ) = T_{2n}(cos θ) + 1.",
       "startLine": 62,
-      "endLine": 83
+      "endLine": 83,
+      "mathContext": "$2T_m(x)T_n(x) = T_{m+n}(x) + T_{m-n}(x)$, the polynomial version of $2\\cos A\\cos B = \\cos(A+B) + \\cos(A-B)$. Special case $m=n$: $2T_n^2(x) = T_{2n}(x) + 1$. Underpins Chebyshev spectral multiplication."
     },
     {
       "id": "parity",
       "title": "Parity Relations",
       "summary": "Proves T_n(-cos θ) = (-1)^n · T_n(cos θ) via cos(π - θ) = -cos θ and cos(nπ - nθ) = (-1)^n cos(nθ). Derives even parity T_{2n}(-x) = T_{2n}(x) and odd parity T_{2n+1}(-x) = -T_{2n+1}(x).",
       "startLine": 84,
-      "endLine": 109
+      "endLine": 109,
+      "mathContext": "$T_n(-x) = (-1)^n T_n(x)$: even-index Chebyshev polynomials are even functions ($T_{2n}(-x) = T_{2n}(x)$), odd-index are odd ($T_{2n+1}(-x) = -T_{2n+1}(x)$). Proof via $-\\cos\\theta = \\cos(\\pi - \\theta)$ and $\\cos(n\\pi - n\\theta) = (-1)^n \\cos(n\\theta)$."
     },
     {
       "id": "special-values",
       "title": "Special Values",
       "summary": "Proves T_n(1) = 1 (from cos(0) = 1), T_n(-1) = (-1)^n (from cos(nπ) = (-1)^n), and T_n(0) = cos(nπ/2) (from cos(π/2) = 0).",
       "startLine": 110,
-      "endLine": 130
+      "endLine": 130,
+      "mathContext": "$T_n(1) = 1$ for all $n$. $T_n(-1) = (-1)^n$. $T_n(0) = \\cos(n\\pi/2)$ cycles: $1, 0, -1, 0, 1, \\ldots$. The fixed point $T_n(1) = 1$ means the endpoint of $[-1,1]$ is always a maximum."
     },
     {
       "id": "roots",
       "title": "Roots of Chebyshev Polynomials",
       "summary": "Proves T_n vanishes at cos((2k+1)π/(2n)) for all k ∈ ℤ and positive n. The proof simplifies n · (2k+1)π/(2n) = kπ + π/2, then uses cos(kπ + π/2) = 0.",
       "startLine": 131,
-      "endLine": 145
+      "endLine": 145,
+      "mathContext": "The $n$ roots of $T_n$ are $x_k = \\cos\\frac{(2k+1)\\pi}{2n}$ for $k = 0, \\ldots, n-1$. These are the Chebyshev nodes, optimal for polynomial interpolation (minimizing Runge's phenomenon). Proof: $n \\cdot \\frac{(2k+1)\\pi}{2n} = k\\pi + \\frac{\\pi}{2}$, so $\\cos(k\\pi + \\pi/2) = 0$."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "summary": "Packages composition, product-to-sum, parity, and T_n(1) = 1 into a single conjunction theorem for easy citation.",
       "startLine": 146,
-      "endLine": 157
+      "endLine": 157,
+      "mathContext": "Summary conjunction: $T_m \\circ T_n = T_{mn}$ $\\wedge$ $2T_m T_n = T_{m+n} + T_{m-n}$ $\\wedge$ $T_n(-x) = (-1)^n T_n(x)$ $\\wedge$ $T_n(1) = 1$. All 15 theorems proved with 0 sorries."
     }
   ],
   "conclusion": {
