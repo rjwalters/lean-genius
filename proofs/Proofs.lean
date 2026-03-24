@@ -835,6 +835,7 @@ import Proofs.Erdos487Problem
 import Proofs.Erdos488Problem
 import Proofs.Erdos489Problem
 import Proofs.Erdos48Problem
+import Proofs.Erdos490OQ01
 import Proofs.Erdos490Problem
 import Proofs.Erdos491Problem
 import Proofs.Erdos492Problem
