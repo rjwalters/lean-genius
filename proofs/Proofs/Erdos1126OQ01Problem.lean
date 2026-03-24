@@ -31,12 +31,13 @@ import Mathlib.Data.Real.Basic
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Topology.Basic
 import Mathlib.Algebra.Order.Field.Basic
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 open MeasureTheory
 
 namespace Erdos1126OQ01
 
-/-! ## Definitions from Parent Problem (Erdős #1126) -/
+/- ## Definitions from Parent Problem (Erdős #1126) -/
 
 /-- Cauchy's additive functional equation. -/
 def IsAdditive (f : ℝ → ℝ) : Prop :=
@@ -176,14 +177,29 @@ theorem jensen_iff_additive_shifted (f : ℝ → ℝ) :
 /- ## Part II: Almost Jensen → Almost Additive Reduction -/
 
 /-- **Almost Jensen reduces to almost additive (for shifted function).**
-If f is almost Jensen, then g(x) = f(x) - f(0) is almost additive.
-This reduces the Jensen stability problem to the de Bruijn-Jurkat theorem. -/
+If f is almost Jensen, then the shifted function g(x) = f(x) - f(0) satisfies
+the additive equation for a.e. (x,y) where Jensen also holds at (2x, 0) and (2y, 0).
+This reduces the Jensen stability problem to the de Bruijn-Jurkat theorem.
+
+Note: The full proof requires Fubini's theorem to extract a "good" b₀ such that
+f((a + b₀)/2) = (f(a) + f(b₀))/2 for a.e. a, then uses the substitution
+(x,y) ↦ (2x, 2y) in the Jensen equation. The resulting null set is a union
+of three null sets: from Jensen at (x,y), at (2x, 2y), and the Fubini section.
+
+Mathematical argument:
+1. From a.e. Jensen + Fubini, pick b₀ such that f((a+b₀)/2) = (f(a)+f(b₀))/2 for a.e. a
+2. Setting a = 2x - b₀: f(x) = (f(2x - b₀) + f(b₀))/2 for a.e. x
+3. From a.e. Jensen at (2x, 2y): f(x+y) = (f(2x)+f(2y))/2 for a.e. (x,y)
+4. Combining with step 2 yields additivity of f - f(b₀) modulo null sets -/
 theorem almost_jensen_implies_almost_additive_shifted (f : ℝ → ℝ)
     (hf : IsAlmostJensen f) :
-    IsAlmostAdditive (fun x => 2 * f ((x + 0) / 2) - f 0) := by
-  -- This follows from the algebraic relationship between Jensen and additivity
-  -- applied at the a.e. level. The null set for the shifted function
-  -- is derived from the Jensen null set.
+    IsAlmostAdditive (fun x => f x - f 0) := by
+  -- Full proof requires Fubini's theorem (MeasureTheory.ae_prod_iff)
+  -- to extract a.e. sections from the 2D null set in IsAlmostJensen.
+  -- The key steps are: (1) Fubini to get a "good" point b₀,
+  -- (2) linear substitution (2x, 2y) preserving null sets,
+  -- (3) combining three a.e. conditions.
+  -- This is a non-trivial measure-theory exercise in Lean.
   sorry
 
 /- ## Part III: Multiplicative Functional Equation -/
@@ -237,10 +253,19 @@ theorem log_of_mul_is_additive :
     ∀ f : ℝ → ℝ, IsMultiplicative f →
     (∀ x : ℝ, x > 0 → f x > 0) →
     IsAdditive (fun x => Real.log (f (Real.exp x))) := by
-  -- If g(x) = log(f(eˣ)), then
-  -- g(x+y) = log(f(e^{x+y})) = log(f(eˣ · eʸ)) = log(f(eˣ) · f(eʸ))
-  --         = log(f(eˣ)) + log(f(eʸ)) = g(x) + g(y)
-  sorry
+  intro f hf hpos
+  intro x y
+  simp only
+  -- Step 1: exp(x+y) = exp(x) * exp(y)
+  rw [Real.exp_add]
+  -- Step 2: f(exp(x) * exp(y)) = f(exp(x)) * f(exp(y))
+  have hx_ne : Real.exp x ≠ 0 := ne_of_gt (Real.exp_pos x)
+  have hy_ne : Real.exp y ≠ 0 := ne_of_gt (Real.exp_pos y)
+  rw [hf (Real.exp x) (Real.exp y) hx_ne hy_ne]
+  -- Step 3: log(f(exp(x)) * f(exp(y))) = log(f(exp(x))) + log(f(exp(y)))
+  have hfx_pos : f (Real.exp x) > 0 := hpos (Real.exp x) (Real.exp_pos x)
+  have hfy_pos : f (Real.exp y) > 0 := hpos (Real.exp y) (Real.exp_pos y)
+  exact Real.log_mul (ne_of_gt hfx_pos) (ne_of_gt hfy_pos)
 
 /- ## Part IV: Extension Theorems (Axiomatized) -/
 
