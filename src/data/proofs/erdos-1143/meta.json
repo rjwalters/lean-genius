@@ -17,7 +17,7 @@
       "inclusion-exclusion"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "axioms": 3,
     "erdosNumber": 1143,
     "erdosUrl": "https://erdosproblems.com/1143",
@@ -52,8 +52,8 @@
     ],
     "historicalContext": "Erdős asked about F_k(p₁,...,pᵤ), the minimum number of integers divisible by at least one given prime in any interval of k consecutive integers. Erdős and Selfridge reportedly found the exact formula for 2 < α < 3 (where k = αpᵤ), but the paper has not been located. For α > 3, very little is known.",
     "axiomCount": 3,
-    "lineCount": 183,
-    "assumptions": "3 axiom(s) and 1 sorry(s). 1 True-stub placeholder (covering_complement_relation). See the Lean source for details."
+    "lineCount": 267,
+    "assumptions": "3 axiom(s) and 0 sorry(s). 1 True-stub placeholder (covering_complement_relation). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #1143 belongs to the rich tradition of **sieve-theoretic covering problems** dating back to Eratosthenes. The question of how many integers in a short interval are divisible by given primes connects to the **Selberg sieve**, the **large sieve**, and the distribution of prime gaps. Erdős formulated this problem as a quantitative version of the Chinese Remainder Theorem: while CRT tells us the *average* density of covered integers is $1 - \\prod(1 - 1/p_i)$, the problem asks about the *worst-case* covering over all starting positions. The parameter $\\alpha = k/p_u$ measures how many complete periods of the largest prime fit in the interval. Erdős and Selfridge reportedly solved the $2 < \\alpha < 3$ case exactly, but their paper has never been located — one of the tantalizing 'lost results' in combinatorial number theory. The dual problem (Erdős #970, Jacobsthal's function) asks about coprime elements instead; Iwaniec (1978) proved the best known bounds $h(k) = O(k^{0.735})$.",
@@ -86,40 +86,40 @@
       "id": "basic-properties",
       "title": "Basic Properties and Single Prime Bounds",
       "startLine": 52,
-      "endLine": 71,
-      "summary": "Basic bounds: $F_k \\leq k$ (trivial) and for a single prime $p$, $\\lfloor k/p \\rfloor \\leq F_k(\\{p\\}) \\leq \\lfloor k/p \\rfloor + 1$. The lower bound counts at least $\\lfloor k/p \\rfloor$ multiples of $p$ in any $k$-length interval."
+      "endLine": 143,
+      "summary": "Basic bounds: $F_k \\leq k$ (trivial) and for a single prime $p$, $\\lfloor k/p \\rfloor \\leq F_k(\\{p\\}) \\leq \\lfloor k/p \\rfloor + 1$. The lower bound is proved by injecting $\\{0, \\ldots, \\lfloor k/p \\rfloor - 1\\}$ into multiples of $p$ via ceiling division alignment; the upper bound by injecting multiples into $\\{0, \\ldots, \\lfloor k/p \\rfloor\\}$ via floor division."
     },
     {
       "id": "density",
       "title": "Density Properties and Asymptotics",
-      "startLine": 72,
-      "endLine": 95,
+      "startLine": 144,
+      "endLine": 193,
       "summary": "Expected density lies in $(0, 1)$ for nonempty prime sets: $0 < 1 - \\prod(1-1/p_i) < 1$ since each factor $(1-1/p_i) \\in (0,1)$. Axiomatizes the asymptotic: $|F_k - k \\cdot d| \\leq C$ for a constant $C$."
     },
     {
       "id": "alpha-regime",
       "title": "The $\\alpha > 2$ Regime",
-      "startLine": 96,
-      "endLine": 118,
+      "startLine": 194,
+      "endLine": 215,
       "summary": "Two axioms for the parameter $\\alpha = k/p_u$: (1) **Erdős-Selfridge** ($2 < \\alpha < 3$): an exact value of $F_k$ exists (paper not located). (2) **$\\alpha > 3$**: $F_k$ is bounded between $k(d - 1)$ and $kd + u$ (essentially the density approximation plus the number of primes)."
     },
     {
       "id": "examples",
       "title": "Concrete Density Examples",
-      "startLine": 119,
-      "endLine": 135,
+      "startLine": 216,
+      "endLine": 234,
       "summary": "Computes expected density for small prime sets: $d(\\{2,3\\}) = 1 - (1/2)(2/3) = 2/3$ (in any 6 integers, 4 are even or divisible by 3) and $d(\\{2,3,5\\}) = 1 - (1/2)(2/3)(4/5) = 11/15$."
     },
     {
       "id": "jacobsthal-connection",
       "title": "Connection to Jacobsthal's Function",
-      "startLine": 136,
-      "endLine": 168,
+      "startLine": 235,
+      "endLine": 267,
       "summary": "Links to Erdős #970: Jacobsthal's function $h(k)$ asks for the minimal interval guaranteeing a coprime element. The relationship: uncovered $= k - F_k$, so the two problems are complementary. If $h(u)$ is the Jacobsthal value, then $F_{h(u)-1} = h(u) - 1$ (all integers covered)."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős #1143, an open problem about covering intervals with multiples of primes. The covering function, expected density, and known results are formalized. 1 sorry (routine calculation), 3 axioms (asymptotic, Erdős-Selfridge, α > 3), 1 True-stub placeholder.",
+    "summary": "This formalization captures Erdős #1143, an open problem about covering intervals with multiples of primes. The covering function, expected density, and known results are formalized. 0 sorries, 3 axioms (asymptotic, Erdős-Selfridge, α > 3), 1 True-stub placeholder.",
     "implications": "**Theoretical Significance**: Understanding $F_k$ connects to several important areas: **sieve theory** (the covering function is closely related to sieve weights), **Jacobsthal's function** (the dual coprimality question), and the **distribution of smooth numbers** in short intervals.\n\nSharp estimates for $F_k$ in the $\\alpha > 3$ regime would have consequences for prime gap bounds and the structure of residue classes modulo products of small primes. The lost Erdős-Selfridge result, if reconstructed, could provide a template for the general case.",
     "openQuestions": [
       "What is the exact formula for $F_k$ when $k = \\alpha p_u$ with $\\alpha > 3$? Can the density approximation error be made uniform in the prime set?",
@@ -157,7 +157,7 @@
       "BigOperators"
     ],
     "namespace": "Erdos1143",
-    "lineCount": 183,
+    "lineCount": 267,
     "axiomCount": 3,
     "theoremCount": 8,
     "definitionCount": 3

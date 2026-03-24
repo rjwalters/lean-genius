@@ -66,9 +66,56 @@ theorem covering_le_k (primes : Finset ℕ) (k : ℕ) :
 /-- For a single prime p, F_k({p}) = ⌊k/p⌋ or ⌈k/p⌉.
     More precisely, in any k consecutive integers, at least ⌊k/p⌋ are
     divisible by p, and at most ⌈k/p⌉. -/
-theorem single_prime_lower (p k : ℕ) (hp : Nat.Prime p) (hk : k ≥ 1) :
+theorem single_prime_lower (p k : ℕ) (hp : Nat.Prime p) :
     coveringFunction {p} k ≥ k / p := by
-  sorry
+  unfold coveringFunction coveredInInterval
+  simp only [Finset.mem_singleton, exists_eq_left]
+  apply le_ciInf
+  intro a
+  -- b = ⌈a/p⌉: index of the first multiple of p that is ≥ a
+  set b := (a + p - 1) / p with hb_def
+  have hp_pos := hp.pos
+  -- Key bounds on b
+  have hpb_ge : a ≤ p * b := by
+    have h1 : p * b + (a + p - 1) % p = a + p - 1 := Nat.div_add_mod (a + p - 1) p
+    have h2 := Nat.mod_lt (a + p - 1) hp_pos
+    omega
+  have hpb_le : p * b ≤ a + p - 1 := by
+    calc p * b = b * p := mul_comm p b
+      _ ≤ a + p - 1 := Nat.div_mul_le_self (a + p - 1) p
+  -- Injection: i ↦ p*(b+i) maps range(k/p) into multiples of p in [a, a+k)
+  -- Step 1: image ⊆ filtered set
+  have h_sub : (Finset.range (k / p)).image (fun i => p * (b + i)) ⊆
+      (Finset.Ico a (a + k)).filter (p ∣ ·) := by
+    intro n hn
+    simp only [Finset.mem_image, Finset.mem_range] at hn
+    obtain ⟨i, hi, rfl⟩ := hn
+    simp only [Finset.mem_filter, Finset.mem_Ico]
+    refine ⟨⟨?_, ?_⟩, dvd_mul_right p (b + i)⟩
+    · -- a ≤ p*(b+i)
+      calc a ≤ p * b := hpb_ge
+        _ ≤ p * (b + i) := Nat.mul_le_mul_left p (Nat.le_add_right b i)
+    · -- p*(b+i) < a+k: use p*(b+i)+p ≤ p*b + p*(i+1) ≤ (a+p-1) + k
+      have h_pi1 : p * (i + 1) ≤ k := by
+        have : i + 1 ≤ k / p := by omega
+        calc p * (i + 1) = (i + 1) * p := by ring
+          _ ≤ (k / p) * p := Nat.mul_le_mul_right p this
+          _ ≤ k := Nat.div_mul_le_self k p
+      -- p*(b+i) + p = p*b + p*(i+1) ≤ (a+p-1) + k
+      have : p * (b + i) + p ≤ a + p - 1 + k := by
+        calc p * (b + i) + p = p * b + p * (i + 1) := by ring
+          _ ≤ (a + p - 1) + k := Nat.add_le_add hpb_le h_pi1
+      omega
+  -- Step 2: the map is injective, so image has same cardinality
+  have h_card : ((Finset.range (k / p)).image (fun i => p * (b + i))).card =
+      (Finset.range (k / p)).card := by
+    rw [Finset.card_image_of_injOn]
+    intro i _ j _ hij
+    have : b + i = b + j := mul_left_cancel₀ (show (p : ℕ) ≠ 0 from by omega) hij
+    omega
+  -- Combine: k/p = |range| = |image| ≤ |filter|
+  rw [← Finset.card_range (k / p), ← h_card]
+  exact Finset.card_le_card h_sub
 
 theorem single_prime_upper (p k : ℕ) (hp : Nat.Prime p) :
     coveringFunction {p} k ≤ k / p + 1 := by
