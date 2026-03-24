@@ -111,28 +111,28 @@
       "priority": "high",
       "target": "enricher",
       "description": "Rewrite meta.json originalContributions to honestly separate the type-coercion bridge (symmetric_not_solvable) from pedagogical organization and documentation contributions. Remove claims that restate Mathlib aliases as original contributions.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "high",
       "target": "enricher",
       "description": "Change description from 'complete proof chain' to 'key group-theoretic steps of the proof chain,' acknowledging that Steps 4-5 are documented but not formalized in this file.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "medium",
       "target": "enricher",
       "description": "Add qualification to the '8 theorems' count in the conclusion, distinguishing the 1 substantive bridge theorem from 5 convenience specializations and 2 typeclass inferences.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "medium",
       "target": "enricher",
       "description": "Trim crossReferences from 36 entries to the 8-12 most directly relevant, removing purely thematic connections (Godel, halting problem, Cantor, etc.) that inflate the entry's apparent centrality.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",
@@ -146,7 +146,7 @@
       "priority": "low",
       "target": "enricher",
       "description": "Align meta.json framing with the annotations' honest assessment. The annotations correctly note the 2-line bridge is 'the file's only new proof content' while meta.json lists 5 original contributions.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
 
