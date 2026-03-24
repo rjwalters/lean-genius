@@ -102,9 +102,8 @@ theorem g_d_1 (d : ℕ) (hd : d ≥ 1) : g d 1 = 2 := by
       rw [Finset.mem_filter]
       refine ⟨Finset.mem_image.mpr ⟨(a, b), ?_, rfl⟩,
         norm_pos_iff.mpr (sub_ne_zero.mpr hab)⟩
-      simp only [Finset.mem_product]
-      exact ⟨Finset.mem_insert_self a _, Finset.mem_insert.mpr
-        (Or.inr (Finset.mem_singleton_self b))⟩
+      exact Finset.mk_mem_product (Finset.mem_insert_self a _)
+        (Finset.mem_insert.mpr (Or.inr (Finset.mem_singleton_self b)))
     exact Finset.card_pos.mpr ⟨_, hmem⟩
   · -- 2 ≤ g d 1: 0 and 1 are not in the threshold set
     obtain ⟨M, hM⟩ := g_well_defined d 1 (by omega)
@@ -128,8 +127,10 @@ theorem g_d_1 (d : ℕ) (hd : d ≥ 1) : g d 1 = 2 := by
           obtain ⟨hr_mem, hr_pos⟩ := hr
           rw [Finset.mem_image] at hr_mem
           obtain ⟨⟨p, q⟩, hpq_mem, rfl⟩ := hr_mem
-          simp only [Finset.mem_product, Finset.mem_singleton] at hpq_mem
-          obtain ⟨rfl, rfl⟩ := hpq_mem
+          have ⟨hp, hq⟩ := Finset.mem_product.mp hpq_mem
+          simp only [Finset.mem_singleton] at hp hq
+          subst hp; subst hq
+          dsimp only at hr_pos
           simp [eucDist] at hr_pos
         rw [hempty, Finset.card_empty] at this
         omega
@@ -179,8 +180,8 @@ private lemma distinctDistances_mono {d : ℕ} {P Q : Finset (Point d)} (h : P �
   rw [Finset.mem_image] at hr_mem ⊢
   obtain ⟨⟨p, q⟩, hpq_mem, rfl⟩ := hr_mem
   refine ⟨(p, q), ?_, rfl⟩
-  simp only [Finset.mem_product] at hpq_mem ⊢
-  exact ⟨h hpq_mem.1, h hpq_mem.2⟩
+  have ⟨hp, hq⟩ := Finset.mem_product.mp hpq_mem
+  exact Finset.mk_mem_product (h hp) (h hq)
 
 /-- Cube gives lower bound: g_d(d+1) > 2^d -/
 theorem cube_lower_bound (d : ℕ) : g d (d + 1) > 2^d := by
@@ -188,10 +189,10 @@ theorem cube_lower_bound (d : ℕ) : g d (d + 1) > 2^d := by
   push_neg at hle
   obtain ⟨M, hM⟩ := g_well_defined d (d + 1) (by omega)
   have hne : Set.Nonempty {m : ℕ | ∀ P : Finset (Point d), P.card = m →
-      determinesNDistances P (d + 1)} := by exact ⟨M, hM⟩
+      determinesNDistances P (d + 1)} := ⟨M, hM⟩
   have hmem := Nat.sInf_mem hne
   have hsz : g d (d + 1) ≤ (cubeVertices d).card := by rw [cube_card]; exact hle
-  obtain ⟨P, hPsub, hPcard⟩ := Finset.exists_subset_card_le hsz
+  obtain ⟨P, hPsub, hPcard⟩ := Finset.exists_subset_card_eq hsz
   have h_many := hmem P hPcard
   have h_few : numDistinctDistances P ≤ d :=
     le_trans (Finset.card_le_card (distinctDistances_mono hPsub)) (cube_distances d)
