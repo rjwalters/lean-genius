@@ -38,7 +38,7 @@
   {
     "id": "ann-1059-bound101",
     "proofId": "erdos-1059",
-    "range": { "startLine": 57, "endLine": 71 },
+    "range": { "startLine": 56, "endLine": 69 },
     "type": "technique",
     "title": "Factorial Growth Bounds for Finite Case Reduction",
     "content": "Two auxiliary lemmas reduce the infinite universal quantifier to finite case analysis. `factorial_lt_bound` proves $k! < 101 \\implies k \\leq 4$ and `factorial_lt_bound_211` proves $k! < 211 \\implies k \\leq 5$. Both use the same pattern: assume for contradiction $k \\geq 5$ (or 6), apply `Nat.factorial_le` for monotonicity ($m \\leq n \\implies m! \\leq n!$), compute $5! = 120 > 101$ (or $6! = 720 > 211$), and derive contradiction via `omega`.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-1059-ex101",
     "proofId": "erdos-1059",
-    "range": { "startLine": 72, "endLine": 77 },
+    "range": { "startLine": 70, "endLine": 76 },
     "type": "insight",
     "title": "Example: p = 101 (Verified)",
     "content": "Fully verified proof that $101$ satisfies the factorial-subtraction property. After bounding $k \\leq 4$, `interval_cases` splits into 5 cases: $101 - 0! = 100 = 4 \\times 25$, $101 - 1! = 100$, $101 - 2! = 99 = 9 \\times 11$, $101 - 3! = 95 = 5 \\times 19$, $101 - 4! = 77 = 7 \\times 11$. Each compositeness check is resolved by `decide`.\n\n**Why 101 is the smallest qualifying prime:** Below 101, the primes that fail include 89 ($89 - 6 = 83$ prime), 71 ($71 - 6 = 65 = 5 \\times 13$, $71 - 24 = 47$ prime), 53 ($53 - 6 = 47$ prime), and many others. The $k = 3$ case ($k! = 6$) is the most common obstruction: since $p - 6$ is prime for many primes $p$ (this is the prime-gap-6 phenomenon, related to twin primes mod 6), finding primes where *all* factorial subtractions avoid primality requires escaping multiple primality obstructions simultaneously.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-1059-ex211",
     "proofId": "erdos-1059",
-    "range": { "startLine": 78, "endLine": 83 },
+    "range": { "startLine": 77, "endLine": 82 },
     "type": "insight",
     "title": "Example: p = 211 (Verified)",
     "content": "Fully verified: $211$ satisfies the property with 6 cases ($k \\leq 5$ since $5! = 120 < 211 < 720 = 6!$). Subtractions: $211 - 1 = 210$, $211 - 2 = 209 = 11 \\times 19$, $211 - 6 = 205 = 5 \\times 41$, $211 - 24 = 187 = 11 \\times 17$, $211 - 120 = 91 = 7 \\times 13$. All composite.",
@@ -74,7 +74,7 @@
   {
     "id": "ann-1059-counter89",
     "proofId": "erdos-1059",
-    "range": { "startLine": 84, "endLine": 89 },
+    "range": { "startLine": 83, "endLine": 89 },
     "type": "insight",
     "title": "Counterexample: p = 89 (Verified)",
     "content": "Proof that $89$ does NOT satisfy the property: $89 - 3! = 89 - 6 = 83$, and $83$ is prime. The proof instantiates $k = 3$ in `AllFactorialSubtractionsComposite`, extracts the non-primality claim for $83$, and derives a contradiction via `decide` confirming $83$ is prime.\n\nNotably, Wilson's theorem (see `wilsons-theorem`) gives $(p-1)! \\equiv -1 \\pmod{p}$, so $p - (p-1)! \\equiv 1 \\pmod{p}$, which is never prime for $p > 2$. But the factorials relevant here are much smaller than $(p-1)!$ — for $p = 89$, only $k \\leq 4$ (since $4! = 24 < 89 < 120 = 5!$), far from $88!$.",
