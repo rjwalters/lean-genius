@@ -194,6 +194,16 @@
       "targetId": "harmonic-divergence",
       "relationship": "related",
       "description": "The integral test for series convergence uses MVT: comparing $\\sum_{k=1}^n f(k)$ with $\\int_1^n f(x)\\,dx$ requires bounding $f(k) - \\int_k^{k+1} f(x)\\,dx$, which MVT controls via $|f(k) - f(c)| \\leq |f'(\\xi)|$ for some $\\xi$. The harmonic series diverges because $\\int_1^n 1/x\\,dx = \\ln n \\to \\infty$, an argument mediated by MVT"
+    },
+    {
+      "targetId": "taylor-theorem",
+      "relationship": "extended-by",
+      "description": "Taylor's theorem is the $n$th-order generalization of MVT: MVT is the $n=0$ case ($f(b) = f(a) + f'(c)(b-a)$), while Taylor gives $f(b) = \\sum f^{(k)}(a)(b-a)^k/k! + R_n$. The Lagrange remainder directly generalizes MVT's intermediate point"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "MVT bounds $|e^x - 1 - x| \\leq (e^c/2)x^2$ — the kind of estimate used in Hermite's transcendence proof, where controlling exponential approximation errors is essential"
     }
   ],
   "relatedProofs": [
@@ -202,7 +212,9 @@
     "greens-theorem",
     "brouwer-fixed-point",
     "cauchy-schwarz",
-    "harmonic-divergence"
+    "harmonic-divergence",
+    "taylor-theorem",
+    "e-transcendental"
   ],
   "leanFile": {
     "imports": [
