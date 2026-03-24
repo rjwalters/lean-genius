@@ -72,41 +72,66 @@ def oddPositives : Set ℕ := {n : ℕ | n > 0 ∧ n % 2 = 1}
     denominator is odd. -/
 def HasOddDenom (x : ℚ) : Prop := x.den % 2 = 1
 
-/-- Stein's question (Erdős Problem #282): Does the greedy algorithm
-    terminate when x has odd denominator and A = odd positive integers?
+/-- **Stein's question (Erdős Problem #282, OPEN):**
+    Does the greedy algorithm terminate when x has odd denominator
+    and A = odd positive integers?
 
+    This is an OPEN problem — stated as a Prop definition, not an axiom.
     Example: 3/5 = 1/3 + 1/5 + 1/15 + ... (greedy picks 3, then ...) -/
-axiom stein_odd_greedy_conjecture (x : ℚ) (hx : 0 < x) (hx1 : x ≤ 1)
-    (hodd : HasOddDenom x) :
-    GreedyTerminates x oddPositives
+def SteinOddGreedyConjecture : Prop :=
+  ∀ x : ℚ, 0 < x → x ≤ 1 → HasOddDenom x → GreedyTerminates x oddPositives
 
 /- ## Graham's Representability Results (1964) -/
 
 /-- The set of positive integers ≡ a (mod d). -/
 def congClass (a d : ℕ) : Set ℕ := {n : ℕ | n > 0 ∧ n % d = a % d}
 
-/-- Graham (1964): A rational m/n with gcd(m,n)=1 can be represented as a
+/-- **Graham (1964)**: A rational m/n with gcd(m,n)=1 can be represented as a
     sum of distinct unit fractions with denominators ≡ a (mod d) if and only
-    if certain algebraic conditions on a, d, m, n are satisfied. -/
-axiom graham_representability (a d m n : ℕ) (hd : d > 0) (hn : n > 0)
-    (hcoprime : Nat.Coprime m n) :
-    IsRepresentable ((m : ℚ) / n) (congClass a d) ↔ True -- simplified; actual conditions complex
+    if certain algebraic conditions on a, d, m, n are satisfied.
+
+    The full conditions are complex and depend on the prime factorization
+    of d and the residue class. This is stated as a definition rather than
+    an axiom to avoid introducing vacuous assumptions. -/
+def GrahamRepresentability (a d m n : ℕ) (hd : d > 0) (hn : n > 0)
+    (hcoprime : Nat.Coprime m n) : Prop :=
+    IsRepresentable ((m : ℚ) / n) (congClass a d)
 
 /- ## Square Denominators Conjecture -/
 
 /-- The set of perfect squares. -/
 def perfectSquares : Set ℕ := {n : ℕ | ∃ k : ℕ, k > 0 ∧ n = k * k}
 
-/-- Erdős–Graham conjecture: The greedy algorithm on A = {n² : n ≥ 1}
-    perhaps fails to terminate for "almost all" starting rationals. -/
-axiom erdos_graham_squares_conjecture :
+/-- **Erdős–Graham conjecture (OPEN):** The greedy algorithm on A = {n² : n ≥ 1}
+    perhaps fails to terminate for "almost all" starting rationals.
+    Stated as a definition, not an axiom (this is a conjecture). -/
+def ErdosGrahamSquaresConjecture : Prop :=
     ∃ x : ℚ, 0 < x ∧ x ≤ 1 ∧ ¬ GreedyTerminates x perfectSquares
 
 /- ## General Framework -/
 
-/-- For the greedy algorithm to have any chance of terminating on A,
-    x must be representable using denominators from A. The greedy
-    algorithm is a specific strategy; representability is necessary
-    but not sufficient for greedy termination. -/
-axiom greedy_implies_representable (x : ℚ) (A : Set ℕ)
-    (hterm : GreedyTerminates x A) : IsRepresentable x A
+/-- **Greedy termination implies representability.**
+    This is definitionally true: `GreedyTerminates` and `IsRepresentable`
+    are both `∃ S, IsEgyptianFracRep x S A`. -/
+theorem greedy_implies_representable (x : ℚ) (A : Set ℕ)
+    (hterm : GreedyTerminates x A) : IsRepresentable x A :=
+  hterm
+
+/-- **Representability is exactly greedy termination** (by definition). -/
+theorem representable_iff_greedy (x : ℚ) (A : Set ℕ) :
+    IsRepresentable x A ↔ GreedyTerminates x A :=
+  Iff.rfl
+
+/-- **Unit fractions are self-representable.**
+    For any n > 0 with n ∈ A: 1/n is representable using denominators from A. -/
+theorem unit_frac_representable (n : ℕ) (hn : n > 0) (A : Set ℕ) (hmem : n ∈ A) :
+    IsRepresentable ((1 : ℚ) / n) A := by
+  refine ⟨{n}, ⟨fun m hm => ?_, ?_⟩⟩
+  · simp at hm; subst hm; exact ⟨hmem, hn⟩
+  · simp
+
+/-- **The odd positive integers are infinite.** -/
+theorem oddPositives_infinite : Set.Infinite oddPositives := by
+  apply Set.infinite_of_injective_forall_mem (f := fun n : ℕ => 2 * n + 1)
+  · intro a b h; omega
+  · intro n; simp [oddPositives]; omega

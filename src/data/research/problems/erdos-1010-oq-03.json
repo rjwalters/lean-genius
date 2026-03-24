@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1010-oq-03",
   "title": "Can the stability method yield effective bounds on how structurally close a n...",
-  "phase": "NEW",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-03-24T00:48:59.902Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,9 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: Solved problem, well-structured, 4 axioms all legitimate known results.",
+    "builtItems": [
+      "Surveyed 107-line formalization"
+    ],
+    "insights": [
+      "Problem is SOLVED (Lovász-Simonovits 1976, Nikiforov-Khadzhiivanov 1981)",
+      "turán_triangle_existence could potentially be derived from Turán theorem (contrapositive: > threshold → not triangle-free)",
+      "All 4 axioms are genuine known results from literature, deep to prove",
+      "supersaturation requires exact edge count (= not ≥), limiting direct corollary extraction"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -55,7 +62,7 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.901Z",
-  "lastUpdate": "2026-03-24T00:48:59.901Z",
+  "lastUpdate": "2026-03-24T16:40:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [

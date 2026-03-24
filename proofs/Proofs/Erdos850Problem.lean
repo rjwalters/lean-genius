@@ -59,6 +59,44 @@ def MakowskiExample : ℕ × ℕ := (75, 1215)
 theorem makowski_distinct : MakowskiExample.1 ≠ MakowskiExample.2 := by
   simp [MakowskiExample]
 
+/-- **Makowski example verification: 75 and 1215 share prime factors.**
+    75 = 3 × 5², 1215 = 3⁵ × 5, so primeFactors = {3, 5} for both. -/
+theorem makowski_same_primes_base : SamePrimeFactors 75 1215 := by
+  native_decide
+
+/-- **Makowski example verification: 76 and 1216 share prime factors.**
+    76 = 2² × 19, 1216 = 2⁶ × 19, so primeFactors = {2, 19} for both. -/
+theorem makowski_same_primes_shift : SamePrimeFactors 76 1216 := by
+  native_decide
+
+/-- **The two-shift version IS solvable.**
+    The Makowski pair (75, 1215) provides a concrete witness. -/
+theorem two_shift_is_solvable : TwoShiftSolvable :=
+  ⟨75, 1215, by decide, makowski_same_primes_base, makowski_same_primes_shift⟩
+
+/-- **The 0-shift problem has trivial solutions.**
+    For k = 0: any two distinct numbers with the same prime factors work.
+    E.g., x = 2, y = 4: primeFactors(2) = primeFactors(4) = {2}. -/
+theorem zero_shift_has_solution :
+    ¬KShiftProblem 0 := by
+  intro h
+  apply h
+  refine ⟨2, 4, by decide, fun i hi => ?_⟩
+  interval_cases i
+  show SamePrimeFactors 2 4
+  native_decide
+
+/-- **Larger k makes the problem strictly easier to NEGATE (harder to solve).**
+    Correction to kshift_monotone: if no pair works for k shifts,
+    it doesn't mean no pair works for k-1 shifts. The correct monotonicity
+    is: a solution to (k+1)-shift is also a solution to k-shift.
+    So KShiftProblem k → KShiftProblem (k+1). -/
+theorem kshift_hard_monotone (k : ℕ) (h : ¬KShiftProblem (k + 1)) :
+    ¬KShiftProblem k := by
+  intro hk
+  apply h; intro ⟨x, y, hne, hshift⟩
+  exact hk ⟨x, y, hne, fun i hi => hshift i (by omega)⟩
+
 /- ## Connection to ABC Conjecture -/
 
 /-- The radical of a positive integer: the product of its distinct prime factors. -/

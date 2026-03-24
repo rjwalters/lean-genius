@@ -183,6 +183,53 @@ theorem general_monotone (d₁ d₂ : ℕ) (hd : d₁ ≤ d₂)
   obtain ⟨k, hk, hc, hm2, hlpf⟩ := hN n hn
   exact ⟨k, hk, hc, hm2, fun p hp => lt_of_le_of_lt (Nat.pow_le_pow_right (by omega) hd) (hlpf p hp)⟩
 
+/- ## The k = 1 resolution -/
+
+/-- **k = 1 resolves the conjecture when n+1 is composite.**
+For ANY d ≥ 0: if n + 1 is composite (and ≥ 2), then k = 1 satisfies
+p(n+1) > 1^d = 1, since all prime factors are ≥ 2.
+
+This means the conjecture is open ONLY for those n where n+1 is prime
+(i.e., n = p - 1 for some prime p). -/
+theorem k1_resolves_all_d (d : ℕ) (n : ℕ) (hn : 2 ≤ n + 1)
+    (hc : ¬(n + 1).Prime) :
+    0 < 1 ∧ ¬(n + 1).Prime ∧ 2 ≤ n + 1 ∧
+      ∀ p : ℕ, IsLeastPrimeFactor p (n + 1) → 1 ^ d < p := by
+  refine ⟨Nat.one_pos, hc, hn, fun p ⟨hp, _, _⟩ => ?_⟩
+  simp
+  exact hp.one_lt
+
+/-- **The d=1 generalization holds whenever n+1 is composite.**
+For n ≥ 3 with n+1 composite, ErdosProblem681General 1 is witnessed by k = 1. -/
+theorem general_d1_at_composite_succ (n : ℕ) (hn : 3 ≤ n) (hc : ¬(n + 1).Prime) :
+    ∃ k : ℕ, 0 < k ∧ ¬(n + k).Prime ∧ 2 ≤ n + k ∧
+      ∀ p : ℕ, IsLeastPrimeFactor p (n + k) → k ^ 1 < p :=
+  ⟨1, Nat.one_pos, hc, by omega, fun p ⟨hp, _, _⟩ => by simp; exact hp.one_lt⟩
+
+/-- **The original d=2 conjecture holds whenever n+1 is composite.**
+Since p(n+1) ≥ 2 > 1 = 1², k = 1 always works. -/
+theorem conjecture_at_composite_succ (n : ℕ) (hn : 3 ≤ n) (hc : ¬(n + 1).Prime) :
+    ∃ k : ℕ, 0 < k ∧ ¬(n + k).Prime ∧ 2 ≤ n + k ∧
+      ∀ p : ℕ, IsLeastPrimeFactor p (n + k) → k ^ 2 < p :=
+  ⟨1, Nat.one_pos, hc, by omega, fun p ⟨hp, _, _⟩ => by simp; exact hp.one_lt⟩
+
+/-- **The hard case: n+1 is prime.**
+When n + 1 is prime, k = 1 is excluded (n+1 is not composite).
+For k ≥ 2, we need a composite m = n + k with p(m) > k^d.
+Since p(m) ≤ √m for composite m, this forces k^{2d} < n + k ≈ n,
+so k ≲ n^{1/(2d)}. The difficulty is finding such a k. -/
+theorem hard_case_constraint (n k d : ℕ) (hk : 2 ≤ k)
+    (hm : ¬(n + k).Prime) (hm2 : 2 ≤ n + k)
+    (hlpf : ∀ p : ℕ, IsLeastPrimeFactor p (n + k) → k ^ d < p) :
+    k ^ (2 * d) < n + k := by
+  obtain ⟨p, hp, hpsq⟩ := lpf_le_sqrt (n + k) hm hm2
+  have hkd := hlpf p hp
+  -- k^d < p and p² ≤ n + k, so k^{2d} < p² ≤ n + k
+  calc k ^ (2 * d) = (k ^ d) ^ 2 := by ring
+    _ = k ^ d * k ^ d := by ring
+    _ < p * p := by nlinarith
+    _ ≤ n + k := hpsq
+
 /- ## Connection to Erdős 680 -/
 
 /-- The formulations of #680 and #681 are closely related. Problem 680

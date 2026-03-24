@@ -51,10 +51,11 @@ noncomputable def minimalK (n : ℕ) : ℕ :=
 
 /- ## Main Conjecture -/
 
-/-- **Erdős Problem #389 (Open).**
+/-- **Erdős Problem #389 (OPEN).**
 For every n ≥ 1, there exists k ≥ 1 such that
-  n(n+1)···(n+k−1) ∣ (n+k)(n+k+1)···(n+2k−1). -/
-axiom erdos_389 :
+  n(n+1)···(n+k−1) ∣ (n+k)(n+k+1)···(n+2k−1).
+Stated as a definition since this is an open problem. -/
+def ErdosProblem389 : Prop :=
   ∀ n : ℕ, 1 ≤ n → ∃ k : ℕ, 1 ≤ k ∧ divides_upper_block n k
 
 /- ## Small Cases -/
@@ -64,10 +65,10 @@ theorem erdos_389_n1 : divides_upper_block 1 1 := by
   simp [divides_upper_block, consecutiveProd]
 
 /-- n = 2, k = 5: 2·3·4·5·6 = 720 divides 7·8·9·10·11 = 55440. -/
-axiom erdos_389_n2 : divides_upper_block 2 5
+theorem erdos_389_n2 : divides_upper_block 2 5 := by native_decide
 
 /-- n = 3, k = 4: 3·4·5·6 = 360 divides 7·8·9·10 = 5040. -/
-axiom erdos_389_n3 : divides_upper_block 3 4
+theorem erdos_389_n3 : divides_upper_block 3 4 := by native_decide
 
 /- ## Mehta's Computation -/
 
@@ -83,14 +84,13 @@ axiom mehta_n4_minimality :
 
 /- ## Ratio Interpretation -/
 
-/-- The ratio of consecutive products equals a product of ratios:
-  ∏_{i=0}^{k-1} (n+k+i)/(n+i).
-When this is an integer, the divisibility holds. We state this
-as a multiplicative identity in ℕ. -/
-axiom ratio_identity (n k : ℕ) (hn : 0 < n) :
-  consecutiveProd (n + k) k = consecutiveProd n k *
-    (∏ i ∈ Finset.range k, ((n + k + i) / (n + i)))
-  ∨ ¬ divides_upper_block n k
+/-- **The upper block relates to binomial coefficients.**
+    consecutiveProd n k = n · (n+1) · ··· · (n+k-1) = k! · C(n+k-1, k).
+    This connects the divisibility problem to binomial coefficient arithmetic.
+
+    Note: The previous `ratio_identity` axiom was vacuously true (used
+    `∨ ¬ divides_upper_block n k` as an escape clause). Replaced with the
+    cleaner binomial identity. -/
 
 /-- The product of consecutive integers relates to binomial coefficients:
   consecutiveProd n k = k! · C(n+k−1, k). -/
