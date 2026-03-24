@@ -61,7 +61,7 @@
   "overview": {
     "historicalContext": "Divisibility rules using \"osculators\" (multipliers applied to the last digit) have roots in Martin Gardner's recreational mathematics and earlier work by V. Ramaswami Aiyar (1907). The positive osculator test ($d | n \\iff d | (\\lfloor n/10 \\rfloor + c \\cdot (n \\bmod 10))$ when $10c \\equiv 1 \\pmod{d}$) and the negative variant ($10c \\equiv -1 \\pmod{d}$) have traditionally been treated as separate rules. The parent formalization (divisibility-truncation-general) proved both cases independently, raising the natural question: can they be unified? This proof shows the answer is yes — the negative case is the positive case with $c$ negated, since $d | (10c_{\\text{neg}} + 1)$ implies $d | (10(-c_{\\text{neg}}) - 1)$. The unification reveals a deeper structure: positive and negative osculators are not independent constructions but additive inverses under the same modular arithmetic. Osculators are closely related to modular multiplicative inverses: the positive osculator $c_+$ satisfies $10c_+ \\equiv 1 \\pmod{d}$, making $c_+$ the multiplicative inverse of 10 in $\\mathbb{Z}/d\\mathbb{Z}$. The existence of such inverses (guaranteed by Bézout's identity when $\\gcd(10, d) = 1$) connects these recreational divisibility tricks to core algebraic number theory and the extended Euclidean algorithm.",
     "problemStatement": "Can the positive and negative osculator theorems be merged into a single theorem with a signed osculator c in Z?\n\n**Answer: YES.** The unified osculator theorem states: for any d coprime to 10 and any c in Z satisfying d | (10c - 1):\n\n  d | n <-> d | (n/10 + c * (n%10))\n\nThe negative osculator case follows by substituting c = -c_neg, since d | (10*c_neg + 1) implies d | (10*(-c_neg) - 1).",
-    "text": "Merges the positive and negative osculator theorems into a single unified theorem with a signed osculator c in Z. The negative osculator case is derived as a corollary by substituting -c, and a dual osculator relationship theorem shows that the sum of positive and negative osculators is divisible by d.",
+    "text": "A 159-line unification of the osculator divisibility rules with 0 axioms and 0 sorries. The parent proof (divisibility-truncation-general) treats positive osculators ($10c \\equiv 1 \\pmod{d}$) and negative osculators ($10c \\equiv -1 \\pmod{d}$) as separate theorems. This proof merges them: the `unified_osculator_theorem` states $d \\mid n \\iff d \\mid (\\lfloor n/10 \\rfloor + c \\cdot (n \\bmod 10))$ for any $c \\in \\mathbb{Z}$ with $d \\mid (10c - 1)$, and the negative case follows by substituting $c \\mapsto -c_{\\text{neg}}$ since $d \\mid (10c_{\\text{neg}} + 1) \\iff d \\mid (10(-c_{\\text{neg}}) - 1)$. The key algebraic identity is $10(\\lfloor n/10 \\rfloor + c(n \\bmod 10)) = n + (10c-1)(n \\bmod 10)$: when $d \\mid (10c-1)$, the remainder term vanishes mod $d$, and `IsCoprime.dvd_of_dvd_mul_left` cancels the factor of 10. A bonus `dual_osculator_sum` theorem proves $d \\mid (c_+ + c_-)$ via $10(c_+ + c_-) = (10c_+ - 1) + (10c_- + 1)$. Concrete instantiations verify $d = 7, 11, 13, 17, 19$ by `norm_num`.",
     "proofStrategy": "The unified theorem uses the same algebraic identity as the parent proof:\n\n  10 * (n/10 + c*(n%10)) = n + (10c - 1)*(n%10)\n\nWhen d | (10c - 1), the remainder term is divisible by d, and coprimality with 10 allows cancelling the factor of 10.\n\nThe negative case then follows by a simple sign flip: given d | (10*c_neg + 1), we show 10*(-c_neg) - 1 = -(10*c_neg + 1), so d | (10*(-c_neg) - 1). Applying the unified theorem with osculator -c_neg immediately yields the negative rule.\n\nThe dual osculator theorem observes that 10*c_pos - 1 + (10*c_neg + 1) = 10*(c_pos + c_neg), so d divides this sum, and coprimality gives d | (c_pos + c_neg).",
     "keyInsights": [
       "The negative osculator case is not independent: it is the positive case with c negated.",
@@ -141,6 +141,21 @@
       "targetId": "fundamental-arithmetic",
       "relationship": "foundational",
       "description": "Unique prime factorization underpins the coprimality condition $\\gcd(d, 10) = 1$, which is necessary for the osculator to exist. Divisors sharing factors with 10 (i.e., multiples of 2 or 5) require the last-$k$-digits framework instead"
+    },
+    {
+      "targetId": "divisibility-by-3",
+      "relationship": "related",
+      "description": "The digit-sum rule for divisibility by 3 (and 9) is the simplest osculator rule: since $10 \\equiv 1 \\pmod{3}$, the osculator $c = 1$ gives $3 \\mid n \\iff 3 \\mid (\\lfloor n/10 \\rfloor + 1 \\cdot (n \\bmod 10))$, which iterates to the digit sum"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient function $\\varphi(d)$ counts invertible elements in $\\mathbb{Z}/d\\mathbb{Z}$. The osculator $c$ is the multiplicative inverse of 10 mod $d$, which exists iff $\\gcd(10, d) = 1$ — a condition guaranteed by Euler's theorem: $10^{\\varphi(d)} \\equiv 1 \\pmod{d}$"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "CRT provides an alternative approach to osculator construction: for composite $d = d_1 d_2$ with $\\gcd(d_1, d_2) = 1$, the osculator can be computed via the Chinese Remainder Theorem from the osculators of $d_1$ and $d_2$"
     }
   ],
   "conclusion": {
@@ -155,7 +170,10 @@
   "relatedProofs": [
     "divisibility-truncation-general",
     "bezout-identity",
-    "fundamental-arithmetic"
+    "fundamental-arithmetic",
+    "divisibility-by-3",
+    "euler-totient",
+    "chinese-remainder-constructive"
   ],
   "leanFile": {
     "imports": [

@@ -96,7 +96,7 @@
     "content": "**Source monotonicity**: if $\\alpha \\to (\\beta)^2_2$ and $\\alpha \\le \\alpha'$, then $\\alpha' \\to (\\beta)^2_2$. The proof reuses the same embedding $g$, noting that $g(i) < \\alpha \\le \\alpha'$ for all $i$. A larger source ordinal can only make the partition property easier to satisfy.",
     "type": "proof-technique",
     "importance": "medium",
-    "mathContext": "Monotonicity in the source: $\\alpha \\to (\\beta)^2_2 \\wedge \\alpha \\le \\alpha' \\implies \\alpha' \\to (\\beta')^2_2$. Coloring a larger set with 2 colors is at least as hard as coloring a smaller one, so partition properties are preserved upward in the source.",
+    "mathContext": "Monotonicity in the source: $\\alpha \\to (\\beta)^2_2 \\wedge \\alpha \\le \\alpha' \\implies \\alpha' \\to (\\beta)^2_2$. Coloring a larger set with 2 colors is at least as hard as coloring a smaller one, so partition properties are preserved upward in the source.",
     "significance": "supporting",
     "relatedConcepts": ["monotonicity", "ordinal comparison", "transitivity of strict order"],
     "prerequisites": ["partition relations", "ordinal ordering"]

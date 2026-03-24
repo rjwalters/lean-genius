@@ -17,7 +17,11 @@
       "fixed-points",
       "Fintype.card_congr"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Equiv.permCongr",
+      "Fintype.card for subtypes",
+      "fixed-point definition"
+    ]
   },
   {
     "id": "ann-filter-bijection",
@@ -37,7 +41,11 @@
       "filter",
       "cardinality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "fixedPoint_count_permCongr",
+      "Equiv.permCongr round-trip",
+      "Finset.filter bijection"
+    ]
   },
   {
     "id": "ann-main-theorem",
@@ -57,7 +65,11 @@
       "numDerangements",
       "binomial coefficient"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "card_kfixed_permCongr",
+      "Fintype.equivFin",
+      "PartialDerangements.card_perms_with_kfixed"
+    ]
   },
   {
     "id": "ann-corollaries",
@@ -77,7 +89,11 @@
       "factorial",
       "partition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "card_perms_with_kfixed_fintype",
+      "card_kfixed_permCongr",
+      "numDerangements"
+    ]
   },
   {
     "id": "ann-transport-methodology",
@@ -97,6 +113,10 @@
       "transport",
       "Mathlib methodology"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Fintype.equivFin",
+      "Equiv.permCongr invariance",
+      "conjugation-invariant permutation statistics"
+    ]
   }
 ]

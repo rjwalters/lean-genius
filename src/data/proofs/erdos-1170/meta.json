@@ -73,7 +73,8 @@
       "**Cardinal arithmetic proves ω₁² < ω₂**: The ordinal product ω₁·ω₁ has cardinality ℵ₁·ℵ₁ = ℵ₁ (by infinite cardinal idempotence), which is strictly less than ℵ₂ = card(ω₂). This uses Ordinal.card_mul, Cardinal.mul_eq_self, and the initial ordinal characterization.",
       "**Balanced implies polarized**: A direct proof by case analysis on the color — if the homogeneous set has color 0, take the left disjunct; if color 1, take the right.",
       "**Independence vs provability**: The problem asks about consistency (metamathematical), not provability. Laver's axiom captures a forcing result that ZFC alone cannot prove, making it the only irreducible assumption.",
-      "**Axiom elimination**: The formalization reduced axiom count from 7 to 1 by replacing opaque predicate axioms with constructive definitions and proving structural properties from first principles."
+      "**Axiom elimination**: The formalization reduced axiom count from 7 to 1 by replacing opaque predicate axioms with constructive definitions and proving structural properties from first principles.",
+      "**Gap between ω₁ and ω₂**: The Dushnik-Miller theorem (1941) shows $\\omega_1 \\to (\\omega_1, \\omega + 1)^2$ in ZFC, but the balanced relation $\\omega_1 \\to (\\alpha)^2_2$ for all $\\alpha < \\omega_1$ is independent. Problem #1170 lifts this question to $\\omega_2$, where even the polarized form requires iterated forcing — the combinatorial complexity increases dramatically at each cardinal level."
     ],
     "prerequisites": [
       "Set theory and cardinality",
@@ -134,7 +135,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1170 — the balanced partition property of ω₂ — in 155 lines of Lean 4 code with only 1 axiom (Laver's deep forcing result) and 7 proved theorems. The key achievement is replacing 6 opaque axioms with constructive definitions and machine-checked proofs, including a cardinal arithmetic proof that ω₁² < ω₂.",
+    "summary": "This formalization captures Erdős Problem #1170 — the balanced partition property of ω₂ — in 186 lines of Lean 4 code with only 1 axiom (Laver's deep forcing result) and 7 proved theorems. The key achievement is replacing 6 opaque axioms with constructive definitions and machine-checked proofs, including a cardinal arithmetic proof that ω₁² < ω₂ using Hessenberg's infinite cardinal idempotence theorem.",
     "implications": "**Theoretical Significance**: The formalization demonstrates that most structural properties of ordinal partition relations can be derived from first principles once the definitions are made transparent. The sole remaining axiom (Laver's consistency result) captures genuine mathematical depth — a forcing construction that ZFC cannot prove.\n\n**Methodological Contribution**: The constructive embedding-based definition of partition relations (using strictly increasing ordinal functions) provides a clean, universe-safe formalization pattern applicable to other partition calculus problems.",
     "openQuestions": [
       "Is the full balanced partition property ω₂ → (α)²₂ consistent for all α < ω₂?",
@@ -164,7 +165,9 @@
     "Erdős: original problem formulation",
     "Laver (1982): Consistency of ω₂ → (ω₁² + 1, α)² for all α < ω₂",
     "Foreman and Hajnal (2003): Extended Laver's consistency result",
-    "Erdős-Rado (1956): Foundational partition calculus",
+    "Erdős-Rado (1956): Foundational partition calculus — 'A partition calculus in set theory', Bull. AMS",
+    "Dushnik-Miller (1941): Linear orderings and partition relations — proved ω₁ → (ω₁, ω+1)²",
+    "Todorcevic (1987): Partitioning pairs of countable ordinals — advanced partition calculus techniques",
     "https://erdosproblems.com/1170"
   ],
   "crossReferences": [
@@ -197,6 +200,21 @@
       "targetId": "erdos-1014",
       "relationship": "thematic",
       "description": "Ramsey number ratio convergence — finite counterpart to the infinite partition calculus studied here"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "prerequisite",
+      "description": "Ramsey's theorem is the finite foundation of partition calculus; Problem #1170 asks about its transfinite generalization to ω₂"
+    },
+    {
+      "targetId": "erdos-szekeres",
+      "relationship": "thematic",
+      "description": "The Erdős-Szekeres theorem on monotone subsequences is a classical application of Ramsey theory — the same combinatorial paradigm underlying partition relations"
+    },
+    {
+      "targetId": "partition-theorem",
+      "relationship": "prerequisite",
+      "description": "General partition theorem formalization — the finite partition calculus that Problem #1170 generalizes to uncountable ordinals"
     }
   ],
   "relatedProofs": [
@@ -205,6 +223,9 @@
     "erdos-1167",
     "continuum-hypothesis",
     "cantor-diagonalization-oq-02-oq-01",
-    "erdos-1014"
+    "erdos-1014",
+    "ramseys-theorem",
+    "erdos-szekeres",
+    "partition-theorem"
   ]
 }

@@ -18,7 +18,12 @@
       "chromatic-number",
       "probabilistic-method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "simple graphs and adjacency",
+      "graph cycles and girth",
+      "graph coloring and chromatic number",
+      "directed graphs and acyclicity"
+    ]
   },
   {
     "id": "ann-1006-girth",
@@ -38,7 +43,11 @@
       "Erdos-girth-chromatic",
       "IsCycle"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "SimpleGraph.Walk and IsCycle from Mathlib",
+      "cycle length in graph theory",
+      "locally tree-like graphs"
+    ]
   },
   {
     "id": "ann-1006-orientations",
@@ -58,7 +67,12 @@
       "topological-ordering",
       "DAG"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "SimpleGraph from Mathlib",
+      "directed relations on vertex sets",
+      "topological sorting",
+      "structure syntax in Lean 4"
+    ]
   },
   {
     "id": "ann-1006-robust",
@@ -78,7 +92,11 @@
       "critical-edge",
       "directed-cycle"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Orientation structure defined above",
+      "acyclicity of directed graphs",
+      "axiom keyword in Lean 4"
+    ]
   },
   {
     "id": "ann-1006-conjecture",
@@ -97,7 +115,11 @@
       "girth-threshold",
       "disproved-conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "hasGirthAtLeast definition",
+      "admitsRobustAcyclicOrientation definition",
+      "universal quantification in Lean 4"
+    ]
   },
   {
     "id": "ann-1006-counterexamples",
@@ -117,6 +139,11 @@
       "proof-by-contradiction",
       "high-girth-high-chromatic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "nesetril_rodl_1978 axiom",
+      "grotzsch_counterexample axiom",
+      "proof by contradiction in Lean 4",
+      "omega tactic for natural number arithmetic"
+    ]
   }
 ]

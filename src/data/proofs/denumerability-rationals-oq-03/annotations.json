@@ -9,7 +9,8 @@
     "mathContext": "$\\text{State} = (la/lb, ra/rb),\\quad \\text{node} = \\frac{la+ra}{lb+rb}$. $L : ra \\gets la+ra,\\; rb \\gets lb+rb$. $R : la \\gets la+ra,\\; lb \\gets lb+rb$.",
     "significance": "key",
     "relatedConcepts": ["binary search trees", "continued fraction algorithm", "Euclidean algorithm", "mediants"],
-    "prerequisites": ["List Dir", "Nat"]
+    "prerequisites": ["List Dir", "Nat"],
+    "importance": "high"
   },
   {
     "id": "ann-sb-det-invariant",
@@ -21,7 +22,8 @@
     "mathContext": "$\\det(s) = ra \\cdot lb - la \\cdot rb = 1$ for all reachable states. Equivalently, $\\begin{pmatrix} ra & la \\\\ rb & lb \\end{pmatrix} \\in \\mathrm{SL}_2(\\mathbb{Z})$.",
     "significance": "key",
     "relatedConcepts": ["SL(2,Z)", "unimodular matrices", "Farey neighbors", "modular group"],
-    "prerequisites": ["Int", "linarith", "induction on List"]
+    "prerequisites": ["Int", "linarith", "induction on List"],
+    "importance": "high"
   },
   {
     "id": "ann-sb-coprimality",
@@ -33,7 +35,8 @@
     "mathContext": "$\\gcd(la+ra, lb+rb) \\mid ra(lb+rb) - rb(la+ra) = 1 \\implies \\gcd = 1$",
     "significance": "key",
     "relatedConcepts": ["Bezout's identity", "extended Euclidean algorithm", "Farey sequence lowest terms"],
-    "prerequisites": ["Nat.Coprime", "Int.natCast_dvd_natCast", "Int.le_of_dvd", "det_path"]
+    "prerequisites": ["Nat.Coprime", "Int.natCast_dvd_natCast", "Int.le_of_dvd", "det_path"],
+    "importance": "high"
   },
   {
     "id": "ann-sb-positivity",
@@ -45,7 +48,8 @@
     "mathContext": "$la + ra > 0$ and $lb + rb > 0$ for all states reachable from $(0/1, 1/0)$",
     "significance": "supporting",
     "relatedConcepts": ["well-definedness", "positive rationals", "structural induction"],
-    "prerequisites": ["omega", "induction on Path"]
+    "prerequisites": ["omega", "induction on Path"],
+    "importance": "medium"
   },
   {
     "id": "ann-sb-torat",
@@ -57,7 +61,8 @@
     "mathContext": "$\\text{toRat}(p) = \\frac{\\text{pathNum}(p)}{\\text{pathDen}(p)} > 0$",
     "significance": "supporting",
     "relatedConcepts": ["rational number embedding", "Q+", "canonical forms"],
-    "prerequisites": ["pathNum", "pathDen", "div_pos", "Nat.cast_pos"]
+    "prerequisites": ["pathNum", "pathDen", "div_pos", "Nat.cast_pos"],
+    "importance": "medium"
   },
   {
     "id": "ann-sb-ordering",
@@ -69,7 +74,8 @@
     "mathContext": "$la \\cdot (lb+rb) < (la+ra) \\cdot lb$ and $(la+ra) \\cdot rb < ra \\cdot (lb+rb)$, i.e., $\\frac{la}{lb} < \\frac{la+ra}{lb+rb} < \\frac{ra}{rb}$",
     "significance": "key",
     "relatedConcepts": ["binary search tree property", "mediant inequality", "Farey sequence ordering"],
-    "prerequisites": ["State.det", "nlinarith"]
+    "prerequisites": ["State.det", "nlinarith"],
+    "importance": "high"
   },
   {
     "id": "ann-sb-injectivity",
@@ -81,6 +87,33 @@
     "mathContext": "$\\text{evalPath}(p_1) = \\text{evalPath}(p_2) \\implies p_1 = p_2$",
     "significance": "key",
     "relatedConcepts": ["tree injectivity", "binary word encoding", "Stern-Brocot bijection"],
-    "prerequisites": ["mediant_strictly_between", "eval", "sorry"]
+    "prerequisites": ["mediant_strictly_between", "eval", "sorry"],
+    "importance": "high"
+  },
+  {
+    "id": "ann-sb-bst-infrastructure",
+    "proofId": "denumerability-rationals-oq-03",
+    "range": { "startLine": 228, "endLine": 400 },
+    "type": "technique",
+    "title": "Injectivity Infrastructure: Monotonicity and BST Invariants (Proved)",
+    "content": "A suite of 10+ proved theorems establishing the monotonicity properties needed for injectivity. **Component monotonicity** (all proved): `ra_ge_eval`, `lb_ge_eval`, `rb_ge_eval`, `la_ge_eval` — each state component is non-decreasing along any path. **Post-step bounds**: `rb_ge_after_left`, `lb_ge_after_right`, `la_ge_after_right` — after going left, $rb$ increases by at least $lb$; after going right, $lb$ and $la$ increase similarly. **BST preservation** (proved via induction + `nlinarith`): `num_lt_den_preserved` and `num_gt_den_preserved` show that the ordering of numerator/denominator sums is preserved through all navigation, using the determinant to establish cross-product inequalities at each step.",
+    "mathContext": "Component monotonicity: $s.ra \\leq (\\text{eval}\\, s\\, p).ra$, etc. BST preservation: if $\\det = 1$ and $la + ra < lb + rb$ at the root, then this inequality holds at every descendant. These are the technical lemmas needed to show the tree is a binary search tree on $\\mathbb{Q}^+$.",
+    "significance": "supporting",
+    "relatedConcepts": ["binary search tree invariant", "monotonicity", "structural induction", "nlinarith"],
+    "prerequisites": ["State navigation", "determinant invariant", "omega tactic"],
+    "importance": "high"
+  },
+  {
+    "id": "ann-sb-examples",
+    "proofId": "denumerability-rationals-oq-03",
+    "range": { "startLine": 401, "endLine": 618 },
+    "type": "context",
+    "title": "Concrete Verification: First Three Levels of the Tree",
+    "content": "Seven verified examples confirming the first three levels of the Stern-Brocot tree: root $[] \\to 1/1$, level 1: $[L] \\to 1/2$, $[R] \\to 2/1$, level 2: $[L,L] \\to 1/3$, $[L,R] \\to 2/3$, $[R,L] \\to 3/2$, $[R,R] \\to 3/1$. Each example verifies numerator, denominator, coprimality, and ordering properties by `native_decide` or `norm_num`. This section also includes the full `eval_injective_gen` proof and the final `eval_injective` theorem, establishing that the tree enumeration is injective.",
+    "mathContext": "Level 0: $1/1$. Level 1: $1/2, 2/1$. Level 2: $1/3, 2/3, 3/2, 3/1$. All fractions are in lowest terms with the BST ordering property verified computationally.",
+    "significance": "supporting",
+    "relatedConcepts": ["Stern-Brocot tree levels", "Farey sequence F_3", "native_decide"],
+    "prerequisites": ["state machine definitions", "eval function"],
+    "importance": "medium"
   }
 ]
