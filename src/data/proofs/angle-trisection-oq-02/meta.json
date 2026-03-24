@@ -236,8 +236,8 @@
     {
       "id": "constructibility",
       "title": "Definition of Constructibility",
-      "startLine": 61,
-      "endLine": 71,
+      "startLine": 60,
+      "endLine": 75,
       "summary": "IsConstructibleFromQ: α is constructible iff it lies in some K ⊇ ℚ inside ℝ with FiniteDimensional ℚ K and [K:ℚ] = 2^n for some n.",
       "mathContext": "$\\alpha$ constructible $\\iff \\exists$ tower $\\mathbb{Q} = K_0 \\subset K_1 \\subset \\cdots \\subset K_n$ with $[K_{i+1}:K_i] = 2$ and $\\alpha \\in K_n$."
     },
@@ -252,7 +252,7 @@
     {
       "id": "non-constructible",
       "title": "Non-Constructibility: ∛2 and cos(20°)",
-      "startLine": 94,
+      "startLine": 91,
       "endLine": 141,
       "summary": "Proved: Gal(x³-2/ℚ) (order 6) and Gal(8x³-6x-1/ℚ) (order 3) are NOT 2-groups. Key: 3 divides both orders but gcd(3,2^n)=1, so neither is a power of 2.",
       "mathContext": "$|\\text{Gal}(x^3-2/\\mathbb{Q})| = 6 = 2 \\cdot 3$: since $\\gcd(3, 2) = 1$, we get $\\gcd(3, 2^n) = 1$ by `Nat.Coprime.pow_right`, so $3 \\nmid 2^n$, but $3 \\mid 6$, contradiction with $6 = 2^n$. Same argument for $|\\text{Gal}(8x^3-6x-1/\\mathbb{Q})| = 3$. The private lemma `not_pow_two_of_eq_six` encapsulates this coprimality argument and is reused for both non-constructibility proofs ($\\sqrt[3]{2}$ and $\\cos 20°$)."
