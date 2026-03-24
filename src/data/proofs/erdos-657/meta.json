@@ -237,5 +237,21 @@
       "citation": "Behrend, F. (1946). On sets of integers which contain no three terms in arithmetical progression. Proceedings of the National Academy of Sciences, 32(12), 331-332.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-135",
+      "relationship": "related",
+      "description": "The Erdős distinct distances problem: every n-point set in ℝ² determines ≥ cn/√(log n) distinct distances (Guth-Katz 2015). Problem #657 asks the analogous question restricted to isosceles-free sets"
+    },
+    {
+      "targetId": "erdos-652",
+      "relationship": "related",
+      "description": "Distance multiplicity spectrum problem — both study how structural constraints on point sets affect the number of distinct distances"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-135",
+    "erdos-652"
   ]
 }

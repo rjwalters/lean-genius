@@ -207,5 +207,45 @@
     "axiomCount": 6,
     "theoremCount": 3,
     "definitionCount": 13
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-988",
+      "relationship": "related",
+      "description": "Companion spherical discrepancy problem using Schmidt's theorem on spherical caps"
+    },
+    {
+      "targetId": "erdos-987",
+      "relationship": "related",
+      "description": "Exponential sums controlling equidistribution via the Erdős-Turán inequality, using related Fourier methods"
+    },
+    {
+      "targetId": "erdos-990",
+      "relationship": "related",
+      "description": "Angular discrepancy of polynomial roots on the unit circle via Erdős-Turán inequality"
+    },
+    {
+      "targetId": "erdos-992",
+      "relationship": "related",
+      "description": "Sequence discrepancy mod 1 using Weyl's criterion and exponential sum bounds"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "related",
+      "description": "Foundational Fourier series theory underpinning Beck's Fourier-analytic lower bound proof"
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Roth's theorem (k=3 case) connects to Roth's earlier rectangle discrepancy lower bound (1954)"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-988",
+    "erdos-987",
+    "erdos-990",
+    "erdos-992",
+    "fourier-series",
+    "szemeredi-theorem"
+  ]
 }

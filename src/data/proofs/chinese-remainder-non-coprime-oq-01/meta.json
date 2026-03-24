@@ -164,5 +164,15 @@
     "axiomCount": 0,
     "theoremCount": 17,
     "definitionCount": 0
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    }
+  ],
+  "relatedProofs": [
+    "chinese-remainder-non-coprime"
+  ]
 }
