@@ -66,10 +66,12 @@ theorem orbit_strictly_increasing (n : ℕ) (hn : n ≥ 1) (k : ℕ) :
   simp [hOrbit]
   exact h_strictly_increasing (hOrbit n k) (hOrbit_pos n hn k)
 
-/-- h(n) ≤ 2n for all n ≥ 1 (since τ(n) ≤ n).
-    The bound τ(n) ≤ n requires Finset.Icc card lemmas not easily accessible. -/
-axiom h_upper (n : ℕ) (hn : n ≥ 1) :
-    h n ≤ 2 * n
+/-- h(n) ≤ 2n for all n ≥ 1 (since τ(n) ≤ n). -/
+theorem h_upper (n : ℕ) (_hn : n ≥ 1) :
+    h n ≤ 2 * n := by
+  unfold h
+  have : n.divisors.card ≤ n := Nat.card_divisors_le_self n
+  omega
 
 /-- For primes p, h(p) = p + 2 (since τ(p) = 2). -/
 theorem h_prime (p : ℕ) (hp : p.Prime) :
@@ -85,6 +87,14 @@ theorem h_two : h 2 = 4 := by native_decide
 /-- h(3) = 3 + τ(3) = 3 + 2 = 5. -/
 theorem h_three : h 3 = 5 := by native_decide
 
+/- ## Orbit Composition -/
+
+/-- Orbit iteration is compositional: h^{a+b}(n) = h^b(h^a(n)). -/
+theorem hOrbit_compose (n a b : ℕ) : hOrbit n (a + b) = hOrbit (hOrbit n a) b := by
+  induction b with
+  | zero => simp [hOrbit]
+  | succ b ih => exact congrArg h ih
+
 /- ## Main Conjecture -/
 
 /-- **Erdős Problem #414** (OPEN): For any m, n ≥ 1, the orbits
@@ -94,11 +104,17 @@ axiom erdos_414_conjecture :
   ∀ m n : ℕ, m ≥ 1 → n ≥ 1 → ∃ i j : ℕ, hOrbit m i = hOrbit n j
 
 /-- Equivalently: there is a single eventual orbit that all
-    positive integers converge to. -/
-axiom single_eventual_orbit :
-  ∃ S : ℕ → ℕ, ∀ n : ℕ, n ≥ 1 →
-    ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
-      ∃ j : ℕ, hOrbit n k = S j
+    positive integers converge to. Derived from the main conjecture
+    by taking S = hOrbit 1 (the orbit of 1). -/
+theorem single_eventual_orbit :
+    ∃ S : ℕ → ℕ, ∀ n : ℕ, n ≥ 1 →
+      ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        ∃ j : ℕ, hOrbit n k = S j := by
+  refine ⟨hOrbit 1, fun n hn => ?_⟩
+  obtain ⟨i, j₀, hij⟩ := erdos_414_conjecture 1 n (by omega) hn
+  refine ⟨j₀, fun k hk => ⟨i + (k - j₀), ?_⟩⟩
+  conv_lhs => rw [show k = j₀ + (k - j₀) by omega]
+  rw [hOrbit_compose n j₀, ← hij, ← hOrbit_compose]
 
 /- ## Orbit Examples -/
 
@@ -135,11 +151,12 @@ theorem orbit_linear_lower (n : ℕ) (hn : n ≥ 1) (k : ℕ) :
     have hgt := h_strictly_increasing (hOrbit n k) hpos
     omega
 
-/-- Two orbits starting at m and n must eventually be "close" since
-    both grow at rate ~ log(current value), and gaps between
-    consecutive values h^k(n) are bounded by τ(h^k(n)). -/
-axiom orbits_get_close :
-  ∀ m n : ℕ, m ≥ 1 → n ≥ 1 →
-    ∀ D : ℕ, ∃ i j : ℕ,
+/-- Two orbits eventually merge exactly, so in particular they get
+    within any positive distance D. Derived from the main conjecture. -/
+theorem orbits_get_close (m n : ℕ) (hm : m ≥ 1) (hn : n ≥ 1)
+    (D : ℕ) (hD : D ≥ 1) :
+    ∃ i j : ℕ,
       (hOrbit m i : ℤ) - (hOrbit n j : ℤ) < D ∧
-      (hOrbit n j : ℤ) - (hOrbit m i : ℤ) < D
+      (hOrbit n j : ℤ) - (hOrbit m i : ℤ) < D := by
+  obtain ⟨i, j, hij⟩ := erdos_414_conjecture m n hm hn
+  exact ⟨i, j, by simp [show (hOrbit m i : ℤ) = hOrbit n j from by exact_mod_cast hij]; omega⟩

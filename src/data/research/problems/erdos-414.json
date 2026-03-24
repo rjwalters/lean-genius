@@ -29,19 +29,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 10 of 14 axioms proved (14→4). Remaining 4: erdos_414_conjecture (OPEN), single_eventual_orbit (equiv), h_upper (needs card bound), orbits_get_close (heuristic).",
+    "progressSummary": "COMPLETED: 14→1 axiom. Only erdos_414_conjecture (OPEN problem) remains. Proved h_upper via Nat.card_divisors_le_self. Derived single_eventual_orbit and orbits_get_close from the conjecture using new hOrbit_compose lemma.",
     "builtItems": [
       "Proved h_strictly_increasing, orbit_strictly_increasing, h_prime, h_one, h_two, h_three",
       "Proved orbit_1_start, orbit_3_merges_with_1 via native_decide",
-      "Proved orbit_linear_lower by induction, average_divisor_count trivially"
+      "Proved orbit_linear_lower by induction, average_divisor_count trivially",
+      "Proved h_upper: τ(n) ≤ n via Nat.card_divisors_le_self (session 2)",
+      "Proved hOrbit_compose: h^{a+b}(n) = h^b(h^a(n)) by induction (session 2)",
+      "Derived single_eventual_orbit from erdos_414_conjecture using orbit composition (session 2)",
+      "Derived orbits_get_close from erdos_414_conjecture (fixed buggy D=0 case) (session 2)"
     ],
     "insights": [
-      "10 of 14 axioms proved from definitions and Mathlib",
+      "14→1 axiom across two sessions: only the open conjecture remains",
       "h and hOrbit are concrete definitions, enabling computational proofs",
       "h_strictly_increasing: divisors_card_pos (1 is always a divisor)",
       "h_prime: Nat.Prime.divisors + Finset.card_pair",
       "Computed values (h_one/two/three, orbits) proved via native_decide",
-      "orbit_linear_lower: induction using h_strictly_increasing"
+      "orbit_linear_lower: induction using h_strictly_increasing",
+      "Nat.card_divisors_le_self exists in Mathlib: τ(n) ≤ n for all n",
+      "hOrbit_compose proved by congrArg h on inductive hypothesis",
+      "single_eventual_orbit: S = hOrbit 1, merge point gives k₀",
+      "orbits_get_close original statement was buggy (false for D=0), fixed with D ≥ 1 guard"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -68,9 +76,9 @@
     {
       "path": "Proofs/Erdos414Problem.lean",
       "filename": "Erdos414Problem.lean",
-      "lineCount": 110,
-      "theoremCount": 0,
-      "axiomCount": 14,
+      "lineCount": 163,
+      "theoremCount": 14,
+      "axiomCount": 1,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
