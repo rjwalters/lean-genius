@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+The Schauder projection lemma: given a compact set K in a normed space and epsilon > 0, there exists a continuous map approximating the identity on K with image in a finite-dimensional convex hull. Proved from first principles using partition of unity.
 
 ### Formal Statement
 $$

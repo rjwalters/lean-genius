@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Proves the multinomial theorem (∑ f(i))^n = ∑ multinomial(s,k) · ∏ f(i)^k(i) and shows the binomial theorem is the 2-variable special case.
 
 ### Formal Statement
 $$

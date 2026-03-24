@@ -15,7 +15,7 @@ $$
 
 ### Plain Language
 
-[Explain what we're trying to prove in accessible terms]
+The spherical Ceva theorem expressed concretely using unit vectors in an inner product space. Cevian points on arcs are defined by weight parameters (α, β) via normalization of α·B + β·C. The key results: sin(BD)/sin(DC) = β/α for a single cevian, the triple product of sin-ratios equals the weight-product ratio, and the spherical Ceva concurrency condition reduces to α_D·α_E·α_F = β_D·β_E·β_F.
 
 ### Why This Matters
 

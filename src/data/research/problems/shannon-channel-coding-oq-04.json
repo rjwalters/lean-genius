@@ -7,7 +7,7 @@
   "path": "fast",
   "problemStatement": {
     "formal": "",
-    "plain": "",
+    "plain": "Formalizes the binary entropy function h(p) = -p ln p - (1-p) ln(1-p) with full proofs of boundary values, symmetry, non-negativity, maximum at p=1/2 (= ln 2 nats = 1 bit), the sharp upper bound h(p) ≤ ln 2 via binary Gibbs inequality, the zero-characterization h(p)=0 iff p∈{0,1}, and concavity on [0,1] from Mathlib's convexity of x·log(x).",
     "whyMatters": []
   },
   "knownResults": {

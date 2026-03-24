@@ -7,7 +7,7 @@
   "path": "fast",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
+    "plain": "The parent file's constructive_div used classical choice (hdvd.choose) and required the noncomputable annotation. This formalization replaces the choice-based witness with computable integer division (b*c)/a, producing a fully computable constructive_div_computable that can be evaluated with #eval. The key insight: the divisibility proof is only needed at verification time, not at runtime.",
     "whyMatters": []
   },
   "knownResults": {

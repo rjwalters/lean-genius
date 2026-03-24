@@ -532,14 +532,37 @@ function processProblem(slug: string, entry: RegistryEntry): ResearchProblem | n
   }
 }
 
+// Status prefixes that indicate placeholder descriptions (safety net)
+const PLACEHOLDER_PREFIXES = ['AVAILABLE', 'IN-PROGRESS', 'IN PROGRESS', 'COMPLETED', 'SKIPPED', 'SURVEYED']
+
+/**
+ * Check if a description is a status placeholder that should be replaced
+ */
+function isDescriptionPlaceholder(desc: string): boolean {
+  const trimmed = desc.trim().replace(/\.$/, '').trim()
+  if (!trimmed) return true
+  const upper = trimmed.toUpperCase()
+  for (const prefix of PLACEHOLDER_PREFIXES) {
+    if (upper === prefix) return true
+  }
+  if (trimmed === '[Explain what we\'re trying to prove in accessible terms]') return true
+  return false
+}
+
 /**
  * Generate lightweight listing from full problem
  */
 function generateListing(problem: ResearchProblem): ResearchListing {
+  // Safety net: if problemStatement.plain is a status placeholder, fall back to title
+  const rawDescription = problem.problemStatement?.plain || ''
+  const description = isDescriptionPlaceholder(rawDescription)
+    ? problem.title
+    : rawDescription
+
   return {
     slug: problem.slug,
     title: problem.title,
-    description: problem.problemStatement?.plain || problem.title,
+    description,
     phase: problem.phase,
     status: problem.status,
     tier: problem.tier,

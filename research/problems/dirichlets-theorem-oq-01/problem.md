@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Can L(1, χ) be extremely close to zero for real Dirichlet characters χ of large conductor? Dirichlet's theorem (in Mathlib) proves L(1, χ) ≠ 0, but how small can it get? A 'Siegel zero' would be a real zero β of L(s, χ) in (1 - c/log(q), 1) — their existence is a major open question in analytic number theory, intimately connected to the Generalized Riemann Hypothesis.
 
 ### Formal Statement
 $$

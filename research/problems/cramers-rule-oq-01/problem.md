@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+A formal proof that the Cayley-Hamilton theorem — every matrix satisfies its characteristic polynomial — follows as a direct corollary of the adjugate identity at the heart of Cramer's Rule: A * adj(A) = det(A) * I.
 
 ### Formal Statement
 $$

@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Complete analysis of ruin probabilities, expected ruin times, and exponential decay of ruin time distribution via the Optional Stopping Theorem, with extension to biased random walks.
 
 ### Formal Statement
 $$

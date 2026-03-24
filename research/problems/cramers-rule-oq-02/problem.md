@@ -15,7 +15,7 @@ $$
 
 ### Plain Language
 
-[Explain what we're trying to prove in accessible terms]
+A formal proof that Gaussian elimination (O(n³) multiplications) is strictly more efficient than Cramer's rule ((n+1)·n·n! multiplications) for solving n×n linear systems, with the gap growing super-polynomially: for any constant K, Gaussian is eventually K-times faster.
 
 ### Why This Matters
 

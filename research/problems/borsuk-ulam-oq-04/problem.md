@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization generalizing a known result: What are the higher categorical analogues of the covering space argument.
 
 ### Formal Statement
 $$

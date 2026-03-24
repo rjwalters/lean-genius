@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Cantor's diagonal argument proves aleph_0 < 2^aleph_0, but can it tell us whether any cardinal lies between them? This extension explores the beth number hierarchy, König's constraint, and why CH is independent of the diagonal argument.
 
 ### Formal Statement
 $$

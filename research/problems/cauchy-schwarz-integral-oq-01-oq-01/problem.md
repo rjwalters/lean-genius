@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalizes Hölder's inequality hierarchy using Mathlib 4.26+ eLpNorm API: Young → Hölder (lintegral) → Cauchy-Schwarz (p=q=2) → Minkowski (eLpNorm triangle) → L² inner product CS.
 
 ### Formal Statement
 $$

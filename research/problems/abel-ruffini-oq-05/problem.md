@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization extending an existing formalization: Charles Hermite (1858) showed that the general quintic *can* be solved using ....
 
 ### Formal Statement
 $$

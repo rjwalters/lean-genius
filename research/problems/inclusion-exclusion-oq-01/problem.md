@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization extending an existing formalization in combinatorics: General n-set Inclusion-Exclusion Formula with Formal Induction.
 
 ### Formal Statement
 $$

@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalizes when equality holds in the Cauchy-Schwarz and Hölder inequalities. CS equality (∑fᵢgᵢ)² = (∑fᵢ²)(∑gᵢ²) iff proportional, proved via Lagrange identity. Extended to general Hölder: equality iff power proportionality fᵢ^p = c·gᵢ^q, proved via Young deficit reduction. Lifted to measure-theoretic integrals.
 
 ### Formal Statement
 $$

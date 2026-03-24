@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+A formal proof that similar matrices B = P⁻¹AP share the same minimal polynomial over any field K. The inner conjugation map A ↦ P⁻¹AP is formalized as a K-algebra endomorphism, and polynomial evaluation is shown to commute with conjugation via aeval_algHom_apply.
 
 ### Formal Statement
 $$

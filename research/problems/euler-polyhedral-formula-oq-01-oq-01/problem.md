@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalizes the Five Color Theorem for planar graphs using the Kempe chain recoloring argument, including formal definitions of color swaps via Equiv.swap, Kempe chain swap correctness proofs, and the K₅ non-planarity prerequisite.
 
 ### Formal Statement
 $$

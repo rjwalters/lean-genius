@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization extending an existing formalization in number theory: Generalizations of Wilsons Theorem to Non-Prime Moduli.
 
 ### Formal Statement
 $$

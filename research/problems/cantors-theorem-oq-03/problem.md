@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+A hierarchy of diagonal arguments of increasing generality: Lawvere (uniform fixed-point-free dodge), Coordinate Diagonal (pointwise dodge), and König's Principle (heterogeneous types and dodges at each index). König captures cardinal arithmetic (Σ κᵢ < Π λᵢ), while Cantor and Lawvere are special cases. The diagonal works on Bool, ℕ, ℤ, Prop, and any type with a fixed-point-free endomorphism.
 
 ### Formal Statement
 $$

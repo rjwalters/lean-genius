@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Let f(N) be the max size of A ⊆ {1,...,N} with A+A squarefree. Is f(N) ≤ N^{o(1)} or (log N)^{O(1)}? Current bounds: (log log N)(log N)² ≪ f(N) ≪ N^{11/15+o(1)}. OPEN.
 
 ### Formal Statement
 $$

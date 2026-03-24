@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+The area of a circle A = πr² derived by integrating the circumference C(ρ) = 2πρ from 0 to r. Formalizes Archimedes' geometric vision of the disk as a sum of concentric rings via the Fundamental Theorem of Calculus.
 
 ### Formal Statement
 $$

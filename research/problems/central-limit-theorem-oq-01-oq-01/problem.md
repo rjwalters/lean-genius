@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+When does the Central Limit Theorem generalize beyond finite variance? The Gnedenko-Kolmogorov theorem gives a complete characterization: a distribution lies in the domain of attraction of an α-stable law if and only if its tails are regularly varying with index -α. This file formalizes slowly varying functions, regular variation, the tail balance condition, and states the full forward, converse, and Gaussian cases of the theorem.
 
 ### Formal Statement
 $$

@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Proves structural constraints on hypothetical Collatz cycles: no fixed points, no 2-cycles, the unique cycle through 1 is {1,4,2} with period 3, and derives algebraic bounds on cycle length from the 2^M > 3^j constraint. All n ≤ 20 verified to reach 1.
 
 ### Formal Statement
 $$

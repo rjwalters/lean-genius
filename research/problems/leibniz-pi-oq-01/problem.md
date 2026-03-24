@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+The Leibniz series converges at rate Θ(1/N): error |π/4 - Sₙ| ≤ 1/(2N+1), which is sharp. Machin-type formulas achieve exponential O(1/m^(2N)) rates.
 
 ### Formal Statement
 $$

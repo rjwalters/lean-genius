@@ -167,5 +167,10 @@
     "cayley-hamilton-minpoly-oq-05-oq-01"
   ],
   "lastUpdate": "2026-03-22T22:15:00Z",
-  "tags": []
+  "tags": [],
+  "problemStatement": {
+    "formal": "",
+    "plain": "A fully verified proof of the Skolem-Noether theorem for matrix algebras: every K-algebra automorphism of Mₙ(K) is inner (conjugation by an invertible matrix). Uses an elementary matrix units approach (no Artin-Wedderburn theory needed). Defines inner automorphisms, proves they form a subgroup, and proves the main theorem with all helper lemmas fully verified. Also derives Aut_K(Mₙ(K)) ≅ PGLₙ(K), proves Center(Mₙ(K)) = K·I, and establishes the conjugation kernel theorem. 0 sorries, 0 axioms.",
+    "whyMatters": []
+  }
 }

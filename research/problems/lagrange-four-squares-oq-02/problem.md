@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization extending an existing formalization in number theory: Distribution of Four-Square Representations Among Orderings.
 
 ### Formal Statement
 $$

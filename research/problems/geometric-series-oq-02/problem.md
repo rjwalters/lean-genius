@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+The Neumann series ∑ T^n = (1-T)⁻¹ for elements T with ‖T‖ < 1 in complete normed rings, generalizing geometric series to matrices and operators.
 
 ### Formal Statement
 $$

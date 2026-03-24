@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Algebraic irrationality via irreducible polynomials: proves that roots of irreducible polynomials of degree >= 2 over Q are irrational, applies Eisenstein's criterion to show X^n - p is irreducible for prime p, and derives irrationality of nth roots of primes. Imported by InverseGalois, InverseGaloisD4, InverseGaloisF20, and AngleTrisectionOQ02.
 
 ### Formal Statement
 $$

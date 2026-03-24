@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Bertrand's Postulate guarantees a prime in every (n, 2n], but how dense are primes in much shorter intervals? This formalization establishes a logarithmic lower bound π(n) ≥ log₂(n) from iterated Bertrand, surveys Baker-Harman-Pintz's x^0.525 record, and formally captures the open Cramér and Legendre conjectures.
 
 ### Formal Statement
 $$

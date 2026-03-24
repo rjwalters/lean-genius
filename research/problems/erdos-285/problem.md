@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Let f(k) be the minimal largest denominator in a k-term Egyptian fraction representation of 1. Is f(k) = (1+o(1))·e/(e-1)·k? YES — proved by Martin (2000). The constant e/(e-1) ≈ 1.582 comes from harmonic series structure.
 
 ### Formal Statement
 $$

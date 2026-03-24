@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization generalizing a known result in combinatorics: Generalized Binomial Coefficients for Non-Integer Arguments.
 
 ### Formal Statement
 $$

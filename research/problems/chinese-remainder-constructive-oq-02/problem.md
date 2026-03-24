@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization generalizing a known result in number theory: Chinese Remainder Theorem for Non-Coprime Moduli.
 
 ### Formal Statement
 $$

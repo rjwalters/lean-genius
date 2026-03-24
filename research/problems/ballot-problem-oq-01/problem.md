@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+The generalized ballot problem: in an election where candidate A must maintain more than k times the votes of candidate B throughout counting, the probability is (a - kb)/(a + b). Formalized using lattice paths and cyclic rotations.
 
 ### Formal Statement
 $$

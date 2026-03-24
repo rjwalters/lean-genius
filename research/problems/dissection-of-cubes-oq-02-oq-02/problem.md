@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formal investigation in geometry: Dehn-Sydler completeness theorem for 3D scissors congruence.
 
 ### Formal Statement
 $$

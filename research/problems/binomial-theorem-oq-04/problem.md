@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Vandermonde's convolution identity states that C(m+n, r) = Σ_{k=0}^{r} C(m,k)·C(n,r-k). Combinatorially, this counts r-element subsets of an (m+n)-element set by how many come from the first m elements. The classic sum-of-squares corollary C(2n,n) = Σ C(n,k)² follows by setting m=n=r and using symmetry.
 
 ### Formal Statement
 $$

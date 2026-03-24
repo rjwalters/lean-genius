@@ -3,7 +3,7 @@
 ## Statement
 
 ### Plain Language
-AVAILABLE.
+Formalization extending an existing formalization: Which mathematical statements are independent of ZFC due to cardinality consi....
 
 ### Formal Statement
 $$
