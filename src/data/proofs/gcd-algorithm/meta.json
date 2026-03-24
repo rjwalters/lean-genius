@@ -231,12 +231,12 @@
     {
       "id": "bezout-identity",
       "relationship": "extends",
-      "description": "The extended Euclidean algorithm computes Bezout coefficients $x, y$ with $\\gcd(a,b) = ax + by$. This formalization prov"
+      "description": "The extended Euclidean algorithm computes Bezout coefficients $x, y$ with $\\gcd(a,b) = ax + by$. This formalization proves the basic GCD properties; the Bezout identity entry provides the full linear combination result"
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "The Euclidean algorithm provides a constructive proof that GCD exists. Unique prime factorization (FTA) gives an alterna"
+      "description": "The Euclidean algorithm provides a constructive proof that GCD exists. Unique prime factorization (FTA) gives an alternative characterization: $\\gcd(a,b) = \\prod p^{\\min(v_p(a), v_p(b))}$. The GCD algorithm is more efficient than factoring for computing GCDs"
     },
     {
       "id": "infinitude-primes",
@@ -246,7 +246,7 @@
     {
       "id": "factor-remainder-theorem",
       "relationship": "related",
-      "description": "The Euclidean algorithm for polynomial GCD mirrors the integer version: $\\gcd(p,q) = \\gcd(q, p \\bmod q)$. The Factor and"
+      "description": "The Euclidean algorithm for polynomial GCD mirrors the integer version: $\\gcd(p,q) = \\gcd(q, p \\bmod q)$. The Factor and Remainder Theorems provide the polynomial division step used in each iteration"
     },
     {
       "id": "chinese-remainder-constructive",

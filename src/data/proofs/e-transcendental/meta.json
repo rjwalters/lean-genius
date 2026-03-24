@@ -174,17 +174,17 @@
     {
       "id": "pi-transcendental",
       "relationship": "related",
-      "description": "Lindemann's 1882 proof of $\\pi$'s transcendence directly extended Hermite's method for $e$. Both results are special cas"
+      "description": "Lindemann's 1882 proof of $\\pi$'s transcendence directly extended Hermite's method for $e$. Both results are special cases of the Lindemann-Weierstrass theorem."
     },
     {
       "id": "hermite-lindemann",
       "relationship": "extends",
-      "description": "Hermite-Lindemann generalizes e's transcendence: e^α is transcendental for all algebraic α ≠ 0. Hermite's 1873 proof for"
+      "description": "Hermite-Lindemann generalizes e's transcendence: e^α is transcendental for all algebraic α ≠ 0. Hermite's 1873 proof for e was the seed that Lindemann extended to e^α in 1882"
     },
     {
       "id": "leibniz-pi",
       "relationship": "related",
-      "description": "Both formalizations involve the constant $\\pi$ and its deep properties. Leibniz's series computes $\\pi$ as a limit, whil"
+      "description": "Both formalizations involve the constant $\\pi$ and its deep properties. Leibniz's series computes $\\pi$ as a limit, while transcendence shows $\\pi$ (like $e$) satisfies no polynomial relation."
     },
     {
       "id": "euler-identity",
@@ -194,7 +194,7 @@
     {
       "id": "sqrt2-irrational",
       "relationship": "foundational",
-      "description": "The irrationality of √2 is the simplest impossibility result about number expressibility. Transcendence of e is strictly"
+      "description": "The irrationality of √2 is the simplest impossibility result about number expressibility. Transcendence of e is strictly stronger: irrational → algebraically irrational → transcendental"
     }
   ],
   "references": [

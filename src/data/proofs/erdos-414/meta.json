@@ -185,7 +185,7 @@
     {
       "id": "collatz-structured",
       "relationship": "related",
-      "description": "Both study iterated function dynamics on integers asking whether all orbits merge; unlike Collatz, h is strictly increasing, eliminating cycle complications"
+      "description": "Both study iterated function dynamics on integers: Collatz iterates $n \\mapsto 3n+1$ or $n/2$, while #414 iterates $n \\mapsto n + \\tau(n)$. Both ask whether all orbits merge. Unlike Collatz, $h$ is strictly increasing, eliminating cycle complications"
     },
     {
       "id": "erdos-413",
@@ -195,7 +195,7 @@
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "The divisor function tau(n) = prod(e_i + 1) is defined via unique prime factorization; orbit coalescence requires controlling how tau transforms the factorization at each step"
+      "description": "The divisor function $\\tau(n) = \\prod (e_i + 1)$ is defined via unique prime factorization $n = p_1^{e_1} \\cdots p_k^{e_k}$. Understanding when $h^i(m) = h^j(n)$ (orbit coalescence) requires controlling how $\\tau$ transforms the prime factorization structure at each step"
     },
     {
       "id": "prime-number-theorem",

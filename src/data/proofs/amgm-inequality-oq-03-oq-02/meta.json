@@ -263,7 +263,7 @@
     {
       "id": "amgm-inequality-oq-03",
       "relationship": "extends",
-      "description": "Parent file containing power mean definitions and positive/negative monotonicity — this file establishes the r=0 limit c"
+      "description": "Parent file containing power mean definitions and positive/negative monotonicity — this file establishes the r=0 limit completing the continuous chain"
     },
     {
       "id": "amgm-inequality-oq-03-oq-01",
@@ -278,12 +278,12 @@
     {
       "id": "amgm-inequality-oq-02",
       "relationship": "related",
-      "description": "Maclaurin's inequalities via elementary symmetric polynomials give an alternative chain between AM and GM — this limit r"
+      "description": "Maclaurin's inequalities via elementary symmetric polynomials give an alternative chain between AM and GM — this limit result shows M₀ = GM, the same GM that Maclaurin's chain bounds from a different direction"
     },
     {
       "id": "lhopital",
       "relationship": "related",
-      "description": "The limit uses the same derivative-based approach as L'Hopital's rule: f(r)/r → f'(0) when f(0) = 0, formalized via hasD"
+      "description": "The limit uses the same derivative-based approach as L'Hopital's rule: f(r)/r → f'(0) when f(0) = 0, formalized via hasDerivAt_iff_tendsto_slope"
     }
   ],
   "references": [

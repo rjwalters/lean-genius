@@ -241,27 +241,27 @@
     {
       "id": "cantors-theorem",
       "relationship": "generalizes",
-      "description": "Cantor's theorem that |S| < |P(S)| for any set S is the generalization of diagonalization from binary sequences to arbit"
+      "description": "Cantor's theorem that |S| < |P(S)| for any set S is the generalization of diagonalization from binary sequences to arbitrary sets. The diagonal argument is the special case S = ℕ."
     },
     {
       "id": "continuum-hypothesis",
       "relationship": "motivates",
-      "description": "Diagonalization proves |ℕ| < |ℝ|, but leaves open whether any cardinality lies between them. The Continuum Hypothesis (i"
+      "description": "Diagonalization proves |ℕ| < |ℝ|, but leaves open whether any cardinality lies between them. The Continuum Hypothesis (independent of ZFC) addresses exactly this gap."
     },
     {
       "id": "halting-problem",
       "relationship": "technique",
-      "description": "Turing's proof of the halting problem (1936) uses the same diagonal construction: assume a program H decides halting, th"
+      "description": "Turing's proof of the halting problem (1936) uses the same diagonal construction: assume a program H decides halting, then build a program D that does the opposite of what H predicts for D — a direct analogue of flipping the diagonal bit."
     },
     {
       "id": "godel-incompleteness",
       "relationship": "technique",
-      "description": "Gödel's incompleteness theorems (1931) use diagonalization via self-referential sentences: 'This statement is not provab"
+      "description": "Gödel's incompleteness theorems (1931) use diagonalization via self-referential sentences: 'This statement is not provable.' The diagonal construction of unprovable truths parallels Cantor's construction of unlisted sequences."
     },
     {
       "id": "schroeder-bernstein",
       "relationship": "complementary",
-      "description": "The Schröder-Bernstein theorem (injections in both directions imply bijection) provides the positive tool for establishi"
+      "description": "The Schröder-Bernstein theorem (injections in both directions imply bijection) provides the positive tool for establishing cardinality equalities, while Cantor's diagonal argument provides the negative tool for establishing strict inequalities. Together they form the complete toolkit for comparing infinite cardinalities."
     }
   ],
   "alternativeInterpretation": {

@@ -201,17 +201,17 @@
     {
       "id": "szemeredi-regularity",
       "relationship": "foundational",
-      "description": "Provides the core definitions (edge density, epsilon-regularity, regular partition, partition energy) imported by the re"
+      "description": "Provides the core definitions (edge density, epsilon-regularity, regular partition, partition energy) imported by the regularity lemma proof, which uses the energy increment argument to establish existence of regular partitions"
     },
     {
       "id": "szemeredi-counting",
       "relationship": "foundational",
-      "description": "Provides the core definitions imported by the counting and triangle removal lemmas, which use epsilon-regularity to coun"
+      "description": "Provides the core definitions imported by the counting and triangle removal lemmas, which use epsilon-regularity to count subgraph copies in regular pairs"
     },
     {
       "id": "szemeredi-full",
       "relationship": "foundational",
-      "description": "The full Szemerédi theorem on arithmetic progressions depends on the regularity pipeline that begins with these core def"
+      "description": "The full Szemerédi theorem on arithmetic progressions depends on the regularity pipeline that begins with these core definitions"
     },
     {
       "id": "szemeredi-theorem",

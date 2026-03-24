@@ -185,22 +185,22 @@
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "Unique prime factorization gives meaning to ω(n) (the number of distinct prime factors). The problem asks about the join"
+      "description": "Unique prime factorization gives meaning to ω(n) (the number of distinct prime factors). The problem asks about the joint distribution of ω(n), ω(n+1), ..., ω(n+k), which depends on the multiplicative structure guaranteed by the FTA"
     },
     {
       "id": "infinitude-primes",
       "relationship": "foundational",
-      "description": "The infinitude of primes means ω(n) can grow without bound (for n with many small prime factors). The Hardy-Ramanujan th"
+      "description": "The infinitude of primes means ω(n) can grow without bound (for n with many small prime factors). The Hardy-Ramanujan theorem shows the typical growth is log log n, making the problem's linear bound in k a natural question"
     },
     {
       "id": "bounded-prime-gaps",
       "relationship": "related",
-      "description": "Both concern the local distribution of prime-related quantities: bounded prime gaps constrains p_{n+1} - p_n, while this"
+      "description": "Both concern the local distribution of prime-related quantities: bounded prime gaps constrains p_{n+1} - p_n, while this problem constrains ω(n+k) - ω(n) for consecutive integers. Both use sieve methods and density arguments"
     },
     {
       "id": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's postulate ensures a prime in every interval (n, 2n], constraining the distribution of prime factors among con"
+      "description": "Bertrand's postulate ensures a prime in every interval (n, 2n], constraining the distribution of prime factors among consecutive integers. This affects the growth of ω(n+k) since integers near primes have fewer prime factors"
     },
     {
       "id": "euler-totient",

@@ -213,7 +213,7 @@
     {
       "id": "ramseys-theorem",
       "relationship": "foundational",
-      "description": "The Erdős-Rogers function $f(n)$ is deeply connected to Ramsey numbers $R(3,k) = \\Theta(k^2/\\log k)$ (Kim 1995). Finding"
+      "description": "The Erdős-Rogers function $f(n)$ is deeply connected to Ramsey numbers $R(3,k) = \\Theta(k^2/\\log k)$ (Kim 1995). Finding large triangle-free induced subgraphs in $K_4$-free graphs generalizes finding large independent sets — the key Ramsey-theoretic operation"
     },
     {
       "id": "szemeredi-regularity",
@@ -223,7 +223,7 @@
     {
       "id": "erdos-1104",
       "relationship": "related",
-      "description": "Both concern chromatic structure in triangle-free graphs: #1104 studies maximum chromatic number of triangle-free graphs"
+      "description": "Both concern chromatic structure in triangle-free graphs: #1104 studies maximum chromatic number of triangle-free graphs, while #620 finds large triangle-free induced subgraphs in $K_4$-free graphs. Both are constrained by Ramsey-type bounds"
     },
     {
       "id": "erdos-1010",
@@ -233,7 +233,7 @@
     {
       "id": "erdos-1155",
       "relationship": "thematic",
-      "description": "Both concern graph processes and structure: #1155 studies the triangle removal process (randomly removing triangles), wh"
+      "description": "Both concern graph processes and structure: #1155 studies the triangle removal process (randomly removing triangles), while #620 studies finding triangle-free substructures in clique-free graphs. Both connect to the interplay between local and global triangle structure"
     }
   ],
   "leanFile": {

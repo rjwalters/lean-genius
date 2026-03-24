@@ -186,17 +186,17 @@
     {
       "id": "sophie-germain",
       "relationship": "related",
-      "description": "Sophie Germain primes > 3 satisfy p ≡ 5 (mod 6); Dirichlet's theorem guarantees infinitely many primes in this residue c"
+      "description": "Sophie Germain primes > 3 satisfy p ≡ 5 (mod 6); Dirichlet's theorem guarantees infinitely many primes in this residue class"
     },
     {
       "id": "infinitude-primes",
       "relationship": "generalizes",
-      "description": "Dirichlet's theorem vastly generalizes Euclid's infinitude of primes by proving infinitude within each coprime residue c"
+      "description": "Dirichlet's theorem vastly generalizes Euclid's infinitude of primes by proving infinitude within each coprime residue class"
     },
     {
       "id": "fermats-last-theorem",
       "relationship": "related",
-      "description": "Sophie Germain's work on FLT relied on primes in specific residue classes; Dirichlet's theorem guarantees their abundanc"
+      "description": "Sophie Germain's work on FLT relied on primes in specific residue classes; Dirichlet's theorem guarantees their abundance"
     },
     {
       "id": "chinese-remainder-non-coprime",
@@ -206,7 +206,7 @@
     {
       "id": "prime-number-theorem",
       "relationship": "extended-by",
-      "description": "PNT ($\\pi(x) \\sim x/\\ln x$) is the quantitative refinement of the infinitude of primes. Dirichlet's theorem is the equid"
+      "description": "PNT ($\\pi(x) \\sim x/\\ln x$) is the quantitative refinement of the infinitude of primes. Dirichlet's theorem is the equidistribution refinement: primes are not only infinite but spread uniformly across coprime residue classes. PNT for arithmetic progressions ($\\pi(x; q, a) \\sim x/(\\varphi(q) \\ln x)$) combines both, proved via Dirichlet L-functions"
     }
   ],
   "leanFile": {

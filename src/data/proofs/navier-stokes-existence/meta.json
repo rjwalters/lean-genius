@@ -311,12 +311,12 @@
     {
       "id": "navier-stokes",
       "relationship": "complementary",
-      "description": "The main Navier-Stokes formalization defines the equations and basic properties, while this entry focuses specifically o"
+      "description": "The main Navier-Stokes formalization defines the equations and basic properties, while this entry focuses specifically on the Millennium Prize existence and smoothness question — whether smooth solutions exist globally in 3D"
     },
     {
       "id": "yang-mills",
       "relationship": "thematic",
-      "description": "Both are Clay Millennium Prize problems concerning PDEs from physics: Navier-Stokes asks about fluid dynamics regularity"
+      "description": "Both are Clay Millennium Prize problems concerning PDEs from physics: Navier-Stokes asks about fluid dynamics regularity, while Yang-Mills asks about existence of a mass gap in quantum gauge theory — both remain open"
     },
     {
       "id": "poincare-conjecture",
@@ -326,12 +326,12 @@
     {
       "id": "hilbert-19",
       "relationship": "related",
-      "description": "Hilbert's 19th (regularity of variational minimizers) was resolved by De Giorgi-Nash for elliptic PDEs. Navier-Stokes re"
+      "description": "Hilbert's 19th (regularity of variational minimizers) was resolved by De Giorgi-Nash for elliptic PDEs. Navier-Stokes regularity is the analogous open question for parabolic-hyperbolic Navier-Stokes — the methods overlap but the Navier-Stokes nonlinearity poses additional obstacles"
     },
     {
       "id": "hilbert-20",
       "relationship": "related",
-      "description": "Hilbert's 20th (boundary value problem existence) was resolved via Lax-Milgram for elliptic PDEs. Navier-Stokes existenc"
+      "description": "Hilbert's 20th (boundary value problem existence) was resolved via Lax-Milgram for elliptic PDEs. Navier-Stokes existence is the analogous question for incompressible fluid equations — Leray's weak solutions exist but global regularity is unknown"
     }
   ]
 }

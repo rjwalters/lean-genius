@@ -157,7 +157,7 @@
     {
       "id": "ramseys-theorem",
       "relationship": "foundational",
-      "description": "Ramsey theory guarantees unavoidable substructures in large graphs; triangle supersaturation quantifies this by counting"
+      "description": "Ramsey theory guarantees unavoidable substructures in large graphs; triangle supersaturation quantifies this by counting how many triangles are forced when the edge count exceeds the Turán bound. The Kruskal-Katona theorem extends this counting to general cliques"
     },
     {
       "id": "erdos-1010-oq-02",
@@ -167,7 +167,7 @@
     {
       "id": "szemeredi-regularity",
       "relationship": "technique",
-      "description": "The Szemerédi regularity lemma provides the partition machinery underlying the stability method used in the Lovász-Simon"
+      "description": "The Szemerédi regularity lemma provides the partition machinery underlying the stability method used in the Lovász-Simonovits proof. Regularity partitions decompose graphs into quasi-random parts, enabling supersaturation arguments for general subgraph counts"
     }
   ],
   "references": [

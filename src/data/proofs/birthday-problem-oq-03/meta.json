@@ -194,12 +194,12 @@
     {
       "id": "birthday-problem",
       "relationship": "generalizes",
-      "description": "Generalizes from 2-way to k-way coincidences. The classical birthday problem is exactly the k=2 case, and this formaliza"
+      "description": "Generalizes from 2-way to k-way coincidences. The classical birthday problem is exactly the k=2 case, and this formalization proves that equivalence via `hasKWay_two_iff_not_injective`"
     },
     {
       "id": "birthday-problem-oq-02",
       "relationship": "related",
-      "description": "The asymptotic bound formalization complements this combinatorial approach — OQ-02 provides the $\\sqrt{2d \\ln 2} \\approx"
+      "description": "The asymptotic bound formalization complements this combinatorial approach — OQ-02 provides the $\\sqrt{2d \\ln 2} \\approx 22.5$ threshold formula, while this entry provides the exact pigeonhole bound and extends to $k > 2$"
     },
     {
       "id": "ramseys-theorem",
@@ -209,7 +209,7 @@
     {
       "id": "infinitude-primes",
       "relationship": "technique",
-      "description": "Both use counting/contradiction arguments: the generalized pigeonhole bounds fiber sizes, while Euclid's proof bounds th"
+      "description": "Both use counting/contradiction arguments: the generalized pigeonhole bounds fiber sizes, while Euclid's proof bounds the number of primes. The proof structure — assume a bound, sum over components, derive a contradiction — is shared"
     }
   ],
   "references": [

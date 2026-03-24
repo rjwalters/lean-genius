@@ -199,12 +199,12 @@
     {
       "id": "infinitude-primes",
       "relationship": "related",
-      "description": "The infinitude of primes is a prerequisite for understanding coprimality density. Erdős #1149 asks about coprimality alo"
+      "description": "The infinitude of primes is a prerequisite for understanding coprimality density. Erdős #1149 asks about coprimality along the sequence $(n, \\lfloor n^\\alpha \\rfloor)$, where prime factors of $\\lfloor n^\\alpha \\rfloor$ determine the coprimality"
     },
     {
       "id": "prime-number-theorem",
       "relationship": "technique",
-      "description": "The prime number theorem gives the density of primes needed to analyze when $\\gcd(n, \\lfloor n^\\alpha \\rfloor) = 1$. Sie"
+      "description": "The prime number theorem gives the density of primes needed to analyze when $\\gcd(n, \\lfloor n^\\alpha \\rfloor) = 1$. Sieve methods and prime counting estimates are the natural tools for this coprimality problem"
     }
   ],
   "leanFile": {

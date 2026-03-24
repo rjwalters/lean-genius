@@ -300,12 +300,12 @@
     {
       "id": "angle-trisection",
       "relationship": "extends",
-      "description": "Main impossibility proof for angle trisection; OQ02-OQ03 gives the complete constructibility characterization for regula"
+      "description": "Main impossibility proof for angle trisection; OQ02-OQ03 gives the complete constructibility characterization for regular polygons"
     },
     {
       "id": "angle-trisection-oq-02",
       "relationship": "extends",
-      "description": "OQ02 proves the Galois criterion (α constructible ↔ Gal is 2-group); OQ02-OQ03 applies it to cos(2π/n) to characterize c"
+      "description": "OQ02 proves the Galois criterion (α constructible ↔ Gal is 2-group); OQ02-OQ03 applies it to cos(2π/n) to characterize constructible polygons"
     },
     {
       "id": "angle-trisection-oq-02-oq-01",
@@ -315,12 +315,12 @@
     {
       "id": "combinations-formula",
       "relationship": "related",
-      "description": "The combinations formula underpins binomial coefficient computations; Euler's totient involves counting coprime residues"
+      "description": "The combinations formula underpins binomial coefficient computations; Euler's totient involves counting coprime residues, a related combinatorial object"
     },
     {
       "id": "abel-ruffini",
       "relationship": "related",
-      "description": "Both link impossibility results to Galois group structure: Abel-Ruffini via solvability (S₅ not solvable), Gauss-Wantzel"
+      "description": "Both link impossibility results to Galois group structure: Abel-Ruffini via solvability (S₅ not solvable), Gauss-Wantzel via 2-groups ((ℤ/nℤ)* not always a 2-group)"
     }
   ],
   "leanFile": {

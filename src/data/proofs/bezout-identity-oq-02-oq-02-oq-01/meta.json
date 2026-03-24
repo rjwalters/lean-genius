@@ -258,7 +258,7 @@
     {
       "id": "bezout-identity",
       "relationship": "extends",
-      "description": "Root formalization of Bézout's identity; this entry extends it with a constructive divisibility algorithm using the Bézo"
+      "description": "Root formalization of Bézout's identity; this entry extends it with a constructive divisibility algorithm using the Bézout coefficients"
     },
     {
       "id": "bezout-identity-oq-02",
@@ -268,17 +268,17 @@
     {
       "id": "bezout-identity-oq-02-oq-02",
       "relationship": "extends",
-      "description": "Direct parent in the open question chain: generalizes Euclid's lemma to commutative rings. This entry adds the construct"
+      "description": "Direct parent in the open question chain: generalizes Euclid's lemma to commutative rings. This entry adds the constructive quotient computation"
     },
     {
       "id": "bezout-identity-oq-03",
       "relationship": "sibling",
-      "description": "Sibling open question from the Bézout identity chain, exploring different extensions of the core identity — together the"
+      "description": "Sibling open question from the Bézout identity chain, exploring different extensions of the core identity — together these entries map the space of constructive number-theoretic algorithms derivable from the extended Euclidean algorithm"
     },
     {
       "id": "chinese-remainder-constructive",
       "relationship": "related",
-      "description": "Both use the extended Euclidean algorithm constructively: CRT for simultaneous congruences, this for explicit quotient e"
+      "description": "Both use the extended Euclidean algorithm constructively: CRT for simultaneous congruences, this for explicit quotient extraction"
     }
   ],
   "references": [

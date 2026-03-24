@@ -109,7 +109,7 @@
     {
       "id": "harmonic-divergence",
       "relationship": "foundational",
-      "description": "The divergence of the harmonic series is the necessary condition ensuring enough reciprocal sum is available from any ta"
+      "description": "The divergence of the harmonic series is the necessary condition ensuring enough reciprocal sum is available from any tail of N. Without this, the target sum 1 might be unreachable from large intervals."
     },
     {
       "id": "geometric-series",
@@ -119,7 +119,7 @@
     {
       "id": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's postulate guarantees primes in [n,2n], relevant to the Hickerson-Montgomery construction which uses intervals"
+      "description": "Bertrand's postulate guarantees primes in [n,2n], relevant to the Hickerson-Montgomery construction which uses intervals near powers of 2. Prime locations constrain which intervals can achieve exact rational sums."
     }
   ],
   "leanFile": {

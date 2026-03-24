@@ -180,7 +180,7 @@
     {
       "id": "erdos-907",
       "relationship": "thematic",
-      "description": "Erdős #907 (Decomposition of Functions with Continuous Differences) concerns functions where f(x+h) - f(x) is continuous"
+      "description": "Erdős #907 (Decomposition of Functions with Continuous Differences) concerns functions where f(x+h) - f(x) is continuous for every fixed h. Like the Kemperman inequality, a condition on second-order difference expressions forces a global structural conclusion (decomposition as continuous + additive). Both are part of the same cluster of Erdős problems on functional constraints and regularity."
     },
     {
       "id": "erdos-908",
@@ -190,12 +190,12 @@
     {
       "id": "erdos-1122",
       "relationship": "related",
-      "description": "Erdős #1122 (Additive Functions and Monotonicity Defects) asks when an additive arithmetic function f : ℕ → ℝ satisfying"
+      "description": "Erdős #1122 (Additive Functions and Monotonicity Defects) asks when an additive arithmetic function f : ℕ → ℝ satisfying f(n+1) < f(n) only rarely must equal c·log(n). The parallel with #1125 is notable: both problems characterize monotonicity (or its defect) for functions satisfying algebraic difference conditions, and both connect functional-equation techniques to classical analysis."
     },
     {
       "id": "lebesgue-measure",
       "relationship": "foundational",
-      "description": "Lebesgue measure is the foundation for Kemperman's 1969 partial result: measurability of f (in the Lebesgue sense) was t"
+      "description": "Lebesgue measure is the foundation for Kemperman's 1969 partial result: measurability of f (in the Lebesgue sense) was the original hypothesis required to conclude monotonicity. Laczkovich's 1984 theorem removes this assumption, but understanding why measurability suffices — and why it is not necessary — requires the theory of Lebesgue null sets and the existence of non-measurable functions via the Axiom of Choice."
     }
   ],
   "references": [

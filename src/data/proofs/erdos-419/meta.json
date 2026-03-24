@@ -258,12 +258,12 @@
     {
       "id": "erdos-415",
       "relationship": "related-problem",
-      "description": "Also studies consecutive arithmetic function values. Erdős #415 examines ordering patterns of τ(n), τ(n+1), τ(n+2), whil"
+      "description": "Also studies consecutive arithmetic function values. Erdős #415 examines ordering patterns of τ(n), τ(n+1), τ(n+2), while #419 studies the ratio of consecutive factorial divisor counts."
     },
     {
       "id": "erdos-414",
       "relationship": "related-problem",
-      "description": "Uses the same divisor function τ in the dynamical system h(n) = n + τ(n). Both problems explore how τ interacts with seq"
+      "description": "Uses the same divisor function τ in the dynamical system h(n) = n + τ(n). Both problems explore how τ interacts with sequential structure."
     },
     {
       "id": "kummer-theorem",
@@ -273,12 +273,12 @@
     {
       "id": "erdos-728-factorial-divisibility",
       "relationship": "uses-same-technique",
-      "description": "Both analyze factorial divisibility via p-adic valuations and Legendre's formula, studying how prime factorization of fa"
+      "description": "Both analyze factorial divisibility via p-adic valuations and Legendre's formula, studying how prime factorization of factorials determines divisibility properties."
     },
     {
       "id": "stirling-formula",
       "relationship": "related-problem",
-      "description": "Stirling gives log(n!) ~ n log n; the asymptotics log τ(n!) ~ n log n / log log n involve an extra log log n factor from"
+      "description": "Stirling gives log(n!) ~ n log n; the asymptotics log τ(n!) ~ n log n / log log n involve an extra log log n factor from the prime structure of n!."
     }
   ],
   "references": [

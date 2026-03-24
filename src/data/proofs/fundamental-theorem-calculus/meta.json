@@ -185,22 +185,22 @@
     {
       "id": "area-of-circle",
       "relationship": "foundational",
-      "description": "The area of a circle A = πr² can be derived via FTC by integrating the circumference function 2πr from 0 to R. FTC provi"
+      "description": "The area of a circle A = πr² can be derived via FTC by integrating the circumference function 2πr from 0 to R. FTC provides the rigorous foundation for computing areas via integration"
     },
     {
       "id": "basel-problem",
       "relationship": "related",
-      "description": "The Basel identity ∑1/n² = π²/6 is proved via Fourier analysis which relies on integration theory built on FTC. Parseval"
+      "description": "The Basel identity ∑1/n² = π²/6 is proved via Fourier analysis which relies on integration theory built on FTC. Parseval's identity uses integrals that FTC makes computable"
     },
     {
       "id": "euler-identity",
       "relationship": "related",
-      "description": "Euler's formula e^(ix) = cos(x) + i·sin(x) is proved via Taylor series of exp, which are defined using the derivatives t"
+      "description": "Euler's formula e^(ix) = cos(x) + i·sin(x) is proved via Taylor series of exp, which are defined using the derivatives that FTC relates to integrals"
     },
     {
       "id": "intermediate-value-theorem",
       "relationship": "foundational",
-      "description": "IVT is used in the proof of FTC Part I: the antiderivative $F(x) = \\int_a^x f(t)\\,dt$ is continuous by construction, and"
+      "description": "IVT is used in the proof of FTC Part I: the antiderivative $F(x) = \\int_a^x f(t)\\,dt$ is continuous by construction, and IVT guarantees that continuous functions on intervals attain intermediate values — a key property used in the proof that $F'(x) = f(x)$ for continuous $f$"
     },
     {
       "id": "mean-value-theorem",

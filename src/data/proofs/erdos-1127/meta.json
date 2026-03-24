@@ -178,17 +178,17 @@
     {
       "id": "continuum-hypothesis",
       "relationship": "foundational",
-      "description": "The Continuum Hypothesis is the central set-theoretic axiom on which the entire #1127 result depends. Erdős-Kakutani pro"
+      "description": "The Continuum Hypothesis is the central set-theoretic axiom on which the entire #1127 result depends. Erdős-Kakutani proved that CH is not merely sufficient but EQUIVALENT to ℝ being a countable union of ℚ-linearly independent sets — making this a rare case where an independence result (CH undecidable in ZFC) completely governs a geometric decomposition problem."
     },
     {
       "id": "cantors-theorem",
       "relationship": "thematic",
-      "description": "Cantor's theorem |S| < |P(S)| establishes the cardinal hierarchy that makes CH meaningful. The countable decomposition i"
+      "description": "Cantor's theorem |S| < |P(S)| establishes the cardinal hierarchy that makes CH meaningful. The countable decomposition in #1127 exploits the gap between ℵ₀ and 2^ℵ₀ (the continuum): under CH these two cardinalities are adjacent (ℵ₁ = 2^ℵ₀), providing just enough transfinite structure to index the ℚ-linearly independent pieces."
     },
     {
       "id": "erdos-1128",
       "relationship": "sibling-problem",
-      "description": "Both #1127 and #1128 are Erdős-Hajnal problems resolved through set-theoretic methods at the level of ℵ₁. #1128 asks whe"
+      "description": "Both #1127 and #1128 are Erdős-Hajnal problems resolved through set-theoretic methods at the level of ℵ₁. #1128 asks whether ℵ₁³ → (ℵ₀)³₂ (disproved by Prikry-Mills 1978), while #1127 uses CH to partition ℝⁿ (cardinality 2^ℵ₀ = ℵ₁ under CH) into countably many geometrically structured sets. Both illustrate how cardinal arithmetic governs infinite combinatorics."
     },
     {
       "id": "erdos-97",

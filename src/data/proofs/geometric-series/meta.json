@@ -254,12 +254,12 @@
     {
       "id": "harmonic-divergence",
       "relationship": "contrasts",
-      "description": "The geometric series $\\sum r^n$ converges for $|r| < 1$, while the harmonic series $\\sum 1/n$ diverges despite its terms"
+      "description": "The geometric series $\\sum r^n$ converges for $|r| < 1$, while the harmonic series $\\sum 1/n$ diverges despite its terms approaching zero. Together they illustrate the boundary between convergent and divergent series — the harmonic series is the 'limit case' where the ratio between consecutive terms approaches 1 (from below), exactly the geometric series threshold"
     },
     {
       "id": "basel-problem",
       "relationship": "related",
-      "description": "The Basel series $\\sum 1/n^2 = \\pi^2/6$ generalizes from geometric to Dirichlet series. The geometric series $1/(1-r)$ i"
+      "description": "The Basel series $\\sum 1/n^2 = \\pi^2/6$ generalizes from geometric to Dirichlet series. The geometric series $1/(1-r)$ is the simplest power series with a pole, while the Basel problem connects infinite series to $\\pi$ via the Weierstrass product for $\\sin(\\pi z)/\\pi z$"
     },
     {
       "id": "arithmetic-series",
@@ -274,7 +274,7 @@
     {
       "id": "taylor-theorem",
       "relationship": "foundational",
-      "description": "The geometric series $\\sum r^k = 1/(1-r)$ is the Taylor expansion of $f(r) = (1-r)^{-1}$ at $r = 0$. Taylor's theorem gu"
+      "description": "The geometric series $\\sum r^k = 1/(1-r)$ is the Taylor expansion of $f(r) = (1-r)^{-1}$ at $r = 0$. Taylor's theorem guarantees that any analytic function has a power series expansion, with the geometric series being the prototypical example — its radius of convergence $|r| < 1$ is determined by the nearest singularity at $r = 1$"
     }
   ],
   "leanFile": {

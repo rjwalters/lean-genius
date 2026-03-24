@@ -163,12 +163,12 @@
     {
       "id": "erdos-1009",
       "relationship": "foundational",
-      "description": "Erdős #1009 asks about edge-disjoint triangles in graphs with more than n²/4 edges—precisely the structural ingredient t"
+      "description": "Erdős #1009 asks about edge-disjoint triangles in graphs with more than n²/4 edges—precisely the structural ingredient the Győri-Keszegh theorem uses to lower f(n,k) in the K₄-free case of Problem #1017."
     },
     {
       "id": "erdos-1010",
       "relationship": "complementary",
-      "description": "Erdős #1010 studies triangle supersaturation: how many triangles must appear when k > n²/4. This supersaturation count d"
+      "description": "Erdős #1010 studies triangle supersaturation: how many triangles must appear when k > n²/4. This supersaturation count directly governs how much the clique partition number f(n,k) can decrease below ⌊n²/4⌋ in dense graphs."
     },
     {
       "id": "ramseys-theorem",
@@ -178,12 +178,12 @@
     {
       "id": "erdos-1015",
       "relationship": "thematic",
-      "description": "Erdős #1015 partitions edges of 2-colored complete graphs into monochromatic cliques, sharing the same edge-partition fr"
+      "description": "Erdős #1015 partitions edges of 2-colored complete graphs into monochromatic cliques, sharing the same edge-partition framework and complete-bipartite extremal example that appears in Problem #1017."
     },
     {
       "id": "szemeredi-regularity",
       "relationship": "complementary",
-      "description": "The Szemerédi Regularity Lemma is a key tool in modern extremal graph theory for problems about dense graphs. Approaches"
+      "description": "The Szemerédi Regularity Lemma is a key tool in modern extremal graph theory for problems about dense graphs. Approaches to the general case of Problem #1017 beyond the K₄-free regime are expected to require regularity-based techniques."
     }
   ],
   "references": [

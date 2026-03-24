@@ -246,7 +246,7 @@
     {
       "id": "pythagorean-theorem",
       "relationship": "extends",
-      "description": "The Pythagorean theorem establishes a^2 + b^2 = c^2; this entry counts how many primitive solutions exist with c <= N, g"
+      "description": "The Pythagorean theorem establishes a^2 + b^2 = c^2; this entry counts how many primitive solutions exist with c <= N, giving the asymptotic density N/(2pi)"
     },
     {
       "id": "infinitude-primes",
@@ -256,7 +256,7 @@
     {
       "id": "euler-totient",
       "relationship": "related",
-      "description": "Euler's totient function underlies the coprimality analysis: the density of coprime pairs in the lattice point count use"
+      "description": "Euler's totient function underlies the coprimality analysis: the density of coprime pairs in the lattice point count uses Euler products over primes"
     }
   ],
   "references": [

@@ -256,27 +256,27 @@
     {
       "id": "erdos-340",
       "relationship": "extends",
-      "description": "This infrastructure module provides the full Sidon set library (definitions, closure, counting, bounds) for the main Erd"
+      "description": "This infrastructure module provides the full Sidon set library (definitions, closure, counting, bounds) for the main Erdos #340 problem entry"
     },
     {
       "id": "erdos-44",
       "relationship": "foundational",
-      "description": "Erdos #44 concerns Sidon sets (B2 sequences) — this module's IsSidon definition, subset closure, and counting infrastruc"
+      "description": "Erdos #44 concerns Sidon sets (B2 sequences) — this module's IsSidon definition, subset closure, and counting infrastructure directly support that formalization"
     },
     {
       "id": "erdos-1",
       "relationship": "thematic",
-      "description": "Both are foundational results in additive combinatorics: Erdos #1 (Erdos-Ginzburg-Ziv, zero-sum subsequences) constrains"
+      "description": "Both are foundational results in additive combinatorics: Erdos #1 (Erdos-Ginzburg-Ziv, zero-sum subsequences) constrains sums modulo n, while Sidon sets constrain pairwise sum distinctness"
     },
     {
       "id": "roth-theorem-k3",
       "relationship": "related",
-      "description": "Roth's theorem (dense sets contain 3-term APs) is complementary: Sidon sets constrain pairwise sums (additive energy zer"
+      "description": "Roth's theorem (dense sets contain 3-term APs) is complementary: Sidon sets constrain pairwise sums (additive energy zero), while AP-free sets constrain arithmetic structure. Both use density/counting arguments to derive upper bounds on set size"
     },
     {
       "id": "szemeredi-theorem",
       "relationship": "related",
-      "description": "Szemeredi's theorem (dense sets contain arbitrarily long APs) and Sidon theory represent dual aspects of additive combin"
+      "description": "Szemeredi's theorem (dense sets contain arbitrarily long APs) and Sidon theory represent dual aspects of additive combinatorics: Szemeredi limits how unstructured a dense set can be, while Sidon theory limits how dense an unstructured set can be"
     }
   ]
 }

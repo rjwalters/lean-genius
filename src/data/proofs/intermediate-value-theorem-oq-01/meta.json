@@ -132,12 +132,12 @@
     {
       "id": "intermediate-value-theorem",
       "relationship": "extends",
-      "description": "Constructive companion to the non-constructive IVT. The parent proves $\\exists c, f(c) = 0$; this entry provides an algo"
+      "description": "Constructive companion to the non-constructive IVT. The parent proves $\\exists c, f(c) = 0$; this entry provides an algorithm to approximate $c$ with guaranteed convergence rate."
     },
     {
       "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
       "relationship": "related",
-      "description": "Both entries formalize classical analysis from first principles using Lean 4 automation tactics (nlinarith, linarith, no"
+      "description": "Both entries formalize classical analysis from first principles using Lean 4 automation tactics (nlinarith, linarith, norm_num, ring)."
     }
   ],
   "leanFile": {

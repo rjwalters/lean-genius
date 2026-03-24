@@ -262,7 +262,7 @@
     {
       "id": "erdos-4",
       "relationship": "related",
-      "description": "Erdős #4 asks about large prime gaps — directly relevant since #680 reduces to prime gap bounds. The Maynard-Tao theorem"
+      "description": "Erdős #4 asks about large prime gaps — directly relevant since #680 reduces to prime gap bounds. The Maynard-Tao theorem (2016) on large gaps provides partial context for understanding when $p(n+k)$ can be large."
     },
     {
       "id": "prime-number-theorem",
@@ -272,7 +272,7 @@
     {
       "id": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's postulate guarantees a prime in $(n, 2n]$, giving a weak version of the prime gap bound needed for #680: with"
+      "description": "Bertrand's postulate guarantees a prime in $(n, 2n]$, giving a weak version of the prime gap bound needed for #680: with $k \\le n$ and $n + k$ prime, we need $k^2 + 1 < n + k$, which holds for $k \\le \\sqrt{n}$."
     },
     {
       "id": "infinitude-primes",
@@ -282,7 +282,7 @@
     {
       "id": "erdos-648",
       "relationship": "related",
-      "description": "Erdős #648 studies the greatest prime factor $P(n)$ while #680 studies the least prime factor $p(n)$. They are dual pers"
+      "description": "Erdős #648 studies the greatest prime factor $P(n)$ while #680 studies the least prime factor $p(n)$. They are dual perspectives on the same arithmetic function: the prime factorization structure of integers near $n$."
     }
   ]
 }

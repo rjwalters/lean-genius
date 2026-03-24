@@ -155,12 +155,12 @@
     {
       "id": "halting-problem",
       "relationship": "foundational",
-      "description": "H10 undecidability is proved by reduction from the halting problem; the halting problem proof is embedded in this formal"
+      "description": "H10 undecidability is proved by reduction from the halting problem; the halting problem proof is embedded in this formalization"
     },
     {
       "id": "godel-incompleteness",
       "relationship": "thematic",
-      "description": "Both demonstrate fundamental limits of formal systems — Gödel shows incompleteness of arithmetic, MRDP shows undecidabil"
+      "description": "Both demonstrate fundamental limits of formal systems — Gödel shows incompleteness of arithmetic, MRDP shows undecidability of Diophantine equations"
     },
     {
       "id": "pell-equation",
@@ -170,7 +170,7 @@
     {
       "id": "abel-ruffini",
       "relationship": "thematic",
-      "description": "Abel-Ruffini (1824) pioneered the impossibility-proof paradigm for polynomial equations: no radical formula solves all q"
+      "description": "Abel-Ruffini (1824) pioneered the impossibility-proof paradigm for polynomial equations: no radical formula solves all quintics, because the Galois group $S_5$ is not solvable. Matiyasevich (1970) proved the analogous impossibility for Diophantine equations: no algorithm decides all integer polynomial systems. Both reveal fundamental limits on 'solving' polynomial equations within a given formal framework"
     }
   ],
   "references": [

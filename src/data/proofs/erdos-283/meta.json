@@ -213,22 +213,22 @@
     {
       "id": "sum-of-kth-powers",
       "relationship": "related",
-      "description": "Waring's problem asks about representing integers as sums of k-th powers, directly related to this problem which asks ab"
+      "description": "Waring's problem asks about representing integers as sums of k-th powers, directly related to this problem which asks about sums of polynomial values subject to an Egyptian fraction constraint"
     },
     {
       "id": "lagrange-four-squares",
       "relationship": "related",
-      "description": "Lagrange's four squares theorem (every positive integer is a sum of four squares) is the k=2 case of Waring's problem. T"
+      "description": "Lagrange's four squares theorem (every positive integer is a sum of four squares) is the k=2 case of Waring's problem. This Erdős problem generalizes by requiring the summands' indices to satisfy an Egyptian fraction condition"
     },
     {
       "id": "harmonic-divergence",
       "relationship": "foundational",
-      "description": "The divergence of the harmonic series Σ 1/n connects to Egyptian fractions: partial sums of 1/n can approximate any posi"
+      "description": "The divergence of the harmonic series Σ 1/n connects to Egyptian fractions: partial sums of 1/n can approximate any positive rational, and the density of Egyptian fraction representations depends on harmonic series asymptotics"
     },
     {
       "id": "binomial-theorem",
       "relationship": "related",
-      "description": "The binomial theorem provides polynomial identities used in analyzing polynomial values p(n). When p(x) = x^k, the numbe"
+      "description": "The binomial theorem provides polynomial identities used in analyzing polynomial values p(n). When p(x) = x^k, the number of representations relates to Waring's problem via binomial coefficient identities"
     }
   ]
 }

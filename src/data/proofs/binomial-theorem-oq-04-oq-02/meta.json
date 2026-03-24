@@ -145,12 +145,12 @@
     {
       "id": "binomial-theorem-oq-04",
       "relationship": "extends",
-      "description": "Parent entry proving Vandermonde via Nat.add_choose_eq — this file provides the algebraic proof via polynomial coefficie"
+      "description": "Parent entry proving Vandermonde via Nat.add_choose_eq — this file provides the algebraic proof via polynomial coefficient comparison, a conceptually different approach"
     },
     {
       "id": "binomial-theorem",
       "relationship": "uses",
-      "description": "The coefficient extraction (1+X)^n has r-th coefficient C(n,r) is the binomial theorem — the algebraic proof of Vandermo"
+      "description": "The coefficient extraction (1+X)^n has r-th coefficient C(n,r) is the binomial theorem — the algebraic proof of Vandermonde is essentially a consequence"
     },
     {
       "id": "combinations-formula",

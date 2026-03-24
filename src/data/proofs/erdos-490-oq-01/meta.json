@@ -193,7 +193,7 @@
     {
       "id": "erdos-490",
       "relationship": "parent",
-      "description": "Parent problem — this OQ investigates whether the normalized maximum product size has a limit"
+      "description": "Open question derived from Erdős #490; this OQ investigates the limit of the normalized maximum product size"
     },
     {
       "id": "infinitude-primes",
@@ -203,22 +203,22 @@
     {
       "id": "harmonic-divergence",
       "relationship": "related",
-      "description": "The divergence of ∑ 1/p underlies the log N factor in Szemerédi's bound"
+      "description": "The divergence of $\\sum 1/p$ underlies the $\\log N$ factor in Szemerédi's bound on distinct product pairs"
     },
     {
       "id": "erdos-262",
       "relationship": "related",
-      "description": "Sidon sets (distinct pairwise sums) are the additive analogue of the distinct products condition"
+      "description": "Erdős #262 on Sidon sets (distinct pairwise sums) is the additive analogue of the distinct products condition — both ask how large a set can be while maintaining injectivity of a binary operation on pairs"
     },
     {
       "id": "prime-number-theorem",
       "relationship": "foundational",
-      "description": "PNT provides the asymptotic prime count that establishes the lower bound construction"
+      "description": "The prime number theorem $\\pi(N) \\sim N/\\log N$ provides the asymptotic count of primes in $(N/2, N]$ that makes the optimal lower bound construction work — without PNT, the lower bound $c \\cdot N^2/\\log N$ could not be established"
     },
     {
       "id": "bertrands-postulate",
       "relationship": "foundational",
-      "description": "Guarantees primes in (N/2, N], ensuring the lower bound construction is non-vacuous"
+      "description": "Bertrand's postulate guarantees at least one prime in $(N/2, N]$ for all $N > 1$, ensuring the lower bound construction is non-vacuous. The prime number theorem strengthens this to $\\sim N/(2\\log N)$ primes in the interval"
     }
   ]
 }

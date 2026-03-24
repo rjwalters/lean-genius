@@ -174,12 +174,12 @@
     {
       "id": "bezout-identity-oq-02",
       "relationship": "extends",
-      "description": "Parent entry proving Euclid's lemma from Bézout — this file completes the chain by deriving the Fundamental Theorem of A"
+      "description": "Parent entry proving Euclid's lemma from Bézout — this file completes the chain by deriving the Fundamental Theorem of Arithmetic from Euclid's lemma"
     },
     {
       "id": "bezout-identity",
       "relationship": "ancestor",
-      "description": "The original Bézout identity gcd(a,b) = ax + by — the start of the chain Bézout → Euclid's Lemma → FTA that this file co"
+      "description": "The original Bézout identity gcd(a,b) = ax + by — the start of the chain Bézout → Euclid's Lemma → FTA that this file completes"
     },
     {
       "id": "fundamental-arithmetic",
@@ -189,7 +189,7 @@
     {
       "id": "infinitude-primes",
       "relationship": "extended-by",
-      "description": "The infinity of primes (no_finite_list_contains_all_primes) is proved here as a corollary of FTA, complementing Euclid's"
+      "description": "The infinity of primes (no_finite_list_contains_all_primes) is proved here as a corollary of FTA, complementing Euclid's original proof"
     }
   ],
   "references": [

@@ -159,7 +159,7 @@
     {
       "id": "erdos-384",
       "relationship": "strengthens",
-      "description": "Problem 1094 strengthens Problem 384 by bounding the *least* prime factor, not just requiring existence of a small prime"
+      "description": "Problem 1094 strengthens Problem 384 by bounding the *least* prime factor, not just requiring existence of a small prime divisor"
     },
     {
       "id": "erdos-1093",
@@ -174,12 +174,12 @@
     {
       "id": "kummer-theorem",
       "relationship": "technique",
-      "description": "Kummer's theorem on p-adic valuations of binomial coefficients provides the key tool for analyzing which primes divide C"
+      "description": "Kummer's theorem on p-adic valuations of binomial coefficients provides the key tool for analyzing which primes divide C(n,k)"
     },
     {
       "id": "bertrands-postulate",
       "relationship": "foundation",
-      "description": "Bertrand's postulate guarantees primes in [n, 2n], relevant to bounding prime factors in the central binomial coefficien"
+      "description": "Bertrand's postulate guarantees primes in [n, 2n], relevant to bounding prime factors in the central binomial coefficient"
     }
   ],
   "leanFile": {
