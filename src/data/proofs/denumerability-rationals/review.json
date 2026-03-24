@@ -90,42 +90,42 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Reframe originalContributions to honestly reflect pedagogical repackaging. Replace 8 items with 3: multi-perspective formalization, round-trip wrappers, pedagogical documentation. Drop all inferInstance and one-liner alias claims.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "medium",
       "target": "enricher",
       "description": "Remove false Cantor-Bernstein claim from overview.text. The file does not use Schroeder-Bernstein — injection and surjection both come from the same Equiv. Replace with accurate description of complementary formulations.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "low",
       "target": "enricher",
       "description": "Fix historical note in Lean file header (line 38): Cantor used anti-diagonal enumeration (1874), not the diagonal argument (1891).",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "low",
       "target": "enricher",
       "description": "Remove duplicate reference Ca74 (keep Ca74b with note). Update theoremCount from 7 to 9. Change schroeder-bernstein cross-reference relationship from 'uses-same-technique' to 'related-problem'.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",
       "priority": "low",
       "target": "enricher",
       "description": "Fix annotation ranges: extend round-trip annotation endLine to 119 to cover both decode_encode and encode_decode. Extend or split countable-corollary annotation to cover surjection (line 83) and injection (line 90) theorems.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-6",
       "priority": "low",
       "target": "researcher",
       "description": "Remove #check debug lines at end of file (lines 186-189).",
-      "status": "open"
+      "status": "resolved"
     }
   ],
 
