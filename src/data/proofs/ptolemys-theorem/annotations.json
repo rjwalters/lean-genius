@@ -99,11 +99,11 @@
       "startLine": 123,
       "endLine": 128
     },
-    "title": "Diagonal Product from Sides",
+    "title": "Diagonal Product from Sides (Duplicate)",
     "type": "concept",
-    "content": "For a cyclic quadrilateral with known side lengths, the product of diagonals $AC \\cdot BD$ can be computed from the four side lengths alone: $AC \\cdot BD = AB \\cdot CD + BC \\cdot DA$.",
-    "mathContext": "This corollary is the computationally useful form of Ptolemy's theorem. In ancient astronomy, side lengths (angular separations between stars) could be measured directly, but diagonal lengths required trigonometric computation. Ptolemy's theorem eliminated one step. In modern computational geometry, computing the diagonal product from sides avoids taking square roots, which is numerically advantageous. The proof is trivially `ptolemys_theorem_symmetric h hapc hbpd`.",
-    "significance": "key",
+    "content": "**Note**: This theorem (`diagonal_product_from_sides`) is identical to `ptolemys_theorem_symmetric` — same hypotheses (Cospherical, angle conditions), same conclusion, proof body is just `ptolemys_theorem_symmetric h hapc hbpd`. Despite the name suggesting sides-only computation, it still requires the same Cospherical and angle hypotheses. The docstring's claim that diagonal products 'can be computed from the four side lengths alone' is inaccurate — the geometric conditions are not eliminated.",
+    "mathContext": "The statement $AC \\cdot BD = AB \\cdot CD + BC \\cdot DA$ is identical to `ptolemys_theorem_symmetric`. A genuine 'diagonal from sides' theorem would compute diagonal lengths from side lengths and circumradius without angle hypotheses.",
+    "significance": "supporting",
     "relatedConcepts": [
       "diagonal computation",
       "numerical stability",
