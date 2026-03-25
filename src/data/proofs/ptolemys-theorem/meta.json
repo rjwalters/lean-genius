@@ -83,16 +83,16 @@
       "title": "Alternative Formulations",
       "startLine": 88,
       "endLine": 116,
-      "summary": "Three equivalent formulations: diagonals form (same), symmetric form (diagonals on left), and rearranged form (using commutativity of multiplication).",
-      "mathContext": "Three equivalent formulations: diagonals form (same), symmetric form (diagonals on left), and rearranged form (using commutativity of multiplication)."
+      "summary": "Three named variants: `ptolemys_theorem_diagonals` (duplicate of main — flagged for removal), `ptolemys_theorem_symmetric` (LHS/RHS swap via `rw`), and `ptolemys_theorem_rearranged` (`mul_comm` on diagonal product). Only 2 of 3 are mathematically distinct.",
+      "mathContext": "Two genuinely distinct formulations (symmetric and rearranged) plus one exact duplicate (`ptolemys_theorem_diagonals`). The symmetric form is useful when computing diagonal products; the rearranged form swaps factor order."
     },
     {
       "id": "corollaries",
       "title": "Corollaries and Special Cases",
       "startLine": 117,
       "endLine": 129,
-      "summary": "Diagonal product from sides: $AC \\cdot BD = AB \\cdot CD + BC \\cdot DA$ can be computed from the four side lengths alone, eliminating the need for trigonometric computation of diagonals.",
-      "mathContext": "Diagonal product from sides: $AC \\cdot BD = AB \\cdot CD + BC \\cdot DA$ can be computed from the four side lengths alone, eliminating the need for trigonometric computation of diagonals."
+      "summary": "Contains `diagonal_product_from_sides`, which is statement-identical to `ptolemys_theorem_symmetric` (same hypotheses, same conclusion, proof body delegates). Flagged as duplicate by peer review (ai-1). Despite the name suggesting side-length-only computation, the Lean statement still requires `Cospherical` and angle hypotheses.",
+      "mathContext": "The section contains one theorem (`diagonal_product_from_sides`) that duplicates `ptolemys_theorem_symmetric`. Removal recommended — see review.json ai-1."
     },
     {
       "id": "connections",
@@ -171,7 +171,9 @@
     "namespace": null,
     "lineCount": 267,
     "axiomCount": 0,
-    "theoremCount": 3,
+    "theoremCount": 5,
+    "substantiveTheoremCount": 3,
+    "duplicateTheorems": ["ptolemys_theorem_diagonals (= ptolemys_theorem)", "diagonal_product_from_sides (= ptolemys_theorem_symmetric)"],
     "definitionCount": 0
   },
   "references": [

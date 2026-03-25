@@ -78,8 +78,8 @@
     },
     "title": "Alternative Formulations",
     "type": "concept",
-    "content": "Three equivalent statements of Ptolemy: standard form ($AB \\cdot CD + BC \\cdot DA = AC \\cdot BD$), symmetric form (diagonals on left), and rearranged form (using `mul_comm`). All follow from the main theorem by algebraic rewriting.",
-    "mathContext": "The three formulations differ only in the arrangement of terms. The symmetric form $AC \\cdot BD = AB \\cdot CD + BC \\cdot DA$ is natural when computing diagonal products from side lengths. The rearranged form swaps the order of diagonal factors via `mul_comm`. Formally, each requires a separate theorem statement since Lean's definitional equality does not include commutativity. The proofs use `rw [ptolemys_theorem ...]` and `mul_comm`.",
+    "content": "Three named variants after the main theorem: `ptolemys_theorem_diagonals` (character-for-character identical to `ptolemys_theorem` — a duplicate flagged for removal by peer review), `ptolemys_theorem_symmetric` (swaps LHS/RHS via `rw`), and `ptolemys_theorem_rearranged` (applies `mul_comm` to the diagonal product). Only the symmetric and rearranged forms are mathematically distinct from the main theorem.",
+    "mathContext": "The symmetric form $AC \\cdot BD = AB \\cdot CD + BC \\cdot DA$ is natural when computing diagonal products from side lengths. The rearranged form $BD \\cdot AC = AB \\cdot CD + BC \\cdot DA$ swaps the order of diagonal factors via `mul_comm`. Formally, each requires a separate theorem statement since Lean's definitional equality does not include commutativity. The `ptolemys_theorem_diagonals` variant is redundant (identical statement and hypotheses to `ptolemys_theorem`, proof body `ptolemys_theorem h hapc hbpd`) — see review.json ai-1.",
     "significance": "supporting",
     "relatedConcepts": [
       "commutativity",
@@ -99,11 +99,11 @@
       "startLine": 123,
       "endLine": 128
     },
-    "title": "Diagonal Product from Sides",
+    "title": "Diagonal Product from Sides (Duplicate)",
     "type": "concept",
-    "content": "For a cyclic quadrilateral with known side lengths, the product of diagonals $AC \\cdot BD$ can be computed from the four side lengths alone: $AC \\cdot BD = AB \\cdot CD + BC \\cdot DA$.",
-    "mathContext": "This corollary is the computationally useful form of Ptolemy's theorem. In ancient astronomy, side lengths (angular separations between stars) could be measured directly, but diagonal lengths required trigonometric computation. Ptolemy's theorem eliminated one step. In modern computational geometry, computing the diagonal product from sides avoids taking square roots, which is numerically advantageous. The proof is trivially `ptolemys_theorem_symmetric h hapc hbpd`.",
-    "significance": "key",
+    "content": "**Note:** This theorem (`diagonal_product_from_sides`) is statement-identical to `ptolemys_theorem_symmetric` — same hypotheses, same conclusion, proof body is `ptolemys_theorem_symmetric h hapc hbpd`. The docstring claims it 'computes the diagonal product from side lengths', but the Lean statement still requires `Cospherical` and angle hypotheses — it does not eliminate geometric conditions as the name implies. A peer review flagged this as filler; removal is recommended (see review.json ai-1).",
+    "mathContext": "The statement $AC \\cdot BD = AB \\cdot CD + BC \\cdot DA$ is mathematically identical to `ptolemys_theorem_symmetric`. The name 'diagonal_product_from_sides' suggests a stronger result (computing diagonals from sides alone, without angle conditions), but the Lean signature requires `Cospherical` and `∠ a p c = π`, `∠ b p d = π` — all the same hypotheses as the symmetric form.",
+    "significance": "supporting",
     "relatedConcepts": [
       "diagonal computation",
       "numerical stability",
