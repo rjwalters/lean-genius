@@ -121,6 +121,26 @@
       "targetId": "dirichlets-theorem",
       "relationship": "related",
       "description": "Dirichlet's theorem guarantees primes in arithmetic progressions; the 6k±1 structure of twin primes reflects primes in residue classes mod 6"
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "The divergence of $\\sum 1/p$ shows primes are dense enough for the sum to diverge; Brun's theorem shows the analogous sum $\\sum 1/p$ over twin primes converges, quantifying their relative sparsity"
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate guarantees a prime in $(n, 2n)$, ensuring prime gaps grow at most linearly — a weaker but unconditional result compared to the conjectured bounded gaps between twin primes"
+    },
+    {
+      "targetId": "sophie-germain",
+      "relationship": "related",
+      "description": "Sophie Germain primes $p$ where $2p+1$ is also prime share the $p \\equiv 5 \\pmod{6}$ constraint with twin primes — both require the companion number to avoid divisibility by 3"
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "foundational",
+      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ provides a primality characterization; for twin primes $(p, p+2)$, the pair of Wilson congruences constrains $p \\bmod 6$"
     }
   ],
   "conclusion": {

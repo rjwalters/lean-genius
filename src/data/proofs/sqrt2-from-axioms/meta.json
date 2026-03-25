@@ -140,6 +140,31 @@
       "targetId": "gcd-algorithm",
       "relationship": "foundational",
       "description": "The GCD algorithm and the notion of coprimality ($\\gcd(p,q)=1$) are central to the standard proof: if $p^2 = 2q^2$ with $\\gcd(p,q)=1$, then both $p$ and $q$ must be even, contradicting coprimality"
+    },
+    {
+      "targetId": "sqrt2-examples",
+      "relationship": "related",
+      "description": "Companion entry providing concrete computational examples of $\\sqrt{2}$ approximations and decimal expansions, complementing this axiomatic irrationality proof"
+    },
+    {
+      "targetId": "nth-root-irrational",
+      "relationship": "extends",
+      "description": "Generalizes the $\\sqrt{2}$ irrationality proof to $\\sqrt[n]{m}$ for non-perfect-$n$th-powers $m$ — the same parity/divisibility argument extends using unique prime factorization"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The fundamental theorem of arithmetic (unique prime factorization) provides the deeper reason the proof works: $p^2 = 2q^2$ forces $2$ to appear an odd number of times on the right, contradicting the even exponent on the left"
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "The Pythagorean theorem $a^2 + b^2 = c^2$ on a unit right triangle gives $c = \\sqrt{2}$, the original geometric motivation for studying its irrationality — Hippasus discovered incommensurability through this diagonal"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "Both $\\sqrt{2}$ (irrational but algebraic) and $\\pi$ (transcendental) lie outside $\\mathbb{Q}$, but $\\pi$'s transcendence is far stronger — comparing these proofs illustrates the hierarchy: rational $\\subset$ algebraic $\\subset$ real"
     }
   ],
   "references": [

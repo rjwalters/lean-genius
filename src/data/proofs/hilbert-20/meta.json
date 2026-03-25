@@ -166,6 +166,26 @@
       "targetId": "schauder-fixed-point",
       "relationship": "related",
       "description": "Schauder's fixed point theorem is used to prove existence of solutions to nonlinear boundary value problems by converting PDE existence into a fixed point problem in function spaces"
+    },
+    {
+      "targetId": "hilbert-23",
+      "relationship": "related",
+      "description": "Hilbert's 23rd problem on the calculus of variations directly motivates Problem 20: variational problems lead to Euler-Lagrange PDEs whose boundary value solvability is the subject of Problem 20"
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "foundational",
+      "description": "Brouwer's fixed point theorem is the finite-dimensional precursor to Schauder's theorem; together they provide the topological existence machinery underlying nonlinear boundary value problems"
+    },
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "foundational",
+      "description": "The mean value theorem and its generalizations underpin elliptic regularity: harmonic functions satisfy the mean value property, which is the starting point for regularity of solutions to Laplace's equation"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "related",
+      "description": "Lagrange's theorem on subgroup orders reflects the algebraic structure that governs symmetry groups of PDEs; group-theoretic methods classify boundary value problems by their symmetry type"
     }
   ],
   "references": [
