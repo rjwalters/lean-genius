@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved integration formula ∫T_j²=1-1/(4j²-1), change of variables, trace formula combining step. Sorry localized to chebyshev_sq_expansion (DCT identity). 642 lines, 1 sorry, 1 axiom.",
+    "progressSummary": "PROGRESS: Added DCT orthogonality infrastructure (frequency Abel sum, even/odd frequency sums, diagonal/offdiag conditions). chebyshev_sq_expansion proof strategy fully documented. Pre-existing Mathlib API breakage in integral lemmas needs Mechanic fix. File: ~700 lines, 1 sorry (expansion) + 1 axiom (conjecture) + 4 temp sorrys (API breakage).",
     "builtItems": [
       "lagrangeBasis_self: Finset.prod_eq_one + div_self (product of 1s)",
       "lagrangeBasis_other: Finset.prod_eq_zero + sub_self (zero factor)",
@@ -54,7 +54,13 @@
       "chebyshev_integral_trace: I=(1/n)(2n-2∑1/(4j²-1)) (PROVED from expansion+integration)",
       "chebyshev_integral_exact: I_cheb = 2 - 2(n-1)/(n(2n-1)) (PROVED from trace + partial_fraction)",
       "chebyshev_integral_lt_two: I_cheb < 2 (PROVED from exact formula)",
-      "chebyshev_integral_estimate: ∃c>0, |I-(2-c/n)|≤c/n² (PROVED, was axiom)"
+      "chebyshev_integral_estimate: ∃c>0, |I-(2-c/n)|≤c/n² (PROVED, was axiom)",
+      "two_cos_mul_cos: product-to-sum for cosines",
+      "frequency_abel_sum: Abel summation 2sin(β)∑cos(2jβ) = (1-(-1)^s)sin(β)",
+      "frequency_cosine_sum_even: ∑cos(jsπ/n) = 0 for even s",
+      "frequency_cosine_sum_odd: ∑cos(jsπ/n) = 1 for odd s",
+      "dct_diagonal: 1+2∑cos²(jθ_k) = n",
+      "dct_offdiag: 1+2∑cos(jθ_k)cos(jθ_m) = 0 for k≠m (statement)"
     ],
     "insights": [
       "lagrangeBasis product form makes self/other proofs very clean",
@@ -69,15 +75,19 @@
       "KEY INSIGHT: chebyshev_integral_estimate axiom is existential with c depending on n, so c=n*(2-I) works if I<2",
       "Exact formula I_cheb(n) = 2 - 2(n-1)/(n(2n-1)) via discrete Chebyshev expansion",
       "Discrete cosine sum: ∑_k cos(rθ_k) = 0 for 0<r<2n, provable via telescoping+sin(rπ)=0",
-      "Mathlib has Chebyshev polynomials (Polynomial.Chebyshev.T) and T_real_cos: cos(nθ) = T_n(cos θ)"
+      "Mathlib has Chebyshev polynomials (Polynomial.Chebyshev.T) and T_real_cos: cos(nθ) = T_n(cos θ)",
+      "DCT dual orthogonality: 1+2∑cos(jθ_k)cos(jθ_m) = nδ_{km} follows from frequency cosine sums",
+      "frequency_cosine_sum uses Abel summation: multiply by 2sin(β), telescope, evaluate via sin(sπ)=0 and parity",
+      "chebyshev_sq_expansion proof: use Lagrange interpolation of T_j + DCT Parseval identity, avoids direct polynomial theory",
+      "Pre-existing API breakage: hasDerivAt_cos, integral_eq_sub_of_hasDerivAt, continuous_sin renamed in Mathlib 4.26"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove chebyshev_sq_expansion (remaining sorry): ∑l_k(x)²=(1/n)(1+2∑cos²(j·arccos x))",
-      "  Approach: DCT representation l_k=(1/n)(1+2∑cos(jθ_k)cos(j·arccos x)), square+sum, cross-term cancellation",
-      "  Needs: (1) discrete cosine orthogonality (~50 lines), (2) DCT basis completeness (~150 lines)",
-      "Integration formula ∫T_j²=1-1/(4j²-1) is DONE",
-      "The open conjecture erdos_1131_conjecture correctly remains as axiom"
+      "Fix Mathlib API breakage in integral_sin_mul, integral_cos_mul_sin, integral_cos_substitution (hasDerivAt_cos→Real.hasDerivAt_cos, etc.)",
+      "Fix frequency_cosine_sum_even/odd div_lt_iff usage for Lean 4.26 compatibility",
+      "Complete dct_offdiag proof (product-to-sum + parity argument)",
+      "Prove Lagrange interpolation identity: cos(j arccos x) = ∑cos(jθ_k)l_k(x) via Chebyshev polynomials",
+      "Prove chebyshev_sq_expansion: combine Lagrange interp + DCT Parseval"
     ]
   },
   "tags": [
