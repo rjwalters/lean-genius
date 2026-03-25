@@ -86,7 +86,7 @@
       "startLine": 45,
       "endLine": 69,
       "summary": "Definitions of sigma (σ), IsAbundant, IsPseudoperfect, and IsWeird.",
-      "mathContext": "Formal definition: Definitions of sigma (σ), IsAbundant, IsPseudoperfect, and IsWeird."
+      "mathContext": "Definitions of sigma (σ), IsAbundant, IsPseudoperfect, and IsWeird."
     },
     {
       "id": "smallest-weird",
@@ -94,7 +94,7 @@
       "startLine": 70,
       "endLine": 100,
       "summary": "Axioms establishing 70 as abundant, not pseudoperfect, and the smallest weird.",
-      "mathContext": "Axiomatized: Axioms establishing 70 as abundant, not pseudoperfect, and the smallest weird."
+      "mathContext": "Axioms establishing 70 as abundant, not pseudoperfect, and the smallest weird."
     },
     {
       "id": "oeis-sequence",
@@ -102,7 +102,7 @@
       "startLine": 101,
       "endLine": 119,
       "summary": "OEIS A006037 values: 70, 836, 4030, 5830, 7192, 7912, 9272, ...",
-      "mathContext": "Mathematical content: OEIS A006037 values: 70, 836, 4030, 5830, 7192, 7912, 9272, ..."
+      "mathContext": "OEIS A006037 values: 70, 836, 4030, 5830, 7192, 7912, 9272, ..."
     },
     {
       "id": "odd-weird",
@@ -110,7 +110,7 @@
       "startLine": 120,
       "endLine": 161,
       "summary": "Formal statement of the odd weird question with Fang and Liddy-Riedl bounds.",
-      "mathContext": "Bound: Formal statement of the odd weird question with Fang and Liddy-Riedl bounds."
+      "mathContext": "Formal statement of the odd weird question with Fang and Liddy-Riedl bounds."
     },
     {
       "id": "primitive-weird",
@@ -118,7 +118,7 @@
       "startLine": 162,
       "endLine": 204,
       "summary": "Definition of IsPrimitiveWeird, Open Question 2, and seventy_is_primitive_weird proof.",
-      "mathContext": "Formal definition: Definition of IsPrimitiveWeird, Open Question 2, and seventy_is_primitive_weird proof."
+      "mathContext": "Definition of IsPrimitiveWeird, Open Question 2, and seventy_is_primitive_weird proof."
     },
     {
       "id": "conditional-results",
@@ -126,7 +126,7 @@
       "startLine": 207,
       "endLine": 237,
       "summary": "Melfi's conditional infinitude result based on prime gap hypothesis.",
-      "mathContext": "Mathematical content: Melfi's conditional infinitude result based on prime gap hypothesis."
+      "mathContext": "Melfi's conditional infinitude result based on prime gap hypothesis."
     },
     {
       "id": "density",
@@ -134,7 +134,7 @@
       "startLine": 238,
       "endLine": 254,
       "summary": "Benkoski-Erdős theorem: weird numbers have positive asymptotic density.",
-      "mathContext": "Verified: Benkoski-Erdős theorem: weird numbers have positive asymptotic density."
+      "mathContext": "Benkoski-Erdős theorem: weird numbers have positive asymptotic density."
     },
     {
       "id": "detailed-analysis",
@@ -142,7 +142,7 @@
       "startLine": 294,
       "endLine": 320,
       "summary": "Complete analysis of why no subset of 70's proper divisors sums to 70.",
-      "mathContext": "Mathematical content: Complete analysis of why no subset of 70's proper divisors sums to 70."
+      "mathContext": "Complete analysis of why no subset of 70's proper divisors sums to 70."
     },
     {
       "id": "summary",
@@ -150,7 +150,7 @@
       "startLine": 321,
       "endLine": 346,
       "summary": "erdos_470 summary theorem combining key established results.",
-      "mathContext": "Verified: erdos_470 summary theorem combining key established results."
+      "mathContext": "erdos_470 summary theorem combining key established results."
     }
   ],
   "conclusion": {
@@ -194,6 +194,11 @@
       "targetId": "perfect-numbers",
       "relationship": "related",
       "description": "Weird numbers are a refinement of abundant numbers: they are abundant but not pseudoperfect. Perfect numbers satisfy $\\sigma(n) = 2n$, while weird numbers have $\\sigma(n) > 2n$ but no proper subset of divisors summing to $n$. The divisor-sum function $\\sigma$ and its relationship to $2n$ is the common thread"
+    },
+    {
+      "targetId": "perfect-numbers",
+      "relationship": "related",
+      "description": "Weird numbers are abundant but not pseudoperfect: $\\sigma(n) > 2n$ yet no proper subset of divisors sums to $n$. Perfect numbers ($\\sigma(n) = 2n$) are the boundary case — every perfect number is pseudoperfect (the proper divisors sum exactly to $n$), making weird numbers a strict refinement of the abundance hierarchy"
     }
   ]
 }
