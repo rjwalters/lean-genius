@@ -205,40 +205,46 @@
     "opens": [
       "Finset"
     ],
-    "namespace": null,
-    "mainTheorems": [
-      {
-        "name": "ap_diff_subset",
-        "type": "proved",
-        "description": "D(B) ⊆ D(A) for B ⊆ A (monotonicity)"
-      },
-      {
-        "name": "ap_diff_translate",
-        "type": "proved",
-        "description": "D(A + c) = D(A) (translation invariance)"
-      },
-      {
-        "name": "katz_tao_upper",
-        "type": "axiom",
-        "description": "|D(A)| = O(n^{11/6}) (Katz-Tao 1999, incidence geometry)"
-      },
-      {
-        "name": "lemm_lower",
-        "type": "axiom",
-        "description": "|D(A)| = Ω(n^{1.778}) (Lemm 2015, best human lower bound)"
-      },
-      {
-        "name": "chan_equivalence",
-        "type": "axiom",
-        "description": "3-AP exponent = Bourgain sums-differences exponent"
-      },
-      {
-        "name": "current_knowledge",
-        "type": "proved",
-        "description": "Summary: critical exponent lies in (1.778, 11/6]"
-      }
-    ]
+    "namespace": null
   },
+  "mainTheorems": [
+    {
+      "name": "ap_diff_subset",
+      "type": "core",
+      "description": "Monotonicity: D(B) ⊆ D(A) for B ⊆ A — fewer elements means fewer common differences",
+      "leanType": "∀ A B : Finset ℕ, B ⊆ A → apDiffSet B ⊆ apDiffSet A"
+    },
+    {
+      "name": "ap_diff_translate",
+      "type": "core",
+      "description": "Translation invariance: D(A + c) = D(A) — common differences are shift-invariant",
+      "leanType": "∀ A : Finset ℕ, ∀ c : ℕ, apDiffSet (A.map (· + c)) = apDiffSet A"
+    },
+    {
+      "name": "current_knowledge",
+      "type": "core",
+      "description": "Summary theorem: the critical exponent α lies in (1.778, 11/6], packaging the lower and upper bounds",
+      "leanType": "1.778 < α ∧ α ≤ 11/6"
+    },
+    {
+      "name": "katz_tao_upper",
+      "type": "axiom",
+      "description": "|D(A)| = O(n^{11/6}) — Katz-Tao 1999 upper bound via incidence geometry",
+      "leanType": "∃ C, ∀ A : Finset ℕ, |A| = n → |apDiffSet A| ≤ C * n^(11/6)"
+    },
+    {
+      "name": "lemm_lower",
+      "type": "axiom",
+      "description": "|D(A)| = Ω(n^{1.778}) — Lemm 2015, best known lower bound surpassing probabilistic barrier",
+      "leanType": "∃ c > 0, ∀ n, ∃ A : Finset ℕ, |A| = n ∧ |apDiffSet A| ≥ c * n^1.778"
+    },
+    {
+      "name": "chan_equivalence",
+      "type": "axiom",
+      "description": "The 3-AP exponent equals the Bourgain sums-differences exponent — Chan's structural equivalence",
+      "leanType": "apExponent = bourgainExponent"
+    }
+  ],
   "references": [
     {
       "authors": "Katz, Nets Hawk; Tao, Terence",

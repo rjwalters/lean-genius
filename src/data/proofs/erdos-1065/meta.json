@@ -244,40 +244,50 @@
       "Mathlib.Tactic"
     ],
     "opens": [],
-    "namespace": null,
-    "mainTheorems": [
-      {
-        "name": "fourteen_examples_le_100",
-        "type": "verified",
-        "description": "All 14 Form A primes ≤ 100 verified: 3, 5, 7, 11, 13, 23, 29, 41, 47, 53, 59, 83, 89, 97"
-      },
-      {
-        "name": "strict_inclusion_37",
-        "type": "proved",
-        "description": "37 witnesses Form A ⊊ Form B: 37 = 2·3²·2 + 1 is Form B but not Form A"
-      },
-      {
-        "name": "not_form_b_71",
-        "type": "proved",
-        "description": "71 is not Form B: 70 = 2·5·7 has no 2^k·3^l·q factorization with q prime"
-      },
-      {
-        "name": "form_a_implies_b",
-        "type": "proved",
-        "description": "Form A ⊆ Form B via l = 0 specialization"
-      },
-      {
-        "name": "erdos_1065a",
-        "type": "axiom",
-        "description": "Set.Infinite {p prime | ∃ q prime, k : p = 2^k·q + 1}"
-      },
-      {
-        "name": "erdos_1065b",
-        "type": "axiom",
-        "description": "Set.Infinite {p prime | ∃ q prime, k, l : p = 2^k·3^l·q + 1}"
-      }
-    ]
+    "namespace": null
   },
+  "mainTheorems": [
+    {
+      "name": "fourteen_examples_le_100",
+      "type": "verified",
+      "description": "All 14 Form A primes ≤ 100 verified: 3, 5, 7, 11, 13, 23, 29, 41, 47, 53, 59, 83, 89, 97",
+      "leanType": "conjunction of IsTwoTimePrimePlusOne for each prime"
+    },
+    {
+      "name": "form_a_implies_b",
+      "type": "core",
+      "description": "Form A ⊆ Form B: every Form A prime is also Form B, via l = 0 specialization",
+      "leanType": "∀ p, IsTwoTimePrimePlusOne p → IsTwoThreeTimePrimePlusOne p"
+    },
+    {
+      "name": "conjecture_a_implies_b",
+      "type": "core",
+      "description": "Conjecture A implies Conjecture B via Set.Infinite.mono",
+      "leanType": "Set.Infinite {p | IsTwoTimePrimePlusOne p} → Set.Infinite {p | IsTwoThreeTimePrimePlusOne p}"
+    },
+    {
+      "name": "strict_inclusion_37",
+      "type": "supporting",
+      "description": "37 witnesses Form A ⊊ Form B: 37 = 2·3²·2 + 1 is Form B but not Form A"
+    },
+    {
+      "name": "not_form_b_71",
+      "type": "supporting",
+      "description": "71 is not Form B: 70 = 2·5·7 has no 2^k·3^l·q factorization with q prime"
+    },
+    {
+      "name": "erdos_1065a",
+      "type": "axiom",
+      "description": "Conjecture A: infinitely many primes p = 2^k·q + 1",
+      "leanType": "Set.Infinite {p : ℕ | IsTwoTimePrimePlusOne p}"
+    },
+    {
+      "name": "erdos_1065b",
+      "type": "axiom",
+      "description": "Conjecture B: infinitely many primes p = 2^k·3^l·q + 1",
+      "leanType": "Set.Infinite {p : ℕ | IsTwoThreeTimePrimePlusOne p}"
+    }
+  ],
   "references": [
     {
       "authors": "Guy, Richard K.",

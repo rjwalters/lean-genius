@@ -106,24 +106,29 @@
   },
   "crossReferences": [
     {
-      "slug": "kepler-conjecture",
-      "relationship": "The Kepler conjecture (FCC sphere packing optimality) directly governs the large-n behavior of f₃(n): the conjectured lower bound f₃(n) ≥ 6n - Θ(n^{2/3}) would follow from understanding how finite FCC/HCP clusters approach the infinite-volume limit, making the Kepler structure the conjectured optimal configuration."
+      "targetId": "kepler-conjecture",
+      "relationship": "related",
+      "description": "The Kepler conjecture (FCC sphere packing optimality) governs f₃(n) asymptotics: the conjectured lower bound f₃(n) ≥ 6n - Θ(n^{2/3}) follows from finite FCC/HCP clusters approaching the infinite-volume limit"
     },
     {
-      "slug": "erdos-1085",
-      "relationship": "Erdős Problem #1085 studies the unit distance problem without the separation constraint (f_d(n) for arbitrary point sets). Problem #1084 imposes the additional ≥1 separation condition, which converts a graph-theoretic extremal problem into a sphere-packing one. The two problems share notation but differ sharply in difficulty and techniques."
+      "targetId": "erdos-1085",
+      "relationship": "companion",
+      "description": "Studies unit distances without the separation constraint. Problem #1084 adds the ≥1 separation condition, converting a graph-theoretic extremal problem into a sphere-packing one"
     },
     {
-      "slug": "erdos-1083",
-      "relationship": "Erdős Problem #1083 asks for the minimum number of distinct distances among n points in ℝ^d (f_d(n) = n^{2/d - o(1)}). Both problems use the same dimension-indexed function f_d(n) and the same Euclidean setup, and both exhibit an isoperimetric correction term of order n^{(d-1)/d} in the sub-leading behavior."
+      "targetId": "erdos-1083",
+      "relationship": "companion",
+      "description": "Asks for the minimum number of distinct distances among n points in ℝ^d. Both use dimension-indexed f_d(n) and exhibit isoperimetric correction terms of order n^{(d-1)/d}"
     },
     {
-      "slug": "erdos-1086",
-      "relationship": "Erdős Problem #1086 on triangles of equal area is a neighboring extremal combinatorial geometry problem sharing the same era (1971), the same authors (Erdős–Purdy), and the same incidence-geometry toolkit (Szemerédi–Trotter, algebraic methods). The techniques for bounding repeated distances and repeated areas overlap substantially."
+      "targetId": "erdos-1086",
+      "relationship": "related",
+      "description": "Neighboring extremal combinatorial geometry problem (Erdős-Purdy, 1971) on triangles of equal area, sharing incidence-geometry toolkit (Szemerédi-Trotter)"
     },
     {
-      "slug": "erdos-97",
-      "relationship": "Erdős Problem #97 on equidistant vertices in convex polygons is another discrete-geometry problem about distance multiplicity in point configurations. The kissing-number constraint τ(2) = 6 that drives f₂(n) ≤ 3n also bounds the number of vertices equidistant from a given point in convex position, linking the two problems via the hexagonal lattice geometry."
+      "targetId": "erdos-97",
+      "relationship": "related",
+      "description": "Distance multiplicity in point configurations: the kissing-number constraint τ(2) = 6 driving f₂(n) ≤ 3n also bounds equidistant vertices in convex position"
     }
   ],
   "references": [
@@ -163,5 +168,37 @@
     "substantiveTheoremCount": 0,
     "sorryTheorems": 3,
     "definitionCount": 2
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "unit_distance_1d_triangle",
+      "type": "core",
+      "description": "In 1D with ≥1 separation, three points cannot all be at unit distance — the fundamental triangle inequality for separated points",
+      "leanType": "(x y z : ℝ) → |x - y| ≥ 1 → |y - z| ≥ 1 → |x - z| ≥ 1 → ¬(|x - y| = 1 ∧ |y - z| = 1 ∧ |x - z| = 1)"
+    },
+    {
+      "name": "f1_upper_bound",
+      "type": "core",
+      "description": "The 1D upper bound: f₁(n) ≤ n - 1 for any separated configuration of n points",
+      "leanType": "(n : ℕ) → n ≥ 1 → (C : SeparatedConfig1D n) → unitDistPairs1D C ≤ n - 1"
+    },
+    {
+      "name": "f1_achievable",
+      "type": "core",
+      "description": "The 1D bound is tight: there exists a configuration achieving n - 1 unit distances (consecutive integers)",
+      "leanType": "(n : ℕ) → n ≥ 1 → ∃ C : SeparatedConfig1D n, unitDistPairs1D C = n - 1"
+    },
+    {
+      "name": "harborth_exact",
+      "type": "axiom",
+      "description": "Harborth's formula: f₂(n) = ⌊3n - √(12n-3)⌋ for separated points in ℝ², optimal on triangular lattice",
+      "leanType": "(n : ℕ) → n ≥ 2 → maxUnitDistPairs 2 n = ⌊3n - √(12n-3)⌋"
+    },
+    {
+      "name": "erdos_1084_d3_conjecture",
+      "type": "axiom",
+      "description": "The d=3 conjecture: f₃(n) ~ 6n - Θ(n^{2/3}), with leading coefficient from the kissing number τ(3) = 12",
+      "leanType": "∃ C₁ C₂ > 0, ∀ n ≥ 2, 6n - C₁·n^(2/3) ≤ maxUnitDistPairs 3 n ≤ 6n - C₂·n^(2/3)"
+    }
+  ]
 }

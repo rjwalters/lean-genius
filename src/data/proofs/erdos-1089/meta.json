@@ -260,30 +260,40 @@
       "Set",
       "Finset"
     ],
-    "namespace": null,
-    "mainTheorems": [
-      {
-        "name": "ratio_bounded_below",
-        "type": "proved",
-        "description": "g_d(n)/d^{n-1} ≥ c > 0 from the Erdős lower bound"
-      },
-      {
-        "name": "erdos1089Conjecture",
-        "type": "axiom",
-        "description": "Filter.Tendsto (gRatio · n) atTop (nhds L) — the limit exists"
-      },
-      {
-        "name": "erdos_lower_bound",
-        "type": "axiom",
-        "description": "g_d(n) ≥ c·d^{n-1} for n ≥ 2 (Erdős 1975)"
-      },
-      {
-        "name": "erdos_straus_upper_bound",
-        "type": "axiom",
-        "description": "g_d(n) ≤ c^{d^{1-b_n}} stretched-exponential upper bound"
-      }
-    ]
+    "namespace": null
   },
+  "mainTheorems": [
+    {
+      "name": "ratio_bounded_below",
+      "type": "core",
+      "description": "The ratio g_d(n)/d^{n-1} is bounded below by a positive constant — genuinely proved from the Erdős lower bound axiom",
+      "leanType": "(n : ℕ) → n ≥ 2 → ∃ c > 0, ∀ d ≥ 1, gRatio d n ≥ c"
+    },
+    {
+      "name": "g_mono_n",
+      "type": "core",
+      "description": "g_d is monotone in n: requiring more distinct distances needs at least as many points",
+      "leanType": "∀ d n₁ n₂, n₁ ≤ n₂ → g d n₁ ≤ g d n₂"
+    },
+    {
+      "name": "erdos1089Conjecture",
+      "type": "axiom",
+      "description": "The limit conjecture: g_d(n)/d^{n-1} converges as d → ∞ for each fixed n",
+      "leanType": "Filter.Tendsto (gRatio · n) atTop (nhds L)"
+    },
+    {
+      "name": "erdos_lower_bound",
+      "type": "axiom",
+      "description": "Erdős polynomial lower bound: g_d(n) ≥ c·d^{n-1} for n ≥ 2 (1975)",
+      "leanType": "∃ c > 0, ∀ d ≥ 1, g d n ≥ c * d^(n-1)"
+    },
+    {
+      "name": "erdos_straus_upper_bound",
+      "type": "axiom",
+      "description": "Erdős-Straus stretched-exponential upper bound: g_d(n) ≤ c^{d^{1-b_n}}",
+      "leanType": "∃ c > 1, ∃ b > 0, ∀ d ≥ 1, g d n ≤ c^(d^(1-b))"
+    }
+  ],
   "references": [
     {
       "authors": "Erdős, Paul",
