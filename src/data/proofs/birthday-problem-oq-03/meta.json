@@ -102,7 +102,7 @@
       "startLine": 49,
       "endLine": 64,
       "summary": "Proves the partition-of-unity identity: fiber sizes sum to n. Uses `Finset.card_eq_sum_card_fiberwise` — the structural foundation for the generalized pigeonhole argument.",
-      "mathContext": "Proves the partition-of-unity identity: fiber sizes sum to n. Uses `Finset.card_eq_sum_card_fiberwise` — the structural foundation for the generalized pigeonhole argument."
+      "mathContext": "$\\sum_{j \\in [d]} |f^{-1}(j)| = n$. The fibers partition $[n]$: $\\bigsqcup_{j=1}^d f^{-1}(j) = [n]$, so their cardinalities sum to $n$. Uses `Finset.card_biUnion`."
     },
     {
       "id": "pigeonhole",
@@ -110,7 +110,7 @@
       "startLine": 65,
       "endLine": 113,
       "summary": "Proves the generalized pigeonhole bound with examples for d=365.",
-      "mathContext": "Proves the generalized pigeonhole bound with examples for d=365."
+      "mathContext": "If $n > (k-1)d$, then $\\exists j \\in [d],\\, |f^{-1}(j)| \\geq k$ (pigeonhole). For $d=365$: $n > 365(k-1)$ guarantees a $k$-way birthday coincidence."
     },
     {
       "id": "classical-recovery",
@@ -118,7 +118,7 @@
       "startLine": 114,
       "endLine": 171,
       "summary": "Shows 2-way coincidence equals non-injectivity, connecting to the standard birthday problem.",
-      "mathContext": "Shows 2-way coincidence equals non-injectivity, connecting to the standard birthday problem."
+      "mathContext": "$k=2$: $\\exists j,\\, |f^{-1}(j)| \\geq 2 \\iff f$ is not injective. Connects the $k$-way framework to the standard birthday problem ($P(\\text{collision}) = P(f \\text{ not injective})$)."
     },
     {
       "id": "monotonicity",
@@ -126,7 +126,7 @@
       "startLine": 172,
       "endLine": 194,
       "summary": "Proves k-way implies k'-way for k' <= k.",
-      "mathContext": "Proves k-way implies k'-way for k' <= k."
+      "mathContext": "$k' \\leq k$ and $\\exists j,\\, |f^{-1}(j)| \\geq k \\Rightarrow \\exists j,\\, |f^{-1}(j)| \\geq k'$. A $k$-way coincidence is automatically a $k'$-way coincidence for all $k' \\leq k$."
     },
     {
       "id": "trivial-cases",
@@ -134,7 +134,7 @@
       "startLine": 195,
       "endLine": 229,
       "summary": "Validates the definition with edge cases: k=0 always satisfied, k=1 iff n > 0.",
-      "mathContext": "Validates the definition with edge cases: k=0 always satisfied, k=1 iff n > 0."
+      "mathContext": "$k=0$: $\\exists j,\\, |f^{-1}(j)| \\geq 0$ is trivially true. $k=1$: $\\exists j,\\, |f^{-1}(j)| \\geq 1 \\iff n > 0$ (at least one person exists)."
     },
     {
       "id": "probability",
@@ -142,7 +142,7 @@
       "startLine": 230,
       "endLine": 281,
       "summary": "Defines probKWay, proves it equals 1 when pigeonhole applies, and monotonicity in k.",
-      "mathContext": "Defines probKWay, proves it equals 1 when pigeonhole applies, and monotonicity in k."
+      "mathContext": "$P_k(n, d) = P(\\exists j,\\, |f^{-1}(j)| \\geq k)$ for uniform random $f: [n] \\to [d]$. When $n > (k-1)d$: $P_k = 1$. Monotonicity: $P_{k'} \\geq P_k$ for $k' \\leq k$."
     },
     {
       "id": "classical-connection",
@@ -150,7 +150,7 @@
       "startLine": 282,
       "endLine": 297,
       "summary": "Shows the no-2-way set equals the set of injective functions.",
-      "mathContext": "Shows the no-2-way set equals the set of injective functions."
+      "mathContext": "$\\{f : [n] \\to [d] \\mid \\nexists j,\\, |f^{-1}(j)| \\geq 2\\} = \\{f : [n] \\hookrightarrow [d]\\}$ (the set of injections). Cardinality: $d!/(d-n)! = d^{\\underline{n}}$ (falling factorial)."
     },
     {
       "id": "counting",
@@ -158,7 +158,7 @@
       "startLine": 298,
       "endLine": 331,
       "summary": "Verifies small cases: 1 person has no 2-way, 0 people have no k-way.",
-      "mathContext": "Verifies small cases: 1 person has no 2-way, 0 people have no k-way."
+      "mathContext": "Small cases: 1 person, any $d$: no 2-way ($|f^{-1}(j)| \\leq 1$ for all $j$). 0 people: no $k$-way for $k \\geq 1$ (all fibers empty)."
     },
     {
       "id": "bounds",
