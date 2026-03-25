@@ -148,6 +148,16 @@
       "targetId": "vietas-formulas",
       "relationship": "foundational",
       "description": "Vieta's formulas express the coefficients of $x^5 - 4x + 2$ as elementary symmetric functions of its roots — this is why the Galois group permutes roots while preserving coefficients, and why the `galActionHom` maps $\\text{Gal}$ into $\\text{Perm}(\\text{rootSet})$"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "related",
+      "description": "Both are impossibility results proved via Galois theory: Abel-Ruffini (this entry's concrete instance) shows $x^5-4x+2$ is unsolvable by radicals because $\\text{Gal} \\cong S_5$ is non-solvable, while angle trisection shows the general angle cannot be trisected by compass and straightedge because the minimal polynomial of $\\cos(20°)$ has degree 3 over the constructible field extension. Both reduce geometric/algebraic impossibility to group-theoretic obstructions"
+    },
+    {
+      "targetId": "kummer-theorem",
+      "relationship": "foundational",
+      "description": "Kummer theory provides the mechanism underlying the Galois bridge used in `roots_not_solvable_by_rad`: each radical extraction $K \\to K(\\sqrt[n]{a})$ creates a Kummer extension with cyclic Galois group. The impossibility arises because $S_5$ cannot be decomposed into such cyclic layers — exactly what the contrapositive of `solvableByRad.isSolvable'` captures"
     }
   ],
   "overview": {
