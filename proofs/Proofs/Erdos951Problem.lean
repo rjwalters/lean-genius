@@ -35,6 +35,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.NumberTheory.PrimeCounting
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Finsupp.Basic
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 open Nat BigOperators Finset Real
 
@@ -67,7 +68,33 @@ noncomputable def primePi (x : ℝ) : ℕ := Nat.primeCounting (Nat.floor x)
     indices satisfy a_n <= x. -/
 theorem beurlingPi_finite (bp : BeurlingPrimes) (x : ℝ) :
     Set.Finite {n : ℕ | bp.a n ≤ x} := by
-  sorry
+  -- Step 1: consecutive terms differ by ≥ 1 (from well-separated products
+  -- applied to single-element Finsupp representations)
+  have step : ∀ n : ℕ, bp.a (n + 1) ≥ bp.a n + 1 := by
+    intro n
+    have hne : Finsupp.single (n + 1) (1 : ℕ) ≠ Finsupp.single n 1 :=
+      fun h => absurd (Finsupp.single_left_injective (by omega) h) (by omega)
+    have hsep := bp.well_separated _ _ hne
+    have hs1 : (Finsupp.single (n + 1) (1 : ℕ)).support = {n + 1} :=
+      Finsupp.support_single_ne_zero _ (by omega)
+    have hs2 : (Finsupp.single n (1 : ℕ)).support = {n} :=
+      Finsupp.support_single_ne_zero _ (by omega)
+    rw [hs1, hs2, Finset.prod_singleton, Finset.prod_singleton] at hsep
+    simp only [Finsupp.single_eq_same] at hsep
+    rw [abs_of_pos (by linarith [bp.strictly_increasing n (n + 1) (by omega)])] at hsep
+    linarith
+  -- Step 2: a_n ≥ a_0 + n (by induction on the step bound)
+  have growth : ∀ n : ℕ, bp.a n ≥ bp.a 0 + n := by
+    intro n; induction n with
+    | zero => simp
+    | succ k ih => push_cast at *; linarith [step k]
+  -- Step 3: the set is a bounded subset of ℕ, hence finite
+  apply Set.Finite.subset (Set.finite_Iic ⌊x⌋₊)
+  intro n hn
+  simp only [Set.mem_setOf_eq] at hn
+  simp only [Set.mem_Iic]
+  have : (n : ℝ) < x := by linarith [growth n, bp.all_gt_one 0]
+  exact Nat.le_floor this.le
 
 /-- The nth prime as a real number. -/
 noncomputable def primeSeq (n : ℕ) : ℝ := Nat.nth Nat.Prime n
@@ -99,13 +126,13 @@ noncomputable def powersOfTwo (n : ℕ) : ℝ := 2 ^ (n + 1)
 theorem powersOfTwo_increasing : ∀ n m, n < m → powersOfTwo n < powersOfTwo m := by
   intro n m h
   simp only [powersOfTwo]
-  exact pow_lt_pow_right (by norm_num : (1 : ℝ) < 2) (by omega)
+  exact pow_lt_pow_right₀ (by norm_num : (1 : ℝ) < 2) (by omega)
 
 /-- Powers of 2 are all > 1. -/
 theorem powersOfTwo_gt_one : ∀ n, powersOfTwo n > 1 := by
   intro n
   simp only [powersOfTwo]
-  have : 2 ^ (n + 1) ≥ 2 ^ 1 := pow_le_pow_right (by norm_num : 1 ≤ 2) (by omega)
+  have : (2 : ℝ) ^ (n + 1) ≥ 2 ^ 1 := pow_le_pow_right₀ (by norm_num : 1 ≤ (2 : ℝ)) (by omega)
   linarith
 
 /-- Powers of 2 have well-separated products. -/
