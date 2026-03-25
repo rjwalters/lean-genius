@@ -52,26 +52,13 @@
       "Convergence of sequences and series (limits, partial sums)",
       "Summability (absolute convergence, tsum in Mathlib)"
     ],
-    "leanFile": {
-      "lineCount": 171,
-      "structureCount": 0,
-      "axiomCount": 0,
-      "theoremCount": 10,
-      "lemmaCount": 0,
-      "defCount": 0,
-      "imports": [
-        "Mathlib.Algebra.GeomSum",
-        "Mathlib.Analysis.SpecificLimits.Normed",
-        "Mathlib.Tactic"
-      ]
-    },
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The geometric series is among the oldest objects in mathematics. Euclid's *Elements* (Book IX, Proposition 35, c. 300 BCE) gives the finite geometric sum formula for integers, and Archimedes (~250 BCE) used the infinite geometric series $1 + \\frac{1}{4} + \\frac{1}{16} + \\cdots = \\frac{4}{3}$ to calculate the area under a parabola in *Quadrature of the Parabola* — one of the first rigorous uses of an infinite process in mathematics.\n\nNicole Oresme (c. 1350) proved that $\\sum_{k=1}^{\\infty} k/2^k = 2$ by a remarkable graphical argument, making him the first European mathematician to sum an infinite series explicitly. In the Kerala school of astronomy, Nilakantha Somayaji (c. 1500) used geometric series within the derivation of the Madhava-Leibniz series for $\\pi/4$, anticipating European work by two centuries.\n\nThe general finite formula $\\sum_{k=0}^{n-1} r^k = (1 - r^n)/(1 - r)$ appears in the work of François Viète (1593) and was fully systematized by Euler in *Introductio in analysin infinitorum* (1748), where it serves as the starting point for the theory of power series. Newton's generalized binomial theorem (1665) implicitly relies on geometric series as the case $\\alpha = -1$ of $(1-r)^\\alpha$.\n\nRigorous convergence theory arrived with Cauchy's *Cours d'analyse* (1821), which defined convergence of series via partial sums and proved the geometric series converges precisely when $|r| < 1$. Weierstrass later placed this in the framework of uniform convergence and the $\\epsilon$-$\\delta$ formalism that underpins modern analysis.\n\nToday, geometric series appear throughout mathematics and its applications: compound interest and annuities in finance, the geometric distribution and moment-generating functions in probability, $z$-transforms in signal processing, the Neumann series $(I - T)^{-1} = \\sum T^k$ in operator theory, perturbation series in quantum field theory, and as the simplest formal power series in combinatorics.",
     "problemStatement": "**Theorem (Wiedijk #66)**: For a geometric series with ratio r:\n\n**Finite sum** (any r ≠ 1):\n$$\\sum_{k=0}^{n} r^k = \\frac{1 - r^{n+1}}{1 - r}$$\n\n**Infinite sum** (|r| < 1):\n$$\\sum_{k=0}^{\\infty} r^k = \\frac{1}{1-r}$$\n\n**General form** with first term a:\n$$\\sum_{k=0}^{\\infty} ar^k = \\frac{a}{1-r}$$",
-    "text": "The classic formulas for finite and infinite geometric series: for |r| < 1, the infinite sum converges to 1/(1-r).",
+    "text": "A 171-line formalization of the geometric series (Wiedijk #66) with 10 named theorems, 0 sorries, 0 axioms. The finite formula is proved algebraically via Mathlib's `mul_neg_geom_sum` encoding the factorization $1 - r^n = (1-r)(1 + r + \\cdots + r^{n-1})$ over any ring. The infinite sum $\\sum r^k = (1-r)^{-1}$ for $|r| < 1$ uses `tsum_geometric_of_abs_lt_one` from Mathlib's topology library, requiring the analytic structure of $\\mathbb{R}$ (completeness, absolute convergence). The file provides three formulations of the finite sum (multiplicative, commuted, division form), the scaled general form $\\sum ar^k = a/(1-r)$, three classic examples (sum of halves = 1, sum of thirds = 3/2, alternating sum with $r=-1/2$ = 2/3), and a bridge theorem `finite_to_infinite` connecting finite partial sums to the infinite limit via `HasSum.tendsto_sum_nat`.",
     "proofStrategy": "**Finite Sum Derivation:**\n\nLet $S_n = 1 + r + r^2 + \\cdots + r^n$. Then:\n$$rS_n = r + r^2 + \\cdots + r^{n+1}$$\n\nSubtracting:\n$$S_n - rS_n = 1 - r^{n+1}$$\n$$(1-r)S_n = 1 - r^{n+1}$$\n$$S_n = \\frac{1 - r^{n+1}}{1-r}$$\n\n**Infinite Sum:**\n\nWhen |r| < 1, we have $r^{n+1} \\to 0$ as $n \\to \\infty$, so:\n$$\\lim_{n \\to \\infty} S_n = \\frac{1 - 0}{1-r} = \\frac{1}{1-r}$$",
     "keyInsights": [
       "**Telescoping via the $(1-r)$ trick:** The finite formula $\\sum_{k=0}^{n-1} r^k = (1 - r^n)/(1 - r)$ arises from the factorization $1 - r^n = (1 - r)(1 + r + r^2 + \\cdots + r^{n-1})$, which is a special case of the cyclotomic factorization of $x^n - 1$. Lean's `mul_neg_geom_sum` encodes this algebraic identity over any ring, with no convergence hypotheses needed.",
@@ -264,6 +251,35 @@
     "lineCount": 171,
     "axiomCount": 0,
     "theoremCount": 10,
-    "definitionCount": 0
+    "substantiveTheoremCount": 5,
+    "trivialSpecializations": 5,
+    "definitionCount": 0,
+    "mainTheorems": [
+      {
+        "name": "finite_geom_sum",
+        "type": "wrapper",
+        "description": "(1 - r) * ∑ r^k = 1 - r^n — finite geometric sum (multiplicative form)"
+      },
+      {
+        "name": "infinite_geom_sum",
+        "type": "wrapper",
+        "description": "∑ r^k = (1 - r)⁻¹ for |r| < 1 — infinite geometric series"
+      },
+      {
+        "name": "infinite_geom_sum_scaled",
+        "type": "wrapper",
+        "description": "∑ a·r^k = a·(1 - r)⁻¹ — general form with first term"
+      },
+      {
+        "name": "finite_to_infinite",
+        "type": "bridge",
+        "description": "Partial sums S_n converge to (1-r)⁻¹ — connects finite formula to infinite limit"
+      },
+      {
+        "name": "geom_series_summable",
+        "type": "wrapper",
+        "description": "Summable (fun k => r^k) for |r| < 1 — convergence precondition"
+      }
+    ]
   }
 }
