@@ -59,7 +59,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The Riemann Hypothesis (1859) for the zeta function was generalized by Piltz (1884) to Dirichlet L-functions. GRH predicts that ALL non-trivial zeros of L(s, χ) for ANY Dirichlet character χ lie on the critical line Re(s) = 1/2.\n\nGRH is strictly stronger than RH: it addresses infinitely many L-functions, not just ζ(s). A proof of GRH would have immediate, dramatic consequences for prime distribution in arithmetic progressions, computational number theory, and cryptography.\n\nThe consequences are well-studied: under GRH, the error term in the PNT for APs improves from O(x · exp(-c√log x)) to O(√x · log x), Linnik's bound drops from O(q^5) to O(q² log² q), and Siegel zeros are eliminated entirely.",
+    "historicalContext": "The Riemann Hypothesis (1859) for the zeta function was generalized by Piltz (1884) to Dirichlet L-functions. GRH predicts that ALL non-trivial zeros of L(s, χ) for ANY Dirichlet character χ lie on the critical line Re(s) = 1/2.\n\nGRH is strictly stronger than RH: it addresses infinitely many L-functions, not just ζ(s). A proof of GRH would have immediate, dramatic consequences for prime distribution in arithmetic progressions, computational number theory, and cryptography.\n\nThe consequences are well-studied: under GRH, the error term in the PNT for APs improves from O(x · exp(-c√log x)) to O(√x · log x), Linnik's bound drops from the best unconditional exponent L ≤ 5 (Xylouris, 2011) to effectively L = 2, i.e., O(q² log² q). The Montgomery-Vaughan improvement (1977) of character sums from O(√q log q) to O(√q log log q) under GRH remains one of the deepest consequences.\n\nGRH also eliminates Siegel zeros entirely. Siegel's 1935 ineffective bound |L(1,χ)| ≫ q^{-ε} (with an uncomputable constant) is replaced under GRH by the effective bound |L(1,χ)| ≥ C/(log q)². Goldfeld (1985) resolved the class number problem using Gross-Zagier, but the unconditional bound h(d) ≫ (log|d|)^{1-ε} remains far weaker than the GRH prediction h(d) ≥ C√|d|/log|d|.",
     "problemStatement": "**Open Question**: Does the Generalized Riemann Hypothesis hold for all Dirichlet L-functions? That is, for every Dirichlet character χ modulo q, do all zeros of L(s, χ) with 0 < Re(s) < 1 satisfy Re(s) = 1/2?\n\n**Status**: OPEN. No proof or counterexample exists. Computational verification extends to billions of zeros.\n\n**Key formalization**: We prove GRH ↔ GRH_right_half (no zeros with Re(s) > 1/2), using the functional equation symmetry. We axiomatize all major consequences and prove theorems connecting them.",
     "text": "The Generalized Riemann Hypothesis (GRH) asserts that all non-trivial zeros of Dirichlet L-functions L(s, χ) lie on the critical line Re(s) = 1/2. We formalize GRH, prove equivalences between formulations, and axiomatize its dramatic consequences for prime distribution, character sums, and class numbers.",
     "proofStrategy": "We formalize GRH in three layers:\n\n**1. Definitions**: GRH_for_character (per-character), GRH (all characters), GRH_right_half (no zeros with Re > 1/2).\n\n**2. Proved equivalences**: GRH ↔ GRH_right_half via the functional equation axiom. GRH_right_half = GRH_via_log_derivative.\n\n**3. Consequences (axiomatized)**: Improved PNT for APs, effective Linnik bound, Montgomery-Vaughan character sum improvement, effective L(1,χ) lower bound, class number bounds. Each is stated precisely with the GRH hypothesis.\n\n**4. Connections**: GRH eliminates Siegel zeros (proved from definitions), comprehensive nonvanishing for σ > 1/2 (proved combining GRH, Dirichlet, Euler product).",
@@ -164,6 +164,11 @@
       "targetId": "prime-number-theorem",
       "relationship": "extends",
       "description": "GRH refines the PNT error term for primes in APs from O(x exp(-c√log x)) to O(√x log x), and removes restrictions on the modulus q"
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "The divergence of the prime reciprocal series is a consequence of the PNT; GRH strengthens the rate of divergence for primes in arithmetic progressions"
     }
   ],
   "references": [
@@ -201,6 +206,13 @@
       "year": "1985",
       "venue": "Bulletin of the AMS",
       "note": "Solved the class number problem using Gross-Zagier; the unconditional bound h(d) ≫ (log|d|)^{1-ε} is far weaker than the GRH bound"
+    },
+    {
+      "authors": "Carl Ludwig Siegel",
+      "title": "Über die Classenzahl quadratischer Zahlkörper",
+      "year": "1935",
+      "venue": "Acta Arithmetica",
+      "note": "Proved the ineffective lower bound |L(1,χ)| ≫ q^{-ε}; the ineffectivity arises from the possible existence of Siegel zeros, which GRH eliminates"
     }
   ]
 }
