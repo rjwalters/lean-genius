@@ -1,13 +1,13 @@
 {
   "slug": "inverse-galois-oq-01",
-  "title": "Does every finite group appear as a Galois group over \u211a",
+  "title": "Does every finite group appear as a Galois group over ℚ",
   "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formalization an open mathematical problem in algebra: Does every finite group appear as a Galois group over \u211a.",
+    "plain": "Formalization an open mathematical problem in algebra: Does every finite group appear as a Galois group over ℚ.",
     "whyMatters": []
   },
   "knownResults": {
@@ -68,7 +68,8 @@
     "seeker-selected"
   ],
   "relatedProofs": [
-    "inverse-galois"
+    "inverse-galois",
+    "inverse-galois-oq-01"
   ],
   "references": {
     "papers": [],
@@ -156,6 +157,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisF20.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisOQ01.lean",
+      "filename": "InverseGaloisOQ01.lean",
+      "lineCount": 449,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisOQ01.lean"
     }
   ]
 }

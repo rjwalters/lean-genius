@@ -1,6 +1,6 @@
 {
   "slug": "erdos-1173",
-  "title": "Erd\u0151s #1173",
+  "title": "Erdős #1173",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
@@ -31,24 +31,24 @@
     "progressSummary": "STRUCTURAL: Added basic cardinal and free set properties. 4 axioms unchanged (all deep set theory).",
     "builtItems": [
       "aleph_omega_lt_succ: proved",
-      "gch_power: proved (GCH \u2192 2^\u2135_\u03c9 = \u2135_{\u03c9+1})",
+      "gch_power: proved (GCH → 2^ℵ_ω = ℵ_{ω+1})",
       "free_set_empty/singleton/subset: proved"
     ],
     "insights": [
       "All 4 axioms are deep set-theoretic results about singular cardinals",
       "hajnal_free_set_theorem is a named result in infinitary combinatorics",
       "gch_aleph_omega_strong_limit is a consequence of GCH",
-      "Problem concerns \u2135_\u03c9 which is singular \u2014 makes set theory harder",
+      "Problem concerns ℵ_ω which is singular — makes set theory harder",
       "Proved aleph_omega_lt_succ and gch_power: basic cardinal arithmetic",
       "Proved free_set_empty, free_set_singleton, free_set_subset: basic set mapping properties",
-      "All 4 axioms are genuinely deep (Hajnal theorem, GCH consequences) \u2014 no eliminations possible"
+      "All 4 axioms are genuinely deep (Hajnal theorem, GCH consequences) — no eliminations possible"
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Check if Mathlib has Cardinal.IsRegular and related API",
-      "GCH is independent of ZFC \u2014 axiom is appropriate"
+      "GCH is independent of ZFC — axiom is appropriate"
     ],
-    "markdown": "# Erd\u0151s #1173 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erdős #1173 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -72,12 +72,13 @@
     {
       "path": "Proofs/Erdos1173Problem.lean",
       "filename": "Erdos1173Problem.lean",
-      "lineCount": 168,
-      "theoremCount": 0,
+      "lineCount": 203,
+      "theoremCount": 5,
       "axiomCount": 4,
-      "defCount": 5,
+      "defCount": 11,
       "sorryCount": 0,
-      "isAristotle": false
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1173Problem.lean"
     }
   ]
 }

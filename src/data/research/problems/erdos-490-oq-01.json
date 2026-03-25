@@ -68,15 +68,21 @@
   "relatedProofs": [
     "erdos-4",
     "erdos-49",
-    "erdos-490"
+    "erdos-490",
+    "erdos-490-oq-01"
   ],
   "references": {
     "papers": [
       "Szemeredi 1976: On a problem of P. Erdos",
       "Erdos 1972: Extremal problems in number theory"
     ],
-    "urls": ["https://erdosproblems.com/490"],
-    "mathlib": ["Real.log_pos", "Finset.card_Icc"]
+    "urls": [
+      "https://erdosproblems.com/490"
+    ],
+    "mathlib": [
+      "Real.log_pos",
+      "Finset.card_Icc"
+    ]
   },
   "started": "2026-03-24T00:48:59.907Z",
   "lastUpdate": "2026-03-24T06:00:00.000Z",
@@ -84,15 +90,37 @@
   "tractability": 6,
   "leanFiles": [
     {
+      "path": "Proofs/Erdos490Aristotle.lean",
+      "filename": "Erdos490Aristotle.lean",
+      "lineCount": 76,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 6,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos490Aristotle.lean"
+    },
+    {
       "path": "Proofs/Erdos490OQ01.lean",
       "filename": "Erdos490OQ01.lean",
-      "lineCount": 229,
+      "lineCount": 216,
       "theoremCount": 9,
       "axiomCount": 3,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos490OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos490Problem.lean",
+      "filename": "Erdos490Problem.lean",
+      "lineCount": 278,
+      "theoremCount": 10,
+      "axiomCount": 6,
+      "defCount": 15,
+      "sorryCount": 9,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos490Problem.lean"
     }
   ]
 }

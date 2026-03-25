@@ -6,7 +6,7 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "For base b, modulus d with b % d = 1: digitsum_b(a) + digitsum_b(c) \u2261 digitsum_b(a+c) (mod d) and digitsum_b(a) * digitsum_b(c) \u2261 digitsum_b(a*c) (mod d)",
+    "formal": "For base b, modulus d with b % d = 1: digitsum_b(a) + digitsum_b(c) ≡ digitsum_b(a+c) (mod d) and digitsum_b(a) * digitsum_b(c) ≡ digitsum_b(a*c) (mod d)",
     "plain": "Digit sums respect both addition and multiplication modulo d when b % d = 1, enabling arithmetic verification (casting out nines and generalizations).",
     "whyMatters": [
       "Formalizes a 1200-year-old arithmetic verification method",
@@ -66,7 +66,8 @@
   ],
   "relatedProofs": [
     "divisibility-by-3",
-    "divisibility-by-3-oq-02"
+    "divisibility-by-3-oq-02",
+    "divisibility-by-3-oq-04"
   ],
   "references": {
     "papers": [],
@@ -103,7 +104,7 @@
     {
       "path": "Proofs/DivisibilityBy3OQ04.lean",
       "filename": "DivisibilityBy3OQ04.lean",
-      "lineCount": 229,
+      "lineCount": 230,
       "theoremCount": 17,
       "axiomCount": 0,
       "defCount": 0,

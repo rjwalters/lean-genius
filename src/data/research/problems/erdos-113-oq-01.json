@@ -52,9 +52,12 @@
     "erdos-1132",
     "erdos-1133",
     "erdos-1134",
+    "erdos-1135",
     "erdos-1136",
+    "erdos-1137",
     "erdos-1138",
-    "erdos-1138-oq-03"
+    "erdos-1138-oq-03",
+    "erdos-1139"
   ],
   "references": {
     "papers": [],
@@ -80,22 +83,33 @@
     {
       "path": "Proofs/Erdos1131Problem.lean",
       "filename": "Erdos1131Problem.lean",
-      "lineCount": 159,
-      "theoremCount": 1,
-      "axiomCount": 9,
-      "defCount": 5,
-      "sorryCount": 0,
+      "lineCount": 265,
+      "theoremCount": 9,
+      "axiomCount": 3,
+      "defCount": 6,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1131Problem.lean"
     },
     {
+      "path": "Proofs/Erdos1132Aristotle.lean",
+      "filename": "Erdos1132Aristotle.lean",
+      "lineCount": 34,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1132Aristotle.lean"
+    },
+    {
       "path": "Proofs/Erdos1132Problem.lean",
       "filename": "Erdos1132Problem.lean",
-      "lineCount": 246,
-      "theoremCount": 2,
-      "axiomCount": 9,
+      "lineCount": 278,
+      "theoremCount": 7,
+      "axiomCount": 5,
       "defCount": 11,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1132Problem.lean"
     },
@@ -124,8 +138,8 @@
     {
       "path": "Proofs/Erdos1135Problem.lean",
       "filename": "Erdos1135Problem.lean",
-      "lineCount": 70,
-      "theoremCount": 3,
+      "lineCount": 111,
+      "theoremCount": 15,
       "axiomCount": 3,
       "defCount": 3,
       "sorryCount": 0,
@@ -144,6 +158,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1136Problem.lean"
     },
     {
+      "path": "Proofs/Erdos1137Problem.lean",
+      "filename": "Erdos1137Problem.lean",
+      "lineCount": 315,
+      "theoremCount": 19,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1137Problem.lean"
+    },
+    {
       "path": "Proofs/Erdos1138OQ03.lean",
       "filename": "Erdos1138OQ03.lean",
       "lineCount": 229,
@@ -157,13 +182,24 @@
     {
       "path": "Proofs/Erdos1138Problem.lean",
       "filename": "Erdos1138Problem.lean",
-      "lineCount": 239,
-      "theoremCount": 20,
-      "axiomCount": 3,
+      "lineCount": 242,
+      "theoremCount": 21,
+      "axiomCount": 2,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1138Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1139Problem.lean",
+      "filename": "Erdos1139Problem.lean",
+      "lineCount": 193,
+      "theoremCount": 16,
+      "axiomCount": 2,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1139Problem.lean"
     },
     {
       "path": "Proofs/Erdos113Problem.lean",
