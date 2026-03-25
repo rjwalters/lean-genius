@@ -67,7 +67,7 @@
     "assumptions": "14 axioms: erdos_faudree_schelp_s2, sudakov_verstrate_2008, min_degree_le_avg, and 11 more. See Lean source for complete statements."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #752** was posed by Erdős, Faudree, and Schelp about cycle lengths in graphs with high girth.\n\n**Historical Development:**\n- **Erdős-Faudree-Schelp (original):** Proved the case s = 2 and conjectured the general result.\n- **Sudakov-Verstraëte (2008):** Proved the full conjecture and a stronger version: under average degree k and girth > 2s, there are Ω(k^s) consecutive even cycle lengths.\n\n**Key Insight:** The tension between high girth (no short cycles) and high degree (forcing many cycles) creates structure that guarantees many distinct cycle lengths.\n\nThe result is tight up to constants: Moore graphs show that Ω(k^s) cannot be improved.",
+    "historicalContext": "Erdős, Faudree, and Schelp posed Problem #752 as part of the systematic study of cycle structure in graphs, a central theme in extremal graph theory. The question asks: if a graph has minimum degree $k$ and girth (shortest cycle length) greater than $2s$, must it contain $\\gg k^s$ distinct cycle lengths?\n\nThe problem connects to the classical theory of **Moore graphs** and **cages** (smallest regular graphs with given girth). A $(k,g)$-Moore graph has exactly $1 + k \\sum_{i=0}^{(g-3)/2} (k-1)^i$ vertices — the theoretical minimum for a $k$-regular graph of girth $g$. These exist only for $g \\in \\{3, 5, 7, 11\\}$ and specific $k$ values (Hoffman-Singleton 1960, Damerell 1973, Bannai-Ito 1973). Moore graphs are extremal for Problem #752: they show the $\\Omega(k^s)$ bound cannot be improved.\n\nErdős, Faudree, and Schelp proved the case $s = 2$ (girth $> 4$, at least $\\Omega(k^2)$ cycle lengths) and conjectured the general result. Benny Sudakov and Jacques Verstraëte resolved the full conjecture in 2008, proving a stronger result: under average degree $k$ and girth $> 2s$, there are $\\Omega(k^s)$ **consecutive even** cycle lengths. This consecutivity strengthening is remarkable — it shows the cycle lengths are not scattered but form a contiguous block. Their proof uses probabilistic and algebraic methods, including dependent random choice and spectral graph theory.",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $G$ be a graph with minimum degree $k$ and girth $> 2s$ (i.e., $G$ contains no cycles of length $\\leq 2s$). Must there be $\\gg k^s$ many distinct cycle lengths in $G$?\n\n**Answer:** YES\n\n**Sudakov-Verstraëte (2008) proved a stronger result:**\nUnder the assumption of average degree $k$ and girth $> 2s$, there are at least $\\Omega(k^s)$ many consecutive even integers which are cycle lengths in $G$.\n\n**The bound is tight:** Moore graphs achieve approximately $k^s$ vertices, limiting cycle diversity.",
     "text": "Let G be a graph with minimum degree k and girth > 2s. Must there be ≫ k^s many distinct cycle lengths in G? Answer: YES (Sudakov-Verstraëte 2008).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Define minimum degree, girth, and cycle lengths using Mathlib's SimpleGraph.\n\n2. **Conjecture Statement:** Formalize the Erdős-Faudree-Schelp conjecture as existence of constant c > 0.\n\n3. **Sudakov-Verstraëte Theorem:** Axiomatize the stronger result about consecutive even cycle lengths.\n\n4. **Main Theorem:** Derive the conjecture from the stronger result.\n\n5. **Tightness:** Reference Moore graphs and Moore bound to show the result is optimal.",
@@ -199,6 +199,29 @@
       "targetId": "erdos-622",
       "relationship": "related",
       "description": "Related Erdős problem sharing themes: cycles, extremal-combinatorics, graph-theory"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Sudakov, Benny; Verstraëte, Jacques",
+      "title": "Cycle lengths in sparse graphs",
+      "year": "2008",
+      "venue": "Combinatorica, 28(3), 357–372",
+      "note": "Resolved Problem #752: graphs with average degree k and girth > 2s contain Ω(k^s) consecutive even cycle lengths. Uses dependent random choice and spectral methods."
+    },
+    {
+      "authors": "Erdős, Paul; Faudree, Ralph J.; Schelp, Richard H.",
+      "title": "Cycle lengths in graphs of given minimum degree and girth",
+      "year": "1989",
+      "venue": "Discrete Mathematics, 75(1–3), 303–306",
+      "note": "Original formulation of the conjecture. Proved the s=2 case: graphs with minimum degree k and girth > 4 contain Ω(k²) distinct cycle lengths."
+    },
+    {
+      "authors": "Hoffman, Alan J.; Singleton, Robert R.",
+      "title": "On Moore graphs with diameters 2 and 3",
+      "year": "1960",
+      "venue": "IBM Journal of Research and Development, 4(5), 497–504",
+      "note": "Foundational work on Moore graphs, which provide the extremal examples showing the Ω(k^s) bound in Problem #752 is tight up to constants."
     }
   ]
 }
