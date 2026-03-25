@@ -72,9 +72,21 @@
     "prerequisites": ["Galois group action on roots", "cardinal arithmetic"]
   },
   {
+    "id": "ann-abeloq04oq01-evaluations",
+    "proofId": "abel-ruffini-oq-04-oq-01",
+    "range": { "startLine": 199, "endLine": 226 },
+    "type": "technique",
+    "title": "Polynomial Evaluations: Sign Changes Locating 3 Real Roots",
+    "content": "Formally computes $p(-2) = -22$, $p(-1) = 5$, $p(0) = 2$, $p(1) = -1$, $p(2) = 26$ using `unfold p; simp [...]; ring`. The three sign changes $(-22 \\to 5, 2 \\to -1, -1 \\to 26)$ locate real roots in $(-2,-1)$, $(0,1)$, and $(1,2)$ by the intermediate value theorem. Combined with the derivative $p'(x) = 5x^4 - 4$ having exactly 2 real critical points, $p$ has exactly 3 real roots and 2 complex conjugate roots. This is the computational foundation for the axiom $|\\text{Gal}| = 120$: complex conjugation swaps the 2 non-real roots (a transposition), which together with a 5-cycle generates $S_5$.",
+    "mathContext": "$p(-2) = -22 < 0$, $p(-1) = 5 > 0$, $p(0) = 2 > 0$, $p(1) = -1 < 0$, $p(2) = 26 > 0$. Three sign changes $\\Rightarrow$ at least 3 real roots. $p'(x) = 5x^4 - 4$ has 2 real roots $\\Rightarrow$ at most 3 real roots. Therefore exactly 3 real, 2 complex conjugate roots.",
+    "significance": "supporting",
+    "relatedConcepts": ["intermediate value theorem", "sign changes", "polynomial evaluation", "Rolle's theorem", "derivative analysis"],
+    "prerequisites": ["polynomial evaluation", "ring tactic", "real root counting"]
+  },
+  {
     "id": "ann-abeloq04oq01-axiom",
     "proofId": "abel-ruffini-oq-04-oq-01",
-    "range": { "startLine": 243, "endLine": 243 },
+    "range": { "startLine": 270, "endLine": 276 },
     "type": "concept",
     "title": "Axiom: |Gal| = 120 (Detailed Justification)",
     "content": "The single axiom: $|\\text{Gal}(p/\\mathbb{Q})| = 120$. The extensive documentation justifies this via a classical argument: (1) $p$ has exactly 3 real roots (by sign changes at $-2, -1, 0, 1, 2$ and derivative analysis: $p'(x) = 5x^4 - 4$ has 2 real roots, giving 2 critical points, bounding real roots to 3), (2) complex conjugation gives a transposition in $\\text{Gal}$ (swaps the 2 non-real roots), (3) irreducibility of prime degree gives a 5-cycle, (4) a transitive subgroup of $S_p$ ($p$ prime) containing a transposition generates $S_p$. Formalizing this fully would require the intermediate value theorem over $\\mathbb{R}$ and the classification of transitive permutation groups.",
@@ -86,7 +98,7 @@
   {
     "id": "ann-abeloq04oq01-iso",
     "proofId": "abel-ruffini-oq-04-oq-01",
-    "range": { "startLine": 253, "endLine": 278 },
+    "range": { "startLine": 282, "endLine": 311 },
     "type": "insight",
     "title": "Gal(p/Q) = S_5 via galActionHom Bijectivity",
     "content": "The central isomorphism: $\\text{Gal}(p/\\mathbb{Q}) \\cong S_5$. The proof proceeds in three steps: (1) `galActionHom` is injective (Mathlib), (2) $|\\text{Gal}| = 120 = |\\text{Perm}(\\text{rootSet})|$ (axiom + root set card), so `galActionHom` is bijective by the pigeonhole principle (`Fintype.bijective_iff_injective_and_card`), (3) transfer from $\\text{Perm}(\\text{rootSet})$ to $\\text{Perm}(\\text{Fin}\\;5)$ via `Equiv.permCongr`. The `MulEquiv.ofBijective` constructor packages the bijective homomorphism as a group isomorphism.",
@@ -98,7 +110,7 @@
   {
     "id": "ann-abeloq04oq01-nonsolvable",
     "proofId": "abel-ruffini-oq-04-oq-01",
-    "range": { "startLine": 285, "endLine": 297 },
+    "range": { "startLine": 317, "endLine": 330 },
     "type": "technique",
     "title": "Non-Solvability: S_5 to Gal Transfer",
     "content": "Two-step argument: (1) $S_5$ is not solvable, proved by `Equiv.Perm.not_solvable` which requires $5 \\leq |\\text{Fin}\\;5|$ (since $S_n$ is non-solvable for $n \\geq 5$, because the derived series $S_n \\supset A_n \\supset \\{e\\}$ stabilizes at the simple group $A_n$). (2) Transfer to $\\text{Gal}$: if $\\text{Gal}$ were solvable, then $S_5$ would be solvable via the surjective image of the isomorphism (`solvable_of_surjective`), contradiction. The surjectivity is extracted from the `MulEquiv` using `iso.apply_symm_apply`.",
@@ -110,7 +122,7 @@
   {
     "id": "ann-abeloq04oq01-main",
     "proofId": "abel-ruffini-oq-04-oq-01",
-    "range": { "startLine": 322, "endLine": 332 },
+    "range": { "startLine": 349, "endLine": 365 },
     "type": "insight",
     "title": "Abel-Ruffini Conclusion: Roots Not Solvable by Radicals",
     "content": "The culminating theorem: no root of $x^5 - 4x + 2$ can be expressed using $+, -, \\times, \\div$, and $n$-th roots starting from rationals. The proof is a clean contrapositive: assume root $\\alpha$ is solvable by radicals, then by Galois's theorem (`solvableByRad.isSolvable'`, which uses $p$ irreducible and $p(\\alpha) = 0$), $\\text{Gal}(p/\\mathbb{Q})$ would be solvable — contradicting `gal_not_solvable`. This is the concrete incarnation of Abel's 1824 impossibility result: not merely \"some\" quintic is unsolvable, but *this specific* quintic is unsolvable.",
@@ -122,7 +134,7 @@
   {
     "id": "ann-abeloq04oq01-realizability",
     "proofId": "abel-ruffini-oq-04-oq-01",
-    "range": { "startLine": 339, "endLine": 349 },
+    "range": { "startLine": 371, "endLine": 382 },
     "type": "insight",
     "title": "S_5 Realizability as a Galois Group over Q",
     "content": "A contribution to the inverse Galois problem: $S_5$ is realizable as $\\text{Gal}(K/\\mathbb{Q})$ for some finite Galois extension $K$. The witness is $K = $ splitting field of $x^5 - 4x + 2$. The proof constructs the requisite structure: $K/\\mathbb{Q}$ is finite-dimensional (splitting field of a polynomial), normal (splitting fields are normal), separable ($\\text{char}(\\mathbb{Q}) = 0$), hence Galois. The isomorphism $S_5 \\cong \\text{Gal}(K/\\mathbb{Q})$ is the inverse of `gal_iso_s5`. This complements other gallery realizations: $S_3$ via cubic discriminant, $F_{20}$ via cyclotomic fields.",
