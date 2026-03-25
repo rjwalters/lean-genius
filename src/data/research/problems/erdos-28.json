@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-25T12:00:00Z",
-    "iteration": 2,
-    "focus": "Session 2: Eliminated sidon_density_bound axiom via import bridge",
+    "iteration": 3,
+    "focus": "Session 3: Eliminated sidon_not_basis axiom via unordered pair counting + tight Sidon density bound",
     "blockers": [],
-    "nextAction": "Prove sidon_not_basis from Erdos340.sidon_upper_bound (need ordered pair counting + truncation infrastructure)",
+    "nextAction": "Remaining 2 axioms (grekos_lower_bound, borwein_lower_bound) are deep analytical results — consider Aristotle submission",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,29 +29,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM ELIMINATION: sidon_density_bound PROVED (4→3 axioms). Bridge lemma reconciles Set/Finset IsSidon definitions, imports Erdos340.sidon_upper_bound_weak. File: 14 theorems, 3 axioms, 0 sorries, ~510 lines.",
+    "progressSummary": "AXIOM ELIMINATION: sidon_not_basis PROVED (3→2 axioms). Unordered pair counting lemma (|sumset| ≤ n(n+1)/2) + tight Sidon density bound gives contradiction for large N. File: 18 theorems, 2 axioms, 0 sorries, ~647 lines.",
     "builtItems": [
       "repFunc_ge_repFuncUnordered: proved (ordered ≥ unordered)",
       "nat_repFuncUnordered_unbounded: proved",
       "erdos_turan_holds_for_nat: proved (conjecture holds for ℕ)",
       "basis_element_count_sq: proved (|A∩[0,N]|² ≥ N-N₀+1 for bases)",
       "isSidon_set_to_finset: bridge lemma converting Erdos28.IsSidon (Set) → Erdos340.IsSidon (Finset)",
-      "sidon_density_bound PROVED: was axiom, now theorem via bridge + Erdos340.sidon_upper_bound_weak"
+      "sidon_density_bound PROVED: was axiom, now theorem via bridge + Erdos340.sidon_upper_bound_weak",
+      "sidon_not_basis PROVED: was axiom, now theorem via unordered pair counting + tight Sidon bound",
+      "card_upper_triangle: |{(a,b) ∈ F×F : a≤b}|*2 = |F|*(|F|+1) via partition/swap/diagonal",
+      "finset_sumset_card_bound: |sumset(F)|*2 ≤ |F|*(|F|+1)"
     ],
     "insights": [
       "The Erdős-Turán conjecture (3 forms) is OPEN with $500 prize - cannot be proved",
       "sidon_density_bound successfully eliminated by reconciling Set/Finset IsSidon definitions",
       "Bridge lemma insight: Set IsSidon gives {a,b}={c,d}, Finset IsSidon needs (a,b)=(c,d) with a≤b,c≤d. Case c=b forces a≤b=c≤d=a by omega",
-      "sidon_not_basis requires tight √N bound (Erdos340.sidon_upper_bound, axiom). Weak √(2N) bound gives no contradiction",
-      "sidon_not_basis proof path documented: coverage gives |A_N|(|A_N|+1)/2 ≥ N-N₀+1, tight bound gives LHS ≈ N/2, contradiction",
+      "sidon_not_basis PROVED: coverage gives N-N₀+1 ≤ |sumset| ≤ |A_N|(|A_N|+1)/2, tight bound gives RHS ≈ N/2, contradiction at N=(4N₀+100)²",
       "Erdős-Fuchs theorem and average_rep_unbounded are deep analytical results, unlikely provable from Mathlib alone",
       "basis_element_count_sq uses: [N₀,N] ⊆ sumset(A∩[0,N]) and |sumset(S)| ≤ |S×S| = |S|²"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove sidon_not_basis from Erdos340.sidon_upper_bound: need ordered pair counting lemma, Set→Finset truncation, explicit N₁ (~150 lines)",
-      "Prove sidon_upper_bound in Erdos340GreedySidon.lean (tight √N bound, currently axiom) — would unblock sidon_not_basis",
-      "Consider proving average_rep_unbounded from basis_element_count_sq"
+      "Prove sidon_upper_bound in Erdos340GreedySidon.lean (tight √N bound, currently axiom) — would make sidon_not_basis fully self-contained",
+      "Consider proving average_rep_unbounded from basis_element_count_sq",
+      "grekos_lower_bound and borwein_lower_bound are deep analytical results — likely not provable without major Mathlib additions"
     ],
     "markdown": "# Erdős #28 - Knowledge Base\n\n## Problem Statement\n\nIf $A\\subseteq \\mathbb{N}$ is such that $A+A$ contains all but finitely many integers then $\\limsup 1_A\\ast 1_A(n)=\\infty$. Conjectured by Erdős and Turán. They also suggest the stronger conjecture that $\\limsup 1_A\\ast 1_A(n)/\\log n>0$. Another stronger conjecture would be that the hypothesis $\\lvert A\\cap [1,N]\\rvert \\gg N^{1/2}$ for all large $N$ suffices. Erdős and Sárközy conjectured the stronger version that if $A=\\{a_1[40]. This is discussed in problem C9 of Guy's collection [Gu04]. View the LaTeX source This page was last edited 18 November 2025.\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Prize**: $500\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #2\n- Problem #40\n- Problem #27\n- Problem #29\n- Problem #39\n- Problem #1\n\n## References\n\n- ErTu41\n- Er56\n- Er57\n- Er59\n- Er61\n- Er65\n- Er65b\n- Er69\n- Er70c\n- Er73\n- Er77c\n- ErGr80\n- Er81\n- Er85c\n- Er89d\n- Er90\n- Er94b\n- Er95\n- Er97c\n- Er97f\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
@@ -199,9 +201,9 @@
     {
       "path": "Proofs/Erdos28AdditiveBases.lean",
       "filename": "Erdos28AdditiveBases.lean",
-      "lineCount": 510,
-      "theoremCount": 14,
-      "axiomCount": 3,
+      "lineCount": 647,
+      "theoremCount": 18,
+      "axiomCount": 2,
       "defCount": 11,
       "sorryCount": 0,
       "isAristotle": false,
