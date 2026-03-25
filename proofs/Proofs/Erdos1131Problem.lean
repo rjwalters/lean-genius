@@ -28,8 +28,11 @@ Key results:
 - `lagrangeBasis_other`: l_k(x_j) = 0 for j ≠ k (orthogonality)
 - `lagrangeBasis_eq_eval_basis`: connection to Mathlib's Lagrange.basis
 - `partition_of_unity`: ∑ₖ l_k(x) = 1 for all x (via Lagrange.sum_basis)
+- `sum_sq_lagrangeBasis_ge`: ∑ₖ l_k(x)² ≥ 1/n (Cauchy-Schwarz)
+- `lagrangeIntegral_lower_bound`: I ≥ 2/n (integral monotonicity)
 - `chebyshevNodes_in_range`: Chebyshev nodes lie in [-1, 1]
 - `chebyshevNodes_distinct`: Chebyshev nodes are pairwise distinct
+- `erdos_1131`: main theorem (I ≥ 2/n)
 
 References:
 - Erdős: Original problem formulation
@@ -135,36 +138,43 @@ theorem partition_of_unity (n : ℕ) (hn : n ≥ 1) (nodes : Fin n → ℝ)
   exact heval
 
 /--
-**Pointwise lower bound**: ∑ₖ l_k(x)² ≥ 1/n via variance bound on partition of unity.
+**Pointwise lower bound**: ∑ₖ l_k(x)² ≥ 1/n via Cauchy-Schwarz on partition of unity.
 
-The variance identity ∑(l_k - 1/n)² = ∑l_k² - 1/n together with non-negativity
-of sums of squares gives ∑l_k² ≥ 1/n.
+By Cauchy-Schwarz for finite sums: (∑ l_k)² ≤ n · ∑ l_k².
+Since ∑ l_k = 1 (partition of unity), we get 1 ≤ n · ∑ l_k², hence ∑ l_k² ≥ 1/n.
 -/
 theorem sum_sq_lagrangeBasis_ge (n : ℕ) (hn : n ≥ 1) (nodes : Fin n → ℝ)
     (hd : AreDistinct n nodes) (x : ℝ) :
     ∑ k : Fin n, (lagrangeBasis n nodes k x) ^ 2 ≥ 1 / n := by
   have hpou := partition_of_unity n hn nodes hd x
   have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr (by omega)
-  have hn_ne : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
+  have hn_ne : (n : ℝ) ≠ 0 := ne_of_gt hn_pos
+  -- Variance identity: ∑(l_k - 1/n)² = ∑l_k² - 1/n (when ∑l_k = 1)
+  -- Since ∑(l_k - 1/n)² ≥ 0, we get ∑l_k² ≥ 1/n
   rw [ge_iff_le, ← sub_nonneg]
-  -- Variance: 0 ≤ ∑(l_k - 1/n)²
-  have hvar : 0 ≤ ∑ k : Fin n, (lagrangeBasis n nodes k x - 1 / ↑n) ^ 2 :=
-    Finset.sum_nonneg fun k _ => sq_nonneg _
-  -- Expand (a - c)² = a² + (-2c·a + c²) and distribute sum
-  have hexp : ∀ k : Fin n, (lagrangeBasis n nodes k x - 1 / ↑n) ^ 2 =
-    (lagrangeBasis n nodes k x) ^ 2 +
-    (-(2 / ↑n) * lagrangeBasis n nodes k x + 1 / ↑n ^ 2) := by intro k; ring
-  simp_rw [hexp] at hvar
-  rw [Finset.sum_add_distrib] at hvar
-  -- Factor the remainder sum: ∑(-(2/n)·l_k + 1/n²) = -(2/n)·∑l_k + n·(1/n²)
-  rw [show ∑ k : Fin n, (-(2 / ↑n) * lagrangeBasis n nodes k x + 1 / ↑n ^ 2) =
-      -(2 / ↑n) * ∑ k : Fin n, lagrangeBasis n nodes k x + ↑n * (1 / ↑n ^ 2) from by
-    rw [Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_const, Finset.card_fin,
-        nsmul_eq_mul]] at hvar
-  rw [hpou, mul_one] at hvar
-  -- hvar : 0 ≤ ∑l_k² + (-(2/n) + n/n²), simplify -(2/n) + n/n² = -1/n
-  have key : -(2 / (↑n : ℝ)) + ↑n * (1 / ↑n ^ 2) = -(1 / ↑n) := by field_simp; ring
-  linarith
+  -- Goal: 0 ≤ ∑l_k² - 1/n
+  -- Show this equals ∑(l_k - 1/n)² ≥ 0
+  suffices hid : ∑ k : Fin n, (lagrangeBasis n nodes k x) ^ 2 - 1 / ↑n =
+      ∑ k : Fin n, (lagrangeBasis n nodes k x - 1 / ↑n) ^ 2 by
+    rw [hid]; exact Finset.sum_nonneg fun k _ => sq_nonneg _
+  -- Prove the identity by expanding the RHS
+  -- RHS = ∑(l_k² - 2l_k/n + 1/n²) = ∑l_k² - (2/n)·∑l_k + n·(1/n²)
+  --     = ∑l_k² - 2/n + 1/n = ∑l_k² - 1/n = LHS
+  have step1 : ∀ k : Fin n, (lagrangeBasis n nodes k x - 1 / ↑n) ^ 2 =
+      (lagrangeBasis n nodes k x) ^ 2 - 2 * (1 / ↑n) * lagrangeBasis n nodes k x + (1 / ↑n) ^ 2 :=
+    fun k => by ring
+  simp_rw [step1]
+  rw [Finset.sum_add_distrib, Finset.sum_sub_distrib,
+      Finset.sum_const, Finset.card_fin, nsmul_eq_mul]
+  -- Factor: ∑ 2(1/n)·l_k = 2(1/n)·∑l_k
+  have hmid : ∑ k : Fin n, 2 * (1 / ↑n) * lagrangeBasis n nodes k x =
+      2 * (1 / ↑n) * ∑ k : Fin n, lagrangeBasis n nodes k x :=
+    (Finset.mul_sum ..).symm
+  rw [hmid, hpou]
+  -- Goal: ∑l_k² - 1/n = ∑l_k² - 2(1/n)·1 + n·(1/n)²
+  -- Arithmetic: -1/n = -2/n + 1/n, i.e., n·(1/n)² - 2·(1/n) + 1/n = 0
+  field_simp
+  ring
 
 /--
 **Lower bound**: I(x₁,...,xₙ) ≥ 2/n for any configuration.
@@ -179,11 +189,11 @@ theorem lagrangeIntegral_lower_bound (n : ℕ) (hn : n ≥ 1) (nodes : Fin n →
   have hpw : ∀ x, 1 / ↑n ≤ ∑ k : Fin n, (lagrangeBasis n nodes k x) ^ 2 :=
     fun x => sum_sq_lagrangeBasis_ge n hn nodes hd x
   have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr (by omega)
-  have hn_ne : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
   -- Integrand is continuous (polynomial), hence integrable
   have h_cont : Continuous (fun x => ∑ k : Fin n, (lagrangeBasis n nodes k x) ^ 2) := by
     apply continuous_finset_sum; intro k _
     apply Continuous.pow
+    show Continuous (fun x => lagrangeBasis n nodes k x)
     unfold lagrangeBasis
     exact continuous_finset_prod _ fun i _ => (continuous_id.sub continuous_const).div_const _
   rw [ge_iff_le, ← sub_nonneg]
@@ -194,12 +204,11 @@ theorem lagrangeIntegral_lower_bound (n : ℕ) (hn : n ≥ 1) (nodes : Fin n →
   exact intervalIntegral.integral_nonneg (by norm_num : (-1 : ℝ) ≤ 1)
     fun u _hu => by linarith [hpw u]
 
-/--
-**Upper bound**: I is bounded above by 2n for any configuration.
+/-
+Note: There is NO general upper bound on I independent of node spacing.
+Counterexample: n=2, nodes at 0 and δ give I = 2 + 4/(3δ²) → ∞ as δ → 0.
+The infimum of I over all configurations is ≈ 2 - c/n (see Chebyshev section).
 -/
-axiom lagrangeIntegral_upper_bound (n : ℕ) (hn : n ≥ 1) (nodes : Fin n → ℝ)
-    (hd : AreDistinct n nodes) (hrange : ∀ i, -1 ≤ nodes i ∧ nodes i ≤ 1) :
-    lagrangeIntegral n nodes ≤ 2 * n
 
 /-
 ## Part III: Chebyshev Nodes
