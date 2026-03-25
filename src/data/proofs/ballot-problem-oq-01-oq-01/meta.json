@@ -126,7 +126,7 @@
       "id": "rightmost-good-sketch",
       "title": "Rightmost-Is-Good Sketch (Placeholder)",
       "startLine": 110,
-      "endLine": 131,
+      "endLine": 130,
       "summary": "Placeholder theorem `rightmost_is_good_sketch` (proves 1+1=2 via rfl) with a detailed docstring explaining why the rightmost position i with P(i)=v yields a good rotation. Non-wrapping case: rightmostness forces P(i+offset) > v. Wrapping case: v < minPS + S gives positivity for wrap-around prefix sums. The docstring is valuable exposition; the theorem itself is not yet formalized.",
       "mathContext": "For the rotation starting at position $i$ with $P(i) = v$, define the cyclic prefix sum $\\mathrm{cps}(\\text{off}) = P((i + \\text{off}) \\bmod n) - P(i) + \\epsilon$ where $\\epsilon$ accounts for wrap-around. Non-wrapping ($\\text{off} \\leq n - i$): $\\mathrm{cps}(\\text{off}) = P(i + \\text{off}) - v > 0$ by rightmostness. Wrapping ($\\text{off} > n - i$): $\\mathrm{cps}(\\text{off}) = P(r) + S - v \\geq \\mu + S - v > 0$ since $v < \\mu + S$."
     }
