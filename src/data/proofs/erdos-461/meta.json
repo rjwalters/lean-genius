@@ -118,6 +118,11 @@
     {
       "relationship": "Both problems study density phenomena in short intervals: #450 asks about divisor density in $(n, 2n)$ intervals, #461 asks about distinct smooth component counts. Both connect to Ford's work on divisor distribution and the anatomy of integers.",
       "targetId": "erdos-450"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The distribution of smooth numbers (those with all prime factors ≤ y) is controlled by the Dickman function ρ(u), whose behavior depends on the prime distribution governed by PNT. Problem #461 studies smooth numbers in short intervals, directly connecting to PNT-based estimates"
     }
   ],
   "conclusion": {
