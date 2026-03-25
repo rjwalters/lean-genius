@@ -166,5 +166,29 @@
       "relationship": "related",
       "description": "Related Erdős problem sharing themes: number-neighbor"
     }
+  ],
+  "references": [
+    {
+      "key": "St70",
+      "authors": [
+        "H. Steinhaus"
+      ],
+      "title": "Sur les distances des points dans les ensembles de mesure positive",
+      "venue": "Fundamenta Mathematicae",
+      "year": "1920",
+      "volume": "1",
+      "pages": "93-104",
+      "note": "Steinhaus's theorem on distance sets of positive-measure sets; foundation for the similarity problem"
+    },
+    {
+      "key": "Fa03",
+      "authors": [
+        "K.J. Falconer"
+      ],
+      "title": "The Geometry of Fractal Sets",
+      "venue": "Cambridge University Press",
+      "year": "1985",
+      "note": "Standard reference for measure-theoretic geometry including similarity and distance set problems"
+    }
   ]
 }
