@@ -589,19 +589,47 @@ theorem fourierCoeffSumSq_mono (f : AddCircle T → ℂ) (M N : ℕ) (hMN : M �
   · intro i _ _
     exact sq_nonneg _
 
+/-- Helper: bridge from integrability of ‖f‖² to Mathlib's HasSum Parseval identity.
+    Constructs MemLp f 2, lifts to Lp, transfers coefficients and norms. -/
+private theorem hasSum_fourierCoeffSq
+    (f : AddCircle T → ℂ) (hf : Integrable f haarAddCircle)
+    (hf2 : Integrable (fun x => ‖f x‖^2) haarAddCircle) :
+    HasSum (fun n : ℤ => ‖fourierCoeff f n‖ ^ 2) (l2NormSq f) := by
+  -- Bridge to L²: construct MemLp from integrability of ‖f‖²
+  have hf_memLp : MeasureTheory.MemLp f 2 haarAddCircle :=
+    (MeasureTheory.memLp_two_iff_integrable_sq_norm hf.aestronglyMeasurable).mpr hf2
+  set f_Lp := hf_memLp.toLp f
+  have hae := hf_memLp.coeFn_toLp  -- ⇑f_Lp =ᵐ[haarAddCircle] f
+  -- Fourier coefficients of Lp representative equal those of f (ae-invariance of integral)
+  have hcoeff : ∀ n : ℤ, fourierCoeff (⇑f_Lp) n = fourierCoeff f n := fun n => by
+    simp only [fourierCoeff]
+    apply integral_congr_ae
+    filter_upwards [hae] with x hx
+    rw [hx]
+  -- Norm equality: ∫ ‖f_Lp‖² = l2NormSq f
+  have hnorm : (∫ t, ‖(⇑f_Lp) t‖ ^ 2 ∂haarAddCircle) = l2NormSq f := by
+    unfold l2NormSq
+    apply integral_congr_ae
+    filter_upwards [hae] with x hx
+    rw [hx]
+  -- Apply Mathlib's Parseval identity and transfer
+  have hP := hasSum_sq_fourierCoeff f_Lp
+  rw [show (fun n => ‖fourierCoeff (⇑f_Lp) n‖ ^ 2) = (fun n => ‖fourierCoeff f n‖ ^ 2)
+      from funext fun n => by rw [hcoeff]] at hP
+  rwa [hnorm] at hP
+
 /-- **Bessel's Inequality**: The sum of squared Fourier coefficients is bounded
     by the L² norm of f.
 
     Σ_{|n|≤N} |ĉ_n(f)|² ≤ ‖f‖²₂ for all N.
 
-    Proof sketch: ‖f - S_N f‖² ≥ 0 expands to ‖f‖² - Σ|ĉ_n|² ≥ 0.
-
-    Axiomatized: requires inner product computation on L²(AddCircle T)
-    with orthogonality of Fourier monomials. -/
-axiom bessel_inequality
+    Proved using Mathlib's `hasSum_sq_fourierCoeff` (Parseval identity for L² functions)
+    and `sum_le_hasSum` (finite partial sum of nonneg series ≤ total). -/
+theorem bessel_inequality
     (f : AddCircle T → ℂ) (hf : Integrable f haarAddCircle)
     (hf2 : Integrable (fun x => ‖f x‖^2) haarAddCircle) (N : ℕ) :
-    fourierCoeffSumSq f N ≤ l2NormSq f
+    fourierCoeffSumSq f N ≤ l2NormSq f :=
+  sum_le_hasSum _ (fun i _ => sq_nonneg _) (hasSum_fourierCoeffSq f hf hf2)
 
 /-- **Parseval's Theorem**: The sum of squared Fourier coefficients equals
     the L² norm of f.
@@ -609,15 +637,23 @@ axiom bessel_inequality
     Σ_{n∈ℤ} |ĉ_n(f)|² = ‖f‖²₂
 
     This is equivalent to completeness of the Fourier system in L².
-    Combined with Fejér's theorem, it shows:
-    - Continuous functions are dense in L²
-    - Trigonometric polynomials are dense in L²
-
-    Axiomatized: requires completeness of the Fourier system. -/
-axiom parseval_theorem
+    Proved by composing Mathlib's `hasSum_sq_fourierCoeff` with the cofinality
+    of Icc(-N, N) in the directed system of finite subsets of ℤ. -/
+theorem parseval_theorem
     (f : AddCircle T → ℂ) (hf : Integrable f haarAddCircle)
     (hf2 : Integrable (fun x => ‖f x‖^2) haarAddCircle) :
-    Tendsto (fourierCoeffSumSq f) atTop (𝓝 (l2NormSq f))
+    Tendsto (fourierCoeffSumSq f) atTop (𝓝 (l2NormSq f)) := by
+  -- Icc(-N,N) is cofinal in Finset ℤ: every finite subset is eventually contained
+  have h_cofinal : Tendsto (fun N : ℕ => Icc (-(N : ℤ)) (N : ℤ)) atTop atTop := by
+    rw [Filter.tendsto_atTop_atTop]
+    intro S
+    refine ⟨S.sup Int.natAbs, fun N hN => ?_⟩
+    intro n hn
+    rw [Finset.mem_Icc]
+    have hle : n.natAbs ≤ N := le_trans (Finset.le_sup hn) hN
+    constructor <;> omega
+  -- Compose: HasSum (Tendsto over all finsets) + cofinal Icc → Tendsto over Icc
+  exact (hasSum_fourierCoeffSq f hf hf2 : Tendsto _ atTop _).comp h_cofinal
 
 /-- Parseval's theorem implies the Fourier coefficients tend to zero.
     This is a corollary: if the sum Σ|ĉ_n|² converges, then |ĉ_n| → 0.
