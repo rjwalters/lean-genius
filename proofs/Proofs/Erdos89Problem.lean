@@ -127,7 +127,17 @@ For x > 1, we have √x < x.
 Proof: √x < x ↔ x < x² (squaring, valid since both positive)
       ↔ 1 < x (dividing by x > 0) ✓
 -/
-axiom sqrt_lt_self_of_one_lt {x : ℝ} (hx : x > 1) : Real.sqrt x < x
+theorem sqrt_lt_self_of_one_lt {x : ℝ} (hx : x > 1) : Real.sqrt x < x := by
+  have h0 : (0 : ℝ) < x := by linarith
+  -- √x < x ↔ √x · 1 < √x · √x (since √x > 0), i.e., 1 < √x
+  -- And 1 < √x ↔ 1 < x (since √ is monotone and √1 = 1)
+  have h1 : 1 < Real.sqrt x := by
+    rw [show (1 : ℝ) = Real.sqrt 1 from (Real.sqrt_one).symm]
+    exact Real.sqrt_lt_sqrt (by linarith) hx
+  -- Now √x · √x = x > √x · 1 = √x
+  calc Real.sqrt x = Real.sqrt x * 1 := (mul_one _).symm
+    _ < Real.sqrt x * Real.sqrt x := by exact mul_lt_mul_of_pos_left h1 (Real.sqrt_pos.mpr h0)
+    _ = x := Real.mul_self_sqrt (le_of_lt h0)
 
 /--
 For c > 0 and n > 0 with log n > 1 (i.e., n > e), we have:
@@ -153,7 +163,10 @@ log 3 > 1, since 3 > e ≈ 2.718...
 We state this as an axiom since the numerical verification is straightforward
 but requires careful handling of exp bounds.
 -/
-axiom log_three_gt_one : Real.log 3 > 1
+theorem log_three_gt_one : Real.log 3 > 1 := by
+  -- log 3 > 1 ↔ 3 > exp 1, since log is monotone and log(exp 1) = 1
+  rw [show (1 : ℝ) = Real.log (Real.exp 1) from (Real.log_exp 1).symm]
+  exact Real.log_lt_log (Real.exp_pos 1) (by linarith [Real.exp_one_lt_d9])
 
 /--
 If the Erdős conjecture holds, then Guth-Katz follows.
