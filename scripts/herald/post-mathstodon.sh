@@ -21,7 +21,7 @@ set -euo pipefail
 # Config
 MASTODON_INSTANCE="https://mathstodon.xyz"
 MAX_CHARS=500
-MAX_DAILY_POSTS=4
+MAX_DAILY_POSTS=8
 
 # Colors
 RED='\033[0;31m'
