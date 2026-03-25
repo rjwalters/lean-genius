@@ -140,5 +140,97 @@
       "Function.comp",
       "IsColoring"
     ]
+  },
+  {
+    "id": "ann-e62-infgraph-detail",
+    "proofId": "erdos-62",
+    "range": {
+      "startLine": 32,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "InfGraph: Custom Infinite Graph Structure",
+    "content": "The file defines its own `InfGraph V` structure rather than using Mathlib's `SimpleGraph V`. This is a deliberate choice: `SimpleGraph` uses `DecidableEq` on vertices and `Decidable` on adjacency, which is inappropriate for uncountable vertex sets where adjacency may not be decidable. `InfGraph` requires only symmetry (`Adj u v -> Adj v u`) and looplessness (`not Adj v v`), matching the minimal axioms of a simple graph. The coloring definitions (`IsColoring`, `IsColorable`, `IsCountablyColorable`) are built directly on top of `InfGraph` using `Fin k` (finite colors) and `N` (countable colors).",
+    "mathContext": "An infinite simple graph $G = (V, E)$ with $V$ possibly uncountable. $E \\subseteq \\binom{V}{2}$. A proper $k$-coloring is $f: V \\to [k]$ with $f(u) \\neq f(v)$ whenever $uv \\in E$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "simple graph",
+      "proper coloring",
+      "chromatic number",
+      "uncountable graphs"
+    ],
+    "prerequisites": [
+      "graph theory basics",
+      "Lean 4 structures"
+    ]
+  },
+  {
+    "id": "ann-e62-chromatic-hierarchy",
+    "proofId": "erdos-62",
+    "range": {
+      "startLine": 52,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "Three-Level Chromatic Hierarchy",
+    "content": "The chromatic number is stratified into three classes rather than defined as a single cardinal. `HasChromaticNumber G k` means $\\chi(G) = k$ exactly (k-colorable, not (k-1)-colorable). `HasChromaticAleph0 G` means $\\chi(G) = \\aleph_0$ (countably but not finitely colorable). `HasChromaticAleph1 G` means $\\chi(G) \\geq \\aleph_1$ (not countably colorable). This stratification avoids dealing with arbitrary cardinals in Lean and suffices for Erd\\u0151s 62, which only asks about the $\\aleph_1$ case.",
+    "mathContext": "$\\chi(G) = k \\iff G$ is $k$-colorable and not $(k-1)$-colorable. $\\chi(G) = \\aleph_0 \\iff G$ is $\\omega$-colorable but not $n$-colorable for any $n < \\omega$. $\\chi(G) \\geq \\aleph_1 \\iff G$ is not countably colorable.",
+    "significance": "key",
+    "relatedConcepts": [
+      "chromatic number",
+      "cardinal arithmetic",
+      "aleph numbers",
+      "coloring decidability"
+    ],
+    "prerequisites": [
+      "cardinal numbers",
+      "ZFC set theory"
+    ]
+  },
+  {
+    "id": "ann-e62-odd-cycles-proof",
+    "proofId": "erdos-62",
+    "range": {
+      "startLine": 127,
+      "endLine": 141
+    },
+    "type": "theorem",
+    "title": "odd_cycles_are_common: Proved via EHS (Max of Thresholds)",
+    "content": "`odd_cycles_are_common` is the main proved theorem: if $G_1$ and $G_2$ both have $\\chi \\geq \\aleph_1$, they share a common subgraph with $\\chi = 3$ (an odd cycle). The proof applies the Erd\\u0151s-Hajnal-Shelah axiom to each graph, obtaining thresholds $N_1$ and $N_2$ such that $G_i$ contains all odd cycles of length $\\geq 2N_i + 1$. Taking $k = \\max(N_1, N_2) + 1$, the odd cycle $C_{2k+1}$ embeds into both $G_1$ and $G_2$, and has $\\chi = 3$ by `oddCycle_chromatic`.",
+    "mathContext": "Take $k = \\max(N_1, N_2) + 1$. Then $k \\geq N_1$ and $k \\geq N_2$, so $C_{2k+1}$ embeds into both $G_1$ and $G_2$. Since $\\chi(C_{2k+1}) = 3$, this is a common subgraph with $\\chi = 3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "odd cycles",
+      "Erdos-Hajnal-Shelah theorem",
+      "max of thresholds",
+      "omega tactic"
+    ],
+    "prerequisites": [
+      "erdos_hajnal_shelah axiom",
+      "oddCycle axiom"
+    ]
+  },
+  {
+    "id": "ann-e62-monotonicity",
+    "proofId": "erdos-62",
+    "range": {
+      "startLine": 165,
+      "endLine": 184
+    },
+    "type": "theorem",
+    "title": "Chromatic Monotonicity Under Embedding (Proved)",
+    "content": "`finite_implies_countable` proves that finite colorability implies countable colorability: if $G$ is $k$-colorable for some $k \\in \\mathbb{N}$, then $G$ is countably colorable (via `Fin.val : Fin k \\to \\mathbb{N}`, which is injective by `Fin.val_injective`). `embed_colorable` proves that colorability transfers to subgraphs: if $H$ embeds into $G$ and $G$ is $k$-colorable, then $H$ is $k$-colorable (compose the coloring with the embedding). Both are fully proved with no axioms.",
+    "mathContext": "Finite $\\Rightarrow$ countable: $f: V \\to \\text{Fin}\\;k$ proper $\\Rightarrow$ $\\text{val} \\circ f: V \\to \\mathbb{N}$ proper (val is injective). Embedding: $H \\hookrightarrow G$, $G$ $k$-colorable $\\Rightarrow$ $H$ $k$-colorable (pull back the coloring).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "chromatic monotonicity",
+      "subgraph colorability",
+      "Fin.val_injective",
+      "function composition"
+    ],
+    "prerequisites": [
+      "Fin.val",
+      "Function.Injective"
+    ]
   }
 ]

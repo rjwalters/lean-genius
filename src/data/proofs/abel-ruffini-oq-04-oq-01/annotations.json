@@ -2,157 +2,401 @@
   {
     "id": "ann-abeloq04oq01-header",
     "proofId": "abel-ruffini-oq-04-oq-01",
-    "range": { "startLine": 1, "endLine": 57 },
+    "range": {
+      "startLine": 1,
+      "endLine": 57
+    },
     "type": "context",
     "title": "Proof Chain Overview and Mathematical Background",
     "content": "Documents the complete Abel-Ruffini proof chain as realized in this formalization. The chain proceeds: (1) $A_5$ is simple (Mathlib), (2) $S_n$ ($n \\geq 5$) is not solvable (parent OQ-04 file), (3) solvable by radicals $\\Rightarrow$ solvable Galois group (Mathlib's `solvableByRad.isSolvable'`), (4) $\\text{Gal}(x^5 - 4x + 2/\\mathbb{Q}) \\cong S_5$ (this file), (5) therefore roots of $x^5 - 4x + 2$ cannot be expressed by radicals. This is the final link: a concrete polynomial witness.",
     "mathContext": "The Abel-Ruffini theorem (1824/1832): there is no general algebraic solution in radicals for polynomial equations of degree $\\geq 5$. This file provides a concrete witness: $p(x) = x^5 - 4x + 2$.",
     "significance": "context",
-    "relatedConcepts": ["Abel-Ruffini theorem", "Galois theory", "solvability by radicals", "symmetric group", "proof chain"],
-    "prerequisites": ["splitting fields", "Galois groups", "radical extensions", "solvable groups"]
+    "relatedConcepts": [
+      "Abel-Ruffini theorem",
+      "Galois theory",
+      "solvability by radicals",
+      "symmetric group",
+      "proof chain"
+    ],
+    "prerequisites": [
+      "splitting fields",
+      "Galois groups",
+      "radical extensions",
+      "solvable groups"
+    ]
   },
   {
     "id": "ann-abeloq04oq01-polynomial",
     "proofId": "abel-ruffini-oq-04-oq-01",
-    "range": { "startLine": 67, "endLine": 70 },
+    "range": {
+      "startLine": 67,
+      "endLine": 70
+    },
     "type": "definition",
     "title": "The Polynomial p = X^5 - 4X + 2",
     "content": "Defines the polynomial $p = X^5 - 4X + 2$ in both $\\mathbb{Q}[X]$ and $\\mathbb{Z}[X]$. The $\\mathbb{Z}[X]$ version is needed for Eisenstein's criterion, which requires checking divisibility conditions on integer coefficients. The polynomial is chosen specifically because it satisfies Eisenstein at $p = 2$ (giving irreducibility) and has exactly 3 real roots (giving $\\text{Gal} \\cong S_5$ via the transposition-and-cycle argument).",
     "mathContext": "$p(x) = x^5 - 4x + 2 \\in \\mathbb{Q}[X]$. Coefficients: $(a_5, a_4, a_3, a_2, a_1, a_0) = (1, 0, 0, 0, -4, 2)$.",
     "significance": "key",
-    "relatedConcepts": ["polynomial ring", "integer polynomial", "rational polynomial", "Eisenstein polynomial"],
-    "prerequisites": ["polynomial arithmetic in Lean", "C (constant) and X constructors"]
+    "relatedConcepts": [
+      "polynomial ring",
+      "integer polynomial",
+      "rational polynomial",
+      "Eisenstein polynomial"
+    ],
+    "prerequisites": [
+      "polynomial arithmetic in Lean",
+      "C (constant) and X constructors"
+    ]
   },
   {
     "id": "ann-abeloq04oq01-eisenstein",
     "proofId": "abel-ruffini-oq-04-oq-01",
-    "range": { "startLine": 93, "endLine": 133 },
+    "range": {
+      "startLine": 93,
+      "endLine": 133
+    },
     "type": "technique",
     "title": "Eisenstein's Irreducibility Criterion at p = 2",
     "content": "Applies Eisenstein's criterion with the prime ideal $(2) \\subset \\mathbb{Z}$ to prove $p$ is irreducible over $\\mathbb{Z}$. The criterion requires: (1) leading coefficient $1 \\notin (2)$, (2) all lower coefficients $0, 0, 0, -4, 2 \\in (2)$, (3) constant term $2 \\notin (4) = (2)^2$, (4) positive degree. Lean's `Polynomial.irreducible_of_eisenstein_criterion` requires also that $p$ is primitive, which follows from monicity. The key tactic `interval_cases k` enumerates all coefficient indices $k < 5$ and `norm_num` discharges each divisibility check.",
     "mathContext": "Eisenstein at $(2)$: $2 \\nmid 1$ (leading), $2 \\mid 0, 0, 0, -4, 2$ (lower), $4 \\nmid 2$ (constant). Therefore $x^5 - 4x + 2$ is irreducible over $\\mathbb{Z}$.",
     "significance": "key",
-    "relatedConcepts": ["Eisenstein's criterion", "prime ideal", "irreducible polynomial", "interval_cases tactic", "norm_num"],
-    "prerequisites": ["prime ideals in Z", "Ideal.span_singleton", "polynomial coefficient access"]
+    "relatedConcepts": [
+      "Eisenstein's criterion",
+      "prime ideal",
+      "irreducible polynomial",
+      "interval_cases tactic",
+      "norm_num"
+    ],
+    "prerequisites": [
+      "prime ideals in Z",
+      "Ideal.span_singleton",
+      "polynomial coefficient access"
+    ]
   },
   {
     "id": "ann-abeloq04oq01-gauss",
     "proofId": "abel-ruffini-oq-04-oq-01",
-    "range": { "startLine": 134, "endLine": 145 },
+    "range": {
+      "startLine": 134,
+      "endLine": 145
+    },
     "type": "technique",
     "title": "Transfer to Q-Irreducibility via Gauss's Lemma",
     "content": "Transfers irreducibility from $\\mathbb{Z}[X]$ to $\\mathbb{Q}[X]$ using Gauss's lemma: a primitive polynomial over $\\mathbb{Z}$ is irreducible over $\\mathbb{Z}$ if and only if it is irreducible over $\\mathbb{Q}$. Monicity implies primitivity (the GCD of coefficients divides the leading coefficient 1). The `convert` tactic handles the identification of $p \\in \\mathbb{Q}[X]$ with the image of $p_{\\text{int}} \\in \\mathbb{Z}[X]$ under the map $\\mathbb{Z} \\hookrightarrow \\mathbb{Q}$.",
     "mathContext": "Gauss's lemma: for primitive $f \\in \\mathbb{Z}[X]$, $f$ irreducible over $\\mathbb{Z} \\iff f$ irreducible over $\\mathbb{Q}$. Since $p$ is monic (hence primitive), $\\mathbb{Z}$-irreducibility gives $\\mathbb{Q}$-irreducibility.",
     "significance": "key",
-    "relatedConcepts": ["Gauss's lemma", "primitive polynomial", "IsPrimitive.Int.irreducible_iff_irreducible_map_cast", "ring homomorphism"],
-    "prerequisites": ["content of a polynomial", "Z to Q embedding"]
+    "relatedConcepts": [
+      "Gauss's lemma",
+      "primitive polynomial",
+      "IsPrimitive.Int.irreducible_iff_irreducible_map_cast",
+      "ring homomorphism"
+    ],
+    "prerequisites": [
+      "content of a polynomial",
+      "Z to Q embedding"
+    ]
   },
   {
     "id": "ann-abeloq04oq01-structural",
     "proofId": "abel-ruffini-oq-04-oq-01",
-    "range": { "startLine": 152, "endLine": 169 },
+    "range": {
+      "startLine": 152,
+      "endLine": 169
+    },
     "type": "technique",
     "title": "Structural Properties: Degree, Separability, Root Set",
     "content": "Establishes the key structural facts: $\\deg(p) = 5$ (by `compute_degree!`), $p$ is monic, $p$ is separable (automatic for irreducible polynomials over $\\mathbb{Q}$, since $\\text{char}(\\mathbb{Q}) = 0$), and $|\\text{rootSet}(p)| = 5$ (a separable polynomial of degree $n$ has exactly $n$ roots in its splitting field). The root set cardinality is critical: it establishes that $\\text{Gal}$ acts on a 5-element set, hence embeds into $S_5$.",
     "mathContext": "$\\deg(p) = 5$, $p$ monic, $p$ separable (char 0). $|\\{\\alpha \\in K : p(\\alpha) = 0\\}| = 5$ where $K$ is the splitting field. Therefore $\\text{Gal}(p/\\mathbb{Q}) \\hookrightarrow \\text{Perm}(\\text{rootSet}) \\cong S_5$.",
     "significance": "supporting",
-    "relatedConcepts": ["separable polynomial", "splitting field", "root set", "characteristic zero", "compute_degree!"],
-    "prerequisites": ["field characteristic", "polynomial separability", "splitting field construction"]
+    "relatedConcepts": [
+      "separable polynomial",
+      "splitting field",
+      "root set",
+      "characteristic zero",
+      "compute_degree!"
+    ],
+    "prerequisites": [
+      "field characteristic",
+      "polynomial separability",
+      "splitting field construction"
+    ]
   },
   {
     "id": "ann-abeloq04oq01-galois-bounds",
     "proofId": "abel-ruffini-oq-04-oq-01",
-    "range": { "startLine": 176, "endLine": 193 },
+    "range": {
+      "startLine": 176,
+      "endLine": 193
+    },
     "type": "technique",
     "title": "Galois Group Order Bounds: 5 | |Gal| and |Gal| | 120",
     "content": "Establishes tight bounds on $|\\text{Gal}|$. The lower bound $5 \\mid |\\text{Gal}|$ uses Mathlib's `Polynomial.Gal.prime_degree_dvd_card`: for an irreducible polynomial of prime degree $p$, the Galois group acts transitively on roots, so $p \\mid |\\text{Gal}|$ by the orbit-stabilizer theorem. The upper bound $|\\text{Gal}| \\mid 120$ uses the injective `galActionHom` embedding $\\text{Gal} \\hookrightarrow \\text{Perm}(\\text{rootSet})$: the image is a subgroup, so $|\\text{Gal}|$ divides $|S_5| = 5! = 120$. Together: $|\\text{Gal}| \\in \\{5, 10, 15, 20, 30, 40, 60, 120\\}$.",
     "mathContext": "$5 \\mid |\\text{Gal}|$ (orbit-stabilizer for transitive action on 5 roots) and $|\\text{Gal}| \\mid 5! = 120$ (embedding into $S_5$). Combined: $|\\text{Gal}| \\in \\{5, 10, 15, 20, 30, 40, 60, 120\\}$.",
     "significance": "key",
-    "relatedConcepts": ["orbit-stabilizer theorem", "transitive group action", "Lagrange's theorem", "galActionHom", "Subgroup.card_dvd_of_injective"],
-    "prerequisites": ["Galois group action on roots", "cardinal arithmetic"]
+    "relatedConcepts": [
+      "orbit-stabilizer theorem",
+      "transitive group action",
+      "Lagrange's theorem",
+      "galActionHom",
+      "Subgroup.card_dvd_of_injective"
+    ],
+    "prerequisites": [
+      "Galois group action on roots",
+      "cardinal arithmetic"
+    ]
   },
   {
     "id": "ann-abeloq04oq01-evaluations",
     "proofId": "abel-ruffini-oq-04-oq-01",
-    "range": { "startLine": 199, "endLine": 226 },
+    "range": {
+      "startLine": 233,
+      "endLine": 260
+    },
     "type": "technique",
     "title": "Polynomial Evaluations: Sign Changes Locating 3 Real Roots",
     "content": "Formally computes $p(-2) = -22$, $p(-1) = 5$, $p(0) = 2$, $p(1) = -1$, $p(2) = 26$ using `unfold p; simp [...]; ring`. The three sign changes $(-22 \\to 5, 2 \\to -1, -1 \\to 26)$ locate real roots in $(-2,-1)$, $(0,1)$, and $(1,2)$ by the intermediate value theorem. Combined with the derivative $p'(x) = 5x^4 - 4$ having exactly 2 real critical points, $p$ has exactly 3 real roots and 2 complex conjugate roots. This is the computational foundation for the axiom $|\\text{Gal}| = 120$: complex conjugation swaps the 2 non-real roots (a transposition), which together with a 5-cycle generates $S_5$.",
     "mathContext": "$p(-2) = -22 < 0$, $p(-1) = 5 > 0$, $p(0) = 2 > 0$, $p(1) = -1 < 0$, $p(2) = 26 > 0$. Three sign changes $\\Rightarrow$ at least 3 real roots. $p'(x) = 5x^4 - 4$ has 2 real roots $\\Rightarrow$ at most 3 real roots. Therefore exactly 3 real, 2 complex conjugate roots.",
     "significance": "supporting",
-    "relatedConcepts": ["intermediate value theorem", "sign changes", "polynomial evaluation", "Rolle's theorem", "derivative analysis"],
-    "prerequisites": ["polynomial evaluation", "ring tactic", "real root counting"]
+    "relatedConcepts": [
+      "intermediate value theorem",
+      "sign changes",
+      "polynomial evaluation",
+      "Rolle's theorem",
+      "derivative analysis"
+    ],
+    "prerequisites": [
+      "polynomial evaluation",
+      "ring tactic",
+      "real root counting"
+    ]
   },
   {
     "id": "ann-abeloq04oq01-group-theory",
     "proofId": "abel-ruffini-oq-04-oq-01",
-    "range": { "startLine": 248, "endLine": 319 },
+    "range": {
+      "startLine": 262,
+      "endLine": 365
+    },
     "type": "technique",
     "title": "5-Cycle + Transposition Generates S₅ (closure_cycle_swap_eq_top)",
     "content": "The key group-theoretic bridge: proves that $\\langle c_5, (0\\;1) \\rangle = S_5$ where $c_5 = (0\\;1\\;2\\;3\\;4)$. The 5-cycle is constructed explicitly as the modular successor map $i \\mapsto (i+1) \\bmod 5$. The proof generates all 10 transpositions in three stages: (1) **Adjacent transpositions** via conjugation: $c_5^k (0\\;1) c_5^{-k} = (k\\;k{+}1)$ for $k = 1,2,3$, verified by `native_decide`. (2) **Star transpositions** via double conjugation: $(0\\;k)(k\\;k{+}1)(0\\;k) = (0\\;k{+}1)$. (3) **Remaining transpositions**: $(0\\;a)(0\\;b)(0\\;a) = (a\\;b)$. Finally, `Equiv.Perm.swap_induction_on` decomposes any permutation into transpositions, and `fin_cases` with `Equiv.swap_comm` handles all $\\binom{5}{2} = 10$ cases. This is the formal proof of the classical result that a transitive subgroup of $S_p$ ($p$ prime) containing a transposition equals $S_p$.",
     "mathContext": "$c_5 = (0\\;1\\;2\\;3\\;4)$, $\\tau = (0\\;1)$. Stage 1: $c_5^k \\tau c_5^{-k} = (k\\;k{+}1)$. Stage 2: $(0\\;k)(k\\;k{+}1)(0\\;k) = (0\\;k{+}1)$. Stage 3: $(0\\;a)(0\\;b)(0\\;a) = (a\\;b)$. Therefore $\\langle c_5, \\tau \\rangle \\supseteq \\{\\text{all transpositions}\\} \\Rightarrow \\langle c_5, \\tau \\rangle = S_5$.",
     "significance": "key",
-    "relatedConcepts": ["conjugation in symmetric groups", "transposition generation", "native_decide", "swap_induction_on", "fin_cases", "Cayley generation of Sn"],
-    "prerequisites": ["Subgroup.closure", "Equiv.Perm.swap_induction_on", "conjugation in groups", "modular arithmetic"]
+    "relatedConcepts": [
+      "conjugation in symmetric groups",
+      "transposition generation",
+      "native_decide",
+      "swap_induction_on",
+      "fin_cases",
+      "Cayley generation of Sn"
+    ],
+    "prerequisites": [
+      "Subgroup.closure",
+      "Equiv.Perm.swap_induction_on",
+      "conjugation in groups",
+      "modular arithmetic"
+    ]
   },
   {
     "id": "ann-abeloq04oq01-axiom",
     "proofId": "abel-ruffini-oq-04-oq-01",
-    "range": { "startLine": 325, "endLine": 353 },
+    "range": {
+      "startLine": 540,
+      "endLine": 586
+    },
     "type": "concept",
     "title": "Axiom: |Gal| = 120 (Architecture and Remaining Gap)",
     "content": "The single axiom `gal_card_eq_120`: $|\\text{Gal}(p/\\mathbb{Q})| = 120$. The proof architecture decomposes into two parts. **Part A (fully proved):** `closure_cycle_swap_eq_top` shows a 5-cycle and transposition generate $S_5$. **Part B (remaining gap):** formalizing that complex conjugation acts as a transposition on the Galois group. This requires: (1) embedding the splitting field into $\\mathbb{C}$, (2) showing complex conjugation preserves the splitting field, (3) counting fixed points (3 real roots are fixed, 2 complex roots are swapped). The polynomial evaluations provide the IVT ingredients, but connecting them to a Galois automorphism requires Mathlib's theory of real and complex embeddings.",
     "mathContext": "Axiom: $|\\text{Gal}(x^5 - 4x + 2/\\mathbb{Q})| = 120$. Proved: $\\langle c_5, \\tau \\rangle = S_5$. Gap: complex conjugation $\\sigma \\in \\text{Gal}$ with $\\sigma(\\alpha_i) = \\bar{\\alpha}_i$, fixing 3 real roots and swapping 2 complex roots $\\Rightarrow$ $\\sigma$ is a transposition.",
     "significance": "key",
-    "relatedConcepts": ["complex conjugation automorphism", "real vs complex embeddings", "Galois automorphism", "splitting field embedding", "axiom elimination"],
-    "prerequisites": ["closure_cycle_swap_eq_top", "polynomial evaluations", "IVT over reals", "complex embedding theory"]
+    "relatedConcepts": [
+      "complex conjugation automorphism",
+      "real vs complex embeddings",
+      "Galois automorphism",
+      "splitting field embedding",
+      "axiom elimination"
+    ],
+    "prerequisites": [
+      "closure_cycle_swap_eq_top",
+      "polynomial evaluations",
+      "IVT over reals",
+      "complex embedding theory"
+    ]
   },
   {
     "id": "ann-abeloq04oq01-iso",
     "proofId": "abel-ruffini-oq-04-oq-01",
-    "range": { "startLine": 363, "endLine": 388 },
+    "range": {
+      "startLine": 755,
+      "endLine": 787
+    },
     "type": "insight",
     "title": "Gal(p/Q) = S_5 via galActionHom Bijectivity",
     "content": "The central isomorphism: $\\text{Gal}(p/\\mathbb{Q}) \\cong S_5$. The proof proceeds in three steps: (1) `galActionHom` is injective (Mathlib), (2) $|\\text{Gal}| = 120 = |\\text{Perm}(\\text{rootSet})|$ (axiom + root set card), so `galActionHom` is bijective by the pigeonhole principle (`Fintype.bijective_iff_injective_and_card`), (3) transfer from $\\text{Perm}(\\text{rootSet})$ to $\\text{Perm}(\\text{Fin}\\;5)$ via `Equiv.permCongr`. The `MulEquiv.ofBijective` constructor packages the bijective homomorphism as a group isomorphism.",
     "mathContext": "$\\text{galActionHom}: \\text{Gal}(p/\\mathbb{Q}) \\hookrightarrow \\text{Perm}(\\text{rootSet})$. Injective + $|\\text{Gal}| = |\\text{Perm}(\\text{rootSet})| = 120$ $\\Rightarrow$ bijective $\\Rightarrow$ $\\text{Gal}(p/\\mathbb{Q}) \\cong S_5$.",
     "significance": "key",
-    "relatedConcepts": ["MulEquiv.ofBijective", "Equiv.permCongr", "Fintype.bijective_iff_injective_and_card", "galActionHom", "pigeonhole principle"],
-    "prerequisites": ["galActionHom injectivity", "gal_card_eq_120", "p_rootSet_card"]
+    "relatedConcepts": [
+      "MulEquiv.ofBijective",
+      "Equiv.permCongr",
+      "Fintype.bijective_iff_injective_and_card",
+      "galActionHom",
+      "pigeonhole principle"
+    ],
+    "prerequisites": [
+      "galActionHom injectivity",
+      "gal_card_eq_120",
+      "p_rootSet_card"
+    ]
   },
   {
     "id": "ann-abeloq04oq01-nonsolvable",
     "proofId": "abel-ruffini-oq-04-oq-01",
-    "range": { "startLine": 394, "endLine": 408 },
+    "range": {
+      "startLine": 790,
+      "endLine": 807
+    },
     "type": "technique",
     "title": "Non-Solvability: S_5 to Gal Transfer",
     "content": "Two-step argument: (1) $S_5$ is not solvable, proved by `Equiv.Perm.not_solvable` which requires $5 \\leq |\\text{Fin}\\;5|$ (since $S_n$ is non-solvable for $n \\geq 5$, because the derived series $S_n \\supset A_n \\supset \\{e\\}$ stabilizes at the simple group $A_n$). (2) Transfer to $\\text{Gal}$: if $\\text{Gal}$ were solvable, then $S_5$ would be solvable via the surjective image of the isomorphism (`solvable_of_surjective`), contradiction. The surjectivity is extracted from the `MulEquiv` using `iso.apply_symm_apply`.",
     "mathContext": "$S_5$ is not solvable since $A_5$ is simple and non-abelian. $\\text{Gal} \\cong S_5$ $\\Rightarrow$ $\\text{Gal}$ not solvable. Formally: $\\text{Gal}$ solvable $\\xrightarrow{\\text{surjection}}$ $S_5$ solvable, contradiction.",
     "significance": "key",
-    "relatedConcepts": ["solvable group", "derived series", "simple group", "A5 simplicity", "solvable_of_surjective"],
-    "prerequisites": ["Equiv.Perm.not_solvable", "gal_iso_s5", "group theory: solvability transfer"]
+    "relatedConcepts": [
+      "solvable group",
+      "derived series",
+      "simple group",
+      "A5 simplicity",
+      "solvable_of_surjective"
+    ],
+    "prerequisites": [
+      "Equiv.Perm.not_solvable",
+      "gal_iso_s5",
+      "group theory: solvability transfer"
+    ]
   },
   {
     "id": "ann-abeloq04oq01-main",
     "proofId": "abel-ruffini-oq-04-oq-01",
-    "range": { "startLine": 432, "endLine": 442 },
+    "range": {
+      "startLine": 825,
+      "endLine": 841
+    },
     "type": "insight",
     "title": "Abel-Ruffini Conclusion: Roots Not Solvable by Radicals",
     "content": "The culminating theorem: no root of $x^5 - 4x + 2$ can be expressed using $+, -, \\times, \\div$, and $n$-th roots starting from rationals. The proof is a clean contrapositive: assume root $\\alpha$ is solvable by radicals, then by Galois's theorem (`solvableByRad.isSolvable'`, which uses $p$ irreducible and $p(\\alpha) = 0$), $\\text{Gal}(p/\\mathbb{Q})$ would be solvable — contradicting `gal_not_solvable`. This is the concrete incarnation of Abel's 1824 impossibility result: not merely \"some\" quintic is unsolvable, but *this specific* quintic is unsolvable.",
     "mathContext": "For any $\\alpha$ with $p(\\alpha) = 0$: $\\alpha \\in \\text{Rad}(\\mathbb{Q}) \\Rightarrow \\text{Gal}(p/\\mathbb{Q})$ solvable $\\Rightarrow S_5$ solvable $\\Rightarrow \\bot$. Therefore $\\alpha \\notin \\text{Rad}(\\mathbb{Q})$.",
     "significance": "key",
-    "relatedConcepts": ["IsSolvableByRad", "solvableByRad.isSolvable'", "contrapositive", "radical extension", "Abel's impossibility theorem"],
-    "prerequisites": ["p_irreducible", "gal_not_solvable", "Galois correspondence for radical extensions"]
+    "relatedConcepts": [
+      "IsSolvableByRad",
+      "solvableByRad.isSolvable'",
+      "contrapositive",
+      "radical extension",
+      "Abel's impossibility theorem"
+    ],
+    "prerequisites": [
+      "p_irreducible",
+      "gal_not_solvable",
+      "Galois correspondence for radical extensions"
+    ]
   },
   {
     "id": "ann-abeloq04oq01-realizability",
     "proofId": "abel-ruffini-oq-04-oq-01",
-    "range": { "startLine": 448, "endLine": 459 },
+    "range": {
+      "startLine": 844,
+      "endLine": 858
+    },
     "type": "insight",
     "title": "S_5 Realizability as a Galois Group over Q",
     "content": "A contribution to the inverse Galois problem: $S_5$ is realizable as $\\text{Gal}(K/\\mathbb{Q})$ for some finite Galois extension $K$. The witness is $K = $ splitting field of $x^5 - 4x + 2$. The proof constructs the requisite structure: $K/\\mathbb{Q}$ is finite-dimensional (splitting field of a polynomial), normal (splitting fields are normal), separable ($\\text{char}(\\mathbb{Q}) = 0$), hence Galois. The isomorphism $S_5 \\cong \\text{Gal}(K/\\mathbb{Q})$ is the inverse of `gal_iso_s5`. This complements other gallery realizations: $S_3$ via cubic discriminant, $F_{20}$ via cyclotomic fields.",
     "mathContext": "$\\exists K/\\mathbb{Q}$ Galois with $\\text{Gal}(K/\\mathbb{Q}) \\cong S_5$. Witness: $K = \\mathbb{Q}(\\alpha_1, \\ldots, \\alpha_5)$ = splitting field of $x^5 - 4x + 2$.",
     "significance": "supporting",
-    "relatedConcepts": ["inverse Galois problem", "splitting field", "IsGalois", "FiniteDimensional", "Normal extension"],
-    "prerequisites": ["gal_iso_s5", "splitting field properties", "Galois extension characterization"]
+    "relatedConcepts": [
+      "inverse Galois problem",
+      "splitting field",
+      "IsGalois",
+      "FiniteDimensional",
+      "Normal extension"
+    ],
+    "prerequisites": [
+      "gal_iso_s5",
+      "splitting field properties",
+      "Galois extension characterization"
+    ]
+  },
+  {
+    "id": "ann-abeloq04oq01-sylow-no15",
+    "proofId": "abel-ruffini-oq-04-oq-01",
+    "range": {
+      "startLine": 401,
+      "endLine": 530
+    },
+    "type": "technique",
+    "title": "Sylow Theory: No Subgroups of Order 15 or 30 in S₅",
+    "content": "`no_subgroup_order_15` and `no_subgroup_order_30` rule out $|\\text{Gal}| = 15$ and $|\\text{Gal}| = 30$. For order 15 = 3·5: both Sylow subgroups $P_5$ and $P_3$ are unique (hence normal), so elements of order 5 and order 3 commute. But `native_decide` verifies no order-5 and order-3 elements commute in $S_5$, contradiction. For order 30: a subgroup of order 30 in $S_5$ would have index 4, giving a homomorphism $S_5 \\to S_4$ whose kernel is a normal subgroup of $S_5$ contained in the order-30 subgroup — but $A_5$ is simple, so the kernel must be trivial or $A_5$, and neither works.",
+    "mathContext": "Order 15: unique $P_5$ and $P_3$ (Sylow) $\\Rightarrow$ $P_5 P_3 \\cong \\mathbb{Z}/5 \\times \\mathbb{Z}/3 \\cong \\mathbb{Z}/15$ (cyclic, abelian). But $S_5$ has no cyclic subgroup of order 15 (`native_decide`). Order 30: $[S_5 : H] = 4$ gives $S_5 \\to S_4$ with kernel $K \\trianglelefteq S_5$, $K \\subseteq H$. Since $A_5$ is simple, $K \\in \\{\\{e\\}, A_5\\}$. $K = A_5$ impossible ($|A_5| = 60 > 30 = |H|$). $K = \\{e\\}$ gives $S_5 \\hookrightarrow S_4$, impossible by cardinality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sylow theorems",
+      "normal subgroups",
+      "cyclic groups",
+      "index-to-homomorphism",
+      "A5 simplicity"
+    ],
+    "prerequisites": [
+      "Sylow theory",
+      "normal Sylow subgroups",
+      "native_decide",
+      "group actions on cosets"
+    ]
+  },
+  {
+    "id": "ann-abeloq04oq01-axiom-decomposition",
+    "proofId": "abel-ruffini-oq-04-oq-01",
+    "range": {
+      "startLine": 532,
+      "endLine": 590
+    },
+    "type": "concept",
+    "title": "Axiom Decomposition: Two Narrow Axioms Replace |Gal|=120",
+    "content": "The formerly opaque axiom $|\\text{Gal}| = 120$ is decomposed into two narrow, verifiable axioms: (A) `three_dvd_gal_card`: $3 \\mid |\\text{Gal}|$, from Dedekind's theorem applied at $p = 13$ (the mod-13 factorization of $x^5 - 4x + 2$ has a cubic factor, forcing a 3-cycle in the Galois group). (B) `gal_has_odd_perm`: the Galois group contains an odd permutation ($\\text{Gal} \\not\\subset A_5$), from the discriminant $\\Delta(x^5-4x+2) = -212144 < 0$ being a non-square (the Vandermonde identity relates $\\text{sign}(\\sigma)$ to $\\Delta$). These two facts, combined with $5 \\mid |\\text{Gal}|$ (prime degree), $|\\text{Gal}| \\mid 120$, and the no-15/no-30 lemmas, force $|\\text{Gal}| = 120$.",
+    "mathContext": "Axiom (A): $3 \\mid |\\text{Gal}|$ (Dedekind: $x^5 - 4x + 2 \\equiv (x^2+6x+10)(x^3+7x^2+8x+11) \\pmod{13}$). Axiom (B): $\\text{Gal} \\not\\subset A_5$ (discriminant $\\Delta = -212144$ is not a perfect square). From $15 \\mid |\\text{Gal}|$, $|\\text{Gal}| \\mid 120$: possible orders $\\{15, 30, 60, 120\\}$. Not 15 (Sylow), not 30 ($A_5$ simple), not 60 ($\\text{Gal} \\not\\subset A_5$). Therefore $|\\text{Gal}| = 120$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dedekind's theorem",
+      "Frobenius element",
+      "discriminant",
+      "Vandermonde determinant",
+      "axiom decomposition"
+    ],
+    "prerequisites": [
+      "Dedekind's theorem on Galois groups",
+      "discriminant-sign relationship",
+      "Sylow elimination"
+    ]
+  },
+  {
+    "id": "ann-abeloq04oq01-gal-card-theorem",
+    "proofId": "abel-ruffini-oq-04-oq-01",
+    "range": {
+      "startLine": 700,
+      "endLine": 753
+    },
+    "type": "theorem",
+    "title": "Main Theorem: |Gal| = 120 (from Axioms)",
+    "content": "`gal_card_eq_120` proves $|\\text{Gal}(x^5-4x+2/\\mathbb{Q})| = 120$ from the two axioms plus Sylow elimination. The proof: (1) $5 \\mid |G|$ and $3 \\mid |G|$ give $15 \\mid |G|$, (2) $|G| \\mid 120$ gives $|G| \\in \\{15, 30, 60, 120\\}$, (3) `no_subgroup_order_15` eliminates 15, (4) `gal_card_ne_30` eliminates 30, (5) $|G| = 60$ would mean $\\text{Gal} \\subset A_5$ (index 2 in $S_5$), contradicting `gal_has_odd_perm`. Therefore $|G| = 120 = 5!$.",
+    "mathContext": "$15 \\mid |G|$, $|G| \\mid 120$: $|G| \\in \\{15, 30, 60, 120\\}$. Eliminate 15 (Sylow), 30 ($A_5$ simple), 60 (odd permutation). Therefore $|G| = 120$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Galois group order",
+      "divisibility chain",
+      "case elimination",
+      "Fintype.card"
+    ],
+    "prerequisites": [
+      "three_dvd_gal_card",
+      "gal_has_odd_perm",
+      "no_subgroup_order_15",
+      "gal_card_ne_30"
+    ]
   }
 ]
