@@ -19,17 +19,17 @@
     "phase": "ACT",
     "since": "2026-03-24T23:00:00.000Z",
     "iteration": 2,
-    "focus": "Created InverseGaloisOQ01.lean with solvability characterization and structural results",
+    "focus": "Added alternating group characterization and quotient realizability structural theorem",
     "blockers": [],
-    "nextAction": "Add more non-solvable group realizations (PSL(2,7), A6)",
+    "nextAction": "Add direct product realizability or PSL(2,7) cardinality",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created 448-line proof with 31 theorems (0 axioms). Key: sn_solvable_iff, a5_simple, a5_commutator_eq_top, fixed field degree formulas.",
+    "progressSummary": "PROGRESS: Extended to 591 lines, 39 theorems. Added An solvability characterization and quotient realizability via FTGT (0 axioms, 2 sorries: census + open conjecture).",
     "builtItems": [
       "sn_solvable_iff: Sn solvable iff n<=4",
       "a5_simple: A5 is simple",
@@ -40,23 +40,32 @@
       "sign_surjective: sign Sn->Z/2 surjective",
       "cayley_card: Cayley embedding",
       "inverse_galois_conjecture: formal IGC statement",
-      "Gallery entry: inverse-galois-oq-01"
+      "Gallery entry: inverse-galois-oq-01",
+      "an_not_solvable_of_ge_five: An not solvable for n >= 5",
+      "an_solvable_iff: An solvable iff n <= 4",
+      "quotient_is_galois: K^H/F is Galois when H normal in Gal(K/F)",
+      "quotient_galois_equiv: FTGT isomorphism Gal(K/F)/H ≅ Gal(K^H/F)",
+      "fixed_field_galois_card_eq_index: |Gal(K^H/F)| = [G:H]",
+      "quotient_of_galois_realized: quotient realizability via FTGT",
+      "realizability_closed_under_quotients: closure under quotients"
     ],
     "insights": [
       "Solvability divide at n=5 is the key IGP boundary",
       "A5 perfection blocks derived series for n>=5",
       "Every quotient of realized Galois group is realized",
-      "Cayley theorem reduces IGP to symmetric group realizability"
+      "Cayley theorem reduces IGP to symmetric group realizability",
+      "Solvability frontier extends from Sn to An: both families divide at n=5",
+      "Quotient realizability via FTGT gives structural closure: once G is realized, all G/N are automatic",
+      "inferInstance resolves IsGalois for fixed fields of normal subgroups automatically"
     ],
     "mathlibGaps": [
       "No MulAction.toPermHom_injective (proved manually)",
       "IsSimpleGroup uses eq_bot_or_eq_top_of_normal"
     ],
     "nextSteps": [
-      "Realize PSL(2,7) as Galois group over Q",
-      "Realize A6 via explicit polynomial",
-      "Prove quotient realizability theorem",
-      "Connect S5 realization to census"
+      "Prove PSL(2,7) exists as a group (GL(3,F2) has order 168)",
+      "Formalize direct product realizability via coprime-degree compositum",
+      "Connect S5 realization to census (import InverseGaloisA5 for A5/S5 orders)"
     ]
   },
   "tags": [
@@ -77,7 +86,7 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.908Z",
-  "lastUpdate": "2026-03-24T00:48:59.908Z",
+  "lastUpdate": "2026-03-24T23:30:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [

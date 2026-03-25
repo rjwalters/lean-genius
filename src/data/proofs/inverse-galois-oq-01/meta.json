@@ -2,7 +2,7 @@
   "id": "inverse-galois-oq-01",
   "title": "Inverse Galois Problem: Non-Solvable Frontier",
   "slug": "inverse-galois-oq-01",
-  "description": "Explores the boundary between solvable and non-solvable realms in the Inverse Galois Problem. Proves the complete characterization: Sn is solvable iff n <= 4. Shows A5 is simple, perfect, and not solvable. Establishes Galois-theoretic fixed field degree formulas. States the full Inverse Galois Conjecture.",
+  "description": "Explores the boundary between solvable and non-solvable realms in the Inverse Galois Problem. Proves complete solvability characterizations: Sn and An are solvable iff n <= 4. Shows A5 is simple, perfect, and not solvable. Establishes the quotient realizability theorem via FTGT: every quotient of a realized Galois group is realized. Includes degree formulas and Cayley's embedding theorem. States the full Inverse Galois Conjecture.",
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026-03-24",
@@ -33,8 +33,8 @@
     ],
     "assumptions": "3 axioms across dependency chain: Shafarevich's theorem and symmetric group realizability (InverseGalois.lean), A5 Galois group order (InverseGaloisA5.lean). 3 sorries in this file: 2 census sorries for A5/S5 realization, 1 open Inverse Galois Conjecture.",
     "leanFile": {
-      "lineCount": 448,
-      "theoremCount": 31,
+      "lineCount": 591,
+      "theoremCount": 39,
       "lemmaCount": 0,
       "defCount": 0,
       "axiomCount": 0,

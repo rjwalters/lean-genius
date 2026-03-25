@@ -47,3 +47,35 @@ The Inverse Galois Problem (IGP) asks whether every finite group is isomorphic t
 - Realize A6 (order 360) via explicit polynomial
 - Prove quotient realizability formally using Mathlib compositum machinery
 - Connect S5 realization to the census (import AbelRuffiniOQ04OQ01)
+
+## Session 2026-03-24 (Session 2) - Alternating Group Characterization & Quotient Realizability
+
+**Mode**: REVISIT (rich knowledge, phase ACT)
+**Outcome**: progress
+
+### What I Did
+- Extended `InverseGaloisOQ01.lean` from 448 → 591 lines, 31 → 39 theorems
+- Proved `an_not_solvable_of_ge_five`: Aₙ is not solvable for n ≥ 5 (via exact sequence 1 → Aₙ → Sₙ → C₂ → 1)
+- Proved `an_solvable_iff`: Aₙ is solvable iff n ≤ 4 (complete characterization)
+- Proved `quotient_is_galois`: K^H/F is Galois when H ◁ Gal(K/F) (via Mathlib instance)
+- Defined `quotient_galois_equiv`: the FTGT isomorphism Gal(K/F)/H ≅ Gal(K^H/F)
+- Proved `fixed_field_galois_card_eq_index`: |Gal(K^H/F)| = [Gal(K/F) : H]
+- Proved `quotient_of_galois_realized`: quotient realizability as existence theorem
+- Proved `realizability_closed_under_quotients`: closure under quotients
+
+### Key Findings
+- `inferInstance` resolves `IsGalois F (fixedField H)` automatically when H is normal — Mathlib has the instance
+- `IsGalois.normalAutEquivQuotient H` is the key Mathlib lemma for FTGT quotient isomorphism
+- `Subgroup.index` unfolds to `Nat.card (G ⧸ H)` — needs explicit `unfold` in proofs
+- For `an_solvable_iff` backward direction: `interval_cases n <;> infer_instance` works (Mathlib has solvability instances for alternating groups of small n)
+- No new Mathlib gaps encountered — all new theorems build cleanly from existing API
+
+### Files Modified
+- `proofs/Proofs/InverseGaloisOQ01.lean` (extended, 591 lines)
+- `src/data/proofs/inverse-galois-oq-01/meta.json` (updated counts)
+- `src/data/research/problems/inverse-galois-oq-01.json` (updated knowledge)
+
+### Next Steps
+- Prove PSL(2,7) exists as a group (GL(3,F₂) has order 168) via native_decide
+- Formalize direct product realizability via coprime-degree compositum
+- Connect S5 realization to census (import InverseGaloisA5)
