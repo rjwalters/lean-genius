@@ -171,10 +171,13 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib.Logic.Function.Basic", "Mathlib.Order.BooleanAlgebra"],
+    "imports": [
+      "Mathlib.Logic.Function.Basic",
+      "Mathlib.Order.BooleanAlgebra"
+    ],
     "opens": [],
     "namespace": "LawvereCantor",
-    "lineCount": 150,
+    "lineCount": 149,
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 0
