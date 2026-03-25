@@ -49,7 +49,7 @@
       "startLine": 29,
       "endLine": 32,
       "summary": "Imports `Mathlib.Tactic`, `Data.Nat.Prime.Basic`, and `Order.ConditionallyCompleteLattice.Basic` for prime number predicates, `sSup`, and `BddAbove`.",
-      "mathContext": "Imports `Mathlib.Tactic`, `Data.Nat.Prime.Basic`, and `Order.ConditionallyCompleteLattice.Basic` for prime number predicates, `sSup`, and `BddAbove`."
+      "mathContext": "Mathematical content: Imports `Mathlib.Tactic`, `Data.Nat.Prime.Basic`, and `Order.ConditionallyCompleteLattice.Basic` for prime number predicates, `sSup`, and `BddAbove`."
     },
     {
       "id": "definitions",
@@ -65,7 +65,7 @@
       "startLine": 56,
       "endLine": 64,
       "summary": "Defines $g(n) = \\sup\\{d \\mid \\exists m, \\forall k \\in (m, m+d), \\exists p \\mid n \\text{ with } p \\mid k\\}$, the largest gap between consecutive integers coprime to $n$.",
-      "mathContext": "Defines $g(n) = \\sup\\{d \\mid \\exists m, \\forall k \\in (m, m+d), \\exists p \\mid n \\text{ with } p \\mid k\\}$, the largest gap between consecutive integers coprime to $n$."
+      "mathContext": "Formal definition: Defines $g(n) = \\sup\\{d \\mid \\exists m, \\forall k \\in (m, m+d), \\exists p \\mid n \\text{ with } p \\mid k\\}$, the largest gap between consecutive integers coprime to $n$."
     },
     {
       "id": "basic-properties",
@@ -73,7 +73,7 @@
       "startLine": 65,
       "endLine": 80,
       "summary": "Proves `jacobsthalSet` is nonempty (via $y = 0$ vacuously) and axiomatizes it is bounded above (by CRT periodicity of the primorial), enabling the use of `sSup`.",
-      "mathContext": "Proves `jacobsthalSet` is nonempty (via $y = 0$ vacuously) and axiomatizes it is bounded above (by CRT periodicity of the primorial), enabling the use of `sSup`."
+      "mathContext": "Verified: Proves `jacobsthalSet` is nonempty (via $y = 0$ vacuously) and axiomatizes it is bounded above (by CRT periodicity of the primorial), enabling the use of `sSup`."
     },
     {
       "id": "structural",
@@ -89,7 +89,7 @@
       "startLine": 105,
       "endLine": 110,
       "summary": "Axiomatizes $Y(x) = g(\\text{primorial}(x))$, the fundamental equivalence between covering length and the Jacobsthal function of the primorial.",
-      "mathContext": "Axiomatizes $Y(x) = g(\\text{primorial}(x))$, the fundamental equivalence between covering length and the Jacobsthal function of the primorial."
+      "mathContext": "Axiomatized: Axiomatizes $Y(x) = g(\\text{primorial}(x))$, the fundamental equivalence between covering length and the Jacobsthal function of the primorial."
     },
     {
       "id": "conjecture",
@@ -97,7 +97,7 @@
       "startLine": 111,
       "endLine": 118,
       "summary": "States the \\$1,000 prize conjecture: $\\forall \\varepsilon > 0$, eventually $Y(x) \\le x^{1+\\varepsilon}$, formalized using `Filter.atTop` and `Filter.Eventually`.",
-      "mathContext": "States the \\$1,000 prize conjecture: $\\forall \\varepsilon > 0$, eventually $Y(x) \\le x^{1+\\varepsilon}$, formalized using `Filter.atTop` and `Filter.Eventually`."
+      "mathContext": "Mathematical content: States the \\$1,000 prize conjecture: $\\forall \\varepsilon > 0$, eventually $Y(x) \\le x^{1+\\varepsilon}$, formalized using `Filter.atTop` and `Filter.Eventually`."
     },
     {
       "id": "bounds",
@@ -113,7 +113,7 @@
       "startLine": 142,
       "endLine": 148,
       "summary": "Axiomatizes $Y(x) \\ge x + 1$ for $x \\ge 2$: every integer in $[1, x]$ has a prime factor $\\le x$, so taking $a_p = 0$ covers at least $[1, x]$.",
-      "mathContext": "Axiomatizes $Y(x) \\ge x + 1$ for $x \\ge 2$: every integer in $[1, x]$ has a prime factor $\\le x$, so taking $a_p = 0$ covers at least $[1, x]$."
+      "mathContext": "Axiomatized: Axiomatizes $Y(x) \\ge x + 1$ for $x \\ge 2$: every integer in $[1, x]$ has a prime factor $\\le x$, so taking $a_p = 0$ covers at least $[1, x]$."
     }
   ],
   "conclusion": {

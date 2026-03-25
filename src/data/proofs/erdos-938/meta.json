@@ -88,7 +88,7 @@
       "summary": "Header documentation with problem statement, references, and OEIS link",
       "startLine": 1,
       "endLine": 25,
-      "mathContext": "Header documentation with problem statement, references, and OEIS link"
+      "mathContext": "Mathematical content: Header documentation with problem statement, references, and OEIS link"
     },
     {
       "id": "imports-setup",
@@ -96,7 +96,7 @@
       "summary": "Specific Mathlib imports and namespace opening",
       "startLine": 26,
       "endLine": 46,
-      "mathContext": "Specific Mathlib imports and namespace opening"
+      "mathContext": "Mathematical content: Specific Mathlib imports and namespace opening"
     },
     {
       "id": "powerful-def",
@@ -104,7 +104,7 @@
       "summary": "Powerful and PowerfulAlt definitions, powerfulSet",
       "startLine": 47,
       "endLine": 57,
-      "mathContext": "Powerful and PowerfulAlt definitions, powerfulSet"
+      "mathContext": "Formal definition: Powerful and PowerfulAlt definitions, powerfulSet"
     },
     {
       "id": "examples",
@@ -112,7 +112,7 @@
       "summary": "Verification that 1, 4, 8, 9 are powerful numbers",
       "startLine": 58,
       "endLine": 77,
-      "mathContext": "Verification that 1, 4, 8, 9 are powerful numbers"
+      "mathContext": "Mathematical content: Verification that 1, 4, 8, 9 are powerful numbers"
     },
     {
       "id": "enumeration",
@@ -120,7 +120,7 @@
       "summary": "infinite_powerful theorem, nthPowerful via Nat.nth with proved monotonicity, membership, surjectivity",
       "startLine": 78,
       "endLine": 97,
-      "mathContext": "infinite_powerful theorem, nthPowerful via Nat.nth with proved monotonicity, membership, surjectivity"
+      "mathContext": "Verified: infinite_powerful theorem, nthPowerful via Nat.nth with proved monotonicity, membership, surjectivity"
     },
     {
       "id": "ap-condition",
@@ -128,7 +128,7 @@
       "summary": "ConsecutivePowerfulAP, apIndices, powerfulGap, ap_iff_equal_gaps",
       "startLine": 98,
       "endLine": 124,
-      "mathContext": "ConsecutivePowerfulAP, apIndices, powerfulGap, ap_iff_equal_gaps"
+      "mathContext": "Mathematical content: ConsecutivePowerfulAP, apIndices, powerfulGap, ap_iff_equal_gaps"
     },
     {
       "id": "main-problem",
@@ -136,7 +136,7 @@
       "summary": "erdos_938 axiom: finiteness of apIndices (OPEN)",
       "startLine": 125,
       "endLine": 139,
-      "mathContext": "erdos_938 axiom: finiteness of apIndices (OPEN)"
+      "mathContext": "Axiomatized: erdos_938 axiom: finiteness of apIndices (OPEN)"
     },
     {
       "id": "problem-364",
@@ -144,7 +144,7 @@
       "summary": "NoThreeConsecutivePowerful and erdos_364_conjecture",
       "startLine": 140,
       "endLine": 155,
-      "mathContext": "NoThreeConsecutivePowerful and erdos_364_conjecture"
+      "mathContext": "Mathematical content: NoThreeConsecutivePowerful and erdos_364_conjecture"
     },
     {
       "id": "asymptotics",
@@ -152,7 +152,7 @@
       "summary": "countPowerful and powerful_count_asymptotic axiom",
       "startLine": 156,
       "endLine": 174,
-      "mathContext": "countPowerful and powerful_count_asymptotic axiom"
+      "mathContext": "Axiomatized: countPowerful and powerful_count_asymptotic axiom"
     },
     {
       "id": "ap-differences",
@@ -160,7 +160,7 @@
       "summary": "ConsecutivePowerfulAPWithDiff, apDifferences, finiteness lemma",
       "startLine": 175,
       "endLine": 217,
-      "mathContext": "ConsecutivePowerfulAPWithDiff, apDifferences, finiteness lemma"
+      "mathContext": "Mathematical content: ConsecutivePowerfulAPWithDiff, apDifferences, finiteness lemma"
     }
   ],
   "conclusion": {

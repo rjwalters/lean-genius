@@ -96,7 +96,7 @@
       "startLine": 39,
       "endLine": 48,
       "summary": "Imports `AEMeasurableOrder`, `Lebesgue.Basic`, `ContinuousAffineMap`, `Integrals`, `Group.Basic`. Opens `MeasureTheory` and `Set` for $\\lambda$-a.e. notation and `Measurable`.",
-      "mathContext": "Imports `AEMeasurableOrder`, `Lebesgue.Basic`, `ContinuousAffineMap`, `Integrals`, `Group.Basic`. Opens `MeasureTheory` and `Set` for $\\lambda$-a.e. notation and `Measurable`."
+      "mathContext": "Mathematical content: Imports `AEMeasurableOrder`, `Lebesgue.Basic`, `ContinuousAffineMap`, `Integrals`, `Group.Basic`. Opens `MeasureTheory` and `Set` for $\\lambda$-a.e. notation and `Measurable`."
     },
     {
       "id": "basic-definitions",
@@ -104,7 +104,7 @@
       "summary": "Defines `HasMeasurableDifferences f` ($\\Delta_h f$ measurable $\\forall h > 0$), `IsAdditive h` ($h(x+y) = h(x) + h(y)$), and `IsRigid r` ($r(x+h) = r(x)$ $\\lambda$-a.e.).",
       "startLine": 49,
       "endLine": 66,
-      "mathContext": "Defines `HasMeasurableDifferences f` ($\\Delta_h f$ measurable $\\forall h > 0$), `IsAdditive h` ($h(x+y) = h(x) + h(y)$), and `IsRigid r` ($r(x+h) = r(x)$ $\\lambda$-a.e.)."
+      "mathContext": "Formal definition: Defines `HasMeasurableDifferences f` ($\\Delta_h f$ measurable $\\forall h > 0$), `IsAdditive h` ($h(x+y) = h(x) + h(y)$), and `IsRigid r` ($r(x+h) = r(x)$ $\\lambda$-a.e.)."
     },
     {
       "id": "additive-properties",
@@ -112,7 +112,7 @@
       "summary": "Verified: $h(0) = 0$ and $h(-x) = -h(x)$. Axioms: $h(qx) = qh(x)$ for $q \\in \\mathbb{Q}$, $\\exists$ discontinuous additive (via Hamel bases), continuous additive $\\Rightarrow h(x) = cx$.",
       "startLine": 67,
       "endLine": 96,
-      "mathContext": "Verified: $h(0) = 0$ and $h(-x) = -h(x)$. Axioms: $h(qx) = qh(x)$ for $q \\in \\mathbb{Q}$, $\\exists$ discontinuous additive (via Hamel bases), continuous additive $\\Rightarrow h(x) = cx$."
+      "mathContext": "Axiomatized: Verified: $h(0) = 0$ and $h(-x) = -h(x)$. Axioms: $h(qx) = qh(x)$ for $q \\in \\mathbb{Q}$, $\\exists$ discontinuous additive (via Hamel bases), continuous additive $\\Rightarrow h(x) = cx$."
     },
     {
       "id": "rigid-properties",
@@ -120,7 +120,7 @@
       "summary": "Axioms: rigid + continuous $\\Rightarrow$ constant (periodic with every period). Rigid $\\Rightarrow$ measurable differences ($\\Delta_h r = 0$ $\\lambda$-a.e.).",
       "startLine": 97,
       "endLine": 109,
-      "mathContext": "Axioms: rigid + continuous $\\Rightarrow$ constant (periodic with every period). Rigid $\\Rightarrow$ measurable differences ($\\Delta_h r = 0$ $\\lambda$-a.e.)."
+      "mathContext": "Axiomatized: Axioms: rigid + continuous $\\Rightarrow$ constant (periodic with every period). Rigid $\\Rightarrow$ measurable differences ($\\Delta_h r = 0$ $\\lambda$-a.e.)."
     },
     {
       "id": "decomposition-theorem",
@@ -144,7 +144,7 @@
       "summary": "Formalizes Problem #907: additive + bounded on $(a,b) \\Rightarrow$ continuous. Axiom `erdos_907_connection` asserts this. Connects to #908 via the additive component's (dis)continuity.",
       "startLine": 183,
       "endLine": 198,
-      "mathContext": "Formalizes Problem #907: additive + bounded on $(a,b) \\Rightarrow$ continuous. Axiom `erdos_907_connection` asserts this. Connects to #908 via the additive component's (dis)continuity."
+      "mathContext": "Axiomatized: Formalizes Problem #907: additive + bounded on $(a,b) \\Rightarrow$ continuous. Axiom `erdos_907_connection` asserts this. Connects to #908 via the additive component's (dis)continuity."
     },
     {
       "id": "de-bruijn",
@@ -152,7 +152,7 @@
       "summary": "Defines `DifferenceClosed C`: $\\Delta_h f \\in C$ $\\forall h \\Rightarrow f = g + h + r$ with $g \\in C$. Axiom: $\\{\\text{measurable}\\}$ is difference closed. This is de Bruijn's 1951 formulation.",
       "startLine": 199,
       "endLine": 216,
-      "mathContext": "Defines `DifferenceClosed C`: $\\Delta_h f \\in C$ $\\forall h \\Rightarrow f = g + h + r$ with $g \\in C$. Axiom: $\\{\\text{measurable}\\}$ is difference closed. This is de Bruijn's 1951 formulation."
+      "mathContext": "Formal definition: Defines `DifferenceClosed C`: $\\Delta_h f \\in C$ $\\forall h \\Rightarrow f = g + h + r$ with $g \\in C$. Axiom: $\\{\\text{measurable}\\}$ is difference closed. This is de Bruijn's 1951 formulation."
     },
     {
       "id": "summary",

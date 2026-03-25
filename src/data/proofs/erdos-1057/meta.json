@@ -123,7 +123,7 @@
       "summary": "Defines $C(x)$ via `Finset.filter` and proves monotonicity $x \\leq y \\implies C(x) \\leq C(y)$ using Mathlib's `Finset.card_le_card` and `Finset.range_mono`.",
       "startLine": 231,
       "endLine": 249,
-      "mathContext": "Defines $C(x)$ via `Finset.filter` and proves monotonicity $x \\leq y \\implies C(x) \\leq C(y)$ using Mathlib's `Finset.card_le_card` and `Finset.range_mono`."
+      "mathContext": "Formal definition: Defines $C(x)$ via `Finset.filter` and proves monotonicity $x \\leq y \\implies C(x) \\leq C(y)$ using Mathlib's `Finset.card_le_card` and `Finset.range_mono`."
     },
     {
       "id": "bounds",
@@ -131,7 +131,7 @@
       "summary": "Axiomatizes Erdős's 1956 upper bound, Lichtman's 2022 lower bound ($x^{0.3389}$), Harman's 2008 bound ($x^{0.33336704}$), the AGP infinitude theorem, and AGP's quantitative $x^{2/7}$ bound.",
       "startLine": 250,
       "endLine": 277,
-      "mathContext": "Axiomatizes Erdős's 1956 upper bound, Lichtman's 2022 lower bound ($x^{0.3389}$), Harman's 2008 bound ($x^{0.33336704}$), the AGP infinitude theorem, and AGP's quantitative $x^{2/7}$ bound."
+      "mathContext": "Verified: Axiomatizes Erdős's 1956 upper bound, Lichtman's 2022 lower bound ($x^{0.3389}$), Harman's 2008 bound ($x^{0.33336704}$), the AGP infinitude theorem, and AGP's quantitative $x^{2/7}$ bound."
     },
     {
       "id": "conjecture",
@@ -139,7 +139,7 @@
       "summary": "Formalizes $C(x) = x^{1-o(1)}$ as `erdos1057Conjecture`, the log-ratio formulation via `Filter.Tendsto`, and Pomerance's heuristic as `pomeranceConjecture`.",
       "startLine": 278,
       "endLine": 301,
-      "mathContext": "Formalizes $C(x) = x^{1-o(1)}$ as `erdos1057Conjecture`, the log-ratio formulation via `Filter.Tendsto`, and Pomerance's heuristic as `pomeranceConjecture`."
+      "mathContext": "Mathematical content: Formalizes $C(x) = x^{1-o(1)}$ as `erdos1057Conjecture`, the log-ratio formulation via `Filter.Tendsto`, and Pomerance's heuristic as `pomeranceConjecture`."
     },
     {
       "id": "structural",
@@ -155,7 +155,7 @@
       "summary": "Defines `upperExponent(x) = 1 - \\log\\log\\log x / \\log\\log x` and `lowerExponent = 0.3389`. Proves the lower bound exponent is $< 1$. Packages the open problem as `erdos1057OpenProblem`.",
       "startLine": 519,
       "endLine": 538,
-      "mathContext": "Defines `upperExponent(x) = 1 - \\log\\log\\log x / \\log\\log x` and `lowerExponent = 0.3389`. Proves the lower bound exponent is $< 1$. Packages the open problem as `erdos1057OpenProblem`."
+      "mathContext": "Formal definition: Defines `upperExponent(x) = 1 - \\log\\log\\log x / \\log\\log x` and `lowerExponent = 0.3389`. Proves the lower bound exponent is $< 1$. Packages the open problem as `erdos1057OpenProblem`."
     },
     {
       "id": "utilities",

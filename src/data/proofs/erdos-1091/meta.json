@@ -101,7 +101,7 @@
       "startLine": 1,
       "endLine": 18,
       "summary": "Problem statement, answer (YES for 2 diagonals), history (Larson 1979, Voss 1982), and general open question about $f(r)$.",
-      "mathContext": "Problem statement, answer (YES for 2 diagonals), history (Larson 1979, Voss 1982), and general open question about $f(r)$."
+      "mathContext": "Mathematical content: Problem statement, answer (YES for 2 diagonals), history (Larson 1979, Voss 1982), and general open question about $f(r)$."
     },
     {
       "id": "basic-definitions",
@@ -117,7 +117,7 @@
       "startLine": 70,
       "endLine": 95,
       "summary": "`larson_one_diagonal` (axiom): $K_4$-free, $\\chi \\geq 4$ implies odd cycle with $\\geq 1$ diagonal. `BollobasErdosAlternative` structure and `bollobas_erdos_conjecture` (axiom).",
-      "mathContext": "`larson_one_diagonal` (axiom): $K_4$-free, $\\chi \\geq 4$ implies odd cycle with $\\geq 1$ diagonal. `BollobasErdosAlternative` structure and `bollobas_erdos_conjecture` (axiom)."
+      "mathContext": "Formal definition: `larson_one_diagonal` (axiom): $K_4$-free, $\\chi \\geq 4$ implies odd cycle with $\\geq 1$ diagonal. `BollobasErdosAlternative` structure and `bollobas_erdos_conjecture` (axiom)."
     },
     {
       "id": "voss-theorem",
@@ -125,7 +125,7 @@
       "startLine": 96,
       "endLine": 112,
       "summary": "`voss_two_diagonals` (axiom): $K_4$-free, $\\chi \\geq 4$ implies odd cycle with $\\geq 2$ diagonals. `voss_implies_larson` (verified corollary via `Nat.le_of_succ_le`).",
-      "mathContext": "`voss_two_diagonals` (axiom): $K_4$-free, $\\chi \\geq 4$ implies odd cycle with $\\geq 2$ diagonals. `voss_implies_larson` (verified corollary via `Nat.le_of_succ_le`)."
+      "mathContext": "Axiomatized: `voss_two_diagonals` (axiom): $K_4$-free, $\\chi \\geq 4$ implies odd cycle with $\\geq 2$ diagonals. `voss_implies_larson` (verified corollary via `Nat.le_of_succ_le`)."
     },
     {
       "id": "counterexample",
@@ -141,7 +141,7 @@
       "startLine": 159,
       "endLine": 176,
       "summary": "IsLocallyColorable (induced subgraph coloring) and GeneralQuestion (existence of $f(r) \\to \\infty$). The main unsolved part of Problem #1091.",
-      "mathContext": "IsLocallyColorable (induced subgraph coloring) and GeneralQuestion (existence of $f(r) \\to \\infty$). The main unsolved part of Problem #1091."
+      "mathContext": "Mathematical content: IsLocallyColorable (induced subgraph coloring) and GeneralQuestion (existence of $f(r) \\to \\infty$). The main unsolved part of Problem #1091."
     },
     {
       "id": "related-results",
@@ -149,7 +149,7 @@
       "startLine": 177,
       "endLine": 190,
       "summary": "`K4_free_high_chi_possible` (verified via PentagonalWheel), `mycielski_construction` (axiom: triangle-free graphs with arbitrary $\\chi$).",
-      "mathContext": "`K4_free_high_chi_possible` (verified via PentagonalWheel), `mycielski_construction` (axiom: triangle-free graphs with arbitrary $\\chi$)."
+      "mathContext": "Axiomatized: `K4_free_high_chi_possible` (verified via PentagonalWheel), `mycielski_construction` (axiom: triangle-free graphs with arbitrary $\\chi$)."
     },
     {
       "id": "summary",
@@ -157,7 +157,7 @@
       "startLine": 191,
       "endLine": 208,
       "summary": "`erdos_1091_summary` (verified): combines Voss ($\\geq 2$ guaranteed) and pentagonal wheel ($\\geq 3$ not guaranteed) into a single theorem.",
-      "mathContext": "`erdos_1091_summary` (verified): combines Voss ($\\geq 2$ guaranteed) and pentagonal wheel ($\\geq 3$ not guaranteed) into a single theorem."
+      "mathContext": "Verified: `erdos_1091_summary` (verified): combines Voss ($\\geq 2$ guaranteed) and pentagonal wheel ($\\geq 3$ not guaranteed) into a single theorem."
     }
   ],
   "conclusion": {

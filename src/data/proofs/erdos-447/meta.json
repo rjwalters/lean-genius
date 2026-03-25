@@ -137,7 +137,7 @@
       "startLine": 35,
       "endLine": 57,
       "summary": "Defines `GroundSet n = Finset (Fin n)`, `powerSet n = Finset.univ.powerset`, `IsUnionFree` (no $A \\cup B = C$), and `IsUnionFree'` (symmetric variant forbidding all three union orientations).",
-      "mathContext": "Defines `GroundSet n = Finset (Fin n)`, `powerSet n = Finset.univ.powerset`, `IsUnionFree` (no $A \\cup B = C$), and `IsUnionFree'` (symmetric variant forbidding all three union orientations)."
+      "mathContext": "Formal definition: Defines `GroundSet n = Finset (Fin n)`, `powerSet n = Finset.univ.powerset`, `IsUnionFree` (no $A \\cup B = C$), and `IsUnionFree'` (symmetric variant forbidding all three union orientations)."
     },
     {
       "id": "middle-layer-sperner",
@@ -153,7 +153,7 @@
       "startLine": 77,
       "endLine": 90,
       "summary": "Defines `IsLittleO` ($f = o(g)$ via $\\varepsilon$-$N$), `maxUnionFreeSize` (sup over union-free families), `AsymptoticUpperBound` ($f \\leq (1+o(1))g$).",
-      "mathContext": "Defines `IsLittleO` ($f = o(g)$ via $\\varepsilon$-$N$), `maxUnionFreeSize` (sup over union-free families), `AsymptoticUpperBound` ($f \\leq (1+o(1))g$)."
+      "mathContext": "Formal definition: Defines `IsLittleO` ($f = o(g)$ via $\\varepsilon$-$N$), `maxUnionFreeSize` (sup over union-free families), `AsymptoticUpperBound` ($f \\leq (1+o(1))g$)."
     },
     {
       "id": "sarkozy-szemeredi",
@@ -161,7 +161,7 @@
       "startLine": 91,
       "endLine": 97,
       "summary": "Axiom: $\\text{maxUnionFreeSize}(n) = o(2^n)$. First non-trivial upper bound (unpublished, $\\sim$1965). Superseded by Kleitman.",
-      "mathContext": "Axiom: $\\text{maxUnionFreeSize}(n) = o(2^n)$. First non-trivial upper bound (unpublished, $\\sim$1965). Superseded by Kleitman."
+      "mathContext": "Axiom: $\\text{maxUnionFreeSize}(n) = o($2^{n}$)$. First non-trivial upper bound (unpublished, $\\sim$1965). Superseded by Kleitman."
     },
     {
       "id": "kleitman",
@@ -169,7 +169,7 @@
       "startLine": 98,
       "endLine": 106,
       "summary": "Axiom: $\\text{AsymptoticUpperBound}\\, \\text{maxUnionFreeSize}\\, \\text{middleBinomial}$. The optimal bound via compression.",
-      "mathContext": "Axiom: $\\text{AsymptoticUpperBound}\\, \\text{maxUnionFreeSize}\\, \\text{middleBinomial}$. The optimal bound via compression."
+      "mathContext": "Axiomatized: Axiom: $\\text{AsymptoticUpperBound}\\, \\text{maxUnionFreeSize}\\, \\text{middleBinomial}$. The optimal bound via compression."
     },
     {
       "id": "lower-bound",
@@ -177,7 +177,7 @@
       "startLine": 107,
       "endLine": 114,
       "summary": "Axioms: $|\\text{middleLayer}(n)| = \\binom{n}{\\lfloor n/2 \\rfloor}$ and $\\text{maxUnionFreeSize}(n) \\geq \\binom{n}{\\lfloor n/2 \\rfloor}$. Together with Kleitman, pins down the asymptotic.",
-      "mathContext": "Axioms: $|\\text{middleLayer}(n)| = \\binom{n}{\\lfloor n/2 \\rfloor}$ and $\\text{maxUnionFreeSize}(n) \\geq \\binom{n}{\\lfloor n/2 \\rfloor}$. Together with Kleitman, pins down the asymptotic."
+      "mathContext": "Axiomatized: Axioms: $|\\text{middleLayer}(n)| = \\binom{n}{\\lfloor n/2 \\rfloor}$ and $\\text{maxUnionFreeSize}(n) \\geq \\binom{n}{\\lfloor n/2 \\rfloor}$. Together with Kleitman, pins down the asymptotic."
     },
     {
       "id": "problem-487",
@@ -193,7 +193,7 @@
       "startLine": 135,
       "endLine": 148,
       "summary": "Defines `IsKUnionFree` ($k$-union-free via `Finset.sup`) and `IsStrongUnionFree` (Problem 1023: no set is union of any number of others).",
-      "mathContext": "Defines `IsKUnionFree` ($k$-union-free via `Finset.sup`) and `IsStrongUnionFree` (Problem 1023: no set is union of any number of others)."
+      "mathContext": "Formal definition: Defines `IsKUnionFree` ($k$-union-free via `Finset.sup`) and `IsStrongUnionFree` (Problem 1023: no set is union of any number of others)."
     },
     {
       "id": "summary",
@@ -201,7 +201,7 @@
       "startLine": 149,
       "endLine": 165,
       "summary": "`erdos_447_summary`: conjunction of Kleitman's upper bound and middle layer lower bound, proved by `exact ⟨kleitman_theorem, lower_bound⟩`. SOLVED.",
-      "mathContext": "`erdos_447_summary`: conjunction of Kleitman's upper bound and middle layer lower bound, proved by `exact ⟨kleitman_theorem, lower_bound⟩`. SOLVED."
+      "mathContext": "Verified: `erdos_447_summary`: conjunction of Kleitman's upper bound and middle layer lower bound, proved by `exact ⟨kleitman_theorem, lower_bound⟩`. SOLVED."
     }
   ],
   "conclusion": {

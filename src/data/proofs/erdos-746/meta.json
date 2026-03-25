@@ -109,7 +109,7 @@
       "startLine": 39,
       "endLine": 61,
       "summary": "Defines `GraphOnN`, `numEdges`, `ErdosRenyiModel`, and the threshold functions $(1/2 + \\varepsilon) n \\log n$ and $(1/2) n \\log n + (1/2) n \\log \\log n$.",
-      "mathContext": "Defines `GraphOnN`, `numEdges`, `ErdosRenyiModel`, and the threshold functions $(1/2 + \\varepsilon) n \\log n$ and $(1/2) n \\log n + (1/2) n \\log \\log n$."
+      "mathContext": "Defines `GraphOnN`, `numEdges`, `ErdosRenyiModel`, and the threshold functions $(1/2 + \\varepsilon) n \\$\\log n$$ and $(1/2) n \\$\\log n$ + (1/2) n \\log \\$\\log n$$."
     },
     {
       "id": "hamiltonicity",
@@ -117,7 +117,7 @@
       "startLine": 62,
       "endLine": 81,
       "summary": "Defines `IsHamiltonianCycle` (vertex list formulation) and `IsHamiltonian`. Axiomatizes Dirac's theorem: $\\delta(G) \\ge n/2 \\Rightarrow$ Hamiltonian.",
-      "mathContext": "Defines `IsHamiltonianCycle` (vertex list formulation) and `IsHamiltonian`. Axiomatizes Dirac's theorem: $\\delta(G) \\ge n/2 \\Rightarrow$ Hamiltonian."
+      "mathContext": "Defines `IsHamiltonianCycle` (vertex list formulation) and `IsHamiltonian`. Axiomatizes Dirac's theorem: $\\$\\delta$(G) \\ge n/2 \\Rightarrow$ Hamiltonian."
     },
     {
       "id": "perfect-matchings",
@@ -125,7 +125,7 @@
       "startLine": 82,
       "endLine": 95,
       "summary": "Defines `IsPerfectMatching` and `HasPerfectMatching` — the weaker property that shares the Hamiltonicity threshold.",
-      "mathContext": "Defines `IsPerfectMatching` and `HasPerfectMatching` — the weaker property that shares the Hamiltonicity threshold."
+      "mathContext": "Formal definition: Defines `IsPerfectMatching` and `HasPerfectMatching` — the weaker property that shares the Hamiltonicity threshold."
     },
     {
       "id": "erdos-renyi-matching",
@@ -133,7 +133,7 @@
       "startLine": 96,
       "endLine": 106,
       "summary": "Axiomatizes that $G(n, m)$ with $m \\ge (1/2 + \\varepsilon) n \\log n$ a.s. has a perfect matching.",
-      "mathContext": "Axiomatizes that $G(n, m)$ with $m \\ge (1/2 + \\varepsilon) n \\log n$ a.s. has a perfect matching."
+      "mathContext": "Axiomatizes that $G(n, m)$ with $m \\ge (1/2 + \\varepsilon) n \\$\\log n$$ a.s. has a perfect matching."
     },
     {
       "id": "erdos-question",
@@ -141,7 +141,7 @@
       "startLine": 107,
       "endLine": 117,
       "summary": "Formalizes `ErdosQuestion746`: is $G(n, (1/2 + \\varepsilon) n \\log n)$ a.s. Hamiltonian?",
-      "mathContext": "Formalizes `ErdosQuestion746`: is $G(n, (1/2 + \\varepsilon) n \\log n)$ a.s. Hamiltonian?"
+      "mathContext": "Formalizes `ErdosQuestion746`: is $G(n, (1/2 + \\varepsilon) n \\$\\log n$)$ a.s. Hamiltonian?"
     },
     {
       "id": "posa-result",
@@ -149,7 +149,7 @@
       "startLine": 118,
       "endLine": 132,
       "summary": "Axiomatizes Pósa's theorem: $\\exists C > 0$ such that $G(n, Cn \\log n)$ is a.s. Hamiltonian.",
-      "mathContext": "Axiomatizes Pósa's theorem: $\\exists C > 0$ such that $G(n, Cn \\log n)$ is a.s. Hamiltonian."
+      "mathContext": "Axiomatizes Pósa's theorem: $\\exists C > 0$ such that $G(n, Cn \\$\\log n$)$ is a.s. Hamiltonian."
     },
     {
       "id": "korshunov",
@@ -157,7 +157,7 @@
       "startLine": 133,
       "endLine": 151,
       "summary": "Axiomatizes the sharp threshold $(1/2) n \\log n + (1/2) n \\log \\log n + \\omega(n) n$ with $\\omega \\to \\infty$.",
-      "mathContext": "Axiomatizes the sharp threshold $(1/2) n \\log n + (1/2) n \\log \\log n + \\omega(n) n$ with $\\omega \\to \\infty$."
+      "mathContext": "Axiomatizes the sharp threshold $(1/2) n \\$\\log n$ + (1/2) n \\log \\$\\log n$ + \\omega(n) n$ with $\\omega \\to \\infty$."
     },
     {
       "id": "komlos-szemeredi",
@@ -165,7 +165,7 @@
       "startLine": 152,
       "endLine": 179,
       "summary": "Axiomatizes the limiting probability. Defines `limitingProbability c = e^{-e^{-2c}}`. Proves $\\Pr(c=0) = e^{-1}$.",
-      "mathContext": "Axiomatizes the limiting probability. Defines `limitingProbability c = e^{-e^{-2c}}`. Proves $\\Pr(c=0) = e^{-1}$."
+      "mathContext": "Formal definition: Axiomatizes the limiting probability. Defines `limitingProbability c = e^{-e^{-2c}}`. Proves $\\Pr(c=0) = e^{-1}$."
     },
     {
       "id": "the-answer",
@@ -173,7 +173,7 @@
       "startLine": 180,
       "endLine": 194,
       "summary": "Proves `erdos_746_answer` by instantiating Korshunov's theorem.",
-      "mathContext": "Proves `erdos_746_answer` by instantiating Korshunov's theorem."
+      "mathContext": "Verified: Proves `erdos_746_answer` by instantiating Korshunov's theorem."
     },
     {
       "id": "connectivity",
@@ -181,7 +181,7 @@
       "startLine": 195,
       "endLine": 217,
       "summary": "Defines `IsConnected` via `Reachable`. Axiomatizes connectivity threshold. States threshold coincidence with Hamiltonicity.",
-      "mathContext": "Defines `IsConnected` via `Reachable`. Axiomatizes connectivity threshold. States threshold coincidence with Hamiltonicity."
+      "mathContext": "Formal definition: Defines `IsConnected` via `Reachable`. Axiomatizes connectivity threshold. States threshold coincidence with Hamiltonicity."
     },
     {
       "id": "related-properties",
@@ -189,7 +189,7 @@
       "startLine": 218,
       "endLine": 230,
       "summary": "Defines `MinDegree` and axiomatizes concentration of minimum degree in $G(n, m)$ around $2m/n$.",
-      "mathContext": "Defines `MinDegree` and axiomatizes concentration of minimum degree in $G(n, m)$ around $2m/n$."
+      "mathContext": "Formal definition: Defines `MinDegree` and axiomatizes concentration of minimum degree in $G(n, m)$ around $2m/n$."
     },
     {
       "id": "summary",
@@ -197,7 +197,7 @@
       "startLine": 231,
       "endLine": 262,
       "summary": "Proves `erdos_746`, `erdos_746_main`, `erdos_746_precise`, `erdos_746_solved` — composing axioms to confirm the full resolution.",
-      "mathContext": "Proves `erdos_746`, `erdos_746_main`, `erdos_746_precise`, `erdos_746_solved` — composing axioms to confirm the full resolution."
+      "mathContext": "Verified: Proves `erdos_746`, `erdos_746_main`, `erdos_746_precise`, `erdos_746_solved` — composing axioms to confirm the full resolution."
     }
   ],
   "conclusion": {

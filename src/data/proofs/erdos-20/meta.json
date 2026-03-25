@@ -75,7 +75,7 @@
       "summary": "Imports Mathlib and opens `Set`/`Finset` namespaces; declares type variable $\\alpha$ with `DecidableEq`",
       "startLine": 26,
       "endLine": 33,
-      "mathContext": "Imports Mathlib and opens `Set`/`Finset` namespaces; declares type variable $\\alpha$ with `DecidableEq`"
+      "mathContext": "Imports Mathlib and opens `Set`/`Finset` namespaces; declares type variable $\\$\\alpha$$ with `DecidableEq`"
     },
     {
       "id": "definitions",
@@ -83,7 +83,7 @@
       "summary": "Defines $n$-uniform families (`IsUniform`), sunflower core ($C = \\bigcap_i S_i$), $k$-sunflowers ($S_i \\cap S_j = C$ for all $i \\neq j$), and containment",
       "startLine": 34,
       "endLine": 54,
-      "mathContext": "Defines $n$-uniform families (`IsUniform`), sunflower core ($C = \\bigcap_i S_i$), $k$-sunflowers ($S_i \\cap S_j = C$ for all $i \\neq j$), and containment"
+      "mathContext": "Formal definition: Defines $n$-uniform families (`IsUniform`), sunflower core ($C = \\bigcap_i S_i$), $k$-sunflowers ($S_i \\cap S_j = C$ for all $i \\neq j$), and containment"
     },
     {
       "id": "sunflower-number",
@@ -91,7 +91,7 @@
       "summary": "Axiomatizes $f(n,k) = \\min\\{m : \\text{every } n\\text{-uniform family of size } m \\text{ has a } k\\text{-sunflower}\\}$ and its finiteness",
       "startLine": 55,
       "endLine": 65,
-      "mathContext": "Axiomatizes $f(n,k) = \\min\\{m : \\text{every } n\\text{-uniform family of size } m \\text{ has a } k\\text{-sunflower}\\}$ and its finiteness"
+      "mathContext": "Axiomatized: Axiomatizes $f(n,k) = \\min\\{m : \\text{every } n\\text{-uniform family of size } m \\text{ has a } k\\text{-sunflower}\\}$ and its finiteness"
     },
     {
       "id": "erdos-rado",
@@ -99,7 +99,7 @@
       "summary": "Original upper bound $f(n,k) \\leq (k-1)^n \\cdot n!$ with explicit bound definition `erdosRadoBound`",
       "startLine": 66,
       "endLine": 78,
-      "mathContext": "Original upper bound $f(n,k) \\leq (k-1)^n \\cdot n!$ with explicit bound definition `erdosRadoBound`"
+      "mathContext": "Formal definition: Original upper bound $f(n,k) \\leq (k-1)^n \\cdot n!$ with explicit bound definition `erdosRadoBound`"
     },
     {
       "id": "conjecture",
@@ -107,7 +107,7 @@
       "summary": "OPEN conjecture: $\\forall k \\geq 3, \\exists c_k > 0 : f(n,k) < c_k^n$, plus the critical $k=3$ special case",
       "startLine": 79,
       "endLine": 92,
-      "mathContext": "OPEN conjecture: $\\forall k \\geq 3, \\exists c_k > 0 : f(n,k) < c_k^n$, plus the critical $k=3$ special case"
+      "mathContext": "Mathematical content: OPEN conjecture: $\\forall k \\geq 3, \\exists c_k > 0 : f(n,k) < c_k^n$, plus the critical $k=3$ special case"
     },
     {
       "id": "progress",
@@ -115,7 +115,7 @@
       "summary": "Three milestones: Kostochka (1997) $o(n!)$ factor, ALWZ (2020) $(Ck\\log n \\log\\log n)^n$, Rao (2020) $(Ck\\log n)^n$",
       "startLine": 93,
       "endLine": 112,
-      "mathContext": "Three milestones: Kostochka (1997) $o(n!)$ factor, ALWZ (2020) $(Ck\\log n \\log\\log n)^n$, Rao (2020) $(Ck\\log n)^n$"
+      "mathContext": "Three milestones: Kostochka (1997) $o(n!)$ factor, ALWZ (2020) $(Ck\\$\\log n$ \\log\\$\\log n$)^n$, Rao (2020) $(Ck\\$\\log n$)^n$"
     },
     {
       "id": "gap",
@@ -123,7 +123,7 @@
       "summary": "Defines `RequiredBound` ($\\exists c > 0: f(n,k) \\leq c^n$) and proves its equivalence to the full conjecture via strict/non-strict inequality manipulation",
       "startLine": 113,
       "endLine": 132,
-      "mathContext": "Defines `RequiredBound` ($\\exists c > 0: f(n,k) \\leq c^n$) and proves its equivalence to the full conjecture via strict/non-strict inequality manipulation"
+      "mathContext": "Formal definition: Defines `RequiredBound` ($\\exists c > 0: f(n,k) \\leq c^n$) and proves its equivalence to the full conjecture via strict/non-strict inequality manipulation"
     },
     {
       "id": "special-cases",
@@ -131,7 +131,7 @@
       "summary": "Exact values $f(n,2) = n+1$ and $f(2,3) = 6$; lower bound $f(n,k) \\geq (k-1)^n$ from product constructions",
       "startLine": 133,
       "endLine": 144,
-      "mathContext": "Exact values $f(n,2) = n+1$ and $f(2,3) = 6$; lower bound $f(n,k) \\geq (k-1)^n$ from product constructions"
+      "mathContext": "Bound: Exact values $f(n,2) = n+1$ and $f(2,3) = 6$; lower bound $f(n,k) \\geq (k-1)^n$ from product constructions"
     },
     {
       "id": "examples",
@@ -139,7 +139,7 @@
       "summary": "Verified 3-sunflowers: $\\{1,2,3\\}, \\{1,4,5\\}, \\{1,6,7\\}$ (core $\\{1\\}$) and $\\{1,2\\}, \\{3,4\\}, \\{5,6\\}$ (empty core $\\emptyset$)",
       "startLine": 145,
       "endLine": 166,
-      "mathContext": "Verified 3-sunflowers: $\\{1,2,3\\}, \\{1,4,5\\}, \\{1,6,7\\}$ (core $\\{1\\}$) and $\\{1,2\\}, \\{3,4\\}, \\{5,6\\}$ (empty core $\\emptyset$)"
+      "mathContext": "Mathematical content: Verified 3-sunflowers: $\\{1,2,3\\}, \\{1,4,5\\}, \\{1,6,7\\}$ (core $\\{1\\}$) and $\\{1,2\\}, \\{3,4\\}, \\{5,6\\}$ (empty core $\\emptyset$)"
     },
     {
       "id": "applications",
@@ -147,7 +147,7 @@
       "summary": "Connections to matrix multiplication exponent, ACC$^0$ circuit lower bounds, and property testing in TCS",
       "startLine": 167,
       "endLine": 175,
-      "mathContext": "Connections to matrix multiplication exponent, ACC$^0$ circuit lower bounds, and property testing in TCS"
+      "mathContext": "Bound: Connections to matrix multiplication exponent, ACC$^0$ circuit lower bounds, and property testing in TCS"
     },
     {
       "id": "status",
@@ -155,7 +155,7 @@
       "summary": "Detailed summary of known results, references (Erdős-Rado 1960, Kostochka 1997, ALWZ 2020, Rao 2020), and the OPEN status via `Classical.em`",
       "startLine": 176,
       "endLine": 206,
-      "mathContext": "Detailed summary of known results, references (Erdős-Rado 1960, Kostochka 1997, ALWZ 2020, Rao 2020), and the OPEN status via `Classical.em`"
+      "mathContext": "Mathematical content: Detailed summary of known results, references (Erdős-Rado 1960, Kostochka 1997, ALWZ 2020, Rao 2020), and the OPEN status via `Classical.em`"
     }
   ],
   "conclusion": {

@@ -66,7 +66,7 @@
       "startLine": 1,
       "endLine": 32,
       "summary": "Docstring stating Erdős Problem #184: the Erdős–Gallai conjecture on $O(n)$ cycle/edge decomposition, with references to Erdős (1971), Bucić–Montgomery (2022), and Conlon–Fox–Sudakov (2014).",
-      "mathContext": "Docstring stating Erdős Problem #184: the Erdős–Gallai conjecture on $O(n)$ cycle/edge decomposition, with references to Erdős (1971), Bucić–Montgomery (2022), and Conlon–Fox–Sudakov (2014)."
+      "mathContext": "Docstring stating Erdős Problem #184: the Erdős–Gallai conjecture on $$O(n)$$ cycle/edge decomposition, with references to Erdős (1971), Bucić–Montgomery (2022), and Conlon–Fox–Sudakov (2014)."
     },
     {
       "id": "imports",
@@ -74,7 +74,7 @@
       "startLine": 33,
       "endLine": 42,
       "summary": "Imports Mathlib's `SimpleGraph`, `Subgraph`, `Finset`, and `Real.log` modules. Opens `Finset` namespace.",
-      "mathContext": "Imports Mathlib's `SimpleGraph`, `Subgraph`, `Finset`, and `Real.log` modules. Opens `Finset` namespace."
+      "mathContext": "Mathematical content: Imports Mathlib's `SimpleGraph`, `Subgraph`, `Finset`, and `Real.log` modules. Opens `Finset` namespace."
     },
     {
       "id": "basic-definitions",
@@ -82,7 +82,7 @@
       "startLine": 43,
       "endLine": 81,
       "summary": "Defines `Graph V` (alias for `SimpleGraph V`), `numVertices`, `Cycle G` (structure with $\\geq 3$ distinct adjacent vertices in cyclic order), and `SingleEdge G` (pair with adjacency proof).",
-      "mathContext": "Defines `Graph V` (alias for `SimpleGraph V`), `numVertices`, `Cycle G` (structure with $\\geq 3$ distinct adjacent vertices in cyclic order), and `SingleEdge G` (pair with adjacency proof)."
+      "mathContext": "Formal definition: Defines `Graph V` (alias for `SimpleGraph V`), `numVertices`, `Cycle G` (structure with $\\geq 3$ distinct adjacent vertices in cyclic order), and `SingleEdge G` (pair with adjacency proof)."
     },
     {
       "id": "decomposition",
@@ -98,7 +98,7 @@
       "startLine": 121,
       "endLine": 132,
       "summary": "States the conjecture as a `Prop`: $\\exists C > 0$ such that $\\text{dec}(G) \\leq C \\cdot n$ for all $G$ on $n$ vertices.",
-      "mathContext": "States the conjecture as a `Prop`: $\\exists C > 0$ such that $\\text{dec}(G) \\leq C \\cdot n$ for all $G$ on $n$ vertices."
+      "mathContext": "Mathematical content: States the conjecture as a `Prop`: $\\exists C > 0$ such that $\\text{dec}(G) \\leq C \\cdot n$ for all $G$ on $n$ vertices."
     },
     {
       "id": "known-bounds",
@@ -106,7 +106,7 @@
       "startLine": 133,
       "endLine": 173,
       "summary": "Axiomatizes three bounds: Erdős–Gallai's $O(n \\log n)$, the $(1+c)n$ lower bound from $K_{3,n-3}$, Bucić–Montgomery's $O(n \\log^* n)$, and defines the iterated logarithm `logStar`.",
-      "mathContext": "Axiomatizes three bounds: Erdős–Gallai's $O(n \\log n)$, the $(1+c)n$ lower bound from $K_{3,n-3}$, Bucić–Montgomery's $O(n \\log^* n)$, and defines the iterated logarithm `logStar`."
+      "mathContext": "Axiomatizes three bounds: Erdős–Gallai's $$O(n \\$\\log n$)$$, the $(1+c)n$ lower bound from $K_{3,n-3}$, Bucić–Montgomery's $$O(n \\log^* n)$$, and defines the iterated logarithm `logStar`."
     },
     {
       "id": "dense-graphs",
@@ -114,7 +114,7 @@
       "startLine": 174,
       "endLine": 193,
       "summary": "Defines `minDegree G` and axiomatizes Conlon–Fox–Sudakov (2014): when $\\delta(G) \\geq \\varepsilon n$, $O(n)$ pieces suffice. The dense case is **fully resolved**.",
-      "mathContext": "Defines `minDegree G` and axiomatizes Conlon–Fox–Sudakov (2014): when $\\delta(G) \\geq \\varepsilon n$, $O(n)$ pieces suffice. The dense case is **fully resolved**."
+      "mathContext": "Defines `minDegree G` and axiomatizes Conlon–Fox–Sudakov (2014): when $\\$\\delta$(G) \\geq \\varepsilon n$, $$O(n)$$ pieces suffice. The dense case is **fully resolved**."
     },
     {
       "id": "non-disjoint",
@@ -122,7 +122,7 @@
       "startLine": 194,
       "endLine": 217,
       "summary": "Defines `IsValidCovering` (drops disjointness) and `coverNumber`. Axiomatizes Erdős's result: $\\text{cov}(G) \\leq n - 1$, showing the disjointness constraint is the source of difficulty.",
-      "mathContext": "Defines `IsValidCovering` (drops disjointness) and `coverNumber`. Axiomatizes Erdős's result: $\\text{cov}(G) \\leq n - 1$, showing the disjointness constraint is the source of difficulty."
+      "mathContext": "Formal definition: Defines `IsValidCovering` (drops disjointness) and `coverNumber`. Axiomatizes Erdős's result: $\\text{cov}(G) \\leq n - 1$, showing the disjointness constraint is the source of difficulty."
     },
     {
       "id": "summary",
@@ -130,7 +130,7 @@
       "startLine": 218,
       "endLine": 251,
       "summary": "Combines all three bounds into `erdos_184_summary`. Computationally verifies $\\log^*(65536) = 4$ and $\\log^*(4) = 2$ via `native_decide`.",
-      "mathContext": "Combines all three bounds into `erdos_184_summary`. Computationally verifies $\\log^*(65536) = 4$ and $\\log^*(4) = 2$ via `native_decide`."
+      "mathContext": "Bound: Combines all three bounds into `erdos_184_summary`. Computationally verifies $\\log^*(65536) = 4$ and $\\log^*(4) = 2$ via `native_decide`."
     }
   ],
   "overview": {

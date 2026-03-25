@@ -78,7 +78,7 @@
       "startLine": 1,
       "endLine": 54,
       "summary": "Imports `Mathlib.Algebra.BigOperators` and `Mathlib.Data.Rat.Cast.Lemmas` for rational arithmetic. Historical context for Pick (1859-1942).",
-      "mathContext": "Imports `Mathlib.Algebra.BigOperators` and `Mathlib.Data.Rat.Cast.Lemmas` for rational arithmetic. Historical context for Pick (1859-1942)."
+      "mathContext": "Uses $\\sum$ from `BigOperators` for lattice point counting and $\\mathbb{Q}$-valued casts from `Rat.Cast.Lemmas` for the half-integer area formula $A = i + b/2 - 1$."
     },
     {
       "id": "lattice-points",
@@ -86,7 +86,7 @@
       "startLine": 55,
       "endLine": 77,
       "summary": "Defines `LatticePoint := ℤ × ℤ` with coordinate accessors and `origin := (0, 0)` in the integer lattice $\\mathbb{Z}^2$.",
-      "mathContext": "Defines `LatticePoint := ℤ × ℤ` with coordinate accessors and `origin := (0, 0)` in the integer lattice $\\mathbb{Z}^2$."
+      "mathContext": "A lattice point is a pair $(x, y) \\in \\mathbb{Z}^2$. The origin is $\\mathbf{0} = (0, 0)$. Coordinate projections $\\pi_x, \\pi_y : \\mathbb{Z}^2 \\to \\mathbb{Z}$ extract components."
     },
     {
       "id": "polygon-structure",
@@ -94,7 +94,7 @@
       "startLine": 78,
       "endLine": 122,
       "summary": "Axiomatizes `SimpleLatticePolygon` with `interior_count`, `boundary_count`, `area : ℚ`, constraints $A > 0$ and $b \\geq 3$. Custom notation `i(P)`, `b(P)`, `A(P)`.",
-      "mathContext": "Axiomatizes `SimpleLatticePolygon` with `interior_count`, `boundary_count`, `area : ℚ`, constraints $A > 0$ and $b \\geq 3$. Custom notation `i(P)`, `b(P)`, `A(P)`."
+      "mathContext": "Structure fields: $i(P) \\in \\mathbb{N}$ (interior count), $b(P) \\in \\mathbb{N}$ (boundary count), $A(P) \\in \\mathbb{Q}$ (area). Constraints: $A(P) > 0$ and $b(P) \\geq 3$ (minimum for a non-degenerate polygon)."
     },
     {
       "id": "picks-formula",
@@ -102,7 +102,7 @@
       "startLine": 123,
       "endLine": 169,
       "summary": "Defines `picks_formula(i, b) = i + b/2 - 1`. Axiom `picks_theorem`: $A(P) = i + b/2 - 1$. Rearrangements solving for $i$ and $b$ via `linarith`.",
-      "mathContext": "Defines `picks_formula(i, b) = i + b/2 - 1`. Axiom `picks_theorem`: $A(P) = i + b/2 - 1$. Rearrangements solving for $i$ and $b$ via `linarith`."
+      "mathContext": "Pick's formula: $A = i + \\tfrac{b}{2} - 1$. Rearrangements: $i = A - \\tfrac{b}{2} + 1$ and $b = 2(A - i + 1)$. Equivalently $2A = 2i + b - 2$."
     },
     {
       "id": "unit-triangle",
@@ -110,7 +110,7 @@
       "startLine": 170,
       "endLine": 207,
       "summary": "Verifies Pick's formula for vertices $(0,0), (1,0), (0,1)$: $i=0, b=3, A=1/2$. Formula: $0 + 3/2 - 1 = 1/2$ by `norm_num`.",
-      "mathContext": "Verifies Pick's formula for vertices $(0,0), (1,0), (0,1)$: $i=0, b=3, A=1/2$. Formula: $0 + 3/2 - 1 = 1/2$ by `norm_num`."
+      "mathContext": "Unit right triangle with vertices $(0,0), (1,0), (0,1)$: $i = 0$, $b = 3$, $A = \\tfrac{1}{2}$. Verification: $0 + \\tfrac{3}{2} - 1 = \\tfrac{1}{2}$. This is the minimal-area lattice polygon."
     },
     {
       "id": "rectangles",
@@ -118,7 +118,7 @@
       "startLine": 208,
       "endLine": 265,
       "summary": "Defines `rectangle m n` with $i=(m-1)(n-1)$, $b=2m+2n$, $A=mn$. Algebraic verification by `ring`. Examples: $3 \\times 4$, $5 \\times 7$, unit square.",
-      "mathContext": "Defines `rectangle m n` with $i=(m-1)(n-1)$, $b=2m+2n$, $A=mn$. Algebraic verification by `ring`. Examples: $3 \\times 4$, $5 \\times 7$, unit square."
+      "mathContext": "For an $m \\times n$ rectangle: $i = (m-1)(n-1)$, $b = 2m + 2n$, $A = mn$. Check: $(m-1)(n-1) + \\tfrac{2m+2n}{2} - 1 = mn - m - n + 1 + m + n - 1 = mn$."
     },
     {
       "id": "edge-points",
@@ -126,7 +126,7 @@
       "startLine": 266,
       "endLine": 294,
       "summary": "Triangle $(0,0), (4,0), (0,4)$ with $i=3, b=12, A=8$. Demonstrates GCD formula for boundary counting on edges.",
-      "mathContext": "Triangle $(0,0), (4,0), (0,4)$ with $i=3, b=12, A=8$. Demonstrates GCD formula for boundary counting on edges."
+      "mathContext": "Triangle $(0,0),(4,0),(0,4)$: $i = 3$, $b = 12$, $A = 8$. Boundary points on a segment from $(x_1,y_1)$ to $(x_2,y_2)$: $\\gcd(|\\Delta x|, |\\Delta y|) + 1$. Verification: $3 + \\tfrac{12}{2} - 1 = 8$."
     },
     {
       "id": "additivity",
@@ -134,7 +134,7 @@
       "startLine": 295,
       "endLine": 335,
       "summary": "Key inductive step: `picks_additive` proves the formula is preserved when combining polygons sharing an edge with $e$ lattice points. Proved by `ring`.",
-      "mathContext": "Key inductive step: `picks_additive` proves the formula is preserved when combining polygons sharing an edge with $e$ lattice points. Proved by `ring`."
+      "mathContext": "Additivity: if $P_1, P_2$ share an edge with $e$ lattice points, then $A(P_1 \\cup P_2) = A(P_1) + A(P_2)$ and $i_{\\cup} + \\tfrac{b_{\\cup}}{2} - 1 = (i_1 + \\tfrac{b_1}{2} - 1) + (i_2 + \\tfrac{b_2}{2} - 1)$ because $e - 2$ boundary points become interior."
     },
     {
       "id": "half-integer",
@@ -142,7 +142,7 @@
       "startLine": 336,
       "endLine": 369,
       "summary": "Corollaries: $2A \\in \\mathbb{Z}$ (`twice_area_is_integer`) and $2A = 2i + b - 2$ (`area_half_integer`). Connection to shoelace and Green's theorem.",
-      "mathContext": "Corollaries: $2A \\in \\mathbb{Z}$ (`twice_area_is_integer`) and $2A = 2i + b - 2$ (`area_half_integer`). Connection to shoelace and Green's theorem."
+      "mathContext": "From $A = i + \\tfrac{b}{2} - 1$: multiply by 2 to get $2A = 2i + b - 2 \\in \\mathbb{Z}$, so $A \\in \\tfrac{1}{2}\\mathbb{Z}$. The shoelace formula gives $2A = |\\sum_i (x_i y_{i+1} - x_{i+1} y_i)|$."
     },
     {
       "id": "3d-failure",
@@ -150,7 +150,7 @@
       "startLine": 370,
       "endLine": 421,
       "summary": "Reeve tetrahedra: same $i=0, b=4$ but volume $= r/6$ varies. `picks_fails_3D` proves the 3D counterexample. Ehrhart theory as the correct generalization.",
-      "mathContext": "Reeve tetrahedra: same $i=0, b=4$ but volume $= r/6$ varies. `picks_fails_3D` proves the 3D counterexample. Ehrhart theory as the correct generalization."
+      "mathContext": "Reeve tetrahedra $T_r$ with vertices $(0,0,0),(1,0,0),(0,1,0),(1,1,r)$: $i = 0$, $b = 4$ for all $r$, but $\\text{Vol}(T_r) = r/6$ varies. No function $f(i, b) = \\text{Vol}$ exists. In $d$ dimensions, Ehrhart polynomial $L(P, t) = \\sum_{k=0}^{d} c_k t^k$ replaces Pick's formula."
     },
     {
       "id": "applications",
@@ -158,7 +158,7 @@
       "startLine": 422,
       "endLine": 489,
       "summary": "$O(1)$ area computation via `compute_area`. Lattice width bounds: $A \\leq w_x \\cdot w_y$. Export of main results.",
-      "mathContext": "$O(1)$ area computation via `compute_area`. Lattice width bounds: $A \\leq w_x \\cdot w_y$. Export of main results."
+      "mathContext": "Area in $O(1)$ time: $A = i + \\tfrac{b}{2} - 1$ requires only two integer counts. Lattice width bound: $A \\leq w_x \\cdot w_y$ where $w_x = \\max x - \\min x$ and $w_y = \\max y - \\min y$ are the axis-aligned widths of $P$."
     }
   ],
   "conclusion": {

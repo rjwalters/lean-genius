@@ -64,7 +64,7 @@
       "startLine": 42,
       "endLine": 48,
       "summary": "Axiomatizes that a dissociated set of size $k$ yields exactly $2^k$ distinct subset sums, the fundamental counting identity underlying both bounds.",
-      "mathContext": "Axiomatizes that a dissociated set of size $k$ yields exactly $2^k$ distinct subset sums, the fundamental counting identity underlying both bounds."
+      "mathContext": "Axiomatizes that a dissociated set of size $k$ yields exactly $$2^{k}$$ distinct subset sums, the fundamental counting identity underlying both bounds."
     },
     {
       "id": "conjecture",
@@ -72,7 +72,7 @@
       "startLine": 49,
       "endLine": 56,
       "summary": "States the central open problem: $f(n) \\ge \\lfloor\\log_2 n\\rfloor$ for all $n \\ge 1$. This is axiomatized as `erdos_963_conjecture`.",
-      "mathContext": "States the central open problem: $f(n) \\ge \\lfloor\\log_2 n\\rfloor$ for all $n \\ge 1$. This is axiomatized as `erdos_963_conjecture`."
+      "mathContext": "Axiomatized: States the central open problem: $f(n) \\ge \\lfloor\\log_2 n\\rfloor$ for all $n \\ge 1$. This is axiomatized as `erdos_963_conjecture`."
     },
     {
       "id": "greedy-bound",
@@ -80,7 +80,7 @@
       "startLine": 57,
       "endLine": 66,
       "summary": "Axiomatizes Erdős's greedy argument: $f(n) \\ge \\lfloor\\log_3 n\\rfloor$, based on the observation that at most $3^k - 1$ elements are excluded after choosing $k$ dissociated elements.",
-      "mathContext": "Axiomatizes Erdős's greedy argument: $f(n) \\ge \\lfloor\\log_3 n\\rfloor$, based on the observation that at most $3^k - 1$ elements are excluded after choosing $k$ dissociated elements."
+      "mathContext": "Axiomatizes Erdős's greedy argument: $f(n) \\ge \\lfloor\\log_3 n\\rfloor$, based on the observation that at most $$3^{k}$ - 1$ elements are excluded after choosing $k$ dissociated elements."
     },
     {
       "id": "upper-bound",
@@ -88,7 +88,7 @@
       "startLine": 67,
       "endLine": 74,
       "summary": "Axiomatizes $f(n) \\le \\lfloor\\log_2 n\\rfloor + 1$: a dissociated set of size $k$ needs $2^k$ distinct sums from at most $n+1$ possible values (including 0).",
-      "mathContext": "Axiomatizes $f(n) \\le \\lfloor\\log_2 n\\rfloor + 1$: a dissociated set of size $k$ needs $2^k$ distinct sums from at most $n+1$ possible values (including 0)."
+      "mathContext": "Axiomatizes $f(n) \\le \\lfloor\\log_2 n\\rfloor + 1$: a dissociated set of size $k$ needs $$2^{k}$$ distinct sums from at most $n+1$ possible values (including 0)."
     },
     {
       "id": "base-cases",
@@ -104,7 +104,7 @@
       "startLine": 125,
       "endLine": 130,
       "summary": "Axiomatizes that $\\{2^0, 2^1, \\ldots, 2^{k-1}\\}$ is dissociated: binary representation uniqueness guarantees distinct subset sums, providing the extremal example.",
-      "mathContext": "Axiomatizes that $\\{2^0, 2^1, \\ldots, 2^{k-1}\\}$ is dissociated: binary representation uniqueness guarantees distinct subset sums, providing the extremal example."
+      "mathContext": "Axiomatizes that $\\{$2^{0}$, $2^{1}$, \\ldots, $$2^{{k-1}$}$\\}$ is dissociated: binary representation uniqueness guarantees distinct subset sums, providing the extremal example."
     },
     {
       "id": "monotonicity-and-gap",

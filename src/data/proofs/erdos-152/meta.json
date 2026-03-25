@@ -48,7 +48,7 @@
       "startLine": 1,
       "endLine": 14,
       "summary": "Documents the problem from Erdős-Sárközy-Sós (1994), J. Number Theory. States both the weak (unbounded) and strong ($\\gg |A|^2$) forms.",
-      "mathContext": "Documents the problem from Erdős-Sárközy-Sós (1994), J. Number Theory. States both the weak (unbounded) and strong ($\\gg |A|^2$) forms."
+      "mathContext": "Bound: Documents the problem from Erdős-Sárközy-Sós (1994), J. Number Theory. States both the weak (unbounded) and strong ($\\gg |A|^2$) forms."
     },
     {
       "id": "imports",
@@ -56,7 +56,7 @@
       "startLine": 15,
       "endLine": 23,
       "summary": "Imports Mathlib Sidon set library, pointwise finset operations, and filter basics. Opens `Pointwise` scope.",
-      "mathContext": "Imports Mathlib Sidon set library, pointwise finset operations, and filter basics. Opens `Pointwise` scope."
+      "mathContext": "Mathematical content: Imports Mathlib Sidon set library, pointwise finset operations, and filter basics. Opens `Pointwise` scope."
     },
     {
       "id": "sidon-sumsets",
@@ -64,7 +64,7 @@
       "startLine": 24,
       "endLine": 36,
       "summary": "Defines `IsSidonFinset` (distinct pairwise sums) and `sumsetFinset A = A + A`. The Sidon property gives $|A+A| = \\binom{n+1}{2}$.",
-      "mathContext": "Defines `IsSidonFinset` (distinct pairwise sums) and `sumsetFinset A = A + A`. The Sidon property gives $|A+A| = \\binom{n+1}{2}$."
+      "mathContext": "Formal definition: Defines `IsSidonFinset` (distinct pairwise sums) and `sumsetFinset A = A + A`. The Sidon property gives $|A+A| = \\binom{n+1}{2}$."
     },
     {
       "id": "isolated-elements",
@@ -72,7 +72,7 @@
       "startLine": 37,
       "endLine": 50,
       "summary": "Defines `IsIsolated` ($s \\pm 1 \\notin A+A$) and `isolatedCount` via `Finset.filter`. The central counting function of the problem.",
-      "mathContext": "Defines `IsIsolated` ($s \\pm 1 \\notin A+A$) and `isolatedCount` via `Finset.filter`. The central counting function of the problem."
+      "mathContext": "Formal definition: Defines `IsIsolated` ($s \\pm 1 \\notin A+A$) and `isolatedCount` via `Finset.filter`. The central counting function of the problem."
     },
     {
       "id": "weak-conjecture",
@@ -80,7 +80,7 @@
       "startLine": 51,
       "endLine": 61,
       "summary": "States `ErdosProblem152`: $\\forall M, \\exists N_0, \\forall$ Sidon $A$ with $|A| \\geq N_0$, $I(A) \\geq M$.",
-      "mathContext": "States `ErdosProblem152`: $\\forall M, \\exists N_0, \\forall$ Sidon $A$ with $|A| \\geq N_0$, $I(A) \\geq M$."
+      "mathContext": "Mathematical content: States `ErdosProblem152`: $\\forall M, \\exists N_0, \\forall$ Sidon $A$ with $|A| \\geq N_0$, $I(A) \\geq M$."
     },
     {
       "id": "strong-conjecture",
@@ -88,7 +88,7 @@
       "startLine": 62,
       "endLine": 73,
       "summary": "States `ErdosProblem152Strong`: $\\exists c > 0$ with $I(A) \\geq c|A|^2$ for all Sidon $A$. A constant fraction of the sumset is isolated.",
-      "mathContext": "States `ErdosProblem152Strong`: $\\exists c > 0$ with $I(A) \\geq c|A|^2$ for all Sidon $A$. A constant fraction of the sumset is isolated."
+      "mathContext": "Mathematical content: States `ErdosProblem152Strong`: $\\exists c > 0$ with $I(A) \\geq c|A|^2$ for all Sidon $A$. A constant fraction of the sumset is isolated."
     },
     {
       "id": "sumset-bounds",
@@ -96,7 +96,7 @@
       "startLine": 74,
       "endLine": 89,
       "summary": "Axiomatizes $|A+A| = n(n+1)/2$ and $\\max A \\geq n^2 - n + 1$ for Sidon sets of size $n$.",
-      "mathContext": "Axiomatizes $|A+A| = n(n+1)/2$ and $\\max A \\geq n^2 - n + 1$ for Sidon sets of size $n$."
+      "mathContext": "Axiomatizes $|A+A| = n(n+1)/2$ and $\\max A \\geq $n^{2}$ - n + 1$ for Sidon sets of size $n$."
     },
     {
       "id": "related",
@@ -104,7 +104,7 @@
       "startLine": 90,
       "endLine": 108,
       "summary": "Pigeonhole: $I(A) \\geq 1$ for $|A| \\geq 5$. Infinite version: does $I(A \\cap [1,N]) \\to \\infty$ for infinite Sidon $A$?",
-      "mathContext": "Pigeonhole: $I(A) \\geq 1$ for $|A| \\geq 5$. Infinite version: does $I(A \\cap [1,N]) \\to \\infty$ for infinite Sidon $A$?"
+      "mathContext": "Mathematical content: Pigeonhole: $I(A) \\geq 1$ for $|A| \\geq 5$. Infinite version: does $I(A \\cap [1,N]) \\to \\infty$ for infinite Sidon $A$?"
     }
   ],
   "conclusion": {

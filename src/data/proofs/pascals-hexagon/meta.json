@@ -81,7 +81,7 @@
       "startLine": 1,
       "endLine": 54,
       "summary": "Imports `Mathlib.LinearAlgebra.CrossProduct` and `Mathlib.LinearAlgebra.Matrix.Determinant.Basic` for cross products and determinants in $\\mathbb{R}^3$.",
-      "mathContext": "Imports `Mathlib.LinearAlgebra.CrossProduct` and `Mathlib.LinearAlgebra.Matrix.Determinant.Basic` for cross products and determinants in $\\mathbb{R}^3$."
+      "mathContext": "Imports cross product $\\mathbf{u} \\times \\mathbf{v} \\in \\mathbb{R}^3$ and the matrix determinant $\\det : M_{3 \\times 3}(\\mathbb{R}) \\to \\mathbb{R}$, which together provide the computational backbone for projective incidence geometry."
     },
     {
       "id": "projective-points-lines",
@@ -89,7 +89,7 @@
       "startLine": 55,
       "endLine": 73,
       "summary": "Defines `ProjPoint` and `ProjLine` as `Fin 3 → ℝ` (vectors in $\\mathbb{R}^3$), with `valid` predicates ensuring nonzero representatives in $\\mathbb{RP}^2$.",
-      "mathContext": "Defines `ProjPoint` and `ProjLine` as `Fin 3 → ℝ` (vectors in $\\mathbb{R}^3$), with `valid` predicates ensuring nonzero representatives in $\\mathbb{RP}^2$."
+      "mathContext": "Points and lines in $\\mathbb{RP}^2$ are represented as nonzero vectors $p, l \\in \\mathbb{R}^3 \\setminus \\{0\\}$. A point $p$ lies on line $l$ iff $p \\cdot l = \\sum_{i=0}^{2} p_i l_i = 0$. The $\\mathrm{valid}$ predicate ensures the representative is nonzero."
     },
     {
       "id": "fundamental-operations",
@@ -97,7 +97,7 @@
       "startLine": 74,
       "endLine": 87,
       "summary": "Defines `lineThrough`, `lineIntersection` (both via cross product), and `pointOnLine` (via dot product $p \\cdot l = 0$).",
-      "mathContext": "Defines `lineThrough`, `lineIntersection` (both via cross product), and `pointOnLine` (via dot product $p \\cdot l = 0$)."
+      "mathContext": "The line through points $p, q$ is $\\ell = p \\times q$, and the intersection of lines $\\ell, m$ is $P = \\ell \\times m$. Both use the same cross product operation, reflecting projective point-line duality in $\\mathbb{RP}^2$. Incidence is $p \\cdot \\ell = 0$."
     },
     {
       "id": "collinearity-concurrency",
@@ -105,7 +105,7 @@
       "startLine": 88,
       "endLine": 108,
       "summary": "Defines `threeVectorMatrix`, `collinear` ($\\det(p,q,r) = 0$), and `concurrent` ($\\det(l,m,n) = 0$) — dual predicates via the same determinant condition.",
-      "mathContext": "Defines `threeVectorMatrix`, `collinear` ($\\det(p,q,r) = 0$), and `concurrent` ($\\det(l,m,n) = 0$) — dual predicates via the same determinant condition."
+      "mathContext": "Three points $P, Q, R$ are collinear iff $\\det(P \\mid Q \\mid R) = 0$, and three lines $\\ell, m, n$ are concurrent iff $\\det(\\ell \\mid m \\mid n) = 0$. Both conditions reduce to the vanishing of a $3 \\times 3$ determinant, a manifestation of point-line duality."
     },
     {
       "id": "conic-sections",
@@ -113,7 +113,7 @@
       "startLine": 109,
       "endLine": 133,
       "summary": "Defines `Conic` as a symmetric $3 \\times 3$ matrix $C$, `conicQuadraticForm` ($p^T C p = \\sum_{i,j} C_{ij} p_i p_j$), `pointOnConic`, non-degeneracy ($\\det C \\neq 0$), and symmetry.",
-      "mathContext": "Defines `Conic` as a symmetric $3 \\times 3$ matrix $C$, `conicQuadraticForm` ($p^T C p = \\sum_{i,j} C_{ij} p_i p_j$), `pointOnConic`, non-degeneracy ($\\det C \\neq 0$), and symmetry."
+      "mathContext": "A conic is a symmetric matrix $C \\in \\mathrm{Sym}_3(\\mathbb{R})$ with quadratic form $Q(p) = p^T C p = \\sum_{i,j} C_{ij} p_i p_j$. A point lies on the conic iff $Q(p) = 0$. Non-degeneracy requires $\\det C \\neq 0$, and all non-degenerate conics are projectively equivalent."
     },
     {
       "id": "inscribed-hexagon",
@@ -121,7 +121,7 @@
       "startLine": 134,
       "endLine": 172,
       "summary": "Defines `InscribedHexagon C` with 6 vertices on conic $C$, and the three Pascal points: $P = (A \\times B) \\times (D \\times E)$, $Q = (B \\times C') \\times (E \\times F)$, $R = (C' \\times D) \\times (F \\times A)$.",
-      "mathContext": "Defines `InscribedHexagon C` with 6 vertices on conic $C$, and the three Pascal points: $P = (A \\times B) \\times (D \\times E)$, $Q = (B \\times C') \\times (E \\times F)$, $R = (C' \\times D) \\times (F \\t"
+      "mathContext": "An inscribed hexagon $ABCDEF$ has all six vertices on conic $C$: $Q(A) = Q(B) = \\cdots = Q(F) = 0$. The three Pascal points are intersections of opposite sides: $P = \\overline{AB} \\cap \\overline{DE}$, $Q = \\overline{BC} \\cap \\overline{EF}$, $R = \\overline{CD} \\cap \\overline{FA}$, computed as $(A \\times B) \\times (D \\times E)$, etc."
     },
     {
       "id": "pascal-constraint",
@@ -129,7 +129,7 @@
       "startLine": 173,
       "endLine": 187,
       "summary": "Defines `pascalConstraint`: compute opposite-side intersections $P, Q, R$ via cross products, then check $\\det(P, Q, R) = 0$.",
-      "mathContext": "Defines `pascalConstraint`: compute opposite-side intersections $P, Q, R$ via cross products, then check $\\det(P, Q, R) = 0$."
+      "mathContext": "The Pascal constraint asserts $\\det(P \\mid Q \\mid R) = 0$ where $P, Q, R$ are the opposite-side intersections. By Cayley-Bacharach, two degenerate cubics $\\overline{AB} \\cup \\overline{CD} \\cup \\overline{EF}$ and $\\overline{BC} \\cup \\overline{DE} \\cup \\overline{FA}$ meet in $3 \\times 3 = 9$ points (Bezout), 6 on the conic, forcing the remaining 3 to be collinear."
     },
     {
       "id": "main-theorem",
@@ -137,7 +137,7 @@
       "startLine": 188,
       "endLine": 231,
       "summary": "The axiom `conic_implies_pascal_constraint` and **Theorem** `pascal_hexagon_theorem` (Wiedijk #28): for hexagon inscribed in conic, Pascal points $P, Q, R$ are collinear.",
-      "mathContext": "The axiom `conic_implies_pascal_constraint` and **Theorem** `pascal_hexagon_theorem` (Wiedijk #28): for hexagon inscribed in conic, Pascal points $P, Q, R$ are collinear."
+      "mathContext": "**Pascal's Theorem** (Wiedijk #28): For hexagon $ABCDEF$ inscribed in a non-degenerate conic $C$, the three points $P = \\overline{AB} \\cap \\overline{DE}$, $Q = \\overline{BC} \\cap \\overline{EF}$, $R = \\overline{CD} \\cap \\overline{FA}$ satisfy $\\det(P \\mid Q \\mid R) = 0$, i.e., they are collinear. The line $PQR$ is the Pascal line."
     },
     {
       "id": "special-cases",
@@ -145,7 +145,7 @@
       "startLine": 232,
       "endLine": 248,
       "summary": "Defines `collinearOnLine` for Pappus's theorem — the degenerate case where the conic is a pair of lines $l_1 \\cup l_2$.",
-      "mathContext": "Defines `collinearOnLine` for Pappus's theorem — the degenerate case where the conic is a pair of lines $l_1 \\cup l_2$."
+      "mathContext": "When the conic degenerates to a line pair $C = \\ell_1 \\cup \\ell_2$ (i.e., $\\det C = 0$ and $C$ factors), Pascal's theorem specializes to Pappus's theorem (c. 340 AD): if $A, C, E \\in \\ell_1$ and $B, D, F \\in \\ell_2$, then $\\overline{AB} \\cap \\overline{DE}$, $\\overline{BC} \\cap \\overline{EF}$, $\\overline{CD} \\cap \\overline{FA}$ are collinear."
     },
     {
       "id": "brianchon-dual",
@@ -153,7 +153,7 @@
       "startLine": 249,
       "endLine": 321,
       "summary": "Defines `hexagonDiagonal1/2/3` for Brianchon's theorem (1806): if a hexagon is circumscribed about a conic, the three main diagonals $AD$, $BE$, $CF$ are concurrent. Includes historical notes on the 60 Pascal lines.",
-      "mathContext": "Defines `hexagonDiagonal1/2/3` for Brianchon's theorem (1806): if a hexagon is circumscribed about a conic, the three main diagonals $AD$, $BE$, $CF$ are concurrent. Includes historical notes on the 6"
+      "mathContext": "**Brianchon's Theorem** (1806), dual to Pascal's: if hexagon $ABCDEF$ is circumscribed about a conic (each side tangent to $C$), then the three main diagonals $\\overline{AD}$, $\\overline{BE}$, $\\overline{CF}$ are concurrent, i.e., $\\det(\\overline{AD} \\mid \\overline{BE} \\mid \\overline{CF}) = 0$. The $6!/(2 \\cdot 6) = 60$ orderings of six conic points yield 60 Pascal lines."
     }
   ],
   "conclusion": {

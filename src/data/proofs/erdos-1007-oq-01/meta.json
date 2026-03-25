@@ -88,7 +88,7 @@
       "summary": "Axiomatizes minEdges(d) as the minimum edge count among graphs of dimension d. Three axioms: the function, the lower bound property, and the achievability.",
       "startLine": 62,
       "endLine": 77,
-      "mathContext": "Axiomatizes minEdges(d) as the minimum edge count among graphs of dimension d. Three axioms: the function, the lower bound property, and the achievability."
+      "mathContext": "Axiomatized: Axiomatizes minEdges(d) as the minimum edge count among graphs of dimension d. Three axioms: the function, the lower bound property, and the achievability."
     },
     {
       "id": "known-values",
@@ -96,7 +96,7 @@
       "summary": "Records $\\text{minEdges}(0..5) = (0, 1, 3, 6, 9, 15)$ as six axioms. For $d \\le 3$ and $d=5$, these match $\\binom{d+1}{2}$; the $d=4$ value of 9 (from $K_{3,3}$) is the sole exception.",
       "startLine": 83,
       "endLine": 99,
-      "mathContext": "Records $\\text{minEdges}(0..5) = (0, 1, 3, 6, 9, 15)$ as six axioms. For $d \\le 3$ and $d=5$, these match $\\binom{d+1}{2}$; the $d=4$ value of 9 (from $K_{3,3}$) is the sole exception."
+      "mathContext": "Axiomatized: Records $\\text{minEdges}(0..5) = (0, 1, 3, 6, 9, 15)$ as six axioms. For $d \\le 3$ and $d=5$, these match $\\binom{d+1}{2}$; the $d=4$ value of 9 (from $K_{3,3}$) is the sole exception."
     },
     {
       "id": "structural-results",
@@ -104,7 +104,7 @@
       "summary": "Three theorems: $K_{d+1}$ optimality for $d \\le 3$ (via `interval_cases`), the $d=4$ surprise ($9 < \\binom{5}{2} = 10$), and $d=5$ matching ($15 = \\binom{6}{2}$).",
       "startLine": 105,
       "endLine": 123,
-      "mathContext": "Three theorems: $K_{d+1}$ optimality for $d \\le 3$ (via `interval_cases`), the $d=4$ surprise ($9 < \\binom{5}{2} = 10$), and $d=5$ matching ($15 = \\binom{6}{2}$)."
+      "mathContext": "Verified: Three theorems: $K_{d+1}$ optimality for $d \\le 3$ (via `interval_cases`), the $d=4$ surprise ($9 < \\binom{5}{2} = 10$), and $d=5$ matching ($15 = \\binom{6}{2}$)."
     },
     {
       "id": "general-bounds",
@@ -120,7 +120,7 @@
       "summary": "Three Prop-valued definitions: monotonicity conjecture, quadratic growth conjecture (Θ(d²)), and complete graph optimality conjecture (K_{d+1} optimal for d ≠ 4).",
       "startLine": 150,
       "endLine": 166,
-      "mathContext": "Three Prop-valued definitions: monotonicity conjecture, quadratic growth conjecture (Θ(d²)), and complete graph optimality conjecture (K_{d+1} optimal for d ≠ 4)."
+      "mathContext": "Three Prop-valued definitions: monotonicity conjecture, quadratic growth conjecture (Θ(d²)), and complete graph optimality conjecture (K_{d+1} optimal for d $\\neq$ 4)."
     },
     {
       "id": "simplex-embedding",
@@ -136,7 +136,7 @@
       "startLine": 272,
       "endLine": 317,
       "summary": "Constructive proof of `hasUnitEmbedding_exists_irrefl`: every finite irreflexive graph embeds in some $\\mathbb{R}^n$ via the simplex construction. Uses `Fintype.truncEquivFin` to reduce to `Fin |V|`.",
-      "mathContext": "Constructive proof of `hasUnitEmbedding_exists_irrefl`: every finite irreflexive graph embeds in some $\\mathbb{R}^n$ via the simplex construction. Uses `Fintype.truncEquivFin` to reduce to `Fin |V|`."
+      "mathContext": "Verified: Constructive proof of `hasUnitEmbedding_exists_irrefl`: every finite irreflexive graph embeds in some $\\mathbb{R}^n$ via the simplex construction. Uses `Fintype.truncEquivFin` to reduce to `Fin |V|`."
     },
     {
       "id": "conjecture-relationships",

@@ -49,7 +49,7 @@
       "startLine": 43,
       "endLine": 64,
       "summary": "The n-th prime via Nat.nth, with axioms for primality and strict monotonicity.",
-      "mathContext": "The n-th prime via Nat.nth, with axioms for primality and strict monotonicity."
+      "mathContext": "Axiomatized: The n-th prime via Nat.nth, with axioms for primality and strict monotonicity."
     },
     {
       "id": "prime-gap",
@@ -57,7 +57,7 @@
       "startLine": 65,
       "endLine": 83,
       "summary": "Prime gap g_n = p_{n+1} - p_n, proved positive from strict monotonicity.",
-      "mathContext": "Prime gap g_n = p_{n+1} - p_n, proved positive from strict monotonicity."
+      "mathContext": "Mathematical content: Prime gap g_n = p_{n+1} - p_n, proved positive from strict monotonicity."
     },
     {
       "id": "smooth-numbers",
@@ -65,7 +65,7 @@
       "startLine": 84,
       "endLine": 120,
       "summary": "Maximum prime factor, B-smoothness definition, properties for 1 and prime powers.",
-      "mathContext": "Maximum prime factor, B-smoothness definition, properties for 1 and prime powers."
+      "mathContext": "Formal definition: Maximum prime factor, B-smoothness definition, properties for 1 and prime powers."
     },
     {
       "id": "smooth-in-gap",
@@ -73,7 +73,7 @@
       "startLine": 121,
       "endLine": 162,
       "summary": "Open interval between consecutive primes, filtering for smooth numbers, and the count function.",
-      "mathContext": "Open interval between consecutive primes, filtering for smooth numbers, and the count function."
+      "mathContext": "Mathematical content: Open interval between consecutive primes, filtering for smooth numbers, and the count function."
     },
     {
       "id": "main-conjecture",
@@ -81,7 +81,7 @@
       "startLine": 163,
       "endLine": 184,
       "summary": "The Erdős conjecture: {r : smoothCount(r) ≥ 2} is infinite.",
-      "mathContext": "The Erdős conjecture: {r : smoothCount(r) ≥ 2} is infinite."
+      "mathContext": "The Erdős conjecture: {r : smoothCount(r) $\\geq$ 2} is infinite."
     },
     {
       "id": "density-zero",
@@ -89,7 +89,7 @@
       "startLine": 185,
       "endLine": 219,
       "summary": "Natural density definition and Erdős's result that density of r with smoothCount(r) ≥ 1 is 0.",
-      "mathContext": "Natural density definition and Erdős's result that density of r with smoothCount(r) ≥ 1 is 0."
+      "mathContext": "Natural density definition and Erdős's result that density of r with smoothCount(r) $\\geq$ 1 is 0."
     },
     {
       "id": "examples",
@@ -97,7 +97,7 @@
       "startLine": 220,
       "endLine": 244,
       "summary": "Concrete example: r=3 (gap 7→11) has smoothCount = 2 via 8=2³ and 9=3².",
-      "mathContext": "Concrete example: r=3 (gap 7→11) has smoothCount = 2 via 8=2³ and 9=3²."
+      "mathContext": "Concrete example: r=3 (gap 7$\\to$11) has smoothCount = 2 via 8=2³ and 9=3²."
     },
     {
       "id": "difficulty",
@@ -105,7 +105,7 @@
       "startLine": 245,
       "endLine": 263,
       "summary": "Discussion of the challenge: proving infinitude despite density zero.",
-      "mathContext": "Discussion of the challenge: proving infinitude despite density zero."
+      "mathContext": "Mathematical content: Discussion of the challenge: proving infinitude despite density zero."
     },
     {
       "id": "smooth-distribution",
@@ -113,7 +113,7 @@
       "startLine": 264,
       "endLine": 285,
       "summary": "Counting function Ψ(x,y), Dickman function, and monotonicity in the smoothness bound.",
-      "mathContext": "Counting function Ψ(x,y), Dickman function, and monotonicity in the smoothness bound."
+      "mathContext": "Bound: Counting function Ψ(x,y), Dickman function, and monotonicity in the smoothness bound."
     },
     {
       "id": "summary",
@@ -121,7 +121,7 @@
       "startLine": 286,
       "endLine": 314,
       "summary": "Summary theorem combining density result, example, and problem status.",
-      "mathContext": "Summary theorem combining density result, example, and problem status."
+      "mathContext": "Verified: Summary theorem combining density result, example, and problem status."
     }
   ],
   "conclusion": {

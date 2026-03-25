@@ -83,7 +83,7 @@
       "startLine": 1,
       "endLine": 39,
       "summary": "Problem statement, Adenwalla's 2025 proof, references (Erdős-Graham 1980, Adenwalla 2025), imports from `Mathlib.Data.Nat.GCD.Basic`, `Mathlib.Data.Nat.Divisors`, `Mathlib.Data.Finset.Basic`",
-      "mathContext": "Problem statement, Adenwalla's 2025 proof, references (Erdős-Graham 1980, Adenwalla 2025), imports from `Mathlib.Data.Nat.GCD.Basic`, `Mathlib.Data.Nat.Divisors`, `Mathlib.Data.Finset.Basic`"
+      "mathContext": "Verified: Problem statement, Adenwalla's 2025 proof, references (Erdős-Graham 1980, Adenwalla 2025), imports from `Mathlib.Data.Nat.GCD.Basic`, `Mathlib.Data.Nat.Divisors`, `Mathlib.Data.Finset.Basic`"
     },
     {
       "id": "definitions",
@@ -99,7 +99,7 @@
       "startLine": 64,
       "endLine": 85,
       "summary": "Defines `Overlaps` ($x$ in both residue classes), `IsAsDisjointAsPossible` (overlap $\\Rightarrow \\gcd(d,d') = 1$), and `IsDisjointCoveringSystem` (covering $\\wedge$ disjoint)",
-      "mathContext": "Defines `Overlaps` ($x$ in both residue classes), `IsAsDisjointAsPossible` (overlap $\\Rightarrow \\gcd(d,d') = 1$), and `IsDisjointCoveringSystem` (covering $\\wedge$ disjoint)"
+      "mathContext": "Formal definition: Defines `Overlaps` ($x$ in both residue classes), `IsAsDisjointAsPossible` (overlap $\\Rightarrow \\gcd(d,d') = 1$), and `IsDisjointCoveringSystem` (covering $\\wedge$ disjoint)"
     },
     {
       "id": "main-question",
@@ -107,7 +107,7 @@
       "startLine": 86,
       "endLine": 98,
       "summary": "Defines `ExistsDisjointCoveringN` ($\\exists n > 1$ with disjoint covering) and `ErdosGrahamConjecture` ($\\neg$ExistsDisjointCoveringN)",
-      "mathContext": "Defines `ExistsDisjointCoveringN` ($\\exists n > 1$ with disjoint covering) and `ErdosGrahamConjecture` ($\\neg$ExistsDisjointCoveringN)"
+      "mathContext": "Formal definition: Defines `ExistsDisjointCoveringN` ($\\exists n > 1$ with disjoint covering) and `ErdosGrahamConjecture` ($\\neg$ExistsDisjointCoveringN)"
     },
     {
       "id": "density",
@@ -115,7 +115,7 @@
       "startLine": 99,
       "endLine": 113,
       "summary": "Placeholder axioms for density-zero result (if such $n$ existed) and Erdős-Graham's belief",
-      "mathContext": "Placeholder axioms for density-zero result (if such $n$ existed) and Erdős-Graham's belief"
+      "mathContext": "Axiomatized: Placeholder axioms for density-zero result (if such $n$ existed) and Erdős-Graham's belief"
     },
     {
       "id": "adenwalla",
@@ -131,7 +131,7 @@
       "startLine": 133,
       "endLine": 154,
       "summary": "Verified proof `divisor_pair_not_coprime`: $d \\mid d' \\wedge d > 1 \\Rightarrow \\gcd(d,d') \\neq 1$, using `Nat.gcd_eq_left`. This is the key obstruction making disjoint covering impossible",
-      "mathContext": "Verified proof `divisor_pair_not_coprime`: $d \\mid d' \\wedge d > 1 \\Rightarrow \\gcd(d,d') \\neq 1$, using `Nat.gcd_eq_left`. This is the key obstruction making disjoint covering impossible"
+      "mathContext": "Verified: Verified proof `divisor_pair_not_coprime`: $d \\mid d' \\wedge d > 1 \\Rightarrow \\gcd(d,d') \\neq 1$, using `Nat.gcd_eq_left`. This is the key obstruction making disjoint covering impossible"
     },
     {
       "id": "related",
@@ -139,7 +139,7 @@
       "startLine": 155,
       "endLine": 176,
       "summary": "`MaxCoverableDensity n` (sorry — supremum of coverable density under disjointness), Adenwalla's density study, and existence of standard covering systems without coprimality constraint",
-      "mathContext": "`MaxCoverableDensity n` (sorry — supremum of coverable density under disjointness), Adenwalla's density study, and existence of standard covering systems without coprimality constraint"
+      "mathContext": "Mathematical content: `MaxCoverableDensity n` (sorry — supremum of coverable density under disjointness), Adenwalla's density study, and existence of standard covering systems without coprimality constraint"
     },
     {
       "id": "examples",
@@ -147,7 +147,7 @@
       "startLine": 177,
       "endLine": 196,
       "summary": "Verified: `properDivisors 6 = {2, 3, 6}` by `native_decide`. Axioms `n6_fails` and `n12_fails`: for $n = 6$, $2 \\mid 6$ gives $\\gcd(2,6) = 2$; for $n = 12$, similar obstructions",
-      "mathContext": "Verified: `properDivisors 6 = {2, 3, 6}` by `native_decide`. Axioms `n6_fails` and `n12_fails`: for $n = 6$, $2 \\mid 6$ gives $\\gcd(2,6) = 2$; for $n = 12$, similar obstructions"
+      "mathContext": "Axiomatized: Verified: `properDivisors 6 = {2, 3, 6}` by `native_decide`. Axioms `n6_fails` and `n12_fails`: for $n = 6$, $2 \\mid 6$ gives $\\gcd(2,6) = 2$; for $n = 12$, similar obstructions"
     },
     {
       "id": "covering-connections",
@@ -155,7 +155,7 @@
       "startLine": 197,
       "endLine": 217,
       "summary": "Context axioms: classical covering system problem, minimum modulus problem, and Hough's theorem (2015) on reciprocal sums $\\sum 1/d_i \\geq 1$",
-      "mathContext": "Context axioms: classical covering system problem, minimum modulus problem, and Hough's theorem (2015) on reciprocal sums $\\sum 1/d_i \\geq 1$"
+      "mathContext": "Verified: Context axioms: classical covering system problem, minimum modulus problem, and Hough's theorem (2015) on reciprocal sums $\\sum 1/d_i \\geq 1$"
     },
     {
       "id": "summary",
@@ -163,7 +163,7 @@
       "startLine": 218,
       "endLine": 253,
       "summary": "Theorems `erdos_204_solved` and `erdos_204_summary`: $\\neg$ExistsDisjointCoveringN $\\wedge$ ErdosGrahamConjecture, both proved from `adenwalla_2025`",
-      "mathContext": "Theorems `erdos_204_solved` and `erdos_204_summary`: $\\neg$ExistsDisjointCoveringN $\\wedge$ ErdosGrahamConjecture, both proved from `adenwalla_2025`"
+      "mathContext": "Verified: Theorems `erdos_204_solved` and `erdos_204_summary`: $\\neg$ExistsDisjointCoveringN $\\wedge$ ErdosGrahamConjecture, both proved from `adenwalla_2025`"
     }
   ],
   "crossReferences": [

@@ -63,7 +63,7 @@
       "summary": "Tournament structure and order",
       "startLine": 38,
       "endLine": 49,
-      "mathContext": "Tournament structure and order"
+      "mathContext": "Formal definition: Tournament structure and order"
     },
     {
       "id": "domination",
@@ -71,7 +71,7 @@
       "summary": "Dominates, isDominated, isNDominating definitions",
       "startLine": 50,
       "endLine": 63,
-      "mathContext": "Dominates, isDominated, isNDominating definitions"
+      "mathContext": "Formal definition: Dominates, isDominated, isNDominating definitions"
     },
     {
       "id": "f-definition",
@@ -79,7 +79,7 @@
       "summary": "Definition of f(n) as minimal n-dominating tournament order",
       "startLine": 64,
       "endLine": 81,
-      "mathContext": "Definition of f(n) as minimal n-dominating tournament order"
+      "mathContext": "Formal definition: Definition of f(n) as minimal n-dominating tournament order"
     },
     {
       "id": "known-values",
@@ -87,7 +87,7 @@
       "summary": "f(1)=3, f(2)=7, f(3)=19",
       "startLine": 82,
       "endLine": 120,
-      "mathContext": "f(1)=3, f(2)=7, f(3)=19"
+      "mathContext": "Mathematical content: f(1)=3, f(2)=7, f(3)=19"
     },
     {
       "id": "lower-bound",
@@ -95,7 +95,7 @@
       "summary": "Szekeres & Szekeres (1965): f(n) ≥ c·n·2^n",
       "startLine": 121,
       "endLine": 138,
-      "mathContext": "Szekeres & Szekeres (1965): f(n) ≥ c·n·2^n"
+      "mathContext": "Szekeres & Szekeres (1965): f(n) $\\geq$ c·n·$2^{n}$"
     },
     {
       "id": "upper-bound",
@@ -103,7 +103,7 @@
       "summary": "Erdős (1963): f(n) ≤ C·n²·2^n",
       "startLine": 139,
       "endLine": 151,
-      "mathContext": "Erdős (1963): f(n) ≤ C·n²·2^n"
+      "mathContext": "Erdős (1963): f(n) $\\leq$ C·n²·$2^{n}$"
     },
     {
       "id": "asymptotic",
@@ -111,7 +111,7 @@
       "summary": "The gap between lower and upper bounds",
       "startLine": 152,
       "endLine": 171,
-      "mathContext": "The gap between lower and upper bounds"
+      "mathContext": "Bound: The gap between lower and upper bounds"
     },
     {
       "id": "paley",
@@ -119,7 +119,7 @@
       "summary": "Quadratic residue construction and domination bound",
       "startLine": 167,
       "endLine": 176,
-      "mathContext": "Quadratic residue construction and domination bound"
+      "mathContext": "Bound: Quadratic residue construction and domination bound"
     },
     {
       "id": "quadratic-residues",
@@ -127,7 +127,7 @@
       "summary": "Half of nonzero elements are residues",
       "startLine": 177,
       "endLine": 187,
-      "mathContext": "Half of nonzero elements are residues"
+      "mathContext": "Mathematical content: Half of nonzero elements are residues"
     },
     {
       "id": "generalizations",
@@ -135,7 +135,7 @@
       "summary": "Domination number of a tournament",
       "startLine": 188,
       "endLine": 201,
-      "mathContext": "Domination number of a tournament"
+      "mathContext": "Mathematical content: Domination number of a tournament"
     },
     {
       "id": "probabilistic",
@@ -143,7 +143,7 @@
       "summary": "Random tournaments and existence proofs",
       "startLine": 202,
       "endLine": 216,
-      "mathContext": "Random tournaments and existence proofs"
+      "mathContext": "Verified: Random tournaments and existence proofs"
     },
     {
       "id": "summary",
@@ -151,7 +151,7 @@
       "summary": "erdos_902: combining Szekeres lower and Erdős upper bounds",
       "startLine": 217,
       "endLine": 237,
-      "mathContext": "erdos_902: combining Szekeres lower and Erdős upper bounds"
+      "mathContext": "Bound: erdos_902: combining Szekeres lower and Erdős upper bounds"
     }
   ],
   "conclusion": {

@@ -53,7 +53,7 @@
       "summary": "Module documentation on Problem 1037 (Chen-Erdős conjecture, Cambie-Chan-Hunter disproof), imports for SimpleGraph, Finset, Fintype, and real number arithmetic",
       "startLine": 1,
       "endLine": 22,
-      "mathContext": "Module documentation on Problem 1037 (Chen-Erdős conjecture, Cambie-Chan-Hunter disproof), imports for SimpleGraph, Finset, Fintype, and real number arithmetic"
+      "mathContext": "Verified: Module documentation on Problem 1037 (Chen-Erdős conjecture, Cambie-Chan-Hunter disproof), imports for SimpleGraph, Finset, Fintype, and real number arithmetic"
     },
     {
       "id": "graph-setup",
@@ -61,7 +61,7 @@
       "summary": "vertexCount definition: cardinality of the finite vertex set",
       "startLine": 23,
       "endLine": 35,
-      "mathContext": "vertexCount definition: cardinality of the finite vertex set"
+      "mathContext": "Formal definition: vertexCount definition: cardinality of the finite vertex set"
     },
     {
       "id": "degree-sequences",
@@ -69,7 +69,7 @@
       "summary": "degreeMultiset (multiset of all vertex degrees), distinctDegrees (number of distinct values), degreeMultiplicity (count of each degree value)",
       "startLine": 36,
       "endLine": 54,
-      "mathContext": "degreeMultiset (multiset of all vertex degrees), distinctDegrees (number of distinct values), degreeMultiplicity (count of each degree value)"
+      "mathContext": "Mathematical content: degreeMultiset (multiset of all vertex degrees), distinctDegrees (number of distinct values), degreeMultiplicity (count of each degree value)"
     },
     {
       "id": "degree-constraints",
@@ -77,7 +77,7 @@
       "summary": "hasLimitedMultiplicity (each degree at most twice), hasManyDistinctDegrees (distinct degrees > (1/2 + ε)n), isChenErdosGraph (both conditions)",
       "startLine": 55,
       "endLine": 70,
-      "mathContext": "hasLimitedMultiplicity (each degree at most twice), hasManyDistinctDegrees (distinct degrees > (1/2 + ε)n), isChenErdosGraph (both conditions)"
+      "mathContext": "Mathematical content: hasLimitedMultiplicity (each degree at most twice), hasManyDistinctDegrees (distinct degrees > (1/2 + ε)n), isChenErdosGraph (both conditions)"
     },
     {
       "id": "trivial-subgraphs",
@@ -85,7 +85,7 @@
       "summary": "isIndependentSet, isClique, isTrivialSet (independent or clique), maxTrivialSize (maximum over all trivial subsets)",
       "startLine": 71,
       "endLine": 90,
-      "mathContext": "isIndependentSet, isClique, isTrivialSet (independent or clique), maxTrivialSize (maximum over all trivial subsets)"
+      "mathContext": "Mathematical content: isIndependentSet, isClique, isTrivialSet (independent or clique), maxTrivialSize (maximum over all trivial subsets)"
     },
     {
       "id": "conjecture",
@@ -93,7 +93,7 @@
       "summary": "chenErdosConjecture (degree diversity forces trivial subgraphs ≫ log n) and chenErdos_false establishing the conjecture is false",
       "startLine": 91,
       "endLine": 105,
-      "mathContext": "chenErdosConjecture (degree diversity forces trivial subgraphs ≫ log n) and chenErdos_false establishing the conjecture is false"
+      "mathContext": "chenErdosConjecture (degree diversity forces trivial subgraphs ≫ $\\log n$) and chenErdos_false establishing the conjecture is false"
     },
     {
       "id": "counterexample",
@@ -109,7 +109,7 @@
       "summary": "ramseyNumber definition, ramsey_theorem (every graph has trivial subgraph ≥ (1/2) log₂ n), degree_diversity_no_ramsey_help (degree diversity does not improve the Ramsey bound)",
       "startLine": 136,
       "endLine": 162,
-      "mathContext": "ramseyNumber definition, ramsey_theorem (every graph has trivial subgraph ≥ (1/2) log₂ n), degree_diversity_no_ramsey_help (degree diversity does not improve the Ramsey bound)"
+      "mathContext": "ramseyNumber definition, ramsey_theorem (every graph has trivial subgraph $\\geq$ (1/2) log₂ n), degree_diversity_no_ramsey_help (degree diversity does not improve the Ramsey bound)"
     },
     {
       "id": "degree-properties",
@@ -117,7 +117,7 @@
       "summary": "degree_sum_eq_twice_edges (handshaking lemma), limited_multiplicity_bound (multiplicity ≤ 2 constrains distinct degrees ≤ n), degree_bound (each degree < n)",
       "startLine": 163,
       "endLine": 184,
-      "mathContext": "degree_sum_eq_twice_edges (handshaking lemma), limited_multiplicity_bound (multiplicity ≤ 2 constrains distinct degrees ≤ n), degree_bound (each degree < n)"
+      "mathContext": "degree_sum_eq_twice_edges (handshaking lemma), limited_multiplicity_bound (multiplicity $\\leq$ 2 constrains distinct degrees $\\leq$ n), degree_bound (each degree < n)"
     },
     {
       "id": "stronger-bounds",
@@ -125,7 +125,7 @@
       "summary": "optimalDistinctBound (3n/4), max_distinct_with_limited_mult (distinct degrees ≤ 3n/4 when multiplicity ≤ 2), cambie_is_optimal (the counterexample achieves this bound)",
       "startLine": 185,
       "endLine": 207,
-      "mathContext": "optimalDistinctBound (3n/4), max_distinct_with_limited_mult (distinct degrees ≤ 3n/4 when multiplicity ≤ 2), cambie_is_optimal (the counterexample achieves this bound)"
+      "mathContext": "optimalDistinctBound (3n/4), max_distinct_with_limited_mult (distinct degrees $\\leq$ 3n/4 when multiplicity $\\leq$ 2), cambie_is_optimal (the counterexample achieves this bound)"
     },
     {
       "id": "generalizations",
@@ -133,7 +133,7 @@
       "summary": "hasMultiplicityAtMost (generalized multiplicity ≤ k), generalMultiplicityBound (max distinct degrees with multiplicity ≤ k is (1-1/(2k))n), multiplicity_two_bound (special case k=2 recovers 3n/4)",
       "startLine": 208,
       "endLine": 238,
-      "mathContext": "hasMultiplicityAtMost (generalized multiplicity ≤ k), generalMultiplicityBound (max distinct degrees with multiplicity ≤ k is (1-1/(2k))n), multiplicity_two_bound (special case k=2 recovers 3n/4)"
+      "mathContext": "hasMultiplicityAtMost (generalized multiplicity $\\leq$ k), generalMultiplicityBound (max distinct degrees with multiplicity $\\leq$ k is (1-1/(2k))n), multiplicity_two_bound (special case k=2 recovers 3n/4)"
     },
     {
       "id": "resolved",
@@ -141,7 +141,7 @@
       "summary": "erdos_1037_disproved (the conjecture is false via counterexample) and erdos_1037_answer (degree diversity does not force large trivial subgraphs)",
       "startLine": 239,
       "endLine": 276,
-      "mathContext": "erdos_1037_disproved (the conjecture is false via counterexample) and erdos_1037_answer (degree diversity does not force large trivial subgraphs)"
+      "mathContext": "Mathematical content: erdos_1037_disproved (the conjecture is false via counterexample) and erdos_1037_answer (degree diversity does not force large trivial subgraphs)"
     }
   ],
   "conclusion": {

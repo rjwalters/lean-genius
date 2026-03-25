@@ -103,7 +103,7 @@
       "summary": "States `Erdos3Conjecture`: every set with divergent reciprocal sum contains arbitrarily long APs. Equivalent to $r_k(N) = o(N/\\log N)$ for all $k \\geq 3$.",
       "startLine": 71,
       "endLine": 81,
-      "mathContext": "States `Erdos3Conjecture`: every set with divergent reciprocal sum contains arbitrarily long APs. Equivalent to $r_k(N) = o(N/\\log N)$ for all $k \\geq 3$."
+      "mathContext": "Mathematical content: States `Erdos3Conjecture`: every set with divergent reciprocal sum contains arbitrarily long APs. Equivalent to $r_k(N) = o(N/\\log N)$ for all $k \\geq 3$."
     },
     {
       "id": "historical",
@@ -127,7 +127,7 @@
       "summary": "Axiomatizes lower bounds: Behrend (1946, $r_3(N) \\geq N/\\exp(c\\sqrt{\\log N})$ via sphere construction in high-dimensional lattices) and Elkin (2011, improvement by $\\sqrt{\\log \\log N}$).",
       "startLine": 136,
       "endLine": 155,
-      "mathContext": "Axiomatizes lower bounds: Behrend (1946, $r_3(N) \\geq N/\\exp(c\\sqrt{\\log N})$ via sphere construction in high-dimensional lattices) and Elkin (2011, improvement by $\\sqrt{\\log \\log N}$)."
+      "mathContext": "Axiomatized: Axiomatizes lower bounds: Behrend (1946, $r_3(N) \\geq N/\\exp(c\\sqrt{\\log N})$ via sphere construction in high-dimensional lattices) and Elkin (2011, improvement by $\\sqrt{\\log \\log N}$)."
     },
     {
       "id": "green-tao",
@@ -135,7 +135,7 @@
       "summary": "Axiomatizes Green-Tao (primes contain all APs) and Euler ($\\sum 1/p = \\infty$), then formally proves `erdos3_implies_green_tao`: the conjecture implies Green-Tao as an immediate corollary.",
       "startLine": 156,
       "endLine": 183,
-      "mathContext": "Axiomatizes Green-Tao (primes contain all APs) and Euler ($\\sum 1/p = \\infty$), then formally proves `erdos3_implies_green_tao`: the conjecture implies Green-Tao as an immediate corollary."
+      "mathContext": "Verified: Axiomatizes Green-Tao (primes contain all APs) and Euler ($\\sum 1/p = \\infty$), then formally proves `erdos3_implies_green_tao`: the conjecture implies Green-Tao as an immediate corollary."
     },
     {
       "id": "status",
@@ -143,7 +143,7 @@
       "summary": "Concludes with `erdos_3_open` via `Classical.em`, plus references documenting the trajectory from Bloom-Sisask (2020) through Kelley-Meka (2023) to Leng-Sah-Sawhney (2024).",
       "startLine": 184,
       "endLine": 214,
-      "mathContext": "Concludes with `erdos_3_open` via `Classical.em`, plus references documenting the trajectory from Bloom-Sisask (2020) through Kelley-Meka (2023) to Leng-Sah-Sawhney (2024)."
+      "mathContext": "Mathematical content: Concludes with `erdos_3_open` via `Classical.em`, plus references documenting the trajectory from Bloom-Sisask (2020) through Kelley-Meka (2023) to Leng-Sah-Sawhney (2024)."
     }
   ],
   "conclusion": {

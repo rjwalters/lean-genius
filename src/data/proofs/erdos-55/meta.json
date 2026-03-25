@@ -52,7 +52,7 @@
       "summary": "Imports Mathlib and opens `Finset`, `BigOperators` for $\\sum$ notation",
       "startLine": 27,
       "endLine": 32,
-      "mathContext": "Imports Mathlib and opens `Finset`, `BigOperators` for $\\sum$ notation"
+      "mathContext": "Mathematical content: Imports Mathlib and opens `Finset`, `BigOperators` for $\\sum$ notation"
     },
     {
       "id": "definitions",
@@ -60,7 +60,7 @@
       "summary": "Defines $r$-colorings ($A \\to \\mathrm{Fin}\\,r$), monochromatic subsets, finite sums, and the central predicate `IsRamseyComplete`",
       "startLine": 33,
       "endLine": 53,
-      "mathContext": "Defines $r$-colorings ($A \\to \\mathrm{Fin}\\,r$), monochromatic subsets, finite sums, and the central predicate `IsRamseyComplete`"
+      "mathContext": "Formal definition: Defines $r$-colorings ($A \\to \\mathrm{Fin}\\,r$), monochromatic subsets, finite sums, and the central predicate `IsRamseyComplete`"
     },
     {
       "id": "counting",
@@ -68,7 +68,7 @@
       "summary": "Defines counting function $|A \\cap [1,N]|$ via `Set.ncard` and predicates `HasGrowthAtMost` ($O$-bound) and `HasGrowthAtLeast` ($\\Omega$-bound)",
       "startLine": 54,
       "endLine": 67,
-      "mathContext": "Defines counting function $|A \\cap [1,N]|$ via `Set.ncard` and predicates `HasGrowthAtMost` ($O$-bound) and `HasGrowthAtLeast` ($\\Omega$-bound)"
+      "mathContext": "Formal definition: Defines counting function $|A \\cap [1,N]|$ via `Set.ncard` and predicates `HasGrowthAtMost` ($O$-bound) and `HasGrowthAtLeast` ($\\Omega$-bound)"
     },
     {
       "id": "burr-erdos-lower",
@@ -76,7 +76,7 @@
       "summary": "For $r=2$: $\\exists\\,c > 0$ such that no Ramsey 2-complete set satisfies $|A \\cap [1,N]| \\leq c(\\log N)^2$",
       "startLine": 68,
       "endLine": 81,
-      "mathContext": "For $r=2$: $\\exists\\,c > 0$ such that no Ramsey 2-complete set satisfies $|A \\cap [1,N]| \\leq c(\\log N)^2$"
+      "mathContext": "Mathematical content: For $r=2$: $\\exists\\,c > 0$ such that no Ramsey 2-complete set satisfies $|A \\cap [1,N]| \\leq c(\\log N)^2$"
     },
     {
       "id": "burr-erdos-upper",
@@ -84,7 +84,7 @@
       "summary": "Upper bound $(\\log N)^3$ for $r=2$ and Burr's theorem that $k$-th powers are Ramsey $r$-complete for all $r,k \\geq 1$",
       "startLine": 82,
       "endLine": 95,
-      "mathContext": "Upper bound $(\\log N)^3$ for $r=2$ and Burr's theorem that $k$-th powers are Ramsey $r$-complete for all $r,k \\geq 1$"
+      "mathContext": "Verified: Upper bound $(\\log N)^3$ for $r=2$ and Burr's theorem that $k$-th powers are Ramsey $r$-complete for all $r,k \\geq 1$"
     },
     {
       "id": "cfp-upper",
@@ -92,7 +92,7 @@
       "summary": "For all $r \\geq 2$: $\\exists$ Ramsey $r$-complete $A$ with $|A \\cap [1,N]| \\leq Cr(\\log N)^2$",
       "startLine": 96,
       "endLine": 108,
-      "mathContext": "For all $r \\geq 2$: $\\exists$ Ramsey $r$-complete $A$ with $|A \\cap [1,N]| \\leq Cr(\\log N)^2$"
+      "mathContext": "Mathematical content: For all $r \\geq 2$: $\\exists$ Ramsey $r$-complete $A$ with $|A \\cap [1,N]| \\leq Cr(\\log N)^2$"
     },
     {
       "id": "cfp-lower",
@@ -100,7 +100,7 @@
       "summary": "Universal $c > 0$: if $|A \\cap [1,N]| \\leq cr(\\log N)^2$ then $A$ is not $r$-Ramsey complete",
       "startLine": 109,
       "endLine": 121,
-      "mathContext": "Universal $c > 0$: if $|A \\cap [1,N]| \\leq cr(\\log N)^2$ then $A$ is not $r$-Ramsey complete"
+      "mathContext": "Mathematical content: Universal $c > 0$: if $|A \\cap [1,N]| \\leq cr(\\log N)^2$ then $A$ is not $r$-Ramsey complete"
     },
     {
       "id": "main-solution",
@@ -108,7 +108,7 @@
       "summary": "Theorem `erdos_55_solution`: combines CFP upper and lower bounds into the tight $\\Theta(r(\\log N)^2)$ characterization",
       "startLine": 122,
       "endLine": 143,
-      "mathContext": "Theorem `erdos_55_solution`: combines CFP upper and lower bounds into the tight $\\Theta(r(\\log N)^2)$ characterization"
+      "mathContext": "Verified: Theorem `erdos_55_solution`: combines CFP upper and lower bounds into the tight $\\Theta(r(\\log N)^2)$ characterization"
     },
     {
       "id": "r2-corollary",
@@ -116,7 +116,7 @@
       "summary": "Derives $\\Theta((\\log N)^2)$ for $r=2$ from the general bounds, closing the Burr-Erdős gap via `ring` and `linarith`",
       "startLine": 144,
       "endLine": 173,
-      "mathContext": "Derives $\\Theta((\\log N)^2)$ for $r=2$ from the general bounds, closing the Burr-Erdős gap via `ring` and `linarith`"
+      "mathContext": "Bound: Derives $\\Theta((\\log N)^2)$ for $r=2$ from the general bounds, closing the Burr-Erdős gap via `ring` and `linarith`"
     },
     {
       "id": "historical-notes",
@@ -124,7 +124,7 @@
       "summary": "Timeline from Burr-Erdős (1985) through Conlon-Fox-Pham (2021), construction techniques, and key references",
       "startLine": 174,
       "endLine": 193,
-      "mathContext": "Timeline from Burr-Erdős (1985) through Conlon-Fox-Pham (2021), construction techniques, and key references"
+      "mathContext": "Mathematical content: Timeline from Burr-Erdős (1985) through Conlon-Fox-Pham (2021), construction techniques, and key references"
     }
   ],
   "references": [

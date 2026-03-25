@@ -74,7 +74,7 @@
       "startLine": 109,
       "endLine": 126,
       "summary": "Documents key Mathlib definitions: `IsAlgebraic R x`, `Transcendental R x`, `LinearIndependent R v`. Notes that `Transcendental ℤ x ⟺ Transcendental ℚ x` by clearing denominators.",
-      "mathContext": "Documents key Mathlib definitions: `IsAlgebraic R x`, `Transcendental R x`, `LinearIndependent R v`. Notes that `Transcendental ℤ x ⟺ Transcendental ℚ x` by clearing denominators."
+      "mathContext": "Documents key Mathlib definitions: `IsAlgebraic R x`, `Transcendental R x`, `LinearIndependent R v`. Notes that `Transcendental $\\mathbb{Z}$ x ⟺ Transcendental $\\mathbb{Q}$ x` by clearing denominators."
     },
     {
       "id": "hermite-lindemann-theorem",
@@ -82,7 +82,7 @@
       "startLine": 127,
       "endLine": 159,
       "summary": "Axiomatizes the main theorem: $\\alpha \\neq 0$ algebraic $\\Rightarrow e^\\alpha$ transcendental. Also states the contrapositive: $e^\\alpha$ algebraic $\\Rightarrow \\alpha$ transcendental.",
-      "mathContext": "Axiomatizes the main theorem: $\\alpha \\neq 0$ algebraic $\\Rightarrow e^\\alpha$ transcendental. Also states the contrapositive: $e^\\alpha$ algebraic $\\Rightarrow \\alpha$ transcendental."
+      "mathContext": "Axiomatizes the main theorem: $\\$\\alpha$ \\neq 0$ algebraic $\\Rightarrow e^\\$\\alpha$$ transcendental. Also states the contrapositive: $e^\\$\\alpha$$ algebraic $\\Rightarrow \\$\\alpha$$ transcendental."
     },
     {
       "id": "lindemann-weierstrass",
@@ -98,7 +98,7 @@
       "startLine": 207,
       "endLine": 282,
       "summary": "Derives transcendence of $e$ (Wiedijk #67), $\\pi$ (Wiedijk #53), $e^n$ for nonzero $n \\in \\mathbb{Z}$ (proved via `hermite_lindemann` + `isAlgebraic_int`), and $e^{n\\alpha}$ for algebraic $\\alpha$.",
-      "mathContext": "Derives transcendence of $e$ (Wiedijk #67), $\\pi$ (Wiedijk #53), $e^n$ for nonzero $n \\in \\mathbb{Z}$ (proved via `hermite_lindemann` + `isAlgebraic_int`), and $e^{n\\alpha}$ for algebraic $\\alpha$."
+      "mathContext": "Derives transcendence of $e$ (Wiedijk #67), $\\$\\pi$$ (Wiedijk #53), $e^n$ for nonzero $n \\in \\mathbb{Z}$ (proved via `hermite_lindemann` + `isAlgebraic_int`), and $e^{n\\$\\alpha$}$ for algebraic $\\$\\alpha$$."
     },
     {
       "id": "applications",
@@ -106,7 +106,7 @@
       "startLine": 283,
       "endLine": 318,
       "summary": "Axiomatizes $\\sqrt{\\pi}$ transcendental (impossibility of squaring the circle) and $e$ irrational (non-periodic decimal expansion). Both follow from transcendence via algebraic closure properties.",
-      "mathContext": "Axiomatizes $\\sqrt{\\pi}$ transcendental (impossibility of squaring the circle) and $e$ irrational (non-periodic decimal expansion). Both follow from transcendence via algebraic closure properties."
+      "mathContext": "Axiomatizes $\\sqrt{\\$\\pi$}$ transcendental (impossibility of squaring the circle) and $e$ irrational (non-periodic decimal expansion). Both follow from transcendence via algebraic closure properties."
     },
     {
       "id": "connections",

@@ -91,7 +91,7 @@
       "summary": "harmonicSum, IsEgyptianRepresentation, subsets, egyptianCount",
       "startLine": 49,
       "endLine": 73,
-      "mathContext": "harmonicSum, IsEgyptianRepresentation, subsets, egyptianCount"
+      "mathContext": "Mathematical content: harmonicSum, IsEgyptianRepresentation, subsets, egyptianCount"
     },
     {
       "id": "examples",
@@ -99,7 +99,7 @@
       "summary": "singleton_one_is_egyptian, two_three_six, two_four_five_twenty, two_three_seven_fortytwo, at_least_three_representations",
       "startLine": 74,
       "endLine": 103,
-      "mathContext": "singleton_one_is_egyptian, two_three_six, two_four_five_twenty, two_three_seven_fortytwo, at_least_three_representations"
+      "mathContext": "Mathematical content: singleton_one_is_egyptian, two_three_six, two_four_five_twenty, two_three_seven_fortytwo, at_least_three_representations"
     },
     {
       "id": "basic-bounds",
@@ -107,7 +107,7 @@
       "summary": "egyptianCount_finite, trivial_upper_bound, trivial_lower_bound",
       "startLine": 104,
       "endLine": 124,
-      "mathContext": "egyptianCount_finite, trivial_upper_bound, trivial_lower_bound"
+      "mathContext": "Bound: egyptianCount_finite, trivial_upper_bound, trivial_lower_bound"
     },
     {
       "id": "central-question",
@@ -115,7 +115,7 @@
       "summary": "hasSubexponentialGrowth definition",
       "startLine": 125,
       "endLine": 135,
-      "mathContext": "hasSubexponentialGrowth definition"
+      "mathContext": "Formal definition: hasSubexponentialGrowth definition"
     },
     {
       "id": "steinerberger",
@@ -123,7 +123,7 @@
       "summary": "steinerbergerConstant, steinerberger_upper_bound axiom (2^{0.93N})",
       "startLine": 136,
       "endLine": 152,
-      "mathContext": "steinerbergerConstant, steinerberger_upper_bound axiom (2^{0.93N})"
+      "mathContext": "steinerbergerConstant, steinerberger_upper_bound axiom ($$2^{{0.93N}$}$)"
     },
     {
       "id": "liu-sawhney",
@@ -131,7 +131,7 @@
       "summary": "liuSawhneyConstant, liuSawhney_constant_bounds, liuSawhney_asymptotic axiom",
       "startLine": 153,
       "endLine": 180,
-      "mathContext": "liuSawhneyConstant, liuSawhney_constant_bounds, liuSawhney_asymptotic axiom"
+      "mathContext": "Axiomatized: liuSawhneyConstant, liuSawhney_constant_bounds, liuSawhney_asymptotic axiom"
     },
     {
       "id": "conlon-et-al",
@@ -139,7 +139,7 @@
       "summary": "conlon_et_al_asymptotic, egyptianCountTarget, conlon_et_al_general",
       "startLine": 181,
       "endLine": 209,
-      "mathContext": "conlon_et_al_asymptotic, egyptianCountTarget, conlon_et_al_general"
+      "mathContext": "Mathematical content: conlon_et_al_asymptotic, egyptianCountTarget, conlon_et_al_general"
     },
     {
       "id": "mathoverflow-precedent",
@@ -147,7 +147,7 @@
       "summary": "egyptianCountLeq, mathoverflow_2017_asymptotic",
       "startLine": 210,
       "endLine": 226,
-      "mathContext": "egyptianCountLeq, mathoverflow_2017_asymptotic"
+      "mathContext": "Mathematical content: egyptianCountLeq, mathoverflow_2017_asymptotic"
     },
     {
       "id": "intuition",
@@ -155,7 +155,7 @@
       "summary": "heuristic_expected_sum_grows showing harmonic series divergence",
       "startLine": 227,
       "endLine": 242,
-      "mathContext": "heuristic_expected_sum_grows showing harmonic series divergence"
+      "mathContext": "Mathematical content: heuristic_expected_sum_grows showing harmonic series divergence"
     },
     {
       "id": "main-results",
@@ -163,7 +163,7 @@
       "summary": "erdos_297_main theorem with full asymptotic, erdos_297_answer axiom",
       "startLine": 243,
       "endLine": 277,
-      "mathContext": "erdos_297_main theorem with full asymptotic, erdos_297_answer axiom"
+      "mathContext": "Verified: erdos_297_main theorem with full asymptotic, erdos_297_answer axiom"
     },
     {
       "id": "summary",
@@ -171,7 +171,7 @@
       "summary": "erdos_297_solved theorem combining main results",
       "startLine": 278,
       "endLine": 301,
-      "mathContext": "erdos_297_solved theorem combining main results"
+      "mathContext": "Verified: erdos_297_solved theorem combining main results"
     }
   ],
   "conclusion": {

@@ -88,7 +88,7 @@
       "startLine": 34,
       "endLine": 53,
       "summary": "Defines Point2D, collinearity, and general position (no three points on a line).",
-      "mathContext": "Defines Point2D, collinearity, and general position (no three points on a line)."
+      "mathContext": "Formal definition: Defines Point2D, collinearity, and general position (no three points on a line)."
     },
     {
       "id": "convex-subsets",
@@ -96,7 +96,7 @@
       "startLine": 54,
       "endLine": 72,
       "summary": "Axiomatizes convex subset predicate and counts convex subsets.",
-      "mathContext": "Axiomatizes convex subset predicate and counts convex subsets."
+      "mathContext": "Axiomatized: Axiomatizes convex subset predicate and counts convex subsets."
     },
     {
       "id": "function-f",
@@ -104,7 +104,7 @@
       "startLine": 73,
       "endLine": 92,
       "summary": "Axiomatizes f(n) with lower bound and tightness properties.",
-      "mathContext": "Axiomatizes f(n) with lower bound and tightness properties."
+      "mathContext": "Axiomatized: Axiomatizes f(n) with lower bound and tightness properties."
     },
     {
       "id": "erdos-bounds",
@@ -112,7 +112,7 @@
       "startLine": 93,
       "endLine": 114,
       "summary": "States and combines Erdős's bounds: n^{c₁ log n} < f(n) < n^{c₂ log n}.",
-      "mathContext": "States and combines Erdős's bounds: n^{c₁ log n} < f(n) < n^{c₂ log n}."
+      "mathContext": "States and combines Erdős's bounds: n^{c₁ $\\log n$} < f(n) < n^{c₂ $\\log n$}."
     },
     {
       "id": "main-question",
@@ -120,7 +120,7 @@
       "startLine": 115,
       "endLine": 134,
       "summary": "Formalizes the limit question and bounds on limit value.",
-      "mathContext": "Formalizes the limit question and bounds on limit value."
+      "mathContext": "Bound: Formalizes the limit question and bounds on limit value."
     },
     {
       "id": "erdos-szekeres",
@@ -128,7 +128,7 @@
       "startLine": 135,
       "endLine": 155,
       "summary": "Erdős-Szekeres theorem, triangles are convex, triangle count bound.",
-      "mathContext": "Erdős-Szekeres theorem, triangles are convex, triangle count bound."
+      "mathContext": "Verified: Erdős-Szekeres theorem, triangles are convex, triangle count bound."
     },
     {
       "id": "growth-rate",
@@ -136,7 +136,7 @@
       "startLine": 156,
       "endLine": 166,
       "summary": "f(n) is superpolynomial but subexponential.",
-      "mathContext": "f(n) is superpolynomial but subexponential."
+      "mathContext": "Mathematical content: f(n) is superpolynomial but subexponential."
     },
     {
       "id": "summary",
@@ -144,7 +144,7 @@
       "startLine": 167,
       "endLine": 183,
       "summary": "Summary theorem combining bounds with superpolynomial growth.",
-      "mathContext": "Summary theorem combining bounds with superpolynomial growth."
+      "mathContext": "Verified: Summary theorem combining bounds with superpolynomial growth."
     }
   ],
   "conclusion": {

@@ -96,7 +96,7 @@
       "summary": "Defines `IsRamseyBounded G k ℓ` (asymmetric) and `IsEpsilonRamsey G ε` (symmetric, logarithmic scale). Axiomatizes `ramsey_size_bound`: ε-Ramsey graphs have bounded size by Ramsey's theorem.",
       "startLine": 68,
       "endLine": 87,
-      "mathContext": "Defines `IsRamseyBounded G k ℓ` (asymmetric) and `IsEpsilonRamsey G ε` (symmetric, logarithmic scale). Axiomatizes `ramsey_size_bound`: ε-Ramsey graphs have bounded size by Ramsey's theorem."
+      "mathContext": "Formal definition: Defines `IsRamseyBounded G k ℓ` (asymmetric) and `IsEpsilonRamsey G ε` (symmetric, logarithmic scale). Axiomatizes `ramsey_size_bound`: ε-Ramsey graphs have bounded size by Ramsey's theorem."
     },
     {
       "id": "induced-subgraphs",
@@ -112,7 +112,7 @@
       "summary": "Defines `AchievesAllEdgeCounts G M` (∀ m ≤ M, ∃ S with e(G[S]) = m) and `EdgeCountRangeProperty G δ` which specializes M = ⌊δn²⌋. The quadratic scale is justified by Erdős-Szemerédi density.",
       "startLine": 110,
       "endLine": 126,
-      "mathContext": "Defines `AchievesAllEdgeCounts G M` (∀ m ≤ M, ∃ S with e(G[S]) = m) and `EdgeCountRangeProperty G δ` which specializes M = ⌊δn²⌋. The quadratic scale is justified by Erdős-Szemerédi density."
+      "mathContext": "Defines `AchievesAllEdgeCounts G M` (∀ m $\\leq$ M, ∃ S with e(G[S]) = m) and `EdgeCountRangeProperty G δ` which specializes M = ⌊δn²⌋. The quadratic scale is justified by Erdős-Szemerédi density."
     },
     {
       "id": "erdos-mckay",
@@ -128,7 +128,7 @@
       "summary": "Axiomatizes `erdos_szemeredi_density`: for fixed ε > 0, ε-Ramsey graphs satisfy c₁n² ≤ |E(G)| ≤ c₂n². This 1972 result establishes that Θ(n²) is the correct edge count scale for Ramsey graphs.",
       "startLine": 155,
       "endLine": 172,
-      "mathContext": "Axiomatizes `erdos_szemeredi_density`: for fixed ε > 0, ε-Ramsey graphs satisfy c₁n² ≤ |E(G)| ≤ c₂n². This 1972 result establishes that Θ(n²) is the correct edge count scale for Ramsey graphs."
+      "mathContext": "Axiomatizes `erdos_szemeredi_density`: for fixed ε > 0, ε-Ramsey graphs satisfy c₁n² $\\leq$ |E(G)| $\\leq$ c₂n². This 1972 result establishes that Θ(n²) is the correct edge count scale for Ramsey graphs."
     },
     {
       "id": "anticoncentration",
@@ -144,7 +144,7 @@
       "summary": "Axiomatizes `ksss_theorem : ErdosMcKayConjecture` (the 2022 solution). Records the prize ($100) and technique ('Anticoncentration') as string definitions for documentation.",
       "startLine": 196,
       "endLine": 214,
-      "mathContext": "Axiomatizes `ksss_theorem : ErdosMcKayConjecture` (the 2022 solution). Records the prize ($100) and technique ('Anticoncentration') as string definitions for documentation."
+      "mathContext": "Formal definition: Axiomatizes `ksss_theorem : ErdosMcKayConjecture` (the 2022 solution). Records the prize ($100) and technique ('Anticoncentration') as string definitions for documentation."
     },
     {
       "id": "main-result",

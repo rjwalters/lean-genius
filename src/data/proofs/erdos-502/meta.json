@@ -55,7 +55,7 @@
       "startLine": 51,
       "endLine": 60,
       "summary": "Basic lower bound $f(n) \\geq \\binom{n}{2}$ from binary vectors, improved to $f(n) \\geq \\binom{n+1}{2}$ via projection into a suitable $(n-1)$-dimensional affine subspace.",
-      "mathContext": "Basic lower bound $f(n) \\geq \\binom{n}{2}$ from binary vectors, improved to $f(n) \\geq \\binom{n+1}{2}$ via projection into a suitable $(n-1)$-dimensional affine subspace."
+      "mathContext": "Bound: Basic lower bound $f(n) \\geq \\binom{n}{2}$ from binary vectors, improved to $f(n) \\geq \\binom{n+1}{2}$ via projection into a suitable $(n-1)$-dimensional affine subspace."
     },
     {
       "id": "upper-bound",
@@ -71,7 +71,7 @@
       "startLine": 69,
       "endLine": 76,
       "summary": "The sandwich theorem: $\\binom{n+1}{2} \\leq f(n) \\leq \\binom{n+2}{2}$, establishing $f(n) = \\Theta(n^2)$ with an additive gap of at most $n+1$.",
-      "mathContext": "The sandwich theorem: $\\binom{n+1}{2} \\leq f(n) \\leq \\binom{n+2}{2}$, establishing $f(n) = \\Theta(n^2)$ with an additive gap of at most $n+1$."
+      "mathContext": "The sandwich theorem: $\\binom{n+1}{2} \\leq f(n) \\leq \\binom{n+2}{2}$, establishing $f(n) = \\Theta($n^{2}$)$ with an additive gap of at most $n+1$."
     },
     {
       "id": "small-cases",
@@ -79,7 +79,7 @@
       "startLine": 77,
       "endLine": 84,
       "summary": "Exact values: $f(2) = 5$ (vertices of a regular pentagon) and $f(3) = 6$. These match the lower bound $\\binom{3}{2} = 3$ and $\\binom{4}{2} = 6$ respectively, with the planar case being exceptional.",
-      "mathContext": "Exact values: $f(2) = 5$ (vertices of a regular pentagon) and $f(3) = 6$. These match the lower bound $\\binom{3}{2} = 3$ and $\\binom{4}{2} = 6$ respectively, with the planar case being exceptional."
+      "mathContext": "Bound: Exact values: $f(2) = 5$ (vertices of a regular pentagon) and $f(3) = 6$. These match the lower bound $\\binom{3}{2} = 3$ and $\\binom{4}{2} = 6$ respectively, with the planar case being exceptional."
     },
     {
       "id": "coxeter-question",

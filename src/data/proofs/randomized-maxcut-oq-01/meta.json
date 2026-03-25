@@ -96,7 +96,7 @@
       "startLine": 1,
       "endLine": 38,
       "summary": "Import Mathlib modules for graphs, real numbers, and finite sets.",
-      "mathContext": "Import Mathlib modules for graphs, real numbers, and finite sets."
+      "mathContext": "Imports: `SimpleGraph`, `edgeFinset`, `Finset.sup_le`, `Sym2` (unordered pairs), `Real.arccos` from Mathlib's graph theory, combinatorics, and trigonometry libraries."
     },
     {
       "id": "cut-structure",
@@ -104,7 +104,7 @@
       "startLine": 39,
       "endLine": 79,
       "summary": "Define GWCut structure and MaxCut value, mirroring the 1/2-approximation proof.",
-      "mathContext": "Define GWCut structure and MaxCut value, mirroring the 1/2-approximation proof."
+      "mathContext": "$\\mathrm{Cut}(G) = (S, \\bar{S})$ partition of $V$. $|C| = |\\{(i,j) \\in E : i \\in S, j \\notin S\\}|$. $\\mathrm{MaxCut}(G) = \\max_C |C|$."
     },
     {
       "id": "gw-constant",
@@ -112,7 +112,7 @@
       "startLine": 80,
       "endLine": 99,
       "summary": "Define α_GW = 878/1000 and prove key bounds (0 < α_GW < 1, α_GW > 1/2).",
-      "mathContext": "Define α_GW = 878/1000 and prove key bounds (0 < α_GW < 1, α_GW > 1/2)."
+      "mathContext": "$\\alpha_{\\mathrm{GW}} = 878/1000$ (conservative bound for $\\min_{0 < \\theta \\leq \\pi} \\frac{2\\theta}{\\pi(1 - \\cos\\theta)} \\approx 0.87856$). Proved: $0 < \\alpha_{\\mathrm{GW}} < 1$ and $\\alpha_{\\mathrm{GW}} > 1/2$."
     },
     {
       "id": "sdp-relaxation",
@@ -120,7 +120,7 @@
       "startLine": 100,
       "endLine": 126,
       "summary": "Axiomatize the SDP relaxation value and its relationship to MaxCut.",
-      "mathContext": "Axiomatize the SDP relaxation value and its relationship to MaxCut."
+      "mathContext": "$\\mathrm{SDP}_{\\mathrm{OPT}} = \\max \\frac{1}{2}\\sum_{(i,j) \\in E}(1 - v_i \\cdot v_j)$ over unit vectors $v_i \\in S^n$. Axiom: $\\mathrm{MaxCut} \\leq \\mathrm{SDP}_{\\mathrm{OPT}}$ (cuts embed as $v_i = \\pm e_1$)."
     },
     {
       "id": "hyperplane-rounding",
@@ -128,7 +128,7 @@
       "startLine": 127,
       "endLine": 146,
       "summary": "Axiomatize the expected cut from GW hyperplane rounding.",
-      "mathContext": "Axiomatize the expected cut from GW hyperplane rounding."
+      "mathContext": "Random hyperplane rounding: choose $r \\in S^n$ uniformly, assign $i$ to side $A$ iff $v_i \\cdot r \\geq 0$. Edge $(i,j)$ cut with probability $\\frac{\\arccos(v_i \\cdot v_j)}{\\pi}$."
     },
     {
       "id": "gw-inequality",
@@ -136,7 +136,7 @@
       "startLine": 147,
       "endLine": 169,
       "summary": "Axiomatize the core analytical result: E[cut] ≥ α_GW · SDP_OPT.",
-      "mathContext": "Axiomatize the core analytical result: E[cut] ≥ α_GW · SDP_OPT."
+      "mathContext": "Core inequality (axiomatized): $\\mathbb{E}[|C|] \\geq \\alpha_{\\mathrm{GW}} \\cdot \\mathrm{SDP}_{\\mathrm{OPT}}$. Follows from $\\frac{\\arccos(x)}{\\pi} \\geq \\alpha_{\\mathrm{GW}} \\cdot \\frac{1-x}{2}$ for all $x \\in [-1, 1]$."
     },
     {
       "id": "main-theorem",
@@ -144,7 +144,7 @@
       "startLine": 170,
       "endLine": 196,
       "summary": "Prove the main result: α_GW · MaxCut ≤ E[GW cut], with ratio bound corollary.",
-      "mathContext": "Prove the main result: α_GW · MaxCut ≤ E[GW cut], with ratio bound corollary."
+      "mathContext": "Main theorem (proved): $\\alpha_{\\mathrm{GW}} \\cdot \\mathrm{MaxCut} \\leq \\alpha_{\\mathrm{GW}} \\cdot \\mathrm{SDP}_{\\mathrm{OPT}} \\leq \\mathbb{E}[|C|]$. Corollary: $\\mathbb{E}[|C|] / \\mathrm{MaxCut} \\geq \\alpha_{\\mathrm{GW}}$."
     },
     {
       "id": "bounds",
@@ -152,7 +152,7 @@
       "startLine": 197,
       "endLine": 225,
       "summary": "Prove MaxCut ≤ edges and expected cut ≤ edges bounds.",
-      "mathContext": "Prove MaxCut ≤ edges and expected cut ≤ edges bounds."
+      "mathContext": "$\\mathrm{MaxCut}(G) \\leq |E|$ and $\\mathbb{E}[|C|] \\leq |E|$. Combined: $\\alpha_{\\mathrm{GW}} \\cdot \\mathrm{MaxCut} \\leq \\mathbb{E}[|C|] \\leq |E|$."
     },
     {
       "id": "arccos-framework",
@@ -160,7 +160,7 @@
       "startLine": 240,
       "endLine": 311,
       "summary": "Define roundingProb(x) = arccos(x)/π and sdpContrib(x) = (1-x)/2 using Mathlib's arccos. Prove boundary values at x = -1, 0, 1 and range properties [0,1].",
-      "mathContext": "Define roundingProb(x) = arccos(x)/π and sdpContrib(x) = (1-x)/2 using Mathlib's arccos. Prove boundary values at x = -1, 0, 1 and range properties [0,1]."
+      "mathContext": "$p(x) = \\frac{\\arccos(x)}{\\pi}$: rounding probability. $s(x) = \\frac{1-x}{2}$: SDP contribution. Boundary: $p(-1) = 1, p(0) = 1/2, p(1) = 0$; $s(-1) = 1, s(0) = 1/2, s(1) = 0$. Range: $[0, 1]$."
     },
     {
       "id": "gw-boundary",
@@ -168,7 +168,7 @@
       "startLine": 312,
       "endLine": 341,
       "summary": "Prove the GW inequality αGW · sdpContrib(x) ≤ roundingProb(x) at the three critical points x = -1, 0, 1.",
-      "mathContext": "Prove the GW inequality αGW · sdpContrib(x) ≤ roundingProb(x) at the three critical points x = -1, 0, 1."
+      "mathContext": "GW inequality verified at boundaries: $\\alpha_{\\mathrm{GW}} \\cdot s(x) \\leq p(x)$ at $x = -1$ (both sides $= 1$), $x = 0$ (ratio $= 1 > \\alpha_{\\mathrm{GW}}$), and $x = 1$ (both sides $= 0$)."
     },
     {
       "id": "ratio-analysis",
@@ -176,7 +176,7 @@
       "startLine": 342,
       "endLine": 376,
       "summary": "Analyze the GW ratio roundingProb(x)/sdpContrib(x) at boundary points, showing it equals 1 at x = 0 and x = -1.",
-      "mathContext": "Analyze the GW ratio roundingProb(x)/sdpContrib(x) at boundary points, showing it equals 1 at x = 0 and x = -1."
+      "mathContext": "Ratio $r(x) = p(x)/s(x) = \\frac{2\\arccos(x)}{\\pi(1-x)}$ for $x \\neq 1$. Boundary: $r(0) = 1$, $r(-1) = 1$. Minimum at $x^* \\approx -0.689$ gives $r(x^*) = \\alpha_{\\mathrm{GW}} \\approx 0.878$."
     },
     {
       "id": "enhanced-bounds",
@@ -184,7 +184,7 @@
       "startLine": 377,
       "endLine": 403,
       "summary": "Additional bounds: improvement factor over random, bipartite specialization, tighter αGW estimates, and UGC hardness axiom.",
-      "mathContext": "Additional bounds: improvement factor over random, bipartite specialization, tighter αGW estimates, and UGC hardness axiom."
+      "mathContext": "Improvement over random: $\\alpha_{\\mathrm{GW}}/(1/2) \\approx 1.756$. Bipartite graphs: GW achieves ratio $1$ (exact). Under the Unique Games Conjecture, no polynomial-time algorithm beats $\\alpha_{\\mathrm{GW}}$."
     }
   ],
   "conclusion": {

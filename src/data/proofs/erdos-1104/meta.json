@@ -32,7 +32,7 @@
       "startLine": 1,
       "endLine": 25,
       "summary": "Header documentation with known bounds, Mathlib imports for graph theory, coloring, and real analysis.",
-      "mathContext": "Header documentation with known bounds, Mathlib imports for graph theory, coloring, and real analysis."
+      "mathContext": "Bound: Header documentation with known bounds, Mathlib imports for graph theory, coloring, and real analysis."
     },
     {
       "id": "core-definitions",
@@ -40,7 +40,7 @@
       "startLine": 26,
       "endLine": 39,
       "summary": "IsTriangleFree wrapping CliqueFree 3, and triangleFreeMaxChi computing f(n) = sup{χ(G)} via sSup.",
-      "mathContext": "IsTriangleFree wrapping CliqueFree 3, and triangleFreeMaxChi computing f(n) = sup{χ(G)} via sSup."
+      "mathContext": "Mathematical content: IsTriangleFree wrapping CliqueFree 3, and triangleFreeMaxChi computing f(n) = sup{χ(G)} via sSup."
     },
     {
       "id": "basic-properties",
@@ -48,7 +48,7 @@
       "startLine": 40,
       "endLine": 108,
       "summary": "f(n) ≤ n for all n (identity coloring), f(0) = 0, f(1) ≤ 1, f(n) ≥ 1 for n ≥ 1 (one sorry in empty graph chromatic number).",
-      "mathContext": "f(n) ≤ n for all n (identity coloring), f(0) = 0, f(1) ≤ 1, f(n) ≥ 1 for n ≥ 1 (one sorry in empty graph chromatic number)."
+      "mathContext": "f(n) $\\leq$ n for all n (identity coloring), f(0) = 0, f(1) $\\leq$ 1, f(n) $\\geq$ 1 for n $\\geq$ 1 (one sorry in empty graph chromatic number)."
     },
     {
       "id": "ramsey-duality",
@@ -56,7 +56,7 @@
       "startLine": 109,
       "endLine": 126,
       "summary": "f(n) ≥ k iff R(3,k) ≤ n. Kim's R(3,k) = Θ(k²/log k) axiomatized with constants c₁, c₂.",
-      "mathContext": "f(n) ≥ k iff R(3,k) ≤ n. Kim's R(3,k) = Θ(k²/log k) axiomatized with constants c₁, c₂."
+      "mathContext": "f(n) $\\geq$ k iff R(3,k) $\\leq$ n. Kim's R(3,k) = Θ(k²/log k) axiomatized with constants c₁, c₂."
     },
     {
       "id": "asymptotic-bounds",
@@ -64,7 +64,7 @@
       "startLine": 127,
       "endLine": 151,
       "summary": "Lower bound (HHKP 2025): f(n) ≥ (1−o(1))√(n/log n). Upper bound (DI 2022): f(n) ≤ (2+o(1))√(n/log n). Exact constant open.",
-      "mathContext": "Lower bound (HHKP 2025): f(n) ≥ (1−o(1))√(n/log n). Upper bound (DI 2022): f(n) ≤ (2+o(1))√(n/log n). Exact constant open."
+      "mathContext": "Lower bound (HHKP 2025): f(n) $\\geq$ (1−o(1))√(n/$\\log n$). Upper bound (DI 2022): f(n) $\\leq$ (2+o(1))√(n/$\\log n$). Exact constant open."
     },
     {
       "id": "edge-variant",
@@ -72,7 +72,7 @@
       "startLine": 152,
       "endLine": 175,
       "summary": "g(m) = max χ over triangle-free graphs with m edges. Θ((m/(log m)²)^{1/3}) with upper constant 3^{5/3}.",
-      "mathContext": "g(m) = max χ over triangle-free graphs with m edges. Θ((m/(log m)²)^{1/3}) with upper constant 3^{5/3}."
+      "mathContext": "g(m) = max χ over triangle-free graphs with m edges. Θ((m/(log m)²)^{1/3}) with upper constant $$3^{{5/3}$}$."
     },
     {
       "id": "mycielski",
@@ -80,7 +80,7 @@
       "startLine": 176,
       "endLine": 202,
       "summary": "Classical triangle-free graphs M_k with χ(M_k) = k on 3·2^{k−2} − 1 vertices. Gives weak f(n) ≥ Ω(log n) bound.",
-      "mathContext": "Classical triangle-free graphs M_k with χ(M_k) = k on 3·2^{k−2} − 1 vertices. Gives weak f(n) ≥ Ω(log n) bound."
+      "mathContext": "Classical triangle-free graphs M_k with χ(M_k) = k on 3·$$2^{{k−2}$}$ − 1 vertices. Gives weak f(n) $\\geq$ Ω($\\log n$) bound."
     },
     {
       "id": "summary",
@@ -88,7 +88,7 @@
       "startLine": 203,
       "endLine": 212,
       "summary": "Combined bounds_summary theorem: (1−ε)√(n/log n) ≤ f(n) ≤ (2+ε)√(n/log n) for large n.",
-      "mathContext": "Combined bounds_summary theorem: (1−ε)√(n/log n) ≤ f(n) ≤ (2+ε)√(n/log n) for large n."
+      "mathContext": "Combined bounds_summary theorem: (1−ε)√(n/$\\log n$) $\\leq$ f(n) $\\leq$ (2+ε)√(n/$\\log n$) for large n."
     }
   ],
   "overview": {

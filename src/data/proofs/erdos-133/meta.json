@@ -91,7 +91,7 @@
       "summary": "Triangle-free, diameter-2, and maximum degree definitions",
       "startLine": 41,
       "endLine": 56,
-      "mathContext": "Triangle-free, diameter-2, and maximum degree definitions"
+      "mathContext": "Formal definition: Triangle-free, diameter-2, and maximum degree definitions"
     },
     {
       "id": "f-function",
@@ -99,7 +99,7 @@
       "summary": "Definition of f(n) as minimum guaranteed maximum degree",
       "startLine": 57,
       "endLine": 65,
-      "mathContext": "Definition of f(n) as minimum guaranteed maximum degree"
+      "mathContext": "Formal definition: Definition of f(n) as minimum guaranteed maximum degree"
     },
     {
       "id": "moore-bound",
@@ -107,7 +107,7 @@
       "summary": "Lower bound f(n) ≥ (1-o(1))√n from vertex counting",
       "startLine": 66,
       "endLine": 81,
-      "mathContext": "Lower bound f(n) ≥ (1-o(1))√n from vertex counting"
+      "mathContext": "Lower bound f(n) $\\geq$ (1-o(1))√n from vertex counting"
     },
     {
       "id": "upper-bounds",
@@ -115,7 +115,7 @@
       "summary": "Simonovits, Alon, Hanson-Seyffarth, and Füredi-Seress upper bounds",
       "startLine": 82,
       "endLine": 110,
-      "mathContext": "Simonovits, Alon, Hanson-Seyffarth, and Füredi-Seress upper bounds"
+      "mathContext": "Bound: Simonovits, Alon, Hanson-Seyffarth, and Füredi-Seress upper bounds"
     },
     {
       "id": "main-question",
@@ -123,7 +123,7 @@
       "summary": "Original question disproved: f(n)/√n does NOT → ∞",
       "startLine": 111,
       "endLine": 124,
-      "mathContext": "Original question disproved: f(n)/√n does NOT → ∞"
+      "mathContext": "Original question disproved: f(n)/√n does NOT $\\to$ ∞"
     },
     {
       "id": "alon-conjecture",
@@ -131,7 +131,7 @@
       "summary": "Conjecture that f(n) ~ √n exactly",
       "startLine": 125,
       "endLine": 130,
-      "mathContext": "Conjecture that f(n) ~ √n exactly"
+      "mathContext": "Mathematical content: Conjecture that f(n) ~ √n exactly"
     },
     {
       "id": "constructions",
@@ -139,7 +139,7 @@
       "summary": "Polarity graph and bipartite constructions showing upper bound tightness",
       "startLine": 131,
       "endLine": 150,
-      "mathContext": "Polarity graph and bipartite constructions showing upper bound tightness"
+      "mathContext": "Bound: Polarity graph and bipartite constructions showing upper bound tightness"
     },
     {
       "id": "resolution",
@@ -147,7 +147,7 @@
       "summary": "Summary theorem combining disproof, lower bound, and upper bound",
       "startLine": 151,
       "endLine": 164,
-      "mathContext": "Summary theorem combining disproof, lower bound, and upper bound"
+      "mathContext": "Verified: Summary theorem combining disproof, lower bound, and upper bound"
     }
   ],
   "conclusion": {

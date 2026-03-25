@@ -48,7 +48,7 @@
       "startLine": 1,
       "endLine": 23,
       "summary": "Module documentation describing Problem 538 and Erdős's bound, with Mathlib imports for primality, finite sets, real numbers, and tactics.",
-      "mathContext": "Module documentation describing Problem 538 and Erdős's bound, with Mathlib imports for primality, finite sets, real numbers, and tactics."
+      "mathContext": "Bound: Module documentation describing Problem 538 and Erdős's bound, with Mathlib imports for primality, finite sets, real numbers, and tactics."
     },
     {
       "id": "representation-count",
@@ -56,7 +56,7 @@
       "startLine": 24,
       "endLine": 42,
       "summary": "Defines primeReprSet, reprCount (counting m = pa representations), and HasBoundedRepr (at most r representations for all m).",
-      "mathContext": "Defines primeReprSet, reprCount (counting m = pa representations), and HasBoundedRepr (at most r representations for all m)."
+      "mathContext": "Formal definition: Defines primeReprSet, reprCount (counting m = pa representations), and HasBoundedRepr (at most r representations for all m)."
     },
     {
       "id": "basic-properties",
@@ -64,7 +64,7 @@
       "startLine": 43,
       "endLine": 80,
       "summary": "Proved: reprCount of empty set is 0, reprCount ≤ |A|, HasBoundedRepr is monotone in r and hereditary under subsets.",
-      "mathContext": "Proved: reprCount of empty set is 0, reprCount ≤ |A|, HasBoundedRepr is monotone in r and hereditary under subsets."
+      "mathContext": "Proved: reprCount of empty set is 0, reprCount $\\leq$ |A|, HasBoundedRepr is monotone in r and hereditary under subsets."
     },
     {
       "id": "reciprocal-sum",
@@ -72,7 +72,7 @@
       "startLine": 81,
       "endLine": 116,
       "summary": "Defines reciprocalSum (Σ 1/n) and proves: empty sum = 0, non-negativity, monotonicity under subsets, insertion identity.",
-      "mathContext": "Defines reciprocalSum (Σ 1/n) and proves: empty sum = 0, non-negativity, monotonicity under subsets, insertion identity."
+      "mathContext": "Defines reciprocalSum ($\\sum$ 1/n) and proves: empty sum = 0, non-negativity, monotonicity under subsets, insertion identity."
     },
     {
       "id": "problem-statement",
@@ -80,7 +80,7 @@
       "startLine": 117,
       "endLine": 136,
       "summary": "Defines ErdosProblem538 as finding the optimal bound f(r,N) for the reciprocal sum under the representation constraint.",
-      "mathContext": "Defines ErdosProblem538 as finding the optimal bound f(r,N) for the reciprocal sum under the representation constraint."
+      "mathContext": "Formal definition: Defines ErdosProblem538 as finding the optimal bound f(r,N) for the reciprocal sum under the representation constraint."
     },
     {
       "id": "erdos-bound",
@@ -88,7 +88,7 @@
       "startLine": 137,
       "endLine": 157,
       "summary": "Theorem (sorry): Σ 1/n ≤ C·r·log N / log log N via double counting with Mertens' theorem.",
-      "mathContext": "Theorem (sorry): Σ 1/n ≤ C·r·log N / log log N via double counting with Mertens' theorem."
+      "mathContext": "Theorem (sorry): $\\sum$ 1/n $\\leq$ C·r·log N / log log N via double counting with Mertens' theorem."
     },
     {
       "id": "trivial-bound",
@@ -96,7 +96,7 @@
       "startLine": 158,
       "endLine": 168,
       "summary": "Theorem (PROVED): Σ 1/n ≤ 1 + log N (harmonic sum bound) by induction using log(x) ≤ x - 1.",
-      "mathContext": "Theorem (PROVED): Σ 1/n ≤ 1 + log N (harmonic sum bound) by induction using log(x) ≤ x - 1."
+      "mathContext": "Theorem (PROVED): $\\sum$ 1/n $\\leq$ 1 + log N (harmonic sum bound) by induction using log(x) $\\leq$ x - 1."
     },
     {
       "id": "double-counting",
@@ -104,7 +104,7 @@
       "startLine": 169,
       "endLine": 193,
       "summary": "Proved: primes_for_element_bound (|{p : pa ≤ N}| ≤ N/a) and sum_reprCount_bound (Σ reprCount ≤ |A|·N) via double counting.",
-      "mathContext": "Proved: primes_for_element_bound (|{p : pa ≤ N}| ≤ N/a) and sum_reprCount_bound (Σ reprCount ≤ |A|·N) via double counting."
+      "mathContext": "Proved: primes_for_element_bound (|{p : pa $\\leq$ N}| $\\leq$ N/a) and sum_reprCount_bound ($\\sum$ reprCount $\\leq$ |A|·N) via double counting."
     },
     {
       "id": "multiplicative-energy",
@@ -112,7 +112,7 @@
       "startLine": 194,
       "endLine": 208,
       "summary": "Proved: multiplicative energy trivial bound |A|² (the tighter r²|A| bound is false — counterexample documented).",
-      "mathContext": "Proved: multiplicative energy trivial bound |A|² (the tighter r²|A| bound is false — counterexample documented)."
+      "mathContext": "Bound: Proved: multiplicative energy trivial bound |A|² (the tighter r²|A| bound is false — counterexample documented)."
     },
     {
       "id": "special-cases",
@@ -120,7 +120,7 @@
       "startLine": 209,
       "endLine": 398,
       "summary": "Proved: r = 1 cardinality bound (|A| ≤ N for positive elements) and singleton 1-bounded representations.",
-      "mathContext": "Proved: r = 1 cardinality bound (|A| ≤ N for positive elements) and singleton 1-bounded representations."
+      "mathContext": "Proved: r = 1 cardinality bound (|A| $\\leq$ N for positive elements) and singleton 1-bounded representations."
     }
   ],
   "conclusion": {

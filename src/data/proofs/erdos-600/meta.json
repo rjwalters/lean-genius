@@ -92,7 +92,7 @@
       "summary": "Graph structure, edgeCount, IsTriangle",
       "startLine": 36,
       "endLine": 55,
-      "mathContext": "Graph structure, edgeCount, IsTriangle"
+      "mathContext": "Formal definition: Graph structure, edgeCount, IsTriangle"
     },
     {
       "id": "edge-triangle-containment",
@@ -100,7 +100,7 @@
       "summary": "triangleCount, IsTriangleCovered, AllEdgesTriangleCovered, HasEdgeInRTriangles",
       "startLine": 56,
       "endLine": 77,
-      "mathContext": "triangleCount, IsTriangleCovered, AllEdgesTriangleCovered, HasEdgeInRTriangles"
+      "mathContext": "Mathematical content: triangleCount, IsTriangleCovered, AllEdgesTriangleCovered, HasEdgeInRTriangles"
     },
     {
       "id": "e-function",
@@ -108,7 +108,7 @@
       "summary": "e(n,r) definition via sInf and e_well_defined axiom",
       "startLine": 78,
       "endLine": 91,
-      "mathContext": "e(n,r) definition via sInf and e_well_defined axiom"
+      "mathContext": "Formal definition: e(n,r) definition via sInf and e_well_defined axiom"
     },
     {
       "id": "ruzsa-szemeredi",
@@ -116,7 +116,7 @@
       "summary": "ruzsa_szemeredi: e(n,r) = o(n²) for fixed r",
       "startLine": 92,
       "endLine": 100,
-      "mathContext": "ruzsa_szemeredi: e(n,r) = o(n²) for fixed r"
+      "mathContext": "Mathematical content: ruzsa_szemeredi: e(n,r) = o(n²) for fixed r"
     },
     {
       "id": "open-questions",
@@ -124,7 +124,7 @@
       "summary": "Question1 (absolute difference) and Question2 (ratio convergence)",
       "startLine": 101,
       "endLine": 115,
-      "mathContext": "Question1 (absolute difference) and Question2 (ratio convergence)"
+      "mathContext": "Mathematical content: Question1 (absolute difference) and Question2 (ratio convergence)"
     },
     {
       "id": "monotonicity",
@@ -132,7 +132,7 @@
       "summary": "e_monotone_r, e_monotone_n, questions_together theorem",
       "startLine": 116,
       "endLine": 135,
-      "mathContext": "e_monotone_r, e_monotone_n, questions_together theorem"
+      "mathContext": "Verified: e_monotone_r, e_monotone_n, questions_together theorem"
     },
     {
       "id": "known-bounds",
@@ -140,7 +140,7 @@
       "summary": "turan_number_bound, upper_bound, lower_bound",
       "startLine": 136,
       "endLine": 155,
-      "mathContext": "turan_number_bound, upper_bound, lower_bound"
+      "mathContext": "Bound: turan_number_bound, upper_bound, lower_bound"
     },
     {
       "id": "summary",
@@ -148,7 +148,7 @@
       "summary": "erdos_600_summary: three-part conjunction of known results",
       "startLine": 156,
       "endLine": 179,
-      "mathContext": "erdos_600_summary: three-part conjunction of known results"
+      "mathContext": "Mathematical content: erdos_600_summary: three-part conjunction of known results"
     }
   ],
   "conclusion": {

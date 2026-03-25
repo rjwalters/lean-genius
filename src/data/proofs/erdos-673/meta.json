@@ -119,7 +119,7 @@
       "summary": "Defines $G(n) = \\sum_i d_i/d_{i+1}$ as a sum over `Finset.range (tau n - 1)`. Computes $G(1) = 0$, $G(p) = 1/p$ for primes, and $G(p^2) = 2/p$.",
       "startLine": 56,
       "endLine": 74,
-      "mathContext": "Defines $G(n) = \\sum_i d_i/d_{i+1}$ as a sum over `Finset.range (tau n - 1)`. Computes $G(1) = 0$, $G(p) = 1/p$ for primes, and $G(p^2) = 2/p$."
+      "mathContext": "Defines $G(n) = \\sum_i d_i/d_{i+1}$ as a sum over `Finset.range (tau n - 1)`. Computes $G(1) = 0$, $G(p) = 1/p$ for primes, and $G($p^{2}$) = 2/p$."
     },
     {
       "id": "bounds",
@@ -127,7 +127,7 @@
       "summary": "Establishes $G(n) \\le \\tau(n) - 1$ (trivial), Tao's $G(n) \\le \\tau(n)$, Tao's $G(n) \\ge \\tau(n/m)/m$ for $m \\mid n$, and the even-number corollary $G(n) \\ge \\tau(n)/4$.",
       "startLine": 75,
       "endLine": 96,
-      "mathContext": "Establishes $G(n) \\le \\tau(n) - 1$ (trivial), Tao's $G(n) \\le \\tau(n)$, Tao's $G(n) \\ge \\tau(n/m)/m$ for $m \\mid n$, and the even-number corollary $G(n) \\ge \\tau(n)/4$."
+      "mathContext": "Mathematical content: Establishes $G(n) \\le \\tau(n) - 1$ (trivial), Tao's $G(n) \\le \\tau(n)$, Tao's $G(n) \\ge \\tau(n/m)/m$ for $m \\mid n$, and the even-number corollary $G(n) \\ge \\tau(n)/4$."
     },
     {
       "id": "asymptotic",
@@ -135,7 +135,7 @@
       "summary": "Proves average $(1/X) \\sum G(n) \\to \\infty$ and formalizes $G(n) \\to \\infty$ for density 1 of integers (`AlmostAllGToInfinity`), trivially answering Erdős's first question.",
       "startLine": 97,
       "endLine": 114,
-      "mathContext": "Proves average $(1/X) \\sum G(n) \\to \\infty$ and formalizes $G(n) \\to \\infty$ for density 1 of integers (`AlmostAllGToInfinity`), trivially answering Erdős's first question."
+      "mathContext": "Verified: Proves average $(1/X) \\sum G(n) \\to \\infty$ and formalizes $G(n) \\to \\infty$ for density 1 of integers (`AlmostAllGToInfinity`), trivially answering Erdős's first question."
     },
     {
       "id": "distribution",
@@ -143,7 +143,7 @@
       "summary": "Defines $\\text{GRatio}(n) = G(n)/\\tau(n)$, proves it is bounded in $[0,1]$, and formalizes the Erdős-Tenenbaum theorem: $G(n)/\\tau(n)$ has a continuous distribution function $F$.",
       "startLine": 115,
       "endLine": 139,
-      "mathContext": "Defines $\\text{GRatio}(n) = G(n)/\\tau(n)$, proves it is bounded in $[0,1]$, and formalizes the Erdős-Tenenbaum theorem: $G(n)/\\tau(n)$ has a continuous distribution function $F$."
+      "mathContext": "Formal definition: Defines $\\text{GRatio}(n) = G(n)/\\tau(n)$, proves it is bounded in $[0,1]$, and formalizes the Erdős-Tenenbaum theorem: $G(n)/\\tau(n)$ has a continuous distribution function $F$."
     },
     {
       "id": "specific",
@@ -151,7 +151,7 @@
       "summary": "Computes $G(6) = 1/2 + 2/3 + 1/2$ and $G(12) = 1/2 + 2/3 + 3/4 + 4/6 + 6/12$ from the divisor sequences. Shows highly composite numbers satisfy $G(n) \\ge \\tau(n)/4$.",
       "startLine": 140,
       "endLine": 156,
-      "mathContext": "Computes $G(6) = 1/2 + 2/3 + 1/2$ and $G(12) = 1/2 + 2/3 + 3/4 + 4/6 + 6/12$ from the divisor sequences. Shows highly composite numbers satisfy $G(n) \\ge \\tau(n)/4$."
+      "mathContext": "Mathematical content: Computes $G(6) = 1/2 + 2/3 + 1/2$ and $G(12) = 1/2 + 2/3 + 3/4 + 4/6 + 6/12$ from the divisor sequences. Shows highly composite numbers satisfy $G(n) \\ge \\tau(n)/4$."
     },
     {
       "id": "multiplicative",
@@ -159,7 +159,7 @@
       "summary": "Proves $G$ is not multiplicative (exhibits coprime $a, b$ with $G(ab) \\neq G(a)G(b)$) but is superadditive: $G(mn) \\ge G(m) + G(n)$ for coprime $m, n$.",
       "startLine": 157,
       "endLine": 169,
-      "mathContext": "Proves $G$ is not multiplicative (exhibits coprime $a, b$ with $G(ab) \\neq G(a)G(b)$) but is superadditive: $G(mn) \\ge G(m) + G(n)$ for coprime $m, n$."
+      "mathContext": "Verified: Proves $G$ is not multiplicative (exhibits coprime $a, b$ with $G(ab) \\neq G(a)G(b)$) but is superadditive: $G(mn) \\ge G(m) + G(n)$ for coprime $m, n$."
     },
     {
       "id": "formula",
@@ -167,7 +167,7 @@
       "summary": "States $\\sum_{n \\le X} G(n) \\sim c X \\log X$ for some $c > 0$, both as a limit and as an $\\varepsilon$-$N$ formalization (`AsymptoticFormula`).",
       "startLine": 170,
       "endLine": 183,
-      "mathContext": "States $\\sum_{n \\le X} G(n) \\sim c X \\log X$ for some $c > 0$, both as a limit and as an $\\varepsilon$-$N$ formalization (`AsymptoticFormula`)."
+      "mathContext": "Mathematical content: States $\\sum_{n \\le X} G(n) \\sim c X \\log X$ for some $c > 0$, both as a limit and as an $\\varepsilon$-$N$ formalization (`AsymptoticFormula`)."
     },
     {
       "id": "tau-connection",
@@ -175,7 +175,7 @@
       "summary": "Proves Dirichlet's $\\sum \\tau(n) \\sim X \\log X$ and the sandwich $c_1 \\sum \\tau(n) \\le \\sum G(n) \\le c_2 \\sum \\tau(n)$, confirming $G$ and $\\tau$ have comparable average order.",
       "startLine": 184,
       "endLine": 233,
-      "mathContext": "Proves Dirichlet's $\\sum \\tau(n) \\sim X \\log X$ and the sandwich $c_1 \\sum \\tau(n) \\le \\sum G(n) \\le c_2 \\sum \\tau(n)$, confirming $G$ and $\\tau$ have comparable average order."
+      "mathContext": "Verified: Proves Dirichlet's $\\sum \\tau(n) \\sim X \\log X$ and the sandwich $c_1 \\sum \\tau(n) \\le \\sum G(n) \\le c_2 \\sum \\tau(n)$, confirming $G$ and $\\tau$ have comparable average order."
     }
   ],
   "conclusion": {

@@ -75,7 +75,7 @@
       "startLine": 1,
       "endLine": 16,
       "summary": "Overview of the fallacy and its origins in physics.",
-      "mathContext": "Overview of the fallacy and its origins in physics."
+      "mathContext": "The claim $\\sum_{n=1}^{\\infty} n = 1 + 2 + 3 + \\cdots = -\\tfrac{1}{12}$ conflates ordinary summation with analytic continuation of the Riemann zeta function $\\zeta(s) = \\sum n^{-s}$, which satisfies $\\zeta(-1) = -\\tfrac{1}{12}$ via its meromorphic extension."
     },
     {
       "id": "convergence",
@@ -83,7 +83,7 @@
       "startLine": 17,
       "endLine": 38,
       "summary": "How Mathlib's tsum function handles infinite series.",
-      "mathContext": "How Mathlib's tsum function handles infinite series."
+      "mathContext": "Mathlib's $\\mathrm{tsum}\\, f = \\sum_{n=0}^{\\infty} f(n)$ requires a $\\mathrm{Summable}\\, f$ proof for meaningful results. For non-summable $f$, $\\mathrm{tsum}\\, f = 0$ by convention, preventing arithmetic on divergent series."
     },
     {
       "id": "grandi",
@@ -91,7 +91,7 @@
       "startLine": 39,
       "endLine": 60,
       "summary": "Why 1-1+1-1+... cannot be assigned the value 1/2.",
-      "mathContext": "Why 1-1+1-1+... cannot be assigned the value 1/2."
+      "mathContext": "Grandi's series $S_1 = \\sum_{n=0}^{\\infty} (-1)^n = 1 - 1 + 1 - 1 + \\cdots$ has partial sums alternating between $0$ and $1$, so it diverges. The Cesaro mean $\\frac{1}{N}\\sum_{k=0}^{N-1} s_k \\to \\tfrac{1}{2}$, but Cesaro summability $\\neq$ convergence."
     },
     {
       "id": "shift-add",
@@ -99,7 +99,7 @@
       "startLine": 61,
       "endLine": 90,
       "summary": "Why series manipulation requires convergence proofs.",
-      "mathContext": "Why series manipulation requires convergence proofs."
+      "mathContext": "The shift-and-add trick claims $2S_2 = S_1$ by writing $S_2 + \\mathrm{shift}(S_2) = S_1$. In Lean, $\\mathrm{tsum\\_add}$ requires both summands to be $\\mathrm{Summable}$. Since $(-1)^n n$ is not summable, the manipulation is blocked at the type level."
     },
     {
       "id": "core-theorem",
@@ -107,7 +107,7 @@
       "startLine": 91,
       "endLine": 117,
       "summary": "Lean proves the natural number series diverges.",
-      "mathContext": "Lean proves the natural number series diverges."
+      "mathContext": "The series $\\sum_{n=1}^{\\infty} n$ diverges since $s_N = \\frac{N(N+1)}{2} \\to \\infty$. In Lean: $\\lnot\\, \\mathrm{Summable}\\,(\\lambda\\, n,\\, (n : \\mathbb{R}))$, so $\\mathrm{tsum}\\,(\\lambda\\, n,\\, (n : \\mathbb{R})) = 0 \\neq -\\tfrac{1}{12}$."
     },
     {
       "id": "zeta",
@@ -115,7 +115,7 @@
       "startLine": 118,
       "endLine": 144,
       "summary": "The distinction between summation and zeta regularization.",
-      "mathContext": "The distinction between summation and zeta regularization."
+      "mathContext": "The Riemann zeta function $\\zeta(s) = \\sum_{n=1}^{\\infty} n^{-s}$ converges for $\\mathrm{Re}(s) > 1$ and extends meromorphically to $\\mathbb{C} \\setminus \\{1\\}$. The value $\\zeta(-1) = -\\tfrac{1}{12}$ is obtained via analytic continuation, not ordinary summation. Zeta regularization assigns this value as a finite part extraction."
     },
     {
       "id": "step-by-step",
@@ -123,7 +123,7 @@
       "startLine": 145,
       "endLine": 178,
       "summary": "Tracing through the Numberphile proof and marking each fallacy.",
-      "mathContext": "Tracing through the Numberphile proof and marking each fallacy."
+      "mathContext": "Step 1 fails: $S_1 = \\sum (-1)^n$ diverges. Step 2 fails: shift-and-add requires $\\mathrm{Summable}$. Step 3 fails: $S - S_2 = 4S$ subtracts two divergent series. Step 4 fails: $S - \\tfrac{1}{4} = 4S \\Rightarrow S = -\\tfrac{1}{12}$ treats $\\infty$ as a number. Each step is blocked by Lean's $\\mathrm{Summable}$ guard."
     },
     {
       "id": "conclusion",
@@ -131,7 +131,7 @@
       "startLine": 179,
       "endLine": 282,
       "summary": "Summary of how Lean enforces mathematical rigor.",
-      "mathContext": "Summary of how Lean enforces mathematical rigor."
+      "mathContext": "Lean's type system enforces: (1) $\\mathrm{tsum\\_add}$ requires $\\mathrm{Summable}\\, f \\wedge \\mathrm{Summable}\\, g$; (2) $\\mathrm{tsum\\_eq\\_zero\\_of\\_not\\_summable}$ returns $0$ for divergent series; (3) the Riemann series theorem shows rearrangement of conditionally convergent series can yield any value, justifying the $\\mathrm{Summable}$ guard."
     }
   ],
   "conclusion": {

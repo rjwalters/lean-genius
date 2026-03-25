@@ -50,7 +50,7 @@
       "startLine": 20,
       "endLine": 24,
       "summary": "Imports Nat.Basic, Set.Basic, Finset.Basic, and tactics from Mathlib.",
-      "mathContext": "Imports Nat.Basic, Set.Basic, Finset.Basic, and tactics from Mathlib."
+      "mathContext": "Mathematical content: Imports Nat.Basic, Set.Basic, Finset.Basic, and tactics from Mathlib."
     },
     {
       "id": "translation-property",
@@ -58,7 +58,7 @@
       "startLine": 25,
       "endLine": 37,
       "summary": "Defines HasTranslationProperty and the minimal translation function via Nat.find.",
-      "mathContext": "Defines HasTranslationProperty and the minimal translation function via Nat.find."
+      "mathContext": "Formal definition: Defines HasTranslationProperty and the minimal translation function via Nat.find."
     },
     {
       "id": "number-theoretic-sets",
@@ -66,7 +66,7 @@
       "startLine": 38,
       "endLine": 51,
       "summary": "Defines sumOfTwoSquares, squarefreeSet, and bFreeSet as Set ℕ predicates.",
-      "mathContext": "Defines sumOfTwoSquares, squarefreeSet, and bFreeSet as Set ℕ predicates."
+      "mathContext": "Defines sumOfTwoSquares, squarefreeSet, and bFreeSet as Set $\\mathbb{N}$ predicates."
     },
     {
       "id": "sieve-conditions",
@@ -74,7 +74,7 @@
       "startLine": 52,
       "endLine": 61,
       "summary": "Defines IsPairwiseCoprime and HasSmallReciprocalSum as conditions for Brun's sieve.",
-      "mathContext": "Defines IsPairwiseCoprime and HasSmallReciprocalSum as conditions for Brun's sieve."
+      "mathContext": "Formal definition: Defines IsPairwiseCoprime and HasSmallReciprocalSum as conditions for Brun's sieve."
     },
     {
       "id": "known-results",
@@ -82,7 +82,7 @@
       "startLine": 62,
       "endLine": 74,
       "summary": "Axiomatizes the CRT-based translation for B-free sets and the squarefree special case.",
-      "mathContext": "Axiomatizes the CRT-based translation for B-free sets and the squarefree special case."
+      "mathContext": "Axiomatized: Axiomatizes the CRT-based translation for B-free sets and the squarefree special case."
     },
     {
       "id": "part1-two-squares",
@@ -90,7 +90,7 @@
       "startLine": 75,
       "endLine": 81,
       "summary": "States the conjecture that sums of two squares have the translation property.",
-      "mathContext": "States the conjecture that sums of two squares have the translation property."
+      "mathContext": "Mathematical content: States the conjecture that sums of two squares have the translation property."
     },
     {
       "id": "balanced-partition",
@@ -98,7 +98,7 @@
       "startLine": 82,
       "endLine": 98,
       "summary": "Defines balanced partitions, P-smooth numbers, and states Part 2 of the conjecture.",
-      "mathContext": "Defines balanced partitions, P-smooth numbers, and states Part 2 of the conjecture."
+      "mathContext": "Formal definition: Defines balanced partitions, P-smooth numbers, and states Part 2 of the conjecture."
     },
     {
       "id": "growth-rate",
@@ -106,7 +106,7 @@
       "startLine": 99,
       "endLine": 105,
       "summary": "States the conjecture that minimal translations for squarefree numbers grow super-polynomially.",
-      "mathContext": "States the conjecture that minimal translations for squarefree numbers grow super-polynomially."
+      "mathContext": "Mathematical content: States the conjecture that minimal translations for squarefree numbers grow super-polynomially."
     }
   ],
   "conclusion": {

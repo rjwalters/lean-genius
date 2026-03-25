@@ -71,7 +71,7 @@
       "startLine": 1,
       "endLine": 44,
       "summary": "Overview of the theorem, its historical context, and the proof approach.",
-      "mathContext": "Overview of the theorem, its historical context, and the proof approach."
+      "mathContext": "States the intersecting chords theorem: if chords $\\overline{AB}$ and $\\overline{CD}$ of a circle with center $O$ and radius $r$ meet at $P$, then $PA \\cdot PB = PC \\cdot PD = |\\,|PO|^2 - r^2\\,|$."
     },
     {
       "id": "definitions",
@@ -79,7 +79,7 @@
       "startLine": 50,
       "endLine": 70,
       "summary": "Circle and point-on-circle definitions in the Euclidean plane.",
-      "mathContext": "Circle and point-on-circle definitions in the Euclidean plane."
+      "mathContext": "A circle is defined by center $O \\in \\mathbb{R}^2$ and radius $r > 0$: $\\mathrm{Circle}(O, r) = \\{P : \\|P - O\\| = r\\}$. The predicate $\\mathrm{pointOnCircle}(P, O, r)$ asserts $\\|P - O\\| = r$ using the Euclidean inner product space norm."
     },
     {
       "id": "power",
@@ -87,7 +87,7 @@
       "startLine": 71,
       "endLine": 100,
       "summary": "The power of a point concept and auxiliary lemmas.",
-      "mathContext": "The power of a point concept and auxiliary lemmas."
+      "mathContext": "The power of a point $P$ with respect to circle $(O, r)$ is $\\mathrm{pow}(P) = \\|P - O\\|^2 - r^2$. For $P$ inside the circle, $\\mathrm{pow}(P) < 0$; on the circle, $\\mathrm{pow}(P) = 0$; outside, $\\mathrm{pow}(P) > 0$."
     },
     {
       "id": "chord-algebra",
@@ -95,7 +95,7 @@
       "startLine": 101,
       "endLine": 220,
       "summary": "Algebraic proof using quadratic equations and Vieta's formulas.",
-      "mathContext": "Algebraic proof using quadratic equations and Vieta's formulas."
+      "mathContext": "Parametrize a chord through $P$ as $P + t\\mathbf{d}$. The circle equation $\\|P + t\\mathbf{d} - O\\|^2 = r^2$ gives a quadratic $t^2 \\|\\mathbf{d}\\|^2 + 2t\\langle P-O, \\mathbf{d}\\rangle + (\\|P-O\\|^2 - r^2) = 0$. By Vieta's formulas, the product of roots $t_1 t_2 = \\frac{\\|P-O\\|^2 - r^2}{\\|\\mathbf{d}\\|^2}$, so $PA \\cdot PB = |t_1 t_2|\\,\\|\\mathbf{d}\\|^2 = |\\mathrm{pow}(P)|$."
     },
     {
       "id": "main-theorem",
@@ -103,7 +103,7 @@
       "startLine": 221,
       "endLine": 438,
       "summary": "The Product of Segments of Chords theorem: PA * PB = PC * PD.",
-      "mathContext": "The Product of Segments of Chords theorem: PA * PB = PC * PD."
+      "mathContext": "The main result (Wiedijk #55): for any two chords $\\overline{AB}$, $\\overline{CD}$ through interior point $P$, $PA \\cdot PB = PC \\cdot PD$. Both products equal $|\\mathrm{pow}(P)| = r^2 - \\|P - O\\|^2$, establishing the invariance of the chord product over all directions through $P$."
     },
     {
       "id": "special-cases",
@@ -111,7 +111,7 @@
       "startLine": 439,
       "endLine": 491,
       "summary": "The center case (all chords are diameters) and the converse theorem.",
-      "mathContext": "The center case (all chords are diameters) and the converse theorem."
+      "mathContext": "When $P = O$ (the center), every chord is a diameter and $PA \\cdot PB = r^2$ for all chords. The converse: if $PA \\cdot PB = PC \\cdot PD$ for two lines through $P$ with $A, B, C, D$ on a common circle, the four points are concyclic."
     },
     {
       "id": "examples",
@@ -119,7 +119,7 @@
       "startLine": 492,
       "endLine": 508,
       "summary": "Concrete numerical examples demonstrating the theorem.",
-      "mathContext": "Concrete numerical examples demonstrating the theorem."
+      "mathContext": "Numerical verification: for the unit circle $O = (0,0)$, $r = 1$, with $P$ at distance $d$ from center, any chord through $P$ has segment product $PA \\cdot PB = 1 - d^2$. For example, $d = \\tfrac{1}{2}$ gives $PA \\cdot PB = \\tfrac{3}{4}$."
     },
     {
       "id": "connections",
@@ -127,7 +127,7 @@
       "startLine": 509,
       "endLine": 541,
       "summary": "Relates the product of segments theorem to the power of a point, Ptolemy's theorem, and practical applications in lens design, architecture, and navigation.",
-      "mathContext": "Relates the product of segments theorem to the power of a point, Ptolemy's theorem, and practical applications in lens design, architecture, and navigation."
+      "mathContext": "The power of a point $\\mathrm{pow}(P) = \\|P-O\\|^2 - r^2$ unifies four classical theorems: intersecting chords ($P$ inside), two secants ($P$ outside), secant-tangent ($PA \\cdot PB = PT^2$), and two tangents ($PT_1 = PT_2$). The radical axis of two circles is the locus $\\{P : \\mathrm{pow}_1(P) = \\mathrm{pow}_2(P)\\}$."
     }
   ],
   "conclusion": {

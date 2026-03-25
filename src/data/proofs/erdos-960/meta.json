@@ -68,7 +68,7 @@
       "startLine": 25,
       "endLine": 42,
       "summary": "Defines PointConfig structure and NoKCollinear predicate.",
-      "mathContext": "Defines PointConfig structure and NoKCollinear predicate."
+      "mathContext": "Formal definition: Defines PointConfig structure and NoKCollinear predicate."
     },
     {
       "id": "ordinary-lines",
@@ -76,7 +76,7 @@
       "startLine": 43,
       "endLine": 57,
       "summary": "Defines IsOrdinaryLine and ordinaryLineCount.",
-      "mathContext": "Defines IsOrdinaryLine and ordinaryLineCount."
+      "mathContext": "Formal definition: Defines IsOrdinaryLine and ordinaryLineCount."
     },
     {
       "id": "all-ordinary",
@@ -84,7 +84,7 @@
       "startLine": 58,
       "endLine": 66,
       "summary": "Defines AllOrdinary: every pair in a subset determines an ordinary line.",
-      "mathContext": "Defines AllOrdinary: every pair in a subset determines an ordinary line."
+      "mathContext": "Formal definition: Defines AllOrdinary: every pair in a subset determines an ordinary line."
     },
     {
       "id": "threshold",
@@ -92,7 +92,7 @@
       "startLine": 67,
       "endLine": 78,
       "summary": "Defines threshold(r, k, n) via sSup over configurations without all-ordinary r-subsets.",
-      "mathContext": "Defines threshold(r, k, n) via sSup over configurations without all-ordinary r-subsets."
+      "mathContext": "Formal definition: Defines threshold(r, k, n) via sSup over configurations without all-ordinary r-subsets."
     },
     {
       "id": "conjecture",
@@ -100,7 +100,7 @@
       "startLine": 79,
       "endLine": 96,
       "summary": "Defines ErdosConjecture960_littleo (f = o(n²)) and ErdosConjecture960_linear (f ≪ n). Axiom erdos_960_littleo_conjecture.",
-      "mathContext": "Defines ErdosConjecture960_littleo (f = o(n²)) and ErdosConjecture960_linear (f ≪ n). Axiom erdos_960_littleo_conjecture."
+      "mathContext": "Formal definition: Defines ErdosConjecture960_littleo (f = o(n²)) and ErdosConjecture960_linear (f ≪ n). Axiom erdos_960_littleo_conjecture."
     },
     {
       "id": "turan-bound",
@@ -108,7 +108,7 @@
       "startLine": 97,
       "endLine": 110,
       "summary": "Axiom turan_upper_bound over ℚ (Turán's theorem), trivial_bound (at most C(n,2) lines).",
-      "mathContext": "Axiom turan_upper_bound over ℚ (Turán's theorem), trivial_bound (at most C(n,2) lines)."
+      "mathContext": "Axiom turan_upper_bound over $\\mathbb{Q}$ (Turán's theorem), trivial_bound (at most C(n,2) lines)."
     },
     {
       "id": "connections",
@@ -116,7 +116,7 @@
       "startLine": 111,
       "endLine": 133,
       "summary": "threshold_r2 (r=2 base case), Green-Tao ordinary lines, Ramsey connection for r-subsets.",
-      "mathContext": "threshold_r2 (r=2 base case), Green-Tao ordinary lines, Ramsey connection for r-subsets."
+      "mathContext": "Mathematical content: threshold_r2 (r=2 base case), Green-Tao ordinary lines, Ramsey connection for r-subsets."
     },
     {
       "id": "summary",
@@ -124,7 +124,7 @@
       "startLine": 134,
       "endLine": 148,
       "summary": "erdos_960_summary (proved): combines conjecture with r=2 case. Problem remains OPEN.",
-      "mathContext": "erdos_960_summary (proved): combines conjecture with r=2 case. Problem remains OPEN."
+      "mathContext": "Mathematical content: erdos_960_summary (proved): combines conjecture with r=2 case. Problem remains OPEN."
     }
   ],
   "conclusion": {

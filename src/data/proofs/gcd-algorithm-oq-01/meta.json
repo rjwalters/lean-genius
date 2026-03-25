@@ -77,7 +77,7 @@
       "startLine": 1,
       "endLine": 31,
       "summary": "Imports `Data.Nat.Fib.Basic` (Fibonacci lemmas), `Data.Nat.GCD.Basic`, `Data.Nat.Log` (for $\\lfloor \\log_b n \\rfloor$), and `Tactic`. Opens `Nat` namespace and documents the open question status.",
-      "mathContext": "Imports `Data.Nat.Fib.Basic` (Fibonacci lemmas), `Data.Nat.GCD.Basic`, `Data.Nat.Log` (for $\\lfloor \\log_b n \\rfloor$), and `Tactic`. Opens `Nat` namespace and documents the open question status."
+      "mathContext": "Sets up the Lean environment with Fibonacci numbers $F_n$, $\\gcd(a,b)$, and the natural logarithm $\\lfloor \\log_b n \\rfloor$ for bounding Euclidean algorithm step counts."
     },
     {
       "id": "sec-gcd-oq01-step-counting",
@@ -85,7 +85,7 @@
       "startLine": 32,
       "endLine": 54,
       "summary": "Defines `euclideanSteps` with termination proof via `Nat.mod_lt`, plus 10 verification examples showing $\\text{euclideanSteps}(F_{n+2}, F_{n+1}) = n$ for $n = 0, \\ldots, 8$.",
-      "mathContext": "Defines `euclideanSteps` with termination proof via `Nat.mod_lt`, plus 10 verification examples showing $\\text{euclideanSteps}(F_{n+2}, F_{n+1}) = n$ for $n = 0, \\ldots, 8$."
+      "mathContext": "Defines the step-counting function $S(a,b)$ by well-founded recursion on $b$: $S(a,0)=0$ and $S(a,b)=1+S(b, a \\bmod b)$ for $b>0$, with termination via $a \\bmod b < b$. Verified: $S(F_{n+2}, F_{n+1}) = n$ for small $n$."
     },
     {
       "id": "sec-gcd-oq01-unfolding",
@@ -93,7 +93,7 @@
       "startLine": 55,
       "endLine": 70,
       "summary": "Three interface lemmas: `euclideanSteps_zero` (simp), `euclideanSteps_pos_eq` ($b > 0$ recursive case), and `euclideanSteps_ge_one` ($b > 0 \\implies \\text{steps} \\geq 1$).",
-      "mathContext": "Three interface lemmas: `euclideanSteps_zero` (simp), `euclideanSteps_pos_eq` ($b > 0$ recursive case), and `euclideanSteps_ge_one` ($b > 0 \\implies \\text{steps} \\geq 1$)."
+      "mathContext": "Interface lemmas: $S(a,0) = 0$, $S(a,b) = 1 + S(b, a \\bmod b)$ when $b > 0$, and $b > 0 \\implies S(a,b) \\geq 1$."
     },
     {
       "id": "sec-gcd-oq01-lame",
@@ -109,7 +109,7 @@
       "startLine": 157,
       "endLine": 197,
       "summary": "Proves $\\text{euclideanSteps}(F_{n+2}, F_{n+1}) = n$ for $n \\geq 1$ via `fib_mod_fib`: $F_{n+2} \\bmod F_{n+1} = F_n$. Includes saturation verification examples.",
-      "mathContext": "Proves $\\text{euclideanSteps}(F_{n+2}, F_{n+1}) = n$ for $n \\geq 1$ via `fib_mod_fib`: $F_{n+2} \\bmod F_{n+1} = F_n$. Includes saturation verification examples."
+      "mathContext": "Worst-case optimality: $S(F_{n+2}, F_{n+1}) = n$ for $n \\geq 1$, using the Fibonacci recurrence $F_{n+2} \\bmod F_{n+1} = F_n$. Consecutive Fibonacci pairs are the unique inputs that saturate Lam\\u00e9's bound."
     },
     {
       "id": "sec-gcd-oq01-logarithmic",
@@ -117,7 +117,7 @@
       "startLine": 198,
       "endLine": 231,
       "summary": "Proves $\\text{fib}(2n+1) \\geq 2^n$ by induction, then derives $\\text{steps} \\leq 2\\lfloor\\log_2 b\\rfloor + 2$ via `calc` chain confirming $O(\\log b)$ complexity.",
-      "mathContext": "Proves $\\text{fib}(2n+1) \\geq 2^n$ by induction, then derives $\\text{steps} \\leq 2\\lfloor\\log_2 b\\rfloor + 2$ via `calc` chain confirming $O(\\log b)$ complexity."
+      "mathContext": "Exponential lower bound $F_{2n+1} \\geq 2^n$ proved by induction, yielding the logarithmic step bound $S(a,b) \\leq 2\\lfloor \\log_2 b \\rfloor + 2 = O(\\log b)$."
     },
     {
       "id": "sec-gcd-oq01-5digit",
@@ -125,7 +125,7 @@
       "startLine": 232,
       "endLine": 267,
       "summary": "Defines `decimalDigits` and proves $\\text{steps} \\leq 5 \\cdot \\text{decimalDigits}(b)$ for $b < 10^{20}$, using $\\text{fib}(5k+2) \\geq 10^k$ verified by `interval_cases`/`native_decide`.",
-      "mathContext": "Defines `decimalDigits` and proves $\\text{steps} \\leq 5 \\cdot \\text{decimalDigits}(b)$ for $b < 10^{20}$, using $\\text{fib}(5k+2) \\geq 10^k$ verified by `interval_cases`/`native_decide`."
+      "mathContext": "Lam\\u00e9's classical bound: $S(a,b) \\leq 5k$ where $k = \\lceil \\log_{10} b \\rceil$ is the number of decimal digits of $b$, proved via $F_{5k+2} \\geq 10^k$ for $k \\leq 20$."
     },
     {
       "id": "sec-gcd-oq01-gcd-preservation",
@@ -133,7 +133,7 @@
       "startLine": 268,
       "endLine": 306,
       "summary": "Proves bidirectional characterization (`steps = 0 ↔ b = 0`), divisibility shortcut (`b | a → steps = 1`), one-step termination (`steps = 1 → a%b = 0`), and Lamé remainder bound extraction.",
-      "mathContext": "Proves bidirectional characterization (`steps = 0 ↔ b = 0`), divisibility shortcut (`b | a → steps = 1`), one-step termination (`steps = 1 → a%b = 0`), and Lamé remainder bound extraction."
+      "mathContext": "Structural identities: $S(a,b) = 0 \\iff b = 0$; $b \\mid a \\implies S(a,b) = 1$; $S(a,b) = 1 \\implies a \\bmod b = 0$. Connects step counts to divisibility and the remainder sequence $r_0 = a, r_1 = b, r_{i+1} = r_{i-1} \\bmod r_i$."
     },
     {
       "id": "sec-gcd-oq01-tight-lame",
@@ -141,7 +141,7 @@
       "startLine": 307,
       "endLine": 346,
       "summary": "Proves translation invariance (`steps(a + kb, b) = steps(a, b)`) and the swap lemma (`a < b → steps(a,b) = steps(b,a) + 1`), establishing that step count depends only on the remainder sequence.",
-      "mathContext": "Proves translation invariance (`steps(a + kb, b) = steps(a, b)`) and the swap lemma (`a < b → steps(a,b) = steps(b,a) + 1`), establishing that step count depends only on the remainder sequence."
+      "mathContext": "Translation invariance $S(a + kb, b) = S(a, b)$ and the swap lemma $a < b \\implies S(a,b) = S(b,a) + 1$, showing the step count is determined by the continued fraction expansion of $a/b$."
     },
     {
       "id": "sec-gcd-oq01-average",

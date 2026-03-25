@@ -85,7 +85,7 @@
       "summary": "Point, dist, dist_symm, dist_nonneg definitions",
       "startLine": 41,
       "endLine": 70,
-      "mathContext": "Point, dist, dist_symm, dist_nonneg definitions"
+      "mathContext": "Formal definition: Point, dist, dist_symm, dist_nonneg definitions"
     },
     {
       "id": "point-sets",
@@ -93,7 +93,7 @@
       "summary": "PointSet, pairwiseDistances, distanceFrequency, minDistance, maxDistance",
       "startLine": 71,
       "endLine": 108,
-      "mathContext": "PointSet, pairwiseDistances, distanceFrequency, minDistance, maxDistance"
+      "mathContext": "Mathematical content: PointSet, pairwiseDistances, distanceFrequency, minDistance, maxDistance"
     },
     {
       "id": "conjecture",
@@ -101,7 +101,7 @@
       "summary": "ErdosPachConjecture formalization",
       "startLine": 109,
       "endLine": 124,
-      "mathContext": "ErdosPachConjecture formalization"
+      "mathContext": "Mathematical content: ErdosPachConjecture formalization"
     },
     {
       "id": "dumitrescu",
@@ -109,7 +109,7 @@
       "summary": "dumitrescu_theorem axiom, erdos_pach_conjecture_true",
       "startLine": 125,
       "endLine": 154,
-      "mathContext": "dumitrescu_theorem axiom, erdos_pach_conjecture_true"
+      "mathContext": "Verified: dumitrescu_theorem axiom, erdos_pach_conjecture_true"
     },
     {
       "id": "tightness",
@@ -117,7 +117,7 @@
       "summary": "makai_tight_construction, constant_tight theorem",
       "startLine": 155,
       "endLine": 181,
-      "mathContext": "makai_tight_construction, constant_tight theorem"
+      "mathContext": "Verified: makai_tight_construction, constant_tight theorem"
     },
     {
       "id": "sum-inequality",
@@ -125,7 +125,7 @@
       "summary": "sum_inequality axiom: f(d_1) + f(d_k) <= 3n - c*sqrt(n)",
       "startLine": 182,
       "endLine": 201,
-      "mathContext": "sum_inequality axiom: f(d_1) + f(d_k) <= 3n - c*sqrt(n)"
+      "mathContext": "sum_inequality axiom: f(d_1) + f(d_k) <= 3n - c*$\\sqrt{n}$"
     },
     {
       "id": "convex-hull",
@@ -133,7 +133,7 @@
       "summary": "StrongerConjecture involving convex hull vertices",
       "startLine": 202,
       "endLine": 227,
-      "mathContext": "StrongerConjecture involving convex hull vertices"
+      "mathContext": "Mathematical content: StrongerConjecture involving convex hull vertices"
     },
     {
       "id": "regular-polygon",
@@ -141,7 +141,7 @@
       "summary": "regular_polygon_all_frequent: odd polygons have frequent distances",
       "startLine": 228,
       "endLine": 252,
-      "mathContext": "regular_polygon_all_frequent: odd polygons have frequent distances"
+      "mathContext": "Mathematical content: regular_polygon_all_frequent: odd polygons have frequent distances"
     },
     {
       "id": "summary",
@@ -149,7 +149,7 @@
       "summary": "erdos_957_summary: main results and status",
       "startLine": 276,
       "endLine": 320,
-      "mathContext": "erdos_957_summary: main results and status"
+      "mathContext": "Mathematical content: erdos_957_summary: main results and status"
     }
   ],
   "conclusion": {

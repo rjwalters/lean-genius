@@ -99,7 +99,7 @@
       "startLine": 25,
       "endLine": 34,
       "summary": "Imports Mathlib modules for binomial coefficients (`Nat.choose`), primes, squarefreeness, $p$-adic valuations (`padicValNat`), and real numbers. Opens the `Nat` namespace.",
-      "mathContext": "Imports Mathlib modules for binomial coefficients (`Nat.choose`), primes, squarefreeness, $p$-adic valuations (`padicValNat`), and real numbers. Opens the `Nat` namespace."
+      "mathContext": "Mathematical content: Imports Mathlib modules for binomial coefficients (`Nat.choose`), primes, squarefreeness, $p$-adic valuations (`padicValNat`), and real numbers. Opens the `Nat` namespace."
     },
     {
       "id": "basic-definitions",
@@ -107,7 +107,7 @@
       "startLine": 35,
       "endLine": 51,
       "summary": "Defines `centralBinom(n) = \\binom{2n}{n}$`, `IsSquarefree` (no prime square divides), and a placeholder `maxPrimePowerExp` for $f(n)$.",
-      "mathContext": "Defines `centralBinom(n) = \\binom{2n}{n}$`, `IsSquarefree` (no prime square divides), and a placeholder `maxPrimePowerExp` for $f(n)$."
+      "mathContext": "Formal definition: Defines `centralBinom(n) = \\binom{2n}{n}$`, `IsSquarefree` (no prime square divides), and a placeholder `maxPrimePowerExp` for $f(n)$."
     },
     {
       "id": "divisibility-by-4",
@@ -115,7 +115,7 @@
       "startLine": 52,
       "endLine": 76,
       "summary": "Axiomatizes Kummer's theorem and derives $v_2\\binom{2n}{n} = s_2(n)$. Proves $4 \\mid \\binom{2n}{n} \\iff n \\neq 2^k$. Handles the $n = 2^k$ case where $v_2 = 1$.",
-      "mathContext": "Axiomatizes Kummer's theorem and derives $v_2\\binom{2n}{n} = s_2(n)$. Proves $4 \\mid \\binom{2n}{n} \\iff n \\neq 2^k$. Handles the $n = 2^k$ case where $v_2 = 1$."
+      "mathContext": "Axiomatizes Kummer's theorem and derives $v_2\\binom{2n}{n} = s_2(n)$. Proves $4 \\mid \\binom{2n}{n} \\iff n \\neq $2^{k}$$. Handles the $n = $2^{k}$$ case where $v_2 = 1$."
     },
     {
       "id": "main-theorem",
@@ -123,7 +123,7 @@
       "startLine": 77,
       "endLine": 94,
       "summary": "Axiomatizes Granville–Ramaré (1996): $\\binom{2n}{n}$ not squarefree for $n \\ge 5$. Also includes Sárközy (1985) for large $n$ and direct small-case verification up to $n = 100$.",
-      "mathContext": "Axiomatizes Granville–Ramaré (1996): $\\binom{2n}{n}$ not squarefree for $n \\ge 5$. Also includes Sárközy (1985) for large $n$ and direct small-case verification up to $n = 100$."
+      "mathContext": "Axiomatized: Axiomatizes Granville–Ramaré (1996): $\\binom{2n}{n}$ not squarefree for $n \\ge 5$. Also includes Sárközy (1985) for large $n$ and direct small-case verification up to $n = 100$."
     },
     {
       "id": "function-f",
@@ -139,7 +139,7 @@
       "startLine": 130,
       "endLine": 144,
       "summary": "For $n = 2^k$ ($k \\ge 3$), axiomatizes that an odd prime square divides $\\binom{2n}{n}$. Includes example $\\binom{16}{8} = 12870 = 2 \\times 3^2 \\times 5 \\times 11 \\times 13$.",
-      "mathContext": "For $n = 2^k$ ($k \\ge 3$), axiomatizes that an odd prime square divides $\\binom{2n}{n}$. Includes example $\\binom{16}{8} = 12870 = 2 \\times 3^2 \\times 5 \\times 11 \\times 13$."
+      "mathContext": "For $n = $2^{k}$$ ($k \\ge 3$), axiomatizes that an odd prime square divides $\\binom{2n}{n}$. Includes example $\\binom{16}{8} = 12870 = 2 \\times $3^{2}$ \\times 5 \\times 11 \\times 13$."
     },
     {
       "id": "related-results",
@@ -147,7 +147,7 @@
       "startLine": 145,
       "endLine": 159,
       "summary": "Sander's extension to $\\binom{2n+d}{n}$ for $|d| \\le n^{1-\\varepsilon}$, and the computational record: $n = 786$ is the largest known value with no odd prime square factor.",
-      "mathContext": "Sander's extension to $\\binom{2n+d}{n}$ for $|d| \\le n^{1-\\varepsilon}$, and the computational record: $n = 786$ is the largest known value with no odd prime square factor."
+      "mathContext": "Mathematical content: Sander's extension to $\\binom{2n+d}{n}$ for $|d| \\le n^{1-\\varepsilon}$, and the computational record: $n = 786$ is the largest known value with no odd prime square factor."
     },
     {
       "id": "open-questions",
@@ -155,7 +155,7 @@
       "startLine": 160,
       "endLine": 174,
       "summary": "States the open question $f(n) \\gg \\log n$ for all $n$ (known for almost all $n$ but not universally). The placeholder axiom `open_for_all_n : True` marks this as unresolved.",
-      "mathContext": "States the open question $f(n) \\gg \\log n$ for all $n$ (known for almost all $n$ but not universally). The placeholder axiom `open_for_all_n : True` marks this as unresolved."
+      "mathContext": "States the open question $f(n) \\gg \\$\\log n$$ for all $n$ (known for almost all $n$ but not universally). The placeholder axiom `open_for_all_n : True` marks this as unresolved."
     },
     {
       "id": "explicit-examples",
@@ -163,7 +163,7 @@
       "startLine": 175,
       "endLine": 192,
       "summary": "Concrete computations: $\\binom{10}{5} = 252 = 2^2 \\cdot 3^2 \\cdot 7$ (verified by `native_decide`) and $\\binom{12}{6} = 924$. The theorem `c_10_5_not_squarefree` is proved via `norm_num`.",
-      "mathContext": "Concrete computations: $\\binom{10}{5} = 252 = 2^2 \\cdot 3^2 \\cdot 7$ (verified by `native_decide`) and $\\binom{12}{6} = 924$. The theorem `c_10_5_not_squarefree` is proved via `norm_num`."
+      "mathContext": "Concrete computations: $\\binom{10}{5} = 252 = $2^{2}$ \\cdot $3^{2}$ \\cdot 7$ (verified by `native_decide`) and $\\binom{12}{6} = 924$. The theorem `c_10_5_not_squarefree` is proved via `norm_num`."
     },
     {
       "id": "main-statement",

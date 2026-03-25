@@ -96,7 +96,7 @@
       "startLine": 1,
       "endLine": 39,
       "summary": "Documentation header with problem statement, Alon's disproof via projective plane construction, references to [Er81] and Problem #1159",
-      "mathContext": "Documentation header with problem statement, Alon's disproof via projective plane construction, references to [Er81] and Problem #1159"
+      "mathContext": "Verified: Documentation header with problem statement, Alon's disproof via projective plane construction, references to [Er81] and Problem #1159"
     },
     {
       "id": "set-families",
@@ -112,7 +112,7 @@
       "startLine": 67,
       "endLine": 82,
       "summary": "Defines $\\text{IsBlocker}$ (transversal meeting every set), $\\text{HasBoundedIntersection}$ ($|B \\cap A_i| \\leq k$ for all $i$), and $\\text{IsGoodBlocker}$ (both conditions combined)",
-      "mathContext": "Defines $\\text{IsBlocker}$ (transversal meeting every set), $\\text{HasBoundedIntersection}$ ($|B \\cap A_i| \\leq k$ for all $i$), and $\\text{IsGoodBlocker}$ (both conditions combined)"
+      "mathContext": "Formal definition: Defines $\\text{IsBlocker}$ (transversal meeting every set), $\\text{HasBoundedIntersection}$ ($|B \\cap A_i| \\leq k$ for all $i$), and $\\text{IsGoodBlocker}$ (both conditions combined)"
     },
     {
       "id": "erdos-question",
@@ -120,7 +120,7 @@
       "startLine": 83,
       "endLine": 99,
       "summary": "Formal statement $\\text{ErdosQuestion664}$: $\\forall c \\in (0,1),\\, \\exists k,\\, \\forall n,m \\geq 10,\\, \\forall \\mathcal{F},\\, \\exists B$ with $\\text{IsGoodBlocker}(\\mathcal{F}, B, k)$",
-      "mathContext": "Formal statement $\\text{ErdosQuestion664}$: $\\forall c \\in (0,1),\\, \\exists k,\\, \\forall n,m \\geq 10,\\, \\forall \\mathcal{F},\\, \\exists B$ with $\\text{IsGoodBlocker}(\\mathcal{F}, B, k)$"
+      "mathContext": "Mathematical content: Formal statement $\\text{ErdosQuestion664}$: $\\forall c \\in (0,1),\\, \\exists k,\\, \\forall n,m \\geq 10,\\, \\forall \\mathcal{F},\\, \\exists B$ with $\\text{IsGoodBlocker}(\\mathcal{F}, B, k)$"
     },
     {
       "id": "alon-counterexample",
@@ -144,7 +144,7 @@
       "startLine": 168,
       "endLine": 186,
       "summary": "Defines $\\text{IsBalancedBlockDesign}$ (every pair in exactly one block) and $\\text{ErdosQuestion664\\_Original}$ — the 1981 formulation that remains OPEN",
-      "mathContext": "Defines $\\text{IsBalancedBlockDesign}$ (every pair in exactly one block) and $\\text{ErdosQuestion664\\_Original}$ — the 1981 formulation that remains OPEN"
+      "mathContext": "Formal definition: Defines $\\text{IsBalancedBlockDesign}$ (every pair in exactly one block) and $\\text{ErdosQuestion664\\_Original}$ — the 1981 formulation that remains OPEN"
     },
     {
       "id": "finite-geometry",
@@ -152,7 +152,7 @@
       "startLine": 187,
       "endLine": 206,
       "summary": "Blocking sets in projective planes, Bruen's bound $q + \\sqrt{q} + 1$ for minimum blocking set size, connection to Problem #1159",
-      "mathContext": "Blocking sets in projective planes, Bruen's bound $q + \\sqrt{q} + 1$ for minimum blocking set size, connection to Problem #1159"
+      "mathContext": "Bound: Blocking sets in projective planes, Bruen's bound $q + \\sqrt{q} + 1$ for minimum blocking set size, connection to Problem #1159"
     },
     {
       "id": "constant-analysis",
@@ -160,7 +160,7 @@
       "startLine": 207,
       "endLine": 223,
       "summary": "Analysis of the retention probability $p \\approx 2/5$: any $c < 1/2$ works via Chernoff concentration bounds",
-      "mathContext": "Analysis of the retention probability $p \\approx 2/5$: any $c < 1/2$ works via Chernoff concentration bounds"
+      "mathContext": "Bound: Analysis of the retention probability $p \\approx 2/5$: any $c < 1/2$ works via Chernoff concentration bounds"
     },
     {
       "id": "related-problems",
@@ -168,7 +168,7 @@
       "startLine": 224,
       "endLine": 243,
       "summary": "Connections to Problem #1159 (bounded blocking sets in projective planes), set cover/transversal theory, and hypergraph coloring",
-      "mathContext": "Connections to Problem #1159 (bounded blocking sets in projective planes), set cover/transversal theory, and hypergraph coloring"
+      "mathContext": "Bound: Connections to Problem #1159 (bounded blocking sets in projective planes), set cover/transversal theory, and hypergraph coloring"
     },
     {
       "id": "summary",

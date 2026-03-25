@@ -31,7 +31,7 @@
       "startLine": 1,
       "endLine": 16,
       "summary": "Module docstring stating Erdős Problem #566: is every $(2k-3)$-sparse graph Ramsey size linear? Lists known positive and negative results and notes the problem is OPEN.",
-      "mathContext": "Module docstring stating Erdős Problem #566: is every $(2k-3)$-sparse graph Ramsey size linear? Lists known positive and negative results and notes the problem is OPEN."
+      "mathContext": "Mathematical content: Module docstring stating Erdős Problem #566: is every $(2k-3)$-sparse graph Ramsey size linear? Lists known positive and negative results and notes the problem is OPEN."
     },
     {
       "id": "imports",
@@ -39,7 +39,7 @@
       "startLine": 18,
       "endLine": 21,
       "summary": "Imports Mathlib foundations: $\\mathbb{N}$, $\\text{Finset}$, $\\mathbb{R}$, and general tactics for formalizing graph-theoretic statements with real-valued bounds.",
-      "mathContext": "Imports Mathlib foundations: $\\mathbb{N}$, $\\text{Finset}$, $\\mathbb{R}$, and general tactics for formalizing graph-theoretic statements with real-valued bounds."
+      "mathContext": "Bound: Imports Mathlib foundations: $\\mathbb{N}$, $\\text{Finset}$, $\\mathbb{R}$, and general tactics for formalizing graph-theoretic statements with real-valued bounds."
     },
     {
       "id": "graph-definitions",
@@ -47,7 +47,7 @@
       "startLine": 25,
       "endLine": 33,
       "summary": "Defines simple graphs via symmetric irreflexive adjacency on $\\text{Fin}\\;n$ and edge counting $|E(G)| = |\\{(u,v) : u < v \\land \\text{adj}(u,v)\\}|$.",
-      "mathContext": "Defines simple graphs via symmetric irreflexive adjacency on $\\text{Fin}\\;n$ and edge counting $|E(G)| = |\\{(u,v) : u < v \\land \\text{adj}(u,v)\\}|$."
+      "mathContext": "Formal definition: Defines simple graphs via symmetric irreflexive adjacency on $\\text{Fin}\\;n$ and edge counting $|E(G)| = |\\{(u,v) : u < v \\land \\text{adj}(u,v)\\}|$."
     },
     {
       "id": "sparsity-definitions",
@@ -55,7 +55,7 @@
       "startLine": 35,
       "endLine": 45,
       "summary": "Defines $(2k-3)$-sparsity ($\\forall S,\\;|E(G[S])| \\le 2|S|-3$) and the no-isolated-vertices condition ($\\forall v,\\;\\deg(v) \\ge 1$), the two key hypotheses in the conjecture.",
-      "mathContext": "Defines $(2k-3)$-sparsity ($\\forall S,\\;|E(G[S])| \\le 2|S|-3$) and the no-isolated-vertices condition ($\\forall v,\\;\\deg(v) \\ge 1$), the two key hypotheses in the conjecture."
+      "mathContext": "Formal definition: Defines $(2k-3)$-sparsity ($\\forall S,\\;|E(G[S])| \\le 2|S|-3$) and the no-isolated-vertices condition ($\\forall v,\\;\\deg(v) \\ge 1$), the two key hypotheses in the conjecture."
     },
     {
       "id": "size-ramsey-def",
@@ -79,7 +79,7 @@
       "startLine": 64,
       "endLine": 72,
       "summary": "The EFRS theorem (1993): graphs with $|E(G)| \\le |V(G)| + 1$ are Ramsey size linear. These unicyclic-or-simpler graphs satisfy the $(2k-3)$ condition with room to spare.",
-      "mathContext": "The EFRS theorem (1993): graphs with $|E(G)| \\le |V(G)| + 1$ are Ramsey size linear. These unicyclic-or-simpler graphs satisfy the $(2k-3)$ condition with room to spare."
+      "mathContext": "Verified: The EFRS theorem (1993): graphs with $|E(G)| \\le |V(G)| + 1$ are Ramsey size linear. These unicyclic-or-simpler graphs satisfy the $(2k-3)$ condition with room to spare."
     },
     {
       "id": "counterexample",
@@ -87,7 +87,7 @@
       "startLine": 74,
       "endLine": 81,
       "summary": "Asserts existence of graphs with $2n - 2$ edges that fail Ramsey size linearity, showing the $(2k-3)$ threshold cannot be relaxed to $2k - 2$.",
-      "mathContext": "Asserts existence of graphs with $2n - 2$ edges that fail Ramsey size linearity, showing the $(2k-3)$ threshold cannot be relaxed to $2k - 2$."
+      "mathContext": "Mathematical content: Asserts existence of graphs with $2n - 2$ edges that fail Ramsey size linearity, showing the $(2k-3)$ threshold cannot be relaxed to $2k - 2$."
     },
     {
       "id": "trees-and-implications",
@@ -95,7 +95,7 @@
       "startLine": 83,
       "endLine": 100,
       "summary": "Trees ($n-1$ edges) are Ramsey size linear, providing foundational evidence. A positive answer to #566 would resolve #567 ($Q_3$, $K_{3,3}$, $H_5$).",
-      "mathContext": "Trees ($n-1$ edges) are Ramsey size linear, providing foundational evidence. A positive answer to #566 would resolve #567 ($Q_3$, $K_{3,3}$, $H_5$)."
+      "mathContext": "Mathematical content: Trees ($n-1$ edges) are Ramsey size linear, providing foundational evidence. A positive answer to #566 would resolve #567 ($Q_3$, $K_{3,3}$, $H_5$)."
     }
   ],
   "overview": {

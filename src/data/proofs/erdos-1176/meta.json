@@ -87,7 +87,7 @@
       "summary": "Documentation header stating the open problem of Erdős, Galvin, and Hajnal with known results by Hajnal-Komjáth, followed by Mathlib imports for cardinal arithmetic and graph theory.",
       "startLine": 1,
       "endLine": 39,
-      "mathContext": "Documentation header stating the open problem of Erdős, Galvin, and Hajnal with known results by Hajnal-Komjáth, followed by Mathlib imports for cardinal arithmetic and graph theory."
+      "mathContext": "Mathematical content: Documentation header stating the open problem of Erdős, Galvin, and Hajnal with known results by Hajnal-Komjáth, followed by Mathlib imports for cardinal arithmetic and graph theory."
     },
     {
       "id": "coloring-definitions",
@@ -103,7 +103,7 @@
       "summary": "Defines edge colorings as functions from Sym2 V to a color type C, along with the set of all colors used on actual edges of G.",
       "startLine": 65,
       "endLine": 80,
-      "mathContext": "Defines edge colorings as functions from Sym2 V to a color type C, along with the set of all colors used on actual edges of G."
+      "mathContext": "Formal definition: Defines edge colorings as functions from Sym2 V to a color type C, along with the set of all colors used on actual edges of G."
     },
     {
       "id": "domination-property",
@@ -111,7 +111,7 @@
       "summary": "Defines edge colors seen by a vertex class and the domination property: for every proper $\\mathbb{N}$-coloring, some vertex class sees all edge colors. This is the central concept of the problem.",
       "startLine": 81,
       "endLine": 101,
-      "mathContext": "Defines edge colors seen by a vertex class and the domination property: for every proper $\\mathbb{N}$-coloring, some vertex class sees all edge colors. This is the central concept of the problem."
+      "mathContext": "Formal definition: Defines edge colors seen by a vertex class and the domination property: for every proper $\\mathbb{N}$-coloring, some vertex class sees all edge colors. This is the central concept of the problem."
     },
     {
       "id": "main-conjecture",
@@ -119,7 +119,7 @@
       "summary": "States ErdosProblem1176: for every $G$ with $\\chi(G) = \\aleph_1$, there exists an edge coloring with $\\aleph_1$ colors having the domination property.",
       "startLine": 102,
       "endLine": 116,
-      "mathContext": "States ErdosProblem1176: for every $G$ with $\\chi(G) = \\aleph_1$, there exists an edge coloring with $\\aleph_1$ colors having the domination property."
+      "mathContext": "Mathematical content: States ErdosProblem1176: for every $G$ with $\\chi(G) = \\aleph_1$, there exists an edge coloring with $\\aleph_1$ colors having the domination property."
     },
     {
       "id": "structural-results",
@@ -135,7 +135,7 @@
       "summary": "Axiomatizes the metamathematical result that ErdosProblem1176 is consistent with ZFC, using an axiom since forcing results cannot be directly expressed in Lean's object language.",
       "startLine": 148,
       "endLine": 162,
-      "mathContext": "Axiomatizes the metamathematical result that ErdosProblem1176 is consistent with ZFC, using an axiom since forcing results cannot be directly expressed in Lean's object language."
+      "mathContext": "Axiomatized: Axiomatizes the metamathematical result that ErdosProblem1176 is consistent with ZFC, using an axiom since forcing results cannot be directly expressed in Lean's object language."
     },
     {
       "id": "variants",
@@ -151,7 +151,7 @@
       "summary": "Derives the problem from the Hajnal-Komjáth axiom and states the open ZFC version with a sorry, capturing the metamathematical distinction between consistency and provability.",
       "startLine": 210,
       "endLine": 223,
-      "mathContext": "Derives the problem from the Hajnal-Komjáth axiom and states the open ZFC version with a sorry, capturing the metamathematical distinction between consistency and provability."
+      "mathContext": "Axiomatized: Derives the problem from the Hajnal-Komjáth axiom and states the open ZFC version with a sorry, capturing the metamathematical distinction between consistency and provability."
     }
   ],
   "conclusion": {

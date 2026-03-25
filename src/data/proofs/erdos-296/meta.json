@@ -76,7 +76,7 @@
       "startLine": 41,
       "endLine": 44,
       "summary": "Imports the full **Mathlib** library. Opens **Finset** and **BigOperators** for finite set operations and $\\sum$ notation.",
-      "mathContext": "Imports the full **Mathlib** library. Opens **Finset** and **BigOperators** for finite set operations and $\\sum$ notation."
+      "mathContext": "Mathematical content: Imports the full **Mathlib** library. Opens **Finset** and **BigOperators** for finite set operations and $\\sum$ notation."
     },
     {
       "id": "unit-fractions",
@@ -84,7 +84,7 @@
       "startLine": 45,
       "endLine": 63,
       "summary": "Defines **reciprocalSum** ($\\sum 1/n$ over $\\mathbb{Q}$), **isUnitSet** (reciprocals sum to $1$), and proves the classic example $\\{2,3,6\\}$ is a unit set.",
-      "mathContext": "Defines **reciprocalSum** ($\\sum 1/n$ over $\\mathbb{Q}$), **isUnitSet** (reciprocals sum to $1$), and proves the classic example $\\{2,3,6\\}$ is a unit set."
+      "mathContext": "Formal definition: Defines **reciprocalSum** ($\\sum 1/n$ over $\\mathbb{Q}$), **isUnitSet** (reciprocals sum to $1$), and proves the classic example $\\{2,3,6\\}$ is a unit set."
     },
     {
       "id": "packings",
@@ -92,7 +92,7 @@
       "startLine": 64,
       "endLine": 84,
       "summary": "Defines **arePairwiseDisjoint** and the **UnitSetPacking** structure bundling disjoint unit sets within $\\{1, \\ldots, N\\}$ with a **size** function.",
-      "mathContext": "Defines **arePairwiseDisjoint** and the **UnitSetPacking** structure bundling disjoint unit sets within $\\{1, \\ldots, N\\}$ with a **size** function."
+      "mathContext": "Formal definition: Defines **arePairwiseDisjoint** and the **UnitSetPacking** structure bundling disjoint unit sets within $\\{1, \\ldots, N\\}$ with a **size** function."
     },
     {
       "id": "k-definition",
@@ -100,7 +100,7 @@
       "startLine": 85,
       "endLine": 94,
       "summary": "Defines **k N** as $\\sup\\{p.\\mathrm{size}\\}$ over all valid packings. The central quantity measuring maximum packing density.",
-      "mathContext": "Defines **k N** as $\\sup\\{p.\\mathrm{size}\\}$ over all valid packings. The central quantity measuring maximum packing density."
+      "mathContext": "Formal definition: Defines **k N** as $\\sup\\{p.\\mathrm{size}\\}$ over all valid packings. The central quantity measuring maximum packing density."
     },
     {
       "id": "basic-bounds",
@@ -108,7 +108,7 @@
       "startLine": 95,
       "endLine": 104,
       "summary": "States **k_ge_one** ($k(N) \\geq 1$ for $N \\geq 6$) and **k_le_N** ($k(N) \\leq N$). Trivial bounds establishing $k(N)$ is nontrivial and finite.",
-      "mathContext": "States **k_ge_one** ($k(N) \\geq 1$ for $N \\geq 6$) and **k_le_N** ($k(N) \\leq N$). Trivial bounds establishing $k(N)$ is nontrivial and finite."
+      "mathContext": "Bound: States **k_ge_one** ($k(N) \\geq 1$ for $N \\geq 6$) and **k_le_N** ($k(N) \\leq N$). Trivial bounds establishing $k(N)$ is nontrivial and finite."
     },
     {
       "id": "sunflower",
@@ -116,7 +116,7 @@
       "startLine": 105,
       "endLine": 118,
       "summary": "States **sunflower_lower_bound**: $\\geq N \\cdot e^{-c\\sqrt{\\log N}}$ disjoint sets with equal sums, via the Erdős-Rado sunflower lemma. A weaker intermediate result.",
-      "mathContext": "States **sunflower_lower_bound**: $\\geq N \\cdot e^{-c\\sqrt{\\log N}}$ disjoint sets with equal sums, via the Erdős-Rado sunflower lemma. A weaker intermediate result."
+      "mathContext": "Bound: States **sunflower_lower_bound**: $\\geq N \\cdot e^{-c\\sqrt{\\log N}}$ disjoint sets with equal sums, via the Erdős-Rado sunflower lemma. A weaker intermediate result."
     },
     {
       "id": "main-result",
@@ -124,7 +124,7 @@
       "startLine": 119,
       "endLine": 137,
       "summary": "States **hunter_sawhney_lower** ($k(N) \\geq (1-\\varepsilon)\\log N$), **k_upper_bound** ($k(N) \\leq \\log N + C$), and **erdos_296_main** ($k(N)/\\log N \\to 1$). The complete asymptotic picture.",
-      "mathContext": "States **hunter_sawhney_lower** ($k(N) \\geq (1-\\varepsilon)\\log N$), **k_upper_bound** ($k(N) \\leq \\log N + C$), and **erdos_296_main** ($k(N)/\\log N \\to 1$). The complete asymptotic picture."
+      "mathContext": "Bound: States **hunter_sawhney_lower** ($k(N) \\geq (1-\\varepsilon)\\log N$), **k_upper_bound** ($k(N) \\leq \\log N + C$), and **erdos_296_main** ($k(N)/\\log N \\to 1$). The complete asymptotic picture."
     },
     {
       "id": "answer",
@@ -132,7 +132,7 @@
       "startLine": 138,
       "endLine": 173,
       "summary": "PROVES **k_not_sublogarithmic** ($k(N) \\neq o(\\log N)$, answering Erdős negatively) and **k_infinitely_often_large** (constructive corollary). These are genuine Lean proofs, not axioms.",
-      "mathContext": "PROVES **k_not_sublogarithmic** ($k(N) \\neq o(\\log N)$, answering Erdős negatively) and **k_infinitely_often_large** (constructive corollary). These are genuine Lean proofs, not axioms."
+      "mathContext": "Verified: PROVES **k_not_sublogarithmic** ($k(N) \\neq o(\\log N)$, answering Erdős negatively) and **k_infinitely_often_large** (constructive corollary). These are genuine Lean proofs, not axioms."
     }
   ],
   "overview": {

@@ -93,7 +93,7 @@
       "summary": "Problem documentation with references to Erdős–Lovász (1975); imports Mathlib's `SimpleGraph.Basic`, `Finset`, and `Real` modules; opens `Nat` and `Finset` namespaces",
       "startLine": 1,
       "endLine": 45,
-      "mathContext": "Problem documentation with references to Erdős–Lovász (1975); imports Mathlib's `SimpleGraph.Basic`, `Finset`, and `Real` modules; opens `Nat` and `Finset` namespaces"
+      "mathContext": "Mathematical content: Problem documentation with references to Erdős–Lovász (1975); imports Mathlib's `SimpleGraph.Basic`, `Finset`, and `Real` modules; opens `Nat` and `Finset` namespaces"
     },
     {
       "id": "hypergraph-definitions",
@@ -117,7 +117,7 @@
       "summary": "Defines $f(r) = \\inf\\{d : \\forall H \\in \\mathcal{H}_{r,3},\\; \\Delta(H) \\geq d\\}$ via `sInf`; axiomatizes $f(2) = 2$ (triangle) and $f(3) = 3$ (Fano plane $\\mathrm{PG}(2,2)$)",
       "startLine": 105,
       "endLine": 126,
-      "mathContext": "Defines $f(r) = \\inf\\{d : \\forall H \\in \\mathcal{H}_{r,3},\\; \\Delta(H) \\geq d\\}$ via `sInf`; axiomatizes $f(2) = 2$ (triangle) and $f(3) = 3$ (Fano plane $\\mathrm{PG}(2,2)$)"
+      "mathContext": "Formal definition: Defines $f(r) = \\inf\\{d : \\forall H \\in \\mathcal{H}_{r,3},\\; \\Delta(H) \\geq d\\}$ via `sInf`; axiomatizes $f(2) = 2$ (triangle) and $f(3) = 3$ (Fano plane $\\mathrm{PG}(2,2)$)"
     },
     {
       "id": "exponential-question",
@@ -125,7 +125,7 @@
       "summary": "Defines `ExponentialGrowthConjecture`: $\\exists c > 0,\\; \\forall r \\geq 2,\\; f(r) \\geq (1+c)^r$ — does the minimum max degree grow exponentially with uniformity?",
       "startLine": 127,
       "endLine": 136,
-      "mathContext": "Defines `ExponentialGrowthConjecture`: $\\exists c > 0,\\; \\forall r \\geq 2,\\; f(r) \\geq (1+c)^r$ — does the minimum max degree grow exponentially with uniformity?"
+      "mathContext": "Formal definition: Defines `ExponentialGrowthConjecture`: $\\exists c > 0,\\; \\forall r \\geq 2,\\; f(r) \\geq (1+c)^r$ — does the minimum max degree grow exponentially with uniformity?"
     },
     {
       "id": "erdos-lovasz",
@@ -141,7 +141,7 @@
       "summary": "**Proved** `exists_high_degree_vertex` from the Erdős–Lovász bound; axiomatizes `edge_lower_bound` ($|E| \\geq 2^{r-1}/(4r)$ for 3-chromatic $H$)",
       "startLine": 171,
       "endLine": 191,
-      "mathContext": "**Proved** `exists_high_degree_vertex` from the Erdős–Lovász bound; axiomatizes `edge_lower_bound` ($|E| \\geq 2^{r-1}/(4r)$ for 3-chromatic $H$)"
+      "mathContext": "**Proved** `exists_high_degree_vertex` from the Erdős–Lovász bound; axiomatizes `edge_lower_bound` ($|E| \\geq $$2^{{r-1}$}$/(4r)$ for 3-chromatic $H$)"
     },
     {
       "id": "specific-values",
@@ -149,7 +149,7 @@
       "summary": "Axiomatizes tight examples: `f_2_achieved` (triangle $K_3$ with $\\Delta = 2$, $\\chi = 3$) and `fano_plane_example` (Fano plane $\\mathrm{PG}(2,2)$: 7 vertices, 7 triples, $\\Delta = 3$, $\\chi = 3$)",
       "startLine": 192,
       "endLine": 207,
-      "mathContext": "Axiomatizes tight examples: `f_2_achieved` (triangle $K_3$ with $\\Delta = 2$, $\\chi = 3$) and `fano_plane_example` (Fano plane $\\mathrm{PG}(2,2)$: 7 vertices, 7 triples, $\\Delta = 3$, $\\chi = 3$)"
+      "mathContext": "Axiomatized: Axiomatizes tight examples: `f_2_achieved` (triangle $K_3$ with $\\Delta = 2$, $\\chi = 3$) and `fano_plane_example` (Fano plane $\\mathrm{PG}(2,2)$: 7 vertices, 7 triples, $\\Delta = 3$, $\\chi = 3$)"
     },
     {
       "id": "proof-technique",

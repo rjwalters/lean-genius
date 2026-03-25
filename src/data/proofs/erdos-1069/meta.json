@@ -82,7 +82,7 @@
       "summary": "Point, Line, onLine, pointsOnLine, incidenceCount definitions",
       "startLine": 37,
       "endLine": 63,
-      "mathContext": "Point, Line, onLine, pointsOnLine, incidenceCount definitions"
+      "mathContext": "Formal definition: Point, Line, onLine, pointsOnLine, incidenceCount definitions"
     },
     {
       "id": "k-rich-lines",
@@ -90,7 +90,7 @@
       "summary": "isKRich, kRichLines, numKRichLines definitions",
       "startLine": 64,
       "endLine": 80,
-      "mathContext": "isKRich, kRichLines, numKRichLines definitions"
+      "mathContext": "Formal definition: isKRich, kRichLines, numKRichLines definitions"
     },
     {
       "id": "total-incidences",
@@ -98,7 +98,7 @@
       "summary": "totalIncidences, incidencePairs, incidences_eq axiom",
       "startLine": 81,
       "endLine": 98,
-      "mathContext": "totalIncidences, incidencePairs, incidences_eq axiom"
+      "mathContext": "Axiomatized: totalIncidences, incidencePairs, incidences_eq axiom"
     },
     {
       "id": "szemeredi-trotter",
@@ -106,7 +106,7 @@
       "summary": "szTrBound function, szemeredi_trotter axiom, optimality axiom",
       "startLine": 99,
       "endLine": 118,
-      "mathContext": "szTrBound function, szemeredi_trotter axiom, optimality axiom"
+      "mathContext": "Axiomatized: szTrBound function, szemeredi_trotter axiom, optimality axiom"
     },
     {
       "id": "k-rich-bound",
@@ -114,7 +114,7 @@
       "summary": "kRichBound, kRich_incidences_lower, kRich_bound, erdos_1069 theorem",
       "startLine": 119,
       "endLine": 145,
-      "mathContext": "kRichBound, kRich_incidences_lower, kRich_bound, erdos_1069 theorem"
+      "mathContext": "Verified: kRichBound, kRich_incidences_lower, kRich_bound, erdos_1069 theorem"
     },
     {
       "id": "proof-strategy",
@@ -122,7 +122,7 @@
       "summary": "dyadicLines decomposition, dyadic_bound, dyadic_szTr axioms",
       "startLine": 146,
       "endLine": 168,
-      "mathContext": "dyadicLines decomposition, dyadic_bound, dyadic_szTr axioms"
+      "mathContext": "Axiomatized: dyadicLines decomposition, dyadic_bound, dyadic_szTr axioms"
     },
     {
       "id": "lower-bounds",
@@ -130,7 +130,7 @@
       "summary": "latticePoints, lattice_card, lattice_lower_bound axioms",
       "startLine": 169,
       "endLine": 186,
-      "mathContext": "latticePoints, lattice_card, lattice_lower_bound axioms"
+      "mathContext": "Axiomatized: latticePoints, lattice_card, lattice_lower_bound axioms"
     },
     {
       "id": "special-duality",
@@ -138,7 +138,7 @@
       "summary": "large_k_bound, dual_kRich_bound axioms",
       "startLine": 187,
       "endLine": 203,
-      "mathContext": "large_k_bound, dual_kRich_bound axioms"
+      "mathContext": "Axiomatized: large_k_bound, dual_kRich_bound axioms"
     },
     {
       "id": "summary",
@@ -146,7 +146,7 @@
       "summary": "erdos_1069_summary theorem",
       "startLine": 204,
       "endLine": 228,
-      "mathContext": "erdos_1069_summary theorem"
+      "mathContext": "Verified: erdos_1069_summary theorem"
     }
   ],
   "conclusion": {

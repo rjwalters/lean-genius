@@ -100,7 +100,7 @@
       "summary": "groundSet [m] as Fin m, isKUniform (k-uniform families), isTIntersecting (t-intersecting property), isIntersecting (t=1 specialization)",
       "startLine": 39,
       "endLine": 69,
-      "mathContext": "groundSet [m] as Fin m, isKUniform (k-uniform families), isTIntersecting (t-intersecting property), isIntersecting (t=1 specialization)"
+      "mathContext": "Mathematical content: groundSet [m] as Fin m, isKUniform (k-uniform families), isTIntersecting (t-intersecting property), isIntersecting (t=1 specialization)"
     },
     {
       "id": "ekr-background",
@@ -108,7 +108,7 @@
       "summary": "erdos_ko_rado_bound (classical EKR theorem, axiom), ekrStarFamily (star construction), ekr_achieved (tightness axiom)",
       "startLine": 70,
       "endLine": 96,
-      "mathContext": "erdos_ko_rado_bound (classical EKR theorem, axiom), ekrStarFamily (star construction), ekr_achieved (tightness axiom)"
+      "mathContext": "Verified: erdos_ko_rado_bound (classical EKR theorem, axiom), ekrStarFamily (star construction), ekr_achieved (tightness axiom)"
     },
     {
       "id": "problem-setup",
@@ -116,7 +116,7 @@
       "summary": "erdos83Params (4n, 2n, 2), isValidErdos83Family (uniformity + intersection constraints)",
       "startLine": 97,
       "endLine": 113,
-      "mathContext": "erdos83Params (4n, 2n, 2), isValidErdos83Family (uniformity + intersection constraints)"
+      "mathContext": "Mathematical content: erdos83Params (4n, 2n, 2), isValidErdos83Family (uniformity + intersection constraints)"
     },
     {
       "id": "conjectured-bound",
@@ -124,7 +124,7 @@
       "summary": "erdos83Bound = ½(C(4n,2n) - C(2n,n)²), erdos83Question (formal problem statement)",
       "startLine": 114,
       "endLine": 132,
-      "mathContext": "erdos83Bound = ½(C(4n,2n) - C(2n,n)²), erdos83Question (formal problem statement)"
+      "mathContext": "Bound: erdos83Bound = ½(C(4n,2n) - C(2n,n)²), erdos83Question (formal problem statement)"
     },
     {
       "id": "extremal-construction",
@@ -132,7 +132,7 @@
       "summary": "starLikeFamily (majority family), starLikeFamily_achieves and starLikeFamily_valid (axioms for tightness and validity)",
       "startLine": 133,
       "endLine": 157,
-      "mathContext": "starLikeFamily (majority family), starLikeFamily_achieves and starLikeFamily_valid (axioms for tightness and validity)"
+      "mathContext": "Axiomatized: starLikeFamily (majority family), starLikeFamily_achieves and starLikeFamily_valid (axioms for tightness and validity)"
     },
     {
       "id": "complete-intersection",
@@ -140,7 +140,7 @@
       "summary": "criticalRatio (phase transition parameter), akFamily (general AK construction), ahlswede_khachatrian_theorem (the landmark 1997 result, axiom)",
       "startLine": 158,
       "endLine": 189,
-      "mathContext": "criticalRatio (phase transition parameter), akFamily (general AK construction), ahlswede_khachatrian_theorem (the landmark 1997 result, axiom)"
+      "mathContext": "Verified: criticalRatio (phase transition parameter), akFamily (general AK construction), ahlswede_khachatrian_theorem (the landmark 1997 result, axiom)"
     },
     {
       "id": "resolution",
@@ -148,7 +148,7 @@
       "summary": "erdos83_from_ak (parameter specialization), erdos83_answer (main theorem proved from AK), reducing the problem to a corollary of the Complete Intersection Theorem",
       "startLine": 190,
       "endLine": 214,
-      "mathContext": "erdos83_from_ak (parameter specialization), erdos83_answer (main theorem proved from AK), reducing the problem to a corollary of the Complete Intersection Theorem"
+      "mathContext": "Verified: erdos83_from_ak (parameter specialization), erdos83_answer (main theorem proved from AK), reducing the problem to a corollary of the Complete Intersection Theorem"
     },
     {
       "id": "bound-computation",
@@ -156,7 +156,7 @@
       "summary": "Small cases (n=1: bound 0, n=2: bound 20) and asymptotic growth (≈ ½C(4n,2n) for large n)",
       "startLine": 215,
       "endLine": 234,
-      "mathContext": "Small cases (n=1: bound 0, n=2: bound 20) and asymptotic growth (≈ ½C(4n,2n) for large n)"
+      "mathContext": "Bound: Small cases (n=1: bound 0, n=2: bound 20) and asymptotic growth (≈ ½C(4n,2n) for large n)"
     },
     {
       "id": "implications",
@@ -164,7 +164,7 @@
       "summary": "Phase transitions in optimal families, coding theory connection (constant-weight codes), probabilistic and multipartite extensions",
       "startLine": 235,
       "endLine": 259,
-      "mathContext": "Phase transitions in optimal families, coding theory connection (constant-weight codes), probabilistic and multipartite extensions"
+      "mathContext": "Mathematical content: Phase transitions in optimal families, coding theory connection (constant-weight codes), probabilistic and multipartite extensions"
     },
     {
       "id": "summary",
@@ -172,7 +172,7 @@
       "summary": "erdos_83_summary (both directions: bound + tightness), erdos_83 (final theorem: erdos83Question holds for all n ≥ 1)",
       "startLine": 260,
       "endLine": 289,
-      "mathContext": "erdos_83_summary (both directions: bound + tightness), erdos_83 (final theorem: erdos83Question holds for all n ≥ 1)"
+      "mathContext": "erdos_83_summary (both directions: bound + tightness), erdos_83 (final theorem: erdos83Question holds for all n $\\geq$ 1)"
     }
   ],
   "conclusion": {

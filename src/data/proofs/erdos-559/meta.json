@@ -51,7 +51,7 @@
       "summary": "Documentation header with Beck-Erdős conjecture, DISPROVED status, known positive/negative results, upper bound progression, and references to Beck, Rödl-Szemerédi, Tikhomirov, Draganić-Petrova",
       "startLine": 1,
       "endLine": 47,
-      "mathContext": "Documentation header with Beck-Erdős conjecture, DISPROVED status, known positive/negative results, upper bound progression, and references to Beck, Rödl-Szemerédi, Tikhomirov, Draganić-Petrova"
+      "mathContext": "Bound: Documentation header with Beck-Erdős conjecture, DISPROVED status, known positive/negative results, upper bound progression, and references to Beck, Rödl-Szemerédi, Tikhomirov, Draganić-Petrova"
     },
     {
       "id": "basic-defs",
@@ -59,7 +59,7 @@
       "summary": "FiniteGraph structure with adj/symm/loopless/dec, edgeCount via filtered unordered pairs, degree via neighbor count, maxDegree via Finset.sup",
       "startLine": 48,
       "endLine": 72,
-      "mathContext": "FiniteGraph structure with adj/symm/loopless/dec, edgeCount via filtered unordered pairs, degree via neighbor count, maxDegree via Finset.sup"
+      "mathContext": "Formal definition: FiniteGraph structure with adj/symm/loopless/dec, edgeCount via filtered unordered pairs, degree via neighbor count, maxDegree via Finset.sup"
     },
     {
       "id": "ramsey",
@@ -67,7 +67,7 @@
       "summary": "IsRamseyFor via 2-colorings and monochromatic copies, sizeRamsey via Nat.find over minimum edges with Ramsey host",
       "startLine": 73,
       "endLine": 93,
-      "mathContext": "IsRamseyFor via 2-colorings and monochromatic copies, sizeRamsey via Nat.find over minimum edges with Ramsey host"
+      "mathContext": "Mathematical content: IsRamseyFor via 2-colorings and monochromatic copies, sizeRamsey via Nat.find over minimum edges with Ramsey host"
     },
     {
       "id": "conjecture",
@@ -75,7 +75,7 @@
       "summary": "beck_erdos_conjecture: R̂(G) ≤ c_d·n for Δ(G) ≤ d. beck_erdos_conjecture_false: negation proved by Rödl-Szemerédi (2000)",
       "startLine": 94,
       "endLine": 110,
-      "mathContext": "beck_erdos_conjecture: R̂(G) ≤ c_d·n for Δ(G) ≤ d. beck_erdos_conjecture_false: negation proved by Rödl-Szemerédi (2000)"
+      "mathContext": "beck_erdos_conjecture: R̂(G) $\\leq$ c_d·n for Δ(G) $\\leq$ d. beck_erdos_conjecture_false: negation proved by Rödl-Szemerédi (2000)"
     },
     {
       "id": "positive",
@@ -83,7 +83,7 @@
       "summary": "IsPath/IsTree/IsCycle definitions, beck_paths (1983), friedman_pippenger_trees (1987), haxell_kohayakawa_luczak_cycles (1995) — all proving R̂ = O(n)",
       "startLine": 111,
       "endLine": 151,
-      "mathContext": "IsPath/IsTree/IsCycle definitions, beck_paths (1983), friedman_pippenger_trees (1987), haxell_kohayakawa_luczak_cycles (1995) — all proving R̂ = O(n)"
+      "mathContext": "IsPath/IsTree/IsCycle definitions, beck_paths (1983), friedman_pippenger_trees (1987), haxell_kohayakawa_luczak_cycles (1995) — all proving R̂ = $O(n)$"
     },
     {
       "id": "counterexamples",
@@ -91,7 +91,7 @@
       "summary": "rodl_szemeredi_counterexample: R̂(G) ≥ cn(log n)^c for d=3. tikhomirov_improved_lower_bound: R̂(G) ≥ cn·exp(c√(log n))",
       "startLine": 152,
       "endLine": 172,
-      "mathContext": "rodl_szemeredi_counterexample: R̂(G) ≥ cn(log n)^c for d=3. tikhomirov_improved_lower_bound: R̂(G) ≥ cn·exp(c√(log n))"
+      "mathContext": "rodl_szemeredi_counterexample: R̂(G) $\\geq$ cn($\\log n$)^c for d=3. tikhomirov_improved_lower_bound: R̂(G) $\\geq$ cn·exp(c√($\\log n$))"
     },
     {
       "id": "upper-bounds",
@@ -99,7 +99,7 @@
       "summary": "kohayakawa_upper_bound n^{5/3+o(1)}, conlon_nenadov_trujic n^{8/5}, draganic_petrova_best n^{3/2+o(1)} (current best) — all via sparse regularity",
       "startLine": 173,
       "endLine": 201,
-      "mathContext": "kohayakawa_upper_bound n^{5/3+o(1)}, conlon_nenadov_trujic n^{8/5}, draganic_petrova_best n^{3/2+o(1)} (current best) — all via sparse regularity"
+      "mathContext": "Bound: kohayakawa_upper_bound n^{5/3+o(1)}, conlon_nenadov_trujic n^{8/5}, draganic_petrova_best n^{3/2+o(1)} (current best) — all via sparse regularity"
     },
     {
       "id": "open-question",
@@ -107,7 +107,7 @@
       "summary": "open_degree_3_question: tight growth rate for d=3 between n^{1+o(1)} and n^{3/2+o(1)}. Summary of DISPROVED status and remaining gap",
       "startLine": 202,
       "endLine": 237,
-      "mathContext": "open_degree_3_question: tight growth rate for d=3 between n^{1+o(1)} and n^{3/2+o(1)}. Summary of DISPROVED status and remaining gap"
+      "mathContext": "Mathematical content: open_degree_3_question: tight growth rate for d=3 between n^{1+o(1)} and n^{3/2+o(1)}. Summary of DISPROVED status and remaining gap"
     }
   ],
   "conclusion": {

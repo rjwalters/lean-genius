@@ -75,7 +75,7 @@
       "startLine": 73,
       "endLine": 105,
       "summary": "Constructs the Gaussian exponent ψ(t) = iμt - σ²t²/2, the Gaussian triplet (μ, σ², 0), proves normalization and continuity, and packages into an InfDivisible instance.",
-      "mathContext": "Constructs the Gaussian exponent ψ(t) = iμt - σ²t²/2, the Gaussian triplet (μ, σ², 0), proves normalization and continuity, and packages into an InfDivisible instance."
+      "mathContext": "Verified: Constructs the Gaussian exponent ψ(t) = iμt - σ²t²/2, the Gaussian triplet (μ, σ², 0), proves normalization and continuity, and packages into an InfDivisible instance."
     },
     {
       "id": "poisson-triplet",
@@ -83,7 +83,7 @@
       "startLine": 106,
       "endLine": 137,
       "summary": "Constructs the Poisson exponent ψ(t) = λ(e^{it} - 1), the Poisson triplet (0, 0, λ), proves normalization and continuity, and packages into an InfDivisible instance.",
-      "mathContext": "Constructs the Poisson exponent ψ(t) = λ(e^{it} - 1), the Poisson triplet (0, 0, λ), proves normalization and continuity, and packages into an InfDivisible instance."
+      "mathContext": "Verified: Constructs the Poisson exponent ψ(t) = λ(e^{it} - 1), the Poisson triplet (0, 0, λ), proves normalization and continuity, and packages into an InfDivisible instance."
     },
     {
       "id": "divisibility-properties",
@@ -91,7 +91,7 @@
       "startLine": 138,
       "endLine": 170,
       "summary": "Proves triplets add componentwise under independent sums, defines scaling, and establishes that drift, Gaussian variance, and Lévy measure each add independently.",
-      "mathContext": "Proves triplets add componentwise under independent sums, defines scaling, and establishes that drift, Gaussian variance, and Lévy measure each add independently."
+      "mathContext": "Formal definition: Proves triplets add componentwise under independent sums, defines scaling, and establishes that drift, Gaussian variance, and Lévy measure each add independently."
     },
     {
       "id": "stable-classification",
@@ -99,7 +99,7 @@
       "startLine": 171,
       "endLine": 201,
       "summary": "Defines the symmetric α-stable characteristic exponent ψ(t) = -c|t|^α, proves the normalization property, and states the fundamental scaling identity n·ψ(t/n^{1/α}) = ψ(t).",
-      "mathContext": "Defines the symmetric α-stable characteristic exponent ψ(t) = -c|t|^α, proves the normalization property, and states the fundamental scaling identity n·ψ(t/n^{1/α}) = ψ(t)."
+      "mathContext": "Formal definition: Defines the symmetric α-stable characteristic exponent ψ(t) = -c|t|^α, proves the normalization property, and states the fundamental scaling identity n·ψ(t/n^{1/α}) = ψ(t)."
     },
     {
       "id": "levy-ito-decomposition",
@@ -107,7 +107,7 @@
       "startLine": 202,
       "endLine": 239,
       "summary": "Defines the LevyItoDecomposition structure (drift + volatility + small jumps + large jumps), constructs it from a Lévy triplet, and proves Gaussian has no jumps and Poisson has no Gaussian component.",
-      "mathContext": "Defines the LevyItoDecomposition structure (drift + volatility + small jumps + large jumps), constructs it from a Lévy triplet, and proves Gaussian has no jumps and Poisson has no Gaussian component."
+      "mathContext": "Formal definition: Defines the LevyItoDecomposition structure (drift + volatility + small jumps + large jumps), constructs it from a Lévy triplet, and proves Gaussian has no jumps and Poisson has no Gaussian component."
     },
     {
       "id": "classification-theorems",
@@ -115,7 +115,7 @@
       "startLine": 240,
       "endLine": 265,
       "summary": "Proves that ν = 0 implies Gaussian and σ² = 0 implies compound Poisson. States the recovery formula σ² = lim_{t→0} -2ψ(t)/t² for extracting the Gaussian component.",
-      "mathContext": "Proves that ν = 0 implies Gaussian and σ² = 0 implies compound Poisson. States the recovery formula σ² = lim_{t→0} -2ψ(t)/t² for extracting the Gaussian component."
+      "mathContext": "Proves that ν = 0 implies Gaussian and σ² = 0 implies compound Poisson. States the recovery formula σ² = lim_{t$\\to$0} -2ψ(t)/t² for extracting the Gaussian component."
     },
     {
       "id": "moment-formulas",
@@ -123,7 +123,7 @@
       "startLine": 266,
       "endLine": 312,
       "summary": "Defines mean and variance in terms of the Lévy triplet, proves Gaussian variance = σ² and Poisson variance = λ, and establishes variance additivity under independent sums via ring.",
-      "mathContext": "Defines mean and variance in terms of the Lévy triplet, proves Gaussian variance = σ² and Poisson variance = λ, and establishes variance additivity under independent sums via ring."
+      "mathContext": "Formal definition: Defines mean and variance in terms of the Lévy triplet, proves Gaussian variance = σ² and Poisson variance = λ, and establishes variance additivity under independent sums via ring."
     }
   ],
   "conclusion": {

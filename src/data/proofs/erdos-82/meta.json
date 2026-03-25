@@ -89,7 +89,7 @@
       "startLine": 39,
       "endLine": 64,
       "summary": "Defines k-regular graphs and the notion of a graph being regular of some degree.",
-      "mathContext": "Defines k-regular graphs and the notion of a graph being regular of some degree."
+      "mathContext": "Formal definition: Defines k-regular graphs and the notion of a graph being regular of some degree."
     },
     {
       "id": "induced-subgraphs",
@@ -97,7 +97,7 @@
       "startLine": 65,
       "endLine": 84,
       "summary": "Constructs the induced subgraph G[S] for a finset S, as a SimpleGraph on S with inherited adjacency.",
-      "mathContext": "Constructs the induced subgraph G[S] for a finset S, as a SimpleGraph on S with inherited adjacency."
+      "mathContext": "Mathematical content: Constructs the induced subgraph G[S] for a finset S, as a SimpleGraph on S with inherited adjacency."
     },
     {
       "id": "regular-induced-size",
@@ -105,7 +105,7 @@
       "startLine": 85,
       "endLine": 114,
       "summary": "Defines the key predicate HasRegularInduced and the central function F(n) via sSup.",
-      "mathContext": "Defines the key predicate HasRegularInduced and the central function F(n) via sSup."
+      "mathContext": "Formal definition: Defines the key predicate HasRegularInduced and the central function F(n) via sSup."
     },
     {
       "id": "trivial-lower",
@@ -113,7 +113,7 @@
       "startLine": 115,
       "endLine": 142,
       "summary": "F(n) ≥ 1 for n ≥ 1, and cliques/independent sets are regular.",
-      "mathContext": "F(n) ≥ 1 for n ≥ 1, and cliques/independent sets are regular."
+      "mathContext": "F(n) $\\geq$ 1 for n $\\geq$ 1, and cliques/independent sets are regular."
     },
     {
       "id": "ramsey-lower",
@@ -121,7 +121,7 @@
       "startLine": 143,
       "endLine": 184,
       "summary": "Ramsey numbers, the classical R(k,k) ≤ 4^k bound, and the key consequence F(n) ≥ (1/2)log₂(n).",
-      "mathContext": "Ramsey numbers, the classical R(k,k) ≤ 4^k bound, and the key consequence F(n) ≥ (1/2)log₂(n)."
+      "mathContext": "Ramsey numbers, the classical R(k,k) $\\leq$ $4^{k}$ bound, and the key consequence F(n) $\\geq$ (1/2)log₂(n)."
     },
     {
       "id": "aks-upper",
@@ -129,7 +129,7 @@
       "startLine": 185,
       "endLine": 206,
       "summary": "The 2007 upper bound F(n) ≤ C·√n·(log n)^{O(1)} from probabilistic constructions.",
-      "mathContext": "The 2007 upper bound F(n) ≤ C·√n·(log n)^{O(1)} from probabilistic constructions."
+      "mathContext": "The 2007 upper bound F(n) $\\leq$ C·√n·($\\log n$)^{$O(1)$} from probabilistic constructions."
     },
     {
       "id": "small-values",
@@ -137,7 +137,7 @@
       "startLine": 207,
       "endLine": 243,
       "summary": "The inverse function G(k), exact values of F(n) for small n, and OEIS references.",
-      "mathContext": "The inverse function G(k), exact values of F(n) for small n, and OEIS references."
+      "mathContext": "Mathematical content: The inverse function G(k), exact values of F(n) for small n, and OEIS references."
     },
     {
       "id": "conjecture",
@@ -145,7 +145,7 @@
       "startLine": 244,
       "endLine": 275,
       "summary": "The formal conjecture F(n)/log(n) → ∞ in both Filter.Tendsto and explicit ε-N forms.",
-      "mathContext": "The formal conjecture F(n)/log(n) → ∞ in both Filter.Tendsto and explicit ε-N forms."
+      "mathContext": "The formal conjecture F(n)/log(n) $\\to$ ∞ in both Filter.Tendsto and explicit ε-N forms."
     },
     {
       "id": "connections",
@@ -153,7 +153,7 @@
       "startLine": 276,
       "endLine": 319,
       "summary": "Connections to Ramsey diagonal improvements, Erdős-Sauer problem, and random graph theory.",
-      "mathContext": "Connections to Ramsey diagonal improvements, Erdős-Sauer problem, and random graph theory."
+      "mathContext": "Mathematical content: Connections to Ramsey diagonal improvements, Erdős-Sauer problem, and random graph theory."
     },
     {
       "id": "summary",
@@ -161,7 +161,7 @@
       "startLine": 320,
       "endLine": 352,
       "summary": "Bounds summary theorem combining lower and upper bounds.",
-      "mathContext": "Bounds summary theorem combining lower and upper bounds."
+      "mathContext": "Verified: Bounds summary theorem combining lower and upper bounds."
     }
   ],
   "conclusion": {

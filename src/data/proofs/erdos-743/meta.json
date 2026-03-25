@@ -80,7 +80,7 @@
       "startLine": 37,
       "endLine": 65,
       "summary": "TreeType, TreeCollection, canPack, isStar, isPath, boundedDegreeCollection",
-      "mathContext": "TreeType, TreeCollection, canPack, isStar, isPath, boundedDegreeCollection"
+      "mathContext": "Bound: TreeType, TreeCollection, canPack, isStar, isPath, boundedDegreeCollection"
     },
     {
       "id": "edge-count",
@@ -88,7 +88,7 @@
       "startLine": 66,
       "endLine": 88,
       "summary": "totalTreeEdges, completeGraphEdges, edge_counts_match, concrete values",
-      "mathContext": "totalTreeEdges, completeGraphEdges, edge_counts_match, concrete values"
+      "mathContext": "Mathematical content: totalTreeEdges, completeGraphEdges, edge_counts_match, concrete values"
     },
     {
       "id": "conjecture",
@@ -96,7 +96,7 @@
       "startLine": 89,
       "endLine": 96,
       "summary": "treePackingConjecture formal statement",
-      "mathContext": "treePackingConjecture formal statement"
+      "mathContext": "Mathematical content: treePackingConjecture formal statement"
     },
     {
       "id": "gyarfas-lehel",
@@ -104,7 +104,7 @@
       "startLine": 97,
       "endLine": 112,
       "summary": "Stars case and stars/paths case axioms",
-      "mathContext": "Stars case and stars/paths case axioms"
+      "mathContext": "Axiomatized: Stars case and stars/paths case axioms"
     },
     {
       "id": "small-greedy",
@@ -112,7 +112,7 @@
       "startLine": 113,
       "endLine": 127,
       "summary": "fishburn_small_n, bollobas_greedy axioms",
-      "mathContext": "fishburn_small_n, bollobas_greedy axioms"
+      "mathContext": "Axiomatized: fishburn_small_n, bollobas_greedy axioms"
     },
     {
       "id": "bounded-degree",
@@ -120,7 +120,7 @@
       "startLine": 128,
       "endLine": 145,
       "summary": "jkko_boundedDegree, allen_sublinearDegree axioms",
-      "mathContext": "jkko_boundedDegree, allen_sublinearDegree axioms"
+      "mathContext": "Axiomatized: jkko_boundedDegree, allen_sublinearDegree axioms"
     },
     {
       "id": "large-trees",
@@ -128,7 +128,7 @@
       "startLine": 146,
       "endLine": 158,
       "summary": "janzerMontgomery_largeTrees axiom",
-      "mathContext": "janzerMontgomery_largeTrees axiom"
+      "mathContext": "Axiomatized: janzerMontgomery_largeTrees axiom"
     },
     {
       "id": "summary",
@@ -136,7 +136,7 @@
       "startLine": 159,
       "endLine": 173,
       "summary": "erdos_743_summary theorem",
-      "mathContext": "erdos_743_summary theorem"
+      "mathContext": "Verified: erdos_743_summary theorem"
     }
   ],
   "conclusion": {

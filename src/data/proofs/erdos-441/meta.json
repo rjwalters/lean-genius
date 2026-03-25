@@ -107,7 +107,7 @@
       "startLine": 88,
       "endLine": 101,
       "summary": "Formalizes ErdosQuestion as ∀ N ≥ 1, g(N) = |ErdosConstruction(N)|. This is a universal statement asking whether the construction is optimal for every N — a strong claim that turns out to be false.",
-      "mathContext": "Formalizes ErdosQuestion as ∀ N ≥ 1, g(N) = |ErdosConstruction(N)|. This is a universal statement asking whether the construction is optimal for every N — a strong claim that turns out to be false."
+      "mathContext": "Formalizes ErdosQuestion as ∀ N $\\geq$ 1, g(N) = |ErdosConstruction(N)|. This is a universal statement asking whether the construction is optimal for every N — a strong claim that turns out to be false."
     },
     {
       "id": "lower-bounds",
@@ -163,7 +163,7 @@
       "startLine": 215,
       "endLine": 240,
       "summary": "Derives the constant 9/8 algebraically: √(N/2) + (1/2)(√(2N) - √(N/2)) = (3/(2√2))√N = √(9N/8). The identity √(9/8) = 3/(2√2) ≈ 1.0607 is formally verified via ring_nf and norm_num in constant_value.",
-      "mathContext": "Derives the constant 9/8 algebraically: √(N/2) + (1/2)(√(2N) - √(N/2)) = (3/(2√2))√N = √(9N/8). The identity √(9/8) = 3/(2√2) ≈ 1.0607 is formally verified via ring_nf and norm_num in constant_value."
+      "mathContext": "Derives the constant 9/8 algebraically: √(N/2) + (1/2)(√(2N) - √(N/2)) = (3/(2$\\sqrt{2}$))√N = √(9N/8). The identity √(9/8) = 3/(2$\\sqrt{2}$) ≈ 1.0607 is formally verified via ring_nf and norm_num in constant_value."
     },
     {
       "id": "summary",

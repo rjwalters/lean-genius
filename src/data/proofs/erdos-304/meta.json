@@ -78,7 +78,7 @@
       "startLine": 1,
       "endLine": 19,
       "summary": "Problem statement, known bounds (Erdős 1950, Vose 1985), and the open question about matching upper and lower bounds.",
-      "mathContext": "Problem statement, known bounds (Erdős 1950, Vose 1985), and the open question about matching upper and lower bounds."
+      "mathContext": "Bound: Problem statement, known bounds (Erdős 1950, Vose 1985), and the open question about matching upper and lower bounds."
     },
     {
       "id": "background",
@@ -86,7 +86,7 @@
       "startLine": 31,
       "endLine": 42,
       "summary": "Historical context on Egyptian fractions as sums of distinct unit fractions.",
-      "mathContext": "Historical context on Egyptian fractions as sums of distinct unit fractions."
+      "mathContext": "Mathematical content: Historical context on Egyptian fractions as sums of distinct unit fractions."
     },
     {
       "id": "core-definitions",
@@ -94,7 +94,7 @@
       "startLine": 43,
       "endLine": 69,
       "summary": "Defines unitFractionExpressible, smallestCollection (N(a,b)), and smallestCollectionMax (N(b)).",
-      "mathContext": "Defines unitFractionExpressible, smallestCollection (N(a,b)), and smallestCollectionMax (N(b))."
+      "mathContext": "Formal definition: Defines unitFractionExpressible, smallestCollection (N(a,b)), and smallestCollectionMax (N(b))."
     },
     {
       "id": "basic-properties",
@@ -102,7 +102,7 @@
       "startLine": 70,
       "endLine": 96,
       "summary": "Properties of N(a,b) including the example N(2,15) = 2.",
-      "mathContext": "Properties of N(a,b) including the example N(2,15) = 2."
+      "mathContext": "Mathematical content: Properties of N(a,b) including the example N(2,15) = 2."
     },
     {
       "id": "bounds",
@@ -110,7 +110,7 @@
       "startLine": 97,
       "endLine": 132,
       "summary": "Erdős (1950) lower/upper bounds and Vose (1985) improvement.",
-      "mathContext": "Erdős (1950) lower/upper bounds and Vose (1985) improvement."
+      "mathContext": "Bound: Erdős (1950) lower/upper bounds and Vose (1985) improvement."
     },
     {
       "id": "open-question",
@@ -118,7 +118,7 @@
       "startLine": 133,
       "endLine": 151,
       "summary": "Statement of the main conjecture: Is N(b) ≪ log log b?",
-      "mathContext": "Statement of the main conjecture: Is N(b) ≪ log log b?"
+      "mathContext": "Mathematical content: Statement of the main conjecture: Is N(b) ≪ log log b?"
     },
     {
       "id": "average-case",
@@ -126,7 +126,7 @@
       "startLine": 152,
       "endLine": 174,
       "summary": "Average of N(a,b) over all numerators is also Ω(log log b).",
-      "mathContext": "Average of N(a,b) over all numerators is also Ω(log log b)."
+      "mathContext": "Mathematical content: Average of N(a,b) over all numerators is also Ω(log log b)."
     },
     {
       "id": "special-case",
@@ -134,7 +134,7 @@
       "startLine": 175,
       "endLine": 188,
       "summary": "Connection to Erdős Problem #293 via representations of (b-1)/b.",
-      "mathContext": "Connection to Erdős Problem #293 via representations of (b-1)/b."
+      "mathContext": "Mathematical content: Connection to Erdős Problem #293 via representations of (b-1)/b."
     },
     {
       "id": "algorithmic",
@@ -142,7 +142,7 @@
       "startLine": 189,
       "endLine": 201,
       "summary": "The greedy algorithm uses O(log b) terms - worse than optimal.",
-      "mathContext": "The greedy algorithm uses O(log b) terms - worse than optimal."
+      "mathContext": "The greedy algorithm uses $O(log b)$ terms - worse than optimal."
     },
     {
       "id": "summary",
@@ -150,7 +150,7 @@
       "startLine": 202,
       "endLine": 238,
       "summary": "Summary theorem combining known lower and upper bounds.",
-      "mathContext": "Summary theorem combining known lower and upper bounds."
+      "mathContext": "Verified: Summary theorem combining known lower and upper bounds."
     }
   ],
   "conclusion": {

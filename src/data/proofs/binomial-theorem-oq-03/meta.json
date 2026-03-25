@@ -100,7 +100,7 @@
       "startLine": 25,
       "endLine": 45,
       "summary": "Defines $\\text{binomPMF}(n, p, k) = \\binom{n}{k} p^k (1-p)^{n-k}$ as a real-valued function. Proves boundary values $P(0) = (1-p)^n$, $P(n) = p^n$, and non-negativity $P(k) \\geq 0$ for $p \\in [0,1]$.",
-      "mathContext": "Defines $\\text{binomPMF}(n, p, k) = \\binom{n}{k} p^k (1-p)^{n-k}$ as a real-valued function. Proves boundary values $P(0) = (1-p)^n$, $P(n) = p^n$, and non-negativity $P(k) \\geq 0$ for $p \\in [0,1]$."
+      "mathContext": "Formal definition: Defines $\\text{binomPMF}(n, p, k) = \\binom{n}{k} p^k (1-p)^{n-k}$ as a real-valued function. Proves boundary values $P(0) = (1-p)^n$, $P(n) = p^n$, and non-negativity $P(k) \\geq 0$ for $p \\in [0,1]$."
     },
     {
       "id": "normalization",
@@ -108,7 +108,7 @@
       "startLine": 46,
       "endLine": 65,
       "summary": "Proves $\\sum_{k=0}^{n} \\text{PMF}(k) = 1$ by substituting $q = 1-p$ into the binomial expansion $(p+q)^n$, giving $(p + (1-p))^n = 1^n = 1$. Also shows the sum is independent of $p$.",
-      "mathContext": "Proves $\\sum_{k=0}^{n} \\text{PMF}(k) = 1$ by substituting $q = 1-p$ into the binomial expansion $(p+q)^n$, giving $(p + (1-p))^n = 1^n = 1$. Also shows the sum is independent of $p$."
+      "mathContext": "Proves $\\sum_{k=0}^{n} \\text{PMF}(k) = 1$ by substituting $q = 1-p$ into the binomial expansion $(p+q)^n$, giving $(p + (1-p))^n = $1^{n}$ = 1$. Also shows the sum is independent of $p$."
     },
     {
       "id": "symmetry",
@@ -116,7 +116,7 @@
       "startLine": 66,
       "endLine": 74,
       "summary": "Proves $P(k; n, p) = P(n-k; n, 1-p)$ for $k \\leq n$, using the symmetry $\\binom{n}{k} = \\binom{n}{n-k}$. Swapping success and failure probabilities reflects the distribution.",
-      "mathContext": "Proves $P(k; n, p) = P(n-k; n, 1-p)$ for $k \\leq n$, using the symmetry $\\binom{n}{k} = \\binom{n}{n-k}$. Swapping success and failure probabilities reflects the distribution."
+      "mathContext": "Verified: Proves $P(k; n, p) = P(n-k; n, 1-p)$ for $k \\leq n$, using the symmetry $\\binom{n}{k} = \\binom{n}{n-k}$. Swapping success and failure probabilities reflects the distribution."
     },
     {
       "id": "mean",
@@ -132,7 +132,7 @@
       "startLine": 129,
       "endLine": 162,
       "summary": "Four concrete instances: **fair coin** $P(k) = \\binom{n}{k}/2^n$, **Bernoulli** $P(1; 1, p) = p$ and $P(0; 1, p) = 1-p$, **certain event** $P(n; n, 1) = 1$, and **impossible event** $P(0; n, 0) = 1$.",
-      "mathContext": "Four concrete instances: **fair coin** $P(k) = \\binom{n}{k}/2^n$, **Bernoulli** $P(1; 1, p) = p$ and $P(0; 1, p) = 1-p$, **certain event** $P(n; n, 1) = 1$, and **impossible event** $P(0; n, 0) = 1$."
+      "mathContext": "Four concrete instances: **fair coin** $P(k) = \\binom{n}{k}/$2^{n}$$, **Bernoulli** $P(1; 1, p) = p$ and $P(0; 1, p) = 1-p$, **certain event** $P(n; n, 1) = 1$, and **impossible event** $P(0; n, 0) = 1$."
     },
     {
       "id": "monotonicity",
@@ -140,7 +140,7 @@
       "startLine": 163,
       "endLine": 172,
       "summary": "The mean $np$ is monotone in $p$: if $p \\leq q$ then $np \\leq nq$. A simple consequence of $n \\geq 0$.",
-      "mathContext": "The mean $np$ is monotone in $p$: if $p \\leq q$ then $np \\leq nq$. A simple consequence of $n \\geq 0$."
+      "mathContext": "Mathematical content: The mean $np$ is monotone in $p$: if $p \\leq q$ then $np \\leq nq$. A simple consequence of $n \\geq 0$."
     },
     {
       "id": "pgf",
@@ -148,7 +148,7 @@
       "startLine": 173,
       "endLine": 208,
       "summary": "Proves $E[t^X] = (pt + 1-p)^n$ by replacing $p$ with $pt$ in the binomial expansion. Verifies: PGF at $t=1$ recovers normalization ($=1$), and the formal derivative at $t=1$ gives the mean $np$.",
-      "mathContext": "Proves $E[t^X] = (pt + 1-p)^n$ by replacing $p$ with $pt$ in the binomial expansion. Verifies: PGF at $t=1$ recovers normalization ($=1$), and the formal derivative at $t=1$ gives the mean $np$."
+      "mathContext": "Verified: Proves $E[t^X] = (pt + 1-p)^n$ by replacing $p$ with $pt$ in the binomial expansion. Verifies: PGF at $t=1$ recovers normalization ($=1$), and the formal derivative at $t=1$ gives the mean $np$."
     },
     {
       "id": "second-factorial-moment",
@@ -156,7 +156,7 @@
       "startLine": 209,
       "endLine": 269,
       "summary": "Proves double absorption $(k+2)(k+1)\\binom{n+2}{k+2} = (n+2)(n+1)\\binom{n}{k}$, giving $E[X(X-1)] = n(n-1)p^2$. Then derives $\\text{Var}(X) = E[X^2] - (E[X])^2 = n(n-1)p^2 + np - n^2p^2 = np(1-p)$.",
-      "mathContext": "Proves double absorption $(k+2)(k+1)\\binom{n+2}{k+2} = (n+2)(n+1)\\binom{n}{k}$, giving $E[X(X-1)] = n(n-1)p^2$. Then derives $\\text{Var}(X) = E[X^2] - (E[X])^2 = n(n-1)p^2 + np - n^2p^2 = np(1-p)$."
+      "mathContext": "Proves double absorption $(k+2)(k+1)\\binom{n+2}{k+2} = (n+2)(n+1)\\binom{n}{k}$, giving $E[X(X-1)] = n(n-1)$p^{2}$$. Then derives $\\text{Var}(X) = E[X^2] - (E[X])^2 = n(n-1)$p^{2}$ + np - $n^{2}$$p^{2}$ = np(1-p)$."
     },
     {
       "id": "convolution",

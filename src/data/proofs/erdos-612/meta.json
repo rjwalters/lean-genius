@@ -86,7 +86,7 @@
       "summary": "Axiomatizes the Erdős-Pach-Pollack-Tuza (1989) result: $D \\le 3n/(d+1) + C$ for any connected graph. This coefficient 3 is the baseline all clique-free improvements aim to beat.",
       "startLine": 51,
       "endLine": 61,
-      "mathContext": "Axiomatizes the Erdős-Pach-Pollack-Tuza (1989) result: $D \\le 3n/(d+1) + C$ for any connected graph. This coefficient 3 is the baseline all clique-free improvements aim to beat."
+      "mathContext": "Axiomatized: Axiomatizes the Erdős-Pach-Pollack-Tuza (1989) result: $D \\le 3n/(d+1) + C$ for any connected graph. This coefficient 3 is the baseline all clique-free improvements aim to beat."
     },
     {
       "id": "original-conjecture1",
@@ -102,7 +102,7 @@
       "summary": "Defines $\\alpha_{2r+1} = (3r-1)/r$ and `OriginalConjecture2 r`: $K_{2r+1}$-free $\\implies D \\le \\alpha_{2r+1} \\cdot n/d + O(1)$. Also **DISPROVED** for $r \\ge 2$.",
       "startLine": 83,
       "endLine": 103,
-      "mathContext": "Defines $\\alpha_{2r+1} = (3r-1)/r$ and `OriginalConjecture2 r`: $K_{2r+1}$-free $\\implies D \\le \\alpha_{2r+1} \\cdot n/d + O(1)$. Also **DISPROVED** for $r \\ge 2$."
+      "mathContext": "Defines $\\alpha_{2r+1} = (3r-1)/r$ and `OriginalConjecture2 r`: $K_{2r+1}$-free $\\implies D \\le \\alpha_{2r+1} \\cdot n/d + $O(1)$$. Also **DISPROVED** for $r \\ge 2$."
     },
     {
       "id": "counterexamples",
@@ -118,7 +118,7 @@
       "summary": "Axiomatizes `triangle_free_diameter`: $K_3$-free $\\implies D \\le 5n/(2d) + O(1)$, coefficient $5/2 = 2.5 < 3$. States `conjecture1_base_case`: OriginalConjecture1(1) holds (sorry).",
       "startLine": 125,
       "endLine": 140,
-      "mathContext": "Axiomatizes `triangle_free_diameter`: $K_3$-free $\\implies D \\le 5n/(2d) + O(1)$, coefficient $5/2 = 2.5 < 3$. States `conjecture1_base_case`: OriginalConjecture1(1) holds (sorry)."
+      "mathContext": "Axiomatizes `triangle_free_diameter`: $K_3$-free $\\implies D \\le 5n/(2d) + $O(1)$$, coefficient $5/2 = 2.5 < 3$. States `conjecture1_base_case`: OriginalConjecture1(1) holds (sorry)."
     },
     {
       "id": "amended-conjecture",

@@ -135,7 +135,7 @@
       "startLine": 25,
       "endLine": 35,
       "summary": "Imports Mathlib's $\\sigma_k$ arithmetic function, irrationality definition, infinite sum infrastructure, and opens the `ArithmeticFunction` namespace.",
-      "mathContext": "Imports Mathlib's $\\sigma_k$ arithmetic function, irrationality definition, infinite sum infrastructure, and opens the `ArithmeticFunction` namespace."
+      "mathContext": "Formal definition: Imports Mathlib's $\\sigma_k$ arithmetic function, irrationality definition, infinite sum infrastructure, and opens the `ArithmeticFunction` namespace."
     },
     {
       "id": "definitions",
@@ -143,7 +143,7 @@
       "startLine": 36,
       "endLine": 49,
       "summary": "Defines `divisorPowerSum(k)` as the infinite series $\\sum_{n=1}^{\\infty} \\sigma_k(n)/n!$ using Mathlib's `tsum` and the `sigma` arithmetic function.",
-      "mathContext": "Defines `divisorPowerSum(k)` as the infinite series $\\sum_{n=1}^{\\infty} \\sigma_k(n)/n!$ using Mathlib's `tsum` and the `sigma` arithmetic function."
+      "mathContext": "Formal definition: Defines `divisorPowerSum(k)` as the infinite series $\\sum_{n=1}^{\\infty} \\sigma_k(n)/n!$ using Mathlib's `tsum` and the `sigma` arithmetic function."
     },
     {
       "id": "proved-cases",
@@ -151,7 +151,7 @@
       "startLine": 50,
       "endLine": 85,
       "summary": "Axiomatizes irrationality of $\\sum \\sigma_k(n)/n!$ for each $k \\in \\{0,1,2,3,4\\}$ with historical attributions, then consolidates into `erdos_252_le_4` using `interval_cases`.",
-      "mathContext": "Axiomatizes irrationality of $\\sum \\sigma_k(n)/n!$ for each $k \\in \\{0,1,2,3,4\\}$ with historical attributions, then consolidates into `erdos_252_le_4` using `interval_cases`."
+      "mathContext": "Axiomatized: Axiomatizes irrationality of $\\sum \\sigma_k(n)/n!$ for each $k \\in \\{0,1,2,3,4\\}$ with historical attributions, then consolidates into `erdos_252_le_4` using `interval_cases`."
     },
     {
       "id": "open-conjecture",
@@ -159,7 +159,7 @@
       "startLine": 86,
       "endLine": 102,
       "summary": "Defines `Erdos252Conjecture` ($\\forall k \\geq 1$, irrationality holds) and `Erdos252Open` (the unresolved case $k \\geq 5$).",
-      "mathContext": "Defines `Erdos252Conjecture` ($\\forall k \\geq 1$, irrationality holds) and `Erdos252Open` (the unresolved case $k \\geq 5$)."
+      "mathContext": "Formal definition: Defines `Erdos252Conjecture` ($\\forall k \\geq 1$, irrationality holds) and `Erdos252Open` (the unresolved case $k \\geq 5$)."
     },
     {
       "id": "schinzel",
@@ -175,7 +175,7 @@
       "startLine": 128,
       "endLine": 138,
       "summary": "Formalizes the Hardy-Littlewood prime $k$-tuples conjecture on admissible linear forms, and axiomatizes the implication for $k \\geq 4$ (Friedlander-Luca-Stoiciu 2007).",
-      "mathContext": "Formalizes the Hardy-Littlewood prime $k$-tuples conjecture on admissible linear forms, and axiomatizes the implication for $k \\geq 4$ (Friedlander-Luca-Stoiciu 2007)."
+      "mathContext": "Axiomatized: Formalizes the Hardy-Littlewood prime $k$-tuples conjecture on admissible linear forms, and axiomatizes the implication for $k \\geq 4$ (Friedlander-Luca-Stoiciu 2007)."
     },
     {
       "id": "computations",
@@ -183,7 +183,7 @@
       "startLine": 139,
       "endLine": 155,
       "summary": "Verified examples: $\\sigma_0(1) = 1$, $\\sigma_1(6) = 12$ (confirming 6 is perfect), $\\sigma_0(6) = 4$, $\\sigma_2(2) = 5$, using `decide` and `native_decide`.",
-      "mathContext": "Verified examples: $\\sigma_0(1) = 1$, $\\sigma_1(6) = 12$ (confirming 6 is perfect), $\\sigma_0(6) = 4$, $\\sigma_2(2) = 5$, using `decide` and `native_decide`."
+      "mathContext": "Mathematical content: Verified examples: $\\sigma_0(1) = 1$, $\\sigma_1(6) = 12$ (confirming 6 is perfect), $\\sigma_0(6) = 4$, $\\sigma_2(2) = 5$, using `decide` and `native_decide`."
     },
     {
       "id": "sigma-prime",
@@ -191,7 +191,7 @@
       "startLine": 156,
       "endLine": 162,
       "summary": "Axiomatizes $\\sigma_k(p) = 1 + p^k$ for prime $p$, since the only divisors are $1$ and $p$.",
-      "mathContext": "Axiomatizes $\\sigma_k(p) = 1 + p^k$ for prime $p$, since the only divisors are $1$ and $p$."
+      "mathContext": "Axiomatized: Axiomatizes $\\sigma_k(p) = 1 + p^k$ for prime $p$, since the only divisors are $1$ and $p$."
     },
     {
       "id": "convergence",
@@ -199,7 +199,7 @@
       "startLine": 163,
       "endLine": 182,
       "summary": "Axiomatizes the upper bound $\\sigma_k(n) \\leq n^{k+1}$ and summability of the series via comparison with $\\sum n^{k+1}/n!$.",
-      "mathContext": "Axiomatizes the upper bound $\\sigma_k(n) \\leq n^{k+1}$ and summability of the series via comparison with $\\sum n^{k+1}/n!$."
+      "mathContext": "Axiomatized: Axiomatizes the upper bound $\\sigma_k(n) \\leq n^{k+1}$ and summability of the series via comparison with $\\sum n^{k+1}/n!$."
     },
     {
       "id": "summary-checks",
@@ -207,7 +207,7 @@
       "startLine": 183,
       "endLine": 204,
       "summary": "Recapitulates known results and open cases, with `#check` commands verifying the main definitions and theorems typecheck.",
-      "mathContext": "Recapitulates known results and open cases, with `#check` commands verifying the main definitions and theorems typecheck."
+      "mathContext": "Formal definition: Recapitulates known results and open cases, with `#check` commands verifying the main definitions and theorems typecheck."
     }
   ],
   "conclusion": {

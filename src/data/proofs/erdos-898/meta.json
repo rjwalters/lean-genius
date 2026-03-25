@@ -77,7 +77,7 @@
       "startLine": 1,
       "endLine": 29,
       "summary": "File header with problem statement, history (Erdos 1935, Mordell 1937), status (SOLVED). Imports all of Mathlib. Declares `Erdos898` namespace.",
-      "mathContext": "File header with problem statement, history (Erdos 1935, Mordell 1937), status (SOLVED). Imports all of Mathlib. Declares `Erdos898` namespace."
+      "mathContext": "Mathematical content: File header with problem statement, history (Erdos 1935, Mordell 1937), status (SOLVED). Imports all of Mathlib. Declares `Erdos898` namespace."
     },
     {
       "id": "sec-898-points",
@@ -85,7 +85,7 @@
       "startLine": 30,
       "endLine": 49,
       "summary": "Defines `Point` as `EuclideanSpace ℝ (Fin 2)`, `dist` as Euclidean norm, `IsTriangle` via non-collinearity, and `IsInteriorPoint` (sorry) for convex hull interior.",
-      "mathContext": "Defines `Point` as `EuclideanSpace ℝ (Fin 2)`, `dist` as Euclidean norm, `IsTriangle` via non-collinearity, and `IsInteriorPoint` (sorry) for convex hull interior."
+      "mathContext": "Defines `Point` as `EuclideanSpace $\\mathbb{R}$ (Fin 2)`, `dist` as Euclidean norm, `IsTriangle` via non-collinearity, and `IsInteriorPoint` (sorry) for convex hull interior."
     },
     {
       "id": "sec-898-perp",
@@ -93,7 +93,7 @@
       "startLine": 50,
       "endLine": 76,
       "summary": "Defines `perpendicularFoot` (orthogonal projection, sorry), `distToLine` (perpendicular distance), and `PerpendicularFeet` structure with feet $X, Y, Z$ on sides $BC, CA, AB$.",
-      "mathContext": "Defines `perpendicularFoot` (orthogonal projection, sorry), `distToLine` (perpendicular distance), and `PerpendicularFeet` structure with feet $X, Y, Z$ on sides $BC, CA, AB$."
+      "mathContext": "Formal definition: Defines `perpendicularFoot` (orthogonal projection, sorry), `distToLine` (perpendicular distance), and `PerpendicularFeet` structure with feet $X, Y, Z$ on sides $BC, CA, AB$."
     },
     {
       "id": "sec-898-inequality",
@@ -101,7 +101,7 @@
       "startLine": 77,
       "endLine": 101,
       "summary": "Defines `vertexDistanceSum` ($PA + PB + PC$), `sideDistanceSum` ($PX + PY + PZ$), `ErdosMordellInequality` ($\\ge 2 \\times$), and axiomatizes the theorem.",
-      "mathContext": "Defines `vertexDistanceSum` ($PA + PB + PC$), `sideDistanceSum` ($PX + PY + PZ$), `ErdosMordellInequality` ($\\ge 2 \\times$), and axiomatizes the theorem."
+      "mathContext": "Formal definition: Defines `vertexDistanceSum` ($PA + PB + PC$), `sideDistanceSum` ($PX + PY + PZ$), `ErdosMordellInequality` ($\\ge 2 \\times$), and axiomatizes the theorem."
     },
     {
       "id": "sec-898-equality",
@@ -109,7 +109,7 @@
       "startLine": 102,
       "endLine": 129,
       "summary": "Defines `IsEquilateral`, `centroid`, `incenter` (sorry). Axiomatizes center coincidence for equilateral and the biconditional equality condition.",
-      "mathContext": "Defines `IsEquilateral`, `centroid`, `incenter` (sorry). Axiomatizes center coincidence for equilateral and the biconditional equality condition."
+      "mathContext": "Formal definition: Defines `IsEquilateral`, `centroid`, `incenter` (sorry). Axiomatizes center coincidence for equilateral and the biconditional equality condition."
     },
     {
       "id": "sec-898-alt",
@@ -117,7 +117,7 @@
       "startLine": 130,
       "endLine": 154,
       "summary": "Defines `ErdosMordellAlt` (scalar form) and axiomatizes the weighted Erdos-Mordell inequality with side-length weights.",
-      "mathContext": "Defines `ErdosMordellAlt` (scalar form) and axiomatizes the weighted Erdos-Mordell inequality with side-length weights."
+      "mathContext": "Formal definition: Defines `ErdosMordellAlt` (scalar form) and axiomatizes the weighted Erdos-Mordell inequality with side-length weights."
     },
     {
       "id": "sec-898-proofs",
@@ -125,7 +125,7 @@
       "startLine": 155,
       "endLine": 176,
       "summary": "Axiomatizes four independent proofs: Mordell (1937, trigonometric), Barrow (1937, elementary), Kazarinoff (1957, law of cosines), Bankoff (1958, elegant).",
-      "mathContext": "Axiomatizes four independent proofs: Mordell (1937, trigonometric), Barrow (1937, elementary), Kazarinoff (1957, law of cosines), Bankoff (1958, elegant)."
+      "mathContext": "Verified: Axiomatizes four independent proofs: Mordell (1937, trigonometric), Barrow (1937, elementary), Kazarinoff (1957, law of cosines), Bankoff (1958, elegant)."
     },
     {
       "id": "sec-898-general",
@@ -133,7 +133,7 @@
       "startLine": 177,
       "endLine": 194,
       "summary": "States `ErdosMordellTetrahedron` (3D generalization, sorry) and `erdos_mordell_polygon` (regular $n$-gons, sorry).",
-      "mathContext": "States `ErdosMordellTetrahedron` (3D generalization, sorry) and `erdos_mordell_polygon` (regular $n$-gons, sorry)."
+      "mathContext": "Mathematical content: States `ErdosMordellTetrahedron` (3D generalization, sorry) and `erdos_mordell_polygon` (regular $n$-gons, sorry)."
     },
     {
       "id": "sec-898-related",
@@ -141,7 +141,7 @@
       "startLine": 195,
       "endLine": 221,
       "summary": "States triangle inequality (sorry), Viviani's theorem (equilateral constant sum), and Weitzenbock inequality ($a^2 + b^2 + c^2 \\ge 4\\sqrt{3}S$).",
-      "mathContext": "States triangle inequality (sorry), Viviani's theorem (equilateral constant sum), and Weitzenbock inequality ($a^2 + b^2 + c^2 \\ge 4\\sqrt{3}S$)."
+      "mathContext": "Verified: States triangle inequality (sorry), Viviani's theorem (equilateral constant sum), and Weitzenbock inequality ($a^2 + b^2 + c^2 \\ge 4\\sqrt{3}S$)."
     },
     {
       "id": "sec-898-main",
@@ -149,7 +149,7 @@
       "startLine": 222,
       "endLine": 251,
       "summary": "States `erdos_898` (main theorem via axiom), records problem year (1935) and solution year (1937). Erdos Problem #898 is SOLVED.",
-      "mathContext": "States `erdos_898` (main theorem via axiom), records problem year (1935) and solution year (1937). Erdos Problem #898 is SOLVED."
+      "mathContext": "Verified: States `erdos_898` (main theorem via axiom), records problem year (1935) and solution year (1937). Erdos Problem #898 is SOLVED."
     }
   ],
   "conclusion": {

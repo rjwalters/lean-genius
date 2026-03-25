@@ -92,7 +92,7 @@
       "startLine": 57,
       "endLine": 101,
       "summary": "K_0(Var) as CommRing with Lefschetz motive L, affine and projective class formulas with geometric series proof.",
-      "mathContext": "K_0(Var) as CommRing with Lefschetz motive L, affine and projective class formulas with geometric series proof."
+      "mathContext": "The Grothendieck ring $K_0(\\mathrm{Var})$ is defined as a $\\mathrm{CommRing}$ with Lefschetz motive $\\mathbb{L} = [\\mathbb{A}^1]$. Affine space has class $[\\mathbb{A}^n] = \\mathbb{L}^n$ and projective space $[\\mathbb{P}^n] = 1 + \\mathbb{L} + \\cdots + \\mathbb{L}^n = \\frac{\\mathbb{L}^{n+1}-1}{\\mathbb{L}-1}$."
     },
     {
       "id": "gln-class",
@@ -100,7 +100,7 @@
       "startLine": 102,
       "endLine": 150,
       "summary": "Explicit GL_n formula via Bruhat decomposition with GL_1 through GL_4 theorems proved.",
-      "mathContext": "Explicit GL_n formula via Bruhat decomposition with GL_1 through GL_4 theorems proved."
+      "mathContext": "The motivic class of $\\mathrm{GL}_n$ is $[\\mathrm{GL}_n] = \\prod_{i=0}^{n-1}(\\mathbb{L}^n - \\mathbb{L}^i) = \\mathbb{L}^{n(n-1)/2} \\prod_{i=1}^{n}(\\mathbb{L}^i - 1)$, derived from the Bruhat decomposition. Explicit values: $[\\mathrm{GL}_1] = \\mathbb{L} - 1$, $[\\mathrm{GL}_2] = \\mathbb{L}(\\mathbb{L}-1)(\\mathbb{L}^2-1)$."
     },
     {
       "id": "flag-varieties",
@@ -108,7 +108,7 @@
       "startLine": 151,
       "endLine": 196,
       "summary": "Complete flag definition and flag variety motivic class formula with Fl_1 through Fl_4 proved.",
-      "mathContext": "Complete flag definition and flag variety motivic class formula with Fl_1 through Fl_4 proved."
+      "mathContext": "The complete flag variety $\\mathrm{Fl}_{n+1}$ parametrizes chains $0 = V_0 \\subset V_1 \\subset \\cdots \\subset V_{n+1} = \\mathbb{A}^{n+1}$ with $\\dim V_i = i$. Its motivic class is $[\\mathrm{Fl}_{n+1}] = \\prod_{i=1}^{n} [\\mathbb{P}^i] = \\prod_{i=1}^{n} \\frac{\\mathbb{L}^{i+1}-1}{\\mathbb{L}-1}$."
     },
     {
       "id": "homology-classes",
@@ -116,7 +116,7 @@
       "startLine": 197,
       "endLine": 232,
       "summary": "Homology class representation, positivity condition, and dimension formula computeA with n=1,2 cases.",
-      "mathContext": "Homology class representation, positivity condition, and dimension formula computeA with n=1,2 cases."
+      "mathContext": "A homology class $\\beta = (d_1, \\ldots, d_n) \\in \\mathbb{Z}^n$ is positive if all $d_i > 0$. The dimension formula is $a(\\beta) = \\sum_{i=1}^{n} \\frac{d_i(d_i+1)}{2} + (n-1)\\sum_{i=1}^{n} d_i$, giving the exponent in $[\\Omega^2_\\beta(\\mathrm{Fl}_{n+1})] = [\\mathrm{GL}_n \\times \\mathbb{A}^{a(\\beta)}]$."
     },
     {
       "id": "tower-decomposition",
@@ -124,7 +124,7 @@
       "startLine": 244,
       "endLine": 303,
       "summary": "Fiber class formula from Corollary 2.5: [fiber] = L^{exponent} · (L^k - 1), verified for k=1,2,3. Cell decomposition infrastructure.",
-      "mathContext": "Fiber class formula from Corollary 2.5: [fiber] = L^{exponent} · (L^k - 1), verified for k=1,2,3. Cell decomposition infrastructure."
+      "mathContext": "The tower $\\Omega^2_\\beta(\\mathrm{Fl}_{n+1}) \\xrightarrow{\\pi_k} \\Omega^2_{\\beta'}(\\mathrm{Fl}_k)$ has fiber class $[\\mathrm{fiber}(\\pi_k)] = \\mathbb{L}^{(k+1)d_k - k\\cdot d_{k+1} - k} \\cdot (\\mathbb{L}^k - 1)$. This fiber class is independent of the base point, enabling inductive computation of the total motivic class."
     },
     {
       "id": "main-theorem",
@@ -132,7 +132,7 @@
       "startLine": 304,
       "endLine": 347,
       "summary": "Main theorem axiom with n=1, n=2 special cases derived and L-expansion formula.",
-      "mathContext": "Main theorem axiom with n=1, n=2 special cases derived and L-expansion formula."
+      "mathContext": "The main theorem states $[\\Omega^2_\\beta(\\mathrm{Fl}_{n+1})] = [\\mathrm{GL}_n] \\cdot \\mathbb{L}^{a(\\beta)}$ in $K_0(\\mathrm{Var})$. For $n=1$: $[\\Omega^2_d(\\mathbb{P}^1)] = (\\mathbb{L}-1)\\cdot\\mathbb{L}^{d(d+1)/2}$. For $n=2$: $[\\Omega^2_{(d_1,d_2)}(\\mathrm{Fl}_3)] = [\\mathrm{GL}_2]\\cdot\\mathbb{L}^{a(d_1,d_2)}$."
     },
     {
       "id": "mathlib-connection",
@@ -140,7 +140,7 @@
       "startLine": 358,
       "endLine": 410,
       "summary": "Connection to Mathlib's GL_n, explicit fiber class computations, and dimension formula verification via Gauss sums.",
-      "mathContext": "Connection to Mathlib's GL_n, explicit fiber class computations, and dimension formula verification via Gauss sums."
+      "mathContext": "Links the abstract $\\mathrm{GL}_n$ motivic class to Mathlib's $\\mathrm{Matrix.GeneralLinearGroup}$. Verifies dimension formulas using the Gauss sum identity $\\sum_{i=0}^{n-1} i = \\frac{n(n-1)}{2}$ and computes explicit fiber classes for $k = 1, 2, 3$."
     },
     {
       "id": "further-formalization",
@@ -148,7 +148,7 @@
       "startLine": 420,
       "endLine": 438,
       "summary": "Roadmap for short, medium, and long-term formalization goals (most short-term goals now complete).",
-      "mathContext": "Roadmap for short, medium, and long-term formalization goals (most short-term goals now complete)."
+      "mathContext": "Remaining formalization targets: constructing $\\Omega^2_\\beta(\\mathrm{Fl}_{n+1})$ as a scheme in Mathlib (requires moduli space theory), and proving the main identity from Birkhoff-Grothendieck stratification of vector bundles on $\\mathbb{P}^1$."
     }
   ],
   "conclusion": {

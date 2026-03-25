@@ -81,7 +81,7 @@
       "startLine": 1,
       "endLine": 23,
       "summary": "Problem statement, status, known results for k=2,3, and references.",
-      "mathContext": "Problem statement, status, known results for k=2,3, and references."
+      "mathContext": "Mathematical content: Problem statement, status, known results for k=2,3, and references."
     },
     {
       "id": "imports",
@@ -89,7 +89,7 @@
       "startLine": 24,
       "endLine": 34,
       "summary": "Mathlib imports for primes, multisets, BigOperators, and filters.",
-      "mathContext": "Mathlib imports for primes, multisets, BigOperators, and filters."
+      "mathContext": "Mathematical content: Mathlib imports for primes, multisets, BigOperators, and filters."
     },
     {
       "id": "solution-set",
@@ -97,7 +97,7 @@
       "startLine": 35,
       "endLine": 51,
       "summary": "Define solutionSet(n,k) as multisets of k primes whose k-th powers sum to n, and f(k,n) as its cardinality.",
-      "mathContext": "Define solutionSet(n,k) as multisets of k primes whose k-th powers sum to n, and f(k,n) as its cardinality."
+      "mathContext": "Mathematical content: Define solutionSet(n,k) as multisets of k primes whose k-th powers sum to n, and f(k,n) as its cardinality."
     },
     {
       "id": "small-cases",
@@ -105,7 +105,7 @@
       "startLine": 52,
       "endLine": 67,
       "summary": "Handle edge cases: n=0 with k=0 has unique empty solution; n=0 with k>=1 has no solutions.",
-      "mathContext": "Handle edge cases: n=0 with k=0 has unique empty solution; n=0 with k>=1 has no solutions."
+      "mathContext": "Mathematical content: Handle edge cases: n=0 with k=0 has unique empty solution; n=0 with k>=1 has no solutions."
     },
     {
       "id": "examples-k2",
@@ -113,7 +113,7 @@
       "startLine": 68,
       "endLine": 82,
       "summary": "Concrete examples for k=2: 8 = 2^2 + 2^2 and 50 = 5^2 + 5^2.",
-      "mathContext": "Concrete examples for k=2: 8 = 2^2 + 2^2 and 50 = 5^2 + 5^2."
+      "mathContext": "Concrete examples for k=2: 8 = $2^{2}$ + $2^{2}$ and 50 = $5^{2}$ + $5^{2}$."
     },
     {
       "id": "examples-k3",
@@ -121,7 +121,7 @@
       "startLine": 83,
       "endLine": 92,
       "summary": "Concrete example for k=3: 24 = 2^3 + 2^3 + 2^3.",
-      "mathContext": "Concrete example for k=3: 24 = 2^3 + 2^3 + 2^3."
+      "mathContext": "Concrete example for k=3: 24 = $2^{3}$ + $2^{3}$ + $2^{3}$."
     },
     {
       "id": "main-results",
@@ -129,7 +129,7 @@
       "startLine": 93,
       "endLine": 115,
       "summary": "Erdős's results: lim sup f_2(n) = infinity and lim sup f_3(n) = infinity. The k>=4 case remains open.",
-      "mathContext": "Erdős's results: lim sup f_2(n) = infinity and lim sup f_3(n) = infinity. The k>=4 case remains open."
+      "mathContext": "Erdős's results: lim sup f_2(n) = $\\infty$ and lim sup f_3(n) = $\\infty$. The k>=4 case remains open."
     },
     {
       "id": "connections",
@@ -137,7 +137,7 @@
       "startLine": 116,
       "endLine": 130,
       "summary": "Relationships to Goldbach conjecture, Waring's problem, and Hardy-Littlewood method.",
-      "mathContext": "Relationships to Goldbach conjecture, Waring's problem, and Hardy-Littlewood method."
+      "mathContext": "Mathematical content: Relationships to Goldbach conjecture, Waring's problem, and Hardy-Littlewood method."
     },
     {
       "id": "properties",
@@ -145,7 +145,7 @@
       "startLine": 131,
       "endLine": 148,
       "summary": "Bounds: no solutions for n < 2^k; smallest k=2 solution is n=8.",
-      "mathContext": "Bounds: no solutions for n < 2^k; smallest k=2 solution is n=8."
+      "mathContext": "Bounds: no solutions for n < $2^{k}$; smallest k=2 solution is n=8."
     },
     {
       "id": "summary",
@@ -153,7 +153,7 @@
       "startLine": 149,
       "endLine": 166,
       "summary": "Summary packaging the verified example solutions.",
-      "mathContext": "Summary packaging the verified example solutions."
+      "mathContext": "Mathematical content: Summary packaging the verified example solutions."
     }
   ],
   "conclusion": {

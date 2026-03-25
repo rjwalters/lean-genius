@@ -143,7 +143,7 @@
       "summary": "Introduces InUnitInterval predicate and axiomatizes Erdős's two early observations: unboundedness of sup_n |Sₙ(k)| as k grows (1964), and the quantitative bound Aₖ ≫ log k infinitely often (1965).",
       "startLine": 76,
       "endLine": 107,
-      "mathContext": "Introduces InUnitInterval predicate and axiomatizes Erdős's two early observations: unboundedness of sup_n |Sₙ(k)| as k grows (1964), and the quantitative bound Aₖ ≫ log k infinitely often (1965)."
+      "mathContext": "Axiomatized: Introduces InUnitInterval predicate and axiomatizes Erdős's two early observations: unboundedness of sup_n |Sₙ(k)| as k grows (1964), and the quantitative bound Aₖ ≫ log k infinitely often (1965)."
     },
     {
       "id": "clunie",
@@ -159,7 +159,7 @@
       "summary": "Defines FinitelyManyDistinct predicate and axiomatizes Liu's theorem (Aₖ ≫ k^{1-ε} for finite point sets) and Clunie's observation that Aₖ is unbounded in the finite distinct case.",
       "startLine": 139,
       "endLine": 169,
-      "mathContext": "Defines FinitelyManyDistinct predicate and axiomatizes Liu's theorem (Aₖ ≫ k^{1-ε} for finite point sets) and Clunie's observation that Aₖ is unbounded in the finite distinct case."
+      "mathContext": "Formal definition: Defines FinitelyManyDistinct predicate and axiomatizes Liu's theorem (Aₖ ≫ k^{1-ε} for finite point sets) and Clunie's observation that Aₖ is unbounded in the finite distinct case."
     },
     {
       "id": "open-question",
@@ -175,7 +175,7 @@
       "summary": "Axiomatizes the Weyl sum bound |∑e(jθ)| ≤ csc(πθ/2) for non-integer θ, connecting exponential sums to equidistribution theory and showing arithmetic sequences xⱼ = jα achieve O(1) partial sums.",
       "startLine": 206,
       "endLine": 223,
-      "mathContext": "Axiomatizes the Weyl sum bound |∑e(jθ)| ≤ csc(πθ/2) for non-integer θ, connecting exponential sums to equidistribution theory and showing arithmetic sequences xⱼ = jα achieve O(1) partial sums."
+      "mathContext": "Axiomatizes the Weyl sum bound |∑e(jθ)| $\\leq$ csc(πθ/2) for non-integer θ, connecting exponential sums to equidistribution theory and showing arithmetic sequences xⱼ = jα achieve $O(1)$ partial sums."
     },
     {
       "id": "discrepancy",
@@ -191,7 +191,7 @@
       "summary": "Axiomatizes erdos_987_unbounded (Aₖ → ∞ for all sequences) and proves the erdos_987 theorem as a conjunction of unboundedness, Clunie's √k lower bound, and Clunie's O(k) upper construction.",
       "startLine": 246,
       "endLine": 258,
-      "mathContext": "Axiomatizes erdos_987_unbounded (Aₖ → ∞ for all sequences) and proves the erdos_987 theorem as a conjunction of unboundedness, Clunie's √k lower bound, and Clunie's O(k) upper construction."
+      "mathContext": "Axiomatizes erdos_987_unbounded (Aₖ $\\to$ ∞ for all sequences) and proves the erdos_987 theorem as a conjunction of unboundedness, Clunie's √k lower bound, and Clunie's $O(k)$ upper construction."
     }
   ],
   "conclusion": {

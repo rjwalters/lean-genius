@@ -94,7 +94,7 @@
       "startLine": 23,
       "endLine": 33,
       "summary": "Defines `newPrimeFactorCount n k` as the cardinality of prime factors of $n+k$ that do not divide any $n+i$ for $0 \\le i < k$, using `Finset.filter` on `primeFactors` with universal non-divisibility.",
-      "mathContext": "Defines `newPrimeFactorCount n k` as the cardinality of prime factors of $n+k$ that do not divide any $n+i$ for $0 \\le i < k$, using `Finset.filter` on `primeFactors` with universal non-divisibility."
+      "mathContext": "Formal definition: Defines `newPrimeFactorCount n k` as the cardinality of prime factors of $n+k$ that do not divide any $n+i$ for $0 \\le i < k$, using `Finset.filter` on `primeFactors` with universal non-divisibility."
     },
     {
       "id": "sec-889-v0",
@@ -102,7 +102,7 @@
       "startLine": 34,
       "endLine": 42,
       "summary": "Defines `v₀ n` as $\\sup_{0 \\le k \\le n} v(n,k)$ using `iSup` over `Finset.range (n+1)`, the maximum new prime factor count over all shifts.",
-      "mathContext": "Defines `v₀ n` as $\\sup_{0 \\le k \\le n} v(n,k)$ using `iSup` over `Finset.range (n+1)`, the maximum new prime factor count over all shifts."
+      "mathContext": "Formal definition: Defines `v₀ n` as $\\sup_{0 \\le k \\le n} v(n,k)$ using `iSup` over `Finset.range (n+1)`, the maximum new prime factor count over all shifts."
     },
     {
       "id": "sec-889-conjecture",
@@ -110,7 +110,7 @@
       "startLine": 43,
       "endLine": 53,
       "summary": "States `ErdosProblem889` as a `Prop`: $\\forall M,\\, \\exists N_0,\\, \\forall n \\ge N_0,\\, v_0(n) > M$. Defined rather than axiomatized since the problem is open.",
-      "mathContext": "States `ErdosProblem889` as a `Prop`: $\\forall M,\\, \\exists N_0,\\, \\forall n \\ge N_0,\\, v_0(n) > M$. Defined rather than axiomatized since the problem is open."
+      "mathContext": "Axiomatized: States `ErdosProblem889` as a `Prop`: $\\forall M,\\, \\exists N_0,\\, \\forall n \\ge N_0,\\, v_0(n) > M$. Defined rather than axiomatized since the problem is open."
     },
     {
       "id": "sec-889-known",
@@ -118,7 +118,7 @@
       "startLine": 54,
       "endLine": 67,
       "summary": "Axiomatizes the Erdős–Selfridge (1967) bound $v_0(n) \\ge 2$ for $n \\ge 17$ and the complete exception list $\\{0, 1, 2, 3, 4, 7, 8, 16\\}$ as a biconditional.",
-      "mathContext": "Axiomatizes the Erdős–Selfridge (1967) bound $v_0(n) \\ge 2$ for $n \\ge 17$ and the complete exception list $\\{0, 1, 2, 3, 4, 7, 8, 16\\}$ as a biconditional."
+      "mathContext": "Axiomatized: Axiomatizes the Erdős–Selfridge (1967) bound $v_0(n) \\ge 2$ for $n \\ge 17$ and the complete exception list $\\{0, 1, 2, 3, 4, 7, 8, 16\\}$ as a biconditional."
     },
     {
       "id": "sec-889-generalized",
@@ -126,7 +126,7 @@
       "startLine": 68,
       "endLine": 83,
       "summary": "Defines `vShifted l n` ($v_l$) restricting shifts to $k \\ge l$, states `ErdosProblem889General` (divergence for all $l$), and axiomatizes that the general version implies the base case.",
-      "mathContext": "Defines `vShifted l n` ($v_l$) restricting shifts to $k \\ge l$, states `ErdosProblem889General` (divergence for all $l$), and axiomatizes that the general version implies the base case."
+      "mathContext": "Formal definition: Defines `vShifted l n` ($v_l$) restricting shifts to $k \\ge l$, states `ErdosProblem889General` (divergence for all $l$), and axiomatizes that the general version implies the base case."
     },
     {
       "id": "sec-889-v1",
@@ -134,7 +134,7 @@
       "startLine": 84,
       "endLine": 92,
       "summary": "Axiomatizes the weaker subproblem: does $v_1(n) > 1$ hold for all sufficiently large $n$? Even this was beyond Erdős–Selfridge's methods.",
-      "mathContext": "Axiomatizes the weaker subproblem: does $v_1(n) > 1$ hold for all sufficiently large $n$? Even this was beyond Erdős–Selfridge's methods."
+      "mathContext": "Axiomatized: Axiomatizes the weaker subproblem: does $v_1(n) > 1$ hold for all sufficiently large $n$? Even this was beyond Erdős–Selfridge's methods."
     },
     {
       "id": "sec-889-exact",
@@ -142,7 +142,7 @@
       "startLine": 93,
       "endLine": 116,
       "summary": "Defines `exactPowerNewCount` ($V(n,k)$) using $p$-adic valuation, `exactPowerShifted` ($V_l$), the $V_1$ finiteness question, and the comparison $V(n,k) \\ge v(n,k)$.",
-      "mathContext": "Defines `exactPowerNewCount` ($V(n,k)$) using $p$-adic valuation, `exactPowerShifted` ($V_l$), the $V_1$ finiteness question, and the comparison $V(n,k) \\ge v(n,k)$."
+      "mathContext": "Formal definition: Defines `exactPowerNewCount` ($V(n,k)$) using $p$-adic valuation, `exactPowerShifted` ($V_l$), the $V_1$ finiteness question, and the comparison $V(n,k) \\ge v(n,k)$."
     }
   ],
   "conclusion": {

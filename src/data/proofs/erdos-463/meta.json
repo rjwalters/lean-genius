@@ -102,7 +102,7 @@
       "startLine": 32,
       "endLine": 34,
       "summary": "Defines $\\texttt{leastPrimeGap}(m) = m - \\texttt{Nat.minFac}(m) = m - p(m)$, measuring the distance between a composite and its least prime factor.",
-      "mathContext": "Defines $\\texttt{leastPrimeGap}(m) = m - \\texttt{Nat.minFac}(m) = m - p(m)$, measuring the distance between a composite and its least prime factor."
+      "mathContext": "Formal definition: Defines $\\texttt{leastPrimeGap}(m) = m - \\texttt{Nat.minFac}(m) = m - p(m)$, measuring the distance between a composite and its least prime factor."
     },
     {
       "id": "minFac-bounds",
@@ -118,7 +118,7 @@
       "startLine": 58,
       "endLine": 73,
       "summary": "Proves $m \\geq 9$ for odd composites via $p(m) \\geq 3$ and $p(m)^2 \\leq m$ ($\\texttt{Nat.minFac\\_sq\\_le\\_self}$). Uses a $\\texttt{calc}$ chain: $9 = 3 \\times 3 \\leq p(m)^2 \\leq m$.",
-      "mathContext": "Proves $m \\geq 9$ for odd composites via $p(m) \\geq 3$ and $p(m)^2 \\leq m$ ($\\texttt{Nat.minFac\\_sq\\_le\\_self}$). Uses a $\\texttt{calc}$ chain: $9 = 3 \\times 3 \\leq p(m)^2 \\leq m$."
+      "mathContext": "Verified: Proves $m \\geq 9$ for odd composites via $p(m) \\geq 3$ and $p(m)^2 \\leq m$ ($\\texttt{Nat.minFac\\_sq\\_le\\_self}$). Uses a $\\texttt{calc}$ chain: $9 = 3 \\times 3 \\leq p(m)^2 \\leq m$."
     },
     {
       "id": "composite-existence",
@@ -126,7 +126,7 @@
       "startLine": 74,
       "endLine": 90,
       "summary": "Proves $\\forall n \\geq 1,\\; \\exists m > n$ composite, using the witness $m = 2(n+1)$. Shows $2 \\mid m$ and $m \\geq 4$, so $m$ is not prime.",
-      "mathContext": "Proves $\\forall n \\geq 1,\\; \\exists m > n$ composite, using the witness $m = 2(n+1)$. Shows $2 \\mid m$ and $m \\geq 4$, so $m$ is not prime."
+      "mathContext": "Verified: Proves $\\forall n \\geq 1,\\; \\exists m > n$ composite, using the witness $m = 2(n+1)$. Shows $2 \\mid m$ and $m \\geq 4$, so $m$ is not prime."
     },
     {
       "id": "even-insufficient",
@@ -134,7 +134,7 @@
       "startLine": 91,
       "endLine": 98,
       "summary": "Proves $\\neg\\exists m$ with $p(m) = 2$ and $n + 2 < m < n + 2$ simultaneously (empty interval). Formalizes why even composites cannot satisfy the sandwiching condition.",
-      "mathContext": "Proves $\\neg\\exists m$ with $p(m) = 2$ and $n + 2 < m < n + 2$ simultaneously (empty interval). Formalizes why even composites cannot satisfy the sandwiching condition."
+      "mathContext": "Verified: Proves $\\neg\\exists m$ with $p(m) = 2$ and $n + 2 < m < n + 2$ simultaneously (empty interval). Formalizes why even composites cannot satisfy the sandwiching condition."
     },
     {
       "id": "structural",
@@ -142,7 +142,7 @@
       "startLine": 99,
       "endLine": 107,
       "summary": "The critical structural insight: $n + f(n) < m < n + p(m) \\Rightarrow p(m) > f(n)$. The conjecture requires $(f(n)+1)$-rough composites in short intervals—connecting to sieve theory.",
-      "mathContext": "The critical structural insight: $n + f(n) < m < n + p(m) \\Rightarrow p(m) > f(n)$. The conjecture requires $(f(n)+1)$-rough composites in short intervals—connecting to sieve theory."
+      "mathContext": "Mathematical content: The critical structural insight: $n + f(n) < m < n + p(m) \\Rightarrow p(m) > f(n)$. The conjecture requires $(f(n)+1)$-rough composites in short intervals—connecting to sieve theory."
     },
     {
       "id": "gap-bounds",
@@ -150,7 +150,7 @@
       "startLine": 108,
       "endLine": 118,
       "summary": "Two final bounds: $\\texttt{leastPrimeGap}(m) \\leq m$ (trivial upper bound) and $\\texttt{leastPrimeGap}(m) > 0$ for composites (gap is positive since $p(m) < m$).",
-      "mathContext": "Two final bounds: $\\texttt{leastPrimeGap}(m) \\leq m$ (trivial upper bound) and $\\texttt{leastPrimeGap}(m) > 0$ for composites (gap is positive since $p(m) < m$)."
+      "mathContext": "Bound: Two final bounds: $\\texttt{leastPrimeGap}(m) \\leq m$ (trivial upper bound) and $\\texttt{leastPrimeGap}(m) > 0$ for composites (gap is positive since $p(m) < m$)."
     }
   ],
   "conclusion": {

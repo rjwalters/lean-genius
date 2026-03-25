@@ -48,7 +48,7 @@
       "startLine": 1,
       "endLine": 19,
       "summary": "Module docstring stating the conjecture, Tao's resolution, and reference. Imports `Nat.Totient` for $\\varphi(n)$, `Nat.Prime.Basic` for primality, `Finset` for finite set operations.",
-      "mathContext": "Module docstring stating the conjecture, Tao's resolution, and reference. Imports `Nat.Totient` for $\\varphi(n)$, `Nat.Prime.Basic` for primality, `Finset` for finite set operations."
+      "mathContext": "Mathematical content: Module docstring stating the conjecture, Tao's resolution, and reference. Imports `Nat.Totient` for $\\varphi(n)$, `Nat.Prime.Basic` for primality, `Finset` for finite set operations."
     },
     {
       "id": "increasing-totient-sets",
@@ -64,7 +64,7 @@
       "startLine": 33,
       "endLine": 38,
       "summary": "Defines $\\pi(N) = |\\{p \\leq N : p \\text{ prime}\\}|$ via `Finset.filter Nat.Prime` on `Finset.Icc 1 N`.",
-      "mathContext": "Defines $\\pi(N) = |\\{p \\leq N : p \\text{ prime}\\}|$ via `Finset.filter Nat.Prime` on `Finset.Icc 1 N`."
+      "mathContext": "Defines $\\$\\pi$(N) = |\\{p \\leq N : p \\text{ prime}\\}|$ via `Finset.filter Nat.Prime` on `Finset.Icc 1 N`."
     },
     {
       "id": "primes-optimal",
@@ -72,7 +72,7 @@
       "startLine": 39,
       "endLine": 49,
       "summary": "States that primes form an increasing totient set (since $\\varphi(p) = p-1$ is strictly increasing with $p$) and derives the lower bound $\\text{maxIncTotientSize}(N) \\geq \\pi(N)$.",
-      "mathContext": "States that primes form an increasing totient set (since $\\varphi(p) = p-1$ is strictly increasing with $p$) and derives the lower bound $\\text{maxIncTotientSize}(N) \\geq \\pi(N)$."
+      "mathContext": "States that primes form an increasing totient set (since $\\varphi(p) = p-1$ is strictly increasing with $p$) and derives the lower bound $\\text{maxIncTotientSize}(N) \\geq \\$\\pi$(N)$."
     },
     {
       "id": "tao-theorem",
@@ -80,7 +80,7 @@
       "startLine": 50,
       "endLine": 61,
       "summary": "Tao's asymptotic upper bound: $\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0: \\text{maxIncTotientSize}(N) \\leq (1+\\varepsilon) \\pi(N)$. Axiomatized over $\\mathbb{Q}$ for computability.",
-      "mathContext": "Tao's asymptotic upper bound: $\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0: \\text{maxIncTotientSize}(N) \\leq (1+\\varepsilon) \\pi(N)$. Axiomatized over $\\mathbb{Q}$ for computability."
+      "mathContext": "Tao's asymptotic upper bound: $\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0: \\text{maxIncTotientSize}(N) \\leq (1+\\varepsilon) \\$\\pi$(N)$. Axiomatized over $\\mathbb{Q}$ for computability."
     },
     {
       "id": "main-statement",
@@ -88,7 +88,7 @@
       "startLine": 62,
       "endLine": 70,
       "summary": "Defines `ErdosProblem49` as the proposition that the maximum increasing totient set size is asymptotically $\\pi(N)$, equivalent to Tao's theorem.",
-      "mathContext": "Defines `ErdosProblem49` as the proposition that the maximum increasing totient set size is asymptotically $\\pi(N)$, equivalent to Tao's theorem."
+      "mathContext": "Defines `ErdosProblem49` as the proposition that the maximum increasing totient set size is asymptotically $\\$\\pi$(N)$, equivalent to Tao's theorem."
     },
     {
       "id": "weaker-form",
@@ -96,7 +96,7 @@
       "startLine": 71,
       "endLine": 79,
       "summary": "The weaker result: $\\text{maxIncTotientSize}(N) = o(N)$. Follows from Tao's bound and the PNT ($\\pi(N) \\sim N/\\ln N = o(N)$).",
-      "mathContext": "The weaker result: $\\text{maxIncTotientSize}(N) = o(N)$. Follows from Tao's bound and the PNT ($\\pi(N) \\sim N/\\ln N = o(N)$)."
+      "mathContext": "The weaker result: $\\text{maxIncTotientSize}(N) = o(N)$. Follows from Tao's bound and the PNT ($\\$\\pi$(N) \\sim N/\\ln N = o(N)$)."
     },
     {
       "id": "totient-properties",
@@ -104,7 +104,7 @@
       "startLine": 80,
       "endLine": 87,
       "summary": "States $\\varphi(p) = p - 1$ for primes and $\\varphi(n) \\leq n$ for all $n$. These are fundamental properties used throughout the formalization.",
-      "mathContext": "States $\\varphi(p) = p - 1$ for primes and $\\varphi(n) \\leq n$ for all $n$. These are fundamental properties used throughout the formalization."
+      "mathContext": "Mathematical content: States $\\varphi(p) = p - 1$ for primes and $\\varphi(n) \\leq n$ for all $n$. These are fundamental properties used throughout the formalization."
     }
   ],
   "conclusion": {

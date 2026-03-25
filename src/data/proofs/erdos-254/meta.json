@@ -51,7 +51,7 @@
       "startLine": 1,
       "endLine": 36,
       "summary": "Header documenting the problem statement, Cassels's partial result, and references [Er61], [Ca60].",
-      "mathContext": "Header documenting the problem statement, Cassels's partial result, and references [Er61], [Ca60]."
+      "mathContext": "Mathematical content: Header documenting the problem statement, Cassels's partial result, and references [Er61], [Ca60]."
     },
     {
       "id": "basic-definitions",
@@ -59,7 +59,7 @@
       "startLine": 37,
       "endLine": 54,
       "summary": "Defines $\\|x\\| = |x - \\text{round}(x)|$ (distance to nearest integer) and the counting function $|A \\cap [1,x]|$ for expressing growth conditions.",
-      "mathContext": "Defines $\\|x\\| = |x - \\text{round}(x)|$ (distance to nearest integer) and the counting function $|A \\cap [1,x]|$ for expressing growth conditions."
+      "mathContext": "Formal definition: Defines $\\|x\\| = |x - \\text{round}(x)|$ (distance to nearest integer) and the counting function $|A \\cap [1,x]|$ for expressing growth conditions."
     },
     {
       "id": "the-growth-condition",
@@ -67,7 +67,7 @@
       "startLine": 55,
       "endLine": 66,
       "summary": "Formalizes the weak growth condition: $|A \\cap [x, 2x]| \\to \\infty$ as $x \\to \\infty$ — enough elements in each dyadic interval.",
-      "mathContext": "Formalizes the weak growth condition: $|A \\cap [x, 2x]| \\to \\infty$ as $x \\to \\infty$ — enough elements in each dyadic interval."
+      "mathContext": "Mathematical content: Formalizes the weak growth condition: $|A \\cap [x, 2x]| \\to \\infty$ as $x \\to \\infty$ — enough elements in each dyadic interval."
     },
     {
       "id": "the-irrationality-condition",
@@ -75,7 +75,7 @@
       "startLine": 67,
       "endLine": 82,
       "summary": "Formalizes the irrationality condition: $\\sum_{n \\in A} \\|\\theta n\\| = \\infty$ for all $\\theta \\in (0,1)$, preventing arithmetic concentration.",
-      "mathContext": "Formalizes the irrationality condition: $\\sum_{n \\in A} \\|\\theta n\\| = \\infty$ for all $\\theta \\in (0,1)$, preventing arithmetic concentration."
+      "mathContext": "Mathematical content: Formalizes the irrationality condition: $\\sum_{n \\in A} \\|\\theta n\\| = \\infty$ for all $\\theta \\in (0,1)$, preventing arithmetic concentration."
     },
     {
       "id": "subset-sum-representation",
@@ -83,7 +83,7 @@
       "startLine": 83,
       "endLine": 94,
       "summary": "Defines `IsSubsetSum(A, n)` — $n = \\sum_{a \\in S} a$ for finite $S \\subseteq A$ — and `RepresentsAllLarge(A)` — all large integers are representable.",
-      "mathContext": "Defines `IsSubsetSum(A, n)` — $n = \\sum_{a \\in S} a$ for finite $S \\subseteq A$ — and `RepresentsAllLarge(A)` — all large integers are representable."
+      "mathContext": "Formal definition: Defines `IsSubsetSum(A, n)` — $n = \\sum_{a \\in S} a$ for finite $S \\subseteq A$ — and `RepresentsAllLarge(A)` — all large integers are representable."
     },
     {
       "id": "the-conjecture",
@@ -91,7 +91,7 @@
       "startLine": 95,
       "endLine": 109,
       "summary": "States Erdős's **open** conjecture: growth + irrationality $\\Rightarrow$ every large integer is a subset sum of $A$.",
-      "mathContext": "States Erdős's **open** conjecture: growth + irrationality $\\Rightarrow$ every large integer is a subset sum of $A$."
+      "mathContext": "Mathematical content: States Erdős's **open** conjecture: growth + irrationality $\\Rightarrow$ every large integer is a subset sum of $A$."
     },
     {
       "id": "cassels-s-theorem-1960",
@@ -99,7 +99,7 @@
       "startLine": 110,
       "endLine": 138,
       "summary": "Axiomatizes Cassels's result under the stronger conditions: growth $\\gg \\log\\log x$ and $\\sum \\|\\theta n\\|^2 = \\infty$. Defines `HasStrongGrowthCondition` and `HasStrongIrrationalityCondition`.",
-      "mathContext": "Axiomatizes Cassels's result under the stronger conditions: growth $\\gg \\log\\log x$ and $\\sum \\|\\theta n\\|^2 = \\infty$. Defines `HasStrongGrowthCondition` and `HasStrongIrrationalityCondition`."
+      "mathContext": "Formal definition: Axiomatizes Cassels's result under the stronger conditions: growth $\\gg \\log\\log x$ and $\\sum \\|\\theta n\\|^2 = \\infty$. Defines `HasStrongGrowthCondition` and `HasStrongIrrationalityCondition`."
     },
     {
       "id": "examples",
@@ -107,7 +107,7 @@
       "startLine": 139,
       "endLine": 157,
       "summary": "Powers of 2: $\\{2^k : k \\ge 0\\}$ satisfies both conditions and every positive integer has a binary representation as a sum of distinct powers.",
-      "mathContext": "Powers of 2: $\\{2^k : k \\ge 0\\}$ satisfies both conditions and every positive integer has a binary representation as a sum of distinct powers."
+      "mathContext": "Powers of 2: $\\{$2^{k}$ : k \\ge 0\\}$ satisfies both conditions and every positive integer has a binary representation as a sum of distinct powers."
     },
     {
       "id": "summary",
@@ -115,7 +115,7 @@
       "startLine": 158,
       "endLine": 185,
       "summary": "Packages Cassels's theorem, the powers-of-2 verification, and representation into `erdos_254_summary`, demonstrating both the known result and the gap to the open conjecture.",
-      "mathContext": "Packages Cassels's theorem, the powers-of-2 verification, and representation into `erdos_254_summary`, demonstrating both the known result and the gap to the open conjecture."
+      "mathContext": "Verified: Packages Cassels's theorem, the powers-of-2 verification, and representation into `erdos_254_summary`, demonstrating both the known result and the gap to the open conjecture."
     }
   ],
   "conclusion": {

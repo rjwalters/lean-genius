@@ -81,7 +81,7 @@
       "summary": "Erdős conjecture on triangle-free graphs and bipartite edge deletion, extremal example",
       "startLine": 1,
       "endLine": 29,
-      "mathContext": "Erdős conjecture on triangle-free graphs and bipartite edge deletion, extremal example"
+      "mathContext": "Mathematical content: Erdős conjecture on triangle-free graphs and bipartite edge deletion, extremal example"
     },
     {
       "id": "basic-definitions",
@@ -89,7 +89,7 @@
       "summary": "Graph structure, IsBipartite, ContainsTriangle, IsTriangleFree, HasCycle",
       "startLine": 38,
       "endLine": 86,
-      "mathContext": "Graph structure, IsBipartite, ContainsTriangle, IsTriangleFree, HasCycle"
+      "mathContext": "Formal definition: Graph structure, IsBipartite, ContainsTriangle, IsTriangleFree, HasCycle"
     },
     {
       "id": "edge-deletion",
@@ -97,7 +97,7 @@
       "summary": "bipartiteEdgeDeletion axiom, achieved property, bipartite ↔ deletion zero",
       "startLine": 87,
       "endLine": 101,
-      "mathContext": "bipartiteEdgeDeletion axiom, achieved property, bipartite ↔ deletion zero"
+      "mathContext": "Axiomatized: bipartiteEdgeDeletion axiom, achieved property, bipartite ↔ deletion zero"
     },
     {
       "id": "c5-construction",
@@ -105,7 +105,7 @@
       "summary": "C5 graph, C5BlowUp structure, c5BlowUpGraph, triangle-freeness proofs",
       "startLine": 102,
       "endLine": 156,
-      "mathContext": "C5 graph, C5BlowUp structure, c5BlowUpGraph, triangle-freeness proofs"
+      "mathContext": "Formal definition: C5 graph, C5BlowUp structure, c5BlowUpGraph, triangle-freeness proofs"
     },
     {
       "id": "main-conjecture",
@@ -113,7 +113,7 @@
       "summary": "ErdosConjecture23: triangle-free on 5n vertices → bipartite with ≤ n² deletions",
       "startLine": 157,
       "endLine": 170,
-      "mathContext": "ErdosConjecture23: triangle-free on 5n vertices → bipartite with ≤ n² deletions"
+      "mathContext": "ErdosConjecture23: triangle-free on 5n vertices $\\to$ bipartite with $\\leq$ n² deletions"
     },
     {
       "id": "best-bounds",
@@ -121,7 +121,7 @@
       "summary": "Balogh-Clemen-Lidický 1.064n² bound, trivial upper bound",
       "startLine": 171,
       "endLine": 187,
-      "mathContext": "Balogh-Clemen-Lidický 1.064n² bound, trivial upper bound"
+      "mathContext": "Bound: Balogh-Clemen-Lidický 1.064n² bound, trivial upper bound"
     },
     {
       "id": "generalized-conjecture",
@@ -129,7 +129,7 @@
       "summary": "GeneralizedConjecture for odd girth ≥ 2k+1, blow-up of C_{2k+1}",
       "startLine": 188,
       "endLine": 222,
-      "mathContext": "GeneralizedConjecture for odd girth ≥ 2k+1, blow-up of C_{2k+1}"
+      "mathContext": "GeneralizedConjecture for odd girth $\\geq$ 2k+1, blow-up of C_{2k+1}"
     },
     {
       "id": "turan-connections",
@@ -137,7 +137,7 @@
       "summary": "Kővári-Sós-Turán theorem, Mantel's theorem, odd cycle cover",
       "startLine": 223,
       "endLine": 251,
-      "mathContext": "Kővári-Sós-Turán theorem, Mantel's theorem, odd cycle cover"
+      "mathContext": "Verified: Kővári-Sós-Turán theorem, Mantel's theorem, odd cycle cover"
     },
     {
       "id": "summary",
@@ -145,7 +145,7 @@
       "summary": "Problem status OPEN, verified theorems, approaches and open questions",
       "startLine": 252,
       "endLine": 287,
-      "mathContext": "Problem status OPEN, verified theorems, approaches and open questions"
+      "mathContext": "Verified: Problem status OPEN, verified theorems, approaches and open questions"
     }
   ],
   "conclusion": {

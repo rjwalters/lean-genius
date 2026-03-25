@@ -88,7 +88,7 @@
       "summary": "Defines `IsPath G vs` (distinct vertices, consecutive adjacency), `pathLength vs = |vs| - 1$, `longestPathLength G = \\sup\\{\\text{pathLength}(vs) : \\text{IsPath}(G, vs)\\}$, and `HasPathOfLength G k`.",
       "startLine": 54,
       "endLine": 75,
-      "mathContext": "Defines `IsPath G vs` (distinct vertices, consecutive adjacency), `pathLength vs = |vs| - 1$, `longestPathLength G = \\sup\\{\\text{pathLength}(vs) : \\text{IsPath}(G, vs)\\}$, and `HasPathOfLength G k`."
+      "mathContext": "Formal definition: Defines `IsPath G vs` (distinct vertices, consecutive adjacency), `pathLength vs = |vs| - 1$, `longestPathLength G = \\sup\\{\\text{pathLength}(vs) : \\text{IsPath}(G, vs)\\}$, and `HasPathOfLength G k`."
     },
     {
       "id": "probability",
@@ -104,7 +104,7 @@
       "summary": "Critical density $c = 1/2$. Axiomatizes: $c < 1/2 \\Rightarrow$ forest whp, $c > 1/2 \\Rightarrow$ cycles whp, $c > 1/2 \\Rightarrow$ unique giant component of size $\\geq \\alpha n$ for some $\\alpha > 0$.",
       "startLine": 95,
       "endLine": 116,
-      "mathContext": "Critical density $c = 1/2$. Axiomatizes: $c < 1/2 \\Rightarrow$ forest whp, $c > 1/2 \\Rightarrow$ cycles whp, $c > 1/2 \\Rightarrow$ unique giant component of size $\\geq \\alpha n$ for some $\\alpha > 0$."
+      "mathContext": "Critical density $c = 1/2$. Axiomatizes: $c < 1/2 \\Rightarrow$ forest whp, $c > 1/2 \\Rightarrow$ cycles whp, $c > 1/2 \\Rightarrow$ unique giant component of size $\\geq \\$\\alpha$ n$ for some $\\$\\alpha$ > 0$."
     },
     {
       "id": "path-function",
@@ -128,7 +128,7 @@
       "summary": "Pinpoints $f$ at specific values: $0.1 < f(1) < 0.9$ (average degree 2), $f(2) > f(1)$ (monotonicity witness), $f(1/2 + \\varepsilon) < \\varepsilon$ for small $\\varepsilon$ (critical scaling).",
       "startLine": 167,
       "endLine": 184,
-      "mathContext": "Pinpoints $f$ at specific values: $0.1 < f(1) < 0.9$ (average degree 2), $f(2) > f(1)$ (monotonicity witness), $f(1/2 + \\varepsilon) < \\varepsilon$ for small $\\varepsilon$ (critical scaling)."
+      "mathContext": "Mathematical content: Pinpoints $f$ at specific values: $0.1 < f(1) < 0.9$ (average degree 2), $f(2) > f(1)$ (monotonicity witness), $f(1/2 + \\varepsilon) < \\varepsilon$ for small $\\varepsilon$ (critical scaling)."
     },
     {
       "id": "subcritical",
@@ -136,7 +136,7 @@
       "summary": "For $c < 1/2$: longest path is $O(\\log n)$ whp (`subcritical_path_length`). Trees have diameter $\\leq 2\\lceil \\log n \\rceil$ (`tree_diameter`).",
       "startLine": 185,
       "endLine": 199,
-      "mathContext": "For $c < 1/2$: longest path is $O(\\log n)$ whp (`subcritical_path_length`). Trees have diameter $\\leq 2\\lceil \\log n \\rceil$ (`tree_diameter`)."
+      "mathContext": "For $c < 1/2$: longest path is $$O(\\$\\log n$)$$ whp (`subcritical_path_length`). Trees have diameter $\\leq 2\\lceil \\$\\log n$ \\rceil$ (`tree_diameter`)."
     },
     {
       "id": "hamiltonian",

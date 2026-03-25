@@ -68,7 +68,7 @@
       "startLine": 100,
       "endLine": 146,
       "summary": "Pure Hodge structures with complexification map ι : V_ℚ →ₗ[ℚ] V_ℂ and Hodge components V^{p,q}.",
-      "mathContext": "Pure Hodge structures with complexification map ι : V_ℚ →ₗ[ℚ] V_ℂ and Hodge components V^{p,q}."
+      "mathContext": "A pure Hodge structure of weight $k$: a $\\mathbb{Q}$-vector space $V_{\\mathbb{Q}}$ with complexification $\\iota : V_{\\mathbb{Q}} \\hookrightarrow V_{\\mathbb{C}}$ and decomposition $V_{\\mathbb{C}} = \\bigoplus_{p+q=k} V^{p,q}$."
     },
     {
       "id": "hodge-decomposition",
@@ -84,7 +84,7 @@
       "startLine": 199,
       "endLine": 233,
       "summary": "Decreasing filtration F^p on V_ℂ with F^0 = V_ℂ and F^{k+1} = 0.",
-      "mathContext": "Decreasing filtration F^p on V_ℂ with F^0 = V_ℂ and F^{k+1} = 0."
+      "mathContext": "Hodge filtration: $F^0 = V_{\\mathbb{C}} \\supset F^1 \\supset \\cdots \\supset F^k \\supset F^{k+1} = 0$, with $V^{p,q} = F^p \\cap \\overline{F^q}$ recovering the Hodge decomposition."
     },
     {
       "id": "hodge-classes",
@@ -116,7 +116,7 @@
       "startLine": 1118,
       "endLine": 1260,
       "summary": "Morphisms with rational and complex components, identity, composition, functoriality on Hodge classes and algebraic classes.",
-      "mathContext": "Morphisms with rational and complex components, identity, composition, functoriality on Hodge classes and algebraic classes."
+      "mathContext": "Morphisms of Hodge structures $\\varphi : (V_{\\mathbb{Q}}, V_{\\mathbb{C}}) \\to (W_{\\mathbb{Q}}, W_{\\mathbb{C}})$ preserving the Hodge decomposition: $\\varphi(V^{p,q}) \\subseteq W^{p,q}$. Functoriality: $\\varphi(\\text{Hdg}^p(V)) \\subseteq \\text{Hdg}^p(W)$."
     },
     {
       "id": "sub-hodge",
@@ -124,7 +124,7 @@
       "startLine": 1262,
       "endLine": 1310,
       "summary": "Sub-Hodge structures, full and zero instances, kernel of a morphism is a sub-Hodge structure.",
-      "mathContext": "Sub-Hodge structures, full and zero instances, kernel of a morphism is a sub-Hodge structure."
+      "mathContext": "Sub-Hodge structures $W \\subseteq V$ inheriting the decomposition $W^{p,q} = W_{\\mathbb{C}} \\cap V^{p,q}$. The kernel $\\ker(\\varphi)$ is a sub-Hodge structure since morphisms preserve $(p,q)$-type."
     },
     {
       "id": "polarizations",
@@ -140,7 +140,7 @@
       "startLine": 1510,
       "endLine": 1560,
       "summary": "Mixed Hodge structures with weight filtration, Deligne's theorem, and pure-to-mixed embedding.",
-      "mathContext": "Mixed Hodge structures with weight filtration, Deligne's theorem, and pure-to-mixed embedding."
+      "mathContext": "Mixed Hodge structures: weight filtration $W_0 \\subseteq W_1 \\subseteq \\cdots \\subseteq V_{\\mathbb{Q}}$ with $\\operatorname{Gr}^W_k = W_k/W_{k-1}$ carrying a pure Hodge structure of weight $k$. Deligne's theorem: $H^k(X, \\mathbb{Q})$ carries a functorial mixed Hodge structure for any variety $X$."
     },
     {
       "id": "absolute-hodge-deligne",
@@ -148,7 +148,7 @@
       "startLine": 8699,
       "endLine": 8761,
       "summary": "Deligne's notion of absolute Hodge classes: those stable under all automorphisms of ℂ. Deligne proved: for abelian varieties, all Hodge classes are absolute Hodge. This is evidence for the Hodge Conjecture but does not prove it — absolute Hodge ≠ algebraic in general.",
-      "mathContext": "Deligne's notion of absolute Hodge classes: those stable under all automorphisms of ℂ. Deligne proved: for abelian varieties, all Hodge classes are absolute Hodge. This is evidence for the Hodge Conje"
+      "mathContext": "Absolute Hodge classes: $\\alpha \\in \\text{Hdg}^p(X)$ is absolute if $\\sigma^*(\\alpha) \\in \\text{Hdg}^p(X^\\sigma)$ for every $\\sigma \\in \\operatorname{Aut}(\\mathbb{C})$. Deligne proved $\\text{Hdg}^p(A) = \\text{AHdg}^p(A)$ for abelian varieties $A$."
     },
     {
       "id": "standard-conjectures",
@@ -156,7 +156,7 @@
       "startLine": 8762,
       "endLine": 8840,
       "summary": "Grothendieck's four standard conjectures (Lefschetz, Künneth, Hodge, and algebraicity of numerical equivalence) would imply the Hodge Conjecture. They provide the motivic framework: the category of pure motives would be semisimple and abelian.",
-      "mathContext": "Grothendieck's four standard conjectures (Lefschetz, Künneth, Hodge, and algebraicity of numerical equivalence) would imply the Hodge Conjecture. They provide the motivic framework: the category of pu"
+      "mathContext": "Grothendieck's standard conjectures: (B) Lefschetz: $L^{n-2i} : H^i(X) \\xrightarrow{\\sim} H^{2n-i}(X)$; (C) K\\u00fcnneth: the K\\u00fcnneth projectors are algebraic; (D) $\\text{num} = \\text{hom}$. Together they imply the Hodge conjecture and make the category of pure motives semisimple."
     },
     {
       "id": "known-cases",

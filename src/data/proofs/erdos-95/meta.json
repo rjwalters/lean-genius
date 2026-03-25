@@ -80,7 +80,7 @@
       "startLine": 1,
       "endLine": 34,
       "summary": "Header documentation with the problem statement ($\\sum f(u_i)^2 \\ll_\\varepsilon n^{3+\\varepsilon}$), solution by Guth-Katz ($n^3 \\log n$), \\$500 prize, and references to [GK15] and Fishburn/Altman.",
-      "mathContext": "Header documentation with the problem statement ($\\sum f(u_i)^2 \\ll_\\varepsilon n^{3+\\varepsilon}$), solution by Guth-Katz ($n^3 \\log n$), \\$500 prize, and references to [GK15] and Fishburn/Altman."
+      "mathContext": "Header documentation with the problem statement ($\\sum f(u_i)^2 \\ll_\\varepsilon n^{3+\\varepsilon}$), solution by Guth-Katz ($$n^{3}$ \\$\\log n$$), \\$500 prize, and references to [GK15] and Fishburn/Altman."
     },
     {
       "id": "point-configs",
@@ -96,7 +96,7 @@
       "startLine": 62,
       "endLine": 74,
       "summary": "States `sum_multiplicities` (sorry): $\\sum_d f(d) = n(n-1)$. Defines `sumSquaredMultiplicities P := \\sum_d f(d)^2$ via `Finset.sum`.",
-      "mathContext": "States `sum_multiplicities` (sorry): $\\sum_d f(d) = n(n-1)$. Defines `sumSquaredMultiplicities P := \\sum_d f(d)^2$ via `Finset.sum`."
+      "mathContext": "Formal definition: States `sum_multiplicities` (sorry): $\\sum_d f(d) = n(n-1)$. Defines `sumSquaredMultiplicities P := \\sum_d f(d)^2$ via `Finset.sum`."
     },
     {
       "id": "erdos-conjecture",
@@ -112,7 +112,7 @@
       "startLine": 87,
       "endLine": 113,
       "summary": "Axiomatizes `guth_katz_theorem`: $\\sum f(d)^2 \\le C \\cdot n^3 \\log n$. Derives `erdos_conjecture_proved` from it (1 sorry for $\\log n = o(n^\\varepsilon)$).",
-      "mathContext": "Axiomatizes `guth_katz_theorem`: $\\sum f(d)^2 \\le C \\cdot n^3 \\log n$. Derives `erdos_conjecture_proved` from it (1 sorry for $\\log n = o(n^\\varepsilon)$)."
+      "mathContext": "Axiomatizes `guth_katz_theorem`: $\\sum f(d)^2 \\le C \\cdot $n^{3}$ \\$\\log n$$. Derives `erdos_conjecture_proved` from it (1 sorry for $\\$\\log n$ = o(n^\\varepsilon)$)."
     },
     {
       "id": "polynomial-method",

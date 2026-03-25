@@ -83,7 +83,7 @@
       "startLine": 1,
       "endLine": 34,
       "summary": "File header describing Zolotarev's 1872 approach, references (Frobenius 1914, Rousseau 1991), and imports. Sets `maxHeartbeats 800000` for the complex character-theoretic proofs.",
-      "mathContext": "File header describing Zolotarev's 1872 approach, references (Frobenius 1914, Rousseau 1991), and imports. Sets `maxHeartbeats 800000` for the complex character-theoretic proofs."
+      "mathContext": "Verified: File header describing Zolotarev's 1872 approach, references (Frobenius 1914, Rousseau 1991), and imports. Sets `maxHeartbeats 800000` for the complex character-theoretic proofs."
     },
     {
       "id": "multiplication-permutation",
@@ -147,7 +147,7 @@
       "startLine": 410,
       "endLine": 442,
       "summary": "Five computational examples verified by `decide`: $(2/5) = -1$, $(2/7) = 1$, $(3/5) = (5/3)$, $(3/7) = -(7/3)$, $(5/13) = (13/5)$. Each example includes the permutation cycle structure explanation.",
-      "mathContext": "Five computational examples verified by `decide`: $(2/5) = -1$, $(2/7) = 1$, $(3/5) = (5/3)$, $(3/7) = -(7/3)$, $(5/13) = (13/5)$. Each example includes the permutation cycle structure explanation."
+      "mathContext": "Formal definition: Five computational examples verified by `decide`: $(2/5) = -1$, $(2/7) = 1$, $(3/5) = (5/3)$, $(3/7) = -(7/3)$, $(5/13) = (13/5)$. Each example includes the permutation cycle structure explanation."
     },
     {
       "id": "cyclic-infrastructure",
@@ -163,7 +163,7 @@
       "startLine": 484,
       "endLine": 509,
       "summary": "Proves $\\sigma_a$ is a derangement for $a \\neq 1$ (no fixed points: $ax = x \\Rightarrow a = 1$) and that `mulPermHom` is injective ($\\sigma_a = \\sigma_b \\Rightarrow a = b$, faithful action).",
-      "mathContext": "Proves $\\sigma_a$ is a derangement for $a \\neq 1$ (no fixed points: $ax = x \\Rightarrow a = 1$) and that `mulPermHom` is injective ($\\sigma_a = \\sigma_b \\Rightarrow a = b$, faithful action)."
+      "mathContext": "Verified: Proves $\\sigma_a$ is a derangement for $a \\neq 1$ (no fixed points: $ax = x \\Rightarrow a = 1$) and that `mulPermHom` is injective ($\\sigma_a = \\sigma_b \\Rightarrow a = b$, faithful action)."
     },
     {
       "id": "character-uniqueness",

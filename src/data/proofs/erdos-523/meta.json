@@ -85,7 +85,7 @@
       "startLine": 1,
       "endLine": 36,
       "summary": "Documentation header with references to Salem-Zygmund (1954), Halasz (1973), and Erdos (1961). Imports Mathlib modules for $\\mathbb{C}$, $\\mathbb{R}$, logarithms, finite sets, and big operators.",
-      "mathContext": "Documentation header with references to Salem-Zygmund (1954), Halasz (1973), and Erdos (1961). Imports Mathlib modules for $\\mathbb{C}$, $\\mathbb{R}$, logarithms, finite sets, and big operators."
+      "mathContext": "Mathematical content: Documentation header with references to Salem-Zygmund (1954), Halasz (1973), and Erdos (1961). Imports Mathlib modules for $\\mathbb{C}$, $\\mathbb{R}$, logarithms, finite sets, and big operators."
     },
     {
       "id": "random-polynomials",
@@ -101,7 +101,7 @@
       "startLine": 65,
       "endLine": 71,
       "summary": "Defines `expectedScale n` $= \\sqrt{n \\log n}$ and `scaledMaxModulus` $= M_n / \\sqrt{n \\log n}$, the normalized ratio whose convergence is the central question.",
-      "mathContext": "Defines `expectedScale n` $= \\sqrt{n \\log n}$ and `scaledMaxModulus` $= M_n / \\sqrt{n \\log n}$, the normalized ratio whose convergence is the central question."
+      "mathContext": "Defines `expectedScale n` $= \\sqrt{n \\$\\log n$}$ and `scaledMaxModulus` $= M_n / \\sqrt{n \\$\\log n$}$, the normalized ratio whose convergence is the central question."
     },
     {
       "id": "salem-zygmund",
@@ -117,7 +117,7 @@
       "startLine": 93,
       "endLine": 99,
       "summary": "Formalizes Erdos's question: does $\\max |f(z)| = (C + o(1))\\sqrt{n \\log n}$ almost surely for some $C > 0$?",
-      "mathContext": "Formalizes Erdos's question: does $\\max |f(z)| = (C + o(1))\\sqrt{n \\log n}$ almost surely for some $C > 0$?"
+      "mathContext": "Formalizes Erdos's question: does $\\max |f(z)| = (C + o(1))\\sqrt{n \\$\\log n$}$ almost surely for some $C > 0$?"
     },
     {
       "id": "halasz-theorem",
@@ -125,7 +125,7 @@
       "startLine": 107,
       "endLine": 121,
       "summary": "The definitive answer: YES with $C = 1$. Axiomatizes `halasz_theorem`, defines `halaszConstant = 1`, and proves `erdos_523_answer` by witnessing the existential.",
-      "mathContext": "The definitive answer: YES with $C = 1$. Axiomatizes `halasz_theorem`, defines `halaszConstant = 1`, and proves `erdos_523_answer` by witnessing the existential."
+      "mathContext": "Formal definition: The definitive answer: YES with $C = 1$. Axiomatizes `halasz_theorem`, defines `halaszConstant = 1`, and proves `erdos_523_answer` by witnessing the existential."
     },
     {
       "id": "probabilistic-framework",
@@ -133,7 +133,7 @@
       "startLine": 128,
       "endLine": 142,
       "summary": "Defines `probabilitySpace`, `uniformSignDistribution`, `AlmostSureConvergence C`, and axiomatizes `halasz_almost_sure` (a.s. convergence to $C = 1$).",
-      "mathContext": "Defines `probabilitySpace`, `uniformSignDistribution`, `AlmostSureConvergence C`, and axiomatizes `halasz_almost_sure` (a.s. convergence to $C = 1$)."
+      "mathContext": "Formal definition: Defines `probabilitySpace`, `uniformSignDistribution`, `AlmostSureConvergence C`, and axiomatizes `halasz_almost_sure` (a.s. convergence to $C = 1$)."
     },
     {
       "id": "l2-analysis",
@@ -165,7 +165,7 @@
       "startLine": 210,
       "endLine": 222,
       "summary": "Defines `RudinConjecture` (minimum max over Littlewood polynomials), `mahlerMeasure` (geometric mean on circle), and `szegoConnection` (Toeplitz determinant link).",
-      "mathContext": "Defines `RudinConjecture` (minimum max over Littlewood polynomials), `mahlerMeasure` (geometric mean on circle), and `szegoConnection` (Toeplitz determinant link)."
+      "mathContext": "Formal definition: Defines `RudinConjecture` (minimum max over Littlewood polynomials), `mahlerMeasure` (geometric mean on circle), and `szegoConnection` (Toeplitz determinant link)."
     },
     {
       "id": "summary",
@@ -173,7 +173,7 @@
       "startLine": 238,
       "endLine": 255,
       "summary": "Four concluding theorems: `erdos_523`, `erdos_523_constant` ($C = 1$), `erdos_523_main`, and `erdos_523_solved`. **Status: Completely solved by Halasz (1973).**",
-      "mathContext": "Four concluding theorems: `erdos_523`, `erdos_523_constant` ($C = 1$), `erdos_523_main`, and `erdos_523_solved`. **Status: Completely solved by Halasz (1973).**"
+      "mathContext": "Verified: Four concluding theorems: `erdos_523`, `erdos_523_constant` ($C = 1$), `erdos_523_main`, and `erdos_523_solved`. **Status: Completely solved by Halasz (1973).**"
     }
   ],
   "conclusion": {

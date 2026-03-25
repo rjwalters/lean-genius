@@ -72,7 +72,7 @@
       "startLine": 1,
       "endLine": 46,
       "summary": "Imports Mathlib.Geometry.Euclidean.Triangle and Mathlib.Tactic. Extensive docstring covers the angle sum formula, Euclid's Elements Book I Prop 32, connection to non-Euclidean geometry, and Wiedijk #27 designation.",
-      "mathContext": "Imports Mathlib.Geometry.Euclidean.Triangle and Mathlib.Tactic. Extensive docstring covers the angle sum formula, Euclid's Elements Book I Prop 32, connection to non-Euclidean geometry, and Wiedijk #2"
+      "mathContext": "Imports Mathlib's Euclidean triangle library providing $\\angle p_1\\, p_2\\, p_3$ (the angle at $p_2$ formed by rays to $p_1$ and $p_3$) in any inner product affine space. The angle function satisfies $0 \\leq \\angle \\leq \\pi$ and is defined via $\\cos(\\angle) = \\frac{\\langle p_1-p_2,\\, p_3-p_2\\rangle}{\\|p_1-p_2\\|\\,\\|p_3-p_2\\|}$."
     },
     {
       "id": "setup",
@@ -80,7 +80,7 @@
       "startLine": 47,
       "endLine": 53,
       "summary": "Opens the EuclideanGeometry scope for the ∠ notation. Declares universe-polymorphic type variables V (normed vector space) and P (metric affine space) with inner product structure.",
-      "mathContext": "Opens the EuclideanGeometry scope for the ∠ notation. Declares universe-polymorphic type variables V (normed vector space) and P (metric affine space) with inner product structure."
+      "mathContext": "The proof works in an abstract setting: $V$ is a normed inner product space and $P$ is a metric affine space over $V$. This covers $\\mathbb{R}^n$ for all $n \\geq 2$, not just $\\mathbb{R}^2$. The $\\angle$ notation denotes $\\mathrm{EuclideanGeometry.angle}$."
     },
     {
       "id": "main-theorem",
@@ -88,7 +88,7 @@
       "startLine": 54,
       "endLine": 67,
       "summary": "The central result (Wiedijk #27): for p₂ ≠ p₁ and p₃ ≠ p₁, the three interior angles sum to π. Direct application of Mathlib's angle_add_angle_add_angle_eq_pi.",
-      "mathContext": "The central result (Wiedijk #27): for p₂ ≠ p₁ and p₃ ≠ p₁, the three interior angles sum to π. Direct application of Mathlib's angle_add_angle_add_angle_eq_pi."
+      "mathContext": "**Wiedijk #27**: For $p_2 \\neq p_1$ and $p_3 \\neq p_1$, the identity $\\angle p_1\\,p_2\\,p_3 + \\angle p_2\\,p_3\\,p_1 + \\angle p_3\\,p_1\\,p_2 = \\pi$ holds. This is Euclid's Elements I.32: the interior angles of a triangle sum to $\\pi$ radians ($180°$)."
     },
     {
       "id": "distinct",
@@ -96,7 +96,7 @@
       "startLine": 68,
       "endLine": 78,
       "summary": "Reformulation requiring all three vertices to be pairwise distinct (p₁ ≠ p₂, p₂ ≠ p₃, p₃ ≠ p₁), closer to the classical statement for proper triangles.",
-      "mathContext": "Reformulation requiring all three vertices to be pairwise distinct (p₁ ≠ p₂, p₂ ≠ p₃, p₃ ≠ p₁), closer to the classical statement for proper triangles."
+      "mathContext": "For a non-degenerate triangle with $p_1, p_2, p_3$ pairwise distinct, the same identity $\\alpha + \\beta + \\gamma = \\pi$ holds where $\\alpha = \\angle p_1\\,p_2\\,p_3$, $\\beta = \\angle p_2\\,p_3\\,p_1$, $\\gamma = \\angle p_3\\,p_1\\,p_2$, with each angle satisfying $0 < \\alpha, \\beta, \\gamma < \\pi$."
     },
     {
       "id": "bounds",
@@ -104,7 +104,7 @@
       "startLine": 79,
       "endLine": 90,
       "summary": "Each interior angle satisfies 0 ≤ ∠ ≤ π, using Mathlib's angle_le_pi and angle_nonneg.",
-      "mathContext": "Each interior angle satisfies 0 ≤ ∠ ≤ π, using Mathlib's angle_le_pi and angle_nonneg."
+      "mathContext": "For any three points, $0 \\leq \\angle p_1\\,p_2\\,p_3 \\leq \\pi$, since the angle function is defined as $\\arccos$ of the normalized inner product, which maps to $[0, \\pi]$. Uses Mathlib's $\\mathrm{angle\\_nonneg}$ and $\\mathrm{angle\\_le\\_pi}$."
     },
     {
       "id": "corollaries",
@@ -112,7 +112,7 @@
       "startLine": 91,
       "endLine": 116,
       "summary": "Three consequences: the third angle is determined by the other two, any single angle is strictly less than π in a non-degenerate triangle, and the sum of any two angles is less than π.",
-      "mathContext": "Three consequences: the third angle is determined by the other two, any single angle is strictly less than π in a non-degenerate triangle, and the sum of any two angles is less than π."
+      "mathContext": "From $\\alpha + \\beta + \\gamma = \\pi$: (1) $\\gamma = \\pi - \\alpha - \\beta$ (third angle determined); (2) each angle satisfies $\\alpha < \\pi$ in a non-degenerate triangle; (3) $\\alpha + \\beta < \\pi$ (any two angles sum to less than $\\pi$). All follow by $\\mathrm{linarith}$."
     },
     {
       "id": "right-triangle",
@@ -120,7 +120,7 @@
       "startLine": 117,
       "endLine": 127,
       "summary": "In a right triangle (one angle = π/2), the two acute angles sum to π/2. Proved by substituting the right angle into the sum identity.",
-      "mathContext": "In a right triangle (one angle = π/2), the two acute angles sum to π/2. Proved by substituting the right angle into the sum identity."
+      "mathContext": "If $\\alpha = \\frac{\\pi}{2}$ (right angle), then $\\beta + \\gamma = \\pi - \\frac{\\pi}{2} = \\frac{\\pi}{2}$: the two acute angles of a right triangle are complementary. This follows by substituting $\\alpha = \\frac{\\pi}{2}$ into $\\alpha + \\beta + \\gamma = \\pi$."
     },
     {
       "id": "exterior-angle",
@@ -128,7 +128,7 @@
       "startLine": 128,
       "endLine": 138,
       "summary": "The exterior angle at a vertex (π minus the interior angle) equals the sum of the two remote interior angles.",
-      "mathContext": "The exterior angle at a vertex (π minus the interior angle) equals the sum of the two remote interior angles."
+      "mathContext": "The exterior angle theorem: $\\pi - \\alpha = \\beta + \\gamma$, i.e., the exterior angle at vertex $p_2$ equals the sum of the two non-adjacent interior angles. This is a direct rearrangement of $\\alpha + \\beta + \\gamma = \\pi$."
     },
     {
       "id": "degrees-summary",
@@ -136,7 +136,7 @@
       "startLine": 139,
       "endLine": 157,
       "summary": "Converts the radian result to degrees: the sum equals 180°. Uses field_simp for the π cancellation. Concludes with #check verification of all main theorems.",
-      "mathContext": "Converts the radian result to degrees: the sum equals 180°. Uses field_simp for the π cancellation. Concludes with #check verification of all main theorems."
+      "mathContext": "Converting to degrees via $\\theta_{\\mathrm{deg}} = \\theta \\cdot \\frac{180}{\\pi}$: the sum becomes $\\alpha_{\\mathrm{deg}} + \\beta_{\\mathrm{deg}} + \\gamma_{\\mathrm{deg}} = 180$. The $\\pi$ cancellation is handled by $\\mathrm{field\\_simp}$, yielding the familiar $180°$ statement."
     }
   ],
   "conclusion": {

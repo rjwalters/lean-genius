@@ -51,7 +51,7 @@
       "startLine": 17,
       "endLine": 21,
       "summary": "Imports Finset, Nat, Real, and tactic libraries for graph definitions.",
-      "mathContext": "Imports Finset, Nat, Real, and tactic libraries for graph definitions."
+      "mathContext": "Formal definition: Imports Finset, Nat, Real, and tactic libraries for graph definitions."
     },
     {
       "id": "graph-defs",
@@ -59,7 +59,7 @@
       "startLine": 22,
       "endLine": 37,
       "summary": "Defines SGraph (simple graph), IsClique, and HasClique for clique existence.",
-      "mathContext": "Defines SGraph (simple graph), IsClique, and HasClique for clique existence."
+      "mathContext": "Formal definition: Defines SGraph (simple graph), IsClique, and HasClique for clique existence."
     },
     {
       "id": "induced-triangle",
@@ -67,7 +67,7 @@
       "startLine": 38,
       "endLine": 47,
       "summary": "Defines induced subgraph restriction and IsTriangleFree for vertex subsets.",
-      "mathContext": "Defines induced subgraph restriction and IsTriangleFree for vertex subsets."
+      "mathContext": "Formal definition: Defines induced subgraph restriction and IsTriangleFree for vertex subsets."
     },
     {
       "id": "edge-count",
@@ -75,7 +75,7 @@
       "startLine": 48,
       "endLine": 52,
       "summary": "Defines noncomputable edgeCount via Finset.filter over ordered pairs.",
-      "mathContext": "Defines noncomputable edgeCount via Finset.filter over ordered pairs."
+      "mathContext": "Formal definition: Defines noncomputable edgeCount via Finset.filter over ordered pairs."
     },
     {
       "id": "ehsss",
@@ -83,7 +83,7 @@
       "startLine": 53,
       "endLine": 63,
       "summary": "Records the δ > 1/16 result for K₅-free graphs with linear-size triangle-free subsets.",
-      "mathContext": "Records the δ > 1/16 result for K₅-free graphs with linear-size triangle-free subsets."
+      "mathContext": "Mathematical content: Records the δ > 1/16 result for K₅-free graphs with linear-size triangle-free subsets."
     },
     {
       "id": "k4-free",
@@ -91,7 +91,7 @@
       "startLine": 64,
       "endLine": 71,
       "summary": "Records that the result holds for all δ > 0 when K₄ is excluded instead of K₅.",
-      "mathContext": "Records that the result holds for all δ > 0 when K₄ is excluded instead of K₅."
+      "mathContext": "Mathematical content: Records that the result holds for all δ > 0 when K₄ is excluded instead of K₅."
     },
     {
       "id": "erdos-rogers",
@@ -99,7 +99,7 @@
       "startLine": 72,
       "endLine": 80,
       "summary": "Records the K₇-free counterexample showing the result fails at density 1/4.",
-      "mathContext": "Records the K₇-free counterexample showing the result fails at density 1/4."
+      "mathContext": "Mathematical content: Records the K₇-free counterexample showing the result fails at density 1/4."
     },
     {
       "id": "conjecture",
@@ -107,7 +107,7 @@
       "startLine": 81,
       "endLine": 91,
       "summary": "States Problem 533: for all δ > 0, K₅-free dense graphs have linear-size triangle-free subsets.",
-      "mathContext": "States Problem 533: for all δ > 0, K₅-free dense graphs have linear-size triangle-free subsets."
+      "mathContext": "Mathematical content: States Problem 533: for all δ > 0, K₅-free dense graphs have linear-size triangle-free subsets."
     }
   ],
   "conclusion": {

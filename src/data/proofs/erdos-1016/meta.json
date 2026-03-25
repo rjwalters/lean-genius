@@ -57,7 +57,7 @@
       "startLine": 29,
       "endLine": 35,
       "summary": "Defines `IsPancyclic`: a graph on $n$ vertices containing cycles of every length $k$ for $3 \\leq k \\leq n$. This is the central structural property whose edge cost the problem studies.",
-      "mathContext": "Defines `IsPancyclic`: a graph on $n$ vertices containing cycles of every length $k$ for $3 \\leq k \\leq n$. This is the central structural property whose edge cost the problem studies."
+      "mathContext": "Formal definition: Defines `IsPancyclic`: a graph on $n$ vertices containing cycles of every length $k$ for $3 \\leq k \\leq n$. This is the central structural property whose edge cost the problem studies."
     },
     {
       "id": "excess-function",
@@ -81,7 +81,7 @@
       "startLine": 65,
       "endLine": 72,
       "summary": "The lower bound $h(n) \\geq \\lfloor\\log_2(n-1)\\rfloor - 1$ from a doubling argument: each extra edge at most doubles achievable cycle lengths, so $2^h \\geq n - 2$.",
-      "mathContext": "The lower bound $h(n) \\geq \\lfloor\\log_2(n-1)\\rfloor - 1$ from a doubling argument: each extra edge at most doubles achievable cycle lengths, so $2^h \\geq n - 2$."
+      "mathContext": "The lower bound $h(n) \\geq \\lfloor\\log_2(n-1)\\rfloor - 1$ from a doubling argument: each extra edge at most doubles achievable cycle lengths, so $$2^{h}$ \\geq n - 2$."
     },
     {
       "id": "upper-bound",
@@ -89,7 +89,7 @@
       "startLine": 73,
       "endLine": 79,
       "summary": "The upper bound $h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + O(1)$ via explicit hierarchical construction: $\\log_2 n$ doubling stages plus $\\log^* n$ correction stages.",
-      "mathContext": "The upper bound $h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + O(1)$ via explicit hierarchical construction: $\\log_2 n$ doubling stages plus $\\log^* n$ correction stages."
+      "mathContext": "The upper bound $h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + $O(1)$$ via explicit hierarchical construction: $\\log_2 n$ doubling stages plus $\\log^* n$ correction stages."
     },
     {
       "id": "structural-properties",
@@ -97,7 +97,7 @@
       "startLine": 80,
       "endLine": 96,
       "summary": "Hamiltonian baseline ($h(n) \\geq 0$), Bondy's quadratic threshold ($n^2/4$ edges suffice for pancyclicity or bipartiteness), and monotonicity of pancyclicity under edge addition.",
-      "mathContext": "Hamiltonian baseline ($h(n) \\geq 0$), Bondy's quadratic threshold ($n^2/4$ edges suffice for pancyclicity or bipartiteness), and monotonicity of pancyclicity under edge addition."
+      "mathContext": "Hamiltonian baseline ($h(n) \\geq 0$), Bondy's quadratic threshold ($$n^{2}$/4$ edges suffice for pancyclicity or bipartiteness), and monotonicity of pancyclicity under edge addition."
     },
     {
       "id": "small-cases",
@@ -105,7 +105,7 @@
       "startLine": 97,
       "endLine": 106,
       "summary": "Computed values: $h(3) = 0$ ($K_3$), $h(4) = 1$ ($C_4$ plus diagonal). OEIS A105206 gives further terms.",
-      "mathContext": "Computed values: $h(3) = 0$ ($K_3$), $h(4) = 1$ ($C_4$ plus diagonal). OEIS A105206 gives further terms."
+      "mathContext": "Mathematical content: Computed values: $h(3) = 0$ ($K_3$), $h(4) = 1$ ($C_4$ plus diagonal). OEIS A105206 gives further terms."
     },
     {
       "id": "bounds-gap",
@@ -113,7 +113,7 @@
       "startLine": 107,
       "endLine": 110,
       "summary": "The gap between upper and lower bounds is at most $\\log^* n + O(1)$, making this one of the tightest known gaps for an open extremal graph theory problem.",
-      "mathContext": "The gap between upper and lower bounds is at most $\\log^* n + O(1)$, making this one of the tightest known gaps for an open extremal graph theory problem."
+      "mathContext": "The gap between upper and lower bounds is at most $\\log^* n + $O(1)$$, making this one of the tightest known gaps for an open extremal graph theory problem."
     }
   ],
   "conclusion": {

@@ -152,7 +152,7 @@
       "summary": "Defines `DecisionProblem` as $L : \\mathbb{N} \\to \\text{Bool}$, `inputSize` as $\\lfloor \\log_2 n \\rfloor + 1$, `Program` as abstract TM with `decide : Nat → Bool × Nat`, and predicates `solves` and `runsInTime`.",
       "startLine": 53,
       "endLine": 89,
-      "mathContext": "Defines `DecisionProblem` as $L : \\mathbb{N} \\to \\text{Bool}$, `inputSize` as $\\lfloor \\log_2 n \\rfloor + 1$, `Program` as abstract TM with `decide : Nat → Bool × Nat`, and predicates `solves` and `ru"
+      "mathContext": "Abstract Turing machine model: $L : \\mathbb{N} \\to \\{0,1\\}$ (decision problem), $|n| = \\lfloor \\log_2 n \\rfloor + 1$ (input size), $M(n) = (b, t)$ where $b$ is the answer and $t$ is the running time."
     },
     {
       "id": "polynomial-time",
@@ -160,7 +160,7 @@
       "summary": "Defines `Polynomial` (degree + coefficient), evaluation $p(n) = c \\cdot (n+1)^d$, `isPolynomial` predicate. Proves `eval_mono`, `poly_bound_degree`, and `poly_pow_expand` for polynomial arithmetic.",
       "startLine": 90,
       "endLine": 139,
-      "mathContext": "Defines `Polynomial` (degree + coefficient), evaluation $p(n) = c \\cdot (n+1)^d$, `isPolynomial` predicate. Proves `eval_mono`, `poly_bound_degree`, and `poly_pow_expand` for polynomial arithmetic."
+      "mathContext": "Polynomial time bounds: $p(n) = c \\cdot (n+1)^d$ with degree $d$ and coefficient $c$. Proved: $n \\leq m \\implies p(n) \\leq p(m)$ (monotonicity), $p(n) \\leq c \\cdot (n+1)^d$ (degree bound), and composition closure $p(q(n)) \\leq p'(n)$ for some polynomial $p'$."
     },
     {
       "id": "class-p",
@@ -192,7 +192,7 @@
       "summary": "Defines `Reduction` and `PolyReduction` ($A \\leq_p B$) with output size bounds. Proves reflexivity, transitivity (~150 lines of polynomial arithmetic), and the key `poly_reduce_in_P`: $A \\leq_p B \\wedge B \\in P \\Rightarrow A \\in P$.",
       "startLine": 254,
       "endLine": 569,
-      "mathContext": "Defines `Reduction` and `PolyReduction` ($A \\leq_p B$) with output size bounds. Proves reflexivity, transitivity (~150 lines of polynomial arithmetic), and the key `poly_reduce_in_P`: $A \\leq_p B \\wed"
+      "mathContext": "Polynomial-time reductions $A \\leq_p B$: $\\exists f$ computable in $O(p(|x|))$ with $|f(x)| \\leq q(|x|)$ and $x \\in A \\iff f(x) \\in B$. Proved: $\\leq_p$ is reflexive, transitive, and $A \\leq_p B \\,\\wedge\\, B \\in P \\implies A \\in P$."
     },
     {
       "id": "np-completeness",
@@ -200,7 +200,7 @@
       "summary": "Defines `NPHard` and `NPComplete`. Formalizes SAT with `Literal`, `Clause`, `CNFFormula`, `Assignment`. States Cook-Levin axiom and proves `cook_levin : NPComplete SAT`.",
       "startLine": 570,
       "endLine": 667,
-      "mathContext": "Defines `NPHard` and `NPComplete`. Formalizes SAT with `Literal`, `Clause`, `CNFFormula`, `Assignment`. States Cook-Levin axiom and proves `cook_levin : NPComplete SAT`."
+      "mathContext": "$\\text{NP-hard}(L) \\;:\\Leftrightarrow\\; \\forall L' \\in NP,\\, L' \\leq_p L$. $\\text{NP-complete}(L) \\;:\\Leftrightarrow\\; L \\in NP \\,\\wedge\\, \\text{NP-hard}(L)$. Cook-Levin theorem (axiom): $\\text{SAT}$ is NP-complete, where $\\text{SAT} = \\{\\varphi \\in \\text{CNF} : \\exists \\alpha,\\, \\alpha \\models \\varphi\\}$."
     },
     {
       "id": "npc-gallery",
@@ -208,7 +208,7 @@
       "summary": "Defines and proves NP-completeness of 3-SAT, CLIQUE, SUBSET-SUM, HAMPATH via reduction chains from SAT. Uses helper lemmas for abstract placeholder problems.",
       "startLine": 668,
       "endLine": 756,
-      "mathContext": "Defines and proves NP-completeness of 3-SAT, CLIQUE, SUBSET-SUM, HAMPATH via reduction chains from SAT. Uses helper lemmas for abstract placeholder problems."
+      "mathContext": "NP-completeness reductions: $\\text{SAT} \\leq_p \\text{3-SAT} \\leq_p \\text{CLIQUE}$, $\\text{SAT} \\leq_p \\text{SUBSET-SUM}$, $\\text{SAT} \\leq_p \\text{HAMPATH}$. Each problem shown NP-complete via transitivity of $\\leq_p$ from the Cook-Levin base case."
     },
     {
       "id": "conp-complement",
@@ -216,7 +216,7 @@
       "summary": "Defines `complement` and `coNP`. **Proves**: $P$ is closed under complement ($L \\in P \\Leftrightarrow \\bar{L} \\in P$) and $P \\subseteq \\text{coNP}$.",
       "startLine": 757,
       "endLine": 807,
-      "mathContext": "Defines `complement` and `coNP`. **Proves**: $P$ is closed under complement ($L \\in P \\Leftrightarrow \\bar{L} \\in P$) and $P \\subseteq \\text{coNP}$."
+      "mathContext": "$\\overline{L} = \\{x : x \\notin L\\}$ and $\\text{coNP} = \\{\\overline{L} : L \\in NP\\}$. Proved: $L \\in P \\iff \\overline{L} \\in P$ (negate the solver's output) and $P \\subseteq \\text{coNP}$."
     },
     {
       "id": "conjecture",
@@ -240,7 +240,7 @@
       "summary": "Summarizes all main results: $P \\subseteq NP$, Cook-Levin, NP-completeness of SAT/3-SAT/CLIQUE/SUBSET-SUM/HAMPATH, the key equivalence, and Ladner's theorem. Exports definitions via `#check`.",
       "startLine": 901,
       "endLine": 6370,
-      "mathContext": "Summarizes all main results: $P \\subseteq NP$, Cook-Levin, NP-completeness of SAT/3-SAT/CLIQUE/SUBSET-SUM/HAMPATH, the key equivalence, and Ladner's theorem. Exports definitions via `#check`."
+      "mathContext": "Master summary: $P \\subseteq NP$ (proved), Cook-Levin (axiom), $\\text{NPC} \\cap P \\neq \\emptyset \\implies P = NP$ (proved), Ladner's theorem $P \\neq NP \\implies \\exists L \\in NP \\setminus (P \\cup \\text{NPC})$ (axiom), and $P \\neq \\text{EXPTIME}$ via the time hierarchy."
     }
   ],
   "crossReferences": [

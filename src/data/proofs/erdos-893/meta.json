@@ -94,7 +94,7 @@
       "startLine": 31,
       "endLine": 71,
       "summary": "Defines `tau n` as `n.divisors.card`. Verifies $\\tau(2^k-1)$ for $k = 1, \\ldots, 8$ via `native_decide`. Proves `tau_prime_eq_two`: primes have exactly 2 divisors.",
-      "mathContext": "Defines `tau n` as `n.divisors.card`. Verifies $\\tau(2^k-1)$ for $k = 1, \\ldots, 8$ via `native_decide`. Proves `tau_prime_eq_two`: primes have exactly 2 divisors."
+      "mathContext": "Defines `tau n` as `n.divisors.card`. Verifies $\\tau($2^{k}$-1)$ for $k = 1, \\ldots, 8$ via `native_decide`. Proves `tau_prime_eq_two`: primes have exactly 2 divisors."
     },
     {
       "id": "sec-893-f",
@@ -102,7 +102,7 @@
       "startLine": 72,
       "endLine": 110,
       "summary": "Defines `f n` as $\\sum_{k=1}^n \\tau(2^k-1)$ via `Finset.Icc` and `Finset.sum`. Verifies $f(1), \\ldots, f(8)$ via `native_decide` and collects into `f_initial_values`.",
-      "mathContext": "Defines `f n` as $\\sum_{k=1}^n \\tau(2^k-1)$ via `Finset.Icc` and `Finset.sum`. Verifies $f(1), \\ldots, f(8)$ via `native_decide` and collects into `f_initial_values`."
+      "mathContext": "Defines `f n` as $\\sum_{k=1}^n \\tau($2^{k}$-1)$ via `Finset.Icc` and `Finset.sum`. Verifies $f(1), \\ldots, f(8)$ via `native_decide` and collects into `f_initial_values`."
     },
     {
       "id": "sec-893-mono",
@@ -110,7 +110,7 @@
       "startLine": 111,
       "endLine": 125,
       "summary": "Proves `f_mono` ($m \\le n \\implies f(m) \\le f(n)$) via `Finset.sum_le_sum_of_subset` and `f_pos` ($n \\ge 1 \\implies f(n) > 0$) via chaining with $f(1) = 1$.",
-      "mathContext": "Proves `f_mono` ($m \\le n \\implies f(m) \\le f(n)$) via `Finset.sum_le_sum_of_subset` and `f_pos` ($n \\ge 1 \\implies f(n) > 0$) via chaining with $f(1) = 1$."
+      "mathContext": "Verified: Proves `f_mono` ($m \\le n \\implies f(m) \\le f(n)$) via `Finset.sum_le_sum_of_subset` and `f_pos` ($n \\ge 1 \\implies f(n) > 0$) via chaining with $f(1) = 1$."
     },
     {
       "id": "sec-893-ratio",
@@ -118,7 +118,7 @@
       "startLine": 126,
       "endLine": 140,
       "summary": "Defines `ratio n` as $(f(2n) : \\mathbb{R}) / (f(n) : \\mathbb{R})$. Proves `ratio_ge_one`: the ratio is at least 1 for $n \\ge 1$.",
-      "mathContext": "Defines `ratio n` as $(f(2n) : \\mathbb{R}) / (f(n) : \\mathbb{R})$. Proves `ratio_ge_one`: the ratio is at least 1 for $n \\ge 1$."
+      "mathContext": "Formal definition: Defines `ratio n` as $(f(2n) : \\mathbb{R}) / (f(n) : \\mathbb{R})$. Proves `ratio_ge_one`: the ratio is at least 1 for $n \\ge 1$."
     },
     {
       "id": "sec-893-known",
@@ -126,7 +126,7 @@
       "startLine": 141,
       "endLine": 156,
       "summary": "Axiomatizes `kovac_luca_limsup_infinite`: $\\forall M > 0,\\, \\exists n,\\, \\text{ratio}(n) > M$. Proves `ratio_unbounded` by contradiction.",
-      "mathContext": "Axiomatizes `kovac_luca_limsup_infinite`: $\\forall M > 0,\\, \\exists n,\\, \\text{ratio}(n) > M$. Proves `ratio_unbounded` by contradiction."
+      "mathContext": "Verified: Axiomatizes `kovac_luca_limsup_infinite`: $\\forall M > 0,\\, \\exists n,\\, \\text{ratio}(n) > M$. Proves `ratio_unbounded` by contradiction."
     },
     {
       "id": "sec-893-main",
@@ -134,7 +134,7 @@
       "startLine": 157,
       "endLine": 173,
       "summary": "States `ErdosProblem893` (full divergence, open). Proves `kovac_luca_weaker_than_conjecture`: divergence implies the Kovac-Luca statement.",
-      "mathContext": "States `ErdosProblem893` (full divergence, open). Proves `kovac_luca_weaker_than_conjecture`: divergence implies the Kovac-Luca statement."
+      "mathContext": "Verified: States `ErdosProblem893` (full divergence, open). Proves `kovac_luca_weaker_than_conjecture`: divergence implies the Kovac-Luca statement."
     },
     {
       "id": "sec-893-summary",
@@ -142,7 +142,7 @@
       "startLine": 174,
       "endLine": 187,
       "summary": "Collects verified results into `erdos893_summary`: positivity, monotonicity, and ratio unboundedness.",
-      "mathContext": "Collects verified results into `erdos893_summary`: positivity, monotonicity, and ratio unboundedness."
+      "mathContext": "Bound: Collects verified results into `erdos893_summary`: positivity, monotonicity, and ratio unboundedness."
     }
   ],
   "conclusion": {

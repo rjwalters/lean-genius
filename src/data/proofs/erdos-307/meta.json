@@ -91,7 +91,7 @@
       "startLine": 60,
       "endLine": 74,
       "summary": "States `ErdosProblem307`: $\\exists P, Q \\subseteq \\text{Primes}$ with $(\\sum_P 1/p)(\\sum_Q 1/q) = 1$. This remains OPEN after nearly 50 years — no solution found, no impossibility proof known.",
-      "mathContext": "States `ErdosProblem307`: $\\exists P, Q \\subseteq \\text{Primes}$ with $(\\sum_P 1/p)(\\sum_Q 1/q) = 1$. This remains OPEN after nearly 50 years — no solution found, no impossibility proof known."
+      "mathContext": "Verified: States `ErdosProblem307`: $\\exists P, Q \\subseteq \\text{Primes}$ with $(\\sum_P 1/p)(\\sum_Q 1/q) = 1$. This remains OPEN after nearly 50 years — no solution found, no impossibility proof known."
     },
     {
       "id": "solved-coprime",
@@ -107,7 +107,7 @@
       "startLine": 147,
       "endLine": 159,
       "summary": "Defines `ErdosProblem307CoprimeStrengthened`: require $1 \\notin P \\cup Q$. No examples known — all Cambie solutions use the $1 + 1/n = (n+1)/n$ trick. This is an intermediate open problem.",
-      "mathContext": "Defines `ErdosProblem307CoprimeStrengthened`: require $1 \\notin P \\cup Q$. No examples known — all Cambie solutions use the $1 + 1/n = (n+1)/n$ trick. This is an intermediate open problem."
+      "mathContext": "Formal definition: Defines `ErdosProblem307CoprimeStrengthened`: require $1 \\notin P \\cup Q$. No examples known — all Cambie solutions use the $1 + 1/n = (n+1)/n$ trick. This is an intermediate open problem."
     },
     {
       "id": "constraints",
@@ -131,7 +131,7 @@
       "startLine": 221,
       "endLine": 242,
       "summary": "Defines `IsEgyptianOne` ($\\sum_S 1/n = 1$ with all $n > 0$). Proves $1 = 1/2 + 1/3 + 1/6$ via `norm_num`. Connects to the Erdős-Graham conjecture (Croot 2003) on unit fraction representations.",
-      "mathContext": "Defines `IsEgyptianOne` ($\\sum_S 1/n = 1$ with all $n > 0$). Proves $1 = 1/2 + 1/3 + 1/6$ via `norm_num`. Connects to the Erdős-Graham conjecture (Croot 2003) on unit fraction representations."
+      "mathContext": "Formal definition: Defines `IsEgyptianOne` ($\\sum_S 1/n = 1$ with all $n > 0$). Proves $1 = 1/2 + 1/3 + 1/6$ via `norm_num`. Connects to the Erdős-Graham conjecture (Croot 2003) on unit fraction representations."
     },
     {
       "id": "computational",
@@ -163,7 +163,7 @@
       "startLine": 295,
       "endLine": 314,
       "summary": "Two sorry theorems ruling out small cases: no prime solution with $|P| = |Q| = 2$ (since $(p_1+p_2)(q_1+q_2) < p_1 p_2 q_1 q_2$ for primes $\\geq 2$) and no solution with $|P| = 2, |Q| = 3$.",
-      "mathContext": "Two sorry theorems ruling out small cases: no prime solution with $|P| = |Q| = 2$ (since $(p_1+p_2)(q_1+q_2) < p_1 p_2 q_1 q_2$ for primes $\\geq 2$) and no solution with $|P| = 2, |Q| = 3$."
+      "mathContext": "Verified: Two sorry theorems ruling out small cases: no prime solution with $|P| = |Q| = 2$ (since $(p_1+p_2)(q_1+q_2) < p_1 p_2 q_1 q_2$ for primes $\\geq 2$) and no solution with $|P| = 2, |Q| = 3$."
     },
     {
       "id": "summary",

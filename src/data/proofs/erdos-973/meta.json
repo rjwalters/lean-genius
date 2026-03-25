@@ -86,7 +86,7 @@
       "startLine": 36,
       "endLine": 69,
       "summary": "Defines ComplexSeq, powerSum, HasFirstOne, modulus constraints, and maxPowerSum (axiomatized with specification).",
-      "mathContext": "Defines ComplexSeq, powerSum, HasFirstOne, modulus constraints, and maxPowerSum (axiomatized with specification)."
+      "mathContext": "Formal definition: Defines ComplexSeq, powerSum, HasFirstOne, modulus constraints, and maxPowerSum (axiomatized with specification)."
     },
     {
       "id": "erdos-question",
@@ -94,7 +94,7 @@
       "startLine": 70,
       "endLine": 80,
       "summary": "Formal statement ErdosQuestion973: ∃ C > 1 with max power sum < C^{-n} for |z_i| ≥ 1.",
-      "mathContext": "Formal statement ErdosQuestion973: ∃ C > 1 with max power sum < C^{-n} for |z_i| ≥ 1."
+      "mathContext": "Formal statement ErdosQuestion973: ∃ C > 1 with max power sum < C^{-n} for |z_i| $\\geq$ 1."
     },
     {
       "id": "unit-disk",
@@ -102,7 +102,7 @@
       "startLine": 81,
       "endLine": 93,
       "summary": "Axiom erdos_unit_disk_construction: C ≈ 1.32 works for |z_i| ≤ 1.",
-      "mathContext": "Axiom erdos_unit_disk_construction: C ≈ 1.32 works for |z_i| ≤ 1."
+      "mathContext": "Axiom erdos_unit_disk_construction: C ≈ 1.32 works for |z_i| $\\leq$ 1."
     },
     {
       "id": "unit-circle",
@@ -110,7 +110,7 @@
       "startLine": 94,
       "endLine": 108,
       "summary": "Defines M2 (infimum over unit circle sequences). Axiom l_erdos_1992_bounds: (1.746)^{-n} < M₂ < (1.745)^{-n}.",
-      "mathContext": "Defines M2 (infimum over unit circle sequences). Axiom l_erdos_1992_bounds: (1.746)^{-n} < M₂ < (1.745)^{-n}."
+      "mathContext": "Formal definition: Defines M2 (infimum over unit circle sequences). Axiom l_erdos_1992_bounds: (1.746)^{-n} < M₂ < (1.745)^{-n}."
     },
     {
       "id": "turan-bound",
@@ -118,7 +118,7 @@
       "startLine": 109,
       "endLine": 123,
       "summary": "Axiom turan_lower_bound: for |z_i| ≥ 1, max power sum ≥ (2e)^{-(1+o(1))n}. Defines turanConstant = 2e.",
-      "mathContext": "Axiom turan_lower_bound: for |z_i| ≥ 1, max power sum ≥ (2e)^{-(1+o(1))n}. Defines turanConstant = 2e."
+      "mathContext": "Axiom turan_lower_bound: for |z_i| $\\geq$ 1, max power sum $\\geq$ (2e)^{-(1+o(1))n}. Defines turanConstant = 2e."
     },
     {
       "id": "answer",
@@ -126,7 +126,7 @@
       "startLine": 124,
       "endLine": 138,
       "summary": "AnswerSummary combines all three regimes into a single proposition. No True fillers.",
-      "mathContext": "AnswerSummary combines all three regimes into a single proposition. No True fillers."
+      "mathContext": "Mathematical content: AnswerSummary combines all three regimes into a single proposition. No True fillers."
     },
     {
       "id": "extremal",
@@ -134,7 +134,7 @@
       "startLine": 139,
       "endLine": 156,
       "summary": "Defines rootsOfUnitySequence. Proves roots_on_circle. Axiom roots_power_sum: power sum is 0 or n.",
-      "mathContext": "Defines rootsOfUnitySequence. Proves roots_on_circle. Axiom roots_power_sum: power sum is 0 or n."
+      "mathContext": "Formal definition: Defines rootsOfUnitySequence. Proves roots_on_circle. Axiom roots_power_sum: power sum is 0 or n."
     },
     {
       "id": "dirichlet",
@@ -142,7 +142,7 @@
       "startLine": 157,
       "endLine": 170,
       "summary": "DirichletPolynomial structure. Axiom dirichlet_power_sum_connection: z_i = n_i^{it} yields Dirichlet sums.",
-      "mathContext": "DirichletPolynomial structure. Axiom dirichlet_power_sum_connection: z_i = n_i^{it} yields Dirichlet sums."
+      "mathContext": "Formal definition: DirichletPolynomial structure. Axiom dirichlet_power_sum_connection: z_i = n_i^{it} yields Dirichlet sums."
     },
     {
       "id": "summary",
@@ -150,7 +150,7 @@
       "startLine": 171,
       "endLine": 201,
       "summary": "Proves erdos_973_unit_disk and erdos_973_turan_constrained from axioms. Main theorem erdos_973 combines all three results.",
-      "mathContext": "Proves erdos_973_unit_disk and erdos_973_turan_constrained from axioms. Main theorem erdos_973 combines all three results."
+      "mathContext": "Verified: Proves erdos_973_unit_disk and erdos_973_turan_constrained from axioms. Main theorem erdos_973 combines all three results."
     }
   ],
   "conclusion": {

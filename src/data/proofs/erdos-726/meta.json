@@ -40,7 +40,7 @@
       "startLine": 19,
       "endLine": 22,
       "summary": "Imports Mathlib's logarithm functions, prime API, Finset cardinality, and tactics for asymptotic statements and nonnegativity proofs.",
-      "mathContext": "Imports Mathlib's logarithm functions, prime API, Finset cardinality, and tactics for asymptotic statements and nonnegativity proofs."
+      "mathContext": "Verified: Imports Mathlib's logarithm functions, prime API, Finset cardinality, and tactics for asymptotic statements and nonnegativity proofs."
     },
     {
       "id": "core-definitions",
@@ -48,7 +48,7 @@
       "startLine": 28,
       "endLine": 53,
       "summary": "Defines the upper-half residue predicate $n \\bmod p > p/2$ (with decidable instance), and three weighted sums: $U(n)$, $L(n)$, $M(n) = \\sum_{p \\le n} 1/p$ satisfying $U + L = M$.",
-      "mathContext": "Defines the upper-half residue predicate $n \\bmod p > p/2$ (with decidable instance), and three weighted sums: $U(n)$, $L(n)$, $M(n) = \\sum_{p \\le n} 1/p$ satisfying $U + L = M$."
+      "mathContext": "Formal definition: Defines the upper-half residue predicate $n \\bmod p > p/2$ (with decidable instance), and three weighted sums: $U(n)$, $L(n)$, $M(n) = \\sum_{p \\le n} 1/p$ satisfying $U + L = M$."
     },
     {
       "id": "mertens-conjecture",
@@ -56,7 +56,7 @@
       "startLine": 59,
       "endLine": 69,
       "summary": "States Mertens' theorem $M(n) \\sim \\log\\log n$ and the EGRS conjecture $U(n) \\sim (\\log\\log n)/2$. Both are formalized as $\\varepsilon$-$N$ asymptotic statements.",
-      "mathContext": "States Mertens' theorem $M(n) \\sim \\log\\log n$ and the EGRS conjecture $U(n) \\sim (\\log\\log n)/2$. Both are formalized as $\\varepsilon$-$N$ asymptotic statements."
+      "mathContext": "States Mertens' theorem $M(n) \\sim \\log\\$\\log n$$ and the EGRS conjecture $U(n) \\sim (\\log\\$\\log n$)/2$. Both are formalized as $\\varepsilon$-$N$ asymptotic statements."
     },
     {
       "id": "residue-properties",
@@ -64,7 +64,7 @@
       "startLine": 75,
       "endLine": 93,
       "summary": "Proves residue bounds, that $0$ and multiples of $p$ are not upper-half, and that the upper half contains exactly $(p-1)/2$ elements for odd primes — the 1/2 probability underlying the heuristic.",
-      "mathContext": "Proves residue bounds, that $0$ and multiples of $p$ are not upper-half, and that the upper half contains exactly $(p-1)/2$ elements for odd primes — the 1/2 probability underlying the heuristic."
+      "mathContext": "Verified: Proves residue bounds, that $0$ and multiples of $p$ are not upper-half, and that the upper half contains exactly $(p-1)/2$ elements for odd primes — the 1/2 probability underlying the heuristic."
     },
     {
       "id": "sum-partition",
@@ -72,7 +72,7 @@
       "startLine": 99,
       "endLine": 157,
       "summary": "Proves nonnegativity of all three sums, bounds $U(n), L(n) \\le M(n)$, and handles base cases $n < 2$. Uses $\\text{Finset.sum\\_nonneg}$ and $\\text{positivity}$ tactic throughout.",
-      "mathContext": "Proves nonnegativity of all three sums, bounds $U(n), L(n) \\le M(n)$, and handles base cases $n < 2$. Uses $\\text{Finset.sum\\_nonneg}$ and $\\text{positivity}$ tactic throughout."
+      "mathContext": "Verified: Proves nonnegativity of all three sums, bounds $U(n), L(n) \\le M(n)$, and handles base cases $n < 2$. Uses $\\text{Finset.sum\\_nonneg}$ and $\\text{positivity}$ tactic throughout."
     },
     {
       "id": "heuristic",
@@ -88,7 +88,7 @@
       "startLine": 171,
       "endLine": 180,
       "summary": "The EGRS conjecture implies $L(n) \\sim (\\log\\log n)/2$ and $U(n)/M(n) \\to 1/2$: an equidistribution of prime reciprocal weight across the two halves of the residue range.",
-      "mathContext": "The EGRS conjecture implies $L(n) \\sim (\\log\\log n)/2$ and $U(n)/M(n) \\to 1/2$: an equidistribution of prime reciprocal weight across the two halves of the residue range."
+      "mathContext": "The EGRS conjecture implies $L(n) \\sim (\\log\\$\\log n$)/2$ and $U(n)/M(n) \\to 1/2$: an equidistribution of prime reciprocal weight across the two halves of the residue range."
     },
     {
       "id": "monotonicity",
@@ -96,7 +96,7 @@
       "startLine": 186,
       "endLine": 202,
       "summary": "Proves $M(m) \\le M(n)$ for $m \\le n$ (monotonicity) and $M(n) > 0$ for $n \\ge 2$ (positivity from the prime $p = 2$ contributing $1/2$).",
-      "mathContext": "Proves $M(m) \\le M(n)$ for $m \\le n$ (monotonicity) and $M(n) > 0$ for $n \\ge 2$ (positivity from the prime $p = 2$ contributing $1/2$)."
+      "mathContext": "Verified: Proves $M(m) \\le M(n)$ for $m \\le n$ (monotonicity) and $M(n) > 0$ for $n \\ge 2$ (positivity from the prime $p = 2$ contributing $1/2$)."
     }
   ],
   "overview": {

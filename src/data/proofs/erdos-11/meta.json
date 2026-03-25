@@ -90,7 +90,7 @@
       "summary": "Proves foundational lemmas: $1$ is squarefree (`squarefree_one`), $1 = 2^0$ and $2 = 2^1$ are powers of 2, and every prime is squarefree (`hp.squarefree`).",
       "startLine": 33,
       "endLine": 47,
-      "mathContext": "Proves foundational lemmas: $1$ is squarefree (`squarefree_one`), $1 = 2^0$ and $2 = 2^1$ are powers of 2, and every prime is squarefree (`hp.squarefree`)."
+      "mathContext": "Proves foundational lemmas: $1$ is squarefree (`squarefree_one`), $1 = $2^{0}$$ and $2 = $2^{1}$$ are powers of 2, and every prime is squarefree (`hp.squarefree`)."
     },
     {
       "id": "examples",
@@ -98,7 +98,7 @@
       "summary": "Fully proves representations for $3 = 1 + 2$, $5 = 1 + 2^2$, $7 = 5 + 2$, $9 = 1 + 2^3$ using `decide` and `rfl`.",
       "startLine": 48,
       "endLine": 65,
-      "mathContext": "Fully proves representations for $3 = 1 + 2$, $5 = 1 + 2^2$, $7 = 5 + 2$, $9 = 1 + 2^3$ using `decide` and `rfl`."
+      "mathContext": "Fully proves representations for $3 = 1 + 2$, $5 = 1 + $2^{2}$$, $7 = 5 + 2$, $9 = 1 + $2^{3}$$ using `decide` and `rfl`."
     },
     {
       "id": "wieferich",
@@ -106,7 +106,7 @@
       "summary": "Defines `IsWieferichPrime p` as $p$ prime $\\wedge 2^{p-1} \\equiv 1 \\pmod{p^2}$. Axiomatizes the two known Wieferich primes (1093, 3511) and defines `InfinitelyManyNonWieferich`.",
       "startLine": 66,
       "endLine": 79,
-      "mathContext": "Defines `IsWieferichPrime p` as $p$ prime $\\wedge 2^{p-1} \\equiv 1 \\pmod{p^2}$. Axiomatizes the two known Wieferich primes (1093, 3511) and defines `InfinitelyManyNonWieferich`."
+      "mathContext": "Defines `IsWieferichPrime p` as $p$ prime $\\wedge $$2^{{p-1}$}$ \\equiv 1 \\pmod{$p^{2}$}$. Axiomatizes the two known Wieferich primes (1093, 3511) and defines `InfinitelyManyNonWieferich`."
     },
     {
       "id": "conjecture",
@@ -122,7 +122,7 @@
       "summary": "Axiomatizes the 1998 result: `Erdos11Conjecture → InfinitelyManyNonWieferich`. This connects additive representation theory to multiplicative number theory via Fermat quotients.",
       "startLine": 94,
       "endLine": 99,
-      "mathContext": "Axiomatizes the 1998 result: `Erdos11Conjecture → InfinitelyManyNonWieferich`. This connects additive representation theory to multiplicative number theory via Fermat quotients."
+      "mathContext": "Axiomatizes the 1998 result: `Erdos11Conjecture $\\to$ InfinitelyManyNonWieferich`. This connects additive representation theory to multiplicative number theory via Fermat quotients."
     },
     {
       "id": "verification",
@@ -130,7 +130,7 @@
       "summary": "Axiomatizes Hercher's (2024) verification for all odd $n < 2^{50}$ and Odlyzko's earlier bound of $10^7$, both confirming the conjecture holds in their respective ranges.",
       "startLine": 100,
       "endLine": 109,
-      "mathContext": "Axiomatizes Hercher's (2024) verification for all odd $n < 2^{50}$ and Odlyzko's earlier bound of $10^7$, both confirming the conjecture holds in their respective ranges."
+      "mathContext": "Axiomatizes Hercher's (2024) verification for all odd $n < $$2^{{50}$}$$ and Odlyzko's earlier bound of $$10^{7}$$, both confirming the conjecture holds in their respective ranges."
     },
     {
       "id": "density",
@@ -138,7 +138,7 @@
       "summary": "Axiomatizes Erdős's proof that the set of odd $n$ satisfying the conjecture has natural density 1, using `Filter.Tendsto` to express the limiting density.",
       "startLine": 110,
       "endLine": 117,
-      "mathContext": "Axiomatizes Erdős's proof that the set of odd $n$ satisfying the conjecture has natural density 1, using `Filter.Tendsto` to express the limiting density."
+      "mathContext": "Verified: Axiomatizes Erdős's proof that the set of odd $n$ satisfying the conjecture has natural density 1, using `Filter.Tendsto` to express the limiting density."
     }
   ],
   "conclusion": {

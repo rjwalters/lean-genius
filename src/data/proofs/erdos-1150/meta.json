@@ -68,7 +68,7 @@
       "startLine": 37,
       "endLine": 47,
       "summary": "Defines IsLittlewoodPolynomial (all coefficients in {-1,+1}) and supNorm (supremum of |P(z)| over the unit circle). These are the foundational concepts for the entire formalization.",
-      "mathContext": "Defines IsLittlewoodPolynomial (all coefficients in {-1,+1}) and supNorm (supremum of |P(z)| over the unit circle). These are the foundational concepts for the entire formalization."
+      "mathContext": "Formal definition: Defines IsLittlewoodPolynomial (all coefficients in {-1,+1}) and supNorm (supremum of |P(z)| over the unit circle). These are the foundational concepts for the entire formalization."
     },
     {
       "id": "main-conjecture",
@@ -84,7 +84,7 @@
       "startLine": 64,
       "endLine": 82,
       "summary": "The trivial bound ‖P‖∞ ≥ √(n+1) from Parseval's identity. Axiomatized as parseval_lower_bound. Also proves parseval_bound_pos: √(n+1) > 0 for n ≥ 1 using the positivity tactic.",
-      "mathContext": "The trivial bound ‖P‖∞ ≥ √(n+1) from Parseval's identity. Axiomatized as parseval_lower_bound. Also proves parseval_bound_pos: √(n+1) > 0 for n ≥ 1 using the positivity tactic."
+      "mathContext": "The trivial bound ‖P‖∞ $\\geq$ √(n+1) from Parseval's identity. Axiomatized as parseval_lower_bound. Also proves parseval_bound_pos: √(n+1) > 0 for n $\\geq$ 1 using the positivity tactic."
     },
     {
       "id": "ultraflat-equivalence",
@@ -100,7 +100,7 @@
       "startLine": 142,
       "endLine": 183,
       "summary": "Axiomatizes three landmark results: BBMST flat polynomials (2019), Kahane unimodular ultraflat (1980), and proves the BBMST upper bound consequence from pointwise bound via ciSup_le.",
-      "mathContext": "Axiomatizes three landmark results: BBMST flat polynomials (2019), Kahane unimodular ultraflat (1980), and proves the BBMST upper bound consequence from pointwise bound via ciSup_le."
+      "mathContext": "Verified: Axiomatizes three landmark results: BBMST flat polynomials (2019), Kahane unimodular ultraflat (1980), and proves the BBMST upper bound consequence from pointwise bound via ciSup_le."
     },
     {
       "id": "gap-analysis",
@@ -116,7 +116,7 @@
       "startLine": 201,
       "endLine": 213,
       "summary": "Axiomatizes the Rudin-Shapiro construction: for each k ≥ 1, a degree-(2^k - 1) Littlewood polynomial with sup norm at most √(2·2^k). Provides the best known explicit upper bound on minimal sup norm.",
-      "mathContext": "Axiomatizes the Rudin-Shapiro construction: for each k ≥ 1, a degree-(2^k - 1) Littlewood polynomial with sup norm at most √(2·2^k). Provides the best known explicit upper bound on minimal sup norm."
+      "mathContext": "Axiomatizes the Rudin-Shapiro construction: for each k $\\geq$ 1, a degree-($2^{k}$ - 1) Littlewood polynomial with sup norm at most √(2·$2^{k}$). Provides the best known explicit upper bound on minimal sup norm."
     },
     {
       "id": "summary",
@@ -124,7 +124,7 @@
       "startLine": 214,
       "endLine": 250,
       "summary": "Packages Parseval bound + BBMST flat existence + ultraflat equivalence into erdos_1150_summary, proved from axioms. Now includes the equivalence conjecture ↔ ¬ultraflat as a proved component.",
-      "mathContext": "Packages Parseval bound + BBMST flat existence + ultraflat equivalence into erdos_1150_summary, proved from axioms. Now includes the equivalence conjecture ↔ ¬ultraflat as a proved component."
+      "mathContext": "Axiomatized: Packages Parseval bound + BBMST flat existence + ultraflat equivalence into erdos_1150_summary, proved from axioms. Now includes the equivalence conjecture ↔ ¬ultraflat as a proved component."
     }
   ],
   "conclusion": {

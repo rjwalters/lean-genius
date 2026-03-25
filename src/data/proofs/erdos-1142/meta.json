@@ -108,7 +108,7 @@
       "summary": "Imports `Mathlib.Tactic` and `Mathlib.Data.Nat.Prime.Basic` for primality testing and decidability. Opens `Finset` namespace for finite set operations.",
       "startLine": 24,
       "endLine": 28,
-      "mathContext": "Imports `Mathlib.Tactic` and `Mathlib.Data.Nat.Prime.Basic` for primality testing and decidability. Opens `Finset` namespace for finite set operations."
+      "mathContext": "Mathematical content: Imports `Mathlib.Tactic` and `Mathlib.Data.Nat.Prime.Basic` for primality testing and decidability. Opens `Finset` namespace for finite set operations."
     },
     {
       "id": "core-definitions",
@@ -132,7 +132,7 @@
       "summary": "Verifies $n = 6$ fails ($6 - 2 = 4$ is composite), $n = 9$ fails ($9 - 8 = 1$ is not prime), and $n = 10$ fails ($10 - 2 = 8$ is composite), demonstrating that the property is rare.",
       "startLine": 82,
       "endLine": 92,
-      "mathContext": "Verifies $n = 6$ fails ($6 - 2 = 4$ is composite), $n = 9$ fails ($9 - 8 = 1$ is not prime), and $n = 10$ fails ($10 - 2 = 8$ is composite), demonstrating that the property is rare."
+      "mathContext": "Mathematical content: Verifies $n = 6$ fails ($6 - 2 = 4$ is composite), $n = 9$ fails ($9 - 8 = 1$ is not prime), and $n = 10$ fails ($10 - 2 = 8$ is composite), demonstrating that the property is rare."
     },
     {
       "id": "structural-properties",
@@ -148,7 +148,7 @@
       "summary": "States that $|\\text{powersOfTwoBetween}(n)| = \\lfloor \\log_2 n \\rfloor$ for $n \\geq 4$, formalizing the logarithmic growth of the number of primality conditions imposed on each candidate $n$.",
       "startLine": 129,
       "endLine": 134,
-      "mathContext": "States that $|\\text{powersOfTwoBetween}(n)| = \\lfloor \\log_2 n \\rfloor$ for $n \\geq 4$, formalizing the logarithmic growth of the number of primality conditions imposed on each candidate $n$."
+      "mathContext": "Mathematical content: States that $|\\text{powersOfTwoBetween}(n)| = \\lfloor \\log_2 n \\rfloor$ for $n \\geq 4$, formalizing the logarithmic growth of the number of primality conditions imposed on each candidate $n$."
     },
     {
       "id": "conjecture",

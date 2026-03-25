@@ -111,7 +111,7 @@
       "summary": "Imports Mathlib modules for `Nat.Prime`, `Nat.Factorization`, `Finset`, `Real.Sqrt`, and `Real.log`. Opens `Nat` and `Finset` namespaces within the `Erdos648` namespace.",
       "startLine": 33,
       "endLine": 42,
-      "mathContext": "Imports Mathlib modules for `Nat.Prime`, `Nat.Factorization`, `Finset`, `Real.Sqrt`, and `Real.log`. Opens `Nat` and `Finset` namespaces within the `Erdos648` namespace."
+      "mathContext": "Mathematical content: Imports Mathlib modules for `Nat.Prime`, `Nat.Factorization`, `Finset`, `Real.Sqrt`, and `Real.log`. Opens `Nat` and `Finset` namespaces within the `Erdos648` namespace."
     },
     {
       "id": "gpf",
@@ -151,7 +151,7 @@
       "summary": "States (with sorry) that $g(n) \\ge 1$ for $n \\ge 3$, $g(n) \\ge 2$ for $n \\ge 5$, $g(n) \\ge 3$ for $n \\ge 17$, and $g(n) \\ge 4$ for $n \\ge 65$, using the example sequences as witnesses.",
       "startLine": 200,
       "endLine": 219,
-      "mathContext": "States (with sorry) that $g(n) \\ge 1$ for $n \\ge 3$, $g(n) \\ge 2$ for $n \\ge 5$, $g(n) \\ge 3$ for $n \\ge 17$, and $g(n) \\ge 4$ for $n \\ge 65$, using the example sequences as witnesses."
+      "mathContext": "Mathematical content: States (with sorry) that $g(n) \\ge 1$ for $n \\ge 3$, $g(n) \\ge 2$ for $n \\ge 5$, $g(n) \\ge 3$ for $n \\ge 17$, and $g(n) \\ge 4$ for $n \\ge 65$, using the example sequences as witnesses."
     },
     {
       "id": "smooth",
@@ -159,7 +159,7 @@
       "summary": "Defines `isSmooth B n` ($P(n) \\le B$, i.e., $n$ is $B$-smooth/friable). Proves (with sorry) that $2^k$ is 2-smooth and $p^k$ is $p$-smooth for any prime $p$ with $k \\ge 1$.",
       "startLine": 220,
       "endLine": 241,
-      "mathContext": "Defines `isSmooth B n` ($P(n) \\le B$, i.e., $n$ is $B$-smooth/friable). Proves (with sorry) that $2^k$ is 2-smooth and $p^k$ is $p$-smooth for any prime $p$ with $k \\ge 1$."
+      "mathContext": "Defines `isSmooth B n` ($P(n) \\le B$, i.e., $n$ is $B$-smooth/friable). Proves (with sorry) that $$2^{k}$$ is 2-smooth and $p^k$ is $p$-smooth for any prime $p$ with $k \\ge 1$."
     },
     {
       "id": "cambie",
@@ -191,7 +191,7 @@
       "summary": "Defines the smallest prime factor $p(n) = n.\\text{minFac}$, axiomatizes $p(n) \\le P(n)$, and proves $p(p) = P(p) = p$ for primes. Introduces the dual problem of increasing-SPF sequences.",
       "startLine": 336,
       "endLine": 353,
-      "mathContext": "Defines the smallest prime factor $p(n) = n.\\text{minFac}$, axiomatizes $p(n) \\le P(n)$, and proves $p(p) = P(p) = p$ for primes. Introduces the dual problem of increasing-SPF sequences."
+      "mathContext": "Formal definition: Defines the smallest prime factor $p(n) = n.\\text{minFac}$, axiomatizes $p(n) \\le P(n)$, and proves $p(p) = P(p) = p$ for primes. Introduces the dual problem of increasing-SPF sequences."
     },
     {
       "id": "main-results",

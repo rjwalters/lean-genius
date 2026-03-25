@@ -113,7 +113,7 @@
       "summary": "Proves $A_m \\cap A_m = A_m$ (common_self via Finset.inter_self). Computes $A_4 = \\{3, 4\\}$ and $A_6 = \\{5, 8, 9\\}$ via native_decide, illustrating disjointness for small product sets.",
       "startLine": 142,
       "endLine": 162,
-      "mathContext": "Proves $A_m \\cap A_m = A_m$ (common_self via Finset.inter_self). Computes $A_4 = \\{3, 4\\}$ and $A_6 = \\{5, 8, 9\\}$ via native_decide, illustrating disjointness for small product sets."
+      "mathContext": "Verified: Proves $A_m \\cap A_m = A_m$ (common_self via Finset.inter_self). Computes $A_4 = \\{3, 4\\}$ and $A_6 = \\{5, 8, 9\\}$ via native_decide, illustrating disjointness for small product sets."
     },
     {
       "id": "quadratic",
@@ -137,7 +137,7 @@
       "summary": "Axiomatizes $1/\\log\\log m \\to 0$ (exponent_tends_to_zero) confirming subpolynomial growth, and the uniform bound $|A_m \\cap B_n| \\le m^\\varepsilon$ for large $m$ and $n \\le m$ (subpolynomial_growth).",
       "startLine": 188,
       "endLine": 201,
-      "mathContext": "Axiomatizes $1/\\log\\log m \\to 0$ (exponent_tends_to_zero) confirming subpolynomial growth, and the uniform bound $|A_m \\cap B_n| \\le m^\\varepsilon$ for large $m$ and $n \\le m$ (subpolynomial_growth)."
+      "mathContext": "Axiomatized: Axiomatizes $1/\\log\\log m \\to 0$ (exponent_tends_to_zero) confirming subpolynomial growth, and the uniform bound $|A_m \\cap B_n| \\le m^\\varepsilon$ for large $m$ and $n \\le m$ (subpolynomial_growth)."
     },
     {
       "id": "technique",

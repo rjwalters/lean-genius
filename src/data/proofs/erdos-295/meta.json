@@ -75,7 +75,7 @@
       "startLine": 1,
       "endLine": 20,
       "summary": "Problem statement and references documenting the OPEN status and Erdős-Straus bounds.",
-      "mathContext": "Problem statement and references documenting the OPEN status and Erdős-Straus bounds."
+      "mathContext": "Bound: Problem statement and references documenting the OPEN status and Erdős-Straus bounds."
     },
     {
       "id": "imports",
@@ -83,7 +83,7 @@
       "startLine": 21,
       "endLine": 32,
       "summary": "Mathlib imports for real analysis, filters, and big operators.",
-      "mathContext": "Mathlib imports for real analysis, filters, and big operators."
+      "mathContext": "Mathematical content: Mathlib imports for real analysis, filters, and big operators."
     },
     {
       "id": "background",
@@ -91,7 +91,7 @@
       "startLine": 33,
       "endLine": 44,
       "summary": "Documentation explaining Egyptian fractions and the problem context.",
-      "mathContext": "Documentation explaining Egyptian fractions and the problem context."
+      "mathContext": "Mathematical content: Documentation explaining Egyptian fractions and the problem context."
     },
     {
       "id": "existence",
@@ -99,7 +99,7 @@
       "startLine": 45,
       "endLine": 63,
       "summary": "Axiom stating that for each N, a representation of 1 exists with denominators ≥ N.",
-      "mathContext": "Axiom stating that for each N, a representation of 1 exists with denominators ≥ N."
+      "mathContext": "Axiom stating that for each N, a representation of 1 exists with denominators $\\geq$ N."
     },
     {
       "id": "k-definition",
@@ -107,7 +107,7 @@
       "startLine": 64,
       "endLine": 87,
       "summary": "Axioms defining k(N) as the minimal number of terms, with existence and minimality properties.",
-      "mathContext": "Axioms defining k(N) as the minimal number of terms, with existence and minimality properties."
+      "mathContext": "Axiomatized: Axioms defining k(N) as the minimal number of terms, with existence and minimality properties."
     },
     {
       "id": "erdos-straus",
@@ -115,7 +115,7 @@
       "startLine": 88,
       "endLine": 107,
       "summary": "The known 1971 result: -c < k(N) - (e-1)N < O(N/log N).",
-      "mathContext": "The known 1971 result: -c < k(N) - (e-1)N < O(N/log N)."
+      "mathContext": "The known 1971 result: -c < k(N) - (e-1)N < $O(N/log N)$."
     },
     {
       "id": "open-problem",
@@ -123,7 +123,7 @@
       "startLine": 108,
       "endLine": 122,
       "summary": "Statement of the main conjecture: does k(N) - (e-1)N → ∞?",
-      "mathContext": "Statement of the main conjecture: does k(N) - (e-1)N → ∞?"
+      "mathContext": "Statement of the main conjecture: does k(N) - (e-1)N $\\to$ ∞?"
     },
     {
       "id": "examples",
@@ -131,7 +131,7 @@
       "startLine": 123,
       "endLine": 157,
       "summary": "Verified Egyptian fraction identities, significance of e-1, and e-1 positivity proof.",
-      "mathContext": "Verified Egyptian fraction identities, significance of e-1, and e-1 positivity proof."
+      "mathContext": "Verified: Verified Egyptian fraction identities, significance of e-1, and e-1 positivity proof."
     },
     {
       "id": "summary",
@@ -139,7 +139,7 @@
       "startLine": 158,
       "endLine": 171,
       "summary": "Summary theorem combining Erdős-Straus bounds with e-1 positivity.",
-      "mathContext": "Summary theorem combining Erdős-Straus bounds with e-1 positivity."
+      "mathContext": "Verified: Summary theorem combining Erdős-Straus bounds with e-1 positivity."
     }
   ],
   "conclusion": {

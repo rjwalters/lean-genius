@@ -84,7 +84,7 @@
       "summary": "isSmooth definition, one_smooth, prime_power_smooth, smooth_mul",
       "startLine": 36,
       "endLine": 74,
-      "mathContext": "isSmooth definition, one_smooth, prime_power_smooth, smooth_mul"
+      "mathContext": "Formal definition: isSmooth definition, one_smooth, prime_power_smooth, smooth_mul"
     },
     {
       "id": "additive-representation",
@@ -92,7 +92,7 @@
       "summary": "hasSmootPairRepr definition, small_has_repr for n ≤ 3",
       "startLine": 75,
       "endLine": 92,
-      "mathContext": "hasSmootPairRepr definition, small_has_repr for n ≤ 3"
+      "mathContext": "hasSmootPairRepr definition, small_has_repr for n $\\leq$ 3"
     },
     {
       "id": "minimal-smoothness",
@@ -100,7 +100,7 @@
       "summary": "minSmoothness definition, minSmoothness_exists axiom",
       "startLine": 93,
       "endLine": 112,
-      "mathContext": "minSmoothness definition, minSmoothness_exists axiom"
+      "mathContext": "Formal definition: minSmoothness definition, minSmoothness_exists axiom"
     },
     {
       "id": "known-bounds",
@@ -108,7 +108,7 @@
       "summary": "erdos_cube_root_bound, balogExponent, balog_bound axiom",
       "startLine": 113,
       "endLine": 141,
-      "mathContext": "erdos_cube_root_bound, balogExponent, balog_bound axiom"
+      "mathContext": "Axiomatized: erdos_cube_root_bound, balogExponent, balog_bound axiom"
     },
     {
       "id": "conjectures",
@@ -116,7 +116,7 @@
       "summary": "weakConjecture f(n) ≤ n^{o(1)}, strongConjecture f(n) ≤ e^{O(√log n)}",
       "startLine": 142,
       "endLine": 167,
-      "mathContext": "weakConjecture f(n) ≤ n^{o(1)}, strongConjecture f(n) ≤ e^{O(√log n)}"
+      "mathContext": "weakConjecture f(n) $\\leq$ n^{o(1)}, strongConjecture f(n) $\\leq$ e^{$O(√$\\log n$)$}"
     },
     {
       "id": "examples",
@@ -124,7 +124,7 @@
       "summary": "example_10 (10 = 2 + 8), example_100 (100 = 64 + 36)",
       "startLine": 168,
       "endLine": 222,
-      "mathContext": "example_10 (10 = 2 + 8), example_100 (100 = 64 + 36)"
+      "mathContext": "Mathematical content: example_10 (10 = 2 + 8), example_100 (100 = 64 + 36)"
     },
     {
       "id": "connections",
@@ -132,7 +132,7 @@
       "summary": "smoothCount ψ(x,y), de_bruijn_asymptotic, Goldbach connection",
       "startLine": 223,
       "endLine": 252,
-      "mathContext": "smoothCount ψ(x,y), de_bruijn_asymptotic, Goldbach connection"
+      "mathContext": "Mathematical content: smoothCount ψ(x,y), de_bruijn_asymptotic, Goldbach connection"
     },
     {
       "id": "summary",
@@ -140,7 +140,7 @@
       "summary": "erdos_334_summary, erdos_334 main theorem, openQuestion",
       "startLine": 253,
       "endLine": 300,
-      "mathContext": "erdos_334_summary, erdos_334 main theorem, openQuestion"
+      "mathContext": "Verified: erdos_334_summary, erdos_334 main theorem, openQuestion"
     }
   ],
   "conclusion": {

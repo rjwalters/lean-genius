@@ -104,7 +104,7 @@
       "startLine": 1,
       "endLine": 32,
       "summary": "Header: Erdős-Graham question on sumset growth for sparse bases, Turjányi counterexample, Ruzsa-Turjányi generalization and positive result",
-      "mathContext": "Header: Erdős-Graham question on sumset growth for sparse bases, Turjányi counterexample, Ruzsa-Turjányi generalization and positive result"
+      "mathContext": "Mathematical content: Header: Erdős-Graham question on sumset growth for sparse bases, Turjányi counterexample, Ruzsa-Turjányi generalization and positive result"
     },
     {
       "id": "imports",
@@ -112,7 +112,7 @@
       "startLine": 33,
       "endLine": 42,
       "summary": "Imports from Mathlib: `Nat.Basic`, `Finset.Basic`, `Finset.Card`, `Set.Basic`, `BigOperators`; opens `Nat`, `Finset`, `Set`",
-      "mathContext": "Imports from Mathlib: `Nat.Basic`, `Finset.Basic`, `Finset.Card`, `Set.Basic`, `BigOperators`; opens `Nat`, `Finset`, `Set`"
+      "mathContext": "Mathematical content: Imports from Mathlib: `Nat.Basic`, `Finset.Basic`, `Finset.Card`, `Set.Basic`, `BigOperators`; opens `Nat`, `Finset`, `Set`"
     },
     {
       "id": "definitions",
@@ -120,7 +120,7 @@
       "startLine": 43,
       "endLine": 88,
       "summary": "`countingFunction` ($|A \\cap [1,N]|$), `isLittleO` ($f(N) = o(N)$), `isSparse`, `sumset` ($A+A$), `hFoldSumset` ($hA$) with notation $h \\cdot A$",
-      "mathContext": "`countingFunction` ($|A \\cap [1,N]|$), `isLittleO` ($f(N) = o(N)$), `isSparse`, `sumset` ($A+A$), `hFoldSumset` ($hA$) with notation $h \\cdot A$"
+      "mathContext": "Mathematical content: `countingFunction` ($|A \\cap [1,N]|$), `isLittleO` ($f(N) = o(N)$), `isSparse`, `sumset` ($A+A$), `hFoldSumset` ($hA$) with notation $h \\cdot A$"
     },
     {
       "id": "additive-bases",
@@ -128,7 +128,7 @@
       "startLine": 89,
       "endLine": 106,
       "summary": "`isAdditiveBasis h A` (every large $n \\in hA$) and `isAdditiveBasisFiniteOrder` ($\\exists h$, basis of order $h$)",
-      "mathContext": "`isAdditiveBasis h A` (every large $n \\in hA$) and `isAdditiveBasisFiniteOrder` ($\\exists h$, basis of order $h$)"
+      "mathContext": "Mathematical content: `isAdditiveBasis h A` (every large $n \\in hA$) and `isAdditiveBasisFiniteOrder` ($\\exists h$, basis of order $h$)"
     },
     {
       "id": "conjecture",
@@ -136,7 +136,7 @@
       "startLine": 107,
       "endLine": 144,
       "summary": "`erdosConjecture` (universal claim), `turjanyi_counterexample` (witness with bounded ratio), `erdos_conjecture_false` (Lean proof by contradiction with $M = C+1$)",
-      "mathContext": "`erdosConjecture` (universal claim), `turjanyi_counterexample` (witness with bounded ratio), `erdos_conjecture_false` (Lean proof by contradiction with $M = C+1$)"
+      "mathContext": "Verified: `erdosConjecture` (universal claim), `turjanyi_counterexample` (witness with bounded ratio), `erdos_conjecture_false` (Lean proof by contradiction with $M = C+1$)"
     },
     {
       "id": "generalization",
@@ -144,7 +144,7 @@
       "startLine": 145,
       "endLine": 164,
       "summary": "`generalizedConjecture h` ($hA$ version) and `ruzsa_turjanyi_generalization`: also FALSE for all $h \\geq 2$",
-      "mathContext": "`generalizedConjecture h` ($hA$ version) and `ruzsa_turjanyi_generalization`: also FALSE for all $h \\geq 2$"
+      "mathContext": "Mathematical content: `generalizedConjecture h` ($hA$ version) and `ruzsa_turjanyi_generalization`: also FALSE for all $h \\geq 2$"
     },
     {
       "id": "positive-result",
@@ -152,7 +152,7 @@
       "startLine": 165,
       "endLine": 182,
       "summary": "`scaledSumsetRatio` and `ruzsa_turjanyi_positive`: $|3A \\cap [1,3N]|/|A \\cap [1,N]| \\to \\infty$ IS true for sparse bases",
-      "mathContext": "`scaledSumsetRatio` and `ruzsa_turjanyi_positive`: $|3A \\cap [1,3N]|/|A \\cap [1,N]| \\to \\infty$ IS true for sparse bases"
+      "mathContext": "Mathematical content: `scaledSumsetRatio` and `ruzsa_turjanyi_positive`: $|3A \\cap [1,3N]|/|A \\cap [1,N]| \\to \\infty$ IS true for sparse bases"
     },
     {
       "id": "open-conjecture",
@@ -160,7 +160,7 @@
       "startLine": 183,
       "endLine": 204,
       "summary": "`scaledConjecture`: does $|2A \\cap [1,2N]|/|A \\cap [1,N]| \\to \\infty$? Status: OPEN (Ruzsa-Turjányi conjecture)",
-      "mathContext": "`scaledConjecture`: does $|2A \\cap [1,2N]|/|A \\cap [1,N]| \\to \\infty$? Status: OPEN (Ruzsa-Turjányi conjecture)"
+      "mathContext": "Mathematical content: `scaledConjecture`: does $|2A \\cap [1,2N]|/|A \\cap [1,N]| \\to \\infty$? Status: OPEN (Ruzsa-Turjányi conjecture)"
     },
     {
       "id": "intuition",
@@ -168,7 +168,7 @@
       "startLine": 205,
       "endLine": 227,
       "summary": "`construction_insight`: collisions in $A+A$ limit growth; sparsity alone is insufficient for sumset expansion",
-      "mathContext": "`construction_insight`: collisions in $A+A$ limit growth; sparsity alone is insufficient for sumset expansion"
+      "mathContext": "Mathematical content: `construction_insight`: collisions in $A+A$ limit growth; sparsity alone is insufficient for sumset expansion"
     },
     {
       "id": "plunnecke",
@@ -176,7 +176,7 @@
       "startLine": 228,
       "endLine": 248,
       "summary": "`plunnecke_ruzsa`: $|hA| \\leq |A|^h$ gives upper bounds but no lower bounds; the gap allows bounded ratios",
-      "mathContext": "`plunnecke_ruzsa`: $|hA| \\leq |A|^h$ gives upper bounds but no lower bounds; the gap allows bounded ratios"
+      "mathContext": "Bound: `plunnecke_ruzsa`: $|hA| \\leq |A|^h$ gives upper bounds but no lower bounds; the gap allows bounded ratios"
     },
     {
       "id": "examples",
@@ -184,7 +184,7 @@
       "startLine": 249,
       "endLine": 268,
       "summary": "Powers of 2 (sparse but NOT a basis), squares (sparse basis of order 4 by Lagrange's theorem)",
-      "mathContext": "Powers of 2 (sparse but NOT a basis), squares (sparse basis of order 4 by Lagrange's theorem)"
+      "mathContext": "Verified: Powers of 2 (sparse but NOT a basis), squares (sparse basis of order 4 by Lagrange's theorem)"
     },
     {
       "id": "summary",
@@ -192,7 +192,7 @@
       "startLine": 269,
       "endLine": 315,
       "summary": "`erdos_337_summary` combining `erdos_conjecture_false`, `ruzsa_turjanyi_generalization`, and `scaled_conjecture_open`; `erdos_337` main theorem; `historical_note`",
-      "mathContext": "`erdos_337_summary` combining `erdos_conjecture_false`, `ruzsa_turjanyi_generalization`, and `scaled_conjecture_open`; `erdos_337` main theorem; `historical_note`"
+      "mathContext": "Verified: `erdos_337_summary` combining `erdos_conjecture_false`, `ruzsa_turjanyi_generalization`, and `scaled_conjecture_open`; `erdos_337` main theorem; `historical_note`"
     }
   ],
   "conclusion": {

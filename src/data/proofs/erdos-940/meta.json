@@ -97,7 +97,7 @@
       "summary": "Defines `SumsOfPowerful r k` using `Multiset` sums and `DiagonalSums r = SumsOfPowerful r r`. Proves `zero_mem_SumsOfPowerful` (empty sum) and `one_mem_SumsOfPowerful` (sum of just 1).",
       "startLine": 78,
       "endLine": 105,
-      "mathContext": "Defines `SumsOfPowerful r k` using `Multiset` sums and `DiagonalSums r = SumsOfPowerful r r`. Proves `zero_mem_SumsOfPowerful` (empty sum) and `one_mem_SumsOfPowerful` (sum of just 1)."
+      "mathContext": "Formal definition: Defines `SumsOfPowerful r k` using `Multiset` sums and `DiagonalSums r = SumsOfPowerful r r`. Proves `zero_mem_SumsOfPowerful` (empty sum) and `one_mem_SumsOfPowerful` (sum of just 1)."
     },
     {
       "id": "density",
@@ -105,7 +105,7 @@
       "summary": "Defines `countingFunction A N = |A \\cap [0,N]|$, `HasDensity A d$ via `Filter.Tendsto`, and `HasDensityZero` as density 0.",
       "startLine": 106,
       "endLine": 118,
-      "mathContext": "Defines `countingFunction A N = |A \\cap [0,N]|$, `HasDensity A d$ via `Filter.Tendsto`, and `HasDensityZero` as density 0."
+      "mathContext": "Formal definition: Defines `countingFunction A N = |A \\cap [0,N]|$, `HasDensity A d$ via `Filter.Tendsto`, and `HasDensityZero` as density 0."
     },
     {
       "id": "main-conjecture",
@@ -113,7 +113,7 @@
       "summary": "States `erdos_940_conjecture`: $\\forall r \\ge 3$, $\\text{DiagonalSums}(r)$ has density 0. Also `erdos_940_infinitely_many` (complement is infinite) and `conjecture_implies_infinite` (1 sorry).",
       "startLine": 119,
       "endLine": 143,
-      "mathContext": "States `erdos_940_conjecture`: $\\forall r \\ge 3$, $\\text{DiagonalSums}(r)$ has density 0. Also `erdos_940_infinitely_many` (complement is infinite) and `conjecture_implies_infinite` (1 sorry)."
+      "mathContext": "Mathematical content: States `erdos_940_conjecture`: $\\forall r \\ge 3$, $\\text{DiagonalSums}(r)$ has density 0. Also `erdos_940_infinitely_many` (complement is infinite) and `conjecture_implies_infinite` (1 sorry)."
     },
     {
       "id": "squarefull",
@@ -121,7 +121,7 @@
       "summary": "Axiomatizes `baker_brudern_theorem`: $\\text{SumsOfPowerful}(2, 2)$ has density 0. Baker-Brüdern (1994) proved this 18 years after Erdős called it 'easy'.",
       "startLine": 144,
       "endLine": 160,
-      "mathContext": "Axiomatizes `baker_brudern_theorem`: $\\text{SumsOfPowerful}(2, 2)$ has density 0. Baker-Brüdern (1994) proved this 18 years after Erdős called it 'easy'."
+      "mathContext": "Verified: Axiomatizes `baker_brudern_theorem`: $\\text{SumsOfPowerful}(2, 2)$ has density 0. Baker-Brüdern (1994) proved this 18 years after Erdős called it 'easy'."
     },
     {
       "id": "heath-brown",
@@ -129,7 +129,7 @@
       "summary": "Axiomatizes `heath_brown_theorem`: $\\forall^\\infty n$, $n \\in \\text{SumsOfPowerful}(2, 3)$. All large integers are sums of $\\le 3$ squarefull numbers (1988, ternary quadratic forms).",
       "startLine": 161,
       "endLine": 181,
-      "mathContext": "Axiomatizes `heath_brown_theorem`: $\\forall^\\infty n$, $n \\in \\text{SumsOfPowerful}(2, 3)$. All large integers are sums of $\\le 3$ squarefull numbers (1988, ternary quadratic forms)."
+      "mathContext": "Verified: Axiomatizes `heath_brown_theorem`: $\\forall^\\infty n$, $n \\in \\text{SumsOfPowerful}(2, 3)$. All large integers are sums of $\\le 3$ squarefull numbers (1988, ternary quadratic forms)."
     },
     {
       "id": "cubefull",
@@ -137,7 +137,7 @@
       "summary": "States `three_cubes_conjecture` (OPEN). Proves `cubes_subset_cubefull` ($n^3$ is 3-powerful). Defines `cubefull_conjecture` ($r = 3$ case).",
       "startLine": 182,
       "endLine": 204,
-      "mathContext": "States `three_cubes_conjecture` (OPEN). Proves `cubes_subset_cubefull` ($n^3$ is 3-powerful). Defines `cubefull_conjecture` ($r = 3$ case)."
+      "mathContext": "States `three_cubes_conjecture` (OPEN). Proves `cubes_subset_cubefull` ($$n^{3}$$ is 3-powerful). Defines `cubefull_conjecture` ($r = 3$ case)."
     },
     {
       "id": "universal",
@@ -145,7 +145,7 @@
       "summary": "States `universal_representation_conjecture`: $\\forall r \\ge 2$, $\\forall^\\infty n$, $n \\in \\text{DiagonalSums}(r)$. OPEN even for $r = 2$ (diagonal case).",
       "startLine": 205,
       "endLine": 224,
-      "mathContext": "States `universal_representation_conjecture`: $\\forall r \\ge 2$, $\\forall^\\infty n$, $n \\in \\text{DiagonalSums}(r)$. OPEN even for $r = 2$ (diagonal case)."
+      "mathContext": "Mathematical content: States `universal_representation_conjecture`: $\\forall r \\ge 2$, $\\forall^\\infty n$, $n \\in \\text{DiagonalSums}(r)$. OPEN even for $r = 2$ (diagonal case)."
     },
     {
       "id": "relationship",
@@ -153,7 +153,7 @@
       "summary": "Proves `status_summary`: Baker-Brüdern $\\wedge$ Heath-Brown in one line. Summarizes known vs open cases.",
       "startLine": 225,
       "endLine": 248,
-      "mathContext": "Proves `status_summary`: Baker-Brüdern $\\wedge$ Heath-Brown in one line. Summarizes known vs open cases."
+      "mathContext": "Verified: Proves `status_summary`: Baker-Brüdern $\\wedge$ Heath-Brown in one line. Summarizes known vs open cases."
     },
     {
       "id": "examples",
@@ -161,7 +161,7 @@
       "summary": "Concrete proofs: $4 = 2^2$ is squarefull, $8 = 2^3$ is cubefull, $72 = 2^3 \\cdot 3^2$ is squarefull. All use `interval_cases` and `simp_all`.",
       "startLine": 249,
       "endLine": 281,
-      "mathContext": "Concrete proofs: $4 = 2^2$ is squarefull, $8 = 2^3$ is cubefull, $72 = 2^3 \\cdot 3^2$ is squarefull. All use `interval_cases` and `simp_all`."
+      "mathContext": "Concrete proofs: $4 = $2^{2}$$ is squarefull, $8 = $2^{3}$$ is cubefull, $72 = $2^{3}$ \\cdot $3^{2}$$ is squarefull. All use `interval_cases` and `simp_all`."
     },
     {
       "id": "related",
@@ -169,7 +169,7 @@
       "summary": "Defines connections to Erdős #941 (Heath-Brown's theorem), #1081 (refined $r=2$), and #1107 ($r+1$ summands, off-diagonal).",
       "startLine": 282,
       "endLine": 339,
-      "mathContext": "Defines connections to Erdős #941 (Heath-Brown's theorem), #1081 (refined $r=2$), and #1107 ($r+1$ summands, off-diagonal)."
+      "mathContext": "Formal definition: Defines connections to Erdős #941 (Heath-Brown's theorem), #1081 (refined $r=2$), and #1107 ($r+1$ summands, off-diagonal)."
     }
   ],
   "conclusion": {

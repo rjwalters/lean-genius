@@ -86,7 +86,7 @@
       "summary": "Module imports for Euclidean geometry, finite sets, and real analysis; opens Filter, Set, Finset, and scoped Topology",
       "startLine": 1,
       "endLine": 29,
-      "mathContext": "Module imports for Euclidean geometry, finite sets, and real analysis; opens Filter, Set, Finset, and scoped Topology"
+      "mathContext": "Mathematical content: Module imports for Euclidean geometry, finite sets, and real analysis; opens Filter, Set, Finset, and scoped Topology"
     },
     {
       "id": "plane-distance",
@@ -94,7 +94,7 @@
       "summary": "Euclidean distance in ℝ² with symmetry (dist_symm) and nonnegativity (dist_nonneg)",
       "startLine": 31,
       "endLine": 53,
-      "mathContext": "Euclidean distance in ℝ² with symmetry (dist_symm) and nonnegativity (dist_nonneg)"
+      "mathContext": "Mathematical content: Euclidean distance in ℝ² with symmetry (dist_symm) and nonnegativity (dist_nonneg)"
     },
     {
       "id": "restricted-distances",
@@ -102,7 +102,7 @@
       "summary": "hasIntegerDistances predicate, pairwiseDistances, numDistinctDistances",
       "startLine": 55,
       "endLine": 79,
-      "mathContext": "hasIntegerDistances predicate, pairwiseDistances, numDistinctDistances"
+      "mathContext": "Mathematical content: hasIntegerDistances predicate, pairwiseDistances, numDistinctDistances"
     },
     {
       "id": "diameter",
@@ -110,7 +110,7 @@
       "summary": "Diameter as maximum pairwise distance; diam_nonneg and diam_is_integer (proved)",
       "startLine": 81,
       "endLine": 137,
-      "mathContext": "Diameter as maximum pairwise distance; diam_nonneg and diam_is_integer (proved)"
+      "mathContext": "Mathematical content: Diameter as maximum pairwise distance; diam_nonneg and diam_is_integer (proved)"
     },
     {
       "id": "main-conjecture",
@@ -118,7 +118,7 @@
       "summary": "minDiameterRestrictedSets, Erdos100Conjecture (diam ≥ cn), Erdos100StrongConjecture (diam ≥ n-1)",
       "startLine": 139,
       "endLine": 171,
-      "mathContext": "minDiameterRestrictedSets, Erdos100Conjecture (diam ≥ cn), Erdos100StrongConjecture (diam ≥ n-1)"
+      "mathContext": "minDiameterRestrictedSets, Erdos100Conjecture (diam $\\geq$ cn), Erdos100StrongConjecture (diam $\\geq$ n-1)"
     },
     {
       "id": "distinct-distances-bridge",
@@ -126,7 +126,7 @@
       "summary": "Bridge lemma distinctDistances_le_diam: for integer distance sets, #distinct distances ≤ diam (proved via floor injection)",
       "startLine": 173,
       "endLine": 242,
-      "mathContext": "Bridge lemma distinctDistances_le_diam: for integer distance sets, #distinct distances ≤ diam (proved via floor injection)"
+      "mathContext": "Bridge lemma distinctDistances_le_diam: for integer distance sets, #distinct distances $\\leq$ diam (proved via floor injection)"
     },
     {
       "id": "lower-bounds",
@@ -134,7 +134,7 @@
       "summary": "diam_ge_one (proved), kanold_bound (axiom), guthKatz_distinct_distances (axiom), diam_ge_n_over_log_n (proved from axioms + bridge lemma)",
       "startLine": 244,
       "endLine": 328,
-      "mathContext": "diam_ge_one (proved), kanold_bound (axiom), guthKatz_distinct_distances (axiom), diam_ge_n_over_log_n (proved from axioms + bridge lemma)"
+      "mathContext": "Axiomatized: diam_ge_one (proved), kanold_bound (axiom), guthKatz_distinct_distances (axiom), diam_ge_n_over_log_n (proved from axioms + bridge lemma)"
     },
     {
       "id": "upper-bounds",
@@ -142,7 +142,7 @@
       "summary": "piepmeyer_construction (axiom), piepmeyer_ratio_bound (proved), strong_conjecture_fails_at_9 (proved)",
       "startLine": 330,
       "endLine": 366,
-      "mathContext": "piepmeyer_construction (axiom), piepmeyer_ratio_bound (proved), strong_conjecture_fails_at_9 (proved)"
+      "mathContext": "Axiomatized: piepmeyer_construction (axiom), piepmeyer_ratio_bound (proved), strong_conjecture_fails_at_9 (proved)"
     },
     {
       "id": "erdos-anning",
@@ -150,7 +150,7 @@
       "summary": "IsCollinear definition, erdos_anning_theorem (axiom): infinite integer distance sets must be collinear",
       "startLine": 368,
       "endLine": 392,
-      "mathContext": "IsCollinear definition, erdos_anning_theorem (axiom): infinite integer distance sets must be collinear"
+      "mathContext": "Formal definition: IsCollinear definition, erdos_anning_theorem (axiom): infinite integer distance sets must be collinear"
     },
     {
       "id": "implications",
@@ -158,7 +158,7 @@
       "summary": "conjecture_implies_kanold (proved) and n_over_log_sublinear (proved): the n/log n bound is o(n)",
       "startLine": 394,
       "endLine": 469,
-      "mathContext": "conjecture_implies_kanold (proved) and n_over_log_sublinear (proved): the n/log n bound is o(n)"
+      "mathContext": "conjecture_implies_kanold (proved) and n_over_log_sublinear (proved): the n/$\\log n$ bound is o(n)"
     }
   ],
   "conclusion": {

@@ -55,7 +55,7 @@
       "summary": "ex(n, K_r) = (1 - 1/(r-1)) · n²/2, the maximum K_r-free edge count",
       "startLine": 33,
       "endLine": 47,
-      "mathContext": "ex(n, K_r) = (1 - 1/(r-1)) · n²/2, the maximum K_r-free edge count"
+      "mathContext": "Mathematical content: ex(n, K_r) = (1 - 1/(r-1)) · n²/2, the maximum K_r-free edge count"
     },
     {
       "id": "clique-counting",
@@ -63,7 +63,7 @@
       "summary": "Definitions of cliqueCount(G, r), edgeDensity(G), and cliqueDensity(G, r)",
       "startLine": 49,
       "endLine": 73,
-      "mathContext": "Definitions of cliqueCount(G, r), edgeDensity(G), and cliqueDensity(G, r)"
+      "mathContext": "Formal definition: Definitions of cliqueCount(G, r), edgeDensity(G), and cliqueDensity(G, r)"
     },
     {
       "id": "turan-theorem",
@@ -71,7 +71,7 @@
       "summary": "Exceeding ex(n, K_r) forces at least one K_r",
       "startLine": 75,
       "endLine": 84,
-      "mathContext": "Exceeding ex(n, K_r) forces at least one K_r"
+      "mathContext": "Mathematical content: Exceeding ex(n, K_r) forces at least one K_r"
     },
     {
       "id": "supersaturation",
@@ -79,7 +79,7 @@
       "summary": "Erdős-Simonovits: exceeding threshold by factor (1+δ) forces Ω(n^r) copies",
       "startLine": 86,
       "endLine": 98,
-      "mathContext": "Erdős-Simonovits: exceeding threshold by factor (1+δ) forces Ω(n^r) copies"
+      "mathContext": "Mathematical content: Erdős-Simonovits: exceeding threshold by factor (1+δ) forces Ω(n^r) copies"
     },
     {
       "id": "kruskal-katona",
@@ -87,7 +87,7 @@
       "summary": "Shadow bound: minimum shadow size is achieved by initial colex segment",
       "startLine": 100,
       "endLine": 117,
-      "mathContext": "Shadow bound: minimum shadow size is achieved by initial colex segment"
+      "mathContext": "Bound: Shadow bound: minimum shadow size is achieved by initial colex segment"
     },
     {
       "id": "razborov",
@@ -95,7 +95,7 @@
       "summary": "Exact minimum: g₃(d) = d(2d-1)²/2 for d ≥ 1/2 via flag algebras",
       "startLine": 119,
       "endLine": 140,
-      "mathContext": "Exact minimum: g₃(d) = d(2d-1)²/2 for d ≥ 1/2 via flag algebras"
+      "mathContext": "Exact minimum: g₃(d) = d(2d-1)²/2 for d $\\geq$ 1/2 via flag algebras"
     },
     {
       "id": "reiher",
@@ -103,7 +103,7 @@
       "summary": "Extended flag algebras to determine exact K₄ density",
       "startLine": 142,
       "endLine": 155,
-      "mathContext": "Extended flag algebras to determine exact K₄ density"
+      "mathContext": "Mathematical content: Extended flag algebras to determine exact K₄ density"
     },
     {
       "id": "open-kr",
@@ -111,7 +111,7 @@
       "summary": "Conjectured to be achieved by iterated Turán constructions, but exact formulas unknown",
       "startLine": 157,
       "endLine": 177,
-      "mathContext": "Conjectured to be achieved by iterated Turán constructions, but exact formulas unknown"
+      "mathContext": "Mathematical content: Conjectured to be achieved by iterated Turán constructions, but exact formulas unknown"
     },
     {
       "id": "summary",
@@ -119,7 +119,7 @@
       "summary": "Solved for r=3,4; open for r≥5. Key tools: Kruskal-Katona, flag algebras, stability method",
       "startLine": 179,
       "endLine": 193,
-      "mathContext": "Solved for r=3,4; open for r≥5. Key tools: Kruskal-Katona, flag algebras, stability method"
+      "mathContext": "Solved for r=3,4; open for r$\\geq$5. Key tools: Kruskal-Katona, flag algebras, stability method"
     }
   ],
   "conclusion": {

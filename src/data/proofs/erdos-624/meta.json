@@ -86,7 +86,7 @@
       "summary": "Defines subsetImage f Y = (Y.powerset).image f, the predicate IsCoveringFunction X f H (universal coverage from all large subsets), and coveringNumber X = sInf over ℕ.",
       "startLine": 39,
       "endLine": 54,
-      "mathContext": "Defines subsetImage f Y = (Y.powerset).image f, the predicate IsCoveringFunction X f H (universal coverage from all large subsets), and coveringNumber X = sInf over ℕ."
+      "mathContext": "Defines subsetImage f Y = (Y.powerset).image f, the predicate IsCoveringFunction X f H (universal coverage from all large subsets), and coveringNumber X = sInf over $\\mathbb{N}$."
     },
     {
       "id": "basic-props",
@@ -94,7 +94,7 @@
       "summary": "Proves |Y.powerset| = 2^|Y| (from Mathlib's Finset.card_powerset) and |subsetImage f Y| ≤ 2^|Y| (composing card_image_le with powerset cardinality).",
       "startLine": 55,
       "endLine": 68,
-      "mathContext": "Proves |Y.powerset| = 2^|Y| (from Mathlib's Finset.card_powerset) and |subsetImage f Y| ≤ 2^|Y| (composing card_image_le with powerset cardinality)."
+      "mathContext": "Proves |Y.powerset| = 2^|Y| (from Mathlib's Finset.card_powerset) and |subsetImage f Y| $\\leq$ 2^|Y| (composing card_image_le with powerset cardinality)."
     },
     {
       "id": "lower-bound",
@@ -102,7 +102,7 @@
       "summary": "The counting argument: IsCoveringFunction X f H implies 2^H ≥ |X|, hence coveringNumber X ≥ Nat.clog 2 |X|. Both theorems proved by Aristotle automated proof search.",
       "startLine": 69,
       "endLine": 86,
-      "mathContext": "The counting argument: IsCoveringFunction X f H implies 2^H ≥ |X|, hence coveringNumber X ≥ Nat.clog 2 |X|. Both theorems proved by Aristotle automated proof search."
+      "mathContext": "The counting argument: IsCoveringFunction X f H implies $2^{H}$ $\\geq$ |X|, hence coveringNumber X $\\geq$ Nat.clog 2 |X|. Both theorems proved by Aristotle automated proof search."
     },
     {
       "id": "upper-bound",
@@ -110,7 +110,7 @@
       "summary": "Axiomatized: for n ≥ 4, there exists f and H with IsCoveringFunction X f H and H < log₂(n) + 3·log₂(log₂(n)) + 10. Proved via probabilistic method.",
       "startLine": 87,
       "endLine": 98,
-      "mathContext": "Axiomatized: for n ≥ 4, there exists f and H with IsCoveringFunction X f H and H < log₂(n) + 3·log₂(log₂(n)) + 10. Proved via probabilistic method."
+      "mathContext": "Axiomatized: for n $\\geq$ 4, there exists f and H with IsCoveringFunction X f H and H < log₂(n) + 3·log₂(log₂(n)) + 10. Proved via probabilistic method."
     },
     {
       "id": "main-conjecture",
@@ -118,7 +118,7 @@
       "summary": "States H(n) - log₂(n) → ∞: for all C, there exists N such that for all n > N, coveringNumber X > log₂(n) + C. Axiomatized as erdos_624_open.",
       "startLine": 99,
       "endLine": 112,
-      "mathContext": "States H(n) - log₂(n) → ∞: for all C, there exists N such that for all n > N, coveringNumber X > log₂(n) + C. Axiomatized as erdos_624_open."
+      "mathContext": "States H(n) - log₂(n) $\\to$ ∞: for all C, there exists N such that for all n > N, coveringNumber X > log₂(n) + C. Axiomatized as erdos_624_open."
     },
     {
       "id": "weaker-statement",
@@ -126,7 +126,7 @@
       "summary": "For n = 2^k, H(n) ≥ k + 1. Strictly weaker than the main conjecture; even this statement that H(n) > log₂(n) at powers of 2 is unproven.",
       "startLine": 113,
       "endLine": 123,
-      "mathContext": "For n = 2^k, H(n) ≥ k + 1. Strictly weaker than the main conjecture; even this statement that H(n) > log₂(n) at powers of 2 is unproven."
+      "mathContext": "For n = $2^{k}$, H(n) $\\geq$ k + 1. Strictly weaker than the main conjecture; even this statement that H(n) > log₂(n) at powers of 2 is unproven."
     },
     {
       "id": "alon-upper",
@@ -134,7 +134,7 @@
       "summary": "Axiomatized: ∃ c > 0 such that for any f, some Y ⊆ X with |Y| = k has |subsetImage f Y| < (1-c)·2^k. No function achieves perfect coverage.",
       "startLine": 124,
       "endLine": 137,
-      "mathContext": "Axiomatized: ∃ c > 0 such that for any f, some Y ⊆ X with |Y| = k has |subsetImage f Y| < (1-c)·2^k. No function achieves perfect coverage."
+      "mathContext": "Axiomatized: ∃ c > 0 such that for any f, some Y ⊆ X with |Y| = k has |subsetImage f Y| < (1-c)·$2^{k}$. No function achieves perfect coverage."
     },
     {
       "id": "alon-lower",
@@ -142,7 +142,7 @@
       "summary": "Axiomatized: for k ≥ 2 and |X| = 2^k, there exists f with |subsetImage f Y| > 2^k/4 for all Y of size k. Good covering functions exist.",
       "startLine": 138,
       "endLine": 147,
-      "mathContext": "Axiomatized: for k ≥ 2 and |X| = 2^k, there exists f with |subsetImage f Y| > 2^k/4 for all Y of size k. Good covering functions exist."
+      "mathContext": "Axiomatized: for k $\\geq$ 2 and |X| = $2^{k}$, there exists f with |subsetImage f Y| > $2^{k}$/4 for all Y of size k. Good covering functions exist."
     },
     {
       "id": "summary",
@@ -150,7 +150,7 @@
       "summary": "Complete picture: log₂(n) + Ω(1) ≤ H(n) < log₂(n) + O(log log n). The gap is between a positive constant (Alon) and O(log log n) (Erdős-Hajnal). Unboundedness is OPEN.",
       "startLine": 148,
       "endLine": 219,
-      "mathContext": "Complete picture: log₂(n) + Ω(1) ≤ H(n) < log₂(n) + O(log log n). The gap is between a positive constant (Alon) and O(log log n) (Erdős-Hajnal). Unboundedness is OPEN."
+      "mathContext": "Complete picture: log₂(n) + Ω(1) $\\leq$ H(n) < log₂(n) + $O(log $\\log n$)$. The gap is between a positive constant (Alon) and $O(log $\\log n$)$ (Erdős-Hajnal). Unboundedness is OPEN."
     }
   ],
   "conclusion": {

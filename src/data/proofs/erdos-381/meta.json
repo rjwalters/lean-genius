@@ -86,7 +86,7 @@
       "summary": "tau, IsHighlyComposite, HC, Q(x)",
       "startLine": 36,
       "endLine": 67,
-      "mathContext": "tau, IsHighlyComposite, HC, Q(x)"
+      "mathContext": "Mathematical content: tau, IsHighlyComposite, HC, Q(x)"
     },
     {
       "id": "examples",
@@ -94,7 +94,7 @@
       "summary": "1, 2, 4, 6, 12 are HC; divisor counts; OEIS A002182",
       "startLine": 68,
       "endLine": 140,
-      "mathContext": "1, 2, 4, 6, 12 are HC; divisor counts; OEIS A002182"
+      "mathContext": "Mathematical content: 1, 2, 4, 6, 12 are HC; divisor counts; OEIS A002182"
     },
     {
       "id": "erdos-lower",
@@ -102,7 +102,7 @@
       "summary": "Q(x) ≫ (log x)^{1+c} for some c > 0",
       "startLine": 141,
       "endLine": 163,
-      "mathContext": "Q(x) ≫ (log x)^{1+c} for some c > 0"
+      "mathContext": "Mathematical content: Q(x) ≫ (log x)^{1+c} for some c > 0"
     },
     {
       "id": "question",
@@ -110,7 +110,7 @@
       "summary": "Is Q(x) ≫_k (log x)^k for all k?",
       "startLine": 164,
       "endLine": 183,
-      "mathContext": "Is Q(x) ≫_k (log x)^k for all k?"
+      "mathContext": "Mathematical content: Is Q(x) ≫_k (log x)^k for all k?"
     },
     {
       "id": "nicolas",
@@ -118,7 +118,7 @@
       "summary": "Q(x) ≪ (log x)^C disproves the conjecture",
       "startLine": 184,
       "endLine": 219,
-      "mathContext": "Q(x) ≪ (log x)^C disproves the conjecture"
+      "mathContext": "Verified: Q(x) ≪ (log x)^C disproves the conjecture"
     },
     {
       "id": "bounds",
@@ -126,7 +126,7 @@
       "summary": "(log x)^{1+c} ≪ Q(x) ≪ (log x)^C",
       "startLine": 220,
       "endLine": 241,
-      "mathContext": "(log x)^{1+c} ≪ Q(x) ≪ (log x)^C"
+      "mathContext": "Mathematical content: (log x)^{1+c} ≪ Q(x) ≪ (log x)^C"
     },
     {
       "id": "structure",
@@ -134,7 +134,7 @@
       "summary": "Prime factorization properties, Ramanujan characterization, superior HC numbers",
       "startLine": 242,
       "endLine": 272,
-      "mathContext": "Prime factorization properties, Ramanujan characterization, superior HC numbers"
+      "mathContext": "Mathematical content: Prime factorization properties, Ramanujan characterization, superior HC numbers"
     },
     {
       "id": "comparison",
@@ -142,7 +142,7 @@
       "summary": "HC vs primes (Q(x)/π(x) → 0), highly abundant numbers",
       "startLine": 273,
       "endLine": 293,
-      "mathContext": "HC vs primes (Q(x)/π(x) → 0), highly abundant numbers"
+      "mathContext": "HC vs primes (Q(x)/π(x) $\\to$ 0), highly abundant numbers"
     },
     {
       "id": "summary",
@@ -150,7 +150,7 @@
       "summary": "erdos_381 theorem: the conjecture is FALSE; erdos_381_summary combines all key results",
       "startLine": 294,
       "endLine": 350,
-      "mathContext": "erdos_381 theorem: the conjecture is FALSE; erdos_381_summary combines all key results"
+      "mathContext": "Verified: erdos_381 theorem: the conjecture is FALSE; erdos_381_summary combines all key results"
     }
   ],
   "conclusion": {

@@ -102,7 +102,7 @@
       "summary": "Connects $(a,1)$-choosability to $\\chi_L(G) \\leq a$ via `listChromaticNumber_le`, defines $\\chi_L(G) = \\inf\\{a : \\text{IsChoosable}\\, G\\, a\\, 1\\}$, and axiomatizes $\\chi_L(G) \\geq \\chi(G)$.",
       "startLine": 81,
       "endLine": 99,
-      "mathContext": "Connects $(a,1)$-choosability to $\\chi_L(G) \\leq a$ via `listChromaticNumber_le`, defines $\\chi_L(G) = \\inf\\{a : \\text{IsChoosable}\\, G\\, a\\, 1\\}$, and axiomatizes $\\chi_L(G) \\geq \\chi(G)$."
+      "mathContext": "Formal definition: Connects $(a,1)$-choosability to $\\chi_L(G) \\leq a$ via `listChromaticNumber_le`, defines $\\chi_L(G) = \\inf\\{a : \\text{IsChoosable}\\, G\\, a\\, 1\\}$, and axiomatizes $\\chi_L(G) \\geq \\chi(G)$."
     },
     {
       "id": "properties",
@@ -118,7 +118,7 @@
       "summary": "States `ERT_Conjecture`: $\\forall G, a, b, m \\geq 1$, $(a,b)$-choosable $\\implies$ $(am, bm)$-choosable. Proves the trivial $m = 1$ case and the vacuous $b = 0$ case (select $\\emptyset$ everywhere).",
       "startLine": 126,
       "endLine": 154,
-      "mathContext": "States `ERT_Conjecture`: $\\forall G, a, b, m \\geq 1$, $(a,b)$-choosable $\\implies$ $(am, bm)$-choosable. Proves the trivial $m = 1$ case and the vacuous $b = 0$ case (select $\\emptyset$ everywhere)."
+      "mathContext": "Verified: States `ERT_Conjecture`: $\\forall G, a, b, m \\geq 1$, $(a,b)$-choosable $\\implies$ $(am, bm)$-choosable. Proves the trivial $m = 1$ case and the vacuous $b = 0$ case (select $\\emptyset$ everywhere)."
     },
     {
       "id": "m-2-case",
@@ -126,7 +126,7 @@
       "summary": "Specializes to `ERT_Case_m2` ($m = 2$) and further to `ERT_Case_4_1_to_8_2`: does $(4,1)$-choosable imply $(8,2)$-choosable? Axiomatizes that this specific case is false.",
       "startLine": 155,
       "endLine": 173,
-      "mathContext": "Specializes to `ERT_Case_m2` ($m = 2$) and further to `ERT_Case_4_1_to_8_2`: does $(4,1)$-choosable imply $(8,2)$-choosable? Axiomatizes that this specific case is false."
+      "mathContext": "Axiomatized: Specializes to `ERT_Case_m2` ($m = 2$) and further to `ERT_Case_4_1_to_8_2`: does $(4,1)$-choosable imply $(8,2)$-choosable? Axiomatizes that this specific case is false."
     },
     {
       "id": "dhs-counterexample",
@@ -150,7 +150,7 @@
       "summary": "Axiomatizes cases where the ERT conjecture *does* hold: fractional choosability (Alon–Tuza–Voigt), complete graphs, bipartite graphs, and planar graphs ($m = 2$ case, via Euler's formula constraints).",
       "startLine": 227,
       "endLine": 263,
-      "mathContext": "Axiomatizes cases where the ERT conjecture *does* hold: fractional choosability (Alon–Tuza–Voigt), complete graphs, bipartite graphs, and planar graphs ($m = 2$ case, via Euler's formula constraints)."
+      "mathContext": "Axiomatized: Axiomatizes cases where the ERT conjecture *does* hold: fractional choosability (Alon–Tuza–Voigt), complete graphs, bipartite graphs, and planar graphs ($m = 2$ case, via Euler's formula constraints)."
     },
     {
       "id": "connections",
@@ -174,7 +174,7 @@
       "summary": "Final theorem `erdos_632_disproved`: $\\neg\\text{ERT\\_Conjecture}$, with summary strings. The `#check` commands verify that the disproof and counterexample typecheck in the Lean kernel.",
       "startLine": 314,
       "endLine": 346,
-      "mathContext": "Final theorem `erdos_632_disproved`: $\\neg\\text{ERT\\_Conjecture}$, with summary strings. The `#check` commands verify that the disproof and counterexample typecheck in the Lean kernel."
+      "mathContext": "Verified: Final theorem `erdos_632_disproved`: $\\neg\\text{ERT\\_Conjecture}$, with summary strings. The `#check` commands verify that the disproof and counterexample typecheck in the Lean kernel."
     }
   ],
   "conclusion": {

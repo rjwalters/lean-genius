@@ -58,7 +58,7 @@
       "summary": "Defines `TwoColoring n` as $\\text{Fin}\\;n \\to \\text{Fin}\\;n \\to \\text{Bool}$, the symmetry predicate $c(i,j) = c(j,i)$, and `isMonochromaticClique` requiring all edges in $S$ to have the same color.",
       "startLine": 45,
       "endLine": 59,
-      "mathContext": "Defines `TwoColoring n` as $\\text{Fin}\\;n \\to \\text{Fin}\\;n \\to \\text{Bool}$, the symmetry predicate $c(i,j) = c(j,i)$, and `isMonochromaticClique` requiring all edges in $S$ to have the same color."
+      "mathContext": "Formal definition: Defines `TwoColoring n` as $\\text{Fin}\\;n \\to \\text{Fin}\\;n \\to \\text{Bool}$, the symmetry predicate $c(i,j) = c(j,i)$, and `isMonochromaticClique` requiring all edges in $S$ to have the same color."
     },
     {
       "id": "clique-partition",
@@ -74,7 +74,7 @@
       "summary": "Three-level minimax: `minLeftover(c,t)` via `sInf`, `f_n(n,t)` via `sSup` over colorings, and `f(t)` via `sSup` over $n$. This captures $f(t) = \\sup_n \\max_c \\min_P \\text{leftover}(P)$.",
       "startLine": 87,
       "endLine": 104,
-      "mathContext": "Three-level minimax: `minLeftover(c,t)` via `sInf`, `f_n(n,t)` via `sSup` over colorings, and `f(t)` via `sSup` over $n$. This captures $f(t) = \\sup_n \\max_c \\min_P \\text{leftover}(P)$."
+      "mathContext": "Mathematical content: Three-level minimax: `minLeftover(c,t)` via `sInf`, `f_n(n,t)` via `sSup` over colorings, and `f(t)` via `sSup` over $n$. This captures $f(t) = \\sup_n \\max_c \\min_P \\text{leftover}(P)$."
     },
     {
       "id": "moon",
@@ -82,7 +82,7 @@
       "summary": "Axiomatizes Moon's 1966 result: $f(3) = 4$ and the uniform version $f_n(n, 3) = 4$ for $n \\ge 8$.",
       "startLine": 105,
       "endLine": 114,
-      "mathContext": "Axiomatizes Moon's 1966 result: $f(3) = 4$ and the uniform version $f_n(n, 3) = 4$ for $n \\ge 8$."
+      "mathContext": "Axiomatized: Axiomatizes Moon's 1966 result: $f(3) = 4$ and the uniform version $f_n(n, 3) = 4$ for $n \\ge 8$."
     },
     {
       "id": "ramsey-bound",
@@ -90,7 +90,7 @@
       "summary": "Axiomatizes `ramseyNumber(s,t)` and Erdős's observations: $f(t) < R(t,t)$ (leftover avoids monochromatic $K_t$) and the crude bound $R(t,t) \\le 4^t$ from Erdős-Szekeres.",
       "startLine": 115,
       "endLine": 127,
-      "mathContext": "Axiomatizes `ramseyNumber(s,t)` and Erdős's observations: $f(t) < R(t,t)$ (leftover avoids monochromatic $K_t$) and the crude bound $R(t,t) \\le 4^t$ from Erdős-Szekeres."
+      "mathContext": "Axiomatizes `ramseyNumber(s,t)` and Erdős's observations: $f(t) < R(t,t)$ (leftover avoids monochromatic $K_t$) and the crude bound $R(t,t) \\le $4^{t}$$ from Erdős-Szekeres."
     },
     {
       "id": "exact-formula",
@@ -98,7 +98,7 @@
       "summary": "The main result axiomatized: $\\exists x < t: f(t) = R(t, t-1) + x$ for $t \\ge 3$. Includes both the lower bound $f(t) \\ge R(t, t-1)$ and upper bound $f(t) < R(t, t-1) + t$.",
       "startLine": 128,
       "endLine": 141,
-      "mathContext": "The main result axiomatized: $\\exists x < t: f(t) = R(t, t-1) + x$ for $t \\ge 3$. Includes both the lower bound $f(t) \\ge R(t, t-1)$ and upper bound $f(t) < R(t, t-1) + t$."
+      "mathContext": "Axiomatized: The main result axiomatized: $\\exists x < t: f(t) = R(t, t-1) + x$ for $t \\ge 3$. Includes both the lower bound $f(t) \\ge R(t, t-1)$ and upper bound $f(t) < R(t, t-1) + t$."
     },
     {
       "id": "asymptotic",
@@ -106,7 +106,7 @@
       "summary": "Two consequences of the BES formula: the root limit $f(t)^{1/t} \\to 4$ (via `Filter.Tendsto`) answering Erdős's first question, and $f(t) \\ne O(t)$ (negated existential) answering the second.",
       "startLine": 142,
       "endLine": 158,
-      "mathContext": "Two consequences of the BES formula: the root limit $f(t)^{1/t} \\to 4$ (via `Filter.Tendsto`) answering Erdős's first question, and $f(t) \\ne O(t)$ (negated existential) answering the second."
+      "mathContext": "Two consequences of the BES formula: the root limit $f(t)^{1/t} \\to 4$ (via `Filter.Tendsto`) answering Erdős's first question, and $f(t) \\ne $O(t)$$ (negated existential) answering the second."
     }
   ],
   "conclusion": {

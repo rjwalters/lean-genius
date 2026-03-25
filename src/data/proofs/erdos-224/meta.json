@@ -60,7 +60,7 @@
       "summary": "Imports Mathlib's **InnerProductSpace**, **Finset**, **Real**, and **Finrank** for the `Erdos224` namespace.",
       "startLine": 24,
       "endLine": 30,
-      "mathContext": "Imports Mathlib's **InnerProductSpace**, **Finset**, **Real**, and **Finrank** for the `Erdos224` namespace."
+      "mathContext": "Mathematical content: Imports Mathlib's **InnerProductSpace**, **Finset**, **Real**, and **Finrank** for the `Erdos224` namespace."
     },
     {
       "id": "basic-definitions",
@@ -76,7 +76,7 @@
       "summary": "Defines **ContainsObtuseTriple** ($\\exists$ distinct $A, B, C \\in P$ with obtuse angle at $B$) and **IsObtuseFree** ($\\neg$ContainsObtuseTriple).",
       "startLine": 61,
       "endLine": 76,
-      "mathContext": "Defines **ContainsObtuseTriple** ($\\exists$ distinct $A, B, C \\in P$ with obtuse angle at $B$) and **IsObtuseFree** ($\\neg$ContainsObtuseTriple)."
+      "mathContext": "Formal definition: Defines **ContainsObtuseTriple** ($\\exists$ distinct $A, B, C \\in P$ with obtuse angle at $B$) and **IsObtuseFree** ($\\neg$ContainsObtuseTriple)."
     },
     {
       "id": "main-theorem",
@@ -84,7 +84,7 @@
       "summary": "States **ErdosObtuseConjecture**: $|P| = 2^d + 1 \\Rightarrow \\text{ContainsObtuseTriple}(P)$. Axiomatizes **danzer_grunbaum** (1962) resolving it for all $d$.",
       "startLine": 77,
       "endLine": 93,
-      "mathContext": "States **ErdosObtuseConjecture**: $|P| = 2^d + 1 \\Rightarrow \\text{ContainsObtuseTriple}(P)$. Axiomatizes **danzer_grunbaum** (1962) resolving it for all $d$."
+      "mathContext": "States **ErdosObtuseConjecture**: $|P| = $2^{d}$ + 1 \\Rightarrow \\text{ContainsObtuseTriple}(P)$. Axiomatizes **danzer_grunbaum** (1962) resolving it for all $d$."
     },
     {
       "id": "special-cases",
@@ -92,7 +92,7 @@
       "summary": "Axiomatizes **case_d2** (5 points in $\\mathbb{R}^2$, trivial) and **case_d3** (9 points in $\\mathbb{R}^3$, Kuiper-Boerdijk).",
       "startLine": 94,
       "endLine": 117,
-      "mathContext": "Axiomatizes **case_d2** (5 points in $\\mathbb{R}^2$, trivial) and **case_d3** (9 points in $\\mathbb{R}^3$, Kuiper-Boerdijk)."
+      "mathContext": "Axiomatized: Axiomatizes **case_d2** (5 points in $\\mathbb{R}^2$, trivial) and **case_d3** (9 points in $\\mathbb{R}^3$, Kuiper-Boerdijk)."
     },
     {
       "id": "extremal-config",
@@ -100,7 +100,7 @@
       "summary": "Defines **hypercubeVertices** $= \\{0,1\\}^d$ (sorry), axiomatizes **hypercube_card** ($= 2^d$) and **hypercube_obtuse_free**, and proves **hypercube_extremal**.",
       "startLine": 118,
       "endLine": 152,
-      "mathContext": "Defines **hypercubeVertices** $= \\{0,1\\}^d$ (sorry), axiomatizes **hypercube_card** ($= 2^d$) and **hypercube_obtuse_free**, and proves **hypercube_extremal**."
+      "mathContext": "Defines **hypercubeVertices** $= \\{0,1\\}^d$ (sorry), axiomatizes **hypercube_card** ($= $2^{d}$$) and **hypercube_obtuse_free**, and proves **hypercube_extremal**."
     },
     {
       "id": "hypercube-angles",
@@ -108,7 +108,7 @@
       "summary": "Axiomatizes **hypercube_angle_classification**: $\\angle ABC \\leq \\pi/2$ for all distinct vertices $A, B, C \\in \\{0,1\\}^d$. Only $60°$ and $90°$ angles occur.",
       "startLine": 153,
       "endLine": 177,
-      "mathContext": "Axiomatizes **hypercube_angle_classification**: $\\angle ABC \\leq \\pi/2$ for all distinct vertices $A, B, C \\in \\{0,1\\}^d$. Only $60°$ and $90°$ angles occur."
+      "mathContext": "Axiomatizes **hypercube_angle_classification**: $\\angle ABC \\leq \\$\\pi$/2$ for all distinct vertices $A, B, C \\in \\{0,1\\}^d$. Only $60°$ and $90°$ angles occur."
     },
     {
       "id": "why-2d-plus-1",
@@ -116,7 +116,7 @@
       "summary": "Axiomatizes **pigeonhole_orthants**: $2^d + 1$ points in $\\mathbb{R}^d$ force two into the same orthant. Sketches the Danzer-Grünbaum argument.",
       "startLine": 178,
       "endLine": 204,
-      "mathContext": "Axiomatizes **pigeonhole_orthants**: $2^d + 1$ points in $\\mathbb{R}^d$ force two into the same orthant. Sketches the Danzer-Grünbaum argument."
+      "mathContext": "Axiomatizes **pigeonhole_orthants**: $$2^{d}$ + 1$ points in $\\mathbb{R}^d$ force two into the same orthant. Sketches the Danzer-Grünbaum argument."
     },
     {
       "id": "related",
@@ -124,7 +124,7 @@
       "summary": "Discusses connections to **acute sets** (all angles $< 90°$), **spherical codes**, and high-dimensional geometry phenomena.",
       "startLine": 205,
       "endLine": 229,
-      "mathContext": "Discusses connections to **acute sets** (all angles $< 90°$), **spherical codes**, and high-dimensional geometry phenomena."
+      "mathContext": "Mathematical content: Discusses connections to **acute sets** (all angles $< 90°$), **spherical codes**, and high-dimensional geometry phenomena."
     },
     {
       "id": "main-results",
@@ -132,7 +132,7 @@
       "summary": "Proves **erdos_224** (direct application of danzer_grunbaum) and **erdos_224_summary** (conjunction of main theorem with hypercube extremality).",
       "startLine": 230,
       "endLine": 256,
-      "mathContext": "Proves **erdos_224** (direct application of danzer_grunbaum) and **erdos_224_summary** (conjunction of main theorem with hypercube extremality)."
+      "mathContext": "Verified: Proves **erdos_224** (direct application of danzer_grunbaum) and **erdos_224_summary** (conjunction of main theorem with hypercube extremality)."
     }
   ],
   "conclusion": {

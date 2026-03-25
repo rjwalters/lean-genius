@@ -50,7 +50,7 @@
       "summary": "Imports Mathlib's `SimpleGraph`, `Clique`, `Fintype`, and tactic libraries. Opens the `SimpleGraph`, `Finset`, and `Classical` namespaces and enables classical decidability for propositions.",
       "startLine": 22,
       "endLine": 31,
-      "mathContext": "Imports Mathlib's `SimpleGraph`, `Clique`, `Fintype`, and tactic libraries. Opens the `SimpleGraph`, `Finset`, and `Classical` namespaces and enables classical decidability for propositions."
+      "mathContext": "Mathematical content: Imports Mathlib's `SimpleGraph`, `Clique`, `Fintype`, and tactic libraries. Opens the `SimpleGraph`, `Finset`, and `Classical` namespaces and enables classical decidability for propositions."
     },
     {
       "id": "triangles",
@@ -82,7 +82,7 @@
       "summary": "Axiomatizes $\\tau_B(G)$, the minimum number of edge removals to make $G$ bipartite (the odd cycle transversal number for edges). Also axiomatizes $\\tau_B(G) \\le |E(G)|$.",
       "startLine": 108,
       "endLine": 120,
-      "mathContext": "Axiomatizes $\\tau_B(G)$, the minimum number of edge removals to make $G$ bipartite (the odd cycle transversal number for edges). Also axiomatizes $\\tau_B(G) \\le |E(G)|$."
+      "mathContext": "Axiomatized: Axiomatizes $\\tau_B(G)$, the minimum number of edge removals to make $G$ bipartite (the odd cycle transversal number for edges). Also axiomatizes $\\tau_B(G) \\le |E(G)|$."
     },
     {
       "id": "bipartite-triangles",
@@ -114,7 +114,7 @@
       "summary": "Proves $\\tau_1(G) \\le |E(G)|$ and $\\alpha_1(G) \\le |E(G)|$ from definitions, then derives $\\alpha_1(G) \\le n^2/4$ from Norin-Sun via nonnegativity of $\\tau_B$.",
       "startLine": 231,
       "endLine": 257,
-      "mathContext": "Proves $\\tau_1(G) \\le |E(G)|$ and $\\alpha_1(G) \\le |E(G)|$ from definitions, then derives $\\alpha_1(G) \\le n^2/4$ from Norin-Sun via nonnegativity of $\\tau_B$."
+      "mathContext": "Proves $\\tau_1(G) \\le |E(G)|$ and $\\alpha_1(G) \\le |E(G)|$ from definitions, then derives $\\alpha_1(G) \\le $n^{2}$/4$ from Norin-Sun via nonnegativity of $\\tau_B$."
     },
     {
       "id": "triangle-free-sum",
@@ -122,7 +122,7 @@
       "summary": "Proves $\\alpha_1(G) + \\tau_1(G) = |E(G)|$ for triangle-free graphs, combining the results $\\tau_1 = 0$ and $\\alpha_1 = |E|$ with `omega`.",
       "startLine": 258,
       "endLine": 266,
-      "mathContext": "Proves $\\alpha_1(G) + \\tau_1(G) = |E(G)|$ for triangle-free graphs, combining the results $\\tau_1 = 0$ and $\\alpha_1 = |E|$ with `omega`."
+      "mathContext": "Verified: Proves $\\alpha_1(G) + \\tau_1(G) = |E(G)|$ for triangle-free graphs, combining the results $\\tau_1 = 0$ and $\\alpha_1 = |E|$ with `omega`."
     },
     {
       "id": "equality-cases",
@@ -130,7 +130,7 @@
       "summary": "Axiomatizes that equality $\\alpha_1(G) + \\tau_1(G) = \\lfloor n^2/4 \\rfloor$ is achievable for every $n \\ge 2$, realized by $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$.",
       "startLine": 267,
       "endLine": 277,
-      "mathContext": "Axiomatizes that equality $\\alpha_1(G) + \\tau_1(G) = \\lfloor n^2/4 \\rfloor$ is achievable for every $n \\ge 2$, realized by $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$."
+      "mathContext": "Axiomatizes that equality $\\alpha_1(G) + \\tau_1(G) = \\lfloor $n^{2}$/4 \\rfloor$ is achievable for every $n \\ge 2$, realized by $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$."
     },
     {
       "id": "problem23",
@@ -138,7 +138,7 @@
       "summary": "Defines `Problem23Conjecture` ($\\tau_B(G) \\le n^2/25$) and proves that if Problem #23 holds, then $\\tau_1(G) \\le n^2/25$ via the chain $\\tau_1 \\le \\tau_B \\le n^2/25$.",
       "startLine": 278,
       "endLine": 335,
-      "mathContext": "Defines `Problem23Conjecture` ($\\tau_B(G) \\le n^2/25$) and proves that if Problem #23 holds, then $\\tau_1(G) \\le n^2/25$ via the chain $\\tau_1 \\le \\tau_B \\le n^2/25$."
+      "mathContext": "Defines `Problem23Conjecture` ($\\tau_B(G) \\le $n^{2}$/25$) and proves that if Problem #23 holds, then $\\tau_1(G) \\le $n^{2}$/25$ via the chain $\\tau_1 \\le \\tau_B \\le $n^{2}$/25$."
     }
   ],
   "conclusion": {

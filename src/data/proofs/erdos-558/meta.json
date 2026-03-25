@@ -89,7 +89,7 @@
       "summary": "Four axioms: `ramsey_bipartite_exists` (every coloring above $R$ has monochromatic copy), `ramsey_bipartite_minimal` (coloring avoiding $G$ exists below $R$), and monotonicity in both $(s,t)$ and $k$.",
       "startLine": 73,
       "endLine": 100,
-      "mathContext": "Four axioms: `ramsey_bipartite_exists` (every coloring above $R$ has monochromatic copy), `ramsey_bipartite_minimal` (coloring avoiding $G$ exists below $R$), and monotonicity in both $(s,t)$ and $k$."
+      "mathContext": "Axiomatized: Four axioms: `ramsey_bipartite_exists` (every coloring above $R$ has monochromatic copy), `ramsey_bipartite_minimal` (coloring avoiding $G$ exists below $R$), and monotonicity in both $(s,t)$ and $k$."
     },
     {
       "id": "chung-graham",
@@ -97,7 +97,7 @@
       "summary": "Defines explicit Chung-Graham lower and upper bound functions. Axiomatizes $c_1 k^{(st-1)/(s+t)} \\le R \\le c_2 k^t$ and verifies the exponent inequality $(st-1)/(s+t) \\le t$.",
       "startLine": 101,
       "endLine": 125,
-      "mathContext": "Defines explicit Chung-Graham lower and upper bound functions. Axiomatizes $c_1 k^{(st-1)/(s+t)} \\le R \\le c_2 k^t$ and verifies the exponent inequality $(st-1)/(s+t) \\le t$."
+      "mathContext": "Formal definition: Defines explicit Chung-Graham lower and upper bound functions. Axiomatizes $c_1 k^{(st-1)/(s+t)} \\le R \\le c_2 k^t$ and verifies the exponent inequality $(st-1)/(s+t) \\le t$."
     },
     {
       "id": "k22-case",
@@ -105,7 +105,7 @@
       "summary": "Defines $C_4 = K[2,2]$. Axiomatizes $R(C_4; k) = \\Theta(k^2)$, the precise asymptotic $R(C_4;k)/k^2 \\to 1$ via `Filter.Tendsto`, and the projective plane lower bound $R(C_4;k) \\ge k^2-k+1$.",
       "startLine": 126,
       "endLine": 148,
-      "mathContext": "Defines $C_4 = K[2,2]$. Axiomatizes $R(C_4; k) = \\Theta(k^2)$, the precise asymptotic $R(C_4;k)/k^2 \\to 1$ via `Filter.Tendsto`, and the projective plane lower bound $R(C_4;k) \\ge k^2-k+1$."
+      "mathContext": "Defines $C_4 = K[2,2]$. Axiomatizes $R(C_4; k) = \\Theta($k^{2}$)$, the precise asymptotic $R(C_4;k)/$k^{2}$ \\to 1$ via `Filter.Tendsto`, and the projective plane lower bound $R(C_4;k) \\ge $k^{2}$-k+1$."
     },
     {
       "id": "k33-case",
@@ -121,7 +121,7 @@
       "summary": "Defines the factorial threshold `criticalS(t) = (t-1)!+1`. Axiomatizes $R(K_{s,t}; k) = \\Theta(k^t)$ for $s \\ge (t-1)!+1$ and the intermediate exponent below the threshold.",
       "startLine": 172,
       "endLine": 191,
-      "mathContext": "Defines the factorial threshold `criticalS(t) = (t-1)!+1`. Axiomatizes $R(K_{s,t}; k) = \\Theta(k^t)$ for $s \\ge (t-1)!+1$ and the intermediate exponent below the threshold."
+      "mathContext": "Formal definition: Defines the factorial threshold `criticalS(t) = (t-1)!+1`. Axiomatizes $R(K_{s,t}; k) = \\Theta(k^t)$ for $s \\ge (t-1)!+1$ and the intermediate exponent below the threshold."
     },
     {
       "id": "main-theorem",
@@ -129,7 +129,7 @@
       "summary": "Proves `erdos_558` combining Chung-Graham bounds with the threshold theorem via `constructor` and `exact`. For any $s, t, k$: general bounds hold; above threshold, growth is $\\Theta(k^t)$.",
       "startLine": 192,
       "endLine": 210,
-      "mathContext": "Proves `erdos_558` combining Chung-Graham bounds with the threshold theorem via `constructor` and `exact`. For any $s, t, k$: general bounds hold; above threshold, growth is $\\Theta(k^t)$."
+      "mathContext": "Verified: Proves `erdos_558` combining Chung-Graham bounds with the threshold theorem via `constructor` and `exact`. For any $s, t, k$: general bounds hold; above threshold, growth is $\\Theta(k^t)$."
     },
     {
       "id": "norm-graphs",
@@ -137,7 +137,7 @@
       "summary": "Axiomatizes the norm graph lower bound: for $s = q+1$ with prime $q$, $R(K_{s,t}; k) \\ge q^2 k$.",
       "startLine": 211,
       "endLine": 220,
-      "mathContext": "Axiomatizes the norm graph lower bound: for $s = q+1$ with prime $q$, $R(K_{s,t}; k) \\ge q^2 k$."
+      "mathContext": "Axiomatized: Axiomatizes the norm graph lower bound: for $s = q+1$ with prime $q$, $R(K_{s,t}; k) \\ge q^2 k$."
     },
     {
       "id": "specific-bounds",
@@ -145,7 +145,7 @@
       "summary": "Two sub-threshold cases with open exponents: $R(K_{2,3}; k) = \\Theta(k^{5/3})$ to $O(k^2)$ and $R(K_{2,4}; k) = \\Theta(k^{7/4})$ to $O(k^2)$.",
       "startLine": 221,
       "endLine": 234,
-      "mathContext": "Two sub-threshold cases with open exponents: $R(K_{2,3}; k) = \\Theta(k^{5/3})$ to $O(k^2)$ and $R(K_{2,4}; k) = \\Theta(k^{7/4})$ to $O(k^2)$."
+      "mathContext": "Two sub-threshold cases with open exponents: $R(K_{2,3}; k) = \\Theta(k^{5/3})$ to $$O($k^{2}$)$$ and $R(K_{2,4}; k) = \\Theta(k^{7/4})$ to $$O($k^{2}$)$$."
     },
     {
       "id": "connections",
@@ -153,7 +153,7 @@
       "summary": "The Turan-type lower bound $R(K_{s,t}; k) \\ge k^{(st-1)/(s+t)}$ from the Kovari-Sos-Turan theorem applied across color classes.",
       "startLine": 235,
       "endLine": 242,
-      "mathContext": "The Turan-type lower bound $R(K_{s,t}; k) \\ge k^{(st-1)/(s+t)}$ from the Kovari-Sos-Turan theorem applied across color classes."
+      "mathContext": "Verified: The Turan-type lower bound $R(K_{s,t}; k) \\ge k^{(st-1)/(s+t)}$ from the Kovari-Sos-Turan theorem applied across color classes."
     },
     {
       "id": "summary",
@@ -161,7 +161,7 @@
       "summary": "Proves `erdos_558_summary` bundling $R(C_4;k) = \\Theta(k^2)$, $R(K_{3,3};k) = \\Theta(k^3)$, and the general threshold theorem via tuple construction.",
       "startLine": 243,
       "endLine": 261,
-      "mathContext": "Proves `erdos_558_summary` bundling $R(C_4;k) = \\Theta(k^2)$, $R(K_{3,3};k) = \\Theta(k^3)$, and the general threshold theorem via tuple construction."
+      "mathContext": "Proves `erdos_558_summary` bundling $R(C_4;k) = \\Theta($k^{2}$)$, $R(K_{3,3};k) = \\Theta($k^{3}$)$, and the general threshold theorem via tuple construction."
     }
   ],
   "conclusion": {

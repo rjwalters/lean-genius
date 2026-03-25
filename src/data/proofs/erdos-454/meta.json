@@ -178,7 +178,7 @@
       "startLine": 139,
       "endLine": 158,
       "summary": "Defines `Erdos454Conjecture`: $\\limsup = \\top$ ($= \\infty$). Defines `Erdos454Negation`: $\\exists M,\\, \\limsup \\le M$. States `conjecture_iff_not_negation` (sorry): the two are complementary.",
-      "mathContext": "Defines `Erdos454Conjecture`: $\\limsup = \\top$ ($= \\infty$). Defines `Erdos454Negation`: $\\exists M,\\, \\limsup \\le M$. States `conjecture_iff_not_negation` (sorry): the two are complementary."
+      "mathContext": "Formal definition: Defines `Erdos454Conjecture`: $\\limsup = \\top$ ($= \\infty$). Defines `Erdos454Negation`: $\\exists M,\\, \\limsup \\le M$. States `conjecture_iff_not_negation` (sorry): the two are complementary."
     },
     {
       "id": "heuristics",
@@ -194,7 +194,7 @@
       "startLine": 176,
       "endLine": 192,
       "summary": "Computes $f(3) = \\min(10, 10, 14) = 10 = 2p_3$ (sorry). Proves $2p_3 = 10$ via `native_decide`. States $\\text{deviation}(3) = 0$ (sorry).",
-      "mathContext": "Computes $f(3) = \\min(10, 10, 14) = 10 = 2p_3$ (sorry). Proves $2p_3 = 10$ via `native_decide`. States $\\text{deviation}(3) = 0$ (sorry)."
+      "mathContext": "Verified: Computes $f(3) = \\min(10, 10, 14) = 10 = 2p_3$ (sorry). Proves $2p_3 = 10$ via `native_decide`. States $\\text{deviation}(3) = 0$ (sorry)."
     },
     {
       "id": "related",
@@ -202,7 +202,7 @@
       "startLine": 193,
       "endLine": 204,
       "summary": "Notes connection to Problem #458 (consecutive prime sums). Axiomatizes `prime_number_theorem_asymptotic`: $p_n / (n \\log n) \\to 1$, providing context for average gap size.",
-      "mathContext": "Notes connection to Problem #458 (consecutive prime sums). Axiomatizes `prime_number_theorem_asymptotic`: $p_n / (n \\log n) \\to 1$, providing context for average gap size."
+      "mathContext": "Notes connection to Problem #458 (consecutive prime sums). Axiomatizes `prime_number_theorem_asymptotic`: $p_n / (n \\$\\log n$) \\to 1$, providing context for average gap size."
     },
     {
       "id": "resolution",

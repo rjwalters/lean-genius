@@ -105,7 +105,7 @@
       "startLine": 58,
       "endLine": 73,
       "summary": "Defines $\\texttt{Icc1}(N) = \\{1, \\ldots, N\\}$ via $\\texttt{Finset.range}$ and $\\texttt{IsDenseSubset}(A, N, \\delta)$ requiring $A \\subseteq \\{1,\\ldots,N\\}$ with $\\sum \\frac{1}{a} > \\delta \\log N$.",
-      "mathContext": "Defines $\\texttt{Icc1}(N) = \\{1, \\ldots, N\\}$ via $\\texttt{Finset.range}$ and $\\texttt{IsDenseSubset}(A, N, \\delta)$ requiring $A \\subseteq \\{1,\\ldots,N\\}$ with $\\sum \\frac{1}{a} > \\delta \\log N$."
+      "mathContext": "Defines $\\texttt{Icc1}(N) = \\{1, \\ldots, N\\}$ via $\\texttt{Finset.range}$ and $\\texttt{IsDenseSubset}(A, N, \\$\\delta$)$ requiring $A \\subseteq \\{1,\\ldots,N\\}$ with $\\sum \\frac{1}{a} > \\$\\delta$ \\log N$."
     },
     {
       "id": "conjecture",
@@ -129,7 +129,7 @@
       "startLine": 116,
       "endLine": 129,
       "summary": "Axiomatizes the improved threshold: $\\forall \\varepsilon > 0$, $\\sum \\frac{1}{a} \\geq (\\log N)^{4/5+\\varepsilon}$ suffices. A polynomial improvement from $(\\log N)^{1-o(1)}$ to $(\\log N)^{4/5+o(1)}$.",
-      "mathContext": "Axiomatizes the improved threshold: $\\forall \\varepsilon > 0$, $\\sum \\frac{1}{a} \\geq (\\log N)^{4/5+\\varepsilon}$ suffices. A polynomial improvement from $(\\log N)^{1-o(1)}$ to $(\\log N)^{4/5+o(1)}$."
+      "mathContext": "Axiomatized: Axiomatizes the improved threshold: $\\forall \\varepsilon > 0$, $\\sum \\frac{1}{a} \\geq (\\log N)^{4/5+\\varepsilon}$ suffices. A polynomial improvement from $(\\log N)^{1-o(1)}$ to $(\\log N)^{4/5+o(1)}$."
     },
     {
       "id": "pomerance",
@@ -145,7 +145,7 @@
       "startLine": 144,
       "endLine": 154,
       "summary": "$\\texttt{erdos\\_47\\_summary} : \\texttt{ErdosConjecture47} := \\texttt{bloom\\_theorem}$. Records that Problem #47 is solved and the conjecture equals Bloom's result.",
-      "mathContext": "$\\texttt{erdos\\_47\\_summary} : \\texttt{ErdosConjecture47} := \\texttt{bloom\\_theorem}$. Records that Problem #47 is solved and the conjecture equals Bloom's result."
+      "mathContext": "Verified: $\\texttt{erdos\\_47\\_summary} : \\texttt{ErdosConjecture47} := \\texttt{bloom\\_theorem}$. Records that Problem #47 is solved and the conjecture equals Bloom's result."
     }
   ],
   "conclusion": {

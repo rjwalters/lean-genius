@@ -112,7 +112,7 @@
       "startLine": 79,
       "endLine": 90,
       "summary": "Defines $F(N) = \\sup\\{|A| : A \\subseteq [N],\\; \\text{IsNonDividing}(A)\\}$ via `Finset.powerset` enumeration. States monotonicity $N \\leq M \\implies F(N) \\leq F(M)$.",
-      "mathContext": "Defines $F(N) = \\sup\\{|A| : A \\subseteq [N],\\; \\text{IsNonDividing}(A)\\}$ via `Finset.powerset` enumeration. States monotonicity $N \\leq M \\implies F(N) \\leq F(M)$."
+      "mathContext": "Formal definition: Defines $F(N) = \\sup\\{|A| : A \\subseteq [N],\\; \\text{IsNonDividing}(A)\\}$ via `Finset.powerset` enumeration. States monotonicity $N \\leq M \\implies F(N) \\leq F(M)$."
     },
     {
       "id": "upper-bounds",
@@ -136,7 +136,7 @@
       "startLine": 132,
       "endLine": 153,
       "summary": "Formalizes the remaining open problem: the gap $\\exp(c\\sqrt{\\log N}) \\leq F(N) \\leq N^{1/4+o(1)}$. Also proves Erdős's original conjecture $F(N) < (\\log N)^{O(1)}$ was false.",
-      "mathContext": "Formalizes the remaining open problem: the gap $\\exp(c\\sqrt{\\log N}) \\leq F(N) \\leq N^{1/4+o(1)}$. Also proves Erdős's original conjecture $F(N) < (\\log N)^{O(1)}$ was false."
+      "mathContext": "Formalizes the remaining open problem: the gap $\\exp(c\\sqrt{\\log N}) \\leq F(N) \\leq N^{1/4+o(1)}$. Also proves Erdős's original conjecture $F(N) < (\\log N)^{$O(1)$}$ was false."
     },
     {
       "id": "examples",
@@ -144,7 +144,7 @@
       "startLine": 154,
       "endLine": 188,
       "summary": "Verified: `singleton_nondividing` (vacuous truth). Partially verified: $\\{2,3\\}$ non-dividing (cardinality contradiction). Stated: primes form non-dividing sets.",
-      "mathContext": "Verified: `singleton_nondividing` (vacuous truth). Partially verified: $\\{2,3\\}$ non-dividing (cardinality contradiction). Stated: primes form non-dividing sets."
+      "mathContext": "Mathematical content: Verified: `singleton_nondividing` (vacuous truth). Partially verified: $\\{2,3\\}$ non-dividing (cardinality contradiction). Stated: primes form non-dividing sets."
     },
     {
       "id": "connection",
@@ -152,7 +152,7 @@
       "startLine": 189,
       "endLine": 477,
       "summary": "Defines $g(N)$ (non-averaging extremal function), proves $F(N) \\leq g(N)$ via `F_le_g`, and chains Pham-Zakharov's bound: $g(N) \\leq N^{1/4+\\varepsilon} \\implies F(N) \\leq N^{1/4+\\varepsilon}$.",
-      "mathContext": "Defines $g(N)$ (non-averaging extremal function), proves $F(N) \\leq g(N)$ via `F_le_g`, and chains Pham-Zakharov's bound: $g(N) \\leq N^{1/4+\\varepsilon} \\implies F(N) \\leq N^{1/4+\\varepsilon}$."
+      "mathContext": "Formal definition: Defines $g(N)$ (non-averaging extremal function), proves $F(N) \\leq g(N)$ via `F_le_g`, and chains Pham-Zakharov's bound: $g(N) \\leq N^{1/4+\\varepsilon} \\implies F(N) \\leq N^{1/4+\\varepsilon}$."
     }
   ],
   "conclusion": {

@@ -135,7 +135,7 @@
       "summary": "Axiomatizes four exact values: g(3)=3 (trivial), g(4)=5 (Erdős), g(5)=10 (Harborth 1978), g(6)=30 (Heule-Scheucher 2024). Each is documented with historical attribution.",
       "startLine": 102,
       "endLine": 121,
-      "mathContext": "Axiomatizes four exact values: g(3)=3 (trivial), g(4)=5 (Erdős), g(5)=10 (Harborth 1978), g(6)=30 (Heule-Scheucher 2024). Each is documented with historical attribution."
+      "mathContext": "Axiomatized: Axiomatizes four exact values: g(3)=3 (trivial), g(4)=5 (Erdős), g(5)=10 (Harborth 1978), g(6)=30 (Heule-Scheucher 2024). Each is documented with historical attribution."
     },
     {
       "id": "horton-theorem",
@@ -151,7 +151,7 @@
       "summary": "Axiomatizes the lower bound g(k) ≥ 2k−3 for k ∈ {3,...,6}. Proves g_exists_le_6 by case analysis using interval_cases tactic, dispatching each case via the known-value axioms.",
       "startLine": 150,
       "endLine": 163,
-      "mathContext": "Axiomatizes the lower bound g(k) ≥ 2k−3 for k ∈ {3,...,6}. Proves g_exists_le_6 by case analysis using interval_cases tactic, dispatching each case via the known-value axioms."
+      "mathContext": "Axiomatizes the lower bound g(k) $\\geq$ 2k−3 for k ∈ {3,...,6}. Proves g_exists_le_6 by case analysis using interval_cases tactic, dispatching each case via the known-value axioms."
     },
     {
       "id": "horton-construction",
