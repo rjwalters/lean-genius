@@ -198,29 +198,79 @@
     ]
   },
   {
-    "id": "ann-abeloq04oq01-axiom",
+    "id": "ann-abeloq04oq01-galtoperm5",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 540,
-      "endLine": 586
+      "startLine": 360,
+      "endLine": 405
     },
-    "type": "concept",
-    "title": "Axiom: |Gal| = 120 (Architecture and Remaining Gap)",
-    "content": "The single axiom `gal_card_eq_120`: $|\\text{Gal}(p/\\mathbb{Q})| = 120$. The proof architecture decomposes into two parts. **Part A (fully proved):** `closure_cycle_swap_eq_top` shows a 5-cycle and transposition generate $S_5$. **Part B (remaining gap):** formalizing that complex conjugation acts as a transposition on the Galois group. This requires: (1) embedding the splitting field into $\\mathbb{C}$, (2) showing complex conjugation preserves the splitting field, (3) counting fixed points (3 real roots are fixed, 2 complex roots are swapped). The polynomial evaluations provide the IVT ingredients, but connecting them to a Galois automorphism requires Mathlib's theory of real and complex embeddings.",
-    "mathContext": "Axiom: $|\\text{Gal}(x^5 - 4x + 2/\\mathbb{Q})| = 120$. Proved: $\\langle c_5, \\tau \\rangle = S_5$. Gap: complex conjugation $\\sigma \\in \\text{Gal}$ with $\\sigma(\\alpha_i) = \\bar{\\alpha}_i$, fixing 3 real roots and swapping 2 complex roots $\\Rightarrow$ $\\sigma$ is a transposition.",
-    "significance": "key",
+    "type": "technique",
+    "title": "galToPerm5: Injection Infrastructure from Gal to S₅",
+    "content": "Constructs the faithful injection `galToPerm5 : p.Gal →* Perm(Fin 5)` that embeds the Galois group into $S_5$. The construction is a two-stage composition: (1) `galPermHomAux` maps $\\text{Gal}$ to $\\text{Perm}(\\text{rootSet})$ using `galActionAux` (direct action, avoiding an instance diamond with `galAction` when the splitting field is the target), proved injective via `ext` on root images. (2) `Equiv.permCongr` transfers along the equivalence $\\text{rootSet} \\simeq \\text{Fin}\\;5$ (from `p_rootSet_card`). Also defines `galSign σ = \\text{sign}(\\text{galToPerm5}\\;σ)` for the discriminant argument.",
+    "mathContext": "$\\text{galToPerm5}: \\text{Gal}(p/\\mathbb{Q}) \\hookrightarrow \\text{Perm}(\\text{Fin}\\;5) \\cong S_5$. Composition: $\\text{Gal} \\xrightarrow{\\text{galPermHomAux}} \\text{Perm}(\\text{rootSet}) \\xrightarrow{\\text{permCongr}} \\text{Perm}(\\text{Fin}\\;5)$.",
+    "significance": "supporting",
     "relatedConcepts": [
-      "complex conjugation automorphism",
-      "real vs complex embeddings",
-      "Galois automorphism",
-      "splitting field embedding",
-      "axiom elimination"
+      "faithful group action",
+      "galActionAux",
+      "Equiv.permCongr",
+      "MonoidHom composition",
+      "instance diamond avoidance"
     ],
     "prerequisites": [
-      "closure_cycle_swap_eq_top",
-      "polynomial evaluations",
-      "IVT over reals",
-      "complex embedding theory"
+      "p_rootSet_card",
+      "Galois group action on roots",
+      "Equiv.Perm"
+    ]
+  },
+  {
+    "id": "ann-abeloq04oq01-axiom-strategy",
+    "proofId": "abel-ruffini-oq-04-oq-01",
+    "range": {
+      "startLine": 580,
+      "endLine": 612
+    },
+    "type": "concept",
+    "title": "Axiom Decomposition: Dedekind + Discriminant Strategy",
+    "content": "Documents the decomposition of the original opaque axiom $|\\text{Gal}| = 120$ into two transparent, well-motivated axioms. **Axiom A** (`three_dvd_gal_card`): $3 \\mid |\\text{Gal}|$ from Dedekind's theorem at $p = 13$. The mod-13 factorization $x^5-4x+2 \\equiv (x-2)(x-5)(x^3+7x^2+8) \\pmod{13}$ (verified by `p_root_mod13_at_2`, `p_root_mod13_at_5`, `cubic_factor_no_roots_mod13`) gives a Frobenius element with cycle type $(1,1,3)$. **Axiom B** strategy: $\\text{Gal} \\not\\subset A_5$ via discriminant sign — since $\\Delta^2 = \\text{disc}(p) < 0$ (computational: $-212144$), and $\\Delta \\notin \\mathbb{Q}$ (no rational number squares to a negative), the Galois action $\\sigma(\\Delta) = \\text{sign}(\\sigma) \\cdot \\Delta$ forces some $\\sigma$ with odd sign.",
+    "mathContext": "Axiom A: $3 \\mid |\\text{Gal}|$ (Dedekind at $p=13$: Frobenius cycle type $(1,1,3)$). Axiom B strategy: $\\Delta^2 = \\text{disc}(p) = -212144 < 0 \\Rightarrow \\Delta \\notin \\mathbb{Q} \\Rightarrow \\exists \\sigma, \\text{sign}(\\sigma) = -1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dedekind's theorem",
+      "Frobenius element",
+      "cycle type",
+      "discriminant",
+      "Vandermonde determinant"
+    ],
+    "prerequisites": [
+      "mod-p factorization of polynomials",
+      "discriminant-Vandermonde identity",
+      "Galois action on Δ"
+    ]
+  },
+  {
+    "id": "ann-abeloq04oq01-vandermonde",
+    "proofId": "abel-ruffini-oq-04-oq-01",
+    "range": {
+      "startLine": 631,
+      "endLine": 710
+    },
+    "type": "technique",
+    "title": "Vandermonde Product Infrastructure and Permutation Identity",
+    "content": "Builds the Vandermonde machinery for the discriminant argument. **Root enumeration** (`rootEnum_p`): canonical bijection $\\text{Fin}\\;5 \\to \\text{rootSet}$ via `Fintype.equivOfCardEq`, with proofs that each image is a root (`rootEnum_p_is_root`) and the map is injective (`rootEnum_p_injective`, from separability). **Vandermonde product** (`vandermondeProduct_p`): $\\Delta = \\det(V(\\text{rootEnum\\_p})) = \\prod_{i<j}(\\alpha_j - \\alpha_i)$, proved nonzero since distinct roots give no zero differences. **Galois permutation** (`gal_permutes_roots_p`): $\\sigma(\\alpha_i) = \\alpha_{\\text{galToPerm5}(\\sigma)(i)}$. **Vandermonde permutation identity**: $\\det(V(v \\circ \\pi)) = \\text{sign}(\\pi) \\cdot \\det(V(v))$, proved via the matrix identity $V(v \\circ \\pi) = V(v)[\\pi, \\text{id}]$ and `Matrix.det_permute`.",
+    "mathContext": "$\\Delta = \\det(V(\\alpha_0, \\ldots, \\alpha_4)) = \\prod_{i<j}(\\alpha_j - \\alpha_i) \\neq 0$. Key identity: $\\sigma(\\Delta) = \\det(V(\\sigma \\circ \\alpha)) = \\text{sign}(\\sigma) \\cdot \\Delta$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Vandermonde determinant",
+      "Matrix.det_vandermonde",
+      "Matrix.det_permute",
+      "root enumeration",
+      "separability and distinct roots"
+    ],
+    "prerequisites": [
+      "rootEnum_p",
+      "galToPerm5",
+      "Matrix.vandermonde",
+      "Finset.prod_eq_zero_iff"
     ]
   },
   {
@@ -354,24 +404,50 @@
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
       "startLine": 532,
-      "endLine": 590
+      "endLine": 612
     },
     "type": "concept",
-    "title": "Axiom Decomposition: Two Narrow Axioms Replace |Gal|=120",
-    "content": "The formerly opaque axiom $|\\text{Gal}| = 120$ is decomposed into two narrow, verifiable axioms: (A) `three_dvd_gal_card`: $3 \\mid |\\text{Gal}|$, from Dedekind's theorem applied at $p = 13$ (the mod-13 factorization of $x^5 - 4x + 2$ has a cubic factor, forcing a 3-cycle in the Galois group). (B) `gal_has_odd_perm`: the Galois group contains an odd permutation ($\\text{Gal} \\not\\subset A_5$), from the discriminant $\\Delta(x^5-4x+2) = -212144 < 0$ being a non-square (the Vandermonde identity relates $\\text{sign}(\\sigma)$ to $\\Delta$). These two facts, combined with $5 \\mid |\\text{Gal}|$ (prime degree), $|\\text{Gal}| \\mid 120$, and the no-15/no-30 lemmas, force $|\\text{Gal}| = 120$.",
-    "mathContext": "Axiom (A): $3 \\mid |\\text{Gal}|$ (Dedekind: $x^5 - 4x + 2 \\equiv (x^2+6x+10)(x^3+7x^2+8x+11) \\pmod{13}$). Axiom (B): $\\text{Gal} \\not\\subset A_5$ (discriminant $\\Delta = -212144$ is not a perfect square). From $15 \\mid |\\text{Gal}|$, $|\\text{Gal}| \\mid 120$: possible orders $\\{15, 30, 60, 120\\}$. Not 15 (Sylow), not 30 ($A_5$ simple), not 60 ($\\text{Gal} \\not\\subset A_5$). Therefore $|\\text{Gal}| = 120$.",
+    "title": "Three Narrow Axioms: Dedekind, Discriminant, Vandermonde",
+    "content": "The original opaque axiom $|\\text{Gal}| = 120$ has been decomposed into three narrow, well-motivated axioms. **Axiom A** (`three_dvd_gal_card`, line 612): $3 \\mid |\\text{Gal}|$, from Dedekind's theorem at $p = 13$. Axiomatized because Mathlib lacks Dedekind's theorem; supporting computations (`p_root_mod13_at_2`, `p_root_mod13_at_5`, `cubic_factor_no_roots_mod13`) verify the factorization by `native_decide`. **Axiom B1** (`disc_p_neg`, line 749): $\\text{disc}(p) < 0$, a computational fact ($\\text{disc}(x^5-4x+2) = -212144$). Axiomatized because `native_decide` on the $9 \\times 9$ Sylvester determinant causes stack overflow. **Axiom B2** (`vandermonde_sq_eq_disc_p`, line 761): $\\Delta^2 = \\text{algebraMap}\\;\\mathbb{Q}\\;SF\\;(\\text{disc}(p))$, the standard discriminant-Vandermonde identity. Axiomatized because the full resultant chain is ~200 lines. From B1+B2, the theorem `gal_has_odd_perm` is **proved** (no longer an axiom): $\\Delta^2 < 0$ in $\\mathbb{Q}$ means $\\Delta \\notin \\mathbb{Q}$, so some $\\sigma$ has $\\text{sign}(\\sigma) = -1$.",
+    "mathContext": "Three axioms: (A) $3 \\mid |\\text{Gal}|$ (Dedekind at $p=13$), (B1) $\\text{disc}(p) < 0$ (computational: $-212144$), (B2) $\\Delta^2 = \\text{disc}(p)$ (Vandermonde identity). Theorem from B1+B2: $\\text{Gal} \\not\\subset A_5$.",
     "significance": "key",
     "relatedConcepts": [
       "Dedekind's theorem",
       "Frobenius element",
       "discriminant",
       "Vandermonde determinant",
-      "axiom decomposition"
+      "axiom decomposition",
+      "Sylvester matrix"
     ],
     "prerequisites": [
       "Dedekind's theorem on Galois groups",
-      "discriminant-sign relationship",
-      "Sylow elimination"
+      "discriminant-resultant identity",
+      "Vandermonde permutation identity"
+    ]
+  },
+  {
+    "id": "ann-abeloq04oq01-gal-card-ne60",
+    "proofId": "abel-ruffini-oq-04-oq-01",
+    "range": {
+      "startLine": 863,
+      "endLine": 917
+    },
+    "type": "technique",
+    "title": "|Gal| ≠ 60: Excluding A₅ via Odd Permutation",
+    "content": "The most intricate case elimination: $|\\text{Gal}| \\neq 60$. A subgroup of $S_5$ of order 60 must be contained in $A_5$ (the unique index-2 subgroup). Proof by contradiction: if some element of the Galois image lies outside $A_5$, then the sign homomorphism $\\text{signG}: \\text{Gal} \\to \\mathbb{Z}^\\times$ has a non-trivial kernel $K = \\text{Gal} \\cap A_5$ of index 2, hence $|K| = 30$. But `no_subgroup_order_30` shows $S_5$ has no subgroup of order 30 — contradiction. This forces all Galois elements into $A_5$, contradicting Axiom B (`gal_has_odd_perm`). The argument elegantly bootstraps the order-30 impossibility into the order-60 case.",
+    "mathContext": "$|\\text{Gal}| = 60 \\Rightarrow \\text{Im}(\\text{galToPerm5}) \\leq A_5$ (unique order-60 subgroup). But $\\exists \\sigma \\in \\text{Gal}$ with $\\text{sign}(\\text{galToPerm5}(\\sigma)) = -1$ (Axiom B), contradiction.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "alternating group",
+      "sign homomorphism",
+      "kernel-index relationship",
+      "subgroup order bootstrapping",
+      "Subgroup.card_mul_index"
+    ],
+    "prerequisites": [
+      "gal_has_odd_perm",
+      "no_subgroup_order_30",
+      "alternatingGroup (Fin 5)"
     ]
   },
   {
