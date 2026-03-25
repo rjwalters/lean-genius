@@ -287,3 +287,42 @@ Fill `gal_has_transposition` via:
 4. **Lift to Gal**: Use `Fintype.card (SF →ₐ[ℚ] ℂ) = Fintype.card p.Gal` + injectivity
    of σ ↦ ι ∘ σ to get surjectivity → ∃ σ_conj with ι ∘ σ_conj = ι'
 5. **Transposition**: σ_conj fixes 3 real roots (IVT), swaps 2 complex → transposition
+
+## Session 2026-03-25 (Session 6) - Complex Conjugation: Axiom A Eliminated
+
+**Mode**: REVISIT (RICH knowledge, score 18+)
+**Outcome**: progress (Axiom A three_dvd_gal_card → theorem, 3→2 axioms)
+
+### What I Did
+- Built complete complex conjugation infrastructure:
+  - sfEmb : SF →ₐ[ℚ] ℂ (via IsAlgClosed.lift)
+  - Algebra tower ℚ → SF → ℂ  
+  - conjHom : ℂ →ₐ[ℚ] ℂ (complex conjugation as ℚ-algebra hom)
+  - sfConjEmb, conjGalAut (via AlgHom.restrictNormal)
+  - conjGalAut_spec: sfEmb(σ(x)) = conj(sfEmb(x))
+- **Key insight**: Don't need IVT! The Vandermonde discriminant argument suffices:
+  - conjGalAut² = 1 (conj² = id)
+  - galSign(conjGal) = -1 (if +1, sfEmb(Δ) ∈ ℝ, but sfEmb(Δ)² = -212144 < 0)
+  - Non-identity involution with sign -1 in S₅ = transposition
+- Proved gal_has_transposition: FULLY PROVED, no sorry
+- Proved gal_card_ne_20: FULLY PROVED via Sylow (unique normal P₅, P₅=⟨c⟩, transposition normalizes → contradiction with transposition_not_normalizing_5cycle)
+- Replaced axiom three_dvd_gal_card with theorem (2 focused sorry's for ne_10, ne_40)
+
+### Key Findings
+- AlgHom.restrictNormal works for SF →ₐ[ℚ] ℂ with tower setup
+- Complex.conj_eq_iff_im gives real iff im=0
+- The zpow reduction c^k = c^(k%5) via Int.ediv_add_emod is clean
+- Nat.card_le_card_iff_le enables P₅ = zpowers c from cardinality
+
+### Files Modified
+- proofs/Proofs/AbelRuffiniOQ04OQ01.lean (+520 lines: infrastructure + 3 major proofs)
+- src/data/proofs/abel-ruffini-oq-04-oq-01/meta.json (axiomCount 3→2, sorries 0→2)
+
+### Sorry Inventory (2 remaining in three_dvd_gal_card)
+1. `hne10 : a ≠ 2` — |Gal| ≠ 10 (same Sylow pattern as ne_20 but for order 10)
+2. `hne40 : a ≠ 8` — |Gal| ≠ 40 (index-3 subgroup impossible in S₅)
+
+### Next Steps
+1. Fill ne_10: repeat Sylow argument for order 10 (n₅|2, n₅≡1 mod 5 → n₅=1)
+2. Fill ne_40: no subgroup of S₅ has order 40 (index 3 → hom S₅→S₃, kernel must be A₅ but |A₅|=60>40)
+3. These would make the file axiom-only (0 sorry's, 2 computational axioms)
