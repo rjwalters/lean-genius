@@ -177,41 +177,41 @@
     {
       "id": "gal-order",
       "title": "Parts V(a)-(f): Galois Group Order |Gal| = 120 (Theorem)",
-      "startLine": 230,
-      "endLine": 754,
-      "summary": "Proves $|\\text{Gal}| = 120$ as a theorem via axiom decomposition. (a) Evaluations showing 3 sign changes. (b) Group theory: 5-cycle + transposition = $S_5$ via native_decide conjugation chain. (c) galToPerm5 injection infrastructure. (d) Sylow theory: no order-15 subgroups (native_decide), no order-30 subgroups ($A_5$ simplicity). (e) Three narrow axioms: $3 \\mid |\\text{Gal}|$ (Dedekind at $p=13$), $\\text{disc}(p) < 0$ (computational), $\\Delta^2 = \\text{disc}(p)$ (Vandermonde identity). From (e), `gal_has_odd_perm` is **proved** as a theorem. (f) Proof: $15 \\mid |\\text{Gal}|$, $|\\text{Gal}| \\mid 120$, rule out 15/30/60.",
-      "mathContext": "Theorem: $|\\text{Gal}(x^5-4x+2/\\mathbb{Q})| = 120$. From $5 \\mid |G|$, $3 \\mid |G|$ (Dedekind), $|G| \\mid 120$: $|G| \\in \\{15,30,60,120\\}$. Not 15 (Sylow), not 30 ($A_5$ simple), not 60 ($G \\not\\subset A_5$). Three axioms: Dedekind at $p=13$, discriminant negativity, Vandermonde-discriminant identity."
+      "startLine": 233,
+      "endLine": 952,
+      "summary": "The largest section (720 lines): proves $|\\text{Gal}| = 120$ from three narrow axioms. (a) Lines 233-260: polynomial evaluations showing 3 sign changes. (b) Lines 262-365: `closure_cycle_swap_eq_top` — 5-cycle + transposition generates $S_5$ via `native_decide` conjugation. (c) Lines 366-405: `galToPerm5` injection from $\\text{Gal}$ to $S_5$. (d) Lines 406-530: Sylow elimination of orders 15 and 30. (e) Lines 532-819: axiom decomposition (Dedekind, discriminant, Vandermonde) + `gal_has_odd_perm` PROVED as theorem. (f) Lines 821-952: case elimination and `gal_card_eq_120`.",
+      "mathContext": "Theorem: $|\\text{Gal}(x^5-4x+2/\\mathbb{Q})| = 120$. From $5 \\mid |G|$, $3 \\mid |G|$ (Dedekind at $p=13$), $|G| \\mid 120$: $|G| \\in \\{15,30,60,120\\}$. Not 15 (Sylow), not 30 ($A_5$ simple), not 60 ($\\text{Gal} \\not\\subset A_5$ by discriminant sign). Three axioms: Dedekind at $p=13$, $\\text{disc}(p) < 0$, $\\Delta^2 = \\text{disc}(p)$."
     },
     {
       "id": "gal-iso",
       "title": "Part VI: Gal(p/ℚ) ≅ S₅",
-      "startLine": 755,
-      "endLine": 789,
-      "summary": "Proves $\\text{Gal} \\cong S_5$ via galActionHom bijectivity: injective (Mathlib) + $|\\text{Gal}| = |\\text{Perm}(\\text{rootSet})| = 120$. Transfers via $\\text{rootSet} \\simeq \\text{Fin}\\;5$ using `Equiv.permCongr`.",
+      "startLine": 954,
+      "endLine": 987,
+      "summary": "Proves `gal_iso_s5`: $\\text{Gal} \\cong S_5$ via galActionHom bijectivity. Injective (Mathlib's `galActionHom_injective`) + $|\\text{Gal}| = |\\text{Perm}(\\text{rootSet})| = 120$ from `gal_card_eq_120`. Bijectivity via `Fintype.bijective_iff_injective_and_card`. Transfer from $\\text{Perm}(\\text{rootSet})$ to $\\text{Perm}(\\text{Fin}\\;5)$ via `Equiv.permCongr`.",
       "mathContext": "$\\text{galActionHom}$ injective + $|\\text{Gal}| = |S_5| = 120$ $\\Rightarrow$ bijective $\\Rightarrow$ $\\text{Gal}(p/\\mathbb{Q}) \\cong S_5$."
     },
     {
       "id": "not-solvable",
       "title": "Part VII: Non-Solvability",
-      "startLine": 790,
-      "endLine": 808,
-      "summary": "Proves $S_5$ is not solvable ($A_5$ is simple, $5 \\geq 5$ via `Equiv.Perm.not_solvable`) and transfers to $\\text{Gal}$ via the surjective isomorphism using `solvable_of_surjective`.",
-      "mathContext": "$S_5$ not solvable (derived series: $S_5 \\supset A_5 \\supset A_5 \\supset \\cdots$, $A_5$ simple non-abelian). $\\text{Gal} \\cong S_5 \\Rightarrow \\text{Gal}$ not solvable."
+      "startLine": 989,
+      "endLine": 1006,
+      "summary": "`s5_not_solvable`: $S_5$ not solvable via `Equiv.Perm.not_solvable` with $5 \\leq |\\text{Fin}\\;5|$. `gal_not_solvable`: transfers non-solvability from $S_5$ to $\\text{Gal}$ via the surjective `MulEquiv` from Part VI using `solvable_of_surjective`.",
+      "mathContext": "$S_5$ not solvable (derived series stalls at $A_5$). $\\text{Gal} \\cong S_5 \\Rightarrow \\text{Gal}$ not solvable."
     },
     {
-      "id": "abel-ruffini",
+      "id": "abel-ruffini-conclusion",
       "title": "Part VIII: Abel-Ruffini Conclusion",
-      "startLine": 809,
-      "endLine": 843,
-      "summary": "Main theorem `roots_not_solvable_by_rad`: the roots of $x^5 - 4x + 2$ are not solvable by radicals. Proof by contrapositive: if $\\alpha$ were solvable by radicals, `solvableByRad.isSolvable'` gives $\\text{Gal}$ solvable, contradicting `gal_not_solvable`.",
+      "startLine": 1008,
+      "endLine": 1041,
+      "summary": "Main theorem `roots_not_solvable_by_rad`: for any root $\\alpha$ of $x^5 - 4x + 2$, $\\alpha \\notin \\text{solvableByRad}(\\mathbb{Q})$. Proof: assume $\\alpha$ solvable by radicals; by `solvableByRad.isSolvable'` with `p_irreducible` and `hroot`, $\\text{Gal}(p)$ is solvable — contradicting `gal_not_solvable`.",
       "mathContext": "$\\alpha \\in \\text{Rad}(\\mathbb{Q}) \\Rightarrow \\text{Gal}(p/\\mathbb{Q})$ solvable $\\Rightarrow S_5$ solvable $\\Rightarrow \\bot$."
     },
     {
       "id": "realizability",
       "title": "Part IX: $S_5$ Realizability and Verification",
-      "startLine": 844,
-      "endLine": 1069,
-      "summary": "$S_5$ is realizable as a Galois group over $\\mathbb{Q}$, witnessed by the splitting field of $x^5 - 4x + 2$. Constructs the `IsGalois` structure (finite-dimensional, normal, separable). Concludes with `#check` verification of all key theorems: `p_irreducible`, `p_natDegree`, `p_separable`, `five_dvd_gal_card`, `gal_card_dvd_120`, `gal_iso_s5`.",
+      "startLine": 1043,
+      "endLine": 1072,
+      "summary": "`s5_realizable`: $S_5$ is realizable as a Galois group over $\\mathbb{Q}$, witnessed by the splitting field of $x^5 - 4x + 2$ (constructing `IsGalois` from `Normal` + `IsSeparable`). Lines 1064-1072: `#check` verification of all 9 key theorems from `p_irreducible` through `s5_realizable`.",
       "mathContext": "$\\exists K/\\mathbb{Q}$ Galois: $\\text{Gal}(K/\\mathbb{Q}) \\cong S_5$. Witness: $K = $ splitting field of $x^5 - 4x + 2$."
     }
   ],
@@ -233,7 +233,7 @@
       "Polynomial"
     ],
     "namespace": "AbelRuffiniOQ04OQ01",
-    "lineCount": 1069,
+    "lineCount": 1072,
     "axiomCount": 3,
     "theoremCount": 37,
     "definitionCount": 6,
@@ -262,7 +262,7 @@
       {
         "name": "gal_card_eq_120",
         "type": "proved",
-        "description": "|Gal(x^5-4x+2/Q)| = 120 (from two narrow axioms via Sylow elimination)"
+        "description": "|Gal(x^5-4x+2/Q)| = 120 (from three narrow axioms via Sylow elimination)"
       },
       {
         "name": "gal_iso_s5",
