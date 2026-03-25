@@ -130,7 +130,7 @@
   ],
   "conclusion": {
     "summary": "Cantor's diagonal argument is one of the most elegant proofs in mathematics. In just a few lines, it establishes that infinity comes in different sizes, a counterintuitive result that revolutionized our understanding of the infinite.\n\nThe proof's power lies in its self-referential construction: by looking at the diagonal, we create a witness that must differ from every sequence in the list. This technique is now a standard tool in mathematical logic.\n\nThe formalization shows how naturally this argument translates to type theory. Binary sequences are simply functions Nat → Bool, and the diagonal is constructed by function application and negation.",
-    "implications": "**Theoretical Significance**: Cantor's theorem has profound implications across mathematics and computer science:\n\n1. Hierarchy of Infinities - There are infinitely many distinct infinite cardinalities: $|\\mathbb{N}| < |\\mathbb{R}| < |P(\\mathbb{R})| < \\ldots$\n\n2. Computability Limits - The uncountability of reals implies most real numbers are not computable (only countably many programs exist)\n\n3. The Continuum Hypothesis - Cantor conjectured that no cardinality lies strictly between $|\\mathbb{N}|$ and $|\\mathbb{R}|$. This was proven independent of ZFC by Godel (1940) and Cohen (1963)\n\n4. Diagonalization Everywhere - The technique proves:\n   - Halting problem undecidability (Turing, 1936)\n   - Godel's incompleteness theorems (1931)\n   - Russell's paradox (naive set theory is inconsistent)\n   - Rice's theorem (semantic properties of programs are undecidable)",
+    "implications": "**Theoretical Significance**: Cantor's theorem has profound implications across mathematics and computer science:\n\n1. Hierarchy of Infinities - There are infinitely many distinct infinite cardinalities: $|\\mathbb{N}| < |\\mathbb{R}| < |\\mathcal{P}(\\mathbb{R})| < \\ldots$ The beth numbers $\\beth_0 = \\aleph_0$, $\\beth_1 = 2^{\\aleph_0} = |\\mathbb{R}|$, $\\beth_2 = 2^{|\\mathbb{R}|}$, ... provide a tower of uncountabilities each strictly larger than the last.\n\n2. Computability Limits - The uncountability of reals implies most real numbers are not computable (only countably many programs exist). Formally: the set of computable reals is countable, so almost all reals — in the sense of cardinality and measure — are uncomputable.\n\n3. The Continuum Hypothesis - Cantor conjectured that no cardinality lies strictly between $|\\mathbb{N}|$ and $|\\mathbb{R}|$. This was proven independent of ZFC by Gödel (1940) and Cohen (1963), making it a fundamental undecidable question of mathematics.\n\n4. Diagonalization Everywhere - The technique proves:\n   - Halting problem undecidability (Turing, 1936)\n   - Gödel's incompleteness theorems (1931)\n   - Russell's paradox (naive set theory is inconsistent)\n   - Rice's theorem (semantic properties of programs are undecidable)\n\n5. The Lawvere Unification - Lawvere (1969) showed all four results above are instances of a single categorical principle: whenever a surjection $e : A \\to (A \\to B)$ exists, every endomorphism of $B$ has a fixed point. Since boolean negation has no fixed point, no surjection $\\mathbb{N} \\to (\\mathbb{N} \\to \\text{Bool})$ can exist — recovering Cantor's theorem. The same principle immediately gives Gödel's and Turing's results by choosing appropriate categories.",
     "openQuestions": [
       "Formalize in Lean that the diagonal argument implies $|S| < |\\mathcal{P}(S)|$ as a strict cardinal inequality (not just non-surjectivity), using Mathlib's cardinal arithmetic to establish $\\aleph_0 < \\mathfrak{c}$",
       "Formalize Cantor's 1874 nested-intervals proof of uncountability (the original proof, not the 1891 diagonal argument) and show the two proofs yield the same theorem via different methods",
@@ -173,6 +173,34 @@
       "year": "2010",
       "venue": "A K Peters/CRC Press",
       "note": "Traces the diagonal argument from Cantor through Gödel, Turing, and Cohen, showing how diagonalization underpins incompleteness, undecidability, and independence results"
+    },
+    {
+      "authors": "Halmos, Paul R.",
+      "title": "Naive Set Theory",
+      "year": "1960",
+      "venue": "Van Nostrand; reprinted Springer, 1974",
+      "note": "Classic concise introduction to axiomatic set theory. Section 24 gives a clear presentation of Cantor's theorem (no surjection $S \\to \\mathcal{P}(S)$) in the style closest to the power set formalization here."
+    },
+    {
+      "authors": "Turing, Alan M.",
+      "title": "On Computable Numbers, with an Application to the Entscheidungsproblem",
+      "year": "1936",
+      "venue": "Proceedings of the London Mathematical Society, Series 2, 42, pp. 230-265",
+      "note": "Introduces Turing machines and proves the halting problem undecidable using a diagonal argument: the universal machine diagonalizes over all Turing machines, producing a machine that contradicts any proposed decision procedure. The structural kinship with Cantor's diagonal is explicit."
+    },
+    {
+      "authors": "Gödel, Kurt",
+      "title": "Über formal unentscheidbare Sätze der Principia Mathematica und verwandter Systeme I",
+      "year": "1931",
+      "venue": "Monatshefte für Mathematik und Physik, 38, pp. 173-198",
+      "note": "Proves the incompleteness theorems via arithmetization of syntax and a self-referential diagonal construction: the Gödel sentence 'this statement is unprovable' is constructed by diagonalizing over all provability predicates, directly analogous to Cantor's construction of the unlisted sequence."
+    },
+    {
+      "authors": "Lawvere, F. William",
+      "title": "Diagonal Arguments and Cartesian Closed Categories",
+      "year": "1969",
+      "venue": "Category Theory, Homology Theory and their Applications II (Lecture Notes in Mathematics, vol 92), Springer, pp. 134-145",
+      "note": "Proves the Lawvere fixed-point theorem, showing that Cantor's diagonal argument, Russell's paradox, Gödel's incompleteness, and Turing's halting problem are all instances of a single categorical principle: if a surjection $e : A \\to (A \\to B)$ exists, every $f : B \\to B$ has a fixed point."
     }
   ],
   "crossReferences": [
@@ -235,6 +263,11 @@
       "targetId": "russell-1-plus-1",
       "relationship": "related",
       "description": "Russell's paradox ($R = \\{x : x \\notin x\\}$) and Cantor's diagonal argument share the same logical structure: define an object by 'negating the diagonal' of a self-referential predicate. Russell's paradox (1901) was directly inspired by Cantor's work on cardinal arithmetic, applying the diagonal method to the 'set of all sets'"
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-03",
+      "relationship": "extended-by",
+      "description": "The Lawvere fixed-point theorem provides the categorical unification of Cantor's diagonal argument: if a surjection $e : A \\to (A \\to B)$ exists, every endomorphism $f : B \\to B$ has a fixed point. Cantor's theorem follows because negation has no fixed point, so no surjection $A \\to (A \\to \\text{Bool})$ can exist. This single principle subsumes Cantor, Russell, Gödel, and Turing."
     }
   ],
   "alternativeInterpretation": {
