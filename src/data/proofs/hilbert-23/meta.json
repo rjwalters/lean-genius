@@ -160,6 +160,21 @@
       "targetId": "fundamental-theorem-calculus",
       "relationship": "related",
       "description": "The fundamental theorem of calculus underpins the entire variational framework: the Euler-Lagrange equation is derived via integration by parts, and the fundamental lemma of the calculus of variations is a generalization of the classical result"
+    },
+    {
+      "targetId": "hilbert-22",
+      "relationship": "related",
+      "description": "Uniformization (Problem 22) connects to the calculus of variations through the Plateau problem and conformal mappings: finding energy-minimizing maps between surfaces is a variational problem whose solutions are harmonic maps, linking variational methods to Riemann surface theory"
+    },
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "foundational",
+      "description": "The mean value theorem is the prototype of the Euler-Lagrange necessary condition: just as the MVT locates a point where the derivative equals the average rate of change, the Euler-Lagrange equation identifies functions where the first variation of the functional vanishes"
+    },
+    {
+      "targetId": "navier-stokes",
+      "relationship": "related",
+      "description": "The Navier-Stokes equations arise as Euler-Lagrange equations for dissipative fluid mechanics: the variational formulation of fluid dynamics (Onsager's principle) connects the calculus of variations directly to the existence and regularity questions of the Navier-Stokes millennium problem"
     }
   ],
   "references": [

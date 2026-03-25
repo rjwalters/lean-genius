@@ -156,6 +156,31 @@
       "targetId": "prob-method-second-moment",
       "relationship": "related",
       "description": "Concentration inequalities from the second moment method appear in the uniform convergence proofs"
+    },
+    {
+      "targetId": "shannon-source-coding",
+      "relationship": "related",
+      "description": "Shannon's source coding theorem establishes the information-theoretic limits of data compression, paralleling how PAC learning bounds establish the information-theoretic limits of generalization from finite samples"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "foundational",
+      "description": "The central limit theorem underlies the Gaussian tail bounds used in deriving PAC sample complexity; the CLT-based approximation to binomial tails is a key step in Hoeffding-style concentration inequalities"
+    },
+    {
+      "targetId": "laws-of-large-numbers",
+      "relationship": "foundational",
+      "description": "Uniform convergence in PAC learning generalizes the law of large numbers from a single event to an entire hypothesis class: the VC dimension controls how many events must be simultaneously tracked"
+    },
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "related",
+      "description": "The union bound (a corollary of inclusion-exclusion) is the starting point for PAC generalization bounds: bounding the probability that any hypothesis in the class has large error by summing over individual hypotheses"
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "related",
+      "description": "The birthday problem illustrates the probabilistic collision phenomenon that appears in double-sampling (ghost sample) arguments used to prove uniform convergence in PAC learning theory"
     }
   ],
   "conclusion": {

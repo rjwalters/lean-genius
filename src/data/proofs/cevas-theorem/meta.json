@@ -182,6 +182,31 @@
       "targetId": "feuerbachs-theorem",
       "relationship": "related",
       "description": "Both are classical triangle geometry results: Ceva's theorem concerns cevian concurrency, while Feuerbach's theorem concerns the tangency of the nine-point circle and incircle — both reveal deep structure in triangle configurations"
+    },
+    {
+      "targetId": "ptolemys-theorem",
+      "relationship": "related",
+      "description": "Both are classical theorems about geometric configurations expressed through product relations: Ptolemy's theorem gives a product identity for cyclic quadrilateral diagonals and sides, while Ceva's theorem gives a product identity for signed ratios of cevian divisions — both reduce geometric conditions to elegant algebraic equations"
+    },
+    {
+      "targetId": "pascals-hexagon",
+      "relationship": "related",
+      "description": "Both are incidence theorems in classical geometry: Pascal's theorem characterizes collinearity from a conic inscription, while Ceva's theorem characterizes concurrency from cevian divisions — they are dual in spirit, with Ceva relating to Menelaus as Pascal relates to Brianchon"
+    },
+    {
+      "targetId": "picks-theorem",
+      "relationship": "related",
+      "description": "Both relate combinatorial or arithmetic data to geometric properties of polygons: Pick's theorem computes area from lattice point counts, while Ceva's theorem detects concurrency from signed ratio products — both exemplify how discrete algebraic conditions encode continuous geometric phenomena"
+    },
+    {
+      "targetId": "morleys-theorem",
+      "relationship": "related",
+      "description": "Both are celebrated triangle geometry results: Morley's theorem shows that angle trisector intersections form an equilateral triangle, while Ceva's theorem characterizes when cevians are concurrent — Ceva's framework can be used to prove that certain trisector-related cevians are concurrent"
+    },
+    {
+      "targetId": "triangle-angle-sum",
+      "relationship": "foundational",
+      "description": "The triangle angle sum theorem (angles sum to 180 degrees) is the foundational result of Euclidean triangle geometry upon which Ceva's theorem builds: the signed ratio formulation of Ceva's theorem relies on the Euclidean parallel postulate, which is equivalent to the angle sum property"
     }
   ],
   "mainTheorems": [

@@ -161,6 +161,26 @@
       "targetId": "navier-stokes",
       "relationship": "related",
       "description": "The De Giorgi-Nash-Moser regularity theory developed for Hilbert's 19th problem directly informs the Navier-Stokes regularity question; the gap between elliptic regularity (solved) and parabolic/nonlinear regularity (open) is central to both"
+    },
+    {
+      "targetId": "hilbert-17",
+      "relationship": "related",
+      "description": "Both are Hilbert problems requiring positivity and structure: Problem 17 asks when positive polynomials are sums of squares, while Problem 19 asks when variational minimizers are smooth — both answered by showing that algebraic/analytic positivity conditions force stronger structural regularity"
+    },
+    {
+      "targetId": "hilbert-22",
+      "relationship": "related",
+      "description": "Uniformization (Problem 22) and regularity (Problem 19) both concern smoothness of solutions: uniformization shows Riemann surfaces admit smooth parametrizations, while Problem 19 shows variational minimizers inherit the smoothness of their data"
+    },
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "foundational",
+      "description": "The mean value theorem is a building block of elliptic regularity theory: the mean value property of harmonic functions generalizes to subsolutions of elliptic PDEs via De Giorgi's truncation method, and Moser's Harnack inequality proof relies on iterated mean value estimates"
+    },
+    {
+      "targetId": "schauder-fixed-point",
+      "relationship": "related",
+      "description": "Schauder's fixed point theorem and Schauder estimates share both a name and a mathematical core: the fixed point theorem establishes existence of PDE solutions, while Schauder estimates (central to Problem 19) bootstrap their regularity — together they form the existence-and-regularity paradigm for elliptic PDEs"
     }
   ],
   "references": [
