@@ -506,13 +506,47 @@ All consecutive divisor ratios = 2, so h_α(2^k) = k·(2-1)^α = k.
 Proof: both lists are sorted permutations of the same multiset. -/
 private theorem sortedDivisors_two_pow (k : ℕ) :
     sortedDivisors (2 ^ k) = (List.range (k + 1)).map (HPow.hPow 2) := by
-  sorry -- sort uniqueness via Nat.divisors_prime_pow + Perm.eq_of_pairwise
+  unfold sortedDivisors
+  have hp : Nat.Prime 2 := by norm_num
+  rw [Nat.divisors_prime_pow hp]
+  -- Target list properties
+  have T_nodup : ((List.range (k + 1)).map (HPow.hPow 2)).Nodup :=
+    List.Nodup.map (Nat.pow_right_injective (by norm_num : 1 < 2)) List.nodup_range
+  have T_sorted : ((List.range (k + 1)).map (HPow.hPow 2)).Pairwise (· ≤ ·) := by
+    rw [List.pairwise_map]
+    exact List.Pairwise.imp (fun hab => Nat.pow_le_pow_right (by omega) (le_of_lt hab))
+      List.pairwise_lt_range
+  -- Build perm proof with explicit types (needed for typeclass resolution)
+  set S := ((Finset.range (k + 1)).map
+    ⟨(HPow.hPow 2 : ℕ → ℕ), Nat.pow_right_injective hp.one_lt⟩) with hS_def
+  have S_nodup : (S.sort (· ≤ ·)).Nodup := Finset.sort_nodup _ _
+  have S_sorted : (S.sort (· ≤ ·)).Pairwise (· ≤ ·) := Finset.pairwise_sort _ _
+  have hmem : ∀ x, x ∈ S.sort (· ≤ ·) ↔
+      x ∈ (List.range (k + 1)).map (HPow.hPow 2) := by
+    intro x; rw [Finset.mem_sort (r := (· ≤ ·))]
+    simp only [hS_def, Finset.mem_map, Finset.mem_range, Function.Embedding.coeFn_mk,
+               List.mem_map, List.mem_range]
+  have hperm : (S.sort (· ≤ ·)).Perm ((List.range (k + 1)).map (HPow.hPow 2)) :=
+    (List.perm_ext_iff_of_nodup S_nodup T_nodup).mpr hmem
+  exact hperm.eq_of_pairwise (fun _ _ _ _ h1 h2 => le_antisymm h1 h2) S_sorted T_sorted
+
+/-- Normalize monadic list map: l.flatMap (fun a => [f a]) = l.map f (general version) -/
+private theorem flatMap_singleton_eq_map' {α β : Type} (f : α → β) (l : List α) :
+    l.flatMap (fun a => [f a]) = l.map f := by
+  induction l with
+  | nil => rfl
+  | cons a t ih => simp [List.flatMap_cons, ih]
 
 /-- The consecutive divisor ratios of 2^k consist of k copies of 2.
-Each ratio d_{i+1}/d_i = 2^(i+1)/2^i = 2. -/
+Each ratio d_{i+1}/d_i = 2^(i+1)/2^i = 2.
+
+Note: The proof is blocked by Lean 4's elaboration of the ℕ→ℚ cast inside
+`zipWith (fun a b => (↑a : ℚ) / ↑b)`, which normalizes to monadic do/let/pure
+form, preventing standard List rewrite lemmas from matching. The mathematical
+content is straightforward: each ratio 2^(i+1)/2^i = 2. -/
 private theorem divisorRatios_two_pow (k : ℕ) :
     divisorRatios (2 ^ k) = List.replicate k (2 : ℚ) := by
-  sorry -- via sortedDivisors_two_pow + zipWith computation
+  sorry -- Lean 4 monadic normalization blocker; see docstring above
 
 private theorem flatMap_singleton_eq_map (f : ℚ → ℝ) (l : List ℚ) :
     l.flatMap (fun a => [f a]) = l.map f := by
