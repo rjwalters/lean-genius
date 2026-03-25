@@ -304,13 +304,13 @@
     },
     "type": "theorem",
     "title": "Existence of Degree-5 Polynomials",
-    "content": "`exists_quintic` provides a trivial witness that degree-5 polynomials exist over $\\mathbb{Q}$: the polynomial $X^5$ has `natDegree = 5`. The Lean proof uses `simp only` with two rewrite lemmas — `Polynomial.natDegree_pow` (which computes $\\text{natDegree}(p^n) = n \\cdot \\text{natDegree}(p)$) and `Polynomial.natDegree_X` (which establishes $\\text{natDegree}(X) = 1$) — followed by `mul_one` to simplify $5 \\cdot 1 = 5$.\n\nWhile mathematically trivial, this theorem serves a structural role: it establishes that the degree-5 threshold identified in Parts III–IV (where $S_n$ transitions from solvable to non-solvable) is actually realized by polynomials over $\\mathbb{Q}$. The substantive impossibility is in `not_solvable_by_rad_of_not_solvable_gal` that follows.",
-    "mathContext": "$\\exists p \\in \\mathbb{Q}[X],\\; \\deg(p) = 5$. Witness: $p = X^5$.\n\n$\\text{natDegree}(X^n) = n \\cdot \\text{natDegree}(X) = n \\cdot 1 = n$.",
-    "significance": "supporting",
+    "content": "`exists_quintic` provides a trivial witness that degree-5 polynomials exist over $\\mathbb{Q}$: the polynomial $X^5$ has `natDegree = 5`. The Lean proof uses `simp only` with `Polynomial.natDegree_pow` and `Polynomial.natDegree_X`, followed by `mul_one`.\n\nThis is mathematically trivial and is **not** used in the main Abel-Ruffini argument (`not_solvable_by_rad_of_not_solvable_gal`). The substantive statement the proof actually needs — but does not yet contain — is the existence of a specific polynomial with Galois group $S_5$, i.e., $\\exists q \\in \\mathbb{Q}[X],\\; \\text{Irreducible}\\,q \\land q.\\text{natDegree} = 5 \\land \\neg\\,\\text{IsSolvable}\\,q.\\text{Gal}$. The sub-entry `abel-ruffini-oq-04-oq-01` partially addresses this gap by exhibiting $x^5 - 4x + 2$ with $\\text{Gal} \\cong S_5$ (with one remaining axiom for $|\\text{Gal}| = 120$).",
+    "mathContext": "$\\exists p \\in \\mathbb{Q}[X],\\; \\deg(p) = 5$. Witness: $p = X^5$.\n\n$\\text{natDegree}(X^n) = n \\cdot \\text{natDegree}(X) = n \\cdot 1 = n$.\n\nThe statement the proof *actually needs* is: $\\exists q \\in \\mathbb{Q}[X],\\; \\text{Irreducible}\\,q \\land q.\\text{natDegree} = 5 \\land \\neg\\,\\text{IsSolvable}\\,q.\\text{Gal}$. Standard examples: $x^5 - x - 1$ (discriminant $2869 = 19 \\times 151$, not a perfect square, 3 real roots) or $x^5 - 4x + 2$ (Eisenstein at $p = 2$).",
+    "significance": "context",
     "relatedConcepts": [
       "Polynomial.natDegree",
       "witness construction",
-      "contrapositive setup"
+      "Galois group computation"
     ],
     "prerequisites": [
       "Polynomial.natDegree_pow",
