@@ -109,7 +109,8 @@
       "**Lower bound via prime factorization**: Bleicher–Erdős select integers $n \\leq N$ whose prime factorizations ensure reciprocal subset sums separate, using the unique factorization of $\\text{lcm}(1, \\ldots, N)$ into prime powers",
       "**Upper bound via counting**: There are $2^{|A|}$ subsets but only $\\text{lcm}(1, \\ldots, N) \\approx e^N$ possible distinct values for $\\sum 1/n$, giving $|A| \\leq \\log_2(\\text{lcm}(1, \\ldots, N)) \\approx N/\\log 2$ — refined with prime number theorem estimates",
       "**Egyptian fraction roots**: The problem connects to ancient mathematics — the Rhind Papyrus (1650 BCE) contains Egyptian fraction tables, and the question of which denominators can coexist with unique partial sums is a modern formalization of this tradition",
-      "**Gap is exactly one iterated log**: The difference between upper and lower bounds is the factor $\\log_r N$ at the deepest level of iterated logarithm. Closing this gap requires understanding whether the construction or the counting argument is tighter"
+      "**Gap is exactly one iterated log**: The difference between upper and lower bounds is the factor $\\log_r N$ at the deepest level of iterated logarithm. Closing this gap requires understanding whether the construction or the counting argument is tighter",
+      "**Rational arithmetic avoids precision issues**: The formalization computes subset sums over $\\mathbb{Q}$ (not $\\mathbb{R}$), making equality $\\sum 1/S = \\sum 1/T$ decidable and exact. This is essential because the distinctness condition is defined by *equality* of sums, not approximate closeness — floating-point or real-valued representations would introduce undecidability. The `Classical.DecidablePred` instance enables filtering the powerset by the `HasDistinctReciprocalSums` predicate"
     ],
     "prerequisites": [
       "Combinatorial number theory (subset sums, extremal problems)",
@@ -216,6 +217,11 @@
     }
   ],
   "crossReferences": [
+    {
+      "targetId": "erdos-320",
+      "relationship": "related",
+      "description": "Problem #320 studies distinct sums of unit fractions (the same $\\sum 1/n$ framework), asking complementary structural questions about when such sums can coincide. Both sit in the Egyptian fraction theory landscape and use the arithmetic of rational partial sums as the central object"
+    },
     {
       "targetId": "erdos-148",
       "relationship": "related",
