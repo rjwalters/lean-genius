@@ -9,17 +9,7 @@ import Mathlib.Tactic
 /-
 # Non-Cyclic 2-Torsion Bound for (ZMod n)ˣ
 
-Proves: For n ≥ 3, ¬IsCyclic (ZMod n)ˣ → |{x ∈ (ZMod n)ˣ | x² = 1}| ≥ 3.
-
-This is the final sorry in the Gauss-Wilson theorem formalization.
-
-## Proof Strategy
-1. From ¬IsCyclic and ZMod.isCyclic_units_iff, n is not {0,1,2,4,p^k,2p^k}.
-2. Case A: n has no odd prime factor → n = 2^k with k ≥ 3. Construct 2^(k-1)+1.
-3. Case B: n has odd prime factor p. Extract p-part: n = p^v · m with gcd(p^v, m) = 1.
-   Since n ≠ p^v (ruled out), m ≥ 2. Since n ≠ 2p^v (ruled out), m ≥ 3.
-   Both p^v ≥ 3 and m ≥ 3, so use CRT to get (1, -1) as third square root.
-4. Lift ZMod n element to (ZMod n)ˣ via x² = 1 → x is a unit.
+Proves: For n ≥ 3, ¬IsCyclic (ZMod n)ˣ → ∃ x : ZMod n, x² = 1, x ≠ ±1.
 -/
 
 namespace GaussWilsonNonCyclic
@@ -30,7 +20,6 @@ open Nat Finset ZMod
 -- Section 1: Lifting x² = 1 from ZMod n to (ZMod n)ˣ
 -- ============================================================================
 
-/-- If x² = 1 in ZMod n, then x is a unit (with inverse x itself). -/
 def unitOfSqEqOne {n : ℕ} [NeZero n] (x : ZMod n) (hx : x ^ 2 = 1) : (ZMod n)ˣ :=
   ⟨x, x, by rw [← sq]; exact hx, by rw [← sq]; exact hx⟩
 
@@ -60,105 +49,143 @@ private lemma neg_one_ne_one_zmod' {n : ℕ} (hn : n ≥ 3) : (-1 : ZMod n) ≠ 
   haveI : NeZero n := ⟨by omega⟩
   intro heq
   have h11 : (1 : ZMod n) + 1 = 0 := by
-    have := neg_add_cancel (1 : ZMod n)
-    rwa [heq] at this
+    have := neg_add_cancel (1 : ZMod n); rwa [heq] at this
   have hchar : (2 : ZMod n) = 0 := by
-    have : (2 : ZMod n) = 1 + 1 := by norm_num
-    rw [this]; exact h11
-  have hdvd : n ∣ 2 := (ZMod.natCast_zmod_eq_zero_iff_dvd 2 n).mp (by exact_mod_cast hchar)
+    have h2eq : (2 : ZMod n) = 1 + 1 := by norm_num
+    rw [h2eq]; exact h11
+  have hdvd : n ∣ 2 := (ZMod.natCast_eq_zero_iff 2 n).mp (by exact_mod_cast hchar)
   exact absurd (Nat.le_of_dvd (by norm_num) hdvd) (by omega)
 
 private lemma neg_one_ne_one_units' {n : ℕ} (hn : n ≥ 3) [NeZero n] :
     (-1 : (ZMod n)ˣ) ≠ 1 := by
-  intro h
-  apply neg_one_ne_one_zmod' hn
+  intro h; apply neg_one_ne_one_zmod' hn
   have hv := congr_arg (Units.val : (ZMod n)ˣ → ZMod n) h
-  simp only [Units.val_neg, Units.val_one] at hv
-  exact hv
+  simp only [Units.val_neg, Units.val_one] at hv; exact hv
 
 -- ============================================================================
 -- Section 3: CRT third square root construction
 -- ============================================================================
 
-/-- For coprime a, b ≥ 3, there exists x : ZMod (a*b) with x² = 1, x ≠ ±1. -/
 theorem exists_third_sqrt_coprime {a b : ℕ}
     (hab : Nat.Coprime a b) (ha : a ≥ 3) (hb : b ≥ 3) :
     ∃ x : ZMod (a * b), x ^ 2 = 1 ∧ x ≠ 1 ∧ x ≠ -1 := by
   haveI : NeZero a := ⟨by omega⟩
   haveI : NeZero b := ⟨by omega⟩
   haveI : NeZero (a * b) := ⟨by positivity⟩
-  let φ := ZMod.chineseRemainder hab
-  use φ.symm (1, -1)
+  set e := ZMod.chineseRemainder hab with he_def
+  use e.symm (1, -1)
   refine ⟨?_, ?_, ?_⟩
-  · rw [← map_one φ.symm, ← map_pow]; congr 1; ext <;> simp [sq]
-  · intro h
-    have heq : (1 : ZMod a × ZMod b) = ((1, -1) : ZMod a × ZMod b) := by
-      rw [← map_one φ, ← h, φ.apply_symm_apply]
-    have h2 : (1 : ZMod b) = -1 := by
-      have := congr_arg Prod.snd heq; simpa using this
-    exact neg_one_ne_one_zmod' hb h2.symm
-  · intro h
-    have heq : (-1 : ZMod a × ZMod b) = ((1, -1) : ZMod a × ZMod b) := by
-      rw [← map_neg, ← map_one φ, ← h, φ.apply_symm_apply]
-    have h1 : (-1 : ZMod a) = 1 := by
-      have := congr_arg Prod.fst heq; simpa using this
-    exact neg_one_ne_one_zmod' ha h1
+  · -- (e.symm (1,-1))² = 1
+    have h1 : e.symm (1, -1) ^ 2 = e.symm ((1, -1) ^ 2) := by rw [map_pow]
+    rw [h1]
+    have h2 : ((1 : ZMod a), (-1 : ZMod b)) ^ 2 = 1 := by ext <;> simp [sq]
+    rw [h2, map_one]
+  · -- ≠ 1
+    intro h
+    have : e (e.symm (1, -1)) = e 1 := by rw [h]
+    rw [e.apply_symm_apply] at this
+    have h2 := congr_arg Prod.snd this
+    simp at h2
+    exact neg_one_ne_one_zmod' hb h2
+  · -- ≠ -1
+    intro h
+    have : e (e.symm (1, -1)) = e (-1) := by rw [h]
+    rw [e.apply_symm_apply] at this
+    have h1 := congr_arg Prod.fst this
+    simp at h1
+    exact neg_one_ne_one_zmod' ha h1.symm
 
 -- ============================================================================
 -- Section 4: Power of 2 third square root construction
 -- ============================================================================
 
+private lemma two_pow_helper (k : ℕ) (hk : k ≥ 3) : 2 * 2 ^ (k - 1) = 2 ^ k := by
+  conv_rhs => rw [show k = (k - 1) + 1 from by omega, pow_succ]
+  ring
+
+private lemma two_pow_pos (k : ℕ) : 0 < 2 ^ k := Nat.pos_of_ne_zero (by positivity)
+
+private lemma two_pow_ne_zero (k : ℕ) : (2 : ℕ) ^ k ≠ 0 := (two_pow_pos k).ne'
+
+private lemma two_pow_lt (k : ℕ) (hk : k ≥ 3) : 2 ^ (k - 1) + 1 < 2 ^ k := by
+  have h1 := two_pow_helper k hk
+  have h2 : 2 ≤ 2 ^ (k - 1) := by
+    calc 2 = 2 ^ 1 := by ring
+      _ ≤ 2 ^ (k - 1) := Nat.pow_le_pow_right (by omega) (by omega)
+  nlinarith
+
+private lemma one_lt_two_pow (k : ℕ) (hk : k ≥ 1) : 1 < 2 ^ k := by
+  calc 1 < 2 := by omega
+    _ = 2 ^ 1 := by ring
+    _ ≤ 2 ^ k := Nat.pow_le_pow_right (by omega) hk
+
 private theorem pow2_sq_sub_one_dvd (k : ℕ) (hk : k ≥ 3) :
     2 ^ k ∣ ((2 ^ (k - 1) + 1) ^ 2 - 1) := by
-  have h1 : (2 ^ (k - 1) + 1) ^ 2 - 1 =
-      (2 ^ (k - 1) + 1 - 1) * (2 ^ (k - 1) + 1 + 1) := by
-    have hge : 1 ≤ 2 ^ (k - 1) + 1 := by omega
-    zify [hge, show 1 ≤ (2 ^ (k - 1) + 1) ^ 2 from by nlinarith]
-    ring
-  rw [h1]; simp only [add_tsub_cancel_right]
-  have h2 : 2 ^ (k - 1) + 2 = 2 * (2 ^ (k - 2) + 1) := by
-    rw [show k - 1 = (k - 2) + 1 from by omega, pow_succ]; ring
-  rw [h2, show 2 ^ (k - 1) * (2 * (2 ^ (k - 2) + 1)) =
-    2 ^ (k - 1) * 2 * (2 ^ (k - 2) + 1) from by ring,
-    show 2 ^ (k - 1) * 2 = 2 ^ k from by
-      rw [show k = (k - 1) + 1 from by omega, pow_succ]]
-  exact dvd_mul_right _ _
+  refine ⟨2 ^ (k - 2) + 1, ?_⟩
+  set a := 2 ^ (k - 2)
+  -- 2^(k-1) = 2*a and 2^k = 4*a
+  have ha1 : 2 ^ (k - 1) = 2 * a := by
+    simp only [a]; conv_lhs => rw [show k - 1 = (k - 2) + 1 from by omega, pow_succ]
+    exact mul_comm _ _
+  have ha2 : 2 ^ k = 2 * (2 * a) := by
+    have := two_pow_helper k hk; linarith
+  have ha_pos : 1 ≤ a := Nat.one_le_pow _ _ (by omega)
+  -- (2*a + 1)^2 - 1 = 4*a^2 + 4*a = (2*(2*a)) * (a + 1)
+  -- Avoid natural number subtraction issues by proving equality in two parts
+  -- LHS ≥ 1 so subtraction is fine
+  have hsq : (2 * a + 1) ^ 2 = 4 * a * a + 4 * a + 1 := by ring
+  have hrhs : 2 * (2 * a) * (a + 1) = 4 * a * a + 4 * a := by ring
+  rw [ha1, ha2, hsq, hrhs]; omega
 
 private theorem pow2_cast_sq_eq_one (k : ℕ) (hk : k ≥ 3) :
     ((2 ^ (k - 1) + 1 : ℕ) : ZMod (2 ^ k)) ^ 2 = 1 := by
-  haveI : NeZero (2 ^ k : ℕ) := ⟨by positivity⟩
+  haveI : NeZero (2 ^ k : ℕ) := ⟨two_pow_ne_zero k⟩
   have hdvd := pow2_sq_sub_one_dvd k hk
-  have : ((2 ^ (k - 1) + 1) ^ 2 - 1 + 1 : ℕ) = (2 ^ (k - 1) + 1) ^ 2 := by omega
-  calc ((2 ^ (k - 1) + 1 : ℕ) : ZMod (2 ^ k)) ^ 2
-      = ((((2 ^ (k - 1) + 1) ^ 2 : ℕ) : ZMod (2 ^ k))) := by push_cast; ring
-    _ = ((((2 ^ (k - 1) + 1) ^ 2 - 1 + 1 : ℕ) : ZMod (2 ^ k))) := by rw [this]
-    _ = ((((2 ^ (k - 1) + 1) ^ 2 - 1 : ℕ) : ZMod (2 ^ k)) + 1) := by push_cast; ring
-    _ = (0 + 1) := by rw [ZMod.natCast_zmod_eq_zero_iff_dvd.mpr hdvd]
-    _ = 1 := by ring
+  rw [show ((2 ^ (k - 1) + 1 : ℕ) : ZMod (2 ^ k)) ^ 2 =
+    ((((2 ^ (k - 1) + 1) ^ 2 : ℕ) : ZMod (2 ^ k))) from by push_cast; ring]
+  have hge1 : 1 ≤ (2 ^ (k - 1) + 1) ^ 2 := by
+    have : 1 ≤ 2 ^ (k - 1) := Nat.one_le_pow _ _ (by omega); nlinarith [sq_nonneg (2 ^ (k - 1))]
+  rw [show (2 ^ (k - 1) + 1) ^ 2 = ((2 ^ (k - 1) + 1) ^ 2 - 1) + 1 from by omega]
+  rw [Nat.cast_add, Nat.cast_one]
+  have : (((2 ^ (k - 1) + 1) ^ 2 - 1 : ℕ) : ZMod (2 ^ k)) = 0 := by
+    rwa [ZMod.natCast_eq_zero_iff]
+  rw [this]; simp
 
 private theorem pow2_cast_ne_one (k : ℕ) (hk : k ≥ 3) :
     ((2 ^ (k - 1) + 1 : ℕ) : ZMod (2 ^ k)) ≠ 1 := by
-  haveI : NeZero (2 ^ k : ℕ) := ⟨by positivity⟩
+  haveI : NeZero (2 ^ k : ℕ) := ⟨two_pow_ne_zero k⟩
   intro h
-  have hlt : 2 ^ (k - 1) + 1 < 2 ^ k := by
-    calc 2 ^ (k - 1) + 1 < 2 ^ (k - 1) + 2 ^ (k - 1) := by omega
-      _ = 2 ^ k := by rw [show k = (k - 1) + 1 from by omega, pow_succ]; ring
-  have := congr_arg ZMod.val h
-  rw [ZMod.val_natCast, Nat.mod_eq_of_lt hlt, ZMod.val_one (by positivity)] at this
-  omega
+  have hlt := two_pow_lt k hk
+  have hval := congr_arg ZMod.val h
+  rw [ZMod.val_natCast, Nat.mod_eq_of_lt hlt] at hval
+  have hv1 : ZMod.val (1 : ZMod (2 ^ k)) = 1 := by
+    haveI : Fact (1 < 2 ^ k) := ⟨one_lt_two_pow k (by omega)⟩
+    exact ZMod.val_one _
+  rw [hv1] at hval
+  have : 1 ≤ 2 ^ (k - 1) := Nat.one_le_pow _ _ (by omega); linarith
 
 private theorem pow2_cast_ne_neg_one (k : ℕ) (hk : k ≥ 3) :
     ((2 ^ (k - 1) + 1 : ℕ) : ZMod (2 ^ k)) ≠ -1 := by
-  haveI : NeZero (2 ^ k : ℕ) := ⟨by positivity⟩
+  haveI : NeZero (2 ^ k : ℕ) := ⟨two_pow_ne_zero k⟩
   intro h
-  have hlt : 2 ^ (k - 1) + 1 < 2 ^ k := by
-    calc 2 ^ (k - 1) + 1 < 2 ^ (k - 1) + 2 ^ (k - 1) := by omega
-      _ = 2 ^ k := by rw [show k = (k - 1) + 1 from by omega, pow_succ]; ring
-  have := congr_arg ZMod.val h
-  rw [ZMod.val_natCast, Nat.mod_eq_of_lt hlt, ZMod.val_neg_one'] at this
-  have : 2 ^ k = 2 * 2 ^ (k - 1) := by
-    rw [show k = (k - 1) + 1 from by omega, pow_succ]
-  omega
+  have hlt := two_pow_lt k hk
+  have hval := congr_arg ZMod.val h
+  rw [ZMod.val_natCast, Nat.mod_eq_of_lt hlt] at hval
+  have hvm1 : ZMod.val (-1 : ZMod (2 ^ k)) = 2 ^ k - 1 := by
+    have heq : 2 ^ k = (2 ^ k - 1) + 1 := by omega
+    conv => lhs; rw [heq]
+    exact ZMod.val_neg_one _
+  rw [hvm1] at hval
+  have h1 := two_pow_helper k hk
+  have h2 : 4 ≤ 2 ^ (k - 1) := by
+    calc 4 = 2 ^ 2 := by norm_num
+      _ ≤ 2 ^ (k - 1) := Nat.pow_le_pow_right (by omega) (by omega)
+  -- hval says 2^(k-1) + 1 = 2^k - 1 and h1 says 2*2^(k-1) = 2^k
+  -- Since h2: 4 ≤ 2^(k-1), we have 2^k = 2*2^(k-1) ≥ 8 > 1
+  -- So 2^k - 1 + 1 = 2^k. Combined with hval: 2^(k-1) + 2 = 2^k = 2*2^(k-1)
+  -- Hence 2^(k-1) = 2, contradicting h2.
+  have h3 : 2 ^ k - 1 + 1 = 2 ^ k := Nat.sub_add_cancel (by linarith : 1 ≤ 2 ^ k)
+  linarith
 
 theorem exists_third_sqrt_pow2 (k : ℕ) (hk : k ≥ 3) :
     ∃ x : ZMod (2 ^ k), x ^ 2 = 1 ∧ x ≠ 1 ∧ x ≠ -1 :=
@@ -168,211 +195,127 @@ theorem exists_third_sqrt_pow2 (k : ℕ) (hk : k ≥ 3) :
 -- Section 5: Number theory - structure of non-cyclic n
 -- ============================================================================
 
-/-- For n ≥ 3 with no odd prime factors, n is a power of 2 with exponent ≥ 3. -/
 private lemma is_pow2_of_no_odd_prime_factor {n : ℕ} (hn : n ≥ 3) (hn4 : n ≠ 4)
     (h_no_odd : ∀ p, Nat.Prime p → p ≠ 2 → ¬(p ∣ n)) :
     ∃ k, n = 2 ^ k ∧ k ≥ 3 := by
-  -- Every prime factor of n is 2
   have h_all2 : ∀ p, Nat.Prime p → p ∣ n → p = 2 := by
-    intro p hp hpn
-    by_contra hne
-    exact h_no_odd p hp hne hpn
-  -- n = 2^(n.factorization 2) since all prime factors are 2
-  -- Use: n = ∏ p in n.factorization.support, p ^ n.factorization p
-  -- and n.factorization.support ⊆ {2}
-  have hn_pos : 0 < n := by omega
-  have hsup : n.factorization.support ⊆ {2} := by
-    intro p hp
-    rw [Finsupp.mem_support_iff, ne_eq] at hp
-    have := Nat.prime_of_mem_primeFactors (Nat.mem_primeFactors.mpr ⟨hp, hn_pos.ne'⟩)
-    simp [h_all2 p this (Nat.dvd_of_mem_primeFactors
-      (Nat.mem_primeFactors.mpr ⟨hp, hn_pos.ne'⟩))]
-  use n.factorization 2
-  constructor
-  · -- n = 2^(factorization 2)
-    rw [← Nat.factorization_prod_pow_eq_self hn_pos.ne']
-    rw [show n.factorization.prod (· ^ ·) =
-      ∏ p ∈ n.factorization.support, p ^ n.factorization p from rfl]
-    have : n.factorization.support = {2} ∨ n.factorization.support = ∅ := by
-      rcases Finset.subset_singleton_iff.mp hsup with h | h
-      · right; exact h
-      · left; exact h
-    rcases this with hsup_eq | hsup_empty
-    · rw [hsup_eq]; simp
-    · -- support is empty means n = 1, contradiction
-      exfalso
-      have : n = 1 := by
-        rw [← Nat.factorization_prod_pow_eq_self hn_pos.ne']
-        rw [show n.factorization.prod (· ^ ·) =
-          ∏ p ∈ n.factorization.support, p ^ n.factorization p from rfl]
-        rw [hsup_empty]; simp
-      omega
-  · -- k ≥ 3
-    by_contra hlt; push_neg at hlt
-    -- n = 2^k with k ≤ 2: n ∈ {1, 2, 4}
-    interval_cases (n.factorization 2) <;> simp_all <;> omega
+    intro p hp hpn; by_contra hne; exact h_no_odd p hp hne hpn
+  have hn_ne : n ≠ 0 := by omega
+  set v := n.factorization 2
+  -- p^(ord_p(n)) * (n / p^(ord_p(n))) = n
+  have hn_split : 2 ^ v * (n / 2 ^ v) = n := Nat.ordProj_mul_ordCompl_eq_self n 2
+  -- coprime_ordCompl gives: Coprime p (n / p^(ord_p(n)))
+  have hcop : Nat.Coprime 2 (n / 2 ^ n.factorization 2) :=
+    Nat.coprime_ordCompl Nat.prime_two hn_ne
+  -- So 2 does not divide the complement
+  have h2_ndvd : ¬ (2 ∣ n / 2 ^ v) := by
+    intro h2d
+    have : 2 ∣ Nat.gcd 2 (n / 2 ^ v) := Nat.dvd_gcd (dvd_refl 2) h2d
+    rw [hcop] at this; omega
+  -- The complement must be 1
+  have hcompl_one : n / 2 ^ v = 1 := by
+    by_contra hc
+    have hcompl_pos : 0 < n / 2 ^ v := by
+      apply Nat.pos_of_ne_zero; intro h0; rw [h0, mul_zero] at hn_split; omega
+    obtain ⟨q, hq_prime, hq_dvd⟩ := Nat.exists_prime_and_dvd hc
+    have hq_dvd_n : q ∣ n := by rw [← hn_split]; exact dvd_mul_of_dvd_right hq_dvd _
+    have hq2 : q = 2 := h_all2 q hq_prime hq_dvd_n
+    subst hq2; exact h2_ndvd hq_dvd
+  have hn_eq : n = 2 ^ v := by nlinarith [hn_split]
+  use v
+  refine ⟨hn_eq, ?_⟩
+  by_contra hlt; push_neg at hlt
+  interval_cases v <;> omega
 
-/-- The p-part and coprime complement of n, where p is an odd prime dividing n.
-    Uses Nat.ordProj and ordCompl from Mathlib.factorization. -/
-
-/-- For n ≥ 3 with an odd prime factor, and n not of the form p^k or 2*p^k,
-    n has a coprime factorization into two parts both ≥ 3. -/
 private lemma coprime_split_of_odd_factor {n : ℕ} (hn : n ≥ 3)
     {p : ℕ} (hp : Nat.Prime p) (hp_odd : p ≠ 2) (hp_dvd : p ∣ n)
     (hform : ∀ q m, Nat.Prime q → Odd q → 1 ≤ m → n ≠ q ^ m ∧ n ≠ 2 * q ^ m) :
     ∃ a b, n = a * b ∧ Nat.Coprime a b ∧ a ≥ 3 ∧ b ≥ 3 := by
-  -- Extract the p-part: a = p^(factorization p), b = n / a
-  -- They are coprime by Nat.coprime_ordCompl
   set v := n.factorization p
-  set a := p ^ v  -- the p-part (ordProj)
-  set b := n / a  -- the coprime complement (ordCompl)
+  set a := p ^ v
+  set b := n / a
   have hn_pos : 0 < n := by omega
-  -- v ≥ 1 since p | n
+  have hn_ne : n ≠ 0 := by omega
   have hv_pos : v ≥ 1 := by
-    simp only [v]
-    rw [Nat.one_le_iff_ne_zero]
-    intro h
-    rw [Nat.factorization_eq_zero_iff_not_dvd hp hn_pos.ne'] at h
-    exact h hp_dvd
-  -- a ≥ p ≥ 3
+    simp only [v, ge_iff_le, Nat.one_le_iff_ne_zero]
+    have hp_mem : p ∈ n.primeFactors := Nat.mem_primeFactors.mpr ⟨hp, hp_dvd, hn_ne⟩
+    rw [← Nat.support_factorization] at hp_mem
+    exact Finsupp.mem_support_iff.mp hp_mem
+  have hv_ne : v ≠ 0 := by omega
   have ha_ge : a ≥ 3 := by
-    have : a ≥ p := le_self_pow₀ hv_pos.ne'
-    have : p ≥ 3 := by
-      have := hp.two_le; rcases hp.eq_two_or_odd with h | h
+    have ha_ge_p : a ≥ p := le_self_pow₀ hp.one_le hv_ne
+    have hp_ge : p ≥ 3 := by
+      have h2le := hp.two_le
+      rcases hp.eq_two_or_odd with h | h
       · exact absurd h hp_odd
-      · have hodd : Odd p := Nat.odd_iff.mpr h
-        obtain ⟨k, hk⟩ := hodd; omega
+      · have : Odd p := Nat.odd_iff.mpr h; obtain ⟨k, hk⟩ := this; omega
     omega
-  -- n = a * b
   have hab_eq : n = a * b := by
-    simp only [a, b]
-    exact (Nat.ordProj_mul_ordCompl_eq_self hn_pos.ne' p).symm
-  -- coprime
+    simp only [a, b]; exact (Nat.ordProj_mul_ordCompl_eq_self n p).symm
   have hab_cop : Nat.Coprime a b := by
     simp only [a, b]
-    -- coprime_ordCompl : Coprime (n/p^v) p; symm : Coprime p (n/p^v); pow_right : Coprime (p^v) (n/p^v)
-    exact (Nat.coprime_ordCompl hp hn_pos.ne').symm.pow_right v
-  -- b ≥ 3: b ≠ 1 (else n = p^v, contradicted) and b ≠ 2 (else n = 2*p^v, contradicted)
+    exact (Nat.coprime_ordCompl hp hn_ne).pow_left v
+  have hp_odd' : Odd p := by
+    rcases hp.eq_two_or_odd with h | h; exact absurd h hp_odd; exact Nat.odd_iff.mpr h
   have hb_ne1 : b ≠ 1 := by
-    intro hb1
-    have : n = a := by rw [hab_eq, hb1, mul_one]
-    -- n = p^v, contradicting hform
-    have hp_odd' : Odd p := by
-      rcases hp.eq_two_or_odd with h | h
-      · exact absurd h hp_odd
-      · exact Nat.odd_iff.mpr h
+    intro hb1; have : n = a := by rw [hab_eq, hb1, mul_one]
     exact (hform p v hp hp_odd' hv_pos).1 (this ▸ rfl)
   have hb_ne2 : b ≠ 2 := by
-    intro hb2
-    -- n = a * 2 = 2 * p^v
-    have : n = 2 * a := by rw [hab_eq, hb2]; ring
-    have hp_odd' : Odd p := by
-      rcases hp.eq_two_or_odd with h | h
-      · exact absurd h hp_odd
-      · exact Nat.odd_iff.mpr h
+    intro hb2; have : n = 2 * a := by rw [hab_eq, hb2]; ring
     exact (hform p v hp hp_odd' hv_pos).2 this
-  -- b ≥ 1 since n ≥ 3 and a ≥ 3
-  have hb_pos : b ≥ 1 := by
-    by_contra h; push_neg at h
-    simp at h; rw [h] at hab_eq; simp at hab_eq; omega
-  have hb_ge : b ≥ 3 := by omega
-  exact ⟨a, b, hab_eq, hab_cop, ha_ge, hb_ge⟩
+  have hb_pos : 0 < b := by
+    by_contra h; push_neg at h; simp at h; rw [h] at hab_eq; simp at hab_eq; omega
+  exact ⟨a, b, hab_eq, hab_cop, ha_ge, by omega⟩
 
 -- ============================================================================
--- Section 6: Main construction - third square root of unity
+-- Section 6: Main construction
 -- ============================================================================
 
-/-- If n ≥ 3 and ¬IsCyclic (ZMod n)ˣ, there exists x : ZMod n with x² = 1, x ≠ ±1. -/
 theorem exists_third_sqrt_of_not_cyclic {n : ℕ} (hn : n ≥ 3)
-    [hne : NeZero n] (hncyc : ¬IsCyclic (ZMod n)ˣ) :
+    [_hne : NeZero n] (hncyc : ¬IsCyclic (ZMod n)ˣ) :
     ∃ x : ZMod n, x ^ 2 = 1 ∧ x ≠ 1 ∧ x ≠ -1 := by
-  -- Extract structural info from ¬IsCyclic
   rw [ZMod.isCyclic_units_iff] at hncyc
   push_neg at hncyc
   obtain ⟨_, _, _, hn4, hform⟩ := hncyc
-  -- Case split: does n have an odd prime factor?
   by_cases h_has_odd : ∃ p, Nat.Prime p ∧ p ≠ 2 ∧ p ∣ n
-  · -- Case B: n has an odd prime factor
-    obtain ⟨p, hp, hp2, hpn⟩ := h_has_odd
+  · obtain ⟨p, hp, hp2, hpn⟩ := h_has_odd
     obtain ⟨a, b, hab_eq, hab_cop, ha, hb⟩ :=
       coprime_split_of_odd_factor hn hp hp2 hpn hform
-    rw [hab_eq]
-    exact exists_third_sqrt_coprime hab_cop ha hb
-  · -- Case A: n has no odd prime factor → n is a power of 2
-    push_neg at h_has_odd
-    have h_no_odd : ∀ p, Nat.Prime p → p ≠ 2 → ¬(p ∣ n) := fun p hp hp2 => h_has_odd p hp hp2
-    obtain ⟨k, hk_eq, hk_ge⟩ := is_pow2_of_no_odd_prime_factor hn hn4 h_no_odd
-    rw [hk_eq]
-    exact exists_third_sqrt_pow2 k hk_ge
+    rw [hab_eq]; exact exists_third_sqrt_coprime hab_cop ha hb
+  · push_neg at h_has_odd
+    obtain ⟨k, hk_eq, hk_ge⟩ :=
+      is_pow2_of_no_odd_prime_factor hn hn4 (fun p hp hp2 => h_has_odd p hp hp2)
+    rw [hk_eq]; exact exists_third_sqrt_pow2 k hk_ge
 
 -- ============================================================================
 -- Section 7: Main Result
 -- ============================================================================
 
-/-- For (ZMod n)ˣ with n ≥ 3, ¬IsCyclic → |{x | x² = 1}| ≥ 3.
-
-    This eliminates the last sorry in the Gauss-Wilson theorem. -/
-theorem card_sq_eq_one_ge_three {n : ℕ} (hn : n ≥ 3) [hne : NeZero n]
+theorem card_sq_eq_one_ge_three {n : ℕ} (hn : n ≥ 3) [_hne : NeZero n]
     (hncyc : ¬IsCyclic (ZMod n)ˣ) :
     3 ≤ (Finset.univ.filter (fun x : (ZMod n)ˣ => x ^ 2 = 1)).card := by
-  -- Get a third square root of unity
   obtain ⟨x, hx_sq, hx_ne1, hx_neN1⟩ := exists_third_sqrt_of_not_cyclic hn hncyc
-  -- Lift to a unit
   let u := unitOfSqEqOne x hx_sq
   have hu_sq : u ^ 2 = 1 := unitOfSqEqOne_sq x hx_sq
   have hu_ne1 : u ≠ 1 := unitOfSqEqOne_ne_one hx_sq hx_ne1
   have hu_neN1 : u ≠ -1 := unitOfSqEqOne_ne_neg_one hx_sq hx_neN1
-  -- The three elements {1, -1, u} are all in S and are distinct
-  have h1_mem : (1 : (ZMod n)ˣ) ∈ Finset.univ.filter (fun x => x ^ 2 = 1) := by
-    simp [Finset.mem_filter, sq]
-  have hN1_mem : (-1 : (ZMod n)ˣ) ∈ Finset.univ.filter (fun x => x ^ 2 = 1) := by
-    simp [Finset.mem_filter, sq]
-  have hu_mem : u ∈ Finset.univ.filter (fun x => x ^ 2 = 1) := by
-    simp [Finset.mem_filter, hu_sq]
   have hne_1_N1 : (1 : (ZMod n)ˣ) ≠ -1 := (neg_one_ne_one_units' hn).symm
-  -- {1, -1, u} ⊆ S
   have hsub : {1, -1, u} ⊆ Finset.univ.filter (fun x : (ZMod n)ˣ => x ^ 2 = 1) := by
-    intro x hx
-    simp [Finset.mem_insert, Finset.mem_singleton] at hx
-    rcases hx with rfl | rfl | rfl
-    · exact h1_mem
-    · exact hN1_mem
-    · exact hu_mem
+    intro y hy
+    simp [Finset.mem_insert, Finset.mem_singleton] at hy
+    simp [Finset.mem_filter]
+    rcases hy with rfl | rfl | rfl
+    · simp
+    · simp
+    · exact hu_sq
   have hcard3 : ({1, -1, u} : Finset (ZMod n)ˣ).card = 3 := by
-    rw [Finset.card_insert_of_not_mem (by
+    rw [Finset.card_insert_of_notMem (by
       simp only [Finset.mem_insert, Finset.mem_singleton]
-      rintro (h | h)
-      · exact hne_1_N1 h
-      · exact hu_ne1 h.symm)]
-    rw [Finset.card_insert_of_not_mem (by
-      simp only [Finset.mem_singleton]
-      exact fun h => hu_neN1 h.symm)]
+      rintro (h | h); exact hne_1_N1 h; exact hu_ne1 h.symm)]
+    rw [Finset.card_insert_of_notMem (by
+      simp only [Finset.mem_singleton]; exact fun h => hu_neN1 h.symm)]
     rw [Finset.card_singleton]
   linarith [Finset.card_le_card hsub]
-
--- ============================================================================
--- Summary
--- ============================================================================
-
-/-
-## Results
-
-### Sorry-free (target)
-1. `unitOfSqEqOne`: lift x² = 1 from ZMod n to (ZMod n)ˣ
-2. `exists_third_sqrt_coprime`: CRT construction for coprime a, b ≥ 3
-3. `exists_third_sqrt_pow2`: power-of-2 construction for 2^k, k ≥ 3
-4. `is_pow2_of_no_odd_prime_factor`: structural lemma for pure powers of 2
-5. `coprime_split_of_odd_factor`: structural lemma for odd prime factors
-6. `exists_third_sqrt_of_not_cyclic`: main construction combining all cases
-7. `card_sq_eq_one_ge_three`: THE theorem eliminating the Gauss-Wilson sorry
-
-### Key Mathlib dependencies
-- `ZMod.isCyclic_units_iff`: characterization of cyclic (ZMod n)ˣ
-- `ZMod.chineseRemainder`: ring isomorphism for CRT
-- `Nat.ordProj_mul_ordCompl_eq_self`: p-part × coprime complement = n
-- `Nat.coprime_ordCompl`: p-part is coprime to complement
-- `Nat.factorization_prod_pow_eq_self`: factorization reconstruction
--/
 
 #check @card_sq_eq_one_ge_three
 #check @exists_third_sqrt_of_not_cyclic
