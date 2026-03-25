@@ -25,7 +25,23 @@
     "lineCount": 222,
     "theoremCount": 31,
     "definitionCount": 4,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "relatedProblems": [
+      {
+        "id": "erdos-1065",
+        "relationship": "Companion problem on primes of the form 2^k·q + 1, related to class-1 structure"
+      },
+      {
+        "id": "erdos-1146",
+        "relationship": "Studies 3-smooth numbers as essential components — the base case for the class-1 definition"
+      }
+    ],
+    "originalContributions": [
+      "Well-founded recursive definition of primeClass using nonSmooth_factor_lt termination",
+      "Machine-verified class values c(2)=1, c(13)=2, c(37)=3, c(73)=4, c(1021)=5 via native_decide",
+      "Structural properties: class monotonicity, class-1 characterization, positivity",
+      "Axiomatization of four open conjectures (infinitude, Erdős growth, Selfridge bounded, density)"
+    ]
   },
   "sections": [
     {
@@ -85,7 +101,10 @@
       "The $p + 1$ classification connects to **Cunningham chains** (sequences where each $2p + 1$ is also prime) and to the factorization of shifted primes, a central topic in cryptographic applications (e.g., Pollard's $p - 1$ method requires $p - 1$ to be smooth)"
     ],
     "prerequisites": [
-      "Mathematical prerequisites vary by topic"
+      "Prime factorization and the fundamental theorem of arithmetic",
+      "Smooth numbers: $B$-smooth numbers are integers whose prime factors are all $\\leq B$",
+      "Well-founded recursion in Lean 4 (for the recursive prime class definition)",
+      "Asymptotic density and counting functions ($\\pi(n)$, $\\Psi(n, y)$)"
     ]
   },
   "conclusion": {
@@ -174,7 +193,7 @@
     "namespace": null,
     "lineCount": 222,
     "axiomCount": 4,
-    "theoremCount": 36,
+    "theoremCount": 31,
     "definitionCount": 4
   }
 }
