@@ -72,49 +72,56 @@
       "title": "Imports and Module Documentation",
       "startLine": 1,
       "endLine": 51,
-      "summary": "Imports from Mathlib (interval integrals, Bochner FTC, Vitali families, differentiation, Stieltjes measures, bounded variation, derivatives, Lipschitz) and module-level documentation explaining the Lebesgue FTC and its relationship to the classical version."
+      "summary": "Imports from Mathlib (interval integrals, Bochner FTC, Vitali families, differentiation, Stieltjes measures, bounded variation, derivatives, Lipschitz) and module-level documentation explaining the Lebesgue FTC and its relationship to the classical version.",
+      "mathContext": "Imports Mathlib's interval integral, Bochner FTC, Vitali families, and Stieltjes measure. The Lebesgue generalization of FTC: an absolutely continuous function $F$ is differentiable a.e. and $F(b) - F(a) = \\int_a^b F'(x)\\,dx$."
     },
     {
       "id": "ac-definition",
       "title": "Part I: Absolutely Continuous Functions",
       "startLine": 55,
       "endLine": 81,
-      "summary": "Defines AbsolutelyContinuousOn using Fin n-indexed families of pairwise disjoint subintervals. The definition captures the key property that AC controls total variation on collections of intervals with small total length, placing it strictly between Lipschitz and uniform continuity."
+      "summary": "Defines AbsolutelyContinuousOn using Fin n-indexed families of pairwise disjoint subintervals. The definition captures the key property that AC controls total variation on collections of intervals with small total length, placing it strictly between Lipschitz and uniform continuity.",
+      "mathContext": "Absolute continuity on $[a,b]$: for every $\\varepsilon > 0$, there exists $\\delta > 0$ such that $\\sum |F(b_i) - F(a_i)| < \\varepsilon$ whenever $\\{(a_i, b_i)\\}$ are pairwise disjoint subintervals with $\\sum(b_i - a_i) < \\delta$. Stronger than uniform continuity."
     },
     {
       "id": "lipschitz-implies-ac",
       "title": "Part II: Lipschitz Implies AC",
       "startLine": 82,
       "endLine": 103,
-      "summary": "Proves that K-Lipschitz functions are absolutely continuous by choosing δ = ε/(K+1). The Lipschitz bound on each interval gives total variation ≤ K times total length, which is less than ε. Contains one sorry for the final arithmetic chain."
+      "summary": "Proves that K-Lipschitz functions are absolutely continuous by choosing δ = ε/(K+1). The Lipschitz bound on each interval gives total variation ≤ K times total length, which is less than ε. Contains one sorry for the final arithmetic chain.",
+      "mathContext": "$K$-Lipschitz $\\Rightarrow$ absolutely continuous: choose $\\delta = \\varepsilon/(K+1)$, then $\\sum|F(b_i) - F(a_i)| \\leq K\\sum(b_i - a_i) < K\\delta < \\varepsilon$. The Lipschitz constant provides a uniform modulus of absolute continuity."
     },
     {
       "id": "ac-implies-uniform",
       "title": "Part III: AC Implies Uniformly Continuous",
       "startLine": 104,
       "endLine": 124,
-      "summary": "Proves AC implies uniform continuity by instantiating the AC definition with a single interval (n=1). Contains one sorry for the technical Fin 1 specialization."
+      "summary": "Proves AC implies uniform continuity by instantiating the AC definition with a single interval (n=1). Contains one sorry for the technical Fin 1 specialization.",
+      "mathContext": "Absolutely continuous $\\Rightarrow$ uniformly continuous: instantiate the AC definition with a single interval $(a_1, b_1)$ to get $|F(b_1) - F(a_1)| < \\varepsilon$ when $|b_1 - a_1| < \\delta$. AC is strictly stronger: the Cantor function is uniformly continuous but not AC."
     },
     {
       "id": "lebesgue-ftc-axioms",
       "title": "Part IV: Lebesgue FTC Axioms",
       "startLine": 125,
       "endLine": 164,
-      "summary": "States the two core axioms of the Lebesgue FTC: (1) AC functions are a.e. differentiable (via AC → BV → monotone decomposition → Lebesgue's theorem), and (2) the Lebesgue integral of the a.e. derivative recovers the function's net change."
+      "summary": "States the two core axioms of the Lebesgue FTC: (1) AC functions are a.e. differentiable (via AC → BV → monotone decomposition → Lebesgue's theorem), and (2) the Lebesgue integral of the a.e. derivative recovers the function's net change.",
+      "mathContext": "Two core axioms: (1) AC functions are a.e. differentiable (Lebesgue, 1904), and (2) for AC functions, $F(b) - F(a) = \\int_a^b F'(x)\\,dx$. Together these constitute the Lebesgue FTC, which drops the hypothesis $F' \\in C^0$ from the classical version."
     },
     {
       "id": "consequences",
       "title": "Part V: Consequences and Counterexamples",
       "startLine": 165,
       "endLine": 201,
-      "summary": "Derives the classical FTC as a one-line corollary of the Lebesgue FTC (C^1 → Lipschitz → AC). States the Cantor function counterexample: a continuous monotone function on [0,1] that is NOT AC, proving AC is a necessary hypothesis."
+      "summary": "Derives the classical FTC as a one-line corollary of the Lebesgue FTC (C^1 → Lipschitz → AC). States the Cantor function counterexample: a continuous monotone function on [0,1] that is NOT AC, proving AC is a necessary hypothesis.",
+      "mathContext": "Classical FTC as a corollary: $F \\in C^1 \\Rightarrow F$ Lipschitz $\\Rightarrow F$ AC $\\Rightarrow F(b) - F(a) = \\int_a^b F'(x)\\,dx$. The chain $C^1 \\subset \\text{Lip} \\subset \\text{AC} \\subset \\text{BV}$ is strict, and the Lebesgue FTC applies to the entire AC class."
     },
     {
       "id": "mathlib-connections",
       "title": "Part VI: Mathlib Infrastructure",
       "startLine": 202,
       "endLine": 252,
-      "summary": "Re-exports key Mathlib results that form the building blocks for a full proof: Monotone.ae_differentiableAt (Lebesgue's 1904 theorem on monotone functions), VitaliFamily (abstract differentiation framework), and the Lebesgue density theorem."
+      "summary": "Re-exports key Mathlib results that form the building blocks for a full proof: Monotone.ae_differentiableAt (Lebesgue's 1904 theorem on monotone functions), VitaliFamily (abstract differentiation framework), and the Lebesgue density theorem.",
+      "mathContext": "Re-exports key Mathlib building blocks: `Monotone.ae_differentiableAt` (monotone functions are a.e. differentiable), `intervalIntegral.integral_eq_sub_of_hasDerivAt` (classical FTC), and connections to the Vitali covering lemma."
     }
   ],
   "conclusion": {

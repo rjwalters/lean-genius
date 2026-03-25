@@ -92,49 +92,56 @@
       "title": "Conjugate Exponents",
       "summary": "Establishes Hölder conjugate pairs: $1/p + 1/q = 1$ with $p, q > 1$. Proves the $(2,2)$ pair for Cauchy-Schwarz via `norm_num` and the general construction $q = p/(p-1)$ via `conjExponent`.",
       "startLine": 29,
-      "endLine": 50
+      "endLine": 50,
+      "mathContext": "Hölder conjugate pairs: $1/p + 1/q = 1$ with $p, q > 1$. The endpoint cases: $(p,q) = (1,\\infty)$ and $(\\infty,1)$. The $(2,2)$ pair gives Cauchy-Schwarz as a special case."
     },
     {
       "id": "young-inequality",
       "title": "Young's Inequality",
       "summary": "The pointwise foundation: $ab \\leq a^p/p + b^q/q$ for conjugate $p, q$ and non-negative $a, b$. Proved via `ENNReal.young_inequality`. This is the building block that is normalized and integrated to get Hölder.",
       "startLine": 52,
-      "endLine": 69
+      "endLine": 69,
+      "mathContext": "Young's inequality: $ab \\leq \\frac{a^p}{p} + \\frac{b^q}{q}$ for $a, b \\geq 0$ and conjugate $(p,q)$. Proved from the concavity of $\\log$: $\\log(a^p/p + b^q/q) \\geq (1/p)\\log a^p + (1/q)\\log b^q = \\log(ab)$."
     },
     {
       "id": "holder-lintegral",
       "title": "Hölder for the Lebesgue Integral",
       "summary": "The main inequality: $\\int^- fg \\, d\\mu \\leq (\\int^- f^p \\, d\\mu)^{1/p} \\cdot (\\int^- g^q \\, d\\mu)^{1/q}$. General version for any measure space, plus specialization to Lebesgue measure on $\\mathbb{R}$ (`volume`).",
       "startLine": 71,
-      "endLine": 108
+      "endLine": 108,
+      "mathContext": "Hölder's inequality: $\\int fg\\,d\\mu \\leq \\left(\\int f^p\\,d\\mu\\right)^{1/p} \\left(\\int g^q\\,d\\mu\\right)^{1/q}$ for conjugate $(p,q)$. Proof: normalize to $\\|f\\|_p = \\|g\\|_q = 1$ and apply Young's inequality pointwise."
     },
     {
       "id": "cauchy-schwarz",
       "title": "Cauchy-Schwarz Specialization",
       "summary": "Setting $p = q = 2$ in Hölder gives $\\int^- fg \\leq (\\int^- f^2)^{1/2} (\\int^- g^2)^{1/2}$. One-line proof: `holder_lintegral μ holderConj_two_two hf hg`. Foundation of $L^2$ theory and Hilbert space methods.",
       "startLine": 110,
-      "endLine": 129
+      "endLine": 129,
+      "mathContext": "Cauchy-Schwarz as Hölder with $p = q = 2$: $\\int fg\\,d\\mu \\leq \\left(\\int f^2\\,d\\mu\\right)^{1/2}\\left(\\int g^2\\,d\\mu\\right)^{1/2}$. This is the inner product inequality $|\\langle f, g \\rangle| \\leq \\|f\\| \\cdot \\|g\\|$ in $L^2(\\mu)$."
     },
     {
       "id": "minkowski",
       "title": "Minkowski's Inequality",
       "summary": "Triangle inequality for $L^p$ norms: $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ for $p \\geq 1$. Makes $L^p$ into a Banach space. Proved via `norm_add_le` on the `Lp` type. The proof for $p > 1$ internally uses Hölder.",
       "startLine": 131,
-      "endLine": 154
+      "endLine": 154,
+      "mathContext": "Minkowski's inequality (triangle inequality for $L^p$): $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ for $p \\geq 1$. Proved by applying Hölder to $|f+g|^p = |f+g|^{p-1}|f| + |f+g|^{p-1}|g|$."
     },
     {
       "id": "proper-statement",
       "title": "The Proper Hölder Statement",
       "summary": "Replaces the `True` placeholder in `LebesgueMeasure.lean` with the real theorem. Bridges the ENNReal/Real exponent conventions. Also states the $L^p$ norm version via the Bochner integral.",
       "startLine": 156,
-      "endLine": 197
+      "endLine": 197,
+      "mathContext": "Connects the abstract Hölder inequality to the concrete `LebesgueMeasure.lean` entry in the gallery, providing the proper theorem statement to replace any placeholder."
     },
     {
       "id": "applications",
       "title": "Applications: L² and Norm Properties",
       "summary": "$L^2(\\mu)$ is an inner product space (verified by `inferInstance`). The inner product $\\langle f, g \\rangle = \\int fg \\, d\\mu$ satisfies Cauchy-Schwarz automatically. Also: $L^p$ norm is non-negative (from `norm_nonneg`).",
       "startLine": 199,
-      "endLine": 224
+      "endLine": 224,
+      "mathContext": "$L^2(\\mu)$ is a Hilbert space with inner product $\\langle f, g \\rangle = \\int f \\bar{g}\\,d\\mu$. Cauchy-Schwarz guarantees the inner product is well-defined. Applications to Fourier analysis (Parseval's identity), probability ($\\text{Var}(X) = \\|X - EX\\|_2^2$), and functional analysis (Riesz representation)."
     }
   ],
   "conclusion": {

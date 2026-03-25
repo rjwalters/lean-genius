@@ -80,49 +80,56 @@
       "title": "Imports",
       "summary": "Imports `Mathlib.Data.Nat.Factorial.Basic` for factorial definitions and basic lemmas (`Nat.factorial_succ`, `Nat.factorial_pos`), and `Mathlib.Tactic` for the full tactic library (`nlinarith`, `omega`, `decide`, `native_decide`).",
       "startLine": 1,
-      "endLine": 2
+      "endLine": 2,
+      "mathContext": "Imports `Nat.Factorial.Basic` for factorial definitions. Sets up the complexity comparison between Cramer's rule ($O(n \\cdot n!)$ multiplications) and Gaussian elimination ($O(n^3)$)."
     },
     {
       "id": "complexity-models",
       "title": "Complexity Models",
       "summary": "Defines three complexity functions: `detMuls n = n * n!` (multiplications for one n×n determinant via Leibniz formula), `cramersRuleMuls n = (n+1) * detMuls n` (Cramer's rule on an n×n system: n+1 determinants), and `gaussMuls n = n³` (Gaussian elimination conservative upper bound).",
       "startLine": 57,
-      "endLine": 89
+      "endLine": 89,
+      "mathContext": "Three complexity functions: `detMuls(n) = n \\cdot n!` (multiplications for one $n \\times n$ determinant via cofactor expansion), `cramersRuleMuls(n) = (n+1) \\cdot n \\cdot n!$ ($n+1$ determinants for Cramer's rule), `gaussMuls(n) = n^3$ (Gaussian elimination)."
     },
     {
       "id": "factorial-growth-lemma",
       "title": "Key Growth Lemma: n! > n² for n ≥ 4",
       "summary": "Proves `factorial_gt_sq`: for n ≥ 4, n! > n². The inductive step shows (m+1)! = (m+1)*m! > (m+1)*m² > (m+1)² when m! > m², using `nlinarith [Nat.factorial_pos m]`. The base case (m=3, n=4) is handled by `decide`.",
       "startLine": 90,
-      "endLine": 113
+      "endLine": 113,
+      "mathContext": "Proves `factorial_gt_sq`: for $n \\geq 4$, $n! > n^2$. The inductive step: $(m+1)! = (m+1) \\cdot m! > (m+1) \\cdot m^2 > (m+1)^2$ since $m \\geq 4$ implies $m^2 > m+1$."
     },
     {
       "id": "main-comparison",
       "title": "Main Comparison: Gaussian Beats Cramer for n ≥ 4",
       "summary": "Proves `gauss_beats_cramer`: for n ≥ 4, `gaussMuls n < cramersRuleMuls n` (i.e., n³ < (n+1)*n*n!). Key step: from n²<n! and 0<n, `nlinarith` deduces n³ < (n+1)*n*n!. Includes concrete speedup theorems: at n=4 (7.5×), n=5 (28.8×), n=6 (139×).",
       "startLine": 114,
-      "endLine": 134
+      "endLine": 134,
+      "mathContext": "The main theorem: for $n \\geq 4$, $n^3 < (n+1) \\cdot n \\cdot n!$. Proof: $n^3 = n \\cdot n^2 < n \\cdot n! \\leq (n+1) \\cdot n \\cdot n!$ using `factorial_gt_sq`. This shows Gaussian elimination is asymptotically faster than Cramer's rule."
     },
     {
       "id": "asymptotic-superiority",
       "title": "Asymptotic Superiority: Gaussian K-times Faster Eventually",
       "summary": "Proves `cramer_asymptotically_worse`: for any K, ∃N=max(4,K), ∀n≥N, K*n³ < (n+1)*n*n!. Uses explicit three-step chain: (1) K*n³ ≤ n*n³ via `mul_le_mul_right'`, (2) n*n³ = n*n*n² < n*n*n! via `mul_lt_mul_of_pos_left`, (3) n*n*n! ≤ (n+1)*n*n! via two applications of `mul_le_mul_right'`.",
       "startLine": 135,
-      "endLine": 169
+      "endLine": 169,
+      "mathContext": "For any constant $K$, there exists $N$ such that $K \\cdot n^3 < (n+1) \\cdot n \\cdot n!$ for all $n \\geq N$. This formalizes the asymptotic statement: $n^3 = o(n \\cdot n!)$ as $n \\to \\infty$, since $n!/n^2 \\to \\infty$ (factorial grows super-polynomially)."
     },
     {
       "id": "threshold-analysis",
       "title": "Threshold Analysis: All n ≥ 1",
       "summary": "Corrects the naive expectation: `complexity_threshold` shows Gaussian beats Cramer for all n ≥ 1 (not just n ≥ 4). Concrete values: cramersRuleMuls 1=2>1=gaussMuls 1, cramersRuleMuls 2=12>8=gaussMuls 2, cramersRuleMuls 3=72>27=gaussMuls 3. There is no equal-complexity point.",
       "startLine": 170,
-      "endLine": 191
+      "endLine": 191,
+      "mathContext": "The threshold is $n = 4$: Gaussian beats Cramer for ALL $n \\geq 4$, not just asymptotically. At $n = 3$: Cramer needs $4 \\cdot 3 \\cdot 6 = 72$ multiplications vs Gaussian's $27$, so Gaussian already wins. At $n = 2$: Cramer needs $3 \\cdot 2 \\cdot 2 = 12$ vs Gaussian's $8$."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "summary": "The capstone `cramer_vs_gauss_summary` packages all results: (1) Gaussian beats Cramer for n≥4 (factorial growth), (2) the gap grows without bound (asymptotic K-factor), (3) at n=4, Gaussian uses 64 multiplications vs Cramer's 480 (7.5× gap). Derived as a simple conjunction of the component theorems.",
       "startLine": 192,
-      "endLine": 207
+      "endLine": 207,
+      "mathContext": "Complete summary: (1) Gaussian beats Cramer for all $n \\geq 4$, (2) the gap grows super-exponentially ($n! \\gg n^2$), (3) in practice, Gaussian elimination is $O(n^3)$ while Cramer's rule is $O(n \\cdot n!)$, making Cramer impractical for $n > 4$."
     }
   ],
   "conclusion": {
