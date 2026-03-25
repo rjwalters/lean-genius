@@ -69,7 +69,7 @@
     "assumptions": "9 axioms: trivial_lower_bound, trivial_gives_half, erdos_1997_d1, and 6 more. See Lean source for complete statements."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #670 asks whether n points in ℝ^d with all pairwise distances differing by at least 1 must have diameter (1+o(1))n². The trivial bound gives diameter ≥ n(n-1)/2 from C(n,2) distances spread ≥ 1 apart. Erdős proved the conjecture for d = 1 in 1997 using the ordering of the real line. Higher dimensions remain open. The problem is closely related to the broader Erdős program on distinct distances, initiated in his 1946 paper where he first asked how few distinct distances an n-point set must determine. The condition that distances differ by at least 1 is a quantitative strengthening of the distinct distances condition, and the arithmetic progression {0, n, 2n, ..., (n-1)n} in ℝ shows the (1+o(1))n² diameter bound is tight when it holds.",
+    "historicalContext": "Erdős Problem #670, posed in his 1997 paper [Er97f], asks whether $n$ points in $\\mathbb{R}^d$ with all $\\binom{n}{2}$ pairwise distances mutually differing by at least 1 must have diameter $(1+o(1))n^2$. The trivial pigeonhole bound gives diameter $\\geq \\binom{n}{2} = n(n-1)/2$ since $\\binom{n}{2}$ distances spread at least 1 apart occupy an interval of length at least $\\binom{n}{2} - 1$.\n\nErdős proved the conjecture for $d = 1$ in 1997, exploiting the total ordering of $\\mathbb{R}$: if $x_1 < x_2 < \\cdots < x_n$, the distances $|x_i - x_j|$ for $i < j$ can be indexed by pairs and their mutual separations force $x_n - x_1 \\geq (1 + o(1))n^2$. Higher dimensions lack this ordering structure, making the problem substantially harder.\n\nThe problem connects to the broader Erdős program on distinct distances, initiated in his foundational 1946 paper where he asked for the minimum number of distinct distances among $n$ points in $\\mathbb{R}^2$ (resolved by Guth–Katz in 2015 as $\\Omega(n/\\log n)$). Problem 670 strengthens the distinct distances condition quantitatively: not only must all $\\binom{n}{2}$ distances be distinct, they must be well-separated. The arithmetic progression $\\{0, n, 2n, \\ldots, (n-1)n\\}$ in $\\mathbb{R}$ shows the $(1+o(1))n^2$ bound is tight when it holds.\n\nFor higher dimensions, the problem is related to sphere-packing and distance-graph coloring: in $\\mathbb{R}^d$ with $d \\geq 2$, points can be arranged in configurations that are more compact than on a line, potentially allowing smaller diameter. Whether this is possible while maintaining the distance-separation condition is the core open question.",
     "problemStatement": "Let A ⊆ ℝ^d be n points with |d(p,q) - d(p',q')| ≥ 1 for all distinct unordered pairs. Is diam(A) ≥ (1+o(1))n²? Proved for d=1, OPEN for d ≥ 2.",
     "text": "Let A ⊆ ℝ^d be n points with all pairwise distances differing by at least 1. Is diameter(A) ≥ (1+o(1))n²? Proved for d=1 by Erdős (1997). Higher dimensions remain OPEN.",
     "proofStrategy": "The formalization defines PointSet, DistinctDistances, and diameter in ℝ^d, then specializes to ℝ for the solved d=1 case. The trivial bound, main conjecture, and weak conjecture are formalized. Erdős's 1997 result is axiomatized. Arithmetic progressions demonstrate tightness. The summary theorem proves the conjunction of the d=1 result and the universal WeakConjecture.",
@@ -169,15 +169,53 @@
       "authors": "Erdős, Paul",
       "title": "On sets of distances of n points",
       "year": "1946",
-      "venue": "Amer. Math. Monthly 53(5), pp. 248-250",
-      "note": "Foundational paper on distinct distances, motivating this problem"
+      "venue": "American Mathematical Monthly, vol. 53, no. 5, pp. 248–250",
+      "note": "Foundational paper posing the distinct distances problem. The distance separation condition in Problem 670 is a quantitative strengthening of the distinct distances requirement."
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Some of my favourite problems which recently have been solved",
+      "year": "1997",
+      "venue": "Proceedings of the International Conference on Discrete Mathematics (ICDM 1996), pp. 1–10",
+      "note": "Contains the proof of the d=1 case of Problem 670 and the formulation of the higher-dimensional conjecture. One of Erdős's last papers before his death in 1996."
+    },
+    {
+      "authors": "Guth, Larry; Katz, Nets Hawk",
+      "title": "On the Erdős distinct distances problem in the plane",
+      "year": "2015",
+      "venue": "Annals of Mathematics, vol. 181, no. 1, pp. 155–190",
+      "note": "Resolved the Erdős distinct distances problem (n points in R² determine Ω(n/log n) distances). Problem 670 strengthens the distinct distances condition by requiring distances to be well-separated, connecting to this result."
+    },
+    {
+      "authors": "Pach, János; Agarwal, Pankaj K.",
+      "title": "Combinatorial Geometry",
+      "year": "1995",
+      "venue": "John Wiley & Sons",
+      "note": "Standard reference for combinatorial geometry including distance problems, packing, and covering. Contains background on the Erdős distance program that motivates Problem 670."
+    },
+    {
+      "authors": "Székely, László A.",
+      "title": "Crossing numbers and hard Erdős problems in discrete geometry",
+      "year": "1997",
+      "venue": "Combinatorics, Probability and Computing, vol. 6, no. 3, pp. 353–358",
+      "note": "Introduced the crossing number technique for distance problems, later extended by Guth–Katz. The technique applies to the distinct distances framework underlying Problem 670."
     }
   ],
   "crossReferences": [
     {
       "targetId": "erdos-604",
       "relationship": "related",
-      "description": "Both concern point configurations with distance constraints: #604 studies pinned distances, #670 studies diameter of sets with distinct pairwise distances"
+      "description": "Pinned distances: asks about distances from a single point to all others, while Problem 670 considers all pairwise distances. Both study the geometry of distance sets under quantitative constraints, with the pigeonhole principle playing a central role in both."
+    },
+    {
+      "targetId": "erdos-132",
+      "relationship": "related",
+      "description": "Distance multiplicities: Problem 132 asks how often a single distance can occur, while Problem 670 requires all distances to be well-separated. Together they probe complementary aspects of distance distribution in point configurations."
+    },
+    {
+      "targetId": "erdos-659",
+      "relationship": "related",
+      "description": "Few distances in point configurations: Problem 659 minimizes the number of distinct distances while maintaining a local constraint, while Problem 670 forces all distances to be distinct and well-separated and asks about the geometric consequence (diameter). Both belong to the Erdős distance program."
     }
   ],
   "leanFile": {

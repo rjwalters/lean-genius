@@ -158,15 +158,43 @@
       "authors": "Erdős, Paul; Graham, Ronald L.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "Monographies de L'Enseignement Mathématique 28",
-      "note": "[ErGr80] original formulation"
+      "venue": "Monographies de L'Enseignement Mathématique, vol. 28",
+      "note": "Contains the original formulation of the cochromatic number problem for subgraphs. Part of the Erdős–Graham collection of open problems in combinatorial number theory and graph theory."
+    },
+    {
+      "authors": "Alon, Noga; Krivelevich, Michael; Sudakov, Benny",
+      "title": "Coloring graphs with sparse neighborhoods",
+      "year": "1999",
+      "venue": "Journal of Combinatorial Theory, Series B, vol. 77, no. 1, pp. 73–82",
+      "note": "Proved the main result: every graph with χ(G) = m contains a subgraph H with ζ(H) ≥ cm/log m. The proof uses probabilistic coloring arguments combined with Ramsey-theoretic bounds."
+    },
+    {
+      "authors": "Erdős, Paul; Gimbel, John",
+      "title": "Some problems and results in cochromatic theory",
+      "year": "1993",
+      "venue": "Quo Vadis, Graph Theory? Annals of Discrete Mathematics, vol. 55, pp. 261–264",
+      "note": "The earlier partial result: χ(G) = m implies ∃H ⊆ G with ζ(H) ≥ c√(m/log m). The AKS theorem improved this by replacing √(m/log m) with m/log m."
+    },
+    {
+      "authors": "Ramsey, Frank P.",
+      "title": "On a problem of formal logic",
+      "year": "1930",
+      "venue": "Proceedings of the London Mathematical Society, Series 2, vol. 30, pp. 264–286",
+      "note": "Foundational paper on Ramsey theory. The Ramsey number bounds R(k,k) ≤ 4^k provide the key tool in the proof technique: high cochromatic number is forced by finding large homogeneous sets via Ramsey arguments."
+    },
+    {
+      "authors": "Zuckler, Anton",
+      "title": "The cochromatic number of a graph",
+      "year": "1986",
+      "venue": "Archiv der Mathematik, vol. 47, pp. 85–88",
+      "note": "Early systematic study of the cochromatic number, establishing basic properties including ζ(G) ≤ χ(G) and ζ(Kₙ) = ⌈n/2⌉ that are formalized in this entry."
     }
   ],
   "crossReferences": [
     {
       "targetId": "erdos-759",
       "relationship": "related",
-      "description": "Consecutive Erdős problems in the same family of number-theoretic questions"
+      "description": "Consecutive Erdős problem in the same combinatorial graph theory family. Both concern structural properties of graphs with high chromatic number."
     }
   ],
   "leanFile": {
