@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-e536-header",
+    "proofId": "erdos-536",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "context",
+    "title": "Equal Pairwise LCMs in Dense Sets",
+    "content": "Erdős Problem #536: If $A \\subseteq \\{1, \\ldots, N\\}$ has density $|A| \\geq \\varepsilon N$, must there exist distinct $a, b, c \\in A$ with $[a,b] = [b,c] = [a,c]$?\n\nThe condition fails for four elements (Erdős). Weisenberg showed it holds when $\\varepsilon > 221/225$ and constructed sets avoiding the property with $|A| \\gg (\\log\\log N)^{f(N)} \\cdot N/\\log N$. The problem remains open for general $\\varepsilon > 0$.\n\nThis connects **multiplicative number theory** (LCM structure) to **density Ramsey theory** (forcing structure in dense sets).",
+    "mathContext": "$A \\subseteq [N]$, $|A| \\geq \\varepsilon N$ $\\stackrel{?}{\\Rightarrow}$ $\\exists a \\neq b \\neq c \\in A$: $[a,b] = [b,c] = [a,c]$. Known for $\\varepsilon > 221/225$.",
+    "significance": "supporting",
+    "prerequisites": ["least common multiple", "dense subsets of integers"],
+    "relatedConcepts": ["density Ramsey theory", "multiplicative structure", "LCM conditions"]
+  },
+  {
     "id": "ann-e536-equal-lcm",
     "proofId": "erdos-536",
     "range": { "startLine": 28, "endLine": 30 },
