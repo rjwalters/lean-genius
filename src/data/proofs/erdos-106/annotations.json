@@ -1,5 +1,28 @@
 [
   {
+    "id": "ann-106-header",
+    "proofId": "erdos-106",
+    "range": {
+      "startLine": 1,
+      "endLine": 33
+    },
+    "type": "context",
+    "title": "Module Documentation: Square Packing Problem",
+    "content": "The module docstring introduces Erdős Problem #106: draw $n$ non-overlapping squares inside the unit square and maximize the sum of side-lengths $f(n)$. The main conjecture: $f(k^2+1) = k$, meaning one extra square beyond a perfect $k \\times k$ grid cannot increase the sum. Known: $f(2) = 1$ (Erdős), $f(5) = 2$ (Newman), $f(k^2) = k$ (from Cauchy-Schwarz: $\\sum s_i \\leq \\sqrt{n \\cdot \\sum s_i^2} \\leq \\sqrt{n}$), Halász bounds $f(k^2+2c+1) \\geq k + c/k$. The Erdős-Soifer conjecture gives the full answer: $f(k^2+2c+1) = k + c/k$ for $|c| < k$. A 2024 result by Baek, Koizumi, and Ueoro addresses the axis-parallel case.",
+    "mathContext": "Pack $n$ squares with side-lengths $s_1, \\ldots, s_n$ inside $[0,1]^2$ with disjoint interiors. Maximize $f(n) = \\max \\sum s_i$. Cauchy-Schwarz: $\\sum s_i \\leq \\sqrt{n \\sum s_i^2} \\leq \\sqrt{n}$ (since $\\sum s_i^2 \\leq 1$), so $f(n) \\leq \\sqrt{n}$. Equality at $n = k^2$ via the uniform $k \\times k$ grid ($s_i = 1/k$, $\\sum = k$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "square packing",
+      "Cauchy-Schwarz inequality",
+      "discrete geometry",
+      "Erdős-Soifer conjecture"
+    ],
+    "prerequisites": [
+      "area constraint",
+      "Cauchy-Schwarz inequality"
+    ]
+  },
+  {
     "id": "ann-106-imports",
     "proofId": "erdos-106",
     "range": {
