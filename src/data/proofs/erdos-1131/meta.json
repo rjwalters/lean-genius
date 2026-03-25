@@ -19,14 +19,13 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 1131,
     "erdosUrl": "https://erdosproblems.com/1131",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "sorries": 1,
     "theoremCount": 12,
-    "lineCount": 365,
+    "lineCount": 467,
     "assumptions": "1 axiom: erdos_1131_conjecture (OPEN). 1 sorry: chebyshev_integral_exact (known formula I_cheb = 2 - 2(n-1)/(n(2n-1)), proof plan via discrete cosine orthogonality). All 12 theorems fully proved including: Cauchy-Schwarz lower bound I ≥ 2/n, Chebyshev upper bound I_cheb < 2, and asymptotic estimate I_cheb ≈ 2-c/n.",
     "mathlib_version": "4.26.0"
   },
@@ -49,49 +48,41 @@
   "sections": [
     {
       "id": "definitions",
-      "title": "Definitions",
+      "title": "Part I: Definitions",
       "startLine": 43,
-      "endLine": 77,
+      "endLine": 80,
       "summary": "Imports Mathlib, opens MeasureTheory. Defines `NodeConfig n` (nodes in $[-1,1]$), `AreDistinct`, Lagrange basis $l_k(x) = \\prod_{i \\ne k} (x - x_i)/(x_k - x_i)$ as a finite product, and the objective functional $I = \\int_{-1}^{1} \\sum_k l_k(x)^2 \\, dx$.",
       "mathContext": "$l_k(x) = \\prod_{i \\ne k} \\frac{x - x_i}{x_k - x_i}$, $I = \\int_{-1}^{1} \\sum_k l_k(x)^2 \\, dx$."
     },
     {
       "id": "basis-properties",
-      "title": "Basic Properties (All Proved)",
-      "startLine": 79,
-      "endLine": 138,
-      "summary": "Proves $l_k(x_k) = 1$ (interpolation), $l_k(x_j) = 0$ for $j \\ne k$ (orthogonality), connection to Mathlib's `Lagrange.basis`, and partition of unity $\\sum_k l_k(x) = 1$ via `Lagrange.sum_basis`.",
-      "mathContext": "$l_k(x_j) = \\delta_{kj}$ (Kronecker delta). Partition of unity: $\\sum_k l_k(x) = 1$."
-    },
-    {
-      "id": "lower-bound",
-      "title": "Cauchy-Schwarz Lower Bound (Proved)",
-      "startLine": 140,
-      "endLine": 205,
-      "summary": "Proves pointwise $\\sum_k l_k(x)^2 \\ge 1/n$ via Cauchy-Schwarz on partition of unity, then $I \\ge 2/n$ by integral monotonicity. Uses variance identity $\\sum(l_k - 1/n)^2 = \\sum l_k^2 - 1/n \\ge 0$.",
-      "mathContext": "Cauchy-Schwarz: $(\\sum l_k)^2 \\le n \\sum l_k^2$. Since $\\sum l_k = 1$: $\\sum l_k^2 \\ge 1/n$, so $I \\ge 2/n$."
+      "title": "Part II: Basic Properties (All Proved)",
+      "startLine": 82,
+      "endLine": 214,
+      "summary": "Proves $l_k(x_k) = 1$ (interpolation), $l_k(x_j) = 0$ for $j \\ne k$ (orthogonality), partition of unity $\\sum_k l_k(x) = 1$, and the Cauchy-Schwarz lower bound $I \\ge 2/n$ via variance identity.",
+      "mathContext": "$l_k(x_j) = \\delta_{kj}$. Partition of unity: $\\sum_k l_k(x) = 1$. Cauchy-Schwarz: $I \\ge 2/n$."
     },
     {
       "id": "chebyshev-nodes",
-      "title": "Chebyshev Nodes",
-      "startLine": 213,
-      "endLine": 329,
-      "summary": "Defines Chebyshev nodes $x_k = \\cos((2k+1)\\pi/(2n))$ (roots of $T_n$). Proves they lie in $[-1,1]$ and are distinct. Proves exact formula $I = 2 - 2(n-1)/(n(2n-1))$ (1 sorry), $I < 2$, and asymptotic estimate $\\exists c > 0$.",
+      "title": "Part III: Chebyshev Nodes",
+      "startLine": 216,
+      "endLine": 432,
+      "summary": "Defines Chebyshev nodes $x_k = \\cos((2k+1)\\pi/(2n))$. Proves they lie in $[-1,1]$ and are distinct. Part III.5 proves exact formula $I = 2 - 2(n-1)/(n(2n-1))$ (1 sorry on chebyshev_integral_exact), $I < 2$, and asymptotic estimate.",
       "mathContext": "Chebyshev nodes: $x_k = \\cos\\frac{(2k+1)\\pi}{2n}$. $I_{\\text{Cheb}} = 2 - \\frac{2(n-1)}{n(2n-1)}$."
     },
     {
       "id": "conjecture",
-      "title": "The Main Conjecture (OPEN)",
-      "startLine": 272,
-      "endLine": 288,
+      "title": "Part IV: The Main Conjecture (OPEN)",
+      "startLine": 434,
+      "endLine": 451,
       "summary": "Defines $\\min I_n = \\inf\\{I : \\text{nodes in } [-1,1]\\}$. Erdős's conjecture (axiom): $|\\min I_n - (2 - 1/n)| \\le \\varepsilon/n$ for $n \\ge N_0(\\varepsilon)$.",
       "mathContext": "Erdős conjecture: $\\min I = 2 - (1+o(1))/n$ as $n \\to \\infty$."
     },
     {
       "id": "main-theorem",
-      "title": "Main Formalized Result (Proved)",
-      "startLine": 290,
-      "endLine": 306,
+      "title": "Part V: Main Formalized Result (Proved)",
+      "startLine": 452,
+      "endLine": 467,
       "summary": "The theorem `erdos_1131`: for any distinct nodes in $[-1,1]$, $I \\ge 2/n$. Fully proved via the Cauchy-Schwarz lower bound.",
       "mathContext": "$I(x_1,\\ldots,x_n) \\ge 2/n$ for all configurations."
     }
