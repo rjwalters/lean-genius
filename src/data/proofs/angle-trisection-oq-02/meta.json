@@ -91,74 +91,54 @@
       "description": "Parent file with the degree criterion (necessary condition) — this file upgrades it to a biconditional via Galois groups"
     },
     {
+      "targetId": "angle-trisection-oq-02-oq-03",
+      "relationship": "extended-by",
+      "description": "Extends the Galois characterization of constructibility with additional results and concrete examples"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-01",
+      "relationship": "extended-by",
+      "description": "Extends the 2-group characterization with additional constructibility examples and refined analysis"
+    },
+    {
       "targetId": "abel-ruffini",
       "relationship": "related",
       "description": "Both use Galois groups to prove impossibility: Abel-Ruffini via solvable groups, constructibility via 2-groups"
     },
     {
-      "targetId": "abel-ruffini-oq-04",
-      "relationship": "related",
-      "description": "Exposes the group-theoretic proof chain from $A_5$ simplicity to $S_n$ non-solvability — the chain establishing why solvable Galois groups (radical solvability) are strictly more permissive than 2-group Galois groups (constructibility). Every 2-group is solvable (composition factors $\\mathbb{Z}/2\\mathbb{Z}$ are abelian), so constructible $\\subsetneq$ solvable by radicals, with the threshold at $A_5$"
+      "targetId": "sqrt2-irrational",
+      "relationship": "complementary",
+      "description": "$\\sqrt{2}$ is the canonical constructible irrational: $|\\text{Gal}(x^2-2/\\mathbb{Q})| = 2 = 2^1$ — the first step beyond $\\mathbb{Q}$ in the constructible tower"
     },
     {
       "targetId": "inverse-galois",
       "relationship": "related",
-      "description": "The Galois group realizations (S₃ for x³-2, D₄ for x⁴-2) are concrete instances of the inverse Galois problem"
-    },
-    {
-      "targetId": "sqrt2-irrational",
-      "relationship": "complementary",
-      "description": "√2 is the canonical constructible irrational: |Gal(x²-2/ℚ)| = 2 = 2¹, proved here by divisibility squeeze. Its irrationality is the first step beyond ℚ in the constructible tower"
-    },
-    {
-      "targetId": "angle-trisection-oq-02-oq-03",
-      "relationship": "extended-by",
-      "description": "Sub-entry extending the Galois characterization of constructibility with additional results or concrete examples"
-    },
-    {
-      "targetId": "angle-trisection-oq-02-oq-01",
-      "relationship": "extended-by",
-      "description": "Sub-entry extending the 2-group characterization with additional constructibility examples or refined analysis"
+      "description": "The Galois group realizations ($S_3$ for $x^3-2$, $D_4$ for $x^4-2$) are concrete instances of the inverse Galois problem"
     },
     {
       "targetId": "primitive-roots",
       "relationship": "foundational",
-      "description": "Primitive roots establish that $(\\mathbb{Z}/p\\mathbb{Z})^{\\times}$ is cyclic of order $p-1$. For the Gauss-Wantzel theorem: the regular $p$-gon is constructible iff $\\text{Gal}(\\mathbb{Q}(\\zeta_p)/\\mathbb{Q}) \\cong (\\mathbb{Z}/p\\mathbb{Z})^{\\times}$ is a 2-group, i.e., $p-1 = 2^k$, i.e., $p$ is a Fermat prime. Gauss's construction of the 17-gon used the 2-group structure of $(\\mathbb{Z}/17\\mathbb{Z})^{\\times} \\cong \\mathbb{Z}/16\\mathbb{Z}$"
+      "description": "$(\\mathbb{Z}/p\\mathbb{Z})^{\\times}$ cyclic of order $p-1$ gives the Gauss-Wantzel theorem: regular $p$-gon constructible iff $p-1 = 2^k$ (Fermat prime)"
     },
     {
       "targetId": "nth-root-irrational",
       "relationship": "foundational",
-      "description": "The irrationality of $\\sqrt[n]{m}$ for non-perfect-power $m$ is the simplest case of the constructibility question: $\\sqrt[n]{m}$ is constructible iff $\\text{Gal}(x^n - m / \\mathbb{Q})$ is a 2-group. For $n = 2$, $\\text{Gal}(x^2 - m) \\cong \\mathbb{Z}/2\\mathbb{Z}$ (a 2-group), so $\\sqrt{m}$ is always constructible. For $n = 3$, $\\text{Gal}(x^3 - m) \\cong S_3$ (order 6, not a 2-group), so $\\sqrt[3]{m}$ is never constructible"
+      "description": "$\\sqrt[n]{m}$ constructible iff $\\text{Gal}(x^n - m/\\mathbb{Q})$ is a 2-group: $\\sqrt{m}$ always constructible ($\\mathbb{Z}/2$), $\\sqrt[3]{m}$ never ($S_3$, order 6)"
     },
     {
       "targetId": "solution-of-cubic",
       "relationship": "complementary",
-      "description": "Cardano's cubic formula solves cubics by radicals (S₃ is solvable), but cos(20°) satisfies the cubic 8x³-6x-1=0 yet is NOT constructible — because S₃ is solvable but not a 2-group. This is the key distinction: solvability by radicals (solvable Galois group) is strictly weaker than constructibility (2-group Galois group). Cardano's formula gives cos(20°) in terms of cube roots, confirming it is solvable by radicals, yet the Galois 2-group criterion blocks constructibility"
-    },
-    {
-      "targetId": "angle-trisection-oq-02-oq-03-oq-01",
-      "relationship": "extended-by",
-      "description": "Bridges the Gauss-Wantzel constructibility theorem to Mathlib's cyclotomic field infrastructure. Connects the 2-group Galois criterion proved here to the concrete setting of $\\zeta_n = e^{2\\pi i/n}$ and Chebyshev polynomials, showing how the abstract group-theoretic characterization manifests in the cyclotomic world that governs regular polygon constructibility"
+      "description": "Cardano solves cubics by radicals ($S_3$ solvable), but $\\cos(20°)$ is NOT constructible — $S_3$ is solvable but not a 2-group. The key distinction between radical solvability and constructibility"
     },
     {
       "targetId": "pi-transcendental",
       "relationship": "complementary",
-      "description": "The transcendence of $\\pi$ (Lindemann 1882) proves the third classical impossibility — squaring the circle — by a different mechanism than the Galois 2-group criterion used here. Angle trisection and cube doubling fail because the relevant algebraic numbers have non-2-group Galois groups; squaring the circle fails because $\\pi$ is not even algebraic, lying entirely outside the constructible $\\subsetneq$ algebraic hierarchy. Together, the three classical impossibilities span two levels: algebraic obstruction (2-group criterion) and transcendence"
+      "description": "Squaring the circle fails because $\\pi$ is transcendental — a different mechanism than the 2-group obstruction for trisection and cube doubling"
     },
     {
       "targetId": "fundamental-theorem-algebra",
       "relationship": "complementary",
-      "description": "FTA guarantees every polynomial has roots in $\\mathbb{C}$, so constructibility is never about existence of solutions — only about which geometric operations can produce them. The 2-group criterion characterizes which algebraic numbers (all of which exist by FTA) happen to lie in the compass-and-straightedge closure of $\\mathbb{Q}$"
-    },
-    {
-      "targetId": "abel-ruffini-oq-04-oq-01",
-      "relationship": "related",
-      "description": "Provides the concrete quintic witness $x^5 - 4x + 2$ with $\\text{Gal} \\cong S_5$, illustrating the expressibility hierarchy discussed in keyInsight 7: $\\sqrt[4]{2}$ is constructible ($D_4$ is a 2-group), $\\sqrt[5]{2}$ is solvable by radicals but not constructible ($F_{20}$ is solvable but not a 2-group), and the roots of $x^5 - 4x + 2$ are none of these ($S_5$ is not even solvable)"
-    },
-    {
-      "targetId": "hermite-lindemann",
-      "relationship": "complementary",
-      "description": "Completes the expressibility hierarchy: constructibility (2-group Galois) $\\subsetneq$ radical solvability (solvable Galois, Abel-Ruffini) $\\subsetneq$ algebraic $\\subsetneq$ all reals. Hermite-Lindemann proves $e$ and $\\pi$ transcendental — the third impossibility barrier. The squaring-the-circle impossibility follows from transcendence of $\\pi$ (a stronger result than the 2-group obstruction used for trisection and cube-doubling)"
+      "description": "FTA guarantees roots exist in $\\mathbb{C}$; the 2-group criterion determines which algebraic numbers lie in the compass-and-straightedge closure of $\\mathbb{Q}$"
     }
   ],
   "overview": {
