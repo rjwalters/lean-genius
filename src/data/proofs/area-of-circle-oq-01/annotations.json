@@ -257,9 +257,9 @@
       "endLine": 155
     },
     "type": "technique",
-    "title": "Isoperimetric Equality",
-    "content": "Proves $C(r)^2 = 4\\pi \\cdot A(r)$ — the isoperimetric equality for circles. This is purely algebraic: $(2\\pi r)^2 = 4\\pi^2 r^2 = 4\\pi \\cdot (\\pi r^2)$. The `ring` tactic handles the computation. This is the equality case of the isoperimetric inequality, which states $C^2 \\ge 4\\pi A$ for any simple closed curve.",
-    "mathContext": "$C^2 = 4\\pi A$ is equivalent to $\\frac{C^2}{4\\pi} = A$, or $\\frac{A}{C^2} = \\frac{1}{4\\pi}$. The isoperimetric inequality asserts this ratio is maximized by circles.",
+    "title": "Circumference-Area Algebraic Identity",
+    "content": "Proves the algebraic identity $C(r)^2 = 4\\pi \\cdot A(r)$ for circles, purely by expanding definitions: $(2\\pi r)^2 = 4\\pi^2 r^2 = 4\\pi \\cdot (\\pi r^2)$. The `ring` tactic handles the computation. This is the equality case of the isoperimetric inequality ($C^2 \\ge 4\\pi A$ for any simple closed curve), though the inequality itself — that circles maximize enclosed area for a given perimeter — is not proved here.",
+    "mathContext": "$C^2 = 4\\pi A$ is an algebraic tautology for circles (both sides expand to $4\\pi^2 r^2$). The isoperimetric inequality asserts this ratio is maximized by circles, but that optimality statement requires the calculus of variations and is not formalized in this file.",
     "significance": "key",
     "relatedConcepts": [
       "isoperimetric inequality",

@@ -90,21 +90,21 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Reframe originalContributions from 6 items to 2-3 honest items. Align tone with the assumptions field which already correctly identifies this as a Mathlib application.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "medium",
       "target": "enricher",
       "description": "Fix sections[0].mathContext: replace incorrect import names (Trigonometric.Deriv, EqHaar) with actual imports (Trigonometric.Basic, VolumeOfBalls).",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "low",
       "target": "enricher",
       "description": "Qualify the fundamental-theorem-calculus cross-reference to note that only the derivative direction is proved, not the integral direction.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
@@ -118,7 +118,7 @@
       "priority": "low",
       "target": "enricher",
       "description": "Rename or re-describe isoperimetric_equality to clarify it is an algebraic identity, not a proof of the isoperimetric inequality. Update cross-reference to isoperimetric-theorem accordingly.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
 
