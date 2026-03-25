@@ -329,6 +329,16 @@
       "targetId": "de-moivre-oq-03",
       "relationship": "foundational",
       "description": "Fractional exponents and root extraction via De Moivre's theorem formalize the precise mechanism underlying radical extensions: the $n$th roots $z^{1/n} = |z|^{1/n} e^{i\\theta/n}$ that define each step $K_i \\to K_i(\\sqrt[n]{a})$ of a radical tower. Abel-Ruffini's impossibility arises when the polynomial's Galois group $S_5$ cannot be decomposed into the cyclic layers that root extraction provides"
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "related",
+      "description": "Liouville's 1844 theorem (Wiedijk #18) proving that Liouville numbers are transcendental was the first result establishing the existence of transcendental numbers — the historical bridge between irrationality ($\\sqrt{2} \\notin \\mathbb{Q}$, antiquity) and Hermite-Lindemann ($e, \\pi \\notin \\overline{\\mathbb{Q}}$, 1873-1882) in the expressibility hierarchy discussed in the conclusion. Where Abel-Ruffini (1824) shows certain algebraic numbers escape radical expressions, Liouville showed certain numbers escape all polynomial equations, inaugurating the transcendence theory that culminated in Hermite-Lindemann"
+    },
+    {
+      "targetId": "solution-of-cubic-oq-03",
+      "relationship": "complementary",
+      "description": "Proves Vieta's formulas for the three Cardano roots of $x^3 + px + q = 0$ (sum $= 0$, pairwise products $= p$, triple product $= -q$) and the complete factorization into linear factors. This is the positive constructive counterpart to Abel-Ruffini: Cardano's formula works because $S_3$ is solvable ($S_3 \\triangleright A_3 \\cong \\mathbb{Z}/3 \\triangleright \\{e\\}$), and Vieta's formulas express the symmetric functions of roots that the Galois group permutes"
     }
   ],
   "references": [
