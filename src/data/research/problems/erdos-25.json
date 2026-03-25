@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 4 axioms total from Erdos25Problem.lean. Session 1: sieved_set_nonempty proved with corrected hypothesis. Session 2: logDensity/logDensity_mem_unit/logDensity_unique proved via constructive HasLogDensity. Problem file axioms: 6->2. Build verified via Docker.",
+    "progressSummary": "COMPLETED (main file): All 6 original axioms eliminated. Main file: 0 axioms, 0 sorries, 8 theorems. Companion Erdos25LogDensity.lean still has 4 axioms (deep results).",
     "builtItems": [
       "Proved logWeightedCount_nonneg in Erdos25LogDensity.lean",
       "Proved logWeightedCount_mono in Erdos25LogDensity.lean",
@@ -53,7 +53,9 @@
       "sieved_set_nonempty: PROVED (was axiom, added hypothesis seq_n 0 >= 2)",
       "Converted logDensity from axiom to def (= Erdos25.HasLogDensity) in Erdos25Problem.lean",
       "Proved logDensity_mem_unit: d>=0 via ge_of_tendsto, d<=1 via limsup_le_limsup + harmonic ratio comparison",
-      "Proved logDensity_unique via tendsto_nhds_unique in Erdos25Problem.lean"
+      "Proved logDensity_unique via tendsto_nhds_unique in Erdos25Problem.lean",
+      "PROVED finite_sieve_density_exists via exfalso (contradictory hypotheses, 4 lines)",
+      "REMOVED sieve_density_positive (false axiom, replaced with counterexample comment)"
     ],
     "insights": [
       "The axiom logDensityRatio_bounded claiming ratio <= 1 for N >= 2 is mathematically incorrect since H_N/log N > 1 for all finite N",
@@ -62,7 +64,9 @@
       "logWeightedCount splits additively over disjoint unions",
       "The Problem file axiomatized logDensity separately from LogDensity files constructive HasLogDensity - unifying them eliminated 3 axioms at once",
       "d<=1 proof requires limsup comparison (not pointwise bound) because harmonicSum/log > 1 for all finite N",
-      "sieved_set_nonempty axiom was unsound: false when seq_n 0 = 1 (mod 1 excludes everything)"
+      "sieved_set_nonempty axiom was unsound: false when seq_n 0 = 1 (mod 1 excludes everything)",
+      "finite_sieve_density_exists hypothesis (∀ i≥N, seq_n i = seq_n N) contradicts StrictMono seq_n — axiom proved vacuously via exfalso+omega",
+      "sieve_density_positive is mathematically false: prime sieve (seq_n=primes, seq_a=0) yields sieved set {1} with log density 0, not >0"
     ],
     "mathlibGaps": [],
     "nextSteps": [
