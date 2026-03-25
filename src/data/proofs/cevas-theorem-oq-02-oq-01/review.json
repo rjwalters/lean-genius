@@ -76,21 +76,21 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Qualify the 'bridge' claim in originalContributions[4] and conclusion.implications item 3. The file re-derives the sin-ratio formula rather than importing it from CevasTheoremSinRatio.lean. Note the bridge is conceptual, not formal.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "medium",
       "target": "enricher",
       "description": "Fix overlapping sections: split 'weight-balance' (170-262) into 'weight-balance-criterion' (170-201), 'special-cases' (203-216), and 'main-theorem' (218-261).",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "low",
       "target": "enricher",
       "description": "Consider upgrading badge from 'verified' to 'original'. Add real_inner_self_eq_norm_sq and norm_sub_sq_real to mathlibDependencies. Replace or remove the generic pythagorean-theorem cross-reference.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
 
