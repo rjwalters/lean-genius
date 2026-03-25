@@ -1,5 +1,28 @@
 [
   {
+    "id": "erdos-341-ann-header",
+    "proofId": "erdos-341",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "context",
+    "title": "Module Documentation and Imports",
+    "content": "The module docstring introduces Erdős Problem #341 (Dickson's sum-free extension): given a finite starting set $A_0 = \\{a_1 < \\cdots < a_k\\}$, greedily extend to an infinite sequence where each $a_{n+1}$ is the smallest integer greater than $a_n$ not expressible as $a_i + a_j$ for $i, j \\leq n$. The conjecture asks whether the difference sequence $a_{m+1} - a_m$ is eventually periodic. Originally studied by Dickson, popularized by Erdős and Graham (1980, p. 53), and featured as Problem 7 on Ben Green's open problems list. Even the starting set $\\{1, 4, 9, 16, 25\\}$ (perfect squares) requires thousands of terms before periodicity emerges. Imports provide Finset (for finite initial sets and their pairwise sums), Nat.Basic (for natural number arithmetic), and Tactic (for proof automation).",
+    "mathContext": "Given $A_0 = \\{a_1, \\ldots, a_k\\}$, define $a_{n+1} = \\min\\{m > a_n : m \\notin \\{a_i + a_j : i, j \\leq n\\}\\}$. Conjecture: $\\exists p \\geq 1, N$ such that $a_{n+p+1} - a_{n+p} = a_{n+1} - a_n$ for all $n \\geq N$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "greedy algorithms",
+      "sum-free extension",
+      "Dickson's problem",
+      "Ben Green's problem list"
+    ],
+    "prerequisites": [
+      "Finset API",
+      "natural number arithmetic"
+    ]
+  },
+  {
     "id": "erdos-341-ann-sums",
     "proofId": "erdos-341",
     "range": {
