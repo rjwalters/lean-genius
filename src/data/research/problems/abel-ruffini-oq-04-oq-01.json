@@ -1,13 +1,13 @@
 {
   "slug": "abel-ruffini-oq-04-oq-01",
-  "title": "Formalize the Galois group computation for the generic quintic: Gal(x⁵ + a₁x⁴...",
+  "title": "Formalize the Galois group computation for the generic quintic: Gal(x\u2075 + a\u2081x\u2074...",
   "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formalize the Galois group computation for the generic quintic: Gal(x⁵ + a₁x⁴...",
+    "plain": "Formalize the Galois group computation for the generic quintic: Gal(x\u2075 + a\u2081x\u2074...",
     "whyMatters": []
   },
   "knownResults": {
@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-25T00:00:00Z",
-    "iteration": 4,
-    "focus": "gal_card_eq_120 now proved as theorem from 2 axioms (Dedekind+disc)",
+    "iteration": 3,
+    "focus": "Evaluation lemmas proved, IVT application next",
     "blockers": [],
-    "nextAction": "Eliminate remaining 2 axioms: prove Dedekind theorem, prove disc=Vandermonde² identity",
+    "nextAction": "Eliminate gal_card_eq_120 axiom",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -29,44 +29,32 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: |Gal|=120 now PROVED as theorem (was axiom). 2 narrow axioms remain: three_dvd_gal_card (Dedekind), gal_has_odd_perm (disc). 874 lines, 37 theorems.",
+    "progressSummary": "PROGRESS: 5 evaluation lemmas proved. 1 axiom remains (|Gal|=120). Next: IVT for real roots, then group theory.",
     "builtItems": [
-      "Proofs/AbelRuffiniOQ04OQ01.lean: Full proof (475 lines, 13 theorems, 1 axiom, 3 defs)",
+      "Proofs/AbelRuffiniOQ04OQ01.lean: Full proof (362 lines, 12 theorems, 1 axiom)",
       "p_irreducible: Eisenstein at 2 for x^5-4x+2",
-      "gal_iso_s5: Gal(p/Q) ≅ S_5 via galActionHom bijectivity",
+      "gal_iso_s5: Gal(p/Q) \u2245 S_5 via galActionHom bijectivity",
       "roots_not_solvable_by_rad: contrapositive of Galois theorem",
       "s5_realizable: S_5 realized as Galois group over Q",
-      "Polynomial evaluations p(-2)=-22, p(-1)=5, p(0)=2, p(1)=-1, p(2)=26",
-      "closure_cycle_swap_eq_top: 5-cycle + transposition generates all of S_5 (77 lines, native_decide for conjugation identities)",
-      "galToPerm5: injection Gal(p) →* Perm(Fin 5)",
-      "galSign: sign of Galois element in S₅",
-      "no_subgroup_order_15: Sylow theory + native_decide (order-5/3 non-commutativity)",
-      "no_subgroup_order_30: A₅ simplicity + sign kernel",
-      "gal_card_ne_60: unique order-60 subgroup is A₅, contradicts gal_has_odd_perm",
-      "gal_card_eq_120: THEOREM from 15||Gal| + divisibility + ruling out 15/30/60",
-      "Mod 13 verification: p_root_mod13_at_2, p_root_mod13_at_5, cubic_factor_no_roots_mod13"
+      "Polynomial evaluations p(-2)=-22, p(-1)=5, p(0)=2, p(1)=-1, p(2)=26 (AbelRuffiniOQ04OQ01.lean)"
     ],
     "insights": [
       "Concrete polynomial approach more tractable than generic polynomial: x^5-4x+2 via Eisenstein at 2",
       "galActionHom bijectivity pattern (injective + card equality) well-established in codebase for S_3, F_20, A_5",
       "solvable_of_surjective (not isSolvable_of_surjective) is the correct Mathlib4 name for solvability transfer",
-      "native_decide works for permutation equality on Fin 5 but NOT for Subgroup.closure = ⊤ (no Decidable instance)",
-      "The group theory proof uses swap_induction_on + explicit conjugation chain: c5^k swap(0,1) c5^{-k} gives adjacent transpositions, then star conjugation gives all 10 transpositions",
-      "Subgroup.closure equality lacks Decidable instance; must prove membership of all generators manually then use swap_induction_on",
-      "Sylow approach (InverseGaloisA5 pattern) far more practical than IVT+complex conjugation for proving |Gal|",
-      "native_decide efficiently verifies mod-p factorization and permutation properties on Fin 5",
-      "no_subgroup_order_15 key insight: order-5 and order-3 elements never commute in S₅ (verified computationally)",
-      "gal_card_ne_60 uses the fact that A₅ is the UNIQUE subgroup of S₅ of order 60 (only index-2 subgroup)"
+      "Generic polynomial approach (MvPolynomial + FractionRing + esymmAlgEquiv) requires 3-4 substantial gap lemmas",
+      "simp [eval_sub, eval_add, eval_mul, eval_pow, eval_C, eval_X] suffices for polynomial evaluation; ring only needed sometimes",
+      "To eliminate gal_card_eq_120: need IVT over \u211d for real roots + group theory lemma (transitive + transposition + p-cycle \u2192 S_p)"
     ],
     "mathlibGaps": [
       "No generic polynomial Galois group computation in Mathlib (FractionRing of MvPolynomial + Galois theory)",
-      "No direct MulEquiv.isSolvable_iff — must use solvable_of_surjective with explicit surjectivity proof",
-      "No Decidable instance for Subgroup.closure S = ⊤ on finite groups"
+      "No direct MulEquiv.isSolvable_iff \u2014 must use solvable_of_surjective with explicit surjectivity proof"
     ],
     "nextSteps": [
-      "Formalize Dedekind theorem to eliminate three_dvd_gal_card axiom (~200-300 lines)",
-      "Prove disc(f) = Vandermonde² identity to eliminate gal_has_odd_perm axiom (~100-200 lines)",
-      "Alternative: IVT approach for Axiom B (3 real roots → disc<0, avoids Vandermonde)"
+      "Cast evaluations to \u211d and apply IVT (Polynomial.aeval continuity + IVT) to get roots in (-2,-1), (0,1), (1,2)",
+      "Show f'=5x^4-4 has exactly 2 real roots to bound real root count to 3",
+      "Prove group theory: transitive subgroup of S_p (p prime) with transposition = S_p",
+      "Complex conjugation on 2 non-real roots gives transposition in Gal \u2192 Gal = S_5 \u2192 |Gal|=120"
     ]
   },
   "tags": [
@@ -123,17 +111,6 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04.lean"
-    },
-    {
-      "path": "Proofs/AbelRuffiniOQ04OQ01.lean",
-      "filename": "AbelRuffiniOQ04OQ01.lean",
-      "lineCount": 475,
-      "theoremCount": 13,
-      "axiomCount": 1,
-      "defCount": 3,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ01.lean"
     }
   ]
 }
