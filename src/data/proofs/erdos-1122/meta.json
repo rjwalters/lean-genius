@@ -199,5 +199,42 @@
       "Is the bounded prime values condition in Mangerel's theorem necessary?",
       "What is the relationship between this problem and Erdős #491 on short intervals?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Erd\u0151s, Paul",
+      "title": "On the distribution function of additive functions",
+      "year": "1946",
+      "venue": "Annals of Mathematics, 47(1), pp. 1\u201320",
+      "note": "Proved that an additive function with no monotonicity defects (empty defect set) must be c\u00b7log, establishing the foundational result for Problem 1122"
+    },
+    {
+      "authors": "K\u00e1tai, Imre",
+      "title": "A remark on additive functions",
+      "year": "1969",
+      "venue": "Annales Universitatis Scientiarum Budapestinensis de Rolando E\u00f6tv\u00f6s Nominatae, Sectio Mathematica, 12, pp. 81\u201385",
+      "note": "Extended Erd\u0151s's result to additive functions with vanishing increments: f(n+1) - f(n) \u2192 0 implies f = c\u00b7log"
+    },
+    {
+      "authors": "Wirsing, Eduard",
+      "title": "A characterization of log n as an additive function",
+      "year": "1970",
+      "venue": "Symposia Mathematica, vol. IV (INDAM, Rome, 1968/69), pp. 45\u201357, Academic Press",
+      "note": "Independent proof of the K\u00e1tai result that vanishing increments force f = c\u00b7log, using a different analytic approach"
+    },
+    {
+      "authors": "Mangerel, Alexander P.",
+      "title": "On the Erd\u0151s characterization of log as an additive function",
+      "year": "2022",
+      "venue": "Preprint",
+      "note": "Proved that additive functions with defect density O(X/(log X)^{2+c}) and bounded prime values must be c\u00b7log \u2014 the strongest partial result toward Problem 1122"
+    },
+    {
+      "authors": "Elliott, Peter D.T.A.",
+      "title": "Probabilistic Number Theory I: Mean-Value Theorems",
+      "year": "1979",
+      "venue": "Springer Grundlehren 239",
+      "note": "Standard reference on the distribution of additive functions, including the Erd\u0151s-Wintner and Erd\u0151s-Kac theorems providing context for characterizations of c\u00b7log among additive functions"
+    }
+  ]
 }
