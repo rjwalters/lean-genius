@@ -283,5 +283,95 @@
       "Filter.Tendsto",
       "atTop"
     ]
+  },
+  {
+    "id": "main-conjecture-formal",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 201,
+      "endLine": 224
+    },
+    "type": "definition",
+    "title": "Part IV: Formal Conjecture Statements (Weak and Strong)",
+    "content": "Three formal definitions capture the conjecture at different strengths. `erdos_turan_weak` states: for every basis $A$ and every bound $k$, there exists $n$ with $r_A(n) > k$ — the representation function is unbounded. `erdos_turan_strong` strengthens this to $r_A(n) > c \\log n$ infinitely often. `erdos_28` is defined as `erdos_turan_weak`, making the official problem statement the weaker form. The gap between weak and strong reflects a real open question: even if unboundedness is proved, the growth rate of $\\limsup r_A(n)$ remains unknown.",
+    "mathContext": "Weak: $\\forall A, \\text{IsAsymptoticBasis}(A) \\to \\forall k, \\exists n, r_A(n) > k$. Strong: $\\exists c > 0, \\forall M, \\exists n > M, r_A(n) > c \\log n$. The strong form implies the weak form but is strictly stronger — $\\log n$ growth vs mere unboundedness.",
+    "significance": "key",
+    "relatedConcepts": ["additive basis", "representation function", "lim sup", "logarithmic growth"],
+    "prerequisites": ["repFunc", "IsAsymptoticBasis"]
+  },
+  {
+    "id": "partial-results-formal",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 225,
+      "endLine": 234
+    },
+    "type": "concept",
+    "title": "Part V: Axiomatized Partial Results (Grekos, Borwein)",
+    "content": "Two axioms encode the best known partial results toward the conjecture. `grekos_lower_bound` (Grekos, Haddad, Helou, Pihko, 2003): for any basis $A$, $r_A(n) \\geq 6$ infinitely often. `borwein_lower_bound` (Borwein, Choi, Croot): improved to $r_A(n) \\geq 8$ infinitely often. The conjecture asserts $r_A(n) \\to \\infty$ along a subsequence, so these results confirm the first few steps of unboundedness. The gap between 8 and $\\infty$ remains one of the central challenges in additive combinatorics.",
+    "mathContext": "Grekos et al.: $\\forall A, \\text{basis}(A) \\to \\forall M, \\exists n > M, r_A(n) \\geq 6$. Borwein et al.: same with 6 replaced by 8. The conjecture requires $\\forall k, \\exists n, r_A(n) \\geq k$.",
+    "significance": "key",
+    "relatedConcepts": ["additive bases", "lower bounds", "Grekos et al.", "representation function lower bounds"],
+    "prerequisites": ["repFunc", "IsAsymptoticBasis"]
+  },
+  {
+    "id": "examples-section",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 235,
+      "endLine": 347
+    },
+    "type": "insight",
+    "title": "Part VI: Concrete Examples — Evens and ℕ",
+    "content": "Two concrete examples illustrate basis behavior. The **even numbers** $\\{0, 2, 4, \\ldots\\}$ form a basis for even integers with $r_{\\text{evens}}(2n) = \\lfloor n/2 \\rfloor + 1$ (growing linearly). **ℕ itself** is trivially a basis with $r_{\\mathbb{N}}(n) = \\lfloor n/2 \\rfloor + 1$, confirming the conjecture for this case. These examples show that 'natural' bases have linearly growing representation functions, far exceeding the conjectured $\\log n$ threshold. The challenge is proving unboundedness for bases with potentially adversarial structure.",
+    "mathContext": "$r_{\\text{evens}}(2n) = \\lfloor n/2 \\rfloor + 1$: pairs $(2k, 2(n-k))$ with $k \\leq n/2$. $r_{\\mathbb{N}}(n) = \\lfloor n/2 \\rfloor + 1$: pairs $(k, n-k)$ with $k \\leq n/2$. Both grow as $\\Theta(n)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["even numbers", "natural numbers as basis", "representation counting", "Goldbach-type problems"],
+    "prerequisites": ["repFuncUnordered", "IsAsymptoticBasis", "sumset"]
+  },
+  {
+    "id": "sidon-basis-incompatible",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 348,
+      "endLine": 412
+    },
+    "type": "concept",
+    "title": "Part VII: Sidon Sets Cannot Be Asymptotic Bases",
+    "content": "A key structural result: infinite Sidon sets ($B_2$ sets, where all pairwise sums are distinct) cannot be asymptotic bases. The density bound $|A \\cap [1,N]| \\leq \\sqrt{N} + O(N^{1/4})$ (Erdős-Turán) shows Sidon sets are too sparse. The documentation provides a detailed proof outline explaining why the weaker bound $\\sqrt{2N}+1$ is insufficient — it gives sumset size $\\approx N$, barely covering the interval, while the tight bound gives sumset size $\\approx N/2$, yielding a clear contradiction. This axiomatized result (`sidon_not_basis`) captures the tension between bounded representations (Sidon property) and covering all integers (basis property).",
+    "mathContext": "Sidon density: $|A \\cap [1,N]| \\leq \\sqrt{N} + O(N^{1/4})$. Sumset: $|A_N + A_N| = |A_N|(|A_N|+1)/2 \\approx N/2$. Basis requires covering $[N_0, N]$ which has $\\sim N$ elements. Since $N/2 < N$, Sidon sets fail to be bases for large $N$.",
+    "significance": "key",
+    "relatedConcepts": ["Sidon sets", "B_2 sequences", "density bounds", "sumset size", "Erdős-Turán density bound"],
+    "prerequisites": ["IsSidon", "IsAsymptoticBasis", "sidon_density_bound"]
+  },
+  {
+    "id": "conjecture-holds-nat",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 426,
+      "endLine": 446
+    },
+    "type": "theorem",
+    "title": "Part IX: The Conjecture Holds Trivially for ℕ",
+    "content": "Two proved theorems verify the Erdős-Turán conjecture for $\\mathbb{N}$. `nat_repFuncUnordered_unbounded`: for unordered representations, $r_{\\mathbb{N}}^{\\text{unord}}(2k+2) = k+2 > k$, so the function is unbounded. `erdos_turan_holds_for_nat`: since ordered $\\geq$ unordered ($r \\geq r^{\\text{unord}}$), the ordered count is also unbounded. These are trivial cases — the difficulty lies in adversarially constructed bases where the structure might conspire to keep $r_A(n)$ bounded.",
+    "mathContext": "$r^{\\text{unord}}_{\\mathbb{N}}(2k+2) = (2k+2)/2 + 1 = k+2 > k$. Combined with $r_A(n) \\geq r_A^{\\text{unord}}(n)$: the ordered representation count for $\\mathbb{N}$ is also unbounded.",
+    "significance": "supporting",
+    "relatedConcepts": ["trivial basis", "ordered vs unordered representations", "proof by explicit computation"],
+    "prerequisites": ["nat_repFunc", "repFunc_ge_repFuncUnordered"]
+  },
+  {
+    "id": "basis-density-lower-bound",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 447,
+      "endLine": 497
+    },
+    "type": "theorem",
+    "title": "Part X: Basis Density Lower Bound (Proved)",
+    "content": "The file's most substantive proved theorem: `basis_element_count_sq` shows that any asymptotic basis $A$ satisfies $|A \\cap [0,N]|^2 \\geq N - N_0 + 1$ for all $N \\geq N_0$, hence $|A \\cap [0,N]| \\geq \\sqrt{N - N_0 + 1}$. This is a counting argument: every $n \\in [N_0, N]$ has a representation $n = a + b$ with $a, b \\in A \\cap [0,N]$, so $[N_0, N] \\subseteq \\text{sumset}(A \\cap [0,N])$, and $|\\text{sumset}(S)| \\leq |S|^2$ (sumset is an image of $S \\times S$). The proof uses `Set.ncard` arithmetic and chains three inequalities via `calc`.",
+    "mathContext": "$|A \\cap [0,N]|^2 \\geq |\\text{sumset}(A \\cap [0,N])| \\geq |[N_0, N]| = N - N_0 + 1$. Therefore $|A \\cap [0,N]| \\geq \\sqrt{N - N_0 + 1} \\sim \\sqrt{N}$. This is the necessary condition for being a basis: density at least $\\Omega(\\sqrt{N})$.",
+    "significance": "key",
+    "relatedConcepts": ["counting argument", "sumset size bound", "density of bases", "Set.ncard", "calc block"],
+    "prerequisites": ["IsAsymptoticBasis", "sumset", "Set.ncard_Icc", "Set.ncard_image_le"]
   }
 ]
