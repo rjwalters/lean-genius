@@ -107,6 +107,50 @@
     ]
   },
   {
+    "id": "ann-binom-oq01oq01-04b-ratio",
+    "proofId": "binomial-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 75,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "Coefficient Ratio and Convergence Radius",
+    "content": "`genBinom_ratio` proves $C(\\alpha, k+1)/C(\\alpha, k) = (\\alpha - k)/(k+1)$ when $C(\\alpha, k) \\neq 0$. This ratio tends to $-1$ as $k \\to \\infty$, which by the ratio test gives the convergence radius $R = 1$ for the generalized binomial series. The ratio formula also explains why the series terminates for $\\alpha \\in \\mathbb{N}$: when $k = \\alpha$, the numerator $\\alpha - k = 0$, making all subsequent coefficients vanish.",
+    "mathContext": "$\\frac{\\binom{\\alpha}{k+1}}{\\binom{\\alpha}{k}} = \\frac{\\alpha - k}{k+1} \\xrightarrow{k \\to \\infty} -1$, giving $R = \\lim |a_k/a_{k+1}| = 1$. For $\\alpha = n \\in \\mathbb{N}$: $C(n, n+1) = 0$ since the ratio has numerator $n - n = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ratio test",
+      "radius of convergence",
+      "termination for natural exponents"
+    ],
+    "prerequisites": [
+      "ode_recurrence",
+      "div_eq_iff"
+    ]
+  },
+  {
+    "id": "ann-binom-oq01oq01-04c-special-values",
+    "proofId": "binomial-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 85,
+      "endLine": 105
+    },
+    "type": "insight",
+    "title": "Special Values: Zero Exponent and Geometric Series",
+    "content": "`genBinom_zero_succ` proves $C(0, k) = 0$ for $k \\geq 1$: the series $(1+x)^0 = 1$ is trivially constant. `genBinom_neg_one` proves $C(-1, k) = (-1)^k$: the series $(1+x)^{-1} = \\sum (-x)^k$ recovers the geometric series $1/(1+x) = 1 - x + x^2 - x^3 + \\cdots$ for $|x| < 1$.\n\nThis establishes that Newton's generalized binomial series unifies and extends classical results: the finite binomial theorem ($\\alpha \\in \\mathbb{N}$, terminating), the geometric series ($\\alpha = -1$), and genuinely new infinite series like the square root ($\\alpha = 1/2$).",
+    "mathContext": "$\\binom{0}{k} = 0$ for $k \\geq 1$ (the series truncates to $1$). $\\binom{-1}{k} = (-1)^k$ gives $(1+x)^{-1} = \\sum_{k=0}^{\\infty} (-1)^k x^k = \\frac{1}{1+x}$ for $|x| < 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "geometric series",
+      "termination",
+      "unification of series"
+    ],
+    "prerequisites": [
+      "genBinom definition",
+      "neg_one_pow"
+    ]
+  },
+  {
     "id": "ann-binom-oq01oq01-05-absorption",
     "proofId": "binomial-theorem-oq-01-oq-01",
     "range": {
