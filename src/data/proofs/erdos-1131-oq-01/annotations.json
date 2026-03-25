@@ -1,0 +1,167 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "erdos-1131-oq-01",
+    "range": { "startLine": 1, "endLine": 18 },
+    "type": "context",
+    "title": "Module Documentation: Variance Decomposition Approach",
+    "content": "This file takes a novel approach to Erdős Problem #1131 by decomposing the Lagrange basis integral $I = \\int_{-1}^{1} \\sum_k l_k(x)^2\\,dx$ into a 'uniform floor' $2/n$ and a 'variance excess' $\\int \\text{var}(x)\\,dx$. The key result is that the Cauchy-Schwarz bound $I \\geq 2/n$ is never tight for $n \\geq 2$: the strict inequality $I > 2/n$ holds because the integrated variance is strictly positive. The Erdős conjecture $\\min I = 2 - (1+o(1))/n$ is reformulated as $\\min \\int \\text{var} = 2 - (3+o(1))/n$, separating the understood floor from the open conjecture about the excess.",
+    "mathContext": "$I = \\frac{2}{n} + \\int_{-1}^{1} \\sum_{k=1}^{n}\\left(l_k(x) - \\frac{1}{n}\\right)^2 dx$. The first term is the contribution of a perfectly uniform basis; the second measures deviation from uniformity.",
+    "significance": "key",
+    "prerequisites": [
+      "Lagrange interpolation",
+      "Erdős Problem #1131",
+      "measure theory"
+    ],
+    "relatedConcepts": [
+      "variance decomposition",
+      "Lagrange basis polynomials",
+      "Cauchy-Schwarz inequality",
+      "approximation theory"
+    ]
+  },
+  {
+    "id": "ann-definitions",
+    "proofId": "erdos-1131-oq-01",
+    "range": { "startLine": 26, "endLine": 47 },
+    "type": "definition",
+    "title": "Pointwise and Integrated Variance",
+    "content": "`pointwiseVariance n nodes x` computes $\\sum_k (l_k(x) - 1/n)^2$ — the mean squared deviation of the Lagrange basis values from the uniform distribution $1/n$. `integratedVariance n nodes` integrates this over $[-1,1]$. The continuity theorem `continuous_pointwiseVariance` follows from the fact that each $l_k$ is a ratio of polynomials (continuous for distinct nodes) and finite sums/powers preserve continuity.\n\nThe continuity proof is notable for its compositionality: it builds from `continuous_id`, `continuous_const`, `Continuous.sub`, `Continuous.div_const`, `continuous_finset_prod`, and `Continuous.pow` — a tower of Mathlib continuity lemmas composed to handle the product-of-differences structure of Lagrange basis polynomials.",
+    "mathContext": "$\\text{var}(x) = \\sum_{k=1}^{n} \\left(l_k(x) - \\frac{1}{n}\\right)^2, \\quad \\int\\text{var} = \\int_{-1}^{1} \\text{var}(x)\\,dx$. Continuity: each $l_k(x) = \\prod_{i \\neq k} \\frac{x - x_i}{x_k - x_i}$ is a polynomial in $x$ (for fixed nodes), hence continuous.",
+    "significance": "key",
+    "prerequisites": [
+      "Lagrange basis polynomials",
+      "Lebesgue integration",
+      "continuous functions"
+    ],
+    "relatedConcepts": [
+      "variance",
+      "pointwise convergence",
+      "interval integrability",
+      "compositional continuity proofs"
+    ]
+  },
+  {
+    "id": "ann-variance-identity",
+    "proofId": "erdos-1131-oq-01",
+    "range": { "startLine": 49, "endLine": 79 },
+    "type": "theorem",
+    "title": "Variance Identity: The Decomposition Formula",
+    "content": "`variance_identity` proves $\\sum_k l_k(x)^2 = 1/n + \\text{var}(x)$ — the pointwise decomposition underlying the entire file. The proof expands $(l_k - 1/n)^2 = l_k^2 - 2l_k/n + 1/n^2$, sums over $k$, uses the partition of unity $\\sum l_k = 1$ to simplify the cross terms, and obtains $\\text{var}(x) = \\sum l_k^2 - 1/n$. The algebraic manipulations use `Finset.sum_add_distrib`, `Finset.mul_sum`, `field_simp`, and `ring` to handle the rational arithmetic.\n\nThis identity is the key structural insight: it separates $\\sum l_k^2$ (which appears in the integral $I$) into a constant floor $1/n$ and a non-negative excess $\\text{var}(x)$ that measures non-uniformity.",
+    "mathContext": "$\\sum_{k=1}^{n} l_k(x)^2 = \\frac{1}{n} + \\sum_{k=1}^{n} \\left(l_k(x) - \\frac{1}{n}\\right)^2$. Proof: expand squares and use $\\sum l_k = 1$ (partition of unity).",
+    "significance": "key",
+    "prerequisites": [
+      "partition of unity",
+      "algebraic manipulation",
+      "Finset.sum_add_distrib"
+    ],
+    "relatedConcepts": [
+      "bias-variance decomposition",
+      "partition of unity",
+      "sum of squares decomposition",
+      "Cauchy-Schwarz inequality"
+    ]
+  },
+  {
+    "id": "ann-node-evaluation",
+    "proofId": "erdos-1131-oq-01",
+    "range": { "startLine": 81, "endLine": 98 },
+    "type": "theorem",
+    "title": "Node Evaluation: Kronecker Delta Identity",
+    "content": "`sum_sq_at_node` proves $\\sum_k l_k(x_j)^2 = 1$ at each node $x_j$. This follows directly from the cardinal basis property: $l_j(x_j) = 1$ and $l_k(x_j) = 0$ for $k \\neq j$. The Lean proof rewrites the right-hand side as $\\sum_k (\\text{if } k = j \\text{ then } 1 \\text{ else } 0)$ and uses `lagrangeBasis_self` and `lagrangeBasis_other` from the parent file.\n\nThis is a foundational identity for interpolation: the Lagrange basis functions form a partition of unity that is maximally 'peaked' at node points.",
+    "mathContext": "$\\sum_{k=1}^{n} l_k(x_j)^2 = 0^2 + \\cdots + 1^2 + \\cdots + 0^2 = 1$ using $l_k(x_j) = \\delta_{kj}$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Lagrange basis cardinal property",
+      "Kronecker delta"
+    ],
+    "relatedConcepts": [
+      "cardinal basis",
+      "interpolation nodes",
+      "Kronecker delta"
+    ]
+  },
+  {
+    "id": "ann-variance-at-node",
+    "proofId": "erdos-1131-oq-01",
+    "range": { "startLine": 100, "endLine": 126 },
+    "type": "theorem",
+    "title": "Variance at Nodes and Positivity",
+    "content": "`variance_at_node` computes $\\text{var}(x_j) = (n-1)/n$. At node $x_j$, the $j$-th basis function contributes $(1 - 1/n)^2 = ((n-1)/n)^2$ and each of the $n-1$ others contributes $(0 - 1/n)^2 = 1/n^2$. Total: $((n-1)/n)^2 + (n-1)/n^2 = (n-1)/n$. The proof uses the variance identity and the node evaluation identity, then `field_simp` for rational simplification.\n\n`variance_pos_at_node` deduces $\\text{var}(x_j) > 0$ for $n \\geq 2$ using `positivity`. This is the seed of the strict lower bound: the variance is continuous, non-negative, and strictly positive at an interior point of $[-1,1]$.",
+    "mathContext": "$\\text{var}(x_j) = \\left(1 - \\frac{1}{n}\\right)^2 + (n-1)\\left(\\frac{1}{n}\\right)^2 = \\frac{(n-1)^2 + (n-1)}{n^2} = \\frac{n-1}{n}$. For $n \\geq 2$: $\\frac{n-1}{n} \\geq \\frac{1}{2} > 0$.",
+    "significance": "key",
+    "prerequisites": [
+      "variance_identity",
+      "sum_sq_at_node",
+      "positivity tactic"
+    ],
+    "relatedConcepts": [
+      "positivity at a point",
+      "continuous function positivity",
+      "epsilon-delta arguments"
+    ]
+  },
+  {
+    "id": "ann-integral-decomposition",
+    "proofId": "erdos-1131-oq-01",
+    "range": { "startLine": 128, "endLine": 162 },
+    "type": "theorem",
+    "title": "Integral Decomposition: I = 2/n + Integrated Variance",
+    "content": "`integral_decomposition` lifts the pointwise identity to an integral: $I = 2/n + \\int \\text{var}$. The proof substitutes the variance identity into the integrand, then splits the integral of a sum into a sum of integrals using `intervalIntegral.integral_add`. The constant integral $\\int_{-1}^{1} 1/n\\,dx = 2/n$ is computed via `intervalIntegral.integral_const` and `smul_eq_mul`.\n\n`integratedVariance_nonneg` establishes $\\int \\text{var} \\geq 0$ using `intervalIntegral.integral_nonneg` and the fact that each $(l_k(x) - 1/n)^2 \\geq 0$. This immediately recovers the Cauchy-Schwarz bound $I \\geq 2/n$.",
+    "mathContext": "$I = \\int_{-1}^{1} \\sum_k l_k(x)^2\\,dx = \\int_{-1}^{1} \\left(\\frac{1}{n} + \\text{var}(x)\\right)dx = \\frac{2}{n} + \\int_{-1}^{1} \\text{var}(x)\\,dx$.",
+    "significance": "key",
+    "prerequisites": [
+      "variance_identity",
+      "intervalIntegral.integral_add",
+      "interval integrability"
+    ],
+    "relatedConcepts": [
+      "integral decomposition",
+      "Cauchy-Schwarz inequality",
+      "non-negative integrals"
+    ]
+  },
+  {
+    "id": "ann-strict-lower-bound",
+    "proofId": "erdos-1131-oq-01",
+    "range": { "startLine": 164, "endLine": 261 },
+    "type": "theorem",
+    "title": "Strict Lower Bound: I > 2/n via Epsilon-Delta Continuity",
+    "content": "The file's main analytical result: `integratedVariance_strictly_pos` proves $\\int \\text{var} > 0$ for $n \\geq 2$, implying $I > 2/n$ via the decomposition. The proof is a textbook epsilon-delta argument formalized in Lean:\n\n1. **Seed**: $\\text{var}(x_0) = (n-1)/n > 0$ at the first node $x_0 \\in [-1,1]$\n2. **Continuity**: By `Metric.continuousAt_iff`, there exists $\\delta > 0$ such that $|y - x_0| < \\delta \\Rightarrow |\\text{var}(y) - c| < c/2$ where $c = (n-1)/n$\n3. **Localization**: Construct $[a,b] = [\\max(-1, x_0-\\delta/2), \\min(1, x_0+\\delta/2)] \\subset [-1,1]$ with $a < b$\n4. **Bound on subinterval**: For $y \\in [a,b]$, $\\text{var}(y) \\geq c/2$\n5. **Split integral**: $\\int_{-1}^{1} = \\int_{-1}^{a} + \\int_{a}^{b} + \\int_{b}^{1}$, where the flanking integrals are $\\geq 0$ and the middle integral $\\geq (c/2)(b-a) > 0$\n\nThis is a clean formalization of the standard real analysis argument: a continuous non-negative function with a positive value has positive integral.\n\n`lagrangeIntegral_strict_lower` combines this with the decomposition to get $I > 2/n$.",
+    "mathContext": "$\\int_{-1}^{1} \\text{var}(x)\\,dx \\geq \\int_{a}^{b} \\text{var}(x)\\,dx \\geq \\frac{c}{2}(b-a) > 0$ where $c = \\frac{n-1}{n}$ and $[a,b]$ is a $\\delta$-neighborhood of a node clamped to $[-1,1]$.",
+    "significance": "key",
+    "prerequisites": [
+      "continuous_pointwiseVariance",
+      "variance_pos_at_node",
+      "Metric.continuousAt_iff",
+      "intervalIntegral.integral_mono_on"
+    ],
+    "relatedConcepts": [
+      "epsilon-delta continuity",
+      "strictly positive integrals",
+      "interval decomposition",
+      "real analysis formalization"
+    ]
+  },
+  {
+    "id": "ann-conjecture-reformulation",
+    "proofId": "erdos-1131-oq-01",
+    "range": { "startLine": 263, "endLine": 293 },
+    "type": "insight",
+    "title": "Conjecture Reformulation and Main Theorem",
+    "content": "`minIntegratedVariance n` defines the infimum of the integrated variance over all node configurations. The axiom `erdos_1131_variance_conjecture` states the reformulated Erdős conjecture: $\\min \\int \\text{var} \\approx 2 - 3/n$. Since $I = 2/n + \\int \\text{var}$, this is equivalent to $\\min I \\approx 2 - 1/n$ (the original conjecture: $\\min I = 2 - (1+o(1))/n$).\n\nThe main theorem `erdos_1131_oq01` is the strict lower bound $I > 2/n$, delegating directly to `lagrangeIntegral_strict_lower`. This resolves OQ-01 of the parent problem: the Cauchy-Schwarz bound is never achieved.\n\nThe reformulation $\\min I = 2/n + \\min \\int \\text{var}$ separates the problem into an understood component ($2/n$) and an open question (the minimum integrated variance). The open question is: how uniform can a Lagrange basis be made over $[-1,1]$?",
+    "mathContext": "$\\min I = \\frac{2}{n} + \\min \\int \\text{var}$. Conjecture: $\\min \\int \\text{var} = 2 - \\frac{3+o(1)}{n}$, equivalently $\\min I = 2 - \\frac{1+o(1)}{n}$.",
+    "significance": "key",
+    "prerequisites": [
+      "integral_decomposition",
+      "sInf definition",
+      "asymptotic notation"
+    ],
+    "relatedConcepts": [
+      "infimum over configurations",
+      "open conjecture",
+      "problem reformulation",
+      "asymptotic analysis"
+    ]
+  }
+]
