@@ -114,7 +114,7 @@
       "id": "connections",
       "title": "Connection to Other Problems",
       "startLine": 94,
-      "endLine": 115,
+      "endLine": 113,
       "summary": "Enumerates `easyPrimes` $= \\{5, 7, 13, 19, 37, 61, 181\\}$ (primes $p \\geq 5$ with $(p-1) \\mid 360$) and axiomatizes the key constraints: all moduli $> 2$ and $\\geq 4$ when restricted to $p \\geq 5$.",
       "mathContext": "Easy primes: $\\{p \\geq 5 : (p-1) \\mid 360\\} = \\{5,7,13,19,37,61,181\\}$. Constraint: all $m_i \\geq 4$ for $p \\geq 5$."
     },
