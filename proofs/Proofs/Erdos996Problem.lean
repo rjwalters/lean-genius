@@ -86,7 +86,23 @@ theorem powers_of_three_lacunary : IsLacunary (fun k => 3^k) := by
 /-- Any lacunary sequence is strictly increasing. -/
 theorem lacunary_strictMono {n : ℕ → ℕ} (hn : IsLacunary n) (h0 : n 0 > 0) :
     StrictMono n := by
-  sorry
+  obtain ⟨ratio, hratio, hk⟩ := hn
+  have step : ∀ k, n k > 0 → n k < n (k + 1) := by
+    intro k hpos
+    have hnk_pos : (0 : ℝ) < (n k : ℝ) := Nat.cast_pos.mpr hpos
+    have hge := hk k
+    have : (n k : ℝ) < (n (k + 1) : ℝ) := by
+      have hle : ratio * (n k : ℝ) ≤ (n (k + 1) : ℝ) := by
+        rw [ge_iff_le, le_div_iff₀ hnk_pos] at hge; linarith
+      nlinarith
+    exact_mod_cast this
+  apply strictMono_nat_of_lt_succ
+  intro k
+  have hpos : ∀ m, n m > 0 := by
+    intro m; induction m with
+    | zero => exact h0
+    | succ m ih => exact Nat.lt_trans (Nat.zero_lt_of_lt ih) (step m ih)
+  exact step k (hpos k)
 
 /- ## Part II: Fourier Series and Partial Sums -/
 
@@ -244,9 +260,22 @@ theorem lacunary_quasi_independent {n : ℕ → ℕ} (hn : IsLacunary n) :
     the ratio (k+2)/(k+1) → 1 as k → ∞, so no ratio > 1 can be a lower bound. -/
 theorem consecutive_not_lacunary : ¬IsLacunary (fun k => k + 1) := by
   intro ⟨ratio, hratio, hseq⟩
-  -- For large k, (k+2)/(k+1) < ratio since (k+2)/(k+1) → 1
-  -- This requires an archimedean argument
-  sorry
+  have hpos : ratio - 1 > 0 := by linarith
+  obtain ⟨m, hm⟩ := exists_nat_gt (1 / (ratio - 1))
+  have hm1 : (0 : ℝ) < (m : ℝ) + 1 := by positivity
+  have := hseq m
+  simp only at this
+  have hlt : ((m + 1 + 1 : ℕ) : ℝ) / ((m + 1 : ℕ) : ℝ) < ratio := by
+    rw [show ((m + 1 + 1 : ℕ) : ℝ) = (m : ℝ) + 1 + 1 by push_cast; ring]
+    rw [show ((m + 1 : ℕ) : ℝ) = (m : ℝ) + 1 by push_cast; ring]
+    rw [add_div, div_self (ne_of_gt hm1)]
+    have : 1 / ((m : ℝ) + 1) < ratio - 1 := by
+      have h2 : 1 / (ratio - 1) < (m : ℝ) + 1 := by linarith
+      rw [div_lt_iff₀ hpos] at h2
+      rw [div_lt_iff₀ hm1]
+      linarith [mul_comm ((m : ℝ) + 1) (ratio - 1)]
+    linarith
+  linarith
 
 /- ## Part X: The Gap Between Results -/
 
