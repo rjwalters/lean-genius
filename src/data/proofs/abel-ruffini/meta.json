@@ -339,6 +339,21 @@
       "targetId": "solution-of-cubic-oq-03",
       "relationship": "complementary",
       "description": "Proves Vieta's formulas for the three Cardano roots of $x^3 + px + q = 0$ (sum $= 0$, pairwise products $= p$, triple product $= -q$) and the complete factorization into linear factors. This is the positive constructive counterpart to Abel-Ruffini: Cardano's formula works because $S_3$ is solvable ($S_3 \\triangleright A_3 \\cong \\mathbb{Z}/3 \\triangleright \\{e\\}$), and Vieta's formulas express the symmetric functions of roots that the Galois group permutes"
+    },
+    {
+      "targetId": "nth-root-irrational",
+      "relationship": "foundational",
+      "description": "The irrationality of $\\sqrt[n]{m}$ for non-perfect-power $m$ is the simplest instance of the radical extension phenomenon central to Abel-Ruffini: each adjunction $\\mathbb{Q}(\\sqrt[n]{m})/\\mathbb{Q}$ produces a degree-$n$ extension with cyclic Galois group $\\mathbb{Z}/n\\mathbb{Z}$ (solvable). Abel-Ruffini's impossibility arises when the full Galois group $S_5$ cannot be decomposed into such cyclic layers — the irrationality barrier ($\\sqrt[n]{m} \\notin \\mathbb{Q}$) is the first level of the expressibility hierarchy discussed in the conclusion"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "foundational",
+      "description": "The irrationality of $\\sqrt{2}$ (c. 500 BCE) is the earliest impossibility result in the expressibility hierarchy discussed in the conclusion: $\\sqrt{2} \\notin \\mathbb{Q}$ shows certain quantities escape rational expressions. Abel-Ruffini extends this paradigm one level higher: certain algebraic quantities escape radical expressions. The progression irrationality → radical inexpressibility → transcendence ($e, \\pi \\notin \\overline{\\mathbb{Q}}$) forms the expressibility hierarchy that Abel-Ruffini occupies at the middle level"
+    },
+    {
+      "targetId": "angle-trisection-oq-02",
+      "relationship": "related",
+      "description": "The Wantzel-Galois characterization of constructibility: an algebraic number $\\alpha$ is constructible iff $\\text{Gal}(\\text{minpoly}_{\\mathbb{Q}}(\\alpha))$ is a 2-group. This is directly parallel to Abel-Ruffini's characterization of radical solvability: $\\alpha$ is solvable by radicals iff $\\text{Gal}(\\text{minpoly}_{\\mathbb{Q}}(\\alpha))$ is solvable. Both use Galois groups to convert geometric/algebraic impossibility questions into group-theoretic conditions — 2-groups for constructibility, solvable groups for radical solvability"
     }
   ],
   "references": [
