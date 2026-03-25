@@ -73,49 +73,56 @@
       "title": "The Structure of Variational Problems",
       "startLine": 51,
       "endLine": 80,
-      "summary": "Lagrangians, admissible functions, and the action functional J[y] = integral of L(x, y, y') dx."
+      "summary": "Lagrangians, admissible functions, and the action functional J[y] = integral of L(x, y, y') dx.",
+      "mathContext": "The calculus of variations framework: given a Lagrangian $L(x, y, y')$, find $y: [a,b] \\to \\mathbb{R}$ minimizing the action $J[y] = \\int_a^b L(x, y(x), y'(x))\\,dx$ subject to boundary conditions $y(a) = A$, $y(b) = B$."
     },
     {
       "id": "fundamental-lemma",
       "title": "Fundamental Lemma of Calculus of Variations",
       "startLine": 81,
       "endLine": 109,
-      "summary": "The Du Bois-Reymond lemma: if the integral of f times eta vanishes for all test functions, then f = 0."
+      "summary": "The Du Bois-Reymond lemma: if the integral of f times eta vanishes for all test functions, then f = 0.",
+      "mathContext": "The Du Bois-Reymond lemma (fundamental lemma of calculus of variations): if $\\int_a^b f(x) \\eta(x)\\,dx = 0$ for all smooth test functions $\\eta$ with $\\eta(a) = \\eta(b) = 0$, then $f \\equiv 0$ on $[a,b]$."
     },
     {
       "id": "euler-lagrange",
       "title": "The Euler-Lagrange Equation",
       "startLine": 110,
       "endLine": 163,
-      "summary": "The central theorem: extrema satisfy dL/dy - d/dx(dL/dy') = 0."
+      "summary": "The central theorem: extrema satisfy dL/dy - d/dx(dL/dy') = 0.",
+      "mathContext": "The Euler-Lagrange equation: a necessary condition for $y$ to minimize $J$ is $\\frac{\\partial L}{\\partial y} - \\frac{d}{dx}\\frac{\\partial L}{\\partial y'} = 0$. Derived by requiring $\\frac{d}{d\\epsilon}J[y + \\epsilon \\eta]\\big|_{\\epsilon=0} = 0$ for all test functions $\\eta$."
     },
     {
       "id": "applications",
       "title": "Applications of Euler-Lagrange",
       "startLine": 164,
       "endLine": 211,
-      "summary": "Geodesics as straight lines, and deriving Newton's laws from Lagrangian mechanics."
+      "summary": "Geodesics as straight lines, and deriving Newton's laws from Lagrangian mechanics.",
+      "mathContext": "Classical applications: geodesics on surfaces (shortest paths satisfy the geodesic equation), the brachistochrone (cycloid minimizes travel time), and Lagrangian mechanics ($L = T - V$ yields Newton's equations $m\\ddot{x} = -\\nabla V$)."
     },
     {
       "id": "direct-methods",
       "title": "Direct Methods (Tonelli)",
       "startLine": 212,
       "endLine": 259,
-      "summary": "Existence theorems via coercivity and weak lower semicontinuity."
+      "summary": "Existence theorems via coercivity and weak lower semicontinuity.",
+      "mathContext": "The direct method (Tonelli, 1920s): prove existence of minimizers via (1) coercivity ($J[y_n] \\to \\infty$ as $\\|y_n\\| \\to \\infty$) to extract a bounded minimizing sequence, and (2) weak lower semicontinuity ($J[y] \\leq \\liminf J[y_n]$) to pass to the limit. Requires convexity of $L$ in $y'$."
     },
     {
       "id": "optimal-control",
       "title": "Optimal Control Theory",
       "startLine": 260,
       "endLine": 313,
-      "summary": "The Pontryagin maximum principle extending calculus of variations to control theory."
+      "summary": "The Pontryagin maximum principle extending calculus of variations to control theory.",
+      "mathContext": "The Pontryagin maximum principle (1956) extends calculus of variations to optimal control: minimize $\\int L(x, u)\\,dt$ subject to $\\dot{x} = f(x, u)$. The Hamiltonian $H(x, p, u) = p \\cdot f - L$ and the adjoint equation $\\dot{p} = -H_x$ generalize the Euler-Lagrange framework."
     },
     {
       "id": "modern",
       "title": "Modern Developments",
       "startLine": 314,
       "endLine": 385,
-      "summary": "Sobolev spaces, Gamma-convergence, geometric measure theory, and connections to PDEs."
+      "summary": "Sobolev spaces, Gamma-convergence, geometric measure theory, and connections to PDEs.",
+      "mathContext": "Modern extensions: Sobolev spaces $W^{1,p}$ as natural function spaces for weak solutions, Gamma-convergence for variational limits (homogenization, phase transitions), geometric measure theory (minimal surfaces, varifolds), and connections to Hilbert's 19th and 20th problems."
     }
   ],
   "conclusion": {
