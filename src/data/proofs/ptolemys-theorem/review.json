@@ -3,14 +3,12 @@
   "proofId": "ptolemys-theorem",
   "reviewDate": "2026-03-24T20:15:00Z",
   "reviewer": "peer-reviewer",
-
   "overallAssessment": {
     "grade": "C+",
     "oneLiner": "Honest Mathlib wrapper with excellent pedagogy, undermined by duplicate theorems, a wrong function reference, and inflated theorem counts",
     "tier": "B",
     "tierJustification": "The entire mathematical content is a single call to Mathlib's mul_dist_add_mul_dist_eq_mul_dist_of_cospherical. The file adds naming, two trivial algebraic variants (rw, mul_comm), four arithmetic examples, and extensive commentary. Three of eight sections contain no formal Lean content at all — they are pure /-! ... -/ comment blocks. No original proof reasoning beyond a 3-step square example."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -97,7 +95,6 @@
       "recommendation": "If the theorem is removed (recommended), delete this annotation. If kept, change significance to 'supporting'."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
@@ -111,21 +108,21 @@
       "priority": "high",
       "target": "enricher",
       "description": "Fix wrong Mathlib function name in conclusion.summary: replace 'EuclideanGeometry.mul_dist_le_mul_dist_add_mul_dist' (inequality) with 'mul_dist_add_mul_dist_eq_mul_dist_of_cospherical' (equality). The current name points to Ptolemy's inequality, not the equality theorem actually used.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "medium",
       "target": "enricher",
       "description": "Rewrite conclusion.summary: replace '3 distinct theorem statements (main, symmetric, and rectangle/Pythagorean specialization)' with '3 named theorem variants (main, symmetric, rearranged) with 4 verified numerical examples.' The rectangle case is an unnamed example, not a named theorem.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "medium",
       "target": "enricher",
       "description": "Replace originalContributions[2] ('Symmetric formulation of Ptolemy's theorem') with 'Named theorem API providing symmetric and rearranged forms for downstream use' — a one-line rw step is not an original contribution.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",
@@ -142,7 +139,6 @@
       "status": "open"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 4,
     "originalityAccuracy": 6,
@@ -152,6 +148,5 @@
     "internalConsistency": 5,
     "overall": 5.8
   },
-
   "suggestedBestFraming": "A pedagogical Mathlib wrapper that names and documents Ptolemy's theorem (Wiedijk #95) with four verified numerical examples — including the elegant reduction to the Pythagorean theorem for rectangular cyclic quadrilaterals — and extensive, well-researched historical context on Ptolemy's Almagest and ancient chord tables."
 }

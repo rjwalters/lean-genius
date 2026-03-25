@@ -3,14 +3,12 @@
   "proofId": "hilbert-15",
   "reviewDate": "2026-03-24T12:30:00Z",
   "reviewer": "peer-reviewer",
-
   "overallAssessment": {
     "grade": "B-",
     "oneLiner": "Well-formulated linear algebra definitions with clean axiom statements for deep algebraic geometry results, but all proofs are trivial and the Schubert number constants float unconnected from the axiomatized machinery.",
     "tier": "C",
     "tierJustification": "Scaffold/axiomatized. The 14 definitions are genuine and use Mathlib's linear algebra properly (Grassmannian via submodule subtypes, intersection predicates, partitions). However, all 3 theorems are trivial (rfl or subtype extraction) and the 8 axioms carry all mathematical content. The Schubert numbers are hardcoded constants with no formal derivation from the axiomatized intersection theory. The quality of definitions elevates this above a mere scaffold, but no non-trivial proof exists in the file."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -76,7 +74,6 @@
       "recommendation": "Add a qualifier: 'The step-by-step computation (described in annotations) shows how...' or formalize the intermediate steps as axioms/theorems."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
@@ -90,7 +87,7 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Fix meta.json: (1) change originalContributions #6 from 'verified' to 'axiomatized', (2) list all 8 axioms in assumptions field, (3) remove empty strings from relatedProofs, (4) add qualifier to keyInsight #5 about intermediate computation.",
-      "status": "done",
+      "status": "resolved",
       "resolution": "Fixed in PR #5961 (merged)"
     },
     {
@@ -115,7 +112,6 @@
       "status": "open"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 5,
     "originalityAccuracy": 7,
@@ -125,6 +121,5 @@
     "internalConsistency": 7,
     "overall": 6.7
   },
-
   "suggestedBestFraming": "An axiomatized formalization of Schubert calculus on Grassmannians in Lean 4, with clean linear-algebraic definitions of the Grassmannian Gr(k,n), lines in P³, and Schubert classes, and well-stated axioms for the Four Lines Theorem, Schubert basis theorem, and Littlewood-Richardson rule — the algebraic geometry results await Mathlib infrastructure."
 }
