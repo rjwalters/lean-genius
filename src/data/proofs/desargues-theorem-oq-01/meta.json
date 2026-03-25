@@ -73,7 +73,7 @@
       "startLine": 1,
       "endLine": 44,
       "summary": "Overview: the open question, the answer (YES, generalizes to CommRing), and the proof strategy.",
-      "mathContext": "Overview: the open question, the answer (YES, generalizes to CommRing), and the proof strategy."
+      "mathContext": "**Desargues' theorem over $K$**: triangles $\\triangle ABC$, $\\triangle A'B'C'$ are perspective from a point $\\iff$ perspective from a line. Generalized from fields to any commutative ring $K$."
     },
     {
       "id": "cross-product",
@@ -81,7 +81,7 @@
       "startLine": 45,
       "endLine": 66,
       "summary": "Custom cross product definition for K³, with component lemmas and anticommutativity.",
-      "mathContext": "Custom cross product definition for K³, with component lemmas and anticommutativity."
+      "mathContext": "$\\mathbf{a} \\times \\mathbf{b} = (a_2b_3 - a_3b_2,\\, a_3b_1 - a_1b_3,\\, a_1b_2 - a_2b_1) \\in K^3$. Anticommutative: $\\mathbf{a} \\times \\mathbf{b} = -(\\mathbf{b} \\times \\mathbf{a})$."
     },
     {
       "id": "determinant",
@@ -89,7 +89,7 @@
       "startLine": 67,
       "endLine": 83,
       "summary": "threeVecMat: rows as vectors, explicit 3×3 det expansion proved by ring.",
-      "mathContext": "threeVecMat: rows as vectors, explicit 3×3 det expansion proved by ring."
+      "mathContext": "$\\det(\\mathbf{a}, \\mathbf{b}, \\mathbf{c}) = a_1(b_2c_3 - b_3c_2) - a_2(b_1c_3 - b_3c_1) + a_3(b_1c_2 - b_2c_1)$. Constructed via `threeVecMat` (3 vectors as rows of a $3 \\times 3$ matrix)."
     },
     {
       "id": "lagrange",
@@ -97,7 +97,7 @@
       "startLine": 84,
       "endLine": 116,
       "summary": "Key lemma: (a×b)×(c×d) = det(a,b,d)·c − det(a,b,c)·d over any CommRing K.",
-      "mathContext": "Key lemma: (a×b)×(c×d) = det(a,b,d)·c − det(a,b,c)·d over any CommRing K."
+      "mathContext": "$(\\mathbf{a} \\times \\mathbf{b}) \\times (\\mathbf{c} \\times \\mathbf{d}) = \\det(\\mathbf{a}, \\mathbf{b}, \\mathbf{d}) \\cdot \\mathbf{c} - \\det(\\mathbf{a}, \\mathbf{b}, \\mathbf{c}) \\cdot \\mathbf{d}$. The key algebraic identity (Lagrange's vector identity), valid over any commutative ring."
     },
     {
       "id": "collinearity",
@@ -105,7 +105,7 @@
       "startLine": 117,
       "endLine": 126,
       "summary": "Definitions using determinant = 0 over K.",
-      "mathContext": "Definitions using determinant = 0 over K."
+      "mathContext": "Points $P, Q, R \\in K^3$ are collinear $\\iff \\det(P, Q, R) = 0$. Perspective from a point: $AA' \\cap BB' \\cap CC' \\neq \\emptyset$ ($\\iff \\det(AA', BB', CC') = 0$)."
     },
     {
       "id": "main-identity",
@@ -113,7 +113,7 @@
       "startLine": 127,
       "endLine": 200,
       "summary": "det(P,Q,R) = det(AA',BB',CC')·det(A,B,C)·det(A',B',C') — three-step algebraic proof.",
-      "mathContext": "det(P,Q,R) = det(AA',BB',CC')·det(A,B,C)·det(A',B',C') — three-step algebraic proof."
+      "mathContext": "$\\det(P, Q, R) = \\det(AA', BB', CC') \\cdot \\det(A, B, C) \\cdot \\det(A', B', C')$ where $P = AB' \\cap A'B$, $Q = BC' \\cap B'C$, $R = CA' \\cap C'A$ (as cross products in $\\mathbb{P}^2(K)$)."
     },
     {
       "id": "main-theorems",
@@ -121,7 +121,7 @@
       "startLine": 201,
       "endLine": 260,
       "summary": "Forward (CommRing), converse (IntegralDomain), and biconditional forms.",
-      "mathContext": "Forward (CommRing), converse (IntegralDomain), and biconditional forms."
+      "mathContext": "**Forward** (CommRing): perspective from point $\\Rightarrow$ perspective from line. **Converse** (IntegralDomain): perspective from line $\\Rightarrow$ perspective from point (uses cancellation). **Biconditional** (IntegralDomain): equivalence."
     },
     {
       "id": "corollaries",
@@ -129,7 +129,7 @@
       "startLine": 261,
       "endLine": 285,
       "summary": "Immediate specializations to ℚ, ℤ, ZMod p, and polynomial rings.",
-      "mathContext": "Immediate specializations to ℚ, ℤ, ZMod p, and polynomial rings."
+      "mathContext": "Specializations: $K = \\mathbb{Q}$ (classical), $K = \\mathbb{Z}$ (integer coordinates), $K = \\mathbb{Z}/p\\mathbb{Z}$ (finite projective planes), $K = R[X]$ (polynomial rings). All inherit Desargues from the CommRing instance."
     }
   ],
   "conclusion": {
