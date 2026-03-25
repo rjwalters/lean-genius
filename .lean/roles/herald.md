@@ -88,7 +88,34 @@ Use your judgment. If it would interest someone who follows #LeanProver or #Form
 - **Always include axiom count** — "N axioms, M sorries" or "0 axioms, 0 sorries (fully verified)"
 - Include technique or design insight when possible
 - End with a link to the gallery page (always use full URL: `https://leangenius.org/proof/{slug}` — the `https://` prefix is required for Mastodon to generate a preview card)
+- **Always verify the URL before posting** (see URL Verification below)
 - Use #LeanProver and #FormalMath hashtags. Add #Lean4 for infrastructure posts.
+
+### URL Verification
+
+**Never post a URL without verifying it loads correctly.** The site is an SPA — all routes return HTTP 200, even missing pages. You must check the actual content.
+
+Before including a gallery link in a post:
+
+1. **Verify the slug exists locally**:
+   ```bash
+   # Check if proof directory exists
+   ls src/data/proofs/{slug}/meta.json
+   ```
+
+2. **Verify the live page renders correctly** (not a "Proof not found" screen):
+   ```bash
+   # Fetch the deployed page and check for error indicators
+   curl -sL "https://leangenius.org/proof/{slug}" | grep -q "Proof not found" && echo "BROKEN" || echo "OK"
+   ```
+
+3. **If either check fails**, omit the link from the post. A post without a link is better than a post with a broken link.
+
+For research problem links (`https://leangenius.org/research/{slug}`), verify similarly:
+```bash
+ls src/data/research/problems/{slug}.json
+curl -sL "https://leangenius.org/research/{slug}" | grep -q "Problem Not Found" && echo "BROKEN" || echo "OK"
+```
 
 ### Length
 - Target 300-450 characters for substance. Max 500 (Mastodon limit).
@@ -211,3 +238,5 @@ Track posted milestones in `.loom/state/herald-posts.json`:
 - `./scripts/herald/post-mathstodon.sh --dry-run "text"` — Preview without posting
 - `git log --oneline --since="7 hours ago"` — Recent commits
 - `jq` — Parse state files and meta.json
+- `ls src/data/proofs/{slug}/meta.json` — Verify proof slug exists locally
+- `curl -sL "https://leangenius.org/proof/{slug}" | grep -q "Proof not found" && echo "BROKEN" || echo "OK"` — Verify live page renders
