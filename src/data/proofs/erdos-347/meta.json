@@ -64,7 +64,8 @@
       "Powers of 2 give perfect completeness (binary representation) but are fragile: removing 2^k destroys all representations of 2^k. The challenge is building robustness into a ratio-2 sequence",
       "The cofinite robustness requirement means each integer must have 'many' different subset sum representations, so that deleting finitely many terms still leaves enough to cover almost everything",
       "The Tao-van Doorn construction perturbs powers of 2 with controlled redundancy, creating a sequence where the 'repair cost' of removing any finite set of terms is bounded",
-      "This is one of the solved Erdos problems, demonstrating that formal verification can capture and confirm combinatorial constructions"
+      "This is one of the solved Erdos problems, demonstrating that formal verification can capture and confirm combinatorial constructions",
+      "The formalization exposed a subtle set-vs-multiset trap: the naive closure property $s \\in P(A) \\wedge a \\in A \\Rightarrow s + a \\in P(A)$ is false because subsets are sets (no repeated elements). The corrected `subsetSums_insert` requires $a \\notin S$ — a non-trivial finding that illustrates how formal verification can catch errors invisible in informal reasoning"
     ],
     "prerequisites": [
       "Subset sum theory: completeness of sequences ($P(A) = \\{\\sum_{a \\in S} a : S \\subseteq A, S \\text{ finite}\\}$ covers all large integers), density of sumsets, and the binary representation threshold at ratio 2",
@@ -160,6 +161,32 @@
     "theoremCount": 3,
     "definitionCount": 8
   },
+  "mainTheorems": [
+    {
+      "name": "erdos347_affirmative",
+      "type": "axiom",
+      "description": "The answer to Erdős Problem 347 is affirmative: there exists a monotone sequence with ratio limit 2 such that every cofinite subsequence has density-1 subset sums",
+      "leanType": "ErdosProblem347"
+    },
+    {
+      "name": "subsetSums_insert",
+      "type": "core",
+      "description": "Corrected additive closure: if S ⊆ A witnesses sum s and a ∈ A \\ S, then s + a ∈ P(A). Requires the fresh-witness condition a ∉ S",
+      "leanType": "(A : Set ℕ) → (S : Finset ℕ) → (a : ℕ) → ↑S ⊆ A → a ∈ A → a ∉ S → S.sum id + a ∈ subsetSums A"
+    },
+    {
+      "name": "zero_mem_subsetSums",
+      "type": "supporting",
+      "description": "The empty sum is 0: 0 ∈ P(A) for any A",
+      "leanType": "(A : Set ℕ) → 0 ∈ subsetSums A"
+    },
+    {
+      "name": "subsetSums_mono",
+      "type": "supporting",
+      "description": "Subset sums are monotone: A ⊆ B implies P(A) ⊆ P(B)",
+      "leanType": "(A B : Set ℕ) → A ⊆ B → subsetSums A ⊆ subsetSums B"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "erdos-1",
@@ -201,6 +228,20 @@
       "year": "1966",
       "venue": "Canadian Journal of Mathematics, vol. 18, pp. 643–655",
       "note": "Classical results on complete sequences and the relationship between growth rate and completeness"
+    },
+    {
+      "authors": "Cassels, J.W.S.",
+      "title": "On the representation of integers as the sums of distinct summands taken from a fixed set",
+      "year": "1960",
+      "venue": "Acta Scientiarum Mathematicarum, vol. 21, pp. 111–124",
+      "note": "Early systematic study of complete sequences; establishes growth-rate criteria for completeness that motivated the Erdős-Graham formulation"
+    },
+    {
+      "authors": "Hegyváry, Norbert; Hennecart, François; Lev, Vsevolod",
+      "title": "Subset sums and complete sequences",
+      "year": "2003",
+      "venue": "Annales de l'Institut Fourier, vol. 53, no. 3, pp. 781–791",
+      "note": "Results on subset sum completeness under various growth conditions; strengthens Folkman-type criteria"
     }
   ]
 }
