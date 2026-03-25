@@ -179,6 +179,11 @@
       "targetId": "ramseys-theorem",
       "description": "Both concern guaranteed substructures: Ramsey theory guarantees monochromatic complete graphs, #578 guarantees hypercube subgraphs in random graphs",
       "relationship": "related"
+    },
+    {
+      "targetId": "erdos-36",
+      "relationship": "related",
+      "description": "Both involve probabilistic combinatorics. Problem #36 uses probabilistic partition arguments, while #578 studies the threshold for hypercube subgraph appearance in random graphs — the probabilistic method applied to different structural questions"
     }
   ],
   "leanFile": {
