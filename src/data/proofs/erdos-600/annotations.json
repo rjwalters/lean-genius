@@ -16,7 +16,11 @@
       "extremal graph theory",
       "edge-triangle containment"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Basic graph theory (vertices, edges, triangles)",
+      "Asymptotic notation (o, O, Theta)",
+      "Extremal graph theory (Turan-type problems)"
+    ]
   },
   {
     "id": "ann-e600-definitions",
@@ -35,7 +39,11 @@
       "Fin n",
       "simple graph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Fin n (finite types in Lean)",
+      "Finset and Finset.filter for finite enumeration",
+      "Simple graph structure (symmetric, irreflexive edge relation)"
+    ]
   },
   {
     "id": "ann-e600-threshold",
@@ -54,7 +62,12 @@
       "Filter.atTop",
       "subquadratic growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sInf (infimum of a set of natural numbers)",
+      "Filter.atTop (asymptotic 'eventually' quantifier)",
+      "Triangle removal lemma (for Ruzsa-Szemeredi result)",
+      "ann-e600-definitions"
+    ]
   },
   {
     "id": "ann-e600-questions",
@@ -73,7 +86,11 @@
       "limit",
       "extremal threshold"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Real analysis (limits, asymptotic equivalence)",
+      "Filter.atTop (eventually quantifier in Lean)",
+      "ann-e600-threshold"
+    ]
   },
   {
     "id": "ann-e600-monotonicity",
@@ -92,7 +109,12 @@
       "regularity lemma",
       "monotonicity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Turan's theorem (ex(n, K_3) = floor(n^2/4))",
+      "Szemeredi regularity lemma (for the refined upper bound)",
+      "Behrend-type constructions (for the lower bound)",
+      "ann-e600-threshold"
+    ]
   },
   {
     "id": "ann-e600-summary",
@@ -111,6 +133,10 @@
       "conjunction",
       "axiom combination"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ann-e600-threshold",
+      "ann-e600-monotonicity",
+      "ann-e600-questions"
+    ]
   }
 ]
