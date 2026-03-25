@@ -198,6 +198,16 @@
       "targetId": "erdos-42",
       "relationship": "related",
       "description": "Problem #42 on Sidon sets with disjoint difference sets explores the structure theory of $B_2$ sets, the same objects whose density limitations make the Erdős-Turán conjecture plausible"
+    },
+    {
+      "targetId": "erdos-40",
+      "relationship": "extends",
+      "description": "Problem #40 (also Erdős-Turán): $B_2[g]$ sets cannot be bases. The Lean file proves this as a direct corollary (`erdos_40_from_28`): if $r_A(n) \\leq g$ for all $n$, then the Erdős-Turán conjecture forces $r_A(n) > g$ for some $n$, contradiction"
+    },
+    {
+      "targetId": "erdos-340",
+      "relationship": "related",
+      "description": "Problem #340 on greedy Sidon sets shares the `sidon_density_bound` axiom and density analysis framework. The Sidon density bound proved in the #340 formalization ($|A \\cap [1,N]| \\leq \\sqrt{2N}+1$) is a key ingredient in showing Sidon sets cannot be bases"
     }
   ],
   "references": [
