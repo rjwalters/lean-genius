@@ -1,5 +1,28 @@
 [
   {
+    "id": "erdos-1055-termination",
+    "proofId": "erdos-1055",
+    "range": {
+      "startLine": 30,
+      "endLine": 62
+    },
+    "type": "technique",
+    "title": "Termination Lemma: nonSmooth_factor_lt",
+    "content": "The key lemma enabling well-founded recursion for `primeClass`: any prime factor $q$ of $p+1$ with $q \\notin \\{2,3\\}$ satisfies $q < p$. The proof proceeds by contradiction: $q \\leq p+1$ (since $q \\mid p+1$), and $q = p$ is impossible (since $p \\mid p+1$ implies $p \\mid 1$), and $q = p+1$ is impossible (since $p+1$ being prime and even — because $p$ is odd — forces $p+1 = 2$, contradiction). This strict decrease $q < p$ is the termination argument: recursive calls to `primeClass q` always use a smaller input.",
+    "mathContext": "If $p$ is prime and $q \\mid (p+1)$ with $q \\neq 2, 3$ and $q$ prime, then $q < p$. Proof: $q \\leq p+1$; if $q = p$ then $p \\mid (p+1)$ so $p \\mid 1$, impossible; if $q = p+1$ then $p+1$ is prime but $2 \\mid (p+1)$ (since $p$ is odd prime), so $p+1 = 2$, contradiction. Hence $q \\leq p-1 < p$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "well-founded recursion",
+      "termination proofs",
+      "prime divisor bounds",
+      "omega-decidability"
+    ],
+    "prerequisites": [
+      "prime factorization",
+      "well-founded induction"
+    ]
+  },
+  {
     "id": "prime-class",
     "proofId": "erdos-1055",
     "range": {

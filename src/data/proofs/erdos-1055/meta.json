@@ -78,18 +78,18 @@
     },
     {
       "id": "structural",
-      "title": "Structural Properties",
-      "startLine": 130,
-      "endLine": 222,
-      "summary": "Proves key structural results: class monotonicity ($c(q) < c(p)$ for nonSmooth factors), class-1 characterization ($c(p)=1 \\iff p+1$ is $3$-smooth), and positivity ($c(p) \\ge 1$ for primes). All fully proved with 0 sorries.",
+      "title": "Structural Properties and Concrete Evidence",
+      "startLine": 131,
+      "endLine": 200,
+      "summary": "Proves key structural results: class monotonicity ($c(q) < c(p)$ for nonSmooth factors), class-1 characterization ($c(p)=1 \\iff p+1$ is $3$-smooth), positivity ($c(p) \\ge 1$ for primes), and concrete evidence for infinitude (counting primes in classes 1-3 via native_decide).",
       "mathContext": "Monotonicity: $q \\mid (p+1), q \\notin \\{2,3\\} \\implies c(q) < c(p)$. Class-1 characterization: $c(p) = 1 \\iff p + 1 = 2^a \\cdot 3^b$ ($p+1$ is 3-smooth). Positivity: $c(p) \\geq 1$ for all primes $p$."
     },
     {
       "id": "conjectures",
       "title": "Main Conjectures (OPEN)",
-      "startLine": 222,
+      "startLine": 202,
       "endLine": 222,
-      "summary": "States the OPEN conjectures as axioms: infinitude of each class, Erdős growth conjecture ($p_r^{1/r} \\to \\infty$), Selfridge bounded conjecture ($p_r^{1/r}$ bounded), and subpolynomial density of each class.",
+      "summary": "States the four OPEN conjectures as axioms: infinitude of each class, Erdős growth conjecture ($p_r^{1/r} \\to \\infty$), Selfridge bounded conjecture ($p_r^{1/r}$ bounded), and subpolynomial density of each class. Note Erdős and Selfridge conjectures are mutually exclusive.",
       "mathContext": "Four axioms: (1) $|\\{p \\leq n : c(p) = r\\}| \\to \\infty$; (2) Erdős: $p_r^{1/r} \\to \\infty$; (3) Selfridge: $\\exists C, p_r^{1/r} \\leq C$; (4) $|\\{p \\leq n : c(p) = r\\}| = n^{o(1)}$. Note (2) and (3) are mutually exclusive."
     }
   ],
@@ -122,6 +122,50 @@
       "Does the analogous $p - 1$ classification behave differently? The $p - 1$ variant connects to Cunningham chains and may have different growth properties."
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "nonSmooth_factor_lt",
+      "type": "core",
+      "description": "Termination lemma: any non-{2,3} prime factor q of p+1 satisfies q < p, enabling well-founded recursion on primeClass",
+      "leanType": "{p q : ℕ} → Nat.Prime p → q ∈ ((p + 1).primeFactorsList.dedup.filter (fun r => r != 2 && r != 3)) → q < p"
+    },
+    {
+      "name": "class_of_factor_lt",
+      "type": "core",
+      "description": "Class monotonicity: if q is a non-{2,3} prime factor of p+1, then primeClass q < primeClass p",
+      "leanType": "(p q : ℕ) → Nat.Prime p → Nat.Prime q → q ∣ p + 1 → q ≠ 2 → q ≠ 3 → primeClass q < primeClass p"
+    },
+    {
+      "name": "class_one_iff_smooth",
+      "type": "core",
+      "description": "Class-1 characterization: primeClass p = 1 iff all prime factors of p+1 are 2 or 3 (p+1 is 3-smooth)",
+      "leanType": "(p : ℕ) → Nat.Prime p → (primeClass p = 1 ↔ ∀ q ∈ (p + 1).primeFactorsList, q = 2 ∨ q = 3)"
+    },
+    {
+      "name": "primeClass_pos_of_prime",
+      "type": "supporting",
+      "description": "Every prime has class at least 1",
+      "leanType": "(p : ℕ) → Nat.Prime p → primeClass p ≥ 1"
+    },
+    {
+      "name": "infinitely_many_in_each_class",
+      "type": "axiom",
+      "description": "For each r ≥ 1, there are infinitely many primes in class r (OPEN conjecture)",
+      "leanType": "(r : ℕ) → r ≥ 1 → Set.Infinite {p : ℕ | p.Prime ∧ primeClass p = r}"
+    },
+    {
+      "name": "erdos_growth_conjecture",
+      "type": "axiom",
+      "description": "Erdős's conjecture: p_r^(1/r) → ∞ (superexponential growth of least class-r prime)",
+      "leanType": "∀ M : ℝ, ∃ R : ℕ, ∀ r ≥ R, ∀ p, p.Prime → primeClass p = r → (least in class) → p^(1/r) ≥ M"
+    },
+    {
+      "name": "selfridge_bounded_conjecture",
+      "type": "axiom",
+      "description": "Selfridge's conjecture: p_r^(1/r) is bounded (at most exponential growth). Mutually exclusive with Erdős's conjecture",
+      "leanType": "∃ M : ℝ, ∀ r ≥ 1, ∀ p, p.Prime → primeClass p = r → (least in class) → p^(1/r) ≤ M"
+    }
+  ],
   "crossReferences": [
     {
       "relationship": "companion",
