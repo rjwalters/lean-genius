@@ -135,11 +135,11 @@
     "summary": "The area of a circle is verified using modern measure theory in Lean 4, connecting Archimedes' 2300-year-old result to contemporary Lebesgue integration. The proof is a one-liner — `Complex.volume_ball` — demonstrating the power of building on Mathlib's library of formalized mathematics. Both open and closed disk variants are proved, along with special cases for unit disk, zero radius, and negative radius.",
     "implications": "**Theoretical Significance**: This formalization demonstrates how measure theory subsumes classical geometry. The same framework that proves $A = \\pi r^2$ extends to higher-dimensional ball volumes ($V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2+1)$), surface areas, and general Riemannian volume computations.\n\nThe Wiedijk #9 formalization contributes to the broader project of formalizing the 100 most famous theorems.\n\nThe circle area formula connects to deeper results across mathematics: (1) The **isoperimetric inequality** states that the circle maximizes area for a given perimeter, so $A = \\pi r^2$ is the supremum of $A(\\gamma)$ over all curves $\\gamma$ with length $2\\pi r$. (2) The **Gauss-Bonnet theorem** relates total curvature $\\int_M K\\, dA$ to Euler characteristic — for a disk, this reduces to the boundary curvature integral and the area term. (3) The **Cauchy integral formula** $f(z_0) = \\frac{1}{2\\pi i} \\oint_{|z-z_0|=r} \\frac{f(z)}{z - z_0}\\, dz$ uses circles as contours, with the area formula governing the mean value property $f(z_0) = \\frac{1}{\\pi r^2} \\iint_{|z-z_0| \\leq r} f(z)\\, dA$.",
     "openQuestions": [
-      "Can the formalization be extended to prove the circumference formula C = 2πr via differentiation of the area?",
-      "How does the n-dimensional ball volume formula in Mathlib generalize this result?",
-      "Can the method of exhaustion (Archimedes' original proof) be formalized directly, without measure theory?",
-      "Formalize the isoperimetric inequality: among all planar curves of fixed perimeter L, the circle encloses the maximum area L²/(4π) — providing a variational characterization of the circle that complements the metric definition used here",
-      "Prove the Gaussian integral $\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$ by squaring and converting to polar coordinates, making explicit the use of $A = \\pi r^2$ in the change of variables"
+      "**Addressed** by `area-of-circle-oq-01`: Derives $C = 2\\pi r$ via differentiation of the area $A = \\pi r^2$ with respect to $r$, confirming $A'(r) = C(r)$. Further extended by `area-of-circle-oq-01-oq-02` which derives the area by integrating circumference: $A = \\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$.",
+      "The $n$-dimensional ball volume formula $V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2+1)$ in Mathlib generalizes this result. Can explicit Lean theorems be proved for $V_3(r) = \\frac{4}{3}\\pi r^3$ (sphere), $V_4(r) = \\frac{\\pi^2}{2}r^4$ (4-ball), and the asymptotic result $V_n(1) \\to 0$ as $n \\to \\infty$ (the 'curse of dimensionality' in high-dimensional geometry)?",
+      "**Addressed** by `area-of-circle-oq-03`: Formalizes Archimedes' method of exhaustion directly, approximating the circle's area by inscribed and circumscribed regular polygons without measure theory. Further extended by `area-of-circle-oq-03-oq-02` which proves Archimedes' bounds $223/71 < \\pi < 22/7$ via 96-gons.",
+      "**Addressed** by `isoperimetric-theorem` and `area-of-circle-oq-01-oq-03`: The isoperimetric inequality $C^2 \\geq 4\\pi A$ with equality iff the curve is a circle — showing that $A = \\pi r^2$ is the maximum area for perimeter $C = 2\\pi r$. Remaining gap: can the Hurwitz proof via Fourier series be formalized?",
+      "Prove the Gaussian integral $\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$ by squaring and converting to polar coordinates, making explicit the use of $A = \\pi r^2$ in the change of variables $dA = r\\,dr\\,d\\theta$. This would connect the circle area formula to probability theory (the normalizing constant of the Gaussian distribution) and to the Gamma function ($\\Gamma(1/2) = \\sqrt{\\pi}$)"
     ]
   },
   "crossReferences": [
@@ -227,6 +227,11 @@
       "targetId": "euler-identity",
       "relationship": "related",
       "description": "Euler's identity $e^{i\\pi} = -1$ connects to the circle area formula through the complex plane: this formalization uses $\\mathbb{C}$ as its ambient space precisely because the unit circle $\\{z : |z| = 1\\}$ is parameterized by $e^{i\\theta}$ for $\\theta \\in [0, 2\\pi)$. The area enclosed by this exponential curve is $\\pi \\cdot 1^2 = \\pi$ (the `area_unit_disk` corollary). More deeply, $e^{i\\pi} = -1$ encodes the half-turn symmetry of the circle, and the appearance of $\\pi$ in both the area formula and the exponential reflects $\\pi$'s dual role as a geometric constant (area-to-radius-squared ratio) and an analytic period (half-period of $e^{i\\theta}$)"
+    },
+    {
+      "targetId": "buffons-needle",
+      "relationship": "related",
+      "description": "Buffon's needle problem (1733) gives a surprising probabilistic method for computing $\\pi$: drop a needle of length $\\ell$ on parallel lines spaced $d \\geq \\ell$ apart, and $P(\\text{crossing}) = 2\\ell/(\\pi d)$. The connection to the circle area formula is through the integral geometry of circles: the needle's orientation $\\theta \\in [0, \\pi)$ parameterizes a semicircle, and the crossing probability involves integrating $\\sin\\theta$ over this arc — a computation ultimately grounded in the circle's geometry that $A = \\pi r^2$ formalizes"
     }
   ],
   "leanFile": {
@@ -296,6 +301,20 @@
       "year": "2005",
       "venue": "Princeton Lectures in Analysis, vol. 3, Princeton University Press",
       "note": "Modern treatment of Lebesgue measure and volume computation for balls in ℝⁿ — the framework underlying this formalization's approach via MeasureTheory.volume"
+    },
+    {
+      "authors": "Plofker, Kim",
+      "title": "Mathematics in India",
+      "year": "2009",
+      "venue": "Princeton University Press",
+      "note": "Covers Madhava of Sangamagrama's (c. 1340–1425) discovery of the infinite series π/4 = 1 − 1/3 + 1/5 − ⋯ and the Kerala school's contributions to analysis, predating European calculus by 250 years — directly relevant to the historicalContext's discussion of pre-European π computations"
+    },
+    {
+      "authors": "Wiedijk, Freek",
+      "title": "Formalizing 100 Theorems",
+      "year": "2008",
+      "venue": "https://www.cs.ru.nl/~freek/100/",
+      "note": "The definitive list of 100 well-known mathematical theorems and their formalization status across proof assistants. The area of a circle is #9. This formalization contributes to the Lean 4 / Mathlib column"
     }
   ]
 }
