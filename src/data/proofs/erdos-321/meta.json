@@ -160,11 +160,9 @@
   ],
   "leanFile": {
     "lineCount": 170,
-    "structureCount": 0,
     "axiomCount": 3,
     "theoremCount": 6,
-    "lemmaCount": 0,
-    "defCount": 2,
+    "definitionCount": 3,
     "imports": [
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Data.Finset.Powerset",
@@ -173,8 +171,30 @@
       "Mathlib.Tactic"
     ],
     "opens": [
-      "Classical",
-      "in"
+      "Classical"
+    ],
+    "namespace": "Erdos321",
+    "mainTheorems": [
+      {
+        "name": "hasDistinctReciprocalSums_iff",
+        "type": "equivalence",
+        "description": "Two formulations of distinct reciprocal subset sums are equivalent: explicit distinctness ↔ injective formulation"
+      },
+      {
+        "name": "HasDistinctReciprocalSums.subset",
+        "type": "original",
+        "description": "Hereditary property: subsets of sets with distinct reciprocal sums inherit the property"
+      },
+      {
+        "name": "pair_hasDistinctReciprocalSums",
+        "type": "original",
+        "description": "For 1 ≤ m < n, {m,n} has all 4 reciprocal subset sums distinct via strict chain 0 < 1/n < 1/m < 1/m+1/n"
+      },
+      {
+        "name": "erdos_321_asymptotics",
+        "type": "tautology",
+        "description": "Tautological existence: ∃ f, R(N) = f(N), proved by rfl — the real content is the axiomatized Bleicher–Erdős bounds"
+      }
     ]
   },
   "crossReferences": [
@@ -212,6 +232,11 @@
       "targetId": "harmonic-divergence",
       "relationship": "foundational",
       "description": "The divergence of the harmonic series $\\sum 1/n = \\infty$ ensures that $R(N) \\to \\infty$: as the harmonic sum $H_N \\sim \\log N$ grows, there is increasingly more 'room' for distinct reciprocal subset sums. The Bleicher–Erdős bounds are calibrated against $H_N$ — the lower bound construction exploits the spread of the harmonic series, while the upper bound uses $\\text{lcm}(1,\\ldots,N) \\approx e^N$ to count how many distinct rational values fit in $[0, H_N]$"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The prime number theorem ($\\pi(N) \\sim N/\\log N$) underpins both Bleicher–Erdős bounds: the lower bound construction selects integers based on prime factorization properties, while the upper bound uses $\\text{lcm}(1,\\ldots,N) = e^{\\psi(N)} \\approx e^N$ (where $\\psi(N) \\sim N$ by PNT) to count how many distinct rational values can serve as reciprocal subset sums"
     }
   ]
 }
