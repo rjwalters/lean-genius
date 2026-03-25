@@ -89,14 +89,14 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Rewrite conclusion.implications item 1: remove 'Cycle Lemma Completion' claim and '0 sorries' assertion. Replace with honest description of ballot_discrete_ivt's role as infrastructure for the lower bound. Fix the redundant double heading ('Theoretical Significance: Mathematical Significance').",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "low",
       "target": "enricher",
       "description": "Fix annotations ann-ballot-oq01-06 and ann-ballot-oq01-07: replace 'True := trivial' with '(1 : Nat) + 1 = 2 := rfl' to match the actual Lean code. Add qualifier to overview.problemStatement Corollary paragraph noting it is not yet formalized.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
 
