@@ -171,7 +171,24 @@
     "lineCount": 154,
     "axiomCount": 0,
     "theoremCount": 9,
-    "definitionCount": 1
+    "definitionCount": 1,
+    "mainTheorems": [
+      {
+        "name": "parallel_vandermonde",
+        "type": "original",
+        "description": "Parallel Vandermonde convolution: Σ_{i+j=n} C(i+a,a)·C(j+b,b) = C(n+a+b+1,a+b+1), proved by nested induction on (b,n)"
+      },
+      {
+        "name": "hockey_stick_2d",
+        "type": "original",
+        "description": "2D hockey stick identity: Σ_{i+j≤n} C(i+a,a)·C(j+b,b) = C(n+a+b+2,a+b+2), composed from parallel_vandermonde and hockey_stick"
+      },
+      {
+        "name": "hockey_stick",
+        "type": "original",
+        "description": "1D hockey stick identity: Σ_{i=0}^n C(i+k,k) = C(n+k+1,k+1), proved by induction with Pascal's recurrence"
+      }
+    ]
   },
   "references": [
     {
