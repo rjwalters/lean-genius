@@ -19,14 +19,14 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 1131,
     "erdosUrl": "https://erdosproblems.com/1131",
     "erdosProblemStatus": "open",
     "axiomCount": 3,
     "theoremCount": 9,
-    "lineCount": 264,
-    "assumptions": "3 axioms: lagrangeIntegral_upper_bound, chebyshev_integral_estimate, erdos_1131_conjecture (OPEN). 2 sorries: sum_sq_lagrangeBasis_ge (Cauchy-Schwarz variance step), lagrangeIntegral_lower_bound (integral monotonicity step). 6 former axioms now proved: lagrangeIntegral replaced with interval integral def, lagrangeBasis_self/other proved from product definition, chebyshevNodes_in_range from cos bounds, chebyshevNodes_distinct from cos strict anti on [0,pi], lagrangeIntegral_lower_bound converted from axiom to theorem with sorry.",
+    "lineCount": 297,
+    "assumptions": "3 axioms: lagrangeIntegral_upper_bound, chebyshev_integral_estimate, erdos_1131_conjecture (OPEN). 0 sorries. 8 former axioms now proved: lagrangeIntegral replaced with interval integral def, lagrangeBasis_self/other proved from product definition, chebyshevNodes_in_range from cos bounds, chebyshevNodes_distinct from cos strict anti on [0,pi], sum_sq_lagrangeBasis_ge and lagrangeIntegral_lower_bound proved via Cauchy-Schwarz and integral monotonicity.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
