@@ -58,7 +58,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "**Clique Partition of Graphs**\n\nThe clique partition problem asks: how many complete subgraphs are needed to partition all edges of a graph? Erdős, Goodman, and Pósa (1966) proved the elegant bound f(n,k) ≤ ⌊n²/4⌋ using only edges and triangles. The key insight: greedy triangle extraction leaves a triangle-free remainder, which is bipartite (Ramsey) and has at most ⌊n²/4⌋ edges (Turán).\n\nThe bound is tight: K_{n/2,n/2} has n²/4 edges, no triangles, so each edge must be its own clique. Erdős then asked: when k > n²/4, the graph must contain triangles. Can these be exploited to reduce the partition count below ⌊n²/4⌋?",
+    "historicalContext": "The clique partition problem — decomposing a graph's edges into complete subgraphs — emerged from the interplay of extremal graph theory and combinatorial optimization. Erdős, Goodman, and Pósa (1966) proved the foundational bound $\\text{cp}(G) \\leq \\lfloor n^2/4 \\rfloor$ using a greedy triangle extraction followed by Turán's theorem on the triangle-free remainder. This was connected to earlier work by Mantel (1907) on triangle-free graphs and Turán (1941) on extremal graph density.\n\nThe bound is tight for $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$, which is triangle-free and needs one clique per edge. Erdős asked whether dense graphs (with more than $\\lfloor n^2/4 \\rfloor$ edges) — which must contain triangles by Turán's theorem — allow improvement. Győri and Keszegh (2017) resolved the $K_4$-free case by proving that every excess edge yields an edge-disjoint triangle, reducing the partition count by exactly 1 per excess edge. The general case, when $K_4$ and larger cliques are present, remains open and connects to NP-hard optimization problems in graph decomposition.",
     "problemStatement": "**Open Question**: Can $f(n,k) < \\lfloor n^2/4 \\rfloor$ when $k > n^2/4$?\n\n**Known**: Erdős-Goodman-Pósa: $f(n,k) \\leq \\lfloor n^2/4 \\rfloor$ for all $k$.\n**Extremal**: $K_{n/2,n/2}$ achieves equality.\n**Partial**: $K_4$-free case resolved by Győri-Keszegh (2017): $f = \\lfloor n^2/4 \\rfloor - m$ when the graph has $\\lfloor n^2/4 \\rfloor + m$ edges and avoids $K_4$.\n**Open**: General case with $K_4$ and larger cliques.",
     "text": "Can f(n,k) < ⌊n²/4⌋ when k > n²/4? Formalizes the Erdős-Goodman-Pósa framework, tightness via K_{n/2,n/2}, and the Győri-Keszegh K₄-free resolution. The general case with K₄ and larger cliques remains open.",
     "proofStrategy": "The formalization builds a complete framework for edge clique partitions in 8 parts:\n\n1. **EdgeCliquePartition structure**: cliques covering all edges\n2. **Turán bound**: ⌊n²/4⌋ with concrete values and monotonicity\n3. **EGP theorem**: every graph partitions into ≤ ⌊n²/4⌋ cliques\n4. **Extremal example**: K_{k,k} with triangle-freeness and edge count\n5. **Open question**: formal statement with isDense predicate\n6. **Győri-Keszegh**: K₄-free resolution with triangle packing\n7. **Lovász covering**: related covering bound\n8. **Connections**: supersaturation and edge-coloring duality",
@@ -133,6 +133,16 @@
       "mathContext": "Related bounds: Lovász covering, edge-coloring duality ($\\text{cp}(G) = \\chi'(\\bar{G})$), and Razborov supersaturation."
     }
   ],
+  "conclusion": {
+    "summary": "This formalization captures the complete framework for Erdős's clique partition question (#1017 OQ-01): the Erdős-Goodman-Pósa bound $\\lfloor n^2/4 \\rfloor$, its tightness via $K_{k,k}$, the formal statement of the open question for dense graphs, and the Győri-Keszegh resolution for $K_4$-free graphs. The key proved result is that dense $K_4$-free graphs satisfy $\\text{cp}(G) < \\lfloor n^2/4 \\rfloor$.",
+    "implications": "A positive resolution of the general case would establish a universal improvement principle: density always reduces clique partition numbers. This would have implications for edge coloring (via the $\\text{cp}(G) = \\chi'(\\overline{G})$ duality), graph compression, and communication complexity (where clique partitions relate to non-deterministic communication complexity of graph properties).",
+    "openQuestions": [
+      "Can f(n,k) < ⌊n²/4⌋ when the graph contains K₄? This is the core of Erdős #1017 OQ-01.",
+      "What is the precise savings from K₄? If each K₄ saves 5 edges but can overlap with triangles, what is the optimal packing strategy?",
+      "Does supersaturation (Razborov 2010) provide enough edge-disjoint triangles to improve the bound for all dense graphs?",
+      "Is there a polynomial-time algorithm for optimal clique partitions of dense graphs, or is it NP-hard even in the dense regime?"
+    ]
+  },
   "crossReferences": [
     {
       "targetId": "erdos-1017",
