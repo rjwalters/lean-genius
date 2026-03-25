@@ -165,6 +165,16 @@
       "targetId": "stirling-formula",
       "relationship": "foundational",
       "description": "Stirling's approximation is used in sharp bounds for random walk probabilities and gambler's ruin estimates — the combinatorial constants in martingale stopping problems often require factorial asymptotics"
+    },
+    {
+      "targetId": "laws-of-large-numbers",
+      "relationship": "related",
+      "description": "The Strong Law of Large Numbers can be proved using martingale convergence theory: partial sums form a martingale with respect to the natural filtration, and martingale convergence gives almost sure convergence of sample means"
+    },
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "foundational",
+      "description": "Martingale theory is built on measure-theoretic integration: expectations are Lebesgue integrals, conditional expectations use the Radon-Nikodym theorem, and dominated convergence is invoked in the Optional Stopping Theorem proof"
     }
   ],
   "conclusion": {
@@ -255,10 +265,22 @@
   ],
   "mainTheorems": [
     {
-      "name": "fair_game_theorem",
-      "type": "core",
-      "description": "In a fair game, the expected value of the gambler's fortune is constant (martingale property)",
-      "leanType": "fair_game G -> E[fortune n] = E[fortune 0]"
+      "name": "fair_games_theorem",
+      "type": "original",
+      "description": "Optional Stopping Theorem: E[f_τ] = E[f_π] for bounded stopping times τ ≤ π in a martingale",
+      "leanType": "Martingale f 𝒢 μ → IsStoppingTime 𝒢 τ → IsStoppingTime 𝒢 π → τ ≤ π → π ≤ N → ∫ stoppedValue f τ ∂μ = ∫ stoppedValue f π ∂μ"
+    },
+    {
+      "name": "fair_games_corollary",
+      "type": "application",
+      "description": "E[X_τ] = E[X_0] for any bounded stopping time τ — no strategy beats a fair game",
+      "leanType": "Martingale f 𝒢 μ → IsStoppingTime 𝒢 τ → τ ≤ N → ∫ stoppedValue f τ ∂μ = ∫ f 0 ∂μ"
+    },
+    {
+      "name": "submartingale_characterization",
+      "type": "bridge",
+      "description": "Equivalence: submartingale ↔ monotone stopped expectations (forward from Mathlib, converse axiomatized)",
+      "leanType": "Submartingale f 𝒢 μ ↔ (∀ τ π, τ ≤ π → π ≤ N → ∫ stoppedValue f τ ∂μ ≤ ∫ stoppedValue f π ∂μ)"
     }
   ]
 }
