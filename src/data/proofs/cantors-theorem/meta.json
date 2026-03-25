@@ -40,16 +40,16 @@
     ],
     "dateAdded": "2025-12-26",
     "axiomCount": 0,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and no structure-encoded assumptions. The seven theorems delegate to Mathlib's `Function.cantor_surjective` for the (A → Prop) formulation and provide an original diagonal construction for the Set A formulation. The definition `diagonalSet` and corollaries (`powerset_strictly_larger`, `no_bijection_to_powerset`, `cantor_cardinal_inequality`, `cantor_witness`) are pedagogical wrappers with no custom axioms.",
     "lineCount": 157,
     "relatedProblems": [
       {
         "id": "cantors-theorem-oq-01",
-        "relationship": "Extension of cantors theorem"
+        "relationship": "Investigates the cardinality of $\\mathcal{P}(\\mathbb{R})$ via iterated application of Cantor's theorem, building the beth number tower $\\beth_0 < \\beth_1 < \\beth_2 < \\cdots$"
       },
       {
         "id": "cantors-theorem-oq-02",
-        "relationship": "Extension of cantors theorem"
+        "relationship": "Formalizes Lawvere's fixed-point theorem — the categorical generalization of Cantor's diagonal argument that unifies Cantor, Gödel, and Turing under one cartesian closed category framework"
       }
     ],
     "mathlib_version": "4.26.0"
@@ -129,7 +129,8 @@
     "openQuestions": [
       "The Continuum Hypothesis ($\\aleph_1 = 2^{\\aleph_0}$?) is independent of ZFC (Godel 1940, Cohen 1963). Can we formalize the independence proof in Lean — specifically, Cohen's forcing construction that produces a model where CH fails?",
       "Lawvere's fixed-point theorem generalizes Cantor's diagonal argument categorically. Can we formalize this in Lean using Mathlib's category theory library and derive Cantor's theorem as a corollary?",
-      "Cantor's theorem in constructive mathematics: while the diagonal witness IS constructive, the strict inequality $|A| < |\\mathcal{P}(A)|$ requires classical logic (to show no bijection exists). What is the precise constructive content of Cantor's theorem in CZF or HoTT?"
+      "Cantor's theorem in constructive mathematics: while the diagonal witness IS constructive, the strict inequality $|A| < |\\mathcal{P}(A)|$ requires classical logic (to show no bijection exists). What is the precise constructive content of Cantor's theorem in CZF or HoTT?",
+      "The Schröder-Bernstein theorem shows that mutual injections $A \\hookrightarrow B$ and $B \\hookrightarrow A$ imply $|A| = |B|$. Cantor's theorem gives $A \\hookrightarrow \\mathcal{P}(A)$ (via singletons) but blocks the reverse. Can the proof of Schröder-Bernstein be combined with Cantor's result to give a unified treatment of the cardinal arithmetic of power sets in Lean?"
     ]
   },
   "leanFile": {
@@ -195,6 +196,26 @@
       "targetId": "mathematical-induction",
       "relationship": "foundational",
       "description": "The well-ordering principle (equivalent to induction, as formalized in mathematical-induction) provides the foundation for ordinal and cardinal arithmetic that Cantor's theorem initiates. The transfinite induction principle generalizes mathematical induction to ordinals, enabling proofs about the cardinal hierarchy $\\aleph_0 < 2^{\\aleph_0} < 2^{2^{\\aleph_0}} < \\cdots$ that Cantor's theorem establishes"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "foundational",
+      "description": "The irrationality of $\\sqrt{2}$ ($\\sqrt{2} \\notin \\mathbb{Q}$, c. 500 BCE) is the oldest proof that the rationals are 'incomplete' — there exist quantities beyond $\\mathbb{Q}$. Cantor's theorem vastly generalizes this: not only are there irrationals, but the set of all reals $\\mathbb{R} = \\mathcal{P}(\\mathbb{N})$ is uncountably larger than $\\mathbb{Q}$, and the hierarchy continues without bound. Both proofs use contradiction: $\\sqrt{2}$ irrational by parity, Cantor by diagonalization"
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "related",
+      "description": "Liouville's construction of the first explicit transcendental number (1844) via rational approximation complements Cantor's theorem: Cantor shows transcendental numbers exist (in fact $|\\text{transcendentals}| = |\\mathbb{R}|$ since algebraic numbers are countable), while Liouville constructs a specific witness. This parallels the constructive nature of Cantor's own theorem — `cantor_witness` produces an explicit set not in any function's range"
+    },
+    {
+      "targetId": "hilbert-10",
+      "relationship": "thematic",
+      "description": "Matiyasevich's negative resolution of Hilbert's 10th problem (MRDP theorem, 1970) extends the impossibility paradigm that Cantor's diagonal argument inaugurated: Cantor shows no surjection $\\mathbb{N} \\to \\mathcal{P}(\\mathbb{N})$, Turing shows no algorithm decides halting, and MRDP shows no algorithm decides Diophantine solvability. Each uses a variant of the diagonal technique to establish fundamental limitations"
+    },
+    {
+      "targetId": "fermats-last-theorem",
+      "relationship": "thematic",
+      "description": "Both are landmark results establishing non-existence: Cantor proves no surjection $A \\to \\mathcal{P}(A)$ via diagonalization, while FLT proves no integer solutions to $x^n + y^n = z^n$ for $n \\geq 3$. The proof techniques diverge radically — Cantor's argument is elementary and constructive, while Wiles's proof uses deep algebraic geometry — but both resolved questions that had been open for centuries"
     }
   ],
   "references": [
@@ -239,6 +260,27 @@
       "year": "1977",
       "venue": "Academic Press",
       "note": "Standard graduate textbook with rigorous treatment of Cantor's theorem, cardinal arithmetic, and the beth/aleph hierarchies"
+    },
+    {
+      "authors": "Cantor, Georg",
+      "title": "Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
+      "year": "1874",
+      "venue": "Journal für die reine und angewandte Mathematik 77, 258–262",
+      "note": "Cantor's first proof that the reals are uncountable, using a nested interval argument (not the diagonal method). This 1874 paper also contains the proof that the algebraic numbers are countable — together, these imply transcendental numbers exist, anticipating the general power set result by 17 years"
+    },
+    {
+      "authors": "Yanofsky, Noson S.",
+      "title": "A universal approach to self-referential paradoxes, incompleteness and fixed points",
+      "year": "2003",
+      "venue": "Bulletin of Symbolic Logic, vol. 9, no. 3, pp. 362–386",
+      "note": "Unifies the diagonal arguments of Cantor, Russell, Gödel, Turing, and others under a single categorical framework, extending Lawvere's 1969 fixed-point theorem. Shows that all these impossibility results are instances of one meta-theorem about surjections in cartesian closed categories"
+    },
+    {
+      "authors": "Gödel, Kurt",
+      "title": "The consistency of the axiom of choice and of the generalized continuum-hypothesis",
+      "year": "1940",
+      "venue": "Annals of Mathematics Studies No. 3, Princeton University Press",
+      "note": "Proved the Continuum Hypothesis is consistent with ZFC by constructing the constructible universe L — half of the independence proof, complementing Cohen's 1963 forcing result. Shows that Cantor's hierarchy $\\aleph_0 < 2^{\\aleph_0}$ is consistent with $2^{\\aleph_0} = \\aleph_1$"
     }
   ]
 }
