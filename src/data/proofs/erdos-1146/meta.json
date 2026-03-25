@@ -165,33 +165,37 @@
       "What is the precise relationship between residue class distribution and essential component property?",
       "Can either of the 2 remaining axioms (smooth23_not_lacunary, smooth23_schnirelmann_zero) be proved from Mathlib?"
     ],
-    "crossReferences": [
+    "relatedProblems": [
       {
-        "proofId": "erdos-37",
-        "relationship": "Parent problem — Erdős #37 resolves the lacunary case and provides all infrastructure (Schnirelmann density, essential components, sumsets). Problem #1146 is the open question stated at the end of #37."
+        "id": "erdos-37",
+        "relationship": "Parent problem — resolves the lacunary case and provides all infrastructure"
       },
       {
-        "proofId": "erdos-30",
-        "relationship": "Sidon sets (B₂ sets) also concern additive structure of sparse sets. Both ask how sparse a set can be while maintaining a strong additive property."
-      },
-      {
-        "proofId": "erdos-35",
-        "relationship": "Schnirelmann density improvements for additive bases — closely related density concepts and techniques."
+        "id": "erdos-1055",
+        "relationship": "Uses 3-smooth numbers as the base case for the Erdős–Selfridge prime classification"
       }
     ]
   },
   "crossReferences": [
     {
-      "relationship": "Parent problem -- Erdos #37 resolves the lacunary case and provides all infrastructure (Schnirelmann density, essential components, sumsets)",
-      "targetId": "erdos-37"
+      "targetId": "erdos-37",
+      "relationship": "extends",
+      "description": "Parent problem — Erdős #37 resolves the lacunary case and provides all infrastructure (Schnirelmann density, essential components, sumsets). Problem #1146 is the open question stated at the end of #37"
     },
     {
-      "relationship": "Sidon sets (B2 sets) concern additive structure of sparse sets; both ask how sparse a set can be while maintaining a strong additive property",
-      "targetId": "erdos-30"
+      "targetId": "erdos-30",
+      "relationship": "related",
+      "description": "Sidon sets (B₂ sets) concern additive structure of sparse sets; both ask how sparse a set can be while maintaining a strong additive property"
     },
     {
-      "relationship": "Schnirelmann density improvements for additive bases; closely related density concepts and techniques",
-      "targetId": "erdos-35"
+      "targetId": "erdos-35",
+      "relationship": "related",
+      "description": "Schnirelmann density improvements for additive bases; closely related density concepts and techniques"
+    },
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Uses 3-smooth numbers {2^m·3^n} as the base case for the Erdős-Selfridge prime classification — class 1 primes are those with p+1 being 3-smooth"
     }
   ],
   "references": [
