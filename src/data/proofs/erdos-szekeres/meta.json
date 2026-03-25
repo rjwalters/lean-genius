@@ -134,6 +134,26 @@
       "targetId": "mathematical-induction",
       "relationship": "foundational",
       "description": "The alternative proof of the Erdős-Szekeres theorem uses strong induction: if the longest increasing subsequence has length $< r$ and the longest decreasing has length $< s$, partition by the first element and apply induction to the remaining subsequences"
+    },
+    {
+      "targetId": "ballot-problem",
+      "relationship": "related",
+      "description": "Both concern path-counting in lattice settings. The ballot problem counts paths with a dominance constraint; the Erdős-Szekeres theorem uses pigeonhole on monotone subsequences. Both are foundational results in enumerative/extremal combinatorics with connections to Young tableaux and RSK correspondence."
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "thematic",
+      "description": "Both are landmark results in combinatorics/graph theory. The Erdős-Szekeres theorem shows that structure (monotonicity) is unavoidable in long sequences; the four-color theorem shows that structure (4-colorability) is unavoidable in planar graphs. Both established fundamental paradigms in their fields."
+    },
+    {
+      "targetId": "erdos-196",
+      "relationship": "applied-in",
+      "description": "Erdős Problem #196 asks about monotone 4-term arithmetic progressions in permutations — a direct application of the Erdős-Szekeres framework to structured subsequences with additional arithmetic constraints."
+    },
+    {
+      "targetId": "friendship-theorem",
+      "relationship": "thematic",
+      "description": "Both are extremal/Ramsey-type results where structure emerges from quantitative hypotheses: the friendship theorem shows graphs where every pair has exactly one common friend must be 'windmill' graphs; the Erdős-Szekeres theorem shows long sequences must contain long monotone subsequences."
     }
   ],
   "conclusion": {
