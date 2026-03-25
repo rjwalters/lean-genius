@@ -170,6 +170,21 @@
       "targetId": "angle-trisection-oq-02-oq-03",
       "relationship": "extended-by",
       "description": "Extends the constructibility framework to the Gauss-Wantzel theorem for regular polygons: the regular $n$-gon is constructible iff $\\phi(n)$ is a power of 2, i.e., $n = 2^a p_1 \\cdots p_m$ with distinct Fermat primes $p_i$. This connects the same degree-criterion used here to cyclotomic field theory and Euler's totient function"
+    },
+    {
+      "targetId": "morleys-theorem",
+      "relationship": "related",
+      "description": "Morley's theorem states that the intersections of adjacent angle trisectors of any triangle form an equilateral triangle — a beautiful result about the very operation (angle trisection) that this entry proves impossible with compass and straightedge. Morley's theorem holds because trisection exists analytically even though it is not constructible."
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "foundational",
+      "description": "The Hermite-Lindemann theorem ($\\alpha$ algebraic $\\Rightarrow$ $e^\\alpha$ transcendental) is the underlying result from which $\\pi$'s transcendence follows (via $e^{i\\pi} = -1$), settling the third classical Greek problem of squaring the circle."
+    },
+    {
+      "targetId": "erdos-1124",
+      "relationship": "related",
+      "description": "Tarski's circle-squaring problem (Erdős #1124): can a disk be partitioned into finitely many pieces and rearranged into a square of equal area? Laczkovich (1990) proved YES using $\\sim 10^{50}$ non-measurable pieces — a measure-theoretic counterpart to the compass-straightedge impossibility proved here."
     }
   ],
   "overview": {
