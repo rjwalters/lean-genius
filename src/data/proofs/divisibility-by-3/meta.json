@@ -151,6 +151,21 @@
       "targetId": "divisibility-by-3-oq-02",
       "relationship": "child",
       "description": "Further open question on divisibility by 3"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "foundational",
+      "description": "The divisibility rule $3 \\mid n \\iff 3 \\mid \\text{digitSum}(n)$ is a consequence of $10 \\equiv 1 \\pmod{3}$, which generalizes: the digit sum rule works for any divisor $d$ of $b - 1$ in base $b$. Euler's totient function characterizes which modular arithmetic identities like $10^k \\equiv 1 \\pmod{d}$ hold"
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "foundational",
+      "description": "Bezout's identity $\\gcd(a, b) = ax + by$ underpins the modular arithmetic framework in which the divisibility rule is proved: $10 \\equiv 1 \\pmod{3}$ means $3 \\mid (10 - 1) = 9$, and the digit sum rule follows from the geometric series identity $n = \\sum d_i \\cdot 10^i \\equiv \\sum d_i \\cdot 1^i = \\text{digitSum}(n) \\pmod{3}$"
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "related",
+      "description": "The positional notation $n = \\sum_{i=0}^{k} d_i \\cdot 10^i$ is a geometric-series-like expansion. The digit sum rule follows from evaluating this polynomial modulo 3: since $10 \\equiv 1 \\pmod{3}$, each power $10^i \\equiv 1$, collapsing the sum to $\\sum d_i$"
     }
   ],
   "leanFile": {
