@@ -1,5 +1,7 @@
 import Mathlib
 import Proofs.AbelRuffiniGaloisExtensions
+import Proofs.InverseGaloisA5
+import Proofs.AbelRuffiniOQ04OQ01
 
 /-
 # Inverse Galois Problem: Non-Solvable Frontier (OQ-01)
@@ -376,12 +378,12 @@ theorem nonsolvable_realized_orders :
   intro n hn
   simp at hn
   rcases hn with rfl | rfl
-  · -- n = 60: A₅ via ℚ itself as the base field doesn't work; need the A₅ extension
-    -- We use the fact that A₅ is realizable (from InverseGaloisA5, but we avoid
-    -- the import cycle by noting this is a census theorem)
-    sorry -- Requires import of InverseGaloisA5 (A₅ realization)
-  · -- n = 120: S₅ via x⁵ - 4x + 2 splitting field
-    sorry -- Requires import of AbelRuffiniOQ04OQ01 (S₅ realization)
+  · -- n = 60: A₅ realized via splitting field of x⁵ + 20x - 16
+    exact InverseGaloisA5.a5_realizable
+  · -- n = 120: S₅ realized via splitting field of x⁵ - 4x + 2
+    exact ⟨AbelRuffiniOQ04OQ01.p.SplittingField,
+      inferInstance, inferInstance, inferInstance, IsGalois.mk,
+      AbelRuffiniOQ04OQ01.gal_card_eq_120⟩
 
 -- ============================================================================
 -- Part IX: The Inverse Galois Conjecture — Formal Statement

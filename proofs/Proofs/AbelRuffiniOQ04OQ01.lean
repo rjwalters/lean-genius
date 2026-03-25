@@ -60,7 +60,10 @@ set_option linter.unusedVariables false
 
 -- ============================================================================
 -- Computational Lemmas (BEFORE `open scoped Classical` for native_decide)
+-- Namespaced to avoid collisions with InverseGaloisA5 which shares some lemmas.
 -- ============================================================================
+
+namespace AbelRuffiniOQ04OQ01
 
 /-- No element of order 5 commutes with any element of order 3 in S₅.
     Used to prove no subgroup of S₅ has order 15. -/
@@ -86,6 +89,8 @@ theorem p_root_mod13_at_5 : (5 ^ 5 - 4 * 5 + 2 : ZMod 13) = 0 := by native_decid
     (Exhaustive check: all 13 values of x give nonzero residue.) -/
 theorem cubic_factor_no_roots_mod13 :
     ∀ x : ZMod 13, x ^ 3 + 7 * x ^ 2 + 8 ≠ 0 := by native_decide
+
+end AbelRuffiniOQ04OQ01
 
 open scoped Classical
 
