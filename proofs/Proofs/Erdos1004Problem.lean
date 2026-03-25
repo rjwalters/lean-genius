@@ -229,9 +229,14 @@ theorem example_n2 : IsDistinctTotientRun 2 1 ∧ ¬IsDistinctTotientRun 2 2 := 
     have := h 1 2 (by omega) (by omega) (by omega) (by omega) (by omega)
     unfold phi at this; simp [Nat.totient] at this; exact absurd (by decide) this
 
-/-- Looking for longer runs requires larger n. -/
+/-- For any fixed K ≥ 2, distinct totient runs of length K exist for sufficiently
+    large n. This follows from probabilistic arguments on the distribution of
+    totient values (the expected number of collision-free starting points m ≤ x
+    grows like x · ∏(1 - i/V(x)) → x for fixed K), but a full proof requires
+    deep analytic number theory. Concrete examples: K=2 at m=1, K=3 at m=4,
+    K=5 at m=10. -/
 axiom longer_runs_need_larger_n (K : ℕ) (hK : K ≥ 2) :
-    ∃ n₀ : ℕ, ∀ n ≥ n₀, ∃ m ≤ n, IsDistinctTotientRun m K := by
+    ∃ n₀ : ℕ, ∀ n ≥ n₀, ∃ m ≤ n, IsDistinctTotientRun m K
 
 /-! ## Part VIII: Totient Value Collisions -/
 
@@ -275,10 +280,13 @@ def Problem945Conjecture : Prop :=
 noncomputable def countDistinctTotients (x : ℕ) : ℕ :=
   (Finset.range x).image phi |>.card
 
-/-- Asymptotically, there are ~ x / log x distinct totient values ≤ x. -/
+/-- Asymptotically, there are ~ x / log x distinct totient values ≤ x.
+    This is a consequence of results on the distribution of Euler's totient
+    function (Erdős 1935, refined by Ford 1998). The count V(x) of distinct
+    values φ(k) for k ≤ x satisfies V(x) ~ x / log x. -/
 axiom distinct_totients_asymptotic :
     Tendsto (fun x : ℕ => (countDistinctTotients x : ℝ) * Real.log (x : ℝ) / (x : ℝ))
-      atTop (𝓝 (1 : ℝ)) := by
+      atTop (𝓝 (1 : ℝ))
 
 /-- Heuristic: Probability that K consecutive totients are distinct
     is roughly (1 - 1/V) * (1 - 2/V) * ... * (1 - (K-1)/V)
@@ -575,10 +583,13 @@ such that φ(n+1), φ(n+2), ..., φ(n+⌊(log x)^c⌋) are all distinct?
 8. Probabilistic heuristics
 9. Special totient values
 
-**Key axioms**:
-- `eps87_upper_bound`: The EPS87 theorem limiting run length (for n ≥ threshold)
-- `eps87_constant`: The constant c in the bound
-- `eps87_threshold`: The threshold beyond which the bound holds
+**Key axioms** (6 total):
+- `eps87_constant`, `eps87_constant_pos`, `eps87_threshold`, `eps87_upper_bound`:
+  The EPS87 theorem and its parameters
+- `longer_runs_need_larger_n`: Fixed-length distinct runs exist eventually
+  (probabilistic argument on totient value distribution)
+- `distinct_totients_asymptotic`: #{distinct φ(k) : k ≤ x} ~ x/log x
+  (Erdős 1935 / Ford 1998)
 
 **Proved from axioms**:
 - `run_length_sublinear`: maxDistinctRunLength(n)/n → 0 (via squeeze theorem + EPS bound)

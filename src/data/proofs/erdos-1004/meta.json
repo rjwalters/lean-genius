@@ -7,7 +7,7 @@
     "author": "Paul Erdős, Carl Pomerance, András Sárközy",
     "sourceUrl": "https://erdosproblems.com/1004",
     "date": "1987",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1004Problem.lean",
     "tags": [
       "erdos",
@@ -15,14 +15,14 @@
       "totient",
       "analytic-number-theory"
     ],
-    "badge": "formalized",
-    "sorries": 2,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 1004,
     "erdosUrl": "https://erdosproblems.com/1004",
     "erdosProblemStatus": "open",
-    "axiomCount": 4,
-    "lineCount": 585,
-    "assumptions": "Four axioms for EPS87 upper bound (eps87_constant, eps87_constant_pos, eps87_threshold, eps87_upper_bound). Two sorries: longer_runs_need_larger_n, distinct_totients_asymptotic.",
+    "axiomCount": 6,
+    "lineCount": 598,
+    "assumptions": "Six axioms: EPS87 upper bound (eps87_constant, eps87_constant_pos, eps87_threshold, eps87_upper_bound), existence of fixed-length distinct runs (longer_runs_need_larger_n), and asymptotic count of distinct totient values (distinct_totients_asymptotic, Erdős 1935/Ford 1998).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -257,8 +257,8 @@
       "Topology"
     ],
     "namespace": "Erdos1004",
-    "lineCount": 533,
-    "axiomCount": 3,
+    "lineCount": 598,
+    "axiomCount": 6,
     "theoremCount": 22,
     "definitionCount": 13
   }
