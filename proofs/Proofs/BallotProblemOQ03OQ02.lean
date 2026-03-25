@@ -1348,17 +1348,58 @@ private def pathsShareCol {r : ℕ} (cfg : LGVConfig r) (t : TaggedPathTuple cfg
               else cfg.targets (t.1 j)
   lo_j ≤ hi_i ∧ lo_i ≤ hi_j
 
-/-- Crossing code predicate. Encodes (c, i, j) as n = c * r² + i * r + j.
-    Nat.find on this yields the lex-minimum crossing triple. -/
+/-- Path k visits the lattice point at column c, y-coordinate y:
+    y is in path k's y-range at column c. -/
+private def pathVisitsY {r : ℕ} (cfg : LGVConfig r) (t : TaggedPathTuple cfg)
+    (c y : ℕ) (k : Fin r) : Prop :=
+  cfg.sources k + colEntry (t.2 k).val c ≤ y ∧
+  y ≤ (if c < cfg.m then cfg.sources k + colEntry (t.2 k).val (c + 1)
+       else cfg.targets (t.1 k))
+
+/-- Upper bound on y-coordinates at crossings. targets is strictly monotone,
+    so targets(r-1) is the maximum target value. -/
+private noncomputable def tBound {r : ℕ} (cfg : LGVConfig r) : ℕ :=
+  if h : 0 < r then cfg.targets ⟨r - 1, by omega⟩ + 1 else 1
+
+/-- Any target value is less than tBound. -/
+private theorem target_lt_tBound {r : ℕ} (cfg : LGVConfig r) (hr : 0 < r) (k : Fin r) :
+    cfg.targets k < tBound cfg := by
+  simp only [tBound, hr, dite_true]
+  exact Nat.lt_succ_of_le (cfg.targets_strictMono.monotone (by omega : k.val ≤ r - 1))
+
+/-- pathVisitsY implies y < tBound (y ≤ target ≤ max target < tBound). -/
+private theorem pathVisitsY_lt_tBound {r : ℕ} (cfg : LGVConfig r) (hr : 0 < r)
+    (t : TaggedPathTuple cfg) (c y : ℕ) (k : Fin r)
+    (hv : pathVisitsY cfg t c y k) : y < tBound cfg := by
+  have hle := hv.2
+  by_cases hcm : c < cfg.m
+  · simp only [hcm, ite_true] at hle
+    have := colEntry_le_north (t.2 k) (c + 1)
+    have hlen := (t.2 k).property.1
+    calc y ≤ cfg.sources k + colEntry (t.2 k).val (c + 1) := hle
+      _ ≤ cfg.sources k + (cfg.targets (t.1 k) - cfg.sources k) := by omega
+      _ = cfg.targets (t.1 k) := by omega
+      _ < tBound cfg := target_lt_tBound cfg hr (t.1 k)
+  · simp only [hcm, ite_false] at hle
+    exact lt_of_le_of_lt hle (target_lt_tBound cfg hr (t.1 k))
+
+/-- Crossing code predicate. Encodes (c, y, i, j) as a single natural number
+    n = c * (T * r²) + y * r² + i * r + j, where T = tBound cfg.
+    Nat.find on this yields the lex-minimum (c, y, i, j) crossing quadruple.
+    The (c, y, i, j) lex ordering is essential for the self-inverse property:
+    a (c, i, j) ordering fails because tail-swap can create new overlapping
+    pairs at the canonical column with smaller (i, j) indices. -/
 private def crossingCode {r : ℕ} (cfg : LGVConfig r) (t : TaggedPathTuple cfg)
     (n : ℕ) : Prop :=
   0 < r ∧
-  let c := n / (r * r)
+  let T := tBound cfg
+  let c := n / (T * r * r)
+  let y := (n / (r * r)) % T
   let iv := (n / r) % r
   let jv := n % r
   c ≤ cfg.m ∧ iv < jv ∧
   ∃ (hiv : iv < r) (hjv : jv < r),
-    pathsShareCol cfg t c ⟨iv, hiv⟩ ⟨jv, hjv⟩
+    pathVisitsY cfg t c y ⟨iv, hiv⟩ ∧ pathVisitsY cfg t c y ⟨jv, hjv⟩
 
 private noncomputable instance crossingCode.dec {r : ℕ} {cfg : LGVConfig r}
     {t : TaggedPathTuple cfg} : DecidablePred (crossingCode cfg t) :=
@@ -1398,30 +1439,55 @@ private theorem notNI_gives_overlap {r : ℕ} (cfg : LGVConfig r)
         omega
       omega
 
-/-- Encoding (c, i, j) as c * r² + i * r + j, with decoding back. -/
-private theorem encode_decode_c (r c iv jv : ℕ) (hr : 0 < r)
-    (hiv : iv < r) (hjv : jv < r) :
-    (c * (r * r) + iv * r + jv) / (r * r) = c := by
-  have h1 : iv * r + jv < r * r := by nlinarith
-  rw [Nat.add_div_right_eq_zero h1 |>.symm ▸ show c * (r * r) + (iv * r + jv) =
-    c * (r * r) + iv * r + jv from by ring_nf]
-  omega
+/-- The (c, y, i, j) encoding: n = c * (T * r²) + y * r² + i * r + j.
+    Rewrite to standard form for modular arithmetic. -/
+private theorem encode_form (T r c y iv jv : ℕ) :
+    c * (T * r * r) + y * (r * r) + iv * r + jv =
+    ((c * T + y) * r + iv) * r + jv := by ring
 
-private theorem encode_decode_i (r c iv jv : ℕ) (hr : 0 < r)
+/-- Decode j: extract last component (mod r). -/
+private theorem encode_decode_j (T r c y iv jv : ℕ) (hr : 0 < r)
+    (hjv : jv < r) :
+    (c * (T * r * r) + y * (r * r) + iv * r + jv) % r = jv := by
+  rw [encode_form, Nat.add_mul_mod_self_left]
+  exact Nat.mod_eq_of_lt hjv
+
+/-- Decode i: extract second-to-last component. -/
+private theorem encode_decode_i (T r c y iv jv : ℕ) (hr : 0 < r)
     (hiv : iv < r) (hjv : jv < r) :
-    ((c * (r * r) + iv * r + jv) / r) % r = iv := by
-  have h1 : jv / r = 0 := Nat.div_eq_zero_iff (by omega).mpr (by omega)
-  have : c * (r * r) + iv * r + jv = (c * r + iv) * r + jv := by ring
-  rw [this, Nat.add_mul_div_left _ _ (by omega : 0 < r)]
-  rw [h1, Nat.add_zero]
+    ((c * (T * r * r) + y * (r * r) + iv * r + jv) / r) % r = iv := by
+  rw [encode_form, Nat.add_mul_div_left _ _ hr,
+      Nat.div_eq_of_lt hjv, Nat.add_zero, Nat.add_mul_mod_self_left]
   exact Nat.mod_eq_of_lt hiv
 
-private theorem encode_decode_j (r c iv jv : ℕ) (hr : 0 < r)
-    (hiv : iv < r) (hjv : jv < r) :
-    (c * (r * r) + iv * r + jv) % r = jv := by
-  have : c * (r * r) + iv * r + jv = (c * r + iv) * r + jv := by ring
-  rw [this, Nat.add_mul_mod_self_left]
-  exact Nat.mod_eq_of_lt hjv
+/-- Decode y: extract the y-component. -/
+private theorem encode_decode_y (T r c y iv jv : ℕ) (hr : 0 < r) (hT : 0 < T)
+    (hiv : iv < r) (hjv : jv < r) (hy : y < T) :
+    ((c * (T * r * r) + y * (r * r) + iv * r + jv) / (r * r)) % T = y := by
+  have hrr : 0 < r * r := by positivity
+  rw [encode_form]
+  rw [show ((c * T + y) * r + iv) * r + jv = (c * T + y) * (r * r) + (iv * r + jv) from by ring]
+  rw [Nat.add_mul_div_left _ _ hrr, Nat.div_eq_of_lt (by nlinarith), Nat.add_zero,
+      Nat.add_mul_mod_self_left]
+  exact Nat.mod_eq_of_lt hy
+
+/-- Decode c: extract the column component. -/
+private theorem encode_decode_c (T r c y iv jv : ℕ) (hr : 0 < r) (hT : 0 < T)
+    (hiv : iv < r) (hjv : jv < r) (hy : y < T) :
+    (c * (T * r * r) + y * (r * r) + iv * r + jv) / (T * r * r) = c := by
+  have hTrr : 0 < T * r * r := by positivity
+  rw [encode_form]
+  rw [show ((c * T + y) * r + iv) * r + jv = c * (T * r * r) + (y * (r * r) + iv * r + jv)
+    from by ring]
+  rw [Nat.add_mul_div_left _ _ hTrr, Nat.div_eq_of_lt (by nlinarith), Nat.add_zero]
+
+/-- pathsShareCol follows from pathVisitsY at a common y-value. -/
+private theorem pathVisitsY_implies_overlap {r : ℕ} (cfg : LGVConfig r)
+    (t : TaggedPathTuple cfg) (c y : ℕ) (i j : Fin r)
+    (hi : pathVisitsY cfg t c y i) (hj : pathVisitsY cfg t c y j) :
+    pathsShareCol cfg t c i j := by
+  unfold pathsShareCol pathVisitsY at *
+  constructor <;> omega
 
 /-- A crossing code exists for every cancellable tagged tuple. -/
 private theorem crossingCode_exists {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
@@ -1430,14 +1496,28 @@ private theorem crossingCode_exists {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wel
   obtain ⟨i, j, hij, hni⟩ := cancellable_has_crossing cfg hwf t ht
   obtain ⟨c, hcm, hoverlap⟩ := notNI_gives_overlap cfg t i j hij hni
   have hr : 0 < r := by omega
-  refine ⟨c * (r * r) + i.val * r + j.val, hr, ?_, ?_, ?_⟩
-  · rwa [encode_decode_c r c i.val j.val hr i.isLt j.isLt]
-  · rw [encode_decode_i r c i.val j.val hr i.isLt j.isLt,
-        encode_decode_j r c i.val j.val hr i.isLt j.isLt]
+  unfold pathsShareCol at hoverlap
+  set y := max (cfg.sources i + colEntry (t.2 i).val c)
+              (cfg.sources j + colEntry (t.2 j).val c)
+  have hT : 0 < tBound cfg := by simp only [tBound, hr, dite_true]; omega
+  have hvi : pathVisitsY cfg t c y i := by
+    unfold pathVisitsY; constructor
+    · exact le_max_left _ _
+    · split_ifs with hcm' <;> omega
+  have hvj : pathVisitsY cfg t c y j := by
+    unfold pathVisitsY; constructor
+    · exact le_max_right _ _
+    · split_ifs with hcm' <;> omega
+  have hy : y < tBound cfg := pathVisitsY_lt_tBound cfg hr t c y i hvi
+  refine ⟨c * (tBound cfg * r * r) + y * (r * r) + i.val * r + j.val, hr, ?_, ?_, ?_⟩
+  · rwa [encode_decode_c (tBound cfg) r c y i.val j.val hr hT i.isLt j.isLt hy]
+  · rw [encode_decode_i (tBound cfg) r c y i.val j.val hr i.isLt j.isLt,
+        encode_decode_j (tBound cfg) r c y i.val j.val hr j.isLt]
     exact hij
-  · rw [encode_decode_i r c i.val j.val hr i.isLt j.isLt,
-        encode_decode_j r c i.val j.val hr i.isLt j.isLt]
-    exact ⟨i.isLt, j.isLt, by convert hoverlap using 2 <;> simp⟩
+  · rw [encode_decode_i (tBound cfg) r c y i.val j.val hr i.isLt j.isLt,
+        encode_decode_j (tBound cfg) r c y i.val j.val hr j.isLt,
+        encode_decode_y (tBound cfg) r c y i.val j.val hr hT i.isLt j.isLt hy]
+    exact ⟨i.isLt, j.isLt, by convert hvi using 2; simp, by convert hvj using 2; simp⟩
 
 /-- The canonical crossing code for a cancellable tagged tuple. -/
 private noncomputable def canonCrossN {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
@@ -1459,7 +1539,12 @@ private theorem canonCross_min {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellForm
 /-- Extract the canonical crossing column. -/
 private noncomputable def canonCol {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
     (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) : ℕ :=
-  canonCrossN cfg hwf t ht / (r * r)
+  canonCrossN cfg hwf t ht / (tBound cfg * r * r)
+
+/-- Extract the canonical shared y-coordinate. -/
+private noncomputable def canonY {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) : ℕ :=
+  (canonCrossN cfg hwf t ht / (r * r)) % tBound cfg
 
 /-- Extract the canonical first crossing index. -/
 private noncomputable def canonI {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
@@ -1485,21 +1570,22 @@ private theorem canonCol_le_m {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellForme
   have h := canonCross_spec cfg hwf t ht
   exact h.2.1
 
+/-- The canonical crossing point: both paths visit y at column c. -/
+private theorem canon_pathVisitsY {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) :
+    pathVisitsY cfg t (canonCol cfg hwf t ht) (canonY cfg hwf t ht)
+      (canonI cfg hwf t ht) ∧
+    pathVisitsY cfg t (canonCol cfg hwf t ht) (canonY cfg hwf t ht)
+      (canonJ cfg hwf t ht) := by
+  have h := canonCross_spec cfg hwf t ht
+  exact h.2.2.2.choose_spec.choose_spec.2
+
 private theorem canon_overlap {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
     (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) :
     pathsShareCol cfg t (canonCol cfg hwf t ht)
       (canonI cfg hwf t ht) (canonJ cfg hwf t ht) := by
-  have h := canonCross_spec cfg hwf t ht
-  exact h.2.2.2.choose_spec.choose_spec.2
-
-/-- The shared y-value: max of lower bounds at the canonical crossing column. -/
-private noncomputable def canonY {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
-    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) : ℕ :=
-  let ci := canonI cfg hwf t ht
-  let cj := canonJ cfg hwf t ht
-  let c := canonCol cfg hwf t ht
-  max (cfg.sources ci + colEntry (t.2 ci).val c)
-      (cfg.sources cj + colEntry (t.2 cj).val c)
+  have ⟨hi, hj⟩ := canon_pathVisitsY cfg hwf t ht
+  exact pathVisitsY_implies_overlap cfg t _ _ _ _ hi hj
 
 -- ============================================================
 -- PART 7k: Tail-Swap PathMN Construction
@@ -1575,7 +1661,8 @@ private lemma colEntry_at_end {m n : ℕ} (P : PathMN m n) :
         Bool.true_eq_false, decide_false, Nat.add_zero] at hk ⊢
       rw [ih k (by omega)]
 
-/-- The shared y-value is within path i's y-range at the canonical crossing column. -/
+/-- The shared y-value is within path i's y-range at the canonical crossing column.
+    Derived from canon_pathVisitsY (pathVisitsY encodes this directly). -/
 private theorem canonY_in_range_i {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
     (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) :
     let ci := canonI cfg hwf t ht
@@ -1583,32 +1670,23 @@ private theorem canonY_in_range_i {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellF
     let y := canonY cfg hwf t ht
     colEntry (t.2 ci).val c ≤ y - cfg.sources ci ∧
     y - cfg.sources ci ≤ colEntry (t.2 ci).val (c + 1) := by
-  have hoverlap := canon_overlap cfg hwf t ht
+  have hpv := (canon_pathVisitsY cfg hwf t ht).1
   set ci := canonI cfg hwf t ht
-  set cj := canonJ cfg hwf t ht
   set c := canonCol cfg hwf t ht
   set y := canonY cfg hwf t ht
-  unfold canonY at y
-  unfold pathsShareCol at hoverlap
+  unfold pathVisitsY at hpv
   constructor
-  · -- colEntry(P_ci, c) ≤ y - source_ci
-    -- y = max(source_ci + colEntry(P_ci, c), source_cj + colEntry(P_cj, c))
-    -- y ≥ source_ci + colEntry(P_ci, c)
-    simp only [y]; omega
-  · -- y - source_ci ≤ colEntry(P_ci, c+1) (or n_ci for c = m)
-    -- From overlap: source_cj + colEntry(P_cj, c) ≤ hi_ci
-    -- And y = max(lo_ci, lo_cj) ≤ hi_ci
-    split_ifs at hoverlap with hcm
-    · -- c < m: hi_ci = source_ci + colEntry(P_ci, c+1)
-      simp only [y]; omega
-    · -- c ≥ m: hi_ci = targets(σ(ci))
-      have hcm' := canonCol_le_m cfg hwf t ht
+  · omega
+  · split_ifs at hpv with hcm
+    · omega
+    · have hcm' := canonCol_le_m cfg hwf t ht
       have hceq : c = cfg.m := by omega
       rw [hceq, colEntry_at_end (t.2 ci)]
       have h_le := hwf ci (t.1 ci)
-      simp only [y]; omega
+      omega
 
-/-- The shared y-value is within path j's y-range at the canonical crossing column. -/
+/-- The shared y-value is within path j's y-range at the canonical crossing column.
+    Derived from canon_pathVisitsY (pathVisitsY encodes this directly). -/
 private theorem canonY_in_range_j {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
     (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) :
     let cj := canonJ cfg hwf t ht
@@ -1616,22 +1694,20 @@ private theorem canonY_in_range_j {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellF
     let y := canonY cfg hwf t ht
     colEntry (t.2 cj).val c ≤ y - cfg.sources cj ∧
     y - cfg.sources cj ≤ colEntry (t.2 cj).val (c + 1) := by
-  have hoverlap := canon_overlap cfg hwf t ht
-  set ci := canonI cfg hwf t ht
+  have hpv := (canon_pathVisitsY cfg hwf t ht).2
   set cj := canonJ cfg hwf t ht
   set c := canonCol cfg hwf t ht
   set y := canonY cfg hwf t ht
-  unfold canonY at y
-  unfold pathsShareCol at hoverlap
+  unfold pathVisitsY at hpv
   constructor
-  · simp only [y]; omega
-  · split_ifs at hoverlap with hcm
-    · simp only [y]; omega
+  · omega
+  · split_ifs at hpv with hcm
+    · omega
     · have hcm' := canonCol_le_m cfg hwf t ht
       have hceq : c = cfg.m := by omega
       rw [hceq, colEntry_at_end (t.2 cj)]
       have h_le := hwf cj (t.1 cj)
-      simp only [y]; omega
+      omega
 
 /-- Split position is within path bounds. -/
 private theorem splitPos_le_length {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
@@ -1893,6 +1969,18 @@ private theorem gvCanon_membership {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.well
       simp only [splitPosAt] at ki kj
       rcases hfinal with h | h <;> omega
 
+/-- The canonical crossing code is preserved by the GV involution:
+    canonCrossN(g(t)) = canonCrossN(t). This is the key lemma for self-inverse.
+    Tail-swap preserves prefixes at all columns ≤ c₀, so pathVisitsY at (c₀, y₀)
+    is preserved for both paths, and no smaller (c, y, i, j) quadruple is created. -/
+private theorem canonCrossN_preserved {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) :
+    let t' := gvCanonInv cfg hwf t ht
+    let ht' := (Finset.mem_filter.mp (gvCanon_membership cfg hwf t
+      (Finset.mem_filter.mpr ⟨Finset.mem_univ t, ht⟩))).2
+    canonCrossN cfg hwf t' ht' = canonCrossN cfg hwf t ht := by
+  sorry -- Prefix preservation + pathVisitsY stability at (c₀, y₀)
+
 /-- The GV canonical involution is self-inverse: g(g(t)) = t.
     The proof has two parts:
     1. Permutation: σ * swap(ci,cj) * swap(ci,cj) = σ (swap² = 1)
@@ -1909,7 +1997,7 @@ private theorem gvCanon_self_inverse {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.we
     (ht : t ∈ Finset.univ.filter (fun t : TaggedPathTuple cfg => ¬isNonCancellable t)) :
     gvCanonInv cfg hwf (gvCanonInv cfg hwf t ((Finset.mem_filter.mp ht).2))
       ((Finset.mem_filter.mp (gvCanon_membership cfg hwf t ht)).2) = t := by
-  sorry -- self-inverse: canonical crossing preserved + double tail-swap = id
+  sorry -- Uses canonCrossN_preserved + Sigma.ext + swap_swap_self + List.take_append_drop
 
 /-- The signed sum over cancellable tagged tuples is zero,
     by the GV sign-reversing involution via `Finset.sum_involution`. -/
