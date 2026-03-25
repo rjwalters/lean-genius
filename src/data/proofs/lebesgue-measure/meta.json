@@ -171,27 +171,43 @@
   "crossReferences": [
     {
       "targetId": "fundamental-theorem-calculus",
-      "relationship": "The Fundamental Theorem of Calculus holds in the Lebesgue setting: if $f$ is absolutely continuous, then $f' \\in L^1$ and $\\int_a^b f' = f(b) - f(a)$."
+      "relationship": "extended-by",
+      "description": "The Fundamental Theorem of Calculus extends to the Lebesgue setting: if $f$ is absolutely continuous, then $f' \\in L^1$ and $\\int_a^b f' = f(b) - f(a)$. Lebesgue measure provides the natural framework for this generalization"
     },
     {
       "targetId": "fourier-series",
-      "relationship": "Fourier series convergence in $L^2$ relies on the completeness of the Lebesgue $L^2$ space and the Riesz-Fischer theorem."
+      "relationship": "related",
+      "description": "Fourier series convergence in $L^2$ relies on the completeness of the Lebesgue $L^2$ space and the Riesz-Fischer theorem — the Lebesgue integral is essential for Fourier analysis"
     },
     {
       "targetId": "central-limit-theorem",
-      "relationship": "The Central Limit Theorem is stated and proved using measure-theoretic probability, where random variables are measurable functions and expectations are Lebesgue integrals."
+      "relationship": "related",
+      "description": "The Central Limit Theorem is stated and proved using measure-theoretic probability, where random variables are measurable functions and expectations are Lebesgue integrals"
     },
     {
       "targetId": "laws-of-large-numbers",
-      "relationship": "The Strong Law of Large Numbers uses dominated convergence and measure-theoretic tools to establish almost sure convergence of sample means."
+      "relationship": "related",
+      "description": "The Strong Law of Large Numbers uses dominated convergence and measure-theoretic tools to establish almost sure convergence of sample means"
     },
     {
       "targetId": "cauchy-schwarz-integral",
-      "relationship": "The integral Cauchy-Schwarz inequality $|\\int fg| \\leq \\|f\\|_2 \\|g\\|_2$ is a special case of Holder's inequality in the Lebesgue $L^2$ space."
+      "relationship": "related",
+      "description": "The integral Cauchy-Schwarz inequality $|\\int fg| \\leq \\|f\\|_2 \\|g\\|_2$ is a special case of Holder's inequality in the Lebesgue $L^2$ space"
     },
     {
       "targetId": "cantor-diagonalization",
-      "relationship": "Cantor's theorem that $\\mathbb{R}$ is uncountable connects to the existence of uncountable null sets (like the Cantor set) and non-measurable sets (Vitali's construction)."
+      "relationship": "related",
+      "description": "Cantor's theorem that $\\mathbb{R}$ is uncountable connects to the existence of uncountable null sets (like the Cantor set) and non-measurable sets (Vitali's construction)"
+    },
+    {
+      "targetId": "denumerability-rationals",
+      "relationship": "foundational",
+      "description": "The countability of $\\mathbb{Q}$ is directly used in the proof that $\\mu(\\mathbb{Q}) = 0$, and in the Dirichlet function integral showing $\\int_{[0,1]} \\mathbf{1}_{\\mathbb{Q}} = 0$"
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "related",
+      "description": "The measure-theoretic perspective connects: Liouville numbers form an uncountable measure-zero $G_\\delta$ set, a striking example of the Baire category vs Lebesgue measure duality that pervades real analysis"
     }
   ],
   "leanFile": {
@@ -236,20 +252,85 @@
       "year": "1999",
       "venue": "Wiley, 2nd edition",
       "note": "Standard graduate text with complete construction of Lebesgue measure via Carathéodory's extension theorem"
+    },
+    {
+      "authors": "Carathéodory, Constantin",
+      "title": "Über das lineare Maß von Punktmengen — eine Verallgemeinerung des Längenbegriffs",
+      "year": "1914",
+      "venue": "Nachrichten von der Gesellschaft der Wissenschaften zu Göttingen, pp. 404–426",
+      "note": "Introduced the Carathéodory extension theorem and measurability criterion used in Mathlib's construction of Lebesgue measure from outer measures"
+    },
+    {
+      "authors": "Rudin, Walter",
+      "title": "Real and Complex Analysis",
+      "year": "1987",
+      "venue": "McGraw-Hill, 3rd edition",
+      "note": "Comprehensive treatment of measure theory and Lebesgue integration with emphasis on the abstract measure-theoretic framework, including the convergence theorems and Fubini's theorem"
+    },
+    {
+      "authors": "Kolmogorov, Andrey N.",
+      "title": "Grundbegriffe der Wahrscheinlichkeitsrechnung",
+      "year": "1933",
+      "venue": "Springer (English translation: Foundations of the Theory of Probability, Chelsea, 1956)",
+      "note": "Axiomatized probability theory using Lebesgue measure theory, making the Lebesgue integral the foundation for expectations, conditional expectations, and limit theorems in probability"
+    },
+    {
+      "authors": "Vitali, Giuseppe",
+      "title": "Sul problema della misura dei gruppi di punti di una retta",
+      "year": "1905",
+      "venue": "Tipografia Gamberini e Parmeggiani, Bologna",
+      "note": "Constructed the first non-measurable set using the Axiom of Choice, proving that not every subset of ℝ can be assigned a Lebesgue measure — the restriction to σ-algebras is necessary"
+    },
+    {
+      "authors": "Wiedijk, Freek",
+      "title": "Formalizing 100 Theorems",
+      "year": "2008",
+      "venue": "https://www.cs.ru.nl/~freek/100/",
+      "note": "The definitive list of 100 well-known theorems and their formalization status. Lebesgue measure is #86"
     }
   ],
   "mainTheorems": [
     {
-      "name": "lebesgue_measure_interval",
-      "type": "core",
+      "name": "lebesgue_measure_Icc",
+      "type": "wrapper",
       "description": "The Lebesgue measure of [a,b] equals b - a",
-      "leanType": "a <= b -> volume (Icc a b) = ENNReal.ofReal (b - a)"
+      "leanType": "a ≤ b → volume (Set.Icc a b) = ENNReal.ofReal (b - a)"
     },
     {
-      "name": "countable_null",
-      "type": "key",
+      "name": "volume_add_left",
+      "type": "wrapper",
+      "description": "Lebesgue measure is translation-invariant: μ(E + c) = μ(E)",
+      "leanType": "(c : ℝ) → (s : Set ℝ) → MeasurableSet s → volume (c +ᵥ s) = volume s"
+    },
+    {
+      "name": "monotone_convergence",
+      "type": "wrapper",
+      "description": "Monotone convergence: if fₙ ↑ f then ∫fₙ → ∫f",
+      "leanType": "Monotone f → Filter.Tendsto (∫⁻ x, f n x ∂μ) atTop (nhds (∫⁻ x, ⨆ n, f n x ∂μ))"
+    },
+    {
+      "name": "dominated_convergence",
+      "type": "wrapper",
+      "description": "Dominated convergence: |fₙ| ≤ g integrable, fₙ → f a.e. implies ∫fₙ → ∫f",
+      "leanType": "Integrable bound μ → (∀ n, ‖f n x‖ ≤ bound x) → f n → g a.e. → ∫ f n → ∫ g"
+    },
+    {
+      "name": "fubini",
+      "type": "application",
+      "description": "Fubini: for integrable f, iterated integrals equal the product integral",
+      "leanType": "Integrable f (μ.prod ν) → ∫∫ f dμ dν = ∫ f d(μ.prod ν)"
+    },
+    {
+      "name": "dirichlet_integral_zero",
+      "type": "original",
+      "description": "The Dirichlet function integral: ∫₀¹ 𝟙_ℚ = 0 via measure zero of ℚ",
+      "leanType": "∫ x in Set.Icc 0 1, Set.indicator (Set.range (↑)) (fun _ => (1 : ℝ)) x = 0"
+    },
+    {
+      "name": "countable_measure_zero",
+      "type": "wrapper",
       "description": "Countable sets have Lebesgue measure zero",
-      "leanType": "Set.Countable S -> volume S = 0"
+      "leanType": "Set.Countable S → volume S = 0"
     }
   ]
 }
