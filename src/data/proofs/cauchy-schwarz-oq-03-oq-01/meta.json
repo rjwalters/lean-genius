@@ -85,7 +85,7 @@
       "summary": "Proves the Lagrange identity: ∑ᵢ∑ⱼ(fᵢgⱼ - fⱼgᵢ)² = 2·[(∑f²)(∑g²) - (∑fg)²]. The LHS is manifestly non-negative, giving CS as a corollary.",
       "startLine": 26,
       "endLine": 58,
-      "mathContext": "Proves the Lagrange identity: ∑ᵢ∑ⱼ(fᵢgⱼ - fⱼgᵢ)² = 2·[(∑f²)(∑g²) - (∑fg)²]. The LHS is manifestly non-negative, giving CS as a corollary."
+      "mathContext": "$\\sum_{i<j}(f_ig_j - f_jg_i)^2 = \\left(\\sum f_i^2\\right)\\left(\\sum g_i^2\\right) - \\left(\\sum f_ig_i\\right)^2$. The Lagrange identity makes CS inequality trivial: the LHS is $\\geq 0$."
     },
     {
       "id": "sum-sq-zero",
@@ -93,7 +93,7 @@
       "summary": "∑hᵢ² = 0 iff each hᵢ = 0. Extended to double sums. The fundamental technique reused for Hölder via Young deficits.",
       "startLine": 59,
       "endLine": 82,
-      "mathContext": "∑hᵢ² = 0 iff each hᵢ = 0. Extended to double sums. The fundamental technique reused for Hölder via Young deficits."
+      "mathContext": "$\\sum_{i} h_i^2 = 0 \\iff \\forall i,\\, h_i = 0$ (for $h_i \\in \\mathbb{R}$). Extended: $\\sum_{i,j} h_{ij}^2 = 0 \\iff \\forall i,j,\\, h_{ij} = 0$."
     },
     {
       "id": "cs-equality-iff",
@@ -101,7 +101,7 @@
       "summary": "Full iff: equality in CS holds iff all cross-terms fᵢgⱼ = fⱼgᵢ vanish. Extracts proportionality: fᵢ = c·gᵢ when some gₖ ≠ 0.",
       "startLine": 83,
       "endLine": 149,
-      "mathContext": "Full iff: equality in CS holds iff all cross-terms fᵢgⱼ = fⱼgᵢ vanish. Extracts proportionality: fᵢ = c·gᵢ when some gₖ ≠ 0."
+      "mathContext": "Equality in CS: $\\left(\\sum f_ig_i\\right)^2 = \\left(\\sum f_i^2\\right)\\left(\\sum g_i^2\\right) \\iff \\forall i,j,\\, f_ig_j = f_jg_i$ (i.e., $\\mathbf{f}$ and $\\mathbf{g}$ are proportional)."
     },
     {
       "id": "inner-product-equality",
@@ -109,7 +109,7 @@
       "summary": "Abstract characterization: ‖⟨u,v⟩‖ = ‖u‖·‖v‖ iff ∃c, u = c•v. Both norm and absolute value forms.",
       "startLine": 150,
       "endLine": 177,
-      "mathContext": "Abstract characterization: ‖⟨u,v⟩‖ = ‖u‖·‖v‖ iff ∃c, u = c•v. Both norm and absolute value forms."
+      "mathContext": "$|\\langle u, v \\rangle| = \\|u\\| \\cdot \\|v\\| \\iff \\exists c \\in K,\\, u = c \\cdot v$ (linear dependence). Both norm and absolute-value forms equivalent."
     },
     {
       "id": "holder-cs-finite",
@@ -117,7 +117,7 @@
       "summary": "Hölder for NNReal sums via Mathlib, CS from Lagrange, and concrete equality/strict-inequality examples.",
       "startLine": 178,
       "endLine": 230,
-      "mathContext": "Hölder for NNReal sums via Mathlib, CS from Lagrange, and concrete equality/strict-inequality examples."
+      "mathContext": "**Hölder**: $\\sum |f_ig_i| \\leq \\left(\\sum |f_i|^p\\right)^{1/p}\\left(\\sum |g_i|^q\\right)^{1/q}$ for $\\frac{1}{p}+\\frac{1}{q}=1$. **CS** = Hölder at $p=q=2$."
     },
     {
       "id": "conjugate-identities",
@@ -125,7 +125,7 @@
       "summary": "Five identities for Hölder conjugate pairs: q=p/(p-1), (p-1)(q-1)=1, q/p+1=q, 1<q, p+q=pq.",
       "startLine": 231,
       "endLine": 293,
-      "mathContext": "Five identities for Hölder conjugate pairs: q=p/(p-1), (p-1)(q-1)=1, q/p+1=q, 1<q, p+q=pq."
+      "mathContext": "$\\frac{1}{p}+\\frac{1}{q}=1 \\iff q = \\frac{p}{p-1} \\iff (p-1)(q-1) = 1 \\iff \\frac{q}{p}+1 = q \\iff 1 < p < \\infty \\wedge 1 < q < \\infty$."
     },
     {
       "id": "young-equality",
@@ -133,7 +133,7 @@
       "summary": "Defines Young deficit a^p/p + b^q/q - ab. Full iff: deficit = 0 ↔ a^p = b^q. Forward via exp/log; reverse via strict convexity of exp.",
       "startLine": 294,
       "endLine": 461,
-      "mathContext": "Defines Young deficit a^p/p + b^q/q - ab. Full iff: deficit = 0 ↔ a^p = b^q. Forward via exp/log; reverse via strict convexity of exp."
+      "mathContext": "**Young's inequality**: $ab \\leq \\frac{a^p}{p} + \\frac{b^q}{q}$ for $a,b \\geq 0$ and $\\frac{1}{p}+\\frac{1}{q}=1$. **Equality**: $\\frac{a^p}{p}+\\frac{b^q}{q} - ab = 0 \\iff a^p = b^q$."
     },
     {
       "id": "holder-equality",
@@ -141,7 +141,7 @@
       "summary": "Reduces Hölder equality to pointwise Young equality: sum of deficits = 0 forces each deficit = 0. Normalized and general cases with both directions.",
       "startLine": 462,
       "endLine": 600,
-      "mathContext": "Reduces Hölder equality to pointwise Young equality: sum of deficits = 0 forces each deficit = 0. Normalized and general cases with both directions."
+      "mathContext": "Equality in Hölder: $\\sum f_ig_i = \\left(\\sum f_i^p\\right)^{1/p}\\left(\\sum g_i^q\\right)^{1/q} \\iff \\exists c > 0,\\, f_i^p = c \\cdot g_i^q$ for all $i$ (power proportionality)."
     },
     {
       "id": "cs-from-holder",
@@ -149,7 +149,7 @@
       "summary": "At p=q=2, power proportionality fᵢ² = c·gᵢ² reduces to linear proportionality fᵢ = √c·gᵢ for non-negative functions.",
       "startLine": 626,
       "endLine": 651,
-      "mathContext": "At p=q=2, power proportionality fᵢ² = c·gᵢ² reduces to linear proportionality fᵢ = √c·gᵢ for non-negative functions."
+      "mathContext": "At $p = q = 2$: power proportionality $f_i^2 = c \\cdot g_i^2$ reduces to linear proportionality $f_i = \\pm\\sqrt{c} \\cdot g_i$, recovering the standard CS equality condition."
     },
     {
       "id": "integral-holder-equality",
@@ -157,7 +157,7 @@
       "summary": "Lifts Hölder equality to integrals: ∫fg = ‖f‖_p‖g‖_q iff f^p =ᵃᵉ c·g^q. Uses integral_eq_zero_iff_of_nonneg_ae as the measure-theoretic 'sum of nonneg = 0'.",
       "startLine": 652,
       "endLine": 835,
-      "mathContext": "Lifts Hölder equality to integrals: ∫fg = ‖f‖_p‖g‖_q iff f^p =ᵃᵉ c·g^q. Uses integral_eq_zero_iff_of_nonneg_ae as the measure-theoretic 'sum of nonneg = 0'."
+      "mathContext": "$\\int fg = \\|f\\|_p\\|g\\|_q \\iff f^p =_{\\text{a.e.}} c \\cdot g^q$ for some $c > 0$. Proof: integral of nonneg Young deficit = 0 forces pointwise equality a.e."
     }
   ],
   "overview": {
