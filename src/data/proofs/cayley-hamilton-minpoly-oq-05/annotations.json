@@ -139,11 +139,11 @@
     "proofId": "cayley-hamilton-minpoly-oq-05",
     "range": {
       "startLine": 166,
-      "endLine": 239
+      "endLine": 232
     },
     "type": "technique",
     "title": "Algebra Tower: Base Change of Minimal Polynomials",
-    "content": "**Tower theorems** for $K \\subseteq L \\subseteq A$:\n\n1. **Integrality lifts**: `IsIntegral K x → IsIntegral L x` via `IsIntegral.tower_top`\n2. **Tower divisibility**: $\\mu_L(x) | \\text{map}(\\mu_K(x))$ — the minimal polynomial over $L$ divides the base-changed one over $K$\n3. **Degree bound**: $\\deg(\\mu_L(x)) \\le \\deg(\\mu_K(x))$ — more polynomials available over $L$ means potentially smaller minpoly\n4. **Equality condition** (1 sorry): $\\mu_L(x) = \\text{map}(\\mu_K(x))$ when $\\text{map}(\\mu_K(x))$ remains irreducible over $L$\n\nThe sorry is in showing associated monic polynomials are equal.",
+    "content": "**Tower theorems** for $K \\subseteq L \\subseteq A$:\n\n1. **Integrality lifts**: `IsIntegral K x → IsIntegral L x` via `IsIntegral.tower_top`\n2. **Tower divisibility**: $\\mu_L(x) | \\text{map}(\\mu_K(x))$ — the minimal polynomial over $L$ divides the base-changed one over $K$\n3. **Degree bound**: $\\deg(\\mu_L(x)) \\le \\deg(\\mu_K(x))$ — more polynomials available over $L$ means potentially smaller minpoly\n4. **Equality condition**: $\\mu_L(x) = \\text{map}(\\mu_K(x))$ when $\\text{map}(\\mu_K(x))$ remains irreducible over $L$ (proved via `minpoly.eq_of_irreducible_of_monic`)",
     "mathContext": "In the tower $K \\subset L$, the base change $\\mu_K \\mapsto \\mu_K \\otimes_K L$ gives an annihilating polynomial over $L$. Since $\\mu_L$ is the minimal such, $\\mu_L | (\\mu_K \\otimes L)$. Equality holds iff $\\mu_K$ stays irreducible over $L$ — the criterion for the extension $K(x)/K$ being linearly disjoint from $L/K$.",
     "significance": "key",
     "relatedConcepts": [

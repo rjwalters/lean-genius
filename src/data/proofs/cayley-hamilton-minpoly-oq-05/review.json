@@ -101,28 +101,28 @@
       "priority": "high",
       "target": "enricher",
       "description": "Remove all stale sorry references: update originalContributions[7] to remove '(1 sorry)', update sections[6].summary to remove '1 sorry remaining', remove conclusion.openQuestions[0] about completing the sorry, and update annotation ann-chmoq05-6 to remove '(1 sorry)' from content.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "medium",
       "target": "enricher",
       "description": "Unify badge fields: both meta.badge and root badge should be 'verified' (0 sorries, 0 axioms = verified per project conventions).",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "medium",
       "target": "enricher",
       "description": "Reframe originalContributions to distinguish substantive proofs (minpoly_reduction, minpoly_annihilator_iff, minpoly_congruence_iff, power_reduction, minpoly_natDegree_tower_le) from pedagogical Mathlib wrappers (minpoly_dvd_of_idempotent etc.).",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "low",
       "target": "enricher",
       "description": "Remove minpoly.irreducible from mathlibDependencies (not used in the Lean file). Fix annotation ann-chmoq05-6 endLine from 239 to 232.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
 
