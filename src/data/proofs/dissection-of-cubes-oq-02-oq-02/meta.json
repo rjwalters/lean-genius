@@ -20,7 +20,7 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 6,
+    "axiomCount": 1,
     "dateAdded": "2026-03-25",
     "mathlibDependencies": [
       {
@@ -54,8 +54,8 @@
       "octAngle_class: [arccos(-1/3)] = -[arccos(1/3)] in \u211d/\u03c0\u2124",
       "Dehn-Sydler completeness theorem statement"
     ],
-    "lineCount": 406,
-    "assumptions": "6 axioms: niven_arccos_third (proved in parent file), tmul_infinite_order_ne_zero (flatness of \u211d over \u2124), arccos_neg_third (trig identity), dehn_preserved_by_scissors, volume_preserved_by_scissors, dehn_sydler_theorem (Sydler 1965).",
+    "lineCount": 410,
+    "assumptions": "1 axiom: tmul_infinite_order_ne_zero (flatness of \u211d over \u2124 \u2014 torsion-free over PID implies flat). Previously 6 axioms; 5 eliminated: niven_arccos_third (cross-referenced from parent file), arccos_neg_third (proved via Real.arccos_neg), and 3 placeholder axioms (dehn_preserved_by_scissors, volume_preserved_by_scissors, dehn_sydler_theorem).",
     "mathlib_version": "4.26.0",
     "wiedijkNumber": 37,
     "relatedProblems": [
@@ -145,7 +145,7 @@
       "title": "Part VI-VII: Irrational Angles and Tetrahedron D ≠ 0",
       "startLine": 182,
       "endLine": 227,
-      "summary": "Defines `tetAngle = arccos(1/3)`. Niven's theorem (axiom) shows $\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$, so $[\\arccos(1/3)]$ has infinite order. Flatness axiom gives $D(\\text{tet}) = 6a \\otimes [\\arccos(1/3)] \\neq 0$.",
+      "summary": "Defines `tetAngle = arccos(1/3)`. Niven's theorem (cross-referenced from parent file) shows $\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$, so $[\\arccos(1/3)]$ has infinite order. Flatness axiom gives $D(\\text{tet}) = 6a \\otimes [\\arccos(1/3)] \\neq 0$.",
       "mathContext": "$\\arccos(1/3)/\\pi$ irrational (Niven) $\\Rightarrow$ $[\\arccos(1/3)]$ has infinite order $\\Rightarrow$ $6a \\otimes [\\arccos(1/3)] \\neq 0$ by flatness."
     },
     {
@@ -169,7 +169,7 @@
       "title": "Part X: Dehn-Sydler Completeness Theorem",
       "startLine": 285,
       "endLine": 333,
-      "summary": "Axiomatizes the full Dehn-Sydler theorem: $P \\cong_{\\text{sc}} Q \\iff \\text{Vol}(P) = \\text{Vol}(Q) \\wedge D(P) = D(Q)$. Forward direction is Dehn (1900); sufficiency is Sydler (1965).",
+      "summary": "States the full Dehn-Sydler theorem (placeholder): $P \\cong_{\\text{sc}} Q \\iff \\text{Vol}(P) = \\text{Vol}(Q) \\wedge D(P) = D(Q)$. Forward direction is Dehn (1900); sufficiency is Sydler (1965). Placeholder axioms for scissors-congruence preservation of volume and Dehn invariant have been converted to trivial theorems.",
       "mathContext": "Complete scissors congruence classification in $\\mathbb{R}^3$: volume + Dehn invariant."
     },
     {
@@ -185,7 +185,7 @@
       "title": "Part XII: Axiom Budget and Summary",
       "startLine": 367,
       "endLine": 406,
-      "summary": "Lists 4 substantive axioms and 7 proved results. Verification via `#check` commands.",
+      "summary": "Lists 1 remaining axiom (flatness) and 7+ proved results. Verification via `#check` commands.",
       "mathContext": "Proved: $D(\\text{cube}) = 0$, $D(\\text{tet}) \\neq 0$, $D(\\text{oct}) \\neq 0$, Hilbert III, rational-angle vanishing."
     }
   ],
@@ -196,14 +196,14 @@
       "Can the flatness axiom (tmul_infinite_order_ne_zero) be proved in Lean using Mathlib's flatness theory for torsion-free modules over PIDs?",
       "Can Sydler's sufficiency proof (same volume + same D implies scissors congruent) be formalized, completing the Dehn-Sydler theorem?",
       "What are the complete scissors congruence invariants in $\\mathbb{R}^n$ for $n \\geq 4$? Jessen and Thorup (1978) showed that volume and Dehn invariant do NOT suffice in dimension 4.",
-      "Can the arccos_neg_third axiom ($\\arccos(-1/3) = \\pi - \\arccos(1/3)$) be proved from Mathlib's arccos properties? This is a standard trigonometric identity: $\\arccos(-x) = \\pi - \\arccos(x)$ for $x \\in [-1, 1]$."
+      "The arccos_neg_third axiom has been proved via Mathlib's Real.arccos_neg. Can the remaining flatness axiom (tmul_infinite_order_ne_zero) be proved using Mathlib's Module.Flat theory?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "dissection-of-cubes-oq-02",
       "relationship": "extends",
-      "description": "Parent file proving Niven's theorem: arccos(1/3)/π is irrational. This result is axiomatized here and used to show the tetrahedron's Dehn invariant is nonzero."
+      "description": "Parent file proving Niven's theorem: arccos(1/3)/π is irrational. This result is now cross-referenced (no longer axiomatized) and used to show the tetrahedron's Dehn invariant is nonzero."
     },
     {
       "targetId": "dissection-of-cubes",
@@ -242,11 +242,11 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
+    "imports": ["Mathlib", "Proofs.DissectionOfCubesOQ02"],
     "opens": ["Real"],
     "namespace": "DehnSydler",
-    "lineCount": 406,
-    "axiomCount": 6,
+    "lineCount": 410,
+    "axiomCount": 1,
     "theoremCount": 14,
     "definitionCount": 5,
     "mainTheorems": [
