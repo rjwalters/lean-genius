@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Removed false axiom sum_divisor_ratios_lower_bound (4→3 axioms). Fixed 3 pre-existing Mathlib v4.26.0 API breaks.",
+    "progressSummary": "PROGRESS: power_of_two_h_alpha converted from axiom to theorem (2 sorry helpers pending). 2 axioms remain (Vose 1984). sum_divisor_ratios_lower_bound removed (false bound).",
     "builtItems": [
       "17 new infrastructure theorems for sorted divisor properties",
       "first_divisor_is_one theorem (was axiom)",
@@ -43,7 +43,10 @@
       "Fixed le_div_iff → le_div_iff₀ rename in zipWith_div_ge_one",
       "Fixed Real.rpow_le_rpow_left → Real.rpow_le_rpow_of_exponent_le rename",
       "Fixed List.mem_cons_self → .head _ for membership proofs",
-      "Fixed List.mem_map.mpr → simp [List.mem_map] + apply List.single_le_sum pattern"
+      "Fixed List.mem_map.mpr → simp [List.mem_map] + apply List.single_le_sum pattern",
+      "power_of_two_h_alpha theorem (was axiom): h_alpha α (2^k) = k",
+      "flatMap_singleton_eq_map: normalize monadic flatMap to List.map",
+      "list_bind_pure_ratCast: bridge monad do/pure to explicit map for ℚ→ℝ cast"
     ],
     "insights": [
       "divisorRatios had a critical bug: computed d_i/d_{i+1} instead of d_{i+1}/d_i",
@@ -54,14 +57,16 @@
       "For prime unboundedness: Nat.exists_infinite_primes + rpow_le_rpow_left for exponent monotonicity",
       "Real.rpow_nonneg requires 0 <= base; for ratios >= 1 we get base = ratio - 1 >= 0",
       "sum_divisor_ratios_lower_bound axiom was FALSE: claimed Σ(d_{i+1}/dᵢ) > τ(n) + log(n) but correct bound is τ(n)-1+log(n) (off by 1 because there are τ-1 ratios, not τ). Counterexample: n=2, sum=2 but τ+log(2)≈2.69. Removed the false axiom.",
-      "Lean 4 v4.26.0 has List.map normalization issues: map f l normalizes to do/flatMap form, breaking List.mem_map.mpr and List.single_le_sum proofs"
+      "Lean 4 v4.26.0 has List.map normalization issues: map f l normalizes to do/flatMap form, breaking List.mem_map.mpr and List.single_le_sum proofs",
+      "sum_divisor_ratios_lower_bound was FALSE: fails for n=2 (2 > 2+ln2≈2.69), n=6 (5.5 > 4+ln6≈5.79)",
+      "Lean4 monad elaboration creates do/pure form when composing List.map with casts — need flatMap_singleton helper to normalize"
     ],
     "mathlibGaps": [
       "No direct Finset.sort getLast = max lemma"
     ],
     "nextSteps": [
-      "Prove power_of_two_h_alpha via Nat.divisors_prime_pow + sorted list computation",
-      "Prove sum_divisor_ratios_lower_bound via AM-GM + telescoping product"
+      "Fill in sortedDivisors_two_pow sorry via Perm.eq_of_pairwise + Nat.divisors_prime_pow",
+      "Fill in divisorRatios_two_pow sorry via sortedDivisors_two_pow + zipWith computation"
     ]
   },
   "tags": [
