@@ -188,6 +188,11 @@
       "targetId": "ramseys-theorem",
       "description": "Both concern coloring/partition problems: Ramsey theory partitions edges, #603 partitions hypergraph vertices (set families) avoiding intersection conditions",
       "relationship": "related"
+    },
+    {
+      "targetId": "erdos-36",
+      "relationship": "related",
+      "description": "Both involve partition/coloring problems with structural constraints. Problem #36 studies minimum overlap in partitions, while #603 studies colorings of set families with intersection constraints — both explore when partitions must create specific substructure"
     }
   ],
   "leanFile": {

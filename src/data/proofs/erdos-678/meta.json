@@ -157,6 +157,11 @@
       "targetId": "erdos-367",
       "relationship": "related",
       "description": "Both concern multiplicative structure of consecutive integers: #367 studies products of powerful parts, #678 studies LCM of consecutive intervals"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem on subgroup orders constrains the LCM of divisors studied in Problem #678. The LCM of a set of integers is governed by their prime factorizations, and Lagrange's theorem provides structural constraints on how these factorizations interact within the multiplicative group (ℤ/nℤ)×"
     }
   ],
   "leanFile": {
