@@ -79,39 +79,7 @@
     "historicalContext": "Erdős asked Mahler whether infinitely many consecutive powerful pairs exist. Mahler immediately answered yes, observing that solutions to the Pell equation x² - 8y² = 1 yield pairs (8y², 8y² + 1) where both terms are powerful. The fundamental solution (3, 1) gives the pair (8, 9). Erdős then posed the deeper question: must all such pairs arise from Pell equations? Equivalently, must either n or n+1 be a perfect square?\n\nGolomb (1970) answered this decisively: NO. He exhibited the counterexample 12167 = 23³ and 12168 = 2³·3²·13², both powerful with neither being a perfect square. Walker (1976) went further, showing that the generalized Pell equation 343x² = 27y² + 1 has infinitely many solutions, each producing a consecutive powerful pair where neither element is a square. This demonstrated that non-Pell counterexamples are not isolated curiosities but form infinite families.\n\nThe second part of the problem — whether the counting function P(x) = |{n ≤ x : n and n+1 both powerful}| satisfies P(x) = O((log x)^C) — remains open. Since most known pairs come from Pell-type equations, whose solution counts grow polylogarithmically, the bound is widely expected to hold. The problem connects to fundamental questions about the distribution of powerful numbers and the structure of Diophantine equations.",
     "problemStatement": "Q1: Do all pairs of consecutive powerful numbers n, n+1 come from Pell equations? Equivalently, must either n or n+1 be a square? Q2: Is the number of such n ≤ x bounded by (log x)^O(1)?",
     "text": "A powerful (or squarefull) number n satisfies p^2 | n for every prime p | n, equivalently n = a^2 b^3. These numbers have density ~c sqrt(x) up to x, but consecutive powerful pairs are far rarer. Mahler showed Pell equations produce infinitely many such pairs, e.g. (8, 9) from x^2 - 8y^2 = 1. Erdos asked: must every consecutive powerful pair arise from a Pell equation -- i.e., must one element be a perfect square? Golomb (1970) disproved this with the pair (12167, 12168) = (23^3, 2^3 * 3^2 * 13^2), and Walker (1976) showed infinitely many non-Pell pairs exist via the generalized equation 343x^2 = 27y^2 + 1. The counting question -- whether the number of pairs up to x is O((log x)^C) -- remains open.",
-    "proofStrategy": {
-      "overview": "The formalization proceeds in seven parts, building from definitions through proved examples to axiomatized deep results, culminating in a summary theorem that packages the resolved portion of the problem.",
-      "parts": [
-        {
-          "name": "Part I: Powerful Numbers",
-          "description": "Defines IsPowerful via prime factorization (p^2 | n for all primes p | n) and the equivalent characterization IsPowerfulAlt (n = a^2 b^3). Axiomatizes that all perfect squares and cubes are powerful."
-        },
-        {
-          "name": "Part II: Consecutive Powerful Pairs",
-          "description": "Defines IsConsecutivePowerfulPair and proves the smallest example (8, 9) by enumerating prime divisors with interval_cases and verifying divisibility conditions with decide."
-        },
-        {
-          "name": "Part III: Pell Equation Connection",
-          "description": "Formalizes IsPellSolution and axiomatizes Mahler's observation that solutions to x^2 = 8y^2 + 1 yield consecutive powerful pairs, together with the existence of infinitely many such solutions."
-        },
-        {
-          "name": "Part IV: Question 1 Refutation",
-          "description": "Formalizes Question1 as a Prop and axiomatizes its negation. Records Golomb's specific counterexample (12167, 12168) with verified factorizations 12167 = 23^3 and 12168 = 2^3 * 3^2 * 13^2 via native_decide."
-        },
-        {
-          "name": "Part V: Walker's Infinite Family",
-          "description": "Formalizes WalkerEquation (7^3 x^2 = 3^3 y^2 + 1) and axiomatizes both the existence of infinitely many solutions and the fact that each solution yields a non-square consecutive powerful pair."
-        },
-        {
-          "name": "Part VI: Question 2",
-          "description": "Defines the counting function P(x) as a Finset.card computation and formalizes the open Question2 as the existence of constants C, K such that P(x) <= K (log x)^C."
-        },
-        {
-          "name": "Part VII: Summary",
-          "description": "The theorem erdos_365_summary packages three results into a conjunction: negation of Question1, Golomb's counterexample, and Walker's infinite family, using the axioms directly."
-        }
-      ]
-    },
+    "proofStrategy": "The formalization proceeds in seven parts, building from definitions through proved examples to axiomatized deep results, culminating in a summary theorem that packages the resolved portion of the problem. Part I: Powerful Numbers: Defines IsPowerful via prime factorization (p^2 | n for all primes p | n) and the equivalent characterization IsPowerfulAlt (n = a^2 b^3). Axiomatizes that all perfect squares and cubes are powerful. Part II: Consecutive Powerful Pairs: Defines IsConsecutivePowerfulPair and proves the smallest example (8, 9) by enumerating prime divisors with interval_cases and verifying divisibility conditions with decide. Part III: Pell Equation Connection: Formalizes IsPellSolution and axiomatizes Mahler's observation that solutions to x^2 = 8y^2 + 1 yield consecutive powerful pairs, together with the existence of infinitely many such solutions. Part IV: Question 1 Refutation: Formalizes Question1 as a Prop and axiomatizes its negation. Records Golomb's specific counterexample (12167, 12168) with verified factorizations 12167 = 23^3 and 12168 = 2^3 * 3^2 * 13^2 via native_decide. Part V: Walker's Infinite Family: Formalizes WalkerEquation (7^3 x^2 = 3^3 y^2 + 1) and axiomatizes both the existence of infinitely many solutions and the fact that each solution yields a non-square consecutive powerful pair. Part VI: Question 2: Defines the counting function P(x) as a Finset.card computation and formalizes the open Question2 as the existence of constants C, K such that P(x) <= K (log x)^C. Part VII: Summary: The theorem erdos_365_summary packages three results into a conjunction: negation of Question1, Golomb's counterexample, and Walker's infinite family, using the axioms directly.",
     "keyInsights": [
       "Q1 is FALSE: Golomb found 12167 = 23³, 12168 = 2³·3²·13² (neither square)",
       "Walker: infinitely many counterexamples via 7³x² = 3³y² + 1",
