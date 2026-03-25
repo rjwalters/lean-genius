@@ -189,6 +189,98 @@ theorem bot_isProPSubgroup (G : Type*) [Group G] [TopologicalSpace G]
       exact Nat.card_unique
     exact this
 
+/-
+## Conjugation Preserves Sylow Pro-p Structure
+
+Conjugation by any group element is a topological group automorphism,
+hence preserves closedness, pro-p, and maximality. We use this to
+construct the conjugate of a SylowProP, then uniqueness forces normality.
+-/
+
+section ConjugateSylow
+
+variable {G : Type*} [Group G] [TopologicalSpace G]
+
+/-- The image of a closed subgroup under conjugation is closed. -/
+theorem isClosed_conj_map (hpf : IsProfiniteGroup G) (H : Subgroup G) (g : G)
+    (hclosed : IsClosed (H : Set G)) :
+    IsClosed (H.map (MulAut.conj g).toMonoidHom : Set G) := by
+  haveI : ContinuousMul G := ⟨hpf.continuous_mul⟩
+  haveI : ContinuousInv G := ⟨hpf.continuous_inv⟩
+  have hcont : Continuous (fun x : G => g * x * g⁻¹) :=
+    (continuous_mul_right g⁻¹).comp (continuous_mul_left g)
+  have hcont_inv : Continuous (fun x : G => g⁻¹ * x * g) :=
+    (continuous_mul_right g).comp (continuous_mul_left g⁻¹)
+  let φ : G ≃ₜ G := {
+    toEquiv := (MulAut.conj g).toEquiv
+    continuous_toFun := hcont
+    continuous_invFun := hcont_inv
+  }
+  have hset : (H.map (MulAut.conj g).toMonoidHom : Set G) = φ '' (H : Set G) := by
+    ext x; constructor
+    · rintro ⟨y, hy, rfl⟩; exact ⟨y, hy, rfl⟩
+    · rintro ⟨y, hy, rfl⟩; exact ⟨y, hy, rfl⟩
+  rw [hset]; exact φ.isClosedMap _ hclosed
+
+/-- Conjugation preserves the pro-p property via MulEquiv index transfer. -/
+theorem isProP_conj_map (hpf : IsProfiniteGroup G) (H : Subgroup G) (g : G) (p : ℕ)
+    (hprop : IsProP H p) :
+    IsProP (H.map (MulAut.conj g).toMonoidHom) p := by
+  haveI : ContinuousMul G := ⟨hpf.continuous_mul⟩
+  haveI : ContinuousInv G := ⟨hpf.continuous_inv⟩
+  constructor
+  intro N hN hNopen
+  let φ : ↥H ≃* ↥(H.map (MulAut.conj g).toMonoidHom) :=
+    (MulAut.conj g).subgroupMap H
+  let N' := N.comap φ.toMonoidHom
+  have hN'_normal : N'.Normal := Subgroup.Normal.comap hN φ.toMonoidHom
+  have hφ_cont : Continuous φ := by
+    apply continuous_induced_rng.mpr
+    exact ((continuous_mul_right g⁻¹).comp (continuous_mul_left g)).comp continuous_subtype_val
+  have hN'_open : IsOpen (N' : Set ↥H) := hNopen.preimage hφ_cont
+  obtain ⟨k, hk⟩ := hprop.index_of_open_normal N' hN'_normal hN'_open
+  use k
+  rw [show N.index = N'.index from ?_]
+  · exact hk
+  · unfold Subgroup.index
+    apply Nat.card_congr
+    exact Quotient.congr φ.toEquiv (fun a b => by
+      simp only [QuotientGroup.leftRel_apply]
+      show a⁻¹ * b ∈ N.comap φ.toMonoidHom ↔
+        (φ.toEquiv a)⁻¹ * (φ.toEquiv b) ∈ N
+      rw [Subgroup.mem_comap]
+      constructor
+      · intro h; rwa [map_mul, map_inv] at h
+      · intro h; rw [map_mul, map_inv]; exact h)
+
+/-- Conjugating a Sylow pro-p subgroup produces another Sylow pro-p subgroup. -/
+noncomputable def SylowProP.conjBy (P : SylowProP G p) (g : G)
+    (hpf : IsProfiniteGroup G) [Fact (Nat.Prime p)] : SylowProP G p where
+  toSubgroup := P.toSubgroup.map (MulAut.conj g).toMonoidHom
+  isClosed := isClosed_conj_map hpf P.toSubgroup g P.isClosed
+  isProP := isProP_conj_map hpf P.toSubgroup g p P.isProP
+  isMaximal := by
+    intro H hHclosed hHprop hcontains
+    have key : H.map (MulAut.conj g⁻¹).toMonoidHom = P.toSubgroup := by
+      symm
+      apply P.isMaximal (H.map (MulAut.conj g⁻¹).toMonoidHom)
+        (isClosed_conj_map hpf H g⁻¹ hHclosed)
+        (isProP_conj_map hpf H g⁻¹ p hHprop)
+      intro x hx
+      rw [Subgroup.mem_map]
+      exact ⟨(MulAut.conj g) x,
+        hcontains (Subgroup.mem_map.mpr ⟨x, hx, rfl⟩),
+        by simp [MulAut.conj_apply]; group⟩
+    have step := congr_arg (fun K => K.map (MulAut.conj g).toMonoidHom) key
+    rw [Subgroup.map_map] at step
+    have hcomp : (MulAut.conj g).toMonoidHom.comp (MulAut.conj g⁻¹).toMonoidHom =
+        MonoidHom.id G := by
+      ext x; simp [MulAut.conj_apply]; group
+    rw [hcomp, Subgroup.map_id] at step
+    exact step.symm
+
+end ConjugateSylow
+
 /-- If a profinite group has a unique Sylow pro-p subgroup, it is normal. -/
 theorem sylowProP_normal_of_unique {G : Type*} [Group G] [TopologicalSpace G]
     (hpf : IsProfiniteGroup G)
@@ -198,10 +290,11 @@ theorem sylowProP_normal_of_unique {G : Type*} [Group G] [TopologicalSpace G]
     P.toSubgroup.Normal := by
   constructor
   intro n hn g
-  -- By conjugacy, there exists g' conjugating P to P
-  -- By uniqueness, conjugation by any element preserves P
-  -- Full proof requires constructing conjugate as a SylowProP
-  sorry
+  let Q := P.conjBy g hpf
+  have hQ : Q.toSubgroup = P.toSubgroup := hunique Q
+  have hmem : g * n * g⁻¹ ∈ Q.toSubgroup :=
+    Subgroup.mem_map.mpr ⟨n, hn, by simp [MulAut.conj_apply]⟩
+  rwa [hQ] at hmem
 
 /-
 ## Finite Recovery: Connecting to Classical Sylow Theory
@@ -217,7 +310,6 @@ theorem isProP_iff_isPGroup_finite (G : Type*) [Group G] [Fintype G]
   · intro ⟨h⟩
     obtain ⟨k, hk⟩ := h ⊥ inferInstance (isOpen_discrete _)
     rw [Subgroup.index_bot] at hk
-    -- hk : Nat.card G = p ^ k
     exact IsPGroup.of_card hk
   · intro hpg
     constructor
@@ -225,8 +317,7 @@ theorem isProP_iff_isPGroup_finite (G : Type*) [Group G] [Fintype G]
     rw [show N.index = Nat.card (G ⧸ N) from rfl]
     exact IsPGroup.iff_card.mp (IsPGroup.to_quotient hpg N)
 
-/-- For a finite group, every classical Sylow p-subgroup is closed and pro-p.
-    This bridges classical and profinite Sylow theory. -/
+/-- For a finite group, every classical Sylow p-subgroup is closed and pro-p. -/
 theorem finite_sylow_is_proP (G : Type*) [Group G] [Fintype G]
     [TopologicalSpace G] [DiscreteTopology G]
     (p : ℕ) [Fact p.Prime] (P : Sylow p G) :
@@ -237,8 +328,7 @@ theorem finite_sylow_is_proP (G : Type*) [Group G] [Fintype G]
   rw [show N.index = Nat.card ((↑P : Subgroup G) ⧸ N) from rfl]
   exact IsPGroup.iff_card.mp (IsPGroup.to_quotient P.isPGroup' N)
 
-/-- A pro-p subgroup of a finite group has p-power order.
-    This is the discrete/finite version of the profinite theory. -/
+/-- A pro-p subgroup of a finite group has p-power order. -/
 theorem proP_subgroup_card_ppow (G : Type*) [Group G] [Fintype G]
     [TopologicalSpace G] [DiscreteTopology G]
     (H : Subgroup G) (p : ℕ) [Fact p.Prime]
@@ -253,8 +343,7 @@ theorem proP_subgroup_card_ppow (G : Type*) [Group G] [Fintype G]
 ## Counting Theorem for Finite Quotients
 -/
 
-/-- In any finite group (and hence in any finite quotient of a profinite group),
-    the Sylow counting theorem holds: n_p ≡ 1 (mod p). -/
+/-- In any finite group, the Sylow counting theorem holds: n_p ≡ 1 (mod p). -/
 theorem finite_quotient_sylow_count
     (H : Type*) [Group H] [Fintype H]
     (p : ℕ) [Fact p.Prime] [Finite (Sylow p H)] :
@@ -271,19 +360,25 @@ theorem finite_quotient_sylow_count
 | Frattini Argument | axiom | Profinite generalization |
 | Projection to p-groups | axiom | Quotient bridge |
 | Distinct primes trivial | axiom | Order argument |
+| Conjugate is closed | theorem | Proved (homeomorphism) |
+| Conjugate is pro-p | theorem | Proved (MulEquiv index transfer) |
+| Conjugate is SylowProP | def | Proved (above + maximality) |
 | Compact Sylow subgroups | theorem | Proved |
 | Trivial subgroup pro-p | theorem | Proved |
-| Uniqueness → normality | theorem | 1 sorry |
+| Uniqueness → normality | theorem | Proved (conjugate construction) |
 | Pro-p ↔ p-group (finite) | theorem | Proved |
 | Finite Sylow is pro-p | theorem | Proved |
 | Pro-p has p-power order | theorem | Proved |
 | Counting in quotients | theorem | Proved |
 
-Axiom count: 5, Sorry count: 1, Proved theorems: 7
+Axiom count: 5, Sorry count: 0, Proved theorems: 10
 -/
 
 #check @sylowProP_existence
 #check @sylowProP_conjugacy
+#check @isClosed_conj_map
+#check @isProP_conj_map
+#check @SylowProP.conjBy
 #check @sylowProP_compact
 #check @bot_isProPSubgroup
 #check @isProP_iff_isPGroup_finite

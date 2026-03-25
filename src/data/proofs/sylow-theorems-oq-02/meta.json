@@ -2,7 +2,7 @@
   "id": "sylow-theorems-oq-02",
   "title": "Pro-p Sylow Theory for Profinite Groups",
   "slug": "sylow-theorems-oq-02",
-  "description": "Generalizes the classical Sylow theorems to profinite groups (compact, Hausdorff, totally disconnected topological groups). Defines pro-p groups via open normal subgroup indices, constructs Sylow pro-p subgroups as maximal closed pro-p subgroups, and axiomatizes existence (Serre's Zorn argument) and conjugacy (finite approximation + compactness). Proves: compactness of Sylow pro-p subgroups, trivial subgroup is pro-p, equivalence of pro-p and p-group for finite groups, classical Sylow subgroups are pro-p, pro-p subgroups have p-power order, counting theorem in finite quotients. 5 axioms (deep inverse limit results), 1 sorry, 7 proved theorems.",
+  "description": "Generalizes the classical Sylow theorems to profinite groups. Proves conjugation preserves Sylow pro-p structure (closedness, pro-p, maximality), that uniqueness implies normality, plus compactness, trivial subgroup is pro-p, pro-p/p-group equivalence, classical Sylow bridge, counting theorem. 5 axioms, 0 sorries, 10 proved theorems.",
   "meta": {
     "author": "Serre (formalized)",
     "sourceUrl": "https://github.com/rjwalters/lean-genius",
@@ -18,9 +18,9 @@
       "open-question"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "axiomCount": 5,
-    "lineCount": 298,
+    "lineCount": 393,
     "mathlibDependencies": [
       {
         "theorem": "Sylow.nonempty",
@@ -46,10 +46,12 @@
     "originalContributions": [
       "Pro-p group definition via open normal subgroup indices",
       "Sylow pro-p subgroup structure with maximality condition",
+      "Conjugation preserves Sylow pro-p structure (closedness, pro-p, maximality)",
+      "Uniqueness implies normality via conjugate SylowProP construction",
       "Equivalence theorem: IsProP ↔ IsPGroup for finite discrete groups",
       "Bridge theorem: classical Sylow subgroups satisfy pro-p condition",
       "Pro-p subgroup p-power order theorem for finite groups",
-      "Axiomatization of Serre's existence and conjugacy theorems"
+      "Axiomatization of Serre existence and conjugacy theorems"
     ],
     "assumptions": "5 axioms encoding deep profinite group theory results: (1) Sylow pro-p existence via Zorn's lemma on closed pro-p subgroups, (2) conjugacy via finite approximation and compactness, (3) Frattini argument for profinite groups, (4) projection of Sylow pro-p subgroups to p-groups in finite quotients, (5) trivial intersection of Sylow subgroups for distinct primes.",
     "dateAdded": "2026-03-25",
@@ -67,10 +69,10 @@
         "Subgroup"
       ],
       "namespace": "ProfiniteSylow",
-      "lineCount": 298,
+      "lineCount": 393,
       "axiomCount": 5,
-      "theoremCount": 7,
-      "definitionCount": 4
+      "theoremCount": 10,
+      "definitionCount": 5
     },
     "mathlib_version": "4.26.0"
   },
