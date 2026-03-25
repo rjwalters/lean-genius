@@ -290,8 +290,35 @@
     "lineCount": 233,
     "axiomCount": 13,
     "theoremCount": 5,
-    "substantiveTheoremCount": 2,
-    "sorryTheorems": 3,
-    "definitionCount": 12
+    "substantiveTheoremCount": 3,
+    "sorryTheorems": 1,
+    "definitionCount": 12,
+    "mainTheorems": [
+      {
+        "name": "conjecture_equiv",
+        "type": "proved",
+        "description": "The main conjecture f(k²+1) = k is equivalent to f(k²+1) = f(k²) for all k ≥ 1"
+      },
+      {
+        "name": "one_in_plateau",
+        "type": "proved",
+        "description": "1 ∈ plateauSet since f(2) = f(1) = 1, confirming the k=1 case"
+      },
+      {
+        "name": "perfect_square_plateau",
+        "type": "proved",
+        "description": "k² ∈ plateauSet ↔ f(k²+1) = k, reformulating the conjecture as: all perfect squares are plateaus"
+      },
+      {
+        "name": "erdos106Conjecture",
+        "type": "conjecture",
+        "description": "∀ k ≥ 1, f(k²+1) = k — the main open problem"
+      },
+      {
+        "name": "perfect_square_achieved",
+        "type": "sorry",
+        "description": "Existence of the k×k grid packing achieving sumSides = k (sorry'd construction)"
+      }
+    ]
   }
 }
