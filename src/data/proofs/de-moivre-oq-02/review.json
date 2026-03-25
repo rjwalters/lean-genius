@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "proofId": "de-moivre-oq-02",
+  "reviewDate": "2026-03-25T12:00:00Z",
+  "reviewer": "peer-reviewer",
+
+  "overallAssessment": {
+    "grade": "B",
+    "oneLiner": "Clean, complete formalization of standard Chebyshev identities via T_real_cos, with strong pedagogy but some precision issues in the meta-narrative around generality and algebraic structure claims.",
+    "tier": "B",
+    "tierJustification": "All 16 theorems are fully proved with 0 sorries and 0 axioms, but the core technique reduces everything to Mathlib's T_real_cos, making this a well-crafted Mathlib-leveraged formalization rather than independent proof work.",
+    "stratification": {
+      "proved": [
+        "chebyshev_composition",
+        "chebyshev_composition_comm",
+        "chebyshev_comp_one",
+        "chebyshev_comp_assoc",
+        "T_two_comp",
+        "T_self_comp",
+        "chebyshev_product_to_sum",
+        "chebyshev_square",
+        "chebyshev_parity",
+        "chebyshev_even_parity",
+        "chebyshev_odd_parity",
+        "chebyshev_at_one",
+        "chebyshev_at_neg_one",
+        "chebyshev_at_zero",
+        "chebyshev_root",
+        "demoivre_oq02_summary"
+      ],
+      "axiomatized": [],
+      "elementary": [
+        "T_two_comp (1-line corollary of chebyshev_composition)",
+        "T_self_comp (1-line corollary of chebyshev_composition)",
+        "chebyshev_comp_one (1-line application of composition + simp)",
+        "chebyshev_at_one (2-line simp from T_real_cos at 0)",
+        "demoivre_oq02_summary (conjunction of earlier results, no new content)"
+      ],
+      "assessment": "All components are fully proved at a uniform epistemic level. Five of the sixteen theorems are trivial corollaries or packaging. The remaining eleven range from short (2-3 line) to moderately substantive (product-to-sum at 6 lines, root theorem at 9 lines). No epistemic mixing — clean and honest."
+    }
+  },
+
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "DeMoivreOQ02.lean, overall structure",
+      "finding": "The proof follows a beautifully uniform strategy throughout: convert to trigonometric form via T_real_cos, apply a standard trig identity, close with algebra (push_cast/ring/linarith/field_simp). This consistency makes the file pedagogically clear and easy to extend.",
+      "recommendation": "Preserve this structural pattern; it is a model for how to build a systematic collection of related identities."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "meta.json keyInsights",
+      "finding": "The key insights about zpow_add₀ for nonzero base (line 104) and conv_lhs to prevent unwanted rewrites (line 118) are genuinely useful practical tips for Lean users. These go beyond mathematical content to teach formalization technique.",
+      "recommendation": "Keep these insights. They exemplify the kind of Lean-specific wisdom that makes gallery entries valuable beyond just the mathematics."
+    },
+    {
+      "severity": "moderate",
+      "category": "precision",
+      "location": "meta.json description, originalContributions, and overview.text",
+      "finding": "The meta.json describes identities using generic variable x (e.g., '2·T_m(x)·T_n(x) = T_{m+n}(x) + T_{m-n}(x)', 'T_n(-x) = (-1)^n·T_n(x)'), but the Lean theorems are stated for cos θ values: e.g., chebyshev_product_to_sum has type '2 * ((T ℝ m).eval (Real.cos θ)) * ((T ℝ n).eval (Real.cos θ)) = ...'. The polynomial identities hold for all x (by density/extension), but the Lean file only proves them for x = cos θ. A reader expecting general polynomial identity proofs would be surprised.",
+      "recommendation": "Change descriptions to use cos θ notation matching the Lean theorems, or add a note: 'All identities are proved for x = cos θ; the general polynomial identity follows since cos surjects onto [-1,1] and polynomial identities extend by continuity, but this extension step is not formalized.'"
+    },
+    {
+      "severity": "moderate",
+      "category": "overclaim",
+      "location": "meta.json originalContributions[0] and overview.historicalContext",
+      "finding": "The first original contribution claims 'proving Chebyshev polynomials form a commutative monoid under composition', and the historical context section elaborates on monoid homomorphisms and identity elements. The Lean file proves T_m(T_n(cos θ)) = T_{mn}(cos θ), T_1 is the identity, and associativity — but only as pointwise evaluation equalities on cos-values. No Monoid instance or homomorphism is constructed. The algebraic structure claim exceeds what is formalized.",
+      "recommendation": "Reframe to: 'Composition identity T_m(T_n(cos θ)) = T_{mn}(cos θ), together with commutativity, identity (T_1), and associativity — demonstrating the monoid-like structure of Chebyshev composition on trigonometric values.' Reserve 'form a commutative monoid' for when a Monoid instance is actually constructed."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json conclusion.summary",
+      "finding": "The conclusion states 'The formalization proves 15 theorems with 0 sorries' but the Lean file contains 16 theorems (including demoivre_oq02_summary). The leanFile.theoremCount field correctly says 16.",
+      "recommendation": "Change '15 theorems' to '16 theorems' in the conclusion."
+    },
+    {
+      "severity": "minor",
+      "category": "overclaim",
+      "location": "meta.json conclusion.summary",
+      "finding": "The conclusion claims 'the complete algebraic structure of Chebyshev polynomials.' This overstates the scope: the file covers composition, product-to-sum, parity, special values, and roots, but not the three-term recurrence, orthogonality relation, minimax property, or generating function — all fundamental parts of Chebyshev polynomial theory.",
+      "recommendation": "Replace 'complete algebraic structure' with 'key algebraic identities' or 'core algebraic properties.'"
+    },
+    {
+      "severity": "minor",
+      "category": "overclaim",
+      "location": "meta.json assumptions field",
+      "finding": "The assumptions field describes 'Extensive original derivations of product-to-sum, parity, and root formulas.' The proofs are clean and correct but range from 2 to 9 lines, all following the same T_real_cos pattern. 'Extensive' overstates the complexity.",
+      "recommendation": "Replace 'Extensive original derivations' with 'Clean original derivations' or 'Original Lean formalizations.'"
+    }
+  ],
+
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Fix x-vs-cos θ notation: change descriptions, originalContributions, and overview.text to use cos θ notation matching the actual Lean theorems, or add an explicit note about the scope limitation (identities proved for cos θ values, not for general polynomial evaluation).",
+      "status": "open"
+    },
+    {
+      "id": "ai-2",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Reframe 'commutative monoid' claim in originalContributions[0] and overview.historicalContext to accurately describe what is formalized (evaluation identity with monoid-like properties) vs what is not (no Monoid instance or homomorphism).",
+      "status": "open"
+    },
+    {
+      "id": "ai-3",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Fix theorem count: change '15 theorems' to '16 theorems' in conclusion.summary.",
+      "status": "open"
+    },
+    {
+      "id": "ai-4",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Tone down overclaims: replace 'complete algebraic structure' with 'key algebraic identities' in conclusion; replace 'Extensive original derivations' with 'Clean original derivations' in assumptions.",
+      "status": "open"
+    }
+  ],
+
+  "qualityScores": {
+    "mathematicalSubstance": 7,
+    "originalityAccuracy": 7,
+    "completeness": 8,
+    "framingPrecision": 6,
+    "pedagogicalQuality": 8,
+    "internalConsistency": 7,
+    "epistemicCoherence": 9,
+    "overall": 7.4
+  },
+
+  "suggestedBestFraming": "A clean Lean 4 formalization of five families of Chebyshev polynomial identities — composition (T_m ∘ T_n = T_{mn}), product-to-sum, parity, special values, and roots — all derived from Mathlib's T_real_cos identity via a uniform strategy of trigonometric reduction. All 16 theorems proved for cos θ values with 0 sorries and 0 axioms."
+}
