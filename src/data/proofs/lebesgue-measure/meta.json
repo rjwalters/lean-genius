@@ -332,5 +332,19 @@
       "description": "Countable sets have Lebesgue measure zero",
       "leanType": "Set.Countable S → volume S = 0"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "lebesgue_measure_interval",
+      "type": "core",
+      "description": "The Lebesgue measure of [a,b] equals b - a",
+      "leanType": "a <= b -> volume (Icc a b) = ENNReal.ofReal (b - a)"
+    },
+    {
+      "name": "countable_null",
+      "type": "key",
+      "description": "Countable sets have Lebesgue measure zero",
+      "leanType": "Set.Countable S -> volume S = 0"
+    }
   ]
 }
