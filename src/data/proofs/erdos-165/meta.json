@@ -194,5 +194,31 @@
       "relationship": "related",
       "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
     }
+  ],
+  "references": [
+    {
+      "key": "Ki95b",
+      "authors": [
+        "J.H. Kim"
+      ],
+      "title": "The Ramsey number R(3,t) has order of magnitude t²/log t",
+      "venue": "Random Structures & Algorithms",
+      "year": "1995",
+      "volume": "7",
+      "pages": "173-207",
+      "note": "Landmark result determining R(3,k) up to constant factors"
+    },
+    {
+      "key": "Bo09",
+      "authors": [
+        "T. Bohman"
+      ],
+      "title": "The triangle-free process",
+      "venue": "Advances in Mathematics",
+      "year": "2009",
+      "volume": "221",
+      "pages": "1653-1677",
+      "note": "Alternative proof of Kim's bound via the triangle-free graph process"
+    }
   ]
 }

@@ -134,5 +134,31 @@
       "relationship": "related",
       "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics"
     }
+  ],
+  "references": [
+    {
+      "key": "Sz75",
+      "authors": [
+        "E. Szemerédi"
+      ],
+      "title": "On sets of integers containing no k elements in arithmetic progression",
+      "venue": "Acta Arithmetica",
+      "year": "1975",
+      "volume": "27",
+      "pages": "199-245",
+      "note": "The original proof of Szemerédi's theorem: any positive-density subset of integers contains arbitrarily long APs"
+    },
+    {
+      "key": "Go01",
+      "authors": [
+        "W.T. Gowers"
+      ],
+      "title": "A new proof of Szemerédi's theorem",
+      "venue": "Geometric and Functional Analysis",
+      "year": "2001",
+      "volume": "11",
+      "pages": "465-588",
+      "note": "Gowers's analytic proof giving the first effective bounds for Szemerédi's theorem"
+    }
   ]
 }

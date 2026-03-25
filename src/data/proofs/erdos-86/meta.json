@@ -123,5 +123,34 @@
       "relationship": "related",
       "description": "Related Erdős problem sharing themes: extremal, graph-theory"
     }
+  ],
+  "references": [
+    {
+      "key": "Ch89",
+      "authors": [
+        "F.R.K. Chung"
+      ],
+      "title": "Subgraphs of a hypercube containing no small even cycles",
+      "venue": "Journal of Graph Theory",
+      "year": "1992",
+      "volume": "16",
+      "pages": "1-6",
+      "note": "Upper bounds on C₄-free subgraphs of the hypercube"
+    },
+    {
+      "key": "BH12",
+      "authors": [
+        "R. Balogh",
+        "P. Hu",
+        "B. Lidický",
+        "F. Pfender"
+      ],
+      "title": "Maximum number of edges in C₄-free subgraphs of Q_n",
+      "venue": "Journal of Combinatorial Theory, Series B",
+      "year": "2014",
+      "volume": "104",
+      "pages": "43-59",
+      "note": "Flag algebra bounds on C₄-free subgraphs of hypercubes, context for Erdős's conjecture"
+    }
   ]
 }

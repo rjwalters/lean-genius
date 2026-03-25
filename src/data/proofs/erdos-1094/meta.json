@@ -175,5 +175,31 @@
     "axiomCount": 1,
     "theoremCount": 37,
     "definitionCount": 7
-  }
+  },
+  "references": [
+    {
+      "key": "Ku15",
+      "authors": [
+        "E. Kummer"
+      ],
+      "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
+      "venue": "Journal für die reine und angewandte Mathematik",
+      "year": "1852",
+      "volume": "44",
+      "pages": "93-146",
+      "note": "Kummer's theorem: v_p(C(m,n)) equals the number of carries in base-p addition of n and m-n"
+    },
+    {
+      "key": "Gr72",
+      "authors": [
+        "A. Granville"
+      ],
+      "title": "Arithmetic properties of binomial coefficients I: Binomial coefficients modulo prime powers",
+      "venue": "Canadian Mathematical Society Conference Proceedings",
+      "year": "1998",
+      "volume": "20",
+      "pages": "253-276",
+      "note": "Modern treatment of prime factors of binomial coefficients and related Erdős problems"
+    }
+  ]
 }

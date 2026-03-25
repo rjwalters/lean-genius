@@ -207,5 +207,32 @@
     "axiomCount": 20,
     "theoremCount": 3,
     "definitionCount": 8
-  }
+  },
+  "references": [
+    {
+      "key": "BE83",
+      "authors": [
+        "S.A. Burr",
+        "P. Erdős"
+      ],
+      "title": "On the magnitude of generalized Ramsey numbers for graphs",
+      "venue": "Infinite and Finite Sets, Colloquia Mathematica Soc. J. Bolyai",
+      "year": "1975",
+      "volume": "10",
+      "pages": "214-240",
+      "note": "Original Burr-Erdős conjecture: R(H,H) = O(n) for bounded-degree H"
+    },
+    {
+      "key": "Le17",
+      "authors": [
+        "C. Lee"
+      ],
+      "title": "Ramsey numbers of degenerate graphs",
+      "venue": "Annals of Mathematics",
+      "year": "2017",
+      "volume": "185",
+      "pages": "791-829",
+      "note": "Proof of the Burr-Erdős conjecture for all bounded-degeneracy graphs"
+    }
+  ]
 }

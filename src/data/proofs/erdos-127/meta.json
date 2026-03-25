@@ -136,5 +136,34 @@
       "relationship": "related",
       "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory"
     }
+  ],
+  "references": [
+    {
+      "key": "Ed73",
+      "authors": [
+        "C.S. Edwards"
+      ],
+      "title": "Some extremal properties of bipartite subgraphs",
+      "venue": "Canadian Journal of Mathematics",
+      "year": "1973",
+      "volume": "25",
+      "pages": "475-485",
+      "note": "Edwards's bound: every graph has a bipartite subgraph with at least m/2 + (n-1)/4 edges"
+    },
+    {
+      "key": "ACFS22",
+      "authors": [
+        "N. Alon",
+        "B. Bollobás",
+        "M. Krivelevich",
+        "B. Sudakov"
+      ],
+      "title": "Maximum cuts and judicious partitions in graphs without short cycles",
+      "venue": "Journal of Combinatorial Theory, Series B",
+      "year": "2003",
+      "volume": "88",
+      "pages": "329-346",
+      "note": "Extensions of Edwards's bound for graphs without short cycles"
+    }
   ]
 }

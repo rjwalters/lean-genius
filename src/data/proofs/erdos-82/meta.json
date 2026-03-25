@@ -212,5 +212,32 @@
       "relationship": "related",
       "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory, regular-graphs"
     }
+  ],
+  "references": [
+    {
+      "key": "Er75",
+      "authors": [
+        "P. Erdős",
+        "M. Simonovits"
+      ],
+      "title": "On a valence problem in extremal graph theory",
+      "venue": "Discrete Mathematics",
+      "year": "1975",
+      "volume": "5",
+      "pages": "323-334",
+      "note": "Explores regular subgraph existence in dense graphs"
+    },
+    {
+      "key": "Py85",
+      "authors": [
+        "L. Pyber"
+      ],
+      "title": "Regular subgraphs of dense graphs",
+      "venue": "Combinatorica",
+      "year": "1985",
+      "volume": "5",
+      "pages": "347-349",
+      "note": "Results on finding regular induced subgraphs in graphs with many edges"
+    }
   ]
 }

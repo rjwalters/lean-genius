@@ -169,5 +169,30 @@
       "relationship": "related",
       "description": "Related Erdős problem sharing themes: graph-theory, minimum-degree"
     }
+  ],
+  "references": [
+    {
+      "key": "KSS02",
+      "authors": [
+        "J. Komlós",
+        "M. Simonovits",
+        "E. Szemerédi"
+      ],
+      "title": "On the theory of graph minor. I",
+      "venue": "Combinatorica",
+      "year": "2002",
+      "note": "Context for minimum degree conditions forcing specific subgraphs"
+    },
+    {
+      "key": "Er64",
+      "authors": [
+        "P. Erdős"
+      ],
+      "title": "Extremal problems in graph theory",
+      "venue": "Theory of Graphs and its Applications, Publ. House Czech. Acad. Sci.",
+      "year": "1964",
+      "pages": "29-36",
+      "note": "Foundational paper posing extremal problems including minimum degree conditions for cycles"
+    }
   ]
 }

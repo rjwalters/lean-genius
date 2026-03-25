@@ -187,5 +187,34 @@
       "relationship": "related",
       "description": "Related Erdős problem sharing themes: graph-theory, triangles"
     }
+  ],
+  "references": [
+    {
+      "key": "KST54",
+      "authors": [
+        "T. Kővári",
+        "V.T. Sós",
+        "P. Turán"
+      ],
+      "title": "On a problem of K. Zarankiewicz",
+      "venue": "Colloquium Mathematicum",
+      "year": "1954",
+      "volume": "3",
+      "pages": "50-57",
+      "note": "Foundational result on extremal bipartite graphs, context for triangle-saturated graph problems"
+    },
+    {
+      "key": "ES66",
+      "authors": [
+        "P. Erdős",
+        "M. Simonovits"
+      ],
+      "title": "A limit theorem in graph theory",
+      "venue": "Studia Scientiarum Mathematicarum Hungarica",
+      "year": "1966",
+      "volume": "1",
+      "pages": "51-57",
+      "note": "Erdős-Simonovits stability and supersaturation, context for book-size questions"
+    }
   ]
 }

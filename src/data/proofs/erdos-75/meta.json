@@ -129,5 +129,32 @@
       "relationship": "related",
       "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, open"
     }
+  ],
+  "references": [
+    {
+      "key": "EH66",
+      "authors": [
+        "P. Erdős",
+        "A. Hajnal"
+      ],
+      "title": "On chromatic number of graphs and set-systems",
+      "venue": "Acta Mathematica Hungarica",
+      "year": "1966",
+      "volume": "17",
+      "pages": "61-99",
+      "note": "Foundational work on chromatic number of infinite graphs and the connection to independence number"
+    },
+    {
+      "key": "Ko99",
+      "authors": [
+        "P. Komjáth"
+      ],
+      "title": "The chromatic number of infinite graphs — a survey",
+      "venue": "Discrete Mathematics",
+      "year": "1999",
+      "volume": "196",
+      "pages": "275-287",
+      "note": "Survey of chromatic number problems for infinite graphs including Erdős-Hajnal type questions"
+    }
   ]
 }

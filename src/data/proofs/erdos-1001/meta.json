@@ -221,5 +221,30 @@
     "axiomCount": 9,
     "theoremCount": 4,
     "definitionCount": 10
-  }
+  },
+  "references": [
+    {
+      "key": "Kh24",
+      "authors": [
+        "A.Ya. Khintchine"
+      ],
+      "title": "Einige Sätze über Kettenbrüche, mit Anwendungen auf die Theorie der Diophantischen Approximationen",
+      "venue": "Mathematische Annalen",
+      "year": "1924",
+      "volume": "92",
+      "pages": "115-125",
+      "note": "Foundational results on metric Diophantine approximation; Khintchine's theorem on measure of well-approximable numbers"
+    },
+    {
+      "key": "HW38",
+      "authors": [
+        "G.H. Hardy",
+        "E.M. Wright"
+      ],
+      "title": "An Introduction to the Theory of Numbers",
+      "venue": "Oxford University Press",
+      "year": "1938",
+      "note": "Standard reference for Farey fractions and Diophantine approximation theory"
+    }
+  ]
 }

@@ -138,5 +138,33 @@
     "axiomCount": 0,
     "theoremCount": 0,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "key": "Za51",
+      "authors": [
+        "K. Zarankiewicz"
+      ],
+      "title": "Problem P 101",
+      "venue": "Colloquium Mathematicum",
+      "year": "1951",
+      "volume": "2",
+      "pages": "301",
+      "note": "The original Zarankiewicz problem: maximum edges in bipartite graphs without K_{s,t}"
+    },
+    {
+      "key": "KST54b",
+      "authors": [
+        "T. Kővári",
+        "V.T. Sós",
+        "P. Turán"
+      ],
+      "title": "On a problem of K. Zarankiewicz",
+      "venue": "Colloquium Mathematicum",
+      "year": "1954",
+      "volume": "3",
+      "pages": "50-57",
+      "note": "Classical upper bound z(n; s,t) ≤ cn^{2-1/s} for C₄-free graphs"
+    }
+  ]
 }
