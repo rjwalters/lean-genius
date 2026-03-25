@@ -5,7 +5,7 @@
     "type": "concept",
     "range": {
       "startLine": 21,
-      "endLine": 26
+      "endLine": 25
     },
     "title": "Imports and Setup",
     "content": "Imports Mathlib for `Finset.Card` (counting covered residues), `Nat.GCD.Basic` and `Nat.Prime.Basic` (for LCM and coprimality), `Data.Real.Basic` (for density as a real number), and tactics. The formalization works with moduli in $\\mathbb{N}$ and densities in $\\mathbb{R}$.",
@@ -139,7 +139,7 @@
     "type": "concept",
     "range": {
       "startLine": 60,
-      "endLine": 80
+      "endLine": 113
     },
     "title": "LCM Positivity Lemmas",
     "content": "Two lemmas establishing that `foldl Nat.lcm` preserves positivity (by induction on the list) and that `systemLCM` is always positive. These are needed to ensure the density denominator is nonzero. The proof uses `Nat.lcm_eq_zero_iff` to show the LCM of positive numbers is positive.",
@@ -251,8 +251,8 @@
     "proofId": "erdos-278",
     "type": "concept",
     "range": {
-      "startLine": 141,
-      "endLine": 142
+      "startLine": 489,
+      "endLine": 550
     },
     "title": "Maximum Density: The Open Problem",
     "content": "The main open part of Problem #278: what is the maximum coverage density for general (non-coprime) moduli? Axiomatized as $\\delta_{\\max} \\leq 1$, which is trivially true but highlights that no tighter bound is known in general. Non-coprimality allows clever residue alignment to control overlap structure.",
@@ -274,8 +274,8 @@
     "proofId": "erdos-278",
     "type": "technique",
     "range": {
-      "startLine": 147,
-      "endLine": 148
+      "startLine": 584,
+      "endLine": 646
     },
     "title": "Single Modulus Case",
     "content": "For a single modulus $n$, there is only one residue to choose, and the coverage density is exactly $1/n$ regardless of the choice. This is the trivial base case: max = min = $1/n$.",

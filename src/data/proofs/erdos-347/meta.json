@@ -21,14 +21,36 @@
     "erdosUrl": "https://erdosproblems.com/347",
     "erdosProblemStatus": "proved",
     "axiomCount": 1,
-    "assumptions": "1 axiom(s). No sorries.",
+    "assumptions": "1 axiom: `erdos347_affirmative` asserts the existential statement `ErdosProblem347` — that a monotone sequence with ratio limit 2 exists such that every cofinite subsequence has density-1 subset sums. This axiomatizes the affirmative solution by ebarschkis (Tao-van Doorn construction). No sorries.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets, used for subset sum definition",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "StrictMono",
+        "description": "Strictly monotone functions, used for cofinite subsequence reindexing",
+        "module": "Mathlib.Order.Monotone.Basic"
+      },
+      {
+        "theorem": "Set.Finite",
+        "description": "Finiteness predicate for sets, used for cofinite complement condition",
+        "module": "Mathlib.Data.Set.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Complete formal framework for subset sum density problems: subsetSums, HasDensity, HasRatioLimit, IsCofiniteSubseq",
+      "Corrected subsetSums_insert with fresh-witness requirement (original subsetSums_add was incorrect for multiset-like reasoning)",
+      "Three proved structural properties: zero_mem_subsetSums, subsetSums_insert, subsetSums_mono"
+    ],
     "lineCount": 102,
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this in their 1980 monograph, asking about the interplay between multiplicative growth rates and additive completeness. The ratio limit 2 is the critical threshold for subset sum completeness: powers of 2 give every natural number via binary representation ($P(\\{1,2,4,8,\\ldots\\}) = \\mathbb{N}$), but small perturbations can destroy this. The question asks whether a sequence growing at rate 2 can be made 'robustly complete' — not just complete, but maintaining density-1 subset sums even after removing finitely many terms. This robustness requirement is much stronger than simple completeness and connects to the stability theory of additive representations. The problem was solved affirmatively by ebarschkis, building on ideas from Terence Tao and Wouter van Doorn. The construction carefully perturbs powers of 2 to create controlled redundancy: each integer has many different subset sum representations, so deleting finitely many terms still leaves enough representations to cover almost all integers.",
     "problemStatement": "Is there a sequence A = {a_1 <= a_2 <= ...} with lim a_{n+1}/a_n = 2 such that P(A') has density 1 for every cofinite subsequence A' of A?",
-    "text": "Is there a monotone integer sequence with ratio limit 2 such that every cofinite subsequence has subset sums of density 1? Solved affirmatively by ebarschkis (based on Tao-van Doorn ideas).",
+    "text": "A 102-line formalization of Erdős Problem #347 (solved affirmatively) that builds the complete framework for studying subset sum density under cofinite deletions. Defines `subsetSums A` (finite subset sums of $A$), `HasDensity S \\delta$ (asymptotic density via $\\varepsilon$-$N_0$ convergence of $|S \\cap [1,N]|/N$), `HasRatioLimit a r` (consecutive ratio convergence), and `IsCofiniteSubseq a \\iota$ (strictly monotone reindexing with cofinite range). The main statement `ErdosProblem347` combines all conditions existentially, and `erdos347_affirmative` axiomatizes the affirmative answer (ebarschkis, building on Tao-van Doorn). Three proved theorems establish basic algebraic properties: $0 \\in P(A)$ (empty sum), the corrected additive closure (requiring fresh witnesses to avoid the multiset trap), and monotonicity under set inclusion. The fresh-witness correction in `subsetSums_insert` is a non-trivial finding: the naive formulation $s \\in P(A) \\wedge a \\in A \\Rightarrow s+a \\in P(A)$ is false because subsets are sets, not multisets.",
     "proofStrategy": "We formalize `subsetSums A` as the set of all finite subset sums, `HasDensity S delta` as the limit of the counting function ratio, `HasRatioLimit a r` as convergence of consecutive ratios, and `IsCofiniteSubseq` via strictly monotone injections with cofinite range. The main statement `ErdosProblem347` combines all conditions existentially, and `erdos347_affirmative` axiomatizes the positive answer. Basic algebraic properties of subset sums (zero membership, additive closure, monotonicity) are included.",
     "keyInsights": [
       "Ratio limit 2 is the critical threshold: for r < 2, completeness is easy (slow growth fills gaps); for r > 2, completeness fails (fast growth creates unbridgeable gaps). The problem lives exactly at the boundary",
@@ -45,6 +67,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "header",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Module docstring stating the problem, its solved status, and reference. Six Mathlib imports for natural numbers, finite sets, reals, sets, and tactics. Opens Set namespace.",
+      "mathContext": "Erdős Problem #347: $\\exists A$ monotone with $a_{n+1}/a_n \\to 2$ such that $P(A')$ has density 1 for every cofinite $A' \\subseteq A$. Solved affirmatively."
+    },
     {
       "id": "subset-sums",
       "title": "Subset Sums",
