@@ -25,13 +25,13 @@
     ],
     "badge": "axiom",
     "sorries": 3,
-    "axiomCount": 3,
+    "axiomCount": 0,
     "prerequisites": [
       "Galois theory (Galois groups, splitting fields, fixed fields)",
       "Group theory (symmetric groups, alternating groups, solvability, simplicity)",
       "Field extensions (finrank, tower law)"
     ],
-    "assumptions": "3 axioms across dependency chain: Shafarevich's theorem and symmetric group realizability (InverseGalois.lean), A5 Galois group order (InverseGaloisA5.lean). 3 sorries in this file: 2 census sorries for A5/S5 realization, 1 open Inverse Galois Conjecture.",
+    "assumptions": "0 axioms in this file or its imports. 3 sorries: 2 census sorries for A5/S5 realization (would require importing InverseGaloisA5.lean and AbelRuffiniOQ04OQ01.lean), 1 intentional sorry for the open Inverse Galois Conjecture. Related files (InverseGalois.lean, InverseGaloisA5.lean) contain axioms but are NOT imported by this file.",
     "leanFile": {
       "lineCount": 448,
       "theoremCount": 31,
@@ -172,7 +172,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization maps the solvability frontier of the Inverse Galois Problem in 448 lines with 31 theorems and 0 axioms. The central result `sn_solvable_iff` ($S_n$ solvable $\\Leftrightarrow$ $n \\leq 4$) precisely delineates the boundary between groups covered by Shafarevich's theorem and those requiring explicit polynomial constructions. The deep structural analysis of $A_5$ — simple, not solvable, not abelian, and perfect — reveals why this boundary is sharp and irreversible.",
+    "summary": "This formalization maps the solvability frontier of the Inverse Galois Problem in 448 lines with 31 theorems, 0 axioms, and 3 sorries (2 census entries requiring additional imports, 1 intentional for the open Inverse Galois Conjecture). The central result `sn_solvable_iff` ($S_n$ solvable $\\Leftrightarrow$ $n \\leq 4$) precisely delineates the boundary between groups covered by Shafarevich's theorem and those requiring explicit polynomial constructions. The deep structural analysis of $A_5$ — simple, not solvable, not abelian, and perfect — reveals why this boundary is sharp and irreversible.",
     "implications": "**Connection to Abel-Ruffini**: The solvability characterization is the group-theoretic half of Abel-Ruffini. Combined with the Galois bridge (`solvableByRad.isSolvable'`), it gives: a polynomial of degree $n$ with generic Galois group $S_n$ is solvable by radicals iff $n \\leq 4$ — explaining exactly why the quadratic, cubic, and quartic formulas exist but the quintic formula does not.\n\n**Toward the full IGP**: The census shows 18+ groups formally realized over $\\mathbb{Q}$, with the non-solvable frontier at $A_5$ and $S_5$. Extending to $\\text{PSL}(2,7)$ (order 168), $A_6$ (order 360), and sporadic groups would advance the formalized frontier significantly.\n\n**Fixed field machinery**: The degree formulas $[K:K^H] = |H|$ and $[K^H:F] = [G:H]$ provide reusable infrastructure for future Galois-theoretic formalizations — any result needing the fundamental theorem of Galois theory can build on these.",
     "openQuestions": [
       "Can $\\text{PSL}(2,7)$ (order 168, the second smallest non-abelian simple group) be formally realized as a Galois group over $\\mathbb{Q}$? The standard approach uses the polynomial $x^7 - 7x + 3$, which has Galois group $\\text{PSL}(2,7)$.",
