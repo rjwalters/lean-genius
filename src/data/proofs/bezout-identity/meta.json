@@ -257,6 +257,21 @@
       "targetId": "bezout-identity-oq-04",
       "relationship": "extended-by",
       "description": "Characterizes the complete solution set of linear Diophantine equations $ax + by = c$: a particular solution (from Bézout) plus the homogeneous solutions $(b/g)t, -(a/g)t$ where $g = \\gcd(a,b)$"
+    },
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "foundational",
+      "description": "The extended Euclidean algorithm computes the GCD along with the Bézout coefficients $x, y$ satisfying $ax + by = \\gcd(a,b)$. Bézout's identity is the theoretical guarantee that these coefficients exist; the GCD algorithm is the efficient computation."
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "extends",
+      "description": "The Chinese Remainder Theorem for non-coprime moduli generalizes the coprime CRT by using Bézout's identity to check consistency: $x \\equiv a_1 \\pmod{m_1}$ and $x \\equiv a_2 \\pmod{m_2}$ has a solution iff $\\gcd(m_1, m_2) \\mid (a_1 - a_2)$, which is the Diophantine solvability criterion from Bézout."
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "supports",
+      "description": "Fermat's two squares theorem ($p = a^2 + b^2$ iff $p \\equiv 1 \\pmod{4}$) uses Bézout's identity in the descent step: the existence of $x$ with $x^2 \\equiv -1 \\pmod{p}$ (from Euler's criterion and Bézout) initiates the Gaussian integer argument."
     }
   ],
   "references": [
