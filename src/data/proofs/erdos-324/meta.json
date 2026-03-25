@@ -63,9 +63,10 @@
       "distinct_count_eq_binomial: count = C(N+1,2)"
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Number theory (primes, divisibility)",
-      "Additive combinatorics (sumsets, density)"
+      "Polynomial evaluation over $\\mathbb{Z}$ and $\\mathbb{Z}[X]$",
+      "Sums of powers and Diophantine equations ($a^n + b^n = c^n + d^n$)",
+      "Sidon sets and distinct sumset theory",
+      "Injectivity and $\\texttt{Set.InjOn}$ in Lean 4"
     ]
   },
   "sections": [
@@ -74,42 +75,48 @@
       "title": "Distinct Pair Sums",
       "startLine": 25,
       "endLine": 41,
-      "summary": "Defines the core machinery: `pairSumFn` maps $(a,b) \\mapsto f(a) + f(b)$ for $f \\in \\mathbb{Z}[X]$, `orderedPairs` restricts to $\\{(a,b) : a < b\\}$ to avoid commutative collisions, and `HasDistinctPairSums` formalizes injectivity via `Set.InjOn`. This captures the distinct pair sums property using Mathlib's function restriction framework."
+      "summary": "Defines the core machinery: `pairSumFn` maps $(a,b) \\mapsto f(a) + f(b)$ for $f \\in \\mathbb{Z}[X]$, `orderedPairs` restricts to $\\{(a,b) : a < b\\}$ to avoid commutative collisions, and `HasDistinctPairSums` formalizes injectivity via `Set.InjOn`. This captures the distinct pair sums property using Mathlib's function restriction framework.",
+      "mathContext": "$S_f(a,b) = f(a) + f(b)$; ordered pairs $\\{(a,b) : a < b\\}$; distinct pair sums $\\Leftrightarrow$ $S_f$ injective on ordered pairs."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "startLine": 42,
       "endLine": 50,
-      "summary": "Formalizes Erdős Problem #324 as `ErdosProblem324 : Prop := \\exists f : \\mathbb{Z}[X], \\text{HasDistinctPairSums}\\, f`. The existential quantification asks whether *any* polynomial works, making this an existence problem. Erdős and Graham (1980, p. 53) called it 'very annoying.'"
+      "summary": "Formalizes Erdős Problem #324 as `ErdosProblem324 : Prop := \\exists f : \\mathbb{Z}[X], \\text{HasDistinctPairSums}\\, f`. The existential quantification asks whether *any* polynomial works, making this an existence problem. Erdős and Graham (1980, p. 53) called it 'very annoying.'",
+      "mathContext": "$\\exists f \\in \\mathbb{Z}[X]: \\forall a < b, c < d, (a,b) \\neq (c,d) \\implies f(a)+f(b) \\neq f(c)+f(d)$."
     },
     {
       "id": "quintic",
       "title": "The Quintic Conjecture",
       "startLine": 51,
       "endLine": 63,
-      "summary": "Defines `QuinticConjecture := HasDistinctPairSums (X^5)` and proves `quintic_implies_324 : QuinticConjecture \\to ErdosProblem324` by existential introduction $\\langle X^5, h\\rangle$. This is the only fully-proved theorem in the file (no sorry), demonstrating that the quintic conjecture is strictly stronger than the main problem."
+      "summary": "Defines `QuinticConjecture := HasDistinctPairSums (X^5)` and proves `quintic_implies_324 : QuinticConjecture \\to ErdosProblem324` by existential introduction $\\langle X^5, h\\rangle$. This is the only fully-proved theorem in the file (no sorry), demonstrating that the quintic conjecture is strictly stronger than the main problem.",
+      "mathContext": "$\\text{QuinticConj}: \\forall a < b, c < d, (a,b) \\neq (c,d) \\implies a^5+b^5 \\neq c^5+d^5$. Implies P324 by $\\exists$-intro with $f = X^5$."
     },
     {
       "id": "powers",
       "title": "Power Generalizations",
       "startLine": 64,
       "endLine": 88,
-      "summary": "Parametrizes the problem over exponents via `PowerPairSumDistinct(n) := HasDistinctPairSums(X^n)`. Axiomatizes: (1) LPS conjecture implies $\\text{PowerPairSumDistinct}(n)$ for $n \\geq 5$; (2) $\\neg\\text{PowerPairSumDistinct}(2)$ via $1^2 + 8^2 = 4^2 + 7^2 = 65$; (3) $\\neg\\text{PowerPairSumDistinct}(3)$ via $1^3 + 12^3 = 9^3 + 10^3 = 1729$; (4) $\\neg\\text{PowerPairSumDistinct}(4)$ via Euler (1772)."
+      "summary": "Parametrizes the problem over exponents via `PowerPairSumDistinct(n) := HasDistinctPairSums(X^n)`. Axiomatizes: (1) LPS conjecture implies $\\text{PowerPairSumDistinct}(n)$ for $n \\geq 5$; (2) $\\neg\\text{PowerPairSumDistinct}(2)$ via $1^2 + 8^2 = 4^2 + 7^2 = 65$; (3) $\\neg\\text{PowerPairSumDistinct}(3)$ via $1^3 + 12^3 = 9^3 + 10^3 = 1729$; (4) $\\neg\\text{PowerPairSumDistinct}(4)$ via Euler (1772).",
+      "mathContext": "Failures: $1^2+8^2 = 4^2+7^2 = 65$; $1^3+12^3 = 9^3+10^3 = 1729$; $59^4+158^4 = 133^4+134^4 = 635318657$. LPS conjecture: $a^n+b^n = c^n+d^n$ has no nontrivial solutions for $n \\geq 5$."
     },
     {
       "id": "lower-degree",
       "title": "Lower Degree Impossibility",
       "startLine": 89,
       "endLine": 100,
-      "summary": "Axiomatizes two impossibility results: `linear_not_distinct` shows $f(x) = ax + b$ always produces collisions (pair sums depend only on $a_1 + b_1$, not individual values), and `min_degree_for_distinct` establishes $\\deg(f) \\geq 5$ as the sharp lower bound, combining failures at degrees 0-4."
+      "summary": "Axiomatizes two impossibility results: `linear_not_distinct` shows $f(x) = ax + b$ always produces collisions (pair sums depend only on $a_1 + b_1$, not individual values), and `min_degree_for_distinct` establishes $\\deg(f) \\geq 5$ as the sharp lower bound, combining failures at degrees 0-4.",
+      "mathContext": "Linear: $f(a)+f(b) = a(a_1+b_1)+2b$, so $f(0)+f(3) = f(1)+f(2)$. Combined: $\\deg(f) \\leq 4 \\implies \\neg\\text{HasDistinctPairSums}(f)$."
     },
     {
       "id": "counting",
       "title": "Counting Pair Sums",
       "startLine": 101,
       "endLine": 113,
-      "summary": "Defines `distinctPairSumCount f N` as the cardinality of $\\{f(a) + f(b) : 0 \\leq a < b \\leq N\\}$ using `Finset.image`. Axiomatizes that for $f$ with distinct pair sums, this count equals $\\binom{N+1}{2} = \\frac{N(N+1)}{2}$, the maximum possible — the Sidon-set-like property achieves the combinatorial upper bound."
+      "summary": "Defines `distinctPairSumCount f N` as the cardinality of $\\{f(a) + f(b) : 0 \\leq a < b \\leq N\\}$ using `Finset.image`. Axiomatizes that for $f$ with distinct pair sums, this count equals $\\binom{N+1}{2} = \\frac{N(N+1)}{2}$, the maximum possible — the Sidon-set-like property achieves the combinatorial upper bound.",
+      "mathContext": "$|\\{f(a)+f(b) : 0 \\leq a < b \\leq N\\}| = \\binom{N+1}{2}$ when all pair sums are distinct. Maximum: $\\binom{N+1}{2} = N(N+1)/2$ ordered pairs."
     }
   ],
   "crossReferences": [
