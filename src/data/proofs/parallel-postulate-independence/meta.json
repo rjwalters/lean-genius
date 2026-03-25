@@ -131,6 +131,31 @@
       "targetId": "continuum-hypothesis",
       "relationship": "related",
       "description": "The continuum hypothesis is independent of ZFC (Gödel 1940, Cohen 1963), paralleling the parallel postulate's independence from the other geometric axioms. Both are paradigmatic examples of statements that are consistent with, but not provable from, a standard axiom system — demonstrating the limits of axiomatization in their respective domains"
+    },
+    {
+      "targetId": "triangle-angle-sum",
+      "relationship": "complementary",
+      "description": "The triangle angle sum theorem (α+β+γ=π) is equivalent to the parallel postulate in neutral geometry. In hyperbolic geometry (where the parallel postulate fails), the angle sum is strictly less than π, with the defect π-(α+β+γ) proportional to the triangle's area. This makes the angle sum the simplest test distinguishing Euclidean from non-Euclidean geometry."
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "complementary",
+      "description": "The Pythagorean theorem a^2+b^2=c^2 depends on the parallel postulate and fails in non-Euclidean geometries. In hyperbolic geometry, the law of cosines becomes cosh(c)=cosh(a)cosh(b)-sinh(a)sinh(b)cos(C), reducing to the Pythagorean theorem only in the Euclidean limit. The independence of the parallel postulate thus implies the Pythagorean theorem is not a consequence of neutral geometry alone."
+    },
+    {
+      "targetId": "poincare-conjecture",
+      "relationship": "related",
+      "description": "The Poincare conjecture (proved by Perelman) concerns the topology of 3-manifolds, which can carry Euclidean, hyperbolic, or spherical geometry. Thurston's geometrization conjecture (also proved by Perelman) classifies 3-manifolds into eight model geometries, three of which are the constant-curvature geometries directly connected to the parallel postulate's independence."
+    },
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "related",
+      "description": "Euler's formula V-E+F=2 holds for convex polyhedra in Euclidean space. Its generalization to surfaces of different genus (V-E+F=2-2g) connects to the Gauss-Bonnet theorem, which relates curvature to topology — the same framework that explains why the parallel postulate's truth depends on the geometry's curvature."
+    },
+    {
+      "targetId": "hilbert-3",
+      "relationship": "related",
+      "description": "Hilbert's third problem asks whether two polyhedra of equal volume are always scissors-congruent. Dehn's negative answer (1900) uses the Dehn invariant, which depends on the geometry's structure. In hyperbolic geometry (where the parallel postulate fails), the analogous scissors-congruence problem has a different answer — volume alone suffices (Jessen, 1968)."
     }
   ],
   "leanFile": {

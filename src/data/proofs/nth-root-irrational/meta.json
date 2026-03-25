@@ -141,13 +141,33 @@
     },
     {
       "targetId": "fundamental-arithmetic",
-      "relationship": "technique",
+      "relationship": "foundational",
       "description": "The unique prime factorization theorem underlies the 'not a perfect power' test: $m$ is a perfect $n$-th power iff every prime in its factorization appears with multiplicity divisible by $n$. The irrationality of $\\sqrt[n]{m}$ thus reduces to a divisibility condition on prime exponents"
     },
     {
       "targetId": "e-transcendental",
-      "relationship": "extends",
+      "relationship": "related",
       "description": "Nth root irrationality sits at the bottom of the expressibility hierarchy: irrationality ($\\sqrt[n]{m} \\notin \\mathbb{Q}$) is weaker than transcendence ($e \\notin \\overline{\\mathbb{Q}}$). Hermite's proof that $e$ is transcendental (1873) shows $e$ is not even an algebraic number, while this file proves certain algebraic numbers ($\\sqrt[n]{m}$) escape the rationals"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "extended-by",
+      "description": "The irrationality of sqrt(2) is the most famous special case of the general nth root theorem (n=2, m=2). The classical Pythagorean parity argument is subsumed by this file's uniform proof via irrational_nrt_of_notint_nrt, which handles all roots and all non-perfect-powers simultaneously."
+    },
+    {
+      "targetId": "sqrt2-from-axioms",
+      "relationship": "complementary",
+      "description": "While sqrt2-from-axioms proves irrationality of sqrt(2) from first principles using Peano arithmetic axioms, this file takes the opposite approach: leveraging Mathlib's powerful irrational_nrt_of_notint_nrt lemma to prove a maximally general result. The two approaches illustrate the tradeoff between foundational depth and generality in formal mathematics."
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "The transcendence of pi (Lindemann, 1882) is a far stronger result than irrationality: pi satisfies no polynomial equation over Q, while nth roots of integers are algebraic (roots of x^n - m). Together, these results map the hierarchy: rational < irrational algebraic < transcendental, with nth roots occupying the middle tier."
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "related",
+      "description": "The Hermite-Lindemann theorem proves that e^alpha is transcendental for nonzero algebraic alpha. Since nth roots are algebraic, this creates a sharp divide: nth roots of integers are algebraic irrationals (this file), while exponentials of algebraic numbers are transcendental (Hermite-Lindemann). The two results together characterize much of classical transcendence theory."
     }
   ],
   "leanFile": {

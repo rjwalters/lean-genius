@@ -240,6 +240,26 @@
       "targetId": "abel-ruffini",
       "relationship": "thematic",
       "description": "For n ≥ 5, Abel-Ruffini implies the eigenvalues (roots of the characteristic polynomial) cannot always be expressed in radicals — yet the minimal polynomial reduction works regardless, algebraically rather than numerically"
+    },
+    {
+      "targetId": "cayley-hamilton-reduction",
+      "relationship": "extended-by",
+      "description": "The charpoly reduction (OQ-02) shows aeval M f = aeval M (f mod charpoly). This minpoly reduction refines it: since minpoly divides charpoly, the remainder mod minpoly has smaller degree, giving a tighter bound on the reduced polynomial."
+    },
+    {
+      "targetId": "inverse-galois",
+      "relationship": "related",
+      "description": "The inverse Galois problem asks which finite groups occur as Galois groups over Q. The minimal polynomial of a matrix determines the splitting field of its eigenvalues, and the Galois group of minpoly controls the symmetries of the eigenvalue configuration — connecting matrix algebra to field extension theory."
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem that the order of a subgroup divides the group order is the algebraic ancestor of the divisibility minpoly | charpoly. Both express that a 'smaller' algebraic object (subgroup, minimal polynomial) must divide a 'larger' one (full group, characteristic polynomial) in a precise sense."
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The annihilator ideal (μ_M) is principal in the PID K[X], relying on the Euclidean algorithm for polynomials — the same unique factorization structure that underlies the fundamental theorem of arithmetic for integers. The polynomial division algorithm f = q*μ_M + r is the core mechanism of the minpoly reduction theorem."
     }
   ],
   "references": [

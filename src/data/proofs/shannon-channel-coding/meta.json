@@ -127,18 +127,33 @@
   "crossReferences": [
     {
       "targetId": "shannon-entropy",
-      "relationship": "depends-on",
-      "description": "Channel capacity is defined via mutual information, which is built from Shannon entropy"
+      "relationship": "foundational",
+      "description": "Channel capacity C = max I(X;Y) is defined via mutual information, which is built from Shannon entropy H(X). The entropy function provides the information-theoretic units (bits) that measure channel capacity, and its properties (concavity, chain rule) are essential for both the achievability and converse proofs."
     },
     {
       "targetId": "shannon-source-coding",
-      "relationship": "related",
-      "description": "Source coding and channel coding are the two fundamental theorems, connected by the separation theorem: source coding then channel coding is optimal"
+      "relationship": "complementary",
+      "description": "Source coding and channel coding are the two fundamental theorems of information theory, connected by the separation theorem: optimal communication decomposes into source compression (to H(X) bits/symbol) followed by channel coding (reliable at rates below C). Together they characterize the complete communication pipeline."
     },
     {
       "targetId": "prob-method-expectation",
       "relationship": "related",
-      "description": "Random coding is a probabilistic method argument: a random codebook achieves capacity with high probability"
+      "description": "Shannon's random coding proof is one of the earliest and most influential uses of the probabilistic method: a randomly chosen codebook achieves vanishing error probability, so a good deterministic codebook must exist. This predates Erdos's systematic development of the probabilistic method and demonstrates its power in information theory."
+    },
+    {
+      "targetId": "pac-learning-bounds",
+      "relationship": "related",
+      "description": "PAC learning bounds and channel coding both concern the fundamental limits of inference from noisy data. The sample complexity in PAC learning plays the role of block length in channel coding, and both use concentration inequalities to bound error probability. Fano's inequality appears in both contexts as a tool for proving impossibility results."
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "foundational",
+      "description": "The central limit theorem underlies the asymptotic equipartition property (AEP), which is the core technical tool in Shannon's channel coding proof. The AEP states that -1/n log P(X^n) converges to H(X) — a law of large numbers for log-probabilities — and the CLT refines this with Gaussian fluctuations that govern finite block-length performance."
+    },
+    {
+      "targetId": "laws-of-large-numbers",
+      "relationship": "foundational",
+      "description": "The law of large numbers is the mathematical engine behind Shannon's coding theorems. The AEP (asymptotic equipartition property) is essentially the weak law applied to log P(X_i): the sample entropy -1/n Σ log P(X_i) converges to H(X). Joint typicality decoding exploits this convergence to separate correct from incorrect codewords."
     }
   ],
   "conclusion": {
