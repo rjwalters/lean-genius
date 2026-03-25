@@ -373,38 +373,190 @@ theorem sidon_density_bound (A : Finset ℕ) (hS : IsSidon (A : Set ℕ)) (N : �
     (hAN : ∀ a ∈ A, a ≤ N) : A.card ≤ Nat.sqrt (2 * N) + 1 :=
   Erdos340.sidon_upper_bound_weak A (isSidon_set_to_finset A hS) N hAN
 
-/-- **Axiom: Sidon sets are NOT asymptotic bases.**
+/-- The number of upper-triangular pairs (a ≤ b) in F×F satisfies
+    |{(a,b) ∈ F×F : a ≤ b}| * 2 = |F| * (|F| + 1).
+    Proof: partition F×F into {a ≤ b} and {b < a}, swap bijects {a < b} ↔ {b < a},
+    and {a ≤ b} = {a < b} ∪ diagonal. -/
+private lemma card_upper_triangle (F : Finset ℕ) :
+    ((F ×ˢ F).filter (fun p : ℕ × ℕ => p.1 ≤ p.2)).card * 2 =
+    F.card * (F.card + 1) := by
+  -- Step 1: {a ≤ b} and {¬(a ≤ b)} partition F×F
+  have h_part : ((F ×ˢ F).filter (fun p : ℕ × ℕ => p.1 ≤ p.2)).card +
+      ((F ×ˢ F).filter (fun p : ℕ × ℕ => ¬(p.1 ≤ p.2))).card = F.card * F.card := by
+    rw [Finset.filter_card_add_filter_neg_card_eq_card, Finset.card_product]
+  -- Step 2: Swap bijection: |{b < a}| = |{a < b}| via Prod.swap image
+  have h_swap : ((F ×ˢ F).filter (fun p : ℕ × ℕ => ¬(p.1 ≤ p.2))).card =
+      ((F ×ˢ F).filter (fun p : ℕ × ℕ => p.1 < p.2)).card := by
+    -- Show Prod.swap maps lower to strict-upper
+    suffices h_im : ((F ×ˢ F).filter (fun p : ℕ × ℕ => ¬(p.1 ≤ p.2))).image Prod.swap =
+        (F ×ˢ F).filter (fun p : ℕ × ℕ => p.1 < p.2) by
+      rw [← h_im]
+      exact (Finset.card_image_of_injective _ (Prod.swap_injective (α := ℕ) (β := ℕ))).symm
+    ext ⟨a, b⟩
+    simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_product, Prod.swap, not_le]
+    constructor
+    · rintro ⟨⟨c, d⟩, ⟨⟨hc, hd⟩, hcd⟩, heq⟩
+      obtain ⟨h1, h2⟩ := (Prod.mk.inj heq)
+      subst h1; subst h2; exact ⟨⟨hd, hc⟩, hcd⟩
+    · intro ⟨⟨ha, hb⟩, hab⟩
+      exact ⟨⟨b, a⟩, ⟨⟨hb, ha⟩, by omega⟩, by simp [Prod.mk.injEq]⟩
+  -- Step 3: {a ≤ b} = {a < b} ∪ {a = b}, disjoint
+  have h_split : ((F ×ˢ F).filter (fun p : ℕ × ℕ => p.1 ≤ p.2)).card =
+      ((F ×ˢ F).filter (fun p : ℕ × ℕ => p.1 < p.2)).card +
+      ((F ×ˢ F).filter (fun p : ℕ × ℕ => p.1 = p.2)).card := by
+    have h_eq : (F ×ˢ F).filter (fun p : ℕ × ℕ => p.1 ≤ p.2) =
+        (F ×ˢ F).filter (fun p : ℕ × ℕ => p.1 < p.2) ∪
+        (F ×ˢ F).filter (fun p : ℕ × ℕ => p.1 = p.2) := by
+      ext ⟨a, b⟩; simp only [Finset.mem_filter, Finset.mem_union, Finset.mem_product]
+      constructor
+      · intro ⟨h, hab⟩; rcases Nat.eq_or_lt_of_le hab with rfl | hlt
+        · exact Or.inr ⟨h, rfl⟩
+        · exact Or.inl ⟨h, hlt⟩
+      · rintro (⟨h, hlt⟩ | ⟨h, heq⟩) <;> exact ⟨h, by omega⟩
+    have h_disj : Disjoint ((F ×ˢ F).filter (fun p : ℕ × ℕ => p.1 < p.2))
+        ((F ×ˢ F).filter (fun p : ℕ × ℕ => p.1 = p.2)) := by
+      rw [Finset.disjoint_filter]; intro _ _ h1 h2; omega
+    rw [h_eq, Finset.card_union_of_disjoint h_disj]
+  -- Step 4: |{a = b}| = |F| via the diagonal map a ↦ (a,a)
+  have h_diag : ((F ×ˢ F).filter (fun p : ℕ × ℕ => p.1 = p.2)).card = F.card := by
+    suffices h_im : F.image (fun a => (a, a)) =
+        (F ×ˢ F).filter (fun p : ℕ × ℕ => p.1 = p.2) by
+      rw [← h_im]
+      exact Finset.card_image_of_injective _ (fun a₁ a₂ h => (Prod.mk.inj h).1)
+    ext ⟨a, b⟩
+    simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_product, Prod.mk.injEq]
+    constructor
+    · rintro ⟨c, hc, rfl, rfl⟩; exact ⟨⟨hc, hc⟩, rfl⟩
+    · rintro ⟨⟨ha, _⟩, rfl⟩; exact ⟨a, ha, rfl, rfl⟩
+  -- Combine: 2U = n(n+1). omega can't handle n*n, so use linarith after expanding.
+  -- h_part: U + L = n*n; h_swap: L = SU; h_split: U = SU + D; h_diag: D = n
+  -- => U = L + n, so U + L = 2*L + n = n*n, hence 2*U = 2*L + 2*n = n*n + n = n*(n+1)
+  have : F.card * (F.card + 1) = F.card * F.card + F.card := by ring
+  linarith
 
-## Mathematical Proof Sketch
+/-- The Finset sumset image equals the image restricted to upper-triangular pairs. -/
+private lemma finset_sumset_eq_upper_image (F : Finset ℕ) :
+    (F ×ˢ F).image (fun p : ℕ × ℕ => p.1 + p.2) =
+    ((F ×ˢ F).filter (fun p : ℕ × ℕ => p.1 ≤ p.2)).image (fun p : ℕ × ℕ => p.1 + p.2) := by
+  ext n
+  simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_product]
+  constructor
+  · rintro ⟨⟨a, b⟩, ⟨ha, hb⟩, heq⟩
+    by_cases h : a ≤ b
+    · exact ⟨⟨a, b⟩, ⟨⟨ha, hb⟩, h⟩, heq⟩
+    · exact ⟨⟨b, a⟩, ⟨⟨hb, ha⟩, by omega⟩, by omega⟩
+  · rintro ⟨⟨a, b⟩, ⟨⟨ha, hb⟩, _⟩, heq⟩
+    exact ⟨⟨a, b⟩, ⟨ha, hb⟩, heq⟩
 
-By contradiction. Assume A is an infinite Sidon set that is a basis with threshold N₀.
-For any N ≥ N₀, let A_N = A ∩ [0, N].
+/-- The sumset of a finite set F has |sumset(F)| * 2 ≤ |F| * (|F| + 1). -/
+private lemma finset_sumset_card_bound (F : Finset ℕ) :
+    ((F ×ˢ F).image (fun p : ℕ × ℕ => p.1 + p.2)).card * 2 ≤
+    F.card * (F.card + 1) := by
+  rw [finset_sumset_eq_upper_image]
+  calc (((F ×ˢ F).filter (fun p : ℕ × ℕ => p.1 ≤ p.2)).image
+          (fun p : ℕ × ℕ => p.1 + p.2)).card * 2
+      ≤ ((F ×ˢ F).filter (fun p : ℕ × ℕ => p.1 ≤ p.2)).card * 2 := by
+        apply Nat.mul_le_mul_right; exact Finset.card_image_le
+    _ = F.card * (F.card + 1) := card_upper_triangle F
 
-1. **Coverage**: Each n ∈ [N₀, N] is a sum a + b with a, b ∈ A_N (both ≤ n ≤ N).
-   The sumset of A_N covers [N₀, N].
+/-- **Sidon sets are NOT asymptotic bases.**
 
-2. **Pair counting**: The sumset has at most |A_N|(|A_N|+1)/2 elements
-   (image of addition on ordered pairs (a,b) with a ≤ b from A_N).
-   So |A_N|(|A_N|+1)/2 ≥ N - N₀ + 1.
+Uses the tight Sidon density bound (Erdos340.sidon_upper_bound, axiom) to show that
+Sidon sets are too sparse to cover [N₀, N] when N is large.
 
-3. **Tight Sidon density**: By `Erdos340.sidon_upper_bound`, |A_N| ≤ √N + √(√N) + 1.
-   So |A_N|(|A_N|+1)/2 ≈ N/2 + O(N^{3/4}).
-
-4. **Contradiction**: For large N, N/2 + O(N^{3/4}) < N - N₀ + 1.
-
-## Dependencies
-
-Uses `Erdos340.sidon_upper_bound` (axiom in Erdos340GreedySidon.lean, the tight √N bound).
-The weaker √(2N) bound (`sidon_upper_bound_weak`, proved) is insufficient: it gives
-sumset ≈ N + O(√N) ≥ N - N₀ + 1, which holds and gives no contradiction.
-
-## Status
-
-**HARD**: Known mathematics, needs ~150 lines of formalization.
-Requires: (1) ordered pair counting lemma, (2) truncation Set→Finset, (3) explicit N₁.
--/
-axiom sidon_not_basis (A : Set ℕ) (hS : IsSidon A) (hInf : A.Infinite) :
-    ¬IsAsymptoticBasis A
+**Proof**: By contradiction. For a Sidon basis with threshold N₀, pick N = (4N₀+100)².
+Coverage gives N-N₀+1 ≤ |sumset(A_N)| ≤ |A_N|(|A_N|+1)/2 (unordered pair bound).
+The tight Sidon bound gives |A_N| ≤ √N+√(√N)+1 ≤ 5N₀+126, so the RHS ≈ N/2,
+contradicting the LHS ≈ N. -/
+theorem sidon_not_basis (A : Set ℕ) (hS : IsSidon A) (hInf : A.Infinite) :
+    ¬IsAsymptoticBasis A := by
+  intro ⟨N₀, hN₀⟩
+  -- Choose N = (4*N₀ + 100)², large enough for the arithmetic contradiction
+  set T := 4 * N₀ + 100 with hT_def
+  set N := T ^ 2 with hN_def
+  have hN_ge_N0 : N ≥ N₀ := by nlinarith [hN_def, hT_def, sq_nonneg T]
+  -- Truncate A to A_N = A ∩ [0, N]
+  set S := A ∩ Set.Iic N with hS_set
+  have hS_fin : S.Finite := Set.Finite.subset (Set.finite_Iic N) Set.inter_subset_right
+  set F := hS_fin.toFinset with hF_def
+  set s := F.card with hs_def
+  -- IsSidon is hereditary: S ⊆ A implies S is Sidon
+  have hS_sidon : IsSidon (↑F : Set ℕ) := by
+    rw [Set.Finite.coe_toFinset]
+    intro a b c d ha hb hc hd heq
+    exact hS a b c d (Set.mem_of_mem_inter_left ha) (Set.mem_of_mem_inter_left hb)
+      (Set.mem_of_mem_inter_left hc) (Set.mem_of_mem_inter_left hd) heq
+  -- Sidon tight bound: s ≤ √N + √(√N) + 1
+  have hF_bound : ∀ a ∈ F, a ≤ N := by
+    intro a ha
+    rw [Set.Finite.mem_toFinset] at ha
+    exact Set.mem_Iic.mp (Set.mem_of_mem_inter_right ha)
+  have h_sidon : s ≤ Nat.sqrt N + Nat.sqrt (Nat.sqrt N) + 1 :=
+    Erdos340.sidon_upper_bound F (isSidon_set_to_finset F hS_sidon) N hF_bound
+  -- Bound s using explicit values: √(T²) = T, √T ≤ N₀ + 25
+  have h_sqrt_N : Nat.sqrt N = T := by
+    rw [hN_def, sq]; simp [Nat.sqrt_eq]
+  have h_sqrt_T : Nat.sqrt T ≤ N₀ + 25 := by
+    have : T ≤ (N₀ + 25) ^ 2 := by nlinarith [hT_def]
+    calc Nat.sqrt T ≤ Nat.sqrt ((N₀ + 25) ^ 2) := Nat.sqrt_le_sqrt this
+      _ = N₀ + 25 := by rw [sq]; simp [Nat.sqrt_eq]
+  have h_s_bound : s ≤ 5 * N₀ + 126 := by
+    have h1 := h_sidon; rw [h_sqrt_N] at h1; linarith [h_sqrt_T, hT_def]
+  -- Coverage: [N₀, N] ⊆ sumset(S), so N - N₀ + 1 ≤ |sumset(S)|
+  have h_cover : Set.Icc N₀ N ⊆ sumset S := by
+    intro n hn
+    simp only [Set.mem_Icc] at hn
+    obtain ⟨a, b, ha, hb, heq⟩ := hN₀ n hn.1
+    exact ⟨a, b, ⟨ha, Set.mem_Iic.mpr (by omega)⟩,
+                  ⟨hb, Set.mem_Iic.mpr (by omega)⟩, heq⟩
+  -- sumset S is finite (reuse from basis_element_count_sq proof pattern)
+  have h_sumset_fin : (sumset S).Finite := by
+    apply Set.Finite.subset (Set.finite_Iic (2 * N))
+    intro n ⟨a, b, ha, hb, heq⟩
+    exact Set.mem_Iic.mpr (by
+      have := Set.mem_Iic.mp (Set.mem_of_mem_inter_right ha)
+      have := Set.mem_Iic.mp (Set.mem_of_mem_inter_right hb)
+      omega)
+  -- Coverage count
+  have h_Icc_card : (Set.Icc N₀ N).ncard = N - N₀ + 1 := by
+    rw [show Set.Icc N₀ N = ↑(Finset.Icc N₀ N) from (Finset.coe_Icc N₀ N).symm,
+        Set.ncard_coe_finset, Nat.card_Icc]; omega
+  have h_cover_count : N - N₀ + 1 ≤ (sumset S).ncard := by
+    rw [← h_Icc_card]
+    exact Set.ncard_le_ncard h_cover h_sumset_fin
+  -- Key: connect Set sumset to Finset sumset for the bound
+  have h_sumset_eq : sumset S = ↑((F ×ˢ F).image (fun p : ℕ × ℕ => p.1 + p.2)) := by
+    ext n; constructor
+    · rintro ⟨a, b, ha, hb, heq⟩
+      simp only [Finset.coe_image, Set.mem_image, Finset.mem_coe]
+      exact ⟨⟨a, b⟩, Finset.mem_product.mpr ⟨hS_fin.mem_toFinset.mpr ha,
+        hS_fin.mem_toFinset.mpr hb⟩, by dsimp; omega⟩
+    · simp only [Finset.coe_image, Set.mem_image, Finset.mem_coe]
+      rintro ⟨⟨a, b⟩, hmem, heq⟩
+      dsimp at heq; rw [Finset.mem_product] at hmem
+      exact ⟨a, b, hS_fin.mem_toFinset.mp hmem.1, hS_fin.mem_toFinset.mp hmem.2, by omega⟩
+  -- |sumset(S)| = Finset card of sumset
+  have h_sumset_ncard : (sumset S).ncard =
+      ((F ×ˢ F).image (fun p : ℕ × ℕ => p.1 + p.2)).card := by
+    rw [h_sumset_eq, Set.ncard_coe_finset]
+  -- Unordered pair bound: |sumset| * 2 ≤ s * (s + 1)
+  have h_sumset_bound : (sumset S).ncard * 2 ≤ s * (s + 1) := by
+    rw [h_sumset_ncard]; exact finset_sumset_card_bound F
+  -- Combined: 2*(N - N₀ + 1) ≤ s*(s+1), convert to addition to help nlinarith
+  have h_combined : 2 * N + 2 ≤ s * (s + 1) + 2 * N₀ := by
+    have h := Nat.mul_le_mul_left 2 h_cover_count
+    have h2 := h_sumset_bound
+    omega
+  -- s*(s+1) ≤ (5*N₀+126)*(5*N₀+127) since s ≤ 5*N₀+126
+  have h_s_mul : s * (s + 1) ≤ (5 * N₀ + 126) * (5 * N₀ + 127) := by
+    apply Nat.mul_le_mul <;> omega
+  -- N = T^2 = (4*N₀+100)^2, so 2*N+2 = 2*(4*N₀+100)^2+2
+  -- Combining: 2*(4*N₀+100)^2+2 ≤ (5*N₀+126)*(5*N₀+127)+2*N₀
+  -- i.e., 32*N₀²+1600*N₀+20002 ≤ 25*N₀²+1267*N₀+16002
+  -- i.e., 7*N₀²+333*N₀+4000 ≤ 0, which is impossible.
+  have : 2 * T ^ 2 + 2 ≤ (5 * N₀ + 126) * (5 * N₀ + 127) + 2 * N₀ := by
+    linarith [hN_def]
+  nlinarith [hT_def, sq_nonneg N₀]
 
 /- ## Part VIII: Ordered vs Unordered Representations -/
 
@@ -482,11 +634,13 @@ theorem basis_element_count_sq (A : Set ℕ) (hA : IsAsymptoticBasis A) :
     rw [h_sumset_img]
     calc ((fun p : ℕ × ℕ => p.1 + p.2) '' (S ×ˢ S)).ncard
         ≤ (S ×ˢ S).ncard := Set.ncard_image_le (hS_fin.prod hS_fin)
-      _ = S.ncard * S.ncard := Set.ncard_prod hS_fin hS_fin
+      _ = S.ncard * S.ncard := Set.ncard_prod
       _ = S.ncard ^ 2 := by ring
   -- Chain: N - N₀ + 1 ≤ |[N₀, N]| ≤ |sumset S| ≤ |S|²
   calc N - N₀ + 1
-      = (Set.Icc N₀ N).ncard := by simp [Set.ncard_Icc]; omega
+      = (Set.Icc N₀ N).ncard := by
+        rw [show Set.Icc N₀ N = ↑(Finset.Icc N₀ N) from (Finset.coe_Icc N₀ N).symm,
+            Set.ncard_coe_finset, Nat.card_Icc]; omega
     _ ≤ (sumset S).ncard := Set.ncard_le_ncard h_cover h_sumset_fin
     _ ≤ S.ncard ^ 2 := h_sumset_bound
 
