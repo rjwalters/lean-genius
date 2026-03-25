@@ -92,7 +92,7 @@
       "summary": "Defines TriangulatedDisk2D structure with vertices, edges, boundary, and antipodal map. Defines the antisymmetric difference g(x)=f(x)-f(-x) and proves it is odd and continuous.",
       "startLine": 120,
       "endLine": 210,
-      "mathContext": "Defines TriangulatedDisk2D structure with vertices, edges, boundary, and antipodal map. Defines the antisymmetric difference g(x)=f(x)-f(-x) and proves it is odd and continuous."
+      "mathContext": "**TriangulatedDisk2D**: simplicial complex on $D^2 = \\{(u,v) : u^2 + v^2 \\leq 1\\}$ with antipodal boundary identification: vertex $v$ on $\\partial D^2$ paired with $-v$. Tucker requires: $L(-v) = -L(v)$ for boundary vertices."
     },
     {
       "id": "odd-framework",
@@ -100,7 +100,7 @@
       "summary": "Establishes properties of odd functions on S¹/S²: g(0)=0, symmetric zero set, norm preservation. Defines ε-approximate antipodal pairs and proves the approximate→exact bridge via compactness.",
       "startLine": 400,
       "endLine": 575,
-      "mathContext": "Establishes properties of odd functions on S¹/S²: g(0)=0, symmetric zero set, norm preservation. Defines ε-approximate antipodal pairs and proves the approximate→exact bridge via compactness."
+      "mathContext": "$g: S^n \\to \\mathbb{R}^n$ is odd $\\iff g(-x) = -g(x)$. Properties: $g(\\mathbf{0}) = \\mathbf{0}$ (if defined), symmetric zero set $g(x)=0 \\Rightarrow g(-x)=0$. Borsuk-Ulam: $\\exists x \\in S^n,\\, g(x) = \\mathbf{0}$."
     },
     {
       "id": "corrected-bu",
@@ -108,7 +108,7 @@
       "summary": "The correct 2D BU statement uses S² ⊂ ℝ³ (not S¹). Defines neg3, antisymmetricDiff3, sphere compactness. Proves approximate and exact BU via Tucker on the disk + hemisphere projection.",
       "startLine": 595,
       "endLine": 845,
-      "mathContext": "The correct 2D BU statement uses S² ⊂ ℝ³ (not S¹). Defines neg3, antisymmetricDiff3, sphere compactness. Proves approximate and exact BU via Tucker on the disk + hemisphere projection."
+      "mathContext": "**2D Borsuk-Ulam**: For continuous $f: S^2 \\to \\mathbb{R}^2$, $\\exists x \\in S^2,\\, f(x) = f(-x)$. Note: $S^2 \\subset \\mathbb{R}^3$ (not $S^1$). Odd version: $g = f - f \\circ \\text{neg}$, then $g(-x) = -g(x)$ and $\\exists x,\\, g(x) = 0$."
     },
     {
       "id": "hemisphere-projection",
@@ -116,7 +116,7 @@
       "summary": "Maps D² to upper hemisphere of S² via diskLift: (u,v) ↦ (u,v,√(1-u²-v²)). Proves the crucial boundary property: diskLift(-p) = neg3(diskLift(p)) on ∂D², making Tucker's lemma applicable.",
       "startLine": 846,
       "endLine": 920,
-      "mathContext": "Maps D² to upper hemisphere of S² via diskLift: (u,v) ↦ (u,v,√(1-u²-v²)). Proves the crucial boundary property: diskLift(-p) = neg3(diskLift(p)) on ∂D², making Tucker's lemma applicable."
+      "mathContext": "$\\text{diskLift}: D^2 \\to S^2_+$ via $(u,v) \\mapsto (u, v, \\sqrt{1-u^2-v^2})$. Maps the closed disk to the upper hemisphere. Antipodal points on $\\partial D^2$ map to antipodal points on $S^2$: $\\text{diskLift}(-u,-v) = -\\text{diskLift}(u,v)$."
     },
     {
       "id": "ivt-segments",
@@ -132,7 +132,7 @@
       "summary": "At a dominant-component vertex near an IVT zero, both components of g are bounded by the modulus of continuity. Proves |g(w)_{3-k}| ≤ 2·dist(g(u),g(w)), enabling the mesh refinement argument.",
       "startLine": 1081,
       "endLine": 1150,
-      "mathContext": "At a dominant-component vertex near an IVT zero, both components of g are bounded by the modulus of continuity. Proves |g(w)_{3-k}| ≤ 2·dist(g(u),g(w)), enabling the mesh refinement argument."
+      "mathContext": "Near an IVT zero on a segment: if component $j$ dominates at a vertex ($|g_j| > |g_{1-j}|$), then both components satisfy $|g_i| \\leq \\varepsilon$ within $\\delta$ of the zero, providing $\\ell^\\infty$-ball containment."
     },
     {
       "id": "tucker-5v",
@@ -140,7 +140,7 @@
       "summary": "Verifies Tucker's 2D lemma for the minimal centrally-symmetric triangulated disk (4 boundary + 1 center vertex, 8 edges). Exhaustive check over 4³ = 64 valid labelings via decide.",
       "startLine": 1153,
       "endLine": 1260,
-      "mathContext": "Verifies Tucker's 2D lemma for the minimal centrally-symmetric triangulated disk (4 boundary + 1 center vertex, 8 edges). Exhaustive check over 4³ = 64 valid labelings via decide."
+      "mathContext": "Minimal Tucker verification: centrally symmetric triangulated disk with 4 boundary + 1 interior vertex. Antipodal labeling $L(-v) = -L(v)$ on boundary. Explicit exhaustive check that a complementary edge (labels $+k, -k$) exists."
     },
     {
       "id": "tucker-9v",
@@ -148,7 +148,7 @@
       "summary": "Verifies Tucker's 2D lemma for a 3×3 grid triangulation (8 boundary + 1 interior vertex, 16 edges). Exhaustive check over 4⁵ = 1024 valid labelings via native_decide.",
       "startLine": 1261,
       "endLine": 1330,
-      "mathContext": "Verifies Tucker's 2D lemma for a 3×3 grid triangulation (8 boundary + 1 interior vertex, 16 edges). Exhaustive check over 4⁵ = 1024 valid labelings via native_decide."
+      "mathContext": "$3 \\times 3$ grid triangulation: 8 boundary + 1 interior vertex. Any antipodal labeling of the boundary forces a complementary edge $\\{v_i, v_j\\}$ with $L(v_i) + L(v_j) = 0$. Verified by `native_decide`."
     },
     {
       "id": "antipodal-necessity",
@@ -156,7 +156,7 @@
       "summary": "Proves the antipodal boundary condition is necessary: a constant labeling (all vertices +1) with no antipodal constraint has zero complementary edges.",
       "startLine": 1331,
       "endLine": 1370,
-      "mathContext": "Proves the antipodal boundary condition is necessary: a constant labeling (all vertices +1) with no antipodal constraint has zero complementary edges."
+      "mathContext": "The antipodal condition $L(-v) = -L(v)$ is necessary: a constant labeling $L \\equiv +1$ on all boundary vertices has no complementary edge, showing Tucker fails without antipodality."
     },
     {
       "id": "boundary-parity",
@@ -164,7 +164,7 @@
       "summary": "Proves that for any antipodal labeling of the boundary, the number of complementary boundary edges is even. Verified for 5-vertex (16 cases, decide) and 9-vertex (256 cases, native_decide).",
       "startLine": 1371,
       "endLine": 2633,
-      "mathContext": "Proves that for any antipodal labeling of the boundary, the number of complementary boundary edges is even. Verified for 5-vertex (16 cases, decide) and 9-vertex (256 cases, native_decide)."
+      "mathContext": "For any antipodal labeling of $\\partial D^2$: the number of complementary edges (sign changes) on the boundary is odd. Parity argument: antipodal pairing forces an odd number of sign transitions around the circle."
     }
   ],
   "conclusion": {
