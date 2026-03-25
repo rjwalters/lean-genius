@@ -159,6 +159,11 @@
       "targetId": "riemann-hypothesis",
       "relationship": "generalizes",
       "description": "GRH generalizes RH from the single Riemann zeta function to ALL Dirichlet L-functions"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "extends",
+      "description": "GRH refines the PNT error term for primes in APs from O(x exp(-c√log x)) to O(√x log x), and removes restrictions on the modulus q"
     }
   ],
   "references": [
@@ -182,6 +187,20 @@
       "year": "1973",
       "venue": "Mathematika",
       "note": "GRH-conditional improvement of character sums from O(√q log q) to O(√q log log q)"
+    },
+    {
+      "authors": "Yuri Linnik",
+      "title": "On the least prime in an arithmetic progression",
+      "year": "1944",
+      "venue": "Rec. Math. [Mat. Sbornik]",
+      "note": "Original proof that the least prime in an AP is O(q^L); GRH improves L from ~5 to effectively 2"
+    },
+    {
+      "authors": "Dorian Goldfeld",
+      "title": "Gauss's class number problem for imaginary quadratic fields",
+      "year": "1985",
+      "venue": "Bulletin of the AMS",
+      "note": "Solved the class number problem using Gross-Zagier; the unconditional bound h(d) ≫ (log|d|)^{1-ε} is far weaker than the GRH bound"
     }
   ]
 }
