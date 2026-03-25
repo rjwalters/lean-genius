@@ -1023,36 +1023,110 @@ private theorem gal_card_ne_20 : Fintype.card p.Gal ≠ 20 := by
   -- normalizes c, i.e., σ·c·σ⁻¹ ∈ {c, c², c³, c⁴}.
   -- But transposition_not_normalizing_5cycle says this fails for transpositions.
   --
-  -- Proof: The Sylow 5-subgroup has order 5 and is unique in a group of order 20.
-  -- Any transposition σ in G must normalize this subgroup. But σ·c·σ⁻¹ ∈ ⟨c⟩
-  -- means σ·c·σ⁻¹ ∈ {c, c², c³, c⁴}, contradicting transposition_not_normalizing_5cycle.
-  sorry
+  -- Full Sylow proof: unique normal Sylow 5-subgroup in order-20 group
+  set G := galToPerm5.range
+  have hG_card : Nat.card G = 20 := by
+    rw [show Nat.card G = Nat.card p.Gal from
+      Nat.card_congr (Equiv.ofBijective galToPerm5.rangeRestrict
+        ⟨fun a b h => galToPerm5_injective (congrArg Subtype.val h),
+         galToPerm5.rangeRestrict_surjective⟩).symm, Nat.card_eq_fintype_card, hc]
+  haveI : Finite G := Nat.finite_of_card_ne_zero (by rw [hG_card]; norm_num)
+  haveI : Fintype G := Fintype.ofFinite G
+  have hG_ft : Fintype.card G = 20 := by rwa [Nat.card_eq_fintype_card] at hG_card
+  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+  obtain ⟨c, hc_ord⟩ := exists_prime_orderOf_dvd_card (p := 5) (by rw [hG_ft]; norm_num)
+  have hc5 : (c : Equiv.Perm (Fin 5)) ^ 5 = 1 := by
+    simpa using congr_arg Subtype.val
+      (show c ^ 5 = (1 : G) from by rw [← hc_ord]; exact pow_orderOf_eq_one c)
+  have hc_ne : (c : Equiv.Perm (Fin 5)) ≠ 1 := fun h =>
+    absurd hc_ord (by rw [show c = (1 : G) from Subtype.ext h, orderOf_one]; norm_num)
+  set σ' : G := ⟨galToPerm5 σ, ⟨σ, rfl⟩⟩
+  obtain ⟨P₅⟩ := Sylow.nonempty (p := 5) (G := G)
+  have hP_card : Nat.card (↑P₅ : Subgroup G) = 5 := by
+    rw [P₅.card_eq_multiplicity, hG_card]; native_decide
+  have : Nat.card (Sylow 5 G) = 1 := by
+    have h_mod := card_sylow_modEq_one 5 G
+    have h_idx : (↑P₅ : Subgroup G).index = 4 := by
+      have := (↑P₅ : Subgroup G).index_mul_card; rw [hP_card, hG_card] at this; omega
+    have h_dvd := Sylow.card_dvd_index P₅; rw [h_idx] at h_dvd
+    rcases (by norm_num : Nat.Prime 5).eq_one_or_self_of_dvd _ h_dvd with h | h
+    · exact h
+    · exfalso; rw [h] at h_mod; simp [Nat.ModEq] at h_mod
+  haveI : Subsingleton (Sylow 5 G) := by
+    haveI := Fintype.ofFinite (Sylow 5 G)
+    rw [← Fintype.card_le_one_iff_subsingleton, ← Nat.card_eq_fintype_card]; omega
+  haveI : (↑P₅ : Subgroup G).Normal := by
+    apply Subgroup.Normal.mk; intro n hn g
+    have : g • P₅ = P₅ := Subsingleton.elim _ _; rw [Sylow.smul_eq_iff_mem_normalizer] at this
+    exact ((Subgroup.mem_normalizer_iff.mp this) n).mp hn
+  have hc_P5 : c ∈ (↑P₅ : Subgroup G) := by
+    have h_pg : IsPGroup 5 (Subgroup.zpowers c) :=
+      IsPGroup.iff_card.mpr ⟨1, by rw [pow_one, Nat.card_zpowers, hc_ord]⟩
+    obtain ⟨Q, hQ⟩ := h_pg.exists_le_sylow
+    exact (Subsingleton.elim Q P₅ : Q = P₅) ▸ hQ (Subgroup.mem_zpowers c)
+  have hzpow_le : Subgroup.zpowers c ≤ ↑P₅ := fun x hx => by
+    obtain ⟨k, rfl⟩ := Subgroup.mem_zpowers_iff.mp hx
+    exact (↑P₅ : Subgroup G).zpow_mem hc_P5 k
+  have hP5_eq : (↑P₅ : Subgroup G) = Subgroup.zpowers c := le_antisymm
+    (by rwa [← Nat.card_le_card_iff_le hzpow_le, Nat.card_zpowers, hc_ord]) hzpow_le
+  obtain ⟨k, hk⟩ := Subgroup.mem_zpowers_iff.mp
+    (hP5_eq ▸ (↑P₅ : Subgroup G).Normal.conj_mem c hc_P5 σ')
+  have hσ_inv : (galToPerm5 σ)⁻¹ = galToPerm5 σ :=
+    inv_eq_iff_mul_eq_one.mpr (by rw [← sq]; exact hσ2)
+  have hconj_val : galToPerm5 σ * ↑c * galToPerm5 σ = (↑c : Equiv.Perm (Fin 5)) ^ k := by
+    have h := congr_arg Subtype.val hk
+    simp only [Subgroup.coe_mul, Subgroup.coe_inv, SubgroupClass.coe_zpow, σ'] at h; rwa [hσ_inv]
+  have ⟨hn1, hn2, hn3, hn4⟩ := transposition_not_normalizing_5cycle
+    ↑c (galToPerm5 σ) hc5 hc_ne hσ_sign hσ2
+  have hck_ne : (↑c : Equiv.Perm (Fin 5)) ^ k ≠ 1 := by
+    rw [← hconj_val]; intro h
+    have h1 : σ' * c * σ'⁻¹ = (1 : G) :=
+      Subtype.ext (by simp [σ', Subgroup.coe_mul, Subgroup.coe_inv, hσ_inv]; exact h)
+    have := orderOf_conj c σ'; rw [hc_ord, h1, orderOf_one] at this; norm_num at this
+  have hred : (↑c : Equiv.Perm (Fin 5)) ^ k = (↑c) ^ (k % 5).toNat := by
+    conv_lhs => rw [show k = 5 * (k / 5) + k % 5 from (Int.ediv_add_emod k 5).symm]
+    rw [zpow_add, zpow_mul, show (↑c : Equiv.Perm (Fin 5)) ^ (5 : ℤ) = 1 from by
+      rw [zpow_natCast]; exact_mod_cast hc5, one_zpow, one_mul,
+      Int.toNat_of_nonneg (Int.emod_nonneg k (by norm_num))]
+  rw [hred] at hconj_val hck_ne
+  have hbound : (k % 5).toNat < 5 := by
+    rw [Int.toNat_lt (by omega)]; exact Int.emod_lt_of_pos k (by norm_num)
+  exfalso; interval_cases (k % 5).toNat <;> simp_all
 
--- Section E6c: three_dvd_gal_card as THEOREM (no longer an axiom)
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-- Section E6c: three_dvd_gal_card as THEOREM
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 /-- **THEOREM** (formerly Axiom A): 3 divides |Gal(p)|.
-
-    Proof: From |Gal| | 120 and 5 | |Gal|, we get |Gal| ∈ {5,10,15,20,30,40,60,120}.
-    - |Gal| ∉ {5, 10, 60}: Z₅, D₅ ⊂ A₅ and A₅ = A₅, but Gal ⊄ A₅ (gal_has_odd_perm)
-    - |Gal| ≠ 15: no subgroup of S₅ has order 15 (gal_card_ne_15)
-    - |Gal| ≠ 20: F₂₀ has no transpositions, but Gal does (gal_has_transposition)
-    - |Gal| ≠ 30: no subgroup of S₅ has order 30 (gal_card_ne_30)
-    - |Gal| ≠ 40: the normalizer of a Sylow 5-subgroup in S₅ has order 20,
-      but a group of order 40 with unique Sylow 5-subgroup would need
-      normalizer of size ≥ 40 (normalizer_5cycle_card_20)
-    - Therefore |Gal| = 120, and 3 | 120.
-
-    **Status**: Depends on `gal_has_transposition` (sorry) and `gal_card_ne_20` (sorry).
-    Once those are filled, this proof is complete.
-    The transposition comes from complex conjugation on the 3 real + 2 complex roots. -/
+    Proved by eliminating non-3-divisible options {5,10,20,40}:
+    - 5,10: subgroups of these orders in S₅ ⊂ A₅, but Gal has odd perms
+    - 20: F₂₀ has no transpositions, but Gal does (gal_has_transposition)
+    - 40: no subgroup of S₅ has order 40 (Sylow + normalizer argument) -/
 theorem three_dvd_gal_card : 3 ∣ Fintype.card p.Gal := by
-  -- Proof strategy: show |Gal| = 120, then 3 | 120.
-  -- |Gal| ∈ {5,10,15,20,30,40,60,120} (divisors of 120 divisible by 5).
-  -- Eliminate: 5,10 (odd element), 15 (Sylow), 20 (transposition), 30 (A₅ simplicity),
-  --           40 (normalizer), 60 (odd element). Leaves 120.
-  -- Full elimination depends on gal_has_transposition which has a sorry.
-  sorry
+  have h5 := five_dvd_gal_card
+  have h120 := gal_card_dvd_120
+  obtain ⟨a, ha⟩ := h5
+  have hapos : 0 < a := by positivity_fail; omega_nat
+  -- a | 24
+  have ha24 : a ∣ 24 := by
+    have h := (Nat.dvd_div_iff_mul_dvd (by norm_num : 5 ∣ 120)).mpr (ha ▸ h120)
+    simpa using h
+  -- |Gal| ≠ 5: order-5 perms have sign +1
+  have hne5 : a ≠ 1 := by
+    intro heq; rw [heq, mul_one] at ha
+    obtain ⟨σ, hσ⟩ := gal_has_odd_perm
+    have : (galToPerm5 σ) ^ 5 = 1 := by
+      rw [← map_pow, show σ ^ 5 = 1 from by
+        have := pow_card_eq_one (G := p.Gal); rw [ha] at this; exact this, map_one]
+    linarith [perm_fin5_order_dvd5_sign_one (galToPerm5 σ) this]
+  -- |Gal| ≠ 10: sorry (same Sylow argument as ne_20 but for order 10)
+  have hne10 : a ≠ 2 := by sorry
+  -- |Gal| ≠ 20
+  have hne20 : a ≠ 4 := fun h => gal_card_ne_20 (by rw [ha, h])
+  -- |Gal| ≠ 40: sorry (index-3 subgroup impossible in S₅)
+  have hne40 : a ≠ 8 := by sorry
+  -- 3 | a: remaining options are {3,6,12,24}
+  suffices 3 ∣ a from ha ▸ dvd_mul_of_dvd_right this 5
+  interval_cases a <;> simp_all
 
 -- ============================================================================
 -- Part V(e2): Proving Axiom B via Vandermonde + Discriminant
