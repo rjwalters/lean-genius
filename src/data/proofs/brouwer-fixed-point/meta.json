@@ -92,7 +92,11 @@
     "relatedProblems": [
       {
         "id": "brouwer-fixed-point-oq-02",
-        "relationship": "Extension of brouwer fixed point"
+        "relationship": "Explores the computational complexity of finding approximate Brouwer fixed points (PPAD-completeness)"
+      },
+      {
+        "id": "brouwer-fixed-point-oq-04",
+        "relationship": "Kakutani's generalization to set-valued maps, with applications to Nash equilibrium existence"
       }
     ]
   },
@@ -328,6 +332,11 @@
       "targetId": "isoperimetric-theorem",
       "relationship": "thematic",
       "description": "Both characterize fundamental properties of the ball/sphere: the isoperimetric theorem shows the ball maximizes volume for given surface area, while Brouwer's theorem shows the ball has the fixed point property. Both use compactness and convexity in essential ways — the isoperimetric theorem via calculus of variations, Brouwer via algebraic topology"
+    },
+    {
+      "targetId": "brouwer-fixed-point-oq-04",
+      "relationship": "extended-by",
+      "description": "Kakutani's fixed point theorem (1941) generalizes Brouwer from single-valued to set-valued (multi-valued) maps: every upper hemicontinuous correspondence with non-empty convex compact values on a compact convex set has a fixed point. Nash's equilibrium theorem is a direct application"
     }
   ],
   "leanFile": {
