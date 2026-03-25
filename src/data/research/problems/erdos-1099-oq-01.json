@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 0 sorries, 4 axioms (down from 5A+1S). h_alpha_ge_one proved, prime_h_alpha_unbounded proved.",
+    "progressSummary": "PROGRESS: Removed false axiom sum_divisor_ratios_lower_bound (4→3 axioms). Fixed 3 pre-existing Mathlib v4.26.0 API breaks.",
     "builtItems": [
       "17 new infrastructure theorems for sorted divisor properties",
       "first_divisor_is_one theorem (was axiom)",
@@ -39,7 +39,11 @@
       "divisorRatios_ge_one: all divisor ratios >= 1",
       "h_alpha_ge_one: proved via nonneg sum + single_le_sum",
       "prime_ratio_mem: for prime p, ratio p is in divisorRatios",
-      "prime_h_alpha_unbounded: proved via prime ratio + rpow monotonicity"
+      "prime_h_alpha_unbounded: proved via prime ratio + rpow monotonicity",
+      "Fixed le_div_iff → le_div_iff₀ rename in zipWith_div_ge_one",
+      "Fixed Real.rpow_le_rpow_left → Real.rpow_le_rpow_of_exponent_le rename",
+      "Fixed List.mem_cons_self → .head _ for membership proofs",
+      "Fixed List.mem_map.mpr → simp [List.mem_map] + apply List.single_le_sum pattern"
     ],
     "insights": [
       "divisorRatios had a critical bug: computed d_i/d_{i+1} instead of d_{i+1}/d_i",
@@ -48,7 +52,9 @@
       "first_ratio_ge_two: proved by showing second divisor d2 >= 2",
       "Key to h_alpha_ge_one: prove all divisor ratios >= 1 via zipWith induction on sorted lists",
       "For prime unboundedness: Nat.exists_infinite_primes + rpow_le_rpow_left for exponent monotonicity",
-      "Real.rpow_nonneg requires 0 <= base; for ratios >= 1 we get base = ratio - 1 >= 0"
+      "Real.rpow_nonneg requires 0 <= base; for ratios >= 1 we get base = ratio - 1 >= 0",
+      "sum_divisor_ratios_lower_bound axiom was FALSE: claimed Σ(d_{i+1}/dᵢ) > τ(n) + log(n) but correct bound is τ(n)-1+log(n) (off by 1 because there are τ-1 ratios, not τ). Counterexample: n=2, sum=2 but τ+log(2)≈2.69. Removed the false axiom.",
+      "Lean 4 v4.26.0 has List.map normalization issues: map f l normalizes to do/flatMap form, breaking List.mem_map.mpr and List.single_le_sum proofs"
     ],
     "mathlibGaps": [
       "No direct Finset.sort getLast = max lemma"
