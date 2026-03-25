@@ -276,6 +276,29 @@ main() {
             return 0
         fi
         echo ""
+
+        # Safety check: if many COMPLETE projects on server are not tracked locally
+        # at all, the recovery pipeline may be broken. This prevents wasting server
+        # resources by resubmitting files whose results were never retrieved.
+        local server_complete_ids
+        server_complete_ids=$(uvx --from aristotlelib aristotle list --status COMPLETE --limit 100 2>&1 | grep -oE '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' 2>/dev/null || true)
+        if [[ -n "$server_complete_ids" ]]; then
+            local tracked_ids
+            tracked_ids=$(jq -r '.jobs[].project_id // empty' "$JOBS_FILE" 2>/dev/null | sort -u)
+            local untracked=0
+            while IFS= read -r pid; do
+                [[ -z "$pid" ]] && continue
+                if ! echo "$tracked_ids" | grep -q "^${pid}$"; then
+                    untracked=$((untracked + 1))
+                fi
+            done <<< "$server_complete_ids"
+            if [[ "$untracked" -gt 10 ]]; then
+                echo -e "${RED}WARNING: $untracked COMPLETE projects on server not tracked locally${NC}"
+                echo -e "${RED}Recovery pipeline may be broken — skipping submissions until resolved${NC}"
+                echo -e "${YELLOW}Run: ./scripts/aristotle/retrieve-integrate.sh to recover results${NC}"
+                return 0
+            fi
+        fi
     fi
 
     # Calculate how many to submit
