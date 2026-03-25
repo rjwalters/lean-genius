@@ -125,7 +125,7 @@
       "startLine": 39,
       "endLine": 77,
       "summary": "Defines IsRepresentableAs via existential over Multiset ℕ with membership and sum constraints. Proves three closure properties: zero_representable (empty multiset), mem_representable (singleton multiset), add_representable (multiset concatenation). The representable set forms a submonoid of (ℕ, +).",
-      "mathContext": "Defines IsRepresentableAs via existential over Multiset ℕ with membership and sum constraints. Proves three closure properties: zero_representable (empty multiset), mem_representable (singleton multis"
+      "mathContext": "Defines IsRepresentableAs via existential over Multiset ℕ with membership and sum constraints. Proves three closure properties: zero_representable (empty multiset), mem_representable (singleton multiset), add_representable (multiset concatenation). The representable set forms a submonoid of (ℕ, +)."
     },
     {
       "id": "non-representable",
@@ -133,7 +133,7 @@
       "startLine": 78,
       "endLine": 91,
       "summary": "Defines NonRepresentable A = {n | ¬IsRepresentableAs n A}. Two counting functions: countNonRepresentable (ℕ∞ via encard, handles infinite gcd > 1 case) and nCardNonRepresentable (ℕ via ncard, used in Kiss's theorem).",
-      "mathContext": "Defines NonRepresentable A = {n | ¬IsRepresentableAs n A}. Two counting functions: countNonRepresentable (ℕ∞ via encard, handles infinite gcd > 1 case) and nCardNonRepresentable (ℕ via ncard, used in "
+      "mathContext": "Defines NonRepresentable A = {n | ¬IsRepresentableAs n A}. Two counting functions: countNonRepresentable (ℕ∞ via encard, handles infinite gcd > 1 case) and nCardNonRepresentable (ℕ via ncard, used in Kiss's theorem)."
     },
     {
       "id": "frobenius",
@@ -205,7 +205,7 @@
       "startLine": 239,
       "endLine": 254,
       "summary": "problem433Set n k = Set.Icc n (n+k-1) for consecutive integers. frobenius_consecutive (axiom): Frobenius number formula for consecutive integers. Contrasts #433 (maximize Frobenius number) with #434 (maximize count).",
-      "mathContext": "problem433Set n k = Set.Icc n (n+k-1) for consecutive integers. frobenius_consecutive (axiom): Frobenius number formula for consecutive integers. Contrasts #433 (maximize Frobenius number) with #434 ("
+      "mathContext": "problem433Set n k = Set.Icc n (n+k-1) for consecutive integers. frobenius_consecutive (axiom): Frobenius number formula for consecutive integers. Contrasts #433 (maximize Frobenius number) with #434 (maximize count)."
     },
     {
       "id": "main-result",
@@ -213,7 +213,7 @@
       "startLine": 255,
       "endLine": 310,
       "summary": "erdos_434_complete: proved by exact kiss_2002 application. topK_is_maximum (sorry): strongest formulation using IsGreatest, requires proving topK is valid and applying kiss_2002.",
-      "mathContext": "Mathematical content: erdos_434_complete: proved by exact kiss_2002 application. topK_is_maximum (sorry): strongest formulation using IsGreatest, requires proving topK is valid and applying kiss_2002."
+      "mathContext": "erdos_434_complete: proved by exact kiss_2002 application. topK_is_maximum (sorry): strongest formulation using IsGreatest, requires proving topK is valid and applying kiss_2002."
     }
   ],
   "conclusion": {

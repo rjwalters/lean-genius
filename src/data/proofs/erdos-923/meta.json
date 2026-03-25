@@ -82,7 +82,7 @@
       "startLine": 45,
       "endLine": 70,
       "summary": "Defines $\\chi(G) = \\inf\\{k : \\exists\\, c : G.\\text{Coloring}(\\text{Fin}\\,k)\\}$, `IsKColorable` ($\\chi(G) \\leq k$), and `HasChromaticNumberAtLeast` ($\\chi(G) \\geq k$). These form the vocabulary for stating Rödl's theorem.",
-      "mathContext": "Defines $\\chi(G) = \\inf\\{k : \\exists\\, c : G.\\text{Coloring}(\\text{Fin}\\,k)\\}$, `IsKColorable` ($\\chi(G) \\leq k$), and `HasChromaticNumberAtLeast` ($\\chi(G) \\geq k$). These form the vocabulary for sta"
+      "mathContext": "Defines $\\chi(G) = \\inf\\{k : \\exists\\, c : G.\\text{Coloring}(\\text{Fin}\\,k)\\}$, `IsKColorable` ($\\chi(G) \\leq k$), and `HasChromaticNumberAtLeast` ($\\chi(G) \\geq k$). These form the vocabulary for stating Rödl's theorem."
     },
     {
       "id": "triangle-free",
@@ -90,7 +90,7 @@
       "startLine": 71,
       "endLine": 97,
       "summary": "Defines `HasTriangle` ($\\exists$ three pairwise adjacent vertices) and `IsTriangleFree` ($\\neg\\text{HasTriangle}$). Proves `emptyGraph_triangleFree`: $\\bot$ is triangle-free via `push_neg` and `bot_adj`.",
-      "mathContext": "Defines `HasTriangle` ($\\exists$ three pairwise adjacent vertices) and `IsTriangleFree` ($\\neg\\text{HasTriangle}$). Proves `emptyGraph_triangleFree`: $\\bot$ is triangle-free via `push_neg` and `bot_ad"
+      "mathContext": "Defines `HasTriangle` ($\\exists$ three pairwise adjacent vertices) and `IsTriangleFree` ($\\neg\\text{HasTriangle}$). Proves `emptyGraph_triangleFree`: $\\bot$ is triangle-free via `push_neg` and `bot_adj`."
     },
     {
       "id": "subgraphs",
@@ -114,7 +114,7 @@
       "startLine": 134,
       "endLine": 164,
       "summary": "Axiomatizes Rödl (1977): $\\forall k,\\, \\exists f_k$ such that $\\chi(G) \\geq f_k \\Rightarrow G$ has a triangle-free spanning subgraph with $\\chi \\geq k$. The corollary `erdos_923_true := rodl_1977` gives the formal answer to Problem #923.",
-      "mathContext": "Axiomatizes Rödl (1977): $\\forall k,\\, \\exists f_k$ such that $\\chi(G) \\geq f_k \\Rightarrow G$ has a triangle-free spanning subgraph with $\\chi \\geq k$. The corollary `erdos_923_true := rodl_1977` giv"
+      "mathContext": "Axiomatizes Rödl (1977): $\\forall k,\\, \\exists f_k$ such that $\\chi(G) \\geq f_k \\Rightarrow G$ has a triangle-free spanning subgraph with $\\chi \\geq k$."
     },
     {
       "id": "bounds",
@@ -122,7 +122,7 @@
       "startLine": 165,
       "endLine": 199,
       "summary": "Defines $\\text{tower}(0) = 1$, $\\text{tower}(n+1) = 2^{\\text{tower}(n)}$. Verifies values $1, 2, 4, 16, 65536$ computationally. Axiomatizes $f(k) \\leq \\text{tower}(C \\cdot k)$ for a universal constant $C$.",
-      "mathContext": "Defines $\\text{tower}(0) = 1$, $\\text{tower}(n+1) = 2^{\\text{tower}(n)}$. Verifies values $1, 2, 4, 16, 65536$ computationally. Axiomatizes $f(k) \\leq \\text{tower}(C \\cdot k)$ for a universal constant"
+      "mathContext": "Defines $\\text{tower}(0) = 1$, $\\text{tower}(n+1) = 2^{\\text{tower}(n)}$. Verifies values $1, 2, 4, 16, 65536$ computationally. Axiomatizes $f(k) \\leq \\text{tower}(C \\cdot k)$ for a universal constant $C$."
     },
     {
       "id": "generalizations",
@@ -130,7 +130,7 @@
       "startLine": 200,
       "endLine": 227,
       "summary": "Defines `HFreeSubgraphProblem` for arbitrary forbidden subgraph $H$. Axiomatizes Rödl's generalization: the $H$-free version holds when $H$ is bipartite ($\\exists$ 2-coloring of $H$). Connects to Erdős Problem #108.",
-      "mathContext": "Defines `HFreeSubgraphProblem` for arbitrary forbidden subgraph $H$. Axiomatizes Rödl's generalization: the $H$-free version holds when $H$ is bipartite ($\\exists$ 2-coloring of $H$). Connects to Erdő"
+      "mathContext": "Defines `HFreeSubgraphProblem` for arbitrary forbidden subgraph $H$. Axiomatizes Rödl's generalization: the $H$-free version holds when $H$ is bipartite ($\\exists$ 2-coloring of $H$)."
     },
     {
       "id": "summary",

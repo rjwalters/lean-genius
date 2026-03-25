@@ -59,7 +59,7 @@
       "startLine": 30,
       "endLine": 53,
       "summary": "Defines IsProperColoring (adjacent vertices get different colors from a cardinal-indexed type), IsColorable, and the axiomatized cardinalChromaticNumber with chromaticNumber_le_iff connecting it to colorability.",
-      "mathContext": "Defines IsProperColoring (adjacent vertices get different colors from a cardinal-indexed type), IsColorable, and the axiomatized cardinalChromaticNumber with chromaticNumber_le_iff connecting it to co"
+      "mathContext": "Defines IsProperColoring (adjacent vertices get different colors from a cardinal-indexed type), IsColorable, and the axiomatized cardinalChromaticNumber with chromaticNumber_le_iff connecting it to colorability."
     },
     {
       "id": "triangle-free",
@@ -67,7 +67,7 @@
       "startLine": 54,
       "endLine": 76,
       "summary": "Defines IsTriangleFree (no three mutually adjacent vertices), inducedSubgraphOn (restricts G to a vertex subset S via subtypes), and HasTriangleFreeSubgraphWithChromatic (∃ S with G[S] triangle-free and χ(G[S]) ≥ κ).",
-      "mathContext": "Defines IsTriangleFree (no three mutually adjacent vertices), inducedSubgraphOn (restricts G to a vertex subset S via subtypes), and HasTriangleFreeSubgraphWithChromatic (∃ S with G[S] triangle-free a"
+      "mathContext": "Defines IsTriangleFree (no three mutually adjacent vertices), inducedSubgraphOn (restricts G to a vertex subset S via subtypes), and HasTriangleFreeSubgraphWithChromatic (∃ S with G[S] triangle-free and χ(G[S]) ≥ κ)."
     },
     {
       "id": "main-conjecture",
@@ -83,7 +83,7 @@
       "startLine": 94,
       "endLine": 131,
       "summary": "Axiomatizes Shelah's result: consistently ∃ G with χ(G) = ℵ₁ where every triangle-free induced subgraph has χ ≤ ℵ₀. The theorem shelah_implies_failure_at_aleph1 derives that λ = ℵ₁ fails for κ = ℵ₁ by contradiction.",
-      "mathContext": "Axiomatizes Shelah's result: consistently ∃ G with χ(G) = ℵ₁ where every triangle-free induced subgraph has χ ≤ ℵ₀. The theorem shelah_implies_failure_at_aleph1 derives that λ = ℵ₁ fails for κ = ℵ₁ by"
+      "mathContext": "Axiomatizes Shelah's result: consistently ∃ G with χ(G) = ℵ₁ where every triangle-free induced subgraph has χ ≤ ℵ₀. The theorem shelah_implies_failure_at_aleph1 derives that λ = ℵ₁ fails for κ = ℵ₁ by contradiction."
     },
     {
       "id": "finite-case",
@@ -91,7 +91,7 @@
       "startLine": 132,
       "endLine": 151,
       "summary": "Two positive results: Mycielski's theorem (∀ k ≥ 1, ∃ triangle-free G with χ(G) = k) and the finite case of the conjecture (∀ finite k, ∃ n such that χ(G) ≥ n implies G has triangle-free subgraph with χ ≥ k).",
-      "mathContext": "Two positive results: Mycielski's theorem (∀ k ≥ 1, ∃ triangle-free G with χ(G) = k) and the finite case of the conjecture (∀ finite k, ∃ n such that χ(G) ≥ n implies G has triangle-free subgraph with"
+      "mathContext": "Two positive results: Mycielski's theorem (∀ k ≥ 1, ∃ triangle-free G with χ(G) = k) and the finite case of the conjecture (∀ finite k, ∃ n such that χ(G) ≥ n implies G has triangle-free subgraph with χ ≥ k)."
     },
     {
       "id": "girth-variant",
@@ -107,7 +107,7 @@
       "startLine": 174,
       "endLine": 202,
       "summary": "Axiomatizes Erdős (1959): ∀ k ≥ 1, g ≥ 3, ∃ finite graph with girth ≥ g and χ ≥ k (probabilistic method). Summary theorem confirms Shelah's result as the main known result. ErdosProblem1175 := erdos1175.",
-      "mathContext": "Axiomatizes Erdős (1959): ∀ k ≥ 1, g ≥ 3, ∃ finite graph with girth ≥ g and χ ≥ k (probabilistic method). Summary theorem confirms Shelah's result as the main known result. ErdosProblem1175 := erdos11"
+      "mathContext": "Axiomatizes Erdős (1959): ∀ k ≥ 1, g ≥ 3, ∃ finite graph with girth ≥ g and χ ≥ k (probabilistic method). Summary theorem confirms Shelah's result as the main known result. ErdosProblem1175 := erdos1175."
     }
   ],
   "conclusion": {

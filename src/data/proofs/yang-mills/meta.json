@@ -149,7 +149,7 @@
       "id": "mass-gap",
       "title": "The Mass Gap",
       "summary": "Defines `hasMassGap qft \\Delta$: all states orthogonal to vacuum have energy $\\geq \\Delta > 0$. Defines `hasSomeMassGap`. Proves downward closure: if $\\Delta$ is a mass gap, so is any $0 < \\Delta' \\leq \\Delta$. Proves vacuum has zero energy.",
-      "mathContext": "$\\Delta > 0$: $\\forall \\psi \\perp |0\\rangle,\\; \\|\\psi\\| = 1 \\implies \\text{Re}\\langle H\\psi, \\psi \\rangle \\geq \\Delta$. Downward closure: $0 < \\Delta' \\leq \\Delta \\implies \\text{hasMassGap}(\\Delta')$.",
+      "mathContext": "Defines `hasMassGap qft \\Delta$: all states orthogonal to vacuum have energy $\\geq \\Delta > 0$. Defines `hasSomeMassGap`. Proves downward closure: if $\\Delta$ is a mass gap, so is any $0 < \\Delta' \\leq \\Delta$. Proves vacuum has zero energy.",
       "file": "Proofs/YangMills/Quantum.lean",
       "startLine": 80,
       "endLine": 109

@@ -57,7 +57,7 @@
       "startLine": 26,
       "endLine": 45,
       "summary": "Defines $\\mathrm{consecutiveProduct}(n,k) = \\prod_{i=0}^{k-1}(n+i+1)$ as a Finset product, and axiomatizes $q(n,k)$ via three properties: primality, non-divisibility of $(n+1)\\cdots(n+k)$, and minimality among such primes.",
-      "mathContext": "Defines $\\mathrm{consecutiveProduct}(n,k) = \\prod_{i=0}^{k-1}(n+i+1)$ as a Finset product, and axiomatizes $q(n,k)$ via three properties: primality, non-divisibility of $(n+1)\\cdots(n+k)$, and minimal"
+      "mathContext": "Defines $\\mathrm{consecutiveProduct}(n,k) = \\prod_{i=0}^{k-1}(n+i+1)$ as a Finset product, and axiomatizes $q(n,k)$ via three properties: primality, non-divisibility of $(n+1)\\cdots(n+k)$, and minimality among such primes."
     },
     {
       "id": "conjecture",
@@ -89,7 +89,7 @@
       "startLine": 79,
       "endLine": 99,
       "summary": "Establishes that $\\mathrm{consecutiveProduct}(n,1) = n+1$ via `simp`, proves positivity of the consecutive product for $k > 0$ via `Finset.prod_pos`, and states the connection to Erdős Problem #457 on small prime divisors.",
-      "mathContext": "Establishes that $\\mathrm{consecutiveProduct}(n,1) = n+1$ via `simp`, proves positivity of the consecutive product for $k > 0$ via `Finset.prod_pos`, and states the connection to Erdős Problem #457 on"
+      "mathContext": "Establishes that $\\mathrm{consecutiveProduct}(n,1) = n+1$ via `simp`, proves positivity of the consecutive product for $k > 0$ via `Finset.prod_pos`, and states the connection to Erdős Problem #457 on small prime divisors."
     },
     {
       "id": "small-primes",
@@ -105,7 +105,7 @@
       "startLine": 112,
       "endLine": 127,
       "summary": "Axiomatizes non-increasing monotonicity $q(n,k_2) \\leq q(n,k_1)$ for $k_1 \\leq k_2$, and proves that the main conjecture implies the weak bound via the inequality $(1+\\varepsilon)\\log n \\leq (1+\\varepsilon)\\,k\\log n$ using `mul_assoc` and `nlinarith`.",
-      "mathContext": "Axiomatizes non-increasing monotonicity $q(n,k_2) \\leq q(n,k_1)$ for $k_1 \\leq k_2$, and proves that the main conjecture implies the weak bound via the inequality $(1+\\varepsilon)\\log n \\leq (1+\\varep"
+      "mathContext": "Axiomatizes non-increasing monotonicity $q(n,k_2) \\leq q(n,k_1)$ for $k_1 \\leq k_2$, and proves that the main conjecture implies the weak bound via the inequality $(1+\\varepsilon)\\log n \\leq (1+\\varepsilon)\\,k\\log n$ using `mul_assoc` and `nlinarith`."
     }
   ],
   "conclusion": {

@@ -96,7 +96,7 @@
       "summary": "Defines $\\aleph_\\omega = \\aleph_{\\omega}$ as the first singular cardinal, proves it is a limit cardinal via `Cardinal.isLimit_aleph`, establishes singularity ($\\neg\\mathrm{IsRegular}$), and shows $\\aleph_n < \\aleph_\\omega$ for all $n < \\omega$.",
       "startLine": 37,
       "endLine": 60,
-      "mathContext": "Defines $\\aleph_\\omega = \\aleph_{\\omega}$ as the first singular cardinal, proves it is a limit cardinal via `Cardinal.isLimit_aleph`, establishes singularity ($\\neg\\mathrm{IsRegular}$), and shows $\\al"
+      "mathContext": "Defines $\\aleph_\\omega = \\aleph_{\\omega}$ as the first singular cardinal, proves it is a limit cardinal via `Cardinal.isLimit_aleph`, establishes singularity ($\\neg\\mathrm{IsRegular}$), and shows $\\aleph_n < \\aleph_\\omega$ for all $n < \\omega$."
     },
     {
       "id": "free-functions",
@@ -104,7 +104,7 @@
       "summary": "Defines `IsFreeFunction` as $\\forall A \\in [X]^{<\\omega},\\, f(A) \\notin A$. Proves existence of free functions on infinite sets by choosing elements outside finite subsets (using the infinite pigeonhole principle).",
       "startLine": 61,
       "endLine": 75,
-      "mathContext": "Defines `IsFreeFunction` as $\\forall A \\in [X]^{<\\omega},\\, f(A) \\notin A$. Proves existence of free functions on infinite sets by choosing elements outside finite subsets (using the infinite pigeonho"
+      "mathContext": "Defines `IsFreeFunction` as $\\forall A \\in [X]^{<\\omega},\\, f(A) \\notin A$. Proves existence of free functions on infinite sets by choosing elements outside finite subsets (using the infinite pigeonhole principle)."
     },
     {
       "id": "independent-sets",
@@ -112,7 +112,7 @@
       "summary": "Defines `IsIndependent` as $\\forall B \\in [Y]^{<\\omega},\\, f(B) \\notin Y$. Proves $\\emptyset$ is trivially independent and characterizes singleton independence: $\\{x\\}$ is independent iff $f(\\{x\\}) \\neq x$.",
       "startLine": 76,
       "endLine": 101,
-      "mathContext": "Defines `IsIndependent` as $\\forall B \\in [Y]^{<\\omega},\\, f(B) \\notin Y$. Proves $\\emptyset$ is trivially independent and characterizes singleton independence: $\\{x\\}$ is independent iff $f(\\{x\\}) \\n"
+      "mathContext": "Defines `IsIndependent` as $\\forall B \\in [Y]^{<\\omega},\\, f(B) \\notin Y$. Proves $\\emptyset$ is trivially independent and characterizes singleton independence: $\\{x\\}$ is independent iff $f(\\{x\\}) \\neq x$."
     },
     {
       "id": "erdos-hajnal",
@@ -120,7 +120,7 @@
       "summary": "Axiomatizes the Erdős-Hajnal theorem (1958): for $|X| < \\aleph_\\omega$, there exists a free $f$ with no infinite independent set. Derives the consequence for each specific $\\aleph_n$ via `counterexample_at_aleph_n`.",
       "startLine": 102,
       "endLine": 120,
-      "mathContext": "Axiomatizes the Erdős-Hajnal theorem (1958): for $|X| < \\aleph_\\omega$, there exists a free $f$ with no infinite independent set. Derives the consequence for each specific $\\aleph_n$ via `counterexamp"
+      "mathContext": "Axiomatizes the Erdős-Hajnal theorem (1958): for $|X| < \\aleph_\\omega$, there exists a free $f$ with no infinite independent set. Derives the consequence for each specific $\\aleph_n$ via `counterexample_at_aleph_n`."
     },
     {
       "id": "main-problem",
@@ -128,7 +128,7 @@
       "summary": "States `erdos_623_conjecture`: $\\forall X$ with $|X| = \\aleph_\\omega$, every free $f$ admits an infinite independent set. Also states the negative formulation and proves the dichotomy `erdos_623_conjecture \\lor \\text{erdos\\_623\\_negative}`.",
       "startLine": 121,
       "endLine": 147,
-      "mathContext": "States `erdos_623_conjecture`: $\\forall X$ with $|X| = \\aleph_\\omega$, every free $f$ admits an infinite independent set. Also states the negative formulation and proves the dichotomy `erdos_623_conje"
+      "mathContext": "States `erdos_623_conjecture`: $\\forall X$ with $|X| = \\aleph_\\omega$, every free $f$ admits an infinite independent set. Also states the negative formulation and proves the dichotomy `erdos_623_conjecture \\lor \\text{erdos\\_623\\_negative}`."
     },
     {
       "id": "undecidability",
@@ -136,7 +136,7 @@
       "summary": "Discusses Erdős's 1999 suggestion of ZFC-independence. Proves `cofinality_aleph_omega : $\\mathrm{cof}(\\aleph_\\omega) = \\omega$` using `Cardinal.cof_aleph`, establishing the singular nature that drives independence phenomena.",
       "startLine": 148,
       "endLine": 163,
-      "mathContext": "Discusses Erdős's 1999 suggestion of ZFC-independence. Proves `cofinality_aleph_omega : $\\mathrm{cof}(\\aleph_\\omega) = \\omega$` using `Cardinal.cof_aleph`, establishing the singular nature that drives"
+      "mathContext": "Proves `cofinality_aleph_omega : $\\mathrm{cof}(\\aleph_\\omega) = \\omega$` using `Cardinal.cof_aleph`, establishing the singular nature that drives independence phenomena."
     },
     {
       "id": "related",
@@ -144,7 +144,7 @@
       "summary": "Provides a chromatic interpretation (`ChromaticVersion`): coloring finite sets so the image avoids $Y$. Also gives a `RamseyInterpretation` viewing the problem as a partition regularity question for singular cardinals.",
       "startLine": 164,
       "endLine": 174,
-      "mathContext": "Provides a chromatic interpretation (`ChromaticVersion`): coloring finite sets so the image avoids $Y$. Also gives a `RamseyInterpretation` viewing the problem as a partition regularity question for s"
+      "mathContext": "Provides a chromatic interpretation (`ChromaticVersion`): coloring finite sets so the image avoids $Y$."
     },
     {
       "id": "finite-cases",
@@ -152,7 +152,7 @@
       "summary": "Proves `finite_case_trivial`: for finite $X$, no infinite $Y$ exists (via `Set.toFinite`). Proves `countable_case_no`: for $|X| = \\aleph_0$, reduces to Erdős-Hajnal since $\\aleph_0 = \\aleph_0 < \\aleph_\\omega$.",
       "startLine": 175,
       "endLine": 191,
-      "mathContext": "Proves `finite_case_trivial`: for finite $X$, no infinite $Y$ exists (via `Set.toFinite`). Proves `countable_case_no`: for $|X| = \\aleph_0$, reduces to Erdős-Hajnal since $\\aleph_0 = \\aleph_0 < \\aleph"
+      "mathContext": "Proves `finite_case_trivial`: for finite $X$, no infinite $Y$ exists (via `Set.toFinite`). Proves `countable_case_no`: for $|X| = \\aleph_0$, reduces to Erdős-Hajnal since $\\aleph_0 = \\aleph_0 < \\aleph_\\omega$."
     },
     {
       "id": "gap",
@@ -160,7 +160,7 @@
       "summary": "Summarizes known results in a table: NO for all $\\aleph_n$ ($n < \\omega$), OPEN at $\\aleph_\\omega$, UNKNOWN above. The theorem `known_results_summary` formalizes the universal negative below $\\aleph_\\omega$.",
       "startLine": 192,
       "endLine": 213,
-      "mathContext": "Summarizes known results in a table: NO for all $\\aleph_n$ ($n < \\omega$), OPEN at $\\aleph_\\omega$, UNKNOWN above. The theorem `known_results_summary` formalizes the universal negative below $\\aleph_\\"
+      "mathContext": "Summarizes known results in a table: NO for all $\\aleph_n$ ($n < \\omega$), OPEN at $\\aleph_\\omega$, UNKNOWN above. The theorem `known_results_summary` formalizes the universal negative below $\\aleph_\\omega$."
     },
     {
       "id": "variants",
@@ -168,7 +168,7 @@
       "summary": "Defines `erdos_623_uncountable`: must $Y$ have $|Y| > \\aleph_0$? Defines `erdos_623_weak`: does at least one free $f$ have an infinite independent set? Proves the weak version follows from the strong conjecture.",
       "startLine": 214,
       "endLine": 268,
-      "mathContext": "Defines `erdos_623_uncountable`: must $Y$ have $|Y| > \\aleph_0$? Defines `erdos_623_weak`: does at least one free $f$ have an infinite independent set? Proves the weak version follows from the strong "
+      "mathContext": "Defines `erdos_623_uncountable`: must $Y$ have $|Y| > \\aleph_0$? Defines `erdos_623_weak`: does at least one free $f$ have an infinite independent set? Proves the weak version follows from the strong conjecture."
     }
   ],
   "conclusion": {

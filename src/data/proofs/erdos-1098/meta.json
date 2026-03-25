@@ -129,7 +129,7 @@
       "startLine": 40,
       "endLine": 79,
       "summary": "Defines `nonCommuting g h` as `g * h ≠ h * g`, `commuting g h` as `g * h = h * g`. Proves `nonCommuting_symm` via simp and constructor. Defines `centerDef := Subgroup.center G` and proves `mem_center_iff` characterizing center membership via `commuting`.",
-      "mathContext": "Defines `nonCommuting g h` as `g * h ≠ h * g`, `commuting g h` as `g * h = h * g`. Proves `nonCommuting_symm` via simp and constructor. Defines `centerDef := Subgroup.center G` and proves `mem_center_"
+      "mathContext": "Defines `nonCommuting g h` as `g * h ≠ h * g`, `commuting g h` as `g * h = h * g`. Proves `nonCommuting_symm` via simp and constructor. Defines `centerDef := Subgroup.center G` and proves `mem_center_iff` characterizing center membership via `commuting`."
     },
     {
       "id": "non-commuting-graph",
@@ -137,7 +137,7 @@
       "startLine": 80,
       "endLine": 120,
       "summary": "Defines `NonCommGraph G` structure with vertices (Set.univ), adj (nonCommuting), symm, and irrefl. Defines `isClique S` (pairwise non-commuting), `cliqueNumber` via `⨆` over finite cliques, `hasFiniteCliqueNumber` (∃ n bounding all cliques), `noInfiniteClique` (all cliques finite).",
-      "mathContext": "Defines `NonCommGraph G` structure with vertices (Set.univ), adj (nonCommuting), symm, and irrefl. Defines `isClique S` (pairwise non-commuting), `cliqueNumber` via `⨆` over finite cliques, `hasFinite"
+      "mathContext": "Defines `NonCommGraph G` structure with vertices (Set.univ), adj (nonCommuting), symm, and irrefl. Defines `isClique S` (pairwise non-commuting), `cliqueNumber` via `⨆` over finite cliques, `hasFiniteCliqueNumber` (∃ n bounding all cliques), `noInfiniteClique` (all cliques finite)."
     },
     {
       "id": "finite-index",
@@ -153,7 +153,7 @@
       "startLine": 138,
       "endLine": 171,
       "summary": "Axiomatizes `neumann_theorem : noInfiniteClique G ↔ centerHasFiniteIndex G` and `neumann_bound` (clique size ≤ index). Proves `finite_index_implies_finite_clique` (sorry) and `erdos_question_answered` by rewriting with `neumann_theorem`.",
-      "mathContext": "Axiomatizes `neumann_theorem : noInfiniteClique G ↔ centerHasFiniteIndex G` and `neumann_bound` (clique size ≤ index). Proves `finite_index_implies_finite_clique` (sorry) and `erdos_question_answered`"
+      "mathContext": "Axiomatizes `neumann_theorem : noInfiniteClique G ↔ centerHasFiniteIndex G` and `neumann_bound` (clique size ≤ index). Proves `finite_index_implies_finite_clique` (sorry) and `erdos_question_answered` by rewriting with `neumann_theorem`."
     },
     {
       "id": "coset-structure",
@@ -161,7 +161,7 @@
       "startLine": 172,
       "endLine": 200,
       "summary": "States `same_coset_commute` (sorry), `clique_different_cosets` (sorry using quotient.mk), and `clique_size_bound` (sorry). These form the heart of the coset argument: clique members lie in distinct Z(G)-cosets.",
-      "mathContext": "States `same_coset_commute` (sorry), `clique_different_cosets` (sorry using quotient.mk), and `clique_size_bound` (sorry). These form the heart of the coset argument: clique members lie in distinct Z("
+      "mathContext": "States `same_coset_commute` (sorry), `clique_different_cosets` (sorry using quotient.mk), and `clique_size_bound` (sorry). These form the heart of the coset argument: clique members lie in distinct Z(G)-cosets."
     },
     {
       "id": "infinite-groups",
@@ -169,7 +169,7 @@
       "startLine": 201,
       "endLine": 250,
       "summary": "Proves `abelian_no_edges` (Z(G) = ⊤ implies no non-commuting pairs). Axiomatizes `infinite_clique_example`, `symmetric_group_clique_bound` (≤ n!), `dihedral_group_center_index`. States `finite_group_finite_index` (sorry).",
-      "mathContext": "Proves `abelian_no_edges` (Z(G) = ⊤ implies no non-commuting pairs). Axiomatizes `infinite_clique_example`, `symmetric_group_clique_bound` (≤ n!), `dihedral_group_center_index`. States `finite_group_f"
+      "mathContext": "Proves `abelian_no_edges` (Z(G) = ⊤ implies no non-commuting pairs). Axiomatizes `infinite_clique_example`, `symmetric_group_clique_bound` (≤ n!), `dihedral_group_center_index`. States `finite_group_finite_index` (sorry)."
     },
     {
       "id": "generalizations",

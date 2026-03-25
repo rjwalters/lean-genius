@@ -84,7 +84,7 @@
       "summary": "Defines `signedUnitSum` computing $\\sum_{n \\in S} f(n)/n \\in \\mathbb{Q}$, `IsSignFunction` constraining $f(n) \\in \\{\\pm 1\\}$, and `IsNonConstant` requiring both values on $A$.  Uses $\\mathbb{Q}$ for exact arithmetic and Mathlib's `Finset.sum` for the summation.",
       "startLine": 44,
       "endLine": 71,
-      "mathContext": "Defines `signedUnitSum` computing $\\sum_{n \\in S} f(n)/n \\in \\mathbb{Q}$, `IsSignFunction` constraining $f(n) \\in \\{\\pm 1\\}$, and `IsNonConstant` requiring both values on $A$.  Uses $\\mathbb{Q}$ for e"
+      "mathContext": "Defines `signedUnitSum` computing $\\sum_{n \\in S} f(n)/n \\in \\mathbb{Q}$, `IsSignFunction` constraining $f(n) \\in \\{\\pm 1\\}$, and `IsNonConstant` requiring both values on $A$. Uses $\\mathbb{Q}$ for exact arithmetic and Mathlib's `Finset.sum` for the summation."
     },
     {
       "id": "property-p1",
@@ -92,7 +92,7 @@
       "summary": "Formalizes `HasPropertyP1` as the $\\forall f \\, \\exists S$ statement: every non-constant sign function admits a non-empty finite zero-sum subset.  The `Finset ↑ Set` coercion bridges the finite witness with the (potentially infinite) target set $A$.",
       "startLine": 72,
       "endLine": 88,
-      "mathContext": "Formalizes `HasPropertyP1` as the $\\forall f \\, \\exists S$ statement: every non-constant sign function admits a non-empty finite zero-sum subset.  The `Finset ↑ Set` coercion bridges the finite witnes"
+      "mathContext": "Formalizes `HasPropertyP1` as the $\\forall f \\, \\exists S$ statement: every non-constant sign function admits a non-empty finite zero-sum subset. The `Finset ↑ Set` coercion bridges the finite witness with the (potentially infinite) target set $A$."
     },
     {
       "id": "arithmetic-progressions",
@@ -100,7 +100,7 @@
       "summary": "Defines `arithmeticProgression a d` as $\\{a + kd : k \\geq 0\\}$, `positiveNaturals` as $\\{n \\geq 1\\}$, and `oddNumbers` as $\\{n : n \\bmod 2 = 1\\}$.  Notes that $\\mathbb{N}^+$ and odds are special APs ($d=1$ and $d=2$ respectively).",
       "startLine": 89,
       "endLine": 111,
-      "mathContext": "Defines `arithmeticProgression a d` as $\\{a + kd : k \\geq 0\\}$, `positiveNaturals` as $\\{n \\geq 1\\}$, and `oddNumbers` as $\\{n : n \\bmod 2 = 1\\}$.  Notes that $\\mathbb{N}^+$ and odds are special APs ("
+      "mathContext": "Defines `arithmeticProgression a d` as $\\{a + kd : k \\geq 0\\}$, `positiveNaturals` as $\\{n \\geq 1\\}$, and `oddNumbers` as $\\{n : n \\bmod 2 = 1\\}$. Notes that $\\mathbb{N}^+$ and odds are special APs ($d=1$ and $d=2$ respectively)."
     },
     {
       "id": "known-results",
@@ -108,7 +108,7 @@
       "summary": "Axiomatizes three landmark results: `erdos_straus_1975` ($\\mathbb{N}$ has $P_1$), `sattler_odd_1975` (odds have $P_1$), `sattler_1982` (all APs have $P_1$).  The main theorem `erdos_318_arithmetic_progression` is a direct application of Sattler's axiom via `exact sattler_1982 a d ha hd`.",
       "startLine": 112,
       "endLine": 149,
-      "mathContext": "Axiomatizes three landmark results: `erdos_straus_1975` ($\\mathbb{N}$ has $P_1$), `sattler_odd_1975` (odds have $P_1$), `sattler_1982` (all APs have $P_1$).  The main theorem `erdos_318_arithmetic_pro"
+      "mathContext": "Axiomatizes three landmark results: `erdos_straus_1975` ($\\mathbb{N}$ has $P_1$), `sattler_odd_1975` (odds have $P_1$), `sattler_1982` (all APs have $P_1$). The main theorem `erdos_318_arithmetic_progression` is a direct application of Sattler's axiom via `exact sattler_1982 a d ha hd`."
     },
     {
       "id": "counterexamples",
@@ -116,7 +116,7 @@
       "summary": "Constructs `counterexampleSet m` = odds $\\cup \\{2m\\}$ with density $\\approx 1/2$.  Axiomatizes `counterexample_fails_P1` (the $2$-adic valuation obstruction) and derives `positive_density_insufficient` as a constructive witness.  The density lemma has `sorry` for the counting argument.",
       "startLine": 150,
       "endLine": 198,
-      "mathContext": "Constructs `counterexampleSet m` = odds $\\cup \\{2m\\}$ with density $\\approx 1/2$.  Axiomatizes `counterexample_fails_P1` (the $2$-adic valuation obstruction) and derives `positive_density_insufficient"
+      "mathContext": "Constructs `counterexampleSet m` = odds $\\cup \\{2m\\}$ with density $\\approx 1/2$. Axiomatizes `counterexample_fails_P1` (the $2$-adic valuation obstruction) and derives `positive_density_insufficient` as a constructive witness. The density lemma has `sorry` for the counting argument."
     },
     {
       "id": "squares",
@@ -124,7 +124,7 @@
       "summary": "Defines `squaresExcludingOne` = $\\{k^2 : k \\geq 2\\}$ and `erdos_318_squares_conjecture` as the open $P_1$ question for this set.  Proves (with sorry) that $\\sum_{k \\geq 2} 1/k^2 < 1$ via the Basel bound, justifying the exclusion of $1$.  The axiom `squares_case_open` records the unresolved status.",
       "startLine": 199,
       "endLine": 232,
-      "mathContext": "Defines `squaresExcludingOne` = $\\{k^2 : k \\geq 2\\}$ and `erdos_318_squares_conjecture` as the open $P_1$ question for this set.  Proves (with sorry) that $\\sum_{k \\geq 2} 1/k^2 < 1$ via the Basel bou"
+      "mathContext": "Defines `squaresExcludingOne` = $\\{k^2 : k \\geq 2\\}$ and `erdos_318_squares_conjecture` as the open $P_1$ question for this set. Proves (with sorry) that $\\sum_{k \\geq 2} 1/k^2 < 1$ via the Basel bound, justifying the exclusion of $1$. The axiom `squares_case_open` records the unresolved status."
     },
     {
       "id": "techniques",
@@ -132,7 +132,7 @@
       "summary": "Formalizes `zero_sum_integer_form` (clearing denominators: multiply $\\sum f(n)/n = 0$ by $\\prod m$ to get an integer equation) and `parityObstruction` (a prime $p$ creates an obstruction when $p$-adic valuations of elements are incompatible).  Both have sorry due to rational arithmetic complexity.",
       "startLine": 233,
       "endLine": 257,
-      "mathContext": "Formalizes `zero_sum_integer_form` (clearing denominators: multiply $\\sum f(n)/n = 0$ by $\\prod m$ to get an integer equation) and `parityObstruction` (a prime $p$ creates an obstruction when $p$-adic"
+      "mathContext": "Formalizes `zero_sum_integer_form` (clearing denominators: multiply $\\sum f(n)/n = 0$ by $\\prod m$ to get an integer equation) and `parityObstruction` (a prime $p$ creates an obstruction when $p$-adic valuations of elements are incompatible)."
     },
     {
       "id": "egyptian",
@@ -140,7 +140,7 @@
       "summary": "Defines `isEgyptianRepresentation` (unsigned: $\\sum 1/n_i = q$) and `hasSignedZeroRepresentation` (signed: $\\sum f(n)/n = 0$).  Links Property $P_1$ to the broader Egyptian fraction tradition from the Rhind Papyrus through Erdős-Straus to Croot's $P_k$ theorem.",
       "startLine": 258,
       "endLine": 276,
-      "mathContext": "Defines `isEgyptianRepresentation` (unsigned: $\\sum 1/n_i = q$) and `hasSignedZeroRepresentation` (signed: $\\sum f(n)/n = 0$).  Links Property $P_1$ to the broader Egyptian fraction tradition from the"
+      "mathContext": "Defines `isEgyptianRepresentation` (unsigned: $\\sum 1/n_i = q$) and `hasSignedZeroRepresentation` (signed: $\\sum f(n)/n = 0$). Links Property $P_1$ to the broader Egyptian fraction tradition from the Rhind Papyrus through Erdős-Straus to Croot's $P_k$ theorem."
     },
     {
       "id": "summary",
@@ -148,7 +148,7 @@
       "summary": "The theorem `erdos_318_summary` packages all four resolved cases into a single conjunction, proved via `refine ⟨?_, ?_, ?_, ?_⟩`.  The axiom `erdos_318_status : True` serves as a documentation marker for the mixed (partially-solved) status of Problem #318.",
       "startLine": 277,
       "endLine": 317,
-      "mathContext": "The theorem `erdos_318_summary` packages all four resolved cases into a single conjunction, proved via `refine ⟨?_, ?_, ?_, ?_⟩`.  The axiom `erdos_318_status : True` serves as a documentation marker "
+      "mathContext": "The theorem `erdos_318_summary` packages all four resolved cases into a single conjunction, proved via `refine ⟨?_, ?_, ?_, ?_⟩`.  The axiom `erdos_318_status : True` serves as a documentation marker for the mixed (partially-solved) status of Problem #318."
     }
   ],
   "conclusion": {

@@ -84,7 +84,7 @@
       "startLine": 48,
       "endLine": 65,
       "summary": "Defines `VectorField2D` as a structure with components $P, Q : \\mathbb{R}^2 \\to \\mathbb{R}$, assigning a vector $(P(x,y), Q(x,y))$ to each point. Defines `Curl2D` with a `value` function abstracting $\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}$, the scalar measure of rotation density.",
-      "mathContext": "Defines `VectorField2D` as a structure with components $P, Q : \\mathbb{R}^2 \\to \\mathbb{R}$, assigning a vector $(P(x,y), Q(x,y))$ to each point. Defines `Curl2D` with a `value` function abstracting $"
+      "mathContext": "Defines `VectorField2D` as a structure with components $P, Q : \\mathbb{R}^2 \\to \\mathbb{R}$, assigning a vector $(P(x,y), Q(x,y))$ to each point. Defines `Curl2D` with a `value` function abstracting $\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}$, the scalar measure of rotation density."
     },
     {
       "id": "rectangles",
@@ -92,7 +92,7 @@
       "startLine": 66,
       "endLine": 102,
       "summary": "Defines `Rectangle` as $[a,b] \\times [c,d]$ with $a < b$, $c < d$. Derives `width`, `height`, `area` and **fully proves** all three are positive: `width_pos` and `height_pos` by `linarith`, `area_pos` by `mul_pos`. No sorries.",
-      "mathContext": "Defines `Rectangle` as $[a,b] \\times [c,d]$ with $a < b$, $c < d$. Derives `width`, `height`, `area` and **fully proves** all three are positive: `width_pos` and `height_pos` by `linarith`, `area_pos`"
+      "mathContext": "Defines `Rectangle` as $[a,b] \\times [c,d]$ with $a < b$, $c < d$. Derives `width`, `height`, `area` and **fully proves** all three are positive: `width_pos` and `height_pos` by `linarith`, `area_pos` by `mul_pos`."
     },
     {
       "id": "integrals",
@@ -100,7 +100,7 @@
       "startLine": 103,
       "endLine": 129,
       "summary": "Defines `lineIntegral` and `doubleIntegralCurl` as noncomputable stub functions (returning 0). Axiomatized because Mathlib lacks direct path-integral and oriented-double-integral support. Captures the key functional signatures needed for Green's theorem.",
-      "mathContext": "Defines `lineIntegral` and `doubleIntegralCurl` as noncomputable stub functions (returning 0). Axiomatized because Mathlib lacks direct path-integral and oriented-double-integral support. Captures the"
+      "mathContext": "Defines `lineIntegral` and `doubleIntegralCurl` as noncomputable stub functions (returning 0). Axiomatized because Mathlib lacks direct path-integral and oriented-double-integral support. Captures the key functional signatures needed for Green's theorem."
     },
     {
       "id": "greens-rectangle",
@@ -108,7 +108,7 @@
       "startLine": 130,
       "endLine": 161,
       "summary": "The core axiom `greens_theorem_rectangle`: $\\oint_{\\partial R} (P\\,dx + Q\\,dy) = \\iint_R \\text{curl}(\\mathbf{F})\\,dA$. Comments detail the Fubini + FTC proof strategy, showing how the double integral reduces to boundary integrals along the four edges.",
-      "mathContext": "The core axiom `greens_theorem_rectangle`: $\\oint_{\\partial R} (P\\,dx + Q\\,dy) = \\iint_R \\text{curl}(\\mathbf{F})\\,dA$. Comments detail the Fubini + FTC proof strategy, showing how the double integral "
+      "mathContext": "The core axiom `greens_theorem_rectangle`: $\\oint_{\\partial R} (P\\,dx + Q\\,dy) = \\iint_R \\text{curl}(\\mathbf{F})\\,dA$."
     },
     {
       "id": "general",
@@ -116,7 +116,7 @@
       "startLine": 162,
       "endLine": 188,
       "summary": "States `greens_theorem_general` for arbitrary `GreenRegion` (currently a placeholder with `dummy : Unit`). The proof strategy — decompose into rectangles, apply the rectangular case, cancel internal boundaries — is documented but the axiom body is `True`.",
-      "mathContext": "States `greens_theorem_general` for arbitrary `GreenRegion` (currently a placeholder with `dummy : Unit`). The proof strategy — decompose into rectangles, apply the rectangular case, cancel internal b"
+      "mathContext": "States `greens_theorem_general` for arbitrary `GreenRegion` (currently a placeholder with `dummy : Unit`). The proof strategy — decompose into rectangles, apply the rectangular case, cancel internal boundaries — is documented but the axiom body is `True`."
     },
     {
       "id": "area-applications",
@@ -124,7 +124,7 @@
       "startLine": 189,
       "endLine": 234,
       "summary": "Three vector fields with curl $\\equiv 1$: `areaVectorField` $(0, x)$, `areaVectorField'` $(-y, 0)$, `areaVectorFieldSymmetric` $(-y/2, x/2)$. Each gives $\\text{Area}(D) = \\oint_{\\partial D} \\mathbf{F} \\cdot d\\mathbf{r}$ via Green's theorem. Connected to planimeters.",
-      "mathContext": "Three vector fields with curl $\\equiv 1$: `areaVectorField` $(0, x)$, `areaVectorField'` $(-y, 0)$, `areaVectorFieldSymmetric` $(-y/2, x/2)$. Each gives $\\text{Area}(D) = \\oint_{\\partial D} \\mathbf{F}"
+      "mathContext": "Three vector fields with curl $\\equiv 1$: `areaVectorField` $(0, x)$, `areaVectorField'` $(-y, 0)$, `areaVectorFieldSymmetric` $(-y/2, x/2)$. Each gives $\\text{Area}(D) = \\oint_{\\partial D} \\mathbf{F} \\cdot d\\mathbf{r}$ via Green's theorem."
     },
     {
       "id": "connections",
@@ -132,7 +132,7 @@
       "startLine": 235,
       "endLine": 294,
       "summary": "Defines `Div2D` (divergence structure) and `SatisfiesCauchyRiemann` (curl $\\equiv 0$). Proves `cauchy_integral_zero_of_cauchy_riemann`: if the curl vanishes everywhere, the line integral around any rectangle is zero. Documents connections to Stokes' theorem ($\\int_{\\partial S} \\omega = \\int_S d\\omega$) and the 2D divergence theorem.",
-      "mathContext": "Defines `Div2D` (divergence structure) and `SatisfiesCauchyRiemann` (curl $\\equiv 0$). Proves `cauchy_integral_zero_of_cauchy_riemann`: if the curl vanishes everywhere, the line integral around any re"
+      "mathContext": "Defines `Div2D` (divergence structure) and `SatisfiesCauchyRiemann` (curl $\\equiv 0$). Proves `cauchy_integral_zero_of_cauchy_riemann`: if the curl vanishes everywhere, the line integral around any rectangle is zero. Documents connections to Stokes' theorem ($\\int_{\\partial S} \\omega = \\int_S d\\omega$) and the 2D divergence theorem."
     },
     {
       "id": "examples",
@@ -140,7 +140,7 @@
       "startLine": 295,
       "endLine": 352,
       "summary": "Concrete rectangles: `unitSquare` $[0,1]^2$ with area $= 1$ and `exampleRectangle` $[0,2] \\times [0,3]$ with area $= 6$, both **fully proved** by `norm_num`. Documents the unit-square circulation example ($\\mathbf{F} = (-y, x)$, curl $= 2$) and the circle area computation via parametric integration.",
-      "mathContext": "Concrete rectangles: `unitSquare` $[0,1]^2$ with area $= 1$ and `exampleRectangle` $[0,2] \\times [0,3]$ with area $= 6$, both **fully proved** by `norm_num`. Documents the unit-square circulation exam"
+      "mathContext": "Concrete rectangles: `unitSquare` $[0,1]^2$ with area $= 1$ and `exampleRectangle` $[0,2] \\times [0,3]$ with area $= 6$, both **fully proved** by `norm_num`. Documents the unit-square circulation example ($\\mathbf{F} = (-y, x)$, curl $= 2$) and the circle area computation via parametric integration."
     }
   ],
   "conclusion": {

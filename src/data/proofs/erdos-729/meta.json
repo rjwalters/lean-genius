@@ -81,7 +81,7 @@
       "startLine": 57,
       "endLine": 74,
       "summary": "Axiomatizes `erdos_1968_classical`: $a!b! \\mid n! \\implies a + b \\leq n + O(\\log n)$. Proves `erdos_proof_via_powers_of_two` by forwarding to the axiom, documenting that the original proof uses only the $p = 2$ constraint.",
-      "mathContext": "Axiomatizes `erdos_1968_classical`: $a!b! \\mid n! \\implies a + b \\leq n + O(\\log n)$. Proves `erdos_proof_via_powers_of_two` by forwarding to the axiom, documenting that the original proof uses only t"
+      "mathContext": "Axiomatizes `erdos_1968_classical`: $a!b! \\implies a + b \\leq n + O(\\log n)$. Proves `erdos_proof_via_powers_of_two` by forwarding to the axiom, documenting that the original proof uses only the $p = 2$ constraint."
     },
     {
       "id": "relaxed-condition",
@@ -105,7 +105,7 @@
       "startLine": 108,
       "endLine": 123,
       "summary": "Axiomatizes `barreto_leeham_theorem`: $\\neg\\text{InfinitelyManyExceptions}(C)$ for all $C > 0$. Also states `barreto_leeham_bound`: the bound $a + b \\leq n + D\\log n$ persists with an explicit constant $D$.",
-      "mathContext": "Axiomatizes `barreto_leeham_theorem`: $\\neg\\text{InfinitelyManyExceptions}(C)$ for all $C > 0$. Also states `barreto_leeham_bound`: the bound $a + b \\leq n + D\\log n$ persists with an explicit constan"
+      "mathContext": "Axiomatizes `barreto_leeham_theorem`: $\\neg\\text{InfinitelyManyExceptions}(C)$ for all $C > 0$. Also states `barreto_leeham_bound`: the bound $a + b \\leq n + D\\log n$ persists with an explicit constant $D$."
     },
     {
       "id": "proof-strategy",
@@ -113,7 +113,7 @@
       "startLine": 124,
       "endLine": 140,
       "summary": "Axiomatizes `proof_extends_erdos_argument`: for primes $p > C$, the $p$-adic constraint $v_p(a!) + v_p(b!) \\leq v_p(n!)$ holds even under the relaxed condition, since the correction factor $k$ has no $p$-component.",
-      "mathContext": "Axiomatizes `proof_extends_erdos_argument`: for primes $p > C$, the $p$-adic constraint $v_p(a!) + v_p(b!) \\leq v_p(n!)$ holds even under the relaxed condition, since the correction factor $k$ has no "
+      "mathContext": "Axiomatizes `proof_extends_erdos_argument`: for primes $p > C$, the $p$-adic constraint $v_p(a!) + v_p(b!) \\leq v_p(n!)$ holds even under the relaxed condition, since the correction factor $k$ has no $p$-component."
     },
     {
       "id": "legendre-details",

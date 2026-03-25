@@ -78,7 +78,7 @@
       "startLine": 49,
       "endLine": 91,
       "summary": "Defines `IsBlock $k$ $B$` ($|B| = k$), `Covers $S$ $B$` ($S \\subseteq B$), and `SteinerSystem $r$ $k$ $n$` with `blocks`, `block_size`, and `covers_once` fields. Block count formulas: $\\binom{n}{r}/\\binom{k}{r}$ and $\\binom{n}{k}/\\binom{k}{r}$.",
-      "mathContext": "Defines `IsBlock $k$ $B$` ($|B| = k$), `Covers $S$ $B$` ($S \\subseteq B$), and `SteinerSystem $r$ $k$ $n$` with `blocks`, `block_size`, and `covers_once` fields. Block count formulas: $\\binom{n}{r}/\\b"
+      "mathContext": "Defines `IsBlock $k$ $B$` ($|B| = k$), `Covers $S$ $B$` ($S \\subseteq B$), and `SteinerSystem $r$ $k$ $n$` with `blocks`, `block_size`, and `covers_once` fields. Block count formulas: $\\binom{n}{r}/\\binom{k}{r}$ and $\\binom{n}{k}/\\binom{k}{r}$."
     },
     {
       "id": "divisibility",
@@ -86,7 +86,7 @@
       "startLine": 92,
       "endLine": 127,
       "summary": "Defines `DivisibilityConditions $r$ $k$ $n$`: $\\forall 0 \\leq i < r,\\; \\binom{k-i}{r-i} \\mid \\binom{n-i}{r-i}$. Special cases: `MainDivisibility` ($i = 0$: $\\binom{k}{r} \\mid \\binom{n}{r}$) and `LastDivisibility` ($i = r-1$: $(k-r+1) \\mid (n-r+1)$). Proves `divisibility_includes_main`.",
-      "mathContext": "Defines `DivisibilityConditions $r$ $k$ $n$`: $\\forall 0 \\leq i < r,\\; \\binom{k-i}{r-i} \\mid \\binom{n-i}{r-i}$. Special cases: `MainDivisibility` ($i = 0$: $\\binom{k}{r} \\mid \\binom{n}{r}$) and `LastD"
+      "mathContext": "Defines `DivisibilityConditions $r$ $k$ $n$`: $\\forall 0 \\leq i < r,\\; \\binom{k-i}{r-i} \\mid \\binom{n-i}{r-i}$. Special cases: `MainDivisibility` ($i = 0$: $\\binom{k}{r} \\mid \\binom{n}{r}$) and `LastDivisibility` ($i = r-1$: $(k-r+1) \\mid (n-r+1)$). Proves `divisibility_includes_main`."
     },
     {
       "id": "classical",
@@ -94,7 +94,7 @@
       "startLine": 128,
       "endLine": 163,
       "summary": "Axiomatizes `kirkman_triple_systems`: $S(2,3,n)$ exists iff $n \\equiv 1,3 \\pmod{6}$, $n \\geq 7$. Axiomatizes `fano_plane_exists`: $S(2,3,7)$. Axiomatizes `hanani_1961`: existence for $S(3,4,n)$, $S(2,4,n)$, $S(2,5,n)$ under appropriate conditions.",
-      "mathContext": "Axiomatizes `kirkman_triple_systems`: $S(2,3,n)$ exists iff $n \\equiv 1,3 \\pmod{6}$, $n \\geq 7$. Axiomatizes `fano_plane_exists`: $S(2,3,7)$. Axiomatizes `hanani_1961`: existence for $S(3,4,n)$, $S(2,"
+      "mathContext": "Axiomatizes `kirkman_triple_systems`: $S(2,3,n)$ exists iff $n \\equiv 1,3 \\pmod{6}$, $n \\geq 7$. Axiomatizes `fano_plane_exists`: $S(2,3,7)$. Axiomatizes `hanani_1961`: existence for $S(3,4,n)$, $S(2,4,n)$, $S(2,5,n)$ under appropriate conditions."
     },
     {
       "id": "wilson",
@@ -102,7 +102,7 @@
       "startLine": 164,
       "endLine": 186,
       "summary": "Axiomatizes `wilson_theorem_r2`: $\\forall k \\geq 2,\\; \\exists N_0,\\; \\forall n \\geq N_0$ satisfying divisibility, $S(2,k,n)$ exists. Also `wilson_quantitative`: $N_0 \\leq C \\cdot k^2$ for some constant $C$.",
-      "mathContext": "Axiomatizes `wilson_theorem_r2`: $\\forall k \\geq 2,\\; \\exists N_0,\\; \\forall n \\geq N_0$ satisfying divisibility, $S(2,k,n)$ exists. Also `wilson_quantitative`: $N_0 \\leq C \\cdot k^2$ for some constan"
+      "mathContext": "Axiomatizes `wilson_theorem_r2`: $\\forall k \\geq 2,\\; \\exists N_0,\\; \\forall n \\geq N_0$ satisfying divisibility, $S(2,k,n)$ exists. Also `wilson_quantitative`: $N_0 \\leq C \\cdot k^2$ for some constant $C$."
     },
     {
       "id": "keevash",
@@ -110,7 +110,7 @@
       "startLine": 187,
       "endLine": 235,
       "summary": "Axiomatizes `keevash_theorem`: $\\forall r \\geq 1,\\; k > r,\\; \\exists N_0,\\; \\forall n \\geq N_0$ satisfying divisibility, $S(r,k,n)$ exists. Proves `erdos_722_solved` directly from Keevash. Documents the randomized algebraic construction method.",
-      "mathContext": "Axiomatizes `keevash_theorem`: $\\forall r \\geq 1,\\; k > r,\\; \\exists N_0,\\; \\forall n \\geq N_0$ satisfying divisibility, $S(r,k,n)$ exists. Proves `erdos_722_solved` directly from Keevash. Documents t"
+      "mathContext": "Axiomatizes `keevash_theorem`: $\\forall r \\geq 1,\\; k > r,\\; \\exists N_0,\\; \\forall n \\geq N_0$ satisfying divisibility, $S(r,k,n)$ exists. Proves `erdos_722_solved` directly from Keevash."
     },
     {
       "id": "examples",
@@ -126,7 +126,7 @@
       "startLine": 265,
       "endLine": 291,
       "summary": "Defines `IsResolvable` (blocks partition into parallel classes), `IsPacking` (every $r$-set in $\\leq 1$ block), `IsCovering` (every $r$-set in $\\geq 1$ block). Steiner systems are both packings and coverings.",
-      "mathContext": "Defines `IsResolvable` (blocks partition into parallel classes), `IsPacking` (every $r$-set in $\\leq 1$ block), `IsCovering` (every $r$-set in $\\geq 1$ block). Steiner systems are both packings and co"
+      "mathContext": "Defines `IsResolvable` (blocks partition into parallel classes), `IsPacking` (every $r$-set in $\\leq 1$ block), `IsCovering` (every $r$-set in $\\geq 1$ block)."
     },
     {
       "id": "summary",

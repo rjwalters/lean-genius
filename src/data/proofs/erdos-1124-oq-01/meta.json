@@ -51,7 +51,7 @@
       "startLine": 1,
       "endLine": 50,
       "summary": "Defines `Point` as $\\mathbb{R}^2$ (`EuclideanSpace ℝ (Fin 2)`), `disk` as $\\{p : \\|p\\| \\leq r\\}$, `square` as the axis-aligned $[0,s]^2$, translation congruence via $B = A + v$, and the equal-area condition $\\pi r^2 = s^2$.",
-      "mathContext": "Defines `Point` as $\\mathbb{R}^2$ (`EuclideanSpace ℝ (Fin 2)`), `disk` as $\\{p : \\|p\\| \\leq r\\}$, `square` as the axis-aligned $[0,s]^2$, translation congruence via $B = A + v$, and the equal-area con"
+      "mathContext": "Defines `Point` as $\\mathbb{R}^2$ (`EuclideanSpace ℝ (Fin 2)`), `disk` as $\\{p : \\|p\\| \\leq r\\}$, `square` as the axis-aligned $[0,s]^2$, translation congruence via $B = A + v$, and the equal-area condition $\\pi r^2 = s^2$."
     },
     {
       "id": "n-piece",
@@ -59,7 +59,7 @@
       "startLine": 51,
       "endLine": 78,
       "summary": "Introduces `IsNDecomposition` (pairwise disjoint, union = whole set) and `TranslationEquidecomposableN` (corresponding pieces are translates), parametrizing equidecomposition by the piece count $N$ to convert the qualitative problem into a quantitative one.",
-      "mathContext": "Introduces `IsNDecomposition` (pairwise disjoint, union = whole set) and `TranslationEquidecomposableN` (corresponding pieces are translates), parametrizing equidecomposition by the piece count $N$ to"
+      "mathContext": "Introduces `IsNDecomposition` (pairwise disjoint, union = whole set) and `TranslationEquidecomposableN` (corresponding pieces are translates), parametrizing equidecomposition by the piece count $N$ to convert the qualitative problem into a quantitative one."
     },
     {
       "id": "properties",
@@ -67,7 +67,7 @@
       "startLine": 79,
       "endLine": 171,
       "summary": "Proves equidecomposability is reflexive (identity translation), symmetric (negate translations), and monotone ($N$-piece $\\Rightarrow$ $(N+1)$-piece by appending $\\emptyset$). All three are fully verified with no axioms.",
-      "mathContext": "Proves equidecomposability is reflexive (identity translation), symmetric (negate translations), and monotone ($N$-piece $\\Rightarrow$ $(N+1)$-piece by appending $\\emptyset$). All three are fully veri"
+      "mathContext": "Proves equidecomposability is reflexive (identity translation), symmetric (negate translations), and monotone ($N$-piece $\\Rightarrow$ $(N+1)$-piece by appending $\\emptyset$). All three are fully verified with no axioms."
     },
     {
       "id": "minimum",
@@ -75,7 +75,7 @@
       "startLine": 172,
       "endLine": 194,
       "summary": "Defines `minPieceCount` as the infimum of $\\{N : \\text{TranslationEquidecomposableN}(\\text{disk}(r), \\text{square}(s), N)\\}$ and axiomatizes its basic properties: achievability (the minimum is achieved) and minimality (no decomposition uses fewer pieces).",
-      "mathContext": "Defines `minPieceCount` as the infimum of $\\{N : \\text{TranslationEquidecomposableN}(\\text{disk}(r), \\text{square}(s), N)\\}$ and axiomatizes its basic properties: achievability (the minimum is achieve"
+      "mathContext": "Defines `minPieceCount` as the infimum of $\\{N : \\text{TranslationEquidecomposableN}(\\text{disk}(r), \\text{square}(s), N)\\}$ and axiomatizes its basic properties: achievability (the minimum is achieved) and minimality (no decomposition uses fewer pieces)."
     },
     {
       "id": "bounds",
@@ -83,7 +83,7 @@
       "startLine": 195,
       "endLine": 240,
       "summary": "Axiomatizes three generations of upper bounds: Laczkovich 1990 ($\\leq 10^{50}$ non-measurable pieces), Grabowski-Máthé-Pikhurko 2016 (Lebesgue measurable pieces), and Marks-Unger 2017 ($< 10^5$ Borel pieces). Also axiomatizes the topological lower bound of 3 pieces.",
-      "mathContext": "Axiomatizes three generations of upper bounds: Laczkovich 1990 ($\\leq 10^{50}$ non-measurable pieces), Grabowski-Máthé-Pikhurko 2016 (Lebesgue measurable pieces), and Marks-Unger 2017 ($< 10^5$ Borel "
+      "mathContext": "Axiomatizes three generations of upper bounds: Laczkovich 1990 ($\\leq 10^{50}$ non-measurable pieces), Grabowski-Máthé-Pikhurko 2016 (Lebesgue measurable pieces), and Marks-Unger 2017 ($< 10^5$ Borel pieces). Also axiomatizes the topological lower bound of 3 pieces."
     },
     {
       "id": "open-question",
@@ -91,7 +91,7 @@
       "startLine": 241,
       "endLine": 305,
       "summary": "States the central open question: what is the exact minimum piece count? Known bounds $3 \\leq \\text{minPieceCount} \\leq 10^{50}$ leave an enormous gap. Computer experiments suggest $\\sim 22$ might suffice.",
-      "mathContext": "States the central open question: what is the exact minimum piece count? Known bounds $3 \\leq \\text{minPieceCount} \\leq 10^{50}$ leave an enormous gap. Computer experiments suggest $\\sim 22$ might suf"
+      "mathContext": "Known bounds $3 \\leq \\text{minPieceCount} \\leq 10^{50}$ leave an enormous gap. Computer experiments suggest $\\sim 22$ might suffice."
     },
     {
       "id": "zero-piece",
@@ -107,7 +107,7 @@
       "startLine": 337,
       "endLine": 426,
       "summary": "The deepest verified result: proves 1-piece equidecomposition is impossible via a diagonal norm argument. If the square were a translate of the disk, the diagonal point $(s,s)$ maps to the disk, giving $\\|(s,s)\\| \\leq 2r$, so $2s^2 \\leq 4r^2$, but $\\pi r^2 = s^2$ forces $\\pi \\leq 2$, contradicting $\\pi > 3$.",
-      "mathContext": "The deepest verified result: proves 1-piece equidecomposition is impossible via a diagonal norm argument. If the square were a translate of the disk, the diagonal point $(s,s)$ maps to the disk, givin"
+      "mathContext": "The deepest verified result: proves 1-piece equidecomposition is impossible via a diagonal norm argument. If the square were a translate of the disk, the diagonal point $(s,s)$ maps to the disk, giving $\\|(s,s)\\| \\leq 2r$, so $2s^2 \\leq 4r^2$, but $\\pi r^2 = s^2$ forces $\\pi \\leq 2$, contradicting $\\pi > 3$."
     },
     {
       "id": "transitivity",
@@ -115,7 +115,7 @@
       "startLine": 427,
       "endLine": 454,
       "summary": "Proves transitivity of translation congruence (composing translations via $v + w$) and assembles the complete bound chain $3 \\leq \\text{minPieceCount}(r,s) \\leq 10^{50}$ using case analysis with `omega` over $\\{0,1,2\\}$.",
-      "mathContext": "Proves transitivity of translation congruence (composing translations via $v + w$) and assembles the complete bound chain $3 \\leq \\text{minPieceCount}(r,s) \\leq 10^{50}$ using case analysis with `omeg"
+      "mathContext": "Proves transitivity of translation congruence (composing translations via $v + w$) and assembles the complete bound chain $3 \\leq \\text{minPieceCount}(r,s) \\leq 10^{50}$ using case analysis with `omega` over $\\{0,1,2\\}$."
     }
   ],
   "overview": {

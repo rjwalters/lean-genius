@@ -179,7 +179,7 @@
       "summary": "Defines $\\tau(n) = |\\{d : d \\mid n\\}|$ via `n.divisors.card`, axiomatizes the multiplicative formula $\\tau(n) = \\prod_{p \\mid n} (v_p(n) + 1)$, and defines the factorial divisor ratio $\\tau((n+1)!)/\\tau(n!) \\in \\mathbb{Q}$.",
       "startLine": 37,
       "endLine": 48,
-      "mathContext": "Defines $\\tau(n) = |\\{d : d \\mid n\\}|$ via `n.divisors.card`, axiomatizes the multiplicative formula $\\tau(n) = \\prod_{p \\mid n} (v_p(n) + 1)$, and defines the factorial divisor ratio $\\tau((n+1)!)/\\t"
+      "mathContext": "Defines $\\tau(n) = |\\{d : d \\mid n\\}|$ via `n.divisors.card`, axiomatizes the multiplicative formula $\\tau(n) = \\prod_{p \\mid n} (v_p(n) + 1)$, and defines the factorial divisor ratio $\\tau((n+1)!)/\\tau(n!) \\in \\mathbb{Q}$."
     },
     {
       "id": "ratio-formula",
@@ -187,7 +187,7 @@
       "summary": "Defines `padicValFactorial` via Legendre's formula $v_p(n!) = \\sum_{i \\ge 1} \\lfloor n/p^i \\rfloor$, axiomatizes the identity with `padicValNat`, and states the key product formula: $\\tau((n+1)!)/\\tau(n!) = \\prod_{p \\mid n+1} (1 + v_p(n+1)/(v_p(n!)+1))$.",
       "startLine": 56,
       "endLine": 71,
-      "mathContext": "Defines `padicValFactorial` via Legendre's formula $v_p(n!) = \\sum_{i \\ge 1} \\lfloor n/p^i \\rfloor$, axiomatizes the identity with `padicValNat`, and states the key product formula: $\\tau((n+1)!)/\\tau"
+      "mathContext": "Defines `padicValFactorial` via Legendre's formula $v_p(n!) = \\sum_{i \\ge 1} \\lfloor n/p^i \\rfloor$, axiomatizes the identity with `padicValNat`, and states the key product formula: $\\tau((n+1)!)/\\tau(n!) = \\prod_{p \\mid n+1} (1 + v_p(n+1)/(v_p(n!)+1))$."
     },
     {
       "id": "prime-bounds",
@@ -211,7 +211,7 @@
       "summary": "If $p > n^{2/3}$ divides $n+1$, then $v_p(n+1) = 1$ (since $p^2 > n+1$) and $v_p(n!) = k-1$ where $n+1 = pk$. The factor is $(k+1)/k = 1 + 1/k$. When $n+1$ is prime ($k=1$), the ratio $\\approx 2$.",
       "startLine": 116,
       "endLine": 122,
-      "mathContext": "If $p > n^{2/3}$ divides $n+1$, then $v_p(n+1) = 1$ (since $$p^{2}$ > n+1$) and $v_p(n!) = k-1$ where $n+1 = pk$. The factor is $(k+1)/k = 1 + 1/k$. When $n+1$ is prime ($k=1$), the ratio $\\approx 2$."
+      "mathContext": "If $p > n^{2/3}$ divides $n+1$, then $v_p(n+1) = 1$ (since $p^2 > n+1$) and $v_p(n!) = k-1$ where $n+1 = pk$. The factor is $(k+1)/k = 1 + 1/k$. When $n+1$ is prime ($k=1$), the ratio $\\approx 2$."
     },
     {
       "id": "limit-points",
@@ -227,7 +227,7 @@
       "summary": "Four cases: $n+1$ prime $\\Rightarrow$ ratio $\\approx 2$; $n+1 = 2p \\Rightarrow \\approx 3/2$; $n+1 = 3p \\Rightarrow \\approx 4/3$; $n+1$ smooth $\\Rightarrow \\approx 1$. Verified: $1+1/1=2$, $1+1/2=3/2$, $1+1/3=4/3$, $1+1/4=5/4$.",
       "startLine": 158,
       "endLine": 172,
-      "mathContext": "Four cases: $n+1$ prime $\\Rightarrow$ ratio $\\approx 2$; $n+1 = 2p \\Rightarrow \\approx 3/2$; $n+1 = 3p \\Rightarrow \\approx 4/3$; $n+1$ smooth $\\Rightarrow \\approx 1$. Verified: $1+1/1=2$, $1+1/2=3/2$,"
+      "mathContext": "Four cases: $n+1$ prime $\\Rightarrow$ ratio $\\approx 2$; $n+1 = 2p \\Rightarrow \\approx 3/2$; $n+1 = 3p \\Rightarrow \\approx 4/3$; $n+1$ smooth $\\Rightarrow \\approx 1$. Verified: $1+1/1=2$, $1+1/2=3/2$, $1+1/3=4/3$, $1+1/4=5/4$."
     },
     {
       "id": "proof-structure",
@@ -235,7 +235,7 @@
       "summary": "Axiomatizes `ratio_decomposition`: ratio $= S \\cdot L$ with $S \\to 1$ and $L \\in \\{1\\} \\cup \\{1+1/k\\}$. Proves `sawhney_characterization`: $x$ is a limit point $\\iff x \\in L$, via `Set.mem_union` case analysis.",
       "startLine": 180,
       "endLine": 201,
-      "mathContext": "Axiomatizes `ratio_decomposition`: ratio $= S \\cdot L$ with $S \\to 1$ and $L \\in \\{1\\} \\cup \\{1+1/k\\}$. Proves `sawhney_characterization`: $x$ is a limit point $\\iff x \\in L$, via `Set.mem_union` case"
+      "mathContext": "Axiomatizes `ratio_decomposition`: ratio $= S \\cdot L$ with $S \\to 1$ and $L \\in \\{1\\} \\cup \\{1+1/k\\}$. Proves `sawhney_characterization`: $x$ is a limit point $\\iff x \\in L$, via `Set.mem_union` case analysis."
     },
     {
       "id": "asymptotics",
@@ -243,7 +243,7 @@
       "summary": "Axiomatizes $\\tau(n!) \\ge 2^{n/\\log n}$ and $\\log \\tau(n!) \\sim n \\log n / \\log \\log n$. Provides context: both numerator and denominator are astronomically large, explaining why the ratio stays in $[1, 2]$.",
       "startLine": 209,
       "endLine": 215,
-      "mathContext": "Axiomatizes $\\tau(n!) \\ge 2^{n/\\log n}$ and $\\log \\tau(n!) \\sim n \\log n / \\log \\log n$. Provides context: both numerator and denominator are astronomically large, explaining why the ratio stays in $["
+      "mathContext": "Axiomatizes $\\tau(n!) \\ge 2^{n/\\log n}$ and $\\log \\tau(n!) \\sim n \\log n / \\log \\log n$. Provides context: both numerator and denominator are astronomically large, explaining why the ratio stays in $[1, 2]$."
     },
     {
       "id": "summary",
@@ -251,7 +251,7 @@
       "summary": "Proves `limit_set_properties` ($1 \\in L$, $1+1/k \\in L$, all $\\ge 1$) by constructive case analysis with `linarith`. Proves `erdos_419_summary` packaging the characterization, existence of $1$, and existence of $1+1/k$.",
       "startLine": 223,
       "endLine": 252,
-      "mathContext": "Proves `limit_set_properties` ($1 \\in L$, $1+1/k \\in L$, all $\\ge 1$) by constructive case analysis with `linarith`. Proves `erdos_419_summary` packaging the characterization, existence of $1$, and ex"
+      "mathContext": "Proves `limit_set_properties` ($1 \\in L$, $1+1/k \\in L$, all $\\ge 1$) by constructive case analysis with `linarith`. Proves `erdos_419_summary` packaging the characterization, existence of $1$, and existence of $1+1/k$."
     }
   ],
   "conclusion": {

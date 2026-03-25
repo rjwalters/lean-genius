@@ -39,7 +39,7 @@
       "startLine": 28,
       "endLine": 37,
       "summary": "Defines $\\text{Point2} = \\mathbb{R} \\times \\mathbb{R}$ and squared Euclidean distance $d^2(p,q) = (p_1 - q_1)^2 + (p_2 - q_2)^2$. The bipartite distance set $\\text{bipartiteDistSet}(X,Y) = \\{d^2(x,y) \\mid x \\in X, y \\in Y\\}$ captures all cross-pair distances.",
-      "mathContext": "Defines $\\text{Point2} = \\mathbb{R} \\times \\mathbb{R}$ and squared Euclidean distance $d^2(p,q) = (p_1 - q_1)^2 + (p_2 - q_2)^2$. The bipartite distance set $\\text{bipartiteDistSet}(X,Y) = \\{d^2(x,y) "
+      "mathContext": "Defines $\\text{Point2} = \\mathbb{R} \\times \\mathbb{R}$ and squared Euclidean distance $d^2(p,q) = (p_1 - q_1)^2 + (p_2 - q_2)^2$. The bipartite distance set $\\text{bipartiteDistSet}(X,Y) = \\{d^2(x,y) \\mid x \\in X, y \\in Y\\}$ captures all cross-pair distances."
     },
     {
       "id": "extremal-functions",
@@ -55,7 +55,7 @@
       "startLine": 46,
       "endLine": 55,
       "summary": "States the main conjecture: $\\forall \\varepsilon > 0, \\exists N_0$ such that $n \\ge N_0 \\Rightarrow F(2n) \\le \\varepsilon \\cdot f(2n)$, formalized as `erdos_661_bipartite_advantage`. This asserts the bipartite structure provides asymptotically fewer distances.",
-      "mathContext": "States the main conjecture: $\\forall \\varepsilon > 0, \\exists N_0$ such that $n \\ge N_0 \\Rightarrow F(2n) \\le \\varepsilon \\cdot f(2n)$, formalized as `erdos_661_bipartite_advantage`. This asserts the "
+      "mathContext": "States the main conjecture: $\\forall \\varepsilon > 0, \\exists N_0$ such that $n \\ge N_0 \\Rightarrow F(2n) \\le \\varepsilon \\cdot f(2n)$, formalized as `erdos_661_bipartite_advantage`."
     },
     {
       "id": "guth-katz",
@@ -63,7 +63,7 @@
       "startLine": 56,
       "endLine": 64,
       "summary": "Axiomatizes the landmark Guth–Katz (2015) result: $f(2n) \\ge C \\cdot n / \\log n$ for some constant $C > 0$. This essentially resolved Erdős's distinct distances problem (Problem #89) and sets the benchmark for the bipartite variant.",
-      "mathContext": "Axiomatizes the landmark Guth–Katz (2015) result: $f(2n) \\ge C \\cdot n / \\log n$ for some constant $C > 0$. This essentially resolved Erdős's distinct distances problem (Problem #89) and sets the benc"
+      "mathContext": "Axiomatizes the landmark Guth–Katz (2015) result: $f(2n) \\ge C \\cdot n / \\log n$ for some constant $C > 0$."
     },
     {
       "id": "lattice-upper",
@@ -71,7 +71,7 @@
       "startLine": 65,
       "endLine": 71,
       "summary": "Axiomatizes the lattice upper bound: $f(2n) \\le C \\cdot n / \\sqrt{\\log n}$, achieved by the integer lattice $\\{1,\\ldots,\\sqrt{n}\\}^2$. The gap between $n/\\log n$ and $n/\\sqrt{\\log n}$ remains open even for general point sets.",
-      "mathContext": "Axiomatizes the lattice upper bound: $f(2n) \\le C \\cdot n / \\sqrt{\\log n}$, achieved by the integer lattice $\\{1,\\ldots,\\sqrt{n}\\}^2$. The gap between $n/\\log n$ and $n/\\sqrt{\\log n}$ remains open eve"
+      "mathContext": "Axiomatizes the lattice upper bound: $f(2n) \\le C \\cdot n / \\sqrt{\\log n}$, achieved by the integer lattice $\\{1,\\ldots,\\sqrt{n}\\}^2$. The gap between $n/\\log n$ and $n/\\sqrt{\\log n}$ remains open even for general point sets."
     },
     {
       "id": "lenz-construction",
@@ -79,7 +79,7 @@
       "startLine": 72,
       "endLine": 77,
       "summary": "Records Lenz's construction in $\\mathbb{R}^4$: place $n$ points on each of two orthogonal unit circles; every bipartite distance equals $\\sqrt{2}$, so $F(2n) = 1$. This dramatic saving is impossible in $\\mathbb{R}^2$.",
-      "mathContext": "Records Lenz's construction in $\\mathbb{R}^4$: place $n$ points on each of two orthogonal unit circles; every bipartite distance equals $\\sqrt{2}$, so $F(2n) = 1$. This dramatic saving is impossible i"
+      "mathContext": "Records Lenz's construction in $\\mathbb{R}^4$: place $n$ points on each of two orthogonal unit circles; every bipartite distance equals $\\sqrt{2}$, so $F(2n) = 1$. This dramatic saving is impossible in $\\mathbb{R}^2$."
     },
     {
       "id": "observations",

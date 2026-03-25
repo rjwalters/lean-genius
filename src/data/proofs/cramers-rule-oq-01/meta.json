@@ -86,7 +86,7 @@
       "summary": "Imports `Mathlib.LinearAlgebra.Matrix.Charpoly.Basic` (providing `charmatrix`, `charpoly`, `aeval_self_charpoly`), `Mathlib.LinearAlgebra.Matrix.Adjugate` (providing `adjugate_mul`, `mul_adjugate`), and `Mathlib.RingTheory.PolynomialAlgebra` (providing `matPolyEquiv`).",
       "startLine": 1,
       "endLine": 5,
-      "mathContext": "Imports `Mathlib.LinearAlgebra.Matrix.Charpoly.Basic` (providing `charmatrix`, `charpoly`, `aeval_self_charpoly`), `Mathlib.LinearAlgebra.Matrix.Adjugate` (providing `adjugate_mul`, `mul_adjugate`), a"
+      "mathContext": "Imports `Mathlib.LinearAlgebra.Matrix.Charpoly.Basic` (providing `charmatrix`, `charpoly`, `aeval_self_charpoly`), `Mathlib.LinearAlgebra.Matrix.Adjugate` (providing `adjugate_mul`, `mul_adjugate`), and `Mathlib.RingTheory.PolynomialAlgebra` (providing `matPolyEquiv`)."
     },
     {
       "id": "adjugate-identity",
@@ -126,7 +126,7 @@
       "summary": "The main theorem: `aeval M (charpoly M) = 0`, derived as a corollary of the adjugate identity. Includes both the short proof via Mathlib's `aeval_self_charpoly` and an explicit step-by-step derivation.",
       "startLine": 222,
       "endLine": 261,
-      "mathContext": "The main theorem: `aeval M (charpoly M) = 0`, derived as a corollary of the adjugate identity. Includes both the short proof via Mathlib's `aeval_self_charpoly` and an explicit step-by-step derivation"
+      "mathContext": "The main theorem: `aeval M (charpoly M) = 0`, derived as a corollary of the adjugate identity. Includes both the short proof via Mathlib's `aeval_self_charpoly` and an explicit step-by-step derivation."
     },
     {
       "id": "further-corollaries",
@@ -142,7 +142,7 @@
       "summary": "The capstone theorem `cramer_implies_cayley_hamilton` formally states that Cayley-Hamilton follows as a corollary of the adjugate identity. Takes the adjugate identity as a hypothesis and derives aeval M (charpoly M) = 0.",
       "startLine": 282,
       "endLine": 282,
-      "mathContext": "The capstone theorem `cramer_implies_cayley_hamilton` formally states that Cayley-Hamilton follows as a corollary of the adjugate identity. Takes the adjugate identity as a hypothesis and derives aeva"
+      "mathContext": "The capstone theorem `cramer_implies_cayley_hamilton` formally states that Cayley-Hamilton follows as a corollary of the adjugate identity. Takes the adjugate identity as a hypothesis and derives aeval M (charpoly M) = 0."
     }
   ],
   "conclusion": {

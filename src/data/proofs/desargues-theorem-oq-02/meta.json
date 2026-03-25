@@ -70,7 +70,7 @@
       "startLine": 1,
       "endLine": 60,
       "summary": "Defines the Moulton plane primitives: $\\text{MPoint} = \\mathbb{Q} \\times \\mathbb{Q}$, the inductive `MLine` type (standard/bent/vertical), the piecewise incidence relation `onLine` where bent lines use slope $m$ for $x \\leq 0$ and $2m$ for $x > 0$, and `MoultonCollinear` (three points on a common Moulton line).",
-      "mathContext": "Defines the Moulton plane primitives: $\\text{MPoint} = \\mathbb{Q} \\times \\mathbb{Q}$, the inductive `MLine` type (standard/bent/vertical), the piecewise incidence relation `onLine` where bent lines us"
+      "mathContext": "Defines the Moulton plane primitives: $\\text{MPoint} = \\mathbb{Q} \\times \\mathbb{Q}$, the inductive `MLine` type (standard/bent/vertical), the piecewise incidence relation `onLine` where bent lines use slope $m$ for $x \\leq 0$ and $2m$ for $x > 0$, and `MoultonCollinear` (three points on a common Moulton line)."
     },
     {
       "id": "configuration",
@@ -78,7 +78,7 @@
       "startLine": 61,
       "endLine": 72,
       "summary": "Seven rational points: center $O = (-4, 12)$ and two triangles $\\triangle ABC = \\{(-8,8), (-5,8), (-4,6)\\}$, $\\triangle A'B'C' = \\{(-14,2), (-7,0), (-4,3)\\}$. All vertices have $x \\leq 0$, ensuring perspectivity lines avoid Moulton bending.",
-      "mathContext": "Seven rational points: center $O = (-4, 12)$ and two triangles $\\triangle ABC = \\{(-8,8), (-5,8), (-4,6)\\}$, $\\triangle A'B'C' = \\{(-14,2), (-7,0), (-4,3)\\}$. All vertices have $x \\leq 0$, ensuring pe"
+      "mathContext": "Seven rational points: center $O = (-4, 12)$ and two triangles $\\triangle ABC = \\{(-8,8), (-5,8), (-4,6)\\}$, $\\triangle A'B'C' = \\{(-14,2), (-7,0), (-4,3)\\}$. All vertices have $x \\leq 0$, ensuring perspectivity lines avoid Moulton bending."
     },
     {
       "id": "perspectivity",
@@ -86,7 +86,7 @@
       "startLine": 73,
       "endLine": 106,
       "summary": "Proves $AA'$, $BB'$, $CC'$ all pass through $O$: $\\overline{OAA'}: y = x + 16$ (standard), $\\overline{OBB'}: y = 4x + 28$ (standard), $\\overline{OCC'}: x = -4$ (vertical). Bundles all 9 incidences into `perspective_from_point`.",
-      "mathContext": "Proves $AA'$, $BB'$, $CC'$ all pass through $O$: $\\overline{OAA'}: y = x + 16$ (standard), $\\overline{OBB'}: y = 4x + 28$ (standard), $\\overline{OCC'}: x = -4$ (vertical). Bundles all 9 incidences int"
+      "mathContext": "Proves $AA'$, $BB'$, $CC'$ all pass through $O$: $\\overline{OAA'}: y = x + 16$ (standard), $\\overline{OBB'}: y = 4x + 28$ (standard), $\\overline{OCC'}: x = -4$ (vertical)."
     },
     {
       "id": "side-lines",
@@ -94,7 +94,7 @@
       "startLine": 107,
       "endLine": 146,
       "summary": "Defines 6 side lines: bent $A'B'$ ($m = -2/7$), $BC$ ($m = -2$), $CA$ ($m = -1/2$); standard $AB$ ($m = 0$), $B'C'$ ($m = 1$), $C'A'$ ($m = 1/10$). Verifies 12 vertex incidences. Only $CA$'s bending affects the counterexample at $\\beta$.",
-      "mathContext": "Defines 6 side lines: bent $A'B'$ ($m = -2/7$), $BC$ ($m = -2$), $CA$ ($m = -1/2$); standard $AB$ ($m = 0$), $B'C'$ ($m = 1$), $C'A'$ ($m = 1/10$). Verifies 12 vertex incidences. Only $CA$'s bending a"
+      "mathContext": "Defines 6 side lines: bent $A'B'$ ($m = -2/7$), $BC$ ($m = -2$), $CA$ ($m = -1/2$); standard $AB$ ($m = 0$), $B'C'$ ($m = 1$), $C'A'$ ($m = 1/10$). Only $CA$'s bending affects the counterexample at $\\beta$."
     },
     {
       "id": "intersections",
@@ -102,7 +102,7 @@
       "startLine": 147,
       "endLine": 179,
       "summary": "Computes $\\alpha = BC \\cap B'C' = (-3, 4)$, $\\beta = CA \\cap C'A' = (6/11, 38/11)$, $\\gamma = AB \\cap A'B' = (-35, 8)$. The critical computation: $CA$ has Moulton slope $-1/2$, so at $x = 6/11 > 0$ the effective slope is $-1$, giving $y = 38/11$ instead of the Euclidean $7/2$.",
-      "mathContext": "Computes $\\alpha = BC \\cap B'C' = (-3, 4)$, $\\beta = CA \\cap C'A' = (6/11, 38/11)$, $\\gamma = AB \\cap A'B' = (-35, 8)$. The critical computation: $CA$ has Moulton slope $-1/2$, so at $x = 6/11 > 0$ th"
+      "mathContext": "Computes $\\alpha = BC \\cap B'C' = (-3, 4)$, $\\beta = CA \\cap C'A' = (6/11, 38/11)$, $\\gamma = AB \\cap A'B' = (-35, 8)$. The critical computation: $CA$ has Moulton slope $-1/2$, so at $x = 6/11 > 0$ the effective slope is $-1$, giving $y = 38/11$ instead of the Euclidean $7/2$."
     },
     {
       "id": "non-collinearity",
@@ -110,7 +110,7 @@
       "startLine": 180,
       "endLine": 225,
       "summary": "Proves $\\neg \\text{MoultonCollinear}(\\alpha, \\beta, \\gamma)$ by case analysis over `MLine` constructors. Standard lines: overdetermined system gives $313/88 \\neq 304/88$ (gap $9/88$). Bent lines: right branch gives $307/88 \\neq 304/88$ (gap $3/88$). Vertical: $x$-coordinates $-3 \\neq 6/11$.",
-      "mathContext": "Proves $\\neg \\text{MoultonCollinear}(\\alpha, \\beta, \\gamma)$ by case analysis over `MLine` constructors. Standard lines: overdetermined system gives $313/88 \\neq 304/88$ (gap $9/88$). Bent lines: righ"
+      "mathContext": "Proves $\\neg \\text{MoultonCollinear}(\\alpha, \\beta, \\gamma)$ by case analysis over `MLine` constructors. Standard lines: overdetermined system gives $313/88 \\neq 304/88$ (gap $9/88$). Bent lines: right branch gives $307/88 \\neq 304/88$ (gap $3/88$). Vertical: $x$-coordinates $-3 \\neq 6/11$."
     },
     {
       "id": "main-theorem",
@@ -118,7 +118,7 @@
       "startLine": 226,
       "endLine": 251,
       "summary": "`desargues_fails_in_moulton`: 13-conjunct theorem assembling perspectivity (9 incidences), side-intersections (6 incidences), and $\\neg \\text{MoultonCollinear}(\\alpha, \\beta, \\gamma)$. Complete formal statement that Desargues's theorem fails in the Moulton plane.",
-      "mathContext": "`desargues_fails_in_moulton`: 13-conjunct theorem assembling perspectivity (9 incidences), side-intersections (6 incidences), and $\\neg \\text{MoultonCollinear}(\\alpha, \\beta, \\gamma)$. Complete formal"
+      "mathContext": "`desargues_fails_in_moulton`: 13-conjunct theorem assembling perspectivity (9 incidences), side-intersections (6 incidences), and $\\neg \\text{MoultonCollinear}(\\alpha, \\beta, \\gamma)$. Complete formal statement that Desargues's theorem fails in the Moulton plane."
     },
     {
       "id": "structural",
@@ -126,7 +126,7 @@
       "startLine": 252,
       "endLine": 332,
       "summary": "Non-degeneracy: both triangles are non-collinear and vertices are pairwise distinct. Euclidean comparison: the same $\\alpha, \\beta_{\\text{Euc}} = (1, 7/2), \\gamma$ ARE collinear on $y = -x/8 + 29/8$, proving the failure is caused by Moulton bending. Moulton gap: the exact arithmetic discrepancy is $3/88$.",
-      "mathContext": "Non-degeneracy: both triangles are non-collinear and vertices are pairwise distinct. Euclidean comparison: the same $\\alpha, \\beta_{\\text{Euc}} = (1, 7/2), \\gamma$ ARE collinear on $y = -x/8 + 29/8$, "
+      "mathContext": "Euclidean comparison: the same $\\alpha, \\beta_{\\text{Euc}} = (1, 7/2), \\gamma$ ARE collinear on $y = -x/8 + 29/8$, proving the failure is caused by Moulton bending. Moulton gap: the exact arithmetic discrepancy is $3/88$."
     }
   ],
   "conclusion": {

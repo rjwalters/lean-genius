@@ -51,7 +51,7 @@
       "startLine": 1,
       "endLine": 34,
       "summary": "Module docstring stating the problem and known results. Imports `MeasureTheory.Measure.Lebesgue.Basic` for outer measure, `Topology.MetricSpace.Basic` for closedness, `Data.Set.Finite` for finiteness, and `Tactic`.",
-      "mathContext": "Module docstring stating the problem and known results. Imports `MeasureTheory.Measure.Lebesgue.Basic` for outer measure, `Topology.MetricSpace.Basic` for closedness, `Data.Set.Finite` for finiteness,"
+      "mathContext": "Module docstring stating the problem and known results. Imports `MeasureTheory.Measure.Lebesgue.Basic` for outer measure, `Topology.MetricSpace.Basic` for closedness, `Data.Set.Finite` for finiteness, and `Tactic`."
     },
     {
       "id": "definitions",
@@ -59,7 +59,7 @@
       "startLine": 38,
       "endLine": 55,
       "summary": "Defines `SetFamily` ($\\mathbb{R} \\to \\mathcal{P}(\\mathbb{R})$), `IsBoundedSet` ($A \\subseteq [-M, M]$), `outerMeasure` via Lebesgue measure, `BoundedOuterMeasureFamily` (bounded + measure $< 1$), and `ClosedMeasureFamily` (closed + measure $< 1$).",
-      "mathContext": "Defines `SetFamily` ($\\mathbb{R} \\to \\mathcal{P}(\\mathbb{R})$), `IsBoundedSet` ($A \\subseteq [-M, M]$), `outerMeasure` via Lebesgue measure, `BoundedOuterMeasureFamily` (bounded + measure $< 1$), and "
+      "mathContext": "Defines `SetFamily` ($\\mathbb{R} \\to \\mathcal{P}(\\mathbb{R})$), `IsBoundedSet` ($A \\subseteq [-M, M]$), `outerMeasure` via Lebesgue measure, `BoundedOuterMeasureFamily` (bounded + measure $< 1$), and `ClosedMeasureFamily` (closed + measure $< 1$)."
     },
     {
       "id": "independence",
@@ -67,7 +67,7 @@
       "startLine": 59,
       "endLine": 69,
       "summary": "Defines `IsIndependent A X` ($\\forall x \\neq y \\in X,\\; x \\notin A_y$), `IsIndependentOfSize A n` (finite independent set of size $n$), and `HasInfiniteIndependent A` (existence of an infinite independent set).",
-      "mathContext": "Defines `IsIndependent A X` ($\\forall x \\neq y \\in X,\\; x \\notin A_y$), `IsIndependentOfSize A n` (finite independent set of size $n$), and `HasInfiniteIndependent A` (existence of an infinite indepen"
+      "mathContext": "Defines `IsIndependent A X` ($\\forall x \\neq y \\in X,\\; x \\notin A_y$), `IsIndependentOfSize A n` (finite independent set of size $n$), and `HasInfiniteIndependent A` (existence of an infinite independent set)."
     },
     {
       "id": "erdos-hajnal",
@@ -107,7 +107,7 @@
       "startLine": 143,
       "endLine": 206,
       "summary": "Proves independence is hereditary (subsets of independent sets are independent) and the insertion lemma (extending by one element). Defines `maxIndependentSize` and states it is infinite by Erdős-Hajnal.",
-      "mathContext": "Proves independence is hereditary (subsets of independent sets are independent) and the insertion lemma (extending by one element). Defines `maxIndependentSize` and states it is infinite by Erdős-Hajn"
+      "mathContext": "Proves independence is hereditary (subsets of independent sets are independent) and the insertion lemma (extending by one element). Defines `maxIndependentSize` and states it is infinite by Erdős-Hajnal."
     }
   ],
   "conclusion": {

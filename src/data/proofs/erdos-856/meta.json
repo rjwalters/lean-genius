@@ -58,7 +58,7 @@
       "startLine": 47,
       "endLine": 65,
       "summary": "Defines `myLcm a b = Nat.lcm a b` and proves commutativity $\\text{lcm}(a,b) = \\text{lcm}(b,a)$ and idempotence $\\text{lcm}(a,a) = a$. These are genuine Lean proofs using `Nat.lcm_comm` and `Nat.lcm_self`.",
-      "mathContext": "Defines `myLcm a b = Nat.lcm a b` and proves commutativity $\\text{lcm}(a,b) = \\text{lcm}(b,a)$ and idempotence $\\text{lcm}(a,a) = a$. These are genuine Lean proofs using `Nat.lcm_comm` and `Nat.lcm_se"
+      "mathContext": "Defines `myLcm a b = Nat.lcm a b` and proves commutativity $\\text{lcm}(a,b) = \\text{lcm}(b,a)$ and idempotence $\\text{lcm}(a,a) = a$."
     },
     {
       "id": "uniform-lcm",
@@ -66,7 +66,7 @@
       "startLine": 66,
       "endLine": 89,
       "summary": "Defines `HasUniformPairwiseLCM A t` (all distinct pairs have $\\text{lcm} = t$), `ContainsUniformLCMSubset A k` ($\\exists$ $k$-subset with uniform LCM), and `IsLCMFree A k` (no such $k$-subset). These capture the forbidden pattern.",
-      "mathContext": "Defines `HasUniformPairwiseLCM A t` (all distinct pairs have $\\text{lcm} = t$), `ContainsUniformLCMSubset A k` ($\\exists$ $k$-subset with uniform LCM), and `IsLCMFree A k` (no such $k$-subset). These "
+      "mathContext": "Defines `HasUniformPairwiseLCM A t` (all distinct pairs have $\\text{lcm} = t$), `ContainsUniformLCMSubset A k` ($\\exists$ $k$-subset with uniform LCM), and `IsLCMFree A k` (no such $k$-subset)."
     },
     {
       "id": "log-density",
@@ -74,7 +74,7 @@
       "startLine": 90,
       "endLine": 107,
       "summary": "Defines `harmonicSum A = \\sum_{n \\in A} 1/n$ (with $1/0 = 0$ guard) and $f_k(k, N) = \\sup\\{\\text{harmonicSum}(A) : A \\subseteq [N],\\, \\text{IsLCMFree}(A, k)\\}$. The `sSup` formulation axiomatizes the extremal function.",
-      "mathContext": "Defines `harmonicSum A = \\sum_{n \\in A} 1/n$ (with $1/0 = 0$ guard) and $f_k(k, N) = \\sup\\{\\text{harmonicSum}(A) : A \\subseteq [N],\\, \\text{IsLCMFree}(A, k)\\}$. The `sSup` formulation axiomatizes the "
+      "mathContext": "Defines `harmonicSum A = \\sum_{n \\in A} 1/n$ (with $1/0 = 0$ guard) and $f_k(k, N) = \\sup\\{\\text{harmonicSum}(A) : A \\subseteq [N],\\, \\text{IsLCMFree}(A, k)\\}$. The `sSup` formulation axiomatizes the extremal function."
     },
     {
       "id": "erdos-bound",
@@ -90,7 +90,7 @@
       "startLine": 133,
       "endLine": 158,
       "summary": "Axiomatizes $\\exists b_k \\leq c_k$ with $(\\log N)^{b_k - \\varepsilon} \\leq f_k(N) \\leq (\\log N)^{c_k + \\varepsilon}$ for all $\\varepsilon > 0$ eventually. For $k = 3$: $(\\log N)^{0.438} \\leq f_3(N) \\leq (\\log N)^{0.889}$.",
-      "mathContext": "Axiomatizes $\\exists b_k \\leq c_k$ with $(\\log N)^{b_k - \\varepsilon} \\leq f_k(N) \\leq (\\log N)^{c_k + \\varepsilon}$ for all $\\varepsilon > 0$ eventually. For $k = 3$: $(\\log N)^{0.438} \\leq f_3(N) \\l"
+      "mathContext": "Axiomatizes $\\exists b_k \\leq c_k$ with $(\\log N)^{b_k - \\varepsilon} \\leq f_k(N) \\leq (\\log N)^{c_k + \\varepsilon}$ for all $\\varepsilon > 0$ eventually. For $k = 3$: $(\\log N)^{0.438} \\leq f_3(N) \\leq (\\log N)^{0.889}$."
     },
     {
       "id": "sunflower",

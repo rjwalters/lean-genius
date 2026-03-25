@@ -68,7 +68,7 @@
       "startLine": 37,
       "endLine": 47,
       "summary": "Defines IsLittlewoodPolynomial (all coefficients in {-1,+1}) and supNorm (supremum of |P(z)| over the unit circle). These are the foundational concepts for the entire formalization.",
-      "mathContext": "Formal definition: Defines IsLittlewoodPolynomial (all coefficients in {-1,+1}) and supNorm (supremum of |P(z)| over the unit circle). These are the foundational concepts for the entire formalization."
+      "mathContext": "Defines IsLittlewoodPolynomial (all coefficients in {-1,+1}) and supNorm (supremum of |P(z)| over the unit circle). These are the foundational concepts for the entire formalization."
     },
     {
       "id": "main-conjecture",
@@ -76,7 +76,7 @@
       "startLine": 48,
       "endLine": 63,
       "summary": "States Erdos1150Conjecture as a Prop: ∃ c > 0 such that eventually all degree-n Littlewood polynomials satisfy supNorm P > (1+c)√n. Uses Lean's Filter.Eventually (∀ᶠ) for the 'for all large n' quantifier.",
-      "mathContext": "States Erdos1150Conjecture as a Prop: ∃ c > 0 such that eventually all degree-n Littlewood polynomials satisfy supNorm P > (1+c)√n. Uses Lean's Filter.Eventually (∀ᶠ) for the 'for all large n' quantif"
+      "mathContext": "States Erdos1150Conjecture as a Prop: ∃ c > 0 such that eventually all degree-n Littlewood polynomials satisfy supNorm P > (1+c)√n. Uses Lean's Filter.Eventually (∀ᶠ) for the 'for all large n' quantifier."
     },
     {
       "id": "parseval",
@@ -92,7 +92,7 @@
       "startLine": 83,
       "endLine": 141,
       "summary": "Defines IsUltraflat (supNorm/√n → 1). Proves forward direction: conjecture → no ultraflat (by contradiction with Filter.Tendsto). Axiomatizes backward direction (requires diagonal/choice argument). Full equivalence is a theorem.",
-      "mathContext": "Defines IsUltraflat (supNorm/√n → 1). Proves forward direction: conjecture → no ultraflat (by contradiction with Filter.Tendsto). Axiomatizes backward direction (requires diagonal/choice argument). Fu"
+      "mathContext": "Defines IsUltraflat (supNorm/√n → 1). Proves forward direction: conjecture → no ultraflat (by contradiction with Filter.Tendsto). Axiomatizes backward direction (requires diagonal/choice argument). Full equivalence is a theorem."
     },
     {
       "id": "known-results",
@@ -108,7 +108,7 @@
       "startLine": 184,
       "endLine": 200,
       "summary": "Formally shows that flat does not logically imply ultraflat. The existence of bounded-ratio polynomials (BBMST) does not give ratio-converging-to-1 polynomials (ultraflat). This is the essential gap that Problem #1150 asks about.",
-      "mathContext": "Formally shows that flat does not logically imply ultraflat. The existence of bounded-ratio polynomials (BBMST) does not give ratio-converging-to-1 polynomials (ultraflat). This is the essential gap t"
+      "mathContext": "Formally shows that flat does not logically imply ultraflat. The existence of bounded-ratio polynomials (BBMST) does not give ratio-converging-to-1 polynomials (ultraflat). This is the essential gap that Problem #1150 asks about."
     },
     {
       "id": "rudin-shapiro",

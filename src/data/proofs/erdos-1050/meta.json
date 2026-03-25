@@ -108,7 +108,7 @@
       "summary": "Computes explicit values: term_1 (2¹-3 = -1), term_2 (2²-3 = 1), term_3 (2³-3 = 5), demonstrating the negative first term, exact cancellation -1+1=0, and S_first_terms showing S = 0 + 1/5 + 1/13 + 1/29 + ... ≈ 0.287",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Computes explicit values: term_1 (2¹-3 = -1), term_2 (2²-3 = 1), term_3 (2³-3 = 5), demonstrating the negative first term, exact cancellation -1+1=0, and S_first_terms showing S = 0 + 1/5 + 1/13 + 1/2"
+      "mathContext": "Computes explicit values: term_1 (2¹-3 = -1), term_2 (2²-3 = 1), term_3 (2³-3 = 5), demonstrating the negative first term, exact cancellation -1+1=0, and S_first_terms showing S = 0 + 1/5 + 1/13 + 1/29 + ... ≈ 0.287"
     },
     {
       "id": "borwein",
@@ -124,7 +124,7 @@
       "summary": "Applies Borwein's theorem to three further series: sum_2n_minus_1_irrational (∑ 1/(2^n-1), recovering Erdős 1948 as a special case), sum_2n_plus_1_irrational (∑ 1/(2^n+1), the companion constant), sum_3n_minus_1_irrational (∑ 1/(3^n-1), base-3 extension), and general_irrational for arbitrary valid parameters",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Applies Borwein's theorem to three further series: sum_2n_minus_1_irrational (∑ 1/(2^n-1), recovering Erdős 1948 as a special case), sum_2n_plus_1_irrational (∑ 1/(2^n+1), the companion constant), sum"
+      "mathContext": "Applies Borwein's theorem to three further series: sum_2n_minus_1_irrational (∑ 1/(2^n-1), recovering Erdős 1948 as a special case), sum_2n_plus_1_irrational (∑ 1/(2^n+1), the companion constant), sum_3n_minus_1_irrational (∑ 1/(3^n-1), base-3 extension), and general_irrational for arbitrary valid parameters"
     },
     {
       "id": "transcendence",
@@ -132,7 +132,7 @@
       "summary": "States ErdosTranscendenceConjecture (∑ 1/(2^n+t) transcendental for integer t ≠ 0) and GeneralTranscendenceConjecture (T(q,r) transcendental for all valid q,r), proves transcendence_implies_irrationality linking the hierarchy, and records the OPEN status",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "States ErdosTranscendenceConjecture (∑ 1/(2^n+t) transcendental for integer t ≠ 0) and GeneralTranscendenceConjecture (T(q,r) transcendental for all valid q,r), proves transcendence_implies_irrational"
+      "mathContext": "States ErdosTranscendenceConjecture (∑ 1/(2^n+t) transcendental for integer t ≠ 0) and GeneralTranscendenceConjecture (T(q,r) transcendental for all valid q,r), proves transcendence_implies_irrationality linking the hierarchy, and records the OPEN status"
     },
     {
       "id": "connection",
@@ -148,7 +148,7 @@
       "summary": "Axiomatizes S_approx (0.286 < S < 0.288), proves S_positive (tail dominance after cancellation), S_lt_one (comparison with geometric series), and partial_sums_converge linking finite sums to the tsum limit",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Axiomatizes S_approx (0.286 < S < 0.288), proves S_positive (tail dominance after cancellation), S_lt_one (comparison with geometric series), and partial_sums_converge linking finite sums to the tsum "
+      "mathContext": "Axiomatizes S_approx (0.286 < S < 0.288), proves S_positive (tail dominance after cancellation), S_lt_one (comparison with geometric series), and partial_sums_converge linking finite sums to the tsum limit"
     },
     {
       "id": "oeis",
@@ -156,7 +156,7 @@
       "summary": "Defines oeis_A331372 (the shifted Mersenne sequence 2^n - 3), verifies denom_sequence matching OEIS, and proves denom_growth (exponential growth 2^n - 3 > 2^{n-1} for n ≥ 3, ensuring O(1/2^n) convergence rate)",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Defines oeis_A331372 (the shifted Mersenne sequence 2^n - 3), verifies denom_sequence matching OEIS, and proves denom_growth (exponential growth 2^n - 3 > 2^{n-1} for n ≥ 3, ensuring O(1/2^n) converge"
+      "mathContext": "Defines oeis_A331372 (the shifted Mersenne sequence 2^n - 3), verifies denom_sequence matching OEIS, and proves denom_growth (exponential growth 2^n - 3 > 2^{n-1} for n ≥ 3, ensuring O(1/2^n) convergence rate)"
     },
     {
       "id": "main",
@@ -164,7 +164,7 @@
       "summary": "Unifies the formalization: erdos_1050 (the capstone irrationality result), erdos_1050_answer and erdos_1050_status (documentation strings), and borwein_theorem (complete restatement of Borwein's 1991 result covering rational r, not just integer shifts)",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Unifies the formalization: erdos_1050 (the capstone irrationality result), erdos_1050_answer and erdos_1050_status (documentation strings), and borwein_theorem (complete restatement of Borwein's 1991 "
+      "mathContext": "Unifies the formalization: erdos_1050 (the capstone irrationality result), erdos_1050_answer and erdos_1050_status (documentation strings), and borwein_theorem (complete restatement of Borwein's 1991 result covering rational r, not just integer shifts)"
     }
   ],
   "conclusion": {

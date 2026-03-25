@@ -79,7 +79,7 @@
       "startLine": 49,
       "endLine": 83,
       "summary": "Defines $d$-degeneracy via two equivalent characterizations: (1) every non-empty subgraph has a vertex of degree $\\le d$ (`IsDDegenerate`), and (2) vertices admit an ordering where each has $\\le d$ later neighbors (`HasDegeneracyOrdering`). Includes examples: trees are 1-degenerate, planar graphs are 5-degenerate.",
-      "mathContext": "Defines $d$-degeneracy via two equivalent characterizations: (1) every non-empty subgraph has a vertex of degree $\\le d$ (`IsDDegenerate`), and (2) vertices admit an ordering where each has $\\le d$ la"
+      "mathContext": "Defines $d$-degeneracy via two equivalent characterizations: (1) every non-empty subgraph has a vertex of degree $\\le d$ (`IsDDegenerate`), and (2) vertices admit an ordering where each has $\\le d$ later neighbors (`HasDegeneracyOrdering`)."
     },
     {
       "id": "ramsey-numbers",
@@ -87,7 +87,7 @@
       "startLine": 84,
       "endLine": 106,
       "summary": "Defines the Ramsey number $R(H)$ as the minimum $n$ such that any 2-coloring of $K_n$ contains a monochromatic copy of $H$. States the exponential bounds $2^{n/2} \\le R(K_n) \\le 4^n$ for clique Ramsey numbers (Erdős–Szekeres, 1935).",
-      "mathContext": "Defines the Ramsey number $R(H)$ as the minimum $n$ such that any 2-coloring of $K_n$ contains a monochromatic copy of $H$. States the exponential bounds $2^{n/2} \\le R(K_n) \\le 4^n$ for clique Ramsey"
+      "mathContext": "Defines the Ramsey number $R(H)$ as the minimum $n$ such that any 2-coloring of $K_n$ contains a monochromatic copy of $H$. States the exponential bounds $2^{n/2} \\le R(K_n) \\le 4^n$ for clique Ramsey numbers (Erdős–Szekeres, 1935)."
     },
     {
       "id": "burr-erdos-conjecture",
@@ -95,7 +95,7 @@
       "startLine": 107,
       "endLine": 138,
       "summary": "States the Burr-Erdős Conjecture ($R(H) \\le C_d \\cdot n$ for $d$-degenerate $H$ on $n$ vertices) and two equivalent formulations: (1) union of $c$ forests has linear Ramsey number, and (2) bounded average degree implies linear Ramsey number.",
-      "mathContext": "States the Burr-Erdős Conjecture ($R(H) \\le C_d \\cdot n$ for $d$-degenerate $H$ on $n$ vertices) and two equivalent formulations: (1) union of $c$ forests has linear Ramsey number, and (2) bounded ave"
+      "mathContext": "States the Burr-Erdős Conjecture ($R(H) \\le C_d \\cdot n$ for $d$-degenerate $H$ on $n$ vertices) and two equivalent formulations: (1) union of $c$ forests has linear Ramsey number, and (2) bounded average degree implies linear Ramsey number."
     },
     {
       "id": "lee-theorem",
@@ -103,7 +103,7 @@
       "startLine": 139,
       "endLine": 166,
       "summary": "Axiomatizes Lee's main result: $R(H) \\le 2^{2^{O(d)}} \\cdot n$ for $d$-degenerate $H$, along with the explicit constant bound $C = 2^{2^{cd}}$ and the refined chromatic number version $R(H) \\le 2^{d \\cdot 2^{c\\chi}} \\cdot n$.",
-      "mathContext": "Axiomatizes Lee's main result: $R(H) \\le 2^{2^{O(d)}} \\cdot n$ for $d$-degenerate $H$, along with the explicit constant bound $C = 2^{2^{cd}}$ and the refined chromatic number version $R(H) \\le 2^{d \\"
+      "mathContext": "Axiomatizes Lee's main result: $R(H) \\le 2^{2^{O(d)}} \\cdot n$ for $d$-degenerate $H$, along with the explicit constant bound $C = 2^{2^{cd}}$ and the refined chromatic number version $R(H) \\le 2^{d \\cdot 2^{c\\chi}} \\cdot n$."
     },
     {
       "id": "solved",
@@ -119,7 +119,7 @@
       "startLine": 180,
       "endLine": 204,
       "summary": "Defines the conjectured optimal bound $R(H) \\le 2^{O(d)} \\cdot n$ (`OptimalBurrErdos`) and notes the significant gap between Lee's doubly exponential $2^{2^{O(d)}}$ and the conjectured singly exponential $2^{O(d)}$.",
-      "mathContext": "Defines the conjectured optimal bound $R(H) \\le 2^{O(d)} \\cdot n$ (`OptimalBurrErdos`) and notes the significant gap between Lee's doubly exponential $2^{2^{O(d)}}$ and the conjectured singly exponent"
+      "mathContext": "Defines the conjectured optimal bound $R(H) \\le 2^{O(d)} \\cdot n$ (`OptimalBurrErdos`) and notes the significant gap between Lee's doubly exponential $2^{2^{O(d)}}$ and the conjectured singly exponential $2^{O(d)}$."
     },
     {
       "id": "special-cases",
@@ -127,7 +127,7 @@
       "startLine": 205,
       "endLine": 233,
       "summary": "Records known special cases: trees ($d=1$, $R(T_n) \\le Cn$), paths ($R(P_n) = n$ exactly), cycles (computed for various $n$), and planar graphs ($d=5$, $R(H) \\le C_5 n$). These were established before Lee's general result.",
-      "mathContext": "Records known special cases: trees ($d=1$, $R(T_n) \\le Cn$), paths ($R(P_n) = n$ exactly), cycles (computed for various $n$), and planar graphs ($d=5$, $R(H) \\le C_5 n$). These were established before"
+      "mathContext": "Records known special cases: trees ($d=1$, $R(T_n) \\le Cn$), paths ($R(P_n) = n$ exactly), cycles (computed for various $n$), and planar graphs ($d=5$, $R(H) \\le C_5 n$)."
     },
     {
       "id": "proof-techniques",
@@ -135,7 +135,7 @@
       "startLine": 234,
       "endLine": 252,
       "summary": "Documents the three main techniques in Lee's proof: the Szemerédi regularity lemma for graph decomposition, dependent random choice for finding large common neighborhoods, and embedding lemmas for degenerate graphs in pseudo-random hosts.",
-      "mathContext": "Documents the three main techniques in Lee's proof: the Szemerédi regularity lemma for graph decomposition, dependent random choice for finding large common neighborhoods, and embedding lemmas for deg"
+      "mathContext": "Documents the three main techniques in Lee's proof: the Szemerédi regularity lemma for graph decomposition, dependent random choice for finding large common neighborhoods, and embedding lemmas for degenerate graphs in pseudo-random hosts."
     },
     {
       "id": "historical-context",
@@ -151,7 +151,7 @@
       "startLine": 274,
       "endLine": 311,
       "summary": "Proves `erdos_163_summary` combining the solved conjecture with the explicit Lee bound. The summary theorem witnesses both `BurrErdosConjecture` and the quantitative bound for all $d \\ge 1$.",
-      "mathContext": "Verified: Proves `erdos_163_summary` combining the solved conjecture with the explicit Lee bound. The summary theorem witnesses both `BurrErdosConjecture` and the quantitative bound for all $d \\ge 1$."
+      "mathContext": "Proves `erdos_163_summary` combining the solved conjecture with the explicit Lee bound. The summary theorem witnesses both `BurrErdosConjecture` and the quantitative bound for all $d \\ge 1$."
     }
   ],
   "conclusion": {

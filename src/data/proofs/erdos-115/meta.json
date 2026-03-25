@@ -70,7 +70,7 @@
       "startLine": 1,
       "endLine": 19,
       "summary": "Problem statement: max|p'| on connected lemniscates. Status PROVED by Eremenko-Lempert. Known bounds: lower n (monomial), upper (e/2)n² (Pommerenke), sharp (1/2 + o(1))n². Reference to erdosproblems.com/115.",
-      "mathContext": "Problem statement: max|p'| on connected lemniscates. Status PROVED by Eremenko-Lempert. Known bounds: lower n (monomial), upper (e/2)n² (Pommerenke), sharp (1/2 + o(1))n². Reference to erdosproblems.c"
+      "mathContext": "Problem statement: max|p'| on connected lemniscates. Status PROVED by Eremenko-Lempert. Known bounds: lower n (monomial), upper (e/2)n² (Pommerenke), sharp (1/2 + o(1))n². Reference to erdosproblems.com/115."
     },
     {
       "id": "imports",
@@ -86,7 +86,7 @@
       "startLine": 24,
       "endLine": 42,
       "summary": "Axiomatizes ComplexPoly n (abstract type), polyDegree with degree equality, IsLemniscateConnected predicate, maxDerivOnLemniscate functional, and non-negativity of the maximum derivative.",
-      "mathContext": "Axiomatized: Axiomatizes ComplexPoly n (abstract type), polyDegree with degree equality, IsLemniscateConnected predicate, maxDerivOnLemniscate functional, and non-negativity of the maximum derivative."
+      "mathContext": "Axiomatizes ComplexPoly n (abstract type), polyDegree with degree equality, IsLemniscateConnected predicate, maxDerivOnLemniscate functional, and non-negativity of the maximum derivative."
     },
     {
       "id": "lower-bound",
@@ -126,7 +126,7 @@
       "startLine": 83,
       "endLine": 91,
       "summary": "The only proved (non-axiom) result: ErdosProblem115_sharp constructs Chebyshev witnesses showing ∀ ε > 0, ∃ N, ∀ n ≥ N, ∃ p with connected lemniscate and max|p'| ≥ (1/2 - ε)n². Proof: obtain Chebyshev asymptotic, provide chebyshev_poly n as witness.",
-      "mathContext": "The only proved (non-axiom) result: ErdosProblem115_sharp constructs Chebyshev witnesses showing ∀ ε > 0, ∃ N, ∀ n ≥ N, ∃ p with connected lemniscate and max|p'| ≥ (1/2 - ε)n². Proof: obtain Chebyshev"
+      "mathContext": "The only proved (non-axiom) result: ErdosProblem115_sharp constructs Chebyshev witnesses showing ∀ ε > 0, ∃ N, ∀ n ≥ N, ∃ p with connected lemniscate and max|p'| ≥ (1/2 - ε)n². Proof: obtain Chebyshev asymptotic, provide chebyshev_poly n as witness."
     }
   ],
   "conclusion": {

@@ -48,7 +48,7 @@
       "startLine": 23,
       "endLine": 28,
       "summary": "Imports Mathlib's `Combinatorics.Additive.Dissociated` module (which defines dissociated sets in the group-theoretic sense), along with `Finset.Card`, `Data.Real.Basic`, logarithmic functions, and general tactics.",
-      "mathContext": "Imports Mathlib's `Combinatorics.Additive.Dissociated` module (which defines dissociated sets in the group-theoretic sense), along with `Finset.Card`, `Data.Real.Basic`, logarithmic functions, and gen"
+      "mathContext": "Imports Mathlib's `Combinatorics.Additive.Dissociated` module (which defines dissociated sets in the group-theoretic sense), along with `Finset.Card`, `Data.Real.Basic`, logarithmic functions, and general tactics."
     },
     {
       "id": "definitions",
@@ -56,7 +56,7 @@
       "startLine": 29,
       "endLine": 41,
       "summary": "Defines `IsDissociatedSubset A B` requiring $B \\subseteq A$ with the subset-sum map injective on $\\mathcal{P}(B)$, and `maxDissociatedSize n = \\sup\\{k : \\forall |A|=n,\\, \\exists B \\subseteq A \\text{ dissociated with } |B| \\ge k\\}$.",
-      "mathContext": "Defines `IsDissociatedSubset A B` requiring $B \\subseteq A$ with the subset-sum map injective on $\\mathcal{P}(B)$, and `maxDissociatedSize n = \\sup\\{k : \\forall |A|=n,\\, \\exists B \\subseteq A \\text{ d"
+      "mathContext": "Defines `IsDissociatedSubset A B` requiring $B \\subseteq A$ with the subset-sum map injective on $\\mathcal{P}(B)$, and `maxDissociatedSize n = \\sup\\{k : \\forall |A|=n,\\, \\exists B \\subseteq A \\text{ dissociated with } |B| \\ge k\\}$."
     },
     {
       "id": "counting",
@@ -96,7 +96,7 @@
       "startLine": 75,
       "endLine": 124,
       "summary": "Proves that the empty set is trivially dissociated (`empty_dissociated`) and any singleton $\\{a\\} \\subseteq A$ is dissociated (`singleton_dissociated`), establishing the inductive base for dissociated subset constructions.",
-      "mathContext": "Proves that the empty set is trivially dissociated (`empty_dissociated`) and any singleton $\\{a\\} \\subseteq A$ is dissociated (`singleton_dissociated`), establishing the inductive base for dissociated"
+      "mathContext": "Proves that the empty set is trivially dissociated (`empty_dissociated`) and any singleton $\\{a\\} \\subseteq A$ is dissociated (`singleton_dissociated`), establishing the inductive base for dissociated subset constructions."
     },
     {
       "id": "powers-of-two",
@@ -112,7 +112,7 @@
       "startLine": 131,
       "endLine": 137,
       "summary": "Axiomatizes that $f$ is non-decreasing ($m \\le n \\Rightarrow f(m) \\le f(n)$) and that $\\lfloor\\log_3 n\\rfloor \\le \\lfloor\\log_2 n\\rfloor$ for $n \\ge 2$, quantifying the gap between the known and conjectured bounds.",
-      "mathContext": "Axiomatizes that $f$ is non-decreasing ($m \\le n \\Rightarrow f(m) \\le f(n)$) and that $\\lfloor\\log_3 n\\rfloor \\le \\lfloor\\log_2 n\\rfloor$ for $n \\ge 2$, quantifying the gap between the known and conje"
+      "mathContext": "Axiomatizes that $f$ is non-decreasing ($m \\le n \\Rightarrow f(m) \\le f(n)$) and that $\\lfloor\\log_3 n\\rfloor \\le \\lfloor\\log_2 n\\rfloor$ for $n \\ge 2$, quantifying the gap between the known and conjectured bounds."
     }
   ],
   "conclusion": {

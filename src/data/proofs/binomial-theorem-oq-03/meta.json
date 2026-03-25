@@ -124,7 +124,7 @@
       "startLine": 75,
       "endLine": 128,
       "summary": "Proves $E[X] = np$ using the **absorption identity** $(k+1)\\binom{n+1}{k+1} = (n+1)\\binom{n}{k}$. Each term $k \\cdot \\text{PMF}(k)$ is rewritten as $(n+1)p$ times a degree-$(n-1)$ binomial term, and the resulting sum equals 1 by normalization.",
-      "mathContext": "Proves $E[X] = np$ using the **absorption identity** $(k+1)\\binom{n+1}{k+1} = (n+1)\\binom{n}{k}$. Each term $k \\cdot \\text{PMF}(k)$ is rewritten as $(n+1)p$ times a degree-$(n-1)$ binomial term, and t"
+      "mathContext": "Proves $E[X] = np$ using the **absorption identity** $(k+1)\\binom{n+1}{k+1} = (n+1)\\binom{n}{k}$. Each term $k \\cdot \\text{PMF}(k)$ is rewritten as $(n+1)p$ times a degree-$(n-1)$ binomial term, and the resulting sum equals 1 by normalization."
     },
     {
       "id": "special-cases",
@@ -164,7 +164,7 @@
       "startLine": 270,
       "endLine": 330,
       "summary": "Proves Vandermonde's identity $\\binom{n+m}{k} = \\sum_{j=0}^{k} \\binom{n}{j}\\binom{m}{k-j}$ using `Nat.add_choose_eq`, then translates it to: $\\sum_j \\text{PMF}_n(j) \\cdot \\text{PMF}_m(k-j) = \\text{PMF}_{n+m}(k)$. This is the reproductive property: $\\text{Bin}(n,p) * \\text{Bin}(m,p) = \\text{Bin}(n+m,p)$.",
-      "mathContext": "Proves Vandermonde's identity $\\binom{n+m}{k} = \\sum_{j=0}^{k} \\binom{n}{j}\\binom{m}{k-j}$ using `Nat.add_choose_eq`, then translates it to: $\\sum_j \\text{PMF}_n(j) \\cdot \\text{PMF}_m(k-j) = \\text{PMF"
+      "mathContext": "Proves Vandermonde's identity $\\binom{n+m}{k} = \\sum_{j=0}^{k} \\binom{n}{j}\\binom{m}{k-j}$ using `Nat.add_choose_eq`, then translates it to: $\\sum_j \\text{PMF}_n(j) \\cdot \\text{PMF}_m(k-j) = \\text{PMF}_{n+m}(k)$. This is the reproductive property: $\\text{Bin}(n,p) * \\text{Bin}(m,p) = \\text{Bin}(n+m,p)$."
     },
     {
       "id": "poisson-limit",
@@ -172,7 +172,7 @@
       "startLine": 331,
       "endLine": 559,
       "summary": "The centerpiece: proves $(1+x/n)^n \\to e^x$ from first principles (via $\\text{HasDerivAt}(\\log(1+t), 1, 0)$ and continuity of $\\exp$), defines the Poisson PMF $e^{-r} r^k / k!$, and proves the Poisson limit theorem $\\text{Bin}(n, r/n) \\to \\text{Poi}(r)$ pointwise by induction on $k$, using the PMF ratio $\\text{PMF}(k+1)/\\text{PMF}(k) \\to r/(k+1)$.",
-      "mathContext": "The centerpiece: proves $(1+x/n)^n \\to e^x$ from first principles (via $\\text{HasDerivAt}(\\log(1+t), 1, 0)$ and continuity of $\\exp$), defines the Poisson PMF $e^{-r} r^k / k!$, and proves the Poisson"
+      "mathContext": "The centerpiece: proves $(1+x/n)^n \\to e^x$ from first principles (via $\\text{HasDerivAt}(\\log(1+t), 1, 0)$ and continuity of $\\exp$), defines the Poisson PMF $e^{-r} r^k / k!$, and proves the Poisson limit theorem $\\text{Bin}(n, r/n) \\to \\text{Poi}(r)$ pointwise by induction on $k$, using the PMF ratio $\\text{PMF}(k+1)/\\text{PMF}(k) \\to r/(k+1)$."
     },
     {
       "id": "summary",
@@ -180,7 +180,7 @@
       "startLine": 560,
       "endLine": 588,
       "summary": "A single conjunction theorem packaging all seven results: normalization, mean $np$, variance $np(1-p)$, PGF $(pt+1-p)^n$, fair coin formula, Vandermonde convolution, and the Poisson limit. Serves as a machine-checkable summary of the OQ-03 answer.",
-      "mathContext": "A single conjunction theorem packaging all seven results: normalization, mean $np$, variance $np(1-p)$, PGF $(pt+1-p)^n$, fair coin formula, Vandermonde convolution, and the Poisson limit. Serves as a"
+      "mathContext": "A single conjunction theorem packaging all seven results: normalization, mean $np$, variance $np(1-p)$, PGF $(pt+1-p)^n$, fair coin formula, Vandermonde convolution, and the Poisson limit."
     }
   ],
   "conclusion": {

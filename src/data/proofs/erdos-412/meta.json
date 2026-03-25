@@ -119,7 +119,7 @@
       "startLine": 62,
       "endLine": 93,
       "summary": "`iterSigma k n = sigma^[k] n` via `Function.iterate`. Verified sequences from $2$ ($2 \\to 3 \\to 4 \\to 7 \\to 8 \\to 15$) and $3$ ($3 \\to 4 \\to 7 \\to 8 \\to 15$); merge at step $1$: $\\sigma_1(2) = 3 = \\sigma_0(3)$.",
-      "mathContext": "`iterSigma k n = sigma^[k] n` via `Function.iterate`. Verified sequences from $2$ ($2 \\to 3 \\to 4 \\to 7 \\to 8 \\to 15$) and $3$ ($3 \\to 4 \\to 7 \\to 8 \\to 15$); merge at step $1$: $\\sigma_1(2) = 3 = \\si"
+      "mathContext": "Verified sequences from $2$ ($2 \\to 3 \\to 4 \\to 7 \\to 8 \\to 15$) and $3$ ($3 \\to 4 \\to 7 \\to 8 \\to 15$); merge at step $1$: $\\sigma_1(2) = 3 = \\sigma_0(3)$."
     },
     {
       "id": "conjecture",
@@ -151,7 +151,7 @@
       "startLine": 138,
       "endLine": 161,
       "summary": "`sigma_ge_succ` (proved): $\\sigma(n) \\ge n + 1$ via $\\{1, n\\} \\subseteq \\text{divisors}(n)$ and `Finset.sum_le_sum_of_subset`. `sigma_gt` (proved): $\\sigma(n) > n$ for $n \\ge 2$.",
-      "mathContext": "Mathematical content: `sigma_ge_succ` (proved): $\\sigma(n) \\ge n + 1$ via $\\{1, n\\} \\subseteq \\text{divisors}(n)$ and `Finset.sum_le_sum_of_subset`. `sigma_gt` (proved): $\\sigma(n) > n$ for $n \\ge 2$."
+      "mathContext": "`sigma_ge_succ` (proved): $\\sigma(n) \\ge n + 1$ via $\\{1, n\\} \\subseteq \\text{divisors}(n)$ and `Finset.sum_le_sum_of_subset`. `sigma_gt` (proved): $\\sigma(n) > n$ for $n \\ge 2$."
     },
     {
       "id": "related",

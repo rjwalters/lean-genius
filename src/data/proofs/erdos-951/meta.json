@@ -106,7 +106,7 @@
       "summary": "Defines `primeSeq n := \\text{Nat.nth Prime } n$. Axiomatizes strict monotonicity, $> 1$, and well-separation (via FTA). Constructs `actualPrimes : BeurlingPrimes` and proves `actualPrimes_counting : \\pi_a(x) = \\pi(x)$.",
       "startLine": 72,
       "endLine": 93,
-      "mathContext": "Defines `primeSeq n := \\text{Nat.nth Prime } n$. Axiomatizes strict monotonicity, $> 1$, and well-separation (via FTA). Constructs `actualPrimes : BeurlingPrimes` and proves `actualPrimes_counting : \\"
+      "mathContext": "Defines `primeSeq n := \\text{Nat.nth Prime } n$. Axiomatizes strict monotonicity, $> 1$, and well-separation (via FTA). Constructs `actualPrimes : BeurlingPrimes` and proves `actualPrimes_counting : \\pi_a(x) = \\pi(x)$."
     },
     {
       "id": "examples",
@@ -114,7 +114,7 @@
       "summary": "Defines `powersOfTwo n := 2^{n+1}$. Proves strict monotonicity (via `pow_lt_pow_right`) and $> 1$ (via `pow_le_pow_right`). Axiomatizes well-separation. Constructs `powersOfTwoBeurling : BeurlingPrimes`.",
       "startLine": 96,
       "endLine": 120,
-      "mathContext": "Defines `powersOfTwo n := 2^{n+1}$. Proves strict monotonicity (via `pow_lt_pow_right`) and $> 1$ (via `pow_le_pow_right`). Axiomatizes well-separation. Constructs `powersOfTwoBeurling : BeurlingPrime"
+      "mathContext": "Defines `powersOfTwo n := 2^{n+1}$. Proves strict monotonicity (via `pow_lt_pow_right`) and $> 1$ (via `pow_le_pow_right`). Axiomatizes well-separation."
     },
     {
       "id": "separation-analysis",
@@ -130,7 +130,7 @@
       "summary": "Defines `IsBeurlingInteger a x` ($x = \\prod a_i^{k_i}$) and `beurlingN a x$ (counting function). Axiomatizes `beurlings_conjecture`: if $|N_a(x) - x| \\le \\varepsilon \\log x$ for all $\\varepsilon > 0$ eventually, then $a = \\text{primeSeq}$.",
       "startLine": 131,
       "endLine": 148,
-      "mathContext": "Defines `IsBeurlingInteger a x` ($x = \\prod a_i^{k_i}$) and `beurlingN a x$ (counting function). Axiomatizes `beurlings_conjecture`: if $|N_a(x) - x| \\le \\varepsilon \\log x$ for all $\\varepsilon > 0$ "
+      "mathContext": "Defines `IsBeurlingInteger a x` ($x = \\prod a_i^{k_i}$) and `beurlingN a x$ (counting function). Axiomatizes `beurlings_conjecture`: if $|N_a(x) - x| \\le \\varepsilon \\log x$ for all $\\varepsilon > 0$ eventually, then $a = \\text{primeSeq}$."
     },
     {
       "id": "main-conjecture",

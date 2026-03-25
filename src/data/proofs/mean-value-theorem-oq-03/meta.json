@@ -102,7 +102,7 @@
       "summary": "The central theorem: for $f : \\mathbb{R} \\to E$ with $\\|f'(x)\\| \\leq C$ on $[a,b]$, $\\|f(x) - f(a)\\| \\leq C \\cdot (x-a)$ for all $x \\in [a,b]$. One-line proof delegating to Mathlib's `norm_image_sub_le_of_norm_deriv_le_segment'`.",
       "startLine": 49,
       "endLine": 82,
-      "mathContext": "The central theorem: for $f : \\mathbb{R} \\to E$ with $\\|f'(x)\\| \\leq C$ on $[a,b]$, $\\|f(x) - f(a)\\| \\leq C \\cdot (x-a)$ for all $x \\in [a,b]$. One-line proof delegating to Mathlib's `norm_image_sub_l"
+      "mathContext": "The central theorem: for $f : \\mathbb{R} \\to E$ with $\\|f'(x)\\| \\leq C$ on $[a,b]$, $\\|f(x) - f(a)\\| \\leq C \\cdot (x-a)$ for all $x \\in [a,b]$."
     },
     {
       "id": "scalar-special-case",
@@ -150,7 +150,7 @@
       "summary": "For $f : E \\to F$ between normed spaces, Fréchet differentiable on a convex set with $\\|Df\\| \\leq C$: $\\|f(b) - f(a)\\| \\leq C \\cdot \\|b-a\\|$. Foundation for implicit function theorem and contraction mapping theorem.",
       "startLine": 239,
       "endLine": 272,
-      "mathContext": "For $f : E \\to F$ between normed spaces, Fréchet differentiable on a convex set with $\\|Df\\| \\leq C$: $\\|f(b) - f(a)\\| \\leq C \\cdot \\|b-a\\|$. Foundation for implicit function theorem and contraction m"
+      "mathContext": "For $f : E \\to F$ between normed spaces, Fréchet differentiable on a convex set with $\\|Df\\| \\leq C$: $\\|f(b) - f(a)\\| \\leq C \\cdot \\|b-a\\|$. Foundation for implicit function theorem and contraction mapping theorem."
     },
     {
       "id": "ode-uniqueness",

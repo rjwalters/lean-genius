@@ -107,7 +107,7 @@
       "summary": "Defines `satisfiesKorselt` (squarefree + divisibility), `IsCarmichael` (composite + Korselt), `satisfiesFermat` ($a^n \\equiv a \\pmod{n}$ for all $a$), and axiomatizes Korselt's 1899 equivalence theorem.",
       "startLine": 39,
       "endLine": 60,
-      "mathContext": "Defines `satisfiesKorselt` (squarefree + divisibility), `IsCarmichael` (composite + Korselt), `satisfiesFermat` ($a^n \\equiv a \\pmod{n}$ for all $a$), and axiomatizes Korselt's 1899 equivalence theore"
+      "mathContext": "Defines `satisfiesKorselt` (squarefree + divisibility), `IsCarmichael` (composite + Korselt), `satisfiesFermat` ($a^n \\equiv a \\pmod{n}$ for all $a$), and axiomatizes Korselt's 1899 equivalence theorem."
     },
     {
       "id": "small",
@@ -115,7 +115,7 @@
       "summary": "Formally verifies $561, 1105, 1729, 2465, 2821, 6601, 8911$ as Carmichael numbers using `native_decide` for primality checks and `norm_num` for Korselt divisibility. Each proof follows the same pattern: squarefreeness via `Nat.squarefree_iff_prime_squarefree`, then Korselt divisibility by enumerating prime factors.",
       "startLine": 61,
       "endLine": 230,
-      "mathContext": "Formally verifies $561, 1105, 1729, 2465, 2821, 6601, 8911$ as Carmichael numbers using `native_decide` for primality checks and `norm_num` for Korselt divisibility. Each proof follows the same patter"
+      "mathContext": "Formally verifies $561, 1105, 1729, 2465, 2821, 6601, 8911$ as Carmichael numbers using `native_decide` for primality checks and `norm_num` for Korselt divisibility."
     },
     {
       "id": "counting",
@@ -147,7 +147,7 @@
       "summary": "Three fully verified structural results: (1) Carmichael numbers are odd (parity-squarefreeness argument), (2) not semiprimes (coprimality argument via $\\mathbb{Z}$ lifting), (3) have $\\geq 3$ prime factors (case analysis on factorization cardinality). Also proves no Carmichael is a prime power.",
       "startLine": 302,
       "endLine": 518,
-      "mathContext": "Three fully verified structural results: (1) Carmichael numbers are odd (parity-squarefreeness argument), (2) not semiprimes (coprimality argument via $\\mathbb{Z}$ lifting), (3) have $\\geq 3$ prime fa"
+      "mathContext": "Three fully verified structural results: (1) Carmichael numbers are odd (parity-squarefreeness argument), (2) not semiprimes (coprimality argument via $\\mathbb{Z}$ lifting), (3) have $\\geq 3$ prime factors (case analysis on factorization cardinality). Also proves no Carmichael is a prime power."
     },
     {
       "id": "gap",
@@ -163,7 +163,7 @@
       "summary": "Accessor lemmas extracting individual components from `IsCarmichael`: `carmichael_gt_one`, `carmichael_composite`, `carmichael_squarefree`, `carmichael_korselt_dvd`. Plus lower bound comparison theorems proving $2/7 < 0.33336704 < 0.3389 < 1$.",
       "startLine": 539,
       "endLine": 575,
-      "mathContext": "Accessor lemmas extracting individual components from `IsCarmichael`: `carmichael_gt_one`, `carmichael_composite`, `carmichael_squarefree`, `carmichael_korselt_dvd`. Plus lower bound comparison theore"
+      "mathContext": "Accessor lemmas extracting individual components from `IsCarmichael`: `carmichael_gt_one`, `carmichael_composite`, `carmichael_squarefree`, `carmichael_korselt_dvd`. Plus lower bound comparison theorems proving $2/7 < 0.33336704 < 0.3389 < 1$."
     },
     {
       "id": "counting-properties",
@@ -171,7 +171,7 @@
       "summary": "Proves $C(0) = C(1) = 0$, $C(560) = 0$ (via decidable checking), $C(561) \\geq 1$, $C(2821) \\geq 5$, $C(8911) \\geq 7$ (by constructing explicit witness sets), and $C$ unbounded (inductive construction from AGP).",
       "startLine": 576,
       "endLine": 727,
-      "mathContext": "Proves $C(0) = C(1) = 0$, $C(560) = 0$ (via decidable checking), $C(561) \\geq 1$, $C(2821) \\geq 5$, $C(8911) \\geq 7$ (by constructing explicit witness sets), and $C$ unbounded (inductive construction "
+      "mathContext": "Proves $C(0) = C(1) = 0$, $C(560) = 0$ (via decidable checking), $C(561) \\geq 1$, $C(2821) \\geq 5$, $C(8911) \\geq 7$ (by constructing explicit witness sets), and $C$ unbounded (inductive construction from AGP)."
     },
     {
       "id": "deeper-structure",
@@ -179,7 +179,7 @@
       "summary": "Additional verified results: minimum prime $\\geq 3$, distinct prime factors (from squarefree), product-of-primes decomposition, multiplicity-one factorization, Korselt congruence $n \\equiv 1 \\pmod{p-1}$, double congruence, and all seven small Carmichaels have exactly 3 prime factors.",
       "startLine": 728,
       "endLine": 1113,
-      "mathContext": "Additional verified results: minimum prime $\\geq 3$, distinct prime factors (from squarefree), product-of-primes decomposition, multiplicity-one factorization, Korselt congruence $n \\equiv 1 \\pmod{p-1"
+      "mathContext": "Additional verified results: minimum prime $\\geq 3$, distinct prime factors (from squarefree), product-of-primes decomposition, multiplicity-one factorization, Korselt congruence $n \\equiv 1 \\pmod{p-1}$, double congruence, and all seven small Carmichaels have exactly 3 prime factors."
     }
   ],
   "conclusion": {

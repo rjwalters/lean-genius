@@ -51,7 +51,7 @@
       "startLine": 1,
       "endLine": 37,
       "summary": "Header documenting Erdős Problem #927 with references to Moon-Moser (1965), Erdős (1966), and Spencer (1971), all in Israel J. Math. Imports `SimpleGraph.Basic`, `SimpleGraph.Clique`, `Nat.Log`, and `Real.Basic`. Opens `Erdos927` namespace.",
-      "mathContext": "Header documenting Erdős Problem #927 with references to Moon-Moser (1965), Erdős (1966), and Spencer (1971), all in Israel J. Math. Imports `SimpleGraph.Basic`, `SimpleGraph.Clique`, `Nat.Log`, and `"
+      "mathContext": "Header documenting Erdős Problem #927 with references to Moon-Moser (1965), Erdős (1966), and Spencer (1971), all in Israel J. Math. Imports `SimpleGraph.Basic`, `SimpleGraph.Clique`, `Nat.Log`, and `Real.Basic`. Opens `Erdos927` namespace."
     },
     {
       "id": "definitions",
@@ -59,7 +59,7 @@
       "startLine": 40,
       "endLine": 64,
       "summary": "Defines `IsClique G S` requiring all pairs in $S$ to be adjacent, `HasCliqueOfSize G k` requiring a $k$-element clique, and `cliqueSizes G : \\text{Set}\\,\\mathbb{N}$ as $\\{k : \\text{HasCliqueOfSize}\\,G\\,k\\}$.",
-      "mathContext": "Defines `IsClique G S` requiring all pairs in $S$ to be adjacent, `HasCliqueOfSize G k` requiring a $k$-element clique, and `cliqueSizes G : \\text{Set}\\,\\mathbb{N}$ as $\\{k : \\text{HasCliqueOfSize}\\,G"
+      "mathContext": "Defines `IsClique G S` requiring all pairs in $S$ to be adjacent, `HasCliqueOfSize G k` requiring a $k$-element clique, and `cliqueSizes G : \\text{Set}\\,\\mathbb{N}$ as $\\{k : \\text{HasCliqueOfSize}\\,G\\,k\\}$."
     },
     {
       "id": "g-function",
@@ -67,7 +67,7 @@
       "startLine": 65,
       "endLine": 94,
       "summary": "Defines `g : \\mathbb{N} \\to \\mathbb{N}` as the maximum number of distinct clique sizes over all graphs on $n$ vertices (noncomputable). Axiomatizes $g(n) \\leq n$ and proves `singleton_is_clique`: every vertex forms a clique of size 1.",
-      "mathContext": "Defines `g : \\mathbb{N} \\to \\mathbb{N}` as the maximum number of distinct clique sizes over all graphs on $n$ vertices (noncomputable). Axiomatizes $g(n) \\leq n$ and proves `singleton_is_clique`: ever"
+      "mathContext": "Defines `g : \\mathbb{N} \\to \\mathbb{N}` as the maximum number of distinct clique sizes over all graphs on $n$ vertices (noncomputable). Axiomatizes $g(n) \\leq n$ and proves `singleton_is_clique`: every vertex forms a clique of size 1."
     },
     {
       "id": "moon-moser",
@@ -83,7 +83,7 @@
       "startLine": 113,
       "endLine": 139,
       "summary": "Defines `logStar : \\mathbb{N} \\to \\mathbb{N}` recursively: $\\log^*(0) = \\log^*(1) = 0$, otherwise $1 + \\log^*(\\lfloor \\log_2 n \\rfloor)$ if $\\lfloor \\log_2 n \\rfloor > 1$. Axiomatizes $\\log^*(2^{16}) \\leq 4$.",
-      "mathContext": "Defines `logStar : \\mathbb{N} \\to \\mathbb{N}` recursively: $\\log^*(0) = \\log^*(1) = 0$, otherwise $1 + \\log^*(\\lfloor \\log_2 n \\rfloor)$ if $\\lfloor \\log_2 n \\rfloor > 1$. Axiomatizes $\\log^*(2^{16}) "
+      "mathContext": "Defines `logStar : \\mathbb{N} \\to \\mathbb{N}` recursively: $\\log^*(0) = \\log^*(1) = 0$, otherwise $1 + \\log^*(\\lfloor \\log_2 n \\rfloor)$ if $\\lfloor \\log_2 n \\rfloor > 1$. Axiomatizes $\\log^*(2^{16}) \\leq 4$."
     },
     {
       "id": "erdos-conjecture",
@@ -99,7 +99,7 @@
       "startLine": 163,
       "endLine": 194,
       "summary": "Axiomatizes `spencer_theorem`: $\\exists C > 0,\\, \\forall n \\geq 2,\\, g(n) > n - \\log_2 n - C$, and `conjecture_disproved`: $\\neg\\text{ErdosConjecture}$. Defines `CorrectAsymptotic` as $g(n) = n - \\log_2 n - \\Theta(1)$.",
-      "mathContext": "Axiomatizes `spencer_theorem`: $\\exists C > 0,\\, \\forall n \\geq 2,\\, g(n) > n - \\log_2 n - C$, and `conjecture_disproved`: $\\neg\\text{ErdosConjecture}$. Defines `CorrectAsymptotic` as $g(n) = n - \\log"
+      "mathContext": "Axiomatizes `spencer_theorem`: $\\exists C > 0,\\, \\forall n \\geq 2,\\, g(n) > n - \\log_2 n - C$, and `conjecture_disproved`: $\\neg\\text{ErdosConjecture}$. Defines `CorrectAsymptotic` as $g(n) = n - \\log_2 n - \\Theta(1)$."
     },
     {
       "id": "proof-ideas",
@@ -107,7 +107,7 @@
       "startLine": 195,
       "endLine": 224,
       "summary": "Comment sections discussing Moon-Moser construction (avoiding clique-size gaps), Ramsey connection (upper bound from monochromatic subsets), Spencer's key insight (probabilistic avoidance of $\\log^*$ loss), and connection to Problem 775.",
-      "mathContext": "Comment sections discussing Moon-Moser construction (avoiding clique-size gaps), Ramsey connection (upper bound from monochromatic subsets), Spencer's key insight (probabilistic avoidance of $\\log^*$ "
+      "mathContext": "Comment sections discussing Moon-Moser construction (avoiding clique-size gaps), Ramsey connection (upper bound from monochromatic subsets), Spencer's key insight (probabilistic avoidance of $\\log^*$ loss), and connection to Problem 775."
     },
     {
       "id": "examples",
@@ -123,7 +123,7 @@
       "startLine": 243,
       "endLine": 275,
       "summary": "Proves `erdos_927_summary` combining Spencer's theorem and the disproof: $\\exists C > 0$ with $g(n) > n - \\log_2 n - C$ and $\\neg\\text{ErdosConjecture}$. Proved by `exact \\langle spencer\\_theorem, conjecture\\_disproved\\rangle`.",
-      "mathContext": "Proves `erdos_927_summary` combining Spencer's theorem and the disproof: $\\exists C > 0$ with $g(n) > n - \\log_2 n - C$ and $\\neg\\text{ErdosConjecture}$. Proved by `exact \\langle spencer\\_theorem, con"
+      "mathContext": "Proves `erdos_927_summary` combining Spencer's theorem and the disproof: $\\exists C > 0$ with $g(n) > n - \\log_2 n - C$ and $\\neg\\text{ErdosConjecture}$. Proved by `exact \\langle spencer\\_theorem, conjecture\\_disproved\\rangle`."
     }
   ],
   "conclusion": {

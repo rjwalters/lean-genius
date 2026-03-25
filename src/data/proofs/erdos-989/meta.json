@@ -121,7 +121,7 @@
       "summary": "Defines PointSequence (ℕ → Point), countInCircle (filtering Finset.range n), localDiscrepancy (|count - πr²|), and the central object circleDiscrepancy (iSup over all circles of fixed radius and all prefix lengths).",
       "startLine": 62,
       "endLine": 87,
-      "mathContext": "Defines PointSequence (ℕ → Point), countInCircle (filtering Finset.range n), localDiscrepancy (|count - πr²|), and the central object circleDiscrepancy (iSup over all circles of fixed radius and all p"
+      "mathContext": "Defines PointSequence (ℕ → Point), countInCircle (filtering Finset.range n), localDiscrepancy (|count - πr²|), and the central object circleDiscrepancy (iSup over all circles of fixed radius and all prefix lengths)."
     },
     {
       "id": "lower-bound",
@@ -129,7 +129,7 @@
       "summary": "States beck_lower_bound as an axiom (∃ c > 0, ∀ A, f(r) ≥ c√r eventually) and derives discrepancy_unbounded — one of the rare fully-proved theorems in the file, using calc chains with sqrt monotonicity.",
       "startLine": 88,
       "endLine": 129,
-      "mathContext": "States beck_lower_bound as an axiom (∃ c > 0, ∀ A, f(r) ≥ c√r eventually) and derives discrepancy_unbounded — one of the rare fully-proved theorems in the file, using calc chains with sqrt monotonicit"
+      "mathContext": "States beck_lower_bound as an axiom (∃ c > 0, ∀ A, f(r) ≥ c√r eventually) and derives discrepancy_unbounded — one of the rare fully-proved theorems in the file, using calc chains with sqrt monotonicity."
     },
     {
       "id": "upper-bound",
@@ -137,7 +137,7 @@
       "summary": "States beck_upper_bound as an axiom (∃ A, f(r) ≤ C√(r log r) eventually) and extracts beckOptimalSequence via Classical.choose — a non-constructive witness from the probabilistic existence proof.",
       "startLine": 130,
       "endLine": 150,
-      "mathContext": "States beck_upper_bound as an axiom (∃ A, f(r) $\\leq$ C√(r log r) eventually) and extracts beckOptimalSequence via Classical.choose — a non-constructive witness from the probabilistic existence proof."
+      "mathContext": "States beck_upper_bound as an axiom (∃ A, f(r) ≤ C√(r log r) eventually) and extracts beckOptimalSequence via Classical.choose — a non-constructive witness from the probabilistic existence proof."
     },
     {
       "id": "complete-answer",
@@ -145,7 +145,7 @@
       "summary": "The erdos_989_solved theorem packages all three results as a conjunction: unboundedness, universal lower bound √r, and existence of near-optimal √(r log r) sequence. Proved by direct application of the preceding results.",
       "startLine": 151,
       "endLine": 183,
-      "mathContext": "The erdos_989_solved theorem packages all three results as a conjunction: unboundedness, universal lower bound √r, and existence of near-optimal √(r log r) sequence. Proved by direct application of th"
+      "mathContext": "The erdos_989_solved theorem packages all three results as a conjunction: unboundedness, universal lower bound √r, and existence of near-optimal √(r log r) sequence. Proved by direct application of the preceding results."
     },
     {
       "id": "discrepancy-theory",
@@ -153,7 +153,7 @@
       "summary": "Contextualizes circle discrepancy within the broader framework of geometric discrepancy theory. Defines allCircles and generalCircleDiscrepancy (sup over all radii), linking to the test-set family perspective of Roth, Schmidt, and Beck.",
       "startLine": 184,
       "endLine": 208,
-      "mathContext": "Contextualizes circle discrepancy within the broader framework of geometric discrepancy theory. Defines allCircles and generalCircleDiscrepancy (sup over all radii), linking to the test-set family per"
+      "mathContext": "Contextualizes circle discrepancy within the broader framework of geometric discrepancy theory. Defines allCircles and generalCircleDiscrepancy (sup over all radii), linking to the test-set family perspective of Roth, Schmidt, and Beck."
     },
     {
       "id": "proof-techniques",
@@ -161,7 +161,7 @@
       "summary": "Formalizes the two proof techniques as axioms: fourier_analysis_lower_bound (for any A and r > 1, some circle has discrepancy ≥ √r/10) and probabilistic_upper_bound_construction (existence of sequence with local discrepancy O(√(r log r))).",
       "startLine": 209,
       "endLine": 239,
-      "mathContext": "Formalizes the two proof techniques as axioms: fourier_analysis_lower_bound (for any A and r > 1, some circle has discrepancy ≥ √r/10) and probabilistic_upper_bound_construction (existence of sequence"
+      "mathContext": "Formalizes the two proof techniques as axioms: fourier_analysis_lower_bound (for any A and r > 1, some circle has discrepancy ≥ √r/10) and probabilistic_upper_bound_construction (existence of sequence with local discrepancy O(√(r log r)))."
     },
     {
       "id": "open-questions",
@@ -169,7 +169,7 @@
       "summary": "Formalizes three major open problems as Lean propositions: the logarithmic gap (is f(r) = O(√r) achievable?), explicit constructions (derandomization), and higher-dimensional balls (discrepancy in ℝ^d).",
       "startLine": 240,
       "endLine": 283,
-      "mathContext": "Formalizes three major open problems as Lean propositions: the logarithmic gap (is f(r) = O(√r) achievable?), explicit constructions (derandomization), and higher-dimensional balls (discrepancy in ℝ^d"
+      "mathContext": "Formalizes three major open problems as Lean propositions: the logarithmic gap (is f(r) = O(√r) achievable?), explicit constructions (derandomization), and higher-dimensional balls (discrepancy in ℝ^d)."
     },
     {
       "id": "related-results",
@@ -177,7 +177,7 @@
       "summary": "States Schmidt's classical box discrepancy theorem (D(N) ≥ c log N for d=2) and Alexander's half-plane discrepancy theorem (D(N) ≥ cN^{1/4}) as axioms, providing context for why circle discrepancy (√r) is intermediate.",
       "startLine": 284,
       "endLine": 320,
-      "mathContext": "States Schmidt's classical box discrepancy theorem (D(N) ≥ c log N for d=2) and Alexander's half-plane discrepancy theorem (D(N) ≥ cN^{1/4}) as axioms, providing context for why circle discrepancy (√r"
+      "mathContext": "States Schmidt's classical box discrepancy theorem (D(N) ≥ c log N for d=2) and Alexander's half-plane discrepancy theorem (D(N) ≥ cN^{1/4}) as axioms, providing context for why circle discrepancy (√r) is intermediate."
     },
     {
       "id": "summary",
@@ -185,7 +185,7 @@
       "summary": "The erdos_989_answers_both_questions theorem restates the key conjunction: f(r) is always unbounded AND f(r) ≥ c√r. The detailed docstring provides a complete narrative of the problem, solution, techniques, significance, and open problems.",
       "startLine": 321,
       "endLine": 365,
-      "mathContext": "The erdos_989_answers_both_questions theorem restates the key conjunction: f(r) is always unbounded AND f(r) ≥ c√r. The detailed docstring provides a complete narrative of the problem, solution, techn"
+      "mathContext": "The erdos_989_answers_both_questions theorem restates the key conjunction: f(r) is always unbounded AND f(r) ≥ c√r. The detailed docstring provides a complete narrative of the problem, solution, techniques, significance, and open problems."
     }
   ],
   "conclusion": {

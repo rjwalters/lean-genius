@@ -94,7 +94,7 @@
       "startLine": 62,
       "endLine": 114,
       "summary": "circleCirc, circleArea definitions. circle_isoperimetric_equality: (2πr)²=4π·πr² by ring. circle_isoperimetric_ratio=1. circumference_is_deriv_of_area: C = dA/dr (connection to OQ01). circleCirc_pos, circleArea_pos positivity results.",
-      "mathContext": "circleCirc, circleArea definitions. circle_isoperimetric_equality: (2πr)²=4π·πr² by ring. circle_isoperimetric_ratio=1. circumference_is_deriv_of_area: C = dA/dr (connection to OQ01). circleCirc_pos, "
+      "mathContext": "circleCirc, circleArea definitions. circle_isoperimetric_equality: (2πr)²=4π·πr² by ring. circle_isoperimetric_ratio=1. circumference_is_deriv_of_area: C = dA/dr (connection to OQ01). circleCirc_pos, circleArea_pos positivity results."
     },
     {
       "id": "part-ii-square",
@@ -102,7 +102,7 @@
       "startLine": 115,
       "endLine": 148,
       "summary": "squareCirc, squareArea definitions. square_isoperimetric_strict: C²>4πA for squares, proved by π<4 (Real.pi_lt_four). square_isoperimetric_ratio = π/4. square_ratio_lt_one: π/4 < 1.",
-      "mathContext": "Formal definition: squareCirc, squareArea definitions. square_isoperimetric_strict: C²>4πA for squares, proved by π<4 (Real.pi_lt_four). square_isoperimetric_ratio = π/4. square_ratio_lt_one: π/4 < 1."
+      "mathContext": "squareCirc, squareArea definitions. square_isoperimetric_strict: C²>4πA for squares, proved by π<4 (Real.pi_lt_four). square_isoperimetric_ratio = π/4. square_ratio_lt_one: π/4 < 1."
     },
     {
       "id": "part-iii-ngon",
@@ -110,7 +110,7 @@
       "startLine": 149,
       "endLine": 243,
       "summary": "regular_ngon_isoperimetric_ratio = π/(n·tan(π/n)) for circumradius R. ngon_limit_tendsto_circle: the ratio tends to 1 as n→∞, proved using Real.hasDerivAt_tan and hasDerivAt_iff_tendsto_slope (tan(h)/h→1 at h=0).",
-      "mathContext": "regular_ngon_isoperimetric_ratio = π/(n·tan(π/n)) for circumradius R. ngon_limit_tendsto_circle: the ratio tends to 1 as n→∞, proved using Real.hasDerivAt_tan and hasDerivAt_iff_tendsto_slope (tan(h)/"
+      "mathContext": "regular_ngon_isoperimetric_ratio = π/(n·tan(π/n)) for circumradius R. ngon_limit_tendsto_circle: the ratio tends to 1 as n→∞, proved using Real.hasDerivAt_tan and hasDerivAt_iff_tendsto_slope (tan(h)/h→1 at h=0)."
     },
     {
       "id": "part-iv-wirtinger",
@@ -118,7 +118,7 @@
       "startLine": 244,
       "endLine": 355,
       "summary": "SmoothClosedCurve structure (x, y smooth 2π-periodic), circumference and area (Green's theorem) definitions. wirtinger_inequality axiom. circleGamma as SmoothClosedCurve instance with verified circumference 2πr and area πr².",
-      "mathContext": "SmoothClosedCurve structure (x, y smooth 2π-periodic), circumference and area (Green's theorem) definitions. wirtinger_inequality axiom. circleGamma as SmoothClosedCurve instance with verified circumf"
+      "mathContext": "SmoothClosedCurve structure (x, y smooth 2π-periodic), circumference and area (Green's theorem) definitions. wirtinger_inequality axiom. circleGamma as SmoothClosedCurve instance with verified circumference 2πr and area πr²."
     },
     {
       "id": "part-v-smooth",
@@ -126,7 +126,7 @@
       "startLine": 356,
       "endLine": 381,
       "summary": "isoperimetric_inequality_smooth: the main theorem (1 sorry) — for any SmoothClosedCurve, C²≥4πA. Uses wirtinger_inequality axiom. The sorry requires integral Cauchy-Schwarz and the constant-speed parametrization argument.",
-      "mathContext": "isoperimetric_inequality_smooth: the main theorem (1 sorry) — for any SmoothClosedCurve, C²≥4πA. Uses wirtinger_inequality axiom. The sorry requires integral Cauchy-Schwarz and the constant-speed para"
+      "mathContext": "isoperimetric_inequality_smooth: the main theorem (1 sorry) — for any SmoothClosedCurve, C²≥4πA. Uses wirtinger_inequality axiom. The sorry requires integral Cauchy-Schwarz and the constant-speed parametrization argument."
     },
     {
       "id": "part-vi-equality",
@@ -134,7 +134,7 @@
       "startLine": 382,
       "endLine": 412,
       "summary": "circle_satisfies_isoperimetric: circles achieve equality C²=4πA. equality_implies_circle: NOW PROVED (was axiom) — if 4πA=C², set r=C/(2π), then C=circleCirc r and A=circleArea r (purely algebraic). non_circle_satisfies_strict: strict inequality for non-circles.",
-      "mathContext": "circle_satisfies_isoperimetric: circles achieve equality C²=4πA. equality_implies_circle: NOW PROVED (was axiom) — if 4πA=C², set r=C/(2π), then C=circleCirc r and A=circleArea r (purely algebraic). n"
+      "mathContext": "circle_satisfies_isoperimetric: circles achieve equality C²=4πA. equality_implies_circle: NOW PROVED (was axiom) — if 4πA=C², set r=C/(2π), then C=circleCirc r and A=circleArea r (purely algebraic). non_circle_satisfies_strict: strict inequality for non-circles."
     },
     {
       "id": "part-vii-corollaries",
@@ -142,7 +142,7 @@
       "startLine": 413,
       "endLine": 522,
       "summary": "isoperimetric_area_bound: A ≤ C²/(4π). minimum_circumference_for_area: C ≥ 2√(πA). isoperimetric_ratio_scale_invariant: ratio unchanged by scaling. circle_maximizes_area: circle is optimal for fixed circumference. non_circle_area_lt_circle: non-circles have strictly less area.",
-      "mathContext": "isoperimetric_area_bound: A ≤ C²/(4π). minimum_circumference_for_area: C ≥ 2√(πA). isoperimetric_ratio_scale_invariant: ratio unchanged by scaling. circle_maximizes_area: circle is optimal for fixed c"
+      "mathContext": "isoperimetric_area_bound: A ≤ C²/(4π). minimum_circumference_for_area: C ≥ 2√(πA). isoperimetric_ratio_scale_invariant: ratio unchanged by scaling. circle_maximizes_area: circle is optimal for fixed circumference. non_circle_area_lt_circle: non-circles have strictly less area."
     },
     {
       "id": "part-viii-arithmetic",
@@ -150,7 +150,7 @@
       "startLine": 523,
       "endLine": 1232,
       "summary": "cross_product_sq_le: 2D Cauchy-Schwarz (xv-yu)² ≤ (x²+y²)(u²+v²) by nlinarith. isoperimetric_from_wirtinger_bounds: arithmetic kernel — from Wirtinger bounds (Sxy≤2πc², S²≤2πSxy, 2A≤cS) to 4πA≤L². All inequalities fully proved.",
-      "mathContext": "cross_product_sq_le: 2D Cauchy-Schwarz (xv-yu)² ≤ (x²+y²)(u²+v²) by nlinarith. isoperimetric_from_wirtinger_bounds: arithmetic kernel — from Wirtinger bounds (Sxy≤2πc², S²≤2πSxy, 2A≤cS) to 4πA≤L². All"
+      "mathContext": "cross_product_sq_le: 2D Cauchy-Schwarz (xv-yu)² ≤ (x²+y²)(u²+v²) by nlinarith. isoperimetric_from_wirtinger_bounds: arithmetic kernel — from Wirtinger bounds (Sxy≤2πc², S²≤2πSxy, 2A≤cS) to 4πA≤L². All inequalities fully proved."
     }
   ],
   "conclusion": {

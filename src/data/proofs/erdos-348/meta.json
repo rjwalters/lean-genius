@@ -90,7 +90,7 @@
       "startLine": 1,
       "endLine": 22,
       "summary": "Problem statement, definition of completeness and robustness, known cases (0,1) via powers of 2 and (1,2) via Fibonacci, the open (2,3) case, and reference to erdosproblems.com/348.",
-      "mathContext": "Formal definition: Problem statement, definition of completeness and robustness, known cases (0,1) via powers of 2 and (1,2) via Fibonacci, the open (2,3) case, and reference to erdosproblems.com/348."
+      "mathContext": "Problem statement, definition of completeness and robustness, known cases (0,1) via powers of 2 and (1,2) via Fibonacci, the open (2,3) case, and reference to erdosproblems.com/348."
     },
     {
       "id": "complete-sequences",
@@ -98,7 +98,7 @@
       "startLine": 23,
       "endLine": 48,
       "summary": "Core definitions: finiteSums (all sums of distinct elements from a set), IsComplete (all large integers representable), IsStronglyComplete (all integers representable), and sequenceToSet (converting ℕ → ℕ to Set ℕ).",
-      "mathContext": "Core definitions: finiteSums (all sums of distinct elements from a set), IsComplete (all large integers representable), IsStronglyComplete (all integers representable), and sequenceToSet (converting ℕ"
+      "mathContext": "Core definitions: finiteSums (all sums of distinct elements from a set), IsComplete (all large integers representable), IsStronglyComplete (all integers representable), and sequenceToSet (converting ℕ → ℕ to Set ℕ)."
     },
     {
       "id": "removing-elements",
@@ -106,7 +106,7 @@
       "startLine": 49,
       "endLine": 83,
       "summary": "Defines removeIndices (exclude indices from sequence), removeValues (set difference), IsRobust (complete after removing any m indices), NotRobust (some n-deletion breaks completeness), and validPairs set.",
-      "mathContext": "Defines removeIndices (exclude indices from sequence), removeValues (set difference), IsRobust (complete after removing any m indices), NotRobust (some n-deletion breaks completeness), and validPairs "
+      "mathContext": "Defines removeIndices (exclude indices from sequence), removeValues (set difference), IsRobust (complete after removing any m indices), NotRobust (some n-deletion breaks completeness), and validPairs set."
     },
     {
       "id": "known-examples",
@@ -114,7 +114,7 @@
       "startLine": 84,
       "endLine": 165,
       "summary": "Defines powersOf2 and fib sequences. Proves pair_0_1_valid (powers of 2 are 0-robust, not 1-robust) with partial proofs and pair_1_2_valid (Fibonacci is 1-robust, not 2-robust) with sorries for Zeckendorf arguments.",
-      "mathContext": "Defines powersOf2 and fib sequences. Proves pair_0_1_valid (powers of 2 are 0-robust, not 1-robust) with partial proofs and pair_1_2_valid (Fibonacci is 1-robust, not 2-robust) with sorries for Zecken"
+      "mathContext": "Defines powersOf2 and fib sequences. Proves pair_0_1_valid (powers of 2 are 0-robust, not 1-robust) with partial proofs and pair_1_2_valid (Fibonacci is 1-robust, not 2-robust) with sorries for Zeckendorf arguments."
     },
     {
       "id": "main-conjecture",
@@ -154,7 +154,7 @@
       "startLine": 229,
       "endLine": 255,
       "summary": "The final axiom erdos_348_main_problem: either all (m, m+1) are valid, or ∃ cutoff k with (m, m+1) ∉ validPairs for m ≥ k. Includes comprehensive docstring summarizing known results and the open question.",
-      "mathContext": "The final axiom erdos_348_main_problem: either all (m, m+1) are valid, or ∃ cutoff k with (m, m+1) ∉ validPairs for m ≥ k. Includes comprehensive docstring summarizing known results and the open quest"
+      "mathContext": "The final axiom erdos_348_main_problem: either all (m, m+1) are valid, or ∃ cutoff k with (m, m+1) ∉ validPairs for m ≥ k. Includes comprehensive docstring summarizing known results and the open question."
     }
   ],
   "conclusion": {

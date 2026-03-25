@@ -94,7 +94,7 @@
       "startLine": 1,
       "endLine": 41,
       "summary": "Module docstring stating the problem: does $\\delta(m, \\alpha) \\to 0$ or $1$ exhibit a sharp threshold $\\beta$? Summarizes the answer ($\\beta = 1/\\ln 2$, Hall 1992), key results (trivial bound for $\\alpha < 1$, Erdős's $\\alpha = 1$ claim), and references [Er79e], [Ha92]. Imports Mathlib's logarithm, exponential, and filter modules.",
-      "mathContext": "Module docstring stating the problem: does $\\delta(m, \\alpha) \\to 0$ or $1$ exhibit a sharp threshold $\\beta$? Summarizes the answer ($\\beta = 1/\\ln 2$, Hall 1992), key results (trivial bound for $\\al"
+      "mathContext": "Module docstring stating the problem: does $\\delta(m, \\alpha) \\to 0$ or $1$ exhibit a sharp threshold $\\beta$? Summarizes the answer ($\\beta = 1/\\ln 2$, Hall 1992), key results (trivial bound for $\\alpha < 1$, Erdős's $\\alpha = 1$ claim), and references [Er79e], [Ha92]."
     },
     {
       "id": "part-1-basic-definitions",
@@ -102,7 +102,7 @@
       "startLine": 42,
       "endLine": 62,
       "summary": "Defines `IsAdmissibleDivisor` ($d \\mid n$, $d \\equiv 1 \\pmod{m}$, $1 < d < e^{m^\\alpha}$), `IsCovered` (existence of an admissible divisor), `coveredCount` (count via `Finset.filter`), and `delta` (asymptotic density via `Filter.liminf`).",
-      "mathContext": "Defines `IsAdmissibleDivisor` ($d \\mid n$, $d \\equiv 1 \\pmod{m}$, $1 < d < e^{m^\\alpha}$), `IsCovered` (existence of an admissible divisor), `coveredCount` (count via `Finset.filter`), and `delta` (as"
+      "mathContext": "Defines `IsAdmissibleDivisor` ($d \\mid n$, $d \\equiv 1 \\pmod{m}$, $1 < d < e^{m^\\alpha}$), `IsCovered` (existence of an admissible divisor), `coveredCount` (count via `Finset.filter`), and `delta` (asymptotic density via `Filter.liminf`)."
     },
     {
       "id": "part-2-the-threshold-question",
@@ -110,7 +110,7 @@
       "startLine": 63,
       "endLine": 80,
       "summary": "Formalizes `HasSharpThreshold` as $\\exists \\beta > 1$ with density $\\to 0$ below and $\\to 1$ above, using `Filter.Tendsto`. Defines `hallThreshold = 1/\\ln 2$ and proves $\\beta > 1$ via `exp_one_gt_d9` and monotonicity of $\\ln$.",
-      "mathContext": "Formalizes `HasSharpThreshold` as $\\exists \\beta > 1$ with density $\\to 0$ below and $\\to 1$ above, using `Filter.Tendsto`. Defines `hallThreshold = 1/\\ln 2$ and proves $\\beta > 1$ via `exp_one_gt_d9`"
+      "mathContext": "Formalizes `HasSharpThreshold` as $\\exists \\beta > 1$ with density $\\to 0$ below and $\\to 1$ above, using `Filter.Tendsto`. Defines `hallThreshold = 1/\\ln 2$ and proves $\\beta > 1$ via `exp_one_gt_d9` and monotonicity of $\\ln$."
     },
     {
       "id": "part-3-trivial-bounds",
@@ -134,7 +134,7 @@
       "startLine": 105,
       "endLine": 129,
       "summary": "The core axiom: Hall's theorem giving `HasSharpThreshold` with the specific value $\\beta = 1/\\ln 2$. The combined theorem `threshold_is_one_over_log_two` packages existence, the threshold value, and both convergence directions.",
-      "mathContext": "The core axiom: Hall's theorem giving `HasSharpThreshold` with the specific value $\\beta = 1/\\ln 2$. The combined theorem `threshold_is_one_over_log_two` packages existence, the threshold value, and b"
+      "mathContext": "The core axiom: Hall's theorem giving `HasSharpThreshold` with the specific value $\\beta = 1/\\ln 2$. The combined theorem `threshold_is_one_over_log_two` packages existence, the threshold value, and both convergence directions."
     },
     {
       "id": "part-6-why-1-log-2",
@@ -142,7 +142,7 @@
       "startLine": 130,
       "endLine": 148,
       "summary": "Intuition for the threshold value: the count of admissible $d$ is $\\sim e^{m^\\alpha}/m$. The critical exponent $1/\\ln 2$ arises from sieve-theoretic analysis of when enough admissible divisors exist to cover positive density.",
-      "mathContext": "Intuition for the threshold value: the count of admissible $d$ is $\\sim e^{m^\\alpha}/m$. The critical exponent $1/\\ln 2$ arises from sieve-theoretic analysis of when enough admissible divisors exist t"
+      "mathContext": "Intuition for the threshold value: the count of admissible $d$ is $\\sim e^{m^\\alpha}/m$. The critical exponent $1/\\ln 2$ arises from sieve-theoretic analysis of when enough admissible divisors exist to cover positive density."
     },
     {
       "id": "part-7-behavior-at-threshold",
@@ -166,7 +166,7 @@
       "startLine": 173,
       "endLine": 185,
       "summary": "Concrete cases: for $m = 2$, every integer has an odd divisor, so $\\delta(2, \\alpha) = 1$ trivially. For $m = p$ (large prime), the smallest admissible $d$ is $1 + p$, making the density analysis non-trivial.",
-      "mathContext": "Concrete cases: for $m = 2$, every integer has an odd divisor, so $\\delta(2, \\alpha) = 1$ trivially. For $m = p$ (large prime), the smallest admissible $d$ is $1 + p$, making the density analysis non-"
+      "mathContext": "Concrete cases: for $m = 2$, every integer has an odd divisor, so $\\delta(2, \\alpha) = 1$ trivially. For $m = p$ (large prime), the smallest admissible $d$ is $1 + p$, making the density analysis non-trivial."
     },
     {
       "id": "part-10-historical-context",
@@ -182,7 +182,7 @@
       "startLine": 197,
       "endLine": 239,
       "summary": "Final theorems: `erdos_697_answer` (threshold exists), `erdos_697_threshold` (full characterization with $\\beta = 1/\\ln 2$), `erdos_697_summary` (threshold exists and $\\beta > 1$), and `erdos_697_solved` (problem is completely resolved).",
-      "mathContext": "Final theorems: `erdos_697_answer` (threshold exists), `erdos_697_threshold` (full characterization with $\\beta = 1/\\ln 2$), `erdos_697_summary` (threshold exists and $\\beta > 1$), and `erdos_697_solv"
+      "mathContext": "Final theorems: `erdos_697_answer` (threshold exists), `erdos_697_threshold` (full characterization with $\\beta = 1/\\ln 2$), `erdos_697_summary` (threshold exists and $\\beta > 1$), and `erdos_697_solved` (problem is completely resolved)."
     }
   ],
   "conclusion": {

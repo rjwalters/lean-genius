@@ -112,7 +112,7 @@
       "startLine": 14,
       "endLine": 21,
       "summary": "Imports `Finset` for finite set operations, `Int.Basic` for $\\mathbb{Z}$ (difference sets $A - A \\subseteq \\mathbb{Z}$), `Real.Sqrt` for the $f(N) \\sim \\sqrt{N}$ asymptotic, and `Tactic` for proof automation.",
-      "mathContext": "Imports `Finset` for finite set operations, `Int.Basic` for $\\mathbb{Z}$ (difference sets $A - A \\subseteq \\mathbb{Z}$), `Real.Sqrt` for the $f(N) \\sim \\sqrt{N}$ asymptotic, and `Tactic` for proof aut"
+      "mathContext": "Imports `Finset` for finite set operations, `Int.Basic` for $\\mathbb{Z}$ (difference sets $A - A \\subseteq \\mathbb{Z}$), `Real.Sqrt` for the $f(N) \\sim \\sqrt{N}$ asymptotic, and `Tactic` for proof automation."
     },
     {
       "id": "sidon-sets",
@@ -120,7 +120,7 @@
       "startLine": 22,
       "endLine": 33,
       "summary": "Defines `IsSidonSet A`: all pairwise sums distinct ($a_1 + b_1 = a_2 + b_2 \\Rightarrow \\{a_1,b_1\\} = \\{a_2,b_2\\}$). Defines `diffSet A = \\{a - b : a, b \\in A\\}$ via `Finset.image` on the Cartesian product $A \\times A$.",
-      "mathContext": "Defines `IsSidonSet A`: all pairwise sums distinct ($a_1 + b_1 = a_2 + b_2 \\Rightarrow \\{a_1,b_1\\} = \\{a_2,b_2\\}$). Defines `diffSet A = \\{a - b : a, b \\in A\\}$ via `Finset.image` on the Cartesian pro"
+      "mathContext": "Defines `IsSidonSet A`: all pairwise sums distinct ($a_1 + b_1 = a_2 + b_2 \\Rightarrow \\{a_1,b_1\\} = \\{a_2,b_2\\}$). Defines `diffSet A = \\{a - b : a, b \\in A\\}$ via `Finset.image` on the Cartesian product $A \\times A$."
     },
     {
       "id": "disjoint-diff",
@@ -136,7 +136,7 @@
       "startLine": 40,
       "endLine": 50,
       "summary": "Axiomatizes `maxSidonSize : \\mathbb{N} \\to \\mathbb{N}` and `sidon_size_asymptotic`: $|f(N) - \\sqrt{N}| \\le \\varepsilon\\sqrt{N}$ for all $N \\ge N_0(\\varepsilon)$, encoding the Erdős-Turán result $f(N) = (1 + o(1))\\sqrt{N}$.",
-      "mathContext": "Axiomatizes `maxSidonSize : \\mathbb{N} \\to \\mathbb{N}` and `sidon_size_asymptotic`: $|f(N) - \\sqrt{N}| \\le \\varepsilon\\sqrt{N}$ for all $N \\ge N_0(\\varepsilon)$, encoding the Erdős-Turán result $f(N) "
+      "mathContext": "Axiomatizes `maxSidonSize : \\mathbb{N} \\to \\mathbb{N}` and `sidon_size_asymptotic`: $|f(N) - \\sqrt{N}| \\le \\varepsilon\\sqrt{N}$ for all $N \\ge N_0(\\varepsilon)$, encoding the Erdős-Turán result $f(N) = (1 + o(1))\\sqrt{N}$."
     },
     {
       "id": "conjecture",
@@ -144,7 +144,7 @@
       "startLine": 51,
       "endLine": 61,
       "summary": "States `ErdosProblem43`: $\\exists C,\\, \\forall N, A, B$, if $A, B$ are Sidon in $\\{1,\\ldots,N\\}$ with disjoint nonzero differences, then $\\binom{|A|}{2} + \\binom{|B|}{2} \\le \\binom{f(N)}{2} + C$. Uses `Nat.choose` for binomial coefficients.",
-      "mathContext": "States `ErdosProblem43`: $\\exists C,\\, \\forall N, A, B$, if $A, B$ are Sidon in $\\{1,\\ldots,N\\}$ with disjoint nonzero differences, then $\\binom{|A|}{2} + \\binom{|B|}{2} \\le \\binom{f(N)}{2} + C$. Uses"
+      "mathContext": "States `ErdosProblem43`: $\\exists C,\\, \\forall N, A, B$, if $A, B$ are Sidon in $\\{1,\\ldots,N\\}$ with disjoint nonzero differences, then $\\binom{|A|}{2} + \\binom{|B|}{2} \\le \\binom{f(N)}{2} + C$."
     },
     {
       "id": "equal-size",
@@ -152,7 +152,7 @@
       "startLine": 62,
       "endLine": 76,
       "summary": "States `EqualSizeVariant` with multiplicative savings $(1-c)\\binom{f(N)}{2}$ when $|A| = |B|$. Axiom `barreto_counterexample : \\neg\\text{EqualSizeVariant}$: this strengthening is FALSE for infinitely many $N$.",
-      "mathContext": "States `EqualSizeVariant` with multiplicative savings $(1-c)\\binom{f(N)}{2}$ when $|A| = |B|$. Axiom `barreto_counterexample : \\neg\\text{EqualSizeVariant}$: this strengthening is FALSE for infinitely "
+      "mathContext": "States `EqualSizeVariant` with multiplicative savings $(1-c)\\binom{f(N)}{2}$ when $|A| = |B|$. Axiom `barreto_counterexample : \\neg\\text{EqualSizeVariant}$: this strengthening is FALSE for infinitely many $N$."
     },
     {
       "id": "bounds",
@@ -160,7 +160,7 @@
       "startLine": 77,
       "endLine": 97,
       "summary": "`sidon_pair_bound` (sorry): $\\binom{|A|}{2} \\le N$ from counting $|A|(|A|-1)$ distinct differences in $\\{-(N-1),\\ldots,N-1\\}$. `disjoint_diff_combined_bound` (sorry): $\\binom{|A|}{2} + \\binom{|B|}{2} \\le N$ using disjointness to combine difference counts.",
-      "mathContext": "`sidon_pair_bound` (sorry): $\\binom{|A|}{2} \\le N$ from counting $|A|(|A|-1)$ distinct differences in $\\{-(N-1),\\ldots,N-1\\}$. `disjoint_diff_combined_bound` (sorry): $\\binom{|A|}{2} + \\binom{|B|}{2} "
+      "mathContext": "`sidon_pair_bound` (sorry): $\\binom{|A|}{2} \\le N$ from counting $|A|(|A|-1)$ distinct differences in $\\{-(N-1),\\ldots,N-1\\}$. `disjoint_diff_combined_bound` (sorry): $\\binom{|A|}{2} + \\binom{|B|}{2} \\le N$ using disjointness to combine difference counts."
     },
     {
       "id": "tao",
@@ -168,7 +168,7 @@
       "startLine": 98,
       "endLine": 116,
       "summary": "`tao_equal_size_bound` (sorry): when $|A| = |B| = m$ with disjoint differences, $m^2 \\le 2N + 1$, giving $m \\le (1/\\sqrt{2} + o(1))\\sqrt{N} \\approx 0.707\\sqrt{N}$. Derived from `disjoint_diff_combined_bound` via $2\\binom{m}{2} \\le N$.",
-      "mathContext": "`tao_equal_size_bound` (sorry): when $|A| = |B| = m$ with disjoint differences, $m^2 \\le 2N + 1$, giving $m \\le (1/\\sqrt{2} + o(1))\\sqrt{N} \\approx 0.707\\sqrt{N}$. Derived from `disjoint_diff_combined"
+      "mathContext": "`tao_equal_size_bound` (sorry): when $|A| = |B| = m$ with disjoint differences, $m^2 \\le 2N + 1$, giving $m \\le (1/\\sqrt{2} + o(1))\\sqrt{N} \\approx 0.707\\sqrt{N}$. Derived from `disjoint_diff_combined_bound` via $2\\binom{m}{2} \\le N$."
     },
     {
       "id": "counting",
@@ -176,7 +176,7 @@
       "startLine": 117,
       "endLine": 129,
       "summary": "`sidon_diff_count` (sorry): $|A - A| = |A|^2 - |A| + 1$ for Sidon sets ($|A|(|A|-1)$ distinct nonzero differences plus $0$). `disjoint_diff_total` (sorry): inclusion-exclusion gives $|A-A \\cup B-B| \\ge |A|^2 + |B|^2 - |A| - |B| + 1$ under disjoint differences.",
-      "mathContext": "`sidon_diff_count` (sorry): $|A - A| = |A|^2 - |A| + 1$ for Sidon sets ($|A|(|A|-1)$ distinct nonzero differences plus $0$). `disjoint_diff_total` (sorry): inclusion-exclusion gives $|A-A \\cup B-B| \\g"
+      "mathContext": "`sidon_diff_count` (sorry): $|A - A| = |A|^2 - |A| + 1$ for Sidon sets ($|A|(|A|-1)$ distinct nonzero differences plus $0$). `disjoint_diff_total` (sorry): inclusion-exclusion gives $|A-A \\cup B-B| \\ge |A|^2 + |B|^2 - |A| - |B| + 1$ under disjoint differences."
     }
   ],
   "conclusion": {

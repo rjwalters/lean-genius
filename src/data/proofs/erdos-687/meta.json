@@ -57,7 +57,7 @@
       "startLine": 33,
       "endLine": 55,
       "summary": "Defines `primorial(x) = \\prod_{p \\le x} p$, `IsCovered` for integers satisfying a congruence $n \\equiv a_p \\pmod{p}$, `jacobsthalSet(x)` of achievable covering lengths, and $Y(x) = \\text{sSup}(\\text{jacobsthalSet}(x))$.",
-      "mathContext": "Defines `primorial(x) = \\prod_{p \\le x} p$, `IsCovered` for integers satisfying a congruence $n \\equiv a_p \\pmod{p}$, `jacobsthalSet(x)` of achievable covering lengths, and $Y(x) = \\text{sSup}(\\text{j"
+      "mathContext": "Defines `primorial(x) = \\prod_{p \\le x} p$, `IsCovered` for integers satisfying a congruence $n \\equiv a_p \\pmod{p}$, `jacobsthalSet(x)` of achievable covering lengths, and $Y(x) = \\text{sSup}(\\text{jacobsthalSet}(x))$."
     },
     {
       "id": "jacobsthal",
@@ -81,7 +81,7 @@
       "startLine": 81,
       "endLine": 104,
       "summary": "Proves `jacobsthalSet` is monotone ($x_1 \\le x_2 \\Rightarrow \\text{jacobsthalSet}(x_1) \\subseteq \\text{jacobsthalSet}(x_2)$) by extending coverings to new primes. Derives $Y(x)$ monotonicity via `csSup_le_csSup`.",
-      "mathContext": "Proves `jacobsthalSet` is monotone ($x_1 \\le x_2 \\Rightarrow \\text{jacobsthalSet}(x_1) \\subseteq \\text{jacobsthalSet}(x_2)$) by extending coverings to new primes. Derives $Y(x)$ monotonicity via `csSu"
+      "mathContext": "Proves `jacobsthalSet` is monotone ($x_1 \\le x_2 \\Rightarrow \\text{jacobsthalSet}(x_1) \\subseteq \\text{jacobsthalSet}(x_2)$) by extending coverings to new primes. Derives $Y(x)$ monotonicity via `csSup_le_csSup`."
     },
     {
       "id": "connection",
@@ -105,7 +105,7 @@
       "startLine": 119,
       "endLine": 141,
       "summary": "Axiomatizes Iwaniec's upper bound $Y(x) \\le C x^2$, the FGKMT lower bound $Y(x) \\ge c x (\\log x)(\\log \\log \\log x)/(\\log \\log x)$, and the Maier–Pomerance conjecture $Y(x) \\le C x (\\log x)^{2+\\varepsilon}$.",
-      "mathContext": "Axiomatizes Iwaniec's upper bound $Y(x) \\le C x^2$, the FGKMT lower bound $Y(x) \\ge c x (\\log x)(\\log \\log \\log x)/(\\log \\log x)$, and the Maier–Pomerance conjecture $Y(x) \\le C x (\\log x)^{2+\\varepsi"
+      "mathContext": "Axiomatizes Iwaniec's upper bound $Y(x) \\le C x^2$, the FGKMT lower bound $Y(x) \\ge c x (\\log x)(\\log \\log \\log x)/(\\log \\log x)$, and the Maier–Pomerance conjecture $Y(x) \\le C x (\\log x)^{2+\\varepsilon}$."
     },
     {
       "id": "trivial-bound",

@@ -87,7 +87,7 @@
       "summary": "Axiomatizes `OrdinalRamseyProperty α β n` as a `Prop` with notation `α →ₒ (β, n)²`, capturing the Erdős-Rado arrow relation $\\alpha \\to (\\beta, n)^2$ without requiring the full definition involving order-preserving embeddings and pair colorings.",
       "startLine": 39,
       "endLine": 52,
-      "mathContext": "Axiomatizes `OrdinalRamseyProperty α β n` as a `Prop` with notation `α →ₒ (β, n)²`, capturing the Erdős-Rado arrow relation $\\alpha \\to (\\beta, n)^2$ without requiring the full definition involving or"
+      "mathContext": "Axiomatizes `OrdinalRamseyProperty α β n` as a `Prop` with notation `α →ₒ (β, n)²`, capturing the Erdős-Rado arrow relation $\\alpha \\to (\\beta, n)^2$ without requiring the full definition involving order-preserving embeddings and pair colorings."
     },
     {
       "id": "specker",
@@ -95,7 +95,7 @@
       "summary": "Two axioms for Specker's results: `specker_omega_squared` ($\\omega^2 \\to (\\omega^2, 3)^2$ holds) and `specker_omega_power_n_fails` ($\\omega^n \\nrightarrow (\\omega^n, 3)^2$ for $n \\ge 3$). Explicit failure theorems for $\\omega^3$ (via `le_refl 3`) and $\\omega^4$ (via `norm_num`) derived as corollaries.",
       "startLine": 53,
       "endLine": 78,
-      "mathContext": "Two axioms for Specker's results: `specker_omega_squared` ($\\omega^2 \\to (\\omega^2, 3)^2$ holds) and `specker_omega_power_n_fails` ($\\omega^n \\nrightarrow (\\omega^n, 3)^2$ for $n \\ge 3$). Explicit fai"
+      "mathContext": "Two axioms for Specker's results: `specker_omega_squared` ($\\omega^2 \\to (\\omega^2, 3)^2$ holds) and `specker_omega_power_n_fails` ($\\omega^n \\nrightarrow (\\omega^n, 3)^2$ for $n \\ge 3$). Explicit failure theorems for $\\omega^3$ (via `le_refl 3`) and $\\omega^4$ (via `norm_num`) derived as corollaries."
     },
     {
       "id": "chang",
@@ -103,7 +103,7 @@
       "summary": "The main result `chang_omega_omega`: $\\omega^\\omega \\to (\\omega^\\omega, 3)^2$, resolving Problem #590. The wrapper `erdos_590_solved` makes the solution explicit. Chang's proof uses transfinite induction exploiting the limit ordinal structure.",
       "startLine": 79,
       "endLine": 95,
-      "mathContext": "The main result `chang_omega_omega`: $\\omega^\\omega \\to (\\omega^\\omega, 3)^2$, resolving Problem #590. The wrapper `erdos_590_solved` makes the solution explicit. Chang's proof uses transfinite induct"
+      "mathContext": "The main result `chang_omega_omega`: $\\omega^\\omega \\to (\\omega^\\omega, 3)^2$, resolving Problem #590."
     },
     {
       "id": "milner-larson",
@@ -111,7 +111,7 @@
       "summary": "Generalization `milner_larson_extension`: $\\omega^\\omega \\to (\\omega^\\omega, m)^2$ for all $m \\ge 1$. Specific instances for $m = 4$ and $m = 10$ derived via `norm_num`. Larson's 1973 proof was substantially shorter than Milner's original.",
       "startLine": 96,
       "endLine": 113,
-      "mathContext": "Generalization `milner_larson_extension`: $\\omega^\\omega \\to (\\omega^\\omega, m)^2$ for all $m \\ge 1$. Specific instances for $m = 4$ and $m = 10$ derived via `norm_num`. Larson's 1973 proof was substa"
+      "mathContext": "Generalization `milner_larson_extension`: $\\omega^\\omega \\to (\\omega^\\omega, m)^2$ for all $m \\ge 1$. Specific instances for $m = 4$ and $m = 10$ derived via `norm_num`."
     },
     {
       "id": "ordinal-hierarchy",
@@ -119,7 +119,7 @@
       "summary": "Proved properties using Mathlib: $\\omega > 0$, $\\omega^2 = \\omega \\cdot \\omega$, $\\omega^3 = \\omega \\cdot \\omega \\cdot \\omega$, $\\omega^\\omega > 0$, $\\omega^\\omega$ is a limit ordinal, and $\\omega^n < \\omega^\\omega$ for all $n \\ge 1$. Uses `omega0_pos`, `pow_two`, `pow_succ`, `opow_pos`, `isLimit_opow_left`, `opow_lt_opow_right`.",
       "startLine": 114,
       "endLine": 143,
-      "mathContext": "Proved properties using Mathlib: $\\omega > 0$, $\\omega^2 = \\omega \\cdot \\omega$, $\\omega^3 = \\omega \\cdot \\omega \\cdot \\omega$, $\\omega^\\omega > 0$, $\\omega^\\omega$ is a limit ordinal, and $\\omega^n <"
+      "mathContext": "Proved properties using Mathlib: $\\omega > 0$, $\\omega^2 = \\omega \\cdot \\omega$, $\\omega^3 = \\omega \\cdot \\omega \\cdot \\omega$, $\\omega^\\omega > 0$, $\\omega^\\omega$ is a limit ordinal, and $\\omega^n < \\omega^\\omega$ for all $n \\ge 1$."
     },
     {
       "id": "pattern",
@@ -127,7 +127,7 @@
       "summary": "The `pattern_summary` theorem bundles: (1) $\\omega^2$ works, (2) $\\omega^3$ fails, (3) $\\omega^\\omega$ works. Includes a documentation table showing the full pattern from $\\omega$ through $\\omega^{\\omega^2}$ with the OPEN case marked.",
       "startLine": 144,
       "endLine": 169,
-      "mathContext": "The `pattern_summary` theorem bundles: (1) $\\omega^2$ works, (2) $\\omega^3$ fails, (3) $\\omega^\\omega$ works. Includes a documentation table showing the full pattern from $\\omega$ through $\\omega^{\\om"
+      "mathContext": "The `pattern_summary` theorem bundles: (1) $\\omega^2$ works, (2) $\\omega^3$ fails, (3) $\\omega^\\omega$ works. Includes a documentation table showing the full pattern from $\\omega$ through $\\omega^{\\omega^2}$ with the OPEN case marked."
     },
     {
       "id": "related-problems",
@@ -135,7 +135,7 @@
       "summary": "Defines `problem_591_conjecture` ($\\omega^{\\omega^2} \\to (\\omega^{\\omega^2}, 3)^2$, OPEN, \\$250) and `problem_592_related` (the general question for all limit $\\alpha$) as `Prop` definitions rather than theorems.",
       "startLine": 170,
       "endLine": 181,
-      "mathContext": "Defines `problem_591_conjecture` ($\\omega^{\\omega^2} \\to (\\omega^{\\omega^2}, 3)^2$, OPEN, \\$250) and `problem_592_related` (the general question for all limit $\\alpha$) as `Prop` definitions rather th"
+      "mathContext": "Defines `problem_591_conjecture` ($\\omega^{\\omega^2} \\to (\\omega^{\\omega^2}, 3)^2$, OPEN, \\$250) and `problem_592_related` (the general question for all limit $\\alpha$) as `Prop` definitions rather than theorems."
     },
     {
       "id": "ordinal-arithmetic",
@@ -143,7 +143,7 @@
       "summary": "Two proved results: `omega_omega_dominates` ($\\omega^n < \\omega^\\omega$ for all $n : \\mathbb{N}$, including $n = 0$ via `one_lt_opow`) and `omega_omega_squared_form` ($\\omega^\\omega \\cdot \\omega^\\omega = \\omega^{\\omega + \\omega}$ via `opow_add`).",
       "startLine": 182,
       "endLine": 238,
-      "mathContext": "Two proved results: `omega_omega_dominates` ($\\omega^n < \\omega^\\omega$ for all $n : \\mathbb{N}$, including $n = 0$ via `one_lt_opow`) and `omega_omega_squared_form` ($\\omega^\\omega \\cdot \\omega^\\omeg"
+      "mathContext": "Two proved results: `omega_omega_dominates` ($\\omega^n < \\omega^\\omega$ for all $n : \\mathbb{N}$, including $n = 0$ via `one_lt_opow`) and `omega_omega_squared_form` ($\\omega^\\omega \\cdot \\omega^\\omega = \\omega^{\\omega + \\omega}$ via `opow_add`)."
     }
   ],
   "conclusion": {

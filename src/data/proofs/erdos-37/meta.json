@@ -155,7 +155,7 @@
       "startLine": 160,
       "endLine": 249,
       "summary": "Proves $a_n \\ge a_0 r^n$ and $n \\le C \\log N$ (Aristotle). Then proves `lacunary_counting_bound`: $|A \\cap [1,N]| \\le C \\log N$ for lacunary $A$ (Aristotle). This is the key sparsity result.",
-      "mathContext": "Verified: Proves $a_n \\ge a_0 r^n$ and $n \\le C \\log N$ (Aristotle). Then proves `lacunary_counting_bound`: $|A \\cap [1,N]| \\le C \\log N$ for lacunary $A$ (Aristotle). This is the key sparsity result."
+      "mathContext": "Proves $a_n \\ge a_0 r^n$ and $n \\le C \\log N$ (Aristotle). Then proves `lacunary_counting_bound`: $|A \\cap [1,N]| \\le C \\log N$ for lacunary $A$ (Aristotle)."
     },
     {
       "id": "main",
@@ -163,7 +163,7 @@
       "startLine": 250,
       "endLine": 306,
       "summary": "Axiomatizes Ruzsa's lower bound (essential $\\Rightarrow |A \\cap [1,N]| \\ge (\\log N)^{1+c}$) and construction (tight). Axiom `erdos_37_disproved` and theorem `erdos_37_answer`: $\\lnot\\exists A$ lacunary and essential.",
-      "mathContext": "Axiomatizes Ruzsa's lower bound (essential $\\Rightarrow |A \\cap [1,N]| \\ge (\\log N)^{1+c}$) and construction (tight). Axiom `erdos_37_disproved` and theorem `erdos_37_answer`: $\\lnot\\exists A$ lacunar"
+      "mathContext": "Axiomatizes Ruzsa's lower bound (essential $\\Rightarrow |A \\cap [1,N]| \\ge (\\log N)^{1+c}$) and construction (tight). Axiom `erdos_37_disproved` and theorem `erdos_37_answer`: $\\lnot\\exists A$ lacunary and essential."
     },
     {
       "id": "smooth23",

@@ -104,7 +104,7 @@
       "startLine": 42,
       "endLine": 66,
       "summary": "Defines $\\text{SetFamily}(n,m)$ as $\\text{Fin}\\,m \\to \\text{Finset}\\,(\\text{Fin}\\,n)$, $\\text{AllLargerThan}$ ($|A_i| > c\\sqrt{n}$), $\\text{PairwiseSmallIntersection}$ ($|A_i \\cap A_j| \\leq 1$), and the $\\text{NearLinearFamily}$ structure bundling both conditions",
-      "mathContext": "Defines $\\text{SetFamily}(n,m)$ as $\\text{Fin}\\,m \\to \\text{Finset}\\,(\\text{Fin}\\,n)$, $\\text{AllLargerThan}$ ($|A_i| > c\\sqrt{n}$), $\\text{PairwiseSmallIntersection}$ ($|A_i \\cap A_j| \\leq 1$), and t"
+      "mathContext": "Defines $\\text{SetFamily}(n,m)$ as $\\text{Fin}\\,m \\to \\text{Finset}\\,(\\text{Fin}\\,n)$, $\\text{AllLargerThan}$ ($|A_i| > c\\sqrt{n}$), $\\text{PairwiseSmallIntersection}$ ($|A_i \\cap A_j| \\leq 1$), and the $\\text{NearLinearFamily}$ structure bundling both conditions"
     },
     {
       "id": "blocking-sets",
@@ -128,7 +128,7 @@
       "startLine": 100,
       "endLine": 139,
       "summary": "Axiomatizes Alon's disproof ($\\neg\\text{ErdosQuestion664}$), projective plane parameters ($q^2+q+1$), and the explicit construction giving families where any blocker has $|B \\cap A_j| \\geq (\\log n)/10$ for some $j$",
-      "mathContext": "Axiomatizes Alon's disproof ($\\neg\\text{ErdosQuestion664}$), projective plane parameters ($q^2+q+1$), and the explicit construction giving families where any blocker has $|B \\cap A_j| \\geq (\\log n)/10"
+      "mathContext": "Axiomatizes Alon's disproof ($\\neg\\text{ErdosQuestion664}$), projective plane parameters ($q^2+q+1$), and the explicit construction giving families where any blocker has $|B \\cap A_j| \\geq (\\log n)/10$ for some $j$"
     },
     {
       "id": "mechanism",
@@ -136,7 +136,7 @@
       "startLine": 140,
       "endLine": 167,
       "summary": "Three axiomatized properties: projective lines have $q+1$ points, two lines meet in exactly one point, random thinning preserves near-linearity while forcing blocker concentration. The logarithmic lower bound via coupon-collector argument",
-      "mathContext": "Three axiomatized properties: projective lines have $q+1$ points, two lines meet in exactly one point, random thinning preserves near-linearity while forcing blocker concentration. The logarithmic low"
+      "mathContext": "Three axiomatized properties: projective lines have $q+1$ points, two lines meet in exactly one point, random thinning preserves near-linearity while forcing blocker concentration."
     },
     {
       "id": "balanced-designs",
@@ -176,7 +176,7 @@
       "startLine": 244,
       "endLine": 281,
       "summary": "Four equivalent formulations: $\\texttt{erdos\\_664}$, $\\texttt{erdos\\_664\\_main}$, $\\texttt{erdos\\_664\\_disproved}$ (all $\\neg\\text{ErdosQuestion664}$), and $\\texttt{erdos\\_664\\_constructive}$ (explicit counterexample for each prime $q \\geq 100$)",
-      "mathContext": "Four equivalent formulations: $\\texttt{erdos\\_664}$, $\\texttt{erdos\\_664\\_main}$, $\\texttt{erdos\\_664\\_disproved}$ (all $\\neg\\text{ErdosQuestion664}$), and $\\texttt{erdos\\_664\\_constructive}$ (explici"
+      "mathContext": "Four equivalent formulations: $\\texttt{erdos\\_664}$, $\\texttt{erdos\\_664\\_main}$, $\\texttt{erdos\\_664\\_disproved}$ (all $\\neg\\text{ErdosQuestion664}$), and $\\texttt{erdos\\_664\\_constructive}$ (explicit counterexample for each prime $q \\geq 100$)"
     }
   ],
   "conclusion": {
