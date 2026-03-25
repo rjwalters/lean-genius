@@ -71,9 +71,10 @@
       "All five classical divisibility rules (7, 11, 13, 17, 19) are recovered from the single unified theorem."
     ],
     "prerequisites": [
-      "Modular arithmetic ($\\mathbb{Z}/d\\mathbb{Z}$, multiplicative inverses)",
-      "Divisibility theory (coprimality, Bézout's identity)",
-      "Elementary number theory (division algorithm, digit extraction)"
+      "Modular arithmetic: multiplicative inverses in $\\mathbb{Z}/d\\mathbb{Z}$ ($10c \\equiv 1 \\pmod{d}$)",
+      "Coprimality and Bézout's identity ($\\gcd(d, 10) = 1$ guarantees osculator existence)",
+      "Division algorithm and digit extraction ($n = 10 \\lfloor n/10 \\rfloor + n \\bmod 10$)",
+      "Divisibility over $\\mathbb{Z}$: linearity, transitivity, and coprime cancellation (`IsCoprime.dvd_of_dvd_mul_left`)"
     ]
   },
   "sections": [

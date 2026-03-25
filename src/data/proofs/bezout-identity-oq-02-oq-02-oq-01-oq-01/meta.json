@@ -49,7 +49,10 @@
       "This technique generalizes beyond integers: in any Euclidean domain where division is computable, classical choice can be replaced with explicit division to make constructive proofs executable"
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Extended Euclidean algorithm: computing Bézout coefficients $x, y$ with $ax + by = \\gcd(a,b)$",
+      "Constructive vs. classical mathematics: `noncomputable` annotations and `Exists.choose` in Lean 4",
+      "Integer division and divisibility ($a \\mid bc$ implies $\\lfloor bc/a \\rfloor$ is exact)",
+      "Coprimality and Euclid's lemma ($\\gcd(a,b) = 1$ and $a \\mid bc \\Rightarrow a \\mid c$)"
     ]
   },
   "sections": [

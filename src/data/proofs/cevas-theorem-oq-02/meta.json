@@ -80,7 +80,10 @@
       "The full geometric proof (that these ratio conditions ACTUALLY correspond to concurrence/collinearity) requires Riemannian geometry infrastructure not yet in Mathlib"
     ],
     "prerequisites": [
-      "Geometry (Euclidean, combinatorial)"
+      "Euclidean geometry: triangle cevians, concurrence, and Ceva's theorem (ratio product $= 1$)",
+      "Spherical and hyperbolic geometry (geodesics, $\\sin$-ratios, $\\sinh$-ratios on constant-curvature surfaces)",
+      "Trigonometric and hyperbolic functions ($\\sin$, $\\sinh$, positivity on appropriate domains)",
+      "Gauss-Bonnet formula: angle sum $= \\pi + \\kappa \\cdot \\text{Area}$ for curvature $\\kappa$"
     ]
   },
   "sections": [

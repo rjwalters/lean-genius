@@ -172,7 +172,12 @@
       "**Measure-theoretic lifting**: replacing finite `sum_eq_zero_iff_of_nonneg` with Mathlib's `integral_eq_zero_iff_of_nonneg_ae` gives almost-everywhere proportionality — the same argument works verbatim with sums replaced by integrals",
       "**Holder-to-CS specialization**: at $p = q = 2$, power proportionality $f_i^2 = c \\cdot g_i^2$ reduces to linear proportionality $f_i = \\sqrt{c} \\cdot g_i$ for non-negative functions, closing the circle from general Holder back to classical Cauchy-Schwarz"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cauchy-Schwarz and Holder inequalities for finite sums and integrals",
+      "Lagrange identity and sum-of-squares characterizations",
+      "Young's inequality and conjugate exponent pairs (1/p + 1/q = 1)",
+      "Measure theory: integration, almost-everywhere equality, and Lp spaces"
+    ]
   },
   "conclusion": {
     "summary": "Complete formalization of equality characterizations for Cauchy-Schwarz, general Hölder, and integral Hölder inequalities. CS via Lagrange identity with full iff proportionality. Hölder via Young deficit reduction with both directions. Integral case via normalization and integral_eq_zero_iff_of_nonneg_ae. All 835 lines, zero axioms, zero sorries.",

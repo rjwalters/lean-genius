@@ -131,7 +131,12 @@
       "This constructive approach eliminates 3 axioms from the parent formalization by replacing axiom-based reasoning about the Poincaré model with direct computation in the Klein model",
       "The nlinarith tactic is the workhorse for the parallelism proofs: it derives $4 < 1$ (a contradiction) from the intersection coordinates and the disk constraint"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclid's axioms and Playfair's parallel postulate",
+      "Model-theoretic independence: consistency of axiom negation",
+      "Coordinate geometry in the plane: lines, slopes, and intersections",
+      "Non-Euclidean geometry: hyperbolic planes and the Beltrami-Klein disk model"
+    ]
   },
   "conclusion": {
     "summary": "This formalization provides a fully constructive, coordinate-geometric verification of the Beltrami-Klein model's hyperbolic parallel property. Through P = (0, 1/2), two explicit chords with slopes ±1/4 are both parallel to the x-axis, violating Playfair's uniqueness axiom. Combined with the axiomatized Euclidean model, this establishes independence of the parallel postulate with only 4 axioms (down from 7 in the parent formalization).",

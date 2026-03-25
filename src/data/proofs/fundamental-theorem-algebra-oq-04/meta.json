@@ -85,6 +85,12 @@
       "**Steinitz Uniqueness**: All algebraic closures of a given field are isomorphic (Steinitz 1910). This is a non-constructive result: the isomorphism uses Zorn's lemma to extend embeddings. For $\\mathbb{R}$, the isomorphism is actually computable (every algebraic closure is $\\mathbb{R}$-isomorphic to $\\mathbb{C}$ via explicit coordinates), but the general theorem applies uniformly.",
       "**No Intermediate Algebraically Closed Fields**: The tower law argument shows there are no fields properly between $\\mathbb{R}$ and $\\mathbb{C}$. Combined with the fact that $\\mathbb{R}$ is not algebraically closed ($X^2 + 1$ has no real root), this means $\\mathbb{C}$ is the unique minimal algebraically closed extension.",
       "**Frobenius Perspective**: By Frobenius's theorem (1877), the only finite-dimensional associative division algebras over $\\mathbb{R}$ are $\\mathbb{R}$, $\\mathbb{C}$, and $\\mathbb{H}$ (quaternions). Since $\\mathbb{C}$ is the only commutative option beyond $\\mathbb{R}$, the extension $\\mathbb{R} \\to \\mathbb{C}$ is forced: any commutative algebraic closure of $\\mathbb{R}$ must be $\\mathbb{C}$. The quaternions $\\mathbb{H}$, despite being 4-dimensional, are non-commutative and so cannot serve as a field extension."
+    ],
+    "prerequisites": [
+      "Field extensions, algebraic elements, and extension degree [K:F]",
+      "Algebraic closure: algebraically closed fields that are algebraic over the base",
+      "The Fundamental Theorem of Algebra (every complex polynomial has a root)",
+      "The tower law for field extensions and Steinitz's uniqueness theorem"
     ]
   },
   "sections": [
@@ -196,8 +202,13 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Polynomial", "Complex"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "Complex"
+    ],
     "namespace": "FTAUniqueAlgebraicClosure",
     "lineCount": 207,
     "axiomCount": 0,

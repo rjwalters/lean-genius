@@ -79,7 +79,12 @@
       "**T_add_two (R := ℝ)**: Explicit ring annotation is required when Lean cannot infer the CommRing instance for Chebyshev polynomial recurrences.",
       "**Product-to-Sum**: cos((n+2)θ) = cos((n+1)θ + θ) combined with cos(nθ) = cos((n+1)θ - θ) gives the recurrence by adding the two cos_add/cos_sub identities."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "De Moivre's theorem: (cos theta + i sin theta)^n = cos(n theta) + i sin(n theta)",
+      "Chebyshev polynomials of the first and second kind (T_n, U_n)",
+      "Trigonometric addition formulas and the Pythagorean identity",
+      "Polynomial evaluation and recurrence relations over commutative rings"
+    ]
   },
   "sections": [
     {

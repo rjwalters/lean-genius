@@ -73,7 +73,12 @@
       "Titu's lemma is the 'Schur complement' of Cauchy-Schwarz: applying CS to vectors $(a_i/\\sqrt{b_i})$ and $(\\sqrt{b_i})$",
       "Nesbitt's proof strategy — rewrite as (sum) - 3/2 ≥ 0, clear denominators via field_simp, then apply nlinarith — generalizes to many symmetric inequality problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Real number ordering and the square root function",
+      "Polynomial inequalities and sum-of-squares decompositions",
+      "Fraction manipulation: common denominators and clearing denominators",
+      "The Lagrange identity and its connection to Cauchy-Schwarz"
+    ]
   },
   "sections": [
     {

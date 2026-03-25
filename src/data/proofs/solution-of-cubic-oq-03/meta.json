@@ -77,6 +77,12 @@
       "The pairing x_k = ω^k u + ω^{2k} v is not arbitrary — it preserves uv = -p/3 for each root pair because ω^k · ω^{2k} = ω^{3k} = 1, which is exactly what makes Vieta II work",
       "The linear_combination tactic provides algebraic proof certificates: instead of step-by-step rewriting, it directly expresses the goal as a linear combination of hypotheses (omega_sum, h_prod, h_sum), leaving only a ring identity for the kernel to verify",
       "The factorization theorem closes the loop: Cardano → Vieta → factorization → root verification forms a complete algebraic proof cycle, entirely machine-checked"
+    ],
+    "prerequisites": [
+      "Cardano's formula for the depressed cubic x^3 + px + q = 0",
+      "Cube roots of unity: omega = e^(2 pi i/3) and the identity 1 + omega + omega^2 = 0",
+      "Elementary symmetric polynomials and Vieta's formulas",
+      "Complex exponential function and Euler's formula"
     ]
   },
   "sections": [
