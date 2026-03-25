@@ -247,6 +247,11 @@
       "targetId": "area-of-circle-oq-01-oq-02-oq-01",
       "relationship": "extended-by",
       "description": "Generalizes the circumference-to-area integration to $n$ dimensions: derives $V_n(r)$ from $S_n(r)$ via $V_n(r) = \\int_0^r S_n(\\rho)\\, d\\rho$, extending the annular ring argument from the 2D case ($A = \\int_0^r 2\\pi\\rho\\, d\\rho$) to arbitrary dimension"
+    },
+    {
+      "targetId": "de-moivre",
+      "relationship": "foundational",
+      "description": "De Moivre's formula $(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$ governs the unit circle parameterization in $\\mathbb{C}$ that this proof relies on: the disk $\\{z : |z - c| \\leq r\\}$ is bounded by the circle $c + re^{i\\theta}$ for $\\theta \\in [0, 2\\pi)$. The polar coordinate area element $r\\,dr\\,d\\theta$ — which the annular ring derivation $A = \\int_0^r 2\\pi\\rho\\,d\\rho = \\pi r^2$ uses — derives from this De Moivre parameterization of the circular boundary. More precisely, the Jacobian of the map $(r,\\theta) \\mapsto re^{i\\theta}$ is $r$, giving $dA = r\\,dr\\,d\\theta$"
     }
   ],
   "leanFile": {
