@@ -1,5 +1,17 @@
 [
   {
+    "id": "erdos-510-ann-header",
+    "proofId": "erdos-510",
+    "range": { "startLine": 1, "endLine": 22 },
+    "type": "context",
+    "title": "Chowla's Cosine Problem",
+    "content": "Erdős Problem #510 (Chowla's cosine problem): for a finite set $A \\subset \\mathbb{N}$ of size $N$, does there exist an absolute constant $c > 0$ such that $\\min_\\theta \\sum_{n \\in A} \\cos(n\\theta) < -c\\sqrt{N}$?\n\nThe Sidon set construction $A = B - B$ shows the $\\sqrt{N}$ bound is best possible. Bedert (2025) proved a $-cN^{1/7}$ lower bound, but the gap between $N^{1/7}$ and $N^{1/2}$ remains open. This is a problem in **exponential sums** and **harmonic analysis** with connections to additive combinatorics.",
+    "mathContext": "$\\min_\\theta \\sum_{n \\in A} \\cos(n\\theta) \\stackrel{?}{\\leq} -c\\sqrt{|A|}$. Best known: $-c|A|^{1/7}$ (Bedert 2025). Optimal: $-c\\sqrt{|A|}$ (Sidon set example).",
+    "significance": "supporting",
+    "prerequisites": ["trigonometric sums", "Sidon sets", "exponential sum bounds"],
+    "relatedConcepts": ["Chowla's conjecture", "exponential sums", "additive combinatorics"]
+  },
+  {
     "id": "erdos-510-ann-cosineSum",
     "proofId": "erdos-510",
     "range": {
