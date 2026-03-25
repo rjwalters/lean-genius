@@ -171,5 +171,43 @@
       "relationship": "related",
       "description": "Both concern structural properties of graphs under extremal constraints"
     }
+  ],
+  "references": [
+    {
+      "key": "Er47",
+      "authors": [
+        "P. Erdős"
+      ],
+      "title": "Some remarks on the theory of graphs",
+      "venue": "Bulletin of the American Mathematical Society",
+      "year": "1947",
+      "volume": "53",
+      "pages": "292-294",
+      "note": "Pioneering probabilistic lower bound: R(k,k) > 2^{k/2}, establishing the probabilistic method"
+    },
+    {
+      "key": "Sp75",
+      "authors": [
+        "J. Spencer"
+      ],
+      "title": "Ramsey's theorem — a new lower bound",
+      "venue": "Journal of Combinatorial Theory, Series A",
+      "year": "1975",
+      "volume": "18",
+      "pages": "108-115",
+      "note": "Improved Erdős's lower bound by a √2 factor using the Lovász Local Lemma"
+    },
+    {
+      "key": "Co09",
+      "authors": [
+        "D. Conlon"
+      ],
+      "title": "A new upper bound for diagonal Ramsey numbers",
+      "venue": "Annals of Mathematics",
+      "year": "2009",
+      "volume": "170",
+      "pages": "941-960",
+      "note": "Best known upper bound improvement for R(k,k)"
+    }
   ]
 }

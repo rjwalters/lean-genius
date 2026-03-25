@@ -191,5 +191,30 @@
     "axiomCount": 10,
     "theoremCount": 4,
     "definitionCount": 6
-  }
+  },
+  "references": [
+    {
+      "key": "Bo78",
+      "authors": [
+        "B. Bollobás"
+      ],
+      "title": "Extremal Graph Theory",
+      "venue": "Academic Press, London",
+      "year": "1978",
+      "note": "Comprehensive reference on extremal graph theory including cycle counting problems"
+    },
+    {
+      "key": "FS13",
+      "authors": [
+        "J. Fox",
+        "B. Sudakov"
+      ],
+      "title": "Dependent random choice",
+      "venue": "Random Structures & Algorithms",
+      "year": "2011",
+      "volume": "38",
+      "pages": "68-99",
+      "note": "Modern technique for cycle and path counting problems in dense graphs"
+    }
+  ]
 }

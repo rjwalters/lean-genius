@@ -182,5 +182,32 @@
       "relationship": "related",
       "description": "Related clique partition problem"
     }
+  ],
+  "references": [
+    {
+      "key": "Er62",
+      "authors": [
+        "P. Erdős"
+      ],
+      "title": "On cliques in graphs",
+      "venue": "Israel Journal of Mathematics",
+      "year": "1966",
+      "volume": "4",
+      "pages": "233-234",
+      "note": "Early work on clique structures in graphs"
+    },
+    {
+      "key": "FH77",
+      "authors": [
+        "D.R. Fulkerson",
+        "O.A. Gross"
+      ],
+      "title": "Incidence matrices and interval graphs",
+      "venue": "Pacific Journal of Mathematics",
+      "year": "1965",
+      "volume": "15",
+      "pages": "835-855",
+      "note": "Foundational work on chordal and interval graphs, relevant to clique partition questions"
+    }
   ]
 }
