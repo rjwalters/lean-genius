@@ -48,7 +48,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "In 1931, Kurt Gödel, a 25-year-old logician in Vienna, published a paper that would fundamentally change our understanding of mathematics and logic. His Incompleteness Theorems demonstrated that the dream of a complete, consistent foundation for mathematics—Hilbert's Program—was impossible.\n\nDavid Hilbert had proposed that all mathematical truths could be derived from a fixed set of axioms using formal rules. Gödel showed this was a fantasy: any system powerful enough to do arithmetic would contain truths it could never prove. The implications rippled through philosophy, computer science (anticipating the Halting Problem), and our understanding of the limits of human knowledge.",
+    "historicalContext": "In 1931, Kurt Gödel, a 25-year-old logician in Vienna, published a paper that would fundamentally change our understanding of mathematics and logic. His Incompleteness Theorems demonstrated that the dream of a complete, consistent foundation for mathematics—Hilbert's Program—was impossible.\n\nDavid Hilbert had proposed that all mathematical truths could be derived from a fixed set of axioms using formal rules. At the Second International Congress of Mathematicians (Paris, 1900), Hilbert had listed the completeness of a formal axiom system as a central goal. By 1930, the Hilbert-Bernays program was in full swing: find a complete, consistent, finitely axiomatizable system for all of mathematics, and prove its consistency by finitary means. Gödel showed this was a fantasy: any system powerful enough to do arithmetic would contain truths it could never prove.\n\nGödel announced the First Incompleteness Theorem at a conference in Königsberg in September 1930, barely noticed by attendees — except John von Neumann, who immediately recognized its significance. The formal paper appeared in January 1931. Five years later, in 1936, Alan Turing independently proved the undecidability of the Halting Problem via his model of computation, which can be seen as a computability-theoretic restatement of the same diagonalization principle. Turing explicitly acknowledged Gödel's influence.\n\nIn 1936, J. Barkley Rosser strengthened the First Incompleteness Theorem by replacing the assumption of ω-consistency with the weaker assumption of simple consistency, using the 'Rosser trick': replacing the Gödel sentence G ↔ ¬Prov(⌜G⌝) with a sentence that also encodes 'no shorter proof of ¬G exists'. This is now the standard modern form of the theorem. The implications rippled through philosophy, computer science (the Halting Problem, Rice's theorem, Chaitin's incompleteness), and our understanding of the fundamental limits of formal reasoning.",
     "problemStatement": "Gödel's First Incompleteness Theorem: If $F$ is a consistent formal system capable of expressing basic arithmetic, then there exists a sentence $G$ such that:\n\n1. $G$ is true (in the standard model of arithmetic)\n2. $G$ is not provable in $F$\n3. $\\neg G$ is not provable in $F$ (assuming $\\omega$-consistency)\n\nIn other words: $F$ is incomplete—there are truths it cannot reach.",
     "text": "A 467-line pedagogical scaffold for Gödel's Incompleteness Theorems (Wiedijk #6) with 2 axioms, 0 sorries. **Important**: The provability predicate `Provable` is defined as `fun _ => False`, making all incompleteness theorems vacuously true. The file's value is in its argument structure and extensive mathematical commentary, not in formal proof content. Demonstrates the correct case-split structure for the first incompleteness theorem and includes Löb's theorem, Rosser's strengthening, and the second incompleteness theorem.",
     "proofStrategy": "The proof proceeds through a remarkable self-referential construction:\n\n1. Gödel Numbering: Encode every formula as a natural number, allowing the system to \"talk about\" its own formulas\n2. Representability: Show that the provability relation can be expressed within the system via a formula $\\text{Prov}(x)$\n3. Diagonal Lemma: Construct a sentence $G$ that says \"$G$ is not provable\"—formal self-reference\n4. The Contradiction: If $G$ were provable, the system would prove both $\\text{Prov}(\\ulcorner G \\urcorner)$ and $\\neg\\text{Prov}(\\ulcorner G \\urcorner)$, violating consistency\n5. Conclusion: $G$ must be true but unprovable",
@@ -149,8 +149,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Gödel's First Incompleteness Theorem demonstrates that mathematical truth forever exceeds formal provability. Any consistent system powerful enough to express arithmetic contains true statements it cannot prove. This isn't a flaw in specific systems—it's a fundamental feature of formal reasoning itself.",
-    "implications": "**Theoretical Significance**: The incompleteness theorems transformed our understanding of foundations. Hilbert's vision of a complete, mechanizable mathematics was shown to be impossible.\n\nIn computer science, the same techniques yield the undecidability of the Halting Problem. Philosophically, the theorems raise profound questions: Does human mathematical insight transcend algorithmic computation? Is there a limit to what we can know through formal methods? Gödel's work suggests that creativity and intuition in mathematics cannot be fully captured by any fixed set of rules.",
+    "summary": "Gödel's First Incompleteness Theorem demonstrates that mathematical truth forever exceeds formal provability. Any consistent system powerful enough to express arithmetic contains true statements it cannot prove. This isn't a flaw in specific systems—it's a fundamental feature of formal reasoning itself. Rosser's 1936 strengthening showed that mere consistency (not the stronger ω-consistency) suffices for the result, making the theorem's hypotheses as weak as possible.",
+    "implications": "**Theoretical Significance**: The incompleteness theorems transformed our understanding of foundations. Hilbert's vision of a complete, mechanizable mathematics was shown to be impossible. The Second Incompleteness Theorem — that no consistent system can prove its own consistency — meant that even Hilbert's fallback goal (a consistency proof for all of mathematics) was unachievable from within mathematics itself.\n\n**Connection to Computability**: Alan Turing's 1936 undecidability result for the Halting Problem is the direct computability-theoretic analog of Gödel's incompleteness. Both proofs use diagonalization; both show limits of formal/mechanical systems. The Church-Turing thesis and Gödel incompleteness together define the boundary of what is formally decidable or provable. Rice's theorem (1953) generalizes: no non-trivial semantic property of programs is decidable.\n\n**Chaitin's Incompleteness**: Gregory Chaitin's algorithmic information theory approach (1970s) yields a third form of incompleteness: for any consistent formal system, there is a constant K such that the system cannot prove 'the Kolmogorov complexity of n exceeds K' for any specific n, even though this is true for almost all n. This connects incompleteness to randomness and information.\n\n**Independence Results in Practice**: The Continuum Hypothesis (Gödel 1940, Cohen 1963), the independence of the Axiom of Choice from ZF, and numerous combinatorial statements (Paris-Harrington theorem, Goodstein sequences) are 'natural' mathematical statements independent of standard axioms — incompleteness in practice, not just in self-referential constructions.\n\n**Philosophical Implications**: The Lucas-Penrose argument claims humans can 'see' the truth of G while no formal system can prove it, suggesting human mathematical cognition transcends any Turing machine. Critics (Putnam, Feferman, Hofstadter) argue this conflates informal reasoning with formal proof and that humans are also subject to limitations. The debate remains unresolved.\n\nGödel's work suggests that no finite set of rules can capture all mathematical truth — creativity, intuition, and the willingness to adopt new axioms are permanently necessary.",
     "openQuestions": [
       "Can human mathematical reasoning genuinely transcend formal systems, or are we also bound by incompleteness?",
       "What is the relationship between Gödel incompleteness, Turing undecidability, and Chaitin incompleteness?",
@@ -223,6 +223,36 @@
       "targetId": "cantors-theorem",
       "relationship": "foundational",
       "description": "Cantor's theorem ($|A| < |\\mathcal{P}(A)|$) uses the same diagonal construction that Gödel adapted for incompleteness. Gödel's self-referential sentence 'this statement is unprovable' is the arithmetic analog of Cantor's diagonal set $\\{x : x \\notin f(x)\\}$ — both create paradoxes by negating a self-referential predicate along the diagonal. Lawvere's fixed-point theorem unifies both as instances of a single categorical principle"
+    },
+    {
+      "targetId": "p-vs-np",
+      "relationship": "related",
+      "description": "The P vs. NP problem asks whether every efficiently verifiable problem can be efficiently solved — a question about the limits of computation, just as Gödel asks about the limits of formal proof. Some researchers have explored whether P ≠ NP might be independent of standard axioms (à la Gödel incompleteness), though no proof of independence exists. Both problems sit at the boundary of what formal systems and computational processes can achieve."
+    },
+    {
+      "targetId": "schroeder-bernstein",
+      "relationship": "foundational",
+      "description": "The Schröder-Bernstein theorem (if |A| ≤ |B| and |B| ≤ |A| then |A| = |B|) is a foundational result about infinite sets provable in Zermelo-Fraenkel set theory. Gödel's theorems apply to any formal system including ZF that is strong enough to code arithmetic — the Schröder-Bernstein theorem is part of the set-theoretic infrastructure within which Gödel's encoding operates."
+    },
+    {
+      "targetId": "denumerability-rationals",
+      "relationship": "foundational",
+      "description": "The denumerability of the rationals (Q is countably infinite) is essential background for Gödel's theorem: Gödel numbering works because the set of all formulas in any finitary language is countable. The uncountability of the reals (via Cantor's diagonal argument) then explains why formal systems cannot prove all arithmetic truths — there are uncountably many, but only countably many proofs."
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "thematic",
+      "description": "The Four Color Theorem (1976, Appel-Haken) was the first major theorem proved with essential computer assistance, raising philosophical questions about what counts as a mathematical proof — questions that Gödel's framework makes precise. While the Four Color Theorem is provable in ZFC (and has since been formally verified in Coq/Lean), it illustrates how the boundary between 'proved' and 'unprovable' shapes mathematical practice."
+    },
+    {
+      "targetId": "fermats-last-theorem",
+      "relationship": "thematic",
+      "description": "Fermat's Last Theorem ($x^n + y^n = z^n$ has no positive integer solutions for $n \\geq 3$) was an open problem for 350 years before Wiles's proof (1995). Harvey Friedman has shown that very strong set-theoretic axioms (Grothendieck universes, used in Wiles's original proof) are not necessary — FLT is provable in Peano Arithmetic. This connects to Gödel incompleteness: determining which axiom system is needed for a given theorem is a refined form of the provability question."
+    },
+    {
+      "targetId": "collatz-structured",
+      "relationship": "related",
+      "description": "The Collatz conjecture — that iterating $n \\mapsto 3n+1$ (if odd) or $n/2$ (if even) always reaches 1 — is widely suspected to be unprovable in standard axiom systems like ZFC, not just unknown. Erdős said 'Mathematics is not yet ready for such problems.' If true, this would be a 'natural' instance of Gödel incompleteness: a simple arithmetic statement independent of ZFC, not arising from self-reference but from inherent complexity."
     }
   ],
   "references": [
@@ -253,6 +283,27 @@
       "year": "1992",
       "venue": "Oxford Logic Guides 19, Oxford University Press",
       "note": "Rigorous modern treatment emphasizing the role of the diagonal lemma and Löb's theorem — the approach most closely matching this formalization's use of fixed-point sentences and derivability conditions"
+    },
+    {
+      "authors": "Davis, Martin (ed.)",
+      "title": "The Undecidable: Basic Papers on Undecidable Propositions, Unsolvable Problems and Computable Functions",
+      "year": "1965",
+      "venue": "Raven Press (reprinted Dover Publications, 2004)",
+      "note": "Collects the foundational papers in one volume: Gödel (1931), Church (1936), Turing (1936), Rosser (1936), Kleene (1936), Post (1947). Essential primary source collection showing how incompleteness, undecidability, and computability theory emerged together in the 1930s"
+    },
+    {
+      "authors": "Franzén, Torkel",
+      "title": "Gödel's Theorem: An Incomplete Guide to Its Use and Abuse",
+      "year": "2005",
+      "venue": "A K Peters / CRC Press",
+      "note": "Invaluable corrective to misappropriations of Gödel's theorem in philosophy, consciousness studies, and popular writing. Carefully distinguishes what the theorems actually say from what they are often claimed to imply — particularly relevant for discussions of the Lucas-Penrose argument and limits of human mathematical insight"
+    },
+    {
+      "authors": "Rosser, J. Barkley",
+      "title": "Extensions of Some Theorems of Gödel and Church",
+      "year": "1936",
+      "venue": "Journal of Symbolic Logic 1(3), 87–91",
+      "note": "Rosser's strengthening of the First Incompleteness Theorem: replaces Gödel's ω-consistency hypothesis with simple consistency, using the 'Rosser trick' of comparing lengths of proofs of φ and ¬φ. This is now the standard modern statement of the theorem"
     }
   ],
   "leanFile": {
