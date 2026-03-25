@@ -24,6 +24,18 @@
     "prerequisites": ["metric spaces", "Prod type in Lean", "function types"]
   },
   {
+    "id": "ann-erdos103oq01-metric-basics",
+    "proofId": "erdos-103-oq-01",
+    "range": { "startLine": 79, "endLine": 98 },
+    "type": "technique",
+    "title": "Foundational Metric Properties: Nonnegativity, Reflexivity, Symmetry",
+    "content": "Establishes the basic metric space axioms for `pointDist`. Nonnegativity follows directly from `Real.sqrt_nonneg`. Reflexivity ($d(p,p)=0$) reduces to $\\sqrt{0^2+0^2}=0$ via `sub_self`. The squared distance formula $d(p,q)^2 = (p_1-q_1)^2 + (p_2-q_2)^2$ uses `Real.sq_sqrt` (valid since the sum of squares is nonneg). Symmetry uses `ring` to show $(p_1-q_1)^2+(p_2-q_2)^2 = (q_1-p_1)^2+(q_2-p_2)^2$. These properties are standard but essential scaffolding for the definiteness proof that follows.",
+    "mathContext": "Nonnegativity: $d(p,q) = \\sqrt{(\\cdot)} \\geq 0$. Reflexivity: $d(p,p) = \\sqrt{0} = 0$. Symmetry: $(a-b)^2 = (b-a)^2$ by ring identity. Squared form: $d(p,q)^2 = (p_1-q_1)^2 + (p_2-q_2)^2$ by $\\sqrt{x}^2 = x$ for $x \\geq 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["metric space axioms", "Real.sqrt_nonneg", "Real.sq_sqrt", "ring tactic"],
+    "prerequisites": ["square root properties", "basic real arithmetic"]
+  },
+  {
     "id": "ann-erdos103oq01-definiteness",
     "proofId": "erdos-103-oq-01",
     "range": { "startLine": 100, "endLine": 115 },
@@ -58,6 +70,18 @@
     "significance": "key",
     "relatedConcepts": ["Mazur-Ulam theorem", "affine isometry", "surjective function", "orthogonal group"],
     "prerequisites": ["normed space isometries", "function surjectivity"]
+  },
+  {
+    "id": "ann-erdos103oq01-identity-comp",
+    "proofId": "erdos-103-oq-01",
+    "range": { "startLine": 142, "endLine": 151 },
+    "type": "definition",
+    "title": "Identity and Composition Isometries",
+    "content": "Constructs the identity isometry (trivially distance-preserving) and the composition $\\sigma \\circ \\tau$ of two isometries. Composition preserves distances by chaining: $d((\\sigma \\circ \\tau)(p), (\\sigma \\circ \\tau)(q)) = d(\\tau(p), \\tau(q)) = d(p,q)$. These are the first two ingredients for showing that isometries of $\\mathbb{R}^2$ form a group — the inverse (constructed next using `Function.surjInv`) completes the picture. In the classification of isometries of $\\mathbb{R}^n$, the group structure is $E(n) = O(n) \\ltimes \\mathbb{R}^n$ (the Euclidean group), a semidirect product of orthogonal transformations and translations.",
+    "mathContext": "Identity: $\\text{id}(p) = p$, trivially $d(p,q) = d(p,q)$. Composition: $d((\\sigma \\circ \\tau)(p), (\\sigma \\circ \\tau)(q)) = d(\\tau(p), \\tau(q)) = d(p,q)$. Group: $(E(2), \\circ)$ with $\\text{id}$, composition, and inverse.",
+    "significance": "supporting",
+    "relatedConcepts": ["Euclidean group", "group structure", "isometry composition", "Function.comp"],
+    "prerequisites": ["Isometry2D structure", "function composition"]
   },
   {
     "id": "ann-erdos103oq01-inverse",
