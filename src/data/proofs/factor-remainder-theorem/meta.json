@@ -247,5 +247,19 @@
       "venue": "Springer UTM, 4th edition",
       "note": "Extends the Factor Theorem to the multivariate setting via Hilbert's Nullstellensatz and Gröbner bases — the computational algebra perspective on polynomial root-finding and factorization"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "factor_theorem",
+      "type": "core",
+      "description": "p(a) = 0 iff (x - a) divides p(x)",
+      "leanType": "(p : Polynomial R) -> (a : R) -> aeval a p = 0 <-> (X - C a) dvd p"
+    },
+    {
+      "name": "remainder_theorem",
+      "type": "key",
+      "description": "The remainder of p(x) / (x - a) is p(a)",
+      "leanType": "(p : Polynomial R) -> (a : R) -> p %ₘ (X - C a) = C (aeval a p)"
+    }
   ]
 }

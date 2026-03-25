@@ -222,5 +222,19 @@
       "venue": "Sitzungsberichte der Königlich Preußischen Akademie der Wissenschaften",
       "note": "Generalized Lindemann's result to the full Lindemann-Weierstrass theorem on algebraic independence"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "hermite_lindemann",
+      "type": "core",
+      "description": "If a is a nonzero algebraic number, then e^a is transcendental",
+      "leanType": "IsAlgebraic Q a -> a != 0 -> Transcendental Q (Real.exp a)"
+    },
+    {
+      "name": "pi_transcendental",
+      "type": "key",
+      "description": "Pi is transcendental (corollary: e^(i*pi) = -1 with i*pi algebraic would contradict HL)",
+      "leanType": "Transcendental Q Real.pi"
+    }
   ]
 }

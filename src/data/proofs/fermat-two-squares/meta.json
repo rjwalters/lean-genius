@@ -227,5 +227,13 @@
     "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 0
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "fermat_two_squares",
+      "type": "core",
+      "description": "An odd prime p is a sum of two squares iff p = 1 (mod 4)",
+      "leanType": "Nat.Prime p -> p != 2 -> (exists a b : Int, p = a^2 + b^2) <-> p % 4 = 1"
+    }
+  ]
 }

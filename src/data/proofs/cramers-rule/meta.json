@@ -244,5 +244,13 @@
       "venue": "Mathematics of Computation",
       "note": "Fraction-free algorithm for determinants, an alternative to Cramer's rule for integer matrices"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "cramers_rule",
+      "type": "core",
+      "description": "x_i = det(A_i)/det(A) where A_i replaces column i of A with b",
+      "leanType": "det A != 0 -> A.mulVec x = b -> x i = det (A.updateColumn i b) / det A"
+    }
   ]
 }

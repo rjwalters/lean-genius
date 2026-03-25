@@ -223,5 +223,13 @@
       "relationship": "related",
       "description": "The Schroeder-Bernstein theorem uses a chain of iterated function applications that terminates by well-ordering — the same principle shown equivalent to induction in this formalization. Both are Wiedijk 100 theorems formalized in Lean 4 via Mathlib"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "induction_principle",
+      "type": "core",
+      "description": "If P(0) and P(n) implies P(n+1), then P holds for all natural numbers",
+      "leanType": "P 0 -> (forall n, P n -> P (n+1)) -> forall n, P n"
+    }
   ]
 }

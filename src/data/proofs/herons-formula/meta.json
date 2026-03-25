@@ -186,5 +186,13 @@
       "venue": "Oxford University Press (Dover reprint 1981)",
       "note": "Historical analysis of Heron's formula including the proof from Metrica"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "heron_formula",
+      "type": "core",
+      "description": "Area of triangle = sqrt(s(s-a)(s-b)(s-c)) where s = (a+b+c)/2",
+      "leanType": "area = Real.sqrt (s * (s-a) * (s-b) * (s-c)) where s = (a+b+c)/2"
+    }
   ]
 }

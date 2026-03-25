@@ -377,5 +377,13 @@
       "ENNReal",
       "TwoDimensionalGlobal"
     ]
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "navier_stokes_existence",
+      "type": "core",
+      "description": "Millennium Prize: existence and smoothness of solutions to Navier-Stokes equations",
+      "leanType": "NavierStokesInitialData -> exists! (u p), NavierStokesSolution u p and Smooth u"
+    }
+  ]
 }

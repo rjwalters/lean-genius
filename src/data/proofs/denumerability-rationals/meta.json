@@ -229,5 +229,13 @@
       "type": "book",
       "note": "Authoritative history of set theory from Cantor and Dedekind through Zermelo and Gödel, with detailed analysis of the denumerability results and their foundational impact"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "rationals_countable",
+      "type": "core",
+      "description": "The rational numbers are countable (Cantor's zigzag argument)",
+      "leanType": "Set.Countable (Set.univ : Set Q)"
+    }
   ]
 }

@@ -207,5 +207,13 @@
       "venue": "Cambridge University Press",
       "note": "Contains the proof and its vast generalization to linear forms in logarithms, for which Baker won the Fields Medal"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "gelfond_schneider",
+      "type": "core",
+      "description": "If a is algebraic != 0,1 and b is algebraic irrational, then a^b is transcendental",
+      "leanType": "IsAlgebraic Q a -> a != 0 -> a != 1 -> IsAlgebraic Q b -> Irrational b -> Transcendental Q (a^b)"
+    }
   ]
 }

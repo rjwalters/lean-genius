@@ -231,5 +231,13 @@
       "venue": "Journal de Mathématiques Pures et Appliquées 16, 133–142",
       "note": "Proved the existence of transcendental numbers by constructing explicit examples using rapidly convergent series"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "liouville_approximation",
+      "type": "core",
+      "description": "Algebraic numbers of degree d cannot be approximated by rationals better than |a - p/q| >= c/q^d",
+      "leanType": "IsAlgebraic Q a -> algebraicDegree a = d -> exists c > 0, forall p q, |a - p/q| >= c / q^d"
+    }
   ]
 }

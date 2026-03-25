@@ -244,5 +244,13 @@
       "Metric",
       "Filter"
     ]
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "schauder_fixed_point",
+      "type": "core",
+      "description": "Every continuous map from a convex compact subset of a Banach space to itself has a fixed point",
+      "leanType": "Convex K -> IsCompact K -> Continuous f -> maps_to f K K -> exists x in K, f x = x"
+    }
+  ]
 }

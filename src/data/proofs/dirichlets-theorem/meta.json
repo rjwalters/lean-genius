@@ -221,5 +221,13 @@
       "venue": "Springer GTM 7",
       "note": "Modern proof of Dirichlet's theorem using character theory and L-functions"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "dirichlet_arithmetic_progression",
+      "type": "core",
+      "description": "There are infinitely many primes in any arithmetic progression a, a+d, a+2d, ... with gcd(a,d)=1",
+      "leanType": "Nat.Coprime a d -> Set.Infinite {p | Nat.Prime p and p % d = a % d}"
+    }
   ]
 }

@@ -162,5 +162,13 @@
       "venue": "Addison-Wesley, 2nd edition",
       "note": "Modern reference for binomial coefficients, identities, and their applications in computer science"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "combinations_formula",
+      "type": "core",
+      "description": "C(n,k) = n! / (k! * (n-k)!)",
+      "leanType": "(n k : Nat) -> k <= n -> Nat.choose n k = n! / (k! * (n-k)!)"
+    }
   ]
 }
