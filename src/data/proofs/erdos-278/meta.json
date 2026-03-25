@@ -21,9 +21,9 @@
     "erdosNumber": 278,
     "erdosUrl": "https://erdosproblems.com/278",
     "erdosProblemStatus": "open",
-    "axiomCount": 2,
-    "assumptions": "2 axiom declarations: simpson_theorem (minimum with equal residues — deep 1986 result), max_density_coprime_case (CRT coprime maximum). Previously axiomatized equal_residues_minimize, single_modulus_density, and erdos_278_density_le_one are now fully proved.",
-    "lineCount": 411,
+    "axiomCount": 1,
+    "assumptions": "1 axiom: simpson_theorem (minimum density achieved with equal residues — Simpson 1986). coprime_density_formula is now FULLY PROVED via CRT complement counting argument.",
+    "lineCount": 646,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -131,9 +131,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 411,
-    "axiomCount": 2,
-    "theoremCount": 11,
+    "lineCount": 646,
+    "axiomCount": 1,
+    "theoremCount": 31,
     "definitionCount": 7
   },
   "crossReferences": [

@@ -180,30 +180,215 @@ lemma systemLCM_coprime_eq_prod (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 
   unfold systemLCM
   set l := moduli.val.toList with hl_def
   -- Convert pairwise coprime from Finset to List
-  have hpw : l.Pairwise Nat.Coprime := by
-    have hnd := moduli.nodup
-    rw [hl_def]
-    rw [List.pairwise_iff_getElem]
-    intro i j hi hj hij
-    have hlt := Nat.lt_of_lt_of_le (Nat.lt_of_lt_of_le hij (Nat.le_of_lt_succ hj)) (by omega)
-    have hi' : l[i] ∈ moduli := by
-      rw [hl_def]; exact Finset.mem_def.mpr (Multiset.mem_toList.mpr
-        (Multiset.mem_toList.mp (List.getElem_mem (by rw [← hl_def]; exact hi))))
-    have hj' : l[j] ∈ moduli := by
-      rw [hl_def]; exact Finset.mem_def.mpr (Multiset.mem_toList.mpr
-        (Multiset.mem_toList.mp (List.getElem_mem (by rw [← hl_def]; exact hj))))
-    have hne : l[i] ≠ l[j] := by
-      intro heq
-      have hnd' : l.Nodup := by rw [hl_def]; exact Multiset.toList_nodup moduli.val hnd
-      exact absurd heq (List.Nodup.getElem_ne hnd' (by omega))
-    exact hcop l[i] hi' l[j] hj' hne
+  have hnd : l.Nodup := by
+    simp only [hl_def, ← Multiset.coe_nodup, Multiset.coe_toList]; exact moduli.nodup
+  have hpw : l.Pairwise Nat.Coprime :=
+    hnd.imp_of_mem fun {a} {b} ha hb hne => by
+      rw [hl_def] at ha hb
+      exact hcop a (Finset.mem_def.mpr (Multiset.mem_toList.mp ha))
+                   b (Finset.mem_def.mpr (Multiset.mem_toList.mp hb)) hne
   rw [foldl_lcm_eq_foldl_mul l 1 (fun x _ => Nat.coprime_one_left x) hpw]
   -- Relate List.foldl (· * ·) 1 to Finset.prod
   rw [← List.prod_eq_foldl]
   -- l.prod = moduli.val.prod = moduli.prod id
   change l.prod = moduli.prod id
-  rw [Finset.prod_eq_multiset_prod, Multiset.map_id']
-  exact (Multiset.prod_toList moduli.val).symm
+  rw [Finset.prod_eq_multiset_prod, Multiset.map_id, hl_def]
+  exact Multiset.prod_toList moduli.val
+
+-- ## CRT Complement Counting (for proving coprime_density_formula)
+
+/-- If n ∣ L, then (j + k*L) % n = j % n. -/
+private lemma mod_add_mul_dvd (j k n L : ℕ) (h : n ∣ L) : (j + k * L) % n = j % n := by
+  obtain ⟨q, rfl⟩ := h
+  rw [show k * (n * q) = n * (q * k) from by ring]
+  exact Nat.add_mul_mod_self_left j n (q * k)
+
+/-- For coprime L and n, residue shift is injective on {0,...,n-1}. -/
+private lemma coprime_shift_injective {n L : ℕ} (hn : 0 < n) (hcop : Nat.Coprime L n)
+    {j k₁ k₂ : ℕ} (hk₁ : k₁ < n) (hk₂ : k₂ < n)
+    (heq : (j + k₁ * L) % n = (j + k₂ * L) % n) : k₁ = k₂ := by
+  by_contra hne
+  wlog hle : k₁ ≤ k₂ with H
+  · exact H hn hcop hk₂ hk₁ heq.symm (Ne.symm hne) (le_of_not_le hle)
+  have hlt : k₁ < k₂ := lt_of_le_of_ne hle hne
+  have h1 : j + k₁ * L ≤ j + k₂ * L :=
+    Nat.add_le_add_left (Nat.mul_le_mul_right L hle) j
+  have h2 : j + k₂ * L - (j + k₁ * L) = (k₂ - k₁) * L := by
+    have hkL : k₁ * L ≤ k₂ * L := Nat.mul_le_mul_right L hle
+    rw [Nat.sub_mul]
+    omega
+  have hdvd := (Nat.modEq_iff_dvd' h1).mp heq
+  rw [h2] at hdvd
+  exact absurd (Nat.le_of_dvd (by omega) (hcop.symm.dvd_of_dvd_mul_right hdvd)) (by omega)
+
+/-- For coprime L and n, residues {(j+kL) % n : k < n} cover all of {0,...,n-1}. -/
+private lemma coprime_residues_complete {n L : ℕ} (hn : 0 < n) (hcop : Nat.Coprime L n) (j : ℕ) :
+    (Finset.range n).image (fun k => (j + k * L) % n) = Finset.range n :=
+  Finset.eq_of_subset_of_card_le
+    (fun _ hx => Finset.mem_range.mpr (by
+      obtain ⟨_, _, rfl⟩ := Finset.mem_image.mp hx; exact Nat.mod_lt _ hn))
+    (by rw [Finset.card_range]
+        have hinj : Set.InjOn (fun k => (j + k * L) % n) ↑(Finset.range n) :=
+          fun _ hk₁ _ hk₂ heq =>
+            coprime_shift_injective hn hcop (Finset.mem_range.mp (Finset.mem_coe.mp hk₁))
+              (Finset.mem_range.mp (Finset.mem_coe.mp hk₂)) heq
+        rw [Finset.card_image_of_injOn hinj, Finset.card_range])
+
+/-- Among k < n, exactly (n-1) give (j+kL) % n ≠ t (for coprime L, n). -/
+private lemma coprime_avoid_count {n L : ℕ} (hn : 0 < n) (hcop : Nat.Coprime L n)
+    {j t : ℕ} (ht : t < n) :
+    ((Finset.range n).filter (fun k => (j + k * L) % n ≠ t)).card = n - 1 := by
+  have hmem : t ∈ (Finset.range n).image (fun k => (j + k * L) % n) := by
+    rw [coprime_residues_complete hn hcop j]; exact Finset.mem_range.mpr ht
+  obtain ⟨k₀, hk₀, hmod₀⟩ := Finset.mem_image.mp hmem
+  have hhit : (Finset.range n).filter (fun k => (j + k * L) % n = t) = {k₀} :=
+    Finset.ext fun k => ⟨
+      fun h => by
+        simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_singleton] at h ⊢
+        exact coprime_shift_injective hn hcop h.1 (Finset.mem_range.mp hk₀) (by rw [h.2, hmod₀]),
+      fun h => by rw [Finset.mem_singleton.mp h]; exact Finset.mem_filter.mpr ⟨hk₀, hmod₀⟩⟩
+  have : (Finset.range n).filter (fun k => (j + k * L) % n ≠ t) =
+      Finset.range n \ (Finset.range n).filter (fun k => (j + k * L) % n = t) :=
+    Finset.ext fun k => by
+      simp only [Finset.mem_filter, Finset.mem_sdiff, Finset.mem_range]
+      constructor
+      · intro ⟨hk, hne⟩; exact ⟨hk, fun ⟨_, heq⟩ => hne heq⟩
+      · intro ⟨hk, h⟩; exact ⟨hk, fun heq => h ⟨hk, heq⟩⟩
+  rw [this, hhit]
+  have hk₀_mem : k₀ ∈ Finset.range n := hk₀
+  rw [show Finset.range n \ ({k₀} : Finset ℕ) = (Finset.range n).erase k₀ from
+      (Finset.erase_eq (Finset.range n) k₀).symm,
+    Finset.card_erase_of_mem hk₀_mem, Finset.card_range]
+
+/-- The complement count for coprime moduli equals ∏(nᵢ - 1) (CRT argument by Finset induction). -/
+private lemma complement_eq_prod (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n)
+    (hcop : ∀ m ∈ moduli, ∀ n ∈ moduli, m ≠ n → Nat.Coprime m n)
+    (r : ℕ → ℕ) :
+    ((Finset.range (moduli.prod id)).filter
+      (fun m => ∀ n ∈ moduli, m % n ≠ r n % n)).card =
+    moduli.prod (fun n => n - 1) := by
+  revert hpos hcop
+  refine Finset.induction_on moduli ?_ ?_
+  · intro _ _; simp [Finset.filter_true_of_mem]
+  · intro a S haS ih hpos hcop
+    have hpos_S : ∀ n ∈ S, 0 < n := fun n hn => hpos n (Finset.mem_insert_of_mem hn)
+    have hcop_S : ∀ m ∈ S, ∀ n ∈ S, m ≠ n → Nat.Coprime m n :=
+      fun m hm n hn hmn => hcop m (Finset.mem_insert_of_mem hm) n (Finset.mem_insert_of_mem hn) hmn
+    have ha_pos : 0 < a := hpos a (Finset.mem_insert_self a S)
+    have hcop_aS : ∀ n ∈ S, Nat.Coprime a n := fun n hn =>
+      hcop a (Finset.mem_insert_self a S) n (Finset.mem_insert_of_mem hn)
+        (fun h => haS (h ▸ hn))
+    specialize ih hpos_S hcop_S
+    set L := S.prod id with hL_def
+    have hL_pos : 0 < L := Finset.prod_pos (fun n hn => hpos_S n hn)
+    set t := r a % a
+    -- Rewrite products for insert
+    have hprod_id : (insert a S).prod id = a * L := by
+      rw [Finset.prod_insert haS]; simp [hL_def]
+    rw [hprod_id, Finset.prod_insert haS, ← ih]
+    -- Split filter condition: ∀n∈insert a S ↔ (m%a ≠ t) ∧ (∀n∈S, ...)
+    have hfilter_eq : (Finset.range (a * L)).filter
+        (fun m => ∀ n ∈ insert a S, m % n ≠ r n % n) =
+        (Finset.range (a * L)).filter
+        (fun m => m % a ≠ t ∧ ∀ n ∈ S, m % n ≠ r n % n) := by
+      ext m; simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_insert]
+      constructor
+      · intro ⟨hm, h⟩; exact ⟨hm, h a (Or.inl rfl), fun n hn => h n (Or.inr hn)⟩
+      · intro ⟨hm, ha_c, hS_c⟩; exact ⟨hm, fun n hn => hn.elim (· ▸ ha_c) (hS_c n)⟩
+    rw [hfilter_eq]
+    -- Define complement_S and fiber function
+    set compS := (Finset.range L).filter (fun j => ∀ n ∈ S, j % n ≠ r n % n)
+    set fib := fun (j : ℕ) =>
+      ((Finset.range a).filter (fun k => (j + k * L) % a ≠ t)).image (fun k => j + k * L)
+    -- Show the complement equals biUnion of fibers
+    have hbi : (Finset.range (a * L)).filter
+        (fun m => m % a ≠ t ∧ ∀ n ∈ S, m % n ≠ r n % n) = compS.biUnion fib := by
+      ext m; constructor
+      · intro hm
+        have ⟨hm_r, hm_a, hm_S⟩ := Finset.mem_filter.mp hm
+        refine Finset.mem_biUnion.mpr ⟨m % L, Finset.mem_filter.mpr
+          ⟨Finset.mem_range.mpr (Nat.mod_lt m hL_pos), fun n hn => by
+            have hndvd : n ∣ L := Finset.dvd_prod_of_mem id hn
+            have hmodL : m % L % n = m % n := by
+              have heq1 : (m % L + m / L * L) % n = m % L % n :=
+                mod_add_mul_dvd (m % L) (m / L) n L hndvd
+              have heq2 : m % L + m / L * L = m := by
+                linarith [Nat.div_add_mod m L, mul_comm L (m / L)]
+              rw [heq2] at heq1; exact heq1.symm
+            rw [hmodL]; exact hm_S n hn⟩,
+          Finset.mem_image.mpr ⟨m / L, Finset.mem_filter.mpr
+            ⟨Finset.mem_range.mpr (Nat.div_lt_of_lt_mul (by rw [mul_comm]; exact Finset.mem_range.mp hm_r)),
+             by have hmod_eq : m % L + m / L * L = m := by
+                  linarith [Nat.div_add_mod m L, mul_comm L (m / L)]
+                rw [hmod_eq]; exact hm_a⟩,
+            by linarith [Nat.div_add_mod m L, mul_comm L (m / L)]⟩⟩
+      · intro hm
+        obtain ⟨j, hj, hm_fib⟩ := Finset.mem_biUnion.mp hm
+        obtain ⟨k, hk, rfl⟩ := Finset.mem_image.mp hm_fib
+        have hj_d := Finset.mem_filter.mp hj
+        have hk_d := Finset.mem_filter.mp hk
+        exact Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by
+          have hj_lt : j < L := Finset.mem_range.mp hj_d.1
+          have hk_lt : k < a := Finset.mem_range.mp hk_d.1
+          have hkL : k * L ≤ (a - 1) * L :=
+            Nat.mul_le_mul_right L (by omega)
+          have hcalc : L + (a - 1) * L = a * L := by
+            have : a - 1 + 1 = a := Nat.succ_pred_eq_of_pos ha_pos
+            nlinarith
+          calc j + k * L < L + (a - 1) * L := by omega
+            _ = a * L := hcalc),
+          hk_d.2, fun n hn => by
+            rw [mod_add_mul_dvd j k n L (Finset.dvd_prod_of_mem id hn)]; exact hj_d.2 n hn⟩
+    rw [hbi]
+    -- Fibers are pairwise disjoint (different j → different m%L)
+    have hdisj : Set.PairwiseDisjoint (↑compS : Set ℕ) fib := by
+      intro j₁ hj₁ j₂ hj₂ hne
+      rw [Function.onFun, Finset.disjoint_left]
+      intro m hm₁ hm₂
+      obtain ⟨k₁, _, rfl⟩ := Finset.mem_image.mp hm₁
+      obtain ⟨k₂, _, heq⟩ := Finset.mem_image.mp hm₂
+      apply hne
+      have h1 : j₁ < L := Finset.mem_range.mp (Finset.mem_filter.mp hj₁).1
+      have h2 : j₂ < L := Finset.mem_range.mp (Finset.mem_filter.mp hj₂).1
+      have h3 : (j₁ + k₁ * L) % L = j₁ := by
+        rw [show j₁ + k₁ * L = j₁ + L * k₁ from by ring, Nat.add_mul_mod_self_left,
+            Nat.mod_eq_of_lt h1]
+      have h4 : (j₂ + k₂ * L) % L = j₂ := by
+        rw [show j₂ + k₂ * L = j₂ + L * k₂ from by ring, Nat.add_mul_mod_self_left,
+            Nat.mod_eq_of_lt h2]
+      calc j₁ = (j₁ + k₁ * L) % L := h3.symm
+        _ = (j₂ + k₂ * L) % L := by rw [heq]
+        _ = j₂ := h4
+    rw [Finset.card_biUnion hdisj]
+    -- L is coprime to a (product of coprime elements)
+    have hcop_La : Nat.Coprime L a := by
+      rw [hL_def]; exact Nat.coprime_prod_left_iff.mpr (fun n hn => (hcop_aS n hn).symm)
+    -- Each fiber has cardinality a - 1
+    have hfib_card : ∀ j ∈ compS, (fib j).card = a - 1 := fun j _ => by
+      rw [Finset.card_image_of_injOn (fun k₁ _ k₂ _ (heq : j + k₁ * L = j + k₂ * L) =>
+        Nat.eq_of_mul_eq_mul_right hL_pos (by linarith))]
+      exact coprime_avoid_count ha_pos hcop_La (Nat.mod_lt (r a) ha_pos)
+    -- Sum of constant (a-1) over compS = (a-1) * compS.card
+    rw [Finset.sum_congr rfl hfib_card, Finset.sum_const, smul_eq_mul, mul_comm]
+
+/-- Product fraction identity: ∏((n-1)/n) = ∏(n-1) / ∏n in ℝ, for positive naturals. -/
+private lemma prod_sub_one_div (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n) :
+    (↑(moduli.prod (fun n => n - 1)) : ℝ) / ↑(moduli.prod id) =
+    moduli.prod (fun n => 1 - 1 / (↑n : ℝ)) := by
+  revert hpos
+  refine Finset.induction_on moduli ?_ ?_
+  · intro _; simp
+  · intro a S haS ih hpos
+    have hpos_S : ∀ n ∈ S, 0 < n := fun n hn => hpos n (Finset.mem_insert_of_mem hn)
+    have ha_pos : 0 < a := hpos a (Finset.mem_insert_self a S)
+    have ha_ne : (a : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+    have hL_ne : (↑(S.prod id) : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by
+      exact Nat.pos_iff_ne_zero.mp (Finset.prod_pos (fun n hn => hpos_S n hn)))
+    rw [Finset.prod_insert haS, Finset.prod_insert haS, Finset.prod_insert haS]
+    conv_lhs => rw [show (id a : ℕ) = a from rfl]
+    rw [← ih hpos_S, Nat.cast_mul, Nat.cast_mul, Nat.cast_sub (by omega : 1 ≤ a)]
+    field_simp
+    ring
 
 -- ## Simpson's Theorem (1986)
 
@@ -309,13 +494,63 @@ theorem equal_residues_minimize (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 
     the residue classes partition Z/LZ uniformly.
     NOTE: Previously stated as "= Σ 1/nᵢ" which is incorrect for |moduli| ≥ 2
     (e.g., for {2,3}: actual density = 2/3, not 5/6). -/
-axiom coprime_density_formula (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n)
+theorem coprime_density_formula (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n)
     (hcop : ∀ m ∈ moduli, ∀ n ∈ moduli, m ≠ n → Nat.Coprime m n)
     (r : ℕ → ℕ) :
-    coverageDensity ⟨moduli, r, hpos⟩ = coprimeDensity moduli
+    coverageDensity ⟨moduli, r, hpos⟩ = coprimeDensity moduli := by
+  -- Rewrite to explicit filter form
+  rw [coverageDensity_eq]
+  -- Replace systemLCM with moduli.prod id
+  have hL := systemLCM_coprime_eq_prod moduli hpos hcop r
+  conv_lhs => rw [hL]
+  dsimp only []
+  -- Setup
+  have hP : 0 < moduli.prod id := Finset.prod_pos (fun n hn => hpos n hn)
+  have hP_ne : (↑(moduli.prod id) : ℝ) ≠ 0 :=
+    Nat.cast_ne_zero.mpr (Nat.pos_iff_ne_zero.mp hP)
+  -- Complement count = ∏(nᵢ - 1) by CRT
+  have hcomp := complement_eq_prod moduli hpos hcop r
+  -- Coverage + complement = moduli.prod id (partition)
+  have hpart :
+    ((Finset.range (moduli.prod id)).filter (fun m => ∃ n ∈ moduli, m % n = r n % n)).card +
+    ((Finset.range (moduli.prod id)).filter (fun m => ∀ n ∈ moduli, m % n ≠ r n % n)).card =
+    moduli.prod id := by
+    have hdisj : Disjoint
+        ((Finset.range (moduli.prod id)).filter (fun m => ∃ n ∈ moduli, m % n = r n % n))
+        ((Finset.range (moduli.prod id)).filter (fun m => ∀ n ∈ moduli, m % n ≠ r n % n)) := by
+      rw [Finset.disjoint_left]; intro m hm1 hm2
+      obtain ⟨n, hn, heq⟩ := (Finset.mem_filter.mp hm1).2
+      exact absurd heq ((Finset.mem_filter.mp hm2).2 n hn)
+    have hunion : (Finset.range (moduli.prod id)).filter (fun m => ∃ n ∈ moduli, m % n = r n % n) ∪
+        (Finset.range (moduli.prod id)).filter (fun m => ∀ n ∈ moduli, m % n ≠ r n % n) =
+        Finset.range (moduli.prod id) := by
+      ext m; simp only [Finset.mem_union, Finset.mem_filter, Finset.mem_range]
+      exact ⟨fun h => h.elim And.left And.left,
+        fun hm => if h : ∃ n ∈ moduli, m % n = r n % n then .inl ⟨hm, h⟩
+                   else .inr ⟨hm, by push_neg at h; exact h⟩⟩
+    linarith [Finset.card_union_of_disjoint hdisj, hunion ▸ Finset.card_range (moduli.prod id)]
+  -- coverage = prod(id) - prod(n-1) in ℕ and ℝ
+  have hle : moduli.prod (fun n => n - 1) ≤ moduli.prod id := by
+    calc moduli.prod (fun n => n - 1)
+        = ((Finset.range (moduli.prod id)).filter
+            (fun m => ∀ n ∈ moduli, m % n ≠ r n % n)).card := hcomp.symm
+      _ ≤ (Finset.range (moduli.prod id)).card := Finset.card_filter_le _ _
+      _ = moduli.prod id := Finset.card_range _
+  have hcov_eq : (((Finset.range (moduli.prod id)).filter
+      (fun m => ∃ n ∈ moduli, m % n = r n % n)).card : ℝ) =
+      ↑(moduli.prod id) - ↑(moduli.prod (fun n => n - 1)) := by
+    have hnat : ((Finset.range (moduli.prod id)).filter
+      (fun m => ∃ n ∈ moduli, m % n = r n % n)).card =
+      moduli.prod id - moduli.prod (fun n => n - 1) := by rw [← hcomp]; omega
+    rw [hnat, Nat.cast_sub hle]
+  -- density = 1 - ∏(1-1/n) = coprimeDensity
+  unfold coprimeDensity
+  rw [hcov_eq, sub_div, div_self hP_ne]
+  congr 1
+  exact prod_sub_one_div moduli hpos
 
 /-- coprimeDensity for a singleton is 1/n. -/
-theorem coprimeDensity_singleton (n : ℕ) (hn : 0 < n) :
+theorem coprimeDensity_singleton (n : ℕ) (_hn : 0 < n) :
     coprimeDensity {n} = 1 / (n : ℝ) := by
   unfold coprimeDensity
   rw [Finset.prod_singleton]
