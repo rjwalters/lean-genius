@@ -16,7 +16,11 @@
       "Nat.choose (binomial coefficients)",
       "Real-valued powers"
     ],
-    "proofId": "binomial-theorem-oq-03"
+    "proofId": "binomial-theorem-oq-03",
+    "range": {
+      "startLine": 28,
+      "endLine": 43
+    }
   },
   {
     "id": "binomial-expansion",
@@ -34,7 +38,11 @@
       "Mathlib's Commute.add_pow",
       "ring tactic"
     ],
-    "proofId": "binomial-theorem-oq-03"
+    "proofId": "binomial-theorem-oq-03",
+    "range": {
+      "startLine": 48,
+      "endLine": 63
+    }
   },
   {
     "id": "normalization",
@@ -52,7 +60,11 @@
       "binomial_expansion",
       "add_sub_cancel"
     ],
-    "proofId": "binomial-theorem-oq-03"
+    "proofId": "binomial-theorem-oq-03",
+    "range": {
+      "startLine": 53,
+      "endLine": 63
+    }
   },
   {
     "id": "absorption",
@@ -70,7 +82,11 @@
       "Nat.choose definition",
       "factorial identities"
     ],
-    "proofId": "binomial-theorem-oq-03"
+    "proofId": "binomial-theorem-oq-03",
+    "range": {
+      "startLine": 77,
+      "endLine": 82
+    }
   },
   {
     "id": "binomial-mean",
@@ -89,7 +105,11 @@
       "absorption identity",
       "binomPMF_sum_eq_one (normalization)"
     ],
-    "proofId": "binomial-theorem-oq-03"
+    "proofId": "binomial-theorem-oq-03",
+    "range": {
+      "startLine": 83,
+      "endLine": 127
+    }
   },
   {
     "id": "fair-coin",
@@ -107,7 +127,11 @@
       "binomPMF definition",
       "arithmetic with 1/2"
     ],
-    "proofId": "binomial-theorem-oq-03"
+    "proofId": "binomial-theorem-oq-03",
+    "range": {
+      "startLine": 132,
+      "endLine": 162
+    }
   },
   {
     "id": "binomial-pgf",
@@ -125,7 +149,11 @@
       "binomial_expansion",
       "ring tactic"
     ],
-    "proofId": "binomial-theorem-oq-03"
+    "proofId": "binomial-theorem-oq-03",
+    "range": {
+      "startLine": 181,
+      "endLine": 197
+    }
   },
   {
     "id": "double-absorption",
@@ -143,7 +171,11 @@
       "absorption identity (single)",
       "Nat.choose"
     ],
-    "proofId": "binomial-theorem-oq-03"
+    "proofId": "binomial-theorem-oq-03",
+    "range": {
+      "startLine": 203,
+      "endLine": 253
+    }
   },
   {
     "id": "binomial-variance",
@@ -162,7 +194,11 @@
       "binomial_second_factorial_moment",
       "binomial_mean"
     ],
-    "proofId": "binomial-theorem-oq-03"
+    "proofId": "binomial-theorem-oq-03",
+    "range": {
+      "startLine": 255,
+      "endLine": 268
+    }
   },
   {
     "id": "vandermonde-convolution",
@@ -182,7 +218,11 @@
       "binomPMF definition",
       "power laws"
     ],
-    "proofId": "binomial-theorem-oq-03"
+    "proofId": "binomial-theorem-oq-03",
+    "range": {
+      "startLine": 273,
+      "endLine": 328
+    }
   },
   {
     "id": "compound-interest-limit",
@@ -204,7 +244,11 @@
       "Real.continuous_exp",
       "tendsto_const_div_atTop_nhds_zero_nat"
     ],
-    "proofId": "binomial-theorem-oq-03"
+    "proofId": "binomial-theorem-oq-03",
+    "range": {
+      "startLine": 335,
+      "endLine": 409
+    }
   },
   {
     "id": "poisson-pmf",
@@ -223,7 +267,11 @@
       "Real.exp",
       "Nat.factorial"
     ],
-    "proofId": "binomial-theorem-oq-03"
+    "proofId": "binomial-theorem-oq-03",
+    "range": {
+      "startLine": 411,
+      "endLine": 428
+    }
   },
   {
     "id": "poisson-limit",
@@ -244,7 +292,11 @@
       "binomPMF_succ_eq",
       "poisson_ratio_tendsto"
     ],
-    "proofId": "binomial-theorem-oq-03"
+    "proofId": "binomial-theorem-oq-03",
+    "range": {
+      "startLine": 527,
+      "endLine": 558
+    }
   },
   {
     "id": "summary-theorem",
@@ -261,6 +313,10 @@
     "prerequisites": [
       "All preceding theorems in the file"
     ],
-    "proofId": "binomial-theorem-oq-03"
+    "proofId": "binomial-theorem-oq-03",
+    "range": {
+      "startLine": 564,
+      "endLine": 580
+    }
   }
 ]
