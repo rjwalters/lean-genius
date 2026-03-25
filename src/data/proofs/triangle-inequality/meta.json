@@ -231,5 +231,13 @@
       "venue": "Athens",
       "note": "Reports the Epicurean objection that Proposition 20 is 'evident even to an ass' — yet its proof from Euclid's axioms is non-trivial and the result fails in some geometries"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "triangle_inequality",
+      "type": "core",
+      "description": "||x + y|| <= ||x|| + ||y|| in normed spaces",
+      "leanType": "[NormedAddCommGroup E] -> (x y : E) -> norm(x + y) <= norm x + norm y"
+    }
   ]
 }

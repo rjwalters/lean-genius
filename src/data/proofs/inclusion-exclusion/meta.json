@@ -221,5 +221,13 @@
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 0
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "inclusion_exclusion",
+      "type": "core",
+      "description": "|A1 union ... union An| = sum |Ai| - sum |Ai cap Aj| + ...",
+      "leanType": "(s : Finset (Set alpha)) -> card (Finset.sup s) = sum (-1)^(k+1) * sum_{|T|=k} card(cap T)"
+    }
+  ]
 }

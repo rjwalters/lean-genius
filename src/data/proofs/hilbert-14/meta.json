@@ -171,5 +171,13 @@
       "venue": "American Journal of Mathematics 81(3), 766–772",
       "note": "Provided a counterexample showing that invariant rings need not be finitely generated — negative resolution of Hilbert's 14th problem"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "nagata_counterexample",
+      "type": "core",
+      "description": "Hilbert's 14th: Nagata's counterexample shows invariant rings need not be finitely generated",
+      "leanType": "exists G action, not (FinitelyGenerated (invariantRing G))"
+    }
   ]
 }

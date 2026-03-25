@@ -297,5 +297,13 @@
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 0
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "lagrange_theorem",
+      "type": "core",
+      "description": "The order of a subgroup divides the order of the group",
+      "leanType": "(H : Subgroup G) -> [Fintype G] -> Fintype.card H | Fintype.card G"
+    }
+  ]
 }

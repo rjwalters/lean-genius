@@ -177,5 +177,13 @@
       "venue": "Springer, Grundlehren der mathematischen Wissenschaften 310–311",
       "note": "Comprehensive treatment of the calculus of variations including the direct method and regularity theory — the subject of Hilbert's 23rd problem"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "calculus_of_variations",
+      "type": "core",
+      "description": "Development of the calculus of variations and direct methods",
+      "leanType": "Functional J -> exists u, minimizes J u"
+    }
   ]
 }

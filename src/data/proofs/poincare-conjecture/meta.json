@@ -377,5 +377,13 @@
       "venue": "Journal of Differential Geometry 17(3), 357–453",
       "note": "Proved the topological Poincaré conjecture in dimension 4, earning the Fields Medal — the smooth case remains open"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "poincare_conjecture",
+      "type": "core",
+      "description": "Every simply connected closed 3-manifold is homeomorphic to S^3 (Perelman 2003)",
+      "leanType": "SimplyConnected M -> ClosedManifold M -> dim M = 3 -> M homeomorphic S3"
+    }
   ]
 }

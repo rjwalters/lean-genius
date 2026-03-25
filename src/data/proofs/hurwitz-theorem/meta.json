@@ -289,5 +289,13 @@
       "venue": "Nachrichten von der Gesellschaft der Wissenschaften zu Göttingen, 309–316",
       "note": "Proved that normed division algebras over the reals exist only in dimensions 1, 2, 4, and 8 (R, C, H, O)"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "hurwitz_normed_algebras",
+      "type": "core",
+      "description": "Real normed division algebras exist only in dimensions 1, 2, 4, 8 (R, C, H, O)",
+      "leanType": "NormedDivisionAlgebra A R -> FiniteDimensional R A -> finrank R A in {1, 2, 4, 8}"
+    }
   ]
 }

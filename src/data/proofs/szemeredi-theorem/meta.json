@@ -221,5 +221,13 @@
       "venue": "ITP 2022",
       "note": "The Mathlib formalization of the regularity lemma that underpins the k=3 proof chain used in this file"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "szemeredi_theorem",
+      "type": "core",
+      "description": "Any set of integers with positive upper density contains arbitrarily long arithmetic progressions",
+      "leanType": "upper_density A > 0 -> forall k, exists a d, d > 0 and forall i < k, a + i*d in A"
+    }
   ]
 }
