@@ -127,7 +127,9 @@ retrieve_solution() {
 
 # Count sorries in a file
 count_sorries() {
-    grep -c "sorry" "$1" 2>/dev/null || echo 0
+    local count
+    count=$(grep -c "sorry" "$1" 2>/dev/null) || true
+    echo "${count:-0}"
 }
 
 # Count theorems proved (sorries eliminated) by comparing original and solution
