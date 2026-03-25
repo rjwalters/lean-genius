@@ -180,5 +180,42 @@
     "axiomCount": 2,
     "theoremCount": 12,
     "definitionCount": 5
-  }
+  },
+  "references": [
+    {
+      "authors": "Guy, Richard K.",
+      "title": "Unsolved Problems in Number Theory",
+      "year": "2004",
+      "venue": "Springer, 3rd edition (Problem B11)",
+      "note": "Documents this problem as B11: bounds on the number of solutions to k\u00b7\u03c3(k) = n. The standard reference for Erd\u0151s's unsolved number theory problems"
+    },
+    {
+      "authors": "Erd\u0151s, Paul; Granville, Andrew; Pomerance, Carl; Spiro, Claudia",
+      "title": "On the normal behavior of the iterates of some arithmetic functions",
+      "year": "1990",
+      "venue": "Analytic Number Theory (Allerton Park, IL, 1989), Progr. Math. 85, pp. 165\u2013204, Birkh\u00e4user",
+      "note": "Studies the distribution of arithmetic functions involving \u03c3(k), including asymptotic behavior of iterated sums of divisors relevant to bounding f(n)"
+    },
+    {
+      "authors": "Luca, Florian; Pomerance, Carl",
+      "title": "On some problems of Mkowski-Schinzel and Erd\u0151s concerning the arithmetical functions \u03c6 and \u03c3",
+      "year": "2002",
+      "venue": "Colloquium Mathematicum, 92(1), pp. 111\u2013130",
+      "note": "Studies the range and preimage sizes of multiplicative functions related to \u03c3, providing techniques applicable to counting solutions of k\u00b7\u03c3(k) = n"
+    },
+    {
+      "authors": "Ford, Kevin",
+      "title": "The distribution of integers with a divisor in a given interval",
+      "year": "2008",
+      "venue": "Annals of Mathematics, 168(2), pp. 367\u2013433",
+      "note": "Breakthrough results on divisor distribution with applications to bounding the number of representations of integers by multiplicative functions"
+    },
+    {
+      "authors": "Erd\u0151s, Paul",
+      "title": "Some remarks on number theory",
+      "year": "1952",
+      "venue": "Riveon Lematematika, 6, pp. 28\u201338",
+      "note": "Early paper containing several problems on the divisor function \u03c3(k) and its interactions with multiplicative number theory"
+    }
+  ]
 }
