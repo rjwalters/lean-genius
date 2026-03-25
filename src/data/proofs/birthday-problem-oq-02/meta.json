@@ -68,7 +68,7 @@
       "startLine": 60,
       "endLine": 73,
       "summary": "Defines probAllDistinct as the product ∏(1 - i/d) and probCollision as its complement, generalizing the birthday problem to arbitrary d.",
-      "mathContext": "Defines probAllDistinct as the product ∏(1 - i/d) and probCollision as its complement, generalizing the birthday problem to arbitrary d."
+      "mathContext": "$P(\\text{all distinct}) = \\prod_{i=0}^{k-1}\\left(1 - \\frac{i}{d}\\right)$, $P(\\text{collision}) = 1 - P(\\text{all distinct})$"
     },
     {
       "id": "fundamental-inequality",
@@ -76,7 +76,7 @@
       "startLine": 75,
       "endLine": 83,
       "summary": "Proves 1 - x ≤ exp(-x) for all real x via Mathlib's add_one_le_exp, the key analytic workhorse of the entire bound.",
-      "mathContext": "Proves 1 - x ≤ exp(-x) for all real x via Mathlib's add_one_le_exp, the key analytic workhorse of the entire bound."
+      "mathContext": "$1 - x \\leq e^{-x}$ for all $x \\in \\mathbb{R}$. Equivalently, $1 + t \\leq e^t$ (Mathlib's `add_one_le_exp`). Substituting $t = -x$ gives the form used here."
     },
     {
       "id": "factor-properties",
@@ -84,7 +84,7 @@
       "startLine": 85,
       "endLine": 100,
       "summary": "Establishes 0 ≤ 1 - i/d ≤ 1 for valid indices, the preconditions needed for Finset.prod_le_prod.",
-      "mathContext": "Establishes 0 ≤ 1 - i/d ≤ 1 for valid indices, the preconditions needed for Finset.prod_le_prod."
+      "mathContext": "$0 \\leq 1 - \\frac{i}{d} \\leq 1$ for $0 \\leq i < k \\leq d$. Required for `Finset.prod_le_prod` (pointwise product bound)."
     },
     {
       "id": "exponential-sum-bound",
@@ -92,7 +92,7 @@
       "startLine": 102,
       "endLine": 127,
       "summary": "The central technical step: lifts the pointwise inequality through the product and collapses via exp_sum to obtain ∏(1-i/d) ≤ exp(-∑ i/d).",
-      "mathContext": "The central technical step: lifts the pointwise inequality through the product and collapses via exp_sum to obtain ∏(1-i/d) ≤ exp(-∑ i/d)."
+      "mathContext": "$\\prod_{i<k}\\left(1-\\frac{i}{d}\\right) \\leq \\prod_{i<k} e^{-i/d} = \\exp\\left(-\\sum_{i<k}\\frac{i}{d}\\right)$. Uses `Finset.prod_le_prod` pointwise and `Real.exp_sum` to collapse the product of exponentials."
     },
     {
       "id": "gauss-sum",
@@ -100,7 +100,7 @@
       "startLine": 129,
       "endLine": 149,
       "summary": "Proves ∑_{i<k} i/d = k(k-1)/(2d) by induction, giving the closed-form exponent.",
-      "mathContext": "Proves ∑_{i<k} i/d = k(k-1)/(2d) by induction, giving the closed-form exponent."
+      "mathContext": "$\\sum_{i=0}^{k-1} \\frac{i}{d} = \\frac{1}{d}\\cdot\\frac{k(k-1)}{2} = \\frac{k(k-1)}{2d}$. Gauss's formula $\\sum_{i=0}^{k-1} i = k(k-1)/2$ divided by $d$."
     },
     {
       "id": "main-theorem",
@@ -108,7 +108,7 @@
       "startLine": 151,
       "endLine": 163,
       "summary": "Combines the product-to-exponential bound with Gauss's formula to prove P(all distinct) ≤ exp(-k(k-1)/(2d)).",
-      "mathContext": "Combines the product-to-exponential bound with Gauss's formula to prove P(all distinct) ≤ exp(-k(k-1)/(2d))."
+      "mathContext": "$P(\\text{all distinct}, k, d) \\leq \\exp\\left(-\\frac{k(k-1)}{2d}\\right)$. Combines the product-to-exponential bound with Gauss's closed form."
     },
     {
       "id": "collision-bound",
@@ -116,7 +116,7 @@
       "startLine": 165,
       "endLine": 177,
       "summary": "Takes the complement to obtain P(collision) ≥ 1 - exp(-k(k-1)/(2d)), the form used in cryptographic security analysis.",
-      "mathContext": "Takes the complement to obtain P(collision) ≥ 1 - exp(-k(k-1)/(2d)), the form used in cryptographic security analysis."
+      "mathContext": "$P(\\text{collision}) = 1 - P(\\text{all distinct}) \\geq 1 - \\exp\\left(-\\frac{k(k-1)}{2d}\\right)$. The standard birthday attack lower bound used in cryptography."
     },
     {
       "id": "trivial-cases",
@@ -124,7 +124,7 @@
       "startLine": 179,
       "endLine": 205,
       "summary": "Verifies boundary conditions: k=0 and k=1 give P(all distinct) = 1 and P(collision) = 0.",
-      "mathContext": "Verifies boundary conditions: k=0 and k=1 give P(all distinct) = 1 and P(collision) = 0."
+      "mathContext": "$P(\\text{all distinct}, 0, d) = \\prod_{i \\in \\emptyset}(\\cdots) = 1$. $P(\\text{all distinct}, 1, d) = 1 - 0/d = 1$. Both give $P(\\text{collision}) = 0$."
     },
     {
       "id": "probability-bounds",
@@ -132,7 +132,7 @@
       "startLine": 207,
       "endLine": 241,
       "summary": "Proves P(all distinct) and P(collision) lie in [0,1], confirming the definitions are well-formed probabilities.",
-      "mathContext": "Proves P(all distinct) and P(collision) lie in [0,1], confirming the definitions are well-formed probabilities."
+      "mathContext": "$0 \\leq P(\\text{all distinct}) \\leq 1$ and $0 \\leq P(\\text{collision}) \\leq 1$. Each factor $1 - i/d \\in [0,1]$ for $k \\leq d$, so the product is in $[0,1]$."
     },
     {
       "id": "threshold",
@@ -140,7 +140,7 @@
       "startLine": 243,
       "endLine": 269,
       "summary": "Proves that k(k-1)/(2d) > ln(1/(1-p)) guarantees P(collision) > p, explaining the 23-person threshold for d=365.",
-      "mathContext": "Proves that k(k-1)/(2d) > ln(1/(1-p)) guarantees P(collision) > p, explaining the 23-person threshold for d=365."
+      "mathContext": "If $\\frac{k(k-1)}{2d} > \\ln\\frac{1}{1-p}$, then $P(\\text{collision}) > p$. For $d=365, p=0.5$: threshold $k \\approx \\sqrt{2 \\cdot 365 \\cdot \\ln 2} \\approx 22.5$, giving the famous 23."
     },
     {
       "id": "consistency",
@@ -148,7 +148,7 @@
       "startLine": 271,
       "endLine": 278,
       "summary": "Verifies definitional equality with the d=365 specialization in the parent birthday problem formalization.",
-      "mathContext": "Verifies definitional equality with the d=365 specialization in the parent birthday problem formalization."
+      "mathContext": "Verifies $\\text{probAllDistinct}(k, 365) = \\text{parentFile.probAllDistinct}(k)$ — the generalized definition specializes correctly."
     },
     {
       "id": "monotonicity",
@@ -156,7 +156,7 @@
       "startLine": 280,
       "endLine": 299,
       "summary": "Proves P(all distinct, k+1) ≤ P(all distinct, k): adding people can only increase collision probability.",
-      "mathContext": "Proves P(all distinct, k+1) ≤ P(all distinct, k): adding people can only increase collision probability."
+      "mathContext": "$P(\\text{all distinct}, k+1, d) = P(\\text{all distinct}, k, d) \\cdot (1 - k/d) \\leq P(\\text{all distinct}, k, d)$ since $1 - k/d \\leq 1$ for $k \\leq d$."
     }
   ],
   "conclusion": {
