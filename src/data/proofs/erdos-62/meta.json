@@ -182,7 +182,24 @@
     "lineCount": 207,
     "axiomCount": 3,
     "theoremCount": 3,
-    "definitionCount": 12
+    "definitionCount": 12,
+    "mainTheorems": [
+      {
+        "name": "odd_cycles_are_common",
+        "type": "proved",
+        "description": "Two graphs with chi >= aleph_1 share a common odd cycle (chi = 3 subgraph)"
+      },
+      {
+        "name": "finite_implies_countable",
+        "type": "proved",
+        "description": "Finite colorability implies countable colorability"
+      },
+      {
+        "name": "embed_colorable",
+        "type": "proved",
+        "description": "Colorability transfers to subgraphs under embedding"
+      }
+    ]
   },
   "crossReferences": [
     {
@@ -194,20 +211,39 @@
       "targetId": "erdos-22",
       "relationship": "related",
       "description": "Problem #22 and Problem #62 both concern extremal properties of graphs with specific density constraints"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey theory provides the combinatorial foundation: graphs with large chromatic number have rich subgraph structure, analogous to how large complete subgraphs arise in Ramsey's theorem"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Both are Erd\\u0151s problems about asymptotic graph properties. Problem 1014 concerns Ramsey number ratios; Problem 62 concerns common subgraph structure at the $\\aleph_1$ threshold"
     }
   ],
   "references": [
     {
-      "authors": "Erdős, Paul",
-      "title": "On some problems in graph theory, combinatorial analysis, and combinatorial number theory",
-      "year": "1977",
-      "venue": "In: Graph Theory and Related Topics, Academic Press, pp. 132–149",
-      "note": "Includes the formulation of problems about common subgraphs of dense graphs"
+      "authors": "Erd\\u0151s, Paul; Hajnal, Andr\\u00e1s; Shelah, Saharon",
+      "title": "On some general properties of chromatic numbers",
+      "year": "1974",
+      "venue": "In: Topics in Topology, Colloq. Math. Soc. J\\u00e1nos Bolyai 8",
+      "note": "Proved that graphs with $\\chi = \\aleph_1$ contain all sufficiently large odd cycles"
     },
-    "Erdős (1974, 1987, 1990): Original problem statements and generalization to finite collections",
-    "Erdős, Hajnal, Shelah (1974): graphs with χ = ℵ₁ contain all sufficiently large odd cycles",
-    "De Bruijn, Erdős (1951): compactness theorem — G is k-colorable iff every finite subgraph is",
-    "Komjáth, Shelah (2003): related results on uncountable chromatic number",
-    "https://erdosproblems.com/62"
+    {
+      "authors": "Erd\\u0151s, Paul",
+      "title": "Problems and results on chromatic numbers in finite and infinite graphs",
+      "year": "1987",
+      "venue": "Discrete Mathematics 65, 101-107",
+      "note": "Generalization of Problem 62 to finite collections of $\\chi = \\aleph_1$ graphs"
+    },
+    {
+      "authors": "Komj\\u00e1th, P\\u00e9ter",
+      "title": "The chromatic number of infinite graphs \\u2014 a survey",
+      "year": "2011",
+      "venue": "Discrete Mathematics 311, 1448-1450",
+      "note": "Survey of results on chromatic numbers of uncountable graphs, including the status of Erd\\u0151s 62"
+    }
   ]
 }
