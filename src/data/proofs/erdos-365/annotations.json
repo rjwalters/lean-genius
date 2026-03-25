@@ -16,7 +16,10 @@
       "Pell equations",
       "consecutive integers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization",
+      "divisibility"
+    ]
   },
   {
     "id": "ann-e365-powerful-def",
@@ -35,7 +38,11 @@
       "squarefull numbers",
       "Nat.Prime"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.Prime and prime divisibility in Lean",
+      "p^k | n notation and divisibility",
+      "basic number theory (squares, cubes)"
+    ]
   },
   {
     "id": "ann-e365-example-8-9",
@@ -54,7 +61,11 @@
       "decide",
       "computational verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "IsPowerful definition (ann-e365-powerful-def)",
+      "interval_cases tactic for case splitting on bounded naturals",
+      "decide tactic for decidable propositions"
+    ]
   },
   {
     "id": "ann-e365-pell",
@@ -73,7 +84,11 @@
       "continued fractions",
       "recurrence relation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "IsPowerful and IsConsecutivePowerfulPair definitions",
+      "Pell equation theory (existence and structure of solutions to x^2 - Dy^2 = 1)",
+      "continued fractions and fundamental solutions"
+    ]
   },
   {
     "id": "ann-e365-golomb",
@@ -92,7 +107,11 @@
       "native_decide",
       "perfect square test"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "IsConsecutivePowerfulPair definition",
+      "Question1 formulation (the square-requirement conjecture)",
+      "native_decide tactic for kernel-level computation"
+    ]
   },
   {
     "id": "ann-e365-walker",
@@ -111,7 +130,39 @@
       "infinite family",
       "non-square powerful numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "IsConsecutivePowerfulPair and IsPowerful definitions",
+      "Pell equation connection (ann-e365-pell)",
+      "Golomb's counterexample establishing that non-Pell pairs exist (ann-e365-golomb)",
+      "generalized Pell equations in quadratic number fields"
+    ]
+  },
+  {
+    "id": "ann-e365-counting",
+    "proofId": "erdos-365",
+    "range": {
+      "startLine": 148,
+      "endLine": 164
+    },
+    "type": "concept",
+    "title": "Question 2: Counting Consecutive Powerful Pairs",
+    "content": "**countingFunction x** computes P(x) = |{n <= x : IsConsecutivePowerfulPair n}| using Finset.filter over Finset.range. **Question2** formalizes the conjecture that P(x) = O((log x)^C) for some constants C > 0 and K > 0 -- i.e., the number of consecutive powerful pairs up to x grows at most polylogarithmically. This remains OPEN.",
+    "mathContext": "Each Pell-type equation a^3 x^2 - b^3 y^2 = 1 has solutions growing exponentially, contributing O(log x) pairs up to x. If only finitely many such equation families produce consecutive powerful pairs, P(x) = O((log x)^C). The formalization uses Finset.card with Finset.filter, making P(x) computable in principle but intractable for large x. The Real.log function from Mathlib.Data.Real.Basic provides the logarithm for the asymptotic bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counting function",
+      "polylogarithmic bound",
+      "Finset.filter",
+      "Real.log",
+      "open problem"
+    ],
+    "prerequisites": [
+      "IsConsecutivePowerfulPair definition",
+      "Pell equation families and their solution counts (ann-e365-pell)",
+      "Finset.card and Finset.filter from Mathlib",
+      "Real.log from Mathlib.Data.Real.Basic",
+      "asymptotic notation (O-notation)"
+    ]
   },
   {
     "id": "ann-e365-summary",
@@ -130,6 +181,11 @@
       "partial resolution",
       "open problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "question1_false axiom (ann-e365-golomb)",
+      "golomb_counterexample axiom (ann-e365-golomb)",
+      "walker_infinitely_many axiom (ann-e365-walker)",
+      "Question2 definition and countingFunction (counting section)"
+    ]
   }
 ]
