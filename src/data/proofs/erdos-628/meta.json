@@ -67,8 +67,11 @@
       "**The $\\alpha = 2$ case is Ramsey-constrained:** When $\\alpha(G) = 2$, the complement $\\bar{G}$ is triangle-free. By Ramsey theory, $|V(G)| \\le R(3, \\omega(\\bar{G})+1)$, bounding the graph's size. This constraint, combined with $K_k$-freeness and $\\chi = k$, severely limits the graph structure, enabling the proof."
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Graph theory (vertices, edges, colorings)"
+      "Graph coloring (chromatic number, critical graphs)",
+      "Clique number and $K_k$-free graphs",
+      "Vertex partition (splittability)",
+      "Perfect graph theory",
+      "Quasi-line graphs and structural decomposition"
     ]
   },
   "sections": [
@@ -78,7 +81,7 @@
       "summary": "Module docstring with conjecture statement and known results, Mathlib import, opening of Finset/Function/SimpleGraph/Nat namespaces, and type variable declarations",
       "startLine": 1,
       "endLine": 30,
-      "mathContext": "Mathematical content: Module docstring with conjecture statement and known results, Mathlib import, opening of Finset/Function/SimpleGraph/Nat namespaces, and type variable declarations"
+      "mathContext": "Tihany conjecture: if $\\\\chi(G) = k$ and $G$ is $K_k$-free, is $G$ $(a,b)$-splittable for $a+b=k+1$ with $a,b \\\\geq 2$?"
     },
     {
       "id": "basic-definitions",
@@ -86,7 +89,7 @@
       "summary": "Sorry'd noncomputable chromaticNumber and cliqueNumber, IsCliqueFree (ω < k) and AreDisjoint (vertex set disjointness) predicates",
       "startLine": 31,
       "endLine": 48,
-      "mathContext": "Mathematical content: Sorry'd noncomputable chromaticNumber and cliqueNumber, IsCliqueFree (ω < k) and AreDisjoint (vertex set disjointness) predicates"
+      "mathContext": "$\\\\chi(G)$ = chromatic number, $\\\\omega(G)$ = clique number. $K_k$-free: $\\\\omega(G) < k$. Since $\\\\chi \\\\geq \\\\omega$, these graphs have $\\\\chi > \\\\omega$."
     },
     {
       "id": "splittability",
@@ -94,7 +97,7 @@
       "summary": "IsSplittable definition (disjoint vertex sets with χ ≥ a and χ ≥ b on induced subgraphs), plus equivalent HasDisjointHighChromatic formulation using S ∩ T = ∅",
       "startLine": 49,
       "endLine": 65,
-      "mathContext": "IsSplittable definition (disjoint vertex sets with χ $\\geq$ a and χ $\\geq$ b on induced subgraphs), plus equivalent HasDisjointHighChromatic formulation using S ∩ T = ∅"
+      "mathContext": "$(a,b)$-splittable: $V = A \\\\sqcup B$ with $\\\\chi(G[A]) \\\\geq a$ and $\\\\chi(G[B]) \\\\geq b$. The chromatic number splits across a vertex partition."
     },
     {
       "id": "tihany-conjecture",
@@ -102,7 +105,7 @@
       "summary": "Full TihanyConjecture definition (universal over k ≥ 5 and valid (a,b) pairs) and TihanyForPair (per-pair version with k = a + b - 1)",
       "startLine": 66,
       "endLine": 86,
-      "mathContext": "Full TihanyConjecture definition (universal over k $\\geq$ 5 and valid (a,b) pairs) and TihanyForPair (per-pair version with k = a + b - 1)"
+      "mathContext": "Full conjecture: $\\\\forall k \\\\geq 5$, $\\\\forall a,b \\\\geq 2$ with $a+b=k+1$: $\\\\chi(G)=k$, $G$ is $K_k$-free $\\\\Rightarrow$ $G$ is $(a,b)$-splittable."
     },
     {
       "id": "brown-jung",
@@ -110,7 +113,7 @@
       "summary": "Axiomatized brown_jung_theorem (TihanyForPair 3 3), proved tihany_3_3 instantiation, and axiomatized brown_jung_odd_cycles (two disjoint odd cycles formulation)",
       "startLine": 87,
       "endLine": 110,
-      "mathContext": "Verified: Axiomatized brown_jung_theorem (TihanyForPair 3 3), proved tihany_3_3 instantiation, and axiomatized brown_jung_odd_cycles (two disjoint odd cycles formulation)"
+      "mathContext": "Brown-Jung: proved for $(a,b) = (3,3)$ (i.e., $k=5$). The first non-trivial case of the conjecture."
     },
     {
       "id": "quasi-line",
@@ -118,7 +121,7 @@
       "summary": "Sorry'd IsLineGraph, IsQuasiLine definition (neighborhoods as union of two cliques), and axiomatized balogh_quasi_line (Tihany for all pairs on quasi-line graphs)",
       "startLine": 111,
       "endLine": 134,
-      "mathContext": "Formal definition: Sorry'd IsLineGraph, IsQuasiLine definition (neighborhoods as union of two cliques), and axiomatized balogh_quasi_line (Tihany for all pairs on quasi-line graphs)"
+      "mathContext": "Quasi-line graphs: neighborhoods decompose into two cliques. Proved: Tihany holds for quasi-line graphs (stronger than line graphs)."
     },
     {
       "id": "alpha-2",
@@ -126,7 +129,7 @@
       "summary": "Sorry'd independenceNumber definition and axiomatized balogh_alpha_2 (Tihany for all pairs when α = 2)",
       "startLine": 135,
       "endLine": 151,
-      "mathContext": "Formal definition: Sorry'd independenceNumber definition and axiomatized balogh_alpha_2 (Tihany for all pairs when α = 2)"
+      "mathContext": "Balogh et al.: proved for $\\\\alpha(G) = 2$ (independence number 2). When $G$ has no independent triple, the structure is constrained enough."
     },
     {
       "id": "critical-graphs",
@@ -134,7 +137,7 @@
       "summary": "IsCritical definition (χ = k, removing any vertex drops χ), sorry'd contains_critical (k-critical subgraph existence), sorry'd critical_min_degree (δ ≥ k-1)",
       "startLine": 152,
       "endLine": 169,
-      "mathContext": "IsCritical definition (χ = k, removing any vertex drops χ), sorry'd contains_critical (k-critical subgraph existence), sorry'd critical_min_degree (δ $\\geq$ k-1)"
+      "mathContext": "$G$ is $k$-critical if $\\\\chi(G) = k$ but $\\\\chi(G-v) < k$ for every $v$. Critical graphs are the hardest case: minimal counterexamples must be critical."
     },
     {
       "id": "perfect-graphs",
@@ -142,7 +145,7 @@
       "summary": "IsPerfect definition, sorry'd perfect_clique_free (K_{χ+1}-free), sorry'd perfect_tihany_vacuous (perfect graphs satisfy Tihany hypothesis vacuously)",
       "startLine": 170,
       "endLine": 186,
-      "mathContext": "Formal definition: IsPerfect definition, sorry'd perfect_clique_free (K_{χ+1}-free), sorry'd perfect_tihany_vacuous (perfect graphs satisfy Tihany hypothesis vacuously)"
+      "mathContext": "Perfect: $\\\\chi(H) = \\\\omega(H)$ for every induced subgraph $H$. Perfect graphs are $K_{\\\\chi+1}$-free, so Tihany is trivially true for them."
     },
     {
       "id": "partial-results",
@@ -150,7 +153,7 @@
       "summary": "Sorry'd weak_splittability (single high-χ part), sorry'd tihany_a_eq_2 (easy a=2 case), and TihanySymmetric definition (a = b case)",
       "startLine": 187,
       "endLine": 203,
-      "mathContext": "Formal definition: Sorry'd weak_splittability (single high-χ part), sorry'd tihany_a_eq_2 (easy a=2 case), and TihanySymmetric definition (a = b case)"
+      "mathContext": "Weak splittability (one high-$\\\\chi$ part) is easier. The $(2,k-1)$ case is known. The general $(a,b)$ case remains open for most $k$."
     },
     {
       "id": "odd-cycles",
@@ -158,7 +161,7 @@
       "summary": "Sorry'd odd_cycle_chi_3 (χ(C_{2k+1}) = 3), sorry'd disjoint_odd_cycles_splittable with sorry'd cycle hypotheses connecting cycle theory to splittability",
       "startLine": 204,
       "endLine": 220,
-      "mathContext": "Mathematical content: Sorry'd odd_cycle_chi_3 (χ(C_{2k+1}) = 3), sorry'd disjoint_odd_cycles_splittable with sorry'd cycle hypotheses connecting cycle theory to splittability"
+      "mathContext": "$\\\\chi(C_{2k+1}) = 3$. Disjoint odd cycles can build graphs with $\\\\chi = k$ and specific clique structure."
     },
     {
       "id": "main-status",
@@ -166,7 +169,7 @@
       "summary": "erdos_628_status combining Brown–Jung, quasi-line, and α=2 results (proved from three axioms), plus #check verifications of key declarations",
       "startLine": 221,
       "endLine": 246,
-      "mathContext": "Axiomatized: erdos_628_status combining Brown–Jung, quasi-line, and α=2 results (proved from three axioms), plus #check verifications of key declarations"
+      "mathContext": "Partial: Brown-Jung ($a=b=3$), quasi-line graphs, $\\\\alpha=2$ case. Full conjecture for general $k \\\\geq 5$ remains OPEN."
     }
   ],
   "conclusion": {

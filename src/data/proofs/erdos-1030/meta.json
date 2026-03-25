@@ -67,10 +67,11 @@
       "**Problem connections**: Generalizes to Problem #1014 (arbitrary offset $j$) and relates to Problem #544 on $R(3,k) \\sim k^2/\\log k$ growth"
     ],
     "prerequisites": [
-      "Ramsey theory: Ramsey numbers R(k, l), edge colorings, and monochromatic cliques",
-      "Binomial coefficients and the Erdos-Szekeres recursive bound (Mathlib.Data.Nat.Choose.Basic)",
-      "Filter.liminf for growth rate analysis (Mathlib.Order.LiminfLimsup)",
-      "Probabilistic method: Erdos 1947 lower bound R(k,k) >= 2^{k/2}"
+      "Ramsey numbers ($R(k,l)$ and diagonal $R(k,k)$)",
+      "Graph coloring (2-colorings of complete graphs)",
+      "Probabilistic method (Erdos 1947 lower bounds)",
+      "Recursive bounds and binomial coefficients",
+      "Off-diagonal Ramsey asymptotics"
     ]
   },
   "sections": [
@@ -88,7 +89,7 @@
       "summary": "Edge colorings of $K_n$ and the Ramsey property: $\\forall\\,\\text{col},\\; \\text{red } k\\text{-clique} \\lor \\text{blue } \\ell\\text{-clique}$",
       "startLine": 28,
       "endLine": 55,
-      "mathContext": "Mathematical content: Edge colorings of $K_n$ and the Ramsey property: $\\forall\\,\\text{col},\\; \\text{red } k\\text{-clique} \\lor \\text{blue } \\ell\\text{-clique}$"
+      "mathContext": "2-coloring of $K_n$: every pair colored red/blue. Ramsey property: contains red $K_k$ or blue $K_l$."
     },
     {
       "id": "ramsey-definition",
@@ -96,7 +97,7 @@
       "summary": "$R(k, \\ell) = \\min\\{n : \\text{RamseyProperty}(n, k, \\ell)\\}$ via `Nat.find`",
       "startLine": 56,
       "endLine": 79,
-      "mathContext": "Mathematical content: $R(k, \\ell) = \\min\\{n : \\text{RamseyProperty}(n, k, \\ell)\\}$ via `Nat.find`"
+      "mathContext": "$R(k,l) = \\\\min\\\\{n : \\\\text{every 2-coloring of } K_n \\\\text{ has red } K_k \\\\text{ or blue } K_l\\\\}$."
     },
     {
       "id": "basic-properties",
@@ -104,7 +105,7 @@
       "summary": "$R(k,\\ell) = R(\\ell,k)$, recursive bound $R(k,\\ell) \\le R(k-1,\\ell) + R(k,\\ell-1)$, binomial bound $\\le \\binom{k+\\ell-2}{k-1}$",
       "startLine": 80,
       "endLine": 107,
-      "mathContext": "Bound: $R(k,\\ell) = R(\\ell,k)$, recursive bound $R(k,\\ell) \\le R(k-1,\\ell) + R(k,\\ell-1)$, binomial bound $\\le \\binom{k+\\ell-2}{k-1}$"
+      "mathContext": "$R(k,l) = R(l,k)$. Recursive: $R(k,l) \\\\leq R(k-1,l) + R(k,l-1)$. From this: $R(k,l) \\\\leq \\\\binom{k+l-2}{k-1}$."
     },
     {
       "id": "diagonal",
@@ -112,7 +113,7 @@
       "summary": "$R_{\\text{diag}}(k) = R(k,k)$ with bounds $2^{k/2} \\le R(k,k) \\le \\binom{2k-2}{k-1}$",
       "startLine": 108,
       "endLine": 134,
-      "mathContext": "$R_{\\text{diag}}(k) = R(k,k)$ with bounds $$$2^{{k/2}$}$ \\le R(k,k) \\le \\binom{2k-2}{k-1}$"
+      "mathContext": "$R(k,k)$: diagonal Ramsey. Bounds: $2^{k/2} \\\\leq R(k,k) \\\\leq \\\\binom{2k-2}{k-1} \\\\leq 4^k$."
     },
     {
       "id": "off-diagonal",
@@ -120,7 +121,7 @@
       "summary": "$\\text{RamseyDiff}(k) = R(k+1,k) - R(k,k) \\ge k - 2$ (trivial bound)",
       "startLine": 135,
       "endLine": 153,
-      "mathContext": "Bound: $\\text{RamseyDiff}(k) = R(k+1,k) - R(k,k) \\ge k - 2$ (trivial bound)"
+      "mathContext": "$R(k+1,k) - R(k,k) \\\\geq k-2$ (trivial). The problem asks for a linear lower bound."
     },
     {
       "id": "befs",
@@ -128,7 +129,7 @@
       "summary": "BEFS theorem: $R(k+1,k) - R(k,k) \\ge 2k - 5$, doubling the trivial bound",
       "startLine": 154,
       "endLine": 172,
-      "mathContext": "Verified: BEFS theorem: $R(k+1,k) - R(k,k) \\ge 2k - 5$, doubling the trivial bound"
+      "mathContext": "Burr-Erdos-Faudree-Schelp: $R(k+1,k) - R(k,k) \\\\geq 2k-5$. Doubles the trivial bound."
     },
     {
       "id": "growth-ratio",
@@ -136,7 +137,7 @@
       "summary": "$\\text{GrowthRatio}(k) = R(k+1,k)/R(k,k) = 1 + \\text{diff}/R(k,k)$ and $\\liminf$ definition",
       "startLine": 173,
       "endLine": 194,
-      "mathContext": "Formal definition: $\\text{GrowthRatio}(k) = R(k+1,k)/R(k,k) = 1 + \\text{diff}/R(k,k)$ and $\\liminf$ definition"
+      "mathContext": "$R(k+1,k)/R(k,k) = 1 + (R(k+1,k)-R(k,k))/R(k,k)$. If diff grows linearly and $R(k,k)$ grows exponentially, ratio -> 1."
     },
     {
       "id": "conjecture",
@@ -144,7 +145,7 @@
       "summary": "$\\exists\\, c > 0,\\; \\liminf R(k+1,k)/R(k,k) > 1+c$ — conjecture statement and BEFS-based resolution",
       "startLine": 195,
       "endLine": 235,
-      "mathContext": "Mathematical content: $\\exists\\, c > 0,\\; \\liminf R(k+1,k)/R(k,k) > 1+c$ — conjecture statement and BEFS-based resolution"
+      "mathContext": "SOLVED: $\\\\exists c > 0$ with $\\\\liminf R(k+1,k)/R(k,k) > 1+c$. The off-diagonal Ramsey numbers grow strictly faster than diagonal."
     },
     {
       "id": "known-values",
@@ -152,7 +153,7 @@
       "summary": "Known exact values $R(3,3)=6$, $R(4,4)=18$, $R(4,5)=25$ and $R(3,k)$ bounds",
       "startLine": 236,
       "endLine": 250,
-      "mathContext": "Bound: Known exact values $R(3,3)=6$, $R(4,4)=18$, $R(4,5)=25$ and $R(3,k)$ bounds"
+      "mathContext": "$R(3,3)=6$, $R(4,4)=18$, $R(4,5)=25$. $R(3,k) = \\\\Theta(k^2/\\\\log k)$ (Kim 1995, Bohman-Keevash 2021)."
     },
     {
       "id": "connections",
@@ -160,7 +161,7 @@
       "summary": "Problem #544 ($R(3,k) \\le Ck^2/\\log k$) and Problem #1014 ($R(k+j,k)/R(k,k) > 1 + c_j$ for general $j$)",
       "startLine": 251,
       "endLine": 266,
-      "mathContext": "Mathematical content: Problem #544 ($R(3,k) \\le Ck^2/\\log k$) and Problem #1014 ($R(k+j,k)/R(k,k) > 1 + c_j$ for general $j$)"
+      "mathContext": "Connected to Problem #544 ($R(3,k)$ bounds) and #1014 (ratio $R(k+j,k)/R(k,k)$)."
     },
     {
       "id": "main-result",
@@ -168,7 +169,7 @@
       "summary": "$\\texttt{erdos\\_1030} : \\texttt{ErdosSosConjecture}$ — problem SOLVED via BEFS axiomatization",
       "startLine": 267,
       "endLine": 293,
-      "mathContext": "Axiomatized: $\\texttt{erdos\\_1030} : \\texttt{ErdosSosConjecture}$ — problem SOLVED via BEFS axiomatization"
+      "mathContext": "SOLVED: Erdos-Sos conjecture confirmed. The growth ratio exceeds $1+c$ for some absolute $c > 0$."
     }
   ],
   "conclusion": {

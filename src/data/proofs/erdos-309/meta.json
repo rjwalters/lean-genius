@@ -84,8 +84,11 @@
       "**Density Zero:** The set of representable integers is sparse (F(N)/N → 0) but unbounded"
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Number theory (primes, divisibility)"
+      "Harmonic numbers ($H_N = \\\\sum 1/k$)",
+      "Egyptian fractions (distinct unit fraction sums)",
+      "Subset sum problems over rationals",
+      "Asymptotic analysis ($\\\\Theta(\\\\log N)$)",
+      "Greedy algorithms and constructive number theory"
     ]
   },
   "sections": [
@@ -95,7 +98,7 @@
       "summary": "unitFraction, sumUnitFractions, sumUnitFractions_empty",
       "startLine": 46,
       "endLine": 83,
-      "mathContext": "Mathematical content: unitFraction, sumUnitFractions, sumUnitFractions_empty"
+      "mathContext": "$1/k$ for $k \\\\in \\\\mathbb{N}$. A sum of distinct unit fractions: $\\\\sum_{k \\\\in S} 1/k$ for $S \\\\subseteq \\\\{1,\\\\ldots,N\\\\}$ with distinct elements."
     },
     {
       "id": "denominator-range",
@@ -103,7 +106,7 @@
       "summary": "denominatorRange, mem_denominatorRange, denominatorRange_card",
       "startLine": 84,
       "endLine": 108,
-      "mathContext": "Mathematical content: denominatorRange, mem_denominatorRange, denominatorRange_card"
+      "mathContext": "Denominator range $\\\\{1,2,\\\\ldots,N\\\\}$. All unit fractions $1/k$ for $k \\\\leq N$ are available."
     },
     {
       "id": "representable-integers",
@@ -111,7 +114,7 @@
       "summary": "IsRepresentable, zero_representable, one_representable",
       "startLine": 109,
       "endLine": 140,
-      "mathContext": "Mathematical content: IsRepresentable, zero_representable, one_representable"
+      "mathContext": "Integer $m$ is representable if $\\\\exists S \\\\subseteq \\\\{1,\\\\ldots,N\\\\}$, distinct, with $\\\\sum_{k \\\\in S} 1/k = m$."
     },
     {
       "id": "counting",
@@ -119,7 +122,7 @@
       "summary": "countRepresentable definition",
       "startLine": 141,
       "endLine": 153,
-      "mathContext": "Formal definition: countRepresentable definition"
+      "mathContext": "$R(N) = |\\\\{m \\\\in \\\\mathbb{Z} : m \\\\text{ representable from } \\\\{1,\\\\ldots,N\\\\}\\\\}|$."
     },
     {
       "id": "harmonic-numbers",
@@ -127,7 +130,7 @@
       "summary": "harmonicNumber, harmonicNumber_one, max_representable_le_harmonic",
       "startLine": 154,
       "endLine": 178,
-      "mathContext": "Mathematical content: harmonicNumber, harmonicNumber_one, max_representable_le_harmonic"
+      "mathContext": "$H_N = \\\\sum_{k=1}^N 1/k \\\\sim \\\\ln N + \\\\gamma$. Max sum is $H_N$, so $R(N) \\\\leq H_N + 1 = O(\\\\log N)$."
     },
     {
       "id": "asymptotic-bounds",
@@ -135,7 +138,7 @@
       "summary": "harmonic_log_asymptotic, countRepresentable_upper_bound",
       "startLine": 179,
       "endLine": 199,
-      "mathContext": "Bound: harmonic_log_asymptotic, countRepresentable_upper_bound"
+      "mathContext": "$H_N \\\\sim \\\\ln N$ gives $R(N) = O(\\\\log N)$. Is $R(N) = \\\\Theta(\\\\log N)$?"
     },
     {
       "id": "yokota-1997",
@@ -143,7 +146,7 @@
       "summary": "yokota_lower_bound_1997 axiom",
       "startLine": 200,
       "endLine": 212,
-      "mathContext": "Axiomatized: yokota_lower_bound_1997 axiom"
+      "mathContext": "Yokota (1997): $R(N) \\\\geq c\\\\log N$. First proof of logarithmic lower bound."
     },
     {
       "id": "croot-1999",
@@ -151,7 +154,7 @@
       "summary": "croot_threshold_1999 axiom",
       "startLine": 213,
       "endLine": 226,
-      "mathContext": "Axiomatized: croot_threshold_1999 axiom"
+      "mathContext": "Croot (1999): every integer $m \\\\leq H_N - c\\\\sqrt{\\\\log N}$ is representable for large $N$."
     },
     {
       "id": "yokota-2002",
@@ -159,7 +162,7 @@
       "summary": "yokota_refined_2002 axiom",
       "startLine": 227,
       "endLine": 239,
-      "mathContext": "Axiomatized: yokota_refined_2002 axiom"
+      "mathContext": "Yokota (2002): refined constants in $R(N) = \\\\Theta(\\\\log N)$."
     },
     {
       "id": "main-result",
@@ -167,7 +170,7 @@
       "summary": "erdos_309_answer theorem, count_asymptotic",
       "startLine": 240,
       "endLine": 272,
-      "mathContext": "Verified: erdos_309_answer theorem, count_asymptotic"
+      "mathContext": "SOLVED: $R(N) = \\\\Theta(\\\\log N)$. The count of representable integers grows logarithmically."
     },
     {
       "id": "examples",
@@ -175,7 +178,7 @@
       "summary": "N=6 example, egyptianFractionProperty",
       "startLine": 273,
       "endLine": 293,
-      "mathContext": "Mathematical content: N=6 example, egyptianFractionProperty"
+      "mathContext": "$N=6$: $H_6 = 49/20 \\\\approx 2.45$. Representable: $\\\\{0, 1, 2\\\\}$ (3 integers)."
     },
     {
       "id": "harmonic-series",
@@ -183,7 +186,7 @@
       "summary": "harmonic_divergence, representable_sparse_but_unbounded",
       "startLine": 294,
       "endLine": 323,
-      "mathContext": "Bound: harmonic_divergence, representable_sparse_but_unbounded"
+      "mathContext": "$\\\\sum 1/k$ diverges, so $H_N \\\\to \\\\infty$. But representable integers grow only as $\\\\log N$ — sparse but unbounded."
     },
     {
       "id": "summary",
@@ -191,7 +194,7 @@
       "summary": "erdos_309_summary combining main results",
       "startLine": 324,
       "endLine": 351,
-      "mathContext": "Mathematical content: erdos_309_summary combining main results"
+      "mathContext": "Answer: $R(N) = \\\\Theta(\\\\log N)$. Upper: $H_N \\\\sim \\\\ln N$. Lower: Yokota construction."
     }
   ],
   "conclusion": {

@@ -43,9 +43,11 @@
       "**Shelah's Technique:** The proof uses a sophisticated partition argument and the Hales-Jewett theorem to extract exponentially many distinct induced patterns"
     ],
     "prerequisites": [
-      "Graph theory (vertices, edges, colorings)",
-      "Ramsey theory (partition regularity)",
-      "Combinatorics and number theory"
+      "Simple graphs (vertices, edges, adjacency)",
+      "Ramsey theory (Ramsey numbers, cliques, independent sets)",
+      "Graph isomorphism (adjacency-preserving bijections)",
+      "Induced subgraphs and homogeneous sets",
+      "Asymptotic notation ($\\Omega$, $O$, $\\Theta$)"
     ]
   },
   "sections": [
@@ -55,7 +57,7 @@
       "summary": "Module documentation on Problem 1036, imports for SimpleGraph, Finset, Fintype, and real number arithmetic for counting arguments",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Mathematical content: Module documentation on Problem 1036, imports for SimpleGraph, Finset, Fintype, and real number arithmetic for counting arguments"
+      "mathContext": "Imports for graph theory infrastructure: `SimpleGraph V` for finite simple graphs, `Finset`/`Fintype` for finite combinatorics, and $\\mathbb{R}$-valued arithmetic for the counting function $i(G)$."
     },
     {
       "id": "graph-setup",
@@ -63,7 +65,7 @@
       "summary": "vertexCount definition: cardinality of the finite vertex set",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Formal definition: vertexCount definition: cardinality of the finite vertex set"
+      "mathContext": "$n = |V(G)| = \\text{Fintype.card}\\;V$ — the order of the graph, used throughout as the parameter in asymptotic bounds like $2^{\\Omega(n)}$."
     },
     {
       "id": "trivial",
@@ -71,7 +73,7 @@
       "summary": "Definitions of isTrivialInduced, isIndependentSet, isClique, and the trivial_iff characterization (trivial = independent or clique)",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Formal definition: Definitions of isTrivialInduced, isIndependentSet, isClique, and the trivial_iff characterization (trivial = independent or clique)"
+      "mathContext": "$S \\subseteq V(G)$ is \\emph{trivial} if $G[S]$ is complete ($\\omega$) or empty ($\\alpha$). Formally: $\\text{isTrivialInduced}(G, S) \\iff \\text{isClique}(G, S) \\lor \\text{isIndependentSet}(G, S)$."
     },
     {
       "id": "non-ramsey",
@@ -79,7 +81,7 @@
       "summary": "noLargeTrivial predicate, isNonRamsey definition (no trivial subgraph > c log n), and axiomatized existence of non-Ramsey graphs via the probabilistic method",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "noLargeTrivial predicate, isNonRamsey definition (no trivial subgraph > c $\\log n$), and axiomatized existence of non-Ramsey graphs via the probabilistic method"
+      "mathContext": "$G$ is non-Ramsey with parameter $c$ if $\\max(\\omega(G), \\alpha(G)) \\leq c \\log_2 n$. By Erdős (1947), $G(n, 1/2)$ satisfies this with high probability for $c = 2 + \\varepsilon$."
     },
     {
       "id": "induced",
@@ -87,7 +89,7 @@
       "summary": "inducedSubgraph definition (G[S] restricted to vertex subset S) and InducedPair for comparing equal-size induced subgraphs",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Formal definition: inducedSubgraph definition (G[S] restricted to vertex subset S) and InducedPair for comparing equal-size induced subgraphs"
+      "mathContext": "$G[S]$ has vertex set $S$ and edge set $E(G) \\cap \\binom{S}{2}$. An `InducedPair` pairs two subsets $S_1, S_2$ with $|S_1| = |S_2|$ for isomorphism comparison."
     },
     {
       "id": "isomorphism",
@@ -95,7 +97,7 @@
       "summary": "GraphIso (adjacency-preserving bijection), inducedIso, and proofs that induced isomorphism is an equivalence relation (reflexive, symmetric, transitive)",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Verified: GraphIso (adjacency-preserving bijection), inducedIso, and proofs that induced isomorphism is an equivalence relation (reflexive, symmetric, transitive)"
+      "mathContext": "$G \\cong H$ via bijection $\\phi: V(G) \\to V(H)$ with $uv \\in E(G) \\iff \\phi(u)\\phi(v) \\in E(H)$. Induced isomorphism $G[S_1] \\cong G[S_2]$ is shown to be an equivalence relation (refl, symm, trans)."
     },
     {
       "id": "counting",
@@ -103,7 +105,7 @@
       "summary": "allInducedSubsets (power set), sameIsoClass equivalence relation, distinctInducedCount (number of isomorphism classes), hasDistinctInduced predicate",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Mathematical content: allInducedSubsets (power set), sameIsoClass equivalence relation, distinctInducedCount (number of isomorphism classes), hasDistinctInduced predicate"
+      "mathContext": "$i(G) = |\\mathcal{P}(V) / {\\cong}|$ — the number of isomorphism classes of induced subgraphs. Defined via the quotient of $\\mathcal{P}(V(G))$ by the `sameIsoClass` equivalence relation."
     },
     {
       "id": "conjecture",
@@ -119,7 +121,7 @@
       "summary": "alonHajnalExponent (n·(log n)^{-O(log log n)}), axiomatized Alon-Hajnal bound, and proof that it is weaker than Shelah's bound",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "alonHajnalExponent (n·($\\log n$)^{-$O(log $\\log n$)$}), axiomatized Alon-Hajnal bound, and proof that it is weaker than Shelah's bound"
+      "mathContext": "Alon-Hajnal (1991): $i(G) \\geq \\exp\\bigl(n \\cdot (\\log n)^{-O(\\log \\log n)}\\bigr)$ for non-Ramsey $G$. Sub-exponential — proved via Szemerédi's regularity lemma. Strictly weaker than Shelah's $2^{\\Omega(n)}$."
     },
     {
       "id": "erdos-hajnal",
@@ -127,7 +129,7 @@
       "summary": "hasCompleteBipartite, avoidsBipartite predicates, axiomatized Erdős-Hajnal 1989 bound, and proof that non-Ramsey implies bipartite avoidance",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Verified: hasCompleteBipartite, avoidsBipartite predicates, axiomatized Erdős-Hajnal 1989 bound, and proof that non-Ramsey implies bipartite avoidance"
+      "mathContext": "Erdős-Hajnal (1989): if $G$ avoids $K_{k,k}$ in both $G$ and $\\bar{G}$, then $i(G) \\geq 2^{\\Omega(n)}$. Non-Ramsey graphs satisfy this avoidance condition, giving the first exponential bound in a special case."
     },
     {
       "id": "shelah",
@@ -143,7 +145,7 @@
       "summary": "shelahBound and alonHajnalBound definitions with shelah_better proving Shelah's bound is exponentially stronger",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Formal definition: shelahBound and alonHajnalBound definitions with shelah_better proving Shelah's bound is exponentially stronger"
+      "mathContext": "$2^{c'n} \\gg \\exp(n \\cdot (\\log n)^{-O(\\log \\log n)})$: Shelah's exponential bound dominates Alon-Hajnal's sub-exponential bound for all sufficiently large $n$."
     },
     {
       "id": "counting-args",
@@ -151,7 +153,7 @@
       "summary": "distinct_upper (trivial 2^n upper bound), random_graph_distinct (random graphs near-maximize diversity), nonRamsey_random_like (non-Ramsey ≈ random in diversity)",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "distinct_upper (trivial $2^{n}$ upper bound), random_graph_distinct (random graphs near-maximize diversity), nonRamsey_random_like (non-Ramsey ≈ random in diversity)"
+      "mathContext": "Upper bound: $i(G) \\leq 2^n$ trivially. Random graphs: $i(G(n,1/2)) = (1 - o(1)) \\cdot 2^n$. Non-Ramsey graphs satisfy $i(G) = 2^{\\Theta(n)}$, qualitatively matching random graph behavior."
     },
     {
       "id": "fixed-size",
@@ -159,7 +161,7 @@
       "summary": "inducedOfSize, distinctOfSize, hasDistinctOfSize definitions, and nonRamsey_fixed_size axiom for fixed-k diversity",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Formal definition: inducedOfSize, distinctOfSize, hasDistinctOfSize definitions, and nonRamsey_fixed_size axiom for fixed-k diversity"
+      "mathContext": "For fixed $k$, let $i_k(G) = |\\{G[S] : S \\subseteq V, |S| = k\\} / {\\cong}|$. Non-Ramsey graphs have $i_k(G) \\geq 2^{\\Omega(k)}$ for $k \\leq \\varepsilon n$."
     },
     {
       "id": "complement",
@@ -167,7 +169,7 @@
       "summary": "complement_nonRamsey (complement preserves non-Ramsey) and complement_distinct (i(G) = i(Ḡ))",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Mathematical content: complement_nonRamsey (complement preserves non-Ramsey) and complement_distinct (i(G) = i(Ḡ))"
+      "mathContext": "If $\\max(\\omega(G), \\alpha(G)) \\leq k$ then $\\max(\\omega(\\bar{G}), \\alpha(\\bar{G})) \\leq k$ (since $\\omega(\\bar{G}) = \\alpha(G)$). Also $i(G) = i(\\bar{G})$ because complementation is a bijection on isomorphism classes."
     },
     {
       "id": "problem-1031",
@@ -175,7 +177,7 @@
       "summary": "isKUniversal definition, universal_implies_distinct theorem, and via_universality providing an alternative proof of Problem 1036 through Prömel-Rödl universality",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Formal definition: isKUniversal definition, universal_implies_distinct theorem, and via_universality providing an alternative proof of Problem 1036 through Prömel-Rödl universality"
+      "mathContext": "$G$ is $k$-universal if every $k$-vertex graph is an induced subgraph of $G$. Prömel-Rödl: non-Ramsey $\\Rightarrow$ $c\\log n$-universal $\\Rightarrow$ $i(G) \\geq 2^{\\Omega((\\log n)^2)}$. Weaker than Shelah but gives an alternative proof path."
     }
   ],
   "conclusion": {

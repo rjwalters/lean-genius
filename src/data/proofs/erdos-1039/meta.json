@@ -41,8 +41,11 @@
       "**Open Gap:** The remaining obstacle is eliminating the √(log n) factor: proving ρ(f) ≥ c/n from the current ρ(f) ≥ c/(n√(log n)). This may require new ideas beyond the area approach, perhaps direct conformal mapping estimates"
     ],
     "prerequisites": [
-      "Complex analysis",
-      "Combinatorics and number theory"
+      "Complex analysis (polynomial lemniscates, sublevel sets)",
+      "Potential theory (logarithmic capacity)",
+      "Inscribed disc radius and isoperimetric estimates",
+      "Roots of unity and extremal configurations",
+      "Asymptotic bounds ($1/n$ vs $1/n^2$)"
     ]
   },
   "sections": [
@@ -52,7 +55,7 @@
       "summary": "Module documentation on the Erdős-Herzog-Piranian problem (#1039), the known bounds hierarchy (Pommerenke 1961, KLR 2025), and imports for Mathlib complex analysis",
       "startLine": 1,
       "endLine": 24,
-      "mathContext": "Bound: Module documentation on the Erdős-Herzog-Piranian problem (#1039), the known bounds hierarchy (Pommerenke 1961, KLR 2025), and imports for Mathlib complex analysis"
+      "mathContext": "Problem #1039 (Erdos-Herzog-Piranian): for monic $f(z) = \\\\prod(z-z_i)$ with $|z_i| \\\\leq 1$, what is $\\\\rho(f)$ = radius of largest disc inside $\\\\{|f(z)| < 1\\\\}$?"
     },
     {
       "id": "polynomial-setup",
@@ -60,7 +63,7 @@
       "summary": "UnitDiscPolynomial structure (degree, roots, roots_in_disc constraint), UnitDiscPolynomial.eval (product formula), and sublevelSet definition {z : |f(z)| < 1}",
       "startLine": 25,
       "endLine": 47,
-      "mathContext": "Formal definition: UnitDiscPolynomial structure (degree, roots, roots_in_disc constraint), UnitDiscPolynomial.eval (product formula), and sublevelSet definition {z : |f(z)| < 1}"
+      "mathContext": "Structure: degree $n$, roots $z_1,\\\\ldots,z_n \\\\in \\\\overline{\\\\mathbb{D}}$. The sublevel set $\\\\{|f(z)|<1\\\\}$ is open and non-empty."
     },
     {
       "id": "inscribed-disc",
@@ -68,7 +71,7 @@
       "summary": "isInscribedDisc (disc B(c,r) ⊆ S), inscribedDiscRadius (supremum of radii), and rho (ρ(f) = inscribedDiscRadius of sublevel set)",
       "startLine": 48,
       "endLine": 62,
-      "mathContext": "Mathematical content: isInscribedDisc (disc B(c,r) ⊆ S), inscribedDiscRadius (supremum of radii), and rho (ρ(f) = inscribedDiscRadius of sublevel set)"
+      "mathContext": "$\\\\rho(f) = \\\\sup\\\\{r : \\\\exists c, B(c,r) \\\\subseteq \\\\{|f(z)|<1\\\\}\\\\}$. Measures flatness of the lemniscate near its nodes."
     },
     {
       "id": "benchmark",
@@ -76,7 +79,7 @@
       "summary": "rootsOfUnity construction (roots at e^{2πik/n}) and benchmark_upper axiom: ρ(zⁿ - 1) ≤ π/(2n)",
       "startLine": 63,
       "endLine": 79,
-      "mathContext": "rootsOfUnity construction (roots at e^{2πik/n}) and benchmark_upper axiom: ρ(zⁿ - 1) $\\leq$ π/(2n)"
+      "mathContext": "Roots of unity $z_k = e^{2\\\\pi ik/n}$: $\\\\rho = (2/n)\\\\sin(\\\\pi/n) \\\\sim 2\\\\pi/n^2$. This worst-case benchmark has $\\\\rho \\\\sim C/n^2$."
     },
     {
       "id": "pommerenke",
@@ -84,7 +87,7 @@
       "summary": "pommerenke_lower axiom (ρ(f) ≥ 1/(2en²)) and pommerenkeExponent constant (= 2, recording the quadratic rate)",
       "startLine": 80,
       "endLine": 90,
-      "mathContext": "pommerenke_lower axiom (ρ(f) $\\geq$ 1/(2en²)) and pommerenkeExponent constant (= 2, recording the quadratic rate)"
+      "mathContext": "Pommerenke: $\\\\rho(f) \\\\geq 1/(2en^2)$. Quadratic in $n$ — not sharp. The conjecture is $\\\\rho \\\\geq c/n$."
     },
     {
       "id": "klr",
@@ -92,7 +95,7 @@
       "summary": "klr_lower axiom (ρ(f) ≥ c/(n√log n) for n ≥ 3) and klr_better_than_pommerenke theorem (KLR eventually dominates)",
       "startLine": 91,
       "endLine": 105,
-      "mathContext": "klr_lower axiom (ρ(f) $\\geq$ c/(n√$\\log n$) for n $\\geq$ 3) and klr_better_than_pommerenke theorem (KLR eventually dominates)"
+      "mathContext": "Komarov-Lachand-Robert: $\\\\rho(f) \\\\geq c/(n\\\\sqrt{\\\\log n})$. Improves $1/n^2$ to nearly $1/n$ with a $\\\\sqrt{\\\\log n}$ gap."
     },
     {
       "id": "conjecture",
@@ -100,7 +103,7 @@
       "summary": "ehpConjecture definition (∃ c > 0, ρ(f) ≥ c/n for all unit disc polynomials) and ehp_open placeholder axiom",
       "startLine": 106,
       "endLine": 118,
-      "mathContext": "ehpConjecture definition (∃ c > 0, ρ(f) $\\geq$ c/n for all unit disc polynomials) and ehp_open placeholder axiom"
+      "mathContext": "OPEN: $\\\\exists c > 0$ such that $\\\\rho(f) \\\\geq c/n$ for all unit-disc polynomials of degree $n$. Sharp up to constants."
     },
     {
       "id": "comparison",
@@ -108,7 +111,7 @@
       "summary": "Explicit bound functions pommerenkeBound, klrBound, conjecturedBound, benchmarkBound, and bounds_gap theorem showing KLR < benchmark",
       "startLine": 119,
       "endLine": 143,
-      "mathContext": "Verified: Explicit bound functions pommerenkeBound, klrBound, conjecturedBound, benchmarkBound, and bounds_gap theorem showing KLR < benchmark"
+      "mathContext": "Bounds: $1/(2en^2) \\\\leq c/(n\\\\sqrt{\\\\log n}) \\\\leq c/n$ (conjecture). KLR-to-conjecture gap: $\\\\sqrt{\\\\log n}$."
     },
     {
       "id": "lemniscate",
@@ -116,7 +119,7 @@
       "summary": "lemniscate definition ({z : |f(z)| = 1}), sublevelSet_isOpen, sublevelSet_nonempty, and root_in_sublevelSet (roots lie in sublevel set)",
       "startLine": 144,
       "endLine": 165,
-      "mathContext": "Formal definition: lemniscate definition ({z : |f(z)| = 1}), sublevelSet_isOpen, sublevelSet_nonempty, and root_in_sublevelSet (roots lie in sublevel set)"
+      "mathContext": "The lemniscate $\\\\{|f(z)|=1\\\\}$ is a real-algebraic curve of degree $2n$. The sublevel set is a union of at most $n$ connected components."
     },
     {
       "id": "area",
@@ -124,7 +127,7 @@
       "summary": "sublevelArea (Lebesgue measure of sublevel set), area_implies_disc_bound (area ≥ πρ²), and klr_area_bound axiom (area ≥ π/(n² log n))",
       "startLine": 166,
       "endLine": 181,
-      "mathContext": "sublevelArea (Lebesgue measure of sublevel set), area_implies_disc_bound (area $\\geq$ πρ²), and klr_area_bound axiom (area $\\geq$ π/(n² $\\log n$))"
+      "mathContext": "Area bound: $|\\\\{|f(z)|<1\\\\}| \\\\geq \\\\pi/n^2$. Large area implies large inscribed disc (isoperimetric reasoning)."
     },
     {
       "id": "special-cases",
@@ -132,7 +135,7 @@
       "summary": "degree_one_optimal (ρ = 1 for degree 1), hasClusteredRoots definition, and clustered_implies_large_disc (clustered roots → ρ ≥ 1 - ε)",
       "startLine": 182,
       "endLine": 200,
-      "mathContext": "degree_one_optimal (ρ = 1 for degree 1), hasClusteredRoots definition, and clustered_implies_large_disc (clustered roots $\\to$ ρ $\\geq$ 1 - ε)"
+      "mathContext": "Degree 1: $\\\\rho = 1$ always. Clustered roots ($z_i \\\\approx z_0$): $\\\\rho \\\\approx 1$."
     },
     {
       "id": "random",
@@ -140,7 +143,7 @@
       "summary": "random_polynomial_expected axiom: E[ρ] ~ 1/√n for random unit disc polynomials, showing worst-case is atypical",
       "startLine": 201,
       "endLine": 210,
-      "mathContext": "Axiomatized: random_polynomial_expected axiom: E[ρ] ~ 1/√n for random unit disc polynomials, showing worst-case is atypical"
+      "mathContext": "Random polynomials: $\\\\mathbb{E}[\\\\rho] \\\\sim 1/\\\\sqrt{n}$ for i.i.d. uniform roots on $\\\\overline{\\\\mathbb{D}}$. Much better than worst case."
     },
     {
       "id": "open-question",
@@ -148,7 +151,7 @@
       "summary": "erdos_1039_question (alias for ehpConjecture) and erdos_1039_current_state theorem combining KLR lower bound with roots of unity upper bound",
       "startLine": 211,
       "endLine": 249,
-      "mathContext": "Verified: erdos_1039_question (alias for ehpConjecture) and erdos_1039_current_state theorem combining KLR lower bound with roots of unity upper bound"
+      "mathContext": "OPEN: EHP conjecture $\\\\rho(f) \\\\geq c/n$. Closing the $\\\\sqrt{\\\\log n}$ gap from KLR is the main challenge."
     }
   ],
   "conclusion": {

@@ -75,8 +75,11 @@
       "**General Powers:** The γ ≥ 1 generalization shows all power sums are controlled similarly."
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Number theory (primes, divisibility)"
+      "Euler's totient function $\\varphi(n)$",
+      "Coprimality and reduced residue systems",
+      "Sieve methods (Selberg/Brun sieve)",
+      "Asymptotic notation ($\\ll$, $O$)",
+      "Jacobsthal's function and prime gaps"
     ]
   },
   "sections": [
@@ -86,7 +89,7 @@
       "summary": "Definition and properties of reduced residues",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Formal definition: Definition and properties of reduced residues"
+      "mathContext": "The reduced residues mod $n$: $\\{m : 1 \\leq m < n,\\; \\gcd(m,n) = 1\\}$. There are $\\varphi(n)$ of them, where $\\varphi$ is Euler's totient function."
     },
     {
       "id": "gaps",
@@ -94,7 +97,7 @@
       "summary": "Gaps between consecutive residues",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Mathematical content: Gaps between consecutive residues"
+      "mathContext": "For sorted residues $a_1 < a_2 < \\cdots < a_{\\varphi(n)}$, define gaps $g_k = a_{k+1} - a_k$. The average gap is $n/\\varphi(n)$."
     },
     {
       "id": "sums",
@@ -102,7 +105,7 @@
       "summary": "Sum of γ-th powers of gaps",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Mathematical content: Sum of γ-th powers of gaps"
+      "mathContext": "$S_\\gamma(n) = \\sum_{k=1}^{\\varphi(n)-1} (a_{k+1} - a_k)^\\gamma$ for $\\gamma \\geq 1$. The case $\\gamma = 2$ is the original Erdős conjecture."
     },
     {
       "id": "conjecture",
@@ -110,7 +113,7 @@
       "summary": "Statement of the squared gaps conjecture",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Mathematical content: Statement of the squared gaps conjecture"
+      "mathContext": "Erdős conjectured: $\\sum_{k} (a_{k+1} - a_k)^2 \\ll \\frac{n^2}{\\varphi(n)}$. This is the bound one gets if all gaps equal the average $n/\\varphi(n)$."
     },
     {
       "id": "montgomery-vaughan",
@@ -125,7 +128,7 @@
       "summary": "Why the bound is natural",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Bound: Why the bound is natural"
+      "mathContext": "If all gaps were equal ($g_k = n/\\varphi(n)$), then $\\sum g_k^2 = \\varphi(n) \\cdot (n/\\varphi(n))^2 = n^2/\\varphi(n)$. The theorem says gap variance doesn't worsen this bound beyond a constant."
     },
     {
       "id": "special",
@@ -133,7 +136,7 @@
       "summary": "Prime n, power of 2, primorials",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Mathematical content: Prime n, power of 2, primorials"
+      "mathContext": "Prime $p$: all gaps are 1, $\\sum g_k^2 = p-2 \\approx p^2/\\varphi(p)$. Power of 2 $n=2^k$: only odd residues, all gaps are 2, bound is tight. Primorials $n = p\\#$: large gaps possible, bound still holds."
     },
     {
       "id": "jacobsthal",
@@ -141,7 +144,7 @@
       "summary": "Jacobsthal's function",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Mathematical content: Jacobsthal's function"
+      "mathContext": "Jacobsthal's function $g(n) = \\max_k (a_{k+1} - a_k)$: the largest gap between consecutive reduced residues. Known: $g(n) \\ll (\\log n)^2$ unconditionally, $g(n) \\ll \\log n$ under GRH."
     },
     {
       "id": "summary",
@@ -149,7 +152,7 @@
       "summary": "Main result and resolution",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Mathematical content: Main result and resolution"
+      "mathContext": "SOLVED by Montgomery-Vaughan (1986): $\\sum g_k^\\gamma \\ll n^\\gamma / \\varphi(n)^{\\gamma-1}$ for all $\\gamma \\geq 1$. The $\\gamma = 2$ case answers Erdős's original \\$500 question."
     }
   ],
   "conclusion": {

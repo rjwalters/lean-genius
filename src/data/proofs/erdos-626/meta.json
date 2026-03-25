@@ -68,10 +68,11 @@
       "**Dual problem $h^{(m)}(n)$:** Maximizing $\\chi$ for fixed girth gives polynomial bounds $\\Theta(n^{1/(m-1)})$ (with log corrections), connecting to the cage problem and Moore graphs in algebraic graph theory."
     ],
     "prerequisites": [
-      "Graph coloring: chromatic number $\\chi(G)$, list coloring, degeneracy",
-      "Graph girth: shortest cycle length, connections to cage problem and Ramanujan graphs",
-      "Probabilistic method (Erdős 1959): random graph constructions for high-chromatic, high-girth graphs",
-      "Extremal graph theory: Moore bound, algebraic constructions of graphs with prescribed girth"
+      "Graph coloring (chromatic number)",
+      "Girth of graphs (shortest cycle length)",
+      "Probabilistic method (Erdos 1959)",
+      "Ramanujan graphs (explicit constructions)",
+      "Off-diagonal Ramsey numbers"
     ]
   },
   "sections": [
@@ -81,7 +82,7 @@
       "summary": "Module docstring with problem history and bounds, plus import of the full Mathlib library",
       "startLine": 1,
       "endLine": 29,
-      "mathContext": "Bound: Module docstring with problem history and bounds, plus import of the full Mathlib library"
+      "mathContext": "Problem #626: for $k$-chromatic graphs, does $\\\\lim_{n \\\\to \\\\infty} g_k(n)/\\\\log n$ exist? Here $g_k(n)$ = max girth of an $n$-vertex $k$-chromatic graph."
     },
     {
       "id": "basic-definitions",
@@ -89,7 +90,7 @@
       "summary": "Chromatic number (sorry'd), k-colorability via proper coloring, girth (sorry'd), and HasGirthGT predicate",
       "startLine": 30,
       "endLine": 47,
-      "mathContext": "Mathematical content: Chromatic number (sorry'd), k-colorability via proper coloring, girth (sorry'd), and HasGirthGT predicate"
+      "mathContext": "$\\\\chi(G)$ = chromatic number. Girth = length of shortest cycle ($\\\\infty$ if acyclic). High girth + high chromatic: Erdos (1959) proved existence via probabilistic method."
     },
     {
       "id": "g-function",
@@ -97,7 +98,7 @@
       "summary": "Noncomputable definition of g_k(n) via supremum, with axiomatized well-definedness for k ≥ 4",
       "startLine": 48,
       "endLine": 63,
-      "mathContext": "Noncomputable definition of g_k(n) via supremum, with axiomatized well-definedness for k $\\geq$ 4"
+      "mathContext": "$g_k(n) = \\\\max\\\\{\\\\text{girth}(G) : |V(G)| = n, \\\\chi(G) = k\\\\}$. How large a girth can a $k$-chromatic $n$-vertex graph have?"
     },
     {
       "id": "erdos-constructions",
@@ -105,7 +106,7 @@
       "summary": "Axiomatized existence of high-chromatic, high-girth graphs, plus sorry'd corollary g_k(n) → ∞",
       "startLine": 64,
       "endLine": 76,
-      "mathContext": "Axiomatized existence of high-chromatic, high-girth graphs, plus sorry'd corollary g_k(n) $\\to$ ∞"
+      "mathContext": "Erdos (1959): $\\\\forall k, g$, $\\\\exists G$ with $\\\\chi(G) \\\\geq k$ and girth $> g$. Non-constructive (probabilistic). Explicit constructions: Ramanujan graphs (Lubotzky-Phillips-Sarnak)."
     },
     {
       "id": "upper-bound",
@@ -113,7 +114,7 @@
       "summary": "Axiomatized bound g_k(n) ≤ (2/log(k-2))·log n + 1 with coefficient definition and k=4 evaluation",
       "startLine": 77,
       "endLine": 93,
-      "mathContext": "Axiomatized bound g_k(n) $\\leq$ (2/log(k-2))·$\\log n$ + 1 with coefficient definition and k=4 evaluation"
+      "mathContext": "$g_k(n) \\\\leq \\\\frac{2}{\\\\log(k-2)} \\\\log n + 1$. The coefficient $2/\\\\log(k-2)$ decreases with $k$: higher chromatic number forces shorter cycles."
     },
     {
       "id": "lower-bound",
@@ -121,7 +122,7 @@
       "summary": "Axiomatized bound g_k(n) ≥ (1/(4 log k))·log n with coefficient definition and k=4 evaluation",
       "startLine": 94,
       "endLine": 110,
-      "mathContext": "Axiomatized bound g_k(n) $\\geq$ (1/(4 log k))·$\\log n$ with coefficient definition and k=4 evaluation"
+      "mathContext": "$g_k(n) \\\\geq \\\\frac{1}{4\\\\log k} \\\\log n$. From probabilistic constructions. Gap: coefficient ranges between $1/(4\\\\log k)$ and $2/\\\\log(k-2)$."
     },
     {
       "id": "main-question",
@@ -129,7 +130,7 @@
       "summary": "Ratio g_k(n)/log n, limit existence via Filter.Tendsto, sorry'd boundedness, and formal open status",
       "startLine": 111,
       "endLine": 131,
-      "mathContext": "Ratio g_k(n)/$\\log n$, limit existence via Filter.Tendsto, sorry'd boundedness, and formal open status"
+      "mathContext": "OPEN: does $g_k(n)/\\\\log n$ converge as $n \\\\to \\\\infty$? Known to be bounded between positive constants. The limit (if it exists) depends on $k$."
     },
     {
       "id": "gap-analysis",
@@ -137,7 +138,7 @@
       "summary": "Bound ratio formula 8·log k/log(k-2), sorry'd positivity of gap, and sorry'd limit to 8 as k → ∞",
       "startLine": 132,
       "endLine": 152,
-      "mathContext": "Bound ratio formula 8·log k/log(k-2), sorry'd positivity of gap, and sorry'd limit to 8 as k $\\to$ ∞"
+      "mathContext": "Gap ratio: $\\\\frac{2/\\\\log(k-2)}{1/(4\\\\log k)} = 8\\\\log k / \\\\log(k-2) \\\\to 8$ as $k \\\\to \\\\infty$. For small $k$, the gap is larger."
     },
     {
       "id": "dual-problem",
@@ -145,7 +146,7 @@
       "summary": "Maximum chromatic number for given girth, sorry'd duality g↔h, and axiomatized polynomial bounds",
       "startLine": 153,
       "endLine": 171,
-      "mathContext": "Axiomatized: Maximum chromatic number for given girth, sorry'd duality g↔h, and axiomatized polynomial bounds"
+      "mathContext": "Dual: $h(g,n) = \\\\max \\\\chi(G)$ for $n$-vertex graphs with girth $> g$. By duality, bounds on $g_k$ give bounds on $h$."
     },
     {
       "id": "special-cases",
@@ -153,7 +154,7 @@
       "summary": "k=4 bounds, triangle-free unbounded chromatic (sorry'd), Erdős 1959 axiom, and probabilistic lower bound construction",
       "startLine": 172,
       "endLine": 203,
-      "mathContext": "Axiomatized: k=4 bounds, triangle-free unbounded chromatic (sorry'd), Erdős 1959 axiom, and probabilistic lower bound construction"
+      "mathContext": "$k=4$: triangle-free graphs. $g_4(n) = \\\\Theta(\\\\log n)$ but exact asymptotics unknown. Erdos (1959): triangle-free graphs have unbounded $\\\\chi$."
     },
     {
       "id": "ramsey-connection",
@@ -161,7 +162,7 @@
       "summary": "Off-diagonal Ramsey number definition and sorry'd connection g_k(n) ≤ C·log R(k,n)",
       "startLine": 204,
       "endLine": 216,
-      "mathContext": "Off-diagonal Ramsey number definition and sorry'd connection g_k(n) $\\leq$ C·log R(k,n)"
+      "mathContext": "Connection to off-diagonal Ramsey: $R(3,n) = \\\\Theta(n^2/\\\\log n)$ implies bounds on $g_3(n)$ (triangle-free, $\\\\chi = 3$)."
     },
     {
       "id": "main-status",
@@ -169,7 +170,7 @@
       "summary": "Combined bounds theorem erdos_626_status packaging logarithmic bounds and existence, with #check verifications",
       "startLine": 217,
       "endLine": 244,
-      "mathContext": "Verified: Combined bounds theorem erdos_626_status packaging logarithmic bounds and existence, with #check verifications"
+      "mathContext": "Status: logarithmic growth established ($g_k(n) = \\\\Theta(\\\\log n)$ for each fixed $k$). Limit existence and exact coefficient: OPEN."
     }
   ],
   "conclusion": {

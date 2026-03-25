@@ -39,9 +39,11 @@
       "Aristotle formally verified `kls_improves`: for $n \\geq 100$, $\\log n / \\log \\log n < 4n + 2$, using $e < 3$ proved via Taylor expansion bounds"
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Graph theory (vertices, edges, colorings)",
-      "Ramsey theory (partition regularity)"
+      "Ramsey numbers ($R(G,H)$ for specific graphs)",
+      "Cycle graphs ($C_k$) and complete graphs ($K_n$)",
+      "Turan-type stability arguments",
+      "Szemerédi regularity lemma",
+      "Graph coloring (red-blue edge colorings)"
     ]
   },
   "sections": [
@@ -51,7 +53,7 @@
       "summary": "Documentation header with problem statement, Aristotle edit notes, threshold progression, related questions, and Mathlib imports for SimpleGraph and real analysis",
       "startLine": 1,
       "endLine": 43,
-      "mathContext": "Mathematical content: Documentation header with problem statement, Aristotle edit notes, threshold progression, related questions, and Mathlib imports for SimpleGraph and real analysis"
+      "mathContext": "Prove $R(C_k, K_n) = (k-1)(n-1)+1$ for $k \\\\geq n \\\\geq 3$ (except $(3,3)$). Progressive thresholds: Bondy-Erdos $k > n^2$, Nikiforov $k \\\\geq 4n+2$."
     },
     {
       "id": "basic-defs",
@@ -59,7 +61,7 @@
       "summary": "cycleGraph C_k via modular adjacency, completeGraph K_n as top of lattice, ContainsCycle via injective embedding preserving cyclic adjacency, ContainsClique via clique Finset of given size",
       "startLine": 56,
       "endLine": 91,
-      "mathContext": "Mathematical content: cycleGraph C_k via modular adjacency, completeGraph K_n as top of lattice, ContainsCycle via injective embedding preserving cyclic adjacency, ContainsClique via clique Finset of given size"
+      "mathContext": "Cycle graph $C_k$: $k$ vertices in a cycle ($k$-gon). Complete graph $K_n$: all $\\\\binom{n}{2}$ edges. ContainsCopy: subgraph isomorphism."
     },
     {
       "id": "ramsey",
@@ -67,7 +69,7 @@
       "summary": "RamseyNumber via Nat.find over existence of N with red C_k or blue K_n, RamseyProperty as the Ramsey property predicate, ramsey_is_min establishing minimality",
       "startLine": 96,
       "endLine": 144,
-      "mathContext": "Mathematical content: RamseyNumber via Nat.find over existence of N with red C_k or blue K_n, RamseyProperty as the Ramsey property predicate, ramsey_is_min establishing minimality"
+      "mathContext": "$R(C_k, K_n) = \\\\min N$ such that every red-blue coloring of $K_N$ contains red $C_k$ or blue $K_n$. Found via $\\\\text{Nat.find}$ on existence."
     },
     {
       "id": "conjecture",
@@ -75,7 +77,7 @@
       "summary": "ConjecturedFormula (k-1)(n-1)+1, MainConjecture for k ≥ n ≥ 3 excluding (3,3), exception_3_3 showing R(C_3,K_3) = 6, formula_wrong_at_3_3 proved by native_decide",
       "startLine": 145,
       "endLine": 174,
-      "mathContext": "ConjecturedFormula (k-1)(n-1)+1, MainConjecture for k $\\geq$ n $\\geq$ 3 excluding (3,3), exception_3_3 showing R(C_3,K_3) = 6, formula_wrong_at_3_3 proved by native_decide"
+      "mathContext": "Conjectured formula: $R(C_k, K_n) = (k-1)(n-1)+1$ for $k \\\\geq n \\\\geq 3$, $(k,n) \\\\neq (3,3)$. Exception: $R(K_3, K_3) = 6 \\\\neq 5$."
     },
     {
       "id": "lower-bound",
@@ -83,7 +85,7 @@
       "summary": "LowerBoundGraph partitions (k-1)(n-1) vertices into (n-1) copies of K_{k-1} via integer division, lower_bound_no_cycle (components too small), lower_bound_complement_no_clique (independence number n-1)",
       "startLine": 191,
       "endLine": 232,
-      "mathContext": "LowerBoundGraph partitions (k-1)(n-1) vertices into (n-1) copies of K_{k-1} via integer division, lower_bound_no_cycle (components too small), lower_bound_complement_no_clique (independence number n-1"
+      "mathContext": "Lower bound: $(k-1)(n-1)$ vertices, partitioned into $n-1$ copies of $K_{k-1}$ (all red within, all blue between). Contains no red $C_k$ and no blue $K_n$."
     },
     {
       "id": "bondy-erdos",
@@ -91,7 +93,7 @@
       "summary": "bondy_erdos theorem for k > n²-2, BondyErdosThreshold definition, above_bondy_erdos_threshold corollary",
       "startLine": 243,
       "endLine": 267,
-      "mathContext": "Formal definition: bondy_erdos theorem for k > n²-2, BondyErdosThreshold definition, above_bondy_erdos_threshold corollary"
+      "mathContext": "Bondy-Erdos (1973): formula holds for $k > n^2 - 2$. The first threshold result."
     },
     {
       "id": "nikiforov",
@@ -99,7 +101,7 @@
       "summary": "nikiforov theorem for k ≥ 4n+2, NikiforovThreshold definition, nikiforov_improves proved by omega for n ≥ 5",
       "startLine": 278,
       "endLine": 293,
-      "mathContext": "nikiforov theorem for k $\\geq$ 4n+2, NikiforovThreshold definition, nikiforov_improves proved by omega for n $\\geq$ 5"
+      "mathContext": "Nikiforov (2005): formula holds for $k \\\\geq 4n + 2$. Significant improvement from $n^2$ to $4n$."
     },
     {
       "id": "kls",
@@ -107,7 +109,7 @@
       "summary": "keevash_long_skokan with existential constant C, KLSThreshold as log n / log log n, exp_one_lt_3 lemma via Taylor bounds, kls_improves PROVED by Aristotle for n ≥ 100",
       "startLine": 312,
       "endLine": 358,
-      "mathContext": "keevash_long_skokan with existential constant C, KLSThreshold as $\\log n$ / log $\\log n$, exp_one_lt_3 lemma via Taylor bounds, kls_improves PROVED by Aristotle for n $\\geq$ 100"
+      "mathContext": "Keevash-Long-Skokan: formula holds for $k \\\\geq C\\\\log n / \\\\log\\\\log n$ for some constant $C$. Near-optimal threshold."
     },
     {
       "id": "special-cases",
@@ -115,7 +117,7 @@
       "summary": "cycle_3_is_triangle (C_3 = K_3), ramsey_C4_K3 = 7, ramsey_C5_K3 = 9, ramsey_Ck_K3 = 2k-1 for k ≥ 4 (triangle case via Dirac's theorem)",
       "startLine": 376,
       "endLine": 420,
-      "mathContext": "cycle_3_is_triangle (C_3 = K_3), ramsey_C4_K3 = 7, ramsey_C5_K3 = 9, ramsey_Ck_K3 = 2k-1 for k $\\geq$ 4 (triangle case via Dirac's theorem)"
+      "mathContext": "$R(C_4, K_3) = 7$, $R(C_5, K_3) = 9$. For $k \\\\geq 4$, $n = 3$: $R(C_k, K_3) = 2k-1$ (Faudree-Schelp)."
     },
     {
       "id": "related",
@@ -123,7 +125,7 @@
       "summary": "SmallestValidK via Nat.find for threshold where formula holds, MinRamseyValue as infimum of R(C_k, K_n) over k ≥ n, min_ramsey_achieved existence",
       "startLine": 425,
       "endLine": 461,
-      "mathContext": "SmallestValidK via Nat.find for threshold where formula holds, MinRamseyValue as infimum of R(C_k, K_n) over k $\\geq$ n, min_ramsey_achieved existence"
+      "mathContext": "SmallestValidK: the minimum $k$ where $(k-1)(n-1)+1$ holds for all $n$. Approaches 3 or 4 as theorems improve."
     },
     {
       "id": "monotonicity",
@@ -131,7 +133,7 @@
       "summary": "ramsey_mono_k and ramsey_mono_n (non-decreasing in both parameters), formula_mono PROVED showing ConjecturedFormula is monotone via nlinarith",
       "startLine": 479,
       "endLine": 511,
-      "mathContext": "Mathematical content: ramsey_mono_k and ramsey_mono_n (non-decreasing in both parameters), formula_mono PROVED showing ConjecturedFormula is monotone via nlinarith"
+      "mathContext": "$R(C_k, K_n) \\\\leq R(C_{k+1}, K_n)$ and $R(C_k, K_n) \\\\leq R(C_k, K_{n+1})$. Non-decreasing in both parameters."
     },
     {
       "id": "upper-bound",
@@ -139,7 +141,7 @@
       "summary": "upper_bound theorem R(C_k, K_n) ≤ (k-1)(n-1)+1 for k ≥ n ≥ 3 excluding (3,3), path_cycle_method establishing RamseyProperty for N ≥ (k-1)(n-1)+1",
       "startLine": 522,
       "endLine": 542,
-      "mathContext": "upper_bound theorem R(C_k, K_n) $\\leq$ (k-1)(n-1)+1 for k $\\geq$ n $\\geq$ 3 excluding (3,3), path_cycle_method establishing RamseyProperty for N $\\geq$ (k-1)(n-1)+1"
+      "mathContext": "$R(C_k, K_n) \\\\leq (k-1)(n-1)+1$ for $k \\\\geq n \\\\geq 3$, $(k,n) \\\\neq (3,3)$. Proved by stability + regularity arguments."
     },
     {
       "id": "summary",
@@ -147,7 +149,7 @@
       "summary": "main_theorem combining all progress (formula ↔ k ≥ SmallestValidK), current_best via KLS bound, solved_asymptotically showing formula holds for all but finitely many k per fixed n",
       "startLine": 560,
       "endLine": 604,
-      "mathContext": "main_theorem combining all progress (formula ↔ k $\\geq$ SmallestValidK), current_best via KLS bound, solved_asymptotically showing formula holds for all but finitely many k per fixed n"
+      "mathContext": "Conjectured: $R(C_k,K_n) = (k-1)(n-1)+1$ for $k \\\\geq n \\\\geq 3$, $(k,n) \\\\neq (3,3)$. Known thresholds: $k \\\\geq 4n+2$ (Nikiforov), $k \\\\geq C\\\\log n/\\\\log\\\\log n$ (KLS)."
     }
   ],
   "conclusion": {

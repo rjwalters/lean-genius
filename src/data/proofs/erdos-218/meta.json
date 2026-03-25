@@ -48,12 +48,11 @@
       "Green-Tao gives long APs in primes, but not necessarily of consecutive primes"
     ],
     "prerequisites": [
-      "Prime numbers and basic properties of Nat.Prime",
-      "Prime Number Theorem (average gap growth)",
-      "Natural density and asymptotic density of integer sets",
-      "Arithmetic progressions in the primes",
-      "Green-Tao theorem (arbitrarily long APs in primes)",
-      "Cramér probabilistic model for primes"
+      "Prime gaps ($d_n = p_{n+1} - p_n$)",
+      "Density of integer sets (natural, upper, lower)",
+      "Arithmetic progressions in primes (Green-Tao)",
+      "Prime number theorem ($p_n \\\\sim n\\\\log n$)",
+      "Heuristic models for prime distribution"
     ]
   },
   "sections": [
@@ -63,7 +62,7 @@
       "startLine": 43,
       "endLine": 68,
       "summary": "nthPrime via Nat.nth, nthPrime_prime, nthPrime_strictMono, specific values.",
-      "mathContext": "Mathematical content: nthPrime via Nat.nth, nthPrime_prime, nthPrime_strictMono, specific values."
+      "mathContext": "$p_n$ = $n$-th prime. $p_1 = 2, p_2 = 3, p_3 = 5, \\\\ldots$ Strictly increasing."
     },
     {
       "id": "prime-gaps",
@@ -71,7 +70,7 @@
       "startLine": 69,
       "endLine": 101,
       "summary": "primeGap definition, primeGap_pos (proved), specific gap values.",
-      "mathContext": "Formal definition: primeGap definition, primeGap_pos (proved), specific gap values."
+      "mathContext": "$d_n = p_{n+1} - p_n$: consecutive prime gap. $d_1 = 1, d_2 = 2, d_3 = 2, d_4 = 4, \\\\ldots$"
     },
     {
       "id": "density",
@@ -79,7 +78,7 @@
       "startLine": 102,
       "endLine": 127,
       "summary": "HasDensity, upperDensity, lowerDensity definitions.",
-      "mathContext": "Formal definition: HasDensity, upperDensity, lowerDensity definitions."
+      "mathContext": "Natural density: $\\\\delta(S) = \\\\lim |S \\\\cap [1,N]|/N$. Upper density: $\\\\bar{\\\\delta}$, lower density: $\\\\underline{\\\\delta}$."
     },
     {
       "id": "key-sets",
@@ -87,7 +86,7 @@
       "startLine": 128,
       "endLine": 172,
       "summary": "gapIncreasingSet, gapDecreasingSet, gapEqualSet, gapEqualSet_eq_inter (proved).",
-      "mathContext": "Mathematical content: gapIncreasingSet, gapDecreasingSet, gapEqualSet, gapEqualSet_eq_inter (proved)."
+      "mathContext": "$I = \\\\{n : d_{n+1} > d_n\\\\}$ (increasing gaps), $D = \\\\{n : d_{n+1} < d_n\\\\}$ (decreasing), $E = \\\\{n : d_{n+1} = d_n\\\\}$ (equal). These partition $\\\\mathbb{N}$."
     },
     {
       "id": "conjectures",
@@ -95,7 +94,7 @@
       "startLine": 173,
       "endLine": 203,
       "summary": "erdos_218a, erdos_218b, erdos_218c axioms (all OPEN).",
-      "mathContext": "Axiomatized: erdos_218a, erdos_218b, erdos_218c axioms (all OPEN)."
+      "mathContext": "Three OPEN conjectures: (a) $\\\\delta(I) = \\\\delta(D) = 1/2$, $\\\\delta(E) = 0$; (b) $|I|, |D|$ infinite; (c) $E$ infinite."
     },
     {
       "id": "ap-connection",
@@ -103,7 +102,7 @@
       "startLine": 204,
       "endLine": 225,
       "summary": "threePrimesInAP, gapEqual_iff_ap axiom, infinitely_many_3ap_from_218c (proved).",
-      "mathContext": "Axiomatized: threePrimesInAP, gapEqual_iff_ap axiom, infinitely_many_3ap_from_218c (proved)."
+      "mathContext": "Three primes in AP: $p, p+d, p+2d$ iff $d_n = d_{n+1}$. So $E$ infinite $\\\\iff$ infinitely many 3-term prime APs."
     },
     {
       "id": "examples",
@@ -111,7 +110,7 @@
       "startLine": 226,
       "endLine": 236,
       "summary": "example_ap_1, apTriples definition, ap_357 axiom.",
-      "mathContext": "Formal definition: example_ap_1, apTriples definition, ap_357 axiom."
+      "mathContext": "$p = 3, 5, 7$ is a 3-AP with $d = 2$. Primes 3, 7, 11 with $d = 4$."
     },
     {
       "id": "green-tao",
@@ -119,7 +118,7 @@
       "startLine": 237,
       "endLine": 249,
       "summary": "Green-Tao theorem axiom; does not directly imply conjecture 3.",
-      "mathContext": "Verified: Green-Tao theorem axiom; does not directly imply conjecture 3."
+      "mathContext": "Green-Tao (2008): primes contain $k$-APs for all $k$. But this gives $k \\\\geq 3$ APs, not necessarily $d_n = d_{n+1}$ (consecutive gaps)."
     },
     {
       "id": "partial",
@@ -127,7 +126,7 @@
       "startLine": 250,
       "endLine": 272,
       "summary": "gapIncreasingSet_infinite, gapDecreasingSet_infinite axioms, average_gap_growth.",
-      "mathContext": "Axiomatized: gapIncreasingSet_infinite, gapDecreasingSet_infinite axioms, average_gap_growth."
+      "mathContext": "$I$ and $D$ are both infinite (gaps oscillate). Average gap: $d_n \\\\sim \\\\log n$ (PNT)."
     },
     {
       "id": "symmetry",
@@ -135,7 +134,7 @@
       "startLine": 273,
       "endLine": 301,
       "summary": "Heuristic for density 1/2, partition theorem (proved).",
-      "mathContext": "Verified: Heuristic for density 1/2, partition theorem (proved)."
+      "mathContext": "Heuristic: gaps are roughly symmetric around the mean, suggesting $\\\\delta(I) \\\\approx \\\\delta(D) \\\\approx 1/2$."
     },
     {
       "id": "summary",
@@ -143,7 +142,7 @@
       "startLine": 302,
       "endLine": 340,
       "summary": "erdos_218_summary (proved from axioms), erdos_218_open.",
-      "mathContext": "Axiomatized: erdos_218_summary (proved from axioms), erdos_218_open."
+      "mathContext": "Three OPEN conjectures on prime gap monotonicity. Partial: $I, D$ infinite. Unknown: densities, $E$ infinite."
     }
   ],
   "conclusion": {

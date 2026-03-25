@@ -76,8 +76,11 @@
       "**Open gap**: For general D > 1, the gap between the lower bound n·√(log n) and the upper bound n^{4/3} remains one of the major open problems in discrete geometry."
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Geometry (Euclidean, combinatorial)"
+      "Discrete geometry (point configurations on $S^2$)",
+      "Distance problems (unit distance, repeated distance)",
+      "Incidence geometry (Szemeredi-Trotter theorem)",
+      "Iterated logarithm ($\\\\log^*$)",
+      "Extremal combinatorics on surfaces"
     ]
   },
   "sections": [
@@ -87,7 +90,7 @@
       "startLine": 1,
       "endLine": 39,
       "summary": "Problem statement, references, imports, and namespace declaration",
-      "mathContext": "Mathematical content: Problem statement, references, imports, and namespace declaration"
+      "mathContext": "Problem #605: for $n$ points on a sphere in $\\\\mathbb{R}^3$, what is $u_D(n)$ = max pairs at the same distance? Is $u_D(n)/n \\\\to \\\\infty$?"
     },
     {
       "id": "sphere-config",
@@ -95,7 +98,7 @@
       "startLine": 40,
       "endLine": 65,
       "summary": "Definitions of Point3, Sphere, and SphereConfig structure in ℝ³",
-      "mathContext": "Formal definition: Definitions of Point3, Sphere, and SphereConfig structure in ℝ³"
+      "mathContext": "Points $p_1,\\\\ldots,p_n \\\\in S^2$ (unit sphere). Distance $d(p_i,p_j) = \\\\|p_i - p_j\\\\|$. Configuration: any $n$ points on $S^2$."
     },
     {
       "id": "distance-pairs",
@@ -103,7 +106,7 @@
       "startLine": 66,
       "endLine": 87,
       "summary": "Counting pairs at specific distances and finding the maximum",
-      "mathContext": "Mathematical content: Counting pairs at specific distances and finding the maximum"
+      "mathContext": "For distance $d$: $r_d(P) = |\\\\{(i,j) : d(p_i,p_j) = d\\\\}|$. Maximum: $u_D(n) = \\\\max_P \\\\max_d r_d(P)$ over all configs and distances."
     },
     {
       "id": "u-function",
@@ -111,7 +114,7 @@
       "startLine": 88,
       "endLine": 98,
       "summary": "Definition of the maximum repeated-distance function as a supremum",
-      "mathContext": "Formal definition: Definition of the maximum repeated-distance function as a supremum"
+      "mathContext": "$u_D(n) = \\\\sup$ over all $n$-point configs $P$ on $S^2$ of $\\\\max_d r_d(P)$. Measures how many distance repetitions are possible."
     },
     {
       "id": "main-question",
@@ -119,7 +122,7 @@
       "startLine": 99,
       "endLine": 115,
       "summary": "Formal statement of superlinear growth and the growth ratio",
-      "mathContext": "Mathematical content: Formal statement of superlinear growth and the growth ratio"
+      "mathContext": "Does $u_D(n)/n \\\\to \\\\infty$? Equivalently: is superlinear growth achievable? YES — proved by Swanepoel-Valtr."
     },
     {
       "id": "iterated-log",
@@ -127,7 +130,7 @@
       "startLine": 116,
       "endLine": 133,
       "summary": "Recursive definition of log*(n) and its divergence",
-      "mathContext": "Formal definition: Recursive definition of log*(n) and its divergence"
+      "mathContext": "$\\\\log^*(n)$: number of times $\\\\log$ must be applied to reach $\\\\leq 1$. Grows incredibly slowly: $\\\\log^*(2^{65536}) = 5$."
     },
     {
       "id": "known-bounds",
@@ -135,7 +138,7 @@
       "startLine": 134,
       "endLine": 187,
       "summary": "EHP bound, Swanepoel-Valtr bound, upper bound, and √2 sphere tight bound",
-      "mathContext": "Bound: EHP bound, Swanepoel-Valtr bound, upper bound, and √2 sphere tight bound"
+      "mathContext": "EHP: $u_D(n) \\\\geq cn\\\\log^*(n)$ (barely superlinear). Swanepoel-Valtr: $u_D(n) \\\\geq cn\\\\sqrt{\\\\log n}$. Upper: $u_D(n) = O(n^{4/3})$ from incidence geometry."
     },
     {
       "id": "main-theorem",
@@ -143,7 +146,7 @@
       "startLine": 188,
       "endLine": 221,
       "summary": "Erdős #605 solved: superlinear growth and witness function",
-      "mathContext": "Mathematical content: Erdős #605 solved: superlinear growth and witness function"
+      "mathContext": "SOLVED: $u_D(n) \\\\to \\\\infty$ superlinearly. Best lower bound: $\\\\Omega(n\\\\sqrt{\\\\log n})$ (Swanepoel-Valtr)."
     },
     {
       "id": "unit-distance",
@@ -151,7 +154,7 @@
       "startLine": 222,
       "endLine": 240,
       "summary": "Relation to the classical planar unit distance problem",
-      "mathContext": "Mathematical content: Relation to the classical planar unit distance problem"
+      "mathContext": "Planar unit distance problem: $u(n) = O(n^{4/3})$ (Spencer-Szemer\\\\acute{e}di-Trotter). Sphere version behaves differently due to curvature."
     },
     {
       "id": "constructions",
@@ -159,7 +162,7 @@
       "startLine": 241,
       "endLine": 255,
       "summary": "Great circle and cube vertex constructions",
-      "mathContext": "Mathematical content: Great circle and cube vertex constructions"
+      "mathContext": "Great circle: $n$ equally spaced points on a great circle give $u_D \\\\geq n-1$. Cube vertices: $8$ points with $3$ distinct distances."
     },
     {
       "id": "asymptotics",
@@ -167,7 +170,7 @@
       "startLine": 256,
       "endLine": 281,
       "summary": "Formal definitions of Ω, O, and asymptotic equivalence",
-      "mathContext": "Formal definition: Formal definitions of Ω, O, and asymptotic equivalence"
+      "mathContext": "$\\\\Omega(n\\\\sqrt{\\\\log n}) \\\\leq u_D(n) \\\\leq O(n^{4/3})$. The gap between $\\\\sqrt{\\\\log n}$ and $n^{1/3}$ growth factors remains open."
     },
     {
       "id": "open-questions",
@@ -175,7 +178,7 @@
       "startLine": 282,
       "endLine": 298,
       "summary": "Remaining open problems and the gap between bounds",
-      "mathContext": "Bound: Remaining open problems and the gap between bounds"
+      "mathContext": "What is the true growth rate? Is $u_D(n) = \\\\Theta(n\\\\sqrt{\\\\log n})$ or closer to $n^{4/3}$? Can algebraic geometry improve upper bounds on $S^2$?"
     }
   ],
   "conclusion": {

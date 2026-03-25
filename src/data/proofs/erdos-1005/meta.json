@@ -40,9 +40,11 @@
       "**Mediant insertion mechanism**: $F_{n+1}$ is obtained from $F_n$ by inserting mediants $(a+c)/(b+d)$ between adjacent fractions $a/b, c/d$ when $b+d = n+1$. Understanding how mediant insertion affects similarly ordered runs is central to closing the gap between $1/12$ and $1/4$"
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)",
-      "Combinatorics and number theory",
-      "Combinatorics (counting, extremal problems)"
+      "Farey sequences ($F_n$ and their ordering properties)",
+      "Number theory ($\\gcd$, coprimality, Euler totient $\\varphi$)",
+      "Lattice point geometry (product order on $\\mathbb{Z}^2$)",
+      "Dilworth theorem (chains vs antichains)",
+      "Mediant and modular group ($|ad-bc|=1$)"
     ]
   },
   "sections": [
@@ -60,7 +62,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Defines `FareyFraction` structure with coprimality invariant, `fareySequence` $F_n$ as a `Finset` (construction sorry'd), `fareyCount`, and the asymptotic $|F_n| = \\frac{3n^2}{\\pi^2} + O(n \\log n)$.",
-      "mathContext": "Defines `FareyFraction` structure with coprimality invariant, `fareySequence` $F_n$ as a `Finset` (construction sorry'd), `fareyCount`, and the asymptotic $|F_n| = \\frac{3n^2}{\\$\\pi$^2} + $O(n \\$\\log n$)$$."
+      "mathContext": "A Farey fraction $a/b$ in $F_n$ has $0 \\leq a \\leq b \\leq n$ with $\\gcd(a,b) = 1$. The Farey sequence $F_n$ lists all such fractions in $[0,1]$ in increasing order; $|F_n| \\sim 3n^2/\\pi^2$."
     },
     {
       "id": "similarly-ordered",
@@ -76,7 +78,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Defines `fareyList` (ordered list of $F_n$) and `isSimOrdered`: a pairwise similarly ordered property over a consecutive run of $k$ fractions starting at index $i$.",
-      "mathContext": "Formal definition: Defines `fareyList` (ordered list of $F_n$) and `isSimOrdered`: a pairwise similarly ordered property over a consecutive run of $k$ fractions starting at index $i$."
+      "mathContext": "Fractions $p_i/q_i, p_j/q_j$ are \\emph{similarly ordered} if $p_i \\leq p_j$ and $q_i \\leq q_j$ (or vice versa). A run of $k$ consecutive fractions is similarly ordered if every pair satisfies this."
     },
     {
       "id": "function-f",
@@ -84,7 +86,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Defines `mayerErdosF` as the supremum of $\\{k : \\exists i,\\ \\text{isSimOrdered}(n, i, k)\\}$ — the longest run of consecutive pairwise similarly ordered Farey fractions in $F_n$.",
-      "mathContext": "Formal definition: Defines `mayerErdosF` as the supremum of $\\{k : \\exists i,\\ \\text{isSimOrdered}(n, i, k)\\}$ — the longest run of consecutive pairwise similarly ordered Farey fractions in $F_n$."
+      "mathContext": "$f(n) = \\max\\{k : \\exists i,; F_n[i], F_n[i+1], \\ldots, F_n[i+k-1] \\text{ are pairwise similarly ordered}\\}$ — the longest such run in $F_n$."
     },
     {
       "id": "historical",
@@ -92,7 +94,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Axiomatizes Mayer's theorem ($f(n) \\to \\infty$ via `Filter.Tendsto`) and Erdős's 1943 linear lower bound ($\\exists c > 0,\\ f(n) \\geq cn$).",
-      "mathContext": "Verified: Axiomatizes Mayer's theorem ($f(n) \\to \\infty$ via `Filter.Tendsto`) and Erdős's 1943 linear lower bound ($\\exists c > 0,\\ f(n) \\geq cn$)."
+      "mathContext": "Mayer (1942): $f(n) \\to \\infty$. Erdős (1943): $f(n) \\geq cn$ for some $c > 0$, establishing linear growth. These were the first quantitative results."
     },
     {
       "id": "van-doorn",
@@ -100,7 +102,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Axiomatizes the lower bound $f(n) \\geq (1/12 - \\varepsilon)n$ and upper bound $f(n) \\leq n/4 + C$. The combined `vanDoorn_bounds` theorem packages both.",
-      "mathContext": "Verified: Axiomatizes the lower bound $f(n) \\geq (1/12 - \\varepsilon)n$ and upper bound $f(n) \\leq n/4 + C$. The combined `vanDoorn_bounds` theorem packages both."
+      "mathContext": "van Doorn (2025): $\\frac{1}{12}n - \\varepsilon n \\leq f(n) \\leq \\frac{1}{4}n + C$. A factor-of-3 gap between bounds remains. The upper bound uses the $|ad - bc| = 1$ adjacency constraint."
     },
     {
       "id": "main-conjecture",
@@ -108,7 +110,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "States `hasAsymptoticConstant` ($\\exists c > 0 : f(n)/n \\to c$) and `vanDoornConjecture` ($c = 1/4$). Both are `def`s producing `Prop` since the problem is open.",
-      "mathContext": "Mathematical content: States `hasAsymptoticConstant` ($\\exists c > 0 : f(n)/n \\to c$) and `vanDoornConjecture` ($c = 1/4$). Both are `def`s producing `Prop` since the problem is open."
+      "mathContext": "OPEN: Does $f(n)/n \\to c$ for some constant $c > 0$? van Doorn conjectures $c = 1/4$. Currently $1/12 \\leq c \\leq 1/4$."
     },
     {
       "id": "mediant",
@@ -132,7 +134,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Verified computations: $\\frac{1/4}{1/12} = 3$ and $1/4 - 1/12 = 1/6$, quantifying the factor-of-3 gap between van Doorn's bounds. Closing this gap is the central remaining challenge.",
-      "mathContext": "Bound: Verified computations: $\\frac{1/4}{1/12} = 3$ and $1/4 - 1/12 = 1/6$, quantifying the factor-of-3 gap between van Doorn's bounds. Closing this gap is the central remaining challenge."
+      "mathContext": "The gap: $1/4 \\div 1/12 = 3$ (factor of 3), and $1/4 - 1/12 = 1/6$. Closing this requires either better constructions (improving $1/12$) or tighter constraints (reducing $1/4$)."
     }
   ],
   "conclusion": {

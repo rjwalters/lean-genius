@@ -68,9 +68,11 @@
       "Gap of about 0.15n remains open"
     ],
     "prerequisites": [
-      "Graph theory (vertices, edges, colorings)",
-      "Extremal graph theory (Turán-type problems)",
-      "Combinatorics and number theory"
+      "Extremal graph theory (Turan threshold)",
+      "Triangle counting in dense graphs",
+      "Vertex degree sums in substructures",
+      "Graph density and minimum degree",
+      "Asymptotic extremal analysis"
     ]
   },
   "sections": [
@@ -80,7 +82,7 @@
       "summary": "vertexCount, edgeCount definitions",
       "startLine": 28,
       "endLine": 42,
-      "mathContext": "Formal definition: vertexCount, edgeCount definitions"
+      "mathContext": "$n = |V|$, $e = |E|$. Dense graph: $e > n^2/4$ (above Turan threshold)."
     },
     {
       "id": "turan-threshold",
@@ -96,7 +98,7 @@
       "summary": "Triangle structure, vertexDegree, triangleDegreeSum",
       "startLine": 61,
       "endLine": 91,
-      "mathContext": "Formal definition: Triangle structure, vertexDegree, triangleDegreeSum"
+      "mathContext": "Triangle $(u,v,w)$. Degree sum of triangle: $d(u)+d(v)+d(w)$. Measures how embedded the triangle is in the graph."
     },
     {
       "id": "h-function",
@@ -120,7 +122,7 @@
       "summary": "erdos_laskar_upper, upper_bound_tight",
       "startLine": 132,
       "endLine": 149,
-      "mathContext": "Bound: erdos_laskar_upper, upper_bound_tight"
+      "mathContext": "Erdos-Laskar upper: $h(n) \\\\leq cn$ for some constant $c < 1$."
     },
     {
       "id": "original-lower",
@@ -128,7 +130,7 @@
       "summary": "erdos_laskar_lower, lower_beats_n",
       "startLine": 150,
       "endLine": 167,
-      "mathContext": "Mathematical content: erdos_laskar_lower, lower_beats_n"
+      "mathContext": "Erdos-Laskar lower: $h(n) \\\\geq n + O(1)$. Every dense graph has a triangle with degree sum $> n$."
     },
     {
       "id": "fan-bound",
@@ -136,7 +138,7 @@
       "summary": "fanConstant, fan_lower, current_bounds",
       "startLine": 168,
       "endLine": 191,
-      "mathContext": "Bound: fanConstant, fan_lower, current_bounds"
+      "mathContext": "Fan: $h(n) \\\\geq cn$ with improved constant. Current best lower bound."
     },
     {
       "id": "gap",
@@ -144,7 +146,7 @@
       "summary": "boundGap, gap_positive, gap_approx",
       "startLine": 192,
       "endLine": 209,
-      "mathContext": "Bound: boundGap, gap_positive, gap_approx"
+      "mathContext": "Gap: $cn_1 \\\\leq h(n) \\\\leq cn_2$ with $c_1 < c_2$. Narrowing the gap is the main challenge."
     },
     {
       "id": "conjecture",
@@ -152,7 +154,7 @@
       "summary": "erdos_1033_conjecture, h_asymptotic",
       "startLine": 210,
       "endLine": 230,
-      "mathContext": "Mathematical content: erdos_1033_conjecture, h_asymptotic"
+      "mathContext": "Conjecture: $h(n) \\\\sim cn$ for some specific constant $c$. Determine the asymptotic."
     },
     {
       "id": "degree-properties",
@@ -160,7 +162,7 @@
       "summary": "triangle_min_degree, triangle_sum_min, dense_average_degree",
       "startLine": 231,
       "endLine": 252,
-      "mathContext": "Mathematical content: triangle_min_degree, triangle_sum_min, dense_average_degree"
+      "mathContext": "Dense graph: average degree $> n/2$. Triangle with degree sum $> 3n/2$ exists (from average)."
     },
     {
       "id": "maximum",
@@ -168,7 +170,7 @@
       "summary": "maxTriangleDegreeSum, h_as_min",
       "startLine": 253,
       "endLine": 271,
-      "mathContext": "Mathematical content: maxTriangleDegreeSum, h_as_min"
+      "mathContext": "max triangle degree sum over all triangles in $G$. The function $h$ minimizes this over all dense graphs."
     },
     {
       "id": "extremal",
@@ -176,7 +178,7 @@
       "summary": "isExtremal, extremal_exists",
       "startLine": 272,
       "endLine": 288,
-      "mathContext": "Mathematical content: isExtremal, extremal_exists"
+      "mathContext": "Extremal graph: achieves $h(n)$ exactly. Near-bipartite constructions are typically extremal."
     },
     {
       "id": "turan-graph",
@@ -184,7 +186,7 @@
       "summary": "bipartite_no_triangle, turan_plus_one",
       "startLine": 289,
       "endLine": 312,
-      "mathContext": "Mathematical content: bipartite_no_triangle, turan_plus_one"
+      "mathContext": "Turan graph $T(n,2)$: no triangles, $n^2/4$ edges. One more edge forces a triangle."
     },
     {
       "id": "small-cases",

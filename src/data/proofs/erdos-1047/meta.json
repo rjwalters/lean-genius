@@ -76,11 +76,11 @@
       "**Open Question:** Goodman asked for the maximum number of non-convex components vs polynomial degree"
     ],
     "prerequisites": [
-      "Complex polynomial evaluation and norms",
-      "Sublevel sets and connected components in ℂ",
-      "Convexity in normed spaces",
-      "Polynomial roots, multiplicity, and critical points",
-      "Compactness (Heine-Borel) for bounded closed sets"
+      "Polynomial lemniscates and sublevel sets",
+      "Convexity in the complex plane",
+      "Connected components of algebraic curves",
+      "Potential theory (Green function, capacity)",
+      "Counterexample constructions in complex analysis"
     ]
   },
   "sections": [
@@ -90,7 +90,7 @@
       "summary": "Basic definitions: lemniscate, strictLemniscate, lemniscateBoundary",
       "startLine": 50,
       "endLine": 67,
-      "mathContext": "Formal definition: Basic definitions: lemniscate, strictLemniscate, lemniscateBoundary"
+      "mathContext": "Lemniscate: $\\\\{z : |f(z)| = c\\\\}$. Sublevel set: $\\\\{z : |f(z)| \\\\leq c\\\\}$. Strict: $\\\\{z : |f(z)| < c\\\\}$."
     },
     {
       "id": "properties",
@@ -98,7 +98,7 @@
       "summary": "Closedness, compactness, and component counting theorems",
       "startLine": 68,
       "endLine": 84,
-      "mathContext": "Verified: Closedness, compactness, and component counting theorems"
+      "mathContext": "Sublevel sets are closed and compact. Component count depends on root distribution and level $c$."
     },
     {
       "id": "components",
@@ -106,7 +106,7 @@
       "summary": "Component counting and componentContaining helper",
       "startLine": 85,
       "endLine": 103,
-      "mathContext": "Mathematical content: Component counting and componentContaining helper"
+      "mathContext": "Connected components of $\\\\{|f(z)| \\\\leq c\\\\}$. For small $c$: components cluster near roots. For large $c$: single component."
     },
     {
       "id": "convexity",
@@ -114,7 +114,7 @@
       "summary": "IsConvexComplex definition and closedBall convexity",
       "startLine": 104,
       "endLine": 118,
-      "mathContext": "Formal definition: IsConvexComplex definition and closedBall convexity"
+      "mathContext": "Convexity: $S$ is convex if $\\\\forall x,y \\\\in S$, the line segment $[x,y] \\\\subseteq S$. Closed disks are convex."
     },
     {
       "id": "grunsky",
@@ -122,7 +122,7 @@
       "summary": "Statement of grunskyConjecture and grunskyConjecture_false",
       "startLine": 119,
       "endLine": 134,
-      "mathContext": "Mathematical content: Statement of grunskyConjecture and grunskyConjecture_false"
+      "mathContext": "Grunsky conjecture: connected components of $\\\\{|f(z)| \\\\leq c\\\\}$ are convex for small $c$. DISPROVED."
     },
     {
       "id": "pommerenke",
@@ -130,7 +130,7 @@
       "summary": "The 1961 counterexample: z^k(z-a) for large k",
       "startLine": 135,
       "endLine": 167,
-      "mathContext": "Mathematical content: The 1961 counterexample: z^k(z-a) for large k"
+      "mathContext": "Pommerenke (1961): $f(z) = z^k(z-a)$ for large $k$. The sublevel set near 0 is non-convex (elongated toward $a$)."
     },
     {
       "id": "goodman",
@@ -138,7 +138,7 @@
       "summary": "(z²+1)(z-2)² and the simple-roots degree-4 example",
       "startLine": 168,
       "endLine": 197,
-      "mathContext": "Mathematical content: (z²+1)(z-2)² and the simple-roots degree-4 example"
+      "mathContext": "Goodman: $f(z) = (z^2+1)(z-2)^2$. Degree-4 with simple roots. Non-convex component."
     },
     {
       "id": "referee",
@@ -146,7 +146,7 @@
       "summary": "z(z⁵-1) with symmetric root configuration",
       "startLine": 198,
       "endLine": 220,
-      "mathContext": "Mathematical content: z(z⁵-1) with symmetric root configuration"
+      "mathContext": "Referee example: $f(z) = z(z^5-1)$. Symmetric root configuration on unit circle. Non-convex sublevel near origin."
     },
     {
       "id": "positive",
@@ -154,7 +154,7 @@
       "summary": "Single-root lemniscates are disks (hence convex)",
       "startLine": 221,
       "endLine": 231,
-      "mathContext": "Mathematical content: Single-root lemniscates are disks (hence convex)"
+      "mathContext": "Single-root lemniscates: $\\\\{|z-a|^n \\\\leq c\\\\} = \\\\overline{B}(a, c^{1/n})$ (disk). Always convex."
     },
     {
       "id": "open-question",
@@ -162,7 +162,7 @@
       "summary": "maxNonConvexComponents as a function of degree",
       "startLine": 232,
       "endLine": 250,
-      "mathContext": "Mathematical content: maxNonConvexComponents as a function of degree"
+      "mathContext": "OPEN: what is $\\\\max$ number of non-convex components as a function of degree $n$?"
     },
     {
       "id": "main",
@@ -170,7 +170,7 @@
       "summary": "erdos_1047 theorem and existence of counterexamples",
       "startLine": 251,
       "endLine": 278,
-      "mathContext": "Verified: erdos_1047 theorem and existence of counterexamples"
+      "mathContext": "DISPROVED (Pommerenke 1961). Components can be non-convex even for arbitrarily small $c > 0$."
     }
   ],
   "conclusion": {

@@ -16,13 +16,13 @@
       "analytic-number-theory"
     ],
     "badge": "formalized",
-    "sorries": 3,
+    "sorries": 5,
     "erdosNumber": 1004,
     "erdosUrl": "https://erdosproblems.com/1004",
     "erdosProblemStatus": "open",
     "axiomCount": 3,
-    "lineCount": 424,
-    "assumptions": "Three axioms for EPS87 upper bound (eps87_constant, eps87_constant_pos, eps87_upper_bound). Three sorries: run_length_sublinear, longer_runs_need_larger_n, distinct_totients_asymptotic.",
+    "lineCount": 327,
+    "assumptions": "Three axioms for EPS87 upper bound (eps87_constant, eps87_constant_pos, eps87_upper_bound). Five sorries: run_length_sublinear, longer_runs_need_larger_n, distinct_totients_asymptotic, totient_eq_two_iff, totient_eq_four_iff.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -38,8 +38,11 @@
       "**Parallel structure with divisor function**: Problem 945 asks the identical question for $\\tau(n)$. Both $\\varphi$ and $\\tau$ are multiplicative, but their collision patterns differ: $\\tau$ has more collisions at small values (many $n$ with 2 divisors), while $\\varphi$ collides differently (even values dominate)"
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Number theory (primes, divisibility)"
+      "Eulers totient function $\\varphi(n)$ and its properties",
+      "Multiplicative number theory (divisor function $\\tau(n)$)",
+      "Distribution of totient values and collision rates",
+      "Pigeonhole principle and counting arguments",
+      "Asymptotic analysis ($\\log n$ factors)"
     ]
   },
   "sections": [
@@ -57,7 +60,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Defines `phi(n)` as `Nat.totient n`, proves $\\varphi(p) = p-1$ for primes, and establishes bounds: $\\varphi(n) > 0$ for $n > 0$, $\\varphi(n) \\leq n$, $\\varphi(n) < n$ for $n > 1$.",
-      "mathContext": "Formal definition: Defines `phi(n)` as `Nat.totient n`, proves $\\varphi(p) = p-1$ for primes, and establishes bounds: $\\varphi(n) > 0$ for $n > 0$, $\\varphi(n) \\leq n$, $\\varphi(n) < n$ for $n > 1$."
+      "mathContext": "$\\varphi(n)$ — Eulers totient: count of integers in $[1,n]$ coprime to $n$. Key: $\\varphi(p) = p-1$ for primes, $\\varphi(p^k) = p^{k-1}(p-1)$, multiplicative on coprime arguments."
     },
     {
       "id": "distinct-runs",
@@ -65,7 +68,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Defines `IsDistinctTotientRun(n, K)`: $\\varphi$ is injective on $\\{n+1, \\ldots, n+K\\}$. Equivalent `Set.InjOn` formulation stated. Trivial cases $K=0$ and $K=1$ proved.",
-      "mathContext": "Formal definition: Defines `IsDistinctTotientRun(n, K)`: $\\varphi$ is injective on $\\{n+1, \\ldots, n+K\\}$. Equivalent `Set.InjOn` formulation stated. Trivial cases $K=0$ and $K=1$ proved."
+      "mathContext": "$\\text{IsDistinctTotientRun}(n, K)$: $\\varphi$ is injective on $\\{n, n+1, \\ldots, n+K-1\\}$ — all $K$ consecutive integers have distinct totient values."
     },
     {
       "id": "max-length",
@@ -73,7 +76,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Defines `maxDistinctRunLength(n) = \\sup\\{K : \\text{IsDistinctTotientRun}(n,K)\\}` and proves it is at least 1 for every $n$.",
-      "mathContext": "Formal definition: Defines `maxDistinctRunLength(n) = \\sup\\{K : \\text{IsDistinctTotientRun}(n,K)\\}` and proves it is at least 1 for every $n$."
+      "mathContext": "$L(n) = \\max\\{K : \\text{IsDistinctTotientRun}(n, K)\\}$ — the longest run of consecutive integers with pairwise distinct $\\varphi$ values, starting at $n$."
     },
     {
       "id": "eps87",
@@ -81,7 +84,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Axiomatizes the Erdős–Pomerance–Sárközy theorem: $K \\leq n/\\exp(c(\\log n)^{1/3})$ for distinct runs of length $K$. Corollary: $f(n)/n \\to 0$ (sublinear growth).",
-      "mathContext": "Axiomatizes the Erdős–Pomerance–Sárközy theorem: $K \\leq n/\\exp(c(\\$\\log n$)^{1/3})$ for distinct runs of length $K$. Corollary: $f(n)/n \\to 0$ (sublinear growth)."
+      "mathContext": "Erdős-Pomerance-Sárközy (1987): $L(n) \\leq n/(\\log n)^{c}$ for some $c > 0$. The totient function collides too often for very long distinct runs."
     },
     {
       "id": "conjecture",
@@ -97,7 +100,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Verified computations: $n=1$ gives run length 2 ($\\varphi(2)=1, \\varphi(3)=2, \\varphi(4)=2$), $n=2$ gives run length 1. Proves longer runs require larger starting points.",
-      "mathContext": "Verified: Verified computations: $n=1$ gives run length 2 ($\\varphi(2)=1, \\varphi(3)=2, \\varphi(4)=2$), $n=2$ gives run length 1. Proves longer runs require larger starting points."
+      "mathContext": "Small cases: $\\varphi(2)=1, \\varphi(3)=2$ gives run length 2 from $n=1$. $\\varphi(4)=2=\\varphi(3)$: collision at $n=3$. The first long runs start around $n=1$."
     },
     {
       "id": "collisions",
@@ -113,7 +116,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Defines $\\tau(n) = |\\text{divisors}(n)|$, `IsDistinctDivisorRun`, and `Problem945Conjecture`: the analogous question for $\\tau$ instead of $\\varphi$.",
-      "mathContext": "Formal definition: Defines $\\tau(n) = |\\text{divisors}(n)|$, `IsDistinctDivisorRun`, and `Problem945Conjecture`: the analogous question for $\\tau$ instead of $\\varphi$."
+      "mathContext": "$\\tau(n) = |\\{d : d \\mid n\\}|$ — the divisor function. An analogous problem: longest run with distinct $\\tau$ values. Similar behavior expected since $\\tau$ is also multiplicative."
     },
     {
       "id": "heuristics",
@@ -129,7 +132,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Trivial bound $K \\leq n+K$ and structural bound $K \\leq |\\{\\varphi(m) : m \\leq n+K+1\\}|$ (distinct values bound injective image).",
-      "mathContext": "Bound: Trivial bound $K \\leq n+K$ and structural bound $K \\leq |\\{\\varphi(m) : m \\leq n+K+1\\}|$ (distinct values bound injective image)."
+      "mathContext": "Trivial: $L(n) \\leq n + L(n) - 1$ (tautology). Structural: $L(n) \\leq |\\{\\varphi(m) : m \\leq n + L(n)\\}|$ — run length bounded by the image size of $\\varphi$ in the range."
     },
     {
       "id": "special",
@@ -137,7 +140,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Characterizes $\\varphi^{-1}(1) = \\{1,2\\}$, $\\varphi^{-1}(2) = \\{3,4,6\\}$, $\\varphi^{-1}(4) = \\{5,8,10,12\\}$. Illustrates increasing preimage sizes relevant to Carmichael's conjecture.",
-      "mathContext": "Mathematical content: Characterizes $\\varphi^{-1}(1) = \\{1,2\\}$, $\\varphi^{-1}(2) = \\{3,4,6\\}$, $\\varphi^{-1}(4) = \\{5,8,10,12\\}$. Illustrates increasing preimage sizes relevant to Carmichael's conjecture."
+      "mathContext": "$\\varphi^{-1}(1) = \\{1, 2\\}$, $\\varphi^{-1}(2) = \\{3, 4, 6\\}$: some totient values have many preimages. The pigeonhole principle from these collisions constrains run lengths."
     }
   ],
   "conclusion": {
@@ -257,7 +260,7 @@
       "Topology"
     ],
     "namespace": "Erdos1004",
-    "lineCount": 424,
+    "lineCount": 327,
     "axiomCount": 3,
     "theoremCount": 22,
     "definitionCount": 13

@@ -83,8 +83,11 @@
       "**n² + 1 Variant:** Pasten's 2024 breakthrough actually concerns P(n² + 1), with techniques applicable to n(n+1)"
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Number theory (primes, divisibility)"
+      "Greatest prime factor ($P(n)$)",
+      "Smooth numbers (Dickman $\\\\rho$ function)",
+      "Diophantine approximation (Thue-Siegel-Roth)",
+      "ABC conjecture implications",
+      "Consecutive integers and coprimality"
     ]
   },
   "sections": [
@@ -94,7 +97,7 @@
       "summary": "largestPrimeFactor, F(n), product_ge_two",
       "startLine": 42,
       "endLine": 71,
-      "mathContext": "Mathematical content: largestPrimeFactor, F(n), product_ge_two"
+      "mathContext": "$F(n) = P(n(n+1)) = \\\\max(P(n), P(n+1))$: greatest prime factor of the product of two consecutive integers."
     },
     {
       "id": "coprimality",
@@ -102,7 +105,7 @@
       "summary": "consecutive_coprime, primeFactors_product_coprime, F_eq_max",
       "startLine": 72,
       "endLine": 95,
-      "mathContext": "Mathematical content: consecutive_coprime, primeFactors_product_coprime, F_eq_max"
+      "mathContext": "consecutive_coprime, primeFactors_product_coprime, F_eq_max"
     },
     {
       "id": "polya",
@@ -110,7 +113,7 @@
       "summary": "polya_theorem axiom, F_unbounded theorem",
       "startLine": 96,
       "endLine": 117,
-      "mathContext": "Verified: polya_theorem axiom, F_unbounded theorem"
+      "mathContext": "Polya: $F(n) \\\\to \\\\infty$. Since $n$ and $n+1$ are coprime, $F(n) \\\\geq P(n+1)$, and smooth numbers are rare."
     },
     {
       "id": "mahler",
@@ -118,7 +121,7 @@
       "summary": "mahler_bound axiom, mahler_improves_polya axiom",
       "startLine": 118,
       "endLine": 140,
-      "mathContext": "Verified: mahler_bound axiom, mahler_improves_polya axiom"
+      "mathContext": "Mahler: $F(n) \\\\gg \\\\log\\\\log n$ via Thue-Siegel-Roth. Diophantine approximation prevents $n(n+1)$ from being too smooth."
     },
     {
       "id": "schinzel",
@@ -126,7 +129,7 @@
       "summary": "schinzel_upper axiom, isSmooth definition",
       "startLine": 141,
       "endLine": 171,
-      "mathContext": "Formal definition: schinzel_upper axiom, isSmooth definition"
+      "mathContext": "schinzel_upper axiom, isSmooth definition"
     },
     {
       "id": "erdos-conjectures",
@@ -134,7 +137,7 @@
       "summary": "erdos_lower_conjecture, erdos_upper_conjecture definitions",
       "startLine": 172,
       "endLine": 196,
-      "mathContext": "Formal definition: erdos_lower_conjecture, erdos_upper_conjecture definitions"
+      "mathContext": "erdos_lower_conjecture, erdos_upper_conjecture definitions"
     },
     {
       "id": "pasten",
@@ -142,7 +145,7 @@
       "summary": "pasten_bound axiom, pasten_improves_mahler axiom",
       "startLine": 197,
       "endLine": 220,
-      "mathContext": "Verified: pasten_bound axiom, pasten_improves_mahler axiom"
+      "mathContext": "pasten_bound axiom, pasten_improves_mahler axiom"
     },
     {
       "id": "examples",
@@ -150,7 +153,7 @@
       "summary": "F(1) through F(8), OEIS A074399",
       "startLine": 221,
       "endLine": 275,
-      "mathContext": "Mathematical content: F(1) through F(8), OEIS A074399"
+      "mathContext": "F(1) through F(8), OEIS A074399"
     },
     {
       "id": "variant",
@@ -158,7 +161,7 @@
       "summary": "P_squared_plus_one, pasten_squared_plus_one",
       "startLine": 276,
       "endLine": 296,
-      "mathContext": "Mathematical content: P_squared_plus_one, pasten_squared_plus_one"
+      "mathContext": "P_squared_plus_one, pasten_squared_plus_one"
     },
     {
       "id": "abc",
@@ -166,7 +169,7 @@
       "summary": "radical definition, abc_implies_strong_bound",
       "startLine": 297,
       "endLine": 323,
-      "mathContext": "Formal definition: radical definition, abc_implies_strong_bound"
+      "mathContext": "radical definition, abc_implies_strong_bound"
     },
     {
       "id": "summary",
@@ -174,7 +177,7 @@
       "summary": "erdos_368_summary combining all bounds",
       "startLine": 324,
       "endLine": 342,
-      "mathContext": "Bound: erdos_368_summary combining all bounds"
+      "mathContext": "Partially solved. Best: $F(n) \\\\gg n^{1/2}(\\\\log n)^{1/4}$. Conjectured $\\\\gg n^{1-\\\\varepsilon}$. Full resolution likely requires ABC."
     }
   ],
   "conclusion": {
