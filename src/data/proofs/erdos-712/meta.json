@@ -87,7 +87,7 @@
       "summary": "Hypergraph structure, edgeCount, formsClique, isCliqueFree definitions",
       "startLine": 38,
       "endLine": 64,
-      "mathContext": "Formal definition: Hypergraph structure, edgeCount, formsClique, isCliqueFree definitions"
+      "mathContext": "An $r$-uniform hypergraph $H = (V, E)$ has edges $E \\subseteq \\binom{V}{r}$. A set $S \\subseteq V$ of size $k$ forms a $K_k^r$-clique if all $\\binom{k}{r}$ subsets of size $r$ are edges. The `Hypergraph` structure enforces uniformity: every edge has exactly $r$ vertices. `isCliqueFree H k` means no $k$-vertex subset is a complete clique."
     },
     {
       "id": "turan-number",
@@ -95,7 +95,7 @@
       "summary": "turanNumber definition using sSup, turanNumberDef, turan_upper_trivial axiom",
       "startLine": 65,
       "endLine": 83,
-      "mathContext": "Formal definition: turanNumber definition using sSup, turanNumberDef, turan_upper_trivial axiom"
+      "mathContext": "The Turán number $\\text{ex}_r(n, K_k^r) = \\max\\{|E(H)| : H \\text{ is } K_k^r\\text{-free on } n \\text{ vertices}\\}$. Defined via `sSup` of edge counts over all $K_k^r$-free $r$-uniform hypergraphs on $\\text{Fin}\\,n$. The trivial upper bound $\\text{ex}_r(n, K_k^r) \\leq \\binom{n}{r}$ follows from the total number of $r$-subsets."
     },
     {
       "id": "turan-density",
@@ -103,7 +103,7 @@
       "summary": "turanDensity, turan_density_exists, turan_density_bounds",
       "startLine": 84,
       "endLine": 101,
-      "mathContext": "Bound: turanDensity, turan_density_exists, turan_density_bounds"
+      "mathContext": "The Turán density $\\pi_r(K_k^r) = \\lim_{n \\to \\infty} \\text{ex}_r(n, K_k^r)/\\binom{n}{r}$ exists by a compactness argument (Katona-Nemetz-Simonovits, 1964) and satisfies $0 \\leq \\pi \\leq 1$. The density captures the asymptotic maximum proportion of $r$-edges a $K_k^r$-free hypergraph can have."
     },
     {
       "id": "turan-theorem",
@@ -111,7 +111,7 @@
       "summary": "turanGraphDensity, turan_theorem, turan_graph_extremal",
       "startLine": 102,
       "endLine": 119,
-      "mathContext": "Verified: turanGraphDensity, turan_theorem, turan_graph_extremal"
+      "mathContext": "Turán's theorem (1941): $\\pi_2(K_k) = (1 - 1/(k-1))/2$. The extremal graph is the balanced complete $(k-1)$-partite graph $T(n, k-1)$ (the Turán graph). This completely solves Erdős #712 for $r = 2$ — the unique case where the density is known."
     },
     {
       "id": "k43-conjecture",
@@ -119,7 +119,7 @@
       "summary": "turanConjectureK43 = 5/9, turanHypergraph34_is_clique_free, K43 bounds",
       "startLine": 120,
       "endLine": 146,
-      "mathContext": "Bound: turanConjectureK43 = 5/9, turanHypergraph34_is_clique_free, K43 bounds"
+      "mathContext": "The simplest open case: $\\pi_3(K_4^3) \\stackrel{?}{=} 5/9$. Turán (1941) conjectured the extremal $3$-hypergraph is obtained by partitioning $n$ vertices into 4 balanced parts and taking all triples meeting $\\geq 2$ parts ($\\approx (5/9)\\binom{n}{3}$ edges). Razborov (2010) proved $\\pi_3(K_4^3) \\leq 0.5616$ via flag algebras. The gap $[5/9, 0.5616]$ remains open after 80+ years."
     },
     {
       "id": "known-bounds",
@@ -127,7 +127,7 @@
       "summary": "turan_density_positive, de_caen_lower_bound, kruskal_katona_upper, flag_algebras_upper",
       "startLine": 147,
       "endLine": 166,
-      "mathContext": "Bound: turan_density_positive, de_caen_lower_bound, kruskal_katona_upper, flag_algebras_upper"
+      "mathContext": "General bounds: de Caen's lower bound $\\pi_r(K_k^r) \\geq 1 - \\binom{k-1}{r}/\\binom{k}{r}$; Kruskal-Katona upper bound $\\pi_r(K_k^r) \\leq 1 - 1/k$. Razborov's flag algebra method (2007) gives improved computer-assisted upper bounds for specific $(r, k)$ pairs, strictly beating $1 - 1/k$."
     },
     {
       "id": "general-problem",
@@ -135,7 +135,7 @@
       "summary": "erdos_712_problem, erdos_712_open, erdos_712 theorem with full proof",
       "startLine": 167,
       "endLine": 202,
-      "mathContext": "Verified: erdos_712_problem, erdos_712_open, erdos_712 theorem with full proof"
+      "mathContext": "Erdős Problem #712: determine $\\pi_r(K_k^r)$ as an explicit (preferably rational) value for all $k > r > 2$. The `erdos_712` theorem proves the density exists in $(0, 1)$ using positivity and Kruskal-Katona, but axiomatizes that no rational value is known. Prize: \\$500 for any single case, \\$1000 for the general solution."
     },
     {
       "id": "conjectures",
@@ -143,7 +143,7 @@
       "summary": "extremal_structure_conjecture, mubayi_K53_conjecture",
       "startLine": 203,
       "endLine": 219,
-      "mathContext": "Formal definition: extremal_structure_conjecture, mubayi_K53_conjecture"
+      "mathContext": "The extremal structure conjecture: for all $r \\geq 2$, $k > r$, the extremal $K_k^r$-free hypergraph is a balanced $k$-partition construction (generalizing the Turán graph). Mubayi's conjecture: $\\pi_3(K_5^3) = 3/4$, from triples meeting $\\geq 2$ parts of a balanced 5-partition."
     },
     {
       "id": "computational",
@@ -151,7 +151,7 @@
       "summary": "flag_algebra_method, computed_bounds for small cases",
       "startLine": 220,
       "endLine": 234,
-      "mathContext": "Bound: flag_algebra_method, computed_bounds for small cases"
+      "mathContext": "Razborov's flag algebra method (2007) converts Turán density bounds into semidefinite programs, enabling computer-verified upper bounds. Known results: $5/9 \\leq \\pi_3(K_4^3) \\leq 0.562$; $0.75 \\leq \\pi_3(K_5^3) \\leq 0.769$. These are the tightest bounds available for hypergraph Turán problems."
     },
     {
       "id": "connections",
@@ -159,7 +159,7 @@
       "summary": "ramsey_connection, coding_connection",
       "startLine": 235,
       "endLine": 252,
-      "mathContext": "Mathematical content: ramsey_connection, coding_connection"
+      "mathContext": "Connection to Ramsey theory: $\\pi_r(K_k^r) < 1$ is equivalent to the statement that sufficiently dense $r$-uniform hypergraphs must contain $K_k^r$ (a density Ramsey theorem). Connection to coding theory: $K_k^r$-free hypergraphs correspond to covering designs with prescribed intersection properties — the Turán number bounds the size of optimal covering codes."
     },
     {
       "id": "summary",
@@ -167,7 +167,7 @@
       "summary": "erdos_712_summary: graph case solved, hypergraph case open, K_4^3 bounds",
       "startLine": 253,
       "endLine": 273,
-      "mathContext": "Bound: erdos_712_summary: graph case solved, hypergraph case open, K_4^3 bounds"
+      "mathContext": "Main results: Turán solved the graph case ($r = 2$) in 1941, giving $\\pi_2(K_k) = (1 - 1/(k-1))/2$. For $r > 2$, the exact density is unknown for ALL $k > r$ — even the simplest case $\\pi_3(K_4^3)$ remains open. Best bounds for $K_4^3$: $5/9 \\leq \\pi_3(K_4^3) \\leq 0.5616$. Erdős offered \\$500/\\$1000 prizes."
     }
   ],
   "conclusion": {
