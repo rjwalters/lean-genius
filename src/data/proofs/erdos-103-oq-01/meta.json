@@ -67,7 +67,7 @@
     "assumptions": "3 axiom(s), 0 sorry(s). isometry2D_surjective (Mazur-Ulam consequence: isometries of R^2 are surjective), h (counting function), h_pos (existence of optimal configs for n>=2)."
   },
   "overview": {
-    "historicalContext": "Erdos Problem #103 (1994) asks whether the count of incongruent optimal point configurations grows without bound. The parent formalization contained a subtle logical error: it claimed that 'h unbounded' and 'h tends to infinity' are equivalent, but this requires monotonicity of h, which is itself an interesting open question. This investigation corrects the formalization and builds proper infrastructure for the congruence relation.",
+    "historicalContext": "Erdős Problem #103, first appearing in his 1994 collection \"Some of my favourite unsolved problems,\" asks whether h(n) → ∞, where h(n) counts the number of incongruent sets of n points in ℝ² that minimize diameter subject to pairwise distances ≥ 1. The problem connects to the classical theory of optimal point configurations studied by Fejes Tóth (1953) and to modern questions about the structure of extremal packings. The parent formalization contained a subtle logical error: it claimed that \"h unbounded\" and \"h tends to infinity\" are equivalent, but this requires monotonicity of h, which is itself an interesting open structural question about how the space of optimal configurations evolves as the number of points increases.",
     "problemStatement": "**Investigation**: Does h(n) -> infinity as n -> infinity, where h(n) counts incongruent sets of n points in R^2 that minimize diameter subject to d(x,y) >= 1?\n\n**Key finding**: The 'unbounded <=> tends to infinity' equivalence claimed in the parent formalization is FALSE without monotonicity. We prove the correct version and demonstrate the failure with a concrete counterexample.",
     "text": "Investigation of whether h(n), the count of incongruent optimal point configurations, tends to infinity. Corrects a logical error in the parent formalization.",
     "proofStrategy": "1. Build pointDist metric properties (definiteness, symmetry) from scratch. 2. Prove isometry injectivity from metric definiteness. 3. Axiomatize surjectivity (Mazur-Ulam), construct inverse. 4. Prove congruent_symm (eliminates parent sorry). 5. Construct oscillating counterexample showing unbounded != tends to infinity. 6. State correct equivalence with monotonicity.",
@@ -177,7 +177,9 @@
   "references": [
     {
       "key": "Er94b",
-      "authors": ["P. Erdos"],
+      "authors": [
+        "P. Erdos"
+      ],
       "title": "Some of my favourite unsolved problems",
       "venue": "A Tribute to Paul Erdos, Cambridge University Press",
       "year": "1994",
@@ -186,7 +188,10 @@
     },
     {
       "key": "MU38",
-      "authors": ["S. Mazur", "S. Ulam"],
+      "authors": [
+        "S. Mazur",
+        "S. Ulam"
+      ],
       "title": "Sur les transformations isometriques d'espaces vectoriels normes",
       "venue": "Comptes Rendus Acad. Sci. Paris",
       "year": "1932",
@@ -196,8 +201,14 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Metric", "Set", "Finset"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Metric",
+      "Set",
+      "Finset"
+    ],
     "namespace": "Erdos103OQ01",
     "lineCount": 368,
     "axiomCount": 3,
