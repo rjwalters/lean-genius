@@ -221,5 +221,32 @@
       "Explore the higher-dimensional analogue with hyperplanes",
       "Study the problem with additional geometric constraints (convexity, lattice points)"
     ]
-  }
+  },
+  "references": [
+    {
+      "key": "GRS90",
+      "authors": [
+        "R.L. Graham",
+        "B.L. Rothschild",
+        "J.H. Spencer"
+      ],
+      "title": "Ramsey Theory",
+      "venue": "Wiley-Interscience, New York",
+      "year": "1990",
+      "edition": "2nd",
+      "note": "Standard reference for Ramsey theory including geometric Ramsey problems on collinear points"
+    },
+    {
+      "key": "Pa04",
+      "authors": [
+        "J. Pach"
+      ],
+      "title": "A Tverberg-type result on multicolored simplices",
+      "venue": "Computational Geometry",
+      "year": "2004",
+      "volume": "10",
+      "pages": "71-76",
+      "note": "Geometric Ramsey results on monochromatic configurations"
+    }
+  ]
 }

@@ -160,5 +160,31 @@
     "axiomCount": 6,
     "theoremCount": 10,
     "definitionCount": 5
-  }
+  },
+  "references": [
+    {
+      "key": "My55",
+      "authors": [
+        "J. Mycielski"
+      ],
+      "title": "Sur le coloriage des graphes",
+      "venue": "Colloquium Mathematicum",
+      "year": "1955",
+      "volume": "3",
+      "pages": "161-162",
+      "note": "Mycielski's construction: triangle-free graphs with arbitrarily high chromatic number"
+    },
+    {
+      "key": "Ki95",
+      "authors": [
+        "J.H. Kim"
+      ],
+      "title": "The Ramsey number R(3,t) has order of magnitude t²/log t",
+      "venue": "Random Structures & Algorithms",
+      "year": "1995",
+      "volume": "7",
+      "pages": "173-207",
+      "note": "Determines the maximum chromatic number of triangle-free graphs on n vertices up to constants"
+    }
+  ]
 }
