@@ -222,5 +222,13 @@
       "venue": "Wiley, 4th edition",
       "note": "The definitive textbook on the probabilistic method in combinatorics, covering all major techniques"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "lovasz_local_lemma",
+      "type": "core",
+      "description": "If bad events have limited dependence and low probability, they can all be avoided simultaneously",
+      "leanType": "forall i, P(A_i) * e * (d+1) <= 1 -> P(none of A_i) > 0"
+    }
   ]
 }

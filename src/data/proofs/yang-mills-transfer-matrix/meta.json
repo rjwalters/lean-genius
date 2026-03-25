@@ -195,5 +195,13 @@
       "edition": "2nd",
       "note": "Comprehensive reference for constructive quantum field theory including transfer matrix methods"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "transfer_matrix",
+      "type": "core",
+      "description": "Transfer matrix method for computing Yang-Mills partition functions",
+      "leanType": "TransferMatrix T -> partition_function = trace(T^N)"
+    }
   ]
 }

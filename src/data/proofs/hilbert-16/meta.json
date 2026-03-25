@@ -223,5 +223,13 @@
       "venue": "American Mathematical Society, Graduate Studies in Mathematics 86",
       "note": "Modern treatment of limit cycles and Hilbert's 16th problem on planar polynomial vector fields"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "hilbert16_limit_cycles",
+      "type": "core",
+      "description": "Upper bound on limit cycles of polynomial vector fields",
+      "leanType": "PolynomialVectorField degree n -> exists H, num_limit_cycles <= H(n)"
+    }
   ]
 }

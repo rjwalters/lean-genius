@@ -211,5 +211,13 @@
       "citation": "Alon, N., Duke, R.A., Lefmann, H., Rödl, V., and Yuster, R., The algorithmic aspects of the regularity lemma, JCSS 52 (1996), 480-491.",
       "type": "paper"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "regularity_lemma",
+      "type": "core",
+      "description": "Every graph has an epsilon-regular partition into at most M(epsilon) parts",
+      "leanType": "epsilon > 0 -> exists partition, epsilon_regular partition and card partition <= M(epsilon)"
+    }
   ]
 }

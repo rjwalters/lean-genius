@@ -206,5 +206,13 @@
       "venue": "Proceedings of the International Congress of Mathematicians, Vol. I, 579–604",
       "note": "Foundation of motivic homotopy theory in which flag varieties and their maps play a central role"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "motivic_flag_map",
+      "type": "core",
+      "description": "Motivic maps between flag varieties in algebraic K-theory",
+      "leanType": "FlagVariety G B -> MotivicMap -> K_theory_class"
+    }
   ]
 }

@@ -230,5 +230,13 @@
       "venue": "Sitzungsberichte des deutschen naturwissenschaftlich-medicinischen Vereines für Böhmen \"Lotos\" in Prag 19, 311–319",
       "note": "Original statement and proof: the area of a lattice polygon is I + B/2 - 1 where I = interior points and B = boundary points"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "picks_theorem",
+      "type": "core",
+      "description": "Area of lattice polygon: A = I + B/2 - 1 where I = interior points, B = boundary points",
+      "leanType": "lattice_polygon P -> area P = interior_points P + boundary_points P / 2 - 1"
+    }
   ]
 }

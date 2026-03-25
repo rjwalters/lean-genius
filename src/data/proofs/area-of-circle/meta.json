@@ -350,16 +350,16 @@
   ],
   "mainTheorems": [
     {
-      "name": "area_circle",
+      "name": "area_of_circle",
       "type": "core",
-      "description": "Area of a circle of radius r is pi*r^2",
-      "leanType": "(r : R) -> 0 <= r -> area (circle r) = pi * r^2"
+      "description": "Lebesgue measure of an open disk in C equals πr²",
+      "leanType": "(center : ℂ) → (r : ℝ) → volume (ball center r) = ENNReal.ofReal r ^ 2 * ↑NNReal.pi"
     },
     {
-      "name": "circumference_circle",
-      "type": "key",
-      "description": "Circumference of a circle of radius r is 2*pi*r",
-      "leanType": "(r : R) -> 0 <= r -> circumference (circle r) = 2 * pi * r"
+      "name": "area_of_closed_disk",
+      "type": "core",
+      "description": "Lebesgue measure of a closed disk in C equals πr²",
+      "leanType": "(center : ℂ) → (r : ℝ) → volume (closedBall center r) = ENNReal.ofReal r ^ 2 * ↑NNReal.pi"
     }
   ]
 }

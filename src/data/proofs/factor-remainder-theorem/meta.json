@@ -209,6 +209,11 @@
       "targetId": "lagrange-theorem",
       "relationship": "related",
       "description": "Lagrange's theorem on subgroup orders and the Factor Theorem both concern divisibility structures. More directly, Lagrange interpolation reconstructs a polynomial from its values at $n+1$ points — the existence and uniqueness of the interpolant follows from the Factor Theorem's degree-counting argument"
+    },
+    {
+      "targetId": "descartes-rule-of-signs",
+      "relationship": "extends",
+      "description": "Descartes' Rule of Signs bounds the number of positive real roots by the number of sign changes in coefficients — a refinement of the Factor Theorem's corollary that a degree-$n$ polynomial has at most $n$ roots. Both results originate from Descartes' *La Géométrie* (1637), where the Factor Theorem was first clearly stated"
     }
   ],
   "references": [
@@ -252,14 +257,14 @@
     {
       "name": "factor_theorem",
       "type": "core",
-      "description": "p(a) = 0 iff (x - a) divides p(x)",
-      "leanType": "(p : Polynomial R) -> (a : R) -> aeval a p = 0 <-> (X - C a) dvd p"
+      "description": "(x - a) divides p(x) iff p(a) = 0",
+      "leanType": "{R : Type*} → [CommRing R] → (p : R[X]) → (a : R) → (X - C a) ∣ p ↔ p.eval a = 0"
     },
     {
       "name": "remainder_theorem",
       "type": "key",
       "description": "The remainder of p(x) / (x - a) is p(a)",
-      "leanType": "(p : Polynomial R) -> (a : R) -> p %ₘ (X - C a) = C (aeval a p)"
+      "leanType": "{R : Type*} → [CommRing R] → (p : R[X]) → (a : R) → p %ₘ (X - C a) = C (p.eval a)"
     }
   ]
 }

@@ -316,5 +316,13 @@
       "relationship": "thematic",
       "description": "Both are unsolved Clay Millennium Prize problems: BSD concerns L-functions of elliptic curves, while Navier-Stokes concerns fluid dynamics — both represent frontier challenges in their respective fields"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "navier_stokes_weak_existence",
+      "type": "core",
+      "description": "Existence of weak solutions to Navier-Stokes in 3D",
+      "leanType": "NavierStokesData -> exists u, weak_solution u and energy_inequality u"
+    }
   ]
 }

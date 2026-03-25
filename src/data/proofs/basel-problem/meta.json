@@ -425,16 +425,16 @@
   },
   "mainTheorems": [
     {
-      "name": "basel_problem",
+      "name": "basel_hasSum",
       "type": "core",
-      "description": "Sum of reciprocal squares: sum 1/n^2 = pi^2/6 (Euler 1734)",
-      "leanType": "HasSum (fun n => 1 / (n+1)^2) (pi^2 / 6)"
+      "description": "The Basel identity: ∑ 1/n² = π²/6 as a HasSum statement",
+      "leanType": "HasSum (fun n : ℕ => 1 / (↑n : ℝ) ^ 2) (π ^ 2 / 6)"
     },
     {
-      "name": "zeta_two",
+      "name": "zeta_four_hasSum",
       "type": "key",
-      "description": "The Riemann zeta function at 2 equals pi^2/6",
-      "leanType": "riemannZeta 2 = pi^2 / 6"
+      "description": "ζ(4) = π⁴/90 as a HasSum statement",
+      "leanType": "HasSum (fun n : ℕ => 1 / (↑n : ℝ) ^ 4) (π ^ 4 / 90)"
     }
   ]
 }

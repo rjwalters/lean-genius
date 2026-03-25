@@ -181,5 +181,13 @@
       "venue": "Forum of Mathematics, Pi 5, e2",
       "note": "The complete formal verification in HOL Light (Flyspeck project) — eliminating all doubts about the computer-assisted proof"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "kepler_conjecture",
+      "type": "core",
+      "description": "FCC/HCP sphere packing achieves maximum density pi/(3*sqrt(2))",
+      "leanType": "sphere_packing P -> density P <= pi / (3 * Real.sqrt 2)"
+    }
   ]
 }

@@ -265,5 +265,13 @@
       "ComplexConjugate",
       "DirectSum"
     ]
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "hodge_conjecture",
+      "type": "core",
+      "description": "Millennium Prize: Every Hodge class on a projective variety is algebraic",
+      "leanType": "Projective X -> HodgeClass alpha -> exists Z algebraic_cycle, class(Z) = alpha"
+    }
+  ]
 }

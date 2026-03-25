@@ -277,22 +277,10 @@
   ],
   "mainTheorems": [
     {
-      "name": "bezout_int",
-      "type": "wrapper",
-      "description": "Bézout's identity for ℤ: ∃ x y, a*x + b*y = gcd(a,b)",
-      "leanType": "(a b : ℤ) → ∃ x y : ℤ, a * x + b * y = ↑(Int.gcd a b)"
-    },
-    {
-      "name": "coprime_iff_linear_combination",
-      "type": "original",
-      "description": "Coprimality characterization: gcd(a,b) = 1 ↔ ∃ x y, ax + by = 1",
-      "leanType": "(a b : ℕ) → Nat.Coprime a b ↔ ∃ x y : ℤ, ↑a * x + ↑b * y = 1"
-    },
-    {
-      "name": "modular_inverse_exists",
-      "type": "original",
-      "description": "If gcd(a,m) = 1, then a has a modular inverse mod m",
-      "leanType": "(a m : ℕ) → Nat.Coprime a m → ∃ x : ℤ, (↑a * x) % ↑m = 1"
+      "name": "bezout_identity",
+      "type": "core",
+      "description": "For integers a, b, there exist x, y with ax + by = gcd(a,b)",
+      "leanType": "(a b : Int) -> exists x y : Int, a * x + b * y = Int.gcd a b"
     }
   ]
 }

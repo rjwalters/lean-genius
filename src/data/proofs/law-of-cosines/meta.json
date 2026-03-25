@@ -190,5 +190,13 @@
       "venue": "Alexandria",
       "note": "The law of cosines in geometric form for obtuse and acute triangles respectively"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "law_of_cosines",
+      "type": "core",
+      "description": "c^2 = a^2 + b^2 - 2ab*cos(C) for any triangle",
+      "leanType": "c^2 = a^2 + b^2 - 2*a*b*Real.cos C"
+    }
   ]
 }

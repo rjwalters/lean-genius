@@ -86,14 +86,14 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Fix section overlap in meta.json: iscop-version endLine should be 139 (not 161) to avoid overlapping with combined section which starts at 141. This was flagged in the prior review as resolved but the overlap persists.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "low",
       "target": "enricher",
       "description": "Fix annotation ann-bezout-int type from 'definition' to 'concept' — bezout_int is declared as a theorem, not a def.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",

@@ -195,5 +195,13 @@
       "citation": "Erdős, P. (1932). Beweis eines Satzes von Tschebyschef. Acta Scientiarum Mathematicarum (Szeged), 5, 194-198.",
       "type": "paper"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "prime_gap_upper",
+      "type": "core",
+      "description": "Upper bounds on gaps between consecutive primes",
+      "leanType": "exists C, forall p, Nat.Prime p -> next_prime p - p <= C * p^theta"
+    }
   ]
 }

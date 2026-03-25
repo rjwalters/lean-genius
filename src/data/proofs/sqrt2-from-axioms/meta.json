@@ -145,5 +145,13 @@
       "venue": "Oxford University Press, 6th edition",
       "note": "The classic proof of irrationality of √2 from the unique factorization of integers"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "sqrt2_exists",
+      "type": "core",
+      "description": "Existence of sqrt(2) from field axioms and completeness",
+      "leanType": "exists x : R, x > 0 and x * x = 2"
+    }
   ]
 }

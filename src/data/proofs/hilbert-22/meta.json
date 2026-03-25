@@ -171,5 +171,13 @@
       "venue": "Mathematische Annalen 67 (Koebe); Acta Mathematica 31 (Poincaré)",
       "note": "Both independently proved the uniformization theorem for Riemann surfaces — solving Hilbert's 22nd problem"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "uniformization",
+      "type": "core",
+      "description": "Every simply connected Riemann surface is conformally equivalent to the sphere, plane, or disk",
+      "leanType": "SimplyConnected S -> RiemannSurface S -> S conformal_equiv sphere or plane or disk"
+    }
   ]
 }

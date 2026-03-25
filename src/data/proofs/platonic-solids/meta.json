@@ -224,5 +224,13 @@
       "relationship": "foundational",
       "description": "The angle sum property (180 degrees for planar triangles) constrains face geometry. For Platonic solids, the angle defect at each vertex (360 minus the sum of face angles) must be positive, directly yielding the finiteness of regular polyhedra"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "platonic_classification",
+      "type": "core",
+      "description": "There are exactly 5 Platonic solids: tetrahedron, cube, octahedron, dodecahedron, icosahedron",
+      "leanType": "PlatonicSolid P -> P in {tetrahedron, cube, octahedron, dodecahedron, icosahedron}"
+    }
   ]
 }

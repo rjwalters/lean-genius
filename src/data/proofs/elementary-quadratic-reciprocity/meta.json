@@ -218,5 +218,13 @@
       "venue": "Springer Monographs in Mathematics",
       "note": "Comprehensive history of all 240+ published proofs of quadratic reciprocity"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "quadratic_reciprocity",
+      "type": "core",
+      "description": "Quadratic reciprocity via elementary methods (Gauss sums or counting)",
+      "leanType": "odd_prime p -> odd_prime q -> p != q -> legendreSym p q * legendreSym q p = (-1)^((p-1)/2 * (q-1)/2)"
+    }
   ]
 }

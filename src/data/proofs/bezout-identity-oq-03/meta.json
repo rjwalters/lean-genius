@@ -121,7 +121,7 @@
       "id": "iscop-version",
       "title": "CRT via IsCoprime",
       "startLine": 127,
-      "endLine": 161,
+      "endLine": 139,
       "summary": "crt_iscop and crt_unique_iscop: alternative formulations using IsCoprime directly. Cleaner algebraically since IsCoprime unpacks to exactly the Bézout coefficients needed.",
       "mathContext": "Alternative via `IsCoprime`: $\\text{IsCoprime}(m, n) \\iff \\exists u,v,\\, mu + nv = 1$. CRT stated as: $m \\mid (x-a) \\wedge n \\mid (x-b)$ with uniqueness via `IsCoprime.mul_dvd`: $m \\mid z \\wedge n \\mid z \\Rightarrow mn \\mid z$."
     },

@@ -199,5 +199,13 @@
       "venue": "Wiley, 4th edition",
       "note": "The definitive textbook on the probabilistic method in combinatorics, covering all major techniques"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "prob_method_existence",
+      "type": "core",
+      "description": "If E[X] > 0, then there exists an outcome with X > 0",
+      "leanType": "0 < E[X] -> exists omega, 0 < X omega"
+    }
   ]
 }

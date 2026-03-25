@@ -163,5 +163,13 @@
       "venue": "Addison-Wesley, 2nd edition",
       "note": "Standard reference for combinatorial identities including the proof that a set with n elements has 2^n subsets"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "subset_count",
+      "type": "core",
+      "description": "A set with n elements has exactly 2^n subsets",
+      "leanType": "[Fintype S] -> Fintype.card S = n -> Fintype.card (Set S) = 2^n"
+    }
   ]
 }

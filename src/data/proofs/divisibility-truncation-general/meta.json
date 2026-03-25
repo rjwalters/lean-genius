@@ -176,5 +176,13 @@
       "relationship": "foundational",
       "description": "The IsCoprime condition (gcd(d,10)=1) enabling the key cancellation step is the same coprimality machinery used in the Chinese Remainder Theorem"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "divisibility_truncation",
+      "type": "core",
+      "description": "General divisibility test by truncation of digits",
+      "leanType": "divisible_by_truncation n d -> d | n"
+    }
   ]
 }

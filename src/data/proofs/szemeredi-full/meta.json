@@ -195,5 +195,13 @@
       "venue": "Acta Arithmetica 27, 199–245",
       "note": "Proved that any set of integers with positive upper density contains arbitrarily long arithmetic progressions — won the Abel Prize in 2012"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "szemeredi_full",
+      "type": "core",
+      "description": "Full Szemeredi theorem: positive density implies arbitrarily long APs",
+      "leanType": "upper_density A > 0 -> forall k, exists a d, d > 0 and forall i < k, a + i*d in A"
+    }
   ]
 }

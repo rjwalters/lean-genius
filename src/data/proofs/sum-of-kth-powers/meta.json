@@ -203,5 +203,13 @@
       "venue": "Addison-Wesley, 2nd edition",
       "note": "Comprehensive treatment of finite sums including power sums, Bernoulli numbers, and the Euler-Maclaurin formula — the standard reference for discrete mathematics"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "sum_of_powers",
+      "type": "core",
+      "description": "Formulas for sums of k-th powers: sum_{i=1}^n i^k",
+      "leanType": "(k : Nat) -> exists polynomial p, degree p = k+1 and forall n, sum i in range n, i^k = p.eval n"
+    }
   ]
 }

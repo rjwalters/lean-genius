@@ -225,5 +225,13 @@
       "description": "Taxicab norm satisfies the triangle inequality (non-Euclidean Minkowski example)",
       "leanType": "(n : ℕ) → (x y : Fin n → ℝ) → taxicabNorm n (x + y) ≤ taxicabNorm n x + taxicabNorm n y"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "hilbert4_metric",
+      "type": "core",
+      "description": "Construction of metrics for which straight lines are geodesics",
+      "leanType": "exists metric, forall line, is_geodesic metric line"
+    }
   ]
 }
