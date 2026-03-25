@@ -45,46 +45,84 @@
   },
   "sections": [
     {
-      "id": "header-imports",
-      "title": "Problem Statement and Imports",
+      "id": "docstring",
+      "title": "Module Docstring",
       "startLine": 1,
-      "endLine": 27,
-      "summary": "Docstring establishing Erdős Problem #1072 with references to Erdős–Hardy–Subbarao (2002) and OEIS A154554. Imports Nat.Factorial.Basic, Nat.Prime.Basic, ZMod.Basic, Filter.AtTopBot, and Tactic."
+      "endLine": 20,
+      "summary": "Problem statement for Erdős Problem #1072 on the least factorial achieving Wilson's congruence.",
+      "mathContext": "For prime $p$, defines $f(p) = \\min\\{n \\geq 1 : n! \\equiv -1 \\pmod{p}\\}$. By Wilson's theorem $f(p) \\leq p-1$. Two open questions: (1) infinitely many $p$ with $f(p) = p-1$? (2) $f(p)/p \\to 0$ for almost all primes? References Erdős–Hardy–Subbarao and OEIS A154554."
+    },
+    {
+      "id": "imports",
+      "title": "Imports",
+      "startLine": 22,
+      "endLine": 24,
+      "summary": "Imports Mathlib and opens Nat and Filter namespaces.",
+      "mathContext": "Imports full Mathlib for `Nat.Factorial.Basic`, `ZMod.wilsons_lemma`, `sInf`, `Filter`, `Real.log`. Opens `Nat` and `Filter`."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "startLine": 28,
-      "endLine": 42,
-      "summary": "Defines `leastFactorialWilson` ($f(p) = \\inf\\{n > 0 : p \\mid n!+1\\}$) via `sInf` and `isWilsonMaximal` ($f(p) = p-1$). Both use noncomputable/classical definitions for the infimum."
+      "startLine": 26,
+      "endLine": 37,
+      "summary": "Defines the least factorial Wilson function and Wilson-maximality predicate.",
+      "mathContext": "Defines `leastFactorialWilson(p) = \\inf\\{n > 0 : p \\mid n! + 1\\}$ via `sInf` (noncomputable). Defines `isWilsonMaximal(p) \\iff p$ is prime $\\wedge f(p) = p - 1$, meaning $(p-1)!$ is the first factorial achieving $-1 \\pmod{p}$."
     },
     {
-      "id": "wilson-bound",
+      "id": "wilson-bounds",
       "title": "Wilson's Theorem and Bounds",
-      "startLine": 44,
-      "endLine": 58,
-      "summary": "Three axioms: Wilson's theorem ($p \\mid (p-1)!+1$), the upper bound $f(p) \\leq p-1$, and the lower bound $f(p) \\geq 1$ for $p \\geq 3$. Together these establish $f(p) \\in [1, p-1]$."
+      "startLine": 39,
+      "endLine": 69,
+      "summary": "Proves Wilson's theorem and establishes that $f(p) \\in [1, p-1]$.",
+      "mathContext": "PROVED `wilson_theorem`: $p \\mid (p-1)! + 1$ via Mathlib's `ZMod.wilsons_lemma` (formerly an axiom). PROVED `f_le_pred`: $f(p) \\leq p-1$ from Wilson's theorem via `Nat.sInf_le`. PROVED `f_pos`: $f(p) \\geq 1$ for $p \\geq 3$ via `le_csInf` — every element of the defining set has $n > 0$."
     },
     {
-      "id": "main-questions",
-      "title": "The Main Conjectures",
-      "startLine": 60,
-      "endLine": 82,
-      "summary": "Axiomatizes both open questions: `erdos_1072a` (infinitely many Wilson-maximal primes via Set.Infinite) and `erdos_1072b` ($f(p)/p \\to 0$ for a density-1 set of primes). Also states the Hardy–Subbarao density-zero belief."
+      "id": "question-1",
+      "title": "Question 1: Infinitely Many Maximal Primes",
+      "startLine": 71,
+      "endLine": 77,
+      "summary": "States the first open conjecture: infinitely many primes with $f(p) = p-1$.",
+      "mathContext": "Axiom `erdos_1072a`: $\\text{Set.Infinite}\\{p : \\mathbb{N} \\mid \\text{isWilsonMaximal}(p)\\}$. Asserts that there are infinitely many primes where no factorial smaller than $(p-1)!$ achieves $-1 \\pmod{p}$."
+    },
+    {
+      "id": "question-2",
+      "title": "Question 2: $f(p)/p \\to 0$ for Almost All Primes",
+      "startLine": 79,
+      "endLine": 88,
+      "summary": "States the second open conjecture on the asymptotic density of the Wilson function.",
+      "mathContext": "Axiom `erdos_1072b`: $\\exists S \\subseteq \\text{primes}$ with density 1, such that $\\forall \\varepsilon > 0$, $\\exists N$, $\\forall p \\in S$ with $p \\geq N$: $f(p)/p < \\varepsilon$. Captures the belief that $f(p)$ is typically $o(p)$."
+    },
+    {
+      "id": "hardy-subbarao",
+      "title": "Hardy–Subbarao Belief",
+      "startLine": 90,
+      "endLine": 100,
+      "summary": "Axiomatizes the Hardy–Subbarao density conjecture on Wilson-maximal primes.",
+      "mathContext": "Axiom `hardy_subbarao_belief`: $\\forall \\varepsilon > 0$, $\\exists N$ s.t. $|\\{p \\leq x : \\text{isWilsonMaximal}(p)\\}| \\leq \\varepsilon \\cdot x / \\log x$ for $x \\geq N$. Uses `DecidablePred` via `Classical.decPred` to filter primes in `Finset.Icc`."
     },
     {
       "id": "examples",
       "title": "Small Examples",
-      "startLine": 84,
-      "endLine": 103,
-      "summary": "Computed values: $f(2)=1$, $f(3)=2$, $f(5)=4$ (all maximal), and $f(7)=3$ (first non-maximal, since $3!+1=7$)."
+      "startLine": 102,
+      "endLine": 142,
+      "summary": "Computes $f$ for the first four primes, identifying $p=7$ as the first non-maximal prime.",
+      "mathContext": "PROVED $f(2) = 1$ ($1! + 1 = 2$, maximal). PROVED $f(3) = 2$ ($2! + 1 = 3$, maximal). PROVED $f(5) = 4$ ($4! + 1 = 25 = 5^2$, maximal; eliminates $k=1,2,3$ via `decide`). PROVED $f(7) = 3$ ($3! + 1 = 7$, first non-maximal: $f(7) = 3 < 6 = 7-1$). All use `sInf` + `le_antisymm` + `le_csInf`."
     },
     {
       "id": "wilson-primes",
       "title": "Connection to Wilson Primes",
-      "startLine": 105,
-      "endLine": 113,
-      "summary": "Distinguishes Wilson primes ($p^2 \\mid (p-1)!+1$, known: $5, 13, 563$) from Wilson-maximal primes. Axiom: every Wilson prime is Wilson-maximal."
+      "startLine": 144,
+      "endLine": 149,
+      "summary": "Explains the relationship between Wilson primes and Wilson-maximal primes.",
+      "mathContext": "Notes that Wilson primes ($p^2 \\mid (p-1)! + 1$, known only for $p = 5, 13, 563$) are empirically Wilson-maximal ($f(p) = p-1$), but this is not proved in general. The Erdős problem concerns $f(p)$, not the strength of the congruence."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 151,
+      "endLine": 169,
+      "summary": "Recapitulates all proved theorems and remaining open axioms.",
+      "mathContext": "7 proved theorems (all formerly axioms): `wilson_theorem`, `f_le_pred`, `f_pos`, `f_of_2`, `f_of_3`, `f_of_5`, `f_of_7`. 3 remaining axioms — all OPEN conjectures: `erdos_1072a` (infinitely many maximal primes), `erdos_1072b` ($f(p)/p \\to 0$ for almost all primes), `hardy_subbarao_belief` (maximal primes have density 0)."
     }
   ],
   "conclusion": {

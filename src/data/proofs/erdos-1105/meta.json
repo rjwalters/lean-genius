@@ -142,34 +142,34 @@
     {
       "id": "bounds",
       "title": "Lower and Upper Bounds",
-      "summary": "ar_lower_bound, ar_upper_bound, ar_mono_n",
+      "summary": "Proves `ar_lower_bound` ($\\text{AR}(n,H) \\geq 1$ for $n \\geq 2$) via constant coloring and `le_csSup`; helper lemmas `numColors_const_one` and `const_avoids_rainbow`; proves `ar_upper_bound` ($\\text{AR}(n,H) \\leq \\binom{n}{2}$) via `csSup_le`; helper lemmas `choose_two_add_eq`, `card_edges_eq_choose` (trichotomy bijection proof that $|\\{(i,j) : i < j\\}| = \\binom{n}{2}$), `numColors_le_edges`; axiom `ar_mono_n` (monotonicity in $n$).",
       "startLine": 184,
-      "endLine": 202,
-      "mathContext": "General bounds: $1 \\leq \\text{AR}(n, H) \\leq \\binom{n}{2}$. The lower bound `ar_lower_bound` uses a constant coloring (1 color, trivially avoids rainbow). The upper bound `ar_upper_bound` uses $\\binom{n}{2} = |E(K_n)|$ (at most one color per edge). The proofs of `ar_lower_bound` and `ar_upper_bound` are fully verified in Lean using `csSup_le` and `le_csSup` for the `sSup` definition. Monotonicity in $n$ is axiomatized."
+      "endLine": 323,
+      "mathContext": "General bounds: $1 \\leq \\text{AR}(n, H) \\leq \\binom{n}{2}$. The lower bound uses a constant coloring (1 color, trivially avoids rainbow) and `le_csSup` for the supremum. The upper bound uses `csSup_le` with the fact that `numColors` $\\leq \\binom{n}{2}$, proved via a trichotomy argument partitioning $\\text{Fin}\\,n \\times \\text{Fin}\\,n$ into $\\{i < j\\}$, $\\{i = j\\}$, $\\{i > j\\}$ with a swap bijection showing $|\\{i < j\\}| = |\\{i > j\\}|$. The identity $\\binom{n}{2} \\cdot 2 + n = n^2$ closes the counting. Both proofs are fully machine-checked."
     },
     {
       "id": "turan",
-      "title": "Connection to Turán Numbers",
-      "summary": "turan definition, ar_turan_lower",
-      "startLine": 203,
-      "endLine": 220,
-      "mathContext": "The Turán number $\\text{ex}(n, H) = \\max\\{|E(G)| : G \\text{ on } n \\text{ vertices, } H\\text{-free}\\}$. The key connection: $\\text{AR}(n, H) \\geq \\text{ex}(n, H) + 1$ because an $H$-free graph can be colored rainbow (using all its edges as distinct colors), with the remaining edges of $K_n$ getting one extra color."
+      "title": "Connection to Turan Numbers",
+      "summary": "Defines Turan number `turan n k H` as $\\text{ex}(n, H) = \\sup\\{|E(G)| : G \\text{ is } H\\text{-free}\\}$ via `sSup`. Axiomatizes `ar_turan_lower`: $\\text{AR}(n, H) \\geq \\text{ex}(n, H) + 1$ for $n \\geq k$.",
+      "startLine": 324,
+      "endLine": 340,
+      "mathContext": "The Turan number $\\text{ex}(n, H) = \\max\\{|E(G)| : G \\text{ on } n \\text{ vertices, } H\\text{-free}\\}$. The key connection: $\\text{AR}(n, H) \\geq \\text{ex}(n, H) + 1$ because an $H$-free graph can be colored rainbow (all edges distinct colors), with remaining edges of $K_n$ getting one extra color. This links anti-Ramsey theory to extremal graph theory."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "summary": "ar_triangle, ar_path_3, ar_k3",
-      "startLine": 221,
-      "endLine": 235,
-      "mathContext": "Known exact values: $\\text{AR}(n, C_3) = n - 1$ (Erdős-Simonovits-Sós, 1975), $\\text{AR}(n, P_3) = 1$ (trivial: any 2-colored edge coloring avoids rainbow $P_3$), $\\text{AR}(n, K_3) = n - 1$ (same as $C_3$ since $K_3 = C_3$). These form the base cases for the general conjectures."
+      "summary": "Axiomatizes known exact values: `ar_path_3` ($\\text{AR}(n, P_3) = 1$), `ar_k3` ($\\text{AR}(n, K_3) = n - 1$). The triangle case `ar_triangle` was stated earlier in the cycle conjecture section.",
+      "startLine": 343,
+      "endLine": 357,
+      "mathContext": "Known exact values: $\\text{AR}(n, P_3) = 1$ (trivial: any 2-colored edge coloring avoids rainbow $P_3$), $\\text{AR}(n, K_3) = n - 1$ (same as $C_3$ since $K_3 = C_3$). These base cases anchor the general conjectures."
     },
     {
       "id": "status",
-      "title": "Problem Status",
-      "summary": "erdos_1105_status, erdos_1105_cycle_statement, erdos_1105_path_statement",
-      "startLine": 236,
-      "endLine": 275,
-      "mathContext": "The cycle conjecture remains OPEN for general $k$. The path conjecture is conditionally resolved by Yuan (2021) for $n \\geq k \\geq 5$. The main formal statements `erdos_1105_cycle_statement` and `erdos_1105_path_statement` confirm that the Lean definitions faithfully capture the conjectures (both reduce to `rfl`)."
+      "title": "Problem Status and Main Statements",
+      "summary": "Declares `erdos_1105_status := \"OPEN\"`. Proves `erdos_1105_cycle_statement` and `erdos_1105_path_statement` (both `rfl`), confirming the Lean definitions faithfully capture the conjectures. Closing summary comment and `end Erdos1105`.",
+      "startLine": 358,
+      "endLine": 397,
+      "mathContext": "The cycle conjecture remains OPEN for general $k$. The path conjecture is conditionally resolved by Yuan (2021) for $n \\geq k \\geq 5$. The main formal statements `erdos_1105_cycle_statement` and `erdos_1105_path_statement` confirm that `CycleConjecture` and `PathConjecture` faithfully capture the mathematical conjectures (both reduce to `rfl`). The summary enumerates: $\\text{AR}(n, C_3) = n - 1$ known, general cycle formula open, path formula for $n \\geq ck^2$ proved by Simonovits-Sos, full path formula announced by Yuan."
     }
   ],
   "conclusion": {

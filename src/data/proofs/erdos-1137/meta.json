@@ -134,43 +134,81 @@
       "id": "docstring",
       "title": "Module Docstring",
       "startLine": 1,
-      "endLine": 25,
-      "summary": "Problem statement, history (Varga 1999 survey), connection to Cramér and Granville conjectures on prime gap distribution."
+      "endLine": 24,
+      "summary": "Problem statement and historical context for Erdős Problem #1137 on consecutive prime gap products.",
+      "mathContext": "States the conjecture: $\\max_{n<x} d_n \\cdot d_{n-1} / (\\max_{n<x} d_n)^2 \\to 0$ as $x \\to \\infty$, where $d_n = p_{n+1} - p_n$. References Varga's 1999 survey [Va99, §1.2] and connections to the Cramér and Granville conjectures on prime gap distribution."
+    },
+    {
+      "id": "imports-setup",
+      "title": "Imports and Namespace",
+      "startLine": 26,
+      "endLine": 31,
+      "summary": "Imports Mathlib and opens Finset, Filter, Nat namespaces with scoped Topology.",
+      "mathContext": "Opens `Finset`, `Filter`, `Nat` and scoped `Topology` for access to `Tendsto`, `nhds`, `atTop`, and `Finset.sup`."
     },
     {
       "id": "definitions",
       "title": "Part I: Core Definitions",
       "startLine": 33,
-      "endLine": 52,
-      "summary": "Defines `primeGap n = p_{n+1} - p_n`, `maxGap x = max_{n<x} d_n`, and `erdosRatio x` as the conjectured-to-vanish ratio."
+      "endLine": 51,
+      "summary": "Defines the three core objects: prime gap, maximum gap, and the Erdős ratio.",
+      "mathContext": "Defines `primeGap n = p_{n+1} - p_n` via `Nat.nth`, `maxGap x = \\sup_{n < x} d_n` via `Finset.sup`, and `erdosRatio x = \\sup_{n<x}(d_n \\cdot d_{n-1}) / (\\max_{n<x} d_n)^2$ as the conjectured-to-vanish quantity."
     },
     {
       "id": "basic-properties",
-      "title": "Part II: Basic Properties",
-      "startLine": 54,
-      "endLine": 103,
-      "summary": "Proves strict monotonicity of primes, positivity of gaps ($d_n \\geq 1$), and computes $d_0 = 1$, $d_1 = 2$ via `Nat.nth_count`."
+      "title": "Part II: Basic Properties of Prime Gaps",
+      "startLine": 53,
+      "endLine": 101,
+      "summary": "Establishes fundamental properties of the prime enumeration and computes the first two gaps.",
+      "mathContext": "Proves `nth_prime_strictMono` (primes are strictly increasing), `nth_prime_zero` ($p_0 = 2$), `nth_prime_is_prime`, `nth_prime_lt_succ` ($p_{n+1} > p_n$), and `primeGap_pos` ($d_n \\geq 1$). Computes $p_1 = 3$, $p_2 = 5$ via `Nat.nth_count`, yielding $d_0 = 1$ (the unique odd gap) and $d_1 = 2$."
     },
     {
       "id": "parity",
       "title": "Part III: Parity of Prime Gaps",
-      "startLine": 105,
-      "endLine": 140,
-      "summary": "Proves $d_n$ is even for $n \\geq 1$ (odd minus odd) and consequently $d_n \\geq 2$. The parity proof uses `eq_one_or_self_of_dvd` and `Nat.even_sub`."
+      "startLine": 103,
+      "endLine": 135,
+      "summary": "Proves that all prime gaps after the first are even and at least 2.",
+      "mathContext": "Proves `nth_prime_ge_three` ($p_n \\geq 3$ for $n \\geq 1$), `nth_prime_not_even` (primes $\\geq 3$ are odd, using `eq_one_or_self_of_dvd`), `primeGap_even` ($d_n$ is even for $n \\geq 1$ via `Nat.even_sub`), and `primeGap_ge_two` ($d_n \\geq 2$ for $n \\geq 1$, combining evenness and positivity)."
     },
     {
       "id": "computations",
       "title": "Part IV: Computations",
-      "startLine": 142,
-      "endLine": 170,
-      "summary": "Computes $p_3 = 7$, $p_4 = 11$ and gaps $d_2 = 2$, $d_3 = 4$ via `Nat.nth_count`."
+      "startLine": 137,
+      "endLine": 161,
+      "summary": "Computes higher prime values and gaps by the nth/count Galois connection.",
+      "mathContext": "Computes $p_3 = 7$ and $p_4 = 11$ via `Nat.nth_count` with `decide`, then derives $d_2 = p_3 - p_2 = 2$ (twin prime gap between 5 and 7) and $d_3 = p_4 - p_3 = 4$ (gap between 7 and 11)."
     },
     {
       "id": "conjecture",
       "title": "Part V: Main Conjecture",
-      "startLine": 172,
-      "endLine": 195,
-      "summary": "States the main conjecture as an axiom: `Tendsto erdosRatio atTop (nhds 0)`. Also axiomatizes the trivial bound ($\\leq 1$) and max gap $\\to \\infty$."
+      "startLine": 163,
+      "endLine": 186,
+      "summary": "States the main open conjecture as an axiom.",
+      "mathContext": "Axiom `erdos_1137`: $\\text{Tendsto}\\left(x \\mapsto \\frac{\\sup_{n<x}(d_n \\cdot d_{n-1})}{(\\sup_{n<x} d_n)^2}\\right) \\text{atTop} (\\mathcal{N}(0))$. The sole axiom in the file, encoding the open conjecture that record-breaking prime gaps are isolated."
+    },
+    {
+      "id": "axiom-elimination",
+      "title": "Part VI: Infrastructure for Axiom Elimination",
+      "startLine": 188,
+      "endLine": 208,
+      "summary": "Proves factorial divisibility lemmas used to establish unboundedness of prime gaps.",
+      "mathContext": "Private lemma `dvd_factorial`: $k \\mid n!$ when $1 \\leq k \\leq n$ (by induction on $n$). Private lemma `not_prime_factorial_add`: $n! + k$ is composite for $2 \\leq k \\leq n$, since $k \\mid n! + k$ and $k < n! + k$, contradicting primality via `eq_one_or_self_of_dvd`."
+    },
+    {
+      "id": "consequences",
+      "title": "Part VII: Consequences and Context",
+      "startLine": 210,
+      "endLine": 281,
+      "summary": "Three major proved results: the ratio bound, unbounded gaps, and maximal gap divergence.",
+      "mathContext": "PROVED `erdosRatio_le_one` ($\\text{erdosRatio}(x) \\leq 1$ for $x \\geq 2$) using `Finset.sup_le` and the fact that each factor $\\leq \\max$. PROVED `primeGap_unbounded`: for any $B$, $\\exists n$ with $d_n \\geq B$, via the factorial composites argument — $(B+2)!+2, \\ldots, (B+2)!+(B+2)$ are all composite — combined with the `Nat.nth`/`Nat.count` Galois connection. PROVED `maxGap_tendsto_atTop`: $\\max_{n<x} d_n \\to \\infty$, from `primeGap_unbounded`."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 283,
+      "endLine": 314,
+      "summary": "Recapitulates all results: 18 proved theorems, 1 axiom (the open conjecture), and key insights.",
+      "mathContext": "Documents 18 proved theorems (including formerly-axiom results `erdosRatio_le_one` and `maxGap_tendsto_atTop`), 1 remaining axiom (`erdos_1137`, the open conjecture). Highlights that $d_0 = 1$ is the unique odd gap, all subsequent gaps are even and $\\geq 2$, and the conjecture concerns the correlation structure of consecutive record-breaking gaps."
     }
   ],
   "conclusion": {
