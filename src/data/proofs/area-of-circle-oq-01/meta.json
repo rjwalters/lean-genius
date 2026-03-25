@@ -91,6 +91,26 @@
       "targetId": "fundamental-theorem-calculus",
       "relationship": "foundational",
       "description": "This entry proves the derivative direction: differentiating the area function πr² yields the circumference 2πr. The integral direction (A(r) = ∫₀ʳ C(ρ) dρ) is listed as an open question but not formalized here"
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02",
+      "relationship": "extended-by",
+      "description": "Proves the integral direction this entry left as an open question: $A(r) = \\int_0^r C(\\rho)\\,d\\rho = \\int_0^r 2\\pi\\rho\\,d\\rho = \\pi r^2$. Together with this entry's derivative direction $dA/dr = C(r)$, they form a complete FTC round-trip"
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-03",
+      "relationship": "extended-by",
+      "description": "Proves the full isoperimetric inequality $C^2 \\geq 4\\pi A$ with equality iff the curve is a circle. This entry only proves the algebraic identity $C^2 = 4\\pi A$ for circles; the OQ-03 entry establishes the optimality of circles among all closed curves"
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-01",
+      "relationship": "extended-by",
+      "description": "Generalizes the derivative relationship $dA/dr = C(r)$ to $n$ dimensions: $dV_n/dr = S_n(r)$ where $V_n$ is the volume and $S_n$ the surface area of an $n$-ball. Answers the open question about formalizing the $n$-dimensional volume-surface area derivative"
+    },
+    {
+      "targetId": "area-of-circle-oq-03",
+      "relationship": "complementary",
+      "description": "Formalizes Archimedes' method of exhaustion for computing the area of a circle, the ancient precursor to the calculus-based approach used here. Where this entry differentiates $A = \\pi r^2$, Archimedes approximated the area by inscribed/circumscribed polygons"
     }
   ],
   "sections": [
@@ -155,9 +175,9 @@
     "summary": "This formalization proves that the circumference formula $C = 2\\pi r$ follows from differentiating the area formula $A = \\pi r^2$, answering the open question from the Area of a Circle gallery entry. The proof uses Mathlib's calculus infrastructure (HasDerivAt, deriv) and includes extensive corollaries: differentiability, second derivative, isoperimetric equality, monotonicity, and scaling laws. All 163 lines, 0 sorries, 0 axioms.",
     "implications": "**Theoretical Significance**: This formalizes a fundamental relationship in geometry: the boundary length is the derivative of the enclosed area.\n\nThe same principle generalizes to higher dimensions ($S_n = dV_n/dr$) and to arbitrary smooth domains via the coarea formula. The isoperimetric equality $C^2 = 4\\pi A$ is the equality case of the isoperimetric inequality.",
     "openQuestions": [
-      "Can the n-dimensional volume-surface area derivative relationship V'_n(r) = S_n(r) be formalized?",
-      "Can the integral direction be formalized: A(r) = integral from 0 to r of C(rho) drho?",
-      "Can the isoperimetric inequality (C^2 >= 4*pi*A with equality only for circles) be proved?"
+      "**Addressed** by `area-of-circle-oq-01-oq-02-oq-01`: the $n$-dimensional volume-surface area derivative relationship $V'_n(r) = S_n(r)$ is formalized for the $n$-ball.",
+      "**Addressed** by `area-of-circle-oq-01-oq-02`: the integral direction $A(r) = \\int_0^r C(\\rho)\\,d\\rho$ is formalized, completing the FTC round-trip with this entry's derivative direction.",
+      "**Addressed** by `area-of-circle-oq-01-oq-03`: the isoperimetric inequality $C^2 \\geq 4\\pi A$ with equality only for circles is formalized."
     ]
   },
   "leanFile": {
