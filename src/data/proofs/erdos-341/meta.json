@@ -68,6 +68,20 @@
       "year": "1980",
       "venue": "L'Enseignement Mathématique, Monograph 28, p.53",
       "note": "Highlighted Dickson's problem and posed it in the modern framework of additive combinatorics"
+    },
+    {
+      "authors": "Mian, Abdul Majid; Chowla, Sarvadaman",
+      "title": "On the B₂ sequences of Sidon",
+      "year": "1944",
+      "venue": "Proceedings of the National Academy of Sciences of India, vol. 14, pp. 3–4",
+      "note": "Introduced the greedy Sidon sequence (Mian–Chowla sequence), which is the Dickson extension starting from {1} — the foundational special case of Problem #341"
+    },
+    {
+      "authors": "Guy, Richard K.",
+      "title": "Unsolved Problems in Number Theory",
+      "year": "2004",
+      "venue": "Springer, 3rd edition",
+      "note": "Section E32 discusses sum-free sequences, greedy constructions, and eventual periodicity conjectures related to Dickson's problem"
     }
   ],
   "mathlibDependencies": [
@@ -173,10 +187,11 @@
       "Mathlib.Tactic"
     ],
     "opens": [],
-    "namespace": null,
+    "namespace": "",
     "lineCount": 116,
     "axiomCount": 9,
     "theoremCount": 0,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "mainTheorems": []
   }
 }
