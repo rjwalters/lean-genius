@@ -181,6 +181,26 @@
       "targetId": "cayley-hamilton",
       "relationship": "related",
       "description": "Parent result: Cayley-Hamilton theorem shows characteristic polynomial annihilates M; minimal polynomial is the monic divisor of least degree"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-02-oq-01",
+      "relationship": "extended_by",
+      "description": "Generalizes similarity invariance from matrices to abstract K-algebras, showing that algebra-isomorphic elements share the same minimal polynomial"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
+      "relationship": "extended_by",
+      "description": "Formalizes the Skolem-Noether theorem: every K-algebra automorphism of M_n(K) is inner conjugation, connecting to why similarity is the natural equivalence"
+    },
+    {
+      "targetId": "cayley-hamilton-reduction-oq-02",
+      "relationship": "related",
+      "description": "Studies minimal polynomial vs characteristic polynomial reduction; similarity invariance of the minimal polynomial is a key ingredient for determining when the two coincide (non-derogatory matrices)"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01",
+      "relationship": "related",
+      "description": "Proves nonderogatory matrices have cyclic vectors; the minimal polynomial equals the characteristic polynomial precisely when the matrix is nonderogatory, complementing similarity invariance"
     }
   ],
   "references": [
