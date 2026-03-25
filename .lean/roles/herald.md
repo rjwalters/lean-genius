@@ -234,8 +234,9 @@ Track posted milestones in `.loom/state/herald-posts.json`:
 
 ## Tools
 
-- `./scripts/herald/post-mathstodon.sh "text"` — Post to Mathstodon
-- `./scripts/herald/post-mathstodon.sh --dry-run "text"` — Preview without posting
+- `./scripts/herald/post-mathstodon.sh --automated --subject "KEY" --arc "ARC" "text"` — Post to Mathstodon (updates state automatically)
+- `./scripts/herald/post-mathstodon.sh --dry-run --subject "KEY" "text"` — Preview without posting or updating state
+- `./scripts/herald/post-mathstodon.sh --status` — Check rate limit and recent post history
 - `git log --oneline --since="7 hours ago"` — Recent commits
 - `jq` — Parse state files and meta.json
 - `ls src/data/proofs/{slug}/meta.json` — Verify proof slug exists locally
