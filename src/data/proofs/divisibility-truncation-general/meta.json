@@ -64,7 +64,10 @@
       "The proof works uniformly for all d, not just primes."
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Modular arithmetic and coprimality ($\\gcd(d, 10) = 1$, multiplicative inverses in $\\mathbb{Z}/d\\mathbb{Z}$)",
+      "Division algorithm: $n = 10 \\cdot \\lfloor n/10 \\rfloor + (n \\bmod 10)$ for digit extraction",
+      "Bézout's identity and `IsCoprime` (cancelling a coprime factor from a divisibility relation)",
+      "Elementary divisibility theory (transitivity, linearity of divisibility over sums)"
     ]
   },
   "sections": [

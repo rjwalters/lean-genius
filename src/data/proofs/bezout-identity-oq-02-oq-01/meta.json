@@ -85,7 +85,10 @@
       "**Nat.primeFactorsList provides existence for free**: Mathlib already has the existence direction, so we only need to add uniqueness via our inductive proof."
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Euclid's lemma: if $p$ is prime and $p \\mid ab$, then $p \\mid a$ or $p \\mid b$",
+      "Prime numbers and their divisibility properties (unique factorization context)",
+      "Mathematical induction on lists (products of primes, list permutations)",
+      "Bézout's identity and coprimality ($\\gcd(a,b) = 1 \\Rightarrow$ existence of integer linear combination)"
     ]
   },
   "sections": [

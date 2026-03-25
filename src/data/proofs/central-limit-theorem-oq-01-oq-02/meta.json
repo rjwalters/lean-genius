@@ -57,7 +57,10 @@
       "The classification ν = 0 ↔ Gaussian and σ² = 0 ↔ compound Poisson is the probabilistic analogue of the decomposition of a semimartingale into continuous and purely discontinuous parts"
     ],
     "prerequisites": [
-      "Probability theory"
+      "Characteristic functions and Fourier analysis ($\\varphi_X(t) = E[e^{itX}]$)",
+      "Infinite divisibility: distributions satisfying $\\mu = \\mu_n^{*n}$ for all $n$",
+      "Gaussian and Poisson distributions (moments, characteristic exponents)",
+      "Lévy processes and stochastic analysis (independent stationary increments, jump structure)"
     ]
   },
   "sections": [

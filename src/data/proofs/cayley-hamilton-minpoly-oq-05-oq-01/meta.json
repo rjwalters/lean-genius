@@ -92,6 +92,12 @@
       "Polynomial evaluations at the same matrix commute, enabling the d(M)v = 0 argument via mul_comm",
       "normalizedFactors provides the canonical finite set of irreducible factors needed for union avoidance",
       "The proof structure mirrors the prime avoidance lemma in commutative algebra (Davis 1964): proper submodules replace prime ideals, and the line argument replaces the pigeonhole argument — a concrete instance of the algebra/geometry dictionary"
+    ],
+    "prerequisites": [
+      "Minimal and characteristic polynomials of matrices (Cayley-Hamilton theorem)",
+      "Unique factorization and irreducible decomposition in polynomial rings",
+      "Bezout's identity and the Euclidean algorithm in K[X]",
+      "Linear algebra over fields: subspaces, kernels, and the union avoidance lemma"
     ]
   },
   "sections": [

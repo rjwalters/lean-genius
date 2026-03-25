@@ -73,7 +73,10 @@
       "**One proof, many instances**: `euclids_lemma_ring hcop hdvd` is the same line of code for ℤ, ℚ[X], and ℤ[i]."
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Abstract algebra: commutative rings, ideals, and the `IsCoprime` typeclass ($\\exists u,v,\\; ua + vb = 1$)",
+      "Bézout domains and principal ideal rings (`IsBezout`, `EuclideanDomain` hierarchy)",
+      "Irreducible vs. prime elements in integral domains (`DecompositionMonoid`)",
+      "Concrete ring instances: $\\mathbb{Z}$, $\\mathbb{Q}[X]$, and $\\mathbb{Z}[i]$ (Gaussian integers)"
     ]
   },
   "sections": [

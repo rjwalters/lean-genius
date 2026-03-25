@@ -91,7 +91,10 @@
       "**Ideal characterization = double divisibility**: d = gcd(a,b) iff (d achievable → gcd ∣ d) AND (d divides gcd → d ∣ gcd) → d = gcd by Nat.dvd_antisymm."
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Bézout's identity and the extended Euclidean algorithm ($\\gcd(a,b) = ax + by$)",
+      "Linear Diophantine equations: solvability criterion $\\gcd(a,b) \\mid c$ for $ax + by = c$",
+      "Integer lattices and $\\mathbb{Z}$-modules (null space structure, coset parameterization)",
+      "Ideal theory in $\\mathbb{Z}$: principal ideals and the characterization $(a,b) = (\\gcd(a,b))$"
     ]
   },
   "sections": [
