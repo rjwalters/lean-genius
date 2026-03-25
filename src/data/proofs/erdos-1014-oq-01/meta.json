@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "erdosNumber": 1014,
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1014OQ01.lean",
     "tags": [
       "erdos",
@@ -16,15 +16,15 @@
       "asymptotics",
       "research"
     ],
-    "badge": "formalized",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/1014",
     "erdosUrl": "https://erdosproblems.com/1014",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-03-24",
     "axiomCount": 6,
-    "lineCount": 169,
-    "assumptions": "6 axioms: ramseyNumber (definition), ramsey_pos, ramsey_monotone_right, ramsey_recurrence, ramsey_k2, R3_lower_bound. 1 sorry: routine analysis lemma (log l / l → 0).",
+    "lineCount": 197,
+    "assumptions": "6 axioms: ramseyNumber (definition), ramsey_pos, ramsey_monotone_right, ramsey_recurrence, ramsey_k2, R3_lower_bound. All theorems fully proved.",
     "mathlib_version": "4.26.0"
   },
   "crossReferences": [
@@ -55,24 +55,24 @@
       "id": "analysis-lemma",
       "title": "Analysis Lemma",
       "startLine": 86,
-      "endLine": 96,
-      "summary": "States that $(l+1) \\cdot \\log l / (c \\cdot l^2) < \\varepsilon$ for sufficiently large $l$. **1 sorry** — routine analysis following from $\\log x = o(x)$ (Mathlib's `isLittleO_log_rpow_atTop`).",
+      "endLine": 124,
+      "summary": "**Proved.** Shows $(l+1) \\cdot \\log l / (c \\cdot l^2) < \\varepsilon$ for sufficiently large $l$, using Mathlib's `isLittleO_log_rpow_atTop` ($\\log x = o(x)$).",
       "mathContext": "Standard result from real analysis. The bound follows from $\\log l / l \\to 0$ and $(l+1)/l \\leq 2$."
     },
     {
       "id": "main-theorem-setup",
       "title": "Main Theorem: Statement and Setup",
-      "startLine": 101,
-      "endLine": 136,
-      "summary": "Statement of `erdos_1014_k3_ratio_convergence` in $\\varepsilon$-$N$ form. Setup: extract lower bound constant $c$ and threshold $L_1$, analysis threshold $L_2$, combined threshold $L_0 = \\max(L_1, L_2, 2)$. Cast Ramsey values to reals, establish $R > 0$ from `ramsey_pos`, and $R' \\geq R$ from monotonicity.",
+      "startLine": 129,
+      "endLine": 164,
+      "summary": "**Fully proved.** Statement of `erdos_1014_k3_ratio_convergence` in $\\varepsilon$-$N$ form. Setup: extract lower bound constant $c$ and threshold $L_1$, analysis threshold $L_2$, combined threshold $L_0 = \\max(L_1, L_2, 2)$. Cast Ramsey values to reals, establish $R > 0$ from `ramsey_pos`, and $R' \\geq R$ from monotonicity.",
       "mathContext": "For $l > L_0 = \\max(L_1, L_2, 2)$: the Kim-Shearer lower bound holds, the analysis lemma applies, and $\\log l > 0$ (since $l \\geq 3$)."
     },
     {
       "id": "main-theorem-calc",
       "title": "Main Theorem: Calc Chain and Conclusion",
-      "startLine": 137,
-      "endLine": 167,
-      "summary": "The core argument: $|R'/R - 1| = (R'-R)/R$ (monotonicity eliminates absolute value), $(R'-R)/R \\leq (l+1)/R$ (increment bound), $(l+1)/R \\leq (l+1) \\cdot \\log l / (c \\cdot l^2)$ (lower bound on denominator), and the final bound $< \\varepsilon$ (analysis lemma). The calc block uses `div_le_div_of_nonneg_right`, `div_le_div_of_nonneg_left`, and algebraic simplification via `div_div_eq_mul_div`.",
+      "startLine": 165,
+      "endLine": 197,
+      "summary": "**Fully proved.** The core argument: $|R'/R - 1| = (R'-R)/R$ (monotonicity eliminates absolute value), $(R'-R)/R \\leq (l+1)/R$ (increment bound), $(l+1)/R \\leq (l+1) \\cdot \\log l / (c \\cdot l^2)$ (lower bound on denominator), and the final bound $< \\varepsilon$ (analysis lemma).",
       "mathContext": "$\\left|\\frac{R'}{R} - 1\\right| = \\frac{R'-R}{R} \\leq \\frac{l+1}{R} \\leq \\frac{l+1}{c \\cdot l^2/\\log l} = \\frac{(l+1)\\log l}{c \\cdot l^2} < \\varepsilon$"
     }
   ],
@@ -95,7 +95,7 @@
     ]
   },
   "conclusion": {
-    "summary": "The k=3 case of Erdős Problem #1014 is resolved: R(3,l+1)/R(3,l) → 1. The proof reveals that the recurrence relation, often overlooked in discussions of this problem, provides exactly the constraint needed. One routine analysis sorry remains (log l/l → 0).",
+    "summary": "The k=3 case of Erdős Problem #1014 is fully resolved: R(3,l+1)/R(3,l) → 1. All theorems proved — the analysis sorry (log l/l → 0) was filled using Mathlib's isLittleO_log_rpow_atTop. The proof reveals that the recurrence relation, often overlooked in discussions of this problem, provides exactly the constraint needed.",
     "implications": "This demonstrates that ratio convergence for k=3 does not require exact Ramsey number asymptotics — only a polynomial lower bound and the basic recurrence. The approach may extend to k=4 using R(3,l) bounds in the recurrence.",
     "openQuestions": [
       "Can this recurrence-based approach extend to k=4? The recurrence gives R(4,l+1) - R(4,l) ≤ R(3,l+1) = O(l²/log l), and if R(4,l) grows as l³/(log l)², the ratio would be O(1/l)",
@@ -106,7 +106,7 @@
     "imports": ["Mathlib"],
     "opens": ["Real"],
     "namespace": "Erdos1014OQ01",
-    "lineCount": 169,
+    "lineCount": 197,
     "axiomCount": 6,
     "theoremCount": 3,
     "definitionCount": 0
