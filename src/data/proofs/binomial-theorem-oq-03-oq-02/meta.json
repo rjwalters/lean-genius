@@ -183,5 +183,42 @@
       "relationship": "related",
       "description": "Stirling's formula $n! \\sim \\sqrt{2\\pi n}(n/e)^n$ involves $e$ through $e^{-n} = \\lim_{m\\to\\infty}(1-n/m)^m$, connecting to the decay limit proved here"
     }
+  ],
+  "references": [
+    {
+      "authors": "Euler, Leonhard",
+      "title": "Introductio in analysin infinitorum",
+      "year": "1748",
+      "venue": "Lausanne: M.-M. Bousquet",
+      "note": "Euler's foundational treatise on analysis, where he systematically explored the exponential function and defined e as the limit of (1+1/n)^n, establishing the connection between discrete compounding and continuous growth"
+    },
+    {
+      "authors": "Bernoulli, Jacob",
+      "title": "Quaestiones nonnullae de usuris, cum solutione problematis de sorte alearum",
+      "year": "1690",
+      "venue": "Acta Eruditorum, pp. 219\u2013223",
+      "note": "First studied the continuous compounding problem: what happens to compound interest as the compounding frequency increases? Computed (1+1/n)^n for several values and noted convergence to a value between 2 and 3"
+    },
+    {
+      "authors": "Rudin, Walter",
+      "title": "Principles of Mathematical Analysis",
+      "year": "1976",
+      "venue": "McGraw-Hill, 3rd edition",
+      "note": "Chapter 3 proves the limit (1+1/n)^n \u2192 e via bounded monotone convergence (Theorem 3.31), and Chapter 8 derives the exponential function properties. The approach in this formalization instead uses log'(1) = 1 and continuity of exp"
+    },
+    {
+      "authors": "Sandifer, C. Edward",
+      "title": "How Euler Did It: (1+1/n)^n",
+      "year": "2006",
+      "venue": "MAA Online Column",
+      "note": "Historical account of Euler's treatment of the exponential limit in the Introductio, tracing how he computed e to 23 decimal places and established the series expansion from the binomial theorem"
+    },
+    {
+      "authors": "Dunham, William",
+      "title": "Euler: The Master of Us All",
+      "year": "1999",
+      "venue": "MAA Dolciani Mathematical Expositions No. 22",
+      "note": "Chapter 3 covers Euler's contributions to the theory of the exponential and logarithmic functions, including the limit definition of e and the connection to compound interest"
+    }
   ]
 }
