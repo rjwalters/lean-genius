@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-25T00:00:00Z",
-    "iteration": 4,
-    "focus": "Axiom reduction: 2→1 via Dedekind at p=7",
+    "iteration": 3,
+    "focus": "Evaluation lemmas proved, IVT application next",
     "blockers": [],
-    "nextAction": "Formalize Dedekind theorem to eliminate last axiom",
+    "nextAction": "Eliminate gal_card_eq_120 axiom",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -29,21 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Unified 2 axioms into 1 (Dedekind at p=7). 924 lines, 42 theorems, 1 axiom. three_dvd_gal_card and gal_has_odd_perm now PROVED from single order-6 element axiom.",
+    "progressSummary": "PROGRESS: Axiom B eliminated. gal_has_odd_perm now a THEOREM via Vandermonde+FTGT. 2 axioms remain: three_dvd_gal_card + vandermondeProduct_sq_val (narrow disc computation).",
     "builtItems": [
-      "Proofs/AbelRuffiniOQ04OQ01.lean: Full proof (924 lines, 42 theorems, 1 axiom)",
+      "Proofs/AbelRuffiniOQ04OQ01.lean: Full proof (362 lines, 12 theorems, 1 axiom)",
       "p_irreducible: Eisenstein at 2 for x^5-4x+2",
       "gal_iso_s5: Gal(p/Q) ≅ S_5 via galActionHom bijectivity",
       "roots_not_solvable_by_rad: contrapositive of Galois theorem",
       "s5_realizable: S_5 realized as Galois group over Q",
-      "Polynomial evaluations p(-2)=-22, p(-1)=5, p(0)=2, p(1)=-1, p(2)=26",
-      "closure_cycle_swap_eq_top: 5-cycle + transposition = S_5 via native_decide conjugation chain",
-      "no_subgroup_order_15: Sylow theory + native_decide commutativity obstruction",
-      "no_subgroup_order_30: A_5 simplicity via index-2 normality",
-      "Mod-7 factorization verified (native_decide): x^5-4x+2 ≡ (x²+4x+6)(x³+3x²+3x+5)",
-      "perm_fin5_order6_odd_sign: order-6 elements in S_5 have sign -1 (native_decide)",
-      "three_dvd_gal_card: PROVED from order-6 element via Lagrange",
-      "gal_has_odd_perm: PROVED from order-6 element via sign computation"
+      "Polynomial evaluations p(-2)=-22, p(-1)=5, p(0)=2, p(1)=-1, p(2)=26 (AbelRuffiniOQ04OQ01.lean)",
+      "rootEnum, vandermondeProduct, gal_acts_on_vandermondeProduct, gal_permutes_roots, vandermondeProduct_not_rational, fixed_by_all_gal_is_rational, exists_odd_galSign (proves former Axiom B)"
     ],
     "insights": [
       "Concrete polynomial approach more tractable than generic polynomial: x^5-4x+2 via Eisenstein at 2",
@@ -52,16 +46,17 @@
       "Generic polynomial approach (MvPolynomial + FractionRing + esymmAlgEquiv) requires 3-4 substantial gap lemmas",
       "simp [eval_sub, eval_add, eval_mul, eval_pow, eval_C, eval_X] suffices for polynomial evaluation; ring only needed sometimes",
       "To eliminate gal_card_eq_120: need IVT over ℝ for real roots + group theory lemma (transitive + transposition + p-cycle → S_p)",
-      "Mod-7 factorization is STRICTLY STRONGER than mod-13: (2,3) cycle type gives both 3||Gal| AND Gal⊄A₅ from a single Frobenius",
-      "orderOf is noncomputable in Lean — must use σ^6=1 ∧ σ^2≠1 ∧ σ^3≠1 for native_decide"
+      "Vandermonde product approach: σ(Δ)=sign(σ)·Δ, with Δ²=disc(p)=-212144<0, gives Δ∉ℚ. By FTGT, fixed by all σ→in ℚ. Contrapositive: Δ∉ℚ→∃σ with sign=-1."
     ],
     "mathlibGaps": [
-      "Mathlib lacks Dedekind theorem (mod-p factorization → Frobenius cycle type)",
-      "No generic polynomial Galois group computation in Mathlib"
+      "No generic polynomial Galois group computation in Mathlib (FractionRing of MvPolynomial + Galois theory)",
+      "No direct MulEquiv.isSolvable_iff — must use solvable_of_surjective with explicit surjectivity proof"
     ],
     "nextSteps": [
-      "Formalize Dedekind theorem to eliminate last axiom (~200-300 lines)",
-      "Alternative: IVT + complex conjugation approach (3 real roots → transposition)"
+      "Cast evaluations to ℝ and apply IVT (Polynomial.aeval continuity + IVT) to get roots in (-2,-1), (0,1), (1,2)",
+      "Show f'=5x^4-4 has exactly 2 real roots to bound real root count to 3",
+      "Prove group theory: transitive subgroup of S_p (p prime) with transposition = S_p",
+      "Complex conjugation on 2 non-real roots gives transposition in Gal → Gal = S_5 → |Gal|=120"
     ]
   },
   "tags": [
@@ -82,7 +77,7 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.815Z",
-  "lastUpdate": "2026-03-24T00:00:00Z",
+  "lastUpdate": "2026-03-25T00:00:00Z",
   "significance": 8,
   "tractability": 6,
   "leanFiles": [

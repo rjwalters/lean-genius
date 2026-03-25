@@ -110,40 +110,40 @@ we proved a concrete witness: Gal(x^5 - 4x + 2 / Q) ≅ S_5.
 - src/data/proofs/abel-ruffini-oq-04-oq-01/meta.json (updated counts)
 - src/data/research/problems/abel-ruffini-oq-04-oq-01.json (to be updated)
 
-### Remaining Work to Eliminate ALL Axioms
-1. **Dedekind's theorem**: Formalize the connection between mod-p factorization and Frobenius cycle types (~200-300 lines)
-2. **Alternative**: IVT + complex conjugation approach (3 real roots → transposition in Gal → S₅)
+## Session 2026-03-24 (Session 4) - Vandermonde Product: Axiom B Eliminated
 
-## Session 2026-03-24 (Session 4) - Axiom Unification via Dedekind at p=7
-
-**Mode**: REVISIT (RICH knowledge, score ~25)
-**Outcome**: progress (2 axioms → 1 axiom, both former axioms now proved as theorems)
+**Mode**: REVISIT (RICH knowledge, score ~29)
+**Outcome**: progress (Axiom B eliminated, replaced with narrower disc computation axiom)
 
 ### What I Did
-- Discovered that x⁵-4x+2 mod 7 factors as (x²+4x+6)(x³+3x²+3x+5) with both factors irreducible
-- This mod-7 factorization (cycle type (2,3)) is STRICTLY STRONGER than the mod-13 factorization (cycle type (1,1,3)):
-  - Mod-13 gives only 3 | |Gal| (Axiom A)
-  - Mod-7 gives both 3 | |Gal| AND sign = -1 (Axiom A + B) from a single Frobenius
-- Replaced 2 axioms with 1 unified axiom: `gal_has_order_six_element`
-- Proved `three_dvd_gal_card` as THEOREM from new axiom (Lagrange: 6 | |Gal| → 3 | |Gal|)
-- Proved `gal_has_odd_perm` as THEOREM from new axiom (order-6 element in S₅ has sign -1)
-- Added 5 new native_decide lemmas:
-  - `quadratic_factor_no_roots_mod7`, `cubic_factor_no_roots_mod7` (irreducibility)
-  - `p_factors_mod7` (factorization verification)
-  - `perm_fin5_order6_odd_sign` (sign of order-6 elements)
-- Worked around orderOf noncomputability: used σ^6=1 ∧ σ^2≠1 ∧ σ^3≠1 for native_decide
+- Built complete Vandermonde product infrastructure for polynomial p
+  - rootEnum, rootEnum_is_root, rootEnum_injective
+  - vandermondeProduct = det(Vandermonde(rootEnum)), nonzero
+  - gal_permutes_roots, vandermonde_perm_det, gal_map_vandermonde_entry
+  - **gal_acts_on_vandermondeProduct**: σ(Δ) = galSign(σ) · Δ
+- Proved **vandermondeProduct_not_rational**: Δ ∉ ℚ (from Δ² = -212144 < 0)
+- Proved **fixed_by_all_gal_is_rational**: FTGT direction (fixedField(⊤) = ⊥)
+  - Key: fixingSubgroup(⊥) = ⊤ (automorphisms fix ℚ by σ.commutes)
+  - Then IsGalois.fixedField_fixingSubgroup gives fixedField(⊤) = ⊥
+- Proved **exists_odd_galSign** = **gal_has_odd_perm** as a THEOREM
+- Former Axiom B is now PROVED; replaced with narrower axiom vandermondeProduct_sq_val
 
 ### Key Findings
-- `orderOf` is noncomputable in Lean 4 — cannot use in native_decide
-- `Nat.dvd_antisymm` works for all naturals (no positivity needed)
-- The order-6 element axiom gives a clean factoring: Lagrange for divisibility, sign computation for A₅ exclusion
-- Docker build confirms: 924 lines, 42 theorems, 1 axiom, 0 sorries
+- IntermediateField.mem_fixedField_iff is the correct API (not mem_fixedField)
+- fixingSubgroup membership requires `show ∀ y : ↑↑⊥, σ • ↑y = ↑y` pattern
+- IsGalois ℚ SF needs explicit `IsGalois.mk` (inferInstance may fail for abbrevs)
+- The FTGT (fixedField ⊤ = ⊥) follows from fixingSubgroup ⊥ = ⊤ + Galois correspondence
+- Pattern from InverseGaloisA5.lean (vandermonde_perm_det, gal_map_vandermonde_entry) transfers directly
 
 ### Files Modified
-- proofs/Proofs/AbelRuffiniOQ04OQ01.lean (874→924 lines, 37→42 theorems, 2→1 axioms)
-- src/data/proofs/abel-ruffini-oq-04-oq-01/meta.json (updated counts and descriptions)
+- proofs/Proofs/AbelRuffiniOQ04OQ01.lean (874→1036 lines, 37→48 theorems, 2 axioms still)
+- src/data/proofs/abel-ruffini-oq-04-oq-01/meta.json (updated counts)
 - src/data/research/problems/abel-ruffini-oq-04-oq-01.json (updated knowledge)
 
-### Remaining: 1 Axiom to Eliminate
-- **gal_has_order_six_element**: requires Dedekind's theorem (~200-300 lines)
-- Alternative: IVT + complex conjugation approach
+### Remaining Work to Eliminate ALL Axioms
+1. **Axiom A (three_dvd_gal_card)**: Needs Dedekind's theorem (~200-300 lines)
+2. **Axiom B replacement (vandermondeProduct_sq_val)**: Prove Δ² = -212144 from Res(p,p')
+   - Chain: Δ² = ∏_{i≠j}(αᵢ-αⱼ) = ∏ᵢ p'(αᵢ) = Res(p,p') = disc(p) = -212144
+   - InverseGaloisA5.lean proves this for q via ℂ embedding + Sophie Germain (~400 lines)
+   - For p = x⁵-4x+2, p'=5x⁴-4 doesn't factor as nicely (no Sophie Germain)
+   - Alternative: direct Sylvester matrix determinant computation (9×9 over ℤ)
