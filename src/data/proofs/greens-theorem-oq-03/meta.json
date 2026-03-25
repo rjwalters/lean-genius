@@ -118,12 +118,44 @@
       "mathContext": "$\\iint_D F\\,dA = \\int_a^b \\int_{f(x)}^{g(x)} F(x,y)\\,dy\\,dx$. Area $= \\iint_D 1\\,dA$."
     },
     {
-      "id": "sec-greens-theorem",
-      "title": "Green's Theorem for TypeI Regions",
+      "id": "sec-greens-axiom",
+      "title": "Green's Theorem Axiom for TypeI Regions",
       "startLine": 181,
+      "endLine": 217,
+      "summary": "Axiom stating Green's theorem with concrete boundary decomposition using deriv f and deriv g from chain rule parametrization. Requires HasDerivAt hypotheses on P and Q.",
+      "mathContext": "$\\iint_D (\\partial Q/\\partial x - \\partial P/\\partial y)\\,dA = \\oint_{\\partial D} P\\,dx + Q\\,dy$. Boundary uses $f'(x)$ and $g'(x)$ for Q-contributions along curved boundaries."
+    },
+    {
+      "id": "sec-inner-ftc-P",
+      "title": "Inner FTC: The P Contribution (Proved)",
+      "startLine": 218,
+      "endLine": 279,
+      "summary": "Three proved theorems: typeI_inner_ftc_P (inner FTC: $\\iint \\partial P/\\partial y = \\int [P(x,g(x))-P(x,f(x))]dx$), typeI_P_boundary (sign-flipped boundary form), and typeI_rect_inner_ftc_P (rectangle specialization). All proved via integral_congr + integral_eq_sub_of_hasDerivAt.",
+      "mathContext": "$\\int_a^b \\int_{f(x)}^{g(x)} \\frac{\\partial P}{\\partial y}\\,dy\\,dx = \\int_a^b [P(x,g(x)) - P(x,f(x))]\\,dx$. This is the P half of Green's theorem, proved without axioms via the FTC for each inner integral."
+    },
+    {
+      "id": "sec-typeII",
+      "title": "TypeII (Horizontally Simple) Regions and Q Contribution",
+      "startLine": 280,
+      "endLine": 378,
+      "summary": "Defines TypeIIRegion (dual of TypeI: D = {(x,y) | c≤y≤d, h(y)≤x≤k(y)}), proves membership, nonemptiness, area, and the inner FTC for Q: $\\iint \\partial Q/\\partial x = \\int [Q(k(y),y)-Q(h(y),y)]dy$. Includes rectToTypeII constructor.",
+      "mathContext": "TypeII inner FTC: $\\int_c^d \\int_{h(y)}^{k(y)} \\frac{\\partial Q}{\\partial x}\\,dx\\,dy = \\int_c^d [Q(k(y),y) - Q(h(y),y)]\\,dy$. The Q half of Green's theorem, proved symmetrically to the P half."
+    },
+    {
+      "id": "sec-disk-semicircle",
+      "title": "Disk and Semicircle as Concrete TypeI/II Examples",
+      "startLine": 379,
+      "endLine": 487,
+      "summary": "Constructs the closed disk as both TypeI ($y = \\pm\\sqrt{r^2-x^2}$) and TypeII ($x = \\pm\\sqrt{r^2-y^2}$) regions. Proves disk_mem_iff ($x^2+y^2 \\leq r^2$) via sq_le_sq' and abs_le. Axiomatizes disk area = $\\pi r^2$. Constructs upper semicircle, proves disk = 2 × semicircle area, derives semicircle area = $\\pi r^2/2$.",
+      "mathContext": "Disk as TypeI: $D = \\{(x,y) \\mid -r \\leq x \\leq r,\\, -\\sqrt{r^2-x^2} \\leq y \\leq \\sqrt{r^2-x^2}\\}$. Membership: $(x,y) \\in D \\iff x^2+y^2 \\leq r^2$. Area axiom: $\\int_{-r}^r 2\\sqrt{r^2-x^2}\\,dx = \\pi r^2$."
+    },
+    {
+      "id": "sec-rectangle-greens",
+      "title": "Full Green's Theorem for Rectangles (Both Halves)",
+      "startLine": 488,
       "endLine": 557,
-      "summary": "Axiom stating Green's theorem with concrete boundary decomposition via deriv f, deriv g.",
-      "mathContext": "$\\iint_D (\\partial Q/\\partial x - \\partial P/\\partial y)\\,dA = \\oint_{\\partial D} P\\,dx + Q\\,dy$. Boundary uses $f'(x)$ and $g'(x)$ from chain rule parametrization."
+      "summary": "Proves rectangles are both TypeI and TypeII with identical point sets. Combines the P contribution (TypeI) and Q contribution (TypeII) to give the full Green's theorem for rectangles without axioms. rect_P_contribution and rect_Q_contribution are the final results.",
+      "mathContext": "For rectangle $[a,b] \\times [c,d]$: P contribution $= \\int_a^b [P(x,d)-P(x,c)]\\,dx$ (from TypeI FTC), Q contribution $= \\int_c^d [Q(b,y)-Q(a,y)]\\,dy$ (from TypeII FTC). Combined: full Green's theorem for rectangles."
     }
   ],
   "overview": {

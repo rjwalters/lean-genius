@@ -150,5 +150,89 @@
       "chain rule for parametric curves",
       "Apostol Mathematical Analysis §17.4"
     ]
+  },
+  {
+    "id": "ann-oq03-07-inner-ftc-P",
+    "proofId": "greens-theorem-oq-03",
+    "range": { "startLine": 233, "endLine": 249 },
+    "type": "technique",
+    "title": "Inner FTC for TypeI: The P Contribution (Proved, 0 Axioms)",
+    "content": "`typeI_inner_ftc_P` is the computational heart of the standard Green's theorem proof. It proves $\\int_a^b \\int_{f(x)}^{g(x)} \\partial P/\\partial y\\,dy\\,dx = \\int_a^b [P(x,g(x)) - P(x,f(x))]\\,dx$ in just 3 lines: unfold the iterated integral definition, then apply `integral_congr` to reduce to showing equality of inner integrals, where `integral_eq_sub_of_hasDerivAt` (the FTC for interval integrals) closes each one. This requires `HasDerivAt` for $P$ in the $y$-variable and `IntervalIntegrable` for $\\partial P/\\partial y$.",
+    "mathContext": "$\\int_a^b \\left[\\int_{f(x)}^{g(x)} \\frac{\\partial P}{\\partial y}(x,y)\\,dy\\right]dx = \\int_a^b [P(x,g(x)) - P(x,f(x))]\\,dx$. The inner integral is evaluated by the FTC: $\\int_{f(x)}^{g(x)} \\frac{\\partial P}{\\partial y}\\,dy = P(x,g(x)) - P(x,f(x))$. Then `integral_congr` lifts this pointwise equality to the outer integral.",
+    "significance": "key",
+    "relatedConcepts": ["fundamental theorem of calculus", "integral_eq_sub_of_hasDerivAt", "integral_congr", "iterated integral"],
+    "prerequisites": ["HasDerivAt", "IntervalIntegrable", "intervalIntegral"]
+  },
+  {
+    "id": "ann-oq03-08-P-boundary",
+    "proofId": "greens-theorem-oq-03",
+    "range": { "startLine": 251, "endLine": 266 },
+    "type": "insight",
+    "title": "P Boundary Sign Flip: Orientation Matters",
+    "content": "`typeI_P_boundary` proves $\\int_a^b [P(x,f(x)) - P(x,g(x))]\\,dx = -\\iint_D \\partial P/\\partial y\\,dA$. The sign flip comes from boundary orientation: in Green's theorem, the lower curve $f(x)$ is traversed left-to-right (contributing $+P$) but the upper curve $g(x)$ right-to-left (contributing $-P$). The proof rewrites $P(x,f(x)) - P(x,g(x)) = -(P(x,g(x)) - P(x,f(x)))$ via `ring`, then applies `intervalIntegral.integral_neg` to pull out the minus sign.",
+    "mathContext": "The boundary orientation: $\\partial D$ is traversed counterclockwise. Lower curve: left-to-right ($+P\\,dx$). Upper curve: right-to-left ($-P\\,dx$). Net P contribution: $\\int_a^b P(x,f(x))\\,dx - \\int_a^b P(x,g(x))\\,dx = -\\iint_D \\frac{\\partial P}{\\partial y}\\,dA$.",
+    "significance": "supporting",
+    "relatedConcepts": ["boundary orientation", "counterclockwise convention", "integral_neg", "sign convention"],
+    "prerequisites": ["typeI_inner_ftc_P", "ring tactic"]
+  },
+  {
+    "id": "ann-oq03-09-typeII",
+    "proofId": "greens-theorem-oq-03",
+    "range": { "startLine": 291, "endLine": 342 },
+    "type": "definition",
+    "title": "TypeIIRegion: The Dual Structure for the Q Contribution",
+    "content": "`TypeIIRegion` is the dual of `TypeIRegion` with roles of $x$ and $y$ swapped: $D = \\{(x,y) \\mid c \\leq y \\leq d,\\, h(y) \\leq x \\leq k(y)\\}$. Fields: bounds $c < d$, curves $h, k$ with $h(y) \\leq k(y)$ on $[c,d]$. This structure is needed for the Q contribution to Green's theorem, where the FTC is applied in the $x$-direction with $y$ as the outer variable. The section proves membership iff, nonemptiness (witness $(h(c), c)$), iterated integral ($\\int_c^d \\int_{h(y)}^{k(y)} F\\,dx\\,dy$), area ($\\int_c^d (k(y)-h(y))\\,dy$), and area nonnegativity. The `rectToTypeII` constructor completes the duality for rectangles.",
+    "mathContext": "TypeII region: $D = \\{(x,y) \\mid c \\leq y \\leq d,\\, h(y) \\leq x \\leq k(y)\\}$. Iterated integral: $\\iint_D F\\,dA = \\int_c^d \\int_{h(y)}^{k(y)} F(x,y)\\,dx\\,dy$. For rectangles: $h \\equiv a$, $k \\equiv b$.",
+    "significance": "key",
+    "relatedConcepts": ["TypeIIRegion", "horizontally simple", "Fubini's theorem", "dual structure"],
+    "prerequisites": ["TypeIRegion", "intervalIntegral"]
+  },
+  {
+    "id": "ann-oq03-10-inner-ftc-Q",
+    "proofId": "greens-theorem-oq-03",
+    "range": { "startLine": 344, "endLine": 377 },
+    "type": "technique",
+    "title": "Inner FTC for TypeII: The Q Contribution (Proved, 0 Axioms)",
+    "content": "`typeII_inner_ftc_Q` proves $\\int_c^d \\int_{h(y)}^{k(y)} \\partial Q/\\partial x\\,dx\\,dy = \\int_c^d [Q(k(y),y) - Q(h(y),y)]\\,dy$, completely symmetric to the TypeI P result. The proof is identical: unfold `iteratedIntegral`, apply `integral_congr`, close each inner integral with `integral_eq_sub_of_hasDerivAt`. The companion `typeII_Q_boundary` shows no sign flip is needed for Q (unlike P), because the boundary orientation contributes $+Q\\,dy$ on the right curve and $-Q\\,dy$ on the left curve, matching the FTC direction.",
+    "mathContext": "$\\int_c^d \\left[\\int_{h(y)}^{k(y)} \\frac{\\partial Q}{\\partial x}(x,y)\\,dx\\right]dy = \\int_c^d [Q(k(y),y) - Q(h(y),y)]\\,dy$. No sign flip: right boundary contributes $+Q$, left boundary $-Q$, matching the natural FTC direction.",
+    "significance": "key",
+    "relatedConcepts": ["typeII_inner_ftc_Q", "Q boundary", "symmetric proof", "integral_congr"],
+    "prerequisites": ["TypeIIRegion.iteratedIntegral", "integral_eq_sub_of_hasDerivAt"]
+  },
+  {
+    "id": "ann-oq03-11-disk",
+    "proofId": "greens-theorem-oq-03",
+    "range": { "startLine": 387, "endLine": 425 },
+    "type": "insight",
+    "title": "Disk Membership: x²+y²≤r² via Square Root Arithmetic",
+    "content": "`diskTypeI` constructs the closed disk as a TypeI region with lower boundary $y = -\\sqrt{r^2-x^2}$ and upper boundary $y = \\sqrt{r^2-x^2}$. The main result `disk_mem_iff` proves the equivalence $(x,y) \\in D \\iff x^2+y^2 \\leq r^2$. The forward direction uses `sq_le_sq'` to convert the bounds $-\\sqrt{r^2-x^2} \\leq y \\leq \\sqrt{r^2-x^2}$ into $y^2 \\leq r^2-x^2$, then `Real.sq_sqrt` to remove the square root. The reverse direction reconstructs the bounds from $|y| \\leq \\sqrt{r^2-x^2}$ using `Real.sqrt_le_sqrt` and `abs_le`. The $x$-bounds $-r \\leq x \\leq r$ are recovered from $x^2 \\leq r^2$ via `nlinarith` with `sq_nonneg (x \\pm r)`.",
+    "mathContext": "Disk as TypeI: $f(x) = -\\sqrt{r^2-x^2}$, $g(x) = \\sqrt{r^2-x^2}$, base $[-r, r]$. Membership: $-\\sqrt{r^2-x^2} \\leq y \\leq \\sqrt{r^2-x^2} \\iff y^2 \\leq r^2-x^2 \\iff x^2+y^2 \\leq r^2$. Key lemmas: `sq_le_sq'`, `Real.sq_sqrt`, `Real.sqrt_le_sqrt`.",
+    "significance": "key",
+    "relatedConcepts": ["disk", "TypeI region", "sq_le_sq'", "abs_le", "Real.sqrt_le_sqrt"],
+    "prerequisites": ["Real.sqrt_nonneg", "Real.sq_sqrt", "nlinarith"]
+  },
+  {
+    "id": "ann-oq03-12-semicircle-area",
+    "proofId": "greens-theorem-oq-03",
+    "range": { "startLine": 460, "endLine": 477 },
+    "type": "technique",
+    "title": "Semicircle Area from Disk: integral_smul Relates 2√(r²-x²) to √(r²-x²)",
+    "content": "`disk_area_eq_twice_semicircle` proves that the disk area equals twice the upper semicircle area. The disk integrand is $\\sqrt{r^2-x^2} - (-\\sqrt{r^2-x^2}) = 2\\sqrt{r^2-x^2}$, while the semicircle integrand is $\\sqrt{r^2-x^2} - 0 = \\sqrt{r^2-x^2}$. The proof uses `intervalIntegral.integral_smul` to factor out the 2, then `smul_eq_mul` to convert scalar multiplication to ordinary multiplication. From the axiom `disk_area_eq_pi` ($\\text{Area}_{\\text{disk}} = \\pi r^2$), `upper_semicircle_area` derives $\\text{Area}_{\\text{semi}} = \\pi r^2/2$ by `linarith`.",
+    "mathContext": "$\\int_{-r}^r 2\\sqrt{r^2-x^2}\\,dx = 2 \\int_{-r}^r \\sqrt{r^2-x^2}\\,dx$, so $\\text{Area}_{\\text{disk}} = 2 \\cdot \\text{Area}_{\\text{semicircle}}$. With $\\text{Area}_{\\text{disk}} = \\pi r^2$: $\\text{Area}_{\\text{semicircle}} = \\pi r^2/2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["integral_smul", "smul_eq_mul", "disk area", "semicircle area", "pi"],
+    "prerequisites": ["disk_area_eq_pi", "diskTypeI", "upperSemicircleTypeI"]
+  },
+  {
+    "id": "ann-oq03-13-rectangle-greens",
+    "proofId": "greens-theorem-oq-03",
+    "range": { "startLine": 496, "endLine": 555 },
+    "type": "insight",
+    "title": "Full Green's Theorem for Rectangles: Both Halves Combined",
+    "content": "The culmination: `rectTypeI_set_eq_rectTypeII_set` proves that rectangles viewed as TypeI and TypeII have identical point sets (via `ext` + member reordering). `rect_P_contribution` and `rect_Q_contribution` provide the two halves of Green's theorem for rectangles, each proved from the respective inner FTC without axioms. Together: $\\iint_{[a,b]\\times[c,d]} (\\partial Q/\\partial x - \\partial P/\\partial y)\\,dA = \\int_c^d [Q(b,y)-Q(a,y)]\\,dy - \\int_a^b [P(x,d)-P(x,c)]\\,dx$. This is the full Green's theorem for the most basic simply-connected domain, proved entirely from the FTC.",
+    "mathContext": "For $R = [a,b]\\times[c,d]$: $\\iint_R \\frac{\\partial Q}{\\partial x}\\,dA = \\int_c^d [Q(b,y)-Q(a,y)]\\,dy$ (TypeII FTC) and $\\iint_R \\frac{\\partial P}{\\partial y}\\,dA = \\int_a^b [P(x,d)-P(x,c)]\\,dx$ (TypeI FTC). Subtract: full Green's theorem for rectangles.",
+    "significance": "key",
+    "relatedConcepts": ["Green's theorem for rectangles", "TypeI-TypeII duality", "Fubini compatibility", "fundamental theorem of calculus"],
+    "prerequisites": ["typeI_inner_ftc_P", "typeII_inner_ftc_Q", "rectTypeI_set_eq_rectTypeII_set"]
   }
 ]
