@@ -155,44 +155,72 @@
   ],
   "references": [
     {
+      "authors": "de Moivre, Abraham",
+      "title": "Approximatio ad Summam Terminorum Binomii (a+b)^n in Seriem Expansi",
+      "year": "1733",
+      "venue": "Unpublished manuscript; later incorporated into The Doctrine of Chances (1738, 2nd ed.)",
+      "note": "Earliest form of the CLT: de Moivre showed the binomial B(n, 1/2) is approximated by a bell-shaped curve proportional to e^{-x^2/(2n)}, anticipating the Gaussian density by a century"
+    },
+    {
+      "authors": "Laplace, Pierre-Simon",
+      "title": "Théorie analytique des probabilités",
+      "year": "1812",
+      "venue": "Paris: Courcier",
+      "note": "Extended de Moivre's result to general sums of independent errors; introduced the method of characteristic functions (generating functions) and established the normal distribution as the universal error law"
+    },
+    {
+      "authors": "Chebyshev, Pafnuty",
+      "title": "Sur deux théorèmes relatifs aux probabilités",
+      "year": "1887",
+      "venue": "Acta Mathematica 14, 305–315",
+      "note": "Proved the CLT for sums of non-identically distributed bounded variables using the method of moments, pioneering systematic use of moment conditions"
+    },
+    {
       "authors": "Lyapunov, Aleksandr M.",
       "title": "Nouvelle forme du théorème sur la limite de probabilité",
       "year": "1901",
       "venue": "Mémoires de l'Académie Impériale des Sciences de St.-Pétersbourg, VIII série, Classe physico-mathématique 12(5), 1–24",
-      "note": "First rigorous proof of the CLT under the Lyapunov condition using characteristic functions"
+      "note": "First fully rigorous proof of the CLT using characteristic functions (moment generating functions), under the Lyapunov condition on third absolute moments"
     },
     {
       "authors": "Lindeberg, Jarl Waldemar",
       "title": "Eine neue Herleitung des Exponentialgesetzes in der Wahrscheinlichkeitsrechnung",
       "year": "1922",
       "venue": "Mathematische Zeitschrift 15(1), 211–225",
-      "note": "Proved the CLT under the weaker Lindeberg condition — the definitive version for independent non-identically distributed variables"
+      "note": "Proved the CLT under the optimal Lindeberg condition, weaker than Lyapunov's; this remains the definitive version for independent non-identically distributed variables"
+    },
+    {
+      "authors": "Berry, Andrew C.",
+      "title": "The Accuracy of the Gaussian Approximation to the Sum of Independent Variates",
+      "year": "1941",
+      "venue": "Transactions of the American Mathematical Society 49(1), 122–136",
+      "note": "Established the quantitative Berry-Esseen bound sup_x |F_n(x) - Φ(x)| ≤ Cρ/√n, giving the first explicit rate of convergence; Esseen (1942) independently obtained the same result"
     },
     {
       "authors": "Feller, William",
       "title": "An Introduction to Probability Theory and Its Applications, Vol. II",
       "year": "1971",
       "venue": "Wiley, 2nd edition",
-      "note": "Standard reference for the characteristic function proof and Berry-Esseen bounds"
+      "note": "Standard reference for the characteristic function proof, Berry-Esseen bounds, and stable distribution theory; Chapter XV covers the CLT in full generality"
     },
     {
-      "authors": "de Moivre, Abraham",
-      "title": "The Doctrine of Chances: or, A Method of Calculating the Probabilities of Events in Play",
-      "year": "1738",
-      "venue": "London: Woodfall, 2nd edition",
-      "note": "Contains de Moivre's 1733 approximation of the binomial distribution by the normal curve — the earliest form of the Central Limit Theorem"
+      "authors": "Billingsley, Patrick",
+      "title": "Convergence of Probability Measures",
+      "year": "1999",
+      "venue": "Wiley-Interscience, 2nd edition",
+      "note": "Definitive treatment of weak convergence of probability measures and the functional CLT (Donsker's theorem), covering the Lévy continuity theorem and Prokhorov compactness theorem used in the proof"
     },
     {
       "authors": "Fischer, Hans",
       "title": "A History of the Central Limit Theorem: From Classical to Modern Probability Theory",
       "year": "2011",
       "venue": "Springer, Sources and Studies in the History of Mathematics and Physical Sciences",
-      "note": "Comprehensive history tracing the CLT from de Moivre and Laplace through Lyapunov, Lindeberg, Feller, and modern formulations"
+      "note": "Comprehensive history tracing the CLT from de Moivre and Laplace through Chebyshev, Lyapunov, Lindeberg, Feller, and modern formulations, with detailed analysis of each proof's novelty"
     }
   ],
   "conclusion": {
     "summary": "The Central Limit Theorem reveals that the Gaussian distribution is not merely common but inevitable. The classical proof via characteristic functions shows *that* sums converge to the normal distribution; the topological interpretation explains *why*—the Gaussian is a fixed point attractor under the fundamental operation of averaging.\n\nThis dual perspective unifies analysis (characteristic functions, Fourier transforms) with geometry (the space of distributions, Wasserstein metrics) and dynamics (renormalization flows, fixed point theory). The result has profound implications: wherever we see averages of many independent effects, we expect Gaussian behavior.",
-    "implications": "**Practical Impact**:\n- Statistical inference relies on CLT for confidence intervals and hypothesis tests\n- Measurement errors are approximately Gaussian (many small independent sources)\n- Financial models (Black-Scholes) assume log-normal returns via CLT\n- Quality control uses normal distributions for process variation\n\n**Mathematical Significance**:\n- Connects probability to topology and dynamical systems\n- Explains universality: why the same distribution appears across domains\n- Foundation for stable distribution theory and heavy-tailed analysis\n- Information geometry reveals Gaussian as Fisher-information minimizer\n\n**Computational Aspects**:\n- Monte Carlo methods exploit CLT for error estimation\n- Berry-Esseen bounds quantify convergence rates\n- Edgeworth expansions provide corrections for finite samples",
+    "implications": "**Statistical Inference**:\nThe CLT is the theoretical backbone of classical statistics. Confidence intervals, t-tests, chi-squared tests, and ANOVA all rely on approximate normality guaranteed by the CLT. The sample mean $\\bar{X}_n$ is approximately $N(\\mu, \\sigma^2/n)$ for large $n$, enabling inference without knowing the population distribution. Bootstrap methods rely on the CLT for their validity. Without the CLT, parametric statistics would require exact distributional assumptions that rarely hold in practice.\n\n**Physics and Natural Science**:\nMeasurement errors are Gaussian because each observation accumulates many small, independent perturbations—thermal noise, quantization error, vibration, rounding. Maxwell's velocity distribution in an ideal gas is Gaussian in each component for the same reason. In quantum mechanics, the position of a particle in a harmonic potential ground state follows a Gaussian wave function. The diffusion equation $\\partial_t u = \\frac{1}{2}\\partial_{xx} u$ has the Gaussian $G(x,t) = (2\\pi t)^{-1/2}e^{-x^2/(2t)}$ as its fundamental solution, connecting Brownian motion to the CLT via Donsker's theorem.\n\n**Finance and Economics**:\nThe Black-Scholes model assumes log-normal asset prices, justified by the CLT: daily returns are sums of many small trades, and log-returns are approximately normal. Value-at-Risk calculations, option pricing, and portfolio optimization all exploit Gaussian approximations. However, the CLT also reveals its own limits: financial crashes are heavy-tailed events outside the finite-variance domain of attraction, motivating stable distribution models ($\\alpha < 2$) as a correction.\n\n**Machine Learning and AI**:\nThe CLT underlies generalization bounds in statistical learning theory — the VC dimension bounds in PAC learning rely on normal approximations to empirical risk fluctuations. Gradient noise in stochastic gradient descent is approximately Gaussian by the CLT, informing optimizer design and learning rate schedules. Neural network weight initialization schemes (Xavier, He) are designed to keep activations in the Gaussian regime where the CLT applies.\n\n**Information Theory**:\nThe Gaussian maximizes differential entropy $h(X) = -\\int p \\log p$ among all distributions with fixed variance: $h(N(0,\\sigma^2)) = \\frac{1}{2}\\log(2\\pi e \\sigma^2)$. This is why additive white Gaussian noise (AWGN) is the capacity-achieving channel input for power-constrained channels — the CLT predicts that mixing many signals gives Gaussian aggregate noise. Shannon's channel coding theorem implicitly relies on the CLT through the law of large numbers for information-density fluctuations.\n\n**Mathematical Significance**:\n- Connects probability to topology (Wasserstein geometry), dynamical systems (renormalization flows), and information geometry (Fisher metric)\n- Explains universality: why the Gaussian appears across physics, biology, economics, and engineering\n- Foundation for stable distribution theory ($\\alpha$-stable laws) and heavy-tailed analysis\n- Motivates functional CLT (Donsker's invariance principle) and stochastic calculus (Itô's formula)\n- Berry-Esseen bounds and Edgeworth expansions quantify convergence rates for finite samples",
     "openQuestions": [
       "What happens when variance is infinite? This leads to stable distributions (Lévy alpha-stable) with heavier tails than the Gaussian.",
       "Can CLT be generalized to dependent random variables? Yes, under mixing conditions—but the geometry becomes more complex.",
@@ -255,6 +283,41 @@
       "targetId": "central-limit-theorem-oq-01-oq-02",
       "relationship": "extended-by",
       "description": "The Lévy-Khintchine representation: every infinitely divisible distribution has a unique triplet $(b, \\sigma^2, \\nu)$ decomposing it into drift, Gaussian component, and jump measure. The CLT's Gaussian limit corresponds to the pure Gaussian case $(0, \\sigma^2, 0)$, placing the CLT within the broader framework of infinitely divisible distributions and Lévy processes"
+    },
+    {
+      "targetId": "laws-of-large-numbers",
+      "relationship": "related",
+      "description": "The Laws of Large Numbers and the CLT are the two fundamental limit theorems of probability. The LLN establishes that $\\bar{X}_n \\to \\mu$ almost surely; the CLT refines this by giving the rate: $(\\bar{X}_n - \\mu) \\cdot \\sqrt{n}/\\sigma \\xrightarrow{d} N(0,1)$. Together they fully characterize the asymptotic behavior of sample means: the LLN gives convergence, the CLT gives the fluctuation scale"
+    },
+    {
+      "targetId": "de-moivre",
+      "relationship": "related",
+      "description": "De Moivre's Theorem ($(\\cos\\theta + i\\sin\\theta)^n = \\cos n\\theta + i\\sin n\\theta$) is the complex-analytic foundation for characteristic functions used in the CLT proof: $\\varphi_X(t) = \\mathbb{E}[e^{itX}]$ uses Euler's formula $e^{it} = \\cos t + i\\sin t$, which is exactly de Moivre's theorem. Historically, Abraham de Moivre also discovered the first form of the CLT (1733), approximating the binomial by the Gaussian"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "foundational",
+      "description": "Fourier analysis is the analytical backbone of the CLT proof. The characteristic function $\\varphi_X(t) = \\mathbb{E}[e^{itX}]$ is the Fourier transform of the probability density. The Lévy continuity theorem — that pointwise convergence of Fourier transforms implies weak convergence of measures — is the key bridge between the computational step (showing $\\varphi_{Z_n}(t) \\to e^{-t^2/2}$) and the probabilistic conclusion ($Z_n \\xrightarrow{d} N(0,1)$)"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "Both the CLT and PNT are landmark analytic results where Fourier/complex-analytic methods establish distributional universality. The PNT uses the Riemann zeta function (a Dirichlet series / Mellin transform) to show primes behave like a Poisson process at scale $1/\\ln x$; the CLT uses characteristic functions to show averages of random variables converge to the Gaussian. Both reveal hidden regularity through analytic continuation and contour integration"
+    },
+    {
+      "targetId": "shannon-entropy",
+      "relationship": "related",
+      "description": "Shannon entropy and the CLT are connected through the maximum entropy characterization of the Gaussian: $N(0,\\sigma^2)$ maximizes differential entropy $h(X) = -\\int p\\log p\\,dx$ among all distributions with variance $\\sigma^2$. This information-theoretic perspective — the Gaussian is the 'most random' distribution at fixed variance — provides an independent explanation of why the CLT's limit is Gaussian. The entropy power inequality $e^{2h(X+Y)} \\geq e^{2h(X)} + e^{2h(Y)}$ is the information-theoretic analog of the CLT"
+    },
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "related",
+      "description": "The First Moment Method (probabilistic method) and the CLT are complementary tools in probabilistic combinatorics. The CLT gives the distribution of sums of random variables; the first moment method uses $\\mathbb{E}[X] > 0$ to certify existence. The second moment method ($\\text{Var}(X)/\\mathbb{E}[X]^2 \\to 0$ implies $P(X > 0) \\to 1$) is a direct application of the Chebyshev inequality, which in turn is a quantitative precursor to the CLT"
+    },
+    {
+      "targetId": "pac-learning-bounds",
+      "relationship": "related",
+      "description": "PAC learning bounds and the CLT are linked through statistical learning theory. The sample complexity bound $O((d + \\log(1/\\delta))/\\varepsilon^2)$ for VC dimension $d$ reflects the $1/\\sqrt{n}$ CLT convergence rate: empirical risk fluctuations are $O(1/\\sqrt{n})$ by the CLT, requiring $n = O(1/\\varepsilon^2)$ samples to achieve $\\varepsilon$-accuracy. The CLT thus provides the fundamental reason why PAC learning requires quadratically more samples for higher precision"
     }
   ],
   "leanFile": {
