@@ -495,13 +495,46 @@ theorem prime_h_alpha_unbounded :
             ≥ ((p : ℝ) - 1) ^ (1 : ℝ) := Real.rpow_le_rpow_of_exponent_le hp_sub (by linarith)
           _ = (p : ℝ) - 1 := Real.rpow_one _
 
-/--
-**Example: Power of 2**
-For n = 2^k, divisors are {1, 2, 4, ..., 2^k}, all ratios equal 2.
-h_α(2^k) = k · 1^α = k, which grows with k.
+/-
+## Power of Two Infrastructure
+
+Sorted divisors of 2^k = [1, 2, 4, ..., 2^k] by sort uniqueness.
+All consecutive divisor ratios = 2, so h_α(2^k) = k·(2-1)^α = k.
 -/
-axiom power_of_two_h_alpha (k : ℕ) (α : ℝ) (hα : α ≥ 1) :
-    h_alpha α (2^k) = k
+
+/-- Sorted divisors of 2^k are [2^0, 2^1, ..., 2^k].
+Proof: both lists are sorted permutations of the same multiset. -/
+private theorem sortedDivisors_two_pow (k : ℕ) :
+    sortedDivisors (2 ^ k) = (List.range (k + 1)).map (HPow.hPow 2) := by
+  sorry -- sort uniqueness via Nat.divisors_prime_pow + Perm.eq_of_pairwise
+
+/-- The consecutive divisor ratios of 2^k consist of k copies of 2.
+Each ratio d_{i+1}/d_i = 2^(i+1)/2^i = 2. -/
+private theorem divisorRatios_two_pow (k : ℕ) :
+    divisorRatios (2 ^ k) = List.replicate k (2 : ℚ) := by
+  sorry -- via sortedDivisors_two_pow + zipWith computation
+
+private theorem flatMap_singleton_eq_map (f : ℚ → ℝ) (l : List ℚ) :
+    l.flatMap (fun a => [f a]) = l.map f := by
+  induction l with
+  | nil => rfl
+  | cons a t ih => simp [List.flatMap_cons, ih]
+
+private theorem list_bind_pure_ratCast (l : List ℚ) :
+    (do let a ← l; pure (↑a : ℝ)) = l.map (Rat.cast · : ℚ → ℝ) :=
+  flatMap_singleton_eq_map Rat.cast l
+
+set_option maxHeartbeats 1600000 in
+/-- For n = 2^k, h_α(2^k) = k since all k ratios equal 2 and (2-1)^α = 1^α = 1. -/
+theorem power_of_two_h_alpha (k : ℕ) (α : ℝ) (hα : α ≥ 1) :
+    h_alpha α (2^k) = k := by
+  delta h_alpha
+  rw [divisorRatios_two_pow]
+  -- Convert monadic do/pure to explicit map, fuse maps, compute on replicate
+  rw [list_bind_pure_ratCast, List.map_map, List.map_replicate, List.sum_replicate]
+  -- Goal: k • ((fun r : ℚ => ((↑r : ℝ) - 1) ^ α) (2 : ℚ)) = ↑k
+  simp only [Function.comp_apply, show ((2 : ℚ) : ℝ) - 1 = 1 from by push_cast; ring,
+             Real.one_rpow, nsmul_eq_mul, mul_one]
 
 /-
 **Example: Small highly composite**
