@@ -144,7 +144,7 @@
       "Can a purely algebraic proof of FTA be found? Every known proof uses the completeness of $\\mathbb{R}$ (via Liouville's theorem, winding numbers, or the intermediate value theorem). The fact that $\\mathbb{Q}_p$ (the $p$-adic numbers) is complete but NOT algebraically closed shows completeness alone is insufficient — some topological property specific to $\\mathbb{R}$ (connectedness? the archimedean property?) seems essential.",
       "The Mathlib proof uses Liouville's theorem. Can we formalize Gauss's purely algebraic proof (1849), which only uses the intermediate value theorem for odd-degree real polynomials plus the fact that every complex number has a square root? This would reduce the analytic prerequisites to the minimum.",
       "Can we formalize the constructive content of FTA? Gauss's proof is non-constructive (it doesn't exhibit the root). There are constructive proofs (Bridges-Richman, 1999) that produce roots as limits of Cauchy sequences, but they require a modulus of separation. Can these be formalized in Lean's constructive type theory?",
-      "FTA implies $\\mathbb{C}$ is the algebraic closure of $\\mathbb{R}$. Can we formalize that $[\\mathbb{C}:\\mathbb{R}] = 2$ is the ONLY algebraically closed extension of $\\mathbb{R}$, and moreover that $\\mathbb{C}$ is the unique algebraically closed field of cardinality $\\mathfrak{c}$ and characteristic 0 (up to isomorphism)?",
+      "**Addressed** by `fundamental-theorem-algebra-oq-04`: $\\mathbb{C}$ is proved to be the unique algebraic closure of $\\mathbb{R}$ (algebraically closed and algebraic over $\\mathbb{R}$, with any algebraic closure of $\\mathbb{R}$ being $\\mathbb{R}$-algebra isomorphic to $\\mathbb{C}$). The remaining question is formalizing $\\mathbb{C}$ as the unique algebraically closed field of cardinality $\\mathfrak{c}$ and characteristic 0.",
       "The Artin-Schreier theorem (1927) characterizes real-closed fields: a field $F$ is real-closed iff $F(\\sqrt{-1})$ is algebraically closed. Can we formalize this generalization and show that FTA is a special case ($F = \\mathbb{R}$)?"
     ]
   },
@@ -213,6 +213,26 @@
       "targetId": "cayley-hamilton",
       "relationship": "related",
       "description": "The Cayley-Hamilton theorem ($p_A(A) = 0$ for the characteristic polynomial $p_A$) combined with FTA guarantees every complex matrix has an eigenvalue: FTA gives a root $\\lambda$ of $p_A$, making $A - \\lambda I$ singular. This is why linear algebra over $\\mathbb{C}$ admits Jordan normal form — a direct consequence of algebraic closure"
+    },
+    {
+      "targetId": "fundamental-theorem-algebra-oq-04",
+      "relationship": "extended-by",
+      "description": "Proves $\\mathbb{C}$ is the unique algebraic closure of $\\mathbb{R}$: algebraically closed (from FTA) and algebraic over $\\mathbb{R}$ (since $[\\mathbb{C}:\\mathbb{R}] = 2$), with uniqueness via the universal property. Addresses the open question about formalizing $\\mathbb{C}$ as the algebraic closure"
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "complementary",
+      "description": "FTA guarantees that the polynomial equation $p(z) = 0$ always has solutions in $\\mathbb{C}$ for any $p \\in \\mathbb{C}[z]$. Hermite-Lindemann shows that certain important constants ($e$, $\\pi$) are NOT solutions of any polynomial with rational coefficients — they are transcendental, lying outside $\\overline{\\mathbb{Q}}$ even though they live in $\\mathbb{C}$. Together they illustrate the distinction between algebraic closure (FTA) and transcendence"
+    },
+    {
+      "targetId": "puiseux-theorem",
+      "relationship": "complementary",
+      "description": "Puiseux's theorem provides an alternative 'algebraic closure': the field of fractional power series $\\bigcup_n \\mathbb{C}((t^{1/n}))$ is algebraically closed, so polynomial roots can always be expressed as Puiseux series. FTA proves algebraic closure of $\\mathbb{C}$ via analysis; Puiseux proves it for the Puiseux series field via algebra. Both show that roots 'exist' — in different mathematical settings"
+    },
+    {
+      "targetId": "descartes-rule-of-signs",
+      "relationship": "complementary",
+      "description": "FTA guarantees $n$ complex roots for a degree-$n$ polynomial; Descartes' rule bounds how many are positive real: at most as many as sign changes in the coefficient sequence. Together they constrain root location: FTA gives existence in $\\mathbb{C}$, Descartes constrains which are in $\\mathbb{R}_{>0}$"
     }
   ],
   "references": [
