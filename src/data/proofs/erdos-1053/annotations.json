@@ -1,10 +1,33 @@
 [
   {
-    "id": "imports-setup",
+    "id": "ann-header",
     "proofId": "erdos-1053",
     "range": {
       "startLine": 1,
-      "endLine": 32
+      "endLine": 24
+    },
+    "type": "context",
+    "title": "Module Docstring: Problem Statement and Status",
+    "content": "The module docstring states Erdős Problem #1053: for each $k \\geq 2$, are there only finitely many $k$-perfect numbers? A $k$-perfect number satisfies $\\sigma(n) = kn$ where $\\sigma$ is the sum-of-divisors function. For $k = 2$ these are the classical perfect numbers (6, 28, 496, ...) characterized by the Euclid-Euler theorem. For $k \\geq 3$, only finitely many examples are known. The problem connects to the Riemann Hypothesis via Gronwall's and Robin's theorems on the growth of $\\sigma(n)/n$.",
+    "mathContext": "A $k$-perfect number satisfies $\\sigma(n) = kn$. For $k = 2$: even perfects $n = 2^{p-1}(2^p-1)$ where $2^p-1$ is a Mersenne prime (Euclid-Euler). For $k \\geq 3$: only finitely many known examples, all below $10^{19}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sum-of-divisors function",
+      "perfect numbers",
+      "multiperfect numbers",
+      "Robin's criterion"
+    ],
+    "prerequisites": [
+      "divisor theory",
+      "Erdős problem catalog"
+    ]
+  },
+  {
+    "id": "imports-setup",
+    "proofId": "erdos-1053",
+    "range": {
+      "startLine": 26,
+      "endLine": 28
     },
     "type": "context",
     "title": "Imports and Dependencies",
