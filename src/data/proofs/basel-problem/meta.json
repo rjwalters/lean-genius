@@ -360,8 +360,8 @@
       {
         "name": "zeta_general",
         "type": "wrapper",
-        "description": "General formula ζ(2k) = (-1)^(k+1) · 2^(2k-1) · π^(2k) · B_{2k} / (2k)!",
-        "leanType": "(k : ℕ) → HasSum (fun n : ℕ => 1 / (↑n : ℝ) ^ (2 * k)) (ζ_value k)"
+        "description": "General formula ζ(2k) = (-1)^(k+1) · 2^(2k-1) · π^(2k) · B_{2k} / (2k)! for k ≠ 0",
+        "leanType": "(k : ℕ) → k ≠ 0 → HasSum (fun n : ℕ => 1 / (↑n : ℝ) ^ (2 * k)) ((-1)^(k+1) * 2^(2*k-1) * π^(2*k) * bernoulli (2*k) / (2*k).factorial)"
       }
     ]
   }
