@@ -50,31 +50,33 @@
     "id": "ann-fixed-point-def",
     "proofId": "brouwer-fixed-point",
     "range": {
-      "startLine": 71,
-      "endLine": 72
+      "startLine": 82,
+      "endLine": 86
     },
     "type": "definition",
-    "title": "What Is a Fixed Point?",
-    "content": "A **fixed point** of function $f$ is a point $x$ where $f(x) = x$. The point is 'fixed' because applying $f$ doesn't move it.\n\nFixed points are crucial in many areas:\n- **Dynamical systems:** Equilibrium states are fixed points\n- **Iteration:** $x, f(x), f(f(x)), ...$ converges if there's an attracting fixed point\n- **Economics:** Nash equilibria are fixed points of best-response maps\n- **Differential equations:** Steady-state solutions are fixed points\n\nBrouwer's theorem guarantees that continuous self-maps of balls always have at least one fixed point. This existence guarantee is powerful even when we can't find the fixed point explicitly.",
-    "mathContext": "$x$ is a fixed point of $f$ iff $f(x) = x$",
+    "title": "Self-Maps, Fixed Points, and Original Structures",
+    "content": "Part 2 introduces the formalization's original structures:\n\n**`SelfMap n`**: a continuous function $f: \\mathbb{R}^n \\to \\mathbb{R}^n$ with `maps_ball : ∀ x ∈ B^n, f(x) ∈ B^n`. This bundles continuity (`Continuous toFun`) with the invariance constraint into a single type, ensuring well-formedness at the type level.\n\n**`IsFixedPoint f x := f x = x`**: the predicate for individual fixed points.\n\n**`HasFixedPoint n f := ∃ x ∈ B^n, IsFixedPoint f.toFun x`**: the existential statement that Brouwer's theorem proves.\n\nFixed points are ubiquitous: Nash equilibria are fixed points of best-response maps, steady states of ODEs are fixed points of the flow, and market clearing prices are fixed points of excess demand maps. Brouwer's theorem guarantees existence for continuous self-maps of balls, but not uniqueness or computability.",
+    "mathContext": "$f \\in \\text{SelfMap}(n)$ iff $f: \\mathbb{R}^n \\to \\mathbb{R}^n$ continuous with $f(B^n) \\subseteq B^n$. $\\text{HasFixedPoint}(n, f) := \\exists x \\in B^n,\\; f(x) = x$. The `SelfMap` structure bundles `toFun`, `continuous'`, and `maps_ball` into a single record, analogous to Mathlib's `ContinuousMap` but with the additional domain/codomain constraint.",
     "significance": "key",
     "prerequisites": [
       "continuous functions",
       "self-maps",
-      "closed ball"
+      "closed ball",
+      "Lean structures"
     ],
     "relatedConcepts": [
       "equilibrium",
       "iteration",
-      "convergence"
+      "convergence",
+      "ContinuousMap"
     ]
   },
   {
     "id": "ann-retraction",
     "proofId": "brouwer-fixed-point",
     "range": {
-      "startLine": 75,
-      "endLine": 76
+      "startLine": 99,
+      "endLine": 105
     },
     "type": "definition",
     "title": "Retractions: Projecting to Subspaces",
@@ -96,8 +98,8 @@
     "id": "ann-no-retraction",
     "proofId": "brouwer-fixed-point",
     "range": {
-      "startLine": 91,
-      "endLine": 93
+      "startLine": 111,
+      "endLine": 124
     },
     "type": "theorem",
     "title": "No-Retraction Theorem: The Topological Heart",
@@ -118,8 +120,8 @@
     "id": "ann-ray-construction",
     "proofId": "brouwer-fixed-point",
     "range": {
-      "startLine": 126,
-      "endLine": 129
+      "startLine": 163,
+      "endLine": 179
     },
     "type": "concept",
     "title": "The Brilliant Ray Construction",
@@ -161,22 +163,24 @@
     "id": "ann-dimension-1",
     "proofId": "brouwer-fixed-point",
     "range": {
-      "startLine": 10,
-      "endLine": 44
+      "startLine": 208,
+      "endLine": 225
     },
     "type": "insight",
-    "title": "Dimension 1: The Intermediate Value Theorem",
-    "content": "In dimension 1, Brouwer's theorem says: every continuous $f: [0,1] \\to [0,1]$ has a fixed point.\n\nThis can be proved directly using the Intermediate Value Theorem!\n\n**Proof:** Define $g(x) = f(x) - x$.\n- At $x = 0$: $g(0) = f(0) - 0 = f(0) \\geq 0$ (since $f(0) \\in [0,1]$)\n- At $x = 1$: $g(1) = f(1) - 1 \\leq 0$ (since $f(1) \\in [0,1]$)\n- By IVT, $g(c) = 0$ for some $c$, meaning $f(c) = c$\n\nThe 1D case is elementary; the theorem's power comes from higher dimensions where this argument fails and algebraic topology is needed.",
-    "mathContext": "$f: [0,1] \\to [0,1]$ continuous $\\implies \\exists c,\\; f(c) = c$. Proof: $g(x) = f(x) - x$; $g(0) \\geq 0$, $g(1) \\leq 0$; IVT gives $g(c) = 0$.",
+    "title": "Dimension 1: IVT and the Axiom-Free Case",
+    "content": "The 1D example (lines 229-242) is the only axiom-free result in the file: every continuous $f: [0,1] \\to [0,1]$ has a fixed point, proved using Mathlib's `exists_mem_Icc_isFixedPt_of_mapsTo` from the Intermediate Value Theorem.\n\nThe proof is clean Lean: extract `ContinuousOn` from `Continuous`, verify `0 ≤ 1`, wrap the mapping hypothesis, and apply the IVT-based fixed point theorem. No axioms needed — the IVT provides the topological content directly.\n\nThe contrast is instructive: in 1D, the IVT suffices (via $g(x) = f(x) - x$, with $g(0) \\geq 0$ and $g(1) \\leq 0$). In higher dimensions, $g(x) = f(x) - x$ maps $B^n \\to \\mathbb{R}^n$ and the IVT doesn't apply — you need the topological obstruction (homology) to show $g$ must have a zero. This is where algebraic topology becomes essential and why the general theorem requires the two axioms.",
+    "mathContext": "$f: [0,1] \\to [0,1]$ continuous $\\implies \\exists c \\in [0,1],\\; f(c) = c$. Proof: $g(x) = f(x) - x$ satisfies $g(0) = f(0) \\geq 0$ and $g(1) = f(1) - 1 \\leq 0$. By IVT, $\\exists c,\\; g(c) = 0$, i.e., $f(c) = c$. Lean uses `exists_mem_Icc_isFixedPt_of_mapsTo` which packages this argument for `MapsTo f (Icc a b) (Icc a b)` with `ContinuousOn f (Icc a b)` and `a ≤ b`.",
     "significance": "key",
     "prerequisites": [
       "intermediate value theorem",
-      "continuous functions on intervals"
+      "continuous functions on intervals",
+      "ContinuousOn"
     ],
     "relatedConcepts": [
       "intermediate value theorem",
       "calculus",
-      "1D topology"
+      "1D topology",
+      "exists_mem_Icc_isFixedPt_of_mapsTo"
     ]
   },
   {
