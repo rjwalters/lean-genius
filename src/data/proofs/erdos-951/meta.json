@@ -90,7 +90,7 @@
       "summary": "Defines `WellSeparatedProducts a` ($|\\prod a_i^{k_i} - \\prod a_j^{\\ell_j}| \\ge 1$ for distinct `Finsupp` tuples) and `BeurlingPrimes` structure (strictly increasing, all $> 1$, well-separated).",
       "startLine": 44,
       "endLine": 55,
-      "mathContext": "Defines `WellSeparatedProducts a` ($|\\prod a_i^{k_i} - \\prod a_j^{\\ell_j}| \\ge 1$ for distinct `Finsupp` tuples) and `BeurlingPrimes` structure (strictly increasing, all $> 1$, well-separated)."
+      "mathContext": "Formal definition: Defines `WellSeparatedProducts a` ($|\\prod a_i^{k_i} - \\prod a_j^{\\ell_j}| \\ge 1$ for distinct `Finsupp` tuples) and `BeurlingPrimes` structure (strictly increasing, all $> 1$, well-separated)."
     },
     {
       "id": "counting-functions",
@@ -98,7 +98,7 @@
       "summary": "Defines `beurlingPi a x := \\text{Set.ncard}\\{n : a_n \\le x\\}$ and `primePi x := \\text{Nat.primeCounting}(\\lfloor x \\rfloor)$. States `beurlingPi_finite` (sorry) for finiteness of the counting set.",
       "startLine": 56,
       "endLine": 73,
-      "mathContext": "Defines `beurlingPi a x := \\text{Set.ncard}\\{n : a_n \\le x\\}$ and `primePi x := \\text{Nat.primeCounting}(\\lfloor x \\rfloor)$. States `beurlingPi_finite` (sorry) for finiteness of the counting set."
+      "mathContext": "Formal definition: Defines `beurlingPi a x := \\text{Set.ncard}\\{n : a_n \\le x\\}$ and `primePi x := \\text{Nat.primeCounting}(\\lfloor x \\rfloor)$. States `beurlingPi_finite` (sorry) for finiteness of the counting set."
     },
     {
       "id": "actual-primes",
@@ -122,7 +122,7 @@
       "summary": "Proves `separation_implies_distinct`: well-separation ($|P_1 - P_2| \\ge 1$) implies $P_1 \\neq P_2$, by contradiction using `abs_zero` and `linarith`.",
       "startLine": 121,
       "endLine": 130,
-      "mathContext": "Proves `separation_implies_distinct`: well-separation ($|P_1 - P_2| \\ge 1$) implies $P_1 \\neq P_2$, by contradiction using `abs_zero` and `linarith`."
+      "mathContext": "Verified: Proves `separation_implies_distinct`: well-separation ($|P_1 - P_2| \\ge 1$) implies $P_1 \\neq P_2$, by contradiction using `abs_zero` and `linarith`."
     },
     {
       "id": "beurling-integers",
@@ -138,7 +138,7 @@
       "summary": "Defines `erdos951_conjecture`: $\\forall$ bp, $\\forall x > 0$, $\\pi_a(x) \\le \\pi(x)$. NOT axiomatized since it's OPEN. Axiomatizes `powersOfTwo_sparser` as a special case.",
       "startLine": 145,
       "endLine": 154,
-      "mathContext": "Defines `erdos951_conjecture`: $\\forall$ bp, $\\forall x > 0$, $\\pi_a(x) \\le \\pi(x)$. NOT axiomatized since it's OPEN. Axiomatizes `powersOfTwo_sparser` as a special case."
+      "mathContext": "Defines `erdos951_conjecture`: $\\forall$ bp, $\\forall x > 0$, $\\pi_a(x) \\le \\$\\pi$(x)$. NOT axiomatized since it's OPEN. Axiomatizes `powersOfTwo_sparser` as a special case."
     },
     {
       "id": "summary",
@@ -146,7 +146,7 @@
       "summary": "Proves `erdos_951_summary`: conjunction of `powersOfTwo_sparser` and `actualPrimes_counting` via term-mode $\\langle \\cdot, \\cdot \\rangle$. Problem remains OPEN.",
       "startLine": 155,
       "endLine": 161,
-      "mathContext": "Proves `erdos_951_summary`: conjunction of `powersOfTwo_sparser` and `actualPrimes_counting` via term-mode $\\langle \\cdot, \\cdot \\rangle$. Problem remains OPEN."
+      "mathContext": "Verified: Proves `erdos_951_summary`: conjunction of `powersOfTwo_sparser` and `actualPrimes_counting` via term-mode $\\langle \\cdot, \\cdot \\rangle$. Problem remains OPEN."
     }
   ],
   "conclusion": {

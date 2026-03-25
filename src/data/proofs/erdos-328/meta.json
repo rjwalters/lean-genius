@@ -105,7 +105,7 @@
       "startLine": 1,
       "endLine": 26,
       "summary": "Header documentation: Erdős-Newman question, Nešetřil-Rödl disproof, references to [ErGr80], [Er80e], [NeRo85]",
-      "mathContext": "Header documentation: Erdős-Newman question, Nešetřil-Rödl disproof, references to [ErGr80], [Er80e], [NeRo85]"
+      "mathContext": "Verified: Header documentation: Erdős-Newman question, Nešetřil-Rödl disproof, references to [ErGr80], [Er80e], [NeRo85]"
     },
     {
       "id": "imports",
@@ -113,7 +113,7 @@
       "startLine": 27,
       "endLine": 33,
       "summary": "Imports from Mathlib: `Nat.Basic`, `Set.Basic`, `Finset.Basic`, `BigOperators` for finite sums",
-      "mathContext": "Imports from Mathlib: `Nat.Basic`, `Set.Basic`, `Finset.Basic`, `BigOperators` for finite sums"
+      "mathContext": "Mathematical content: Imports from Mathlib: `Nat.Basic`, `Set.Basic`, `Finset.Basic`, `BigOperators` for finite sums"
     },
     {
       "id": "representation-function",
@@ -121,7 +121,7 @@
       "startLine": 34,
       "endLine": 59,
       "summary": "Definitions of $r_A(n)$ via `representationFunction` (on `Set ℕ`) and `rA` (on `Finset ℕ`), plus `hasBoundedConvolution` requiring $r_A(n) \\leq C$ for all $n$",
-      "mathContext": "Definitions of $r_A(n)$ via `representationFunction` (on `Set ℕ`) and `rA` (on `Finset ℕ`), plus `hasBoundedConvolution` requiring $r_A(n) \\leq C$ for all $n$"
+      "mathContext": "Definitions of $r_A(n)$ via `representationFunction` (on `Set $\\mathbb{N}$`) and `rA` (on `Finset $\\mathbb{N}$`), plus `hasBoundedConvolution` requiring $r_A(n) \\leq C$ for all $n$"
     },
     {
       "id": "sidon-sets",
@@ -129,7 +129,7 @@
       "startLine": 60,
       "endLine": 84,
       "summary": "`isSidonSet` (all pairwise sums distinct, $r_A \\leq 2$), `isBhSet` ($B_h$ generalization), and `sidon_bounded_convolution` linking Sidon sets to $C=2$",
-      "mathContext": "`isSidonSet` (all pairwise sums distinct, $r_A \\leq 2$), `isBhSet` ($B_h$ generalization), and `sidon_bounded_convolution` linking Sidon sets to $C=2$"
+      "mathContext": "Bound: `isSidonSet` (all pairwise sums distinct, $r_A \\leq 2$), `isBhSet` ($B_h$ generalization), and `sidon_bounded_convolution` linking Sidon sets to $C=2$"
     },
     {
       "id": "partition-question",
@@ -137,7 +137,7 @@
       "startLine": 85,
       "endLine": 115,
       "summary": "`isPartition`, `hasStrictlySmaller`, and `erdos_newman_question`: $\\forall C, \\exists t(C), \\forall A$ with $r_A \\leq C$, can $A$ be split into $\\leq t$ pieces with $r_{A_i} < C$?",
-      "mathContext": "`isPartition`, `hasStrictlySmaller`, and `erdos_newman_question`: $\\forall C, \\exists t(C), \\forall A$ with $r_A \\leq C$, can $A$ be split into $\\leq t$ pieces with $r_{A_i} < C$?"
+      "mathContext": "Mathematical content: `isPartition`, `hasStrictlySmaller`, and `erdos_newman_question`: $\\forall C, \\exists t(C), \\forall A$ with $r_A \\leq C$, can $A$ be split into $\\leq t$ pieces with $r_{A_i} < C$?"
     },
     {
       "id": "erdos-partial",
@@ -145,7 +145,7 @@
       "startLine": 116,
       "endLine": 140,
       "summary": "`erdos_C3_counterexample` and `erdos_C4_counterexample`: for $C=3$ and $C=4$, there exist bad sets with no valid partition",
-      "mathContext": "`erdos_C3_counterexample` and `erdos_C4_counterexample`: for $C=3$ and $C=4$, there exist bad sets with no valid partition"
+      "mathContext": "Mathematical content: `erdos_C3_counterexample` and `erdos_C4_counterexample`: for $C=3$ and $C=4$, there exist bad sets with no valid partition"
     },
     {
       "id": "nesetril-rodl",
@@ -153,7 +153,7 @@
       "startLine": 141,
       "endLine": 175,
       "summary": "`nesetril_rodl_theorem` ($\\forall C \\geq 1$, counterexamples exist), `erdos_newman_disproved` ($\\neg$ Erdős-Newman), `nesetril_rodl_strong` (no partition works even with $t$ depending on $A$)",
-      "mathContext": "`nesetril_rodl_theorem` ($\\forall C \\geq 1$, counterexamples exist), `erdos_newman_disproved` ($\\neg$ Erdős-Newman), `nesetril_rodl_strong` (no partition works even with $t$ depending on $A$)"
+      "mathContext": "Verified: `nesetril_rodl_theorem` ($\\forall C \\geq 1$, counterexamples exist), `erdos_newman_disproved` ($\\neg$ Erdős-Newman), `nesetril_rodl_strong` (no partition works even with $t$ depending on $A$)"
     },
     {
       "id": "special-cases",
@@ -161,7 +161,7 @@
       "startLine": 176,
       "endLine": 203,
       "summary": "`sidon_case` (even Sidon sets fail), `hasUniqueSums` ($r_A \\leq 1$), `unique_sums_hereditary` (unique sums closed under subsets)",
-      "mathContext": "`sidon_case` (even Sidon sets fail), `hasUniqueSums` ($r_A \\leq 1$), `unique_sums_hereditary` (unique sums closed under subsets)"
+      "mathContext": "Mathematical content: `sidon_case` (even Sidon sets fail), `hasUniqueSums` ($r_A \\leq 1$), `unique_sums_hereditary` (unique sums closed under subsets)"
     },
     {
       "id": "density",
@@ -169,7 +169,7 @@
       "startLine": 204,
       "endLine": 215,
       "summary": "`density_bound`: $|A \\cap [1,N]| \\leq C\\sqrt{N}+1$ for sets with bounded convolution; counterexamples achieve this bound",
-      "mathContext": "`density_bound`: $|A \\cap [1,N]| \\leq C\\sqrt{N}+1$ for sets with bounded convolution; counterexamples achieve this bound"
+      "mathContext": "Bound: `density_bound`: $|A \\cap [1,N]| \\leq C\\sqrt{N}+1$ for sets with bounded convolution; counterexamples achieve this bound"
     },
     {
       "id": "summary",
@@ -177,7 +177,7 @@
       "startLine": 216,
       "endLine": 247,
       "summary": "`erdos_328_summary`: combines `nesetril_rodl_theorem` with `erdos_newman_disproved` to state the complete resolution",
-      "mathContext": "`erdos_328_summary`: combines `nesetril_rodl_theorem` with `erdos_newman_disproved` to state the complete resolution"
+      "mathContext": "Verified: `erdos_328_summary`: combines `nesetril_rodl_theorem` with `erdos_newman_disproved` to state the complete resolution"
     }
   ],
   "conclusion": {

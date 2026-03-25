@@ -105,7 +105,7 @@
       "summary": "Docstring introducing Erdős Problem #214 (1983): unit-distance-free S implies Sᶜ contains unit square? Answered YES by Juhász (1979) with the stronger result covering all 4-point configurations.",
       "startLine": 1,
       "endLine": 25,
-      "mathContext": "Docstring introducing Erdős Problem #214 (1983): unit-distance-free S implies Sᶜ contains unit square? Answered YES by Juhász (1979) with the stronger result covering all 4-point configurations."
+      "mathContext": "Mathematical content: Docstring introducing Erdős Problem #214 (1983): unit-distance-free S implies Sᶜ contains unit square? Answered YES by Juhász (1979) with the stronger result covering all 4-point configurations."
     },
     {
       "id": "basic-definitions",
@@ -121,7 +121,7 @@
       "summary": "Erdos214Statement = ∀ S, IsUnitDistanceFree S → ContainsUnitSquare Sᶜ. Axiomatized as juhasz_1979. erdos_214_solved simply applies the axiom.",
       "startLine": 63,
       "endLine": 76,
-      "mathContext": "Erdos214Statement = ∀ S, IsUnitDistanceFree S → ContainsUnitSquare Sᶜ. Axiomatized as juhasz_1979. erdos_214_solved simply applies the axiom."
+      "mathContext": "Erdos214Statement = ∀ S, IsUnitDistanceFree S $\\to$ ContainsUnitSquare Sᶜ. Axiomatized as juhasz_1979. erdos_214_solved simply applies the axiom."
     },
     {
       "id": "stronger-version",
@@ -137,7 +137,7 @@
       "summary": "fails_for_large_sets: ∃ n, ∃ S unit-free with ∃ P : PointSet n not in Sᶜ. HoldsFor5Points: Prop (open question). The critical threshold n between 4 (works) and the failure point is unknown.",
       "startLine": 108,
       "endLine": 123,
-      "mathContext": "fails_for_large_sets: ∃ n, ∃ S unit-free with ∃ P : PointSet n not in Sᶜ. HoldsFor5Points: Prop (open question). The critical threshold n between 4 (works) and the failure point is unknown."
+      "mathContext": "Mathematical content: fails_for_large_sets: ∃ n, ∃ S unit-free with ∃ P : PointSet n not in Sᶜ. HoldsFor5Points: Prop (open question). The critical threshold n between 4 (works) and the failure point is unknown."
     },
     {
       "id": "unit-distance-graph",
@@ -177,7 +177,7 @@
       "summary": "erdos_214_summary: Erdos214Statement ∧ JuhaszStrongerTheorem, proved by ⟨juhasz_1979, juhasz_stronger⟩. Problem SOLVED. Includes human-readable status string.",
       "startLine": 243,
       "endLine": 279,
-      "mathContext": "erdos_214_summary: Erdos214Statement ∧ JuhaszStrongerTheorem, proved by ⟨juhasz_1979, juhasz_stronger⟩. Problem SOLVED. Includes human-readable status string."
+      "mathContext": "Verified: erdos_214_summary: Erdos214Statement ∧ JuhaszStrongerTheorem, proved by ⟨juhasz_1979, juhasz_stronger⟩. Problem SOLVED. Includes human-readable status string."
     }
   ],
   "conclusion": {

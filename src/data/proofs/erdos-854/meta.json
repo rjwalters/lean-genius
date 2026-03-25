@@ -51,7 +51,7 @@
       "startLine": 17,
       "endLine": 22,
       "summary": "Imports Nat.Basic, Nat.Prime.Basic, Finset.Basic, Finset.Card, and tactics.",
-      "mathContext": "Imports Nat.Basic, Nat.Prime.Basic, Finset.Basic, Finset.Card, and tactics."
+      "mathContext": "Mathematical content: Imports Nat.Basic, Nat.Prime.Basic, Finset.Basic, Finset.Card, and tactics."
     },
     {
       "id": "prime-enumeration",
@@ -59,7 +59,7 @@
       "startLine": 25,
       "endLine": 30,
       "summary": "Axiomatizes the k-th prime with primality, strict monotonicity, and initial values.",
-      "mathContext": "Axiomatizes the k-th prime with primality, strict monotonicity, and initial values."
+      "mathContext": "Axiomatized: Axiomatizes the k-th prime with primality, strict monotonicity, and initial values."
     },
     {
       "id": "primorial",
@@ -67,7 +67,7 @@
       "startLine": 31,
       "endLine": 35,
       "summary": "Defines the k-th primorial recursively as the product of the first k primes.",
-      "mathContext": "Defines the k-th primorial recursively as the product of the first k primes."
+      "mathContext": "Formal definition: Defines the k-th primorial recursively as the product of the first k primes."
     },
     {
       "id": "coprime-residues",
@@ -75,7 +75,7 @@
       "startLine": 36,
       "endLine": 45,
       "summary": "Defines the coprime residue set computationally and axiomatizes the sorted enumeration.",
-      "mathContext": "Defines the coprime residue set computationally and axiomatizes the sorted enumeration."
+      "mathContext": "Formal definition: Defines the coprime residue set computationally and axiomatizes the sorted enumeration."
     },
     {
       "id": "gap-structure",
@@ -83,7 +83,7 @@
       "startLine": 46,
       "endLine": 64,
       "summary": "Axiomatizes the gap set, gap evenness for k ≥ 2, maximal gap with membership and maximality.",
-      "mathContext": "Axiomatizes the gap set, gap evenness for k ≥ 2, maximal gap with membership and maximality."
+      "mathContext": "Axiomatizes the gap set, gap evenness for k $\\geq$ 2, maximal gap with membership and maximality."
     },
     {
       "id": "known-bounds",
@@ -91,7 +91,7 @@
       "startLine": 65,
       "endLine": 70,
       "summary": "Records the bound g(nₖ) ≤ 2pₖ and axiomatizes the distinct gap count.",
-      "mathContext": "Records the bound g(nₖ) ≤ 2pₖ and axiomatizes the distinct gap count."
+      "mathContext": "Records the bound g(nₖ) $\\leq$ 2pₖ and axiomatizes the distinct gap count."
     },
     {
       "id": "first-missing-gap",
@@ -99,7 +99,7 @@
       "startLine": 71,
       "endLine": 77,
       "summary": "Axiomatizes the smallest even integer absent from the gap set with evenness and non-membership.",
-      "mathContext": "Axiomatizes the smallest even integer absent from the gap set with evenness and non-membership."
+      "mathContext": "Axiomatized: Axiomatizes the smallest even integer absent from the gap set with evenness and non-membership."
     },
     {
       "id": "counterexample",
@@ -107,7 +107,7 @@
       "startLine": 78,
       "endLine": 82,
       "summary": "Records the computational disproof of Erdős's strong conjecture for n₆ = 30030.",
-      "mathContext": "Records the computational disproof of Erdős's strong conjecture for n₆ = 30030."
+      "mathContext": "Verified: Records the computational disproof of Erdős's strong conjecture for n₆ = 30030."
     },
     {
       "id": "conjecture-part1",
@@ -115,7 +115,7 @@
       "startLine": 83,
       "endLine": 89,
       "summary": "States that the smallest missing gap grows without bound.",
-      "mathContext": "States that the smallest missing gap grows without bound."
+      "mathContext": "Bound: States that the smallest missing gap grows without bound."
     },
     {
       "id": "conjecture-part2",
@@ -123,7 +123,7 @@
       "startLine": 90,
       "endLine": 95,
       "summary": "States that the number of distinct gap values is proportional to the maximal gap.",
-      "mathContext": "States that the number of distinct gap values is proportional to the maximal gap."
+      "mathContext": "Mathematical content: States that the number of distinct gap values is proportional to the maximal gap."
     }
   ],
   "conclusion": {

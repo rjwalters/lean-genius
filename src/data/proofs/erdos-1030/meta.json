@@ -88,7 +88,7 @@
       "summary": "Edge colorings of $K_n$ and the Ramsey property: $\\forall\\,\\text{col},\\; \\text{red } k\\text{-clique} \\lor \\text{blue } \\ell\\text{-clique}$",
       "startLine": 28,
       "endLine": 55,
-      "mathContext": "Edge colorings of $K_n$ and the Ramsey property: $\\forall\\,\\text{col},\\; \\text{red } k\\text{-clique} \\lor \\text{blue } \\ell\\text{-clique}$"
+      "mathContext": "Mathematical content: Edge colorings of $K_n$ and the Ramsey property: $\\forall\\,\\text{col},\\; \\text{red } k\\text{-clique} \\lor \\text{blue } \\ell\\text{-clique}$"
     },
     {
       "id": "ramsey-definition",
@@ -96,7 +96,7 @@
       "summary": "$R(k, \\ell) = \\min\\{n : \\text{RamseyProperty}(n, k, \\ell)\\}$ via `Nat.find`",
       "startLine": 56,
       "endLine": 79,
-      "mathContext": "$R(k, \\ell) = \\min\\{n : \\text{RamseyProperty}(n, k, \\ell)\\}$ via `Nat.find`"
+      "mathContext": "Mathematical content: $R(k, \\ell) = \\min\\{n : \\text{RamseyProperty}(n, k, \\ell)\\}$ via `Nat.find`"
     },
     {
       "id": "basic-properties",
@@ -104,7 +104,7 @@
       "summary": "$R(k,\\ell) = R(\\ell,k)$, recursive bound $R(k,\\ell) \\le R(k-1,\\ell) + R(k,\\ell-1)$, binomial bound $\\le \\binom{k+\\ell-2}{k-1}$",
       "startLine": 80,
       "endLine": 107,
-      "mathContext": "$R(k,\\ell) = R(\\ell,k)$, recursive bound $R(k,\\ell) \\le R(k-1,\\ell) + R(k,\\ell-1)$, binomial bound $\\le \\binom{k+\\ell-2}{k-1}$"
+      "mathContext": "Bound: $R(k,\\ell) = R(\\ell,k)$, recursive bound $R(k,\\ell) \\le R(k-1,\\ell) + R(k,\\ell-1)$, binomial bound $\\le \\binom{k+\\ell-2}{k-1}$"
     },
     {
       "id": "diagonal",
@@ -112,7 +112,7 @@
       "summary": "$R_{\\text{diag}}(k) = R(k,k)$ with bounds $2^{k/2} \\le R(k,k) \\le \\binom{2k-2}{k-1}$",
       "startLine": 108,
       "endLine": 134,
-      "mathContext": "$R_{\\text{diag}}(k) = R(k,k)$ with bounds $2^{k/2} \\le R(k,k) \\le \\binom{2k-2}{k-1}$"
+      "mathContext": "$R_{\\text{diag}}(k) = R(k,k)$ with bounds $$$2^{{k/2}$}$ \\le R(k,k) \\le \\binom{2k-2}{k-1}$"
     },
     {
       "id": "off-diagonal",
@@ -120,7 +120,7 @@
       "summary": "$\\text{RamseyDiff}(k) = R(k+1,k) - R(k,k) \\ge k - 2$ (trivial bound)",
       "startLine": 135,
       "endLine": 153,
-      "mathContext": "$\\text{RamseyDiff}(k) = R(k+1,k) - R(k,k) \\ge k - 2$ (trivial bound)"
+      "mathContext": "Bound: $\\text{RamseyDiff}(k) = R(k+1,k) - R(k,k) \\ge k - 2$ (trivial bound)"
     },
     {
       "id": "befs",
@@ -128,7 +128,7 @@
       "summary": "BEFS theorem: $R(k+1,k) - R(k,k) \\ge 2k - 5$, doubling the trivial bound",
       "startLine": 154,
       "endLine": 172,
-      "mathContext": "BEFS theorem: $R(k+1,k) - R(k,k) \\ge 2k - 5$, doubling the trivial bound"
+      "mathContext": "Verified: BEFS theorem: $R(k+1,k) - R(k,k) \\ge 2k - 5$, doubling the trivial bound"
     },
     {
       "id": "growth-ratio",
@@ -136,7 +136,7 @@
       "summary": "$\\text{GrowthRatio}(k) = R(k+1,k)/R(k,k) = 1 + \\text{diff}/R(k,k)$ and $\\liminf$ definition",
       "startLine": 173,
       "endLine": 194,
-      "mathContext": "$\\text{GrowthRatio}(k) = R(k+1,k)/R(k,k) = 1 + \\text{diff}/R(k,k)$ and $\\liminf$ definition"
+      "mathContext": "Formal definition: $\\text{GrowthRatio}(k) = R(k+1,k)/R(k,k) = 1 + \\text{diff}/R(k,k)$ and $\\liminf$ definition"
     },
     {
       "id": "conjecture",
@@ -144,7 +144,7 @@
       "summary": "$\\exists\\, c > 0,\\; \\liminf R(k+1,k)/R(k,k) > 1+c$ — conjecture statement and BEFS-based resolution",
       "startLine": 195,
       "endLine": 235,
-      "mathContext": "$\\exists\\, c > 0,\\; \\liminf R(k+1,k)/R(k,k) > 1+c$ — conjecture statement and BEFS-based resolution"
+      "mathContext": "Mathematical content: $\\exists\\, c > 0,\\; \\liminf R(k+1,k)/R(k,k) > 1+c$ — conjecture statement and BEFS-based resolution"
     },
     {
       "id": "known-values",
@@ -152,7 +152,7 @@
       "summary": "Known exact values $R(3,3)=6$, $R(4,4)=18$, $R(4,5)=25$ and $R(3,k)$ bounds",
       "startLine": 236,
       "endLine": 250,
-      "mathContext": "Known exact values $R(3,3)=6$, $R(4,4)=18$, $R(4,5)=25$ and $R(3,k)$ bounds"
+      "mathContext": "Bound: Known exact values $R(3,3)=6$, $R(4,4)=18$, $R(4,5)=25$ and $R(3,k)$ bounds"
     },
     {
       "id": "connections",
@@ -160,7 +160,7 @@
       "summary": "Problem #544 ($R(3,k) \\le Ck^2/\\log k$) and Problem #1014 ($R(k+j,k)/R(k,k) > 1 + c_j$ for general $j$)",
       "startLine": 251,
       "endLine": 266,
-      "mathContext": "Problem #544 ($R(3,k) \\le Ck^2/\\log k$) and Problem #1014 ($R(k+j,k)/R(k,k) > 1 + c_j$ for general $j$)"
+      "mathContext": "Mathematical content: Problem #544 ($R(3,k) \\le Ck^2/\\log k$) and Problem #1014 ($R(k+j,k)/R(k,k) > 1 + c_j$ for general $j$)"
     },
     {
       "id": "main-result",
@@ -168,7 +168,7 @@
       "summary": "$\\texttt{erdos\\_1030} : \\texttt{ErdosSosConjecture}$ — problem SOLVED via BEFS axiomatization",
       "startLine": 267,
       "endLine": 293,
-      "mathContext": "$\\texttt{erdos\\_1030} : \\texttt{ErdosSosConjecture}$ — problem SOLVED via BEFS axiomatization"
+      "mathContext": "Axiomatized: $\\texttt{erdos\\_1030} : \\texttt{ErdosSosConjecture}$ — problem SOLVED via BEFS axiomatization"
     }
   ],
   "conclusion": {

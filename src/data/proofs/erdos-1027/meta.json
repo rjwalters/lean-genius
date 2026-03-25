@@ -53,7 +53,7 @@
       "summary": "Documents Erdős Problem #1027 on the abundance of good sets for bounded $n$-uniform families. Imports Mathlib modules for `Finset`, `Fintype`, `Powerset`, and `Real`.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Documents Erdős Problem #1027 on the abundance of good sets for bounded $n$-uniform families. Imports Mathlib modules for `Finset`, `Fintype`, `Powerset`, and `Real`."
+      "mathContext": "Bound: Documents Erdős Problem #1027 on the abundance of good sets for bounded $n$-uniform families. Imports Mathlib modules for `Finset`, `Fintype`, `Powerset`, and `Real`."
     },
     {
       "id": "set-families",
@@ -77,7 +77,7 @@
       "summary": "Defines `hasPropertyB` ($\\exists$ good set), `is2Colorable` ($\\exists$ proper 2-coloring), and proves `propertyB_iff_2colorable`: a good set $B$ defines the coloring $f(x) = (x \\in B)$.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Defines `hasPropertyB` ($\\exists$ good set), `is2Colorable` ($\\exists$ proper 2-coloring), and proves `propertyB_iff_2colorable`: a good set $B$ defines the coloring $f(x) = (x \\in B)$."
+      "mathContext": "Formal definition: Defines `hasPropertyB` ($\\exists$ good set), `is2Colorable` ($\\exists$ proper 2-coloring), and proves `propertyB_iff_2colorable`: a good set $B$ defines the coloring $f(x) = (x \\in B)$."
     },
     {
       "id": "main-question",
@@ -93,7 +93,7 @@
       "summary": "Axiomatizes `erdos_1027_solution` (the affirmative answer) and derives `erdos_1027_solved`: a $\\delta(c)$-fraction of all subsets of $X$ are good for bounded families.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Axiomatizes `erdos_1027_solution` (the affirmative answer) and derives `erdos_1027_solved`: a $\\delta(c)$-fraction of all subsets of $X$ are good for bounded families."
+      "mathContext": "Axiomatizes `erdos_1027_solution` (the affirmative answer) and derives `erdos_1027_solved`: a $\\$\\delta$(c)$-fraction of all subsets of $X$ are good for bounded families."
     },
     {
       "id": "problem-901",
@@ -101,7 +101,7 @@
       "summary": "Links to Erdős Problem #901: `problem_901_connection` states property B $\\iff$ 2-colorability universally. Problem #1027 is a quantitative supersaturation of #901.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Links to Erdős Problem #901: `problem_901_connection` states property B $\\iff$ 2-colorability universally. Problem #1027 is a quantitative supersaturation of #901."
+      "mathContext": "Mathematical content: Links to Erdős Problem #901: `problem_901_connection` states property B $\\iff$ 2-colorability universally. Problem #1027 is a quantitative supersaturation of #901."
     },
     {
       "id": "existence",
@@ -125,7 +125,7 @@
       "summary": "Defines `goodSetDensity` $= |\\text{good}| / 2^{|X|}$ and axiomatizes `goodSetDensity_lower`: density $\\ge \\delta(c) > 0$ for bounded families. The strongest form of the result.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Defines `goodSetDensity` $= |\\text{good}| / 2^{|X|}$ and axiomatizes `goodSetDensity_lower`: density $\\ge \\delta(c) > 0$ for bounded families. The strongest form of the result."
+      "mathContext": "Defines `goodSetDensity` $= |\\text{good}| / $$2^{{|X|}$}$$ and axiomatizes `goodSetDensity_lower`: density $\\ge \\$\\delta$(c) > 0$ for bounded families. The strongest form of the result."
     },
     {
       "id": "special-cases",

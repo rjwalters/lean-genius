@@ -68,7 +68,7 @@
       "startLine": 78,
       "endLine": 83,
       "summary": "Defines primePi(n) = π(n) by filtering and counting primes in Finset.range(n+1). This local definition parallels Nat.Arithmetic.primePi in some Mathlib versions.",
-      "mathContext": "Defines primePi(n) = π(n) by filtering and counting primes in Finset.range(n+1). This local definition parallels Nat.Arithmetic.primePi in some Mathlib versions."
+      "mathContext": "Formal definition: Defines primePi(n) = π(n) by filtering and counting primes in Finset.range(n+1). This local definition parallels Nat.Arithmetic.primePi in some Mathlib versions."
     },
     {
       "id": "sec-795-erdos-bound",
@@ -76,7 +76,7 @@
       "startLine": 84,
       "endLine": 109,
       "summary": "States Erdős's original result g(n) ≤ π(n) + O(√n/log n) as a Lean theorem with explicit existential constant. Sorry'd—this is a deep analytic number theory result.",
-      "mathContext": "States Erdős's original result g(n) ≤ π(n) + O(√n/log n) as a Lean theorem with explicit existential constant. Sorry'd—this is a deep analytic number theory result."
+      "mathContext": "States Erdős's original result g(n) $\\leq$ π(n) + $O(√n/$\\log n$)$ as a Lean theorem with explicit existential constant. Sorry'd—this is a deep analytic number theory result."
     },
     {
       "id": "sec-795-conjecture",
@@ -84,7 +84,7 @@
       "startLine": 110,
       "endLine": 121,
       "summary": "Formalizes Erdős's conjecture as a Lean definition: for all ε > 0, eventually g(n) ≤ π(n) + π(√n) + ε·√n/log n. Uses ε-N formulation of the little-o condition.",
-      "mathContext": "Formalizes Erdős's conjecture as a Lean definition: for all ε > 0, eventually g(n) ≤ π(n) + π(√n) + ε·√n/log n. Uses ε-N formulation of the little-o condition."
+      "mathContext": "Formalizes Erdős's conjecture as a Lean definition: for all ε > 0, eventually g(n) $\\leq$ π(n) + π(√n) + ε·√n/$\\log n$. Uses ε-N formulation of the little-o condition."
     },
     {
       "id": "sec-795-raghavan",
@@ -108,7 +108,7 @@
       "startLine": 292,
       "endLine": 328,
       "summary": "The structural decomposition theorem: any optimal set A decomposes as P ∪ P² ∪ R where P is primes, P² is prime squares, and the remainder R has size ≤ π(n^{1/3})/2.",
-      "mathContext": "The structural decomposition theorem: any optimal set A decomposes as P ∪ P² ∪ R where P is primes, P² is prime squares, and the remainder R has size ≤ π(n^{1/3})/2."
+      "mathContext": "The structural decomposition theorem: any optimal set A decomposes as P ∪ P² ∪ R where P is primes, P² is prime squares, and the remainder R has size $\\leq$ π(n^{1/3})/2."
     },
     {
       "id": "sec-795-error",
@@ -116,7 +116,7 @@
       "startLine": 332,
       "endLine": 357,
       "summary": "Two comparison theorems: Erdős's error vs π(√n), and Raghavan's n^{5/12} vs √n/log n. The latter was proved by Aristotle, making it the only non-sorry theorem in the file.",
-      "mathContext": "Two comparison theorems: Erdős's error vs π(√n), and Raghavan's n^{5/12} vs √n/log n. The latter was proved by Aristotle, making it the only non-sorry theorem in the file."
+      "mathContext": "Two comparison theorems: Erdős's error vs π(√n), and Raghavan's n^{5/12} vs √n/$\\log n$. The latter was proved by Aristotle, making it the only non-sorry theorem in the file."
     },
     {
       "id": "sec-795-sidon",
@@ -124,7 +124,7 @@
       "startLine": 360,
       "endLine": 415,
       "summary": "Defines multiplicative Sidon sets (no non-trivial product relations ab = cd), proves Sidon implies distinct products, and shows the converse fails. Links to the broader theory of B_h sequences.",
-      "mathContext": "Defines multiplicative Sidon sets (no non-trivial product relations ab = cd), proves Sidon implies distinct products, and shows the converse fails. Links to the broader theory of B_h sequences."
+      "mathContext": "Formal definition: Defines multiplicative Sidon sets (no non-trivial product relations ab = cd), proves Sidon implies distinct products, and shows the converse fails. Links to the broader theory of B_h sequences."
     },
     {
       "id": "sec-795-related",
@@ -132,7 +132,7 @@
       "startLine": 416,
       "endLine": 423,
       "summary": "A placeholder connecting to the sister problem erdos-786 on growth of g(n) for specific families, noting Raghavan's bounds pin it to π(n) + π(√n) + Θ(π(∛n)).",
-      "mathContext": "A placeholder connecting to the sister problem erdos-786 on growth of g(n) for specific families, noting Raghavan's bounds pin it to π(n) + π(√n) + Θ(π(∛n))."
+      "mathContext": "Bound: A placeholder connecting to the sister problem erdos-786 on growth of g(n) for specific families, noting Raghavan's bounds pin it to π(n) + π(√n) + Θ(π(∛n))."
     },
     {
       "id": "sec-795-examples",
@@ -140,7 +140,7 @@
       "startLine": 424,
       "endLine": 490,
       "summary": "Concrete examples: {2,3,5} has distinct products (all 8 products different), {2,3,6} fails (product collision at 6), and small computed values g(2)=1, g(3)=2, g(5)=3, g(10)≥5.",
-      "mathContext": "Concrete examples: {2,3,5} has distinct products (all 8 products different), {2,3,6} fails (product collision at 6), and small computed values g(2)=1, g(3)=2, g(5)=3, g(10)≥5."
+      "mathContext": "Concrete examples: {2,3,5} has distinct products (all 8 products different), {2,3,6} fails (product collision at 6), and small computed values g(2)=1, g(3)=2, g(5)=3, g(10)$\\geq$5."
     },
     {
       "id": "sec-795-summary",
@@ -148,7 +148,7 @@
       "startLine": 491,
       "endLine": 519,
       "summary": "Closing documentation block summarizing the SOLVED status, the exact asymptotic g(n) = π(n) + π(√n) + Θ(π(∛n)), and the key insight about primes and prime powers forming optimal sets.",
-      "mathContext": "Closing documentation block summarizing the SOLVED status, the exact asymptotic g(n) = π(n) + π(√n) + Θ(π(∛n)), and the key insight about primes and prime powers forming optimal sets."
+      "mathContext": "Mathematical content: Closing documentation block summarizing the SOLVED status, the exact asymptotic g(n) = π(n) + π(√n) + Θ(π(∛n)), and the key insight about primes and prime powers forming optimal sets."
     }
   ],
   "conclusion": {

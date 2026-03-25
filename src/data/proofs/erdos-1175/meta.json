@@ -51,7 +51,7 @@
       "startLine": 1,
       "endLine": 29,
       "summary": "Header documenting the conjecture, Shelah's consistency result, and imports for Cardinal.Ordinal (ℵ₀, ℵ₁, cardinal comparison) and SimpleGraph.Basic (graph structure, adjacency).",
-      "mathContext": "Header documenting the conjecture, Shelah's consistency result, and imports for Cardinal.Ordinal (ℵ₀, ℵ₁, cardinal comparison) and SimpleGraph.Basic (graph structure, adjacency)."
+      "mathContext": "Formal definition: Header documenting the conjecture, Shelah's consistency result, and imports for Cardinal.Ordinal (ℵ₀, ℵ₁, cardinal comparison) and SimpleGraph.Basic (graph structure, adjacency)."
     },
     {
       "id": "coloring-defs",
@@ -75,7 +75,7 @@
       "startLine": 77,
       "endLine": 93,
       "summary": "States erdos1175: for each uncountable κ, ∃ λ such that ∀ G, χ(G) ≥ λ implies G has a triangle-free subgraph with χ ≥ κ. Universally quantified over all types V and graphs G.",
-      "mathContext": "States erdos1175: for each uncountable κ, ∃ λ such that ∀ G, χ(G) ≥ λ implies G has a triangle-free subgraph with χ ≥ κ. Universally quantified over all types V and graphs G."
+      "mathContext": "States erdos1175: for each uncountable κ, ∃ λ such that ∀ G, χ(G) $\\geq$ λ implies G has a triangle-free subgraph with χ $\\geq$ κ. Universally quantified over all types V and graphs G."
     },
     {
       "id": "shelah-consistency",
@@ -99,7 +99,7 @@
       "startLine": 152,
       "endLine": 173,
       "summary": "Generalizes triangle-freeness to girth ≥ g via HasGirthAtLeast (no injective cycle of length < g). States erdos1175_girth_variant: for each g ≥ 4 and uncountable κ, ∃ λ with the analogous property.",
-      "mathContext": "Generalizes triangle-freeness to girth ≥ g via HasGirthAtLeast (no injective cycle of length < g). States erdos1175_girth_variant: for each g ≥ 4 and uncountable κ, ∃ λ with the analogous property."
+      "mathContext": "Generalizes triangle-freeness to girth $\\geq$ g via HasGirthAtLeast (no injective cycle of length < g). States erdos1175_girth_variant: for each g $\\geq$ 4 and uncountable κ, ∃ λ with the analogous property."
     },
     {
       "id": "erdos-1959",

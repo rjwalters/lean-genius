@@ -88,7 +88,7 @@
       "summary": "Fibonacci reciprocal sum irrationality conjecture, partially solved cases",
       "startLine": 1,
       "endLine": 19,
-      "mathContext": "Fibonacci reciprocal sum irrationality conjecture, partially solved cases"
+      "mathContext": "Mathematical content: Fibonacci reciprocal sum irrationality conjecture, partially solved cases"
     },
     {
       "id": "fibonacci-background",
@@ -96,7 +96,7 @@
       "summary": "Fibonacci sequence definition, golden ratio, exponential growth",
       "startLine": 27,
       "endLine": 48,
-      "mathContext": "Fibonacci sequence definition, golden ratio, exponential growth"
+      "mathContext": "Formal definition: Fibonacci sequence definition, golden ratio, exponential growth"
     },
     {
       "id": "verified-values",
@@ -104,7 +104,7 @@
       "summary": "fib_one through fib_twelve verified by rfl — direct computation in Lean 4 confirming F₁=1, F₂=1, ..., F₁₂=144.",
       "startLine": 49,
       "endLine": 72,
-      "mathContext": "fib_one through fib_twelve verified by rfl — direct computation in Lean 4 confirming F₁=1, F₂=1, ..., F₁₂=144."
+      "mathContext": "Mathematical content: fib_one through fib_twelve verified by rfl — direct computation in Lean 4 confirming F₁=1, F₂=1, ..., F₁₂=144."
     },
     {
       "id": "golden-ratio",
@@ -112,7 +112,7 @@
       "summary": "Defines goldenRatio = (1+√5)/2, proves goldenRatio_gt_one (needed for convergence), and fib_pos from Mathlib's Nat.fib_pos.",
       "startLine": 73,
       "endLine": 95,
-      "mathContext": "Defines goldenRatio = (1+√5)/2, proves goldenRatio_gt_one (needed for convergence), and fib_pos from Mathlib's Nat.fib_pos."
+      "mathContext": "Formal definition: Defines goldenRatio = (1+√5)/2, proves goldenRatio_gt_one (needed for convergence), and fib_pos from Mathlib's Nat.fib_pos."
     },
     {
       "id": "convergence",
@@ -120,7 +120,7 @@
       "summary": "fibonacci_reciprocal_summable axiom, comparison with geometric series",
       "startLine": 96,
       "endLine": 107,
-      "mathContext": "fibonacci_reciprocal_summable axiom, comparison with geometric series"
+      "mathContext": "Axiomatized: fibonacci_reciprocal_summable axiom, comparison with geometric series"
     },
     {
       "id": "solved-cases",
@@ -128,7 +128,7 @@
       "summary": "good_bicknell_hoggatt (2^n indices), andre_jeannin (full sum) axioms",
       "startLine": 108,
       "endLine": 129,
-      "mathContext": "good_bicknell_hoggatt (2^n indices), andre_jeannin (full sum) axioms"
+      "mathContext": "good_bicknell_hoggatt ($2^{n}$ indices), andre_jeannin (full sum) axioms"
     },
     {
       "id": "main-conjecture",
@@ -136,7 +136,7 @@
       "summary": "HasRatioBoundedBelow, Erdos267Conjecture, erdos_267_open by classical EM",
       "startLine": 130,
       "endLine": 169,
-      "mathContext": "HasRatioBoundedBelow, Erdos267Conjecture, erdos_267_open by classical EM"
+      "mathContext": "Bound: HasRatioBoundedBelow, Erdos267Conjecture, erdos_267_open by classical EM"
     },
     {
       "id": "weaker-variant",
@@ -144,7 +144,7 @@
       "summary": "HasSuperlinearGrowth, Erdos267WeakerVariant — n_k/k → ∞ might suffice",
       "startLine": 170,
       "endLine": 190,
-      "mathContext": "HasSuperlinearGrowth, Erdos267WeakerVariant — n_k/k → ∞ might suffice"
+      "mathContext": "HasSuperlinearGrowth, Erdos267WeakerVariant — n_k/k $\\to$ ∞ might suffice"
     },
     {
       "id": "numerical",
@@ -152,7 +152,7 @@
       "summary": "pow_two_series_first_terms (verified by native_decide), sum ≈ 3.3598",
       "startLine": 191,
       "endLine": 217,
-      "mathContext": "pow_two_series_first_terms (verified by native_decide), sum ≈ 3.3598"
+      "mathContext": "Mathematical content: pow_two_series_first_terms (verified by native_decide), sum ≈ 3.3598"
     },
     {
       "id": "related-problems",
@@ -160,7 +160,7 @@
       "summary": "Problems #250 and #259, connections to continued fractions and transcendence",
       "startLine": 218,
       "endLine": 233,
-      "mathContext": "Problems #250 and #259, connections to continued fractions and transcendence"
+      "mathContext": "Mathematical content: Problems #250 and #259, connections to continued fractions and transcendence"
     }
   ],
   "conclusion": {

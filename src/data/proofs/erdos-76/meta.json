@@ -120,7 +120,7 @@
       "summary": "Defines `Color` (Red/Blue), `EdgeColoring V` as $c : V \\to V \\to (u \\ne v) \\to \\text{Color}$, and `coloredEdges` partitioning $\\binom{n}{2}$ edges by color",
       "startLine": 29,
       "endLine": 48,
-      "mathContext": "Defines `Color` (Red/Blue), `EdgeColoring V` as $c : V \\to V \\to (u \\ne v) \\to \\text{Color}$, and `coloredEdges` partitioning $\\binom{n}{2}$ edges by color"
+      "mathContext": "Formal definition: Defines `Color` (Red/Blue), `EdgeColoring V` as $c : V \\to V \\to (u \\ne v) \\to \\text{Color}$, and `coloredEdges` partitioning $\\binom{n}{2}$ edges by color"
     },
     {
       "id": "triangles",
@@ -128,7 +128,7 @@
       "summary": "Defines `Triangle V` (Finset with card = 3), `Triangle.edges` via Cartesian product filtering, and `isMonochromatic` requiring all edges same color",
       "startLine": 49,
       "endLine": 67,
-      "mathContext": "Defines `Triangle V` (Finset with card = 3), `Triangle.edges` via Cartesian product filtering, and `isMonochromatic` requiring all edges same color"
+      "mathContext": "Formal definition: Defines `Triangle V` (Finset with card = 3), `Triangle.edges` via Cartesian product filtering, and `isMonochromatic` requiring all edges same color"
     },
     {
       "id": "packings",
@@ -136,7 +136,7 @@
       "summary": "Defines `edgeDisjoint` via `Disjoint t₁.edges t₂.edges`, `isPacking` (pairwise disjoint), and `monochromaticPacking` combining packing with monochromaticity",
       "startLine": 68,
       "endLine": 85,
-      "mathContext": "Defines `edgeDisjoint` via `Disjoint t₁.edges t₂.edges`, `isPacking` (pairwise disjoint), and `monochromaticPacking` combining packing with monochromaticity"
+      "mathContext": "Formal definition: Defines `edgeDisjoint` via `Disjoint t₁.edges t₂.edges`, `isPacking` (pairwise disjoint), and `monochromaticPacking` combining packing with monochromaticity"
     },
     {
       "id": "max-packing",
@@ -144,7 +144,7 @@
       "summary": "Defines `maxPackingSize c` as $\\sup\\{k : \\exists\\text{ packing of size }k\\}$ and `minMaxPackingSize n` as $\\inf_c \\max_{\\text{packing}} |\\text{packing}|$ — the extremal quantity",
       "startLine": 86,
       "endLine": 100,
-      "mathContext": "Defines `maxPackingSize c` as $\\sup\\{k : \\exists\\text{ packing of size }k\\}$ and `minMaxPackingSize n` as $\\inf_c \\max_{\\text{packing}} |\\text{packing}|$ — the extremal quantity"
+      "mathContext": "Formal definition: Defines `maxPackingSize c` as $\\sup\\{k : \\exists\\text{ packing of size }k\\}$ and `minMaxPackingSize n` as $\\inf_c \\max_{\\text{packing}} |\\text{packing}|$ — the extremal quantity"
     },
     {
       "id": "extremal",
@@ -152,7 +152,7 @@
       "summary": "Defines `balancedColoring n` partitioning `Fin n` at $n/2$; proves `balanced_same_half_blue` and `balanced_diff_half_red` creating blue $K_{n/2} \\cup K_{n/2}$ and red $K_{n/2,n/2}$",
       "startLine": 101,
       "endLine": 128,
-      "mathContext": "Defines `balancedColoring n` partitioning `Fin n` at $n/2$; proves `balanced_same_half_blue` and `balanced_diff_half_red` creating blue $K_{n/2} \\cup K_{n/2}$ and red $K_{n/2,n/2}$"
+      "mathContext": "Formal definition: Defines `balancedColoring n` partitioning `Fin n` at $n/2$; proves `balanced_same_half_blue` and `balanced_diff_half_red` creating blue $K_{n/2} \\cup K_{n/2}$ and red $K_{n/2,n/2}$"
     },
     {
       "id": "conjecture",
@@ -160,7 +160,7 @@
       "summary": "Defines `conjecturedBound n` $= n^2/12$ and axiomatizes `balanced_achieves_bound`: the balanced coloring achieves exactly $n^2/12 + o(1)$ packed triangles",
       "startLine": 129,
       "endLine": 144,
-      "mathContext": "Defines `conjecturedBound n` $= n^2/12$ and axiomatizes `balanced_achieves_bound`: the balanced coloring achieves exactly $n^2/12 + o(1)$ packed triangles"
+      "mathContext": "Defines `conjecturedBound n` $= $n^{2}$/12$ and axiomatizes `balanced_achieves_bound`: the balanced coloring achieves exactly $$n^{2}$/12 + o(1)$ packed triangles"
     },
     {
       "id": "gruslys-letzter",
@@ -168,7 +168,7 @@
       "summary": "Axiomatizes `gruslys_letzter`: $\\forall c, \\text{maxPackingSize}(c) \\ge (1 - 1/n) \\cdot n^2/12$ for $n \\ge 6$; also `extremal_uniqueness` (stability)",
       "startLine": 145,
       "endLine": 164,
-      "mathContext": "Axiomatizes `gruslys_letzter`: $\\forall c, \\text{maxPackingSize}(c) \\ge (1 - 1/n) \\cdot n^2/12$ for $n \\ge 6$; also `extremal_uniqueness` (stability)"
+      "mathContext": "Axiomatizes `gruslys_letzter`: $\\forall c, \\text{maxPackingSize}(c) \\ge (1 - 1/n) \\cdot $n^{2}$/12$ for $n \\ge 6$; also `extremal_uniqueness` (stability)"
     },
     {
       "id": "counting-vs-packing",
@@ -176,7 +176,7 @@
       "summary": "Defines `totalTriangles n` $= \\binom{n}{3}$ and `totalEdges n` $= \\binom{n}{2}$; states `packing_upper_bound`: at most $\\lfloor \\binom{n}{2}/3 \\rfloor \\approx n^2/6$ packed triangles (sorry)",
       "startLine": 165,
       "endLine": 182,
-      "mathContext": "Defines `totalTriangles n` $= \\binom{n}{3}$ and `totalEdges n` $= \\binom{n}{2}$; states `packing_upper_bound`: at most $\\lfloor \\binom{n}{2}/3 \\rfloor \\approx n^2/6$ packed triangles (sorry)"
+      "mathContext": "Defines `totalTriangles n` $= \\binom{n}{3}$ and `totalEdges n` $= \\binom{n}{2}$; states `packing_upper_bound`: at most $\\lfloor \\binom{n}{2}/3 \\rfloor \\approx $n^{2}$/6$ packed triangles (sorry)"
     },
     {
       "id": "bound-explained",
@@ -184,7 +184,7 @@
       "summary": "Proves `bound_from_cliques`: $n^2/12 = 2 \\times (n/2)^2/24$, showing each blue $K_{n/2}$ contributes $\\approx n^2/24$ via Steiner-type packing",
       "startLine": 183,
       "endLine": 198,
-      "mathContext": "Proves `bound_from_cliques`: $n^2/12 = 2 \\times (n/2)^2/24$, showing each blue $K_{n/2}$ contributes $\\approx n^2/24$ via Steiner-type packing"
+      "mathContext": "Proves `bound_from_cliques`: $$n^{2}$/12 = 2 \\times (n/2)^2/24$, showing each blue $K_{n/2}$ contributes $\\approx $n^{2}$/24$ via Steiner-type packing"
     },
     {
       "id": "single-color",
@@ -192,7 +192,7 @@
       "summary": "Defines `maxSingleColorPacking` (max over colors of single-color packing) and states `single_color_conjecture`: $\\exists c > 1/24$ with max single-color packing $\\ge cn^2$",
       "startLine": 199,
       "endLine": 245,
-      "mathContext": "Defines `maxSingleColorPacking` (max over colors of single-color packing) and states `single_color_conjecture`: $\\exists c > 1/24$ with max single-color packing $\\ge cn^2$"
+      "mathContext": "Formal definition: Defines `maxSingleColorPacking` (max over colors of single-color packing) and states `single_color_conjecture`: $\\exists c > 1/24$ with max single-color packing $\\ge cn^2$"
     }
   ],
   "conclusion": {

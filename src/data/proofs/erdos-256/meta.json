@@ -104,7 +104,7 @@
       "summary": "Defines `productPoly` ($\\prod_i(1 - z^{a_i})$), `maxOnUnitCircle` ($\\max_{|z|=1} |P(z)|$), and $f(n) = \\inf_a \\max_{|z|=1} |P(z;a)|$. The inf-max structure captures the minimax optimization.",
       "startLine": 39,
       "endLine": 65,
-      "mathContext": "Defines `productPoly` ($\\prod_i(1 - z^{a_i})$), `maxOnUnitCircle` ($\\max_{|z|=1} |P(z)|$), and $f(n) = \\inf_a \\max_{|z|=1} |P(z;a)|$. The inf-max structure captures the minimax optimization."
+      "mathContext": "Formal definition: Defines `productPoly` ($\\prod_i(1 - z^{a_i})$), `maxOnUnitCircle` ($\\max_{|z|=1} |P(z)|$), and $f(n) = \\inf_a \\max_{|z|=1} |P(z;a)|$. The inf-max structure captures the minimax optimization."
     },
     {
       "id": "bounds",
@@ -120,7 +120,7 @@
       "summary": "Defines `ErdosQuestion256`: $\\exists c > 0,\\, \\exists C > 0,\\, \\forall n \\geq 2,\\, \\log f(n) \\geq C \\cdot n^c$. Asks whether $\\log f(n)$ grows at least as a power of $n$.",
       "startLine": 105,
       "endLine": 117,
-      "mathContext": "Defines `ErdosQuestion256`: $\\exists c > 0,\\, \\exists C > 0,\\, \\forall n \\geq 2,\\, \\log f(n) \\geq C \\cdot n^c$. Asks whether $\\log f(n)$ grows at least as a power of $n$."
+      "mathContext": "Formal definition: Defines `ErdosQuestion256`: $\\exists c > 0,\\, \\exists C > 0,\\, \\forall n \\geq 2,\\, \\log f(n) \\geq C \\cdot n^c$. Asks whether $\\log f(n)$ grows at least as a power of $n$."
     },
     {
       "id": "answer",
@@ -128,7 +128,7 @@
       "summary": "Axiomatizes the Belov-Konyagin bound $\\log f(n) \\leq C(\\log n)^4$ and proves `erdos_256_answer : ¬ErdosQuestion256` — the answer is NO, since $(\\log n)^4$ grows slower than $n^c$ for any $c > 0$.",
       "startLine": 118,
       "endLine": 140,
-      "mathContext": "Axiomatizes the Belov-Konyagin bound $\\log f(n) \\leq C(\\log n)^4$ and proves `erdos_256_answer : ¬ErdosQuestion256` — the answer is NO, since $(\\log n)^4$ grows slower than $n^c$ for any $c > 0$."
+      "mathContext": "Axiomatizes the Belov-Konyagin bound $\\log f(n) \\leq C(\\$\\log n$)^4$ and proves `erdos_256_answer : ¬ErdosQuestion256` — the answer is NO, since $(\\$\\log n$)^4$ grows slower than $n^c$ for any $c > 0$."
     },
     {
       "id": "distinct",
@@ -136,7 +136,7 @@
       "summary": "Defines `fDistinct(n)` for the variant with distinct exponents. Axiomatizes the Bourgain-Chang (2018) bound for this case, which has different (potentially better) growth behavior.",
       "startLine": 141,
       "endLine": 159,
-      "mathContext": "Defines `fDistinct(n)` for the variant with distinct exponents. Axiomatizes the Bourgain-Chang (2018) bound for this case, which has different (potentially better) growth behavior."
+      "mathContext": "Formal definition: Defines `fDistinct(n)` for the variant with distinct exponents. Axiomatizes the Bourgain-Chang (2018) bound for this case, which has different (potentially better) growth behavior."
     },
     {
       "id": "chowla",
@@ -152,7 +152,7 @@
       "summary": "Proves `product_at_root_of_unity`: evaluation at primitive $m$-th roots of unity. Axiomatizes `primitive_root_lower_bound`: these evaluation points provide key lower bounds on $f(n)$.",
       "startLine": 180,
       "endLine": 201,
-      "mathContext": "Proves `product_at_root_of_unity`: evaluation at primitive $m$-th roots of unity. Axiomatizes `primitive_root_lower_bound`: these evaluation points provide key lower bounds on $f(n)$."
+      "mathContext": "Verified: Proves `product_at_root_of_unity`: evaluation at primitive $m$-th roots of unity. Axiomatizes `primitive_root_lower_bound`: these evaluation points provide key lower bounds on $f(n)$."
     },
     {
       "id": "summary-bounds",
@@ -160,7 +160,7 @@
       "summary": "Axiomatizes the complete bounds timeline in one theorem: $\\sqrt{2n} \\leq f(n)$ (1959) and $\\log f(n) \\leq C(\\log n)^4$ (1996). The gap between $\\frac{1}{2}\\log n$ and $(\\log n)^4$ remains open.",
       "startLine": 202,
       "endLine": 226,
-      "mathContext": "Axiomatizes the complete bounds timeline in one theorem: $\\sqrt{2n} \\leq f(n)$ (1959) and $\\log f(n) \\leq C(\\log n)^4$ (1996). The gap between $\\frac{1}{2}\\log n$ and $(\\log n)^4$ remains open."
+      "mathContext": "Axiomatizes the complete bounds timeline in one theorem: $\\sqrt{2n} \\leq f(n)$ (1959) and $\\log f(n) \\leq C(\\$\\log n$)^4$ (1996). The gap between $\\frac{1}{2}\\$\\log n$$ and $(\\$\\log n$)^4$ remains open."
     },
     {
       "id": "summary",

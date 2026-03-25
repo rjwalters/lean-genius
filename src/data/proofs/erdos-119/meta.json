@@ -49,7 +49,7 @@
       "startLine": 1,
       "endLine": 21,
       "summary": "Documents all three parts of the problem with references to Wagner (1980), Beck (1991), and the open Part 3 with its $100 Erdős prize.",
-      "mathContext": "Documents all three parts of the problem with references to Wagner (1980), Beck (1991), and the open Part 3 with its $100 Erdős prize."
+      "mathContext": "Mathematical content: Documents all three parts of the problem with references to Wagner (1980), Beck (1991), and the open Part 3 with its $100 Erdős prize."
     },
     {
       "id": "imports",
@@ -57,7 +57,7 @@
       "startLine": 22,
       "endLine": 30,
       "summary": "Imports Mathlib modules for complex circle, normed spaces, filters (limsup, eventually), and big operators (finite sums and products).",
-      "mathContext": "Imports Mathlib modules for complex circle, normed spaces, filters (limsup, eventually), and big operators (finite sums and products)."
+      "mathContext": "Mathematical content: Imports Mathlib modules for complex circle, normed spaces, filters (limsup, eventually), and big operators (finite sums and products)."
     },
     {
       "id": "definitions",
@@ -65,7 +65,7 @@
       "startLine": 31,
       "endLine": 42,
       "summary": "Defines `unitCirclePoly` as $\\prod_{i<n}(w - z_i)$ and `maxModulus` as $\\sup\\{\\|p_n(w)\\| : \\|w\\| = 1\\}$.",
-      "mathContext": "Defines `unitCirclePoly` as $\\prod_{i<n}(w - z_i)$ and `maxModulus` as $\\sup\\{\\|p_n(w)\\| : \\|w\\| = 1\\}$."
+      "mathContext": "Formal definition: Defines `unitCirclePoly` as $\\prod_{i<n}(w - z_i)$ and `maxModulus` as $\\sup\\{\\|p_n(w)\\| : \\|w\\| = 1\\}$."
     },
     {
       "id": "part1",
@@ -73,7 +73,7 @@
       "startLine": 43,
       "endLine": 55,
       "summary": "States $\\limsup M_n = \\top$ in EReal. Wagner proved $M_n > (\\log n)^c$ infinitely often.",
-      "mathContext": "States $\\limsup M_n = \\top$ in EReal. Wagner proved $M_n > (\\log n)^c$ infinitely often."
+      "mathContext": "States $\\limsup M_n = \\top$ in EReal. Wagner proved $M_n > (\\$\\log n$)^c$ infinitely often."
     },
     {
       "id": "part2",
@@ -81,7 +81,7 @@
       "startLine": 56,
       "endLine": 69,
       "summary": "States $\\exists c > 0$ with $\\max_{n \\leq N} M_n > N^c$. Solved by Beck with harmonic analysis.",
-      "mathContext": "States $\\exists c > 0$ with $\\max_{n \\leq N} M_n > N^c$. Solved by Beck with harmonic analysis."
+      "mathContext": "Mathematical content: States $\\exists c > 0$ with $\\max_{n \\leq N} M_n > N^c$. Solved by Beck with harmonic analysis."
     },
     {
       "id": "part3",
@@ -89,7 +89,7 @@
       "startLine": 70,
       "endLine": 81,
       "summary": "Defines `ErdosProblem119` using `Filter.Eventually`: $\\exists c > 0,\\, \\forall^\\infty n,\\, \\sum_{k<n} M_k > n^{1+c}$. Open with $100 prize.",
-      "mathContext": "Defines `ErdosProblem119` using `Filter.Eventually`: $\\exists c > 0,\\, \\forall^\\infty n,\\, \\sum_{k<n} M_k > n^{1+c}$. Open with $100 prize."
+      "mathContext": "Formal definition: Defines `ErdosProblem119` using `Filter.Eventually`: $\\exists c > 0,\\, \\forall^\\infty n,\\, \\sum_{k<n} M_k > n^{1+c}$. Open with $100 prize."
     },
     {
       "id": "basic",
@@ -97,7 +97,7 @@
       "startLine": 82,
       "endLine": 99,
       "summary": "Proves base cases ($p_0 = 1$, $p_1 = w - z_0$) and states $M_n \\geq 1$ for $n \\geq 1$ and nonnegativity of $M_n$.",
-      "mathContext": "Proves base cases ($p_0 = 1$, $p_1 = w - z_0$) and states $M_n \\geq 1$ for $n \\geq 1$ and nonnegativity of $M_n$."
+      "mathContext": "Verified: Proves base cases ($p_0 = 1$, $p_1 = w - z_0$) and states $M_n \\geq 1$ for $n \\geq 1$ and nonnegativity of $M_n$."
     },
     {
       "id": "implications",
@@ -105,7 +105,7 @@
       "startLine": 100,
       "endLine": 115,
       "summary": "States Part 3 $\\implies$ Part 2 $\\implies$ Part 1 as axioms, formalizing the strict hierarchy of the three conjectures.",
-      "mathContext": "States Part 3 $\\implies$ Part 2 $\\implies$ Part 1 as axioms, formalizing the strict hierarchy of the three conjectures."
+      "mathContext": "Axiomatized: States Part 3 $\\implies$ Part 2 $\\implies$ Part 1 as axioms, formalizing the strict hierarchy of the three conjectures."
     }
   ],
   "conclusion": {

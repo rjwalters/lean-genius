@@ -91,7 +91,7 @@
       "summary": "Defines IsValidSelection (divisibility matching in (m, m+L)), IntervalAdmitsSelection (existence), and axiom selection_exists_for_any_start guaranteeing large enough intervals always work.",
       "startLine": 43,
       "endLine": 75,
-      "mathContext": "Defines IsValidSelection (divisibility matching in (m, m+L)), IntervalAdmitsSelection (existence), and axiom selection_exists_for_any_start guaranteeing large enough intervals always work."
+      "mathContext": "Formal definition: Defines IsValidSelection (divisibility matching in (m, m+L)), IntervalAdmitsSelection (existence), and axiom selection_exists_for_any_start guaranteeing large enough intervals always work."
     },
     {
       "id": "two-parameter",
@@ -99,7 +99,7 @@
       "summary": "Defines minimalIntervalLength n m via Nat.find (minimal L admitting selection), notation f(n,m), and fnn n = f(n,n) connecting to Problem #710.",
       "startLine": 76,
       "endLine": 97,
-      "mathContext": "Defines minimalIntervalLength n m via Nat.find (minimal L admitting selection), notation f(n,m), and fnn n = f(n,n) connecting to Problem #710."
+      "mathContext": "Formal definition: Defines minimalIntervalLength n m via Nat.find (minimal L admitting selection), notation f(n,m), and fnn n = f(n,n) connecting to Problem #710."
     },
     {
       "id": "upper-bounds",
@@ -107,7 +107,7 @@
       "summary": "Axiomatized Erdős-Pomerance bound max_m f(n,m) ≤ C·n^{3/2}. Defines firstConjecture (∀ε>0 ∃N ∀n≥N ∀m, f(n,m) ≤ n^{1+ε}) as OPEN.",
       "startLine": 98,
       "endLine": 129,
-      "mathContext": "Axiomatized Erdős-Pomerance bound max_m f(n,m) ≤ C·n^{3/2}. Defines firstConjecture (∀ε>0 ∃N ∀n≥N ∀m, f(n,m) ≤ n^{1+ε}) as OPEN."
+      "mathContext": "Axiomatized Erdős-Pomerance bound max_m f(n,m) $\\leq$ C·n^{3/2}. Defines firstConjecture (∀ε>0 ∃N ∀n$\\geq$N ∀m, f(n,m) $\\leq$ n^{1+ε}) as OPEN."
     },
     {
       "id": "dependence-on-m",
@@ -115,7 +115,7 @@
       "summary": "Defines differenceFnm n m = f(n,m) - f(n,n) as ℤ, and secondConjecture: max_m differenceFnm(n,m) → ∞.",
       "startLine": 130,
       "endLine": 159,
-      "mathContext": "Defines differenceFnm n m = f(n,m) - f(n,n) as ℤ, and secondConjecture: max_m differenceFnm(n,m) → ∞."
+      "mathContext": "Defines differenceFnm n m = f(n,m) - f(n,n) as $\\mathbb{Z}$, and secondConjecture: max_m differenceFnm(n,m) $\\to$ ∞."
     },
     {
       "id": "van-doorn",
@@ -123,7 +123,7 @@
       "summary": "Axiomatized quantitative bound: ∃ C > 0, ∃ N₀, ∀ n ≥ N₀, ∃ m, differenceFnm n m ≥ C·n·log(n)/log(log(n)). Derives secondConjecture.",
       "startLine": 160,
       "endLine": 183,
-      "mathContext": "Axiomatized quantitative bound: ∃ C > 0, ∃ N₀, ∀ n ≥ N₀, ∃ m, differenceFnm n m ≥ C·n·log(n)/log(log(n)). Derives secondConjecture."
+      "mathContext": "Axiomatized quantitative bound: ∃ C > 0, ∃ N₀, ∀ n $\\geq$ N₀, ∃ m, differenceFnm n m $\\geq$ C·n·log(n)/log(log(n)). Derives secondConjecture."
     },
     {
       "id": "why-m-matters",
@@ -131,7 +131,7 @@
       "summary": "Analyzes residue class effects: multiplesInInterval(d, m, L) = ⌊(m+L)/d⌋ - ⌊m/d⌋ depends on m mod d. Axiomatized bound ≤ L/d + 1.",
       "startLine": 184,
       "endLine": 216,
-      "mathContext": "Analyzes residue class effects: multiplesInInterval(d, m, L) = ⌊(m+L)/d⌋ - ⌊m/d⌋ depends on m mod d. Axiomatized bound ≤ L/d + 1."
+      "mathContext": "Analyzes residue class effects: multiplesInInterval(d, m, L) = ⌊(m+L)/d⌋ - ⌊m/d⌋ depends on m mod d. Axiomatized bound $\\leq$ L/d + 1."
     },
     {
       "id": "connection-710",
@@ -139,7 +139,7 @@
       "summary": "Axiomatized Erdős-Pomerance bounds for f(n,n): C₁·n·√(log n/log log n) ≤ f(n,n) ≤ C₂·n·√(log n). Shows van Doorn's difference can dominate the base value.",
       "startLine": 217,
       "endLine": 243,
-      "mathContext": "Axiomatized Erdős-Pomerance bounds for f(n,n): C₁·n·√(log n/log log n) ≤ f(n,n) ≤ C₂·n·√(log n). Shows van Doorn's difference can dominate the base value."
+      "mathContext": "Axiomatized Erdős-Pomerance bounds for f(n,n): C₁·n·√($\\log n$/log $\\log n$) $\\leq$ f(n,n) $\\leq$ C₂·n·√($\\log n$). Shows van Doorn's difference can dominate the base value."
     },
     {
       "id": "examples",
@@ -147,7 +147,7 @@
       "summary": "Three fully proved examples with m=1,2,3 all showing f(2,m) ≤ 3. Demonstrates the divergence is asymptotic, not visible at small scale.",
       "startLine": 244,
       "endLine": 295,
-      "mathContext": "Three fully proved examples with m=1,2,3 all showing f(2,m) ≤ 3. Demonstrates the divergence is asymptotic, not visible at small scale."
+      "mathContext": "Three fully proved examples with m=1,2,3 all showing f(2,m) $\\leq$ 3. Demonstrates the divergence is asymptotic, not visible at small scale."
     },
     {
       "id": "summary",
@@ -155,7 +155,7 @@
       "summary": "Theorem erdos_711_summary combining all results. erdos_711_part2_solved confirms second conjecture. openQuestion records first conjecture status.",
       "startLine": 296,
       "endLine": 345,
-      "mathContext": "Theorem erdos_711_summary combining all results. erdos_711_part2_solved confirms second conjecture. openQuestion records first conjecture status."
+      "mathContext": "Verified: Theorem erdos_711_summary combining all results. erdos_711_part2_solved confirms second conjecture. openQuestion records first conjecture status."
     }
   ],
   "conclusion": {

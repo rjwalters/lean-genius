@@ -115,7 +115,7 @@
       "startLine": 183,
       "endLine": 243,
       "summary": "Bridges the explicit coordinate proof with Mathlib's `Quaternion.normSq_mul` for an alternative abstract verification. Constructs `fourSquareIdentity : NSquareIdentity 4`.",
-      "mathContext": "Bridges the explicit coordinate proof with Mathlib's `Quaternion.normSq_mul` for an alternative abstract verification. Constructs `fourSquareIdentity : NSquareIdentity 4`."
+      "mathContext": "Verified: Bridges the explicit coordinate proof with Mathlib's `Quaternion.normSq_mul` for an alternative abstract verification. Constructs `fourSquareIdentity : NSquareIdentity 4`."
     },
     {
       "id": "octonions",
@@ -123,7 +123,7 @@
       "startLine": 244,
       "endLine": 316,
       "summary": "Axiomatizes the existence of `eight_square_identity_exists : NSquareIdentity 8` (Degen's identity from 1818). Full proof requires octonion formalization not yet in Mathlib.",
-      "mathContext": "Axiomatizes the existence of `eight_square_identity_exists : NSquareIdentity 8` (Degen's identity from 1818). Full proof requires octonion formalization not yet in Mathlib."
+      "mathContext": "Verified: Axiomatizes the existence of `eight_square_identity_exists : NSquareIdentity 8` (Degen's identity from 1818). Full proof requires octonion formalization not yet in Mathlib."
     },
     {
       "id": "helper-definitions",
@@ -139,7 +139,7 @@
       "startLine": 452,
       "endLine": 490,
       "summary": "Proves auxiliary lemmas for scalar multiplication, projection, and the bilinearity of inner products. Establishes the infrastructure for the Parseval identity proof.",
-      "mathContext": "Proves auxiliary lemmas for scalar multiplication, projection, and the bilinearity of inner products. Establishes the infrastructure for the Parseval identity proof."
+      "mathContext": "Formal definition: Proves auxiliary lemmas for scalar multiplication, projection, and the bilinearity of inner products. Establishes the infrastructure for the Parseval identity proof."
     },
     {
       "id": "ortho-triple-zero",
@@ -187,7 +187,7 @@
       "startLine": 1173,
       "endLine": 1556,
       "summary": "Final assembly of the $n = 3$ impossibility proof. Derives additional constraint conflicts and establishes `no_three_square_identity : NSquareIdentity 3 → False`.",
-      "mathContext": "Final assembly of the $n = 3$ impossibility proof. Derives additional constraint conflicts and establishes `no_three_square_identity : NSquareIdentity 3 → False`."
+      "mathContext": "Final assembly of the $n = 3$ impossibility proof. Derives additional constraint conflicts and establishes `no_three_square_identity : NSquareIdentity 3 $\\to$ False`."
     },
     {
       "id": "hurwitz-complete",

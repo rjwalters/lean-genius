@@ -83,7 +83,7 @@
       "startLine": 47,
       "endLine": 84,
       "summary": "Defines validCycleLengths ({3,...,n}), axiomatizes cycleSet (cycle lengths in a graph), defines isAchievableCycleSet (realizability), and axiomatizes f(n) (the count).",
-      "mathContext": "Defines validCycleLengths ({3,...,n}), axiomatizes cycleSet (cycle lengths in a graph), defines isAchievableCycleSet (realizability), and axiomatizes f(n) (the count)."
+      "mathContext": "Formal definition: Defines validCycleLengths ({3,...,n}), axiomatizes cycleSet (cycle lengths in a graph), defines isAchievableCycleSet (realizability), and axiomatizes f(n) (the count)."
     },
     {
       "id": "erdos-faudree",
@@ -91,7 +91,7 @@
       "startLine": 85,
       "endLine": 116,
       "summary": "Axiomatizes the trivial upper bound f(n) ≤ 2^{n-2} and the constructive lower bound f(n) > 2^{n/2}. Proves their conjunction as erdos_faudree_bounds.",
-      "mathContext": "Axiomatizes the trivial upper bound f(n) ≤ 2^{n-2} and the constructive lower bound f(n) > 2^{n/2}. Proves their conjunction as erdos_faudree_bounds."
+      "mathContext": "Axiomatizes the trivial upper bound f(n) $\\leq$ $$2^{{n-2}$}$ and the constructive lower bound f(n) > $$2^{{n/2}$}$. Proves their conjunction as erdos_faudree_bounds."
     },
     {
       "id": "part1-solved",
@@ -99,7 +99,7 @@
       "startLine": 117,
       "endLine": 150,
       "summary": "Defines little-o notation, formalizes Part 1 as f = o(2^n), axiomatizes Verstraëte's quantitative bound f(n) ≤ 2^{n - n^{1/10}}, and axiomatizes the Part 1 solution.",
-      "mathContext": "Defines little-o notation, formalizes Part 1 as f = o(2^n), axiomatizes Verstraëte's quantitative bound f(n) ≤ 2^{n - n^{1/10}}, and axiomatizes the Part 1 solution."
+      "mathContext": "Defines little-o notation, formalizes Part 1 as f = o($2^{n}$), axiomatizes Verstraëte's quantitative bound f(n) $\\leq$ $$2^{{n - n^{1/10}$}$}, and axiomatizes the Part 1 solution."
     },
     {
       "id": "nenadov",
@@ -107,7 +107,7 @@
       "startLine": 151,
       "endLine": 171,
       "summary": "Axiomatizes Nenadov's improved bound f(n) ≤ 2^{n - n^{1/2 - ε}} and wraps it in the best_upper_bound theorem.",
-      "mathContext": "Axiomatizes Nenadov's improved bound f(n) ≤ 2^{n - n^{1/2 - ε}} and wraps it in the best_upper_bound theorem."
+      "mathContext": "Axiomatizes Nenadov's improved bound f(n) $\\leq$ $$2^{{n - n^{1/2 - ε}$}$} and wraps it in the best_upper_bound theorem."
     },
     {
       "id": "part2-open",
@@ -115,7 +115,7 @@
       "startLine": 172,
       "endLine": 191,
       "summary": "Formalizes the open question: does f(n)/2^{n/2} → ∞? Stated as a divergence condition using Real.rpow.",
-      "mathContext": "Formalizes the open question: does f(n)/2^{n/2} → ∞? Stated as a divergence condition using Real.rpow."
+      "mathContext": "Formalizes the open question: does f(n)/$$2^{{n/2}$}$ $\\to$ ∞? Stated as a divergence condition using Real.rpow."
     },
     {
       "id": "limit",
@@ -123,7 +123,7 @@
       "startLine": 192,
       "endLine": 215,
       "summary": "Formalizes the open question of whether lim f(n)^{1/n} exists, with axiomatized bounds √2 ≤ L ≤ 2 if it does.",
-      "mathContext": "Formalizes the open question of whether lim f(n)^{1/n} exists, with axiomatized bounds √2 ≤ L ≤ 2 if it does."
+      "mathContext": "Formalizes the open question of whether lim f(n)^{1/n} exists, with axiomatized bounds √2 $\\leq$ L $\\leq$ 2 if it does."
     },
     {
       "id": "structural",
@@ -131,7 +131,7 @@
       "startLine": 218,
       "endLine": 229,
       "summary": "Axiomatizes the existence of non-achievable subsets, the fundamental fact underlying Part 1.",
-      "mathContext": "Axiomatizes the existence of non-achievable subsets, the fundamental fact underlying Part 1."
+      "mathContext": "Axiomatized: Axiomatizes the existence of non-achievable subsets, the fundamental fact underlying Part 1."
     },
     {
       "id": "small-values",
@@ -139,7 +139,7 @@
       "startLine": 232,
       "endLine": 245,
       "summary": "Axiomatizes f(3) = 2, f(4) = 4, f(5) = 8. The last value where f(n) = 2^{n-2} (all subsets achievable).",
-      "mathContext": "Axiomatizes f(3) = 2, f(4) = 4, f(5) = 8. The last value where f(n) = 2^{n-2} (all subsets achievable)."
+      "mathContext": "Axiomatizes f(3) = 2, f(4) = 4, f(5) = 8. The last value where f(n) = $$2^{{n-2}$}$ (all subsets achievable)."
     },
     {
       "id": "summary",
@@ -147,7 +147,7 @@
       "startLine": 246,
       "endLine": 279,
       "summary": "erdos_84_summary packages Part 1 + structural constraints as a conjunction. erdos_84 is a simplified alias for Part 1.",
-      "mathContext": "erdos_84_summary packages Part 1 + structural constraints as a conjunction. erdos_84 is a simplified alias for Part 1."
+      "mathContext": "Mathematical content: erdos_84_summary packages Part 1 + structural constraints as a conjunction. erdos_84 is a simplified alias for Part 1."
     }
   ],
   "conclusion": {

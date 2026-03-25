@@ -73,7 +73,7 @@
       "startLine": 35,
       "endLine": 56,
       "summary": "Defines `factorialPadicVal` via Legendre's formula $\\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$, axiomatizes `legendre_formula`, and defines `DividesFactorial n a b` as $a! \\cdot b! \\mid n!$.",
-      "mathContext": "Defines `factorialPadicVal` via Legendre's formula $\\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$, axiomatizes `legendre_formula`, and defines `DividesFactorial n a b` as $a! \\cdot b! \\mid n!$."
+      "mathContext": "Formal definition: Defines `factorialPadicVal` via Legendre's formula $\\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$, axiomatizes `legendre_formula`, and defines `DividesFactorial n a b` as $a! \\cdot b! \\mid n!$."
     },
     {
       "id": "erdos-classical",
@@ -89,7 +89,7 @@
       "startLine": 75,
       "endLine": 94,
       "summary": "Defines `SmallPrimes C` as primes $\\leq C$, and `DividesFactorialModSmall` allowing a correction factor $k$ with only small prime factors. This formalizes 'ignoring small primes in the denominator'.",
-      "mathContext": "Defines `SmallPrimes C` as primes $\\leq C$, and `DividesFactorialModSmall` allowing a correction factor $k$ with only small prime factors. This formalizes 'ignoring small primes in the denominator'."
+      "mathContext": "Formal definition: Defines `SmallPrimes C` as primes $\\leq C$, and `DividesFactorialModSmall` allowing a correction factor $k$ with only small prime factors. This formalizes 'ignoring small primes in the denominator'."
     },
     {
       "id": "question",
@@ -97,7 +97,7 @@
       "startLine": 95,
       "endLine": 107,
       "summary": "Defines `InfinitelyManyExceptions C`: are there infinitely many $(a, b, n)$ with $a + b > n + C\\log n$ and `DividesFactorialModSmall`? This is the formal statement of Erdős Problem 729.",
-      "mathContext": "Defines `InfinitelyManyExceptions C`: are there infinitely many $(a, b, n)$ with $a + b > n + C\\log n$ and `DividesFactorialModSmall`? This is the formal statement of Erdős Problem 729."
+      "mathContext": "Defines `InfinitelyManyExceptions C`: are there infinitely many $(a, b, n)$ with $a + b > n + C\\$\\log n$$ and `DividesFactorialModSmall`? This is the formal statement of Erdős Problem 729."
     },
     {
       "id": "barreto-leeham",
@@ -121,7 +121,7 @@
       "startLine": 141,
       "endLine": 160,
       "summary": "Defines `digitSum p n` recursively and axiomatizes `legendre_identity`: $v_p(n!) = (n - s_p(n))/(p-1)$. The theorem `legendre_for_two` ($v_2(n!) = n - s_2(n)$) has a `sorry`.",
-      "mathContext": "Defines `digitSum p n` recursively and axiomatizes `legendre_identity`: $v_p(n!) = (n - s_p(n))/(p-1)$. The theorem `legendre_for_two` ($v_2(n!) = n - s_2(n)$) has a `sorry`."
+      "mathContext": "Formal definition: Defines `digitSum p n` recursively and axiomatizes `legendre_identity`: $v_p(n!) = (n - s_p(n))/(p-1)$. The theorem `legendre_for_two` ($v_2(n!) = n - s_2(n)$) has a `sorry`."
     },
     {
       "id": "implications",
@@ -129,7 +129,7 @@
       "startLine": 161,
       "endLine": 178,
       "summary": "Axiomatizes `factorial_rigidity` and states `binomial_rigidity` (with `sorry`): when $a + b = n$, $n!/(a!b!) = \\binom{n}{a}$ is always an integer.",
-      "mathContext": "Axiomatizes `factorial_rigidity` and states `binomial_rigidity` (with `sorry`): when $a + b = n$, $n!/(a!b!) = \\binom{n}{a}$ is always an integer."
+      "mathContext": "Axiomatized: Axiomatizes `factorial_rigidity` and states `binomial_rigidity` (with `sorry`): when $a + b = n$, $n!/(a!b!) = \\binom{n}{a}$ is always an integer."
     },
     {
       "id": "main-statement",
@@ -137,7 +137,7 @@
       "startLine": 179,
       "endLine": 193,
       "summary": "Proves `erdos_729_statement`: combines `erdos_1968_classical` and `barreto_leeham_theorem` into a single conjunction, establishing both the classical bound and its robustness.",
-      "mathContext": "Proves `erdos_729_statement`: combines `erdos_1968_classical` and `barreto_leeham_theorem` into a single conjunction, establishing both the classical bound and its robustness."
+      "mathContext": "Verified: Proves `erdos_729_statement`: combines `erdos_1968_classical` and `barreto_leeham_theorem` into a single conjunction, establishing both the classical bound and its robustness."
     },
     {
       "id": "summary",
@@ -145,7 +145,7 @@
       "startLine": 194,
       "endLine": 207,
       "summary": "Proves `erdos_729_summary`: the answer is NO, and the explicit bound $a + b \\leq n + D\\log n$ holds, combining `barreto_leeham_theorem` and `barreto_leeham_bound`.",
-      "mathContext": "Proves `erdos_729_summary`: the answer is NO, and the explicit bound $a + b \\leq n + D\\log n$ holds, combining `barreto_leeham_theorem` and `barreto_leeham_bound`."
+      "mathContext": "Proves `erdos_729_summary`: the answer is NO, and the explicit bound $a + b \\leq n + D\\$\\log n$$ holds, combining `barreto_leeham_theorem` and `barreto_leeham_bound`."
     }
   ],
   "conclusion": {

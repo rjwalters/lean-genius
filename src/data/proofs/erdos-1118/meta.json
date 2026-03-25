@@ -110,7 +110,7 @@
       "startLine": 37,
       "endLine": 60,
       "summary": "Defines IsEntire (Differentiable ℂ f), IsNonConstantEntire, superlevelSet f c = {z : |f(z)| > c}, HasFiniteMeasure via volume < ⊤, and maxModulus via indexed supremum ⨆ over the circle |z| = r",
-      "mathContext": "Defines IsEntire (Differentiable ℂ f), IsNonConstantEntire, superlevelSet f c = {z : |f(z)| > c}, HasFiniteMeasure via volume < ⊤, and maxModulus via indexed supremum ⨆ over the circle |z| = r"
+      "mathContext": "Formal definition: Defines IsEntire (Differentiable ℂ f), IsNonConstantEntire, superlevelSet f c = {z : |f(z)| > c}, HasFiniteMeasure via volume < ⊤, and maxModulus via indexed supremum ⨆ over the circle |z| = r"
     },
     {
       "id": "erdos-questions",
@@ -118,7 +118,7 @@
       "startLine": 61,
       "endLine": 78,
       "summary": "Defines thresholdSet T(f) = {c > 0 : HasFiniteMeasure f c}, GrowthRateQuestion (Q1), and ThresholdMonotonicityQuestion (Q2) as placeholder propositions",
-      "mathContext": "Defines thresholdSet T(f) = {c > 0 : HasFiniteMeasure f c}, GrowthRateQuestion (Q1), and ThresholdMonotonicityQuestion (Q2) as placeholder propositions"
+      "mathContext": "Formal definition: Defines thresholdSet T(f) = {c > 0 : HasFiniteMeasure f c}, GrowthRateQuestion (Q1), and ThresholdMonotonicityQuestion (Q2) as placeholder propositions"
     },
     {
       "id": "hayman-conjecture",
@@ -126,7 +126,7 @@
       "startLine": 79,
       "endLine": 105,
       "summary": "Defines growthIntegral and HaymanConjecture biconditional, then axiomatizes camera_goldberg_theorem plus separate growth_necessary and growth_sufficient directions",
-      "mathContext": "Defines growthIntegral and HaymanConjecture biconditional, then axiomatizes camera_goldberg_theorem plus separate growth_necessary and growth_sufficient directions"
+      "mathContext": "Formal definition: Defines growthIntegral and HaymanConjecture biconditional, then axiomatizes camera_goldberg_theorem plus separate growth_necessary and growth_sufficient directions"
     },
     {
       "id": "goldberg-counterexample",
@@ -134,7 +134,7 @@
       "startLine": 106,
       "endLine": 125,
       "summary": "Axiomatizes goldberg_counterexample (∃ f with T(f) = [m,∞)) and goldberg_threshold_classification (all four threshold types ∅, (0,∞), [m,∞), (m,∞) are realizable)",
-      "mathContext": "Axiomatizes goldberg_counterexample (∃ f with T(f) = [m,∞)) and goldberg_threshold_classification (all four threshold types ∅, (0,∞), [m,∞), (m,∞) are realizable)"
+      "mathContext": "Axiomatized: Axiomatizes goldberg_counterexample (∃ f with T(f) = [m,∞)) and goldberg_threshold_classification (all four threshold types ∅, (0,∞), [m,∞), (m,∞) are realizable)"
     },
     {
       "id": "max-modulus-properties",
@@ -142,7 +142,7 @@
       "startLine": 126,
       "endLine": 143,
       "summary": "Axiomatizes M(r) → ∞ for non-constant entire functions (Liouville), monotonicity of M(r), and polynomial growth bound M(r) ≤ C·r^d",
-      "mathContext": "Axiomatizes M(r) → ∞ for non-constant entire functions (Liouville), monotonicity of M(r), and polynomial growth bound M(r) ≤ C·r^d"
+      "mathContext": "Axiomatizes M(r) $\\to$ ∞ for non-constant entire functions (Liouville), monotonicity of M(r), and polynomial growth bound M(r) $\\leq$ C·r^d"
     },
     {
       "id": "examples",
@@ -150,7 +150,7 @@
       "startLine": 144,
       "endLine": 161,
       "summary": "Axiomatizes threshold sets for canonical examples: polynomials (T = (0,∞)), exp(z) (T = ∅), and fast-growing entire functions (T bounded below)",
-      "mathContext": "Axiomatizes threshold sets for canonical examples: polynomials (T = (0,∞)), exp(z) (T = ∅), and fast-growing entire functions (T bounded below)"
+      "mathContext": "Axiomatized: Axiomatizes threshold sets for canonical examples: polynomials (T = (0,∞)), exp(z) (T = ∅), and fast-growing entire functions (T bounded below)"
     },
     {
       "id": "measure-theory-aspects",
@@ -158,7 +158,7 @@
       "startLine": 162,
       "endLine": 192,
       "summary": "Axiomatizes measurability of superlevel sets; PROVES superlevel_nested (linarith), finite_measure_monotone (measure_mono), and threshold_is_upper_set — the constructive core",
-      "mathContext": "Axiomatizes measurability of superlevel sets; PROVES superlevel_nested (linarith), finite_measure_monotone (measure_mono), and threshold_is_upper_set — the constructive core"
+      "mathContext": "Verified: Axiomatizes measurability of superlevel sets; PROVES superlevel_nested (linarith), finite_measure_monotone (measure_mono), and threshold_is_upper_set — the constructive core"
     },
     {
       "id": "connections",
@@ -166,7 +166,7 @@
       "startLine": 193,
       "endLine": 210,
       "summary": "Placeholder connections to Nevanlinna theory, value distribution theory, and Hayman's Problem 2.40",
-      "mathContext": "Placeholder connections to Nevanlinna theory, value distribution theory, and Hayman's Problem 2.40"
+      "mathContext": "Mathematical content: Placeholder connections to Nevanlinna theory, value distribution theory, and Hayman's Problem 2.40"
     },
     {
       "id": "main-theorems",

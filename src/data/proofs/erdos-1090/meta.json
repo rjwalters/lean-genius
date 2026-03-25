@@ -144,7 +144,7 @@
       "summary": "Defines `HasRamseyProperty A k` (∀ c : Point → Bool, MonochromaticKCollinear A k c) and `Erdos1090Question k` (k ≥ 3 → ∃ A, HasRamseyProperty A k).",
       "startLine": 108,
       "endLine": 126,
-      "mathContext": "Defines `HasRamseyProperty A k` (∀ c : Point → Bool, MonochromaticKCollinear A k c) and `Erdos1090Question k` (k ≥ 3 → ∃ A, HasRamseyProperty A k)."
+      "mathContext": "Defines `HasRamseyProperty A k` (∀ c : Point $\\to$ Bool, MonochromaticKCollinear A k c) and `Erdos1090Question k` (k $\\geq$ 3 $\\to$ ∃ A, HasRamseyProperty A k)."
     },
     {
       "id": "graham-selfridge",
@@ -152,7 +152,7 @@
       "summary": "Axiomatizes `graham_selfridge : ∃ A, HasRamseyProperty A 3`. Proves `k3_case : Erdos1090Question 3` by applying the axiom after `intro _`.",
       "startLine": 127,
       "endLine": 147,
-      "mathContext": "Axiomatizes `graham_selfridge : ∃ A, HasRamseyProperty A 3`. Proves `k3_case : Erdos1090Question 3` by applying the axiom after `intro _`."
+      "mathContext": "Verified: Axiomatizes `graham_selfridge : ∃ A, HasRamseyProperty A 3`. Proves `k3_case : Erdos1090Question 3` by applying the axiom after `intro _`."
     },
     {
       "id": "hales-jewett",
@@ -168,7 +168,7 @@
       "summary": "Proves `erdos_1090_affirmative : ∀ k ≥ 3, Erdos1090Question k` by applying `hunter_observation k hk` — a three-line proof that unfolds the question and applies Hunter's result.",
       "startLine": 202,
       "endLine": 215,
-      "mathContext": "Proves `erdos_1090_affirmative : ∀ k ≥ 3, Erdos1090Question k` by applying `hunter_observation k hk` — a three-line proof that unfolds the question and applies Hunter's result."
+      "mathContext": "Proves `erdos_1090_affirmative : ∀ k $\\geq$ 3, Erdos1090Question k` by applying `hunter_observation k hk` — a three-line proof that unfolds the question and applies Hunter's result."
     },
     {
       "id": "constructions",
@@ -176,7 +176,7 @@
       "summary": "Axiomatizes three point set constructions: `regularNgonWithCenter` (vertices + center), `gridPoints` (m × m grid), and `projectivePlanePoints` (from finite projective planes over 𝔽_q).",
       "startLine": 216,
       "endLine": 239,
-      "mathContext": "Axiomatizes three point set constructions: `regularNgonWithCenter` (vertices + center), `gridPoints` (m × m grid), and `projectivePlanePoints` (from finite projective planes over 𝔽_q)."
+      "mathContext": "Axiomatized: Axiomatizes three point set constructions: `regularNgonWithCenter` (vertices + center), `gridPoints` (m × m grid), and `projectivePlanePoints` (from finite projective planes over 𝔽_q)."
     },
     {
       "id": "bounds",
@@ -192,7 +192,7 @@
       "summary": "Defines `SylvesterGallai` (ordinary line existence) and `HellyProperty` (d+1 convex sets with pairwise intersections have common point). Axiomatizes `sylvester_gallai` for ≥ 3 non-collinear points.",
       "startLine": 266,
       "endLine": 295,
-      "mathContext": "Defines `SylvesterGallai` (ordinary line existence) and `HellyProperty` (d+1 convex sets with pairwise intersections have common point). Axiomatizes `sylvester_gallai` for ≥ 3 non-collinear points."
+      "mathContext": "Defines `SylvesterGallai` (ordinary line existence) and `HellyProperty` (d+1 convex sets with pairwise intersections have common point). Axiomatizes `sylvester_gallai` for $\\geq$ 3 non-collinear points."
     },
     {
       "id": "generalizations",
@@ -200,7 +200,7 @@
       "summary": "Defines `Erdos1090Generalized k r` (r-coloring version) and `Erdos1090HigherDim d k` (hyperplanes in ℝᵈ). Axiomatizes `erdos_1090_generalized` via Hales-Jewett for r colors.",
       "startLine": 296,
       "endLine": 328,
-      "mathContext": "Defines `Erdos1090Generalized k r` (r-coloring version) and `Erdos1090HigherDim d k` (hyperplanes in ℝᵈ). Axiomatizes `erdos_1090_generalized` via Hales-Jewett for r colors."
+      "mathContext": "Formal definition: Defines `Erdos1090Generalized k r` (r-coloring version) and `Erdos1090HigherDim d k` (hyperplanes in ℝᵈ). Axiomatizes `erdos_1090_generalized` via Hales-Jewett for r colors."
     },
     {
       "id": "summary",
@@ -208,7 +208,7 @@
       "summary": "Proves `erdos_1090_summary` as conjunction of Graham-Selfridge (k=3) and Hunter (∀ k ≥ 3), with `erdos_1090 := erdos_1090_affirmative` as the final theorem.",
       "startLine": 329,
       "endLine": 358,
-      "mathContext": "Proves `erdos_1090_summary` as conjunction of Graham-Selfridge (k=3) and Hunter (∀ k ≥ 3), with `erdos_1090 := erdos_1090_affirmative` as the final theorem."
+      "mathContext": "Proves `erdos_1090_summary` as conjunction of Graham-Selfridge (k=3) and Hunter (∀ k $\\geq$ 3), with `erdos_1090 := erdos_1090_affirmative` as the final theorem."
     }
   ],
   "conclusion": {

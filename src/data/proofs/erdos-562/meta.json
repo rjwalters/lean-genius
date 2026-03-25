@@ -31,7 +31,7 @@
       "summary": "Imports `Mathlib.Combinatorics.Ramsey`, `Data.Nat.Basic`, and `Tactic` for Ramsey-theoretic foundations",
       "startLine": 23,
       "endLine": 25,
-      "mathContext": "Imports `Mathlib.Combinatorics.Ramsey`, `Data.Nat.Basic`, and `Tactic` for Ramsey-theoretic foundations"
+      "mathContext": "Mathematical content: Imports `Mathlib.Combinatorics.Ramsey`, `Data.Nat.Basic`, and `Tactic` for Ramsey-theoretic foundations"
     },
     {
       "id": "tower-function",
@@ -39,7 +39,7 @@
       "summary": "Recursive definition of $\\mathrm{twr}(k, n) = 2^{\\mathrm{twr}(k-1, n)}$ with base $\\mathrm{twr}(0,n) = n$, plus verification $\\mathrm{twr}(1,n) = 2^n$ and $\\mathrm{twr}(2,n) = 2^{2^n}$",
       "startLine": 27,
       "endLine": 39,
-      "mathContext": "Recursive definition of $\\mathrm{twr}(k, n) = 2^{\\mathrm{twr}(k-1, n)}$ with base $\\mathrm{twr}(0,n) = n$, plus verification $\\mathrm{twr}(1,n) = 2^n$ and $\\mathrm{twr}(2,n) = 2^{2^n}$"
+      "mathContext": "Recursive definition of $\\mathrm{twr}(k, n) = $$2^{{\\mathrm{twr}$}$(k-1, n)}$ with base $\\mathrm{twr}(0,n) = n$, plus verification $\\mathrm{twr}(1,n) = $2^{n}$$ and $\\mathrm{twr}(2,n) = $$2^{{$2^{n}$}$}$$"
     },
     {
       "id": "hypergraph-ramsey",
@@ -47,7 +47,7 @@
       "summary": "Definition of $R_r(n)$: minimal $m$ for monochromatic $r$-uniform cliques in 2-colorings of $K_m^{(r)}$, via `sInf`",
       "startLine": 41,
       "endLine": 49,
-      "mathContext": "Definition of $R_r(n)$: minimal $m$ for monochromatic $r$-uniform cliques in 2-colorings of $K_m^{(r)}$, via `sInf`"
+      "mathContext": "Formal definition: Definition of $R_r(n)$: minimal $m$ for monochromatic $r$-uniform cliques in 2-colorings of $K_m^{(r)}$, via `sInf`"
     },
     {
       "id": "graph-ramsey",
@@ -55,7 +55,7 @@
       "summary": "Erdős-Szekeres bounds $2^{n/2} \\leq R(n,n) \\leq 4^n$ establishing exponential growth, combined into $R_2(n) = \\mathrm{twr}_1(\\Theta(n))$",
       "startLine": 51,
       "endLine": 64,
-      "mathContext": "Erdős-Szekeres bounds $2^{n/2} \\leq R(n,n) \\leq 4^n$ establishing exponential growth, combined into $R_2(n) = \\mathrm{twr}_1(\\Theta(n))$"
+      "mathContext": "Erdős-Szekeres bounds $$$2^{{n/2}$}$ \\leq R(n,n) \\leq $4^{n}$$ establishing exponential growth, combined into $R_2(n) = \\mathrm{twr}_1(\\Theta(n))$"
     },
     {
       "id": "stepping-up",
@@ -63,7 +63,7 @@
       "summary": "For $r \\geq 3$: $R_r(n) \\leq \\mathrm{twr}_{r-1}(c_r \\cdot n^2)$ — each uniformity increase adds one tower level with quadratic penalty",
       "startLine": 66,
       "endLine": 72,
-      "mathContext": "For $r \\geq 3$: $R_r(n) \\leq \\mathrm{twr}_{r-1}(c_r \\cdot n^2)$ — each uniformity increase adds one tower level with quadratic penalty"
+      "mathContext": "For $r \\geq 3$: $R_r(n) \\leq \\mathrm{twr}_{r-1}(c_r \\cdot $n^{2}$)$ — each uniformity increase adds one tower level with quadratic penalty"
     },
     {
       "id": "r3-lower",
@@ -71,7 +71,7 @@
       "summary": "$R_3(n) \\geq \\mathrm{twr}_2(c \\cdot n^2) = 2^{2^{cn^2}}$, matching the upper bound tower height and resolving the $r=3$ case",
       "startLine": 74,
       "endLine": 80,
-      "mathContext": "$R_3(n) \\geq \\mathrm{twr}_2(c \\cdot n^2) = 2^{2^{cn^2}}$, matching the upper bound tower height and resolving the $r=3$ case"
+      "mathContext": "$R_3(n) \\geq \\mathrm{twr}_2(c \\cdot $n^{2}$) = $$2^{{2^{cn^2}$}$}$, matching the upper bound tower height and resolving the $r=3$ case"
     },
     {
       "id": "general-lower",
@@ -79,7 +79,7 @@
       "summary": "$R_r(n) \\geq \\mathrm{twr}_{r-1}(cn)$: tower height is exactly $r-1$, with gap in argument ($n$ vs $n^2$)",
       "startLine": 82,
       "endLine": 86,
-      "mathContext": "$R_r(n) \\geq \\mathrm{twr}_{r-1}(cn)$: tower height is exactly $r-1$, with gap in argument ($n$ vs $n^2$)"
+      "mathContext": "$R_r(n) \\geq \\mathrm{twr}_{r-1}(cn)$: tower height is exactly $r-1$, with gap in argument ($n$ vs $$n^{2}$$)"
     },
     {
       "id": "main-conjecture",
@@ -87,7 +87,7 @@
       "summary": "Erdős-Hajnal-Rado (1965): $R_r(n) = \\mathrm{twr}_{r-1}(\\Theta(n))$ — the iterated logarithm is linear in $n$",
       "startLine": 88,
       "endLine": 98,
-      "mathContext": "Erdős-Hajnal-Rado (1965): $R_r(n) = \\mathrm{twr}_{r-1}(\\Theta(n))$ — the iterated logarithm is linear in $n$"
+      "mathContext": "Mathematical content: Erdős-Hajnal-Rado (1965): $R_r(n) = \\mathrm{twr}_{r-1}(\\Theta(n))$ — the iterated logarithm is linear in $n$"
     },
     {
       "id": "small-cases",
@@ -95,7 +95,7 @@
       "summary": "Exact value $R_3(4) = 13$, one of very few known hypergraph Ramsey numbers",
       "startLine": 100,
       "endLine": 103,
-      "mathContext": "Exact value $R_3(4) = 13$, one of very few known hypergraph Ramsey numbers"
+      "mathContext": "Mathematical content: Exact value $R_3(4) = 13$, one of very few known hypergraph Ramsey numbers"
     }
   ],
   "overview": {

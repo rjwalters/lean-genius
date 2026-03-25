@@ -113,7 +113,7 @@
       "summary": "Defines primitiveTripleCount, tripleDensityConstant, and connects to Mathlib's PythagoreanTriple parametrization. Establishes the bijection between primitive triples and valid parameter pairs.",
       "startLine": 69,
       "endLine": 110,
-      "mathContext": "Defines primitiveTripleCount, tripleDensityConstant, and connects to Mathlib's PythagoreanTriple parametrization. Establishes the bijection between primitive triples and valid parameter pairs."
+      "mathContext": "Formal definition: Defines primitiveTripleCount, tripleDensityConstant, and connects to Mathlib's PythagoreanTriple parametrization. Establishes the bijection between primitive triples and valid parameter pairs."
     },
     {
       "id": "parity-density",
@@ -129,7 +129,7 @@
       "summary": "Verifies primitiveTripleCount for N = 0, 4, 5, 13, 25, 50, 100 via native_decide. Confirms values track the predicted $N/(2\\pi) \\approx 0.159N$.",
       "startLine": 184,
       "endLine": 221,
-      "mathContext": "Verifies primitiveTripleCount for N = 0, 4, 5, 13, 25, 50, 100 via native_decide. Confirms values track the predicted $N/(2\\pi) \\approx 0.159N$."
+      "mathContext": "Verifies primitiveTripleCount for N = 0, 4, 5, 13, 25, 50, 100 via native_decide. Confirms values track the predicted $N/(2\\$\\pi$) \\approx 0.159N$."
     },
     {
       "id": "monotonicity-intermediates",
@@ -161,7 +161,7 @@
       "summary": "Links the counting function to Mathlib's PythagoreanTriple.IsPrimitiveClassified, confirming the parametrization generates all primitive triples and the counting function counts the correct objects.",
       "startLine": 606,
       "endLine": 660,
-      "mathContext": "Links the counting function to Mathlib's PythagoreanTriple.IsPrimitiveClassified, confirming the parametrization generates all primitive triples and the counting function counts the correct objects."
+      "mathContext": "Mathematical content: Links the counting function to Mathlib's PythagoreanTriple.IsPrimitiveClassified, confirming the parametrization generates all primitive triples and the counting function counts the correct objects."
     },
     {
       "id": "parity-counting",
@@ -185,7 +185,7 @@
       "summary": "Per-row analysis: for even $m$, all coprime residues are odd (only EO pairs). For odd $m \\ge 3$, the involution bijects even and odd coprime residues, giving exact equality per row.",
       "startLine": 918,
       "endLine": 1138,
-      "mathContext": "Per-row analysis: for even $m$, all coprime residues are odd (only EO pairs). For odd $m \\ge 3$, the involution bijects even and odd coprime residues, giving exact equality per row."
+      "mathContext": "Mathematical content: Per-row analysis: for even $m$, all coprime residues are odd (only EO pairs). For odd $m \\ge 3$, the involution bijects even and odd coprime residues, giving exact equality per row."
     },
     {
       "id": "column-analysis",
@@ -201,7 +201,7 @@
       "summary": "Collects all results and provides a final summary of the 97 theorems, 3 axioms, and 0 sorries. Includes the verification table showing count$(N)$ tracks $N/(2\\pi)$.",
       "startLine": 2029,
       "endLine": 2485,
-      "mathContext": "Collects all results and provides a final summary of the 97 theorems, 3 axioms, and 0 sorries. Includes the verification table showing count$(N)$ tracks $N/(2\\pi)$."
+      "mathContext": "Collects all results and provides a final summary of the 97 theorems, 3 axioms, and 0 sorries. Includes the verification table showing count$(N)$ tracks $N/(2\\$\\pi$)$."
     }
   ],
   "conclusion": {

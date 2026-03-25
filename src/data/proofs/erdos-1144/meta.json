@@ -95,7 +95,7 @@
       "startLine": 1,
       "endLine": 23,
       "summary": "Documentation header stating Erdős Problem #1144: the conjecture on partial sums of random multiplicative functions, its open status, Atherfold's upper bound, and relation to Problem #520.",
-      "mathContext": "Documentation header stating Erdős Problem #1144: the conjecture on partial sums of random multiplicative functions, its open status, Atherfold's upper bound, and relation to Problem #520."
+      "mathContext": "Bound: Documentation header stating Erdős Problem #1144: the conjecture on partial sums of random multiplicative functions, its open status, Atherfold's upper bound, and relation to Problem #520."
     },
     {
       "id": "imports",
@@ -103,7 +103,7 @@
       "startLine": 24,
       "endLine": 28,
       "summary": "Imports Mathlib.Tactic and Mathlib.Data.Nat.Prime.Basic; opens Filter and Finset namespaces.",
-      "mathContext": "Imports Mathlib.Tactic and Mathlib.Data.Nat.Prime.Basic; opens Filter and Finset namespaces."
+      "mathContext": "Mathematical content: Imports Mathlib.Tactic and Mathlib.Data.Nat.Prime.Basic; opens Filter and Finset namespaces."
     },
     {
       "id": "core-defs",
@@ -111,7 +111,7 @@
       "startLine": 29,
       "endLine": 44,
       "summary": "Defines IsCompletelyMultiplicative (f(mn) = f(m)f(n)), IsRademacherMultiplicative (completely multiplicative with f(p) = ±1), and partialSum as ∑ over Finset.range.",
-      "mathContext": "Defines IsCompletelyMultiplicative (f(mn) = f(m)f(n)), IsRademacherMultiplicative (completely multiplicative with f(p) = ±1), and partialSum as ∑ over Finset.range."
+      "mathContext": "Formal definition: Defines IsCompletelyMultiplicative (f(mn) = f(m)f(n)), IsRademacherMultiplicative (completely multiplicative with f(p) = ±1), and partialSum as ∑ over Finset.range."
     },
     {
       "id": "basic-props",
@@ -119,7 +119,7 @@
       "startLine": 45,
       "endLine": 77,
       "summary": "Four theorems: rademacher_one (f(1)=1), rademacher_values_pm1 (f(n)=±1 for n>0, sorry), rademacher_abs_one (|f(n)|=1), completely_mult_zero (f(0)=0 by algebraic argument).",
-      "mathContext": "Four theorems: rademacher_one (f(1)=1), rademacher_values_pm1 (f(n)=±1 for n>0, sorry), rademacher_abs_one (|f(n)|=1), completely_mult_zero (f(0)=0 by algebraic argument)."
+      "mathContext": "Verified: Four theorems: rademacher_one (f(1)=1), rademacher_values_pm1 (f(n)=±1 for n>0, sorry), rademacher_abs_one (|f(n)|=1), completely_mult_zero (f(0)=0 by algebraic argument)."
     },
     {
       "id": "conjecture",
@@ -135,7 +135,7 @@
       "startLine": 104,
       "endLine": 118,
       "summary": "Axiomatizes Atherfold's 2025 upper bound: for every ε>0, there exists C>0 such that |S_f(N)| ≤ C√N (log N)^{1+ε} eventually.",
-      "mathContext": "Axiomatizes Atherfold's 2025 upper bound: for every ε>0, there exists C>0 such that |S_f(N)| ≤ C√N (log N)^{1+ε} eventually."
+      "mathContext": "Axiomatizes Atherfold's 2025 upper bound: for every ε>0, there exists C>0 such that |S_f(N)| $\\leq$ C$\\sqrt{N}$ (log N)^{1+ε} eventually."
     },
     {
       "id": "structural",
@@ -143,7 +143,7 @@
       "startLine": 119,
       "endLine": 141,
       "summary": "Three structural results: partialSum_zero (S(0)=0), atherfold_implies_subpolynomial (sorry: log factors dominated by N^δ), partialSum_trivial_bound (sorry: |S(N)| ≤ N by triangle inequality).",
-      "mathContext": "Three structural results: partialSum_zero (S(0)=0), atherfold_implies_subpolynomial (sorry: log factors dominated by N^δ), partialSum_trivial_bound (sorry: |S(N)| ≤ N by triangle inequality)."
+      "mathContext": "Three structural results: partialSum_zero (S(0)=0), atherfold_implies_subpolynomial (sorry: log factors dominated by N^δ), partialSum_trivial_bound (sorry: |S(N)| $\\leq$ N by triangle inequality)."
     },
     {
       "id": "pinch",
@@ -151,7 +151,7 @@
       "startLine": 142,
       "endLine": 185,
       "summary": "The main proved result: if the conjecture holds, combined with Atherfold's bound, the growth rate is pinned between C₁√N and C₂√N(log N)^{1+ε}. Proof extracts C₁=1 and C₂ from Atherfold.",
-      "mathContext": "The main proved result: if the conjecture holds, combined with Atherfold's bound, the growth rate is pinned between C₁√N and C₂√N(log N)^{1+ε}. Proof extracts C₁=1 and C₂ from Atherfold."
+      "mathContext": "The main proved result: if the conjecture holds, combined with Atherfold's bound, the growth rate is pinned between C₁$\\sqrt{N}$ and C₂$\\sqrt{N}$(log N)^{1+ε}. Proof extracts C₁=1 and C₂ from Atherfold."
     }
   ],
   "conclusion": {

@@ -49,7 +49,7 @@
       "summary": "Defines $P(n)$ as the greatest prime factor of $n$ (returning 0 for $n \\le 1$), and proves basic properties: $P(n) \\mid n$ and $P(n)$ is prime for $n \\ge 2$.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Defines $P(n)$ as the greatest prime factor of $n$ (returning 0 for $n \\le 1$), and proves basic properties: $P(n) \\mid n$ and $P(n)$ is prime for $n \\ge 2$."
+      "mathContext": "Formal definition: Defines $P(n)$ as the greatest prime factor of $n$ (returning 0 for $n \\le 1$), and proves basic properties: $P(n) \\mid n$ and $P(n)$ is prime for $n \\ge 2$."
     },
     {
       "id": "mersenne",
@@ -57,7 +57,7 @@
       "summary": "Defines the Mersenne sequence $M_n = 2^n - 1$ and establishes basic properties including $M_n > 0$ and divisibility relations.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Defines the Mersenne sequence $M_n = 2^n - 1$ and establishes basic properties including $M_n > 0$ and divisibility relations."
+      "mathContext": "Defines the Mersenne sequence $M_n = $2^{n}$ - 1$ and establishes basic properties including $M_n > 0$ and divisibility relations."
     },
     {
       "id": "main",
@@ -65,7 +65,7 @@
       "summary": "States the central question $P(2^n - 1)/n \\to \\infty$ and axiomatizes Stewart's 2013 affirmative answer.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "States the central question $P(2^n - 1)/n \\to \\infty$ and axiomatizes Stewart's 2013 affirmative answer."
+      "mathContext": "States the central question $P($2^{n}$ - 1)/n \\to \\infty$ and axiomatizes Stewart's 2013 affirmative answer."
     },
     {
       "id": "schinzel",
@@ -73,7 +73,7 @@
       "summary": "Axiomatizes Schinzel's 1962 result: $P(2^n - 1) > 2n$ for $n > 12$, the first linear-beating bound.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Axiomatizes Schinzel's 1962 result: $P(2^n - 1) > 2n$ for $n > 12$, the first linear-beating bound."
+      "mathContext": "Axiomatizes Schinzel's 1962 result: $P($2^{n}$ - 1) > 2n$ for $n > 12$, the first linear-beating bound."
     },
     {
       "id": "stewart",
@@ -81,7 +81,7 @@
       "summary": "Axiomatizes the precise growth rate $P(2^n - 1) \\ge n^{1 + 1/(104 \\log\\log n)}$ from Stewart (2013), giving super-polynomial growth.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Axiomatizes the precise growth rate $P(2^n - 1) \\ge n^{1 + 1/(104 \\log\\log n)}$ from Stewart (2013), giving super-polynomial growth."
+      "mathContext": "Axiomatizes the precise growth rate $P($2^{n}$ - 1) \\ge n^{1 + 1/(104 \\log\\$\\log n$)}$ from Stewart (2013), giving super-polynomial growth."
     },
     {
       "id": "small",
@@ -89,7 +89,7 @@
       "summary": "Provides explicit computations of $P(2^n - 1)$ for small $n$: $P(M_2) = 3$, $P(M_3) = 7$, etc., verifying the bound for initial cases.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Provides explicit computations of $P(2^n - 1)$ for small $n$: $P(M_2) = 3$, $P(M_3) = 7$, etc., verifying the bound for initial cases."
+      "mathContext": "Provides explicit computations of $P($2^{n}$ - 1)$ for small $n$: $P(M_2) = 3$, $P(M_3) = 7$, etc., verifying the bound for initial cases."
     },
     {
       "id": "mersenne-primes",
@@ -97,7 +97,7 @@
       "summary": "Defines Mersenne primes and proves that when $M_n$ is prime, $P(M_n) = M_n = 2^n - 1$, the extreme case where the bound is trivially satisfied.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Defines Mersenne primes and proves that when $M_n$ is prime, $P(M_n) = M_n = 2^n - 1$, the extreme case where the bound is trivially satisfied."
+      "mathContext": "Defines Mersenne primes and proves that when $M_n$ is prime, $P(M_n) = M_n = $2^{n}$ - 1$, the extreme case where the bound is trivially satisfied."
     },
     {
       "id": "factorial",
@@ -105,7 +105,7 @@
       "summary": "States the open analogue: does $P(n! + 1)/(n \\log n) \\to \\infty$? Axiomatizes Lai's (2021) partial result on the limsup.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "States the open analogue: does $P(n! + 1)/(n \\log n) \\to \\infty$? Axiomatizes Lai's (2021) partial result on the limsup."
+      "mathContext": "States the open analogue: does $P(n! + 1)/(n \\$\\log n$) \\to \\infty$? Axiomatizes Lai's (2021) partial result on the limsup."
     },
     {
       "id": "zsygmondy",
@@ -113,7 +113,7 @@
       "summary": "Defines primitive prime factors ($p \\mid 2^n - 1$ with $p \\nmid 2^k - 1$ for $k < n$) and axiomatizes Zsygmondy's theorem: existence for $n > 6$.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Defines primitive prime factors ($p \\mid 2^n - 1$ with $p \\nmid 2^k - 1$ for $k < n$) and axiomatizes Zsygmondy's theorem: existence for $n > 6$."
+      "mathContext": "Defines primitive prime factors ($p \\mid $2^{n}$ - 1$ with $p \\nmid $2^{k}$ - 1$ for $k < n$) and axiomatizes Zsygmondy's theorem: existence for $n > 6$."
     },
     {
       "id": "order",
@@ -121,7 +121,7 @@
       "summary": "Defines $\\text{ord}_p(2)$ and axiomatizes the connection: $p \\mid 2^n - 1 \\iff \\text{ord}_p(2) \\mid n$, linking prime factors to the algebraic structure of $\\mathbb{F}_p^\\times$.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Defines $\\text{ord}_p(2)$ and axiomatizes the connection: $p \\mid 2^n - 1 \\iff \\text{ord}_p(2) \\mid n$, linking prime factors to the algebraic structure of $\\mathbb{F}_p^\\times$."
+      "mathContext": "Defines $\\text{ord}_p(2)$ and axiomatizes the connection: $p \\mid $2^{n}$ - 1 \\iff \\text{ord}_p(2) \\mid n$, linking prime factors to the algebraic structure of $\\mathbb{F}_p^\\times$."
     }
   ],
   "conclusion": {

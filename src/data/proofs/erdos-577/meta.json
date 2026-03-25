@@ -72,7 +72,7 @@
       "summary": "Imports `SimpleGraph.Basic`, `Subgraph`, `Fintype.Card`; opens `SimpleGraph` namespace",
       "startLine": 28,
       "endLine": 36,
-      "mathContext": "Imports `SimpleGraph.Basic`, `Subgraph`, `Fintype.Card`; opens `SimpleGraph` namespace"
+      "mathContext": "Mathematical content: Imports `SimpleGraph.Basic`, `Subgraph`, `Fintype.Card`; opens `SimpleGraph` namespace"
     },
     {
       "id": "basic-defs",
@@ -80,7 +80,7 @@
       "summary": "Defines minimum degree $\\delta(G)$ via `Finset.min'`, `FourCycle` structure with 4 distinct vertices and edges $v_1v_2, v_2v_3, v_3v_4, v_4v_1$",
       "startLine": 37,
       "endLine": 66,
-      "mathContext": "Defines minimum degree $\\delta(G)$ via `Finset.min'`, `FourCycle` structure with 4 distinct vertices and edges $v_1v_2, v_2v_3, v_3v_4, v_4v_1$"
+      "mathContext": "Defines minimum degree $\\$\\delta$(G)$ via `Finset.min'`, `FourCycle` structure with 4 distinct vertices and edges $v_1v_2, v_2v_3, v_3v_4, v_4v_1$"
     },
     {
       "id": "disjointness",
@@ -88,7 +88,7 @@
       "summary": "Defines `DisjointFourCycles` via `Finset.Disjoint` on vertex sets, and `PairwiseDisjoint` for collections of $C_4$'s",
       "startLine": 67,
       "endLine": 74,
-      "mathContext": "Defines `DisjointFourCycles` via `Finset.Disjoint` on vertex sets, and `PairwiseDisjoint` for collections of $C_4$'s"
+      "mathContext": "Formal definition: Defines `DisjointFourCycles` via `Finset.Disjoint` on vertex sets, and `PairwiseDisjoint` for collections of $C_4$'s"
     },
     {
       "id": "conjecture",
@@ -96,7 +96,7 @@
       "summary": "Formal statement: $\\forall k > 0$, if $|V| = 4k$ and $\\delta(G) \\geq 2k$, then $\\exists$ $k$ pairwise vertex-disjoint $C_4$'s",
       "startLine": 75,
       "endLine": 93,
-      "mathContext": "Formal statement: $\\forall k > 0$, if $|V| = 4k$ and $\\delta(G) \\geq 2k$, then $\\exists$ $k$ pairwise vertex-disjoint $C_4$'s"
+      "mathContext": "Formal statement: $\\forall k > 0$, if $|V| = 4k$ and $\\$\\delta$(G) \\geq 2k$, then $\\exists$ $k$ pairwise vertex-disjoint $C_4$'s"
     },
     {
       "id": "wang",
@@ -104,7 +104,7 @@
       "summary": "Axiom `wang_theorem : ErdosFaudreeConjecture` and wrapper `erdos_faudree_solved` confirming the solution",
       "startLine": 94,
       "endLine": 108,
-      "mathContext": "Axiom `wang_theorem : ErdosFaudreeConjecture` and wrapper `erdos_faudree_solved` confirming the solution"
+      "mathContext": "Verified: Axiom `wang_theorem : ErdosFaudreeConjecture` and wrapper `erdos_faudree_solved` confirming the solution"
     },
     {
       "id": "special-cases",
@@ -112,7 +112,7 @@
       "summary": "Base case $k=1$ (4 vertices, $\\delta \\geq 2$ implies $C_4$ exists) and sharpness: $\\delta = 2k-1$ admits counterexamples",
       "startLine": 109,
       "endLine": 140,
-      "mathContext": "Base case $k=1$ (4 vertices, $\\delta \\geq 2$ implies $C_4$ exists) and sharpness: $\\delta = 2k-1$ admits counterexamples"
+      "mathContext": "Base case $k=1$ (4 vertices, $\\$\\delta$ \\geq 2$ implies $C_4$ exists) and sharpness: $\\$\\delta$ = 2k-1$ admits counterexamples"
     },
     {
       "id": "related",
@@ -120,7 +120,7 @@
       "summary": "Connections to Dirac's theorem ($\\delta \\geq n/2 \\Rightarrow$ Hamiltonian), El-Zahar's conjecture (general cycle lengths), and Corrádi-Hajnal ($C_3$ partition)",
       "startLine": 141,
       "endLine": 164,
-      "mathContext": "Connections to Dirac's theorem ($\\delta \\geq n/2 \\Rightarrow$ Hamiltonian), El-Zahar's conjecture (general cycle lengths), and Corrádi-Hajnal ($C_3$ partition)"
+      "mathContext": "Connections to Dirac's theorem ($\\$\\delta$ \\geq n/2 \\Rightarrow$ Hamiltonian), El-Zahar's conjecture (general cycle lengths), and Corrádi-Hajnal ($C_3$ partition)"
     },
     {
       "id": "techniques",
@@ -128,7 +128,7 @@
       "summary": "Wang's minimal counterexample method: neighborhood analysis, greedy $C_4$ extraction, contradiction",
       "startLine": 165,
       "endLine": 184,
-      "mathContext": "Wang's minimal counterexample method: neighborhood analysis, greedy $C_4$ extraction, contradiction"
+      "mathContext": "Mathematical content: Wang's minimal counterexample method: neighborhood analysis, greedy $C_4$ extraction, contradiction"
     },
     {
       "id": "summary",
@@ -136,7 +136,7 @@
       "summary": "Canonical `erdos_577 : ErdosFaudreeConjecture := wang_theorem` resolving Problem #577",
       "startLine": 185,
       "endLine": 213,
-      "mathContext": "Canonical `erdos_577 : ErdosFaudreeConjecture := wang_theorem` resolving Problem #577"
+      "mathContext": "Verified: Canonical `erdos_577 : ErdosFaudreeConjecture := wang_theorem` resolving Problem #577"
     }
   ],
   "references": [

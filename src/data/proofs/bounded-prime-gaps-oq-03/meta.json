@@ -82,7 +82,7 @@
       "startLine": 1,
       "endLine": 36,
       "summary": "Header explaining OQ-03: Is 246 optimal for 50-tuple Maynard-Tao sieve? Answer: YES. Engelsma (2013) exhaustive search confirms. Imports from BoundedPrimeGaps.lean for IsAdmissible.",
-      "mathContext": "Header explaining OQ-03: Is 246 optimal for 50-tuple Maynard-Tao sieve? Answer: YES. Engelsma (2013) exhaustive search confirms. Imports from BoundedPrimeGaps.lean for IsAdmissible."
+      "mathContext": "Bound: Header explaining OQ-03: Is 246 optimal for 50-tuple Maynard-Tao sieve? Answer: YES. Engelsma (2013) exhaustive search confirms. Imports from BoundedPrimeGaps.lean for IsAdmissible."
     },
     {
       "id": "engelsma-tuple",
@@ -90,7 +90,7 @@
       "startLine": 37,
       "endLine": 58,
       "summary": "engelsma50Tuple: explicit Finset with 50 elements {0,4,6,...,244,246}. Theorems: card=50, nonempty, 0∈tuple, 246∈tuple, all elements ≤246. All proved by native_decide.",
-      "mathContext": "engelsma50Tuple: explicit Finset with 50 elements {0,4,6,...,244,246}. Theorems: card=50, nonempty, 0∈tuple, 246∈tuple, all elements ≤246. All proved by native_decide."
+      "mathContext": "engelsma50Tuple: explicit Finset with 50 elements {0,4,6,...,244,246}. Theorems: card=50, nonempty, 0∈tuple, 246∈tuple, all elements $\\leq$246. All proved by native_decide."
     },
     {
       "id": "admissibility",
@@ -114,7 +114,7 @@
       "startLine": 124,
       "endLine": 137,
       "summary": "engelsma_lower_bound: axiom encoding Engelsma's 2013 exhaustive computer search. States: ∀ H admissible with card ≥ 50, diameter ≥ 246.",
-      "mathContext": "engelsma_lower_bound: axiom encoding Engelsma's 2013 exhaustive computer search. States: ∀ H admissible with card ≥ 50, diameter ≥ 246."
+      "mathContext": "engelsma_lower_bound: axiom encoding Engelsma's 2013 exhaustive computer search. States: ∀ H admissible with card $\\geq$ 50, diameter $\\geq$ 246."
     },
     {
       "id": "optimality",

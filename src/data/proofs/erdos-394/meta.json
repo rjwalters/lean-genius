@@ -88,7 +88,7 @@
       "startLine": 38,
       "endLine": 67,
       "summary": "consecutiveProduct, t_k(n), divides_consecutive",
-      "mathContext": "consecutiveProduct, t_k(n), divides_consecutive"
+      "mathContext": "Mathematical content: consecutiveProduct, t_k(n), divides_consecutive"
     },
     {
       "id": "basic-properties",
@@ -96,7 +96,7 @@
       "startLine": 68,
       "endLine": 95,
       "summary": "Well-definedness, t₂(p) = p - 1 for primes",
-      "mathContext": "Well-definedness, t₂(p) = p - 1 for primes"
+      "mathContext": "Mathematical content: Well-definedness, t₂(p) = p - 1 for primes"
     },
     {
       "id": "sum-t2",
@@ -104,7 +104,7 @@
       "startLine": 96,
       "endLine": 124,
       "summary": "Sum function S, trivial lower bound, original conjecture",
-      "mathContext": "Sum function S, trivial lower bound, original conjecture"
+      "mathContext": "Bound: Sum function S, trivial lower bound, original conjecture"
     },
     {
       "id": "erdos-hall",
@@ -112,7 +112,7 @@
       "startLine": 125,
       "endLine": 143,
       "summary": "(log log log x / log log x)x² upper bound",
-      "mathContext": "(log log log x / log log x)x² upper bound"
+      "mathContext": "Bound: (log log log x / log log x)x² upper bound"
     },
     {
       "id": "erdos-hall-conjecture",
@@ -120,7 +120,7 @@
       "startLine": 144,
       "endLine": 166,
       "summary": "o(x²/(log x)^c) for c < log 2",
-      "mathContext": "o(x²/(log x)^c) for c < log 2"
+      "mathContext": "Mathematical content: o(x²/(log x)^c) for c < log 2"
     },
     {
       "id": "hierarchy",
@@ -128,7 +128,7 @@
       "startLine": 167,
       "endLine": 181,
       "summary": "Σ t_{k+1} = o(Σ t_k)?",
-      "mathContext": "Σ t_{k+1} = o(Σ t_k)?"
+      "mathContext": "$\\sum$ t_{k+1} = o($\\sum$ t_k)?"
     },
     {
       "id": "factorials",
@@ -136,7 +136,7 @@
       "startLine": 182,
       "endLine": 214,
       "summary": "t_{n-1}(n!) = 2, t_{n-2}(n!) ≪ n",
-      "mathContext": "t_{n-1}(n!) = 2, t_{n-2}(n!) ≪ n"
+      "mathContext": "Mathematical content: t_{n-1}(n!) = 2, t_{n-2}(n!) ≪ n"
     },
     {
       "id": "selfridge",
@@ -144,7 +144,7 @@
       "startLine": 215,
       "endLine": 233,
       "summary": "Strict decrease property, n = 10 case",
-      "mathContext": "Strict decrease property, n = 10 case"
+      "mathContext": "Mathematical content: Strict decrease property, n = 10 case"
     },
     {
       "id": "connections",
@@ -152,7 +152,7 @@
       "startLine": 234,
       "endLine": 262,
       "summary": "Factorial divisibility, probabilistic intuition, smooth numbers",
-      "mathContext": "Factorial divisibility, probabilistic intuition, smooth numbers"
+      "mathContext": "Mathematical content: Factorial divisibility, probabilistic intuition, smooth numbers"
     },
     {
       "id": "summary",
@@ -160,7 +160,7 @@
       "startLine": 263,
       "endLine": 306,
       "summary": "Summary theorem and main result",
-      "mathContext": "Summary theorem and main result"
+      "mathContext": "Verified: Summary theorem and main result"
     }
   ],
   "conclusion": {

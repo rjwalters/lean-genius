@@ -92,7 +92,7 @@
       "startLine": 1,
       "endLine": 40,
       "summary": "Overview of the sharp convergence rate |D(n)/n! - 1/e| ≤ 1/(n+1)! and imports (Derangements.Finite, SpecificLimits.Normed, ExpDeriv, InfiniteSum.Basic).",
-      "mathContext": "Overview of the sharp convergence rate |D(n)/n! - 1/e| ≤ 1/(n+1)! and imports (Derangements.Finite, SpecificLimits.Normed, ExpDeriv, InfiniteSum.Basic)."
+      "mathContext": "Overview of the sharp convergence rate |D(n)/n! - 1/e| $\\leq$ 1/(n+1)! and imports (Derangements.Finite, SpecificLimits.Normed, ExpDeriv, InfiniteSum.Basic)."
     },
     {
       "id": "section-i",
@@ -100,7 +100,7 @@
       "startLine": 41,
       "endLine": 66,
       "summary": "Definition of altFactTerm k = (-1)^k/k! and altFactPartialSum n = ∑_{k=0}^n altFactTerm k. Helper lemmas: factorial_cast_pos, factorial_cast_ne_zero, altFactTerm_abs, altFactPartialSum_succ.",
-      "mathContext": "Definition of altFactTerm k = (-1)^k/k! and altFactPartialSum n = ∑_{k=0}^n altFactTerm k. Helper lemmas: factorial_cast_pos, factorial_cast_ne_zero, altFactTerm_abs, altFactPartialSum_succ."
+      "mathContext": "Formal definition: Definition of altFactTerm k = (-1)^k/k! and altFactPartialSum n = ∑_{k=0}^n altFactTerm k. Helper lemmas: factorial_cast_pos, factorial_cast_ne_zero, altFactTerm_abs, altFactPartialSum_succ."
     },
     {
       "id": "section-ii",
@@ -108,7 +108,7 @@
       "startLine": 67,
       "endLine": 91,
       "summary": "numDerangements_eq_factorial_mul_altSum: D(n) = n! · ∑_{k=0}^n (-1)^k/k! by strong induction. derangements_div_factorial: D(n)/n! = altFactPartialSum n.",
-      "mathContext": "numDerangements_eq_factorial_mul_altSum: D(n) = n! · ∑_{k=0}^n (-1)^k/k! by strong induction. derangements_div_factorial: D(n)/n! = altFactPartialSum n."
+      "mathContext": "Mathematical content: numDerangements_eq_factorial_mul_altSum: D(n) = n! · ∑_{k=0}^n (-1)^k/k! by strong induction. derangements_div_factorial: D(n)/n! = altFactPartialSum n."
     },
     {
       "id": "section-iii",
@@ -116,7 +116,7 @@
       "startLine": 92,
       "endLine": 114,
       "summary": "summable_altFactTerm: the alternating series is summable. exp_neg_one_eq_tsum_alt: e^{-1} = ∑ (-1)^k/k! via NormedSpace.exp_eq_tsum.",
-      "mathContext": "summable_altFactTerm: the alternating series is summable. exp_neg_one_eq_tsum_alt: e^{-1} = ∑ (-1)^k/k! via NormedSpace.exp_eq_tsum."
+      "mathContext": "Mathematical content: summable_altFactTerm: the alternating series is summable. exp_neg_one_eq_tsum_alt: e^{-1} = ∑ (-1)^k/k! via NormedSpace.exp_eq_tsum."
     },
     {
       "id": "section-iv",
@@ -132,7 +132,7 @@
       "startLine": 262,
       "endLine": 310,
       "summary": "derangements_convergence_rate: |D(n)/n! - e^{-1}| ≤ 1/(n+1)! (sharp bound). derangements_tendsto_inv_e: D(n)/n! → e^{-1} using Metric.tendsto_atTop and factorial tail convergence.",
-      "mathContext": "derangements_convergence_rate: |D(n)/n! - e^{-1}| ≤ 1/(n+1)! (sharp bound). derangements_tendsto_inv_e: D(n)/n! → e^{-1} using Metric.tendsto_atTop and factorial tail convergence."
+      "mathContext": "derangements_convergence_rate: |D(n)/n! - e^{-1}| $\\leq$ 1/(n+1)! (sharp bound). derangements_tendsto_inv_e: D(n)/n! $\\to$ e^{-1} using Metric.tendsto_atTop and factorial tail convergence."
     },
     {
       "id": "section-vi",
@@ -140,7 +140,7 @@
       "startLine": 311,
       "endLine": 342,
       "summary": "convergence_rate_monotone: error bound decreases with n. derangements_div_factorial_nonneg: ratio always ≥ 0. Concrete error bounds for n=0,1,2,3: |error| ≤ 1, 1/2, 1/6, 1/24.",
-      "mathContext": "convergence_rate_monotone: error bound decreases with n. derangements_div_factorial_nonneg: ratio always ≥ 0. Concrete error bounds for n=0,1,2,3: |error| ≤ 1, 1/2, 1/6, 1/24."
+      "mathContext": "convergence_rate_monotone: error bound decreases with n. derangements_div_factorial_nonneg: ratio always $\\geq$ 0. Concrete error bounds for n=0,1,2,3: |error| $\\leq$ 1, 1/2, 1/6, 1/24."
     },
     {
       "id": "section-vii",
@@ -148,7 +148,7 @@
       "startLine": 343,
       "endLine": 405,
       "summary": "derangements_alternating_even: e^{-1} ≤ D(2n)/(2n)! (even partial sums overshoot). derangements_alternating_odd: D(2n+1)/(2n+1)! ≤ e^{-1} (odd partial sums undershoot).",
-      "mathContext": "derangements_alternating_even: e^{-1} ≤ D(2n)/(2n)! (even partial sums overshoot). derangements_alternating_odd: D(2n+1)/(2n+1)! ≤ e^{-1} (odd partial sums undershoot)."
+      "mathContext": "derangements_alternating_even: e^{-1} $\\leq$ D(2n)/(2n)! (even partial sums overshoot). derangements_alternating_odd: D(2n+1)/(2n+1)! $\\leq$ e^{-1} (odd partial sums undershoot)."
     }
   ],
   "conclusion": {

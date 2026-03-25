@@ -93,7 +93,7 @@
       "startLine": 44,
       "endLine": 60,
       "summary": "Defines $\\text{PowersOfTwo} = \\{n \\mid \\exists k,\\; n = 2^k\\}$, the additive complement predicate $\\text{IsAdditiveComplementForLarge}(A, B)$, and specializes to $\\text{IsComplementToPowersOfTwo}(A)$.",
-      "mathContext": "Defines $\\text{PowersOfTwo} = \\{n \\mid \\exists k,\\; n = 2^k\\}$, the additive complement predicate $\\text{IsAdditiveComplementForLarge}(A, B)$, and specializes to $\\text{IsComplementToPowersOfTwo}(A)$."
+      "mathContext": "Defines $\\text{PowersOfTwo} = \\{n \\mid \\exists k,\\; n = $2^{k}$\\}$, the additive complement predicate $\\text{IsAdditiveComplementForLarge}(A, B)$, and specializes to $\\text{IsComplementToPowersOfTwo}(A)$."
     },
     {
       "id": "counting-functions",
@@ -109,7 +109,7 @@
       "startLine": 85,
       "endLine": 92,
       "summary": "States $\\text{Erdos221Conjecture} : \\exists A,\\; \\text{IsComplementToPowersOfTwo}(A) \\wedge \\text{HasDensityNOverLogN}(A)$.",
-      "mathContext": "States $\\text{Erdos221Conjecture} : \\exists A,\\; \\text{IsComplementToPowersOfTwo}(A) \\wedge \\text{HasDensityNOverLogN}(A)$."
+      "mathContext": "Mathematical content: States $\\text{Erdos221Conjecture} : \\exists A,\\; \\text{IsComplementToPowersOfTwo}(A) \\wedge \\text{HasDensityNOverLogN}(A)$."
     },
     {
       "id": "lorentz-1954",
@@ -133,7 +133,7 @@
       "startLine": 132,
       "endLine": 138,
       "summary": "States `erdos_221_answer : Erdos221Conjecture := ruzsa_1972`. The answer is YES.",
-      "mathContext": "States `erdos_221_answer : Erdos221Conjecture := ruzsa_1972`. The answer is YES."
+      "mathContext": "Mathematical content: States `erdos_221_answer : Erdos221Conjecture := ruzsa_1972`. The answer is YES."
     },
     {
       "id": "optimal-construction",
@@ -141,7 +141,7 @@
       "startLine": 139,
       "endLine": 149,
       "summary": "Defines $\\text{ExactComplementExists}$ requiring asymptotic density $\\sim N/\\log_2 N$, and axiomatizes `ruzsa_2001_exact_complement`. This is the sharpest known result.",
-      "mathContext": "Defines $\\text{ExactComplementExists}$ requiring asymptotic density $\\sim N/\\log_2 N$, and axiomatizes `ruzsa_2001_exact_complement`. This is the sharpest known result."
+      "mathContext": "Formal definition: Defines $\\text{ExactComplementExists}$ requiring asymptotic density $\\sim N/\\log_2 N$, and axiomatizes `ruzsa_2001_exact_complement`. This is the sharpest known result."
     },
     {
       "id": "optimality",
@@ -165,7 +165,7 @@
       "startLine": 190,
       "endLine": 205,
       "summary": "Defines $\\text{GeneralizedComplement}(g, A)$ for arbitrary base $g$, and axiomatizes `generalization_to_any_base`: for any $g \\geq 2$, sparse complements to $\\{g^k\\}$ exist with density $O(N/\\log N)$.",
-      "mathContext": "Defines $\\text{GeneralizedComplement}(g, A)$ for arbitrary base $g$, and axiomatizes `generalization_to_any_base`: for any $g \\geq 2$, sparse complements to $\\{g^k\\}$ exist with density $O(N/\\log N)$."
+      "mathContext": "Defines $\\text{GeneralizedComplement}(g, A)$ for arbitrary base $g$, and axiomatizes `generalization_to_any_base`: for any $g \\geq 2$, sparse complements to $\\{g^k\\}$ exist with density $$O(N/\\log N)$$."
     },
     {
       "id": "related",

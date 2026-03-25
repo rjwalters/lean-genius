@@ -31,7 +31,7 @@
       "startLine": 1,
       "endLine": 10,
       "summary": "Module docstring introducing the Erdős–Lovász–Vesztergombi conjecture (1997): among 1-separated point sets in $\\mathbb{R}^2$, the triangular lattice maximizes the number of pairs at distance $\\le t$.",
-      "mathContext": "Module docstring introducing the Erdős–Lovász–Vesztergombi conjecture (1997): among 1-separated point sets in $\\mathbb{R}^2$, the triangular lattice maximizes the number of pairs at distance $\\le t$."
+      "mathContext": "Mathematical content: Module docstring introducing the Erdős–Lovász–Vesztergombi conjecture (1997): among 1-separated point sets in $\\mathbb{R}^2$, the triangular lattice maximizes the number of pairs at distance $\\le t$."
     },
     {
       "id": "imports",
@@ -39,7 +39,7 @@
       "startLine": 12,
       "endLine": 18,
       "summary": "Imports Mathlib's $\\mathbb{R}$, $\\mathbb{N}$, $\\text{Finset}$, cardinality, and tactics for coordinate geometry and finite combinatorial computations.",
-      "mathContext": "Imports Mathlib's $\\mathbb{R}$, $\\mathbb{N}$, $\\text{Finset}$, cardinality, and tactics for coordinate geometry and finite combinatorial computations."
+      "mathContext": "Mathematical content: Imports Mathlib's $\\mathbb{R}$, $\\mathbb{N}$, $\\text{Finset}$, cardinality, and tactics for coordinate geometry and finite combinatorial computations."
     },
     {
       "id": "point-distance",
@@ -47,7 +47,7 @@
       "startLine": 22,
       "endLine": 27,
       "summary": "Defines $\\text{Point2D} = \\mathbb{R} \\times \\mathbb{R}$ and the squared Euclidean distance $d^2(p,q) = (p_1 - q_1)^2 + (p_2 - q_2)^2$, avoiding square roots for cleaner algebraic manipulation.",
-      "mathContext": "Defines $\\text{Point2D} = \\mathbb{R} \\times \\mathbb{R}$ and the squared Euclidean distance $d^2(p,q) = (p_1 - q_1)^2 + (p_2 - q_2)^2$, avoiding square roots for cleaner algebraic manipulation."
+      "mathContext": "Formal definition: Defines $\\text{Point2D} = \\mathbb{R} \\times \\mathbb{R}$ and the squared Euclidean distance $d^2(p,q) = (p_1 - q_1)^2 + (p_2 - q_2)^2$, avoiding square roots for cleaner algebraic manipulation."
     },
     {
       "id": "separation-neighbors",
@@ -71,7 +71,7 @@
       "startLine": 59,
       "endLine": 71,
       "summary": "Proves the Loeschian quadratic form $d^2 = a^2 + ab + b^2$ for lattice point $(a,b)$ and establishes $f(1) = 6$, $f(\\sqrt{3}) = 12$: the first two coordination shells of the triangular lattice.",
-      "mathContext": "Proves the Loeschian quadratic form $d^2 = a^2 + ab + b^2$ for lattice point $(a,b)$ and establishes $f(1) = 6$, $f(\\sqrt{3}) = 12$: the first two coordination shells of the triangular lattice."
+      "mathContext": "Verified: Proves the Loeschian quadratic form $d^2 = a^2 + ab + b^2$ for lattice point $(a,b)$ and establishes $f(1) = 6$, $f(\\sqrt{3}) = 12$: the first two coordination shells of the triangular lattice."
     },
     {
       "id": "contact-number",

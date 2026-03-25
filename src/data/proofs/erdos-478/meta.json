@@ -92,7 +92,7 @@
       "startLine": 21,
       "endLine": 25,
       "summary": "Imports $\\texttt{Nat.Prime}$, $\\texttt{ZMod}$, $\\texttt{Finset.Card}$, $\\texttt{Real}$, and $\\texttt{Tactic}$ for modular arithmetic, finite set cardinality, and proof automation.",
-      "mathContext": "Imports $\\texttt{Nat.Prime}$, $\\texttt{ZMod}$, $\\texttt{Finset.Card}$, $\\texttt{Real}$, and $\\texttt{Tactic}$ for modular arithmetic, finite set cardinality, and proof automation."
+      "mathContext": "Verified: Imports $\\texttt{Nat.Prime}$, $\\texttt{ZMod}$, $\\texttt{Finset.Card}$, $\\texttt{Real}$, and $\\texttt{Tactic}$ for modular arithmetic, finite set cardinality, and proof automation."
     },
     {
       "id": "core-definitions",
@@ -100,7 +100,7 @@
       "startLine": 29,
       "endLine": 39,
       "summary": "Defines $\\texttt{factorialResidueSet}(p) = \\{k! \\bmod p\\}$ as $\\texttt{Finset}(\\texttt{ZMod p})$, $\\texttt{factorialResidueCount}(p) = |A_p|$, and $\\texttt{conjecturedDensity} = 1 - e^{-1}$.",
-      "mathContext": "Defines $\\texttt{factorialResidueSet}(p) = \\{k! \\bmod p\\}$ as $\\texttt{Finset}(\\texttt{ZMod p})$, $\\texttt{factorialResidueCount}(p) = |A_p|$, and $\\texttt{conjecturedDensity} = 1 - e^{-1}$."
+      "mathContext": "Formal definition: Defines $\\texttt{factorialResidueSet}(p) = \\{k! \\bmod p\\}$ as $\\texttt{Finset}(\\texttt{ZMod p})$, $\\texttt{factorialResidueCount}(p) = |A_p|$, and $\\texttt{conjecturedDensity} = 1 - e^{-1}$."
     },
     {
       "id": "wilson-consequences",
@@ -116,7 +116,7 @@
       "startLine": 54,
       "endLine": 68,
       "summary": "$A_p / A_p \\supseteq (\\mathbb{Z}/p\\mathbb{Z})^*$ since $(k+1)!/k! = k+1$ ranges over all nonzero residues. Combined with $|A_p/A_p| \\leq |A_p|^2$, this gives $|A_p| \\geq \\sqrt{p-1}$.",
-      "mathContext": "$A_p / A_p \\supseteq (\\mathbb{Z}/p\\mathbb{Z})^*$ since $(k+1)!/k! = k+1$ ranges over all nonzero residues. Combined with $|A_p/A_p| \\leq |A_p|^2$, this gives $|A_p| \\geq \\sqrt{p-1}$."
+      "mathContext": "Mathematical content: $A_p / A_p \\supseteq (\\mathbb{Z}/p\\mathbb{Z})^*$ since $(k+1)!/k! = k+1$ ranges over all nonzero residues. Combined with $|A_p/A_p| \\leq |A_p|^2$, this gives $|A_p| \\geq \\sqrt{p-1}$."
     },
     {
       "id": "improved-lower-bound",
@@ -124,7 +124,7 @@
       "startLine": 69,
       "endLine": 75,
       "summary": "Grebennikov–Sagdeev–Semchankau–Vasilevskii prove $|A_p \\cdot A_p| = (1+o(1))p$, yielding $|A_p| \\geq (\\sqrt{2}-o(1))\\sqrt{p}$, the current best unconditional bound.",
-      "mathContext": "Grebennikov–Sagdeev–Semchankau–Vasilevskii prove $|A_p \\cdot A_p| = (1+o(1))p$, yielding $|A_p| \\geq (\\sqrt{2}-o(1))\\sqrt{p}$, the current best unconditional bound."
+      "mathContext": "Bound: Grebennikov–Sagdeev–Semchankau–Vasilevskii prove $|A_p \\cdot A_p| = (1+o(1))p$, yielding $|A_p| \\geq (\\sqrt{2}-o(1))\\sqrt{p}$, the current best unconditional bound."
     },
     {
       "id": "main-conjecture",
@@ -148,7 +148,7 @@
       "startLine": 101,
       "endLine": 108,
       "summary": "The conjecture holds on average: $\\sum_{p \\leq x} |A_p| / \\sum_{p \\leq x} p \\to 1 - 1/e$ [Klurman–Munsch 2017]. This confirms the random model prediction in an averaged sense.",
-      "mathContext": "The conjecture holds on average: $\\sum_{p \\leq x} |A_p| / \\sum_{p \\leq x} p \\to 1 - 1/e$ [Klurman–Munsch 2017]. This confirms the random model prediction in an averaged sense."
+      "mathContext": "Mathematical content: The conjecture holds on average: $\\sum_{p \\leq x} |A_p| / \\sum_{p \\leq x} p \\to 1 - 1/e$ [Klurman–Munsch 2017]. This confirms the random model prediction in an averaged sense."
     }
   ],
   "conclusion": {

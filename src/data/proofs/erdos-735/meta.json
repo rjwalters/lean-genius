@@ -50,7 +50,7 @@
       "startLine": 32,
       "endLine": 38,
       "summary": "Imports `InnerProductSpace.PiL2` for `EuclideanSpace ℝ (Fin 2)`, `AffineSubspace` for lines, `Finset` for finite point sets, and `Tactic` for proof automation.",
-      "mathContext": "Imports `InnerProductSpace.PiL2` for `EuclideanSpace ℝ (Fin 2)`, `AffineSubspace` for lines, `Finset` for finite point sets, and `Tactic` for proof automation."
+      "mathContext": "Imports `InnerProductSpace.PiL2` for `EuclideanSpace $\\mathbb{R}$ (Fin 2)`, `AffineSubspace` for lines, `Finset` for finite point sets, and `Tactic` for proof automation."
     },
     {
       "id": "basic",
@@ -66,7 +66,7 @@
       "startLine": 58,
       "endLine": 67,
       "summary": "Defines `IsMagic P`: there exist positive weights $w$ and constant $c > 0$ such that every configuration line has weight sum $c$. Defines the `magicConstant` via `Classical.choose`.",
-      "mathContext": "Defines `IsMagic P`: there exist positive weights $w$ and constant $c > 0$ such that every configuration line has weight sum $c$. Defines the `magicConstant` via `Classical.choose`."
+      "mathContext": "Formal definition: Defines `IsMagic P`: there exist positive weights $w$ and constant $c > 0$ such that every configuration line has weight sum $c$. Defines the `magicConstant` via `Classical.choose`."
     },
     {
       "id": "classes",
@@ -82,7 +82,7 @@
       "startLine": 115,
       "endLine": 127,
       "summary": "Defines `ProjectivelyEquivalent` (bijective image) and axiomatizes that the magic property is preserved: $P$ magic $\\Leftrightarrow$ $f(P)$ magic for bijective $f$.",
-      "mathContext": "Defines `ProjectivelyEquivalent` (bijective image) and axiomatizes that the magic property is preserved: $P$ magic $\\Leftrightarrow$ $f(P)$ magic for bijective $f$."
+      "mathContext": "Formal definition: Defines `ProjectivelyEquivalent` (bijective image) and axiomatizes that the magic property is preserved: $P$ magic $\\Leftrightarrow$ $f(P)$ magic for bijective $f$."
     },
     {
       "id": "classification",
@@ -98,7 +98,7 @@
       "startLine": 166,
       "endLine": 187,
       "summary": "Constructs `threeCollinear` $= \\{(0,0), (1,0), (2,0)\\}$ and `triangle` $= \\{(0,0), (1,0), (0,1)\\}$. Proves both are magic via the class axioms.",
-      "mathContext": "Constructs `threeCollinear` $= \\{(0,0), (1,0), (2,0)\\}$ and `triangle` $= \\{(0,0), (1,0), (0,1)\\}$. Proves both are magic via the class axioms."
+      "mathContext": "Verified: Constructs `threeCollinear` $= \\{(0,0), (1,0), (2,0)\\}$ and `triangle` $= \\{(0,0), (1,0), (0,1)\\}$. Proves both are magic via the class axioms."
     },
     {
       "id": "linear",

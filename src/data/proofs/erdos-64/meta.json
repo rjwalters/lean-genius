@@ -119,7 +119,7 @@
       "summary": "Imports Mathlib and opens the `Set`, `SimpleGraph`, and `Finset` namespaces. Declares universe-polymorphic vertex type V with `Fintype` and `DecidableEq` instances.",
       "startLine": 25,
       "endLine": 32,
-      "mathContext": "Imports Mathlib and opens the `Set`, `SimpleGraph`, and `Finset` namespaces. Declares universe-polymorphic vertex type V with `Fintype` and `DecidableEq` instances."
+      "mathContext": "Mathematical content: Imports Mathlib and opens the `Set`, `SimpleGraph`, and `Finset` namespaces. Declares universe-polymorphic vertex type V with `Fintype` and `DecidableEq` instances."
     },
     {
       "id": "core-definitions",
@@ -135,7 +135,7 @@
       "summary": "Defines `PowersOfTwoAtLeast4` = {2^k : k ≥ 2} = {4, 8, 16, ...}. Proves 2^k ≥ 4 for k ≥ 2 (valid cycle length) and 2^k is even (connecting to Liu-Montgomery's even cycle result).",
       "startLine": 53,
       "endLine": 68,
-      "mathContext": "Defines `PowersOfTwoAtLeast4` = {2^k : k ≥ 2} = {4, 8, 16, ...}. Proves 2^k ≥ 4 for k ≥ 2 (valid cycle length) and 2^k is even (connecting to Liu-Montgomery's even cycle result)."
+      "mathContext": "Defines `PowersOfTwoAtLeast4` = {$2^{k}$ : k $\\geq$ 2} = {4, 8, 16, ...}. Proves $2^{k}$ $\\geq$ 4 for k $\\geq$ 2 (valid cycle length) and $2^{k}$ is even (connecting to Liu-Montgomery's even cycle result)."
     },
     {
       "id": "main-conjecture",
@@ -143,7 +143,7 @@
       "summary": "States `erdos_64_conjecture`: every finite graph with δ(G) ≥ 3 contains C_{2^k} for some k ≥ 2. Universally quantified over all finite types W with simple graphs.",
       "startLine": 69,
       "endLine": 80,
-      "mathContext": "States `erdos_64_conjecture`: every finite graph with δ(G) ≥ 3 contains C_{2^k} for some k ≥ 2. Universally quantified over all finite types W with simple graphs."
+      "mathContext": "States `erdos_64_conjecture`: every finite graph with δ(G) $\\geq$ 3 contains C_{$2^{k}$} for some k $\\geq$ 2. Universally quantified over all finite types W with simple graphs."
     },
     {
       "id": "erdos-gyarfas",
@@ -151,7 +151,7 @@
       "summary": "States `erdos_gyarfas_conjecture` (for every r, ∃ graph with δ ≥ r avoiding all 2^k-cycles) and axiomatizes `liu_montgomery_threshold` disproving it for large r.",
       "startLine": 81,
       "endLine": 106,
-      "mathContext": "States `erdos_gyarfas_conjecture` (for every r, ∃ graph with δ ≥ r avoiding all 2^k-cycles) and axiomatizes `liu_montgomery_threshold` disproving it for large r."
+      "mathContext": "States `erdos_gyarfas_conjecture` (for every r, ∃ graph with δ $\\geq$ r avoiding all $2^{k}$-cycles) and axiomatizes `liu_montgomery_threshold` disproving it for large r."
     },
     {
       "id": "partial-results",
@@ -159,7 +159,7 @@
       "summary": "Axiomatizes Liu-Montgomery's stronger result: δ(G) ≥ D implies all even cycle lengths in [4, L] for some L ≥ 16. Proves `range_contains_power_of_two`: [4, L] always contains 2^2 = 4.",
       "startLine": 107,
       "endLine": 132,
-      "mathContext": "Axiomatizes Liu-Montgomery's stronger result: δ(G) ≥ D implies all even cycle lengths in [4, L] for some L ≥ 16. Proves `range_contains_power_of_two`: [4, L] always contains 2^2 = 4."
+      "mathContext": "Axiomatizes Liu-Montgomery's stronger result: δ(G) $\\geq$ D implies all even cycle lengths in [4, L] for some L $\\geq$ 16. Proves `range_contains_power_of_two`: [4, L] always contains $2^{2}$ = 4."
     },
     {
       "id": "infinite-counterexample",
@@ -167,7 +167,7 @@
       "summary": "Defines `InfGraph` (infinite simple graph without Fintype), `IsRegular`, `ContainsCycleLength`, and `IsTree`. Axiomatizes the infinite 3-regular tree showing finiteness is essential.",
       "startLine": 133,
       "endLine": 161,
-      "mathContext": "Defines `InfGraph` (infinite simple graph without Fintype), `IsRegular`, `ContainsCycleLength`, and `IsTree`. Axiomatizes the infinite 3-regular tree showing finiteness is essential."
+      "mathContext": "Formal definition: Defines `InfGraph` (infinite simple graph without Fintype), `IsRegular`, `ContainsCycleLength`, and `IsTree`. Axiomatizes the infinite 3-regular tree showing finiteness is essential."
     },
     {
       "id": "degree-3",
@@ -175,7 +175,7 @@
       "summary": "Restates the conjecture as `degree_3_conjecture` with δ(G) = 3 explicitly. This is the unsolved core: Liu-Montgomery resolves large degree but the gap down to 3 is enormous.",
       "startLine": 162,
       "endLine": 175,
-      "mathContext": "Restates the conjecture as `degree_3_conjecture` with δ(G) = 3 explicitly. This is the unsolved core: Liu-Montgomery resolves large degree but the gap down to 3 is enormous."
+      "mathContext": "Mathematical content: Restates the conjecture as `degree_3_conjecture` with δ(G) = 3 explicitly. This is the unsolved core: Liu-Montgomery resolves large degree but the gap down to 3 is enormous."
     },
     {
       "id": "known-results",
@@ -191,7 +191,7 @@
       "summary": "Axiomatizes that random graphs G(n, c/n) have δ ≥ 3 and contain C_{2^k} for k ≤ 10, providing probabilistic evidence that counterexamples must be highly structured.",
       "startLine": 199,
       "endLine": 236,
-      "mathContext": "Axiomatizes that random graphs G(n, c/n) have δ ≥ 3 and contain C_{2^k} for k ≤ 10, providing probabilistic evidence that counterexamples must be highly structured."
+      "mathContext": "Axiomatizes that random graphs G(n, c/n) have δ $\\geq$ 3 and contain C_{$2^{k}$} for k $\\leq$ 10, providing probabilistic evidence that counterexamples must be highly structured."
     }
   ],
   "conclusion": {

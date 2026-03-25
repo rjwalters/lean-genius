@@ -50,7 +50,7 @@
       "startLine": 1,
       "endLine": 18,
       "summary": "Documentation block with the problem statement, counterexample descriptions (AlphaProof and Tijdeman), status (OPEN), and references to Er76d and Guy's Problem B35.",
-      "mathContext": "Documentation block with the problem statement, counterexample descriptions (AlphaProof and Tijdeman), status (OPEN), and references to Er76d and Guy's Problem B35."
+      "mathContext": "Verified: Documentation block with the problem statement, counterexample descriptions (AlphaProof and Tijdeman), status (OPEN), and references to Er76d and Guy's Problem B35."
     },
     {
       "id": "sec-931-imports",
@@ -58,7 +58,7 @@
       "startLine": 19,
       "endLine": 29,
       "summary": "Imports Nat.Basic, Nat.Prime.Basic, Nat.Factorization.Basic, Finset.Basic, Finset.Interval, and Tactic. Opens Nat and Finset namespaces within Erdos931.",
-      "mathContext": "Imports Nat.Basic, Nat.Prime.Basic, Nat.Factorization.Basic, Finset.Basic, Finset.Interval, and Tactic. Opens Nat and Finset namespaces within Erdos931."
+      "mathContext": "Mathematical content: Imports Nat.Basic, Nat.Prime.Basic, Nat.Factorization.Basic, Finset.Basic, Finset.Interval, and Tactic. Opens Nat and Finset namespaces within Erdos931."
     },
     {
       "id": "sec-931-definitions",
@@ -74,7 +74,7 @@
       "startLine": 50,
       "endLine": 85,
       "summary": "Concrete product values (10!=3628800, 14·15·16=3360, etc.), base cases (empty product=1, single factor=n+1), positivity, and non-zero properties—all proved by native_decide, simp, or omega.",
-      "mathContext": "Concrete product values (10!=3628800, 14·15·16=3360, etc.), base cases (empty product=1, single factor=n+1), positivity, and non-zero properties—all proved by native_decide, simp, or omega."
+      "mathContext": "Mathematical content: Concrete product values (10!=3628800, 14·15·16=3360, etc.), base cases (empty product=1, single factor=n+1), positivity, and non-zero properties—all proved by native_decide, simp, or omega."
     },
     {
       "id": "sec-931-conjecture",
@@ -82,7 +82,7 @@
       "startLine": 86,
       "endLine": 103,
       "summary": "Formalizes ErdosProblem931 (finiteness of same-prime-factor pairs with gap ≥ k₁) and StrongerConjecture (restricted to n₂ ≤ 2(n₁+k₁)).",
-      "mathContext": "Formalizes ErdosProblem931 (finiteness of same-prime-factor pairs with gap ≥ k₁) and StrongerConjecture (restricted to n₂ ≤ 2(n₁+k₁))."
+      "mathContext": "Formalizes ErdosProblem931 (finiteness of same-prime-factor pairs with gap $\\geq$ k₁) and StrongerConjecture (restricted to n₂ $\\leq$ 2(n₁+k₁))."
     },
     {
       "id": "sec-931-counterexamples",
@@ -98,7 +98,7 @@
       "startLine": 149,
       "endLine": 192,
       "summary": "Seven lemmas: prime factors divide the product and are prime, a prime dividing any n+i is in the factor set (via Finset.dvd_prod_of_mem), and SamePrimeFactors is reflexive, symmetric, transitive.",
-      "mathContext": "Seven lemmas: prime factors divide the product and are prime, a prime dividing any n+i is in the factor set (via Finset.dvd_prod_of_mem), and SamePrimeFactors is reflexive, symmetric, transitive."
+      "mathContext": "Mathematical content: Seven lemmas: prime factors divide the product and are prime, a prime dividing any n+i is in the factor set (via Finset.dvd_prod_of_mem), and SamePrimeFactors is reflexive, symmetric, transitive."
     },
     {
       "id": "sec-931-implication",

@@ -113,7 +113,7 @@
       "summary": "States `ErdosConjecture781 : ∀ k ≥ 1, f k = k² - k + 1`. This conjecture is FALSE — Alon-Spencer (1989) showed $f(k) \\gg k^3$, proving quadratic growth is impossible.",
       "startLine": 99,
       "endLine": 108,
-      "mathContext": "States `ErdosConjecture781 : ∀ k ≥ 1, f k = k² - k + 1`. This conjecture is FALSE — Alon-Spencer (1989) showed $f(k) \\gg k^3$, proving quadratic growth is impossible."
+      "mathContext": "States `ErdosConjecture781 : ∀ k $\\geq$ 1, f k = k² - k + 1`. This conjecture is FALSE — Alon-Spencer (1989) showed $f(k) \\gg $k^{3}$$, proving quadratic growth is impossible."
     },
     {
       "id": "bounds",
@@ -129,7 +129,7 @@
       "summary": "Axiomatizes $f(1)=1$, $f(2)=2$, $f(3)=7$. These known small values are stated as axioms. Critically, $f(2)=2 \\neq 3 = 2^2-2+1$, so the conjecture already fails at $k=2$.",
       "startLine": 139,
       "endLine": 147,
-      "mathContext": "Axiomatizes $f(1)=1$, $f(2)=2$, $f(3)=7$. These known small values are stated as axioms. Critically, $f(2)=2 \\neq 3 = 2^2-2+1$, so the conjecture already fails at $k=2$."
+      "mathContext": "Axiomatizes $f(1)=1$, $f(2)=2$, $f(3)=7$. These known small values are stated as axioms. Critically, $f(2)=2 \\neq 3 = $2^{2}$-2+1$, so the conjecture already fails at $k=2$."
     },
     {
       "id": "disproof",
@@ -145,7 +145,7 @@
       "summary": "Proves `small_k_correct : f 1 = 1 ∧ f 2 = 2 ∧ f 3 = 7` (conjunction of the three axioms). Proves `conjecture_formula: k^2-k+1 = k(k-1)+1` by `ring`.",
       "startLine": 156,
       "endLine": 169,
-      "mathContext": "Proves `small_k_correct : f 1 = 1 ∧ f 2 = 2 ∧ f 3 = 7` (conjunction of the three axioms). Proves `conjecture_formula: k^2-k+1 = k(k-1)+1` by `ring`."
+      "mathContext": "Proves `small_k_correct : f 1 = 1 ∧ f 2 = 2 ∧ f 3 = 7` (conjunction of the three axioms). Proves `conjecture_formula: $k^{2}$-k+1 = k(k-1)+1` by `ring`."
     },
     {
       "id": "construction",

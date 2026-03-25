@@ -57,7 +57,7 @@
       "startLine": 26,
       "endLine": 33,
       "summary": "Axiomatizes `nthPrime : ℕ → ℕ` with four properties: $p_n$ is prime, $n \\mapsto p_n$ is strictly monotone, $p_0 = 2$, and $p_1 = 3$. These encode the fundamental enumeration of primes.",
-      "mathContext": "Axiomatizes `nthPrime : ℕ → ℕ` with four properties: $p_n$ is prime, $n \\mapsto p_n$ is strictly monotone, $p_0 = 2$, and $p_1 = 3$. These encode the fundamental enumeration of primes."
+      "mathContext": "Axiomatizes `nthPrime : $\\mathbb{N}$ $\\to$ $\\mathbb{N}$` with four properties: $p_n$ is prime, $n \\mapsto p_n$ is strictly monotone, $p_0 = 2$, and $p_1 = 3$. These encode the fundamental enumeration of primes."
     },
     {
       "id": "gaps",
@@ -105,7 +105,7 @@
       "startLine": 157,
       "endLine": 170,
       "summary": "Axiomatizes $h(x) \\leq x$ and the pigeonhole principle: $k$ distinct positive values all $\\leq M$ implies $k \\leq M$. This gives the trivial ceiling far above the conjectured $o(\\log x)$.",
-      "mathContext": "Axiomatizes $h(x) \\leq x$ and the pigeonhole principle: $k$ distinct positive values all $\\leq M$ implies $k \\leq M$. This gives the trivial ceiling far above the conjectured $o(\\log x)$."
+      "mathContext": "Axiomatized: Axiomatizes $h(x) \\leq x$ and the pigeonhole principle: $k$ distinct positive values all $\\leq M$ implies $k \\leq M$. This gives the trivial ceiling far above the conjectured $o(\\log x)$."
     }
   ],
   "conclusion": {

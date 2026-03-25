@@ -92,7 +92,7 @@
       "summary": "Defines the general family T(q,r) = ∑ 1/(q^n + r) via tsum, the specific instance S = T(2, -3) for Problem #1050, and the alternative definition sumTwoMinusThree for direct computation",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Defines the general family T(q,r) = ∑ 1/(q^n + r) via tsum, the specific instance S = T(2, -3) for Problem #1050, and the alternative definition sumTwoMinusThree for direct computation"
+      "mathContext": "Formal definition: Defines the general family T(q,r) = ∑ 1/(q^n + r) via tsum, the specific instance S = T(2, -3) for Problem #1050, and the alternative definition sumTwoMinusThree for direct computation"
     },
     {
       "id": "convergence",
@@ -100,7 +100,7 @@
       "summary": "Proves T_summable (convergence for q ≥ 2, r ≠ -q^n via geometric series comparison), S_summable (specialization to q=2, r=-3), and denom_nonzero (2^n - 3 ≠ 0 for all n ≥ 1 by case split on n=1 vs n≥2)",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Proves T_summable (convergence for q ≥ 2, r ≠ -q^n via geometric series comparison), S_summable (specialization to q=2, r=-3), and denom_nonzero (2^n - 3 ≠ 0 for all n ≥ 1 by case split on n=1 vs n≥2)"
+      "mathContext": "Proves T_summable (convergence for q $\\geq$ 2, r $\\neq$ -q^n via geometric series comparison), S_summable (specialization to q=2, r=-3), and denom_nonzero ($2^{n}$ - 3 $\\neq$ 0 for all n $\\geq$ 1 by case split on n=1 vs n$\\geq$2)"
     },
     {
       "id": "first-terms",
@@ -116,7 +116,7 @@
       "summary": "Axiomatizes borwein_irrationality (1991 Padé approximation result for T(q,r)), derives S_irrational by instantiating with q=2, r=-3 and verifying the pole-avoidance condition 3 ∉ {2^n : n ≥ 1}",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Axiomatizes borwein_irrationality (1991 Padé approximation result for T(q,r)), derives S_irrational by instantiating with q=2, r=-3 and verifying the pole-avoidance condition 3 ∉ {2^n : n ≥ 1}"
+      "mathContext": "Axiomatizes borwein_irrationality (1991 Padé approximation result for T(q,r)), derives S_irrational by instantiating with q=2, r=-3 and verifying the pole-avoidance condition 3 ∉ {$2^{n}$ : n $\\geq$ 1}"
     },
     {
       "id": "related",
@@ -140,7 +140,7 @@
       "summary": "Defines S_1049 t = ∑ 1/(t^n - 1) from Problem #1049, proves T_eq_S_1049 showing T(q,-1) = S_1049(q), and problems_related establishing that both problems are resolved by Borwein's single theorem",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Defines S_1049 t = ∑ 1/(t^n - 1) from Problem #1049, proves T_eq_S_1049 showing T(q,-1) = S_1049(q), and problems_related establishing that both problems are resolved by Borwein's single theorem"
+      "mathContext": "Formal definition: Defines S_1049 t = ∑ 1/(t^n - 1) from Problem #1049, proves T_eq_S_1049 showing T(q,-1) = S_1049(q), and problems_related establishing that both problems are resolved by Borwein's single theorem"
     },
     {
       "id": "numerical",

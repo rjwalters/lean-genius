@@ -91,7 +91,7 @@
       "startLine": 211,
       "endLine": 223,
       "summary": "Defines $\\text{ex}(n, T)$ via `sSup` over $T$-free graphs. States that the conjecture implies the uniform bound $\\text{ex}(n, T) \\le (k-1)n/2$ for all trees with $k$ edges.",
-      "mathContext": "Defines $\\text{ex}(n, T)$ via `sSup` over $T$-free graphs. States that the conjecture implies the uniform bound $\\text{ex}(n, T) \\le (k-1)n/2$ for all trees with $k$ edges."
+      "mathContext": "Formal definition: Defines $\\text{ex}(n, T)$ via `sSup` over $T$-free graphs. States that the conjecture implies the uniform bound $\\text{ex}(n, T) \\le (k-1)n/2$ for all trees with $k$ edges."
     },
     {
       "id": "special-trees",
@@ -115,7 +115,7 @@
       "startLine": 251,
       "endLine": 273,
       "summary": "Axiomatizes the Erdos-Gallai matching theorem (max edges without $(k+1)$-matching) and the Turan number for paths $\\text{ex}(n, P_k) = (k-2)(n-1)/2$. Both provide context for the tree Turan problem.",
-      "mathContext": "Axiomatizes the Erdos-Gallai matching theorem (max edges without $(k+1)$-matching) and the Turan number for paths $\\text{ex}(n, P_k) = (k-2)(n-1)/2$. Both provide context for the tree Turan problem."
+      "mathContext": "Verified: Axiomatizes the Erdos-Gallai matching theorem (max edges without $(k+1)$-matching) and the Turan number for paths $\\text{ex}(n, P_k) = (k-2)(n-1)/2$. Both provide context for the tree Turan problem."
     },
     {
       "id": "open-status",
@@ -123,7 +123,7 @@
       "startLine": 274,
       "endLine": 319,
       "summary": "States the conjecture's open status as a tautological disjunction $P \\lor \\neg P$. The conjecture is marked 'falsifiable' but no counterexample has been found despite extensive computational search.",
-      "mathContext": "States the conjecture's open status as a tautological disjunction $P \\lor \\neg P$. The conjecture is marked 'falsifiable' but no counterexample has been found despite extensive computational search."
+      "mathContext": "Mathematical content: States the conjecture's open status as a tautological disjunction $P \\lor \\neg P$. The conjecture is marked 'falsifiable' but no counterexample has been found despite extensive computational search."
     }
   ],
   "conclusion": {

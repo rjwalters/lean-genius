@@ -93,7 +93,7 @@
       "summary": "Historical context and significance of the EFL conjecture",
       "startLine": 37,
       "endLine": 47,
-      "mathContext": "Historical context and significance of the EFL conjecture"
+      "mathContext": "Mathematical content: Historical context and significance of the EFL conjecture"
     },
     {
       "id": "graph-definitions",
@@ -101,7 +101,7 @@
       "summary": "SimpleGraph', completeGraph, EdgeDisjoint",
       "startLine": 48,
       "endLine": 67,
-      "mathContext": "SimpleGraph', completeGraph, EdgeDisjoint"
+      "mathContext": "Mathematical content: SimpleGraph', completeGraph, EdgeDisjoint"
     },
     {
       "id": "chromatic-number",
@@ -109,7 +109,7 @@
       "summary": "IsProperColoring, IsKColorable, chromaticNumber axioms",
       "startLine": 68,
       "endLine": 94,
-      "mathContext": "IsProperColoring, IsKColorable, chromaticNumber axioms"
+      "mathContext": "Axiomatized: IsProperColoring, IsKColorable, chromaticNumber axioms"
     },
     {
       "id": "efl-setup",
@@ -117,7 +117,7 @@
       "summary": "EFLFamily structure, eflUnionGraph construction",
       "startLine": 95,
       "endLine": 128,
-      "mathContext": "EFLFamily structure, eflUnionGraph construction"
+      "mathContext": "Formal definition: EFLFamily structure, eflUnionGraph construction"
     },
     {
       "id": "lower-bound",
@@ -125,7 +125,7 @@
       "summary": "efl_chromatic_lower_bound: χ(G) ≥ n",
       "startLine": 129,
       "endLine": 138,
-      "mathContext": "efl_chromatic_lower_bound: χ(G) ≥ n"
+      "mathContext": "efl_chromatic_lower_bound: χ(G) $\\geq$ n"
     },
     {
       "id": "small-cases",
@@ -133,7 +133,7 @@
       "summary": "hindman_small_cases: n < 10",
       "startLine": 139,
       "endLine": 148,
-      "mathContext": "hindman_small_cases: n < 10"
+      "mathContext": "Mathematical content: hindman_small_cases: n < 10"
     },
     {
       "id": "kahn-1992",
@@ -141,7 +141,7 @@
       "summary": "kahn_asymptotic, kahn_explicit_bound: χ(G) ≤ (1+o(1))n",
       "startLine": 149,
       "endLine": 163,
-      "mathContext": "kahn_asymptotic, kahn_explicit_bound: χ(G) ≤ (1+o(1))n"
+      "mathContext": "kahn_asymptotic, kahn_explicit_bound: χ(G) $\\leq$ (1+o(1))n"
     },
     {
       "id": "main-result",
@@ -149,7 +149,7 @@
       "summary": "kang_kelly_kuhn_methuku_osthus, EFLConjecture, efl_conjecture_resolved",
       "startLine": 164,
       "endLine": 182,
-      "mathContext": "kang_kelly_kuhn_methuku_osthus, EFLConjecture, efl_conjecture_resolved"
+      "mathContext": "Mathematical content: kang_kelly_kuhn_methuku_osthus, EFLConjecture, efl_conjecture_resolved"
     },
     {
       "id": "equivalent-formulations",
@@ -157,7 +157,7 @@
       "summary": "LinearHypergraph, NearlyDisjointFamily structures",
       "startLine": 183,
       "endLine": 228,
-      "mathContext": "LinearHypergraph, NearlyDisjointFamily structures"
+      "mathContext": "Formal definition: LinearHypergraph, NearlyDisjointFamily structures"
     },
     {
       "id": "special-cases",
@@ -165,7 +165,7 @@
       "summary": "projective_plane_case, steiner_system_case axioms",
       "startLine": 229,
       "endLine": 247,
-      "mathContext": "projective_plane_case, steiner_system_case axioms"
+      "mathContext": "Axiomatized: projective_plane_case, steiner_system_case axioms"
     },
     {
       "id": "extensions",
@@ -173,7 +173,7 @@
       "summary": "erdos_furedi_generalization axiom: k-wise intersections",
       "startLine": 248,
       "endLine": 259,
-      "mathContext": "erdos_furedi_generalization axiom: k-wise intersections"
+      "mathContext": "Axiomatized: erdos_furedi_generalization axiom: k-wise intersections"
     },
     {
       "id": "summary",
@@ -181,7 +181,7 @@
       "summary": "erdos_19_summary combining efl_conjecture_resolved and kang_kelly_kuhn_methuku_osthus",
       "startLine": 260,
       "endLine": 301,
-      "mathContext": "erdos_19_summary combining efl_conjecture_resolved and kang_kelly_kuhn_methuku_osthus"
+      "mathContext": "Mathematical content: erdos_19_summary combining efl_conjecture_resolved and kang_kelly_kuhn_methuku_osthus"
     }
   ],
   "conclusion": {

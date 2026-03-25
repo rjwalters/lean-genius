@@ -37,7 +37,7 @@
       "startLine": 22,
       "endLine": 30,
       "summary": "Imports $\\texttt{Mathlib.Data.Nat.Prime.Basic}$, $\\texttt{Finset.Basic}$, and general tactics. Opens $\\texttt{Finset}$ namespace for $\\texttt{Ico}$ and $\\texttt{prod}$.",
-      "mathContext": "Imports $\\texttt{Mathlib.Data.Nat.Prime.Basic}$, $\\texttt{Finset.Basic}$, and general tactics. Opens $\\texttt{Finset}$ namespace for $\\texttt{Ico}$ and $\\texttt{prod}$."
+      "mathContext": "Mathematical content: Imports $\\texttt{Mathlib.Data.Nat.Prime.Basic}$, $\\texttt{Finset.Basic}$, and general tactics. Opens $\\texttt{Finset}$ namespace for $\\texttt{Ico}$ and $\\texttt{prod}$."
     },
     {
       "id": "core-definitions",
@@ -77,7 +77,7 @@
       "startLine": 173,
       "endLine": 179,
       "summary": "Axiomatizes the open conjecture: $\\forall k \\ge 2$, $\\text{HasSolution}(k)$. Only $k = 2$ and $k = 3$ are verified; no $k = 4$ solution is known.",
-      "mathContext": "Axiomatizes the open conjecture: $\\forall k \\ge 2$, $\\text{HasSolution}(k)$. Only $k = 2$ and $k = 3$ are verified; no $k = 4$ solution is known."
+      "mathContext": "Axiomatized: Axiomatizes the open conjecture: $\\forall k \\ge 2$, $\\text{HasSolution}(k)$. Only $k = 2$ and $k = 3$ are verified; no $k = 4$ solution is known."
     },
     {
       "id": "noll-simmons",
@@ -93,7 +93,7 @@
       "startLine": 194,
       "endLine": 204,
       "summary": "Packages all verified results: $\\text{HasSolution}(2) \\land \\text{HasSolution}(3) \\land (10! \\equiv 10 \\pmod{11}) \\land (16! \\equiv 16 \\pmod{17})$.",
-      "mathContext": "Packages all verified results: $\\text{HasSolution}(2) \\land \\text{HasSolution}(3) \\land (10! \\equiv 10 \\pmod{11}) \\land (16! \\equiv 16 \\pmod{17})$."
+      "mathContext": "Mathematical content: Packages all verified results: $\\text{HasSolution}(2) \\land \\text{HasSolution}(3) \\land (10! \\equiv 10 \\pmod{11}) \\land (16! \\equiv 16 \\pmod{17})$."
     }
   ],
   "overview": {

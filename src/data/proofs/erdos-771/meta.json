@@ -106,7 +106,7 @@
       "startLine": 39,
       "endLine": 57,
       "summary": "Icc_n (Finset.Icc 1 n), subsetSums (powerset.image(sum).filter(>0)), AvoidSum (m not in subsetSums), IsMAvoidingSet (subset of [n] avoiding m).",
-      "mathContext": "Icc_n (Finset.Icc 1 n), subsetSums (powerset.image(sum).filter(>0)), AvoidSum (m not in subsetSums), IsMAvoidingSet (subset of [n] avoiding m)."
+      "mathContext": "Mathematical content: Icc_n (Finset.Icc 1 n), subsetSums (powerset.image(sum).filter(>0)), AvoidSum (m not in subsetSums), IsMAvoidingSet (subset of [n] avoiding m)."
     },
     {
       "id": "the-function-f-n",
@@ -114,7 +114,7 @@
       "startLine": 58,
       "endLine": 82,
       "summary": "maxAvoidingSize (sup over powerset of avoiding sets), f (inf over m in [1,n^2] of maxAvoidingSize), f_property (universal avoidance characterization), f_characterization (sorry: f is maximal).",
-      "mathContext": "maxAvoidingSize (sup over powerset of avoiding sets), f (inf over m in [1,n^2] of maxAvoidingSize), f_property (universal avoidance characterization), f_characterization (sorry: f is maximal)."
+      "mathContext": "maxAvoidingSize (sup over powerset of avoiding sets), f (inf over m in [1,$n^{2}$] of maxAvoidingSize), f_property (universal avoidance characterization), f_characterization (sorry: f is maximal)."
     },
     {
       "id": "the-erdos-graham-conjecture",
@@ -122,7 +122,7 @@
       "startLine": 83,
       "endLine": 102,
       "summary": "expectedValue = (1/2)*n/log(n). ErdosGrahamConjecture: |f(n)/(n/log n) - 1/2| < epsilon for large n. ErdosGrahamConjecture': f(n) = (1/2 + g(n))*n/log n with g(n) -> 0.",
-      "mathContext": "expectedValue = (1/2)*n/log(n). ErdosGrahamConjecture: |f(n)/(n/log n) - 1/2| < epsilon for large n. ErdosGrahamConjecture': f(n) = (1/2 + g(n))*n/log n with g(n) -> 0."
+      "mathContext": "expectedValue = (1/2)*n/log(n). ErdosGrahamConjecture: |f(n)/(n/$\\log n$) - 1/2| < $\\varepsilon$ for large n. ErdosGrahamConjecture': f(n) = (1/2 + g(n))*n/$\\log n$ with g(n) -> 0."
     },
     {
       "id": "erdos-graham-lower-bound",
@@ -138,7 +138,7 @@
       "startLine": 133,
       "endLine": 155,
       "summary": "alon_freiman_upper_bound (axiom): f(n) <= (1/2+eps)n/log n. lcm_up_to (Icc_n(s).lcm id), lcm_estimate (axiom: lcm{1,...,s} <= exp(2s)), large_set_achieves_sum (axiom: large sets hit some m).",
-      "mathContext": "alon_freiman_upper_bound (axiom): f(n) <= (1/2+eps)n/log n. lcm_up_to (Icc_n(s).lcm id), lcm_estimate (axiom: lcm{1,...,s} <= exp(2s)), large_set_achieves_sum (axiom: large sets hit some m)."
+      "mathContext": "alon_freiman_upper_bound (axiom): f(n) <= (1/2+eps)n/$\\log n$. lcm_up_to (Icc_n(s).lcm id), lcm_estimate (axiom: lcm{1,...,s} <= exp(2s)), large_set_achieves_sum (axiom: large sets hit some m)."
     },
     {
       "id": "the-complete-answer",
@@ -146,7 +146,7 @@
       "startLine": 156,
       "endLine": 175,
       "summary": "erdos_graham_conjecture_true (partial proof + sorry): combines lower/upper bounds with epsilon/2. f_asymptotic: alias. The conjecture is TRUE.",
-      "mathContext": "erdos_graham_conjecture_true (partial proof + sorry): combines lower/upper bounds with epsilon/2. f_asymptotic: alias. The conjecture is TRUE."
+      "mathContext": "erdos_graham_conjecture_true (partial proof + sorry): combines lower/upper bounds with $\\varepsilon$/2. f_asymptotic: alias. The conjecture is TRUE."
     },
     {
       "id": "explicit-bounds",
@@ -154,7 +154,7 @@
       "startLine": 176,
       "endLine": 190,
       "summary": "explicitBounds: 0.4*n/log n <= f(n) <= 0.6*n/log n for n >= 10. leading_constant (sorry): f(n)/(n/log n) -> 1/2 via Filter.Tendsto.",
-      "mathContext": "explicitBounds: 0.4*n/log n <= f(n) <= 0.6*n/log n for n >= 10. leading_constant (sorry): f(n)/(n/log n) -> 1/2 via Filter.Tendsto."
+      "mathContext": "explicitBounds: 0.4*n/$\\log n$ <= f(n) <= 0.6*n/$\\log n$ for n >= 10. leading_constant (sorry): f(n)/(n/$\\log n$) -> 1/2 via Filter.Tendsto."
     },
     {
       "id": "special-cases",
@@ -162,7 +162,7 @@
       "startLine": 191,
       "endLine": 209,
       "summary": "m_eq_one_case (sorry): maxAvoidingSize(n,1) = n-1. m_eq_two_case (sorry): >= n-2. smallPrimeConstruction: uses Nat.minFac(m+1) for practical construction.",
-      "mathContext": "m_eq_one_case (sorry): maxAvoidingSize(n,1) = n-1. m_eq_two_case (sorry): >= n-2. smallPrimeConstruction: uses Nat.minFac(m+1) for practical construction."
+      "mathContext": "Mathematical content: m_eq_one_case (sorry): maxAvoidingSize(n,1) = n-1. m_eq_two_case (sorry): >= n-2. smallPrimeConstruction: uses Nat.minFac(m+1) for practical construction."
     },
     {
       "id": "connection-to-sum-free-sets",
@@ -170,7 +170,7 @@
       "startLine": 210,
       "endLine": 228,
       "summary": "IsSumFree (no a+b=c in S), sum_free_upper_bound (axiom: |S| <= n/3+1). Comparison: m-avoiding allows n/(2 log n) vs n/3 for sum-free.",
-      "mathContext": "IsSumFree (no a+b=c in S), sum_free_upper_bound (axiom: |S| <= n/3+1). Comparison: m-avoiding allows n/(2 log n) vs n/3 for sum-free."
+      "mathContext": "IsSumFree (no a+b=c in S), sum_free_upper_bound (axiom: |S| <= n/3+1). Comparison: m-avoiding allows n/(2 $\\log n$) vs n/3 for sum-free."
     },
     {
       "id": "summary",
@@ -178,7 +178,7 @@
       "startLine": 229,
       "endLine": 257,
       "summary": "erdos_771, erdos_771_main, erdos_771_solved: three equivalent statements that ErdosGrahamConjecture holds. All proved from erdos_graham_conjecture_true.",
-      "mathContext": "erdos_771, erdos_771_main, erdos_771_solved: three equivalent statements that ErdosGrahamConjecture holds. All proved from erdos_graham_conjecture_true."
+      "mathContext": "Mathematical content: erdos_771, erdos_771_main, erdos_771_solved: three equivalent statements that ErdosGrahamConjecture holds. All proved from erdos_graham_conjecture_true."
     }
   ],
   "conclusion": {

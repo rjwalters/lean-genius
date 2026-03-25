@@ -79,7 +79,7 @@
       "startLine": 44,
       "endLine": 74,
       "summary": "Defines L(n) = lcm(1,...,n), H(n) = harmonic number as rational, a(n) = H(n)·L(n) as integer numerator, and harmonicGCD(n) = gcd(a(n), L(n)).",
-      "mathContext": "Defines L(n) = lcm(1,...,n), H(n) = harmonic number as rational, a(n) = H(n)·L(n) as integer numerator, and harmonicGCD(n) = gcd(a(n), L(n))."
+      "mathContext": "Formal definition: Defines L(n) = lcm(1,...,n), H(n) = harmonic number as rational, a(n) = H(n)·L(n) as integer numerator, and harmonicGCD(n) = gcd(a(n), L(n))."
     },
     {
       "id": "problem-statement",
@@ -87,7 +87,7 @@
       "startLine": 75,
       "endLine": 98,
       "summary": "Formalizes both parts: question_part1 (infinitely many n with gcd = 1, OPEN) and question_part2 (infinitely many with gcd > 1, PROVED). erdos291Statement is their conjunction.",
-      "mathContext": "Formalizes both parts: question_part1 (infinitely many n with gcd = 1, OPEN) and question_part2 (infinitely many with gcd > 1, PROVED). erdos291Statement is their conjunction."
+      "mathContext": "Mathematical content: Formalizes both parts: question_part1 (infinitely many n with gcd = 1, OPEN) and question_part2 (infinitely many with gcd > 1, PROVED). erdos291Statement is their conjunction."
     },
     {
       "id": "steinerberger-wolstenholme",
@@ -111,7 +111,7 @@
       "startLine": 247,
       "endLine": 373,
       "summary": "Proves L(n) > 0, L(n) | n!, k | L(n) for k ≤ n. Computed L values for n ≤ 10. H recurrence, positivity, strict monotonicity. H(n)·L(n) = Σ L(n)/k is a sum of integers.",
-      "mathContext": "Proves L(n) > 0, L(n) | n!, k | L(n) for k ≤ n. Computed L values for n ≤ 10. H recurrence, positivity, strict monotonicity. H(n)·L(n) = Σ L(n)/k is a sum of integers."
+      "mathContext": "Proves L(n) > 0, L(n) | n!, k | L(n) for k $\\leq$ n. Computed L values for n $\\leq$ 10. H recurrence, positivity, strict monotonicity. H(n)·L(n) = $\\sum$ L(n)/k is a sum of integers."
     },
     {
       "id": "small-examples",
@@ -119,7 +119,7 @@
       "startLine": 374,
       "endLine": 431,
       "summary": "Proves gcd = 1 for n = 1,...,5 and gcd = 3 for n = 6 (first occurrence). Extended: gcd = 3 for n = 7,8 and gcd = 1 for n = 9,10. Seven values with gcd = 1 found in [1,10].",
-      "mathContext": "Proves gcd = 1 for n = 1,...,5 and gcd = 3 for n = 6 (first occurrence). Extended: gcd = 3 for n = 7,8 and gcd = 1 for n = 9,10. Seven values with gcd = 1 found in [1,10]."
+      "mathContext": "Verified: Proves gcd = 1 for n = 1,...,5 and gcd = 3 for n = 6 (first occurrence). Extended: gcd = 3 for n = 7,8 and gcd = 1 for n = 9,10. Seven values with gcd = 1 found in [1,10]."
     },
     {
       "id": "leading-digits",
@@ -127,7 +127,7 @@
       "startLine": 432,
       "endLine": 614,
       "summary": "Proves leadingDigit_pm1_times_pow: ld((p-1)·p^k, p) = p-1. Generates infinite families {2·3^k} and {4·5^k} with p | gcd. General prime_dvd_gcd_pm1_pow for any prime p ≥ 3.",
-      "mathContext": "Proves leadingDigit_pm1_times_pow: ld((p-1)·p^k, p) = p-1. Generates infinite families {2·3^k} and {4·5^k} with p | gcd. General prime_dvd_gcd_pm1_pow for any prime p ≥ 3."
+      "mathContext": "Proves leadingDigit_pm1_times_pow: ld((p-1)·p^k, p) = p-1. Generates infinite families {2·$3^{k}$} and {4·$5^{k}$} with p | gcd. General prime_dvd_gcd_pm1_pow for any prime p $\\geq$ 3."
     },
     {
       "id": "part2-proof",
@@ -135,7 +135,7 @@
       "startLine": 641,
       "endLine": 698,
       "summary": "Constructively proves part2_trivially_true via {2·3^k} family with injectivity argument. Alternate proof part2_via_five using {4·5^k}. Summary theorems erdos_291_summary and erdos_291.",
-      "mathContext": "Constructively proves part2_trivially_true via {2·3^k} family with injectivity argument. Alternate proof part2_via_five using {4·5^k}. Summary theorems erdos_291_summary and erdos_291."
+      "mathContext": "Constructively proves part2_trivially_true via {2·$3^{k}$} family with injectivity argument. Alternate proof part2_via_five using {4·$5^{k}$}. Summary theorems erdos_291_summary and erdos_291."
     },
     {
       "id": "zmod-evidence",
@@ -143,7 +143,7 @@
       "startLine": 808,
       "endLine": 932,
       "summary": "Verifies Σ k⁻¹ ≡ 0 (mod p) for p = 3,5,7,11,13 via decide. Assembles seven_gcd_one_values as concrete evidence for Part 1. Extended examples for n = 7,...,10.",
-      "mathContext": "Verifies Σ k⁻¹ ≡ 0 (mod p) for p = 3,5,7,11,13 via decide. Assembles seven_gcd_one_values as concrete evidence for Part 1. Extended examples for n = 7,...,10."
+      "mathContext": "Verifies $\\sum$ k⁻¹ ≡ 0 (mod p) for p = 3,5,7,11,13 via decide. Assembles seven_gcd_one_values as concrete evidence for Part 1. Extended examples for n = 7,...,10."
     }
   ],
   "conclusion": {

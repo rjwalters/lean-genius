@@ -104,7 +104,7 @@
       "summary": "IsDivisibilityAntichain, IsPrimitiveSet, antichain_iff_primitive",
       "startLine": 46,
       "endLine": 78,
-      "mathContext": "IsDivisibilityAntichain, IsPrimitiveSet, antichain_iff_primitive"
+      "mathContext": "Mathematical content: IsDivisibilityAntichain, IsPrimitiveSet, antichain_iff_primitive"
     },
     {
       "id": "game-board",
@@ -112,7 +112,7 @@
       "summary": "gameBoard, gameBoard_card, IsLegalMove, legal_move_iff",
       "startLine": 79,
       "endLine": 110,
-      "mathContext": "gameBoard, gameBoard_card, IsLegalMove, legal_move_iff"
+      "mathContext": "Mathematical content: gameBoard, gameBoard_card, IsLegalMove, legal_move_iff"
     },
     {
       "id": "game-state",
@@ -120,7 +120,7 @@
       "summary": "IsMaximalAntichain, game_terminates axiom",
       "startLine": 111,
       "endLine": 131,
-      "mathContext": "IsMaximalAntichain, game_terminates axiom"
+      "mathContext": "Axiomatized: IsMaximalAntichain, game_terminates axiom"
     },
     {
       "id": "bounds",
@@ -128,7 +128,7 @@
       "summary": "Antichain upper bound n/2, prime antichain lower bound",
       "startLine": 132,
       "endLine": 154,
-      "mathContext": "Antichain upper bound n/2, prime antichain lower bound"
+      "mathContext": "Bound: Antichain upper bound n/2, prime antichain lower bound"
     },
     {
       "id": "erdos-questions",
@@ -136,7 +136,7 @@
       "summary": "gameLastsLinear, gameLastsNearOptimal, open status",
       "startLine": 155,
       "endLine": 190,
-      "mathContext": "gameLastsLinear, gameLastsNearOptimal, open status"
+      "mathContext": "Mathematical content: gameLastsLinear, gameLastsNearOptimal, open status"
     },
     {
       "id": "related-results",
@@ -144,7 +144,7 @@
       "summary": "Füredi-Seress triangle-free game, Biró-Horn-Wildstrom bound",
       "startLine": 191,
       "endLine": 210,
-      "mathContext": "Füredi-Seress triangle-free game, Biró-Horn-Wildstrom bound"
+      "mathContext": "Bound: Füredi-Seress triangle-free game, Biró-Horn-Wildstrom bound"
     },
     {
       "id": "examples",
@@ -152,7 +152,7 @@
       "summary": "primes_antichain, upper_half_antichain, firstPlayerAdvantage",
       "startLine": 211,
       "endLine": 254,
-      "mathContext": "primes_antichain, upper_half_antichain, firstPlayerAdvantage"
+      "mathContext": "Mathematical content: primes_antichain, upper_half_antichain, firstPlayerAdvantage"
     },
     {
       "id": "game-theory",
@@ -160,7 +160,7 @@
       "summary": "gameValue axiom with properties, erdos_872_conjecture",
       "startLine": 255,
       "endLine": 277,
-      "mathContext": "gameValue axiom with properties, erdos_872_conjecture"
+      "mathContext": "Axiomatized: gameValue axiom with properties, erdos_872_conjecture"
     },
     {
       "id": "summary",
@@ -168,7 +168,7 @@
       "summary": "erdos_872_summary combining primes_antichain and gameValue_upper",
       "startLine": 278,
       "endLine": 292,
-      "mathContext": "erdos_872_summary combining primes_antichain and gameValue_upper"
+      "mathContext": "Mathematical content: erdos_872_summary combining primes_antichain and gameValue_upper"
     }
   ],
   "conclusion": {

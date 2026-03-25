@@ -56,7 +56,7 @@
       "startLine": 29,
       "endLine": 43,
       "summary": "Defines `ternaryForm α x y z = x^2 + y^2 - \\alpha z^2$, `IsIndefinite α` ($\\alpha > 0$), and `ApproxZero α ε` ($\\exists x,y,z > 0$ with $|Q(x,y,z)| < \\varepsilon$).",
-      "mathContext": "Defines `ternaryForm α x y z = x^2 + y^2 - \\alpha z^2$, `IsIndefinite α` ($\\alpha > 0$), and `ApproxZero α ε` ($\\exists x,y,z > 0$ with $|Q(x,y,z)| < \\varepsilon$)."
+      "mathContext": "Defines `ternaryForm α x y z = x^2 + y^2 - \\$\\alpha$ z^2$, `IsIndefinite α` ($\\$\\alpha$ > 0$), and `ApproxZero α ε` ($\\exists x,y,z > 0$ with $|Q(x,y,z)| < \\varepsilon$)."
     },
     {
       "id": "main-theorem",
@@ -64,7 +64,7 @@
       "startLine": 44,
       "endLine": 52,
       "summary": "Margulis's theorem: $\\text{Irrational}(\\alpha) \\land \\alpha > 0 \\implies \\forall \\varepsilon > 0,\\; \\text{ApproxZero}(\\alpha, \\varepsilon)$. The resolution of the Oppenheim conjecture for $n = 3$.",
-      "mathContext": "Margulis's theorem: $\\text{Irrational}(\\alpha) \\land \\alpha > 0 \\implies \\forall \\varepsilon > 0,\\; \\text{ApproxZero}(\\alpha, \\varepsilon)$. The resolution of the Oppenheim conjecture for $n = 3$."
+      "mathContext": "Margulis's theorem: $\\text{Irrational}(\\$\\alpha$) \\land \\$\\alpha$ > 0 \\implies \\forall \\varepsilon > 0,\\; \\text{ApproxZero}(\\$\\alpha$, \\varepsilon)$. The resolution of the Oppenheim conjecture for $n = 3$."
     },
     {
       "id": "density",
@@ -80,7 +80,7 @@
       "startLine": 63,
       "endLine": 76,
       "summary": "A fully proved theorem: density of values implies zero can be approximated, by specializing the target to $t = 0$.",
-      "mathContext": "A fully proved theorem: density of values implies zero can be approximated, by specializing the target to $t = 0$."
+      "mathContext": "Verified: A fully proved theorem: density of values implies zero can be approximated, by specializing the target to $t = 0$."
     },
     {
       "id": "rational-bound",
@@ -88,7 +88,7 @@
       "startLine": 77,
       "endLine": 87,
       "summary": "For $\\alpha = p/q$ rational, $\\exists \\delta > 0$ such that $|Q(x,y,z)| \\geq \\delta$ at all nonzero integer points with $Q \\neq 0$. Irrationality is essential.",
-      "mathContext": "For $\\alpha = p/q$ rational, $\\exists \\delta > 0$ such that $|Q(x,y,z)| \\geq \\delta$ at all nonzero integer points with $Q \\neq 0$. Irrationality is essential."
+      "mathContext": "For $\\$\\alpha$ = p/q$ rational, $\\exists \\$\\delta$ > 0$ such that $|Q(x,y,z)| \\geq \\$\\delta$$ at all nonzero integer points with $Q \\neq 0$. Irrationality is essential."
     },
     {
       "id": "davenport-heilbronn",
@@ -96,7 +96,7 @@
       "startLine": 88,
       "endLine": 97,
       "summary": "The diagonal form $x_1^2 + x_2^2 + x_3^2 + x_4^2 - \\alpha x_5^2$ approximates zero for irrational $\\alpha > 0$. Proved by the circle method (1946).",
-      "mathContext": "The diagonal form $x_1^2 + x_2^2 + x_3^2 + x_4^2 - \\alpha x_5^2$ approximates zero for irrational $\\alpha > 0$. Proved by the circle method (1946)."
+      "mathContext": "The diagonal form $x_1^2 + x_2^2 + x_3^2 + x_4^2 - \\$\\alpha$ x_5^2$ approximates zero for irrational $\\$\\alpha$ > 0$. Proved by the circle method (1946)."
     },
     {
       "id": "orbit-dichotomy",
@@ -104,7 +104,7 @@
       "startLine": 98,
       "endLine": 118,
       "summary": "The dynamical heart: either $\\alpha$ is rational (closed orbit, bounded away from zero) or values are dense in $\\mathbb{R}$ (dense orbit). Includes the proved `irrational_not_rational` lemma.",
-      "mathContext": "The dynamical heart: either $\\alpha$ is rational (closed orbit, bounded away from zero) or values are dense in $\\mathbb{R}$ (dense orbit). Includes the proved `irrational_not_rational` lemma."
+      "mathContext": "The dynamical heart: either $\\$\\alpha$$ is rational (closed orbit, bounded away from zero) or values are dense in $\\mathbb{R}$ (dense orbit). Includes the proved `irrational_not_rational` lemma."
     },
     {
       "id": "quantitative",
@@ -112,7 +112,7 @@
       "startLine": 119,
       "endLine": 132,
       "summary": "Quantitative Oppenheim: for $T$ large, the set of $(x,y,z)$ with $|Q| < \\delta$ and $\\max|\\cdot| \\leq T$ has positive cardinality. The asymptotic is $\\sim c \\cdot \\delta \\cdot T$.",
-      "mathContext": "Quantitative Oppenheim: for $T$ large, the set of $(x,y,z)$ with $|Q| < \\delta$ and $\\max|\\cdot| \\leq T$ has positive cardinality. The asymptotic is $\\sim c \\cdot \\delta \\cdot T$."
+      "mathContext": "Quantitative Oppenheim: for $T$ large, the set of $(x,y,z)$ with $|Q| < \\$\\delta$$ and $\\max|\\cdot| \\leq T$ has positive cardinality. The asymptotic is $\\sim c \\cdot \\$\\delta$ \\cdot T$."
     }
   ],
   "conclusion": {

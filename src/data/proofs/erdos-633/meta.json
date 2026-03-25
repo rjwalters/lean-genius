@@ -80,7 +80,7 @@
       "summary": "Defines Triangle (by sides with triangle inequality), TriangleByAngles (by angles with sum π), and heronArea via Heron's formula.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Defines Triangle (by sides with triangle inequality), TriangleByAngles (by angles with sum π), and heronArea via Heron's formula."
+      "mathContext": "Formal definition: Defines Triangle (by sides with triangle inequality), TriangleByAngles (by angles with sum π), and heronArea via Heron's formula."
     },
     {
       "id": "dissection-defs",
@@ -88,7 +88,7 @@
       "summary": "Defines CongruentDissection (area compatibility + tiling), CanDissectInto, and DissectionCounts (set of valid dissection numbers).",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Defines CongruentDissection (area compatibility + tiling), CanDissectInto, and DissectionCounts (set of valid dissection numbers)."
+      "mathContext": "Formal definition: Defines CongruentDissection (area compatibility + tiling), CanDissectInto, and DissectionCounts (set of valid dissection numbers)."
     },
     {
       "id": "square-property",
@@ -96,7 +96,7 @@
       "summary": "Defines IsSquare (n = k²) and HasSquareOnlyProperty (all dissection counts are perfect squares).",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Defines IsSquare (n = k²) and HasSquareOnlyProperty (all dissection counts are perfect squares)."
+      "mathContext": "Formal definition: Defines IsSquare (n = k²) and HasSquareOnlyProperty (all dissection counts are perfect squares)."
     },
     {
       "id": "universal",
@@ -104,7 +104,7 @@
       "summary": "States universal_square_dissection: every triangle admits n² dissections via grid subdivision.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "States universal_square_dissection: every triangle admits n² dissections via grid subdivision."
+      "mathContext": "Mathematical content: States universal_square_dissection: every triangle admits n² dissections via grid subdivision."
     },
     {
       "id": "soifer",
@@ -112,7 +112,7 @@
       "summary": "Constructs soiferTriangle (√2, √3, √4) with verified triangle inequalities, and states soifer_square_only.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Constructs soiferTriangle (√2, √3, √4) with verified triangle inequalities, and states soifer_square_only."
+      "mathContext": "Mathematical content: Constructs soiferTriangle (√2, √3, √4) with verified triangle inequalities, and states soifer_square_only."
     },
     {
       "id": "integral",
@@ -120,7 +120,7 @@
       "summary": "Defines IntegrallyIndependent for angle triples, connecting algebraic constraints on angles to dissection rigidity.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Defines IntegrallyIndependent for angle triples, connecting algebraic constraints on angles to dissection rigidity."
+      "mathContext": "Formal definition: Defines IntegrallyIndependent for angle triples, connecting algebraic constraints on angles to dissection rigidity."
     },
     {
       "id": "similar",
@@ -128,7 +128,7 @@
       "summary": "Counterexamples (equilateral: 3 pieces, right isosceles: 2 pieces) and similar_dissection_complete (n ≠ 2,3,5 always works for similar).",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Counterexamples (equilateral: 3 pieces, right isosceles: 2 pieces) and similar_dissection_complete (n ≠ 2,3,5 always works for similar)."
+      "mathContext": "Counterexamples (equilateral: 3 pieces, right isosceles: 2 pieces) and similar_dissection_complete (n $\\neq$ 2,3,5 always works for similar)."
     },
     {
       "id": "classification",
@@ -136,7 +136,7 @@
       "summary": "States erdos_633_classification (find the predicate), defines SoiferFamily (√p, √q, √r), and erdos_633_exists (square-only triangles exist).",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "States erdos_633_classification (find the predicate), defines SoiferFamily (√p, √q, √r), and erdos_633_exists (square-only triangles exist)."
+      "mathContext": "Formal definition: States erdos_633_classification (find the predicate), defines SoiferFamily (√p, √q, √r), and erdos_633_exists (square-only triangles exist)."
     }
   ],
   "conclusion": {

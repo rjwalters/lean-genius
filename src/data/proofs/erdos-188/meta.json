@@ -108,7 +108,7 @@
       "summary": "Defines `achievableSet := {k | ∃ valid coloring for k}`, the main problem `ErdosProblem188` as finding `IsLeast achievableSet k`, and the noncomputable `minAchievable := sInf achievableSet`.",
       "startLine": 66,
       "endLine": 81,
-      "mathContext": "Defines `achievableSet := {k | ∃ valid coloring for k}`, the main problem `ErdosProblem188` as finding `IsLeast achievableSet k`, and the noncomputable `minAchievable := sInf achievableSet`."
+      "mathContext": "Formal definition: Defines `achievableSet := {k | ∃ valid coloring for k}`, the main problem `ErdosProblem188` as finding `IsLeast achievableSet k`, and the noncomputable `minAchievable := sInf achievableSet`."
     },
     {
       "id": "bounds",
@@ -140,7 +140,7 @@
       "summary": "Derives `large_k_valid`: there exists some large $k$ and a coloring satisfying both constraints, as an immediate corollary of the axiomatized upper bound.",
       "startLine": 148,
       "endLine": 162,
-      "mathContext": "Derives `large_k_valid`: there exists some large $k$ and a coloring satisfying both constraints, as an immediate corollary of the axiomatized upper bound."
+      "mathContext": "Axiomatized: Derives `large_k_valid`: there exists some large $k$ and a coloring satisfying both constraints, as an immediate corollary of the axiomatized upper bound."
     },
     {
       "id": "status",
@@ -148,7 +148,7 @@
       "summary": "Records the problem as OPEN and proves `erdos_188_statement`: the formal equivalence between `ErdosProblem188` and the existence of a least element in the achievable set.",
       "startLine": 163,
       "endLine": 187,
-      "mathContext": "Records the problem as OPEN and proves `erdos_188_statement`: the formal equivalence between `ErdosProblem188` and the existence of a least element in the achievable set."
+      "mathContext": "Verified: Records the problem as OPEN and proves `erdos_188_statement`: the formal equivalence between `ErdosProblem188` and the existence of a least element in the achievable set."
     },
     {
       "id": "summary",
@@ -156,7 +156,7 @@
       "summary": "Summarizes known bounds $6 \\leq \\min s \\leq 10^7$, the combinatorial origin of the lower bound, the constructive origin of the upper bound, and the remaining open questions.",
       "startLine": 188,
       "endLine": 201,
-      "mathContext": "Summarizes known bounds $6 \\leq \\min s \\leq 10^7$, the combinatorial origin of the lower bound, the constructive origin of the upper bound, and the remaining open questions."
+      "mathContext": "Summarizes known bounds $6 \\leq \\min s \\leq $10^{7}$$, the combinatorial origin of the lower bound, the constructive origin of the upper bound, and the remaining open questions."
     }
   ],
   "conclusion": {

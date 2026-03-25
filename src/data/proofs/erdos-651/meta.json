@@ -85,7 +85,7 @@
       "summary": "Definition of general position in ℝ^k",
       "startLine": 38,
       "endLine": 55,
-      "mathContext": "Definition of general position in ℝ^k"
+      "mathContext": "Definition of general position in $\\mathbb{R}$^k"
     },
     {
       "id": "convex-polyhedra",
@@ -93,7 +93,7 @@
       "summary": "Convex hull, determining polyhedra, containing polyhedra",
       "startLine": 56,
       "endLine": 82,
-      "mathContext": "Convex hull, determining polyhedra, containing polyhedra"
+      "mathContext": "Mathematical content: Convex hull, determining polyhedra, containing polyhedra"
     },
     {
       "id": "f-k-function",
@@ -101,7 +101,7 @@
       "summary": "Ramsey-type function for convex geometry",
       "startLine": 83,
       "endLine": 113,
-      "mathContext": "Ramsey-type function for convex geometry"
+      "mathContext": "Mathematical content: Ramsey-type function for convex geometry"
     },
     {
       "id": "erdos-szekeres",
@@ -109,7 +109,7 @@
       "summary": "k = 2 case: f_2(n) = 2^{n-2} + 1",
       "startLine": 114,
       "endLine": 133,
-      "mathContext": "k = 2 case: f_2(n) = 2^{n-2} + 1"
+      "mathContext": "k = 2 case: f_2(n) = $$2^{{n-2}$}$ + 1"
     },
     {
       "id": "monotonicity",
@@ -117,7 +117,7 @@
       "summary": "f_k decreases with increasing k",
       "startLine": 134,
       "endLine": 147,
-      "mathContext": "f_k decreases with increasing k"
+      "mathContext": "Mathematical content: f_k decreases with increasing k"
     },
     {
       "id": "conjecture",
@@ -125,7 +125,7 @@
       "summary": "Exponential lower bound conjecture",
       "startLine": 148,
       "endLine": 160,
-      "mathContext": "Exponential lower bound conjecture"
+      "mathContext": "Bound: Exponential lower bound conjecture"
     },
     {
       "id": "disproof",
@@ -133,7 +133,7 @@
       "summary": "Pohoata-Zakharov 2022: f_3(n) ≤ 2^{o(n)}, disproving the conjecture",
       "startLine": 161,
       "endLine": 202,
-      "mathContext": "Pohoata-Zakharov 2022: f_3(n) ≤ 2^{o(n)}, disproving the conjecture"
+      "mathContext": "Pohoata-Zakharov 2022: f_3(n) $\\leq$ $$2^{{o(n)}$}$, disproving the conjecture"
     },
     {
       "id": "main-results",
@@ -141,7 +141,7 @@
       "summary": "erdos_651 theorem and summary combining disproof with subexponential bound",
       "startLine": 203,
       "endLine": 227,
-      "mathContext": "erdos_651 theorem and summary combining disproof with subexponential bound"
+      "mathContext": "Verified: erdos_651 theorem and summary combining disproof with subexponential bound"
     }
   ],
   "conclusion": {

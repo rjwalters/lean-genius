@@ -71,7 +71,7 @@
       "startLine": 24,
       "endLine": 33,
       "summary": "Imports `Mathlib.SetTheory.Ordinal.Arithmetic`, `Cardinal.Basic`, `SimpleGraph.Basic`, and `Tactic`. Opens `Ordinal`, `Cardinal`, `SimpleGraph` namespaces.",
-      "mathContext": "Imports `Mathlib.SetTheory.Ordinal.Arithmetic`, `Cardinal.Basic`, `SimpleGraph.Basic`, and `Tactic`. Opens `Ordinal`, `Cardinal`, `SimpleGraph` namespaces."
+      "mathContext": "Mathematical content: Imports `Mathlib.SetTheory.Ordinal.Arithmetic`, `Cardinal.Basic`, `SimpleGraph.Basic`, and `Tactic`. Opens `Ordinal`, `Cardinal`, `SimpleGraph` namespaces."
     },
     {
       "id": "basic-defs",
@@ -87,7 +87,7 @@
       "summary": "Defines $P(\\alpha)$: every graph on $\\alpha$ has infinite path OR independent set of order type $\\alpha$. Proves equivalence with the contrapositive formulation.",
       "startLine": 51,
       "endLine": 64,
-      "mathContext": "Defines $P(\\alpha)$: every graph on $\\alpha$ has infinite path OR independent set of order type $\\alpha$. Proves equivalence with the contrapositive formulation."
+      "mathContext": "Defines $P(\\$\\alpha$)$: every graph on $\\$\\alpha$$ has infinite path OR independent set of order type $\\$\\alpha$$. Proves equivalence with the contrapositive formulation."
     },
     {
       "id": "finite",
@@ -95,7 +95,7 @@
       "summary": "$P(n)$ holds trivially for all finite $n$: no infinite path exists in a finite graph, so the independent set condition must hold.",
       "startLine": 65,
       "endLine": 76,
-      "mathContext": "$P(n)$ holds trivially for all finite $n$: no infinite path exists in a finite graph, so the independent set condition must hold."
+      "mathContext": "Mathematical content: $P(n)$ holds trivially for all finite $n$: no infinite path exists in a finite graph, so the independent set condition must hold."
     },
     {
       "id": "omega",
@@ -103,7 +103,7 @@
       "summary": "$P(\\omega)$ follows from the infinite Ramsey theorem ($\\omega \\to (\\omega)^2_2$): any graph on $\\omega$ has either an infinite clique (containing a ray) or an infinite independent set.",
       "startLine": 77,
       "endLine": 87,
-      "mathContext": "$P(\\omega)$ follows from the infinite Ramsey theorem ($\\omega \\to (\\omega)^2_2$): any graph on $\\omega$ has either an infinite clique (containing a ray) or an infinite independent set."
+      "mathContext": "Verified: $P(\\omega)$ follows from the infinite Ramsey theorem ($\\omega \\to (\\omega)^2_2$): any graph on $\\omega$ has either an infinite clique (containing a ray) or an infinite independent set."
     },
     {
       "id": "ehm",
@@ -111,7 +111,7 @@
       "summary": "Defines `criticalOrdinal` $= \\omega_1^{\\omega+2}$ and axiomatizes the main result: $P(\\alpha)$ holds for all $\\alpha < \\omega_1^{\\omega+2}$. The proof uses transfinite induction on Cantor normal form.",
       "startLine": 88,
       "endLine": 101,
-      "mathContext": "Defines `criticalOrdinal` $= \\omega_1^{\\omega+2}$ and axiomatizes the main result: $P(\\alpha)$ holds for all $\\alpha < \\omega_1^{\\omega+2}$. The proof uses transfinite induction on Cantor normal form."
+      "mathContext": "Defines `criticalOrdinal` $= \\omega_1^{\\omega+2}$ and axiomatizes the main result: $P(\\$\\alpha$)$ holds for all $\\$\\alpha$ < \\omega_1^{\\omega+2}$. The proof uses transfinite induction on Cantor normal form."
     },
     {
       "id": "critical",
@@ -119,7 +119,7 @@
       "summary": "States the `CriticalCaseConjecture`: does $P(\\omega_1^{\\omega+2})$ hold? This is the exact boundary where the Erdős-Hajnal-Milner induction breaks down. \\$250 prize.",
       "startLine": 102,
       "endLine": 116,
-      "mathContext": "States the `CriticalCaseConjecture`: does $P(\\omega_1^{\\omega+2})$ hold? This is the exact boundary where the Erdős-Hajnal-Milner induction breaks down. \\$250 prize."
+      "mathContext": "Bound: States the `CriticalCaseConjecture`: does $P(\\omega_1^{\\omega+2})$ hold? This is the exact boundary where the Erdős-Hajnal-Milner induction breaks down. \\$250 prize."
     },
     {
       "id": "martins-axiom",
@@ -127,7 +127,7 @@
       "summary": "Axiomatizes Martin's Axiom and Larson's theorem (1990): under MA, $P(\\alpha)$ holds for all $\\alpha$ with $|\\alpha| < 2^{\\aleph_0}$, extending the range far beyond $\\omega_1^{\\omega+2}$.",
       "startLine": 117,
       "endLine": 134,
-      "mathContext": "Axiomatizes Martin's Axiom and Larson's theorem (1990): under MA, $P(\\alpha)$ holds for all $\\alpha$ with $|\\alpha| < 2^{\\aleph_0}$, extending the range far beyond $\\omega_1^{\\omega+2}$."
+      "mathContext": "Axiomatizes Martin's Axiom and Larson's theorem (1990): under MA, $P(\\$\\alpha$)$ holds for all $\\$\\alpha$$ with $|\\$\\alpha$| < $$2^{{\\aleph_0}$}$$, extending the range far beyond $\\omega_1^{\\omega+2}$."
     },
     {
       "id": "ordinal-arithmetic",
@@ -135,7 +135,7 @@
       "summary": "Establishes the ordinal chain $\\omega < \\omega_1 < \\omega_1^\\omega < \\omega_1^{\\omega+1} < \\omega_1^{\\omega+2}$ and proves all countable ordinals satisfy $P$.",
       "startLine": 135,
       "endLine": 151,
-      "mathContext": "Establishes the ordinal chain $\\omega < \\omega_1 < \\omega_1^\\omega < \\omega_1^{\\omega+1} < \\omega_1^{\\omega+2}$ and proves all countable ordinals satisfy $P$."
+      "mathContext": "Verified: Establishes the ordinal chain $\\omega < \\omega_1 < \\omega_1^\\omega < \\omega_1^{\\omega+1} < \\omega_1^{\\omega+2}$ and proves all countable ordinals satisfy $P$."
     },
     {
       "id": "graph-tools",
@@ -143,7 +143,7 @@
       "summary": "States König's lemma (infinite finitely-branching trees have rays) and ordinal Ramsey partition regularity for large ordinals.",
       "startLine": 152,
       "endLine": 165,
-      "mathContext": "States König's lemma (infinite finitely-branching trees have rays) and ordinal Ramsey partition regularity for large ordinals."
+      "mathContext": "Mathematical content: States König's lemma (infinite finitely-branching trees have rays) and ordinal Ramsey partition regularity for large ordinals."
     },
     {
       "id": "independence",
@@ -151,7 +151,7 @@
       "summary": "Defines `independenceNumber` as $\\sup_{S \\text{ independent}} |S|$ and establishes that $P(\\alpha)$ failure requires $\\alpha(G) < |\\alpha|$ with no infinite path.",
       "startLine": 166,
       "endLine": 197,
-      "mathContext": "Defines `independenceNumber` as $\\sup_{S \\text{ independent}} |S|$ and establishes that $P(\\alpha)$ failure requires $\\alpha(G) < |\\alpha|$ with no infinite path."
+      "mathContext": "Defines `independenceNumber` as $\\sup_{S \\text{ independent}} |S|$ and establishes that $P(\\$\\alpha$)$ failure requires $\\$\\alpha$(G) < |\\$\\alpha$|$ with no infinite path."
     },
     {
       "id": "general",

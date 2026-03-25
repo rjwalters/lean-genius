@@ -78,7 +78,7 @@
       "summary": "Module docstring with problem statement, known results, Erdős-Graham references, and status. Imports Mathlib's `SpecificLimits`, `Irrational`, topology, filters, and tactics.",
       "startLine": 1,
       "endLine": 38,
-      "mathContext": "Module docstring with problem statement, known results, Erdős-Graham references, and status. Imports Mathlib's `SpecificLimits`, `Irrational`, topology, filters, and tactics."
+      "mathContext": "Mathematical content: Module docstring with problem statement, known results, Erdős-Graham references, and status. Imports Mathlib's `SpecificLimits`, `Irrational`, topology, filters, and tactics."
     },
     {
       "id": "seq-properties",
@@ -94,7 +94,7 @@
       "summary": "The series term $a_n/2^{a_n}$, partial sums via `Finset.range`, convergence theorem (comparison with $\\sum n/2^n$), and the `seriesSum` limit extracted via `Classical.choose`.",
       "startLine": 59,
       "endLine": 79,
-      "mathContext": "The series term $a_n/2^{a_n}$, partial sums via `Finset.range`, convergence theorem (comparison with $\\sum n/2^n$), and the `seriesSum` limit extracted via `Classical.choose`."
+      "mathContext": "The series term $a_n/$$2^{{a_n}$}$$, partial sums via `Finset.range`, convergence theorem (comparison with $\\sum n/$2^{n}$$), and the `seriesSum` limit extracted via `Classical.choose`."
     },
     {
       "id": "known-results",
@@ -102,7 +102,7 @@
       "summary": "Erdős's two partial results (both `sorry`): gaps $\\to \\infty$ implies irrational (1974), and superlogarithmic growth implies irrational. These bracket the open conjecture.",
       "startLine": 80,
       "endLine": 100,
-      "mathContext": "Erdős's two partial results (both `sorry`): gaps $\\to \\infty$ implies irrational (1974), and superlogarithmic growth implies irrational. These bracket the open conjecture."
+      "mathContext": "Mathematical content: Erdős's two partial results (both `sorry`): gaps $\\to \\infty$ implies irrational (1974), and superlogarithmic growth implies irrational. These bracket the open conjecture."
     },
     {
       "id": "implications",
@@ -110,7 +110,7 @@
       "summary": "The implication chain: GapsToInfinity $\\Rightarrow$ FastGrowth $\\Leftarrow$ SuperlogarithmicGrowth. Both proofs use telescoping/growth comparison arguments (both `sorry`).",
       "startLine": 101,
       "endLine": 114,
-      "mathContext": "The implication chain: GapsToInfinity $\\Rightarrow$ FastGrowth $\\Leftarrow$ SuperlogarithmicGrowth. Both proofs use telescoping/growth comparison arguments (both `sorry`)."
+      "mathContext": "Verified: The implication chain: GapsToInfinity $\\Rightarrow$ FastGrowth $\\Leftarrow$ SuperlogarithmicGrowth. Both proofs use telescoping/growth comparison arguments (both `sorry`)."
     },
     {
       "id": "examples",
@@ -134,7 +134,7 @@
       "summary": "End-of-file documentation: status (OPEN), what's formalized, key sorries, and what a proof would require.",
       "startLine": 181,
       "endLine": 203,
-      "mathContext": "End-of-file documentation: status (OPEN), what's formalized, key sorries, and what a proof would require."
+      "mathContext": "Verified: End-of-file documentation: status (OPEN), what's formalized, key sorries, and what a proof would require."
     }
   ],
   "conclusion": {

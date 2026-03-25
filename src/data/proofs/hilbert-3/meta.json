@@ -87,7 +87,7 @@
       "startLine": 75,
       "endLine": 102,
       "summary": "Defines `Edge` (with positive `length : ℝ`) and `Polyhedron` (a `Finset Edge` with `dihedralAngle : Edge → ℝ` in $(0, 2\\pi)$). Models polyhedra by their combinatorial edge-angle data.",
-      "mathContext": "Defines `Edge` (with positive `length : ℝ`) and `Polyhedron` (a `Finset Edge` with `dihedralAngle : Edge → ℝ` in $(0, 2\\pi)$). Models polyhedra by their combinatorial edge-angle data."
+      "mathContext": "Defines `Edge` (with positive `length : $\\mathbb{R}$`) and `Polyhedron` (a `Finset Edge` with `dihedralAngle : Edge $\\to$ $\\mathbb{R}$` in $(0, 2\\$\\pi$)$). Models polyhedra by their combinatorial edge-angle data."
     },
     {
       "id": "dehn-invariant",
@@ -103,7 +103,7 @@
       "startLine": 150,
       "endLine": 169,
       "summary": "Defines `scissorsCongruent P Q := True` (placeholder). Documents that scissors congruence requires decomposition into finitely many pieces rearranged by rigid motions.",
-      "mathContext": "Defines `scissorsCongruent P Q := True` (placeholder). Documents that scissors congruence requires decomposition into finitely many pieces rearranged by rigid motions."
+      "mathContext": "Formal definition: Defines `scissorsCongruent P Q := True` (placeholder). Documents that scissors congruence requires decomposition into finitely many pieces rearranged by rigid motions."
     },
     {
       "id": "invariance",
@@ -143,7 +143,7 @@
       "startLine": 373,
       "endLine": 401,
       "summary": "Axiom `sydler_theorem`: $P \\sim Q \\iff \\text{Vol}(P) = \\text{Vol}(Q) \\wedge D(P) = D(Q)$. Sydler (1965) proved the Dehn invariant is a **complete** invariant for scissors congruence in $\\mathbb{R}^3$.",
-      "mathContext": "Axiom `sydler_theorem`: $P \\sim Q \\iff \\text{Vol}(P) = \\text{Vol}(Q) \\wedge D(P) = D(Q)$. Sydler (1965) proved the Dehn invariant is a **complete** invariant for scissors congruence in $\\mathbb{R}^3$."
+      "mathContext": "Verified: Axiom `sydler_theorem`: $P \\sim Q \\iff \\text{Vol}(P) = \\text{Vol}(Q) \\wedge D(P) = D(Q)$. Sydler (1965) proved the Dehn invariant is a **complete** invariant for scissors congruence in $\\mathbb{R}^3$."
     },
     {
       "id": "bolyai-gerwien",
@@ -159,7 +159,7 @@
       "startLine": 471,
       "endLine": 514,
       "summary": "Historical commentary: ICM 1900, Dehn's solution, Sydler's 1965 completeness, connections to $K_3(\\mathbb{C})$ and higher-dimensional scissors congruence. Exports five key results via `#check`.",
-      "mathContext": "Historical commentary: ICM 1900, Dehn's solution, Sydler's 1965 completeness, connections to $K_3(\\mathbb{C})$ and higher-dimensional scissors congruence. Exports five key results via `#check`."
+      "mathContext": "Mathematical content: Historical commentary: ICM 1900, Dehn's solution, Sydler's 1965 completeness, connections to $K_3(\\mathbb{C})$ and higher-dimensional scissors congruence. Exports five key results via `#check`."
     }
   ],
   "conclusion": {

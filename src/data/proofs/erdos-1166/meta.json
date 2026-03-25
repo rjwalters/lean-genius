@@ -108,7 +108,7 @@
       "startLine": 1,
       "endLine": 31,
       "summary": "Documents the problem statement, its resolution, key ingredients (Erdős–Révész bound and Erdős–Taylor theorem), and imports Mathlib modules for finite sets, real analysis, logarithms, and powers.",
-      "mathContext": "Documents the problem statement, its resolution, key ingredients (Erdős–Révész bound and Erdős–Taylor theorem), and imports Mathlib modules for finite sets, real analysis, logarithms, and powers."
+      "mathContext": "Verified: Documents the problem statement, its resolution, key ingredients (Erdős–Révész bound and Erdős–Taylor theorem), and imports Mathlib modules for finite sets, real analysis, logarithms, and powers."
     },
     {
       "id": "random-walk-definitions",
@@ -116,7 +116,7 @@
       "startLine": 32,
       "endLine": 46,
       "summary": "Defines the integer lattice, origin, and axiomatizes random walks as an abstract type with trajectories starting at the origin.",
-      "mathContext": "Defines the integer lattice, origin, and axiomatizes random walks as an abstract type with trajectories starting at the origin."
+      "mathContext": "Formal definition: Defines the integer lattice, origin, and axiomatizes random walks as an abstract type with trajectories starting at the origin."
     },
     {
       "id": "visit-counts",
@@ -124,7 +124,7 @@
       "startLine": 47,
       "endLine": 62,
       "summary": "Axiomatizes the visit count function $f_k(x, \\omega)$ with non-negativity, monotonicity in $k$, and initial visit to the origin.",
-      "mathContext": "Axiomatizes the visit count function $f_k(x, \\omega)$ with non-negativity, monotonicity in $k$, and initial visit to the origin."
+      "mathContext": "Axiomatized: Axiomatizes the visit count function $f_k(x, \\omega)$ with non-negativity, monotonicity in $k$, and initial visit to the origin."
     },
     {
       "id": "max-visit-count",
@@ -132,7 +132,7 @@
       "startLine": 63,
       "endLine": 83,
       "summary": "Defines the maximum visit count $T_k$ and proves it is always at least 1, combining the origin's visit count with monotonicity.",
-      "mathContext": "Defines the maximum visit count $T_k$ and proves it is always at least 1, combining the origin's visit count with monotonicity."
+      "mathContext": "Formal definition: Defines the maximum visit count $T_k$ and proves it is always at least 1, combining the origin's visit count with monotonicity."
     },
     {
       "id": "most-visited-set",
@@ -140,7 +140,7 @@
       "startLine": 84,
       "endLine": 98,
       "summary": "Axiomatizes the set of points achieving maximum visit count, with membership characterization and nonemptiness.",
-      "mathContext": "Axiomatizes the set of points achieving maximum visit count, with membership characterization and nonemptiness."
+      "mathContext": "Axiomatized: Axiomatizes the set of points achieving maximum visit count, with membership characterization and nonemptiness."
     },
     {
       "id": "cumulative-set",
@@ -148,7 +148,7 @@
       "startLine": 99,
       "endLine": 120,
       "summary": "Defines $\\bigcup_{k \\leq n} F(k)$ with containment and subset axioms, and proves monotonicity of the cumulative set.",
-      "mathContext": "Defines $\\bigcup_{k \\leq n} F(k)$ with containment and subset axioms, and proves monotonicity of the cumulative set."
+      "mathContext": "Formal definition: Defines $\\bigcup_{k \\leq n} F(k)$ with containment and subset axioms, and proves monotonicity of the cumulative set."
     },
     {
       "id": "almost-surely",
@@ -156,7 +156,7 @@
       "startLine": 121,
       "endLine": 135,
       "summary": "Axiomatizes almost sure events with monotonicity and conjunction properties, abstracting away the probability space.",
-      "mathContext": "Axiomatizes almost sure events with monotonicity and conjunction properties, abstracting away the probability space."
+      "mathContext": "Axiomatized: Axiomatizes almost sure events with monotonicity and conjunction properties, abstracting away the probability space."
     },
     {
       "id": "key-ingredients",
@@ -164,7 +164,7 @@
       "startLine": 136,
       "endLine": 155,
       "summary": "States the two main ingredients: $|F(n)| \\leq 3$ a.s. for large $n$ (Erdős–Révész) and $T_n \\leq C(\\log n)^2$ a.s. (Erdős–Taylor).",
-      "mathContext": "States the two main ingredients: $|F(n)| \\leq 3$ a.s. for large $n$ (Erdős–Révész) and $T_n \\leq C(\\log n)^2$ a.s. (Erdős–Taylor)."
+      "mathContext": "States the two main ingredients: $|F(n)| \\leq 3$ a.s. for large $n$ (Erdős–Révész) and $T_n \\leq C(\\$\\log n$)^2$ a.s. (Erdős–Taylor)."
     },
     {
       "id": "main-theorem",
@@ -172,7 +172,7 @@
       "startLine": 156,
       "endLine": 219,
       "summary": "States the main result $|\\bigcup_{k \\leq n} F(k)| = O((\\log n)^2)$ a.s., derives the polylogarithmic form, provides the proof structure combining both ingredients, and connects to Problem #1165.",
-      "mathContext": "States the main result $|\\bigcup_{k \\leq n} F(k)| = O((\\log n)^2)$ a.s., derives the polylogarithmic form, provides the proof structure combining both ingredients, and connects to Problem #1165."
+      "mathContext": "States the main result $|\\bigcup_{k \\leq n} F(k)| = $O((\\$\\log n$)$^2)$ a.s., derives the polylogarithmic form, provides the proof structure combining both ingredients, and connects to Problem #1165."
     },
     {
       "id": "recurrence-and-constant",
@@ -180,7 +180,7 @@
       "startLine": 222,
       "endLine": 259,
       "summary": "States Pólya's 2D recurrence theorem, the divergence of $T_n$, and the precise Erdős–Taylor constant $T_n/(\\log n)^2 \\to 1/\\pi$ a.s., with a derivation of the upper bound from the constant.",
-      "mathContext": "States Pólya's 2D recurrence theorem, the divergence of $T_n$, and the precise Erdős–Taylor constant $T_n/(\\log n)^2 \\to 1/\\pi$ a.s., with a derivation of the upper bound from the constant."
+      "mathContext": "States Pólya's 2D recurrence theorem, the divergence of $T_n$, and the precise Erdős–Taylor constant $T_n/(\\$\\log n$)^2 \\to 1/\\$\\pi$$ a.s., with a derivation of the upper bound from the constant."
     }
   ],
   "conclusion": {

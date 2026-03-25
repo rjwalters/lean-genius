@@ -65,7 +65,7 @@
       "summary": "The PNT gives $p_n \\sim n \\ln n$, so $n/p_n \\to 0$. But the Leibniz test fails since $n/p_n$ is not monotone decreasing (twin primes cause ratio increases).",
       "startLine": 32,
       "endLine": 47,
-      "mathContext": "The PNT gives $p_n \\sim n \\ln n$, so $n/p_n \\to 0$. But the Leibniz test fails since $n/p_n$ is not monotone decreasing (twin primes cause ratio increases)."
+      "mathContext": "Mathematical content: The PNT gives $p_n \\sim n \\ln n$, so $n/p_n \\to 0$. But the Leibniz test fails since $n/p_n$ is not monotone decreasing (twin primes cause ratio increases)."
     },
     {
       "id": "core-definitions",
@@ -73,7 +73,7 @@
       "summary": "Defines `nthPrime` via `Nat.nth Nat.Prime`, the alternating term $a_n = (-1)^n \\cdot n/p_n$, partial sums $S_N = \\sum_{n=0}^{N} a_n$, and `AlternatingPrimeSeriesConverges` as $\\exists L : S_N \\to L$.",
       "startLine": 48,
       "endLine": 69,
-      "mathContext": "Defines `nthPrime` via `Nat.nth Nat.Prime`, the alternating term $a_n = (-1)^n \\cdot n/p_n$, partial sums $S_N = \\sum_{n=0}^{N} a_n$, and `AlternatingPrimeSeriesConverges` as $\\exists L : S_N \\to L$."
+      "mathContext": "Formal definition: Defines `nthPrime` via `Nat.nth Nat.Prime`, the alternating term $a_n = (-1)^n \\cdot n/p_n$, partial sums $S_N = \\sum_{n=0}^{N} a_n$, and `AlternatingPrimeSeriesConverges` as $\\exists L : S_N \\to L$."
     },
     {
       "id": "pnt-consequences",
@@ -81,7 +81,7 @@
       "summary": "Axiomatizes PNT ($p_n/(n\\ln n) \\to 1$), $n/p_n \\to 0$, $|a_n| \\to 0$, and the critical failure: $n/p_n$ is not monotone decreasing (counterexample: $5/11 < 6/13$ near twin primes).",
       "startLine": 70,
       "endLine": 117,
-      "mathContext": "Axiomatizes PNT ($p_n/(n\\ln n) \\to 1$), $n/p_n \\to 0$, $|a_n| \\to 0$, and the critical failure: $n/p_n$ is not monotone decreasing (counterexample: $5/11 < 6/13$ near twin primes)."
+      "mathContext": "Axiomatized: Axiomatizes PNT ($p_n/(n\\ln n) \\to 1$), $n/p_n \\to 0$, $|a_n| \\to 0$, and the critical failure: $n/p_n$ is not monotone decreasing (counterexample: $5/11 < 6/13$ near twin primes)."
     },
     {
       "id": "tao-result",
@@ -97,7 +97,7 @@
       "summary": "Defines prime gap $g_n = p_{n+1} - p_n$. Erdős's conjectures: (1) $\\sum (-1)^n/(n g_n)$ converges (open); (2) $\\sum (-1)^n/g_n$ diverges (proved via Zhang's bounded gaps $\\liminf g_n \\le H$).",
       "startLine": 143,
       "endLine": 179,
-      "mathContext": "Defines prime gap $g_n = p_{n+1} - p_n$. Erdős's conjectures: (1) $\\sum (-1)^n/(n g_n)$ converges (open); (2) $\\sum (-1)^n/g_n$ diverges (proved via Zhang's bounded gaps $\\liminf g_n \\le H$)."
+      "mathContext": "Formal definition: Defines prime gap $g_n = p_{n+1} - p_n$. Erdős's conjectures: (1) $\\sum (-1)^n/(n g_n)$ converges (open); (2) $\\sum (-1)^n/g_n$ diverges (proved via Zhang's bounded gaps $\\liminf g_n \\le H$)."
     },
     {
       "id": "difficulty",
@@ -113,7 +113,7 @@
       "summary": "$\\sum n/p_n \\sim \\sum 1/\\ln n = \\infty$ (logarithmic integral diverges), so any convergence must be conditional. The comparison $n/p_n \\sim 1/\\ln n$ follows from PNT.",
       "startLine": 207,
       "endLine": 228,
-      "mathContext": "$\\sum n/p_n \\sim \\sum 1/\\ln n = \\infty$ (logarithmic integral diverges), so any convergence must be conditional. The comparison $n/p_n \\sim 1/\\ln n$ follows from PNT."
+      "mathContext": "Mathematical content: $\\sum n/p_n \\sim \\sum 1/\\ln n = \\infty$ (logarithmic integral diverges), so any convergence must be conditional. The comparison $n/p_n \\sim 1/\\ln n$ follows from PNT."
     },
     {
       "id": "numerical-evidence",
@@ -121,7 +121,7 @@
       "summary": "Partial sums appear to oscillate around $\\approx -1$: $|S_N - (-1)| < 1 + \\varepsilon$ for large $N$. Suggestive but not a proof, as the infinite tail is uncomputable.",
       "startLine": 229,
       "endLine": 271,
-      "mathContext": "Partial sums appear to oscillate around $\\approx -1$: $|S_N - (-1)| < 1 + \\varepsilon$ for large $N$. Suggestive but not a proof, as the infinite tail is uncomputable."
+      "mathContext": "Verified: Partial sums appear to oscillate around $\\approx -1$: $|S_N - (-1)| < 1 + \\varepsilon$ for large $N$. Suggestive but not a proof, as the infinite tail is uncomputable."
     }
   ],
   "conclusion": {

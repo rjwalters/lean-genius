@@ -75,7 +75,7 @@
       "startLine": 95,
       "endLine": 112,
       "summary": "Axiomatizes the Moon-Moser bounds: upper bound $g(n) \\leq n - \\lfloor \\log_2 n \\rfloor$ using `Nat.log 2 n`, and lower bound $g(n) > n - \\log_2 n - 2\\log\\log n / \\log 2$ using `Real.log`.",
-      "mathContext": "Axiomatizes the Moon-Moser bounds: upper bound $g(n) \\leq n - \\lfloor \\log_2 n \\rfloor$ using `Nat.log 2 n`, and lower bound $g(n) > n - \\log_2 n - 2\\log\\log n / \\log 2$ using `Real.log`."
+      "mathContext": "Axiomatizes the Moon-Moser bounds: upper bound $g(n) \\leq n - \\lfloor \\log_2 n \\rfloor$ using `Nat.log 2 n`, and lower bound $g(n) > n - \\log_2 n - 2\\log\\$\\log n$ / \\log 2$ using `Real.log`."
     },
     {
       "id": "log-star",
@@ -91,7 +91,7 @@
       "startLine": 140,
       "endLine": 162,
       "summary": "Axiomatizes Erdős's improved lower bound $g(n) > n - \\log_2 n - \\log^*(n) - C$. Defines `ErdosConjecture` as $|g(n) - (n - \\log_2 n - \\log^*(n))| \\leq C$ for all $n \\geq 2$.",
-      "mathContext": "Axiomatizes Erdős's improved lower bound $g(n) > n - \\log_2 n - \\log^*(n) - C$. Defines `ErdosConjecture` as $|g(n) - (n - \\log_2 n - \\log^*(n))| \\leq C$ for all $n \\geq 2$."
+      "mathContext": "Formal definition: Axiomatizes Erdős's improved lower bound $g(n) > n - \\log_2 n - \\log^*(n) - C$. Defines `ErdosConjecture` as $|g(n) - (n - \\log_2 n - \\log^*(n))| \\leq C$ for all $n \\geq 2$."
     },
     {
       "id": "spencer",
@@ -115,7 +115,7 @@
       "startLine": 225,
       "endLine": 242,
       "summary": "Axiomatizes `complete_graph_cliques`: $K_n$ has cliques of sizes $1, 2, \\ldots, n$ so $g(n) \\geq n$, and `empty_graph_one_clique_size`: $g(1) \\geq 1$.",
-      "mathContext": "Axiomatizes `complete_graph_cliques`: $K_n$ has cliques of sizes $1, 2, \\ldots, n$ so $g(n) \\geq n$, and `empty_graph_one_clique_size`: $g(1) \\geq 1$."
+      "mathContext": "Axiomatized: Axiomatizes `complete_graph_cliques`: $K_n$ has cliques of sizes $1, 2, \\ldots, n$ so $g(n) \\geq n$, and `empty_graph_one_clique_size`: $g(1) \\geq 1$."
     },
     {
       "id": "summary",

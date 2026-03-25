@@ -51,7 +51,7 @@
       "startLine": 1,
       "endLine": 46,
       "summary": "Header documenting Erdős Problem #793: the product-divisibility condition on subsets of $\\{1,\\ldots,n\\}$, citing Erdős (1938) and the 1969 graph-theoretic proof. Imports Mathlib.",
-      "mathContext": "Header documenting Erdős Problem #793: the product-divisibility condition on subsets of $\\{1,\\ldots,n\\}$, citing Erdős (1938) and the 1969 graph-theoretic proof. Imports Mathlib."
+      "mathContext": "Verified: Header documenting Erdős Problem #793: the product-divisibility condition on subsets of $\\{1,\\ldots,n\\}$, citing Erdős (1938) and the 1969 graph-theoretic proof. Imports Mathlib."
     },
     {
       "id": "condition",
@@ -59,7 +59,7 @@
       "startLine": 47,
       "endLine": 63,
       "summary": "Defines `satisfiesCondition`: $\\forall a, b, c \\in A$ with $a \\neq b$ and $a \\neq c$, $a \\nmid bc$. Also an alternative with $b \\neq c$. Stronger than primitive (no $a \\mid b$).",
-      "mathContext": "Defines `satisfiesCondition`: $\\forall a, b, c \\in A$ with $a \\neq b$ and $a \\neq c$, $a \\nmid bc$. Also an alternative with $b \\neq c$. Stronger than primitive (no $a \\mid b$)."
+      "mathContext": "Formal definition: Defines `satisfiesCondition`: $\\forall a, b, c \\in A$ with $a \\neq b$ and $a \\neq c$, $a \\nmid bc$. Also an alternative with $b \\neq c$. Stronger than primitive (no $a \\mid b$)."
     },
     {
       "id": "f-definition",
@@ -67,7 +67,7 @@
       "startLine": 64,
       "endLine": 76,
       "summary": "Defines $F(n) = \\sup\\{|A| : A \\subseteq \\{1,\\ldots,n\\},\\, \\text{satisfiesCondition}(A)\\}$ as the central quantity. Noncomputable via `sSup`.",
-      "mathContext": "Defines $F(n) = \\sup\\{|A| : A \\subseteq \\{1,\\ldots,n\\},\\, \\text{satisfiesCondition}(A)\\}$ as the central quantity. Noncomputable via `sSup`."
+      "mathContext": "Formal definition: Defines $F(n) = \\sup\\{|A| : A \\subseteq \\{1,\\ldots,n\\},\\, \\text{satisfiesCondition}(A)\\}$ as the central quantity. Noncomputable via `sSup`."
     },
     {
       "id": "primes",
@@ -83,7 +83,7 @@
       "startLine": 98,
       "endLine": 117,
       "summary": "Axiomatizes $\\pi(n) + c_1 n^{2/3}(\\log n)^{-2} \\leq F(n) \\leq \\pi(n) + c_2 n^{2/3}(\\log n)^{-2}$ for constants $0 < c_1 < c_2$, plus the simpler bound $F(n) \\leq \\pi(n) + n^{2/3}$.",
-      "mathContext": "Axiomatizes $\\pi(n) + c_1 n^{2/3}(\\log n)^{-2} \\leq F(n) \\leq \\pi(n) + c_2 n^{2/3}(\\log n)^{-2}$ for constants $0 < c_1 < c_2$, plus the simpler bound $F(n) \\leq \\pi(n) + n^{2/3}$."
+      "mathContext": "Axiomatizes $\\$\\pi$(n) + c_1 n^{2/3}(\\$\\log n$)^{-2} \\leq F(n) \\leq \\$\\pi$(n) + c_2 n^{2/3}(\\$\\log n$)^{-2}$ for constants $0 < c_1 < c_2$, plus the simpler bound $F(n) \\leq \\$\\pi$(n) + n^{2/3}$."
     },
     {
       "id": "conjecture",
@@ -91,7 +91,7 @@
       "startLine": 118,
       "endLine": 141,
       "summary": "Formalizes the open question: does $\\lim_{n \\to \\infty} \\frac{F(n) - \\pi(n)}{n^{2/3}(\\log n)^{-2}} = C$ exist? Uses `Filter.Tendsto` for the limit and an $\\varepsilon$-$N$ alternative formulation.",
-      "mathContext": "Formalizes the open question: does $\\lim_{n \\to \\infty} \\frac{F(n) - \\pi(n)}{n^{2/3}(\\log n)^{-2}} = C$ exist? Uses `Filter.Tendsto` for the limit and an $\\varepsilon$-$N$ alternative formulation."
+      "mathContext": "Formalizes the open question: does $\\lim_{n \\to \\infty} \\frac{F(n) - \\$\\pi$(n)}{n^{2/3}(\\$\\log n$)^{-2}} = C$ exist? Uses `Filter.Tendsto` for the limit and an $\\varepsilon$-$N$ alternative formulation."
     },
     {
       "id": "graph",
@@ -107,7 +107,7 @@
       "startLine": 167,
       "endLine": 191,
       "summary": "Extends to $r$-product condition: $a \\nmid b_1 \\cdots b_r$ for distinct $b_i \\neq a$. Defines $F_r(n)$ and axiomatizes bounds with exponent $2/(r+1)$ replacing $2/3$.",
-      "mathContext": "Extends to $r$-product condition: $a \\nmid b_1 \\cdots b_r$ for distinct $b_i \\neq a$. Defines $F_r(n)$ and axiomatizes bounds with exponent $2/(r+1)$ replacing $2/3$."
+      "mathContext": "Formal definition: Extends to $r$-product condition: $a \\nmid b_1 \\cdots b_r$ for distinct $b_i \\neq a$. Defines $F_r(n)$ and axiomatizes bounds with exponent $2/(r+1)$ replacing $2/3$."
     }
   ],
   "conclusion": {

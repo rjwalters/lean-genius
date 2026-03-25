@@ -84,7 +84,7 @@
       "summary": "Defines `completeGraph` as $\\top$ in the `SimpleGraph` lattice, `IsCliqueOfSize` via `Finset`/`IsClique`, `IsCliqueFree` ($\\neg \\text{IsCliqueOfSize}$), and `ContainsClique` (semantic alias).",
       "startLine": 36,
       "endLine": 68,
-      "mathContext": "Defines `completeGraph` as $\\top$ in the `SimpleGraph` lattice, `IsCliqueOfSize` via `Finset`/`IsClique`, `IsCliqueFree` ($\\neg \\text{IsCliqueOfSize}$), and `ContainsClique` (semantic alias)."
+      "mathContext": "Formal definition: Defines `completeGraph` as $\\top$ in the `SimpleGraph` lattice, `IsCliqueOfSize` via `Finset`/`IsClique`, `IsCliqueFree` ($\\neg \\text{IsCliqueOfSize}$), and `ContainsClique` (semantic alias)."
     },
     {
       "id": "edge-colorings",
@@ -92,7 +92,7 @@
       "summary": "`EdgeColoring` as $G.\\text{edgeSet} \\to \\text{Fin}\\, k$, `MonochromaticSubgraph` with `symm`/`loopless` proofs via `Sym2.eq_swap`, and `HasMonochromaticClique` ($\\exists c,\\; K_l \\subseteq G_c$).",
       "startLine": 69,
       "endLine": 105,
-      "mathContext": "`EdgeColoring` as $G.\\text{edgeSet} \\to \\text{Fin}\\, k$, `MonochromaticSubgraph` with `symm`/`loopless` proofs via `Sym2.eq_swap`, and `HasMonochromaticClique` ($\\exists c,\\; K_l \\subseteq G_c$)."
+      "mathContext": "Verified: `EdgeColoring` as $G.\\text{edgeSet} \\to \\text{Fin}\\, k$, `MonochromaticSubgraph` with `symm`/`loopless` proofs via `Sym2.eq_swap`, and `HasMonochromaticClique` ($\\exists c,\\; K_l \\subseteq G_c$)."
     },
     {
       "id": "ramsey-property",
@@ -100,7 +100,7 @@
       "summary": "`HasRamseyProperty`: $\\forall \\chi,\\; \\exists c,\\; K_l \\subseteq G_c$. `ErdosHajnalQuestion`: $\\exists G,\\; \\omega(G) \\le l \\land G \\to (K_l)^k_2$.",
       "startLine": 106,
       "endLine": 126,
-      "mathContext": "`HasRamseyProperty`: $\\forall \\chi,\\; \\exists c,\\; K_l \\subseteq G_c$. `ErdosHajnalQuestion`: $\\exists G,\\; \\omega(G) \\le l \\land G \\to (K_l)^k_2$."
+      "mathContext": "Mathematical content: `HasRamseyProperty`: $\\forall \\chi,\\; \\exists c,\\; K_l \\subseteq G_c$. `ErdosHajnalQuestion`: $\\exists G,\\; \\omega(G) \\le l \\land G \\to (K_l)^k_2$."
     },
     {
       "id": "folkman-graphs",
@@ -108,7 +108,7 @@
       "summary": "`IsFolkmanGraph` $= \\text{IsCliqueFree}\\, G\\, (l+1) \\land \\text{HasRamseyProperty}\\, G\\, k\\, l$. `FolkmanNumber` $f(l;k)$ defined via `Nat.find` from the existence guarantee.",
       "startLine": 127,
       "endLine": 146,
-      "mathContext": "`IsFolkmanGraph` $= \\text{IsCliqueFree}\\, G\\, (l+1) \\land \\text{HasRamseyProperty}\\, G\\, k\\, l$. `FolkmanNumber` $f(l;k)$ defined via `Nat.find` from the existence guarantee."
+      "mathContext": "Mathematical content: `IsFolkmanGraph` $= \\text{IsCliqueFree}\\, G\\, (l+1) \\land \\text{HasRamseyProperty}\\, G\\, k\\, l$. `FolkmanNumber` $f(l;k)$ defined via `Nat.find` from the existence guarantee."
     },
     {
       "id": "known-results",
@@ -116,7 +116,7 @@
       "summary": "Axioms: `folkman_1970` ($k=2$, $\\forall l \\ge 3$) and `nesetril_rodl_1976` ($\\forall k \\ge 2, l \\ge 3$). The general theorem completely solves the Erdős-Hajnal question.",
       "startLine": 147,
       "endLine": 166,
-      "mathContext": "Axioms: `folkman_1970` ($k=2$, $\\forall l \\ge 3$) and `nesetril_rodl_1976` ($\\forall k \\ge 2, l \\ge 3$). The general theorem completely solves the Erdős-Hajnal question."
+      "mathContext": "Verified: Axioms: `folkman_1970` ($k=2$, $\\forall l \\ge 3$) and `nesetril_rodl_1976` ($\\forall k \\ge 2, l \\ge 3$). The general theorem completely solves the Erdős-Hajnal question."
     },
     {
       "id": "special-cases",
@@ -124,7 +124,7 @@
       "summary": "`FolkmanNumber_3_2` definition, Graham's upper bound $f(3;2) \\le 941$, and exact value $f(3;2) = 786$ (Lange-Radziszowski-Xu 2014).",
       "startLine": 167,
       "endLine": 197,
-      "mathContext": "`FolkmanNumber_3_2` definition, Graham's upper bound $f(3;2) \\le 941$, and exact value $f(3;2) = 786$ (Lange-Radziszowski-Xu 2014)."
+      "mathContext": "Formal definition: `FolkmanNumber_3_2` definition, Graham's upper bound $f(3;2) \\le 941$, and exact value $f(3;2) = 786$ (Lange-Radziszowski-Xu 2014)."
     },
     {
       "id": "ramsey-connection",
@@ -132,7 +132,7 @@
       "summary": "`RamseyNumber` $R(l,l)$ definition via `Nat.find`. Comparison: $K_n$ for $n \\ge R(l,l)$ trivially has the Ramsey property but contains all $K_m$; Folkman graphs achieve forcing with $\\omega(G) \\le l$.",
       "startLine": 198,
       "endLine": 221,
-      "mathContext": "`RamseyNumber` $R(l,l)$ definition via `Nat.find`. Comparison: $K_n$ for $n \\ge R(l,l)$ trivially has the Ramsey property but contains all $K_m$; Folkman graphs achieve forcing with $\\omega(G) \\le l$."
+      "mathContext": "Formal definition: `RamseyNumber` $R(l,l)$ definition via `Nat.find`. Comparison: $K_n$ for $n \\ge R(l,l)$ trivially has the Ramsey property but contains all $K_m$; Folkman graphs achieve forcing with $\\omega(G) \\le l$."
     },
     {
       "id": "proof-techniques",
@@ -148,7 +148,7 @@
       "summary": "`erdos_924_summary` combines three results in a single conjunction. `erdos_924 := nesetril_rodl_1976` identifies the solution. `erdos_924_answer` unpacks the existential for downstream use.",
       "startLine": 268,
       "endLine": 317,
-      "mathContext": "`erdos_924_summary` combines three results in a single conjunction. `erdos_924 := nesetril_rodl_1976` identifies the solution. `erdos_924_answer` unpacks the existential for downstream use."
+      "mathContext": "Mathematical content: `erdos_924_summary` combines three results in a single conjunction. `erdos_924 := nesetril_rodl_1976` identifies the solution. `erdos_924_answer` unpacks the existential for downstream use."
     }
   ],
   "conclusion": {

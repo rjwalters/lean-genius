@@ -49,7 +49,7 @@
       "startLine": 1,
       "endLine": 28,
       "summary": "Module documentation for Erdos Problem #1013 on the triangle-free chromatic threshold, listing key results and references. Imports Mathlib's SimpleGraph, Clique, Real, Log, and Tactic modules.",
-      "mathContext": "Module documentation for Erdos Problem #1013 on the triangle-free chromatic threshold, listing key results and references. Imports Mathlib's SimpleGraph, Clique, Real, Log, and Tactic modules."
+      "mathContext": "Mathematical content: Module documentation for Erdos Problem #1013 on the triangle-free chromatic threshold, listing key results and references. Imports Mathlib's SimpleGraph, Clique, Real, Log, and Tactic modules."
     },
     {
       "id": "triangle-free-def",
@@ -73,7 +73,7 @@
       "startLine": 51,
       "endLine": 60,
       "summary": "States Erdos's conjecture that $h_3(k)/(k^2 \\log k) \\to c$ for some constant $c > 0$, formalized using `Filter.Tendsto` and `nhds c`.",
-      "mathContext": "States Erdos's conjecture that $h_3(k)/(k^2 \\log k) \\to c$ for some constant $c > 0$, formalized using `Filter.Tendsto` and `nhds c`."
+      "mathContext": "States Erdos's conjecture that $h_3(k)/($k^{2}$ \\log k) \\to c$ for some constant $c > 0$, formalized using `Filter.Tendsto` and `nhds c`."
     },
     {
       "id": "ratio-convergence",
@@ -81,7 +81,7 @@
       "startLine": 61,
       "endLine": 68,
       "summary": "The weaker conjecture $h_3(k+1)/h_3(k) \\to 1$: the threshold grows smoothly. Formalized as `Filter.Tendsto` to `nhds 1`.",
-      "mathContext": "The weaker conjecture $h_3(k+1)/h_3(k) \\to 1$: the threshold grows smoothly. Formalized as `Filter.Tendsto` to `nhds 1`."
+      "mathContext": "Mathematical content: The weaker conjecture $h_3(k+1)/h_3(k) \\to 1$: the threshold grows smoothly. Formalized as `Filter.Tendsto` to `nhds 1`."
     },
     {
       "id": "lower-upper-bounds",
@@ -97,7 +97,7 @@
       "startLine": 84,
       "endLine": 90,
       "summary": "The 1968 bound $h_3(k) \\gg k^2 \\log k / \\log \\log k$ by Graver and Yackel using probabilistic deletion. This was the first quantitative lower bound, later superseded by the Ramsey-theoretic approach.",
-      "mathContext": "The 1968 bound $h_3(k) \\gg k^2 \\log k / \\log \\log k$ by Graver and Yackel using probabilistic deletion. This was the first quantitative lower bound, later superseded by the Ramsey-theoretic approach."
+      "mathContext": "The 1968 bound $h_3(k) \\gg $k^{2}$ \\log k / \\log \\log k$ by Graver and Yackel using probabilistic deletion. This was the first quantitative lower bound, later superseded by the Ramsey-theoretic approach."
     },
     {
       "id": "monotonicity",
@@ -105,7 +105,7 @@
       "startLine": 91,
       "endLine": 96,
       "summary": "The threshold $h_3$ is non-decreasing: $j \\leq k \\implies h_3(j) \\leq h_3(k)$, since achieving $\\chi \\geq k$ implies $\\chi \\geq j$.",
-      "mathContext": "The threshold $h_3$ is non-decreasing: $j \\leq k \\implies h_3(j) \\leq h_3(k)$, since achieving $\\chi \\geq k$ implies $\\chi \\geq j$."
+      "mathContext": "Mathematical content: The threshold $h_3$ is non-decreasing: $j \\leq k \\implies h_3(j) \\leq h_3(k)$, since achieving $\\chi \\geq k$ implies $\\chi \\geq j$."
     },
     {
       "id": "small-cases",

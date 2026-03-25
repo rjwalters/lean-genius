@@ -99,7 +99,7 @@
       "summary": "Problem statement, DKM 2025 solution, and note on regularity necessity.",
       "startLine": 1,
       "endLine": 19,
-      "mathContext": "Problem statement, DKM 2025 solution, and note on regularity necessity."
+      "mathContext": "Mathematical content: Problem statement, DKM 2025 solution, and note on regularity necessity."
     },
     {
       "id": "imports",
@@ -107,7 +107,7 @@
       "summary": "Imports `SimpleGraph.Basic`, `WalkCounting`, `Fintype.Basic`, `Asymptotics` (for `Filter.atTop`), and `Tactic`. Opens `SimpleGraph` and `Finset` namespaces.",
       "startLine": 20,
       "endLine": 31,
-      "mathContext": "Imports `SimpleGraph.Basic`, `WalkCounting`, `Fintype.Basic`, `Asymptotics` (for `Filter.atTop`), and `Tactic`. Opens `SimpleGraph` and `Finset` namespaces."
+      "mathContext": "Mathematical content: Imports `SimpleGraph.Basic`, `WalkCounting`, `Fintype.Basic`, `Asymptotics` (for `Filter.atTop`), and `Tactic`. Opens `SimpleGraph` and `Finset` namespaces."
     },
     {
       "id": "graph-basics",
@@ -115,7 +115,7 @@
       "summary": "Defines `IsRegular` ($\\deg(v) = d$ for all $v$), `vertexCount`, and `IsErdosFaudreeGraph` ($2n$ vertices, $(n+1)$-regular).",
       "startLine": 32,
       "endLine": 44,
-      "mathContext": "Defines `IsRegular` ($\\deg(v) = d$ for all $v$), `vertexCount`, and `IsErdosFaudreeGraph` ($2n$ vertices, $(n+1)$-regular)."
+      "mathContext": "Formal definition: Defines `IsRegular` ($\\deg(v) = d$ for all $v$), `vertexCount`, and `IsErdosFaudreeGraph` ($2n$ vertices, $(n+1)$-regular)."
     },
     {
       "id": "cycles",
@@ -123,7 +123,7 @@
       "summary": "Defines `IsCycle` (closed vertex-disjoint walk of length $\\geq 3$), `SpannedByCycle` ($\\exists$ cycle with $V(C) = S$), and `cycleSpannedCount` ($|\\{S \\subseteq V : \\text{SpannedByCycle}(G,S)\\}|$).",
       "startLine": 45,
       "endLine": 59,
-      "mathContext": "Defines `IsCycle` (closed vertex-disjoint walk of length $\\geq 3$), `SpannedByCycle` ($\\exists$ cycle with $V(C) = S$), and `cycleSpannedCount` ($|\\{S \\subseteq V : \\text{SpannedByCycle}(G,S)\\}|$)."
+      "mathContext": "Formal definition: Defines `IsCycle` (closed vertex-disjoint walk of length $\\geq 3$), `SpannedByCycle` ($\\exists$ cycle with $V(C) = S$), and `cycleSpannedCount` ($|\\{S \\subseteq V : \\text{SpannedByCycle}(G,S)\\}|$)."
     },
     {
       "id": "main-theorem",
@@ -139,7 +139,7 @@
       "summary": "Defines `nonCycleCount = 2^{|V|} - \\text{cycleSpannedCount}$. Axiomatizes Erdős's observation ($\\text{nonCycleCount} \\geq (1/2 - \\varepsilon) \\cdot 2^{2n}$) and `half_half` (both bounds combined).",
       "startLine": 81,
       "endLine": 103,
-      "mathContext": "Defines `nonCycleCount = 2^{|V|} - \\text{cycleSpannedCount}$. Axiomatizes Erdős's observation ($\\text{nonCycleCount} \\geq (1/2 - \\varepsilon) \\cdot 2^{2n}$) and `half_half` (both bounds combined)."
+      "mathContext": "Defines `nonCycleCount = $$2^{{|V|}$}$ - \\text{cycleSpannedCount}$. Axiomatizes Erdős's observation ($\\text{nonCycleCount} \\geq (1/2 - \\varepsilon) \\cdot $$2^{{2n}$}$$) and `half_half` (both bounds combined)."
     },
     {
       "id": "regularity",
@@ -155,7 +155,7 @@
       "summary": "Defines `IsPaleyGraph` ($q \\equiv 1 \\pmod{4}$, $(q-1)/2$-regular on $\\mathbb{F}_q$). Axiomatizes `random_regular_bound` (DKM holds with high probability for random regular graphs).",
       "startLine": 148,
       "endLine": 172,
-      "mathContext": "Defines `IsPaleyGraph` ($q \\equiv 1 \\pmod{4}$, $(q-1)/2$-regular on $\\mathbb{F}_q$). Axiomatizes `random_regular_bound` (DKM holds with high probability for random regular graphs)."
+      "mathContext": "Formal definition: Defines `IsPaleyGraph` ($q \\equiv 1 \\pmod{4}$, $(q-1)/2$-regular on $\\mathbb{F}_q$). Axiomatizes `random_regular_bound` (DKM holds with high probability for random regular graphs)."
     },
     {
       "id": "hamiltonian",
@@ -163,7 +163,7 @@
       "summary": "Defines `IsHamiltonianCycle` ($V(C) = V$) and `hamiltonianCount`. Axiomatizes existence via **Dirac's theorem**: $\\delta(G) \\geq |V|/2 \\implies$ Hamiltonian.",
       "startLine": 173,
       "endLine": 188,
-      "mathContext": "Defines `IsHamiltonianCycle` ($V(C) = V$) and `hamiltonianCount`. Axiomatizes existence via **Dirac's theorem**: $\\delta(G) \\geq |V|/2 \\implies$ Hamiltonian."
+      "mathContext": "Defines `IsHamiltonianCycle` ($V(C) = V$) and `hamiltonianCount`. Axiomatizes existence via **Dirac's theorem**: $\\$\\delta$(G) \\geq |V|/2 \\implies$ Hamiltonian."
     },
     {
       "id": "turan",
@@ -171,7 +171,7 @@
       "summary": "Axiomatizes $|E| = n(n+1)$ (handshaking lemma) and $n(n+1) > n^2 = \\text{ex}(2n, K_3)$ (Turán's theorem), confirming Erdős–Faudree graphs exceed the triangle-free threshold.",
       "startLine": 189,
       "endLine": 238,
-      "mathContext": "Axiomatizes $|E| = n(n+1)$ (handshaking lemma) and $n(n+1) > n^2 = \\text{ex}(2n, K_3)$ (Turán's theorem), confirming Erdős–Faudree graphs exceed the triangle-free threshold."
+      "mathContext": "Axiomatizes $|E| = n(n+1)$ (handshaking lemma) and $n(n+1) > $n^{2}$ = \\text{ex}(2n, K_3)$ (Turán's theorem), confirming Erdős–Faudree graphs exceed the triangle-free threshold."
     }
   ],
   "conclusion": {

@@ -84,7 +84,7 @@
       "summary": "Definition of sigma(n) and basic values",
       "startLine": 36,
       "endLine": 67,
-      "mathContext": "Definition of sigma(n) and basic values"
+      "mathContext": "Formal definition: Definition of sigma(n) and basic values"
     },
     {
       "id": "additive-equation",
@@ -92,7 +92,7 @@
       "summary": "Definition of isAdditiveDivisorPair and additiveDivisorPairs set",
       "startLine": 68,
       "endLine": 88,
-      "mathContext": "Definition of isAdditiveDivisorPair and additiveDivisorPairs set"
+      "mathContext": "Formal definition: Definition of isAdditiveDivisorPair and additiveDivisorPairs set"
     },
     {
       "id": "counting-function",
@@ -100,7 +100,7 @@
       "summary": "Definition of S(x) and base cases S(0)=0, S(1)=0",
       "startLine": 89,
       "endLine": 114,
-      "mathContext": "Definition of S(x) and base cases S(0)=0, S(1)=0"
+      "mathContext": "Formal definition: Definition of S(x) and base cases S(0)=0, S(1)=0"
     },
     {
       "id": "known-solutions",
@@ -108,7 +108,7 @@
       "summary": "Verified examples: (1,2), (2,1) are solutions; many pairs are not",
       "startLine": 115,
       "endLine": 176,
-      "mathContext": "Verified examples: (1,2), (2,1) are solutions; many pairs are not"
+      "mathContext": "Mathematical content: Verified examples: (1,2), (2,1) are solutions; many pairs are not"
     },
     {
       "id": "structure-theorems",
@@ -116,7 +116,7 @@
       "summary": "Non-subadditivity and non-superadditivity of sigma",
       "startLine": 177,
       "endLine": 201,
-      "mathContext": "Non-subadditivity and non-superadditivity of sigma"
+      "mathContext": "Mathematical content: Non-subadditivity and non-superadditivity of sigma"
     },
     {
       "id": "asymptotic-question",
@@ -124,7 +124,7 @@
       "summary": "hasLinearGrowth and isAsymptoticToLinear formulations",
       "startLine": 202,
       "endLine": 227,
-      "mathContext": "hasLinearGrowth and isAsymptoticToLinear formulations"
+      "mathContext": "Mathematical content: hasLinearGrowth and isAsymptoticToLinear formulations"
     },
     {
       "id": "bounds",
@@ -132,7 +132,7 @@
       "summary": "Lower bound S(x)>=2 for x>=3, upper bound S(x)<=x^2/4",
       "startLine": 228,
       "endLine": 251,
-      "mathContext": "Lower bound S(x)>=2 for x>=3, upper bound S(x)<=x^2/4"
+      "mathContext": "Bound: Lower bound S(x)>=2 for x>=3, upper bound S(x)<=x^2/4"
     },
     {
       "id": "open-problem",
@@ -140,7 +140,7 @@
       "summary": "Erdos 1061 statement as an axiom placeholder",
       "startLine": 252,
       "endLine": 279,
-      "mathContext": "Erdos 1061 statement as an axiom placeholder"
+      "mathContext": "Axiomatized: Erdos 1061 statement as an axiom placeholder"
     },
     {
       "id": "oeis",
@@ -148,7 +148,7 @@
       "summary": "A110177: sums n with sigma(n) = sigma(a) + sigma(n-a)",
       "startLine": 280,
       "endLine": 305,
-      "mathContext": "A110177: sums n with sigma(n) = sigma(a) + sigma(n-a)"
+      "mathContext": "Mathematical content: A110177: sums n with sigma(n) = sigma(a) + sigma(n-a)"
     },
     {
       "id": "summary",
@@ -156,7 +156,7 @@
       "summary": "erdos_1061_summary combining verified facts",
       "startLine": 306,
       "endLine": 380,
-      "mathContext": "erdos_1061_summary combining verified facts"
+      "mathContext": "Mathematical content: erdos_1061_summary combining verified facts"
     }
   ],
   "conclusion": {

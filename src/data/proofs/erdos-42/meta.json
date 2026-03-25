@@ -57,7 +57,7 @@
       "startLine": 19,
       "endLine": 23,
       "summary": "Imports Finset, Nat.Basic, and tactic libraries from Mathlib for finite set operations.",
-      "mathContext": "Imports Finset, Nat.Basic, and tactic libraries from Mathlib for finite set operations."
+      "mathContext": "Mathematical content: Imports Finset, Nat.Basic, and tactic libraries from Mathlib for finite set operations."
     },
     {
       "id": "sidon-def",
@@ -65,7 +65,7 @@
       "startLine": 24,
       "endLine": 31,
       "summary": "Defines IsSidonSet via sum-distinctness: if a₁ + b₁ = a₂ + b₂ then {a₁,b₁} = {a₂,b₂}.",
-      "mathContext": "Defines IsSidonSet via sum-distinctness: if a₁ + b₁ = a₂ + b₂ then {a₁,b₁} = {a₂,b₂}."
+      "mathContext": "Formal definition: Defines IsSidonSet via sum-distinctness: if a₁ + b₁ = a₂ + b₂ then {a₁,b₁} = {a₂,b₂}."
     },
     {
       "id": "interval-def",
@@ -73,7 +73,7 @@
       "startLine": 32,
       "endLine": 35,
       "summary": "Defines InInterval A N requiring all elements of A to lie in {1,...,N}.",
-      "mathContext": "Defines InInterval A N requiring all elements of A to lie in {1,...,N}."
+      "mathContext": "Formal definition: Defines InInterval A N requiring all elements of A to lie in {1,...,N}."
     },
     {
       "id": "maximal-sidon",
@@ -81,7 +81,7 @@
       "startLine": 36,
       "endLine": 41,
       "summary": "Defines IsMaximalSidon: a Sidon set in {1,...,N} where no element can be added while preserving Sidon.",
-      "mathContext": "Defines IsMaximalSidon: a Sidon set in {1,...,N} where no element can be added while preserving Sidon."
+      "mathContext": "Formal definition: Defines IsMaximalSidon: a Sidon set in {1,...,N} where no element can be added while preserving Sidon."
     },
     {
       "id": "difference-sets",
@@ -89,7 +89,7 @@
       "startLine": 42,
       "endLine": 51,
       "summary": "Defines diffSet via biUnion over pairs and DisjointDiffs requiring (A−A) ∩ (B−B) = {0}.",
-      "mathContext": "Defines diffSet via biUnion over pairs and DisjointDiffs requiring (A−A) ∩ (B−B) = {0}."
+      "mathContext": "Formal definition: Defines diffSet via biUnion over pairs and DisjointDiffs requiring (A−A) ∩ (B−B) = {0}."
     },
     {
       "id": "basic-properties",
@@ -97,7 +97,7 @@
       "startLine": 52,
       "endLine": 65,
       "summary": "Records the classical size bound |A|² ≤ 2N+1, the trivial 0 ∈ A−A, and a concrete example {1,2,4}.",
-      "mathContext": "Records the classical size bound |A|² ≤ 2N+1, the trivial 0 ∈ A−A, and a concrete example {1,2,4}."
+      "mathContext": "Records the classical size bound |A|² $\\leq$ 2N+1, the trivial 0 ∈ A−A, and a concrete example {1,2,4}."
     },
     {
       "id": "sedov-M2",
@@ -105,7 +105,7 @@
       "startLine": 66,
       "endLine": 75,
       "summary": "Axiomatizes Sedov's proof that every maximal Sidon set admits a 2-element companion with disjoint differences.",
-      "mathContext": "Axiomatizes Sedov's proof that every maximal Sidon set admits a 2-element companion with disjoint differences."
+      "mathContext": "Verified: Axiomatizes Sedov's proof that every maximal Sidon set admits a 2-element companion with disjoint differences."
     },
     {
       "id": "sedov-M3",
@@ -113,7 +113,7 @@
       "startLine": 76,
       "endLine": 82,
       "summary": "Axiomatizes Sedov's extension to M = 3, combining analytic and computational methods.",
-      "mathContext": "Axiomatizes Sedov's extension to M = 3, combining analytic and computational methods."
+      "mathContext": "Axiomatized: Axiomatizes Sedov's extension to M = 3, combining analytic and computational methods."
     },
     {
       "id": "main-conjecture",
@@ -121,7 +121,7 @@
       "startLine": 83,
       "endLine": 94,
       "summary": "States Erdős Problem 42 in full generality: for every M, sufficiently large N yields companion sets.",
-      "mathContext": "States Erdős Problem 42 in full generality: for every M, sufficiently large N yields companion sets."
+      "mathContext": "Mathematical content: States Erdős Problem 42 in full generality: for every M, sufficiently large N yields companion sets."
     },
     {
       "id": "constructive",
@@ -129,7 +129,7 @@
       "startLine": 95,
       "endLine": 100,
       "summary": "Strengthens the conjecture by asserting an explicit threshold function f(M) bounding N₀.",
-      "mathContext": "Strengthens the conjecture by asserting an explicit threshold function f(M) bounding N₀."
+      "mathContext": "Bound: Strengthens the conjecture by asserting an explicit threshold function f(M) bounding N₀."
     }
   ],
   "conclusion": {

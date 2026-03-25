@@ -96,7 +96,7 @@
       "summary": "Defines `consecutiveSquareProduct(p, k) = ∏_{i ∈ Icc 0 k} (p²+i)` using Finset.prod, proves equivalence with range-based form, and verifies special cases: k=0 gives p², k=1 gives p²(p²+1).",
       "startLine": 53,
       "endLine": 81,
-      "mathContext": "Defines `consecutiveSquareProduct(p, k) = ∏_{i ∈ Icc 0 k} (p²+i)` using Finset.prod, proves equivalence with range-based form, and verifies special cases: k=0 gives p², k=1 gives p²(p²+1)."
+      "mathContext": "Formal definition: Defines `consecutiveSquareProduct(p, k) = ∏_{i ∈ Icc 0 k} (p²+i)` using Finset.prod, proves equivalence with range-based form, and verifies special cases: k=0 gives p², k=1 gives p²(p²+1)."
     },
     {
       "id": "kgood",
@@ -112,7 +112,7 @@
       "summary": "States the conjecture in two forms: `ErdosConjecture383` (∀k, kGoodPrimes(k) is infinite) and `ErdosConjecture383'` using `Nat.maxPrimeFac` directly. Axiomatizes their equivalence.",
       "startLine": 105,
       "endLine": 121,
-      "mathContext": "States the conjecture in two forms: `ErdosConjecture383` (∀k, kGoodPrimes(k) is infinite) and `ErdosConjecture383'` using `Nat.maxPrimeFac` directly. Axiomatizes their equivalence."
+      "mathContext": "Axiomatized: States the conjecture in two forms: `ErdosConjecture383` (∀k, kGoodPrimes(k) is infinite) and `ErdosConjecture383'` using `Nat.maxPrimeFac` directly. Axiomatizes their equivalence."
     },
     {
       "id": "partial",
@@ -144,7 +144,7 @@
       "summary": "Dickman ρ(2) ≈ 0.307 supports positive answer",
       "startLine": 176,
       "endLine": 190,
-      "mathContext": "Dickman ρ(2) ≈ 0.307 supports positive answer"
+      "mathContext": "Mathematical content: Dickman ρ(2) ≈ 0.307 supports positive answer"
     },
     {
       "id": "summary",
@@ -152,7 +152,7 @@
       "summary": "Status string (OPEN) and `erdos_383_statement`: the formal conjecture using `Nat.maxPrimeFac` and `Finset.Icc`, proving equivalence with the `ErdosConjecture383'` formulation.",
       "startLine": 191,
       "endLine": 244,
-      "mathContext": "Status string (OPEN) and `erdos_383_statement`: the formal conjecture using `Nat.maxPrimeFac` and `Finset.Icc`, proving equivalence with the `ErdosConjecture383'` formulation."
+      "mathContext": "Mathematical content: Status string (OPEN) and `erdos_383_statement`: the formal conjecture using `Nat.maxPrimeFac` and `Finset.Icc`, proving equivalence with the `ErdosConjecture383'` formulation."
     }
   ],
   "conclusion": {

@@ -100,7 +100,7 @@
       "startLine": 61,
       "endLine": 68,
       "summary": "Defines `ErdosQuestion933 := ∀ M : ℝ, ∃ n : ℕ, n ≥ 2 ∧ smoothRatio n > M` — the sequential characterization of limsup smoothRatio = ∞, avoiding Filter-based limsup.",
-      "mathContext": "Defines `ErdosQuestion933 := ∀ M : ℝ, ∃ n : ℕ, n ≥ 2 ∧ smoothRatio n > M` — the sequential characterization of limsup smoothRatio = ∞, avoiding Filter-based limsup."
+      "mathContext": "Defines `ErdosQuestion933 := ∀ M : $\\mathbb{R}$, ∃ n : $\\mathbb{N}$, n $\\geq$ 2 ∧ smoothRatio n > M` — the sequential characterization of limsup smoothRatio = ∞, avoiding Filter-based limsup."
     },
     {
       "id": "mahler-s-upper-bound",
@@ -108,7 +108,7 @@
       "startLine": 69,
       "endLine": 83,
       "summary": "Axiomatizes `mahler_upper_bound`: ∀ ε > 0, ∃ N, ∀ n ≥ N, consecutiveSmoothPart n < n^{1+ε}. Placeholder `mahlerSUnitConnection` notes the S-unit equation origin. From Baker-Evertse theory.",
-      "mathContext": "Axiomatizes `mahler_upper_bound`: ∀ ε > 0, ∃ N, ∀ n ≥ N, consecutiveSmoothPart n < n^{1+ε}. Placeholder `mahlerSUnitConnection` notes the S-unit equation origin. From Baker-Evertse theory."
+      "mathContext": "Axiomatizes `mahler_upper_bound`: ∀ ε > 0, ∃ N, ∀ n $\\geq$ N, consecutiveSmoothPart n < n^{1+ε}. Placeholder `mahlerSUnitConnection` notes the S-unit equation origin. From Baker-Evertse theory."
     },
     {
       "id": "erd-s-s-lower-bound",

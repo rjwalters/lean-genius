@@ -92,7 +92,7 @@
       "startLine": 32,
       "endLine": 44,
       "summary": "Imports Mathlib modules for simple graphs, cliques, subgraphs, cardinality, and logarithms. Opens `SimpleGraph` and `Finset` namespaces with generic finite type variable $V$.",
-      "mathContext": "Imports Mathlib modules for simple graphs, cliques, subgraphs, cardinality, and logarithms. Opens `SimpleGraph` and `Finset` namespaces with generic finite type variable $V$."
+      "mathContext": "Mathematical content: Imports Mathlib modules for simple graphs, cliques, subgraphs, cardinality, and logarithms. Opens `SimpleGraph` and `Finset` namespaces with generic finite type variable $V$."
     },
     {
       "id": "cliques-forbidden",
@@ -100,7 +100,7 @@
       "startLine": 45,
       "endLine": 68,
       "summary": "Defines `HasTriangle`, `TriangleFree`, `HasK4`, and `K4Free`. Includes a complete Lean proof of `triangleFree_implies_K4Free` via existential destruction — one of the file's fully verified results.",
-      "mathContext": "Defines `HasTriangle`, `TriangleFree`, `HasK4`, and `K4Free`. Includes a complete Lean proof of `triangleFree_implies_K4Free` via existential destruction — one of the file's fully verified results."
+      "mathContext": "Formal definition: Defines `HasTriangle`, `TriangleFree`, `HasK4`, and `K4Free`. Includes a complete Lean proof of `triangleFree_implies_K4Free` via existential destruction — one of the file's fully verified results."
     },
     {
       "id": "induced-subgraphs",
@@ -124,7 +124,7 @@
       "startLine": 105,
       "endLine": 116,
       "summary": "Formalizes `Erdos620Statement`: existence of a tight function $f$ with $\\forall G,\\, f(n) \\le \\text{maxTF}(G)$ and attainment $\\exists G,\\, \\text{maxTF}(G) = f(n)$.",
-      "mathContext": "Formalizes `Erdos620Statement`: existence of a tight function $f$ with $\\forall G,\\, f(n) \\le \\text{maxTF}(G)$ and attainment $\\exists G,\\, \\text{maxTF}(G) = f(n)$."
+      "mathContext": "Mathematical content: Formalizes `Erdos620Statement`: existence of a tight function $f$ with $\\forall G,\\, f(n) \\le \\text{maxTF}(G)$ and attainment $\\exists G,\\, \\text{maxTF}(G) = f(n)$."
     },
     {
       "id": "known-bounds",
@@ -140,7 +140,7 @@
       "startLine": 169,
       "endLine": 188,
       "summary": "Complete proof of `current_bounds` combining Shearer and Mubayi-Verstraëte. Complete proof of `gap_analysis` extracting constants $c, C > 0$ with the full sandwich inequality for $n \\ge 16$.",
-      "mathContext": "Complete proof of `current_bounds` combining Shearer and Mubayi-Verstraëte. Complete proof of `gap_analysis` extracting constants $c, C > 0$ with the full sandwich inequality for $n \\ge 16$."
+      "mathContext": "Verified: Complete proof of `current_bounds` combining Shearer and Mubayi-Verstraëte. Complete proof of `gap_analysis` extracting constants $c, C > 0$ with the full sandwich inequality for $n \\ge 16$."
     },
     {
       "id": "special-cases",
@@ -148,7 +148,7 @@
       "startLine": 189,
       "endLine": 205,
       "summary": "Sparse graph case: $|E| \\le n$ implies triangle-free induced subgraph of size $\\ge n/3$. Defines the Turán graph $T(n,3)$ via $i \\bmod 3 \\ne j \\bmod 3$ adjacency and states $K_4$-freeness.",
-      "mathContext": "Sparse graph case: $|E| \\le n$ implies triangle-free induced subgraph of size $\\ge n/3$. Defines the Turán graph $T(n,3)$ via $i \\bmod 3 \\ne j \\bmod 3$ adjacency and states $K_4$-freeness."
+      "mathContext": "Formal definition: Sparse graph case: $|E| \\le n$ implies triangle-free induced subgraph of size $\\ge n/3$. Defines the Turán graph $T(n,3)$ via $i \\bmod 3 \\ne j \\bmod 3$ adjacency and states $K_4$-freeness."
     },
     {
       "id": "ramsey-connection",
@@ -172,7 +172,7 @@
       "startLine": 244,
       "endLine": 263,
       "summary": "Defines $f_{s,t}(n)$ via `generalizedErdosRogers` using Mathlib's `CliqueFree`. States `original_is_f43` and axiomatizes $f_{s,2}(n) = \\Theta(n^{1/(s-1)} \\cdot (\\log n)^{O(1)})$ from Ramsey theory.",
-      "mathContext": "Defines $f_{s,t}(n)$ via `generalizedErdosRogers` using Mathlib's `CliqueFree`. States `original_is_f43` and axiomatizes $f_{s,2}(n) = \\Theta(n^{1/(s-1)} \\cdot (\\log n)^{O(1)})$ from Ramsey theory."
+      "mathContext": "Defines $f_{s,t}(n)$ via `generalizedErdosRogers` using Mathlib's `CliqueFree`. States `original_is_f43` and axiomatizes $f_{s,2}(n) = \\Theta(n^{1/(s-1)} \\cdot (\\$\\log n$)^{$O(1)$})$ from Ramsey theory."
     },
     {
       "id": "open-status",

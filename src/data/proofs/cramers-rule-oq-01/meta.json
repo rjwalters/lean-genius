@@ -92,7 +92,7 @@
       "summary": "Recalls both forms of the adjugate identity: `A * adj(A) = det(A) * I` and `adj(A) * A = det(A) * I`. These are the algebraic foundation of Cramer's Rule.",
       "startLine": 56,
       "endLine": 81,
-      "mathContext": "Recalls both forms of the adjugate identity: `A * adj(A) = det(A) * I` and `adj(A) * A = det(A) * I`. These are the algebraic foundation of Cramer's Rule."
+      "mathContext": "Mathematical content: Recalls both forms of the adjugate identity: `A * adj(A) = det(A) * I` and `adj(A) * A = det(A) * I`. These are the algebraic foundation of Cramer's Rule."
     },
     {
       "id": "charmatrix-application",
@@ -100,7 +100,7 @@
       "summary": "Applies the left adjugate identity to `charmatrix M = λI - M`, giving `adj(λI - M) * (λI - M) = charpoly(M) * I`. This is Cramer's Rule applied to a polynomial matrix.",
       "startLine": 82,
       "endLine": 121,
-      "mathContext": "Applies the left adjugate identity to `charmatrix M = λI - M`, giving `adj(λI - M) * (λI - M) = charpoly(M) * I`. This is Cramer's Rule applied to a polynomial matrix."
+      "mathContext": "Mathematical content: Applies the left adjugate identity to `charmatrix M = λI - M`, giving `adj(λI - M) * (λI - M) = charpoly(M) * I`. This is Cramer's Rule applied to a polynomial matrix."
     },
     {
       "id": "matpolyequiv-bridge",
@@ -108,7 +108,7 @@
       "summary": "Uses the algebra isomorphism `matPolyEquiv` to transfer the Cramer identity from `Matrix n n R[X]` to `(Matrix n n R)[X]`, converting `charmatrix M` to `X - C M`.",
       "startLine": 122,
       "endLine": 171,
-      "mathContext": "Uses the algebra isomorphism `matPolyEquiv` to transfer the Cramer identity from `Matrix n n R[X]` to `(Matrix n n R)[X]`, converting `charmatrix M` to `X - C M`."
+      "mathContext": "Mathematical content: Uses the algebra isomorphism `matPolyEquiv` to transfer the Cramer identity from `Matrix n n R[X]` to `(Matrix n n R)[X]`, converting `charmatrix M` to `X - C M`."
     },
     {
       "id": "evaluation-step",
@@ -116,7 +116,7 @@
       "summary": "Uses `eval_mul_X_sub_C` to show that evaluating `B(X) * (X - M)` at `X = M` gives 0. This is the algebraic heart of the proof.",
       "startLine": 172,
       "endLine": 221,
-      "mathContext": "Uses `eval_mul_X_sub_C` to show that evaluating `B(X) * (X - M)` at `X = M` gives 0. This is the algebraic heart of the proof."
+      "mathContext": "Verified: Uses `eval_mul_X_sub_C` to show that evaluating `B(X) * (X - M)` at `X = M` gives 0. This is the algebraic heart of the proof."
     },
     {
       "id": "main-theorem",
@@ -132,7 +132,7 @@
       "summary": "Additional results including the matrix inverse formula (Cramer → A⁻¹ = Ring.inverse(det A) * adj(A)), the charpoly-as-determinant formula, and the monic property of charpoly.",
       "startLine": 262,
       "endLine": 282,
-      "mathContext": "Additional results including the matrix inverse formula (Cramer → A⁻¹ = Ring.inverse(det A) * adj(A)), the charpoly-as-determinant formula, and the monic property of charpoly."
+      "mathContext": "Additional results including the matrix inverse formula (Cramer $\\to$ A⁻¹ = Ring.inverse(det A) * adj(A)), the charpoly-as-determinant formula, and the monic property of charpoly."
     },
     {
       "id": "unified-picture",

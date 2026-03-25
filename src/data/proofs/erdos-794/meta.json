@@ -110,7 +110,7 @@
       "summary": "Hypergraph3 structure with vertices, edges, edge_card (3-uniformity), edge_subset proofs. vertexCount = |V|, edgeCount = |E|.",
       "startLine": 46,
       "endLine": 68,
-      "mathContext": "Hypergraph3 structure with vertices, edges, edge_card (3-uniformity), edge_subset proofs. vertexCount = |V|, edgeCount = |E|."
+      "mathContext": "Formal definition: Hypergraph3 structure with vertices, edges, edge_card (3-uniformity), edge_subset proofs. vertexCount = |V|, edgeCount = |E|."
     },
     {
       "id": "target-subgraphs",
@@ -118,7 +118,7 @@
       "summary": "ContainsK4Minus: ∃ S with |S|=4, S ⊆ V, and (E filtered by e ⊆ S).card = 3. Contains5_7: ∃ S with |S|=5 and 7 edges within.",
       "startLine": 69,
       "endLine": 88,
-      "mathContext": "ContainsK4Minus: ∃ S with |S|=4, S ⊆ V, and (E filtered by e ⊆ S).card = 3. Contains5_7: ∃ S with |S|=5 and 7 edges within."
+      "mathContext": "Mathematical content: ContainsK4Minus: ∃ S with |S|=4, S ⊆ V, and (E filtered by e ⊆ S).card = 3. Contains5_7: ∃ S with |S|=5 and 7 edges within."
     },
     {
       "id": "balogh",
@@ -126,7 +126,7 @@
       "summary": "balogh_observation axiom: Contains5_7 → ContainsK4Minus (double counting: 7 edges × 2 subsets = 14, averaging 2.8 per 4-vertex subset). second_condition_redundant applies the axiom.",
       "startLine": 89,
       "endLine": 105,
-      "mathContext": "balogh_observation axiom: Contains5_7 → ContainsK4Minus (double counting: 7 edges × 2 subsets = 14, averaging 2.8 per 4-vertex subset). second_condition_redundant applies the axiom."
+      "mathContext": "balogh_observation axiom: Contains5_7 $\\to$ ContainsK4Minus (double counting: 7 edges × 2 subsets = 14, averaging 2.8 per 4-vertex subset). second_condition_redundant applies the axiom."
     },
     {
       "id": "conjecture",
@@ -134,7 +134,7 @@
       "summary": "Erdos794Conjecture (both conditions), Erdos794Simplified (K₄⁻ only). simplified_implies_original PROVED via left injection. The two are equivalent via Balogh.",
       "startLine": 106,
       "endLine": 136,
-      "mathContext": "Erdos794Conjecture (both conditions), Erdos794Simplified (K₄⁻ only). simplified_implies_original PROVED via left injection. The two are equivalent via Balogh."
+      "mathContext": "Mathematical content: Erdos794Conjecture (both conditions), Erdos794Simplified (K₄⁻ only). simplified_implies_original PROVED via left injection. The two are equivalent via Balogh."
     },
     {
       "id": "counterexample",
@@ -150,7 +150,7 @@
       "summary": "erdos_794_disproved PROVED: ¬Erdos794Simplified by applying Harris to the simplified conjecture. erdos_794_original_false PROVED: ¬Erdos794Conjecture by chaining with Balogh.",
       "startLine": 178,
       "endLine": 197,
-      "mathContext": "erdos_794_disproved PROVED: ¬Erdos794Simplified by applying Harris to the simplified conjecture. erdos_794_original_false PROVED: ¬Erdos794Conjecture by chaining with Balogh."
+      "mathContext": "Mathematical content: erdos_794_disproved PROVED: ¬Erdos794Simplified by applying Harris to the simplified conjecture. erdos_794_original_false PROVED: ¬Erdos794Conjecture by chaining with Balogh."
     },
     {
       "id": "density",
@@ -158,7 +158,7 @@
       "summary": "turanDensityK4Minus = 2/7 (conjectured). frankl_furedi_lower axiom: density ≥ 2/7. turan_conjecture (1/4, disproved). current_conjecture (2/7, open upper bound).",
       "startLine": 198,
       "endLine": 224,
-      "mathContext": "turanDensityK4Minus = 2/7 (conjectured). frankl_furedi_lower axiom: density ≥ 2/7. turan_conjecture (1/4, disproved). current_conjecture (2/7, open upper bound)."
+      "mathContext": "turanDensityK4Minus = 2/7 (conjectured). frankl_furedi_lower axiom: density $\\geq$ 2/7. turan_conjecture (1/4, disproved). current_conjecture (2/7, open upper bound)."
     },
     {
       "id": "summary",
@@ -166,7 +166,7 @@
       "summary": "erdos_794_summary PROVED: ¬Conjecture ∧ (5-7 → K₄⁻) ∧ density ≥ 2/7. erdos_794 = ¬Erdos794Conjecture. Zero sorry entries in the entire file.",
       "startLine": 227,
       "endLine": 256,
-      "mathContext": "erdos_794_summary PROVED: ¬Conjecture ∧ (5-7 → K₄⁻) ∧ density ≥ 2/7. erdos_794 = ¬Erdos794Conjecture. Zero sorry entries in the entire file."
+      "mathContext": "erdos_794_summary PROVED: ¬Conjecture ∧ (5-7 $\\to$ K₄⁻) ∧ density $\\geq$ 2/7. erdos_794 = ¬Erdos794Conjecture. Zero sorry entries in the entire file."
     }
   ],
   "conclusion": {

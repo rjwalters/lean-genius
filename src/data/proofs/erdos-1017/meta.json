@@ -51,7 +51,7 @@
       "summary": "Defines `edgeCount G` via `G.edgeFinset.card` and `vertexCount` via `Fintype.card V` within Mathlib's `SimpleGraph` framework. These are the parameters $(n,k)$ for $f(n,k)$.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Defines `edgeCount G` via `G.edgeFinset.card` and `vertexCount` via `Fintype.card V` within Mathlib's `SimpleGraph` framework. These are the parameters $(n,k)$ for $f(n,k)$."
+      "mathContext": "Formal definition: Defines `edgeCount G` via `G.edgeFinset.card` and `vertexCount` via `Fintype.card V` within Mathlib's `SimpleGraph` framework. These are the parameters $(n,k)$ for $f(n,k)$."
     },
     {
       "id": "cliques",
@@ -59,7 +59,7 @@
       "summary": "Defines `isClique G S` (pairwise adjacency in $S$) and `completeOn S` (the complete graph $K_S$ as a `SimpleGraph`). These are the atomic pieces of any clique partition.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Defines `isClique G S` (pairwise adjacency in $S$) and `completeOn S` (the complete graph $K_S$ as a `SimpleGraph`). These are the atomic pieces of any clique partition."
+      "mathContext": "Formal definition: Defines `isClique G S` (pairwise adjacency in $S$) and `completeOn S` (the complete graph $K_S$ as a `SimpleGraph`). These are the atomic pieces of any clique partition."
     },
     {
       "id": "partitions",
@@ -75,7 +75,7 @@
       "summary": "Defines `canPartitionInto n k m` (universal over all $(n,k)$-graphs) and `cliquePartitionNumber` via `Nat.find`. The trivial bound $m = n^2$ serves as the existence witness.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Defines `canPartitionInto n k m` (universal over all $(n,k)$-graphs) and `cliquePartitionNumber` via `Nat.find`. The trivial bound $m = n^2$ serves as the existence witness."
+      "mathContext": "Defines `canPartitionInto n k m` (universal over all $(n,k)$-graphs) and `cliquePartitionNumber` via `Nat.find`. The trivial bound $m = $n^{2}$$ serves as the existence witness."
     },
     {
       "id": "egp",
@@ -83,7 +83,7 @@
       "summary": "Axiomatizes the EGP bound: $f(n,k) \\le \\lfloor n^2/4 \\rfloor$ using only edges and triangles. Defines `usesOnlyEdgesAndTriangles` and derives `cliquePartitionNumber_le`.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Axiomatizes the EGP bound: $f(n,k) \\le \\lfloor n^2/4 \\rfloor$ using only edges and triangles. Defines `usesOnlyEdgesAndTriangles` and derives `cliquePartitionNumber_le`."
+      "mathContext": "Axiomatizes the EGP bound: $f(n,k) \\le \\lfloor $n^{2}$/4 \\rfloor$ using only edges and triangles. Defines `usesOnlyEdgesAndTriangles` and derives `cliquePartitionNumber_le`."
     },
     {
       "id": "extremal",
@@ -91,7 +91,7 @@
       "summary": "Constructs `completeBipartite A B` as the Turán graph $T(n,2) = K_{n/2, n/2}$, proves it has no triangles, and shows it requires $n^2/4$ edge-cliques—establishing tightness of the EGP bound.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Constructs `completeBipartite A B` as the Turán graph $T(n,2) = K_{n/2, n/2}$, proves it has no triangles, and shows it requires $n^2/4$ edge-cliques—establishing tightness of the EGP bound."
+      "mathContext": "Constructs `completeBipartite A B` as the Turán graph $T(n,2) = K_{n/2, n/2}$, proves it has no triangles, and shows it requires $$n^{2}$/4$ edge-cliques—establishing tightness of the EGP bound."
     },
     {
       "id": "open-problem",
@@ -99,7 +99,7 @@
       "summary": "States `canImproveForDenseGraphs` and `erdos_1017_question`: can $f(n,k) < n^2/4$ when $k > n^2/4$? This is the core open question.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "States `canImproveForDenseGraphs` and `erdos_1017_question`: can $f(n,k) < n^2/4$ when $k > n^2/4$? This is the core open question."
+      "mathContext": "States `canImproveForDenseGraphs` and `erdos_1017_question`: can $f(n,k) < $n^{2}$/4$ when $k > $n^{2}$/4$? This is the core open question."
     },
     {
       "id": "lovasz",
@@ -115,7 +115,7 @@
       "summary": "Axiomatizes the complete solution for $K_4$-free graphs: $\\lfloor n^2/4 \\rfloor + m$ edges $\\Rightarrow m$ edge-disjoint triangles. Derives the partition count formula $\\lfloor n^2/4 \\rfloor - m$.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Axiomatizes the complete solution for $K_4$-free graphs: $\\lfloor n^2/4 \\rfloor + m$ edges $\\Rightarrow m$ edge-disjoint triangles. Derives the partition count formula $\\lfloor n^2/4 \\rfloor - m$."
+      "mathContext": "Axiomatizes the complete solution for $K_4$-free graphs: $\\lfloor $n^{2}$/4 \\rfloor + m$ edges $\\Rightarrow m$ edge-disjoint triangles. Derives the partition count formula $\\lfloor $n^{2}$/4 \\rfloor - m$."
     },
     {
       "id": "general-harder",
@@ -123,7 +123,7 @@
       "summary": "Illustrates with `larger_cliques_help`: $K_r$ with $r \\ge 4$ saves $\\binom{r}{2} - 1$ over edge-by-edge partitioning, but global optimization of overlapping cliques is the open challenge.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Illustrates with `larger_cliques_help`: $K_r$ with $r \\ge 4$ saves $\\binom{r}{2} - 1$ over edge-by-edge partitioning, but global optimization of overlapping cliques is the open challenge."
+      "mathContext": "Mathematical content: Illustrates with `larger_cliques_help`: $K_r$ with $r \\ge 4$ saves $\\binom{r}{2} - 1$ over edge-by-edge partitioning, but global optimization of overlapping cliques is the open challenge."
     }
   ],
   "conclusion": {

@@ -94,7 +94,7 @@
       "startLine": 48,
       "endLine": 86,
       "summary": "Definition of bigOmega via primeFactorsList.length, with all four properties PROVED from Mathlib: Ω(1)=0, Ω(p)=1, Ω(p^k)=k (by induction), Ω(ab)=Ω(a)+Ω(b) (via perm_primeFactorsList_mul)",
-      "mathContext": "Definition of bigOmega via primeFactorsList.length, with all four properties PROVED from Mathlib: Ω(1)=0, Ω(p)=1, Ω(p^k)=k (by induction), Ω(ab)=Ω(a)+Ω(b) (via perm_primeFactorsList_mul)"
+      "mathContext": "Formal definition: Definition of bigOmega via primeFactorsList.length, with all four properties PROVED from Mathlib: Ω(1)=0, Ω(p)=1, Ω(p^k)=k (by induction), Ω(ab)=Ω(a)+Ω(b) (via perm_primeFactorsList_mul)"
     },
     {
       "id": "conjecture",
@@ -102,7 +102,7 @@
       "startLine": 87,
       "endLine": 100,
       "summary": "HasSmallOmegaRep (n = 2^k + m with Ω(m) < log log m) and Erdos205Conjecture (all sufficiently large n have such a representation)",
-      "mathContext": "HasSmallOmegaRep (n = 2^k + m with Ω(m) < log log m) and Erdos205Conjecture (all sufficiently large n have such a representation)"
+      "mathContext": "HasSmallOmegaRep (n = $2^{k}$ + m with Ω(m) < log log m) and Erdos205Conjecture (all sufficiently large n have such a representation)"
     },
     {
       "id": "counterexample",
@@ -118,7 +118,7 @@
       "startLine": 231,
       "endLine": 254,
       "summary": "IsPowerPlusePrime definition, Romanoff positive density (axiom: δ > 0 fraction are 2^k + p), and Erdős covering obstruction (axiom: positive density of odds are NOT 2^k + p)",
-      "mathContext": "IsPowerPlusePrime definition, Romanoff positive density (axiom: δ > 0 fraction are 2^k + p), and Erdős covering obstruction (axiom: positive density of odds are NOT 2^k + p)"
+      "mathContext": "IsPowerPlusePrime definition, Romanoff positive density (axiom: δ > 0 fraction are $2^{k}$ + p), and Erdős covering obstruction (axiom: positive density of odds are NOT $2^{k}$ + p)"
     },
     {
       "id": "concrete-omega",
@@ -126,7 +126,7 @@
       "startLine": 255,
       "endLine": 294,
       "summary": "12 verified Ω values via native_decide: from Ω(2)=1 to Ω(30030)=6, including prime powers (Ω(1024)=10) and primorials (Ω(2310)=5, Ω(30030)=6)",
-      "mathContext": "12 verified Ω values via native_decide: from Ω(2)=1 to Ω(30030)=6, including prime powers (Ω(1024)=10) and primorials (Ω(2310)=5, Ω(30030)=6)"
+      "mathContext": "Mathematical content: 12 verified Ω values via native_decide: from Ω(2)=1 to Ω(30030)=6, including prime powers (Ω(1024)=10) and primorials (Ω(2310)=5, Ω(30030)=6)"
     },
     {
       "id": "covering-systems",
@@ -142,7 +142,7 @@
       "startLine": 386,
       "endLine": 405,
       "summary": "Hardy-Ramanujan average (axiom: average Ω ~ log log N) and Erdős-Kac concentration (axiom: Ω(n) is asymptotically Gaussian around log log n)",
-      "mathContext": "Hardy-Ramanujan average (axiom: average Ω ~ log log N) and Erdős-Kac concentration (axiom: Ω(n) is asymptotically Gaussian around log log n)"
+      "mathContext": "Hardy-Ramanujan average (axiom: average Ω ~ log log N) and Erdős-Kac concentration (axiom: Ω(n) is asymptotically Gaussian around log $\\log n$)"
     },
     {
       "id": "summary",
@@ -150,7 +150,7 @@
       "startLine": 406,
       "endLine": 444,
       "summary": "Complete audit: 6 axioms (all deep analytic results), ~85 declarations, 0 sorries. Three axioms eliminated during formalization.",
-      "mathContext": "Complete audit: 6 axioms (all deep analytic results), ~85 declarations, 0 sorries. Three axioms eliminated during formalization."
+      "mathContext": "Axiomatized: Complete audit: 6 axioms (all deep analytic results), ~85 declarations, 0 sorries. Three axioms eliminated during formalization."
     }
   ],
   "conclusion": {

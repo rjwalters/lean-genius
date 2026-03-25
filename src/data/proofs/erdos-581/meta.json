@@ -85,7 +85,7 @@
       "summary": "IsTriangleFree, IsBipartite, edgeCount, IsSubgraph",
       "startLine": 33,
       "endLine": 70,
-      "mathContext": "IsTriangleFree, IsBipartite, edgeCount, IsSubgraph"
+      "mathContext": "Mathematical content: IsTriangleFree, IsBipartite, edgeCount, IsSubgraph"
     },
     {
       "id": "f-function",
@@ -93,7 +93,7 @@
       "summary": "maxBipartiteEdges axiom, f axiom",
       "startLine": 71,
       "endLine": 95,
-      "mathContext": "maxBipartiteEdges axiom, f axiom"
+      "mathContext": "Axiomatized: maxBipartiteEdges axiom, f axiom"
     },
     {
       "id": "trivial-bounds",
@@ -101,7 +101,7 @@
       "summary": "half_edges_bipartite: any graph has m/2 bipartite edges",
       "startLine": 96,
       "endLine": 112,
-      "mathContext": "half_edges_bipartite: any graph has m/2 bipartite edges"
+      "mathContext": "Mathematical content: half_edges_bipartite: any graph has m/2 bipartite edges"
     },
     {
       "id": "alon-upper",
@@ -109,7 +109,7 @@
       "summary": "f(m) ≤ m/2 + c₂·m^{4/5}, constant c₂",
       "startLine": 113,
       "endLine": 141,
-      "mathContext": "f(m) ≤ m/2 + c₂·m^{4/5}, constant c₂"
+      "mathContext": "f(m) $\\leq$ m/2 + c₂·m^{4/5}, constant c₂"
     },
     {
       "id": "alon-lower",
@@ -117,7 +117,7 @@
       "summary": "f(m) ≥ m/2 + c₁·m^{4/5}, constant c₁",
       "startLine": 142,
       "endLine": 170,
-      "mathContext": "f(m) ≥ m/2 + c₁·m^{4/5}, constant c₁"
+      "mathContext": "f(m) $\\geq$ m/2 + c₁·m^{4/5}, constant c₁"
     },
     {
       "id": "asymptotic",
@@ -125,7 +125,7 @@
       "summary": "ThetaBound definition, alon_main_theorem",
       "startLine": 171,
       "endLine": 196,
-      "mathContext": "ThetaBound definition, alon_main_theorem"
+      "mathContext": "Formal definition: ThetaBound definition, alon_main_theorem"
     },
     {
       "id": "related",
@@ -133,7 +133,7 @@
       "summary": "general_graph_bound, Mantel's theorem, Kővári-Sós-Turán",
       "startLine": 197,
       "endLine": 234,
-      "mathContext": "general_graph_bound, Mantel's theorem, Kővári-Sós-Turán"
+      "mathContext": "Verified: general_graph_bound, Mantel's theorem, Kővári-Sós-Turán"
     },
     {
       "id": "main-results",
@@ -141,7 +141,7 @@
       "summary": "erdos_581 theorem, erdos_581_summary",
       "startLine": 235,
       "endLine": 281,
-      "mathContext": "erdos_581 theorem, erdos_581_summary"
+      "mathContext": "Verified: erdos_581 theorem, erdos_581_summary"
     }
   ],
   "conclusion": {

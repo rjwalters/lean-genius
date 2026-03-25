@@ -88,7 +88,7 @@
       "startLine": 1,
       "endLine": 18,
       "summary": "Documentation header stating the problem: are there infinitely many n with n - k² prime for all coprime k? Lists OEIS A214583 values, the 10^10 search bound, and ChatGPT-Tang's density result.",
-      "mathContext": "Documentation header stating the problem: are there infinitely many n with n - k² prime for all coprime k? Lists OEIS A214583 values, the 10^10 search bound, and ChatGPT-Tang's density result."
+      "mathContext": "Documentation header stating the problem: are there infinitely many n with n - k² prime for all coprime k? Lists OEIS A214583 values, the $10^{10}$ search bound, and ChatGPT-Tang's density result."
     },
     {
       "id": "imports",
@@ -96,7 +96,7 @@
       "startLine": 20,
       "endLine": 25,
       "summary": "Imports Nat.Prime, Nat.GCD, Finset, LocallyFiniteOrder, and Tactic from Mathlib.",
-      "mathContext": "Imports Nat.Prime, Nat.GCD, Finset, LocallyFiniteOrder, and Tactic from Mathlib."
+      "mathContext": "Mathematical content: Imports Nat.Prime, Nat.GCD, Finset, LocallyFiniteOrder, and Tactic from Mathlib."
     },
     {
       "id": "core-def",
@@ -104,7 +104,7 @@
       "startLine": 26,
       "endLine": 43,
       "summary": "Defines IsErdos1141Good using bounded quantification over Finset.range for decidability, then proves equivalence with the unbounded mathematical formulation.",
-      "mathContext": "Defines IsErdos1141Good using bounded quantification over Finset.range for decidability, then proves equivalence with the unbounded mathematical formulation."
+      "mathContext": "Formal definition: Defines IsErdos1141Good using bounded quantification over Finset.range for decidability, then proves equivalence with the unbounded mathematical formulation."
     },
     {
       "id": "positive-examples",
@@ -112,7 +112,7 @@
       "startLine": 45,
       "endLine": 69,
       "summary": "Computationally verifies IsErdos1141Good for n = 3, 4, 6, 8, 12, 14, 18, 20 using the decide tactic.",
-      "mathContext": "Computationally verifies IsErdos1141Good for n = 3, 4, 6, 8, 12, 14, 18, 20 using the decide tactic."
+      "mathContext": "Mathematical content: Computationally verifies IsErdos1141Good for n = 3, 4, 6, 8, 12, 14, 18, 20 using the decide tactic."
     },
     {
       "id": "counterexamples",
@@ -120,7 +120,7 @@
       "startLine": 71,
       "endLine": 86,
       "summary": "Proves ¬IsErdos1141Good for n = 5, 7, 9, 10, 16 using decide, demonstrating specific k values that violate the property.",
-      "mathContext": "Proves ¬IsErdos1141Good for n = 5, 7, 9, 10, 16 using decide, demonstrating specific k values that violate the property."
+      "mathContext": "Verified: Proves ¬IsErdos1141Good for n = 5, 7, 9, 10, 16 using decide, demonstrating specific k values that violate the property."
     },
     {
       "id": "structural",
@@ -128,7 +128,7 @@
       "startLine": 88,
       "endLine": 107,
       "summary": "Three structural results: good_0 (vacuously true), not_good_1, not_good_2, and the key theorem good_implies_pred_prime showing good n ≥ 2 requires n-1 prime.",
-      "mathContext": "Three structural results: good_0 (vacuously true), not_good_1, not_good_2, and the key theorem good_implies_pred_prime showing good n ≥ 2 requires n-1 prime."
+      "mathContext": "Three structural results: good_0 (vacuously true), not_good_1, not_good_2, and the key theorem good_implies_pred_prime showing good n $\\geq$ 2 requires n-1 prime."
     },
     {
       "id": "conjecture",
@@ -136,7 +136,7 @@
       "startLine": 109,
       "endLine": 114,
       "summary": "Axiomatizes the open problem: for every N, there exists n ≥ N with IsErdos1141Good n (infinitude of good values).",
-      "mathContext": "Axiomatizes the open problem: for every N, there exists n ≥ N with IsErdos1141Good n (infinitude of good values)."
+      "mathContext": "Axiomatizes the open problem: for every N, there exists n $\\geq$ N with IsErdos1141Good n (infinitude of good values)."
     },
     {
       "id": "large-examples",
@@ -144,7 +144,7 @@
       "startLine": 116,
       "endLine": 161,
       "summary": "Defines knownGoodValues (41 terms), verifies list length, and computationally proves IsErdos1141Good for n = 24, 30, 60, 90, 110, 198, 252, 570, 1722 using native_decide.",
-      "mathContext": "Defines knownGoodValues (41 terms), verifies list length, and computationally proves IsErdos1141Good for n = 24, 30, 60, 90, 110, 198, 252, 570, 1722 using native_decide."
+      "mathContext": "Formal definition: Defines knownGoodValues (41 terms), verifies list length, and computationally proves IsErdos1141Good for n = 24, 30, 60, 90, 110, 198, 252, 570, 1722 using native_decide."
     },
     {
       "id": "unified-verification",
@@ -152,7 +152,7 @@
       "startLine": 163,
       "endLine": 165,
       "summary": "Single theorem verifying all 41 known OEIS A214583 values satisfy the property, via native_decide over the knownGoodValues list.",
-      "mathContext": "Single theorem verifying all 41 known OEIS A214583 values satisfy the property, via native_decide over the knownGoodValues list."
+      "mathContext": "Verified: Single theorem verifying all 41 known OEIS A214583 values satisfy the property, via native_decide over the knownGoodValues list."
     },
     {
       "id": "classification",
@@ -160,7 +160,7 @@
       "startLine": 167,
       "endLine": 180,
       "summary": "Exhaustive classification: computes exactly which values in {0,...,100} satisfy IsErdos1141Good, yielding 24 good values. Proved by filtering Finset.range 101 and comparing to the explicit list.",
-      "mathContext": "Exhaustive classification: computes exactly which values in {0,...,100} satisfy IsErdos1141Good, yielding 24 good values. Proved by filtering Finset.range 101 and comparing to the explicit list."
+      "mathContext": "Mathematical content: Exhaustive classification: computes exactly which values in {0,...,100} satisfy IsErdos1141Good, yielding 24 good values. Proved by filtering Finset.range 101 and comparing to the explicit list."
     },
     {
       "id": "structural-corollaries",
@@ -168,7 +168,7 @@
       "startLine": 182,
       "endLine": 202,
       "summary": "Three corollaries: no prime ≥ 5 is good (primes are odd but good values ≥ 4 are even), 3 is the unique odd good value ≥ 3, and good n ≥ 10 coprime to 3 forces n − 9 to be prime.",
-      "mathContext": "Three corollaries: no prime ≥ 5 is good (primes are odd but good values ≥ 4 are even), 3 is the unique odd good value ≥ 3, and good n ≥ 10 coprime to 3 forces n − 9 to be prime."
+      "mathContext": "Three corollaries: no prime $\\geq$ 5 is good (primes are odd but good values $\\geq$ 4 are even), 3 is the unique odd good value $\\geq$ 3, and good n $\\geq$ 10 coprime to 3 forces n − 9 to be prime."
     }
   ],
   "conclusion": {

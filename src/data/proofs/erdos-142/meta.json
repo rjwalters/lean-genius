@@ -56,7 +56,7 @@
       "startLine": 20,
       "endLine": 24,
       "summary": "Imports Mathlib tactic library, `Finset` and `Nat` basics, and `Filter` theory for the formalization.",
-      "mathContext": "Imports Mathlib tactic library, `Finset` and `Nat` basics, and `Filter` theory for the formalization."
+      "mathContext": "Mathematical content: Imports Mathlib tactic library, `Finset` and `Nat` basics, and `Filter` theory for the formalization."
     },
     {
       "id": "definitions",
@@ -64,7 +64,7 @@
       "startLine": 25,
       "endLine": 41,
       "summary": "Defines arithmetic progressions via `Finset.range k |>.image`, AP-$k$-free sets via `IsAPFree`, and $r_k(N) = \\max\\{|S| : S \\subseteq [N], S \\text{ AP-free}\\}$ via `Finset.sup` over `Finset.powerset`.",
-      "mathContext": "Defines arithmetic progressions via `Finset.range k |>.image`, AP-$k$-free sets via `IsAPFree`, and $r_k(N) = \\max\\{|S| : S \\subseteq [N], S \\text{ AP-free}\\}$ via `Finset.sup` over `Finset.powerset`."
+      "mathContext": "Formal definition: Defines arithmetic progressions via `Finset.range k |>.image`, AP-$k$-free sets via `IsAPFree`, and $r_k(N) = \\max\\{|S| : S \\subseteq [N], S \\text{ AP-free}\\}$ via `Finset.sup` over `Finset.powerset`."
     },
     {
       "id": "szemeredi",
@@ -72,7 +72,7 @@
       "startLine": 42,
       "endLine": 49,
       "summary": "Axiomatizes $\\forall k \\ge 3, \\forall \\varepsilon > 0, \\exists N_0 : r_k(N) \\le \\varepsilon N$ for $N \\ge N_0$. The qualitative foundation: every dense set contains $k$-APs.",
-      "mathContext": "Axiomatizes $\\forall k \\ge 3, \\forall \\varepsilon > 0, \\exists N_0 : r_k(N) \\le \\varepsilon N$ for $N \\ge N_0$. The qualitative foundation: every dense set contains $k$-APs."
+      "mathContext": "Axiomatized: Axiomatizes $\\forall k \\ge 3, \\forall \\varepsilon > 0, \\exists N_0 : r_k(N) \\le \\varepsilon N$ for $N \\ge N_0$. The qualitative foundation: every dense set contains $k$-APs."
     },
     {
       "id": "roth",
@@ -80,7 +80,7 @@
       "startLine": 50,
       "endLine": 56,
       "summary": "Axiomatizes $r_3(N) = o(N)$ separately, acknowledging the long chain of quantitative improvements from Roth (1953) through Kelley–Meka (2023).",
-      "mathContext": "Axiomatizes $r_3(N) = o(N)$ separately, acknowledging the long chain of quantitative improvements from Roth (1953) through Kelley–Meka (2023)."
+      "mathContext": "Axiomatized: Axiomatizes $r_3(N) = o(N)$ separately, acknowledging the long chain of quantitative improvements from Roth (1953) through Kelley–Meka (2023)."
     },
     {
       "id": "behrend",
@@ -88,7 +88,7 @@
       "startLine": 57,
       "endLine": 64,
       "summary": "Axiomatizes $r_3(N) \\ge C \\cdot N \\cdot \\exp(-C\\sqrt{\\log N})$, the 1946 lattice-sphere construction that remains the best lower bound (up to constants) after nearly 80 years.",
-      "mathContext": "Axiomatizes $r_3(N) \\ge C \\cdot N \\cdot \\exp(-C\\sqrt{\\log N})$, the 1946 lattice-sphere construction that remains the best lower bound (up to constants) after nearly 80 years."
+      "mathContext": "Axiomatized: Axiomatizes $r_3(N) \\ge C \\cdot N \\cdot \\exp(-C\\sqrt{\\log N})$, the 1946 lattice-sphere construction that remains the best lower bound (up to constants) after nearly 80 years."
     },
     {
       "id": "kelley-meka",
@@ -96,7 +96,7 @@
       "startLine": 65,
       "endLine": 72,
       "summary": "Axiomatizes the 2023 breakthrough: $r_3(N) \\le N \\cdot \\exp(-c(\\log N)^{1/12})$, the first sub-polynomial density decay for 3-AP-free sets.",
-      "mathContext": "Axiomatizes the 2023 breakthrough: $r_3(N) \\le N \\cdot \\exp(-c(\\log N)^{1/12})$, the first sub-polynomial density decay for 3-AP-free sets."
+      "mathContext": "Axiomatized: Axiomatizes the 2023 breakthrough: $r_3(N) \\le N \\cdot \\exp(-c(\\log N)^{1/12})$, the first sub-polynomial density decay for 3-AP-free sets."
     },
     {
       "id": "erdos-5000",
@@ -104,7 +104,7 @@
       "startLine": 73,
       "endLine": 81,
       "summary": "Axiomatizes $r_k(N) = o(N/\\log N)$ for all $k \\ge 3$. Known for $k \\le 4$; the $k \\ge 5$ case is the last barrier for Erdős's sub-prize.",
-      "mathContext": "Axiomatizes $r_k(N) = o(N/\\log N)$ for all $k \\ge 3$. Known for $k \\le 4$; the $k \\ge 5$ case is the last barrier for Erdős's sub-prize."
+      "mathContext": "Axiomatized: Axiomatizes $r_k(N) = o(N/\\log N)$ for all $k \\ge 3$. Known for $k \\le 4$; the $k \\ge 5$ case is the last barrier for Erdős's sub-prize."
     },
     {
       "id": "main-problem",
@@ -120,7 +120,7 @@
       "startLine": 93,
       "endLine": 100,
       "summary": "Axiomatizes $r_4(N) \\le N/(\\log N)^{1+c}$ from Green–Tao (2017), using the $U^3$ inverse theorem and density increment.",
-      "mathContext": "Axiomatizes $r_4(N) \\le N/(\\log N)^{1+c}$ from Green–Tao (2017), using the $U^3$ inverse theorem and density increment."
+      "mathContext": "Verified: Axiomatizes $r_4(N) \\le N/(\\log N)^{1+c}$ from Green–Tao (2017), using the $U^3$ inverse theorem and density increment."
     },
     {
       "id": "trivial",
@@ -128,7 +128,7 @@
       "startLine": 101,
       "endLine": 102,
       "summary": "Axiomatizes $r_k(N) \\ge 1$ for $N \\ge 1$, ensuring the asymptotic ratio is well-defined.",
-      "mathContext": "Axiomatizes $r_k(N) \\ge 1$ for $N \\ge 1$, ensuring the asymptotic ratio is well-defined."
+      "mathContext": "Axiomatized: Axiomatizes $r_k(N) \\ge 1$ for $N \\ge 1$, ensuring the asymptotic ratio is well-defined."
     }
   ],
   "conclusion": {

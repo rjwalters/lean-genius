@@ -131,7 +131,7 @@
       "summary": "Axiomatizes `kneser_conjecture`: $\\chi(KG(n,r)) = n - 2r + 2$ for $n \\geq 2r$ (Lovász 1978). Defines `KneserGraph` and `kneserAdj` (disjointness adjacency).",
       "startLine": 114,
       "endLine": 132,
-      "mathContext": "Axiomatizes `kneser_conjecture`: $\\chi(KG(n,r)) = n - 2r + 2$ for $n \\geq 2r$ (Lovász 1978). Defines `KneserGraph` and `kneserAdj` (disjointness adjacency)."
+      "mathContext": "Formal definition: Axiomatizes `kneser_conjecture`: $\\chi(KG(n,r)) = n - 2r + 2$ for $n \\geq 2r$ (Lovász 1978). Defines `KneserGraph` and `kneserAdj` (disjointness adjacency)."
     },
     {
       "id": "small-cases",
@@ -139,7 +139,7 @@
       "summary": "Four axiomatized instances: $\\chi(KG(5,2)) = 3$ (Petersen graph), $\\chi(KG(7,3)) = 2$, $\\chi(KG(2r,r)) = 2$ (perfect matching), $\\chi(KG(2r+1,r)) = 3$ (odd graph).",
       "startLine": 133,
       "endLine": 150,
-      "mathContext": "Four axiomatized instances: $\\chi(KG(5,2)) = 3$ (Petersen graph), $\\chi(KG(7,3)) = 2$, $\\chi(KG(2r,r)) = 2$ (perfect matching), $\\chi(KG(2r+1,r)) = 3$ (odd graph)."
+      "mathContext": "Axiomatized: Four axiomatized instances: $\\chi(KG(5,2)) = 3$ (Petersen graph), $\\chi(KG(7,3)) = 2$, $\\chi(KG(2r,r)) = 2$ (perfect matching), $\\chi(KG(2r+1,r)) = 3$ (odd graph)."
     },
     {
       "id": "connections",
@@ -147,7 +147,7 @@
       "summary": "Axiomatizes `erdos_ko_rado`: maximum intersecting family of $r$-subsets of $[n]$ has size $\\binom{n-1}{r-1}$ for $n \\geq 2r$, giving $\\alpha(KG(n,r)) = \\binom{n-1}{r-1}$.",
       "startLine": 151,
       "endLine": 165,
-      "mathContext": "Axiomatizes `erdos_ko_rado`: maximum intersecting family of $r$-subsets of $[n]$ has size $\\binom{n-1}{r-1}$ for $n \\geq 2r$, giving $\\alpha(KG(n,r)) = \\binom{n-1}{r-1}$."
+      "mathContext": "Axiomatizes `erdos_ko_rado`: maximum intersecting family of $r$-subsets of $[n]$ has size $\\binom{n-1}{r-1}$ for $n \\geq 2r$, giving $\\$\\alpha$(KG(n,r)) = \\binom{n-1}{r-1}$."
     },
     {
       "id": "summary",
@@ -155,7 +155,7 @@
       "summary": "**Proves** `erdos_780_main` (wrapper for AFL axiom) and `erdos_780_summary` (conjunction of AFL + Kneser's conjecture). 0 sorries.",
       "startLine": 166,
       "endLine": 200,
-      "mathContext": "**Proves** `erdos_780_main` (wrapper for AFL axiom) and `erdos_780_summary` (conjunction of AFL + Kneser's conjecture). 0 sorries."
+      "mathContext": "Verified: **Proves** `erdos_780_main` (wrapper for AFL axiom) and `erdos_780_summary` (conjunction of AFL + Kneser's conjecture). 0 sorries."
     }
   ],
   "crossReferences": [

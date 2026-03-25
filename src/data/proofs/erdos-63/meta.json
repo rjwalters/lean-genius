@@ -57,7 +57,7 @@
       "summary": "Defines cyclic successor (Fin.succMod), cycle containment via injective vertex maps, the set of cycle lengths in G, and the infinite chromatic number property.",
       "startLine": 34,
       "endLine": 52,
-      "mathContext": "Defines cyclic successor (Fin.succMod), cycle containment via injective vertex maps, the set of cycle lengths in G, and the infinite chromatic number property."
+      "mathContext": "Formal definition: Defines cyclic successor (Fin.succMod), cycle containment via injective vertex maps, the set of cycle lengths in G, and the infinite chromatic number property."
     },
     {
       "id": "minimum-degree",
@@ -65,7 +65,7 @@
       "summary": "Defines minimum degree δ(G) as the infimum of vertex degrees, and ContainsMinDegreeSubgraph asserting existence of a subgraph with minimum degree ≥ d.",
       "startLine": 53,
       "endLine": 65,
-      "mathContext": "Defines minimum degree δ(G) as the infimum of vertex degrees, and ContainsMinDegreeSubgraph asserting existence of a subgraph with minimum degree ≥ d."
+      "mathContext": "Defines minimum degree δ(G) as the infimum of vertex degrees, and ContainsMinDegreeSubgraph asserting existence of a subgraph with minimum degree $\\geq$ d."
     },
     {
       "id": "key-lemmas",
@@ -73,7 +73,7 @@
       "summary": "Axiomatizes two results: high minimum degree implies an even cycle (weaker form), and the full Bondy-Simonovits theorem guaranteeing ALL even cycle lengths from 4 to 2d.",
       "startLine": 66,
       "endLine": 84,
-      "mathContext": "Axiomatizes two results: high minimum degree implies an even cycle (weaker form), and the full Bondy-Simonovits theorem guaranteeing ALL even cycle lengths from 4 to 2d."
+      "mathContext": "Verified: Axiomatizes two results: high minimum degree implies an even cycle (weaker form), and the full Bondy-Simonovits theorem guaranteeing ALL even cycle lengths from 4 to 2d."
     },
     {
       "id": "de-bruijn-erdos",
@@ -81,7 +81,7 @@
       "summary": "Defines InfGraph for possibly infinite graphs, along with colorability and infinite chromatic number. Axiomatizes the de Bruijn-Erdős theorem: infinite χ → finite high-χ subgraphs.",
       "startLine": 85,
       "endLine": 117,
-      "mathContext": "Defines InfGraph for possibly infinite graphs, along with colorability and infinite chromatic number. Axiomatizes the de Bruijn-Erdős theorem: infinite χ → finite high-χ subgraphs."
+      "mathContext": "Defines InfGraph for possibly infinite graphs, along with colorability and infinite chromatic number. Axiomatizes the de Bruijn-Erdős theorem: infinite χ $\\to$ finite high-χ subgraphs."
     },
     {
       "id": "liu-montgomery",
@@ -89,7 +89,7 @@
       "summary": "Axiomatizes the key breakthrough: every graph with χ > k contains a subgraph with minimum degree > k/2, bridging chromatic number to minimum degree.",
       "startLine": 118,
       "endLine": 128,
-      "mathContext": "Axiomatizes the key breakthrough: every graph with χ > k contains a subgraph with minimum degree > k/2, bridging chromatic number to minimum degree."
+      "mathContext": "Axiomatized: Axiomatizes the key breakthrough: every graph with χ > k contains a subgraph with minimum degree > k/2, bridging chromatic number to minimum degree."
     },
     {
       "id": "erdos-hajnal",
@@ -97,7 +97,7 @@
       "summary": "Axiomatizes Erdős-Hajnal (uncountable χ → K_{m,m} subgraphs) and the fact that K_{m,m} contains all even cycles up to 2m.",
       "startLine": 129,
       "endLine": 145,
-      "mathContext": "Axiomatizes Erdős-Hajnal (uncountable χ → K_{m,m} subgraphs) and the fact that K_{m,m} contains all even cycles up to 2m."
+      "mathContext": "Axiomatizes Erdős-Hajnal (uncountable χ $\\to$ K_{m,m} subgraphs) and the fact that K_{m,m} contains all even cycles up to 2m."
     },
     {
       "id": "main-result",
@@ -105,7 +105,7 @@
       "summary": "Defines PowersOfTwo, proves that 2^n is even (n≥1) and ≥4 (n≥2), states the erdos_63_statement, and axiomatizes the main theorem.",
       "startLine": 146,
       "endLine": 188,
-      "mathContext": "Defines PowersOfTwo, proves that 2^n is even (n≥1) and ≥4 (n≥2), states the erdos_63_statement, and axiomatizes the main theorem."
+      "mathContext": "Defines PowersOfTwo, proves that $2^{n}$ is even (n$\\geq$1) and $\\geq$4 (n$\\geq$2), states the erdos_63_statement, and axiomatizes the main theorem."
     },
     {
       "id": "corollaries",
@@ -113,7 +113,7 @@
       "summary": "Proves the infinitely_many_power_cycles corollary by unfolding the main theorem. Axiomatizes Penman's observation for the uncountable case.",
       "startLine": 189,
       "endLine": 210,
-      "mathContext": "Proves the infinitely_many_power_cycles corollary by unfolding the main theorem. Axiomatizes Penman's observation for the uncountable case."
+      "mathContext": "Verified: Proves the infinitely_many_power_cycles corollary by unfolding the main theorem. Axiomatizes Penman's observation for the uncountable case."
     },
     {
       "id": "generalization",
@@ -121,7 +121,7 @@
       "summary": "Defines the generalized conjecture for arbitrary sequences f(n), proves squares_strictly_increasing, and states the specific squares conjecture as an open problem.",
       "startLine": 211,
       "endLine": 255,
-      "mathContext": "Defines the generalized conjecture for arbitrary sequences f(n), proves squares_strictly_increasing, and states the specific squares conjecture as an open problem."
+      "mathContext": "Formal definition: Defines the generalized conjecture for arbitrary sequences f(n), proves squares_strictly_increasing, and states the specific squares conjecture as an open problem."
     }
   ],
   "conclusion": {

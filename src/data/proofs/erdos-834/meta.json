@@ -89,7 +89,7 @@
       "startLine": 59,
       "endLine": 72,
       "summary": "Defines `IsTransversal H T` ($T$ hits every edge) and `transversalNumber H` ($\\min |T|$ over transversals) using conditional infimum.",
-      "mathContext": "Defines `IsTransversal H T` ($T$ hits every edge) and `transversalNumber H` ($\\min |T|$ over transversals) using conditional infimum."
+      "mathContext": "Formal definition: Defines `IsTransversal H T` ($T$ hits every edge) and `transversalNumber H` ($\\min |T|$ over transversals) using conditional infimum."
     },
     {
       "id": "sec-834-tau-critical",
@@ -97,7 +97,7 @@
       "startLine": 73,
       "endLine": 88,
       "summary": "Defines `removeEdge H e` and `IsTransversalCritical H k`: $\\tau(H) = k$ and every edge removal reduces $\\tau$.",
-      "mathContext": "Defines `removeEdge H e` and `IsTransversalCritical H k`: $\\tau(H) = k$ and every edge removal reduces $\\tau$."
+      "mathContext": "Formal definition: Defines `removeEdge H e` and `IsTransversalCritical H k`: $\\tau(H) = k$ and every edge removal reduces $\\tau$."
     },
     {
       "id": "sec-834-chromatic",
@@ -105,7 +105,7 @@
       "startLine": 89,
       "endLine": 107,
       "summary": "Defines `IsProperColoring H k c` (no monochromatic edge of size $\\ge 2$), `chromaticNumber H` (min colors), and `IsChromaticCritical H k` ($\\chi = k$ and every edge removal reduces $\\chi$).",
-      "mathContext": "Defines `IsProperColoring H k c` (no monochromatic edge of size $\\ge 2$), `chromaticNumber H` (min colors), and `IsChromaticCritical H k` ($\\chi = k$ and every edge removal reduces $\\chi$)."
+      "mathContext": "Formal definition: Defines `IsProperColoring H k c` (no monochromatic edge of size $\\ge 2$), `chromaticNumber H` (min colors), and `IsChromaticCritical H k` ($\\chi = k$ and every edge removal reduces $\\chi$)."
     },
     {
       "id": "sec-834-questions",
@@ -113,7 +113,7 @@
       "startLine": 108,
       "endLine": 123,
       "summary": "States `transversal_question` and `chromatic_question` as existential propositions: does there exist a 3-uniform, 3-critical hypergraph with $\\delta \\ge 7$ under each interpretation?",
-      "mathContext": "States `transversal_question` and `chromatic_question` as existential propositions: does there exist a 3-uniform, 3-critical hypergraph with $\\delta \\ge 7$ under each interpretation?"
+      "mathContext": "States `transversal_question` and `chromatic_question` as existential propositions: does there exist a 3-uniform, 3-critical hypergraph with $\\$\\delta$ \\ge 7$ under each interpretation?"
     },
     {
       "id": "sec-834-li",
@@ -121,7 +121,7 @@
       "startLine": 124,
       "endLine": 138,
       "summary": "Axiomatizes `li_bound` ($\\delta \\le 6$ for $\\tau$-critical) and proves `transversal_answer_no` by contradiction with `omega`.",
-      "mathContext": "Axiomatizes `li_bound` ($\\delta \\le 6$ for $\\tau$-critical) and proves `transversal_answer_no` by contradiction with `omega`."
+      "mathContext": "Axiomatizes `li_bound` ($\\$\\delta$ \\le 6$ for $\\tau$-critical) and proves `transversal_answer_no` by contradiction with `omega`."
     },
     {
       "id": "sec-834-lovasz",
@@ -129,7 +129,7 @@
       "startLine": 139,
       "endLine": 153,
       "summary": "Axiomatizes `lovasz_construction` ($\\forall d$, $\\chi$-critical with $\\delta \\ge d$ exists) and proves `chromatic_answer_yes` by instantiating with $d = 7$.",
-      "mathContext": "Axiomatizes `lovasz_construction` ($\\forall d$, $\\chi$-critical with $\\delta \\ge d$ exists) and proves `chromatic_answer_yes` by instantiating with $d = 7$."
+      "mathContext": "Axiomatizes `lovasz_construction` ($\\forall d$, $\\chi$-critical with $\\$\\delta$ \\ge d$ exists) and proves `chromatic_answer_yes` by instantiating with $d = 7$."
     },
     {
       "id": "sec-834-resolution",

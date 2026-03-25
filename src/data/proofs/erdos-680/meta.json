@@ -127,7 +127,7 @@
       "startLine": 20,
       "endLine": 26,
       "summary": "Imports Mathlib modules for `Nat.Prime`, filters, real numbers, square roots, and tactics.",
-      "mathContext": "Imports Mathlib modules for `Nat.Prime`, filters, real numbers, square roots, and tactics."
+      "mathContext": "Mathematical content: Imports Mathlib modules for `Nat.Prime`, filters, real numbers, square roots, and tactics."
     },
     {
       "id": "main-conjecture",
@@ -135,7 +135,7 @@
       "startLine": 27,
       "endLine": 38,
       "summary": "Defines `ErdosProblem680` ($\\exists N_0, \\forall n \\ge N_0, \\exists k \\ge 1 : p(n+k) > k^2 + 1$) and `HasLargeLPF` (the predicate for individual $n$).",
-      "mathContext": "Defines `ErdosProblem680` ($\\exists N_0, \\forall n \\ge N_0, \\exists k \\ge 1 : p(n+k) > k^2 + 1$) and `HasLargeLPF` (the predicate for individual $n$)."
+      "mathContext": "Defines `ErdosProblem680` ($\\exists N_0, \\forall n \\ge N_0, \\exists k \\ge 1 : p(n+k) > $k^{2}$ + 1$) and `HasLargeLPF` (the predicate for individual $n$)."
     },
     {
       "id": "exponential-variant",
@@ -143,7 +143,7 @@
       "startLine": 39,
       "endLine": 55,
       "summary": "States `ErdosProblem680Variant` ($\\forall \\varepsilon > 0$, the exponential bound $e^{(1+\\varepsilon)\\sqrt{k}} + C$ eventually fails) and `ErdosProblem680Combined` (both statements together).",
-      "mathContext": "States `ErdosProblem680Variant` ($\\forall \\varepsilon > 0$, the exponential bound $e^{(1+\\varepsilon)\\sqrt{k}} + C$ eventually fails) and `ErdosProblem680Combined` (both statements together)."
+      "mathContext": "Bound: States `ErdosProblem680Variant` ($\\forall \\varepsilon > 0$, the exponential bound $e^{(1+\\varepsilon)\\sqrt{k}} + C$ eventually fails) and `ErdosProblem680Combined` (both statements together)."
     },
     {
       "id": "cramer",
@@ -151,7 +151,7 @@
       "startLine": 56,
       "endLine": 71,
       "summary": "Formalizes `CramerConjecture` ($p_{n+1} - p_n \\le C(\\log p_n)^2$) using `Nat.find` for the next prime. Axiomatizes `cramer_implies_large_lpf`: Cramér's conjecture implies a stronger version of #680.",
-      "mathContext": "Formalizes `CramerConjecture` ($p_{n+1} - p_n \\le C(\\log p_n)^2$) using `Nat.find` for the next prime. Axiomatizes `cramer_implies_large_lpf`: Cramér's conjecture implies a stronger version of #680."
+      "mathContext": "Axiomatized: Formalizes `CramerConjecture` ($p_{n+1} - p_n \\le C(\\log p_n)^2$) using `Nat.find` for the next prime. Axiomatizes `cramer_implies_large_lpf`: Cramér's conjecture implies a stronger version of #680."
     },
     {
       "id": "basic-properties",
@@ -167,7 +167,7 @@
       "startLine": 96,
       "endLine": 125,
       "summary": "Defines `granvilleConstant` ($2e^{-\\gamma} \\approx 1.1229$) and `GranvilleRefinement`. Proves `problem680_from_prime_distribution`: if primes exist near $n$ with $k^2 + 1 < n + k$, then #680 holds.",
-      "mathContext": "Defines `granvilleConstant` ($2e^{-\\gamma} \\approx 1.1229$) and `GranvilleRefinement`. Proves `problem680_from_prime_distribution`: if primes exist near $n$ with $k^2 + 1 < n + k$, then #680 holds."
+      "mathContext": "Defines `granvilleConstant` ($2e^{-\\$\\gamma$} \\approx 1.1229$) and `GranvilleRefinement`. Proves `problem680_from_prime_distribution`: if primes exist near $n$ with $$k^{2}$ + 1 < n + k$, then #680 holds."
     },
     {
       "id": "structural",
@@ -183,7 +183,7 @@
       "startLine": 171,
       "endLine": 194,
       "summary": "Verifies `HasLargeLPF` for $n = 2, 4, 6, 8, 10, 12, 14, 20, 24, 100$ using `native_decide`. All cases use $k = 1$ witness.",
-      "mathContext": "Verifies `HasLargeLPF` for $n = 2, 4, 6, 8, 10, 12, 14, 20, 24, 100$ using `native_decide`. All cases use $k = 1$ witness."
+      "mathContext": "Mathematical content: Verifies `HasLargeLPF` for $n = 2, 4, 6, 8, 10, 12, 14, 20, 24, 100$ using `native_decide`. All cases use $k = 1$ witness."
     }
   ],
   "conclusion": {

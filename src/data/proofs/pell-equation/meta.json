@@ -87,7 +87,7 @@
       "startLine": 107,
       "endLine": 125,
       "summary": "Proves infinitely many distinct solutions exist by showing distinct integer powers of the fundamental solution have distinct $y$-coordinates, using `y_strictMono.injective`",
-      "mathContext": "Proves infinitely many distinct solutions exist by showing distinct integer powers of the fundamental solution have distinct $y$-coordinates, using `y_strictMono.injective`"
+      "mathContext": "Verified: Proves infinitely many distinct solutions exist by showing distinct integer powers of the fundamental solution have distinct $y$-coordinates, using `y_strictMono.injective`"
     },
     {
       "id": "fundamental",
@@ -95,7 +95,7 @@
       "startLine": 126,
       "endLine": 154,
       "summary": "Defines `IsFundamentalSolution` wrapping `Pell.IsFundamental`, proves existence via `IsFundamental.exists_of_not_isSquare`, and uniqueness via the `subsingleton` property of minimal elements",
-      "mathContext": "Defines `IsFundamentalSolution` wrapping `Pell.IsFundamental`, proves existence via `IsFundamental.exists_of_not_isSquare`, and uniqueness via the `subsingleton` property of minimal elements"
+      "mathContext": "Formal definition: Defines `IsFundamentalSolution` wrapping `Pell.IsFundamental`, proves existence via `IsFundamental.exists_of_not_isSquare`, and uniqueness via the `subsingleton` property of minimal elements"
     },
     {
       "id": "generation",
@@ -127,7 +127,7 @@
       "startLine": 245,
       "endLine": 271,
       "summary": "Original proof that $D = k^2$ forces only trivial solutions: factors $x^2 - k^2 y^2 = (x-ky)(x+ky) = 1$, then uses $a \\mid 1 \\Rightarrow a = \\pm 1$ in $\\mathbb{Z}$ to conclude $ky = 0$",
-      "mathContext": "Original proof that $D = k^2$ forces only trivial solutions: factors $x^2 - k^2 y^2 = (x-ky)(x+ky) = 1$, then uses $a \\mid 1 \\Rightarrow a = \\pm 1$ in $\\mathbb{Z}$ to conclude $ky = 0$"
+      "mathContext": "Original proof that $D = $k^{2}$$ forces only trivial solutions: factors $x^2 - $k^{2}$ y^2 = (x-ky)(x+ky) = 1$, then uses $a \\mid 1 \\Rightarrow a = \\pm 1$ in $\\mathbb{Z}$ to conclude $ky = 0$"
     },
     {
       "id": "connections",

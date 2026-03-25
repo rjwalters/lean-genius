@@ -86,7 +86,7 @@
       "startLine": 193,
       "endLine": 206,
       "summary": "Defines `ConvexBody n` bundling a carrier set with proofs of convexity, central symmetry, and nonemptiness. Provides `Membership` instance and `ConvexBody.zero_mem` corollary.",
-      "mathContext": "Defines `ConvexBody n` bundling a carrier set with proofs of convexity, central symmetry, and nonemptiness. Provides `Membership` instance and `ConvexBody.zero_mem` corollary."
+      "mathContext": "Formal definition: Defines `ConvexBody n` bundling a carrier set with proofs of convexity, central symmetry, and nonemptiness. Provides `Membership` instance and `ConvexBody.zero_mem` corollary."
     },
     {
       "id": "volume",
@@ -94,7 +94,7 @@
       "startLine": 212,
       "endLine": 234,
       "summary": "Introduces `HasVolume` typeclass abstracting Lebesgue measure. Defines `criticalVolume(L) = 2^n \\cdot \\text{covol}(L)$, the Minkowski threshold, and proves it positive using `pow_pos` and `mul_pos`.",
-      "mathContext": "Introduces `HasVolume` typeclass abstracting Lebesgue measure. Defines `criticalVolume(L) = 2^n \\cdot \\text{covol}(L)$, the Minkowski threshold, and proves it positive using `pow_pos` and `mul_pos`."
+      "mathContext": "Introduces `HasVolume` typeclass abstracting Lebesgue measure. Defines `criticalVolume(L) = $2^{n}$ \\cdot \\text{covol}(L)$, the Minkowski threshold, and proves it positive using `pow_pos` and `mul_pos`."
     },
     {
       "id": "main-theorem",

@@ -86,7 +86,7 @@
       "summary": "Problem documentation with full references to Alon (1992) and AKS (1999); imports Mathlib graph theory and finite type modules",
       "startLine": 1,
       "endLine": 40,
-      "mathContext": "Problem documentation with full references to Alon (1992) and AKS (1999); imports Mathlib graph theory and finite type modules"
+      "mathContext": "Mathematical content: Problem documentation with full references to Alon (1992) and AKS (1999); imports Mathlib graph theory and finite type modules"
     },
     {
       "id": "list-coloring-definitions",
@@ -102,7 +102,7 @@
       "summary": "Two structural results: χ_L(G) ≥ χ(G) always holds, and the gap can be arbitrarily large (K_{n,n} example with χ = 2, χ_L ≥ log₂ n + 1)",
       "startLine": 80,
       "endLine": 100,
-      "mathContext": "Two structural results: χ_L(G) ≥ χ(G) always holds, and the gap can be arbitrarily large (K_{n,n} example with χ = 2, χ_L ≥ log₂ n + 1)"
+      "mathContext": "Two structural results: χ_L(G) $\\geq$ χ(G) always holds, and the gap can be arbitrarily large (K_{n,n} example with χ = 2, χ_L $\\geq$ log₂ n + 1)"
     },
     {
       "id": "random-graph-model",
@@ -110,7 +110,7 @@
       "summary": "Axiomatizes listChromaticRandom(n) for the almost-sure behavior of G(n,1/2), and states the classical chromatic number bound χ(G) ≍ n/(2 log₂ n)",
       "startLine": 101,
       "endLine": 118,
-      "mathContext": "Axiomatizes listChromaticRandom(n) for the almost-sure behavior of G(n,1/2), and states the classical chromatic number bound χ(G) ≍ n/(2 log₂ n)"
+      "mathContext": "Axiomatized: Axiomatizes listChromaticRandom(n) for the almost-sure behavior of G(n,1/2), and states the classical chromatic number bound χ(G) ≍ n/(2 log₂ n)"
     },
     {
       "id": "alon-1992",
@@ -118,7 +118,7 @@
       "summary": "First proof that χ_L(G) = o(n): the bound χ_L ≤ C · (log log n / log n) · n via the Lovász Local Lemma, plus the formal o(n) corollary answering Problem #799",
       "startLine": 119,
       "endLine": 142,
-      "mathContext": "First proof that χ_L(G) = o(n): the bound χ_L ≤ C · (log log n / log n) · n via the Lovász Local Lemma, plus the formal o(n) corollary answering Problem #799"
+      "mathContext": "First proof that χ_L(G) = o(n): the bound χ_L $\\leq$ C · (log $\\log n$ / $\\log n$) · n via the Lovász Local Lemma, plus the formal o(n) corollary answering Problem #799"
     },
     {
       "id": "aks-1999",
@@ -126,7 +126,7 @@
       "summary": "Tight bound χ_L(G) ≍ n/log n: upper bound via semi-random method (Rödl nibble), lower bound via adversarial list construction",
       "startLine": 143,
       "endLine": 160,
-      "mathContext": "Tight bound χ_L(G) ≍ n/log n: upper bound via semi-random method (Rödl nibble), lower bound via adversarial list construction"
+      "mathContext": "Tight bound χ_L(G) ≍ n/$\\log n$: upper bound via semi-random method (Rödl nibble), lower bound via adversarial list construction"
     },
     {
       "id": "chromatic-comparison",
@@ -134,7 +134,7 @@
       "summary": "The ratio χ_L(G)/χ(G) → 2/ln(2) ≈ 2.885 for random graphs, formalized as χ_L(G) ~ n/log n",
       "startLine": 161,
       "endLine": 177,
-      "mathContext": "The ratio χ_L(G)/χ(G) → 2/ln(2) ≈ 2.885 for random graphs, formalized as χ_L(G) ~ n/log n"
+      "mathContext": "The ratio χ_L(G)/χ(G) $\\to$ 2/ln(2) ≈ 2.885 for random graphs, formalized as χ_L(G) ~ n/$\\log n$"
     },
     {
       "id": "main-results",
@@ -142,7 +142,7 @@
       "summary": "The main theorem erdos_799 directly equals alon_krivelevich_sudakov_1999, resolving Problem #799 with the tight Θ(n/log n) bound",
       "startLine": 178,
       "endLine": 201,
-      "mathContext": "The main theorem erdos_799 directly equals alon_krivelevich_sudakov_1999, resolving Problem #799 with the tight Θ(n/log n) bound"
+      "mathContext": "The main theorem erdos_799 directly equals alon_krivelevich_sudakov_1999, resolving Problem #799 with the tight Θ(n/$\\log n$) bound"
     }
   ],
   "conclusion": {

@@ -83,7 +83,7 @@
       "startLine": 45,
       "endLine": 68,
       "summary": "IsEntire (Differentiable ℂ f), IsTranscendental (entire and not polynomial), IsNonLinear (not affine) definitions.",
-      "mathContext": "IsEntire (Differentiable ℂ f), IsTranscendental (entire and not polynomial), IsNonLinear (not affine) definitions."
+      "mathContext": "Formal definition: IsEntire (Differentiable ℂ f), IsTranscendental (entire and not polynomial), IsNonLinear (not affine) definitions."
     },
     {
       "id": "countable-dense",
@@ -91,7 +91,7 @@
       "startLine": 69,
       "endLine": 86,
       "summary": "IsCountableDense definition. rationals_countable_dense: proved ℚ is countable dense in ℝ using Set.countable_range and Rat.denseRange_ratCast.",
-      "mathContext": "IsCountableDense definition. rationals_countable_dense: proved ℚ is countable dense in ℝ using Set.countable_range and Rat.denseRange_ratCast."
+      "mathContext": "IsCountableDense definition. rationals_countable_dense: proved $\\mathbb{Q}$ is countable dense in $\\mathbb{R}$ using Set.countable_range and Rat.denseRange_ratCast."
     },
     {
       "id": "rationality-preservation",
@@ -99,7 +99,7 @@
       "startLine": 87,
       "endLine": 102,
       "summary": "PreservesRationality (f(x) ∈ ℚ ↔ x ∈ ℚ) and MapsSetToSet (x ∈ A ↔ f(x) ∈ B) definitions.",
-      "mathContext": "PreservesRationality (f(x) ∈ ℚ ↔ x ∈ ℚ) and MapsSetToSet (x ∈ A ↔ f(x) ∈ B) definitions."
+      "mathContext": "PreservesRationality (f(x) ∈ $\\mathbb{Q}$ ↔ x ∈ $\\mathbb{Q}$) and MapsSetToSet (x ∈ A ↔ f(x) ∈ B) definitions."
     },
     {
       "id": "original-question",
@@ -107,7 +107,7 @@
       "startLine": 103,
       "endLine": 115,
       "summary": "ErdosQuestion: ∃ entire non-linear f with x ∈ ℚ ↔ f(x) ∈ ℚ.",
-      "mathContext": "ErdosQuestion: ∃ entire non-linear f with x ∈ ℚ ↔ f(x) ∈ ℚ."
+      "mathContext": "ErdosQuestion: ∃ entire non-linear f with x ∈ $\\mathbb{Q}$ ↔ f(x) ∈ $\\mathbb{Q}$."
     },
     {
       "id": "general-question",
@@ -115,7 +115,7 @@
       "startLine": 116,
       "endLine": 129,
       "summary": "GeneralQuestion: for all countable dense A, B, ∃ entire f mapping A to B.",
-      "mathContext": "GeneralQuestion: for all countable dense A, B, ∃ entire f mapping A to B."
+      "mathContext": "Mathematical content: GeneralQuestion: for all countable dense A, B, ∃ entire f mapping A to B."
     },
     {
       "id": "barth-schneider",
@@ -123,7 +123,7 @@
       "startLine": 130,
       "endLine": 161,
       "summary": "barth_schneider_1970 axiom (transcendental entire f with f(A) = B) and barth_schneider_monotone axiom (monotone version).",
-      "mathContext": "barth_schneider_1970 axiom (transcendental entire f with f(A) = B) and barth_schneider_monotone axiom (monotone version)."
+      "mathContext": "Axiomatized: barth_schneider_1970 axiom (transcendental entire f with f(A) = B) and barth_schneider_monotone axiom (monotone version)."
     },
     {
       "id": "main-answer",
@@ -131,7 +131,7 @@
       "startLine": 162,
       "endLine": 207,
       "summary": "erdos_question_affirmative (proved from barth_schneider_1970 with A=B=ℚ) and general_question_affirmative (proved directly).",
-      "mathContext": "erdos_question_affirmative (proved from barth_schneider_1970 with A=B=ℚ) and general_question_affirmative (proved directly)."
+      "mathContext": "erdos_question_affirmative (proved from barth_schneider_1970 with A=B=$\\mathbb{Q}$) and general_question_affirmative (proved directly)."
     },
     {
       "id": "extensions",
@@ -139,7 +139,7 @@
       "startLine": 208,
       "endLine": 223,
       "summary": "barth_schneider_complex axiom (1971 extension to countable dense subsets of ℂ).",
-      "mathContext": "barth_schneider_complex axiom (1971 extension to countable dense subsets of ℂ)."
+      "mathContext": "Axiomatized: barth_schneider_complex axiom (1971 extension to countable dense subsets of ℂ)."
     },
     {
       "id": "insights",
@@ -147,7 +147,7 @@
       "startLine": 224,
       "endLine": 241,
       "summary": "no_polynomial_works axiom: no polynomial of degree > 1 can preserve rationality.",
-      "mathContext": "no_polynomial_works axiom: no polynomial of degree > 1 can preserve rationality."
+      "mathContext": "Axiomatized: no_polynomial_works axiom: no polynomial of degree > 1 can preserve rationality."
     },
     {
       "id": "summary",
@@ -155,7 +155,7 @@
       "startLine": 242,
       "endLine": 289,
       "summary": "erdos_226_summary (proved), erdos_226, erdos_226_answer theorems. Problem SOLVED.",
-      "mathContext": "erdos_226_summary (proved), erdos_226, erdos_226_answer theorems. Problem SOLVED."
+      "mathContext": "Verified: erdos_226_summary (proved), erdos_226, erdos_226_answer theorems. Problem SOLVED."
     }
   ],
   "conclusion": {

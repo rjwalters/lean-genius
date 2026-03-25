@@ -44,7 +44,7 @@
       "startLine": 20,
       "endLine": 23,
       "summary": "Imports Mathlib's prime number API, real arithmetic, logarithm special functions, and tactics for stating asymptotic bounds with iterated logarithms.",
-      "mathContext": "Imports Mathlib's prime number API, real arithmetic, logarithm special functions, and tactics for stating asymptotic bounds with iterated logarithms."
+      "mathContext": "Bound: Imports Mathlib's prime number API, real arithmetic, logarithm special functions, and tactics for stating asymptotic bounds with iterated logarithms."
     },
     {
       "id": "core-definitions",
@@ -60,7 +60,7 @@
       "startLine": 54,
       "endLine": 57,
       "summary": "States $\\varepsilon_n \\to 0$: for any $\\delta > 0$, primes in $(n^\\delta, n]$ with one class each cover $[1, n]$ for sufficiently large $n$. Formalized via $\\text{Filter.Tendsto}$.",
-      "mathContext": "States $\\varepsilon_n \\to 0$: for any $\\delta > 0$, primes in $(n^\\delta, n]$ with one class each cover $[1, n]$ for sufficiently large $n$. Formalized via $\\text{Filter.Tendsto}$."
+      "mathContext": "States $\\varepsilon_n \\to 0$: for any $\\$\\delta$ > 0$, primes in $(n^\\$\\delta$, n]$ with one class each cover $[1, n]$ for sufficiently large $n$. Formalized via $\\text{Filter.Tendsto}$."
     },
     {
       "id": "known-bounds",
@@ -68,7 +68,7 @@
       "startLine": 61,
       "endLine": 72,
       "summary": "Erdős's lower bound $\\varepsilon_n \\ge c \\cdot (\\log\\log\\log n)/(\\log\\log n)$ via counting/probabilistic argument, and the trivial upper bound $\\varepsilon_n < 1$.",
-      "mathContext": "Erdős's lower bound $\\varepsilon_n \\ge c \\cdot (\\log\\log\\log n)/(\\log\\log n)$ via counting/probabilistic argument, and the trivial upper bound $\\varepsilon_n < 1$."
+      "mathContext": "Erdős's lower bound $\\varepsilon_n \\ge c \\cdot (\\log\\log\\$\\log n$)/(\\log\\$\\log n$)$ via counting/probabilistic argument, and the trivial upper bound $\\varepsilon_n < 1$."
     },
     {
       "id": "per-prime-coverage",
@@ -76,7 +76,7 @@
       "startLine": 76,
       "endLine": 80,
       "summary": "Each prime $p$ with one residue class covers at most $\\lfloor n/p \\rfloor + 1 \\le n/p + 1$ integers in $[1,n]$, bounding the per-prime contribution to the covering.",
-      "mathContext": "Each prime $p$ with one residue class covers at most $\\lfloor n/p \\rfloor + 1 \\le n/p + 1$ integers in $[1,n]$, bounding the per-prime contribution to the covering."
+      "mathContext": "Bound: Each prime $p$ with one residue class covers at most $\\lfloor n/p \\rfloor + 1 \\le n/p + 1$ integers in $[1,n]$, bounding the per-prime contribution to the covering."
     },
     {
       "id": "mertens-estimate",
@@ -92,7 +92,7 @@
       "startLine": 90,
       "endLine": 101,
       "summary": "Monotonicity (smaller $\\varepsilon$ includes more primes), well-definedness of $\\varepsilon_n$ via supremum, and full prime covering ($\\varepsilon = 0$) by CRT and PNT for large $n$.",
-      "mathContext": "Monotonicity (smaller $\\varepsilon$ includes more primes), well-definedness of $\\varepsilon_n$ via supremum, and full prime covering ($\\varepsilon = 0$) by CRT and PNT for large $n$."
+      "mathContext": "Mathematical content: Monotonicity (smaller $\\varepsilon$ includes more primes), well-definedness of $\\varepsilon_n$ via supremum, and full prime covering ($\\varepsilon = 0$) by CRT and PNT for large $n$."
     },
     {
       "id": "sieve-duality",
@@ -100,7 +100,7 @@
       "startLine": 103,
       "endLine": 110,
       "summary": "Covering (include one class per prime to hit every integer) is dual to sieving (exclude one class per prime to find survivors). Placeholder axiomatization of this structural connection.",
-      "mathContext": "Covering (include one class per prime to hit every integer) is dual to sieving (exclude one class per prime to find survivors). Placeholder axiomatization of this structural connection."
+      "mathContext": "Axiomatized: Covering (include one class per prime to hit every integer) is dual to sieving (exclude one class per prime to find survivors). Placeholder axiomatization of this structural connection."
     }
   ],
   "overview": {

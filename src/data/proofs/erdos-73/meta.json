@@ -101,7 +101,7 @@
       "startLine": 39,
       "endLine": 59,
       "summary": "Defines `IsIndependentSet` and `independenceNumber` $\\alpha(G)$. Proves basic properties: empty set and singletons are independent.",
-      "mathContext": "Defines `IsIndependentSet` and `independenceNumber` $\\alpha(G)$. Proves basic properties: empty set and singletons are independent."
+      "mathContext": "Defines `IsIndependentSet` and `independenceNumber` $\\$\\alpha$(G)$. Proves basic properties: empty set and singletons are independent."
     },
     {
       "id": "independence-condition",
@@ -109,7 +109,7 @@
       "startLine": 60,
       "endLine": 71,
       "summary": "Defines `satisfiesIndependenceCondition G k`: $\\alpha(G[S]) \\ge (|S| - k)/2$ for all $S$. The $k = 0$ case is `satisfiesStrictCondition`.",
-      "mathContext": "Defines `satisfiesIndependenceCondition G k`: $\\alpha(G[S]) \\ge (|S| - k)/2$ for all $S$. The $k = 0$ case is `satisfiesStrictCondition`."
+      "mathContext": "Defines `satisfiesIndependenceCondition G k`: $\\$\\alpha$(G[S]) \\ge (|S| - k)/2$ for all $S$. The $k = 0$ case is `satisfiesStrictCondition`."
     },
     {
       "id": "bipartite",
@@ -117,7 +117,7 @@
       "startLine": 72,
       "endLine": 87,
       "summary": "Defines `IsBipartite` via vertex partition and `hasNoOddCycle`. Axiomatizes the classical equivalence $G$ bipartite $\\iff$ no odd cycles.",
-      "mathContext": "Defines `IsBipartite` via vertex partition and `hasNoOddCycle`. Axiomatizes the classical equivalence $G$ bipartite $\\iff$ no odd cycles."
+      "mathContext": "Formal definition: Defines `IsBipartite` via vertex partition and `hasNoOddCycle`. Axiomatizes the classical equivalence $G$ bipartite $\\iff$ no odd cycles."
     },
     {
       "id": "trivial-case",
@@ -125,7 +125,7 @@
       "startLine": 88,
       "endLine": 114,
       "summary": "Axiomatizes $\\alpha(C_{2m+1}) = m$. Proves $2m < 2m+1$ (odd cycles violate strict condition). States `trivial_case` (sorry): strict condition $\\Rightarrow$ bipartite.",
-      "mathContext": "Axiomatizes $\\alpha(C_{2m+1}) = m$. Proves $2m < 2m+1$ (odd cycles violate strict condition). States `trivial_case` (sorry): strict condition $\\Rightarrow$ bipartite."
+      "mathContext": "Axiomatizes $\\$\\alpha$(C_{2m+1}) = m$. Proves $2m < 2m+1$ (odd cycles violate strict condition). States `trivial_case` (sorry): strict condition $\\Rightarrow$ bipartite."
     },
     {
       "id": "almost-bipartite",
@@ -133,7 +133,7 @@
       "startLine": 115,
       "endLine": 130,
       "summary": "Defines `isAlmostBipartite G bound` (remove $\\le$ bound vertices for bipartiteness) and `bipartiteDeficiency` (minimum such bound).",
-      "mathContext": "Defines `isAlmostBipartite G bound` (remove $\\le$ bound vertices for bipartiteness) and `bipartiteDeficiency` (minimum such bound)."
+      "mathContext": "Formal definition: Defines `isAlmostBipartite G bound` (remove $\\le$ bound vertices for bipartiteness) and `bipartiteDeficiency` (minimum such bound)."
     },
     {
       "id": "reed-theorem",
@@ -141,7 +141,7 @@
       "startLine": 131,
       "endLine": 152,
       "summary": "Axiomatizes `reed_bound` and `reed_theorem`. Proves `erdos_73_solved` by unpacking the axiom into existential form.",
-      "mathContext": "Axiomatizes `reed_bound` and `reed_theorem`. Proves `erdos_73_solved` by unpacking the axiom into existential form."
+      "mathContext": "Verified: Axiomatizes `reed_bound` and `reed_theorem`. Proves `erdos_73_solved` by unpacking the axiom into existential form."
     },
     {
       "id": "special-cases",
@@ -149,7 +149,7 @@
       "startLine": 153,
       "endLine": 169,
       "summary": "Axiomatizes $f(0) = 0$ and derives `strict_implies_bipartite` (sorry on the final isomorphism step $G[V] \\cong G$).",
-      "mathContext": "Axiomatizes $f(0) = 0$ and derives `strict_implies_bipartite` (sorry on the final isomorphism step $G[V] \\cong G$)."
+      "mathContext": "Axiomatized: Axiomatizes $f(0) = 0$ and derives `strict_implies_bipartite` (sorry on the final isomorphism step $G[V] \\cong G$)."
     },
     {
       "id": "examples",
@@ -157,7 +157,7 @@
       "startLine": 170,
       "endLine": 185,
       "summary": "Defines `triangleGraph` on `Fin 3`. States (sorry) that $K_3$ violates strict condition and is 1-almost-bipartite.",
-      "mathContext": "Defines `triangleGraph` on `Fin 3`. States (sorry) that $K_3$ violates strict condition and is 1-almost-bipartite."
+      "mathContext": "Formal definition: Defines `triangleGraph` on `Fin 3`. States (sorry) that $K_3$ violates strict condition and is 1-almost-bipartite."
     },
     {
       "id": "bounds",
@@ -165,7 +165,7 @@
       "startLine": 186,
       "endLine": 197,
       "summary": "Axiomatizes $f(k) \\le 2^k$ from Reed's proof. Defines the open question of optimal $f(k)$.",
-      "mathContext": "Axiomatizes $f(k) \\le 2^k$ from Reed's proof. Defines the open question of optimal $f(k)$."
+      "mathContext": "Axiomatizes $f(k) \\le $2^{k}$$ from Reed's proof. Defines the open question of optimal $f(k)$."
     },
     {
       "id": "chromatic",
@@ -173,7 +173,7 @@
       "startLine": 198,
       "endLine": 244,
       "summary": "Axiomatizes bipartite $\\iff$ 2-colorable and $k$-almost-bipartite $\\Rightarrow$ $\\chi(G) \\le k + 2$.",
-      "mathContext": "Axiomatizes bipartite $\\iff$ 2-colorable and $k$-almost-bipartite $\\Rightarrow$ $\\chi(G) \\le k + 2$."
+      "mathContext": "Axiomatized: Axiomatizes bipartite $\\iff$ 2-colorable and $k$-almost-bipartite $\\Rightarrow$ $\\chi(G) \\le k + 2$."
     }
   ],
   "conclusion": {

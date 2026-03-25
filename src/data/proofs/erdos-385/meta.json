@@ -95,7 +95,7 @@
       "summary": "Header with problem statement, known results, references, and OEIS link",
       "startLine": 1,
       "endLine": 27,
-      "mathContext": "Header with problem statement, known results, references, and OEIS link"
+      "mathContext": "Mathematical content: Header with problem statement, known results, references, and OEIS link"
     },
     {
       "id": "imports-setup",
@@ -103,7 +103,7 @@
       "summary": "Specific Mathlib imports and namespace opening",
       "startLine": 28,
       "endLine": 46,
-      "mathContext": "Specific Mathlib imports and namespace opening"
+      "mathContext": "Mathematical content: Specific Mathlib imports and namespace opening"
     },
     {
       "id": "definitions",
@@ -111,7 +111,7 @@
       "summary": "IsComposite, leastPrimeDivisor, and their properties",
       "startLine": 47,
       "endLine": 75,
-      "mathContext": "IsComposite, leastPrimeDivisor, and their properties"
+      "mathContext": "Mathematical content: IsComposite, leastPrimeDivisor, and their properties"
     },
     {
       "id": "function-f",
@@ -119,7 +119,7 @@
       "summary": "F(n) using Finset.sup' and alternative FSet definition",
       "startLine": 76,
       "endLine": 94,
-      "mathContext": "F(n) using Finset.sup' and alternative FSet definition"
+      "mathContext": "Formal definition: F(n) using Finset.sup' and alternative FSet definition"
     },
     {
       "id": "bounds",
@@ -127,7 +127,7 @@
       "summary": "Upper bound F(n) ≤ n + √n",
       "startLine": 95,
       "endLine": 100,
-      "mathContext": "Upper bound F(n) ≤ n + √n"
+      "mathContext": "Upper bound F(n) $\\leq$ n + √n"
     },
     {
       "id": "main-conjectures",
@@ -135,7 +135,7 @@
       "summary": "Question 1 (F(n) > n) and Question 2 (F(n) - n → ∞)",
       "startLine": 101,
       "endLine": 121,
-      "mathContext": "Question 1 (F(n) > n) and Question 2 (F(n) - n → ∞)"
+      "mathContext": "Question 1 (F(n) > n) and Question 2 (F(n) - n $\\to$ ∞)"
     },
     {
       "id": "connection-430",
@@ -143,7 +143,7 @@
       "summary": "Equivalence with Problem #430, q2_implies_q1",
       "startLine": 122,
       "endLine": 132,
-      "mathContext": "Equivalence with Problem #430, q2_implies_q1"
+      "mathContext": "Mathematical content: Equivalence with Problem #430, q2_implies_q1"
     },
     {
       "id": "lower-bound",
@@ -151,7 +151,7 @@
       "summary": "F(n) ≥ n + (1 - ε)√n conjecture using real analysis",
       "startLine": 133,
       "endLine": 144,
-      "mathContext": "F(n) ≥ n + (1 - ε)√n conjecture using real analysis"
+      "mathContext": "F(n) $\\geq$ n + (1 - ε)√n conjecture using real analysis"
     },
     {
       "id": "examples",
@@ -159,7 +159,7 @@
       "summary": "Verified composites: 4, 6, 9",
       "startLine": 145,
       "endLine": 155,
-      "mathContext": "Verified composites: 4, 6, 9"
+      "mathContext": "Mathematical content: Verified composites: 4, 6, 9"
     },
     {
       "id": "difficulty",
@@ -167,7 +167,7 @@
       "summary": "Connections to prime distribution, sieve theory, Siegel zeros",
       "startLine": 156,
       "endLine": 175,
-      "mathContext": "Connections to prime distribution, sieve theory, Siegel zeros"
+      "mathContext": "Mathematical content: Connections to prime distribution, sieve theory, Siegel zeros"
     }
   ],
   "conclusion": {

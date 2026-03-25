@@ -80,7 +80,7 @@
       "startLine": 36,
       "endLine": 55,
       "summary": "Defines the base set $\\{1,\\ldots,n\\}$, the vertex type `kSubsets` as $\\binom{n}{k}$ subsets, and the Johnson graph $J(n,k)$ with adjacency $|S \\cap T| = k - 1$ (differing by exactly one element).",
-      "mathContext": "Defines the base set $\\{1,\\ldots,n\\}$, the vertex type `kSubsets` as $\\binom{n}{k}$ subsets, and the Johnson graph $J(n,k)$ with adjacency $|S \\cap T| = k - 1$ (differing by exactly one element)."
+      "mathContext": "Formal definition: Defines the base set $\\{1,\\ldots,n\\}$, the vertex type `kSubsets` as $\\binom{n}{k}$ subsets, and the Johnson graph $J(n,k)$ with adjacency $|S \\cap T| = k - 1$ (differing by exactly one element)."
     },
     {
       "id": "coloring",
@@ -88,7 +88,7 @@
       "startLine": 56,
       "endLine": 67,
       "summary": "Defines `ProperColoring` as $\\text{Coloring}(J(n,k), \\text{Fin}\\,c)$ from Mathlib, and `chromaticNumber` as $\\chi(J(n,k)) = \\min\\{c : \\exists \\text{proper } c\\text{-coloring}\\}$ via `Nat.find`.",
-      "mathContext": "Defines `ProperColoring` as $\\text{Coloring}(J(n,k), \\text{Fin}\\,c)$ from Mathlib, and `chromaticNumber` as $\\chi(J(n,k)) = \\min\\{c : \\exists \\text{proper } c\\text{-coloring}\\}$ via `Nat.find`."
+      "mathContext": "Formal definition: Defines `ProperColoring` as $\\text{Coloring}(J(n,k), \\text{Fin}\\,c)$ from Mathlib, and `chromaticNumber` as $\\chi(J(n,k)) = \\min\\{c : \\exists \\text{proper } c\\text{-coloring}\\}$ via `Nat.find`."
     },
     {
       "id": "erdos-rosenfeld",
@@ -96,7 +96,7 @@
       "startLine": 68,
       "endLine": 81,
       "summary": "Defines `hasErdosRosenfeldProperty`: a $(k+1)$-coloring where $\\forall A \\subseteq \\{1,\\ldots,2k\\}$ with $|A| = k+1$, every color $c \\in \\text{Fin}(k+1)$ appears among the $k$-subsets of $A$.",
-      "mathContext": "Defines `hasErdosRosenfeldProperty`: a $(k+1)$-coloring where $\\forall A \\subseteq \\{1,\\ldots,2k\\}$ with $|A| = k+1$, every color $c \\in \\text{Fin}(k+1)$ appears among the $k$-subsets of $A$."
+      "mathContext": "Formal definition: Defines `hasErdosRosenfeldProperty`: a $(k+1)$-coloring where $\\forall A \\subseteq \\{1,\\ldots,2k\\}$ with $|A| = k+1$, every color $c \\in \\text{Fin}(k+1)$ appears among the $k$-subsets of $A$."
     },
     {
       "id": "equivalence",
@@ -104,7 +104,7 @@
       "startLine": 82,
       "endLine": 94,
       "summary": "Axiomatizes the key equivalence: $\\text{ErdosRosenfeldQuestion}(k) \\iff \\chi(J(2k,k)) = k + 1$. This transforms the combinatorial rainbow condition into a pure graph coloring question.",
-      "mathContext": "Axiomatizes the key equivalence: $\\text{ErdosRosenfeldQuestion}(k) \\iff \\chi(J(2k,k)) = k + 1$. This transforms the combinatorial rainbow condition into a pure graph coloring question."
+      "mathContext": "Axiomatized: Axiomatizes the key equivalence: $\\text{ErdosRosenfeldQuestion}(k) \\iff \\chi(J(2k,k)) = k + 1$. This transforms the combinatorial rainbow condition into a pure graph coloring question."
     },
     {
       "id": "known-results",
@@ -120,7 +120,7 @@
       "startLine": 125,
       "endLine": 146,
       "summary": "Axiomatizes $k + 1 \\leq \\chi(J(2k,k)) \\leq 2k$ and the table of known chromatic numbers. Only $k = 2$ achieves the lower bound.",
-      "mathContext": "Axiomatizes $k + 1 \\leq \\chi(J(2k,k)) \\leq 2k$ and the table of known chromatic numbers. Only $k = 2$ achieves the lower bound."
+      "mathContext": "Axiomatized: Axiomatizes $k + 1 \\leq \\chi(J(2k,k)) \\leq 2k$ and the table of known chromatic numbers. Only $k = 2$ achieves the lower bound."
     },
     {
       "id": "main-theorem",
@@ -128,7 +128,7 @@
       "startLine": 147,
       "endLine": 196,
       "summary": "The main theorem `erdos_835` proves $\\forall k,\\, 3 \\leq k \\leq 8 \\Rightarrow \\neg\\text{ErdosRosenfeldQuestion}(k)$ via `interval_cases`. Also proves $k = 2$ is the unique solution in range $[2, 8]$.",
-      "mathContext": "The main theorem `erdos_835` proves $\\forall k,\\, 3 \\leq k \\leq 8 \\Rightarrow \\neg\\text{ErdosRosenfeldQuestion}(k)$ via `interval_cases`. Also proves $k = 2$ is the unique solution in range $[2, 8]$."
+      "mathContext": "Verified: The main theorem `erdos_835` proves $\\forall k,\\, 3 \\leq k \\leq 8 \\Rightarrow \\neg\\text{ErdosRosenfeldQuestion}(k)$ via `interval_cases`. Also proves $k = 2$ is the unique solution in range $[2, 8]$."
     }
   ],
   "conclusion": {

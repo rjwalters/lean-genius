@@ -55,7 +55,7 @@
       "summary": "Module documentation on Problem 1036, imports for SimpleGraph, Finset, Fintype, and real number arithmetic for counting arguments",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Module documentation on Problem 1036, imports for SimpleGraph, Finset, Fintype, and real number arithmetic for counting arguments"
+      "mathContext": "Mathematical content: Module documentation on Problem 1036, imports for SimpleGraph, Finset, Fintype, and real number arithmetic for counting arguments"
     },
     {
       "id": "graph-setup",
@@ -63,7 +63,7 @@
       "summary": "vertexCount definition: cardinality of the finite vertex set",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "vertexCount definition: cardinality of the finite vertex set"
+      "mathContext": "Formal definition: vertexCount definition: cardinality of the finite vertex set"
     },
     {
       "id": "trivial",
@@ -71,7 +71,7 @@
       "summary": "Definitions of isTrivialInduced, isIndependentSet, isClique, and the trivial_iff characterization (trivial = independent or clique)",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Definitions of isTrivialInduced, isIndependentSet, isClique, and the trivial_iff characterization (trivial = independent or clique)"
+      "mathContext": "Formal definition: Definitions of isTrivialInduced, isIndependentSet, isClique, and the trivial_iff characterization (trivial = independent or clique)"
     },
     {
       "id": "non-ramsey",
@@ -79,7 +79,7 @@
       "summary": "noLargeTrivial predicate, isNonRamsey definition (no trivial subgraph > c log n), and axiomatized existence of non-Ramsey graphs via the probabilistic method",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "noLargeTrivial predicate, isNonRamsey definition (no trivial subgraph > c log n), and axiomatized existence of non-Ramsey graphs via the probabilistic method"
+      "mathContext": "noLargeTrivial predicate, isNonRamsey definition (no trivial subgraph > c $\\log n$), and axiomatized existence of non-Ramsey graphs via the probabilistic method"
     },
     {
       "id": "induced",
@@ -87,7 +87,7 @@
       "summary": "inducedSubgraph definition (G[S] restricted to vertex subset S) and InducedPair for comparing equal-size induced subgraphs",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "inducedSubgraph definition (G[S] restricted to vertex subset S) and InducedPair for comparing equal-size induced subgraphs"
+      "mathContext": "Formal definition: inducedSubgraph definition (G[S] restricted to vertex subset S) and InducedPair for comparing equal-size induced subgraphs"
     },
     {
       "id": "isomorphism",
@@ -95,7 +95,7 @@
       "summary": "GraphIso (adjacency-preserving bijection), inducedIso, and proofs that induced isomorphism is an equivalence relation (reflexive, symmetric, transitive)",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "GraphIso (adjacency-preserving bijection), inducedIso, and proofs that induced isomorphism is an equivalence relation (reflexive, symmetric, transitive)"
+      "mathContext": "Verified: GraphIso (adjacency-preserving bijection), inducedIso, and proofs that induced isomorphism is an equivalence relation (reflexive, symmetric, transitive)"
     },
     {
       "id": "counting",
@@ -103,7 +103,7 @@
       "summary": "allInducedSubsets (power set), sameIsoClass equivalence relation, distinctInducedCount (number of isomorphism classes), hasDistinctInduced predicate",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "allInducedSubsets (power set), sameIsoClass equivalence relation, distinctInducedCount (number of isomorphism classes), hasDistinctInduced predicate"
+      "mathContext": "Mathematical content: allInducedSubsets (power set), sameIsoClass equivalence relation, distinctInducedCount (number of isomorphism classes), hasDistinctInduced predicate"
     },
     {
       "id": "conjecture",
@@ -119,7 +119,7 @@
       "summary": "alonHajnalExponent (n·(log n)^{-O(log log n)}), axiomatized Alon-Hajnal bound, and proof that it is weaker than Shelah's bound",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "alonHajnalExponent (n·(log n)^{-O(log log n)}), axiomatized Alon-Hajnal bound, and proof that it is weaker than Shelah's bound"
+      "mathContext": "alonHajnalExponent (n·($\\log n$)^{-$O(log $\\log n$)$}), axiomatized Alon-Hajnal bound, and proof that it is weaker than Shelah's bound"
     },
     {
       "id": "erdos-hajnal",
@@ -127,7 +127,7 @@
       "summary": "hasCompleteBipartite, avoidsBipartite predicates, axiomatized Erdős-Hajnal 1989 bound, and proof that non-Ramsey implies bipartite avoidance",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "hasCompleteBipartite, avoidsBipartite predicates, axiomatized Erdős-Hajnal 1989 bound, and proof that non-Ramsey implies bipartite avoidance"
+      "mathContext": "Verified: hasCompleteBipartite, avoidsBipartite predicates, axiomatized Erdős-Hajnal 1989 bound, and proof that non-Ramsey implies bipartite avoidance"
     },
     {
       "id": "shelah",
@@ -143,7 +143,7 @@
       "summary": "shelahBound and alonHajnalBound definitions with shelah_better proving Shelah's bound is exponentially stronger",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "shelahBound and alonHajnalBound definitions with shelah_better proving Shelah's bound is exponentially stronger"
+      "mathContext": "Formal definition: shelahBound and alonHajnalBound definitions with shelah_better proving Shelah's bound is exponentially stronger"
     },
     {
       "id": "counting-args",
@@ -151,7 +151,7 @@
       "summary": "distinct_upper (trivial 2^n upper bound), random_graph_distinct (random graphs near-maximize diversity), nonRamsey_random_like (non-Ramsey ≈ random in diversity)",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "distinct_upper (trivial 2^n upper bound), random_graph_distinct (random graphs near-maximize diversity), nonRamsey_random_like (non-Ramsey ≈ random in diversity)"
+      "mathContext": "distinct_upper (trivial $2^{n}$ upper bound), random_graph_distinct (random graphs near-maximize diversity), nonRamsey_random_like (non-Ramsey ≈ random in diversity)"
     },
     {
       "id": "fixed-size",
@@ -159,7 +159,7 @@
       "summary": "inducedOfSize, distinctOfSize, hasDistinctOfSize definitions, and nonRamsey_fixed_size axiom for fixed-k diversity",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "inducedOfSize, distinctOfSize, hasDistinctOfSize definitions, and nonRamsey_fixed_size axiom for fixed-k diversity"
+      "mathContext": "Formal definition: inducedOfSize, distinctOfSize, hasDistinctOfSize definitions, and nonRamsey_fixed_size axiom for fixed-k diversity"
     },
     {
       "id": "complement",
@@ -167,7 +167,7 @@
       "summary": "complement_nonRamsey (complement preserves non-Ramsey) and complement_distinct (i(G) = i(Ḡ))",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "complement_nonRamsey (complement preserves non-Ramsey) and complement_distinct (i(G) = i(Ḡ))"
+      "mathContext": "Mathematical content: complement_nonRamsey (complement preserves non-Ramsey) and complement_distinct (i(G) = i(Ḡ))"
     },
     {
       "id": "problem-1031",
@@ -175,7 +175,7 @@
       "summary": "isKUniversal definition, universal_implies_distinct theorem, and via_universality providing an alternative proof of Problem 1036 through Prömel-Rödl universality",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "isKUniversal definition, universal_implies_distinct theorem, and via_universality providing an alternative proof of Problem 1036 through Prömel-Rödl universality"
+      "mathContext": "Formal definition: isKUniversal definition, universal_implies_distinct theorem, and via_universality providing an alternative proof of Problem 1036 through Prömel-Rödl universality"
     }
   ],
   "conclusion": {

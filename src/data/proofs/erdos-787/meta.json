@@ -81,7 +81,7 @@
       "summary": "IsSumAvoidingIn, maxSumAvoidingSize, HasSumAvoidingSubset, g axiom with spec",
       "startLine": 38,
       "endLine": 62,
-      "mathContext": "IsSumAvoidingIn, maxSumAvoidingSize, HasSumAvoidingSubset, g axiom with spec"
+      "mathContext": "Axiomatized: IsSumAvoidingIn, maxSumAvoidingSize, HasSumAvoidingSubset, g axiom with spec"
     },
     {
       "id": "trivial-cases",
@@ -89,7 +89,7 @@
       "summary": "empty_is_sum_avoiding and singleton_is_sum_avoiding proved theorems",
       "startLine": 63,
       "endLine": 81,
-      "mathContext": "empty_is_sum_avoiding and singleton_is_sum_avoiding proved theorems"
+      "mathContext": "Verified: empty_is_sum_avoiding and singleton_is_sum_avoiding proved theorems"
     },
     {
       "id": "klarner-lower",
@@ -97,7 +97,7 @@
       "summary": "klarner_lower_bound: g(n) ≫ log n",
       "startLine": 82,
       "endLine": 87,
-      "mathContext": "klarner_lower_bound: g(n) ≫ log n"
+      "mathContext": "klarner_lower_bound: g(n) ≫ $\\log n$"
     },
     {
       "id": "choi-upper",
@@ -105,7 +105,7 @@
       "summary": "choi_1971_upper_bound: g(n) ≪ n^(2/5+ε)",
       "startLine": 88,
       "endLine": 94,
-      "mathContext": "choi_1971_upper_bound: g(n) ≪ n^(2/5+ε)"
+      "mathContext": "Bound: choi_1971_upper_bound: g(n) ≪ n^(2/5+ε)"
     },
     {
       "id": "ruzsa-upper",
@@ -113,7 +113,7 @@
       "summary": "ruzsa_2005_upper_bound: g(n) ≪ exp(√log n)",
       "startLine": 95,
       "endLine": 101,
-      "mathContext": "ruzsa_2005_upper_bound: g(n) ≪ exp(√log n)"
+      "mathContext": "ruzsa_2005_upper_bound: g(n) ≪ exp(√$\\log n$)"
     },
     {
       "id": "sanders-lower",
@@ -121,7 +121,7 @@
       "summary": "sanders_2021_lower_bound: (log n)^(1+c) ≪ g(n)",
       "startLine": 102,
       "endLine": 108,
-      "mathContext": "sanders_2021_lower_bound: (log n)^(1+c) ≪ g(n)"
+      "mathContext": "sanders_2021_lower_bound: ($\\log n$)^(1+c) ≪ g(n)"
     },
     {
       "id": "beker-lower",
@@ -129,7 +129,7 @@
       "summary": "bekerExponent = 1+1/68, beker_2025_lower_bound",
       "startLine": 109,
       "endLine": 118,
-      "mathContext": "bekerExponent = 1+1/68, beker_2025_lower_bound"
+      "mathContext": "Bound: bekerExponent = 1+1/68, beker_2025_lower_bound"
     },
     {
       "id": "k-configurations",
@@ -137,7 +137,7 @@
       "summary": "IsKConfiguration: the dual notion where all sums lie in A",
       "startLine": 119,
       "endLine": 125,
-      "mathContext": "IsKConfiguration: the dual notion where all sums lie in A"
+      "mathContext": "Mathematical content: IsKConfiguration: the dual notion where all sums lie in A"
     },
     {
       "id": "summary",
@@ -145,7 +145,7 @@
       "summary": "erdos_787_summary: three-part conjunction of known bounds",
       "startLine": 126,
       "endLine": 149,
-      "mathContext": "erdos_787_summary: three-part conjunction of known bounds"
+      "mathContext": "Bound: erdos_787_summary: three-part conjunction of known bounds"
     }
   ],
   "conclusion": {

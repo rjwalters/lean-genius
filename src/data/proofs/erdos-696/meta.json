@@ -79,7 +79,7 @@
       "summary": "Definitions of prime chains, divisor chains, and the functions h and H",
       "startLine": 43,
       "endLine": 86,
-      "mathContext": "Definitions of prime chains, divisor chains, and the functions h and H"
+      "mathContext": "Formal definition: Definitions of prime chains, divisor chains, and the functions h and H"
     },
     {
       "id": "basic-properties",
@@ -87,7 +87,7 @@
       "summary": "h(n) ≤ H(n), base cases h(1) and h(p)",
       "startLine": 87,
       "endLine": 115,
-      "mathContext": "h(n) ≤ H(n), base cases h(1) and h(p)"
+      "mathContext": "h(n) $\\leq$ H(n), base cases h(1) and h(p)"
     },
     {
       "id": "iterated-log",
@@ -95,7 +95,7 @@
       "summary": "Definition of log*(n) and its slow growth",
       "startLine": 116,
       "endLine": 139,
-      "mathContext": "Definition of log*(n) and its slow growth"
+      "mathContext": "Formal definition: Definition of log*(n) and its slow growth"
     },
     {
       "id": "conjectures",
@@ -103,7 +103,7 @@
       "summary": "h(n) → ∞, normal order, ratio H/h conjectures",
       "startLine": 140,
       "endLine": 166,
-      "mathContext": "h(n) → ∞, normal order, ratio H/h conjectures"
+      "mathContext": "h(n) $\\to$ ∞, normal order, ratio H/h conjectures"
     },
     {
       "id": "chains",
@@ -111,7 +111,7 @@
       "summary": "Multiplicative group connection, Sophie Germain, Cunningham chains",
       "startLine": 167,
       "endLine": 199,
-      "mathContext": "Multiplicative group connection, Sophie Germain, Cunningham chains"
+      "mathContext": "Mathematical content: Multiplicative group connection, Sophie Germain, Cunningham chains"
     },
     {
       "id": "examples",
@@ -119,7 +119,7 @@
       "summary": "h(6), h(30), h(2310) computed",
       "startLine": 200,
       "endLine": 222,
-      "mathContext": "h(6), h(30), h(2310) computed"
+      "mathContext": "Mathematical content: h(6), h(30), h(2310) computed"
     },
     {
       "id": "comparison",
@@ -127,7 +127,7 @@
       "summary": "Why H(n) can be much larger, composites give flexibility",
       "startLine": 223,
       "endLine": 250,
-      "mathContext": "Why H(n) can be much larger, composites give flexibility"
+      "mathContext": "Mathematical content: Why H(n) can be much larger, composites give flexibility"
     },
     {
       "id": "upper-bounds",
@@ -135,7 +135,7 @@
       "summary": "h(n) ≤ ω(n) and H(n) ≤ log₂(n)",
       "startLine": 251,
       "endLine": 274,
-      "mathContext": "h(n) ≤ ω(n) and H(n) ≤ log₂(n)"
+      "mathContext": "h(n) $\\leq$ ω(n) and H(n) $\\leq$ log₂(n)"
     },
     {
       "id": "van-doorn",
@@ -143,7 +143,7 @@
       "summary": "Proof that h(n) → ∞ for almost all n",
       "startLine": 275,
       "endLine": 297,
-      "mathContext": "Proof that h(n) → ∞ for almost all n"
+      "mathContext": "Proof that h(n) $\\to$ ∞ for almost all n"
     },
     {
       "id": "summary",
@@ -151,7 +151,7 @@
       "summary": "erdos_696_status and summary theorems",
       "startLine": 298,
       "endLine": 340,
-      "mathContext": "erdos_696_status and summary theorems"
+      "mathContext": "Verified: erdos_696_status and summary theorems"
     }
   ],
   "conclusion": {

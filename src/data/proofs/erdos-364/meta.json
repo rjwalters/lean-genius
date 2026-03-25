@@ -96,7 +96,7 @@
       "startLine": 1,
       "endLine": 21,
       "summary": "Header documentation with problem statement, status, and known results.",
-      "mathContext": "Header documentation with problem statement, status, and known results."
+      "mathContext": "Mathematical content: Header documentation with problem statement, status, and known results."
     },
     {
       "id": "powerful-def",
@@ -104,7 +104,7 @@
       "startLine": 29,
       "endLine": 42,
       "summary": "Defines a natural number as powerful if p | n implies p² | n for all primes p.",
-      "mathContext": "Defines a natural number as powerful if p | n implies p² | n for all primes p."
+      "mathContext": "Formal definition: Defines a natural number as powerful if p | n implies p² | n for all primes p."
     },
     {
       "id": "basic-examples",
@@ -112,7 +112,7 @@
       "startLine": 43,
       "endLine": 102,
       "summary": "Proves 1, 4, 8, 9 are powerful using interval_cases and decidability.",
-      "mathContext": "Proves 1, 4, 8, 9 are powerful using interval_cases and decidability."
+      "mathContext": "Verified: Proves 1, 4, 8, 9 are powerful using interval_cases and decidability."
     },
     {
       "id": "pairs",
@@ -120,7 +120,7 @@
       "startLine": 103,
       "endLine": 122,
       "summary": "Shows (8,9) is a powerful pair and states infinitely many pairs exist via Pell equation.",
-      "mathContext": "Shows (8,9) is a powerful pair and states infinitely many pairs exist via Pell equation."
+      "mathContext": "Mathematical content: Shows (8,9) is a powerful pair and states infinitely many pairs exist via Pell equation."
     },
     {
       "id": "quadruple",
@@ -128,7 +128,7 @@
       "startLine": 123,
       "endLine": 151,
       "summary": "Proves no four consecutive powerful numbers exist using the mod 4 argument.",
-      "mathContext": "Proves no four consecutive powerful numbers exist using the mod 4 argument."
+      "mathContext": "Verified: Proves no four consecutive powerful numbers exist using the mod 4 argument."
     },
     {
       "id": "triple-conjecture",
@@ -136,7 +136,7 @@
       "startLine": 152,
       "endLine": 171,
       "summary": "States the open conjecture that no three consecutive powerful numbers exist.",
-      "mathContext": "States the open conjecture that no three consecutive powerful numbers exist."
+      "mathContext": "Mathematical content: States the open conjecture that no three consecutive powerful numbers exist."
     },
     {
       "id": "stronger-gap",
@@ -144,7 +144,7 @@
       "startLine": 172,
       "endLine": 189,
       "summary": "States Erdős's stronger conjecture about polynomial growth of gaps.",
-      "mathContext": "States Erdős's stronger conjecture about polynomial growth of gaps."
+      "mathContext": "Mathematical content: States Erdős's stronger conjecture about polynomial growth of gaps."
     },
     {
       "id": "partial",
@@ -152,7 +152,7 @@
       "startLine": 190,
       "endLine": 205,
       "summary": "States Chan's 2025 result ruling out triples with a cube in the middle.",
-      "mathContext": "States Chan's 2025 result ruling out triples with a cube in the middle."
+      "mathContext": "Mathematical content: States Chan's 2025 result ruling out triples with a cube in the middle."
     }
   ],
   "conclusion": {

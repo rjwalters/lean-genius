@@ -88,7 +88,7 @@
       "startLine": 1,
       "endLine": 4,
       "summary": "Imports three Mathlib modules: `Deriv.Basic` for derivative definitions, `MeanValue` for the core MVT lemmas, and `Deriv.Slope` for slope-related formulations.",
-      "mathContext": "Imports three Mathlib modules: `Deriv.Basic` for derivative definitions, `MeanValue` for the core MVT lemmas, and `Deriv.Slope` for slope-related formulations."
+      "mathContext": "Formal definition: Imports three Mathlib modules: `Deriv.Basic` for derivative definitions, `MeanValue` for the core MVT lemmas, and `Deriv.Slope` for slope-related formulations."
     },
     {
       "id": "module-docstring",
@@ -104,7 +104,7 @@
       "startLine": 50,
       "endLine": 53,
       "summary": "Opens `Set`, `Filter`, `Topology` namespaces and declares `MeanValueTheorem` namespace for all theorems.",
-      "mathContext": "Opens `Set`, `Filter`, `Topology` namespaces and declares `MeanValueTheorem` namespace for all theorems."
+      "mathContext": "Verified: Opens `Set`, `Filter`, `Topology` namespaces and declares `MeanValueTheorem` namespace for all theorems."
     },
     {
       "id": "lagrange-mvt",
@@ -152,7 +152,7 @@
       "startLine": 157,
       "endLine": 163,
       "summary": "Closes the `MeanValueTheorem` namespace and runs `#check` on all four theorems (`mvt`, `mvt_hasDerivAt`, `cauchy_mvt`, `constant_of_deriv_zero`) to verify they type-check correctly.",
-      "mathContext": "Closes the `MeanValueTheorem` namespace and runs `#check` on all four theorems (`mvt`, `mvt_hasDerivAt`, `cauchy_mvt`, `constant_of_deriv_zero`) to verify they type-check correctly."
+      "mathContext": "Verified: Closes the `MeanValueTheorem` namespace and runs `#check` on all four theorems (`mvt`, `mvt_hasDerivAt`, `cauchy_mvt`, `constant_of_deriv_zero`) to verify they type-check correctly."
     }
   ],
   "conclusion": {

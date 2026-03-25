@@ -113,7 +113,7 @@
       "summary": "Defines Point (as EuclideanSpace ℝ (Fin 2)), Circle (center + positive radius), Circle.disk (closed ball), and circleArea (πr²). These are the geometric primitives for the discrepancy problem.",
       "startLine": 44,
       "endLine": 61,
-      "mathContext": "Defines Point (as EuclideanSpace ℝ (Fin 2)), Circle (center + positive radius), Circle.disk (closed ball), and circleArea (πr²). These are the geometric primitives for the discrepancy problem."
+      "mathContext": "Defines Point (as EuclideanSpace $\\mathbb{R}$ (Fin 2)), Circle (center + positive radius), Circle.disk (closed ball), and circleArea (πr²). These are the geometric primitives for the discrepancy problem."
     },
     {
       "id": "discrepancy-definitions",
@@ -137,7 +137,7 @@
       "summary": "States beck_upper_bound as an axiom (∃ A, f(r) ≤ C√(r log r) eventually) and extracts beckOptimalSequence via Classical.choose — a non-constructive witness from the probabilistic existence proof.",
       "startLine": 130,
       "endLine": 150,
-      "mathContext": "States beck_upper_bound as an axiom (∃ A, f(r) ≤ C√(r log r) eventually) and extracts beckOptimalSequence via Classical.choose — a non-constructive witness from the probabilistic existence proof."
+      "mathContext": "States beck_upper_bound as an axiom (∃ A, f(r) $\\leq$ C√(r log r) eventually) and extracts beckOptimalSequence via Classical.choose — a non-constructive witness from the probabilistic existence proof."
     },
     {
       "id": "complete-answer",

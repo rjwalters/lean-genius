@@ -90,7 +90,7 @@
       "summary": "Axiomatizes g₃(N) = 2 (Choi–Erdős–Szemerédi). The lower bound g₃ ≥ 2 from odd numbers has a sorry requiring the parity-pigeonhole argument that two of three integers share parity.",
       "startLine": 67,
       "endLine": 82,
-      "mathContext": "Axiomatizes g₃(N) = 2 (Choi–Erdős–Szemerédi). The lower bound g₃ ≥ 2 from odd numbers has a sorry requiring the parity-pigeonhole argument that two of three integers share parity."
+      "mathContext": "Axiomatizes g₃(N) = 2 (Choi–Erdős–Szemerédi). The lower bound g₃ $\\geq$ 2 from odd numbers has a sorry requiring the parity-pigeonhole argument that two of three integers share parity."
     },
     {
       "id": "case-k4",
@@ -98,7 +98,7 @@
       "summary": "Two axioms: g₄(N) ≤ C for an absolute constant (Choi–Erdős–Szemerédi), and the explicit g₄(N) ≤ 2032 (van Doorn). The surprising boundedness of g₄ contrasts sharply with the unbounded g₅.",
       "startLine": 83,
       "endLine": 96,
-      "mathContext": "Two axioms: g₄(N) ≤ C for an absolute constant (Choi–Erdős–Szemerédi), and the explicit g₄(N) ≤ 2032 (van Doorn). The surprising boundedness of g₄ contrasts sharply with the unbounded g₅."
+      "mathContext": "Two axioms: g₄(N) $\\leq$ C for an absolute constant (Choi–Erdős–Szemerédi), and the explicit g₄(N) $\\leq$ 2032 (van Doorn). The surprising boundedness of g₄ contrasts sharply with the unbounded g₅."
     },
     {
       "id": "case-k5",
@@ -114,7 +114,7 @@
       "summary": "Axiomatizes g₆(N) ≍ √N, the first case with polynomial growth. The jump from Θ(log N) to Θ(√N) between k=5 and k=6 is one of the problem's most striking features.",
       "startLine": 117,
       "endLine": 127,
-      "mathContext": "Axiomatizes g₆(N) ≍ √N, the first case with polynomial growth. The jump from Θ(log N) to Θ(√N) between k=5 and k=6 is one of the problem's most striking features."
+      "mathContext": "Axiomatized: Axiomatizes g₆(N) ≍ √N, the first case with polynomial growth. The jump from Θ(log N) to Θ(√N) between k=5 and k=6 is one of the problem's most striking features."
     },
     {
       "id": "general-upper",
@@ -122,7 +122,7 @@
       "summary": "Axiomatizes g_k(N) ≪ N^{1-2^{-k}} for k ≥ 3. Defines upperExponent(k) = 1-2^{-k} and proves (with sorry) that it's strictly increasing. The exponent approaches 1 as k → ∞.",
       "startLine": 128,
       "endLine": 151,
-      "mathContext": "Axiomatizes g_k(N) ≪ N^{1-2^{-k}} for k ≥ 3. Defines upperExponent(k) = 1-2^{-k} and proves (with sorry) that it's strictly increasing. The exponent approaches 1 as k → ∞."
+      "mathContext": "Axiomatizes g_k(N) ≪ N^{1-$$2^{{-k}$}$} for k $\\geq$ 3. Defines upperExponent(k) = 1-$$2^{{-k}$}$ and proves (with sorry) that it's strictly increasing. The exponent approaches 1 as k $\\to$ ∞."
     },
     {
       "id": "general-lower",
@@ -130,7 +130,7 @@
       "summary": "Axiomatizes the lower bound g_k(N) > N^{1-ε} for large k. The theorem threshold_approaches_N (fully proved) shows g_k(N) > N^c for any c < 1 and large enough k, using linarith and obtain.",
       "startLine": 152,
       "endLine": 173,
-      "mathContext": "Axiomatizes the lower bound g_k(N) > N^{1-ε} for large k. The theorem threshold_approaches_N (fully proved) shows g_k(N) > N^c for any c < 1 and large enough k, using linarith and obtain."
+      "mathContext": "Verified: Axiomatizes the lower bound g_k(N) > N^{1-ε} for large k. The theorem threshold_approaches_N (fully proved) shows g_k(N) > N^c for any c < 1 and large enough k, using linarith and obtain."
     },
     {
       "id": "odd-construction",
@@ -138,7 +138,7 @@
       "summary": "Defines oddNumbers(N) as odd integers in [2N]. Proves (with sorries) that |oddNumbers(N)| = N and that no triple of integers has all pairwise sums odd. Derives g₃(N) ≥ 1 as a corollary.",
       "startLine": 174,
       "endLine": 196,
-      "mathContext": "Defines oddNumbers(N) as odd integers in [2N]. Proves (with sorries) that |oddNumbers(N)| = N and that no triple of integers has all pairwise sums odd. Derives g₃(N) ≥ 1 as a corollary."
+      "mathContext": "Defines oddNumbers(N) as odd integers in [2N]. Proves (with sorries) that |oddNumbers(N)| = N and that no triple of integers has all pairwise sums odd. Derives g₃(N) $\\geq$ 1 as a corollary."
     },
     {
       "id": "summary-table",
@@ -146,7 +146,7 @@
       "summary": "Four summary theorems (summary_g3 through summary_g6) directly reference the case axioms, providing a clean interface to the known results. Includes a markdown table in comments.",
       "startLine": 197,
       "endLine": 216,
-      "mathContext": "Four summary theorems (summary_g3 through summary_g6) directly reference the case axioms, providing a clean interface to the known results. Includes a markdown table in comments."
+      "mathContext": "Verified: Four summary theorems (summary_g3 through summary_g6) directly reference the case axioms, providing a clean interface to the known results. Includes a markdown table in comments."
     },
     {
       "id": "open-problems",
@@ -154,7 +154,7 @@
       "summary": "Four open problems formalized as Lean propositions: (1) g₄ exact value, (2) g₅ optimal constants, (3) large k exponent gap, (4) extremal set structure. Each captures a genuine research direction.",
       "startLine": 217,
       "endLine": 249,
-      "mathContext": "Four open problems formalized as Lean propositions: (1) g₄ exact value, (2) g₅ optimal constants, (3) large k exponent gap, (4) extremal set structure. Each captures a genuine research direction."
+      "mathContext": "Formal definition: Four open problems formalized as Lean propositions: (1) g₄ exact value, (2) g₅ optimal constants, (3) large k exponent gap, (4) extremal set structure. Each captures a genuine research direction."
     },
     {
       "id": "summary",
@@ -162,7 +162,7 @@
       "summary": "The main summary theorem packages g₃(N) = 2 and g₄ bounded into a conjunction, proved by pairing the two axioms. A detailed docstring summarizes all known results, status, and significance.",
       "startLine": 250,
       "endLine": 274,
-      "mathContext": "The main summary theorem packages g₃(N) = 2 and g₄ bounded into a conjunction, proved by pairing the two axioms. A detailed docstring summarizes all known results, status, and significance."
+      "mathContext": "Verified: The main summary theorem packages g₃(N) = 2 and g₄ bounded into a conjunction, proved by pairing the two axioms. A detailed docstring summarizes all known results, status, and significance."
     }
   ],
   "conclusion": {
