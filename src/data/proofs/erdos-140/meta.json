@@ -187,5 +187,31 @@
     "axiomCount": 9,
     "theoremCount": 6,
     "definitionCount": 11
-  }
+  },
+  "references": [
+    {
+      "key": "Ro53",
+      "authors": [
+        "K.F. Roth"
+      ],
+      "title": "On certain sets of integers",
+      "venue": "Journal of the London Mathematical Society",
+      "year": "1953",
+      "volume": "s1-28",
+      "pages": "104-109",
+      "note": "Roth's theorem: sets of positive upper density contain 3-term arithmetic progressions"
+    },
+    {
+      "key": "KM23",
+      "authors": [
+        "Z. Kelley",
+        "R. Meka"
+      ],
+      "title": "Strong bounds for 3-progressions",
+      "venue": "Proceedings of the 55th STOC",
+      "year": "2023",
+      "pages": "933-941",
+      "note": "Breakthrough: 3-AP-free subsets of [N] have size at most N/exp(Ω(log^{1/11} N)), nearly matching Behrend"
+    }
+  ]
 }

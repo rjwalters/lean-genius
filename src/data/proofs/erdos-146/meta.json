@@ -185,5 +185,32 @@
       "relationship": "related",
       "description": "Related Erdős problem sharing themes: bipartite-graphs, extremal-graph-theory"
     }
+  ],
+  "references": [
+    {
+      "key": "Tu41",
+      "authors": [
+        "P. Turán"
+      ],
+      "title": "Eine Extremalaufgabe aus der Graphentheorie",
+      "venue": "Matematikai és Fizikai Lapok",
+      "year": "1941",
+      "volume": "48",
+      "pages": "436-452",
+      "note": "Original Turán theorem establishing ex(n, K_r) = (1-1/(r-1))n²/2"
+    },
+    {
+      "key": "FS13b",
+      "authors": [
+        "J. Fox",
+        "B. Sudakov"
+      ],
+      "title": "Dependent random choice",
+      "venue": "Random Structures & Algorithms",
+      "year": "2011",
+      "volume": "38",
+      "pages": "68-99",
+      "note": "Modern technique for Turán-type problems on bipartite and degenerate graphs"
+    }
   ]
 }
