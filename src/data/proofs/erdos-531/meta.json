@@ -64,11 +64,11 @@
     "text": "Estimate F(k), the minimal N such that any 2-coloring of {1,...,N} has a k-element set with monochromatic subset sums. Lower bound: F(k) ≥ 2^{2^{k-1}/k}.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - Coloring: ℕ → Bool\n   - SubsetSums: all non-empty subset sums of a finite set\n   - MonochromaticSubsetSums: all sums have same color\n   - F(k): minimum N using sInf\n\n2. **Main Theorems as Axioms:**\n   - folkman_theorem: F(k) exists (finite for all k ≥ 1)\n   - erdos_spencer_1989: F(k) ≥ 2^{ck²/log k}\n   - balogh_2017: F(k) ≥ 2^{2^{k-1}/k}\n\n3. **Small Cases:** F(1) = 1, F(2) = 3, F(3) ≥ 11\n\n4. **Connections:** Link to Rado's theorem on partition regularity",
     "keyInsights": [
-      "**Folkman's Theorem:** Any 2-coloring of sufficiently large {1,...,N} contains a k-set with monochromatic subset sums",
-      "**Doubly Exponential:** F(k) ≥ 2^{2^{k-1}/k} shows very fast growth",
-      "**Ramsey Connection:** Related to Schur numbers (x+y=z) and Rado's theorem",
-      "**Subset Sum Structure:** 2^k - 1 non-empty subsets create complex coloring constraints",
-      "**Gap Problem:** Huge gap between known lower and upper bounds"
+      "A $k$-element set $A$ has $2^k - 1$ non-empty subsets, each producing a sum. Monochromaticity requires ALL these sums to get the same color — an exponentially growing constraint that explains why $F(k)$ grows so fast",
+      "The lower bound $F(k) \\geq 2^{2^{k-1}/k}$ is doubly exponential: even the exponent $2^{k-1}/k$ grows exponentially in $k$. This means $F(5) \\geq 2^{16/5} \\approx 10$, but $F(20) \\geq 2^{2^{19}/20} \\approx 2^{26000}$ — enormous growth",
+      "Folkman's theorem follows from Rado's theorem on partition regularity: the subset sum equations form a system $\\sum_{i \\in S} x_i = y_S$ whose coefficient matrix satisfies Rado's columns condition. This algebraic viewpoint connects combinatorial coloring to linear algebra over $\\mathbb{Z}$",
+      "The Erdős-Spencer (1989) lower bound $2^{ck^2/\\log k}$ was merely singly exponential in $k$; the Balogh et al. (2017) improvement to $2^{2^{k-1}/k}$ represented a qualitative leap to doubly exponential, matching the expected behavior more closely",
+      "The $F(2) = 3$ case is essentially Schur's theorem: any 2-coloring of $\\{1,2,3\\}$ has $a, b$ with $a + b$ monochromatic. Folkman's theorem generalizes Schur from linear equations ($x + y = z$) to arbitrary subset sum equations"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -80,74 +80,74 @@
     {
       "id": "header-overview",
       "title": "Problem Overview",
-      "summary": "Header documentation with problem statement and status",
+      "summary": "Header documentation with Folkman's theorem statement, known bounds, and problem status.",
       "startLine": 1,
       "endLine": 13,
-      "mathContext": "Mathematical content: Header documentation with problem statement and status"
+      "mathContext": "$F(k)$ = min $N$ such that any 2-coloring of $\\{1,\\ldots,N\\}$ contains a $k$-element set $A$ with all $2^k - 1$ non-empty subset sums monochromatic. Best known: $F(k) \\geq 2^{2^{k-1}/k}$."
     },
     {
       "id": "imports-namespace",
       "title": "Imports and Setup",
-      "summary": "Mathlib imports for finsets, powersets, and combinatorics",
+      "summary": "Imports `Finset.Powerset` (for enumerating subsets), `BigOperators` (for summing over sets), `BoundedOrder` (for $\\inf$ definition of $F(k)$), and `SalemSpencer` (sum-free set infrastructure).",
       "startLine": 14,
       "endLine": 22,
-      "mathContext": "Mathematical content: Mathlib imports for finsets, powersets, and combinatorics"
+      "mathContext": "Key Mathlib dependencies: `Finset.powerset` gives $\\mathcal{P}(A)$ for finite $A$, `Finset.sum` computes $\\sum_{a \\in S} a$, and `sInf` defines $F(k) = \\inf\\{N : \\text{any 2-coloring of } [N] \\text{ has a monochromatic } k\\text{-set}\\}$."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "summary": "Coloring, SubsetSums, MonochromaticSubsetSums, F(k)",
+      "summary": "Defines `Coloring` ($\\chi : \\mathbb{N} \\to \\text{Bool}$), `SubsetSums A` ($\\{\\sum_{a \\in S} a : \\emptyset \\neq S \\subseteq A\\}$), `MonochromaticSubsetSums` (all subset sums get the same color), `ExistsMonochromaticSet`, and $F(k)$ via `sInf`.",
       "startLine": 23,
       "endLine": 63,
-      "mathContext": "Mathematical content: Coloring, SubsetSums, MonochromaticSubsetSums, F(k)"
+      "mathContext": "For $A = \\{a_1, \\ldots, a_k\\}$, the subset sums are $\\{\\sum_{i \\in S} a_i : \\emptyset \\neq S \\subseteq [k]\\}$, giving $2^k - 1$ sums. Monochromaticity: $\\exists c,\\, \\forall \\emptyset \\neq S \\subseteq A,\\, \\chi(\\sum S) = c$. $F(k) = \\inf\\{N : \\forall \\chi,\\, \\exists |A| = k$ with monochromatic sums$\\}$."
     },
     {
       "id": "folkman-theorem",
       "title": "Folkman's Theorem",
-      "summary": "Existence axiom and well-definedness of F(k)",
+      "summary": "Axiomatizes `folkman_theorem`: $F(k)$ is finite for all $k \\geq 1$. Also axiomatizes `folkman_well_defined`: any coloring of $\\{1,\\ldots,F(k)\\}$ contains a monochromatic $k$-set.",
       "startLine": 64,
       "endLine": 79,
-      "mathContext": "Axiomatized: Existence axiom and well-definedness of F(k)"
+      "mathContext": "Folkman's theorem (1960s): $\\forall k \\geq 1,\\, F(k) < \\infty$. Equivalently: the system of equations $\\{\\sum_{i \\in S} x_i = y_S : \\emptyset \\neq S \\subseteq [k]\\}$ is partition regular. This follows from Rado's theorem since the coefficient matrix has columns summing to a column of the identity."
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
-      "summary": "Erdős-Spencer 1989 and Balogh et al. 2017 bounds",
+      "summary": "Axiomatizes two lower bounds: `erdos_spencer_1989` ($F(k) \\geq 2^{ck^2/\\log k}$) and `balogh_2017` ($F(k) \\geq 2^{2^{k-1}/k}$, the current best).",
       "startLine": 80,
       "endLine": 97,
-      "mathContext": "Bound: Erdős-Spencer 1989 and Balogh et al. 2017 bounds"
+      "mathContext": "Erdős-Spencer (1989): $F(k) \\geq 2^{ck^2/\\log k}$ for some $c > 0$. Balogh-Eberhard-Narayanan-Treglown-Wagner (2017): $F(k) \\geq 2^{2^{k-1}/k}$, showing doubly-exponential growth. For large $k$, $2^{k-1}/k \\gg k^2/\\log k$, so the 2017 bound is strictly stronger."
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
-      "summary": "F(1), F(2), F(3) values and bounds",
+      "summary": "Proves or axiomatizes $F(1) = 1$ (trivial), $F(2) = 3$ (any coloring of $\\{1,2,3\\}$ has $a, b$ with $a+b$ monochromatic — this is Schur's theorem for $k=2$), and $F(3) \\geq 11$.",
       "startLine": 98,
       "endLine": 114,
-      "mathContext": "Bound: F(1), F(2), F(3) values and bounds"
+      "mathContext": "$F(1) = 1$: any single element has its (unique) subset sum trivially monochromatic. $F(2) = 3$: in any 2-coloring of $\\{1,2,3\\}$, either $1+2=3$ is mono or we find a suitable pair. $F(3) \\geq 11$: verified by exhaustive search."
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
-      "summary": "Tower-type upper bound from Folkman's proof",
+      "summary": "Documents the tower-type upper bound from Folkman's original existence proof and the Hales-Jewett/Rado approach, which gives $F(k) \\leq \\text{tower}(k)$ for an iterated exponential.",
       "startLine": 115,
       "endLine": 126,
-      "mathContext": "Verified: Tower-type upper bound from Folkman's proof"
+      "mathContext": "Upper bounds come from the Rado/Hales-Jewett proof, giving $F(k) \\leq \\text{tower}(O(k))$ (iterated exponential). The gap between lower ($2^{2^{k-1}/k}$) and upper ($\\text{tower}(O(k))$) is enormous — closing it is the core of Problem #531."
     },
     {
       "id": "rado-connection",
       "title": "Connection to Rado's Theorem",
-      "summary": "How Folkman follows from Rado's partition regularity",
+      "summary": "Axiomatizes `folkman_from_rado`: Folkman's theorem follows from Rado's theorem on partition regularity. The subset sum equations form a partition-regular system because the coefficient matrix satisfies Rado's columns condition.",
       "startLine": 127,
       "endLine": 147,
-      "mathContext": "Mathematical content: How Folkman follows from Rado's partition regularity"
+      "mathContext": "Rado's theorem (1933): a system $Ax = 0$ over $\\mathbb{Z}$ is partition regular iff $A$ satisfies the columns condition. For Folkman: the variables are $x_1, \\ldots, x_k$ and $y_S$ for each $\\emptyset \\neq S \\subseteq [k]$, with equations $\\sum_{i \\in S} x_i = y_S$. The coefficient matrix satisfies Rado's condition."
     },
     {
       "id": "main-results",
       "title": "Main Results",
-      "summary": "Summary theorem and erdos_531 main result",
+      "summary": "Combines all results into `erdos_531`: Folkman's theorem holds, $F(k) \\geq 2^{2^{k-1}/k}$, and exact values for $k \\leq 2$. Asserts the exact growth rate remains open.",
       "startLine": 148,
       "endLine": 187,
-      "mathContext": "Verified: Summary theorem and erdos_531 main result"
+      "mathContext": "Summary: $F(k) < \\infty$ (Folkman), $F(k) \\geq 2^{2^{k-1}/k}$ (Balogh et al.), $F(1) = 1$, $F(2) = 3$. The exact growth rate of $F(k)$ — somewhere between doubly exponential and tower-type — remains open."
     }
   ],
   "conclusion": {
@@ -181,17 +181,17 @@
     {
       "targetId": "erdos-532",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: colorings, combinatorics, ramsey-theory"
+      "description": "Erdős #532 concerns a related Ramsey-theoretic coloring problem — both explore how monochromatic structures emerge in large colored sets"
     },
     {
       "targetId": "erdos-781",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: colorings, combinatorics, ramsey-theory"
+      "description": "Erdős #781 studies Ramsey-type coloring bounds — part of the broader family of problems asking how large a set must be to guarantee monochromatic substructures"
     },
     {
       "targetId": "erdos-843",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorics, ramsey-theory, subset-sums"
+      "description": "Erdős #843 concerns subset sums in combinatorial settings — directly related to the subset sum monochromaticity condition that defines $F(k)$"
     }
   ]
 }
