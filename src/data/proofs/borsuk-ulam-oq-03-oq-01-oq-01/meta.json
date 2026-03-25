@@ -198,6 +198,31 @@
       "targetId": "borsuk-ulam-oq-03-oq-01",
       "relationship": "extends",
       "description": "Parent formalization; this entry extends it with further exploration"
+    },
+    {
+      "targetId": "borsuk-ulam-oq-03",
+      "relationship": "related",
+      "description": "Grandparent entry on constructive Borsuk-Ulam equivalences; Tucker's lemma is one of the key combinatorial equivalents formalized there"
+    },
+    {
+      "targetId": "borsuk-ulam-oq-03-oq-03",
+      "relationship": "related",
+      "description": "Sibling entry formalizing the constructive 2D Borsuk-Ulam via Tucker's lemma from a different angle, using linear algebra (rank-nullity) rather than graph-theoretic path-following"
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "related",
+      "description": "Root Borsuk-Ulam theorem formalization; Tucker's lemma is the discrete combinatorial analogue, and the two results are equivalent"
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "Brouwer fixed point theorem is equivalent to the Borsuk-Ulam theorem; Tucker's lemma plays the same role for Brouwer as Sperner's lemma, via path-following algorithms on triangulations"
+    },
+    {
+      "targetId": "brouwer-fixed-point-oq-02",
+      "relationship": "related",
+      "description": "PPAD complexity of approximate fixed points connects to Tucker's path-following algorithm; both use constructive path-tracing through simplicial complexes"
     }
   ]
 }

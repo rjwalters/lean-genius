@@ -137,6 +137,26 @@
       "targetId": "erdos-1011",
       "relationship": "related",
       "description": "Problem #1011 on chromatic numbers is directly related: both study how graph structure constrains the chromatic number"
+    },
+    {
+      "targetId": "erdos-57",
+      "relationship": "related",
+      "description": "Companion problem on odd cycles in infinite-chromatic graphs: if chi(G) = infinity then the reciprocal sum of odd cycle lengths diverges (Liu-Montgomery 2020). Problem #58 is the finite analogue bounding chi by the count of distinct odd cycle lengths"
+    },
+    {
+      "targetId": "erdos-921",
+      "relationship": "related",
+      "description": "Studies the odd cycle girth in k-chromatic graphs: the largest m such that all odd cycles have length > m. Complements Problem #58 by asking how long odd cycles must be rather than how many distinct lengths exist"
+    },
+    {
+      "targetId": "erdos-740",
+      "relationship": "related",
+      "description": "Asks whether graphs with infinite chromatic number must contain high-chromatic subgraphs avoiding short odd cycles. Extends the theme of Problem #58 to the infinite setting: controlling chromatic number by restricting odd cycle structure"
+    },
+    {
+      "targetId": "erdos-594",
+      "relationship": "related",
+      "description": "Graphs with chromatic number at least aleph_1 contain all sufficiently large odd cycles (Erdos-Hajnal-Shelah 1974). This is the uncountable counterpart to Problem #58, where high chromatic number forces many odd cycle lengths rather than bounding them"
     }
   ],
   "references": [

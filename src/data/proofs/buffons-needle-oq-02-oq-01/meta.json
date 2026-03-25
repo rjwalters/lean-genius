@@ -77,7 +77,10 @@
       "Dimension comparisons reduce to bounds on π (a transcendental constant entering combinatorial geometry), connecting number theory to probability"
     ],
     "prerequisites": [
-      "Probability theory"
+      "Probability theory (linearity of expectation)",
+      "Integral geometry (Cauchy-Crofton formula, sphere averages)",
+      "Gamma function and its recurrence Γ(z+1) = zΓ(z)",
+      "Real analysis (positivity arguments, squeeze theorem for limits)"
     ]
   },
   "sections": [
@@ -165,7 +168,32 @@
     {
       "targetId": "buffons-needle-oq-02",
       "relationship": "extends",
-      "description": "Parent formalization; this entry extends it with further exploration"
+      "description": "Parent formalization of the 3D Buffon noodle formula E = L/(2d); this entry generalizes it to arbitrary dimension n with the recurrence α_{n+2} = (n/(n+1))·αₙ"
+    },
+    {
+      "targetId": "buffons-needle",
+      "relationship": "extends",
+      "description": "Original 2D Buffon's needle problem yielding P = 2ℓ/(πd) — the base case α₂ = 2/π of the n-dimensional crossing factor sequence"
+    },
+    {
+      "targetId": "buffons-needle-oq-01",
+      "relationship": "related",
+      "description": "Smooth noodle theorem (Buffon-Barbier for C¹ curves) — proves linearity of expected crossings in arc length, the same additivity principle that the n-dimensional noodle theorem generalizes"
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "foundational",
+      "description": "The area formula A = πr² and properties of π appear in the even-dimensional crossing factors α₂ = 2/π, α₄ = 4/(3π), etc."
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "Transcendence of π — the even/odd dichotomy (even-dimensional crossing factors involve π, odd-dimensional ones are rational) reflects the transcendental nature of π entering combinatorial geometry"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "The Basel problem connects to the Gamma function at half-integers via Γ(1/2) = √π; the crossing factor's closed form αₙ = Γ(n/2)/(√π·Γ((n+1)/2)) involves the same special function values"
     }
   ],
   "references": [

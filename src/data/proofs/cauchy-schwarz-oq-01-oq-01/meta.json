@@ -169,6 +169,31 @@
       "targetId": "cauchy-schwarz-oq-01",
       "relationship": "extends",
       "description": "Parent formalization; this entry extends it with further exploration"
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "extends",
+      "description": "Base Cauchy-Schwarz inequality; this entry characterizes when equality holds in complex inner product spaces"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "Bunyakovsky-Schwarz integral inequality: the L2 function space analogue of Cauchy-Schwarz, where equality holds iff f and g are proportional a.e."
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "related",
+      "description": "AM-GM inequality: another fundamental inequality with a well-known equality condition (all terms equal), analogous to the linear dependence condition here"
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "related",
+      "description": "The triangle inequality in normed spaces follows from Cauchy-Schwarz; equality in both is governed by linear dependence of vectors"
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "uses",
+      "description": "The Pythagorean theorem for orthogonal vectors is the key proof technique: the orthogonal decomposition u = c*v + (u - c*v) yields the equality criterion"
     }
   ]
 }
