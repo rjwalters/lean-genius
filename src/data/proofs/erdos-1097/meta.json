@@ -22,7 +22,7 @@
     "erdosProblemStatus": "open",
     "mathlib_version": "4.26.0",
     "axiomCount": 6,
-    "assumptions": "6 axiom declarations: katz_tao_upper (O(n^{11/6}) upper bound), erdos_spencer_lower (Ω(n log n) lower bound), erdos_ruzsa_explicit (Ω(n^{4/3}) explicit lower bound), lemm_lower (Ω(n^{1.778}) best known lower bound), alphaevolve_improvement (Ω(n^{1.822}) DeepMind AlphaEvolve result), chan_equivalence (equivalence to Bourgain sums-differences problem). All are established results from the literature.",
+    "assumptions": "6 axiom declarations: katz_tao_upper (O(n^{11/6}) upper bound), erdos_spencer_lower (Ω(n^{3/2}) probabilistic lower bound), erdos_ruzsa_explicit (Ω(n^{1+c}) explicit lower bound), lemm_lower (Ω(n^{1.778}) best known lower bound), alphaevolve_improvement (exponent > 1.77898, DeepMind AlphaEvolve result), chan_equivalence (equivalence to Bourgain sums-differences problem). All are established results from the literature.",
     "lineCount": 374,
     "relatedProblems": [
       {
@@ -36,7 +36,7 @@
     ]
   },
   "overview": {
-    "text": "A 374-line formalization of Erdős Problem #1097 on counting distinct common differences in three-term arithmetic progressions within an $n$-element integer set $A$. Defines $D(A) = \\{d : \\exists a,\\; a, a+d, a+2d \\in A\\}$ and asks whether $|D(A)| = O(n^{3/2})$. The formalization proves 14 structural lemmas without axioms — including translation invariance ($D(A+c) = D(A)$), dilation covariance ($D(\\lambda A) = \\lambda \\cdot D(A)$), negation symmetry, subset monotonicity, and exact computations for small sets — then axiomatizes 6 established bounds: Katz-Tao's $O(n^{11/6})$ upper bound (1999, incidence geometry), Erdős-Spencer's $\\Omega(n \\log n)$, Erdős-Ruzsa's explicit $\\Omega(n^{4/3})$, Lemm's $\\Omega(n^{1.778})$ (2015, best human lower bound), DeepMind AlphaEvolve's $\\Omega(n^{1.822})$ (2025), and Chan's equivalence to Bourgain's restricted sums-differences problem (linking discrete combinatorics to harmonic analysis). A summary theorem captures the current state: the critical exponent lies in $(1.778, 11/6]$, with resolution potentially impacting the Kakeya conjecture.",
+    "text": "A 374-line formalization of Erdős Problem #1097 on counting distinct common differences in three-term arithmetic progressions within an $n$-element integer set $A$. Defines $D(A) = \\{d : \\exists a,\\; a, a+d, a+2d \\in A\\}$ and asks whether $|D(A)| = O(n^{3/2})$. The formalization proves 14 structural lemmas without axioms — including translation invariance ($D(A+c) = D(A)$), dilation covariance ($D(\\lambda A) = \\lambda \\cdot D(A)$), negation symmetry, subset monotonicity, and exact computations for small sets — then axiomatizes 6 established bounds: Katz-Tao's $O(n^{11/6})$ upper bound (1999, incidence geometry), Erdős-Spencer's $\\Omega(n^{3/2})$ (probabilistic), Erdős-Ruzsa's explicit $\\Omega(n^{4/3})$, Lemm's $\\Omega(n^{1.778})$ (2015, best human lower bound), DeepMind AlphaEvolve's marginal improvement (exponent > 1.77898, 2025), and Chan's equivalence to Bourgain's restricted sums-differences problem (linking discrete combinatorics to harmonic analysis). A summary theorem captures the current state: the critical exponent lies in $(1.778, 11/6]$, with resolution potentially impacting the Kakeya conjecture.",
     "historicalContext": "Erdős posed this problem at the 1989 Great Western Number Theory problem session in Asilomar, California. He asked: given an $n$-element set of integers $A$, how many distinct common differences can three-term arithmetic progressions in $A$ have?\n\nThe Erdős-Spencer probabilistic argument (random subsets of $\\{1,\\ldots,N\\}$) showed that $\\Omega(n^{3/2})$ is achievable. Bourgain connected the problem to the Kakeya conjecture, reformulating it via restricted sums and differences. In 1999, Katz and Tao established $O(n^{11/6})$ using Szemerédi-Trotter incidence geometry. Lemm improved the lower bound past $n^{1.778}$ in 2015, and in 2025 AlphaEvolve achieved a marginal further improvement. The gap $\\Omega(n^{1.778})$ vs $O(n^{11/6}) \\approx O(n^{1.833})$ remains open, with implications for the Kakeya conjecture and additive combinatorics.",
     "problemStatement": "Let $A \\subseteq \\mathbb{Z}$ with $|A| = n$, and let $D(A) = \\{d : \\exists\\, a \\text{ s.t. } a, a+d, a+2d \\in A\\}$. Is $|D(A)| = O(n^{3/2})$?",
     "proofStrategy": "The formalization defines IsThreeAP and commonDifferences, then develops a comprehensive infrastructure of proven structural results: subset bounds, monotonicity, symmetry, translation invariance, and dilation covariance. The main conjecture and known bounds are stated as axioms. Bourgain's restricted sums-differences framework is formalized, and Chan's equivalence theorem connecting the two formulations is recorded. A summary theorem combines the bounds to capture the current state of knowledge: $1.778 < c^* \\le 11/6$.",
@@ -108,7 +108,7 @@
       "startLine": 310,
       "endLine": 337,
       "summary": "Axiomatizes four lower bounds: Erdős-Spencer (n^{3/2} probabilistic), Erdős-Ruzsa (n^{1+c} explicit), Lemm (n^{1.778}), and AlphaEvolve (slight improvement on Lemm).",
-      "mathContext": "Erdős-Spencer: $f(n) \\geq c n^{3/2}$ (probabilistic). Erdős-Ruzsa: $f(n) \\geq n^{4/3}$ (explicit). Lemm: $f(n) \\geq n^{1.778}$ (best known). AlphaEvolve: $f(n) \\geq n^{1.822}$ (marginal improvement)."
+      "mathContext": "Erdős-Spencer: $f(n) \\geq c n^{3/2}$ (probabilistic). Erdős-Ruzsa: $f(n) \\geq n^{1+c}$ (explicit). Lemm: $f(n) \\geq n^{1.778}$ (best known). AlphaEvolve: exponent $> 1.77898$ (marginal improvement)."
     },
     {
       "id": "bourgain",
@@ -209,40 +209,34 @@
   },
   "mainTheorems": [
     {
-      "name": "ap_diff_subset",
-      "type": "core",
-      "description": "Monotonicity: D(B) ⊆ D(A) for B ⊆ A — fewer elements means fewer common differences",
-      "leanType": "∀ A B : Finset ℕ, B ⊆ A → apDiffSet B ⊆ apDiffSet A"
+      "name": "commonDiffFinset_subset",
+      "type": "proved",
+      "description": "D(A) ⊆ A - A (common differences lie in the difference set)"
     },
     {
-      "name": "ap_diff_translate",
-      "type": "core",
-      "description": "Translation invariance: D(A + c) = D(A) — common differences are shift-invariant",
-      "leanType": "∀ A : Finset ℕ, ∀ c : ℕ, apDiffSet (A.map (· + c)) = apDiffSet A"
-    },
-    {
-      "name": "current_knowledge",
-      "type": "core",
-      "description": "Summary theorem: the critical exponent α lies in (1.778, 11/6], packaging the lower and upper bounds",
-      "leanType": "1.778 < α ∧ α ≤ 11/6"
+      "name": "commonDiffFinset_translate",
+      "type": "proved",
+      "description": "D(A + c) = D(A) (translation invariance)"
     },
     {
       "name": "katz_tao_upper",
       "type": "axiom",
-      "description": "|D(A)| = O(n^{11/6}) — Katz-Tao 1999 upper bound via incidence geometry",
-      "leanType": "∃ C, ∀ A : Finset ℕ, |A| = n → |apDiffSet A| ≤ C * n^(11/6)"
+      "description": "|D(A)| = O(n^{11/6}) (Katz-Tao 1999, incidence geometry)"
     },
     {
       "name": "lemm_lower",
       "type": "axiom",
-      "description": "|D(A)| = Ω(n^{1.778}) — Lemm 2015, best known lower bound surpassing probabilistic barrier",
-      "leanType": "∃ c > 0, ∀ n, ∃ A : Finset ℕ, |A| = n ∧ |apDiffSet A| ≥ c * n^1.778"
+      "description": "|D(A)| = Ω(n^{1.778}) (Lemm 2015, best human lower bound)"
     },
     {
       "name": "chan_equivalence",
       "type": "axiom",
-      "description": "The 3-AP exponent equals the Bourgain sums-differences exponent — Chan's structural equivalence",
-      "leanType": "apExponent = bourgainExponent"
+      "description": "3-AP exponent = Bourgain sums-differences exponent (Chan's equivalence)"
+    },
+    {
+      "name": "current_bounds_summary",
+      "type": "proved",
+      "description": "Summary: critical exponent lies in (1.778, 11/6]"
     }
   ],
   "references": [
