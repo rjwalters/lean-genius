@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: power_of_two_h_alpha converted from axiom to theorem (2 sorry helpers pending). 2 axioms remain (Vose 1984). sum_divisor_ratios_lower_bound removed (false bound).",
+    "progressSummary": "PROGRESS: sortedDivisors_two_pow proved (2→1 sorries). divisorRatios_two_pow blocked by Lean4 monadic cast normalization.",
     "builtItems": [
       "17 new infrastructure theorems for sorted divisor properties",
       "first_divisor_is_one theorem (was axiom)",
@@ -46,7 +46,9 @@
       "Fixed List.mem_map.mpr → simp [List.mem_map] + apply List.single_le_sum pattern",
       "power_of_two_h_alpha theorem (was axiom): h_alpha α (2^k) = k",
       "flatMap_singleton_eq_map: normalize monadic flatMap to List.map",
-      "list_bind_pure_ratCast: bridge monad do/pure to explicit map for ℚ→ℝ cast"
+      "list_bind_pure_ratCast: bridge monad do/pure to explicit map for ℚ→ℝ cast",
+      "sortedDivisors_two_pow theorem: sorted divisors of 2^k = [2^0,...,2^k] via Nat.divisors_prime_pow + sorted permutation uniqueness",
+      "list_range_pairwise_lt: List.range n is Pairwise (· < ·)"
     ],
     "insights": [
       "divisorRatios had a critical bug: computed d_i/d_{i+1} instead of d_{i+1}/d_i",
@@ -59,14 +61,15 @@
       "sum_divisor_ratios_lower_bound axiom was FALSE: claimed Σ(d_{i+1}/dᵢ) > τ(n) + log(n) but correct bound is τ(n)-1+log(n) (off by 1 because there are τ-1 ratios, not τ). Counterexample: n=2, sum=2 but τ+log(2)≈2.69. Removed the false axiom.",
       "Lean 4 v4.26.0 has List.map normalization issues: map f l normalizes to do/flatMap form, breaking List.mem_map.mpr and List.single_le_sum proofs",
       "sum_divisor_ratios_lower_bound was FALSE: fails for n=2 (2 > 2+ln2≈2.69), n=6 (5.5 > 4+ln6≈5.79)",
-      "Lean4 monad elaboration creates do/pure form when composing List.map with casts — need flatMap_singleton helper to normalize"
+      "Lean4 monad elaboration creates do/pure form when composing List.map with casts — need flatMap_singleton helper to normalize",
+      "sortedDivisors_two_pow proved via List.perm_ext_iff_of_nodup + Perm.eq_of_pairwise with explicit antisymmetry",
+      "divisorRatios_two_pow blocked by Lean4 monadic normalization: zipWith with ℕ→ℚ cast creates do/pure form that breaks type matching with structural recursion helper"
     ],
     "mathlibGaps": [
       "No direct Finset.sort getLast = max lemma"
     ],
     "nextSteps": [
-      "Fill in sortedDivisors_two_pow sorry via Perm.eq_of_pairwise + Nat.divisors_prime_pow",
-      "Fill in divisorRatios_two_pow sorry via sortedDivisors_two_pow + zipWith computation"
+      "Prove divisorRatios_two_pow by working around monadic normalization (use native_decide for small k + structural induction, or restate zipWith_div_doubles to match normalized types)"
     ]
   },
   "tags": [
