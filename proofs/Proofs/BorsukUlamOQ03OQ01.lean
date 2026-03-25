@@ -1,34 +1,35 @@
 import Mathlib
 
 /-
-# Quantitative Borsuk-Ulam: Constructive Rates and Bounds (borsuk-ulam-oq-03-oq-01)
+# Tucker's 1D Lemma via Discrete IVT, with Interval and Circle Bounds
+# (borsuk-ulam-oq-03-oq-01)
 
 ## The Open Question
 
-**OQ-01** (of OQ-03): What are the quantitative aspects of the constructive
-1D Borsuk-Ulam theorem? Specifically:
-- How fast can we locate antipodal pairs (bisection rate)?
-- What bounds does Lipschitz continuity give on the antipodal set?
-- How does the modulus of continuity control the deviation |f(x) - f(-x)|?
-- Can we bound the size of the coincidence set?
+**OQ-01** (of OQ-03): Can Tucker's lemma be proved in Lean via discrete IVT?
+What quantitative bounds arise from the constructive 1D BU proof?
 
-## Context
+## Important Caveat
 
-The parent file (borsuk-ulam-oq-03) proved the 1D BU constructively via IVT.
-This extension explores the quantitative/computational aspects:
-the IVT proof is inherently constructive (bisection), and we can extract
-explicit rates and bounds.
+On [-1,1], many Borsuk-Ulam-style statements are **degenerate** because
+x = 0 is self-antipodal (0 = -0). Results like "there exist x, y with
+f(x) = f(y) and x + y = 0" are trivially satisfied by x = y = 0.
+The genuinely nontrivial Borsuk-Ulam topology begins on S¹, where
+the antipodal map has no fixed points.
 
-## Key Results
+## Key Results (by strength)
 
-I. Lipschitz BU: L-Lipschitz f has antipodal deviation ≤ 2L
-II. Bisection convergence: antipodal pair located within 2^{-n} after n steps
-III. Oscillation bounds: antipodal deviation controlled by oscillation
-IV. Coincidence set structure: closed, symmetric, nonempty
-V. Quantitative BU on the circle: explicit modulus for parametric version
-VI. BU for uniformly continuous functions: constructive witness
-VII. Antipodal value bounds from Lipschitz constant
-VIII. Multi-function BU: simultaneous antipodal pairs
+**Strongest:**
+I. Tucker's 1D lemma via discrete IVT (Sections XIV-XV)
+II. Circle BU via IVT on g(θ) -- genuinely nontrivial (Section IX)
+III. Sign-change parity framework toward Tucker 2D (Sections XX-XXII)
+
+**Supporting (correct but elementary on intervals):**
+IV. Lipschitz bounds: antisymmetric difference is 2L-Lipschitz
+V. Bisection width formulas: 2·(1/2)^n → 0
+VI. Oscillation bounds on antipodal deviation
+VII. Coincidence set structure (nonempty trivially via x = 0)
+VIII. Perturbation stability: 2ε bound on antisymmetric differences
 -/
 
 set_option linter.unusedVariables false
