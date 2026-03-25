@@ -83,49 +83,56 @@
       "title": "Polygon Ceva Configuration",
       "startLine": 49,
       "endLine": 73,
-      "summary": "PolygonCevaConfig structure with weight parameters (αᵢ, βᵢ) for Fin n. cevaProduct and weightBalance definitions."
+      "summary": "PolygonCevaConfig structure with weight parameters (αᵢ, βᵢ) for Fin n. cevaProduct and weightBalance definitions.",
+      "mathContext": "PolygonCevaConfig: a structure with weight parameters $(\\alpha_i, \\beta_i)$ for $i \\in \\text{Fin}\\,n$. The Ceva product $\\prod_{i=0}^{n-1} \\beta_i/\\alpha_i$ and weight product $\\prod \\alpha_i$ generalize the classical triangle Ceva condition to $n$-gons."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: Weight Balance Criterion",
       "startLine": 78,
       "endLine": 128,
-      "summary": "polygon_ceva_weight_balance: ∏(βᵢ/αᵢ) = 1 ↔ ∏αᵢ = ∏βᵢ. Uses prod_div_distrib and div_eq_one_iff_eq."
+      "summary": "polygon_ceva_weight_balance: ∏(βᵢ/αᵢ) = 1 ↔ ∏αᵢ = ∏βᵢ. Uses prod_div_distrib and div_eq_one_iff_eq.",
+      "mathContext": "The polygon Ceva balance: $\\prod(\\beta_i/\\alpha_i) = 1 \\iff \\prod \\alpha_i = \\prod \\beta_i$. Proved using `Finset.prod_div_distrib` and `div_eq_one_iff_eq`. This is the algebraic content of the generalized Ceva theorem."
     },
     {
       "id": "triangle-specialization",
       "title": "Triangle Specialization (n=3)",
       "startLine": 133,
       "endLine": 149,
-      "summary": "triangle_ceva_specialization: n=3 recovers α₀·α₁·α₂ = β₀·β₁·β₂ via Fin.prod_univ_three."
+      "summary": "triangle_ceva_specialization: n=3 recovers α₀·α₁·α₂ = β₀·β₁·β₂ via Fin.prod_univ_three.",
+      "mathContext": "For $n = 3$: recovers $\\alpha_0 \\alpha_1 \\alpha_2 = \\beta_0 \\beta_1 \\beta_2$, the classical Ceva's theorem condition for concurrent cevians in a triangle. Uses `Fin.prod_univ_three` for the 3-element product."
     },
     {
       "id": "quadrilateral-ceva",
       "title": "Quadrilateral Ceva (n=4)",
       "startLine": 154,
       "endLine": 175,
-      "summary": "quadrilateral_ceva: n=4 gives α₀·α₁·α₂·α₃ = β₀·β₁·β₂·β₃ via Fin.prod_univ_four."
+      "summary": "quadrilateral_ceva: n=4 gives α₀·α₁·α₂·α₃ = β₀·β₁·β₂·β₃ via Fin.prod_univ_four.",
+      "mathContext": "For $n = 4$: the quadrilateral Ceva condition $\\alpha_0 \\alpha_1 \\alpha_2 \\alpha_3 = \\beta_0 \\beta_1 \\beta_2 \\beta_3$. Uses `Fin.prod_univ_four`. This extends the classical concurrence condition to quadrilaterals."
     },
     {
       "id": "equal-weight",
       "title": "Equal-Weight (Medial) Case",
       "startLine": 180,
       "endLine": 200,
-      "summary": "equal_weight_polygon_ceva: when αᵢ = βᵢ for all i, the Ceva product is 1."
+      "summary": "equal_weight_polygon_ceva: when αᵢ = βᵢ for all i, the Ceva product is 1.",
+      "mathContext": "When $\\alpha_i = \\beta_i$ for all $i$, the Ceva product is trivially 1. This corresponds to the case where all cevians are medians (equal division of sides)."
     },
     {
       "id": "polygon-menelaus",
       "title": "Polygon Menelaus and Duality",
       "startLine": 205,
       "endLine": 245,
-      "summary": "menelausCondition for n-gons, negate_one_ratio_flips_sign, triangle and quadrilateral Menelaus sign results."
+      "summary": "menelausCondition for n-gons, negate_one_ratio_flips_sign, triangle and quadrilateral Menelaus sign results.",
+      "mathContext": "The Menelaus dual: `menelausCondition` for $n$-gons, where negating one ratio flips the overall sign. Triangle and quadrilateral specializations recover the classical Menelaus theorem conditions."
     },
     {
       "id": "scaling-and-angles",
       "title": "Scaling Invariance and Angle Connection",
       "startLine": 250,
       "endLine": 320,
-      "summary": "ceva_product_scale_invariant, ceva_product_pos, angle_product_from_weight_ratios connecting to the formal problem statement."
+      "summary": "ceva_product_scale_invariant, ceva_product_pos, angle_product_from_weight_ratios connecting to the formal problem statement.",
+      "mathContext": "Scale invariance: the Ceva product $\\prod \\beta_i/\\alpha_i$ is unchanged by uniform scaling of all weights. Positivity: if all weights are positive, the product is positive. Angle interpretation: weight ratios correspond to ratios of subtended angles."
     }
   ],
   "conclusion": {

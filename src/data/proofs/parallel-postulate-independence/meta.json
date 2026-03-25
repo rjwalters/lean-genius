@@ -62,49 +62,56 @@
       "title": "Abstract Incidence Geometry Framework",
       "startLine": 45,
       "endLine": 76,
-      "summary": "Defines points, lines, and incidence geometry structures following Hilbert's axiomatics, with parallelism as non-intersection."
+      "summary": "Defines points, lines, and incidence geometry structures following Hilbert's axiomatics, with parallelism as non-intersection.",
+      "mathContext": "Hilbert-style incidence geometry: types `Point` and `Line` with incidence relation `∈`. Axioms: two distinct points determine a unique line, every line contains at least two points, existence of three non-collinear points. No metric or angle measure — only incidence."
     },
     {
       "id": "parallel-postulate",
       "title": "Playfair's Axiom and Hyperbolic Alternative",
       "startLine": 77,
       "endLine": 96,
-      "summary": "Formalizes Playfair's axiom (∃! parallel) and the hyperbolic parallel property (∃ two distinct parallels)."
+      "summary": "Formalizes Playfair's axiom (∃! parallel) and the hyperbolic parallel property (∃ two distinct parallels).",
+      "mathContext": "Two competing axioms: Playfair's axiom (through a point not on a line, there exists a UNIQUE parallel) and the hyperbolic parallel property (through such a point, there exist at least TWO distinct parallel lines). They are mutually exclusive: Playfair $\\iff \\neg$hyperbolic."
     },
     {
       "id": "neutral-geometry",
       "title": "Neutral (Absolute) Geometry",
       "startLine": 97,
       "endLine": 119,
-      "summary": "The common axioms shared by Euclidean and hyperbolic geometry — incidence, betweenness, congruence, continuity — omitting the parallel postulate."
+      "summary": "The common axioms shared by Euclidean and hyperbolic geometry — incidence, betweenness, congruence, continuity — omitting the parallel postulate.",
+      "mathContext": "Neutral (absolute) geometry: the axioms common to both Euclidean and hyperbolic geometry — incidence, betweenness, congruence, continuity. All theorems of neutral geometry hold in both models. The parallel postulate is the unique axiom separating the two geometries."
     },
     {
       "id": "euclidean-model",
       "title": "The Euclidean Model",
       "startLine": 120,
       "endLine": 143,
-      "summary": "Axiomatizes the Euclidean plane ℝ² as a model satisfying neutral geometry plus the parallel postulate."
+      "summary": "Axiomatizes the Euclidean plane ℝ² as a model satisfying neutral geometry plus the parallel postulate.",
+      "mathContext": "The Euclidean model: $\\mathbb{R}^2$ with standard lines $\\{(x,y) : ax + by = c\\}$. Playfair's axiom holds because parallel lines in $\\mathbb{R}^2$ have the same slope, and there is exactly one line through a given point with a given slope."
     },
     {
       "id": "poincare-model",
       "title": "The Poincaré Disk Model",
       "startLine": 144,
       "endLine": 186,
-      "summary": "Axiomatizes the Poincaré disk as a model of neutral geometry satisfying the hyperbolic parallel property."
+      "summary": "Axiomatizes the Poincaré disk as a model of neutral geometry satisfying the hyperbolic parallel property.",
+      "mathContext": "The Poincaré disk model: the open unit disk $\\{(x,y) : x^2 + y^2 < 1\\}$ with 'lines' being diameters and circular arcs orthogonal to the boundary. Through any point not on a geodesic, infinitely many geodesics miss the given one — giving multiple parallels."
     },
     {
       "id": "key-theorems",
       "title": "Key Theorems",
       "startLine": 187,
       "endLine": 224,
-      "summary": "Proves that hyperbolic parallels contradict Playfair's axiom, and derives that the Poincaré disk violates the parallel postulate."
+      "summary": "Proves that hyperbolic parallels contradict Playfair's axiom, and derives that the Poincaré disk violates the parallel postulate.",
+      "mathContext": "Proves hyperbolic parallels contradict Playfair's axiom (if two parallels exist, uniqueness fails) and derives that the Poincaré disk model cannot satisfy Playfair's axiom. This is the logical core of the independence argument."
     },
     {
       "id": "independence",
       "title": "The Independence Theorem",
       "startLine": 225,
       "endLine": 314,
-      "summary": "Main result: exhibits both a model (ℝ²) and a countermodel (Poincaré disk) for the parallel postulate, establishing independence."
+      "summary": "Main result: exhibits both a model (ℝ²) and a countermodel (Poincaré disk) for the parallel postulate, establishing independence.",
+      "mathContext": "The independence result: Playfair's axiom is independent of neutral geometry because $\\mathbb{R}^2$ satisfies it (model) and the Poincaré disk refutes it (countermodel). Neither the postulate nor its negation is provable from the other axioms — settling a 2000-year-old question."
     }
   ],
   "conclusion": {

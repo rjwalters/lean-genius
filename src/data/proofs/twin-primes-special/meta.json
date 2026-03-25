@@ -65,35 +65,40 @@
       "title": "Definitions",
       "startLine": 30,
       "endLine": 34,
-      "summary": "Formal definitions of twin prime pairs and the conjecture."
+      "summary": "Formal definitions of twin prime pairs and the conjecture.",
+      "mathContext": "Formal definitions: a twin prime pair is $(p, p+2)$ where both $p$ and $p+2$ are prime. The twin prime conjecture: there are infinitely many twin prime pairs. The strongest known result is Zhang (2013) / Maynard-Tao (2014): $\\liminf(p_{n+1} - p_n) \\leq 246$."
     },
     {
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 42,
       "endLine": 67,
-      "summary": "Computational verification of 6 twin prime pairs: (3,5), (5,7), (11,13), (17,19), (29,31), (41,43)."
+      "summary": "Computational verification of 6 twin prime pairs: (3,5), (5,7), (11,13), (17,19), (29,31), (41,43).",
+      "mathContext": "Computational verification of the first six twin prime pairs: $(3,5), (5,7), (11,13), (17,19), (29,31), (41,43)$. Each verified by `Nat.Prime` instances or `norm_num`."
     },
     {
       "id": "structure-theorem",
       "title": "Structure Theorem",
       "startLine": 68,
       "endLine": 155,
-      "summary": "The main result: twin primes > 3 must satisfy p ≡ 5 (mod 6), giving form (6k-1, 6k+1)."
+      "summary": "The main result: twin primes > 3 must satisfy p ≡ 5 (mod 6), giving form (6k-1, 6k+1).",
+      "mathContext": "The main structural result: for twin prime pairs $(p, p+2)$ with $p > 3$, we have $p \\equiv 5 \\pmod{6}$, so the pair has the form $(6k-1, 6k+1)$. Proof: among $6k, 6k+1, \\ldots, 6k+5$, only $6k \\pm 1$ can be prime (the others are divisible by 2 or 3), so twin primes must straddle a multiple of 6."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "startLine": 156,
       "endLine": 168,
-      "summary": "The twin prime conjecture stated as an axiom."
+      "summary": "The twin prime conjecture stated as an axiom.",
+      "mathContext": "The twin prime conjecture: $\\{p : p \\text{ and } p+2 \\text{ are both prime}\\}$ is infinite. Stated as an axiom in Lean since it remains unproved. Related to the Hardy-Littlewood conjecture on the asymptotic density $\\pi_2(x) \\sim 2C_2 x/(\\ln x)^2$ where $C_2 \\approx 0.6602$ is the twin prime constant."
     },
     {
       "id": "non-examples",
       "title": "Non-Examples",
       "startLine": 169,
       "endLine": 190,
-      "summary": "Why 0, 1, and 2 cannot start twin prime pairs."
+      "summary": "Why 0, 1, and 2 cannot start twin prime pairs.",
+      "mathContext": "Why 0, 1, and 2 cannot start twin prime pairs: 0 and 1 are not prime, and while 2 is prime, $2 + 2 = 4$ is not. The pair $(2, 3)$ has gap 1, not 2, so it is not a twin prime pair by definition."
     }
   ],
   "crossReferences": [

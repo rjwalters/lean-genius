@@ -74,49 +74,56 @@
       "title": "The Calculus of Variations",
       "startLine": 59,
       "endLine": 90,
-      "summary": "Setup of variational problems: Lagrangian densities, action functionals, and critical points."
+      "summary": "Setup of variational problems: Lagrangian densities, action functionals, and critical points.",
+      "mathContext": "Variational setup: given a Lagrangian $L(x, u, \\nabla u)$, minimize the action $J[u] = \\int_\\Omega L(x, u(x), \\nabla u(x))\\,dx$ over admissible functions $u: \\Omega \\to \\mathbb{R}$. Hilbert asked: if $L$ is analytic, must minimizers be analytic?"
     },
     {
       "id": "euler-lagrange",
       "title": "The Euler-Lagrange Equation",
       "startLine": 91,
       "endLine": 117,
-      "summary": "Characterization of critical points via the Euler-Lagrange differential equation."
+      "summary": "Characterization of critical points via the Euler-Lagrange differential equation.",
+      "mathContext": "Critical points of $J$ satisfy the Euler-Lagrange PDE: $\\frac{\\partial L}{\\partial u} - \\sum_i \\frac{\\partial}{\\partial x_i}\\frac{\\partial L}{\\partial u_{x_i}} = 0$. This is a second-order nonlinear PDE whose regularity depends on the structure of $L$."
     },
     {
       "id": "ellipticity",
       "title": "Ellipticity - The Key Condition",
       "startLine": 118,
       "endLine": 150,
-      "summary": "The ellipticity (Legendre) condition ensuring the PDE is well-behaved."
+      "summary": "The ellipticity (Legendre) condition ensuring the PDE is well-behaved.",
+      "mathContext": "The ellipticity (Legendre) condition: $\\sum_{i,j} \\frac{\\partial^2 L}{\\partial p_i \\partial p_j} \\xi_i \\xi_j \\geq \\lambda |\\xi|^2$ for some $\\lambda > 0$. This ensures the Euler-Lagrange equation is elliptic, which is the key structural hypothesis for regularity."
     },
     {
       "id": "regularity",
       "title": "Regularity Theory",
       "startLine": 151,
       "endLine": 207,
-      "summary": "The main theorems: De Giorgi-Nash-Moser for Holder regularity, Schauder for smoothness."
+      "summary": "The main theorems: De Giorgi-Nash-Moser for Holder regularity, Schauder for smoothness.",
+      "mathContext": "The resolution: De Giorgi (1957) and Nash (1958) independently proved that weak solutions of uniformly elliptic equations in divergence form are Hölder continuous. Schauder theory then bootstraps to $C^\\infty$ and analyticity when $L$ is analytic. This fully resolves Hilbert's 19th."
     },
     {
       "id": "degiorgi",
       "title": "The De Giorgi Method",
       "startLine": 208,
       "endLine": 252,
-      "summary": "De Giorgi's elegant approach via Caccioppoli inequality and oscillation decay."
+      "summary": "De Giorgi's elegant approach via Caccioppoli inequality and oscillation decay.",
+      "mathContext": "De Giorgi's approach: start with a weak ($W^{1,2}$) solution, prove a Caccioppoli-type energy inequality, then use an iterative oscillation decay argument (De Giorgi classes) to obtain Hölder continuity $C^{0,\\alpha}$. The key insight: energy estimates on level sets $\\{u > k\\}$ cascade into pointwise regularity."
     },
     {
       "id": "examples",
       "title": "Examples and Non-Examples",
       "startLine": 253,
       "endLine": 287,
-      "summary": "Dirichlet problem as prototypical example; minimal surfaces as non-example in high dimensions."
+      "summary": "Dirichlet problem as prototypical example; minimal surfaces as non-example in high dimensions.",
+      "mathContext": "The Dirichlet problem $\\min \\int |\\nabla u|^2$ (Lagrangian $L = |p|^2$) is the prototypical example: solutions are harmonic and automatically $C^\\omega$. Minimal surfaces ($L = \\sqrt{1 + |\\nabla u|^2}$) satisfy regularity in dimensions $\\leq 7$ but can have singularities in dimension $\\geq 8$ (Bombieri-De Giorgi-Giusti, 1969)."
     },
     {
       "id": "modern",
       "title": "Modern Developments",
       "startLine": 288,
       "endLine": 337,
-      "summary": "Extensions to nonlinear theory, systems, and the final summary theorem."
+      "summary": "Extensions to nonlinear theory, systems, and the final summary theorem.",
+      "mathContext": "Extensions: Nash-Moser theory for systems, Krylov-Safonov for non-divergence equations, Evans-Krylov for fully nonlinear PDEs. Connections to geometric measure theory (varifolds), Sobolev spaces ($W^{k,p}$), and Gamma-convergence in materials science."
     }
   ],
   "conclusion": {

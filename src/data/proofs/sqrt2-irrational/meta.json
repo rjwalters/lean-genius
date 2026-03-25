@@ -78,35 +78,40 @@
       "title": "Setup and Imports",
       "startLine": 1,
       "endLine": 51,
-      "summary": "Module documentation and import statements."
+      "summary": "Module documentation and import statements.",
+      "mathContext": "Imports `Mathlib.Data.Real.Irrational` and `Mathlib.Data.Nat.Prime.Basic`. The central result: $\\sqrt{2} \\notin \\mathbb{Q}$ (Wiedijk #1). The classical proof assumes $\\sqrt{2} = a/b$ in lowest terms and derives that both $a$ and $b$ must be even, contradicting coprimality."
     },
     {
       "id": "lemmas",
       "title": "Supporting Lemmas",
       "startLine": 52,
       "endLine": 74,
-      "summary": "Key lemmas: if n² is even then n is even, and divisibility properties."
+      "summary": "Key lemmas: if n² is even then n is even, and divisibility properties.",
+      "mathContext": "Key lemmas for the proof: if $n^2$ is even then $n$ is even (contrapositive: odd $\\cdot$ odd = odd). Divisibility properties: $2 \\mid n^2 \\Rightarrow 2 \\mid n$ and $4 \\mid n^2 \\Rightarrow 2 \\mid n$. These follow from unique prime factorization: the exponent of 2 in $n^2$ is $2v_2(n)$, which is even."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: √2",
       "startLine": 75,
       "endLine": 86,
-      "summary": "The irrationality of √2 using Mathlib's formalization."
+      "summary": "The irrationality of √2 using Mathlib's formalization.",
+      "mathContext": "The irrationality of $\\sqrt{2}$: `Irrational (Real.sqrt 2)`. Mathlib's proof uses the general criterion `irrational_sqrt_two` or `Nat.Prime.irrational_sqrt` applied to the prime 2. The classical argument: $\\sqrt{2} = a/b \\Rightarrow 2b^2 = a^2 \\Rightarrow 2 \\mid a \\Rightarrow 4 \\mid a^2 \\Rightarrow 2 \\mid b^2 \\Rightarrow 2 \\mid b$, contradicting $\\gcd(a,b) = 1$."
     },
     {
       "id": "examples",
       "title": "Example Proofs",
       "startLine": 87,
       "endLine": 142,
-      "summary": "Additional proofs demonstrating tactics: case analysis, induction, logic."
+      "summary": "Additional proofs demonstrating tactics: case analysis, induction, logic.",
+      "mathContext": "Additional irrationality demonstrations using different proof techniques: case analysis on parity, induction on the denominator, and logical contradiction. These illustrate various Lean 4 tactics for the same mathematical fact."
     },
     {
       "id": "generalization",
       "title": "Generalization: √n for Non-Squares",
       "startLine": 143,
       "endLine": 222,
-      "summary": "The general theorem: √n is irrational iff n is not a perfect square. Includes √3, √5, √6, √7."
+      "summary": "The general theorem: √n is irrational iff n is not a perfect square. Includes √3, √5, √6, √7.",
+      "mathContext": "The general theorem: $\\sqrt{n} \\in \\mathbb{Q} \\iff n$ is a perfect square. Applied to prove $\\sqrt{3}, \\sqrt{5}, \\sqrt{6}, \\sqrt{7} \\notin \\mathbb{Q}$ since $3, 5, 6, 7$ are not perfect squares. The proof generalizes: if $p$ is prime, $\\sqrt{p}$ is irrational (since $p$ is not a perfect square)."
     }
   ],
   "conclusion": {

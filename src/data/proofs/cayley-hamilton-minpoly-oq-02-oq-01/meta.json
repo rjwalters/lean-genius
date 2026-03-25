@@ -98,35 +98,40 @@
       "title": "Module Header and Variable Declarations",
       "startLine": 1,
       "endLine": 27,
-      "summary": "Documents the open question origin (generalizing minimal polynomial theory from matrices to abstract K-algebras) and the affirmative answer via Mathlib's minpoly.algEquiv_eq. Imports Mathlib and declares the field variable K used throughout the formalization."
+      "summary": "Documents the open question origin (generalizing minimal polynomial theory from matrices to abstract K-algebras) and the affirmative answer via Mathlib's minpoly.algEquiv_eq. Imports Mathlib and declares the field variable K used throughout the formalization.",
+      "mathContext": "Generalizing minimal polynomial theory from matrices to abstract $K$-algebras. The key insight: similarity invariance of $\\text{minpoly}$ follows from the abstract result that algebra isomorphisms preserve minimal polynomials."
     },
     {
       "id": "abstract-theory",
       "title": "Abstract Theory from Mathlib",
       "startLine": 28,
       "endLine": 64,
-      "summary": "Re-exports Mathlib's minpoly.algEquiv_eq and minpoly.algHom_eq as named theorems for the generalization to K-algebras."
+      "summary": "Re-exports Mathlib's minpoly.algEquiv_eq and minpoly.algHom_eq as named theorems for the generalization to K-algebras.",
+      "mathContext": "Re-exports Mathlib's `minpoly.algEquiv_eq`: for an algebra isomorphism $\\varphi: A \\xrightarrow{\\sim} B$, $\\text{minpoly}_K(\\varphi(a)) = \\text{minpoly}_K(a)$. This is the abstract generalization of similarity invariance."
     },
     {
       "id": "conjugation-algequiv",
       "title": "Conjugation as an AlgEquiv",
       "startLine": 65,
       "endLine": 121,
-      "summary": "Constructs conjAlgEquiv P : Matrix n n K ≃ₐ[K] Matrix n n K with forward map A ↦ P⁻¹AP and inverse A ↦ PAP⁻¹. Upgrades the AlgHom from OQ-02 to a proper AlgEquiv."
+      "summary": "Constructs conjAlgEquiv P : Matrix n n K ≃ₐ[K] Matrix n n K with forward map A ↦ P⁻¹AP and inverse A ↦ PAP⁻¹. Upgrades the AlgHom from OQ-02 to a proper AlgEquiv.",
+      "mathContext": "Constructs `conjAlgEquiv P`: the conjugation map $A \\mapsto P^{-1}AP$ as a $K$-algebra automorphism of $M_n(K)$, for invertible $P$. Forward: $A \\mapsto P^{-1}AP$, inverse: $A \\mapsto PAP^{-1}$."
     },
     {
       "id": "main-results",
       "title": "Matrix Similarity via Abstract Theory",
       "startLine": 122,
       "endLine": 138,
-      "summary": "minpoly_similar_via_abstract and minpoly_conj_inv_via_abstract: matrix similarity preserves minpoly, derived as corollaries of minpoly.algEquiv_eq."
+      "summary": "minpoly_similar_via_abstract and minpoly_conj_inv_via_abstract: matrix similarity preserves minpoly, derived as corollaries of minpoly.algEquiv_eq.",
+      "mathContext": "Matrix similarity preserves minimal polynomials: $\\text{minpoly}_K(P^{-1}AP) = \\text{minpoly}_K(A)$. Derived by applying the abstract `minpoly.algEquiv_eq` to `conjAlgEquiv P`."
     },
     {
       "id": "applications",
       "title": "Applications and Corollaries",
       "startLine": 139,
       "endLine": 217,
-      "summary": "Additional results: minpoly invariance under arbitrary algebra automorphisms, subalgebra inclusions, injective algebra homomorphisms. Also proves conjAlgEquiv_trans showing composition of conjugations."
+      "summary": "Additional results: minpoly invariance under arbitrary algebra automorphisms, subalgebra inclusions, injective algebra homomorphisms. Also proves conjAlgEquiv_trans showing composition of conjugations.",
+      "mathContext": "Extensions: minpoly invariance under arbitrary algebra automorphisms (not just conjugation), subalgebra inclusions, and tensor products — all following from the abstract Mathlib infrastructure."
     }
   ],
   "conclusion": {

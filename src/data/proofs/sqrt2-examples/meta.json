@@ -113,35 +113,40 @@
       "title": "Imports and Documentation",
       "startLine": 1,
       "endLine": 29,
-      "summary": "Imports Mathlib.Tactic for standard proof tactics and provides a documentation header describing the file's purpose, proof techniques demonstrated, and Mathlib dependencies."
+      "summary": "Imports Mathlib.Tactic for standard proof tactics and provides a documentation header describing the file's purpose, proof techniques demonstrated, and Mathlib dependencies.",
+      "mathContext": "Imports `Mathlib.Tactic` for standard proof tactics (`ring`, `omega`, `positivity`, `linarith`, `calc`). Demonstrates basic Lean 4 proof techniques through the example $n^2 \\geq 0$ for all $n \\in \\mathbb{Z}$."
     },
     {
       "id": "square-nonneg",
       "title": "Squares are Non-negative",
       "startLine": 30,
       "endLine": 41,
-      "summary": "Proves $n \\cdot n \\geq 0$ for any integer $n$ using case analysis on the sign of $n$, with a `calc` block handling the negative case by rewriting as $(-n)(-n)$."
+      "summary": "Proves $n \\cdot n \\geq 0$ for any integer $n$ using case analysis on the sign of $n$, with a `calc` block handling the negative case by rewriting as $(-n)(-n)$.",
+      "mathContext": "Proves $n \\cdot n \\geq 0$ for any $n \\in \\mathbb{Z}$ using case analysis on $\\text{sign}(n)$. A `calc` block handles the negative case via $n \\cdot n = (-n)(-n) \\geq 0$. Demonstrates the `Int.lt_or_le` case split tactic."
     },
     {
       "id": "implication-transitivity",
       "title": "Implication Transitivity",
       "startLine": 42,
       "endLine": 48,
-      "summary": "Proves $(P \\to Q) \\to (Q \\to R) \\to (P \\to R)$ using backward reasoning with `intro`, `apply`, and `exact`, demonstrating Lean's natural deduction style."
+      "summary": "Proves $(P \\to Q) \\to (Q \\to R) \\to (P \\to R)$ using backward reasoning with `intro`, `apply`, and `exact`, demonstrating Lean's natural deduction style.",
+      "mathContext": "Proves $(P \\to Q) \\to (Q \\to R) \\to (P \\to R)$ using backward reasoning: `intro hpq hqr hp`, then `apply hqr`, then `apply hpq`, then `exact hp`. A pure logic exercise demonstrating Lean's tactic mode."
     },
     {
       "id": "positive-case",
       "title": "Positive Case: n >= 0",
       "startLine": 34,
       "endLine": 35,
-      "summary": "When $n \\geq 0$, the result $n \\cdot n \\geq 0$ follows directly from `mul_nonneg h h`, applying the Mathlib lemma that a product of non-negative numbers is non-negative."
+      "summary": "When $n \\geq 0$, the result $n \\cdot n \\geq 0$ follows directly from `mul_nonneg h h`, applying the Mathlib lemma that a product of non-negative numbers is non-negative.",
+      "mathContext": "When $n \\geq 0$: $n \\cdot n \\geq 0$ follows directly from `mul_nonneg h h`, since the product of non-negative integers is non-negative. The simplest of the two cases."
     },
     {
       "id": "negative-case",
       "title": "Negative Case: n < 0",
       "startLine": 36,
       "endLine": 48,
-      "summary": "When $n < 0$, derives $-n \\geq 0$, then uses a `calc` block: $n \\cdot n = (-n) \\cdot (-n) \\geq 0$. The `ring` tactic proves the equality $n \\cdot n = (-n)(-n)$ and `mul_nonneg` closes the inequality."
+      "summary": "When $n < 0$, derives $-n \\geq 0$, then uses a `calc` block: $n \\cdot n = (-n) \\cdot (-n) \\geq 0$. The `ring` tactic proves the equality $n \\cdot n = (-n)(-n)$ and `mul_nonneg` closes the inequality.",
+      "mathContext": "When $n < 0$: derive $-n > 0$, hence $-n \\geq 0$, then use $n \\cdot n = (-n)(-n) \\geq 0$ via `neg_mul_neg` and `mul_nonneg`. The `calc` block chains the equalities and inequalities."
     }
   ],
   "conclusion": {
