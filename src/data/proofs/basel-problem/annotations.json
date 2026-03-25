@@ -48,6 +48,52 @@
     ]
   },
   {
+    "id": "ann-namespace-setup",
+    "proofId": "basel-problem",
+    "range": {
+      "startLine": 54,
+      "endLine": 61
+    },
+    "type": "concept",
+    "title": "Namespace and Open Declarations",
+    "content": "The `BaselProblem` namespace scopes the entire development. Five `open` declarations bring key Mathlib namespaces into scope: `Finset` for finite sums, `BigOperators` for the summation notation, `Filter` and `Topology` for the topological framework underlying `HasSum` and `tsum`, and `Real` for the constant pi and real-valued operations. The section header introduces the main theorem block.",
+    "mathContext": "The `open` declarations expose: `Finset.sum` (finite partial sums $\\sum_{n \\in S} f(n)$), `BigOperators` ($\\sum$ and $\\prod$ notation), `Filter` (the directed limit framework for `HasSum`), `Topology` (topological convergence), and `Real` ($\\pi$, real-valued arithmetic). The `HasSum` predicate is defined as convergence of the net of partial sums over finite subsets of $\\mathbb{N}$, directed by inclusion.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Lean 4 namespace system",
+      "Mathlib open conventions",
+      "HasSum API"
+    ],
+    "relatedConcepts": [
+      "Lean 4 namespaces",
+      "BigOperators notation",
+      "Filter convergence",
+      "directed net"
+    ]
+  },
+  {
+    "id": "ann-zeta-connection",
+    "proofId": "basel-problem",
+    "range": {
+      "startLine": 125,
+      "endLine": 129
+    },
+    "type": "context",
+    "title": "Connection to Higher Zeta Values",
+    "content": "This section header introduces the generalization from $\\zeta(2) = \\pi^2/6$ to the full family of even zeta values. Euler computed $\\zeta(4) = \\pi^4/90$, $\\zeta(6) = \\pi^6/945$, and eventually tabulated values up to $\\zeta(26)$, always finding a rational multiple of $\\pi^{2k}$. The general formula $\\zeta(2k) = (-1)^{k+1} 2^{2k-1} \\pi^{2k} B_{2k}/(2k)!$ reveals that the Bernoulli numbers are the arithmetic key to all even zeta values.",
+    "mathContext": "Even zeta values: $\\zeta(2) = \\pi^2/6$, $\\zeta(4) = \\pi^4/90$, $\\zeta(6) = \\pi^6/945$, $\\zeta(8) = \\pi^8/9450$. General formula: $\\zeta(2k) = \\frac{(-1)^{k+1} 2^{2k-1} \\pi^{2k} B_{2k}}{(2k)!}$. The Bernoulli numbers: $B_0 = 1$, $B_1 = -1/2$, $B_2 = 1/6$, $B_4 = -1/30$, $B_6 = 1/42$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Bernoulli numbers",
+      "zeta function values"
+    ],
+    "relatedConcepts": [
+      "Bernoulli numbers",
+      "even zeta values",
+      "odd zeta mystery"
+    ]
+  },
+  {
     "id": "ann-basel-main",
     "proofId": "basel-problem",
     "range": {
@@ -240,7 +286,7 @@
     "proofId": "basel-problem",
     "range": {
       "startLine": 145,
-      "endLine": 161
+      "endLine": 164
     },
     "type": "context",
     "title": "Numerical Approximation and Convergence Rate",
