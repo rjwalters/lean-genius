@@ -64,50 +64,42 @@
     {
       "id": "known-results",
       "title": "Part 3: Known Results (de Bruijn–Erdős–Turán)",
-      "startLine": 121,
-      "endLine": 152,
+      "startLine": 98,
+      "endLine": 119,
       "summary": "∑ f(n) ~ x and ∑ f(n)² ~ x as axioms. f_average_one proved from axiom.",
       "mathContext": "∑ f(n) ~ x and ∑ f(n)² ~ x as axioms. f_average_one proved from axiom."
     },
     {
       "id": "basic-properties",
       "title": "Part 4: Basic Properties",
-      "startLine": 154,
-      "endLine": 185,
-      "summary": "f_nonneg proved, f_two proved by simp, f_three and f_four as axioms, prime_contributes proved.",
-      "mathContext": "f_nonneg proved, f_two proved by simp, f_three and f_four as axioms, prime_contributes proved."
-    },
-    {
-      "id": "heuristics",
-      "title": "Part 5: Heuristic Analysis",
-      "startLine": 187,
-      "endLine": 208,
-      "summary": "Integral approximation explains average = 1. f(n) large near primes.",
-      "mathContext": "Integral approximation explains average = 1. f(n) large near primes."
+      "startLine": 121,
+      "endLine": 162,
+      "summary": "f_nonneg proved, f_two proved by simp, f_three and f_four proved by norm_num.",
+      "mathContext": "f_nonneg proved, f_two proved by simp, f_three and f_four proved by norm_num."
     },
     {
       "id": "weaker-conjecture",
-      "title": "Part 6: Weaker Conjecture and Connection",
-      "startLine": 213,
-      "endLine": 208,
+      "title": "Part 5: Weaker Conjecture and Connections",
+      "startLine": 164,
+      "endLine": 183,
       "summary": "primeCountingFunction, weakerConjecture, weaker_implies_bound axiom (f ≪ log log log n).",
       "mathContext": "primeCountingFunction, weakerConjecture, weaker_implies_bound axiom (f ≪ log log log n)."
     },
     {
       "id": "prime-distribution",
-      "title": "Part 7: Connection to Prime Distribution",
-      "startLine": 246,
-      "endLine": 208,
-      "summary": "primeGap definition, dense_primes_increase_f axiom (f(n) ≥ 1/k).",
-      "mathContext": "primeGap definition, dense_primes_increase_f axiom (f(n) ≥ 1/k)."
+      "title": "Part 6: Connection to Prime Distribution",
+      "startLine": 187,
+      "endLine": 231,
+      "summary": "maxPrimeGapBelow, dense_primes_increase_f proved, dense_short_intervals_imply_liminf_pos and f_at_primes_open axioms.",
+      "mathContext": "maxPrimeGapBelow, dense_primes_increase_f proved, dense_short_intervals_imply_liminf_pos and f_at_primes_open axioms."
     },
     {
       "id": "summary",
-      "title": "Part 8: Summary",
-      "startLine": 269,
-      "endLine": 208,
-      "summary": "erdos_950_summary theorem combining both average results and True. Status: OPEN.",
-      "mathContext": "erdos_950_summary theorem combining both average results and True. Status: OPEN."
+      "title": "Part 7: Summary",
+      "startLine": 232,
+      "endLine": 244,
+      "summary": "erdos_950_summary theorem combining both average results. Status: OPEN.",
+      "mathContext": "erdos_950_summary theorem combining both average results. Status: OPEN."
     }
   ],
   "conclusion": {
