@@ -1,5 +1,30 @@
 [
   {
+    "id": "ann-header",
+    "proofId": "erdos-124",
+    "type": "context",
+    "title": "Module Header and Imports",
+    "content": "The module header states Erdős Problem #124 from Burr, Erdős, Graham, and Li (1996): given bases $3 \\leq d_1 < \\cdots < d_r$ with $\\sum 1/(d_i - 1) \\geq 1$, can all sufficiently large integers be represented as $\\sum c_i a_i$ with $c_i \\in \\{0,1\\}$ and $a_i$ having only digits $\\{0,1\\}$ in base $d_i$?\n\nSix Mathlib imports provide the infrastructure: `Nat.Digits` for base-$d$ digit decomposition, `Nat.GCD.Basic` for the coprimality condition in Q2, `Finset.Basic` for finite sums and products, `Rat.Basic` for exact rational arithmetic in the reciprocal condition, `Filter.Basic` for the 'eventually' quantifier $\\forall^\\infty n$, and `Tactic` for general proof tactics.",
+    "mathContext": "The problem connects three mathematical threads: (1) digit theory via $P(d,k) = \\{n : \\text{digits}_d(n,i) \\in \\{0,1\\}\\;\\forall i \\geq k\\}$; (2) additive combinatorics via the sumset representation $n = \\sum c_i a_i$; (3) density thresholds via $\\sum 1/(d_i - 1) \\geq 1$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Erdős problems",
+      "complete sequences",
+      "digit restriction",
+      "Nat.digits",
+      "Filter.atTop"
+    ],
+    "prerequisites": [
+      "base-d representations",
+      "additive combinatorics",
+      "Lean 4 import system"
+    ],
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    }
+  },
+  {
     "id": "digit-restricted",
     "proofId": "erdos-124",
     "type": "definition",
