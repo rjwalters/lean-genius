@@ -268,6 +268,16 @@
       "targetId": "cantor-diagonalization-oq-03",
       "relationship": "extended-by",
       "description": "The Lawvere fixed-point theorem provides the categorical unification of Cantor's diagonal argument: if a surjection $e : A \\to (A \\to B)$ exists, every endomorphism $f : B \\to B$ has a fixed point. Cantor's theorem follows because negation has no fixed point, so no surjection $A \\to (A \\to \\text{Bool})$ can exist. This single principle subsumes Cantor, Russell, Gödel, and Turing."
+    },
+    {
+      "targetId": "denumerability-rationals",
+      "relationship": "complementary",
+      "description": "The rationals ARE countable ($|\\mathbb{Q}| = |\\mathbb{N}|$) while the reals are not ($|\\mathbb{R}| > |\\mathbb{N}|$): these are the two sides of Cantor's foundational cardinality theory. The countability of $\\mathbb{Q}$ via zigzag enumeration and the uncountability of $\\mathbb{R}$ via diagonalization together show that the jump from $\\mathbb{Q}$ to $\\mathbb{R}$ (completing the rationals) introduces uncountably many new elements."
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "related",
+      "description": "Liouville's theorem provides explicit transcendental numbers (well-approximable by rationals), whose existence can also be proved via the countability of algebraic numbers and the uncountability of reals (a Cantor argument). The Liouville numbers are themselves uncountable — a specific uncountable subset of the transcendentals."
     }
   ],
   "alternativeInterpretation": {
