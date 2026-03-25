@@ -7,16 +7,22 @@
       "endLine": 23
     },
     "type": "concept",
-    "title": "Problem Overview",
-    "content": "**Erdős Problem #284: Maximum First Denominator in Egyptian Fractions**\n\nLet f(k) be the maximum n₁ such that 1 = 1/n₁ + ... + 1/nₖ with n₁ < ... < nₖ.\n\n**Question:** Is f(k) = (1+o(1))·k/(e-1)?\n**Answer:** YES (Croot 2001)\n\nThe upper bound is trivial via harmonic series; Croot proved the matching lower bound constructively.",
-    "mathContext": "Egyptian fractions decompose rational numbers as sums of distinct unit fractions. This problem asks about the extremal behavior of the smallest denominator when the target sum is 1.",
+    "title": "Problem Overview and Imports",
+    "content": "**Erdős Problem #284: Maximum First Denominator in Egyptian Fractions**\n\nLet $f(k)$ be the maximum $n_1$ such that $1 = 1/n_1 + \\cdots + 1/n_k$ with distinct $n_1 < \\cdots < n_k$.\n\n**Question:** Is $f(k) = (1+o(1)) \\cdot k/(e-1)$?\n**Answer:** YES — proved by Croot (2001)\n\nThe upper bound is trivial via harmonic series counting; Croot proved the matching lower bound constructively by showing that for any $N > 1$, one can always find distinct integers in $(N, eN]$ whose reciprocals sum to exactly 1.\n\nImports: `Data.Nat.Basic`, `Data.Rat.Defs`, `Analysis.SpecialFunctions.Pow.Real` (for $e = \\exp(1)$), `Analysis.SpecialFunctions.Log.Basic` (for logarithmic estimates), `Data.Finset.Basic`/`Finset.Sum`, `Order.Filter.AtTopBot.Basic`, `Tactic`.",
+    "mathContext": "The constant $1/(e-1) \\approx 0.582$ arises from the integral identity $\\int_1^e \\frac{1}{x}\\,dx = \\ln e = 1$: the interval $[N, eN]$ has $\\sim(e-1)N$ integers and harmonic sum $\\sim 1$, so $k \\sim (e-1) \\cdot f(k)$.",
     "significance": "key",
     "relatedConcepts": [
       "Egyptian fractions",
-      "Harmonic series",
-      "Unit fractions"
+      "harmonic series",
+      "asymptotic analysis",
+      "Euler's number"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Real.exp",
+      "Real.log",
+      "Finset.sum",
+      "Filter.atTop"
+    ]
   },
   {
     "id": "ann-284-egyptian",
@@ -27,14 +33,21 @@
     },
     "type": "definition",
     "title": "Egyptian Fraction Framework",
-    "content": "**IsEgyptianRep(S, r):** A finite set S of positive integers whose reciprocals sum to r. Formalized as a conjunction: all elements ≥ 1 AND S.sum(1/·) = r.\n\n**RepresentsOne(S):** Specialization to r = 1.\n\n**minElement(S):** The minimum element of a nonempty finite set, using Finset.min'.",
-    "mathContext": "The distinctness of elements comes from using Finset (which has no duplicates). The condition n ≥ 1 ensures we only use positive denominators.",
+    "content": "Three definitions formalize the Egyptian fraction setup:\n\n**`IsEgyptianRep S r`**: A finite set $S$ of positive integers whose reciprocals sum to $r$. Formalized as: all elements $\\geq 1$ AND $\\sum_{n \\in S} 1/n = r$ (computed in $\\mathbb{Q}$ for exact arithmetic).\n\n**`RepresentsOne S`**: Specialization to $r = 1$, i.e., $\\sum_{n \\in S} 1/n = 1$.\n\n**`minElement S`**: The minimum element of a nonempty `Finset`, extracted via `Finset.min'`. This gives the first denominator $n_1$ in an Egyptian fraction representation $n_1 < n_2 < \\cdots < n_k$.\n\nThe `Finset` type automatically ensures distinctness (no duplicate elements), which is essential for the problem's formulation.",
+    "mathContext": "An Egyptian fraction representation of 1 with $k$ terms is a set $S = \\{n_1, \\ldots, n_k\\} \\subset \\mathbb{Z}_{>0}$ with $n_1 < \\cdots < n_k$ and $\\sum 1/n_i = 1$. Examples: $\\{2,3,6\\}$ (3 terms), $\\{2,4,6,12\\}$ (4 terms), $\\{2,3,7,42\\}$ (4 terms). The number of $k$-term representations grows rapidly with $k$.",
     "significance": "key",
     "relatedConcepts": [
       "Finset operations",
-      "Rational arithmetic"
+      "rational arithmetic",
+      "unit fractions",
+      "Rhind papyrus"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.min'",
+      "Data.Rat.Defs",
+      "Finset.sum",
+      "positivity"
+    ]
   },
   {
     "id": "ann-284-f",
@@ -44,15 +57,21 @@
       "endLine": 82
     },
     "type": "concept",
-    "title": "The Function f(k)",
-    "content": "**f (axiomatized):** The function f(k) returns the maximum first denominator among all k-term Egyptian fraction representations of 1. Axiomatized because the sSup formulation would require proving the set is bounded and nonempty.\n\n**f_well_defined:** For k ≥ 2, at least one k-term representation exists (e.g., 1 = 1/2 + 1/3 + 1/6 for k=3).",
-    "mathContext": "The function f is well-defined because the set of first denominators is finite and nonempty for each k ≥ 2. The supremum formulation in ℕ requires BddAbove which is nontrivial to prove formally.",
+    "title": "The Extremal Function f(k)",
+    "content": "**`f`** (axiomatized): $f(k) = \\max\\{\\min(S) : S \\subseteq \\mathbb{Z}_{>0},\\, |S| = k,\\, \\sum_{n \\in S} 1/n = 1\\}$. Axiomatized because formalizing the supremum in $\\mathbb{N}$ requires proving the set is bounded above and nonempty.\n\n**`f_well_defined`**: For $k \\geq 2$, at least one $k$-term representation exists. This ensures $f(k)$ is well-defined.\n\n**`f_example`**: $f(4) \\geq 2$, witnessed by $\\{2, 4, 5, 20\\}$ since $1/2 + 1/4 + 1/5 + 1/20 = 10/20 + 5/20 + 4/20 + 1/20 = 1$.",
+    "mathContext": "$f(k)$ measures how 'spread out' a $k$-term Egyptian fraction of 1 can be. If $\\min(S) = u$, then the remaining terms $\\{n_2, \\ldots, n_k\\}$ must sum to $1 - 1/u = (u-1)/u$ in reciprocals, which constrains how large $u$ can be relative to $k$.",
     "significance": "key",
     "relatedConcepts": [
-      "Supremum in ℕ",
-      "Bounded sets"
+      "extremal combinatorics",
+      "supremum in ℕ",
+      "well-definedness",
+      "witness construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.card",
+      "Nat.sSup",
+      "RepresentsOne"
+    ]
   },
   {
     "id": "ann-284-upper",
@@ -62,16 +81,22 @@
       "endLine": 115
     },
     "type": "concept",
-    "title": "Upper Bound and the Constant e-1",
-    "content": "**harmonic_interval:** The harmonic sum Σ_{n=u}^{⌊eu⌋} 1/n → 1 as u → ∞. This is the discrete version of ∫₁ᵉ 1/x dx = 1.\n\n**f_upper_bound:** f(k) ≤ (1+ε)·k/(e-1) for large k. If the first denominator is u, we need ~(e-1)u terms from [u, eu], so k ≥ (e-1-o(1))u.\n\n**e_minus_one_constant:** The integral identity exp(1) - 1 = ∫₁ᵉ 1/x dx.",
-    "mathContext": "The constant e-1 ≈ 1.718 is the key to this problem. The interval [N, eN] has multiplicative length e, and ∫_N^{eN} 1/x dx = ln(e) = 1. So the number of integers in this interval (~(e-1)N) is roughly what's needed for a sum of reciprocals to reach 1.",
+    "title": "Upper Bound via Harmonic Series",
+    "content": "**`harmonic_interval`** (axiom): $\\sum_{n=u}^{\\lfloor eu \\rfloor} 1/n \\to 1$ as $u \\to \\infty$. This is the discrete version of $\\int_1^e 1/x\\,dx = 1$, with error $O(1/u)$.\n\n**`f_upper_bound`** (axiom): $f(k) \\leq (1+\\varepsilon) \\cdot k/(e-1)$ for sufficiently large $k$.\n\n**Proof idea**: If the first denominator is $u$, the remaining $k-1$ terms must have reciprocals summing to $1 - 1/u$. The 'best case' is to use consecutive integers starting from $u$, but even then the interval $[u, eu]$ has only $\\sim(e-1)u$ integers and their reciprocals sum to $\\sim 1$. So $k-1 \\leq (e-1)u + O(1)$, giving $u \\leq (1+o(1)) \\cdot k/(e-1)$.\n\n**`e_minus_one_constant`**: The key identity $(e-1) = \\exp(1) - 1$, connecting Euler's number to the harmonic counting argument.",
+    "mathContext": "The Euler-Maclaurin formula gives $\\sum_{n=u}^{v} \\frac{1}{n} = \\ln(v/u) + O(1/u)$. For $v = \\lfloor eu \\rfloor$: $\\sum = \\ln(eu/u) + O(1/u) = 1 + O(1/u)$. The $(e-1)u$ integers in $[u, eu]$ contribute harmonic sum $\\approx 1$, so no more than $(e-1)u + O(1)$ terms can be selected — this bounds $k$ and hence $f(k)$.",
     "significance": "key",
     "relatedConcepts": [
-      "Harmonic series",
-      "Integral approximation",
+      "harmonic series asymptotics",
+      "Euler-Maclaurin formula",
+      "integral approximation",
       "Euler's number"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Real.exp",
+      "Real.log",
+      "harmonic series",
+      "Filter.Eventually"
+    ]
   },
   {
     "id": "ann-284-croot",
@@ -81,16 +106,22 @@
       "endLine": 145
     },
     "type": "concept",
-    "title": "Croot's Theorem (2001)",
-    "content": "**croot_2001:** For any N > 1, there exist distinct integers n₁ < ... < nₖ in (N, eN] with 1 = Σ 1/nᵢ. This is the hard direction.\n\n**f_lower_bound:** Consequence: f(k) ≥ (1-ε)·k/(e-1) for large k.\n\n**f_asymptotic:** Combining bounds: |f(k) - k/(e-1)| < ε·k/(e-1) for large k, i.e., f(k) = (1+o(1))·k/(e-1).",
-    "mathContext": "Croot's proof starts with the harmonic sum over (N, eN], which slightly exceeds 1, then carefully removes terms to bring the sum down to exactly 1. The key difficulty is showing this removal process always succeeds while maintaining distinctness.",
+    "title": "Croot's Theorem (2001): The Hard Direction",
+    "content": "**`croot_2001`** (axiom): For any $N > 1$, there exist distinct integers $n_1 < \\cdots < n_k$ in $(N, eN]$ with $\\sum 1/n_i = 1$. This is the constructive lower bound.\n\n**`f_lower_bound`** (axiom): $f(k) \\geq (1-\\varepsilon) \\cdot k/(e-1)$ for large $k$.\n\n**`f_asymptotic`** (axiom): Combining upper and lower bounds: $|f(k) - k/(e-1)| < \\varepsilon \\cdot k/(e-1)$ for large $k$, i.e., $f(k) = (1+o(1)) \\cdot k/(e-1)$.\n\n**Croot's technique**: Start with the full harmonic sum $\\sum_{n=N+1}^{\\lfloor eN \\rfloor} 1/n \\approx 1 + O(1/N)$ (slightly exceeding 1). Then carefully remove terms to bring the sum down to exactly 1. The key difficulty: showing the removal process can always find an appropriate term to remove (using continued fraction or greedy arguments) while maintaining that all remaining terms are in $(N, eN]$.",
+    "mathContext": "Croot's theorem implies: for each $N$, there exists a set $S \\subset (N, eN] \\cap \\mathbb{Z}$ with $\\sum_{n \\in S} 1/n = 1$ and $|S| \\leq (e-1)N + O(1)$. Since $\\min(S) > N$ and $|S| \\leq (e-1)N + O(1)$, we get $f(|S|) \\geq N \\geq (1-o(1)) \\cdot |S|/(e-1)$.",
     "significance": "key",
     "relatedConcepts": [
-      "Constructive proofs",
-      "Greedy algorithms",
-      "Number theory"
+      "constructive existence",
+      "term removal technique",
+      "asymptotic matching",
+      "Croot's work"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "harmonic_interval",
+      "f_upper_bound",
+      "Real.exp",
+      "Filter.Eventually"
+    ]
   },
   {
     "id": "ann-284-summary",
@@ -99,15 +130,21 @@
       "startLine": 158,
       "endLine": 194
     },
-    "type": "technique",
-    "title": "Summary Theorems",
-    "content": "**erdos_284_summary:** Combines the upper and lower bounds into a single conjunction:\n1. f(k) ≤ (1+ε)k/(e-1) for large k\n2. f(k) ≥ (1-ε)k/(e-1) for large k\n\nProved by ⟨f_upper_bound, f_lower_bound⟩.\n\n**erdos_284:** The main theorem, equal to erdos_284_summary. States that Erdős Problem #284 is SOLVED.",
-    "mathContext": "The conjunction of upper and lower bounds is equivalent to f(k)/k → 1/(e-1), which is the asymptotic statement f(k) = (1+o(1))k/(e-1).",
-    "significance": "key",
+    "type": "insight",
+    "title": "Summary: Solved Asymptotic Formula",
+    "content": "**`erdos_284_summary`**: Combines upper and lower bounds into a single conjunction:\n1. $f(k) \\leq (1+\\varepsilon) \\cdot k/(e-1)$ for large $k$\n2. $f(k) \\geq (1-\\varepsilon) \\cdot k/(e-1)$ for large $k$\n\nProved by $\\langle$`f_upper_bound`, `f_lower_bound`$\\rangle$.\n\n**`erdos_284`**: The main theorem, equal to `erdos_284_summary`. States that Erdős Problem #284 is SOLVED.\n\nThe `#check` commands verify all declarations have expected types. The file totals 194 lines with 9 axioms (the extremal function $f$, its well-definedness, harmonic interval estimate, Croot's theorem, bounds, and the asymptotic formula), 4 proved theorems (examples, the constant identity, the summary conjunction), and 3 definitions.",
+    "mathContext": "$f(k)/(k/(e-1)) \\to 1$ as $k \\to \\infty$. Equivalently, $f(k) = \\frac{k}{e-1} + o(k)$. The $o(k)$ error term hides the detailed structure of Egyptian fractions near the extremal boundary — determining the second-order term $f(k) - k/(e-1)$ remains open.",
+    "significance": "supporting",
     "relatedConcepts": [
-      "Asymptotic equivalence",
-      "Solved problems"
+      "asymptotic equivalence",
+      "o(1) notation",
+      "solved Erdős problem",
+      "second-order asymptotics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "f_upper_bound",
+      "f_lower_bound",
+      "And.intro"
+    ]
   }
 ]
