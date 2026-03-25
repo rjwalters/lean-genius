@@ -99,9 +99,9 @@
     {
       "id": "ai-1",
       "priority": "high",
-      "target": "enricher",
-      "description": "Remove duplicate theorems: ptolemys_theorem_diagonals (lines 94-99, identical to ptolemys_theorem) and diagonal_product_from_sides (lines 123-128, identical to ptolemys_theorem_symmetric). Remove the corresponding #check lines (263, 267), annotations (ann-corollary), and update meta.json sections, theoremCount (set to 3), and leanFile.lineCount.",
-      "status": "open"
+      "target": "researcher",
+      "description": "Remove duplicate theorems from Lean file: ptolemys_theorem_diagonals (lines 94-99, identical to ptolemys_theorem) and diagonal_product_from_sides (lines 123-128, identical to ptolemys_theorem_symmetric). Remove the corresponding #check lines (263, 267). NOTE: Lean file modifications are outside enricher scope; reassigned to researcher. Metadata and annotations have been updated to flag the duplicates.",
+      "status": "deferred"
     },
     {
       "id": "ai-2",
@@ -127,16 +127,16 @@
     {
       "id": "ai-5",
       "priority": "low",
-      "target": "enricher",
-      "description": "Remove unused Vec2 abbreviation (line 62) from Lean source, or add a concrete ℝ² example using specific points.",
-      "status": "open"
+      "target": "researcher",
+      "description": "Remove unused Vec2 abbreviation (line 62) from Lean source, or add a concrete ℝ² example using specific points. NOTE: Lean file modification; reassigned to researcher.",
+      "status": "deferred"
     },
     {
       "id": "ai-6",
       "priority": "low",
-      "target": "enricher",
-      "description": "Restructure isosceles trapezoid docstring (lines 193-203): lead with the correct computation (AC·BD = 61, AC = √61) instead of a failed assumption (AC = BD = 7).",
-      "status": "open"
+      "target": "researcher",
+      "description": "Restructure isosceles trapezoid docstring (lines 193-203): lead with the correct computation (AC·BD = 61, AC = √61) instead of a failed assumption (AC = BD = 7). NOTE: Lean file modification; reassigned to researcher.",
+      "status": "deferred"
     }
   ],
   "qualityScores": {
