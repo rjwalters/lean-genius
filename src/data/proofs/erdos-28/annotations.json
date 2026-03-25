@@ -167,46 +167,23 @@
     "id": "density-version",
     "proofId": "erdos-28",
     "range": {
-      "startLine": 447,
-      "endLine": 462
+      "startLine": 16,
+      "endLine": 18
     },
-    "type": "definition",
-    "title": "Density Version of the Conjecture",
-    "content": "Replaces the basis condition with the weaker hypothesis $A(N) \\geq c\\sqrt{N}$ for all large $N$. Since every basis of order 2 satisfies this density bound, this version is strictly stronger. It asks: does sufficient density alone force unbounded representations, without requiring $A + A$ to cover almost all integers?",
-    "mathContext": "If $A(N) \\geq c\\sqrt{N}$ for some $c > 0$ and all $N \\geq 1$, then $\\limsup r_A(n) = \\infty$. This generalizes the main conjecture since $\\text{IsAsymptoticBasis2}(A) \\Rightarrow A(N) \\gg \\sqrt{N}$.",
-    "significance": "key",
+    "type": "concept",
+    "title": "Density Version of the Conjecture (Unstated Strengthening)",
+    "content": "The module docstring mentions the stronger hypothesis $|A \\cap [1,N]| \\gg N^{1/2}$ as sufficient for the conjecture to hold. This density version replaces the basis condition ($A + A$ covers all large integers) with the weaker assumption that $A$ has density at least $\\sqrt{N}$. Since every basis of order 2 satisfies this density bound (proved as `basis_element_count_sq`), this version is strictly stronger. It is not formalized as a separate Lean definition — it remains a conceptual conjecture discussed in the metadata.",
+    "mathContext": "If $A(N) \\geq c\\sqrt{N}$ for some $c > 0$ and all $N \\geq 1$, then $\\limsup r_A(n) = \\infty$. This generalizes the main conjecture since $\\text{IsAsymptoticBasis2}(A) \\Rightarrow A(N) \\gg \\sqrt{N}$ (proved as `basis_element_count_sq`).",
+    "significance": "supporting",
     "relatedConcepts": [
       "density conditions",
       "sumset structure",
-      "inverse sumset theory"
+      "inverse sumset theory",
+      "basis_element_count_sq"
     ],
     "prerequisites": [
-      "countingFn",
-      "Real.sqrt",
-      "basis_counting_lower"
-    ]
-  },
-  {
-    "id": "basis-counting",
-    "proofId": "erdos-28",
-    "range": {
-      "startLine": 449,
-      "endLine": 462
-    },
-    "type": "technique",
-    "title": "Basis Counting Lower Bound",
-    "content": "A necessary condition: any basis of order 2 must have $A(N) \\geq c\\sqrt{N}$. This follows by counting: the sumset $A + A$ contains $\\sim N$ elements up to $N$, but $|A + A| \\leq \\binom{A(N)+1}{2}$, so $A(N) \\gg \\sqrt{N}$. This bound is essentially tight — Sidon sets achieve $A(N) \\sim \\sqrt{N}$ but are too thin to be bases.",
-    "mathContext": "$|A \\cap [1,N]| \\geq c\\sqrt{N}$ for some absolute constant $c > 0$ and all $N \\geq 1$. The upper bound $|A + A| \\leq \\binom{|A|+1}{2}$ gives $N \\leq \\binom{A(N)+1}{2}$, hence $A(N) \\geq \\sqrt{2N} - 1$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "pigeonhole principle",
-      "Plünnecke–Ruzsa inequality",
-      "sumset size bounds"
-    ],
-    "prerequisites": [
-      "countingFn",
-      "IsAsymptoticBasis2",
-      "binomial coefficient bounds"
+      "IsAsymptoticBasis",
+      "basis_element_count_sq"
     ]
   },
   {
@@ -367,8 +344,8 @@
     "id": "ordered-vs-unordered",
     "proofId": "erdos-28",
     "range": {
-      "startLine": 413,
-      "endLine": 425
+      "startLine": 561,
+      "endLine": 572
     },
     "type": "technique",
     "title": "Part VIII: Ordered ≥ Unordered Representation Count",
@@ -427,23 +404,53 @@
     "id": "sidon-basis-incompatible",
     "proofId": "erdos-28",
     "range": {
-      "startLine": 348,
-      "endLine": 412
+      "startLine": 349,
+      "endLine": 374
     },
     "type": "concept",
-    "title": "Part VII: Sidon Sets Cannot Be Asymptotic Bases",
-    "content": "A key structural result: infinite Sidon sets ($B_2$ sets, where all pairwise sums are distinct) cannot be asymptotic bases. The density bound $|A \\cap [1,N]| \\leq \\sqrt{N} + O(N^{1/4})$ (Erdős-Turán) shows Sidon sets are too sparse. The documentation provides a detailed proof outline explaining why the weaker bound $\\sqrt{2N}+1$ is insufficient — it gives sumset size $\\approx N$, barely covering the interval, while the tight bound gives sumset size $\\approx N/2$, yielding a clear contradiction. This axiomatized result (`sidon_not_basis`) captures the tension between bounded representations (Sidon property) and covering all integers (basis property).",
-    "mathContext": "Sidon density: $|A \\cap [1,N]| \\leq \\sqrt{N} + O(N^{1/4})$. Sumset: $|A_N + A_N| = |A_N|(|A_N|+1)/2 \\approx N/2$. Basis requires covering $[N_0, N]$ which has $\\sim N$ elements. Since $N/2 < N$, Sidon sets fail to be bases for large $N$.",
+    "title": "Part VII: Sidon Density Bridge and Density Bound",
+    "content": "Part VII opens with a bridge lemma `isSidon_set_to_finset` that converts the Set-based `IsSidon` (unordered pair equality: $a+b = c+d \\Rightarrow \\{a,b\\} = \\{c,d\\}$) to the Finset-based `Erdos340.IsSidon` (ordered pair equality with $a \\leq b$, $c \\leq d$). This bridge enables importing `sidon_density_bound` from the Erdős #340 formalization: for any Sidon set $A$ with elements in $[0, N]$, $|A| \\leq \\sqrt{2N} + 1$. The proof is a one-liner delegating to `Erdos340.sidon_upper_bound_weak` via the bridge. This density bound is the key ingredient for proving Sidon sets cannot be bases.",
+    "mathContext": "Bridge: IsSidon (Set) $\\Rightarrow$ IsSidon (Finset). From $\\{a,b\\} = \\{c,d\\}$ with $a \\leq b, c \\leq d$: either $c = a$ (then $b = d$) or $c = b$ (then $a \\leq b = c \\leq d$ and $a + b = c + d$ force $a = c, b = d$). Density: $|A \\cap [0,N]| \\leq \\sqrt{2N} + 1$ for Sidon $A$.",
     "significance": "key",
-    "relatedConcepts": ["Sidon sets", "B_2 sequences", "density bounds", "sumset size", "Erdős-Turán density bound"],
-    "prerequisites": ["IsSidon", "IsAsymptoticBasis", "sidon_density_bound"]
+    "relatedConcepts": ["Sidon sets", "B_2 sequences", "density bounds", "Erdős #340", "bridge lemma"],
+    "prerequisites": ["IsSidon", "Erdos340.sidon_upper_bound_weak", "Erdos340.IsSidon"]
+  },
+  {
+    "id": "sidon-combinatorial-helpers",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 376,
+      "endLine": 468
+    },
+    "type": "technique",
+    "title": "Combinatorial Helper Lemmas for Sidon Non-Basis Proof",
+    "content": "Three private helper lemmas build the combinatorial infrastructure for the `sidon_not_basis` proof. `card_upper_triangle` proves $|\\{(a,b) \\in F \\times F : a \\leq b\\}| \\cdot 2 = |F| \\cdot (|F|+1)$ by partitioning $F \\times F$ into upper-triangular ($a \\leq b$), strict-lower ($b < a$), and diagonal ($a = b$) parts, using a swap bijection between strict-upper and strict-lower. `finset_sumset_eq_upper_image` shows the sumset equals the image of upper-triangular pairs under addition, exploiting commutativity ($a+b = b+a$). `finset_sumset_card_bound` combines these: $|\\text{sumset}(F)| \\leq |\\text{upper-triangle}|$ (since the image of upper-triangle surjects onto sumset) and $|\\text{upper-triangle}| \\cdot 2 = |F|(|F|+1)$, giving $|\\text{sumset}(F)| \\cdot 2 \\leq |F|(|F|+1)$. This refined bound (using $|F|(|F|+1)/2$ instead of $|F|^2$) is essential for the `sidon_not_basis` contradiction.",
+    "mathContext": "$|\\{(a,b) \\in F^2 : a \\leq b\\}| = \\frac{|F|(|F|+1)}{2}$. Partition: $F^2 = \\{a < b\\} \\sqcup \\{a = b\\} \\sqcup \\{a > b\\}$, with $|\\{a > b\\}| = |\\{a < b\\}|$ by the swap $(a,b) \\mapsto (b,a)$, and $|\\{a = b\\}| = |F|$ (diagonal). So $|\\{a \\leq b\\}| = |\\{a < b\\}| + |F| = (|F|^2 - |F|)/2 + |F| = |F|(|F|+1)/2$. The sumset $\\{a+b : a,b \\in F\\}$ is the image of $\\{(a,b) : a \\leq b\\}$ under addition (by commutativity), so $|\\text{sumset}(F)| \\leq |F|(|F|+1)/2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["upper-triangular pairs", "swap bijection", "Finset.card_image_of_injective", "sumset cardinality", "pigeonhole principle"],
+    "prerequisites": ["Finset.product", "Finset.filter", "Finset.card_union_of_disjoint", "Finset.card_image_of_injective"]
+  },
+  {
+    "id": "sidon-not-basis-proof",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 471,
+      "endLine": 559
+    },
+    "type": "theorem",
+    "title": "Sidon Sets Cannot Be Bases (Fully Proved)",
+    "content": "`sidon_not_basis` is the most substantial theorem in the file: any infinite Sidon set $A$ is not an asymptotic basis of order 2. Previously axiomatized, this is now fully proved via a combinatorial counting argument.\n\nThe proof proceeds by contradiction. Assume $A$ is an infinite Sidon set and an asymptotic basis with threshold $N_0$. Choose $T = 4N_0 + 100$ and $N = T^2$. The restricted set $S = A \\cap [0, N]$ is finite and Sidon. By the Sidon density bound (imported from Erdős #340), $|S| \\leq \\sqrt{2N} + 1 = \\sqrt{2T^2} + 1 \\leq T + \\sqrt{T} + 1 \\leq 5N_0 + 126$. But $S$ must cover $[N_0, N]$ via its sumset, giving $|\\text{sumset}(S)| \\geq N - N_0 + 1 = T^2 - N_0 + 1$. The helper bound $|\\text{sumset}(S)| \\cdot 2 \\leq |S|(|S|+1) \\leq (5N_0+126)(5N_0+127)$ then forces $2(4N_0+100)^2 + 2 \\leq (5N_0+126)(5N_0+127) + 2N_0$, which simplifies to $7N_0^2 + 333N_0 + 4000 \\leq 0$ — impossible for $N_0 \\geq 0$. The `nlinarith` tactic closes the proof.",
+    "mathContext": "Proof by contradiction: set $T = 4N_0+100$, $N = T^2$, $s = |A \\cap [0,N]|$.\n\n(1) Sidon bound: $s \\leq \\sqrt{2N}+1 = T\\sqrt{2}+1 \\leq T + \\sqrt{T} + 1 \\leq 5N_0+126$.\n(2) Coverage: $|\\text{sumset}(A \\cap [0,N])| \\geq |[N_0, N]| = T^2 - N_0 + 1$.\n(3) Sumset bound: $|\\text{sumset}| \\cdot 2 \\leq s(s+1) \\leq (5N_0+126)(5N_0+127)$.\n(4) Combining: $2T^2 + 2 \\leq (5N_0+126)(5N_0+127) + 2N_0$.\n(5) Expanding with $T = 4N_0+100$: $32N_0^2 + 1600N_0 + 20002 \\leq 25N_0^2 + 1267N_0 + 16002$, i.e., $7N_0^2 + 333N_0 + 4000 \\leq 0$. Contradiction.",
+    "significance": "key",
+    "relatedConcepts": ["Sidon sets", "additive bases", "counting argument", "proof by contradiction", "nlinarith", "Erdős #340 dependency"],
+    "prerequisites": ["IsSidon", "IsAsymptoticBasis", "sidon_density_bound", "finset_sumset_card_bound", "Set.Infinite"]
   },
   {
     "id": "conjecture-holds-nat",
     "proofId": "erdos-28",
     "range": {
-      "startLine": 426,
-      "endLine": 446
+      "startLine": 574,
+      "endLine": 593
     },
     "type": "theorem",
     "title": "Part IX: The Conjecture Holds Trivially for ℕ",
@@ -457,8 +464,8 @@
     "id": "basis-density-lower-bound",
     "proofId": "erdos-28",
     "range": {
-      "startLine": 447,
-      "endLine": 497
+      "startLine": 595,
+      "endLine": 647
     },
     "type": "theorem",
     "title": "Part X: Basis Density Lower Bound (Proved)",

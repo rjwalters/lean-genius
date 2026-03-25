@@ -182,6 +182,11 @@
       "description": "Both involve density and extremal problems in additive combinatorics: #340 studies sum-free sets and their maximum density, #332 studies difference sets and syndeticity thresholds"
     },
     {
+      "targetId": "erdos-3",
+      "relationship": "related",
+      "description": "Problem #3 (Erdős-Turán conjecture on APs) and Problem #332 are siblings in the density-forces-structure paradigm: #3 asks when dense sets must contain arithmetic progressions, #332 asks when dense sets must have syndetic difference sets. Both follow from Furstenberg's ergodic correspondence, and Szemerédi's theorem resolving #3 is the template for Prikry's result on #332"
+    },
+    {
       "targetId": "szemeredi-theorem",
       "relationship": "related",
       "description": "Szemerédi's theorem (1975) proves positive density forces arbitrarily long arithmetic progressions — the parallel structural consequence to Prikry's theorem (positive density forces syndetic $D(A)$). Both are instances of the principle that density forces additive structure, and both follow from Furstenberg's ergodic-theoretic correspondence principle"

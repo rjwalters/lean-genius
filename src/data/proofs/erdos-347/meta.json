@@ -212,6 +212,16 @@
       "targetId": "erdos-124-complete-sequences",
       "relationship": "related",
       "description": "Both study completeness of integer sequences under subset sums. Problem #124 explores the classical Folkman-type completeness condition ($a_{n+1} \\leq \\sigma_n + 1$ where $\\sigma_n = \\sum_{i \\leq n} a_i$), while Problem #347 asks whether the weaker asymptotic ratio condition $a_{n+1}/a_n \\to 2$ can guarantee robust completeness — a refinement of the classical theory"
+    },
+    {
+      "targetId": "erdos-346",
+      "relationship": "related",
+      "description": "Problem #346 studies complete sequences and the golden ratio, exploring how growth rates near $\\phi \\approx 1.618$ interact with completeness. Problem #347 concerns the critical ratio 2, which is the threshold where binary representations become possible — together they map the landscape of ratio-dependent completeness"
+    },
+    {
+      "targetId": "erdos-348",
+      "relationship": "related",
+      "description": "Problem #348 asks about robustness of complete sequences under element deletion — directly connected to #347's question of whether density-1 coverage survives deletion of finitely many terms. Both concern the stability of completeness under perturbation"
     }
   ],
   "references": [

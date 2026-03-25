@@ -114,32 +114,32 @@
     {
       "id": "sidon-connection",
       "title": "Part VII: Connection to Sidon Sets",
-      "startLine": 348,
-      "endLine": 412,
-      "summary": "Sidon density bound and proof outline for why infinite Sidon sets cannot be asymptotic bases.",
-      "mathContext": "Sidon ($B_2$) sets satisfy $|A \\cap [1,N]| \\leq \\sqrt{N} + O(N^{1/4})$, but bases require $|A \\cap [1,N]| \\gg \\sqrt{N}$ with constant exceeding the Sidon threshold. Hence infinite Sidon sets cannot be bases."
+      "startLine": 349,
+      "endLine": 559,
+      "summary": "The most substantial section: proves `sidon_density_bound` (Sidon sets have $\\leq \\sqrt{2N}+1$ elements in $[1,N]$) via bridge to Erdős #340, then proves `sidon_not_basis` as a full theorem (not axiom) via a combinatorial counting argument. Four private helper lemmas (`isSidon_set_to_finset`, `card_upper_triangle`, `finset_sumset_eq_upper_image`, `finset_sumset_card_bound`) build the infrastructure. The `sidon_not_basis` proof chooses $T = 4N_0 + 100$, $N = T^2$, bounds $|A \\cap [0,N]| \\leq 5N_0 + 126$ via the Sidon density bound, then shows the sumset of this restricted set is too small to cover $[N_0, N]$ — a contradiction from $2(4N_0+100)^2 + 2 \\leq (5N_0+126)(5N_0+127) + 2N_0$ being impossible for all $N_0 \\geq 0$.",
+      "mathContext": "Sidon density: $|A \\cap [1,N]| \\leq \\sqrt{2N} + 1$. For basis $A$ with threshold $N_0$: set $S = A \\cap [0, T^2]$ with $T = 4N_0+100$. Then $|\\text{sumset}(S)| \\cdot 2 \\leq |S|(|S|+1)$ (upper-triangle counting), but coverage requires $|\\text{sumset}(S)| \\geq T^2 - N_0 + 1$. The Sidon bound $|S| \\leq 5N_0+126$ forces $2(T^2 - N_0 + 1) \\leq (5N_0+126)(5N_0+127)$, which fails since $32N_0^2 + 1600N_0 + 20002 \\leq 25N_0^2 + 1267N_0 + 16002$ is impossible."
     },
     {
       "id": "ordered-vs-unordered",
       "title": "Part VIII: Ordered vs Unordered Representations",
-      "startLine": 413,
-      "endLine": 425,
+      "startLine": 561,
+      "endLine": 572,
       "summary": "Proved: r_A(n) ≥ r_A^≤(n) since unordered pairs are a subset of ordered pairs.",
       "mathContext": "$r_A(n) \\geq r_A^{\\leq}(n)$ since $\\{(a,b) : a \\leq b, a+b=n\\} \\subseteq \\{(a,b) : a+b=n\\}$. The ordered count double-counts pairs with $a \\neq b$."
     },
     {
       "id": "conjecture-for-nat",
       "title": "Part IX: Conjecture Holds for ℕ",
-      "startLine": 426,
-      "endLine": 446,
-      "summary": "Proved: the Erdos-Turan conjecture holds trivially for A = ℕ, since r_ℕ(2k+2) = k+2 > k.",
+      "startLine": 574,
+      "endLine": 593,
+      "summary": "Proved: the Erdős–Turán conjecture holds trivially for A = ℕ, since r_ℕ(2k+2) = k+2 > k.",
       "mathContext": "For $A = \\mathbb{N}$: $r_{\\mathbb{N}}(2k+2) = k+2 > k$ for all $k$, so $\\limsup r_{\\mathbb{N}}(n) = \\infty$. This is the trivial case — the conjecture's difficulty lies in sparse bases."
     },
     {
       "id": "basis-density",
       "title": "Part X: Basis Density Lower Bound",
-      "startLine": 447,
-      "endLine": 497,
+      "startLine": 595,
+      "endLine": 647,
       "summary": "Proved: any basis A satisfies |A ∩ [0,N]|² ≥ N - N₀ + 1, giving |A ∩ [0,N]| ≥ c√N.",
       "mathContext": "$|A \\cap [0,N]|^2 \\geq N - N_0 + 1$ via $[N_0,N] \\subseteq A+A$ and $|A+A| \\leq |A|^2$."
     }
@@ -147,7 +147,7 @@
   "overview": {
     "historicalContext": "Paul Erdős and Pál Turán posed this conjecture in their landmark 1941 paper 'On a problem of Sidon in additive number theory and some related problems' (J. London Math. Soc.), which also introduced the systematic study of $B_2$ sequences. The conjecture emerged from their investigation of how the representation function $r_A(n)$ behaves for additive bases — sets $A$ whose sumset $A + A$ covers all sufficiently large integers. Erdős attached a $500 bounty, one of his largest prizes, signaling its depth within additive combinatorics. Key partial results include the Erdős–Fuchs theorem (1956), which proved that cumulative representations must fluctuate (sharpened by Montgomery and Vaughan in 1990 to the optimal exponent $1/4$), and the Halberstam–Roth observation that average representations diverge. The conjecture connects to a web of related problems: Problem #40 on $B_2[g]$ sets, the structure theory of Sidon sets (initiated by Simon Sidon in the 1930s), and Waring-type problems on additive bases of higher order. Despite 85 years of effort by leaders in additive combinatorics — including Nathanson, Cilleruelo, and Lev — even the basic conjecture remains completely open.",
     "problemStatement": "If $A \\subseteq \\mathbb{N}$ and $A + A$ contains all but finitely many natural numbers, must $\\limsup_{n \\to \\infty} r_A(n) = \\infty$, where $r_A(n) = |\\{(a,b) \\in A \\times A : a + b = n, \\; a \\leq b\\}|$?",
-    "text": "A 497-line formalization of Erdős Problem #28 (\\$500 bounty, OPEN since 1941) that builds the complete framework for the Erdős–Turán conjecture on additive bases. Defines the representation function $r_A(n)$ (ordered and unordered), the asymptotic basis predicate, and the counting function $A(N)$, then states the conjecture in three tiers: weak ($\\limsup r_A(n) = \\infty$), strong ($\\limsup r_A(n)/\\log n > 0$), and density version ($A(N) \\geq c\\sqrt{N}$ suffices). The 3 axioms encode known partial results (Grekos et al. 2003: $r_A(n) \\geq 6$ i.o.; Borwein et al.: $r_A(n) \\geq 8$ i.o.) and the Sidon non-basis fact. The 14 proved theorems include `isAsymptoticBasis_iff` (equivalence of basis definitions), `sidon_repFunc_bounded` ($r_A(n) \\leq 2$ for Sidon sets), `erdos_turan_holds_for_nat` (conjecture holds trivially for $A = \\mathbb{N}$), and `basis_element_count_sq` (density lower bound $A(N)^2 \\geq N - N_0 + 1$).",
+    "text": "A 647-line formalization of Erdős Problem #28 (\\$500 bounty, OPEN since 1941) that builds the complete framework for the Erdős–Turán conjecture on additive bases. Defines the representation function $r_A(n)$ (ordered and unordered), the asymptotic basis predicate, and the counting function $A(N)$, then states the conjecture in three tiers: weak ($\\limsup r_A(n) = \\infty$), strong ($\\limsup r_A(n)/\\log n > 0$), and density version ($A(N) \\geq c\\sqrt{N}$ suffices). The 2 axioms encode known partial results: Grekos et al. (2003): $r_A(n) \\geq 6$ i.o., and Borwein et al.: $r_A(n) \\geq 8$ i.o. The `sidon_not_basis` result — that infinite Sidon sets cannot be asymptotic bases — is now fully proved as a theorem (not an axiom) via a combinatorial counting argument using the Sidon density bound imported from Erdős #340. The 14 proved theorems include `isAsymptoticBasis_iff` (equivalence of basis definitions), `sidon_repFunc_bounded` ($r_A(n) \\leq 2$ for Sidon sets), `sidon_not_basis` (Sidon sets too sparse for bases), `erdos_turan_holds_for_nat` (conjecture holds trivially for $A = \\mathbb{N}$), and `basis_element_count_sq` (density lower bound $A(N)^2 \\geq N - N_0 + 1$).",
     "proofStrategy": "We formalize the core objects of the conjecture — the representation function $r_A(n)$, the asymptotic basis condition, and the counting function — then state the main conjecture and two strengthenings (logarithmic growth and density version) as axioms. We connect these to known results: the basis counting lower bound ($A(N) \\gg \\sqrt{N}$), the Sidon set exclusion, the implication to Problem #40, the Erdős–Fuchs fluctuation theorem, and the Halberstam–Roth average divergence.",
     "keyInsights": [
       "**No thin basis can exist**: The conjecture asserts that controlling $r_A(n) \\leq C$ is fundamentally incompatible with $A + A$ covering all large integers — a profound structural constraint on sumsets",

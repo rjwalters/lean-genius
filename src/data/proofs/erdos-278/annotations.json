@@ -1,5 +1,50 @@
 [
   {
+    "id": "erdos-278-header",
+    "proofId": "erdos-278",
+    "type": "context",
+    "range": {
+      "startLine": 1,
+      "endLine": 20
+    },
+    "title": "Module Documentation and Problem Statement",
+    "content": "The module docstring introduces Erdős Problem #278 on the maximum covering density of congruence systems. Given moduli $A = \\{n_1 < \\cdots < n_r\\}$, choose residues $a_1, \\ldots, a_r$ to maximize the density of integers $m$ satisfying $m \\equiv a_i \\pmod{n_i}$ for some $i$. Simpson (1986) settled the minimum density case: it is achieved when all residues are equal, yielding the inclusion-exclusion formula $\\sum 1/n_i - \\sum 1/\\text{lcm}(n_i, n_j) + \\cdots$. The maximum density question remains OPEN.",
+    "mathContext": "Coverage density: $d(A, \\mathbf{a}) = \\lim_{N \\to \\infty} |\\{m \\in [0,N) : \\exists i,\\, m \\equiv a_i \\pmod{n_i}\\}|/N$. Min density = inclusion-exclusion sum (Simpson). Max density is open.",
+    "significance": "supporting",
+    "relatedConcepts": ["covering systems", "inclusion-exclusion", "Simpson's theorem"],
+    "prerequisites": ["modular arithmetic", "asymptotic density"]
+  },
+  {
+    "id": "erdos-278-coprime-lcm-helpers",
+    "proofId": "erdos-278",
+    "type": "technique",
+    "range": {
+      "startLine": 156,
+      "endLine": 262
+    },
+    "title": "Coprime LCM and CRT-Based Counting Lemmas",
+    "content": "Seven private helper lemmas building the coprime case machinery. `foldl_lcm_eq_foldl_mul`: for pairwise coprime elements, $\\text{lcm} = \\prod$. `lcm_eq_prod_of_coprime`: lifts to `Finset.lcm`. `complement_card_single_mod`: counts non-hits in $[0, nL)$. `complement_count_two_mod`: extends to two coprime moduli via CRT. `complement_eq_prod`: for pairwise coprime moduli, complement count = $\\prod(n_i - 1)$, giving coprime coverage $1 - \\prod(1 - 1/n_i)$.",
+    "mathContext": "For pairwise coprime $\\{n_1, \\ldots, n_r\\}$: by CRT, $|\\{m \\in [0, \\prod n_i) : \\forall i,\\, m \\not\\equiv a_i \\pmod{n_i}\\}| = \\prod(n_i - 1)$. Coverage: $1 - \\prod(1 - 1/n_i)$.",
+    "significance": "key",
+    "relatedConcepts": ["Chinese Remainder Theorem", "pairwise coprimality", "Finset induction"],
+    "prerequisites": ["Nat.Coprime", "Nat.Coprime.lcm_eq_mul", "Finset.lcm"]
+  },
+  {
+    "id": "erdos-278-shift-helpers",
+    "proofId": "erdos-278",
+    "type": "technique",
+    "range": {
+      "startLine": 400,
+      "endLine": 473
+    },
+    "title": "Cyclic Shift Bijection and Simpson's Minimum Density",
+    "content": "Helpers proving coverage density is shift-invariant. `coverage_card_shift`: coverage for constant residue $a$ equals coverage for residue 0, via the cyclic shift $m \\mapsto (m+a) \\bmod L$ on $[0,L)$. Since each $n \\mid L$, the shift preserves residue classes. This establishes Simpson's result: minimum coverage density is at the constant-residue system.",
+    "mathContext": "Shift bijection $\\phi_a(m) = (m+a) \\bmod L$ preserves residue classes mod any $n \\mid L$. Therefore coverage count is translation-invariant: $|\\{m : \\exists i, m \\equiv a \\pmod{n_i}\\}| = |\\{m : \\exists i, m \\equiv 0 \\pmod{n_i}\\}|$.",
+    "significance": "key",
+    "relatedConcepts": ["cyclic group action", "bijective counting", "Simpson's theorem"],
+    "prerequisites": ["Nat.add_mod", "Finset.card_image_of_injective", "systemLCM"]
+  },
+  {
     "id": "erdos-278-imports",
     "proofId": "erdos-278",
     "type": "concept",

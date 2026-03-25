@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-1084-header",
+    "proofId": "erdos-1084",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 36 },
+    "title": "Module Documentation: Unit Distances Among Separated Points",
+    "content": "Erdős Problem #1084: let $f_d(n)$ be the max unit-distance pairs among $n$ points in $\\mathbb{R}^d$ with all pairwise distances $\\geq 1$. In 1D: $f_1(n) = n-1$ (proved here). In 2D: $f_2(n) = \\lfloor 3n - \\sqrt{12n-3}\\rfloor$ (Harborth 1974). In 3D: $6n - c_1 n^{2/3} < f_3(n) < 6n - c_2 n^{2/3}$ (conjectured). General: $(d - o(1))n \\leq f_d(n) \\leq 2^{O(d)} n$. The file proves 4 theorems: triangle lemma (1D), degree $\\leq 2$, upper bound $f_1(n) \\leq n-1$ via left-endpoint injection, and achievability via consecutive integers.",
+    "mathContext": "$f_d(n) = \\max\\{|\\{(i,j) : |x_i - x_j| = 1\\}| : x_1, \\ldots, x_n \\in \\mathbb{R}^d,\\, |x_i - x_j| \\geq 1\\}$. The 1D case $f_1(n) = n-1$ is fully proved.",
+    "significance": "supporting",
+    "relatedConcepts": ["unit distance problem", "Harborth formula", "discrete geometry", "packing"],
+    "prerequisites": ["metric spaces", "real analysis"]
+  },
+  {
+    "id": "ann-1084-counting-helpers",
+    "proofId": "erdos-1084",
+    "type": "technique",
+    "range": { "startLine": 132, "endLine": 167 },
+    "title": "1D Counting Helper Lemmas",
+    "content": "Four private lemmas supporting the 1D upper bound. `nat_abs_sub_ge_one`: distinct naturals have $|a - b| \\geq 1$ as reals (case split on $a < b$ vs $a > b$). `nat_consecutive_abs_eq_one`: $|i - (i+1)| = 1$. `unit_dist_left`: if $|a-b| = 1$ and $a \\leq b$, then $b = a+1$. Together these establish that the consecutive integer configuration is the unique (up to translation) 1D separated configuration achieving $n-1$ unit pairs.",
+    "mathContext": "For the 1D case: distinct naturals satisfy $|a - b| \\geq 1$ (separation), consecutive naturals satisfy $|i - (i+1)| = 1$ (unit distance). The upper bound proof injects unit pairs into $\\text{Fin}\\,n$ via the left-endpoint map.",
+    "significance": "supporting",
+    "relatedConcepts": ["absolute value properties", "integer spacing", "injection argument"],
+    "prerequisites": ["abs_sub_comm", "exact_mod_cast", "push_cast"]
+  },
+  {
     "id": "ann-1084-imports",
     "proofId": "erdos-1084",
     "range": { "startLine": 37, "endLine": 40 },

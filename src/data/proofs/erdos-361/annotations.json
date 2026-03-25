@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-e361-header",
+    "proofId": "erdos-361",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 23 },
+    "title": "Module Documentation and Imports",
+    "content": "Erdős Problem #361: for $c > 0$ and large $n$, what is the maximum size of $A \\subseteq \\{1, \\ldots, \\lfloor cn \\rfloor\\}$ such that $n$ is not a subset sum of $A$? Does this size depend on $n$ irregularly? From Erdős-Graham [ErGr80, p. 59]. Imports Finset (for subset operations), Powerset (for subset enumeration), BigOperators (for $\\sum$), and Asymptotics (for $o$-notation). Opens Classical for decidability.",
+    "mathContext": "$f(c, n) = \\max\\{|A| : A \\subseteq [\\lfloor cn \\rfloor],\\, n \\notin \\{\\sum_{a \\in B} a : B \\subseteq A\\}\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["subset sum problem", "non-representing sets", "Erdős-Graham"],
+    "prerequisites": ["Finset.sum", "Finset.Powerset"]
+  },
+  {
+    "id": "ann-e361-counting-proofs",
+    "proofId": "erdos-361",
+    "type": "technique",
+    "range": { "startLine": 95, "endLine": 146 },
+    "title": "Non-Representation Proofs and Structural Properties",
+    "content": "Proved theorems establishing key structural properties. `nonRepresenting_of_sum_lt`: if $\\sum A < n$, then no subset of $A$ sums to $n$ (since $\\sum B \\leq \\sum A < n$ for $B \\subseteq A$). `maxNonRepr_small_sum`: when the total $\\{1, \\ldots, \\lfloor cn \\rfloor\\}$ sums to less than $n$, the maximum non-representing set is the full range. The documentation notes this replaces an earlier incorrect asymptotic claim — the condition $\\sum < n$ only holds for finitely many $n$ since the sum grows as $\\Theta(c^2 n^2)$. Additional structural results on the relationship between density parameter $c$ and the non-representation threshold.",
+    "mathContext": "$\\sum_{i=1}^{\\lfloor cn \\rfloor} i = \\binom{\\lfloor cn \\rfloor + 1}{2} \\sim c^2 n^2 / 2$. For $c < \\sqrt{2/n}$: $\\sum < n$, so $f(c,n) = \\lfloor cn \\rfloor$. For $c \\geq \\sqrt{2}$: $\\sum \\gg n$, so non-trivial obstructions exist.",
+    "significance": "key",
+    "relatedConcepts": ["sum comparison", "Finset.sum_le_sum_of_subset_of_nonneg", "density threshold"],
+    "prerequisites": ["NonRepresenting", "Finset.sum"]
+  },
+  {
     "id": "ann-e361-subsetsum",
     "proofId": "erdos-361",
     "range": {
