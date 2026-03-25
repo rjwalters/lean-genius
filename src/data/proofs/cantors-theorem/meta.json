@@ -183,11 +183,6 @@
       "description": "Godel's incompleteness theorem uses a self-referential construction structurally identical to Cantor's diagonal argument: the Godel sentence 'I am not provable' parallels the diagonal set 'I am not in my own image'. Lawvere's fixed-point theorem unifies both."
     },
     {
-      "targetId": "abel-ruffini",
-      "relationship": "thematic",
-      "description": "Both are impossibility results proved by structural obstruction: Cantor shows no surjection to the power set via diagonalization, Abel-Ruffini shows no radical formula for quintics via non-solvability of $S_5$."
-    },
-    {
       "targetId": "infinitude-primes",
       "relationship": "related",
       "description": "Both establish fundamental structural properties of infinite mathematical objects. Euclid's proof that primes are infinite and Cantor's proof of uncountability are the two foundational results about the structure of infinity."
@@ -206,16 +201,6 @@
       "targetId": "liouville-theorem",
       "relationship": "related",
       "description": "Liouville's construction of the first explicit transcendental number (1844) via rational approximation complements Cantor's theorem: Cantor shows transcendental numbers exist (in fact $|\\text{transcendentals}| = |\\mathbb{R}|$ since algebraic numbers are countable), while Liouville constructs a specific witness. This parallels the constructive nature of Cantor's own theorem — `cantor_witness` produces an explicit set not in any function's range"
-    },
-    {
-      "targetId": "hilbert-10",
-      "relationship": "thematic",
-      "description": "Matiyasevich's negative resolution of Hilbert's 10th problem (MRDP theorem, 1970) extends the impossibility paradigm that Cantor's diagonal argument inaugurated: Cantor shows no surjection $\\mathbb{N} \\to \\mathcal{P}(\\mathbb{N})$, Turing shows no algorithm decides halting, and MRDP shows no algorithm decides Diophantine solvability. Each uses a variant of the diagonal technique to establish fundamental limitations"
-    },
-    {
-      "targetId": "fermats-last-theorem",
-      "relationship": "thematic",
-      "description": "Both are landmark results establishing non-existence: Cantor proves no surjection $A \\to \\mathcal{P}(A)$ via diagonalization, while FLT proves no integer solutions to $x^n + y^n = z^n$ for $n \\geq 3$. The proof techniques diverge radically — Cantor's argument is elementary and constructive, while Wiles's proof uses deep algebraic geometry — but both resolved questions that had been open for centuries"
     }
   ],
   "references": [

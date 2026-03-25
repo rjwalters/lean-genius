@@ -161,11 +161,6 @@
       "description": "The ballot formula relies on binomial coefficients C(p+q,p) and C(p+q,q) for counting lattice paths"
     },
     {
-      "targetId": "infinitude-primes",
-      "relationship": "co-listed",
-      "description": "Both appear in Wiedijk's 100 Theorems list; infinitude of primes is #11, ballot problem is #30"
-    },
-    {
       "targetId": "combinations-formula",
       "relationship": "uses",
       "description": "The ballot probability is a ratio of binomial coefficients C(p+q,p); the counting argument relies on the combinations formula"
@@ -199,11 +194,6 @@
       "targetId": "inclusion-exclusion",
       "relationship": "related",
       "description": "Inclusion-exclusion is a complementary counting technique to the ballot problem's reflection principle — both reduce constrained counting to simpler enumerations, and some ballot problem proofs use inclusion-exclusion directly"
-    },
-    {
-      "targetId": "central-limit-theorem",
-      "relationship": "related",
-      "description": "The ballot problem concerns random walks with a bias (p > q votes), which in the limit connects to the central limit theorem: the vote-counting sequence is a biased random walk, and CLT describes its asymptotic distribution"
     },
     {
       "targetId": "erdos-szekeres",
