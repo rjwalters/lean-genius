@@ -83,7 +83,7 @@
       "startLine": 1,
       "endLine": 2,
       "summary": "Single `import Mathlib` — the proof uses IsBezout, IsRelPrime, GaussianInt, Polynomial, and DecompositionMonoid from across Mathlib.",
-      "mathContext": "Single `import Mathlib` — the proof uses IsBezout, IsRelPrime, GaussianInt, Polynomial, and DecompositionMonoid from across Mathlib."
+      "mathContext": "Single `import Mathlib` providing `IsBezout`, `IsRelPrime`, `IsCoprime`, `GaussianInt`, `Polynomial` — the algebraic infrastructure for Euclid's lemma across ring types."
     },
     {
       "id": "module-doc",
@@ -99,7 +99,7 @@
       "startLine": 58,
       "endLine": 81,
       "summary": "euclids_lemma_ring: the master theorem. Works in ANY CommRing with IsCoprime. Witness u*c + v*k proved by linear_combination v * hk - c * huv. Also euclids_lemma_ring' (right multiplication form).",
-      "mathContext": "euclids_lemma_ring: the master theorem. Works in ANY CommRing with IsCoprime. Witness u*c + v*k proved by linear_combination v * hk - c * huv. Also euclids_lemma_ring' (right multiplication form)."
+      "mathContext": "**Euclid's lemma** (CommRing): $\\text{IsCoprime}(a, b) \\wedge a \\mid bc \\Rightarrow a \\mid c$. Uses `IsCoprime.dvd_of_dvd_mul_right` from Mathlib. Works in any `CommRing` — the most general formulation."
     },
     {
       "id": "isbezout-connection",
@@ -115,7 +115,7 @@
       "startLine": 137,
       "endLine": 156,
       "summary": "euclids_lemma_euclidean: EuclideanDomain implies IsBezout, so IsRelPrime → IsCoprime → Euclid's lemma applies directly.",
-      "mathContext": "euclids_lemma_euclidean: EuclideanDomain implies IsBezout, so IsRelPrime → IsCoprime → Euclid's lemma applies directly."
+      "mathContext": "EuclideanDomain $\\Rightarrow$ IsBezout $\\Rightarrow$ `IsRelPrime` lifts to `IsCoprime`. Chain: $\\text{IsRelPrime}(a,b) \\xrightarrow{\\text{IsBezout}} \\text{IsCoprime}(a,b) \\xrightarrow{\\text{Euclid}} a \\mid c$."
     },
     {
       "id": "irreducible-prime",
@@ -123,7 +123,7 @@
       "startLine": 157,
       "endLine": 181,
       "summary": "irred_iff_prime_decomp and euclids_lemma_irreducible: in CancelCommMonoidWithZero + DecompositionMonoid (ℤ, k[X], ℤ[i]), irreducible_iff_prime gives the classical prime version.",
-      "mathContext": "irred_iff_prime_decomp and euclids_lemma_irreducible: in CancelCommMonoidWithZero + DecompositionMonoid (ℤ, k[X], ℤ[i]), irreducible_iff_prime gives the classical prime version."
+      "mathContext": "In a `CancelCommMonoidWithZero`: $p$ irreducible $\\wedge$ $p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$ (Euclid for irreducibles). Equivalently: irreducible $\\iff$ prime in UFDs."
     },
     {
       "id": "instances",
@@ -131,7 +131,7 @@
       "startLine": 182,
       "endLine": 251,
       "summary": "euclids_lemma_int, euclids_lemma_poly, euclids_lemma_gaussian — all one-liners calling euclids_lemma_ring. Confirms IsBezout and DecompositionMonoid instances for ℤ, Polynomial ℚ, GaussianInt.",
-      "mathContext": "euclids_lemma_int, euclids_lemma_poly, euclids_lemma_gaussian — all one-liners calling euclids_lemma_ring. Confirms IsBezout and DecompositionMonoid instances for ℤ, Polynomial ℚ, GaussianInt."
+      "mathContext": "Specializations: $\\mathbb{Z}$ (classical Euclid), $K[X]$ (polynomial Euclid), $\\mathbb{Z}[i]$ (Gaussian Euclid). All one-liners delegating to `euclids_lemma_ring` via typeclass inference."
     },
     {
       "id": "uniform-principle",
@@ -139,7 +139,7 @@
       "startLine": 252,
       "endLine": 285,
       "summary": "euclids_lemma_uniform: the master theorem alias. euclids_lemma_explicit: term-mode proof showing ring identity alone suffices. Table: how each ring establishes IsCoprime.",
-      "mathContext": "euclids_lemma_uniform: the master theorem alias. euclids_lemma_explicit: term-mode proof showing ring identity alone suffices. Table: how each ring establishes IsCoprime."
+      "mathContext": "Master alias `euclids_lemma_uniform` and explicit term-mode proof `euclids_lemma_explicit` using `IsCoprime.dvd_of_dvd_mul_right` directly. Both demonstrate that a single proof covers all Bézout domains."
     }
   ],
   "conclusion": {
