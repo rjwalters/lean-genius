@@ -167,8 +167,8 @@
     "proofId": "erdos-332",
     "type": "technique",
     "range": {
-      "startLine": 70,
-      "endLine": 72
+      "startLine": 71,
+      "endLine": 85
     },
     "title": "Symmetry of D(A)",
     "content": "$D(A)$ is symmetric about the origin: $d \\in D(A) \\iff -d \\in D(A)$. This follows immediately from swapping $a_1$ and $a_2$ in the definition. The bijection $(a_1, a_2) \\mapsto (a_2, a_1)$ maps the fibre over $d$ to the fibre over $-d$, preserving infiniteness.",
@@ -189,8 +189,8 @@
     "proofId": "erdos-332",
     "type": "concept",
     "range": {
-      "startLine": 74,
-      "endLine": 76
+      "startLine": 87,
+      "endLine": 97
     },
     "title": "Zero Membership in D(A)",
     "content": "If $A$ is infinite, then $0 \\in D(A)$: the difference $a - a = 0$ is realized by every $a \\in A$, and infinitely many such $a$ exist. This is the simplest structural property of $D(A)$.",
