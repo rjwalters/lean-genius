@@ -85,7 +85,7 @@
       "summary": "Trees and vertex counting",
       "startLine": 30,
       "endLine": 44,
-      "mathContext": "Mathematical content: Trees and vertex counting"
+      "mathContext": "Tree: connected acyclic, n vertices, n-1 edges."
     },
     {
       "id": "multipartite",
@@ -93,7 +93,7 @@
       "summary": "K_{m₁,...,mₖ} structure and chromatic number",
       "startLine": 45,
       "endLine": 73,
-      "mathContext": "Formal definition: K_{m₁,...,mₖ} structure and chromatic number"
+      "mathContext": "K_{m1,...,mk}: complete k-partite. chi=k."
     },
     {
       "id": "ramsey",
@@ -101,7 +101,7 @@
       "summary": "Definition of R(T, G) and Ramsey property",
       "startLine": 74,
       "endLine": 102,
-      "mathContext": "Formal definition: Definition of R(T, G) and Ramsey property"
+      "mathContext": "R(T,G) = min N with red-T or blue-G in 2-coloring of K_N."
     },
     {
       "id": "chvatal",
@@ -109,7 +109,7 @@
       "summary": "R(T, Kₘ) = (m-1)(n-1) + 1",
       "startLine": 103,
       "endLine": 130,
-      "mathContext": "Mathematical content: R(T, Kₘ) = (m-1)(n-1) + 1"
+      "mathContext": "Chvatal: R(T,K_m) = (m-1)(n-1)+1 for tree T on n vertices."
     },
     {
       "id": "conjecture",
@@ -117,7 +117,7 @@
       "summary": "The conjectured bound for multipartite G",
       "startLine": 131,
       "endLine": 152,
-      "mathContext": "Bound: The conjectured bound for multipartite G"
+      "mathContext": "Conjectured: R(T,K_{m1,...,mk}) extends Chvatal to multipartite."
     },
     {
       "id": "special-cases",
@@ -125,7 +125,7 @@
       "summary": "Complete graphs, bipartite, stars",
       "startLine": 153,
       "endLine": 176,
-      "mathContext": "Mathematical content: Complete graphs, bipartite, stars"
+      "mathContext": "Known for complete graphs, bipartite, stars."
     },
     {
       "id": "paths",
@@ -133,7 +133,7 @@
       "summary": "P_n and Gerencsér-Gyárfás",
       "startLine": 177,
       "endLine": 197,
-      "mathContext": "Mathematical content: P_n and Gerencsér-Gyárfás"
+      "mathContext": "Gerencser-Gyarfas: path Ramsey numbers determined."
     },
     {
       "id": "tree-structure",
@@ -141,7 +141,7 @@
       "summary": "Maximum degree and Burr's conjecture",
       "startLine": 198,
       "endLine": 219,
-      "mathContext": "Mathematical content: Maximum degree and Burr's conjecture"
+      "mathContext": "Max degree Delta(T) affects Ramsey number."
     },
     {
       "id": "turan",
@@ -149,7 +149,7 @@
       "summary": "Extremal graph theory connections",
       "startLine": 220,
       "endLine": 231,
-      "mathContext": "Mathematical content: Extremal graph theory connections"
+      "mathContext": "Turan graph T(n,r): K_r-free with most edges."
     },
     {
       "id": "probabilistic",
@@ -157,7 +157,7 @@
       "summary": "Lower bounds from random graphs",
       "startLine": 232,
       "endLine": 244,
-      "mathContext": "Bound: Lower bounds from random graphs"
+      "mathContext": "Random colorings give lower bounds."
     },
     {
       "id": "extremal",
@@ -165,7 +165,7 @@
       "summary": "Constructions achieving bounds",
       "startLine": 245,
       "endLine": 260,
-      "mathContext": "Bound: Constructions achieving bounds"
+      "mathContext": "Partition-based colorings achieve lower bounds."
     },
     {
       "id": "asymptotic",

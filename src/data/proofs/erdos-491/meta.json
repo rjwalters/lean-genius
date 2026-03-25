@@ -84,7 +84,7 @@
       "summary": "IsAdditive, IsCompletelyAdditive, completely_additive_is_additive, log_is_completely_additive",
       "startLine": 35,
       "endLine": 56,
-      "mathContext": "Mathematical content: IsAdditive, IsCompletelyAdditive, completely_additive_is_additive, log_is_completely_additive"
+      "mathContext": "Additive: f(mn)=f(m)+f(n) for gcd(m,n)=1. log is completely additive."
     },
     {
       "id": "bounded-differences",
@@ -92,7 +92,7 @@
       "summary": "HasBoundedDifferences, log_bounded_differences",
       "startLine": 57,
       "endLine": 69,
-      "mathContext": "Bound: HasBoundedDifferences, log_bounded_differences"
+      "mathContext": "|f(n+1)-f(n)|<c for all n. Slowly varying additive function."
     },
     {
       "id": "erdos-1946",
@@ -100,7 +100,7 @@
       "summary": "DifferencesTendToZero, IsMonotone, erdos_1946_o1, erdos_1946_monotone",
       "startLine": 70,
       "endLine": 92,
-      "mathContext": "Mathematical content: DifferencesTendToZero, IsMonotone, erdos_1946_o1, erdos_1946_monotone"
+      "mathContext": "Erdos 1946: |f(n+1)-f(n)|->0 and f monotone implies f=A log."
     },
     {
       "id": "wirsing-theorem",
@@ -108,7 +108,7 @@
       "summary": "IsLogPlusO1, wirsing_theorem, wirsingConstant",
       "startLine": 93,
       "endLine": 111,
-      "mathContext": "Verified: IsLogPlusO1, wirsing_theorem, wirsingConstant"
+      "mathContext": "Wirsing: additive + bounded difference implies f(n)=A log n + O(1)."
     },
     {
       "id": "main-theorem",
@@ -116,7 +116,7 @@
       "summary": "erdos_491, erdos_491_explicit",
       "startLine": 112,
       "endLine": 129,
-      "mathContext": "Mathematical content: erdos_491, erdos_491_explicit"
+      "mathContext": "SOLVED: bounded-difference additive functions are exactly A log n."
     },
     {
       "id": "characterization-properties",
@@ -124,7 +124,7 @@
       "summary": "wirsing_constant_unique, wirsing_monotone_nonneg, log_unique_completely_additive",
       "startLine": 130,
       "endLine": 149,
-      "mathContext": "Mathematical content: wirsing_constant_unique, wirsing_monotone_nonneg, log_unique_completely_additive"
+      "mathContext": "Uniqueness: A determined by f(p)/log(p) for any prime p."
     },
     {
       "id": "examples",
@@ -132,7 +132,7 @@
       "summary": "log_satisfies_hypothesis, nonExample, non_example_bounded_diff, non_example_not_log_plus_O1",
       "startLine": 150,
       "endLine": 173,
-      "mathContext": "Bound: log_satisfies_hypothesis, nonExample, non_example_bounded_diff, non_example_not_log_plus_O1"
+      "mathContext": "log: additive, bounded diff. Omega: NOT bounded diff."
     },
     {
       "id": "prime-factorization",
@@ -140,7 +140,7 @@
       "summary": "additive_from_prime_powers, additiveFromPrimes, additive_from_primes_is_additive",
       "startLine": 174,
       "endLine": 191,
-      "mathContext": "Mathematical content: additive_from_prime_powers, additiveFromPrimes, additive_from_primes_is_additive"
+      "mathContext": "Additive f determined by values on prime powers."
     },
     {
       "id": "rate-of-convergence",
@@ -148,7 +148,7 @@
       "summary": "wirsing_explicit_bound, deviation_bounded_not_zero",
       "startLine": 192,
       "endLine": 209,
-      "mathContext": "Bound: wirsing_explicit_bound, deviation_bounded_not_zero"
+      "mathContext": "Wirsing explicit: |f(n)-A log n|=O(1)."
     },
     {
       "id": "related-problems",
@@ -156,7 +156,7 @@
       "summary": "erdos_897_connection, multiplicative_analog",
       "startLine": 210,
       "endLine": 226,
-      "mathContext": "Mathematical content: erdos_897_connection, multiplicative_analog"
+      "mathContext": "Multiplicative analog: |g(n+1)-g(n)|->0 implies g=n^{it}."
     },
     {
       "id": "summary",
@@ -164,7 +164,7 @@
       "summary": "erdos_491_summary and erdos_491_answer",
       "startLine": 227,
       "endLine": 249,
-      "mathContext": "Mathematical content: erdos_491_summary and erdos_491_answer"
+      "mathContext": "SOLVED. Bounded-diff additive = A log n."
     }
   ],
   "conclusion": {
