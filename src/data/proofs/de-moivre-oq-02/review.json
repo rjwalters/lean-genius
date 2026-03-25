@@ -98,28 +98,28 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Fix x-vs-cos θ notation: change descriptions, originalContributions, and overview.text to use cos θ notation matching the actual Lean theorems, or add an explicit note about the scope limitation (identities proved for cos θ values, not for general polynomial evaluation).",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "medium",
       "target": "enricher",
       "description": "Reframe 'commutative monoid' claim in originalContributions[0] and overview.historicalContext to accurately describe what is formalized (evaluation identity with monoid-like properties) vs what is not (no Monoid instance or homomorphism).",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "low",
       "target": "enricher",
       "description": "Fix theorem count: change '15 theorems' to '16 theorems' in conclusion.summary.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "low",
       "target": "enricher",
       "description": "Tone down overclaims: replace 'complete algebraic structure' with 'key algebraic identities' in conclusion; replace 'Extensive original derivations' with 'Clean original derivations' in assumptions.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
 
