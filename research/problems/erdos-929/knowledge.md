@@ -64,7 +64,29 @@ Back to the problem
 
 ## Sessions
 
-(No research sessions yet)
+### Session 2026-03-25 (Session 1) — Eliminate smoothBlockSet_pos_density sorry
+
+**Mode**: REVISIT
+**Outcome**: completed (sorry eliminated)
+
+#### What I Did
+- Proved `smoothBlockSet_pos_density`: the set smoothBlockSet k (k+1) has positive upper density
+- Proof strategy: the AP {M*i+1 : i ∈ ℕ} (M = (k+1)!) is contained in the smooth block set (via `arithProg_subset_smoothBlockSet`). At index n=M*t, the AP contributes ≥ t members to {0,...,n}. So densityRatio ≥ t/(M*t+1) ≥ 1/(M+1) > 0 frequently.
+- Used `Filter.le_limsup_of_frequently_le` + `densityRatio_isBoundedUnder` for the limsup bound
+- Used `Finset.card_image_of_injOn` + `Finset.card_le_card` for the cardinality injection
+- Overcame DecidablePred instance mismatch: `change` to `densityRatio S (M*t)` then `unfold densityRatio` to match exact Classical.decPred instance from Set.upperDensity definition
+
+#### Key Findings
+- DecidablePred instance from `haveI` does NOT match the one embedded in Set.upperDensity definition — must use `@Finset.filter` with explicit `Classical.decPred (· ∈ S)` to match
+- `div_le_div_iff` is deprecated; use `div_le_div_iff₀` in current Mathlib
+- `omega` cannot handle nonlinear multiplication (M*a = M*b); use `linarith` + `mul_left_cancel₀`
+
+#### Files Modified
+- `proofs/Proofs/Erdos929Problem.lean` — eliminated sorry in smoothBlockSet_pos_density
+
+#### Next Steps
+- smooth_threshold_2 (S(2)=3) may be provable: show x≤2 gives zero density, x=3 works via n≡2 mod 6
+- rosser_lower and fgkmt_upper are deep analytic NT — keep as axioms
 
 ---
 
