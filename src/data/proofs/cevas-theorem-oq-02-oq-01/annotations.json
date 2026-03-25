@@ -97,6 +97,21 @@
     ]
   },
   {
+    "id": "ann-ceva-oq02-oq01-04b-special-cases",
+    "proofId": "cevas-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 203,
+      "endLine": 216
+    },
+    "type": "insight",
+    "title": "Symmetry and Equal-Weight Special Case",
+    "content": "Two structural results. `weight_balance_symmetric` shows the Ceva condition $\\alpha_D \\alpha_E \\alpha_F = \\beta_D \\beta_E \\beta_F$ is symmetric (proved by `eq_comm` — equality is symmetric, so this is definitional). `equal_weight_ceva` shows that when all weights are equal ($\\alpha_i = \\beta_i = \\alpha$), the product $(\\alpha/\\alpha)^3 = 1$ holds trivially. This is the spherical analogue of the fact that medians of a planar triangle are concurrent — arc-bisecting cevians on the sphere are automatically concurrent.",
+    "mathContext": "Equal weights: $\\alpha_D = \\beta_D = \\alpha_E = \\beta_E = \\alpha_F = \\beta_F = \\alpha$. Then $\\alpha^3 = \\alpha^3$, so the Ceva condition holds. These are the 'spherical medians' — cevians to the midpoints of each arc.",
+    "significance": "supporting",
+    "relatedConcepts": ["eq_comm", "field_simp", "spherical medians", "midpoint of arc"],
+    "prerequisites": ["weight balance criterion"]
+  },
+  {
     "id": "ann-ceva-oq02-oq01-05-main-theorem",
     "proofId": "cevas-theorem-oq-02-oq-01",
     "range": {
