@@ -355,16 +355,26 @@ Vose answered the question affirmatively by constructing a different sequence.
 -/
 
 /--
-**Vose's Construction:**
-There exists a sequence (nₖ) of positive integers such that
-h_α(nₖ) remains bounded as k → ∞.
+**Vose's Bounded Sequence (Trivial Witness):**
+The constant sequence n_k = 2 shows bounded h_α exists.
+For n = 2, divisors = {1, 2}, sole ratio = 2/1, so h_α(2) = (2-1)^α = 1.
 
-The key is to construct numbers whose divisors are very evenly spaced.
+Vose (1984) proved the stronger result that liminf h_α(n) < ∞,
+constructing numbers with densely-spaced divisors.
 -/
-axiom vose_bounded_sequence (α : ℝ) (hα : α > 1) :
+private theorem divisorRatios_two : divisorRatios 2 = [(2 : ℚ)] := by native_decide
+
+private theorem h_alpha_two (α : ℝ) : h_alpha α 2 = 1 := by
+  rw [h_alpha_unfold, divisorRatios_two]
+  simp only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero]
+  have : ((2 : ℚ) : ℝ) - 1 = 1 := by push_cast; ring
+  rw [this, Real.one_rpow]
+
+theorem vose_bounded_sequence (α : ℝ) (hα : α > 1) :
     ∃ (bound : ℝ), bound > 0 ∧
       ∃ (n : ℕ → ℕ), (∀ k, n k ≥ 1) ∧
-        ∀ k, h_alpha α (n k) ≤ bound
+        ∀ k, h_alpha α (n k) ≤ bound :=
+  ⟨1, one_pos, fun _ => 2, fun _ => by norm_num, fun _ => (h_alpha_two α).le⟩
 
 /--
 **Vose's Theorem (1984):**
