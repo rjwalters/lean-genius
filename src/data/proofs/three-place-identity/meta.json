@@ -53,7 +53,10 @@
       "Connects to Quine's insight: Id_mem(x,y,z) iff (y in x iff z in x)—identity as indistinguishability relative to a predicate"
     ],
     "prerequisites": [
-      "Set theory and cardinality"
+      "Set theory (ZF axioms, membership relation, pairing/union operations)",
+      "Relational structures and interpretability between theories",
+      "Three-place relative identity: $I(x, y, z)$ meaning \"$x$ and $y$ are identical qua $z$\"",
+      "First-order logic and mutual interpretability of formal systems"
     ]
   },
   "sections": [
