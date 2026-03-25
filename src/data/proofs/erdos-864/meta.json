@@ -125,7 +125,27 @@
     {
       "targetId": "erdos-840",
       "relationship": "related",
-      "description": "Problem #840 studies the general k-collision case; #864 is the special case k = 1"
+      "description": "Problem #840 studies the general $k$-collision case (quasi-Sidon sets with at most $k$ collisions); #864 is the special case $k = 1$, asking for the maximum size of a set with at most one repeated pairwise sum"
+    },
+    {
+      "targetId": "erdos-30",
+      "relationship": "foundational",
+      "description": "Problem #30 defines Sidon sets (0 sum collisions) and establishes the classical bound $|A| \\leq \\sqrt{N} + O(N^{1/4})$. Problem #864 relaxes the Sidon condition to allow one collision, asking whether the $\\sqrt{2/3}$ improvement factor from the reflected construction $B \\cup (N - B)$ is optimal"
+    },
+    {
+      "targetId": "erdos-329",
+      "relationship": "related",
+      "description": "Problem #329 studies the maximum density of Sidon sets in $\\{1, \\ldots, N\\}$. Problem #864 extends this to almost-Sidon sets (one collision), where the conjectured maximum $(2/\\sqrt{3})\\sqrt{N}$ exceeds the Sidon bound $\\sqrt{N}$ by the factor $2/\\sqrt{3} \\approx 1.155$"
+    },
+    {
+      "targetId": "erdos-862",
+      "relationship": "related",
+      "description": "Problem #862 studies maximal Sidon subsets — Sidon sets that cannot be extended. Problem #864's almost-Sidon sets represent a controlled relaxation: allowing exactly one collision enables larger sets while retaining most of the sum-distinctness structure"
+    },
+    {
+      "targetId": "erdos-757",
+      "relationship": "related",
+      "description": "Problem #757 studies Sidon sets within families that are almost-Sidon. Both explore the transition zone between exact Sidon sets and their relaxations, with #864 quantifying the size gain from allowing one collision and #757 asking how large a true Sidon subset of an almost-Sidon family can be"
     }
   ],
   "leanFile": {
