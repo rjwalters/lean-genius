@@ -94,12 +94,20 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "File docstring outlining the proof strategy, `import Mathlib`, `open Filter Topology` for filter and topology operations, and the `ExponentialLimit` namespace with Part I header.",
+      "mathContext": "The `open Filter Topology` provides `atTop`, `nhdsWithin`, `Tendsto`, and `nhds` without qualification. The proof requires `Real.log`, casting lemmas, and division/absolute value infrastructure from Mathlib."
+    },
+    {
       "id": "main-limit",
-      "title": "The Main Limit Theorem",
-      "startLine": 27,
+      "title": "Part I: The Main Limit Theorem",
+      "startLine": 33,
       "endLine": 130,
-      "summary": "Proves the derivative $\\text{HasDerivAt}(\\log(1+t), 1, 0)$, the slope limit $\\log(1+h)/h \\to 1$, and the main theorem $(1+x/n)^n \\to \\exp(x)$ via composition of limits and continuity of exp.",
-      "mathContext": "The main theorem $(1+x/n)^n \\to \\exp(x)$ is proved from the derivative of $\\log$ at 1. The proof chain: $\\log'(1) = 1 \\Rightarrow \\log(1+h)/h \\to 1 \\Rightarrow n\\log(1+x/n) \\to x \\Rightarrow (1+x/n)^n \\to e^x$."
+      "summary": "Three theorems building to the main result: `hasDerivAt_log_one_plus` ($\\log'(1+t)|_{t=0} = 1$ via chain rule), `tendsto_log_one_plus_div` ($\\log(1+h)/h \\to 1$ via slope-derivative equivalence), and `tendsto_one_plus_div_pow_exp` ($(1+x/n)^n \\to e^x$ via six-step composition argument).",
+      "mathContext": "The proof chain: $\\log'(1) = 1 \\Rightarrow \\log(1+h)/h \\to 1 \\Rightarrow n\\log(1+x/n) \\to x \\Rightarrow (1+x/n)^n \\to e^x$. The main theorem splits into a trivial $x=0$ case and a six-step $x \\neq 0$ case."
     },
     {
       "id": "eulers-number",
@@ -135,24 +143,45 @@
     }
   ],
   "conclusion": {
-    "text": "This formalization proves the classical limit $(1+x/n)^n \\to e^x$ from first principles in Lean 4, using only the derivative of $\\log$ at 1 and the continuity of $\\exp$. The proof is entirely constructive: no axioms, no sorries, 215 lines, 10 theorems. The result fills a gap in Mathlib v4.26.0 — one of the most fundamental limits in analysis was not previously formalized. Applications include Euler's number characterization, continuous compounding in finance, and the Poisson limit theorem (proved in the parent formalization OQ-03).",
-    "futureDirections": [
-      "Contribute the main limit theorem to Mathlib as a PR",
-      "Prove the complex-valued version: $(1+z/n)^n \\to e^z$ for $z \\in \\mathbb{C}$",
-      "Prove monotonicity: $(1+1/n)^n$ is strictly increasing in $n$",
-      "Connect to the power series definition: $e^x = \\sum x^k/k!$"
+    "summary": "This formalization proves the classical limit $(1+x/n)^n \\to e^x$ from first principles in Lean 4, using only the derivative of $\\log$ at 1 and the continuity of $\\exp$. The proof is entirely constructive: no axioms, no sorries, 215 lines, 10 theorems. The result fills a gap in Mathlib v4.26.0.",
+    "implications": "**Mathlib contribution potential**: The main theorem `tendsto_one_plus_div_pow_exp` is a natural addition to Mathlib's `Analysis.SpecialFunctions.Exp` module, as it provides a standard characterization of the exponential function missing from the library.\n\n**Applications**: The limit directly underlies the Poisson limit theorem (proved in the parent formalization OQ-03), the definition of matrix exponentials via $\\lim (I + A/n)^n = e^A$, and the continuous-time limit of discrete stochastic processes.\n\n**Proof technique**: The six-step argument — derivative → slope → filter composition → algebraic rewrite → limit product → continuity of exp → exp/log cancellation — is a template for proving similar characterizations of special functions from their derivative properties.",
+    "openQuestions": [
+      "Can the main limit theorem be contributed to Mathlib? The proof uses standard Mathlib infrastructure and the result is absent from v4.26.0",
+      "Prove the complex-valued version: $(1+z/n)^n \\to e^z$ for $z \\in \\mathbb{C}$, generalizing from $\\mathbb{R}$ — this requires the complex logarithm branch cut analysis",
+      "Prove monotonicity: $(1+1/n)^n$ is strictly increasing in $n$, which combined with the upper bound $(1+1/n)^n \\leq e$ gives the bounded monotone convergence proof of Euler's constant",
+      "Connect to the power series definition: the binomial expansion $(1+x/n)^n = \\sum_{k=0}^n \\binom{n}{k}(x/n)^k$ converges term-by-term to $\\sum x^k/k! = e^x$"
     ]
   },
   "crossReferences": [
     {
       "targetId": "binomial-theorem-oq-03",
       "relationship": "parent",
-      "description": "Parent formalization of the binomial distribution, which first proved this limit theorem en route to the Poisson limit."
+      "description": "Parent formalization of the binomial distribution, which first proved this limit theorem en route to the Poisson limit"
     },
     {
       "targetId": "binomial-theorem",
       "relationship": "ancestor",
-      "description": "The binomial theorem (x+y)^n = Σ C(n,k) x^k y^(n-k), the algebraic foundation."
+      "description": "The binomial theorem $(x+y)^n = \\sum \\binom{n}{k} x^k y^{n-k}$ is the algebraic foundation — the binomial expansion of $(1+x/n)^n$ converges term-by-term to the Taylor series $\\sum x^k/k!$"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "Hermite's proof that $e$ is transcendental (1873) builds on the properties of $e$ established by limits like $(1+1/n)^n \\to e$"
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's identity $e^{i\\pi} + 1 = 0$ connects the exponential limit to complex analysis — the complex version $(1+z/n)^n \\to e^z$ evaluated at $z = i\\pi$ gives the identity"
+    },
+    {
+      "targetId": "taylor-theorem",
+      "relationship": "related",
+      "description": "Taylor's theorem provides the power series $e^x = \\sum x^k/k!$, an alternative characterization of exp that can be derived from the binomial expansion of $(1+x/n)^n$"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's formula $n! \\sim \\sqrt{2\\pi n}(n/e)^n$ involves $e$ through $e^{-n} = \\lim_{m\\to\\infty}(1-n/m)^m$, connecting to the decay limit proved here"
     }
   ]
 }
