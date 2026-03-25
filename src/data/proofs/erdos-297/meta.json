@@ -79,9 +79,11 @@
       "**OEIS Connection:** The sequence of Egyptian fraction representation counts is catalogued as A092670"
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Number theory (primes, divisibility)",
-      "Combinatorics (counting, extremal problems)"
+      "Egyptian fractions (unit fraction sums to 1)",
+      "Counting subsets with sum constraints",
+      "Entropy and exponential growth rates",
+      "Greedy algorithms for fractions",
+      "Harmonic numbers and partial sums"
     ]
   },
   "sections": [
@@ -91,7 +93,7 @@
       "summary": "harmonicSum, IsEgyptianRepresentation, subsets, egyptianCount",
       "startLine": 49,
       "endLine": 73,
-      "mathContext": "Mathematical content: harmonicSum, IsEgyptianRepresentation, subsets, egyptianCount"
+      "mathContext": "Egyptian fraction representation: $\\\\sum_{n \\\\in S} 1/n = 1$ with $S \\\\subset \\\\mathbb{N}$ finite. Counting function $g(N)$ = number of such subsets $\\\\subseteq [N]$."
     },
     {
       "id": "examples",
@@ -99,7 +101,7 @@
       "summary": "singleton_one_is_egyptian, two_three_six, two_four_five_twenty, two_three_seven_fortytwo, at_least_three_representations",
       "startLine": 74,
       "endLine": 103,
-      "mathContext": "Mathematical content: singleton_one_is_egyptian, two_three_six, two_four_five_twenty, two_three_seven_fortytwo, at_least_three_representations"
+      "mathContext": "Small: $\\\\{2,3,6\\\\}$, $\\\\{2,4,5,20\\\\}$ sum to 1. For $N = 6$: count all valid subsets."
     },
     {
       "id": "basic-bounds",
@@ -107,7 +109,7 @@
       "summary": "egyptianCount_finite, trivial_upper_bound, trivial_lower_bound",
       "startLine": 104,
       "endLine": 124,
-      "mathContext": "Bound: egyptianCount_finite, trivial_upper_bound, trivial_lower_bound"
+      "mathContext": "egyptianCount_finite, trivial_upper_bound, trivial_lower_bound"
     },
     {
       "id": "central-question",
@@ -115,7 +117,7 @@
       "summary": "hasSubexponentialGrowth definition",
       "startLine": 125,
       "endLine": 135,
-      "mathContext": "Formal definition: hasSubexponentialGrowth definition"
+      "mathContext": "hasSubexponentialGrowth definition"
     },
     {
       "id": "steinerberger",
@@ -123,7 +125,7 @@
       "summary": "steinerbergerConstant, steinerberger_upper_bound axiom (2^{0.93N})",
       "startLine": 136,
       "endLine": 152,
-      "mathContext": "steinerbergerConstant, steinerberger_upper_bound axiom ($$2^{{0.93N}$}$)"
+      "mathContext": "steinerbergerConstant, steinerberger_upper_bound axiom (2^{0.93N})"
     },
     {
       "id": "liu-sawhney",
@@ -131,7 +133,7 @@
       "summary": "liuSawhneyConstant, liuSawhney_constant_bounds, liuSawhney_asymptotic axiom",
       "startLine": 153,
       "endLine": 180,
-      "mathContext": "Axiomatized: liuSawhneyConstant, liuSawhney_constant_bounds, liuSawhney_asymptotic axiom"
+      "mathContext": "liuSawhneyConstant, liuSawhney_constant_bounds, liuSawhney_asymptotic axiom"
     },
     {
       "id": "conlon-et-al",
@@ -139,7 +141,7 @@
       "summary": "conlon_et_al_asymptotic, egyptianCountTarget, conlon_et_al_general",
       "startLine": 181,
       "endLine": 209,
-      "mathContext": "Mathematical content: conlon_et_al_asymptotic, egyptianCountTarget, conlon_et_al_general"
+      "mathContext": "conlon_et_al_asymptotic, egyptianCountTarget, conlon_et_al_general"
     },
     {
       "id": "mathoverflow-precedent",
@@ -147,7 +149,7 @@
       "summary": "egyptianCountLeq, mathoverflow_2017_asymptotic",
       "startLine": 210,
       "endLine": 226,
-      "mathContext": "Mathematical content: egyptianCountLeq, mathoverflow_2017_asymptotic"
+      "mathContext": "egyptianCountLeq, mathoverflow_2017_asymptotic"
     },
     {
       "id": "intuition",
@@ -155,7 +157,7 @@
       "summary": "heuristic_expected_sum_grows showing harmonic series divergence",
       "startLine": 227,
       "endLine": 242,
-      "mathContext": "Mathematical content: heuristic_expected_sum_grows showing harmonic series divergence"
+      "mathContext": "heuristic_expected_sum_grows showing harmonic series divergence"
     },
     {
       "id": "main-results",
@@ -163,7 +165,7 @@
       "summary": "erdos_297_main theorem with full asymptotic, erdos_297_answer axiom",
       "startLine": 243,
       "endLine": 277,
-      "mathContext": "Verified: erdos_297_main theorem with full asymptotic, erdos_297_answer axiom"
+      "mathContext": "erdos_297_main theorem with full asymptotic, erdos_297_answer axiom"
     },
     {
       "id": "summary",
@@ -171,7 +173,7 @@
       "summary": "erdos_297_solved theorem combining main results",
       "startLine": 278,
       "endLine": 301,
-      "mathContext": "Verified: erdos_297_solved theorem combining main results"
+      "mathContext": "SOLVED: $g(N) = 2^{(0.91+o(1))N}$. Exponentially many subsets of $[N]$ have reciprocal sum exactly 1."
     }
   ],
   "conclusion": {

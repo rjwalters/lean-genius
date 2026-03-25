@@ -42,10 +42,11 @@
       "**Monotonicity Properties:** f(n;r,k) is non-decreasing in both n (more vertices allow more edges) and k (weaker matching avoidance condition)"
     ],
     "prerequisites": [
-      "Hypergraph theory: r-uniform hypergraphs, matchings, and independent edges",
-      "Binomial coefficients Nat.choose and combinatorial identities (Mathlib.Data.Nat.Choose.Basic)",
-      "Extremal set theory: Turan-type problems and the shifting technique",
-      "Finset operations for hyperedge sets and matching predicates (Mathlib.Data.Finset.Basic)"
+      "Extremal hypergraph theory ($r$-uniform, matchings)",
+      "Binomial coefficients and combinatorial identities",
+      "Shifting/compression technique (Frankl)",
+      "Container method for hypergraphs",
+      "Sunflower structures in set families"
     ]
   },
   "sections": [
@@ -55,7 +56,7 @@
       "summary": "Module documentation describing the Erdős Matching Conjecture, imports for Finset, Nat.Choose, and combinatorial infrastructure",
       "startLine": 1,
       "endLine": 40,
-      "mathContext": "Formal definition: Module documentation describing the Erdős Matching Conjecture, imports for Finset, Nat.Choose, and combinatorial infrastructure"
+      "mathContext": "Erdos Matching Conjecture: determine $f(n;r,k)$ = max edges in an $r$-uniform hypergraph on $n$ vertices with no $k$ pairwise disjoint edges (no matching of size $k$)."
     },
     {
       "id": "basics",
@@ -63,7 +64,7 @@
       "summary": "Definitions of r-uniform hypergraphs (RUniformHypergraph) and matchings (IsMatching) as collections of pairwise disjoint edges",
       "startLine": 41,
       "endLine": 68,
-      "mathContext": "Formal definition: Definitions of r-uniform hypergraphs (RUniformHypergraph) and matchings (IsMatching) as collections of pairwise disjoint edges"
+      "mathContext": "$r$-uniform hypergraph: every edge has exactly $r$ vertices. Matching of size $k$: $k$ pairwise disjoint edges. `matchingNumber` = max matching size."
     },
     {
       "id": "function",
@@ -71,7 +72,7 @@
       "summary": "Definition of erdosMatchingFunction as the supremum of edge counts over r-uniform hypergraphs on n vertices avoiding k-matchings",
       "startLine": 69,
       "endLine": 80,
-      "mathContext": "Formal definition: Definition of erdosMatchingFunction as the supremum of edge counts over r-uniform hypergraphs on n vertices avoiding k-matchings"
+      "mathContext": "$f(n;r,k) = \\\\max\\\\{|\\\\mathcal{E}| : \\\\mathcal{H} \\\\text{ is } r\\\\text{-uniform on } n \\\\text{ vertices, matching number} < k\\\\}$."
     },
     {
       "id": "formula",
@@ -79,7 +80,7 @@
       "summary": "Two extremal constructions: complete r-graph on rk-1 vertices and (k-1)-sunflower construction, with conjecture that f equals their maximum",
       "startLine": 81,
       "endLine": 100,
-      "mathContext": "Mathematical content: Two extremal constructions: complete r-graph on rk-1 vertices and (k-1)-sunflower construction, with conjecture that f equals their maximum"
+      "mathContext": "Two extremal families: (1) complete $r$-graph on $rk-1$ vertices: $\\\\binom{rk-1}{r}$ edges; (2) $(k-1)$-sunflower: $\\\\binom{n}{r} - \\\\binom{n-k+1}{r}$ edges. Conjecture: $f = \\\\max$ of these two."
     },
     {
       "id": "r2",
@@ -87,7 +88,7 @@
       "summary": "Erdős-Gallai theorem completely solving the graph case: f(n;2,k) = max(C(2k-1,2), n(k-1)-C(k,2))",
       "startLine": 101,
       "endLine": 116,
-      "mathContext": "Verified: Erdős-Gallai theorem completely solving the graph case: f(n;2,k) = max(C(2k-1,2), n(k-1)-C(k,2))"
+      "mathContext": "Erdos-Gallai (graph case): $f(n;2,k) = \\\\max(\\\\binom{2k-1}{2}, \\\\binom{n}{2} - \\\\binom{n-k+1}{2})$. Completely solved for $r=2$."
     },
     {
       "id": "r3",
@@ -95,7 +96,7 @@
       "summary": "Łuczak-Mieczkowska (2014) confirmation for 3-uniform hypergraphs using container methods",
       "startLine": 117,
       "endLine": 127,
-      "mathContext": "Mathematical content: Łuczak-Mieczkowska (2014) confirmation for 3-uniform hypergraphs using container methods"
+      "mathContext": "Luczak-Mieczkowska (2014): confirmed for $r=3$ using the container method from hypergraph regularity."
     },
     {
       "id": "partial",
@@ -103,7 +104,7 @@
       "summary": "Progressive improvements: Kleitman (1968), Frankl special cases, Huang-Loh-Sudakov large n regime (n ≥ 3kr²)",
       "startLine": 128,
       "endLine": 149,
-      "mathContext": "Progressive improvements: Kleitman (1968), Frankl special cases, Huang-Loh-Sudakov large n regime (n $\\geq$ 3kr²)"
+      "mathContext": "Progressive improvements: Kleitman (1968), Frankl special cases, Huang-Loh-Sudakov (2012) for large $n$. Each narrowed the gap for specific $(r,k)$ ranges."
     },
     {
       "id": "upper",
@@ -111,7 +112,7 @@
       "summary": "Frankl's (k-1)·C(n-1,r-1) bound via the shifting technique, the best known general upper bound",
       "startLine": 150,
       "endLine": 165,
-      "mathContext": "Bound: Frankl's (k-1)·C(n-1,r-1) bound via the shifting technique, the best known general upper bound"
+      "mathContext": "Frankl: $f(n;r,k) \\\\leq (k-1)\\\\binom{n-1}{r-1}$. Proved via the shifting technique. Best known general upper bound."
     },
     {
       "id": "lower",
@@ -119,7 +120,7 @@
       "summary": "Construction-based lower bounds establishing the conjectured value as achievable",
       "startLine": 166,
       "endLine": 189,
-      "mathContext": "Bound: Construction-based lower bounds establishing the conjectured value as achievable"
+      "mathContext": "Constructions achieving $\\\\max(\\\\binom{rk-1}{r}, \\\\binom{n}{r}-\\\\binom{n-k+1}{r})$ edges with matching number $< k$. These establish the conjectured value as a lower bound."
     },
     {
       "id": "mono",
@@ -127,7 +128,7 @@
       "summary": "f(n;r,k) is non-decreasing in n and k: adding vertices or relaxing the matching condition cannot decrease the extremal number",
       "startLine": 190,
       "endLine": 201,
-      "mathContext": "Mathematical content: f(n;r,k) is non-decreasing in n and k: adding vertices or relaxing the matching condition cannot decrease the extremal number"
+      "mathContext": "$f(n;r,k)$ is non-decreasing in $n$ (adding vertices helps) and in $k$ (relaxing matching constraint helps)."
     },
     {
       "id": "asymptotic",
@@ -135,7 +136,7 @@
       "summary": "Large n regime where the sunflower construction dominates and asymptotic analysis of the extremal function",
       "startLine": 202,
       "endLine": 218,
-      "mathContext": "Mathematical content: Large n regime where the sunflower construction dominates and asymptotic analysis of the extremal function"
+      "mathContext": "For $n \\\\gg rk$: the sunflower construction dominates. Asymptotically $f(n;r,k) \\\\sim (k-1)\\\\binom{n-1}{r-1}/(r)$."
     },
     {
       "id": "open",
@@ -143,7 +144,7 @@
       "summary": "Statement that the conjecture remains open for r ≥ 4, with summary of known partial results and current state",
       "startLine": 219,
       "endLine": 238,
-      "mathContext": "Statement that the conjecture remains open for r $\\geq$ 4, with summary of known partial results and current state"
+      "mathContext": "OPEN for $r \\\\geq 4$ in general. Known cases: $r=2$ (Erdos-Gallai), $r=3$ (Luczak-Mieczkowska), $n$ sufficiently large (Frankl 2013+)."
     }
   ],
   "conclusion": {

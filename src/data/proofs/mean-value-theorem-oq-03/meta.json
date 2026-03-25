@@ -102,7 +102,7 @@
       "summary": "The central theorem: for $f : \\mathbb{R} \\to E$ with $\\|f'(x)\\| \\leq C$ on $[a,b]$, $\\|f(x) - f(a)\\| \\leq C \\cdot (x-a)$ for all $x \\in [a,b]$. One-line proof delegating to Mathlib's `norm_image_sub_le_of_norm_deriv_le_segment'`.",
       "startLine": 49,
       "endLine": 82,
-      "mathContext": "For $f : \\mathbb{R} \\to E$ differentiable on $[a,b]$ with $\\|f'(x)\\| \\leq C$, the mean value inequality states $\\|f(x) - f(a)\\| \\leq C \\cdot (x - a)$. This replaces the scalar equality $f'(c) = \\frac{f(b)-f(a)}{b-a}$ with a norm bound valid in any normed space $E$."
+      "mathContext": "The central theorem: for $f : \\mathbb{R} \\to E$ with $\\|f'(x)\\| \\leq C$ on $[a,b]$, $\\|f(x) - f(a)\\| \\leq C \\cdot (x-a)$ for all $x \\in [a,b]$. One-line proof delegating to Mathlib's `norm_image_sub_l"
     },
     {
       "id": "scalar-special-case",
@@ -110,7 +110,7 @@
       "summary": "When $E = \\mathbb{R}$, the vector inequality reduces to $|f(x) - f(a)| \\leq C(x-a)$. The classical scalar MVT ($\\exists c, f'(c) = \\text{slope}$) is strictly stronger, using `exists_deriv_eq_slope`.",
       "startLine": 83,
       "endLine": 114,
-      "mathContext": "Specializing to $E = \\mathbb{R}$ yields $|f(x) - f(a)| \\leq C(x-a)$, while the classical equality form gives $\\exists c \\in (a,b),\\; f'(c) = \\frac{f(b)-f(a)}{b-a}$. The equality is strictly stronger because it uses the intermediate value theorem, which has no vector analogue."
+      "mathContext": "For $E = \\mathbb{R}$: $|f(b) - f(a)| \\leq \\sup_{t \\in (a,b)} |f(t)| \\cdot (b-a)$. This is the classical scalar MVT inequality (without the intermediate value conclusion)."
     },
     {
       "id": "counterexample",
@@ -118,7 +118,7 @@
       "summary": "Canonical counterexample: $f(t) = (\\cos t, \\sin t)$ has $f(2\\pi) = f(0)$ but $\\|f'(t)\\| = 1$ everywhere. Proves $\\cos(2\\pi) = 1 \\wedge \\sin(2\\pi) = 0$ and $\\sin^2 t + \\cos^2 t = 1$.",
       "startLine": 115,
       "endLine": 145,
-      "mathContext": "The map $f(t) = (\\cos t, \\sin t)$ satisfies $f(2\\pi) = f(0)$ and $\\|f'(t)\\| = \\sqrt{\\sin^2 t + \\cos^2 t} = 1$, yet no $c$ satisfies $f'(c) = \\mathbf{0}$. This shows the scalar MVT equality $f'(c) = \\frac{f(b)-f(a)}{b-a}$ cannot hold for $\\mathbb{R} \\to \\mathbb{R}^2$."
+      "mathContext": "Canonical: $f(t) = (\\cos t, \\sin t)$ on $[0, 2\\pi]$. Then $f(2\\pi) - f(0) = 0$ but $\\|f(t)\\| = 1$ everywhere. Equality $f(b)-f(a) = f(c)(b-a)$ fails: no vector analogue of Rolles theorem."
     },
     {
       "id": "lipschitz",
@@ -126,7 +126,7 @@
       "summary": "Derivative bound $\\Rightarrow$ Lipschitz: if $\\|Df(x)\\|_{\\text{op}} \\leq L$ on a convex set, then $f$ is $L$-Lipschitz. Also proves: zero derivative implies constant function via MVT with $C = 0$.",
       "startLine": 146,
       "endLine": 186,
-      "mathContext": "If $\\|Df(x)\\|_{\\mathrm{op}} \\leq L$ for all $x$ in a convex set $S$, then $\\|f(x) - f(y)\\| \\leq L\\,\\|x - y\\|$ for all $x, y \\in S$ (Lipschitz continuity). Setting $L = 0$ gives the constant-function theorem: $Df \\equiv 0 \\Rightarrow f$ is constant."
+      "mathContext": "Derivative bound $\\Rightarrow$ Lipschitz: if $\\|Df(x)\\|_{\\text{op}} \\leq C$ on $[a,b]$, then $\\|f(x) - f(y)\\| \\leq C|x-y|$ for all $x,y \\in [a,b]$. The vector MVT IS a Lipschitz estimate."
     },
     {
       "id": "contraction-bounds",
@@ -134,7 +134,7 @@
       "summary": "If $\\|T'(x)\\| \\leq q$ on $[a,b]$, then $\\|T(x) - T(a)\\| \\leq q(x-a)$. Foundation for proving contraction mappings are contractive.",
       "startLine": 187,
       "endLine": 211,
-      "mathContext": "Applying the MVT inequality to a map $T$ with $\\|T'(x)\\| \\leq q < 1$ on $[a,b]$ yields $\\|T(x) - T(a)\\| \\leq q(x-a)$. This is the key estimate for showing that $T$ is a contraction: $\\|T(x) - T(y)\\| \\leq q\\,\\|x - y\\|$."
+      "mathContext": "If $\\|T(x)\\| \\leq q < 1$ on $[a,b]$, then $T$ is a contraction: $\\|T(x) - T(y)\\| \\leq q|x-y|$. Foundation for Banach fixed-point theorem applications via the vector MVT."
     },
     {
       "id": "displacement-bound",
@@ -142,7 +142,7 @@
       "summary": "Simplest form: $\\|f(T) - f(0)\\| \\leq CT$ for $\\|f'\\| \\leq C$ on $[0,T]$. Connection to Gronwall's inequality, which generalizes to $f'(t) \\leq \\alpha f(t)$.",
       "startLine": 212,
       "endLine": 238,
-      "mathContext": "The displacement bound $\\|f(T) - f(0)\\| \\leq C \\cdot T$ follows from $\\sup_{t \\in [0,T]} \\|f'(t)\\| \\leq C$. Gronwall's inequality generalizes this to $u'(t) \\leq \\alpha\\, u(t)$, yielding the exponential bound $u(t) \\leq u(0)\\, e^{\\alpha t}$."
+      "mathContext": "Simplest form: $\\|f(T) - f(0)\\| \\leq CT$ when $\\|f\\| \\leq C$. This is the fundamental estimate for bounding displacement by velocity in Banach spaces."
     },
     {
       "id": "banach-space",
@@ -150,7 +150,7 @@
       "summary": "For $f : E \\to F$ between normed spaces, Fréchet differentiable on a convex set with $\\|Df\\| \\leq C$: $\\|f(b) - f(a)\\| \\leq C \\cdot \\|b-a\\|$. Foundation for implicit function theorem and contraction mapping theorem.",
       "startLine": 239,
       "endLine": 272,
-      "mathContext": "For Banach spaces $E, F$ and $f : E \\to F$ Fréchet differentiable on a convex set $S$ with $\\|Df(x)\\|_{\\mathrm{op}} \\leq C$ for all $x \\in S$: $\\|f(b) - f(a)\\| \\leq C\\,\\|b - a\\|$. This generalizes the one-dimensional MVT inequality from $\\mathbb{R} \\to E$ to arbitrary $E \\to F$."
+      "mathContext": "For $f : E \\to F$ between normed spaces, Fréchet differentiable on a convex set with $\\|Df\\| \\leq C$: $\\|f(b) - f(a)\\| \\leq C \\cdot \\|b-a\\|$. Foundation for implicit function theorem and contraction m"
     },
     {
       "id": "ode-uniqueness",
@@ -158,7 +158,7 @@
       "summary": "For $f, g$ with $f(a) = g(a)$ and $\\|f'(t) - g'(t)\\| \\leq q$: $\\|f(x) - g(x)\\| \\leq q(x-a)$. Core argument behind Picard-Lindelöf uniqueness, applying MVT to $h = f - g$.",
       "startLine": 273,
       "endLine": 306,
-      "mathContext": "Setting $h = f - g$ with $h(a) = 0$ and $\\|h'(t)\\| \\leq q$ on $[a,b]$, the MVT inequality gives $\\|f(x) - g(x)\\| = \\|h(x)\\| \\leq q(x-a)$. In Picard-Lindelof theory, if $f, g$ solve $y' = F(t,y)$ with Lipschitz constant $L$, this yields $\\|f(x)-g(x)\\| \\leq L \\int_a^x \\|f-g\\|\\,dt$."
+      "mathContext": "Picard-Lindelöf application: if $f(t) = g(t)$ a.e. and $f(a) = g(a)$, then $f = g$ on $[a,b]$. More generally, $\\|f(t) - g(t)\\| \\leq q$ gives Gronwall-type estimates."
     },
     {
       "id": "scalar-vs-vector",
@@ -166,7 +166,7 @@
       "summary": "Strict monotonicity ($f' > 0 \\Rightarrow f(a) < f(b)$) requires the scalar MVT equality. Antiderivative uniqueness ($f' = g' \\Rightarrow f - g$ constant) uses the vector inequality with $C = 0$.",
       "startLine": 307,
       "endLine": 363,
-      "mathContext": "Strict monotonicity ($f' > 0$ on $(a,b) \\Rightarrow f(a) < f(b)$) requires the scalar equality $f'(c) = \\frac{f(b)-f(a)}{b-a}$ to transfer the sign. Antiderivative uniqueness ($f' = g' \\Rightarrow f - g \\equiv \\text{const}$) only needs the vector inequality with $C = 0$: $\\|(f-g)(b) - (f-g)(a)\\| \\leq 0$."
+      "mathContext": "Strict monotonicity ($f > 0 \\Rightarrow f(a) < f(b)$) requires the ordering of $\\mathbb{R}$. In $\\mathbb{R}^n$ or Banach spaces, only the norm inequality $\\|\\Delta f\\| \\leq \\sup\\|f\\| \\cdot \\Delta t$ survives."
     },
     {
       "id": "banach-extensions",
@@ -174,7 +174,7 @@
       "summary": "Three additional variants: Banach MVT with `DifferentiableAt`, with `HasFDerivWithinAt`, and zero Fréchet derivative implies constant. Plus Lipschitz from pointwise differentiability.",
       "startLine": 389,
       "endLine": 461,
-      "mathContext": "Extended Banach space results: (1) $\\|f(b)-f(a)\\| \\leq C\\,\\|b-a\\|$ using pointwise $\\mathrm{DifferentiableAt}$ hypotheses, (2) the same using $\\mathrm{HasFDerivWithinAt}$, (3) $Df \\equiv 0$ on a convex set implies $f$ constant, and (4) pointwise derivative bounds imply $\\mathrm{LipschitzOnWith}$."
+      "mathContext": "Three variants: (1) `DifferentiableAt` version (point-by-point), (2) `DifferentiableOn` with open interior, (3) `HasDerivWithinAt` for boundary-inclusive intervals. All yield the same $\\|\\cdot\\|$-inequality."
     }
   ],
   "conclusion": {

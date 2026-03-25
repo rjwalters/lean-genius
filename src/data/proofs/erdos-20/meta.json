@@ -64,8 +64,11 @@
       "**Broad TCS impact:** Sunflower bounds connect to the matrix multiplication exponent via the Cohn-Umans framework, to ACC$^0$ circuit lower bounds via Razborov's method, and to property testing through characterizations of testable set properties."
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Combinatorics (counting, extremal problems)"
+      "Extremal set theory ($n$-uniform families)",
+      "Sunflower lemma (Erdos-Rado 1960)",
+      "Probabilistic combinatorics (random restriction)",
+      "Circuit complexity (ACC$^0$ bounds)",
+      "Entropy methods in combinatorics"
     ]
   },
   "sections": [
@@ -75,7 +78,7 @@
       "summary": "Imports Mathlib and opens `Set`/`Finset` namespaces; declares type variable $\\alpha$ with `DecidableEq`",
       "startLine": 26,
       "endLine": 33,
-      "mathContext": "Imports Mathlib and opens `Set`/`Finset` namespaces; declares type variable $\\$\\alpha$$ with `DecidableEq`"
+      "mathContext": "Set families on a finite type. Sunflower: $k$ sets with common core $C = \\\\bigcap$."
     },
     {
       "id": "definitions",
@@ -83,7 +86,7 @@
       "summary": "Defines $n$-uniform families (`IsUniform`), sunflower core ($C = \\bigcap_i S_i$), $k$-sunflowers ($S_i \\cap S_j = C$ for all $i \\neq j$), and containment",
       "startLine": 34,
       "endLine": 54,
-      "mathContext": "Formal definition: Defines $n$-uniform families (`IsUniform`), sunflower core ($C = \\bigcap_i S_i$), $k$-sunflowers ($S_i \\cap S_j = C$ for all $i \\neq j$), and containment"
+      "mathContext": "$n$-uniform family: all sets have $|A| = n$. Sunflower of size $k$: $A_1, \\\\ldots, A_k$ with $A_i \\\\cap A_j = C$ for all $i \\\\neq j$. Petals: $A_i \\\\setminus C$."
     },
     {
       "id": "sunflower-number",
@@ -91,7 +94,7 @@
       "summary": "Axiomatizes $f(n,k) = \\min\\{m : \\text{every } n\\text{-uniform family of size } m \\text{ has a } k\\text{-sunflower}\\}$ and its finiteness",
       "startLine": 55,
       "endLine": 65,
-      "mathContext": "Axiomatized: Axiomatizes $f(n,k) = \\min\\{m : \\text{every } n\\text{-uniform family of size } m \\text{ has a } k\\text{-sunflower}\\}$ and its finiteness"
+      "mathContext": "$f(n,k)$: min $m$ such that every $n$-uniform family of size $m$ contains a $k$-sunflower. The sunflower lemma gives upper bounds."
     },
     {
       "id": "erdos-rado",
@@ -99,7 +102,7 @@
       "summary": "Original upper bound $f(n,k) \\leq (k-1)^n \\cdot n!$ with explicit bound definition `erdosRadoBound`",
       "startLine": 66,
       "endLine": 78,
-      "mathContext": "Formal definition: Original upper bound $f(n,k) \\leq (k-1)^n \\cdot n!$ with explicit bound definition `erdosRadoBound`"
+      "mathContext": "Erdos-Rado (1960): $f(n,k) \\\\leq (k-1)^n \\\\cdot n! + 1$. Proved by greedy: if no sunflower, family has bounded size."
     },
     {
       "id": "conjecture",
@@ -107,7 +110,7 @@
       "summary": "OPEN conjecture: $\\forall k \\geq 3, \\exists c_k > 0 : f(n,k) < c_k^n$, plus the critical $k=3$ special case",
       "startLine": 79,
       "endLine": 92,
-      "mathContext": "Mathematical content: OPEN conjecture: $\\forall k \\geq 3, \\exists c_k > 0 : f(n,k) < c_k^n$, plus the critical $k=3$ special case"
+      "mathContext": "OPEN: $\\\\exists c_k$ with $f(n,k) \\\\leq c_k^n$ (exponential in $n$, not factorial). Would remove the $n!$ factor."
     },
     {
       "id": "progress",
@@ -115,7 +118,7 @@
       "summary": "Three milestones: Kostochka (1997) $o(n!)$ factor, ALWZ (2020) $(Ck\\log n \\log\\log n)^n$, Rao (2020) $(Ck\\log n)^n$",
       "startLine": 93,
       "endLine": 112,
-      "mathContext": "Three milestones: Kostochka (1997) $o(n!)$ factor, ALWZ (2020) $(Ck\\$\\log n$ \\log\\$\\log n$)^n$, Rao (2020) $(Ck\\$\\log n$)^n$"
+      "mathContext": "Kostochka (1997): $o(n!)$ factor. ALWZ (2020): $f(n,k) \\\\leq (Ck\\\\log(kn))^n$. Bell-Li-Tao (2021): further improvements."
     },
     {
       "id": "gap",
@@ -123,7 +126,7 @@
       "summary": "Defines `RequiredBound` ($\\exists c > 0: f(n,k) \\leq c^n$) and proves its equivalence to the full conjecture via strict/non-strict inequality manipulation",
       "startLine": 113,
       "endLine": 132,
-      "mathContext": "Formal definition: Defines `RequiredBound` ($\\exists c > 0: f(n,k) \\leq c^n$) and proves its equivalence to the full conjecture via strict/non-strict inequality manipulation"
+      "mathContext": "Gap: best upper $\\\\leq (C\\\\log n)^n$ vs conjectured $c_k^n$. Still a $(\\\\log n)^n$ factor from the conjecture."
     },
     {
       "id": "special-cases",
@@ -131,7 +134,7 @@
       "summary": "Exact values $f(n,2) = n+1$ and $f(2,3) = 6$; lower bound $f(n,k) \\geq (k-1)^n$ from product constructions",
       "startLine": 133,
       "endLine": 144,
-      "mathContext": "Bound: Exact values $f(n,2) = n+1$ and $f(2,3) = 6$; lower bound $f(n,k) \\geq (k-1)^n$ from product constructions"
+      "mathContext": "$f(n,2) = n+1$ (pigeonhole). $f(2,3) = 6$. Lower: $f(n,k) \\\\geq (k-1)^n$."
     },
     {
       "id": "examples",
@@ -139,7 +142,7 @@
       "summary": "Verified 3-sunflowers: $\\{1,2,3\\}, \\{1,4,5\\}, \\{1,6,7\\}$ (core $\\{1\\}$) and $\\{1,2\\}, \\{3,4\\}, \\{5,6\\}$ (empty core $\\emptyset$)",
       "startLine": 145,
       "endLine": 166,
-      "mathContext": "Mathematical content: Verified 3-sunflowers: $\\{1,2,3\\}, \\{1,4,5\\}, \\{1,6,7\\}$ (core $\\{1\\}$) and $\\{1,2\\}, \\{3,4\\}, \\{5,6\\}$ (empty core $\\emptyset$)"
+      "mathContext": "3-sunflower: $\\\\{1,2,3\\\\}, \\\\{1,4,5\\\\}, \\\\{1,6,7\\\\}$ with core $\\\\{1\\\\}$. Petals disjoint."
     },
     {
       "id": "applications",
@@ -147,7 +150,7 @@
       "summary": "Connections to matrix multiplication exponent, ACC$^0$ circuit lower bounds, and property testing in TCS",
       "startLine": 167,
       "endLine": 175,
-      "mathContext": "Bound: Connections to matrix multiplication exponent, ACC$^0$ circuit lower bounds, and property testing in TCS"
+      "mathContext": "Matrix multiplication ($\\\\omega$), circuit lower bounds (ACC$^0$), property testing. Sunflower bounds have wide algorithmic implications."
     },
     {
       "id": "status",
@@ -155,7 +158,7 @@
       "summary": "Detailed summary of known results, references (Erdős-Rado 1960, Kostochka 1997, ALWZ 2020, Rao 2020), and the OPEN status via `Classical.em`",
       "startLine": 176,
       "endLine": 206,
-      "mathContext": "Mathematical content: Detailed summary of known results, references (Erdős-Rado 1960, Kostochka 1997, ALWZ 2020, Rao 2020), and the OPEN status via `Classical.em`"
+      "mathContext": "OPEN for $k \\\\geq 3$. Best: $(Ck\\\\log(kn))^n$ (ALWZ 2020). Conjecture: $c_k^n$."
     }
   ],
   "conclusion": {

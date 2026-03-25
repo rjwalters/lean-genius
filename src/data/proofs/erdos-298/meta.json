@@ -80,10 +80,11 @@
       "**Connection to Egyptian fractions**: Every positive rational has an Egyptian fraction representation (ancient result). This problem asks about constrained representations."
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Number theory (primes, divisibility)",
-      "Asymptotic density and counting",
-      "Additive combinatorics (sumsets, density)"
+      "Egyptian fractions (unit fraction sums)",
+      "Density of integer sets (upper density $\\\\bar{d}$)",
+      "Greedy algorithm for Egyptian fractions",
+      "Erdos-Graham conjecture and Bloom theorem",
+      "Additive combinatorics (density implies structure)"
     ]
   },
   "sections": [
@@ -93,7 +94,7 @@
       "startLine": 1,
       "endLine": 23,
       "summary": "Problem statement, answer, and historical context.",
-      "mathContext": "Mathematical content: Problem statement, answer, and historical context."
+      "mathContext": "Does every $A \\\\subseteq \\\\mathbb{N}$ with positive upper density contain $S \\\\subset A$ finite with $\\\\sum_{n \\\\in S} 1/n = 1$? YES (Bloom 2021)."
     },
     {
       "id": "background",
@@ -101,7 +102,7 @@
       "startLine": 40,
       "endLine": 55,
       "summary": "Unit fractions, Egyptian fractions, and density definitions.",
-      "mathContext": "Formal definition: Unit fractions, Egyptian fractions, and density definitions."
+      "mathContext": "Unit fractions: $1/n$. Egyptian fraction representation: $1 = 1/a_1 + \\\\cdots + 1/a_k$ with distinct $a_i$. Density: $\\\\bar{d}(A) = \\\\limsup |A \\\\cap [1,N]|/N > 0$."
     },
     {
       "id": "definitions",
@@ -109,7 +110,7 @@
       "startLine": 56,
       "endLine": 90,
       "summary": "countUpTo, densityRatio, HasPosDensity, unitFractionSum, etc.",
-      "mathContext": "Mathematical content: countUpTo, densityRatio, HasPosDensity, unitFractionSum, etc."
+      "mathContext": "$A(N) = |A \\\\cap [1,N]|$. $\\\\bar{d}(A) = \\\\limsup A(N)/N$. Unit fraction sum: $\\\\sum_{n \\\\in S} 1/n$ for finite $S \\\\subset A$."
     },
     {
       "id": "examples",
@@ -117,7 +118,7 @@
       "startLine": 91,
       "endLine": 105,
       "summary": "Examples: {2,3,6}, {2,4,5,20}, {3,4,5,6,20} all sum to 1.",
-      "mathContext": "Mathematical content: Examples: {2,3,6}, {2,4,5,20}, {3,4,5,6,20} all sum to 1."
+      "mathContext": "$\\\\{2,3,6\\\\}$: $1/2+1/3+1/6=1$. $\\\\{2,4,5,20\\\\}$: $1/2+1/4+1/5+1/20=1$. Many Egyptian fraction representations of 1 exist."
     },
     {
       "id": "conjecture",
@@ -125,7 +126,7 @@
       "startLine": 106,
       "endLine": 135,
       "summary": "erdos_298_conjecture, bloom_2021, bloom_theorem.",
-      "mathContext": "Verified: erdos_298_conjecture, bloom_2021, bloom_theorem."
+      "mathContext": "Erdos-Graham conjecture: positive density $\\\\Rightarrow$ contains $S$ with $\\\\sum 1/n = 1$. SOLVED: Bloom (2021)."
     },
     {
       "id": "upper-density",
@@ -133,7 +134,7 @@
       "startLine": 136,
       "endLine": 163,
       "summary": "Stronger version with upper density; bloom_2021_upper.",
-      "mathContext": "Mathematical content: Stronger version with upper density; bloom_2021_upper."
+      "mathContext": "Stronger: holds for upper density (not just natural density). Bloom proves $\\\\bar{d}(A) > 0 \\\\Rightarrow \\\\exists S \\\\subset A$ with $\\\\sum 1/n = 1$."
     },
     {
       "id": "density-props",
@@ -141,7 +142,7 @@
       "startLine": 164,
       "endLine": 183,
       "summary": "Basic properties: monotonicity, finite sets have density 0.",
-      "mathContext": "Mathematical content: Basic properties: monotonicity, finite sets have density 0."
+      "mathContext": "Monotonicity: $A \\\\subseteq B \\\\Rightarrow \\\\bar{d}(A) \\\\leq \\\\bar{d}(B)$. Finite sets have density 0. $\\\\bar{d}(\\\\mathbb{N}) = 1$."
     },
     {
       "id": "egyptian",
@@ -149,7 +150,7 @@
       "startLine": 184,
       "endLine": 203,
       "summary": "HasEgyptianRep, egyptian_fraction_exists, one_has_egyptian_rep.",
-      "mathContext": "Mathematical content: HasEgyptianRep, egyptian_fraction_exists, one_has_egyptian_rep."
+      "mathContext": "Every positive rational has an Egyptian fraction representation (greedy algorithm). The question asks when the representation can be found WITHIN the set $A$."
     },
     {
       "id": "quantitative",
@@ -157,7 +158,7 @@
       "startLine": 204,
       "endLine": 224,
       "summary": "bloom_quantitative (finitary), sparse_counterexample.",
-      "mathContext": "Mathematical content: bloom_quantitative (finitary), sparse_counterexample."
+      "mathContext": "Bloom quantitative: if $\\\\bar{d}(A) > \\\\delta$, there exists $S \\\\subset A \\\\cap [1, N(\\\\delta)]$ with $\\\\sum 1/n = 1$. Effective bound on $N$."
     },
     {
       "id": "formalization",
@@ -165,7 +166,7 @@
       "startLine": 225,
       "endLine": 239,
       "summary": "Reference to Bloom-Mehta formalization.",
-      "mathContext": "Mathematical content: Reference to Bloom-Mehta formalization."
+      "mathContext": "Bloom-Mehta: formal verification of the proof in Lean/Mathlib (partial). One of few Erdos problems with a machine-checked proof."
     },
     {
       "id": "related",
@@ -173,7 +174,7 @@
       "startLine": 240,
       "endLine": 257,
       "summary": "Connection to Erdős #46 and #47.",
-      "mathContext": "Mathematical content: Connection to Erdős #46 and #47."
+      "mathContext": "Related to Erdos #46 (every $A$ with $\\\\sum 1/a = \\\\infty$ contains $S$ summing to 1) and #47 (coloring version)."
     },
     {
       "id": "summary",
@@ -181,7 +182,7 @@
       "startLine": 258,
       "endLine": 264,
       "summary": "erdos_298_solved theorem and final summary.",
-      "mathContext": "Verified: erdos_298_solved theorem and final summary."
+      "mathContext": "SOLVED (Bloom 2021). Every $A \\\\subseteq \\\\mathbb{N}$ with $\\\\bar{d}(A) > 0$ contains finite $S$ with $\\\\sum_{n \\\\in S} 1/n = 1$."
     }
   ],
   "conclusion": {

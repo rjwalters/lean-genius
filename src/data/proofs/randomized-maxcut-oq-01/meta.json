@@ -86,7 +86,11 @@
       "Under the Unique Games Conjecture, no polynomial-time algorithm can beat this ratio, making it conditionally optimal."
     ],
     "prerequisites": [
-      "Graph theory (vertices, edges, colorings)"
+      "Semidefinite programming (SDP relaxation)",
+      "MaxCut problem (NP-hardness, approximation)",
+      "Hyperplane rounding (random projection)",
+      "Approximation algorithms (ratio guarantees)",
+      "Unique Games Conjecture (optimality barrier)"
     ]
   },
   "sections": [
@@ -96,7 +100,7 @@
       "startLine": 1,
       "endLine": 38,
       "summary": "Import Mathlib modules for graphs, real numbers, and finite sets.",
-      "mathContext": "Imports: `SimpleGraph`, `edgeFinset`, `Finset.sup_le`, `Sym2` (unordered pairs), `Real.arccos` from Mathlib's graph theory, combinatorics, and trigonometry libraries."
+      "mathContext": "MaxCut: partition V to maximize crossing edges. NP-hard. Approximation algorithms are key."
     },
     {
       "id": "cut-structure",
@@ -104,7 +108,7 @@
       "startLine": 39,
       "endLine": 79,
       "summary": "Define GWCut structure and MaxCut value, mirroring the 1/2-approximation proof.",
-      "mathContext": "$\\mathrm{Cut}(G) = (S, \\bar{S})$ partition of $V$. $|C| = |\\{(i,j) \\in E : i \\in S, j \\notin S\\}|$. $\\mathrm{MaxCut}(G) = \\max_C |C|$."
+      "mathContext": "MaxCut(G) = max over partitions of crossing edge count. Random partition: E[cut] >= |E|/2 >= MaxCut/2."
     },
     {
       "id": "gw-constant",
@@ -112,7 +116,7 @@
       "startLine": 80,
       "endLine": 99,
       "summary": "Define α_GW = 878/1000 and prove key bounds (0 < α_GW < 1, α_GW > 1/2).",
-      "mathContext": "$\\alpha_{\\mathrm{GW}} = 878/1000$ (conservative bound for $\\min_{0 < \\theta \\leq \\pi} \\frac{2\\theta}{\\pi(1 - \\cos\\theta)} \\approx 0.87856$). Proved: $0 < \\alpha_{\\mathrm{GW}} < 1$ and $\\alpha_{\\mathrm{GW}} > 1/2$."
+      "mathContext": "alpha_GW = min over [-1,1] of arccos(x)/(pi(1-x)/2) ~ 0.878. Worst-case GW rounding ratio."
     },
     {
       "id": "sdp-relaxation",
@@ -120,7 +124,7 @@
       "startLine": 100,
       "endLine": 126,
       "summary": "Axiomatize the SDP relaxation value and its relationship to MaxCut.",
-      "mathContext": "$\\mathrm{SDP}_{\\mathrm{OPT}} = \\max \\frac{1}{2}\\sum_{(i,j) \\in E}(1 - v_i \\cdot v_j)$ over unit vectors $v_i \\in S^n$. Axiom: $\\mathrm{MaxCut} \\leq \\mathrm{SDP}_{\\mathrm{OPT}}$ (cuts embed as $v_i = \\pm e_1$)."
+      "mathContext": "SDP relaxation: replace x_i in {+-1} with unit vectors v_i. Maximize sum (1-v_i.v_j)/2 over edges."
     },
     {
       "id": "hyperplane-rounding",
@@ -128,7 +132,7 @@
       "startLine": 127,
       "endLine": 146,
       "summary": "Axiomatize the expected cut from GW hyperplane rounding.",
-      "mathContext": "Random hyperplane rounding: choose $r \\in S^n$ uniformly, assign $i$ to side $A$ iff $v_i \\cdot r \\geq 0$. Edge $(i,j)$ cut with probability $\\frac{\\arccos(v_i \\cdot v_j)}{\\pi}$."
+      "mathContext": "GW rounding: random hyperplane r, set x_i = sgn(v_i . r). Pr[x_i != x_j] = arccos(v_i.v_j)/pi."
     },
     {
       "id": "gw-inequality",
@@ -136,7 +140,7 @@
       "startLine": 147,
       "endLine": 169,
       "summary": "Axiomatize the core analytical result: E[cut] ≥ α_GW · SDP_OPT.",
-      "mathContext": "Core inequality (axiomatized): $\\mathbb{E}[|C|] \\geq \\alpha_{\\mathrm{GW}} \\cdot \\mathrm{SDP}_{\\mathrm{OPT}}$. Follows from $\\frac{\\arccos(x)}{\\pi} \\geq \\alpha_{\\mathrm{GW}} \\cdot \\frac{1-x}{2}$ for all $x \\in [-1, 1]$."
+      "mathContext": "Core: E[cut] >= alpha_GW * SDP_OPT >= alpha_GW * MaxCut."
     },
     {
       "id": "main-theorem",
@@ -144,7 +148,7 @@
       "startLine": 170,
       "endLine": 196,
       "summary": "Prove the main result: α_GW · MaxCut ≤ E[GW cut], with ratio bound corollary.",
-      "mathContext": "Main theorem (proved): $\\alpha_{\\mathrm{GW}} \\cdot \\mathrm{MaxCut} \\leq \\alpha_{\\mathrm{GW}} \\cdot \\mathrm{SDP}_{\\mathrm{OPT}} \\leq \\mathbb{E}[|C|]$. Corollary: $\\mathbb{E}[|C|] / \\mathrm{MaxCut} \\geq \\alpha_{\\mathrm{GW}}$."
+      "mathContext": "Goemans-Williamson (1995): 0.878-approximation for MaxCut. Best polynomial-time ratio under UGC."
     },
     {
       "id": "bounds",
@@ -152,7 +156,7 @@
       "startLine": 197,
       "endLine": 225,
       "summary": "Prove MaxCut ≤ edges and expected cut ≤ edges bounds.",
-      "mathContext": "$\\mathrm{MaxCut}(G) \\leq |E|$ and $\\mathbb{E}[|C|] \\leq |E|$. Combined: $\\alpha_{\\mathrm{GW}} \\cdot \\mathrm{MaxCut} \\leq \\mathbb{E}[|C|] \\leq |E|$."
+      "mathContext": "MaxCut <= |E|. E[GW cut] <= |E|. Bipartite: MaxCut = |E| (all edges cross)."
     },
     {
       "id": "arccos-framework",
@@ -160,7 +164,7 @@
       "startLine": 240,
       "endLine": 311,
       "summary": "Define roundingProb(x) = arccos(x)/π and sdpContrib(x) = (1-x)/2 using Mathlib's arccos. Prove boundary values at x = -1, 0, 1 and range properties [0,1].",
-      "mathContext": "$p(x) = \\frac{\\arccos(x)}{\\pi}$: rounding probability. $s(x) = \\frac{1-x}{2}$: SDP contribution. Boundary: $p(-1) = 1, p(0) = 1/2, p(1) = 0$; $s(-1) = 1, s(0) = 1/2, s(1) = 0$. Range: $[0, 1]$."
+      "mathContext": "Rounding prob: arccos(v_i.v_j)/pi. SDP contrib: (1-v_i.v_j)/2. Ratio >= alpha_GW for all inner products."
     },
     {
       "id": "gw-boundary",
@@ -168,7 +172,7 @@
       "startLine": 312,
       "endLine": 341,
       "summary": "Prove the GW inequality αGW · sdpContrib(x) ≤ roundingProb(x) at the three critical points x = -1, 0, 1.",
-      "mathContext": "GW inequality verified at boundaries: $\\alpha_{\\mathrm{GW}} \\cdot s(x) \\leq p(x)$ at $x = -1$ (both sides $= 1$), $x = 0$ (ratio $= 1 > \\alpha_{\\mathrm{GW}}$), and $x = 1$ (both sides $= 0$)."
+      "mathContext": "GW ratio achieves minimum alpha_GW at inner product t* ~ -0.689. Verified by calculus."
     },
     {
       "id": "ratio-analysis",
@@ -176,7 +180,7 @@
       "startLine": 342,
       "endLine": 376,
       "summary": "Analyze the GW ratio roundingProb(x)/sdpContrib(x) at boundary points, showing it equals 1 at x = 0 and x = -1.",
-      "mathContext": "Ratio $r(x) = p(x)/s(x) = \\frac{2\\arccos(x)}{\\pi(1-x)}$ for $x \\neq 1$. Boundary: $r(0) = 1$, $r(-1) = 1$. Minimum at $x^* \\approx -0.689$ gives $r(x^*) = \\alpha_{\\mathrm{GW}} \\approx 0.878$."
+      "mathContext": "At t=-1: ratio = 1. At t=0: ratio = 1. At t=1: limit = 1 (0/0). Min at interior t*."
     },
     {
       "id": "enhanced-bounds",
@@ -184,7 +188,7 @@
       "startLine": 377,
       "endLine": 403,
       "summary": "Additional bounds: improvement factor over random, bipartite specialization, tighter αGW estimates, and UGC hardness axiom.",
-      "mathContext": "Improvement over random: $\\alpha_{\\mathrm{GW}}/(1/2) \\approx 1.756$. Bipartite graphs: GW achieves ratio $1$ (exact). Under the Unique Games Conjecture, no polynomial-time algorithm beats $\\alpha_{\\mathrm{GW}}$."
+      "mathContext": "Improvement: alpha_GW/0.5 ~ 1.756x over random. Bipartite: ratio 1. Triangle: ratio ~ 0.912."
     }
   ],
   "conclusion": {

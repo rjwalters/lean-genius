@@ -86,7 +86,11 @@
       "**Explicit Constant c = 1/(4π):** The formalization includes an explicit constant. The optimal constant is believed to be close to $1/\\pi \\approx 0.318$, and improving it remains an active research topic."
     ],
     "prerequisites": [
-      "Combinatorics and number theory"
+      "Fourier analysis on $\\\\mathbb{T}$ (exponential sums $e(n\\\\theta)$)",
+      "Hardy inequality (discrete version)",
+      "Parseval identity ($L^2$ norm of exponential sums)",
+      "Dirichlet kernel and Fejer kernel",
+      "Additive combinatorics (sumset structure)"
     ]
   },
   "sections": [
@@ -96,7 +100,7 @@
       "summary": "Littlewood's conjecture statement, references to Konyagin 1981 and MPS 1981; imports Complex.Exponential, Bochner integration, Complex.Log",
       "startLine": 1,
       "endLine": 36,
-      "mathContext": "Mathematical content: Littlewood's conjecture statement, references to Konyagin 1981 and MPS 1981; imports Complex.Exponential, Bochner integration, Complex.Log"
+      "mathContext": "Littlewood conjecture: for $A \\\\subset \\\\mathbb{Z}$ with $|A|=N$, is $\\\\int_0^1 |\\\\sum_{n \\\\in A} e(n\\\\theta)| d\\\\theta \\\\gg \\\\log N$? SOLVED: YES (1981)."
     },
     {
       "id": "exponential-functions",
@@ -104,7 +108,7 @@
       "summary": "expTwoPiI definition e(x) = e^{2πix}; proved: periodicity (e(x+1) = e(x)), unit norm (|e(x)| = 1), multiplicativity (e(x+y) = e(x)e(y))",
       "startLine": 37,
       "endLine": 60,
-      "mathContext": "Formal definition: expTwoPiI definition e(x) = e^{2πix}; proved: periodicity (e(x+1) = e(x)), unit norm (|e(x)| = 1), multiplicativity (e(x+y) = e(x)e(y))"
+      "mathContext": "$e(x) = e^{2\\\\pi ix}$: periodic ($e(x+1)=e(x)$), unit modulus ($|e(x)|=1$), multiplicative ($e(x+y)=e(x)e(y)$). Foundation for Fourier analysis on $\\\\mathbb{T}$."
     },
     {
       "id": "exponential-sums",
@@ -112,7 +116,7 @@
       "summary": "expSum for ℤ and ℕ, expSumNorm modulus, expSum_bound (proved: triangle inequality |S_A| ≤ N)",
       "startLine": 61,
       "endLine": 85,
-      "mathContext": "expSum for $\\mathbb{Z}$ and $\\mathbb{N}$, expSumNorm modulus, expSum_bound (proved: triangle inequality |S_A| $\\leq$ N)"
+      "mathContext": "$S_A(\\\\theta) = \\\\sum_{n \\\\in A} e(n\\\\theta)$. Triangle inequality: $|S_A(\\\\theta)| \\\\leq N$. Equality iff all $e(n\\\\theta)$ are aligned (e.g. $\\\\theta=0$)."
     },
     {
       "id": "l1-norm",
@@ -120,7 +124,7 @@
       "summary": "L1norm via Bochner integral on [0,1]; proved: nonnegativity; sorry: upper bound L¹ ≤ N",
       "startLine": 86,
       "endLine": 105,
-      "mathContext": "L1norm via Bochner integral on [0,1]; proved: nonnegativity; sorry: upper bound L¹ $\\leq$ N"
+      "mathContext": "$\\\\|S_A\\\\|_1 = \\\\int_0^1 |\\\\sum_{n \\\\in A} e(n\\\\theta)| d\\\\theta$. The $L^1$ norm measures average cancellation. Non-negative, bounded above by $N$."
     },
     {
       "id": "littlewood-conjecture",
@@ -128,7 +132,7 @@
       "summary": "LittlewoodConjecture (∃c > 0, L¹ ≥ c log N) and asymptotic variant LittlewoodConjecture'",
       "startLine": 106,
       "endLine": 122,
-      "mathContext": "LittlewoodConjecture (∃c > 0, L¹ $\\geq$ c log N) and asymptotic variant LittlewoodConjecture'"
+      "mathContext": "Conjecture: $\\\\|S_A\\\\|_1 \\\\geq c\\\\log N$ for all $A$ with $|A|=N$. The logarithmic lower bound quantifies how much cancellation is inevitable."
     },
     {
       "id": "solution",
@@ -136,7 +140,7 @@
       "summary": "konyagin_theorem and mcgehee_pigno_smith_theorem axioms; littlewoodConstant = 1/(4π); littlewood_explicit axiom",
       "startLine": 123,
       "endLine": 141,
-      "mathContext": "Verified: konyagin_theorem and mcgehee_pigno_smith_theorem axioms; littlewoodConstant = 1/(4π); littlewood_explicit axiom"
+      "mathContext": "Konyagin (1981) and McGehee-Pigno-Smith (1981): $\\\\|S_A\\\\|_1 \\\\geq c\\\\log N$ with $c = 1/(8\\\\pi^2)$. Two independent proofs in the same year."
     },
     {
       "id": "sharpness",
@@ -144,7 +148,7 @@
       "summary": "littlewood_sharpness axiom; geometricProgression = {0,...,N-1}; arithmetic_progression_bound: L¹ ≍ log N for APs (Lebesgue constant)",
       "startLine": 142,
       "endLine": 160,
-      "mathContext": "Axiomatized: littlewood_sharpness axiom; geometricProgression = {0,...,N-1}; arithmetic_progression_bound: L¹ ≍ log N for APs (Lebesgue constant)"
+      "mathContext": "Sharp: geometric progressions $A = \\\\{0,1,\\\\ldots,N-1\\\\}$ achieve $\\\\|S_A\\\\|_1 = \\\\Theta(\\\\log N)$. The Dirichlet kernel $\\\\sum_{n=0}^{N-1} e(n\\\\theta)$ has $L^1$ norm $\\\\sim (4/\\\\pi^2)\\\\log N$."
     },
     {
       "id": "hardy-connection",
@@ -152,7 +156,7 @@
       "summary": "Discrete Hardy inequality axiom with constant 4; hardyConnection noting MPS proof technique",
       "startLine": 161,
       "endLine": 175,
-      "mathContext": "Verified: Discrete Hardy inequality axiom with constant 4; hardyConnection noting MPS proof technique"
+      "mathContext": "Hardy inequality: $\\\\sum |\\\\hat{f}(n)|/n \\\\leq 4\\\\|f\\\\|_1$. The MPS proof proceeds through this discrete Hardy inequality, connecting $L^1$ norms to coefficient decay."
     },
     {
       "id": "related-results",
@@ -160,7 +164,7 @@
       "summary": "L2_norm = √N (Parseval, sorry); L1 vs L2 comparison; flat polynomial problem connection",
       "startLine": 176,
       "endLine": 196,
-      "mathContext": "Mathematical content: L2_norm = √N (Parseval, sorry); L1 vs L2 comparison; flat polynomial problem connection"
+      "mathContext": "$\\\\|S_A\\\\|_2 = \\\\sqrt{N}$ (Parseval). So $L^1 = \\\\Theta(\\\\log N) \\\\ll L^2 = \\\\sqrt{N}$: exponential sums have much more $L^1$ cancellation than $L^2$ suggests."
     },
     {
       "id": "generalizations",
@@ -168,7 +172,7 @@
       "summary": "weightedExpSum with unit weights; weighted_littlewood axiom (same log N bound); higher-dimensional placeholder",
       "startLine": 197,
       "endLine": 215,
-      "mathContext": "Axiomatized: weightedExpSum with unit weights; weighted_littlewood axiom (same log N bound); higher-dimensional placeholder"
+      "mathContext": "Weighted version: $\\\\int |\\\\sum w_n e(n\\\\theta)| d\\\\theta \\\\geq c\\\\log N$ for $|w_n|=1$. Same $\\\\log N$ bound with unit weights."
     },
     {
       "id": "applications",
@@ -176,7 +180,7 @@
       "summary": "Connections to Diophantine approximation (Weyl's criterion) and analytic number theory (character sums)",
       "startLine": 216,
       "endLine": 231,
-      "mathContext": "Mathematical content: Connections to Diophantine approximation (Weyl's criterion) and analytic number theory (character sums)"
+      "mathContext": "Weyl criterion: $S_A(\\\\theta) \\\\to 0$ for irrational $\\\\theta$ iff $A$ is equidistributed. The $L^1$ bound constrains how equidistributed finite sets can be."
     },
     {
       "id": "summary",
@@ -184,7 +188,7 @@
       "summary": "erdos_512 = konyagin_theorem; erdos_512_solved packages both proofs; konyagin_equals_mps shows logical equivalence",
       "startLine": 232,
       "endLine": 261,
-      "mathContext": "Verified: erdos_512 = konyagin_theorem; erdos_512_solved packages both proofs; konyagin_equals_mps shows logical equivalence"
+      "mathContext": "SOLVED (1981). $\\\\|S_A\\\\|_1 \\\\geq c\\\\log N$ with $c = 1/(8\\\\pi^2)$. Sharp: arithmetic progressions achieve $\\\\Theta(\\\\log N)$."
     }
   ],
   "conclusion": {

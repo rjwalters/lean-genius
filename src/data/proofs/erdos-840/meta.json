@@ -52,7 +52,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Header documenting Erdős Problem #840 on quasi-Sidon subsets, posed by Erdős and Freud (1991). Imports Mathlib modules for Finsets, natural arithmetic, and combinatorics.",
-      "mathContext": "Mathematical content: Header documenting Erdős Problem #840 on quasi-Sidon subsets, posed by Erdős and Freud (1991). Imports Mathlib modules for Finsets, natural arithmetic, and combinatorics."
+      "mathContext": "Problem #840: find the maximum size $f(N)$ of a quasi-Sidon subset $A \\subseteq \\{1, \\ldots, N\\}$, where quasi-Sidon means $|A+A| = (1-o(1))\\binom{|A|}{2}$ (asymptotically distinct sums)."
     },
     {
       "id": "definitions",
@@ -68,7 +68,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Defines little-$o$ notation for integer sequences and the quasi-Sidon condition: $|A_n + A_n| = (1 + o(1)) \\binom{|A_n|}{2}$ as $|A_n| \\to \\infty$. This allows a vanishing fraction of sum collisions.",
-      "mathContext": "Formal definition: Defines little-$o$ notation for integer sequences and the quasi-Sidon condition: $|A_n + A_n| = (1 + o(1)) \\binom{|A_n|}{2}$ as $|A_n| \\to \\infty$. This allows a vanishing fraction of sum collisions."
+      "mathContext": "A set $A$ is \\emph{quasi-Sidon} if $|A+A| \\geq (1-o(1))\\binom{|A|}{2}$: almost all pairwise sums are distinct. This relaxes the classical Sidon ($B_2$) condition $|A+A| = \\binom{|A|}{2}$ exactly."
     },
     {
       "id": "f-function",
@@ -76,7 +76,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Axiomatizes $f(N)$ as the maximum quasi-Sidon subset size in $\\{1, \\ldots, N\\}$, with witness and optimality axioms. The growth rate $f(N) = \\Theta(\\sqrt{N})$ is known.",
-      "mathContext": "Axiomatized: Axiomatizes $f(N)$ as the maximum quasi-Sidon subset size in $\\{1, \\ldots, N\\}$, with witness and optimality axioms. The growth rate $f(N) = \\Theta(\\sqrt{N})$ is known."
+      "mathContext": "$f(N) = \\max\\{|A| : A \\subseteq [N],; A \\text{ is quasi-Sidon}\\}$. Known: $f(N) = \\Theta(\\sqrt{N})$. The exact asymptotic constant $c$ with $f(N) \\sim c\\sqrt{N}$ is unknown."
     },
     {
       "id": "lower-bound",
@@ -84,7 +84,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Axiomatizes the lower bound $f(N) \\geq (2/\\sqrt{3} + o(1))\\sqrt{N} \\approx 1.155\\sqrt{N}$. The construction takes a Sidon set $B \\subseteq [1, N/3]$ and forms $A = B \\cup \\{N - b : b \\in B\\}$.",
-      "mathContext": "Axiomatized: Axiomatizes the lower bound $f(N) \\geq (2/\\sqrt{3} + o(1))\\sqrt{N} \\approx 1.155\\sqrt{N}$. The construction takes a Sidon set $B \\subseteq [1, N/3]$ and forms $A = B \\cup \\{N - b : b \\in B\\}$."
+      "mathContext": "Erdős-Freud: $f(N) \\geq (2/\\sqrt{3} + o(1))\\sqrt{N} \\approx 1.155\\sqrt{N}$. Construction: take a Sidon set $B \\subseteq [1, N/3]$ and form $A = B \\cup \\{N - b : b \\in B\\}$. The reflected copy has few sum collisions."
     },
     {
       "id": "upper-bounds",
@@ -92,7 +92,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Axiomatizes the original Erdős–Freud upper bound $f(N) \\leq 2\\sqrt{N}$ and Pikhurko's improvement $f(N) \\leq c_P \\sqrt{N}$ where $c_P = (1/4 + 1/(\\pi+2)^2)^{-1/2} \\approx 1.863$.",
-      "mathContext": "Axiomatizes the original Erdős–Freud upper bound $f(N) \\leq 2\\sqrt{N}$ and Pikhurko's improvement $f(N) \\leq c_P \\sqrt{N}$ where $c_P = (1/4 + 1/(\\$\\pi$+2)^2)^{-1/2} \\approx 1.863$."
+      "mathContext": "Erdős-Freud: $f(N) \\leq 2\\sqrt{N}$. Pikhurko: $f(N) \\leq c_P\\sqrt{N}$ where $c_P = (1/4 + 1/(\\pi+2)^2)^{-1/2} \\approx 1.863$, using edge-magic graph constraints."
     },
     {
       "id": "open-question",
@@ -100,7 +100,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "States the main open question: determine the exact asymptotic constant $c$ with $f(N) \\sim c\\sqrt{N}$. Currently $2/\\sqrt{3} \\leq c \\leq 1.863$.",
-      "mathContext": "Mathematical content: States the main open question: determine the exact asymptotic constant $c$ with $f(N) \\sim c\\sqrt{N}$. Currently $2/\\sqrt{3} \\leq c \\leq 1.863$."
+      "mathContext": "OPEN: determine $c = \\lim f(N)/\\sqrt{N}$. Current bounds: $2/\\sqrt{3} \\approx 1.155 \\leq c \\leq 1.863 \\approx c_P$. A 38% gap remains."
     },
     {
       "id": "related",

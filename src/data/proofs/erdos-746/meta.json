@@ -98,8 +98,11 @@
       "**Dirac vs random**: Dirac's theorem needs $\\delta(G) \\ge n/2$, but random graphs are Hamiltonian with $\\delta(G) \\sim 2c \\log n \\ll n/2$ — randomness compensates for low degree"
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Graph theory (vertices, edges, colorings)"
+      "Random graphs $G(n,m)$ and $G(n,p)$",
+      "Hamiltonicity (Hamiltonian cycles in graphs)",
+      "Threshold phenomena in random graphs",
+      "Connectivity and minimum degree thresholds",
+      "Poisson convergence for graph properties"
     ]
   },
   "sections": [
@@ -109,7 +112,7 @@
       "startLine": 39,
       "endLine": 61,
       "summary": "Defines `GraphOnN`, `numEdges`, `ErdosRenyiModel`, and the threshold functions $(1/2 + \\varepsilon) n \\log n$ and $(1/2) n \\log n + (1/2) n \\log \\log n$.",
-      "mathContext": "Defines `GraphOnN`, `numEdges`, `ErdosRenyiModel`, and the threshold functions $(1/2 + \\varepsilon) n \\$\\log n$$ and $(1/2) n \\$\\log n$ + (1/2) n \\log \\$\\log n$$."
+      "mathContext": "$G(n,m)$: random graph on $n$ vertices with $m$ edges chosen uniformly. Threshold: $m = (1/2+\\\\varepsilon)n\\\\log n$ edges."
     },
     {
       "id": "hamiltonicity",
@@ -117,7 +120,7 @@
       "startLine": 62,
       "endLine": 81,
       "summary": "Defines `IsHamiltonianCycle` (vertex list formulation) and `IsHamiltonian`. Axiomatizes Dirac's theorem: $\\delta(G) \\ge n/2 \\Rightarrow$ Hamiltonian.",
-      "mathContext": "Defines `IsHamiltonianCycle` (vertex list formulation) and `IsHamiltonian`. Axiomatizes Dirac's theorem: $\\$\\delta$(G) \\ge n/2 \\Rightarrow$ Hamiltonian."
+      "mathContext": "Hamiltonian cycle: a cycle visiting every vertex exactly once. $G$ is Hamiltonian if such a cycle exists. NP-complete to decide in general."
     },
     {
       "id": "perfect-matchings",
@@ -125,7 +128,7 @@
       "startLine": 82,
       "endLine": 95,
       "summary": "Defines `IsPerfectMatching` and `HasPerfectMatching` — the weaker property that shares the Hamiltonicity threshold.",
-      "mathContext": "Formal definition: Defines `IsPerfectMatching` and `HasPerfectMatching` — the weaker property that shares the Hamiltonicity threshold."
+      "mathContext": "Perfect matching: $n/2$ disjoint edges covering all vertices. Necessary for Hamiltonicity. Has a sharper threshold than Hamiltonicity."
     },
     {
       "id": "erdos-renyi-matching",
@@ -133,7 +136,7 @@
       "startLine": 96,
       "endLine": 106,
       "summary": "Axiomatizes that $G(n, m)$ with $m \\ge (1/2 + \\varepsilon) n \\log n$ a.s. has a perfect matching.",
-      "mathContext": "Axiomatizes that $G(n, m)$ with $m \\ge (1/2 + \\varepsilon) n \\$\\log n$$ a.s. has a perfect matching."
+      "mathContext": "$G(n, (1/2+\\\\varepsilon)n\\\\log n)$ has a perfect matching almost surely. This follows from the min-degree threshold."
     },
     {
       "id": "erdos-question",
@@ -141,7 +144,7 @@
       "startLine": 107,
       "endLine": 117,
       "summary": "Formalizes `ErdosQuestion746`: is $G(n, (1/2 + \\varepsilon) n \\log n)$ a.s. Hamiltonian?",
-      "mathContext": "Formalizes `ErdosQuestion746`: is $G(n, (1/2 + \\varepsilon) n \\$\\log n$)$ a.s. Hamiltonian?"
+      "mathContext": "Erdos #746: is $G(n, (1/2+\\\\varepsilon)n\\\\log n)$ Hamiltonian a.s.? Same threshold as connectivity and min-degree $\\\\geq 1$."
     },
     {
       "id": "posa-result",
@@ -149,7 +152,7 @@
       "startLine": 118,
       "endLine": 132,
       "summary": "Axiomatizes Pósa's theorem: $\\exists C > 0$ such that $G(n, Cn \\log n)$ is a.s. Hamiltonian.",
-      "mathContext": "Axiomatizes Pósa's theorem: $\\exists C > 0$ such that $G(n, Cn \\$\\log n$)$ is a.s. Hamiltonian."
+      "mathContext": "Posa: $\\\\exists C$ such that $G(n, Cn\\\\log n)$ is Hamiltonian a.s. First result: Hamiltonicity threshold is $O(n\\\\log n)$."
     },
     {
       "id": "korshunov",
@@ -157,7 +160,7 @@
       "startLine": 133,
       "endLine": 151,
       "summary": "Axiomatizes the sharp threshold $(1/2) n \\log n + (1/2) n \\log \\log n + \\omega(n) n$ with $\\omega \\to \\infty$.",
-      "mathContext": "Axiomatizes the sharp threshold $(1/2) n \\$\\log n$ + (1/2) n \\log \\$\\log n$ + \\omega(n) n$ with $\\omega \\to \\infty$."
+      "mathContext": "Korshunov (1976): sharp threshold $m = (1/2)n\\\\log n + (1/2)n\\\\log\\\\log n + cn$. SOLVED the exact threshold problem."
     },
     {
       "id": "komlos-szemeredi",
@@ -165,7 +168,7 @@
       "startLine": 152,
       "endLine": 179,
       "summary": "Axiomatizes the limiting probability. Defines `limitingProbability c = e^{-e^{-2c}}`. Proves $\\Pr(c=0) = e^{-1}$.",
-      "mathContext": "Formal definition: Axiomatizes the limiting probability. Defines `limitingProbability c = e^{-e^{-2c}}`. Proves $\\Pr(c=0) = e^{-1}$."
+      "mathContext": "Komlos-Szemeredi: $\\\\Pr[G(n,m) \\\\text{ Hamiltonian}] \\\\to e^{-e^{-2c}}$ when $m = (1/2)n\\\\log n + (1/2)n\\\\log\\\\log n + cn$."
     },
     {
       "id": "the-answer",
@@ -173,7 +176,7 @@
       "startLine": 180,
       "endLine": 194,
       "summary": "Proves `erdos_746_answer` by instantiating Korshunov's theorem.",
-      "mathContext": "Verified: Proves `erdos_746_answer` by instantiating Korshunov's theorem."
+      "mathContext": "SOLVED: YES. $G(n, (1/2+\\\\varepsilon)n\\\\log n)$ is Hamiltonian a.s. The Hamiltonicity threshold coincides with connectivity threshold."
     },
     {
       "id": "connectivity",
@@ -181,7 +184,7 @@
       "startLine": 195,
       "endLine": 217,
       "summary": "Defines `IsConnected` via `Reachable`. Axiomatizes connectivity threshold. States threshold coincidence with Hamiltonicity.",
-      "mathContext": "Formal definition: Defines `IsConnected` via `Reachable`. Axiomatizes connectivity threshold. States threshold coincidence with Hamiltonicity."
+      "mathContext": "$G(n,m)$ is connected a.s. iff $m \\\\geq (1/2)n\\\\log n + \\\\omega(n)$. The connectivity and Hamiltonicity thresholds are the same!"
     },
     {
       "id": "related-properties",
@@ -189,7 +192,7 @@
       "startLine": 218,
       "endLine": 230,
       "summary": "Defines `MinDegree` and axiomatizes concentration of minimum degree in $G(n, m)$ around $2m/n$.",
-      "mathContext": "Formal definition: Defines `MinDegree` and axiomatizes concentration of minimum degree in $G(n, m)$ around $2m/n$."
+      "mathContext": "Min-degree $\\\\geq 2$ is necessary for Hamiltonicity. In $G(n,m)$, min-degree concentrates near $(2m/n)$ with Poisson fluctuations."
     },
     {
       "id": "summary",
@@ -197,7 +200,7 @@
       "startLine": 231,
       "endLine": 262,
       "summary": "Proves `erdos_746`, `erdos_746_main`, `erdos_746_precise`, `erdos_746_solved` — composing axioms to confirm the full resolution.",
-      "mathContext": "Verified: Proves `erdos_746`, `erdos_746_main`, `erdos_746_precise`, `erdos_746_solved` — composing axioms to confirm the full resolution."
+      "mathContext": "SOLVED. Sharp threshold: $(1/2)n\\\\log n + (1/2)n\\\\log\\\\log n + cn$ with limiting probability $e^{-e^{-2c}}$. Coincides with connectivity threshold."
     }
   ],
   "conclusion": {

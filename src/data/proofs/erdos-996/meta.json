@@ -95,8 +95,11 @@
       "Raikov's unconditional result for geometric sequences shows that maximal lacunarity compensates for any lack of regularity, while general lacunary sequences need some minimum Fourier decay"
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Probability theory"
+      "Lacunary sequences and gap conditions",
+      "Fourier analysis (L^2 approximation)",
+      "Ergodic theory (Birkhoff, SLLN)",
+      "Fractional parts and equidistribution",
+      "Diophantine approximation (Weyl sums)"
     ]
   },
   "sections": [
@@ -106,7 +109,7 @@
       "startLine": 50,
       "endLine": 90,
       "summary": "Defines IsLacunary (ratio condition n(k+1)/n(k) ≥ λ > 1), proves powers of 2 and 3 are lacunary via explicit ratio calculations, and states lacunary_strictMono (sorry).",
-      "mathContext": "Defines IsLacunary (ratio condition n(k+1)/n(k) $\\geq$ λ > 1), proves powers of 2 and 3 are lacunary via explicit ratio calculations, and states lacunary_strictMono (sorry)."
+      "mathContext": "Lacunary sequence: n(k+1)/n(k) >= lambda > 1. Growth at least geometric. Examples: 2^k, floor(a^k)."
     },
     {
       "id": "fourier",
@@ -114,7 +117,7 @@
       "startLine": 91,
       "endLine": 108,
       "summary": "Defines fourierPartialSum (trigonometric polynomial of degree N), fourierError (L² norm of f - fₙ), and axiomatizes Parseval's identity connecting L² norm to Fourier coefficient ℓ² norm.",
-      "mathContext": "Formal definition: Defines fourierPartialSum (trigonometric polynomial of degree N), fourierError (L² norm of f - fₙ), and axiomatizes Parseval's identity connecting L² norm to Fourier coefficient ℓ² norm."
+      "mathContext": "Fourier partial sum: S_N f(x) = sum |k|<=N f_hat(k) e^{2pi ikx}. Convergence depends on smoothness."
     },
     {
       "id": "ergodic",
@@ -122,7 +125,7 @@
       "startLine": 109,
       "endLine": 123,
       "summary": "Defines frac (fractional part), ergodicAverage ((1/N)Σf({αnₖ}) as Cesàro mean), and spaceAverage (∫₀¹f dx, the zeroth Fourier coefficient).",
-      "mathContext": "Defines frac (fractional part), ergodicAverage ((1/N)$\\sum$f({αnₖ}) as Cesàro mean), and spaceAverage (∫₀¹f dx, the zeroth Fourier coefficient)."
+      "mathContext": "Ergodic average: (1/N) sum f({alpha n_k}). Birkhoff: converges a.e. for L^1."
     },
     {
       "id": "strong-law",
@@ -130,7 +133,7 @@
       "startLine": 124,
       "endLine": 135,
       "summary": "Defines StrongLawHolds (Tendsto of ergodic average to space average) and StrongLawHoldsAE (a.e. version using ∀ᵐ α with Lebesgue measure on [0,1]).",
-      "mathContext": "Formal definition: Defines StrongLawHolds (Tendsto of ergodic average to space average) and StrongLawHoldsAE (a.e. version using ∀ᵐ α with Lebesgue measure on [0,1])."
+      "mathContext": "SLLN for {alpha n_k}: (1/N) sum f({alpha n_k}) -> int f for a.e. alpha."
     },
     {
       "id": "known-results",
@@ -138,7 +141,7 @@
       "startLine": 136,
       "endLine": 171,
       "summary": "Four axiomatized historical milestones: raikov_theorem (geometric sequences, unconditional), kac_salem_zygmund_1948 (log decay c > 1), erdos_1949 (log log c > 1), matsuyama_1966 (log log c > 1/2).",
-      "mathContext": "Verified: Four axiomatized historical milestones: raikov_theorem (geometric sequences, unconditional), kac_salem_zygmund_1948 (log decay c > 1), erdos_1949 (log log c > 1), matsuyama_1966 (log log c > 1/2)."
+      "mathContext": "Raikov: geometric n_k = q^k. Takahashi: n(k+1)/n(k) -> infinity. Matsuyama: O(1/(log N)^{1/2+eps}) suffices."
     },
     {
       "id": "open-question",
@@ -146,7 +149,7 @@
       "startLine": 172,
       "endLine": 187,
       "summary": "Formalizes ErdosProblem996 as a Lean Prop: ∃ C > 0 such that log log log decay with exponent C suffices for StrongLawHoldsAE. Status: OPEN.",
-      "mathContext": "Mathematical content: Formalizes ErdosProblem996 as a Lean Prop: ∃ C > 0 such that log log log decay with exponent C suffices for StrongLawHoldsAE. Status: OPEN."
+      "mathContext": "OPEN: does O(1/(log log log N)^C) decay suffice for SLLN? Triple-log is very weak."
     },
     {
       "id": "related",
@@ -154,7 +157,7 @@
       "startLine": 188,
       "endLine": 200,
       "summary": "Two additional open questions: FloorPowerQuestion (SLLN for ⌊aᵏ⌋ with real a > 1) and BoundedFunctionQuestion (SLLN for all bounded f without Fourier decay condition).",
-      "mathContext": "Bound: Two additional open questions: FloorPowerQuestion (SLLN for ⌊aᵏ⌋ with real a > 1) and BoundedFunctionQuestion (SLLN for all bounded f without Fourier decay condition)."
+      "mathContext": "Related open: SLLN for floor(a^k) with non-integer a > 1."
     },
     {
       "id": "decay-hierarchy",
@@ -162,7 +165,7 @@
       "startLine": 201,
       "endLine": 231,
       "summary": "DecayCondition structure with name/rate/sufficiency, instantiated for log (c > 1, sufficient), log log (c > 1/2, sufficient), and log log log (unknown, sufficient = false).",
-      "mathContext": "Formal definition: DecayCondition structure with name/rate/sufficiency, instantiated for log (c > 1, sufficient), log log (c > 1/2, sufficient), and log log log (unknown, sufficient = false)."
+      "mathContext": "Hierarchy: polynomial > 1/(log N)^C > 1/(log log N)^C > 1/(log log log N)^C."
     },
     {
       "id": "quasi-independence",
@@ -170,7 +173,7 @@
       "startLine": 232,
       "endLine": 250,
       "summary": "Placeholder for quasi-independence theorem (proved as True), and consecutive_not_lacunary showing n(k) = k+1 fails the ratio condition (sorry, needs Archimedean argument).",
-      "mathContext": "Verified: Placeholder for quasi-independence theorem (proved as True), and consecutive_not_lacunary showing n(k) = k+1 fails the ratio condition (sorry, needs Archimedean argument)."
+      "mathContext": "Quasi-independence: {alpha n_k} behaves like independent r.v.s due to lacunary gaps."
     },
     {
       "id": "gap",
@@ -178,7 +181,7 @@
       "startLine": 251,
       "endLine": 266,
       "summary": "known_gap theorem packaging Matsuyama's result (∀ c > 1/2, ...) with a True placeholder for the open question. Proved by direct application of matsuyama_1966.",
-      "mathContext": "Verified: known_gap theorem packaging Matsuyama's result (∀ c > 1/2, ...) with a True placeholder for the open question. Proved by direct application of matsuyama_1966."
+      "mathContext": "Gap: Matsuyama c > 1/2. Problem asks about c = 0 (no log decay, just triple-log)."
     },
     {
       "id": "connections",
@@ -186,7 +189,7 @@
       "startLine": 267,
       "endLine": 282,
       "summary": "Weyl equidistribution theorem axiomatized as a precursor. Documents connections to ergodic theory, harmonic analysis, probability, and Diophantine approximation.",
-      "mathContext": "Verified: Weyl equidistribution theorem axiomatized as a precursor. Documents connections to ergodic theory, harmonic analysis, probability, and Diophantine approximation."
+      "mathContext": "Weyl equidistribution: {alpha n} equidistributed for irrational alpha."
     },
     {
       "id": "summary",
@@ -194,7 +197,7 @@
       "startLine": 283,
       "endLine": 343,
       "summary": "erdos_996_summary theorem: existential witness c = 1 > 1/2 satisfies Matsuyama, conjoined with True for the open log log log question. Complete docstring overview.",
-      "mathContext": "Verified: erdos_996_summary theorem: existential witness c = 1 > 1/2 satisfies Matsuyama, conjoined with True for the open log log log question. Complete docstring overview."
+      "mathContext": "OPEN. Known: SLLN for O(1/(log N)^{1/2+eps}). Unknown: triple-log decay."
     }
   ],
   "conclusion": {

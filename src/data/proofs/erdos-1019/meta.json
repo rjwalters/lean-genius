@@ -40,8 +40,11 @@
       "**Planarity as a formal challenge**: The definition of `isPlanar` is `sorry` because topological planarity requires embedding theory not yet in Mathlib. This is a concrete target for formalization efforts: Kuratowski's theorem or the Hopcroft-Tarjan planarity algorithm would provide a constructive definition."
     ],
     "prerequisites": [
-      "Graph theory (vertices, edges, colorings)",
-      "Combinatorics and number theory"
+      "Planar graphs (Euler formula, $|E| \\\\leq 3|V|-6$)",
+      "Turan theory (bipartite threshold)",
+      "Saturated/maximal planar graphs (triangulations)",
+      "Structural graph theory (forbidden subgraphs)",
+      "Extremal combinatorics (threshold functions)"
     ]
   },
   "sections": [
@@ -51,7 +54,7 @@
       "summary": "Defines `edgeCount G` via `G.edgeFinset.card` and `vertexCount` via `Fintype.card V`. These parametrize the function $f(n,k)$ measuring the edge threshold.",
       "startLine": 22,
       "endLine": 36,
-      "mathContext": "Formal definition: Defines `edgeCount G` via `G.edgeFinset.card` and `vertexCount` via `Fintype.card V`. These parametrize the function $f(n,k)$ measuring the edge threshold."
+      "mathContext": "$e(G) = |E(G)|$, $v(G) = |V(G)|$ for finite simple graphs."
     },
     {
       "id": "planar-graphs",
@@ -59,7 +62,7 @@
       "summary": "Defines `isPlanar G` (as `sorry`) and axiomatizes Euler's bound $|E| \\le 3|V| - 6$ for planar graphs with $|V| \\ge 3$.",
       "startLine": 37,
       "endLine": 50,
-      "mathContext": "Formal definition: Defines `isPlanar G` (as `sorry`) and axiomatizes Euler's bound $|E| \\le 3|V| - 6$ for planar graphs with $|V| \\ge 3$."
+      "mathContext": "Planar: embeds in $\\\\mathbb{R}^2$ without crossings. Euler: $|E| \\\\leq 3|V|-6$ for $|V| \\\\geq 3$."
     },
     {
       "id": "saturated-planar",
@@ -67,7 +70,7 @@
       "summary": "Defines `isSaturatedPlanar G` requiring planarity, $|V| \\ge 3$, and $|E| = 3|V| - 6$. Proves basic implications: saturated implies planar, saturated achieves the Euler bound.",
       "startLine": 51,
       "endLine": 72,
-      "mathContext": "Formal definition: Defines `isSaturatedPlanar G` requiring planarity, $|V| \\ge 3$, and $|E| = 3|V| - 6$. Proves basic implications: saturated implies planar, saturated achieves the Euler bound."
+      "mathContext": "Saturated planar: planar, $|V| \\\\geq 3$, $|E| = 3|V|-6$ (maximal). Adding any edge violates planarity."
     },
     {
       "id": "threshold",
@@ -75,7 +78,7 @@
       "summary": "Defines `turanEdges n` $= \\lfloor n^2/4 \\rfloor$, `additionalThreshold n` $= \\lfloor(n+1)/2\\rfloor$, `saturatedPlanarThreshold`, and `exceedsThreshold`.",
       "startLine": 73,
       "endLine": 91,
-      "mathContext": "Defines `turanEdges n` $= \\lfloor $n^{2}$/4 \\rfloor$, `additionalThreshold n` $= \\lfloor(n+1)/2\\rfloor$, `saturatedPlanarThreshold`, and `exceedsThreshold`."
+      "mathContext": "Threshold: $\\\\lfloor n^2/4 \\\\rfloor + \\\\lfloor(n+1)/2\\\\rfloor$ edges. Turan number plus a matching."
     },
     {
       "id": "triangles",
@@ -83,7 +86,7 @@
       "summary": "Defines $K_3$, axiomatizes it as saturated planar, and axiomatizes Turán's theorem: $|E| > \\lfloor n^2/4 \\rfloor \\Rightarrow K_3 \\subseteq G$.",
       "startLine": 92,
       "endLine": 114,
-      "mathContext": "Defines $K_3$, axiomatizes it as saturated planar, and axiomatizes Turán's theorem: $|E| > \\lfloor $n^{2}$/4 \\rfloor \\Rightarrow K_3 \\subseteq G$."
+      "mathContext": "$K_3$ is the smallest saturated planar graph ($3 = 3\\\\cdot3-6$). Above Turan $\\\\Rightarrow$ contains $K_3$."
     },
     {
       "id": "subgraphs",
@@ -91,7 +94,7 @@
       "summary": "Defines `inducedSubgraph G S`, `hasSaturatedPlanarSubgraph G k`, and `hasLargeSaturatedPlanarSubgraph G` ($k > 3$).",
       "startLine": 115,
       "endLine": 135,
-      "mathContext": "Formal definition: Defines `inducedSubgraph G S`, `hasSaturatedPlanarSubgraph G k`, and `hasLargeSaturatedPlanarSubgraph G` ($k > 3$)."
+      "mathContext": "Saturated planar subgraph on $k \\\\geq 4$ vertices: $G[S]$ with $e(G[S]) = 3|S|-6$."
     },
     {
       "id": "k4",
@@ -99,7 +102,7 @@
       "summary": "Axiomatizes $K_4$ as saturated planar (6 $= 3 \\cdot 4 - 6$ edges). Defines `containsK4` and proves it implies a large saturated planar subgraph.",
       "startLine": 136,
       "endLine": 153,
-      "mathContext": "Formal definition: Axiomatizes $K_4$ as saturated planar (6 $= 3 \\cdot 4 - 6$ edges). Defines `containsK4` and proves it implies a large saturated planar subgraph."
+      "mathContext": "$K_4$ is saturated planar: $6 = 3\\\\cdot4-6$. Does the threshold force $K_4$ or larger?"
     },
     {
       "id": "cycle-plus",
@@ -107,7 +110,7 @@
       "summary": "Defines `containsCyclePlus2K1 G l` ($\\ell \\ge 3$ with 2 apex vertices). Axiomatizes it as saturated planar ($3\\ell = 3(\\ell+2) - 6$ edges). Proves it implies a large saturated planar subgraph.",
       "startLine": 154,
       "endLine": 179,
-      "mathContext": "Formal definition: Defines `containsCyclePlus2K1 G l` ($\\ell \\ge 3$ with 2 apex vertices). Axiomatizes it as saturated planar ($3\\ell = 3(\\ell+2) - 6$ edges). Proves it implies a large saturated planar subgraph."
+      "mathContext": "$C_\\\\ell + 2K_1$: cycle of length $\\\\ell$ with 2 apex vertices. Saturated planar on $\\\\ell+2$ vertices."
     },
     {
       "id": "construction",
@@ -115,7 +118,7 @@
       "summary": "Axiomatizes existence of graphs with $\\lfloor n^2/4 \\rfloor + \\lfloor(n-1)/2\\rfloor$ edges avoiding large saturated planar subgraphs.",
       "startLine": 180,
       "endLine": 198,
-      "mathContext": "Axiomatizes existence of graphs with $\\lfloor $n^{2}$/4 \\rfloor + \\lfloor(n-1)/2\\rfloor$ edges avoiding large saturated planar subgraphs."
+      "mathContext": "Below threshold: graphs exist avoiding large saturated planar subgraphs. Shows threshold is tight."
     },
     {
       "id": "simonovits",
@@ -123,7 +126,7 @@
       "summary": "Axiomatizes the dichotomy: exceeding the threshold forces $K_4$ or $C_\\ell + 2K_1$. Derives `erdos_1019_solved` resolving the problem.",
       "startLine": 209,
       "endLine": 229,
-      "mathContext": "Axiomatized: Axiomatizes the dichotomy: exceeding the threshold forces $K_4$ or $C_\\ell + 2K_1$. Derives `erdos_1019_solved` resolving the problem."
+      "mathContext": "Dichotomy: exceeding threshold forces $K_4$ or $C_\\\\ell + 2K_1$ as induced saturated planar subgraph."
     },
     {
       "id": "size-bound",
@@ -131,7 +134,7 @@
       "summary": "Quantitative bound: $\\lfloor n^2/4 \\rfloor + k$ edges force saturated planar on $\\gg k/n$ vertices. Connection to complete bipartite graphs via Kuratowski.",
       "startLine": 230,
       "endLine": 267,
-      "mathContext": "Quantitative bound: $\\lfloor $n^{2}$/4 \\rfloor + k$ edges force saturated planar on $\\gg k/n$ vertices. Connection to complete bipartite graphs via Kuratowski."
+      "mathContext": "$\\\\lfloor n^2/4\\\\rfloor + k$ edges forces saturated planar on $\\\\Omega(k)$ vertices."
     },
     {
       "id": "threshold-gap",
@@ -139,7 +142,7 @@
       "summary": "Proves the threshold gap is exactly 1 edge via `omega`. States the combined optimality theorem: above the threshold, structure exists; below, it can be avoided.",
       "startLine": 268,
       "endLine": 316,
-      "mathContext": "Formal definition: Proves the threshold gap is exactly 1 edge via `omega`. States the combined optimality theorem: above the threshold, structure exists; below, it can be avoided."
+      "mathContext": "Gap is exactly 1 edge: one more edge above $\\\\lfloor n^2/4\\\\rfloor + \\\\lfloor(n+1)/2\\\\rfloor - 1$ forces the subgraph."
     }
   ],
   "conclusion": {

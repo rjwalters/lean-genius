@@ -38,8 +38,11 @@
       "**Baker-type finiteness (Uchiyama 1984)**: For each fixed $Q < 1/4$, the number of solutions is finite, proved using Baker's bounds on linear forms in logarithms"
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Number theory (primes, divisibility)"
+      "Exponential Diophantine equations",
+      "Prime factorization and $p$-adic valuations",
+      "Radical of an integer ($\\\\text{rad}(n)$)",
+      "Parametric solution families",
+      "Computational search methods"
     ]
   },
   "sections": [
@@ -49,7 +52,7 @@
       "startLine": 19,
       "endLine": 23,
       "summary": "Imports `Mathlib.NumberTheory.Divisors`, `Data.Nat.Prime.Basic`, `Data.Nat.GCD.Basic`, and `Algebra.Order.Ring.Lemmas` for prime factorization, GCD, and ordered arithmetic.",
-      "mathContext": "Mathematical content: Imports `Mathlib.NumberTheory.Divisors`, `Data.Nat.Prime.Basic`, `Data.Nat.GCD.Basic`, and `Algebra.Order.Ring.Lemmas` for prime factorization, GCD, and ordered arithmetic."
+      "mathContext": "Problem #674: find all solutions to $x^x y^y = z^z$ with $x, y, z > 1$. Ko (1940) found infinitely many."
     },
     {
       "id": "equation",
@@ -57,7 +60,7 @@
       "startLine": 29,
       "endLine": 47,
       "summary": "Defines `Solution` as a structure $(x,y,z)$ with $x,y,z > 1$ and $x^x \\cdot y^y = z^z$. States `SolutionsExist` and Ko's 1940 existence theorem.",
-      "mathContext": "Formal definition: Defines `Solution` as a structure $(x,y,z)$ with $x,y,z > 1$ and $x^x \\cdot y^y = z^z$. States `SolutionsExist` and Ko's 1940 existence theorem."
+      "mathContext": "Solution $(x,y,z)$: $x^x \\\\cdot y^y = z^z$ with $x,y,z > 1$. Taking logs: $x\\\\ln x + y\\\\ln y = z\\\\ln z$."
     },
     {
       "id": "ko-example",
@@ -65,7 +68,7 @@
       "startLine": 48,
       "endLine": 87,
       "summary": "Defines Ko's example: $x = 2^{12} \\cdot 3^6$, $y = 2^8 \\cdot 3^8$, $z = 2^{11} \\cdot 3^7$. Verifies $x,y,z > 1$ via `norm_num` and states the equation verification as a sorry.",
-      "mathContext": "Defines Ko's example: $x = $$2^{{12}$}$ \\cdot $3^{6}$$, $y = $2^{8}$ \\cdot $3^{8}$$, $z = $$2^{{11}$}$ \\cdot $3^{7}$$. Verifies $x,y,z > 1$ via `norm_num` and states the equation verification as a sorry."
+      "mathContext": "Ko: $x = 2^{12}\\\\cdot 3^6$, $y = 2^8\\\\cdot 3^8$, $z = 2^{11}\\\\cdot 3^7$. The prime valuations balance the power-weighted equation."
     },
     {
       "id": "coprime",
@@ -73,7 +76,7 @@
       "startLine": 88,
       "endLine": 97,
       "summary": "Proves $\\gcd(x,y) \\ne 1$ for any solution, equivalently $\\gcd(x,y) > 1$. Uses the fact that coprime $x,y$ force contradictory $p$-adic valuations in $x^x y^y = z^z$.",
-      "mathContext": "Verified: Proves $\\gcd(x,y) \\ne 1$ for any solution, equivalently $\\gcd(x,y) > 1$. Uses the fact that coprime $x,y$ force contradictory $p$-adic valuations in $x^x y^y = z^z$."
+      "mathContext": "$\\\\gcd(x,y) > 1$ for every solution. If $\\\\gcd(x,y)=1$ and $p|x$, then $p^x | z^z$ forces contradictions."
     },
     {
       "id": "schinzel",
@@ -81,7 +84,7 @@
       "startLine": 98,
       "endLine": 109,
       "summary": "Schinzel (1958): for any prime $p$, $p \\mid x \\iff p \\mid y$. Defines `SchinzelConjecture` extending this to include $z$: all three share identical prime divisors.",
-      "mathContext": "Formal definition: Schinzel (1958): for any prime $p$, $p \\mid x \\iff p \\mid y$. Defines `SchinzelConjecture` extending this to include $z$: all three share identical prime divisors."
+      "mathContext": "Schinzel (1958): $\\\\text{rad}(x) = \\\\text{rad}(y) = \\\\text{rad}(z)$. All three share the same prime factors."
     },
     {
       "id": "demjanenko",
@@ -89,7 +92,7 @@
       "startLine": 110,
       "endLine": 121,
       "summary": "Dem'janenko (1975) proved $\\text{primeFactors}(x) = \\text{primeFactors}(y) = \\text{primeFactors}(z)$. The deepest structural result, proved via $p$-adic analysis of $x \\log x + y \\log y = z \\log z$.",
-      "mathContext": "Mathematical content: Dem'janenko (1975) proved $\\text{primeFactors}(x) = \\text{primeFactors}(y) = \\text{primeFactors}(z)$. The deepest structural result, proved via $p$-adic analysis of $x \\log x + y \\log y = z \\log z$."
+      "mathContext": "Demjanenko (1975): $\\\\text{supp}(x) = \\\\text{supp}(y) = \\\\text{supp}(z)$ where $\\\\text{supp}(n) = \\\\{p : p|n\\\\}$."
     },
     {
       "id": "mills",
@@ -97,7 +100,7 @@
       "startLine": 122,
       "endLine": 144,
       "summary": "Defines $Q = xy/z^2$ and proves no solutions satisfy $4xy > z^2$ with $x \\ne y$. Shows Ko's example achieves $4xy = z^2$, and defines `MillsTheorem` characterizing the equality case.",
-      "mathContext": "Formal definition: Defines $Q = xy/z^2$ and proves no solutions satisfy $4xy > z^2$ with $x \\ne y$. Shows Ko's example achieves $4xy = z^2$, and defines `MillsTheorem` characterizing the equality case."
+      "mathContext": "Mills: $Q = xy/z^2$. No solutions with $4xy > z^2$ and $x \\\\neq y$."
     },
     {
       "id": "uchiyama",
@@ -105,7 +108,7 @@
       "startLine": 145,
       "endLine": 156,
       "summary": "Uchiyama (1984): for fixed $Q \\in (0, 1/4)$, the set of solutions with $\\text{ratioQ}(s) = Q$ is finite. Also proves no solutions for $Q = (1 - k^2)/4$ with rational $k \\in (0,1)$.",
-      "mathContext": "Uchiyama (1984): for fixed $Q \\in (0, 1/4)$, the set of solutions with $\\text{ratioQ}(s) = Q$ is finite. Also proves no solutions for $Q = (1 - $k^{2}$)/4$ with rational $k \\in (0,1)$."
+      "mathContext": "Uchiyama (1984): for fixed $Q \\\\in (0,1/4)$, finitely many solutions with bounded ratio $x/y$."
     },
     {
       "id": "ko-family",
@@ -113,7 +116,7 @@
       "startLine": 157,
       "endLine": 176,
       "summary": "Defines `koFamily(n)` producing solutions for $n \\ge 2$ using $a = 2^{n+1}$ and $b = 2^n - 1$. Proves the family yields valid solutions and that infinitely many exist.",
-      "mathContext": "Defines `koFamily(n)` producing solutions for $n \\ge 2$ using $a = $$2^{{n+1}$}$$ and $b = $2^{n}$ - 1$. Proves the family yields valid solutions and that infinitely many exist."
+      "mathContext": "Infinite family: koFamily$(n)$ for $n \\\\geq 2$ using $a = 2^{n+1}$, $b = 2^n-1$. All known solutions are Ko type."
     },
     {
       "id": "computational",
@@ -121,7 +124,7 @@
       "startLine": 177,
       "endLine": 189,
       "summary": "Mills' computational search: no solutions with $4xy < z^2$ exist for $x, y < 6^{150}$, suggesting $Q = 1/4$ (Ko's family) may be the only case.",
-      "mathContext": "Mills' computational search: no solutions with $4xy < z^2$ exist for $x, y < $$6^{{150}$}$$, suggesting $Q = 1/4$ (Ko's family) may be the only case."
+      "mathContext": "Mills search: no non-Ko solutions for $x,y < 6^6 = 46656$."
     },
     {
       "id": "structure",
@@ -129,7 +132,7 @@
       "startLine": 190,
       "endLine": 211,
       "summary": "Defines `IsKoType` and the conjecture that all solutions come from Ko's family. Proves the universal ratio constraint $Q \\le 1/4$ and characterizes equality.",
-      "mathContext": "Formal definition: Defines `IsKoType` and the conjecture that all solutions come from Ko's family. Proves the universal ratio constraint $Q \\le 1/4$ and characterizes equality."
+      "mathContext": "Conjecture: ALL solutions come from Ko parametric family."
     },
     {
       "id": "small-cases",
@@ -137,7 +140,7 @@
       "startLine": 212,
       "endLine": 233,
       "summary": "No solutions with $x = 2$, $x = 3$, or $x = y$ (equivalently $x^{2x} \\ne z^z$). These follow from divisibility and parity arguments.",
-      "mathContext": "Mathematical content: No solutions with $x = 2$, $x = 3$, or $x = y$ (equivalently $x^{2x} \\ne z^z$). These follow from divisibility and parity arguments."
+      "mathContext": "No solutions with $x=2$, $x=3$, or $x=y$. When $x=y$: $x^{2x}=z^z$ has no solutions."
     },
     {
       "id": "ordering",
@@ -145,7 +148,7 @@
       "startLine": 234,
       "endLine": 283,
       "summary": "WLOG $x \\le y$ by symmetry ($x^x y^y = y^y x^x$). In any solution with $x \\le y$, the ordering is $x < z < y$, following from the convexity of $t \\mapsto t \\log t$.",
-      "mathContext": "Mathematical content: WLOG $x \\le y$ by symmetry ($x^x y^y = y^y x^x$). In any solution with $x \\le y$, the ordering is $x < z < y$, following from the convexity of $t \\mapsto t \\log t$."
+      "mathContext": "WLOG $x \\\\leq y$. Then $x < z < y$ (from the log equation)."
     }
   ],
   "conclusion": {

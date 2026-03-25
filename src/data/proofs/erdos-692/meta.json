@@ -71,9 +71,11 @@
       "**39-Year Resolution (1986–2025):** Erdős's Oberwolfach question survived nearly four decades, suggesting the community expected unimodality to hold — Cambie's computational approach overturned this intuition"
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Number theory (primes, divisibility)",
-      "Asymptotic density and counting"
+      "Divisor function and divisor distribution in intervals",
+      "Asymptotic density of integer sets",
+      "Unimodality and oscillation of arithmetic functions",
+      "Ford distribution $\\\\Phi(x,y,z)$",
+      "Counterexample constructions in analytic number theory"
     ]
   },
   "crossReferences": [
@@ -110,7 +112,7 @@
       "summary": "Imports Mathlib modules for `Nat.divisors`, `Finset.filter`, `Filter.limsup`, real analysis, and topology; opens `Nat`, `Real`, `Filter`, `Finset` namespaces within `Erdos692`",
       "startLine": 32,
       "endLine": 41,
-      "mathContext": "Mathematical content: Imports Mathlib modules for `Nat.divisors`, `Finset.filter`, `Filter.limsup`, real analysis, and topology; opens `Nat`, `Real`, `Filter`, `Finset` namespaces within `Erdos692`"
+      "mathContext": "Divisor counting in intervals. Imports: `Nat.divisors`, `Finset.filter`, asymptotic analysis tools."
     },
     {
       "id": "divisors-interval",
@@ -118,7 +120,7 @@
       "summary": "Defines `divisorsInInterval(k, n, m) = |\\mathcal{D}(k) \\cap (n,m)|$ via `Finset.filter` and `hasExactlyOneDivisor` for the exactness predicate",
       "startLine": 49,
       "endLine": 62,
-      "mathContext": "Formal definition: Defines `divisorsInInterval(k, n, m) = |\\mathcal{D}(k) \\cap (n,m)|$ via `Finset.filter` and `hasExactlyOneDivisor` for the exactness predicate"
+      "mathContext": "$d_k(n,m) = |\\\\{d : d \\\\mid k,; n < d < m\\\\}|$ — count of divisors of $k$ in the open interval $(n,m)$."
     },
     {
       "id": "counting-density",
@@ -126,7 +128,7 @@
       "summary": "Defines `countWithOneDivisor(N, n, m)` counting integers $k \\leq N$ with one divisor in $(n,m)$, and `delta1(n,m) = \\limsup_{N \\to \\infty} \\text{count}/N$ via `Filter.limsup`",
       "startLine": 63,
       "endLine": 79,
-      "mathContext": "Formal definition: Defines `countWithOneDivisor(N, n, m)` counting integers $k \\leq N$ with one divisor in $(n,m)$, and `delta1(n,m) = \\limsup_{N \\to \\infty} \\text{count}/N$ via `Filter.limsup`"
+      "mathContext": "$\\\\delta_1(n,m) = \\\\lim_{N \\\\to \\\\infty} \\\\frac{1}{N} |\\\\{k \\\\leq N : d_k(n,m) = 1\\\\}|$ — density of integers with exactly one divisor in $(n,m)$."
     },
     {
       "id": "erdos-bound",
@@ -134,7 +136,7 @@
       "summary": "Axiomatizes $\\forall n \\geq 2,\\; \\exists c > 0,\\; \\delta_1(n,m) \\leq 1/(\\log n)^c$ — Erdős's 1986 quantitative decay bound, uniform in $m$",
       "startLine": 87,
       "endLine": 94,
-      "mathContext": "Axiomatizes $\\forall n \\geq 2,\\; \\exists c > 0,\\; \\delta_1(n,m) \\leq 1/(\\$\\log n$)^c$ — Erdős's 1986 quantitative decay bound, uniform in $m$"
+      "mathContext": "Erdos: $\\\\forall n \\\\geq 2$, $\\\\exists c > 0$: $\\\\delta_1(n,m) \\\\leq 1 - c$ for all $m > n+1$. Not all integers have a divisor in $(n,m)$."
     },
     {
       "id": "ford-bounds",
@@ -142,7 +144,7 @@
       "summary": "Axiomatizes Ford's regime-dependent bounds on $\\delta_1(n,m)$ from his Annals paper, refining Erdős's estimate using $H(x,y,z) \\asymp x \\cdot \\delta(\\log z / \\log y)$",
       "startLine": 102,
       "endLine": 111,
-      "mathContext": "Axiomatizes Ford's regime-dependent bounds on $\\delta_1(n,m)$ from his Annals paper, refining Erdős's estimate using $H(x,y,z) \\asymp x \\cdot \\$\\delta$(\\log z / \\log y)$"
+      "mathContext": "Ford: regime-dependent bounds on $\\\\delta_1(n,m)$ from his work on the distribution of divisors."
     },
     {
       "id": "unimodality-definition",
@@ -150,7 +152,7 @@
       "summary": "Defines `IsUnimodal f start` (non-decreasing to peak, non-increasing after) and `erdosUnimodalityQuestion n`: is $m \\mapsto \\delta_1(n,m)$ unimodal for $m > n+1$?",
       "startLine": 119,
       "endLine": 134,
-      "mathContext": "Formal definition: Defines `IsUnimodal f start` (non-decreasing to peak, non-increasing after) and `erdosUnimodalityQuestion n`: is $m \\mapsto \\delta_1(n,m)$ unimodal for $m > n+1$?"
+      "mathContext": "Unimodal: non-decreasing to a peak, then non-increasing. Question: is $m \\\\mapsto \\\\delta_1(n,m)$ unimodal for fixed $n$?"
     },
     {
       "id": "cambie-counterexample",
@@ -158,7 +160,7 @@
       "summary": "Axiomatizes $\\delta_1(3,6) > 0.34$, $\\delta_1(3,7) < 0.34$, $\\delta_1(3,8) > 0.36$ — the decrease-then-increase pattern computed via inclusion-exclusion over divisibility by 4, 5, and 20",
       "startLine": 142,
       "endLine": 158,
-      "mathContext": "Axiomatized: Axiomatizes $\\delta_1(3,6) > 0.34$, $\\delta_1(3,7) < 0.34$, $\\delta_1(3,8) > 0.36$ — the decrease-then-increase pattern computed via inclusion-exclusion over divisibility by 4, 5, and 20"
+      "mathContext": "Cambie (2025): $\\\\delta_1(3,6) > 0.34 > \\\\delta_1(3,7) < 0.34 < \\\\delta_1(3,8)$. Non-monotone! Disproves unimodality for $n=3$."
     },
     {
       "id": "disproof",
@@ -166,7 +168,7 @@
       "summary": "Axiomatizes $\\neg\\,\\text{erdosUnimodalityQuestion}\\,3$ and $\\neg\\,\\text{erdosUnimodalityQuestion}\\,2$, then the universal negation $\\neg(\\forall n \\geq 2,\\; \\text{unimodal})$",
       "startLine": 159,
       "endLine": 175,
-      "mathContext": "Axiomatized: Axiomatizes $\\neg\\,\\text{erdosUnimodalityQuestion}\\,3$ and $\\neg\\,\\text{erdosUnimodalityQuestion}\\,2$, then the universal negation $\\neg(\\forall n \\geq 2,\\; \\text{unimodal})$"
+      "mathContext": "DISPROVED: $\\\\delta_1(n,m)$ is NOT unimodal for $n = 3$ (Cambie 2025). Also fails for $n = 4$."
     },
     {
       "id": "local-maxima-defs",
@@ -174,7 +176,7 @@
       "summary": "Defines `IsLocalMaximum`, `countLocalMaxima` on $[\\text{start}+1, M]$, and `SuperpolynomialGrowth g` meaning $g(n) = \\omega(n^k)$ for every $k$",
       "startLine": 187,
       "endLine": 203,
-      "mathContext": "Formal definition: Defines `IsLocalMaximum`, `countLocalMaxima` on $[\\text{start}+1, M]$, and `SuperpolynomialGrowth g` meaning $g(n) = \\omega(n^k)$ for every $k$"
+      "mathContext": "Local maximum: $\\\\delta_1(n,m) > \\\\delta_1(n,m-1)$ and $\\\\delta_1(n,m) > \\\\delta_1(n,m+1)$. Count of local maxima measures oscillation complexity."
     },
     {
       "id": "superpolynomial-maxima",
@@ -182,7 +184,7 @@
       "summary": "Axiomatizes that for fixed $n \\geq 2$, the count of local maxima of $\\delta_1(n,\\cdot)$ up to $M$ grows superpolynomially — driven by $\\pi(M) \\sim M/\\log M$",
       "startLine": 209,
       "endLine": 213,
-      "mathContext": "Axiomatizes that for fixed $n \\geq 2$, the count of local maxima of $\\delta_1(n,\\cdot)$ up to $M$ grows superpolynomially — driven by $\\$\\pi$(M) \\sim M/\\log M$"
+      "mathContext": "For fixed $n \\\\geq 2$: the number of local maxima of $m \\\\mapsto \\\\delta_1(n,m)$ for $m \\\\leq M$ grows super-polynomially in $M$. Wild oscillation."
     },
     {
       "id": "ford-distribution",
@@ -190,7 +192,7 @@
       "summary": "Defines `fordDistribution(x,y,z) = \\#\\{n \\leq x : \\exists d \\mid n,\\; y < d < z\\}$ and the oscillation interpretation connecting 'at least one' to 'exactly one' via inclusion-exclusion",
       "startLine": 232,
       "endLine": 256,
-      "mathContext": "Formal definition: Defines `fordDistribution(x,y,z) = \\#\\{n \\leq x : \\exists d \\mid n,\\; y < d < z\\}$ and the oscillation interpretation connecting 'at least one' to 'exactly one' via inclusion-exclusion"
+      "mathContext": "Ford: $\\\\Phi(x,y,z) = \\\\#\\\\{n \\\\leq x : \\\\exists d \\\\mid n,; y < d \\\\leq z\\\\}$. The distribution of divisors in intervals is a rich and well-studied topic."
     },
     {
       "id": "main-results",
@@ -198,7 +200,7 @@
       "summary": "`erdos_692` combines the upper bound with Cambie's disproof via `constructor`; `erdos_692_status` records $\\neg\\,\\text{erdosUnimodalityQuestion}\\,3$ resolving a 39-year-old problem",
       "startLine": 277,
       "endLine": 295,
-      "mathContext": "Verified: `erdos_692` combines the upper bound with Cambie's disproof via `constructor`; `erdos_692_status` records $\\neg\\,\\text{erdosUnimodalityQuestion}\\,3$ resolving a 39-year-old problem"
+      "mathContext": "DISPROVED (Cambie 2025). The density $\\\\delta_1(n,m)$ oscillates with super-polynomially many local maxima. Combined with Erdos upper bound $\\\\delta_1 < 1$."
     }
   ],
   "conclusion": {

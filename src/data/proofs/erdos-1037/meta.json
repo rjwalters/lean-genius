@@ -41,9 +41,11 @@
       "**Connection to Non-Ramsey Graphs:** Like Problems 1036 and 1031, this problem explores when combinatorial constraints force (or fail to force) large homogeneous subgraphs beyond the Ramsey baseline"
     ],
     "prerequisites": [
-      "Graph theory (vertices, edges, colorings)",
-      "Combinatorics and number theory",
-      "Ramsey theory (partition regularity)"
+      "Graph degree sequences and multiplicity",
+      "Ramsey theory (forced homogeneous subgraphs)",
+      "Clique and independence number ($\\\\omega$, $\\\\alpha$)",
+      "Extremal graph theory (degree constraints)",
+      "Counterexample constructions"
     ]
   },
   "sections": [
@@ -53,7 +55,7 @@
       "summary": "Module documentation on Problem 1037 (Chen-Erdős conjecture, Cambie-Chan-Hunter disproof), imports for SimpleGraph, Finset, Fintype, and real number arithmetic",
       "startLine": 1,
       "endLine": 22,
-      "mathContext": "Verified: Module documentation on Problem 1037 (Chen-Erdős conjecture, Cambie-Chan-Hunter disproof), imports for SimpleGraph, Finset, Fintype, and real number arithmetic"
+      "mathContext": "Problem #1037: if degree multiplicities are $\\\\leq 2$ and distinct degrees $> (1/2+\\\\varepsilon)n$, must $G$ have large trivial subgraphs?"
     },
     {
       "id": "graph-setup",
@@ -61,7 +63,7 @@
       "summary": "vertexCount definition: cardinality of the finite vertex set",
       "startLine": 23,
       "endLine": 35,
-      "mathContext": "Formal definition: vertexCount definition: cardinality of the finite vertex set"
+      "mathContext": "$n = |V(G)|$. Vertex degrees $d(v) = |N(v)|$. Degree sequence determines graph structure up to isomorphism (nearly)."
     },
     {
       "id": "degree-sequences",
@@ -69,7 +71,7 @@
       "summary": "degreeMultiset (multiset of all vertex degrees), distinctDegrees (number of distinct values), degreeMultiplicity (count of each degree value)",
       "startLine": 36,
       "endLine": 54,
-      "mathContext": "Mathematical content: degreeMultiset (multiset of all vertex degrees), distinctDegrees (number of distinct values), degreeMultiplicity (count of each degree value)"
+      "mathContext": "Degree multiset: multiset of all vertex degrees. Distinct degrees: $|\\\\{d(v) : v \\\\in V\\\\}|$. Limited multiplicity: each degree value appears $\\\\leq 2$ times."
     },
     {
       "id": "degree-constraints",
@@ -77,7 +79,7 @@
       "summary": "hasLimitedMultiplicity (each degree at most twice), hasManyDistinctDegrees (distinct degrees > (1/2 + ε)n), isChenErdosGraph (both conditions)",
       "startLine": 55,
       "endLine": 70,
-      "mathContext": "Mathematical content: hasLimitedMultiplicity (each degree at most twice), hasManyDistinctDegrees (distinct degrees > (1/2 + ε)n), isChenErdosGraph (both conditions)"
+      "mathContext": "Has limited multiplicity ($\\\\leq 2$) and many distinct degrees ($> (1/2+\\\\varepsilon)n$). Forces diverse vertex degrees with low repetition."
     },
     {
       "id": "trivial-subgraphs",
@@ -85,7 +87,7 @@
       "summary": "isIndependentSet, isClique, isTrivialSet (independent or clique), maxTrivialSize (maximum over all trivial subsets)",
       "startLine": 71,
       "endLine": 90,
-      "mathContext": "Mathematical content: isIndependentSet, isClique, isTrivialSet (independent or clique), maxTrivialSize (maximum over all trivial subsets)"
+      "mathContext": "Trivial set: independent set or clique. $\\\\max(\\\\alpha(G), \\\\omega(G)) = $ max trivial subgraph. Ramsey: this is $\\\\geq (1/2)\\\\log_2 n$."
     },
     {
       "id": "conjecture",
@@ -93,7 +95,7 @@
       "summary": "chenErdosConjecture (degree diversity forces trivial subgraphs ≫ log n) and chenErdos_false establishing the conjecture is false",
       "startLine": 91,
       "endLine": 105,
-      "mathContext": "chenErdosConjecture (degree diversity forces trivial subgraphs ≫ $\\log n$) and chenErdos_false establishing the conjecture is false"
+      "mathContext": "Chen-Erdos conjecture: degree diversity forces large trivial subgraphs ($\\\\gg \\\\log n$). DISPROVED."
     },
     {
       "id": "counterexample",
@@ -109,7 +111,7 @@
       "summary": "ramseyNumber definition, ramsey_theorem (every graph has trivial subgraph ≥ (1/2) log₂ n), degree_diversity_no_ramsey_help (degree diversity does not improve the Ramsey bound)",
       "startLine": 136,
       "endLine": 162,
-      "mathContext": "ramseyNumber definition, ramsey_theorem (every graph has trivial subgraph $\\geq$ (1/2) log₂ n), degree_diversity_no_ramsey_help (degree diversity does not improve the Ramsey bound)"
+      "mathContext": "Ramsey: $R(k,k) \\\\leq 4^k$, so every $n$-vertex graph has $\\\\max(\\\\alpha, \\\\omega) \\\\geq (1/2)\\\\log_2 n$."
     },
     {
       "id": "degree-properties",
@@ -117,7 +119,7 @@
       "summary": "degree_sum_eq_twice_edges (handshaking lemma), limited_multiplicity_bound (multiplicity ≤ 2 constrains distinct degrees ≤ n), degree_bound (each degree < n)",
       "startLine": 163,
       "endLine": 184,
-      "mathContext": "degree_sum_eq_twice_edges (handshaking lemma), limited_multiplicity_bound (multiplicity $\\leq$ 2 constrains distinct degrees $\\leq$ n), degree_bound (each degree < n)"
+      "mathContext": "Handshaking: $\\\\sum d(v) = 2|E|$. With multiplicity $\\\\leq 2$ and $> n/2$ distinct values: most degrees are 1 or 2-fold."
     },
     {
       "id": "stronger-bounds",
@@ -125,7 +127,7 @@
       "summary": "optimalDistinctBound (3n/4), max_distinct_with_limited_mult (distinct degrees ≤ 3n/4 when multiplicity ≤ 2), cambie_is_optimal (the counterexample achieves this bound)",
       "startLine": 185,
       "endLine": 207,
-      "mathContext": "optimalDistinctBound (3n/4), max_distinct_with_limited_mult (distinct degrees $\\leq$ 3n/4 when multiplicity $\\leq$ 2), cambie_is_optimal (the counterexample achieves this bound)"
+      "mathContext": "Optimal distinct bound: $(3/4)n$ distinct degrees possible with multiplicity $\\\\leq 2$."
     },
     {
       "id": "generalizations",
@@ -133,7 +135,7 @@
       "summary": "hasMultiplicityAtMost (generalized multiplicity ≤ k), generalMultiplicityBound (max distinct degrees with multiplicity ≤ k is (1-1/(2k))n), multiplicity_two_bound (special case k=2 recovers 3n/4)",
       "startLine": 208,
       "endLine": 238,
-      "mathContext": "hasMultiplicityAtMost (generalized multiplicity $\\leq$ k), generalMultiplicityBound (max distinct degrees with multiplicity $\\leq$ k is (1-1/(2k))n), multiplicity_two_bound (special case k=2 recovers 3n/4)"
+      "mathContext": "General multiplicity $\\\\leq k$: how does the forced trivial subgraph size depend on $k$?"
     },
     {
       "id": "resolved",
@@ -141,7 +143,7 @@
       "summary": "erdos_1037_disproved (the conjecture is false via counterexample) and erdos_1037_answer (degree diversity does not force large trivial subgraphs)",
       "startLine": 239,
       "endLine": 276,
-      "mathContext": "Mathematical content: erdos_1037_disproved (the conjecture is false via counterexample) and erdos_1037_answer (degree diversity does not force large trivial subgraphs)"
+      "mathContext": "DISPROVED (Cambie-Chudnovsky 2023): counterexample exists. The degree diversity does NOT force super-logarithmic trivial subgraphs."
     }
   ],
   "conclusion": {

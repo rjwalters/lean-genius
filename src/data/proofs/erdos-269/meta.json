@@ -84,8 +84,11 @@
       "**The Difficulty:** For finite P, pattern of duplicates is hard to analyze"
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Number theory (primes, divisibility)"
+      "Smooth numbers ($P$-smooth: all prime factors in $P$)",
+      "LCM of integer sequences",
+      "Irrationality criteria (e.g., Erdos-Straus)",
+      "$p$-adic valuations and arithmetic functions",
+      "Diophantine approximation"
     ]
   },
   "sections": [
@@ -95,7 +98,7 @@
       "summary": "IsPSmooth definition, basic properties",
       "startLine": 34,
       "endLine": 73,
-      "mathContext": "Formal definition: IsPSmooth definition, basic properties"
+      "mathContext": "$n$ is $P$-smooth if all prime factors of $n$ are in $P$. Example: $P = \\\\{2,3\\\\}$, smooth numbers are $\\\\{1, 2, 3, 4, 6, 8, 9, \\\\ldots\\\\}$."
     },
     {
       "id": "sequence",
@@ -103,7 +106,7 @@
       "summary": "smoothSeq enumeration and properties",
       "startLine": 74,
       "endLine": 93,
-      "mathContext": "Mathematical content: smoothSeq enumeration and properties"
+      "mathContext": "$(a_n)$: the $P$-smooth numbers in increasing order. $a_0 = 1, a_1 = \\\\min P, \\\\ldots$"
     },
     {
       "id": "partial-lcm",
@@ -111,7 +114,7 @@
       "summary": "L_n = [a_0,...,a_{n-1}] definition and properties",
       "startLine": 94,
       "endLine": 129,
-      "mathContext": "Formal definition: L_n = [a_0,...,a_{n-1}] definition and properties"
+      "mathContext": "$L_n = \\\\text{lcm}(a_0, a_1, \\\\ldots, a_{n-1})$: partial LCM of the first $n$ smooth numbers."
     },
     {
       "id": "series",
@@ -119,7 +122,7 @@
       "summary": "lcmSeries definition, convergence, positivity",
       "startLine": 130,
       "endLine": 152,
-      "mathContext": "Formal definition: lcmSeries definition, convergence, positivity"
+      "mathContext": "$\\\\sum_{n=0}^\\\\infty 1/L_n$: converges (since $L_n$ grows super-exponentially). The sum is a well-defined positive real."
     },
     {
       "id": "main-conjecture",
@@ -127,7 +130,7 @@
       "summary": "erdos_269 axiom for finite P",
       "startLine": 153,
       "endLine": 176,
-      "mathContext": "Axiomatized: erdos_269 axiom for finite P"
+      "mathContext": "OPEN: $\\\\sum 1/L_n$ is irrational for all finite $P$ with $|P| \\\\geq 2$. Connects smooth number LCMs to irrationality."
     },
     {
       "id": "infinite-case",
@@ -135,7 +138,7 @@
       "summary": "erdos_269_infinite axiom",
       "startLine": 177,
       "endLine": 193,
-      "mathContext": "Axiomatized: erdos_269_infinite axiom"
+      "mathContext": "When $P$ is the set of all primes: $L_n = \\\\text{lcm}(1,\\\\ldots,n)$ and $\\\\sum 1/\\\\text{lcm}(1,\\\\ldots,n)$ is known to be irrational."
     },
     {
       "id": "examples",
@@ -143,7 +146,7 @@
       "summary": "P = {2,3} worked examples",
       "startLine": 180,
       "endLine": 195,
-      "mathContext": "Mathematical content: P = {2,3} worked examples"
+      "mathContext": "$P = \\\\{2,3\\\\}$: smooth numbers 1,2,3,4,6,8,9,12,... LCMs: 1,2,6,12,12,24,..."
     },
     {
       "id": "padic",
@@ -151,7 +154,7 @@
       "summary": "P-adic valuation analysis",
       "startLine": 196,
       "endLine": 209,
-      "mathContext": "Mathematical content: P-adic valuation analysis"
+      "mathContext": "$p$-adic valuation $v_p(L_n) = \\\\max v_p(a_i)$ for $i < n$. Controls the growth of $L_n$."
     },
     {
       "id": "difficulty",
@@ -159,7 +162,7 @@
       "summary": "Analysis of the finite P difficulty",
       "startLine": 210,
       "endLine": 223,
-      "mathContext": "Mathematical content: Analysis of the finite P difficulty"
+      "mathContext": "For finite $P$: the structure of $L_n$ depends on how primes in $P$ interleave. Harder than the all-primes case."
     },
     {
       "id": "partial-result",
@@ -167,7 +170,7 @@
       "summary": "Distinct terms case is solved (distinctLcmTerms, erdos_269_distinct axiom)",
       "startLine": 224,
       "endLine": 241,
-      "mathContext": "Axiomatized: Distinct terms case is solved (distinctLcmTerms, erdos_269_distinct axiom)"
+      "mathContext": "Distinct terms case solved: when all $L_n$ are distinct, irrationality follows from standard criteria."
     },
     {
       "id": "summary",
@@ -175,7 +178,7 @@
       "summary": "erdos_269_summary theorem, erdos_269_conjecture restating the main open problem",
       "startLine": 242,
       "endLine": 275,
-      "mathContext": "Verified: erdos_269_summary theorem, erdos_269_conjecture restating the main open problem"
+      "mathContext": "OPEN for finite $P$ with $|P| \\\\geq 2$. Solved for $P$ = all primes. Partial: distinct-LCM case."
     }
   ],
   "conclusion": {

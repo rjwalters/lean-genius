@@ -82,10 +82,11 @@
       "Question 4 under CH is naturally 'balanced' ($\\omega_2 \\to (\\omega_1 + \\omega)_2^2$), meaning both colors must admit the same order type, which is a strictly stronger requirement than the unbalanced case."
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Combinatorics (counting, extremal problems)",
-      "Set theory and cardinality",
-      "Ramsey theory (partition regularity)"
+      "Ordinal partition relations ($\\\\alpha \\\\to (\\\\beta, \\\\gamma)^r$)",
+      "Infinite combinatorics (Ramsey for ordinals)",
+      "Set theory (GCH, CH, ZFC independence)",
+      "Ordinal arithmetic ($\\\\omega_1, \\\\omega_2, \\\\omega_3$)",
+      "Erdos-Dushnik-Miller theorem"
     ]
   },
   "sections": [
@@ -95,7 +96,7 @@
       "summary": "Defines ω₁, ω₂, ω₃ as the ordinals of the first three uncountable alephs, and ω as the first limit ordinal.",
       "startLine": 38,
       "endLine": 44,
-      "mathContext": "Formal definition: Defines ω₁, ω₂, ω₃ as the ordinals of the first three uncountable alephs, and ω as the first limit ordinal."
+      "mathContext": "$\\\\omega_1, \\\\omega_2, \\\\omega_3$: first three uncountable ordinals. $\\\\aleph_0 < \\\\aleph_1 < \\\\aleph_2 < \\\\aleph_3$."
     },
     {
       "id": "partition-relation",
@@ -103,7 +104,7 @@
       "summary": "Introduces the unbalanced ordinal partition relation α → (β, γ)² as an axiom and defines the balanced variant α → (β)₂².",
       "startLine": 45,
       "endLine": 53,
-      "mathContext": "Introduces the unbalanced ordinal partition relation α $\\to$ (β, γ)² as an axiom and defines the balanced variant α $\\to$ (β)₂²."
+      "mathContext": "$\\\\alpha \\\\to (\\\\beta, \\\\gamma)^2$: for every 2-coloring of pairs from $\\\\alpha$, there is a red set order-isomorphic to $\\\\beta$ or a blue set order-isomorphic to $\\\\gamma$."
     },
     {
       "id": "set-theoretic-hypotheses",
@@ -111,7 +112,7 @@
       "summary": "Formalizes GCH as 2^ℵ_α = ℵ_{α+1} for all α, CH as the special case 2^ℵ₀ = ℵ₁, and proves GCH implies CH.",
       "startLine": 54,
       "endLine": 67,
-      "mathContext": "Formalizes GCH as $2^{ℵ_α}$ = ℵ_{α+1} for all α, CH as the special case $2^{ℵ₀}$ = ℵ₁, and proves GCH implies CH."
+      "mathContext": "GCH: $2^{\\\\aleph_\\\\alpha} = \\\\aleph_{\\\\alpha+1}$. CH: $2^{\\\\aleph_0} = \\\\aleph_1$ (special case). Some partition relations depend on GCH."
     },
     {
       "id": "the-four-open-questions",
@@ -119,7 +120,7 @@
       "summary": "States the four open partition relations from Erdős-Hajnal as Lean definitions, three under GCH and one under CH.",
       "startLine": 68,
       "endLine": 81,
-      "mathContext": "Formal definition: States the four open partition relations from Erdős-Hajnal as Lean definitions, three under GCH and one under CH."
+      "mathContext": "Four OPEN questions from Erdos-Hajnal: $\\\\omega_3 \\\\to (\\\\omega_2, \\\\omega_1+2)^2$, etc. Each asks about specific ordinal partition relations."
     },
     {
       "id": "basic-ordinal-arithmetic",
@@ -127,7 +128,7 @@
       "summary": "Proves the ordering chain ω < ω₁ < ω₂ < ω₃ and positivity of all three uncountable ordinals using Mathlib's aleph lemmas.",
       "startLine": 82,
       "endLine": 115,
-      "mathContext": "Verified: Proves the ordering chain ω < ω₁ < ω₂ < ω₃ and positivity of all three uncountable ordinals using Mathlib's aleph lemmas."
+      "mathContext": "$\\\\omega < \\\\omega_1 < \\\\omega_2 < \\\\omega_3$ (strict ordering). All are limit ordinals. $|\\\\omega_i| = \\\\aleph_i$."
     },
     {
       "id": "monotonicity",
@@ -135,7 +136,7 @@
       "summary": "Axiomatizes source monotonicity (enlarging the source preserves the relation) and target monotonicity (shrinking targets preserves it).",
       "startLine": 116,
       "endLine": 123,
-      "mathContext": "Axiomatized: Axiomatizes source monotonicity (enlarging the source preserves the relation) and target monotonicity (shrinking targets preserves it)."
+      "mathContext": "Source monotonicity: $\\\\alpha \\\\to (\\\\beta, \\\\gamma)^2$ and $\\\\alpha \\\\leq \\\\alpha \\\\Rightarrow \\\\alpha \\\\to (\\\\beta, \\\\gamma)^2$."
     },
     {
       "id": "known-results",
@@ -143,7 +144,7 @@
       "summary": "States the Erdős-Dushnik-Miller theorem (1941) and the Erdős-Rado strengthening for regular uncountable cardinals as axioms.",
       "startLine": 124,
       "endLine": 134,
-      "mathContext": "Verified: States the Erdős-Dushnik-Miller theorem (1941) and the Erdős-Rado strengthening for regular uncountable cardinals as axioms."
+      "mathContext": "Erdos-Dushnik-Miller (1941): $\\\\omega_1 \\\\to (\\\\omega_1, \\\\omega+1)^2$. Erdos-Rado: stronger results with GCH."
     },
     {
       "id": "proved-theorems",
@@ -151,7 +152,7 @@
       "summary": "Derives six consequences including weak forms of Q1 via EDM + monotonicity, target weakening implications, and the unfolding of Q4's balanced definition.",
       "startLine": 135,
       "endLine": 172,
-      "mathContext": "Formal definition: Derives six consequences including weak forms of Q1 via EDM + monotonicity, target weakening implications, and the unfolding of Q4's balanced definition."
+      "mathContext": "Six derived consequences via EDM + monotonicity. Weak forms of Q1 follow from classical results."
     },
     {
       "id": "stepping-up-lemma",
@@ -159,7 +160,7 @@
       "summary": "Axiomatizes the negative stepping-up lemma: failure of a partition relation at κ propagates to κ + 1 with modified targets.",
       "startLine": 173,
       "endLine": 178,
-      "mathContext": "Axiomatized: Axiomatizes the negative stepping-up lemma: failure of a partition relation at κ propagates to κ + 1 with modified targets."
+      "mathContext": "Negative stepping-up: failure of $\\\\alpha \\\\to (\\\\beta, \\\\gamma)^2$ can imply failure at higher cardinals."
     },
     {
       "id": "independence-results",
@@ -167,7 +168,7 @@
       "summary": "Demonstrates ZFC-independence of ω₁ → (ω₁, ω + 2)² via Todorcevic's negative result under b = ω₁ and PFA's positive result.",
       "startLine": 179,
       "endLine": 194,
-      "mathContext": "Demonstrates ZFC-independence of ω₁ $\\to$ (ω₁, ω + 2)² via Todorcevic's negative result under b = ω₁ and PFA's positive result."
+      "mathContext": "ZFC-independent: $\\\\omega_1 \\\\to (\\\\omega_1, \\\\omega+2)^2$ is independent of ZFC (Todorcevic negative, forcing positive)."
     },
     {
       "id": "summary",
@@ -175,7 +176,7 @@
       "summary": "Packages all four questions into one conjunction and verifies consistency bounds on the targets appearing in Q2 and Q3.",
       "startLine": 195,
       "endLine": 204,
-      "mathContext": "Bound: Packages all four questions into one conjunction and verifies consistency bounds on the targets appearing in Q2 and Q3."
+      "mathContext": "Four OPEN ordinal partition questions. Some are ZFC-independent. Known: EDM theorem and monotonicity consequences."
     }
   ],
   "conclusion": {

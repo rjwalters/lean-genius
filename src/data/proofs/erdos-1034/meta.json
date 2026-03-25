@@ -43,9 +43,11 @@
       "**$K_4$-free variant**: the bound improves to $(2\\sqrt{3} - 3)n \\approx 0.464n > 0.419n$ — counterintuitively, forbidding $K_4$ allows *more* good neighbors"
     ],
     "prerequisites": [
-      "Graph theory (vertices, edges, colorings)",
-      "Extremal graph theory (Turán-type problems)",
-      "Combinatorics and number theory"
+      "Extremal graph theory (Turan threshold $\\\\text{ex}(n, K_r)$)",
+      "Triangle counting in dense graphs",
+      "Book lemma (shared-edge triangles)",
+      "Common neighborhood counting",
+      "Asymptotic analysis ($o(1)$ correction terms)"
     ]
   },
   "sections": [
@@ -55,7 +57,7 @@
       "startLine": 1,
       "endLine": 26,
       "summary": "Module docstring documenting the problem statement, background, and references; single `import Mathlib` for full Mathlib access",
-      "mathContext": "Erdős Problem #1034: Turán-type density bounds for graph properties. Aristotle proved numerical approximations for the Ma-Tang constant, $K_4$-free Turán constant, and negated the Erdős-Faudree conjecture."
+      "mathContext": "Problem #1034: in a graph with $> n^2/4$ edges (above Turan threshold), must there exist a triangle $T$ with $> (1/2 - o(1))n$ vertices each adjacent to 2+ vertices of $T$?"
     },
     {
       "id": "graph-setup",
@@ -63,7 +65,7 @@
       "summary": "$|E(G)|$, $\\lfloor n^2/4 \\rfloor$ Turán threshold, and `isAboveTuran` predicate",
       "startLine": 27,
       "endLine": 45,
-      "mathContext": "$|E(G)|$, $\\lfloor $n^{2}$/4 \\rfloor$ Turán threshold, and `isAboveTuran` predicate"
+      "mathContext": "$e(G) = |E(G)|$, Turan threshold $\\\\lfloor n^2/4 \\\\rfloor$. The predicate isAboveTuran means $e(G) > \\\\lfloor n^2/4 \\\\rfloor$."
     },
     {
       "id": "triangles",
@@ -71,7 +73,7 @@
       "summary": "Triangle $T = (v_1, v_2, v_3)$ structure with pairwise adjacency and vertex set of cardinality 3",
       "startLine": 46,
       "endLine": 71,
-      "mathContext": "Formal definition: Triangle $T = (v_1, v_2, v_3)$ structure with pairwise adjacency and vertex set of cardinality 3"
+      "mathContext": "Triangle $T = (v_1, v_2, v_3)$ with $v_iv_j \\\\in E(G)$ for all $i \\\\neq j$. By Turan theorem, any graph above the threshold contains at least one triangle."
     },
     {
       "id": "triangle-neighbors",
@@ -79,7 +81,7 @@
       "summary": "$\\text{goodNeighbors}(G, T) = \\{y \\notin T : |\\{v \\in T : y \\sim v\\}| \\ge 2\\}$ and cardinality",
       "startLine": 72,
       "endLine": 101,
-      "mathContext": "Mathematical content: $\\text{goodNeighbors}(G, T) = \\{y \\notin T : |\\{v \\in T : y \\sim v\\}| \\ge 2\\}$ and cardinality"
+      "mathContext": "$\\\\text{goodNeighbors}(G,T) = \\\\{y \\\\notin T : |N(y) \\\\cap T| \\\\geq 2\\\\}$ — vertices adjacent to at least 2 of the 3 triangle vertices."
     },
     {
       "id": "h-function",
@@ -87,7 +89,7 @@
       "summary": "$h(n) = \\max\\{k : \\forall G \\text{ above Turán}, \\exists T, |\\text{goodNeighbors}| \\ge k\\}$",
       "startLine": 102,
       "endLine": 123,
-      "mathContext": "Mathematical content: $h(n) = \\max\\{k : \\forall G \\text{ above Turán}, \\exists T, |\\text{goodNeighbors}| \\ge k\\}$"
+      "mathContext": "$h(n) = \\\\max\\\\{k : \\\\forall G \\\\text{ above Turan}, \\\\exists T, |\\\\text{goodNeighbors}(G,T)| \\\\geq k\\\\}$."
     },
     {
       "id": "conjecture",
@@ -95,7 +97,7 @@
       "summary": "$\\neg\\,\\text{erdos\\_faudree\\_conjecture}$: conjecture $h(n) > (1/2)n$ is FALSE (Aristotle-proved negation)",
       "startLine": 124,
       "endLine": 142,
-      "mathContext": "Mathematical content: $\\neg\\,\\text{erdos\\_faudree\\_conjecture}$: conjecture $h(n) > (1/2)n$ is FALSE (Aristotle-proved negation)"
+      "mathContext": "Erdos-Faudree conjecture: $h(n) > n/2$. DISPROVED. Ma-Tang: $h(n) \\\\leq (2-\\\\sqrt{5/2})n \\\\approx 0.419n < n/2$."
     },
     {
       "id": "ma-tang",
@@ -103,7 +105,7 @@
       "summary": "$h(n) \\le (2 - \\sqrt{5/2})n \\approx 0.419n$ from Ma-Tang construction (axiomatized)",
       "startLine": 143,
       "endLine": 168,
-      "mathContext": "Axiomatized: $h(n) \\le (2 - \\sqrt{5/2})n \\approx 0.419n$ from Ma-Tang construction (axiomatized)"
+      "mathContext": "Ma-Tang: $h(n) \\\\leq (2-\\\\sqrt{5/2})n \\\\approx 0.419n$. Extremal construction where every triangle has limited good-neighbor count."
     },
     {
       "id": "book-lower",
@@ -111,7 +113,7 @@
       "summary": "$h(n) \\ge n/6$ from book lemma: dense graphs have triangles with $\\ge n/6$ common neighbors",
       "startLine": 169,
       "endLine": 200,
-      "mathContext": "Mathematical content: $h(n) \\ge n/6$ from book lemma: dense graphs have triangles with $\\ge n/6$ common neighbors"
+      "mathContext": "Book lemma: $h(n) \\\\geq n/6$. Dense graphs have triangles with $\\\\geq n/6$ common neighbors."
     },
     {
       "id": "gap",
@@ -119,7 +121,7 @@
       "summary": "$n/6 \\le h(n) \\le (2 - \\sqrt{5/2})n$ with gap $\\approx 0.252n$ (Aristotle-verified)",
       "startLine": 201,
       "endLine": 218,
-      "mathContext": "Mathematical content: $n/6 \\le h(n) \\le (2 - \\sqrt{5/2})n$ with gap $\\approx 0.252n$ (Aristotle-verified)"
+      "mathContext": "$n/6 \\\\leq h(n) \\\\leq (2-\\\\sqrt{5/2})n$. Gap $\\\\approx 0.252n$."
     },
     {
       "id": "k4-free",
@@ -127,7 +129,7 @@
       "summary": "$K_4$-free bound: $(2\\sqrt{3} - 3)n \\approx 0.464n > 0.419n$ (counterintuitively larger)",
       "startLine": 219,
       "endLine": 248,
-      "mathContext": "Bound: $K_4$-free bound: $(2\\sqrt{3} - 3)n \\approx 0.464n > 0.419n$ (counterintuitively larger)"
+      "mathContext": "$K_4$-free bound: $(2\\sqrt{3} - 3)n \\approx 0.464n > 0.419n$ (counterintuitively larger)"
     },
     {
       "id": "problem-905",
@@ -135,7 +137,7 @@
       "summary": "Problem #1034 $\\implies$ Problem #905: good neighbors $\\implies$ high-degree triangle vertices",
       "startLine": 249,
       "endLine": 267,
-      "mathContext": "Mathematical content: Problem #1034 $\\implies$ Problem #905: good neighbors $\\implies$ high-degree triangle vertices"
+      "mathContext": "Problem 1034 $\\\\Rightarrow$ Problem 905: good triangle neighbors implies high-degree triangle vertices."
     },
     {
       "id": "maximum",
@@ -143,7 +145,7 @@
       "summary": "$\\max_T |\\text{goodNeighbors}(G, T)|$ and Ma-Tang extremal graph characterization",
       "startLine": 268,
       "endLine": 284,
-      "mathContext": "Mathematical content: $\\max_T |\\text{goodNeighbors}(G, T)|$ and Ma-Tang extremal graph characterization"
+      "mathContext": "$\\\\max_T |\\\\text{goodNeighbors}(G,T)|$. The Ma-Tang graph achieves this at $(2-\\\\sqrt{5/2})n$."
     },
     {
       "id": "resolved",
@@ -151,7 +153,7 @@
       "summary": "Complete resolution: bounds $n/6 \\le h(n) \\le (2 - \\sqrt{5/2})n$, conjecture DISPROVED",
       "startLine": 285,
       "endLine": 304,
-      "mathContext": "Bound: Complete resolution: bounds $n/6 \\le h(n) \\le (2 - \\sqrt{5/2})n$, conjecture DISPROVED"
+      "mathContext": "Status: conjecture DISPROVED. Bounds: $n/6 \\\\leq h(n) \\\\leq (2-\\\\sqrt{5/2})n$. Exact $h(n)$ remains OPEN."
     },
     {
       "id": "properties",
@@ -159,7 +161,7 @@
       "summary": "$T.\\text{vertices} \\subseteq \\text{goodNeighbors}$ and $\\text{bookPages} \\subseteq \\text{goodNeighbors}$ structural lemmas",
       "startLine": 305,
       "endLine": 744,
-      "mathContext": "Mathematical content: $T.\\text{vertices} \\subseteq \\text{goodNeighbors}$ and $\\text{bookPages} \\subseteq \\text{goodNeighbors}$ structural lemmas"
+      "mathContext": "Structural: triangle vertices are good neighbors of $T$. Book pages are subsets of good neighbors."
     }
   ],
   "conclusion": {

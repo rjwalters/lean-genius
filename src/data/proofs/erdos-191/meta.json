@@ -86,9 +86,11 @@
       "**Ramsey Connection:** Classical Ramsey gives cliques of size ~2 log n; the weighting transforms this"
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Ramsey theory (partition regularity)",
-      "Combinatorics (counting, extremal problems)"
+      "Ramsey theory (monochromatic substructures)",
+      "Graph coloring (2-colorings of complete graphs)",
+      "Weighted sums ($\\\\sum 1/\\\\log x$)",
+      "Triple logarithm growth rates",
+      "Probabilistic constructions (Lovasz Local Lemma)"
     ]
   },
   "sections": [
@@ -98,7 +100,7 @@
       "summary": "IntegerSet, EdgeColoring, SimpleEdgeColoring",
       "startLine": 37,
       "endLine": 62,
-      "mathContext": "Mathematical content: IntegerSet, EdgeColoring, SimpleEdgeColoring"
+      "mathContext": "Integer set $X \\\\subseteq \\\\{2, \\\\ldots, n\\\\}$. Edge coloring of $K(\\\\{2,\\\\ldots,n\\\\})$: assign red/blue to each pair $\\\\{x, y\\\\}$."
     },
     {
       "id": "monochromatic",
@@ -106,7 +108,7 @@
       "summary": "IsMonochromatic, HasMonochromaticSubset, IsClique",
       "startLine": 63,
       "endLine": 86,
-      "mathContext": "Mathematical content: IsMonochromatic, HasMonochromaticSubset, IsClique"
+      "mathContext": "Monochromatic $X$: all edges within $X$ have the same color. Clique: pairwise connected (complete subgraph on $X$)."
     },
     {
       "id": "weighted-sum",
@@ -114,7 +116,7 @@
       "summary": "logInverseSum definition and properties",
       "startLine": 87,
       "endLine": 116,
-      "mathContext": "Formal definition: logInverseSum definition and properties"
+      "mathContext": "$S(X) = \\\\sum_{x \\\\in X} 1/\\\\log x$. This weight function grows slowly, making large weighted sums require many elements."
     },
     {
       "id": "problem-statement",
@@ -122,7 +124,7 @@
       "summary": "MonochromaticWithLargeSum, erdos191Conjecture",
       "startLine": 117,
       "endLine": 135,
-      "mathContext": "Mathematical content: MonochromaticWithLargeSum, erdos191Conjecture"
+      "mathContext": "For any $C > 0$, if $n$ is large enough, any 2-coloring of $K(\\\\{2,\\\\ldots,n\\\\})$ contains monochromatic $X$ with $S(X) \\\\geq C$."
     },
     {
       "id": "solution",
@@ -130,7 +132,7 @@
       "summary": "erdos_191 axiom (main solution)",
       "startLine": 136,
       "endLine": 153,
-      "mathContext": "Axiomatized: erdos_191 axiom (main solution)"
+      "mathContext": "SOLVED: for any $C$, there exists $n_0$ such that for $n \\\\geq n_0$, every 2-coloring has monochromatic $X$ with $\\\\sum 1/\\\\log x \\\\geq C$."
     },
     {
       "id": "tight-bounds",
@@ -138,7 +140,7 @@
       "summary": "tripleLog, rodl_upper_construction, conlon_fox_sudakov_bound",
       "startLine": 154,
       "endLine": 195,
-      "mathContext": "Bound: tripleLog, rodl_upper_construction, conlon_fox_sudakov_bound"
+      "mathContext": "Tight: $C \\\\leq c \\\\cdot \\\\log\\\\log\\\\log n$ (triple logarithm). Conlon-Fox-Sudakov: matching upper bound via probabilistic construction."
     },
     {
       "id": "derivation",
@@ -146,7 +148,7 @@
       "summary": "erdos_191_from_cfs theorem",
       "startLine": 196,
       "endLine": 224,
-      "mathContext": "Verified: erdos_191_from_cfs theorem"
+      "mathContext": "Derives from Ramsey-type density arguments: large monochromatic subgraphs contain enough elements to make $\\\\sum 1/\\\\log x$ large."
     },
     {
       "id": "ramsey-connection",
@@ -154,7 +156,7 @@
       "summary": "RamseyStyleProperty, classical_ramsey_connection",
       "startLine": 225,
       "endLine": 247,
-      "mathContext": "Mathematical content: RamseyStyleProperty, classical_ramsey_connection"
+      "mathContext": "Ramsey property: 2-coloring forces structure. The $1/\\\\log x$ weight makes this a quantitative refinement of classical Ramsey theory."
     },
     {
       "id": "examples",
@@ -162,7 +164,7 @@
       "summary": "small_n_bound, monochromatic_pair_exists, sum asymptotic",
       "startLine": 248,
       "endLine": 283,
-      "mathContext": "Bound: small_n_bound, monochromatic_pair_exists, sum asymptotic"
+      "mathContext": "Small cases: $n = 100$, monochromatic pairs always exist (Ramsey). The weighted sum condition requires larger monochromatic sets."
     },
     {
       "id": "generalizations",
@@ -170,7 +172,7 @@
       "summary": "r-coloring, different weight functions",
       "startLine": 284,
       "endLine": 313,
-      "mathContext": "Mathematical content: r-coloring, different weight functions"
+      "mathContext": "$r$-colorings (for $r \\\\geq 3$): analogous results hold with different thresholds. Other weight functions $w(x)$ give different growth rates."
     },
     {
       "id": "asymptotic",
@@ -178,7 +180,7 @@
       "summary": "tight_asymptotic theorem",
       "startLine": 314,
       "endLine": 338,
-      "mathContext": "Verified: tight_asymptotic theorem"
+      "mathContext": "Tight asymptotic: maximum guaranteed $\\\\sum 1/\\\\log x = \\\\Theta(\\\\log\\\\log\\\\log n)$. The triple-log growth is intrinsic to the $1/\\\\log$ weight."
     },
     {
       "id": "summary",
@@ -186,7 +188,7 @@
       "summary": "erdos_191_summary, erdos_191_answer",
       "startLine": 339,
       "endLine": 371,
-      "mathContext": "Mathematical content: erdos_191_summary, erdos_191_answer"
+      "mathContext": "SOLVED. Any 2-coloring of $\\\\{2,\\\\ldots,n\\\\}$ has monochromatic $X$ with $\\\\sum 1/\\\\log x \\\\geq c\\\\log\\\\log\\\\log n$. Tight up to constants."
     }
   ],
   "conclusion": {
@@ -222,17 +224,7 @@
     {
       "targetId": "erdos-1109",
       "relationship": "related",
-      "description": "Problem #1109 studies squarefree sumsets using sieve techniques similar to those used in the weighted-sum analysis of monochromatic sets. Both combine number-theoretic structure with combinatorial density arguments"
-    },
-    {
-      "targetId": "ramseys-theorem",
-      "relationship": "foundational",
-      "description": "Ramsey's theorem guarantees monochromatic cliques in edge-colored complete graphs. Problem #191 asks how 'large' (in a weighted harmonic sense) monochromatic subsets can be forced to exist — a quantitative refinement of the Ramsey property from clique existence to weighted-sum lower bounds"
-    },
-    {
-      "targetId": "harmonic-divergence",
-      "relationship": "related",
-      "description": "The divergence of the harmonic series is the foundational fact underlying the $\\sum 1/\\log n$ weighting. Problem #191 asks whether monochromatic subsets must have divergent weighted harmonic sums — connecting Ramsey-theoretic partition results to the harmonic-sum structure of the integers"
+      "description": "Related additive combinatorics: squarefree sumsets use similar sieve techniques"
     }
   ],
   "references": [

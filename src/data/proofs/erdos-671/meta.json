@@ -80,8 +80,11 @@
       "**Q1 vs Q2:** Q2 implies Q1 trivially. The main conjecture asks if they're equivalent."
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Mathematical analysis"
+      "Polynomial interpolation (Lagrange basis)",
+      "Approximation theory (best polynomial approximation $E_n(f)$)",
+      "Lebesgue function and Lebesgue constant",
+      "Measure theory (Lebesgue measure, a.e. convergence)",
+      "Continuous functions on compact intervals"
     ]
   },
   "sections": [
@@ -91,7 +94,7 @@
       "summary": "InterpolationPoints structure and Lagrange basis polynomials",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Formal definition: InterpolationPoints structure and Lagrange basis polynomials"
+      "mathContext": "Given $n$ distinct points $a_1^n, \\ldots, a_n^n \\in [-1,1]$, the Lagrange basis polynomials are $p_i^n(x) = \\prod_{j \\neq i} \\frac{x - a_j^n}{a_i^n - a_j^n}$, satisfying $p_i^n(a_j^n) = \\delta_{ij}$."
     },
     {
       "id": "lagrange-interp",
@@ -99,7 +102,7 @@
       "summary": "The operator L^n and its interpolation properties",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Mathematical content: The operator L^n and its interpolation properties"
+      "mathContext": "$L^n f(x) = \\sum_{i=1}^n f(a_i^n)\\, p_i^n(x)$: the unique polynomial of degree $\\leq n-1$ interpolating $f$ at the nodes. Error: $\\|f - L^n f\\|_\\infty \\leq (1 + \\Lambda_n) E_{n-1}(f)$."
     },
     {
       "id": "lebesgue",
@@ -107,7 +110,7 @@
       "summary": "lambda_n(x) and the Lebesgue constant Lambda_n",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Mathematical content: lambda_n(x) and the Lebesgue constant Lambda_n"
+      "mathContext": "$\\lambda_n(x) = \\sum_{i=1}^n |p_i^n(x)|$ — the Lebesgue function. $\\Lambda_n = \\max_{x \\in [-1,1]} \\lambda_n(x)$ — the Lebesgue constant. Controls interpolation error amplification."
     },
     {
       "id": "bernstein",
@@ -115,7 +118,7 @@
       "summary": "Divergence at some point for any scheme",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Mathematical content: Divergence at some point for any scheme"
+      "mathContext": "Bernstein (1931): for any triangular array of nodes, $\\exists x_0 \\in [-1,1]$ such that $\\limsup_{n \\to \\infty} \\lambda_n(x_0) = \\infty$. Uniform convergence of $L^n$ for all $f \\in C[-1,1]$ is impossible."
     },
     {
       "id": "erdos-vertesi",
@@ -123,7 +126,7 @@
       "summary": "Almost everywhere divergence for some continuous f",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Mathematical content: Almost everywhere divergence for some continuous f"
+      "mathContext": "Erdős-Vértesi (1980): for any nodes, $\\exists f \\in C[-1,1]$ such that $|L^n f(x)| \\to \\infty$ for a.e. $x \\in [-1,1]$. Pointwise convergence fails almost everywhere for some continuous function."
     },
     {
       "id": "question1",
@@ -131,7 +134,7 @@
       "summary": "Convergence despite local Lebesgue divergence",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Mathematical content: Convergence despite local Lebesgue divergence"
+      "mathContext": "Q1: Do there exist nodes such that $\\forall f \\in C[-1,1]$, $\\exists x$ with $\\limsup \\lambda_n(x) = \\infty$ yet $L^n f(x) \\to f(x)$? Can convergence survive where the error bound diverges?"
     },
     {
       "id": "question2",
@@ -139,7 +142,7 @@
       "summary": "Convergence despite universal Lebesgue divergence",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Mathematical content: Convergence despite universal Lebesgue divergence"
+      "mathContext": "Q2: Can $\\lambda_n(x) \\to \\infty$ for ALL $x \\in [-1,1]$, yet $\\forall f \\in C[-1,1]$, $\\exists x$ where $L^n f(x) \\to f(x)$? Stronger than Q1: Lebesgue function diverges everywhere."
     },
     {
       "id": "special-points",
@@ -147,7 +150,7 @@
       "summary": "Chebyshev (optimal) and equidistant (bad) nodes",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Mathematical content: Chebyshev (optimal) and equidistant (bad) nodes"
+      "mathContext": "Chebyshev nodes $x_k = \\cos\\frac{(2k-1)\\pi}{2n}$: minimize $\\Lambda_n = O(\\log n)$. Equidistant nodes: $\\Lambda_n$ grows exponentially (Runge phenomenon for $f(x) = 1/(1+25x^2)$)."
     },
     {
       "id": "convergence",
@@ -155,7 +158,7 @@
       "summary": "When does L^n f converge?",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Mathematical content: When does L^n f converge?"
+      "mathContext": "By Jackson's theorem, $E_n(f) \\to 0$ for all $f \\in C[-1,1]$. So $L^n f \\to f$ uniformly iff $\\Lambda_n = O(1)$ (impossible by Bernstein). But pointwise convergence may still occur where $\\lambda_n$ is controlled."
     },
     {
       "id": "pointwise",
@@ -163,7 +166,7 @@
       "summary": "Faber's theorem and pointwise behavior",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Verified: Faber's theorem and pointwise behavior"
+      "mathContext": "Faber (1914): for any nodes, $\\exists f \\in C[-1,1]$ with $\\|L^n f - f\\|_\\infty \\not\\to 0$. The gap between pointwise and uniform convergence is central to the problem."
     },
     {
       "id": "measure",
@@ -171,7 +174,7 @@
       "summary": "Divergence and convergence sets",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Mathematical content: Divergence and convergence sets"
+      "mathContext": "For fixed $f$, let $D_f = \\{x : L^n f(x) \\not\\to f(x)\\}$ and $C_f = [-1,1] \\setminus D_f$. By Erdős-Vértesi, $\\exists f$ with $|D_f| = 2$ (full measure). The questions ask about $\\bigcap_f C_f$."
     },
     {
       "id": "main-conjecture",
@@ -179,7 +182,7 @@
       "summary": "Relationship between Q1 and Q2",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Mathematical content: Relationship between Q1 and Q2"
+      "mathContext": "Q2 $\\Rightarrow$ Q1 trivially (universal divergence is stronger). The conjecture asks: is Q1 $\\iff$ Q2? If not, which is true? Prize: \\$250."
     }
   ],
   "conclusion": {

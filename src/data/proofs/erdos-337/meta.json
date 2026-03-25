@@ -92,9 +92,11 @@
       }
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Additive combinatorics (sumsets, density)",
-      "Number theory (primes, divisibility)"
+      "Additive bases (Waring, Goldbach, sumset theory)",
+      "Sumset growth ($|A+A|$ vs $|A|$)",
+      "Plunnecke-Ruzsa inequality",
+      "Sparse sets and density ($o(N)$ condition)",
+      "Counterexample constructions in additive combinatorics"
     ]
   },
   "sections": [
@@ -104,7 +106,7 @@
       "startLine": 1,
       "endLine": 32,
       "summary": "Header: Erdős-Graham question on sumset growth for sparse bases, Turjányi counterexample, Ruzsa-Turjányi generalization and positive result",
-      "mathContext": "Mathematical content: Header: Erdős-Graham question on sumset growth for sparse bases, Turjányi counterexample, Ruzsa-Turjányi generalization and positive result"
+      "mathContext": "Erdos-Graham question: for sparse additive bases $A$, must $|A+A \\\\cap [1,N]| / |A \\\\cap [1,N]| \\\\to \\\\infty$? Answered NO by Turjanyi (1984)."
     },
     {
       "id": "imports",
@@ -112,7 +114,7 @@
       "startLine": 33,
       "endLine": 42,
       "summary": "Imports from Mathlib: `Nat.Basic`, `Finset.Basic`, `Finset.Card`, `Set.Basic`, `BigOperators`; opens `Nat`, `Finset`, `Set`",
-      "mathContext": "Mathematical content: Imports from Mathlib: `Nat.Basic`, `Finset.Basic`, `Finset.Card`, `Set.Basic`, `BigOperators`; opens `Nat`, `Finset`, `Set`"
+      "mathContext": "Mathlib imports for natural number arithmetic, finite sets, set operations, and order theory."
     },
     {
       "id": "definitions",
@@ -120,7 +122,7 @@
       "startLine": 43,
       "endLine": 88,
       "summary": "`countingFunction` ($|A \\cap [1,N]|$), `isLittleO` ($f(N) = o(N)$), `isSparse`, `sumset` ($A+A$), `hFoldSumset` ($hA$) with notation $h \\cdot A$",
-      "mathContext": "Mathematical content: `countingFunction` ($|A \\cap [1,N]|$), `isLittleO` ($f(N) = o(N)$), `isSparse`, `sumset` ($A+A$), `hFoldSumset` ($hA$) with notation $h \\cdot A$"
+      "mathContext": "$A(N) = |A \\\\cap [1,N]|$ (counting function). $A$ is sparse if $A(N) = o(N)$ (zero density). Sumset $A+A = \\\\{a+b : a,b \\\\in A\\\\}$."
     },
     {
       "id": "additive-bases",
@@ -128,7 +130,7 @@
       "startLine": 89,
       "endLine": 106,
       "summary": "`isAdditiveBasis h A` (every large $n \\in hA$) and `isAdditiveBasisFiniteOrder` ($\\exists h$, basis of order $h$)",
-      "mathContext": "Mathematical content: `isAdditiveBasis h A` (every large $n \\in hA$) and `isAdditiveBasisFiniteOrder` ($\\exists h$, basis of order $h$)"
+      "mathContext": "$A$ is an additive basis of order $h$ if every sufficiently large $n \\\\in hA = A + \\\\cdots + A$ ($h$ copies). Finite order: basis for some $h$."
     },
     {
       "id": "conjecture",
@@ -136,7 +138,7 @@
       "startLine": 107,
       "endLine": 144,
       "summary": "`erdosConjecture` (universal claim), `turjanyi_counterexample` (witness with bounded ratio), `erdos_conjecture_false` (Lean proof by contradiction with $M = C+1$)",
-      "mathContext": "Verified: `erdosConjecture` (universal claim), `turjanyi_counterexample` (witness with bounded ratio), `erdos_conjecture_false` (Lean proof by contradiction with $M = C+1$)"
+      "mathContext": "Erdos conjecture: $|(A+A) \\\\cap [1,N]| / |A \\\\cap [1,N]| \\\\to \\\\infty$ for every sparse basis $A$. Turjanyi (1984): FALSE. Counterexample with bounded ratio."
     },
     {
       "id": "generalization",
@@ -144,7 +146,7 @@
       "startLine": 145,
       "endLine": 164,
       "summary": "`generalizedConjecture h` ($hA$ version) and `ruzsa_turjanyi_generalization`: also FALSE for all $h \\geq 2$",
-      "mathContext": "Mathematical content: `generalizedConjecture h` ($hA$ version) and `ruzsa_turjanyi_generalization`: also FALSE for all $h \\geq 2$"
+      "mathContext": "Ruzsa-Turjanyi: the counterexample extends to $hA$ for all $h \\\\geq 2$. There exist sparse bases where $|hA \\\\cap [1,hN]| / |A \\\\cap [1,N]|$ stays bounded."
     },
     {
       "id": "positive-result",
@@ -152,7 +154,7 @@
       "startLine": 165,
       "endLine": 182,
       "summary": "`scaledSumsetRatio` and `ruzsa_turjanyi_positive`: $|3A \\cap [1,3N]|/|A \\cap [1,N]| \\to \\infty$ IS true for sparse bases",
-      "mathContext": "Mathematical content: `scaledSumsetRatio` and `ruzsa_turjanyi_positive`: $|3A \\cap [1,3N]|/|A \\cap [1,N]| \\to \\infty$ IS true for sparse bases"
+      "mathContext": "Ruzsa-Turjanyi positive: $|3A \\\\cap [1,3N]| / |A \\\\cap [1,N]| \\\\to \\\\infty$ for any sparse basis. Three-fold sumsets always grow relative to the basis."
     },
     {
       "id": "open-conjecture",
@@ -160,7 +162,7 @@
       "startLine": 183,
       "endLine": 204,
       "summary": "`scaledConjecture`: does $|2A \\cap [1,2N]|/|A \\cap [1,N]| \\to \\infty$? Status: OPEN (Ruzsa-Turjányi conjecture)",
-      "mathContext": "Mathematical content: `scaledConjecture`: does $|2A \\cap [1,2N]|/|A \\cap [1,N]| \\to \\infty$? Status: OPEN (Ruzsa-Turjányi conjecture)"
+      "mathContext": "OPEN: does $|2A \\\\cap [1,2N]| / |A \\\\cap [1,N]| \\\\to \\\\infty$? The scaled 2-fold version with $[1,2N]$ range remains unresolved."
     },
     {
       "id": "intuition",
@@ -168,7 +170,7 @@
       "startLine": 205,
       "endLine": 227,
       "summary": "`construction_insight`: collisions in $A+A$ limit growth; sparsity alone is insufficient for sumset expansion",
-      "mathContext": "Mathematical content: `construction_insight`: collisions in $A+A$ limit growth; sparsity alone is insufficient for sumset expansion"
+      "mathContext": "Collisions in $A+A$ limit growth: if $a_1+b_1 = a_2+b_2$ frequently, the sumset can be nearly as sparse as $A$. Turjanyi constructs $A$ with maximal collision rate."
     },
     {
       "id": "plunnecke",
@@ -176,7 +178,7 @@
       "startLine": 228,
       "endLine": 248,
       "summary": "`plunnecke_ruzsa`: $|hA| \\leq |A|^h$ gives upper bounds but no lower bounds; the gap allows bounded ratios",
-      "mathContext": "Bound: `plunnecke_ruzsa`: $|hA| \\leq |A|^h$ gives upper bounds but no lower bounds; the gap allows bounded ratios"
+      "mathContext": "Plunnecke-Ruzsa: $|hA| \\\\leq |A+A|^h / |A|^{h-1}$. Gives upper bounds on sumset growth but no lower bounds for the ratio question."
     },
     {
       "id": "examples",
@@ -184,7 +186,7 @@
       "startLine": 249,
       "endLine": 268,
       "summary": "Powers of 2 (sparse but NOT a basis), squares (sparse basis of order 4 by Lagrange's theorem)",
-      "mathContext": "Verified: Powers of 2 (sparse but NOT a basis), squares (sparse basis of order 4 by Lagrange's theorem)"
+      "mathContext": "Powers of 2: sparse but NOT a basis. Squares: sparse basis of order 4 (Lagrange). These illustrate the range of sparse-basis behaviors."
     },
     {
       "id": "summary",
@@ -192,7 +194,7 @@
       "startLine": 269,
       "endLine": 315,
       "summary": "`erdos_337_summary` combining `erdos_conjecture_false`, `ruzsa_turjanyi_generalization`, and `scaled_conjecture_open`; `erdos_337` main theorem; `historical_note`",
-      "mathContext": "Verified: `erdos_337_summary` combining `erdos_conjecture_false`, `ruzsa_turjanyi_generalization`, and `scaled_conjecture_open`; `erdos_337` main theorem; `historical_note`"
+      "mathContext": "DISPROVED for $A+A$ (Turjanyi 1984). Extended to $hA$ (Ruzsa-Turjanyi). Positive result for $3A$ with $[1,3N]$ range. The $[1,2N]$ case remains OPEN."
     }
   ],
   "conclusion": {
