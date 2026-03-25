@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 1099,
     "erdosUrl": "https://erdosproblems.com/1099",
     "erdosProblemStatus": "solved",
@@ -52,17 +52,17 @@
       "divisorRatios definition: consecutive divisor ratios",
       "h_alpha definition: the main function Σ((d_{i+1}/dᵢ) - 1)^α",
       "h_alpha_ge_one theorem: trivial lower bound of 1",
-      "vose_bounded_sequence axiom: existence of bounded sequence",
-      "vose_liminf_bounded axiom: main theorem from 1984",
+      "vose_bounded_sequence axiom: existence of bounded sequence (only axiom)",
+      "vose_liminf_bounded theorem: main theorem from 1984 (proved from axiom)",
       "erdos_1099 theorem: resolution of the problem",
       "sumDivisorRatios definition: related sum",
-      "power_of_two_h_alpha axiom: h_α(2^k) growth for powers of 2",
+      "power_of_two_h_alpha theorem: h_α(2^k) growth for powers of 2",
       "Examples for primes, powers of 2, and highly composite numbers"
     ],
     "axiomCount": 1,
-    "sorries": 2,
-    "lineCount": 578,
-    "assumptions": "1 axiom: vose_bounded_sequence (deep Vose 1984 construction). 2 sorries in helper lemmas (sortedDivisors_two_pow, divisorRatios_two_pow). vose_liminf_bounded proved from vose_bounded_sequence. sum_divisor_ratios_lower_bound removed (mathematically false). power_of_two_h_alpha proved via helper lemmas."
+    "sorries": 1,
+    "lineCount": 608,
+    "assumptions": "1 axiom: vose_bounded_sequence (deep Vose 1984 construction). 1 sorry in divisorRatios_two_pow (zipWith computation). sortedDivisors_two_pow now proved. vose_liminf_bounded proved as theorem from axiom. power_of_two_h_alpha proved as theorem via helper lemmas."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1099** was posed by Erdős in 1981 as part of his study of divisor structure. The problem asks about the regularity of divisor gaps: can we find integers whose consecutive divisor ratios are all close to 1?\n\n**Historical Development:**\n- **1981 (Erdős [Er81h]):** Posed the problem, noting that n! and lcm{1,...,n} seem like good candidates.\n- **1984 (Vose [Vo84]):** Resolved the problem affirmatively by constructing a specific sequence with bounded h_α.\n\n**Key Insight:** The question is about how \"smooth\" the divisor structure of integers can be. While primes have terrible divisor gaps (ratio = p), and even powers of 2 grow linearly in h_α, Vose showed there exist numbers with much smoother divisor distributions.",
@@ -290,8 +290,8 @@
       "BigOperators"
     ],
     "namespace": "Erdos1099",
-    "lineCount": 541,
-    "axiomCount": 2,
+    "lineCount": 608,
+    "axiomCount": 1,
     "theoremCount": 21,
     "definitionCount": 7
   }
