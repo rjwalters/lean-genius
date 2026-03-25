@@ -100,7 +100,7 @@
       "summary": "Problem statement, references (Guy [Gu04] Problem A2, OEIS A064152, erdosproblems.com), and Mathlib imports for primes, factorials, sets, and finite sets.",
       "startLine": 1,
       "endLine": 23,
-      "mathContext": "Imports `Nat.Prime` (primality predicate), `Nat.factorial` (factorial function and monotonicity lemmas), `Set.Infinite` (infinitary conjecture statement), `Finset` (finite set operations for `interval_cases`), and `Mathlib.Tactic` (for `decide`, `interval_cases`, `omega`, `push_neg`)."
+      "mathContext": "Dependencies: $\\text{Nat.Prime}$ (primality), $n! = \\text{Nat.factorial}(n)$, $\\text{Set.Infinite}$ for the conjecture $|\\{p \\text{ prime} : \\forall k \\geq 2,\\, p - k! \\text{ composite}\\}| = \\infty$."
     },
     {
       "id": "core-definitions",
@@ -226,6 +226,8 @@
     "structureCount": 0,
     "axiomCount": 1,
     "theoremCount": 7,
+    "substantiveTheoremCount": 3,
+    "computationalVerifications": 4,
     "lemmaCount": 0,
     "defCount": 1,
     "imports": [
