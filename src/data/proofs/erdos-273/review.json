@@ -114,14 +114,14 @@
       "priority": "high",
       "target": "enricher",
       "description": "Fix all 'axiomatized' language in meta.json to 'proved': originalContributions[3], proofStrategy, and section summaries for selfridge-example, covering-basics, and connections. The Lean file has 0 axioms/sorries — all 13 theorems are fully proved.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "high",
       "target": "enricher",
       "description": "Rewrite annotation erdos-273-selfridge to describe the actual constructive proof (explicit 3-class system {0 mod 2, 1 mod 4, 3 mod 4}) instead of claiming axiomatization.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
