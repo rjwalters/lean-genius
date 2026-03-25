@@ -258,6 +258,32 @@ theorem first_ratio_ge_two (n : ℕ) (hn : n ≥ 2) :
   simp only [Nat.cast_one, div_one]
   exact_mod_cast hd2
 
+/-- In a sorted list of positive naturals, consecutive division ratios are ≥ 1. -/
+private theorem zipWith_div_ge_one :
+    ∀ (l : List ℕ), l.Pairwise (· ≤ ·) → (∀ x ∈ l, 0 < x) →
+    ∀ q ∈ List.zipWith (fun a b => (a : ℚ) / (b : ℚ)) l.tail l, (1 : ℚ) ≤ q := by
+  intro l
+  induction l with
+  | nil => simp
+  | cons a t ih =>
+    intro hsorted hpos q hq
+    cases t with
+    | nil => simp at hq
+    | cons b rest =>
+      simp only [List.tail_cons, List.zipWith_cons_cons] at hq
+      rcases List.mem_cons.mp hq with rfl | hmem
+      · -- q = ↑b / ↑a, show 1 ≤ ↑b / ↑a since a ≤ b (sorted) and a > 0
+        rw [le_div_iff (Nat.cast_pos.mpr (hpos a (List.mem_cons_self _ _))), one_mul]
+        exact Nat.cast_le.mpr
+          ((List.pairwise_cons.mp hsorted).1 b (List.mem_cons_self _ _))
+      · exact ih (List.pairwise_cons.mp hsorted).2
+          (fun x hx => hpos x (List.mem_cons_of_mem _ hx)) q hmem
+
+theorem divisorRatios_ge_one (n : ℕ) (hn : n ≥ 1) :
+    ∀ q ∈ divisorRatios n, (1 : ℚ) ≤ q :=
+  zipWith_div_ge_one (sortedDivisors n) (sortedDivisors_sorted n)
+    (fun x hx => sortedDivisors_pos n x hx)
+
 /--
 **Trivial lower bound:**
 For α > 1 and n ≥ 2, we have h_α(n) ≥ 1.
@@ -269,7 +295,6 @@ theorem h_alpha_ge_one (α : ℝ) (hα : α > 1) (n : ℕ) (hn : n ≥ 2) :
   unfold h_alpha
   obtain ⟨r, hr_mem, hr_ge⟩ := first_ratio_ge_two n hn
   set f := (fun (r : ℚ) => ((r : ℝ) - 1) ^ α) with hf_def
-  -- The term for r is ≥ 1 (since r ≥ 2, so r-1 ≥ 1, and 1^α = 1 ≤ (r-1)^α)
   have hr1 : (1 : ℝ) ≤ (r : ℝ) - 1 := by
     have : (2 : ℚ) ≤ r := hr_ge
     have : (2 : ℝ) ≤ (r : ℝ) := by exact_mod_cast this
@@ -277,10 +302,15 @@ theorem h_alpha_ge_one (α : ℝ) (hα : α > 1) (n : ℕ) (hn : n ≥ 2) :
   have hterm_ge : 1 ≤ f r := by
     simp only [hf_def]
     exact Real.one_le_rpow hr1 (by linarith)
-  -- h_alpha ≥ 1 because the sum contains a term ≥ 1 and all terms are nonneg
-  -- The nonneg condition requires: all divisor ratios ≥ 1 (sorted divisors increasing)
-  -- This is the remaining gap: formalizing that zipWith (/) tail divs ≥ 1 for sorted divs
-  sorry
+  -- All terms nonneg: ratios ≥ 1 so (r-1) ≥ 0 and rpow of nonneg is nonneg
+  have hall_nonneg : ∀ x ∈ (divisorRatios n).map f, 0 ≤ x := by
+    intro x hx
+    obtain ⟨q, hq_mem, rfl⟩ := List.mem_map.mp hx
+    simp only [hf_def]
+    exact Real.rpow_nonneg (by
+      have : (1 : ℝ) ≤ (q : ℝ) := by exact_mod_cast divisorRatios_ge_one n (by omega) q hq_mem
+      linarith) α
+  linarith [List.single_le_sum hall_nonneg (List.mem_map.mpr ⟨r, hr_mem, rfl⟩)]
 
 /-
 ## Part IV: Special Sequences
@@ -404,13 +434,67 @@ But proving uniform bounds on consecutive ratios is non-trivial.
 ## Part IX: Examples
 -/
 
+/-- For prime p, the ratio p/1 = p appears in divisorRatios p. -/
+private theorem prime_ratio_mem (p : ℕ) (hp : Nat.Prime p) :
+    (p : ℚ) ∈ divisorRatios p := by
+  obtain ⟨d₂, rest, heq, hd2⟩ := sortedDivisors_cons2 p hp.two_le
+  have hd2_dvd : d₂ ∣ p := by
+    have : d₂ ∈ p.divisors := by
+      have : d₂ ∈ sortedDivisors p :=
+        heq ▸ List.mem_cons.mpr (Or.inr (List.mem_cons.mpr (Or.inl rfl)))
+      simpa [sortedDivisors] using this
+    exact (Nat.mem_divisors.mp this).1
+  have hd2_eq : d₂ = p := (hp.eq_one_or_self_of_dvd d₂ hd2_dvd).resolve_left (by omega)
+  subst hd2_eq
+  have : divisorRatios p = List.zipWith (fun a b => (↑a : ℚ) / ↑b)
+      (sortedDivisors p).tail (sortedDivisors p) := rfl
+  rw [this, heq, List.tail_cons, List.zipWith_cons_cons]
+  simp [Nat.cast_one, div_one]
+
 /--
 **Example: Prime p**
 For a prime p, divisors are {1, p}, so the only ratio is p/1 = p.
 h_α(p) = (p - 1)^α, which is unbounded as p → ∞.
 -/
-axiom prime_h_alpha_unbounded :
-    ∀ M : ℝ, ∃ p : ℕ, Nat.Prime p ∧ ∀ α : ℝ, α ≥ 1 → h_alpha α p > M
+theorem prime_h_alpha_unbounded :
+    ∀ M : ℝ, ∃ p : ℕ, Nat.Prime p ∧ ∀ α : ℝ, α ≥ 1 → h_alpha α p > M := by
+  intro M
+  obtain ⟨p, hp_ge, hp⟩ := Nat.exists_infinite_primes (⌈max M 0⌉₊ + 2)
+  refine ⟨p, hp, fun α hα => ?_⟩
+  have hp2 : p ≥ 2 := by omega
+  -- Step 1: (p:ℝ) - 1 > M (by choice of p)
+  have hpM : (p : ℝ) - 1 > M := by
+    have h1 := Nat.le_ceil (max M 0)
+    have h2 : (p : ℝ) ≥ (↑(⌈max M 0⌉₊ + 2) : ℝ) := by exact_mod_cast hp_ge
+    push_cast at h2
+    linarith [le_max_left M (0 : ℝ)]
+  -- Step 2: h_alpha α p ≥ (p-1) via ratio p in divisorRatios
+  suffices h : h_alpha α p ≥ (p : ℝ) - 1 from by linarith
+  have hp_sub : (1 : ℝ) ≤ (p : ℝ) - 1 := by
+    have : (2 : ℝ) ≤ (p : ℝ) := by exact_mod_cast hp2
+    linarith
+  calc h_alpha α p
+      ≥ ((p : ℝ) - 1) ^ α := by
+        unfold h_alpha
+        set f := (fun r : ℚ => ((r : ℝ) - 1) ^ α)
+        have hr := prime_ratio_mem p hp
+        have hall : ∀ x ∈ (divisorRatios p).map f, 0 ≤ x := by
+          intro x hx
+          obtain ⟨q, hq, rfl⟩ := List.mem_map.mp hx
+          exact Real.rpow_nonneg (by
+            have : (1 : ℝ) ≤ (q : ℝ) := by
+              exact_mod_cast divisorRatios_ge_one p (by omega) q hq
+            linarith) α
+        have hfmem : f (↑p : ℚ) ∈ (divisorRatios p).map f :=
+          List.mem_map.mpr ⟨_, hr, rfl⟩
+        have : f (↑p : ℚ) ≤ ((divisorRatios p).map f).sum :=
+          List.single_le_sum hall hfmem
+        simp only [Rat.cast_natCast] at this
+        linarith
+    _ ≥ (p : ℝ) - 1 := by
+        calc ((p : ℝ) - 1) ^ α
+            ≥ ((p : ℝ) - 1) ^ (1 : ℝ) := Real.rpow_le_rpow_left hp_sub (by linarith)
+          _ = (p : ℝ) - 1 := Real.rpow_one _
 
 /--
 **Example: Power of 2**

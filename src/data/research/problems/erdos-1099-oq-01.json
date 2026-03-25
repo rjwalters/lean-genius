@@ -29,26 +29,33 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 9->6 axioms (3 eliminated), divisorRatios bug fixed",
+    "progressSummary": "PROGRESS: 0 sorries, 4 axioms (down from 5A+1S). h_alpha_ge_one proved, prime_h_alpha_unbounded proved.",
     "builtItems": [
       "17 new infrastructure theorems for sorted divisor properties",
       "first_divisor_is_one theorem (was axiom)",
       "last_divisor_is_n theorem (was axiom)",
-      "first_ratio_ge_two theorem (was axiom)"
+      "first_ratio_ge_two theorem (was axiom)",
+      "zipWith_div_ge_one: sorted positive list consecutive ratios >= 1",
+      "divisorRatios_ge_one: all divisor ratios >= 1",
+      "h_alpha_ge_one: proved via nonneg sum + single_le_sum",
+      "prime_ratio_mem: for prime p, ratio p is in divisorRatios",
+      "prime_h_alpha_unbounded: proved via prime ratio + rpow monotonicity"
     ],
     "insights": [
       "divisorRatios had a critical bug: computed d_i/d_{i+1} instead of d_{i+1}/d_i",
       "first_divisor_is_one: proved using Finset.sort + Pairwise contradiction",
       "last_divisor_is_n: proved using custom le_getLast_of_mem_pairwise_le helper",
-      "first_ratio_ge_two: proved by showing second divisor d2 >= 2"
+      "first_ratio_ge_two: proved by showing second divisor d2 >= 2",
+      "Key to h_alpha_ge_one: prove all divisor ratios >= 1 via zipWith induction on sorted lists",
+      "For prime unboundedness: Nat.exists_infinite_primes + rpow_le_rpow_left for exponent monotonicity",
+      "Real.rpow_nonneg requires 0 <= base; for ratios >= 1 we get base = ratio - 1 >= 0"
     ],
     "mathlibGaps": [
       "No direct Finset.sort getLast = max lemma"
     ],
     "nextSteps": [
-      "Prove h_alpha_ge_one via rpow monotonicity",
-      "Prove prime_h_alpha_unbounded via Nat.Prime.divisors",
-      "Prove power_of_two_h_alpha via induction on Nat.divisors(2^k)"
+      "Prove power_of_two_h_alpha via Nat.divisors_prime_pow + sorted list computation",
+      "Prove sum_divisor_ratios_lower_bound via AM-GM + telescoping product"
     ]
   },
   "tags": [
@@ -78,11 +85,11 @@
     {
       "path": "Proofs/Erdos1099Problem.lean",
       "filename": "Erdos1099Problem.lean",
-      "lineCount": 459,
-      "theoremCount": 18,
-      "axiomCount": 5,
+      "lineCount": 542,
+      "theoremCount": 24,
+      "axiomCount": 4,
       "defCount": 7,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1099Problem.lean"
     }
