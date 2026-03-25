@@ -394,41 +394,24 @@ theorem value_between_ancestors (s : State) (p : Path) (hdet : s.det = 1) :
       simp only [eval, State.left] at ih1 ih2 ⊢
       constructor
       · exact ih1
-      · -- Need: t_num * rb < ra * t_den. Chain via ih2 and det.
-        have hdet' : (↑s.la + ↑s.ra : ℤ) * ↑s.rb < ↑s.ra * (↑s.lb + ↑s.rb) := by
-          simp only [State.det] at hdet; nlinarith
-        have h_pos : (0 : ℤ) < ↑s.lb + ↑s.rb := by
-          have := lb_pos_of_det s hdet; zify at this ⊢; omega
-        have h_tpos : (0 : ℤ) < ↑(eval s.left rest).lb + ↑(eval s.left rest).rb := by
-          have h1 := lb_ge_eval s.left rest
-          have h2 := lb_pos_of_det s hdet
-          have : s.left.lb = s.lb := rfl
-          have h3 : 0 < (eval s.left rest).lb := by omega
-          positivity
-        -- Explicit chain: t_num*(lb+rb)*rb < (la+ra)*t_den*rb = (la+ra)*rb*t_den < ra*(lb+rb)*t_den
-        -- Divide by (lb+rb) > 0: t_num*rb < ra*t_den
-        -- Chain: ih2 * rb gives t_num*(lb+rb)*rb ≤ (la+ra)*t_den*rb
-        -- hdet' * t_den gives (la+ra)*rb*t_den < ra*(lb+rb)*t_den
-        -- Combined and divided by (lb+rb): t_num*rb < ra*t_den
-        -- TODO: provide nlinarith with mul_le_mul_of_nonneg_right + mul_lt_mul_of_pos_right hints
-        sorry
+      · -- Linear combination: ih1 + ih2 expanded gives tnum*rb - ra*tden < 0
+        -- Lift to ℤ (simp may have reduced to ℕ)
+        have ih1_z : (↑s.la : ℤ) *
+            (↑(eval s.left rest).lb + ↑(eval s.left rest).rb) <
+            (↑(eval s.left rest).la + ↑(eval s.left rest).ra) * ↑s.lb := by
+          exact_mod_cast ih1
+        have ih2_z : (↑(eval s.left rest).la + ↑(eval s.left rest).ra : ℤ) *
+            (↑s.lb + ↑s.rb) < (↑s.la + ↑s.ra) *
+            (↑(eval s.left rest).lb + ↑(eval s.left rest).rb) := by
+          exact_mod_cast ih2
+        nlinarith [ih1_z, ih2_z]
     | R =>
       obtain ⟨ih1, ih2⟩ := ih s.right (det_right s hdet)
       simp only [eval, State.right] at ih1 ih2 ⊢
       constructor
-      · -- Need: la * t_den < t_num * lb. Chain via ih1 and det.
-        have hdet' : (↑s.la : ℤ) * (↑s.lb + ↑s.rb) < (↑s.la + ↑s.ra) * ↑s.lb := by
-          simp only [State.det] at hdet; nlinarith
-        have h_pos : (0 : ℤ) < ↑s.lb + ↑s.rb := by
-          have := lb_pos_of_det s hdet; zify at this ⊢; omega
-        have h_tpos : (0 : ℤ) < ↑(eval s.right rest).lb + ↑(eval s.right rest).rb := by
-          have h1 := lb_ge_eval s.right rest
-          have h2 := lb_pos_of_det s hdet
-          have : s.right.lb = s.lb + s.rb := rfl
-          have h3 : 0 < (eval s.right rest).lb := by omega
-          positivity
-        -- Symmetric chain to L case
-        sorry
+      · -- ih1 (ℤ): (la+ra)*tden < tnum*(lb+rb), ih2 (ℕ): tnum*rb < ra*tden
+        -- Combined: la*tden < tnum*lb
+        zify at ih2; push_cast at ih1 ih2; nlinarith
       · exact ih2
 
 /-- eval is injective from any state with det = 1. -/
@@ -479,12 +462,10 @@ theorem eval_injective_gen (s : State) (p1 p2 : Path) (hdet : s.det = 1)
           have hL := (value_between_ancestors s.left rest1 (det_left s hdet)).2
           have hR := (value_between_ancestors s.right rest2 (det_right s hdet)).1
           simp only [State.left, State.right] at hL hR
-          -- hL: t_num_L * (lb+rb) < (la+ra) * t_den_L
-          -- hR: (la+ra) * t_den_R < t_num_R * (lb+rb)
-          -- But eval s.left rest1 = eval s.right rest2, so same state:
-          -- hL: A < B, hR: B < A' where A'=A (from h). Contradiction.
-          -- TODO: nlinarith needs congr_arg product hints
-          sorry
+          -- hL and hR give A < B and B < A after unifying via h
+          simp only [State.left, State.right] at h
+          rw [h] at hL
+          zify at hL; push_cast at hL hR; linarith
       | R =>
         cases d2 with
         | L =>
@@ -493,9 +474,10 @@ theorem eval_injective_gen (s : State) (p1 p2 : Path) (hdet : s.det = 1)
           have hR := (value_between_ancestors s.right rest1 (det_right s hdet)).1
           have hL := (value_between_ancestors s.left rest2 (det_left s hdet)).2
           simp only [State.left, State.right] at hR hL
-          -- hL: A < B, hR: B < A' where A'=A (from h). Contradiction.
-          -- TODO: nlinarith needs congr_arg product hints
-          sorry
+          -- hR and hL give A < B and B < A after unifying via h
+          simp only [State.left, State.right] at h
+          rw [h] at hR
+          zify at hL; push_cast at hL hR; linarith
         | R =>
           simp only [eval] at h
           exact congrArg (List.cons Dir.R) (ih s.right rest2 (det_right s hdet) h)
