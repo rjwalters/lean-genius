@@ -17,7 +17,8 @@
     ],
     "prerequisites": [
       "mathematical foundations"
-    ]
+    ],
+    "mathContext": "Gödel's First Incompleteness Theorem (1931): For any consistent, recursively axiomatizable formal system $F$ that can express basic arithmetic, there exists a sentence $G_F$ such that neither $F \\vdash G_F$ nor $F \\vdash \\neg G_F$. The Second Incompleteness Theorem: if $F$ is consistent, then $F \\not\\vdash \\text{Con}(F)$."
   },
   {
     "id": "ann-formula-type",
@@ -37,7 +38,8 @@
     ],
     "prerequisites": [
       "mathematical foundations"
-    ]
+    ],
+    "mathContext": "Formulas are built inductively: atomic propositions, logical connectives ($\\neg, \\land, \\lor, \\to$), and quantifiers ($\\forall, \\exists$) over a countable language. In this formalization, `Formula` is an inductive type with constructors for each syntactic form, and `Sentence` is the type of closed formulas (no free variables)."
   },
   {
     "id": "ann-provability",
@@ -98,7 +100,8 @@
     "relatedConcepts": [
       "prime factorization",
       "encoding schemes"
-    ]
+    ],
+    "mathContext": "Gödel numbering $\\ulcorner \\cdot \\urcorner : \\text{Formula} \\to \\mathbb{N}$ must be injective: distinct formulas get distinct codes. This ensures the arithmetic encoding faithfully represents the syntactic objects, so provability in the formal system corresponds exactly to a number-theoretic property of the codes."
   },
   {
     "id": "ann-prov-formula",
@@ -264,7 +267,8 @@
     ],
     "prerequisites": [
       "mathematical foundations"
-    ]
+    ],
+    "mathContext": "Hilbert's program (1920s) sought a finitary consistency proof for all of mathematics. Gödel's Second Incompleteness Theorem shows this is impossible: any system $F$ strong enough to formalize basic arithmetic cannot prove $\\text{Con}(F) \\equiv \\neg\\text{Prov}(\\ulcorner 0 = 1 \\urcorner)$ from within $F$ itself, assuming $F$ is consistent."
   },
   {
     "id": "ann-limits",
@@ -284,7 +288,8 @@
     ],
     "prerequisites": [
       "mathematical foundations"
-    ]
+    ],
+    "mathContext": "Gödel's theorems reveal that mathematical truth transcends any single formal system. For any consistent $F$, the Gödel sentence $G_F$ is true (in the standard model $\\mathbb{N}$) but unprovable in $F$. Adding $G_F$ as an axiom yields $F' = F + G_F$, which is consistent but has its own unprovable Gödel sentence $G_{F'}$ — an inexhaustible hierarchy of truths."
   },
   {
     "id": "ann-mechanism-debate",
@@ -304,6 +309,7 @@
     ],
     "prerequisites": [
       "mathematical foundations"
-    ]
+    ],
+    "mathContext": "The Gödel sentence $G_F$ asserts its own unprovability: $G_F \\leftrightarrow \\neg\\text{Prov}_F(\\ulcorner G_F \\urcorner)$. If the mind is a formal system $F$, then $G_F$ is true but unknowable to $F$. Lucas (1961) and Penrose (1989) argued this shows minds transcend machines; Putnam and others countered that the argument assumes the mind's consistency, which cannot itself be verified."
   }
 ]
