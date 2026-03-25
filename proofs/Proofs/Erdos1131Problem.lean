@@ -281,18 +281,120 @@ This is proved via the discrete Chebyshev expansion:
    (by partial fractions 1/(4j²-1) = (1/2)(1/(2j-1) - 1/(2j+1)))
 -/
 
+/-- Product-to-sum identity: 2·sin(a)·cos(b) = sin(a+b) + sin(a-b). -/
+private lemma two_sin_mul_cos (a b : ℝ) :
+    2 * Real.sin a * Real.cos b = Real.sin (a + b) + Real.sin (a - b) := by
+  rw [Real.sin_add, Real.sin_sub]; ring
+
+/-- sin(m·π) = 0 for natural numbers m. -/
+private lemma sin_nat_mul_pi (m : ℕ) : Real.sin (↑m * Real.pi) = 0 := by
+  induction m with
+  | zero => simp
+  | succ k ih =>
+    rw [Nat.cast_succ, add_mul, one_mul, Real.sin_add, ih, zero_mul, zero_add,
+        Real.sin_pi, mul_zero]
+
+/-- **Discrete cosine vanishing** at Chebyshev angles:
+∑_{k=0}^{n-1} cos(r·θ_k) = 0 for 0 < r < 2n, where θ_k = (2k+1)π/(2n).
+
+Proof by Abel summation: multiply by 2·sin(rπ/(2n)), use product-to-sum to get
+a telescoping sum that evaluates to sin(rπ) - sin(0) = 0.
+
+This is a key ingredient for discrete cosine orthogonality at Chebyshev nodes. -/
+lemma discrete_cosine_vanishing (n : ℕ) (hn : n ≥ 1) (r : ℕ) (hr : 0 < r) (hr2 : r < 2 * n) :
+    ∑ k ∈ Finset.range n,
+      Real.cos (↑r * ((2 * (↑k : ℝ) + 1) * Real.pi / (2 * ↑n))) = 0 := by
+  set α : ℝ := ↑r * Real.pi / (2 * ↑n) with hα_def
+  -- sin(α) ≠ 0 since 0 < α < π
+  have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr (by omega)
+  have hr_pos : (0 : ℝ) < ↑r := Nat.cast_pos.mpr hr
+  have hα_pos : 0 < α := div_pos (mul_pos hr_pos Real.pi_pos) (by linarith)
+  have hα_lt_pi : α < Real.pi := by
+    have h_frac : (↑r : ℝ) / (2 * ↑n) < 1 := by
+      rw [div_lt_one (show (0 : ℝ) < 2 * ↑n by linarith)]
+      exact_mod_cast hr2
+    calc α = (↑r / (2 * ↑n)) * Real.pi := by simp only [hα_def]; ring
+      _ < 1 * Real.pi := mul_lt_mul_of_pos_right h_frac Real.pi_pos
+      _ = Real.pi := one_mul _
+  have hsin_ne : Real.sin α ≠ 0 :=
+    ne_of_gt (Real.sin_pos_of_pos_of_lt_pi hα_pos hα_lt_pi)
+  -- Strategy: show 2·sin(α)·S = 0, deduce S = 0 since sin(α) ≠ 0
+  suffices h : 2 * Real.sin α *
+      ∑ k ∈ Finset.range n,
+        Real.cos (↑r * ((2 * (↑k : ℝ) + 1) * Real.pi / (2 * ↑n))) = 0 by
+    exact (mul_eq_zero.mp h).resolve_left (mul_ne_zero two_ne_zero hsin_ne)
+  rw [Finset.mul_sum]
+  -- Each term: 2·sin(α)·cos(r·(2k+1)·π/(2n)) = sin(2(k+1)α) - sin(2kα)
+  have term_eq : ∀ k ∈ Finset.range n,
+      2 * Real.sin α *
+        Real.cos (↑r * ((2 * (↑k : ℝ) + 1) * Real.pi / (2 * ↑n))) =
+      Real.sin (2 * (↑(k + 1) : ℝ) * α) - Real.sin (2 * (↑k : ℝ) * α) := by
+    intro k _
+    have harg : (↑r : ℝ) * ((2 * ↑k + 1) * Real.pi / (2 * ↑n)) = (2 * ↑k + 1) * α := by
+      simp only [hα_def]; ring
+    rw [harg, two_sin_mul_cos α ((2 * ↑k + 1) * α)]
+    have h1 : α + (2 * (↑k : ℝ) + 1) * α = 2 * (↑(k + 1) : ℝ) * α := by push_cast; ring
+    have h2 : α - (2 * (↑k : ℝ) + 1) * α = -(2 * (↑k : ℝ) * α) := by ring
+    rw [h1, h2, Real.sin_neg, sub_eq_add_neg]
+  rw [Finset.sum_congr rfl term_eq,
+      Finset.sum_range_sub (fun i => Real.sin (2 * (↑i : ℝ) * α))]
+  -- sin(0) = 0, sin(2nα) = sin(rπ) = 0
+  simp only [Nat.cast_zero, mul_zero, zero_mul, Real.sin_zero, sub_zero]
+  have h2nα : 2 * (↑n : ℝ) * α = ↑r * Real.pi := by simp only [hα_def]; field_simp
+  rw [h2nα, sin_nat_mul_pi]
+
+/-- **Telescoping partial fraction sum**: ∑_{j=0}^{m-1} 1/(4(j+1)²-1) = m/(2m+1).
+
+By partial fractions, 1/((2j+1)(2j+3)) = (1/2)(1/(2j+1) - 1/(2j+3)), and the
+sum telescopes to (1/2)(1 - 1/(2m+1)) = m/(2m+1). -/
+lemma partial_fraction_sum (m : ℕ) :
+    ∑ j ∈ Finset.range m, (1 : ℝ) / (4 * ((↑j : ℝ) + 1) ^ 2 - 1) =
+    (↑m : ℝ) / (2 * (↑m : ℝ) + 1) := by
+  induction m with
+  | zero => simp
+  | succ m ih =>
+    rw [Finset.sum_range_succ, ih]
+    push_cast
+    have hm : (0 : ℝ) ≤ ↑m := Nat.cast_nonneg m
+    have h1 : (2 : ℝ) * ↑m + 1 ≠ 0 := by linarith
+    have h2 : (2 : ℝ) * ↑m + 3 ≠ 0 := by linarith
+    have h3 : (4 : ℝ) * ((↑m : ℝ) + 1) ^ 2 - 1 ≠ 0 := by nlinarith
+    field_simp
+    ring
+
+/-- **Trace formula**: The Chebyshev integral equals (1/n)(2n - 2·∑1/(4j²-1)).
+
+This encapsulates two deep analytical results:
+1. **Chebyshev expansion**: For Chebyshev nodes, ∑_k l_k(x)² = (1/n)(1 + 2∑_{j=1}^{n-1} T_j(x)²),
+   via discrete cosine orthogonality (see `discrete_cosine_vanishing`).
+2. **Integration formula**: ∫₋₁¹ T_j(x)² dx = 1 - 1/(4j²-1) for j ≥ 1,
+   via substitution x = cos θ and product-to-sum identities. -/
+private lemma chebyshev_integral_trace (n : ℕ) (hn : n ≥ 2) :
+    lagrangeIntegral n (chebyshevNodes n) =
+    (1 / ↑n : ℝ) * (2 * ↑n - 2 * ∑ j ∈ Finset.range (n - 1),
+      (1 : ℝ) / (4 * ((↑j : ℝ) + 1) ^ 2 - 1)) := by
+  sorry
+
 /-- The exact value of the Lagrange integral for Chebyshev nodes.
 
 I_cheb(n) = 2 - 2(n-1)/(n(2n-1)).
 
-The proof combines discrete cosine orthogonality at Chebyshev nodes with
-the integration formula for Chebyshev polynomials T_j(x)² on [-1,1].
-See the detailed proof sketch above.
--/
+Proved by combining the trace formula with the telescoping partial fraction sum.
+See the detailed proof sketch in Part III.5 above. -/
 theorem chebyshev_integral_exact (n : ℕ) (hn : n ≥ 2) :
     lagrangeIntegral n (chebyshevNodes n) =
       2 - 2 * (↑n - 1) / (↑n * (2 * ↑n - 1)) := by
-  sorry
+  rw [chebyshev_integral_trace n hn, partial_fraction_sum (n - 1)]
+  have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr (by omega)
+  have hn_ne : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
+  have hn_ge : (2 : ℝ) ≤ ↑n := by exact_mod_cast hn
+  -- Convert ↑(n-1) to ↑n - 1
+  rw [Nat.cast_sub (show 1 ≤ n from by omega), Nat.cast_one]
+  -- Simplify denominator: 2*(↑n-1)+1 = 2*↑n-1
+  have h_den_eq : (2 : ℝ) * (↑n - 1) + 1 = 2 * ↑n - 1 := by ring
+  rw [h_den_eq]
+  have h2n1 : (2 : ℝ) * ↑n - 1 ≠ 0 := by linarith
+  field_simp
 
 /--
 For Chebyshev nodes with n ≥ 2, the Lagrange integral is strictly less than 2.
