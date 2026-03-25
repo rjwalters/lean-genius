@@ -141,19 +141,27 @@
     },
     {
       "id": "small-cases",
-      "title": "Small Cases: p=3 and p=4",
+      "title": "Small Cases: p=3, p=4, p=5",
       "startLine": 185,
-      "endLine": 216,
-      "summary": "p=3: q ranges over {1,2}, conjecture fully resolved via Ramsey upper bound. p=4: q ranges over {1,2,3,4}, EFRS gives strict increase at top (c(4,3) < c(4,4)=1) but intermediate steps open.",
-      "mathContext": "$p=3$: $c(3,1) \\leq 2/4 = 1/2 < 1 = c(3,2)$. $p=4$: $c(4,3) \\leq 1/2 < 1 = c(4,4)$ (EFRS), but $c(4,1) < c(4,2)$ and $c(4,2) < c(4,3)$ remain open."
+      "endLine": 261,
+      "summary": "p=3: fully resolved (`erdos667_holds_for_p3`); q ranges over {1,2}, and `p3_strict` proves $c(3,1) < c(3,2) = 1$. p=4: q ranges over {1,...,4}; `p4_efrs` gives $c(4,3) \\le 1/2$, `p4_strict_at_top` gives strict increase at top; Ramsey bounds $c(4,1) \\in [1/3, 2/5]$. p=5: q ranges over {1,...,7}; `p5_efrs` gives $c(5,6) \\le 1/2$, `p5_strict_at_top` at top; Ramsey bounds $c(5,1) \\in [1/4, 1/3]$.",
+      "mathContext": "$p=3$: $c(3,1) \\leq 1/2 < 1 = c(3,2)$, fully resolving the conjecture for $p=3$. $p=4$: $c(4,1) \\in [1/3, 2/5]$ (Ramsey), $c(4,3) \\leq 1/2 < 1 = c(4,4)$ (EFRS). $p=5$: $c(5,1) \\in [1/4, 1/3]$ (Ramsey), $c(5,6) \\leq 1/2 < 1 = c(5,7)$ (EFRS). Intermediate steps for $p \\ge 4$ remain open."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture and Weak Evidence",
-      "startLine": 217,
-      "endLine": 255,
-      "summary": "ErdosProblem667: c(p,q) < c(p,q+1) for all valid q. Weak evidence: c(p,1) < 1 = c(p,q_max). Summary theorem packaging all known results.",
-      "mathContext": "$\\forall p \\geq 3,\\ \\forall 1 \\leq q < \\binom{p-1}{2}+1: c(p,q) < c(p,q+1)$. Weak evidence: $c(p,1) \\leq 2/(p+1) < 1 = c(p, q_{\\max})$."
+      "startLine": 273,
+      "endLine": 294,
+      "summary": "Defines `ErdosProblem667`: $\\forall p \\ge 3,\\, \\forall 1 \\le q < \\binom{p-1}{2}+1,\\, c(p,q) < c(p,q+1)$. Proves `erdos667_weak_evidence`: $c(p,1) < 1 = c(p, q_{\\max})$ via Ramsey upper bound $2/(p+1) < 1$.",
+      "mathContext": "$\\text{ErdosProblem667} := \\forall p \\ge 3,\\, \\forall 1 \\le q < \\binom{p-1}{2}+1: c(p,q) < c(p,q+1)$. Weak evidence: $c(p,1) \\le 2/(p+1) < 1 = c(p, q_{\\max})$ for $p \\ge 3$, since $2/(p+1) < 1$ when $p \\ge 2$."
+    },
+    {
+      "id": "structural-consequences",
+      "title": "Structural Consequences",
+      "startLine": 296,
+      "endLine": 343,
+      "summary": "Proves `cpq_total_gap` ($c(p, q_{\\max}) - c(p,1) \\ge 1 - 2/(p+1)$), `cpq_gap_pos` (gap is strictly positive), `erdos667_at_least_one_strict_step` (existence of a strict increase via EFRS at top), and `erdos667_summary` (packaging all known results: Ramsey interval, $c=1$ at max, weak monotonicity, strict increase at top). Closes namespace `Erdos667`.",
+      "mathContext": "The total gap $c(p, q_{\\max}) - c(p,1) \\ge 1 - 2/(p+1) > 0$ grows with $p$. At least one strict step exists: $c(p, \\binom{p-1}{2}) < c(p, \\binom{p-1}{2}+1)$ by EFRS. The summary theorem packages: (1) $1/(p-1) \\le c(p,1) \\le 2/(p+1)$, (2) $c(p, q_{\\max}) = 1$, (3) $c(p,q) \\le c(p,q+1)$ for all $q$, (4) strict increase at the last step."
     }
   ],
   "conclusion": {
