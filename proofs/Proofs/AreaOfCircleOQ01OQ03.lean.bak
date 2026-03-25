@@ -1,33 +1,4 @@
 /-
-This file was edited by Aristotle (https://aristotle.harmonic.fun).
-
-Lean version: leanprover/lean4:v4.24.0
-Mathlib version: f897ebcf72cd16f89ab4577d0c826cd14afaafc7
-This project request had uuid: 4146761c-b7d1-414c-b56a-5ae440bff648
-
-To cite Aristotle, tag @Aristotle-Harmonic on GitHub PRs/issues, and add as co-author to commits:
-Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
-
-The following was proved by Aristotle:
-
-- theorem parseval_periodic_real (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
-    (hperiod : ∀ t, f (t + 2 * π) = f t) (hab : (0 : ℝ) < 2 * π)
-    (ĉ : ℤ → ℂ) (hĉ : ĉ = fun n => fourierCoeffOn hab (Complex.ofReal ∘ f) n) :
-    (Summable fun n => ‖ĉ n‖ ^ 2) ∧
-    ∫ t in (0 : ℝ)..(2 * π), (f t : ℝ) ^ 2 =
-      (2 * π) * ∑' n : ℤ, ‖ĉ n‖ ^ 2
-
-- theorem fourier_decomposition (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
-    (hperiod : ∀ t, f (t + 2 * π) = f t) :
-    ∃ (c : ℤ → ℝ),
-      Summable (fun n : ℤ => c n ^ 2) ∧
-      Summable (fun n : ℤ => (↑n : ℝ) ^ 2 * c n ^ 2) ∧
-      (∫ t in (0 : ℝ)..(2 * π), f t ^ 2 = ∑' n : ℤ, c n ^ 2) ∧
-      (∫ t in (0 : ℝ)..(2 * π), deriv f t ^ 2 = ∑' n : ℤ, (↑n : ℝ) ^ 2 * c n ^ 2) ∧
-      (c 0 = (1 / Real.sqrt (2 * π)) * ∫ t in (0 : ℝ)..(2 * π), f t)
--/
-
-/-
   Isoperimetric Inequality: C² ≥ 4πA with Equality Only for Circles
   Open Question: area-of-circle-oq-01-oq-03
 
@@ -75,7 +46,6 @@ The following was proved by Aristotle:
 -/
 
 import Mathlib
-
 
 open Real Filter Topology
 
@@ -301,85 +271,17 @@ plus Cauchy-Schwarz and AM-GM. Wirtinger is PROVED from a Fourier decomposition 
   5. Parseval for f': Σ n²|ĉₙ|² = (1/(2π))∫(f')²
   6. Set cₙ² = 2π|ĉₙ|² to obtain the stated real form
 -/
-/- Parseval identity for periodic real functions on [0, 2π].
+/-- Parseval identity for periodic real functions on [0, 2π].
     Proof: lift f to AddCircle(2π), apply tsum_sq_fourierCoeff, bridge via
     fourierCoeff_liftIoc_eq, convert Haar probability measure to Lebesgue. -/
-noncomputable section AristotleLemmas
-
-/-
-Parseval's identity for the lifted function on the circle. The integral w.r.t volume is T times the sum of squared Fourier coefficients.
--/
-theorem parseval_AddCircle_lift (T : ℝ) [Fact (0 < T)] (f : ℝ → ℂ)
-    (hf : Continuous f) (h_per : Function.Periodic f T) :
-    let F := AddCircle.liftIoc T 0 f
-    (Summable fun n : ℤ => ‖fourierCoeff F n‖ ^ 2) ∧
-    ∫ (y : AddCircle T), ‖F y‖ ^ 2 = T * ∑' n : ℤ, ‖fourierCoeff F n‖ ^ 2 := by
-      -- Let's denote the lift of the function $f$ to the circle by $F$.
-      set F : AddCircle T → ℂ := AddCircle.liftIoc T 0 f;
-      have hF_cont : Continuous F := by
-        apply AddCircle.liftIoc_continuous;
-        · simpa using Eq.symm ( h_per 0 );
-        · exact hf.continuousOn;
-      have hF_Lp : MeasureTheory.MemLp F 2 (AddCircle.haarAddCircle) := by
-        refine' MeasureTheory.MemLp.mono' _ _ _;
-        refine' fun x => ( SupSet.sSup ( Set.image ( fun y => ‖F y‖ ) ( Set.univ : Set ( AddCircle T ) ) ) );
-        · exact MeasureTheory.memLp_const _;
-        · exact hF_cont.aestronglyMeasurable;
-        · filter_upwards [ ] with x using le_csSup ( IsCompact.bddAbove ( isCompact_univ.image ( continuous_norm.comp hF_cont ) ) ) ( Set.mem_image_of_mem _ ( Set.mem_univ x ) );
-      have hF_fourier : ∑' n : ℤ, ‖fourierCoeff F n‖ ^ 2 = ∫ y : AddCircle T, ‖F y‖ ^ 2 ∂(AddCircle.haarAddCircle) := by
-        convert tsum_sq_fourierCoeff ( MeasureTheory.MemLp.toLp F hF_Lp ) using 1;
-        · congr! 2;
-          congr! 2;
-          exact MeasureTheory.integral_congr_ae ( by filter_upwards [ MeasureTheory.MemLp.coeFn_toLp hF_Lp ] with x hx; aesop );
-        · rw [ MeasureTheory.integral_congr_ae ];
-          filter_upwards [ MeasureTheory.MemLp.coeFn_toLp hF_Lp ] with x hx using by aesop;;
-      have h_volume_eq : ∫ y : AddCircle T, ‖F y‖ ^ 2 ∂(MeasureTheory.volume) = T * ∫ y : AddCircle T, ‖F y‖ ^ 2 ∂(AddCircle.haarAddCircle) := by
-        rw [ ← MeasureTheory.integral_const_mul ];
-        rw [ MeasureTheory.integral_const_mul, AddCircle.volume_eq_smul_haarAddCircle ];
-        simp +decide [ ENNReal.toReal_ofReal ( le_of_lt Fact.out ), MeasureTheory.integral_smul_measure ];
-      by_cases h : Summable fun n : ℤ => ‖fourierCoeff F n‖ ^ 2 <;> simp_all +decide [ tsum_eq_zero_of_not_summable ];
-      rw [ eq_comm, MeasureTheory.integral_eq_zero_iff_of_nonneg ( fun _ => sq_nonneg _ ) ] at hF_fourier;
-      · refine' h _;
-        refine' ⟨ _, hasSum_single 0 _ ⟩;
-        intro n hn; rw [ fourierCoeff ] ; simp_all +decide [ MeasureTheory.integral_eq_zero_of_ae ] ;
-        rw [ MeasureTheory.integral_eq_zero_of_ae ] ; filter_upwards [ hF_fourier ] with x hx ; aesop;
-      · exact MeasureTheory.MemLp.integrable_sq ( hF_Lp.norm )
-
-end AristotleLemmas
-
 theorem parseval_periodic_real (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
     (hperiod : ∀ t, f (t + 2 * π) = f t) (hab : (0 : ℝ) < 2 * π)
     (ĉ : ℤ → ℂ) (hĉ : ĉ = fun n => fourierCoeffOn hab (Complex.ofReal ∘ f) n) :
     (Summable fun n => ‖ĉ n‖ ^ 2) ∧
     ∫ t in (0 : ℝ)..(2 * π), (f t : ℝ) ^ 2 =
       (2 * π) * ∑' n : ℤ, ‖ĉ n‖ ^ 2 := by
-  constructor;
-  · convert parseval_AddCircle_lift ( 2 * Real.pi ) ( fun x => Complex.ofReal ( f x ) ) _ _ |>.1;
-    all_goals try exact Fact.mk hab;
-    · ext; simp [hĉ, fourierCoeff_liftIoc_eq];
-      rfl;
-    · exact Complex.continuous_ofReal.comp hf.continuous;
-    · exact fun x => by simp +decide [ hperiod ] ;
-  · have := @parseval_AddCircle_lift ( 2 * Real.pi ) ?_ ( fun x => Complex.ofReal ( f x ) ) ?_ ?_ <;> norm_num at *;
-    any_goals try exact Fact.mk Real.pi_pos;
-    · convert this.2 using 1;
-      · rw [ intervalIntegral.integral_of_le Real.two_pi_pos.le ];
-        rw [ ← MeasureTheory.integral_Icc_eq_integral_Ioc, MeasureTheory.integral_Icc_eq_integral_Ioc, ← MeasureTheory.integral_indicator ] <;> norm_num [ Set.indicator ];
-        rw [ ← MeasureTheory.integral_congr_ae ];
-        rotate_right;
-        use fun x => if 0 < x ∧ x ≤ 2 * Real.pi then f x ^ 2 else 0;
-        · rw [ ← MeasureTheory.integral_congr_ae ];
-          convert AddCircle.intervalIntegral_preimage ( 2 * Real.pi ) 0 _ using 1;
-          rw [ intervalIntegral.integral_of_le ( by linarith [ Real.pi_pos ] ) ];
-          rw [ ← MeasureTheory.integral_indicator ] ; norm_num [ Set.indicator ];
-          filter_upwards [ ] with x ; by_cases hx : 0 < x ∧ x ≤ 2 * Real.pi <;> simp +decide [ hx, AddCircle.liftIoc_coe_apply ];
-        · rfl;
-      · simp +decide [ hĉ, fourierCoeff_liftIoc_eq ];
-        rfl;
-    · exact Complex.continuous_ofReal.comp hf.continuous;
-    · assumption
+  sorry
 
-/- Aristotle failed to find a proof. -/
 /-- IBP for Fourier coefficients of periodic functions.
     For C¹ periodic f, ĉₙ(f') = in·ĉₙ(f). Proof: apply fourierCoeffOn_of_hasDerivAt,
     periodicity cancels boundary term f(2π)-f(0) = 0. -/
@@ -394,135 +296,13 @@ theorem fourierCoeffOn_deriv_periodic (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
   -- fourierCoeffOn_of_hasDerivAt argument order also changed.
   sorry
 
-/- Fourier decomposition for periodic C¹ functions.
+/-- Fourier decomposition for periodic C¹ functions.
     Converted from axiom to theorem. Uses parseval_periodic_real and
     fourierCoeffOn_deriv_periodic.
 
     The c₀ normalization is 1/√(2π), not 1/(2π). This arises because
     cₙ² = 2π·‖ĉₙ‖² (Parseval with Lebesgue→Haar bridge), so
     c₀ = √(2π)·ĉ₀ = √(2π)·(1/(2π))·∫f = (1/√(2π))·∫f. -/
-noncomputable section AristotleLemmas
-
-/-
-Definition of real Fourier coefficients c_n.
-For n=0, c_0 = (1/√(2π)) ∫ f.
-For n≠0, c_n = √(2π) ‖ĉ_n‖.
--/
-noncomputable def IsoperimetricOQ.realFourierCoeff (f : ℝ → ℝ) (n : ℤ) : ℝ :=
-  if n = 0 then
-    (1 / Real.sqrt (2 * Real.pi)) * ∫ t in (0 : ℝ)..(2 * Real.pi), f t
-  else
-    Real.sqrt (2 * Real.pi) * ‖fourierCoeffOn (show (0 : ℝ) < 2 * Real.pi by
-                                                positivity) (Complex.ofReal ∘ f) n‖
-
-theorem IsoperimetricOQ.realFourierCoeff_sq_eq (f : ℝ → ℝ) (n : ℤ) :
-    IsoperimetricOQ.realFourierCoeff f n ^ 2 = 2 * Real.pi * ‖fourierCoeffOn (show 0 < 2 * Real.pi by positivity) (Complex.ofReal ∘ f) n‖ ^ 2 := by
-                                                                                unfold IsoperimetricOQ.IsoperimetricOQ.realFourierCoeff;
-                                                                                split_ifs <;> ring ; norm_num [ Real.pi_pos.le ];
-                                                                                · rw [ fourierCoeffOn_eq_integral ] ; norm_num ; ring ; norm_num [ Real.pi_pos.le ];
-                                                                                  norm_num [ mul_assoc, mul_comm, mul_left_comm, Real.pi_ne_zero, ‹n = 0› ] ; ring;
-                                                                                  erw [ intervalIntegral.integral_ofReal ] ; norm_num [ sq, mul_assoc, Real.pi_ne_zero ];
-                                                                                · rw [ Real.sq_sqrt ] <;> linarith [ Real.pi_pos ]
-
-theorem IsoperimetricOQ.integral_deriv_periodic_eq_zero (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
-    (hperiod : ∀ t, f (t + 2 * π) = f t) :
-    ∫ t in (0 : ℝ)..(2 * π), deriv f t = 0 := by
-      rw [ intervalIntegral.integral_deriv_eq_sub ];
-      · simpa using sub_eq_zero.mpr ( hperiod 0 );
-      · exact fun x hx => ( hf.differentiable le_rfl ) x;
-      · exact ( hf.continuous_deriv le_rfl |> Continuous.intervalIntegrable ) _ _
-
-theorem IsoperimetricOQ.norm_fourierCoeffOn_deriv_eq (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
-    (hperiod : ∀ t, f (t + 2 * π) = f t) (n : ℤ) (hn : n ≠ 0) :
-    ‖fourierCoeffOn (show 0 < 2 * Real.pi by positivity) (Complex.ofReal ∘ deriv f) n‖ =
-    |n| * ‖fourierCoeffOn (show 0 < 2 * Real.pi by positivity) (Complex.ofReal ∘ f) n‖ := by
-                            convert congr_arg Norm.norm ( IsoperimetricOQ.fourierCoeffOn_deriv_periodic f hf hperiod ( by positivity ) n hn ) using 1 ; norm_num [ abs_mul ];
-                            swap;
-                            exacts [ 1, Or.inl <| by norm_num ]
-
-theorem IsoperimetricOQ.fourierCoeffOn_deriv_zero_eq_zero (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
-    (hperiod : ∀ t, f (t + 2 * π) = f t) :
-    fourierCoeffOn (show 0 < 2 * Real.pi by positivity) (Complex.ofReal ∘ deriv f) 0 = 0 := by
-                      rw [ fourierCoeffOn_eq_integral ];
-                      norm_num [ fourier ];
-                      erw [ intervalIntegral.integral_ofReal ] ; norm_num [ intervalIntegral.integral_comp_add_right, hperiod ];
-                      convert IsoperimetricOQ.integral_deriv_periodic_eq_zero f hf hperiod using 1
-
-theorem IsoperimetricOQ.realFourierCoeff_deriv_sq_eq (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
-    (hperiod : ∀ t, f (t + 2 * π) = f t) (n : ℤ) :
-    (n : ℝ) ^ 2 * IsoperimetricOQ.realFourierCoeff f n ^ 2 =
-    2 * Real.pi * ‖fourierCoeffOn (show 0 < 2 * Real.pi by positivity) (Complex.ofReal ∘ deriv f) n‖ ^ 2 := by
-                                    by_cases hn : n = 0 <;> simp_all +decide [ IsoperimetricOQ.realFourierCoeff_sq_eq ];
-                                    · exact?;
-                                    · rw [ IsoperimetricOQ.norm_fourierCoeffOn_deriv_eq f hf hperiod n hn ] ; ring;
-                                      norm_num [ mul_assoc, mul_comm, mul_left_comm ]
-
-theorem IsoperimetricOQ.integral_sq_eq_integral_norm_sq_lift_general (T : ℝ) [hT : Fact (0 < T)]
-    (f : ℝ → ℝ) (hf : Continuous f) (hperiod : ∀ t, f (t + T) = f t) :
-    let F := AddCircle.liftIoc T 0 (Complex.ofReal ∘ f)
-    ∫ t in (0 : ℝ)..T, (f t : ℝ) ^ 2 =
-      T * ∫ x : AddCircle T, ‖F x‖ ^ 2 ∂AddCircle.haarAddCircle := by
-        convert AddCircle.intervalIntegral_preimage T 0 ( fun x => ‖AddCircle.liftIoc T 0 ( Complex.ofReal ∘ f ) x‖ ^ 2 ) using 1 ; norm_num [ hperiod ] ; ring;
-        · norm_num [ AddCircle.liftIoc ];
-          refine' intervalIntegral.integral_congr fun t ht => _ ; simp_all +decide [ AddCircle.equivIoc ] ; ring; (
-          cases eq_or_lt_of_le ( show 0 ≤ t from by cases Set.mem_uIcc.mp ht <;> linarith [ hT.1 ] ) <;> simp_all +decide [ toIocMod ] ; ring;
-          rw [ show f t = f ( t - ( toIocDiv hT.1 0 t ) * T ) from by simpa [ sub_mul ] using Function.Periodic.int_mul hperiod ( toIocDiv hT.1 0 t ) ( t - ( toIocDiv hT.1 0 t ) * T ) ]);
-        · rw [ ← MeasureTheory.integral_const_mul ] ; ring;
-          have := @AddCircle.volume_eq_smul_haarAddCircle T hT; simp_all +decide [ MeasureTheory.measureReal_def ] ; ring;
-          rw [ MeasureTheory.integral_const_mul, ENNReal.toReal_ofReal hT.1.le ]
-
-theorem IsoperimetricOQ.parseval_periodic_real_continuous (f : ℝ → ℝ) (hf : Continuous f)
-    (hperiod : ∀ t, f (t + 2 * π) = f t) (hab : (0 : ℝ) < 2 * π)
-    (ĉ : ℤ → ℂ) (hĉ : ĉ = fun n => fourierCoeffOn hab (Complex.ofReal ∘ f) n) :
-    (Summable fun n => ‖ĉ n‖ ^ 2) ∧
-    ∫ t in (0 : ℝ)..(2 * π), (f t : ℝ) ^ 2 =
-      (2 * π) * ∑' n : ℤ, ‖ĉ n‖ ^ 2 := by
-        -- Let `T = 2 * π`. We have `hT : Fact (0 < T)` from `hab`.
-        let T := 2 * Real.pi
-        have hT : Fact (0 < T) := by
-          exact ⟨ hab ⟩;
-        -- Let `F := AddCircle.liftIoc T 0 (Complex.ofReal ∘ f)`. We have `F` is continuous.
-        set F : AddCircle T → ℂ := AddCircle.liftIoc T 0 (Complex.ofReal ∘ f)
-        have hF_cont : Continuous F := by
-          apply AddCircle.liftIoc_continuous;
-          · exact?;
-          · exact Complex.continuous_ofReal.comp_continuousOn hf.continuousOn;
-        -- Since `F` is continuous, it is in `L^2`. Construct `F_Lp : Lp ℂ 2 haarAddCircle` from `F`.
-        obtain ⟨F_Lp, hF_Lp⟩ : ∃ F_Lp : MeasureTheory.Lp ℂ 2 AddCircle.haarAddCircle, ∀ᵐ x ∂AddCircle.haarAddCircle, F_Lp x = F x := by
-          have hF_Lp : MeasureTheory.MemLp F 2 AddCircle.haarAddCircle := by
-            refine' MeasureTheory.MemLp.mono' _ _ _;
-            refine' fun x => ( SupSet.sSup ( Set.range ( fun x => ‖F x‖ ) ) );
-            · exact MeasureTheory.memLp_const _;
-            · exact hF_cont.aestronglyMeasurable;
-            · exact Filter.Eventually.of_forall fun x => le_csSup ( IsCompact.bddAbove ( isCompact_range hF_cont.norm ) ) ( Set.mem_range_self x );
-          exact ⟨ MeasureTheory.MemLp.toLp F hF_Lp, MeasureTheory.MemLp.coeFn_toLp hF_Lp ⟩;
-        have h_summable : Summable (fun n : ℤ => ‖fourierCoeff F_Lp n‖ ^ 2) := by
-          have := tsum_sq_fourierCoeff F_Lp;
-          contrapose! this;
-          rw [ tsum_eq_zero_of_not_summable this ];
-          rw [ Ne.eq_def, eq_comm, MeasureTheory.integral_eq_zero_iff_of_nonneg ( fun _ => sq_nonneg _ ) ];
-          · intro h;
-            refine' this _;
-            refine' ⟨ _, hasSum_single 0 _ ⟩;
-            intro n hn; rw [ fourierCoeff ] ; simp_all +decide [ MeasureTheory.integral_eq_zero_of_ae ] ;
-            rw [ MeasureTheory.integral_eq_zero_of_ae ] ; filter_upwards [ h ] with x hx ; aesop;
-          · refine' MeasureTheory.MemLp.integrable_sq _;
-            exact MeasureTheory.MemLp.norm ( MeasureTheory.Lp.memLp _ );
-        have h_integral : ∫ t in (0 : ℝ)..T, (f t : ℝ) ^ 2 = T * ∑' n : ℤ, ‖fourierCoeff F_Lp n‖ ^ 2 := by
-          convert IsoperimetricOQ.integral_sq_eq_integral_norm_sq_lift_general T f hf hperiod using 1;
-          rw [ tsum_sq_fourierCoeff ];
-          rw [ MeasureTheory.integral_congr_ae ] ; filter_upwards [ hF_Lp ] with x hx ; aesop;
-        -- Since `F_Lp` is a.e. equal to `F`, we have `fourierCoeff F_Lp n = fourierCoeff F n`.
-        have h_fourier_eq : ∀ n : ℤ, fourierCoeff F_Lp n = fourierCoeff F n := by
-          intro n;
-          rw [ fourierCoeff, fourierCoeff ];
-          rw [ MeasureTheory.integral_congr_ae ];
-          filter_upwards [ hF_Lp ] with x hx using by rw [ hx ] ;
-        simp_all +decide [ fourierCoeffOn ];
-        grind
-
-end AristotleLemmas
-
 theorem fourier_decomposition (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
     (hperiod : ∀ t, f (t + 2 * π) = f t) :
     ∃ (c : ℤ → ℝ),
@@ -531,32 +311,7 @@ theorem fourier_decomposition (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
       (∫ t in (0 : ℝ)..(2 * π), f t ^ 2 = ∑' n : ℤ, c n ^ 2) ∧
       (∫ t in (0 : ℝ)..(2 * π), deriv f t ^ 2 = ∑' n : ℤ, (↑n : ℝ) ^ 2 * c n ^ 2) ∧
       (c 0 = (1 / Real.sqrt (2 * π)) * ∫ t in (0 : ℝ)..(2 * π), f t) := by
-  refine' ⟨ fun n => IsoperimetricOQ.realFourierCoeff f n, _, _, _, _, _ ⟩;
-  · have := IsoperimetricOQ.parseval_periodic_real_continuous f hf.continuous hperiod ( by positivity ) ( fun n => fourierCoeffOn ( by positivity ) ( Complex.ofReal ∘ f ) n ) rfl;
-    convert this.1.mul_left ( 2 * Real.pi ) using 2 ; ring;
-    rw [ IsoperimetricOQ.realFourierCoeff_sq_eq ] ; ring;
-  · have := IsoperimetricOQ.parseval_periodic_real_continuous ( deriv f ) ( hf.continuous_deriv le_rfl ) ( fun t => ?_ ) ( by positivity ) ( fun n => fourierCoeffOn ( show 0 < 2 * Real.pi by positivity ) ( Complex.ofReal ∘ deriv f ) n ) rfl;
-    · convert this.1.mul_left ( 2 * Real.pi ) using 2 ; ring;
-      convert IsoperimetricOQ.realFourierCoeff_deriv_sq_eq f hf hperiod ‹_› using 1 ; ring;
-    · have h_deriv_periodic : ∀ t, deriv f (t + 2 * Real.pi) = deriv f t := by
-        intro t
-        have h_eq : ∀ t, deriv f (t + 2 * Real.pi) = deriv (fun t => f (t + 2 * Real.pi)) t := by
-          exact?
-        aesop;
-      exact h_deriv_periodic t;
-  · obtain ⟨ h₁, h₂ ⟩ := IsoperimetricOQ.parseval_periodic_real_continuous f hf.continuous hperiod ( show 0 < 2 * Real.pi by positivity ) ( fun n => fourierCoeffOn ( show 0 < 2 * Real.pi by positivity ) ( Complex.ofReal ∘ f ) n ) rfl;
-    rw [ h₂, ← tsum_mul_left ] ; congr ; ext n ; rw [ IsoperimetricOQ.realFourierCoeff_sq_eq ];
-  · have h_parseval_deriv : ∫ t in (0 : ℝ)..(2 * Real.pi), (deriv f t) ^ 2 = 2 * Real.pi * ∑' n : ℤ, ‖fourierCoeffOn (show 0 < 2 * Real.pi by positivity) (Complex.ofReal ∘ deriv f) n‖ ^ 2 := by
-                                                                                                                        convert IsoperimetricOQ.parseval_periodic_real_continuous ( deriv f ) _ _ _ _ _ |> And.right using 1 <;> norm_num [ Real.pi_pos ];
-                                                                                                                        · exact hf.continuous_deriv le_rfl;
-                                                                                                                        · intro t; exact (by
-                                                                                                                          have h_deriv_periodic : deriv (fun t => f (t + 2 * Real.pi)) t = deriv f (t + 2 * Real.pi) := by
-                                                                                                                            exact?;
-                                                                                                                          aesop);
-    convert h_parseval_deriv using 1;
-    rw [ ← tsum_mul_left ];
-    exact tsum_congr fun n => by rw [ IsoperimetricOQ.realFourierCoeff_deriv_sq_eq f hf hperiod n ] ;
-  · unfold IsoperimetricOQ.IsoperimetricOQ.realFourierCoeff; aesop;
+  sorry
 
 /-- A smooth closed curve in the plane, parametrized by [0, 2π]. -/
 structure SmoothClosedCurve where
@@ -889,7 +644,6 @@ theorem SmoothClosedCurve.meanSubtract_zero_mean_y (γ : SmoothClosedCurve) :
   have hpi : (2 : ℝ) * π ≠ 0 := by positivity
   field_simp; ring
 
-/- Aristotle took a wrong turn (reason code: 9). Please try again. -/
 /-- **Arc-length reparametrization**: Every smooth closed curve with positive
     circumference admits a constant-speed reparametrization preserving L and A.
 
