@@ -21,7 +21,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 2,
-    "assumptions": "Two axioms: (A) three_dvd_gal_card (3||Gal|, from Dedekind's theorem at p=13: mod 13 factorization verified computationally), (B) gal_has_odd_perm (Gal⊄A₅, from disc=-212144<0 and Vandermonde-discriminant identity). The former opaque axiom |Gal|=120 is now a THEOREM proved from these via Sylow theory (no order-15 or order-30 subgroups in S₅) and A₅ simplicity.",
+    "assumptions": "Two axioms: (A) three_dvd_gal_card (3||Gal|, from Dedekind's theorem at p=13: mod 13 factorization verified computationally), (B) vandermondeProduct_sq_val (Δ²=-212144, verifiable discriminant computation). Former Axiom B (gal_has_odd_perm) is now a THEOREM proved via Vandermonde product approach: σ(Δ)=sign(σ)·Δ, disc<0 so Δ∉ℚ, hence ∃σ with sign(σ)=-1. Uses FTGT (fixedField(⊤)=⊥).",
     "wiedijkNumber": 16,
     "dateAdded": "2026-03-25",
     "mathlibDependencies": [
@@ -233,10 +233,10 @@
       "Polynomial"
     ],
     "namespace": "AbelRuffiniOQ04OQ01",
-    "lineCount": 874,
+    "lineCount": 1036,
     "axiomCount": 2,
-    "theoremCount": 37,
-    "definitionCount": 6,
+    "theoremCount": 48,
+    "definitionCount": 8,
     "sorryCount": 0
   },
   "references": [

@@ -110,9 +110,40 @@ we proved a concrete witness: Gal(x^5 - 4x + 2 / Q) ≅ S_5.
 - src/data/proofs/abel-ruffini-oq-04-oq-01/meta.json (updated counts)
 - src/data/research/problems/abel-ruffini-oq-04-oq-01.json (to be updated)
 
+## Session 2026-03-24 (Session 4) - Vandermonde Product: Axiom B Eliminated
+
+**Mode**: REVISIT (RICH knowledge, score ~29)
+**Outcome**: progress (Axiom B eliminated, replaced with narrower disc computation axiom)
+
+### What I Did
+- Built complete Vandermonde product infrastructure for polynomial p
+  - rootEnum, rootEnum_is_root, rootEnum_injective
+  - vandermondeProduct = det(Vandermonde(rootEnum)), nonzero
+  - gal_permutes_roots, vandermonde_perm_det, gal_map_vandermonde_entry
+  - **gal_acts_on_vandermondeProduct**: σ(Δ) = galSign(σ) · Δ
+- Proved **vandermondeProduct_not_rational**: Δ ∉ ℚ (from Δ² = -212144 < 0)
+- Proved **fixed_by_all_gal_is_rational**: FTGT direction (fixedField(⊤) = ⊥)
+  - Key: fixingSubgroup(⊥) = ⊤ (automorphisms fix ℚ by σ.commutes)
+  - Then IsGalois.fixedField_fixingSubgroup gives fixedField(⊤) = ⊥
+- Proved **exists_odd_galSign** = **gal_has_odd_perm** as a THEOREM
+- Former Axiom B is now PROVED; replaced with narrower axiom vandermondeProduct_sq_val
+
+### Key Findings
+- IntermediateField.mem_fixedField_iff is the correct API (not mem_fixedField)
+- fixingSubgroup membership requires `show ∀ y : ↑↑⊥, σ • ↑y = ↑y` pattern
+- IsGalois ℚ SF needs explicit `IsGalois.mk` (inferInstance may fail for abbrevs)
+- The FTGT (fixedField ⊤ = ⊥) follows from fixingSubgroup ⊥ = ⊤ + Galois correspondence
+- Pattern from InverseGaloisA5.lean (vandermonde_perm_det, gal_map_vandermonde_entry) transfers directly
+
+### Files Modified
+- proofs/Proofs/AbelRuffiniOQ04OQ01.lean (874→1036 lines, 37→48 theorems, 2 axioms still)
+- src/data/proofs/abel-ruffini-oq-04-oq-01/meta.json (updated counts)
+- src/data/research/problems/abel-ruffini-oq-04-oq-01.json (updated knowledge)
+
 ### Remaining Work to Eliminate ALL Axioms
-1. **Dedekind's theorem**: Formalize the connection between mod-p factorization and Frobenius cycle types (~200-300 lines)
-2. **Discriminant-Vandermonde identity**: Prove disc(f) = Δ² for monic separable polynomials (~100-200 lines)
-   - Mathlib has Matrix.det_vandermonde; need to connect to Polynomial.disc
-3. **Alternative for Axiom B**: Could use IVT approach instead (3 real roots → disc < 0)
-   - IVT gives roots, derivative gives upper bound, combined: exactly 3 real → disc negative
+1. **Axiom A (three_dvd_gal_card)**: Needs Dedekind's theorem (~200-300 lines)
+2. **Axiom B replacement (vandermondeProduct_sq_val)**: Prove Δ² = -212144 from Res(p,p')
+   - Chain: Δ² = ∏_{i≠j}(αᵢ-αⱼ) = ∏ᵢ p'(αᵢ) = Res(p,p') = disc(p) = -212144
+   - InverseGaloisA5.lean proves this for q via ℂ embedding + Sophie Germain (~400 lines)
+   - For p = x⁵-4x+2, p'=5x⁴-4 doesn't factor as nicely (no Sophie Germain)
+   - Alternative: direct Sylvester matrix determinant computation (9×9 over ℤ)

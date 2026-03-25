@@ -569,30 +569,204 @@ theorem no_subgroup_order_30 (H : Subgroup (Equiv.Perm (Fin 5)))
     exact no_subgroup_order_15 K hK_card
 
 -- ============================================================================
--- Part V(e): Axiom Decomposition for |Gal(p/ℚ)| = 120
+-- Part V(e): Vandermonde Product and Discriminant → Odd Permutation
 -- ============================================================================
 
 /-
-## Axiom Decomposition
+## Vandermonde Product Approach
 
-The original axiom `gal_card_eq_120 : Fintype.card p.Gal = 120` has been
-decomposed into two narrower axioms, each corresponding to a specific
-theorem not yet in Mathlib:
+The Vandermonde product Δ = det(vandermonde(rootEnum)) satisfies:
+  σ(Δ) = sign(σ) · Δ for every σ ∈ Gal(p/ℚ).
 
-**Axiom A (Dedekind at p = 13):** 3 | |Gal(p/ℚ)|.
-  x⁵ - 4x + 2 mod 13 factors as (x-2)(x-5)(x³+7x²+8).
-  The cubic has no roots mod 13 (cubic_factor_no_roots_mod13), hence is
-  irreducible over F₁₃. By Dedekind's theorem, the Frobenius at 13 has
-  cycle type (1,1,3), giving an element of order 3 in the Galois group.
-  Supporting computations: p_root_mod13_at_2, p_root_mod13_at_5.
+If Δ² ∈ ℚ is not a perfect square, then Δ ∉ ℚ, so some σ has sign(σ) = -1.
 
-**Axiom B (Discriminant → Odd Permutation):**
-  disc(p) = Res(p, p') = -212144 < 0.
-  Since the Vandermonde product Δ satisfies Δ² = disc(p) < 0, we have
-  Δ ∉ ℚ (no rational squares negative). The Galois action σ(Δ) = sign(σ)·Δ
-  with Δ ∉ ℚ implies ∃ σ with sign(σ) = -1, i.e., Gal ⊄ A₅.
-  Requires: disc(f) = Δ² identity (not in Mathlib).
+For p = x⁵ - 4x + 2: disc(p) = Δ² = -212144 < 0 (not a perfect square in ℚ),
+so Gal(p) contains an odd permutation (Gal ⊄ A₅).
+
+The approach follows InverseGaloisA5.lean's Vandermonde infrastructure.
 -/
+
+-- Abbreviation for the splitting field
+private abbrev SF := p.SplittingField
+
+-- Section E1: Root Enumeration
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- Canonical enumeration of the 5 roots of p in its splitting field. -/
+noncomputable def rootEnum : Fin 5 → SF :=
+  fun i => ((Fintype.equivOfCardEq (by rw [p_rootSet_card, Fintype.card_fin]) :
+    p.rootSet p.SplittingField ≃ Fin 5).symm i : SF)
+
+/-- Each value of rootEnum is a root of p. -/
+theorem rootEnum_is_root (i : Fin 5) :
+    Polynomial.aeval (rootEnum i) p = 0 := by
+  unfold rootEnum
+  have hmem := ((Fintype.equivOfCardEq (by rw [p_rootSet_card, Fintype.card_fin]) :
+    p.rootSet p.SplittingField ≃ Fin 5).symm i).prop
+  rw [Polynomial.mem_rootSet] at hmem
+  exact hmem.2
+
+/-- The roots are distinct (p is separable). -/
+theorem rootEnum_injective : Function.Injective rootEnum := by
+  intro i j hij
+  unfold rootEnum at hij
+  have hsub : (Fintype.equivOfCardEq (by rw [p_rootSet_card, Fintype.card_fin]) :
+    p.rootSet p.SplittingField ≃ Fin 5).symm i =
+    (Fintype.equivOfCardEq (by rw [p_rootSet_card, Fintype.card_fin]) :
+    p.rootSet p.SplittingField ≃ Fin 5).symm j := Subtype.ext hij
+  exact (Fintype.equivOfCardEq (by rw [p_rootSet_card, Fintype.card_fin]) :
+    p.rootSet p.SplittingField ≃ Fin 5).symm.injective hsub
+
+-- Section E2: Vandermonde Product
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- The Vandermonde product of p's roots:
+    Δ = det(vandermonde(rootEnum)) = ∏_{i<j} (rootEnum j - rootEnum i). -/
+noncomputable def vandermondeProduct : SF :=
+  Matrix.det (Matrix.vandermonde rootEnum)
+
+/-- The Vandermonde product is nonzero (since p is separable, all roots are distinct). -/
+theorem vandermondeProduct_ne_zero : vandermondeProduct ≠ 0 := by
+  unfold vandermondeProduct
+  rw [Matrix.det_vandermonde]
+  intro h
+  rw [Finset.prod_eq_zero_iff] at h
+  obtain ⟨i, _, hi⟩ := h
+  rw [Finset.prod_eq_zero_iff] at hi
+  obtain ⟨j, hj, hij⟩ := hi
+  have hne : j ≠ i := by simp [Finset.mem_Iio] at hj; omega
+  exact hne (rootEnum_injective (sub_eq_zero.mp hij))
+
+-- Section E3: Galois Action on Vandermonde Product
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- The Galois group permutes roots according to galToPerm5. -/
+theorem gal_permutes_roots (σ : p.Gal) (i : Fin 5) :
+    σ (rootEnum i) = rootEnum (galToPerm5 σ i) := by
+  unfold rootEnum galToPerm5 galPermHomAux
+  simp only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.coe_mk,
+    Equiv.toFun_as_coe, Equiv.permCongr_apply, Equiv.symm_apply_apply,
+    MulAction.toPermHom_apply]
+  rfl
+
+/-- Vandermonde with permuted input = row-permuted Vandermonde. -/
+private theorem vandermonde_comp_eq_submatrix
+    (v : Fin 5 → SF) (π : Equiv.Perm (Fin 5)) :
+    Matrix.vandermonde (v ∘ π) = (Matrix.vandermonde v).submatrix π id := by
+  ext i j; simp [Matrix.vandermonde, Matrix.submatrix, Function.comp]
+
+/-- Vandermonde permutation: det(V(v ∘ π)) = sign(π) · det(V(v)). -/
+private theorem vandermonde_perm_det
+    (v : Fin 5 → SF) (π : Equiv.Perm (Fin 5)) :
+    (Matrix.vandermonde (v ∘ π)).det =
+    ↑↑(Equiv.Perm.sign π) * (Matrix.vandermonde v).det := by
+  rw [vandermonde_comp_eq_submatrix]
+  exact Matrix.det_permute π (Matrix.vandermonde v)
+
+/-- σ maps the Vandermonde matrix entry-wise according to root permutation. -/
+private theorem gal_map_vandermonde_entry (σ : p.Gal) (i j : Fin 5) :
+    σ ((Matrix.vandermonde rootEnum) i j) =
+    (Matrix.vandermonde (rootEnum ∘ galToPerm5 σ)) i j := by
+  simp only [Matrix.vandermonde, Matrix.of_apply, Function.comp]
+  rw [map_pow]
+  congr 1
+  exact gal_permutes_roots σ i
+
+/-- **σ(Δ) = galSign(σ) · Δ** — the Galois action on the Vandermonde determinant
+    equals the sign of the induced permutation times the determinant. -/
+theorem gal_acts_on_vandermondeProduct (σ : p.Gal) :
+    σ vandermondeProduct = ↑↑(galSign σ) * vandermondeProduct := by
+  unfold vandermondeProduct galSign
+  trans (Matrix.vandermonde (rootEnum ∘ galToPerm5 σ)).det
+  · change σ.toAlgHom.toRingHom (Matrix.vandermonde rootEnum).det =
+      (Matrix.vandermonde (rootEnum ∘ galToPerm5 σ)).det
+    rw [RingHom.map_det]
+    congr 1; ext i j
+    simp only [RingHom.mapMatrix_apply]
+    change σ ((Matrix.vandermonde rootEnum) i j) =
+      (Matrix.vandermonde (rootEnum ∘ galToPerm5 σ)) i j
+    exact gal_map_vandermonde_entry σ i j
+  · exact vandermonde_perm_det rootEnum (galToPerm5 σ)
+
+-- Section E4: Discriminant Value (Axiom)
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- **Axiom (discriminant computation)**: Δ² = -212144 in the splitting field.
+
+    This is a verifiable computation: disc(x⁵-4x+2) = 256(-4)⁵+3125·2⁴ = -212144.
+    The Sylvester matrix of p and p' = 5x⁴-4 is a 9×9 integer matrix whose
+    determinant equals -212144.
+
+    Axiomatized because computing resultants of explicit polynomials requires
+    API that is not yet available in Lean4/Mathlib v4.26.0. -/
+axiom vandermondeProduct_sq_val :
+  vandermondeProduct ^ 2 = algebraMap ℚ SF (-212144)
+
+-- Section E5: Negative Discriminant → Odd Permutation
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- The Vandermonde product is NOT in the range of algebraMap ℚ SF.
+
+    Proof: Δ² = algebraMap ℤ SF (-212144). If Δ = algebraMap ℚ SF r for some r,
+    then r² = -212144 in ℚ. But r² ≥ 0 in ℚ (characteristic 0, ordered field),
+    contradiction. -/
+theorem vandermondeProduct_not_rational :
+    vandermondeProduct ∉ Set.range (algebraMap ℚ SF) := by
+  intro ⟨r, hr⟩
+  have hinj : Function.Injective (algebraMap ℚ SF) := (algebraMap ℚ SF).injective
+  have hr2 : r ^ 2 = (-212144 : ℚ) := hinj (by rw [map_pow, hr]; exact vandermondeProduct_sq_val)
+  linarith [sq_nonneg r]
+
+/-- Helper: in the Galois splitting field, elements fixed by ALL automorphisms
+    lie in the base field ℚ.
+
+    This is one direction of the Fundamental Theorem of Galois Theory.
+    Proof: fixingSubgroup(⊥) = ⊤ (every ℚ-alg. aut. fixes ℚ), and by
+    IsGalois.fixedField_fixingSubgroup, fixedField(fixingSubgroup(⊥)) = ⊥. -/
+private theorem fixed_by_all_gal_is_rational (x : SF)
+    (hfix : ∀ σ : SF ≃ₐ[ℚ] SF, σ x = x) :
+    x ∈ Set.range (algebraMap ℚ SF) := by
+  haveI : IsGalois ℚ SF := IsGalois.mk
+  -- x ∈ fixedField(⊤)
+  have hmem : x ∈ IntermediateField.fixedField (⊤ : Subgroup (SF ≃ₐ[ℚ] SF)) := by
+    rw [IntermediateField.mem_fixedField_iff]
+    exact fun σ _ => hfix σ
+  -- fixingSubgroup(⊥) = ⊤: every automorphism fixes ℚ
+  have hfix_bot : (⊥ : IntermediateField ℚ SF).fixingSubgroup = ⊤ := by
+    rw [eq_top_iff]; intro σ _ y
+    obtain ⟨r, hr⟩ := IntermediateField.mem_bot.mp y.prop
+    show σ • (y : SF) = (y : SF)
+    rw [show (y : SF) = algebraMap ℚ SF r from hr.symm]
+    exact σ.commutes r
+  -- fixedField(fixingSubgroup(⊥)) = ⊥ (FTGT)
+  have hftgt : IntermediateField.fixedField (⊤ : Subgroup (SF ≃ₐ[ℚ] SF)) = ⊥ := by
+    rw [← hfix_bot]; exact IsGalois.fixedField_fixingSubgroup ⊥
+  rw [hftgt] at hmem
+  exact IntermediateField.mem_bot.mp hmem
+
+/-- Not all Galois signs are positive: some σ has galSign(σ) = -1.
+
+    Proof: If all signs were +1, then σ(Δ) = Δ for all σ, which would mean
+    Δ is fixed by the entire Galois group, hence Δ ∈ ℚ. But Δ ∉ ℚ. -/
+theorem exists_odd_galSign :
+    ∃ σ : p.Gal, galSign σ = -1 := by
+  by_contra hall
+  push_neg at hall
+  have hall_one : ∀ σ : p.Gal, galSign σ = 1 := fun σ =>
+    (Int.units_eq_one_or (galSign σ)).resolve_right (hall σ)
+  have hfix : ∀ σ : p.Gal, σ vandermondeProduct = vandermondeProduct := by
+    intro σ
+    have h := gal_acts_on_vandermondeProduct σ
+    rw [hall_one σ] at h; simpa using h
+  exact vandermondeProduct_not_rational (fixed_by_all_gal_is_rational vandermondeProduct hfix)
+
+/-- **THEOREM** (formerly Axiom B): The Galois group contains an odd permutation.
+    Proved from the Vandermonde product approach and disc(p) = -212144 < 0. -/
+theorem gal_has_odd_perm :
+  ∃ σ : p.Gal, Equiv.Perm.sign (galToPerm5 σ) = -1 := exists_odd_galSign
+
+-- Section E6: Remaining Axiom
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 /-- **Axiom A**: 3 divides |Gal(p)|.
 
@@ -605,18 +779,6 @@ theorem not yet in Mathlib:
     Supporting evidence: p_root_mod13_at_2, p_root_mod13_at_5,
     cubic_factor_no_roots_mod13 verify the factorization. -/
 axiom three_dvd_gal_card : 3 ∣ Fintype.card p.Gal
-
-/-- **Axiom B**: The Galois group is NOT contained in A₅.
-
-    disc(p) = -212144 < 0, so the Vandermonde product Δ satisfies
-    Δ² < 0, hence Δ ∉ ℚ. Since σ(Δ) = sign(σ)·Δ and Δ generates
-    a degree-2 extension of ℚ, there exists σ with sign(σ) = -1.
-
-    Axiomatized because Mathlib lacks the disc(f) = Δ² identity.
-    The discriminant value -212144 is verifiable via the Sylvester
-    matrix determinant of p and p'. -/
-axiom gal_has_odd_perm :
-  ∃ σ : p.Gal, Equiv.Perm.sign (galToPerm5 σ) = -1
 
 -- ============================================================================
 -- Part V(f): |Gal(p/ℚ)| = 120 (PROVED from Axioms A, B)
