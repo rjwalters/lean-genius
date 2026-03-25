@@ -49,8 +49,9 @@
       "If true, the eventual period p and offset N are computable functions of A0, and the asymptotic growth rate a_n/n converges to a rational number"
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Number theory (primes, divisibility)"
+      "Additive combinatorics: sum-free sets, pairwise sums",
+      "Sequences and recurrences: greedy algorithms, eventual periodicity",
+      "Elementary number theory: natural number arithmetic"
     ]
   },
   "references": [
@@ -158,6 +159,11 @@
       "targetId": "erdos-276",
       "relationship": "related",
       "description": "Both involve sequences with restricted additive/multiplicative properties and periodicity: #276 studies composite Lucas sequences, #341 studies periodic sum-free extensions."
+    },
+    {
+      "targetId": "erdos-340-greedy-sidon",
+      "relationship": "specialization",
+      "description": "The greedy Sidon construction formalizes the singleton case $A_0 = \\{1\\}$ of Dickson's extension, producing the Mian–Chowla sequence. Problem #341's eventual periodicity conjecture for the difference sequence specializes to asking whether the Mian–Chowla gaps eventually repeat — a question that remains open even for this single starting set"
     }
   ],
   "leanFile": {
