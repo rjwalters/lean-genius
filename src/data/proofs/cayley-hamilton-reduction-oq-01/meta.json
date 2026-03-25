@@ -75,7 +75,11 @@
       "The BlockTriangular predicate unifies triangular and block triangular under one framework"
     ],
     "prerequisites": [
-      "Linear algebra"
+      "Linear algebra (matrix operations over commutative rings)",
+      "Characteristic polynomials (charpoly, determinant of (XI - A))",
+      "Cayley-Hamilton theorem (charpoly(A)(A) = 0)",
+      "Block matrix decompositions (BlockTriangular predicate)",
+      "Polynomial division (modular reduction of polynomials)"
     ]
   },
   "sections": [
@@ -154,6 +158,26 @@
       "targetId": "cayley-hamilton-reduction-oq-02",
       "relationship": "sibling",
       "description": "Sibling open question: Minimal Polynomial vs Characteristic Polynomial Reduction"
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "uses",
+      "description": "Relies on the Cayley-Hamilton theorem (Matrix.aeval_self_charpoly = 0) as the foundation for all four sparse matrix reduction results"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "related",
+      "description": "The minimal polynomial gives a tighter reduction than the characteristic polynomial; this entry's open questions ask whether minimal polynomial reduction can also be made efficient for sparse matrices"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-03",
+      "relationship": "related",
+      "description": "The Krylov method for computing minimal polynomials in O(n^3) is relevant to sparse matrix efficiency — Krylov iterations exploit sparsity naturally via matrix-vector products"
+    },
+    {
+      "targetId": "cramers-rule-oq-01",
+      "relationship": "related",
+      "description": "Derives Cayley-Hamilton from the adjugate identity A * adj(A) = det(A) * I, providing an alternative algebraic path to the same theorem this entry builds upon"
     }
   ],
   "references": [

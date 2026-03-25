@@ -239,6 +239,26 @@
       "targetId": "cauchy-schwarz-oq-03",
       "relationship": "extends",
       "description": "Parent formalization; this entry extends it with further exploration"
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "extends",
+      "description": "The base Cauchy-Schwarz inequality; this entry characterizes when equality holds (proportionality of vectors)"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "extends",
+      "description": "The Bunyakovsky-Schwarz integral inequality; this entry proves the integral equality condition via measure-theoretic Young deficit"
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "related",
+      "description": "AM-GM is the p=q=2 case of Young's inequality; the Young equality case proved here generalizes the AM-GM equality condition a=b"
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "related",
+      "description": "Cauchy-Schwarz equality characterizes when the triangle inequality for inner products becomes tight (collinear vectors)"
     }
   ]
 }

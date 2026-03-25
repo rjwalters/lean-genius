@@ -255,7 +255,17 @@
     {
       "targetId": "central-limit-theorem-oq-01-oq-02",
       "relationship": "sibling",
-      "description": "Sibling open question: Lévy-Khintchine Representation: Triplets, Decomposition, and"
+      "description": "Sibling open question: Lévy-Khintchine Representation: Triplets, Decomposition, and Classification"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "generalizes",
+      "description": "The classical CLT is the special case alpha=2 with constant slowly varying function; this entry's Gnedenko-Kolmogorov theorem fully characterizes all possible limit laws"
+    },
+    {
+      "targetId": "central-limit-theorem-oq-03",
+      "relationship": "related",
+      "description": "Categorical structure of distributions under convolution; also formalizes domain of attraction and convergence to the Gaussian fixed point"
     }
   ],
   "references": [

@@ -74,7 +74,9 @@
       "**Works Over Any Commutative Ring**: Like the original Cramer's Rule formalization, this proof works over any commutative ring — no field or invertibility assumptions needed."
     ],
     "prerequisites": [
-      "Linear algebra"
+      "Linear algebra (determinants, matrix multiplication, adjugate matrices)",
+      "Polynomial algebra (characteristic polynomial, polynomial evaluation at matrices)",
+      "Ring theory (commutative rings, algebra homomorphisms)"
     ]
   },
   "sections": [
@@ -207,6 +209,16 @@
       "targetId": "cramers-rule-oq-02",
       "relationship": "sibling",
       "description": "Sibling open question: Complexity Analysis: Cramer's Rule vs Gaussian Elimination"
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "Standalone Cayley-Hamilton formalization; this entry re-derives it as a corollary of the adjugate identity central to Cramer's Rule"
+    },
+    {
+      "targetId": "cramers-rule-oq-03",
+      "relationship": "sibling",
+      "description": "Sibling open question extending Cramer's Rule to non-commutative division rings via Gelfand-Retakh quasideterminants"
     }
   ]
 }
