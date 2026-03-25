@@ -181,5 +181,33 @@
       "relationship": "related",
       "description": "Related Erdős problem sharing themes: discrete-geometry, incidence-geometry"
     }
+  ],
+  "references": [
+    {
+      "key": "ST83",
+      "authors": [
+        "E. Szemerédi",
+        "W.T. Trotter"
+      ],
+      "title": "Extremal problems in discrete geometry",
+      "venue": "Combinatorica",
+      "year": "1983",
+      "volume": "3",
+      "pages": "381-392",
+      "note": "Foundational incidence geometry results relevant to distance multiplicity sums"
+    },
+    {
+      "key": "So09",
+      "authors": [
+        "J. Solymosi",
+        "C.D. Tóth"
+      ],
+      "title": "Distinct distances in the plane",
+      "venue": "Discrete & Computational Geometry",
+      "year": "2001",
+      "volume": "25",
+      "pages": "629-634",
+      "note": "Improved bounds on distinct distances using crossing number inequality"
+    }
   ]
 }

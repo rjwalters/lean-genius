@@ -166,5 +166,33 @@
       "relationship": "related",
       "description": "Related distinct distances problem"
     }
+  ],
+  "references": [
+    {
+      "key": "Al03",
+      "authors": [
+        "P. Erdős",
+        "L. Lovász",
+        "A. Simmons",
+        "E.G. Straus"
+      ],
+      "title": "Dissection graphs of planar point sets",
+      "venue": "A Survey of Combinatorial Theory, North-Holland",
+      "year": "1973",
+      "pages": "139-149",
+      "note": "Studies distinct distances in convex position, where tighter bounds are known"
+    },
+    {
+      "key": "AG03",
+      "authors": [
+        "O. Aichholzer",
+        "F. Aurenhammer",
+        "F. Hurtado"
+      ],
+      "title": "Edge operations on non-crossing spanning trees",
+      "venue": "Discrete Mathematics",
+      "year": "2003",
+      "note": "Context for geometric combinatorics on convex point sets"
+    }
   ]
 }

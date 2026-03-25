@@ -167,5 +167,32 @@
     "axiomCount": 6,
     "theoremCount": 0,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    {
+      "key": "Er46c",
+      "authors": [
+        "P. Erdős"
+      ],
+      "title": "On sets of distances of n points",
+      "venue": "American Mathematical Monthly",
+      "year": "1946",
+      "volume": "53",
+      "pages": "248-250",
+      "note": "Posed the unit distance problem: at most how many pairs at distance 1 among n points?"
+    },
+    {
+      "key": "SST84",
+      "authors": [
+        "J. Spencer",
+        "E. Szemerédi",
+        "W.T. Trotter"
+      ],
+      "title": "Unit distances in the Euclidean plane",
+      "venue": "Graph Theory and Combinatorics (Bollobás Festschrift), Academic Press",
+      "year": "1984",
+      "pages": "293-303",
+      "note": "Best known upper bound O(n^{4/3}) for unit distances in the plane"
+    }
+  ]
 }

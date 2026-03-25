@@ -168,5 +168,32 @@
       "relationship": "related",
       "description": "Related Erdős problem sharing themes: combinatorial-geometry, distinct-distances"
     }
+  ],
+  "references": [
+    {
+      "key": "Er46b",
+      "authors": [
+        "P. Erdős"
+      ],
+      "title": "On sets of distances of n points",
+      "venue": "American Mathematical Monthly",
+      "year": "1946",
+      "volume": "53",
+      "pages": "248-250",
+      "note": "Original conjecture: n points determine at least Ω(n/√log n) distinct distances"
+    },
+    {
+      "key": "GK15",
+      "authors": [
+        "L. Guth",
+        "N.H. Katz"
+      ],
+      "title": "On the Erdős distinct distances problem in the plane",
+      "venue": "Annals of Mathematics",
+      "year": "2015",
+      "volume": "181",
+      "pages": "155-190",
+      "note": "Landmark result: n points in the plane determine Ω(n/log n) distinct distances, nearly resolving Erdős's conjecture"
+    }
   ]
 }
