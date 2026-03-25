@@ -69,8 +69,9 @@
       "**Explicit Proof Steps for Asymptotic**: The asymptotic proof uses an explicit chain of `have` steps with `mul_le_mul_right'` and `mul_lt_mul_of_pos_left`, since `nlinarith` cannot directly handle products of three hypotheses involving K, n, and n!."
     ],
     "prerequisites": [
-      "Linear algebra",
-      "Combinatorics (counting, extremal problems)"
+      "Linear algebra (determinants, Leibniz formula, Gaussian elimination)",
+      "Combinatorics (factorials, permutation counting)",
+      "Asymptotic analysis (polynomial vs factorial growth, big-O notation)"
     ]
   },
   "sections": [
@@ -184,6 +185,16 @@
       "targetId": "cramers-rule-oq-01",
       "relationship": "sibling",
       "description": "Sibling open question: Cayley-Hamilton as a Corollary of Cramer's Rule"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation n! ~ sqrt(2*pi*n)*(n/e)^n provides the asymptotic form of the factorial that dominates Cramer's rule complexity"
+    },
+    {
+      "targetId": "cramers-rule-oq-03",
+      "relationship": "sibling",
+      "description": "Sibling open question extending Cramer's Rule to non-commutative division rings via quasideterminants"
     }
   ]
 }
