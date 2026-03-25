@@ -326,5 +326,25 @@
     "lemmaCount": 0,
     "defCount": 0,
     "definitionCount": 0
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "binomial_theorem",
+      "type": "core",
+      "description": "(x+y)^n = sum_k C(n,k) * x^k * y^(n-k) for commutative semirings",
+      "leanType": "[CommSemiring R] -> (x y : R) -> (n : Nat) -> (x + y)^n = sum k in range (n+1), choose n k * x^k * y^(n-k)"
+    },
+    {
+      "name": "sum_binomial_coefficients",
+      "type": "key",
+      "description": "Sum of binomial coefficients: sum C(n,k) = 2^n",
+      "leanType": "(n : Nat) -> sum k in range (n+1), choose n k = 2^n"
+    },
+    {
+      "name": "alternating_sum_binomial",
+      "type": "key",
+      "description": "Alternating sum for n >= 1: sum (-1)^k C(n,k) = 0",
+      "leanType": "(n : Nat) -> 0 < n -> sum k in range (n+1), (-1)^k * choose n k = 0"
+    }
+  ]
 }

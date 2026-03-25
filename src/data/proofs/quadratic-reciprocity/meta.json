@@ -277,5 +277,25 @@
       "venue": "https://www.cs.ru.nl/~freek/100/",
       "note": "Lists quadratic reciprocity as theorem #7 in the 100 most important mathematical theorems to formalize; this Lean proof fulfills that entry"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "quadratic_reciprocity_product",
+      "type": "core",
+      "description": "Main law: (p/q)(q/p) = (-1)^((p-1)/2 * (q-1)/2) for odd primes p != q",
+      "leanType": "[Fact p.Prime] -> [Fact q.Prime] -> p != 2 -> q != 2 -> p != q -> legendreSym q p * legendreSym p q = (-1)^(p/2 * q/2)"
+    },
+    {
+      "name": "first_supplementary_law",
+      "type": "key",
+      "description": "First supplement: -1 is a QR mod p iff p = 1 (mod 4)",
+      "leanType": "[Fact p.Prime] -> IsSquare (-1 : ZMod p) <-> p % 4 != 3"
+    },
+    {
+      "name": "second_supplementary_law",
+      "type": "key",
+      "description": "Second supplement: 2 is a QR mod p iff p = +/-1 (mod 8)",
+      "leanType": "[Fact p.Prime] -> p != 2 -> IsSquare (2 : ZMod p) <-> p % 8 = 1 or p % 8 = 7"
+    }
   ]
 }

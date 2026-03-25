@@ -231,5 +231,25 @@
     "defCount": 3,
     "imports": [],
     "opens": []
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "diagonal_differs",
+      "type": "key",
+      "description": "The diagonal behavior differs from every oracle prediction at the self-application point",
+      "leanType": "(H : HaltingOracle) -> (n : Nat) -> diagonalBehavior H n != H n n"
+    },
+    {
+      "name": "no_halting_oracle",
+      "type": "core",
+      "description": "No oracle can correctly predict the diagonal behavior",
+      "leanType": "forall H : HaltingOracle, forall c : Nat, not (H correctly predicts diagonalBehavior H at c)"
+    },
+    {
+      "name": "halting_problem_undecidable",
+      "type": "synthesis",
+      "description": "The halting problem is undecidable: for any oracle, a counterexample exists",
+      "leanType": "forall H : HaltingOracle, exists b : Behavior, forall c : Nat, H c c != b c"
+    }
+  ]
 }

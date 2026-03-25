@@ -340,5 +340,13 @@
       "Mathlib.Tactic"
     ],
     "opens": []
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "clt_normalized_converges",
+      "type": "core",
+      "description": "Normalized sum of i.i.d. random variables converges in distribution to standard normal",
+      "leanType": "[IID X] -> E[X_i] = mu -> Var(X_i) = sigma^2 -> sigma > 0 -> (S_n - n*mu)/(sigma*sqrt(n)) ->d N(0,1)"
+    }
+  ]
 }

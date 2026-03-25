@@ -222,5 +222,13 @@
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 0
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "sqrt2_irrational",
+      "type": "core",
+      "description": "The square root of 2 is irrational",
+      "leanType": "Irrational (Real.sqrt 2)"
+    }
+  ]
 }

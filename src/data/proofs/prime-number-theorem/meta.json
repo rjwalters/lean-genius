@@ -350,5 +350,25 @@
         "leanType": "RiemannHypothesis → |primePi x - logIntegral x| = O(√x · ln x)"
       }
     ]
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "all_formulations_equiv",
+      "type": "bridge",
+      "description": "All four PNT formulations (ratio, equivalence, error, Li) are equivalent",
+      "leanType": "PNT_Ratio <-> PNT_Equiv and PNT_Error and PNT_Li"
+    },
+    {
+      "name": "prime_asymptotic",
+      "type": "core",
+      "description": "pi(x) ~ x/ln(x) as x -> infinity",
+      "leanType": "PrimeNumberTheorem_Equiv"
+    },
+    {
+      "name": "pnt_rh_error",
+      "type": "synthesis",
+      "description": "Under RH, |pi(x) - Li(x)| = O(sqrt(x) ln x) (von Koch)",
+      "leanType": "RiemannHypothesis -> |primePi x - logIntegral x| = O(sqrt(x) * ln(x))"
+    }
+  ]
 }

@@ -260,5 +260,19 @@
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 2
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "ftc_part1",
+      "type": "core",
+      "description": "FTC Part 1: The derivative of F(x) = integral_a^x f(t)dt equals f(x)",
+      "leanType": "ContinuousAt f b -> IntervalIntegrable f volume a b -> HasDerivAt (integralFunction f a) (f b) b"
+    },
+    {
+      "name": "ftc_part2",
+      "type": "core",
+      "description": "FTC Part 2: integral_a^b f = F(b) - F(a) when F' = f",
+      "leanType": "a <= b -> ContinuousOn F (Icc a b) -> (forall x in Ioo a b, HasDerivAt F (f x) x) -> integral x in a..b, f x = F b - F a"
+    }
+  ]
 }

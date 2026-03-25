@@ -232,5 +232,19 @@
     "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 0
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "mvt",
+      "type": "core",
+      "description": "MVT: there exists c in (a,b) with f'(c) = (f(b) - f(a))/(b - a)",
+      "leanType": "(hab : a < b) -> ContinuousOn f (Icc a b) -> DifferentiableOn R f (Ioo a b) -> exists c in Ioo a b, deriv f c = (f b - f a) / (b - a)"
+    },
+    {
+      "name": "cauchy_mvt",
+      "type": "bridge",
+      "description": "Cauchy's MVT: (g(b)-g(a))f'(c) = (f(b)-f(a))g'(c)",
+      "leanType": "(hab : a < b) -> ContinuousOn f/g -> HasDerivAt f/g -> exists c in Ioo a b, (g b - g a) * f' c = (f b - f a) * g' c"
+    }
+  ]
 }

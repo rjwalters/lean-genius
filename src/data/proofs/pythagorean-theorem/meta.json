@@ -342,5 +342,25 @@
         "leanType": "{ι : Type*} → [DecidableEq ι] → {s : Finset ι} → {v : ι → Vec2} → pairwise_perp → ‖∑ i in s, v i‖^2 = ∑ i in s, ‖v i‖^2"
       }
     ]
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "pythagorean_theorem",
+      "type": "core",
+      "description": "For perpendicular vectors v and w: ||v + w||^2 = ||v||^2 + ||w||^2",
+      "leanType": "(v w : Vec2) -> v perp w -> norm(v + w)^2 = norm(v)^2 + norm(w)^2"
+    },
+    {
+      "name": "pythagorean_converse",
+      "type": "synthesis",
+      "description": "If ||v + w||^2 = ||v||^2 + ||w||^2, then v is perpendicular to w",
+      "leanType": "(v w : Vec2) -> norm(v + w)^2 = norm(v)^2 + norm(w)^2 -> v perp w"
+    },
+    {
+      "name": "pythagorean_sum",
+      "type": "key",
+      "description": "Generalized Pythagorean theorem for finitely many pairwise orthogonal vectors",
+      "leanType": "{s : Finset i} -> {v : i -> Vec2} -> pairwise_perp -> norm(sum v)^2 = sum(norm(v i)^2)"
+    }
+  ]
 }

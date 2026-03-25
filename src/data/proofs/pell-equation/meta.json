@@ -202,5 +202,19 @@
       "venue": "Notices of the AMS 49(2), 182–192",
       "note": "Modern survey of algorithms for solving Pell's equation including connections to class field theory"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "pell_fundamental_solution",
+      "type": "core",
+      "description": "Pell's equation x^2 - Dy^2 = 1 has a fundamental solution for non-square D",
+      "leanType": "(D : Nat) -> not (IsSquare D) -> exists x y : Int, x^2 - D * y^2 = 1 and x > 0 and y > 0"
+    },
+    {
+      "name": "pell_all_solutions",
+      "type": "key",
+      "description": "All solutions are powers of the fundamental solution",
+      "leanType": "PellSolution D -> exists n : Int, sol = fundamental_sol D ^ n"
+    }
   ]
 }
