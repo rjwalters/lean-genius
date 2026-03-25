@@ -364,9 +364,13 @@ For any α > 1, liminf_{n→∞} h_α(n) is finite.
 
 This resolves Erdős Problem #1099 in the affirmative.
 -/
-axiom vose_liminf_bounded (α : ℝ) (hα : α > 1) :
+theorem vose_liminf_bounded (α : ℝ) (hα : α > 1) :
     ∃ (bound : ℝ), ∀ ε > 0,
-      ∃ (n : ℕ), n > 0 ∧ h_alpha α n < bound + ε
+      ∃ (n : ℕ), n > 0 ∧ h_alpha α n < bound + ε := by
+  obtain ⟨bound, _, seq, hpos, hbound⟩ := vose_bounded_sequence α hα
+  refine ⟨bound, fun ε hε => ⟨seq 0, ?_, ?_⟩⟩
+  · have := hpos 0; omega
+  · linarith [hbound 0]
 
 /--
 **Main theorem: Erdős Problem #1099 SOLVED**
@@ -542,7 +546,7 @@ private theorem sortedDivisors_two_pow (k : ℕ) :
 Each ratio d_{i+1}/d_i = 2^(i+1)/2^i = 2. -/
 private theorem divisorRatios_two_pow (k : ℕ) :
     divisorRatios (2 ^ k) = List.replicate k (2 : ℚ) := by
-  sorry -- Monadic ℕ→ℚ cast normalization blocks direct proof; sortedDivisors_two_pow proved above
+  sorry -- via sortedDivisors_two_pow + zipWith computation
 
 private theorem flatMap_singleton_eq_map (f : ℚ → ℝ) (l : List ℚ) :
     l.flatMap (fun a => [f a]) = l.map f := by

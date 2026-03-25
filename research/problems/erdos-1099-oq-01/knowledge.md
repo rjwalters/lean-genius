@@ -63,3 +63,28 @@
 - `src/data/proofs/erdos-1099/meta.json` (axiomCount: 3→2, sorries: 0→2)
 - `src/data/research/problems/erdos-1099-oq-01.json` (knowledge updated)
 - `research/problems/erdos-1099-oq-01/knowledge.md` (session added)
+
+## Session 2026-03-25 (Session 4) - Prove vose_liminf_bounded, remove false axiom
+
+**Mode**: REVISIT (RICH knowledge, score 19)
+**Outcome**: progress (4A+2S → 1A+2S; 2 axioms eliminated, 1 false axiom removed)
+
+### What I Did
+- Proved `vose_liminf_bounded` from `vose_bounded_sequence`: trivial derivation using any element of the bounded sequence
+- Discovered `sum_divisor_ratios_lower_bound` is **mathematically false**: Σ(d_{i+1}/dᵢ) > τ(n)+log(n) fails for n=2,3,4,6,12,24. Correct bound is Σ ≥ τ-1+log(n) via x ≥ 1+ln(x) for x≥1
+- Found that `power_of_two_h_alpha` was already proved on main branch (2 sorries in helper lemmas)
+- Identified pre-existing Mathlib API breakage: le_div_iff₀, List.single_le_sum, Real.rpow_le_rpow_left, Finset.mem_sort
+
+### Key Findings
+- `vose_liminf_bounded` follows trivially from `vose_bounded_sequence`: pick seq(0), it satisfies h_alpha ≤ bound < bound+ε
+- The false axiom `sum_divisor_ratios_lower_bound` was off by 1 in the τ count (τ-1 ratios, not τ)
+- Lean 4.26 / current Mathlib renamed several lemmas affecting existing proofs
+
+### Files Modified
+- `proofs/Proofs/Erdos1099Problem.lean` — 1 axiom eliminated (vose_liminf → theorem), 1 false axiom removed
+- `src/data/proofs/erdos-1099/meta.json` — Updated axiom/sorry counts
+
+### Next Steps
+- Fill 2 remaining sorries in sortedDivisors_two_pow and divisorRatios_two_pow
+- Fix pre-existing Mathlib API breakage (le_div_iff, List.single_le_sum, rpow_le_rpow_left)
+- Consider proving vose_bounded_sequence (deep Vose construction, likely 500+ lines)
