@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-01-12T06:42:02.929Z",
-    "iteration": 1,
-    "focus": "Survey: axiom classification and cross-file analysis",
+    "phase": "ACT",
+    "since": "2026-03-25T12:00:00Z",
+    "iteration": 2,
+    "focus": "Session 2: Eliminated sidon_density_bound axiom via import bridge",
     "blockers": [],
-    "nextAction": "Eliminate sidon_density_bound by importing from Erdos340GreedySidon.lean",
+    "nextAction": "Prove sidon_not_basis from Erdos340.sidon_upper_bound (need ordered pair counting + truncation infrastructure)",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,35 +29,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "STRUCTURAL RESULTS: Proved conjecture holds for ℕ, proved basis density lower bound |A∩[0,N]|² ≥ N-N₀+1, connected ordered/unordered rep counts. Meta.json updated from legacy file (6 axioms) to main file (4 axioms, 18 theorems).",
+    "progressSummary": "AXIOM ELIMINATION: sidon_density_bound PROVED (4→3 axioms). Bridge lemma reconciles Set/Finset IsSidon definitions, imports Erdos340.sidon_upper_bound_weak. File: 14 theorems, 3 axioms, 0 sorries, ~510 lines.",
     "builtItems": [
       "repFunc_ge_repFuncUnordered: proved (ordered ≥ unordered)",
       "nat_repFuncUnordered_unbounded: proved",
       "erdos_turan_holds_for_nat: proved (conjecture holds for ℕ)",
-      "basis_element_count_sq: proved (|A∩[0,N]|² ≥ N-N₀+1 for bases)"
+      "basis_element_count_sq: proved (|A∩[0,N]|² ≥ N-N₀+1 for bases)",
+      "isSidon_set_to_finset: bridge lemma converting Erdos28.IsSidon (Set) → Erdos340.IsSidon (Finset)",
+      "sidon_density_bound PROVED: was axiom, now theorem via bridge + Erdos340.sidon_upper_bound_weak"
     ],
     "insights": [
       "The Erdős-Turán conjecture (3 forms) is OPEN with $500 prize - cannot be proved",
-      "sidon_density_bound in Erdos28AdditiveBases.lean duplicates sidon_upper_bound_weak in Erdos340GreedySidon.lean - needs IsSidon definition reconciliation",
-      "sidon_not_basis has detailed proof outline in docstring (~200 lines to formalize, requires tight Sidon density bound)",
-      "basis_counting_lower is a counting argument: if A+A ⊇ [N₀,∞), then ∑_{a∈A,a≤N} 1 ≥ c√N",
+      "sidon_density_bound successfully eliminated by reconciling Set/Finset IsSidon definitions",
+      "Bridge lemma insight: Set IsSidon gives {a,b}={c,d}, Finset IsSidon needs (a,b)=(c,d) with a≤b,c≤d. Case c=b forces a≤b=c≤d=a by omega",
+      "sidon_not_basis requires tight √N bound (Erdos340.sidon_upper_bound, axiom). Weak √(2N) bound gives no contradiction",
+      "sidon_not_basis proof path documented: coverage gives |A_N|(|A_N|+1)/2 ≥ N-N₀+1, tight bound gives LHS ≈ N/2, contradiction",
       "Erdős-Fuchs theorem and average_rep_unbounded are deep analytical results, unlikely provable from Mathlib alone",
-      "Erdos28AdditiveBases.lean (418 lines) is well-structured with 9 proved theorems including evens_repFunc and nat_repFunc",
-      "The AdditiveBases file proves isAsymptoticBasis_iff, sidon_repFunc_bounded, and several example constructions",
-      "Proved repFunc_ge_repFuncUnordered: ordered rep count ≥ unordered, via Set.ncard_le_ncard on subset",
-      "Proved erdos_turan_holds_for_nat: conjecture holds trivially for ℕ (repFunc(ℕ, 2k+2) ≥ k+2)",
-      "Proved basis_element_count_sq: any basis A has |A ∩ [0,N]|² ≥ N - N₀ + 1 (counting argument via sumset image)",
-      "Meta.json was pointing to legacy Erdos28Problem.lean (6 axioms); updated to Erdos28AdditiveBases.lean (4 axioms, 18 theorems)",
       "basis_element_count_sq uses: [N₀,N] ⊆ sumset(A∩[0,N]) and |sumset(S)| ≤ |S×S| = |S|²"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Eliminate sidon_density_bound axiom by importing Erdos340GreedySidon.sidon_upper_bound_weak (needs IsSidon reconciliation)",
-      "Prove sidon_not_basis using the outlined density argument (requires tight Sidon bound or alternative approach)",
-      "Prove basis_counting_lower from basic combinatorics (~100-150 lines)",
-      "Consider proving average_rep_unbounded from counting arguments",
-      "Reconcile IsSidon definitions (Set vs Finset) to import sidon_upper_bound_weak from Erdos340",
-      "Prove sidon_not_basis if tight Sidon bound becomes available",
+      "Prove sidon_not_basis from Erdos340.sidon_upper_bound: need ordered pair counting lemma, Set→Finset truncation, explicit N₁ (~150 lines)",
+      "Prove sidon_upper_bound in Erdos340GreedySidon.lean (tight √N bound, currently axiom) — would unblock sidon_not_basis",
       "Consider proving average_rep_unbounded from basis_element_count_sq"
     ],
     "markdown": "# Erdős #28 - Knowledge Base\n\n## Problem Statement\n\nIf $A\\subseteq \\mathbb{N}$ is such that $A+A$ contains all but finitely many integers then $\\limsup 1_A\\ast 1_A(n)=\\infty$. Conjectured by Erdős and Turán. They also suggest the stronger conjecture that $\\limsup 1_A\\ast 1_A(n)/\\log n>0$. Another stronger conjecture would be that the hypothesis $\\lvert A\\cap [1,N]\\rvert \\gg N^{1/2}$ for all large $N$ suffices. Erdős and Sárközy conjectured the stronger version that if $A=\\{a_1[40]. This is discussed in problem C9 of Guy's collection [Gu04]. View the LaTeX source This page was last edited 18 November 2025.\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Prize**: $500\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #2\n- Problem #40\n- Problem #27\n- Problem #29\n- Problem #39\n- Problem #1\n\n## References\n\n- ErTu41\n- Er56\n- Er57\n- Er59\n- Er61\n- Er65\n- Er65b\n- Er69\n- Er70c\n- Er73\n- Er77c\n- ErGr80\n- Er81\n- Er85c\n- Er89d\n- Er90\n- Er94b\n- Er95\n- Er97c\n- Er97f\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
@@ -89,7 +82,7 @@
     "mathlib": []
   },
   "started": "2026-01-12T06:42:02.929Z",
-  "lastUpdate": "2026-03-13T07:52:17.043Z",
+  "lastUpdate": "2026-03-25T12:00:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
@@ -206,9 +199,9 @@
     {
       "path": "Proofs/Erdos28AdditiveBases.lean",
       "filename": "Erdos28AdditiveBases.lean",
-      "lineCount": 498,
-      "theoremCount": 13,
-      "axiomCount": 4,
+      "lineCount": 510,
+      "theoremCount": 14,
+      "axiomCount": 3,
       "defCount": 11,
       "sorryCount": 0,
       "isAristotle": false,
