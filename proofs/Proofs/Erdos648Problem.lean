@@ -32,6 +32,7 @@ References:
 
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Factorization.Basic
+import Mathlib.Data.Nat.Factors
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
@@ -44,40 +45,83 @@ namespace Erdos648
 ## Part I: Greatest Prime Factor
 
 The function P(n) returns the greatest prime divisor of n.
+Defined as the last element of the sorted prime factorization list.
 -/
 
-/-
+/--
 **Greatest Prime Factor** P(n):
 The largest prime that divides n.
 
-For n > 1, this is the maximum element of n.primeFactors.
+For n > 1, this is the last element of `n.primeFactorsList` (sorted ascending).
 For n ≤ 1, we define it as 0.
 -/
-
-/-- The greatest prime factor, axiomatized for simplicity. -/
-axiom gpfAx (n : ℕ) : ℕ
-
-/-- gpf n = 0 for n ≤ 1, otherwise the largest prime factor. -/
-noncomputable def gpf (n : ℕ) : ℕ :=
-  if n ≤ 1 then 0 else gpfAx n
+def gpf (n : ℕ) : ℕ := n.primeFactorsList.getLast?.getD 0
 
 /-- P(1) = 0 by convention. -/
-theorem gpf_one : gpf 1 = 0 := by simp [gpf]
+theorem gpf_one : gpf 1 = 0 := by native_decide
 
 /-- P(0) = 0 by convention. -/
-theorem gpf_zero : gpf 0 = 0 := by simp [gpf]
+theorem gpf_zero : gpf 0 = 0 := by native_decide
+
+/-- Prime factors list of n > 1 is nonempty. -/
+private lemma pfl_ne_nil {n : ℕ} (hn : n > 1) : n.primeFactorsList ≠ [] := by
+  intro h
+  have := Nat.prod_primeFactorsList (show n ≠ 0 by omega)
+  rw [h, List.prod_nil] at this
+  omega
+
+/-- gpf n equals the last element of primeFactorsList when nonempty. -/
+private lemma gpf_eq_getLast {n : ℕ} (hne : n.primeFactorsList ≠ []) :
+    gpf n = n.primeFactorsList.getLast hne := by
+  simp [gpf, List.getLast?_eq_some_getLast hne]
+
+/-- gpf n is in n.primeFactorsList for n > 1. -/
+private lemma gpf_mem_pfl {n : ℕ} (hn : n > 1) : gpf n ∈ n.primeFactorsList := by
+  have hne := pfl_ne_nil hn
+  rw [gpf_eq_getLast hne]
+  exact List.getLast_mem hne
+
+/-- The primeFactorsList is pairwise ≤ (sorted ascending). -/
+private lemma pfl_pairwise_le (n : ℕ) : n.primeFactorsList.Pairwise (· ≤ ·) :=
+  (Nat.isChain_primeFactorsList n).pairwise
+
+/-- In a list with Pairwise (· ≤ ·), every element is ≤ the last. -/
+private theorem sorted_le_getLast : ∀ (l : List ℕ),
+    l.Pairwise (· ≤ ·) → ∀ (x : ℕ), x ∈ l → ∀ (hne : l ≠ []), x ≤ l.getLast hne
+  | [], _, _, hx, _ => absurd hx (by simp)
+  | [_], _, _, hx, _ => by simp at hx ⊢; omega
+  | _ :: b :: l, hs, x, hx, _ => by
+    cases hs with
+    | cons hall hpw =>
+      have hb_mem : b ∈ b :: l := by simp
+      rcases List.mem_cons.mp hx with rfl | hm
+      · exact le_trans (@hall b hb_mem)
+          (sorted_le_getLast (b :: l) hpw b hb_mem (List.cons_ne_nil b l))
+      · exact sorted_le_getLast (b :: l) hpw x (by exact hm) (List.cons_ne_nil b l)
+
+/-- All prime factors are ≤ gpf n. -/
+private lemma le_gpf_of_mem_pfl {n p : ℕ} (hp : p ∈ n.primeFactorsList) : p ≤ gpf n := by
+  have hne : n.primeFactorsList ≠ [] := List.ne_nil_of_mem hp
+  rw [gpf_eq_getLast hne]
+  exact sorted_le_getLast n.primeFactorsList (pfl_pairwise_le n) p hp hne
 
 /-- P(p) = p for prime p. -/
-axiom gpf_prime (p : ℕ) (hp : p.Prime) : gpf p = p
+theorem gpf_prime (p : ℕ) (hp : p.Prime) : gpf p = p := by
+  simp [gpf, Nat.primeFactorsList_prime hp]
 
 /-- P(n) divides n for n > 1. -/
-axiom gpf_dvd (n : ℕ) (hn : n > 1) : gpf n ∣ n
+theorem gpf_dvd (n : ℕ) (hn : n > 1) : gpf n ∣ n :=
+  Nat.dvd_of_mem_primeFactorsList (gpf_mem_pfl hn)
 
 /-- P(n) is prime for n > 1. -/
-axiom gpf_is_prime (n : ℕ) (hn : n > 1) : (gpf n).Prime
+theorem gpf_is_prime (n : ℕ) (hn : n > 1) : (gpf n).Prime :=
+  Nat.prime_of_mem_primeFactorsList (gpf_mem_pfl hn)
 
 /-- P(n) is the maximum: any prime dividing n is ≤ P(n). -/
-axiom gpf_max (n p : ℕ) (hp : p.Prime) (hdvd : p ∣ n) (hn : n > 0) : p ≤ gpf n
+theorem gpf_max (n p : ℕ) (hp : p.Prime) (hdvd : p ∣ n) (hn : n > 0) : p ≤ gpf n := by
+  have hmem : p ∈ n.primeFactorsList :=
+    (Nat.mem_primeFactorsList (show n ≠ 0 by omega)).mpr ⟨hp, hdvd⟩
+  exact le_gpf_of_mem_pfl hmem
 
 /-
 ## Part II: Concrete Examples
@@ -90,59 +134,42 @@ theorem gpf_two : gpf 2 = 2 := gpf_prime 2 Nat.prime_two
 theorem gpf_three : gpf 3 = 3 := gpf_prime 3 Nat.prime_three
 
 /-- P(4) = 2 (since 4 = 2²) -/
-axiom gpf_four : gpf 4 = 2
+theorem gpf_four : gpf 4 = 2 := by native_decide
 
 /-- P(6) = 3 (since 6 = 2 · 3) -/
-axiom gpf_six : gpf 6 = 3
+theorem gpf_six : gpf 6 = 3 := by native_decide
 
 /-- P(8) = 2 (since 8 = 2³) -/
-axiom gpf_eight : gpf 8 = 2
+theorem gpf_eight : gpf 8 = 2 := by native_decide
 
 /-- P(9) = 3 (since 9 = 3²) -/
-axiom gpf_nine : gpf 9 = 3
+theorem gpf_nine : gpf 9 = 3 := by native_decide
 
 /-- P(10) = 5 (since 10 = 2 · 5) -/
-axiom gpf_ten : gpf 10 = 5
+theorem gpf_ten : gpf 10 = 5 := by native_decide
 
 /-- P(12) = 3 (since 12 = 2² · 3) -/
-axiom gpf_twelve : gpf 12 = 3
+theorem gpf_twelve : gpf 12 = 3 := by native_decide
 
 /-- P(16) = 2 (since 16 = 2⁴) -/
-axiom gpf_sixteen : gpf 16 = 2
+theorem gpf_sixteen : gpf 16 = 2 := by native_decide
 
 /-- P(27) = 3 (since 27 = 3³) -/
-axiom gpf_twentyseven : gpf 27 = 3
+theorem gpf_twentyseven : gpf 27 = 3 := by native_decide
 
 /-- P(64) = 2 (since 64 = 2⁶) -/
-axiom gpf_sixtyfour : gpf 64 = 2
+theorem gpf_sixtyfour : gpf 64 = 2 := by native_decide
 
 /-
 ## Part III: Descending GPF Sequences
-
-A sequence a₁ < a₂ < ... < aₜ is GPF-descending if P(a₁) > P(a₂) > ... > P(aₜ).
 -/
 
-/--
-**GPF-Descending Sequence:**
-A strictly increasing sequence of integers with strictly decreasing
-greatest prime factors.
--/
 def isGPFDescendingSeq (seq : List ℕ) : Prop :=
-  seq.Chain' (· < ·) ∧  -- strictly increasing values
-  (seq.map gpf).Chain' (· > ·)  -- strictly decreasing GPFs
+  seq.IsChain (· < ·) ∧ (seq.map gpf).IsChain (· > ·)
 
-/--
-**Valid GPF Sequence for n:**
-A GPF-descending sequence where all elements are in [2, n).
--/
 def isValidGPFSeq (n : ℕ) (seq : List ℕ) : Prop :=
-  isGPFDescendingSeq seq ∧
-  (∀ a ∈ seq, 2 ≤ a ∧ a < n)
+  isGPFDescendingSeq seq ∧ (∀ a ∈ seq, 2 ≤ a ∧ a < n)
 
-/--
-**g(n):**
-The maximum length of a valid GPF-descending sequence below n.
--/
 noncomputable def g (n : ℕ) : ℕ :=
   sSup {t : ℕ | ∃ seq : List ℕ, seq.length = t ∧ isValidGPFSeq n seq}
 
@@ -150,121 +177,79 @@ noncomputable def g (n : ℕ) : ℕ :=
 ## Part IV: Example Sequences
 -/
 
-/--
-**Example: [3, 4]**
-Values: 3 < 4 (increasing) ✓
-GPFs: P(3)=3 > P(4)=2 (decreasing) ✓
--/
-theorem example_3_4_gpf_descending :
-    gpf 3 > gpf 4 := by
-  rw [gpf_three, gpf_four]
-  omega
+theorem example_3_4_gpf_descending : gpf 3 > gpf 4 := by
+  rw [gpf_three, gpf_four]; omega
 
-/-
-**Example: [6, 4]**
-Values: but 6 > 4, not increasing!
-Need: [4, 6] but P(4)=2 < P(6)=3, not decreasing.
-So [4, 6] doesn't work as descending.
--/
-
-/--
-**Example: [7, 9, 16]**
-Values: 7 < 9 < 16 (increasing) ✓
-GPFs: P(7)=7 > P(9)=3 > P(16)=2 (decreasing) ✓
--/
 theorem example_7_9_16_gpf_descending :
     gpf 7 > gpf 9 ∧ gpf 9 > gpf 16 := by
   constructor
-  · rw [gpf_prime 7 (by decide : Nat.Prime 7), gpf_nine]
-    omega
-  · rw [gpf_nine, gpf_sixteen]
-    omega
+  · rw [gpf_prime 7 (by decide : Nat.Prime 7), gpf_nine]; omega
+  · rw [gpf_nine, gpf_sixteen]; omega
 
-/--
-**Example: [7, 10, 27, 64]**
-Values: 7 < 10 < 27 < 64 (increasing) ✓
-GPFs: P(7)=7 > P(10)=5 > P(27)=3 > P(64)=2 (decreasing) ✓
-Length 4 sequence!
--/
 theorem example_length_4_exists :
     gpf 7 > gpf 10 ∧ gpf 10 > gpf 27 ∧ gpf 27 > gpf 64 := by
   constructor
-  · rw [gpf_prime 7 (by decide : Nat.Prime 7), gpf_ten]
-    omega
+  · rw [gpf_prime 7 (by decide : Nat.Prime 7), gpf_ten]; omega
   constructor
-  · rw [gpf_ten, gpf_twentyseven]
-    omega
-  · rw [gpf_twentyseven, gpf_sixtyfour]
-    omega
+  · rw [gpf_ten, gpf_twentyseven]; omega
+  · rw [gpf_twentyseven, gpf_sixtyfour]; omega
 
 /-
 ## Part V: Lower Bounds on g(n)
 -/
 
 /-- g(n) ≥ 1 for n ≥ 3 (any single integer works). -/
-theorem g_ge_one (n : ℕ) (hn : n ≥ 3) : g n ≥ 1 := by
-  sorry
+theorem g_ge_one (n : ℕ) (hn : n ≥ 3) : g n ≥ 1 := by sorry
 
 /-- g(n) ≥ 2 for n ≥ 5 using [3, 4]. -/
-theorem g_ge_two (n : ℕ) (hn : n ≥ 5) : g n ≥ 2 := by
-  sorry
+theorem g_ge_two (n : ℕ) (hn : n ≥ 5) : g n ≥ 2 := by sorry
 
 /-- g(n) ≥ 3 for n ≥ 17 using [7, 9, 16]. -/
-theorem g_ge_three (n : ℕ) (hn : n ≥ 17) : g n ≥ 3 := by
-  sorry
+theorem g_ge_three (n : ℕ) (hn : n ≥ 17) : g n ≥ 3 := by sorry
 
 /-- g(n) ≥ 4 for n ≥ 65 using [7, 10, 27, 64]. -/
-theorem g_ge_four (n : ℕ) (hn : n ≥ 65) : g n ≥ 4 := by
-  sorry
+theorem g_ge_four (n : ℕ) (hn : n ≥ 65) : g n ≥ 4 := by sorry
 
 /-
 ## Part VI: Smooth Numbers
-
-Numbers with bounded greatest prime factor.
 -/
 
-/--
-**B-smooth:**
-A number n is B-smooth if P(n) ≤ B.
--/
 def isSmooth (B n : ℕ) : Prop := gpf n ≤ B
 
 /-- Powers of 2 are 2-smooth. -/
 theorem power_of_two_smooth (k : ℕ) (hk : k ≥ 1) : isSmooth 2 (2^k) := by
   simp only [isSmooth]
-  sorry
+  have h1 : (2 : ℕ)^k > 1 := by
+    have : (2 : ℕ) ≤ 2^k := Nat.le_self_pow (by omega) 2; omega
+  have hgp := gpf_is_prime (2^k) h1
+  have hdvd2 : gpf (2^k) ∣ 2 := hgp.dvd_of_dvd_pow (gpf_dvd (2^k) h1)
+  have hlt := hgp.one_lt
+  rcases Nat.prime_two.eq_one_or_self_of_dvd _ hdvd2 with h | h <;> omega
 
 /-- Powers of prime p are p-smooth. -/
 theorem prime_power_smooth (p k : ℕ) (hp : p.Prime) (hk : k ≥ 1) :
     isSmooth p (p^k) := by
-  sorry
+  simp only [isSmooth]
+  have h1 : p^k > 1 := by
+    have : p ≤ p^k := Nat.le_self_pow (by omega) p
+    exact lt_of_lt_of_le hp.one_lt this
+  have hgp := gpf_is_prime (p^k) h1
+  have hdvdp : gpf (p^k) ∣ p := hgp.dvd_of_dvd_pow (gpf_dvd (p^k) h1)
+  have hlt := hgp.one_lt
+  rcases hp.eq_one_or_self_of_dvd _ hdvdp with h | h <;> omega
 
 /-
 ## Part VII: Cambie's Theorem
-
-The main result: g(n) ≍ (n / log n)^{1/2}.
 -/
 
-/--
-**Cambie's Lower Bound:**
-g(n) ≥ c₁ · (n / log n)^{1/2} for some constant c₁ ≥ 2.
--/
 axiom cambie_lower_bound :
     ∃ c₁ : ℝ, c₁ ≥ 2 ∧
     ∀ n : ℕ, n ≥ 10 → (g n : ℝ) ≥ c₁ * Real.sqrt ((n : ℝ) / Real.log n)
 
-/--
-**Cambie's Upper Bound:**
-g(n) ≤ c₂ · (n / log n)^{1/2} for some constant c₂ ≤ 2√2.
--/
 axiom cambie_upper_bound :
     ∃ c₂ : ℝ, c₂ > 0 ∧ c₂ ≤ 2 * Real.sqrt 2 ∧
     ∀ n : ℕ, n ≥ 10 → (g n : ℝ) ≤ c₂ * Real.sqrt ((n : ℝ) / Real.log n)
 
-/--
-**Cambie's Main Result:**
-g(n) ≍ (n / log n)^{1/2}.
--/
 theorem cambie_main :
     ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
     ∀ n : ℕ, n ≥ 10 →
@@ -279,27 +264,16 @@ theorem cambie_main :
 
 /-
 ## Part VIII: The Constant Question
-
-Cambie posed: does g(n) ~ c · (n/log n)^{1/2} for some c ∈ [2, 2√2]?
 -/
 
-/--
-**Cambie's Asymptotic Conjecture:**
-There exists a constant c with 2 ≤ c ≤ 2√2 such that
-g(n) / (n / log n)^{1/2} → c as n → ∞.
--/
 axiom cambie_asymptotic_conjecture :
     ∃ c : ℝ, 2 ≤ c ∧ c ≤ 2 * Real.sqrt 2 ∧
     Filter.Tendsto (fun n : ℕ => (g n : ℝ) / Real.sqrt ((n : ℝ) / Real.log n))
       Filter.atTop (nhds c)
 
-/-- The lower bound on the constant: c ≥ 2. -/
 noncomputable def c_lower : ℝ := 2
-
-/-- The upper bound on the constant: c ≤ 2√2 ≈ 2.83. -/
 noncomputable def c_upper : ℝ := 2 * Real.sqrt 2
 
-/-- 2√2 < 3. -/
 theorem c_upper_lt_three : c_upper < 3 := by
   unfold c_upper
   have h : Real.sqrt 2 < 1.5 := by
@@ -309,73 +283,36 @@ theorem c_upper_lt_three : c_upper < 3 := by
   linarith
 
 /-
-## Part IX: Construction Strategy
+## Part IX: Construction Strategy & Related Functions
 -/
 
-/-
-**Construction Insight:**
-To build a long GPF-descending sequence:
-1. Pick distinct primes p₁ > p₂ > ... > pₖ
-2. For each pᵢ, find an integer aᵢ with P(aᵢ) = pᵢ
-3. Ensure a₁ < a₂ < ... < aₖ
-
-The key is that smaller primes allow higher powers:
-- 2⁶ = 64 has P(64) = 2
-- 3³ = 27 has P(27) = 3
-- 5² = 25 has P(25) = 5
-- 7¹ = 7 has P(7) = 7
-
-So [7, 25, 27, 64] almost works, but 25 < 27 and P(25) = 5 > P(27) = 3 ✓
-Actually [7, 10, 27, 64] works with P values [7, 5, 3, 2].
--/
-
-/-- Sequence construction example using prime powers. -/
 def primePowerSequence : List (ℕ × ℕ) :=
-  [(7, 1), (10, 1), (27, 1), (64, 1)]  -- (value, exponent placeholder)
+  [(7, 1), (10, 1), (27, 1), (64, 1)]
 
-/-
-## Part X: Related Functions
--/
-
-/--
-**Smallest Prime Factor:**
-The smallest prime dividing n.
--/
 noncomputable def spf (n : ℕ) : ℕ := n.minFac
 
 /-- spf(n) ≤ gpf(n) for n > 1. -/
-axiom spf_le_gpf (n : ℕ) (hn : n > 1) : spf n ≤ gpf n
+theorem spf_le_gpf (n : ℕ) (hn : n > 1) : spf n ≤ gpf n := by
+  apply gpf_max
+  · exact Nat.minFac_prime (by omega)
+  · exact Nat.minFac_dvd n
+  · omega
 
-/-- For prime p, spf(p) = gpf(p) = p. -/
 theorem spf_eq_gpf_prime (p : ℕ) (hp : p.Prime) : spf p = gpf p := by
   rw [gpf_prime p hp]
   simp [spf, Nat.Prime.minFac_eq hp]
 
 /-
-## Part XI: Main Results Summary
+## Part X: Main Results Summary
 -/
 
-/--
-**Erdős Problem #648: SOLVED**
-
-g(n) = maximum length of GPF-descending sequence below n.
-
-**Main Result (Cambie):**
-g(n) ≍ (n / log n)^{1/2}
-
-With constants: 2 ≤ c₁ and c₂ ≤ 2√2.
-
-Conjecture: g(n) ~ c · (n/log n)^{1/2} for some 2 ≤ c ≤ 2√2.
--/
 theorem erdos_648_summary :
-    -- g(n) has both lower and upper bounds of order (n/log n)^{1/2}
     (∃ c₁ : ℝ, c₁ ≥ 2 ∧ ∀ n : ℕ, n ≥ 10 →
       (g n : ℝ) ≥ c₁ * Real.sqrt ((n : ℝ) / Real.log n)) ∧
     (∃ c₂ : ℝ, c₂ > 0 ∧ c₂ ≤ 2 * Real.sqrt 2 ∧ ∀ n : ℕ, n ≥ 10 →
       (g n : ℝ) ≤ c₂ * Real.sqrt ((n : ℝ) / Real.log n)) :=
   ⟨cambie_lower_bound, cambie_upper_bound⟩
 
-/-- The main theorem for Erdős #648. -/
 theorem erdos_648 : ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ 0 < c₂ ∧
     ∀ n : ℕ, n ≥ 10 →
       c₁ * Real.sqrt ((n : ℝ) / Real.log n) ≤ (g n : ℝ) ∧
@@ -383,7 +320,6 @@ theorem erdos_648 : ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ 0 < c₂ ∧
   obtain ⟨c₁, c₂, hc₁, hc₂, h⟩ := cambie_main
   exact ⟨c₁, c₂, hc₁, hc₂, h⟩
 
-/-- Concrete verification that length-4 sequences exist. -/
 theorem length_four_exists :
     ∃ (a b c d : ℕ), a < b ∧ b < c ∧ c < d ∧
       gpf a > gpf b ∧ gpf b > gpf c ∧ gpf c > gpf d ∧
