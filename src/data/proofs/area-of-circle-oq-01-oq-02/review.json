@@ -97,28 +97,28 @@
       "priority": "high",
       "target": "enricher",
       "description": "Rewrite annotations 6 and 7 to match the actual theorem statements. diff_area_eq_circumference proves HasDerivAt of the integral function (not deriv of circleArea). unit_disk_area proves the integral equals π (not circleArea 1 = π). area_scaling is a two-parameter integral scaling (not circleArea r = r²·circleArea 1).",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "high",
       "target": "enricher",
       "description": "Remove phantom hypotheses from annotations 4-5. area_from_integral, area_from_integral_explicit, and annulus_area_from_integral do not have nonnegativity or ordering hypotheses — they work for all real numbers.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "medium",
       "target": "enricher",
       "description": "Fix meta.json: (1) conclusion line count 153→146, (2) reduce originalContributions from 6 to 2-3 items, (3) remove 'research' tag, (4) fix oq-02-oq-02 cross-reference IBP→FTC description.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "medium",
       "target": "enricher",
       "description": "Fix annotation 1 import reference (Mathlib.Analysis.SpecialFunctions.Integrals → actual imports) and annotation 2 π transcendence claim (Lindemann-Weierstrass not in Mathlib).",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",
