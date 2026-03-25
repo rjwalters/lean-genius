@@ -165,6 +165,16 @@
       "relationship": "related",
       "description": "Fermat's two-squares theorem uses mod 4 residue analysis in a different number-theoretic context, illustrating how parity and divisibility arguments appear across number theory",
       "targetId": "fermat-two-squares"
+    },
+    {
+      "relationship": "related",
+      "description": "The prime number theorem's density estimates for primes inform heuristic arguments about Collatz: the 3n+1 map interacts with prime factorization, and the expected number of halving steps relates to the distribution of 2-adic valuations",
+      "targetId": "prime-number-theorem"
+    },
+    {
+      "relationship": "related",
+      "description": "Erdős Problem #1009 on edge-disjoint triangles in dense graphs — Erdős himself called Collatz 'hopeless' and contributed to combinatorial number theory; both problems involve counting structures under arithmetic constraints",
+      "targetId": "erdos-1009"
     }
   ],
   "leanFile": {

@@ -169,6 +169,16 @@
       "targetId": "fundamental-arithmetic",
       "relationship": "related",
       "description": "Unique factorization in PIDs follows from the generalized Euclid's lemma: irreducible = prime in decomposition monoids"
+    },
+    {
+      "targetId": "bezout-identity-oq-03-oq-01",
+      "relationship": "related",
+      "description": "CRT ring isomorphism ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ — both results depend on the IsCoprime/Bézout structure in commutative rings; CRT uses coprimality for the isomorphism, Euclid's lemma uses it for divisibility transfer"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "The irreducible ↔ prime equivalence in Bézout domains (used here for Euclid's lemma) connects to Galois theory: polynomial irreducibility over fields determines solvability by radicals in the Abel-Ruffini theorem"
     }
   ],
   "references": [

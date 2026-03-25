@@ -233,6 +233,16 @@
       "targetId": "borsuk-ulam-oq-03-oq-01-oq-01",
       "relationship": "sibling",
       "description": "Sibling open question from the same parent: Tucker 2D Lemma via Graph-Theoretic Path-Following"
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "Borsuk-Ulam implies Brouwer's fixed point theorem: if f: Bⁿ→Bⁿ had no fixed point, the retraction Bⁿ→Sⁿ⁻¹ would contradict BU. The constructive BU approach here suggests a constructive path to Brouwer via Tucker's lemma"
+    },
+    {
+      "targetId": "borsuk-ulam-oq-02",
+      "relationship": "related",
+      "description": "Equivariant Borsuk-Ulam for general group actions — while this entry proves BU constructively for ℤ/2 (antipodal) via Tucker, the equivariant version extends to ℤ/p and compact Lie group actions"
     }
   ]
 }
