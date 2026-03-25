@@ -33,7 +33,7 @@
     "historicalContext": "This problem has roots in Fejér's 1932 work on optimal interpolation. Fejér proved that the zeros of the Legendre polynomial P_n minimize the maximum of the Lebesgue function Λ_n(x) = Σ|l_k(x)| over [-1,1]. Erdős naturally asked whether Legendre nodes also minimize the L² integral I = ∫Σ|l_k(x)|² dx. Szabados (1966, Acta Math. Acad. Sci. Hungar.) disproved this for n > 3, showing that slightly perturbed nodes give a smaller integral. Erdős then conjectured min I = 2 - (1+o(1))/n. The best bounds are due to Erdős, Szabados, Varma, and Vértesi (1994, Studia Sci. Math. Hungar.): they proved 2 - O((log n)²/n) ≤ min I ≤ 2 - 2/(2n-1). The upper bound comes from Legendre nodes (I = 2 - 2/(2n-1) for P_n zeros), while the lower bound uses the partition of unity and Cauchy-Schwarz. Turetskii (1940) initiated the study of Lebesgue constants for specific node systems, and Kilgore-de Boor-Pinkus (1978) proved the existence of optimal L∞ interpolation nodes — the L² analog remains open.",
     "problemStatement": "For x₁,...,xₙ ∈ [-1,1], the Lagrange basis polynomials l_k(x) satisfy l_k(x_k)=1 and l_k(x_j)=0 for j≠k. Find the minimum of I = ∫_{-1}^{1} Σ_k |l_k(x)|² dx. Is min I = 2 - (1+o(1))/n?",
     "text": "For points x₁,...,xₙ ∈ [-1,1], what is the minimum of ∫ Σ |l_k(x)|² dx over all Lagrange basis configurations? Conjecture: min I = 2 - (1+o(1))/n. OPEN problem.",
-    "proofStrategy": "The Lean formalization defines NodeConfig, AreDistinct, lagrangeBasis (as a finite product), and the objective functional I (axiomatized). Key properties — the cardinal basis conditions l_k(x_k) = 1 and l_k(x_j) = 0 — are stated as axioms. The Cauchy-Schwarz lower bound I ≥ 2/n is the main formalized result. Chebyshev nodes are defined and shown to achieve I ≈ 2 - c/n. The conjecture min I = 2 - (1+o(1))/n is stated as an axiom.",
+    "proofStrategy": "The Lean formalization defines NodeConfig, AreDistinct, lagrangeBasis (as a finite product), and the objective functional I (concrete integral definition). The cardinal basis conditions l_k(x_k) = 1 and l_k(x_j) = 0 are proved theorems, as is the partition of unity via Mathlib's Lagrange.sum_basis. The Cauchy-Schwarz lower bound I ≥ 2/n is fully proved using the variance identity. Chebyshev nodes are defined and shown to be distinct; I_Cheb ≈ 2 - c/n is axiomatized. The conjecture min I = 2 - (1+o(1))/n is stated as an axiom.",
     "keyInsights": [
       "**Partition of unity** $\\sum_k l_k(x) = 1$ gives the Cauchy-Schwarz bound $I \\ge 2/n$, but the true minimum is $\\approx 2 - 1/n \\gg 2/n$",
       "**Fejér vs Erdős**: Legendre nodes minimize the $L^\\infty$ Lebesgue function but NOT the $L^2$ integral — Szabados (1966) disproved this for $n > 3$",
@@ -47,68 +47,52 @@
   },
   "sections": [
     {
-      "id": "imports",
-      "title": "Imports and Namespace",
-      "startLine": 26,
-      "endLine": 30,
-      "summary": "Imports `InnerProductSpace.Basic`, `Data.Real.Basic`, `Finset.Basic` from Mathlib. Opens `Erdos1131` namespace.",
-      "mathContext": "Imports `InnerProductSpace.Basic`, `Data.Real.Basic`, `Finset.Basic` from Mathlib. Opens `Erdos1131` namespace."
-    },
-    {
-      "id": "lagrange-basis",
-      "title": "Lagrange Basis Polynomials",
-      "startLine": 36,
-      "endLine": 53,
-      "summary": "Defines `NodeConfig n` (nodes in $[-1,1]$), `AreDistinct`, and the Lagrange basis $l_k(x) = \\prod_{i \\ne k} (x - x_i)/(x_k - x_i)$ as a finite product over `Finset.univ.filter`.",
-      "mathContext": "Defines `NodeConfig n` (nodes in $[-1,1]$), `AreDistinct`, and the Lagrange basis $l_k(x) = \\prod_{i \\ne k} (x - x_i)/(x_k - x_i)$ as a finite product over `Finset.univ.filter`."
-    },
-    {
-      "id": "objective-function",
-      "title": "The Objective Functional $I$",
-      "startLine": 54,
-      "endLine": 59,
-      "summary": "Axiomatizes $I(x_1,\\ldots,x_n) = \\int_{-1}^{1} \\sum_k |l_k(x)|^2 \\, dx$. The $L^2$ energy of the basis — equals the trace of the Gram matrix $G_{jk} = \\int l_j l_k \\, dx$.",
-      "mathContext": "Axiomatizes $I(x_1,\\ldots,x_n) = \\int_{-1}^{1} \\sum_k |l_k(x)|^2 \\, dx$. The $L^2$ energy of the basis — equals the trace of the Gram matrix $G_{jk} = \\int l_j l_k \\, dx$."
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 43,
+      "endLine": 77,
+      "summary": "Imports Mathlib, opens MeasureTheory. Defines `NodeConfig n` (nodes in $[-1,1]$), `AreDistinct`, Lagrange basis $l_k(x) = \\prod_{i \\ne k} (x - x_i)/(x_k - x_i)$ as a finite product, and the objective functional $I = \\int_{-1}^{1} \\sum_k l_k(x)^2 \\, dx$.",
+      "mathContext": "$l_k(x) = \\prod_{i \\ne k} \\frac{x - x_i}{x_k - x_i}$, $I = \\int_{-1}^{1} \\sum_k l_k(x)^2 \\, dx$."
     },
     {
       "id": "basis-properties",
-      "title": "Cardinal Basis Properties",
-      "startLine": 64,
-      "endLine": 75,
-      "summary": "Axioms for $l_k(x_k) = 1$ (interpolation) and $l_k(x_j) = 0$ for $j \\ne k$ (orthogonality). Together: $l_k(x_j) = \\delta_{kj}$ (Kronecker delta).",
-      "mathContext": "Axioms for $l_k(x_k) = 1$ (interpolation) and $l_k(x_j) = 0$ for $j \\ne k$ (orthogonality). Together: $l_k(x_j) = \\delta_{kj}$ (Kronecker delta)."
+      "title": "Basic Properties (All Proved)",
+      "startLine": 79,
+      "endLine": 138,
+      "summary": "Proves $l_k(x_k) = 1$ (interpolation), $l_k(x_j) = 0$ for $j \\ne k$ (orthogonality), connection to Mathlib's `Lagrange.basis`, and partition of unity $\\sum_k l_k(x) = 1$ via `Lagrange.sum_basis`.",
+      "mathContext": "$l_k(x_j) = \\delta_{kj}$ (Kronecker delta). Partition of unity: $\\sum_k l_k(x) = 1$."
     },
     {
-      "id": "known-bounds",
-      "title": "Known Bounds",
-      "startLine": 76,
-      "endLine": 92,
-      "summary": "Lower bound $I \\ge 2/n$ (Cauchy-Schwarz on the partition of unity $\\sum l_k = 1$). Crude upper bound $I \\le 2n$. The ESVV94 tight bounds are $2 - O((\\log n)^2/n) \\le \\min I \\le 2 - 2/(2n-1)$.",
-      "mathContext": "Lower bound $I \\ge 2/n$ (Cauchy-Schwarz on the partition of unity $\\sum l_k = 1$). Crude upper bound $I \\le 2n$. The ESVV94 tight bounds are $2 - O((\\log n)^2/n) \\le \\min I \\le 2 - 2/(2n-1)$."
+      "id": "lower-bound",
+      "title": "Cauchy-Schwarz Lower Bound (Proved)",
+      "startLine": 140,
+      "endLine": 205,
+      "summary": "Proves pointwise $\\sum_k l_k(x)^2 \\ge 1/n$ via Cauchy-Schwarz on partition of unity, then $I \\ge 2/n$ by integral monotonicity. Uses variance identity $\\sum(l_k - 1/n)^2 = \\sum l_k^2 - 1/n \\ge 0$.",
+      "mathContext": "Cauchy-Schwarz: $(\\sum l_k)^2 \\le n \\sum l_k^2$. Since $\\sum l_k = 1$: $\\sum l_k^2 \\ge 1/n$, so $I \\ge 2/n$."
     },
     {
       "id": "chebyshev-nodes",
       "title": "Chebyshev Nodes",
-      "startLine": 97,
-      "endLine": 122,
-      "summary": "Defines Chebyshev nodes $x_k = \\cos((2k+1)\\pi/(2n))$ (roots of $T_n$). Proves they lie in $[-1,1]$ and are distinct. Shows $I_{\\text{Cheb}} \\approx 2 - c/n + O(1/n^2)$.",
-      "mathContext": "Defines Chebyshev nodes $x_k = \\cos((2k+1)\\pi/(2n))$ (roots of $T_n$). Proves they lie in $[-1,1]$ and are distinct. Shows $I_{\\text{Cheb}} \\approx 2 - c/n + O(1/n^2)$."
+      "startLine": 213,
+      "endLine": 270,
+      "summary": "Defines Chebyshev nodes $x_k = \\cos((2k+1)\\pi/(2n))$ (roots of $T_n$). Proves they lie in $[-1,1]$ and are distinct (using strict anti-monotonicity of cos on $[0,\\pi]$). Axiomatizes $I_{\\text{Cheb}} \\approx 2 - c/n$.",
+      "mathContext": "Chebyshev nodes: $x_k = \\cos\\frac{(2k+1)\\pi}{2n}$. $I_{\\text{Cheb}} = 2 - c/n + O(1/n^2)$."
     },
     {
       "id": "conjecture",
-      "title": "The Main Conjecture",
-      "startLine": 128,
-      "endLine": 140,
-      "summary": "Defines $\\min I_n = \\inf\\{I : \\text{nodes in } [-1,1]\\}$. Erdős's conjecture: $|\\min I_n - (2 - 1/n)| \\le \\varepsilon/n$ for $n \\ge N_0(\\varepsilon)$, i.e., $\\min I = 2 - (1+o(1))/n$.",
-      "mathContext": "Defines $\\min I_n = \\inf\\{I : \\text{nodes in } [-1,1]\\}$. Erdős's conjecture: $|\\min I_n - (2 - 1/n)| \\le \\varepsilon/n$ for $n \\ge N_0(\\varepsilon)$, i.e., $\\min I = 2 - (1+o(1))/n$."
+      "title": "The Main Conjecture (OPEN)",
+      "startLine": 272,
+      "endLine": 288,
+      "summary": "Defines $\\min I_n = \\inf\\{I : \\text{nodes in } [-1,1]\\}$. Erdős's conjecture (axiom): $|\\min I_n - (2 - 1/n)| \\le \\varepsilon/n$ for $n \\ge N_0(\\varepsilon)$.",
+      "mathContext": "Erdős conjecture: $\\min I = 2 - (1+o(1))/n$ as $n \\to \\infty$."
     },
     {
       "id": "main-theorem",
-      "title": "Main Formalized Result",
-      "startLine": 145,
-      "endLine": 158,
-      "summary": "The theorem `erdos_1131`: for any distinct nodes in $[-1,1]$, $I \\ge 2/n$. Proved by applying the lower bound axiom. The simplest unconditional result.",
-      "mathContext": "The theorem `erdos_1131`: for any distinct nodes in $[-1,1]$, $I \\ge 2/n$. Proved by applying the lower bound axiom. The simplest unconditional result."
+      "title": "Main Formalized Result (Proved)",
+      "startLine": 290,
+      "endLine": 306,
+      "summary": "The theorem `erdos_1131`: for any distinct nodes in $[-1,1]$, $I \\ge 2/n$. Fully proved via the Cauchy-Schwarz lower bound.",
+      "mathContext": "$I(x_1,\\ldots,x_n) \\ge 2/n$ for all configurations."
     }
   ],
   "conclusion": {
@@ -152,15 +136,15 @@
   ],
   "leanFile": {
     "imports": [
-      "Mathlib.Analysis.InnerProductSpace.Basic",
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.Data.Finset.Basic"
+      "Mathlib"
     ],
-    "opens": [],
+    "opens": [
+      "MeasureTheory"
+    ],
     "namespace": "Erdos1131",
-    "lineCount": 158,
-    "axiomCount": 9,
-    "theoremCount": 1,
-    "definitionCount": 5
+    "lineCount": 306,
+    "axiomCount": 2,
+    "theoremCount": 9,
+    "definitionCount": 6
   }
 }
