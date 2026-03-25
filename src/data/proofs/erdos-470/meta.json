@@ -194,11 +194,6 @@
       "targetId": "perfect-numbers",
       "relationship": "related",
       "description": "Weird numbers are a refinement of abundant numbers: they are abundant but not pseudoperfect. Perfect numbers satisfy $\\sigma(n) = 2n$, while weird numbers have $\\sigma(n) > 2n$ but no proper subset of divisors summing to $n$. The divisor-sum function $\\sigma$ and its relationship to $2n$ is the common thread"
-    },
-    {
-      "targetId": "perfect-numbers",
-      "relationship": "related",
-      "description": "Weird numbers are abundant but not pseudoperfect: $\\sigma(n) > 2n$ yet no proper subset of divisors sums to $n$. Perfect numbers ($\\sigma(n) = 2n$) are the boundary case — every perfect number is pseudoperfect (the proper divisors sum exactly to $n$), making weird numbers a strict refinement of the abundance hierarchy"
     }
   ]
 }
