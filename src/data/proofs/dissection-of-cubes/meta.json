@@ -251,5 +251,13 @@
       "venue": "Journal of Graph Theory, vol. 2, pp. 129-140",
       "note": "Comprehensive survey of squared rectangle and squared square theory, including the history from Moron's 1925 puzzle through the Brooks-Smith-Stone-Tutte breakthrough to Duijvestijn's computer search"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "dehn_invariant",
+      "type": "core",
+      "description": "Dehn's theorem: polyhedra with different Dehn invariants are not scissors-congruent",
+      "leanType": "dehnInvariant P != dehnInvariant Q -> not (scissors_congruent P Q)"
+    }
   ]
 }

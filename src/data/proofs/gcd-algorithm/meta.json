@@ -256,5 +256,13 @@
       "venue": "Comptes rendus de l'Académie des Sciences 19, 867–870",
       "note": "First rigorous complexity analysis: the number of steps is at most 5 times the number of digits of the smaller input — the worst case is consecutive Fibonacci numbers"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "euclidean_algorithm",
+      "type": "core",
+      "description": "The Euclidean algorithm computes the GCD correctly",
+      "leanType": "gcd_euclidean a b = Nat.gcd a b"
+    }
   ]
 }

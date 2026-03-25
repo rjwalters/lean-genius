@@ -172,5 +172,13 @@
       "venue": "Doklady Akademii Nauk SSSR 114, 679–681",
       "note": "Proved that continuous functions of three variables are representable by superpositions — complementing Kolmogorov's result"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "kolmogorov_superposition",
+      "type": "core",
+      "description": "Every continuous function of n variables is a superposition of continuous functions of 2 variables",
+      "leanType": "Continuous f -> exists gs hs, f = sum (fun q => g_q ∘ sum (fun p => h_{pq}))"
+    }
   ]
 }

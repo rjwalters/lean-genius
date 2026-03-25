@@ -266,5 +266,13 @@
     "axiomCount": 1,
     "theoremCount": 65,
     "definitionCount": 27
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "euler_formula",
+      "type": "core",
+      "description": "V - E + F = 2 for convex polyhedra",
+      "leanType": "convex_polyhedron P -> vertices P - edges P + faces P = 2"
+    }
+  ]
 }

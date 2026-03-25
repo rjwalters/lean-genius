@@ -254,5 +254,13 @@
       "year": "2013",
       "venue": "Journal of the American Mathematical Society, 26(3):879–899"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "hilbert5_gleason",
+      "type": "core",
+      "description": "Gleason-Montgomery-Zippin: every locally Euclidean topological group is a Lie group",
+      "leanType": "LocallyEuclidean G -> TopologicalGroup G -> IsLieGroup G"
+    }
   ]
 }

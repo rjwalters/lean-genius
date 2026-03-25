@@ -198,5 +198,13 @@
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 0
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "harmonic_diverges",
+      "type": "core",
+      "description": "The harmonic series 1 + 1/2 + 1/3 + ... diverges to infinity",
+      "leanType": "not (Summable (fun n => 1 / (n + 1 : R)))"
+    }
+  ]
 }

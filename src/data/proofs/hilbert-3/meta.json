@@ -220,5 +220,13 @@
       "venue": "Mathematische Annalen 55, 465–478",
       "note": "First solution to a Hilbert problem — proved via the Dehn invariant that a regular tetrahedron cannot be cut and reassembled into a cube"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "dehn_theorem",
+      "type": "core",
+      "description": "Hilbert's 3rd: a regular tetrahedron and cube of equal volume are not scissors-congruent",
+      "leanType": "not (scissors_congruent regular_tetrahedron (cube_of_equal_volume))"
+    }
   ]
 }

@@ -184,5 +184,13 @@
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 6
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "friendship_theorem",
+      "type": "core",
+      "description": "If any two people at a party have exactly one mutual friend, then there is a person who is everyone's friend",
+      "leanType": "(forall u v, u != v -> exists! w, adj u w and adj v w) -> exists v, forall u, u != v -> adj u v"
+    }
+  ]
 }

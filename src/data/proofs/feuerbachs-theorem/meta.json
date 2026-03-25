@@ -170,5 +170,13 @@
       "relationship": "foundational",
       "description": "The angle sum property is the most basic constraint on triangle geometry, while Feuerbach's theorem is one of the deepest — both concern the rigid geometric structure of triangles"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "feuerbach_tangency",
+      "type": "core",
+      "description": "The nine-point circle is tangent to the incircle and all three excircles",
+      "leanType": "Triangle ABC -> tangent (ninePointCircle ABC) (incircle ABC)"
+    }
   ]
 }

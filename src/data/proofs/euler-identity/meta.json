@@ -341,5 +341,13 @@
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 0
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "euler_identity",
+      "type": "core",
+      "description": "e^(i*pi) + 1 = 0 (Euler's identity)",
+      "leanType": "Complex.exp (Complex.I * Real.pi) + 1 = 0"
+    }
+  ]
 }

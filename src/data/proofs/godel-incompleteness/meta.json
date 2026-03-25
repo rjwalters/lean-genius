@@ -318,5 +318,19 @@
       "Mathlib.Tactic"
     ],
     "opens": []
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "godel_first",
+      "type": "core",
+      "description": "Any consistent sufficiently strong formal system contains undecidable propositions",
+      "leanType": "Consistent T -> SufficientlyStrong T -> exists phi, not (Provable T phi) and not (Provable T (not phi))"
+    },
+    {
+      "name": "godel_second",
+      "type": "key",
+      "description": "A consistent system cannot prove its own consistency",
+      "leanType": "Consistent T -> SufficientlyStrong T -> not (Provable T (Con T))"
+    }
+  ]
 }
