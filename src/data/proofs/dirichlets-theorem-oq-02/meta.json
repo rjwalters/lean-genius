@@ -114,6 +114,11 @@
       "targetId": "dirichlets-theorem-oq-02-oq-01",
       "relationship": "parent",
       "description": "Parent entry for the GRH sub-question about Dirichlet L-functions"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The PNT gives the density of all primes; this result shows that a positive proportion (by Dirichlet density) fall in the residue class 3 mod 4"
     }
   ],
   "references": [
@@ -123,6 +128,13 @@
       "year": "1837",
       "venue": "Abhandlungen der Königlichen Preußischen Akademie der Wissenschaften",
       "note": "Original proof of the general theorem; this entry formalizes the elementary special case for 3 mod 4"
+    },
+    {
+      "authors": "Daniel Marcus",
+      "title": "Number Fields",
+      "year": "1977",
+      "venue": "Springer-Verlag",
+      "note": "Chapter 12 discusses elementary proofs for special cases of Dirichlet's theorem, including primes ≡ 3 (mod 4)"
     }
   ]
 }

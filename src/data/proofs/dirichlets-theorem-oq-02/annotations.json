@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-key-lemma",
+    "proofId": "dirichlets-theorem-oq-02",
+    "range": { "startLine": 22, "endLine": 53 },
+    "type": "technique",
+    "title": "Key Lemma: n ≡ 3 (mod 4) Has a Prime Factor ≡ 3 (mod 4)",
+    "content": "The core lemma: any $n > 1$ with $n \\equiv 3 \\pmod{4}$ has a prime factor $p \\equiv 3 \\pmod{4}$. The proof uses well-founded recursion (`termination_by n`). Take any prime factor $p$ of $n$. If $p \\equiv 3$, done. Otherwise, since $n$ is odd ($n \\equiv 3 \\pmod{4}$), we have $p \\neq 2$, so $p \\equiv 1 \\pmod{4}$. Writing $n = pk$, we get $k \\equiv 3 \\pmod{4}$ (since $1 \\cdot k \\equiv 3$), $k > 1$, and $k < n$ (since $p \\geq 2$). By the induction hypothesis, $k$ has a prime factor $q \\equiv 3 \\pmod{4}$, which also divides $n$.",
+    "mathContext": "$n > 1,\\; n \\equiv 3 \\pmod{4} \\implies \\exists p \\mid n,\\; p \\text{ prime},\\; p \\equiv 3 \\pmod{4}$.\nContrapositive: a product of primes $\\equiv 1 \\pmod{4}$ is $\\equiv 1 \\pmod{4}$.",
+    "significance": "key",
+    "relatedConcepts": ["modular arithmetic", "strong induction", "multiplicativity of residues mod 4", "well-founded recursion"],
+    "prerequisites": ["prime factorization", "modular arithmetic", "well-founded induction"]
+  },
+  {
+    "id": "ann-mod-4-multiplicativity",
+    "proofId": "dirichlets-theorem-oq-02",
+    "range": { "startLine": 32, "endLine": 48 },
+    "type": "insight",
+    "title": "Multiplicativity of Residues mod 4",
+    "content": "The hidden engine of the proof: the group $(\\mathbb{Z}/4\\mathbb{Z})^\\times = \\{1, 3\\}$ is isomorphic to $\\mathbb{Z}/2\\mathbb{Z}$. Since $1 \\cdot 1 = 1$, $1 \\cdot 3 = 3$, and $3 \\cdot 3 = 1$ modulo 4, the product of numbers $\\equiv 1 \\pmod{4}$ stays $\\equiv 1 \\pmod{4}$. So a number $\\equiv 3 \\pmod{4}$ must have an odd number of prime factors $\\equiv 3 \\pmod{4}$. The proof extracts this using `Nat.mul_mod` and the hypothesis `hpmod1 : p % 4 = 1`.",
+    "mathContext": "$(\\mathbb{Z}/4\\mathbb{Z})^\\times \\cong \\mathbb{Z}/2\\mathbb{Z}$: products of residues $\\equiv 1$ stay $\\equiv 1$; an odd count of $\\equiv 3$ gives $\\equiv 3$.",
+    "significance": "key",
+    "relatedConcepts": ["unit group mod 4", "quadratic residues", "Legendre symbol", "group homomorphism"],
+    "prerequisites": ["modular arithmetic", "group theory basics"]
+  },
+  {
+    "id": "ann-construction",
+    "proofId": "dirichlets-theorem-oq-02",
+    "range": { "startLine": 64, "endLine": 74 },
+    "type": "technique",
+    "title": "Euclid-Style Construction: N = 4(n+1)! - 1",
+    "content": "Given any bound $n$, the construction $N = 4(n+1)! - 1$ is a careful variant of Euclid's proof of infinite primes. The number $N$ satisfies three properties simultaneously: (1) $N \\equiv 3 \\pmod{4}$ since $4(n+1)! \\equiv 0 \\pmod{4}$ and subtracting 1 gives $\\equiv 3$; (2) $N > 1$ since $(n+1)! \\geq 1$; (3) any prime factor $p \\leq n+1$ divides $(n+1)!$ and hence $4(n+1)! = N+1$, but not $N$ (since $\\gcd(N, N+1) = 1$). The use of `Set.infinite_iff_exists_gt` converts the infinitude statement to: for every $n$, there exists a prime $p > n$ with $p \\equiv 3 \\pmod{4}$.",
+    "mathContext": "$N = 4(n+1)! - 1 \\equiv 3 \\pmod{4}$, $N > 1$.\nIf $p \\leq n+1$: $p \\mid (n+1)! \\mid N+1$, so $p \\nmid N$ (since $\\gcd(N, N+1) = 1$).",
+    "significance": "key",
+    "relatedConcepts": ["Euclid's proof of infinite primes", "factorial construction", "coprimality of consecutive integers"],
+    "prerequisites": ["prime divisibility of factorials", "coprimality"]
+  },
+  {
+    "id": "ann-contradiction",
+    "proofId": "dirichlets-theorem-oq-02",
+    "range": { "startLine": 78, "endLine": 95 },
+    "type": "technique",
+    "title": "Bounding the Prime Factor: p > n via Contradiction",
+    "content": "The proof that $p > n$ proceeds by contradiction: assume $p \\leq n$, then $p \\leq n+1$, so $p \\mid (n+1)!$ by `Nat.Prime.dvd_factorial`. Since $N + 1 = 4(n+1)!$, we get $p \\mid N+1$. Combined with $p \\mid N$, this gives $p \\mid (N+1) - N = 1$, so $p \\leq 1$, contradicting $p \\geq 2$ (primality). The Lean proof uses `nlinarith` with the equations $N = pa$ and $N+1 = pb$ to derive $p(b-a) = 1$, forcing $p \\leq 1$.",
+    "mathContext": "$p \\mid N \\land p \\mid (N+1) \\implies p \\mid 1 \\implies p \\leq 1$, contradicting $p$ prime.",
+    "significance": "supporting",
+    "relatedConcepts": ["coprimality of consecutive integers", "proof by contradiction", "gcd"],
+    "prerequisites": ["divisibility", "prime number properties"]
+  },
+  {
+    "id": "ann-existence-witness",
+    "proofId": "dirichlets-theorem-oq-02",
+    "range": { "startLine": 97, "endLine": 99 },
+    "type": "context",
+    "title": "Existence Witness: 3 is Prime and ≡ 3 (mod 4)",
+    "content": "A simple witness establishing that the set of primes $\\equiv 3 \\pmod{4}$ is nonempty: $3$ is prime and $3 \\equiv 3 \\pmod{4}$. Both facts are discharged by `norm_num`. While the main theorem already implies nonemptiness (via infinitude), this explicit witness is useful for computations and as a base case.",
+    "mathContext": "$3$ is prime and $3 \\equiv 3 \\pmod{4}$.",
+    "significance": "context",
+    "relatedConcepts": ["small primes", "explicit witnesses", "constructive mathematics"],
+    "prerequisites": []
+  }
+]
