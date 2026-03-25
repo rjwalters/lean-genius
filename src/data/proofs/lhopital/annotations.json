@@ -7,18 +7,21 @@
       "endLine": 4
     },
     "type": "concept",
-    "title": "Resolving Indeterminate Forms",
-    "content": "L'Hopital's Rule is a powerful technique for evaluating limits that initially appear as **indeterminate forms**:\n\n- $\\frac{0}{0}$ - both numerator and denominator approach 0\n- $\\frac{\\infty}{\\infty}$ - both approach infinity\n\nThe rule says: differentiate top and bottom separately, then take the limit. If the new limit exists, it equals the original.\n\n$$\\lim_{x \\to a} \\frac{f(x)}{g(x)} = \\lim_{x \\to a} \\frac{f'(x)}{g'(x)}$$",
-    "mathContext": "$\\lim_{x \\to a} \\frac{f(x)}{g(x)} = \\lim_{x \\to a} \\frac{f'(x)}{g'(x)}$ when $f(a) = g(a) = 0$",
-    "significance": "key",
+    "title": "Imports: Mathlib's Calculus Infrastructure",
+    "content": "Four Mathlib imports provide the foundation: `Analysis.Calculus.LHopital` (the main L'Hôpital theorems: `HasDerivAt.lhopital_zero_right_on_Ioo`, `lhopital_zero_left_on_Ioo`, `lhopital_zero_atTop_on_Ioi`), `Analysis.Calculus.Deriv.Basic` (`HasDerivAt` — the pointwise derivative predicate), `Analysis.SpecificLimits.Normed` (specific limit computations in normed spaces), and `Topology.Order.Basic` (order topology for the real line, `nhdsWithin` filters).\n\nMathlib formulates L'Hôpital's rule using **filters** rather than $\\epsilon$-$\\delta$ arguments: `Tendsto f (𝓝[>] a) (𝓝 c)` means $f(x) \\to c$ as $x \\to a^+$. This filter-based approach handles right limits, left limits, and limits at infinity uniformly.",
+    "mathContext": "Lean's `Filter.Tendsto f l₁ l₂` generalizes all limit notions: $\\lim_{x \\to a^+} f(x) = c$ becomes `Tendsto f (𝓝[>] a) (𝓝 c)`, $\\lim_{x \\to \\infty} f(x) = c$ becomes `Tendsto f atTop (𝓝 c)`. The `HasDerivAt f f' x` predicate states $f(x+h) = f(x) + f' \\cdot h + o(h)$.",
+    "significance": "supporting",
     "prerequisites": [
-      "differential calculus",
-      "limit definition"
+      "Lean 4 import system",
+      "Filter.Tendsto",
+      "HasDerivAt",
+      "nhdsWithin"
     ],
     "relatedConcepts": [
-      "limits",
-      "derivatives",
-      "indeterminate forms"
+      "filter-based limits",
+      "Fréchet derivative",
+      "nhdsWithin",
+      "Mathlib calculus"
     ]
   },
   {
@@ -26,43 +29,118 @@
     "proofId": "lhopital",
     "range": {
       "startLine": 6,
-      "endLine": 49
+      "endLine": 53
     },
-    "type": "insight",
-    "title": "The First Calculus Textbook",
-    "content": "L'Hopital's Rule appeared in **Analyse des Infiniment Petits** (1696), the first calculus textbook ever published.\n\nBut there's a twist: L'Hopital didn't discover the rule himself. He paid Johann Bernoulli a salary to send him mathematical discoveries. Bernoulli only revealed this arrangement after L'Hopital's death, leading to one of math's famous priority disputes.\n\nDespite this, the rule retains L'Hopital's name.",
-    "mathContext": "Bernoulli communicated the rule in a 1694 letter; L'Hopital published it in 1696 as Proposition 163",
-    "significance": "supporting",
+    "type": "context",
+    "title": "Module Documentation: History and Proof Architecture",
+    "content": "The module docstring narrates one of mathematics' most famous priority disputes. Johann Bernoulli (1667-1748) discovered the rule circa 1694 as part of his pioneering work on infinitesimal calculus. Guillaume de l'Hôpital (1661-1704), a French marquis and talented amateur mathematician, paid Bernoulli an annual retainer of 300 livres for exclusive rights to Bernoulli's mathematical discoveries. L'Hôpital published the rule as Proposition 163 in his 1696 *Analyse des Infiniment Petits pour l'Intelligence des Lignes Courbes* — the first calculus textbook ever printed, which systematically presented the differential calculus of Leibniz.\n\nAfter l'Hôpital's death in 1704, Bernoulli publicly claimed credit, supported by their surviving correspondence (the key letter of 22 July 1694 was rediscovered in 1922). Despite this, the rule retains l'Hôpital's name by convention.\n\nThe file opens `Set Filter Topology` for filter-based limit formulation and declares the `LHopital` namespace. Wiedijk #64.",
+    "mathContext": "L'Hôpital's original formulation (Proposition 163): *Soit une ligne courbe AMD... si la différentielle de la grandeur proposée, étant divisée par la différentielle de la variable, donne un rapport de grandeurs...* — phrased in Leibniz's differential notation $dy/dx$ rather than the modern $\\lim f'/g'$ formulation. Cauchy (1823) gave the first rigorous proof using his generalized Mean Value Theorem.",
+    "significance": "context",
     "prerequisites": [
-      "history of mathematics"
+      "history of calculus",
+      "Leibniz notation"
     ],
     "relatedConcepts": [
-      "history of calculus",
       "Johann Bernoulli",
-      "Analyse des Infiniment Petits"
+      "Analyse des Infiniment Petits",
+      "Wiedijk 100 theorems",
+      "Cauchy's rigorous foundations"
     ]
   },
   {
-    "id": "ann-main-theorem",
+    "id": "ann-right-limit",
     "proofId": "lhopital",
     "range": {
-      "startLine": 59,
+      "startLine": 55,
       "endLine": 74
     },
-    "type": "technique",
-    "title": "L'Hopital's Rule (Right Limit)",
-    "content": "**L'Hopital's Rule** (0/0 form, right limit):\n\nIf $f$ and $g$ are differentiable on $(a, b)$, both tend to 0 as $x \\to a^+$, $g'(x) \\neq 0$ on $(a, b)$, and $\\frac{f'(x)}{g'(x)} \\to c$ as $x \\to a^+$, then:\n\n$$\\lim_{x \\to a^+} \\frac{f(x)}{g(x)} = c$$\n\nThis is the fundamental version; other variants (left limits, limits at infinity) follow similarly.",
-    "mathContext": "Lean statement: `Tendsto (fun x => f x / g x) (𝓝[>] a) (𝓝 c)` given `HasDerivAt` hypotheses on $\\text{Ioo}\\,a\\,b$",
+    "type": "theorem",
+    "title": "L'Hôpital's Rule: Right Limit (0/0 Form)",
+    "content": "`lhopital_zero_right` is the fundamental variant: if $f, g$ are differentiable on $(a,b)$, both tend to $0$ as $x \\to a^+$, $g'(x) \\neq 0$ on $(a,b)$, and $f'(x)/g'(x) \\to c$ as $x \\to a^+$, then $f(x)/g(x) \\to c$.\n\nThe proof is a one-line delegation to `HasDerivAt.lhopital_zero_right_on_Ioo`, which internally uses the Cauchy Mean Value Theorem. The seven hypotheses capture exactly the conditions needed: `hab : a < b` (nonempty interval), `hff'`/`hgg'` (differentiability via `HasDerivAt`), `hg'` (non-vanishing denominator derivative), `hfa`/`hga` (both $\\to 0$), and `hdiv` (derivative ratio converges).\n\nThis is the version from which other directional variants can be derived via substitution, though Mathlib provides them independently.",
+    "mathContext": "$$\\text{If } \\lim_{x \\to a^+} f(x) = 0,\\ \\lim_{x \\to a^+} g(x) = 0,\\ g'(x) \\neq 0 \\text{ on } (a,b),\\ \\text{and } \\lim_{x \\to a^+} \\frac{f'(x)}{g'(x)} = c,$$\n$$\\text{then } \\lim_{x \\to a^+} \\frac{f(x)}{g(x)} = c.$$\n\nLean: `Tendsto (fun x => f x / g x) (𝓝[>] a) (𝓝 c)` where `𝓝[>] a = nhdsWithin a (Ioi a)` is the right-neighborhood filter.",
     "significance": "key",
     "prerequisites": [
       "HasDerivAt",
-      "nhdsWithin filter",
-      "open intervals"
+      "nhdsWithin filter (𝓝[>] a)",
+      "Ioo intervals",
+      "Cauchy Mean Value Theorem"
     ],
     "relatedConcepts": [
       "one-sided limits",
-      "differentiability",
+      "indeterminate form 0/0",
+      "Cauchy MVT",
       "Filter.Tendsto"
+    ]
+  },
+  {
+    "id": "ann-left-limit",
+    "proofId": "lhopital",
+    "range": {
+      "startLine": 76,
+      "endLine": 89
+    },
+    "type": "theorem",
+    "title": "L'Hôpital's Rule: Left Limit (0/0 Form)",
+    "content": "`lhopital_zero_left` is the left-limit variant: if $f, g$ are differentiable on $(a,b)$ and both tend to $0$ as $x \\to b^-$, with $g'(x) \\neq 0$ and $f'(x)/g'(x) \\to c$ as $x \\to b^-$, then $f(x)/g(x) \\to c$.\n\nThe proof delegates to `HasDerivAt.lhopital_zero_left_on_Ioo`. The key difference from the right-limit version is the filter: `𝓝[<] b = nhdsWithin b (Iio b)` captures the left-neighborhood. Together, the right and left variants cover two-sided limits at interior points: if both one-sided limits exist and equal $c$, then the two-sided limit equals $c$.",
+    "mathContext": "$$\\lim_{x \\to b^-} \\frac{f(x)}{g(x)} = \\lim_{x \\to b^-} \\frac{f'(x)}{g'(x)} = c$$\n\nLean uses `𝓝[<] b = nhdsWithin b (Iio b)` for the left-neighborhood filter. The Cauchy MVT argument is symmetric: apply to $[x, b]$ with $x \\in (a, b)$ approaching $b$.",
+    "significance": "key",
+    "prerequisites": [
+      "lhopital_zero_right",
+      "nhdsWithin filter (𝓝[<] b)",
+      "left-sided limits"
+    ],
+    "relatedConcepts": [
+      "left limits",
+      "two-sided limits",
+      "nhdsWithin",
+      "reflection symmetry"
+    ]
+  },
+  {
+    "id": "ann-atTop",
+    "proofId": "lhopital",
+    "range": {
+      "startLine": 91,
+      "endLine": 103
+    },
+    "type": "theorem",
+    "title": "L'Hôpital's Rule: Limit at +∞ (0/0 Form)",
+    "content": "`lhopital_zero_atTop` handles the case $x \\to +\\infty$: if $f, g$ are differentiable on $(a, \\infty)$, both tend to $0$ as $x \\to \\infty$, $g'(x) \\neq 0$, and $f'(x)/g'(x) \\to c$ as $x \\to \\infty$, then $f(x)/g(x) \\to c$.\n\nThe filter `atTop` replaces `𝓝[>] a` — it is the filter of sets containing all sufficiently large elements. The domain $(a, \\infty)$ is Lean's `Ioi a`. This variant is especially useful for asymptotic analysis: comparing growth rates of functions like $\\ln x / x^p$ or $x^n / e^x$, which decay to $0$ as $x \\to \\infty$ at different rates.",
+    "mathContext": "$$\\lim_{x \\to +\\infty} \\frac{f(x)}{g(x)} = \\lim_{x \\to +\\infty} \\frac{f'(x)}{g'(x)} = c$$\n\nThe substitution $t = 1/x$ reduces this to a right-limit at $0^+$, but Mathlib provides it directly via `HasDerivAt.lhopital_zero_atTop_on_Ioi` to avoid composing derivatives.",
+    "significance": "key",
+    "prerequisites": [
+      "atTop filter",
+      "Ioi intervals",
+      "HasDerivAt on unbounded intervals"
+    ],
+    "relatedConcepts": [
+      "asymptotic analysis",
+      "growth rate comparison",
+      "atTop filter",
+      "big-O notation"
+    ]
+  },
+  {
+    "id": "ann-atBot",
+    "proofId": "lhopital",
+    "range": {
+      "startLine": 105,
+      "endLine": 117
+    },
+    "type": "theorem",
+    "title": "L'Hôpital's Rule: Limit at −∞ (0/0 Form)",
+    "content": "`lhopital_zero_atBot` is the negative-infinity variant: $f, g$ differentiable on $(-\\infty, a)$, both tending to $0$ as $x \\to -\\infty$, with $g' \\neq 0$ and $f'/g' \\to c$. The proof delegates to `HasDerivAt.lhopital_zero_atBot_on_Iio`.\n\nThis completes the four-variant suite covering all limit directions for the $0/0$ form: $x \\to a^+$, $x \\to b^-$, $x \\to +\\infty$, $x \\to -\\infty$. Together with the right and left variants, this enables evaluation of any one-directional $0/0$ limit.",
+    "mathContext": "$$\\lim_{x \\to -\\infty} \\frac{f(x)}{g(x)} = \\lim_{x \\to -\\infty} \\frac{f'(x)}{g'(x)} = c$$\n\nDomain: `Iio a = (-∞, a)`. Filter: `atBot` captures sets containing all sufficiently negative elements. The four variants form a complete suite: $\\{\\mathcal{N}_{>}(a), \\mathcal{N}_{<}(b), \\text{atTop}, \\text{atBot}\\}$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "atBot filter",
+      "Iio intervals",
+      "lhopital_zero_atTop"
+    ],
+    "relatedConcepts": [
+      "atBot filter",
+      "negative infinity limits",
+      "symmetry with atTop"
     ]
   },
   {
@@ -72,43 +150,22 @@
       "startLine": 119,
       "endLine": 132
     },
-    "type": "concept",
-    "title": "The Mean Value Connection",
-    "content": "L'Hopital's Rule follows from **Cauchy's Mean Value Theorem**:\n\nFor differentiable $f, g$ on $(a, b)$ with $g'(x) \\neq 0$:\n$$\\frac{f(b) - f(a)}{g(b) - g(a)} = \\frac{f'(c)}{g'(c)}$$\nfor some $c \\in (a, b)$.\n\n**Intuition**: For small $h > 0$:\n- $f(a + h) \\approx f(a) + h \\cdot f'(a) = 0 + h \\cdot f'(a)$\n- $g(a + h) \\approx g(a) + h \\cdot g'(a) = 0 + h \\cdot g'(a)$\n\nSo $\\frac{f(a+h)}{g(a+h)} \\approx \\frac{f'(a)}{g'(a)}$",
-    "mathContext": "Cauchy MVT: $\\frac{f(b)-f(a)}{g(b)-g(a)} = \\frac{f'(c)}{g'(c)}$ for some $c \\in (a,b)$",
+    "type": "insight",
+    "title": "Why It Works: The Cauchy Mean Value Theorem",
+    "content": "The commentary explains the intuition behind L'Hôpital's Rule via the **Cauchy Mean Value Theorem** (also called the Extended Mean Value Theorem).\n\n**Intuition**: For the $0/0$ form with $f(a) = g(a) = 0$, near $a$:\n$$f(x) \\approx f(a) + (x-a) f'(a) = (x-a) f'(a)$$\n$$g(x) \\approx g(a) + (x-a) g'(a) = (x-a) g'(a)$$\nSo $f(x)/g(x) \\approx f'(a)/g'(a)$.\n\n**Rigorous argument**: The Cauchy MVT states that for differentiable $f, g$ on $(a,b)$ continuous on $[a,b]$ with $g(a) \\neq g(b)$, there exists $c \\in (a,b)$ with $\\frac{f(b) - f(a)}{g(b) - g(a)} = \\frac{f'(c)}{g'(c)}$. Applying this with $f(a) = g(a) = 0$ gives $\\frac{f(x)}{g(x)} = \\frac{f'(c_x)}{g'(c_x)}$ where $c_x \\in (a, x)$; as $x \\to a$, $c_x \\to a$ by the squeeze theorem.",
+    "mathContext": "Cauchy MVT: $\\frac{f(b)-f(a)}{g(b)-g(a)} = \\frac{f'(c)}{g'(c)}$ for some $c \\in (a,b)$.\n\nThis generalizes the standard MVT ($g(x) = x$): $f(b) - f(a) = f'(c)(b-a)$.\n\nThe Cauchy MVT is proved geometrically: apply the standard MVT to the auxiliary function $h(x) = f(x)(g(b) - g(a)) - g(x)(f(b) - f(a))$, which satisfies $h(a) = h(b)$ (Rolle's theorem).",
     "significance": "key",
     "prerequisites": [
-      "Mean Value Theorem",
-      "continuity on closed intervals",
-      "differentiability on open intervals"
+      "Cauchy Mean Value Theorem",
+      "Rolle's theorem",
+      "squeeze theorem",
+      "continuity on closed intervals"
     ],
     "relatedConcepts": [
       "Mean Value Theorem",
-      "Cauchy's theorem",
-      "linear approximation"
-    ]
-  },
-  {
-    "id": "ann-infinity",
-    "proofId": "lhopital",
-    "range": {
-      "startLine": 91,
-      "endLine": 103
-    },
-    "type": "technique",
-    "title": "Limits at Infinity",
-    "content": "L'Hopital's Rule also works for limits as $x \\to \\infty$:\n\nIf $f$ and $g$ are differentiable on $(a, \\infty)$, both tend to 0 as $x \\to \\infty$, $g'(x) \\neq 0$, and $\\frac{f'(x)}{g'(x)} \\to c$ as $x \\to \\infty$, then:\n\n$$\\lim_{x \\to \\infty} \\frac{f(x)}{g(x)} = c$$\n\nThis is useful for comparing growth rates of functions.",
-    "mathContext": "Lean uses `Tendsto f atTop (𝓝 0)` for $\\lim_{x \\to \\infty} f(x) = 0$ and `Ioi a` for the domain $(a, \\infty)$",
-    "significance": "key",
-    "prerequisites": [
-      "ann-main-theorem",
-      "atTop filter",
-      "Ioi intervals"
-    ],
-    "relatedConcepts": [
-      "asymptotic analysis",
-      "growth rates",
-      "atTop filter"
+      "Rolle's theorem",
+      "linear approximation",
+      "Taylor expansion"
     ]
   },
   {
@@ -119,19 +176,43 @@
       "endLine": 146
     },
     "type": "context",
-    "title": "Classic Examples",
-    "content": "**Example 1**: $\\lim_{x \\to 0} \\frac{\\sin x}{x}$\n- Form: 0/0\n- Apply L'Hopital: $\\lim_{x \\to 0} \\frac{\\cos x}{1} = 1$\n\n**Example 2**: $\\lim_{x \\to 0} \\frac{e^x - 1}{x}$\n- Form: 0/0\n- Apply L'Hopital: $\\lim_{x \\to 0} \\frac{e^x}{1} = 1$\n\n**Example 3**: $\\lim_{x \\to 0^+} x \\ln x$\n- Rewrite as $\\frac{\\ln x}{1/x}$ (form: $-\\infty/\\infty$)\n- Apply L'Hopital: $\\frac{1/x}{-1/x^2} = -x \\to 0$",
-    "mathContext": "The $\\sin x / x$ limit is foundational; Mathlib proves it without L'Hopital to avoid circularity",
+    "title": "Common Applications and the ∞/∞ Form",
+    "content": "The commentary lists four classic applications:\n\n1. $\\lim_{x \\to 0} \\frac{\\sin x}{x} = \\lim_{x \\to 0} \\frac{\\cos x}{1} = 1$ — though Mathlib proves this *without* L'Hôpital to avoid circularity (the derivative of $\\sin$ uses this limit).\n\n2. $\\lim_{x \\to 0} \\frac{e^x - 1}{x} = \\lim_{x \\to 0} \\frac{e^x}{1} = 1$ — the definition of $e$ as the base of the natural exponential.\n\n3. $\\lim_{x \\to 0^+} x \\ln x = \\lim_{x \\to 0^+} \\frac{\\ln x}{1/x} = \\lim_{x \\to 0^+} \\frac{1/x}{-1/x^2} = \\lim_{x \\to 0^+} (-x) = 0$ — rewriting a $0 \\cdot (-\\infty)$ form as $\\frac{-\\infty}{+\\infty}$.\n\n4. Growth rate comparisons: $\\lim_{x \\to \\infty} \\frac{\\ln x}{x^p} = 0$ for $p > 0$ (logarithms grow slower than any polynomial), and $\\lim_{x \\to \\infty} \\frac{x^n}{e^x} = 0$ (polynomials grow slower than exponentials).\n\nThe commentary also notes that Mathlib provides the $\\infty/\\infty$ form, though the precise formulations differ from the $0/0$ variants.",
+    "mathContext": "The $\\sin x / x$ circularity: defining $\\frac{d}{dx}\\sin x = \\cos x$ typically requires $\\lim_{h \\to 0} \\frac{\\sin h}{h} = 1$. Using L'Hôpital to prove this limit would be circular. Mathlib breaks the circle by defining $\\sin$ via power series ($\\sin x = \\sum_{n=0}^{\\infty} \\frac{(-1)^n x^{2n+1}}{(2n+1)!}$) and deriving both the limit and the derivative from convergence properties.",
     "significance": "supporting",
     "prerequisites": [
-      "ann-main-theorem",
       "trigonometric derivatives",
-      "exponential derivatives"
+      "exponential function",
+      "logarithm properties",
+      "growth rate hierarchies"
     ],
     "relatedConcepts": [
-      "trigonometric limits",
-      "exponential limits",
-      "logarithmic limits"
+      "sin(x)/x limit",
+      "circular reasoning in analysis",
+      "power series definition of sin",
+      "asymptotic growth rates"
+    ]
+  },
+  {
+    "id": "ann-verification",
+    "proofId": "lhopital",
+    "range": {
+      "startLine": 148,
+      "endLine": 155
+    },
+    "type": "context",
+    "title": "Verification and Closing",
+    "content": "Four `#check` commands verify that all theorem variants have the expected types, serving as lightweight compile-time verification. The four variants form a complete suite for the $0/0$ form:\n\n| Variant | Direction | Filter | Domain |\n|---------|-----------|--------|--------|\n| `lhopital_zero_right` | $x \\to a^+$ | `𝓝[>] a` | `Ioo a b` |\n| `lhopital_zero_left` | $x \\to b^-$ | `𝓝[<] b` | `Ioo a b` |\n| `lhopital_zero_atTop` | $x \\to +\\infty$ | `atTop` | `Ioi a` |\n| `lhopital_zero_atBot` | $x \\to -\\infty$ | `atBot` | `Iio a` |\n\n`end LHopital` closes the namespace. The file totals 155 lines with 0 sorries and 0 axioms — all four theorems are one-line delegations to Mathlib.",
+    "mathContext": "Each variant wraps the corresponding Mathlib theorem with a pedagogical docstring. The Mathlib originals have longer names (e.g., `HasDerivAt.lhopital_zero_right_on_Ioo`) and more general hypotheses; these wrappers provide a cleaner interface for the gallery presentation.",
+    "significance": "supporting",
+    "prerequisites": [
+      "#check command",
+      "namespace closing"
+    ],
+    "relatedConcepts": [
+      "type verification",
+      "Lean 4 namespaces",
+      "pedagogical wrappers"
     ]
   }
 ]

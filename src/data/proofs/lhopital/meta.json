@@ -59,7 +59,7 @@
   "overview": {
     "historicalContext": "Johann Bernoulli discovered this rule around 1694 as part of his work on infinitesimal calculus, and communicated it privately to Guillaume de l'Hôpital, a French marquis and amateur mathematician. L'Hôpital paid Bernoulli an annual retainer of 300 livres for exclusive rights to Bernoulli's results, and published the rule in his 1696 textbook *Analyse des Infiniment Petits pour l'Intelligence des Lignes Courbes* — the first calculus textbook ever printed. After l'Hôpital's death in 1704, Bernoulli publicly claimed credit, sparking one of mathematics' most famous priority disputes. The rule became central to 18th-century analysis: Euler extended it systematically in his *Introductio in analysin infinitorum* (1748), and Cauchy later placed it on rigorous foundations using his generalized Mean Value Theorem. Today the result is a standard tool in real analysis and appears as entry #64 on Wiedijk's list of 100 greatest theorems. Mathlib formalizes several variants covering right limits, left limits, and limits at infinity.",
     "problemStatement": "**L'Hopital's Rule**:\n\nIf $f$ and $g$ are differentiable near $a$, and:\n1. Both $\\lim_{x \\to a} f(x) = 0$ and $\\lim_{x \\to a} g(x) = 0$ (the 0/0 form), or\n2. Both limits are $\\pm\\infty$ (the $\\infty/\\infty$ form)\n\nAnd if $\\lim_{x \\to a} \\frac{f'(x)}{g'(x)} = L$ exists, then:\n\n$$\\lim_{x \\to a} \\frac{f(x)}{g(x)} = \\lim_{x \\to a} \\frac{f'(x)}{g'(x)} = L$$",
-    "text": "A fundamental technique for evaluating limits of indeterminate forms: if f(x)/g(x) approaches 0/0 or infinity/infinity, then the limit equals the limit of f'(x)/g'(x).",
+    "text": "A 155-line pedagogical formalization of L'Hôpital's Rule (Wiedijk #64) with zero sorries and zero axioms. Provides four directional variants of the $0/0$ form — right limit on $(a,b)$, left limit on $(a,b)$, limit at $+\\infty$ on $(a,\\infty)$, and limit at $-\\infty$ on $(-\\infty,a)$ — each a one-line delegation to Mathlib's `HasDerivAt.lhopital_zero_*` theorems. The formalization uses Lean's filter-based limit infrastructure (`Tendsto`, `𝓝[>]`, `𝓝[<]`, `atTop`, `atBot`) to express all four variants uniformly. Commentary sections explain the Cauchy Mean Value Theorem mechanism and list common applications ($\\sin x/x$, $e^x - 1)/x$, $x \\ln x$, growth rate comparisons).",
     "proofStrategy": "The proof relies on the **Cauchy Mean Value Theorem**:\n\n1. **Cauchy MVT**: For differentiable $f, g$ on $(a, b)$:\n   $$\\frac{f(b) - f(a)}{g(b) - g(a)} = \\frac{f'(c)}{g'(c)}$$\n   for some $c \\in (a, b)$.\n\n2. **Apply to our setting**: For $x$ near $a$:\n   $$\\frac{f(x) - f(a)}{g(x) - g(a)} = \\frac{f(x) - 0}{g(x) - 0} = \\frac{f(x)}{g(x)}$$\n   equals $\\frac{f'(c_x)}{g'(c_x)}$ for some $c_x$ between $a$ and $x$.\n\n3. **Take the limit**: As $x \\to a$, we have $c_x \\to a$, so\n   $$\\lim_{x \\to a} \\frac{f(x)}{g(x)} = \\lim_{c \\to a} \\frac{f'(c)}{g'(c)}$$",
     "keyInsights": [
       "The rule transforms $\\lim \\frac{f}{g}$ into $\\lim \\frac{f'}{g'}$, replacing a difficult limit with a (hopefully) easier one",
@@ -137,7 +137,17 @@
     {
       "targetId": "leibniz-pi",
       "relationship": "related",
-      "description": "The Leibniz series involves limits and series convergence, areas where L'Hopital's rule provides useful asymptotic tools"
+      "description": "The Leibniz series $\\pi/4 = 1 - 1/3 + 1/5 - \\cdots$ involves limits and series convergence, areas where L'Hôpital's rule provides useful asymptotic tools for analyzing partial sum behavior"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation $n! \\sim \\sqrt{2\\pi n}(n/e)^n$ uses asymptotic analysis techniques closely related to L'Hôpital's rule: comparing growth rates of $\\ln(n!)$ with $n \\ln n - n$ via derivative-based arguments"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "The Basel problem $\\sum 1/n^2 = \\pi^2/6$ connects to L'Hôpital via the $\\sin x / x$ limit: Euler's original proof uses the product formula $\\sin x / x = \\prod(1 - x^2/(n\\pi)^2)$, which requires the limit $\\lim_{x \\to 0} \\sin x / x = 1$ that L'Hôpital's rule can evaluate (though Mathlib avoids this circularity)"
     }
   ],
   "conclusion": {
