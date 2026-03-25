@@ -137,16 +137,6 @@
       "description": "The reduction to prime exponents relies on the structure of primes; FLT for n=4 and odd primes covers all n ≥ 3"
     },
     {
-      "targetId": "chinese-remainder-non-coprime",
-      "relationship": "related",
-      "description": "Modular arithmetic techniques used in Kummer's proof for regular primes and in the reduction arguments"
-    },
-    {
-      "targetId": "dirichlets-theorem",
-      "relationship": "related",
-      "description": "Dirichlet's theorem on primes in arithmetic progressions provides context for the distribution of primes relevant to FLT"
-    },
-    {
       "targetId": "pythagorean-theorem",
       "relationship": "foundational",
       "description": "The Pythagorean theorem establishes $a^2 + b^2 = c^2$ — Fermat's Last Theorem generalizes this from $n=2$ (infinitely many solutions: Pythagorean triples) to $n \\geq 3$ (no solutions). The contrast between richness at $n=2$ and emptiness at $n \\geq 3$ is the core mystery"
@@ -182,29 +172,9 @@
       "description": "The failure of unique factorization in $\\mathbb{Z}[\\zeta_p]$ for irregular primes blocked Kummer's 1847 approach to FLT. FLT for regular primes succeeds because these rings retain unique factorization — illustrating that the arithmetic of number rings is the structural core of the problem"
     },
     {
-      "targetId": "godel-incompleteness",
-      "relationship": "thematic",
-      "description": "FLT was once conjectured to be unprovable in PA or even ZFC. Wiles's proof shows it is provable in ZFC, but the question of whether a simpler proof exists in weaker systems remains open. The proof's reliance on cohomological methods raises foundational questions about which axioms are truly necessary"
-    },
-    {
-      "targetId": "euler-identity",
-      "relationship": "related",
-      "description": "Wiles's proof uses modular forms with $q$-expansions $f(\\tau) = \\sum a_n e^{2\\pi i n \\tau}$ — directly using Euler's formula. The exponential map $e^{2\\pi i\\tau}$ bridges the additive structure of the upper half-plane and the multiplicative structure of modular forms, making Euler's identity essential infrastructure"
-    },
-    {
-      "targetId": "hilbert-10",
-      "relationship": "related",
-      "description": "Both concern integer solutions of polynomial equations: FLT proves $x^n + y^n = z^n$ has none for $n > 2$, while Hilbert's 10th shows no algorithm decides arbitrary Diophantine equations. FLT resolves a specific Diophantine question positively (decidable, answer is 'no solutions') within the generally undecidable landscape"
-    },
-    {
       "targetId": "birch-swinnerton-dyer",
       "relationship": "related",
       "description": "The Birch and Swinnerton-Dyer conjecture concerns the very objects at the heart of Wiles' proof: elliptic curves over $\\mathbb{Q}$ and their $L$-functions. Wiles proved that semistable elliptic curves are modular (so their $L$-functions have analytic continuation), a prerequisite for BSD. The Frey curve central to FLT is itself an elliptic curve whose BSD behavior is intimately tied to the proof's contradiction"
-    },
-    {
-      "targetId": "riemann-hypothesis",
-      "relationship": "related",
-      "description": "The Riemann Hypothesis concerns the zeros of $\\zeta(s)$, while Wiles' proof relies on properties of $L$-functions $L(E, s)$ attached to elliptic curves — a generalization of Riemann's zeta function. The Langlands program, which FLT exemplifies, predicts deep symmetries of all $L$-functions; RH is the simplest instance of this web of conjectures about $L$-function zeros"
     },
     {
       "targetId": "sylow-theorems",
@@ -220,11 +190,6 @@
       "targetId": "fermat-two-squares",
       "relationship": "historical",
       "description": "Fermat's two-squares theorem (every prime $p \\equiv 1 \\pmod{4}$ is a sum of two squares) is another of Fermat's claims from his marginal notes, proved by Euler and later Gauss. Both problems stem from Fermat's deep intuitions about integer arithmetic; the two-squares theorem was fully proved, while his Last Theorem required 358 more years and the full machinery of modern algebraic geometry"
-    },
-    {
-      "targetId": "prime-number-theorem",
-      "relationship": "related",
-      "description": "The Prime Number Theorem governs the distribution of primes and is proved using $L$-functions — the same analytic objects at the core of Wiles' proof. The modularity of elliptic curves means their point-counts over $\\mathbb{F}_p$ are controlled by modular form coefficients, establishing an arithmetic-analytic bridge analogous to the one Hadamard and de la Vallée Poussin built for $\\pi(x)$"
     }
   ],
   "conclusion": {

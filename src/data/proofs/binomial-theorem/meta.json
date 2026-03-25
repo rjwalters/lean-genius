@@ -243,21 +243,6 @@
       "targetId": "taylor-theorem",
       "relationship": "extends",
       "description": "Taylor's theorem provides the framework for Newton's generalized binomial series: $(1+x)^\\alpha = \\sum_{k=0}^\\infty \\frac{f^{(k)}(0)}{k!} x^k$ where $f^{(k)}(0) = \\alpha(\\alpha-1)\\cdots(\\alpha-k+1)$, giving the generalized binomial coefficient $\\binom{\\alpha}{k}$. The finite binomial theorem (proved here) is the special case where $\\alpha = n \\in \\mathbb{N}$ and the Taylor series terminates after $n+1$ terms"
-    },
-    {
-      "targetId": "birthday-problem",
-      "relationship": "related",
-      "description": "The birthday problem's exact probability $1 - \\frac{365!}{365^n (365-n)!}$ involves the same factorial and combinatorial counting that underlies binomial coefficients. The binomial approximation $(1-1/365)^{\\binom{n}{2}} \\approx e^{-n(n-1)/730}$ directly uses binomial coefficients to count collision pairs"
-    },
-    {
-      "targetId": "derangements",
-      "relationship": "related",
-      "description": "The derangement formula $D_n = n! \\sum_{k=0}^n \\frac{(-1)^k}{k!}$ uses inclusion-exclusion with binomial coefficients $\\binom{n}{k}$ to count permutations fixing exactly $k$ points. The alternating sum identity proved here ($\\sum (-1)^k \\binom{n}{k} = 0$) is the simplest instance of this alternation pattern"
-    },
-    {
-      "targetId": "sum-of-kth-powers",
-      "relationship": "related",
-      "description": "Faulhaber's formulas for $\\sum_{i=1}^n i^k$ use the binomial theorem in their derivation via the telescoping identity $(i+1)^{k+1} - i^{k+1} = \\sum_{j=0}^k \\binom{k+1}{j} i^j$, which expands the left side using the binomial theorem and rearranges to solve for $\\sum i^k$ in terms of lower power sums"
     }
   ],
   "references": [

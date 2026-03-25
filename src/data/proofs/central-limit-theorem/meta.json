@@ -245,11 +245,6 @@
       "description": "Stirling's formula n! ≈ √(2πn)(n/e)^n provides the √(2π) factor in the Gaussian density — the binomial distribution approaches the normal via Stirling, giving de Moivre's original CLT (1733)"
     },
     {
-      "targetId": "area-of-circle",
-      "relationship": "thematic",
-      "description": "Both reveal π in unexpected contexts: the area formula gives π geometrically, while the CLT's Gaussian density (2πσ²)^{-1/2}·exp(-x²/2σ²) contains π through the normalization constant ∫e^{-x²}dx = √π"
-    },
-    {
       "targetId": "central-limit-theorem-oq-01",
       "relationship": "extended-by",
       "description": "Explores what happens when variance is infinite — leading to stable distributions (Lévy $\\alpha$-stable) with heavier tails than the Gaussian, answering the first open question"
@@ -270,11 +265,6 @@
       "description": "The binomial distribution $P(X = k) = \\binom{n}{k}p^k(1-p)^{n-k}$ arises directly from the binomial theorem with $x = p, y = 1-p$. De Moivre's original CLT (1733) showed this binomial distribution converges to the Gaussian, making the binomial theorem the algebraic foundation for the first limit theorem in probability"
     },
     {
-      "targetId": "euler-identity",
-      "relationship": "related",
-      "description": "The CLT proof via characteristic functions uses $\\varphi_X(t) = \\mathbb{E}[e^{itX}]$, where $e^{itX} = \\cos(tX) + i\\sin(tX)$ (Euler's formula). The Gaussian characteristic function $\\varphi(t) = e^{-t^2/2}$ — the CLT's limit — is the real-valued case, connecting Euler's formula to the universality of the normal distribution"
-    },
-    {
       "targetId": "central-limit-theorem-oq-01-oq-01",
       "relationship": "extended-by",
       "description": "The Gnedenko-Kolmogorov domain of attraction theorem: classifies which distributions converge to each stable law $S_\\alpha$ under normalized sums. Generalizes the CLT's Gaussian convergence (the $\\alpha = 2$ case) to all stable distributions, answering when and how the CLT fails for heavy-tailed distributions"
@@ -290,19 +280,9 @@
       "description": "The Laws of Large Numbers and the CLT are the two fundamental limit theorems of probability. The LLN establishes that $\\bar{X}_n \\to \\mu$ almost surely; the CLT refines this by giving the rate: $(\\bar{X}_n - \\mu) \\cdot \\sqrt{n}/\\sigma \\xrightarrow{d} N(0,1)$. Together they fully characterize the asymptotic behavior of sample means: the LLN gives convergence, the CLT gives the fluctuation scale"
     },
     {
-      "targetId": "de-moivre",
-      "relationship": "related",
-      "description": "De Moivre's Theorem ($(\\cos\\theta + i\\sin\\theta)^n = \\cos n\\theta + i\\sin n\\theta$) is the complex-analytic foundation for characteristic functions used in the CLT proof: $\\varphi_X(t) = \\mathbb{E}[e^{itX}]$ uses Euler's formula $e^{it} = \\cos t + i\\sin t$, which is exactly de Moivre's theorem. Historically, Abraham de Moivre also discovered the first form of the CLT (1733), approximating the binomial by the Gaussian"
-    },
-    {
       "targetId": "fourier-series",
       "relationship": "foundational",
       "description": "Fourier analysis is the analytical backbone of the CLT proof. The characteristic function $\\varphi_X(t) = \\mathbb{E}[e^{itX}]$ is the Fourier transform of the probability density. The Lévy continuity theorem — that pointwise convergence of Fourier transforms implies weak convergence of measures — is the key bridge between the computational step (showing $\\varphi_{Z_n}(t) \\to e^{-t^2/2}$) and the probabilistic conclusion ($Z_n \\xrightarrow{d} N(0,1)$)"
-    },
-    {
-      "targetId": "prime-number-theorem",
-      "relationship": "related",
-      "description": "Both the CLT and PNT are landmark analytic results where Fourier/complex-analytic methods establish distributional universality. The PNT uses the Riemann zeta function (a Dirichlet series / Mellin transform) to show primes behave like a Poisson process at scale $1/\\ln x$; the CLT uses characteristic functions to show averages of random variables converge to the Gaussian. Both reveal hidden regularity through analytic continuation and contour integration"
     },
     {
       "targetId": "shannon-entropy",
@@ -313,11 +293,6 @@
       "targetId": "prob-method-expectation",
       "relationship": "related",
       "description": "The First Moment Method (probabilistic method) and the CLT are complementary tools in probabilistic combinatorics. The CLT gives the distribution of sums of random variables; the first moment method uses $\\mathbb{E}[X] > 0$ to certify existence. The second moment method ($\\text{Var}(X)/\\mathbb{E}[X]^2 \\to 0$ implies $P(X > 0) \\to 1$) is a direct application of the Chebyshev inequality, which in turn is a quantitative precursor to the CLT"
-    },
-    {
-      "targetId": "pac-learning-bounds",
-      "relationship": "related",
-      "description": "PAC learning bounds and the CLT are linked through statistical learning theory. The sample complexity bound $O((d + \\log(1/\\delta))/\\varepsilon^2)$ for VC dimension $d$ reflects the $1/\\sqrt{n}$ CLT convergence rate: empirical risk fluctuations are $O(1/\\sqrt{n})$ by the CLT, requiring $n = O(1/\\varepsilon^2)$ samples to achieve $\\varepsilon$-accuracy. The CLT thus provides the fundamental reason why PAC learning requires quadratically more samples for higher precision"
     }
   ],
   "leanFile": {

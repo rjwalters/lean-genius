@@ -172,11 +172,6 @@
       "description": "Quadratic reciprocity is the simplest case of Artin reciprocity, which in turn is the abelian case of the Langlands program. The L-function $L(E,s)$ in BSD is a degree-2 automorphic L-function, and the Langlands program predicts deep connections between such L-functions and automorphic forms — generalizing the quadratic reciprocity law from $\\text{GL}_1$ to $\\text{GL}_2$"
     },
     {
-      "targetId": "pythagorean-theorem",
-      "relationship": "related",
-      "description": "The congruent number problem — which integers are areas of right triangles with rational sides? — provides the most classical bridge from Pythagorean triples to BSD. A positive integer $n$ is congruent iff the elliptic curve $y^2 = x^3 - n^2 x$ has positive rank. This file formalizes the congruent number curve $E_{37}: y^2 = x^3 - 37^2 x$ and the Koblitz correspondence between rational right triangles and rational points on $E_n$"
-    },
-    {
       "targetId": "hodge-conjecture",
       "relationship": "related",
       "description": "Fellow Millennium Prize Problem concerning algebraic geometry. The Hodge conjecture and BSD both involve deep connections between algebraic and analytic/topological structures: Hodge asks when cohomology classes are algebraic, while BSD asks when the analytic rank equals the algebraic rank. Both are manifestations of the general principle that algebraic and analytic invariants of varieties should be closely related"
@@ -200,26 +195,6 @@
       "targetId": "prime-number-theorem",
       "relationship": "foundational",
       "description": "The Prime Number Theorem is the prototype for analytic number theory results about the distribution of primes — the same Euler product and L-function machinery that underpins PNT (via the Riemann zeta function $\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$) generalizes to the elliptic curve L-function $L(E,s) = \\prod_p L_p(E,s)^{-1}$ at the heart of BSD"
-    },
-    {
-      "targetId": "euler-identity",
-      "relationship": "foundational",
-      "description": "Euler's identity $e^{i\\pi} + 1 = 0$ connects the complex exponential to algebra — the same complex analysis underpins L-functions, analytic continuation, and the functional equation $\\Lambda(E, 2-s) = w(E)\\Lambda(E,s)$ that is essential for defining the analytic rank in BSD"
-    },
-    {
-      "targetId": "sqrt2-irrational",
-      "relationship": "related",
-      "description": "The irrationality of $\\sqrt{2}$ is directly used in the Koblitz correspondence proof: `triangle_to_point_y_ne_zero` shows $Y \\neq 0$ by contradiction — if $a^2 = b^2$ then $c^2 = 2a^2$, contradicting Mathlib's `irrational_sqrt_two`. A classical irrationality result providing a key lemma for modern arithmetic geometry"
-    },
-    {
-      "targetId": "lagrange-theorem",
-      "relationship": "foundational",
-      "description": "Lagrange's theorem on subgroup orders underpins the group-theoretic infrastructure throughout BSD: the Mordell-Weil group structure $E(\\mathbb{Q}) \\cong \\mathbb{Z}^r \\oplus T$, Mazur's classification of torsion subgroups, Selmer group ranks, and the computation of Tamagawa numbers from Kodaira types all rely on finite group theory"
-    },
-    {
-      "targetId": "abel-ruffini",
-      "relationship": "related",
-      "description": "Both are landmark results connecting algebra to group theory via Galois-theoretic ideas. Abel-Ruffini shows polynomial solvability reduces to group solvability ($S_5$ not solvable); BSD connects elliptic curve arithmetic to L-functions via the Langlands program. The modularity theorem (Wiles 1995) — essential for BSD — was proved using Galois representations, the same framework that underlies Abel-Ruffini"
     },
     {
       "targetId": "dirichlets-theorem",

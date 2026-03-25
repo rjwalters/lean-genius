@@ -122,24 +122,9 @@
       "description": "Constructibility is determined by the Galois group of the minimal polynomial — the constructible numbers have Galois groups that are 2-groups"
     },
     {
-      "targetId": "pythagorean-theorem",
-      "relationship": "related",
-      "description": "Pythagoras is the cornerstone of Euclidean geometry that underpins compass-and-straightedge constructions — every constructible length arises from iterated application of the Pythagorean theorem via intersections of circles and lines"
-    },
-    {
       "targetId": "pi-transcendental",
       "relationship": "uses",
       "description": "This file directly imports the pi transcendence proof to establish that squaring the circle is impossible — Lindemann's 1882 result that π is transcendental means √π has no minimal polynomial over ℚ"
-    },
-    {
-      "targetId": "lagrange-theorem",
-      "relationship": "foundational",
-      "description": "The tower law for field extensions (a consequence of Lagrange's theorem on subgroup indices) underpins the degree divisibility argument: [F_n:ℚ] = ∏[F_{i+1}:F_i] = 2^n, so [ℚ(α):ℚ] divides 2^n"
-    },
-    {
-      "targetId": "e-transcendental",
-      "relationship": "related",
-      "description": "Lindemann's proof that e is transcendental uses the same Lindemann-Weierstrass framework that proves π transcendental — this file imports π's transcendence to settle circle squaring, the third classical Greek problem"
     },
     {
       "targetId": "sqrt2-irrational",
@@ -180,11 +165,6 @@
       "targetId": "hermite-lindemann",
       "relationship": "foundational",
       "description": "The Hermite-Lindemann theorem ($\\alpha$ algebraic $\\Rightarrow$ $e^\\alpha$ transcendental) is the underlying result from which $\\pi$'s transcendence follows (via $e^{i\\pi} = -1$), settling the third classical Greek problem of squaring the circle."
-    },
-    {
-      "targetId": "erdos-1124",
-      "relationship": "related",
-      "description": "Tarski's circle-squaring problem (Erdős #1124): can a disk be partitioned into finitely many pieces and rearranged into a square of equal area? Laczkovich (1990) proved YES using $\\sim 10^{50}$ non-measurable pieces — a measure-theoretic counterpart to the compass-straightedge impossibility proved here."
     }
   ],
   "overview": {
