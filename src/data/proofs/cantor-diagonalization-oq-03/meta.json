@@ -134,7 +134,7 @@
       "id": "verification",
       "title": "Verification Checks",
       "startLine": 144,
-      "endLine": 150,
+      "endLine": 149,
       "summary": "#check statements verifying that all five main results (lawvere_fixpoint, cantor, cantor_bool, russell, diagonal_not_in_range) are defined and type-correct.",
       "mathContext": "Lean's #check command confirms each theorem has the expected type signature."
     }

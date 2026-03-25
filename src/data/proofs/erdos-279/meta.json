@@ -93,7 +93,7 @@
       "id": "conjectures",
       "title": "The Erdős Problem and Generalization",
       "startLine": 61,
-      "endLine": 86,
+      "endLine": 85,
       "summary": "States ErdosProblem279 for general k ≥ 3 (existence of a covering residue choice), ErdosProblem279_k3 for the specific k = 3 case, the GeneralizedCovering definition using a choice function on an arbitrary set A, and ErdosProblem279_generalized asserting that any set with prime-like density and log-log divergence admits a covering.",
       "mathContext": "Main conjecture: `axiom ErdosProblem279 (k : ℕ) (hk : 3 ≤ k) : ∃ a : ResidueChoice, CoversEventually a k`. The $k = 3$ instance follows by `le_refl 3`. The generalized conjecture replaces primes with arbitrary $A \\subseteq \\mathbb{N}$ satisfying density conditions, using `GeneralizedCovering A k` which existentially quantifies over a choice function on $A$."
     }
