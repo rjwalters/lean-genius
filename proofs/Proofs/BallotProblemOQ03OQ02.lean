@@ -1348,17 +1348,54 @@ private def pathsShareCol {r : ℕ} (cfg : LGVConfig r) (t : TaggedPathTuple cfg
               else cfg.targets (t.1 j)
   lo_j ≤ hi_i ∧ lo_i ≤ hi_j
 
-/-- Crossing code predicate. Encodes (c, i, j) as n = c * r² + i * r + j.
-    Nat.find on this yields the lex-minimum crossing triple. -/
+/-- Upper bound on y-values at any shared lattice point.
+    Since paths reach at most target(σ(k)) ≤ max(targets), y < yBound. -/
+private noncomputable def yBound {r : ℕ} (cfg : LGVConfig r) : ℕ :=
+  Finset.univ.sup cfg.targets + 1
+
+/-- Two paths share a specific lattice point (c, y): both visit row y at column c. -/
+private def pathsSharePoint {r : ℕ} (cfg : LGVConfig r) (t : TaggedPathTuple cfg)
+    (c y : ℕ) (i j : Fin r) : Prop :=
+  let lo_i := cfg.sources i + colEntry (t.2 i).val c
+  let hi_i := if c < cfg.m then cfg.sources i + colEntry (t.2 i).val (c + 1)
+              else cfg.targets (t.1 i)
+  let lo_j := cfg.sources j + colEntry (t.2 j).val c
+  let hi_j := if c < cfg.m then cfg.sources j + colEntry (t.2 j).val (c + 1)
+              else cfg.targets (t.1 j)
+  lo_i ≤ y ∧ y ≤ hi_i ∧ lo_j ≤ y ∧ y ≤ hi_j
+
+/-- pathsSharePoint implies pathsShareCol (range overlap). -/
+private theorem sharePoint_imp_shareCol {r : ℕ} (cfg : LGVConfig r) (t : TaggedPathTuple cfg)
+    (c y : ℕ) (i j : Fin r) (h : pathsSharePoint cfg t c y i j) :
+    pathsShareCol cfg t c i j := by
+  obtain ⟨hlo_i, hhi_i, hlo_j, hhi_j⟩ := h
+  exact ⟨by omega, by omega⟩
+
+/-- pathsShareCol implies existence of a shared point (max of lower bounds). -/
+private theorem shareCol_imp_sharePoint {r : ℕ} (cfg : LGVConfig r) (t : TaggedPathTuple cfg)
+    (c : ℕ) (i j : Fin r) (h : pathsShareCol cfg t c i j) :
+    ∃ y, pathsSharePoint cfg t c y i j := by
+  obtain ⟨h1, h2⟩ := h
+  let lo_i := cfg.sources i + colEntry (t.2 i).val c
+  let lo_j := cfg.sources j + colEntry (t.2 j).val c
+  exact ⟨max lo_i lo_j, le_max_left _ _, by omega, le_max_right _ _, by omega⟩
+
+/-- Crossing code predicate. Encodes (c, y, i, j) as
+    n = c * (B * r²) + y * r² + i * r + j, where B = yBound.
+    Nat.find on this yields the lex-minimum crossing 4-tuple.
+    Scanning y bottom-up ensures the canonical crossing is preserved under tail-swap. -/
 private def crossingCode {r : ℕ} (cfg : LGVConfig r) (t : TaggedPathTuple cfg)
     (n : ℕ) : Prop :=
   0 < r ∧
-  let c := n / (r * r)
+  let B := yBound cfg
+  let rr := r * r
+  let c := n / (B * rr)
+  let yv := (n / rr) % B
   let iv := (n / r) % r
   let jv := n % r
   c ≤ cfg.m ∧ iv < jv ∧
   ∃ (hiv : iv < r) (hjv : jv < r),
-    pathsShareCol cfg t c ⟨iv, hiv⟩ ⟨jv, hjv⟩
+    pathsSharePoint cfg t c yv ⟨iv, hiv⟩ ⟨jv, hjv⟩
 
 private noncomputable instance crossingCode.dec {r : ℕ} {cfg : LGVConfig r}
     {t : TaggedPathTuple cfg} : DecidablePred (crossingCode cfg t) :=
@@ -1398,30 +1435,60 @@ private theorem notNI_gives_overlap {r : ℕ} (cfg : LGVConfig r)
         omega
       omega
 
-/-- Encoding (c, i, j) as c * r² + i * r + j, with decoding back. -/
-private theorem encode_decode_c (r c iv jv : ℕ) (hr : 0 < r)
-    (hiv : iv < r) (hjv : jv < r) :
-    (c * (r * r) + iv * r + jv) / (r * r) = c := by
-  have h1 : iv * r + jv < r * r := by nlinarith
-  rw [Nat.add_div_right_eq_zero h1 |>.symm ▸ show c * (r * r) + (iv * r + jv) =
-    c * (r * r) + iv * r + jv from by ring_nf]
-  omega
+/-- Encoding (c, y, i, j) as c * (B * r²) + y * r² + i * r + j. -/
+private theorem encode4_decode_c (r B c yv iv jv : ℕ) (hr : 0 < r) (hB : 0 < B)
+    (hyv : yv < B) (hiv : iv < r) (hjv : jv < r) :
+    (c * (B * (r * r)) + yv * (r * r) + iv * r + jv) / (B * (r * r)) = c := by
+  have hrr : 0 < r * r := by positivity
+  have hBrr : 0 < B * (r * r) := by positivity
+  have h1 : yv * (r * r) + iv * r + jv < B * (r * r) := by nlinarith
+  have h2 : c * (B * (r * r)) + (yv * (r * r) + iv * r + jv) =
+      c * (B * (r * r)) + yv * (r * r) + iv * r + jv := by ring
+  rw [← h2, Nat.mul_add_div _ _ (by omega)]
 
-private theorem encode_decode_i (r c iv jv : ℕ) (hr : 0 < r)
-    (hiv : iv < r) (hjv : jv < r) :
-    ((c * (r * r) + iv * r + jv) / r) % r = iv := by
-  have h1 : jv / r = 0 := Nat.div_eq_zero_iff (by omega).mpr (by omega)
-  have : c * (r * r) + iv * r + jv = (c * r + iv) * r + jv := by ring
-  rw [this, Nat.add_mul_div_left _ _ (by omega : 0 < r)]
-  rw [h1, Nat.add_zero]
+private theorem encode4_decode_y (r B c yv iv jv : ℕ) (hr : 0 < r) (hB : 0 < B)
+    (hyv : yv < B) (hiv : iv < r) (hjv : jv < r) :
+    ((c * (B * (r * r)) + yv * (r * r) + iv * r + jv) / (r * r)) % B = yv := by
+  have hrr : 0 < r * r := by positivity
+  have h1 : iv * r + jv < r * r := by nlinarith
+  have h2 : c * (B * (r * r)) + yv * (r * r) + iv * r + jv =
+      (c * B + yv) * (r * r) + (iv * r + jv) := by ring
+  rw [h2, Nat.add_mul_div_left _ _ hrr]
+  rw [Nat.div_eq_zero_iff hrr |>.mpr (by omega), Nat.add_zero]
+  exact Nat.mod_eq_of_lt hyv
+
+private theorem encode4_decode_i (r B c yv iv jv : ℕ) (hr : 0 < r) (hB : 0 < B)
+    (hyv : yv < B) (hiv : iv < r) (hjv : jv < r) :
+    ((c * (B * (r * r)) + yv * (r * r) + iv * r + jv) / r) % r = iv := by
+  have h1 : c * (B * (r * r)) + yv * (r * r) + iv * r + jv =
+      (c * B * r + yv * r + iv) * r + jv := by ring
+  rw [h1, Nat.add_mul_div_left _ _ (by omega : 0 < r)]
+  rw [Nat.div_eq_zero_iff (by omega : 0 < r) |>.mpr (by omega), Nat.add_zero]
   exact Nat.mod_eq_of_lt hiv
 
-private theorem encode_decode_j (r c iv jv : ℕ) (hr : 0 < r)
-    (hiv : iv < r) (hjv : jv < r) :
-    (c * (r * r) + iv * r + jv) % r = jv := by
-  have : c * (r * r) + iv * r + jv = (c * r + iv) * r + jv := by ring
+private theorem encode4_decode_j (r B c yv iv jv : ℕ) (hr : 0 < r) (hB : 0 < B)
+    (hyv : yv < B) (hiv : iv < r) (hjv : jv < r) :
+    (c * (B * (r * r)) + yv * (r * r) + iv * r + jv) % r = jv := by
+  have : c * (B * (r * r)) + yv * (r * r) + iv * r + jv =
+      (c * B * r + yv * r + iv) * r + jv := by ring
   rw [this, Nat.add_mul_mod_self_left]
   exact Nat.mod_eq_of_lt hjv
+
+/-- y at any shared point is < yBound (needed for encoding). -/
+private theorem y_lt_yBound {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (c y : ℕ) (i j : Fin r)
+    (h : pathsSharePoint cfg t c y i j) : y < yBound cfg := by
+  obtain ⟨_, hhi, _, _⟩ := h
+  have : y ≤ cfg.targets (t.1 i) := by
+    split_ifs at hhi with hcm
+    · -- c < m: y ≤ source + colEntry(c+1) ≤ source + n = target
+      have hle := colEntry_le_north (t.2 i) (c + 1)
+      have hsrc := hwf i (t.1 i)
+      omega
+    · exact hhi
+  calc y ≤ cfg.targets (t.1 i) := this
+    _ ≤ Finset.univ.sup cfg.targets := Finset.le_sup (Finset.mem_univ _)
+    _ < yBound cfg := by unfold yBound; omega
 
 /-- A crossing code exists for every cancellable tagged tuple. -/
 private theorem crossingCode_exists {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
@@ -1429,15 +1496,20 @@ private theorem crossingCode_exists {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wel
     ∃ n, crossingCode cfg t n := by
   obtain ⟨i, j, hij, hni⟩ := cancellable_has_crossing cfg hwf t ht
   obtain ⟨c, hcm, hoverlap⟩ := notNI_gives_overlap cfg t i j hij hni
+  obtain ⟨y, hshare⟩ := shareCol_imp_sharePoint cfg t c i j hoverlap
   have hr : 0 < r := by omega
-  refine ⟨c * (r * r) + i.val * r + j.val, hr, ?_, ?_, ?_⟩
-  · rwa [encode_decode_c r c i.val j.val hr i.isLt j.isLt]
-  · rw [encode_decode_i r c i.val j.val hr i.isLt j.isLt,
-        encode_decode_j r c i.val j.val hr i.isLt j.isLt]
+  have hB : 0 < yBound cfg := by unfold yBound; omega
+  have hyB := y_lt_yBound cfg hwf t c y i j hshare
+  set B := yBound cfg
+  refine ⟨c * (B * (r * r)) + y * (r * r) + i.val * r + j.val, hr, ?_, ?_, ?_⟩
+  · rwa [encode4_decode_c r B c y i.val j.val hr hB hyB i.isLt j.isLt]
+  · rw [encode4_decode_i r B c y i.val j.val hr hB hyB i.isLt j.isLt,
+        encode4_decode_j r B c y i.val j.val hr hB hyB i.isLt j.isLt]
     exact hij
-  · rw [encode_decode_i r c i.val j.val hr i.isLt j.isLt,
-        encode_decode_j r c i.val j.val hr i.isLt j.isLt]
-    exact ⟨i.isLt, j.isLt, by convert hoverlap using 2 <;> simp⟩
+  · rw [encode4_decode_y r B c y i.val j.val hr hB hyB i.isLt j.isLt,
+        encode4_decode_i r B c y i.val j.val hr hB hyB i.isLt j.isLt,
+        encode4_decode_j r B c y i.val j.val hr hB hyB i.isLt j.isLt]
+    exact ⟨i.isLt, j.isLt, by convert hshare using 2 <;> simp⟩
 
 /-- The canonical crossing code for a cancellable tagged tuple. -/
 private noncomputable def canonCrossN {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
@@ -1456,10 +1528,15 @@ private theorem canonCross_min {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellForm
     ∀ n, crossingCode cfg t n → canonCrossN cfg hwf t ht ≤ n :=
   fun n hn => Nat.find_min' (crossingCode_exists cfg hwf t ht) hn
 
-/-- Extract the canonical crossing column. -/
+/-- Extract the canonical crossing column from (c, y, i, j) encoding. -/
 private noncomputable def canonCol {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
     (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) : ℕ :=
-  canonCrossN cfg hwf t ht / (r * r)
+  canonCrossN cfg hwf t ht / (yBound cfg * (r * r))
+
+/-- Extract the canonical shared y-value from the encoding. -/
+private noncomputable def canonY {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) : ℕ :=
+  (canonCrossN cfg hwf t ht / (r * r)) % yBound cfg
 
 /-- Extract the canonical first crossing index. -/
 private noncomputable def canonI {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
@@ -1485,21 +1562,19 @@ private theorem canonCol_le_m {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellForme
   have h := canonCross_spec cfg hwf t ht
   exact h.2.1
 
-private theorem canon_overlap {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+/-- The canonical crossing is a shared point (not just range overlap). -/
+private theorem canon_sharePoint {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
     (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) :
-    pathsShareCol cfg t (canonCol cfg hwf t ht)
+    pathsSharePoint cfg t (canonCol cfg hwf t ht) (canonY cfg hwf t ht)
       (canonI cfg hwf t ht) (canonJ cfg hwf t ht) := by
   have h := canonCross_spec cfg hwf t ht
   exact h.2.2.2.choose_spec.choose_spec.2
 
-/-- The shared y-value: max of lower bounds at the canonical crossing column. -/
-private noncomputable def canonY {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
-    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) : ℕ :=
-  let ci := canonI cfg hwf t ht
-  let cj := canonJ cfg hwf t ht
-  let c := canonCol cfg hwf t ht
-  max (cfg.sources ci + colEntry (t.2 ci).val c)
-      (cfg.sources cj + colEntry (t.2 cj).val c)
+private theorem canon_overlap {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) :
+    pathsShareCol cfg t (canonCol cfg hwf t ht)
+      (canonI cfg hwf t ht) (canonJ cfg hwf t ht) :=
+  sharePoint_imp_shareCol _ _ _ _ _ _ (canon_sharePoint cfg hwf t ht)
 
 -- ============================================================
 -- PART 7k: Tail-Swap PathMN Construction
@@ -1583,30 +1658,20 @@ private theorem canonY_in_range_i {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellF
     let y := canonY cfg hwf t ht
     colEntry (t.2 ci).val c ≤ y - cfg.sources ci ∧
     y - cfg.sources ci ≤ colEntry (t.2 ci).val (c + 1) := by
-  have hoverlap := canon_overlap cfg hwf t ht
+  have hsp := canon_sharePoint cfg hwf t ht
   set ci := canonI cfg hwf t ht
-  set cj := canonJ cfg hwf t ht
   set c := canonCol cfg hwf t ht
   set y := canonY cfg hwf t ht
-  unfold canonY at y
-  unfold pathsShareCol at hoverlap
+  obtain ⟨hlo_i, hhi_i, _, _⟩ := hsp
   constructor
-  · -- colEntry(P_ci, c) ≤ y - source_ci
-    -- y = max(source_ci + colEntry(P_ci, c), source_cj + colEntry(P_cj, c))
-    -- y ≥ source_ci + colEntry(P_ci, c)
-    simp only [y]; omega
-  · -- y - source_ci ≤ colEntry(P_ci, c+1) (or n_ci for c = m)
-    -- From overlap: source_cj + colEntry(P_cj, c) ≤ hi_ci
-    -- And y = max(lo_ci, lo_cj) ≤ hi_ci
-    split_ifs at hoverlap with hcm
-    · -- c < m: hi_ci = source_ci + colEntry(P_ci, c+1)
-      simp only [y]; omega
-    · -- c ≥ m: hi_ci = targets(σ(ci))
-      have hcm' := canonCol_le_m cfg hwf t ht
+  · omega
+  · split_ifs at hhi_i with hcm
+    · omega
+    · have hcm' := canonCol_le_m cfg hwf t ht
       have hceq : c = cfg.m := by omega
       rw [hceq, colEntry_at_end (t.2 ci)]
       have h_le := hwf ci (t.1 ci)
-      simp only [y]; omega
+      omega
 
 /-- The shared y-value is within path j's y-range at the canonical crossing column. -/
 private theorem canonY_in_range_j {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
@@ -1616,22 +1681,20 @@ private theorem canonY_in_range_j {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellF
     let y := canonY cfg hwf t ht
     colEntry (t.2 cj).val c ≤ y - cfg.sources cj ∧
     y - cfg.sources cj ≤ colEntry (t.2 cj).val (c + 1) := by
-  have hoverlap := canon_overlap cfg hwf t ht
-  set ci := canonI cfg hwf t ht
+  have hsp := canon_sharePoint cfg hwf t ht
   set cj := canonJ cfg hwf t ht
   set c := canonCol cfg hwf t ht
   set y := canonY cfg hwf t ht
-  unfold canonY at y
-  unfold pathsShareCol at hoverlap
+  obtain ⟨_, _, hlo_j, hhi_j⟩ := hsp
   constructor
-  · simp only [y]; omega
-  · split_ifs at hoverlap with hcm
-    · simp only [y]; omega
+  · omega
+  · split_ifs at hhi_j with hcm
+    · omega
     · have hcm' := canonCol_le_m cfg hwf t ht
       have hceq : c = cfg.m := by omega
       rw [hceq, colEntry_at_end (t.2 cj)]
       have h_le := hwf cj (t.1 cj)
-      simp only [y]; omega
+      omega
 
 /-- Split position is within path bounds. -/
 private theorem splitPos_le_length {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
@@ -1893,23 +1956,37 @@ private theorem gvCanon_membership {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.well
       simp only [splitPosAt] at ki kj
       rcases hfinal with h | h <;> omega
 
-/-- The GV canonical involution is self-inverse: g(g(t)) = t.
-    The proof has two parts:
-    1. Permutation: σ * swap(ci,cj) * swap(ci,cj) = σ (swap² = 1)
-    2. Paths: double tail-swap at the same point = identity
-    Part 2 requires showing the canonical crossing is preserved:
-    - Prefixes at columns < c₀ are unchanged → same crossings there
-    - The shared point (c₀, y₀) is preserved (both paths still visit it)
-    - No smaller crossing (c', y', i', j') is newly created
-    → Nat.find returns the same code → same (c, ci, cj, y) → same swap
-    → double swap on lists: take(take(P,k)++drop(Q,k'), k)++drop(take(Q,k')++drop(P,k), k')
-       = take(P,k)++drop(P,k) = P by List.take_append_drop -/
+/-- Helper: take of a concat where the prefix has the right length. -/
+private lemma take_take_append {α : Type} (l₁ l₂ : List α) :
+    (l₁ ++ l₂).take l₁.length = l₁ := by
+  rw [List.take_append, Nat.sub_self, List.take_length, List.take_zero,
+      List.append_nil]
+
+/-- Helper: drop of a concat where the prefix has the right length. -/
+private lemma drop_take_append {α : Type} (l₁ l₂ : List α) :
+    (l₁ ++ l₂).drop l₁.length = l₂ := by
+  rw [List.drop_append, Nat.sub_self, List.drop_length, List.nil_append,
+      List.drop_zero]
+
+/-- The canonical crossing code is preserved under the GV involution.
+    Key insight: with the (c, y, i, j) encoding scanning y bottom-up,
+    the tail swap at point (c₀, y₀) preserves all crossings at (c', y', i', j')
+    with code ≤ canonCrossN, because:
+    - At columns c' < c₀: all paths have identical prefixes
+    - At (c₀, y' < y₀): one of the swapped paths doesn't reach y' (y₀ = max of lower bounds)
+    - At (c₀, y₀, i', j') with (i', j') < (ci, cj): swapped paths still visit y₀ -/
+private theorem canonCrossN_preserved {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t)
+    (ht' : ¬isNonCancellable (gvCanonInv cfg hwf t ht)) :
+    canonCrossN cfg hwf (gvCanonInv cfg hwf t ht) ht' = canonCrossN cfg hwf t ht := by
+  sorry -- TODO: prove via prefix preservation + shared-point argument
+
 private theorem gvCanon_self_inverse {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
     (t : TaggedPathTuple cfg)
     (ht : t ∈ Finset.univ.filter (fun t : TaggedPathTuple cfg => ¬isNonCancellable t)) :
     gvCanonInv cfg hwf (gvCanonInv cfg hwf t ((Finset.mem_filter.mp ht).2))
       ((Finset.mem_filter.mp (gvCanon_membership cfg hwf t ht)).2) = t := by
-  sorry -- self-inverse: canonical crossing preserved + double tail-swap = id
+  sorry -- TODO: use canonCrossN_preserved + double tail-swap = id + swap² = 1
 
 /-- The signed sum over cancellable tagged tuples is zero,
     by the GV sign-reversing involution via `Finset.sum_involution`. -/
