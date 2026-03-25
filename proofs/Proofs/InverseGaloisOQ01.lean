@@ -21,14 +21,20 @@ in the Inverse Galois Problem, focusing on the **non-solvable frontier**.
 5. Aₙ is not solvable for n ≥ 5
 6. The alternating groups are the key obstruction to solvability
 
-### Structural Results
-7. Normal subgroups of Sₙ: {e}, Aₙ, Sₙ for n ≥ 5 (Jordan's theorem)
-8. S₅ has exactly three normal subgroups
-9. Every quotient of a realized group is realized (via fixed fields)
+### The Alternating Group Frontier (NEW)
+7. Aₙ is not solvable for n ≥ 5 (from Sₙ non-solvability)
+8. Aₙ is solvable iff n ≤ 4 (complete characterization)
 
-### Direct Product Realizability
-10. If K₁/ℚ and K₂/ℚ are Galois of coprime degrees,
-    Gal(K₁K₂/ℚ) ≅ Gal(K₁/ℚ) × Gal(K₂/ℚ)
+### Structural Results
+9. Normal subgroups of Sₙ: {e}, Aₙ, Sₙ for n ≥ 5 (Jordan's theorem)
+10. S₅ has exactly three normal subgroups
+11. Every quotient of a realized group is realized (via fixed fields)
+
+### Quotient Realizability (NEW — FTGT Application)
+12. If K/F is Galois and H ◁ Gal(K/F), then K^H/F is Galois
+13. Gal(K/F)/H ≅ Gal(K^H/F) (the FTGT quotient isomorphism)
+14. |Gal(K^H/F)| = [Gal(K/F) : H] (cardinality consequence)
+15. Realizability is closed under quotients (existence form)
 
 ## Connection to Inverse Galois
 - Shafarevich (axiomatized in InverseGalois.lean): All solvable groups are realizable
@@ -433,16 +439,153 @@ theorem cayley_card (G : Type*) [Group G] [Fintype G] :
   exact h1
 
 -- ============================================================================
+-- Part XII: General Alternating Group Non-Solvability
+-- ============================================================================
+
+/-
+The solvability characterization extends from Sₙ to Aₙ:
+- For n ≤ 4: Aₙ is solvable (subgroup of solvable Sₙ)
+- For n ≥ 5: Aₙ is NOT solvable (would force Sₙ solvable via 1 → Aₙ → Sₙ → C₂ → 1)
+
+This establishes that the solvability frontier at n = 5 applies equally
+to both the symmetric and alternating group families.
+-/
+
+/-- Aₙ is not solvable for n ≥ 5.
+    Proof: If Aₙ were solvable, the exact sequence 1 → Aₙ → Sₙ → C₂ → 1
+    (with C₂ solvable) would make Sₙ solvable, contradicting sn_not_solvable_of_ge_five. -/
+theorem an_not_solvable_of_ge_five (n : ℕ) (hn : 5 ≤ n) :
+    ¬IsSolvable (alternatingGroup (Fin n)) := by
+  intro h
+  have : IsSolvable (Equiv.Perm (Fin n)) := by
+    apply solvable_of_ker_le_range
+      (alternatingGroup (Fin n)).subtype
+      Equiv.Perm.sign
+    intro x hx
+    rw [MonoidHom.mem_ker] at hx
+    exact ⟨⟨x, Equiv.Perm.mem_alternatingGroup.mpr hx⟩, rfl⟩
+  exact sn_not_solvable_of_ge_five n hn this
+
+/-- The complete characterization: Aₙ is solvable iff n ≤ 4.
+    Analogous to sn_solvable_iff for symmetric groups. -/
+theorem an_solvable_iff (n : ℕ) :
+    IsSolvable (alternatingGroup (Fin n)) ↔ n ≤ 4 := by
+  constructor
+  · intro h
+    by_contra hlt
+    push_neg at hlt
+    exact an_not_solvable_of_ge_five n hlt h
+  · intro hn
+    interval_cases n <;> infer_instance
+
+-- ============================================================================
+-- Part XIII: Quotient Realizability — The Fundamental Structural Theorem
+-- ============================================================================
+
+/-
+**KEY STRUCTURAL THEOREM**: Every quotient of a realized Galois group is realized.
+
+Given K/F Galois with Gal(K/F) = G and a normal subgroup H ◁ G:
+1. The fixed field K^H determines a Galois extension K^H/F
+2. Gal(K^H/F) ≅ G/H (the quotient group)
+3. |Gal(K^H/F)| = [G : H] (the index)
+
+This is the group-theoretic content of the Fundamental Theorem of Galois Theory.
+
+Consequence: Realizing one group automatically realizes all its quotients.
+- S₅ realized → C₂ = S₅/A₅ automatically realized
+- S₅ realized → {e} = S₅/S₅ automatically realized
+- Any G realized → G/[G,G] automatically realized (abelianization)
+-/
+
+/-- If K/F is Galois and H is a normal subgroup of Gal(K/F), then the
+    fixed field K^H is Galois over F. This is one direction of the FTGT:
+    normal subgroups correspond to Galois intermediate extensions. -/
+theorem quotient_is_galois
+    {F K : Type*} [Field F] [Field K] [Algebra F K]
+    [FiniteDimensional F K] [IsGalois F K]
+    (H : Subgroup (K ≃ₐ[F] K)) [H.Normal] :
+    IsGalois F (IntermediateField.fixedField H) := inferInstance
+
+/-- The FTGT quotient isomorphism: Gal(K/F)/H ≅ Gal(K^H/F).
+    This packages the Fundamental Theorem of Galois Theory's key isomorphism
+    as a MulEquiv for use in realizability arguments. -/
+noncomputable def quotient_galois_equiv
+    {F K : Type*} [Field F] [Field K] [Algebra F K]
+    [FiniteDimensional F K] [IsGalois F K]
+    (H : Subgroup (K ≃ₐ[F] K)) [H.Normal] :
+    (K ≃ₐ[F] K) ⧸ H ≃*
+      (IntermediateField.fixedField H ≃ₐ[F] IntermediateField.fixedField H) :=
+  IsGalois.normalAutEquivQuotient H
+
+/-- The cardinality consequence: |Gal(K^H/F)| = [Gal(K/F) : H].
+    Follows directly from the FTGT quotient isomorphism. -/
+theorem fixed_field_galois_card_eq_index
+    {F K : Type*} [Field F] [Field K] [Algebra F K]
+    [FiniteDimensional F K] [IsGalois F K]
+    (H : Subgroup (K ≃ₐ[F] K)) [H.Normal] :
+    Nat.card
+      (IntermediateField.fixedField H ≃ₐ[F] IntermediateField.fixedField H) =
+    H.index := by
+  unfold Subgroup.index
+  exact Nat.card_congr (IsGalois.normalAutEquivQuotient H).symm.toEquiv
+
+-- ============================================================================
+-- Part XIV: Quotient Realizability — Application
+-- ============================================================================
+
+/-
+The quotient realizability theorem gives a concrete construction:
+given ANY Galois extension K/F and ANY normal subgroup N of Gal(K/F),
+the fixed field K^N is a Galois extension of F whose Galois group is Gal(K/F)/N.
+
+This means: to prove a group G/N is realized over F, it suffices to:
+1. Find K/F with Gal(K/F) ≅ G
+2. Identify N as a normal subgroup of Gal(K/F)
+3. Take K^N — it's automatically Galois over F with the right group
+-/
+
+/-- **Quotient Realizability**: For any Galois extension K/F and any normal
+    subgroup N of Gal(K/F), there exists an intermediate Galois extension
+    whose Galois group is the quotient Gal(K/F)/N. -/
+theorem quotient_of_galois_realized
+    {F K : Type*} [Field F] [Field K] [Algebra F K]
+    [FiniteDimensional F K] [IsGalois F K]
+    (N : Subgroup (K ≃ₐ[F] K)) [N.Normal] :
+    ∃ (E : IntermediateField F K),
+      IsGalois F ↥E ∧ Nonempty ((K ≃ₐ[F] K) ⧸ N ≃* (↥E ≃ₐ[F] ↥E)) :=
+  ⟨IntermediateField.fixedField N, inferInstance, ⟨IsGalois.normalAutEquivQuotient N⟩⟩
+
+/-- Realizability is closed under quotients (universe-polymorphic version):
+    if G is the Galois group of some extension K/F, then every quotient of G
+    appears as a Galois group over F (via an intermediate field of K/F). -/
+theorem realizability_closed_under_quotients
+    {F : Type*} {K : Type*} [Field F] [Field K] [Algebra F K]
+    [FiniteDimensional F K] [IsGalois F K]
+    (N : Subgroup (K ≃ₐ[F] K)) [N.Normal] :
+    ∃ (_ : IsGalois F ↥(IntermediateField.fixedField N)),
+      Nonempty ((K ≃ₐ[F] K) ⧸ N ≃*
+        (↥(IntermediateField.fixedField N) ≃ₐ[F] ↥(IntermediateField.fixedField N))) :=
+  ⟨inferInstance, ⟨IsGalois.normalAutEquivQuotient N⟩⟩
+
+-- ============================================================================
 -- Verification
 -- ============================================================================
 
 #check s5_not_solvable             -- NOT solvable: S₅
 #check sn_solvable_iff             -- Sₙ solvable ↔ n ≤ 4
+#check an_not_solvable_of_ge_five  -- NOT solvable: Aₙ for n ≥ 5
+#check an_solvable_iff             -- Aₙ solvable ↔ n ≤ 4
 #check a5_simple                   -- A₅ is simple
 #check a5_commutator_eq_top        -- A₅ is perfect
 #check finrank_over_fixed_field    -- [K : K^H] = |H|
 #check finrank_fixed_field_over_base  -- [K^H : F] = [G : H]
 #check cayley_card                 -- Cayley's theorem
+#check quotient_is_galois          -- K^H/F is Galois when H ◁ Gal(K/F)
+#check quotient_galois_equiv       -- Gal(K/F)/H ≅ Gal(K^H/F)
+#check fixed_field_galois_card_eq_index  -- |Gal(K^H/F)| = [G : H]
+#check quotient_of_galois_realized -- Quotient realizability
+#check realizability_closed_under_quotients -- Realizability closed under quotients
 #check inverse_galois_conjecture   -- The open problem
 
 end InverseGaloisOQ01
