@@ -62,7 +62,10 @@
       "This problem spawned modern Geometric Invariant Theory"
     ],
     "prerequisites": [
-      "Abstract algebra"
+      "Group actions on polynomial rings ($G$ acting linearly on $k[x_1, \\ldots, x_n]$)",
+      "Noetherian rings and Hilbert's Basis Theorem ($R$ Noetherian $\\Rightarrow R[X]$ Noetherian)",
+      "Reductive algebraic groups and the Reynolds operator (projection onto invariants)",
+      "Ring of invariants $R^G = \\{f : g(f) = f\\}$ and finite generation as a $k$-algebra"
     ]
   },
   "sections": [

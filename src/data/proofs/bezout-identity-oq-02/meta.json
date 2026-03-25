@@ -72,7 +72,10 @@
       "**IsCoprime IS the Bézout condition**: In Lean 4, `IsCoprime a b = ∃ u v, u*a + v*b = 1`, so `euclids_lemma_int` is the most direct version."
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Bézout's identity: $\\gcd(a,b) = ax + by$ for integers $x, y$ (extended Euclidean algorithm)",
+      "Coprimality and divisibility in $\\mathbb{Z}$ (GCD, $\\gcd(a,b)=1$ implies linear combination equals 1)",
+      "Casting between $\\mathbb{N}$ and $\\mathbb{Z}$ (handling negative Bézout coefficients)",
+      "Ring arithmetic and the `linear_combination` proof technique"
     ]
   },
   "sections": [
