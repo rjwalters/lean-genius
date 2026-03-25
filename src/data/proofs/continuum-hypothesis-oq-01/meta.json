@@ -83,7 +83,7 @@
       "startLine": 1,
       "endLine": 59,
       "summary": "Imports, problem statement, and overview of the CH axiom landscape.",
-      "mathContext": "Imports, problem statement, and overview of the CH axiom landscape."
+      "mathContext": "**CH**: $2^{\\aleph_0} = \\aleph_1$. **GCH**: $2^{\\aleph_\\alpha} = \\aleph_{\\alpha+1}$ for all ordinals $\\alpha$. Gödel (1938): $\\text{Con}(\\text{ZFC}) \\Rightarrow \\text{Con}(\\text{ZFC} + \\text{CH})$. Cohen (1963): $\\text{Con}(\\text{ZFC}) \\Rightarrow \\text{Con}(\\text{ZFC} + \\neg\\text{CH})$."
     },
     {
       "id": "deciding-ch",
@@ -91,7 +91,7 @@
       "startLine": 60,
       "endLine": 83,
       "summary": "The `Decides` predicate: axiom Φ decides CH iff it implies CH or implies ¬CH. CH and ¬CH trivially decide themselves.",
-      "mathContext": "The `Decides` predicate: axiom Φ decides CH iff it implies CH or implies ¬CH. CH and ¬CH trivially decide themselves."
+      "mathContext": "$\\text{Decides}(\\Phi, \\text{CH}) \\iff (\\Phi \\Rightarrow \\text{CH}) \\lor (\\Phi \\Rightarrow \\neg\\text{CH})$. CH and $\\neg$CH are both consistent with ZFC, so ZFC alone does not decide CH."
     },
     {
       "id": "zfc-bounds",
@@ -99,7 +99,7 @@
       "startLine": 84,
       "endLine": 129,
       "summary": "ℵ₁ ≤ 2^ℵ₀ (provable in ZFC); under ¬CH, the continuum is strictly > ℵ₁ and at least ℵ₂.",
-      "mathContext": "ℵ₁ ≤ 2^ℵ₀ (provable in ZFC); under ¬CH, the continuum is strictly > ℵ₁ and at least ℵ₂."
+      "mathContext": "$\\aleph_1 \\leq 2^{\\aleph_0}$ (provable in ZFC: $\\omega_1$ injects into $\\mathcal{P}(\\omega)$). Under $\\neg$CH: $\\aleph_1 < 2^{\\aleph_0}$, and $2^{\\aleph_0}$ can be $\\aleph_2$, $\\aleph_{\\omega_1}$, or any cardinal of uncountable cofinality (Easton's theorem for regular cardinals)."
     },
     {
       "id": "constructibility-direction",
@@ -107,7 +107,7 @@
       "startLine": 130,
       "endLine": 166,
       "summary": "V=L implies GCH implies CH. Ultimate-L (Woodin) also implies GCH conditionally.",
-      "mathContext": "V=L implies GCH implies CH. Ultimate-L (Woodin) also implies GCH conditionally."
+      "mathContext": "$V = L \\Rightarrow \\text{GCH} \\Rightarrow \\text{CH}$, where $L$ is Gödel's constructible universe. Ultimate-$L$ (Woodin): a conjectured inner model compatible with all large cardinals that also implies GCH."
     },
     {
       "id": "forcing-axioms",
@@ -115,7 +115,7 @@
       "startLine": 167,
       "endLine": 213,
       "summary": "PFA implies 2^ℵ₀ = ℵ₂, hence ¬CH. MM implies PFA hence also ¬CH.",
-      "mathContext": "PFA implies 2^ℵ₀ = ℵ₂, hence ¬CH. MM implies PFA hence also ¬CH."
+      "mathContext": "**PFA** (Proper Forcing Axiom): $2^{\\aleph_0} = \\aleph_2$, hence $\\neg$CH. **MM** (Martin's Maximum): strengthens PFA, also implies $2^{\\aleph_0} = \\aleph_2$. These axioms extend ZFC's combinatorial power while negating CH."
     },
     {
       "id": "large-cardinal-incompatibility",
@@ -123,7 +123,7 @@
       "startLine": 214,
       "endLine": 259,
       "summary": "Scott (1961): V=L and measurable cardinals are mutually exclusive. V=L is not large-cardinal compatible.",
-      "mathContext": "Scott (1961): V=L and measurable cardinals are mutually exclusive. V=L is not large-cardinal compatible."
+      "mathContext": "Scott (1961): $V = L \\Rightarrow$ no measurable cardinals exist. Measurable $\\kappa$: $\\exists$ non-principal $\\kappa$-complete ultrafilter on $\\kappa$. Since large cardinals are accepted in modern set theory, $V = L$ is considered too restrictive."
     },
     {
       "id": "axiom-selection",
@@ -131,7 +131,7 @@
       "startLine": 260,
       "endLine": 281,
       "summary": "Key asymmetry theorem: V=L (→ CH) fails large-cardinal compatibility; PFA (→ ¬CH) satisfies it.",
-      "mathContext": "Key asymmetry theorem: V=L (→ CH) fails large-cardinal compatibility; PFA (→ ¬CH) satisfies it."
+      "mathContext": "$V = L \\Rightarrow \\text{CH}$ but $V = L \\Rightarrow \\neg\\exists$ measurable cardinals. PFA $\\Rightarrow \\neg\\text{CH}$ ($2^{\\aleph_0} = \\aleph_2$) and PFA is compatible with large cardinals. This asymmetry favors the $\\neg$CH direction."
     },
     {
       "id": "open-question-summary",
@@ -139,7 +139,7 @@
       "startLine": 262,
       "endLine": 317,
       "summary": "Both CH-deciding and ¬CH-deciding axioms exist. The ¬CH side has structural advantages via large-cardinal compatibility.",
-      "mathContext": "Both CH-deciding and ¬CH-deciding axioms exist. The ¬CH side has structural advantages via large-cardinal compatibility."
+      "mathContext": "Both CH and $\\neg$CH are equiconsistent with ZFC. The $\\neg$CH axioms (PFA, MM) have structural advantages: compatibility with large cardinals, natural combinatorial consequences, and Woodin's $\\Omega$-logic arguments. The question \"should we adopt $\\neg$CH?\" remains open in the philosophy of set theory."
     }
   ],
   "conclusion": {
