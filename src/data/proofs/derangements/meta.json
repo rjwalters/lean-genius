@@ -252,16 +252,16 @@
   },
   "mainTheorems": [
     {
-      "name": "derangement_count",
+      "name": "derangements_recurrence",
       "type": "core",
-      "description": "Number of derangements of n elements: D_n = n! * sum_{k=0}^n (-1)^k/k!",
-      "leanType": "(n : Nat) -> card (derangements n) = n! * sum k in range (n+1), (-1)^k / k!"
+      "description": "Derangement recurrence: D(n+2) = (n+1)(D(n) + D(n+1))",
+      "leanType": "(n : ℕ) → numDerangements (n + 2) = (n + 1) * (numDerangements n + numDerangements (n + 1))"
     },
     {
       "name": "derangement_probability",
       "type": "key",
-      "description": "Probability of a random permutation being a derangement approaches 1/e",
-      "leanType": "Tendsto (fun n => D_n / n!) atTop (nhds (1/Real.exp 1))"
+      "description": "Probability of a derangement approaches 1/e as n → ∞",
+      "leanType": "Filter.Tendsto (fun n => (numDerangements n : ℝ) / n.factorial) Filter.atTop (nhds (1 / Real.exp 1))"
     }
   ]
 }
