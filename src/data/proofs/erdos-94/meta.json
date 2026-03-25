@@ -90,7 +90,7 @@
       "summary": "Defines `Point := EuclideanSpace ℝ (Fin 2)`, `PointConfig := Finset Point`, `dist'` wrapping `dist`, `distanceSet` as positive pairwise distances, and `distanceMultiset` with repetitions.",
       "startLine": 35,
       "endLine": 53,
-      "mathContext": "Defines `Point := EuclideanSpace ℝ (Fin 2)`, `PointConfig := Finset Point`, `dist'` wrapping `dist`, `distanceSet` as positive pairwise distances, and `distanceMultiset` with repetitions."
+      "mathContext": "Defines `Point := EuclideanSpace $\\mathbb{R}$ (Fin 2)`, `PointConfig := Finset Point`, `dist'` wrapping `dist`, `distanceSet` as positive pairwise distances, and `distanceMultiset` with repetitions."
     },
     {
       "id": "multiplicity",
@@ -98,7 +98,7 @@
       "summary": "Defines `distanceMultiplicity P u` (ordered pairs) and `unorderedMultiplicity P u` (half of ordered). Proves `sum_multiplicities`: $\\sum f(u) = \\binom{n}{2}$ via Aristotle (no sorry).",
       "startLine": 54,
       "endLine": 68,
-      "mathContext": "Defines `distanceMultiplicity P u` (ordered pairs) and `unorderedMultiplicity P u` (half of ordered). Proves `sum_multiplicities`: $\\sum f(u) = \\binom{n}{2}$ via Aristotle (no sorry)."
+      "mathContext": "Formal definition: Defines `distanceMultiplicity P u` (ordered pairs) and `unorderedMultiplicity P u` (half of ordered). Proves `sum_multiplicities`: $\\sum f(u) = \\binom{n}{2}$ via Aristotle (no sorry)."
     },
     {
       "id": "sum-squared",
@@ -114,7 +114,7 @@
       "summary": "Defines `InConvexPosition P` (no point in convex hull of rest) and `NoThreeCollinear P` (no three collinear). States `convex_implies_no_collinear` (sorry).",
       "startLine": 85,
       "endLine": 101,
-      "mathContext": "Defines `InConvexPosition P` (no point in convex hull of rest) and `NoThreeCollinear P` (no three collinear). States `convex_implies_no_collinear` (sorry)."
+      "mathContext": "Formal definition: Defines `InConvexPosition P` (no point in convex hull of rest) and `NoThreeCollinear P` (no three collinear). States `convex_implies_no_collinear` (sorry)."
     },
     {
       "id": "fishburn",
@@ -122,7 +122,7 @@
       "summary": "States `fishburn_theorem`: $\\exists C > 0,\\, \\sum f(u)^2 \\leq C n^3$ for convex polygons (sorry). States `fishburn_asymptotic`: constant approaches $1 + \\varepsilon$ for large $n$ (sorry).",
       "startLine": 102,
       "endLine": 115,
-      "mathContext": "States `fishburn_theorem`: $\\exists C > 0,\\, \\sum f(u)^2 \\leq C n^3$ for convex polygons (sorry). States `fishburn_asymptotic`: constant approaches $1 + \\varepsilon$ for large $n$ (sorry)."
+      "mathContext": "States `fishburn_theorem`: $\\exists C > 0,\\, \\sum f(u)^2 \\leq C $n^{3}$$ for convex polygons (sorry). States `fishburn_asymptotic`: constant approaches $1 + \\varepsilon$ for large $n$ (sorry)."
     },
     {
       "id": "lefmann-theile",
@@ -130,7 +130,7 @@
       "summary": "States `lefmann_theile_theorem`: $O(n^3)$ bound under weaker `NoThreeCollinear` condition (sorry).",
       "startLine": 116,
       "endLine": 123,
-      "mathContext": "States `lefmann_theile_theorem`: $O(n^3)$ bound under weaker `NoThreeCollinear` condition (sorry)."
+      "mathContext": "States `lefmann_theile_theorem`: $$O($n^{3}$)$$ bound under weaker `NoThreeCollinear` condition (sorry)."
     },
     {
       "id": "regular-ngon",
@@ -138,7 +138,7 @@
       "summary": "Constructs `regularNGon n` via $\\cos/\\sin$ on the unit circle. States `regular_ngon_convex` (sorry) and `regular_ngon_cubic`: $\\Theta(n^3)$ (sorry).",
       "startLine": 124,
       "endLine": 146,
-      "mathContext": "Constructs `regularNGon n` via $\\cos/\\sin$ on the unit circle. States `regular_ngon_convex` (sorry) and `regular_ngon_cubic`: $\\Theta(n^3)$ (sorry)."
+      "mathContext": "Constructs `regularNGon n` via $\\cos/\\sin$ on the unit circle. States `regular_ngon_convex` (sorry) and `regular_ngon_cubic`: $\\Theta($n^{3}$)$ (sorry)."
     },
     {
       "id": "extremal",
@@ -146,7 +146,7 @@
       "summary": "Defines `ErdosFishburnConjecture : Prop` — regular $n$-gon maximizes $\\sum f(u)^2$ for large $n$. States `conjecture_small_cases` for $n \\leq 10$ (sorry).",
       "startLine": 147,
       "endLine": 159,
-      "mathContext": "Defines `ErdosFishburnConjecture : Prop` — regular $n$-gon maximizes $\\sum f(u)^2$ for large $n$. States `conjecture_small_cases` for $n \\leq 10$ (sorry)."
+      "mathContext": "Formal definition: Defines `ErdosFishburnConjecture : Prop` — regular $n$-gon maximizes $\\sum f(u)^2$ for large $n$. States `conjecture_small_cases` for $n \\leq 10$ (sorry)."
     },
     {
       "id": "connections",
@@ -154,7 +154,7 @@
       "summary": "Defines `numDistinctDistances`, `maxMultiplicity`, `unitDistanceCount`. States convex bounds: $|d(P)| \\leq \\lfloor n/2 \\rfloor + 1$, $\\max f(u) \\leq 2n$, $f(1) \\leq 2n - 2$ (all sorry).",
       "startLine": 160,
       "endLine": 433,
-      "mathContext": "Defines `numDistinctDistances`, `maxMultiplicity`, `unitDistanceCount`. States convex bounds: $|d(P)| \\leq \\lfloor n/2 \\rfloor + 1$, $\\max f(u) \\leq 2n$, $f(1) \\leq 2n - 2$ (all sorry)."
+      "mathContext": "Formal definition: Defines `numDistinctDistances`, `maxMultiplicity`, `unitDistanceCount`. States convex bounds: $|d(P)| \\leq \\lfloor n/2 \\rfloor + 1$, $\\max f(u) \\leq 2n$, $f(1) \\leq 2n - 2$ (all sorry)."
     }
   ],
   "conclusion": {

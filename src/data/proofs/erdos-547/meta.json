@@ -94,7 +94,7 @@
       "summary": "EdgeColoring via Sym2 (Fin n) → Bool; HasMonochromaticCopy via embedding + color agreement; ramseyNumber axioms (existence, spec, minimality).",
       "startLine": 35,
       "endLine": 77,
-      "mathContext": "EdgeColoring via Sym2 (Fin n) → Bool; HasMonochromaticCopy via embedding + color agreement; ramseyNumber axioms (existence, spec, minimality)."
+      "mathContext": "EdgeColoring via Sym2 (Fin n) $\\to$ Bool; HasMonochromaticCopy via embedding + color agreement; ramseyNumber axioms (existence, spec, minimality)."
     },
     {
       "id": "trees",
@@ -102,7 +102,7 @@
       "summary": "IsTree (connected, n-1 edges), tree_exists, maxDegree, tree_degree_bounds (1 ≤ Δ ≤ n-1).",
       "startLine": 78,
       "endLine": 104,
-      "mathContext": "IsTree (connected, n-1 edges), tree_exists, maxDegree, tree_degree_bounds (1 ≤ Δ ≤ n-1)."
+      "mathContext": "IsTree (connected, n-1 edges), tree_exists, maxDegree, tree_degree_bounds (1 $\\leq$ Δ $\\leq$ n-1)."
     },
     {
       "id": "special-trees",
@@ -110,7 +110,7 @@
       "summary": "IsPath (Δ ≤ 2), IsStar (one center), IsCaterpillar (path after leaf removal); inclusion proofs and degree axioms.",
       "startLine": 105,
       "endLine": 138,
-      "mathContext": "IsPath (Δ ≤ 2), IsStar (one center), IsCaterpillar (path after leaf removal); inclusion proofs and degree axioms."
+      "mathContext": "IsPath (Δ $\\leq$ 2), IsStar (one center), IsCaterpillar (path after leaf removal); inclusion proofs and degree axioms."
     },
     {
       "id": "specific-ramsey",
@@ -118,7 +118,7 @@
       "summary": "R(P_n) = n (paths, minimum among trees) and R(S_n) = 2n - 2 (stars, maximum among trees).",
       "startLine": 138,
       "endLine": 138,
-      "mathContext": "R(P_n) = n (paths, minimum among trees) and R(S_n) = 2n - 2 (stars, maximum among trees)."
+      "mathContext": "Mathematical content: R(P_n) = n (paths, minimum among trees) and R(S_n) = 2n - 2 (stars, maximum among trees)."
     },
     {
       "id": "chvatal",
@@ -126,7 +126,7 @@
       "summary": "R(T) ≤ (Δ-1)(n-1) + 1; tight for paths (chvatal_tight_for_paths). Analysis: weak for high-degree trees.",
       "startLine": 138,
       "endLine": 138,
-      "mathContext": "R(T) ≤ (Δ-1)(n-1) + 1; tight for paths (chvatal_tight_for_paths). Analysis: weak for high-degree trees."
+      "mathContext": "R(T) $\\leq$ (Δ-1)(n-1) + 1; tight for paths (chvatal_tight_for_paths). Analysis: weak for high-degree trees."
     },
     {
       "id": "main-conjecture",
@@ -134,7 +134,7 @@
       "summary": "Universal bound tree_ramsey_bound; tightness via bound_achieved_by_stars; proved for large n by regularity method.",
       "startLine": 138,
       "endLine": 138,
-      "mathContext": "Universal bound tree_ramsey_bound; tightness via bound_achieved_by_stars; proved for large n by regularity method."
+      "mathContext": "Bound: Universal bound tree_ramsey_bound; tightness via bound_achieved_by_stars; proved for large n by regularity method."
     },
     {
       "id": "comparison",
@@ -142,7 +142,7 @@
       "summary": "chvatal_vs_main: Chvátal beats 2n-2 iff Δ ∈ {1, 2}, so only for paths.",
       "startLine": 138,
       "endLine": 138,
-      "mathContext": "chvatal_vs_main: Chvátal beats 2n-2 iff Δ ∈ {1, 2}, so only for paths."
+      "mathContext": "Mathematical content: chvatal_vs_main: Chvátal beats 2n-2 iff Δ ∈ {1, 2}, so only for paths."
     },
     {
       "id": "main-results",
@@ -150,7 +150,7 @@
       "summary": "erdos_547 theorem, tightness (erdos_547_tight), and tree_ramsey_ordering: n ≤ R(T) ≤ 2n - 2.",
       "startLine": 138,
       "endLine": 138,
-      "mathContext": "erdos_547 theorem, tightness (erdos_547_tight), and tree_ramsey_ordering: n ≤ R(T) ≤ 2n - 2."
+      "mathContext": "erdos_547 theorem, tightness (erdos_547_tight), and tree_ramsey_ordering: n $\\leq$ R(T) $\\leq$ 2n - 2."
     }
   ],
   "conclusion": {

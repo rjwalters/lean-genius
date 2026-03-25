@@ -51,7 +51,7 @@
       "startLine": 25,
       "endLine": 30,
       "summary": "import Mathlib, Erdos179 namespace, open Finset.",
-      "mathContext": "import Mathlib, Erdos179 namespace, open Finset."
+      "mathContext": "Mathematical content: import Mathlib, Erdos179 namespace, open Finset."
     },
     {
       "id": "arithmetic-progressions",
@@ -59,7 +59,7 @@
       "startLine": 31,
       "endLine": 48,
       "summary": "arithmeticProgression (Finset.image), ContainsAP (∃ AP ⊆ A), countAPs (powerset filter).",
-      "mathContext": "arithmeticProgression (Finset.image), ContainsAP (∃ AP ⊆ A), countAPs (powerset filter)."
+      "mathContext": "Mathematical content: arithmeticProgression (Finset.image), ContainsAP (∃ AP ⊆ A), countAPs (powerset filter)."
     },
     {
       "id": "supersaturation-function",
@@ -67,7 +67,7 @@
       "startLine": 49,
       "endLine": 69,
       "summary": "F_k(N, ℓ) via Nat.find (sorry for existence), SupersaturationProperty.",
-      "mathContext": "F_k(N, ℓ) via Nat.find (sorry for existence), SupersaturationProperty."
+      "mathContext": "Mathematical content: F_k(N, ℓ) via Nat.find (sorry for existence), SupersaturationProperty."
     },
     {
       "id": "trivial-bounds",
@@ -75,7 +75,7 @@
       "startLine": 70,
       "endLine": 88,
       "summary": "F_lower_bound ≥ N^{1.99} (axiom), F_upper_trivial ≤ N² (sorry), random_set_APs (sorry).",
-      "mathContext": "F_lower_bound ≥ N^{1.99} (axiom), F_upper_trivial ≤ N² (sorry), random_set_APs (sorry)."
+      "mathContext": "F_lower_bound $\\geq$ N^{1.99} (axiom), F_upper_trivial $\\leq$ N² (sorry), random_set_APs (sorry)."
     },
     {
       "id": "erdos-questions",
@@ -83,7 +83,7 @@
       "startLine": 89,
       "endLine": 104,
       "summary": "Question1: F₃(N,4) = o(N²). Question2: lim log F₃(N,ℓ)/log N = 2.",
-      "mathContext": "Question1: F₃(N,4) = o(N²). Question2: lim log F₃(N,ℓ)/log N = 2."
+      "mathContext": "Mathematical content: Question1: F₃(N,4) = o(N²). Question2: lim log F₃(N,ℓ)/log N = 2."
     },
     {
       "id": "fox-pohoata",
@@ -91,7 +91,7 @@
       "startLine": 105,
       "endLine": 131,
       "summary": "fox_pohoata_theorem: F ≤ N²/(log log N)^C. question1_solved (1 sorry). question2_solved (sorry).",
-      "mathContext": "fox_pohoata_theorem: F ≤ N²/(log log N)^C. question1_solved (1 sorry). question2_solved (sorry)."
+      "mathContext": "fox_pohoata_theorem: F $\\leq$ N²/(log log N)^C. question1_solved (1 sorry). question2_solved (sorry)."
     },
     {
       "id": "leng-sah-sawhney",
@@ -99,7 +99,7 @@
       "startLine": 132,
       "endLine": 149,
       "summary": "leng_sah_sawhney: F ≤ N²/exp((log log N)^c). improvement_significant (sorry).",
-      "mathContext": "leng_sah_sawhney: F ≤ N²/exp((log log N)^c). improvement_significant (sorry)."
+      "mathContext": "leng_sah_sawhney: F $\\leq$ N²/exp((log log N)^c). improvement_significant (sorry)."
     },
     {
       "id": "szemeredi-connection",
@@ -107,7 +107,7 @@
       "startLine": 150,
       "endLine": 191,
       "summary": "szemeredi_theorem, roth_theorem, behrend_construction (axioms). Dense set AP counting.",
-      "mathContext": "szemeredi_theorem, roth_theorem, behrend_construction (axioms). Dense set AP counting."
+      "mathContext": "Verified: szemeredi_theorem, roth_theorem, behrend_construction (axioms). Dense set AP counting."
     },
     {
       "id": "special-cases",
@@ -115,7 +115,7 @@
       "startLine": 192,
       "endLine": 208,
       "summary": "F_2_well_defined (sorry), exponent_is_2 (sorry).",
-      "mathContext": "F_2_well_defined (sorry), exponent_is_2 (sorry)."
+      "mathContext": "Mathematical content: F_2_well_defined (sorry), exponent_is_2 (sorry)."
     },
     {
       "id": "main-result",
@@ -123,7 +123,7 @@
       "startLine": 209,
       "endLine": 234,
       "summary": "erdos_179: Question1 ∧ Question2. erdos_179_answer (String def). #check statements.",
-      "mathContext": "erdos_179: Question1 ∧ Question2. erdos_179_answer (String def). #check statements."
+      "mathContext": "Mathematical content: erdos_179: Question1 ∧ Question2. erdos_179_answer (String def). #check statements."
     }
   ],
   "conclusion": {

@@ -96,7 +96,7 @@
       "startLine": 36,
       "endLine": 55,
       "summary": "Defines IsNonDivisible (t-non-divisibility for set pairs) and IsAdmissible (containment in {1,...,N} plus non-divisibility).",
-      "mathContext": "Defines IsNonDivisible (t-non-divisibility for set pairs) and IsAdmissible (containment in {1,...,N} plus non-divisibility)."
+      "mathContext": "Formal definition: Defines IsNonDivisible (t-non-divisibility for set pairs) and IsAdmissible (containment in {1,...,N} plus non-divisibility)."
     },
     {
       "id": "extremal-function",
@@ -104,7 +104,7 @@
       "startLine": 56,
       "endLine": 66,
       "summary": "Defines f(N,t) as sSup of achievable cardinalities of t-admissible sets.",
-      "mathContext": "Defines f(N,t) as sSup of achievable cardinalities of t-admissible sets."
+      "mathContext": "Formal definition: Defines f(N,t) as sSup of achievable cardinalities of t-admissible sets."
     },
     {
       "id": "case-t1",
@@ -112,7 +112,7 @@
       "startLine": 67,
       "endLine": 98,
       "summary": "Defines oddSet and axiomatizes: oddSet_admissible, oddSet_card = (N+1)/2, f_t1 optimality.",
-      "mathContext": "Defines oddSet and axiomatizes: oddSet_admissible, oddSet_card = (N+1)/2, f_t1 optimality."
+      "mathContext": "Formal definition: Defines oddSet and axiomatizes: oddSet_admissible, oddSet_card = (N+1)/2, f_t1 optimality."
     },
     {
       "id": "case-t2",
@@ -120,7 +120,7 @@
       "startLine": 99,
       "endLine": 124,
       "summary": "Axioms for f_t2_lower (N/2 + c·log N) and erdos_construction_t2 using odd numbers plus powers of 2.",
-      "mathContext": "Axioms for f_t2_lower (N/2 + c·log N) and erdos_construction_t2 using odd numbers plus powers of 2."
+      "mathContext": "Axiomatized: Axioms for f_t2_lower (N/2 + c·log N) and erdos_construction_t2 using odd numbers plus powers of 2."
     },
     {
       "id": "conjecture",
@@ -128,7 +128,7 @@
       "startLine": 125,
       "endLine": 148,
       "summary": "Defines ErdosConjecture635 with ε-N₀ quantifiers formalizing o_t(1). Axiom erdos_635.",
-      "mathContext": "Defines ErdosConjecture635 with ε-N₀ quantifiers formalizing o_t(1). Axiom erdos_635."
+      "mathContext": "Formal definition: Defines ErdosConjecture635 with ε-N₀ quantifiers formalizing o_t(1). Axiom erdos_635."
     },
     {
       "id": "bounds",
@@ -136,7 +136,7 @@
       "startLine": 149,
       "endLine": 172,
       "summary": "Axioms: f_upper_trivial (f ≤ N), f_monotone_t, f_lower_half (≥ (N+1)/2), f_t1_density (→ 1/2).",
-      "mathContext": "Axioms: f_upper_trivial (f ≤ N), f_monotone_t, f_lower_half (≥ (N+1)/2), f_t1_density (→ 1/2)."
+      "mathContext": "Axioms: f_upper_trivial (f $\\leq$ N), f_monotone_t, f_lower_half ($\\geq$ (N+1)/2), f_t1_density ($\\to$ 1/2)."
     },
     {
       "id": "structural",
@@ -144,7 +144,7 @@
       "startLine": 173,
       "endLine": 188,
       "summary": "Axiom no_far_multiples: admissible sets exclude distant multiples.",
-      "mathContext": "Axiom no_far_multiples: admissible sets exclude distant multiples."
+      "mathContext": "Axiomatized: Axiom no_far_multiples: admissible sets exclude distant multiples."
     },
     {
       "id": "summary",
@@ -152,7 +152,7 @@
       "startLine": 189,
       "endLine": 265,
       "summary": "erdos_635_t1_solved theorem (from f_t1), erdos_635_status (trivial). Problem OPEN for general t.",
-      "mathContext": "erdos_635_t1_solved theorem (from f_t1), erdos_635_status (trivial). Problem OPEN for general t."
+      "mathContext": "Verified: erdos_635_t1_solved theorem (from f_t1), erdos_635_status (trivial). Problem OPEN for general t."
     }
   ],
   "conclusion": {

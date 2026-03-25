@@ -58,7 +58,7 @@
       "startLine": 35,
       "endLine": 49,
       "summary": "Defines nthPrime via Nat.nth and primeGap = p_{n+1} - p_n. Both are noncomputable since Nat.nth uses classical choice.",
-      "mathContext": "Defines nthPrime via Nat.nth and primeGap = p_{n+1} - p_n. Both are noncomputable since Nat.nth uses classical choice."
+      "mathContext": "Formal definition: Defines nthPrime via Nat.nth and primeGap = p_{n+1} - p_n. Both are noncomputable since Nat.nth uses classical choice."
     },
     {
       "id": "consecutive-sequences",
@@ -66,7 +66,7 @@
       "startLine": 51,
       "endLine": 75,
       "summary": "Defines consecutivePrimes (k primes starting from p_m), allPrimesLeX (all primes bounded by x), and allGapsLarge (all k-1 gaps exceed c₂). Uses Fin k for type-safe indexing.",
-      "mathContext": "Defines consecutivePrimes (k primes starting from p_m), allPrimesLeX (all primes bounded by x), and allGapsLarge (all k-1 gaps exceed c₂). Uses Fin k for type-safe indexing."
+      "mathContext": "Formal definition: Defines consecutivePrimes (k primes starting from p_m), allPrimesLeX (all primes bounded by x), and allGapsLarge (all k-1 gaps exceed c₂). Uses Fin k for type-safe indexing."
     },
     {
       "id": "main-conjecture",
@@ -74,7 +74,7 @@
       "startLine": 77,
       "endLine": 89,
       "summary": "mainConjecture: ∀ c₁,c₂ > 0, eventually (via Filter.atTop) ∃ run of k > c₁·log(x) consecutive primes ≤ x with all gaps > c₂.",
-      "mathContext": "mainConjecture: ∀ c₁,c₂ > 0, eventually (via Filter.atTop) ∃ run of k > c₁·log(x) consecutive primes ≤ x with all gaps > c₂."
+      "mathContext": "mainConjecture: ∀ c₁,c₂ > 0, eventually (via Filter.atTop) ∃ run of k > c₁·log(x) consecutive primes $\\leq$ x with all gaps > c₂."
     },
     {
       "id": "negation",
@@ -82,7 +82,7 @@
       "startLine": 91,
       "endLine": 102,
       "summary": "Explicit negation: ∃ c₁,c₂ > 0 such that for arbitrarily large x, no qualifying run exists. Enables the structural proof conjecture_vs_negation.",
-      "mathContext": "Explicit negation: ∃ c₁,c₂ > 0 such that for arbitrarily large x, no qualifying run exists. Enables the structural proof conjecture_vs_negation."
+      "mathContext": "Verified: Explicit negation: ∃ c₁,c₂ > 0 such that for arbitrarily large x, no qualifying run exists. Enables the structural proof conjecture_vs_negation."
     },
     {
       "id": "partial-result",
@@ -90,7 +90,7 @@
       "startLine": 104,
       "endLine": 117,
       "summary": "Axiom encoding Erdős's theorem: ∀ c₂ > 0, ∃ c₁ > 0 (small, depending on c₂) making the conjecture hold. The quantifier swap (∃c₁ vs ∀c₁) is the gap between known and open.",
-      "mathContext": "Axiom encoding Erdős's theorem: ∀ c₂ > 0, ∃ c₁ > 0 (small, depending on c₂) making the conjecture hold. The quantifier swap (∃c₁ vs ∀c₁) is the gap between known and open."
+      "mathContext": "Verified: Axiom encoding Erdős's theorem: ∀ c₂ > 0, ∃ c₁ > 0 (small, depending on c₂) making the conjecture hold. The quantifier swap (∃c₁ vs ∀c₁) is the gap between known and open."
     },
     {
       "id": "pnt-context",
@@ -98,7 +98,7 @@
       "startLine": 119,
       "endLine": 141,
       "summary": "PROVED average_gap_grows via factorial argument (prime gaps are unbounded). Uses Nat.count/Nat.nth Galois connection. Remaining axiom: prime_number_theorem_asymptotic (π(x) ~ x/log(x)).",
-      "mathContext": "PROVED average_gap_grows via factorial argument (prime gaps are unbounded). Uses Nat.count/Nat.nth Galois connection. Remaining axiom: prime_number_theorem_asymptotic (π(x) ~ x/log(x))."
+      "mathContext": "Verified: PROVED average_gap_grows via factorial argument (prime gaps are unbounded). Uses Nat.count/Nat.nth Galois connection. Remaining axiom: prime_number_theorem_asymptotic (π(x) ~ x/log(x))."
     },
     {
       "id": "run-length",
@@ -114,7 +114,7 @@
       "startLine": 166,
       "endLine": 181,
       "summary": "Proved theorem large_gaps_eventually_dominate: for any fixed c₂, large gaps become common for large x. Direct consequence of average_gap_grows axiom.",
-      "mathContext": "Proved theorem large_gaps_eventually_dominate: for any fixed c₂, large gaps become common for large x. Direct consequence of average_gap_grows axiom."
+      "mathContext": "Verified: Proved theorem large_gaps_eventually_dominate: for any fixed c₂, large gaps become common for large x. Direct consequence of average_gap_grows axiom."
     },
     {
       "id": "cramer",
@@ -122,7 +122,7 @@
       "startLine": 183,
       "endLine": 196,
       "summary": "Defines cramersConjecture as a Prop: ∃ C > 0 s.t. all gaps ≤ C·(log x)² eventually. Provides supporting context but is itself open.",
-      "mathContext": "Defines cramersConjecture as a Prop: ∃ C > 0 s.t. all gaps ≤ C·(log x)² eventually. Provides supporting context but is itself open."
+      "mathContext": "Defines cramersConjecture as a Prop: ∃ C > 0 s.t. all gaps $\\leq$ C·(log x)² eventually. Provides supporting context but is itself open."
     },
     {
       "id": "structural-theorems",
@@ -130,7 +130,7 @@
       "startLine": 198,
       "endLine": 234,
       "summary": "Three verified results: partial_weaker_than_full (full conjecture ⟹ partial), conjecture_vs_negation (12-line proof using Filter.mem_atTop_sets), and erdos_238_summary packaging known results.",
-      "mathContext": "Three verified results: partial_weaker_than_full (full conjecture ⟹ partial), conjecture_vs_negation (12-line proof using Filter.mem_atTop_sets), and erdos_238_summary packaging known results."
+      "mathContext": "Three verified results: partial_weaker_than_full (full conjecture $\\Rightarrow$ partial), conjecture_vs_negation (12-line proof using Filter.mem_atTop_sets), and erdos_238_summary packaging known results."
     }
   ],
   "conclusion": {

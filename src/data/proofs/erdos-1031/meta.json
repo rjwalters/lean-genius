@@ -54,7 +54,7 @@
       "summary": "$K_S = \\top$ (complete) and $\\overline{K}_S = \\bot$ (empty) graph definitions",
       "startLine": 25,
       "endLine": 40,
-      "mathContext": "$K_S = \\top$ (complete) and $\\overline{K}_S = \\bot$ (empty) graph definitions"
+      "mathContext": "Formal definition: $K_S = \\top$ (complete) and $\\overline{K}_S = \\bot$ (empty) graph definitions"
     },
     {
       "id": "trivial",
@@ -62,7 +62,7 @@
       "summary": "Trivial = independent set $\\lor$ clique; `isTrivialInduced ↔ isIndependentSet ∨ isClique`",
       "startLine": 41,
       "endLine": 64,
-      "mathContext": "Trivial = independent set $\\lor$ clique; `isTrivialInduced ↔ isIndependentSet ∨ isClique`"
+      "mathContext": "Mathematical content: Trivial = independent set $\\lor$ clique; `isTrivialInduced ↔ isIndependentSet ∨ isClique`"
     },
     {
       "id": "regular",
@@ -70,7 +70,7 @@
       "summary": "$\\deg_S(v)$, $k$-regular induced ($\\forall v \\in S,\\, \\deg_S(v) = k$), non-trivially regular",
       "startLine": 65,
       "endLine": 86,
-      "mathContext": "$\\deg_S(v)$, $k$-regular induced ($\\forall v \\in S,\\, \\deg_S(v) = k$), non-trivially regular"
+      "mathContext": "Mathematical content: $\\deg_S(v)$, $k$-regular induced ($\\forall v \\in S,\\, \\deg_S(v) = k$), non-trivially regular"
     },
     {
       "id": "non-ramsey",
@@ -78,7 +78,7 @@
       "summary": "`noLargeTrivial` $G$ $k$: no trivial subgraph $\\ge k$; Ramsey bound: $\\exists c,\\, \\text{trivial size} \\ge c\\log n$",
       "startLine": 87,
       "endLine": 102,
-      "mathContext": "`noLargeTrivial` $G$ $k$: no trivial subgraph $\\ge k$; Ramsey bound: $\\exists c,\\, \\text{trivial size} \\ge c\\log n$"
+      "mathContext": "`noLargeTrivial` $G$ $k$: no trivial subgraph $\\ge k$; Ramsey bound: $\\exists c,\\, \\text{trivial size} \\ge c\\$\\log n$$"
     },
     {
       "id": "conjecture",
@@ -86,7 +86,7 @@
       "summary": "$\\exists c > 0$: no trivial $\\ge 10\\log n$ $\\Rightarrow$ $\\exists$ non-trivial regular of size $\\ge c\\log n$",
       "startLine": 103,
       "endLine": 116,
-      "mathContext": "$\\exists c > 0$: no trivial $\\ge 10\\log n$ $\\Rightarrow$ $\\exists$ non-trivial regular of size $\\ge c\\log n$"
+      "mathContext": "$\\exists c > 0$: no trivial $\\ge 10\\$\\log n$$ $\\Rightarrow$ $\\exists$ non-trivial regular of size $\\ge c\\$\\log n$$"
     },
     {
       "id": "promel-rodl",
@@ -94,7 +94,7 @@
       "summary": "$k$-universality: $G$ contains all $k$-vertex graphs; Prömel-Rödl: non-Ramsey $\\Rightarrow$ $c'\\log n$-universal",
       "startLine": 117,
       "endLine": 145,
-      "mathContext": "$k$-universality: $G$ contains all $k$-vertex graphs; Prömel-Rödl: non-Ramsey $\\Rightarrow$ $c'\\log n$-universal"
+      "mathContext": "$k$-universality: $G$ contains all $k$-vertex graphs; Prömel-Rödl: non-Ramsey $\\Rightarrow$ $c'\\$\\log n$$-universal"
     },
     {
       "id": "solution",
@@ -102,7 +102,7 @@
       "summary": "For $k \\ge 3$, non-trivial $k$-regular graphs exist; `erdos_1031_solved`: conjecture TRUE via universality",
       "startLine": 146,
       "endLine": 173,
-      "mathContext": "For $k \\ge 3$, non-trivial $k$-regular graphs exist; `erdos_1031_solved`: conjecture TRUE via universality"
+      "mathContext": "Mathematical content: For $k \\ge 3$, non-trivial $k$-regular graphs exist; `erdos_1031_solved`: conjecture TRUE via universality"
     },
     {
       "id": "ramsey-connection",
@@ -110,7 +110,7 @@
       "summary": "$R(k,k)$ via `Nat.find`; bounds $2^{k/2} \\le R(k,k) \\le 4^k$; trivial subgraph $\\ge \\frac{1}{2}\\log_4 n$",
       "startLine": 174,
       "endLine": 203,
-      "mathContext": "$R(k,k)$ via `Nat.find`; bounds $2^{k/2} \\le R(k,k) \\le 4^k$; trivial subgraph $\\ge \\frac{1}{2}\\log_4 n$"
+      "mathContext": "$R(k,k)$ via `Nat.find`; bounds $$$2^{{k/2}$}$ \\le R(k,k) \\le $4^{k}$$; trivial subgraph $\\ge \\frac{1}{2}\\log_4 n$"
     },
     {
       "id": "non-ramsey-graphs",
@@ -118,7 +118,7 @@
       "summary": "`isNonRamsey` $G$ $c$: no trivial $\\ge c\\log n$; existence via $G(n,1/2)$ probabilistic construction",
       "startLine": 204,
       "endLine": 220,
-      "mathContext": "`isNonRamsey` $G$ $c$: no trivial $\\ge c\\log n$; existence via $G(n,1/2)$ probabilistic construction"
+      "mathContext": "`isNonRamsey` $G$ $c$: no trivial $\\ge c\\$\\log n$$; existence via $G(n,1/2)$ probabilistic construction"
     },
     {
       "id": "universality",
@@ -126,7 +126,7 @@
       "summary": "`nonRamsey_universal`: corollary of Prömel-Rödl; `universal_has_regular`: $k$-universal $\\Rightarrow$ $\\exists$ non-trivial regular",
       "startLine": 221,
       "endLine": 280,
-      "mathContext": "`nonRamsey_universal`: corollary of Prömel-Rödl; `universal_has_regular`: $k$-universal $\\Rightarrow$ $\\exists$ non-trivial regular"
+      "mathContext": "Mathematical content: `nonRamsey_universal`: corollary of Prömel-Rödl; `universal_has_regular`: $k$-universal $\\Rightarrow$ $\\exists$ non-trivial regular"
     }
   ],
   "conclusion": {

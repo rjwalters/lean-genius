@@ -33,7 +33,7 @@
       "startLine": 21,
       "endLine": 30,
       "summary": "Imports Mathlib libraries for natural numbers, finite sets, real numbers, and tactics. Opens `Finset` and creates the `Erdos160` namespace.",
-      "mathContext": "Imports Mathlib libraries for natural numbers, finite sets, real numbers, and tactics. Opens `Finset` and creates the `Erdos160` namespace."
+      "mathContext": "Mathematical content: Imports Mathlib libraries for natural numbers, finite sets, real numbers, and tactics. Opens `Finset` and creates the `Erdos160` namespace."
     },
     {
       "id": "definitions",
@@ -41,7 +41,7 @@
       "startLine": 31,
       "endLine": 58,
       "summary": "Defines 4-APs (`Is4AP`), color counting (`colorCount4`), the 3-diversity condition (`Is3DiverseOn4AP`), and the achievability predicate (`Achievable`).",
-      "mathContext": "Defines 4-APs (`Is4AP`), color counting (`colorCount4`), the 3-diversity condition (`Is3DiverseOn4AP`), and the achievability predicate (`Achievable`)."
+      "mathContext": "Formal definition: Defines 4-APs (`Is4AP`), color counting (`colorCount4`), the 3-diversity condition (`Is3DiverseOn4AP`), and the achievability predicate (`Achievable`)."
     },
     {
       "id": "structural",
@@ -49,7 +49,7 @@
       "startLine": 59,
       "endLine": 89,
       "summary": "Proves trivial achievability for $n = 0$ and $n \\le 3$, color monotonicity, and $n$-monotonicity. Establishes that achievability is well-behaved.",
-      "mathContext": "Proves trivial achievability for $n = 0$ and $n \\le 3$, color monotonicity, and $n$-monotonicity. Establishes that achievability is well-behaved."
+      "mathContext": "Verified: Proves trivial achievability for $n = 0$ and $n \\le 3$, color monotonicity, and $n$-monotonicity. Establishes that achievability is well-behaved."
     },
     {
       "id": "h-function",
@@ -57,7 +57,7 @@
       "startLine": 90,
       "endLine": 157,
       "summary": "Axiomatizes $h(N)$ as the minimum colors for 3-diverse coloring. Proves $h(N) \\ge 1$ for $N \\ge 4$, monotonicity, $h(0) = 0$, $h(N) \\le 1$ for $N \\le 3$, and $h(N) \\le N$ via the identity coloring.",
-      "mathContext": "Axiomatizes $h(N)$ as the minimum colors for 3-diverse coloring. Proves $h(N) \\ge 1$ for $N \\ge 4$, monotonicity, $h(0) = 0$, $h(N) \\le 1$ for $N \\le 3$, and $h(N) \\le N$ via the identity coloring."
+      "mathContext": "Verified: Axiomatizes $h(N)$ as the minimum colors for 3-diverse coloring. Proves $h(N) \\ge 1$ for $N \\ge 4$, monotonicity, $h(0) = 0$, $h(N) \\le 1$ for $N \\le 3$, and $h(N) \\le N$ via the identity coloring."
     },
     {
       "id": "upper-bounds",
@@ -65,7 +65,7 @@
       "startLine": 158,
       "endLine": 173,
       "summary": "Axiomatizes $h(N) \\le C N^{2/3}$ (LeechLattice) and the improved $h(N) \\le C N^{\\log 3/\\log 22 + \\varepsilon}$ (Hunter, $\\approx N^{0.356}$).",
-      "mathContext": "Axiomatizes $h(N) \\le C N^{2/3}$ (LeechLattice) and the improved $h(N) \\le C N^{\\log 3/\\log 22 + \\varepsilon}$ (Hunter, $\\approx N^{0.356}$)."
+      "mathContext": "Axiomatized: Axiomatizes $h(N) \\le C N^{2/3}$ (LeechLattice) and the improved $h(N) \\le C N^{\\log 3/\\log 22 + \\varepsilon}$ (Hunter, $\\approx N^{0.356}$)."
     },
     {
       "id": "lower-bounds",
@@ -73,7 +73,7 @@
       "startLine": 174,
       "endLine": 184,
       "summary": "Axiomatizes $h(N) \\ge \\exp(c(\\log N)^{1/9})$ via Hunter's reduction from 3-AP-free set bounds (Kelley–Meka 2023).",
-      "mathContext": "Axiomatizes $h(N) \\ge \\exp(c(\\log N)^{1/9})$ via Hunter's reduction from 3-AP-free set bounds (Kelley–Meka 2023)."
+      "mathContext": "Axiomatized: Axiomatizes $h(N) \\ge \\exp(c(\\log N)^{1/9})$ via Hunter's reduction from 3-AP-free set bounds (Kelley–Meka 2023)."
     },
     {
       "id": "consequences",
@@ -81,7 +81,7 @@
       "startLine": 185,
       "endLine": 204,
       "summary": "Derives sublinear growth, unboundedness of $h$, and the numerical fact $\\log 3/\\log 22 < 2/3$ confirming Hunter improves LeechLattice.",
-      "mathContext": "Derives sublinear growth, unboundedness of $h$, and the numerical fact $\\log 3/\\log 22 < 2/3$ confirming Hunter improves LeechLattice."
+      "mathContext": "Verified: Derives sublinear growth, unboundedness of $h$, and the numerical fact $\\log 3/\\log 22 < 2/3$ confirming Hunter improves LeechLattice."
     },
     {
       "id": "main-problem",
@@ -89,7 +89,7 @@
       "startLine": 205,
       "endLine": 225,
       "summary": "States ErdosProblem160 asking for the true growth rate of $h(N)$. Summary theorem packages both known bounds into a conjunction.",
-      "mathContext": "States ErdosProblem160 asking for the true growth rate of $h(N)$. Summary theorem packages both known bounds into a conjunction."
+      "mathContext": "Verified: States ErdosProblem160 asking for the true growth rate of $h(N)$. Summary theorem packages both known bounds into a conjunction."
     }
   ],
   "overview": {

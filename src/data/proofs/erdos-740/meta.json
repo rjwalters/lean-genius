@@ -54,7 +54,7 @@
       "summary": "Defines cardinal-valued chromatic number and k-colorability for infinite graphs, extending the classical finite notion to arbitrary cardinals using Mathlib's Cardinal type.",
       "startLine": 37,
       "endLine": 57,
-      "mathContext": "Defines cardinal-valued chromatic number and k-colorability for infinite graphs, extending the classical finite notion to arbitrary cardinals using Mathlib's Cardinal type."
+      "mathContext": "Formal definition: Defines cardinal-valued chromatic number and k-colorability for infinite graphs, extending the classical finite notion to arbitrary cardinals using Mathlib's Cardinal type."
     },
     {
       "id": "cycles",
@@ -70,7 +70,7 @@
       "summary": "Defines induced subgraphs via Mathlib's SimpleGraph.induce and the existential predicate hasSubgraphWith, packaging the twin requirements of chromatic number preservation and cycle avoidance.",
       "startLine": 107,
       "endLine": 126,
-      "mathContext": "Defines induced subgraphs via Mathlib's SimpleGraph.induce and the existential predicate hasSubgraphWith, packaging the twin requirements of chromatic number preservation and cycle avoidance."
+      "mathContext": "Formal definition: Defines induced subgraphs via Mathlib's SimpleGraph.induce and the existential predicate hasSubgraphWith, packaging the twin requirements of chromatic number preservation and cycle avoidance."
     },
     {
       "id": "conjecture",
@@ -86,7 +86,7 @@
       "summary": "Declares Rödl's theorem as an axiom: countableCase 3 holds. Derives the trivial corollary countable_triangle_free. This represents the strongest known positive result for Problem #740.",
       "startLine": 160,
       "endLine": 176,
-      "mathContext": "Declares Rödl's theorem as an axiom: countableCase 3 holds. Derives the trivial corollary countable_triangle_free. This represents the strongest known positive result for Problem #740."
+      "mathContext": "Verified: Declares Rödl's theorem as an axiom: countableCase 3 holds. Derives the trivial corollary countable_triangle_free. This represents the strongest known positive result for Problem #740."
     },
     {
       "id": "threshold",
@@ -110,7 +110,7 @@
       "summary": "Defines the finite version of the problem and axiomatizes partial progress for the r = 3 case, connecting to results of Thomassen on finite graphs with high chromatic number.",
       "startLine": 248,
       "endLine": 269,
-      "mathContext": "Defines the finite version of the problem and axiomatizes partial progress for the r = 3 case, connecting to results of Thomassen on finite graphs with high chromatic number."
+      "mathContext": "Formal definition: Defines the finite version of the problem and axiomatizes partial progress for the r = 3 case, connecting to results of Thomassen on finite graphs with high chromatic number."
     },
     {
       "id": "bipartite",
@@ -118,7 +118,7 @@
       "summary": "Defines bipartite graphs (no odd cycles of any length) and proves no_infinite_bipartite: for 𝔪 > 2, no bipartite subgraph can have χ = 𝔪. This shows the parameter r in the conjecture must be finite.",
       "startLine": 270,
       "endLine": 297,
-      "mathContext": "Defines bipartite graphs (no odd cycles of any length) and proves no_infinite_bipartite: for 𝔪 > 2, no bipartite subgraph can have χ = 𝔪. This shows the parameter r in the conjecture must be finite."
+      "mathContext": "Formal definition: Defines bipartite graphs (no odd cycles of any length) and proves no_infinite_bipartite: for 𝔪 > 2, no bipartite subgraph can have χ = 𝔪. This shows the parameter r in the conjecture must be finite."
     },
     {
       "id": "summary",

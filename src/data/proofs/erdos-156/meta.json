@@ -96,7 +96,7 @@
       "startLine": 1,
       "endLine": 18,
       "summary": "Problem statement, definition of Sidon sets and maximality, references to Erdős-Sárközy-Sós [ESS94] and Ruzsa [Ru98b].",
-      "mathContext": "Problem statement, definition of Sidon sets and maximality, references to Erdős-Sárközy-Sós [ESS94] and Ruzsa [Ru98b]."
+      "mathContext": "Formal definition: Problem statement, definition of Sidon sets and maximality, references to Erdős-Sárközy-Sós [ESS94] and Ruzsa [Ru98b]."
     },
     {
       "id": "sidon-definitions",
@@ -112,7 +112,7 @@
       "startLine": 82,
       "endLine": 100,
       "summary": "Defines Interval(N) = {1,...,N}, IsMaximalSidonSet (subset of interval + Sidon + non-extendable), and the size function for finite sets using Set.Finite.toFinset.card.",
-      "mathContext": "Defines Interval(N) = {1,...,N}, IsMaximalSidonSet (subset of interval + Sidon + non-extendable), and the size function for finite sets using Set.Finite.toFinset.card."
+      "mathContext": "Formal definition: Defines Interval(N) = {1,...,N}, IsMaximalSidonSet (subset of interval + Sidon + non-extendable), and the size function for finite sets using Set.Finite.toFinset.card."
     },
     {
       "id": "greedy-construction",
@@ -120,7 +120,7 @@
       "startLine": 101,
       "endLine": 131,
       "summary": "Recursive greedy algorithm: greedySidon(n+1) adds n+1 if it preserves Sidon-ness. Proved to always produce Sidon sets by induction (greedySidon_is_sidon). Maximality theorem stated with sorry.",
-      "mathContext": "Recursive greedy algorithm: greedySidon(n+1) adds n+1 if it preserves Sidon-ness. Proved to always produce Sidon sets by induction (greedySidon_is_sidon). Maximality theorem stated with sorry."
+      "mathContext": "Verified: Recursive greedy algorithm: greedySidon(n+1) adds n+1 if it preserves Sidon-ness. Proved to always produce Sidon sets by induction (greedySidon_is_sidon). Maximality theorem stated with sorry."
     },
     {
       "id": "known-bounds",
@@ -128,7 +128,7 @@
       "startLine": 132,
       "endLine": 148,
       "summary": "Two axioms: sidon_upper_bound (|A| ≤ √N + C for Sidon A ⊆ {1,...,N}) and greedy_lower_bound (|greedy(N)| ≥ c√N). These establish that greedy Sidon sets have size Θ(√N).",
-      "mathContext": "Two axioms: sidon_upper_bound (|A| ≤ √N + C for Sidon A ⊆ {1,...,N}) and greedy_lower_bound (|greedy(N)| ≥ c√N). These establish that greedy Sidon sets have size Θ(√N)."
+      "mathContext": "Two axioms: sidon_upper_bound (|A| $\\leq$ √N + C for Sidon A ⊆ {1,...,N}) and greedy_lower_bound (|greedy(N)| $\\geq$ c$\\sqrt{N}$). These establish that greedy Sidon sets have size Θ(√N)."
     },
     {
       "id": "ruzsa-construction",
@@ -136,7 +136,7 @@
       "startLine": 149,
       "endLine": 161,
       "summary": "Axiom ruzsa_small_maximal: for any ε > 0, there exist maximal Sidon sets of size ≤ N^{1/3+ε}. This is the key breakthrough result that motivates the conjecture.",
-      "mathContext": "Axiom ruzsa_small_maximal: for any ε > 0, there exist maximal Sidon sets of size ≤ N^{1/3+ε}. This is the key breakthrough result that motivates the conjecture."
+      "mathContext": "Axiom ruzsa_small_maximal: for any ε > 0, there exist maximal Sidon sets of size $\\leq$ N^{1/3+ε}. This is the key breakthrough result that motivates the conjecture."
     },
     {
       "id": "main-conjecture",
@@ -144,7 +144,7 @@
       "startLine": 162,
       "endLine": 183,
       "summary": "The central axiom erdos_156_conjecture: either ∃ C > 0 with maximal Sidon sets of size ≤ C·N^{1/3} for all N, or ∀ C > 0 the bound C·N^{1/3} is eventually exceeded.",
-      "mathContext": "The central axiom erdos_156_conjecture: either ∃ C > 0 with maximal Sidon sets of size ≤ C·N^{1/3} for all N, or ∀ C > 0 the bound C·N^{1/3} is eventually exceeded."
+      "mathContext": "The central axiom erdos_156_conjecture: either ∃ C > 0 with maximal Sidon sets of size $\\leq$ C·N^{1/3} for all N, or ∀ C > 0 the bound C·N^{1/3} is eventually exceeded."
     },
     {
       "id": "gap-and-minimum",
@@ -152,7 +152,7 @@
       "startLine": 184,
       "endLine": 203,
       "summary": "Defines minMaximalSidonSize via Nat.find and states the growth exponent conjecture: ∃ α ∈ [1/3, 1/2] such that log(minMaximalSidonSize N)/log N → α.",
-      "mathContext": "Defines minMaximalSidonSize via Nat.find and states the growth exponent conjecture: ∃ α ∈ [1/3, 1/2] such that log(minMaximalSidonSize N)/log N → α."
+      "mathContext": "Defines minMaximalSidonSize via Nat.find and states the growth exponent conjecture: ∃ α ∈ [1/3, 1/2] such that log(minMaximalSidonSize N)/log N $\\to$ α."
     },
     {
       "id": "additive-combinatorics",
@@ -160,7 +160,7 @@
       "startLine": 204,
       "endLine": 238,
       "summary": "Sumset definition, |A + A| = |A|(|A|+1)/2 for Sidon sets (with sorry), IsB2Set alias, and a placeholder axiom for random Sidon barriers.",
-      "mathContext": "Sumset definition, |A + A| = |A|(|A|+1)/2 for Sidon sets (with sorry), IsB2Set alias, and a placeholder axiom for random Sidon barriers."
+      "mathContext": "Formal definition: Sumset definition, |A + A| = |A|(|A|+1)/2 for Sidon sets (with sorry), IsB2Set alias, and a placeholder axiom for random Sidon barriers."
     },
     {
       "id": "infimum-formulation",
@@ -168,7 +168,7 @@
       "startLine": 239,
       "endLine": 260,
       "summary": "Defines infMaximalSidonSize via iInf over all maximal Sidon sets. Final axiom erdos_156_precise: either the infimum is O(N^{1/3}) or it diverges relative to N^{1/3}.",
-      "mathContext": "Defines infMaximalSidonSize via iInf over all maximal Sidon sets. Final axiom erdos_156_precise: either the infimum is O(N^{1/3}) or it diverges relative to N^{1/3}."
+      "mathContext": "Defines infMaximalSidonSize via iInf over all maximal Sidon sets. Final axiom erdos_156_precise: either the infimum is $O(N^{1/3})$ or it diverges relative to N^{1/3}."
     }
   ],
   "conclusion": {

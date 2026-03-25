@@ -85,7 +85,7 @@
       "summary": "OPEN. Two graphs with χ = ℵ₁ — must they share a common subgraph with χ = 4 or ℵ₀? EHS gives χ = 3. Custom InfGraph, imports Mathlib bulk. 0 sorries",
       "startLine": 1,
       "endLine": 29,
-      "mathContext": "OPEN. Two graphs with χ = ℵ₁ — must they share a common subgraph with χ = 4 or ℵ₀? EHS gives χ = 3. Custom InfGraph, imports Mathlib bulk. 0 sorries"
+      "mathContext": "Mathematical content: OPEN. Two graphs with χ = ℵ₁ — must they share a common subgraph with χ = 4 or ℵ₀? EHS gives χ = 3. Custom InfGraph, imports Mathlib bulk. 0 sorries"
     },
     {
       "id": "infgraph",
@@ -93,7 +93,7 @@
       "summary": "InfGraph V: Adj symmetric, loopless. IsColoring G C f: proper coloring. IsColorable G k via Fin k. IsCountablyColorable via ℕ. Custom structure (not SimpleGraph) for uncountable vertex sets",
       "startLine": 30,
       "endLine": 51,
-      "mathContext": "InfGraph V: Adj symmetric, loopless. IsColoring G C f: proper coloring. IsColorable G k via Fin k. IsCountablyColorable via ℕ. Custom structure (not SimpleGraph) for uncountable vertex sets"
+      "mathContext": "InfGraph V: Adj symmetric, loopless. IsColoring G C f: proper coloring. IsColorable G k via Fin k. IsCountablyColorable via $\\mathbb{N}$. Custom structure (not SimpleGraph) for uncountable vertex sets"
     },
     {
       "id": "chromatic-classes",
@@ -101,7 +101,7 @@
       "summary": "HasChromaticNumber G k: exact finite χ. HasChromaticAleph0: countable but not finite. HasChromaticAleph1: ¬countably colorable. Three-level chromatic hierarchy",
       "startLine": 52,
       "endLine": 65,
-      "mathContext": "HasChromaticNumber G k: exact finite χ. HasChromaticAleph0: countable but not finite. HasChromaticAleph1: ¬countably colorable. Three-level chromatic hierarchy"
+      "mathContext": "Mathematical content: HasChromaticNumber G k: exact finite χ. HasChromaticAleph0: countable but not finite. HasChromaticAleph1: ¬countably colorable. Three-level chromatic hierarchy"
     },
     {
       "id": "embeddings",
@@ -109,7 +109,7 @@
       "summary": "EmbedsInto H G: injective homomorphism (∃ f injective, edge-preserving). Weak notion — not necessarily induced. Appropriate for common subgraph problem",
       "startLine": 66,
       "endLine": 71,
-      "mathContext": "EmbedsInto H G: injective homomorphism (∃ f injective, edge-preserving). Weak notion — not necessarily induced. Appropriate for common subgraph problem"
+      "mathContext": "Mathematical content: EmbedsInto H G: injective homomorphism (∃ f injective, edge-preserving). Weak notion — not necessarily induced. Appropriate for common subgraph problem"
     },
     {
       "id": "conjectures",
@@ -117,7 +117,7 @@
       "summary": "erdos_62_conjecture_strong: common χ=4 subgraph. erdos_62_conjecture_weak: common χ=ℵ₀ subgraph. Both as Prop definitions (open problems). Strong implies weak",
       "startLine": 72,
       "endLine": 94,
-      "mathContext": "erdos_62_conjecture_strong: common χ=4 subgraph. erdos_62_conjecture_weak: common χ=ℵ₀ subgraph. Both as Prop definitions (open problems). Strong implies weak"
+      "mathContext": "Formal definition: erdos_62_conjecture_strong: common χ=4 subgraph. erdos_62_conjecture_weak: common χ=ℵ₀ subgraph. Both as Prop definitions (open problems). Strong implies weak"
     },
     {
       "id": "generalization",
@@ -125,7 +125,7 @@
       "summary": "erdos_62_generalized n: Fin n-indexed family of χ=ℵ₁ graphs share common H with χ=4 or χ=ℵ₀. Erdős 1987 extension from pairs to finite collections",
       "startLine": 95,
       "endLine": 108,
-      "mathContext": "erdos_62_generalized n: Fin n-indexed family of χ=ℵ₁ graphs share common H with χ=4 or χ=ℵ₀. Erdős 1987 extension from pairs to finite collections"
+      "mathContext": "Mathematical content: erdos_62_generalized n: Fin n-indexed family of χ=ℵ₁ graphs share common H with χ=4 or χ=ℵ₀. Erdős 1987 extension from pairs to finite collections"
     },
     {
       "id": "ehs",
@@ -133,7 +133,7 @@
       "summary": "oddCycle, oddCycle_chromatic (axioms). erdos_hajnal_shelah (axiom): χ=ℵ₁ → contains all large odd cycles. odd_cycles_are_common (PROVED): k = max(N₁,N₂)+1 gives common χ=3 subgraph",
       "startLine": 109,
       "endLine": 142,
-      "mathContext": "oddCycle, oddCycle_chromatic (axioms). erdos_hajnal_shelah (axiom): χ=ℵ₁ → contains all large odd cycles. odd_cycles_are_common (PROVED): k = max(N₁,N₂)+1 gives common χ=3 subgraph"
+      "mathContext": "oddCycle, oddCycle_chromatic (axioms). erdos_hajnal_shelah (axiom): χ=ℵ₁ $\\to$ contains all large odd cycles. odd_cycles_are_common (PROVED): k = max(N₁,N₂)+1 gives common χ=3 subgraph"
     },
     {
       "id": "chi-gap",
@@ -141,7 +141,7 @@
       "summary": "chi_gap_problem: common subgraph with χ > 3. Captures exact frontier — we have χ=3 (EHS), want χ≥4. The core open question",
       "startLine": 143,
       "endLine": 157,
-      "mathContext": "chi_gap_problem: common subgraph with χ > 3. Captures exact frontier — we have χ=3 (EHS), want χ≥4. The core open question"
+      "mathContext": "chi_gap_problem: common subgraph with χ > 3. Captures exact frontier — we have χ=3 (EHS), want χ$\\geq$4. The core open question"
     },
     {
       "id": "properties",
@@ -149,7 +149,7 @@
       "summary": "HasFiniteChromaticNumber. finite_implies_countable (PROVED via Fin.val). embed_colorable (PROVED via composition). Chromatic monotonicity under subgraph inclusion",
       "startLine": 158,
       "endLine": 184,
-      "mathContext": "HasFiniteChromaticNumber. finite_implies_countable (PROVED via Fin.val). embed_colorable (PROVED via composition). Chromatic monotonicity under subgraph inclusion"
+      "mathContext": "Mathematical content: HasFiniteChromaticNumber. finite_implies_countable (PROVED via Fin.val). embed_colorable (PROVED via composition). Chromatic monotonicity under subgraph inclusion"
     },
     {
       "id": "summary",
@@ -157,7 +157,7 @@
       "summary": "OPEN. Known: χ=3 common subgraphs (odd cycles via EHS). Open: χ=4 and χ=ℵ₀. Generalizes to finite collections. References: Erdős 1974-1995, EHS 1974",
       "startLine": 185,
       "endLine": 207,
-      "mathContext": "OPEN. Known: χ=3 common subgraphs (odd cycles via EHS). Open: χ=4 and χ=ℵ₀. Generalizes to finite collections. References: Erdős 1974-1995, EHS 1974"
+      "mathContext": "Mathematical content: OPEN. Known: χ=3 common subgraphs (odd cycles via EHS). Open: χ=4 and χ=ℵ₀. Generalizes to finite collections. References: Erdős 1974-1995, EHS 1974"
     }
   ],
   "conclusion": {

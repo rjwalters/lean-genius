@@ -85,7 +85,7 @@
       "summary": "Problem documentation with four key references (AEKS 1981, AKS 1980, Shearer 1995, Alon 1996); imports Mathlib graph theory, clique, and logarithm modules",
       "startLine": 1,
       "endLine": 40,
-      "mathContext": "Problem documentation with four key references (AEKS 1981, AKS 1980, Shearer 1995, Alon 1996); imports Mathlib graph theory, clique, and logarithm modules"
+      "mathContext": "Mathematical content: Problem documentation with four key references (AEKS 1981, AKS 1980, Shearer 1995, Alon 1996); imports Mathlib graph theory, clique, and logarithm modules"
     },
     {
       "id": "graph-basics",
@@ -93,7 +93,7 @@
       "summary": "Defines numVertices, avgDegree (2|E|/|V|), IsCliqueFree (no r-clique), and IsTriangleFree (K_3-free) — the structural conditions for the conjecture",
       "startLine": 41,
       "endLine": 58,
-      "mathContext": "Defines numVertices, avgDegree (2|E|/|V|), IsCliqueFree (no r-clique), and IsTriangleFree (K_3-free) — the structural conditions for the conjecture"
+      "mathContext": "Formal definition: Defines numVertices, avgDegree (2|E|/|V|), IsCliqueFree (no r-clique), and IsTriangleFree (K_3-free) — the structural conditions for the conjecture"
     },
     {
       "id": "independent-sets",
@@ -101,7 +101,7 @@
       "summary": "Defines IsIndependent (pairwise non-adjacency) and independenceNumber α(G) as the supremum of independent set sizes",
       "startLine": 59,
       "endLine": 70,
-      "mathContext": "Defines IsIndependent (pairwise non-adjacency) and independenceNumber α(G) as the supremum of independent set sizes"
+      "mathContext": "Formal definition: Defines IsIndependent (pairwise non-adjacency) and independenceNumber α(G) as the supremum of independent set sizes"
     },
     {
       "id": "aeks-conjecture",
@@ -109,7 +109,7 @@
       "summary": "Formalizes AEKSConjecture r: ∃ c > 0 such that α(G) ≥ c·(log t / t)·n for K_r-free G with average degree t; includes aeksBound helper",
       "startLine": 71,
       "endLine": 85,
-      "mathContext": "Formalizes AEKSConjecture r: ∃ c > 0 such that α(G) ≥ c·(log t / t)·n for K_r-free G with average degree t; includes aeksBound helper"
+      "mathContext": "Formalizes AEKSConjecture r: ∃ c > 0 such that α(G) $\\geq$ c·(log t / t)·n for K_r-free G with average degree t; includes aeksBound helper"
     },
     {
       "id": "known-results",
@@ -117,7 +117,7 @@
       "summary": "Three axioms capturing the progression: AEKS 1981 (log log t / t), Shearer 1995 (log t / (log log t · t)), AKS 1980 (full bound for r=3); derives conjecture_true_for_r3",
       "startLine": 86,
       "endLine": 118,
-      "mathContext": "Three axioms capturing the progression: AEKS 1981 (log log t / t), Shearer 1995 (log t / (log log t · t)), AKS 1980 (full bound for r=3); derives conjecture_true_for_r3"
+      "mathContext": "Axiomatized: Three axioms capturing the progression: AEKS 1981 (log log t / t), Shearer 1995 (log t / (log log t · t)), AKS 1980 (full bound for r=3); derives conjecture_true_for_r3"
     },
     {
       "id": "alon-result",
@@ -125,7 +125,7 @@
       "summary": "Defines IsLocallyChromatic (placeholder), axiomatizes full (log t / t) bound under local (r-2)-chromatic assumption, proves locally chromatic implies clique-free",
       "startLine": 119,
       "endLine": 144,
-      "mathContext": "Defines IsLocallyChromatic (placeholder), axiomatizes full (log t / t) bound under local (r-2)-chromatic assumption, proves locally chromatic implies clique-free"
+      "mathContext": "Formal definition: Defines IsLocallyChromatic (placeholder), axiomatizes full (log t / t) bound under local (r-2)-chromatic assumption, proves locally chromatic implies clique-free"
     },
     {
       "id": "ramsey-connection",
@@ -133,7 +133,7 @@
       "summary": "Ramsey lower bound R(3,k) ≥ ck²/log k from AKS; triangle-free independence bound α(G) ≥ c√(n log n)",
       "startLine": 145,
       "endLine": 164,
-      "mathContext": "Ramsey lower bound R(3,k) ≥ ck²/log k from AKS; triangle-free independence bound α(G) ≥ c√(n log n)"
+      "mathContext": "Ramsey lower bound R(3,k) $\\geq$ ck²/log k from AKS; triangle-free independence bound α(G) $\\geq$ c√(n $\\log n$)"
     },
     {
       "id": "summary",
@@ -141,7 +141,7 @@
       "summary": "erdos_802 combines AEKS₃ (full conjecture for r=3) with Shearer's partial bound for general r; includes status strings and #check verification",
       "startLine": 165,
       "endLine": 203,
-      "mathContext": "erdos_802 combines AEKS₃ (full conjecture for r=3) with Shearer's partial bound for general r; includes status strings and #check verification"
+      "mathContext": "Bound: erdos_802 combines AEKS₃ (full conjecture for r=3) with Shearer's partial bound for general r; includes status strings and #check verification"
     }
   ],
   "conclusion": {

@@ -82,7 +82,7 @@
       "startLine": 39,
       "endLine": 70,
       "summary": "Defines IsProductRep (ordered factorization), repCount (representation count from a set), IsBoundedRep (the <k constraint), and IsValidSubset (feasible solutions for the optimization).",
-      "mathContext": "Defines IsProductRep (ordered factorization), repCount (representation count from a set), IsBoundedRep (the <k constraint), and IsValidSubset (feasible solutions for the optimization)."
+      "mathContext": "Formal definition: Defines IsProductRep (ordered factorization), repCount (representation count from a set), IsBoundedRep (the <k constraint), and IsValidSubset (feasible solutions for the optimization)."
     },
     {
       "id": "g-function",
@@ -90,7 +90,7 @@
       "startLine": 71,
       "endLine": 88,
       "summary": "Defines g_k(n) as the supremum of |A| over valid subsets A of {1,...,n}, and axiomatizes the trivial bound g_k(n) ≤ n.",
-      "mathContext": "Defines g_k(n) as the supremum of |A| over valid subsets A of {1,...,n}, and axiomatizes the trivial bound g_k(n) ≤ n."
+      "mathContext": "Defines g_k(n) as the supremum of |A| over valid subsets A of {1,...,n}, and axiomatizes the trivial bound g_k(n) $\\leq$ n."
     },
     {
       "id": "first-order",
@@ -98,7 +98,7 @@
       "startLine": 89,
       "endLine": 122,
       "summary": "Defines omega_count (integers with r prime factors), axiomatizes the Sathe-Selberg formula, and axiomatizes Erdős's 1964 theorem connecting g_k(n) to the count of r-almost primes.",
-      "mathContext": "Defines omega_count (integers with r prime factors), axiomatizes the Sathe-Selberg formula, and axiomatizes Erdős's 1964 theorem connecting g_k(n) to the count of r-almost primes."
+      "mathContext": "Formal definition: Defines omega_count (integers with r prime factors), axiomatizes the Sathe-Selberg formula, and axiomatizes Erdős's 1964 theorem connecting g_k(n) to the count of r-almost primes."
     },
     {
       "id": "k3-case",
@@ -106,7 +106,7 @@
       "startLine": 123,
       "endLine": 141,
       "summary": "The sole proved theorem: g₃(n) ~ (log log n / log n)·n, derived by specializing erdos_1964_main with k=3, r=2 using norm_num and simp.",
-      "mathContext": "The sole proved theorem: g₃(n) ~ (log log n / log n)·n, derived by specializing erdos_1964_main with k=3, r=2 using norm_num and simp."
+      "mathContext": "The sole proved theorem: g₃(n) ~ (log $\\log n$ / $\\log n$)·n, derived by specializing erdos_1964_main with k=3, r=2 using norm_num and simp."
     },
     {
       "id": "second-order",
@@ -114,7 +114,7 @@
       "startLine": 142,
       "endLine": 171,
       "summary": "Defines the error E₃(n), axiomatizes the Θ(n/(log n)²) bounds, and formally states the open conjecture on convergence to a constant.",
-      "mathContext": "Defines the error E₃(n), axiomatizes the Θ(n/(log n)²) bounds, and formally states the open conjecture on convergence to a constant."
+      "mathContext": "Defines the error E₃(n), axiomatizes the Θ(n/($\\log n$)²) bounds, and formally states the open conjecture on convergence to a constant."
     },
     {
       "id": "k2-case",
@@ -122,7 +122,7 @@
       "startLine": 172,
       "endLine": 184,
       "summary": "Axiomatizes g₂(n) ~ n/log n (the PNT-like result) and notes the connection to the companion Problem #425.",
-      "mathContext": "Axiomatizes g₂(n) ~ n/log n (the PNT-like result) and notes the connection to the companion Problem #425."
+      "mathContext": "Axiomatizes g₂(n) ~ n/$\\log n$ (the PNT-like result) and notes the connection to the companion Problem #425."
     },
     {
       "id": "optimal-sets",
@@ -130,7 +130,7 @@
       "startLine": 185,
       "endLine": 205,
       "summary": "Defines near-optimal sets and axiomatizes that they concentrate on semiprimes (integers with Ω(m) = 2).",
-      "mathContext": "Defines near-optimal sets and axiomatizes that they concentrate on semiprimes (integers with Ω(m) = 2)."
+      "mathContext": "Formal definition: Defines near-optimal sets and axiomatizes that they concentrate on semiprimes (integers with Ω(m) = 2)."
     },
     {
       "id": "multiplicative",
@@ -138,7 +138,7 @@
       "startLine": 206,
       "endLine": 218,
       "summary": "Axiomatizes the key bound: τ(m) ≤ 2k-1 implies m is automatically safe (< k representations from any set).",
-      "mathContext": "Axiomatizes the key bound: τ(m) ≤ 2k-1 implies m is automatically safe (< k representations from any set)."
+      "mathContext": "Axiomatizes the key bound: τ(m) $\\leq$ 2k-1 implies m is automatically safe (< k representations from any set)."
     },
     {
       "id": "summary",
@@ -146,7 +146,7 @@
       "startLine": 219,
       "endLine": 241,
       "summary": "Packages the first-order asymptotics and second-order bounds into a single conjunction, proved by pairing g3_first_order and E3_bounded.",
-      "mathContext": "Packages the first-order asymptotics and second-order bounds into a single conjunction, proved by pairing g3_first_order and E3_bounded."
+      "mathContext": "Bound: Packages the first-order asymptotics and second-order bounds into a single conjunction, proved by pairing g3_first_order and E3_bounded."
     }
   ],
   "conclusion": {

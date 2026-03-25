@@ -75,7 +75,7 @@
       "summary": "Imports `Nat.Basic`, `Set.Basic`, `Finset.Basic`, and `BigOperators.Group.Finset` for summation. Opens `Finset` and `BigOperators` namespaces for $\\sum$ notation and finite set operations.",
       "startLine": 34,
       "endLine": 42,
-      "mathContext": "Imports `Nat.Basic`, `Set.Basic`, `Finset.Basic`, and `BigOperators.Group.Finset` for summation. Opens `Finset` and `BigOperators` namespaces for $\\sum$ notation and finite set operations."
+      "mathContext": "Mathematical content: Imports `Nat.Basic`, `Set.Basic`, `Finset.Basic`, and `BigOperators.Group.Finset` for summation. Opens `Finset` and `BigOperators` namespaces for $\\sum$ notation and finite set operations."
     },
     {
       "id": "sum-free-sets",
@@ -131,7 +131,7 @@
       "summary": "States `powers_of_two_sumfree`: $\\{2^n : n \\in \\mathbb{N}\\}$ is sum-free (sorry — the proof uses binary uniqueness). Notes connections to Sidon sets and $B_h$ sequences.",
       "startLine": 227,
       "endLine": 265,
-      "mathContext": "States `powers_of_two_sumfree`: $\\{2^n : n \\in \\mathbb{N}\\}$ is sum-free (sorry — the proof uses binary uniqueness). Notes connections to Sidon sets and $B_h$ sequences."
+      "mathContext": "States `powers_of_two_sumfree`: $\\{$2^{n}$ : n \\in \\mathbb{N}\\}$ is sum-free (sorry — the proof uses binary uniqueness). Notes connections to Sidon sets and $B_h$ sequences."
     },
     {
       "id": "summary-theorem",
@@ -139,7 +139,7 @@
       "summary": "The `erdos_876_summary` theorem combines Graham's result (near-linear gaps achievable) with the open status of the linear gap question, proved by extracting from `graham_result` and `trivial`.",
       "startLine": 266,
       "endLine": 298,
-      "mathContext": "The `erdos_876_summary` theorem combines Graham's result (near-linear gaps achievable) with the open status of the linear gap question, proved by extracting from `graham_result` and `trivial`."
+      "mathContext": "Verified: The `erdos_876_summary` theorem combines Graham's result (near-linear gaps achievable) with the open status of the linear gap question, proved by extracting from `graham_result` and `trivial`."
     }
   ],
   "conclusion": {

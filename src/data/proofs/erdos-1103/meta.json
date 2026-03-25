@@ -69,7 +69,7 @@
       "startLine": 1,
       "endLine": 20,
       "summary": "States Erdős Problem 1103 on squarefree sumsets with known results by van Doorn–Tao ($a_j > 0.24 \\cdot j^{4/3}$, $a_j < \\exp(5j/\\log j)$) and Konyagin ($|A| \\le C \\cdot N^{11/15}$).",
-      "mathContext": "States Erdős Problem 1103 on squarefree sumsets with known results by van Doorn–Tao ($a_j > 0.24 \\cdot j^{4/3}$, $a_j < \\exp(5j/\\log j)$) and Konyagin ($|A| \\le C \\cdot N^{11/15}$)."
+      "mathContext": "Mathematical content: States Erdős Problem 1103 on squarefree sumsets with known results by van Doorn–Tao ($a_j > 0.24 \\cdot j^{4/3}$, $a_j < \\exp(5j/\\log j)$) and Konyagin ($|A| \\le C \\cdot N^{11/15}$)."
     },
     {
       "id": "imports",
@@ -85,7 +85,7 @@
       "startLine": 28,
       "endLine": 42,
       "summary": "Defines `SquarefreeSumset A` requiring $\\forall a, b \\in A, \\text{Squarefree}(a+b)$. Axiomatizes `enumSet A j` as the $j$-th smallest element via `StrictMono` and range surjectivity.",
-      "mathContext": "Defines `SquarefreeSumset A` requiring $\\forall a, b \\in A, \\text{Squarefree}(a+b)$. Axiomatizes `enumSet A j` as the $j$-th smallest element via `StrictMono` and range surjectivity."
+      "mathContext": "Formal definition: Defines `SquarefreeSumset A` requiring $\\forall a, b \\in A, \\text{Squarefree}(a+b)$. Axiomatizes `enumSet A j` as the $j$-th smallest element via `StrictMono` and range surjectivity."
     },
     {
       "id": "conjecture",
@@ -93,7 +93,7 @@
       "startLine": 43,
       "endLine": 52,
       "summary": "States `ErdosProblem1103`: $\\exists C > 1$ such that $C^j \\le a_j$ eventually, for every infinite squarefree-sumset $A$. Uses `Filter.atTop` for the asymptotic quantifier.",
-      "mathContext": "States `ErdosProblem1103`: $\\exists C > 1$ such that $C^j \\le a_j$ eventually, for every infinite squarefree-sumset $A$. Uses `Filter.atTop` for the asymptotic quantifier."
+      "mathContext": "Mathematical content: States `ErdosProblem1103`: $\\exists C > 1$ such that $C^j \\le a_j$ eventually, for every infinite squarefree-sumset $A$. Uses `Filter.atTop` for the asymptotic quantifier."
     },
     {
       "id": "upper-bound",
@@ -101,7 +101,7 @@
       "startLine": 53,
       "endLine": 61,
       "summary": "Axiomatizes existence of an infinite squarefree-sumset sequence with $a_j < \\exp(5j/\\log j)$ — a subexponential construction showing exponential growth is not the only possibility.",
-      "mathContext": "Axiomatizes existence of an infinite squarefree-sumset sequence with $a_j < \\exp(5j/\\log j)$ — a subexponential construction showing exponential growth is not the only possibility."
+      "mathContext": "Axiomatized: Axiomatizes existence of an infinite squarefree-sumset sequence with $a_j < \\exp(5j/\\log j)$ — a subexponential construction showing exponential growth is not the only possibility."
     },
     {
       "id": "lower-bound",
@@ -109,7 +109,7 @@
       "startLine": 62,
       "endLine": 66,
       "summary": "Axiomatizes the universal lower bound $a_j > 0.24 \\cdot j^{4/3}$ for all infinite squarefree-sumset sequences, ruling out polynomial growth slower than $j^{4/3}$.",
-      "mathContext": "Axiomatizes the universal lower bound $a_j > 0.24 \\cdot j^{4/3}$ for all infinite squarefree-sumset sequences, ruling out polynomial growth slower than $j^{4/3}$."
+      "mathContext": "Axiomatized: Axiomatizes the universal lower bound $a_j > 0.24 \\cdot j^{4/3}$ for all infinite squarefree-sumset sequences, ruling out polynomial growth slower than $j^{4/3}$."
     },
     {
       "id": "konyagin",
@@ -117,7 +117,7 @@
       "startLine": 67,
       "endLine": 74,
       "summary": "Axiomatizes $|A| \\le C \\cdot N^{11/15}$ for finite $A \\subseteq \\{1,\\ldots,N\\}$ with squarefree sumset, quantifying sparsity via the large sieve.",
-      "mathContext": "Axiomatizes $|A| \\le C \\cdot N^{11/15}$ for finite $A \\subseteq \\{1,\\ldots,N\\}$ with squarefree sumset, quantifying sparsity via the large sieve."
+      "mathContext": "Axiomatized: Axiomatizes $|A| \\le C \\cdot N^{11/15}$ for finite $A \\subseteq \\{1,\\ldots,N\\}$ with squarefree sumset, quantifying sparsity via the large sieve."
     },
     {
       "id": "basic-properties",
@@ -125,7 +125,7 @@
       "startLine": 75,
       "endLine": 92,
       "summary": "Proves `SquarefreeSumset \\emptyset` (vacuous), subset monotonicity, and `squarefree_one`. Axiomatizes the singleton characterization: $\\text{SquarefreeSumset}\\{a\\} \\iff \\text{Squarefree}(2a)$.",
-      "mathContext": "Proves `SquarefreeSumset \\emptyset` (vacuous), subset monotonicity, and `squarefree_one`. Axiomatizes the singleton characterization: $\\text{SquarefreeSumset}\\{a\\} \\iff \\text{Squarefree}(2a)$."
+      "mathContext": "Verified: Proves `SquarefreeSumset \\emptyset` (vacuous), subset monotonicity, and `squarefree_one`. Axiomatizes the singleton characterization: $\\text{SquarefreeSumset}\\{a\\} \\iff \\text{Squarefree}(2a)$."
     }
   ],
   "crossReferences": [

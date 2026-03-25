@@ -88,7 +88,7 @@
       "startLine": 1,
       "endLine": 37,
       "summary": "Imports from Mathlib (Taylor calculus, exp derivatives, normed limits, infinite sums, exponential bounds) and module documentation explaining the main results and approach.",
-      "mathContext": "Imports from Mathlib (Taylor calculus, exp derivatives, normed limits, infinite sums, exponential bounds) and module documentation explaining the main results and approach."
+      "mathContext": "Imports for Taylor remainder analysis of $e^x$: Mathlib's calculus of $\\frac{d^n}{dx^n} e^x = e^x$, summability of $\\sum |x|^n / n!$, and bounds on $e = \\exp(1) > 2.718281828$."
     },
     {
       "id": "iterated-derivatives",
@@ -96,7 +96,7 @@
       "startLine": 38,
       "endLine": 56,
       "summary": "Proves iteratedDeriv n exp = exp by induction: the base case is iteratedDeriv_zero, and the inductive step uses Real.deriv_exp. The pointwise version iteratedDeriv_exp_apply is an immediate corollary.",
-      "mathContext": "Proves iteratedDeriv n exp = exp by induction: the base case is iteratedDeriv_zero, and the inductive step uses Real.deriv_exp. The pointwise version iteratedDeriv_exp_apply is an immediate corollary."
+      "mathContext": "Proves $\\frac{d^n}{dx^n} e^x = e^x$ for all $n \\in \\mathbb{N}$ by induction: base case $\\frac{d^0}{dx^0} e^x = e^x$ and step $\\frac{d}{dx} e^x = e^x$."
     },
     {
       "id": "partial-sums",
@@ -104,7 +104,7 @@
       "startLine": 57,
       "endLine": 81,
       "summary": "Defines expPartialSum n x = sum_{k=0}^{n} x^k/k! and proves basic properties: S_0(x) = 1, the successor recurrence, and S_n(0) = 1.",
-      "mathContext": "Defines expPartialSum n x = sum_{k=0}^{n} x^k/k! and proves basic properties: S_0(x) = 1, the successor recurrence, and S_n(0) = 1."
+      "mathContext": "Taylor partial sums $S_n(x) = \\sum_{k=0}^{n} \\frac{x^k}{k!}$ with properties: $S_0(x) = 1$, $S_{n+1}(x) = S_n(x) + \\frac{x^{n+1}}{(n+1)!}$, and $S_n(0) = 1$."
     },
     {
       "id": "factorial-dominates",
@@ -112,7 +112,7 @@
       "startLine": 82,
       "endLine": 95,
       "summary": "Proves summability of x^n/n! (from Mathlib's summable_pow_div_factorial) and the consequence x^n/n! -> 0, which is the engine driving Taylor convergence.",
-      "mathContext": "Proves summability of x^n/n! (from Mathlib's summable_pow_div_factorial) and the consequence x^n/n! -> 0, which is the engine driving Taylor convergence."
+      "mathContext": "Factorial domination: $\\sum_{n=0}^{\\infty} \\frac{|x|^n}{n!}$ converges (ratio test: $\\frac{|x|}{n+1} \\to 0$), so $\\frac{x^n}{n!} \\to 0$ for any fixed $x \\in \\mathbb{R}$."
     },
     {
       "id": "remainder-bounds",
@@ -128,7 +128,7 @@
       "startLine": 158,
       "endLine": 199,
       "summary": "Proves partial sums converge to exp(x) and derives the tsum identity exp(x) = sum' x^n/n! by uniqueness of limits. The index shift from range(n+1) to range(n) is handled by subtracting the n-th term.",
-      "mathContext": "Proves partial sums converge to exp(x) and derives the tsum identity exp(x) = sum' x^n/n! by uniqueness of limits. The index shift from range(n+1) to range(n) is handled by subtracting the n-th term."
+      "mathContext": "Convergence: $S_n(x) \\to e^x$ as $n \\to \\infty$, yielding the identity $e^x = \\sum_{n=0}^{\\infty} \\frac{x^n}{n!}$ by uniqueness of limits (partial sums converge to both $e^x$ and the infinite series)."
     },
     {
       "id": "euler-computation",
@@ -136,7 +136,7 @@
       "startLine": 200,
       "endLine": 239,
       "summary": "Defines ePartialSum, proves 2 < e < 3, establishes the error bound |e - S_n(1)| <= 3/n!, and verifies that 10 terms give precision < 10^{-6}.",
-      "mathContext": "Defines ePartialSum, proves 2 < e < 3, establishes the error bound |e - S_n(1)| <= 3/n!, and verifies that 10 terms give precision < 10^{-6}."
+      "mathContext": "Euler's number: $2 < e < 3$ and $\\left|e - \\sum_{k=0}^{n} \\frac{1}{k!}\\right| \\leq \\frac{3}{n!}$. At $n = 10$: error $< 10^{-6}$, giving 6-digit precision for $e \\approx 2.718281828$."
     },
     {
       "id": "cauchy-remainder",

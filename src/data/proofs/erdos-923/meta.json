@@ -74,7 +74,7 @@
       "startLine": 36,
       "endLine": 44,
       "summary": "Imports `SimpleGraph.Basic`, `SimpleGraph.Coloring`, `SimpleGraph.Subgraph` from Mathlib. Opens `Nat` and `SimpleGraph` namespaces for clean notation.",
-      "mathContext": "Imports `SimpleGraph.Basic`, `SimpleGraph.Coloring`, `SimpleGraph.Subgraph` from Mathlib. Opens `Nat` and `SimpleGraph` namespaces for clean notation."
+      "mathContext": "Mathematical content: Imports `SimpleGraph.Basic`, `SimpleGraph.Coloring`, `SimpleGraph.Subgraph` from Mathlib. Opens `Nat` and `SimpleGraph` namespaces for clean notation."
     },
     {
       "id": "chromatic-defs",
@@ -98,7 +98,7 @@
       "startLine": 98,
       "endLine": 121,
       "summary": "Defines `IsSpanningSubgraph` ($E(H) \\subseteq E(G)$, same vertices) and `inducedSubgraph` ($G[S]$ via `comap`). Axiomatizes $\\chi(H) \\leq \\chi(G)$ for spanning subgraphs $H \\subseteq G$.",
-      "mathContext": "Defines `IsSpanningSubgraph` ($E(H) \\subseteq E(G)$, same vertices) and `inducedSubgraph` ($G[S]$ via `comap`). Axiomatizes $\\chi(H) \\leq \\chi(G)$ for spanning subgraphs $H \\subseteq G$."
+      "mathContext": "Formal definition: Defines `IsSpanningSubgraph` ($E(H) \\subseteq E(G)$, same vertices) and `inducedSubgraph` ($G[S]$ via `comap`). Axiomatizes $\\chi(H) \\leq \\chi(G)$ for spanning subgraphs $H \\subseteq G$."
     },
     {
       "id": "mycielski",
@@ -106,7 +106,7 @@
       "startLine": 122,
       "endLine": 133,
       "summary": "Axiomatizes Mycielski's 1955 theorem: $\\forall k,\\, \\exists G$ triangle-free with $\\chi(G) \\geq k$. The Mycielskian $\\mu(G)$ increments $\\chi$ by 1 while preserving triangle-freeness.",
-      "mathContext": "Axiomatizes Mycielski's 1955 theorem: $\\forall k,\\, \\exists G$ triangle-free with $\\chi(G) \\geq k$. The Mycielskian $\\mu(G)$ increments $\\chi$ by 1 while preserving triangle-freeness."
+      "mathContext": "Verified: Axiomatizes Mycielski's 1955 theorem: $\\forall k,\\, \\exists G$ triangle-free with $\\chi(G) \\geq k$. The Mycielskian $\\mu(G)$ increments $\\chi$ by 1 while preserving triangle-freeness."
     },
     {
       "id": "main-theorem",
@@ -138,7 +138,7 @@
       "startLine": 228,
       "endLine": 244,
       "summary": "The summary theorem `erdos_923_summary` packages both Rödl's qualitative result (YES) and quantitative bound ($\\text{tower}(O(k))$) as a conjunction, proved by `⟨rodl_1977, rodl_bound⟩`.",
-      "mathContext": "The summary theorem `erdos_923_summary` packages both Rödl's qualitative result (YES) and quantitative bound ($\\text{tower}(O(k))$) as a conjunction, proved by `⟨rodl_1977, rodl_bound⟩`."
+      "mathContext": "The summary theorem `erdos_923_summary` packages both Rödl's qualitative result (YES) and quantitative bound ($\\text{tower}($O(k)$)$) as a conjunction, proved by `⟨rodl_1977, rodl_bound⟩`."
     }
   ],
   "conclusion": {

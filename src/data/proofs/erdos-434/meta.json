@@ -141,7 +141,7 @@
       "startLine": 92,
       "endLine": 105,
       "summary": "frobeniusNumber A = sSup(NonRepresentable A), the largest non-representable integer. IsComplete A checks gcd condition ensuring finiteness. Note: #434 maximizes count, not Frobenius number.",
-      "mathContext": "frobeniusNumber A = sSup(NonRepresentable A), the largest non-representable integer. IsComplete A checks gcd condition ensuring finiteness. Note: #434 maximizes count, not Frobenius number."
+      "mathContext": "Mathematical content: frobeniusNumber A = sSup(NonRepresentable A), the largest non-representable integer. IsComplete A checks gcd condition ensuring finiteness. Note: #434 maximizes count, not Frobenius number."
     },
     {
       "id": "extremal",
@@ -149,7 +149,7 @@
       "startLine": 106,
       "endLine": 121,
       "summary": "topK n k = Set.Icc (n-k+1) n. topK_card (sorry): |topK| = k. ExtremalFrobeniusQuestion: ∀ A valid, nCardNonRepresentable(A) ≤ nCardNonRepresentable(topK n k).",
-      "mathContext": "topK n k = Set.Icc (n-k+1) n. topK_card (sorry): |topK| = k. ExtremalFrobeniusQuestion: ∀ A valid, nCardNonRepresentable(A) ≤ nCardNonRepresentable(topK n k)."
+      "mathContext": "topK n k = Set.Icc (n-k+1) n. topK_card (sorry): |topK| = k. ExtremalFrobeniusQuestion: ∀ A valid, nCardNonRepresentable(A) $\\leq$ nCardNonRepresentable(topK n k)."
     },
     {
       "id": "examples",
@@ -157,7 +157,7 @@
       "startLine": 122,
       "endLine": 157,
       "summary": "Three examples: example_2_3 (sorry: NonRepresentable {2,3} = {1}), example_3_5_frobenius (sorry: frobeniusNumber {3,5} = 7), topK_5_2 (proved: topK 5 2 = {4, 5} via ext + simp + omega).",
-      "mathContext": "Three examples: example_2_3 (sorry: NonRepresentable {2,3} = {1}), example_3_5_frobenius (sorry: frobeniusNumber {3,5} = 7), topK_5_2 (proved: topK 5 2 = {4, 5} via ext + simp + omega)."
+      "mathContext": "Mathematical content: Three examples: example_2_3 (sorry: NonRepresentable {2,3} = {1}), example_3_5_frobenius (sorry: frobeniusNumber {3,5} = 7), topK_5_2 (proved: topK 5 2 = {4, 5} via ext + simp + omega)."
     },
     {
       "id": "kiss",
@@ -165,7 +165,7 @@
       "startLine": 158,
       "endLine": 176,
       "summary": "kiss_2002 (axiom): ExtremalFrobeniusQuestion n k for all 1 ≤ k ≤ n. erdos_434_answer: direct corollary, proved by exact application of kiss_2002.",
-      "mathContext": "kiss_2002 (axiom): ExtremalFrobeniusQuestion n k for all 1 ≤ k ≤ n. erdos_434_answer: direct corollary, proved by exact application of kiss_2002."
+      "mathContext": "kiss_2002 (axiom): ExtremalFrobeniusQuestion n k for all 1 $\\leq$ k $\\leq$ n. erdos_434_answer: direct corollary, proved by exact application of kiss_2002."
     },
     {
       "id": "intuition",
@@ -173,7 +173,7 @@
       "startLine": 177,
       "endLine": 192,
       "summary": "larger_numbers_fewer_reps (sorry): nCardNonRepresentable({n-1,n}) > nCardNonRepresentable({1,2}) for n ≥ 2. Illustrates that larger numbers create more gaps in representability.",
-      "mathContext": "larger_numbers_fewer_reps (sorry): nCardNonRepresentable({n-1,n}) > nCardNonRepresentable({1,2}) for n ≥ 2. Illustrates that larger numbers create more gaps in representability."
+      "mathContext": "larger_numbers_fewer_reps (sorry): nCardNonRepresentable({n-1,n}) > nCardNonRepresentable({1,2}) for n $\\geq$ 2. Illustrates that larger numbers create more gaps in representability."
     },
     {
       "id": "sylvester",
@@ -181,7 +181,7 @@
       "startLine": 193,
       "endLine": 209,
       "summary": "Two axioms: sylvester_frobenius (frobeniusNumber {a,b} = ab-a-b for coprime a,b) and sylvester_count (count = (a-1)(b-1)/2). consecutive_count (sorry): specializes to {n-1,n} giving (n-2)(n-1)/2.",
-      "mathContext": "Two axioms: sylvester_frobenius (frobeniusNumber {a,b} = ab-a-b for coprime a,b) and sylvester_count (count = (a-1)(b-1)/2). consecutive_count (sorry): specializes to {n-1,n} giving (n-2)(n-1)/2."
+      "mathContext": "Axiomatized: Two axioms: sylvester_frobenius (frobeniusNumber {a,b} = ab-a-b for coprime a,b) and sylvester_count (count = (a-1)(b-1)/2). consecutive_count (sorry): specializes to {n-1,n} giving (n-2)(n-1)/2."
     },
     {
       "id": "greedy",
@@ -189,7 +189,7 @@
       "startLine": 210,
       "endLine": 223,
       "summary": "greedyConstruct n k = Set.Icc (n-k+1) n, definitionally equal to topK (greedy_eq_topK proved by rfl). The greedy algorithm is provably optimal.",
-      "mathContext": "greedyConstruct n k = Set.Icc (n-k+1) n, definitionally equal to topK (greedy_eq_topK proved by rfl). The greedy algorithm is provably optimal."
+      "mathContext": "Formal definition: greedyConstruct n k = Set.Icc (n-k+1) n, definitionally equal to topK (greedy_eq_topK proved by rfl). The greedy algorithm is provably optimal."
     },
     {
       "id": "bounds",
@@ -197,7 +197,7 @@
       "startLine": 224,
       "endLine": 238,
       "summary": "nonrep_finite (sorry): coprime elements imply finite NonRepresentable. topK_finite (sorry): NonRepresentable(topK n k) is finite for k ≥ 2.",
-      "mathContext": "nonrep_finite (sorry): coprime elements imply finite NonRepresentable. topK_finite (sorry): NonRepresentable(topK n k) is finite for k ≥ 2."
+      "mathContext": "nonrep_finite (sorry): coprime elements imply finite NonRepresentable. topK_finite (sorry): NonRepresentable(topK n k) is finite for k $\\geq$ 2."
     },
     {
       "id": "problem433",
@@ -213,7 +213,7 @@
       "startLine": 255,
       "endLine": 310,
       "summary": "erdos_434_complete: proved by exact kiss_2002 application. topK_is_maximum (sorry): strongest formulation using IsGreatest, requires proving topK is valid and applying kiss_2002.",
-      "mathContext": "erdos_434_complete: proved by exact kiss_2002 application. topK_is_maximum (sorry): strongest formulation using IsGreatest, requires proving topK is valid and applying kiss_2002."
+      "mathContext": "Mathematical content: erdos_434_complete: proved by exact kiss_2002 application. topK_is_maximum (sorry): strongest formulation using IsGreatest, requires proving topK is valid and applying kiss_2002."
     }
   ],
   "conclusion": {

@@ -103,7 +103,7 @@
       "startLine": 1,
       "endLine": 39,
       "summary": "Header documentation and Mathlib imports for `Nat.Prime.Basic`, `Nat.Sqrt`, `Finset.Basic`, `BigOperators`, `Real`, `Int`, and `Mathlib.Tactic`. Opens the `Erdos1148` namespace.",
-      "mathContext": "Header documentation and Mathlib imports for `Nat.Prime.Basic`, `Nat.Sqrt`, `Finset.Basic`, `BigOperators`, `Real`, `Int`, and `Mathlib.Tactic`. Opens the `Erdos1148` namespace."
+      "mathContext": "Mathematical content: Header documentation and Mathlib imports for `Nat.Prime.Basic`, `Nat.Sqrt`, `Finset.Basic`, `BigOperators`, `Real`, `Int`, and `Mathlib.Tactic`. Opens the `Erdos1148` namespace."
     },
     {
       "id": "representation",
@@ -119,7 +119,7 @@
       "startLine": 59,
       "endLine": 75,
       "summary": "Proves perfect squares are representable via $(k, 0, 0)$, plus explicit witnesses for $n = 0$ and $n = 1$ (using $(1, 0, 0)$ since $1 = 1^2 + 0^2 - 0^2$).",
-      "mathContext": "Proves perfect squares are representable via $(k, 0, 0)$, plus explicit witnesses for $n = 0$ and $n = 1$ (using $(1, 0, 0)$ since $1 = 1^2 + 0^2 - 0^2$)."
+      "mathContext": "Proves perfect squares are representable via $(k, 0, 0)$, plus explicit witnesses for $n = 0$ and $n = 1$ (using $(1, 0, 0)$ since $1 = $1^{2}$ + $0^{2}$ - $0^{2}$$)."
     },
     {
       "id": "monotonicity",
@@ -135,7 +135,7 @@
       "startLine": 95,
       "endLine": 111,
       "summary": "Proves that for odd $n \\geq 3$, the identity $n = ((n+1)/2)^2 - ((n-1)/2)^2$ violates the strict bound since $((n+1)/2)^2 > n$. Uses the `omega` tactic for arithmetic reasoning.",
-      "mathContext": "Proves that for odd $n \\geq 3$, the identity $n = ((n+1)/2)^2 - ((n-1)/2)^2$ violates the strict bound since $((n+1)/2)^2 > n$. Uses the `omega` tactic for arithmetic reasoning."
+      "mathContext": "Verified: Proves that for odd $n \\geq 3$, the identity $n = ((n+1)/2)^2 - ((n-1)/2)^2$ violates the strict bound since $((n+1)/2)^2 > n$. Uses the `omega` tactic for arithmetic reasoning."
     },
     {
       "id": "small-cases",
@@ -143,7 +143,7 @@
       "startLine": 112,
       "endLine": 144,
       "summary": "Explicit witness constructions for $n = 2, 4, 5, 8, 9$: e.g., $2 = 1^2 + 1^2 - 0^2$, $5 = 2^2 + 1^2 - 0^2$, $9 = 3^2 + 0^2 - 0^2$. Each witness is verified by `omega` and `Nat.le_refl`.",
-      "mathContext": "Explicit witness constructions for $n = 2, 4, 5, 8, 9$: e.g., $2 = 1^2 + 1^2 - 0^2$, $5 = 2^2 + 1^2 - 0^2$, $9 = 3^2 + 0^2 - 0^2$. Each witness is verified by `omega` and `Nat.le_refl`."
+      "mathContext": "Explicit witness constructions for $n = 2, 4, 5, 8, 9$: e.g., $2 = $1^{2}$ + $1^{2}$ - $0^{2}$$, $5 = $2^{2}$ + $1^{2}$ - $0^{2}$$, $9 = $3^{2}$ + $0^{2}$ - $0^{2}$$. Each witness is verified by `omega` and `Nat.le_refl`."
     },
     {
       "id": "decidable-checker",

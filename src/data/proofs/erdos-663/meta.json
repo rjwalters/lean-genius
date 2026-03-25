@@ -49,7 +49,7 @@
       "startLine": 18,
       "endLine": 22,
       "summary": "Imports Mathlib modules for prime number basics, filters for asymptotic analysis, $\\limsup$/$\\liminf$ machinery, real number arithmetic, and general tactics.",
-      "mathContext": "Imports Mathlib modules for prime number basics, filters for asymptotic analysis, $\\limsup$/$\\liminf$ machinery, real number arithmetic, and general tactics."
+      "mathContext": "Mathematical content: Imports Mathlib modules for prime number basics, filters for asymptotic analysis, $\\limsup$/$\\liminf$ machinery, real number arithmetic, and general tactics."
     },
     {
       "id": "definitions",
@@ -65,7 +65,7 @@
       "startLine": 46,
       "endLine": 55,
       "summary": "States the main conjecture in $\\varepsilon$-$N$ asymptotic form: for all $\\varepsilon > 0$ and fixed $k$, there exists $N_0$ such that $q(n,k) < (1+\\varepsilon)\\log n$ for all $n \\geq N_0$.",
-      "mathContext": "States the main conjecture in $\\varepsilon$-$N$ asymptotic form: for all $\\varepsilon > 0$ and fixed $k$, there exists $N_0$ such that $q(n,k) < (1+\\varepsilon)\\log n$ for all $n \\geq N_0$."
+      "mathContext": "States the main conjecture in $\\varepsilon$-$N$ asymptotic form: for all $\\varepsilon > 0$ and fixed $k$, there exists $N_0$ such that $q(n,k) < (1+\\varepsilon)\\$\\log n$$ for all $n \\geq N_0$."
     },
     {
       "id": "weak-bound",
@@ -73,7 +73,7 @@
       "startLine": 56,
       "endLine": 66,
       "summary": "States the weaker bound $q(n,k) < (1+\\varepsilon)\\,k\\log n$, which follows from the prime number theorem. This differs from the main conjecture by the multiplicative factor $k$.",
-      "mathContext": "States the weaker bound $q(n,k) < (1+\\varepsilon)\\,k\\log n$, which follows from the prime number theorem. This differs from the main conjecture by the multiplicative factor $k$."
+      "mathContext": "States the weaker bound $q(n,k) < (1+\\varepsilon)\\,k\\$\\log n$$, which follows from the prime number theorem. This differs from the main conjecture by the multiplicative factor $k$."
     },
     {
       "id": "k1-case",
@@ -81,7 +81,7 @@
       "startLine": 67,
       "endLine": 78,
       "summary": "Proves that the weak bound implies the main conjecture when $k=1$: since $1 \\cdot \\log n = \\log n$, the extra factor disappears. Proved by rewriting with `mul_one`.",
-      "mathContext": "Proves that the weak bound implies the main conjecture when $k=1$: since $1 \\cdot \\log n = \\log n$, the extra factor disappears. Proved by rewriting with `mul_one`."
+      "mathContext": "Proves that the weak bound implies the main conjecture when $k=1$: since $1 \\cdot \\$\\log n$ = \\$\\log n$$, the extra factor disappears. Proved by rewriting with `mul_one`."
     },
     {
       "id": "related-results",
@@ -97,7 +97,7 @@
       "startLine": 100,
       "endLine": 111,
       "summary": "Axiomatizes that every prime $p \\leq k$ divides $(n+1)\\cdots(n+k)$ (pigeonhole on residues), and that $q(n,k) > k$ for $k > 1$ — the smallest missing prime is always larger than the product length.",
-      "mathContext": "Axiomatizes that every prime $p \\leq k$ divides $(n+1)\\cdots(n+k)$ (pigeonhole on residues), and that $q(n,k) > k$ for $k > 1$ — the smallest missing prime is always larger than the product length."
+      "mathContext": "Axiomatized: Axiomatizes that every prime $p \\leq k$ divides $(n+1)\\cdots(n+k)$ (pigeonhole on residues), and that $q(n,k) > k$ for $k > 1$ — the smallest missing prime is always larger than the product length."
     },
     {
       "id": "monotonicity",

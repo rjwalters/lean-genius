@@ -51,7 +51,7 @@
       "startLine": 15,
       "endLine": 21,
       "summary": "Imports InnerProductSpace for ℝ², Finset for combinatorics, and standard tactics.",
-      "mathContext": "Imports InnerProductSpace for ℝ², Finset for combinatorics, and standard tactics."
+      "mathContext": "Mathematical content: Imports InnerProductSpace for ℝ², Finset for combinatorics, and standard tactics."
     },
     {
       "id": "collinearity",
@@ -59,7 +59,7 @@
       "startLine": 22,
       "endLine": 28,
       "summary": "Defines AreCollinear using the vanishing of the 2D cross product determinant.",
-      "mathContext": "Defines AreCollinear using the vanishing of the 2D cross product determinant."
+      "mathContext": "Formal definition: Defines AreCollinear using the vanishing of the 2D cross product determinant."
     },
     {
       "id": "non-trilinear",
@@ -67,7 +67,7 @@
       "startLine": 29,
       "endLine": 33,
       "summary": "Defines NonTrilinear: no three distinct points in the set are collinear (general position).",
-      "mathContext": "Defines NonTrilinear: no three distinct points in the set are collinear (general position)."
+      "mathContext": "Formal definition: Defines NonTrilinear: no three distinct points in the set are collinear (general position)."
     },
     {
       "id": "eps-property",
@@ -75,7 +75,7 @@
       "startLine": 34,
       "endLine": 42,
       "summary": "Defines the density condition: every finite subset B has a non-collinear subset C with |C| ≥ ε|B|.",
-      "mathContext": "Defines the density condition: every finite subset B has a non-collinear subset C with |C| ≥ ε|B|."
+      "mathContext": "Defines the density condition: every finite subset B has a non-collinear subset C with |C| $\\geq$ ε|B|."
     },
     {
       "id": "weakly-non-trilinear",
@@ -83,7 +83,7 @@
       "startLine": 43,
       "endLine": 49,
       "summary": "Defines the structural condition: A is a finite union of non-trilinear sets.",
-      "mathContext": "Defines the structural condition: A is a finite union of non-trilinear sets."
+      "mathContext": "Formal definition: Defines the structural condition: A is a finite union of non-trilinear sets."
     },
     {
       "id": "basic-properties",
@@ -91,7 +91,7 @@
       "startLine": 50,
       "endLine": 74,
       "summary": "Four proved lemmas: monotonicity, empty set, singleton non-trilinearity, and collinearity symmetry.",
-      "mathContext": "Four proved lemmas: monotonicity, empty set, singleton non-trilinearity, and collinearity symmetry."
+      "mathContext": "Mathematical content: Four proved lemmas: monotonicity, empty set, singleton non-trilinearity, and collinearity symmetry."
     },
     {
       "id": "eps-results",
@@ -99,7 +99,7 @@
       "startLine": 75,
       "endLine": 98,
       "summary": "Proves non-trilinear sets are 1-non-trilinear and that ε-non-trilinearity is monotone in ε.",
-      "mathContext": "Proves non-trilinear sets are 1-non-trilinear and that ε-non-trilinearity is monotone in ε."
+      "mathContext": "Verified: Proves non-trilinear sets are 1-non-trilinear and that ε-non-trilinearity is monotone in ε."
     },
     {
       "id": "pigeonhole",
@@ -107,7 +107,7 @@
       "startLine": 99,
       "endLine": 122,
       "summary": "A standalone proof that some fiber of f : B → Fin k has |fiber| ≥ |B|/k, by contradiction.",
-      "mathContext": "A standalone proof that some fiber of f : B → Fin k has |fiber| ≥ |B|/k, by contradiction."
+      "mathContext": "A standalone proof that some fiber of f : B $\\to$ Fin k has |fiber| $\\geq$ |B|/k, by contradiction."
     },
     {
       "id": "easy-direction",
@@ -115,7 +115,7 @@
       "startLine": 123,
       "endLine": 178,
       "summary": "The main proved theorem: if A ⊆ ⋃ᵢ Sᵢ with each Sᵢ non-trilinear, then A is (1/k)-non-trilinear.",
-      "mathContext": "The main proved theorem: if A ⊆ ⋃ᵢ Sᵢ with each Sᵢ non-trilinear, then A is (1/k)-non-trilinear."
+      "mathContext": "Verified: The main proved theorem: if A ⊆ ⋃ᵢ Sᵢ with each Sᵢ non-trilinear, then A is (1/k)-non-trilinear."
     },
     {
       "id": "conjecture",
@@ -123,7 +123,7 @@
       "startLine": 179,
       "endLine": 199,
       "summary": "States the open problem (density → structure) and its logically equivalent contrapositive.",
-      "mathContext": "States the open problem (density → structure) and its logically equivalent contrapositive."
+      "mathContext": "States the open problem (density $\\to$ structure) and its logically equivalent contrapositive."
     }
   ],
   "conclusion": {

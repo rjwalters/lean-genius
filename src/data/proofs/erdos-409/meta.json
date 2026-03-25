@@ -50,7 +50,7 @@
       "startLine": 24,
       "endLine": 30,
       "summary": "Imports Mathlib's Euler totient $\\varphi(n) = |\\{k \\leq n : \\gcd(k,n) = 1\\}|$, primality, and the filter framework for $o(\\cdot)$ asymptotics.",
-      "mathContext": "Imports Mathlib's Euler totient $\\varphi(n) = |\\{k \\leq n : \\gcd(k,n) = 1\\}|$, primality, and the filter framework for $o(\\cdot)$ asymptotics."
+      "mathContext": "Mathematical content: Imports Mathlib's Euler totient $\\varphi(n) = |\\{k \\leq n : \\gcd(k,n) = 1\\}|$, primality, and the filter framework for $o(\\cdot)$ asymptotics."
     },
     {
       "id": "core-defs",
@@ -74,7 +74,7 @@
       "startLine": 133,
       "endLine": 140,
       "summary": "The trivial bound $F(n) = o(n)$ follows from the fact that each iteration reduces $n$ by at least 1 for composites. The open question is whether $F(n) = O(\\log n)$ or even $O(\\log \\log n)$.",
-      "mathContext": "The trivial bound $F(n) = o(n)$ follows from the fact that each iteration reduces $n$ by at least 1 for composites. The open question is whether $F(n) = O(\\log n)$ or even $O(\\log \\log n)$."
+      "mathContext": "The trivial bound $F(n) = o(n)$ follows from the fact that each iteration reduces $n$ by at least 1 for composites. The open question is whether $F(n) = $O(\\$\\log n$)$$ or even $$O(\\log \\$\\log n$)$$."
     },
     {
       "id": "part-ii",
@@ -82,7 +82,7 @@
       "startLine": 142,
       "endLine": 147,
       "summary": "Asks whether some prime $p$ has $|\\{n : \\exists k,\\; T^k(n) = p\\}| = \\infty$. The basin of attraction of $p$ under $T$ --- likely infinite for small primes like 2 and 3.",
-      "mathContext": "Asks whether some prime $p$ has $|\\{n : \\exists k,\\; T^k(n) = p\\}| = \\infty$. The basin of attraction of $p$ under $T$ --- likely infinite for small primes like 2 and 3."
+      "mathContext": "Mathematical content: Asks whether some prime $p$ has $|\\{n : \\exists k,\\; T^k(n) = p\\}| = \\infty$. The basin of attraction of $p$ under $T$ --- likely infinite for small primes like 2 and 3."
     },
     {
       "id": "part-iii",
@@ -90,7 +90,7 @@
       "startLine": 149,
       "endLine": 153,
       "summary": "For each prime $p$, asks whether $\\alpha(p) = \\lim_{N \\to \\infty} |\\{n \\leq N : \\exists k,\\; T^k(n) = p\\}|/N$ exists and what its value is.",
-      "mathContext": "For each prime $p$, asks whether $\\alpha(p) = \\lim_{N \\to \\infty} |\\{n \\leq N : \\exists k,\\; T^k(n) = p\\}|/N$ exists and what its value is."
+      "mathContext": "For each prime $p$, asks whether $\\$\\alpha$(p) = \\lim_{N \\to \\infty} |\\{n \\leq N : \\exists k,\\; T^k(n) = p\\}|/N$ exists and what its value is."
     },
     {
       "id": "basic-properties",
@@ -98,7 +98,7 @@
       "startLine": 155,
       "endLine": 174,
       "summary": "Establishes $F(p) = 0$ for primes, the criterion $F(n) = 1 \\iff \\varphi(n) + 1$ is prime, and the parity result that $\\varphi(n) + 1$ is odd for $n \\geq 3$ (since $\\varphi(n)$ is even).",
-      "mathContext": "Establishes $F(p) = 0$ for primes, the criterion $F(n) = 1 \\iff \\varphi(n) + 1$ is prime, and the parity result that $\\varphi(n) + 1$ is odd for $n \\geq 3$ (since $\\varphi(n)$ is even)."
+      "mathContext": "Mathematical content: Establishes $F(p) = 0$ for primes, the criterion $F(n) = 1 \\iff \\varphi(n) + 1$ is prime, and the parity result that $\\varphi(n) + 1$ is odd for $n \\geq 3$ (since $\\varphi(n)$ is even)."
     },
     {
       "id": "sigma-variant",

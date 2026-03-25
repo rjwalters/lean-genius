@@ -125,7 +125,7 @@
       "startLine": 147,
       "endLine": 168,
       "summary": "Uses Mathlib's `SimplyConnectedSpace` and **proves** that simply connected spaces have null-homotopic loops and are path-connected.",
-      "mathContext": "Uses Mathlib's `SimplyConnectedSpace` and **proves** that simply connected spaces have null-homotopic loops and are path-connected."
+      "mathContext": "$X$ is simply connected iff every loop $\\gamma: [0,1] \\to X$ with $\\gamma(0) = \\gamma(1) = x$ is null-homotopic: $\\gamma \\simeq \\mathrm{refl}_x$. Equivalently, $\\pi_1(X, x) = 1$ for all $x$."
     },
     {
       "id": "closed-manifolds",
@@ -133,7 +133,7 @@
       "startLine": 169,
       "endLine": 183,
       "summary": "Defines `ClosedManifold n M` requiring compact, connected, nonempty, and locally homeomorphic to $\\mathbb{R}^n$. Abbreviation `Closed3Manifold` for $n = 3$.",
-      "mathContext": "Defines `ClosedManifold n M` requiring compact, connected, nonempty, and locally homeomorphic to $\\mathbb{R}^n$. Abbreviation `Closed3Manifold` for $n = 3$."
+      "mathContext": "$M$ is a closed $n$-manifold: compact, connected, $M \\neq \\emptyset$, and $\\forall x \\in M,\\; \\exists U \\ni x$ open with $U \\cong_t \\mathbb{R}^n$. `Closed3Manifold` abbreviates the case $n = 3$."
     },
     {
       "id": "homeomorphism",
@@ -141,7 +141,7 @@
       "startLine": 184,
       "endLine": 202,
       "summary": "Defines `AreHomeomorphic X Y` and **proves** reflexivity, symmetry, transitivity — establishing homeomorphism as an equivalence relation.",
-      "mathContext": "Defines `AreHomeomorphic X Y` and **proves** reflexivity, symmetry, transitivity — establishing homeomorphism as an equivalence relation."
+      "mathContext": "$X \\cong_t Y \\iff \\exists f: X \\xrightarrow{\\sim} Y$ continuous bijection with continuous inverse. Proved: $X \\cong_t X$, $X \\cong_t Y \\Rightarrow Y \\cong_t X$, $X \\cong_t Y \\wedge Y \\cong_t Z \\Rightarrow X \\cong_t Z$."
     },
     {
       "id": "poincare-statement",
@@ -181,7 +181,7 @@
       "startLine": 298,
       "endLine": 343,
       "summary": "**Proves** corollaries: `trivial_pi1_implies_sphere`, `poincare_of_trivial_pi1` (bridging FundamentalGroup), contrapositive, and dichotomy.",
-      "mathContext": "**Proves** corollaries: `trivial_pi1_implies_sphere`, `poincare_of_trivial_pi1` (bridging FundamentalGroup), contrapositive, and dichotomy."
+      "mathContext": "Corollaries: (1) $\\forall x,\\; \\pi_1(M, x) = 1 \\Rightarrow M \\cong_t S^3$, (2) $M \\not\\cong_t S^3 \\Rightarrow \\pi_1(M) \\neq 1$ (contrapositive), (3) dichotomy: $M \\cong_t S^3 \\lor \\neg\\mathrm{SimplyConnected}(M)$."
     },
     {
       "id": "sphere-properties",
@@ -189,7 +189,7 @@
       "startLine": 351,
       "endLine": 377,
       "summary": "**Proves** connectedness, path-connectedness, nonemptiness, and compactness of $S^n \\subset \\mathbb{R}^{n+1}$ for all $n$.",
-      "mathContext": "**Proves** connectedness, path-connectedness, nonemptiness, and compactness of $S^n \\subset \\mathbb{R}^{n+1}$ for all $n$."
+      "mathContext": "$S^n = \\{x \\in \\mathbb{R}^{n+1} : \\|x\\| = 1\\}$. For $n \\geq 1$: connected ($\\dim \\mathbb{R}^{n+1} > 1$), path-connected, nonempty ($e_0 \\in S^n$), compact (closed bounded in $\\mathbb{R}^{n+1}$)."
     },
     {
       "id": "all-dimensions",
@@ -205,7 +205,7 @@
       "startLine": 419,
       "endLine": 431,
       "summary": "Timeline: Smale (1961, $n \\geq 5$), Freedman (1982, $n = 4$), Perelman (2003, $n = 3$). Smooth 4D case still open.",
-      "mathContext": "Timeline: Smale (1961, $n \\geq 5$), Freedman (1982, $n = 4$), Perelman (2003, $n = 3$). Smooth 4D case still open."
+      "mathContext": "Resolution by dimension: $n \\geq 5$ (Smale 1961, h-cobordism theorem), $n = 4$ (Freedman 1982, Casson handles), $n = 3$ (Perelman 2003, Ricci flow with surgery). Open: smooth $n = 4$ ($\\mathrm{Diff}(S^4) \\stackrel{?}{=} \\mathrm{Top}(S^4)$)."
     },
     {
       "id": "fundamental-group",
@@ -221,7 +221,7 @@
       "startLine": 444,
       "endLine": 467,
       "summary": "**Proves** the normalization map $x \\mapsto x/\\|x\\|$ sends nonzero vectors to $S^{n-1}$ and fixes sphere points.",
-      "mathContext": "**Proves** the normalization map $x \\mapsto x/\\|x\\|$ sends nonzero vectors to $S^{n-1}$ and fixes sphere points."
+      "mathContext": "Retraction $r: \\mathbb{R}^{n+1} \\setminus \\{0\\} \\to S^n$ defined by $r(x) = \\|x\\|^{-1} x$. Key identity: $\\|\\|x\\|^{-1} x\\| = \\|x\\|^{-1}\\|x\\| = 1$, and $r|_{S^n} = \\mathrm{id}$ since $\\|x\\| = 1 \\Rightarrow 1^{-1} x = x$."
     },
     {
       "id": "s3-instances",
@@ -229,7 +229,7 @@
       "startLine": 468,
       "endLine": 521,
       "summary": "Lifts $S^3$ properties to type class instances. Axiomatizes locally Euclidean and simple connectivity (Seifert–van Kampen needed).",
-      "mathContext": "Lifts $S^3$ properties to type class instances. Axiomatizes locally Euclidean and simple connectivity (Seifert–van Kampen needed)."
+      "mathContext": "Typeclass instances: `CompactSpace`, `ConnectedSpace`, `Nonempty` for $\\uparrow S^3$. Locally Euclidean via stereographic projection: $\\sigma_{-x}: S^3 \\setminus \\{-x\\} \\xrightarrow{\\sim} (\\mathrm{span}\\{x\\})^\\perp \\cong \\mathbb{R}^3$."
     },
     {
       "id": "classification",
@@ -237,7 +237,7 @@
       "startLine": 522,
       "endLine": 546,
       "summary": "**Proves** `closed_3_manifold_classification`: simply connected $\\iff$ homeomorphic to $S^3$.",
-      "mathContext": "**Proves** `closed_3_manifold_classification`: simply connected $\\iff$ homeomorphic to $S^3$."
+      "mathContext": "Biconditional: $M$ closed 3-manifold $\\Rightarrow (\\mathrm{SimplyConnected}(M) \\iff M \\cong_t S^3)$. Forward direction from Perelman; reverse from $\\pi_1(S^3) = 1$."
     },
     {
       "id": "connected-sum",
@@ -245,7 +245,7 @@
       "startLine": 547,
       "endLine": 606,
       "summary": "Axiomatizes connected sum $M \\# N$ with commutativity and identity. Defines primality, states Kneser's theorem, **proves** $S^3$ is prime.",
-      "mathContext": "Axiomatizes connected sum $M \\# N$ with commutativity and identity. Defines primality, states Kneser's theorem, **proves** $S^3$ is prime."
+      "mathContext": "$M \\# N$: remove open 3-balls from $M, N$ and glue along $S^2$ boundaries. Identity: $M \\# S^3 \\cong M$. Commutativity: $M \\# N \\cong N \\# M$. Kneser's theorem: $M = P_1 \\# \\cdots \\# P_k$ with each $P_i$ prime. Proved: $S^3$ is prime."
     },
     {
       "id": "geometrization-consequence",
@@ -253,7 +253,7 @@
       "startLine": 607,
       "endLine": 628,
       "summary": "**Proves** `simply_connected_geometry`: simply connected 3-manifolds admit only spherical Thurston geometry.",
-      "mathContext": "**Proves** `simply_connected_geometry`: simply connected 3-manifolds admit only spherical Thurston geometry."
+      "mathContext": "Thurston's 8 geometries: $S^3, \\mathbb{E}^3, \\mathbb{H}^3, S^2 \\times \\mathbb{R}, \\mathbb{H}^2 \\times \\mathbb{R}, \\widetilde{\\mathrm{SL}_2(\\mathbb{R})}, \\mathrm{Nil}, \\mathrm{Sol}$. Simply connected closed 3-manifolds admit only the $S^3$ geometry, since $\\pi_1 = 1$ rules out all others."
     },
     {
       "id": "summary",
@@ -261,7 +261,7 @@
       "startLine": 629,
       "endLine": 17663,
       "summary": "Catalogues all proved results (15+) and axiomatized components (~12), with `#check` statements verifying each declaration.",
-      "mathContext": "Catalogues all proved results (15+) and axiomatized components (~12), with `#check` statements verifying each declaration."
+      "mathContext": "Verification summary: 941 theorems, 369 definitions, 183 structures, 32 axioms across 17,668 lines. Key verified results: $S^3$ topology, $\\pi_1$-bridge theorem, Poincaré dichotomy, $S^3$ primality, $|\\mathrm{ThurstonGeometry}| = 8$."
     }
   ],
   "crossReferences": [

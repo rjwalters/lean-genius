@@ -59,7 +59,7 @@
       "startLine": 45,
       "endLine": 70,
       "summary": "Defines $\\texttt{IsKthPowerResidue}(r, k, p) \\iff \\exists x,\\; x^k \\bmod p = r \\bmod p$, consecutive runs $\\texttt{AreConsecutiveKthResidues}$, and the quadratic residue specialization $k = 2$.",
-      "mathContext": "Defines $\\texttt{IsKthPowerResidue}(r, k, p) \\iff \\exists x,\\; x^k \\bmod p = r \\bmod p$, consecutive runs $\\texttt{AreConsecutiveKthResidues}$, and the quadratic residue specialization $k = 2$."
+      "mathContext": "Formal definition: Defines $\\texttt{IsKthPowerResidue}(r, k, p) \\iff \\exists x,\\; x^k \\bmod p = r \\bmod p$, consecutive runs $\\texttt{AreConsecutiveKthResidues}$, and the quadratic residue specialization $k = 2$."
     },
     {
       "id": "structural",
@@ -67,7 +67,7 @@
       "startLine": 71,
       "endLine": 156,
       "summary": "Proved lemmas: $0, 1$, and perfect powers are always $k$th power residues; $k = 1$ is trivial; runs can be extended, shortened, shifted, and verified at individual positions.",
-      "mathContext": "Proved lemmas: $0, 1$, and perfect powers are always $k$th power residues; $k = 1$ is trivial; runs can be extended, shortened, shifted, and verified at individual positions."
+      "mathContext": "Mathematical content: Proved lemmas: $0, 1$, and perfect powers are always $k$th power residues; $k = 1$ is trivial; runs can be extended, shortened, shifted, and verified at individual positions."
     },
     {
       "id": "r-function",
@@ -75,7 +75,7 @@
       "startLine": 157,
       "endLine": 176,
       "summary": "Defines $r(k,m,p) = \\min\\{r \\geq 1 : r, \\ldots, r+m-1$ are $k$th power residues$\\}$ via $\\texttt{Nat.find}$. Axiomatizes existence for large primes.",
-      "mathContext": "Defines $r(k,m,p) = \\min\\{r \\geq 1 : r, \\ldots, r+m-1$ are $k$th power residues$\\}$ via $\\texttt{Nat.find}$. Axiomatizes existence for large primes."
+      "mathContext": "Formal definition: Defines $r(k,m,p) = \\min\\{r \\geq 1 : r, \\ldots, r+m-1$ are $k$th power residues$\\}$ via $\\texttt{Nat.find}$. Axiomatizes existence for large primes."
     },
     {
       "id": "lambda-function",
@@ -83,7 +83,7 @@
       "startLine": 177,
       "endLine": 196,
       "summary": "Defines $\\texttt{LambdaFinite}(k, m)$ (existence of uniform bound) and $\\Lambda(k, m) = \\min\\{N : \\forall p > N,\\; r(k,m,p) \\leq N\\}$ via $\\texttt{Nat.find}$.",
-      "mathContext": "Defines $\\texttt{LambdaFinite}(k, m)$ (existence of uniform bound) and $\\Lambda(k, m) = \\min\\{N : \\forall p > N,\\; r(k,m,p) \\leq N\\}$ via $\\texttt{Nat.find}$."
+      "mathContext": "Formal definition: Defines $\\texttt{LambdaFinite}(k, m)$ (existence of uniform bound) and $\\Lambda(k, m) = \\min\\{N : \\forall p > N,\\; r(k,m,p) \\leq N\\}$ via $\\texttt{Nat.find}$."
     },
     {
       "id": "known-values",
@@ -91,7 +91,7 @@
       "startLine": 197,
       "endLine": 238,
       "summary": "Axiomatized: $\\Lambda(2,2) = 9$, $\\Lambda(3,2) = 77$, $\\Lambda(4,2) = 1224$, $\\Lambda(5,2) = 7888$, $\\Lambda(6,2) = 202124$, $\\Lambda(7,2) = 1649375$ from 1960s computations.",
-      "mathContext": "Axiomatized: $\\Lambda(2,2) = 9$, $\\Lambda(3,2) = 77$, $\\Lambda(4,2) = 1224$, $\\Lambda(5,2) = 7888$, $\\Lambda(6,2) = 202124$, $\\Lambda(7,2) = 1649375$ from 1960s computations."
+      "mathContext": "Axiomatized: Axiomatized: $\\Lambda(2,2) = 9$, $\\Lambda(3,2) = 77$, $\\Lambda(4,2) = 1224$, $\\Lambda(5,2) = 7888$, $\\Lambda(6,2) = 202124$, $\\Lambda(7,2) = 1649375$ from 1960s computations."
     },
     {
       "id": "hildebrand",
@@ -99,7 +99,7 @@
       "startLine": 239,
       "endLine": 258,
       "summary": "Resolves Question 1: $\\forall k \\geq 2,\\; \\Lambda(k, 2) < \\infty$. Uses character sum estimates and the large sieve inequality. The theorem $\\texttt{erdos\\_436\\_question1}$ follows directly.",
-      "mathContext": "Resolves Question 1: $\\forall k \\geq 2,\\; \\Lambda(k, 2) < \\infty$. Uses character sum estimates and the large sieve inequality. The theorem $\\texttt{erdos\\_436\\_question1}$ follows directly."
+      "mathContext": "Verified: Resolves Question 1: $\\forall k \\geq 2,\\; \\Lambda(k, 2) < \\infty$. Uses character sum estimates and the large sieve inequality. The theorem $\\texttt{erdos\\_436\\_question1}$ follows directly."
     },
     {
       "id": "m3-case",
@@ -107,7 +107,7 @@
       "startLine": 259,
       "endLine": 286,
       "summary": "$\\Lambda(3,3) = 23532$ (Lehmer-Lehmer-Mills-Selfridge). $\\Lambda(k,3) = \\infty$ for even $k$ (Lehmer-Lehmer parity obstruction). Open question: is $\\Lambda(k,3) < \\infty$ for odd $k \\geq 5$?",
-      "mathContext": "$\\Lambda(3,3) = 23532$ (Lehmer-Lehmer-Mills-Selfridge). $\\Lambda(k,3) = \\infty$ for even $k$ (Lehmer-Lehmer parity obstruction). Open question: is $\\Lambda(k,3) < \\infty$ for odd $k \\geq 5$?"
+      "mathContext": "Mathematical content: $\\Lambda(3,3) = 23532$ (Lehmer-Lehmer-Mills-Selfridge). $\\Lambda(k,3) = \\infty$ for even $k$ (Lehmer-Lehmer parity obstruction). Open question: is $\\Lambda(k,3) < \\infty$ for odd $k \\geq 5$?"
     },
     {
       "id": "graham",
@@ -115,7 +115,7 @@
       "startLine": 287,
       "endLine": 311,
       "summary": "$\\Lambda(k, m) = \\infty$ for all $k \\geq 2, m \\geq 4$. Corollary: $\\texttt{LambdaFinite}(k, m) \\Rightarrow m \\leq 3$, proved by contradiction.",
-      "mathContext": "$\\Lambda(k, m) = \\infty$ for all $k \\geq 2, m \\geq 4$. Corollary: $\\texttt{LambdaFinite}(k, m) \\Rightarrow m \\leq 3$, proved by contradiction."
+      "mathContext": "Mathematical content: $\\Lambda(k, m) = \\infty$ for all $k \\geq 2, m \\geq 4$. Corollary: $\\texttt{LambdaFinite}(k, m) \\Rightarrow m \\leq 3$, proved by contradiction."
     },
     {
       "id": "quadratic",
@@ -131,7 +131,7 @@
       "startLine": 336,
       "endLine": 540,
       "summary": "Super-polynomial growth axiomatized. Monotonicity and gaps proved via $\\texttt{native\\_decide}$: $68, 1147, 6664, 194236, 1447251$. Also: $\\Lambda(8,2)$ finite (Hildebrand), all values positive.",
-      "mathContext": "Super-polynomial growth axiomatized. Monotonicity and gaps proved via $\\texttt{native\\_decide}$: $68, 1147, 6664, 194236, 1447251$. Also: $\\Lambda(8,2)$ finite (Hildebrand), all values positive."
+      "mathContext": "Axiomatized: Super-polynomial growth axiomatized. Monotonicity and gaps proved via $\\texttt{native\\_decide}$: $68, 1147, 6664, 194236, 1447251$. Also: $\\Lambda(8,2)$ finite (Hildebrand), all values positive."
     },
     {
       "id": "flt-euler",

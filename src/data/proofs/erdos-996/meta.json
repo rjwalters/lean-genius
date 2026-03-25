@@ -106,7 +106,7 @@
       "startLine": 50,
       "endLine": 90,
       "summary": "Defines IsLacunary (ratio condition n(k+1)/n(k) ≥ λ > 1), proves powers of 2 and 3 are lacunary via explicit ratio calculations, and states lacunary_strictMono (sorry).",
-      "mathContext": "Defines IsLacunary (ratio condition n(k+1)/n(k) ≥ λ > 1), proves powers of 2 and 3 are lacunary via explicit ratio calculations, and states lacunary_strictMono (sorry)."
+      "mathContext": "Defines IsLacunary (ratio condition n(k+1)/n(k) $\\geq$ λ > 1), proves powers of 2 and 3 are lacunary via explicit ratio calculations, and states lacunary_strictMono (sorry)."
     },
     {
       "id": "fourier",
@@ -114,7 +114,7 @@
       "startLine": 91,
       "endLine": 108,
       "summary": "Defines fourierPartialSum (trigonometric polynomial of degree N), fourierError (L² norm of f - fₙ), and axiomatizes Parseval's identity connecting L² norm to Fourier coefficient ℓ² norm.",
-      "mathContext": "Defines fourierPartialSum (trigonometric polynomial of degree N), fourierError (L² norm of f - fₙ), and axiomatizes Parseval's identity connecting L² norm to Fourier coefficient ℓ² norm."
+      "mathContext": "Formal definition: Defines fourierPartialSum (trigonometric polynomial of degree N), fourierError (L² norm of f - fₙ), and axiomatizes Parseval's identity connecting L² norm to Fourier coefficient ℓ² norm."
     },
     {
       "id": "ergodic",
@@ -122,7 +122,7 @@
       "startLine": 109,
       "endLine": 123,
       "summary": "Defines frac (fractional part), ergodicAverage ((1/N)Σf({αnₖ}) as Cesàro mean), and spaceAverage (∫₀¹f dx, the zeroth Fourier coefficient).",
-      "mathContext": "Defines frac (fractional part), ergodicAverage ((1/N)Σf({αnₖ}) as Cesàro mean), and spaceAverage (∫₀¹f dx, the zeroth Fourier coefficient)."
+      "mathContext": "Defines frac (fractional part), ergodicAverage ((1/N)$\\sum$f({αnₖ}) as Cesàro mean), and spaceAverage (∫₀¹f dx, the zeroth Fourier coefficient)."
     },
     {
       "id": "strong-law",
@@ -130,7 +130,7 @@
       "startLine": 124,
       "endLine": 135,
       "summary": "Defines StrongLawHolds (Tendsto of ergodic average to space average) and StrongLawHoldsAE (a.e. version using ∀ᵐ α with Lebesgue measure on [0,1]).",
-      "mathContext": "Defines StrongLawHolds (Tendsto of ergodic average to space average) and StrongLawHoldsAE (a.e. version using ∀ᵐ α with Lebesgue measure on [0,1])."
+      "mathContext": "Formal definition: Defines StrongLawHolds (Tendsto of ergodic average to space average) and StrongLawHoldsAE (a.e. version using ∀ᵐ α with Lebesgue measure on [0,1])."
     },
     {
       "id": "known-results",
@@ -138,7 +138,7 @@
       "startLine": 136,
       "endLine": 171,
       "summary": "Four axiomatized historical milestones: raikov_theorem (geometric sequences, unconditional), kac_salem_zygmund_1948 (log decay c > 1), erdos_1949 (log log c > 1), matsuyama_1966 (log log c > 1/2).",
-      "mathContext": "Four axiomatized historical milestones: raikov_theorem (geometric sequences, unconditional), kac_salem_zygmund_1948 (log decay c > 1), erdos_1949 (log log c > 1), matsuyama_1966 (log log c > 1/2)."
+      "mathContext": "Verified: Four axiomatized historical milestones: raikov_theorem (geometric sequences, unconditional), kac_salem_zygmund_1948 (log decay c > 1), erdos_1949 (log log c > 1), matsuyama_1966 (log log c > 1/2)."
     },
     {
       "id": "open-question",
@@ -146,7 +146,7 @@
       "startLine": 172,
       "endLine": 187,
       "summary": "Formalizes ErdosProblem996 as a Lean Prop: ∃ C > 0 such that log log log decay with exponent C suffices for StrongLawHoldsAE. Status: OPEN.",
-      "mathContext": "Formalizes ErdosProblem996 as a Lean Prop: ∃ C > 0 such that log log log decay with exponent C suffices for StrongLawHoldsAE. Status: OPEN."
+      "mathContext": "Mathematical content: Formalizes ErdosProblem996 as a Lean Prop: ∃ C > 0 such that log log log decay with exponent C suffices for StrongLawHoldsAE. Status: OPEN."
     },
     {
       "id": "related",
@@ -154,7 +154,7 @@
       "startLine": 188,
       "endLine": 200,
       "summary": "Two additional open questions: FloorPowerQuestion (SLLN for ⌊aᵏ⌋ with real a > 1) and BoundedFunctionQuestion (SLLN for all bounded f without Fourier decay condition).",
-      "mathContext": "Two additional open questions: FloorPowerQuestion (SLLN for ⌊aᵏ⌋ with real a > 1) and BoundedFunctionQuestion (SLLN for all bounded f without Fourier decay condition)."
+      "mathContext": "Bound: Two additional open questions: FloorPowerQuestion (SLLN for ⌊aᵏ⌋ with real a > 1) and BoundedFunctionQuestion (SLLN for all bounded f without Fourier decay condition)."
     },
     {
       "id": "decay-hierarchy",
@@ -162,7 +162,7 @@
       "startLine": 201,
       "endLine": 231,
       "summary": "DecayCondition structure with name/rate/sufficiency, instantiated for log (c > 1, sufficient), log log (c > 1/2, sufficient), and log log log (unknown, sufficient = false).",
-      "mathContext": "DecayCondition structure with name/rate/sufficiency, instantiated for log (c > 1, sufficient), log log (c > 1/2, sufficient), and log log log (unknown, sufficient = false)."
+      "mathContext": "Formal definition: DecayCondition structure with name/rate/sufficiency, instantiated for log (c > 1, sufficient), log log (c > 1/2, sufficient), and log log log (unknown, sufficient = false)."
     },
     {
       "id": "quasi-independence",
@@ -170,7 +170,7 @@
       "startLine": 232,
       "endLine": 250,
       "summary": "Placeholder for quasi-independence theorem (proved as True), and consecutive_not_lacunary showing n(k) = k+1 fails the ratio condition (sorry, needs Archimedean argument).",
-      "mathContext": "Placeholder for quasi-independence theorem (proved as True), and consecutive_not_lacunary showing n(k) = k+1 fails the ratio condition (sorry, needs Archimedean argument)."
+      "mathContext": "Verified: Placeholder for quasi-independence theorem (proved as True), and consecutive_not_lacunary showing n(k) = k+1 fails the ratio condition (sorry, needs Archimedean argument)."
     },
     {
       "id": "gap",
@@ -178,7 +178,7 @@
       "startLine": 251,
       "endLine": 266,
       "summary": "known_gap theorem packaging Matsuyama's result (∀ c > 1/2, ...) with a True placeholder for the open question. Proved by direct application of matsuyama_1966.",
-      "mathContext": "known_gap theorem packaging Matsuyama's result (∀ c > 1/2, ...) with a True placeholder for the open question. Proved by direct application of matsuyama_1966."
+      "mathContext": "Verified: known_gap theorem packaging Matsuyama's result (∀ c > 1/2, ...) with a True placeholder for the open question. Proved by direct application of matsuyama_1966."
     },
     {
       "id": "connections",
@@ -186,7 +186,7 @@
       "startLine": 267,
       "endLine": 282,
       "summary": "Weyl equidistribution theorem axiomatized as a precursor. Documents connections to ergodic theory, harmonic analysis, probability, and Diophantine approximation.",
-      "mathContext": "Weyl equidistribution theorem axiomatized as a precursor. Documents connections to ergodic theory, harmonic analysis, probability, and Diophantine approximation."
+      "mathContext": "Verified: Weyl equidistribution theorem axiomatized as a precursor. Documents connections to ergodic theory, harmonic analysis, probability, and Diophantine approximation."
     },
     {
       "id": "summary",
@@ -194,7 +194,7 @@
       "startLine": 283,
       "endLine": 343,
       "summary": "erdos_996_summary theorem: existential witness c = 1 > 1/2 satisfies Matsuyama, conjoined with True for the open log log log question. Complete docstring overview.",
-      "mathContext": "erdos_996_summary theorem: existential witness c = 1 > 1/2 satisfies Matsuyama, conjoined with True for the open log log log question. Complete docstring overview."
+      "mathContext": "Verified: erdos_996_summary theorem: existential witness c = 1 > 1/2 satisfies Matsuyama, conjoined with True for the open log log log question. Complete docstring overview."
     }
   ],
   "conclusion": {

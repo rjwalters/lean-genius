@@ -98,7 +98,7 @@
       "summary": "Problem overview, references to Szemerédi 1976 and Erdős 1972, connections to Problems #425 and #896; imports Finset, Log, Primorial",
       "startLine": 1,
       "endLine": 37,
-      "mathContext": "Problem overview, references to Szemerédi 1976 and Erdős 1972, connections to Problems #425 and #896; imports Finset, Log, Primorial"
+      "mathContext": "Mathematical content: Problem overview, references to Szemerédi 1976 and Erdős 1972, connections to Problems #425 and #896; imports Finset, Log, Primorial"
     },
     {
       "id": "basic-definitions",
@@ -106,7 +106,7 @@
       "summary": "IsSubsetUpTo (A ⊆ {1,...,N}), productSet (A·B via biUnion/image), HasDistinctProducts (|A·B| = |A||B|), ProductMapInjective (injectivity formulation), and their equivalence",
       "startLine": 38,
       "endLine": 62,
-      "mathContext": "IsSubsetUpTo (A ⊆ {1,...,N}), productSet (A·B via biUnion/image), HasDistinctProducts (|A·B| = |A||B|), ProductMapInjective (injectivity formulation), and their equivalence"
+      "mathContext": "Mathematical content: IsSubsetUpTo (A ⊆ {1,...,N}), productSet (A·B via biUnion/image), HasDistinctProducts (|A·B| = |A||B|), ProductMapInjective (injectivity formulation), and their equivalence"
     },
     {
       "id": "the-erdos-question",
@@ -114,7 +114,7 @@
       "summary": "maxProductSize via Nat.find, ErdosQuestion490 formalizing ∃C, |A||B| ≤ CN²/log N",
       "startLine": 63,
       "endLine": 85,
-      "mathContext": "maxProductSize via Nat.find, ErdosQuestion490 formalizing ∃C, |A||B| ≤ CN²/log N"
+      "mathContext": "maxProductSize via Nat.find, ErdosQuestion490 formalizing ∃C, |A||B| $\\leq$ CN²/log N"
     },
     {
       "id": "szemeredi-theorem",
@@ -122,7 +122,7 @@
       "summary": "szemeredi_theorem axiom proving the N²/log N upper bound; erdos_490_answer derives YES immediately",
       "startLine": 86,
       "endLine": 101,
-      "mathContext": "szemeredi_theorem axiom proving the N²/log N upper bound; erdos_490_answer derives YES immediately"
+      "mathContext": "Verified: szemeredi_theorem axiom proving the N²/log N upper bound; erdos_490_answer derives YES immediately"
     },
     {
       "id": "optimal-example",
@@ -130,7 +130,7 @@
       "summary": "optimalA = [1, N/2], optimalB = primes in (N/2, N]; optimal_has_distinct_products axiom; optimal_works_because_primes (prime divisibility, sorried)",
       "startLine": 102,
       "endLine": 133,
-      "mathContext": "optimalA = [1, N/2], optimalB = primes in (N/2, N]; optimal_has_distinct_products axiom; optimal_works_because_primes (prime divisibility, sorried)"
+      "mathContext": "Axiomatized: optimalA = [1, N/2], optimalB = primes in (N/2, N]; optimal_has_distinct_products axiom; optimal_works_because_primes (prime divisibility, sorried)"
     },
     {
       "id": "limit-question",
@@ -138,7 +138,7 @@
       "summary": "productRatio normalization, LimitQuestion existence, van_doorn_observation (limit ≥ 1), LimitQuestionOpen placeholder",
       "startLine": 134,
       "endLine": 154,
-      "mathContext": "productRatio normalization, LimitQuestion existence, van_doorn_observation (limit ≥ 1), LimitQuestionOpen placeholder"
+      "mathContext": "productRatio normalization, LimitQuestion existence, van_doorn_observation (limit $\\geq$ 1), LimitQuestionOpen placeholder"
     },
     {
       "id": "special-cases",
@@ -146,7 +146,7 @@
       "summary": "IsMultiplicativeSidon (A = B case), sidon_bound axiom (|A|² ≤ CN²/log N), primes_sidon (primes form a Sidon set, sorried)",
       "startLine": 155,
       "endLine": 177,
-      "mathContext": "IsMultiplicativeSidon (A = B case), sidon_bound axiom (|A|² ≤ CN²/log N), primes_sidon (primes form a Sidon set, sorried)"
+      "mathContext": "IsMultiplicativeSidon (A = B case), sidon_bound axiom (|A|² $\\leq$ CN²/log N), primes_sidon (primes form a Sidon set, sorried)"
     },
     {
       "id": "related-problems",
@@ -154,7 +154,7 @@
       "summary": "Connections to Problems #425 (sums) and #896 (products); multiplicativeEnergy counting quadruples; distinct_minimal_energy equivalence (sorried)",
       "startLine": 178,
       "endLine": 202,
-      "mathContext": "Connections to Problems #425 (sums) and #896 (products); multiplicativeEnergy counting quadruples; distinct_minimal_energy equivalence (sorried)"
+      "mathContext": "Mathematical content: Connections to Problems #425 (sums) and #896 (products); multiplicativeEnergy counting quadruples; distinct_minimal_energy equivalence (sorried)"
     },
     {
       "id": "bounds-history",
@@ -162,7 +162,7 @@
       "summary": "Progression from trivial N² bound to Szemerédi's N²/log N; trivial_bound and counting_bound (sorried), szemeredi_bound (derived from axiom)",
       "startLine": 203,
       "endLine": 227,
-      "mathContext": "Progression from trivial N² bound to Szemerédi's N²/log N; trivial_bound and counting_bound (sorried), szemeredi_bound (derived from axiom)"
+      "mathContext": "Axiomatized: Progression from trivial N² bound to Szemerédi's N²/log N; trivial_bound and counting_bound (sorried), szemeredi_bound (derived from axiom)"
     },
     {
       "id": "summary",
@@ -170,7 +170,7 @@
       "summary": "erdos_490 and erdos_490_main restating the YES answer; bound_is_optimal showing Θ(N²/log N) tightness via the prime construction (partially proved)",
       "startLine": 228,
       "endLine": 277,
-      "mathContext": "erdos_490 and erdos_490_main restating the YES answer; bound_is_optimal showing Θ(N²/log N) tightness via the prime construction (partially proved)"
+      "mathContext": "Bound: erdos_490 and erdos_490_main restating the YES answer; bound_is_optimal showing Θ(N²/log N) tightness via the prime construction (partially proved)"
     }
   ],
   "conclusion": {

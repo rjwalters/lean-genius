@@ -50,7 +50,7 @@
       "startLine": 1,
       "endLine": 39,
       "summary": "Header documentation with problem statement, ESS background, and references. Imports Mathlib and opens Configuration namespace for ProjectivePlane.",
-      "mathContext": "Header documentation with problem statement, ESS background, and references. Imports Mathlib and opens Configuration namespace for ProjectivePlane."
+      "mathContext": "Mathematical content: Header documentation with problem statement, ESS background, and references. Imports Mathlib and opens Configuration namespace for ProjectivePlane."
     },
     {
       "id": "blocking-set-def",
@@ -58,7 +58,7 @@
       "startLine": 40,
       "endLine": 45,
       "summary": "Defines IsBlockingSet S as the property that every line contains at least one point of S, generic over any incidence structure.",
-      "mathContext": "Defines IsBlockingSet S as the property that every line contains at least one point of S, generic over any incidence structure."
+      "mathContext": "Formal definition: Defines IsBlockingSet S as the property that every line contains at least one point of S, generic over any incidence structure."
     },
     {
       "id": "basic-properties",
@@ -66,7 +66,7 @@
       "startLine": 46,
       "endLine": 62,
       "summary": "Proves monotonicity (supersets of blocking sets are blocking) and non-triviality (empty set is never blocking).",
-      "mathContext": "Proves monotonicity (supersets of blocking sets are blocking) and non-triviality (empty set is never blocking)."
+      "mathContext": "Verified: Proves monotonicity (supersets of blocking sets are blocking) and non-triviality (empty set is never blocking)."
     },
     {
       "id": "projective-plane",
@@ -74,7 +74,7 @@
       "startLine": 63,
       "endLine": 88,
       "summary": "Extracts n+1 points per line, n+1 lines per point, and n^2+n+1 total points/lines from Mathlib's ProjectivePlane.",
-      "mathContext": "Extracts n+1 points per line, n+1 lines per point, and n^2+n+1 total points/lines from Mathlib's ProjectivePlane."
+      "mathContext": "Extracts n+1 points per line, n+1 lines per point, and $n^{2}$+n+1 total points/lines from Mathlib's ProjectivePlane."
     },
     {
       "id": "ess-theorem",
@@ -82,7 +82,7 @@
       "startLine": 89,
       "endLine": 106,
       "summary": "Axiomatizes the Erdos-Silverman-Stein result: O(log n)-bounded blocking sets exist in any plane of order n.",
-      "mathContext": "Axiomatizes the Erdos-Silverman-Stein result: O(log n)-bounded blocking sets exist in any plane of order n."
+      "mathContext": "Axiomatizes the Erdos-Silverman-Stein result: $O($\\log n$)$-bounded blocking sets exist in any plane of order n."
     },
     {
       "id": "main-conjecture",
@@ -90,7 +90,7 @@
       "startLine": 107,
       "endLine": 125,
       "summary": "Defines BoundedBlockingSetConjecture: exists an absolute constant C such that every plane has a C-bounded blocking set.",
-      "mathContext": "Defines BoundedBlockingSetConjecture: exists an absolute constant C such that every plane has a C-bounded blocking set."
+      "mathContext": "Formal definition: Defines BoundedBlockingSetConjecture: exists an absolute constant C such that every plane has a C-bounded blocking set."
     },
     {
       "id": "implication",
@@ -98,7 +98,7 @@
       "startLine": 126,
       "endLine": 138,
       "summary": "Proves ESS implies per-order bounds, highlighting the gap between non-uniform (known) and uniform (conjectured) bounds.",
-      "mathContext": "Proves ESS implies per-order bounds, highlighting the gap between non-uniform (known) and uniform (conjectured) bounds."
+      "mathContext": "Verified: Proves ESS implies per-order bounds, highlighting the gap between non-uniform (known) and uniform (conjectured) bounds."
     },
     {
       "id": "related",
@@ -106,7 +106,7 @@
       "startLine": 139,
       "endLine": 144,
       "summary": "Notes connection to Problem 664 (bounded blocking sets in general block designs).",
-      "mathContext": "Notes connection to Problem 664 (bounded blocking sets in general block designs)."
+      "mathContext": "Bound: Notes connection to Problem 664 (bounded blocking sets in general block designs)."
     }
   ],
   "conclusion": {

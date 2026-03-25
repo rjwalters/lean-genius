@@ -63,7 +63,7 @@
       "startLine": 1,
       "endLine": 41,
       "summary": "Overview of the proof and its significance: formalizing Etter's claim that three-place identity is foundationally universal.",
-      "mathContext": "Overview of the proof and its significance: formalizing Etter's claim that three-place identity is foundationally universal."
+      "mathContext": "Etter's Universality Theorem: three-place relative identity $\\mathrm{Id}(x, y, z)$ is mutually interpretable with ZF set membership $\\in$, so it suffices as a foundation for all of mathematics."
     },
     {
       "id": "relative-identity",
@@ -71,7 +71,7 @@
       "startLine": 42,
       "endLine": 87,
       "summary": "Definition of RelativeIdentity: a three-place predicate where each fixed viewpoint induces an equivalence relation.",
-      "mathContext": "Definition of RelativeIdentity: a three-place predicate where each fixed viewpoint induces an equivalence relation."
+      "mathContext": "$\\mathrm{Id}(x, y, z)$ reads \"$x$ regards $y$ as identical to $z$.\" For each fixed $x$, the relation $y \\sim_x z :\\!\\!\\iff \\mathrm{Id}(x, y, z)$ is an equivalence relation (reflexive, symmetric, transitive)."
     },
     {
       "id": "bridge-d1",
@@ -79,7 +79,7 @@
       "startLine": 88,
       "endLine": 127,
       "summary": "First bridge: y exists for x when x distinguishes y from itself. Formalizes 'existence as distinguishability.'",
-      "mathContext": "First bridge: y exists for x when x distinguishes y from itself. Formalizes 'existence as distinguishability.'"
+      "mathContext": "Bridge D1 (membership from identity): $y \\in' x :\\!\\!\\iff \\neg\\,\\mathrm{Id}(x, y, x)$. Interpretation: $y$ exists for $x$ when $x$ distinguishes $y$ from itself."
     },
     {
       "id": "bridge-d2",
@@ -87,7 +87,7 @@
       "startLine": 128,
       "endLine": 169,
       "summary": "Second bridge: x regards y,z as identical when they have the same membership status. Connects to Quine's role identities.",
-      "mathContext": "Second bridge: x regards y,z as identical when they have the same membership status. Connects to Quine's role identities."
+      "mathContext": "Bridge D2 (identity from membership): $\\mathrm{Id}_{\\in}(x, y, z) :\\!\\!\\iff (y \\in x \\land z \\in x) \\lor (\\neg\\, y \\in x \\land \\neg\\, z \\in x)$. Equivalently: $\\mathrm{Id}_{\\in}(x, y, z) \\iff (y \\in x \\leftrightarrow z \\in x)$."
     },
     {
       "id": "d2-preserves",
@@ -95,7 +95,7 @@
       "startLine": 170,
       "endLine": 222,
       "summary": "Proof that any membership relation induces a valid relative identity structure via D2.",
-      "mathContext": "Proof that any membership relation induces a valid relative identity structure via D2."
+      "mathContext": "For any $\\in$, the induced $\\mathrm{Id}_{\\in}$ satisfies the identity axioms: reflexivity ($y \\in x \\leftrightarrow y \\in x$), symmetry, and transitivity of the biconditional. Proved by propositional case analysis."
     },
     {
       "id": "foundation",
@@ -103,7 +103,7 @@
       "startLine": 223,
       "endLine": 244,
       "summary": "The ZF Foundation axiom: no set contains itself. Essential for the round-trip theorem.",
-      "mathContext": "The ZF Foundation axiom: no set contains itself. Essential for the round-trip theorem."
+      "mathContext": "ZF Foundation (Regularity): $\\forall x,\\, \\neg(x \\in x)$. This ensures $x$ is a genuine \"null element\": $\\neg(x \\in x)$ makes D1 yield $\\neg\\,\\mathrm{Id}_{\\in}(x, x, x)$ only when $x \\in x$, which Foundation forbids."
     },
     {
       "id": "round-trip",
@@ -111,7 +111,7 @@
       "startLine": 245,
       "endLine": 282,
       "summary": "The key result: mem -> Id_mem -> mem' = mem. Identity and membership are mutually interpretable.",
-      "mathContext": "The key result: mem -> Id_mem -> mem' = mem. Identity and membership are mutually interpretable."
+      "mathContext": "Round-trip: given $\\in$, form $\\mathrm{Id}_{\\in}$ via D2, then derive $\\in'$ via D1. Under Foundation ($\\neg(x \\in x)$): $y \\in' x \\iff \\neg\\,\\mathrm{Id}_{\\in}(x, y, x) \\iff \\neg(y \\in x \\leftrightarrow x \\in x) \\iff y \\in x$. So $\\in' \\;=\\; \\in$."
     },
     {
       "id": "universality",
@@ -119,7 +119,7 @@
       "startLine": 283,
       "endLine": 335,
       "summary": "The main theorem: identity theory can express all of mathematics via the ZF-derived membership.",
-      "mathContext": "The main theorem: identity theory can express all of mathematics via the ZF-derived membership."
+      "mathContext": "Universality: D2 maps any ZF model $(M, \\in)$ to a valid identity structure $(M, \\mathrm{Id}_{\\in})$, and the round-trip recovers $\\in$. Therefore ZF is interpretable within identity theory, and identity theory is foundationally adequate."
     },
     {
       "id": "philosophy",
@@ -127,7 +127,7 @@
       "startLine": 336,
       "endLine": 370,
       "summary": "Discussion of implications: identity precedes existence, relativity of ontology, connection to Quine.",
-      "mathContext": "Discussion of implications: identity precedes existence, relativity of ontology, connection to Quine."
+      "mathContext": "Philosophical consequence: existence is derived from identity via $y \\in' x :\\!\\!\\iff \\neg\\,\\mathrm{Id}(x, y, x)$. Objects are not posited and then compared; rather, the identity structure $\\mathrm{Id}(x, y, z)$ induces what exists relative to each viewpoint $x$."
     },
     {
       "id": "examples",
@@ -135,7 +135,7 @@
       "startLine": 371,
       "endLine": 425,
       "summary": "Concrete examples: trivial identity, discrete identity, and verification with natural numbers.",
-      "mathContext": "Concrete examples: trivial identity, discrete identity, and verification with natural numbers."
+      "mathContext": "Trivial identity: $\\mathrm{Id}_\\top(x,y,z) = \\top$ for all $x,y,z$ (everything is identified, so nothing exists). Discrete identity: $\\mathrm{Id}_=(x,y,z) \\iff y = z$ (standard equality, viewpoint-independent). Natural number example verifies the bridges on $(\\mathbb{N}, \\in)$."
     }
   ],
   "conclusion": {

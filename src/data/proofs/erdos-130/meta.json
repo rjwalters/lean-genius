@@ -32,7 +32,7 @@
       "startLine": 20,
       "endLine": 23,
       "summary": "Imports Mathlib for $\\mathbb{R}$-arithmetic, $\\mathbb{N}$, set theory, and general tactics.",
-      "mathContext": "Imports Mathlib for $\\mathbb{R}$-arithmetic, $\\mathbb{N}$, set theory, and general tactics."
+      "mathContext": "Mathematical content: Imports Mathlib for $\\mathbb{R}$-arithmetic, $\\mathbb{N}$, set theory, and general tactics."
     },
     {
       "id": "point-distance",
@@ -40,7 +40,7 @@
       "startLine": 28,
       "endLine": 34,
       "summary": "Defines Point2 structure $(x,y) \\in \\mathbb{R}^2$ and squared Euclidean distance $\\text{distSq}(p,q) = (p_x - q_x)^2 + (p_y - q_y)^2$.",
-      "mathContext": "Defines Point2 structure $(x,y) \\in \\mathbb{R}^2$ and squared Euclidean distance $\\text{distSq}(p,q) = (p_x - q_x)^2 + (p_y - q_y)^2$."
+      "mathContext": "Formal definition: Defines Point2 structure $(x,y) \\in \\mathbb{R}^2$ and squared Euclidean distance $\\text{distSq}(p,q) = (p_x - q_x)^2 + (p_y - q_y)^2$."
     },
     {
       "id": "degeneracy",
@@ -48,7 +48,7 @@
       "startLine": 37,
       "endLine": 47,
       "summary": "Defines collinearity via the $2 \\times 2$ cross product determinant and cocircularity via existence of a circumscribed circle.",
-      "mathContext": "Defines collinearity via the $2 \\times 2$ cross product determinant and cocircularity via existence of a circumscribed circle."
+      "mathContext": "Formal definition: Defines collinearity via the $2 \\times 2$ cross product determinant and cocircularity via existence of a circumscribed circle."
     },
     {
       "id": "general-position",
@@ -56,7 +56,7 @@
       "startLine": 48,
       "endLine": 54,
       "summary": "InGeneralPosition$(A)$: no 3 collinear and no 4 cocircular points in $A$. Prevents degenerate integer distance configurations.",
-      "mathContext": "InGeneralPosition$(A)$: no 3 collinear and no 4 cocircular points in $A$. Prevents degenerate integer distance configurations."
+      "mathContext": "Mathematical content: InGeneralPosition$(A)$: no 3 collinear and no 4 cocircular points in $A$. Prevents degenerate integer distance configurations."
     },
     {
       "id": "integer-distance-graph",
@@ -64,7 +64,7 @@
       "startLine": 57,
       "endLine": 62,
       "summary": "Defines IsIntegerDist via $\\exists n: d^2(p,q) = n^2$ and the graph $G(A)$ with edges IntDistEdge$(A, p, q)$.",
-      "mathContext": "Defines IsIntegerDist via $\\exists n: d^2(p,q) = n^2$ and the graph $G(A)$ with edges IntDistEdge$(A, p, q)$."
+      "mathContext": "Defines IsIntegerDist via $\\exists n: d^2(p,q) = $n^{2}$$ and the graph $G(A)$ with edges IntDistEdge$(A, p, q)$."
     },
     {
       "id": "chromatic-clique",
@@ -72,7 +72,7 @@
       "startLine": 67,
       "endLine": 78,
       "summary": "Proper $k$-coloring, ChromaticAtMost$(A,k)$, and HasClique$(A,k)$ — the graph-theoretic quantities at the heart of the problem.",
-      "mathContext": "Proper $k$-coloring, ChromaticAtMost$(A,k)$, and HasClique$(A,k)$ — the graph-theoretic quantities at the heart of the problem."
+      "mathContext": "Mathematical content: Proper $k$-coloring, ChromaticAtMost$(A,k)$, and HasClique$(A,k)$ — the graph-theoretic quantities at the heart of the problem."
     },
     {
       "id": "main-questions",
@@ -80,7 +80,7 @@
       "startLine": 82,
       "endLine": 92,
       "summary": "The open conjecture: $\\exists A$ infinite in general position with $\\chi(G(A)) = \\infty$. Plus the clique finiteness question (answered by Anning–Erdős).",
-      "mathContext": "The open conjecture: $\\exists A$ infinite in general position with $\\chi(G(A)) = \\infty$. Plus the clique finiteness question (answered by Anning–Erdős)."
+      "mathContext": "Mathematical content: The open conjecture: $\\exists A$ infinite in general position with $\\chi(G(A)) = \\infty$. Plus the clique finiteness question (answered by Anning–Erdős)."
     },
     {
       "id": "anning-erdos",
@@ -88,7 +88,7 @@
       "startLine": 96,
       "endLine": 120,
       "summary": "The classical Anning–Erdős theorem (1945), its consequence for finite cliques in general position, and the quantitative diameter bound $|S| \\leq O(\\text{diam}^2)$.",
-      "mathContext": "The classical Anning–Erdős theorem (1945), its consequence for finite cliques in general position, and the quantitative diameter bound $|S| \\leq O(\\text{diam}^2)$."
+      "mathContext": "The classical Anning–Erdős theorem (1945), its consequence for finite cliques in general position, and the quantitative diameter bound $|S| \\leq $O(\\text{diam}^2)$$."
     },
     {
       "id": "observations",
@@ -96,7 +96,7 @@
       "startLine": 121,
       "endLine": 128,
       "summary": "The $\\chi$ vs $\\omega$ gap for geometric graphs (no $\\chi \\leq f(\\omega)$ bound), and the connection to Problem #213.",
-      "mathContext": "The $\\chi$ vs $\\omega$ gap for geometric graphs (no $\\chi \\leq f(\\omega)$ bound), and the connection to Problem #213."
+      "mathContext": "Bound: The $\\chi$ vs $\\omega$ gap for geometric graphs (no $\\chi \\leq f(\\omega)$ bound), and the connection to Problem #213."
     }
   ],
   "overview": {

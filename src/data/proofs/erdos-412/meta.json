@@ -103,7 +103,7 @@
       "startLine": 30,
       "endLine": 34,
       "summary": "Imports `ArithmeticFunction.Defs`, `Nat.Factorization.Basic` for `Nat.divisors` and membership lemmas, `BigOperators.Finprod` for `Finset.sum`, and `Tactic` for `native_decide` and automation.",
-      "mathContext": "Imports `ArithmeticFunction.Defs`, `Nat.Factorization.Basic` for `Nat.divisors` and membership lemmas, `BigOperators.Finprod` for `Finset.sum`, and `Tactic` for `native_decide` and automation."
+      "mathContext": "Mathematical content: Imports `ArithmeticFunction.Defs`, `Nat.Factorization.Basic` for `Nat.divisors` and membership lemmas, `BigOperators.Finprod` for `Finset.sum`, and `Tactic` for `native_decide` and automation."
     },
     {
       "id": "sigma-def",
@@ -111,7 +111,7 @@
       "startLine": 40,
       "endLine": 61,
       "summary": "Defines `sigma n = (n.divisors).sum id` ($\\sigma(n) = \\sum_{d \\mid n} d$). Verified via `native_decide`: $\\sigma(1) = 1$, $\\sigma(2) = 3$, $\\sigma(6) = 12$, $\\sigma(12) = 28$, $\\sigma(28) = 56$.",
-      "mathContext": "Defines `sigma n = (n.divisors).sum id` ($\\sigma(n) = \\sum_{d \\mid n} d$). Verified via `native_decide`: $\\sigma(1) = 1$, $\\sigma(2) = 3$, $\\sigma(6) = 12$, $\\sigma(12) = 28$, $\\sigma(28) = 56$."
+      "mathContext": "Formal definition: Defines `sigma n = (n.divisors).sum id` ($\\sigma(n) = \\sum_{d \\mid n} d$). Verified via `native_decide`: $\\sigma(1) = 1$, $\\sigma(2) = 3$, $\\sigma(6) = 12$, $\\sigma(12) = 28$, $\\sigma(28) = 56$."
     },
     {
       "id": "iteration",
@@ -127,7 +127,7 @@
       "startLine": 94,
       "endLine": 106,
       "summary": "`SigmaEquivalent m n`: $\\exists i\\, j,\\, \\sigma_i(m) = \\sigma_j(n)$. `Erdos412Conjecture`: $\\forall m, n \\ge 2$, sequences merge. OPEN — stated but not asserted.",
-      "mathContext": "`SigmaEquivalent m n`: $\\exists i\\, j,\\, \\sigma_i(m) = \\sigma_j(n)$. `Erdos412Conjecture`: $\\forall m, n \\ge 2$, sequences merge. OPEN — stated but not asserted."
+      "mathContext": "Mathematical content: `SigmaEquivalent m n`: $\\exists i\\, j,\\, \\sigma_i(m) = \\sigma_j(n)$. `Erdos412Conjecture`: $\\forall m, n \\ge 2$, sequences merge. OPEN — stated but not asserted."
     },
     {
       "id": "examples",
@@ -135,7 +135,7 @@
       "startLine": 107,
       "endLine": 120,
       "summary": "Four $\\sigma$-equivalences via `native_decide`: $2 \\equiv 3$, $2 \\equiv 4$, $5 \\equiv 6$, $7 \\equiv 8$. All from prime merging: $\\sigma(p) = p + 1$.",
-      "mathContext": "Four $\\sigma$-equivalences via `native_decide`: $2 \\equiv 3$, $2 \\equiv 4$, $5 \\equiv 6$, $7 \\equiv 8$. All from prime merging: $\\sigma(p) = p + 1$."
+      "mathContext": "Mathematical content: Four $\\sigma$-equivalences via `native_decide`: $2 \\equiv 3$, $2 \\equiv 4$, $5 \\equiv 6$, $7 \\equiv 8$. All from prime merging: $\\sigma(p) = p + 1$."
     },
     {
       "id": "aliquot",
@@ -143,7 +143,7 @@
       "startLine": 121,
       "endLine": 137,
       "summary": "`aliquotSum n = sigma n - n` (proper divisor sum). Verified: $s(6) = 6$, $s(28) = 28$ (perfect numbers). Contrasts $\\sigma$-iteration (increasing) with aliquot iteration (can decrease).",
-      "mathContext": "`aliquotSum n = sigma n - n` (proper divisor sum). Verified: $s(6) = 6$, $s(28) = 28$ (perfect numbers). Contrasts $\\sigma$-iteration (increasing) with aliquot iteration (can decrease)."
+      "mathContext": "Mathematical content: `aliquotSum n = sigma n - n` (proper divisor sum). Verified: $s(6) = 6$, $s(28) = 28$ (perfect numbers). Contrasts $\\sigma$-iteration (increasing) with aliquot iteration (can decrease)."
     },
     {
       "id": "growth",
@@ -151,7 +151,7 @@
       "startLine": 138,
       "endLine": 161,
       "summary": "`sigma_ge_succ` (proved): $\\sigma(n) \\ge n + 1$ via $\\{1, n\\} \\subseteq \\text{divisors}(n)$ and `Finset.sum_le_sum_of_subset`. `sigma_gt` (proved): $\\sigma(n) > n$ for $n \\ge 2$.",
-      "mathContext": "`sigma_ge_succ` (proved): $\\sigma(n) \\ge n + 1$ via $\\{1, n\\} \\subseteq \\text{divisors}(n)$ and `Finset.sum_le_sum_of_subset`. `sigma_gt` (proved): $\\sigma(n) > n$ for $n \\ge 2$."
+      "mathContext": "Mathematical content: `sigma_ge_succ` (proved): $\\sigma(n) \\ge n + 1$ via $\\{1, n\\} \\subseteq \\text{divisors}(n)$ and `Finset.sum_le_sum_of_subset`. `sigma_gt` (proved): $\\sigma(n) > n$ for $n \\ge 2$."
     },
     {
       "id": "related",
@@ -159,7 +159,7 @@
       "startLine": 162,
       "endLine": 173,
       "summary": "`IsSigmaPeriodic n`: $\\exists k \\ge 1,\\, \\sigma^k(n) = n$. `no_sigma_periodic_step1` (proved): strict growth $\\sigma_1(n) > n$ eliminates all periodic behavior for $n \\ge 2$.",
-      "mathContext": "`IsSigmaPeriodic n`: $\\exists k \\ge 1,\\, \\sigma^k(n) = n$. `no_sigma_periodic_step1` (proved): strict growth $\\sigma_1(n) > n$ eliminates all periodic behavior for $n \\ge 2$."
+      "mathContext": "Mathematical content: `IsSigmaPeriodic n`: $\\exists k \\ge 1,\\, \\sigma^k(n) = n$. `no_sigma_periodic_step1` (proved): strict growth $\\sigma_1(n) > n$ eliminates all periodic behavior for $n \\ge 2$."
     },
     {
       "id": "summary",
@@ -167,7 +167,7 @@
       "startLine": 174,
       "endLine": 213,
       "summary": "`erdos_412_summary` (proved): $\\langle \\sigma(n) > n,\\, 2 \\equiv_\\sigma 3,\\, \\sigma_1(n) > n \\rangle$. Main conjecture `Erdos412Conjecture` remains OPEN.",
-      "mathContext": "`erdos_412_summary` (proved): $\\langle \\sigma(n) > n,\\, 2 \\equiv_\\sigma 3,\\, \\sigma_1(n) > n \\rangle$. Main conjecture `Erdos412Conjecture` remains OPEN."
+      "mathContext": "Mathematical content: `erdos_412_summary` (proved): $\\langle \\sigma(n) > n,\\, 2 \\equiv_\\sigma 3,\\, \\sigma_1(n) > n \\rangle$. Main conjecture `Erdos412Conjecture` remains OPEN."
     }
   ],
   "conclusion": {

@@ -55,7 +55,7 @@
       "summary": "Module documentation describing the Erdős Matching Conjecture, imports for Finset, Nat.Choose, and combinatorial infrastructure",
       "startLine": 1,
       "endLine": 40,
-      "mathContext": "Module documentation describing the Erdős Matching Conjecture, imports for Finset, Nat.Choose, and combinatorial infrastructure"
+      "mathContext": "Formal definition: Module documentation describing the Erdős Matching Conjecture, imports for Finset, Nat.Choose, and combinatorial infrastructure"
     },
     {
       "id": "basics",
@@ -63,7 +63,7 @@
       "summary": "Definitions of r-uniform hypergraphs (RUniformHypergraph) and matchings (IsMatching) as collections of pairwise disjoint edges",
       "startLine": 41,
       "endLine": 68,
-      "mathContext": "Definitions of r-uniform hypergraphs (RUniformHypergraph) and matchings (IsMatching) as collections of pairwise disjoint edges"
+      "mathContext": "Formal definition: Definitions of r-uniform hypergraphs (RUniformHypergraph) and matchings (IsMatching) as collections of pairwise disjoint edges"
     },
     {
       "id": "function",
@@ -71,7 +71,7 @@
       "summary": "Definition of erdosMatchingFunction as the supremum of edge counts over r-uniform hypergraphs on n vertices avoiding k-matchings",
       "startLine": 69,
       "endLine": 80,
-      "mathContext": "Definition of erdosMatchingFunction as the supremum of edge counts over r-uniform hypergraphs on n vertices avoiding k-matchings"
+      "mathContext": "Formal definition: Definition of erdosMatchingFunction as the supremum of edge counts over r-uniform hypergraphs on n vertices avoiding k-matchings"
     },
     {
       "id": "formula",
@@ -79,7 +79,7 @@
       "summary": "Two extremal constructions: complete r-graph on rk-1 vertices and (k-1)-sunflower construction, with conjecture that f equals their maximum",
       "startLine": 81,
       "endLine": 100,
-      "mathContext": "Two extremal constructions: complete r-graph on rk-1 vertices and (k-1)-sunflower construction, with conjecture that f equals their maximum"
+      "mathContext": "Mathematical content: Two extremal constructions: complete r-graph on rk-1 vertices and (k-1)-sunflower construction, with conjecture that f equals their maximum"
     },
     {
       "id": "r2",
@@ -87,7 +87,7 @@
       "summary": "Erdős-Gallai theorem completely solving the graph case: f(n;2,k) = max(C(2k-1,2), n(k-1)-C(k,2))",
       "startLine": 101,
       "endLine": 116,
-      "mathContext": "Erdős-Gallai theorem completely solving the graph case: f(n;2,k) = max(C(2k-1,2), n(k-1)-C(k,2))"
+      "mathContext": "Verified: Erdős-Gallai theorem completely solving the graph case: f(n;2,k) = max(C(2k-1,2), n(k-1)-C(k,2))"
     },
     {
       "id": "r3",
@@ -95,7 +95,7 @@
       "summary": "Łuczak-Mieczkowska (2014) confirmation for 3-uniform hypergraphs using container methods",
       "startLine": 117,
       "endLine": 127,
-      "mathContext": "Łuczak-Mieczkowska (2014) confirmation for 3-uniform hypergraphs using container methods"
+      "mathContext": "Mathematical content: Łuczak-Mieczkowska (2014) confirmation for 3-uniform hypergraphs using container methods"
     },
     {
       "id": "partial",
@@ -103,7 +103,7 @@
       "summary": "Progressive improvements: Kleitman (1968), Frankl special cases, Huang-Loh-Sudakov large n regime (n ≥ 3kr²)",
       "startLine": 128,
       "endLine": 149,
-      "mathContext": "Progressive improvements: Kleitman (1968), Frankl special cases, Huang-Loh-Sudakov large n regime (n ≥ 3kr²)"
+      "mathContext": "Progressive improvements: Kleitman (1968), Frankl special cases, Huang-Loh-Sudakov large n regime (n $\\geq$ 3kr²)"
     },
     {
       "id": "upper",
@@ -111,7 +111,7 @@
       "summary": "Frankl's (k-1)·C(n-1,r-1) bound via the shifting technique, the best known general upper bound",
       "startLine": 150,
       "endLine": 165,
-      "mathContext": "Frankl's (k-1)·C(n-1,r-1) bound via the shifting technique, the best known general upper bound"
+      "mathContext": "Bound: Frankl's (k-1)·C(n-1,r-1) bound via the shifting technique, the best known general upper bound"
     },
     {
       "id": "lower",
@@ -119,7 +119,7 @@
       "summary": "Construction-based lower bounds establishing the conjectured value as achievable",
       "startLine": 166,
       "endLine": 189,
-      "mathContext": "Construction-based lower bounds establishing the conjectured value as achievable"
+      "mathContext": "Bound: Construction-based lower bounds establishing the conjectured value as achievable"
     },
     {
       "id": "mono",
@@ -127,7 +127,7 @@
       "summary": "f(n;r,k) is non-decreasing in n and k: adding vertices or relaxing the matching condition cannot decrease the extremal number",
       "startLine": 190,
       "endLine": 201,
-      "mathContext": "f(n;r,k) is non-decreasing in n and k: adding vertices or relaxing the matching condition cannot decrease the extremal number"
+      "mathContext": "Mathematical content: f(n;r,k) is non-decreasing in n and k: adding vertices or relaxing the matching condition cannot decrease the extremal number"
     },
     {
       "id": "asymptotic",
@@ -135,7 +135,7 @@
       "summary": "Large n regime where the sunflower construction dominates and asymptotic analysis of the extremal function",
       "startLine": 202,
       "endLine": 218,
-      "mathContext": "Large n regime where the sunflower construction dominates and asymptotic analysis of the extremal function"
+      "mathContext": "Mathematical content: Large n regime where the sunflower construction dominates and asymptotic analysis of the extremal function"
     },
     {
       "id": "open",
@@ -143,7 +143,7 @@
       "summary": "Statement that the conjecture remains open for r ≥ 4, with summary of known partial results and current state",
       "startLine": 219,
       "endLine": 238,
-      "mathContext": "Statement that the conjecture remains open for r ≥ 4, with summary of known partial results and current state"
+      "mathContext": "Statement that the conjecture remains open for r $\\geq$ 4, with summary of known partial results and current state"
     }
   ],
   "conclusion": {

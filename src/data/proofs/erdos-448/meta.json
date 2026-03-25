@@ -87,7 +87,7 @@
       "summary": "Definitions of τ(n), dyadic intervals, and τ⁺(n)",
       "startLine": 43,
       "endLine": 83,
-      "mathContext": "Definitions of τ(n), dyadic intervals, and τ⁺(n)"
+      "mathContext": "Formal definition: Definitions of τ(n), dyadic intervals, and τ⁺(n)"
     },
     {
       "id": "basic-properties",
@@ -95,7 +95,7 @@
       "summary": "τ(1)=1, τ(p)=2, τ⁺(n)≤τ(n), τ⁺(n)≤log₂(n)+1",
       "startLine": 84,
       "endLine": 118,
-      "mathContext": "τ(1)=1, τ(p)=2, τ⁺(n)≤τ(n), τ⁺(n)≤log₂(n)+1"
+      "mathContext": "τ(1)=1, τ(p)=2, τ⁺(n)$\\leq$τ(n), τ⁺(n)$\\leq$log₂(n)+1"
     },
     {
       "id": "conjecture",
@@ -103,7 +103,7 @@
       "summary": "Original conjecture and Erdős-Tenenbaum disproof",
       "startLine": 119,
       "endLine": 158,
-      "mathContext": "Original conjecture and Erdős-Tenenbaum disproof"
+      "mathContext": "Verified: Original conjecture and Erdős-Tenenbaum disproof"
     },
     {
       "id": "hall-tenenbaum",
@@ -111,7 +111,7 @@
       "summary": "Improved density bounds and distribution function",
       "startLine": 159,
       "endLine": 187,
-      "mathContext": "Improved density bounds and distribution function"
+      "mathContext": "Bound: Improved density bounds and distribution function"
     },
     {
       "id": "ford-asymptotic",
@@ -119,7 +119,7 @@
       "summary": "The Ford constant and sum formula",
       "startLine": 188,
       "endLine": 215,
-      "mathContext": "The Ford constant and sum formula"
+      "mathContext": "Mathematical content: The Ford constant and sum formula"
     },
     {
       "id": "examples",
@@ -127,7 +127,7 @@
       "summary": "Concrete calculations for n = 6, 12, 2^k, 210",
       "startLine": 216,
       "endLine": 262,
-      "mathContext": "Concrete calculations for n = 6, 12, 2^k, 210"
+      "mathContext": "Concrete calculations for n = 6, 12, $2^{k}$, 210"
     },
     {
       "id": "related-problems",
@@ -135,7 +135,7 @@
       "summary": "Connections to problems #446 and #449",
       "startLine": 263,
       "endLine": 284,
-      "mathContext": "Connections to problems #446 and #449"
+      "mathContext": "Mathematical content: Connections to problems #446 and #449"
     },
     {
       "id": "summary",
@@ -143,7 +143,7 @@
       "summary": "Summary theorem and final answer",
       "startLine": 285,
       "endLine": 330,
-      "mathContext": "Summary theorem and final answer"
+      "mathContext": "Verified: Summary theorem and final answer"
     }
   ],
   "conclusion": {

@@ -94,7 +94,7 @@
       "summary": "Defines the component formula: $\\text{cramer}(A,b)_i = \\det(A.\\text{updateColumn}\\,i\\,b)$ via `Matrix.cramer_apply`.",
       "startLine": 59,
       "endLine": 73,
-      "mathContext": "Defines the component formula: $\\text{cramer}(A,b)_i = \\det(A.\\text{updateColumn}\\,i\\,b)$ via `Matrix.cramer_apply`."
+      "mathContext": "Formal definition: Defines the component formula: $\\text{cramer}(A,b)_i = \\det(A.\\text{updateColumn}\\,i\\,b)$ via `Matrix.cramer_apply`."
     },
     {
       "id": "main-identity",
@@ -102,7 +102,7 @@
       "summary": "States and proves $A \\cdot \\text{cramer}(A,b) = \\det(A) \\cdot b$ via `Matrix.mulVec_cramer`. Derives the solution formula when `Invertible A.det`.",
       "startLine": 74,
       "endLine": 97,
-      "mathContext": "States and proves $A \\cdot \\text{cramer}(A,b) = \\det(A) \\cdot b$ via `Matrix.mulVec_cramer`. Derives the solution formula when `Invertible A.det`."
+      "mathContext": "Verified: States and proves $A \\cdot \\text{cramer}(A,b) = \\det(A) \\cdot b$ via `Matrix.mulVec_cramer`. Derives the solution formula when `Invertible A.det`."
     },
     {
       "id": "adjugate",
@@ -110,7 +110,7 @@
       "summary": "Proves $\\text{cramer}(A,b) = \\text{adj}(A) \\cdot b$ and the fundamental identity $A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$ via `Matrix.mul_adjugate`.",
       "startLine": 98,
       "endLine": 112,
-      "mathContext": "Proves $\\text{cramer}(A,b) = \\text{adj}(A) \\cdot b$ and the fundamental identity $A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$ via `Matrix.mul_adjugate`."
+      "mathContext": "Verified: Proves $\\text{cramer}(A,b) = \\text{adj}(A) \\cdot b$ and the fundamental identity $A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$ via `Matrix.mul_adjugate`."
     },
     {
       "id": "transpose",
@@ -118,7 +118,7 @@
       "summary": "Proves $\\text{cramer}(A^T,b)_i = \\det(A.\\text{updateRow}\\,i\\,b)$ via `cramer_transpose_apply`, connecting column operations on $A^T$ to row operations on $A$.",
       "startLine": 113,
       "endLine": 121,
-      "mathContext": "Proves $\\text{cramer}(A^T,b)_i = \\det(A.\\text{updateRow}\\,i\\,b)$ via `cramer_transpose_apply`, connecting column operations on $A^T$ to row operations on $A$."
+      "mathContext": "Verified: Proves $\\text{cramer}(A^T,b)_i = \\det(A.\\text{updateRow}\\,i\\,b)$ via `cramer_transpose_apply`, connecting column operations on $A^T$ to row operations on $A$."
     },
     {
       "id": "linearity",
@@ -134,7 +134,7 @@
       "summary": "Specializes to `Matrix (Fin 2) (Fin 2) F` over a `Field`, recovering the classical formula $x = (ed-bf)/(ad-bc)$ via `inv_mul_cancel`.",
       "startLine": 141,
       "endLine": 153,
-      "mathContext": "Specializes to `Matrix (Fin 2) (Fin 2) F` over a `Field`, recovering the classical formula $x = (ed-bf)/(ad-bc)$ via `inv_mul_cancel`."
+      "mathContext": "Mathematical content: Specializes to `Matrix (Fin 2) (Fin 2) F` over a `Field`, recovering the classical formula $x = (ed-bf)/(ad-bc)$ via `inv_mul_cancel`."
     },
     {
       "id": "verification",
@@ -142,7 +142,7 @@
       "summary": "Uses `#check` to verify the core Mathlib lemmas: `mulVec_cramer`, `cramer_apply`, `cramer_eq_adjugate_mulVec`, `mul_adjugate`.",
       "startLine": 154,
       "endLine": 161,
-      "mathContext": "Uses `#check` to verify the core Mathlib lemmas: `mulVec_cramer`, `cramer_apply`, `cramer_eq_adjugate_mulVec`, `mul_adjugate`."
+      "mathContext": "Mathematical content: Uses `#check` to verify the core Mathlib lemmas: `mulVec_cramer`, `cramer_apply`, `cramer_eq_adjugate_mulVec`, `mul_adjugate`."
     }
   ],
   "crossReferences": [

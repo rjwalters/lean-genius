@@ -134,7 +134,7 @@
       "summary": "Imports `Real.Basic`, `Nat.Basic`, `Pow.Real` (for $n^\\nu$), `Log.Basic` (for $(\\log n)^{1/8}$ corrections), and `MetricSpace.Basic`. Opens `Real` namespace within `Erdos529`.",
       "startLine": 30,
       "endLine": 39,
-      "mathContext": "Imports `Real.Basic`, `Nat.Basic`, `Pow.Real` (for $n^\\nu$), `Log.Basic` (for $(\\log n)^{1/8}$ corrections), and `MetricSpace.Basic`. Opens `Real` namespace within `Erdos529`."
+      "mathContext": "Imports `Real.Basic`, `Nat.Basic`, `Pow.Real` (for $n^\\nu$), `Log.Basic` (for $(\\$\\log n$)^{1/8}$ corrections), and `MetricSpace.Basic`. Opens `Real` namespace within `Erdos529`."
     },
     {
       "id": "saw-definition",
@@ -150,7 +150,7 @@
       "summary": "Defines `criticalExponent k` returning $3/4$ for $k=2$, $0.588$ for $k=3$, $1/2$ otherwise. Proves `meanField_exponent`: $\\nu_k = 1/2$ for $k \\ge 5$ via `simp` + `omega`.",
       "startLine": 77,
       "endLine": 107,
-      "mathContext": "Defines `criticalExponent k` returning $3/4$ for $k=2$, $0.588$ for $k=3$, $1/2$ otherwise. Proves `meanField_exponent`: $\\nu_k = 1/2$ for $k \\ge 5$ via `simp` + `omega`."
+      "mathContext": "Formal definition: Defines `criticalExponent k` returning $3/4$ for $k=2$, $0.588$ for $k=3$, $1/2$ otherwise. Proves `meanField_exponent`: $\\nu_k = 1/2$ for $k \\ge 5$ via `simp` + `omega`."
     },
     {
       "id": "high-dim",

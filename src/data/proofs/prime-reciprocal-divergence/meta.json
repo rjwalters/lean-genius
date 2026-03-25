@@ -75,7 +75,7 @@
       "startLine": 57,
       "endLine": 77,
       "summary": "Proves `¬ Summable (fun p : Nat.Primes => 1 / (p : ℝ))` via `Nat.Primes.not_summable_one_div`, plus an alternative formulation using inverse notation `(p : ℝ)⁻¹`.",
-      "mathContext": "Proves `¬ Summable (fun p : Nat.Primes => 1 / (p : ℝ))` via `Nat.Primes.not_summable_one_div`, plus an alternative formulation using inverse notation `(p : ℝ)⁻¹`."
+      "mathContext": "Proves `¬ Summable (fun p : Nat.Primes => 1 / (p : $\\mathbb{R}$))` via `Nat.Primes.not_summable_one_div`, plus an alternative formulation using inverse notation `(p : $\\mathbb{R}$)⁻¹`."
     },
     {
       "id": "indicator-formulation",
@@ -83,7 +83,7 @@
       "startLine": 78,
       "endLine": 90,
       "summary": "Expresses the prime reciprocal sum as a sub-sum of the harmonic series using `Set.indicator`: for each $n$, the term is $1/n$ if $n$ is prime, else $0$. Proved via `not_summable_one_div_on_primes`.",
-      "mathContext": "Expresses the prime reciprocal sum as a sub-sum of the harmonic series using `Set.indicator`: for each $n$, the term is $1/n$ if $n$ is prime, else $0$. Proved via `not_summable_one_div_on_primes`."
+      "mathContext": "Mathematical content: Expresses the prime reciprocal sum as a sub-sum of the harmonic series using `Set.indicator`: for each $n$, the term is $1/n$ if $n$ is prime, else $0$. Proved via `not_summable_one_div_on_primes`."
     },
     {
       "id": "p-series-criterion",
@@ -91,7 +91,7 @@
       "startLine": 91,
       "endLine": 110,
       "summary": "Proves the sharp convergence criterion: $\\sum_p p^r$ converges iff $r < -1$ via `Nat.Primes.summable_rpow`. The critical exponent $r = -1$ is recovered as a special case.",
-      "mathContext": "Proves the sharp convergence criterion: $\\sum_p p^r$ converges iff $r < -1$ via `Nat.Primes.summable_rpow`. The critical exponent $r = -1$ is recovered as a special case."
+      "mathContext": "Verified: Proves the sharp convergence criterion: $\\sum_p p^r$ converges iff $r < -1$ via `Nat.Primes.summable_rpow`. The critical exponent $r = -1$ is recovered as a special case."
     },
     {
       "id": "significance",
@@ -123,7 +123,7 @@
       "startLine": 160,
       "endLine": 164,
       "summary": "Type-checks the three main results: `prime_reciprocal_not_summable`, `indicator_primes_not_summable`, and `prime_power_summable_iff`. Closes the `PrimeReciprocalDivergence` namespace.",
-      "mathContext": "Type-checks the three main results: `prime_reciprocal_not_summable`, `indicator_primes_not_summable`, and `prime_power_summable_iff`. Closes the `PrimeReciprocalDivergence` namespace."
+      "mathContext": "Mathematical content: Type-checks the three main results: `prime_reciprocal_not_summable`, `indicator_primes_not_summable`, and `prime_power_summable_iff`. Closes the `PrimeReciprocalDivergence` namespace."
     }
   ],
   "conclusion": {

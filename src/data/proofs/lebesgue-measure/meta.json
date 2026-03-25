@@ -99,7 +99,7 @@
       "startLine": 102,
       "endLine": 129,
       "summary": "Establishes that Lebesgue measure is left-invariant under addition: $\\mu(E + c) = \\mu(E)$. This follows from Mathlib's Haar measure infrastructure via `IsAddLeftInvariant` and `measure_preimage_add`.",
-      "mathContext": "Establishes that Lebesgue measure is left-invariant under addition: $\\mu(E + c) = \\mu(E)$. This follows from Mathlib's Haar measure infrastructure via `IsAddLeftInvariant` and `measure_preimage_add`."
+      "mathContext": "Formal definition: Establishes that Lebesgue measure is left-invariant under addition: $\\mu(E + c) = \\mu(E)$. This follows from Mathlib's Haar measure infrastructure via `IsAddLeftInvariant` and `measure_preimage_add`."
     },
     {
       "id": "lebesgue-integral",
@@ -115,7 +115,7 @@
       "startLine": 172,
       "endLine": 211,
       "summary": "Proves the monotone convergence theorem: if $f_n \\nearrow f$ pointwise, then $\\int f_n \\to \\int f$. Also proves the series corollary $\\int \\sum_n f_n = \\sum_n \\int f_n$ via `lintegral_tsum`.",
-      "mathContext": "Proves the monotone convergence theorem: if $f_n \\nearrow f$ pointwise, then $\\int f_n \\to \\int f$. Also proves the series corollary $\\int \\sum_n f_n = \\sum_n \\int f_n$ via `lintegral_tsum`."
+      "mathContext": "Verified: Proves the monotone convergence theorem: if $f_n \\nearrow f$ pointwise, then $\\int f_n \\to \\int f$. Also proves the series corollary $\\int \\sum_n f_n = \\sum_n \\int f_n$ via `lintegral_tsum`."
     },
     {
       "id": "dominated-convergence",
@@ -123,7 +123,7 @@
       "startLine": 212,
       "endLine": 240,
       "summary": "Proves the dominated convergence theorem: if $|f_n| \\leq g$ for integrable $g$ and $f_n \\to f$ a.e., then $\\int f_n \\to \\int f$. Delegates to Mathlib's `tendsto_integral_of_dominated_convergence`.",
-      "mathContext": "Proves the dominated convergence theorem: if $|f_n| \\leq g$ for integrable $g$ and $f_n \\to f$ a.e., then $\\int f_n \\to \\int f$. Delegates to Mathlib's `tendsto_integral_of_dominated_convergence`."
+      "mathContext": "Verified: Proves the dominated convergence theorem: if $|f_n| \\leq g$ for integrable $g$ and $f_n \\to f$ a.e., then $\\int f_n \\to \\int f$. Delegates to Mathlib's `tendsto_integral_of_dominated_convergence`."
     },
     {
       "id": "fubini-theorem",
@@ -155,7 +155,7 @@
       "startLine": 385,
       "endLine": 425,
       "summary": "Demonstrates $L^2$ space membership and states Holder's inequality. Includes verification `#check` statements confirming the formalized theorems are well-typed.",
-      "mathContext": "Demonstrates $L^2$ space membership and states Holder's inequality. Includes verification `#check` statements confirming the formalized theorems are well-typed."
+      "mathContext": "Verified: Demonstrates $L^2$ space membership and states Holder's inequality. Includes verification `#check` statements confirming the formalized theorems are well-typed."
     }
   ],
   "conclusion": {

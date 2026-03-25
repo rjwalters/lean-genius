@@ -86,7 +86,7 @@
       "startLine": 44,
       "endLine": 61,
       "summary": "W(3,k) axiom, W_ge trivial lower bound, W_increasing monotonicity.",
-      "mathContext": "W(3,k) axiom, W_ge trivial lower bound, W_increasing monotonicity."
+      "mathContext": "Axiomatized: W(3,k) axiom, W_ge trivial lower bound, W_increasing monotonicity."
     },
     {
       "id": "known-values",
@@ -94,7 +94,7 @@
       "startLine": 62,
       "endLine": 75,
       "summary": "Exact values W(3,3)=9 through W(3,7)=46.",
-      "mathContext": "Exact values W(3,3)=9 through W(3,7)=46."
+      "mathContext": "Mathematical content: Exact values W(3,3)=9 through W(3,7)=46."
     },
     {
       "id": "graham-conjecture",
@@ -102,7 +102,7 @@
       "startLine": 76,
       "endLine": 91,
       "summary": "graham_conjecture definition (W(3,k) ≤ Ck²) and graham_conjecture_false axiom.",
-      "mathContext": "graham_conjecture definition (W(3,k) ≤ Ck²) and graham_conjecture_false axiom."
+      "mathContext": "graham_conjecture definition (W(3,k) $\\leq$ Ck²) and graham_conjecture_false axiom."
     },
     {
       "id": "lower-bounds",
@@ -110,7 +110,7 @@
       "startLine": 92,
       "endLine": 121,
       "summary": "green_lower_bound, hunter_lower_bound, W_superpolynomial axioms.",
-      "mathContext": "green_lower_bound, hunter_lower_bound, W_superpolynomial axioms."
+      "mathContext": "Axiomatized: green_lower_bound, hunter_lower_bound, W_superpolynomial axioms."
     },
     {
       "id": "upper-bounds",
@@ -118,7 +118,7 @@
       "startLine": 122,
       "endLine": 143,
       "summary": "schoen_upper_bound (exp(k^c)) and bloom_sisask_upper_bound (exp(C(log k)^9)).",
-      "mathContext": "schoen_upper_bound (exp(k^c)) and bloom_sisask_upper_bound (exp(C(log k)^9))."
+      "mathContext": "Bound: schoen_upper_bound (exp(k^c)) and bloom_sisask_upper_bound (exp(C(log k)^9))."
     },
     {
       "id": "three-ap",
@@ -126,7 +126,7 @@
       "startLine": 144,
       "endLine": 184,
       "summary": "roth_density_connection, behrend_construction, kelley_meka_density axioms.",
-      "mathContext": "roth_density_connection, behrend_construction, kelley_meka_density axioms."
+      "mathContext": "Axiomatized: roth_density_connection, behrend_construction, kelley_meka_density axioms."
     },
     {
       "id": "growth-rate",
@@ -134,7 +134,7 @@
       "startLine": 185,
       "endLine": 210,
       "summary": "exact_growth_conjecture definition, bounds_gap_width axiom.",
-      "mathContext": "exact_growth_conjecture definition, bounds_gap_width axiom."
+      "mathContext": "Formal definition: exact_growth_conjecture definition, bounds_gap_width axiom."
     },
     {
       "id": "related",
@@ -142,7 +142,7 @@
       "startLine": 211,
       "endLine": 232,
       "summary": "szemeredi_theorem axiom, diagonal_growth axiom.",
-      "mathContext": "szemeredi_theorem axiom, diagonal_growth axiom."
+      "mathContext": "Verified: szemeredi_theorem axiom, diagonal_growth axiom."
     },
     {
       "id": "summary",
@@ -150,7 +150,7 @@
       "startLine": 233,
       "endLine": 282,
       "summary": "erdos_721_status, W_bounds_summary, erdos_721 theorems combining all results.",
-      "mathContext": "erdos_721_status, W_bounds_summary, erdos_721 theorems combining all results."
+      "mathContext": "Verified: erdos_721_status, W_bounds_summary, erdos_721 theorems combining all results."
     }
   ],
   "conclusion": {

@@ -91,7 +91,7 @@
       "startLine": 1,
       "endLine": 46,
       "summary": "Problem statement, known results (Erdős-Rényi 1965, Erdős-Hall 1976), comparison with #543, references, and imports from Mathlib (`Finset`, `Real.logb`, `Fintype`)",
-      "mathContext": "Problem statement, known results (Erdős-Rényi 1965, Erdős-Hall 1976), comparison with #543, references, and imports from Mathlib (`Finset`, `Real.logb`, `Fintype`)"
+      "mathContext": "Mathematical content: Problem statement, known results (Erdős-Rényi 1965, Erdős-Hall 1976), comparison with #543, references, and imports from Mathlib (`Finset`, `Real.logb`, `Fintype`)"
     },
     {
       "id": "representation-counts",
@@ -99,7 +99,7 @@
       "startLine": 47,
       "endLine": 58,
       "summary": "Defines `reprCount A g = |\\{S \\subseteq A : \\sum_{x \\in S} x = g\\}|$ via `powerset.filter` and `expectedReprCount k N = 2^k/N`",
-      "mathContext": "Defines `reprCount A g = |\\{S \\subseteq A : \\sum_{x \\in S} x = g\\}|$ via `powerset.filter` and `expectedReprCount k N = 2^k/N`"
+      "mathContext": "Defines `reprCount A g = |\\{S \\subseteq A : \\sum_{x \\in S} x = g\\}|$ via `powerset.filter` and `expectedReprCount k N = $2^{k}$/N`"
     },
     {
       "id": "uniformity",
@@ -107,7 +107,7 @@
       "startLine": 59,
       "endLine": 67,
       "summary": "Defines `IsEpsUniform A ε`: $|F_A(g) - 2^k/N| \\leq \\varepsilon \\cdot 2^k/N$ for all $g \\in G$. This is the central notion of 'approximately equal representation counts'",
-      "mathContext": "Defines `IsEpsUniform A ε`: $|F_A(g) - 2^k/N| \\leq \\varepsilon \\cdot 2^k/N$ for all $g \\in G$. This is the central notion of 'approximately equal representation counts'"
+      "mathContext": "Defines `IsEpsUniform A ε`: $|F_A(g) - $2^{k}$/N| \\leq \\varepsilon \\cdot $2^{k}$/N$ for all $g \\in G$. This is the central notion of 'approximately equal representation counts'"
     },
     {
       "id": "elementary",
@@ -123,7 +123,7 @@
       "startLine": 83,
       "endLine": 94,
       "summary": "Axiomatizes `gEps ε N` (minimal $k$ for high-probability $\\varepsilon$-uniformity) and `gEps_pos` ($g_\\varepsilon(N) \\geq 1$ for valid parameters)",
-      "mathContext": "Axiomatizes `gEps ε N` (minimal $k$ for high-probability $\\varepsilon$-uniformity) and `gEps_pos` ($g_\\varepsilon(N) \\geq 1$ for valid parameters)"
+      "mathContext": "Axiomatized: Axiomatizes `gEps ε N` (minimal $k$ for high-probability $\\varepsilon$-uniformity) and `gEps_pos` ($g_\\varepsilon(N) \\geq 1$ for valid parameters)"
     },
     {
       "id": "lower-bound",
@@ -131,7 +131,7 @@
       "startLine": 95,
       "endLine": 106,
       "summary": "Axiom `trivial_lower_bound`: $g_\\varepsilon(N) \\geq \\log_2 N$. If $k < \\log_2 N$ then $2^k < N$, so $\\sum_g F_A(g) < N$ and some element has $F_A(g) = 0$, violating $\\varepsilon$-uniformity",
-      "mathContext": "Axiom `trivial_lower_bound`: $g_\\varepsilon(N) \\geq \\log_2 N$. If $k < \\log_2 N$ then $2^k < N$, so $\\sum_g F_A(g) < N$ and some element has $F_A(g) = 0$, violating $\\varepsilon$-uniformity"
+      "mathContext": "Axiom `trivial_lower_bound`: $g_\\varepsilon(N) \\geq \\log_2 N$. If $k < \\log_2 N$ then $$2^{k}$ < N$, so $\\sum_g F_A(g) < N$ and some element has $F_A(g) = 0$, violating $\\varepsilon$-uniformity"
     },
     {
       "id": "upper-bounds",
@@ -147,7 +147,7 @@
       "startLine": 129,
       "endLine": 138,
       "summary": "Axiom `main_asymptotic`: $g_\\varepsilon(N)/\\log_2 N \\to 1$ as $N \\to \\infty$. Formalized as: $\\forall \\delta > 0,\\, \\exists N_0,\\, \\forall N \\geq N_0,\\, |g_\\varepsilon(N)/\\log_2 N - 1| < \\delta$",
-      "mathContext": "Axiom `main_asymptotic`: $g_\\varepsilon(N)/\\log_2 N \\to 1$ as $N \\to \\infty$. Formalized as: $\\forall \\delta > 0,\\, \\exists N_0,\\, \\forall N \\geq N_0,\\, |g_\\varepsilon(N)/\\log_2 N - 1| < \\delta$"
+      "mathContext": "Axiom `main_asymptotic`: $g_\\varepsilon(N)/\\log_2 N \\to 1$ as $N \\to \\infty$. Formalized as: $\\forall \\$\\delta$ > 0,\\, \\exists N_0,\\, \\forall N \\geq N_0,\\, |g_\\varepsilon(N)/\\log_2 N - 1| < \\$\\delta$$"
     },
     {
       "id": "comparison-543",
@@ -163,7 +163,7 @@
       "startLine": 153,
       "endLine": 159,
       "summary": "Axiom `gEps_mono`: $\\varepsilon_1 \\leq \\varepsilon_2 \\Rightarrow g_{\\varepsilon_1}(N) \\geq g_{\\varepsilon_2}(N)$. Tighter tolerance requires more elements",
-      "mathContext": "Axiom `gEps_mono`: $\\varepsilon_1 \\leq \\varepsilon_2 \\Rightarrow g_{\\varepsilon_1}(N) \\geq g_{\\varepsilon_2}(N)$. Tighter tolerance requires more elements"
+      "mathContext": "Axiomatized: Axiom `gEps_mono`: $\\varepsilon_1 \\leq \\varepsilon_2 \\Rightarrow g_{\\varepsilon_1}(N) \\geq g_{\\varepsilon_2}(N)$. Tighter tolerance requires more elements"
     },
     {
       "id": "summary",
@@ -171,7 +171,7 @@
       "startLine": 160,
       "endLine": 178,
       "summary": "Theorem `erdos_1179_summary`: combines lower bound ($\\geq \\log_2 N$) and main asymptotic ($\\to 1$) into a single statement. Proved from the axiomatized results. Notes comparison with #543",
-      "mathContext": "Theorem `erdos_1179_summary`: combines lower bound ($\\geq \\log_2 N$) and main asymptotic ($\\to 1$) into a single statement. Proved from the axiomatized results. Notes comparison with #543"
+      "mathContext": "Verified: Theorem `erdos_1179_summary`: combines lower bound ($\\geq \\log_2 N$) and main asymptotic ($\\to 1$) into a single statement. Proved from the axiomatized results. Notes comparison with #543"
     }
   ],
   "crossReferences": [

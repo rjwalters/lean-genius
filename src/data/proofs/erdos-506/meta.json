@@ -49,7 +49,7 @@
       "startLine": 1,
       "endLine": 24,
       "summary": "Module documentation describing the circle counting problem, Elliott's theorem, and Segre's counterexample, with Mathlib imports for real arithmetic, finite sets, and affine spaces.",
-      "mathContext": "Module documentation describing the circle counting problem, Elliott's theorem, and Segre's counterexample, with Mathlib imports for real arithmetic, finite sets, and affine spaces."
+      "mathContext": "Verified: Module documentation describing the circle counting problem, Elliott's theorem, and Segre's counterexample, with Mathlib imports for real arithmetic, finite sets, and affine spaces."
     },
     {
       "id": "geometric-primitives",
@@ -57,7 +57,7 @@
       "startLine": 25,
       "endLine": 51,
       "summary": "Defines Point2 (ℝ²), AreCollinear (cross product test), circumcircle (center and radius from 3 points via perpendicular bisectors), and SameCircle (circumcircle equality).",
-      "mathContext": "Defines Point2 (ℝ²), AreCollinear (cross product test), circumcircle (center and radius from 3 points via perpendicular bisectors), and SameCircle (circumcircle equality)."
+      "mathContext": "Formal definition: Defines Point2 (ℝ²), AreCollinear (cross product test), circumcircle (center and radius from 3 points via perpendicular bisectors), and SameCircle (circumcircle equality)."
     },
     {
       "id": "configurations",
@@ -65,7 +65,7 @@
       "startLine": 52,
       "endLine": 63,
       "summary": "Defines PointConfig (indexed n-point set), AllConcyclic (single common circle), and AllCollinear (all triples collinear) — the two degeneracy conditions excluded in the problem.",
-      "mathContext": "Defines PointConfig (indexed n-point set), AllConcyclic (single common circle), and AllCollinear (all triples collinear) — the two degeneracy conditions excluded in the problem."
+      "mathContext": "Formal definition: Defines PointConfig (indexed n-point set), AllConcyclic (single common circle), and AllCollinear (all triples collinear) — the two degeneracy conditions excluded in the problem."
     },
     {
       "id": "circle-counting",
@@ -73,7 +73,7 @@
       "startLine": 64,
       "endLine": 78,
       "summary": "Defines numCircles (distinct circles via image cardinality) and minCircles (extremal minimum over non-degenerate configurations).",
-      "mathContext": "Defines numCircles (distinct circles via image cardinality) and minCircles (extremal minimum over non-degenerate configurations)."
+      "mathContext": "Formal definition: Defines numCircles (distinct circles via image cardinality) and minCircles (extremal minimum over non-degenerate configurations)."
     },
     {
       "id": "elliott-theorem",
@@ -81,7 +81,7 @@
       "startLine": 79,
       "endLine": 86,
       "summary": "Axiom: for n > 393 non-degenerate points, at least C(n-1,2) distinct circles.",
-      "mathContext": "Axiom: for n > 393 non-degenerate points, at least C(n-1,2) distinct circles."
+      "mathContext": "Axiomatized: Axiom: for n > 393 non-degenerate points, at least C(n-1,2) distinct circles."
     },
     {
       "id": "segre-counterexample",
@@ -89,7 +89,7 @@
       "startLine": 87,
       "endLine": 96,
       "summary": "Axiom: 8 points from cube projection determine fewer than 21 circles, showing Elliott's bound fails for small n.",
-      "mathContext": "Axiom: 8 points from cube projection determine fewer than 21 circles, showing Elliott's bound fails for small n."
+      "mathContext": "Axiomatized: Axiom: 8 points from cube projection determine fewer than 21 circles, showing Elliott's bound fails for small n."
     },
     {
       "id": "open-question",
@@ -97,7 +97,7 @@
       "startLine": 97,
       "endLine": 106,
       "summary": "Axiom: existence of a lower bound function f(n) for 4 ≤ n ≤ 393, the unresolved range.",
-      "mathContext": "Axiom: existence of a lower bound function f(n) for 4 ≤ n ≤ 393, the unresolved range."
+      "mathContext": "Axiom: existence of a lower bound function f(n) for 4 $\\leq$ n $\\leq$ 393, the unresolved range."
     },
     {
       "id": "sylvester-gallai",
@@ -105,7 +105,7 @@
       "startLine": 107,
       "endLine": 115,
       "summary": "Axiom: n non-collinear points with n ≥ 3 determine at least n circles, analogous to the Sylvester-Gallai theorem for lines.",
-      "mathContext": "Axiom: n non-collinear points with n ≥ 3 determine at least n circles, analogous to the Sylvester-Gallai theorem for lines."
+      "mathContext": "Axiom: n non-collinear points with n $\\geq$ 3 determine at least n circles, analogous to the Sylvester-Gallai theorem for lines."
     }
   ],
   "conclusion": {

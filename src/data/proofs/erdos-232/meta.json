@@ -96,7 +96,7 @@
       "summary": "Defines `euclideanDist` as a wrapper around Mathlib's `dist` for $\\mathbb{R}^2$, and `IsUnitDistance` as the predicate that two points have distance exactly 1.",
       "startLine": 46,
       "endLine": 63,
-      "mathContext": "Defines `euclideanDist` as a wrapper around Mathlib's `dist` for $\\mathbb{R}^2$, and `IsUnitDistance` as the predicate that two points have distance exactly 1."
+      "mathContext": "Formal definition: Defines `euclideanDist` as a wrapper around Mathlib's `dist` for $\\mathbb{R}^2$, and `IsUnitDistance` as the predicate that two points have distance exactly 1."
     },
     {
       "id": "unit-distance-free",
@@ -104,7 +104,7 @@
       "summary": "Introduces two equivalent definitions of unit-distance-free sets (`IsUnitDistanceFree` and `IsUnitDistanceFree'`) and proves their equivalence via `unitDistanceFree_iff` using contraposition.",
       "startLine": 64,
       "endLine": 92,
-      "mathContext": "Introduces two equivalent definitions of unit-distance-free sets (`IsUnitDistanceFree` and `IsUnitDistanceFree'`) and proves their equivalence via `unitDistanceFree_iff` using contraposition."
+      "mathContext": "Formal definition: Introduces two equivalent definitions of unit-distance-free sets (`IsUnitDistanceFree` and `IsUnitDistanceFree'`) and proves their equivalence via `unitDistanceFree_iff` using contraposition."
     },
     {
       "id": "balls-measure",
@@ -112,7 +112,7 @@
       "summary": "Defines `ballR R` as the closed ball of radius $R$ at the origin and axiomatizes the area formula $\\lambda(B_R) = \\pi R^2$.",
       "startLine": 93,
       "endLine": 110,
-      "mathContext": "Defines `ballR R` as the closed ball of radius $R$ at the origin and axiomatizes the area formula $\\lambda(B_R) = \\pi R^2$."
+      "mathContext": "Defines `ballR R` as the closed ball of radius $R$ at the origin and axiomatizes the area formula $\\lambda(B_R) = \\$\\pi$ R^2$."
     },
     {
       "id": "upper-density",
@@ -128,7 +128,7 @@
       "summary": "Defines $m_1 = \\sup\\{\\overline{\\delta}(A) : A \\text{ unit-distance-free}\\}$ using Mathlib's `sSup` and axiomatizes $0 \\leq m_1 \\leq 1$.",
       "startLine": 137,
       "endLine": 152,
-      "mathContext": "Defines $m_1 = \\sup\\{\\overline{\\delta}(A) : A \\text{ unit-distance-free}\\}$ using Mathlib's `sSup` and axiomatizes $0 \\leq m_1 \\leq 1$."
+      "mathContext": "Defines $m_1 = \\sup\\{\\overline{\\$\\delta$}(A) : A \\text{ unit-distance-free}\\}$ using Mathlib's `sSup` and axiomatizes $0 \\leq m_1 \\leq 1$."
     },
     {
       "id": "trivial-bound",
@@ -136,7 +136,7 @@
       "summary": "Axiomatizes the translation argument giving $m_1 \\leq 1/2$ and formalizes the key lemma `translation_disjoint`: $A \\cap (A + u) = \\emptyset$ for unit $u$.",
       "startLine": 153,
       "endLine": 175,
-      "mathContext": "Axiomatizes the translation argument giving $m_1 \\leq 1/2$ and formalizes the key lemma `translation_disjoint`: $A \\cap (A + u) = \\emptyset$ for unit $u$."
+      "mathContext": "Axiomatized: Axiomatizes the translation argument giving $m_1 \\leq 1/2$ and formalizes the key lemma `translation_disjoint`: $A \\cap (A + u) = \\emptyset$ for unit $u$."
     },
     {
       "id": "lower-bounds",
@@ -144,7 +144,7 @@
       "summary": "Axiomatizes the hexagonal lattice lower bound $m_1 \\geq \\pi/(8\\sqrt{3}) \\approx 0.2267$ and Croft's refinement $m_1 \\geq 0.22936$ from 1967.",
       "startLine": 176,
       "endLine": 194,
-      "mathContext": "Axiomatizes the hexagonal lattice lower bound $m_1 \\geq \\pi/(8\\sqrt{3}) \\approx 0.2267$ and Croft's refinement $m_1 \\geq 0.22936$ from 1967."
+      "mathContext": "Axiomatizes the hexagonal lattice lower bound $m_1 \\geq \\$\\pi$/(8\\sqrt{3}) \\approx 0.2267$ and Croft's refinement $m_1 \\geq 0.22936$ from 1967."
     },
     {
       "id": "solution",
@@ -152,7 +152,7 @@
       "summary": "Axiomatizes the Ambrus et al. (2023) upper bound $m_1 \\leq 0.247$ and derives the main result $m_1 < 1/4$ via `calc` with `norm_num`, plus the weak bound $m_1 \\leq 1/4$ via `linarith`.",
       "startLine": 195,
       "endLine": 228,
-      "mathContext": "Axiomatizes the Ambrus et al. (2023) upper bound $m_1 \\leq 0.247$ and derives the main result $m_1 < 1/4$ via `calc` with `norm_num`, plus the weak bound $m_1 \\leq 1/4$ via `linarith`."
+      "mathContext": "Axiomatized: Axiomatizes the Ambrus et al. (2023) upper bound $m_1 \\leq 0.247$ and derives the main result $m_1 < 1/4$ via `calc` with `norm_num`, plus the weak bound $m_1 \\leq 1/4$ via `linarith`."
     },
     {
       "id": "bounds-summary",
@@ -160,7 +160,7 @@
       "summary": "Combines the lower and upper bounds into `current_bounds`: $0.22936 \\leq m_1 \\leq 0.247$, and computes the explicit gap $0.247 - 0.22936 = 0.01764$ via `norm_num`.",
       "startLine": 229,
       "endLine": 245,
-      "mathContext": "Combines the lower and upper bounds into `current_bounds`: $0.22936 \\leq m_1 \\leq 0.247$, and computes the explicit gap $0.247 - 0.22936 = 0.01764$ via `norm_num`."
+      "mathContext": "Bound: Combines the lower and upper bounds into `current_bounds`: $0.22936 \\leq m_1 \\leq 0.247$, and computes the explicit gap $0.247 - 0.22936 = 0.01764$ via `norm_num`."
     },
     {
       "id": "examples",
@@ -168,7 +168,7 @@
       "summary": "Proves the empty set and singletons are unit-distance-free (by vacuity and uniqueness) and states that open balls of radius $1/2$ are unit-distance-free (via the triangle inequality, still a `sorry`).",
       "startLine": 246,
       "endLine": 275,
-      "mathContext": "Proves the empty set and singletons are unit-distance-free (by vacuity and uniqueness) and states that open balls of radius $1/2$ are unit-distance-free (via the triangle inequality, still a `sorry`)."
+      "mathContext": "Verified: Proves the empty set and singletons are unit-distance-free (by vacuity and uniqueness) and states that open balls of radius $1/2$ are unit-distance-free (via the triangle inequality, still a `sorry`)."
     },
     {
       "id": "chromatic-connection",
@@ -184,7 +184,7 @@
       "summary": "Packages all main results into `erdos_232_summary`: the affirmative answer $m_1 \\leq 1/4$ together with the precise bounds $0.22936 \\leq m_1 \\leq 0.247$.",
       "startLine": 307,
       "endLine": 333,
-      "mathContext": "Packages all main results into `erdos_232_summary`: the affirmative answer $m_1 \\leq 1/4$ together with the precise bounds $0.22936 \\leq m_1 \\leq 0.247$."
+      "mathContext": "Bound: Packages all main results into `erdos_232_summary`: the affirmative answer $m_1 \\leq 1/4$ together with the precise bounds $0.22936 \\leq m_1 \\leq 0.247$."
     }
   ],
   "conclusion": {

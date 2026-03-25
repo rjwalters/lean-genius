@@ -86,7 +86,7 @@
       "summary": "EdgeColor, GameState, Kn, numEdges",
       "startLine": 38,
       "endLine": 64,
-      "mathContext": "EdgeColor, GameState, Kn, numEdges"
+      "mathContext": "Mathematical content: EdgeColor, GameState, Kn, numEdges"
     },
     {
       "id": "colored-subgraphs",
@@ -94,7 +94,7 @@
       "summary": "redSubgraph, blueSubgraph, hasClique using Mathlib's IsClique",
       "startLine": 65,
       "endLine": 85,
-      "mathContext": "redSubgraph, blueSubgraph, hasClique using Mathlib's IsClique"
+      "mathContext": "Mathematical content: redSubgraph, blueSubgraph, hasClique using Mathlib's IsClique"
     },
     {
       "id": "game-mechanics",
@@ -102,7 +102,7 @@
       "summary": "isAliceTurn, gameOver predicates",
       "startLine": 86,
       "endLine": 98,
-      "mathContext": "isAliceTurn, gameOver predicates"
+      "mathContext": "Mathematical content: isAliceTurn, gameOver predicates"
     },
     {
       "id": "winning-conditions",
@@ -110,7 +110,7 @@
       "summary": "aliceWinsCliqueGame, bobWinsModifiedGame, aliceWinsDegreeGame",
       "startLine": 99,
       "endLine": 124,
-      "mathContext": "aliceWinsCliqueGame, bobWinsModifiedGame, aliceWinsDegreeGame"
+      "mathContext": "Mathematical content: aliceWinsCliqueGame, bobWinsModifiedGame, aliceWinsDegreeGame"
     },
     {
       "id": "strategies",
@@ -118,7 +118,7 @@
       "summary": "AliceStrategy, BobStrategy, playGame, winning strategy definitions",
       "startLine": 125,
       "endLine": 149,
-      "mathContext": "AliceStrategy, BobStrategy, playGame, winning strategy definitions"
+      "mathContext": "Formal definition: AliceStrategy, BobStrategy, playGame, winning strategy definitions"
     },
     {
       "id": "conjecture-and-results",
@@ -126,7 +126,7 @@
       "summary": "ErdosConjecture, Malekshahian-Spiro density and periodicity axioms",
       "startLine": 150,
       "endLine": 181,
-      "mathContext": "ErdosConjecture, Malekshahian-Spiro density and periodicity axioms"
+      "mathContext": "Axiomatized: ErdosConjecture, Malekshahian-Spiro density and periodicity axioms"
     },
     {
       "id": "consequences",
@@ -134,7 +134,7 @@
       "summary": "alice_no_four_consecutive proved theorem, game_determined axiom",
       "startLine": 182,
       "endLine": 205,
-      "mathContext": "alice_no_four_consecutive proved theorem, game_determined axiom"
+      "mathContext": "Verified: alice_no_four_consecutive proved theorem, game_determined axiom"
     },
     {
       "id": "summary",
@@ -142,7 +142,7 @@
       "summary": "erdos_778_periodicity combining known results",
       "startLine": 206,
       "endLine": 230,
-      "mathContext": "erdos_778_periodicity combining known results"
+      "mathContext": "Mathematical content: erdos_778_periodicity combining known results"
     }
   ],
   "conclusion": {

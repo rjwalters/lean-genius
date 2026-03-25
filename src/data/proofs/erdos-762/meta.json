@@ -84,7 +84,7 @@
       "summary": "IsProperColoring, chromaticNumber, cliqueNumber",
       "startLine": 41,
       "endLine": 65,
-      "mathContext": "IsProperColoring, chromaticNumber, cliqueNumber"
+      "mathContext": "Mathematical content: IsProperColoring, chromaticNumber, cliqueNumber"
     },
     {
       "id": "cochromatic",
@@ -92,7 +92,7 @@
       "summary": "IsCochromaticColorClass, IsCochromaticColoring, cochromaticNumber",
       "startLine": 66,
       "endLine": 100,
-      "mathContext": "IsCochromaticColorClass, IsCochromaticColoring, cochromaticNumber"
+      "mathContext": "Mathematical content: IsCochromaticColorClass, IsCochromaticColoring, cochromaticNumber"
     },
     {
       "id": "relationship",
@@ -100,7 +100,7 @@
       "summary": "proper_implies_cochromatic, chi_ge_zeta",
       "startLine": 101,
       "endLine": 123,
-      "mathContext": "proper_implies_cochromatic, chi_ge_zeta"
+      "mathContext": "Mathematical content: proper_implies_cochromatic, chi_ge_zeta"
     },
     {
       "id": "conjecture",
@@ -108,7 +108,7 @@
       "summary": "egs_conjecture definition",
       "startLine": 124,
       "endLine": 139,
-      "mathContext": "egs_conjecture definition"
+      "mathContext": "Formal definition: egs_conjecture definition"
     },
     {
       "id": "counterexample",
@@ -116,7 +116,7 @@
       "summary": "steiner_counterexample, egs_conjecture_false",
       "startLine": 140,
       "endLine": 171,
-      "mathContext": "steiner_counterexample, egs_conjecture_false"
+      "mathContext": "Mathematical content: steiner_counterexample, egs_conjecture_false"
     },
     {
       "id": "general-theorem",
@@ -124,7 +124,7 @@
       "summary": "egs_general_theorem, chi_zeta_gap_bounded",
       "startLine": 172,
       "endLine": 197,
-      "mathContext": "egs_general_theorem, chi_zeta_gap_bounded"
+      "mathContext": "Verified: egs_general_theorem, chi_zeta_gap_bounded"
     },
     {
       "id": "bounds",
@@ -132,7 +132,7 @@
       "summary": "zeta_le_chi, steiner_gap_lower_bound",
       "startLine": 198,
       "endLine": 216,
-      "mathContext": "zeta_le_chi, steiner_gap_lower_bound"
+      "mathContext": "Bound: zeta_le_chi, steiner_gap_lower_bound"
     },
     {
       "id": "summary",
@@ -140,7 +140,7 @@
       "summary": "erdos_762_summary theorem",
       "startLine": 217,
       "endLine": 249,
-      "mathContext": "erdos_762_summary theorem"
+      "mathContext": "Verified: erdos_762_summary theorem"
     }
   ],
   "conclusion": {

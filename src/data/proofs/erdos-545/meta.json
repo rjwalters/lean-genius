@@ -48,7 +48,7 @@
       "startLine": 1,
       "endLine": 38,
       "summary": "Module documentation describing Problem 545, known counterexamples, Sudakov's bound, and references. Imports SimpleGraph, Clique, Finset, Nat.Choose, and Tactic.",
-      "mathContext": "Module documentation describing Problem 545, known counterexamples, Sudakov's bound, and references. Imports SimpleGraph, Clique, Finset, Nat.Choose, and Tactic."
+      "mathContext": "Bound: Module documentation describing Problem 545, known counterexamples, Sudakov's bound, and references. Imports SimpleGraph, Clique, Finset, Nat.Choose, and Tactic."
     },
     {
       "id": "graph-basics",
@@ -56,7 +56,7 @@
       "startLine": 39,
       "endLine": 49,
       "summary": "Defines edgeCount (cardinality of edge finset) and NoIsolatedVertices (every vertex has a neighbor).",
-      "mathContext": "Defines edgeCount (cardinality of edge finset) and NoIsolatedVertices (every vertex has a neighbor)."
+      "mathContext": "Formal definition: Defines edgeCount (cardinality of edge finset) and NoIsolatedVertices (every vertex has a neighbor)."
     },
     {
       "id": "edge-colorings",
@@ -64,7 +64,7 @@
       "startLine": 50,
       "endLine": 63,
       "summary": "Defines EdgeColoring (Fin n → Fin n → Bool), IsValidColoring (symmetric + irreflexive), and IsMonochromaticClique (all edges same color).",
-      "mathContext": "Defines EdgeColoring (Fin n → Fin n → Bool), IsValidColoring (symmetric + irreflexive), and IsMonochromaticClique (all edges same color)."
+      "mathContext": "Defines EdgeColoring (Fin n $\\to$ Fin n $\\to$ Bool), IsValidColoring (symmetric + irreflexive), and IsMonochromaticClique (all edges same color)."
     },
     {
       "id": "ramsey-numbers",
@@ -72,7 +72,7 @@
       "startLine": 64,
       "endLine": 81,
       "summary": "Defines ramseyNumber k via Nat.find (sorry witness) and ramseyNumberGraph G for general graphs (sorry definition).",
-      "mathContext": "Defines ramseyNumber k via Nat.find (sorry witness) and ramseyNumberGraph G for general graphs (sorry definition)."
+      "mathContext": "Formal definition: Defines ramseyNumber k via Nat.find (sorry witness) and ramseyNumberGraph G for general graphs (sorry definition)."
     },
     {
       "id": "max-complete",
@@ -80,7 +80,7 @@
       "startLine": 82,
       "endLine": 105,
       "summary": "Defines decomposeEdges (sorry), axiomatizes maximallyCompleteGraph, and states ErdosGrahamConjecture.",
-      "mathContext": "Defines decomposeEdges (sorry), axiomatizes maximallyCompleteGraph, and states ErdosGrahamConjecture."
+      "mathContext": "Formal definition: Defines decomposeEdges (sorry), axiomatizes maximallyCompleteGraph, and states ErdosGrahamConjecture."
     },
     {
       "id": "counterexamples",
@@ -88,7 +88,7 @@
       "startLine": 106,
       "endLine": 125,
       "summary": "Defines SmallCounterexamples = {2,3,4,5,7,8,9}, axiom counterexamples_exist, and the asymptotic variant ErdosGrahamConjectureAsymptotic.",
-      "mathContext": "Defines SmallCounterexamples = {2,3,4,5,7,8,9}, axiom counterexamples_exist, and the asymptotic variant ErdosGrahamConjectureAsymptotic."
+      "mathContext": "Formal definition: Defines SmallCounterexamples = {2,3,4,5,7,8,9}, axiom counterexamples_exist, and the asymptotic variant ErdosGrahamConjectureAsymptotic."
     },
     {
       "id": "sudakov",
@@ -96,7 +96,7 @@
       "startLine": 126,
       "endLine": 138,
       "summary": "Theorem (sorry): R(G) ≤ 2^{C√m} for some C > 0 and any m-edge graph G.",
-      "mathContext": "Theorem (sorry): R(G) ≤ 2^{C√m} for some C > 0 and any m-edge graph G."
+      "mathContext": "Theorem (sorry): R(G) $\\leq$ $$2^{{C$\\sqrt{m}$}$}$ for some C > 0 and any m-edge graph G."
     },
     {
       "id": "classical-ramsey",
@@ -104,7 +104,7 @@
       "startLine": 139,
       "endLine": 166,
       "summary": "Theorems (sorry): R(1)=1, R(2)=2, R(3)=6, R(4)=18, lower bound R(k) ≥ 2^{k/2}, upper bound R(k) ≤ 4^k.",
-      "mathContext": "Theorems (sorry): R(1)=1, R(2)=2, R(3)=6, R(4)=18, lower bound R(k) ≥ 2^{k/2}, upper bound R(k) ≤ 4^k."
+      "mathContext": "Theorems (sorry): R(1)=1, R(2)=2, R(3)=6, R(4)=18, lower bound R(k) $\\geq$ $$2^{{k/2}$}$, upper bound R(k) $\\leq$ $4^{k}$."
     },
     {
       "id": "monotonicity",
@@ -112,7 +112,7 @@
       "startLine": 167,
       "endLine": 223,
       "summary": "Theorems (sorry): edge monotonicity (G ⊆ H ⟹ R(G) ≤ R(H)) and subgraph monotonicity (G ↪ H ⟹ R(G) ≤ R(H)).",
-      "mathContext": "Theorems (sorry): edge monotonicity (G ⊆ H ⟹ R(G) ≤ R(H)) and subgraph monotonicity (G ↪ H ⟹ R(G) ≤ R(H))."
+      "mathContext": "Theorems (sorry): edge monotonicity (G ⊆ H $\\Rightarrow$ R(G) $\\leq$ R(H)) and subgraph monotonicity (G ↪ H $\\Rightarrow$ R(G) $\\leq$ R(H))."
     }
   ],
   "conclusion": {

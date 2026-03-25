@@ -51,7 +51,7 @@
       "startLine": 1,
       "endLine": 28,
       "summary": "Module docstring describing the problem, known bounds (Ecklund-Erdős-Selfridge, Konyagin), concrete values, and imports from Mathlib (Nat.Choose.Basic, Nat.Prime.Basic, Tactic).",
-      "mathContext": "Module docstring describing the problem, known bounds (Ecklund-Erdős-Selfridge, Konyagin), concrete values, and imports from Mathlib (Nat.Choose.Basic, Nat.Prime.Basic, Tactic)."
+      "mathContext": "Bound: Module docstring describing the problem, known bounds (Ecklund-Erdős-Selfridge, Konyagin), concrete values, and imports from Mathlib (Nat.Choose.Basic, Nat.Prime.Basic, Tactic)."
     },
     {
       "id": "core-definitions",
@@ -59,7 +59,7 @@
       "startLine": 30,
       "endLine": 38,
       "summary": "`AllPrimesExceed m k`: all prime factors of $m$ exceed $k$. Defines the $k$-smooth-free predicate central to the problem.",
-      "mathContext": "`AllPrimesExceed m k`: all prime factors of $m$ exceed $k$. Defines the $k$-smooth-free predicate central to the problem."
+      "mathContext": "Formal definition: `AllPrimesExceed m k`: all prime factors of $m$ exceed $k$. Defines the $k$-smooth-free predicate central to the problem."
     },
     {
       "id": "gfunc-axiomatization",
@@ -67,7 +67,7 @@
       "startLine": 40,
       "endLine": 56,
       "summary": "Four axiom declarations: `gFunc : ℕ → ℕ`, `gFunc_gt` ($g(k) > k+1$), `gFunc_spec` (all primes in $\\binom{g(k)}{k}$ exceed $k$), `gFunc_minimal` (minimality).",
-      "mathContext": "Four axiom declarations: `gFunc : ℕ → ℕ`, `gFunc_gt` ($g(k) > k+1$), `gFunc_spec` (all primes in $\\binom{g(k)}{k}$ exceed $k$), `gFunc_minimal` (minimality)."
+      "mathContext": "Four axiom declarations: `gFunc : $\\mathbb{N}$ $\\to$ $\\mathbb{N}$`, `gFunc_gt` ($g(k) > k+1$), `gFunc_spec` (all primes in $\\binom{g(k)}{k}$ exceed $k$), `gFunc_minimal` (minimality)."
     },
     {
       "id": "basic-lemmas",
@@ -83,7 +83,7 @@
       "startLine": 84,
       "endLine": 99,
       "summary": "`choose_eq_zero_of_lt` ($\\binom{n}{k} = 0$ when $k > n$) and `choose_odd_of_allPrimesExceed` (for $k \\geq 2$, $\\binom{n}{k}$ at $g(k)$ must be odd since $2 \\leq k$).",
-      "mathContext": "`choose_eq_zero_of_lt` ($\\binom{n}{k} = 0$ when $k > n$) and `choose_odd_of_allPrimesExceed` (for $k \\geq 2$, $\\binom{n}{k}$ at $g(k)$ must be odd since $2 \\leq k$)."
+      "mathContext": "Mathematical content: `choose_eq_zero_of_lt` ($\\binom{n}{k} = 0$ when $k > n$) and `choose_odd_of_allPrimesExceed` (for $k \\geq 2$, $\\binom{n}{k}$ at $g(k)$ must be odd since $2 \\leq k$)."
     },
     {
       "id": "concrete-computations",
@@ -91,7 +91,7 @@
       "startLine": 101,
       "endLine": 116,
       "summary": "Verified by `decide`: $\\binom{3}{1} = 3$, $\\binom{6}{2} = 15$, $\\binom{4}{2} = 6$, $\\binom{5}{2} = 10$. These confirm $g(1) = 3$ and $g(2) = 6$.",
-      "mathContext": "Verified by `decide`: $\\binom{3}{1} = 3$, $\\binom{6}{2} = 15$, $\\binom{4}{2} = 6$, $\\binom{5}{2} = 10$. These confirm $g(1) = 3$ and $g(2) = 6$."
+      "mathContext": "Mathematical content: Verified by `decide`: $\\binom{3}{1} = 3$, $\\binom{6}{2} = 15$, $\\binom{4}{2} = 6$, $\\binom{5}{2} = 10$. These confirm $g(1) = 3$ and $g(2) = 6$."
     },
     {
       "id": "structural-properties",
@@ -99,7 +99,7 @@
       "startLine": 117,
       "endLine": 130,
       "summary": "`gFunc_ge_k_plus_two`: $g(k) \\geq k+2$ from the axiom $g(k) > k+1$, via `omega`. The weakest formal lower bound on $g$.",
-      "mathContext": "`gFunc_ge_k_plus_two`: $g(k) \\geq k+2$ from the axiom $g(k) > k+1$, via `omega`. The weakest formal lower bound on $g$."
+      "mathContext": "Axiomatized: `gFunc_ge_k_plus_two`: $g(k) \\geq k+2$ from the axiom $g(k) > k+1$, via `omega`. The weakest formal lower bound on $g$."
     },
     {
       "id": "problem-statement",
@@ -107,7 +107,7 @@
       "startLine": 131,
       "endLine": 154,
       "summary": "The open conjecture (informally: $\\log g(k) \\sim c \\cdot k/\\log k$) and its weakened formal version `ErdosProblem1095OQ01`: $\\exists c > 0,\\; \\forall k > 0,\\; g(k) > k^c$ (super-polynomial growth).",
-      "mathContext": "The open conjecture (informally: $\\log g(k) \\sim c \\cdot k/\\log k$) and its weakened formal version `ErdosProblem1095OQ01`: $\\exists c > 0,\\; \\forall k > 0,\\; g(k) > k^c$ (super-polynomial growth)."
+      "mathContext": "Mathematical content: The open conjecture (informally: $\\log g(k) \\sim c \\cdot k/\\log k$) and its weakened formal version `ErdosProblem1095OQ01`: $\\exists c > 0,\\; \\forall k > 0,\\; g(k) > k^c$ (super-polynomial growth)."
     }
   ],
   "conclusion": {

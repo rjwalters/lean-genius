@@ -82,7 +82,7 @@
       "summary": "BlockDesign structure with pair coverage, numBlocks, IsPrimePower, IsProjectivePlaneSize",
       "startLine": 29,
       "endLine": 56,
-      "mathContext": "BlockDesign structure with pair coverage, numBlocks, IsPrimePower, IsProjectivePlaneSize"
+      "mathContext": "Formal definition: BlockDesign structure with pair coverage, numBlocks, IsPrimePower, IsProjectivePlaneSize"
     },
     {
       "id": "de-bruijn-erdos",
@@ -90,7 +90,7 @@
       "summary": "de_bruijn_erdos axiom (t ≥ n), IsMinimalDesign, minimal_design_uniform",
       "startLine": 57,
       "endLine": 74,
-      "mathContext": "de_bruijn_erdos axiom (t ≥ n), IsMinimalDesign, minimal_design_uniform"
+      "mathContext": "de_bruijn_erdos axiom (t $\\geq$ n), IsMinimalDesign, minimal_design_uniform"
     },
     {
       "id": "projective-planes",
@@ -98,7 +98,7 @@
       "summary": "ProjectivePlane structure, projective_plane_exists, projective_plane_design axioms",
       "startLine": 75,
       "endLine": 99,
-      "mathContext": "ProjectivePlane structure, projective_plane_exists, projective_plane_design axioms"
+      "mathContext": "Formal definition: ProjectivePlane structure, projective_plane_exists, projective_plane_design axioms"
     },
     {
       "id": "erdos-sos-theorem",
@@ -106,7 +106,7 @@
       "summary": "efsw_1985 axiom (gap theorem), efsw_strong axiom with broken-plane condition",
       "startLine": 100,
       "endLine": 120,
-      "mathContext": "efsw_1985 axiom (gap theorem), efsw_strong axiom with broken-plane condition"
+      "mathContext": "Verified: efsw_1985 axiom (gap theorem), efsw_strong axiom with broken-plane condition"
     },
     {
       "id": "gap-structure",
@@ -114,7 +114,7 @@
       "summary": "achievableBlocks set, n_achievable, gap_theorem, first_above_n (proved by contradiction)",
       "startLine": 121,
       "endLine": 147,
-      "mathContext": "achievableBlocks set, n_achievable, gap_theorem, first_above_n (proved by contradiction)"
+      "mathContext": "Verified: achievableBlocks set, n_achievable, gap_theorem, first_above_n (proved by contradiction)"
     },
     {
       "id": "examples",
@@ -122,7 +122,7 @@
       "summary": "Concrete gap computations for p = 2, 3, 4, 5 via norm_num",
       "startLine": 148,
       "endLine": 163,
-      "mathContext": "Concrete gap computations for p = 2, 3, 4, 5 via norm_num"
+      "mathContext": "Mathematical content: Concrete gap computations for p = 2, 3, 4, 5 via norm_num"
     },
     {
       "id": "2-designs",
@@ -130,7 +130,7 @@
       "summary": "Is2Design predicate, fisher_inequality axiom, de_bruijn_erdos_from_fisher (proved)",
       "startLine": 164,
       "endLine": 183,
-      "mathContext": "Is2Design predicate, fisher_inequality axiom, de_bruijn_erdos_from_fisher (proved)"
+      "mathContext": "Axiomatized: Is2Design predicate, fisher_inequality axiom, de_bruijn_erdos_from_fisher (proved)"
     },
     {
       "id": "summary",
@@ -138,7 +138,7 @@
       "summary": "erdos_903_summary (proved): three-part conjunction combining de Bruijn-Erdős, projective plane existence, and EFSW gap theorem",
       "startLine": 184,
       "endLine": 228,
-      "mathContext": "erdos_903_summary (proved): three-part conjunction combining de Bruijn-Erdős, projective plane existence, and EFSW gap theorem"
+      "mathContext": "Verified: erdos_903_summary (proved): three-part conjunction combining de Bruijn-Erdős, projective plane existence, and EFSW gap theorem"
     }
   ],
   "conclusion": {

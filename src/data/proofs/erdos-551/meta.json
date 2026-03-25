@@ -51,7 +51,7 @@
       "summary": "Documentation header with problem statement, Aristotle edit notes, threshold progression, related questions, and Mathlib imports for SimpleGraph and real analysis",
       "startLine": 1,
       "endLine": 43,
-      "mathContext": "Documentation header with problem statement, Aristotle edit notes, threshold progression, related questions, and Mathlib imports for SimpleGraph and real analysis"
+      "mathContext": "Mathematical content: Documentation header with problem statement, Aristotle edit notes, threshold progression, related questions, and Mathlib imports for SimpleGraph and real analysis"
     },
     {
       "id": "basic-defs",
@@ -59,7 +59,7 @@
       "summary": "cycleGraph C_k via modular adjacency, completeGraph K_n as top of lattice, ContainsCycle via injective embedding preserving cyclic adjacency, ContainsClique via clique Finset of given size",
       "startLine": 56,
       "endLine": 91,
-      "mathContext": "cycleGraph C_k via modular adjacency, completeGraph K_n as top of lattice, ContainsCycle via injective embedding preserving cyclic adjacency, ContainsClique via clique Finset of given size"
+      "mathContext": "Mathematical content: cycleGraph C_k via modular adjacency, completeGraph K_n as top of lattice, ContainsCycle via injective embedding preserving cyclic adjacency, ContainsClique via clique Finset of given size"
     },
     {
       "id": "ramsey",
@@ -67,7 +67,7 @@
       "summary": "RamseyNumber via Nat.find over existence of N with red C_k or blue K_n, RamseyProperty as the Ramsey property predicate, ramsey_is_min establishing minimality",
       "startLine": 96,
       "endLine": 144,
-      "mathContext": "RamseyNumber via Nat.find over existence of N with red C_k or blue K_n, RamseyProperty as the Ramsey property predicate, ramsey_is_min establishing minimality"
+      "mathContext": "Mathematical content: RamseyNumber via Nat.find over existence of N with red C_k or blue K_n, RamseyProperty as the Ramsey property predicate, ramsey_is_min establishing minimality"
     },
     {
       "id": "conjecture",
@@ -75,7 +75,7 @@
       "summary": "ConjecturedFormula (k-1)(n-1)+1, MainConjecture for k ≥ n ≥ 3 excluding (3,3), exception_3_3 showing R(C_3,K_3) = 6, formula_wrong_at_3_3 proved by native_decide",
       "startLine": 145,
       "endLine": 174,
-      "mathContext": "ConjecturedFormula (k-1)(n-1)+1, MainConjecture for k ≥ n ≥ 3 excluding (3,3), exception_3_3 showing R(C_3,K_3) = 6, formula_wrong_at_3_3 proved by native_decide"
+      "mathContext": "ConjecturedFormula (k-1)(n-1)+1, MainConjecture for k $\\geq$ n $\\geq$ 3 excluding (3,3), exception_3_3 showing R(C_3,K_3) = 6, formula_wrong_at_3_3 proved by native_decide"
     },
     {
       "id": "lower-bound",
@@ -91,7 +91,7 @@
       "summary": "bondy_erdos theorem for k > n²-2, BondyErdosThreshold definition, above_bondy_erdos_threshold corollary",
       "startLine": 243,
       "endLine": 267,
-      "mathContext": "bondy_erdos theorem for k > n²-2, BondyErdosThreshold definition, above_bondy_erdos_threshold corollary"
+      "mathContext": "Formal definition: bondy_erdos theorem for k > n²-2, BondyErdosThreshold definition, above_bondy_erdos_threshold corollary"
     },
     {
       "id": "nikiforov",
@@ -99,7 +99,7 @@
       "summary": "nikiforov theorem for k ≥ 4n+2, NikiforovThreshold definition, nikiforov_improves proved by omega for n ≥ 5",
       "startLine": 278,
       "endLine": 293,
-      "mathContext": "nikiforov theorem for k ≥ 4n+2, NikiforovThreshold definition, nikiforov_improves proved by omega for n ≥ 5"
+      "mathContext": "nikiforov theorem for k $\\geq$ 4n+2, NikiforovThreshold definition, nikiforov_improves proved by omega for n $\\geq$ 5"
     },
     {
       "id": "kls",
@@ -107,7 +107,7 @@
       "summary": "keevash_long_skokan with existential constant C, KLSThreshold as log n / log log n, exp_one_lt_3 lemma via Taylor bounds, kls_improves PROVED by Aristotle for n ≥ 100",
       "startLine": 312,
       "endLine": 358,
-      "mathContext": "keevash_long_skokan with existential constant C, KLSThreshold as log n / log log n, exp_one_lt_3 lemma via Taylor bounds, kls_improves PROVED by Aristotle for n ≥ 100"
+      "mathContext": "keevash_long_skokan with existential constant C, KLSThreshold as $\\log n$ / log $\\log n$, exp_one_lt_3 lemma via Taylor bounds, kls_improves PROVED by Aristotle for n $\\geq$ 100"
     },
     {
       "id": "special-cases",
@@ -115,7 +115,7 @@
       "summary": "cycle_3_is_triangle (C_3 = K_3), ramsey_C4_K3 = 7, ramsey_C5_K3 = 9, ramsey_Ck_K3 = 2k-1 for k ≥ 4 (triangle case via Dirac's theorem)",
       "startLine": 376,
       "endLine": 420,
-      "mathContext": "cycle_3_is_triangle (C_3 = K_3), ramsey_C4_K3 = 7, ramsey_C5_K3 = 9, ramsey_Ck_K3 = 2k-1 for k ≥ 4 (triangle case via Dirac's theorem)"
+      "mathContext": "cycle_3_is_triangle (C_3 = K_3), ramsey_C4_K3 = 7, ramsey_C5_K3 = 9, ramsey_Ck_K3 = 2k-1 for k $\\geq$ 4 (triangle case via Dirac's theorem)"
     },
     {
       "id": "related",
@@ -123,7 +123,7 @@
       "summary": "SmallestValidK via Nat.find for threshold where formula holds, MinRamseyValue as infimum of R(C_k, K_n) over k ≥ n, min_ramsey_achieved existence",
       "startLine": 425,
       "endLine": 461,
-      "mathContext": "SmallestValidK via Nat.find for threshold where formula holds, MinRamseyValue as infimum of R(C_k, K_n) over k ≥ n, min_ramsey_achieved existence"
+      "mathContext": "SmallestValidK via Nat.find for threshold where formula holds, MinRamseyValue as infimum of R(C_k, K_n) over k $\\geq$ n, min_ramsey_achieved existence"
     },
     {
       "id": "monotonicity",
@@ -131,7 +131,7 @@
       "summary": "ramsey_mono_k and ramsey_mono_n (non-decreasing in both parameters), formula_mono PROVED showing ConjecturedFormula is monotone via nlinarith",
       "startLine": 479,
       "endLine": 511,
-      "mathContext": "ramsey_mono_k and ramsey_mono_n (non-decreasing in both parameters), formula_mono PROVED showing ConjecturedFormula is monotone via nlinarith"
+      "mathContext": "Mathematical content: ramsey_mono_k and ramsey_mono_n (non-decreasing in both parameters), formula_mono PROVED showing ConjecturedFormula is monotone via nlinarith"
     },
     {
       "id": "upper-bound",
@@ -139,7 +139,7 @@
       "summary": "upper_bound theorem R(C_k, K_n) ≤ (k-1)(n-1)+1 for k ≥ n ≥ 3 excluding (3,3), path_cycle_method establishing RamseyProperty for N ≥ (k-1)(n-1)+1",
       "startLine": 522,
       "endLine": 542,
-      "mathContext": "upper_bound theorem R(C_k, K_n) ≤ (k-1)(n-1)+1 for k ≥ n ≥ 3 excluding (3,3), path_cycle_method establishing RamseyProperty for N ≥ (k-1)(n-1)+1"
+      "mathContext": "upper_bound theorem R(C_k, K_n) $\\leq$ (k-1)(n-1)+1 for k $\\geq$ n $\\geq$ 3 excluding (3,3), path_cycle_method establishing RamseyProperty for N $\\geq$ (k-1)(n-1)+1"
     },
     {
       "id": "summary",
@@ -147,7 +147,7 @@
       "summary": "main_theorem combining all progress (formula ↔ k ≥ SmallestValidK), current_best via KLS bound, solved_asymptotically showing formula holds for all but finitely many k per fixed n",
       "startLine": 560,
       "endLine": 604,
-      "mathContext": "main_theorem combining all progress (formula ↔ k ≥ SmallestValidK), current_best via KLS bound, solved_asymptotically showing formula holds for all but finitely many k per fixed n"
+      "mathContext": "main_theorem combining all progress (formula ↔ k $\\geq$ SmallestValidK), current_best via KLS bound, solved_asymptotically showing formula holds for all but finitely many k per fixed n"
     }
   ],
   "conclusion": {

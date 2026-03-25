@@ -86,7 +86,7 @@
       "startLine": 1,
       "endLine": 61,
       "summary": "File header explaining the OQ chain (OQ01 → OQ02 → OQ03), the isoperimetric inequality C²≥4πA, and Hurwitz's Fourier proof strategy. Imports from Mathlib trigonometry, calculus, and Fourier analysis.",
-      "mathContext": "File header explaining the OQ chain (OQ01 → OQ02 → OQ03), the isoperimetric inequality C²≥4πA, and Hurwitz's Fourier proof strategy. Imports from Mathlib trigonometry, calculus, and Fourier analysis."
+      "mathContext": "File header explaining the OQ chain (OQ01 $\\to$ OQ02 $\\to$ OQ03), the isoperimetric inequality C²$\\geq$4πA, and Hurwitz's Fourier proof strategy. Imports from Mathlib trigonometry, calculus, and Fourier analysis."
     },
     {
       "id": "part-i-circle",
@@ -102,7 +102,7 @@
       "startLine": 115,
       "endLine": 148,
       "summary": "squareCirc, squareArea definitions. square_isoperimetric_strict: C²>4πA for squares, proved by π<4 (Real.pi_lt_four). square_isoperimetric_ratio = π/4. square_ratio_lt_one: π/4 < 1.",
-      "mathContext": "squareCirc, squareArea definitions. square_isoperimetric_strict: C²>4πA for squares, proved by π<4 (Real.pi_lt_four). square_isoperimetric_ratio = π/4. square_ratio_lt_one: π/4 < 1."
+      "mathContext": "Formal definition: squareCirc, squareArea definitions. square_isoperimetric_strict: C²>4πA for squares, proved by π<4 (Real.pi_lt_four). square_isoperimetric_ratio = π/4. square_ratio_lt_one: π/4 < 1."
     },
     {
       "id": "part-iii-ngon",

@@ -75,7 +75,7 @@
       "startLine": 43,
       "endLine": 63,
       "summary": "$L_f(r) = \\{z \\in \\mathbb{C} : \\|f(z)\\| \\le r\\}$ and unit lemniscate $L_f = L_f(1)$",
-      "mathContext": "$L_f(r) = \\{z \\in \\mathbb{C} : \\|f(z)\\| \\le r\\}$ and unit lemniscate $L_f = L_f(1)$"
+      "mathContext": "Mathematical content: $L_f(r) = \\{z \\in \\mathbb{C} : \\|f(z)\\| \\le r\\}$ and unit lemniscate $L_f = L_f(1)$"
     },
     {
       "id": "projections",
@@ -83,7 +83,7 @@
       "startLine": 64,
       "endLine": 81,
       "summary": "Direction $u$, projection $\\pi_u(z) = \\operatorname{Re}(z\\bar{u})$, projection measure $\\mu(\\pi_u(S))$",
-      "mathContext": "Direction $u$, projection $\\pi_u(z) = \\operatorname{Re}(z\\bar{u})$, projection measure $\\mu(\\pi_u(S))$"
+      "mathContext": "Mathematical content: Direction $u$, projection $\\pi_u(z) = \\operatorname{Re}(z\\bar{u})$, projection measure $\\mu(\\pi_u(S))$"
     },
     {
       "id": "examples",
@@ -91,7 +91,7 @@
       "startLine": 82,
       "endLine": 93,
       "summary": "Unit disk $\\overline{B}(0,1)$ projects to $[-1,1]$ with measure 2 in every direction",
-      "mathContext": "Unit disk $\\overline{B}(0,1)$ projects to $[-1,1]$ with measure 2 in every direction"
+      "mathContext": "Mathematical content: Unit disk $\\overline{B}(0,1)$ projects to $[-1,1]$ with measure 2 in every direction"
     },
     {
       "id": "ehp-question",
@@ -99,7 +99,7 @@
       "startLine": 94,
       "endLine": 108,
       "summary": "EHP Conjecture: $\\forall f$ monic, $\\exists u$ with $\\mu(\\pi_u(L_f)) \\le 2$; min/max projection measures",
-      "mathContext": "EHP Conjecture: $\\forall f$ monic, $\\exists u$ with $\\mu(\\pi_u(L_f)) \\le 2$; min/max projection measures"
+      "mathContext": "Mathematical content: EHP Conjecture: $\\forall f$ monic, $\\exists u$ with $\\mu(\\pi_u(L_f)) \\le 2$; min/max projection measures"
     },
     {
       "id": "counterexample",
@@ -107,7 +107,7 @@
       "startLine": 109,
       "endLine": 135,
       "summary": "Pommerenke (1961): $\\exists f$ monic with $\\mu(\\pi_u(L_f)) \\ge 2.386$ for all $u$; Pommerenke constant $\\mathcal{P}$",
-      "mathContext": "Pommerenke (1961): $\\exists f$ monic with $\\mu(\\pi_u(L_f)) \\ge 2.386$ for all $u$; Pommerenke constant $\\mathcal{P}$"
+      "mathContext": "Mathematical content: Pommerenke (1961): $\\exists f$ monic with $\\mu(\\pi_u(L_f)) \\ge 2.386$ for all $u$; Pommerenke constant $\\mathcal{P}$"
     },
     {
       "id": "upper-bound",
@@ -115,7 +115,7 @@
       "startLine": 136,
       "endLine": 149,
       "summary": "$\\forall f$ monic, $\\exists u$ with $\\mu(\\pi_u(L_f)) \\le 3.3$; $\\inf_u \\mu \\le 3.3$",
-      "mathContext": "$\\forall f$ monic, $\\exists u$ with $\\mu(\\pi_u(L_f)) \\le 3.3$; $\\inf_u \\mu \\le 3.3$"
+      "mathContext": "Mathematical content: $\\forall f$ monic, $\\exists u$ with $\\mu(\\pi_u(L_f)) \\le 3.3$; $\\inf_u \\mu \\le 3.3$"
     },
     {
       "id": "level-set-properties",
@@ -123,7 +123,7 @@
       "startLine": 150,
       "endLine": 166,
       "summary": "$\\operatorname{cap}(L_f) = 1$, connected iff all roots $\\in L_f$, $L_f$ compact",
-      "mathContext": "$\\operatorname{cap}(L_f) = 1$, connected iff all roots $\\in L_f$, $L_f$ compact"
+      "mathContext": "Mathematical content: $\\operatorname{cap}(L_f) = 1$, connected iff all roots $\\in L_f$, $L_f$ compact"
     },
     {
       "id": "width-function",
@@ -131,7 +131,7 @@
       "startLine": 167,
       "endLine": 185,
       "summary": "Width $w(S,u) = \\mu(\\pi_u(S))$, $w_{\\min}(S) = \\inf_u w$, $w_{\\max}(S) = \\sup_u w$",
-      "mathContext": "Width $w(S,u) = \\mu(\\pi_u(S))$, $w_{\\min}(S) = \\inf_u w$, $w_{\\max}(S) = \\sup_u w$"
+      "mathContext": "Mathematical content: Width $w(S,u) = \\mu(\\pi_u(S))$, $w_{\\min}(S) = \\inf_u w$, $w_{\\max}(S) = \\sup_u w$"
     },
     {
       "id": "lemniscates",
@@ -139,7 +139,7 @@
       "startLine": 186,
       "endLine": 201,
       "summary": "`IsLemniscate` predicate, Bernoulli lemniscate $\\{z : |z^2 - 1| = c\\}$ (figure-eight, Bernoulli 1694)",
-      "mathContext": "`IsLemniscate` predicate, Bernoulli lemniscate $\\{z : |z^2 - 1| = c\\}$ (figure-eight, Bernoulli 1694)"
+      "mathContext": "Mathematical content: `IsLemniscate` predicate, Bernoulli lemniscate $\\{z : |z^2 - 1| = c\\}$ (figure-eight, Bernoulli 1694)"
     },
     {
       "id": "related-results",
@@ -147,7 +147,7 @@
       "startLine": 202,
       "endLine": 217,
       "summary": "Transfinite diameter $d_\\infty(L_f) = 1$, Chebyshev optimality $\\|T_n\\|_{[-1,1]} = 2^{1-n}$, roots $\\in L_f$",
-      "mathContext": "Transfinite diameter $d_\\infty(L_f) = 1$, Chebyshev optimality $\\|T_n\\|_{[-1,1]} = 2^{1-n}$, roots $\\in L_f$"
+      "mathContext": "Transfinite diameter $d_\\infty(L_f) = 1$, Chebyshev optimality $\\|T_n\\|_{[-1,1]} = $$2^{{1-n}$}$$, roots $\\in L_f$"
     },
     {
       "id": "bounds",
@@ -155,7 +155,7 @@
       "startLine": 218,
       "endLine": 229,
       "summary": "$\\text{Area}(L_f) \\le \\pi$, $\\text{diam}(L_f) \\le 4$ for monic polynomials",
-      "mathContext": "$\\text{Area}(L_f) \\le \\pi$, $\\text{diam}(L_f) \\le 4$ for monic polynomials"
+      "mathContext": "$\\text{Area}(L_f) \\le \\$\\pi$$, $\\text{diam}(L_f) \\le 4$ for monic polynomials"
     },
     {
       "id": "summary",
@@ -163,7 +163,7 @@
       "startLine": 230,
       "endLine": 280,
       "summary": "`erdos_1043_answer`: $\\neg\\text{EHP} \\wedge (\\forall f,\\, \\exists u,\\, \\mu(\\pi_u(L_f)) \\le 3.3)$",
-      "mathContext": "`erdos_1043_answer`: $\\neg\\text{EHP} \\wedge (\\forall f,\\, \\exists u,\\, \\mu(\\pi_u(L_f)) \\le 3.3)$"
+      "mathContext": "Mathematical content: `erdos_1043_answer`: $\\neg\\text{EHP} \\wedge (\\forall f,\\, \\exists u,\\, \\mu(\\pi_u(L_f)) \\le 3.3)$"
     }
   ],
   "conclusion": {

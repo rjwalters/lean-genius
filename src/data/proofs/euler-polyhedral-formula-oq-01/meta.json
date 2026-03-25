@@ -79,7 +79,7 @@
       "startLine": 1,
       "endLine": 8,
       "summary": "Imports SimpleGraph modules (Basic, Finite, DegreeSum, Coloring, Connected), Fintype.Basic, Int.Basic, and Tactic.",
-      "mathContext": "Imports SimpleGraph modules (Basic, Finite, DegreeSum, Coloring, Connected), Fintype.Basic, Int.Basic, and Tactic."
+      "mathContext": "Mathematical content: Imports SimpleGraph modules (Basic, Finite, DegreeSum, Coloring, Connected), Fintype.Basic, Int.Basic, and Tactic."
     },
     {
       "id": "part1-spanning-tree",
@@ -95,7 +95,7 @@
       "startLine": 216,
       "endLine": 260,
       "summary": "KDegenerate structure: every subgraph has a vertex of degree ≤ k. planar_five_degenerate: E ≤ 3V-6 implies 5-degeneracy. degeneracy_from_edge_bound: general k-degeneracy from 2E < (k+1)V.",
-      "mathContext": "KDegenerate structure: every subgraph has a vertex of degree ≤ k. planar_five_degenerate: E ≤ 3V-6 implies 5-degeneracy. degeneracy_from_edge_bound: general k-degeneracy from 2E < (k+1)V."
+      "mathContext": "KDegenerate structure: every subgraph has a vertex of degree $\\leq$ k. planar_five_degenerate: E $\\leq$ 3V-6 implies 5-degeneracy. degeneracy_from_edge_bound: general k-degeneracy from 2E < (k+1)V."
     },
     {
       "id": "part3-coloring",
@@ -103,7 +103,7 @@
       "startLine": 261,
       "endLine": 294,
       "summary": "degenerate_colorable_aux: k-degenerate graph on n vertices is (k+1)-colorable (by induction). six_colorable_from_degeneracy: since planar is 5-degenerate, planar graphs are 6-colorable.",
-      "mathContext": "degenerate_colorable_aux: k-degenerate graph on n vertices is (k+1)-colorable (by induction). six_colorable_from_degeneracy: since planar is 5-degenerate, planar graphs are 6-colorable."
+      "mathContext": "Mathematical content: degenerate_colorable_aux: k-degenerate graph on n vertices is (k+1)-colorable (by induction). six_colorable_from_degeneracy: since planar is 5-degenerate, planar graphs are 6-colorable."
     },
     {
       "id": "part4-edge-face",
@@ -111,7 +111,7 @@
       "startLine": 295,
       "endLine": 334,
       "summary": "Algebraic consequences of V-E+F=2: face_from_euler, edge_from_euler, vertex_from_euler, tree_edges_from_euler. Also maximal_planar_edges (E=3V-6) and maximal_planar_faces (F=2V-4) for triangulations.",
-      "mathContext": "Algebraic consequences of V-E+F=2: face_from_euler, edge_from_euler, vertex_from_euler, tree_edges_from_euler. Also maximal_planar_edges (E=3V-6) and maximal_planar_faces (F=2V-4) for triangulations."
+      "mathContext": "Mathematical content: Algebraic consequences of V-E+F=2: face_from_euler, edge_from_euler, vertex_from_euler, tree_edges_from_euler. Also maximal_planar_edges (E=3V-6) and maximal_planar_faces (F=2V-4) for triangulations."
     },
     {
       "id": "part5-handshaking",
@@ -119,7 +119,7 @@
       "startLine": 335,
       "endLine": 384,
       "summary": "avg_degree_lt_six: sum of degrees < 6V implies average degree < 6. exists_low_degree_vertex: every planar graph has a vertex of degree ≤ 5 (two proof variants).",
-      "mathContext": "avg_degree_lt_six: sum of degrees < 6V implies average degree < 6. exists_low_degree_vertex: every planar graph has a vertex of degree ≤ 5 (two proof variants)."
+      "mathContext": "avg_degree_lt_six: sum of degrees < 6V implies average degree < 6. exists_low_degree_vertex: every planar graph has a vertex of degree $\\leq$ 5 (two proof variants)."
     },
     {
       "id": "part8-genus",
@@ -127,7 +127,7 @@
       "startLine": 463,
       "endLine": 501,
       "summary": "Edge bounds for genus-g surfaces: E ≤ 3V + 6g - 6. K₃,₃ and K₅ non-planarity from edge bounds. Euler characteristic for surfaces of genus g.",
-      "mathContext": "Edge bounds for genus-g surfaces: E ≤ 3V + 6g - 6. K₃,₃ and K₅ non-planarity from edge bounds. Euler characteristic for surfaces of genus g."
+      "mathContext": "Edge bounds for genus-g surfaces: E $\\leq$ 3V + 6g - 6. K₃,₃ and K₅ non-planarity from edge bounds. Euler characteristic for surfaces of genus g."
     },
     {
       "id": "part9-heawood",
@@ -135,7 +135,7 @@
       "startLine": 502,
       "endLine": 535,
       "summary": "Heawood formula H(g) = ⌊(5+√(1+48g))/2⌋ as a chromatic bound for genus-g surfaces. Verified for torus (H(1)=7), double torus (H(2)=8). toroidal coloring bounds.",
-      "mathContext": "Heawood formula H(g) = ⌊(5+√(1+48g))/2⌋ as a chromatic bound for genus-g surfaces. Verified for torus (H(1)=7), double torus (H(2)=8). toroidal coloring bounds."
+      "mathContext": "Bound: Heawood formula H(g) = ⌊(5+√(1+48g))/2⌋ as a chromatic bound for genus-g surfaces. Verified for torus (H(1)=7), double torus (H(2)=8). toroidal coloring bounds."
     },
     {
       "id": "part11-six-color",

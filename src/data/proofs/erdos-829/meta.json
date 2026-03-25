@@ -84,7 +84,7 @@
       "summary": "Imports Mathlib modules for $\\log$, `Finset`, `BigOperators`, and opens the `Erdos829` namespace",
       "startLine": 28,
       "endLine": 37,
-      "mathContext": "Imports Mathlib modules for $\\log$, `Finset`, `BigOperators`, and opens the `Erdos829` namespace"
+      "mathContext": "Mathematical content: Imports Mathlib modules for $\\log$, `Finset`, `BigOperators`, and opens the `Erdos829` namespace"
     },
     {
       "id": "cubes-representation",
@@ -92,7 +92,7 @@
       "summary": "Defines `IsCube`, `CubeSet` ($A = \\{k^3\\}$), and the representation functions $r_2(n) = |\\{(a,b) : a^3 + b^3 = n, a \\leq b\\}|$",
       "startLine": 38,
       "endLine": 71,
-      "mathContext": "Defines `IsCube`, `CubeSet` ($A = \\{k^3\\}$), and the representation functions $r_2(n) = |\\{(a,b) : a^3 + b^3 = n, a \\leq b\\}|$"
+      "mathContext": "Defines `IsCube`, `CubeSet` ($A = \\{$k^{3}$\\}$), and the representation functions $r_2(n) = |\\{(a,b) : a^3 + b^3 = n, a \\leq b\\}|$"
     },
     {
       "id": "erdos-question",
@@ -100,7 +100,7 @@
       "summary": "Formalizes `HasPolylogBound`: $\\exists c, C > 0$ with $r_2(n) \\leq C (\\log n)^c$ for all $n \\geq 2$, and defines `ErdosQuestion`",
       "startLine": 72,
       "endLine": 89,
-      "mathContext": "Formalizes `HasPolylogBound`: $\\exists c, C > 0$ with $r_2(n) \\leq C (\\log n)^c$ for all $n \\geq 2$, and defines `ErdosQuestion`"
+      "mathContext": "Formalizes `HasPolylogBound`: $\\exists c, C > 0$ with $r_2(n) \\leq C (\\$\\log n$)^c$ for all $n \\geq 2$, and defines `ErdosQuestion`"
     },
     {
       "id": "lower-bounds",
@@ -108,7 +108,7 @@
       "summary": "Axiomatizes Mordell ($\\limsup r_2(n) = \\infty$), Mahler 1935 ($r_2(n) \\gg (\\log n)^{1/4}$ i.o.), and Stewart 2008 ($r_2(n) \\gg (\\log n)^{11/13}$ i.o.)",
       "startLine": 90,
       "endLine": 127,
-      "mathContext": "Axiomatizes Mordell ($\\limsup r_2(n) = \\infty$), Mahler 1935 ($r_2(n) \\gg (\\log n)^{1/4}$ i.o.), and Stewart 2008 ($r_2(n) \\gg (\\log n)^{11/13}$ i.o.)"
+      "mathContext": "Axiomatizes Mordell ($\\limsup r_2(n) = \\infty$), Mahler 1935 ($r_2(n) \\gg (\\$\\log n$)^{1/4}$ i.o.), and Stewart 2008 ($r_2(n) \\gg (\\$\\log n$)^{11/13}$ i.o.)"
     },
     {
       "id": "famous-examples",
@@ -116,7 +116,7 @@
       "summary": "Hardy-Ramanujan number $1729 = 1^3 + 12^3 = 9^3 + 10^3$ (Ta(2)) and $87539319$ (Ta(3) with 3 representations)",
       "startLine": 128,
       "endLine": 158,
-      "mathContext": "Hardy-Ramanujan number $1729 = 1^3 + 12^3 = 9^3 + 10^3$ (Ta(2)) and $87539319$ (Ta(3) with 3 representations)"
+      "mathContext": "Hardy-Ramanujan number $1729 = $1^{3}$ + $12^{3}$ = $9^{3}$ + $10^{3}$$ (Ta(2)) and $87539319$ (Ta(3) with 3 representations)"
     },
     {
       "id": "theory",
@@ -124,7 +124,7 @@
       "summary": "Counting function $N(x) = |\\{n \\leq x : r_2(n) > 0\\}| \\sim c \\cdot x^{2/3}$, implying density zero for the sumset $A + A$",
       "startLine": 159,
       "endLine": 182,
-      "mathContext": "Counting function $N(x) = |\\{n \\leq x : r_2(n) > 0\\}| \\sim c \\cdot x^{2/3}$, implying density zero for the sumset $A + A$"
+      "mathContext": "Mathematical content: Counting function $N(x) = |\\{n \\leq x : r_2(n) > 0\\}| \\sim c \\cdot x^{2/3}$, implying density zero for the sumset $A + A$"
     },
     {
       "id": "the-gap",
@@ -132,7 +132,7 @@
       "summary": "Verified inequality $11/13 > 1/4$ confirming Stewart's improvement over Mahler, proved by `norm_num`",
       "startLine": 183,
       "endLine": 190,
-      "mathContext": "Verified inequality $11/13 > 1/4$ confirming Stewart's improvement over Mahler, proved by `norm_num`"
+      "mathContext": "Bound: Verified inequality $11/13 > 1/4$ confirming Stewart's improvement over Mahler, proved by `norm_num`"
     },
     {
       "id": "summary",
@@ -140,7 +140,7 @@
       "summary": "Conjunction of Stewart's quantitative bound and Mordell's unboundedness: $\\langle \\text{stewart\\_2008}, \\text{mordell\\_unbounded} \\rangle$",
       "startLine": 191,
       "endLine": 218,
-      "mathContext": "Conjunction of Stewart's quantitative bound and Mordell's unboundedness: $\\langle \\text{stewart\\_2008}, \\text{mordell\\_unbounded} \\rangle$"
+      "mathContext": "Bound: Conjunction of Stewart's quantitative bound and Mordell's unboundedness: $\\langle \\text{stewart\\_2008}, \\text{mordell\\_unbounded} \\rangle$"
     }
   ],
   "conclusion": {

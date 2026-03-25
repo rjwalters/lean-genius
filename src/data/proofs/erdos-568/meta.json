@@ -38,7 +38,7 @@
       "startLine": 20,
       "endLine": 22,
       "summary": "Imports Mathlib foundations: $\\mathbb{N}$ for graph sizes, $\\mathbb{R}$ for bound constants $C$ in $R(G,T_n) \\le Cn$ and $R(G,K_n) \\le Cn^2$.",
-      "mathContext": "Imports Mathlib foundations: $\\mathbb{N}$ for graph sizes, $\\mathbb{R}$ for bound constants $C$ in $R(G,T_n) \\le Cn$ and $R(G,K_n) \\le Cn^2$."
+      "mathContext": "Bound: Imports Mathlib foundations: $\\mathbb{N}$ for graph sizes, $\\mathbb{R}$ for bound constants $C$ in $R(G,T_n) \\le Cn$ and $R(G,K_n) \\le Cn^2$."
     },
     {
       "id": "graph-infrastructure",
@@ -46,7 +46,7 @@
       "startLine": 26,
       "endLine": 39,
       "summary": "Defines $\\text{SGraph}(n)$ with symmetric irreflexive adjacency, edge counting $|E(G)|$, and the no-isolated-vertices condition $\\forall v,\\;\\deg(v) \\ge 1$.",
-      "mathContext": "Defines $\\text{SGraph}(n)$ with symmetric irreflexive adjacency, edge counting $|E(G)|$, and the no-isolated-vertices condition $\\forall v,\\;\\deg(v) \\ge 1$."
+      "mathContext": "Formal definition: Defines $\\text{SGraph}(n)$ with symmetric irreflexive adjacency, edge counting $|E(G)|$, and the no-isolated-vertices condition $\\forall v,\\;\\deg(v) \\ge 1$."
     },
     {
       "id": "ramsey-axioms",
@@ -54,7 +54,7 @@
       "startLine": 41,
       "endLine": 50,
       "summary": "Axiomatizes both the classical Ramsey number $R(G,H) = \\min\\{N : K_N \\to (G,H)\\}$ and the size Ramsey number $\\hat{r}(G,H) = \\min\\{|E(F)| : F \\to (G,H)\\}$.",
-      "mathContext": "Axiomatizes both the classical Ramsey number $R(G,H) = \\min\\{N : K_N \\to (G,H)\\}$ and the size Ramsey number $\\hat{r}(G,H) = \\min\\{|E(F)| : F \\to (G,H)\\}$."
+      "mathContext": "Axiomatized: Axiomatizes both the classical Ramsey number $R(G,H) = \\min\\{N : K_N \\to (G,H)\\}$ and the size Ramsey number $\\hat{r}(G,H) = \\min\\{|E(F)| : F \\to (G,H)\\}$."
     },
     {
       "id": "graph-predicates",
@@ -62,7 +62,7 @@
       "startLine": 52,
       "endLine": 58,
       "summary": "Defines trees ($|E| = n-1$, $n \\ge 1$) and complete graphs ($\\forall i \\ne j,\\;\\text{adj}(i,j)$) — the two extremes of graph density that appear in the hypothesis.",
-      "mathContext": "Defines trees ($|E| = n-1$, $n \\ge 1$) and complete graphs ($\\forall i \\ne j,\\;\\text{adj}(i,j)$) — the two extremes of graph density that appear in the hypothesis."
+      "mathContext": "Formal definition: Defines trees ($|E| = n-1$, $n \\ge 1$) and complete graphs ($\\forall i \\ne j,\\;\\text{adj}(i,j)$) — the two extremes of graph density that appear in the hypothesis."
     },
     {
       "id": "hypothesis-conditions",
@@ -70,7 +70,7 @@
       "startLine": 60,
       "endLine": 70,
       "summary": "Defines $\\text{LinearTreeRamsey}(G)$: $\\exists C,\\;R(G,T_n) \\le Cn$ and $\\text{QuadraticCliqueRamsey}(G)$: $\\exists C,\\;R(G,K_n) \\le Cn^2$. These are the two hypotheses of the EFRS conjecture.",
-      "mathContext": "Defines $\\text{LinearTreeRamsey}(G)$: $\\exists C,\\;R(G,T_n) \\le Cn$ and $\\text{QuadraticCliqueRamsey}(G)$: $\\exists C,\\;R(G,K_n) \\le Cn^2$. These are the two hypotheses of the EFRS conjecture."
+      "mathContext": "Formal definition: Defines $\\text{LinearTreeRamsey}(G)$: $\\exists C,\\;R(G,T_n) \\le Cn$ and $\\text{QuadraticCliqueRamsey}(G)$: $\\exists C,\\;R(G,K_n) \\le Cn^2$. These are the two hypotheses of the EFRS conjecture."
     },
     {
       "id": "size-linearity",
@@ -78,7 +78,7 @@
       "startLine": 72,
       "endLine": 78,
       "summary": "Defines $\\text{IsRamseySizeLinear}(G)$: $\\exists C > 0,\\;\\forall H,\\;\\hat{r}(G,H) \\le C \\cdot |E(H)|$. This is the conclusion of the conjecture.",
-      "mathContext": "Defines $\\text{IsRamseySizeLinear}(G)$: $\\exists C > 0,\\;\\forall H,\\;\\hat{r}(G,H) \\le C \\cdot |E(H)|$. This is the conclusion of the conjecture."
+      "mathContext": "Formal definition: Defines $\\text{IsRamseySizeLinear}(G)$: $\\exists C > 0,\\;\\forall H,\\;\\hat{r}(G,H) \\le C \\cdot |E(H)|$. This is the conclusion of the conjecture."
     },
     {
       "id": "main-conjecture",
@@ -86,7 +86,7 @@
       "startLine": 80,
       "endLine": 87,
       "summary": "States the open conjecture: $\\text{LinearTreeRamsey}(G) \\land \\text{QuadraticCliqueRamsey}(G) \\implies \\text{IsRamseySizeLinear}(G)$. Formalized as an axiom since the problem is unresolved.",
-      "mathContext": "States the open conjecture: $\\text{LinearTreeRamsey}(G) \\land \\text{QuadraticCliqueRamsey}(G) \\implies \\text{IsRamseySizeLinear}(G)$. Formalized as an axiom since the problem is unresolved."
+      "mathContext": "Axiomatized: States the open conjecture: $\\text{LinearTreeRamsey}(G) \\land \\text{QuadraticCliqueRamsey}(G) \\implies \\text{IsRamseySizeLinear}(G)$. Formalized as an axiom since the problem is unresolved."
     }
   ],
   "overview": {

@@ -83,7 +83,7 @@
       "summary": "TriangleFree, diameter, HasDiameter, HasDiameterAtMost",
       "startLine": 35,
       "endLine": 63,
-      "mathContext": "TriangleFree, diameter, HasDiameter, HasDiameterAtMost"
+      "mathContext": "Mathematical content: TriangleFree, diameter, HasDiameter, HasDiameterAtMost"
     },
     {
       "id": "edge-addition",
@@ -91,7 +91,7 @@
       "summary": "addEdges with proofs, h and h_exact definitions",
       "startLine": 64,
       "endLine": 98,
-      "mathContext": "addEdges with proofs, h and h_exact definitions"
+      "mathContext": "Formal definition: addEdges with proofs, h and h_exact definitions"
     },
     {
       "id": "known-results",
@@ -99,7 +99,7 @@
       "summary": "h₃ ≤ n, h₃ ≥ n-c, h₅ ≤ (n-1)/2",
       "startLine": 99,
       "endLine": 127,
-      "mathContext": "h₃ ≤ n, h₃ ≥ n-c, h₅ ≤ (n-1)/2"
+      "mathContext": "h₃ $\\leq$ n, h₃ $\\geq$ n-c, h₅ $\\leq$ (n-1)/2"
     },
     {
       "id": "open-question",
@@ -107,7 +107,7 @@
       "summary": "erdos_619_question, erdos_619_upper_bound_form",
       "startLine": 128,
       "endLine": 150,
-      "mathContext": "erdos_619_question, erdos_619_upper_bound_form"
+      "mathContext": "Bound: erdos_619_question, erdos_619_upper_bound_form"
     },
     {
       "id": "without-constraint",
@@ -115,7 +115,7 @@
       "summary": "Alon-Gyárfás-Ruszinkó 2000: n/2 suffices",
       "startLine": 151,
       "endLine": 162,
-      "mathContext": "Alon-Gyárfás-Ruszinkó 2000: n/2 suffices"
+      "mathContext": "Mathematical content: Alon-Gyárfás-Ruszinkó 2000: n/2 suffices"
     },
     {
       "id": "examples",
@@ -123,7 +123,7 @@
       "summary": "pathGraph, path_is_triangle_free, path_diameter",
       "startLine": 163,
       "endLine": 180,
-      "mathContext": "pathGraph, path_is_triangle_free, path_diameter"
+      "mathContext": "Mathematical content: pathGraph, path_is_triangle_free, path_diameter"
     },
     {
       "id": "monotonicity",
@@ -131,7 +131,7 @@
       "summary": "h_monotone axiom: h_r ≥ h_{r+1}",
       "startLine": 181,
       "endLine": 190,
-      "mathContext": "h_monotone axiom: h_r ≥ h_{r+1}"
+      "mathContext": "h_monotone axiom: h_r $\\geq$ h_{r+1}"
     },
     {
       "id": "summary",
@@ -139,7 +139,7 @@
       "summary": "erdos_619 definition, erdos_619_partial_results theorem",
       "startLine": 191,
       "endLine": 227,
-      "mathContext": "erdos_619 definition, erdos_619_partial_results theorem"
+      "mathContext": "Formal definition: erdos_619 definition, erdos_619_partial_results theorem"
     }
   ],
   "conclusion": {

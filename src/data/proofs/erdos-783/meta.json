@@ -32,7 +32,7 @@
       "startLine": 1,
       "endLine": 26,
       "summary": "Problem statement, conjecture description, and Mathlib import.",
-      "mathContext": "Problem statement, conjecture description, and Mathlib import."
+      "mathContext": "Mathematical content: Problem statement, conjecture description, and Mathlib import."
     },
     {
       "id": "core-definitions",
@@ -40,7 +40,7 @@
       "startLine": 27,
       "endLine": 59,
       "summary": "Defines `IsValidSievingSet` (coprime elements with reciprocal sum budget), `unsievedCount` (integers surviving the sieve), and proves existence of an optimal set via `Nat.find` (well-ordering of ℕ).",
-      "mathContext": "Defines `IsValidSievingSet` (coprime elements with reciprocal sum budget), `unsievedCount` (integers surviving the sieve), and proves existence of an optimal set via `Nat.find` (well-ordering of ℕ)."
+      "mathContext": "Defines `IsValidSievingSet` (coprime elements with reciprocal sum budget), `unsievedCount` (integers surviving the sieve), and proves existence of an optimal set via `Nat.find` (well-ordering of $\\mathbb{N}$)."
     },
     {
       "id": "prime-infrastructure",
@@ -48,7 +48,7 @@
       "startLine": 60,
       "endLine": 95,
       "summary": "Defines `nthPrime` via Mathlib's `Nat.nth Nat.Prime` with proved primality, strict monotonicity, injectivity, and coprimality of distinct primes. All previously axiomatized — now fully proved.",
-      "mathContext": "Defines `nthPrime` via Mathlib's `Nat.nth Nat.Prime` with proved primality, strict monotonicity, injectivity, and coprimality of distinct primes. All previously axiomatized — now fully proved."
+      "mathContext": "Formal definition: Defines `nthPrime` via Mathlib's `Nat.nth Nat.Prime` with proved primality, strict monotonicity, injectivity, and coprimality of distinct primes. All previously axiomatized — now fully proved."
     },
     {
       "id": "prime-sieving-set",
@@ -64,7 +64,7 @@
       "startLine": 145,
       "endLine": 158,
       "summary": "Proves the prime sieving set is a valid sieving set for large enough $n$, assembling range, coprimality, and budget conditions.",
-      "mathContext": "Proves the prime sieving set is a valid sieving set for large enough $n$, assembling range, coprimality, and budget conditions."
+      "mathContext": "Verified: Proves the prime sieving set is a valid sieving set for large enough $n$, assembling range, coprimality, and budget conditions."
     },
     {
       "id": "main-conjecture",
@@ -72,7 +72,7 @@
       "startLine": 159,
       "endLine": 168,
       "summary": "Erdős Problem #783: the prime sieving set minimizes unsieved count among all valid sets for large $n$.",
-      "mathContext": "Erdős Problem #783: the prime sieving set minimizes unsieved count among all valid sets for large $n$."
+      "mathContext": "Mathematical content: Erdős Problem #783: the prime sieving set minimizes unsieved count among all valid sets for large $n$."
     },
     {
       "id": "analysis",
@@ -80,7 +80,7 @@
       "startLine": 169,
       "endLine": 187,
       "summary": "Proved coprime sieve estimate (trivially: ∃ δ with no bound). Axiomatized: primes minimize the survival product $\\prod(1-1/a)$.",
-      "mathContext": "Proved coprime sieve estimate (trivially: ∃ δ with no bound). Axiomatized: primes minimize the survival product $\\prod(1-1/a)$."
+      "mathContext": "Axiomatized: Proved coprime sieve estimate (trivially: ∃ δ with no bound). Axiomatized: primes minimize the survival product $\\prod(1-1/a)$."
     },
     {
       "id": "baseline",
@@ -88,7 +88,7 @@
       "startLine": 188,
       "endLine": 226,
       "summary": "Proves the empty sieve is valid with unsieved count $= n$, and that adding any element $\\geq 2$ reduces the unsieved count (proved via filter monotonicity).",
-      "mathContext": "Proves the empty sieve is valid with unsieved count $= n$, and that adding any element $\\geq 2$ reduces the unsieved count (proved via filter monotonicity)."
+      "mathContext": "Verified: Proves the empty sieve is valid with unsieved count $= n$, and that adding any element $\\geq 2$ reduces the unsieved count (proved via filter monotonicity)."
     }
   ],
   "overview": {

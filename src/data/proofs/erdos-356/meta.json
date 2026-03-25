@@ -90,7 +90,7 @@
       "startLine": 36,
       "endLine": 61,
       "summary": "Defines consecutiveSubsum, consecutiveSums Finset, and distinctConsecutiveSums counting function.",
-      "mathContext": "Defines consecutiveSubsum, consecutiveSums Finset, and distinctConsecutiveSums counting function."
+      "mathContext": "Formal definition: Defines consecutiveSubsum, consecutiveSums Finset, and distinctConsecutiveSums counting function."
     },
     {
       "id": "trivial-sequence",
@@ -98,7 +98,7 @@
       "startLine": 62,
       "endLine": 92,
       "summary": "trivialSequence {1,...,n}. Axioms: trivial_fails (O(n) distinct sums), trivial_collision_structure (sub-quadratic).",
-      "mathContext": "trivialSequence {1,...,n}. Axioms: trivial_fails (O(n) distinct sums), trivial_collision_structure (sub-quadratic)."
+      "mathContext": "trivialSequence {1,...,n}. Axioms: trivial_fails ($O(n)$ distinct sums), trivial_collision_structure (sub-quadratic)."
     },
     {
       "id": "increasing-sequences",
@@ -106,7 +106,7 @@
       "startLine": 93,
       "endLine": 115,
       "summary": "isStrictlyIncreasing, boundedBy, isValidSequence definitions.",
-      "mathContext": "isStrictlyIncreasing, boundedBy, isValidSequence definitions."
+      "mathContext": "Formal definition: isStrictlyIncreasing, boundedBy, isValidSequence definitions."
     },
     {
       "id": "main-conjecture",
@@ -114,7 +114,7 @@
       "startLine": 116,
       "endLine": 138,
       "summary": "erdosGrahamConjecture definition. beker_theorem axiom resolving it.",
-      "mathContext": "erdosGrahamConjecture definition. beker_theorem axiom resolving it."
+      "mathContext": "Formal definition: erdosGrahamConjecture definition. beker_theorem axiom resolving it."
     },
     {
       "id": "permutation-variant",
@@ -122,7 +122,7 @@
       "startLine": 139,
       "endLine": 169,
       "summary": "isPermutation, permutationConjecture, konieczny_theorem axiom.",
-      "mathContext": "isPermutation, permutationConjecture, konieczny_theorem axiom."
+      "mathContext": "Verified: isPermutation, permutationConjecture, konieczny_theorem axiom."
     },
     {
       "id": "constructions",
@@ -130,7 +130,7 @@
       "startLine": 170,
       "endLine": 184,
       "summary": "beker_construction_yields_quadratic: explicit constant exists with c < 1.",
-      "mathContext": "beker_construction_yields_quadratic: explicit constant exists with c < 1."
+      "mathContext": "Mathematical content: beker_construction_yields_quadratic: explicit constant exists with c < 1."
     },
     {
       "id": "related-problems",
@@ -138,7 +138,7 @@
       "startLine": 185,
       "endLine": 210,
       "summary": "Connections to Problems #34, #357. permutation_implies_increasing axiom. erdos357Question definition.",
-      "mathContext": "Connections to Problems #34, #357. permutation_implies_increasing axiom. erdos357Question definition."
+      "mathContext": "Formal definition: Connections to Problems #34, #357. permutation_implies_increasing axiom. erdos357Question definition."
     },
     {
       "id": "bounds",
@@ -146,7 +146,7 @@
       "startLine": 211,
       "endLine": 232,
       "summary": "upper_bound axiom (k(k+1)/2). lower_bound_exists axiom (cn² achievable).",
-      "mathContext": "upper_bound axiom (k(k+1)/2). lower_bound_exists axiom (cn² achievable)."
+      "mathContext": "Axiomatized: upper_bound axiom (k(k+1)/2). lower_bound_exists axiom (cn² achievable)."
     },
     {
       "id": "summary",
@@ -154,7 +154,7 @@
       "startLine": 233,
       "endLine": 263,
       "summary": "erdos_356_solved: combines beker_theorem and konieczny_theorem. erdos_356: main result.",
-      "mathContext": "erdos_356_solved: combines beker_theorem and konieczny_theorem. erdos_356: main result."
+      "mathContext": "Verified: erdos_356_solved: combines beker_theorem and konieczny_theorem. erdos_356: main result."
     }
   ],
   "conclusion": {

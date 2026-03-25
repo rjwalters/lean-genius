@@ -66,7 +66,7 @@
       "startLine": 1,
       "endLine": 21,
       "summary": "Module documentation describing the problem, Cantor's example, Erdős's conjectures, Kovač-Tao result, and the remaining open question. Imports Mathlib.",
-      "mathContext": "Module documentation describing the problem, Cantor's example, Erdős's conjectures, Kovač-Tao result, and the remaining open question. Imports Mathlib."
+      "mathContext": "Mathematical content: Module documentation describing the problem, Cantor's example, Erdős's conjectures, Kovač-Tao result, and the remaining open question. Imports Mathlib."
     },
     {
       "id": "valid-sequences",
@@ -74,7 +74,7 @@
       "startLine": 22,
       "endLine": 47,
       "summary": "Core definitions: positive integer sequences, strict monotonicity, reciprocal sum ∑ 1/aₙ, shifted reciprocal sum ∑ 1/(aₙ-1), and the combined rationality predicate hasBothRationalSums.",
-      "mathContext": "Core definitions: positive integer sequences, strict monotonicity, reciprocal sum ∑ 1/aₙ, shifted reciprocal sum ∑ 1/(aₙ-1), and the combined rationality predicate hasBothRationalSums."
+      "mathContext": "Formal definition: Core definitions: positive integer sequences, strict monotonicity, reciprocal sum ∑ 1/aₙ, shifted reciprocal sum ∑ 1/(aₙ-1), and the combined rationality predicate hasBothRationalSums."
     },
     {
       "id": "cantor-example",
@@ -82,7 +82,7 @@
       "startLine": 48,
       "endLine": 71,
       "summary": "Defines Cantor's sequence (triangular numbers n(n+1)/2), proves strict monotonicity, and states rationality of both sums as axioms.",
-      "mathContext": "Defines Cantor's sequence (triangular numbers n(n+1)/2), proves strict monotonicity, and states rationality of both sums as axioms."
+      "mathContext": "Formal definition: Defines Cantor's sequence (triangular numbers n(n+1)/2), proves strict monotonicity, and states rationality of both sums as axioms."
     },
     {
       "id": "growth-rates",
@@ -90,7 +90,7 @@
       "startLine": 72,
       "endLine": 90,
       "summary": "Three growth measures: singleExpGrowth (aₙ^(1/n)), doubleExpGrowth (aₙ^(1/2ⁿ)), and genExpGrowth (aₙ^(1/βⁿ)) for parameterized β > 1.",
-      "mathContext": "Three growth measures: singleExpGrowth (aₙ^(1/n)), doubleExpGrowth (aₙ^(1/2ⁿ)), and genExpGrowth (aₙ^(1/βⁿ)) for parameterized β > 1."
+      "mathContext": "Mathematical content: Three growth measures: singleExpGrowth (aₙ^(1/n)), doubleExpGrowth (aₙ^(1/2ⁿ)), and genExpGrowth (aₙ^(1/βⁿ)) for parameterized β > 1."
     },
     {
       "id": "erdos-conjectures",
@@ -98,7 +98,7 @@
       "startLine": 91,
       "endLine": 110,
       "summary": "Two conjectures: (1) aₙ^(1/n) → ∞ is achievable (proved by Kovač-Tao), (2) aₙ^(1/2ⁿ) → 1 is necessary (still open).",
-      "mathContext": "Two conjectures: (1) aₙ^(1/n) → ∞ is achievable (proved by Kovač-Tao), (2) aₙ^(1/2ⁿ) → 1 is necessary (still open)."
+      "mathContext": "Two conjectures: (1) aₙ^(1/n) $\\to$ ∞ is achievable (proved by Kovač-Tao), (2) aₙ^(1/2ⁿ) $\\to$ 1 is necessary (still open)."
     },
     {
       "id": "kovac-tao",
@@ -106,7 +106,7 @@
       "startLine": 111,
       "endLine": 132,
       "summary": "Kovač-Tao theorem: ∃ β > 1 with aₙ^(1/βⁿ) → ∞ achievable. The remaining open question: can β = 2 work?",
-      "mathContext": "Kovač-Tao theorem: ∃ β > 1 with aₙ^(1/βⁿ) → ∞ achievable. The remaining open question: can β = 2 work?"
+      "mathContext": "Kovač-Tao theorem: ∃ β > 1 with aₙ^(1/βⁿ) $\\to$ ∞ achievable. The remaining open question: can β = 2 work?"
     },
     {
       "id": "irrationality",
@@ -114,7 +114,7 @@
       "startLine": 133,
       "endLine": 145,
       "summary": "Folklore result: if aₙ^(1/2ⁿ) → c > 1, then ∑ 1/aₙ is irrational. This explains why β = 2 might be the natural barrier.",
-      "mathContext": "Folklore result: if aₙ^(1/2ⁿ) → c > 1, then ∑ 1/aₙ is irrational. This explains why β = 2 might be the natural barrier."
+      "mathContext": "Folklore result: if aₙ^(1/2ⁿ) $\\to$ c > 1, then ∑ 1/aₙ is irrational. This explains why β = 2 might be the natural barrier."
     },
     {
       "id": "valid-set-poly",
@@ -122,7 +122,7 @@
       "startLine": 146,
       "endLine": 173,
       "summary": "Defines the set of valid sequences and states that higher-degree polynomial families (e.g., n³+6n²+5n with shift 12) can satisfy the constraint.",
-      "mathContext": "Defines the set of valid sequences and states that higher-degree polynomial families (e.g., n³+6n²+5n with shift 12) can satisfy the constraint."
+      "mathContext": "Formal definition: Defines the set of valid sequences and states that higher-degree polynomial families (e.g., n³+6n²+5n with shift 12) can satisfy the constraint."
     },
     {
       "id": "main-open",
@@ -130,7 +130,7 @@
       "startLine": 174,
       "endLine": 205,
       "summary": "The formal statement of Erdős #265 as a disjunction: either ∃ valid sequence with limsup aₙ^(1/2ⁿ) > 1, or all valid sequences have limsup ≤ 1.",
-      "mathContext": "The formal statement of Erdős #265 as a disjunction: either ∃ valid sequence with limsup aₙ^(1/2ⁿ) > 1, or all valid sequences have limsup ≤ 1."
+      "mathContext": "The formal statement of Erdős #265 as a disjunction: either ∃ valid sequence with limsup aₙ^(1/2ⁿ) > 1, or all valid sequences have limsup $\\leq$ 1."
     }
   ],
   "conclusion": {

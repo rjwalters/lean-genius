@@ -58,7 +58,7 @@
       "startLine": 34,
       "endLine": 44,
       "summary": "Imports Mathlib's `SimpleGraph`, `Cardinal`, and `Set.Countable`. Opens `Cardinal` and `SimpleGraph` namespaces. Sets up universe-polymorphic vertex type variable.",
-      "mathContext": "Imports Mathlib's `SimpleGraph`, `Cardinal`, and `Set.Countable`. Opens `Cardinal` and `SimpleGraph` namespaces. Sets up universe-polymorphic vertex type variable."
+      "mathContext": "Mathematical content: Imports Mathlib's `SimpleGraph`, `Cardinal`, and `Set.Countable`. Opens `Cardinal` and `SimpleGraph` namespaces. Sets up universe-polymorphic vertex type variable."
     },
     {
       "id": "graph-infrastructure",
@@ -82,7 +82,7 @@
       "startLine": 94,
       "endLine": 105,
       "summary": "Axiomatizes `erdos_1068`: for all $G$ with $\\chi(G) \\geq \\aleph_1$, there exists a countable $S$ with $G[S]$ infinitely connected. This is the central open problem.",
-      "mathContext": "Axiomatizes `erdos_1068`: for all $G$ with $\\chi(G) \\geq \\aleph_1$, there exists a countable $S$ with $G[S]$ infinitely connected. This is the central open problem."
+      "mathContext": "Axiomatized: Axiomatizes `erdos_1068`: for all $G$ with $\\chi(G) \\geq \\aleph_1$, there exists a countable $S$ with $G[S]$ infinitely connected. This is the central open problem."
     },
     {
       "id": "known-results",
@@ -106,7 +106,7 @@
       "startLine": 158,
       "endLine": 180,
       "summary": "Two fully proved theorems: $\\infty$-connected implies path existence between any two vertices, and the same for induced subgraphs. These are the only non-axiomatized results in the file.",
-      "mathContext": "Two fully proved theorems: $\\infty$-connected implies path existence between any two vertices, and the same for induced subgraphs. These are the only non-axiomatized results in the file."
+      "mathContext": "Verified: Two fully proved theorems: $\\infty$-connected implies path existence between any two vertices, and the same for induced subgraphs. These are the only non-axiomatized results in the file."
     },
     {
       "id": "summary",

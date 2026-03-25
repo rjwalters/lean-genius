@@ -39,7 +39,7 @@
       "startLine": 17,
       "endLine": 20,
       "summary": "Imports `Analysis.InnerProductSpace.Basic` for Euclidean `dist`, `Finset.Card` for counting, `Data.Real.Basic`, and Mathlib tactics.",
-      "mathContext": "Imports `Analysis.InnerProductSpace.Basic` for Euclidean `dist`, `Finset.Card` for counting, `Data.Real.Basic`, and Mathlib tactics."
+      "mathContext": "Mathematical content: Imports `Analysis.InnerProductSpace.Basic` for Euclidean `dist`, `Finset.Card` for counting, `Data.Real.Basic`, and Mathlib tactics."
     },
     {
       "id": "point-config",
@@ -47,7 +47,7 @@
       "startLine": 22,
       "endLine": 33,
       "summary": "Defines `PointConfig n = Fin n → ℝ × ℝ` and `NoFourConcyclic P`: no four points lie on a common circle, formalized via nonexistence of a center $c$ and radius $r > 0$ equidistant to all four.",
-      "mathContext": "Defines `PointConfig n = Fin n → ℝ × ℝ` and `NoFourConcyclic P`: no four points lie on a common circle, formalized via nonexistence of a center $c$ and radius $r > 0$ equidistant to all four."
+      "mathContext": "Defines `PointConfig n = Fin n $\\to$ $\\mathbb{R}$ × $\\mathbb{R}$` and `NoFourConcyclic P`: no four points lie on a common circle, formalized via nonexistence of a center $c$ and radius $r > 0$ equidistant to all four."
     },
     {
       "id": "distance-counting",
@@ -55,7 +55,7 @@
       "startLine": 35,
       "endLine": 41,
       "summary": "Defines `distinctDistances P i` as $|\\{\\mathrm{dist}(x_i, x_j) : j \\ne i\\}|$ via `Finset.image` and `maxDistinctDistances P` as $\\max_i D(x_i)$ via `Finset.sup'`.",
-      "mathContext": "Defines `distinctDistances P i` as $|\\{\\mathrm{dist}(x_i, x_j) : j \\ne i\\}|$ via `Finset.image` and `maxDistinctDistances P` as $\\max_i D(x_i)$ via `Finset.sup'`."
+      "mathContext": "Formal definition: Defines `distinctDistances P i` as $|\\{\\mathrm{dist}(x_i, x_j) : j \\ne i\\}|$ via `Finset.image` and `maxDistinctDistances P` as $\\max_i D(x_i)$ via `Finset.sup'`."
     },
     {
       "id": "known-bound",
@@ -63,7 +63,7 @@
       "startLine": 43,
       "endLine": 49,
       "summary": "Axiomatizes the known bound: every point has $\\ge (n-1)/3$ distinct distances under no-four-concyclic, by pigeonhole with multiplicity $\\le 3$.",
-      "mathContext": "Axiomatizes the known bound: every point has $\\ge (n-1)/3$ distinct distances under no-four-concyclic, by pigeonhole with multiplicity $\\le 3$."
+      "mathContext": "Axiomatized: Axiomatizes the known bound: every point has $\\ge (n-1)/3$ distinct distances under no-four-concyclic, by pigeonhole with multiplicity $\\le 3$."
     },
     {
       "id": "main-conjecture",
@@ -71,7 +71,7 @@
       "startLine": 51,
       "endLine": 60,
       "summary": "Axiomatizes Erdős Problem #654: $\\forall \\varepsilon > 0,\\; \\exists N,\\; \\forall n \\ge N$, any no-four-concyclic configuration has some point with $\\ge (1-\\varepsilon)n$ distinct distances.",
-      "mathContext": "Axiomatizes Erdős Problem #654: $\\forall \\varepsilon > 0,\\; \\exists N,\\; \\forall n \\ge N$, any no-four-concyclic configuration has some point with $\\ge (1-\\varepsilon)n$ distinct distances."
+      "mathContext": "Axiomatized: Axiomatizes Erdős Problem #654: $\\forall \\varepsilon > 0,\\; \\exists N,\\; \\forall n \\ge N$, any no-four-concyclic configuration has some point with $\\ge (1-\\varepsilon)n$ distinct distances."
     },
     {
       "id": "general-position",
@@ -79,7 +79,7 @@
       "startLine": 62,
       "endLine": 78,
       "summary": "Defines `NoThreeCollinear P` (no three points on a line) and axiomatizes the Erdős-Pach (1990) weaker conjecture: some point has $\\ge (1/3 + c)n$ distinct distances under general position.",
-      "mathContext": "Defines `NoThreeCollinear P` (no three points on a line) and axiomatizes the Erdős-Pach (1990) weaker conjecture: some point has $\\ge (1/3 + c)n$ distinct distances under general position."
+      "mathContext": "Formal definition: Defines `NoThreeCollinear P` (no three points on a line) and axiomatizes the Erdős-Pach (1990) weaker conjecture: some point has $\\ge (1/3 + c)n$ distinct distances under general position."
     },
     {
       "id": "guth-katz",
@@ -87,7 +87,7 @@
       "startLine": 80,
       "endLine": 89,
       "summary": "Axiomatizes the Guth-Katz (2015) result: $\\Omega(n / \\log n)$ total distinct distances for any $n$-point set, providing context for the stronger per-point question of Problem #654.",
-      "mathContext": "Axiomatizes the Guth-Katz (2015) result: $\\Omega(n / \\log n)$ total distinct distances for any $n$-point set, providing context for the stronger per-point question of Problem #654."
+      "mathContext": "Axiomatizes the Guth-Katz (2015) result: $\\Omega(n / \\$\\log n$)$ total distinct distances for any $n$-point set, providing context for the stronger per-point question of Problem #654."
     },
     {
       "id": "circle-bound",
@@ -95,7 +95,7 @@
       "startLine": 91,
       "endLine": 97,
       "summary": "Axiomatizes that at most 3 points share any distance $d > 0$ from $x_i$ under no-four-concyclic: the circle of radius $d$ centered at $x_i$ meets at most 3 configuration points.",
-      "mathContext": "Axiomatizes that at most 3 points share any distance $d > 0$ from $x_i$ under no-four-concyclic: the circle of radius $d$ centered at $x_i$ meets at most 3 configuration points."
+      "mathContext": "Axiomatized: Axiomatizes that at most 3 points share any distance $d > 0$ from $x_i$ under no-four-concyclic: the circle of radius $d$ centered at $x_i$ meets at most 3 configuration points."
     }
   ],
   "overview": {

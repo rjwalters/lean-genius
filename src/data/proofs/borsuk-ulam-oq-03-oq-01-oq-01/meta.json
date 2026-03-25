@@ -85,7 +85,7 @@
       "startLine": 67,
       "endLine": 82,
       "summary": "Proves by exhaustive case analysis (4×4 = 16 cases) that the only complementary pairs are (1,-1), (-1,1), (2,-2), (-2,2). This structural result constrains later combinatorial arguments.",
-      "mathContext": "Proves by exhaustive case analysis (4×4 = 16 cases) that the only complementary pairs are (1,-1), (-1,1), (2,-2), (-2,2). This structural result constrains later combinatorial arguments."
+      "mathContext": "Verified: Proves by exhaustive case analysis (4×4 = 16 cases) that the only complementary pairs are (1,-1), (-1,1), (2,-2), (-2,2). This structural result constrains later combinatorial arguments."
     },
     {
       "id": "complex",
@@ -101,7 +101,7 @@
       "startLine": 108,
       "endLine": 118,
       "summary": "Introduces HasBoundary typeclass abstracting the boundary/interior distinction for triangles. The decidability instance enables filtering and counting in finite computations.",
-      "mathContext": "Introduces HasBoundary typeclass abstracting the boundary/interior distinction for triangles. The decidability instance enables filtering and counting in finite computations."
+      "mathContext": "Bound: Introduces HasBoundary typeclass abstracting the boundary/interior distinction for triangles. The decidability instance enables filtering and counting in finite computations."
     },
     {
       "id": "parity",
@@ -117,7 +117,7 @@
       "startLine": 164,
       "endLine": 187,
       "summary": "Combines parity principle with 1D Tucker boundary result to obtain the full 2D Tucker lemma. The proof destructs the existential and packages vertices with their complementary label property.",
-      "mathContext": "Combines parity principle with 1D Tucker boundary result to obtain the full 2D Tucker lemma. The proof destructs the existential and packages vertices with their complementary label property."
+      "mathContext": "Verified: Combines parity principle with 1D Tucker boundary result to obtain the full 2D Tucker lemma. The proof destructs the existential and packages vertices with their complementary label property."
     },
     {
       "id": "algorithm",

@@ -70,7 +70,7 @@
       "summary": "Imports `SimpleGraph.Basic`, `SimpleGraph.Clique`, `Data.Real.Sqrt`, and `Tactic`. Opens `SimpleGraph`, `Finset`, `Real` namespaces with universe-polymorphic vertex type $V$.",
       "startLine": 21,
       "endLine": 31,
-      "mathContext": "Imports `SimpleGraph.Basic`, `SimpleGraph.Clique`, `Data.Real.Sqrt`, and `Tactic`. Opens `SimpleGraph`, `Finset`, `Real` namespaces with universe-polymorphic vertex type $V$."
+      "mathContext": "Mathematical content: Imports `SimpleGraph.Basic`, `SimpleGraph.Clique`, `Data.Real.Sqrt`, and `Tactic`. Opens `SimpleGraph`, `Finset`, `Real` namespaces with universe-polymorphic vertex type $V$."
     },
     {
       "id": "definitions",
@@ -86,7 +86,7 @@
       "summary": "States Erdős's conjecture: $|E(G)| > n^2/4 \\Rightarrow \\text{edgesInC5}(G) \\geq (2/9)n^2$. Proves `original_conjecture_false : \\neg\\text{OriginalConjecture}$ — the conjecture is disproved.",
       "startLine": 51,
       "endLine": 63,
-      "mathContext": "States Erdős's conjecture: $|E(G)| > n^2/4 \\Rightarrow \\text{edgesInC5}(G) \\geq (2/9)n^2$. Proves `original_conjecture_false : \\neg\\text{OriginalConjecture}$ — the conjecture is disproved."
+      "mathContext": "States Erdős's conjecture: $|E(G)| > $n^{2}$/4 \\Rightarrow \\text{edgesInC5}(G) \\geq (2/9)$n^{2}$$. Proves `original_conjecture_false : \\neg\\text{OriginalConjecture}$ — the conjecture is disproved."
     },
     {
       "id": "constant",
@@ -94,7 +94,7 @@
       "summary": "Defines $c = (2 + \\sqrt{2})/16 \\approx 0.2134$ as a noncomputable real. Proves $0.213 < c < 0.214$ (approximation) and $c < 2/9$ (explaining the conjecture's failure).",
       "startLine": 64,
       "endLine": 76,
-      "mathContext": "Defines $c = (2 + \\sqrt{2})/16 \\approx 0.2134$ as a noncomputable real. Proves $0.213 < c < 0.214$ (approximation) and $c < 2/9$ (explaining the conjecture's failure)."
+      "mathContext": "Formal definition: Defines $c = (2 + \\sqrt{2})/16 \\approx 0.2134$ as a noncomputable real. Proves $0.213 < c < 0.214$ (approximation) and $c < 2/9$ (explaining the conjecture's failure)."
     },
     {
       "id": "furedi-maleki",
@@ -134,7 +134,7 @@
       "summary": "Defines `turanEdges(n) = \\lfloor n/2 \\rfloor \\cdot \\lceil n/2 \\rceil$. Proves the Turán graph $T(n, 2)$ is bipartite with $\\text{edgesInC5} = 0$, showing the threshold $n^2/4$ is **sharp**.",
       "startLine": 151,
       "endLine": 173,
-      "mathContext": "Defines `turanEdges(n) = \\lfloor n/2 \\rfloor \\cdot \\lceil n/2 \\rceil$. Proves the Turán graph $T(n, 2)$ is bipartite with $\\text{edgesInC5} = 0$, showing the threshold $n^2/4$ is **sharp**."
+      "mathContext": "Defines `turanEdges(n) = \\lfloor n/2 \\rfloor \\cdot \\lceil n/2 \\rceil$. Proves the Turán graph $T(n, 2)$ is bipartite with $\\text{edgesInC5} = 0$, showing the threshold $$n^{2}$/4$ is **sharp**."
     },
     {
       "id": "small",
@@ -142,7 +142,7 @@
       "summary": "Concrete verification: $C_5$ itself has 5/5 edges in $C_5$; for $n = 6$ with $> 9$ edges, $\\text{edgesInC5} \\geq 5$. Illustrates supersaturation at small scale.",
       "startLine": 174,
       "endLine": 187,
-      "mathContext": "Concrete verification: $C_5$ itself has 5/5 edges in $C_5$; for $n = 6$ with $> 9$ edges, $\\text{edgesInC5} \\geq 5$. Illustrates supersaturation at small scale."
+      "mathContext": "Mathematical content: Concrete verification: $C_5$ itself has 5/5 edges in $C_5$; for $n = 6$ with $> 9$ edges, $\\text{edgesInC5} \\geq 5$. Illustrates supersaturation at small scale."
     },
     {
       "id": "construction",
@@ -150,7 +150,7 @@
       "summary": "Defines `FurediMalekiGraph` as an algebraic blow-up construction. Proves `construction_optimal`: for $n \\geq 100$, achieves $|E| > n^2/4$ with $\\text{edgesInC5} \\leq cn^2 + n$.",
       "startLine": 188,
       "endLine": 218,
-      "mathContext": "Defines `FurediMalekiGraph` as an algebraic blow-up construction. Proves `construction_optimal`: for $n \\geq 100$, achieves $|E| > n^2/4$ with $\\text{edgesInC5} \\leq cn^2 + n$."
+      "mathContext": "Defines `FurediMalekiGraph` as an algebraic blow-up construction. Proves `construction_optimal`: for $n \\geq 100$, achieves $|E| > $n^{2}$/4$ with $\\text{edgesInC5} \\leq cn^2 + n$."
     },
     {
       "id": "counts",
@@ -158,7 +158,7 @@
       "summary": "Defines `countC5` (unlabeled $C_5$ count, dividing by 10). States `many_c5_subgraphs`: dense graphs have $\\Omega(n^5)$ copies of $C_5$. Includes stability placeholder for near-extremal structure.",
       "startLine": 219,
       "endLine": 270,
-      "mathContext": "Defines `countC5` (unlabeled $C_5$ count, dividing by 10). States `many_c5_subgraphs`: dense graphs have $\\Omega(n^5)$ copies of $C_5$. Includes stability placeholder for near-extremal structure."
+      "mathContext": "Defines `countC5` (unlabeled $C_5$ count, dividing by 10). States `many_c5_subgraphs`: dense graphs have $\\Omega($n^{5}$)$ copies of $C_5$. Includes stability placeholder for near-extremal structure."
     }
   ],
   "overview": {

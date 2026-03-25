@@ -58,7 +58,7 @@
       "startLine": 33,
       "endLine": 46,
       "summary": "Defines ulamSeq as ℕ → ℕ with initial values a(0)=1, a(1)=2. Axiom: strict monotonicity.",
-      "mathContext": "Defines ulamSeq as ℕ → ℕ with initial values a(0)=1, a(1)=2. Axiom: strict monotonicity."
+      "mathContext": "Defines ulamSeq as $\\mathbb{N}$ $\\to$ $\\mathbb{N}$ with initial values a(0)=1, a(1)=2. Axiom: strict monotonicity."
     },
     {
       "id": "representation",
@@ -66,7 +66,7 @@
       "startLine": 47,
       "endLine": 63,
       "summary": "Defines representationCount. Axioms: ulamSeq_unique_representation (exactly 1 representation) and ulamSeq_minimal (no smaller candidate).",
-      "mathContext": "Defines representationCount. Axioms: ulamSeq_unique_representation (exactly 1 representation) and ulamSeq_minimal (no smaller candidate)."
+      "mathContext": "Formal definition: Defines representationCount. Axioms: ulamSeq_unique_representation (exactly 1 representation) and ulamSeq_minimal (no smaller candidate)."
     },
     {
       "id": "initial-values",
@@ -74,7 +74,7 @@
       "startLine": 64,
       "endLine": 79,
       "summary": "Axiom ulamSeq_values (first 12 terms). Axioms: five_not_ulam (5 excluded, two representations), six_is_ulam.",
-      "mathContext": "Axiom ulamSeq_values (first 12 terms). Axioms: five_not_ulam (5 excluded, two representations), six_is_ulam."
+      "mathContext": "Axiomatized: Axiom ulamSeq_values (first 12 terms). Axioms: five_not_ulam (5 excluded, two representations), six_is_ulam."
     },
     {
       "id": "twin-pairs",
@@ -82,7 +82,7 @@
       "startLine": 80,
       "endLine": 96,
       "summary": "Defines IsUlamTwin(n): a(n+1) = a(n) + 2. Defines twinIndices as the set of such n. Axiom twin_examples.",
-      "mathContext": "Defines IsUlamTwin(n): a(n+1) = a(n) + 2. Defines twinIndices as the set of such n. Axiom twin_examples."
+      "mathContext": "Formal definition: Defines IsUlamTwin(n): a(n+1) = a(n) + 2. Defines twinIndices as the set of such n. Axiom twin_examples."
     },
     {
       "id": "conjecture",
@@ -90,7 +90,7 @@
       "startLine": 97,
       "endLine": 108,
       "summary": "Defines ErdosConjecture342: Set.Infinite twinIndices. Axiom erdos_342.",
-      "mathContext": "Defines ErdosConjecture342: Set.Infinite twinIndices. Axiom erdos_342."
+      "mathContext": "Formal definition: Defines ErdosConjecture342: Set.Infinite twinIndices. Axiom erdos_342."
     },
     {
       "id": "density",
@@ -98,7 +98,7 @@
       "startLine": 109,
       "endLine": 123,
       "summary": "Defines ulamCount and DensityZero via Filter.Tendsto. Axiom: density question is undecided.",
-      "mathContext": "Defines ulamCount and DensityZero via Filter.Tendsto. Axiom: density question is undecided."
+      "mathContext": "Formal definition: Defines ulamCount and DensityZero via Filter.Tendsto. Axiom: density question is undecided."
     },
     {
       "id": "growth",
@@ -106,7 +106,7 @@
       "startLine": 124,
       "endLine": 135,
       "summary": "Axioms: ulamSeq_growth (linear growth with constant C) and ulamSeq_growth_constant (C ≈ 13.5).",
-      "mathContext": "Axioms: ulamSeq_growth (linear growth with constant C) and ulamSeq_growth_constant (C ≈ 13.5)."
+      "mathContext": "Axiomatized: Axioms: ulamSeq_growth (linear growth with constant C) and ulamSeq_growth_constant (C ≈ 13.5)."
     },
     {
       "id": "additive-structure",
@@ -114,7 +114,7 @@
       "startLine": 136,
       "endLine": 153,
       "summary": "Defines ulamSet, uniqueSumset. Axiom ulam_characterization: members are unique sums exceeding all previous terms.",
-      "mathContext": "Defines ulamSet, uniqueSumset. Axiom ulam_characterization: members are unique sums exceeding all previous terms."
+      "mathContext": "Formal definition: Defines ulamSet, uniqueSumset. Axiom ulam_characterization: members are unique sums exceeding all previous terms."
     },
     {
       "id": "summary",
@@ -122,7 +122,7 @@
       "startLine": 154,
       "endLine": 180,
       "summary": "Proved: erdos_342_statement (simp), erdos_342_status (trivial). Problem remains OPEN.",
-      "mathContext": "Proved: erdos_342_statement (simp), erdos_342_status (trivial). Problem remains OPEN."
+      "mathContext": "Mathematical content: Proved: erdos_342_statement (simp), erdos_342_status (trivial). Problem remains OPEN."
     }
   ],
   "conclusion": {

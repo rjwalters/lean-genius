@@ -84,7 +84,7 @@
       "startLine": 41,
       "endLine": 58,
       "summary": "Definitions of sumset A+A and restricted sumset (A+A) ∩ [1,N].",
-      "mathContext": "Definitions of sumset A+A and restricted sumset (A+A) ∩ [1,N]."
+      "mathContext": "Formal definition: Definitions of sumset A+A and restricted sumset (A+A) ∩ [1,N]."
     },
     {
       "id": "f-definition",
@@ -92,7 +92,7 @@
       "startLine": 59,
       "endLine": 98,
       "summary": "Definition of admissible sets (A ⊆ [1,N] with |A| = √N) and f(N) as the maximum restricted sumset size.",
-      "mathContext": "Definition of admissible sets (A ⊆ [1,N] with |A| = √N) and f(N) as the maximum restricted sumset size."
+      "mathContext": "Formal definition: Definition of admissible sets (A ⊆ [1,N] with |A| = √N) and f(N) as the maximum restricted sumset size."
     },
     {
       "id": "trivial-bounds",
@@ -100,7 +100,7 @@
       "startLine": 99,
       "endLine": 116,
       "summary": "Basic bounds: f(N) ≤ N and f(N) ≥ √N.",
-      "mathContext": "Basic bounds: f(N) ≤ N and f(N) ≥ √N."
+      "mathContext": "Basic bounds: f(N) $\\leq$ N and f(N) $\\geq$ √N."
     },
     {
       "id": "erdos-freud-bounds",
@@ -108,7 +108,7 @@
       "startLine": 117,
       "endLine": 169,
       "summary": "The main result: (3/8 - o(1))N ≤ f(N) ≤ (1/2 + o(1))N from the 1991 paper.",
-      "mathContext": "The main result: (3/8 - o(1))N ≤ f(N) ≤ (1/2 + o(1))N from the 1991 paper."
+      "mathContext": "The main result: (3/8 - o(1))N $\\leq$ f(N) $\\leq$ (1/2 + o(1))N from the 1991 paper."
     },
     {
       "id": "construction-arguments",
@@ -116,7 +116,7 @@
       "startLine": 170,
       "endLine": 199,
       "summary": "Axiomatized construction achieving 3N/8 and counting argument for upper bound N/2.",
-      "mathContext": "Axiomatized construction achieving 3N/8 and counting argument for upper bound N/2."
+      "mathContext": "Axiomatized: Axiomatized construction achieving 3N/8 and counting argument for upper bound N/2."
     },
     {
       "id": "quasi-sidon",
@@ -124,7 +124,7 @@
       "startLine": 200,
       "endLine": 224,
       "summary": "Link to Problem #840 on quasi-Sidon sets with axiomatized sumset lower bound.",
-      "mathContext": "Link to Problem #840 on quasi-Sidon sets with axiomatized sumset lower bound."
+      "mathContext": "Axiomatized: Link to Problem #840 on quasi-Sidon sets with axiomatized sumset lower bound."
     },
     {
       "id": "extremal-examples",
@@ -132,7 +132,7 @@
       "startLine": 225,
       "endLine": 237,
       "summary": "Arithmetic progression sumset showing APs are suboptimal.",
-      "mathContext": "Arithmetic progression sumset showing APs are suboptimal."
+      "mathContext": "Mathematical content: Arithmetic progression sumset showing APs are suboptimal."
     },
     {
       "id": "the-gap",
@@ -140,7 +140,7 @@
       "startLine": 238,
       "endLine": 254,
       "summary": "The open question: the gap of N/8 between the known bounds.",
-      "mathContext": "The open question: the gap of N/8 between the known bounds."
+      "mathContext": "Bound: The open question: the gap of N/8 between the known bounds."
     },
     {
       "id": "summary",
@@ -148,7 +148,7 @@
       "startLine": 255,
       "endLine": 289,
       "summary": "Complete summary of the OPEN problem with combined bounds theorem.",
-      "mathContext": "Complete summary of the OPEN problem with combined bounds theorem."
+      "mathContext": "Verified: Complete summary of the OPEN problem with combined bounds theorem."
     }
   ],
   "conclusion": {

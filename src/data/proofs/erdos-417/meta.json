@@ -81,7 +81,7 @@
       "summary": "Imports `Mathlib.Data.Nat.Totient` for $\\varphi$, `Finset` for finite counting, and `Filter` for asymptotic limits. Opens `Erdos417` namespace.",
       "startLine": 36,
       "endLine": 44,
-      "mathContext": "Imports `Mathlib.Data.Nat.Totient` for $\\varphi$, `Finset` for finite counting, and `Filter` for asymptotic limits. Opens `Erdos417` namespace."
+      "mathContext": "Mathematical content: Imports `Mathlib.Data.Nat.Totient` for $\\varphi$, `Finset` for finite counting, and `Filter` for asymptotic limits. Opens `Erdos417` namespace."
     },
     {
       "id": "definitions",
@@ -105,7 +105,7 @@
       "summary": "States three OPEN questions using `Filter.Tendsto`: (1) $\\lim V(x)/V'(x)$ exists, (2) $V(x)/V'(x) > 1$ eventually, (3) $V(x)/V'(x) \\to \\infty$ (Erdős's conjecture). All axiomatized.",
       "startLine": 98,
       "endLine": 127,
-      "mathContext": "States three OPEN questions using `Filter.Tendsto`: (1) $\\lim V(x)/V'(x)$ exists, (2) $V(x)/V'(x) > 1$ eventually, (3) $V(x)/V'(x) \\to \\infty$ (Erdős's conjecture). All axiomatized."
+      "mathContext": "Axiomatized: States three OPEN questions using `Filter.Tendsto`: (1) $\\lim V(x)/V'(x)$ exists, (2) $V(x)/V'(x) > 1$ eventually, (3) $V(x)/V'(x) \\to \\infty$ (Erdős's conjecture). All axiomatized."
     },
     {
       "id": "intuition",
@@ -113,7 +113,7 @@
       "summary": "Explains why $V(x) \\gg V'(x)$: $\\varphi$ can be very small relative to its input (e.g., $\\varphi(2^{10}) = 512$), so totient values $\\le x$ arise from inputs $m \\gg x$.",
       "startLine": 128,
       "endLine": 150,
-      "mathContext": "Explains why $V(x) \\gg V'(x)$: $\\varphi$ can be very small relative to its input (e.g., $\\varphi(2^{10}) = 512$), so totient values $\\le x$ arise from inputs $m \\gg x$."
+      "mathContext": "Explains why $V(x) \\gg V'(x)$: $\\varphi$ can be very small relative to its input (e.g., $\\varphi($$2^{{10}$}$) = 512$), so totient values $\\le x$ arise from inputs $m \\gg x$."
     },
     {
       "id": "totient-structure",
@@ -121,7 +121,7 @@
       "summary": "Proves `pow_two_totient_value`: $\\varphi(2^{k+1}) = 2^k$ (sorry), and `prime_pred_totient_value`: $\\varphi(p) = p - 1$ for prime $p$ (complete proof via `totient_prime`).",
       "startLine": 151,
       "endLine": 165,
-      "mathContext": "Proves `pow_two_totient_value`: $\\varphi(2^{k+1}) = 2^k$ (sorry), and `prime_pred_totient_value`: $\\varphi(p) = p - 1$ for prime $p$ (complete proof via `totient_prime`)."
+      "mathContext": "Proves `pow_two_totient_value`: $\\varphi($$2^{{k+1}$}$) = $2^{k}$$ (sorry), and `prime_pred_totient_value`: $\\varphi(p) = p - 1$ for prime $p$ (complete proof via `totient_prime`)."
     },
     {
       "id": "asymptotics",
@@ -129,7 +129,7 @@
       "summary": "Discusses Ford's result $V(x) \\sim cx/\\log x$ and the difficulty of analyzing $V'(x)$ separately. The key challenge is understanding the smallest preimage function $m^*(n)$.",
       "startLine": 166,
       "endLine": 189,
-      "mathContext": "Discusses Ford's result $V(x) \\sim cx/\\log x$ and the difficulty of analyzing $V'(x)$ separately. The key challenge is understanding the smallest preimage function $m^*(n)$."
+      "mathContext": "Mathematical content: Discusses Ford's result $V(x) \\sim cx/\\log x$ and the difficulty of analyzing $V'(x)$ separately. The key challenge is understanding the smallest preimage function $m^*(n)$."
     },
     {
       "id": "summary",
@@ -137,7 +137,7 @@
       "summary": "`erdos_417_summary` packages $V'(x) \\le V(x)$ as a theorem. `erdos_417_open_questions` bundles all three conjectures into a single `Prop`. Related to OEIS A264810 and A061070.",
       "startLine": 190,
       "endLine": 219,
-      "mathContext": "`erdos_417_summary` packages $V'(x) \\le V(x)$ as a theorem. `erdos_417_open_questions` bundles all three conjectures into a single `Prop`. Related to OEIS A264810 and A061070."
+      "mathContext": "Verified: `erdos_417_summary` packages $V'(x) \\le V(x)$ as a theorem. `erdos_417_open_questions` bundles all three conjectures into a single `Prop`. Related to OEIS A264810 and A061070."
     }
   ],
   "conclusion": {

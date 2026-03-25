@@ -81,7 +81,7 @@
       "summary": "IsBasis, HasExactOrder, HasOrderAndExactOrder, h(r) defined as supremum.",
       "startLine": 35,
       "endLine": 56,
-      "mathContext": "IsBasis, HasExactOrder, HasOrderAndExactOrder, h(r) defined as supremum."
+      "mathContext": "Mathematical content: IsBasis, HasExactOrder, HasOrderAndExactOrder, h(r) defined as supremum."
     },
     {
       "id": "limit-question",
@@ -89,7 +89,7 @@
       "summary": "LimitExists and limitValue definitions for lim h(r)/r².",
       "startLine": 57,
       "endLine": 66,
-      "mathContext": "LimitExists and limitValue definitions for lim h(r)/r²."
+      "mathContext": "Formal definition: LimitExists and limitValue definitions for lim h(r)/r²."
     },
     {
       "id": "known-bounds",
@@ -97,7 +97,7 @@
       "summary": "Erdős-Graham 1980 bounds, Grekos 1988 lower, Nash 1993 upper, current_bounds theorem.",
       "startLine": 67,
       "endLine": 90,
-      "mathContext": "Erdős-Graham 1980 bounds, Grekos 1988 lower, Nash 1993 upper, current_bounds theorem."
+      "mathContext": "Verified: Erdős-Graham 1980 bounds, Grekos 1988 lower, Nash 1993 upper, current_bounds theorem."
     },
     {
       "id": "specific-values",
@@ -105,7 +105,7 @@
       "summary": "h(2) = 4, h(3) = 7, 10 ≤ h(4) ≤ 11, ratio verification examples.",
       "startLine": 91,
       "endLine": 111,
-      "mathContext": "h(2) = 4, h(3) = 7, 10 ≤ h(4) ≤ 11, ratio verification examples."
+      "mathContext": "h(2) = 4, h(3) = 7, 10 $\\leq$ h(4) $\\leq$ 11, ratio verification examples."
     },
     {
       "id": "order-differ",
@@ -113,7 +113,7 @@
       "summary": "erdosGrahamExample, example_order_2, example_exact_order_3, order_exact_order_differ theorem.",
       "startLine": 112,
       "endLine": 131,
-      "mathContext": "erdosGrahamExample, example_order_2, example_exact_order_3, order_exact_order_differ theorem."
+      "mathContext": "Verified: erdosGrahamExample, example_order_2, example_exact_order_3, order_exact_order_differ theorem."
     },
     {
       "id": "characterization",
@@ -121,7 +121,7 @@
       "summary": "consecutiveDiffs, erdos_graham_characterization axiom (exact order ↔ coprime differences).",
       "startLine": 132,
       "endLine": 147,
-      "mathContext": "consecutiveDiffs, erdos_graham_characterization axiom (exact order ↔ coprime differences)."
+      "mathContext": "Axiomatized: consecutiveDiffs, erdos_graham_characterization axiom (exact order ↔ coprime differences)."
     },
     {
       "id": "plagne-refinement",
@@ -129,7 +129,7 @@
       "summary": "plagne_lower_order_2004 axiom: refined lower-order term bounds.",
       "startLine": 148,
       "endLine": 159,
-      "mathContext": "plagne_lower_order_2004 axiom: refined lower-order term bounds."
+      "mathContext": "Axiomatized: plagne_lower_order_2004 axiom: refined lower-order term bounds."
     },
     {
       "id": "main-results",
@@ -137,7 +137,7 @@
       "summary": "erdos_336_main combining all results, erdos_336 summary bounds theorem.",
       "startLine": 160,
       "endLine": 180,
-      "mathContext": "erdos_336_main combining all results, erdos_336 summary bounds theorem."
+      "mathContext": "Verified: erdos_336_main combining all results, erdos_336 summary bounds theorem."
     }
   ],
   "conclusion": {

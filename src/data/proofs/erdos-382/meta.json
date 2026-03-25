@@ -92,7 +92,7 @@
       "startLine": 44,
       "endLine": 64,
       "summary": "prodInterval via Finset.Icc product, prodInterval_singleton proved by simp, prodInterval_factorial axiom.",
-      "mathContext": "prodInterval via Finset.Icc product, prodInterval_singleton proved by simp, prodInterval_factorial axiom."
+      "mathContext": "Axiomatized: prodInterval via Finset.Icc product, prodInterval_singleton proved by simp, prodInterval_factorial axiom."
     },
     {
       "id": "largest-prime",
@@ -108,7 +108,7 @@
       "startLine": 89,
       "endLine": 105,
       "summary": "exponent (p-adic valuation wrapper), exponentInProduct, sum decomposition axiom.",
-      "mathContext": "exponent (p-adic valuation wrapper), exponentInProduct, sum decomposition axiom."
+      "mathContext": "Axiomatized: exponent (p-adic valuation wrapper), exponentInProduct, sum decomposition axiom."
     },
     {
       "id": "condition",
@@ -116,7 +116,7 @@
       "startLine": 106,
       "endLine": 131,
       "summary": "satisfiesCondition: largest prime has exponent ≥ 2. Structural axioms on exponent behavior.",
-      "mathContext": "satisfiesCondition: largest prime has exponent ≥ 2. Structural axioms on exponent behavior."
+      "mathContext": "satisfiesCondition: largest prime has exponent $\\geq$ 2. Structural axioms on exponent behavior."
     },
     {
       "id": "questions",
@@ -124,7 +124,7 @@
       "startLine": 132,
       "endLine": 160,
       "summary": "question1 (subpolynomial growth) and question2 (unbounded length) as formal propositions.",
-      "mathContext": "question1 (subpolynomial growth) and question2 (unbounded length) as formal propositions."
+      "mathContext": "Bound: question1 (subpolynomial growth) and question2 (unbounded length) as formal propositions."
     },
     {
       "id": "ramachandra",
@@ -132,7 +132,7 @@
       "startLine": 161,
       "endLine": 174,
       "summary": "Ramachandra's bound axiom: v−u ≤ v^{1/2+ε} for large v.",
-      "mathContext": "Ramachandra's bound axiom: v−u ≤ v^{1/2+ε} for large v."
+      "mathContext": "Ramachandra's bound axiom: v−u $\\leq$ v^{1/2+ε} for large v."
     },
     {
       "id": "cramer",
@@ -140,7 +140,7 @@
       "startLine": 175,
       "endLine": 192,
       "summary": "cramersConjecture definition, cramer_implies_q1 axiom.",
-      "mathContext": "cramersConjecture definition, cramer_implies_q1 axiom."
+      "mathContext": "Formal definition: cramersConjecture definition, cramer_implies_q1 axiom."
     },
     {
       "id": "examples",
@@ -148,7 +148,7 @@
       "startLine": 193,
       "endLine": 207,
       "summary": "Concrete example: prodInterval 2 4 = 24 via native_decide. Structural constraint axiom.",
-      "mathContext": "Concrete example: prodInterval 2 4 = 24 via native_decide. Structural constraint axiom."
+      "mathContext": "Axiomatized: Concrete example: prodInterval 2 4 = 24 via native_decide. Structural constraint axiom."
     },
     {
       "id": "prime-free",
@@ -156,7 +156,7 @@
       "startLine": 208,
       "endLine": 225,
       "summary": "noPrimeLargerThanSqrt predicate and equivalence axiom condition_iff_no_large_prime.",
-      "mathContext": "noPrimeLargerThanSqrt predicate and equivalence axiom condition_iff_no_large_prime."
+      "mathContext": "Axiomatized: noPrimeLargerThanSqrt predicate and equivalence axiom condition_iff_no_large_prime."
     },
     {
       "id": "summary",
@@ -164,7 +164,7 @@
       "startLine": 226,
       "endLine": 266,
       "summary": "erdos_382_summary theorem combining Ramachandra bound, Cramér implication, and problem statement. Consistency theorem. Status: OPEN.",
-      "mathContext": "erdos_382_summary theorem combining Ramachandra bound, Cramér implication, and problem statement. Consistency theorem. Status: OPEN."
+      "mathContext": "Verified: erdos_382_summary theorem combining Ramachandra bound, Cramér implication, and problem statement. Consistency theorem. Status: OPEN."
     }
   ],
   "conclusion": {

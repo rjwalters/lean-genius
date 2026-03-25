@@ -83,7 +83,7 @@
       "summary": "Imports Mathlib modules for $\\text{Nat.log}$, `Finset.Powerset`, and `BigOperators`. Opens the `Finset` and `BigOperators` namespaces for clean syntax.",
       "startLine": 25,
       "endLine": 36,
-      "mathContext": "Imports Mathlib modules for $\\text{Nat.log}$, `Finset.Powerset`, and `BigOperators`. Opens the `Finset` and `BigOperators` namespaces for clean syntax."
+      "mathContext": "Mathematical content: Imports Mathlib modules for $\\text{Nat.log}$, `Finset.Powerset`, and `BigOperators`. Opens the `Finset` and `BigOperators` namespaces for clean syntax."
     },
     {
       "id": "basic-definitions",
@@ -99,7 +99,7 @@
       "summary": "Defines $f(n) = \\text{maxValidSize}(n) = \\max\\{|A| : \\text{ValidSubset}(n,A)\\}$ using `Nat.find`. Marked `noncomputable` since computing the maximum requires exponential search.",
       "startLine": 62,
       "endLine": 75,
-      "mathContext": "Defines $f(n) = \\text{maxValidSize}(n) = \\max\\{|A| : \\text{ValidSubset}(n,A)\\}$ using `Nat.find`. Marked `noncomputable` since computing the maximum requires exponential search."
+      "mathContext": "Formal definition: Defines $f(n) = \\text{maxValidSize}(n) = \\max\\{|A| : \\text{ValidSubset}(n,A)\\}$ using `Nat.find`. Marked `noncomputable` since computing the maximum requires exponential search."
     },
     {
       "id": "lower-bounds",
@@ -123,7 +123,7 @@
       "summary": "Combines lower and upper bounds: $\\log_2 n - 2 \\leq f(n) \\leq \\log_2 n + \\frac{1}{2}\\log_2 \\log_2 n + 3$ for $n \\geq 16$, confirming $f(n) = (1+o(1))\\log_2 n$.",
       "startLine": 140,
       "endLine": 157,
-      "mathContext": "Combines lower and upper bounds: $\\log_2 n - 2 \\leq f(n) \\leq \\log_2 n + \\frac{1}{2}\\log_2 \\log_2 n + 3$ for $n \\geq 16$, confirming $f(n) = (1+o(1))\\log_2 n$."
+      "mathContext": "Bound: Combines lower and upper bounds: $\\log_2 n - 2 \\leq f(n) \\leq \\log_2 n + \\frac{1}{2}\\log_2 \\log_2 n + 3$ for $n \\geq 16$, confirming $f(n) = (1+o(1))\\log_2 n$."
     },
     {
       "id": "examples",
@@ -131,7 +131,7 @@
       "summary": "Concrete examples: $A = \\{1\\}$ is trivially valid (singleton antichain); $A = \\{2,3\\}$ has subset sums $\\{2,3,5\\}$ which form an antichain since $\\gcd$ pairs prevent divisibility.",
       "startLine": 158,
       "endLine": 170,
-      "mathContext": "Concrete examples: $A = \\{1\\}$ is trivially valid (singleton antichain); $A = \\{2,3\\}$ has subset sums $\\{2,3,5\\}$ which form an antichain since $\\gcd$ pairs prevent divisibility."
+      "mathContext": "Mathematical content: Concrete examples: $A = \\{1\\}$ is trivially valid (singleton antichain); $A = \\{2,3\\}$ has subset sums $\\{2,3,5\\}$ which form an antichain since $\\gcd$ pairs prevent divisibility."
     },
     {
       "id": "connections",

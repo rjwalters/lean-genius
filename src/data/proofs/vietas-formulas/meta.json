@@ -63,7 +63,7 @@
       "startLine": 29,
       "endLine": 45,
       "summary": "For x^2 - bx + c = 0 with roots r, s: sum = b, product = c.",
-      "mathContext": "For x^2 - bx + c = 0 with roots r, s: sum = b, product = c."
+      "mathContext": "Quadratic Vieta: if $r, s$ are roots of $x^2 - bx + c = 0$, then $r + s = b$ and $r \\cdot s = c$. Equivalently, $e_1(r,s) = b$ and $e_2(r,s) = c$ where $e_k$ are elementary symmetric polynomials."
     },
     {
       "id": "examples",
@@ -71,7 +71,7 @@
       "startLine": 46,
       "endLine": 93,
       "summary": "Verification with specific polynomials and their roots.",
-      "mathContext": "Verification with specific polynomials and their roots."
+      "mathContext": "Concrete verification: e.g., $x^2 - 5x + 6 = 0$ has roots $r = 2, s = 3$ with $r + s = 5$ and $rs = 6$, confirming $e_1 = b$ and $e_2 = c$."
     },
     {
       "id": "general",
@@ -79,7 +79,7 @@
       "startLine": 94,
       "endLine": 115,
       "summary": "The core Vieta relation for polynomials of any degree.",
-      "mathContext": "The core Vieta relation for polynomials of any degree."
+      "mathContext": "General Vieta: for monic $p(x) = \\prod_{i=1}^{n}(x - r_i)$, the coefficient of $x^{n-k}$ is $(-1)^k e_k(r_1, \\ldots, r_n)$ where $e_k = \\sum_{|S|=k} \\prod_{i \\in S} r_i$."
     },
     {
       "id": "applications",
@@ -87,7 +87,7 @@
       "startLine": 116,
       "endLine": 142,
       "summary": "Reconstructing polynomials from roots and vice versa.",
-      "mathContext": "Reconstructing polynomials from roots and vice versa."
+      "mathContext": "Inverse Vieta: given $e_1 = r_1 + \\cdots + r_n$ and $e_n = r_1 \\cdots r_n$, reconstruct the monic polynomial $p(x) = x^n - e_1 x^{n-1} + e_2 x^{n-2} - \\cdots + (-1)^n e_n$."
     },
     {
       "id": "sign-pattern",
@@ -95,7 +95,7 @@
       "startLine": 143,
       "endLine": 179,
       "summary": "The alternating sign (-1)^k in Vieta's formulas explained: each coefficient collects products of k roots with appropriate sign.",
-      "mathContext": "The alternating sign (-1)^k in Vieta's formulas explained: each coefficient collects products of k roots with appropriate sign."
+      "mathContext": "Sign pattern from $\\prod(x - r_i)$: expanding the product, each $x^{n-k}$ term collects $\\binom{n}{k}$ products of $k$ roots with sign $(-1)^k$, giving $[x^{n-k}] = (-1)^k e_k(r_1, \\ldots, r_n)$."
     }
   ],
   "conclusion": {

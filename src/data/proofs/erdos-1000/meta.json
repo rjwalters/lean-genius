@@ -52,7 +52,7 @@
       "summary": "Module imports for Nat.GCD, Finset, real casts, and filter limits",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Module imports for Nat.GCD, Finset, real casts, and filter limits"
+      "mathContext": "Mathematical content: Module imports for Nat.GCD, Finset, real casts, and filter limits"
     },
     {
       "id": "generalized-totient",
@@ -60,7 +60,7 @@
       "summary": "IncreasingSeq, reducedDenom, and φ_A definitions",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "IncreasingSeq, reducedDenom, and φ_A definitions"
+      "mathContext": "Formal definition: IncreasingSeq, reducedDenom, and φ_A definitions"
     },
     {
       "id": "basic-properties",
@@ -68,7 +68,7 @@
       "summary": "φ_A(k) ≥ φ(n_k) bound and naturalSeq baseline",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "φ_A(k) ≥ φ(n_k) bound and naturalSeq baseline"
+      "mathContext": "φ_A(k) $\\geq$ φ(n_k) bound and naturalSeq baseline"
     },
     {
       "id": "average-density",
@@ -76,7 +76,7 @@
       "summary": "Density ratio ρ_A(k) = φ_A(k)/n_k and Cesàro average C_A(N)",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Density ratio ρ_A(k) = φ_A(k)/n_k and Cesàro average C_A(N)"
+      "mathContext": "Mathematical content: Density ratio ρ_A(k) = φ_A(k)/n_k and Cesàro average C_A(N)"
     },
     {
       "id": "cassels-result",
@@ -84,7 +84,7 @@
       "summary": "Liminf of Cesàro average can be 0; Diophantine approximation connection",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Liminf of Cesàro average can be 0; Diophantine approximation connection"
+      "mathContext": "Mathematical content: Liminf of Cesàro average can be 0; Diophantine approximation connection"
     },
     {
       "id": "erdos-results",
@@ -92,7 +92,7 @@
       "summary": "No-zero-limit theorem and liminf/limsup dichotomy",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "No-zero-limit theorem and liminf/limsup dichotomy"
+      "mathContext": "Verified: No-zero-limit theorem and liminf/limsup dichotomy"
     },
     {
       "id": "main-question",
@@ -100,7 +100,7 @@
       "summary": "VanishingAverage predicate and Erdős' conjecture",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "VanishingAverage predicate and Erdős' conjecture"
+      "mathContext": "Mathematical content: VanishingAverage predicate and Erdős' conjecture"
     },
     {
       "id": "haight-resolution",
@@ -108,7 +108,7 @@
       "summary": "Haight's theorem: vanishing-average sequences exist (SOLVED)",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Haight's theorem: vanishing-average sequences exist (SOLVED)"
+      "mathContext": "Verified: Haight's theorem: vanishing-average sequences exist (SOLVED)"
     },
     {
       "id": "diophantine-connection",
@@ -116,7 +116,7 @@
       "summary": "Cassels' characterization via Khinchin-Groshev theory",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Cassels' characterization via Khinchin-Groshev theory"
+      "mathContext": "Mathematical content: Cassels' characterization via Khinchin-Groshev theory"
     },
     {
       "id": "observations",
@@ -124,7 +124,7 @@
       "summary": "Haight oscillation: vanishing average with maximal oscillation",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Haight oscillation: vanishing average with maximal oscillation"
+      "mathContext": "Mathematical content: Haight oscillation: vanishing average with maximal oscillation"
     }
   ],
   "conclusion": {
@@ -177,8 +177,14 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Finset", "Filter", "Topology"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Filter",
+      "Topology"
+    ],
     "namespace": "Erdos1000",
     "lineCount": 304,
     "axiomCount": 4,

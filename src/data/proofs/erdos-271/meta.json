@@ -84,7 +84,7 @@
       "summary": "Defines IsThreeAP(a,b,c) for a < b < c with 2b = a + c, and two equivalent AP-free predicates: IsAPFree (no three elements form a 3-AP) and IsAPFree' (explicit formulation with ordered triples).",
       "startLine": 39,
       "endLine": 67,
-      "mathContext": "Defines IsThreeAP(a,b,c) for a < b < c with 2b = a + c, and two equivalent AP-free predicates: IsAPFree (no three elements form a 3-AP) and IsAPFree' (explicit formulation with ordered triples)."
+      "mathContext": "Formal definition: Defines IsThreeAP(a,b,c) for a < b < c with 2b = a + c, and two equivalent AP-free predicates: IsAPFree (no three elements form a 3-AP) and IsAPFree' (explicit formulation with ordered triples)."
     },
     {
       "id": "stanley-sequences",
@@ -108,7 +108,7 @@
       "summary": "Axiomatizes that A(3^k) and A(2·3^k) also admit explicit base-3 characterizations (Odlyzko-Stanley 1978), generalizing the A(1) result to two infinite families of 'structured' Stanley sequences.",
       "startLine": 158,
       "endLine": 179,
-      "mathContext": "Axiomatizes that A(3^k) and A(2·3^k) also admit explicit base-3 characterizations (Odlyzko-Stanley 1978), generalizing the A(1) result to two infinite families of 'structured' Stanley sequences."
+      "mathContext": "Axiomatizes that A($3^{k}$) and A(2·$3^{k}$) also admit explicit base-3 characterizations (Odlyzko-Stanley 1978), generalizing the A(1) result to two infinite families of 'structured' Stanley sequences."
     },
     {
       "id": "growth-conjectures",
@@ -124,7 +124,7 @@
       "summary": "Axiomatizes Moy's asymptotic bound a_k ≤ (1/2+ε)k² for large k, the van Doorn-Sothanaphan explicit bound a_k ≤ (k-1)(k+2)/2 + n for all k, and derives the simplified quadratic upper bound a_k = O(k²).",
       "startLine": 229,
       "endLine": 259,
-      "mathContext": "Axiomatizes Moy's asymptotic bound a_k ≤ (1/2+ε)k² for large k, the van Doorn-Sothanaphan explicit bound a_k ≤ (k-1)(k+2)/2 + n for all k, and derives the simplified quadratic upper bound a_k = O(k²)."
+      "mathContext": "Axiomatizes Moy's asymptotic bound a_k $\\leq$ (1/2+ε)k² for large k, the van Doorn-Sothanaphan explicit bound a_k $\\leq$ (k-1)(k+2)/2 + n for all k, and derives the simplified quadratic upper bound a_k = $O(k²)$."
     },
     {
       "id": "specific-values",
@@ -132,7 +132,7 @@
       "summary": "Lists computed initial segments: A(1) = OEIS A003278 (sums of distinct powers of 3), A(2) = OEIS A033157 (widening gaps), A(4) = OEIS A005487 (dense initial terms, conjectured k²/log k growth).",
       "startLine": 260,
       "endLine": 284,
-      "mathContext": "Lists computed initial segments: A(1) = OEIS A003278 (sums of distinct powers of 3), A(2) = OEIS A033157 (widening gaps), A(4) = OEIS A005487 (dense initial terms, conjectured k²/log k growth)."
+      "mathContext": "Mathematical content: Lists computed initial segments: A(1) = OEIS A003278 (sums of distinct powers of 3), A(2) = OEIS A033157 (widening gaps), A(4) = OEIS A005487 (dense initial terms, conjectured k²/log k growth)."
     },
     {
       "id": "sum-free-connection",

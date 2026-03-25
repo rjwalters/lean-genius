@@ -51,7 +51,7 @@
       "startLine": 1,
       "endLine": 12,
       "summary": "Aristotle (Harmonic) proved `erdos_225_optimal` and `sup_on_circle_eq_trig_sup`, and discovered the formalization bug: constant polynomials are a counterexample.",
-      "mathContext": "Aristotle (Harmonic) proved `erdos_225_optimal` and `sup_on_circle_eq_trig_sup`, and discovered the formalization bug: constant polynomials are a counterexample."
+      "mathContext": "Mathematical content: Aristotle (Harmonic) proved `erdos_225_optimal` and `sup_on_circle_eq_trig_sup`, and discovered the formalization bug: constant polynomials are a counterexample."
     },
     {
       "id": "problem-statement",
@@ -59,7 +59,7 @@
       "startLine": 13,
       "endLine": 39,
       "summary": "Docstring for Erdős Problem #225: $\\|f\\|_1 \\leq 4$ when all roots on $|z| = 1$ and $\\|f\\|_\\infty = 1$. Solved by Kristiansen (1974), Saff–Sheil-Small (1973). Hayman Problem 4.20.",
-      "mathContext": "Docstring for Erdős Problem #225: $\\|f\\|_1 \\leq 4$ when all roots on $|z| = 1$ and $\\|f\\|_\\infty = 1$. Solved by Kristiansen (1974), Saff–Sheil-Small (1973). Hayman Problem 4.20."
+      "mathContext": "Mathematical content: Docstring for Erdős Problem #225: $\\|f\\|_1 \\leq 4$ when all roots on $|z| = 1$ and $\\|f\\|_\\infty = 1$. Solved by Kristiansen (1974), Saff–Sheil-Small (1973). Hayman Problem 4.20."
     },
     {
       "id": "trig-poly",
@@ -67,7 +67,7 @@
       "startLine": 40,
       "endLine": 57,
       "summary": "Defines `TrigPoly n` as `Fin (n+1) → ℂ` and evaluation $f(\\theta) = \\sum c_k e^{ik\\theta}$ via `Complex.exp`.",
-      "mathContext": "Defines `TrigPoly n` as `Fin (n+1) → ℂ` and evaluation $f(\\theta) = \\sum c_k e^{ik\\theta}$ via `Complex.exp`."
+      "mathContext": "Defines `TrigPoly n` as `Fin (n+1) $\\to$ ℂ` and evaluation $f(\\theta) = \\sum c_k e^{ik\\theta}$ via `Complex.exp`."
     },
     {
       "id": "unit-circle",
@@ -75,7 +75,7 @@
       "startLine": 58,
       "endLine": 73,
       "summary": "Defines `OnUnitCircle z` ($\\|z\\| = 1$) and `HasUnitCircleRoots p` (all roots of $P(z) = \\sum c_k z^k$ satisfy $|z| = 1$). The vacuous truth issue for constant polynomials is noted.",
-      "mathContext": "Defines `OnUnitCircle z` ($\\|z\\| = 1$) and `HasUnitCircleRoots p` (all roots of $P(z) = \\sum c_k z^k$ satisfy $|z| = 1$). The vacuous truth issue for constant polynomials is noted."
+      "mathContext": "Formal definition: Defines `OnUnitCircle z` ($\\|z\\| = 1$) and `HasUnitCircleRoots p` (all roots of $P(z) = \\sum c_k z^k$ satisfy $|z| = 1$). The vacuous truth issue for constant polynomials is noted."
     },
     {
       "id": "norms",
@@ -83,7 +83,7 @@
       "startLine": 74,
       "endLine": 87,
       "summary": "Defines $\\|f\\|_\\infty = \\sup_{\\theta \\in [0, 2\\pi]} \\|f(\\theta)\\|$ via `iSup` and $\\|f\\|_1 = \\int_0^{2\\pi} \\|f(\\theta)\\| \\, d\\theta$ via Bochner integration.",
-      "mathContext": "Defines $\\|f\\|_\\infty = \\sup_{\\theta \\in [0, 2\\pi]} \\|f(\\theta)\\|$ via `iSup` and $\\|f\\|_1 = \\int_0^{2\\pi} \\|f(\\theta)\\| \\, d\\theta$ via Bochner integration."
+      "mathContext": "Defines $\\|f\\|_\\infty = \\sup_{\\theta \\in [0, 2\\$\\pi$]} \\|f(\\theta)\\|$ via `iSup` and $\\|f\\|_1 = \\int_0^{2\\$\\pi$} \\|f(\\theta)\\| \\, d\\theta$ via Bochner integration."
     },
     {
       "id": "main-theorem",
@@ -91,7 +91,7 @@
       "startLine": 88,
       "endLine": 109,
       "summary": "States $\\|f\\|_1 \\leq 4$ under unit-circle-roots and $\\|f\\|_\\infty = 1$. Contains `sorry` due to the constant-polynomial counterexample. Needs degree $\\geq 1$ hypothesis.",
-      "mathContext": "States $\\|f\\|_1 \\leq 4$ under unit-circle-roots and $\\|f\\|_\\infty = 1$. Contains `sorry` due to the constant-polynomial counterexample. Needs degree $\\geq 1$ hypothesis."
+      "mathContext": "Mathematical content: States $\\|f\\|_1 \\leq 4$ under unit-circle-roots and $\\|f\\|_\\infty = 1$. Contains `sorry` due to the constant-polynomial counterexample. Needs degree $\\geq 1$ hypothesis."
     },
     {
       "id": "optimality",
@@ -99,7 +99,7 @@
       "startLine": 110,
       "endLine": 130,
       "summary": "Aristotle proved: for all $\\varepsilon > 0$, there exists a polynomial achieving $\\|f\\|_1 > 4 - \\varepsilon$. Witness: the constant polynomial $f = 1$ with $\\|f\\|_1 = 2\\pi$.",
-      "mathContext": "Aristotle proved: for all $\\varepsilon > 0$, there exists a polynomial achieving $\\|f\\|_1 > 4 - \\varepsilon$. Witness: the constant polynomial $f = 1$ with $\\|f\\|_1 = 2\\pi$."
+      "mathContext": "Aristotle proved: for all $\\varepsilon > 0$, there exists a polynomial achieving $\\|f\\|_1 > 4 - \\varepsilon$. Witness: the constant polynomial $f = 1$ with $\\|f\\|_1 = 2\\$\\pi$$."
     },
     {
       "id": "special-cases",
@@ -107,7 +107,7 @@
       "startLine": 131,
       "endLine": 142,
       "summary": "Proves $2\\pi > 4$ via `Real.pi_gt_three`, confirming the constant polynomial exceeds the bound.",
-      "mathContext": "Proves $2\\pi > 4$ via `Real.pi_gt_three`, confirming the constant polynomial exceeds the bound."
+      "mathContext": "Proves $2\\$\\pi$ > 4$ via `Real.pi_gt_three`, confirming the constant polynomial exceeds the bound."
     },
     {
       "id": "equivalences",
@@ -115,7 +115,7 @@
       "startLine": 143,
       "endLine": 190,
       "summary": "Defines `PolynomialHasUnitCircleRoots`. Aristotle proved `sup_on_circle_eq_trig_sup`: the $L^\\infty$ norm of $P(z)$ on $S^1$ equals $\\sup_{\\theta} |f(\\theta)|$, via bijection $z = e^{i\\theta}$.",
-      "mathContext": "Defines `PolynomialHasUnitCircleRoots`. Aristotle proved `sup_on_circle_eq_trig_sup`: the $L^\\infty$ norm of $P(z)$ on $S^1$ equals $\\sup_{\\theta} |f(\\theta)|$, via bijection $z = e^{i\\theta}$."
+      "mathContext": "Formal definition: Defines `PolynomialHasUnitCircleRoots`. Aristotle proved `sup_on_circle_eq_trig_sup`: the $L^\\infty$ norm of $P(z)$ on $S^1$ equals $\\sup_{\\theta} |f(\\theta)|$, via bijection $z = e^{i\\theta}$."
     },
     {
       "id": "related-results",
@@ -123,7 +123,7 @@
       "startLine": 191,
       "endLine": 243,
       "summary": "Axiomatizes the Fejér–Riesz theorem ($f \\geq 0 \\Rightarrow f = |g|^2$) and Littlewood's lower bound ($\\|f\\|_1 \\geq C \\log n$ for unimodular coefficients). Summary section reviews the solved status.",
-      "mathContext": "Axiomatizes the Fejér–Riesz theorem ($f \\geq 0 \\Rightarrow f = |g|^2$) and Littlewood's lower bound ($\\|f\\|_1 \\geq C \\log n$ for unimodular coefficients). Summary section reviews the solved status."
+      "mathContext": "Axiomatizes the Fejér–Riesz theorem ($f \\geq 0 \\Rightarrow f = |g|^2$) and Littlewood's lower bound ($\\|f\\|_1 \\geq C \\$\\log n$$ for unimodular coefficients). Summary section reviews the solved status."
     }
   ],
   "conclusion": {

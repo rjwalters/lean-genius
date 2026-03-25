@@ -63,7 +63,7 @@
       "startLine": 43,
       "endLine": 68,
       "summary": "nthPrime via Nat.nth, nthPrime_prime, nthPrime_strictMono, specific values.",
-      "mathContext": "nthPrime via Nat.nth, nthPrime_prime, nthPrime_strictMono, specific values."
+      "mathContext": "Mathematical content: nthPrime via Nat.nth, nthPrime_prime, nthPrime_strictMono, specific values."
     },
     {
       "id": "prime-gaps",
@@ -71,7 +71,7 @@
       "startLine": 69,
       "endLine": 101,
       "summary": "primeGap definition, primeGap_pos (proved), specific gap values.",
-      "mathContext": "primeGap definition, primeGap_pos (proved), specific gap values."
+      "mathContext": "Formal definition: primeGap definition, primeGap_pos (proved), specific gap values."
     },
     {
       "id": "density",
@@ -79,7 +79,7 @@
       "startLine": 102,
       "endLine": 127,
       "summary": "HasDensity, upperDensity, lowerDensity definitions.",
-      "mathContext": "HasDensity, upperDensity, lowerDensity definitions."
+      "mathContext": "Formal definition: HasDensity, upperDensity, lowerDensity definitions."
     },
     {
       "id": "key-sets",
@@ -87,7 +87,7 @@
       "startLine": 128,
       "endLine": 172,
       "summary": "gapIncreasingSet, gapDecreasingSet, gapEqualSet, gapEqualSet_eq_inter (proved).",
-      "mathContext": "gapIncreasingSet, gapDecreasingSet, gapEqualSet, gapEqualSet_eq_inter (proved)."
+      "mathContext": "Mathematical content: gapIncreasingSet, gapDecreasingSet, gapEqualSet, gapEqualSet_eq_inter (proved)."
     },
     {
       "id": "conjectures",
@@ -95,7 +95,7 @@
       "startLine": 173,
       "endLine": 203,
       "summary": "erdos_218a, erdos_218b, erdos_218c axioms (all OPEN).",
-      "mathContext": "erdos_218a, erdos_218b, erdos_218c axioms (all OPEN)."
+      "mathContext": "Axiomatized: erdos_218a, erdos_218b, erdos_218c axioms (all OPEN)."
     },
     {
       "id": "ap-connection",
@@ -103,7 +103,7 @@
       "startLine": 204,
       "endLine": 225,
       "summary": "threePrimesInAP, gapEqual_iff_ap axiom, infinitely_many_3ap_from_218c (proved).",
-      "mathContext": "threePrimesInAP, gapEqual_iff_ap axiom, infinitely_many_3ap_from_218c (proved)."
+      "mathContext": "Axiomatized: threePrimesInAP, gapEqual_iff_ap axiom, infinitely_many_3ap_from_218c (proved)."
     },
     {
       "id": "examples",
@@ -111,7 +111,7 @@
       "startLine": 226,
       "endLine": 236,
       "summary": "example_ap_1, apTriples definition, ap_357 axiom.",
-      "mathContext": "example_ap_1, apTriples definition, ap_357 axiom."
+      "mathContext": "Formal definition: example_ap_1, apTriples definition, ap_357 axiom."
     },
     {
       "id": "green-tao",
@@ -119,7 +119,7 @@
       "startLine": 237,
       "endLine": 249,
       "summary": "Green-Tao theorem axiom; does not directly imply conjecture 3.",
-      "mathContext": "Green-Tao theorem axiom; does not directly imply conjecture 3."
+      "mathContext": "Verified: Green-Tao theorem axiom; does not directly imply conjecture 3."
     },
     {
       "id": "partial",
@@ -127,7 +127,7 @@
       "startLine": 250,
       "endLine": 272,
       "summary": "gapIncreasingSet_infinite, gapDecreasingSet_infinite axioms, average_gap_growth.",
-      "mathContext": "gapIncreasingSet_infinite, gapDecreasingSet_infinite axioms, average_gap_growth."
+      "mathContext": "Axiomatized: gapIncreasingSet_infinite, gapDecreasingSet_infinite axioms, average_gap_growth."
     },
     {
       "id": "symmetry",
@@ -135,7 +135,7 @@
       "startLine": 273,
       "endLine": 301,
       "summary": "Heuristic for density 1/2, partition theorem (proved).",
-      "mathContext": "Heuristic for density 1/2, partition theorem (proved)."
+      "mathContext": "Verified: Heuristic for density 1/2, partition theorem (proved)."
     },
     {
       "id": "summary",
@@ -143,7 +143,7 @@
       "startLine": 302,
       "endLine": 340,
       "summary": "erdos_218_summary (proved from axioms), erdos_218_open.",
-      "mathContext": "erdos_218_summary (proved from axioms), erdos_218_open."
+      "mathContext": "Axiomatized: erdos_218_summary (proved from axioms), erdos_218_open."
     }
   ],
   "conclusion": {

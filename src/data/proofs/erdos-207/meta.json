@@ -81,7 +81,7 @@
       "summary": "Imports Mathlib modules for `Finset`, `Fintype.card`, `Finset.biUnion`, and natural number arithmetic. Opens `Finset` namespace within `Erdos207`.",
       "startLine": 28,
       "endLine": 36,
-      "mathContext": "Imports Mathlib modules for `Finset`, `Fintype.card`, `Finset.biUnion`, and natural number arithmetic. Opens `Finset` namespace within `Erdos207`."
+      "mathContext": "Mathematical content: Imports Mathlib modules for `Finset`, `Fintype.card`, `Finset.biUnion`, and natural number arithmetic. Opens `Finset` namespace within `Erdos207`."
     },
     {
       "id": "hypergraphs",
@@ -89,7 +89,7 @@
       "summary": "Defines `Hypergraph3 V` (edges $\\in \\text{Finset}(\\text{Finset}\\,V)$ with $|e| = 3$), `edgeContainsPair`, and `IsSteinerTripleSystem` via $\\exists!$ unique pair coverage.",
       "startLine": 37,
       "endLine": 64,
-      "mathContext": "Defines `Hypergraph3 V` (edges $\\in \\text{Finset}(\\text{Finset}\\,V)$ with $|e| = 3$), `edgeContainsPair`, and `IsSteinerTripleSystem` via $\\exists!$ unique pair coverage."
+      "mathContext": "Formal definition: Defines `Hypergraph3 V` (edges $\\in \\text{Finset}(\\text{Finset}\\,V)$ with $|e| = 3$), `edgeContainsPair`, and `IsSteinerTripleSystem` via $\\exists!$ unique pair coverage."
     },
     {
       "id": "girth",
@@ -97,7 +97,7 @@
       "summary": "Defines `vertexSpan` via `Finset.biUnion` and `HasGirthAtLeast(H, g)$: $\\forall S \\subseteq H.\\text{edges}, 2 \\leq |S| \\leq g \\implies |\\bigcup S| \\geq |S| + 3$.",
       "startLine": 65,
       "endLine": 95,
-      "mathContext": "Defines `vertexSpan` via `Finset.biUnion` and `HasGirthAtLeast(H, g)$: $\\forall S \\subseteq H.\\text{edges}, 2 \\leq |S| \\leq g \\implies |\\bigcup S| \\geq |S| + 3$."
+      "mathContext": "Formal definition: Defines `vertexSpan` via `Finset.biUnion` and `HasGirthAtLeast(H, g)$: $\\forall S \\subseteq H.\\text{edges}, 2 \\leq |S| \\leq g \\implies |\\bigcup S| \\geq |S| + 3$."
     },
     {
       "id": "admissibility",
@@ -105,7 +105,7 @@
       "summary": "Defines `IsAdmissible(n)$: $n \\bmod 6 \\in \\{1,3\\}$ and `stsTripleCount $= n(n-1)/6$. Axiomatizes Kirkman's 1847 theorem characterizing STS existence.",
       "startLine": 96,
       "endLine": 125,
-      "mathContext": "Defines `IsAdmissible(n)$: $n \\bmod 6 \\in \\{1,3\\}$ and `stsTripleCount $= n(n-1)/6$. Axiomatizes Kirkman's 1847 theorem characterizing STS existence."
+      "mathContext": "Formal definition: Defines `IsAdmissible(n)$: $n \\bmod 6 \\in \\{1,3\\}$ and `stsTripleCount $= n(n-1)/6$. Axiomatizes Kirkman's 1847 theorem characterizing STS existence."
     },
     {
       "id": "conjecture",
@@ -113,7 +113,7 @@
       "summary": "Formalizes erdos207Conjecture: $\\forall g \\geq 2, \\exists N: \\forall n \\geq N$, IsAdmissible$(n) \\implies \\exists$ STS$(n)$ with girth $\\geq g$.",
       "startLine": 126,
       "endLine": 139,
-      "mathContext": "Formalizes erdos207Conjecture: $\\forall g \\geq 2, \\exists N: \\forall n \\geq N$, IsAdmissible$(n) \\implies \\exists$ STS$(n)$ with girth $\\geq g$."
+      "mathContext": "Mathematical content: Formalizes erdos207Conjecture: $\\forall g \\geq 2, \\exists N: \\forall n \\geq N$, IsAdmissible$(n) \\implies \\exists$ STS$(n)$ with girth $\\geq g$."
     },
     {
       "id": "solution",
@@ -121,7 +121,7 @@
       "summary": "Axiomatizes `kwan_sah_sawhney_simkin_2022 : erdos207Conjecture` and derives `erdos_207 : erdos207Conjecture` as the main result of the formalization.",
       "startLine": 140,
       "endLine": 158,
-      "mathContext": "Axiomatizes `kwan_sah_sawhney_simkin_2022 : erdos207Conjecture` and derives `erdos_207 : erdos207Conjecture` as the main result of the formalization."
+      "mathContext": "Axiomatized: Axiomatizes `kwan_sah_sawhney_simkin_2022 : erdos207Conjecture` and derives `erdos_207 : erdos207Conjecture` as the main result of the formalization."
     },
     {
       "id": "special-cases",
@@ -129,7 +129,7 @@
       "summary": "Proves `sts_has_girth_at_least_2` (trivial from unique pair coverage). Defines `IsPaschConfiguration` ($|S|=4, |\\bigcup S|=6$) and states `girth_3_iff_pasch_free`.",
       "startLine": 159,
       "endLine": 197,
-      "mathContext": "Proves `sts_has_girth_at_least_2` (trivial from unique pair coverage). Defines `IsPaschConfiguration` ($|S|=4, |\\bigcup S|=6$) and states `girth_3_iff_pasch_free`."
+      "mathContext": "Formal definition: Proves `sts_has_girth_at_least_2` (trivial from unique pair coverage). Defines `IsPaschConfiguration` ($|S|=4, |\\bigcup S|=6$) and states `girth_3_iff_pasch_free`."
     },
     {
       "id": "techniques",
@@ -137,7 +137,7 @@
       "summary": "Documents the random greedy construction, Rödl nibble method, and spread measure technique used in the KSSS proof, formalized as descriptive comments.",
       "startLine": 198,
       "endLine": 219,
-      "mathContext": "Documents the random greedy construction, Rödl nibble method, and spread measure technique used in the KSSS proof, formalized as descriptive comments."
+      "mathContext": "Verified: Documents the random greedy construction, Rödl nibble method, and spread measure technique used in the KSSS proof, formalized as descriptive comments."
     },
     {
       "id": "related",
@@ -145,7 +145,7 @@
       "summary": "Defines `IsResolvable(H)$: edges partition into parallel classes covering all vertices. States `kirkmanSchoolgirlProblem`: $\\exists$ resolvable STS$(15)$.",
       "startLine": 220,
       "endLine": 244,
-      "mathContext": "Defines `IsResolvable(H)$: edges partition into parallel classes covering all vertices. States `kirkmanSchoolgirlProblem`: $\\exists$ resolvable STS$(15)$."
+      "mathContext": "Formal definition: Defines `IsResolvable(H)$: edges partition into parallel classes covering all vertices. States `kirkmanSchoolgirlProblem`: $\\exists$ resolvable STS$(15)$."
     },
     {
       "id": "summary",
@@ -153,7 +153,7 @@
       "summary": "Proves `erdos_207_summary`: erdos207Conjecture $\\wedge$ ($\\forall n \\geq 1$, $\\exists$ STS$(n) \\iff$ IsAdmissible$(n)$). Second conjunct proved from `kirkman_theorem` axiom.",
       "startLine": 245,
       "endLine": 279,
-      "mathContext": "Proves `erdos_207_summary`: erdos207Conjecture $\\wedge$ ($\\forall n \\geq 1$, $\\exists$ STS$(n) \\iff$ IsAdmissible$(n)$). Second conjunct proved from `kirkman_theorem` axiom."
+      "mathContext": "Verified: Proves `erdos_207_summary`: erdos207Conjecture $\\wedge$ ($\\forall n \\geq 1$, $\\exists$ STS$(n) \\iff$ IsAdmissible$(n)$). Second conjunct proved from `kirkman_theorem` axiom."
     }
   ],
   "conclusion": {

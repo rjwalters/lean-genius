@@ -102,7 +102,7 @@
       "startLine": 47,
       "endLine": 54,
       "summary": "Axiomatizes $\\alpha(n) \\geq c/n^2$ from Erdős's greedy placement: each new point avoids $O(n^2)$ thin forbidden strips of total measure $O(1/n)$, leaving room for placement.",
-      "mathContext": "Axiomatizes $\\alpha(n) \\geq c/n^2$ from Erdős's greedy placement: each new point avoids $O(n^2)$ thin forbidden strips of total measure $O(1/n)$, leaving room for placement."
+      "mathContext": "Axiomatizes $\\$\\alpha$(n) \\geq c/$n^{2}$$ from Erdős's greedy placement: each new point avoids $$O($n^{2}$)$$ thin forbidden strips of total measure $$O(1/n)$$, leaving room for placement."
     },
     {
       "id": "trivial-upper",
@@ -110,7 +110,7 @@
       "startLine": 55,
       "endLine": 60,
       "summary": "Axiomatizes $\\alpha(n) \\leq C/n$ via pigeonhole: partition the disk into $n/3$ strips of width $O(1/n)$; some strip contains $\\geq 3$ points forming a triangle of area $O(1/n)$.",
-      "mathContext": "Axiomatizes $\\alpha(n) \\leq C/n$ via pigeonhole: partition the disk into $n/3$ strips of width $O(1/n)$; some strip contains $\\geq 3$ points forming a triangle of area $O(1/n)$."
+      "mathContext": "Axiomatizes $\\$\\alpha$(n) \\leq C/n$ via pigeonhole: partition the disk into $n/3$ strips of width $$O(1/n)$$; some strip contains $\\geq 3$ points forming a triangle of area $$O(1/n)$$."
     },
     {
       "id": "kps-lower",
@@ -118,7 +118,7 @@
       "startLine": 61,
       "endLine": 69,
       "summary": "Axiomatizes the Komlós–Pintz–Szemerédi (1982) improvement: $\\alpha(n) \\geq c(\\log n)/n^2$ via the Lovász Local Lemma applied to random point placement. Still the best known lower bound.",
-      "mathContext": "Axiomatizes the Komlós–Pintz–Szemerédi (1982) improvement: $\\alpha(n) \\geq c(\\log n)/n^2$ via the Lovász Local Lemma applied to random point placement. Still the best known lower bound."
+      "mathContext": "Axiomatizes the Komlós–Pintz–Szemerédi (1982) improvement: $\\$\\alpha$(n) \\geq c(\\$\\log n$)/$n^{2}$$ via the Lovász Local Lemma applied to random point placement. Still the best known lower bound."
     },
     {
       "id": "kps-upper",
@@ -126,7 +126,7 @@
       "startLine": 70,
       "endLine": 78,
       "summary": "Axiomatizes the KPS (1981) result $\\alpha(n) \\leq C/n^{8/7}$ using the Szemerédi regularity lemma to find structured subconfigurations forcing small triangles.",
-      "mathContext": "Axiomatizes the KPS (1981) result $\\alpha(n) \\leq C/n^{8/7}$ using the Szemerédi regularity lemma to find structured subconfigurations forcing small triangles."
+      "mathContext": "Axiomatizes the KPS (1981) result $\\$\\alpha$(n) \\leq C/n^{8/7}$ using the Szemerédi regularity lemma to find structured subconfigurations forcing small triangles."
     },
     {
       "id": "cpz-upper",
@@ -134,7 +134,7 @@
       "startLine": 79,
       "endLine": 86,
       "summary": "Axiomatizes the Cohen–Pohoata–Zakharov breakthrough: $\\alpha(n) \\leq C/n^{7/6+o(1)}$, improving the KPS exponent via incidence geometry and the polynomial partitioning method.",
-      "mathContext": "Axiomatizes the Cohen–Pohoata–Zakharov breakthrough: $\\alpha(n) \\leq C/n^{7/6+o(1)}$, improving the KPS exponent via incidence geometry and the polynomial partitioning method."
+      "mathContext": "Axiomatizes the Cohen–Pohoata–Zakharov breakthrough: $\\$\\alpha$(n) \\leq C/n^{7/6+o(1)}$, improving the KPS exponent via incidence geometry and the polynomial partitioning method."
     },
     {
       "id": "exponent-range",
@@ -142,7 +142,7 @@
       "startLine": 87,
       "endLine": 96,
       "summary": "States that the true exponent $\\beta$ in $\\alpha(n) = n^{-\\beta+o(1)}$ satisfies $7/6 \\leq \\beta \\leq 2$, combining the CPZ upper bound and KPS lower bound.",
-      "mathContext": "States that the true exponent $\\beta$ in $\\alpha(n) = n^{-\\beta+o(1)}$ satisfies $7/6 \\leq \\beta \\leq 2$, combining the CPZ upper bound and KPS lower bound."
+      "mathContext": "States that the true exponent $\\$\\beta$$ in $\\$\\alpha$(n) = n^{-\\$\\beta$+o(1)}$ satisfies $7/6 \\leq \\$\\beta$ \\leq 2$, combining the CPZ upper bound and KPS lower bound."
     },
     {
       "id": "higher-dim",
@@ -150,7 +150,7 @@
       "startLine": 97,
       "endLine": 103,
       "summary": "Axiomatizes the $d$-dimensional generalization: $c/n^d \\leq \\alpha_d(n) \\leq C/n$ for the minimum-volume simplex among $n$ points in the unit ball $B^d$.",
-      "mathContext": "Axiomatizes the $d$-dimensional generalization: $c/n^d \\leq \\alpha_d(n) \\leq C/n$ for the minimum-volume simplex among $n$ points in the unit ball $B^d$."
+      "mathContext": "Axiomatized: Axiomatizes the $d$-dimensional generalization: $c/n^d \\leq \\alpha_d(n) \\leq C/n$ for the minimum-volume simplex among $n$ points in the unit ball $B^d$."
     }
   ],
   "conclusion": {

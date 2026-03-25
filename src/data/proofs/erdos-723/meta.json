@@ -59,7 +59,7 @@
       "startLine": 1,
       "endLine": 24,
       "summary": "Module docstring stating Erdős Problem #723, its open status, and known partial results. Imports Mathlib and opens the Configuration namespace for projective plane access.",
-      "mathContext": "Module docstring stating Erdős Problem #723, its open status, and known partial results. Imports Mathlib and opens the Configuration namespace for projective plane access."
+      "mathContext": "Mathematical content: Module docstring stating Erdős Problem #723, its open status, and known partial results. Imports Mathlib and opens the Configuration namespace for projective plane access."
     },
     {
       "id": "background-on-projective-planes",
@@ -67,7 +67,7 @@
       "startLine": 25,
       "endLine": 37,
       "summary": "Defines the axioms of a finite projective plane of order n: the counting formulas (n²+n+1 points and lines), incidence properties, and the connection to Mathlib's Configuration.ProjectivePlane type.",
-      "mathContext": "Defines the axioms of a finite projective plane of order n: the counting formulas (n²+n+1 points and lines), incidence properties, and the connection to Mathlib's Configuration.ProjectivePlane type."
+      "mathContext": "Formal definition: Defines the axioms of a finite projective plane of order n: the counting formulas (n²+n+1 points and lines), incidence properties, and the connection to Mathlib's Configuration.ProjectivePlane type."
     },
     {
       "id": "main-conjecture",
@@ -83,7 +83,7 @@
       "startLine": 61,
       "endLine": 74,
       "summary": "Axiom asserting that projective planes exist for all prime power orders, via the classical PG(2,q) construction from finite fields. This is a deep algebraic result not formalized in Mathlib.",
-      "mathContext": "Axiom asserting that projective planes exist for all prime power orders, via the classical PG(2,q) construction from finite fields. This is a deep algebraic result not formalized in Mathlib."
+      "mathContext": "Axiomatized: Axiom asserting that projective planes exist for all prime power orders, via the classical PG(2,q) construction from finite fields. This is a deep algebraic result not formalized in Mathlib."
     },
     {
       "id": "verified-small-orders",
@@ -91,7 +91,7 @@
       "startLine": 75,
       "endLine": 87,
       "summary": "Axiom recording that the conjecture holds for all orders up to 11. Each case uses different methods: direct construction for prime powers, Bruck-Ryser for 6, and Lam's computation for 10.",
-      "mathContext": "Axiom recording that the conjecture holds for all orders up to 11. Each case uses different methods: direct construction for prime powers, Bruck-Ryser for 6, and Lam's computation for 10."
+      "mathContext": "Axiomatized: Axiom recording that the conjecture holds for all orders up to 11. Each case uses different methods: direct construction for prime powers, Bruck-Ryser for 6, and Lam's computation for 10."
     },
     {
       "id": "bruck-ryser-theorem",
@@ -107,7 +107,7 @@
       "startLine": 105,
       "endLine": 119,
       "summary": "Axiom recording Lam, Thiel, and Swiercz's 1989 computational proof that no order-10 projective plane exists. Notable because Bruck-Ryser does not rule out order 10 (since 10 = 1² + 3²).",
-      "mathContext": "Axiom recording Lam, Thiel, and Swiercz's 1989 computational proof that no order-10 projective plane exists. Notable because Bruck-Ryser does not rule out order 10 (since 10 = 1² + 3²)."
+      "mathContext": "Verified: Axiom recording Lam, Thiel, and Swiercz's 1989 computational proof that no order-10 projective plane exists. Notable because Bruck-Ryser does not rule out order 10 (since 10 = 1² + 3²)."
     },
     {
       "id": "order-12-open",
@@ -115,7 +115,7 @@
       "startLine": 120,
       "endLine": 128,
       "summary": "Documents that order 12 is the smallest open case: 12 ≡ 0 (mod 4) so Bruck-Ryser does not apply, 12 is not a prime power, and no computer search has succeeded due to the enormous search space.",
-      "mathContext": "Documents that order 12 is the smallest open case: 12 ≡ 0 (mod 4) so Bruck-Ryser does not apply, 12 is not a prime power, and no computer search has succeeded due to the enormous search space."
+      "mathContext": "Mathematical content: Documents that order 12 is the smallest open case: 12 ≡ 0 (mod 4) so Bruck-Ryser does not apply, 12 is not a prime power, and no computer search has succeeded due to the enormous search space."
     },
     {
       "id": "basic-properties",
@@ -123,7 +123,7 @@
       "startLine": 129,
       "endLine": 140,
       "summary": "Two verified theorems extracting counting formulas from Mathlib's ProjectivePlane API: plane_points and plane_lines both proving |P| = |L| = n² + n + 1, reflecting projective point-line duality.",
-      "mathContext": "Two verified theorems extracting counting formulas from Mathlib's ProjectivePlane API: plane_points and plane_lines both proving |P| = |L| = n² + n + 1, reflecting projective point-line duality."
+      "mathContext": "Verified: Two verified theorems extracting counting formulas from Mathlib's ProjectivePlane API: plane_points and plane_lines both proving |P| = |L| = n² + n + 1, reflecting projective point-line duality."
     },
     {
       "id": "small-order-examples",
@@ -131,7 +131,7 @@
       "startLine": 141,
       "endLine": 168,
       "summary": "Verified computations: IsPrimePow for orders 1-5 via decide (with order 4 needing explicit 4=2² rewrite), and ¬IsPrimePow for 6, 10, 12 confirming these are not prime powers.",
-      "mathContext": "Verified computations: IsPrimePow for orders 1-5 via decide (with order 4 needing explicit 4=2² rewrite), and ¬IsPrimePow for 6, 10, 12 confirming these are not prime powers."
+      "mathContext": "Mathematical content: Verified computations: IsPrimePow for orders 1-5 via decide (with order 4 needing explicit 4=2² rewrite), and ¬IsPrimePow for 6, 10, 12 confirming these are not prime powers."
     },
     {
       "id": "bruck-ryser-applications",

@@ -97,7 +97,7 @@
       "startLine": 29,
       "endLine": 34,
       "summary": "Imports Erdős #37 formalization for Schnirelmann density, essential components, and smooth number definitions. Opens the Erdos37 namespace.",
-      "mathContext": "Imports Erdős #37 formalization for Schnirelmann density, essential components, and smooth number definitions. Opens the Erdos37 namespace."
+      "mathContext": "Formal definition: Imports Erdős #37 formalization for Schnirelmann density, essential components, and smooth number definitions. Opens the Erdos37 namespace."
     },
     {
       "id": "smooth-properties",
@@ -105,7 +105,7 @@
       "startLine": 35,
       "endLine": 90,
       "summary": "Proves basic properties: membership (1, 2, 3, 6 are smooth), closure under multiplication by 2 and 3, multiplicative closure, positivity, and unboundedness.",
-      "mathContext": "Proves basic properties: membership (1, 2, 3, 6 are smooth), closure under multiplication by 2 and 3, multiplicative closure, positivity, and unboundedness."
+      "mathContext": "Verified: Proves basic properties: membership (1, 2, 3, 6 are smooth), closure under multiplication by 2 and 3, multiplicative closure, positivity, and unboundedness."
     },
     {
       "id": "non-lacunary",
@@ -113,7 +113,7 @@
       "startLine": 91,
       "endLine": 109,
       "summary": "States that {2^m · 3^n} is NOT lacunary (axiom). Consecutive smooth numbers have ratios approaching 1, unlike lacunary sets.",
-      "mathContext": "States that {2^m · 3^n} is NOT lacunary (axiom). Consecutive smooth numbers have ratios approaching 1, unlike lacunary sets."
+      "mathContext": "States that {$2^{m}$ · $3^{n}$} is NOT lacunary (axiom). Consecutive smooth numbers have ratios approaching 1, unlike lacunary sets."
     },
     {
       "id": "growth",
@@ -129,7 +129,7 @@
       "startLine": 134,
       "endLine": 150,
       "summary": "Axiom: d_s({2^m · 3^n}) = 0. Smooth numbers become sparse in initial segments.",
-      "mathContext": "Axiom: d_s({2^m · 3^n}) = 0. Smooth numbers become sparse in initial segments."
+      "mathContext": "Axiom: d_s({$2^{m}$ · $3^{n}$}) = 0. Smooth numbers become sparse in initial segments."
     },
     {
       "id": "mann-bound",
@@ -137,7 +137,7 @@
       "startLine": 151,
       "endLine": 175,
       "summary": "Proves mann_lower_bound: d_s(A + B) ≥ d_s(B) using Mann's theorem with d_s(A) = 0. Shows why the problem is hard — we get only non-strict inequality.",
-      "mathContext": "Proves mann_lower_bound: d_s(A + B) ≥ d_s(B) using Mann's theorem with d_s(A) = 0. Shows why the problem is hard — we get only non-strict inequality."
+      "mathContext": "Proves mann_lower_bound: d_s(A + B) $\\geq$ d_s(B) using Mann's theorem with d_s(A) = 0. Shows why the problem is hard — we get only non-strict inequality."
     },
     {
       "id": "main-conjecture",
@@ -145,7 +145,7 @@
       "startLine": 176,
       "endLine": 211,
       "summary": "States Erdos1146Conjecture = IsEssentialComponent smoothNumbers23 and proves equivalence with RuzsaOpenQuestion from Erdős #37. Discusses what would resolve the problem.",
-      "mathContext": "States Erdos1146Conjecture = IsEssentialComponent smoothNumbers23 and proves equivalence with RuzsaOpenQuestion from Erdős #37. Discusses what would resolve the problem."
+      "mathContext": "Verified: States Erdos1146Conjecture = IsEssentialComponent smoothNumbers23 and proves equivalence with RuzsaOpenQuestion from Erdős #37. Discusses what would resolve the problem."
     },
     {
       "id": "generalization",
@@ -153,7 +153,7 @@
       "startLine": 212,
       "endLine": 238,
       "summary": "Defines smoothNumbers for arbitrary prime sets and proves single_prime_not_essential: powers of a single prime are not essential (using lacunary → not essential from #37).",
-      "mathContext": "Defines smoothNumbers for arbitrary prime sets and proves single_prime_not_essential: powers of a single prime are not essential (using lacunary → not essential from #37)."
+      "mathContext": "Defines smoothNumbers for arbitrary prime sets and proves single_prime_not_essential: powers of a single prime are not essential (using lacunary $\\to$ not essential from #37)."
     }
   ],
   "conclusion": {

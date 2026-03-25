@@ -60,7 +60,7 @@
       "summary": "Defines DiskPoint (open unit disk), Chord (line restricted to disk), OnChord (incidence), and ChordParallel (no common disk point).",
       "startLine": 24,
       "endLine": 53,
-      "mathContext": "Defines DiskPoint (open unit disk), Chord (line restricted to disk), OnChord (incidence), and ChordParallel (no common disk point)."
+      "mathContext": "A $\\mathrm{DiskPoint}$ is $(x,y) \\in \\mathbb{R}^2$ with $x^2 + y^2 < 1$ (the open unit disk $\\mathbb{D}$). A $\\mathrm{Chord}$ is a line $ax + by + c = 0$ restricted to $\\mathbb{D}$. Two chords are $\\mathrm{ChordParallel}$ if they share no interior disk point."
     },
     {
       "id": "concrete-constructions",
@@ -68,7 +68,7 @@
       "summary": "Defines the x-axis chord, point P = (0, 1/2), and two parallel chords par₁ (slope 1/4) and par₂ (slope -1/4).",
       "startLine": 54,
       "endLine": 90,
-      "mathContext": "Defines the x-axis chord, point P = (0, 1/2), and two parallel chords par₁ (slope 1/4) and par₂ (slope -1/4)."
+      "mathContext": "Constructs the $x$-axis chord ($y = 0$), the point $P = (0, \\tfrac{1}{2})$ with $0^2 + (\\tfrac{1}{2})^2 = \\tfrac{1}{4} < 1$, and two chords through $P$: $\\mathrm{par}_1: x - 4y + 2 = 0$ (slope $\\tfrac{1}{4}$) and $\\mathrm{par}_2: x + 4y - 2 = 0$ (slope $-\\tfrac{1}{4}$)."
     },
     {
       "id": "verification",
@@ -76,7 +76,7 @@
       "summary": "Proves P is not on xaxis, P lies on both parallels, parallels are distinct, and each parallel doesn't intersect xaxis in the disk.",
       "startLine": 91,
       "endLine": 132,
-      "mathContext": "Proves P is not on xaxis, P lies on both parallels, parallels are distinct, and each parallel doesn't intersect xaxis in the disk."
+      "mathContext": "Verifies: (1) $P = (0,\\tfrac{1}{2})$ is not on $y=0$; (2) $P$ lies on both $\\mathrm{par}_1$ and $\\mathrm{par}_2$; (3) $\\mathrm{par}_1 \\neq \\mathrm{par}_2$ (different $b$-coefficients $-4$ vs $4$); (4) $\\mathrm{par}_1 \\cap (y=0)$ is at $(-2,0)$ with $(-2)^2 > 1$, hence outside $\\mathbb{D}$; similarly $\\mathrm{par}_2 \\cap (y=0) = (2,0)$."
     },
     {
       "id": "hyperbolic-parallel",
@@ -84,7 +84,7 @@
       "summary": "Assembles the existential witness: chord xaxis, point P, and two distinct parallel chords through P.",
       "startLine": 133,
       "endLine": 147,
-      "mathContext": "Assembles the existential witness: chord xaxis, point P, and two distinct parallel chords through P."
+      "mathContext": "Constructs the existential witness $\\exists\\, \\ell, P, m_1, m_2$ such that $P \\notin \\ell$, $P \\in m_1 \\cap m_2$, $m_1 \\neq m_2$, $m_1 \\parallel \\ell$, and $m_2 \\parallel \\ell$ in the Beltrami-Klein model, proving the hyperbolic parallel property."
     },
     {
       "id": "pp-violation",
@@ -92,7 +92,7 @@
       "summary": "Defines Playfair's axiom for the BK model and proves it fails: uniqueness is contradicted by the two parallels.",
       "startLine": 148,
       "endLine": 169,
-      "mathContext": "Defines Playfair's axiom for the BK model and proves it fails: uniqueness is contradicted by the two parallels."
+      "mathContext": "Playfair's axiom states: for any chord $\\ell$ and point $P \\notin \\ell$, there exists a unique chord $m$ with $P \\in m$ and $m \\parallel \\ell$. The two distinct parallels $\\mathrm{par}_1, \\mathrm{par}_2$ through $P$ contradict uniqueness, so Playfair's axiom is false in the BK model."
     },
     {
       "id": "incidence-axioms",
@@ -100,7 +100,7 @@
       "summary": "Proves three non-collinear points exist (O, A, B), disk nontriviality, and axiomatizes two-point-determine-chord and chord-has-two-points.",
       "startLine": 170,
       "endLine": 200,
-      "mathContext": "Proves three non-collinear points exist (O, A, B), disk nontriviality, and axiomatizes two-point-determine-chord and chord-has-two-points."
+      "mathContext": "Verifies non-degeneracy: $O = (0,0)$, $A = (\\tfrac{1}{2}, 0)$, $B = (0, \\tfrac{1}{2})$ are three non-collinear points in $\\mathbb{D}$. Axiomatizes that two distinct disk points determine a unique chord and each chord contains at least two disk points."
     },
     {
       "id": "independence",
@@ -108,7 +108,7 @@
       "summary": "Combines Euclidean (axiomatized) and Beltrami-Klein (proved) models to establish that the parallel postulate is independent.",
       "startLine": 201,
       "endLine": 229,
-      "mathContext": "Combines Euclidean (axiomatized) and Beltrami-Klein (proved) models to establish that the parallel postulate is independent."
+      "mathContext": "Independence: the Euclidean model satisfies axioms $A_1, \\ldots, A_4$ plus the parallel postulate $P$, while the Beltrami-Klein model satisfies $A_1, \\ldots, A_4$ but $\\lnot P$. Since both are consistent, $P$ is independent of $\\{A_1, \\ldots, A_4\\}$: neither $P$ nor $\\lnot P$ is provable from the other axioms."
     },
     {
       "id": "additional",
@@ -116,7 +116,7 @@
       "summary": "Euclidean-parallel chords are BK-parallel; example of a non-parallel secant crossing xaxis inside the disk.",
       "startLine": 230,
       "endLine": 453,
-      "mathContext": "Euclidean-parallel chords are BK-parallel; example of a non-parallel secant crossing xaxis inside the disk."
+      "mathContext": "If two chords are Euclidean-parallel (e.g., $y = 0$ and $y = \\tfrac{1}{3}$, which never intersect), they are also BK-parallel. Conversely, a chord with slope $1$ through $(0, \\tfrac{1}{2})$ crosses $y = 0$ at $(-\\tfrac{1}{2}, 0)$, which satisfies $(-\\tfrac{1}{2})^2 < 1$, so it is a secant (not parallel)."
     }
   ],
   "overview": {

@@ -105,7 +105,7 @@
       "startLine": 221,
       "endLine": 241,
       "summary": "Defines the bijection: $h(a) = f(a)$ if $a$ is reachable, else $h(a) = g^{-1}(a)$. The orbit classification (`a ∈ reachableSet`) is decidable; only the preimage extraction uses `Classical.choose`",
-      "mathContext": "Defines the bijection: $h(a) = f(a)$ if $a$ is reachable, else $h(a) = g^{-1}(a)$. The orbit classification (`a ∈ reachableSet`) is decidable; only the preimage extraction uses `Classical.choose`"
+      "mathContext": "Formal definition: Defines the bijection: $h(a) = f(a)$ if $a$ is reachable, else $h(a) = g^{-1}(a)$. The orbit classification (`a ∈ reachableSet`) is decidable; only the preimage extraction uses `Classical.choose`"
     },
     {
       "id": "injectivity",
@@ -113,7 +113,7 @@
       "startLine": 242,
       "endLine": 273,
       "summary": "Proves injectivity by four cases. The cross-cases (one reachable, one not) derive a contradiction: $g(f(a_1)) = a_2$ would put $a_2$ in the reachable set by closure",
-      "mathContext": "Proves injectivity by four cases. The cross-cases (one reachable, one not) derive a contradiction: $g(f(a_1)) = a_2$ would put $a_2$ in the reachable set by closure"
+      "mathContext": "Verified: Proves injectivity by four cases. The cross-cases (one reachable, one not) derive a contradiction: $g(f(a_1)) = a_2$ would put $a_2$ in the reachable set by closure"
     },
     {
       "id": "surjectivity",
@@ -121,7 +121,7 @@
       "startLine": 274,
       "endLine": 298,
       "summary": "Proves surjectivity: for any $b \\in \\beta$, either some reachable $a$ maps to $b$ via $f$, or $g(b)$ is not reachable (by decomposition + injectivity of $g$) and maps back to $b$",
-      "mathContext": "Proves surjectivity: for any $b \\in \\beta$, either some reachable $a$ maps to $b$ via $f$, or $g(b)$ is not reachable (by decomposition + injectivity of $g$) and maps back to $b$"
+      "mathContext": "Proves surjectivity: for any $b \\in \\$\\beta$$, either some reachable $a$ maps to $b$ via $f$, or $g(b)$ is not reachable (by decomposition + injectivity of $g$) and maps back to $b$"
     },
     {
       "id": "main-theorem",
@@ -129,7 +129,7 @@
       "startLine": 299,
       "endLine": 314,
       "summary": "Assembles the final equivalence $\\alpha \\simeq \\beta$ via `Equiv.ofBijective` and declares the `Decidable` instance for orbit classification",
-      "mathContext": "Assembles the final equivalence $\\alpha \\simeq \\beta$ via `Equiv.ofBijective` and declares the `Decidable` instance for orbit classification"
+      "mathContext": "Assembles the final equivalence $\\$\\alpha$ \\simeq \\$\\beta$$ via `Equiv.ofBijective` and declares the `Decidable` instance for orbit classification"
     }
   ],
   "conclusion": {

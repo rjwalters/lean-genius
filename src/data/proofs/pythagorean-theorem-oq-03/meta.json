@@ -111,7 +111,7 @@
       "startLine": 326,
       "endLine": 356,
       "summary": "The cos-to-cosh correspondence (Wick rotation) connecting spherical and hyperbolic geometry: cos(ix) = cosh(x).",
-      "mathContext": "The cos-to-cosh correspondence (Wick rotation) connecting spherical and hyperbolic geometry: cos(ix) = cosh(x)."
+      "mathContext": "$\\cos(ix) = \\cosh(x)$: Wick rotation connecting spherical ($\\cos c = \\cos a \\cos b$) and hyperbolic ($\\cosh c = \\cosh a \\cosh b$) Pythagorean theorems via analytic continuation $x \\mapsto ix$."
     },
     {
       "id": "flat-limit",
@@ -119,7 +119,7 @@
       "startLine": 357,
       "endLine": 476,
       "summary": "Derivatives of cosh and sinh, second-order Taylor behavior at zero, and the flat-limit argument showing both non-Euclidean laws reduce to a² + b² = c².",
-      "mathContext": "Derivatives of cosh and sinh, second-order Taylor behavior at zero, and the flat-limit argument showing both non-Euclidean laws reduce to a² + b² = c²."
+      "mathContext": "Taylor expansions: $\\cosh(x) = 1 + x^2/2 + O(x^4)$, $\\cos(x) = 1 - x^2/2 + O(x^4)$. Both non-Euclidean laws reduce to $c^2 = a^2 + b^2$ as curvature $\\kappa \\to 0$, with correction $O(a^2 b^2)$."
     },
     {
       "id": "unified-framework",
@@ -135,7 +135,7 @@
       "startLine": 534,
       "endLine": 565,
       "summary": "The hyperbolic excess: cosh(a)·cosh(b) ≥ cosh(a) + cosh(b) - 1, showing the angular defect in hyperbolic triangles.",
-      "mathContext": "The hyperbolic excess: cosh(a)·cosh(b) ≥ cosh(a) + cosh(b) - 1, showing the angular defect in hyperbolic triangles."
+      "mathContext": "$\\cosh a \\cdot \\cosh b \\geq \\cosh a + \\cosh b - 1$: quantifies the angular defect in hyperbolic right triangles, analogous to the Euclidean inequality $(1 + a^2/2)(1 + b^2/2) \\geq 1 + (a^2 + b^2)/2$."
     },
     {
       "id": "area-defect",
@@ -143,7 +143,7 @@
       "startLine": 566,
       "endLine": 622,
       "summary": "Hyperbolic area = π/2 - α - β (angular defect), spherical area = α + β - π/2 (angular excess).",
-      "mathContext": "Hyperbolic area = π/2 - α - β (angular defect), spherical area = α + β - π/2 (angular excess)."
+      "mathContext": "Gauss-Bonnet connection: hyperbolic right triangle area $= \\pi/2 - \\alpha - \\beta$ (defect below $\\pi/2$), spherical area $= \\alpha + \\beta - \\pi/2$ (excess above $\\pi/2$). Both vanish as sides $\\to 0$."
     },
     {
       "id": "numerical-verifications",
@@ -151,7 +151,7 @@
       "startLine": 623,
       "endLine": 645,
       "summary": "Verified Pythagorean triples: 3-4-5, 5-12-13, 8-15-17, 7-24-25.",
-      "mathContext": "Verified Pythagorean triples: 3-4-5, 5-12-13, 8-15-17, 7-24-25."
+      "mathContext": "Classical Pythagorean triples verified: $3^2 + 4^2 = 5^2$, $5^2 + 12^2 = 13^2$, $8^2 + 15^2 = 17^2$, $7^2 + 24^2 = 25^2$."
     },
     {
       "id": "hyperbolic-identities",
@@ -159,7 +159,7 @@
       "startLine": 646,
       "endLine": 693,
       "summary": "Addition formulas for cosh(x+y) and sinh(x+y), double-angle formulas cosh(2x) and sinh(2x).",
-      "mathContext": "Addition formulas for cosh(x+y) and sinh(x+y), double-angle formulas cosh(2x) and sinh(2x)."
+      "mathContext": "$\\cosh(x+y) = \\cosh x \\cosh y + \\sinh x \\sinh y$, $\\sinh(x+y) = \\sinh x \\cosh y + \\cosh x \\sinh y$. Double-angle: $\\cosh(2x) = 2\\cosh^2 x - 1$, $\\sinh(2x) = 2\\sinh x \\cosh x$."
     },
     {
       "id": "distance-properties",
@@ -167,7 +167,7 @@
       "startLine": 694,
       "endLine": 779,
       "summary": "Strict monotonicity of cosh on [0,∞), strict hypotenuse > leg inequality, uniqueness of complementary leg.",
-      "mathContext": "Strict monotonicity of cosh on [0,∞), strict hypotenuse > leg inequality, uniqueness of complementary leg."
+      "mathContext": "$\\cosh$ strictly monotone on $[0, \\infty)$: $0 \\leq a < b \\Rightarrow \\cosh a < \\cosh b$. Consequence: $\\cosh c = \\cosh a \\cosh b > \\cosh a \\Rightarrow c > a$ (strict hypotenuse inequality). Complementary leg is unique."
     },
     {
       "id": "law-of-cosines",
@@ -175,7 +175,7 @@
       "startLine": 728,
       "endLine": 756,
       "summary": "Both spherical and hyperbolic laws of cosines reduce to Pythagorean form when the included angle C = π/2.",
-      "mathContext": "Both spherical and hyperbolic laws of cosines reduce to Pythagorean form when the included angle C = π/2."
+      "mathContext": "Spherical: $\\cos c = \\cos a \\cos b + \\sin a \\sin b \\cos C$. Hyperbolic: $\\cosh c = \\cosh a \\cosh b - \\sinh a \\sinh b \\cos C$. Setting $C = \\pi/2$ ($\\cos C = 0$) recovers the Pythagorean forms."
     },
     {
       "id": "minkowski-spacetime",
@@ -191,7 +191,7 @@
       "startLine": 1221,
       "endLine": 1310,
       "summary": "Lorentz boost transformations preserving the spacetime interval. Both β-parameterization (with Lorentz factor γ) and rapidity-parameterized forms, with proofs of causal character preservation.",
-      "mathContext": "Lorentz boost transformations preserving the spacetime interval. Both β-parameterization (with Lorentz factor γ) and rapidity-parameterized forms, with proofs of causal character preservation."
+      "mathContext": "Lorentz boost: $t' = \\gamma(t - \\beta x)$, $x' = \\gamma(x - \\beta t)$ with $\\gamma = 1/\\sqrt{1 - \\beta^2}$. Preserves interval: $t'^2 - x'^2 = t^2 - x^2$. Rapidity form: $t' = t\\cosh\\phi - x\\sinh\\phi$."
     },
     {
       "id": "rapidity-hyperbolic",
@@ -199,7 +199,7 @@
       "startLine": 1311,
       "endLine": 1380,
       "summary": "Lorentz boosts as hyperbolic rotations using rapidity φ. Rapidity composition law (additivity), connecting special relativity to hyperbolic geometry via cosh/sinh.",
-      "mathContext": "Lorentz boosts as hyperbolic rotations using rapidity φ. Rapidity composition law (additivity), connecting special relativity to hyperbolic geometry via cosh/sinh."
+      "mathContext": "Rapidity $\\phi = \\mathrm{arctanh}(\\beta)$: Lorentz boosts become hyperbolic rotations with $\\cosh\\phi = \\gamma$, $\\sinh\\phi = \\beta\\gamma$. Composition: $\\phi_{12} = \\phi_1 + \\phi_2$ (rapidities add, velocities don't)."
     },
     {
       "id": "time-dilation",
@@ -207,7 +207,7 @@
       "startLine": 1381,
       "endLine": 1431,
       "summary": "Time dilation as consequence of the anti-Pythagorean relation. The reversed triangle inequality for timelike intervals — the mathematical basis of the twin paradox.",
-      "mathContext": "Time dilation as consequence of the anti-Pythagorean relation. The reversed triangle inequality for timelike intervals — the mathematical basis of the twin paradox."
+      "mathContext": "Time dilation: $\\tau = t\\sqrt{1 - \\beta^2} = t/\\gamma \\leq t$. Reversed triangle inequality for timelike intervals: $\\tau(A \\to C) \\geq \\tau(A \\to B) + \\tau(B \\to C)$ — the twin paradox."
     },
     {
       "id": "four-geometries",
@@ -215,7 +215,7 @@
       "startLine": 1431,
       "endLine": 1431,
       "summary": "Comparison of spherical, Euclidean, hyperbolic, and Minkowski Pythagorean relations. Euclidean vs Minkowski quadratic forms, indefiniteness of the Minkowski form.",
-      "mathContext": "Comparison of spherical, Euclidean, hyperbolic, and Minkowski Pythagorean relations. Euclidean vs Minkowski quadratic forms, indefiniteness of the Minkowski form."
+      "mathContext": "Four Pythagorean relations: $\\cos c = \\cos a \\cos b$ (spherical, $\\kappa > 0$), $c^2 = a^2 + b^2$ (Euclidean, $\\kappa = 0$), $\\cosh c = \\cosh a \\cosh b$ (hyperbolic, $\\kappa < 0$), $\\tau^2 = t^2 - x^2$ (Minkowski, indefinite signature)."
     }
   ],
   "conclusion": {

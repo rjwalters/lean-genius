@@ -103,7 +103,7 @@
       "startLine": 29,
       "endLine": 57,
       "summary": "hasFourCycle (4 distinct vertices with 6 distinctness + 4 adjacency conditions), isFourCycleFree (negation), edgeCount (G.edgeFinset.card). Uses SimpleGraph.Adj and Fintype.",
-      "mathContext": "hasFourCycle (4 distinct vertices with 6 distinctness + 4 adjacency conditions), isFourCycleFree (negation), edgeCount (G.edgeFinset.card). Uses SimpleGraph.Adj and Fintype."
+      "mathContext": "Mathematical content: hasFourCycle (4 distinct vertices with 6 distinctness + 4 adjacency conditions), isFourCycleFree (negation), edgeCount (G.edgeFinset.card). Uses SimpleGraph.Adj and Fintype."
     },
     {
       "id": "extremal-function",
@@ -111,7 +111,7 @@
       "startLine": 58,
       "endLine": 73,
       "summary": "ex_C4 (axiom): maximum edges in n-vertex C4-free graph. ex_C4_realized (axiom): existence of optimal graph. The central object of Problem #765.",
-      "mathContext": "ex_C4 (axiom): maximum edges in n-vertex C4-free graph. ex_C4_realized (axiom): existence of optimal graph. The central object of Problem #765."
+      "mathContext": "Axiomatized: ex_C4 (axiom): maximum edges in n-vertex C4-free graph. ex_C4_realized (axiom): existence of optimal graph. The central object of Problem #765."
     },
     {
       "id": "historical-bounds",
@@ -119,7 +119,7 @@
       "startLine": 74,
       "endLine": 104,
       "summary": "erdos_klein_upper (axiom): O(n^{3/2}) via double counting. reiman_bounds (axiom): 1/(2*sqrt(2)) <= L <= 1/2. projective_plane_construction (axiom): PG(2,q) lower bound (1/2)q(q+1)^2 for n = q^2+q+1.",
-      "mathContext": "erdos_klein_upper (axiom): O(n^{3/2}) via double counting. reiman_bounds (axiom): 1/(2*sqrt(2)) <= L <= 1/2. projective_plane_construction (axiom): PG(2,q) lower bound (1/2)q(q+1)^2 for n = q^2+q+1."
+      "mathContext": "erdos_klein_upper (axiom): $O(n^{3/2})$ via double counting. reiman_bounds (axiom): 1/(2*$\\sqrt{2}$) <= L <= 1/2. projective_plane_construction (axiom): PG(2,q) lower bound (1/2)q(q+1)^2 for n = q^2+q+1."
     },
     {
       "id": "asymptotic-formula",
@@ -127,7 +127,7 @@
       "startLine": 105,
       "endLine": 131,
       "summary": "asymptotic_ratio (noncomputable def): ex_C4(n)/n^{3/2}. asymptotic_formula (axiom): limit is 1/2. erdos_765 (PROVED): main theorem, direct from asymptotic_formula.",
-      "mathContext": "asymptotic_ratio (noncomputable def): ex_C4(n)/n^{3/2}. asymptotic_formula (axiom): limit is 1/2. erdos_765 (PROVED): main theorem, direct from asymptotic_formula."
+      "mathContext": "Verified: asymptotic_ratio (noncomputable def): ex_C4(n)/n^{3/2}. asymptotic_formula (axiom): limit is 1/2. erdos_765 (PROVED): main theorem, direct from asymptotic_formula."
     },
     {
       "id": "furedi-exact",
@@ -135,7 +135,7 @@
       "startLine": 132,
       "endLine": 145,
       "summary": "furedi_exact (axiom): for q > 13 prime power, ex(q^2+q+1; C4) = (1/2)q(q+1)^2 exactly. PG(2,q) is the unique extremal graph.",
-      "mathContext": "furedi_exact (axiom): for q > 13 prime power, ex(q^2+q+1; C4) = (1/2)q(q+1)^2 exactly. PG(2,q) is the unique extremal graph."
+      "mathContext": "Axiomatized: furedi_exact (axiom): for q > 13 prime power, ex(q^2+q+1; C4) = (1/2)q(q+1)^2 exactly. PG(2,q) is the unique extremal graph."
     },
     {
       "id": "erdos-conjecture",
@@ -143,7 +143,7 @@
       "startLine": 146,
       "endLine": 175,
       "summary": "erdos_refined_upper (axiom): (1/2)n^{3/2} + (1/4)n + O(sqrt(n)). erdos_conjecture (def): lower bound matching. ma_yang_disproof (axiom): positive-density counterexample with coefficient 1/4 - c.",
-      "mathContext": "erdos_refined_upper (axiom): (1/2)n^{3/2} + (1/4)n + O(sqrt(n)). erdos_conjecture (def): lower bound matching. ma_yang_disproof (axiom): positive-density counterexample with coefficient 1/4 - c."
+      "mathContext": "erdos_refined_upper (axiom): (1/2)n^{3/2} + (1/4)n + $O($\\sqrt{n}$)$. erdos_conjecture (def): lower bound matching. ma_yang_disproof (axiom): positive-density counterexample with coefficient 1/4 - c."
     },
     {
       "id": "number-theory",
@@ -151,7 +151,7 @@
       "startLine": 176,
       "endLine": 188,
       "summary": "is_B2_sequence: Sidon set definition (all pairwise sums distinct). Erdos's original 1936 motivation connecting additive combinatorics to extremal graph theory.",
-      "mathContext": "is_B2_sequence: Sidon set definition (all pairwise sums distinct). Erdos's original 1936 motivation connecting additive combinatorics to extremal graph theory."
+      "mathContext": "Formal definition: is_B2_sequence: Sidon set definition (all pairwise sums distinct). Erdos's original 1936 motivation connecting additive combinatorics to extremal graph theory."
     },
     {
       "id": "examples",
@@ -159,7 +159,7 @@
       "startLine": 189,
       "endLine": 228,
       "summary": "fano_plane_example: PG(2,2) = 7 vertices. pg23_example: PG(2,3) = 13. pg24_example: PG(2,4) = 21. pg25_example: PG(2,5) = 31. All proved by simp[projectivePlaneVertices]; ring.",
-      "mathContext": "fano_plane_example: PG(2,2) = 7 vertices. pg23_example: PG(2,3) = 13. pg24_example: PG(2,4) = 21. pg25_example: PG(2,5) = 31. All proved by simp[projectivePlaneVertices]; ring."
+      "mathContext": "Mathematical content: fano_plane_example: PG(2,2) = 7 vertices. pg23_example: PG(2,3) = 13. pg24_example: PG(2,4) = 21. pg25_example: PG(2,5) = 31. All proved by simp[projectivePlaneVertices]; ring."
     },
     {
       "id": "summary",
@@ -167,7 +167,7 @@
       "startLine": 229,
       "endLine": 246,
       "summary": "erdos_765_summary (PROVED): conjunction of asymptotic_formula and fano_plane_example. Combines the main result with a concrete computation.",
-      "mathContext": "erdos_765_summary (PROVED): conjunction of asymptotic_formula and fano_plane_example. Combines the main result with a concrete computation."
+      "mathContext": "Mathematical content: erdos_765_summary (PROVED): conjunction of asymptotic_formula and fano_plane_example. Combines the main result with a concrete computation."
     }
   ],
   "conclusion": {

@@ -110,7 +110,7 @@
       "startLine": 28,
       "endLine": 36,
       "summary": "Imports `ArithmeticFunction`, `Topology.Basic`, `Topology.Instances.Real`. Opens `ArithmeticFunction`, `Filter`, `Topology` namespaces.",
-      "mathContext": "Imports `ArithmeticFunction`, `Topology.Basic`, `Topology.Instances.Real`. Opens `ArithmeticFunction`, `Filter`, `Topology` namespaces."
+      "mathContext": "Mathematical content: Imports `ArithmeticFunction`, `Topology.Basic`, `Topology.Instances.Real`. Opens `ArithmeticFunction`, `Filter`, `Topology` namespaces."
     },
     {
       "id": "divisor-basics",
@@ -126,7 +126,7 @@
       "startLine": 71,
       "endLine": 80,
       "summary": "Defines `IsSigmaPair n m` ($\\sigma(n) = \\sigma(m)$) and `SigmaSequenceConvergingTo α` ($\\exists (n_k), (m_k),\\; \\sigma(n_k) = \\sigma(m_k) \\wedge n_k/m_k \\to \\alpha$).",
-      "mathContext": "Defines `IsSigmaPair n m` ($\\sigma(n) = \\sigma(m)$) and `SigmaSequenceConvergingTo α` ($\\exists (n_k), (m_k),\\; \\sigma(n_k) = \\sigma(m_k) \\wedge n_k/m_k \\to \\alpha$)."
+      "mathContext": "Defines `IsSigmaPair n m` ($\\sigma(n) = \\sigma(m)$) and `SigmaSequenceConvergingTo α` ($\\exists (n_k), (m_k),\\; \\sigma(n_k) = \\sigma(m_k) \\wedge n_k/m_k \\to \\$\\alpha$$)."
     },
     {
       "id": "pollack-theorem",
@@ -134,7 +134,7 @@
       "startLine": 88,
       "endLine": 99,
       "summary": "Axiomatizes `pollack_2015` and **proves** `erdos_823_solved` as a direct corollary.",
-      "mathContext": "Axiomatizes `pollack_2015` and **proves** `erdos_823_solved` as a direct corollary."
+      "mathContext": "Verified: Axiomatizes `pollack_2015` and **proves** `erdos_823_solved` as a direct corollary."
     },
     {
       "id": "sigma-pairs",
@@ -142,7 +142,7 @@
       "startLine": 107,
       "endLine": 129,
       "summary": "Axiomatizes $\\sigma(14) = \\sigma(15) = 24$, $\\sigma(206) = \\sigma(210) = 432$, $\\sigma(957) = \\sigma(958)$. Ratio checks via `native_decide`.",
-      "mathContext": "Axiomatizes $\\sigma(14) = \\sigma(15) = 24$, $\\sigma(206) = \\sigma(210) = 432$, $\\sigma(957) = \\sigma(958)$. Ratio checks via `native_decide`."
+      "mathContext": "Axiomatized: Axiomatizes $\\sigma(14) = \\sigma(15) = 24$, $\\sigma(206) = \\sigma(210) = 432$, $\\sigma(957) = \\sigma(958)$. Ratio checks via `native_decide`."
     },
     {
       "id": "totient-analogy",
@@ -150,7 +150,7 @@
       "startLine": 137,
       "endLine": 158,
       "summary": "Defines $\\varphi(n)$ via `ArithmeticFunction.totient`. Axiomatizes the 'easy' $\\varphi$-analogue and examples: $\\varphi(1) = \\varphi(2) = 1$, $\\varphi(3) = \\varphi(4) = \\varphi(6) = 2$.",
-      "mathContext": "Defines $\\varphi(n)$ via `ArithmeticFunction.totient`. Axiomatizes the 'easy' $\\varphi$-analogue and examples: $\\varphi(1) = \\varphi(2) = 1$, $\\varphi(3) = \\varphi(4) = \\varphi(6) = 2$."
+      "mathContext": "Formal definition: Defines $\\varphi(n)$ via `ArithmeticFunction.totient`. Axiomatizes the 'easy' $\\varphi$-analogue and examples: $\\varphi(1) = \\varphi(2) = 1$, $\\varphi(3) = \\varphi(4) = \\varphi(6) = 2$."
     },
     {
       "id": "fiber-properties",
@@ -158,7 +158,7 @@
       "startLine": 164,
       "endLine": 176,
       "summary": "Defines `sigmaFiber m` ($\\sigma^{-1}(m)$). Axiomatizes: $14, 15 \\in \\sigma^{-1}(24)$, fibers can be arbitrarily large, every large even number is a $\\sigma$-value.",
-      "mathContext": "Defines `sigmaFiber m` ($\\sigma^{-1}(m)$). Axiomatizes: $14, 15 \\in \\sigma^{-1}(24)$, fibers can be arbitrarily large, every large even number is a $\\sigma$-value."
+      "mathContext": "Formal definition: Defines `sigmaFiber m` ($\\sigma^{-1}(m)$). Axiomatizes: $14, 15 \\in \\sigma^{-1}(24)$, fibers can be arbitrarily large, every large even number is a $\\sigma$-value."
     },
     {
       "id": "density-results",
@@ -166,7 +166,7 @@
       "startLine": 183,
       "endLine": 194,
       "summary": "Axiomatizes positive density of $\\sigma$-values ($|\\{m \\leq N : \\sigma^{-1}(m) \\neq \\emptyset\\}| \\geq cN$) and positive density of multi-preimage values.",
-      "mathContext": "Axiomatizes positive density of $\\sigma$-values ($|\\{m \\leq N : \\sigma^{-1}(m) \\neq \\emptyset\\}| \\geq cN$) and positive density of multi-preimage values."
+      "mathContext": "Axiomatized: Axiomatizes positive density of $\\sigma$-values ($|\\{m \\leq N : \\sigma^{-1}(m) \\neq \\emptyset\\}| \\geq cN$) and positive density of multi-preimage values."
     },
     {
       "id": "computations",
@@ -174,7 +174,7 @@
       "startLine": 201,
       "endLine": 213,
       "summary": "Verified: $\\sigma(p) = p+1$ for small primes, $\\sigma(6) = 12$, $\\sigma(28) = 56$ (perfect numbers).",
-      "mathContext": "Verified: $\\sigma(p) = p+1$ for small primes, $\\sigma(6) = 12$, $\\sigma(28) = 56$ (perfect numbers)."
+      "mathContext": "Mathematical content: Verified: $\\sigma(p) = p+1$ for small primes, $\\sigma(6) = 12$, $\\sigma(28) = 56$ (perfect numbers)."
     },
     {
       "id": "key-insight",
@@ -182,7 +182,7 @@
       "startLine": 224,
       "endLine": 228,
       "summary": "Axiomatizes infinitely many $\\sigma$-pairs $(n, m)$ with $n \\neq m$ — the fundamental enabling fact for Pollack's construction.",
-      "mathContext": "Axiomatizes infinitely many $\\sigma$-pairs $(n, m)$ with $n \\neq m$ — the fundamental enabling fact for Pollack's construction."
+      "mathContext": "Axiomatized: Axiomatizes infinitely many $\\sigma$-pairs $(n, m)$ with $n \\neq m$ — the fundamental enabling fact for Pollack's construction."
     },
     {
       "id": "summary",
@@ -190,7 +190,7 @@
       "startLine": 259,
       "endLine": 270,
       "summary": "`erdos_823_statement`: **proved** conjunction of the $\\sigma$ result (Pollack) and $\\varphi$ result (Erdős).",
-      "mathContext": "`erdos_823_statement`: **proved** conjunction of the $\\sigma$ result (Pollack) and $\\varphi$ result (Erdős)."
+      "mathContext": "Mathematical content: `erdos_823_statement`: **proved** conjunction of the $\\sigma$ result (Pollack) and $\\varphi$ result (Erdős)."
     }
   ],
   "conclusion": {

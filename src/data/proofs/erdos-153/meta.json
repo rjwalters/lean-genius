@@ -50,7 +50,7 @@
       "startLine": 13,
       "endLine": 20,
       "summary": "Imports Mathlib libraries for natural numbers, integers, finite sets (cardinality, sorting), real numbers, and tactics needed throughout the formalization.",
-      "mathContext": "Imports Mathlib libraries for natural numbers, integers, finite sets (cardinality, sorting), real numbers, and tactics needed throughout the formalization."
+      "mathContext": "Mathematical content: Imports Mathlib libraries for natural numbers, integers, finite sets (cardinality, sorting), real numbers, and tactics needed throughout the formalization."
     },
     {
       "id": "sidon-sets",
@@ -58,7 +58,7 @@
       "startLine": 21,
       "endLine": 30,
       "summary": "Defines `IsSidon`: a finite set $A \\subseteq \\mathbb{N}$ where all pairwise sums $a+b$ with $a \\le b$ are distinct. Also known as $B_2$ sets.",
-      "mathContext": "Defines `IsSidon`: a finite set $A \\subseteq \\mathbb{N}$ where all pairwise sums $a+b$ with $a \\le b$ are distinct. Also known as $B_2$ sets."
+      "mathContext": "Formal definition: Defines `IsSidon`: a finite set $A \\subseteq \\mathbb{N}$ where all pairwise sums $a+b$ with $a \\le b$ are distinct. Also known as $B_2$ sets."
     },
     {
       "id": "sumset-gaps",
@@ -74,7 +74,7 @@
       "startLine": 50,
       "endLine": 63,
       "summary": "Defines `meanGapSquared` as $(1/(t-1)) \\cdot \\sum (s_{i+1}-s_i)^2$ and `minMeanGapSquared(n)` as the infimum over all Sidon sets of size $n$, capturing the extremal gap regularity.",
-      "mathContext": "Defines `meanGapSquared` as $(1/(t-1)) \\cdot \\sum (s_{i+1}-s_i)^2$ and `minMeanGapSquared(n)` as the infimum over all Sidon sets of size $n$, capturing the extremal gap regularity."
+      "mathContext": "Formal definition: Defines `meanGapSquared` as $(1/(t-1)) \\cdot \\sum (s_{i+1}-s_i)^2$ and `minMeanGapSquared(n)` as the infimum over all Sidon sets of size $n$, capturing the extremal gap regularity."
     },
     {
       "id": "conjecture",
@@ -82,7 +82,7 @@
       "startLine": 64,
       "endLine": 77,
       "summary": "States `ErdosProblem153`: $\\forall M > 0, \\exists N_0$ such that all Sidon sets $A$ with $|A| \\ge N_0$ satisfy $\\bar{G}(A) > M$. The mean squared gap diverges.",
-      "mathContext": "States `ErdosProblem153`: $\\forall M > 0, \\exists N_0$ such that all Sidon sets $A$ with $|A| \\ge N_0$ satisfy $\\bar{G}(A) > M$. The mean squared gap diverges."
+      "mathContext": "Mathematical content: States `ErdosProblem153`: $\\forall M > 0, \\exists N_0$ such that all Sidon sets $A$ with $|A| \\ge N_0$ satisfy $\\bar{G}(A) > M$. The mean squared gap diverges."
     },
     {
       "id": "sumset-properties",
@@ -90,7 +90,7 @@
       "startLine": 78,
       "endLine": 92,
       "summary": "Axiomatizes two structural properties: (1) $|A+A| \\ge n(n+1)/2$ for Sidon sets of size $n$, and (2) $A+A \\subseteq \\{2,\\ldots,2N\\}$ when $A \\subseteq \\{1,\\ldots,N\\}$.",
-      "mathContext": "Axiomatizes two structural properties: (1) $|A+A| \\ge n(n+1)/2$ for Sidon sets of size $n$, and (2) $A+A \\subseteq \\{2,\\ldots,2N\\}$ when $A \\subseteq \\{1,\\ldots,N\\}$."
+      "mathContext": "Axiomatized: Axiomatizes two structural properties: (1) $|A+A| \\ge n(n+1)/2$ for Sidon sets of size $n$, and (2) $A+A \\subseteq \\{2,\\ldots,2N\\}$ when $A \\subseteq \\{1,\\ldots,N\\}$."
     },
     {
       "id": "known-bounds",
@@ -98,7 +98,7 @@
       "startLine": 93,
       "endLine": 112,
       "summary": "Axiomatizes the bounded average gap ($\\bar{g} = O(1)$) and the Erdős–Sárközy–Sós (1994) result that $\\bar{G}(A) \\ge c > 0$ for sufficiently large Sidon sets.",
-      "mathContext": "Axiomatizes the bounded average gap ($\\bar{g} = O(1)$) and the Erdős–Sárközy–Sós (1994) result that $\\bar{G}(A) \\ge c > 0$ for sufficiently large Sidon sets."
+      "mathContext": "Axiomatizes the bounded average gap ($\\bar{g} = $O(1)$$) and the Erdős–Sárközy–Sós (1994) result that $\\bar{G}(A) \\ge c > 0$ for sufficiently large Sidon sets."
     },
     {
       "id": "infinite-sidon",
@@ -106,7 +106,7 @@
       "startLine": 113,
       "endLine": 130,
       "summary": "Defines `IsInfiniteSidon` for infinite subsets of $\\mathbb{N}$ with the Sidon property, and states the analogous divergence question for $S \\cap \\{1,\\ldots,N\\}$ as $N \\to \\infty$.",
-      "mathContext": "Defines `IsInfiniteSidon` for infinite subsets of $\\mathbb{N}$ with the Sidon property, and states the analogous divergence question for $S \\cap \\{1,\\ldots,N\\}$ as $N \\to \\infty$."
+      "mathContext": "Formal definition: Defines `IsInfiniteSidon` for infinite subsets of $\\mathbb{N}$ with the Sidon property, and states the analogous divergence question for $S \\cap \\{1,\\ldots,N\\}$ as $N \\to \\infty$."
     }
   ],
   "conclusion": {

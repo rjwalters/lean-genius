@@ -49,7 +49,7 @@
       "summary": "Erdős-Hajnal problem: edge density vs cycle length variety, GKS theorem, minimization question",
       "startLine": 1,
       "endLine": 23,
-      "mathContext": "Erdős-Hajnal problem: edge density vs cycle length variety, GKS theorem, minimization question"
+      "mathContext": "Verified: Erdős-Hajnal problem: edge density vs cycle length variety, GKS theorem, minimization question"
     },
     {
       "id": "core-definitions",
@@ -57,7 +57,7 @@
       "summary": "ContainsCycleLength, CycleLengthSet, cycleLengthFinset, Fin.succMod for cycles",
       "startLine": 44,
       "endLine": 68,
-      "mathContext": "ContainsCycleLength, CycleLengthSet, cycleLengthFinset, Fin.succMod for cycles"
+      "mathContext": "Mathematical content: ContainsCycleLength, CycleLengthSet, cycleLengthFinset, Fin.succMod for cycles"
     },
     {
       "id": "edge-density",
@@ -65,7 +65,7 @@
       "summary": "edgeCount, edgeDensity, cycleLengthReciprocalSum definitions",
       "startLine": 69,
       "endLine": 86,
-      "mathContext": "edgeCount, edgeDensity, cycleLengthReciprocalSum definitions"
+      "mathContext": "Formal definition: edgeCount, edgeDensity, cycleLengthReciprocalSum definitions"
     },
     {
       "id": "gks-theorem",
@@ -73,7 +73,7 @@
       "summary": "Gyárfás-Komlós-Szemerédi: Σ 1/aᵢ ≥ c·log(e/n) for graphs with e edges on n vertices",
       "startLine": 87,
       "endLine": 108,
-      "mathContext": "Gyárfás-Komlós-Szemerédi: Σ 1/aᵢ ≥ c·log(e/n) for graphs with e edges on n vertices"
+      "mathContext": "Gyárfás-Komlós-Szemerédi: $\\sum$ 1/aᵢ $\\geq$ c·log(e/n) for graphs with e edges on n vertices"
     },
     {
       "id": "open-question",
@@ -81,7 +81,7 @@
       "summary": "Erdos65Question: is the reciprocal sum minimized by complete bipartite graphs?",
       "startLine": 109,
       "endLine": 131,
-      "mathContext": "Erdos65Question: is the reciprocal sum minimized by complete bipartite graphs?"
+      "mathContext": "Mathematical content: Erdos65Question: is the reciprocal sum minimized by complete bipartite graphs?"
     },
     {
       "id": "bipartite-structure",
@@ -89,7 +89,7 @@
       "summary": "complete_bipartite_cycle_lengths, bipartiteCycleSum, bipartiteCycleSum_eq",
       "startLine": 132,
       "endLine": 160,
-      "mathContext": "complete_bipartite_cycle_lengths, bipartiteCycleSum, bipartiteCycleSum_eq"
+      "mathContext": "Mathematical content: complete_bipartite_cycle_lengths, bipartiteCycleSum, bipartiteCycleSum_eq"
     },
     {
       "id": "lower-bounds",
@@ -97,7 +97,7 @@
       "summary": "min_degree_implies_short_cycle, high_avg_to_min_degree, Zarankiewicz connection",
       "startLine": 161,
       "endLine": 202,
-      "mathContext": "min_degree_implies_short_cycle, high_avg_to_min_degree, Zarankiewicz connection"
+      "mathContext": "Mathematical content: min_degree_implies_short_cycle, high_avg_to_min_degree, Zarankiewicz connection"
     },
     {
       "id": "special-cases",
@@ -105,7 +105,7 @@
       "summary": "density_one_has_cycle, triangle_free_larger_sum, bipartite parity",
       "startLine": 203,
       "endLine": 263,
-      "mathContext": "density_one_has_cycle, triangle_free_larger_sum, bipartite parity"
+      "mathContext": "Mathematical content: density_one_has_cycle, triangle_free_larger_sum, bipartite parity"
     },
     {
       "id": "summary",
@@ -113,7 +113,7 @@
       "summary": "Partial resolution status, GKS proved, minimization open, Liu-Montgomery sharp constant",
       "startLine": 264,
       "endLine": 287,
-      "mathContext": "Partial resolution status, GKS proved, minimization open, Liu-Montgomery sharp constant"
+      "mathContext": "Mathematical content: Partial resolution status, GKS proved, minimization open, Liu-Montgomery sharp constant"
     }
   ],
   "conclusion": {

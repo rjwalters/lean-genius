@@ -145,7 +145,7 @@
       "startLine": 121,
       "endLine": 137,
       "summary": "Defines `centerHasFiniteIndex G` as `(Subgroup.center G).index ≠ ⊤` and `centerIndex G` as the `ℕ∞`-valued index.",
-      "mathContext": "Defines `centerHasFiniteIndex G` as `(Subgroup.center G).index ≠ ⊤` and `centerIndex G` as the `ℕ∞`-valued index."
+      "mathContext": "Defines `centerHasFiniteIndex G` as `(Subgroup.center G).index $\\neq$ ⊤` and `centerIndex G` as the `$\\mathbb{N}$∞`-valued index."
     },
     {
       "id": "neumann-theorem",
@@ -177,7 +177,7 @@
       "startLine": 251,
       "endLine": 280,
       "summary": "Axiomatizes `commutingProbability` and `prob_clique_relation` for finite groups. Defines `isBFCGroup` (bounded finite conjugacy classes) and axiomatizes `bfc_center_connection`.",
-      "mathContext": "Axiomatizes `commutingProbability` and `prob_clique_relation` for finite groups. Defines `isBFCGroup` (bounded finite conjugacy classes) and axiomatizes `bfc_center_connection`."
+      "mathContext": "Formal definition: Axiomatizes `commutingProbability` and `prob_clique_relation` for finite groups. Defines `isBFCGroup` (bounded finite conjugacy classes) and axiomatizes `bfc_center_connection`."
     },
     {
       "id": "summary",
@@ -185,7 +185,7 @@
       "startLine": 281,
       "endLine": 319,
       "summary": "Proves `erdos_1098 := erdos_question_answered`, `erdos_1098_summary` (Neumann equivalence ∧ finite clique implication), and `erdos_1098_status := neumann_theorem`.",
-      "mathContext": "Proves `erdos_1098 := erdos_question_answered`, `erdos_1098_summary` (Neumann equivalence ∧ finite clique implication), and `erdos_1098_status := neumann_theorem`."
+      "mathContext": "Verified: Proves `erdos_1098 := erdos_question_answered`, `erdos_1098_summary` (Neumann equivalence ∧ finite clique implication), and `erdos_1098_status := neumann_theorem`."
     }
   ],
   "conclusion": {

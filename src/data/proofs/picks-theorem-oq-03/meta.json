@@ -113,7 +113,7 @@
       "startLine": 39,
       "endLine": 81,
       "summary": "Defines `LatticePolytope` structure with dimension, normalized/Euclidean volume, interior/boundary/total point counts, and consistency axioms.",
-      "mathContext": "Defines `LatticePolytope` structure with dimension, normalized/Euclidean volume, interior/boundary/total point counts, and consistency axioms."
+      "mathContext": "$P \\subset \\mathbb{R}^d$ lattice polytope: $\\dim = d$, $\\mathrm{vol}(P)$, $L(P, n) = |nP \\cap \\mathbb{Z}^d|$, $L^*(P, n)$ (interior), $B(P, n)$ (boundary), with consistency $L = L^* + B$."
     },
     {
       "id": "ehrhart-theorem",
@@ -121,7 +121,7 @@
       "startLine": 82,
       "endLine": 132,
       "summary": "States Ehrhart's theorem: the lattice point count of nP agrees with a function L satisfying L(0) = 1 and L(n) = |nP ∩ ℤ^d| for positive n.",
-      "mathContext": "States Ehrhart's theorem: the lattice point count of nP agrees with a function L satisfying L(0) = 1 and L(n) = |nP ∩ ℤ^d| for positive n."
+      "mathContext": "$L(P, n) = \\mathrm{vol}(P) n^d + \\cdots + 1$ is a polynomial of degree $d$ in $n$, with leading coefficient $\\mathrm{vol}(P)$ and constant term $L(P, 0) = 1$ (Euler characteristic)."
     },
     {
       "id": "reciprocity",
@@ -129,7 +129,7 @@
       "startLine": 133,
       "endLine": 156,
       "summary": "States Ehrhart-Macdonald reciprocity: L*(t) = (-1)^d · L(-t), connecting interior point counts to the Ehrhart polynomial via sign changes.",
-      "mathContext": "States Ehrhart-Macdonald reciprocity: L*(t) = (-1)^d · L(-t), connecting interior point counts to the Ehrhart polynomial via sign changes."
+      "mathContext": "$L^*(P, n) = (-1)^d L(P, -n)$: interior count from Ehrhart polynomial via sign change. Example: cube $L^*(n) = (n-1)^3 = (-1)^3(1-n)^3 = -L(-n)$."
     },
     {
       "id": "unit-cube",
@@ -137,7 +137,7 @@
       "startLine": 157,
       "endLine": 204,
       "summary": "Defines unitCube3 and verifies L(t) = (t+1)³ at t = 0,1,2,3. Shows expanded form t³ + 3t² + 3t + 1.",
-      "mathContext": "Defines unitCube3 and verifies L(t) = (t+1)³ at t = 0,1,2,3. Shows expanded form t³ + 3t² + 3t + 1."
+      "mathContext": "$L_{\\square_3}(n) = (n+1)^3 = n^3 + 3n^2 + 3n + 1$. Verified: $L(0) = 1, L(1) = 8, L(2) = 27, L(3) = 64$. Volume $= 1$, boundary $= 26$, interior $= 0$ at $n = 1$."
     },
     {
       "id": "simplex",
@@ -145,7 +145,7 @@
       "startLine": 205,
       "endLine": 255,
       "summary": "Defines standardSimplex3 with volume 1/6 and verifies L(t) = (t+1)(t+2)(t+3)/6 at t = 0,1,2,3.",
-      "mathContext": "Defines standardSimplex3 with volume 1/6 and verifies L(t) = (t+1)(t+2)(t+3)/6 at t = 0,1,2,3."
+      "mathContext": "$L_{\\Delta_3}(n) = \\binom{n+3}{3} = \\frac{(n+1)(n+2)(n+3)}{6}$. Volume $= 1/6$. Verified: $L(0) = 1, L(1) = 4, L(2) = 10, L(3) = 20$."
     },
     {
       "id": "picks-specialization",
@@ -153,7 +153,7 @@
       "startLine": 256,
       "endLine": 346,
       "summary": "Shows the 2D Ehrhart polynomial L(t) = At² + (b/2)t + 1 yields Pick's formula A = i + b/2 - 1 when evaluated at t=1.",
-      "mathContext": "Shows the 2D Ehrhart polynomial L(t) = At² + (b/2)t + 1 yields Pick's formula A = i + b/2 - 1 when evaluated at t=1."
+      "mathContext": "2D Ehrhart: $L(n) = An^2 + \\frac{b}{2}n + 1$. At $n = 1$: $i + b = A + b/2 + 1$, rearranging to Pick's formula $A = i + b/2 - 1$."
     },
     {
       "id": "reeve-tetrahedra",
@@ -161,7 +161,7 @@
       "startLine": 347,
       "endLine": 427,
       "summary": "Defines Reeve tetrahedra T_r with same i,b but different volumes. Shows L(T₁,t) ≠ L(T₂,t) despite L(T₁,1) = L(T₂,1).",
-      "mathContext": "Defines Reeve tetrahedra T_r with same i,b but different volumes. Shows L(T₁,t) ≠ L(T₂,t) despite L(T₁,1) = L(T₂,1)."
+      "mathContext": "Reeve tetrahedra $T_r$: vertices $(0,0,0), (1,0,0), (0,1,0), (1,1,r)$. All have $i = 0, b = 4$, but $\\mathrm{vol}(T_r) = r/6$. Different volumes $\\Rightarrow$ different Ehrhart polynomials despite $L(T_r, 1) = 5$."
     },
     {
       "id": "reciprocity-examples",
@@ -169,7 +169,7 @@
       "startLine": 428,
       "endLine": 501,
       "summary": "Verifies Ehrhart-Macdonald reciprocity for the unit cube (L*(t) = (t-1)³) and standard simplex, with concrete interior point counts.",
-      "mathContext": "Verifies Ehrhart-Macdonald reciprocity for the unit cube (L*(t) = (t-1)³) and standard simplex, with concrete interior point counts."
+      "mathContext": "Cube reciprocity: $L^*_{\\square}(n) = (n-1)^3$ and $(-1)^3 L_{\\square}(-n) = -(1-n)^3 = (n-1)^3$ ✓. Interior counts: $L^*(1) = 0, L^*(2) = 1, L^*(3) = 8$."
     },
     {
       "id": "octahedron",
@@ -177,7 +177,7 @@
       "startLine": 502,
       "endLine": 543,
       "summary": "Defines the 3D cross-polytope with volume 4/3 and verifies Ehrhart polynomial at several points.",
-      "mathContext": "Defines the 3D cross-polytope with volume 4/3 and verifies Ehrhart polynomial at several points."
+      "mathContext": "3D cross-polytope $\\beta_3 = \\{x \\in \\mathbb{R}^3 : |x_1| + |x_2| + |x_3| \\leq 1\\}$. Volume $= 4/3$. Dual to the cube $\\square_3$. Ehrhart polynomial verified at several dilations."
     },
     {
       "id": "hstar-vectors",
@@ -185,7 +185,7 @@
       "startLine": 544,
       "endLine": 621,
       "summary": "Defines HStarVector framework, proves Stanley nonnegativity. Verifies h*-vectors for cube (1,4,1,0), simplex (1,0,0,0), and octahedron (1,3,3,1).",
-      "mathContext": "Defines HStarVector framework, proves Stanley nonnegativity. Verifies h*-vectors for cube (1,4,1,0), simplex (1,0,0,0), and octahedron (1,3,3,1)."
+      "mathContext": "$h^*$-vector: $L(P, n) = \\sum_{k=0}^{d} h^*_k \\binom{n+d-k}{d}$. Stanley nonnegativity: $h^*_k \\geq 0$. Cube: $(1,4,1,0)$, simplex: $(1,0,0,0)$, octahedron: $(1,3,3,1)$. Sum $= d! \\cdot \\mathrm{vol}$."
     },
     {
       "id": "dimensional-hierarchy",
@@ -193,7 +193,7 @@
       "startLine": 622,
       "endLine": 710,
       "summary": "Shows the progression from d=0 (point) through d=1 (segment), d=2 (Pick's theorem), to d=3 (Ehrhart). Derives Pick's formula from the 2D case.",
-      "mathContext": "Shows the progression from d=0 (point) through d=1 (segment), d=2 (Pick's theorem), to d=3 (Ehrhart). Derives Pick's formula from the 2D case."
+      "mathContext": "Dimensional hierarchy: $d = 0$ (point, $L = 1$), $d = 1$ (segment, $L = n + 1$), $d = 2$ (Pick's theorem: $A = i + b/2 - 1$), $d = 3$ (full Ehrhart with $d+1 = 4$ coefficients beyond $i, b$)."
     },
     {
       "id": "cross-polytope",

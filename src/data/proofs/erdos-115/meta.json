@@ -78,7 +78,7 @@
       "startLine": 20,
       "endLine": 23,
       "summary": "Imports Nat.Basic, Rat.Basic, and Tactic. Minimal Mathlib usage since the proof is axiomatic.",
-      "mathContext": "Imports Nat.Basic, Rat.Basic, and Tactic. Minimal Mathlib usage since the proof is axiomatic."
+      "mathContext": "Verified: Imports Nat.Basic, Rat.Basic, and Tactic. Minimal Mathlib usage since the proof is axiomatic."
     },
     {
       "id": "abstractions",
@@ -86,7 +86,7 @@
       "startLine": 24,
       "endLine": 42,
       "summary": "Axiomatizes ComplexPoly n (abstract type), polyDegree with degree equality, IsLemniscateConnected predicate, maxDerivOnLemniscate functional, and non-negativity of the maximum derivative.",
-      "mathContext": "Axiomatizes ComplexPoly n (abstract type), polyDegree with degree equality, IsLemniscateConnected predicate, maxDerivOnLemniscate functional, and non-negativity of the maximum derivative."
+      "mathContext": "Axiomatized: Axiomatizes ComplexPoly n (abstract type), polyDegree with degree equality, IsLemniscateConnected predicate, maxDerivOnLemniscate functional, and non-negativity of the maximum derivative."
     },
     {
       "id": "lower-bound",
@@ -94,7 +94,7 @@
       "startLine": 43,
       "endLine": 57,
       "summary": "Axiom lemniscate_deriv_lower: max|p'| ≥ n for connected lemniscates. Monomial axioms: monomial_poly, monomial_connected, monomial_deriv_eq show p(z) = zⁿ achieves equality.",
-      "mathContext": "Axiom lemniscate_deriv_lower: max|p'| ≥ n for connected lemniscates. Monomial axioms: monomial_poly, monomial_connected, monomial_deriv_eq show p(z) = zⁿ achieves equality."
+      "mathContext": "Axiom lemniscate_deriv_lower: max|p'| $\\geq$ n for connected lemniscates. Monomial axioms: monomial_poly, monomial_connected, monomial_deriv_eq show p(z) = zⁿ achieves equality."
     },
     {
       "id": "pommerenke",
@@ -102,7 +102,7 @@
       "startLine": 58,
       "endLine": 62,
       "summary": "Axiom pommerenke_upper: max|p'| ≤ (2718/1000)/2 · n² ≈ (e/2)n². Uses rational approximation of e since ℝ doesn't have a native e constant here.",
-      "mathContext": "Axiom pommerenke_upper: max|p'| ≤ (2718/1000)/2 · n² ≈ (e/2)n². Uses rational approximation of e since ℝ doesn't have a native e constant here."
+      "mathContext": "Axiom pommerenke_upper: max|p'| $\\leq$ (2718/1000)/2 · n² ≈ (e/2)n². Uses rational approximation of e since $\\mathbb{R}$ doesn't have a native e constant here."
     },
     {
       "id": "chebyshev",
@@ -110,7 +110,7 @@
       "startLine": 63,
       "endLine": 73,
       "summary": "Axioms for Chebyshev polynomials: chebyshev_poly (constructor), chebyshev_connected (lemniscate is connected), chebyshev_deriv_asymptotic (max|p'| in [(1/2-ε)n², (1/2+ε)n²] for large n).",
-      "mathContext": "Axioms for Chebyshev polynomials: chebyshev_poly (constructor), chebyshev_connected (lemniscate is connected), chebyshev_deriv_asymptotic (max|p'| in [(1/2-ε)n², (1/2+ε)n²] for large n)."
+      "mathContext": "Axiomatized: Axioms for Chebyshev polynomials: chebyshev_poly (constructor), chebyshev_connected (lemniscate is connected), chebyshev_deriv_asymptotic (max|p'| in [(1/2-ε)n², (1/2+ε)n²] for large n)."
     },
     {
       "id": "eremenko-lempert",
@@ -118,7 +118,7 @@
       "startLine": 74,
       "endLine": 82,
       "summary": "The main axiom ErdosProblem115_proved: ∀ ε > 0, ∃ N, ∀ n ≥ N, ∀ p with connected lemniscate: max|p'| ≤ (1/2 + ε)n². This resolves Erdős Problem #115.",
-      "mathContext": "The main axiom ErdosProblem115_proved: ∀ ε > 0, ∃ N, ∀ n ≥ N, ∀ p with connected lemniscate: max|p'| ≤ (1/2 + ε)n². This resolves Erdős Problem #115."
+      "mathContext": "The main axiom ErdosProblem115_proved: ∀ ε > 0, ∃ N, ∀ n $\\geq$ N, ∀ p with connected lemniscate: max|p'| $\\leq$ (1/2 + ε)n². This resolves Erdős Problem #115."
     },
     {
       "id": "sharpness",
