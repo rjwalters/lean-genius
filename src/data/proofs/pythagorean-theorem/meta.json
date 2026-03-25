@@ -299,6 +299,11 @@
       "targetId": "fourier-series",
       "relationship": "related",
       "description": "Parseval's identity $\\|f\\|^2 = \\sum_{n=-\\infty}^{\\infty} |\\hat{f}(n)|^2$ is the infinite-dimensional Pythagorean theorem for $L^2$ functions: the Fourier coefficients $\\{\\hat{f}(n)\\}$ form an orthonormal basis, and the energy splits by orthogonality exactly as $\\|v+w\\|^2 = \\|v\\|^2 + \\|w\\|^2$. The generalized `pythagorean_sum` in this formalization is the finite-dimensional precursor to Parseval's identity"
+    },
+    {
+      "targetId": "ptolemys-theorem",
+      "relationship": "related",
+      "description": "Ptolemy's theorem ($AC \\cdot BD = AB \\cdot CD + BC \\cdot DA$ for cyclic quadrilaterals) generalizes the Pythagorean theorem: when the cyclic quadrilateral degenerates to a triangle inscribed in a semicircle (with hypotenuse as diameter), Ptolemy's relation reduces to $a^2 + b^2 = c^2$. This makes the Pythagorean theorem a special case of a broader result about cyclic geometry"
     }
   ],
   "leanFile": {

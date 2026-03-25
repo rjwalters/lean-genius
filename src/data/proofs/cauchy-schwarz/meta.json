@@ -172,7 +172,8 @@
       "title": "Application: Correlation Bound",
       "summary": "Proves $|\\langle u,v\\rangle|/(\\|u\\|\\|v\\|) \\leq 1$ for nonzero vectors via `div_le_one`, giving the mathematical foundation for $|\\rho| \\leq 1$.",
       "startLine": 214,
-      "endLine": 231
+      "endLine": 231,
+      "mathContext": "The Pearson correlation coefficient $\\rho(X,Y) = \\text{Cov}(X,Y)/(\\sigma_X \\sigma_Y) = \\langle X - \\bar{X}, Y - \\bar{Y} \\rangle / (\\|X - \\bar{X}\\| \\cdot \\|Y - \\bar{Y}\\|)$ is bounded by $|\\rho| \\leq 1$ as a direct consequence of Cauchy-Schwarz in the $L^2$ inner product space. Equality $|\\rho| = 1$ iff $Y$ is a linear function of $X$."
     }
   ],
   "crossReferences": [
@@ -235,6 +236,21 @@
       "targetId": "central-limit-theorem",
       "relationship": "related",
       "description": "Cauchy-Schwarz underpins key steps in proving the Central Limit Theorem: bounding characteristic function differences $|\\varphi_n(t) - e^{-t^2/2}|$ uses $|\\mathbb{E}[XY]| \\leq \\sqrt{\\mathbb{E}[X^2]\\mathbb{E}[Y^2]}$, and the variance decomposition $\\text{Var}(S_n/\\sqrt{n}) = 1$ relies on the inner product structure of $L^2$. The CLT's normal limit $\\mathcal{N}(0,1)$ has density proportional to $e^{-x^2/2}$, whose normalization $\\int e^{-x^2} dx = \\sqrt{\\pi}$ connects to the Gaussian integral"
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "The Pythagorean theorem $\\|u+v\\|^2 = \\|u\\|^2 + \\|v\\|^2$ is the special case of the expansion $\\|u+v\\|^2 = \\|u\\|^2 + 2\\langle u,v\\rangle + \\|v\\|^2$ when $\\langle u,v\\rangle = 0$. Cauchy-Schwarz bounds the cross term for non-orthogonal vectors, generalizing the Pythagorean identity to arbitrary angles"
+    },
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "related",
+      "description": "The law of cosines $\\|u-v\\|^2 = \\|u\\|^2 + \\|v\\|^2 - 2\\|u\\|\\|v\\|\\cos\\theta$ defines the angle $\\theta$ between vectors via $\\cos\\theta = \\langle u,v\\rangle/(\\|u\\|\\|v\\|)$. Cauchy-Schwarz $|\\langle u,v\\rangle| \\leq \\|u\\|\\|v\\|$ is precisely the statement that $|\\cos\\theta| \\leq 1$, ensuring the angle is well-defined"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "related",
+      "description": "Bessel's inequality $\\sum_n |\\langle f, e_n \\rangle|^2 \\leq \\|f\\|^2$ is a consequence of applying Cauchy-Schwarz to orthogonal projections in $L^2$. Parseval's identity (equality when the basis is complete) elevates this to an isometry between the function and its Fourier coefficients"
     }
   ],
   "conclusion": {
