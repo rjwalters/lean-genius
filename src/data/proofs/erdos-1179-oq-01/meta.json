@@ -18,7 +18,7 @@
       "open-question"
     ],
     "badge": "axiom",
-    "sorryCount": 0,
+    "sorries": 0,
     "axiomCount": 2,
     "theoremCount": 9,
     "definitionCount": 5,
@@ -47,6 +47,7 @@
       "definitionCount": 5
     }
   },
+  "sections": [],
   "overview": {
     "historicalContext": "Erdős Problem #1179 asks about uniform subset sum representations: for a random k-subset A of an abelian group G of size N, when are the representation counts F_A(g) approximately uniform? The main asymptotic g_ε(N) ~ log₂ N was established by Erdős-Hall (1976), building on the Erdős-Rényi (1965) second-moment approach. The remaining open question is the precise second-order correction term.",
     "problemStatement": "Determine the precise rate at which g_ε(N) - log₂ N grows. Is it O(1)? Θ(log log N)? Something else?",
