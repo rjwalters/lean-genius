@@ -148,6 +148,13 @@ theorem dirichletKernel_neg (N : ℕ) (t : AddCircle T) :
 PART III: CONVOLUTION REPRESENTATION
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
+/-- Character property: fourier n is a multiplicative character on AddCircle T.
+    fourier n (a + b) = fourier n a * fourier n b.
+    This follows from the exponential map being a group homomorphism. -/
+private theorem fourier_char (n : ℤ) (a b : AddCircle T) :
+    fourier n (a + b) = fourier n a * fourier n b := by
+  simp [fourier_apply, smul_add, AddCircle.toCircle_add]
+
 /-- The Fourier partial sum as a convolution with the Dirichlet kernel.
 
     S_N f(x) = ∫ f(t) · D_N(x - t) d(haar t)
@@ -155,15 +162,49 @@ PART III: CONVOLUTION REPRESENTATION
     This is the key structural identity. It reduces the study of Fourier partial
     sums to the study of the Dirichlet kernel's approximate identity properties.
 
-    Axiomatized: the proof requires interchanging sum and integral, which needs
-    integrability of f and uses linearity of the integral. -/
-axiom fourierPartialSum_eq_convolution
+    Proved: using the character property of Fourier monomials, linearity of the
+    integral, and the definition of Fourier coefficients. -/
+theorem fourierPartialSum_eq_convolution
     (f : AddCircle T → ℂ) (N : ℕ) (x : AddCircle T)
     (hf : Integrable f haarAddCircle) :
     fourierPartialSum f N x =
-      ∫ t : AddCircle T, f t * dirichletKernel N (x - t) ∂haarAddCircle
+      ∫ t : AddCircle T, f t * dirichletKernel N (x - t) ∂haarAddCircle := by
+  -- Integrability of each term f(t) * fourier n (x - t)
+  have h_integ : ∀ n ∈ Icc (-(N : ℤ)) (N : ℤ),
+      Integrable (fun t => f t * fourier n (x - t)) haarAddCircle := by
+    intro n _
+    exact hf.mono
+      (hf.aestronglyMeasurable.mul
+        ((fourier n).continuous.comp
+          (continuous_const.sub continuous_id')).aestronglyMeasurable)
+      (ae_of_all _ fun t => by
+        rw [norm_mul, show ‖fourier n (x - t)‖ = 1 from by simp [fourier_apply], mul_one])
+  calc fourierPartialSum f N x
+      -- Step 1: Expand fourierPartialSum definition
+      = ∑ n ∈ Icc (-(N : ℤ)) N, fourierCoeff f n • fourier n x := rfl
+      -- Step 2: Expand fourierCoeff as integral (definitional)
+    _ = ∑ n ∈ Icc (-(N : ℤ)) N,
+        (∫ t : AddCircle T, fourier (-n) t * f t ∂haarAddCircle) • fourier n x := rfl
+      -- Step 3: Push constant fourier n x into the integral
+    _ = ∑ n ∈ Icc (-(N : ℤ)) N,
+        ∫ t : AddCircle T, (fourier (-n) t * f t) • fourier n x ∂haarAddCircle := by
+        congr 1; ext n; exact (integral_smul_const _ _).symm
+      -- Step 4: Rewrite integrand using character property
+    _ = ∑ n ∈ Icc (-(N : ℤ)) N,
+        ∫ t : AddCircle T, f t * fourier n (x - t) ∂haarAddCircle := by
+        congr 1; ext n; congr 1; ext t
+        simp only [smul_eq_mul, sub_eq_add_neg]
+        rw [fourier_char n x (-t), fourier_apply_neg n]
+        ring
+      -- Step 5: Interchange sum and integral (← integral_finset_sum)
+    _ = ∫ t : AddCircle T,
+        ∑ n ∈ Icc (-(N : ℤ)) N, f t * fourier n (x - t) ∂haarAddCircle := by
+        exact (integral_finset_sum _ h_integ).symm
+      -- Step 6: Fold back to dirichletKernel definition
+    _ = ∫ t : AddCircle T, f t * dirichletKernel N (x - t) ∂haarAddCircle := by
+        congr 1; ext t; exact (Finset.mul_sum _ _ _).symm
 
-/-- Normalization: The integral of D_N equals 1.
+/- Normalization: The integral of D_N equals 1.
 
     ∫ D_N(t) d(haar t) = 1
 
@@ -223,7 +264,7 @@ axiom hasBV_implies_leftLimit_exists
 PART VI: THE RIEMANN-LEBESGUE LEMMA (BV VERSION)
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- The Riemann-Lebesgue lemma for bounded variation functions.
+/- The Riemann-Lebesgue lemma for bounded variation functions.
 
     If g : [a, b] → ℂ has bounded variation, then
       ∫_a^b g(t) · e^{iλt} dt → 0  as  |λ| → ∞
@@ -383,7 +424,7 @@ theorem dirichlet_continuous_BV
 PART IX: LIPSCHITZ AND SMOOTH FUNCTIONS (COROLLARIES)
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- Lipschitz functions have bounded variation on compact intervals.
+/- Lipschitz functions have bounded variation on compact intervals.
     This connects Lipschitz regularity to the BV hypothesis of Dirichlet's theorem. -/
 
 /-- Continuously differentiable functions on the circle are Lipschitz
@@ -403,7 +444,7 @@ theorem smooth_functions_converge
 PART X: MONOTONE FUNCTIONS (SPECIAL CASE)
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- Monotone functions on closed intervals have bounded variation.
+/- Monotone functions on closed intervals have bounded variation.
     The total variation of a monotone function equals |f(b) - f(a)|. -/
 
 /-
@@ -489,11 +530,11 @@ theorem fejerKernel_at_zero_value (N : ℕ) (hN : 0 < N) :
   rw [smul_eq_mul, sq]
   field_simp
 
-/-- The Cesàro mean can be expressed as a convolution with the Fejér kernel.
+/- The Cesàro mean can be expressed as a convolution with the Fejér kernel.
     σ_N f(x) = ∫ f(t) · F_N(x - t) dt
     This is the key structural identity for Fejér theory. -/
 
-/-- **Fejér's Theorem**: For continuous periodic f, the Cesàro means
+/- **Fejér's Theorem**: For continuous periodic f, the Cesàro means
     converge uniformly to f.
 
     This is stronger than Dirichlet's theorem because:
@@ -599,7 +640,7 @@ private theorem fourierCoeff_norm_le_of_diff {f : AddCircle T → ℂ} {N : ℕ}
     · exact hsub hk
   -- ∑ ({n} ∪ small) ≤ ∑ big (all terms nonneg)
   have h_sum_le := Finset.sum_le_sum_of_subset_of_nonneg h_insert
-    (fun i _ _ => sq_nonneg _)
+    (fun i _ _ => sq_nonneg (‖fourierCoeff f i‖))
   -- ∑ ({n} ∪ small) = ‖ĉ_n‖² + ∑ small (since n ∉ small)
   rw [Finset.sum_insert hn_nmem] at h_sum_le
   -- So ‖ĉ_n‖² + ∑ small ≤ ∑ big, hence ‖ĉ_n‖² ≤ ∑ big - ∑ small
