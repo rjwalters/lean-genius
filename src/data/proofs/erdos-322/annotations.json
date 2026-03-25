@@ -16,7 +16,11 @@
       "Hypothesis K",
       "additive number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Waring's problem",
+      "Hardy-Littlewood circle method",
+      "additive number theory"
+    ]
   },
   {
     "id": "ann-322-definitions",
@@ -35,7 +39,11 @@
       "representation function",
       "sub-polynomial growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "power functions",
+      "convolution counting",
+      "sub-polynomial growth"
+    ]
   },
   {
     "id": "ann-322-mahler",
@@ -54,7 +62,11 @@
       "cubic forms",
       "disproof of Hypothesis K"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hypothesis K",
+      "algebraic geometry of cubic forms",
+      "lattice point counting"
+    ]
   },
   {
     "id": "ann-322-chowla",
@@ -74,7 +86,11 @@
       "Hypothesis K*",
       "squared sum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mahler's theorem for k=3",
+      "analytic number theory",
+      "L^2 estimates"
+    ]
   },
   {
     "id": "ann-322-density",
@@ -93,7 +109,11 @@
       "unbounded representations",
       "dense subsets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "positive lower density",
+      "sumset representations",
+      "power sets"
+    ]
   },
   {
     "id": "ann-322-summary",
@@ -113,6 +133,10 @@
       "Erdős-Chowla",
       "open for k≥4"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mahler's theorem",
+      "Erdős-Chowla bound",
+      "conjunction construction"
+    ]
   }
 ]
