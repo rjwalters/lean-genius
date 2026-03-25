@@ -1,5 +1,27 @@
 [
   {
+    "id": "erdos-347-header",
+    "proofId": "erdos-347",
+    "type": "context",
+    "range": {
+      "startLine": 1,
+      "endLine": 21
+    },
+    "title": "Module Header: Problem Statement and Imports",
+    "content": "The module docstring states Erdős Problem #347: does there exist a monotone sequence with ratio limit 2 such that every cofinite subsequence has density-1 subset sums? The problem was solved affirmatively by ebarschkis, building on ideas from Terence Tao and Wouter van Doorn. Six Mathlib imports provide the foundation: `Data.Nat.Basic` and `Data.Finset.Basic/Card` for natural number and finite set arithmetic, `Data.Real.Basic` for real-valued bounds (used in density definitions via rational approximation), `Data.Set.Basic` for set operations (complements, ranges), and `Tactic` for automation. The `open Set` declaration enables unqualified access to set operations.",
+    "mathContext": "The problem sits at the critical growth threshold: $\\lim a_{n+1}/a_n = 2$ is the boundary between easy completeness ($r < 2$, slow growth fills gaps via greedy algorithms) and impossible completeness ($r > 2$, gaps grow exponentially). Powers of 2 achieve $P(\\{1,2,4,\\ldots\\}) = \\mathbb{N}$ but are fragile under deletion.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Erdős problems",
+      "complete sequences",
+      "critical growth rate"
+    ],
+    "prerequisites": [
+      "Mathlib imports",
+      "Lean 4 set notation"
+    ]
+  },
+  {
     "id": "erdos-347-subset-sums",
     "proofId": "erdos-347",
     "type": "definition",
@@ -77,7 +99,7 @@
     "type": "definition",
     "range": {
       "startLine": 56,
-      "endLine": 61
+      "endLine": 63
     },
     "title": "Cofinite Subsequences",
     "content": "IsCofiniteSubseq a iota means iota is a strictly monotone reindexing omitting only finitely many indices. This captures robustness: removing finitely many terms should not destroy the density-1 property.",
