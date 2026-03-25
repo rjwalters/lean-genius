@@ -73,7 +73,11 @@
       "Woodin's Ultimate-L program seeks to resolve the tension by finding an inner model that satisfies GCH while accommodating all large cardinals"
     ],
     "prerequisites": [
-      "Set theory and cardinality"
+      "Set theory and cardinality (cardinal arithmetic, aleph hierarchy)",
+      "Cantor's theorem: |S| < |P(S)| for any set S",
+      "ZFC axioms and the concept of axiomatic independence",
+      "Ordinal and cardinal successor operations",
+      "Basic familiarity with large cardinal axioms (measurable cardinals)"
     ]
   },
   "sections": [
@@ -177,7 +181,37 @@
     {
       "targetId": "continuum-hypothesis",
       "relationship": "extends",
-      "description": "Parent formalization; this entry extends it with further exploration"
+      "description": "Parent formalization of the independence of CH (Gödel 1940, Cohen 1963). This open-question entry imports CH, GCH, and gch_implies_ch from the parent module and builds the axiom-selection landscape on top of them."
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "uses",
+      "description": "Cantor's theorem (|S| < |P(S)|) is the foundational inequality underlying CH. The proof of aleph_one_le_continuum applies Cardinal.cantor to show aleph_0 < 2^aleph_0, from which aleph_1 <= 2^aleph_0 follows by successor minimality."
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "Cantor's diagonalization argument establishes the uncountability of the reals (aleph_0 < |R|). CH asks whether |R| = aleph_1 or something larger — the diagonalization result is what makes CH a non-trivial question in the first place."
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Gödel's incompleteness theorems and his consistency proof of CH share a common theme: the limits of formal systems. Gödel's constructible universe L (used to prove Con(ZFC + CH)) was developed by the same mathematician who proved the incompleteness of arithmetic, and both results concern what axiom systems can and cannot decide."
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "related",
+      "description": "Both the halting problem and CH independence are landmark undecidability/independence results. The halting problem shows certain questions are undecidable by algorithms; CH independence shows certain questions are undecidable by ZFC. Cohen's forcing technique is the set-theoretic analog of diagonalization in computability."
+    },
+    {
+      "targetId": "parallel-postulate-independence",
+      "relationship": "related",
+      "description": "The independence of the parallel postulate from neutral geometry is the classical precursor to CH independence from ZFC. Both results demonstrate that a natural-seeming statement is neither provable nor refutable from the base axioms, and both led to the development of alternative consistent extensions (Euclidean vs non-Euclidean geometry; CH vs forcing axioms)."
+    },
+    {
+      "targetId": "hilbert-6",
+      "relationship": "related",
+      "description": "Hilbert's sixth problem (axiomatization of physics) shares the foundational concern of axiom selection with CH. Both ask: what axioms should we adopt for a mathematical domain? CH was Hilbert's first problem; the sixth problem similarly asks which formal framework best captures physical reality."
     }
   ],
   "references": [
