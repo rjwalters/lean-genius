@@ -98,10 +98,18 @@ def PrimeResidueCase : Prop :=
     LogDensityExists (sievedSet σ)
 
 /-- The finite sieve case: if only finitely many moduli are used,
-the logarithmic density trivially exists by periodicity. -/
-axiom finite_sieve_density_exists (σ : CongruenceSieve) (N : ℕ)
+the logarithmic density trivially exists by periodicity.
+Note: The hypothesis (∀ i ≥ N, seq_n i = seq_n N) contradicts StrictMono seq_n,
+making this vacuously true. A meaningful finite sieve would need a different
+formulation (e.g., a finite list of moduli rather than an eventually-constant
+infinite sequence). -/
+theorem finite_sieve_density_exists (σ : CongruenceSieve) (N : ℕ)
     (h : ∀ i, i ≥ N → σ.seq_n i = σ.seq_n N) :
-  LogDensityExists (sievedSet σ)
+    LogDensityExists (sievedSet σ) := by
+  exfalso
+  have h1 := h (N + 1) (by omega)
+  have h2 := σ.strictly_mono (show N < N + 1 by omega)
+  omega
 
 /-- Problem 486 asks the same question but for a broader class of sieves.
     A positive answer to Problem 486 would imply Erdős Problem 25. -/
@@ -136,12 +144,13 @@ theorem sieved_set_nonempty (σ : CongruenceSieve) (h : σ.seq_n 0 ≥ 2) :
   have : (1 : ℕ) < σ.seq_n 0 := by omega
   exact_mod_cast this
 
-/-- Each individual congruence class excludes at most a 1/nᵢ fraction.
-The sieved set has positive logarithmic density when it exists. -/
-axiom sieve_density_positive (σ : CongruenceSieve) (d : ℝ)
-    (h : logDensity (sievedSet σ) d)
-    (hprod : ∀ i j, i ≠ j → Nat.Coprime (σ.seq_n i) (σ.seq_n j)) :
-  d > 0
+/- Note on density positivity: The previously-stated axiom
+sieve_density_positive (for coprime moduli, log density > 0) was
+mathematically false. Counterexample: take seq_n i = pᵢ (i-th prime),
+seq_a i = 0. The moduli are pairwise coprime, but the sieved set is {1}
+(every m > 1 is divisible by some prime), which has log density 0.
+A correct version would need additional hypotheses, e.g., that only
+finitely many moduli are used, or that Σ 1/nᵢ converges. -/
 
 /-
 ## Section VI: Monotonicity Properties

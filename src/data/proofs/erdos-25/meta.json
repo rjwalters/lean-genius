@@ -20,9 +20,9 @@
     "erdosNumber": 25,
     "erdosUrl": "https://erdosproblems.com/25",
     "erdosProblemStatus": "open",
-    "axiomCount": 2,
-    "lineCount": 157,
-    "assumptions": "2 axioms: finite_sieve_density_exists, sieve_density_positive. Previously 6: logDensity/logDensity_mem_unit/logDensity_unique proved via constructive HasLogDensity; sieved_set_nonempty proved with corrected hypothesis (seq_n 0 ≥ 2).",
+    "axiomCount": 4,
+    "lineCount": 166,
+    "assumptions": "Main file: 0 axioms (finite_sieve_density_exists proved vacuously — hypothesis contradicts StrictMono; sieve_density_positive removed — mathematically false). Companion Erdos25LogDensity.lean: 4 axioms (logDensity_avoid_one_residue, naturalDensity_implies_logDensity, exists_logDensity_no_naturalDensity, davenport_erdos). Previously 6 main-file axioms: logDensity/logDensity_mem_unit/logDensity_unique proved via constructive HasLogDensity; sieved_set_nonempty proved with corrected hypothesis (seq_n 0 ≥ 2).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -74,16 +74,16 @@
       "title": "Special Cases",
       "startLine": 71,
       "endLine": 90,
-      "summary": "Defines the prime-residue case (moduli are all primes). Axiomatizes finite sieve density existence (eventual periodicity). Notes the relationship to Problem 486.",
-      "mathContext": "`PrimeResidueCase`: $\\forall \\sigma,\\, (\\forall i,\\, \\text{Prime}(n_i)) \\Rightarrow \\text{LogDensityExists}(A(\\sigma))$. Axiom `finite_sieve_density_exists`: if $n_i = n_N$ for $i \\ge N$, then $A(\\sigma)$ is eventually periodic and its density exists. The tautology `erdos_486_implies_25` records that Problem 486 generalizes Problem 25."
+      "summary": "Defines the prime-residue case (moduli are all primes). Proves finite sieve density existence vacuously (the eventually-constant hypothesis contradicts StrictMono). Notes the relationship to Problem 486.",
+      "mathContext": "`PrimeResidueCase`: $\\forall \\sigma,\\, (\\forall i,\\, \\text{Prime}(n_i)) \\Rightarrow \\text{LogDensityExists}(A(\\sigma))$. Theorem `finite_sieve_density_exists`: proved vacuously — the hypothesis $n_i = n_N$ for $i \\ge N$ contradicts `StrictMono seq_n` (taking $i = N+1$). The tautology `erdos_486_implies_25` records that Problem 486 generalizes Problem 25."
     },
     {
       "id": "density-bounds",
       "title": "Density Bounds",
       "startLine": 91,
       "endLine": 106,
-      "summary": "Axiomatizes nonemptiness of sieved sets (small integers pass all conditions) and positive density under pairwise coprimality of moduli.",
-      "mathContext": "Axiom `sieved_set_nonempty`: $\\exists m > 0,\\, m \\in A(\\sigma)$ (integers $m < n_1$ pass all conditions). Axiom `sieve_density_positive`: if $\\gcd(n_i, n_j) = 1$ for $i \\ne j$ and $\\delta_\\ell(A(\\sigma)) = d$, then $d > 0$. By CRT, coprime exclusions are independent: $\\delta_\\ell \\approx \\prod_i (1 - 1/n_i)$."
+      "summary": "Proves nonemptiness of sieved sets (integers below the first modulus pass all conditions). Notes that the density-positivity axiom was removed as mathematically false.",
+      "mathContext": "Proved theorem `sieved_set_nonempty` (with hypothesis $n_0 \\ge 2$): $\\exists m > 0,\\, m \\in A(\\sigma)$. The former axiom `sieve_density_positive` was removed: it claimed positive density for coprime sieves, but this is false for the prime sieve (sieved set = \\{1\\}, density = 0)."
     },
     {
       "id": "monotonicity",
@@ -141,9 +141,9 @@
       "Filter"
     ],
     "namespace": null,
-    "lineCount": 157,
-    "axiomCount": 3,
-    "theoremCount": 3,
+    "lineCount": 166,
+    "axiomCount": 0,
+    "theoremCount": 8,
     "definitionCount": 6
   },
   "references": [
