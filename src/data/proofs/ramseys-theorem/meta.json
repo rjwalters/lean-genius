@@ -167,11 +167,6 @@
       "description": "The probabilistic lower bound on Ramsey numbers R(k,k) ≥ 2^{k/2} uses an alteration/expectation argument on random 2-colorings"
     },
     {
-      "targetId": "pigeonhole-principle",
-      "relationship": "depends-on",
-      "description": "The neighborhood partition step relies on pigeonhole: n-1 vertices split into two sets, so one has at least ⌈(n-1)/2⌉ elements"
-    },
-    {
       "targetId": "kummer-theorem",
       "relationship": "related",
       "description": "Binomial coefficient structure determines the Ramsey bound R(r,s) ≤ C(r+s-2, r-1)"

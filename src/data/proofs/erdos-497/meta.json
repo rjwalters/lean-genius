@@ -163,11 +163,6 @@
       "targetId": "stirling-formula",
       "relationship": "technique",
       "description": "Stirling's approximation gives C(n, ⌊n/2⌋) ~ 2^n · √(2/(πn)), converting the Dedekind number asymptotics from binomial coefficient form to exponential form: log₂ D(n) ~ 2^n / √(πn/2)"
-    },
-    {
-      "targetId": "pigeonhole-principle",
-      "relationship": "foundational",
-      "description": "The pigeonhole principle underlies Sperner's theorem: in any antichain, the sets must be spread across different layers of the Boolean lattice, and the LYM inequality constrains this distribution"
     }
   ],
   "references": [
