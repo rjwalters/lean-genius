@@ -219,5 +219,17 @@
       "Is there a uniform proof for all $k$ that avoids reliance on Schinzel's Hypothesis H or the prime $k$-tuples conjecture?",
       "Can the formalization be extended to prove $\\sigma_k(p) = 1 + p^k$ and the convergence bound $\\sigma_k(n) \\leq n^{k+1}$ directly in Lean, rather than axiomatizing them?"
     ]
-  }
+  },
+  "references": [
+    {
+      "key": "Ba75b",
+      "authors": [
+        "A. Baker"
+      ],
+      "title": "Transcendental Number Theory",
+      "venue": "Cambridge University Press",
+      "year": "1975",
+      "note": "Reference for irrationality measures and transcendence methods"
+    }
+  ]
 }

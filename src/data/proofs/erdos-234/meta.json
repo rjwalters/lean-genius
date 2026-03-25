@@ -179,5 +179,19 @@
     "axiomCount": 4,
     "theoremCount": 20,
     "definitionCount": 8
-  }
+  },
+  "references": [
+    {
+      "key": "Cr36",
+      "authors": [
+        "H. Cramér"
+      ],
+      "title": "On the order of magnitude of the difference between consecutive prime numbers",
+      "venue": "Acta Arithmetica",
+      "year": "1936",
+      "volume": "2",
+      "pages": "23-46",
+      "note": "Cramér's conjecture on prime gaps: p_{n+1}-p_n = O(log²p_n)"
+    }
+  ]
 }
