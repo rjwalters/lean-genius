@@ -65,35 +65,40 @@
       "title": "Basic Definitions",
       "startLine": 49,
       "endLine": 58,
-      "summary": "Defining even and odd numbers from scratch."
+      "summary": "Defining even and odd numbers from scratch.",
+      "mathContext": "Defines even ($\\exists k, n = 2k$) and odd ($\\exists k, n = 2k+1$) from scratch, without importing Mathlib. A self-contained development from first principles."
     },
     {
       "id": "parity-lemmas",
       "title": "Parity Lemmas",
       "startLine": 59,
       "endLine": 103,
-      "summary": "Every number is even XOR odd; successor flips parity."
+      "summary": "Every number is even XOR odd; successor flips parity.",
+      "mathContext": "Every natural number is even XOR odd. Successor flips parity: $n$ even $\\iff$ $n+1$ odd. Proved by induction on $n$."
     },
     {
       "id": "key-lemma",
       "title": "Key Lemma: Even Squares",
       "startLine": 104,
       "endLine": 122,
-      "summary": "If n^2 is even, then n is even (proved by contrapositive)."
+      "summary": "If n^2 is even, then n is even (proved by contrapositive).",
+      "mathContext": "The key lemma: $n^2$ even $\\Rightarrow n$ even. Proved by contrapositive: $n$ odd $\\Rightarrow n = 2k+1 \\Rightarrow n^2 = 4k^2+4k+1$ odd."
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 133,
       "endLine": 166,
-      "summary": "No coprime solution to a^2 = 2b^2 exists."
+      "summary": "No coprime solution to a^2 = 2b^2 exists.",
+      "mathContext": "The main result: no coprime integers $a, b$ satisfy $a^2 = 2b^2$. Proof: $a^2 = 2b^2 \\Rightarrow a^2$ even $\\Rightarrow a$ even $\\Rightarrow a = 2c \\Rightarrow 4c^2 = 2b^2 \\Rightarrow b^2$ even $\\Rightarrow b$ even, contradicting coprimality."
     },
     {
       "id": "educational-notes",
       "title": "Educational Notes",
       "startLine": 188,
       "endLine": 235,
-      "summary": "Why this proof works and comparison with Mathlib."
+      "summary": "Why this proof works and comparison with Mathlib.",
+      "mathContext": "Comparison with Mathlib's proof: this self-contained version builds even/odd from scratch to demonstrate the logical structure, while Mathlib's `irrational_sqrt_two` uses the general `Nat.Prime.irrational_sqrt` machinery."
     }
   ],
   "conclusion": {
