@@ -7,9 +7,9 @@ Find the minimum of I(x₁,...,xₙ) = ∫₋₁¹ Σₖ |l_k(x)|² dx.
 Conjecture: min I = 2 - (1+o(1))/n.
 
 ## Current State
-- **File**: `proofs/Proofs/Erdos1131Problem.lean` (306 lines)
-- **Sorries**: 0
-- **Axioms**: 2 (chebyshev_integral_estimate, erdos_1131_conjecture)
+- **File**: `proofs/Proofs/Erdos1131Problem.lean` (467 lines)
+- **Sorries**: 1 (chebyshev_integral_trace — Chebyshev expansion + integration)
+- **Axioms**: 1 (erdos_1131_conjecture — OPEN, must stay)
 - **Theorems**: 9 (all fully proved)
 
 ## Session 2026-03-25 (Session 2) - Prove sorries, remove false axiom
@@ -47,3 +47,27 @@ Conjecture: min I = 2 - (1+o(1))/n.
 ### Next Steps
 - `chebyshev_integral_estimate` requires Chebyshev polynomial T_n representation of l_k and exact integral computation — substantial infrastructure needed
 - `erdos_1131_conjecture` is genuinely OPEN, stays as axiom
+
+## Session 2026-03-24 (Session 3) - Factor exact formula, prove algebraic components
+
+**Mode**: REVISIT (RICH knowledge, score 32)
+**Outcome**: progress
+
+### What I Did
+1. **Proved `partial_fraction_sum`**: ∑1/(4(j+1)²-1) = m/(2m+1) by induction
+2. **Proved `discrete_cosine_vanishing`**: ∑cos(rθ_k) = 0 via Abel summation + telescoping
+3. **Proved `chebyshev_integral_exact`** from `chebyshev_integral_trace` + `partial_fraction_sum`
+4. Added helpers: `two_sin_mul_cos`, `sin_nat_mul_pi`
+
+### Key Findings
+- `unfold_let` not valid in Lean 4.26.0 — use `simp only [hα_def]`
+- `∑ k in ...` syntax invalid — use `∑ k ∈ ...`
+- `positivity` needs explicit positivity hypotheses for Nat.cast
+- `field_simp` needs denominators pre-normalized (rewrite `2*(n-1)+1` to `2*n-1` first)
+
+### Files Modified
+- `proofs/Proofs/Erdos1131Problem.lean` (365→467 lines, +5 proved lemmas)
+
+### Next Steps
+- Prove `chebyshev_integral_trace`: needs Chebyshev expansion + ∫T_j²dx
+- `erdos_1131_conjecture` stays as axiom
