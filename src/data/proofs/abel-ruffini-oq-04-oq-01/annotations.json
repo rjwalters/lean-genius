@@ -528,5 +528,54 @@
       "group theory (normal subgroups)",
       "simplicity of A5"
     ]
+  },
+  {
+    "id": "ann-abeloq04oq01-complex-conj",
+    "proofId": "abel-ruffini-oq-04-oq-01",
+    "range": {
+      "startLine": 909,
+      "endLine": 996
+    },
+    "type": "technique",
+    "title": "Complex Conjugation as Galois Automorphism: The Key Original Technique",
+    "content": "The proof's most original contribution: constructing a Galois automorphism from complex conjugation, entirely avoiding Dedekind's theorem. The construction: (1) `IsAlgClosed.lift` embeds $SF \\hookrightarrow \\mathbb{C}$, (2) `starRingEnd \\mathbb{C}$ (complex conjugation) is packaged as a $\\mathbb{Q}$-algebra homomorphism, (3) the composition is restricted back to $SF$ via `AlgHom.restrictNormal'` yielding $\\sigma_{\\text{conj}} \\in \\text{Gal}(p)$, (4) the sign of $\\sigma_{\\text{conj}}$ is $-1$ by contradiction: if $+1$, then $\\sigma_{\\text{conj}}(\\Delta) = \\Delta$, so $\\text{sfEmb}(\\Delta) \\in \\mathbb{R}$ (conjugation-invariant), but $\\text{sfEmb}(\\Delta)^2 = -212144 < 0$ contradicts $r^2 \\geq 0$. The involutory property $\\sigma_{\\text{conj}}^2 = 1$ confirms it acts as a transposition.",
+    "mathContext": "$SF \\xrightarrow{\\text{lift}} \\mathbb{C} \\xrightarrow{\\bar{z}} \\mathbb{C} \\xrightarrow{\\text{restrict}} SF$ gives $\\sigma_{\\text{conj}} \\in \\text{Gal}(p/\\mathbb{Q})$ with $\\sigma^2 = 1$, $\\text{sign}(\\sigma) = -1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsAlgClosed.lift",
+      "starRingEnd",
+      "AlgHom.restrictNormal",
+      "complex conjugation",
+      "involution"
+    ],
+    "prerequisites": [
+      "splitting field normality",
+      "vandermondeProduct_sq_val",
+      "Galois group as automorphism group"
+    ]
+  },
+  {
+    "id": "ann-abeloq04oq01-sylow-elim",
+    "proofId": "abel-ruffini-oq-04-oq-01",
+    "range": {
+      "startLine": 998,
+      "endLine": 1341
+    },
+    "type": "technique",
+    "title": "Sylow Elimination: Transposition vs Unique Normal Sylow 5-Subgroup",
+    "content": "Proves $3 \\mid |\\text{Gal}|$ by eliminating non-3-divisible orders $\\{5, 10, 20, 40\\}$. The uniform argument: at each candidate order, the unique Sylow 5-subgroup is normal, so every element normalizes it — but `native_decide` verifies no transposition in $S_5$ normalizes any 5-cycle, contradicting `gal_has_transposition`. **Order 5**: 5-cycles are even, contradicting the odd transposition. **Orders 10, 20, 40**: The Frobenius group $F_{20} = \\text{Norm}_{S_5}(\\langle c_5 \\rangle)$ contains no transpositions. Unique Sylow 5-subgroup at these orders forces the transposition to normalize a 5-cycle — impossible. **Synthesis** (`three_dvd_gal_card`): $|\\text{Gal}| \\notin \\{5,10,20,40\\}$ with $|\\text{Gal}| \\mid 120$ and $5 \\mid |\\text{Gal}|$ gives $3 \\mid |\\text{Gal}|$.",
+    "mathContext": "For $n \\in \\{5,10,20,40\\}$: $H \\leq S_5$, $|H| = n$, $5 \\mid |H|$ $\\Rightarrow$ unique $P_5 \\trianglelefteq H$. Transposition $\\tau \\in H$ must normalize $P_5$, but no $\\tau \\in S_5$ normalizes any 5-cycle. Therefore $|\\text{Gal}| \\notin \\{5,10,20,40\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sylow theorems",
+      "Frobenius group F_20",
+      "normalizer",
+      "native_decide"
+    ],
+    "prerequisites": [
+      "gal_has_transposition",
+      "Sylow theory",
+      "transposition_not_normalizing_5cycle"
+    ]
   }
 ]
