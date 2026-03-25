@@ -704,8 +704,110 @@ theorem gal_acts_on_vandermondeProduct (σ : p.Gal) :
 
     Axiomatized because computing resultants of explicit polynomials requires
     API that is not yet available in Lean4/Mathlib v4.26.0. -/
-axiom vandermondeProduct_sq_val :
-  vandermondeProduct ^ 2 = algebraMap ℚ SF (-212144)
+-- vandermondeProduct_sq_val: NOW A THEOREM (proved below)
+private noncomputable def p_SF : Polynomial SF := Polynomial.map (algebraMap ℚ SF) p
+set_option maxHeartbeats 800000 in
+private theorem p_SF_eq_prod_linear : p_SF = ∏ i : Fin 5, (X - C (rootEnum i)) := by
+  set P := ∏ i : Fin 5, (X - C (rootEnum i))
+  have hq_monic : p_SF.Monic := p_monic.map (algebraMap ℚ SF)
+  have hq_ne : p_SF ≠ 0 := hq_monic.ne_zero
+  have hP_monic : P.Monic := Polynomial.monic_prod_of_monic _ _ (fun i _ => Polynomial.monic_X_sub_C _)
+  have hP_deg : P.natDegree = 5 := by rw [Polynomial.natDegree_prod_of_monic _ _ (fun i _ => Polynomial.monic_X_sub_C _)]; simp [Polynomial.natDegree_X_sub_C, Finset.sum_const, Finset.card_fin]
+  have hroot : ∀ i, Polynomial.IsRoot p_SF (rootEnum i) := fun i => by have := rootEnum_is_root i; rwa [Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map] at this
+  have hcoprime : ∀ i j : Fin 5, i ≠ j → IsCoprime (X - C (rootEnum i) : Polynomial SF) (X - C (rootEnum j)) := by
+    intro i j hij; have hne : rootEnum i ≠ rootEnum j := fun h => hij (rootEnum_injective h); have hne' : rootEnum j - rootEnum i ≠ 0 := sub_ne_zero.mpr (Ne.symm hne)
+    exact ⟨C ((rootEnum j - rootEnum i)⁻¹), -C ((rootEnum j - rootEnum i)⁻¹), by
+      calc C ((rootEnum j - rootEnum i)⁻¹) * (X - C (rootEnum i)) + -C ((rootEnum j - rootEnum i)⁻¹) * (X - C (rootEnum j))
+        _ = C ((rootEnum j - rootEnum i)⁻¹) * ((X - C (rootEnum i)) - (X - C (rootEnum j))) := by ring
+        _ = C ((rootEnum j - rootEnum i)⁻¹) * C (rootEnum j - rootEnum i) := by
+            congr 1; have : (X : Polynomial SF) - C (rootEnum i) - (X - C (rootEnum j)) = C (rootEnum j) - C (rootEnum i) := by ring
+            rw [this, ← map_sub]
+        _ = C ((rootEnum j - rootEnum i)⁻¹ * (rootEnum j - rootEnum i)) := by rw [← map_mul]
+        _ = C 1 := by rw [inv_mul_cancel₀ hne']
+        _ = 1 := map_one _⟩
+  obtain ⟨r, hr⟩ := Finset.prod_dvd_of_coprime (fun i _ j _ hij => hcoprime i j hij) (fun i _ => Polynomial.dvd_iff_isRoot.mpr (hroot i))
+  have r_ne : r ≠ 0 := right_ne_zero_of_mul (hr ▸ hq_ne)
+  have hr_deg : r.natDegree = 0 := by have h1 := Polynomial.natDegree_mul hP_monic.ne_zero r_ne; rw [← hr, show p_SF.natDegree = 5 from by show (Polynomial.map (algebraMap ℚ SF) p).natDegree = 5; rw [Polynomial.natDegree_map_eq_of_injective (algebraMap ℚ SF).injective, p_natDegree], hP_deg] at h1; omega
+  have hr_one : r = 1 := by
+    have h := Polynomial.eq_C_of_natDegree_eq_zero hr_deg
+    have hrc : r.leadingCoeff = 1 := by
+      have hm := hq_monic; rw [hr, Polynomial.Monic] at hm
+      rw [Polynomial.leadingCoeff_mul, hP_monic.leadingCoeff, one_mul] at hm; exact hm
+    rw [h, Polynomial.leadingCoeff_C] at hrc; rw [h, hrc, map_one]
+  rw [hr, hr_one, mul_one]
+private theorem eval_deriv_factor {K : Type*} [Field K] (f r : Polynomial K) (α : K) (hf : f = (X - C α) * r) : Polynomial.eval α (Polynomial.derivative f) = Polynomial.eval α r := by rw [hf, Polynomial.derivative_mul]; simp only [Polynomial.eval_add, Polynomial.eval_mul, Polynomial.derivative_sub, Polynomial.derivative_X, Polynomial.derivative_C, sub_zero, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C, Polynomial.eval_one, sub_self, zero_mul, add_zero, one_mul]
+private theorem eval_deriv_at_root (i : Fin 5) : Polynomial.eval (rootEnum i) (Polynomial.derivative p_SF) = ∏ j ∈ Finset.univ.erase i, (rootEnum i - rootEnum j) := by
+  rw [eval_deriv_factor p_SF _ (rootEnum i) (by rw [p_SF_eq_prod_linear]; exact (Finset.mul_prod_erase Finset.univ (fun j => X - C (rootEnum j)) (Finset.mem_univ i)).symm), Polynomial.eval_prod]; congr 1; ext j; simp [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]
+private theorem vp_sq_eq_ordered_diff : (∏ i : Fin 5, ∏ j ∈ Finset.univ.erase i, (rootEnum i - rootEnum j)) = vandermondeProduct ^ 2 := by
+  have hsplit : ∀ i : Fin 5, ∏ j ∈ Finset.univ.erase i, (rootEnum i - rootEnum j) = (∏ j ∈ Finset.Iio i, (rootEnum i - rootEnum j)) * (∏ j ∈ Finset.Ioi i, (rootEnum i - rootEnum j)) := by
+    intro i; rw [← Finset.prod_union (Finset.disjoint_left.mpr (fun x hx1 hx2 => by rw [Finset.mem_Iio] at hx1; rw [Finset.mem_Ioi] at hx2; omega))]; congr 1; ext j; constructor
+    · intro hj; rw [Finset.mem_erase] at hj; rw [Finset.mem_union, Finset.mem_Iio, Finset.mem_Ioi]; exact (hj.1).lt_or_gt
+    · intro hj; rw [Finset.mem_union, Finset.mem_Iio, Finset.mem_Ioi] at hj; rw [Finset.mem_erase]; refine ⟨?_, Finset.mem_univ _⟩; rcases hj with h | h; exact Fin.ne_of_lt h; exact Fin.ne_of_gt h
+  simp_rw [hsplit, Finset.prod_mul_distrib]; unfold vandermondeProduct; rw [Matrix.det_vandermonde, sq]; congr 1
+  · exact Finset.prod_comm' (fun i j => by simp only [Finset.mem_univ, Finset.mem_Iio, Finset.mem_Ioi, true_and, and_true])
+  · have key : ∀ i : Fin 5, ∏ j ∈ Finset.Ioi i, (rootEnum i - rootEnum j) = (-1 : SF) ^ (Finset.Ioi i).card * ∏ j ∈ Finset.Ioi i, (rootEnum j - rootEnum i) := by
+      intro i
+      have hmul : ∀ j ∈ Finset.Ioi i, rootEnum i - rootEnum j = (-1 : SF) * (rootEnum j - rootEnum i) := fun _ _ => by ring
+      rw [Finset.prod_congr rfl hmul, Finset.prod_mul_distrib, Finset.prod_const]
+    simp_rw [key, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]
+    have : ∑ i : Fin 5, (Finset.Ioi i).card = 10 := by decide
+    rw [this]; norm_num
+private theorem root_poly_zero (i : Fin 5) : rootEnum i ^ 5 - algebraMap ℚ SF 4 * rootEnum i + algebraMap ℚ SF 2 = 0 := by
+  have h := rootEnum_is_root i; change Polynomial.aeval (rootEnum i) (X ^ 5 - C 4 * X + C 2) = 0 at h
+  simp only [map_sub, map_add, map_mul, map_pow, Polynomial.aeval_X, Polynomial.aeval_C] at h; exact h
+private theorem deriv_times_root (i : Fin 5) : (algebraMap ℚ SF 5 * rootEnum i ^ 4 - algebraMap ℚ SF 4) * rootEnum i = algebraMap ℚ SF 16 * rootEnum i - algebraMap ℚ SF 10 := by
+  have h := root_poly_zero i
+  -- (5r⁴-4)r - (16r-10) = 5(r⁵-4r+2) = 0 after converting constants
+  have h16 : algebraMap ℚ SF 16 = algebraMap ℚ SF 5 * algebraMap ℚ SF 4 - algebraMap ℚ SF 4 := by
+    rw [← map_mul, ← map_sub]; norm_num
+  have h10 : algebraMap ℚ SF 10 = algebraMap ℚ SF 5 * algebraMap ℚ SF 2 := by
+    rw [← map_mul]; norm_num
+  have key : (algebraMap ℚ SF 5 * rootEnum i ^ 4 - algebraMap ℚ SF 4) * rootEnum i -
+      (algebraMap ℚ SF 16 * rootEnum i - algebraMap ℚ SF 10) =
+      algebraMap ℚ SF 5 * (rootEnum i ^ 5 - algebraMap ℚ SF 4 * rootEnum i + algebraMap ℚ SF 2) := by
+    rw [h16, h10]; ring
+  rw [h, mul_zero] at key
+  exact sub_eq_zero.mp key
+private theorem eval_deriv_val (i : Fin 5) : Polynomial.eval (rootEnum i) (Polynomial.derivative p_SF) = algebraMap ℚ SF 5 * rootEnum i ^ 4 - algebraMap ℚ SF 4 := by
+  show Polynomial.eval (rootEnum i) (Polynomial.derivative (Polynomial.map (algebraMap ℚ SF) p)) = _; rw [Polynomial.derivative_map]
+  have hd : Polynomial.derivative p = C 5 * X ^ 4 - C 4 := by ext n; unfold p; simp only [Polynomial.coeff_derivative, Polynomial.coeff_sub, Polynomial.coeff_add, Polynomial.coeff_C_mul, Polynomial.coeff_X_pow, Polynomial.coeff_C, Polynomial.coeff_X]; rcases n with _ | _ | _ | _ | _ | n <;> simp <;> ring
+  rw [hd]; simp only [Polynomial.map_sub, Polynomial.map_mul, Polynomial.map_C, Polynomial.map_X, Polynomial.map_pow, Polynomial.eval_sub, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X]
+private theorem vp_sq_times_prod : vandermondeProduct ^ 2 * (∏ i : Fin 5, rootEnum i) = ∏ i : Fin 5, (algebraMap ℚ SF 16 * rootEnum i - algebraMap ℚ SF 10) := by
+  rw [show vandermondeProduct ^ 2 = ∏ i : Fin 5, Polynomial.eval (rootEnum i) (Polynomial.derivative p_SF) from by rw [← vp_sq_eq_ordered_diff]; congr 1; ext i; exact (eval_deriv_at_root i).symm, ← Finset.prod_mul_distrib]; congr 1; ext i; rw [eval_deriv_val]; exact deriv_times_root i
+private theorem prod_roots_val : ∏ i : Fin 5, rootEnum i = algebraMap ℚ SF (-2) := by
+  have heval : Polynomial.eval (0 : SF) p_SF = ∏ i : Fin 5, ((0 : SF) - rootEnum i) := by rw [p_SF_eq_prod_linear, Polynomial.eval_prod]; congr 1; ext i; simp [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]
+  have hlhs : Polynomial.eval (0 : SF) p_SF = algebraMap ℚ SF 2 := by
+    show Polynomial.eval (0 : SF) (Polynomial.map (algebraMap ℚ SF) p) = _; rw [Polynomial.eval_map, show (0 : SF) = algebraMap ℚ SF 0 from (map_zero _).symm]
+    rw [show Polynomial.eval₂ (algebraMap ℚ SF) (algebraMap ℚ SF 0) p = algebraMap ℚ SF (Polynomial.eval 0 p) from Polynomial.aeval_algebraMap_apply SF 0 p, p_eval_0]
+  have hrhs : ∏ i : Fin 5, ((0 : SF) - rootEnum i) = -(∏ i : Fin 5, rootEnum i) := by simp_rw [zero_sub]; rw [Finset.prod_neg, Finset.card_fin]; norm_num
+  rw [hlhs, hrhs] at heval
+  -- heval : algebraMap ℚ SF 2 = -(∏ rootEnum i)
+  rw [show algebraMap ℚ SF (-2 : ℚ) = -(algebraMap ℚ SF 2) from map_neg (algebraMap ℚ SF) _]
+  -- Goal: ∏ rootEnum i = -(algebraMap ℚ SF 2)
+  -- From heval: -(∏ rootEnum i) = algebraMap ℚ SF 2, so ∏ rootEnum i = -(algebraMap ℚ SF 2)
+  -- heval : algebraMap 2 = -(∏ r), goal: ∏ r = -(algebraMap 2)
+  have h2 : -(algebraMap ℚ SF 2) = ∏ i : Fin 5, rootEnum i := by rw [heval, neg_neg]
+  exact h2.symm
+private theorem p_eval_5_8' : p.eval (5/8 : ℚ) = -13259/32768 := by unfold p; simp [Polynomial.eval_sub, Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_pow, Polynomial.eval_C, Polynomial.eval_X]; ring
+/-- **THEOREM** (formerly axiom): Δ² = -212144 in the splitting field. -/
+theorem vandermondeProduct_sq_val : vandermondeProduct ^ 2 = algebraMap ℚ SF (-212144) := by
+  have hmul := vp_sq_times_prod; rw [prod_roots_val] at hmul
+  have heval_sf : Polynomial.eval (algebraMap ℚ SF (5/8)) p_SF = ∏ i : Fin 5, (algebraMap ℚ SF (5/8) - rootEnum i) := by rw [p_SF_eq_prod_linear, Polynomial.eval_prod]; congr 1; ext i; simp [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]
+  have heval_val : Polynomial.eval (algebraMap ℚ SF (5/8)) p_SF = algebraMap ℚ SF (p.eval (5/8)) := by
+    show Polynomial.eval _ (Polynomial.map (algebraMap ℚ SF) p) = _; rw [Polynomial.eval_map]
+    rw [show Polynomial.eval₂ (algebraMap ℚ SF) (algebraMap ℚ SF (5/8 : ℚ)) p = algebraMap ℚ SF (Polynomial.eval (5/8) p) from Polynomial.aeval_algebraMap_apply SF (5/8 : ℚ) p]
+  have h58 : algebraMap ℚ SF 16 * algebraMap ℚ SF (5/8 : ℚ) = algebraMap ℚ SF 10 := by rw [← map_mul]; norm_num
+  have hterm : ∀ i : Fin 5, algebraMap ℚ SF 16 * rootEnum i - algebraMap ℚ SF 10 = -(algebraMap ℚ SF 16) * (algebraMap ℚ SF (5/8) - rootEnum i) := by intro i; linear_combination h58
+  simp_rw [hterm, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_fin, ← heval_sf] at hmul
+  -- hmul: VP² * algebraMap(-2) = (-(algebraMap 16))^5 * p_SF(5/8)
+  have hneg5 : (-(algebraMap ℚ SF 16)) ^ 5 = -(algebraMap ℚ SF 16 ^ 5) := by ring
+  rw [hneg5] at hmul
+  rw [heval_val, p_eval_5_8'] at hmul
+  have hrhs : -(algebraMap ℚ SF 16 ^ 5) * algebraMap ℚ SF (-13259/32768 : ℚ) = algebraMap ℚ SF 424288 := by rw [← map_pow, ← map_neg, ← map_mul]; congr 1; norm_num
+  rw [hrhs] at hmul
+  have hne : algebraMap ℚ SF (-2 : ℚ) ≠ (0 : SF) := by rw [Ne, ← map_zero (algebraMap ℚ SF)]; exact (algebraMap ℚ SF).injective.ne (by norm_num)
+  rw [show algebraMap ℚ SF (-212144 : ℚ) = algebraMap ℚ SF 424288 * (algebraMap ℚ SF (-2 : ℚ))⁻¹ from by rw [← map_inv₀, ← map_mul]; congr 1; norm_num]
+  exact (eq_mul_inv_iff_mul_eq₀ hne).mpr hmul
 
 -- Section E5: Negative Discriminant → Odd Permutation
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
