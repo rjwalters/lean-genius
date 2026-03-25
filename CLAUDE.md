@@ -22,166 +22,9 @@ git worktree remove .claude/worktrees/my-fix
 
 Or use the Claude Code `isolation: "worktree"` agent option for automatic worktree management.
 
-## Two Orchestration Systems
-
-This project uses **two distinct AI agent orchestration systems** for different purposes:
-
-### 1. Loom (Development Orchestration)
-
-**Purpose**: Software development workflow - building features, reviewing PRs, managing issues.
-
-| Agent | Purpose | Mode |
-|-------|---------|------|
-| **Builder** | Implements features and fixes | Manual |
-| **Judge** | Reviews pull requests | Autonomous (5min) |
-| **Curator** | Enhances and organizes issues | Autonomous (5min) |
-| **Architect** | Creates architectural proposals | Autonomous (15min) |
-| **Hermit** | Identifies simplification opportunities | Autonomous (15min) |
-| **Doctor** | Fixes bugs and PR feedback | Manual |
-| **Guide** | Prioritizes and triages issues | Autonomous (15min) |
-
-**Invoke via**: `/builder`, `/judge`, `/curator`, etc.
-
-### 2. Lean Genius Mathematical Orchestration
-
-**Purpose**: Mathematical work - formalizing proofs, enhancing problem entries, running automated proof search.
-
-| Agent | Purpose | Mode |
-|-------|---------|------|
-| **Enricher** | Enriches existing gallery proofs with deeper annotations, cross-references, and context | Autonomous |
-| **Erdos Enhancer** | Creates new Lean formalizations from Erdos problem stubs (**~complete**, 0 stubs remaining) | Legacy (via Makefile) |
-| **Aristotle** | Manages queue of proofs for Aristotle proof search system (~132 job backlog to reprocess) | Autonomous |
-| **Researcher** | Works on open mathematical problems, proves theorems | Autonomous |
-| **Scout** | Surveys gallery proofs, techniques, and literature for research problems | On-demand |
-| **Seeker** | Selects research problems when candidate pool runs low | Autonomous (15min) |
-| **Deployer** | Merges PRs, syncs data, deploys website to Cloudflare | Autonomous (30min) |
-| **Peer Reviewer** | Deep qualitative review of gallery proofs: evaluates substance, originality, framing | On-demand |
-| **Auditor** | Validates gallery integrity: checks proof claims match Lean source files | Autonomous (10min) |
-| **Mechanic** | Repairs issues found by auditors and peer reviewers: metadata, Lean code, companion files | Autonomous (15min) |
-| **Tester** | Tests random proof pages on the live site, files issues on failure | Autonomous (30min) |
-| **Herald** | Posts noteworthy research results to Mathstodon | Autonomous (6h) |
-
-**Managed by `/lean`**: Enricher, Aristotle, Researcher, Auditor, Mechanic, Seeker, Deployer, Tester, Herald
-**Managed separately**: Erdos Enhancer (`make enhance`, `scripts/erdos/`)
-
-**Invoke via**: `/enricher`, `/aristotle`, `/lean-research`, `/lean-scout`, `/lean-seeker`, `/lean-deploy`, `/peer-review`
-
-**Team orchestration**: `/lean` - Start/stop/scale the full mathematical agent team
-
-### PR Labels for Math Agents
-
-**Math agents (Researcher, Enricher, Aristotle, Erdos Enhancer) must NOT add `loom:review-requested` to their PRs.** The deployer merges math PRs directly without Judge review. Only add content-specific labels like `research`, `enrichment`, or `aristotle-integration`.
-
-If you want a specific PR to go through Loom Judge review, manually add `loom:review-requested` — the deployer will skip it until a Judge approves it.
-
-### Two Enrichment Systems
-
-The project has two distinct enrichment systems:
-
-1. **Enricher** (`scripts/enricher/`) - Adds depth to **existing** gallery proofs: annotations, cross-references, mathematical context. This is the active system managed by `/lean`.
-2. **Erdos Enhancer** (`scripts/erdos/`) - Creates **new** Lean formalizations from Erdos problem stubs. This work is essentially complete (0 stubs remaining, gallery at 97.9% quality). Managed via `make enhance`.
-
-### When to Use Which
-
-- **Writing code, fixing bugs, reviewing PRs** → Use Loom agents (Builder, Judge, etc.)
-- **Enriching existing gallery proofs** → Use Enricher (via `/lean`)
-- **Formalizing math, proving theorems** → Use Researcher (via `/lean`)
-- **Automated proof search** → Use Aristotle (via `/lean`)
-- **Surveying literature and techniques** → Use Scout (`/lean-scout`)
-- **Selecting research problems** → Use Seeker (`/lean-seeker`)
-- **Deep qualitative review of a proof** → Use Peer Reviewer (`/peer-review`)
-- **Deploying the website** → Use Deployer (via `/lean`)
-- **Starting the full mathematical team** → Use `/lean`
-- **Creating new Erdos stubs** → `make enhance` (legacy, nearly complete)
-
 ---
 
-# /lean - Mathematical Team Orchestration
-
-The `/lean` skill provides a unified interface to start, stop, and scale the mathematical agent team.
-
-## Quick Start
-
-```bash
-# Start with defaults (2 enricher, 1 aristotle, 2 researcher, 1 seeker, 1 deployer)
-/lean
-
-# Research-focused (no enrichers, more researchers)
-/lean start --enricher 0 --researcher 3
-
-# Check status
-/lean status
-
-# Stop all agents
-/lean stop
-```
-
-## Commands
-
-| Command | Description |
-|---------|-------------|
-| `/lean` | Start daemon with default pool |
-| `/lean status` | Show work queue and agent status |
-| `/lean start [options]` | Start with custom pool sizes |
-| `/lean spawn <type>` | Add one agent (enricher, aristotle, researcher, seeker, deployer, tester, peer-reviewer) |
-| `/lean scale <type> <N>` | Scale pool to N agents |
-| `/lean stop` | Graceful shutdown of all agents (creates signal files) |
-| `/lean stop --force` | Force stop all agents (kills tmux sessions immediately) |
-| `/lean wake <type>` | Wake a sleeping agent early to start its next cycle now |
-| `/lean health` | Show agent process health and detect stuck agents |
-| `/lean daemon [options]` | Run continuous monitoring daemon (respawns completed/stuck agents) |
-
-## Pool Limits
-
-| Agent | Default | Max |
-|-------|---------|-----|
-| Enricher | 2 | 5 |
-| Aristotle | 1 | 2 |
-| Researcher | 2 | 5 |
-| Auditor | 3 | 3 |
-| Mechanic | 1 | 3 |
-| Seeker | 1 | 1 |
-| Deployer | 1 | 1 |
-| Tester | 1 | 1 |
-| Herald | 1 | 1 |
-| Peer Reviewer | 0 | 2 |
-
-## Helper Scripts
-
-```bash
-# Status (also works outside /lean skill)
-./scripts/lean/status.sh
-./scripts/lean/status.sh --json
-
-# Launch/stop (also works outside /lean skill)
-./scripts/lean/launch.sh start --researcher 3
-./scripts/lean/launch.sh stop                # Graceful (signal files)
-./scripts/lean/launch.sh stop --force        # Force (kill sessions)
-./scripts/lean/launch.sh health              # Check agent health
-./scripts/lean/launch.sh spawn researcher
-./scripts/lean/launch.sh spawn seeker
-./scripts/lean/launch.sh spawn peer-reviewer  # On-demand deep review (Opus)
-./scripts/lean/launch.sh scale researcher 4
-./scripts/lean/launch.sh wake aristotle       # Wake aristotle early
-./scripts/lean/launch.sh wake researcher      # Wake all researchers early
-./scripts/lean/launch.sh wake all             # Wake all sleeping agents
-
-# Continuous daemon (monitors and respawns agents)
-./scripts/lean/launch.sh daemon                             # Default 60s interval
-./scripts/lean/launch.sh daemon --interval 30 --researcher 3  # Custom settings
-./scripts/lean/launch.sh daemon &                           # Run in background
-```
-
----
-
-
----
-
-# Lean Proofs
-
-This repository contains formal mathematical proofs in Lean 4. Building Lean proofs can be memory-intensive.
-
-## DANGER: Memory Safety
+## DANGER: Never Run `lake build` Directly
 
 ```
 +======================================================================+
@@ -194,79 +37,87 @@ This repository contains formal mathematical proofs in Lean 4. Building Lean pro
 +======================================================================+
 ```
 
-## Building Proofs Safely
-
-**NEVER run `lake build` directly** - always use Docker or the safe-build script. Tactics like `grind` can consume all system memory before external monitoring can react.
-
 ```bash
 # ALWAYS use this:
 ./proofs/scripts/docker-build.sh Proofs.YourProof
 
-# NEVER use this directly:
-# lake build Proofs.YourProof  # DANGEROUS - no memory limits
-```
+# Custom limits (defaults: 32GB memory, 60min timeout)
+LEAN_MEMORY_LIMIT=8192 ./proofs/scripts/docker-build.sh
+LEAN_BUILD_TIMEOUT=30m ./proofs/scripts/docker-build.sh
 
-**CRITICAL**: Some proofs can consume memory faster than external monitoring can detect. Use Docker for hard memory enforcement:
-
-**Option 1: Docker Build (Recommended)**
-```bash
-# Hard memory limit enforced via Linux cgroups
-./proofs/scripts/docker-build.sh                           # Build all
-./proofs/scripts/docker-build.sh Proofs.OnePlusOne         # Specific target
-
-# Custom memory limit (default: 32GB)
-LEAN_MEMORY_LIMIT=8192 ./proofs/scripts/docker-build.sh    # 8GB limit
-LEAN_BUILD_TIMEOUT=30m ./proofs/scripts/docker-build.sh    # 30min timeout
-```
-
-The first run will build a native ARM64 Lean Docker image (~1 min).
-
-**Option 2: Build Safe Subset**
-```bash
-# Builds all proofs EXCEPT known memory-intensive ones
+# Or build the safe subset (excludes memory-intensive proofs)
 ./proofs/scripts/build-safe-subset.sh
 ```
 
-## Safety Wrapper (Automatic Protection)
-
-This repository includes a `lake` wrapper script in `proofs/bin/` that **automatically intercepts** `lake build` commands and shows safe alternatives. When activated:
-
-```bash
-$ lake build Proofs.Something
-# Output:
-# +======================================================================+
-# |  BLOCKED: Direct 'lake build' can crash your system                 |
-# +======================================================================+
-#
-# Safe alternative:
-#   ./proofs/scripts/docker-build.sh Proofs.Something
-```
-
-**Activation methods:**
-
-1. **direnv (automatic)**: Run `direnv allow` in project root
-2. **Manual**: `source ./proofs/scripts/activate-safety.sh`
-3. **Shell profile**: Add `export PATH="/path/to/lean-genius/proofs/bin:$PATH"`
-
-**Bypass (dangerous)**: `LAKE_UNSAFE=1 lake build ...`
-
-## Proof Organization
-
-- `proofs/` - Lean 4 project root
-- `proofs/Proofs/` - Individual proof files
-- `proofs/lakefile.toml` - Lake build configuration
-- `proofs/scripts/` - Build and utility scripts
-
-## Adding New Proofs
-
-1. Create proof file in `proofs/Proofs/YourProof.lean`
-2. Add gallery integration in `src/data/proofs/your-proof/`
-3. Run `./proofs/scripts/safe-build.sh` to verify
-4. Run `pnpm build` to verify gallery integration
+A `lake` wrapper in `proofs/bin/` blocks direct `lake build` calls when activated via `direnv allow` or `source ./proofs/scripts/activate-safety.sh`. Bypass with `LAKE_UNSAFE=1` (dangerous).
 
 ---
 
-# Axiom Integrity Policy
+## Agent Systems
+
+This project uses two distinct AI agent orchestration systems.
+
+### Loom (Development Orchestration)
+
+Software development workflow. See `.loom/roles/*.md` for detailed role definitions.
+
+| Agent | Purpose | Mode |
+|-------|---------|------|
+| **Builder** | Implements features and fixes | Manual |
+| **Judge** | Reviews pull requests | Autonomous (5min) |
+| **Curator** | Enhances and organizes issues | Autonomous (5min) |
+| **Architect** | Creates architectural proposals | Autonomous (15min) |
+| **Hermit** | Identifies simplification opportunities | Autonomous (15min) |
+| **Doctor** | Fixes bugs and PR feedback | Manual |
+| **Guide** | Prioritizes and triages issues | Autonomous (15min) |
+
+Invoke via: `/builder`, `/judge`, `/curator`, `/architect`, `/hermit`, `/doctor`, `/guide`
+
+### Lean Genius (Mathematical Orchestration)
+
+Mathematical work: formalizing proofs, enhancing entries, automated proof search.
+
+| Agent | Purpose | Mode |
+|-------|---------|------|
+| **Enricher** | Enriches gallery proofs with annotations, cross-references, context | Autonomous |
+| **Aristotle** | Manages queue for Aristotle proof search system | Autonomous |
+| **Researcher** | Works on open mathematical problems, proves theorems | Autonomous |
+| **Scout** | Surveys gallery proofs, techniques, and literature | On-demand |
+| **Seeker** | Selects research problems when candidate pool runs low | Autonomous (15min) |
+| **Deployer** | Merges PRs, syncs data, deploys website to Cloudflare | Autonomous (30min) |
+| **Peer Reviewer** | Deep qualitative review of gallery proofs | On-demand |
+| **Auditor** | Validates gallery integrity: proof claims vs Lean source | Autonomous (10min) |
+| **Mechanic** | Repairs issues found by auditors and peer reviewers | Autonomous (15min) |
+| **Tester** | Tests random proof pages on the live site | Autonomous (30min) |
+| **Herald** | Posts noteworthy research results to Mathstodon | Autonomous (6h) |
+
+**Team orchestration**: `/lean` manages Enricher, Aristotle, Researcher, Auditor, Mechanic, Seeker, Deployer, Tester, Herald. Run `/lean` for commands and pool configuration.
+
+**Legacy**: Erdos Enhancer (`make enhance`) — stub creation is complete (0 stubs remaining).
+
+### When to Use Which
+
+| Task | Use |
+|------|-----|
+| Writing code, fixing bugs, reviewing PRs | Loom agents (`/builder`, `/judge`, etc.) |
+| Enriching existing gallery proofs | `/lean` (enricher) |
+| Formalizing math, proving theorems | `/lean` (researcher) |
+| Automated proof search | `/lean` (aristotle) |
+| Surveying literature and techniques | `/lean-scout` |
+| Selecting research problems | `/lean-seeker` |
+| Deep qualitative review of a proof | `/peer-review` |
+| Deploying the website | `/lean` (deployer) |
+| Starting the full mathematical team | `/lean` |
+
+### PR Labels for Math Agents
+
+**Math agents (Researcher, Enricher, Aristotle, Erdos Enhancer) must NOT add `loom:review-requested` to their PRs.** The deployer merges math PRs directly without Judge review. Only add content-specific labels like `research`, `enrichment`, or `aristotle-integration`.
+
+If you want a specific PR to go through Loom Judge review, manually add `loom:review-requested` — the deployer will skip it until a Judge approves it.
+
+---
+
+## Axiom Integrity Policy
 
 Structure-encoded hypotheses (fields in structures/typeclasses such as `NSAxioms`, `SelbergClassAxioms`, `RHAxioms`) are mathematical assumptions. Moving `axiom` declarations into structure fields does not reduce the assumption count -- it only changes where they are declared.
 
@@ -284,894 +135,98 @@ Structure-encoded hypotheses (fields in structures/typeclasses such as `NSAxioms
 | `axiomatized` | `axiom` | Formalized with stated assumptions | Has `axiom` declarations OR structure-encoded assumptions |
 | `formalized` | varies | Lean formalization exists | Has sorries remaining |
 
-- Millennium Prize problems, Clay problems, and open conjectures: always `"axiomatized"` (these have unproven hypotheses by definition)
+- Millennium Prize problems, Clay problems, and open conjectures: always `"axiomatized"`
 - Never use `"conditional"` — use `"axiomatized"` and describe the conditions in the `assumptions` field
 - When in doubt, use `"axiomatized"` — overclaiming `"verified"` damages credibility
 
 ---
 
-# Aristotle (Proof Search)
+## Aristotle (Proof Search)
 
-Aristotle is an external proof search tool for Lean 4. It can automatically prove theorem sorries by searching for proofs.
+Aristotle is an external proof search tool for Lean 4 that automatically proves theorem sorries. Full guide: `research/SORRY-CLASSIFICATION.md`
 
-## When to Use Aristotle
+### Key Rule
 
-| Tool | Strength | Use For |
-|------|----------|---------|
-| **Claude** | Creative reasoning | OPEN problems, proof architecture |
-| **Aristotle** | Proof search | KNOWN results needing formalization |
-
-## Key Limitations
-
-**CRITICAL: Aristotle only proves theorem/lemma sorries. It skips definitions and axioms entirely.**
-
-This is the most important thing to understand about Aristotle:
-- **Axioms** = "assume this is true" → Aristotle never attempts to prove them
-- **Theorem sorries** = "prove this" → Aristotle will search for proofs
+**Aristotle only proves theorem/lemma sorries. It skips definitions and axioms entirely.**
 
 ```lean
--- ✅ Aristotle CAN prove:
-theorem sidon_bound : A.card ≤ n := by sorry
-lemma computeA_22 : computeA β = 10 := by sorry
+-- Aristotle CAN prove:
+theorem sidon_bound : A.card <= n := by sorry
 
--- ❌ Aristotle SKIPS (will NOT attempt):
-def chromaticNumber (G : SimpleGraph V) : ℕ := by sorry   -- Definition sorry
-def danzerPoints : Finset Point := sorry                   -- Definition sorry
-axiom jss_counterexample : ∃ G, ...                        -- Axiom (treated as given)
-theorem placeholder : True := by sorry                     -- No mathematical content
+-- Aristotle SKIPS:
+def chromaticNumber (G : SimpleGraph V) : Nat := by sorry   -- Definition sorry
+axiom jss_counterexample : exists G, ...                      -- Axiom
 ```
 
-**Implication for Erdős formalizations**: Our files use `axiom` for deep results (Ramsey bounds, probabilistic lemmas, etc.). These are semantically correct but Aristotle-unfriendly. Use companion files (see below) to expose only the provable supporting lemmas.
+### Pre-Submission Requirements
 
-## Aristotle Companion Files (Preferred Approach)
+1. All definitions must be complete (no `sorry` in `def`)
+2. Convert `axiom` declarations to `theorem ... := by sorry` for companion files
+3. No placeholder `True` theorems
+4. No `/-!` docstring sections (use `/-` instead — parser incompatibility)
 
-The recommended way to work with Aristotle is via **companion files**:
+### Companion Files
 
-```
-proofs/Proofs/Erdos340Problem.lean       ← main file: definitions, axioms, main conjecture
-proofs/Proofs/Erdos340Aristotle.lean     ← companion: ONLY routine lemma sorries for Aristotle
-```
+Use `*Aristotle.lean` companion files to expose only provable supporting lemmas (not the main open conjecture). See `research/SORRY-CLASSIFICATION.md` for the template and full guidelines.
 
-**Why companion files?** Most `*Problem.lean` files have their primary `sorry` on the open mathematical conjecture — exactly what Aristotle can't prove. Companion files contain only the routine supporting lemmas that *are* provable from Mathlib.
-
-### Companion File Template
-
-```lean
-/-
-  Aristotle targets for Erdős Problem #N
-  Routine supporting lemmas for automated proof search.
-  See ErdosNProblem.lean for the main formalization.
-
-  Criteria for inclusion:
-  - NOT the main open conjecture
-  - Known result likely in Mathlib (monotonicity, cardinality, bounds, etc.)
-  - Clean theorem statement with no definition sorries
-  - No axioms (use theorem ... := by sorry instead)
--/
-import Mathlib
-
-namespace ErdosN
-
--- Routine supporting lemmas (NOT the main conjecture)
-lemma helper_bound : ... := by sorry
-lemma routine_calc : ... := by sorry
-
-end ErdosN
-```
-
-### Companion File Rules
-
-| Include | Exclude |
-|---------|---------|
-| Monotonicity lemmas | The main open conjecture |
-| Cardinality bounds | `axiom` declarations |
-| Standard inequalities | Definition sorries |
-| Known counting arguments | Placeholder `True` theorems |
-
-**Converting axioms for companion files**: If your main file uses `axiom` for a supporting result, convert it to `theorem ... := by sorry` in the companion file:
-```lean
--- Main file (correct semantics — marks result as assumed):
-axiom sidon_bound (A : Finset ℕ) : A.card ≤ Nat.sqrt N + 1
-
--- Companion file (Aristotle will attempt to prove this):
-theorem sidon_bound (A : Finset ℕ) : A.card ≤ Nat.sqrt N + 1 := by sorry
-```
-
-### How It Works
-
-- The Aristotle agent auto-detects `*Aristotle.lean` files as Tier 1 candidates
-- Tier 1 companion files are submitted **before** Tier 2 regular `*Problem.lean` files
-- When Aristotle proves lemmas, the companion file is integrated and the Researcher is notified to merge the proofs back into the main file
-
-## Pre-Submission Checklist
-
-For companion files (`*Aristotle.lean`):
-1. **No definition sorries** - Aristotle will skip these and dependent theorems fail
-2. **No axiom declarations** - Convert to `theorem ... := by sorry` (Aristotle skips axioms)
-3. **No placeholder True theorems** - Provide real mathematical content
-4. **No OPEN conjectures** - Aristotle searches for existing proofs, can't discover new ones
-5. **No `/-!` docstring sections** - Use `/-` instead (causes parsing errors)
+### Workflow
 
 ```bash
-# Check companion file for problems
-grep -n "def.*:=.*sorry" proofs/Proofs/ErdosNAristotle.lean     # Definition sorries
-grep -n "^axiom " proofs/Proofs/ErdosNAristotle.lean             # Axioms (convert!)
-grep -n "theorem.*: True" proofs/Proofs/ErdosNAristotle.lean     # Placeholder theorems
-grep -n "/-!" proofs/Proofs/ErdosNAristotle.lean                  # Docstring sections
+./scripts/aristotle/find-candidates.sh          # Find candidates
+./scripts/aristotle/submit-batch.sh --target 5   # Submit batch
+./scripts/aristotle/check-jobs.sh --update        # Check status
+./scripts/aristotle/retrieve-integrate.sh         # Integrate solutions
 ```
 
-## Syntax Compatibility
-
-**Aristotle's parser differs from local Mathlib.** Files that compile locally may fail to load.
-
-| Issue | Symptom | Fix |
-|-------|---------|-----|
-| `/-!` docstrings | "unexpected token" | Use `/-` |
-| Complex namespaces | "unexpected name after end" | Flatten structure |
-| Type inference | "function expected" | Add type annotations |
-
-See `research/SORRY-CLASSIFICATION.md` for full compatibility guide.
-
-## Workflow
-
-The Aristotle agent handles submission automatically. For manual operations:
-
-```bash
-# Find available candidates (both tiers)
-./scripts/aristotle/find-candidates.sh
-
-# Find only companion files (Tier 1)
-./scripts/aristotle/find-candidates.sh --tier1-only
-
-# Submit batch (companion files first, then regular)
-./scripts/aristotle/submit-batch.sh --target 5
-
-# Check job status
-./scripts/aristotle/check-jobs.sh --update
-
-# Retrieve and integrate completed solutions
-./scripts/aristotle/retrieve-integrate.sh
-```
-
-## Job Tracking
-
-Jobs are tracked in `research/aristotle-jobs.json`:
-
-```bash
-# View active jobs
-cat research/aristotle-jobs.json | jq '.jobs[] | select(.status == "submitted")'
-
-# Count by status
-cat research/aristotle-jobs.json | jq '[.jobs[] | .status] | group_by(.) | map({status: .[0], count: length})'
-```
-
-## Success Patterns
-
-- **MotivicFlagMapsProvable**: 10/10 theorems proved (all definitions complete)
-- **Erdős #728**: 6-hour overnight run, 1416 lines of proof
-- **Erdős #1**: 3/3 theorems proved in 44 minutes
-
-## Failure Patterns
-
-| Problem | Issue | Result |
-|---------|-------|--------|
-| erdos-58 | `chromaticNumber` def sorry | Theorems axiomatized |
-| erdos-97 | `danzerPoints` def sorry | Construction skipped |
-| erdos-39 | Placeholder `True` theorem | No progress |
-| erdos-1030 | Axiom-heavy file (no conversion) | No proofs attempted |
-| erdos-1026 | Axiom-heavy file (no conversion) | No proofs attempted |
-| erdos-630 | Definition sorries | Blocked dependent theorems |
-
-**Key Learnings**:
-- **Axiom-heavy files** (#1030, #1026): Had many `axiom` declarations for deep results. Aristotle treated these as "given" and had nothing to prove. **Fix**: Convert axioms to theorem sorries before submission.
-- **Definition sorries** (#630): When definitions use `sorry`, all dependent theorems fail to typecheck. Aristotle can't prove theorems that reference undefined values. **Fix**: Complete all definitions before submission.
-
-**Lesson**: Only submit files where all definitions are complete AND axioms have been converted to theorem sorries.
-
-## Current Backlog (as of 2026-02-08)
-
-The Aristotle agent was recently fixed. There are **~132 jobs** eligible for resubmission:
-- 89 expired (never integrated)
-- 31 zombie
-- 7 failed
-- 5 build_failed
-
-The Aristotle agent will automatically process this backlog when spawned via `/lean`.
-
-## Documentation
-
-- `research/SORRY-CLASSIFICATION.md` - Classification guide
-- `research/aristotle-jobs.json` - Job history and learnings
+Jobs tracked in `research/aristotle-jobs.json`. The Aristotle agent handles this automatically when spawned via `/lean`.
 
 ---
 
-# Quick Commands (Makefile)
+## Proof Organization
 
-This repository includes a Makefile with convenient aliases for common tasks. Run `make` or `make help` to see all available commands.
+- `proofs/` — Lean 4 project root
+- `proofs/Proofs/` — Individual proof files
+- `proofs/lakefile.toml` — Lake build configuration
+- `src/data/proofs/<proof-name>/` — Gallery integration (meta.json, annotations, etc.)
 
-## Cleanup Commands
-
-```bash
-make clean            # Preview all cleanup (dry-run)
-make clean-all        # Deep clean everything (force mode)
-make clean-enhancers  # Clean enhancement agent artifacts
-make clean-research   # Clean research agent artifacts
-make clean-loom       # Clean loom worktrees and branches
-make prune            # Prune git worktrees and remote branches
-```
-
-Cleanup flags (can be combined):
-- `DEEP=1` - Include worktrees, branches, and logs
-- `FORCE=1` - Non-interactive mode (for CI/automation)
-- `DRY=1` - Preview what would be cleaned
-
-```bash
-# Examples
-make clean-enhancers DEEP=1 FORCE=1  # Deep clean enhancers non-interactively
-make clean-research DRY=1            # Preview research cleanup
-```
-
-## Status Commands
-
-```bash
-make status           # Show all agent claim status
-make status-enhancers # Show enhancement claims only
-make status-research  # Show research claims only
-```
-
-## Build Commands
-
-```bash
-make build            # Build the project (pnpm build)
-make test             # Run tests
-make lint             # Run linter
-```
-
-## Agent Launch Commands
-
-```bash
-make enhance N=3      # Launch 3 Erdős stub enhancers (legacy - 0 stubs remaining)
-make enhance N=5      # Launch 5 Erdős stub enhancers
-make research N=2     # Launch 2 parallel research agents (default)
-```
-
-**Note**: `make enhance` launches **Erdos Enhancers** (stub creation), not Enrichers (gallery depth). For enrichers, use `/lean start --enricher 2` or `./scripts/lean/launch.sh start --enricher 2`.
+Adding a new proof:
+1. Create `proofs/Proofs/YourProof.lean`
+2. Add gallery data in `src/data/proofs/your-proof/`
+3. Build: `./proofs/scripts/docker-build.sh Proofs.YourProof`
+4. Verify gallery: `pnpm build`
 
 ---
 
-# Troubleshooting
+## Quick Commands
 
-## Common Issues
-
-**Cleaning Up Stale Worktrees and Branches**:
-
-Use `make clean-all` to clean everything, or use the individual cleanup scripts:
+Run `make help` for all available commands.
 
 ```bash
-# Preferred: Use Makefile commands
-make clean-all                           # Deep clean everything
-make clean-enhancers DEEP=1 FORCE=1      # Clean enhancement artifacts
-make clean-research DEEP=1 FORCE=1       # Clean research artifacts
-make clean-loom DEEP=1 FORCE=1           # Clean loom artifacts
+# Build & test
+make build                    # pnpm build
+make test                     # Run tests
+make lint                     # Run linter
 
-# Or use scripts directly
-./.loom/scripts/clean.sh --deep --force  # Loom worktrees/branches
-./scripts/erdos/clean-enhancers.sh --deep --force   # Erdős enhancer agents (legacy)
-./scripts/research/clean-research.sh --deep --force # Research agents
+# Cleanup
+make clean-all                # Deep clean everything
+make prune                    # Prune git worktrees and remote branches
+
+# Agent status
+make status                   # Show all agent claim status
+./scripts/lean/launch.sh health   # Check lean agent health
+
+# Lean agents
+./scripts/lean/launch.sh start --researcher 3   # Start agents
+./scripts/lean/launch.sh stop --force            # Force stop all
+./scripts/lean/launch.sh daemon                  # Continuous monitoring
 ```
-
-**What gets cleaned**:
-- **clean-loom**: Loom worktrees, feature branches for closed issues, tmux sessions
-- **clean-enhancers**: Enhancement claims, erdos-N worktrees, enhancer branches, logs
-- **clean-research**: Research claims, researcher worktrees, researcher branches, logs
-
-**IMPORTANT**: For **CI pipelines and automation**, always use `--force` flag or `FORCE=1`:
-```bash
-make clean-all  # Already uses --force internally
-```
-
-**Manual cleanup** (if needed):
-```bash
-# List worktrees
-git worktree list
-
-# Remove specific stale worktree
-git worktree remove .loom/worktrees/issue-42 --force
-
-# Prune orphaned worktrees
-git worktree prune
-```
-
-**Labels out of sync**:
-```bash
-# Re-sync labels from configuration
-gh label sync --file .github/labels.yml
-```
-
-**Terminal won't start (Tauri App)**:
-```bash
-# Check daemon logs
-tail -f ~/.loom/daemon.log
-
-# Check terminal logs
-tail -f /tmp/loom-terminal-1.out
-```
-
-**Claude Code not found**:
-```bash
-# Ensure Claude Code CLI is in PATH
-which claude
-
-# Install if missing (see Claude Code documentation)
-```
-
-## Resources
-
-### Loom Documentation
-
-- **Main Repository**: https://github.com/loomhq/loom
-- **Getting Started**: https://github.com/loomhq/loom#getting-started
-- **Role Definitions**: See `.loom/roles/*.md` in this repository
-- **Workflow Details**: See `.loom/AGENTS.md` in this repository
-
-### Local Configuration
-
-- **Configuration**: `.loom/config.json` (your local terminal setup)
-- **Role Definitions**: `.loom/roles/*.md` (default and custom roles)
-- **Scripts**: `.loom/scripts/` (helper scripts for worktrees, etc.)
-- **GitHub Labels**: `.github/labels.yml` (label definitions)
-
-## Support
-
-For issues with Loom itself:
-- **GitHub Issues**: https://github.com/loomhq/loom/issues
-- **Documentation**: https://github.com/loomhq/loom/blob/main/CLAUDE.md
-
-For issues specific to this repository:
-- Use the repository's normal issue tracker
-- Tag issues with Loom-related labels when applicable
 
 ---
-
-**Lean Genius Project Guide**
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes<!-- BEGIN LOOM ORCHESTRATION -->
-# Loom Orchestration - Repository Guide
-
-This repository uses **Loom** for AI-powered development orchestration.
-
-**Loom Version**: 0.2.3
-**Installation Date**: 2026-02-15
-
-## What is Loom?
-
-Loom is a multi-terminal desktop application for macOS that orchestrates AI-powered development workers using git worktrees and GitHub as the coordination layer. It enables both automated orchestration (Tauri App Mode) and manual coordination (Manual Orchestration Mode).
-
-**Loom Repository**: https://github.com/rjwalters/loom
-
-## Usage Modes
-
-Loom supports two complementary workflows:
-
-### 1. Manual Orchestration Mode (MOM)
-
-Use Claude Code terminals with specialized roles for hands-on development coordination.
-
-**Setup**:
-1. Open Claude Code in this repository
-2. Use slash commands to assume roles: `/builder`, `/judge`, `/curator`, etc.
-3. Each terminal acts as a specialized agent following role guidelines
-
-**When to use MOM**:
-- Learning Loom workflows
-- Direct control over agent actions
-- Debugging and iterating on processes
-- Working with smaller teams
-
-**Example workflow**:
-```bash
-# Terminal 1: Builder working on feature
-/loom:builder
-# Claims loom:ready issue, implements, creates PR
-
-# Terminal 2: Judge reviewing PRs
-/loom:judge
-# Reviews PR with loom:review-requested, provides feedback
-
-# Terminal 3: Curator maintaining issues
-/loom:curator
-# Enhances unlabeled issues, marks as loom:ready
-```
-
-### 2. Tauri App Mode
-
-Launch the Loom desktop application for automated orchestration with visual terminal management.
-
-**Setup**:
-1. Install Loom app (see main repository for download)
-2. Open Loom application
-3. Select this repository as workspace
-4. Configure terminals with roles and intervals
-5. Start engine - terminals launch automatically
-
-**When to use Tauri App**:
-- Production-scale development
-- Fully autonomous agent workflows
-- Visual monitoring of multiple agents
-- Hands-off orchestration
-
-**Features**:
-- Visual terminal multiplexing
-- Real-time agent monitoring
-- Autonomous mode with configurable intervals
-- Persistent workspace configuration
-
-## Agent Roles
-
-Loom provides specialized roles for different development tasks. Each role follows specific guidelines and uses GitHub labels for coordination.
-
-### Available Roles
-
-**Builder** (Manual, `builder.md`)
-- **Purpose**: Implement features and fixes
-- **Workflow**: Claims `loom:issue` → implements → tests → creates PR with `loom:review-requested`
-- **When to use**: Feature development, bug fixes, refactoring
-
-**Judge** (Autonomous 5min, `judge.md`)
-- **Purpose**: Evaluate pull requests
-- **Workflow**: Finds `loom:review-requested` PRs → evaluates → approves or requests changes
-- **When to use**: Code quality assurance, automated evaluations
-
-**Curator** (Autonomous 5min, `curator.md`)
-- **Purpose**: Enhance and organize issues
-- **Workflow**: Finds unlabeled issues → adds context → marks as `loom:issue`
-- **When to use**: Issue backlog maintenance, quality improvement
-
-**Architect** (Autonomous 15min, `architect.md`)
-- **Purpose**: Create architectural proposals
-- **Workflow**: Analyzes codebase → creates proposal issues with `loom:architect`
-- **When to use**: System design, technical decision making
-
-**Hermit** (Autonomous 15min, `hermit.md`)
-- **Purpose**: Identify code simplification opportunities
-- **Workflow**: Analyzes complexity → creates removal proposals with `loom:hermit`
-- **When to use**: Code simplification, reducing technical debt
-
-**Doctor** (Manual, `doctor.md`)
-- **Purpose**: Fix bugs and address PR feedback
-- **Workflow**: Claims bug reports or addresses PR comments → fixes → pushes changes
-- **When to use**: Bug fixes, PR maintenance
-
-**Guide** (Autonomous 15min, `guide.md`)
-- **Purpose**: Prioritize and triage issues
-- **Workflow**: Reviews issue backlog → updates priorities → organizes labels
-- **When to use**: Project planning, issue organization
-
-**Driver** (Manual, `driver.md`)
-- **Purpose**: Direct command execution
-- **Workflow**: Plain shell environment for custom tasks
-- **When to use**: Ad-hoc tasks, debugging, manual operations
-
-### Role Definitions
-
-Full role definitions with detailed guidelines are available in:
-- `.loom/roles/builder.md`
-- `.loom/roles/judge.md`
-- `.loom/roles/curator.md`
-- And more...
-
-## Label-Based Workflow
-
-Agents coordinate work through GitHub labels. This enables autonomous operation without direct communication.
-
-### Label Flow
-
-**Issue Lifecycle**:
-```
-(created) → loom:issue → loom:building → (closed)
-           ↑ Curator      ↑ Builder
-```
-
-**PR Lifecycle**:
-```
-(created) → loom:review-requested → loom:pr → (merged)
-           ↑ Builder                ↑ Judge    ↑ Human
-```
-
-**Proposal Lifecycle**:
-```
-(created) → loom:architect → (approved) → loom:issue
-           ↑ Architect       ↑ Human      ↑ Ready for Builder
-
-(created) → loom:hermit → (approved) → loom:issue
-           ↑ Hermit       ↑ Human      ↑ Ready for Builder
-```
-
-### Label Definitions
-
-- **`loom:issue`**: Issue approved for work, ready for Builder to claim
-- **`loom:building`**: Issue being implemented OR PR under review
-- **`loom:review-requested`**: PR ready for Judge to review
-- **`loom:pr`**: PR approved by Judge, ready for human to merge
-- **`loom:architect`**: Architectural proposal awaiting user approval
-- **`loom:hermit`**: Simplification proposal awaiting user approval
-- **`loom:curated`**: Issue enhanced by Curator, awaiting approval
-- **`loom:blocked`**: Implementation blocked, needs help
-- **`loom:urgent`**: Critical issue requiring immediate attention
-
-## Git Worktree Workflow
-
-Loom uses git worktrees to isolate agent work. Loom supports two types of worktrees depending on the usage mode:
-
-### Worktree Strategy Overview
-
-**Terminal Worktrees** (`.loom/worktrees/terminal-N`):
-- **Purpose**: Agent isolation in Tauri App Mode
-- **When**: Created automatically for each terminal in the Loom desktop application
-- **Why**: Allows multiple autonomous agents to work on different branches simultaneously without conflicts
-- **Scope**: Per terminal/agent (persistent across app restarts)
-- **Used in**: Tauri App Mode only
-
-**Issue Worktrees** (`.loom/worktrees/issue-N`):
-- **Purpose**: Issue-specific work isolation for Builder agents
-- **When**: Created manually by Builder when claiming an issue (both MOM and Tauri App)
-- **Why**: Isolates work on specific issues with dedicated feature branches
-- **Scope**: Per issue (temporary, cleaned up when PR is merged)
-- **Used in**: Both Manual Orchestration Mode and Tauri App Mode
-
-### When to Use Which Worktree Type
-
-**Manual Orchestration Mode (Claude Code CLI)**:
-- No terminal worktrees (agents work in main workspace initially)
-- Builder creates issue worktrees via `./.loom/scripts/worktree.sh <issue-number>`
-- Single agent per terminal, human-controlled
-
-**Tauri App Mode (Autonomous Agents)**:
-- Automatic terminal worktrees for agent isolation (`.loom/worktrees/terminal-N`)
-- Builder ALSO creates issue worktrees when claiming work (`.loom/worktrees/issue-N`)
-- Multiple autonomous agents can run simultaneously
-- Builder works in issue worktree, not terminal worktree
-
-### Creating Worktrees (for Agents)
-
-When claiming an issue, create a worktree:
-
-```bash
-# Agent claims issue #42
-gh issue edit 42 --remove-label "loom:issue" --add-label "loom:building"
-
-# Create worktree for issue
-./.loom/scripts/worktree.sh 42
-# Creates: .loom/worktrees/issue-42
-# Branch: feature/issue-42
-
-# Change to worktree
-cd .loom/worktrees/issue-42
-
-# Do the work...
-# ... implement, test, commit ...
-
-# Push and create PR
-git push -u origin feature/issue-42
-gh pr create --label "loom:review-requested"
-```
-
-### Worktree Best Practices
-
-- **Always use the helper script**: `./.loom/scripts/worktree.sh <issue-number>`
-- **Never run git worktree directly**: The helper prevents nested worktrees
-- **One worktree per issue**: Keeps work isolated and organized
-- **Semantic naming**: Worktrees named `.loom/worktrees/issue-{number}`
-- **Clean up when done**: Worktrees are automatically removed when PRs are merged
-
-### Worktree Helper Commands
-
-```bash
-# Create worktree for issue
-./.loom/scripts/worktree.sh 42
-
-# Check if you're in a worktree
-./.loom/scripts/worktree.sh --check
-
-# Show help
-./.loom/scripts/worktree.sh --help
-```
-
-## Development Workflow
-
-### As a Builder (Manual Mode)
-
-1. **Find ready issue**:
-   ```bash
-   gh issue list --label="loom:issue"
-   ```
-
-2. **Claim issue**:
-   ```bash
-   gh issue edit 42 --remove-label "loom:issue" --add-label "loom:building"
-   ```
-
-3. **Create worktree**:
-   ```bash
-   ./.loom/scripts/worktree.sh 42
-   cd .loom/worktrees/issue-42
-   ```
-
-4. **Implement and test**:
-   ```bash
-   # Make changes...
-   # Run tests...
-   git add -A
-   git commit -m "Implement feature X"
-   ```
-
-5. **Create PR**:
-   ```bash
-   git push -u origin feature/issue-42
-   gh pr create --label "loom:review-requested" --body "Closes #42"
-   ```
-
-### As a Judge (Autonomous or Manual)
-
-1. **Find PR to review**:
-   ```bash
-   gh pr list --label="loom:review-requested"
-   ```
-
-2. **Review PR**:
-   ```bash
-   gh pr checkout 123
-   # Review code, run tests, check for issues
-   ```
-
-3. **Provide feedback**:
-   ```bash
-   # If changes needed:
-   gh pr review 123 --request-changes --body "Feedback here"
-   gh pr edit 123 --remove-label "loom:review-requested"
-
-   # If approved:
-   gh pr review 123 --approve
-   gh pr edit 123 --remove-label "loom:review-requested" --add-label "loom:pr"
-   ```
-
-### As a Curator (Autonomous or Manual)
-
-1. **Find unlabeled issues**:
-   ```bash
-   gh issue list --label="!loom:issue,!loom:building,!loom:architect,!loom:hermit"
-   ```
-
-2. **Enhance issue**:
-   ```bash
-   # Add technical details, acceptance criteria, references
-   gh issue edit 42 --body "Enhanced description..."
-   ```
-
-3. **Mark as ready**:
-   ```bash
-   gh issue edit 42 --add-label "loom:issue"
-   ```
-
-## Configuration
-
-### Workspace Configuration
-
-Configuration is stored in `.loom/config.json` (gitignored, local to your machine):
-
-```json
-{
-  "nextAgentNumber": 3,
-  "terminals": [
-    {
-      "id": "terminal-1",
-      "name": "Builder",
-      "role": "builder",
-      "roleConfig": {
-        "workerType": "claude",
-        "roleFile": "builder.md",
-        "targetInterval": 0,
-        "intervalPrompt": ""
-      }
-    }
-  ]
-}
-```
-
-### Custom Roles
-
-Create custom roles by adding files to `.loom/roles/`:
-
-```bash
-# Create custom role definition
-cat > .loom/roles/my-role.md <<EOF
-# My Custom Role
-
-You are a specialist in {{workspace}}.
-
-## Your Role
-...
-EOF
-
-# Optional: Add metadata
-cat > .loom/roles/my-role.json <<EOF
-{
-  "name": "My Custom Role",
-  "description": "Brief description",
-  "defaultInterval": 300000,
-  "defaultIntervalPrompt": "Continue working",
-  "autonomousRecommended": false,
-  "suggestedWorkerType": "claude"
-}
-EOF
-```
-
-### Branch Rulesets
-
-Loom works best with a GitHub ruleset enabled on your default branch. Rulesets ensure all changes go through the PR workflow and prevent accidental direct commits.
-
-#### During Installation
-
-The installation script optionally configures a branch ruleset:
-
-**Interactive mode**: Prompts you to enable the ruleset
-```bash
-./scripts/install-loom.sh /path/to/repo
-# Will prompt: Configure branch ruleset for 'main' branch? (y/N)
-```
-
-**Non-interactive mode**: Skips ruleset setup (configure manually)
-```bash
-./scripts/install-loom.sh --yes /path/to/repo
-# Skips ruleset setup for automation safety
-```
-
-#### Manual Configuration
-
-Configure the branch ruleset after installation:
-
-```bash
-./scripts/install/setup-branch-protection.sh /path/to/repo main
-```
-
-Or configure via GitHub Settings:
-1. Go to: `Settings > Rules > Rulesets` in your repository
-2. Create a new ruleset targeting the default branch
-3. Enable:
-   - Prevent branch deletion
-   - Prevent force pushes
-   - Require linear history (squash merges only)
-   - Require pull requests (0 approvals)
-   - Dismiss stale reviews on new commits
-
-#### Ruleset Rules Applied
-
-The setup script configures these rules:
-- ✅ Prevent branch deletion
-- ✅ Prevent force pushes
-- ✅ Require linear history (squash merges only)
-- ✅ Require pull request before merging (0 approvals)
-- ✅ Dismiss stale reviews when new commits pushed
-
-#### Why Rulesets?
-
-**Enforces Loom workflow**:
-- All changes require pull requests
-- PRs require Judge review before merge
-- Prevents bypassing label-based coordination
-- Maintains audit trail of all changes
-
-**Requirements**:
-- Admin permissions on target repository
-- GitHub CLI authenticated
-- Default branch must exist
-
-**Troubleshooting**:
-If setup fails, it's usually due to:
-- Lacking admin permissions (ask repo owner)
-- Branch doesn't exist yet (push at least one commit)
-- GitHub API unreachable (check network/auth)
 
 ## Troubleshooting
 
-### Common Issues
+**Stale worktrees/branches**: `make clean-all` or use individual cleanup: `make clean-loom`, `make clean-research`, `make clean-enhancers`. Add `DEEP=1 FORCE=1` for non-interactive deep clean.
 
-**Cleaning Up Stale Worktrees and Branches**:
+**Labels out of sync**: `gh label sync --file .github/labels.yml`
 
-Use the `loom-clean` command to restore your repository to a clean state:
-
-```bash
-# Interactive mode - prompts for confirmation (default)
-loom-clean
-
-# Preview mode - shows what would be cleaned without making changes
-loom-clean --dry-run
-
-# Non-interactive mode - auto-confirms all prompts (for CI/automation)
-loom-clean --force
-
-# Deep clean - also removes build artifacts (target/, node_modules/)
-loom-clean --deep
-
-# Combine flags
-loom-clean --deep --force  # Non-interactive deep clean
-loom-clean --deep --dry-run  # Preview deep clean
-```
-
-**What loom-clean does**:
-- Removes worktrees for closed GitHub issues (prompts per worktree in interactive mode)
-- Deletes local feature branches for closed issues
-- Cleans up Loom tmux sessions
-- (Optional with `--deep`) Removes `target/` and `node_modules/` directories
-
-**IMPORTANT**: For **CI pipelines and automation**, always use `--force` flag to prevent hanging on prompts:
-```bash
-loom-clean --force  # Non-interactive, safe for automation
-```
-
-**Manual cleanup** (if needed):
-```bash
-# List worktrees
-git worktree list
-
-# Remove specific stale worktree
-git worktree remove .loom/worktrees/issue-42 --force
-
-# Prune orphaned worktrees
-git worktree prune
-```
-
-**Labels out of sync**:
-```bash
-# Re-sync labels from configuration
-gh label sync --file .github/labels.yml
-```
-
-**Terminal won't start (Tauri App)**:
-```bash
-# Check daemon logs
-tail -f ~/.loom/daemon.log
-
-# Check terminal logs
-tail -f /tmp/loom-terminal-1.out
-```
-
-**Claude Code not found**:
-```bash
-# Ensure Claude Code CLI is in PATH
-which claude
-
-# Install if missing (see Claude Code documentation)
-```
-
-## Resources
-
-### Loom Documentation
-
-- **Main Repository**: https://github.com/rjwalters/loom
-- **Getting Started**: https://github.com/rjwalters/loom#getting-started
-- **Role Definitions**: See `.loom/roles/*.md` in this repository
-
-### Local Configuration
-
-- **Configuration**: `.loom/config.json` (your local terminal setup)
-- **Role Definitions**: `.loom/roles/*.md` (default and custom roles)
-- **Scripts**: `.loom/scripts/` (helper scripts for worktrees, etc.)
-- **GitHub Labels**: `.github/labels.yml` (label definitions)
-
-## Support
-
-For issues with Loom itself:
-- **GitHub Issues**: https://github.com/rjwalters/loom/issues
-- **Documentation**: https://github.com/rjwalters/loom/blob/main/CLAUDE.md
-
-For issues specific to this repository:
-- Use the repository's normal issue tracker
-- Tag issues with Loom-related labels when applicable
-
----
-
-**Generated by Loom Installation Process**
-Last updated: 2026-02-15
-<!-- END LOOM ORCHESTRATION -->
+**Manual worktree cleanup**: `git worktree list`, then `git worktree remove <path> --force` and `git worktree prune`.
