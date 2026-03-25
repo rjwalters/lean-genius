@@ -170,9 +170,7 @@
       "Mathlib.Analysis.SpecialFunctions.Log.Basic",
       "Mathlib.Tactic"
     ],
-    "opens": [
-      "Classical"
-    ],
+    "opens": [],
     "namespace": "Erdos321",
     "mainTheorems": [
       {
@@ -197,6 +195,26 @@
       }
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "pair_hasDistinctReciprocalSums",
+      "type": "original",
+      "description": "For 1 ≤ m < n, the pair {m,n} has all 4 reciprocal subset sums distinct",
+      "leanType": "(m n : ℕ) → m ≥ 1 → n ≥ 1 → m < n → HasDistinctReciprocalSums {m, n}"
+    },
+    {
+      "name": "HasDistinctReciprocalSums.subset",
+      "type": "original",
+      "description": "Hereditary property: subsets of sets with distinct reciprocal sums inherit the property",
+      "leanType": "HasDistinctReciprocalSums A → B ⊆ A → HasDistinctReciprocalSums B"
+    },
+    {
+      "name": "hasDistinctReciprocalSums_iff",
+      "type": "equivalence",
+      "description": "Two formulations of distinct reciprocal subset sums are equivalent",
+      "leanType": "(A : Finset ℕ) → HasDistinctReciprocalSums A ↔ HasDistinctReciprocalSums' A"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "erdos-148",
