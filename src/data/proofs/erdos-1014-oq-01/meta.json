@@ -103,8 +103,12 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Real"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
     "namespace": "Erdos1014OQ01",
     "lineCount": 197,
     "axiomCount": 6,
@@ -114,7 +118,9 @@
   "references": [
     {
       "key": "Kim95",
-      "authors": ["J.H. Kim"],
+      "authors": [
+        "J.H. Kim"
+      ],
       "title": "The Ramsey number R(3,t) has order of magnitude t²/log t",
       "venue": "Random Structures & Algorithms",
       "year": "1995",
@@ -124,7 +130,9 @@
     },
     {
       "key": "She95",
-      "authors": ["J.B. Shearer"],
+      "authors": [
+        "J.B. Shearer"
+      ],
       "title": "On the independence number of sparse graphs",
       "venue": "Random Structures & Algorithms",
       "year": "1995",
@@ -134,7 +142,11 @@
     },
     {
       "key": "AKS80",
-      "authors": ["M. Ajtai", "J. Komlós", "E. Szemerédi"],
+      "authors": [
+        "M. Ajtai",
+        "J. Komlós",
+        "E. Szemerédi"
+      ],
       "title": "A note on Ramsey numbers",
       "venue": "Journal of Combinatorial Theory, Series A",
       "year": "1980",
@@ -144,7 +156,10 @@
     },
     {
       "key": "MV24",
-      "authors": ["S. Mattheus", "J. Verstraëte"],
+      "authors": [
+        "S. Mattheus",
+        "J. Verstraëte"
+      ],
       "title": "The asymptotics of r(4,t)",
       "venue": "Annals of Mathematics",
       "year": "2024",
@@ -154,10 +169,13 @@
     },
     {
       "key": "Er71",
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "Some unsolved problems in graph theory and combinatorial analysis",
       "year": "1971",
       "note": "Original source of Problem #1014 asking whether R(k,l+1)/R(k,l) → 1"
     }
-  ]
+  ],
+  "sorries": 0
 }
