@@ -16,31 +16,34 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-03-25T00:00:00Z",
-    "iteration": 2,
-    "focus": "GRH formalization with proved equivalences and axiomatized consequences",
+    "iteration": 3,
+    "focus": "GRH formalization complete — 0 sorry, 13 axiom, gallery entries created",
     "blockers": [],
-    "nextAction": "Try to prove the 1 remaining sorry (log x < sqrt x bound)",
+    "nextAction": "None — formalization complete",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created DirichletsTheoremOQ02OQ01.lean — 430 lines, 15 theorems, 13 axioms, 1 sorry. Proved GRH ↔ GRH_right_half via functional equation. Gallery entry created.",
+    "progressSummary": "COMPLETE: DirichletsTheoremOQ02OQ01.lean — 445 lines, 15 theorems, 13 axioms, 0 sorry. GRH formalization with proved equivalences. Gallery entries for both OQ02 and OQ02-OQ01.",
     "builtItems": [
-      "Created DirichletsTheoremOQ02OQ01.lean: GRH formalization (430 lines)",
-      "15 theorems proved: GRH_iff_right_half, GRH_zero_free_region, GRH_no_siegel_zeros, GRH_L_nonzero_right_of_half, GRH_consequence_chain, etc.",
+      "Created DirichletsTheoremOQ02OQ01.lean: GRH formalization (445 lines, 0 sorry)",
+      "15 theorems proved: GRH_iff_right_half, GRH_zero_free_region, GRH_no_siegel_zeros, GRH_L_nonzero_right_of_half, GRH_consequence_chain, GRH_error_sublinear, etc.",
       "10 definitions: GRH, GRH_for_character, GRH_right_half, criticalStrip, criticalLine, etc.",
-      "Gallery entry: src/data/proofs/dirichlets-theorem-oq-02-oq-01/"
+      "Gallery entry: src/data/proofs/dirichlets-theorem-oq-02-oq-01/",
+      "Gallery entry: src/data/proofs/dirichlets-theorem-oq-02/",
+      "Proved GRH_error_sublinear: log x < sqrt x via quarter-root substitution (w = x^{1/4})"
     ],
     "insights": [
       "GRH ↔ GRH_right_half: functional equation sends zeros at s to 1-s, so no zeros with Re > 1/2 implies all zeros on Re = 1/2",
       "GRH immediately eliminates Siegel zeros: any β ∈ (1-c/log q, 1) has β > 1/2",
       "GRH gives effective L(1,χ) bound C/(log q)² vs Siegel ineffective C(ε)/q^ε",
-      "For q > e, log q < q so (log q)² < q³, meaning q²(log q)² < q⁵ — GRH Linnik improves unconditional"
+      "For q > e, log q < q so (log q)² < q³, meaning q²(log q)² < q⁵ — GRH Linnik improves unconditional",
+      "Quarter-root substitution for log x < sqrt x: set w = x^{1/4}, then log x = 4 log w ≤ 4(w-1) < w² = sqrt x since (w-2)² > 0"
     ],
     "mathlibGaps": [
       "Functional equation of Dirichlet L-functions (axiomatized as L_function_functional_symmetry)",
@@ -49,8 +52,6 @@
       "Pólya-Vinogradov inequality (not in Mathlib)"
     ],
     "nextSteps": [
-      "Prove sorry: log x < sqrt x for x > e^4 (real analysis bound)",
-      "Consider submitting to Aristotle for the sorry",
       "Connect to RiemannHypothesis.lean GeneralizedRiemannHypothesis definition"
     ]
   },
@@ -72,7 +73,7 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.817Z",
-  "lastUpdate": "2026-03-24T00:48:59.817Z",
+  "lastUpdate": "2026-03-25T00:00:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
@@ -97,6 +98,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/DirichletsTheoremOQ02OQ01.lean",
+      "filename": "DirichletsTheoremOQ02OQ01.lean",
+      "lineCount": 445,
+      "theoremCount": 15,
+      "axiomCount": 13,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ02OQ01.lean"
     }
   ]
 }
