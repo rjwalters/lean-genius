@@ -142,6 +142,29 @@
     ]
   },
   {
+    "id": "ann-gw-oq03-06b-composites-basic",
+    "proofId": "angle-trisection-oq-02-oq-03",
+    "range": {
+      "startLine": 332,
+      "endLine": 385
+    },
+    "type": "technique",
+    "title": "Composite Polygon Examples: Constructible and Non-Constructible",
+    "content": "Section VIII applies the Gauss-Wantzel criterion to composite numbers. **Constructible composites**: $n = 15 = 3 \\times 5$ with $\\varphi(15) = 8 = 2^3$, and $n = 20 = 4 \\times 5$ with $\\varphi(20) = 8 = 2^3$. **Non-constructible composites**: $n = 14 = 2 \\times 7$ with $\\varphi(14) = 6$ (factor 3), and $n = 18 = 2 \\times 9$ with $\\varphi(18) = 6$ (factor 3). The constructibility of 15 is historically significant: the ancient Greeks could construct the regular 15-gon via combining the triangle and pentagon constructions, confirmed here algebraically via $\\varphi(15) = 2^3$.",
+    "mathContext": "$\\varphi(15) = \\varphi(3)\\varphi(5) = 2 \\cdot 4 = 8 = 2^3$ (constructible). $\\varphi(14) = \\varphi(2)\\varphi(7) = 1 \\cdot 6 = 6 \\neq 2^k$ (not constructible, factor 3).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "composite polygon constructibility",
+      "totient multiplicativity",
+      "15-gon (ancient construction)"
+    ],
+    "prerequisites": [
+      "gauss_wantzel_theorem",
+      "TotientIsPow2",
+      "not_pow_two_of_odd_prime_dvd"
+    ]
+  },
+  {
     "id": "ann-gw-oq03-07-arithmetic",
     "proofId": "angle-trisection-oq-02-oq-03",
     "range": {

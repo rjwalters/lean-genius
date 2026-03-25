@@ -47,97 +47,97 @@
       "id": "header-imports",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 1,
-      "summary": "File documentation citing EPS (1987), imports from Mathlib: `EulerPhi.Basic` for $\\varphi(n)$, `ArithmeticFunction`, `Log.Basic` and `Pow.Real` for asymptotic bounds, and `Topology.Instances.Real` for `Filter.atTop`.",
-      "mathContext": "File documentation citing EPS (1987), imports from Mathlib: `EulerPhi.Basic` for $\\varphi(n)$, `ArithmeticFunction`, `Log.Basic` and `Pow.Real` for asymptotic bounds, and `Topology.Instances.Real` for"
+      "endLine": 29,
+      "summary": "File documentation citing EPS (1987), problem statement, known results, and `import Mathlib`. Namespace `Erdos1004` with opens for `Nat`, `Real`, `Filter`, `Finset`, `Topology`.",
+      "mathContext": "The problem asks: for any $c > 0$ and large $x$, does $\\exists n \\leq x$ with $\\varphi(n+1), \\ldots, \\varphi(n + \\lfloor(\\log x)^c\\rfloor)$ all distinct? Answer: OPEN, with EPS87 upper bound."
     },
     {
       "id": "totient",
-      "title": "Euler's Totient Function",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Defines `phi(n)` as `Nat.totient n`, proves $\\varphi(p) = p-1$ for primes, and establishes bounds: $\\varphi(n) > 0$ for $n > 0$, $\\varphi(n) \\leq n$, $\\varphi(n) < n$ for $n > 1$.",
-      "mathContext": "Defines `phi(n)` as `Nat.totient n`, proves $\\varphi(p) = p-1$ for primes, and establishes bounds: $\\varphi(n) > 0$ for $n > 0$, $\\varphi(n) \\leq n$, $\\varphi(n) < n$ for $n > 1$."
+      "title": "Part I: Euler's Totient Function",
+      "startLine": 31,
+      "endLine": 53,
+      "summary": "Defines `phi(n) = Nat.totient n`, proves `phi_one`, `phi_prime` ($\\varphi(p) = p-1$), `phi_pos` ($\\varphi(n) > 0$ for $n > 0$), `phi_le` ($\\varphi(n) \\leq n$), and `phi_lt` ($\\varphi(n) < n$ for $n > 1$).",
+      "mathContext": "Euler's totient $\\varphi(n) = |\\{k \\leq n : \\gcd(k,n) = 1\\}|$. Key bounds: $\\varphi(n) > 0$ for $n > 0$ (from Nat.totient_pos), $\\varphi(n) < n$ for $n > 1$ (since $n$ is not coprime to itself)."
     },
     {
       "id": "distinct-runs",
-      "title": "Distinct Totient Runs",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Defines `IsDistinctTotientRun(n, K)`: $\\varphi$ is injective on $\\{n+1, \\ldots, n+K\\}$. Equivalent `Set.InjOn` formulation stated. Trivial cases $K=0$ and $K=1$ proved.",
-      "mathContext": "Defines `IsDistinctTotientRun(n, K)`: $\\varphi$ is injective on $\\{n+1, \\ldots, n+K\\}$. Equivalent `Set.InjOn` formulation stated. Trivial cases $K=0$ and $K=1$ proved."
+      "title": "Part II: Distinct Totient Runs",
+      "startLine": 55,
+      "endLine": 93,
+      "summary": "Defines `IsDistinctTotientRun(n, K)`: $\\varphi$ is injective on $\\{n+1, \\ldots, n+K\\}$. Alternative `Set.InjOn` formulation via `IsDistinctTotientRun'`. Equivalence proved in `distinctRun_iff`. Base cases: `distinctRun_zero` and `distinctRun_one`.",
+      "mathContext": "$\\text{IsDistinctTotientRun}(n, K) :\\Leftrightarrow \\forall i, j \\in [1, K],\\; i \\neq j \\Rightarrow \\varphi(n+i) \\neq \\varphi(n+j)$."
     },
     {
       "id": "max-length",
-      "title": "Maximum Run Length Function",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Defines `maxDistinctRunLength(n) = \\sup\\{K : \\text{IsDistinctTotientRun}(n,K)\\}` and proves it is at least 1 for every $n$.",
-      "mathContext": "Defines `maxDistinctRunLength(n) = \\sup\\{K : \\text{IsDistinctTotientRun}(n,K)\\}` and proves it is at least 1 for every $n$."
+      "title": "Part III: Maximum Run Length Function",
+      "startLine": 95,
+      "endLine": 104,
+      "summary": "Defines `maxDistinctRunLength(n) = sup{K : IsDistinctTotientRun(n,K)}` and proves `exists_distinct_run`: at least length 1 for every $n$.",
+      "mathContext": "$f(n) = \\max\\{K : \\varphi \\text{ injective on } \\{n+1, \\ldots, n+K\\}\\}$. Always $f(n) \\geq 1$."
     },
     {
       "id": "eps87",
-      "title": "EPS87 Upper Bound",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Axiomatizes the Erdős–Pomerance–Sárközy theorem: $K \\leq n/\\exp(c(\\log n)^{1/3})$ for distinct runs of length $K$. Corollary: $f(n)/n \\to 0$ (sublinear growth).",
-      "mathContext": "Axiomatizes the Erdős–Pomerance–Sárközy theorem: $K \\leq n/\\exp(c(\\log n)^{1/3})$ for distinct runs of length $K$. Corollary: $f(n)/n \\to 0$ (sublinear growth)."
+      "title": "Part IV: EPS87 Upper Bound",
+      "startLine": 106,
+      "endLine": 178,
+      "summary": "Axiomatizes the Erdős–Pomerance–Sárközy (1987) theorem: `eps87_upper_bound` gives $K \\leq n/\\exp(c(\\log n)^{1/3})$ for distinct runs. Proves `run_length_sublinear` ($f(n)/n \\to 0$) as a 50-line corollary using the squeeze lemma and the fact that $\\exp(c(\\log n)^{1/3}) \\to \\infty$.",
+      "mathContext": "If $\\text{IsDistinctTotientRun}(n, K)$ and $n \\geq N_0$, then $K \\leq n / \\exp(c(\\log n)^{1/3})$ for an absolute constant $c > 0$. Corollary: $f(n) = o(n)$."
     },
     {
       "id": "conjecture",
-      "title": "Main Conjecture and Variants",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "States `Erdos1004Conjecture`: $\\forall c > 0,\\ \\forall^\\infty x,\\ \\exists n \\leq x$ with distinct run of length $\\lfloor (\\log x)^c \\rfloor$. Also: negation, `SmallCaseConjecture`, and the EPS constraint heuristic $c \\leq 1/3$.",
-      "mathContext": "States `Erdos1004Conjecture`: $\\forall c > 0,\\ \\forall^\\infty x,\\ \\exists n \\leq x$ with distinct run of length $\\lfloor (\\log x)^c \\rfloor$. Also: negation, `SmallCaseConjecture`, and the EPS constra"
+      "title": "Part V: Main Conjecture and Variants",
+      "startLine": 180,
+      "endLine": 210,
+      "summary": "States `Erdos1004Conjecture`: $\\forall c > 0,\\; \\forall^\\infty x,\\; \\exists n \\leq x$ with distinct run of length $\\lfloor(\\log x)^c\\rfloor$. Also defines `Erdos1004Negation`, `SmallCaseConjecture`, and a `eps_constraint_heuristic` suggesting $c \\leq 1/3$.",
+      "mathContext": "The conjecture asks whether logarithmic-length runs of distinct totient values exist everywhere. The EPS upper bound constrains $K \\leq n/\\exp(c(\\log n)^{1/3})$, which is consistent with $K \\sim (\\log x)^c$ for $c < 1/3$."
     },
     {
       "id": "examples",
-      "title": "Concrete Examples",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Verified computations: $n=1$ gives run length 2 ($\\varphi(2)=1, \\varphi(3)=2, \\varphi(4)=2$), $n=2$ gives run length 1. Proves longer runs require larger starting points.",
-      "mathContext": "Verified computations: $n=1$ gives run length 2 ($\\varphi(2)=1, \\varphi(3)=2, \\varphi(4)=2$), $n=2$ gives run length 1. Proves longer runs require larger starting points."
+      "title": "Part VII: Concrete Examples",
+      "startLine": 212,
+      "endLine": 239,
+      "summary": "Verified computations via `native_decide`: $n=1$ gives run length 2 ($\\varphi(2)=1, \\varphi(3)=2$, collision at $\\varphi(4)=2$). $n=2$ gives run length 1 ($\\varphi(3)=\\varphi(4)=2$). Demonstrates that even small runs illustrate the collision obstruction.",
+      "mathContext": "$\\varphi(2)=1, \\varphi(3)=2, \\varphi(4)=2, \\varphi(5)=4, \\varphi(6)=2$. The collision $\\varphi(3)=\\varphi(4)=2$ terminates runs starting near $n=1$ and $n=2$."
     },
     {
       "id": "collisions",
-      "title": "Totient Value Collisions",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Defines `TotientCollision`, proves $\\varphi(1) = \\varphi(2) = 1$ and $\\varphi(3) = \\varphi(4) = 2$. Key theorem: `collision_ends_run` — a collision at positions $i < j$ in a run bounds its length to $< j$.",
-      "mathContext": "Defines `TotientCollision`, proves $\\varphi(1) = \\varphi(2) = 1$ and $\\varphi(3) = \\varphi(4) = 2$. Key theorem: `collision_ends_run` — a collision at positions $i < j$ in a run bounds its length to $"
+      "title": "Part VIII: Totient Value Collisions",
+      "startLine": 241,
+      "endLine": 259,
+      "summary": "Defines `TotientCollision(a,b)` ($a \\neq b$ but $\\varphi(a) = \\varphi(b)$). Proves `collision_12` ($\\varphi(1)=\\varphi(2)=1$), `collision_34` ($\\varphi(3)=\\varphi(4)=2$), and `collision_ends_run`: a collision within the run interval terminates it.",
+      "mathContext": "The many-to-one nature of $\\varphi$ (Carmichael's conjecture: $|\\varphi^{-1}(n)| \\geq 2$ for all $n$ in the range) is the fundamental obstruction to long distinct runs."
     },
     {
       "id": "divisor",
-      "title": "Connection to Problem 945 (Divisor Function)",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Defines $\\tau(n) = |\\text{divisors}(n)|$, `IsDistinctDivisorRun`, and `Problem945Conjecture`: the analogous question for $\\tau$ instead of $\\varphi$.",
-      "mathContext": "Defines $\\tau(n) = |\\text{divisors}(n)|$, `IsDistinctDivisorRun`, and `Problem945Conjecture`: the analogous question for $\\tau$ instead of $\\varphi$."
+      "title": "Part IX: Connection to Problem 945",
+      "startLine": 261,
+      "endLine": 275,
+      "summary": "Defines `tau(n) = (Nat.divisors n).card` and `IsDistinctDivisorRun`. States `Problem945Conjecture`: the analogous question for $\\tau$ instead of $\\varphi$.",
+      "mathContext": "$\\tau(n) = |\\{d : d \\mid n\\}|$. Problem 945 asks: for any $c > 0$ and large $x$, does $\\exists n \\leq x$ with $\\tau(n+1), \\ldots, \\tau(n+\\lfloor(\\log x)^c\\rfloor)$ all distinct?"
     },
     {
       "id": "heuristics",
-      "title": "Birthday Problem Heuristics",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Counts distinct totient values: $|\\{\\varphi(k) : k \\leq x\\}| \\sim x/\\log x$. Birthday paradox analysis: collisions likely after $K \\approx \\sqrt{x/\\log x}$ terms, suggesting logarithmic runs should exist.",
-      "mathContext": "Counts distinct totient values: $|\\{\\varphi(k) : k \\leq x\\}| \\sim x/\\log x$. Birthday paradox analysis: collisions likely after $K \\approx \\sqrt{x/\\log x}$ terms, suggesting logarithmic runs should ex"
+      "title": "Part X: Probabilistic Heuristics",
+      "startLine": 277,
+      "endLine": 296,
+      "summary": "Axiomatizes `distinct_totient_count`: $|\\{\\varphi(k) : k \\leq x\\}| \\sim x/\\log x$ (from Ford's theorem). Birthday paradox heuristic `birthday_heuristic`: collisions expected after $K \\approx \\sqrt{x/\\log x}$ terms, suggesting logarithmic runs are plausible.",
+      "mathContext": "$|\\varphi([1,x])| \\sim \\frac{x}{\\log x}$ (Ford 1998). Birthday paradox: drawing from a pool of $N$ values, a collision is expected after $\\sim \\sqrt{N}$ draws. For $N \\sim x/\\log x$, this gives $K \\sim \\sqrt{x/\\log x}$."
     },
     {
       "id": "bounds",
-      "title": "Run Length Bounds",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Trivial bound $K \\leq n+K$ and structural bound $K \\leq |\\{\\varphi(m) : m \\leq n+K+1\\}|$ (distinct values bound injective image).",
-      "mathContext": "Trivial bound $K \\leq n+K$ and structural bound $K \\leq |\\{\\varphi(m) : m \\leq n+K+1\\}|$ (distinct values bound injective image)."
+      "title": "Part XI: Run Length Bounds",
+      "startLine": 298,
+      "endLine": 322,
+      "summary": "Proves `trivial_bound` ($K \\leq n + K$) and `structural_bound` ($K \\leq |\\{\\varphi(m) : m \\leq n+K+1\\}|$, since an injective function's domain is bounded by the range size).",
+      "mathContext": "The structural bound $K \\leq |\\text{Im}(\\varphi|_{[n+1, n+K]})| \\leq |\\varphi([1, n+K+1])|$ connects run length to the totient value counting function."
     },
     {
       "id": "special",
-      "title": "Special Totient Values",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Characterizes $\\varphi^{-1}(1) = \\{1,2\\}$, $\\varphi^{-1}(2) = \\{3,4,6\\}$, $\\varphi^{-1}(4) = \\{5,8,10,12\\}$. Illustrates increasing preimage sizes relevant to Carmichael's conjecture.",
-      "mathContext": "Characterizes $\\varphi^{-1}(1) = \\{1,2\\}$, $\\varphi^{-1}(2) = \\{3,4,6\\}$, $\\varphi^{-1}(4) = \\{5,8,10,12\\}$. Illustrates increasing preimage sizes relevant to Carmichael's conjecture."
+      "title": "Part XII: Special Totient Values",
+      "startLine": 324,
+      "endLine": 559,
+      "summary": "Characterizes totient preimages: $\\varphi^{-1}(1) = \\{1,2\\}$, $\\varphi^{-1}(2) = \\{3,4,6\\}$, $\\varphi^{-1}(4) = \\{5,8,10,12\\}$. Extensive `native_decide` computations verifying individual totient values and preimage membership, illustrating the many-to-one nature of $\\varphi$ relevant to Carmichael's conjecture.",
+      "mathContext": "Carmichael's conjecture (1907, still open): $|\\varphi^{-1}(n)| \\neq 1$ for all $n$. The growing preimage sizes $|\\varphi^{-1}(1)| = 2$, $|\\varphi^{-1}(2)| = 3$, $|\\varphi^{-1}(4)| = 4$ illustrate why totient collisions are unavoidable."
     }
   ],
   "conclusion": {
