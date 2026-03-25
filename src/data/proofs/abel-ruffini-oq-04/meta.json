@@ -60,77 +60,57 @@
     {
       "targetId": "abel-ruffini",
       "relationship": "extends",
-      "description": "Base Abel-Ruffini theorem using Mathlib's solvableByRad — this file exposes the internal proof chain with each step as a named theorem"
-    },
-    {
-      "targetId": "angle-trisection",
-      "relationship": "related",
-      "description": "Both are Galois-theoretic impossibility results: Abel-Ruffini shows quintics are unsolvable by radicals (Galois group not solvable), angle trisection shows certain angles cannot be trisected (Galois group not a 2-group)"
-    },
-    {
-      "targetId": "fundamental-theorem-algebra",
-      "relationship": "complementary",
-      "description": "FTA guarantees every polynomial has complex roots; this file shows those roots cannot always be expressed with radicals — existence versus expressibility"
-    },
-    {
-      "targetId": "inverse-galois",
-      "relationship": "related",
-      "description": "The inverse Galois problem asks which groups occur as Galois groups — Sₙ occurs as Gal(generic degree-n polynomial), connecting directly to the solvability question"
-    },
-    {
-      "targetId": "lagrange-theorem",
-      "relationship": "foundational",
-      "description": "Lagrange's theorem on subgroup orders is used throughout: |Aₙ| = n!/2, and the derived series quotients have predictable orders"
-    },
-    {
-      "targetId": "sylow-theorems",
-      "relationship": "related",
-      "description": "Sylow theorems provide structural information about A₅: its Sylow subgroups witness the 60 = 4·3·5 factorization and help prove simplicity"
-    },
-    {
-      "targetId": "solution-of-cubic",
-      "relationship": "complementary",
-      "description": "Cardano's formula (1545) gives explicit radical solutions for cubics — the highest odd degree where a general radical formula exists, contrasting with the impossibility at degree 5"
-    },
-    {
-      "targetId": "general-quartic",
-      "relationship": "complementary",
-      "description": "Ferrari's quartic formula (1540) is the highest-degree general radical solution. S₄ is solvable (derived series {e} ◁ V₄ ◁ A₄ ◁ S₄) but S₅ is not — this file proves the exact threshold"
-    },
-    {
-      "targetId": "vietas-formulas",
-      "relationship": "foundational",
-      "description": "Vieta's formulas are the fundamental Sₙ-invariant polynomials. The Abel-Ruffini theorem can be restated as: the elementary symmetric functions cannot be 'inverted' by radicals when the Galois group is S₅"
-    },
-    {
-      "targetId": "primitive-roots",
-      "relationship": "foundational",
-      "description": "Primitive roots of unity are essential to Kummer theory, which underlies Step 4 (the Galois bridge): each radical extraction creates a Kummer extension K(ⁿ√a)/K whose Galois group is cyclic, provided K contains primitive nth roots of unity"
-    },
-    {
-      "targetId": "kummer-theorem",
-      "relationship": "foundational",
-      "description": "Kummer theory provides the mechanism for Step 4: radical extensions are towers of Kummer (cyclic) extensions, so their Galois groups are solvable — connecting the algebraic notion of radical solvability to the group-theoretic notion of solvability"
+      "description": "Base Abel-Ruffini using Mathlib's solvableByRad — this file exposes the internal proof chain with each step as a named theorem"
     },
     {
       "targetId": "abel-ruffini-oq-04-oq-01",
       "relationship": "extended-by",
-      "description": "Completes the proof chain with a concrete witness: proves Gal(x^5 - 4x + 2 / Q) = S_5 and that this specific polynomial is unsolvable by radicals, instantiating the abstract group-theoretic chain proved here"
+      "description": "Completes the chain with a concrete witness: proves $\\text{Gal}(x^5 - 4x + 2/\\mathbb{Q}) = S_5$ and its radical inexpressibility"
     },
     {
-      "targetId": "angle-trisection-oq-02",
+      "targetId": "angle-trisection",
       "relationship": "related",
-      "description": "Formalizes the constructibility criterion via Galois 2-groups, illustrating the strict containment constructible ⊊ solvable by radicals: every 2-group is solvable (composition factors ℤ/2ℤ are abelian), so constructibility is a stronger condition than radical solvability, with A₅'s non-solvability marking the threshold where the broader class fails"
+      "description": "Both are Galois-theoretic impossibility results: quintic unsolvability via solvable groups, trisection via 2-groups"
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "complementary",
+      "description": "FTA guarantees roots exist; this file shows they cannot always be expressed with radicals — existence vs expressibility"
+    },
+    {
+      "targetId": "inverse-galois",
+      "relationship": "related",
+      "description": "$S_n$ occurs as $\\text{Gal}$(generic degree-$n$ polynomial), connecting the inverse Galois problem to radical solvability"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem on subgroup orders: $|A_n| = n!/2$, and derived series quotients have predictable orders"
+    },
+    {
+      "targetId": "solution-of-cubic",
+      "relationship": "complementary",
+      "description": "Cardano's formula (1545) gives radical solutions for cubics — the highest odd degree with a general formula, contrasting with degree 5"
+    },
+    {
+      "targetId": "general-quartic",
+      "relationship": "complementary",
+      "description": "Ferrari's quartic formula (1540) is the last degree with a general radical solution: $S_4$ is solvable but $S_5$ is not"
+    },
+    {
+      "targetId": "vietas-formulas",
+      "relationship": "foundational",
+      "description": "Vieta's formulas are the $S_n$-invariant polynomials — Abel-Ruffini says they cannot be 'inverted' by radicals when $\\text{Gal} = S_5$"
     },
     {
       "targetId": "inverse-galois-oq-01",
       "relationship": "related",
-      "description": "Proves the complete solvability characterization: Sₙ and Aₙ are solvable iff n ≤ 4, and [S₅,S₅] = A₅. Provides the full bidirectional threshold that this file witnesses from one side (non-solvability for n ≥ 5)"
+      "description": "Proves $S_n$ and $A_n$ solvable iff $n \\leq 4$, and $[S_5, S_5] = A_5$ — the full bidirectional threshold"
     },
     {
-      "targetId": "lagrange-theorem-oq-03",
-      "relationship": "complementary",
-      "description": "Hall's theorem (1928) characterizes solvable groups positively: a finite group is solvable iff it has Hall subgroups of every coprime order. This provides a structural 'positive test' complementing the negative result here — S₅ has no subgroup of order 15 (a {3,5}-Hall subgroup), since the maximum element order in S₅ is 6, so S₅ fails Hall's criterion"
+      "targetId": "angle-trisection-oq-02",
+      "relationship": "related",
+      "description": "Constructibility via 2-groups illustrates: constructible $\\subsetneq$ solvable by radicals, with $A_5$'s non-solvability marking where the broader class fails"
     }
   ],
   "overview": {
