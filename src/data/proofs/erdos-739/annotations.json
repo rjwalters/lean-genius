@@ -17,7 +17,11 @@
       "Set-theoretic independence",
       "ZFC"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Basic graph theory: vertices, edges, proper vertex colorings",
+      "Cardinal numbers and the aleph hierarchy",
+      "Familiarity with ZFC independence results"
+    ]
   },
   {
     "id": "ann-e739-definitions",
@@ -36,7 +40,11 @@
       "SimpleGraph.induce",
       "Proper coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib Cardinal type and sInf (conditional infimum)",
+      "SimpleGraph.induce for induced subgraphs on vertex subsets",
+      "The out function on Cardinal providing canonical types"
+    ]
   },
   {
     "id": "ann-e739-galvin-question",
@@ -55,7 +63,11 @@
       "Graph properties",
       "Universality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cardinal.IsLimit: limit cardinals vs successor cardinals",
+      "Universal quantification over types and graphs in Lean 4",
+      "The Infinite typeclass for infinite types"
+    ]
   },
   {
     "id": "ann-e739-galvin-theorem",
@@ -74,7 +86,34 @@
       "Finite chromatic number",
       "Proved corollary"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "The cardinal aleph-0 and its role as the smallest infinite cardinal",
+      "Natural number arithmetic and the n > 0 positivity condition",
+      "How axiom declarations interact with theorem proofs in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-e739-set-theory",
+    "proofId": "erdos-739",
+    "range": {
+      "startLine": 84,
+      "endLine": 93
+    },
+    "type": "technique",
+    "title": "Galvin's Set-Theoretic Observation",
+    "content": "**galvin_set_theory_implication:** If the induced-subgraph version of the Galvin property holds universally -- that is, every graph with infinite chromatic number has induced subgraphs realizing all smaller infinite chromatic numbers -- then the continuum function is strictly monotone: 2^kappa < 2^nu whenever kappa < nu.\n\nThis is the key bridge between combinatorics and set theory. The contrapositive explains Komjath's strategy: if the continuum function can be made non-monotone (e.g., 2^(aleph-0) = 2^(aleph-1)), then the Galvin property can potentially fail.",
+    "mathContext": "The proof idea is that from a universal coloring spectrum property, one can extract information about the sizes of power sets. If 2^kappa = 2^nu for some kappa < nu, one can construct a graph whose coloring structure witnesses this collapse, potentially violating the Galvin property. This observation motivated Komjath's subsequent consistency result.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Continuum function",
+      "Cardinal exponentiation",
+      "Monotonicity of power set sizes"
+    ],
+    "prerequisites": [
+      "Cardinal exponentiation: (2 : Cardinal) ^ kappa in Mathlib",
+      "The relationship between graph colorings and cardinal arithmetic",
+      "Galvin's induced-subgraph strengthening of the chromatic spectrum question"
+    ]
   },
   {
     "id": "ann-e739-independence",
@@ -94,7 +133,12 @@
       "Continuum function",
       "Independence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Forcing and consistency proofs in set theory",
+      "The axiom of constructibility V=L and its consequences",
+      "The continuum function and Easton's theorem on its behavior",
+      "The aleph function: aleph 1, aleph 2 as specific uncountable cardinals"
+    ]
   },
   {
     "id": "ann-e739-gch",
@@ -114,7 +158,12 @@
       "Open problems",
       "Logical strength"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "The Generalized Continuum Hypothesis and its relationship to V=L",
+      "Successor cardinals (Order.succ) vs limit cardinals",
+      "The logical strength hierarchy: ZFC < GCH < V=L",
+      "Diamond principles and their role in combinatorial set theory"
+    ]
   },
   {
     "id": "ann-e739-summary",
@@ -133,6 +182,10 @@
       "Axiom packaging",
       "Countable vs uncountable"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Anonymous constructor syntax for conjunction in Lean 4",
+      "How axiom declarations provide proof terms for theorem composition",
+      "The distinction between ZFC-provable results and consistency statements"
+    ]
   }
 ]
