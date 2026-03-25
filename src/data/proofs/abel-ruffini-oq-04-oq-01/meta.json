@@ -62,7 +62,7 @@
       "Solvable groups and the derived series"
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 398,
+    "lineCount": 475,
     "relatedProblems": [
       {
         "id": "abel-ruffini-oq-04",
@@ -219,7 +219,7 @@
     "summary": "This formalization completes the Abel-Ruffini proof chain by exhibiting a concrete polynomial $x^5 - 4x + 2$ whose roots cannot be expressed by radicals. The proof proceeds from Eisenstein irreducibility through Galois group identification ($\\text{Gal} \\cong S_5$ via galActionHom bijectivity) to the final unsolvability conclusion via Galois's theorem. Only one axiom is used: $|\\text{Gal}| = 120$, justified by classical real root analysis and group generation.",
     "implications": "This result makes the Abel-Ruffini theorem tangible: rather than an abstract impossibility for the 'general quintic', we have a specific polynomial whose five roots provably resist all radical expressions. The $S_5$ realizability result also contributes to the inverse Galois problem, complementing existing gallery realizations of $S_3$ and $F_{20}$.",
     "openQuestions": [
-      "Can the axiom $|\\text{Gal}| = 120$ be eliminated by formalizing the real root count (intermediate value theorem + derivative analysis) and the group generation lemma (transposition + p-cycle generates $S_p$)?",
+      "The group theory is now proved (closure_cycle_swap_eq_top). Remaining to eliminate the axiom: formalize real root count (IVT + Rolle) and show complex conjugation gives a transposition in the Galois group.",
       "What is the simplest quintic with Galois group $S_5$ in terms of coefficient size? Is $x^5 - x - 1$ also a valid witness (it has $\\text{Gal} = S_5$ and smaller coefficients)?",
       "Can this approach be generalized to realize other transitive subgroups of $S_5$ (e.g., $A_5$, $D_5$, $F_{20}$) as Galois groups of specific quintics?",
       "The Mazur-Ulam gap: can Mathlib's growing theory of polynomial Galois groups eventually compute $|\\text{Gal}|$ for specific polynomials, eliminating the need for the cardinality axiom?"
@@ -233,10 +233,10 @@
       "Polynomial"
     ],
     "namespace": "AbelRuffiniOQ04OQ01",
-    "lineCount": 398,
+    "lineCount": 475,
     "axiomCount": 1,
-    "theoremCount": 12,
-    "definitionCount": 2
+    "theoremCount": 13,
+    "definitionCount": 3
   },
   "references": [
     {
