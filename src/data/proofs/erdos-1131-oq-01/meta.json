@@ -1,0 +1,49 @@
+{
+  "id": "erdos-1131-oq-01",
+  "title": "Lagrange Basis Variance Decomposition and Strict Lower Bound",
+  "slug": "erdos-1131-oq-01",
+  "description": "Proves that the Cauchy-Schwarz bound I ≥ 2/n for Lagrange basis integrals is NEVER tight: I > 2/n strictly for n ≥ 2. Uses a variance decomposition I = 2/n + ∫variance, where the integrated variance is strictly positive by continuity and positivity at nodes.",
+  "meta": {
+    "author": "Erdős, Szabados, Varma, Vértesi",
+    "sourceUrl": "https://erdosproblems.com/1131",
+    "date": "1994",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1131OQ01.lean",
+    "tags": [
+      "erdos",
+      "approximation-theory",
+      "interpolation",
+      "lagrange-polynomials",
+      "variance-decomposition",
+      "analysis",
+      "open"
+    ],
+    "badge": "axiom",
+    "erdosNumber": 1131,
+    "erdosUrl": "https://erdosproblems.com/1131",
+    "erdosProblemStatus": "open",
+    "axiomCount": 1,
+    "sorryCount": 0,
+    "theoremCount": 11,
+    "lineCount": 293,
+    "assumptions": "1 axiom: erdos_1131_variance_conjecture (reformulation of OPEN Erdős conjecture in variance form: min ∫variance ≈ 2 - 3/n). All 11 theorems fully proved, 0 sorries. Key results: variance identity, integral decomposition, strict lower bound I > 2/n via epsilon-delta continuity argument.",
+    "parentProof": "erdos-1131"
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.Erdos1131Problem"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Erdos1131"
+    ],
+    "axiomCount": 1,
+    "sorryCount": 0,
+    "theoremCount": 11,
+    "lineCount": 293
+  },
+  "overview": {
+    "title": "Variance Decomposition and Strict Lower Bound",
+    "text": "This file investigates Erdős Problem #1131 by decomposing the Lagrange basis integral I = ∫₋₁¹ Σ l_k(x)² dx into a 'uniform floor' and 'variance excess'. The key structural insight is the identity I = 2/n + ∫ variance, where variance = Σ(l_k(x) - 1/n)² measures non-uniformity. This decomposition shows: (1) the Cauchy-Schwarz bound I ≥ 2/n is exactly the uniform floor contribution, (2) the bound is NEVER tight for n ≥ 2, because variance > 0 at every node point (with value (n-1)/n), and a continuous non-negative function that's positive at an interior point has positive integral. The Erdős conjecture min I = 2 - (1+o(1))/n is reformulated as min ∫variance = 2 - (3+o(1))/n, separating the well-understood floor from the open conjecture about the excess."
+  }
+}
