@@ -232,10 +232,10 @@
   ],
   "mainTheorems": [
     {
-      "name": "taylor_theorem",
+      "name": "taylor_lagrange",
       "type": "core",
-      "description": "f(x) = sum_{k=0}^n f^(k)(a)/k! * (x-a)^k + R_n(x) with Lagrange remainder",
-      "leanType": "ContDiff n f -> exists c between a x, f x = taylorPoly n f a x + f^(n+1)(c) / (n+1)! * (x-a)^(n+1)"
+      "description": "Taylor's theorem with Lagrange remainder: f(x) = T_n(x) + f⁽ⁿ⁺¹⁾(c)/(n+1)! · (x-x₀)ⁿ⁺¹",
+      "leanType": "{f : ℝ → ℝ} → {x₀ x : ℝ} → {n : ℕ} → x₀ < x → ContDiffOn ℝ (n + 1) f (Icc x₀ x) → ∃ x' ∈ Ioo x₀ x, f x - taylorWithinEval f n (Icc x₀ x) x₀ x = iteratedDerivWithin (n + 1) f (Icc x₀ x) x' * (x - x₀) ^ (n + 1) / (n + 1).factorial"
     }
   ]
 }

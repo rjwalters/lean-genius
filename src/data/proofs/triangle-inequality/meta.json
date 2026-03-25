@@ -234,10 +234,10 @@
   ],
   "mainTheorems": [
     {
-      "name": "triangle_inequality",
+      "name": "abs_triangle",
       "type": "core",
-      "description": "||x + y|| <= ||x|| + ||y|| in normed spaces",
-      "leanType": "[NormedAddCommGroup E] -> (x y : E) -> norm(x + y) <= norm x + norm y"
+      "description": "|x + y| ≤ |x| + |y| for real numbers",
+      "leanType": "(x y : ℝ) → |x + y| ≤ |x| + |y|"
     }
   ]
 }
