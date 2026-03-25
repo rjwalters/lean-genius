@@ -119,29 +119,9 @@
       "description": "MVT underpins the derivative machinery used here: hasDerivAt_iff_tendsto_slope depends on the mean value theorem for the slope-to-derivative bridge that proves f(r)/r → f'(0)"
     },
     {
-      "targetId": "triangle-inequality",
-      "relationship": "related",
-      "description": "Power mean monotonicity (completed by this limit bridge) implies Minkowski's inequality (the L^p triangle inequality) for p ≥ 1 — connecting the power mean family to normed space geometry"
-    },
-    {
       "targetId": "cauchy-schwarz",
       "relationship": "related",
-      "description": "Cauchy-Schwarz is the M₁ ≤ M₂ case of power mean monotonicity. The r→0 limit proved here bridges the negative and positive sides of the power mean chain, with Cauchy-Schwarz sitting at M₂ on the positive side"
-    },
-    {
-      "targetId": "harmonic-divergence",
-      "relationship": "related",
-      "description": "The harmonic mean HM = (∑ wᵢ/zᵢ)⁻¹ = M_{-1} is the r = -1 case of the power mean family. This limit result establishes M_0 = GM, bridging the gap between HM and AM in the chain HM ≤ GM ≤ AM. The harmonic series divergence proof formalizes the arithmetic of reciprocals that underpins the HM ≤ GM step via the inversion trick"
-    },
-    {
-      "targetId": "taylor-theorem",
-      "relationship": "foundational",
-      "description": "The derivative-based limit technique used here — f(r)/r → f'(0) when f(0) = 0 — is the first-order case of Taylor's theorem: f(r) = f(0) + f'(0)r + O(r²), so f(r)/r = f'(0) + O(r) → f'(0). Taylor's theorem provides the broader framework for understanding why the power mean limit works: the exp/log representation makes log M_r a smooth function of r whose Taylor expansion at r = 0 reveals the geometric mean as the leading coefficient"
-    },
-    {
-      "targetId": "fundamental-theorem-calculus",
-      "relationship": "foundational",
-      "description": "The calculus infrastructure underpinning this proof — HasDerivAt, chain rule composition, hasDerivAt_iff_tendsto_slope — ultimately rests on the Fundamental Theorem of Calculus connecting derivatives to limits of difference quotients. The FTC formalization establishes the API that makes the slope-to-derivative bridge possible"
+      "description": "Cauchy-Schwarz is the $M_1 \\leq M_2$ case of power mean monotonicity. The $r \\to 0$ limit proved here bridges the negative and positive sides of the chain, with Cauchy-Schwarz at $M_2$"
     }
   ],
   "overview": {
