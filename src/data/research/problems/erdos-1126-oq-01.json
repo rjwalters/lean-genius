@@ -71,7 +71,8 @@
     "erdos-1",
     "erdos-11",
     "erdos-112",
-    "erdos-1126"
+    "erdos-1126",
+    "erdos-1126-oq-01"
   ],
   "references": {
     "papers": [],
@@ -84,11 +85,22 @@
   "tractability": 6,
   "leanFiles": [
     {
+      "path": "Proofs/Erdos1126OQ01Problem.lean",
+      "filename": "Erdos1126OQ01Problem.lean",
+      "lineCount": 414,
+      "theoremCount": 12,
+      "axiomCount": 6,
+      "defCount": 11,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1126OQ01Problem.lean"
+    },
+    {
       "path": "Proofs/Erdos1126Problem.lean",
       "filename": "Erdos1126Problem.lean",
-      "lineCount": 144,
-      "theoremCount": 4,
-      "axiomCount": 6,
+      "lineCount": 155,
+      "theoremCount": 5,
+      "axiomCount": 5,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,

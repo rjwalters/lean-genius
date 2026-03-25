@@ -80,13 +80,24 @@
   "tractability": 6,
   "leanFiles": [
     {
+      "path": "Proofs/Erdos1132Aristotle.lean",
+      "filename": "Erdos1132Aristotle.lean",
+      "lineCount": 34,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1132Aristotle.lean"
+    },
+    {
       "path": "Proofs/Erdos1132Problem.lean",
       "filename": "Erdos1132Problem.lean",
-      "lineCount": 246,
-      "theoremCount": 2,
-      "axiomCount": 7,
+      "lineCount": 278,
+      "theoremCount": 7,
+      "axiomCount": 5,
       "defCount": 11,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1132Problem.lean"
     }

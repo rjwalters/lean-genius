@@ -42,7 +42,8 @@
     "wiedijk-100"
   ],
   "relatedProofs": [
-    "fundamental-theorem-algebra"
+    "fundamental-theorem-algebra",
+    "fundamental-theorem-algebra-oq-04"
   ],
   "references": {
     "papers": [],
@@ -64,6 +65,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebra.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremAlgebraOQ04.lean",
+      "filename": "FundamentalTheoremAlgebraOQ04.lean",
+      "lineCount": 208,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebraOQ04.lean"
     }
   ]
 }

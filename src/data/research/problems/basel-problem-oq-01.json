@@ -48,7 +48,8 @@
   ],
   "relatedProofs": [
     "basel-problem",
-    "basel-problem-oq-01"
+    "basel-problem-oq-01",
+    "basel-problem-oq-02"
   ],
   "references": {
     "papers": [],
@@ -71,6 +72,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblem.lean"
+    },
+    {
+      "path": "Proofs/BaselProblemOQ02.lean",
+      "filename": "BaselProblemOQ02.lean",
+      "lineCount": 275,
+      "theoremCount": 16,
+      "axiomCount": 2,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ02.lean"
+    },
+    {
+      "path": "Proofs/BaselProblemOQ02Aristotle.lean",
+      "filename": "BaselProblemOQ02Aristotle.lean",
+      "lineCount": 54,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 5,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ02Aristotle.lean"
     }
   ]
 }

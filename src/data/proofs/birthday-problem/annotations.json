@@ -129,51 +129,6 @@
     ]
   },
   {
-    "id": "ann-setting-model",
-    "proofId": "birthday-problem",
-    "range": {
-      "startLine": 65,
-      "endLine": 86
-    },
-    "type": "definition",
-    "title": "The Discrete Model: Functions and Injections",
-    "content": "The entire formalization rests on a clean discrete model: birthdays are functions `Fin n → Day` where `Day = Fin 365`. Total assignments are counted by `Fintype.card_fun = 365^n` and collision-free assignments by `Fintype.card_embedding_eq = descFactorial 365 n` (injective functions). This avoids measure theory entirely — the entire proof works with rational arithmetic on natural number counts.",
-    "mathContext": "Sample space: $\\Omega = \\text{Fin}(n) \\to \\text{Fin}(365)$, $|\\Omega| = 365^n$. All-distinct event: $|A| = 365^{\\underline{n}}$. $P(\\text{collision}) = 1 - 365^{\\underline{n}}/365^n$.",
-    "significance": "supporting",
-    "prerequisites": ["Fintype.card_fun", "Fintype.card_embedding_eq"],
-    "relatedConcepts": ["finite sample spaces", "injective functions", "function counting"]
-  },
-  {
-    "id": "ann-expected-pairs",
-    "proofId": "birthday-problem",
-    "range": {
-      "startLine": 315,
-      "endLine": 355
-    },
-    "type": "technique",
-    "title": "Expected Shared Pairs via Linearity of Expectation",
-    "content": "A different perspective: E[# shared pairs] = C(n,2)/365 by linearity of expectation. For 23 people: E = 253/365 ≈ 0.693 (less than 1 expected pair, yet P(≥1) > 50%!). The threshold for E > 1 is 28 people (C(28,2)/365 = 378/365 > 1). All computations verified by `norm_num [Nat.choose]`.",
-    "mathContext": "$\\mathbb{E}[\\text{# shared pairs}] = \\binom{n}{2}/365 = n(n-1)/730$. At $n = 23$: $E \\approx 0.693$. At $n = 28$: $E = 378/365 > 1$.",
-    "significance": "key",
-    "prerequisites": ["linearity of expectation", "Nat.choose"],
-    "relatedConcepts": ["linearity of expectation", "indicator variables", "Nat.choose_two_right"]
-  },
-  {
-    "id": "ann-99-threshold",
-    "proofId": "birthday-problem",
-    "range": {
-      "startLine": 357,
-      "endLine": 402
-    },
-    "type": "technique",
-    "title": "The 99% Threshold: 57 People",
-    "content": "With 57 people, the probability of a shared birthday exceeds 99%. The proof establishes a tight two-sided bound: P(57) > 99/100 AND P(56) ≤ 99/100, making 57 the exact threshold. Both inequalities are reduced to integer comparisons on numbers exceeding 140 digits, discharged by `native_decide`.",
-    "mathContext": "$P(57) > 0.99$ and $P(56) < 0.99$, verified by exact integer arithmetic on $\\sim$146-digit numbers via `native_decide`.",
-    "significance": "supporting",
-    "prerequisites": ["birthday_problem_formula", "native_decide"],
-    "relatedConcepts": ["threshold proof", "tight bounds", "native_decide"]
-  },
-  {
     "id": "ann-two-people",
     "proofId": "birthday-problem",
     "range": {

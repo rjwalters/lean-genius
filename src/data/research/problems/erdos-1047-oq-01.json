@@ -29,18 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 4 axioms total (17\u219213). Proved goodmanPolynomial_degree_pos via Monic.natDegree_pos + eval at 0 contradiction.",
+    "progressSummary": "PROGRESS: Eliminated 4 axioms total (17→13). Proved goodmanPolynomial_degree_pos via Monic.natDegree_pos + eval at 0 contradiction.",
     "builtItems": [
       "Proved pommerenkePolynomial_degree: deg(X^k(X-a)) = k+1",
-      "Proved goodmanPolynomial_monic: (X\u00b2+1)(X-2)\u00b2 is monic",
-      "Proved refereePolynomial_monic: X(X\u2075-1) is monic",
+      "Proved goodmanPolynomial_monic: (X²+1)(X-2)² is monic",
+      "Proved refereePolynomial_monic: X(X⁵-1) is monic",
       "Proved goodmanPolynomial_degree_pos: degree > 0 via eval-at-0 contradiction with Monic.natDegree_pos"
     ],
     "insights": [
       "pommerenkePolynomial_degree provable via natDegree_mul + natDegree_pow",
       "Monic for product polynomials via Monic.mul and monic_X_pow_add_C/monic_X_sub_C",
-      "monic_X_pow_sub_C needs the exponent \u2260 0 proof",
-      "goodmanPolynomial_degree_pos harder: Monic.natDegree_pos needs p \u2260 1 which requires eval-based contradiction",
+      "monic_X_pow_sub_C needs the exponent ≠ 0 proof",
+      "goodmanPolynomial_degree_pos harder: Monic.natDegree_pos needs p ≠ 1 which requires eval-based contradiction",
       "Monic.natDegree_pos is an iff in current Mathlib (not implication), need show + rw pattern"
     ],
     "mathlibGaps": [],
@@ -73,9 +73,9 @@
     {
       "path": "Proofs/Erdos1047Problem.lean",
       "filename": "Erdos1047Problem.lean",
-      "lineCount": 279,
-      "theoremCount": 4,
-      "axiomCount": 17,
+      "lineCount": 294,
+      "theoremCount": 9,
+      "axiomCount": 12,
       "defCount": 13,
       "sorryCount": 0,
       "isAristotle": false,

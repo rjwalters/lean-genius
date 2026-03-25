@@ -1,6 +1,6 @@
 {
   "slug": "erdos-238",
-  "title": "Erd\u0151s #238",
+  "title": "Erdős #238",
   "phase": "ACT",
   "status": "active",
   "tier": "A",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM ELIMINATION: Proved average_gap_grows (formerly axiom) via factorial argument. Reduced axiom count from 3 to 2. Proof uses: (1) k!+j composite for 2\u2264j\u2264k, (2) Nat.count/Nat.nth Galois connection to find the gap.",
+    "progressSummary": "AXIOM ELIMINATION: Proved average_gap_grows (formerly axiom) via factorial argument. Reduced axiom count from 3 to 2. Proof uses: (1) k!+j composite for 2≤j≤k, (2) Nat.count/Nat.nth Galois connection to find the gap.",
     "builtItems": [
       "Proved nthPrime_strictMono : StrictMono nthPrime (line 155)",
       "Proved nthPrime_id_le : n <= nthPrime n (line 159)",
@@ -47,15 +47,15 @@
       "Remaining 3 axioms are genuinely deep: erdos_partial_result (second moment method), average_gap_grows (PNT consequence), prime_number_theorem_asymptotic (PNT itself)",
       "average_gap_grows does NOT need PNT despite its name - it just needs unbounded prime gaps",
       "The Galois connection gc_count_nth between Nat.count and Nat.nth is the key to converting factorial argument into primeGap result",
-      "omega cannot see through set definitions - need explicit rw [\u2190 hc_def] to convert Nat.count back to c"
+      "omega cannot see through set definitions - need explicit rw [← hc_def] to convert Nat.count back to c"
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "prime_number_theorem_asymptotic requires PNT in Mathlib (not currently available in v4.26.0)",
-      "erdos_partial_result is deep (Erd\u0151s second moment argument) - keep as axiom",
+      "erdos_partial_result is deep (Erdős second moment argument) - keep as axiom",
       "Both remaining axioms are genuinely deep number theory results"
     ],
-    "markdown": "# Erd\u0151s #238 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $c_1,c_2>0$. Is it true that, for any sufficiently large $x$, there exist more than $c_1\\log x$ many consecutive primes $\\leq x$ such that the difference between any two is $>c_2$?\n\n\n\nThis is well-known if $c_1$ is sufficiently small.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #237\n- Problem #239\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er55c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "markdown": "# Erdős #238 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $c_1,c_2>0$. Is it true that, for any sufficiently large $x$, there exist more than $c_1\\log x$ many consecutive primes $\\leq x$ such that the difference between any two is $>c_2$?\n\n\n\nThis is well-known if $c_1$ is sufficiently small.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #237\n- Problem #239\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er55c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
     "erdos"
@@ -78,8 +78,8 @@
     {
       "path": "Proofs/Erdos238Problem.lean",
       "filename": "Erdos238Problem.lean",
-      "lineCount": 345,
-      "theoremCount": 12,
+      "lineCount": 346,
+      "theoremCount": 6,
       "axiomCount": 2,
       "defCount": 10,
       "sorryCount": 0,

@@ -84,9 +84,13 @@
     "analytic-number-theory"
   ],
   "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-113",
+    "erdos-1136",
+    "erdos-1137",
     "erdos-6",
-    "prime-gap-bounds",
-    "erdos-1136"
+    "prime-gap-bounds"
   ],
   "references": {
     "papers": [
@@ -111,9 +115,15 @@
   "tractability": 6,
   "leanFiles": [
     {
-      "axiomCount": 2,
-      "lineCount": 271,
-      "theoremCount": 20
+      "path": "Proofs/Erdos1137Problem.lean",
+      "filename": "Erdos1137Problem.lean",
+      "lineCount": 315,
+      "theoremCount": 19,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1137Problem.lean"
     }
   ]
 }

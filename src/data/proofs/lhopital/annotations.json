@@ -89,29 +89,6 @@
     ]
   },
   {
-    "id": "ann-left-limit",
-    "proofId": "lhopital",
-    "range": {
-      "startLine": 75,
-      "endLine": 90
-    },
-    "type": "technique",
-    "title": "L'Hopital's Rule (Left Limit)",
-    "content": "The left-limit variant of L'Hopital's Rule: if $f$ and $g$ are differentiable on $(a, b)$, both tend to 0 as $x \\to b^-$, $g'(x) \\neq 0$ on $(a, b)$, and $\\frac{f'(x)}{g'(x)} \\to c$ as $x \\to b^-$, then $\\lim_{x \\to b^-} \\frac{f(x)}{g(x)} = c$. This complements the right-limit version and together they give the two-sided limit when both one-sided limits agree.\n\nIn Lean, the left limit uses `nhdsWithin` restricted to `Iio b` (the set $(-\\infty, b)$) via `𝓝[<] b`, while the right limit uses `Ioi a` via `𝓝[>] a`. Mathlib's `HasDerivAt.lhopital_zero_left_on_Ioo` provides the underlying result.",
-    "mathContext": "$\\lim_{x \\to b^-} \\frac{f(x)}{g(x)} = \\lim_{x \\to b^-} \\frac{f'(x)}{g'(x)}$ when $f, g \\to 0$ as $x \\to b^-$. Lean: `Tendsto (fun x => f x / g x) (𝓝[<] b) (𝓝 c)`.",
-    "significance": "key",
-    "prerequisites": [
-      "HasDerivAt",
-      "nhdsWithin (𝓝[<] b)",
-      "Ioo intervals"
-    ],
-    "relatedConcepts": [
-      "one-sided limits",
-      "left continuity",
-      "Filter.nhdsWithin"
-    ]
-  },
-  {
     "id": "ann-infinity",
     "proofId": "lhopital",
     "range": {
