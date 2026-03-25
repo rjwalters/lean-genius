@@ -178,10 +178,10 @@
       "endLine": 365
     },
     "type": "technique",
-    "title": "5-Cycle + Transposition Generates S₅ (closure_cycle_swap_eq_top)",
-    "content": "The key group-theoretic bridge: proves that $\\langle c_5, (0\\;1) \\rangle = S_5$ where $c_5 = (0\\;1\\;2\\;3\\;4)$. The 5-cycle is constructed explicitly as the modular successor map $i \\mapsto (i+1) \\bmod 5$. The proof generates all 10 transpositions in three stages: (1) **Adjacent transpositions** via conjugation: $c_5^k (0\\;1) c_5^{-k} = (k\\;k{+}1)$ for $k = 1,2,3$, verified by `native_decide`. (2) **Star transpositions** via double conjugation: $(0\\;k)(k\\;k{+}1)(0\\;k) = (0\\;k{+}1)$. (3) **Remaining transpositions**: $(0\\;a)(0\\;b)(0\\;a) = (a\\;b)$. Finally, `Equiv.Perm.swap_induction_on` decomposes any permutation into transpositions, and `fin_cases` with `Equiv.swap_comm` handles all $\\binom{5}{2} = 10$ cases. This is the formal proof of the classical result that a transitive subgroup of $S_p$ ($p$ prime) containing a transposition equals $S_p$.",
+    "title": "5-Cycle + Transposition Generates S₅ (closure_cycle_swap_eq_top) [Vestigial]",
+    "content": "Proves that $\\langle c_5, (0\\;1) \\rangle = S_5$ where $c_5 = (0\\;1\\;2\\;3\\;4)$. The 5-cycle is constructed explicitly as the modular successor map $i \\mapsto (i+1) \\bmod 5$. The proof generates all 10 transpositions in three stages: (1) **Adjacent transpositions** via conjugation: $c_5^k (0\\;1) c_5^{-k} = (k\\;k{+}1)$ for $k = 1,2,3$, verified by `native_decide`. (2) **Star transpositions** via double conjugation: $(0\\;k)(k\\;k{+}1)(0\\;k) = (0\\;k{+}1)$. (3) **Remaining transpositions**: $(0\\;a)(0\\;b)(0\\;a) = (a\\;b)$. Finally, `Equiv.Perm.swap_induction_on` decomposes any permutation into transpositions, and `fin_cases` with `Equiv.swap_comm` handles all $\\binom{5}{2} = 10$ cases. This is the formal proof of the classical result that a transitive subgroup of $S_p$ ($p$ prime) containing a transposition equals $S_p$.\n\n**Note**: This lemma is NOT used in the current main proof. The actual proof of $|\\text{Gal}| = 120$ uses Sylow elimination rather than the cycle+transposition generation approach. This 62-line theorem is a vestigial artifact from an earlier proof strategy, retained for its pedagogical value.",
     "mathContext": "$c_5 = (0\\;1\\;2\\;3\\;4)$, $\\tau = (0\\;1)$. Stage 1: $c_5^k \\tau c_5^{-k} = (k\\;k{+}1)$. Stage 2: $(0\\;k)(k\\;k{+}1)(0\\;k) = (0\\;k{+}1)$. Stage 3: $(0\\;a)(0\\;b)(0\\;a) = (a\\;b)$. Therefore $\\langle c_5, \\tau \\rangle \\supseteq \\{\\text{all transpositions}\\} \\Rightarrow \\langle c_5, \\tau \\rangle = S_5$.",
-    "significance": "key",
+    "significance": "supporting",
     "relatedConcepts": [
       "conjugation in symmetric groups",
       "transposition generation",
@@ -230,9 +230,9 @@
       "endLine": 612
     },
     "type": "concept",
-    "title": "Proof Decomposition: Dedekind + Discriminant Strategy",
-    "content": "Documents the decomposition of $|\\text{Gal}| = 120$ into two independent proof threads. **Thread A** (`three_dvd_gal_card`): $3 \\mid |\\text{Gal}|$ proved by eliminating non-3-divisible orders. The mod-13 factorization $x^5-4x+2 \\equiv (x-2)(x-5)(x^3+7x^2+8) \\pmod{13}$ (verified by `p_root_mod13_at_2`, `p_root_mod13_at_5`, `cubic_factor_no_roots_mod13`) gives a Frobenius element with cycle type $(1,1,3)$, establishing the Dedekind-theoretic foundation. **Thread B** (`gal_has_odd_perm`): $\\text{Gal} \\not\\subset A_5$ via discriminant sign — since $\\Delta^2 = \\text{disc}(p) < 0$ (computed: $-212144$), and $\\Delta \\notin \\mathbb{Q}$ (no rational number squares to a negative), the Galois action $\\sigma(\\Delta) = \\text{sign}(\\sigma) \\cdot \\Delta$ forces some $\\sigma$ with odd sign. Both threads are fully proved.",
-    "mathContext": "Thread A: $3 \\mid |\\text{Gal}|$ (proved by eliminating orders 5, 10, 20, 40). Thread B: $\\Delta^2 = \\text{disc}(p) = -212144 < 0 \\Rightarrow \\Delta \\notin \\mathbb{Q} \\Rightarrow \\exists \\sigma, \\text{sign}(\\sigma) = -1$.",
+    "title": "Proof Decomposition: Discriminant + Sylow Strategy",
+    "content": "Documents the decomposition of $|\\text{Gal}| = 120$ into two independent, fully proved threads. **Thread A** (`gal_has_odd_perm`): $\\text{Gal} \\not\\subset A_5$ via the Vandermonde-discriminant argument. The Vandermonde product $\\Delta$ satisfies $\\Delta^2 = \\text{disc}(p) = -212144 < 0$ (proved from the derivative product identity). By the Fundamental Theorem of Galois Theory, if all $\\sigma \\in \\text{Gal}$ were even permutations, then $\\sigma(\\Delta) = \\text{sign}(\\sigma) \\cdot \\Delta = \\Delta$ for all $\\sigma$, so $\\Delta \\in \\mathbb{Q}$ — but $\\Delta^2 < 0$ contradicts $q^2 \\geq 0$ for $q \\in \\mathbb{Q}$. An alternative construction obtains the transposition via complex conjugation: `IsAlgClosed.lift` embeds $SF \\hookrightarrow \\mathbb{C}$, composed with `starRingEnd` and restricted via `restrictNormal`. **Thread B** (`three_dvd_gal_card`): $3 \\mid |\\text{Gal}|$ proved by eliminating non-3-divisible candidate orders $\\{5, 10, 20, 40\\}$. The transposition from Thread A cannot coexist with the unique normal Sylow 5-subgroup at each of these orders — verified by `native_decide` on concrete permutations in $S_5$.",
+    "mathContext": "Thread A: $\\Delta^2 = \\text{disc}(p) = -212144 < 0 \\Rightarrow \\Delta \\notin \\mathbb{Q} \\Rightarrow \\exists \\sigma, \\text{sign}(\\sigma) = -1$ (FTGT argument). Thread B: $3 \\mid |\\text{Gal}|$ (proved by Sylow elimination of orders 5, 10, 20, 40).",
     "significance": "key",
     "relatedConcepts": [
       "Dedekind's theorem",
@@ -407,22 +407,23 @@
       "endLine": 612
     },
     "type": "concept",
-    "title": "Three Proof Components: Dedekind, Discriminant, Vandermonde",
-    "content": "The proof of $|\\text{Gal}| = 120$ is built from three independent, fully proved components. **Component A** (`three_dvd_gal_card`): $3 \\mid |\\text{Gal}|$, proved by eliminating non-3-divisible orders ($\\{5, 10, 20, 40\\}$). Supporting computations (`p_root_mod13_at_2`, `p_root_mod13_at_5`, `cubic_factor_no_roots_mod13`) verify the mod-13 factorization by `native_decide`, providing the Dedekind-theoretic foundation. **Component B1** (`disc_p_neg`): $\\text{disc}(p) < 0$, the computational fact $\\text{disc}(x^5-4x+2) = -212144$. **Component B2** (`vandermonde_sq_eq_disc_p`): $\\Delta^2 = \\text{algebraMap}\\;\\mathbb{Q}\\;SF\\;(\\text{disc}(p))$, the standard discriminant-Vandermonde identity. From B1+B2, `gal_has_odd_perm` is proved: $\\Delta^2 < 0$ in $\\mathbb{Q}$ means $\\Delta \\notin \\mathbb{Q}$, so some $\\sigma$ has $\\text{sign}(\\sigma) = -1$. All three components are fully machine-checked.",
-    "mathContext": "Three components: (A) $3 \\mid |\\text{Gal}|$ (proved), (B1) $\\text{disc}(p) < 0$ (proved: $-212144$), (B2) $\\Delta^2 = \\text{disc}(p)$ (proved). Theorem from B1+B2: $\\text{Gal} \\not\\subset A_5$.",
+    "title": "Three Proof Components: Vandermonde, Complex Conjugation, Sylow",
+    "content": "The proof of $|\\text{Gal}| = 120$ is built from three independent, fully proved components. **Component 1** (`vandermondeProduct_sq_val`): $\\Delta^2 = -212144$, proved from the derivative product identity — factor $p_{SF}$ into linear factors, evaluate the derivative at each root, relate the product of derivative values to the Vandermonde square, and extract the numerical value. This is ~100 lines of substantive algebraic reasoning. **Component 2** (`gal_has_odd_perm`): $\\text{Gal} \\not\\subset A_5$, proved via the FTGT: if all Galois automorphisms were even, $\\sigma(\\Delta) = \\Delta$ for all $\\sigma$, so $\\Delta \\in \\mathbb{Q}$ — but $\\Delta^2 = -212144 < 0$ contradicts $q^2 \\geq 0$. The transposition is alternatively obtained via complex conjugation (`IsAlgClosed.lift` + `starRingEnd` + `restrictNormal`). **Component 3** (`three_dvd_gal_card`): $3 \\mid |\\text{Gal}|$, proved by Sylow elimination of non-3-divisible orders $\\{5, 10, 20, 40\\}$ — the transposition from Component 2 cannot normalize the unique Sylow 5-subgroup at any of these orders. All three components are fully machine-checked with 0 axioms.",
+    "mathContext": "Three components: (1) $\\Delta^2 = -212144$ (Vandermonde computation), (2) $\\text{Gal} \\not\\subset A_5$ (FTGT + discriminant sign), (3) $3 \\mid |\\text{Gal}|$ (Sylow elimination). Theorem from (1)+(2)+(3): $|\\text{Gal}| = 120$.",
     "significance": "key",
     "relatedConcepts": [
-      "Dedekind's theorem",
-      "Frobenius element",
-      "discriminant",
       "Vandermonde determinant",
-      "modular proof decomposition",
-      "Sylvester matrix"
+      "derivative product identity",
+      "discriminant",
+      "FTGT (Fundamental Theorem of Galois Theory)",
+      "complex conjugation",
+      "Sylow theory"
     ],
     "prerequisites": [
-      "Dedekind's theorem on Galois groups",
+      "Vandermonde permutation identity",
       "discriminant-resultant identity",
-      "Vandermonde permutation identity"
+      "Sylow theorems",
+      "A5 simplicity"
     ]
   },
   {

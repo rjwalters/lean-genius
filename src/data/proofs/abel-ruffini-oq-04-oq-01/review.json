@@ -143,42 +143,42 @@
       "priority": "high",
       "target": "enricher",
       "description": "Rewrite meta.json proofStrategy to describe the actual axiom-free proof: Vandermonde discriminant computation, complex conjugation for transposition, Sylow elimination for order determination. Remove all references to 'axiom A', 'axiom B1', 'axiom B2'.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "high",
       "target": "enricher",
       "description": "Rewrite meta.json conclusion.summary to remove references to 'three narrow axioms' and describe the axiom-free proof.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "high",
       "target": "enricher",
       "description": "Replace keyInsights[6] (axiom decomposition) and keyInsights[7] (Dedekind's theorem) with insights about the complex conjugation strategy and Sylow elimination approach actually used in the proof.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "medium",
       "target": "enricher",
       "description": "Update openQuestions to remove solved items (axiom elimination is complete) and add relevant current questions.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",
       "priority": "medium",
       "target": "enricher",
       "description": "Rewrite annotations ann-abeloq04oq01-axiom-strategy and ann-abeloq04oq01-axiom-decomposition to describe the current axiom-free proof rather than the eliminated axioms.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-6",
       "priority": "medium",
       "target": "enricher",
       "description": "Downgrade annotation for closure_cycle_swap_eq_top from 'key' to 'supporting' (or note it is unused). Update all annotation line ranges to match current file.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-7",
@@ -199,7 +199,7 @@
       "priority": "low",
       "target": "enricher",
       "description": "Add Matrix.det_vandermonde and alternatingGroup.isSimpleGroup_five to mathlibDependencies. Update descartes-rule cross-reference to remove 'axiom' language.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
 
