@@ -10,7 +10,7 @@ const meta = metaJson as {
   slug: string
   description: string
   meta: ProofMeta
-  sections: ProofSection[]
+  sections?: ProofSection[]
   overview?: ProofOverview
   conclusion?: ProofConclusion
   crossReferences?: CrossReference[]
@@ -22,7 +22,7 @@ export const inverseGaloisOq01Proof: Proof = {
   slug: meta.slug,
   description: meta.description,
   meta: meta.meta,
-  sections: meta.sections,
+  sections: meta.sections ?? [],
   source: sourceRaw,
   overview: meta.overview,
   conclusion: meta.conclusion,
