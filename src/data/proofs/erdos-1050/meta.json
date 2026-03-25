@@ -193,6 +193,26 @@
       "relationship": "related",
       "description": "Problem #257 asks whether ∑_{n∈A} 1/(2^n - 1) is irrational for every infinite set A of positive integers. This is a 'subset selection' variant of the Lambert series that Erdős proved irrational in 1948 (the case A = ℕ), which is T(2, -1) in our framework.",
       "targetId": "erdos-257"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "Hermite proved e transcendental (1873) using rapidly converging rational approximations — the same meta-strategy (approximation quality exceeding what rationality/algebraicity allows) that Borwein uses for T(q,r). The open transcendence conjecture for T(2,-3) would place it in the same class as e"
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "related",
+      "description": "Hermite-Lindemann proves e^α transcendental for nonzero algebraic α. Erdős's transcendence conjecture for T(q,r) is of the same spirit: showing that a naturally-defined analytic quantity escapes the algebraic numbers. The gap between Borwein's irrationality (proved) and Erdős's transcendence (open) mirrors the historical gap between irrationality of e (Euler 1737) and transcendence (Hermite 1873)"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "foundational",
+      "description": "The irrationality of √2 is the prototype for all irrationality proofs. Borwein's method for T(q,r) is a sophisticated descendant: where the proof for √2 uses a descent argument, Borwein constructs Padé approximants whose convergence rate contradicts rationality — a quantitative generalization of the same logical structure"
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "related",
+      "description": "Liouville's approximation theorem bounds how well algebraic numbers can be approximated by rationals: |α - p/q| > c/q^n for algebraic α of degree n. Borwein's irrationality proof for T(q,r) works by showing the approximation quality EXCEEDS what any rational (degree 1) number allows — the same philosophy, specialized to degree 1"
     }
   ],
   "leanFile": {
