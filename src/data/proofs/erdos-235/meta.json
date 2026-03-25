@@ -173,6 +173,16 @@
       "relationship": "foundation",
       "description": "The sum Σ(1/log x) ~ n/log n asymptotic and average gap growth both depend on the prime number theorem and Mertens' theorem.",
       "targetId": "prime-number-theorem"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient $\\varphi(N_k)$ counts the integers coprime to the primorial $N_k = p_1 \\cdots p_k$. The gap distribution studied in Problem #235 is determined by $N_k/\\varphi(N_k) \\sim e^\\gamma \\log p_k$ (via Mertens' third theorem), connecting the coprime gap statistics to the totient function's behavior on highly composite numbers"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes guarantees that the primorial sequence $N_k = p_1 \\cdots p_k$ grows without bound, ensuring the limiting distribution of coprime gaps is well-defined. The exponential distribution $1 - e^{-c}$ emerges from the independence of divisibility by distinct primes, a consequence of the infinitude of the prime set"
     }
   ],
   "leanFile": {

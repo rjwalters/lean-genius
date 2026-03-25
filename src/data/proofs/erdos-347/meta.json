@@ -177,6 +177,11 @@
       "targetId": "partition-function",
       "relationship": "related",
       "description": "Both concern representing integers as sums from a fixed set. The partition function $p(n)$ counts unrestricted representations; Problem #347 asks for a sequence with enough representations that deleting finitely many terms still yields density-1 coverage — a representation-richness condition dual to the partition-counting perspective"
+    },
+    {
+      "targetId": "erdos-124-complete-sequences",
+      "relationship": "related",
+      "description": "Both study completeness of integer sequences under subset sums. Problem #124 explores the classical Folkman-type completeness condition ($a_{n+1} \\leq \\sigma_n + 1$ where $\\sigma_n = \\sum_{i \\leq n} a_i$), while Problem #347 asks whether the weaker asymptotic ratio condition $a_{n+1}/a_n \\to 2$ can guarantee robust completeness — a refinement of the classical theory"
     }
   ],
   "references": [

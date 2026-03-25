@@ -146,6 +146,16 @@
       "targetId": "erdos-36",
       "relationship": "related",
       "description": "Both study density/overlap in partition and sumset problems; #36 concerns overlap in partitions while #335 characterizes density-additive sumsets"
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Szemerédi's theorem shows positive density forces arithmetic progressions. Problem #335 asks about the opposite extreme: when does positive density lead to *exact* density additivity $d(A+B) = d(A) + d(B)$? Both explore how density conditions constrain additive structure, with Szemerédi giving a universal lower bound and #335 characterizing exact equality"
+    },
+    {
+      "targetId": "erdos-332",
+      "relationship": "related",
+      "description": "Problem #332 studies how positive density forces syndeticity of the difference set $D(A)$. Problem #335 asks when positive density allows exact additivity of sumset density. Both probe the structural consequences of density conditions on sum/difference sets — #332 on differences and #335 on sums"
     }
   ],
   "leanFile": {

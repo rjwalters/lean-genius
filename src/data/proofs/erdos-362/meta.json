@@ -151,6 +151,16 @@
       "relationship": "related-problem",
       "description": "Both concern subset sum properties: #254 asks when all sufficiently large integers are representable as subset sums, while #362 bounds how many subsets can sum to a fixed value",
       "targetId": "erdos-254"
+    },
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Problem #1 (distinct subset sums) asks for the maximum $|A|$ where all $2^{|A|}$ subset sums are distinct. Problem #362 is the dual question: given that subsets AREN'T all distinct, how concentrated can they be around a single target value $t$? The Sárközy–Szemerédi bound $O(2^N/N^{3/2})$ shows no single value can attract more than a $1/N^{3/2}$ fraction of all subsets"
+    },
+    {
+      "targetId": "erdos-321",
+      "relationship": "related",
+      "description": "Problem #321 studies distinct RECIPROCAL subset sums ($\\sum 1/a$) while Problem #362 studies concentration of ordinary subset sums ($\\sum a$). Both probe the fine structure of how subset sums distribute: #321 asks for maximum sets with all sums distinct, #362 asks for the maximum multiplicity of any single sum"
     }
   ],
   "leanFile": {

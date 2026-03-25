@@ -166,6 +166,16 @@
       "targetId": "erdos-340",
       "relationship": "related",
       "description": "Both involve density and extremal problems in additive combinatorics: #340 studies sum-free sets and their maximum density, #332 studies difference sets and syndeticity thresholds"
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Szemerédi's theorem (1975) proves positive density forces arbitrarily long arithmetic progressions — the parallel structural consequence to Prikry's theorem (positive density forces syndetic $D(A)$). Both are instances of the principle that density forces additive structure, and both follow from Furstenberg's ergodic-theoretic correspondence principle"
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "related",
+      "description": "The harmonic thickness conjecture ($\\overline{d}(A) > 0 \\Rightarrow \\sum_{d \\in D(A)} 1/d = \\infty$) connects directly to the divergence of the harmonic series. Moreover, the open question of whether $\\sum 1/a = \\infty$ alone (without positive density) forces $D(A)$ to be syndetic asks whether harmonic-sum divergence is a sufficient condition for the main structural conclusion"
     }
   ],
   "leanFile": {
