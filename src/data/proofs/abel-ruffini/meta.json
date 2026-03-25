@@ -196,31 +196,6 @@
   },
   "crossReferences": [
     {
-      "targetId": "general-quartic",
-      "relationship": "complementary",
-      "description": "Ferrari's quartic formula (1545) is the last degree where radicals succeed — S₄ is solvable (derived series S₄ ▷ A₄ ▷ V₄ ▷ Z/2 ▷ {e}), so the degree-4 boundary is the immediate predecessor to Abel-Ruffini's impossibility at degree 5"
-    },
-    {
-      "targetId": "sylow-theorems",
-      "relationship": "related",
-      "description": "Sylow theorems provide structural information about finite groups that complements the solvability analysis — Sylow subgroups help determine composition factors of S_n"
-    },
-    {
-      "targetId": "quadratic-reciprocity",
-      "relationship": "related",
-      "description": "Gauss's quadratic reciprocity law (1801) is a deep result about the structure of Z/pZ that foreshadowed Galois theory — both concern how algebraic objects (quadratic residues, polynomial roots) behave under symmetry. The Artin reciprocity law of class field theory generalizes both: it connects abelian Galois groups of number fields to ideal class groups, unifying quadratic reciprocity with the abelian case of Galois's solvability criterion"
-    },
-    {
-      "targetId": "inverse-galois",
-      "relationship": "extends",
-      "description": "Abel-Ruffini uses that S₅ occurs as a Galois group. The Inverse Galois Problem asks which groups appear as Galois groups over Q — directly extending the question Abel-Ruffini raises"
-    },
-    {
-      "targetId": "angle-trisection",
-      "relationship": "related",
-      "description": "Both are impossibility results proved via Galois theory: Abel-Ruffini shows quintics are unsolvable by radicals, angle trisection shows the general angle cannot be trisected by compass and straightedge"
-    },
-    {
       "targetId": "abel-ruffini-oq-04",
       "relationship": "extended-by",
       "description": "OQ-04 exposes the internal proof chain from A₅ simplicity to Abel-Ruffini as individually named theorems with pedagogical documentation"
@@ -228,22 +203,12 @@
     {
       "targetId": "abel-ruffini-oq-04-oq-01",
       "relationship": "extended-by",
-      "description": "Provides the concrete witness this entry's main theorem lacks: proves $\\text{Gal}(x^5 - 4x + 2/\\mathbb{Q}) \\cong S_5$ via Eisenstein irreducibility at $p = 2$ and galActionHom bijectivity (with $|\\text{Gal}| = 120$ proved from 3 narrow axioms via Sylow elimination), then applies the contrapositive to show the roots are not expressible by radicals. Bridges the gap between the abstract `not_solvable_by_rad_of_not_solvable_gal` and a specific unsolvable quintic"
+      "description": "Provides the concrete witness this entry's main theorem lacks: proves $\\text{Gal}(x^5 - 4x + 2/\\mathbb{Q}) \\cong S_5$ via Eisenstein irreducibility at $p = 2$ and galActionHom bijectivity, then applies the contrapositive to show the roots are not expressible by radicals"
     },
     {
-      "targetId": "lagrange-theorem",
-      "relationship": "foundational",
-      "description": "Lagrange's theorem on subgroup orders underpins the group-theoretic machinery: the derived series, composition factors, and index calculations used to analyze S₅ and A₅"
-    },
-    {
-      "targetId": "puiseux-theorem",
+      "targetId": "general-quartic",
       "relationship": "complementary",
-      "description": "Puiseux's theorem shows the field of fractional power series (Puiseux series) is algebraically closed — polynomial roots CAN be expressed as Puiseux series even when they cannot be expressed by radicals. This provides a concrete alternative framework where Abel-Ruffini's impossibility does not apply: the barrier is specific to the radical operations (+, -, ×, ÷, ⁿ√), not to all closed-form representations"
-    },
-    {
-      "targetId": "vietas-formulas",
-      "relationship": "foundational",
-      "description": "Vieta's formulas express polynomial coefficients as elementary symmetric functions of roots — this is precisely why the Galois group acts by permutations on roots: permuting roots preserves the symmetric functions (= coefficients), so the symmetry group of a polynomial is a subgroup of $S_n$. The failure of $S_5$-solvability in Abel-Ruffini means the elementary symmetric functions of quintic roots cannot be 'unscrambled' using radicals"
+      "description": "Ferrari's quartic formula (1545) is the last degree where radicals succeed — S₄ is solvable (derived series S₄ ▷ A₄ ▷ V₄ ▷ Z/2 ▷ {e}), so the degree-4 boundary is the immediate predecessor to Abel-Ruffini's impossibility at degree 5"
     },
     {
       "targetId": "solution-of-cubic",
@@ -256,19 +221,39 @@
       "description": "FTA guarantees every polynomial has roots in C. Abel-Ruffini shows those roots cannot always be expressed by radicals — the roots exist but may not be 'nameable' in closed form"
     },
     {
-      "targetId": "kroneckers-jugendtraum",
-      "relationship": "extends",
-      "description": "Kronecker-Weber (every abelian extension of Q is contained in a cyclotomic field) is the positive counterpart to Abel-Ruffini: it characterizes exactly which extensions are generated by radicals of unity, while Abel-Ruffini shows general extensions need not be radical. Hilbert's 12th problem generalizes this to arbitrary number fields"
+      "targetId": "puiseux-theorem",
+      "relationship": "complementary",
+      "description": "Puiseux's theorem shows the field of fractional power series (Puiseux series) is algebraically closed — polynomial roots CAN be expressed as Puiseux series even when they cannot be expressed by radicals. The barrier is specific to the radical operations (+, -, ×, ÷, ⁿ√), not to all closed-form representations"
     },
     {
-      "targetId": "e-transcendental",
+      "targetId": "angle-trisection",
       "relationship": "related",
-      "description": "Hermite's proof that $e$ is transcendental (1873) sits one level above Abel-Ruffini in the expressibility hierarchy: Abel-Ruffini shows certain algebraic numbers escape radical expressions, while transcendence shows $e$ escapes all polynomial equations over $\\mathbb{Q}$. Lindemann's extension to $\\pi$ (1882) resolved the ancient problem of squaring the circle"
+      "description": "Both are impossibility results proved via Galois theory: Abel-Ruffini shows quintics are unsolvable by radicals, angle trisection shows the general angle cannot be trisected by compass and straightedge"
+    },
+    {
+      "targetId": "inverse-galois",
+      "relationship": "extends",
+      "description": "Abel-Ruffini uses that S₅ occurs as a Galois group. The Inverse Galois Problem asks which groups appear as Galois groups over Q — directly extending the question Abel-Ruffini raises"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem on subgroup orders underpins the group-theoretic machinery: the derived series, composition factors, and index calculations used to analyze S₅ and A₅"
+    },
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "related",
+      "description": "Sylow theorems provide structural information about finite groups that complements the solvability analysis — Sylow subgroups help determine composition factors of S_n"
+    },
+    {
+      "targetId": "vietas-formulas",
+      "relationship": "foundational",
+      "description": "Vieta's formulas express polynomial coefficients as elementary symmetric functions of roots — this is precisely why the Galois group acts by permutations on roots. The failure of $S_5$-solvability means the elementary symmetric functions of quintic roots cannot be 'unscrambled' using radicals"
     },
     {
       "targetId": "primitive-roots",
       "relationship": "foundational",
-      "description": "Primitive roots and cyclotomic extensions supply the abelian Galois groups $(\\mathbb{Z}/n\\mathbb{Z})^{\\times}$ that form each layer of a radical tower via Kummer theory. Each radical step $K \\to K(\\sqrt[n]{a})$ has cyclic Galois group precisely because the $n$th roots of unity form a cyclic group. Abel-Ruffini's impossibility arises when the target Galois group $S_5$ cannot be decomposed into such abelian cyclotomic layers"
+      "description": "Primitive roots and cyclotomic extensions supply the abelian Galois groups $(\\mathbb{Z}/n\\mathbb{Z})^{\\times}$ that form each layer of a radical tower via Kummer theory. Abel-Ruffini's impossibility arises when the target Galois group $S_5$ cannot be decomposed into such abelian cyclotomic layers"
     },
     {
       "targetId": "kummer-theorem",
@@ -276,89 +261,14 @@
       "description": "Kummer theory provides the mechanism underlying the Galois bridge (galois_bridge): each radical extraction creates a Kummer extension with cyclic Galois group, so radical towers produce solvable Galois groups — the forward direction of the bridge that Abel-Ruffini applies contrapositively"
     },
     {
-      "targetId": "hilbert-13",
-      "relationship": "extended-by",
-      "description": "Hilbert's 13th problem (1900) was directly motivated by Abel-Ruffini: since polynomials of degree $\\geq 5$ cannot be solved by radicals, Hilbert asked whether the roots of the degree-7 equation $x^7 + ax^3 + bx^2 + cx + 1 = 0$ can be expressed as superpositions of continuous functions of two variables. Kolmogorov-Arnold (1957) resolved the topological version positively, but the algebraic formulation remains open — can the roots be expressed via algebraic functions of two variables?"
-    },
-    {
-      "targetId": "hilbert-10",
-      "relationship": "related",
-      "description": "Matiyasevich's negative resolution of Hilbert's 10th problem (MRDP theorem, 1970) extends the impossibility paradigm inaugurated by Abel-Ruffini: Abel-Ruffini shows certain polynomial roots cannot be named by radicals, while MRDP shows the existence of integer solutions to Diophantine equations cannot be decided algorithmically — a deeper level of the expressibility/decidability hierarchy"
-    },
-    {
-      "targetId": "fermats-last-theorem",
-      "relationship": "related",
-      "description": "Both are landmark impossibility/nonexistence results in algebra: Abel-Ruffini proves no radical formula exists for general quintics, while FLT proves no integer solutions exist for $x^n + y^n = z^n$ ($n \\geq 3$). Wiles's proof of FLT (1995) uses Galois representations — the same Galois-theoretic framework that underpins Abel-Ruffini, elevated from polynomial solvability to modularity of elliptic curves"
-    },
-    {
       "targetId": "hermite-lindemann",
       "relationship": "related",
-      "description": "Sits one level above Abel-Ruffini in the expressibility hierarchy: Abel-Ruffini shows certain algebraic numbers escape radical expressions, while Hermite-Lindemann shows $e^\\alpha$ is transcendental for nonzero algebraic $\\alpha$, proving $e$ and $\\pi$ escape all polynomial equations over $\\mathbb{Q}$. Hermite himself showed the quintic IS solvable via elliptic modular functions (1858), demonstrating the barrier is specific to radicals"
-    },
-    {
-      "targetId": "gelfond-schneider",
-      "relationship": "related",
-      "description": "Extends the transcendence hierarchy beyond Hermite-Lindemann: Gelfond-Schneider proves $\\alpha^\\beta$ is transcendental when $\\alpha \\neq 0,1$ is algebraic and $\\beta$ is algebraic irrational (e.g., $2^{\\sqrt{2}}$, $e^\\pi$). Together with Abel-Ruffini and Hermite-Lindemann, this illustrates progressively stronger barriers on expressing mathematical quantities in closed form"
-    },
-    {
-      "targetId": "sqrt2-irrational",
-      "relationship": "foundational",
-      "description": "The irrationality of $\\sqrt{2}$ ($\\sqrt{2} \\notin \\mathbb{Q}$, c. 500 BCE) is the first level of the expressibility hierarchy discussed in this entry's conclusion: irrationality → radical inexpressibility (Abel-Ruffini) → algebraic inexpressibility (Hermite-Lindemann) → computational undecidability (Turing). The ancient proof that $\\sqrt{2}$ escapes rational expressions foreshadows Abel-Ruffini's proof that certain algebraic numbers escape radical expressions"
-    },
-    {
-      "targetId": "godel-incompleteness",
-      "relationship": "related",
-      "description": "Abel-Ruffini (1824) and Gödel's incompleteness (1931) are both impossibility results showing that natural questions ('find a formula', 'prove all truths') admit no universal solution within a given formal framework. Abel-Ruffini's framework is radical operations; Gödel's is consistent axiomatic systems. Both inaugurated paradigm shifts from seeking solutions to proving their nonexistence"
-    },
-    {
-      "targetId": "halting-problem",
-      "relationship": "related",
-      "description": "Turing's halting problem (1936) extends the impossibility paradigm to computation: no algorithm can decide whether an arbitrary program halts, just as no radical formula can solve the general quintic. Abel-Ruffini → Gödel → Turing form a chain of progressively general impossibility results, each showing that a natural class of problems escapes a natural class of methods"
-    },
-    {
-      "targetId": "cantor-diagonalization",
-      "relationship": "related",
-      "description": "Cantor's diagonal argument (1891) is the set-theoretic impossibility result that bridges Abel-Ruffini and Gödel in the impossibility paradigm: it proves no surjection $X \\to \\mathcal{P}(X)$ exists, establishing that some infinities are strictly larger than others. The diagonal method became the template for Gödel's self-referential sentence (1931) and Turing's halting argument (1936). Together with Abel-Ruffini, these form the chain: algebraic impossibility (1824) → set-theoretic impossibility (1891) → logical impossibility (1931) → computational impossibility (1936)"
+      "description": "Sits one level above Abel-Ruffini in the expressibility hierarchy: Abel-Ruffini shows certain algebraic numbers escape radical expressions, while Hermite-Lindemann shows $e^\\alpha$ is transcendental for nonzero algebraic $\\alpha$. Hermite himself showed the quintic IS solvable via elliptic modular functions (1858), demonstrating the barrier is specific to radicals"
     },
     {
       "targetId": "descartes-rule-of-signs",
       "relationship": "related",
-      "description": "Descartes' rule bounds the number of positive real roots of a polynomial by the number of sign changes in its coefficients — a classical tool in the Galois group computation pipeline. For the standard example $x^5 - x - 1$, Descartes' rule (1 sign change) gives exactly 1 positive real root; combined with Sturm's theorem or direct analysis, one finds exactly 3 real roots total, which implies the Galois group contains a transposition (complex conjugation) — one of the key steps in proving $\\text{Gal}(x^5 - x - 1/\\mathbb{Q}) = S_5$"
-    },
-    {
-      "targetId": "pi-transcendental",
-      "relationship": "related",
-      "description": "Lindemann's proof that $\\pi$ is transcendental (1882) resolved the ancient problem of squaring the circle and sits one level above Abel-Ruffini in the expressibility hierarchy: Abel-Ruffini shows certain algebraic numbers escape radical expressions, while $\\pi \\notin \\overline{\\mathbb{Q}}$ shows $\\pi$ escapes all polynomial equations. Both are impossibility results proved via algebraic structure theory — Galois groups for Abel-Ruffini, the Lindemann-Weierstrass theorem for transcendence"
-    },
-    {
-      "targetId": "liouville-theorem",
-      "relationship": "related",
-      "description": "Liouville's construction of the first explicit transcendental numbers (1844) via rational approximation bounds ($|\\alpha - p/q| > c/q^n$ for algebraic $\\alpha$ of degree $n$) bridges the gap between algebraic and transcendental numbers in the expressibility hierarchy. Abel-Ruffini shows a barrier within algebraic numbers (radical vs non-radical), while Liouville's theorem identifies numbers that escape algebraic equations entirely — the next level of the hierarchy discussed in this entry's conclusion"
-    },
-    {
-      "targetId": "lagrange-theorem-oq-03",
-      "relationship": "related",
-      "description": "Hall's theorem (1928) is the partial converse of Lagrange's theorem for solvable groups: every Hall divisor of a solvable group's order yields a subgroup, and all such Hall subgroups are conjugate. This directly constrains the group-theoretic concept central to Abel-Ruffini — group solvability. The A₄ counterexample (6 divides $|A_4| = 12$ but $A_4$ has no subgroup of order 6) illustrates the subtlety of solvable group structure at the degree-4/5 threshold"
-    },
-    {
-      "targetId": "inverse-galois-oq-01",
-      "relationship": "extends",
-      "description": "Proves the complete characterization: $S_n$ is solvable iff $n \\leq 4$. Formalizes $A_5$ as simple, perfect, and non-solvable — the same group-theoretic facts that drive Abel-Ruffini's impossibility, now presented as a standalone result in the non-solvable frontier of the Inverse Galois Problem"
-    },
-    {
-      "targetId": "angle-trisection-oq-02",
-      "relationship": "related",
-      "description": "The Wantzel-Galois theorem — an algebraic number $\\alpha$ is constructible by compass and straightedge iff $\\text{Gal}(\\text{minpoly}_{\\mathbb{Q}}(\\alpha))$ is a 2-group — is the constructibility analogue of Abel-Ruffini's radical solvability criterion. Both results reduce a geometric/algebraic question to group theory via the same Galois-theoretic framework: Abel-Ruffini asks whether the Galois group is solvable (abelian composition factors), while Wantzel-Galois asks whether it is a 2-group (all composition factors $\\mathbb{Z}/2$)"
-    },
-    {
-      "targetId": "angle-trisection-oq-02-oq-03",
-      "relationship": "related",
-      "description": "The Gauss-Wantzel theorem: a regular $n$-gon is constructible iff $\\varphi(n)$ is a power of 2, i.e., $n = 2^k p_1 \\cdots p_r$ with distinct Fermat primes $p_i$. This is the definitive constructibility criterion, paralleling Abel-Ruffini's solvability criterion: both reduce a classical question (constructibility / radical solvability) to a group-theoretic condition ($\\text{Gal}$ is a 2-group / $\\text{Gal}$ is solvable) via the same Galois correspondence, and both explain a sharp boundary ($n$-gon constructibility fails for $n = 7$ just as radical solvability fails for degree 5)"
-    },
-    {
-      "targetId": "nth-root-irrational",
-      "relationship": "foundational",
-      "description": "The irrationality of $m^{1/n}$ for non-perfect-power $m$ is the simplest manifestation of radical extensions producing genuinely new elements. Each step in a radical tower $K_i \\to K_i(\\sqrt[n]{a})$ extends the field precisely because $a^{1/n} \\notin K_i$ — the same mechanism that nth-root irrationality captures over $\\mathbb{Q}$. This entry proves the base case; Abel-Ruffini shows that iterating such extensions cannot reach certain algebraic numbers when the Galois group is non-solvable"
+      "description": "Descartes' rule bounds the number of positive real roots — a classical tool in the Galois group computation pipeline for exhibiting specific polynomials with $\\text{Gal} = S_5$, bridging the gap between the abstract impossibility and concrete unsolvable quintics"
     }
   ],
   "references": [
