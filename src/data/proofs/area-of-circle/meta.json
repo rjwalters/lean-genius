@@ -265,7 +265,23 @@
     "theoremCount": 7,
     "lemmaCount": 0,
     "defCount": 0,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "substantiveTheoremCount": 2,
+    "trivialSpecializations": 5,
+    "mainTheorems": [
+      {
+        "name": "area_of_circle",
+        "type": "wrapper",
+        "description": "Lebesgue measure of an open ball in C equals r^2 * pi",
+        "leanType": "(center : ℂ) → (r : ℝ) → volume (ball center r) = ENNReal.ofReal r ^ 2 * ↑NNReal.pi"
+      },
+      {
+        "name": "area_of_closed_disk",
+        "type": "wrapper",
+        "description": "Lebesgue measure of a closed ball in C equals r^2 * pi",
+        "leanType": "(center : ℂ) → (r : ℝ) → volume (closedBall center r) = ENNReal.ofReal r ^ 2 * ↑NNReal.pi"
+      }
+    ]
   },
   "references": [
     {
