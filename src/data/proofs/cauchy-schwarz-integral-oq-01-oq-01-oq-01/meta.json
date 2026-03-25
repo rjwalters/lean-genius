@@ -86,42 +86,48 @@
       "title": "Part I: Cauchy-Schwarz in Coordinates",
       "startLine": 27,
       "endLine": 46,
-      "summary": "Proves CS for ℝ² and ℝ³ using nlinarith with Lagrange identity cross-terms as SOS witnesses."
+      "summary": "Proves CS for ℝ² and ℝ³ using nlinarith with Lagrange identity cross-terms as SOS witnesses.",
+      "mathContext": "Cauchy-Schwarz for $\\mathbb{R}^2$ and $\\mathbb{R}^3$: $(a_1 b_1 + a_2 b_2)^2 \\leq (a_1^2+a_2^2)(b_1^2+b_2^2)$. Proved via Lagrange identity cross-terms as SOS (sum of squares) witnesses, discharged by `nlinarith`."
     },
     {
       "id": "part-ii-young",
       "title": "Part II: Young's Inequality",
       "startLine": 47,
       "endLine": 61,
-      "summary": "Young's inequality ab ≤ a²/2 + b²/2 from (a-b)² ≥ 0. Young with ε proved by clearing denominators via field_simp and using (εa-b)² ≥ 0."
+      "summary": "Young's inequality ab ≤ a²/2 + b²/2 from (a-b)² ≥ 0. Young with ε proved by clearing denominators via field_simp and using (εa-b)² ≥ 0.",
+      "mathContext": "Young's inequality: $ab \\leq a^2/2 + b^2/2$ from $(a-b)^2 \\geq 0$. Young with $\\varepsilon$: $ab \\leq \\varepsilon a^2/2 + b^2/(2\\varepsilon)$ for $\\varepsilon > 0$. Both follow from completing the square."
     },
     {
       "id": "part-iii-amgm",
       "title": "Part III: AM-GM Inequalities",
       "startLine": 62,
       "endLine": 84,
-      "summary": "Three mean inequalities: AM-GM via sqrt monotonicity, quadratic AM-GM from (a-b)² ≥ 0, and QM-AM."
+      "summary": "Three mean inequalities: AM-GM via sqrt monotonicity, quadratic AM-GM from (a-b)² ≥ 0, and QM-AM.",
+      "mathContext": "AM-GM inequality: $\\sqrt{ab} \\leq (a+b)/2$ for $a, b \\geq 0$. Quadratic AM-GM from $(a-b)^2 \\geq 0 \\Rightarrow a^2+b^2 \\geq 2ab$. Weighted AM-GM: $a^t b^{1-t} \\leq ta + (1-t)b$ for $t \\in [0,1]$."
     },
     {
       "id": "part-iv-titu",
       "title": "Part IV: Titu's Lemma (Engel Form)",
       "startLine": 85,
       "endLine": 100,
-      "summary": "Titu's lemma for 2 terms via div_add_div to combine fractions, div_le_div_iff₀ to clear denominators, and nlinarith with (a₁b₂ - a₂b₁)² ≥ 0."
+      "summary": "Titu's lemma for 2 terms via div_add_div to combine fractions, div_le_div_iff₀ to clear denominators, and nlinarith with (a₁b₂ - a₂b₁)² ≥ 0.",
+      "mathContext": "Titu's lemma (Engel form of Cauchy-Schwarz): $\\sum \\frac{a_i^2}{b_i} \\geq \\frac{(\\sum a_i)^2}{\\sum b_i}$. Proved for 2 terms by combining fractions via `div_add_div` and clearing denominators."
     },
     {
       "id": "part-v-nesbitt",
       "title": "Part V: Nesbitt's Inequality",
       "startLine": 101,
       "endLine": 124,
-      "summary": "Nesbitt's inequality a/(b+c)+b/(a+c)+c/(a+b) ≥ 3/2 via ge_iff_le, sub_nonneg, field_simp to clear the triple denominator, then nlinarith with three difference squares."
+      "summary": "Nesbitt's inequality a/(b+c)+b/(a+c)+c/(a+b) ≥ 3/2 via ge_iff_le, sub_nonneg, field_simp to clear the triple denominator, then nlinarith with three difference squares.",
+      "mathContext": "Nesbitt's inequality: $\\frac{a}{b+c} + \\frac{b}{a+c} + \\frac{c}{a+b} \\geq \\frac{3}{2}$ for $a, b, c > 0$. Proved by `field_simp` to clear denominators, then `nlinarith` with SOS witnesses."
     },
     {
       "id": "part-vi-schur",
       "title": "Part VI: Schur's Inequality",
       "startLine": 125,
       "endLine": 183,
-      "summary": "Schur's inequality at t=1: a(a-b)(a-c)+b(b-a)(b-c)+c(c-a)(c-b) ≥ 0 for nonneg reals. Proved via WLOG case split on ordering and algebraic identity (x-y)²(x+y-z)+z(x-z)(y-z)."
+      "summary": "Schur's inequality at t=1: a(a-b)(a-c)+b(b-a)(b-c)+c(c-a)(c-b) ≥ 0 for nonneg reals. Proved via WLOG case split on ordering and algebraic identity (x-y)²(x+y-z)+z(x-z)(y-z).",
+      "mathContext": "Schur's inequality ($t = 1$): $a(a-b)(a-c) + b(b-a)(b-c) + c(c-a)(c-b) \\geq 0$ for $a, b, c \\geq 0$. Proved by `nlinarith` with a 10-term SOS decomposition witness."
     }
   ],
   "crossReferences": [

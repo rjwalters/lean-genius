@@ -86,42 +86,48 @@
       "title": "Backward Direction: Scalar Multiple → Equality",
       "summary": "Direct computation: ‖⟪c·v, v⟫‖ = ‖c·v‖·‖v‖ via inner_smul_left, norm_star, and algebraic simplification.",
       "startLine": 36,
-      "endLine": 48
+      "endLine": 48,
+      "mathContext": "Backward direction: if $u = c \\cdot v$, then $|\\langle cv, v\\rangle| = |c| \\cdot \\|v\\|^2 = \\|cv\\| \\cdot \\|v\\|$, so equality holds in Cauchy-Schwarz. Proved via `inner_smul_left` and `norm_star`."
     },
     {
       "id": "orthogonal",
       "title": "Orthogonal Projection Lemma",
       "summary": "The residual u − (⟪v,u⟫/⟪v,v⟫)·v is orthogonal to v. Proved via inner_sub_left, inner_smul_left, inner_conj_symm, and field_simp.",
       "startLine": 53,
-      "endLine": 63
+      "endLine": 63,
+      "mathContext": "The projection residual $u - \\frac{\\langle v, u\\rangle}{\\langle v, v\\rangle} v$ is orthogonal to $v$. Proved via `inner_sub_left` and `inner_smul_left`, showing $\\langle \\text{residual}, v \\rangle = 0$."
     },
     {
       "id": "forward",
       "title": "Forward Direction: Equality → Scalar Multiple",
       "summary": "Seven-step proof: define projection, show orthogonality, apply Pythagoras, compute inner product norm, derive ‖c‖·‖v‖ = ‖u‖, show residual vanishes, conclude u = c·v.",
       "startLine": 68,
-      "endLine": 114
+      "endLine": 114,
+      "mathContext": "Forward direction (7 steps): define projection $\\text{proj}_v(u) = \\frac{\\langle v,u\\rangle}{\\|v\\|^2} v$, show orthogonality, apply Pythagoras $\\|u\\|^2 = \\|\\text{proj}\\|^2 + \\|\\text{residual}\\|^2$, deduce equality iff residual $= 0$ iff $u$ is a scalar multiple of $v$."
     },
     {
       "id": "main-iff",
       "title": "Main Equivalence Theorems",
       "summary": "Complex-specific and uniform RCLike versions of the equality characterization: ‖⟪u,v⟫‖ = ‖u‖·‖v‖ ↔ ∃ c, u = c·v.",
       "startLine": 119,
-      "endLine": 139
+      "endLine": 139,
+      "mathContext": "The full characterization: $|\\langle u, v\\rangle| = \\|u\\| \\cdot \\|v\\| \\iff \\exists c,\\, u = cv$. Both $\\mathbb{C}$-specific and general `RCLike` versions."
     },
     {
       "id": "edge-cases",
       "title": "Edge Cases and Symmetry",
       "summary": "Equality holds trivially when either vector is zero. Symmetric version swaps the roles of u and v using inner_conj_symm.",
       "startLine": 144,
-      "endLine": 165
+      "endLine": 165,
+      "mathContext": "Edge cases: equality holds trivially when $u = 0$ or $v = 0$ (both sides equal 0). Symmetric version swaps $u$ and $v$ roles."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "summary": "A single conjunction asserting that the equality characterization works for both the ℂ-specific and uniform RCLike settings.",
       "startLine": 170,
-      "endLine": 185
+      "endLine": 185,
+      "mathContext": "Complete characterization: Cauchy-Schwarz equality holds in a complex inner product space iff the vectors are linearly dependent."
     }
   ],
   "conclusion": {

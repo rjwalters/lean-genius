@@ -90,35 +90,40 @@
       "title": "Measure Zero Properties",
       "summary": "Establishes that $\\mathbb{Q}$ embedded in $\\mathbb{R}$ is countable (`Set.countable_range`) and hence has Lebesgue measure zero (`Countable.measure_zero`). Also proves the monotonicity principle: subsets of null sets are null.",
       "startLine": 39,
-      "endLine": 56
+      "endLine": 56,
+      "mathContext": "The rationals $\\mathbb{Q} \\subset \\mathbb{R}$ form a countable set (`Set.countable_range`) with Lebesgue measure zero: $\\lambda(\\mathbb{Q}) = 0$. This uses `MeasureTheory.measure_countable`."
     },
     {
       "id": "dirichlet-function",
       "title": "The Dirichlet Function",
       "summary": "Defines $\\mathbf{1}_{\\mathbb{Q}} : \\mathbb{R} \\to \\mathbb{R}$ as `Set.indicator` of $\\text{range}(\\text{Rat.cast})$ with constant value 1. Characterization lemmas: equals 1 on rationals (`indicator_of_mem`) and 0 on irrationals (`indicator_of_notMem`).",
       "startLine": 58,
-      "endLine": 77
+      "endLine": 77,
+      "mathContext": "The Dirichlet function $\\mathbf{1}_{\\mathbb{Q}}: \\mathbb{R} \\to \\mathbb{R}$ defined as `Set.indicator` of $\\text{range}(\\mathbb{Q} \\hookrightarrow \\mathbb{R})$. Takes value 1 on rationals, 0 on irrationals. The classic example of a function discontinuous everywhere."
     },
     {
       "id": "almost-everywhere",
       "title": "Almost Everywhere Zero",
       "summary": "The core technical result: $\\mathbf{1}_{\\mathbb{Q}} = 0$ a.e. via `compl_mem_ae_iff.mpr` (converts $\\mu(\\mathbb{Q}) = 0$ to $\\mathbb{Q}^c \\in \\text{ae}$) and `filter_upwards`. Restricted version for $[0,1]$ via `ae_restrict_of_ae`.",
       "startLine": 79,
-      "endLine": 96
+      "endLine": 96,
+      "mathContext": "The core result: $\\mathbf{1}_{\\mathbb{Q}} = 0$ almost everywhere with respect to Lebesgue measure. Since $\\mathbb{Q}$ has measure zero, $\\mathbf{1}_{\\mathbb{Q}}$ differs from the zero function only on a null set."
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem: $\\int_0^1 \\mathbf{1}_{\\mathbb{Q}} = 0$",
       "summary": "Applies `integral_eq_zero_of_ae` to the a.e.-zero result. This resolves the axiom `dirichlet_integral_zero` from the parent proof. Two equivalent formulations: one using the raw indicator, one using the named `dirichletFunction`.",
       "startLine": 98,
-      "endLine": 122
+      "endLine": 122,
+      "mathContext": "The integral: $\\int_{\\mathbb{R}} \\mathbf{1}_{\\mathbb{Q}}\\,d\\lambda = 0$. Proved by `integral_eq_zero_of_ae` applied to the a.e.-zero result. Despite being 1 on a dense set, the Dirichlet function integrates to 0."
     },
     {
       "id": "extensions",
       "title": "Extensions and Nowhere Continuity",
       "summary": "Generalizes to arbitrary sets and all of $\\mathbb{R}$. Proves `dirichletFunction_not_continuous_at` for every $x \\in \\mathbb{R}$: at rationals, balls contain irrationals (by positive measure vs null $\\mathbb{Q}$); at irrationals, balls contain rationals (by `exists_rat_near`). Each case shows $|f(x) - f(y)| = 1$ for nearby $y$.",
       "startLine": 124,
-      "endLine": 197
+      "endLine": 197,
+      "mathContext": "Generalizations: $\\int \\mathbf{1}_S\\,d\\lambda = 0$ for any countable set $S \\subset \\mathbb{R}$. Also proves $\\mathbf{1}_{\\mathbb{Q}}$ is not (Riemann) continuous at any point."
     }
   ],
   "conclusion": {
