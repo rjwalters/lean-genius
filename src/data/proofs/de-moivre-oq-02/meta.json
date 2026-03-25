@@ -2,7 +2,7 @@
   "id": "de-moivre-oq-02",
   "title": "Chebyshev Polynomial Properties via De Moivre's Theorem",
   "slug": "de-moivre-oq-02",
-  "description": "A complete formalization of deeper Chebyshev polynomial properties derived from De Moivre's theorem: the composition identity T_m(T_n(cos θ)) = T_{mn}(cos θ), the product-to-sum formula 2·T_m(x)·T_n(x) = T_{m+n}(x) + T_{m-n}(x), parity relations T_n(-x) = (-1)^n·T_n(x), special values T_n(±1) and T_n(0), and the roots T_n(cos((2k+1)π/(2n))) = 0.",
+  "description": "A formalization of Chebyshev polynomial identities derived from De Moivre's theorem, proved for cos θ values via Mathlib's T_real_cos: the composition identity T_m(T_n(cos θ)) = T_{mn}(cos θ), the product-to-sum formula, parity relations, special values T_n(±1) and T_n(0), and the roots T_n(cos((2k+1)π/(2n))) = 0. All 16 theorems with 0 sorries.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Chebyshev_polynomials",
@@ -56,7 +56,7 @@
       }
     ],
     "originalContributions": [
-      "Composition identity: T_m(T_n(cos θ)) = T_{mn}(cos θ), proving Chebyshev polynomials form a commutative monoid under composition",
+      "Composition identity: T_m(T_n(cos θ)) = T_{mn}(cos θ) with commutativity, identity (T_1), and associativity — demonstrating monoid-like structure on cos θ values (no Monoid instance constructed)",
       "Product-to-sum formula: 2·T_m(x)·T_n(x) = T_{m+n}(x) + T_{m-n}(x), the Chebyshev analog of trigonometric product-to-sum",
       "Parity: T_n(-x) = (-1)^n · T_n(x), with even/odd specializations showing T_{2n} even and T_{2n+1} odd",
       "Special values: T_n(1) = 1, T_n(-1) = (-1)^n, T_n(0) = cos(nπ/2)",
@@ -66,7 +66,7 @@
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
     "lineCount": 157,
-    "assumptions": "0 axioms, 0 sorries. Composition identity derived from Mathlib's T_real_cos. Extensive original derivations of product-to-sum, parity, and root formulas."
+    "assumptions": "0 axioms, 0 sorries. All identities proved for cos θ values via Mathlib's T_real_cos (the general polynomial identities follow by density but are not formalized). Clean original derivations of product-to-sum, parity, and root formulas."
   },
   "overview": {
     "historicalContext": "**Beyond the Basic Identity**\n\nThe OQ-01 extension established the fundamental connection: $T_n(\\cos\\theta) = \\cos(n\\theta)$. This OQ-02 extension explores the rich algebraic structure that follows from this identity.\n\n**Composition Monoid**\n\nSince $T_m(T_n(\\cos\\theta)) = T_m(\\cos(n\\theta)) = \\cos(mn\\theta) = T_{mn}(\\cos\\theta)$, the Chebyshev polynomials form a commutative monoid under function composition. This is a remarkable algebraic structure: $T_m \\circ T_n = T_{mn}$, with $T_1$ as the identity element.\n\n**Product-to-Sum**\n\nThe identity $2T_m(x)T_n(x) = T_{m+n}(x) + T_{m-n}(x)$ is the polynomial analog of the trigonometric product-to-sum formula $2\\cos(A)\\cos(B) = \\cos(A+B) + \\cos(A-B)$. This identity is central to Chebyshev spectral methods in numerical analysis.\n\n**Parity and Roots**\n\nThe parity relation $T_n(-x) = (-1)^nT_n(x)$ shows that even-index Chebyshev polynomials are even functions and odd-index ones are odd. The roots $x_k = \\cos\\frac{(2k+1)\\pi}{2n}$ are the Chebyshev nodes, optimal for polynomial interpolation.",
@@ -138,7 +138,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization proves 15 theorems with 0 sorries, establishing the complete algebraic structure of Chebyshev polynomials via De Moivre's theorem. Every proof follows the same elegant pattern: convert to trigonometric form via T_real_cos, apply standard trig identities, close with algebra. The composition identity T_m ∘ T_n = T_{mn} reveals Chebyshev polynomials as a commutative monoid, a structure with applications in dynamical systems and symbolic computation.",
+    "summary": "The formalization proves 16 theorems with 0 sorries, establishing key algebraic identities of Chebyshev polynomials via De Moivre's theorem. Every proof follows the same elegant pattern: convert to trigonometric form via T_real_cos, apply standard trig identities, close with algebra. The composition identity T_m(T_n(cos θ)) = T_{mn}(cos θ) demonstrates monoid-like structure under composition, with applications in dynamical systems and symbolic computation.",
     "implications": "**Theoretical Significance**: **Implications**\n\n1. **Commutative Composition Monoid**: {T_n : n ∈ ℤ} under composition forms a commutative monoid, isomorphic to (ℤ, ×). This structure underpins iterative methods in dynamical systems.\n\n**2. Spectral Methods**: The product-to-sum formula enables efficient Chebyshev spectral methods in numerical analysis — multiplying two Chebyshev expansions reduces to index arithmetic.\n\n3. **Optimal Interpolation**: The root characterization cos((2k+1)π/(2n)) gives the Chebyshev nodes, which minimize the maximum interpolation error among all polynomial node sets of degree n.\n\n4. **Symmetry Classification**: The parity result classifies Chebyshev polynomials as even/odd functions, simplifying analysis of symmetric integrals and boundary value problems.",
     "openQuestions": [
       "Can the Chebyshev composition monoid structure be formalized abstractly as a monoid homomorphism (ℤ, ×) → (ℝ[X], ∘)?",
