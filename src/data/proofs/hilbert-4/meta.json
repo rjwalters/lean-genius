@@ -189,14 +189,41 @@
       "year": "1955",
       "venue": "Academic Press",
       "note": "Systematic study of metric spaces where geodesics are unique — the class of geometries Hilbert's 4th problem asks to characterize"
+    },
+    {
+      "authors": "Hamel, Georg",
+      "title": "Über die Geometrien, in denen die Geraden die Kürzesten sind",
+      "year": "1903",
+      "venue": "Mathematische Annalen 57, 231–264",
+      "note": "First substantial progress on Hilbert's 4th problem: characterized Desarguesian projective metrics in the plane as exactly Minkowski metrics"
+    },
+    {
+      "authors": "Pogorelov, Aleksei V.",
+      "title": "Hilbert's Fourth Problem",
+      "year": "1979",
+      "venue": "Scripta Series in Mathematics, V.H. Winston & Sons",
+      "note": "Complete solution of Hilbert's 4th problem in all dimensions, classifying all projective metrics where geodesics are straight lines"
+    },
+    {
+      "authors": "Álvarez Paiva, Juan Carlos; Fernandes, E.",
+      "title": "What is a Crofton formula?",
+      "year": "2005",
+      "venue": "Mathematische Notizen 278(13), 1582–1600",
+      "note": "Modern characterization of projective Finsler metrics via symplectic geometry and the Crofton formula — referenced in the open questions"
     }
   ],
   "mainTheorems": [
     {
-      "name": "hilbert4_metric",
-      "type": "core",
-      "description": "Construction of metrics for which straight lines are geodesics",
-      "leanType": "exists metric, forall line, is_geodesic metric line"
+      "name": "euclidean_triangle",
+      "type": "original",
+      "description": "Euclidean norm satisfies the triangle inequality (verified Minkowski example)",
+      "leanType": "(n : ℕ) → (x y : Fin n → ℝ) → euclideanNorm n (x + y) ≤ euclideanNorm n x + euclideanNorm n y"
+    },
+    {
+      "name": "taxicab_triangle",
+      "type": "original",
+      "description": "Taxicab norm satisfies the triangle inequality (non-Euclidean Minkowski example)",
+      "leanType": "(n : ℕ) → (x y : Fin n → ℝ) → taxicabNorm n (x + y) ≤ taxicabNorm n x + taxicabNorm n y"
     }
   ]
 }

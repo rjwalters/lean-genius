@@ -190,7 +190,27 @@
     "axiomCount": 0,
     "theoremCount": 3,
     "substantiveTheoremCount": 3,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "mainTheorems": [
+      {
+        "name": "norm_add_eq_iff_proportional",
+        "type": "original",
+        "description": "Strict Minkowski: ‖f+g‖ = ‖f‖+‖g‖ ↔ ‖f‖•g = ‖g‖•f",
+        "leanType": "(f g : E) → ‖f + g‖ = ‖f‖ + ‖g‖ ↔ ‖f‖ • g = ‖g‖ • f"
+      },
+      {
+        "name": "proportional_of_inner_eq",
+        "type": "original",
+        "description": "CS equality implies proportionality: ⟪f,g⟫ = ‖f‖·‖g‖ → ‖f‖•g = ‖g‖•f",
+        "leanType": "(f g : E) → ⟪f, g⟫_ℝ = ‖f‖ * ‖g‖ → ‖f‖ • g = ‖g‖ • f"
+      },
+      {
+        "name": "inner_eq_of_proportional",
+        "type": "original",
+        "description": "Proportionality implies CS equality: ‖f‖•g = ‖g‖•f → ⟪f,g⟫ = ‖f‖·‖g‖",
+        "leanType": "(f g : E) → ‖f‖ • g = ‖g‖ • f → ⟪f, g⟫_ℝ = ‖f‖ * ‖g‖"
+      }
+    ]
   },
   "references": [
     {

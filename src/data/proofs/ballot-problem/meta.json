@@ -270,10 +270,22 @@
   },
   "mainTheorems": [
     {
-      "name": "ballot_problem",
-      "type": "core",
-      "description": "If candidate A gets a votes and B gets b votes with a > b, probability A leads throughout is (a-b)/(a+b)",
-      "leanType": "a > b -> P(A leads throughout) = (a - b) / (a + b)"
+      "name": "ballot_theorem",
+      "type": "original",
+      "description": "Ballot theorem: if q < p, the number of favorable sequences is (p-q)/(p+q) · C(p+q, p)",
+      "leanType": "(p q : ℕ) → q < p → favorableCount p q * (p + q) = (p - q) * (countedSequence p q).toFinset.card"
+    },
+    {
+      "name": "ballot_theorem_real",
+      "type": "original",
+      "description": "Ballot theorem (real form): probability A leads throughout = (p-q)/(p+q)",
+      "leanType": "(p q : ℕ) → q < p → (favorableCount p q : ℝ) / (countedSequence p q).toFinset.card = (p - q) / (p + q)"
+    },
+    {
+      "name": "ballot_unanimous",
+      "type": "original",
+      "description": "When q=0 (unanimous), all sequences are favorable: probability = 1",
+      "leanType": "(p : ℕ) → favorableCount p 0 = (countedSequence p 0).toFinset.card"
     }
   ]
 }

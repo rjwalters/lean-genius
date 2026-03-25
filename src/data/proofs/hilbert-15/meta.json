@@ -198,5 +198,19 @@
       "venue": "Proceedings of Symposia in Pure Mathematics 28, 445–482",
       "note": "Survey of progress on Schubert calculus and intersection theory related to Hilbert's 15th problem"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "hilbert_15_statement",
+      "type": "original",
+      "description": "Schubert's '2 lines meet 4 lines in general position' = 2",
+      "leanType": "schubertNumber_FourLines = 2"
+    },
+    {
+      "name": "grassmannian_rank",
+      "type": "original",
+      "description": "Grassmannian G(k,n) has dimension k(n-k) as a variety",
+      "leanType": "{k n : ℕ} → {K : Type*} → [DivisionRing K] → FiniteDimensional K → finrank K (Grassmannian k n K) = k * (n - k)"
+    }
   ]
 }

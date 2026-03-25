@@ -267,9 +267,21 @@
   "mainTheorems": [
     {
       "name": "borsuk_ulam",
-      "type": "core",
-      "description": "For any continuous map f: S^n -> R^n, there exists x with f(x) = f(-x)",
-      "leanType": "Continuous f -> exists x : Sphere n, f x = f (-x)"
+      "type": "synthesis",
+      "description": "Borsuk-Ulam: every continuous f: S^n → R^n has an antipodal pair f(x) = f(-x)",
+      "leanType": "(hn : n ≥ 1) → (f : SphereFun n) → HasAntipodalPair n f"
+    },
+    {
+      "name": "no_odd_map_to_lower_sphere",
+      "type": "bridge",
+      "description": "No continuous odd map from S^n to S^{n-1} exists — the topological core",
+      "leanType": "(hn : n ≥ 1) → ¬∃ g : EuclideanSpace ℝ (Fin (n+1)) → EuclideanSpace ℝ (Fin n), Continuous g ∧ (∀ x, g (-x) = -g x) ∧ (∀ x, x ∈ Sphere n → g x ≠ 0)"
+    },
+    {
+      "name": "borsuk_ulam_dim_2",
+      "type": "application",
+      "description": "The 'weather theorem': every continuous f: S² → R² has antipodal agreement",
+      "leanType": "(f : SphereFun 2) → HasAntipodalPair 2 f"
     }
   ]
 }

@@ -211,6 +211,26 @@
     "lineCount": 162,
     "axiomCount": 0,
     "theoremCount": 15,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "mainTheorems": [
+      {
+        "name": "dvd_base_minus_one_iff",
+        "type": "original",
+        "description": "The (b−1) divisibility rule: (b−1) | n ↔ (b−1) | digit_sum_b(n)",
+        "leanType": "(b : ℕ) → 3 ≤ b → (n : ℕ) → (b - 1) ∣ n ↔ (b - 1) ∣ (Nat.digits b n).sum"
+      },
+      {
+        "name": "dvd_factor_iff",
+        "type": "original",
+        "description": "Factor divisibility: if d | (b−1) then d | n ↔ d | digit_sum_b(n)",
+        "leanType": "(b d : ℕ) → 2 ≤ b → 2 ≤ d → d ∣ (b - 1) → (n : ℕ) → d ∣ n ↔ d ∣ (Nat.digits b n).sum"
+      },
+      {
+        "name": "hex_div_15",
+        "type": "application",
+        "description": "15 | n ↔ 15 | hex_digit_sum(n)",
+        "leanType": "(n : ℕ) → 15 ∣ n ↔ 15 ∣ (Nat.digits 16 n).sum"
+      }
+    ]
   }
 }

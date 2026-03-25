@@ -207,9 +207,21 @@
   "mainTheorems": [
     {
       "name": "lagrange_four_squares",
-      "type": "core",
-      "description": "Every natural number is a sum of four squares",
-      "leanType": "(n : Nat) -> exists a b c d : Int, n = a^2 + b^2 + c^2 + d^2"
+      "type": "wrapper",
+      "description": "Every natural number is a sum of four squares (Wiedijk #19)",
+      "leanType": "(n : ℕ) → ∃ a b c d : ℤ, ↑n = a^2 + b^2 + c^2 + d^2"
+    },
+    {
+      "name": "euler_four_squares",
+      "type": "original",
+      "description": "Euler's four-square identity: product of two sums of four squares is a sum of four squares",
+      "leanType": "{R : Type*} → [CommRing R] → (a b c d x y z w : R) → (a^2+b^2+c^2+d^2)*(x^2+y^2+z^2+w^2) = ..."
+    },
+    {
+      "name": "seven_obstructed",
+      "type": "original",
+      "description": "7 cannot be represented as a sum of 3 squares (showing 4 squares are necessary)",
+      "leanType": "IsObstructed 7"
     }
   ]
 }
