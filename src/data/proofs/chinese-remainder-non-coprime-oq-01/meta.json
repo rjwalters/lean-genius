@@ -191,6 +191,16 @@
       "targetId": "bezout-identity",
       "relationship": "foundational",
       "description": "Bézout's identity ($\\gcd(m,n) = sm + tn$) underpins both the coprime CRT construction and the reduction step that makes non-coprime CRT efficient"
+    },
+    {
+      "targetId": "bezout-identity-oq-03-oq-01",
+      "relationship": "related",
+      "description": "CRT ring isomorphism ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ — the algebraic structure that Garner's algorithm exploits for efficient mixed-radix representation, converting between residue and positional systems"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Quadratic reciprocity depends on modular arithmetic with varying moduli — efficient CRT for non-coprime moduli enables practical computation of Legendre symbols and quadratic residues across composite moduli"
     }
   ],
   "references": [

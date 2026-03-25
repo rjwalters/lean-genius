@@ -171,6 +171,16 @@
       "targetId": "bezout-identity-oq-03-oq-01",
       "relationship": "related",
       "description": "CRT ring isomorphism — both characterize solution sets: CRT gives ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ, this file gives {(x₀+bt/d, y₀-at/d) : t ∈ ℤ} for Diophantine equations"
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "related",
+      "description": "Non-coprime CRT extends simultaneous congruences to gcd-compatible moduli — the LCM-based solution bound parallels this entry's lattice parametrization, both reducing to gcd structure"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique factorization provides the GCD computation that underpins the solution lattice: d = gcd(a,b) determines solvability (d | c) and the lattice spacing (b/d, a/d)"
     }
   ],
   "leanFile": {

@@ -231,6 +231,16 @@
       "targetId": "cantor-diagonalization-oq-02-oq-01",
       "relationship": "sibling",
       "description": "Sibling open question from the same parent: ω₁ Properties: Aleph Hierarchy, Regularity, and Cofinality"
+    },
+    {
+      "targetId": "schroeder-bernstein",
+      "relationship": "related",
+      "description": "Schroeder-Bernstein establishes that cardinal comparison is antisymmetric — essential for the cardinality argument here: proving |countable ordinals| = ℵ₁ requires showing both ≤ and ≥ directions of cardinal equality"
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "related",
+      "description": "Both proofs use diagonal/self-referential arguments: Cantor's diagonal shows no countable enumeration of countable ordinals is complete; Turing's diagonal shows no algorithm decides halting. The shared technique reveals deep connections between set theory and computability"
     }
   ]
 }

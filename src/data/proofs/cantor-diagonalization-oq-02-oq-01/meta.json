@@ -139,6 +139,16 @@
       "targetId": "continuum-hypothesis",
       "relationship": "related",
       "description": "The Continuum Hypothesis asks whether $2^{\\aleph_0} = \\aleph_1$. The properties of $\\aleph_1$ established here (regularity, successor structure) are foundational to understanding CH and its independence."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling extension exploring the Continuum Hypothesis directly — this entry's characterization of ℵ₁ as a regular successor cardinal is precisely the object whose relationship to 2^ℵ₀ is independent of ZFC"
+    },
+    {
+      "targetId": "schroeder-bernstein",
+      "relationship": "related",
+      "description": "Schroeder-Bernstein (injections in both directions imply bijection) is the key tool for establishing cardinal equalities; the aleph hierarchy properties proved here rely on the well-ordering of cardinals that Schroeder-Bernstein helps formalize"
     }
   ],
   "conclusion": {
