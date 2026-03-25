@@ -285,6 +285,51 @@
     ]
   },
   {
+    "id": "pairs-finiteness",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 112,
+      "endLine": 139
+    },
+    "type": "technique",
+    "title": "Part III: Finiteness of Pair Sets and Positive Representation",
+    "content": "Three supporting lemmas establish basic properties of the representation function. `pairs_summing_finite` proves that $\\{(a,b) \\in A^2 : a+b=n\\}$ is finite by embedding it into $[0,n) \\times [0,n)$ — both components are bounded by $n$. `repFunc_pos_of_mem_sumset` shows $r_A(n) \\geq 1$ whenever $n \\in A+A$: the witness pair gives a nonempty finite set with positive `Set.ncard`. `repFunc_pos_of_zero_mem` specializes this: if $0 \\in A$ and $n \\in A$, then $(0, n)$ witnesses $n \\in A+A$. These lemmas establish the connection between sumset membership and positive representation count.",
+    "mathContext": "$n \\in A+A \\Rightarrow r_A(n) \\geq 1$. Proof: $n = a+b$ with $a,b \\in A$ gives $(a,b) \\in \\{(x,y) : x+y=n\\}$, so $|\\{(x,y) : x+y=n\\}| \\geq 1$. Finiteness: $(a,b) \\in A^2$ with $a+b=n$ forces $a,b < n+1$, so the set embeds into $[0,n] \\times [0,n]$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Set.ncard", "Set.Finite.subset", "sumset membership", "representation positivity"],
+    "prerequisites": ["repFunc", "sumset", "Set.ncard_pos", "Set.finite_Iio"]
+  },
+  {
+    "id": "sidon-rep-bounded",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 142,
+      "endLine": 199
+    },
+    "type": "technique",
+    "title": "Sidon Sets Have Representation ≤ 2 (Original Proof)",
+    "content": "The file's most detailed original proof. Defines `IsSidon A` as: $a+b = c+d$ with $a,b,c,d \\in A$ implies $\\{a,b\\} = \\{c,d\\}$ (all pairwise sums distinct as multisets). Then proves `sidon_repFunc_bounded`: for Sidon sets, $r_A(n) \\leq 2$ for all $n$. The proof shows that all pairs summing to $n$ must be permutations of a single pair: if $(a,b)$ and $(c,d)$ both sum to $n$, the Sidon property forces $\\{c,d\\} = \\{a,b\\}$, so $(c,d) \\in \\{(a,b), (b,a)\\}$. The subset bound $S \\subseteq \\{(a,b), (b,a)\\}$ gives $|S| \\leq 2$ via `Set.ncard_union_le`. The proof handles the empty case separately (`Set.ncard_empty`). This confirms the extremal case: Sidon sets minimize representation, and their density limitation ($A(N) \\leq \\sqrt{N} + O(N^{1/4})$) prevents them from being bases.",
+    "mathContext": "IsSidon: $a+b = c+d \\Rightarrow \\{a,b\\} = \\{c,d\\}$. Theorem: $r_A(n) \\leq 2$. Proof: fix $(a,b)$ with $a+b=n$; any other $(c,d)$ with $c+d=n$ satisfies $\\{c,d\\} = \\{a,b\\}$, so $(c,d) \\in \\{(a,b), (b,a)\\}$, giving $|S| \\leq |\\{(a,b),(b,a)\\}| \\leq 2$.",
+    "significance": "key",
+    "relatedConcepts": ["Sidon sets", "B_2 sequences", "pair-matching argument", "Set.ncard_le_ncard", "extremal additive combinatorics"],
+    "prerequisites": ["IsSidon", "repFunc", "pairs_summing_finite", "Set.ncard_union_le"]
+  },
+  {
+    "id": "ordered-vs-unordered",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 413,
+      "endLine": 425
+    },
+    "type": "technique",
+    "title": "Part VIII: Ordered ≥ Unordered Representation Count",
+    "content": "Proves `repFunc_ge_repFuncUnordered`: the ordered representation count $r_A(n)$ is at least the unordered count $r_A^{\\leq}(n)$. The proof is a direct subset argument: every unordered pair $(a,b)$ with $a \\leq b$ and $a+b=n$ also satisfies the ordered condition (membership in $A$ and sum $= n$), so the unordered set is a subset of the ordered set. Finiteness from `pairs_summing_finite` enables `Set.ncard_le_ncard`. This bridge lemma is used in `erdos_turan_holds_for_nat` to transfer unboundedness from the unordered to ordered count.",
+    "mathContext": "$r_A(n) = |\\{(a,b) : a+b=n, a,b \\in A\\}| \\geq |\\{(a,b) : a+b=n, a \\leq b, a,b \\in A\\}| = r_A^{\\leq}(n)$. The unordered set is a subset of the ordered set (dropping the $a \\leq b$ constraint only enlarges the set).",
+    "significance": "supporting",
+    "relatedConcepts": ["ordered pairs", "unordered pairs", "Set.ncard_le_ncard", "representation counting conventions"],
+    "prerequisites": ["repFunc", "repFuncUnordered", "pairs_summing_finite"]
+  },
+  {
     "id": "main-conjecture-formal",
     "proofId": "erdos-28",
     "range": {

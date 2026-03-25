@@ -84,21 +84,33 @@
     "prerequisites": ["polynomial evaluation", "ring tactic", "real root counting"]
   },
   {
+    "id": "ann-abeloq04oq01-group-theory",
+    "proofId": "abel-ruffini-oq-04-oq-01",
+    "range": { "startLine": 248, "endLine": 319 },
+    "type": "technique",
+    "title": "5-Cycle + Transposition Generates S₅ (closure_cycle_swap_eq_top)",
+    "content": "The key group-theoretic bridge: proves that $\\langle c_5, (0\\;1) \\rangle = S_5$ where $c_5 = (0\\;1\\;2\\;3\\;4)$. The 5-cycle is constructed explicitly as the modular successor map $i \\mapsto (i+1) \\bmod 5$. The proof generates all 10 transpositions in three stages: (1) **Adjacent transpositions** via conjugation: $c_5^k (0\\;1) c_5^{-k} = (k\\;k{+}1)$ for $k = 1,2,3$, verified by `native_decide`. (2) **Star transpositions** via double conjugation: $(0\\;k)(k\\;k{+}1)(0\\;k) = (0\\;k{+}1)$. (3) **Remaining transpositions**: $(0\\;a)(0\\;b)(0\\;a) = (a\\;b)$. Finally, `Equiv.Perm.swap_induction_on` decomposes any permutation into transpositions, and `fin_cases` with `Equiv.swap_comm` handles all $\\binom{5}{2} = 10$ cases. This is the formal proof of the classical result that a transitive subgroup of $S_p$ ($p$ prime) containing a transposition equals $S_p$.",
+    "mathContext": "$c_5 = (0\\;1\\;2\\;3\\;4)$, $\\tau = (0\\;1)$. Stage 1: $c_5^k \\tau c_5^{-k} = (k\\;k{+}1)$. Stage 2: $(0\\;k)(k\\;k{+}1)(0\\;k) = (0\\;k{+}1)$. Stage 3: $(0\\;a)(0\\;b)(0\\;a) = (a\\;b)$. Therefore $\\langle c_5, \\tau \\rangle \\supseteq \\{\\text{all transpositions}\\} \\Rightarrow \\langle c_5, \\tau \\rangle = S_5$.",
+    "significance": "key",
+    "relatedConcepts": ["conjugation in symmetric groups", "transposition generation", "native_decide", "swap_induction_on", "fin_cases", "Cayley generation of Sn"],
+    "prerequisites": ["Subgroup.closure", "Equiv.Perm.swap_induction_on", "conjugation in groups", "modular arithmetic"]
+  },
+  {
     "id": "ann-abeloq04oq01-axiom",
     "proofId": "abel-ruffini-oq-04-oq-01",
-    "range": { "startLine": 270, "endLine": 276 },
+    "range": { "startLine": 325, "endLine": 353 },
     "type": "concept",
-    "title": "Axiom: |Gal| = 120 (Detailed Justification)",
-    "content": "The single axiom: $|\\text{Gal}(p/\\mathbb{Q})| = 120$. The extensive documentation justifies this via a classical argument: (1) $p$ has exactly 3 real roots (by sign changes at $-2, -1, 0, 1, 2$ and derivative analysis: $p'(x) = 5x^4 - 4$ has 2 real roots, giving 2 critical points, bounding real roots to 3), (2) complex conjugation gives a transposition in $\\text{Gal}$ (swaps the 2 non-real roots), (3) irreducibility of prime degree gives a 5-cycle, (4) a transitive subgroup of $S_p$ ($p$ prime) containing a transposition generates $S_p$. Formalizing this fully would require the intermediate value theorem over $\\mathbb{R}$ and the classification of transitive permutation groups.",
-    "mathContext": "Axiom: $|\\text{Gal}(x^5 - 4x + 2/\\mathbb{Q})| = 120$. Justified by: $p$ has 3 real, 2 complex roots $\\Rightarrow$ complex conjugation is a transposition $(\\alpha_4\\;\\alpha_5) \\in \\text{Gal}$. With a 5-cycle (from transitivity): $\\langle (1\\;2\\;3\\;4\\;5), (i\\;j) \\rangle = S_5$.",
+    "title": "Axiom: |Gal| = 120 (Architecture and Remaining Gap)",
+    "content": "The single axiom `gal_card_eq_120`: $|\\text{Gal}(p/\\mathbb{Q})| = 120$. The proof architecture decomposes into two parts. **Part A (fully proved):** `closure_cycle_swap_eq_top` shows a 5-cycle and transposition generate $S_5$. **Part B (remaining gap):** formalizing that complex conjugation acts as a transposition on the Galois group. This requires: (1) embedding the splitting field into $\\mathbb{C}$, (2) showing complex conjugation preserves the splitting field, (3) counting fixed points (3 real roots are fixed, 2 complex roots are swapped). The polynomial evaluations provide the IVT ingredients, but connecting them to a Galois automorphism requires Mathlib's theory of real and complex embeddings.",
+    "mathContext": "Axiom: $|\\text{Gal}(x^5 - 4x + 2/\\mathbb{Q})| = 120$. Proved: $\\langle c_5, \\tau \\rangle = S_5$. Gap: complex conjugation $\\sigma \\in \\text{Gal}$ with $\\sigma(\\alpha_i) = \\bar{\\alpha}_i$, fixing 3 real roots and swapping 2 complex roots $\\Rightarrow$ $\\sigma$ is a transposition.",
     "significance": "key",
-    "relatedConcepts": ["transposition", "p-cycle", "transitive permutation group", "complex conjugation", "intermediate value theorem", "derivative analysis"],
-    "prerequisites": ["sign change analysis", "critical point counting", "group generation"]
+    "relatedConcepts": ["complex conjugation automorphism", "real vs complex embeddings", "Galois automorphism", "splitting field embedding", "axiom elimination"],
+    "prerequisites": ["closure_cycle_swap_eq_top", "polynomial evaluations", "IVT over reals", "complex embedding theory"]
   },
   {
     "id": "ann-abeloq04oq01-iso",
     "proofId": "abel-ruffini-oq-04-oq-01",
-    "range": { "startLine": 282, "endLine": 311 },
+    "range": { "startLine": 363, "endLine": 388 },
     "type": "insight",
     "title": "Gal(p/Q) = S_5 via galActionHom Bijectivity",
     "content": "The central isomorphism: $\\text{Gal}(p/\\mathbb{Q}) \\cong S_5$. The proof proceeds in three steps: (1) `galActionHom` is injective (Mathlib), (2) $|\\text{Gal}| = 120 = |\\text{Perm}(\\text{rootSet})|$ (axiom + root set card), so `galActionHom` is bijective by the pigeonhole principle (`Fintype.bijective_iff_injective_and_card`), (3) transfer from $\\text{Perm}(\\text{rootSet})$ to $\\text{Perm}(\\text{Fin}\\;5)$ via `Equiv.permCongr`. The `MulEquiv.ofBijective` constructor packages the bijective homomorphism as a group isomorphism.",
@@ -110,7 +122,7 @@
   {
     "id": "ann-abeloq04oq01-nonsolvable",
     "proofId": "abel-ruffini-oq-04-oq-01",
-    "range": { "startLine": 317, "endLine": 330 },
+    "range": { "startLine": 394, "endLine": 408 },
     "type": "technique",
     "title": "Non-Solvability: S_5 to Gal Transfer",
     "content": "Two-step argument: (1) $S_5$ is not solvable, proved by `Equiv.Perm.not_solvable` which requires $5 \\leq |\\text{Fin}\\;5|$ (since $S_n$ is non-solvable for $n \\geq 5$, because the derived series $S_n \\supset A_n \\supset \\{e\\}$ stabilizes at the simple group $A_n$). (2) Transfer to $\\text{Gal}$: if $\\text{Gal}$ were solvable, then $S_5$ would be solvable via the surjective image of the isomorphism (`solvable_of_surjective`), contradiction. The surjectivity is extracted from the `MulEquiv` using `iso.apply_symm_apply`.",
@@ -122,7 +134,7 @@
   {
     "id": "ann-abeloq04oq01-main",
     "proofId": "abel-ruffini-oq-04-oq-01",
-    "range": { "startLine": 349, "endLine": 365 },
+    "range": { "startLine": 432, "endLine": 442 },
     "type": "insight",
     "title": "Abel-Ruffini Conclusion: Roots Not Solvable by Radicals",
     "content": "The culminating theorem: no root of $x^5 - 4x + 2$ can be expressed using $+, -, \\times, \\div$, and $n$-th roots starting from rationals. The proof is a clean contrapositive: assume root $\\alpha$ is solvable by radicals, then by Galois's theorem (`solvableByRad.isSolvable'`, which uses $p$ irreducible and $p(\\alpha) = 0$), $\\text{Gal}(p/\\mathbb{Q})$ would be solvable — contradicting `gal_not_solvable`. This is the concrete incarnation of Abel's 1824 impossibility result: not merely \"some\" quintic is unsolvable, but *this specific* quintic is unsolvable.",
@@ -134,7 +146,7 @@
   {
     "id": "ann-abeloq04oq01-realizability",
     "proofId": "abel-ruffini-oq-04-oq-01",
-    "range": { "startLine": 371, "endLine": 382 },
+    "range": { "startLine": 448, "endLine": 459 },
     "type": "insight",
     "title": "S_5 Realizability as a Galois Group over Q",
     "content": "A contribution to the inverse Galois problem: $S_5$ is realizable as $\\text{Gal}(K/\\mathbb{Q})$ for some finite Galois extension $K$. The witness is $K = $ splitting field of $x^5 - 4x + 2$. The proof constructs the requisite structure: $K/\\mathbb{Q}$ is finite-dimensional (splitting field of a polynomial), normal (splitting fields are normal), separable ($\\text{char}(\\mathbb{Q}) = 0$), hence Galois. The isomorphism $S_5 \\cong \\text{Gal}(K/\\mathbb{Q})$ is the inverse of `gal_iso_s5`. This complements other gallery realizations: $S_3$ via cubic discriminant, $F_{20}$ via cyclotomic fields.",
