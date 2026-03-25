@@ -983,9 +983,7 @@ private theorem galSign_conjGal : galSign conjGal = -1 := by
     Complex.ext rfl (by simp [him])
   rw [hre] at hval
   have : ((sfEmb vandermondeProduct).re ^ 2 : ℝ) = -212144 := by
-    have h := congr_arg Complex.re hval
-    simp only [Complex.ofReal_pow, Complex.ofReal_re, map_neg, Complex.ofReal_natCast] at h
-    push_cast at h; linarith
+    exact_mod_cast hval
   linarith [sq_nonneg (sfEmb vandermondeProduct).re]
 
 theorem gal_has_transposition :
@@ -994,7 +992,7 @@ theorem gal_has_transposition :
   refine ⟨conjGal, ?_, ?_, ?_⟩
   · rw [← map_pow, show conjGal ^ 2 = 1 from conjGalAut_sq, map_one]
   · intro heq; have : galSign conjGal = 1 := by unfold galSign; rw [heq, Equiv.Perm.sign_one]
-    linarith [galSign_conjGal]
+    exact absurd galSign_conjGal (by rw [this]; decide)
   · exact galSign_conjGal
 
 -- Section E6b: |Gal| ≠ 20 (from transposition + F₂₀ structure)
@@ -1096,15 +1094,16 @@ private theorem gal_card_ne_20 : Fintype.card p.Gal ≠ 20 := by
     rw [← hconj_val]; intro h
     have h1 : σ' * c * σ'⁻¹ = (1 : G) :=
       Subtype.ext (by simp only [σ', Subgroup.coe_mul, Subgroup.coe_inv]; rw [hσ_inv]; exact h)
-    exact hc_ne (by have : c = σ'⁻¹ * (σ' * c * σ'⁻¹) * σ' := by group; rw [h1] at this; simpa using this)
+    exact hc_ne (show ↑c = 1 from by have hgrp : c = σ'⁻¹ * (σ' * c * σ'⁻¹) * σ' := by group; rw [h1] at hgrp; simp at hgrp; simp [hgrp])
   have hred : (↑c : Equiv.Perm (Fin 5)) ^ k = (↑c) ^ (k % 5).toNat := by
     have hdiv : k = 5 * (k / 5) + k % 5 := by omega
     conv_lhs => rw [hdiv]
     rw [zpow_add, zpow_mul]
     have h5z : (↑c : Equiv.Perm (Fin 5)) ^ (5 : ℤ) = 1 := by
       rw [show (5 : ℤ) = ↑(5 : ℕ) from by norm_cast, zpow_natCast]; exact_mod_cast hc5
-    rw [h5z, one_zpow, one_mul, zpow_natCast,
-      Int.toNat_of_nonneg (Int.emod_nonneg k (by norm_num))]
+    rw [h5z, one_zpow, one_mul]
+    conv_lhs => rw [(Int.toNat_of_nonneg (Int.emod_nonneg k (by norm_num))).symm]
+    exact zpow_natCast (↑c) ((k % 5).toNat)
   rw [hred] at hconj_val hck_ne
   have hbound : (k % 5).toNat < 5 := by
     rw [Int.toNat_lt (by omega)]; exact Int.emod_lt_of_pos k (by norm_num)
@@ -1190,15 +1189,16 @@ private theorem gal_card_ne_10 : Fintype.card p.Gal ≠ 10 := by
     rw [← hconj_val]; intro h
     have h1 : σ' * c * σ'⁻¹ = (1 : G) :=
       Subtype.ext (by simp only [σ', Subgroup.coe_mul, Subgroup.coe_inv]; rw [hσ_inv]; exact h)
-    exact hc_ne (by have : c = σ'⁻¹ * (σ' * c * σ'⁻¹) * σ' := by group; rw [h1] at this; simpa using this)
+    exact hc_ne (show ↑c = 1 from by have hgrp : c = σ'⁻¹ * (σ' * c * σ'⁻¹) * σ' := by group; rw [h1] at hgrp; simp at hgrp; simp [hgrp])
   have hred : (↑c : Equiv.Perm (Fin 5)) ^ k = (↑c) ^ (k % 5).toNat := by
     have hdiv : k = 5 * (k / 5) + k % 5 := by omega
     conv_lhs => rw [hdiv]
     rw [zpow_add, zpow_mul]
     have h5z : (↑c : Equiv.Perm (Fin 5)) ^ (5 : ℤ) = 1 := by
       rw [show (5 : ℤ) = ↑(5 : ℕ) from by norm_cast, zpow_natCast]; exact_mod_cast hc5
-    rw [h5z, one_zpow, one_mul, zpow_natCast,
-      Int.toNat_of_nonneg (Int.emod_nonneg k (by norm_num))]
+    rw [h5z, one_zpow, one_mul]
+    conv_lhs => rw [(Int.toNat_of_nonneg (Int.emod_nonneg k (by norm_num))).symm]
+    exact zpow_natCast (↑c) ((k % 5).toNat)
   rw [hred] at hconj_val hck_ne
   have hbound : (k % 5).toNat < 5 := by
     rw [Int.toNat_lt (by omega)]; exact Int.emod_lt_of_pos k (by norm_num)
@@ -1284,15 +1284,16 @@ private theorem gal_card_ne_40 : Fintype.card p.Gal ≠ 40 := by
     rw [← hconj_val]; intro h
     have h1 : σ' * c * σ'⁻¹ = (1 : G) :=
       Subtype.ext (by simp only [σ', Subgroup.coe_mul, Subgroup.coe_inv]; rw [hσ_inv]; exact h)
-    exact hc_ne (by have : c = σ'⁻¹ * (σ' * c * σ'⁻¹) * σ' := by group; rw [h1] at this; simpa using this)
+    exact hc_ne (show ↑c = 1 from by have hgrp : c = σ'⁻¹ * (σ' * c * σ'⁻¹) * σ' := by group; rw [h1] at hgrp; simp at hgrp; simp [hgrp])
   have hred : (↑c : Equiv.Perm (Fin 5)) ^ k = (↑c) ^ (k % 5).toNat := by
     have hdiv : k = 5 * (k / 5) + k % 5 := by omega
     conv_lhs => rw [hdiv]
     rw [zpow_add, zpow_mul]
     have h5z : (↑c : Equiv.Perm (Fin 5)) ^ (5 : ℤ) = 1 := by
       rw [show (5 : ℤ) = ↑(5 : ℕ) from by norm_cast, zpow_natCast]; exact_mod_cast hc5
-    rw [h5z, one_zpow, one_mul, zpow_natCast,
-      Int.toNat_of_nonneg (Int.emod_nonneg k (by norm_num))]
+    rw [h5z, one_zpow, one_mul]
+    conv_lhs => rw [(Int.toNat_of_nonneg (Int.emod_nonneg k (by norm_num))).symm]
+    exact zpow_natCast (↑c) ((k % 5).toNat)
   rw [hred] at hconj_val hck_ne
   have hbound : (k % 5).toNat < 5 := by
     rw [Int.toNat_lt (by omega)]; exact Int.emod_lt_of_pos k (by norm_num)
