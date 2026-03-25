@@ -182,5 +182,42 @@
       "What is the behavior of the ratio under the Cramér–Granville model with the Maier correction factor?",
       "Is the conjecture equivalent to any known statement about the distribution of prime gaps in short intervals?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "Cram\u00e9r, Harald",
+      "title": "On the order of magnitude of the difference between consecutive prime numbers",
+      "year": "1936",
+      "venue": "Acta Arithmetica, 2(1), pp. 23\u201346",
+      "note": "Introduced the probabilistic model for prime gaps: under the Riemann Hypothesis, d_n = O(\u221ap_n \u00b7 log p_n). Cram\u00e9r's model predicts consecutive gaps are asymptotically independent, which would imply Erd\u0151s's conjecture"
+    },
+    {
+      "authors": "Granville, Andrew",
+      "title": "Harald Cram\u00e9r and the distribution of prime numbers",
+      "year": "1995",
+      "venue": "Scandinavian Actuarial Journal, 1995(1), pp. 12\u201328",
+      "note": "Showed that Cram\u00e9r's model needs correction (the Maier phenomenon): maximal gaps are at least e^\u03b3 \u00b7 (log p)^2 infinitely often, where \u03b3 is Euler's constant. Provides the modern framework for understanding consecutive gap correlations"
+    },
+    {
+      "authors": "Maynard, James",
+      "title": "Small gaps between primes",
+      "year": "2015",
+      "venue": "Annals of Mathematics, 181(1), pp. 383\u2013413",
+      "note": "Proved that d_n \u2264 246 infinitely often. While addressing small gaps rather than large ones, Maynard's sieve methods inform the study of gap correlations central to Problem 1137"
+    },
+    {
+      "authors": "Ford, Kevin; Green, Ben; Konyagin, Sergei; Maynard, James; Tao, Terence",
+      "title": "Long gaps between primes",
+      "year": "2018",
+      "venue": "Journal of the American Mathematical Society, 31(1), pp. 65\u201105",
+      "note": "Proved that maximal prime gaps exceed c \u00b7 log p \u00b7 log log p \u00b7 log log log log p / (log log log p) infinitely often, improving Rankin's 1938 bound. The structure of these large gaps is relevant to whether record gaps are isolated"
+    },
+    {
+      "authors": "Erd\u0151s, Paul; Straus, Ernst G.",
+      "title": "Remarks on the differences between consecutive primes",
+      "year": "1980",
+      "venue": "Elemente der Mathematik, 35(5), pp. 115\u2013118",
+      "note": "Contains several conjectures on prime gap correlations including Problem 1137, formulated in terms of the ratio of consecutive gap products to the square of the maximal gap"
+    }
+  ]
 }
