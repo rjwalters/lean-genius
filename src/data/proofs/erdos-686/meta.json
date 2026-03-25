@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/686",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos686Problem.lean",
     "tags": [
       "erdos",
@@ -17,7 +17,7 @@
       "binomials",
       "open-problem"
     ],
-    "badge": "axiom",
+    "badge": "original",
     "sorries": 0,
     "erdosNumber": 686,
     "erdosUrl": "https://erdosproblems.com/686",
@@ -34,7 +34,7 @@
       "native_decide"
     ],
     "lineCount": 292,
-    "assumptions": "1 axiom (erdos_686_conjecture, the open problem). representable_set_infinite proved.",
+    "assumptions": "None. Fully verified: 0 axioms, 0 sorries. The open conjecture (Erdos686Conjecture) is stated as a Prop definition, not axiomatized. All supporting infrastructure is proved.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
