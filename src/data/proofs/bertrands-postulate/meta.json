@@ -236,10 +236,22 @@
   ],
   "mainTheorems": [
     {
-      "name": "bertrands_postulate",
-      "type": "core",
-      "description": "For every n >= 1, there exists a prime p with n < p <= 2n",
-      "leanType": "(n : Nat) -> 1 <= n -> exists p, Nat.Prime p and n < p and p <= 2*n"
+      "name": "bertrand_postulate",
+      "type": "wrapper",
+      "description": "Bertrand's postulate: for n ≥ 1, ∃ prime p with n < p ≤ 2n",
+      "leanType": "(n : ℕ) → 0 < n → ∃ p, Nat.Prime p ∧ n < p ∧ p ≤ 2 * n"
+    },
+    {
+      "name": "prime_gap_bounded",
+      "type": "original",
+      "description": "Prime gaps are bounded: the next prime after p is at most 2p",
+      "leanType": "(p : ℕ) → Nat.Prime p → ∃ q, Nat.Prime q ∧ p < q ∧ q ≤ 2 * p"
+    },
+    {
+      "name": "primes_infinite_via_bertrand",
+      "type": "original",
+      "description": "Infinitude of primes as a corollary of Bertrand's postulate",
+      "leanType": "∀ n : ℕ, ∃ p, Nat.Prime p ∧ p > n"
     }
   ]
 }

@@ -355,10 +355,22 @@
   },
   "mainTheorems": [
     {
-      "name": "fta",
-      "type": "core",
-      "description": "Every non-constant polynomial over C has a root",
-      "leanType": "(p : Polynomial C) -> 0 < p.natDegree -> exists z : C, aeval z p = 0"
+      "name": "fundamental_theorem_of_algebra",
+      "type": "wrapper",
+      "description": "Every non-constant complex polynomial has at least one root",
+      "leanType": "{p : ℂ[X]} → 0 < degree p → ∃ z : ℂ, IsRoot p z"
+    },
+    {
+      "name": "splits_over_complex",
+      "type": "wrapper",
+      "description": "Every complex polynomial splits into linear factors",
+      "leanType": "(p : ℂ[X]) → Splits (RingHom.id ℂ) p"
+    },
+    {
+      "name": "card_roots_eq_degree",
+      "type": "wrapper",
+      "description": "A nonzero polynomial has exactly degree-many roots (with multiplicity)",
+      "leanType": "{p : ℂ[X]} → p ≠ 0 → Multiset.card p.roots = p.natDegree"
     }
   ]
 }
