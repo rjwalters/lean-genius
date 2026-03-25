@@ -1,10 +1,33 @@
 [
   {
+    "id": "ann-header",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 1,
+      "endLine": 33
+    },
+    "type": "context",
+    "title": "Module Documentation: Problem Statement and Status",
+    "content": "The module docstring establishes the mathematical context for Erdős Problem #28: the Erdős–Turán conjecture on additive bases. It states the conjecture ($\\limsup r_A(n) = \\infty$ for any asymptotic basis $A$), notes the $500 prize, records the OPEN status, and lists the key partial results (Grekos et al.: $r_A(n) \\geq 6$ i.o.; Borwein et al.: $r_A(n) \\geq 8$ i.o.). The stronger conjectures (logarithmic growth and density version) are also previewed. The outline of the formalization lists five components: representation function, asymptotic basis definition, formal conjecture statement, basic properties, and constructions with unbounded representations.",
+    "mathContext": "The conjecture: if $A + A \\supseteq \\{N_0, N_0+1, \\ldots\\}$ then $\\limsup_{n \\to \\infty} r_A(n) = \\infty$, where $r_A(n) = |\\{(a,b) \\in A^2 : a+b=n\\}|$. The $500 prize reflects its status as one of the deepest open problems in additive number theory, unsolved since 1941.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős problems",
+      "additive bases",
+      "representation functions",
+      "Erdős–Turán conjecture"
+    ],
+    "prerequisites": [
+      "additive number theory",
+      "Erdős problem catalog"
+    ]
+  },
+  {
     "id": "imports-setup",
     "proofId": "erdos-28",
     "range": {
-      "startLine": 20,
-      "endLine": 29
+      "startLine": 35,
+      "endLine": 43
     },
     "type": "concept",
     "title": "Imports and Setup",
@@ -25,8 +48,8 @@
     "id": "rep-function",
     "proofId": "erdos-28",
     "range": {
-      "startLine": 33,
-      "endLine": 36
+      "startLine": 47,
+      "endLine": 55
     },
     "type": "definition",
     "title": "Representation Function",
@@ -49,8 +72,8 @@
     "id": "asymptotic-basis",
     "proofId": "erdos-28",
     "range": {
-      "startLine": 38,
-      "endLine": 41
+      "startLine": 63,
+      "endLine": 73
     },
     "type": "definition",
     "title": "Asymptotic Basis of Order 2",
@@ -73,8 +96,8 @@
     "id": "counting-fn",
     "proofId": "erdos-28",
     "range": {
-      "startLine": 43,
-      "endLine": 45
+      "startLine": 57,
+      "endLine": 59
     },
     "type": "definition",
     "title": "Counting Function",
@@ -96,8 +119,8 @@
     "id": "main-conjecture",
     "proofId": "erdos-28",
     "range": {
-      "startLine": 49,
-      "endLine": 56
+      "startLine": 201,
+      "endLine": 210
     },
     "type": "technique",
     "title": "Erdős–Turán Conjecture (1941)",
@@ -120,8 +143,8 @@
     "id": "strong-form",
     "proofId": "erdos-28",
     "range": {
-      "startLine": 60,
-      "endLine": 63
+      "startLine": 212,
+      "endLine": 218
     },
     "type": "technique",
     "title": "Logarithmic Growth Conjecture",
@@ -144,8 +167,8 @@
     "id": "density-version",
     "proofId": "erdos-28",
     "range": {
-      "startLine": 65,
-      "endLine": 70
+      "startLine": 447,
+      "endLine": 462
     },
     "type": "definition",
     "title": "Density Version of the Conjecture",
@@ -167,8 +190,8 @@
     "id": "basis-counting",
     "proofId": "erdos-28",
     "range": {
-      "startLine": 74,
-      "endLine": 77
+      "startLine": 449,
+      "endLine": 462
     },
     "type": "technique",
     "title": "Basis Counting Lower Bound",
@@ -190,8 +213,8 @@
     "id": "sidon-connection",
     "proofId": "erdos-28",
     "range": {
-      "startLine": 79,
-      "endLine": 84
+      "startLine": 350,
+      "endLine": 411
     },
     "type": "concept",
     "title": "Sidon Sets Cannot Be Bases",
@@ -214,8 +237,8 @@
     "id": "problem-40",
     "proofId": "erdos-28",
     "range": {
-      "startLine": 88,
-      "endLine": 93
+      "startLine": 220,
+      "endLine": 223
     },
     "type": "concept",
     "title": "Connection to Problem #40 (B₂[g] Sets)",
@@ -238,8 +261,8 @@
     "id": "erdos-fuchs",
     "proofId": "erdos-28",
     "range": {
-      "startLine": 97,
-      "endLine": 103
+      "startLine": 225,
+      "endLine": 233
     },
     "type": "concept",
     "title": "Erdős–Fuchs Theorem (1956)",
@@ -263,8 +286,8 @@
     "id": "average-rep",
     "proofId": "erdos-28",
     "range": {
-      "startLine": 105,
-      "endLine": 111
+      "startLine": 225,
+      "endLine": 233
     },
     "type": "concept",
     "title": "Average Representation Unbounded (Halberstam–Roth)",
