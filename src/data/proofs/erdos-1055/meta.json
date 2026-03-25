@@ -196,6 +196,21 @@
       "relationship": "related",
       "description": "The Prime Number Theorem governs the overall density of primes; the #1055 density result (class-r primes have density n^{o(1)}) is proved by combining PNT with the counting function of smooth numbers.",
       "targetId": "prime-number-theorem"
+    },
+    {
+      "targetId": "erdos-648",
+      "relationship": "related",
+      "description": "Erdős Problem #648 studies decreasing greatest prime factors of consecutive integers — directly related to the factorization depth classification of #1055, where the class of a prime depends on the smooth structure of $p+1$."
+    },
+    {
+      "targetId": "erdos-1056",
+      "relationship": "related",
+      "description": "Erdős Problem #1056 concerns consecutive interval products congruent to 1 mod $p$ — connects to the smooth number theory and prime classification framework of #1055 through the factorization structure of integers near primes."
+    },
+    {
+      "targetId": "erdos-375",
+      "relationship": "related",
+      "description": "Grimm's conjecture (Erdős #375) requires assigning distinct prime factors to consecutive composites — related to #1055 through the study of how prime factors distribute near prime gaps."
     }
   ],
   "references": [
