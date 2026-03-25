@@ -1,23 +1,23 @@
 {
   "slug": "erdos-1014-oq-01",
-  "title": "Prove R(3,l+1)/R(3,l) → 1 using recurrence + lower bound",
+  "title": "Prove R(3,l+1)/R(3,l) \u2192 1 using recurrence + lower bound",
   "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "∀ ε > 0, ∃ L₀, ∀ l > L₀, |R(3,l+1)/R(3,l) - 1| < ε",
-    "plain": "Prove that the ratio of consecutive Ramsey numbers R(3,l+1)/R(3,l) converges to 1 as l → ∞. Uses the Ramsey recurrence R(3,l+1) ≤ R(3,l) + (l+1) combined with the Kim-Shearer lower bound R(3,l) ≥ c·l²/log l.",
+    "formal": "\u2200 \u03b5 > 0, \u2203 L\u2080, \u2200 l > L\u2080, |R(3,l+1)/R(3,l) - 1| < \u03b5",
+    "plain": "Prove that the ratio of consecutive Ramsey numbers R(3,l+1)/R(3,l) converges to 1 as l \u2192 \u221e. Uses the Ramsey recurrence R(3,l+1) \u2264 R(3,l) + (l+1) combined with the Kim-Shearer lower bound R(3,l) \u2265 c\u00b7l\u00b2/log l.",
     "whyMatters": [
-      "Resolves the k=3 case of Erdős Problem #1014",
-      "Shows Θ bounds suffice when combined with recurrence (contrary to common belief)",
+      "Resolves the k=3 case of Erd\u0151s Problem #1014",
+      "Shows \u0398 bounds suffice when combined with recurrence (contrary to common belief)",
       "Provides explicit convergence rate O(log l/l)"
     ]
   },
   "knownResults": {
     "proven": [
-      "increment_bound: R(3,l+1) ≤ R(3,l) + (l+1)",
-      "ratio_abs_eq: |R'/R - 1| = (R' - R)/R for R' ≥ R > 0",
+      "increment_bound: R(3,l+1) \u2264 R(3,l) + (l+1)",
+      "ratio_abs_eq: |R'/R - 1| = (R' - R)/R for R' \u2265 R > 0",
       "erdos_1014_k3_ratio_convergence: main theorem (modulo analysis lemma)"
     ],
     "open": [],
@@ -37,20 +37,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: All 3 theorems fully proved, 0 sorries. Last sorry (log l/l → 0) proved using Mathlib isLittleO_log_rpow_atTop.",
+    "progressSummary": "COMPLETED: All 3 theorems fully proved, 0 sorries. Last sorry (log l/l \u2192 0) proved using Mathlib isLittleO_log_rpow_atTop.",
     "builtItems": [
-      "increment_bound in Erdos1014OQ01.lean: R(3,l+1) ≤ R(3,l) + (l+1)",
+      "increment_bound in Erdos1014OQ01.lean: R(3,l+1) \u2264 R(3,l) + (l+1)",
       "ratio_abs_eq in Erdos1014OQ01.lean: absolute value identity",
       "erdos_1014_k3_ratio_convergence in Erdos1014OQ01.lean: main theorem",
       "eventually_ratio_small in Erdos1014OQ01.lean: FULLY PROVED via Mathlib asymptotics"
     ],
     "insights": [
       "The Ramsey recurrence provides a tight O(l) bound on the increment R(3,l+1) - R(3,l)",
-      "Only the LOWER bound R(3,l) ≥ c·l²/log l is needed, not the upper bound",
-      "The Θ bounds DO suffice for k=3 when combined with the recurrence - the recurrence constrains increments independently of the Θ bounds",
+      "Only the LOWER bound R(3,l) \u2265 c\u00b7l\u00b2/log l is needed, not the upper bound",
+      "The \u0398 bounds DO suffice for k=3 when combined with the recurrence - the recurrence constrains increments independently of the \u0398 bounds",
       "Rate of convergence is O(log l/l), which is tight up to constants",
       "isLittleO_log_rpow_atTop + IsLittleO.bound extracts the eventually statement for log = o(x)",
-      "Nat.le_ceil transfers ℝ thresholds to ℕ; div_le_iff₀ converts division to multiplication"
+      "Nat.le_ceil transfers \u211d thresholds to \u2115; div_le_iff\u2080 converts division to multiplication"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -66,18 +66,14 @@
     "research"
   ],
   "relatedProofs": [
-    "erdos-1",
-    "erdos-10",
-    "erdos-101",
     "erdos-1014",
-    "erdos-1014-oq-01",
     "erdos-1030"
   ],
   "references": {
     "papers": [
       "Kim (1995): R(3,l) lower bound",
       "Shearer (1995): Improved constant",
-      "Erdős [Er71], Problem 1014"
+      "Erd\u0151s [Er71], Problem 1014"
     ],
     "urls": [
       "https://erdosproblems.com/1014"
@@ -94,24 +90,13 @@
     {
       "path": "Proofs/Erdos1014OQ01.lean",
       "filename": "Erdos1014OQ01.lean",
-      "lineCount": 198,
+      "lineCount": 197,
       "theoremCount": 3,
       "axiomCount": 6,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1014OQ01.lean"
-    },
-    {
-      "path": "Proofs/Erdos1014Problem.lean",
-      "filename": "Erdos1014Problem.lean",
-      "lineCount": 135,
-      "theoremCount": 2,
-      "axiomCount": 14,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1014Problem.lean"
     }
   ]
 }
