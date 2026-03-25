@@ -54,7 +54,7 @@
     "type": "definition",
     "title": "Cevian Configuration",
     "content": "A structure capturing the configuration of three cevians through parameters d, e, f. Point D = (1-d)B + dC lies on BC, E = (1-e)C + eA lies on CA, and F = (1-f)A + fB lies on AB. The constraints ensure points are distinct from vertices.",
-    "mathContext": "Parameters must satisfy d, e, f in (0, 1) excluding endpoints",
+    "mathContext": "Parameters $d, e, f \\in \\mathbb{R} \\setminus \\{0, 1\\}$, representing division ratios. Values in $(0,1)$ give internal division; values outside $(0,1)$ give external division points. The constraints $d, e, f \\neq 0$ ensure points are not at vertices, and $\\neq 1$ ensures the signed ratios $t/(1-t)$ are defined.",
     "significance": "key",
     "prerequisites": [
       "Affine combinations",
