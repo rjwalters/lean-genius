@@ -170,8 +170,29 @@
   },
   "crossReferences": [
     {
-      "relationship": "Parent problem: investigates the main conjecture h(n) -> infinity and corrects the unbounded<=>tendsto equivalence error",
-      "targetId": "erdos-103"
+      "targetId": "erdos-103",
+      "relationship": "extends",
+      "description": "Parent problem: investigates the main conjecture h(n) -> infinity and corrects the unbounded<=>tendsto equivalence error"
+    },
+    {
+      "targetId": "erdos-101",
+      "relationship": "related",
+      "description": "Erdos #101 studies four-point lines in planar point sets; both concern extremal configurations of points in R^2 with geometric constraints"
+    },
+    {
+      "targetId": "erdos-104",
+      "relationship": "related",
+      "description": "Erdos #104 counts unit circles through 3+ points; shares the theme of counting extremal geometric configurations in R^2"
+    },
+    {
+      "targetId": "erdos-102",
+      "relationship": "related",
+      "description": "Erdos #102 studies maximum collinearity forced by rich lines; both are combinatorial geometry problems about finite point sets in the plane"
+    },
+    {
+      "targetId": "erdos-105",
+      "relationship": "related",
+      "description": "Erdos #105 asks about lines avoiding point sets; adjacent in Erdos's numbering and shares the discrete geometry setting"
     }
   ],
   "references": [

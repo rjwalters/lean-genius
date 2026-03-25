@@ -57,8 +57,10 @@
       "Monotonicity of collision probability is a simple consequence of each new factor being at most 1, but it establishes the intuitive fact that more people can only increase collision likelihood"
     ],
     "prerequisites": [
-      "Combinatorics (counting, extremal problems)",
-      "Probability theory"
+      "Combinatorics: finite products, Gauss summation formula, falling factorials",
+      "Real analysis: exponential function, the inequality 1-x <= exp(-x), monotonicity",
+      "Probability theory: collision probability as complement of distinct-assignment probability",
+      "Mathlib familiarity: Finset.prod_le_prod, Real.exp_sum, add_one_le_exp"
     ]
   },
   "sections": [
@@ -177,7 +179,22 @@
     {
       "targetId": "combinations-formula",
       "relationship": "related",
-      "description": "The combinations formula underlies counting distinct birthday assignments; the birthday product ∏(1-i/d) is related to falling factorials and binomial coefficients"
+      "description": "The combinations formula underlies counting distinct birthday assignments; the birthday product is related to falling factorials and binomial coefficients"
+    },
+    {
+      "targetId": "birthday-problem-oq-03",
+      "relationship": "related",
+      "description": "Generalizes the birthday problem to k-way coincidences; this entry provides the pairwise asymptotic bound that the k-way generalization extends"
+    },
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "uses",
+      "description": "Inclusion-exclusion is the classical exact method for birthday probabilities; this entry's exponential bound provides a simpler asymptotic alternative"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial theorem connects to birthday asymptotics through the expansion of (1-1/d)^k and the relationship between falling factorials and binomial coefficients"
     }
   ],
   "references": [
