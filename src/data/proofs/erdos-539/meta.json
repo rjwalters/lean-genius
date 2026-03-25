@@ -166,6 +166,11 @@
       "targetId": "erdos-302",
       "relationship": "related",
       "description": "Both are extremal problems about structured subsets: #302 studies maximum sum-free sets, #539 studies minimum GCD quotient sets"
+    },
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "foundational",
+      "description": "The Euclidean GCD algorithm is the computational backbone for Problem #539's GCD-reduced quotients. The problem studies the structure of a/gcd(a,n) as a ranges over {1,...,n}, connecting GCD computation to the distribution of reduced fractions"
     }
   ],
   "leanFile": {

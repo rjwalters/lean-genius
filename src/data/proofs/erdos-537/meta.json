@@ -173,6 +173,11 @@
       "targetId": "erdos-536",
       "relationship": "related",
       "description": "Erdős #536 asks whether dense sets contain two numbers with equal prime products. Problem #537 was posed as a stepping stone — a positive answer would have implied #536. Ruzsa's counterexample blocks this approach."
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The Fundamental Theorem of Arithmetic (unique prime factorization) is the foundation for Problem #537's question about when three distinct integers can have identical sets of prime factors. The multiplicative structure of ℤ governs which prime products can coincide"
     }
   ],
   "leanFile": {
