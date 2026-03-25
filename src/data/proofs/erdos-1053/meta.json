@@ -127,7 +127,7 @@
   },
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #1053 and its mathematical context: the growth rate of the perfection multiplicity $k$ for $k$-perfect numbers. The key tension is between Gronwall's theorem (showing $\\sigma(n)/n$ can reach $\\sim e^\\gamma \\cdot \\log\\log n$) and the open question of whether $k$-perfect numbers — where $\\sigma(n)/n$ is exactly an integer — can saturate this bound. Robin's inequality gives $k = O(\\log\\log n)$ conditional on RH; the $o(\\log\\log n)$ question remains open.",
-    "implications": "**Theoretical Significance**: A resolution would reveal deep structural constraints on when $\\sigma(n)/n$ can be an integer versus merely large.\n\nA proof of $k = o(\\log\\log n)$ would show that the multiplicative structure required for exact divisibility by $n$ prevents $\\sigma(n)$ from approaching its theoretical maximum. This connects to the distribution of smooth numbers, the anatomy of colossally abundant numbers, and ultimately to the Riemann Hypothesis through Robin's criterion.",
+    "implications": "**Theoretical Significance**:\n\n1. **EXACT vs APPROXIMATE EXTREMALITY**: A proof of $k = o(\\log\\log n)$ would demonstrate a fundamental gap between what $\\sigma(n)/n$ can achieve approximately (Gronwall: $\\limsup = e^\\gamma \\log\\log n$) and exactly (no $k$-perfect $n$ with $k$ approaching $e^\\gamma \\log\\log n$). This would reveal that the multiplicative structure required for $n \\mid \\sigma(n)$ imposes arithmetic constraints that prevent extremality.\n\n2. **RIEMANN HYPOTHESIS CONNECTION**: Robin's inequality $\\sigma(n) < e^\\gamma n \\log\\log n$ for $n \\geq 5041$ is equivalent to RH. The conditional bound $k = O(\\log\\log n)$ thus means Erdős's question is at least as hard as proving $k$ cannot reach the $O$-constant — progress would illuminate the boundary between the $O$ and $o$ regimes that RH controls.\n\n3. **SMOOTH NUMBER ANATOMY**: Colossally abundant numbers (which extremize $\\sigma(n)/n$) have specific prime factorization patterns with many small prime factors. Understanding whether $k$-perfect numbers can mimic these patterns connects to the distribution of smooth numbers and the anatomy of highly composite numbers.\n\n4. **FINITENESS CONJECTURE**: Guy's stronger conjecture (each $k \\geq 3$ has finitely many $k$-perfect numbers) would trivially resolve Erdős's question. Progress on finiteness for any specific $k \\geq 3$ would be a major advance in multiplicative number theory.",
     "openQuestions": [
       "Must $k = o(\\log\\log n)$ for $k$-perfect numbers? (Erdős Problem #1053)",
       "Are there only finitely many $k$-perfect numbers for each $k \\geq 3$? (Guy's conjecture, strictly stronger)",
@@ -170,6 +170,16 @@
       "targetId": "perfect-numbers",
       "relationship": "specialization",
       "description": "Perfect numbers ($\\sigma(n) = 2n$, i.e., $k = 2$) are the foundational case of $k$-perfect numbers. Euclid proved even perfect numbers have the form $2^{p-1}(2^p - 1)$ when $2^p - 1$ is prime (Mersenne prime). Problem #1053 asks whether the sequence of $k$-perfect numbers for all $k \\geq 2$ grows fast enough — a generalization of the ancient question about the distribution of perfect numbers themselves"
+    },
+    {
+      "targetId": "erdos-1060",
+      "relationship": "related",
+      "description": "Problem #1060 counts solutions to $k \\cdot \\sigma(k) = n$, studying the multiplicative equation from the other direction: where #1053 fixes $n$ and asks how large $k = \\sigma(n)/n$ can be, #1060 fixes the product $k \\cdot \\sigma(k)$ and counts solutions. Both probe the distribution of $\\sigma$ values"
+    },
+    {
+      "targetId": "erdos-1061",
+      "relationship": "related",
+      "description": "Problem #1061 studies the additive divisor equation $\\sigma(a) + \\sigma(b) = \\sigma(a + b)$, a different structural constraint on the divisor sum function. Both problems explore when arithmetic conditions on $\\sigma$ can be satisfied and how the solutions are distributed"
     }
   ],
   "references": [
