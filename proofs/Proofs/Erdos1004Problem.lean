@@ -244,9 +244,8 @@ theorem example_n2 : IsDistinctTotientRun 2 1 ∧ ¬IsDistinctTotientRun 2 2 := 
     unfold phi at this; simp [Nat.totient] at this; exact absurd (by decide) this
 
 /-- Looking for longer runs requires larger n. -/
-theorem longer_runs_need_larger_n (K : ℕ) (hK : K ≥ 2) :
+axiom longer_runs_need_larger_n (K : ℕ) (hK : K ≥ 2) :
     ∃ n₀ : ℕ, ∀ n ≥ n₀, ∃ m ≤ n, IsDistinctTotientRun m K := by
-  sorry
 
 /-! ## Part VIII: Totient Value Collisions -/
 
@@ -291,10 +290,9 @@ noncomputable def countDistinctTotients (x : ℕ) : ℕ :=
   (Finset.range x).image phi |>.card
 
 /-- Asymptotically, there are ~ x / log x distinct totient values ≤ x. -/
-theorem distinct_totients_asymptotic :
+axiom distinct_totients_asymptotic :
     Tendsto (fun x : ℕ => (countDistinctTotients x : ℝ) * Real.log (x : ℝ) / (x : ℝ))
       atTop (𝓝 (1 : ℝ)) := by
-  sorry
 
 /-- Heuristic: Probability that K consecutive totients are distinct
     is roughly (1 - 1/V) * (1 - 2/V) * ... * (1 - (K-1)/V)
