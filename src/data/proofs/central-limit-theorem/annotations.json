@@ -78,7 +78,6 @@
     "type": "insight",
     "title": "Moments from Derivatives",
     "content": "Taking derivatives of the characteristic function at $t=0$ extracts moments: $\\varphi'(0) = i\\mu$ (mean), $\\varphi''(0) = i^2(\\mu^2 + \\sigma^2)$ (second moment). The Taylor expansion $\\varphi(t) = 1 + it\\mu - t^2\\sigma^2/2 + O(t^3)$ encodes the distribution's shape in its coefficients.",
-    "mathContext": "$\\varphi_X(t) = 1 + it\\mathbb{E}[X] - \\frac{t^2}{2}\\mathbb{E}[X^2] + O(|t|^3)$. The remainder bound $\\|\\varphi(t) - (1 + it\\mu - \\sigma^2 t^2/2)\\| \\leq \\mathbb{E}[|X|^3] \\cdot |t|^3/6$ controls the Taylor error.",
     "significance": "key",
     "relatedConcepts": [
       "Taylor series",
@@ -117,7 +116,6 @@
     "type": "concept",
     "title": "The Product-to-Exponential Limit",
     "content": "The classical limit $(1 + x/n)^n \\to e^x$ is the engine of CLT. For the normalized sum $S_n = (X_1 + \\cdots + X_n)/\\sqrt{n}$, we have $\\varphi_{S_n}(t) = [\\varphi_X(t/\\sqrt{n})]^n$. Taylor expansion gives $\\varphi_X(t/\\sqrt{n}) \\approx 1 - t^2/(2n)$, and $(1 - t^2/(2n))^n \\to e^{-t^2/2}$.",
-    "mathContext": "$\\varphi_{S_n}(t) = [\\varphi_X(t/\\sqrt{n})]^n = [1 - t^2/(2n) + O(n^{-3/2})]^n \\to e^{-t^2/2}$. The Lean proof uses `tendsto_one_plus_div_pow_exp` from Mathlib.",
     "significance": "key",
     "relatedConcepts": [
       "exponential limit",
@@ -197,7 +195,6 @@
     "type": "concept",
     "title": "The Topological Viewpoint",
     "content": "Now we shift perspective: instead of computing limits, we ask WHY the Gaussian emerges. The answer: **it is a fixed point attractor** of the renormalization group flow on the space of probability distributions.\n\nThis dynamical systems perspective reveals that CLT is not an accident of computation but a consequence of the structure of the convolution operation.",
-    "mathContext": "The renormalization map $T_n(\\mu) = \\text{Law}((X_1 + \\cdots + X_n)/\\sqrt{n})$ for $X_i \\sim \\mu$ i.i.d. The CLT states $T_n(\\mu) \\xrightarrow{w} N(0,1)$ for all $\\mu$ with mean 0 and variance 1.",
     "significance": "key",
     "relatedConcepts": [
       "dynamical systems",
@@ -327,7 +324,6 @@
     "type": "concept",
     "title": "Synthesis: Why the Gaussian is Universal",
     "content": "The Central Limit Theorem reveals the Gaussian as a **mathematical necessity**, not an accident:\n\n1. **Dynamically**: It is the unique fixed-point attractor of the averaging operation\n2. **Information-theoretically**: It maximizes entropy at fixed variance\n3. **Analytically**: It is self-dual under Fourier transform\n4. **Probabilistically**: It is the only finite-variance stable distribution\n\nWherever we see many small independent effects being summed—measurement errors, thermal fluctuations, stock prices, IQ scores—the Gaussian emerges because averaging dynamics demand it.",
-    "mathContext": "Four characterizations of $N(0,\\sigma^2)$: (1) $T_n(N) = N$ (fixed point), (2) $H(\\mu) \\leq H(N)$ for $\\text{Var}(\\mu) = \\sigma^2$ (max entropy), (3) $\\hat{g} = g$ up to scaling (self-dual), (4) $X_1 + X_2 \\stackrel{d}{=} \\sqrt{2}X$ with finite variance (2-stable).",
     "significance": "key",
     "relatedConcepts": [
       "universality",

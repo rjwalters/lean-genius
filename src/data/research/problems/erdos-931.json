@@ -20,7 +20,9 @@
     "since": "2026-03-24T09:30:00.000Z",
     "iteration": 3,
     "focus": "Partial proof of exists_prime_between_blocks via Bertrand's postulate.",
-    "blockers": ["Størmer's theorem not in Mathlib — needed to fully eliminate exists_prime_between_blocks axiom"],
+    "blockers": [
+      "Størmer's theorem not in Mathlib — needed to fully eliminate exists_prime_between_blocks axiom"
+    ],
     "nextAction": "Investigate Størmer formalization or alternative smooth number arguments.",
     "attemptCounts": {
       "total": 1,
@@ -77,10 +79,10 @@
     {
       "path": "Proofs/Erdos931Problem.lean",
       "filename": "Erdos931Problem.lean",
-      "lineCount": 300,
-      "theoremCount": 31,
+      "lineCount": 331,
+      "theoremCount": 34,
       "axiomCount": 2,
-      "defCount": 6,
+      "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos931Problem.lean"

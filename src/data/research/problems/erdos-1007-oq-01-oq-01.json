@@ -71,7 +71,8 @@
     "erdos-10",
     "erdos-100",
     "erdos-1007",
-    "erdos-1007-oq-01"
+    "erdos-1007-oq-01",
+    "erdos-1007-oq-01-oq-01"
   ],
   "references": {
     "papers": [
@@ -79,25 +80,20 @@
       "House 2013: Graphs of dimension 4",
       "Chaffee-Noble 2016: The dimension of the unit distance graph"
     ],
-    "urls": ["https://erdosproblems.com/1007"],
-    "mathlib": ["Nat.choose_succ_succ", "Nat.choose_le_choose", "Nat.choose_two_right"]
+    "urls": [
+      "https://erdosproblems.com/1007"
+    ],
+    "mathlib": [
+      "Nat.choose_succ_succ",
+      "Nat.choose_le_choose",
+      "Nat.choose_two_right"
+    ]
   },
   "started": "2026-03-24T00:48:59.901Z",
   "lastUpdate": "2026-03-24T05:32:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
-    {
-      "path": "Proofs/Erdos1007OQ01OQ01.lean",
-      "filename": "Erdos1007OQ01OQ01.lean",
-      "lineCount": 388,
-      "theoremCount": 32,
-      "axiomCount": 0,
-      "defCount": 5,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1007OQ01OQ01.lean"
-    },
     {
       "path": "Proofs/Erdos1007OQ01.lean",
       "filename": "Erdos1007OQ01.lean",
@@ -108,6 +104,39 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1007OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1007OQ01Aristotle.lean",
+      "filename": "Erdos1007OQ01Aristotle.lean",
+      "lineCount": 111,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1007OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos1007OQ01OQ01.lean",
+      "filename": "Erdos1007OQ01OQ01.lean",
+      "lineCount": 389,
+      "theoremCount": 32,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1007OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1007Problem.lean",
+      "filename": "Erdos1007Problem.lean",
+      "lineCount": 130,
+      "theoremCount": 3,
+      "axiomCount": 4,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1007Problem.lean"
     }
   ]
 }
