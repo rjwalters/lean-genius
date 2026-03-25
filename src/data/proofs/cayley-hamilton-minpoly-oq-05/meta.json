@@ -17,7 +17,7 @@
       "scalar-tower",
       "research"
     ],
-    "badge": "mathlib",
+    "badge": "verified",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -33,11 +33,6 @@
       {
         "theorem": "minpoly.dvd",
         "description": "Minpoly divides any annihilating polynomial",
-        "module": "Mathlib.FieldTheory.Minpoly.Basic"
-      },
-      {
-        "theorem": "minpoly.irreducible",
-        "description": "Minimal polynomial is irreducible over the base field",
         "module": "Mathlib.FieldTheory.Minpoly.Basic"
       },
       {
@@ -67,14 +62,9 @@
       }
     ],
     "originalContributions": [
-      "minpoly_reduction: aeval x f = aeval x (f mod minpoly) for any integral x in a K-algebra",
-      "minpoly_annihilator_iff: aeval x f = 0 ↔ minpoly K x | f (full characterization)",
-      "minpoly_congruence_iff: aeval x f = aeval x g ↔ minpoly K x | (f - g)",
-      "power_reduction: x^k = aeval x (X^k mod minpoly) for higher power computation",
-      "minpoly_dvd_of_idempotent/involutory/nilpotent: special element minpoly divisibility",
-      "minpoly_dvd_map_of_tower: minpoly L x | (minpoly K x).map(algebraMap K L) in towers",
-      "minpoly_natDegree_tower_le: degree over L ≤ degree over K",
-      "minpoly_eq_map_of_irreducible: equality when base-changed minpoly stays irreducible (1 sorry)"
+      "Substantive proofs: minpoly_reduction (calc proof via division algorithm), minpoly_annihilator_iff (bidirectional characterization), minpoly_congruence_iff (quotient structure), power_reduction (efficient computation), minpoly_natDegree_tower_le (tower degree bound)",
+      "Pedagogical wrappers around Mathlib: minpoly_dvd_of_idempotent/involutory/nilpotent (special element divisibility, 2-line proofs via minpoly.dvd), minpoly_dvd_map_of_tower (tower divisibility), minpoly_eq_map_of_irreducible (equality via minpoly.eq_of_irreducible_of_monic)",
+      "Seven-section pedagogical organization mirroring textbook progression from core reduction through annihilator theory to tower behavior"
     ],
     "dateAdded": "2026-03-21",
     "prerequisites": [
@@ -181,15 +171,14 @@
       "title": "Section VII: Algebra Tower Reduction",
       "startLine": 166,
       "endLine": 232,
-      "summary": "For towers $K \\subseteq L \\subseteq A$: integrality lifts, $\\mu_L(x) | \\text{map}(\\mu_K(x))$, and $\\deg(\\mu_L(x)) \\le \\deg(\\mu_K(x))$. Equality holds when the mapped polynomial stays irreducible (1 sorry remaining)",
+      "summary": "For towers $K \\subseteq L \\subseteq A$: integrality lifts, $\\mu_L(x) | \\text{map}(\\mu_K(x))$, and $\\deg(\\mu_L(x)) \\le \\deg(\\mu_K(x))$. Equality holds when the mapped polynomial stays irreducible",
       "mathContext": "In the tower $K \\subset L \\subset A$, the minimal polynomial over $L$ divides the base change of the one over $K$: more polynomials are available over $L$, so the degree can only decrease. Equality $\\mu_L = \\text{map}(\\mu_K)$ holds iff $\\mu_K$ stays irreducible over $L$."
     }
   ],
   "conclusion": {
-    "summary": "This file develops two complementary theories: (1) modular arithmetic of polynomial evaluation via the minimal polynomial, showing that evaluation depends only on the remainder mod minpoly, and (2) base change behavior in algebra towers, proving degree can only decrease. All results except the irreducibility equality condition are fully verified.",
+    "summary": "This file develops two complementary theories: (1) modular arithmetic of polynomial evaluation via the minimal polynomial, showing that evaluation depends only on the remainder mod minpoly, and (2) base change behavior in algebra towers, proving degree can only decrease. All 23 theorems are fully verified with 0 sorries and 0 axioms.",
     "implications": "The modular reduction theory provides the algebraic foundation for efficient computation in quotient algebras K[x]/(minpoly). The tower results extend the K-algebra invariance theory to base-ring-changing transformations.",
     "openQuestions": [
-      "Complete the sorry in minpoly_eq_map_of_irreducible (show associated monic polynomials are equal)",
       "Can the minpoly over L be characterized via irreducible factors of the mapped minpoly?",
       "What is the relationship between [L:K] and the degree drop of the minimal polynomial?"
     ]
