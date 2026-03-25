@@ -71,49 +71,56 @@
       "title": "Module Documentation and Historical Context",
       "startLine": 1,
       "endLine": 49,
-      "summary": "Docstring covering the isosceles triangle theorem (Pons Asinorum, Euclid I.5, Wiedijk #65). States forward ($AB = AC \\Rightarrow \\angle ABC = \\angle ACB$) and converse directions. Documents Mathlib dependencies: `angle_eq_angle_of_dist_eq`, `dist_eq_of_angle_eq_angle_of_angle_ne_pi`, `angle_sub_eq_angle_sub_rev_of_norm_eq`. Historical note on medieval naming and Pappus's simplified proof."
+      "summary": "Docstring covering the isosceles triangle theorem (Pons Asinorum, Euclid I.5, Wiedijk #65). States forward ($AB = AC \\Rightarrow \\angle ABC = \\angle ACB$) and converse directions. Documents Mathlib dependencies: `angle_eq_angle_of_dist_eq`, `dist_eq_of_angle_eq_angle_of_angle_ne_pi`, `angle_sub_eq_angle_sub_rev_of_norm_eq`. Historical note on medieval naming and Pappus's simplified proof.",
+      "mathContext": "The isosceles triangle theorem (Pons Asinorum, Euclid I.5, Wiedijk #1): if $|AB| = |AC|$ in triangle $ABC$, then $\\angle ABC = \\angle ACB$. One of the oldest theorems in mathematics, first proved rigorously by Euclid circa 300 BCE."
     },
     {
       "id": "setup",
       "title": "Imports and Type Variables",
       "startLine": 1,
       "endLine": 57,
-      "summary": "Imports `Mathlib.Geometry.Euclidean.Triangle` and `Mathlib.Tactic`. Opens `EuclideanGeometry` namespace. Declares type variables $V$ (normed inner product space over $\\mathbb{R}$) and $P$ (metric space with $V$-torsor structure), enabling the theorem in arbitrary-dimensional Euclidean spaces."
+      "summary": "Imports `Mathlib.Geometry.Euclidean.Triangle` and `Mathlib.Tactic`. Opens `EuclideanGeometry` namespace. Declares type variables $V$ (normed inner product space over $\\mathbb{R}$) and $P$ (metric space with $V$-torsor structure), enabling the theorem in arbitrary-dimensional Euclidean spaces.",
+      "mathContext": "Imports for Euclidean geometry: inner product spaces, metric spaces, and norm definitions. Sets up the framework for proving that equal sides imply equal base angles in a triangle."
     },
     {
       "id": "forward",
       "title": "Forward Direction: Equal Sides Imply Equal Angles",
       "startLine": 58,
       "endLine": 74,
-      "summary": "Proves `base_angles_equal_of_sides_equal`: $d(A,B) = d(A,C) \\Rightarrow \\angle ABC = \\angle ACB$. Direct application of `EuclideanGeometry.angle_eq_angle_of_dist_eq`. This is Euclid's Proposition I.5."
+      "summary": "Proves `base_angles_equal_of_sides_equal`: $d(A,B) = d(A,C) \\Rightarrow \\angle ABC = \\angle ACB$. Direct application of `EuclideanGeometry.angle_eq_angle_of_dist_eq`. This is Euclid's Proposition I.5.",
+      "mathContext": "The forward direction: $d(A,B) = d(A,C) \\Rightarrow \\angle ABC = \\angle ACB$. In the inner product space formulation, equal norms of the displacement vectors $\\overrightarrow{BA}$ and $\\overrightarrow{CA}$ imply equal angles."
     },
     {
       "id": "converse",
       "title": "Converse: Equal Angles Imply Equal Sides",
       "startLine": 75,
       "endLine": 92,
-      "summary": "Proves `sides_equal_of_base_angles_equal`: $\\angle ABC = \\angle ACB \\land \\angle BAC \\neq \\pi \\Rightarrow d(A,B) = d(A,C)$. The non-degeneracy hypothesis $\\angle BAC \\neq \\pi$ excludes collinear configurations. Uses `dist_eq_of_angle_eq_angle_of_angle_ne_pi`. This is Euclid's Proposition I.6."
+      "summary": "Proves `sides_equal_of_base_angles_equal`: $\\angle ABC = \\angle ACB \\land \\angle BAC \\neq \\pi \\Rightarrow d(A,B) = d(A,C)$. The non-degeneracy hypothesis $\\angle BAC \\neq \\pi$ excludes collinear configurations. Uses `dist_eq_of_angle_eq_angle_of_angle_ne_pi`. This is Euclid's Proposition I.6.",
+      "mathContext": "The converse: if $\\angle ABC = \\angle ACB$ then $|AB| = |AC|$. Together with the forward direction, this gives: a triangle has two equal sides if and only if it has two equal base angles."
     },
     {
       "id": "biconditional",
       "title": "Biconditional Characterization",
       "startLine": 93,
       "endLine": 107,
-      "summary": "Proves `isosceles_triangle_iff`: for non-degenerate triangles, $d(A,B) = d(A,C) \\iff \\angle ABC = \\angle ACB$. Combines forward and converse via $\\langle$`base_angles_equal_of_sides_equal`, $\\lambda h \\Rightarrow$ `sides_equal_of_base_angles_equal h hnd`$\\rangle$."
+      "summary": "Proves `isosceles_triangle_iff`: for non-degenerate triangles, $d(A,B) = d(A,C) \\iff \\angle ABC = \\angle ACB$. Combines forward and converse via $\\langle$`base_angles_equal_of_sides_equal`, $\\lambda h \\Rightarrow$ `sides_equal_of_base_angles_equal h hnd`$\\rangle$.",
+      "mathContext": "The full characterization: for non-degenerate triangles, $d(A,B) = d(A,C) \\iff \\angle ABC = \\angle ACB$. This combines the forward direction (Euclid I.5) with the converse (Euclid I.6)."
     },
     {
       "id": "vector-form",
       "title": "Vector Formulation",
       "startLine": 108,
       "endLine": 121,
-      "summary": "Proves `angle_eq_of_norm_eq`: for vectors $x, y \\in V$ with $\\|x\\| = \\|y\\|$, the angles $\\angle(x, x-y) = \\angle(y, y-x)$. Uses `InnerProductGeometry.angle_sub_eq_angle_sub_rev_of_norm_eq`. Interprets the theorem using position vectors from the apex."
+      "summary": "Proves `angle_eq_of_norm_eq`: for vectors $x, y \\in V$ with $\\|x\\| = \\|y\\|$, the angles $\\angle(x, x-y) = \\angle(y, y-x)$. Uses `InnerProductGeometry.angle_sub_eq_angle_sub_rev_of_norm_eq`. Interprets the theorem using position vectors from the apex.",
+      "mathContext": "The inner product space formulation: for vectors $x, y \\in V$ with $\\|x\\| = \\|y\\|$, the angle between $x$ and any reference direction equals the angle between $y$ and the same reference. This abstracts the isosceles theorem to arbitrary inner product spaces."
     },
     {
       "id": "verification",
       "title": "Verification and Exports",
       "startLine": 122,
       "endLine": 129,
-      "summary": "Exports all four main results via `#check`: `base_angles_equal_of_sides_equal`, `sides_equal_of_base_angles_equal`, `isosceles_triangle_iff`, `angle_eq_of_norm_eq`. Closes `IsoscelesTriangle` namespace."
+      "summary": "Exports all four main results via `#check`: `base_angles_equal_of_sides_equal`, `sides_equal_of_base_angles_equal`, `isosceles_triangle_iff`, `angle_eq_of_norm_eq`. Closes `IsoscelesTriangle` namespace.",
+      "mathContext": "Type-checking the four main results to verify their Lean signatures."
     }
   ],
   "crossReferences": [
