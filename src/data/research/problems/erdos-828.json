@@ -1,8 +1,8 @@
 {
   "slug": "erdos-828",
   "title": "Erdős #828",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -29,12 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 4 of 5 axioms. Only totient_dvd_self_iff remains (deep characterization, not in Mathlib). Axiom count: 5 → 1.",
+    "progressSummary": "COMPLETE: 0 sorries, 0 axioms. totient_dvd_self_iff fully proved.",
     "builtItems": [
       "Proved totientDivisors_zero_infinite via Set.infinite_of_injective_forall_mem with f(k)=2^(k+1)",
       "Proved totientDivisors_neg_one_infinite via Set.Infinite.mono from Nat.infinite_setOf_prime",
       "Proved totient_even from Nat.totient_even",
-      "Proved totient_prime_pow_formula from Nat.totient_prime_pow"
+      "Proved totient_prime_pow_formula from Nat.totient_prime_pow",
+      "coprime_pow_factorization_div: coprimality of p-part and complement",
+      "pred_dvd_totient_of_prime_dvd: (p-1)|φ(n) when p|n",
+      "two_dvd_pred_of_odd_prime: 2|(p-1) for odd primes",
+      "odd_totient_dvd_two_mul: if m odd, m>1, φ(m)|2m then m=3^e",
+      "totient_dvd_self_iff forward direction: complete proof"
     ],
     "insights": [
       "4 of 5 axioms proved from Mathlib: totient_even, totient_prime_pow_formula, totientDivisors_zero_infinite, totientDivisors_neg_one_infinite",
@@ -43,7 +48,8 @@
       "Only totient_dvd_self_iff (characterization of phi(n)|n) remains axiomatized - deep result not in Mathlib",
       "n/φ(n) = Π_{p|n} p/(p-1) regardless of exponents. Integer iff prime set ⊆ {2,3} with 2 present.",
       "2-adic valuation proof: ν₂(Π(p-1)) ≥ |{odd primes}| but ν₂(Π p) = 1 (only from p=2), so ≤1 odd prime",
-      "If {2,q}: (q-1)|2q and gcd(q,q-1)=1 gives (q-1)|2, so q≤3"
+      "If {2,q}: (q-1)|2q and gcd(q,q-1)=1 gives (q-1)|2, so q≤3",
+      "Proved forward direction of totient_dvd_self_iff: if φ(n)|n and n>1, then n=2^a*3^b using 2-adic decomposition and prime factor counting"
     ],
     "mathlibGaps": [],
     "nextSteps": [
