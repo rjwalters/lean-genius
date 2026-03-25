@@ -240,6 +240,11 @@
       "targetId": "four-color-theorem",
       "relationship": "thematic",
       "description": "Both are foundational results about planar geometric/combinatorial structures: the four-color theorem concerns graph coloring on the plane, while Desargues's theorem concerns projective configurations — both involve deep structural analysis"
+    },
+    {
+      "targetId": "hilbert-4",
+      "relationship": "related",
+      "description": "Hilbert's 4th problem asks for all metrics on a projective space where straight lines are geodesics — a question about projective geometry, the same framework in which Desargues's theorem lives. Desargues's theorem characterizes which projective planes can be coordinatized over division rings (Desarguesian planes), while Hilbert's 4th problem characterizes which metrics respect the projective line structure. Both reveal the deep interplay between algebraic structure and geometric axioms in projective spaces"
     }
   ],
   "mainTheorems": [
