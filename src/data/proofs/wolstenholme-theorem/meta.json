@@ -82,11 +82,19 @@
     },
     {
       "id": "babbage",
-      "title": "Babbage's Theorem",
+      "title": "Babbage's Theorem and Failure Cases",
       "startLine": 81,
-      "endLine": 107,
-      "summary": "The weaker mod p^2 version and failure cases.",
+      "endLine": 108,
+      "summary": "The weaker mod p^2 version and failure cases showing p >= 5 is necessary.",
       "mathContext": "Babbage (1819): C(2p-1,p-1) ≡ 1 (mod p²) for prime p >= 3. One power of p weaker than Wolstenholme. For p = 3: C(5,2) = 10 ≡ 1 (mod 9) but 10 ≢ 1 (mod 27). The gap between p² and p³ is where the difficulty lies."
+    },
+    {
+      "id": "axiom-and-applications",
+      "title": "Full Theorem Statement and Applications",
+      "startLine": 109,
+      "endLine": 145,
+      "summary": "The main Wolstenholme theorem axiom for all primes p >= 5, with the centralBinomial_mod_cube application theorem.",
+      "mathContext": "The axiom `wolstenholme_theorem` states $\\forall p \\geq 5$ prime, $\\binom{2p-1}{p-1} \\equiv 1 \\pmod{p^3}$. The theorem `centralBinomial_mod_cube` provides the usable form for computations."
     },
     {
       "id": "wolstenholme-primes",
@@ -128,7 +136,27 @@
     "lineCount": 220,
     "axiomCount": 2,
     "theoremCount": 17,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "mainTheorems": [
+      {
+        "name": "centralBinomial_mod_cube",
+        "type": "application",
+        "description": "For prime p ≥ 5, C(2p-1,p-1) ≡ 1 (mod p³) — the main theorem applied from the axiom",
+        "leanType": "(p : ℕ) → Nat.Prime p → p ≥ 5 → centralBinomial p % p^3 = 1"
+      },
+      {
+        "name": "babbage_theorem",
+        "type": "original",
+        "description": "Babbage's theorem: for prime p ≥ 3, C(2p-1,p-1) ≡ 1 (mod p²)",
+        "leanType": "BabbageTheorem"
+      },
+      {
+        "name": "wolstenholme_fails_3",
+        "type": "original",
+        "description": "Wolstenholme fails at p=3: C(5,2) = 10 ≢ 1 (mod 27)",
+        "leanType": "centralBinomial 3 % 3^3 ≠ 1"
+      }
+    ]
   },
   "crossReferences": [
     {
@@ -145,6 +173,16 @@
       "targetId": "infinitude-primes",
       "relationship": "foundational",
       "description": "The infinitude of primes provides the setting for Wolstenholme's theorem, which characterizes a divisibility property of all primes p >= 5"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "Binomial coefficients are the core objects of study — Wolstenholme's theorem reveals surprising p-adic divisibility properties of central binomial coefficients C(2p-1, p-1)"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient function and Fermat's little theorem underlie the Fermat quotient q_p(a) = (a^{p-1}-1)/p, which is equivalent to Wolstenholme's theorem via q_p(2) ≡ 0 (mod p)"
     }
   ],
   "references": [
@@ -154,6 +192,27 @@
       "year": "1862",
       "venue": "The Quarterly Journal of Pure and Applied Mathematics 5, 35–39",
       "note": "Proved that for primes p ≥ 5, the binomial coefficient C(2p,p) ≡ 2 (mod p³) — equivalently, the Bernoulli number numerator condition"
+    },
+    {
+      "authors": "McIntosh, Richard J.",
+      "title": "On the converse of Wolstenholme's theorem",
+      "year": "1995",
+      "venue": "Acta Arithmetica 71(4), 381–389",
+      "note": "Identified the two known Wolstenholme primes (16843 and 2124679) and showed no others exist below 10^9"
+    },
+    {
+      "authors": "Babbage, Charles",
+      "title": "Demonstration of a theorem relating to prime numbers",
+      "year": "1819",
+      "venue": "The Edinburgh Philosophical Journal 1, 46–49",
+      "note": "Proved the weaker mod p² version of Wolstenholme's theorem for primes p ≥ 3 — Wolstenholme later strengthened this by one power of p"
+    },
+    {
+      "authors": "Granville, Andrew",
+      "title": "Binomial coefficients modulo prime powers",
+      "year": "1997",
+      "venue": "CMS Conference Proceedings 20, 253–275",
+      "note": "Comprehensive survey of binomial coefficient divisibility including Wolstenholme's theorem, connections to Bernoulli numbers, and the ABC conjecture"
     }
   ]
 }
