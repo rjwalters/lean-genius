@@ -172,7 +172,37 @@
     {
       "targetId": "chinese-remainder-constructive",
       "relationship": "extends",
-      "description": "Parent formalization; this entry extends it with further exploration"
+      "description": "Parent formalization proving CRT for 2, 3, and 4 moduli; this entry generalizes to arbitrary-length lists via induction"
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "relates",
+      "description": "Handles the non-coprime case where gcd(m,n) > 1 with compatibility conditions; the third open question asks whether this too can be generalized to arbitrary-length lists"
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "uses",
+      "description": "Bezout's identity underpins Nat.chineseRemainder, which constructs the solution witness at each inductive step via the extended Euclidean algorithm"
+    },
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "uses",
+      "description": "The Euclidean GCD algorithm is the computational engine behind both the coprimality checks and Bezout coefficient extraction used in the CRT construction"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "relates",
+      "description": "Euler's totient function phi(n) counts units mod n; for pairwise coprime moduli the CRT gives the isomorphism Z/m1...mk ≅ Z/m1 x ... x Z/mk, yielding the multiplicativity of phi"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "relates",
+      "description": "Unique prime factorization guarantees that distinct primes are pairwise coprime, providing the canonical source of pairwise coprime moduli systems for CRT applications"
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "relates",
+      "description": "CRT decomposes (Z/nZ)* into a product of cyclic groups for prime power moduli; primitive roots characterize when this group is itself cyclic"
     }
   ],
   "references": [

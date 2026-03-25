@@ -57,8 +57,13 @@
       "Absolute continuity of functions is intimately connected to absolute continuity of measures: F is AC iff the signed measure dF is absolutely continuous with respect to Lebesgue measure, and F' is its Radon-Nikodym derivative"
     ],
     "prerequisites": [
-      "Mathematical analysis",
-      "Calculus and real analysis"
+      "Lebesgue measure and integration (MeasureTheory in Mathlib)",
+      "Almost everywhere (a.e.) properties and null sets",
+      "Classical Fundamental Theorem of Calculus (Newton-Leibniz form)",
+      "Bounded variation and total variation of functions",
+      "Lipschitz continuity and uniform continuity",
+      "Vitali covering lemma and Lebesgue differentiation theorem",
+      "Monotone functions and their a.e. differentiability (Lebesgue 1904)"
     ]
   },
   "sections": [
@@ -151,7 +156,32 @@
     {
       "targetId": "fundamental-theorem-calculus",
       "relationship": "extends",
-      "description": "Parent formalization; this entry extends it with further exploration"
+      "description": "Parent formalization of the classical Newton-Leibniz FTC for continuous integrands; this entry generalizes to the Lebesgue setting where absolute continuity replaces C^1 regularity"
+    },
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "relates",
+      "description": "The MVT is a key ingredient in the classical FTC proof and in showing AC implies bounded variation; the Lebesgue FTC can be viewed as an a.e. generalization of the MVT relationship between a function and its derivative"
+    },
+    {
+      "targetId": "intermediate-value-theorem",
+      "relationship": "relates",
+      "description": "IVT establishes that continuous functions satisfy the intermediate value property; the Lebesgue FTC shows that AC functions (a strictly stronger regularity class) additionally recover their values via integration of their a.e. derivative"
+    },
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "uses",
+      "description": "Lebesgue measure is the foundational measure for this formalization: the AC definition controls total variation on sets of small Lebesgue measure, and the integral in the FTC statement is the Lebesgue integral"
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "relates",
+      "description": "Computing the area of a circle as pi*r^2 via integration is a classical application of the FTC; the Lebesgue generalization extends such computations to broader classes of integrands"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "relates",
+      "description": "The Cauchy-Schwarz integral inequality operates in the L^2 space built on the Lebesgue integral; the FTC connects pointwise derivatives to this integral framework, enabling L^p regularity analysis of AC functions"
     }
   ]
 }
