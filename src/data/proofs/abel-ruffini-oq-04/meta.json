@@ -121,6 +121,11 @@
       "targetId": "inverse-galois-oq-01",
       "relationship": "related",
       "description": "Proves the complete solvability characterization: Sₙ and Aₙ are solvable iff n ≤ 4, and [S₅,S₅] = A₅. Provides the full bidirectional threshold that this file witnesses from one side (non-solvability for n ≥ 5)"
+    },
+    {
+      "targetId": "lagrange-theorem-oq-03",
+      "relationship": "complementary",
+      "description": "Hall's theorem (1928) characterizes solvable groups positively: a finite group is solvable iff it has Hall subgroups of every coprime order. This provides a structural 'positive test' complementing the negative result here — S₅ has no subgroup of order 15 (a {3,5}-Hall subgroup), since the maximum element order in S₅ is 6, so S₅ fails Hall's criterion"
     }
   ],
   "overview": {
