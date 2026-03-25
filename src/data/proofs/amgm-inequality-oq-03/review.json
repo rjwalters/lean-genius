@@ -74,23 +74,23 @@
     {
       "id": "ai-1",
       "priority": "high",
-      "target": "enricher",
-      "description": "Update the Lean file header (lines 27-33) to accurately reflect that power_mean_monotone_neg is fully proved. Add it as a listed result and change item 7 from 'stated as an axiom' to describe the mixed-sign case specifically as the remaining open direction.",
-      "status": "open"
+      "target": "researcher",
+      "description": "Update the Lean file header (lines 27-33) to accurately reflect that power_mean_monotone_neg is fully proved. Add it as a listed result and change item 7 from 'stated as an axiom' to describe the mixed-sign case specifically as the remaining open direction. NOTE: Lean file modifications are outside enricher scope; reassigned to researcher. The annotation for this section now flags the stale header.",
+      "status": "deferred"
     },
     {
       "id": "ai-2",
       "priority": "medium",
       "target": "enricher",
       "description": "Change meta.json badge from 'mathlib' to 'original' to reflect the ~130 lines of genuine original proof work.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "medium",
       "target": "enricher",
       "description": "Rewrite keyInsight #5 to distinguish between same-sign negative monotonicity (proved) and mixed-sign/zero-crossing case (open). Current phrasing conflates the two.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
@@ -102,9 +102,9 @@
     {
       "id": "ai-5",
       "priority": "low",
-      "target": "enricher",
-      "description": "Consider removing harmonic_mean_le_geom_mean_via_power (lines 349-355) or merging its pedagogical content into the main HM <= GM theorem's docstring. It adds an unused hypothesis and one-line redirect without mathematical substance.",
-      "status": "open"
+      "target": "researcher",
+      "description": "Consider removing harmonic_mean_le_geom_mean_via_power (lines 349-355) or merging its pedagogical content into the main HM <= GM theorem's docstring. It adds an unused hypothesis and one-line redirect without mathematical substance. NOTE: Lean file modifications are outside enricher scope; reassigned to researcher.",
+      "status": "deferred"
     }
   ],
 

@@ -8,7 +8,7 @@
     },
     "type": "context",
     "title": "Power Mean Family: Overview and Open Question",
-    "content": "The header introduces the weighted power mean family M_r(z,w) and the open question: to fully formalize the monotonicity M_r <= M_s for all r <= s in Lean 4/Mathlib. It enumerates what the file proves (7 results including new proofs of HM <= GM and M_r <= M_s for 0 < r <= s) and what remains open (the negative r case). The imports bring in Mathlib.Analysis.MeanInequalities for the weighted AM-GM inequality and Mathlib.Analysis.MeanInequalitiesPow for Jensen's power inequality.",
+    "content": "The header introduces the weighted power mean family M_r(z,w) and the open question: to fully formalize the monotonicity M_r <= M_s for all r <= s in Lean 4/Mathlib. **Note**: The header's item 7 (line 33) is stale — it says 'General monotonicity (negative r case) stated as an axiom' but the file actually proves power_mean_monotone_neg (lines 291–343) with no axioms or sorries. The file proves 13 results total including HM ≤ GM, M_r ≤ M_s for 0 < r ≤ s, and M_r ≤ M_s for r ≤ s < 0. Only the mixed-sign case (r < 0 < s) remains open. The imports bring in Mathlib.Analysis.MeanInequalities for the weighted AM-GM inequality and Mathlib.Analysis.MeanInequalitiesPow for Jensen's power inequality.",
     "mathContext": "$M_r(z,w) = \\left(\\sum_{i} w_i z_i^r\\right)^{1/r}$ for $r \\neq 0$; $M_0 = \\prod_i z_i^{w_i}$ (geometric mean as limit). The chain: $\\text{HM} = M_{-1} \\leq M_0 = \\text{GM} \\leq M_1 = \\text{AM} \\leq M_2 \\leq \\cdots$",
     "significance": "supporting",
     "relatedConcepts": [
