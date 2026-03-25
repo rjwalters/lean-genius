@@ -92,42 +92,48 @@
       "title": "Imports",
       "summary": "Imports `Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev` (providing `T_real_cos`, `U_real_cos`) and `Mathlib.RingTheory.Polynomial.Chebyshev` (providing `T_add_two`, `U_add_two`, `T_two`, `U_two`, etc.).",
       "startLine": 1,
-      "endLine": 2
+      "endLine": 2,
+      "mathContext": "Imports `Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev` providing Chebyshev polynomials $T_n$ and $U_n$ satisfying $\\cos(n\\theta) = T_n(\\cos\\theta)$ and $\\sin(n\\theta) = \\sin\\theta \\cdot U_{n-1}(\\cos\\theta)$."
     },
     {
       "id": "extraction-theorems",
       "title": "Main Extraction Theorems",
       "summary": "Proves `cos_nsmul_chebyshev_T`: cos(nθ) = T_n(cos θ), and `sin_nsmul_chebyshev_U`: sin((↑n+1)θ) = U_n(cos θ)·sin θ. These capture the real and imaginary part extractions from De Moivre's theorem.",
       "startLine": 41,
-      "endLine": 63
+      "endLine": 63,
+      "mathContext": "Proves `cos_nsmul_chebyshev_T`: $\\cos(n\\theta) = T_n(\\cos\\theta)$ and `sin_nsmul_chebyshev_U`: $\\sin((n+1)\\theta) = \\sin\\theta \\cdot U_n(\\cos\\theta)$ where $T_n, U_n$ are Chebyshev polynomials of the first and second kind."
     },
     {
       "id": "existence-theorems",
       "title": "Existence Theorems",
       "summary": "States that cos(nθ) is a polynomial in cos θ for every integer n, and that sin(nθ)/sin θ is a polynomial in cos θ (when sin θ ≠ 0). The witnesses are the Chebyshev polynomials T_n and U_{n-1}.",
       "startLine": 64,
-      "endLine": 79
+      "endLine": 79,
+      "mathContext": "Existence results: $\\cos(n\\theta)$ is always a polynomial in $\\cos\\theta$ (degree $n$), and $\\sin(n\\theta)/\\sin\\theta$ is always a polynomial in $\\cos\\theta$ (degree $n-1$). These are the defining properties of Chebyshev polynomials."
     },
     {
       "id": "chebyshev-computations",
       "title": "Explicit Chebyshev Polynomial Values",
       "summary": "Computes T_3 = 4X³ - 3X, T_4 = 8X⁴ - 8X² + 1, T_5 = 16X⁵ - 20X³ + 5X, U_3 = 8X³ - 4X, U_4 = 16X⁴ - 12X² + 1 via the recurrence T_{n+2} = 2X·T_{n+1} - T_n.",
       "startLine": 80,
-      "endLine": 115
+      "endLine": 115,
+      "mathContext": "Explicit computations: $T_3 = 4x^3 - 3x$, $T_4 = 8x^4 - 8x^2 + 1$, $T_5 = 16x^5 - 20x^3 + 5x$; $U_3 = 8x^3 - 4x$, $U_4 = 16x^4 - 12x^2 + 1$. All verified by `ring` after `simp` with Chebyshev recurrence."
     },
     {
       "id": "multiple-angle-formulas",
       "title": "Explicit Multiple Angle Formulas",
       "summary": "Proves double through quintuple angle formulas directly: cos(2θ) = 2cos²θ - 1, sin(2θ) = 2sinθcosθ, cos(3θ) = 4cos³θ - 3cosθ, sin(3θ) = 3sinθ - 4sin³θ, cos(4θ) = 8cos⁴θ - 8cos²θ + 1, sin(4θ) = (8cos³θ - 4cosθ)sinθ, cos(5θ) = 16cos⁵θ - 20cos³θ + 5cosθ, sin(5θ) = (16cos⁴θ - 12cos²θ + 1)sinθ.",
       "startLine": 116,
-      "endLine": 202
+      "endLine": 202,
+      "mathContext": "Double through quintuple angle formulas: $\\cos(2\\theta) = 2\\cos^2\\theta - 1$, $\\sin(2\\theta) = 2\\sin\\theta\\cos\\theta$, $\\cos(3\\theta) = 4\\cos^3\\theta - 3\\cos\\theta$, etc. All derived from Chebyshev polynomials."
     },
     {
       "id": "cosine-recurrence",
       "title": "Cosine Recurrence",
       "summary": "Proves the general recurrence `cos_nsmul_rec`: cos((n+2)θ) = 2cos(θ)cos((n+1)θ) - cos(nθ) for all integer n, via the product-to-sum identity. This is the De Moivre-derived recurrence that defines the Chebyshev polynomials T_n.",
       "startLine": 203,
-      "endLine": 231
+      "endLine": 231,
+      "mathContext": "The Chebyshev recurrence: $\\cos((n+2)\\theta) = 2\\cos\\theta\\cos((n+1)\\theta) - \\cos(n\\theta)$. Equivalently, $T_{n+2}(x) = 2x T_{n+1}(x) - T_n(x)$. This 3-term recurrence generates all multiple angle formulas."
     }
   ],
   "conclusion": {

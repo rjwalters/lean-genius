@@ -80,42 +80,48 @@
       "title": "Absolute Value Form",
       "startLine": 61,
       "endLine": 74,
-      "summary": "The fundamental triangle inequality for real numbers using absolute value."
+      "summary": "The fundamental triangle inequality for real numbers using absolute value.",
+      "mathContext": "The triangle inequality for $\\mathbb{R}$: $|x + y| \\leq |x| + |y|$ for all $x, y \\in \\mathbb{R}$. The fundamental inequality connecting addition and absolute value."
     },
     {
       "id": "reverse-triangle",
       "title": "Reverse Triangle Inequality",
       "startLine": 75,
       "endLine": 104,
-      "summary": "The reverse inequality: | |x| - |y| | ≤ |x - y|, providing a lower bound."
+      "summary": "The reverse inequality: | |x| - |y| | ≤ |x - y|, providing a lower bound.",
+      "mathContext": "The reverse triangle inequality: $||x| - |y|| \\leq |x - y|$. Provides a lower bound complementing the upper bound of the standard triangle inequality. Proved by applying the triangle inequality to $x = (x-y) + y$ and $y = (y-x) + x$."
     },
     {
       "id": "normed-space",
       "title": "Normed Space Form",
       "startLine": 105,
       "endLine": 133,
-      "summary": "Generalization to arbitrary normed vector spaces using the norm."
+      "summary": "Generalization to arbitrary normed vector spaces using the norm.",
+      "mathContext": "Generalization to normed vector spaces: $\\|x + y\\| \\leq \\|x\\| + \\|y\\|$ for $x, y \\in V$ where $(V, \\|\\cdot\\|)$ is a normed space. This is part of the norm axioms in Mathlib's `NormedAddCommGroup`."
     },
     {
       "id": "metric-space",
       "title": "Metric Space Form",
       "startLine": 134,
       "endLine": 158,
-      "summary": "The most general form for arbitrary metric spaces using distance."
+      "summary": "The most general form for arbitrary metric spaces using distance.",
+      "mathContext": "The most general form: $d(x, z) \\leq d(x, y) + d(y, z)$ in any metric space $(X, d)$. This is the triangle inequality axiom in `MetricSpace`. All specific instances (absolute value, norm, $L^p$) are specializations."
     },
     {
       "id": "strict-triangle",
       "title": "Strict Triangle Inequality",
       "startLine": 173,
       "endLine": 191,
-      "summary": "Proof that inequality is strict when x and y have opposite signs."
+      "summary": "Proof that inequality is strict when x and y have opposite signs.",
+      "mathContext": "Strict inequality: $|x + y| < |x| + |y|$ when $x$ and $y$ have opposite signs (i.e., $xy < 0$). Equality holds iff $x$ and $y$ have the same sign or one is zero."
     },
     {
       "id": "applications",
       "title": "Applications",
       "startLine": 212,
       "endLine": 244,
-      "summary": "Lipschitz continuity of absolute value and norm as applications."
+      "summary": "Lipschitz continuity of absolute value and norm as applications.",
+      "mathContext": "Applications: Lipschitz continuity of absolute value ($||x| - |y|| \\leq |x - y|$ means $|\\cdot|$ is 1-Lipschitz) and norm ($\\|\\cdot\\|$ is 1-Lipschitz), and the proof that metric balls are open sets."
     }
   ],
   "conclusion": {

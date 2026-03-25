@@ -74,42 +74,48 @@
       "title": "The Dirichlet Problem",
       "startLine": 56,
       "endLine": 102,
-      "summary": "The classical Dirichlet problem: find a harmonic function with prescribed boundary values. Existence and uniqueness theorems."
+      "summary": "The classical Dirichlet problem: find a harmonic function with prescribed boundary values. Existence and uniqueness theorems.",
+      "mathContext": "The Dirichlet problem: find $u: \\Omega \\to \\mathbb{R}$ harmonic ($\\Delta u = 0$) with $u|_{\\partial\\Omega} = g$. Classical for smooth domains; requires Sobolev space formulation for general domains."
     },
     {
       "id": "weak",
       "title": "Weak Formulations",
       "startLine": 103,
       "endLine": 131,
-      "summary": "The variational approach: bilinear forms, boundedness, and coercivity conditions."
+      "summary": "The variational approach: bilinear forms, boundedness, and coercivity conditions.",
+      "mathContext": "The variational/weak formulation: find $u \\in H^1_0(\\Omega)$ such that $a(u, v) = F(v)$ for all $v \\in H^1_0(\\Omega)$, where $a$ is a bilinear form and $F$ is a functional. Weaker than classical solutions but more general."
     },
     {
       "id": "lax-milgram",
       "title": "The Lax-Milgram Theorem",
       "startLine": 132,
       "endLine": 183,
-      "summary": "The fundamental existence theorem for bounded coercive bilinear forms on Hilbert spaces."
+      "summary": "The fundamental existence theorem for bounded coercive bilinear forms on Hilbert spaces.",
+      "mathContext": "The Lax-Milgram theorem: if $a: H \\times H \\to \\mathbb{R}$ is continuous and coercive ($a(u,u) \\geq \\alpha \\|u\\|^2$) on a Hilbert space $H$, and $F$ is continuous, then $a(u,v) = F(v)$ has a unique solution. The fundamental existence theorem for elliptic PDEs."
     },
     {
       "id": "poisson",
       "title": "Application to Poisson Equation",
       "startLine": 184,
       "endLine": 225,
-      "summary": "Existence of weak solutions to -u = f with Dirichlet boundary conditions via Lax-Milgram."
+      "summary": "Existence of weak solutions to -u = f with Dirichlet boundary conditions via Lax-Milgram.",
+      "mathContext": "Poisson's equation $-\\Delta u = f$ with Dirichlet boundary conditions: existence and uniqueness of weak solutions via Lax-Milgram applied to $a(u,v) = \\int \\nabla u \\cdot \\nabla v$ and $F(v) = \\int fv$. Coercivity is the Poincaré inequality."
     },
     {
       "id": "lewy",
       "title": "Lewy's Counterexample",
       "startLine": 226,
       "endLine": 244,
-      "summary": "Hans Lewy's 1957 example: a smooth PDE with no solution, even locally."
+      "summary": "Hans Lewy's 1957 example: a smooth PDE with no solution, even locally.",
+      "mathContext": "Hans Lewy's 1957 counterexample: the PDE $\\frac{\\partial u}{\\partial x} + i\\frac{\\partial u}{\\partial y} - 2i(x+iy)\\frac{\\partial u}{\\partial t} = f(t)$ has no $C^1$ solution for generic smooth $f$. Shows that Hilbert's optimism about existence was not entirely justified."
     },
     {
       "id": "modern",
       "title": "Modern Understanding",
       "startLine": 244,
       "endLine": 244,
-      "summary": "Summary of positive and negative results, the complete resolution of Hilbert's twentieth problem."
+      "summary": "Summary of positive and negative results, the complete resolution of Hilbert's twentieth problem.",
+      "mathContext": "Summary: positive results (Lax-Milgram for elliptic, Hille-Yosida for parabolic, Lax-Milgram for hyperbolic) and negative results (Lewy, non-existence for some nonlinear PDEs). Hilbert's 20th is 'mostly resolved' but fundamentally open-ended."
     }
   ],
   "conclusion": {
