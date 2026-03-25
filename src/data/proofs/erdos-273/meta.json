@@ -179,6 +179,16 @@
       "targetId": "chinese-remainder-constructive",
       "relationship": "foundational",
       "description": "The Chinese Remainder Theorem is the key tool for constructing covering systems from residue classes. Any covering system modulo coprime m_i can be verified by checking finitely many residues mod lcm(m_i)"
+    },
+    {
+      "targetId": "erdos-2",
+      "relationship": "related",
+      "description": "Problem #2 asks whether covering systems with distinct moduli and minimum modulus $> k$ exist for all $k$. Problem #273 adds the restriction that moduli must be $p-1$ for primes $p$, connecting covering system existence to prime structure"
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "foundational",
+      "description": "Non-coprime CRT generalizes to overlapping residue classes, directly relevant to covering systems where moduli $p_i - 1$ need not be coprime — the system $\\{a_i \\pmod{p_i-1}\\}$ requires handling non-coprime moduli"
     }
   ],
   "references": [
