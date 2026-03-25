@@ -193,7 +193,40 @@ theorem gal_card_dvd_120 :
   simpa using hdvd
 
 -- ============================================================================
--- Part V: The Galois Group Has Order 120 (= 5!)
+-- Part V: Polynomial Evaluation (toward eliminating gal_card_eq_120)
+-- ============================================================================
+
+/-- p(-2) = -22 (negative). -/
+theorem p_eval_neg2 : p.eval (-2 : ℚ) = -22 := by unfold p; simp [eval_sub, eval_add, eval_mul, eval_pow, eval_C, eval_X]; try ring
+
+/-- p(-1) = 5 (positive). -/
+theorem p_eval_neg1 : p.eval (-1 : ℚ) = 5 := by unfold p; simp [eval_sub, eval_add, eval_mul, eval_pow, eval_C, eval_X]; try ring
+
+/-- p(0) = 2 (positive). -/
+theorem p_eval_0 : p.eval (0 : ℚ) = 2 := by unfold p; simp [eval_sub, eval_add, eval_mul, eval_pow, eval_C, eval_X]; try ring
+
+/-- p(1) = -1 (negative). -/
+theorem p_eval_1 : p.eval (1 : ℚ) = -1 := by unfold p; simp [eval_sub, eval_add, eval_mul, eval_pow, eval_C, eval_X]; try ring
+
+/-- p(2) = 26 (positive). -/
+theorem p_eval_2 : p.eval (2 : ℚ) = 26 := by unfold p; simp [eval_sub, eval_add, eval_mul, eval_pow, eval_C, eval_X]; try ring
+
+/-
+These evaluations show 3 sign changes: p has at least 3 real roots.
+  p(-2) = -22 < 0,  p(-1) = 5 > 0   → root in (-2, -1)
+  p(0)  = 2 > 0,    p(1) = -1 < 0   → root in (0, 1)
+  p(1)  = -1 < 0,   p(2) = 26 > 0   → root in (1, 2)
+
+Combined with p' = 5x⁴ - 4 having exactly 2 real roots (hence p has
+at most 3 real roots by Rolle's theorem), p has EXACTLY 3 real roots.
+
+This means 2 roots are complex conjugate. Complex conjugation induces
+a transposition in the Galois group. A transitive subgroup of S₅
+(5 prime) containing a transposition is S₅ itself. Hence |Gal| = 120.
+-/
+
+-- ============================================================================
+-- Part V(b): The Galois Group Has Order 120 (= 5!)
 -- ============================================================================
 
 /-
