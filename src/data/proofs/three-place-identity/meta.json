@@ -244,5 +244,13 @@
       "venue": "Springer GTM 5, 2nd edition",
       "note": "Standard reference for categorical identities and coherence theorems — relevant to the categorical semantics question raised in the open questions"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "three_place_identity",
+      "type": "core",
+      "description": "A combinatorial identity involving three-place functions",
+      "leanType": "three_place_sum a b c = normalized_value a b c"
+    }
   ]
 }

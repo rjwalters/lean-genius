@@ -204,5 +204,13 @@
       "year": "1983",
       "note": "Standard reference for lattice gauge theory including Wilson action and gauge invariance"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "yang_mills_lattice",
+      "type": "core",
+      "description": "Lattice formulation of Yang-Mills theory for non-perturbative computation",
+      "leanType": "Lattice L -> GaugeGroup G -> exists action, wilson_action L G action"
+    }
   ]
 }

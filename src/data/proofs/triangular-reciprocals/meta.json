@@ -191,5 +191,13 @@
       "venue": "Addison-Wesley, 2nd edition",
       "note": "Treatment of sums involving triangular numbers and their reciprocals via partial fractions"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "triangular_reciprocal_sum",
+      "type": "core",
+      "description": "Sum of reciprocals of triangular numbers: sum 2/(n(n+1)) = 2",
+      "leanType": "HasSum (fun n => 2 / ((n+1) * (n+2))) 2"
+    }
   ]
 }

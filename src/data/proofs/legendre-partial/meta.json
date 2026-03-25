@@ -194,5 +194,13 @@
       "venue": "Acta Arithmetica, vol. 2, pp. 23–46",
       "note": "Conjectured that the largest prime gap below x is O((log x)²), which would imply Legendre's conjecture. The conjecture remains unproven but is supported by extensive computation"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "legendre_partial",
+      "type": "core",
+      "description": "Partial results toward Legendre's conjecture on primes between n^2 and (n+1)^2",
+      "leanType": "sufficiently_large n -> exists p, Nat.Prime p and n^2 < p and p < (n+1)^2"
+    }
   ]
 }

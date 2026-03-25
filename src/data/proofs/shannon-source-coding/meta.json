@@ -259,5 +259,13 @@
       "venue": "IEEE Transactions on Information Theory 56(5), 2307–2359",
       "note": "Established the second-order source coding rate with Gaussian refinement — the modern extension of Shannon's first-order theorem to finite blocklengths"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "source_coding_theorem",
+      "type": "core",
+      "description": "Shannon's source coding theorem: optimal compression rate equals entropy",
+      "leanType": "Source S -> optimal_compression_rate S = entropy S"
+    }
   ]
 }

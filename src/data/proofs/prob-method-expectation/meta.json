@@ -174,5 +174,13 @@
       "venue": "Wiley, 4th edition",
       "note": "The definitive textbook on the probabilistic method in combinatorics, covering all major techniques"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "first_moment_method",
+      "type": "core",
+      "description": "If E[X] < n, then P(X < n) > 0; if E[X] > n, then P(X > n) > 0",
+      "leanType": "E[X] < n -> exists omega, X omega < n"
+    }
   ]
 }

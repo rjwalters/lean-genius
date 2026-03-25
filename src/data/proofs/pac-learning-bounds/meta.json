@@ -197,5 +197,13 @@
       "venue": "Cambridge University Press",
       "note": "Modern treatment of PAC learning, VC dimension, and sample complexity bounds"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "pac_bound",
+      "type": "core",
+      "description": "PAC learning sample complexity bound using VC dimension",
+      "leanType": "vc_dim H = d -> m >= (d + log(1/delta))/epsilon -> probably_approximately_correct"
+    }
   ]
 }

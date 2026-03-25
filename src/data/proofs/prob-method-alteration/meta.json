@@ -210,5 +210,13 @@
       "venue": "Matematikai és Fizikai Lapok 48, 436–452",
       "note": "Turán's theorem gives the maximum number of edges in a K_{r+1}-free graph. The independent set bound alpha(G) >= n^2/(2m+n) proved via alteration can be seen as a dual to Turán's result"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "alteration_method",
+      "type": "core",
+      "description": "The probabilistic alteration method: random construction + fix violations",
+      "leanType": "random_object X -> E[violations] < k -> exists x, violations x = 0"
+    }
   ]
 }

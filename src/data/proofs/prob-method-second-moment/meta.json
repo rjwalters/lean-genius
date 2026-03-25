@@ -197,5 +197,13 @@
       "venue": "Publicationes Mathematicae Debrecen 6, 290–297",
       "note": "Foundational paper introducing the G(n,p) random graph model where the second moment method finds its primary combinatorial application — establishing threshold phenomena for graph properties"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "second_moment_method",
+      "type": "core",
+      "description": "P(X > 0) >= E[X]^2/E[X^2] (Paley-Zygmund inequality)",
+      "leanType": "E[X] > 0 -> P(X > 0) >= E[X]^2 / E[X^2]"
+    }
   ]
 }
