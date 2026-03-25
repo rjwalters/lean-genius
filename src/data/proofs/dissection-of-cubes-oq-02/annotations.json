@@ -75,7 +75,7 @@
     },
     "type": "concept",
     "title": "Tetrahedron Dihedral Angle and Irrationality",
-    "content": "Defines the dihedral angle of the regular tetrahedron as arccos(1/3) ≈ 70.53° and states (with sorry) that this is NOT a rational multiple of π. This irrationality result follows from Niven's theorem (1956), which characterizes which values of arccos are rational multiples of π. Since arccos(1/3)/π is irrational, the tetrahedron's Dehn invariant is nonzero, creating the invariant obstruction between cube and tetrahedron.",
+    "content": "Defines the dihedral angle of the regular tetrahedron as arccos(1/3) ≈ 70.53° and proves that this is NOT a rational multiple of π via the Chebyshev recurrence argument (Niven's theorem). The proof defines a sequence c_k satisfying c₀=2, c₁=2, c_{k+2}=2c_{k+1}-9c_k, proves 3∤c_k by modular induction, and derives a contradiction from assuming arccos(1/3)/π = p/q. Since arccos(1/3)/π is irrational, the tetrahedron's Dehn invariant is nonzero, creating the invariant obstruction between cube and tetrahedron.",
     "mathContext": "The regular tetrahedron dihedral angle is $\\theta_{\\mathrm{tet}} = \\arccos(1/3)$. By Niven's theorem, $\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$, i.e., there is no $q \\in \\mathbb{Q}$ with $\\theta_{\\mathrm{tet}} = q\\pi$.",
     "significance": "key",
     "relatedConcepts": [

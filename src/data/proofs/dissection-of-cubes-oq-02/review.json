@@ -129,35 +129,35 @@
       "priority": "high",
       "target": "enricher",
       "description": "Update meta.json status from 'verified' to 'axiomatized'. Update assumptions field to: 'Dehn's theorem (scissors congruence preserves the Dehn invariant) is encoded as an explicit hypothesis; ScissorsCongruent uses a placeholder definition.' Update badge from 'original' to 'axiom'.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "high",
       "target": "enricher",
       "description": "Rewrite originalContributions to lead with the Niven's theorem proof as the primary contribution. Remove 'Comprehensive documentation' and trivial items (dehn_obstruction).",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "high",
       "target": "enricher",
       "description": "Rewrite conclusion to accurately reflect what is proved: the Niven's theorem result and invariant separation, with the Hilbert's Third Problem connection being conditional on Dehn's theorem.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "medium",
       "target": "enricher",
       "description": "Fix stale annotations: update ann-tetra-angle to remove 'with sorry' reference; update section descriptions for dehn-theorem and hilbert to reflect hypothesis encoding instead of sorry.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",
       "priority": "medium",
       "target": "enricher",
       "description": "Add a dedicated section entry for the Niven's theorem / Chebyshev recurrence proof (approximately lines 80-233). Adjust adjacent section line ranges.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-6",
