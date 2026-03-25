@@ -75,7 +75,10 @@
     "prerequisites": [
       "Arctan addition formula: arctan(x) + arctan(y) = arctan((x+y)/(1-xy)) for xy < 1",
       "Arctan parity: arctan(-x) = -arctan(x)",
-      "arctan(1) = pi/4"
+      "arctan(1) = π/4 (follows from tan(π/4) = 1)",
+      "Rational arithmetic: the proof reduces each step to verifying equalities of rational numbers",
+      "Gaussian integers ℤ[i] (for understanding why the formula exists): arg(a+bi) = arctan(b/a)",
+      "Taylor series for arctan: arctan(x) = x - x³/3 + x⁵/5 - ⋯ (motivates why small arguments converge fast)"
     ],
     "dateAdded": "2026-03-23",
     "axiomCount": 0,
