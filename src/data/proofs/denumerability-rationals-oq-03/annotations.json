@@ -148,28 +148,24 @@
     "id": "ann-sb-injectivity",
     "proofId": "denumerability-rationals-oq-03",
     "range": {
-      "startLine": 417,
+      "startLine": 418,
       "endLine": 488
     },
-    "type": "theorem",
-    "title": "Injectivity via Structural Induction and BST Ordering",
-    "content": "`eval_injective_gen` is a 65-line structural induction proving that `eval s p1 = eval s p2` implies `p1 = p2` for any state with `det = 1`. The proof handles 6 cases: (nil, nil) is trivial; (nil, cons) and (cons, nil) derive contradictions from component monotonicity — after any step, `rb` or `la` strictly increases, making the result differ from the initial state. The (L, R) and (R, L) cases use `value_between_ancestors`: a left descendant's value is below the current mediant while a right descendant's is above, so equal states imply a contradiction via `linarith`. The (L, L) and (R, R) cases recurse via the induction hypothesis. `eval_injective` specializes to `State.init` using `det_init`.",
-    "mathContext": "$\\text{eval}(s, p_1) = \\text{eval}(s, p_2) \\land \\det(s) = 1 \\implies p_1 = p_2$. The (L, R) case: `value_between_ancestors` gives $(la+ra) \\cdot \\text{tden} < \\text{tnum} \\cdot (lb+rb)$ for left descendants and $\\text{tnum} \\cdot (lb+rb) < (la+ra) \\cdot \\text{tden}$ for right descendants — contradicting state equality.",
+    "type": "technique",
+    "title": "Injectivity (Proved)",
+    "content": "Proves that different paths from the root produce different `(pathNum, pathDen)` pairs via structural induction with BST ordering. The proof (`eval_injective_gen`) uses induction on paths, showing that at each L/R step, the BST ordering invariants (`value_between_ancestors`) force different paths to yield different rational values. The base cases use `ra_pos_of_det` and `lb_pos_of_det` from the determinant infrastructure. `eval_injective` specializes to the root state.",
+    "mathContext": "$\\text{evalPath}(p_1) = \\text{evalPath}(p_2) \\implies p_1 = p_2$. Proved by structural induction: if $p_1$ and $p_2$ first disagree at position $k$ (one goes L, the other R), then BST ordering gives $\\text{val}(p_1) < \\text{mediant} < \\text{val}(p_2)$, contradicting equality.",
     "significance": "key",
     "relatedConcepts": [
-      "structural induction",
-      "binary search tree injectivity",
-      "BST ordering invariant",
-      "Stern-Brocot bijection"
+      "tree injectivity",
+      "binary word encoding",
+      "Stern-Brocot bijection",
+      "BST ordering"
     ],
     "prerequisites": [
       "value_between_ancestors",
-      "rb_ge_after_left",
-      "la_ge_after_right",
       "ra_pos_of_det",
-      "lb_pos_of_det",
-      "det_left",
-      "det_right"
+      "lb_pos_of_det"
     ],
     "importance": "high"
   },
@@ -202,25 +198,22 @@
     "id": "ann-sb-examples",
     "proofId": "denumerability-rationals-oq-03",
     "range": {
-      "startLine": 490,
-      "endLine": 600
+      "startLine": 401,
+      "endLine": 618
     },
     "type": "concept",
     "title": "Concrete Verification: First Three Levels of the Tree",
-    "content": "Seven verified examples confirming the first three levels of the Stern-Brocot tree: root $[] \\to 1/1$, level 1: $[L] \\to 1/2$, $[R] \\to 2/1$, level 2: $[L,L] \\to 1/3$, $[L,R] \\to 2/3$, $[R,L] \\to 3/2$, $[R,R] \\to 3/1$. Each example verifies numerator, denominator, coprimality, and ordering properties by `native_decide` or `norm_num`. These serve as computational validation of the definitions and invariants proved earlier.",
-    "mathContext": "Level 0: $1/1$. Level 1: $1/2, 2/1$. Level 2: $1/3, 2/3, 3/2, 3/1$. All fractions are in lowest terms with the BST ordering property verified computationally. These are the first 7 Stern-Brocot fractions, matching the Farey sequence $F_3 = \\{0/1, 1/3, 1/2, 2/3, 1/1, 3/2, 2/1, 3/1, 1/0\\}$ (excluding the sentinels).",
+    "content": "Seven verified examples confirming the first three levels of the Stern-Brocot tree: root $[] \\to 1/1$, level 1: $[L] \\to 1/2$, $[R] \\to 2/1$, level 2: $[L,L] \\to 1/3$, $[L,R] \\to 2/3$, $[R,L] \\to 3/2$, $[R,R] \\to 3/1$. Each example verifies numerator, denominator, coprimality, and ordering properties by `native_decide` or `norm_num`. This section also includes the full `eval_injective_gen` proof and the final `eval_injective` theorem, establishing that the tree enumeration is injective.",
+    "mathContext": "Level 0: $1/1$. Level 1: $1/2, 2/1$. Level 2: $1/3, 2/3, 3/2, 3/1$. All fractions are in lowest terms with the BST ordering property verified computationally.",
     "significance": "supporting",
     "relatedConcepts": [
       "Stern-Brocot tree levels",
       "Farey sequence F_3",
-      "native_decide",
-      "computational verification"
+      "native_decide"
     ],
     "prerequisites": [
       "state machine definitions",
-      "eval function",
-      "pathNum",
-      "pathDen"
+      "eval function"
     ],
     "importance": "medium"
   }
