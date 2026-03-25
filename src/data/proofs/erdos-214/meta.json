@@ -243,5 +243,20 @@
       "relationship": "related",
       "description": "Unit distance graphs with large girth: chromatic number of unit distance graphs under girth constraints"
     }
+  ],
+  "references": [
+    {
+      "key": "SST84b",
+      "authors": [
+        "J. Spencer",
+        "E. Szemerédi",
+        "W.T. Trotter"
+      ],
+      "title": "Unit distances in the Euclidean plane",
+      "venue": "Graph Theory and Combinatorics, Academic Press",
+      "year": "1984",
+      "pages": "293-303",
+      "note": "Best known O(n^{4/3}) bound for unit distances"
+    }
   ]
 }
