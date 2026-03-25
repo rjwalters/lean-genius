@@ -114,6 +114,11 @@
       "targetId": "dirichlets-theorem-oq-02-oq-01",
       "relationship": "parent",
       "description": "Parent entry for the GRH sub-question about Dirichlet L-functions"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The PNT gives asymptotic density of primes; this result shows infinitely many primes in the specific residue class 3 mod 4, a qualitative refinement that PNT alone does not capture"
     }
   ],
   "references": [
@@ -123,6 +128,13 @@
       "year": "1837",
       "venue": "Abhandlungen der Königlichen Preußischen Akademie der Wissenschaften",
       "note": "Original proof of the general theorem; this entry formalizes the elementary special case for 3 mod 4"
+    },
+    {
+      "authors": "Daniel A. Marcus",
+      "title": "Number Fields",
+      "year": "1977",
+      "venue": "Springer-Verlag, Universitext",
+      "note": "Chapter 4 discusses primes in arithmetic progressions and the special cases admitting elementary proofs, including primes ≡ 3 (mod 4)"
     }
   ]
 }
