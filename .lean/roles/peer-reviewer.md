@@ -132,7 +132,7 @@ Apply the evaluation rubric. Produce specific, located findings. Write `review.j
 
 ## Evaluation Rubric
 
-Six dimensions, each scored 1-10:
+Seven dimensions, each scored 1-10:
 
 ### 1. Mathematical Substance (1-10)
 
@@ -204,9 +204,33 @@ Do all parts of the gallery entry agree with each other?
 - **3-4**: Significant contradictions between different parts of the entry.
 - **1-2**: Parts of the entry appear to describe different proofs.
 
+### 7. Epistemic Coherence (1-10)
+
+Are the formal components at compatible levels of rigor, or does the proof mix
+proved results with axiomatized scaffolding in ways that blur what has actually
+been established?
+
+- **9-10**: All components at the same level. If axiomatized, the boundary between proved and assumed is sharp. Narrative tracks the formal status of each component.
+- **7-8**: Minor mixing. E.g., one elementary proved result alongside deeper axiomatized content, but the distinction is clear.
+- **5-6**: Noticeable domain mixing. Multiple components at different formalization levels (proved, axiomatized, trivial) presented as a unified argument without clear separation.
+- **3-4**: Significant conflation. Trivial results (e.g., finite case verification, linear special cases) rhetorically positioned alongside deep axiomatized claims, making the proof's actual contribution unclear.
+- **1-2**: Incoherent. Components from unrelated domains stitched together with narrative, no clear thesis about what has been formalized.
+
+**What to look for:**
+
+- **Domain mixing**: Does the proof combine multiple mathematical domains (e.g., combinatorics + analysis + topology)? If so, are they at compatible levels? A proof that PROVES combinatorial results but AXIOMATIZES the analytic bridge should separate these clearly.
+
+- **Level conflation**: Are elementary results (interval arithmetic, linear algebra special cases, finite case enumeration) presented at the same narrative weight as deep results? Trivial corollaries should not be framed as "insights" alongside genuinely hard content.
+
+- **Scalability vs. substance confusion**: Does the proof verify specific instances (64 cases, small triangulations) and present this as progress toward the general theorem without acknowledging the gap? Instance verification is legitimate infrastructure work but is NOT the general result.
+
+- **Rhetorical bridges**: Watch for phrases like "this demonstrates that..." or "the logical chain..." connecting components at different levels. The bridge itself may be the weakest link but presented as the strongest.
+
+**Key question**: If you removed the narrative and looked only at the Lean code, would the components naturally form a coherent argument? Or are they disparate formal artifacts unified only by prose?
+
 ### Overall Grade
 
-Derived from the average score:
+Derived from the average of all 7 dimension scores:
 - **9-10**: A (exemplary, publishable quality)
 - **7-8**: B (solid, minor issues)
 - **5-6**: C (adequate, significant issues to address)
@@ -230,6 +254,7 @@ Derived from the average score:
 - **gap**: Missing formalization where the proof claims or implies completeness.
 - **precision**: Imprecise or equivocal framing (e.g., "general quintic" vs "some quintic").
 - **inconsistency**: Contradiction between different parts of the entry.
+- **coherence**: Mixing of formal components at different epistemic levels, or narrative that papers over gaps between domains.
 - **strength**: Something done well that should be preserved.
 
 ---
@@ -249,13 +274,19 @@ Write this file to `src/data/proofs/<slug>/review.json`:
     "grade": "B+",
     "oneLiner": "Brief summary — one sentence",
     "tier": "A|B|C|D",
-    "tierJustification": "Why this tier classification"
+    "tierJustification": "Why this tier classification",
+    "stratification": {
+      "proved": ["list of components that are fully proved"],
+      "axiomatized": ["list of components that are axiomatized"],
+      "elementary": ["list of components that are trivial/routine"],
+      "assessment": "One-sentence synthesis of how these levels interact in the narrative"
+    }
   },
 
   "findings": [
     {
       "severity": "major|moderate|minor|positive|critical",
-      "category": "filler|overclaim|gap|precision|inconsistency|strength",
+      "category": "filler|overclaim|gap|precision|inconsistency|coherence|strength",
       "location": "Human-readable (e.g., 'exists_quintic, line 131' or 'meta.json originalContributions')",
       "finding": "What was found — be specific, cite evidence",
       "recommendation": "What to do about it"
@@ -279,7 +310,8 @@ Write this file to `src/data/proofs/<slug>/review.json`:
     "framingPrecision": 6,
     "pedagogicalQuality": 9,
     "internalConsistency": 7,
-    "overall": 6.7
+    "epistemicCoherence": 5,
+    "overall": 6.4
   },
 
   "suggestedBestFraming": "How this proof should be described — provide the most accurate, honest one-sentence description"
