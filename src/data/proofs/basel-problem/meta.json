@@ -278,11 +278,6 @@
       "description": "Euler's proof of the infinitude of primes uses the Euler product ζ(s) = ∏(1-p⁻ˢ)⁻¹ — the same zeta function whose value at s=2 is the Basel problem"
     },
     {
-      "targetId": "prime-reciprocal-divergence",
-      "relationship": "related",
-      "description": "Euler proved ∑ 1/p diverges using the Euler product ζ(s) = ∏(1-p⁻ˢ)⁻¹ — the same zeta function framework. The divergence of ∑ 1/p contrasts with the convergence of ∑ 1/n² = π²/6, highlighting how prime density differs from integer density"
-    },
-    {
       "targetId": "basel-problem-oq-01",
       "relationship": "extended-by",
       "description": "Explores the open question of whether $\\zeta(5)$ is irrational — extending the Basel problem's $\\zeta(2) = \\pi^2/6$ to odd zeta values, where Apéry proved $\\zeta(3)$ irrational (1978) but $\\zeta(5)$ remains unknown"
@@ -308,54 +303,14 @@
       "description": "The Prime Number Theorem ($\\pi(x) \\sim x/\\ln x$) is proved by analyzing the Riemann zeta function $\\zeta(s)$ in the complex plane — the same function whose value $\\zeta(2) = \\pi^2/6$ is the Basel identity. Riemann's 1859 memoir showed that the distribution of primes is encoded in the zeros of $\\zeta(s)$, transforming Euler's product formula $\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$ from a curiosity into the central tool of analytic number theory. Basel was the first hint that $\\zeta$ carries deep arithmetic information"
     },
     {
-      "targetId": "e-transcendental",
-      "relationship": "related",
-      "description": "The Bernoulli numbers that produce $\\zeta(2) = \\pi^2/6$ are defined by the exponential generating function $t/(e^t - 1) = \\sum B_n t^n/n!$, directly involving Euler's number $e$. Hermite's 1873 proof that $e$ is transcendental was the first transcendence result for a 'naturally occurring' constant — the same $e$ whose generating function encodes the Bernoulli numbers $B_{2k}$ appearing in all even zeta values $\\zeta(2k)$"
-    },
-    {
-      "targetId": "stirling-formula",
-      "relationship": "related",
-      "description": "Stirling's approximation $n! \\approx \\sqrt{2\\pi n}(n/e)^n$ is another instance where $\\pi$ emerges from a purely integer-valued function (the factorial). The $\\sqrt{2\\pi}$ factor comes from the Gaussian integral $\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$, while the Basel identity's $\\pi^2/6$ comes from Fourier analysis of periodic functions — both reveal $\\pi$ as an intrinsic constant governing the transition from discrete (integers, factorials) to continuous (limits, sums) mathematics"
-    },
-    {
-      "targetId": "dirichlets-theorem",
-      "relationship": "extends",
-      "description": "Dirichlet's theorem on primes in arithmetic progressions (1837) uses Dirichlet $L$-functions $L(s, \\chi) = \\sum \\chi(n) n^{-s}$, which generalize the Riemann zeta function $\\zeta(s) = \\sum n^{-s}$ whose simplest non-trivial value is the Basel identity $\\zeta(2) = \\pi^2/6$. Euler's product formula for $\\zeta$ inspired Dirichlet's product formula for $L$-functions, extending the connection between arithmetic and analysis that the Basel problem first revealed"
-    },
-    {
-      "targetId": "area-of-circle",
-      "relationship": "related",
-      "description": "The area formula $A = \\pi r^2$ and the Basel identity $\\zeta(2) = \\pi^2/6$ both reveal $\\pi$ in seemingly unrelated contexts. The connection runs deep: the Gaussian integral $\\int_{-\\infty}^{\\infty} e^{-x^2}\\,dx = \\sqrt{\\pi}$ (proved via the area formula's polar coordinate change of variables) is closely related to the functional equation of $\\zeta(s)$, which maps $\\zeta(2) = \\pi^2/6$ to the behavior of $\\zeta$ at negative integers via $\\Gamma(s/2)\\pi^{-s/2}\\zeta(s)$"
-    },
-    {
-      "targetId": "central-limit-theorem",
-      "relationship": "related",
-      "description": "The Central Limit Theorem's Gaussian density $\\frac{1}{\\sqrt{2\\pi}} e^{-x^2/2}$ contains $\\pi$ for the same deep reason as the Basel identity: the Fourier transform of the Gaussian is itself Gaussian, and $\\zeta(2) = \\pi^2/6$ emerges from Parseval's theorem applied to periodic functions — both results flow from the self-duality of the Gaussian under Fourier analysis"
-    },
-    {
-      "targetId": "de-moivre",
-      "relationship": "foundational",
-      "description": "De Moivre's formula $(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$ underpins the Fourier analysis that proves the Basel identity. The Fourier expansion of Bernoulli polynomials $B_n(x) = -n! \\sum_{k \\neq 0} e^{2\\pi ikx}/(2\\pi ik)^n$ uses complex exponentials $e^{i\\theta} = \\cos\\theta + i\\sin\\theta$ (De Moivre's formula), and evaluating at $x = 0$ extracts $\\zeta(2k)$. Parseval's identity — the alternative one-line proof — similarly decomposes $f(x) = x$ into Fourier modes $e^{inx}$ whose orthogonality is governed by De Moivre"
-    },
-    {
       "targetId": "basel-problem-oq-02",
       "relationship": "extended-by",
       "description": "Explores whether all odd zeta values $\\zeta(2k+1)$ are transcendental — the natural next question after the Basel identity proves $\\zeta(2) = \\pi^2/6$ is transcendental (as a rational multiple of $\\pi^2$). Proves even zeta transcendence from the Lindemann axiom"
     },
     {
-      "targetId": "taylor-sincos-convergence",
-      "relationship": "technique",
-      "description": "The Taylor series convergence of $\\sin(x)$ and $\\cos(x)$ underpins Euler's original Basel proof: the Taylor expansion $\\sin(x)/x = 1 - x^2/6 + x^4/120 - \\cdots$ provides the $x^2$ coefficient that Euler matched against the infinite product factorization to extract $\\zeta(2) = \\pi^2/6$. The convergence of these Taylor series (proved via derivative bounds $|\\sin^{(n)}(x)| \\leq 1$) justifies the coefficient comparison"
-    },
-    {
       "targetId": "hermite-lindemann",
       "relationship": "related",
       "description": "The Hermite-Lindemann theorem ($\\alpha$ algebraic and nonzero $\\Rightarrow e^\\alpha$ transcendental) implies $\\pi$ is transcendental (since $e^{i\\pi} = -1$ is algebraic). This immediately gives that $\\zeta(2) = \\pi^2/6$ is transcendental — in fact, all even zeta values $\\zeta(2k) = \\text{rational} \\times \\pi^{2k}$ are transcendental by the same argument. The odd zeta values lack this structural guarantee, which is why their arithmetic nature remains mysterious"
-    },
-    {
-      "targetId": "sqrt2-irrational",
-      "relationship": "foundational",
-      "description": "The irrationality of $\\sqrt{2}$ (c. 500 BCE) is the first level of the expressibility hierarchy discussed in the Basel entry's implications: $\\sqrt{2} \\notin \\mathbb{Q}$ (irrationality) $\\to$ $\\zeta(2) = \\pi^2/6$ involves a transcendental constant (the Basel identity reveals $\\pi$ in an integer sum) $\\to$ $\\pi \\notin \\overline{\\mathbb{Q}}$ (Lindemann transcendence). Each level demonstrates a deeper barrier between discrete objects and the constants they encode"
     },
     {
       "targetId": "vietas-formulas",
@@ -366,11 +321,6 @@
       "targetId": "fundamental-theorem-algebra",
       "relationship": "related",
       "description": "FTA guarantees every polynomial over $\\mathbb{C}$ factors into linear terms — the finite-dimensional version of the Weierstrass factorization theorem that justifies Euler's infinite product $\\sin(x)/x = \\prod(1 - x^2/n^2\\pi^2)$. The analogy between finite polynomial roots and the zeros $\\{n\\pi\\}$ of $\\sin(x)$ was Euler's key insight; Weierstrass (1876) made this rigorous by showing that entire functions of finite order factor over their zeros (with convergence-producing exponential factors)"
-    },
-    {
-      "targetId": "bertrands-postulate",
-      "relationship": "related",
-      "description": "Both results concern the distribution of primes among the integers. Bertrand's postulate (there exists a prime between $n$ and $2n$) constrains prime gaps, while the Euler product $\\zeta(2) = \\prod_p p^2/(p^2-1) = \\pi^2/6$ encodes the global density of primes. The convergence of $\\zeta(2)$ implies the prime reciprocals $\\sum 1/p$ must diverge sufficiently slowly — both results are early manifestations of the prime number theorem"
     },
     {
       "targetId": "euler-totient",

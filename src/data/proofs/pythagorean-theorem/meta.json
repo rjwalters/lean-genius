@@ -206,11 +206,6 @@
       "description": "Both are fundamental results in Euclidean geometry. The Pythagorean theorem relates side lengths; the area formula uses πr² which depends on the same metric structure"
     },
     {
-      "targetId": "angle-trisection",
-      "relationship": "related",
-      "description": "The Pythagorean theorem underpins compass-and-straightedge constructions — every constructible length arises from iterated application of the theorem via circle-line intersections"
-    },
-    {
       "targetId": "fermats-last-theorem",
       "relationship": "foundational",
       "description": "FLT generalizes the Pythagorean equation: while a²+b²=c² has infinitely many integer solutions, aⁿ+bⁿ=cⁿ has none for n≥3"
@@ -231,16 +226,6 @@
       "description": "The law of cosines generalizes the Pythagorean theorem: $c^2 = a^2 + b^2 - 2ab\\cos(C)$. When $C = 90°$, $\\cos(C) = 0$ and this reduces to $c^2 = a^2 + b^2$. In inner product form: $\\|u-v\\|^2 = \\|u\\|^2 + \\|v\\|^2 - 2\\langle u,v \\rangle$"
     },
     {
-      "targetId": "euler-identity",
-      "relationship": "related",
-      "description": "Euler's identity $e^{i\\pi} + 1 = 0$ connects to the Pythagorean theorem via $|e^{i\\theta}|^2 = \\cos^2\\theta + \\sin^2\\theta = 1$ — the Pythagorean identity on the unit circle. The modulus of complex numbers is defined via $|z|^2 = (\\text{Re}\\,z)^2 + (\\text{Im}\\,z)^2$, which is the Pythagorean theorem applied to the Argand plane"
-    },
-    {
-      "targetId": "cauchy-schwarz-integral",
-      "relationship": "related",
-      "description": "The integral Cauchy-Schwarz inequality $|\\int fg|^2 \\leq \\int f^2 \\cdot \\int g^2$ is the infinite-dimensional generalization of the same inner product framework. The Pythagorean theorem for $L^2$ functions — $\\|f+g\\|^2 = \\|f\\|^2 + \\|g\\|^2$ when $\\int fg = 0$ — is Parseval's identity in Fourier analysis"
-    },
-    {
       "targetId": "triangle-inequality",
       "relationship": "related",
       "description": "The triangle inequality $\\|u + v\\| \\leq \\|u\\| + \\|v\\|$ and the Pythagorean theorem $\\|u + v\\|^2 = \\|u\\|^2 + \\|v\\|^2$ (when $u \\perp v$) are complementary: the Pythagorean theorem gives equality in the squared norm when vectors are orthogonal, while the triangle inequality gives the bound for general vectors. Both are fundamental properties of inner product norms"
@@ -249,21 +234,6 @@
       "targetId": "amgm-inequality",
       "relationship": "related",
       "description": "Both AM-GM and the Pythagorean theorem arise from inner product/norm inequalities. The AM-GM inequality $\\sqrt{ab} \\leq (a+b)/2$ can be proved via the Cauchy-Schwarz inequality, which itself is a direct consequence of the Pythagorean decomposition $v = \\text{proj}_w v + (v - \\text{proj}_w v)$"
-    },
-    {
-      "targetId": "mathematical-induction",
-      "relationship": "foundational",
-      "description": "The generalized Pythagorean theorem (`pythagorean_sum`) for $n$ mutually orthogonal vectors is proved by induction on the number of vectors using `Finset.induction_on` — a direct application of mathematical induction in the formalization"
-    },
-    {
-      "targetId": "fundamental-theorem-calculus",
-      "relationship": "related",
-      "description": "The FTC connects to the Pythagorean theorem through arc length: the length of a curve $\\gamma$ is $\\int \\sqrt{dx^2 + dy^2}$, where $dx^2 + dy^2$ is the Pythagorean theorem applied infinitesimally. The Pythagorean theorem is the local, infinitesimal form of the metric that the FTC integrates globally"
-    },
-    {
-      "targetId": "binomial-theorem",
-      "relationship": "related",
-      "description": "The expansion $\\|u+v\\|^2 = \\|u\\|^2 + 2\\langle u,v \\rangle + \\|v\\|^2$ used in the proof is the inner product analog of the binomial expansion $(a+b)^2 = a^2 + 2ab + b^2$. The Pythagorean theorem says the cross term vanishes when $\\langle u,v \\rangle = 0$"
     },
     {
       "targetId": "pythagorean-theorem-oq-03",
@@ -281,11 +251,6 @@
       "description": "Fermat's theorem on sums of two squares identifies which primes $p = a^2 + b^2$ — exactly those with $p = 2$ or $p \\equiv 1 \\pmod{4}$. This connects directly to Pythagorean triples: a hypotenuse $c$ of a primitive triple must be a product of such primes. Both results hinge on the arithmetic of the Gaussian integers $\\mathbb{Z}[i]$, where the Pythagorean norm $N(a + bi) = a^2 + b^2$ plays the central role"
     },
     {
-      "targetId": "birch-swinnerton-dyer",
-      "relationship": "related",
-      "description": "The congruent number problem asks which integers are areas of right triangles with rational sides — a direct descendant of the Pythagorean theorem over $\\mathbb{Q}$. The Birch–Swinnerton-Dyer conjecture governs which $n$ are congruent numbers via the rank of the elliptic curve $E_n: y^2 = x^3 - n^2 x$. Every congruent number $n$ yields a rational Pythagorean triple $(a,b,c)$ with $ab/2 = n$, connecting ancient geometry to modern arithmetic geometry"
-    },
-    {
       "targetId": "herons-formula",
       "relationship": "related",
       "description": "Heron's formula $A = \\sqrt{s(s-a)(s-b)(s-c)}$ for the area of a triangle generalizes the right-triangle area $A = \\frac{1}{2}ab$. For a right triangle, Heron's formula reduces to the simpler form via $c^2 = a^2 + b^2$. Both results are classical companions in Euclidean triangle geometry; Heron's formula can be derived by applying the Pythagorean theorem to the altitude from the right angle"
@@ -294,11 +259,6 @@
       "targetId": "lagrange-four-squares",
       "relationship": "related",
       "description": "Lagrange's four-square theorem states every positive integer is a sum of four perfect squares. The Pythagorean theorem characterizes when a sum of two squares equals another square ($a^2 + b^2 = c^2$). The theory of quaternion norms $N(a + bi + cj + dk) = a^2 + b^2 + c^2 + d^2$ unifies these — Lagrange's theorem via Hurwitz quaternions parallels Fermat's two-square theorem via Gaussian integers, with the Pythagorean sum-of-squares identity at the foundation"
-    },
-    {
-      "targetId": "fourier-series",
-      "relationship": "related",
-      "description": "Parseval's identity $\\|f\\|^2 = \\sum_{n=-\\infty}^{\\infty} |\\hat{f}(n)|^2$ is the infinite-dimensional Pythagorean theorem for $L^2$ functions: the Fourier coefficients $\\{\\hat{f}(n)\\}$ form an orthonormal basis, and the energy splits by orthogonality exactly as $\\|v+w\\|^2 = \\|v\\|^2 + \\|w\\|^2$. The generalized `pythagorean_sum` in this formalization is the finite-dimensional precursor to Parseval's identity"
     },
     {
       "targetId": "ptolemys-theorem",
