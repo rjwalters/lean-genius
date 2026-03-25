@@ -198,6 +198,11 @@
       "targetId": "erdos-384",
       "relationship": "related",
       "description": "Both concern prime divisibility of binomial coefficients: #384 studies small prime divisors, #698 studies GCD of pairs"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "Binomial coefficients are the central objects of Problem #698. The binomial theorem provides the generating function framework for analyzing divisibility and distribution properties of C(n,k) that the problem studies"
     }
   ],
   "leanFile": {
