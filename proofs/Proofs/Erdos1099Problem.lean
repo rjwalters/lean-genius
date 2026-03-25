@@ -273,9 +273,9 @@ private theorem zipWith_div_ge_one :
       simp only [List.tail_cons, List.zipWith_cons_cons] at hq
       rcases List.mem_cons.mp hq with rfl | hmem
       · -- q = ↑b / ↑a, show 1 ≤ ↑b / ↑a since a ≤ b (sorted) and a > 0
-        rw [le_div_iff (Nat.cast_pos.mpr (hpos a (List.mem_cons_self _ _))), one_mul]
+        rw [le_div_iff₀ (Nat.cast_pos.mpr (hpos a (.head _))), one_mul]
         exact Nat.cast_le.mpr
-          ((List.pairwise_cons.mp hsorted).1 b (List.mem_cons_self _ _))
+          ((List.pairwise_cons.mp hsorted).1 b (.head _))
       · exact ih (List.pairwise_cons.mp hsorted).2
           (fun x hx => hpos x (List.mem_cons_of_mem _ hx)) q hmem
 
@@ -305,12 +305,14 @@ theorem h_alpha_ge_one (α : ℝ) (hα : α > 1) (n : ℕ) (hn : n ≥ 2) :
   -- All terms nonneg: ratios ≥ 1 so (r-1) ≥ 0 and rpow of nonneg is nonneg
   have hall_nonneg : ∀ x ∈ (divisorRatios n).map f, 0 ≤ x := by
     intro x hx
-    obtain ⟨q, hq_mem, rfl⟩ := List.mem_map.mp hx
+    obtain ⟨q, hq_mem, rfl⟩ := (List.mem_map.mp hx : _)
     simp only [hf_def]
     exact Real.rpow_nonneg (by
       have : (1 : ℝ) ≤ (q : ℝ) := by exact_mod_cast divisorRatios_ge_one n (by omega) q hq_mem
       linarith) α
-  linarith [List.single_le_sum hall_nonneg (List.mem_map.mpr ⟨r, hr_mem, rfl⟩)]
+  exact le_trans hterm_ge (by
+    apply List.single_le_sum hall_nonneg
+    simp only [List.mem_map]; exact ⟨r, hr_mem, rfl⟩)
 
 /-
 ## Part IV: Special Sequences
@@ -390,15 +392,13 @@ S(n) = Σᵢ (d_{i+1}/dᵢ)
 noncomputable def sumDivisorRatios (n : ℕ) : ℝ :=
   (divisorRatios n).map (fun r => (r : ℝ)) |>.sum
 
-/--
-**Lower bound on sum:**
-Σᵢ (d_{i+1}/dᵢ) > τ(n) + log(n)
-
-Proof idea: Each ratio is ≥ 1, giving τ(n) - 1 terms. The extra log(n)
-comes from the fact that the product of ratios telescopes to n.
+/-
+**Note on sum lower bound:**
+The previously stated axiom Σ(d_{i+1}/dᵢ) > τ(n) + log(n) was **false**
+(counterexample: n=2, sum=2 but τ(2)+log(2)≈2.69).
+The correct bound is Σ ≥ τ(n) - 1 + log(n) (off by 1 in τ count).
+The false axiom has been removed.
 -/
-axiom sum_divisor_ratios_lower_bound (n : ℕ) (hn : n ≥ 2) :
-    sumDivisorRatios n > (tau n : ℝ) + Real.log n
 
 /-
 ## Part VII: Connection to Problem #673
@@ -480,20 +480,19 @@ theorem prime_h_alpha_unbounded :
         have hr := prime_ratio_mem p hp
         have hall : ∀ x ∈ (divisorRatios p).map f, 0 ≤ x := by
           intro x hx
-          obtain ⟨q, hq, rfl⟩ := List.mem_map.mp hx
+          obtain ⟨q, hq, rfl⟩ := (List.mem_map.mp hx : _)
           exact Real.rpow_nonneg (by
             have : (1 : ℝ) ≤ (q : ℝ) := by
               exact_mod_cast divisorRatios_ge_one p (by omega) q hq
             linarith) α
-        have hfmem : f (↑p : ℚ) ∈ (divisorRatios p).map f :=
-          List.mem_map.mpr ⟨_, hr, rfl⟩
-        have : f (↑p : ℚ) ≤ ((divisorRatios p).map f).sum :=
-          List.single_le_sum hall hfmem
-        simp only [Rat.cast_natCast] at this
+        have hsle := by
+          apply List.single_le_sum hall
+          simp only [List.mem_map]; exact ⟨_, hr, rfl⟩
+        simp only [Rat.cast_natCast] at hsle
         linarith
     _ ≥ (p : ℝ) - 1 := by
         calc ((p : ℝ) - 1) ^ α
-            ≥ ((p : ℝ) - 1) ^ (1 : ℝ) := Real.rpow_le_rpow_left hp_sub (by linarith)
+            ≥ ((p : ℝ) - 1) ^ (1 : ℝ) := Real.rpow_le_rpow_of_exponent_le hp_sub (by linarith)
           _ = (p : ℝ) - 1 := Real.rpow_one _
 
 /--
