@@ -2,8 +2,8 @@ import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOvervi
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
 
-// Type assertion for JSON import
-const meta = metaJson as {
+// Type assertion for JSON import (via unknown to handle partial overview)
+const meta = metaJson as unknown as {
   id: string
   title: string
   slug: string
