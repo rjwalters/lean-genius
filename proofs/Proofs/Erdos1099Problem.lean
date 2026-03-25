@@ -201,6 +201,31 @@ gaps penalized more heavily for larger α.
 noncomputable def h_alpha (α : ℝ) (n : ℕ) : ℝ :=
   (divisorRatios n).map (fun r => ((r : ℝ) - 1) ^ α) |>.sum
 
+-- Normalization: Lean 4 elaborates casts via do/pure monadic syntax.
+-- These helpers convert monadic forms back to List.map for proof convenience.
+private theorem flatMap_singleton_eq {α β : Type*} (f : α → β) (l : List α) :
+    l.flatMap (fun a => [f a]) = l.map f := by
+  induction l with
+  | nil => rfl
+  | cons a t ih => simp [List.flatMap_cons, ih]
+
+private theorem flatMap_pure_eq {α : Type*} (l : List α) :
+    l.flatMap (fun a => [a]) = l := by
+  induction l with
+  | nil => rfl
+  | cons a t ih => simp [List.flatMap_cons, ih]
+
+
+-- h_alpha normalizes: monad form = direct map form
+private theorem h_alpha_eq_map_sum (α : ℝ) (n : ℕ) :
+    h_alpha α n = ((divisorRatios n).map (fun r : ℚ => ((↑r : ℝ) - 1) ^ α)).sum := by
+  unfold h_alpha
+  congr 1
+  rw [show (do let a ← divisorRatios n; pure (↑a : ℝ)) =
+    (divisorRatios n).map (Rat.cast : ℚ → ℝ) from flatMap_singleton_eq Rat.cast _,
+    List.map_map]
+  simp only [Function.comp_def]
+
 /-
 h_α(n) can be computed by summing over consecutive pairs.
 This is definitional from the h_alpha definition.
@@ -292,7 +317,7 @@ Proof: The first term is ((d₂/1) - 1)^α ≥ (2-1)^α = 1.
 -/
 theorem h_alpha_ge_one (α : ℝ) (hα : α > 1) (n : ℕ) (hn : n ≥ 2) :
     h_alpha α n ≥ 1 := by
-  unfold h_alpha
+  rw [h_alpha_eq_map_sum]
   obtain ⟨r, hr_mem, hr_ge⟩ := first_ratio_ge_two n hn
   set f := (fun (r : ℚ) => ((r : ℝ) - 1) ^ α) with hf_def
   have hr1 : (1 : ℝ) ≤ (r : ℝ) - 1 := by
@@ -311,8 +336,8 @@ theorem h_alpha_ge_one (α : ℝ) (hα : α > 1) (n : ℕ) (hn : n ≥ 2) :
       have : (1 : ℝ) ≤ (q : ℝ) := by exact_mod_cast divisorRatios_ge_one n (by omega) q hq_mem
       linarith) α
   exact le_trans hterm_ge (by
-    apply List.single_le_sum hall_nonneg
-    simp only [List.mem_map]; exact ⟨r, hr_mem, rfl⟩)
+    have hmem : f r ∈ (divisorRatios n).map f := List.mem_map.mpr ⟨r, hr_mem, rfl⟩
+    exact List.single_le_sum hall_nonneg (f r) hmem)
 
 /-
 ## Part IV: Special Sequences
@@ -445,11 +470,11 @@ private theorem prime_ratio_mem (p : ℕ) (hp : Nat.Prime p) :
       simpa [sortedDivisors] using this
     exact (Nat.mem_divisors.mp this).1
   have hd2_eq : d₂ = p := (hp.eq_one_or_self_of_dvd d₂ hd2_dvd).resolve_left (by omega)
-  subst hd2_eq
-  have : divisorRatios p = List.zipWith (fun a b => (↑a : ℚ) / ↑b)
-      (sortedDivisors p).tail (sortedDivisors p) := rfl
-  rw [this, heq, List.tail_cons, List.zipWith_cons_cons]
-  simp [Nat.cast_one, div_one]
+  rw [hd2_eq] at heq
+  show (↑p : ℚ) ∈ divisorRatios p
+  unfold divisorRatios
+  rw [heq]
+  simp [List.tail_cons, List.zipWith_cons_cons, Nat.cast_one, div_one, List.mem_cons]
 
 /--
 **Example: Prime p**
@@ -475,7 +500,7 @@ theorem prime_h_alpha_unbounded :
     linarith
   calc h_alpha α p
       ≥ ((p : ℝ) - 1) ^ α := by
-        unfold h_alpha
+        rw [h_alpha_eq_map_sum]
         set f := (fun r : ℚ => ((r : ℝ) - 1) ^ α)
         have hr := prime_ratio_mem p hp
         have hall : ∀ x ∈ (divisorRatios p).map f, 0 ≤ x := by
@@ -485,10 +510,10 @@ theorem prime_h_alpha_unbounded :
             have : (1 : ℝ) ≤ (q : ℝ) := by
               exact_mod_cast divisorRatios_ge_one p (by omega) q hq
             linarith) α
-        have hsle := by
-          apply List.single_le_sum hall
-          simp only [List.mem_map]; exact ⟨_, hr, rfl⟩
-        simp only [Rat.cast_natCast] at hsle
+        have hsle : f (↑p : ℚ) ≤ ((divisorRatios p).map f).sum :=
+          List.single_le_sum hall _ (List.mem_map.mpr ⟨_, hr, rfl⟩)
+        -- f (↑p : ℚ) = ((↑(↑p:ℚ):ℝ) - 1)^α = ((↑p:ℝ) - 1)^α
+        simp only [f, Rat.cast_natCast] at hsle
         linarith
     _ ≥ (p : ℝ) - 1 := by
         calc ((p : ℝ) - 1) ^ α
@@ -506,47 +531,49 @@ All consecutive divisor ratios = 2, so h_α(2^k) = k·(2-1)^α = k.
 Proof: both lists are sorted permutations of the same multiset. -/
 private theorem sortedDivisors_two_pow (k : ℕ) :
     sortedDivisors (2 ^ k) = (List.range (k + 1)).map (HPow.hPow 2) := by
+  have hprime : Nat.Prime 2 := by decide
   unfold sortedDivisors
-  have hp : Nat.Prime 2 := by norm_num
-  rw [Nat.divisors_prime_pow hp]
-  -- Target list properties
-  have T_nodup : ((List.range (k + 1)).map (HPow.hPow 2)).Nodup :=
-    List.Nodup.map (Nat.pow_right_injective (by norm_num : 1 < 2)) List.nodup_range
-  have T_sorted : ((List.range (k + 1)).map (HPow.hPow 2)).Pairwise (· ≤ ·) := by
-    rw [List.pairwise_map]
-    exact List.Pairwise.imp (fun hab => Nat.pow_le_pow_right (by omega) (le_of_lt hab))
-      List.pairwise_lt_range
-  -- Build perm proof with explicit types (needed for typeclass resolution)
-  set S := ((Finset.range (k + 1)).map
-    ⟨(HPow.hPow 2 : ℕ → ℕ), Nat.pow_right_injective hp.one_lt⟩) with hS_def
-  have S_nodup : (S.sort (· ≤ ·)).Nodup := Finset.sort_nodup _ _
-  have S_sorted : (S.sort (· ≤ ·)).Pairwise (· ≤ ·) := Finset.pairwise_sort _ _
-  have hmem : ∀ x, x ∈ S.sort (· ≤ ·) ↔
-      x ∈ (List.range (k + 1)).map (HPow.hPow 2) := by
-    intro x; rw [Finset.mem_sort (r := (· ≤ ·))]
-    simp only [hS_def, Finset.mem_map, Finset.mem_range, Function.Embedding.coeFn_mk,
-               List.mem_map, List.mem_range]
-  have hperm : (S.sort (· ≤ ·)).Perm ((List.range (k + 1)).map (HPow.hPow 2)) :=
-    (List.perm_ext_iff_of_nodup S_nodup T_nodup).mpr hmem
-  exact hperm.eq_of_pairwise (fun _ _ _ _ h1 h2 => le_antisymm h1 h2) S_sorted T_sorted
+  rw [Nat.divisors_prime_pow hprime]
+  -- Both sides are sorted (pairwise ≤) and permutations → equal
+  -- First show they're permutations via nodup + same members
+  have hinj : Function.Injective (HPow.hPow 2 : ℕ → ℕ) := by
+    intro a b h; exact Nat.pow_right_injective (by omega) h
+  have hnodup_target : ((List.range (k + 1)).map (HPow.hPow 2 : ℕ → ℕ)).Nodup :=
+    List.nodup_range.map hinj
+  have hnodup_sort : (((Finset.range (k + 1)).map ⟨HPow.hPow 2, hinj⟩).sort
+      (· ≤ ·)).Nodup := Finset.sort_nodup _ _
+  have hperm : ((List.range (k + 1)).map (HPow.hPow 2 : ℕ → ℕ)).Perm
+      (((Finset.range (k + 1)).map ⟨HPow.hPow 2, hinj⟩).sort (· ≤ ·)) := by
+    rw [List.perm_ext_iff_of_nodup hnodup_target hnodup_sort]
+    intro a
+    simp [Finset.mem_sort, Finset.mem_map, List.mem_map, Finset.mem_range, List.mem_range]
+  symm
+  exact List.eq_of_perm_of_sorted
+    (fun _ _ _ _ hab hba => le_antisymm hab hba)
+    (by simp only [List.pairwise_map]
+        exact List.pairwise_lt_range.imp fun h => Nat.pow_le_pow_right (by omega) h.le)
+    (Finset.pairwise_sort _ _)
+    hperm
 
-/-- Normalize monadic list map: l.flatMap (fun a => [f a]) = l.map f (general version) -/
-private theorem flatMap_singleton_eq_map' {α β : Type} (f : α → β) (l : List α) :
-    l.flatMap (fun a => [f a]) = l.map f := by
-  induction l with
-  | nil => rfl
-  | cons a t ih => simp [List.flatMap_cons, ih]
+/-- In the List monad, `do let a ← l; pure ↑a` normalizes to `l.map Nat.cast` for ℕ→ℚ. -/
+private theorem list_bind_pure_natCast (l : List ℕ) :
+    (do let a ← l; pure (↑a : ℚ)) = l.map (Nat.cast · : ℕ → ℚ) :=
+  flatMap_singleton_eq Nat.cast l
 
 /-- The consecutive divisor ratios of 2^k consist of k copies of 2.
 Each ratio d_{i+1}/d_i = 2^(i+1)/2^i = 2.
-
-Note: The proof is blocked by Lean 4's elaboration of the ℕ→ℚ cast inside
-`zipWith (fun a b => (↑a : ℚ) / ↑b)`, which normalizes to monadic do/let/pure
-form, preventing standard List rewrite lemmas from matching. The mathematical
-content is straightforward: each ratio 2^(i+1)/2^i = 2. -/
+Proved extensionally via List.ext_getElem after normalizing monadic ℕ→ℚ casts. -/
 private theorem divisorRatios_two_pow (k : ℕ) :
     divisorRatios (2 ^ k) = List.replicate k (2 : ℚ) := by
-  sorry -- Lean 4 monadic normalization blocker; see docstring above
+  simp only [divisorRatios, sortedDivisors_two_pow, list_bind_pure_natCast]
+  apply List.ext_getElem
+  · simp [List.length_zipWith]
+  · intro i h1 h2
+    simp only [List.getElem_zipWith, List.getElem_map, List.getElem_tail,
+               List.getElem_range, List.getElem_replicate]
+    push_cast
+    rw [pow_succ]
+    field_simp
 
 private theorem flatMap_singleton_eq_map (f : ℚ → ℝ) (l : List ℚ) :
     l.flatMap (fun a => [f a]) = l.map f := by
