@@ -197,5 +197,42 @@
     "axiomCount": 7,
     "theoremCount": 4,
     "definitionCount": 8
-  }
+  },
+  "references": [
+    {
+      "authors": "Voss, Heinz-J\u00fcrgen",
+      "title": "\u00dcber Kreise in Graphen",
+      "year": "1982",
+      "venue": "VEB Deutscher Verlag der Wissenschaften, Berlin",
+      "note": "Proved the affirmative answer to Problem 1091: every K\u2084-free graph with \u03c7(G) = 4 contains an odd cycle with at least two diagonals"
+    },
+    {
+      "authors": "Larson, Jean A.",
+      "title": "Locally K\u2083-free colorings and the chromatic number",
+      "year": "1979",
+      "venue": "Journal of Combinatorial Theory, Series B, 27(1), pp. 1\u20137",
+      "note": "Precursor to Voss's result, establishing structural constraints on odd cycles in locally colorable graphs"
+    },
+    {
+      "authors": "Erd\u0151s, Paul",
+      "title": "Problems and results in graph theory and combinatorial analysis",
+      "year": "1981",
+      "venue": "Graph Theory and Related Topics (Waterloo, 1977), pp. 153\u2013163, Academic Press",
+      "note": "Contains the original statement of Problem 1091 and the general f(r) question for locally (r-1)-colorable graphs"
+    },
+    {
+      "authors": "Mycielski, Jan",
+      "title": "Sur le coloriage des graphes",
+      "year": "1955",
+      "venue": "Colloquium Mathematicum, 3, pp. 161\u2013162",
+      "note": "Introduced the Mycielski construction giving triangle-free graphs with arbitrarily high chromatic number \u2014 the broader context for studying cycle structure in high-chromatic K\u2084-free graphs"
+    },
+    {
+      "authors": "Gy\u00e1rf\u00e1s, Andr\u00e1s",
+      "title": "Problems from the world surrounding perfect graphs",
+      "year": "1987",
+      "venue": "Applicationes Mathematicae, 19(3\u20134), pp. 413\u2013441",
+      "note": "Survey including structural graph theory problems related to chromatic number and forbidden subgraphs, providing context for the Erd\u0151s-Voss result"
+    }
+  ]
 }
