@@ -66,14 +66,16 @@ set_option linter.unusedVariables false
 namespace AbelRuffiniOQ04OQ01
 
 /-- No element of order 5 commutes with any element of order 3 in S₅.
-    Used to prove no subgroup of S₅ has order 15. -/
-theorem perm_fin5_order5_order3_not_commute :
+    Used to prove no subgroup of S₅ has order 15.
+    Note: `private` to avoid name collision with InverseGaloisA5. -/
+private theorem perm_fin5_order5_order3_not_commute :
     ∀ (σ τ : Equiv.Perm (Fin 5)),
       σ ^ 5 = 1 → σ ≠ 1 → τ ^ 3 = 1 → τ ≠ 1 → σ * τ ≠ τ * σ := by
   native_decide
 
-/-- No element of S₅ has order 15. -/
-theorem perm_fin5_no_order_15 :
+/-- No element of S₅ has order 15.
+    Note: `private` to avoid name collision with InverseGaloisA5. -/
+private theorem perm_fin5_no_order_15 :
     ∀ σ : Equiv.Perm (Fin 5), σ ^ 15 = 1 → σ ^ 5 = 1 ∨ σ ^ 3 = 1 := by
   native_decide
 

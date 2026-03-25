@@ -32,12 +32,12 @@
       "Group theory (symmetric groups, alternating groups, solvability, simplicity)",
       "Field extensions (finrank, tower law)"
     ],
-    "assumptions": "0 axioms declared in this file. 1 sorry: the open Inverse Galois Conjecture (intentional). Imports InverseGaloisA5.lean (1 axiom: three_dvd_gal_card) and AbelRuffiniOQ04OQ01.lean (2 axioms: three_dvd_gal_card, gal_has_odd_perm) for the census theorem.",
+    "assumptions": "0 axioms declared in this file. 1 sorry: the open Inverse Galois Conjecture (intentional). Census theorem now sorry-free via imports of InverseGaloisA5.lean (1 axiom: Dedekind) and AbelRuffiniOQ04OQ01.lean (2 axioms: Dedekind). Commutator theorem [S5,S5]=A5 fully proved.",
     "leanFile": {
-      "lineCount": 591,
-      "theoremCount": 39,
+      "lineCount": 723,
+      "theoremCount": 47,
       "lemmaCount": 0,
-      "defCount": 0,
+      "defCount": 1,
       "axiomCount": 0,
       "sorryCount": 1,
       "imports": [
@@ -46,7 +46,7 @@
         "Proofs.InverseGaloisA5",
         "Proofs.AbelRuffiniOQ04OQ01"
       ],
-      "note": "Key results: sn_solvable_iff (Sn solvable iff n<=4), a5_simple, a5_commutator_eq_top (A5 is perfect), finrank_over_fixed_field ([K:K^H]=|H|), finrank_fixed_field_over_base ([K^H:F]=[G:H]), cayley_card (Cayley embedding), inverse_galois_conjecture (open problem). Census of 18+ explicitly realized groups."
+      "note": "Key results: sn_solvable_iff, an_solvable_iff, a5_simple, a5_commutator_eq_top, s5_commutator_eq_alternating ([S5,S5]=A5), finrank_over_fixed_field, finrank_fixed_field_over_base, cayley_card, nonsolvable_realized_orders (sorry-free census), inverse_galois_conjecture (open). Census of 18+ explicitly realized groups."
     },
     "relatedProblems": [
       {
@@ -54,7 +54,7 @@
         "relationship": "Parent entry stating the Inverse Galois Problem and axiomatizing Shafarevich's theorem for solvable groups"
       }
     ],
-    "lineCount": 591,
+    "lineCount": 723,
     "mathlib_version": "4.26.0"
   },
   "overview": {
