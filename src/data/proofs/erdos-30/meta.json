@@ -168,6 +168,16 @@
       "targetId": "erdos-432",
       "relationship": "related",
       "description": "Both study structural constraints on sumsets; #30 requires unique pairwise sums while #432 requires pairwise coprimality of sumsets"
+    },
+    {
+      "targetId": "erdos-340-greedy-sidon",
+      "relationship": "specialization",
+      "description": "The greedy Sidon construction (Mian–Chowla sequence) builds the lexicographically first Sidon set by always choosing the smallest integer whose pairwise sums don't collide. Problem #30 asks for the maximum size $h(N)$ of a Sidon set in $[N]$; the greedy construction gives a lower bound but is not optimal — the gap between greedy and optimal is itself an open question"
+    },
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Problem #1 (distinct subset sums) and Problem #30 (Sidon/B₂ sets) are dual perspectives on the same theme: #1 requires ALL subset sums to be distinct, while #30 requires only PAIRWISE sums to be distinct. The maximum sizes differ dramatically: $O(\\log N)$ for #1 vs $\\Theta(\\sqrt{N})$ for #30, reflecting how the constraint strength controls set density"
     }
   ],
   "leanFile": {

@@ -146,6 +146,11 @@
       "targetId": "erdos-1004",
       "relationship": "related",
       "description": "Erdős Problem #1004 studies the sum ∑ σ(n)/n over structured sets, connecting the local behavior of σ(n)/n at k-perfect numbers to global averaging results. Both problems probe the same extremal arithmetic landscape."
+    },
+    {
+      "targetId": "perfect-numbers",
+      "relationship": "specialization",
+      "description": "Perfect numbers ($\\sigma(n) = 2n$, i.e., $k = 2$) are the foundational case of $k$-perfect numbers. Euclid proved even perfect numbers have the form $2^{p-1}(2^p - 1)$ when $2^p - 1$ is prime (Mersenne prime). Problem #1053 asks whether the sequence of $k$-perfect numbers for all $k \\geq 2$ grows fast enough — a generalization of the ancient question about the distribution of perfect numbers themselves"
     }
   ],
   "references": [

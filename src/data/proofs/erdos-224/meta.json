@@ -171,7 +171,12 @@
     {
       "targetId": "erdos-225",
       "relationship": "related",
-      "description": "Related formalization"
+      "description": "Problem #225 is a companion problem studying related geometric extremal questions about point configurations. Both concern how the structure of point sets in $\\mathbb{R}^d$ constrains the angles they determine"
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "foundational",
+      "description": "The triangle inequality underpins the angle analysis: obtuse angles in a triangle $ABC$ correspond to $|AC|^2 > |AB|^2 + |BC|^2$ (the cosine rule generalization). Problem #224's hypercube construction avoids obtuse angles precisely because $\\{0,1\\}^d$ vertices satisfy the opposite inequality for all triples"
     }
   ]
 }

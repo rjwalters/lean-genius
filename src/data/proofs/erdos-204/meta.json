@@ -171,6 +171,21 @@
       "targetId": "erdos-543",
       "relationship": "thematic",
       "description": "Both problems concern combinatorial constraints on covering/spanning with algebraic conditions on moduli"
+    },
+    {
+      "targetId": "erdos-23",
+      "relationship": "related",
+      "description": "Problem #23 is Erdős's original covering systems problem (minimum modulus). Both #204 and #23 study covering systems — partitions of $\\mathbb{Z}$ by arithmetic progressions with specified moduli — from different angles: #23 asks about minimum modulus, #204 asks about disjointness conditions among the progressions"
+    },
+    {
+      "targetId": "erdos-273",
+      "relationship": "related",
+      "description": "Problem #273 concerns covering congruences with prescribed residue classes. Both #204 and #273 study how divisor-based arithmetic progressions can cover or partition the integers, with #204 focused on the impossibility of disjoint covering and #273 on reciprocal sum conditions for coverage"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "foundational",
+      "description": "The Chinese Remainder Theorem is the structural foundation for covering systems: CRT determines when arithmetic progressions with coprime moduli can be combined into a single progression. Problem #204's disjointness condition (overlaps only for coprime moduli) is precisely the CRT-compatible case — and Adenwalla's theorem shows this is too restrictive to achieve a covering"
     }
   ],
   "conclusion": {

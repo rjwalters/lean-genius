@@ -180,6 +180,11 @@
       "targetId": "fundamental-theorem-algebra",
       "relationship": "related",
       "description": "Both concern the behavior of complex polynomials/entire functions. FTA guarantees roots for polynomials; Problem #227 studies how the dominant term of an entire function relates to its maximum modulus — both exploit the interplay between Taylor coefficients and function values"
+    },
+    {
+      "targetId": "erdos-1048",
+      "relationship": "related",
+      "description": "Problem #1048 studies sublevel sets of polynomials in the complex plane — another facet of the maximum modulus principle. Both #227 and #1048 concern the fine structure of how entire functions or polynomials distribute their values over disks $|z| = r$, with #227 focusing on the maximum term vs maximum modulus ratio and #1048 on the geometry of level sets"
     }
   ],
   "leanFile": {

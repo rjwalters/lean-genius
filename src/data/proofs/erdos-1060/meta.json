@@ -149,6 +149,21 @@
       "relationship": "thematic",
       "description": "Both problems concern restricted prime factorization of expressions involving factorials or divisor functions — the interplay between rapid growth and few prime factors",
       "targetId": "erdos-1058"
+    },
+    {
+      "targetId": "perfect-numbers",
+      "relationship": "related",
+      "description": "Perfect numbers satisfy $\\sigma(n) = 2n$, hence $g(n) = n \\cdot \\sigma(n) = 2n^2$. This means $f(2n^2) \\geq 1$ for every perfect number $n$. The distribution of perfect numbers (known to be connected to Mersenne primes) directly influences the range of $g$ and hence the behavior of $f$"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient $\\varphi(n)$ and the divisor sum $\\sigma(n)$ are related multiplicative functions satisfying $\\varphi(n) \\cdot \\sigma(n) \\geq n^2$ (with equality only for $n = 1$). The counting function $f(n) = |\\{k : k\\sigma(k) = n\\}|$ in Problem #1060 is analogous to counting pre-images under $k \\mapsto k\\varphi(k)$, with both problems probing the injectivity and fibre structure of multiplicative-type functions"
+    },
+    {
+      "targetId": "erdos-1053",
+      "relationship": "related",
+      "description": "Problem #1053 studies growth rates of $k$-perfect numbers where $\\sigma(n) = kn$. Both problems involve the divisor sum function $\\sigma$ in a counting/distribution context: #1060 counts solutions to $k\\sigma(k) = n$ while #1053 studies the sequence of $n$ with $\\sigma(n)/n \\in \\mathbb{Z}$"
     }
   ],
   "conclusion": {

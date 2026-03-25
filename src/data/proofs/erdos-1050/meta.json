@@ -213,6 +213,11 @@
       "targetId": "liouville-theorem",
       "relationship": "related",
       "description": "Liouville's approximation theorem bounds how well algebraic numbers can be approximated by rationals: |α - p/q| > c/q^n for algebraic α of degree n. Borwein's irrationality proof for T(q,r) works by showing the approximation quality EXCEEDS what any rational (degree 1) number allows — the same philosophy, specialized to degree 1"
+    },
+    {
+      "targetId": "nth-root-irrational",
+      "relationship": "foundational",
+      "description": "The irrationality of $m^{1/n}$ for non-perfect-power $m$ is the simplest algebraic irrationality, proved by descent. Borwein's irrationality of $T(q,r)$ is a transcendental-function analogue: where $m^{1/n}$ is irrational because no rational satisfies $x^n = m$, the series $T(q,r)$ is irrational because its Padé approximants converge too quickly for any rational value — upgrading algebraic impossibility to analytic impossibility"
     }
   ],
   "leanFile": {

@@ -278,6 +278,16 @@
       "targetId": "erdos-458",
       "relationship": "related",
       "description": "Consecutive prime sum deviations"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The Prime Number Theorem gives π(x) ~ x/log x, and Problem #454 studies deviations of prime sums from their PNT-predicted values. The error terms in the PNT (connected to zeros of ζ(s)) directly control the sum deviations studied here"
+    },
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Both concern the fine distribution of primes beyond PNT: bounded prime gaps (Maynard-Tao) shows primes cluster more than average, while #454 studies how prime sums deviate from their expected values — complementary perspectives on prime irregularity"
     }
   ]
 }

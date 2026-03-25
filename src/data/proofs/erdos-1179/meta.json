@@ -179,6 +179,11 @@
       "targetId": "erdos-543",
       "relationship": "related-problem",
       "description": "Problem #543 asks about spanning (f(N) = min k for random k-subset to represent every element). Problem #1179 is the stronger uniformity version; uniform_implies_spanning shows #1179 ⟹ #543"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both concern how large random structures inevitably contain ordered substructure. Ramsey's theorem guarantees monochromatic cliques in random colorings; Problem #1179 shows random subsets of abelian groups eventually represent all elements uniformly — a probabilistic density counterpart to Ramsey's combinatorial inevitability"
     }
   ],
   "conclusion": {

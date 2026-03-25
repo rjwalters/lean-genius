@@ -150,7 +150,17 @@
     {
       "targetId": "erdos-1097",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: additive combinatorics, arithmetic progressions"
+      "description": "Problem #1097 studies common differences in three-term arithmetic progressions — a refinement of the AP-density question. Both problems explore how dense sets must contain arithmetic structure, with #201 addressing the general existence and #1097 focusing on the distribution of common differences"
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "foundational",
+      "description": "Szemerédi's theorem (1975) is the definitive answer to the density version of the AP question: every set of positive upper density contains arbitrarily long arithmetic progressions. Problem #201 explores specific quantitative aspects and extensions of this foundational result"
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "The Szemerédi Regularity Lemma is the key structural tool used in the original proof of Szemerédi's theorem. It partitions large graphs into pseudo-random bipartite subgraphs, enabling the extraction of arithmetic progressions from dense sets — the core technique underlying the results relevant to Problem #201"
     }
   ],
   "references": [

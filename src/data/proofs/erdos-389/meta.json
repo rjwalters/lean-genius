@@ -122,6 +122,16 @@
       "targetId": "erdos-28",
       "relationship": "related",
       "description": "Both concern multiplicative structure of consecutive integer products: #389 asks about divisibility of falling factorials, #28 concerns additive representations. Both sit in Erdős's program on the fine structure of integer sequences"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "Binomial coefficients C(n,k) = n!/(k!(n-k)!) measure divisibility of products of consecutive integers. Problem #389 studies when products of k consecutive integers must be divisible by specific values — a question directly connected to the divisibility properties of binomial coefficients and factorials"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "related",
+      "description": "Lagrange's theorem on polynomial congruences (at most d roots mod p for degree d) constrains how products of consecutive integers behave modulo primes, providing tools for the divisibility analysis in Problem #389"
     }
   ],
   "references": [
