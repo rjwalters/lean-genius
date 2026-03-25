@@ -20,11 +20,7 @@
   - Guy, R.K., "Unsolved Problems in Number Theory" (2004), Problem B16
 -/
 
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Data.Nat.Prime.Defs
-import Mathlib.Data.Set.Finite.Basic
+import Mathlib
 
 open Nat Finset
 
@@ -58,25 +54,70 @@ def IsPowerful (n : ℕ) : Prop := IsKFull 2 n
 def IsCubeful (n : ℕ) : Prop := IsKFull 3 n
 
 /-
+## Structural Properties
+-/
+
+/-- The two definitions of k-full are equivalent for nonzero n. -/
+theorem isKFull_iff_isKFull' {k n : ℕ} (hn : n ≠ 0) : IsKFull k n ↔ IsKFull' k n := by
+  constructor
+  · intro h p hmem
+    have ⟨hp, hdvd, _⟩ := Nat.mem_primeFactors.mp hmem
+    exact h p hp hdvd
+  · intro h p hp hdvd
+    exact h p (Nat.mem_primeFactors.mpr ⟨hp, hdvd, hn⟩)
+
+/-- If n is k-full and j ≤ k, then n is also j-full. -/
+theorem IsKFull.mono {j k n : ℕ} (hjk : j ≤ k) (h : IsKFull k n) : IsKFull j n :=
+  fun p hp hdvd => le_trans hjk (h p hp hdvd)
+
+/-
 ## Basic Properties of k-Full Numbers
 -/
 
 /-- 1 is vacuously k-full for any k (no prime factors). -/
 theorem one_is_kfull (k : ℕ) : IsKFull k 1 := by
   intro p hp hdiv
-  -- p | 1 implies p = 1, but p is prime so p ≥ 2, contradiction
-  have h1 : p = 1 := Nat.dvd_one.mp hdiv
-  exact absurd h1 (Nat.Prime.ne_one hp)
+  exact absurd (Nat.dvd_one.mp hdiv) hp.ne_one
+
+/-
+## Helper Lemmas
+-/
+
+/-- If p^k divides n (with p prime and n ≠ 0), then k ≤ n.factorization p.
+Uses factorization_le_iff_dvd and evaluates the factorization of the prime power. -/
+private theorem le_factorization_of_pow_dvd {p k n : ℕ} (hp : p.Prime) (hn : n ≠ 0)
+    (h : p ^ k ∣ n) : k ≤ n.factorization p := by
+  have h1 := ((Nat.factorization_le_iff_dvd (pow_ne_zero k hp.ne_zero) hn).mpr h) p
+  simp only [Nat.factorization_pow, Finsupp.smul_apply, smul_eq_mul,
+    hp.factorization, Finsupp.single_eq_same, mul_one] at h1
+  exact h1
+
+/-- If p is prime and divides q^k where q is also prime, then p = q. -/
+private theorem eq_of_prime_of_dvd_prime_pow {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
+    {k : ℕ} (h : p ∣ q ^ k) : p = q :=
+  (hq.eq_one_or_self_of_dvd p (hp.dvd_of_dvd_pow h)).resolve_left hp.ne_one
 
 /-
 ## Examples of k-Full Numbers
 -/
 
 /-- 8 = 2³ is 3-full (cubeful). -/
-axiom eight_is_cubeful : IsCubeful 8
+theorem eight_is_cubeful : IsCubeful 8 := by
+  intro p hp hdvd
+  have h8 : (8 : ℕ) = 2 ^ 3 := by norm_num
+  rw [h8] at hdvd
+  have hp2 : p = 2 := eq_of_prime_of_dvd_prime_pow hp (by norm_num) hdvd
+  subst hp2
+  exact le_factorization_of_pow_dvd hp (by norm_num) (by norm_num : 2 ^ 3 ∣ 8)
 
 /-- 9 = 3² is 2-full (powerful). -/
-axiom nine_is_powerful : IsPowerful 9
+theorem nine_is_powerful : IsPowerful 9 := by
+  intro p hp hdvd
+  have h9 : (9 : ℕ) = 3 ^ 2 := by norm_num
+  rw [h9] at hdvd
+  have hp3 : p = 3 := eq_of_prime_of_dvd_prime_pow hp (by norm_num) hdvd
+  subst hp3
+  exact le_factorization_of_pow_dvd hp (by norm_num) (by norm_num : 3 ^ 2 ∣ 9)
 
 /-
 ## The Main Question: 2-Full n with 3-Full n+1
@@ -106,10 +147,33 @@ def CubefulPowerfulPairs : Set ℕ := { n | IsCubeful n ∧ IsPowerful (n + 1) }
 theorem eight_nine_pair : 8 ∈ CubefulPowerfulPairs := ⟨eight_is_cubeful, nine_is_powerful⟩
 
 /-- 12167 = 23³ is cubeful. -/
-axiom cubeful_12167 : IsCubeful 12167
+theorem cubeful_12167 : IsCubeful 12167 := by
+  intro p hp hdvd
+  have h : (12167 : ℕ) = 23 ^ 3 := by norm_num
+  rw [h] at hdvd
+  have hp23 : p = 23 := eq_of_prime_of_dvd_prime_pow hp (by norm_num) hdvd
+  subst hp23
+  exact le_factorization_of_pow_dvd hp (by norm_num) (by norm_num : 23 ^ 3 ∣ 12167)
 
 /-- 12168 = 2³ × 3² × 13² is powerful. -/
-axiom powerful_12168 : IsPowerful 12168
+theorem powerful_12168 : IsPowerful 12168 := by
+  intro p hp hdvd
+  have hf : (12168 : ℕ) = 2 ^ 3 * (3 ^ 2 * 13 ^ 2) := by norm_num
+  rw [hf] at hdvd
+  rcases hp.dvd_or_dvd hdvd with h1 | h1
+  · -- p | 2^3 → p = 2
+    have := eq_of_prime_of_dvd_prime_pow hp (by norm_num) h1
+    subst this
+    exact le_factorization_of_pow_dvd hp (by norm_num) (by norm_num : 2 ^ 2 ∣ 12168)
+  · rcases hp.dvd_or_dvd h1 with h2 | h2
+    · -- p | 3^2 → p = 3
+      have := eq_of_prime_of_dvd_prime_pow hp (by norm_num) h2
+      subst this
+      exact le_factorization_of_pow_dvd hp (by norm_num) (by norm_num : 3 ^ 2 ∣ 12168)
+    · -- p | 13^2 → p = 13
+      have := eq_of_prime_of_dvd_prime_pow hp (by norm_num) h2
+      subst this
+      exact le_factorization_of_pow_dvd hp (by norm_num) (by norm_num : 13 ^ 2 ∣ 12168)
 
 /-- (12167, 12168) is a cubeful-powerful pair (Golomb 1970). -/
 theorem golomb_pair : 12167 ∈ CubefulPowerfulPairs :=
@@ -122,8 +186,10 @@ Erdős originally asked Mahler about consecutive powerful numbers.
 Mahler immediately showed infinitely many exist via Pell equations.
 -/
 
-/-- 8 = 2³ has 2 appearing with multiplicity 3 ≥ 2, so 8 is powerful. -/
-axiom eight_is_powerful : IsPowerful 8
+/-- 8 = 2³ has 2 appearing with multiplicity 3 ≥ 2, so 8 is powerful.
+Follows from eight_is_cubeful by monotonicity (cubeful → powerful). -/
+theorem eight_is_powerful : IsPowerful 8 :=
+  eight_is_cubeful.mono (by omega)
 
 /-- 8 and 9 are consecutive powerful numbers. -/
 theorem eight_nine_powerful : IsPowerful 8 ∧ IsPowerful 9 :=
