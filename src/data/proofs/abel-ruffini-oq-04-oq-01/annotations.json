@@ -474,5 +474,58 @@
       "no_subgroup_order_15",
       "gal_card_ne_30"
     ]
+  },
+  {
+    "id": "ann-abeloq04oq01-odd-perm",
+    "proofId": "abel-ruffini-oq-04-oq-01",
+    "range": {
+      "startLine": 720,
+      "endLine": 819
+    },
+    "type": "technique",
+    "title": "Galois Group Contains an Odd Permutation (Proved from Axioms)",
+    "content": "The key theorem `gal_has_odd_perm` proves that the Galois group of $x^5-4x+2$ contains an odd permutation, meaning $\\text{Gal} \\not\\subset A_5$. This was formerly axiomatized but is now a **proved theorem** from two sub-axioms (B1: $\\text{disc}(p) < 0$, B2: $\\Delta^2 = \\text{disc}(p)$).\n\nThe proof is a beautiful application of the Fundamental Theorem of Galois Theory (FTGT): assume for contradiction that all $\\sigma \\in \\text{Gal}$ are even permutations ($\\text{sign}(\\sigma) = +1$). By `gal_acts_on_vandermondeProduct_p`, $\\sigma(\\Delta) = \\text{sign}(\\sigma) \\cdot \\Delta = \\Delta$ for all $\\sigma$. So the Vandermonde product $\\Delta$ is fixed by the entire Galois group. By the FTGT, $\\Delta \\in \\mathbb{Q}$ — it lies in the fixed field of $\\text{Gal}$, which is $\\mathbb{Q}$ since the extension is Galois. Thus $\\Delta = q$ for some $q \\in \\mathbb{Q}$, giving $\\Delta^2 = q^2 \\geq 0$. But axiom B2 says $\\Delta^2 = \\text{disc}(p)$ and axiom B1 says $\\text{disc}(p) < 0$, contradicting $q^2 \\geq 0$.\n\nThis proof connects three mathematical threads: the Vandermonde determinant and alternating functions, the Fundamental Theorem of Galois Theory (fixed fields), and the sign criterion for discriminants. The discriminant $\\text{disc}(x^5-4x+2) = -212144 < 0$ is negative precisely because the polynomial has an odd number of pairs of complex conjugate roots (here, 1 pair), which makes $\\Delta$ purely imaginary rather than real.",
+    "mathContext": "Theorem: $\\exists \\sigma \\in \\text{Gal}(p/\\mathbb{Q}),\\, \\text{sign}(\\sigma) = -1$. Proof by contradiction: if all signs are $+1$, then $\\sigma(\\Delta) = \\Delta$ for all $\\sigma$, so $\\Delta \\in \\mathbb{Q}$ (FTGT). Then $\\Delta^2 = q^2 \\geq 0$, contradicting $\\Delta^2 = \\text{disc}(p) = -212144 < 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Vandermonde determinant",
+      "alternating functions",
+      "discriminant sign",
+      "Fundamental Theorem of Galois Theory",
+      "fixed field",
+      "permutation sign",
+      "complex conjugate roots"
+    ],
+    "prerequisites": [
+      "Galois theory (FTGT)",
+      "discriminant theory",
+      "linear algebra (determinants)"
+    ]
+  },
+  {
+    "id": "ann-abeloq04oq01-case-elim",
+    "proofId": "abel-ruffini-oq-04-oq-01",
+    "range": {
+      "startLine": 821,
+      "endLine": 862
+    },
+    "type": "technique",
+    "title": "Case Elimination: |Gal| ≠ 15 and |Gal| ≠ 30",
+    "content": "`gal_card_ne_15` and `gal_card_ne_30` prove that the Galois group cannot have order 15 or 30, narrowing the candidates to $\\{60, 120\\}$. Both proofs follow the same pattern: construct the embedding $\\phi : \\text{Gal} \\hookrightarrow S_5$ via `galActionHom` composed with the root-set/Fin 5 equivalence, then show that the image subgroup has the given cardinality, and apply the previously proved `no_subgroup_order_15` or `no_subgroup_order_30` to derive a contradiction.\n\nThe order-15 elimination uses Sylow theory: a subgroup of order 15 = 3·5 would have unique Sylow 3- and 5-subgroups (by index constraints in $S_5$), forcing it to be cyclic — but $S_5$ has no element of order 15 (largest element order in $S_5$ is $\\text{lcm}(1,2,3,4,5) = 60$, but 15 = lcm(3,5) requires a permutation with a 3-cycle and a disjoint 5-cycle, impossible on 5 elements). The order-30 elimination uses the simplicity of $A_5$: a subgroup of order 30 = $|A_5|/2$ would be a normal subgroup of $A_5$ of index 2, contradicting $A_5$'s simplicity.",
+    "mathContext": "$|G| \\neq 15$: no subgroup of $S_5$ has order 15 (Sylow theory — unique $P_3$, $P_5$ forces cyclic, but no element of order 15 in $S_5$). $|G| \\neq 30$: $A_5$ is simple with $|A_5| = 60$, so no index-2 subgroup exists in $A_5$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Sylow theory",
+      "cyclic groups",
+      "element order",
+      "simplicity of A5",
+      "normal subgroup",
+      "index of subgroup"
+    ],
+    "prerequisites": [
+      "Sylow theorems",
+      "group theory (normal subgroups)",
+      "simplicity of A5"
+    ]
   }
 ]
