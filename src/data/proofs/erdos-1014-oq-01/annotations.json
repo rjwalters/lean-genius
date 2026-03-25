@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-imports-namespace",
+    "proofId": "erdos-1014-oq-01",
+    "range": { "startLine": 28, "endLine": 32 },
+    "type": "context",
+    "title": "Mathlib Import and Namespace Setup",
+    "content": "A single `import Mathlib` brings in the full library, providing `Real.log`, casting lemmas (`Nat.cast_le`, `exact_mod_cast`), division monotonicity (`div_le_div_of_nonneg_right`, `div_le_div_of_nonneg_left`), and absolute value (`abs_of_nonneg`). The `open Real` directive makes `log` available without qualification. The `Erdos1014OQ01` namespace scopes all declarations, avoiding collision with the parent `Erdos1014Problem` formalization.",
+    "mathContext": "The proof operates in $\\mathbb{R}$ after casting natural-number Ramsey values via `(ramseyNumber k l : \\mathbb{R})$. Lean's `Nat.cast` coercion preserves order ($\\leq$) and arithmetic, allowing seamless translation between the combinatorial setting ($\\mathbb{N}$) and the analytic setting ($\\mathbb{R}$).",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.cast coercion", "Real.log", "namespace isolation"],
+    "prerequisites": ["Lean 4 import system", "Mathlib real analysis"]
+  },
+  {
     "id": "ann-header",
     "proofId": "erdos-1014-oq-01",
     "range": { "startLine": 1, "endLine": 26 },
