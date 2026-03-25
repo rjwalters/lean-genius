@@ -191,10 +191,27 @@
       "Mathlib.Tactic"
     ],
     "opens": [],
-    "namespace": null,
+    "namespace": "",
     "lineCount": 125,
     "axiomCount": 5,
     "theoremCount": 3,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "mainTheorems": [
+      {
+        "name": "repUnbounded_iff",
+        "type": "equivalence",
+        "description": "Characterizes unbounded representation: ∀ B, ∃ n, repCount A n > B ↔ ¬∃ B, ∀ n, repCount A n ≤ B"
+      },
+      {
+        "name": "bounded_rep_not_unbounded",
+        "type": "original",
+        "description": "If repCount is bounded by B for all n, then the representation function is not unbounded"
+      },
+      {
+        "name": "basis2_iff",
+        "type": "equivalence",
+        "description": "Equivalence of two formulations of asymptotic basis of order 2"
+      }
+    ]
   }
 }
