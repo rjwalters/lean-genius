@@ -158,6 +158,11 @@
       "targetId": "cayley-hamilton-minpoly",
       "relationship": "extended-by",
       "description": "Develops the minimal polynomial theory: the minimal polynomial $m(x)$ divides the characteristic polynomial $p(x)$ by Cayley-Hamilton, and $m(M) = 0$ is the strongest polynomial annihilation result — answering the open question about minimal polynomials"
+    },
+    {
+      "targetId": "cramers-rule",
+      "relationship": "related",
+      "description": "Cramer's rule ($x_i = \\det(A_i)/\\det(A)$) and Cayley-Hamilton share the same algebraic core: the adjugate matrix identity $A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$. Cramer's rule uses it to solve linear systems, while Cayley-Hamilton evaluates $\\text{adj}(XI - A) \\cdot (XI - A) = \\det(XI - A) \\cdot I$ at $X = A$ to prove $p_A(A) = 0$. The inverse formula $A^{-1} = \\frac{1}{\\det(A)} \\text{adj}(A)$ — a direct consequence of both results — appears explicitly in the 2×2 case section"
     }
   ],
   "leanFile": {
