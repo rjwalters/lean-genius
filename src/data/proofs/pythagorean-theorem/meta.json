@@ -54,7 +54,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The Pythagorean theorem is arguably the most recognized result in all of mathematics. While named after the Greek mathematician Pythagoras (c. 570-495 BCE), evidence suggests the theorem was known to Babylonian mathematicians over 1000 years earlier—clay tablet Plimpton 322 (c. 1800 BCE) contains a list of Pythagorean triples.\n\nPythagoras, or more likely his school, is credited with providing the first general proof. The theorem appears as Proposition 47 in Book I of Euclid's Elements (c. 300 BCE), where it's proved using areas of squares constructed on the triangle's sides.\n\nBy 1940, mathematician Elisha Loomis had catalogued 367 distinct proofs, and new proofs continue to be discovered. James Garfield, before becoming the 20th US President, published an original proof in 1876.",
+    "historicalContext": "The Pythagorean theorem is arguably the most recognized result in all of mathematics. While named after the Greek mathematician Pythagoras (c. 570-495 BCE), evidence suggests the theorem was known independently in at least three ancient civilizations over 1000 years earlier.\n\nThe Babylonian clay tablet Plimpton 322 (c. 1800 BCE) lists 15 rows of Pythagorean triples in a systematic table, demonstrating that Mesopotamian scribes understood the relationship between the sides of right triangles. The Indian Sulba Sutras (Baudhayana's version c. 800 BCE) state the theorem explicitly — \"the diagonal of a rectangle produces by itself both the areas which the two sides of the rectangle produce separately\" — in the context of Vedic altar construction. Chinese mathematicians recorded the theorem in the Zhou Bi Suan Jing (The Mathematical Classic of the Zhou Gnomon, c. 1000 BCE), where it is known as the Gōu-Gǔ theorem (勾股定理) and attributed to the Duke of Zhou.\n\nPythagoras, or more likely his school, is credited with providing the first general deductive proof in the Greek tradition. The theorem appears as Proposition 47 in Book I of Euclid's Elements (c. 300 BCE), where it's proved via shearing areas of squares constructed on the triangle's sides — a landmark of axiomatic geometry. The converse appears as Proposition I.48.\n\nBy 1940, mathematician Elisha Loomis had catalogued 367 distinct proofs, and new proofs continue to be discovered. James Garfield, before becoming the 20th US President, published an elegant trapezoid-area proof in 1876. In 2023, high school students Ne'Kiya Jackson and Calcea Johnson presented a trigonometric proof avoiding circular reasoning, historically thought impossible.",
     "problemStatement": "Theorem (Pythagorean): In a right triangle with legs of lengths $a$ and $b$ and hypotenuse of length $c$:\n\n$$a^2 + b^2 = c^2$$\n\nEquivalently, using vectors: if $\\vec{v}$ and $\\vec{w}$ are perpendicular ($\\vec{v} \\perp \\vec{w}$), then:\n\n$$\\|\\vec{v} + \\vec{w}\\|^2 = \\|\\vec{v}\\|^2 + \\|\\vec{w}\\|^2$$",
     "text": "A 214-line formalization of the Pythagorean Theorem (Wiedijk #4) with 19 declarations, 0 sorries, 0 axioms. Uses Mathlib's inner product space framework: the core `pythagorean_theorem` proves $\\|v + w\\|^2 = \\|v\\|^2 + \\|w\\|^2$ for orthogonal vectors via `inner_add_left`, `inner_add_right`, and the orthogonality hypothesis $\\langle v, w \\rangle = 0$ that zeroes the cross terms. Specializes to $\\mathbb{R}^2$ via `EuclideanSpace \\mathbb{R} (Fin 2)` with `pythagorean_R2`, and to concrete coordinates with `pythagorean_345` (the $(3,4,5)$ triple via `norm_num`). Includes the converse (`pythagorean_converse`: if $\\|v+w\\|^2 = \\|v\\|^2 + \\|w\\|^2$ then $v \\perp w$) and applications to distance formulas and the law of cosines as commentary.",
     "proofStrategy": "Our proof uses the language of inner product spaces, which provides an elegant algebraic formulation. The key insight is that perpendicularity means the inner product is zero: $\\langle \\vec{v}, \\vec{w} \\rangle = 0$.\n\nThe proof unfolds as:\n1. Expand $\\|\\vec{v} + \\vec{w}\\|^2 = \\langle \\vec{v} + \\vec{w}, \\vec{v} + \\vec{w} \\rangle$\n2. Use bilinearity to distribute: $= \\langle \\vec{v}, \\vec{v} \\rangle + \\langle \\vec{v}, \\vec{w} \\rangle + \\langle \\vec{w}, \\vec{v} \\rangle + \\langle \\vec{w}, \\vec{w} \\rangle$\n3. Apply perpendicularity: the cross terms vanish\n4. Conclude: $= \\|\\vec{v}\\|^2 + \\|\\vec{w}\\|^2$\n\nThis approach reveals the theorem as a natural consequence of the geometry encoded in inner products.",
@@ -144,38 +144,59 @@
   "references": [
     {
       "authors": "Euclid",
-      "title": "Elements, Book I, Proposition 47",
+      "title": "Elements, Book I, Propositions 47 and 48",
       "year": "c. 300 BCE",
       "venue": "Classical geometry",
-      "note": "The original geometric proof of the Pythagorean theorem via area comparison of squares on the sides of a right triangle"
+      "note": "The original geometric proof of the Pythagorean theorem (I.47) via shearing and area comparison of squares on the sides of a right triangle, and the converse (I.48)"
+    },
+    {
+      "authors": "Heath, Thomas L.",
+      "title": "The Thirteen Books of Euclid's Elements (3 vols.)",
+      "year": "1908",
+      "venue": "Cambridge University Press (2nd ed. 1926; Dover reprint 1956)",
+      "note": "Definitive English translation with commentary. Heath's notes on I.47 survey dozens of ancient proofs and trace the historical transmission of the theorem across civilizations"
     },
     {
       "authors": "Loomis, Elisha Scott",
       "title": "The Pythagorean Proposition",
       "year": "1940",
       "venue": "National Council of Teachers of Mathematics",
-      "note": "Collection of 367 distinct proofs of the Pythagorean theorem, demonstrating its central role in mathematics"
+      "note": "Collection of 367 distinct proofs of the Pythagorean theorem, classifying them into algebraic, geometric, quaternionic, and dynamic types"
+    },
+    {
+      "authors": "Nelsen, Roger B.",
+      "title": "Proofs Without Words: Exercises in Visual Thinking",
+      "year": "1993",
+      "venue": "Mathematical Association of America",
+      "note": "Contains several wordless visual proofs of the Pythagorean theorem, including dissection proofs and the classic rearrangement proof attributed to the Chinese classic Zhou Bi Suan Jing"
     },
     {
       "authors": "Neugebauer, Otto; Sachs, Abraham",
       "title": "Mathematical Cuneiform Texts",
       "year": "1945",
       "venue": "American Oriental Society",
-      "note": "Analysis of Plimpton 322 (c. 1800 BCE), a Babylonian clay tablet containing a table of Pythagorean triples — evidence that the theorem was known over 1000 years before Pythagoras"
+      "note": "Analysis of Plimpton 322 (c. 1800 BCE), a Babylonian clay tablet containing a systematic table of Pythagorean triples — evidence that the theorem was known over 1000 years before Pythagoras"
+    },
+    {
+      "authors": "Baudhayana",
+      "title": "Baudhayana Sulba Sutra",
+      "year": "c. 800 BCE",
+      "venue": "Vedic mathematical text",
+      "note": "States the Pythagorean theorem as a geometric rule for constructing square altars: 'the diagonal of a rectangle produces by itself both the areas which the two sides produce separately.' Predates Pythagoras by over 200 years and represents the oldest known explicit statement of the theorem in a mathematical context"
     },
     {
       "authors": "Garfield, James A.",
       "title": "Pons Asinorum",
       "year": "1876",
       "venue": "New-England Journal of Education 3(14), p. 161",
-      "note": "An original trapezoid-based proof of the Pythagorean theorem by the future 20th US President — one of the most elegant proofs using area decomposition"
+      "note": "An original trapezoid-area proof of the Pythagorean theorem by the future 20th US President — one of the most elegant proofs using area decomposition"
     },
     {
       "authors": "Maor, Eli",
       "title": "The Pythagorean Theorem: A 4,000-Year History",
       "year": "2007",
       "venue": "Princeton University Press",
-      "note": "Comprehensive history tracing the theorem from Babylonian and Egyptian origins through its modern generalizations in Hilbert spaces and differential geometry"
+      "note": "Comprehensive history tracing the theorem from Babylonian and Egyptian origins through its modern generalizations in Hilbert spaces and differential geometry, with discussion of the Sulba Sutras and Zhou Bi Suan Jing"
     }
   ],
   "crossReferences": [
@@ -248,6 +269,36 @@
       "targetId": "pythagorean-theorem-oq-03",
       "relationship": "related",
       "description": "Sub-entry exploring extensions or open questions about the Pythagorean theorem"
+    },
+    {
+      "targetId": "pythagorean-triples",
+      "relationship": "related",
+      "description": "The integer solutions $a^2 + b^2 = c^2$ — Pythagorean triples — are the number-theoretic heart of the Pythagorean theorem. All primitive triples are parameterized by $a = m^2 - n^2$, $b = 2mn$, $c = m^2 + n^2$ for coprime $m > n > 0$ of opposite parity. The geometry of these triples connects to the arithmetic of Gaussian integers via the norm $N(m + ni) = m^2 + n^2 = c^2$"
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Fermat's theorem on sums of two squares identifies which primes $p = a^2 + b^2$ — exactly those with $p = 2$ or $p \\equiv 1 \\pmod{4}$. This connects directly to Pythagorean triples: a hypotenuse $c$ of a primitive triple must be a product of such primes. Both results hinge on the arithmetic of the Gaussian integers $\\mathbb{Z}[i]$, where the Pythagorean norm $N(a + bi) = a^2 + b^2$ plays the central role"
+    },
+    {
+      "targetId": "birch-swinnerton-dyer",
+      "relationship": "related",
+      "description": "The congruent number problem asks which integers are areas of right triangles with rational sides — a direct descendant of the Pythagorean theorem over $\\mathbb{Q}$. The Birch–Swinnerton-Dyer conjecture governs which $n$ are congruent numbers via the rank of the elliptic curve $E_n: y^2 = x^3 - n^2 x$. Every congruent number $n$ yields a rational Pythagorean triple $(a,b,c)$ with $ab/2 = n$, connecting ancient geometry to modern arithmetic geometry"
+    },
+    {
+      "targetId": "herons-formula",
+      "relationship": "related",
+      "description": "Heron's formula $A = \\sqrt{s(s-a)(s-b)(s-c)}$ for the area of a triangle generalizes the right-triangle area $A = \\frac{1}{2}ab$. For a right triangle, Heron's formula reduces to the simpler form via $c^2 = a^2 + b^2$. Both results are classical companions in Euclidean triangle geometry; Heron's formula can be derived by applying the Pythagorean theorem to the altitude from the right angle"
+    },
+    {
+      "targetId": "lagrange-four-squares",
+      "relationship": "related",
+      "description": "Lagrange's four-square theorem states every positive integer is a sum of four perfect squares. The Pythagorean theorem characterizes when a sum of two squares equals another square ($a^2 + b^2 = c^2$). The theory of quaternion norms $N(a + bi + cj + dk) = a^2 + b^2 + c^2 + d^2$ unifies these — Lagrange's theorem via Hurwitz quaternions parallels Fermat's two-square theorem via Gaussian integers, with the Pythagorean sum-of-squares identity at the foundation"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "related",
+      "description": "Parseval's identity $\\|f\\|^2 = \\sum_{n=-\\infty}^{\\infty} |\\hat{f}(n)|^2$ is the infinite-dimensional Pythagorean theorem for $L^2$ functions: the Fourier coefficients $\\{\\hat{f}(n)\\}$ form an orthonormal basis, and the energy splits by orthogonality exactly as $\\|v+w\\|^2 = \\|v\\|^2 + \\|w\\|^2$. The generalized `pythagorean_sum` in this formalization is the finite-dimensional precursor to Parseval's identity"
     }
   ],
   "leanFile": {
