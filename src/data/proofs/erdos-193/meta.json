@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/193",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "lineCount": 89,
+    "lineCount": 90,
     "assumptions": "1 axiom: gerver_ramsey_2d (Gerver-Ramsey 2D theorem). collinear_symm now proved via CRT-style witness transformation.",
     "mathlib_version": "4.26.0"
   },
@@ -104,7 +104,7 @@
       "id": "collinearity-properties",
       "title": "Basic Collinearity Properties",
       "startLine": 69,
-      "endLine": 80,
+      "endLine": 90,
       "summary": "Proves collinearity reflexivity (via `ring`), axiomatizes symmetry in the outer points, and derives collinearity for constant walks — validating the definition and motivating injectivity.",
       "mathContext": "Proves collinearity reflexivity (via `ring`), axiomatizes symmetry in the outer points, and derives collinearity for constant walks — validating the definition and motivating injectivity."
     }
@@ -127,8 +127,8 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 80,
-    "axiomCount": 2,
+    "lineCount": 90,
+    "axiomCount": 1,
     "theoremCount": 3,
     "definitionCount": 5
   },
