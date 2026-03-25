@@ -20,9 +20,9 @@
     "erdosNumber": 193,
     "erdosUrl": "https://erdosproblems.com/193",
     "erdosProblemStatus": "open",
-    "axiomCount": 2,
-    "lineCount": 80,
-    "assumptions": "2 axioms: gerver_ramsey_2d, collinear_symm. See Lean source for complete statements.",
+    "axiomCount": 1,
+    "lineCount": 89,
+    "assumptions": "1 axiom: gerver_ramsey_2d (Gerver-Ramsey 2D theorem). collinear_symm now proved via CRT-style witness transformation.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -129,7 +129,7 @@
     "namespace": null,
     "lineCount": 80,
     "axiomCount": 2,
-    "theoremCount": 2,
+    "theoremCount": 3,
     "definitionCount": 5
   },
   "crossReferences": [
