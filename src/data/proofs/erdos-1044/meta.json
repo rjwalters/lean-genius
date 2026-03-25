@@ -50,35 +50,40 @@
       "title": "Basic Definitions",
       "summary": "HasRootsInDisk (roots in unit disk), maxBoundaryLength axiom (Λ function)",
       "startLine": 37,
-      "endLine": 49
+      "endLine": 49,
+      "mathContext": "For a monic polynomial $P(z) = \\prod (z - z_k)$ with $|z_k| \\leq 1$, $\\Lambda(P) = \\text{length}(\\{z : |z| = 1,\\, |P(z)| = 1\\})$ measures the boundary of $\\{|P| \\leq 1\\}$ on the unit circle. `maxBoundaryLength n` computes $\\sup_{\\deg P = n} \\Lambda(P)$."
     },
     {
       "id": "main-result",
       "title": "Tang's Theorem: inf Λ(f) = 2",
       "summary": "tang_infimum_eq_two axiom, infimum_not_achieved, infimum_approached",
       "startLine": 50,
-      "endLine": 73
+      "endLine": 73,
+      "mathContext": "Tang (2024): $\\inf_n \\Lambda_n = 2$, where $\\Lambda_n = \\inf_{\\deg P = n} \\Lambda(P)$. The infimum is not achieved (no polynomial attains $\\Lambda = 2$ exactly) but is approached by $z^n - 1$ as $n \\to \\infty$."
     },
     {
       "id": "tang-conjecture",
       "title": "Roots of Unity and Tang's Conjecture",
       "summary": "rootsOfUnity definition, rootsOfUnity_in_disk, tang_conjecture (z^n - 1 optimal for fixed degree)",
       "startLine": 74,
-      "endLine": 98
+      "endLine": 98,
+      "mathContext": "Conjecture: the polynomials $z^n - 1$ (roots of unity) are optimal for minimizing $\\Lambda$. `rootsOfUnity n` defines the $n$-th cyclotomic polynomial $z^n - 1$ with roots $e^{2\\pi ik/n}$. The conjecture asserts $\\Lambda(z^n - 1) = \\min_{\\deg P = n} \\Lambda(P)$ for each $n$."
     },
     {
       "id": "examples",
       "title": "Degree 1 Case",
       "summary": "degree_one_boundary: Λ(z - z₀) = 2π for |z₀| ≤ 1",
       "startLine": 99,
-      "endLine": 110
+      "endLine": 110,
+      "mathContext": "For $P(z) = z - z_0$ with $|z_0| \\leq 1$: $\\Lambda(P) = 2\\pi$ (the full unit circle has boundary length $2\\pi$ when $|z_0| \\leq 1$, since $|P(e^{i\\theta})| = |e^{i\\theta} - z_0|$ oscillates between $1 - |z_0|$ and $1 + |z_0|$)."
     },
     {
       "id": "summary",
       "title": "Problem Summary",
       "summary": "erdos_1044 theorem: direct application of tang_infimum_eq_two",
       "startLine": 111,
-      "endLine": 128
+      "endLine": 128,
+      "mathContext": "`erdos_1044` theorem: direct application of `tang_infimum_eq_two`. The result resolves the question of the limiting boundary length for optimal monic polynomials on the unit disk."
     }
   ],
   "conclusion": {
