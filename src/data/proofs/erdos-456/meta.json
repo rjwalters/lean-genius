@@ -233,6 +233,16 @@
       "targetId": "erdos-458",
       "relationship": "related",
       "description": "Primes in arithmetic progressions"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "foundational",
+      "description": "Dirichlet's theorem guarantees primes exist in every arithmetic progression a (mod n) with gcd(a,n)=1. Problem #456 compares the SMALLEST such prime (for a≡1 mod n) with the smallest prime dividing φ(n), asking about the quantitative relationship between these two natural 'first prime' quantities"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "foundational",
+      "description": "Euler's totient φ(n) appears on both sides of Problem #456: it determines which arithmetic progressions contain primes (via Dirichlet), and its smallest prime factor is the comparison target. The interplay between φ(n)'s factorization and the distribution of primes ≡ 1 (mod n) is the core tension"
     }
   ]
 }
