@@ -128,7 +128,7 @@
       "summary": "Defines `Point` as `abbrev` for `EuclideanSpace ℝ (Fin 2)`, `TwoColoring A` as `A → Bool`, `Collinear p q r` via `∃ t : ℝ, r - p = t • (q - p)`, `PointsOnLine` as a set comprehension, `Line` structure with point/direction/nonzero, and `OnLine` via `∃ t : ℝ, p = l.point + t • l.direction`.",
       "startLine": 36,
       "endLine": 80,
-      "mathContext": "Defines `Point` as `abbrev` for `EuclideanSpace ℝ (Fin 2)`, `TwoColoring A` as `A → Bool`, `Collinear p q r` via `∃ t : ℝ, r - p = t • (q - p)`, `PointsOnLine` as a set comprehension, `Line` structure"
+      "mathContext": "Defines `Point` as `abbrev` for `EuclideanSpace ℝ (Fin 2)`, `TwoColoring A` as `A → Bool`, `Collinear p q r` via `∃ t : ℝ, r - p = t • (q - p)`, `PointsOnLine` as a set comprehension, `Line` structure with point/direction/nonzero, and `OnLine` via `∃ t : ℝ, p = l.point + t • l.direction`."
     },
     {
       "id": "monochromatic",
@@ -136,7 +136,7 @@
       "summary": "Defines `IsMonochromatic S c` (all points same color), `IsKCollinear S k` (S.card ≥ k ∧ ∃ l : Line, ∀ p ∈ S, OnLine l p), and `MonochromaticKCollinear A k c` combining subset, collinearity, and same-color conditions.",
       "startLine": 81,
       "endLine": 107,
-      "mathContext": "Defines `IsMonochromatic S c` (all points same color), `IsKCollinear S k` (S.card ≥ k ∧ ∃ l : Line, ∀ p ∈ S, OnLine l p), and `MonochromaticKCollinear A k c` combining subset, collinearity, and same-c"
+      "mathContext": "Defines `IsMonochromatic S c` (all points same color), `IsKCollinear S k` (S.card ≥ k ∧ ∃ l : Line, ∀ p ∈ S, OnLine l p), and `MonochromaticKCollinear A k c` combining subset, collinearity, and same-color conditions."
     },
     {
       "id": "ramsey-property",
@@ -160,7 +160,7 @@
       "summary": "Defines `CombinatorialLine k n` structure with fixed/varying coordinate partition. Axiomatizes `hales_jewett` (monochromatic line guarantee), `generic_projection` (injective line-preserving map [k]ⁿ → Point), and `hunter_observation` (combining both for HasRamseyProperty).",
       "startLine": 148,
       "endLine": 201,
-      "mathContext": "Defines `CombinatorialLine k n` structure with fixed/varying coordinate partition. Axiomatizes `hales_jewett` (monochromatic line guarantee), `generic_projection` (injective line-preserving map [k]ⁿ →"
+      "mathContext": "Defines `CombinatorialLine k n` structure with fixed/varying coordinate partition. Axiomatizes `hales_jewett` (monochromatic line guarantee), `generic_projection` (injective line-preserving map [k]ⁿ → Point), and `hunter_observation` (combining both for HasRamseyProperty)."
     },
     {
       "id": "main-result",
@@ -184,7 +184,7 @@
       "summary": "Defines `ramseyNumber k` (minimum |A| with Ramsey property, using noncomputable Nat.find). States `ramsey_lower_bound` (R(k) ≥ k, sorry). Axiomatizes `r3_small` (∃ A, A.card ≤ 9 ∧ HasRamseyProperty A 3).",
       "startLine": 240,
       "endLine": 265,
-      "mathContext": "Defines `ramseyNumber k` (minimum |A| with Ramsey property, using noncomputable Nat.find). States `ramsey_lower_bound` (R(k) ≥ k, sorry). Axiomatizes `r3_small` (∃ A, A.card ≤ 9 ∧ HasRamseyProperty A "
+      "mathContext": "Defines `ramseyNumber k` (minimum |A| with Ramsey property, using noncomputable Nat.find). States `ramsey_lower_bound` (R(k) ≥ k, sorry). Axiomatizes `r3_small` (∃ A, A.card ≤ 9 ∧ HasRamseyProperty A 3)."
     },
     {
       "id": "related",

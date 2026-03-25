@@ -90,7 +90,7 @@
       "summary": "Defines the `Triangle` structure via side lengths $(a, b, c) \\in \\mathbb{R}_{>0}$ satisfying the triangle inequality, and `Congruent` as multiset equality $\\{a, b, c\\} = \\{a', b', c'\\}$, with proofs that congruence is reflexive, symmetric, and transitive.",
       "startLine": 36,
       "endLine": 67,
-      "mathContext": "Defines the `Triangle` structure via side lengths $(a, b, c) \\in \\mathbb{R}_{>0}$ satisfying the triangle inequality, and `Congruent` as multiset equality $\\{a, b, c\\} = \\{a', b', c'\\}$, with proofs t"
+      "mathContext": "Defines the `Triangle` structure via side lengths $(a, b, c) \\in \\mathbb{R}_{>0}$ satisfying the triangle inequality, and `Congruent` as multiset equality $\\{a, b, c\\} = \\{a', b', c'\\}$, with proofs that congruence is reflexive, symmetric, and transitive."
     },
     {
       "id": "similar",
@@ -106,7 +106,7 @@
       "summary": "Central definitions: `Dissection T n` as a function $\\text{Fin}\\, n \\to \\text{Triangle}$ with area constraint, `IsCongruentDissection` requiring all pieces mutually congruent, and `IsDissectable n` asserting existence of some triangle admitting such a dissection.",
       "startLine": 83,
       "endLine": 102,
-      "mathContext": "Central definitions: `Dissection T n` as a function $\\text{Fin}\\, n \\to \\text{Triangle}$ with area constraint, `IsCongruentDissection` requiring all pieces mutually congruent, and `IsDissectable n` as"
+      "mathContext": "Central definitions: `Dissection T n` as a function $\\text{Fin}\\, n \\to \\text{Triangle}$ with area constraint, `IsCongruentDissection` requiring all pieces mutually congruent, and `IsDissectable n` asserting existence of some triangle admitting such a dissection."
     },
     {
       "id": "positive",
@@ -114,7 +114,7 @@
       "summary": "Theorems asserting dissectability for $k^2$ (grid subdivision), $2k^2$, $3k^2$ (equilateral trisection), $6k^2$, $k^2 + m^2$ (two-scale grids), and the special case $27$ — all with `sorry` proofs pending geometric constructions.",
       "startLine": 103,
       "endLine": 133,
-      "mathContext": "Theorems asserting dissectability for $k^2$ (grid subdivision), $2k^2$, $3k^2$ (equilateral trisection), $6k^2$, $k^2 + m^2$ (two-scale grids), and the special case $27$ — all with `sorry` proofs pend"
+      "mathContext": "Theorems asserting dissectability for $k^2$ (grid subdivision), $2k^2$, $3k^2$ (equilateral trisection), $6k^2$, $k^2 + m^2$ (two-scale grids), and the special case $27$ — all with `sorry` proofs pending geometric constructions."
     },
     {
       "id": "beeson",
@@ -130,7 +130,7 @@
       "summary": "States the conjecture that primes of form $4k + 3$ are non-dissectable, with the refined version excluding $p = 3$ (since $3 = 3 \\cdot 1^2$ is dissectable). Proves $3$ is dissectable by specializing `three_squares_dissectable`.",
       "startLine": 158,
       "endLine": 177,
-      "mathContext": "States the conjecture that primes of form $4k + 3$ are non-dissectable, with the refined version excluding $p = 3$ (since $3 = 3 \\cdot 1^2$ is dissectable). Proves $3$ is dissectable by specializing `"
+      "mathContext": "States the conjecture that primes of form $4k + 3$ are non-dissectable, with the refined version excluding $p = 3$ (since $3 = 3 \\cdot 1^2$ is dissectable). Proves $3$ is dissectable by specializing `three_squares_dissectable`."
     },
     {
       "id": "open",
@@ -146,7 +146,7 @@
       "summary": "Defines `IsSimilarDissection` and `IsSimilarDissectable`, then axiomatizes Soifer's complete theorem: all $n \\geq 1$ except $2, 3, 5$ admit similar dissections, with the three exceptions also axiomatized.",
       "startLine": 198,
       "endLine": 224,
-      "mathContext": "Defines `IsSimilarDissection` and `IsSimilarDissectable`, then axiomatizes Soifer's complete theorem: all $n \\geq 1$ except $2, 3, 5$ admit similar dissections, with the three exceptions also axiomati"
+      "mathContext": "Defines `IsSimilarDissection` and `IsSimilarDissectable`, then axiomatizes Soifer's complete theorem: all $n \\geq 1$ except $2, 3, 5$ admit similar dissections, with the three exceptions also axiomatized."
     },
     {
       "id": "self-similar",
@@ -162,7 +162,7 @@
       "summary": "Axiomatizes Zhang's 2025 result on sufficient conditions: for fixed $a \\geq b \\geq 1$, all sufficiently large $n^2 a b$ are dissectable. Also defines `KnownDissectable` as the union of all known parametric families.",
       "startLine": 247,
       "endLine": 264,
-      "mathContext": "Axiomatizes Zhang's 2025 result on sufficient conditions: for fixed $a \\geq b \\geq 1$, all sufficiently large $n^2 a b$ are dissectable. Also defines `KnownDissectable` as the union of all known param"
+      "mathContext": "Axiomatizes Zhang's 2025 result on sufficient conditions: for fixed $a \\geq b \\geq 1$, all sufficiently large $n^2 a b$ are dissectable. Also defines `KnownDissectable` as the union of all known parametric families."
     },
     {
       "id": "main-result",
@@ -170,7 +170,7 @@
       "summary": "The partial answer theorem `erdos_634_partial`: $\\forall k \\geq 1, \\text{IsDissectable}(k^2) \\wedge \\neg\\text{IsDissectable}\\, 7 \\wedge \\neg\\text{IsDissectable}\\, 11$, combining the grid subdivision theorem with Beeson's axioms.",
       "startLine": 265,
       "endLine": 313,
-      "mathContext": "The partial answer theorem `erdos_634_partial`: $\\forall k \\geq 1, \\text{IsDissectable}(k^2) \\wedge \\neg\\text{IsDissectable}\\, 7 \\wedge \\neg\\text{IsDissectable}\\, 11$, combining the grid subdivision t"
+      "mathContext": "The partial answer theorem `erdos_634_partial`: $\\forall k \\geq 1, \\text{IsDissectable}(k^2) \\wedge \\neg\\text{IsDissectable}\\, 7 \\wedge \\neg\\text{IsDissectable}\\, 11$, combining the grid subdivision theorem with Beeson's axioms."
     }
   ],
   "conclusion": {

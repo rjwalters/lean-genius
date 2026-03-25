@@ -60,7 +60,7 @@
       "summary": "Defines the counting function A(N) = |A ∩ {1,...,N}| via Finset.filter, the density ratio A(N)/N, and the Schnirelmann density d_s(A) = inf_{N≥1} A(N)/N via Lean's iInf over a subtype. Introduces notation d_s for schnirelmannDensity.",
       "startLine": 37,
       "endLine": 53,
-      "mathContext": "Defines the counting function A(N) = |A ∩ {1,...,N}| via Finset.filter, the density ratio A(N)/N, and the Schnirelmann density d_s(A) = inf_{N≥1} A(N)/N via Lean's iInf over a subtype. Introduces nota"
+      "mathContext": "Defines the counting function A(N) = |A ∩ {1,...,N}| via Finset.filter, the density ratio A(N)/N, and the Schnirelmann density d_s(A) = inf_{N≥1} A(N)/N via Lean's iInf over a subtype. Introduces notation d_s for schnirelmannDensity."
     },
     {
       "id": "additive-basis",
@@ -68,7 +68,7 @@
       "summary": "Defines sumsets A + B via existential quantification with HAdd instance, k-fold sumsets by recursion (0-fold = {0}, (k+1)-fold = kB + B), and additive bases of order k (every natural in some m-fold sum with m ≤ k). Also defines exact order requiring minimality.",
       "startLine": 54,
       "endLine": 77,
-      "mathContext": "Defines sumsets A + B via existential quantification with HAdd instance, k-fold sumsets by recursion (0-fold = {0}, (k+1)-fold = kB + B), and additive bases of order k (every natural in some m-fold su"
+      "mathContext": "Defines sumsets A + B via existential quantification with HAdd instance, k-fold sumsets by recursion (0-fold = {0}, (k+1)-fold = kB + B), and additive bases of order k (every natural in some m-fold sum with m ≤ k). Also defines exact order requiring minimality."
     },
     {
       "id": "basic-props",
@@ -76,7 +76,7 @@
       "summary": "Proves d_s(A) ≥ 0 (fully proved via iInf_nonneg and case analysis), states d_s(A) ≤ 1 (1 sorry: needs countingFunction A 1 ≤ 1), the density ratio at N=1 for 1 ∈ A (1 sorry), and monotonicity d_s(A) ≤ d_s(A+B) when 0 ∈ B (1 sorry: needs A ⊆ A+B argument).",
       "startLine": 78,
       "endLine": 112,
-      "mathContext": "Proves d_s(A) ≥ 0 (fully proved via iInf_nonneg and case analysis), states d_s(A) ≤ 1 (1 sorry: needs countingFunction A 1 ≤ 1), the density ratio at N=1 for 1 ∈ A (1 sorry), and monotonicity d_s(A) ≤"
+      "mathContext": "Proves d_s(A) ≥ 0 (fully proved via iInf_nonneg and case analysis), states d_s(A) ≤ 1 (1 sorry: needs countingFunction A 1 ≤ 1), the density ratio at N=1 for 1 ∈ A (1 sorry), and monotonicity d_s(A) ≤ d_s(A+B) when 0 ∈ B (1 sorry: needs A ⊆ A+B argument)."
     },
     {
       "id": "erdos-1936",
@@ -100,7 +100,7 @@
       "summary": "The complete proof of Erdős Problem #35: chains plunnecke_inequality and power_bound_implies_erdos via linarith. The theorem erdos_35 compiles in Lean modulo the sorries in its dependencies, demonstrating the clean logical structure.",
       "startLine": 144,
       "endLine": 160,
-      "mathContext": "The complete proof of Erdős Problem #35: chains plunnecke_inequality and power_bound_implies_erdos via linarith. The theorem erdos_35 compiles in Lean modulo the sorries in its dependencies, demonstra"
+      "mathContext": "The complete proof of Erdős Problem #35: chains plunnecke_inequality and power_bound_implies_erdos via linarith. The theorem erdos_35 compiles in Lean modulo the sorries in its dependencies, demonstrating the clean logical structure."
     },
     {
       "id": "basis-order-one",
@@ -116,7 +116,7 @@
       "summary": "Defines squares = {n² : n ∈ ℕ} and primesWithOne = {1} ∪ {p : p prime}. States squares form a basis of order 4 (Lagrange's four-square theorem) and primes with 1 form a basis of order 3 (conditional on Goldbach). Both axiomatized with sorry.",
       "startLine": 177,
       "endLine": 225,
-      "mathContext": "Defines squares = {n² : n ∈ ℕ} and primesWithOne = {1} ∪ {p : p prime}. States squares form a basis of order 4 (Lagrange's four-square theorem) and primes with 1 form a basis of order 3 (conditional o"
+      "mathContext": "Defines squares = {n² : n ∈ ℕ} and primesWithOne = {1} ∪ {p : p prime}. States squares form a basis of order 4 (Lagrange's four-square theorem) and primes with 1 form a basis of order 3 (conditional on Goldbach). Both axiomatized with sorry."
     }
   ],
   "conclusion": {

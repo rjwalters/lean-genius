@@ -74,7 +74,7 @@
       "summary": "Documents Erdős Problem #11: is every odd $n > 1$ the sum of a squarefree number and a power of 2? Notes the Wieferich prime connection and Hercher's (2024) computational verification up to $2^{50}$. Imports Mathlib.",
       "startLine": 1,
       "endLine": 20,
-      "mathContext": "Documents Erdős Problem #11: is every odd $n > 1$ the sum of a squarefree number and a power of 2? Notes the Wieferich prime connection and Hercher's (2024) computational verification up to $2^{50}$. "
+      "mathContext": "Documents Erdős Problem #11: is every odd $n > 1$ the sum of a squarefree number and a power of 2? Notes the Wieferich prime connection and Hercher's (2024) computational verification up to $2^{50}$."
     },
     {
       "id": "definitions",
@@ -82,7 +82,7 @@
       "summary": "Defines `IsSquarefree n` (wrapping Mathlib's `Squarefree`), `IsPowerOfTwo n` ($\\exists k, n = 2^k$), and `IsSquarefreePlusPow2 n` ($\\exists s, p: \\text{Squarefree}(s) \\wedge \\text{Pow2}(p) \\wedge n = s + p$).",
       "startLine": 21,
       "endLine": 32,
-      "mathContext": "Defines `IsSquarefree n` (wrapping Mathlib's `Squarefree`), `IsPowerOfTwo n` ($\\exists k, n = 2^k$), and `IsSquarefreePlusPow2 n` ($\\exists s, p: \\text{Squarefree}(s) \\wedge \\text{Pow2}(p) \\wedge n = "
+      "mathContext": "Defines `IsSquarefree n` (wrapping Mathlib's `Squarefree`), `IsPowerOfTwo n` ($\\exists k, n = 2^k$), and `IsSquarefreePlusPow2 n` ($\\exists s, p: \\text{Squarefree}(s) \\wedge \\text{Pow2}(p) \\wedge n = s + p$)."
     },
     {
       "id": "basic-properties",
@@ -114,7 +114,7 @@
       "summary": "States `Erdos11Conjecture`: $\\forall n$ odd, $n > 1 \\Rightarrow \\exists$ squarefree $s$, power of 2 $p$ with $n = s + p$. Also states the weak version (not divisible by 4) and the two-powers-of-2 variant.",
       "startLine": 80,
       "endLine": 93,
-      "mathContext": "States `Erdos11Conjecture`: $\\forall n$ odd, $n > 1 \\Rightarrow \\exists$ squarefree $s$, power of 2 $p$ with $n = s + p$. Also states the weak version (not divisible by 4) and the two-powers-of-2 vari"
+      "mathContext": "States `Erdos11Conjecture`: $\\forall n$ odd, $n > 1 \\Rightarrow \\exists$ squarefree $s$, power of 2 $p$ with $n = s + p$."
     },
     {
       "id": "connection",

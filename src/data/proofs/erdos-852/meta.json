@@ -49,7 +49,7 @@
       "startLine": 1,
       "endLine": 25,
       "summary": "Header documenting Erdős Problem #852 on maximal distinct prime gap runs. Imports `Nat.Prime.Basic`, `Finset.Basic`, `Real.log`, `Real.rpow`, `Asymptotics.Defs`, and `Filter.Basic` for the formalization.",
-      "mathContext": "Header documenting Erdős Problem #852 on maximal distinct prime gap runs. Imports `Nat.Prime.Basic`, `Finset.Basic`, `Real.log`, `Real.rpow`, `Asymptotics.Defs`, and `Filter.Basic` for the formalizati"
+      "mathContext": "Header documenting Erdős Problem #852 on maximal distinct prime gap runs. Imports `Nat.Prime.Basic`, `Finset.Basic`, `Real.log`, `Real.rpow`, `Asymptotics.Defs`, and `Filter.Basic` for the formalization."
     },
     {
       "id": "primes",
@@ -65,7 +65,7 @@
       "startLine": 34,
       "endLine": 56,
       "summary": "Defines `primeGap n = nthPrime (n+1) - nthPrime n` and proves four results: $d_n > 0$ (from strict monotonicity), `nthPrime` is monotone, $p_n \\geq 2$ (from primality), and $d_0 = 1$ (from $p_0 = 2, p_1 = 3$). All are genuine Lean proofs.",
-      "mathContext": "Defines `primeGap n = nthPrime (n+1) - nthPrime n` and proves four results: $d_n > 0$ (from strict monotonicity), `nthPrime` is monotone, $p_n \\geq 2$ (from primality), and $d_0 = 1$ (from $p_0 = 2, p"
+      "mathContext": "Defines `primeGap n = nthPrime (n+1) - nthPrime n` and proves four results: $d_n > 0$ (from strict monotonicity), `nthPrime` is monotone, $p_n \\geq 2$ (from primality), and $d_0 = 1$ (from $p_0 = 2, p_1 = 3$)."
     },
     {
       "id": "distinct-runs",
@@ -73,7 +73,7 @@
       "startLine": 57,
       "endLine": 81,
       "summary": "Defines `IsDistinctRun n k` requiring all $k$ gaps $d_n, \\ldots, d_{n+k-1}$ to be pairwise distinct. Proves: empty and single runs are distinct (`omega` tactic), and distinct runs are downward-closed in $k$ (prefix property).",
-      "mathContext": "Defines `IsDistinctRun n k` requiring all $k$ gaps $d_n, \\ldots, d_{n+k-1}$ to be pairwise distinct. Proves: empty and single runs are distinct (`omega` tactic), and distinct runs are downward-closed "
+      "mathContext": "Defines `IsDistinctRun n k` requiring all $k$ gaps $d_n, \\ldots, d_{n+k-1}$ to be pairwise distinct. Proves: empty and single runs are distinct (`omega` tactic), and distinct runs are downward-closed in $k$ (prefix property)."
     },
     {
       "id": "h-function",
@@ -81,7 +81,7 @@
       "startLine": 82,
       "endLine": 112,
       "summary": "Axiomatizes `maxDistinctRun : ℕ → ℕ` with witness (achieving run) and optimality (maximality). Proves $h(x) \\geq 1$ for $x \\geq 3$ using $p_0 = 2 < 3 \\leq x$ and `isDistinctRun_one`, and monotonicity $h(x) \\leq h(y)$ for $x \\leq y$.",
-      "mathContext": "Axiomatizes `maxDistinctRun : ℕ → ℕ` with witness (achieving run) and optimality (maximality). Proves $h(x) \\geq 1$ for $x \\geq 3$ using $p_0 = 2 < 3 \\leq x$ and `isDistinctRun_one`, and monotonicity "
+      "mathContext": "Axiomatizes `maxDistinctRun : ℕ → ℕ` with witness (achieving run) and optimality (maximality). Proves $h(x) \\geq 1$ for $x \\geq 3$ using $p_0 = 2 < 3 \\leq x$ and `isDistinctRun_one`, and monotonicity $h(x) \\leq h(y)$ for $x \\leq y$."
     },
     {
       "id": "brun-sieve",
@@ -89,7 +89,7 @@
       "startLine": 113,
       "endLine": 128,
       "summary": "Axiomatizes Brun's result: $\\forall C,\\, \\exists X,\\, \\forall x \\geq X,\\, h(x) \\geq C$. Proves the `Filter.Tendsto` reformulation: $h \\to +\\infty$ as $x \\to \\infty$, using `tendsto_atTop_atTop` and `Nat.cast_le`.",
-      "mathContext": "Axiomatizes Brun's result: $\\forall C,\\, \\exists X,\\, \\forall x \\geq X,\\, h(x) \\geq C$. Proves the `Filter.Tendsto` reformulation: $h \\to +\\infty$ as $x \\to \\infty$, using `tendsto_atTop_atTop` and `N"
+      "mathContext": "Axiomatizes Brun's result: $\\forall C,\\, \\exists X,\\, \\forall x \\geq X,\\, h(x) \\geq C$. Proves the `Filter.Tendsto` reformulation: $h \\to +\\infty$ as $x \\to \\infty$, using `tendsto_atTop_atTop` and `Nat.cast_le`."
     },
     {
       "id": "conjectures",
@@ -97,7 +97,7 @@
       "startLine": 129,
       "endLine": 156,
       "summary": "Axiomatizes both open questions: (1) $\\exists c > 0,\\, \\forall^\\infty x,\\, (\\log x)^c < h(x)$ using `Real.log` and `rpow`; (2) $h = o(\\log)$ using `Asymptotics.IsLittleO`. Derives $\\varepsilon$-bound consequence and combined growth rate statement.",
-      "mathContext": "Axiomatizes both open questions: (1) $\\exists c > 0,\\, \\forall^\\infty x,\\, (\\log x)^c < h(x)$ using `Real.log` and `rpow`; (2) $h = o(\\log)$ using `Asymptotics.IsLittleO`. Derives $\\varepsilon$-bound "
+      "mathContext": "Axiomatizes both open questions: (1) $\\exists c > 0,\\, \\forall^\\infty x,\\, (\\log x)^c < h(x)$ using `Real.log` and `rpow`; (2) $h = o(\\log)$ using `Asymptotics.IsLittleO`. Derives $\\varepsilon$-bound consequence and combined growth rate statement."
     },
     {
       "id": "pigeonhole",
@@ -105,7 +105,7 @@
       "startLine": 157,
       "endLine": 170,
       "summary": "Axiomatizes $h(x) \\leq x$ and the pigeonhole principle: $k$ distinct positive values all $\\leq M$ implies $k \\leq M$. This gives the trivial ceiling far above the conjectured $o(\\log x)$.",
-      "mathContext": "Axiomatized: Axiomatizes $h(x) \\leq x$ and the pigeonhole principle: $k$ distinct positive values all $\\leq M$ implies $k \\leq M$. This gives the trivial ceiling far above the conjectured $o(\\log x)$."
+      "mathContext": "Axiomatizes $h(x) \\leq x$ and the pigeonhole principle: $k$ distinct positive values all $\\leq M$ implies $k \\leq M$. This gives the trivial ceiling far above the conjectured $o(\\log x)$."
     }
   ],
   "conclusion": {

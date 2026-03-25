@@ -111,7 +111,7 @@
       "startLine": 71,
       "endLine": 96,
       "summary": "Define counting function, lower density, upper density, and positive density using Filter.liminf",
-      "mathContext": "$\\underline{d}(S) = \\liminf_{N \\to \\infty} \\frac{|S \\cap [0,N]|}{N}$ via `Filter.liminf`. Uses `Nat.card` for counting, marked `noncomputable` because membership in arbitrary `Set ℕ` is not decidable."
+      "mathContext": "Define counting function, lower density, upper density, and positive density using Filter.liminf"
     },
     {
       "id": "romanoff-theorem",

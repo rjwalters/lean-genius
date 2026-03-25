@@ -51,7 +51,7 @@
       "startLine": 46,
       "endLine": 87,
       "summary": "Defines `IsTree` (connected + acyclic), axiomatizes the edge count formula $|E| = |V| - 1$. Constructs `pathGraph` on `Fin n` with consecutive-integer adjacency and `starGraph` $K_{1,k}$ with center-leaf adjacency. Both include inline proofs of `symm` and `loopless`.",
-      "mathContext": "Defines `IsTree` (connected + acyclic), axiomatizes the edge count formula $|E| = |V| - 1$. Constructs `pathGraph` on `Fin n` with consecutive-integer adjacency and `starGraph` $K_{1,k}$ with center-l"
+      "mathContext": "Defines `IsTree` (connected + acyclic), axiomatizes the edge count formula $|E| = |V| - 1$. Constructs `pathGraph` on `Fin n` with consecutive-integer adjacency and `starGraph` $K_{1,k}$ with center-leaf adjacency."
     },
     {
       "id": "subgraph-containment",
@@ -59,7 +59,7 @@
       "startLine": 88,
       "endLine": 97,
       "summary": "Defines `ContainsSubgraph G H` via an injective graph homomorphism preserving edges, and `TreeFree G T` as its negation. This formalizes the standard notion of subgraph isomorphism used in extremal graph theory.",
-      "mathContext": "Defines `ContainsSubgraph G H` via an injective graph homomorphism preserving edges, and `TreeFree G T` as its negation. This formalizes the standard notion of subgraph isomorphism used in extremal gr"
+      "mathContext": "Defines `ContainsSubgraph G H` via an injective graph homomorphism preserving edges, and `TreeFree G T` as its negation. This formalizes the standard notion of subgraph isomorphism used in extremal graph theory."
     },
     {
       "id": "edge-counting",
@@ -67,7 +67,7 @@
       "startLine": 98,
       "endLine": 117,
       "summary": "Defines `edgeCount`, states the handshaking lemma $\\sum \\deg = 2|E|$, and defines `avgDegree` over $\\mathbb{Q}$. Proves the equivalence between average degree $> k-1$ and edge count $> (k-1)n/2$ formulations.",
-      "mathContext": "Defines `edgeCount`, states the handshaking lemma $\\sum \\deg = 2|E|$, and defines `avgDegree` over $\\mathbb{Q}$. Proves the equivalence between average degree $> k-1$ and edge count $> (k-1)n/2$ formu"
+      "mathContext": "Defines `edgeCount`, states the handshaking lemma $\\sum \\deg = 2|E|$, and defines `avgDegree` over $\\mathbb{Q}$. Proves the equivalence between average degree $> k-1$ and edge count $> (k-1)n/2$ formulations."
     },
     {
       "id": "main-conjecture",
@@ -75,7 +75,7 @@
       "startLine": 118,
       "endLine": 142,
       "summary": "States the conjecture in two equivalent forms: `ErdosSosConjecture` with generic vertex types and strict edge inequality, and `Erdos548Statement` with `Fin n` and the original $\\ge (k-1)n/2 + 1$ phrasing.",
-      "mathContext": "States the conjecture in two equivalent forms: `ErdosSosConjecture` with generic vertex types and strict edge inequality, and `Erdos548Statement` with `Fin n` and the original $\\ge (k-1)n/2 + 1$ phras"
+      "mathContext": "States the conjecture in two equivalent forms: `ErdosSosConjecture` with generic vertex types and strict edge inequality, and `Erdos548Statement` with `Fin n` and the original $\\ge (k-1)n/2 + 1$ phrasing."
     },
     {
       "id": "known-results",
@@ -83,7 +83,7 @@
       "startLine": 143,
       "endLine": 210,
       "summary": "Axiomatizes four partial results: trivial bound ($n(k-1)+1$ edges), Brandt-Dobson (girth $\\ge 5$), Sacle-Wozniak ($C_4$-free), and Wang-Li-Liu (complement girth $\\ge 5$). Defines `girth`, `hasGirthAtLeast`, `C4Free`, and `complement` with inline proofs.",
-      "mathContext": "Axiomatizes four partial results: trivial bound ($n(k-1)+1$ edges), Brandt-Dobson (girth $\\ge 5$), Sacle-Wozniak ($C_4$-free), and Wang-Li-Liu (complement girth $\\ge 5$). Defines `girth`, `hasGirthAtL"
+      "mathContext": "Axiomatizes four partial results: trivial bound ($n(k-1)+1$ edges), Brandt-Dobson (girth $\\ge 5$), Sacle-Wozniak ($C_4$-free), and Wang-Li-Liu (complement girth $\\ge 5$). Defines `girth`, `hasGirthAtLeast`, `C4Free`, and `complement` with inline proofs."
     },
     {
       "id": "extremal-function",
@@ -99,7 +99,7 @@
       "startLine": 224,
       "endLine": 236,
       "summary": "Contrasts paths (extremal: $\\text{ex}(n, P_{k+1}) = (k-1)n/2$ exactly) with stars (easy: pigeonhole gives a vertex of degree $\\ge k$ when $|E| \\ge kn/2$). Paths are the tightest case; stars are trivial.",
-      "mathContext": "Contrasts paths (extremal: $\\text{ex}(n, P_{k+1}) = (k-1)n/2$ exactly) with stars (easy: pigeonhole gives a vertex of degree $\\ge k$ when $|E| \\ge kn/2$). Paths are the tightest case; stars are trivia"
+      "mathContext": "Contrasts paths (extremal: $\\text{ex}(n, P_{k+1}) = (k-1)n/2$ exactly) with stars (easy: pigeonhole gives a vertex of degree $\\ge k$ when $|E| \\ge kn/2$)."
     },
     {
       "id": "komlos-sos",
@@ -107,7 +107,7 @@
       "startLine": 237,
       "endLine": 250,
       "summary": "Axiomatizes the Komlos-Sos-Szemeredi result: the conjecture holds for all $k \\ge k_0$ for some absolute constant $k_0$. Uses the regularity-blow-up method; exact threshold unknown, full proof unpublished.",
-      "mathContext": "Axiomatizes the Komlos-Sos-Szemeredi result: the conjecture holds for all $k \\ge k_0$ for some absolute constant $k_0$. Uses the regularity-blow-up method; exact threshold unknown, full proof unpublis"
+      "mathContext": "Axiomatizes the Komlos-Sos-Szemeredi result: the conjecture holds for all $k \\ge k_0$ for some absolute constant $k_0$."
     },
     {
       "id": "related-theorems",

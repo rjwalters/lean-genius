@@ -49,7 +49,7 @@
       "startLine": 1,
       "endLine": 35,
       "summary": "Header documenting Erdős Problem #926 with references to Füredi (1991, Combinatorica), Alon-Krivelevich-Sudakov (2003, Combin. Probab. Comput.), and Erdős (1971). Imports `SimpleGraph.Basic`, `SimpleGraph.Subgraph`, `Nat.Choose.Basic`, `Finset.Card`.",
-      "mathContext": "Header documenting Erdős Problem #926 with references to Füredi (1991, Combinatorica), Alon-Krivelevich-Sudakov (2003, Combin. Probab. Comput.), and Erdős (1971). Imports `SimpleGraph.Basic`, `SimpleG"
+      "mathContext": "Header documenting Erdős Problem #926 with references to Füredi (1991, Combinatorica), Alon-Krivelevich-Sudakov (2003, Combin. Probab. Comput.), and Erdős (1971). Imports `SimpleGraph.Basic`, `SimpleGraph.Subgraph`, `Nat.Choose.Basic`, `Finset.Card`."
     },
     {
       "id": "graph-hk",
@@ -65,7 +65,7 @@
       "startLine": 75,
       "endLine": 102,
       "summary": "Axiomatizes three structural properties: $C_4 \\subseteq H_k$ for $k \\geq 3$ (via cycle $x$-$y_1$-$z_{12}$-$y_2$), 2-degeneracy ($z_{ij}$ vertices have degree 2), and bipartiteness with parts $\\{x\\} \\cup \\{z_{ij}\\}$ and $\\{y_i\\}$.",
-      "mathContext": "Axiomatizes three structural properties: $C_4 \\subseteq H_k$ for $k \\geq 3$ (via cycle $x$-$y_1$-$z_{12}$-$y_2$), 2-degeneracy ($z_{ij}$ vertices have degree 2), and bipartiteness with parts $\\{x\\} \\c"
+      "mathContext": "Axiomatizes three structural properties: $C_4 \\subseteq H_k$ for $k \\geq 3$ (via cycle $x$-$y_1$-$z_{12}$-$y_2$), 2-degeneracy ($z_{ij}$ vertices have degree 2), and bipartiteness with parts $\\{x\\} \\cup \\{z_{ij}\\}$ and $\\{y_i\\}$."
     },
     {
       "id": "extremal-numbers",
@@ -73,7 +73,7 @@
       "startLine": 103,
       "endLine": 129,
       "summary": "Axiomatizes the extremal number function $\\mathrm{ex}(n; H)$, the Kővári-Sós-Turán theorem ($\\mathrm{ex}(n; K_{r,s}) \\leq \\frac{1}{2}(s-1)^{1/r} n^{2-1/r} + O(n)$), and $\\mathrm{ex}(n; C_4) \\sim \\frac{1}{2}n^{3/2}$.",
-      "mathContext": "Axiomatizes the extremal number function $\\mathrm{ex}(n; H)$, the Kővári-Sós-Turán theorem ($\\mathrm{ex}(n; K_{r,s}) \\leq \\frac{1}{2}(s-1)^{1/r} n^{2-1/r} + O(n)$), and $\\mathrm{ex}(n; C_4) \\sim \\frac"
+      "mathContext": "Axiomatizes the extremal number function $\\mathrm{ex}(n; H)$, the Kővári-Sós-Turán theorem ($\\mathrm{ex}(n; K_{r,s}) \\leq \\frac{1}{2}(s-1)^{1/r} n^{2-1/r} + O(n)$), and $\\mathrm{ex}(n; C_4) \\sim \\frac{1}{2}n^{3/2}$."
     },
     {
       "id": "lower-bound",
@@ -129,7 +129,7 @@
       "startLine": 243,
       "endLine": 274,
       "summary": "Proves `erdos_926_summary : True \\land True \\land True` (problem solved, lower bound tight, special case of 2-degenerate conjecture) and `erdos_926_order : True` ($\\mathrm{ex}(n; H_k) = \\Theta_k(n^{3/2})$).",
-      "mathContext": "Proves `erdos_926_summary : True \\land True \\land True` (problem solved, lower bound tight, special case of 2-degenerate conjecture) and `erdos_926_order : True` ($\\mathrm{ex}(n; H_k) = \\Theta_k(n^{3/"
+      "mathContext": "Proves `erdos_926_summary : True \\land True \\land True` (problem solved, lower bound tight, special case of 2-degenerate conjecture) and `erdos_926_order : True` ($\\mathrm{ex}(n; H_k) = \\Theta_k(n^{3/2})$)."
     }
   ],
   "conclusion": {

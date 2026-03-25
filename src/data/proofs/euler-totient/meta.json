@@ -72,7 +72,9 @@
       "**RSA Foundation:** The encryption scheme $m \\mapsto m^e \\pmod{n}$, $c \\mapsto c^d \\pmod{n}$ with $ed \\equiv 1 \\pmod{\\varphi(n)}$ relies directly on Euler's theorem for correctness."
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Number theory (modular arithmetic, prime factorization)",
+      "Group theory (group order, cyclic groups)",
+      "Combinatorics (inclusion-exclusion, Mobius function)"
     ]
   },
   "sections": [

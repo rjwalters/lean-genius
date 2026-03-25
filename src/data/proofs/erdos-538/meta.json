@@ -38,7 +38,8 @@
       "Erdős's upper bound is now proved from Mertens' second theorem (axiom) and a double counting inequality (sorry). The proof chains: reciprocalSum·(c·log log N) ≤ reciprocalSum·primeReciprocalSum ≤ r·(1+2·log N) ≤ 3r·log N, then divides by c·log log N"
     ],
     "prerequisites": [
-      "Combinatorics and number theory"
+      "Analysis (asymptotic estimates, generating functions)",
+      "Number theory (prime distribution, arithmetic functions)"
     ]
   },
   "sections": [

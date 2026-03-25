@@ -45,7 +45,7 @@
       "startLine": 31,
       "endLine": 53,
       "summary": "Defines $\\text{intervalProd}(a, b) = \\prod_{i=a}^{b-1} i$ via $\\texttt{Finset.Ico}$, validity of boundary sequences ($k+1$ strictly increasing points), the congruence condition $\\prod \\equiv 1 \\pmod{p}$ for all $k$ intervals, and $\\text{HasSolution}(k)$.",
-      "mathContext": "Defines $\\text{intervalProd}(a, b) = \\prod_{i=a}^{b-1} i$ via $\\texttt{Finset.Ico}$, validity of boundary sequences ($k+1$ strictly increasing points), the congruence condition $\\prod \\equiv 1 \\pmod{p"
+      "mathContext": "Defines $\\text{intervalProd}(a, b) = \\prod_{i=a}^{b-1} i$ via $\\texttt{Finset.Ico}$, validity of boundary sequences ($k+1$ strictly increasing points), the congruence condition $\\prod \\equiv 1 \\pmod{p}$ for all $k$ intervals, and $\\text{HasSolution}(k)$."
     },
     {
       "id": "infrastructure",
@@ -53,7 +53,7 @@
       "startLine": 54,
       "endLine": 94,
       "summary": "Proves six supporting lemmas: empty interval product equals 1, boundary list properties (length, chain, count), interval product positivity for $a \\ge 1$, and closure of $\\equiv 1 \\pmod{p}$ under multiplication ($a \\equiv 1, b \\equiv 1 \\implies ab \\equiv 1$).",
-      "mathContext": "Proves six supporting lemmas: empty interval product equals 1, boundary list properties (length, chain, count), interval product positivity for $a \\ge 1$, and closure of $\\equiv 1 \\pmod{p}$ under mult"
+      "mathContext": "Proves six supporting lemmas: empty interval product equals 1, boundary list properties (length, chain, count), interval product positivity for $a \\ge 1$, and closure of $\\equiv 1 \\pmod{p}$ under multiplication ($a \\equiv 1, b \\equiv 1 \\implies ab \\equiv 1$)."
     },
     {
       "id": "verified-solutions",
@@ -61,7 +61,7 @@
       "startLine": 95,
       "endLine": 151,
       "summary": "Computational verification via $\\texttt{native\\_decide}$: Erdős's $k=2$ ($p=11$, $3 \\cdot 4 \\equiv 5 \\cdot 6 \\cdot 7 \\equiv 1$), Makowski's $k=3$ ($p=17$, three intervals), combined result, non-triviality proof, and observation that both solutions use odd primes $p > 2$.",
-      "mathContext": "Computational verification via $\\texttt{native\\_decide}$: Erdős's $k=2$ ($p=11$, $3 \\cdot 4 \\equiv 5 \\cdot 6 \\cdot 7 \\equiv 1$), Makowski's $k=3$ ($p=17$, three intervals), combined result, non-trivia"
+      "mathContext": "Computational verification via $\\texttt{native\\_decide}$: Erdős's $k=2$ ($p=11$, $3 \\cdot 4 \\equiv 5 \\cdot 6 \\cdot 7 \\equiv 1$), Makowski's $k=3$ ($p=17$, three intervals), combined result, non-triviality proof, and observation that both solutions use odd primes $p > 2$."
     },
     {
       "id": "wilson-connection",
@@ -69,7 +69,7 @@
       "startLine": 152,
       "endLine": 172,
       "summary": "Verifies Wilson's theorem for $p = 11$ and $p = 17$ computationally, then states the general constraint: $(p-1)! \\equiv -1 \\pmod{p}$ implies intervals with product $\\equiv 1$ cannot partition $\\{1, \\ldots, p-1\\}$.",
-      "mathContext": "Verifies Wilson's theorem for $p = 11$ and $p = 17$ computationally, then states the general constraint: $(p-1)! \\equiv -1 \\pmod{p}$ implies intervals with product $\\equiv 1$ cannot partition $\\{1, \\l"
+      "mathContext": "Verifies Wilson's theorem for $p = 11$ and $p = 17$ computationally, then states the general constraint: $(p-1)! \\equiv -1 \\pmod{p}$ implies intervals with product $\\equiv 1$ cannot partition $\\{1, \\ldots, p-1\\}$."
     },
     {
       "id": "main-conjecture",
@@ -85,7 +85,7 @@
       "startLine": 180,
       "endLine": 193,
       "summary": "Axiomatizes the Noll–Simmons conjecture: $\\forall k, \\exists p$ prime with $k$ values $q_1 < \\cdots < q_k < p$ satisfying $q_1! \\equiv \\cdots \\equiv q_k! \\pmod{p}$. Weaker than the interval product conjecture since it drops consecutiveness.",
-      "mathContext": "Axiomatizes the Noll–Simmons conjecture: $\\forall k, \\exists p$ prime with $k$ values $q_1 < \\cdots < q_k < p$ satisfying $q_1! \\equiv \\cdots \\equiv q_k! \\pmod{p}$. Weaker than the interval product co"
+      "mathContext": "Axiomatizes the Noll–Simmons conjecture: $\\forall k, \\exists p$ prime with $k$ values $q_1 < \\cdots < q_k < p$ satisfying $q_1! \\pmod{p}$."
     },
     {
       "id": "summary",

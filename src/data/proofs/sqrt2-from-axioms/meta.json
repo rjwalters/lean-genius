@@ -54,7 +54,9 @@
       "This ~200-line pedagogical proof illustrates the trade-off in formalization: Mathlib's one-liner `exact irrational_sqrt_two` hides real number construction, the square root definition, and the actual irrationality argument — this file makes all of that structure explicit"
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Axiomatic real analysis (ordered field axioms, completeness)",
+      "Elementary number theory (divisibility, parity)",
+      "Logic (proof by contradiction, existence proofs)"
     ]
   },
   "sections": [

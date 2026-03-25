@@ -86,7 +86,7 @@
       "startLine": 1,
       "endLine": 3,
       "summary": "Imports $\\texttt{Mathlib.Data.Nat.Prime.Basic}$ for $\\texttt{Nat.minFac}$ and $\\texttt{Nat.Prime}$, plus $\\texttt{Mathlib.Tactic}$ for proof automation ($\\texttt{omega}$, $\\texttt{norm\\_num}$, $\\texttt{ring}$).",
-      "mathContext": "Imports $\\texttt{Mathlib.Data.Nat.Prime.Basic}$ for $\\texttt{Nat.minFac}$ and $\\texttt{Nat.Prime}$, plus $\\texttt{Mathlib.Tactic}$ for proof automation ($\\texttt{omega}$, $\\texttt{norm\\_num}$, $\\textt"
+      "mathContext": "Imports $\\texttt{Mathlib.Data.Nat.Prime.Basic}$ for $\\texttt{Nat.minFac}$ and $\\texttt{Nat.Prime}$, plus $\\texttt{Mathlib.Tactic}$ for proof automation ($\\texttt{omega}$, $\\texttt{norm\\_num}$, $\\texttt{ring}$)."
     },
     {
       "id": "docstring",
@@ -94,7 +94,7 @@
       "startLine": 4,
       "endLine": 28,
       "summary": "Documents the open conjecture: $\\exists f(n) \\to \\infty$ with composites $m$ satisfying $n + f(n) < m < n + p(m)$. References Erdős–Graham (1980) and Erdős (1992). States the related asymptotic question $n - F(n) \\sim c\\sqrt{n}$.",
-      "mathContext": "Documents the open conjecture: $\\exists f(n) \\to \\infty$ with composites $m$ satisfying $n + f(n) < m < n + p(m)$. References Erdős–Graham (1980) and Erdős (1992). States the related asymptotic questi"
+      "mathContext": "Documents the open conjecture: $\\exists f(n) \\to \\infty$ with composites $m$ satisfying $n + f(n) < m < n + p(m)$. States the related asymptotic question $n - F(n) \\sim c\\sqrt{n}$."
     },
     {
       "id": "definitions",
@@ -110,7 +110,7 @@
       "startLine": 38,
       "endLine": 57,
       "summary": "Three proved theorems: $p(m) \\geq 2$ for composites ($\\texttt{minFac\\_ge\\_two}$), gap $= m - 2$ for even composites ($\\texttt{even\\_composite\\_gap}$), and $p(m) \\geq 3$ for odd composites ($\\texttt{odd\\_composite\\_minFac\\_ge\\_three}$).",
-      "mathContext": "Three proved theorems: $p(m) \\geq 2$ for composites ($\\texttt{minFac\\_ge\\_two}$), gap $= m - 2$ for even composites ($\\texttt{even\\_composite\\_gap}$), and $p(m) \\geq 3$ for odd composites ($\\texttt{od"
+      "mathContext": "Three proved theorems: $p(m) \\geq 2$ for composites ($\\texttt{minFac\\_ge\\_two}$), gap $= m - 2$ for even composites ($\\texttt{even\\_composite\\_gap}$), and $p(m) \\geq 3$ for odd composites ($\\texttt{odd\\_composite\\_minFac\\_ge\\_three}$)."
     },
     {
       "id": "nine-bound",

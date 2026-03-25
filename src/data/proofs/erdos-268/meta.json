@@ -94,7 +94,7 @@
       "summary": "Defines HasConvergentHarmonicSubseries as Summable (fun n : A => 1/n) and shiftedHarmonicSum for the k-shifted variant. Proves finite sets trivially converge (sorry) and shifted summability follows from comparison (sorry). The subtype-based summation pattern is standard Mathlib.",
       "startLine": 38,
       "endLine": 62,
-      "mathContext": "Defines HasConvergentHarmonicSubseries as Summable (fun n : A => 1/n) and shiftedHarmonicSum for the k-shifted variant. Proves finite sets trivially converge (sorry) and shifted summability follows fr"
+      "mathContext": "Defines HasConvergentHarmonicSubseries as Summable (fun n : A => 1/n) and shiftedHarmonicSum for the k-shifted variant. Proves finite sets trivially converge (sorry) and shifted summability follows from comparison (sorry). The subtype-based summation pattern is standard Mathlib."
     },
     {
       "id": "point-set",
@@ -102,7 +102,7 @@
       "summary": "Defines harmonicPoint as Fin d → ℝ with each coordinate being a shifted sum, and harmonicPointSet as the image over infinite A with convergent sum. Provides an alternative definition harmonicPointSet' for formal-conjectures compatibility and proves extensional equality via ext/simp (fully proved, no sorry).",
       "startLine": 63,
       "endLine": 87,
-      "mathContext": "Defines harmonicPoint as Fin d → ℝ with each coordinate being a shifted sum, and harmonicPointSet as the image over infinite A with convergent sum. Provides an alternative definition harmonicPointSet'"
+      "mathContext": "Defines harmonicPoint as Fin d → ℝ with each coordinate being a shifted sum, and harmonicPointSet as the image over infinite A with convergent sum."
     },
     {
       "id": "main-theorem",
@@ -110,7 +110,7 @@
       "summary": "Axiomatizes erdos_268_solved: (interior (harmonicPointSet d)).Nonempty for all d. The derived theorem contains_open_ball is fully proved: it extracts a point from the interior, uses mem_interior to find an open set, then Metric.isOpen_iff to find a ball. This is a genuine deduction from the axiom.",
       "startLine": 88,
       "endLine": 108,
-      "mathContext": "Axiomatizes erdos_268_solved: (interior (harmonicPointSet d)).Nonempty for all d. The derived theorem contains_open_ball is fully proved: it extracts a point from the interior, uses mem_interior to fi"
+      "mathContext": "Axiomatizes erdos_268_solved: (interior (harmonicPointSet d)).Nonempty for all d. The derived theorem contains_open_ball is fully proved: it extracts a point from the interior, uses mem_interior to find an open set, then Metric.isOpen_iff to find a ball. This is a genuine deduction from the axiom."
     },
     {
       "id": "dim-2",
@@ -118,7 +118,7 @@
       "summary": "Axiomatizes the Erdős-Straus result that (interior (harmonicPointSet 2)).Nonempty. States dim2_point_form showing the concrete 2D point is (harmonicSubseriesSum A, shiftedHarmonicSum A 1) using matrix notation (sorry for the definitional unfolding).",
       "startLine": 109,
       "endLine": 123,
-      "mathContext": "Axiomatizes the Erdős-Straus result that (interior (harmonicPointSet 2)).Nonempty. States dim2_point_form showing the concrete 2D point is (harmonicSubseriesSum A, shiftedHarmonicSum A 1) using matrix"
+      "mathContext": "Axiomatizes the Erdős-Straus result that (interior (harmonicPointSet 2)).Nonempty. States dim2_point_form showing the concrete 2D point is (harmonicSubseriesSum A, shiftedHarmonicSum A 1) using matrix notation (sorry for the definitional unfolding)."
     },
     {
       "id": "dim-3",
@@ -126,7 +126,7 @@
       "summary": "Axiomatizes kovac_3d for the d=3 interior result. Defines placeholder kovacBallCenter and kovacBallRadius for Kovač's explicit construction. Axiomatizes kovac_explicit_ball: the ball lies inside harmonicPointSet 3.",
       "startLine": 124,
       "endLine": 141,
-      "mathContext": "Axiomatizes kovac_3d for the d=3 interior result. Defines placeholder kovacBallCenter and kovacBallRadius for Kovač's explicit construction. Axiomatizes kovac_explicit_ball: the ball lies inside harmo"
+      "mathContext": "Axiomatizes kovac_3d for the d=3 interior result. Defines placeholder kovacBallCenter and kovacBallRadius for Kovač's explicit construction. Axiomatizes kovac_explicit_ball: the ball lies inside harmonicPointSet 3."
     },
     {
       "id": "general",
@@ -134,7 +134,7 @@
       "summary": "The theorem kovac_tao_general for d ≥ 1 is a direct application of erdos_268_solved. Defines AhmesSeries as a synonym for harmonicSubseriesSum, recording the Egyptian fraction connection that powered the Kovač-Tao proof.",
       "startLine": 142,
       "endLine": 155,
-      "mathContext": "The theorem kovac_tao_general for d ≥ 1 is a direct application of erdos_268_solved. Defines AhmesSeries as a synonym for harmonicSubseriesSum, recording the Egyptian fraction connection that powered "
+      "mathContext": "The theorem kovac_tao_general for d ≥ 1 is a direct application of erdos_268_solved. Defines AhmesSeries as a synonym for harmonicSubseriesSum, recording the Egyptian fraction connection that powered the Kovač-Tao proof."
     },
     {
       "id": "properties",
@@ -142,7 +142,7 @@
       "summary": "States harmonicPointSet_nonempty (sorry — would use squares example), harmonicPointSet_path_connected (sorry — involves continuous interpolation of sets), and harmonicPointSet_dense_somewhere (partially proved from the main axiom using isOpen_interior, with one remaining sorry).",
       "startLine": 156,
       "endLine": 184,
-      "mathContext": "States harmonicPointSet_nonempty (sorry — would use squares example), harmonicPointSet_path_connected (sorry — involves continuous interpolation of sets), and harmonicPointSet_dense_somewhere (partial"
+      "mathContext": "States harmonicPointSet_nonempty (sorry — would use squares example), harmonicPointSet_path_connected (sorry — involves continuous interpolation of sets), and harmonicPointSet_dense_somewhere (partially proved from the main axiom using isOpen_interior, with one remaining sorry)."
     },
     {
       "id": "coordinates",
@@ -150,7 +150,7 @@
       "summary": "States coordinate_decreasing: shifted sums decrease with shift index (sorry — needs tsum_lt_tsum for infinite A). States first_coordinate_largest as a corollary. States all_coordinates_positive for nonempty A (sorry — needs tsum_pos). Together these show X lies in the cone {x₀ > x₁ > ··· > x_{d-1} > 0}.",
       "startLine": 185,
       "endLine": 206,
-      "mathContext": "States coordinate_decreasing: shifted sums decrease with shift index (sorry — needs tsum_lt_tsum for infinite A). States first_coordinate_largest as a corollary. States all_coordinates_positive for no"
+      "mathContext": "States coordinate_decreasing: shifted sums decrease with shift index (sorry — needs tsum_lt_tsum for infinite A). States first_coordinate_largest as a corollary. States all_coordinates_positive for nonempty A (sorry — needs tsum_pos)."
     },
     {
       "id": "monotonicity",
@@ -158,7 +158,7 @@
       "summary": "Defines projectionMap from ℝᵈ² to ℝᵈ¹ for d₁ ≤ d₂ via coordinate restriction. States projection_preserves: the image of X_{d₂} under projection lies in X_{d₁} (sorry — requires showing the same set A generates both points).",
       "startLine": 207,
       "endLine": 217,
-      "mathContext": "Defines projectionMap from ℝᵈ² to ℝᵈ¹ for d₁ ≤ d₂ via coordinate restriction. States projection_preserves: the image of X_{d₂} under projection lies in X_{d₁} (sorry — requires showing the same set A "
+      "mathContext": "Defines projectionMap from ℝᵈ² to ℝᵈ¹ for d₁ ≤ d₂ via coordinate restriction. States projection_preserves: the image of X_{d₂} under projection lies in X_{d₁} (sorry — requires showing the same set A generates both points)."
     },
     {
       "id": "examples",
@@ -166,7 +166,7 @@
       "summary": "Defines squaresSet = {n² : n ≥ 1} and powersOf2Set = {2ᵏ}. States convergence for both (sorry). Defines squaresPoint and powers2Point as concrete elements of X. The squares example connects to the Basel problem (Σ 1/n² = π²/6); the powers-of-2 example is a geometric series (Σ 1/2ᵏ = 2).",
       "startLine": 218,
       "endLine": 278,
-      "mathContext": "Defines squaresSet = {n² : n ≥ 1} and powersOf2Set = {2ᵏ}. States convergence for both (sorry). Defines squaresPoint and powers2Point as concrete elements of X. The squares example connects to the Bas"
+      "mathContext": "Defines squaresSet = {n² : n ≥ 1} and powersOf2Set = {2ᵏ}. States convergence for both (sorry). Defines squaresPoint and powers2Point as concrete elements of X. The squares example connects to the Basel problem (Σ 1/n² = π²/6); the powers-of-2 example is a geometric series (Σ 1/2ᵏ = 2)."
     }
   ],
   "conclusion": {

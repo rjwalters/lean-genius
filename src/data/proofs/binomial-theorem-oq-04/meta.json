@@ -75,7 +75,9 @@
       "The proof leverages Lean's definitional equality for natural number subtraction: when $k > r$, $\\binom{n}{r-k} = \\binom{n}{0} = 1$ since $r - k = 0$ in $\\mathbb{N}$, which means the summation range naturally handles out-of-range terms"
     ],
     "prerequisites": [
-      "Combinatorics (counting, extremal problems)"
+      "Combinatorics (binomial coefficients, Pascal's triangle)",
+      "Formal power series (generating functions)",
+      "Ring theory (polynomial identities, commutative algebra)"
     ]
   },
   "sections": [

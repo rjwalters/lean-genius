@@ -61,7 +61,7 @@
       "summary": "Defines `SetFamily α` as `Finset (Finset α)`, `familyUnion F` as $\\bigcup \\mathcal{F}$ via `Finset.sup`, and `isNUniform F n` requiring $|A| = n$ for all $A \\in \\mathcal{F}$. These parametrize the $n$-uniform hypergraph.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Defines `SetFamily α` as `Finset (Finset α)`, `familyUnion F` as $\\bigcup \\mathcal{F}$ via `Finset.sup`, and `isNUniform F n` requiring $|A| = n$ for all $A \\in \\mathcal{F}$. These parametrize the $n$"
+      "mathContext": "Defines `SetFamily α` as `Finset (Finset α)`, `familyUnion F` as $\\bigcup \\mathcal{F}$ via `Finset.sup`, and `isNUniform F n` requiring $|A| = n$ for all $A \\in \\mathcal{F}$. These parametrize the $n$-uniform hypergraph."
     },
     {
       "id": "intersecting",
@@ -69,7 +69,7 @@
       "summary": "Defines `intersectsAll B F` ($B \\cap A \\ne \\emptyset$ for all $A$), `containsNone B F` ($A \\not\\subseteq B$ for all $A$), `isGoodSet` (both conditions), and `goodSets F` (all good $B \\subseteq X$). A good set corresponds to the 'true' class of a proper 2-coloring.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Defines `intersectsAll B F` ($B \\cap A \\ne \\emptyset$ for all $A$), `containsNone B F` ($A \\not\\subseteq B$ for all $A$), `isGoodSet` (both conditions), and `goodSets F` (all good $B \\subseteq X$). A "
+      "mathContext": "Defines `intersectsAll B F` ($B \\cap A \\ne \\emptyset$ for all $A$), `containsNone B F` ($A \\not\\subseteq B$ for all $A$), `isGoodSet` (both conditions), and `goodSets F` (all good $B \\subseteq X$)."
     },
     {
       "id": "property-b",
@@ -85,7 +85,7 @@
       "summary": "Defines `goodSetCount` via `Finset.filter` on the powerset. States `erdos_1027_conjecture`: for $c > 0$, $\\exists \\delta > 0, N$ such that every large enough bounded $n$-uniform family has $\\ge \\delta \\cdot 2^{|X|}$ good sets.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Defines `goodSetCount` via `Finset.filter` on the powerset. States `erdos_1027_conjecture`: for $c > 0$, $\\exists \\delta > 0, N$ such that every large enough bounded $n$-uniform family has $\\ge \\delta"
+      "mathContext": "Defines `goodSetCount` via `Finset.filter` on the powerset. States `erdos_1027_conjecture`: for $c > 0$, $\\exists \\delta > 0, N$ such that every large enough bounded $n$-uniform family has $\\ge \\delta \\cdot 2^{|X|}$ good sets."
     },
     {
       "id": "solution",
@@ -109,7 +109,7 @@
       "summary": "Axiomatizes `propertyB_for_bounded` (one good set exists) and proves `single_implies_many`: from one good set, local perturbations produce exponentially many. This amplification is the core structural insight.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Axiomatizes `propertyB_for_bounded` (one good set exists) and proves `single_implies_many`: from one good set, local perturbations produce exponentially many. This amplification is the core structural"
+      "mathContext": "Axiomatizes `propertyB_for_bounded` (one good set exists) and proves `single_implies_many`: from one good set, local perturbations produce exponentially many. This amplification is the core structural insight."
     },
     {
       "id": "probabilistic",
@@ -117,7 +117,7 @@
       "summary": "Defines `probIntersects n` $= 1 - 2^{-n}$, `probNotContains n` $= 1 - 2^{-n}$, and `expectedGoodSets`. Proves `expected_good_positive`: the expected count is positive for large $n$, giving $\\mathbb{E} \\approx e^{-2c} \\cdot 2^{|X|}$.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Defines `probIntersects n` $= 1 - 2^{-n}$, `probNotContains n` $= 1 - 2^{-n}$, and `expectedGoodSets`. Proves `expected_good_positive`: the expected count is positive for large $n$, giving $\\mathbb{E}"
+      "mathContext": "Defines `probIntersects n` $= 1 - 2^{-n}$, `probNotContains n` $= 1 - 2^{-n}$, and `expectedGoodSets`. Proves `expected_good_positive`: the expected count is positive for large $n$, giving $\\mathbb{E} \\approx e^{-2c} \\cdot 2^{|X|}$."
     },
     {
       "id": "density",
@@ -133,7 +133,7 @@
       "summary": "Verifies base cases: empty family ($2^{|\\alpha|}$ good sets), singleton family ($\\ge 2^{n-1}$), and an inclusion-exclusion lower bound $|\\text{good}| \\ge \\frac{1}{4} \\cdot 2^{|X|} - |\\mathcal{F}| \\cdot 2^{|X|-1}$.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Verifies base cases: empty family ($2^{|\\alpha|}$ good sets), singleton family ($\\ge 2^{n-1}$), and an inclusion-exclusion lower bound $|\\text{good}| \\ge \\frac{1}{4} \\cdot 2^{|X|} - |\\mathcal{F}| \\cdo"
+      "mathContext": "Verifies base cases: empty family ($2^{|\\alpha|}$ good sets), singleton family ($\\ge 2^{n-1}$), and an inclusion-exclusion lower bound $|\\text{good}| \\ge \\frac{1}{4} \\cdot 2^{|X|} - |\\mathcal{F}| \\cdot 2^{|X|-1}$."
     }
   ],
   "conclusion": {

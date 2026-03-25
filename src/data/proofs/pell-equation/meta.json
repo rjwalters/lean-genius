@@ -61,7 +61,9 @@
       "**Computational Complexity:** The fundamental solution can be exponentially large in $D$: for $D = 61$, the solution has 10 digits, discovered by Bhaskara II in the 12th century"
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Number theory (continued fractions, quadratic irrationals)",
+      "Algebraic number theory (units in quadratic rings)",
+      "Group theory (structure of unit groups, infinite cyclic groups)"
     ]
   },
   "sections": [
@@ -71,7 +73,7 @@
       "startLine": 1,
       "endLine": 67,
       "summary": "Imports `Mathlib.NumberTheory.Pell` and provides extensive documentation: historical context (Brahmagupta, Bhaskara II, Fermat, Lagrange), the equation $x^2 - Dy^2 = 1$, key Mathlib API (`Solution₁`, `IsFundamental`), and the multiplicative structure in $\\mathbb{Z}[\\sqrt{D}]$",
-      "mathContext": "Imports `Mathlib.NumberTheory.Pell` and provides extensive documentation: historical context (Brahmagupta, Bhaskara II, Fermat, Lagrange), the equation $x^2 - Dy^2 = 1$, key Mathlib API (`Solution₁`, "
+      "mathContext": "Imports `Mathlib.NumberTheory.Pell` and provides extensive documentation: historical context (Brahmagupta, Bhaskara II, Fermat, Lagrange), the equation $x^2 - Dy^2 = 1$, key Mathlib API (`Solution₁`, `IsFundamental`), and the multiplicative structure in $\\mathbb{Z}[\\sqrt{D}]$"
     },
     {
       "id": "existence",
@@ -79,7 +81,7 @@
       "startLine": 68,
       "endLine": 106,
       "summary": "Two existence theorems: `pell_has_nontrivial_solution_int` gives $(x,y)$ with $x^2 - Dy^2 = 1$ and $y \\neq 0$ (wrapping `Pell.exists_of_not_isSquare`); `pell_has_pos_solution` gives a `Solution₁` with $x > 1$ and $y > 0$",
-      "mathContext": "Two existence theorems: `pell_has_nontrivial_solution_int` gives $(x,y)$ with $x^2 - Dy^2 = 1$ and $y \\neq 0$ (wrapping `Pell.exists_of_not_isSquare`); `pell_has_pos_solution` gives a `Solution₁` with"
+      "mathContext": "Two existence theorems: `pell_has_nontrivial_solution_int` gives $(x,y)$ with $x^2 - Dy^2 = 1$ and $y \\neq 0$ (wrapping `Pell.exists_of_not_isSquare`); `pell_has_pos_solution` gives a `Solution₁` with $x > 1$ and $y > 0$"
     },
     {
       "id": "infinitely-many",
@@ -103,7 +105,7 @@
       "startLine": 155,
       "endLine": 167,
       "summary": "The key structural theorem: every solution $a$ satisfies $a = a_1^n$ or $a = -a_1^n$ for some $n \\in \\mathbb{Z}$, via `IsFundamental.eq_zpow_or_neg_zpow`. The solution group is $\\mathbb{Z} \\times \\mathbb{Z}/2\\mathbb{Z}$",
-      "mathContext": "The key structural theorem: every solution $a$ satisfies $a = a_1^n$ or $a = -a_1^n$ for some $n \\in \\mathbb{Z}$, via `IsFundamental.eq_zpow_or_neg_zpow`. The solution group is $\\mathbb{Z} \\times \\mat"
+      "mathContext": "The key structural theorem: every solution $a$ satisfies $a = a_1^n$ or $a = -a_1^n$ for some $n \\in \\mathbb{Z}$, via `IsFundamental.eq_zpow_or_neg_zpow`. The solution group is $\\mathbb{Z} \\times \\mathbb{Z}/2\\mathbb{Z}$"
     },
     {
       "id": "group-structure",
@@ -111,7 +113,7 @@
       "startLine": 168,
       "endLine": 197,
       "summary": "Verifies the group operations explicitly: multiplication formula $(x_1 x_2 + Dy_1 y_2,\\, x_1 y_2 + x_2 y_1)$ matching $\\mathbb{Z}[\\sqrt{D}]$ multiplication, identity $(1,0)$, and inverse $(x,-y)$ (conjugation)",
-      "mathContext": "Verifies the group operations explicitly: multiplication formula $(x_1 x_2 + Dy_1 y_2,\\, x_1 y_2 + x_2 y_1)$ matching $\\mathbb{Z}[\\sqrt{D}]$ multiplication, identity $(1,0)$, and inverse $(x,-y)$ (con"
+      "mathContext": "Verifies the group operations explicitly: multiplication formula $(x_1 x_2 + Dy_1 y_2,\\, x_1 y_2 + x_2 y_1)$ matching $\\mathbb{Z}[\\sqrt{D}]$ multiplication, identity $(1,0)$, and inverse $(x,-y)$ (conjugation)"
     },
     {
       "id": "examples",
@@ -119,7 +121,7 @@
       "startLine": 198,
       "endLine": 244,
       "summary": "Computational verification via `norm_num` for $D = 2$ (fundamental $(3,2)$, powers $(17,12)$, $(99,70)$), $D = 3$ ($(2,1)$, $(7,4)$), $D = 5$ ($(9,4)$), $D = 7$ ($(8,3)$), and Fermat's challenge $D = 61$ ($(1766319049, 226153980)$)",
-      "mathContext": "Computational verification via `norm_num` for $D = 2$ (fundamental $(3,2)$, powers $(17,12)$, $(99,70)$), $D = 3$ ($(2,1)$, $(7,4)$), $D = 5$ ($(9,4)$), $D = 7$ ($(8,3)$), and Fermat's challenge $D = "
+      "mathContext": "Computational verification via `norm_num` for $D = 2$ (fundamental $(3,2)$, powers $(17,12)$, $(99,70)$), $D = 3$ ($(2,1)$, $(7,4)$), $D = 5$ ($(9,4)$), $D = 7$ ($(8,3)$), and Fermat's challenge $D = 61$ ($(1766319049, 226153980)$)"
     },
     {
       "id": "non-square",
@@ -135,7 +137,7 @@
       "startLine": 272,
       "endLine": 298,
       "summary": "Outlines connections to algebraic number theory (units in $\\mathbb{Z}[\\sqrt{D}]$, fundamental unit), continued fractions (convergents give solutions), Diophantine approximation ($|\\sqrt{D} - x/y| < 1/(2y^2)$), and cryptography (NTRU)",
-      "mathContext": "Outlines connections to algebraic number theory (units in $\\mathbb{Z}[\\sqrt{D}]$, fundamental unit), continued fractions (convergents give solutions), Diophantine approximation ($|\\sqrt{D} - x/y| < 1/"
+      "mathContext": "Outlines connections to algebraic number theory (units in $\\mathbb{Z}[\\sqrt{D}]$, fundamental unit), continued fractions (convergents give solutions), Diophantine approximation ($|\\sqrt{D} - x/y| < 1/(2y^2)$), and cryptography (NTRU)"
     }
   ],
   "conclusion": {

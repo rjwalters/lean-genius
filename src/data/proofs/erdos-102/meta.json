@@ -63,7 +63,10 @@
       "**Open divergence question**: Neither divergence ($h_c(n) \\to \\infty$) nor the existence of bounded counterexamples ($h_c(n) = O(1)$) has been established — the problem sits at the boundary between what Szemerédi–Trotter can and cannot resolve"
     ],
     "prerequisites": [
-      "Combinatorics and number theory"
+      "Algebraic geometry (algebraic curves, polynomial method)",
+      "Combinatorial geometry (incidence bounds, configurations)",
+      "Combinatorial geometry (incidence theorems, Szemerédi-Trotter)",
+      "Discrete geometry (point-line incidences, arrangements)"
     ]
   },
   "sections": [
@@ -81,7 +84,7 @@
       "startLine": 23,
       "endLine": 45,
       "summary": "Defines `PointConfig` (a finset of $\\mathbb{R}^2$ points with positive cardinality), `collinear₃` via the cross-product determinant, `richLineCount` counting 4-element collinear subsets, and `maxCollinear` as the supremum of collinear subset sizes.",
-      "mathContext": "Defines `PointConfig` (a finset of $\\mathbb{R}^2$ points with positive cardinality), `collinear₃` via the cross-product determinant, `richLineCount` counting 4-element collinear subsets, and `maxColli"
+      "mathContext": "Defines `PointConfig` (a finset of $\\mathbb{R}^2$ points with positive cardinality), `collinear₃` via the cross-product determinant, `richLineCount` counting 4-element collinear subsets, and `maxCollinear` as the supremum of collinear subset sizes."
     },
     {
       "id": "main-problem",

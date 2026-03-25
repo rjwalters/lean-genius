@@ -69,7 +69,7 @@
       "startLine": 1,
       "endLine": 18,
       "summary": "States Erdős Problem 1130 on the $\\Upsilon$ functional for Lagrange interpolation: $\\Upsilon = \\min_i \\max_{x \\in [x_i, x_{i+1}]} \\sum |l_k(x)|$. Summarizes proved results: $\\Upsilon < \\sqrt{n}$ (Erdős), $\\Upsilon \\le (2/\\pi) \\log n + O(1)$ (de Boor–Pinkus).",
-      "mathContext": "States Erdős Problem 1130 on the $\\Upsilon$ functional for Lagrange interpolation: $\\Upsilon = \\min_i \\max_{x \\in [x_i, x_{i+1}]} \\sum |l_k(x)|$. Summarizes proved results: $\\Upsilon < \\sqrt{n}$ (Erdő"
+      "mathContext": "States Erdős Problem 1130 on the $\\Upsilon$ functional for Lagrange interpolation: $\\Upsilon = \\min_i \\max_{x \\in [x_i, x_{i+1}]} \\sum |l_k(x)|$. Summarizes proved results: $\\Upsilon < \\sqrt{n}$ (Erdős), $\\Upsilon \\le (2/\\pi) \\log n + O(1)$ (de Boor–Pinkus)."
     },
     {
       "id": "imports",
@@ -93,7 +93,7 @@
       "startLine": 45,
       "endLine": 62,
       "summary": "Defines `subintervalEndpoint` ($x_0 = -1$, $x_{n+1} = 1$), `maxLebesgueOnInterval` ($\\text{sSup}$ of $\\Lambda$ on each subinterval), and `upsilon` ($\\text{sInf}$ over subintervals — the min-max functional).",
-      "mathContext": "Defines `subintervalEndpoint` ($x_0 = -1$, $x_{n+1} = 1$), `maxLebesgueOnInterval` ($\\text{sSup}$ of $\\Lambda$ on each subinterval), and `upsilon` ($\\text{sInf}$ over subintervals — the min-max functi"
+      "mathContext": "Defines `subintervalEndpoint` ($x_0 = -1$, $x_{n+1} = 1$), `maxLebesgueOnInterval` ($\\text{sSup}$ of $\\Lambda$ on each subinterval), and `upsilon` ($\\text{sInf}$ over subintervals — the min-max functional)."
     },
     {
       "id": "sqrt-bound",
@@ -117,7 +117,7 @@
       "startLine": 77,
       "endLine": 86,
       "summary": "Axiomatizes de Boor–Pinkus (1978): optimal nodes equalize $\\max_{[x_i,x_{i+1}]} \\Lambda$ across all subintervals. The optimal $P$ satisfies both maximality ($\\forall Q, \\Upsilon(Q) \\le \\Upsilon(P)$) and equalization.",
-      "mathContext": "Axiomatizes de Boor–Pinkus (1978): optimal nodes equalize $\\max_{[x_i,x_{i+1}]} \\Lambda$ across all subintervals. The optimal $P$ satisfies both maximality ($\\forall Q, \\Upsilon(Q) \\le \\Upsilon(P)$) a"
+      "mathContext": "Axiomatizes de Boor–Pinkus (1978): optimal nodes equalize $\\max_{[x_i,x_{i+1}]} \\Lambda$ across all subintervals. The optimal $P$ satisfies both maximality ($\\forall Q, \\Upsilon(Q) \\le \\Upsilon(P)$) and equalization."
     },
     {
       "id": "main-result",

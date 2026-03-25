@@ -31,7 +31,7 @@
       "startLine": 1,
       "endLine": 23,
       "summary": "Module docstring stating the problem, its solved status, and references. Imports `Analysis.InnerProductSpace.Basic` for the metric structure on $\\mathbb{R}^n$, `Combinatorics.Choose.Basic` for binomial coefficients, and `Data.Finset.Card` for finite set cardinalities.",
-      "mathContext": "Module docstring stating the problem, its solved status, and references. Imports `Analysis.InnerProductSpace.Basic` for the metric structure on $\\mathbb{R}^n$, `Combinatorics.Choose.Basic` for binomia"
+      "mathContext": "Imports `Analysis.InnerProductSpace.Basic` for the metric structure on $\\mathbb{R}^n$, `Combinatorics.Choose.Basic` for binomial coefficients, and `Data.Finset.Card` for finite set cardinalities."
     },
     {
       "id": "core-definitions",
@@ -39,7 +39,7 @@
       "startLine": 24,
       "endLine": 36,
       "summary": "Defines `IsTwoDistanceSet n A` requiring exactly two distinct positive distances $d_1 \\neq d_2$ among all pairs in $A \\subseteq \\mathbb{R}^n$, and `maxTwoDistSize n = \\sup\\{|A| : A \\text{ is a two-distance set in } \\mathbb{R}^n\\}$.",
-      "mathContext": "Defines `IsTwoDistanceSet n A` requiring exactly two distinct positive distances $d_1 \\neq d_2$ among all pairs in $A \\subseteq \\mathbb{R}^n$, and `maxTwoDistSize n = \\sup\\{|A| : A \\text{ is a two-dis"
+      "mathContext": "Defines `IsTwoDistanceSet n A` requiring exactly two distinct positive distances $d_1 \\neq d_2$ among all pairs in $A \\subseteq \\mathbb{R}^n$, and `maxTwoDistSize n = \\sup\\{|A| : A \\text{ is a two-distance set in } \\mathbb{R}^n\\}$."
     },
     {
       "id": "binary-construction",
@@ -47,7 +47,7 @@
       "startLine": 37,
       "endLine": 50,
       "summary": "Constructs `binaryTwoVec n i j` — indicator vectors $e_i + e_j \\in \\{0,1\\}^n$ — forming a two-distance set with distances $\\sqrt{2}$ (one shared coordinate) and $2$ (disjoint supports), giving $\\binom{n}{2}$ points.",
-      "mathContext": "Constructs `binaryTwoVec n i j` — indicator vectors $e_i + e_j \\in \\{0,1\\}^n$ — forming a two-distance set with distances $\\sqrt{2}$ (one shared coordinate) and $2$ (disjoint supports), giving $\\binom"
+      "mathContext": "Constructs `binaryTwoVec n i j` — indicator vectors $e_i + e_j \\in \\{0,1\\}^n$ — forming a two-distance set with distances $\\sqrt{2}$ (one shared coordinate) and $2$ (disjoint supports), giving $\\binom{n}{2}$ points."
     },
     {
       "id": "lower-bound",
@@ -63,7 +63,7 @@
       "startLine": 61,
       "endLine": 68,
       "summary": "The BBS theorem: $f(n) \\leq \\binom{n+2}{2}$. The proof associates to each point a polynomial vanishing on the other distance, bounding the dimension of the resulting polynomial space by $\\binom{n+2}{2}$.",
-      "mathContext": "The BBS theorem: $f(n) \\leq \\binom{n+2}{2}$. The proof associates to each point a polynomial vanishing on the other distance, bounding the dimension of the resulting polynomial space by $\\binom{n+2}{2"
+      "mathContext": "The BBS theorem: $f(n) \\leq \\binom{n+2}{2}$. The proof associates to each point a polynomial vanishing on the other distance, bounding the dimension of the resulting polynomial space by $\\binom{n+2}{2}$."
     },
     {
       "id": "main-result",
@@ -87,7 +87,7 @@
       "startLine": 85,
       "endLine": 97,
       "summary": "Coxeter's question — is $f(n)$ polynomial? — answered affirmatively by BBS. Erdős's original weaker bound $f(n) \\leq n!$ (exponential) is stated as a historical record of the pre-BBS state of knowledge.",
-      "mathContext": "Coxeter's question — is $f(n)$ polynomial? — answered affirmatively by BBS. Erdős's original weaker bound $f(n) \\leq n!$ (exponential) is stated as a historical record of the pre-BBS state of knowledg"
+      "mathContext": "Coxeter's question — is $f(n)$ polynomial? Erdős's original weaker bound $f(n) \\leq n!$ (exponential) is stated as a historical record of the pre-BBS state of knowledge."
     }
   ],
   "overview": {

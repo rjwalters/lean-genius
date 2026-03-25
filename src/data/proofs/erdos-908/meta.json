@@ -128,7 +128,7 @@
       "summary": "Axiomatizes `laczkovich_decomposition`: $\\forall f \\in \\text{MD},\\; \\exists g \\in C(\\mathbb{R}),\\; h$ additive, $r$ rigid: $f = g + h + r$. Essential uniqueness: $g_1 - g_2 = cx$, $r_1 = r_2$ $\\lambda$-a.e.",
       "startLine": 110,
       "endLine": 144,
-      "mathContext": "Axiomatizes `laczkovich_decomposition`: $\\forall f \\in \\text{MD},\\; \\exists g \\in C(\\mathbb{R}),\\; h$ additive, $r$ rigid: $f = g + h + r$. Essential uniqueness: $g_1 - g_2 = cx$, $r_1 = r_2$ $\\lambda"
+      "mathContext": "Axiomatizes `laczkovich_decomposition`: $\\forall f \\in \\text{MD},\\; \\exists g \\in C(\\mathbb{R}),\\; h$ additive, $r$ rigid: $f = g + h + r$. Essential uniqueness: $g_1 - g_2 = cx$, $r_1 = r_2$ $\\lambda$-a.e."
     },
     {
       "id": "special-cases",
@@ -136,7 +136,7 @@
       "summary": "If $f$ is measurable, $h = 0$ ($f = g + r$). Verified: continuous $\\Rightarrow \\text{MD}$ (via `hCont.sub`). Verified: additive $\\Rightarrow \\text{MD}$ ($\\Delta_h f = f(h)$ constant, hence `measurable_const`).",
       "startLine": 145,
       "endLine": 182,
-      "mathContext": "If $f$ is measurable, $h = 0$ ($f = g + r$). Verified: continuous $\\Rightarrow \\text{MD}$ (via `hCont.sub`). Verified: additive $\\Rightarrow \\text{MD}$ ($\\Delta_h f = f(h)$ constant, hence `measurable"
+      "mathContext": "If $f$ is measurable, $h = 0$ ($f = g + r$). Verified: continuous $\\Rightarrow \\text{MD}$ (via `hCont.sub`). Verified: additive $\\Rightarrow \\text{MD}$ ($\\Delta_h f = f(h)$ constant, hence `measurable_const`)."
     },
     {
       "id": "related-problems",
@@ -160,7 +160,7 @@
       "summary": "`erdos_908_solved` and `de_bruijn_erdos_conjecture` state the main result (both reference `laczkovich_decomposition`). `erdos_908_summary` combines decomposition $\\wedge$ continuous verification $\\wedge$ additive verification.",
       "startLine": 217,
       "endLine": 258,
-      "mathContext": "`erdos_908_solved` and `de_bruijn_erdos_conjecture` state the main result (both reference `laczkovich_decomposition`). `erdos_908_summary` combines decomposition $\\wedge$ continuous verification $\\wed"
+      "mathContext": "`erdos_908_summary` combines decomposition $\\wedge$ continuous verification $\\wedge$ additive verification."
     }
   ],
   "conclusion": {

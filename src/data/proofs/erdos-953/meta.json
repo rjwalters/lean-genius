@@ -96,7 +96,7 @@
       "summary": "Defines `IsIntegerDistance a b` ($\\exists n \\in \\mathbb{Z},\\; d(a,b) = n$) and `AvoidsIntegerDistances A` (no distinct pair has integer distance). Includes an equivalence theorem expanding the avoidance property via `simp`.",
       "startLine": 44,
       "endLine": 72,
-      "mathContext": "Defines `IsIntegerDistance a b` ($\\exists n \\in \\mathbb{Z},\\; d(a,b) = n$) and `AvoidsIntegerDistances A` (no distinct pair has integer distance). Includes an equivalence theorem expanding the avoidan"
+      "mathContext": "Defines `IsIntegerDistance a b` ($\\exists n \\in \\mathbb{Z},\\; d(a,b) = n$) and `AvoidsIntegerDistances A` (no distinct pair has integer distance). Includes an equivalence theorem expanding the avoidance property via `simp`."
     },
     {
       "id": "disk-measure",
@@ -104,7 +104,7 @@
       "summary": "Defines `openDisk r = \\{x \\in \\mathbb{R}^2 : d(x,0) < r\\}` and proves it is nonempty for $r > 0$. Introduces `maxMeasure r = \\sup\\{\\mu(A)\\}$ over measurable subsets avoiding integer distances—the central quantity of Problem #953.",
       "startLine": 73,
       "endLine": 99,
-      "mathContext": "Defines `openDisk r = \\{x \\in \\mathbb{R}^2 : d(x,0) < r\\}` and proves it is nonempty for $r > 0$. Introduces `maxMeasure r = \\sup\\{\\mu(A)\\}$ over measurable subsets avoiding integer distances—the cent"
+      "mathContext": "Defines `openDisk r = \\{x \\in \\mathbb{R}^2 : d(x,0) < r\\}` and proves it is nonempty for $r > 0$. Introduces `maxMeasure r = \\sup\\{\\mu(A)\\}$ over measurable subsets avoiding integer distances—the central quantity of Problem #953."
     },
     {
       "id": "basic-properties",
@@ -112,7 +112,7 @@
       "summary": "Fully proves two base cases: `singleton_avoids` (singletons trivially satisfy the avoidance property) and `pair_half_avoids` (the set $\\{(0,0), (0.5, 0)\\}$ avoids integer distances via an `omega` argument showing $0.5 \\notin \\mathbb{Z}$).",
       "startLine": 100,
       "endLine": 140,
-      "mathContext": "Fully proves two base cases: `singleton_avoids` (singletons trivially satisfy the avoidance property) and `pair_half_avoids` (the set $\\{(0,0), (0.5, 0)\\}$ avoids integer distances via an `omega` argu"
+      "mathContext": "Fully proves two base cases: `singleton_avoids` (singletons trivially satisfy the avoidance property) and `pair_half_avoids` (the set $\\{(0,0), (0.5, 0)\\}$ avoids integer distances via an `omega` argument showing $0.5 \\notin \\mathbb{Z}$)."
     },
     {
       "id": "upper-bounds",
@@ -136,7 +136,7 @@
       "summary": "Defines `annulus r₁ r₂ = \\{x : r_1 \\leq d(x,0) < r_2\\}$ and axiomatizes the thin annulus property: for $\\delta < 1$, there exists a positive-measure subset of the annulus $[r, r+\\delta)$ that avoids integer distances.",
       "startLine": 194,
       "endLine": 215,
-      "mathContext": "Defines `annulus r₁ r₂ = \\{x : r_1 \\leq d(x,0) < r_2\\}$ and axiomatizes the thin annulus property: for $\\delta < 1$, there exists a positive-measure subset of the annulus $[r, r+\\delta)$ that avoids i"
+      "mathContext": "Defines `annulus r₁ r₂ = \\{x : r_1 \\leq d(x,0) < r_2\\}$ and axiomatizes the thin annulus property: for $\\delta < 1$, there exists a positive-measure subset of the annulus $[r, r+\\delta)$ that avoids integer distances."
     },
     {
       "id": "related-problems",
@@ -144,7 +144,7 @@
       "summary": "Introduces `AvoidsForbiddenDistances A D` for general forbidden distance sets. Proves that integer avoidance equals $D = \\mathbb{Z}$ avoidance. Axiomatizes Erdős #465 (unit distance upper bounds) and #466 (unit distance lower bounds).",
       "startLine": 216,
       "endLine": 256,
-      "mathContext": "Introduces `AvoidsForbiddenDistances A D` for general forbidden distance sets. Proves that integer avoidance equals $D = \\mathbb{Z}$ avoidance. Axiomatizes Erdős #465 (unit distance upper bounds) and "
+      "mathContext": "Proves that integer avoidance equals $D = \\mathbb{Z}$ avoidance. Axiomatizes Erdős #465 (unit distance upper bounds) and #466 (unit distance lower bounds)."
     },
     {
       "id": "main-question",
@@ -152,7 +152,7 @@
       "summary": "Axiomatizes the conjectured asymptotic $C_1 r^{\\alpha} \\leq M(r) \\leq C_2 r^{\\alpha}$ for some $\\alpha \\in (0,1]$ and the existence of a limiting function $f(r)$ with $M(r) = f(r)$ satisfying $f(r) / r^{\\alpha} \\to 1$.",
       "startLine": 257,
       "endLine": 304,
-      "mathContext": "Axiomatizes the conjectured asymptotic $C_1 r^{\\alpha} \\leq M(r) \\leq C_2 r^{\\alpha}$ for some $\\alpha \\in (0,1]$ and the existence of a limiting function $f(r)$ with $M(r) = f(r)$ satisfying $f(r) / "
+      "mathContext": "Axiomatizes the conjectured asymptotic $C_1 r^{\\alpha} \\leq M(r) \\leq C_2 r^{\\alpha}$ for some $\\alpha \\in (0,1]$ and the existence of a limiting function $f(r)$ with $M(r) = f(r)$ satisfying $f(r) / r^{\\alpha} \\to 1$."
     },
     {
       "id": "summary-theorem",
@@ -160,7 +160,7 @@
       "summary": "The `erdos_953_summary` theorem combines the upper bound axiom and lower bound axiom into one statement, proved by pairing `trivial_upper_bound` and `kovac_lower_bound`. Confirms the state of knowledge on Problem #953.",
       "startLine": 292,
       "endLine": 306,
-      "mathContext": "The `erdos_953_summary` theorem combines the upper bound axiom and lower bound axiom into one statement, proved by pairing `trivial_upper_bound` and `kovac_lower_bound`. Confirms the state of knowledg"
+      "mathContext": "The `erdos_953_summary` theorem combines the upper bound axiom and lower bound axiom into one statement, proved by pairing `trivial_upper_bound` and `kovac_lower_bound`. Confirms the state of knowledge on Problem #953."
     }
   ],
   "conclusion": {

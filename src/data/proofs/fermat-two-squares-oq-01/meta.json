@@ -58,7 +58,9 @@
       "**Conjugation as norm recovery**: The identity $q\\bar{q} = N(q)$ (with zero imaginary part) shows the norm is intrinsic to the quaternion algebra. This parallels $z\\bar{z} = |z|^2$ for complex numbers and is the foundation of the theory of composition algebras (Hurwitz, 1898)."
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Number theory (primes, quadratic residues, Gaussian integers)",
+      "Abstract algebra (norms in Z[i], unique factorization)",
+      "Combinatorics (involutions, Zagier's one-sentence proof)"
     ]
   },
   "sections": [

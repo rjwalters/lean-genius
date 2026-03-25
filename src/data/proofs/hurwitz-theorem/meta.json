@@ -131,7 +131,7 @@
       "startLine": 317,
       "endLine": 451,
       "summary": "Defines $\\langle u, v \\rangle = \\sum_i u_i v_i$, standard basis $e_i$, proves $\\|e_i\\|^2 = 1$, $\\|v\\|^2 = \\langle v, v \\rangle$, and norm expansion $\\|a+b\\|^2 = \\|a\\|^2 + 2\\langle a,b \\rangle + \\|b\\|^2$. Derives that $m_{ij} = \\text{mul}(e_i, e_j)$ form orthonormal rows and columns.",
-      "mathContext": "Defines $\\langle u, v \\rangle = \\sum_i u_i v_i$, standard basis $e_i$, proves $\\|e_i\\|^2 = 1$, $\\|v\\|^2 = \\langle v, v \\rangle$, and norm expansion $\\|a+b\\|^2 = \\|a\\|^2 + 2\\langle a,b \\rangle + \\|b\\|^"
+      "mathContext": "Defines $\\langle u, v \\rangle = \\sum_i u_i v_i$, standard basis $e_i$, proves $\\|e_i\\|^2 = 1$, $\\|v\\|^2 = \\langle v, v \\rangle$, and norm expansion $\\|a+b\\|^2 = \\|a\\|^2 + 2\\langle a,b \\rangle + \\|b\\|^2$. Derives that $m_{ij} = \\text{mul}(e_i, e_j)$ form orthonormal rows and columns."
     },
     {
       "id": "parseval-helpers",
@@ -147,7 +147,7 @@
       "startLine": 491,
       "endLine": 580,
       "summary": "**Key lemma:** In $\\mathbb{R}^3$, a vector orthogonal to all three vectors of an orthonormal basis must be zero. Proved via matrix invertibility: the $3 \\times 3$ matrix with orthonormal rows has unit determinant, hence is invertible.",
-      "mathContext": "**Key lemma:** In $\\mathbb{R}^3$, a vector orthogonal to all three vectors of an orthonormal basis must be zero. Proved via matrix invertibility: the $3 \\times 3$ matrix with orthonormal rows has unit"
+      "mathContext": "**Key lemma:** In $\\mathbb{R}^3$, a vector orthogonal to all three vectors of an orthonormal basis must be zero. Proved via matrix invertibility: the $3 \\times 3$ matrix with orthonormal rows has unit determinant, hence is invertible."
     },
     {
       "id": "parseval-identity",
@@ -163,7 +163,7 @@
       "startLine": 648,
       "endLine": 678,
       "summary": "A unit vector orthogonal to two vectors of an orthonormal triple must equal $\\pm$ the third vector. Follows from Parseval: if $\\langle u, v_1 \\rangle = \\langle u, v_2 \\rangle = 0$ and $\\|u\\| = 1$, then $\\langle u, v_3 \\rangle = \\pm 1$.",
-      "mathContext": "A unit vector orthogonal to two vectors of an orthonormal triple must equal $\\pm$ the third vector. Follows from Parseval: if $\\langle u, v_1 \\rangle = \\langle u, v_2 \\rangle = 0$ and $\\|u\\| = 1$, the"
+      "mathContext": "A unit vector orthogonal to two vectors of an orthonormal triple must equal $\\pm$ the third vector. Follows from Parseval: if $\\langle u, v_1 \\rangle = \\langle u, v_2 \\rangle = 0$ and $\\|u\\| = 1$, then $\\langle u, v_3 \\rangle = \\pm 1$."
     },
     {
       "id": "bilinear-parseval",
@@ -171,7 +171,7 @@
       "startLine": 679,
       "endLine": 793,
       "summary": "Proves the bilinear Parseval identity: $\\langle u, w \\rangle = \\sum_i \\langle u, v_i \\rangle \\langle w, v_i \\rangle$ for orthonormal basis $\\{v_i\\}$. Uses `linear_combination` tactic for the algebraic manipulation.",
-      "mathContext": "Proves the bilinear Parseval identity: $\\langle u, w \\rangle = \\sum_i \\langle u, v_i \\rangle \\langle w, v_i \\rangle$ for orthonormal basis $\\{v_i\\}$. Uses `linear_combination` tactic for the algebraic"
+      "mathContext": "Proves the bilinear Parseval identity: $\\langle u, w \\rangle = \\sum_i \\langle u, v_i \\rangle \\langle w, v_i \\rangle$ for orthonormal basis $\\{v_i\\}$."
     },
     {
       "id": "n3-contradiction",

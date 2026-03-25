@@ -73,7 +73,9 @@
       "Nilpotent matrices have charpoly = X^n, so all powers >= n vanish"
     ],
     "prerequisites": [
-      "Linear algebra"
+      "Linear algebra (matrix powers, characteristic polynomial)",
+      "Ring theory (polynomial ring quotients, Cayley-Hamilton)",
+      "Computational algebra (matrix function evaluation)"
     ]
   },
   "sections": [

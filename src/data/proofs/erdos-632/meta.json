@@ -78,7 +78,7 @@
       "startLine": 1,
       "endLine": 36,
       "summary": "Module docstring documenting the problem statement, background, and references; single `import Mathlib` for full Mathlib access; `open` declarations (Finset Function); namespace `Erdos632`",
-      "mathContext": "A graph is (a,b)-choosable if for any assignment of a colors to each vertex, one can select b colors from each list such that adjacent vertices have disjoint color subsets. Conjecture: If G is (a,b)-c"
+      "mathContext": "Module docstring documenting the problem statement, background, and references; single `import Mathlib` for full Mathlib access; `open` declarations (Finset Function); namespace `Erdos632`"
     },
     {
       "id": "color-lists",
@@ -86,7 +86,7 @@
       "summary": "Defines `Graph V` as `SimpleGraph V`, `ColorAssignment V a` as $V \\to \\text{Finset}(\\text{Fin}\\, a)$ assigning $a$ colors per vertex, `ColorSelection` for choosing subsets, and validity predicates (`IsValidAssignment`, `IsValidSelection`) ensuring correct cardinalities.",
       "startLine": 37,
       "endLine": 59,
-      "mathContext": "Defines `Graph V` as `SimpleGraph V`, `ColorAssignment V a` as $V \\to \\text{Finset}(\\text{Fin}\\, a)$ assigning $a$ colors per vertex, `ColorSelection` for choosing subsets, and validity predicates (`I"
+      "mathContext": "Defines `Graph V` as `SimpleGraph V`, `ColorAssignment V a` as $V \\to \\text{Finset}(\\text{Fin}\\, a)$ assigning $a$ colors per vertex, `ColorSelection` for choosing subsets, and validity predicates (`IsValidAssignment`, `IsValidSelection`) ensuring correct cardinalities."
     },
     {
       "id": "choosability",
@@ -94,7 +94,7 @@
       "summary": "The central definition: `IsChoosable G a b` holds iff $\\forall L$ (valid assignment of $a$ colors), $\\exists S$ (selection of $b$ colors from each list) such that adjacent vertices have `Disjoint` selections. This captures the $\\forall\\exists$ game semantics.",
       "startLine": 60,
       "endLine": 80,
-      "mathContext": "The central definition: `IsChoosable G a b` holds iff $\\forall L$ (valid assignment of $a$ colors), $\\exists S$ (selection of $b$ colors from each list) such that adjacent vertices have `Disjoint` sel"
+      "mathContext": "The central definition: `IsChoosable G a b` holds iff $\\forall L$ (valid assignment of $a$ colors), $\\exists S$ (selection of $b$ colors from each list) such that adjacent vertices have `Disjoint` selections. This captures the $\\forall\\exists$ game semantics."
     },
     {
       "id": "list-chromatic",
@@ -110,7 +110,7 @@
       "summary": "Proves monotonicity in $a$ (more colors $\\implies$ easier), anti-monotonicity in $b$ (fewer selections $\\implies$ easier), the necessity of $b \\leq a$, and that the empty graph $\\bot$ is always $(a,b)$-choosable when $b \\leq a$.",
       "startLine": 100,
       "endLine": 125,
-      "mathContext": "Proves monotonicity in $a$ (more colors $\\implies$ easier), anti-monotonicity in $b$ (fewer selections $\\implies$ easier), the necessity of $b \\leq a$, and that the empty graph $\\bot$ is always $(a,b)"
+      "mathContext": "Proves monotonicity in $a$ (more colors $\\implies$ easier), anti-monotonicity in $b$ (fewer selections $\\implies$ easier), the necessity of $b \\leq a$, and that the empty graph $\\bot$ is always $(a,b)$-choosable when $b \\leq a$."
     },
     {
       "id": "ert-conjecture",
@@ -134,7 +134,7 @@
       "summary": "Axiomatizes the DHS 2019 result: $\\exists G$ with $(4,1)$-choosable $\\wedge \\neg(8,2)$-choosable, with $n > 100$ vertices. Also axiomatizes the existence of a specific bad 8-color assignment that blocks all valid 2-selections.",
       "startLine": 174,
       "endLine": 199,
-      "mathContext": "Axiomatizes the DHS 2019 result: $\\exists G$ with $(4,1)$-choosable $\\wedge \\neg(8,2)$-choosable, with $n > 100$ vertices. Also axiomatizes the existence of a specific bad 8-color assignment that bloc"
+      "mathContext": "Axiomatizes the DHS 2019 result: $\\exists G$ with $(4,1)$-choosable $\\wedge \\neg(8,2)$-choosable, with $n > 100$ vertices. Also axiomatizes the existence of a specific bad 8-color assignment that blocks all valid 2-selections."
     },
     {
       "id": "disproof",
@@ -142,7 +142,7 @@
       "summary": "Proves `ert_conjecture_false`: $\\neg\\text{ERT\\_Conjecture}$. The chain: `ert_4_1_to_8_2_false` $\\implies$ `ert_m2_false` (by specializing $a=4, b=1$) $\\implies$ `ert_conjecture_false` (by specializing $m=2$).",
       "startLine": 200,
       "endLine": 226,
-      "mathContext": "Proves `ert_conjecture_false`: $\\neg\\text{ERT\\_Conjecture}$. The chain: `ert_4_1_to_8_2_false` $\\implies$ `ert_m2_false` (by specializing $a=4, b=1$) $\\implies$ `ert_conjecture_false` (by specializing"
+      "mathContext": "Proves `ert_conjecture_false`: $\\neg\\text{ERT\\_Conjecture}$. The chain: `ert_4_1_to_8_2_false` $\\implies$ `ert_m2_false` (by specializing $a=4, b=1$) $\\implies$ `ert_conjecture_false` (by specializing $m=2$)."
     },
     {
       "id": "positive",
@@ -158,7 +158,7 @@
       "summary": "States the List Coloring Conjecture ($\\chi_L(L(G)) = \\chi'(G)$ for line graphs), Galvin's theorem for bipartite line graphs, and Ohba's theorem ($\\chi_L = \\chi$ when $|V| \\leq 2\\chi + 1$, proved by Noel–Reed–Wu 2015).",
       "startLine": 264,
       "endLine": 285,
-      "mathContext": "States the List Coloring Conjecture ($\\chi_L(L(G)) = \\chi'(G)$ for line graphs), Galvin's theorem for bipartite line graphs, and Ohba's theorem ($\\chi_L = \\chi$ when $|V| \\leq 2\\chi + 1$, proved by No"
+      "mathContext": "States the List Coloring Conjecture ($\\chi_L(L(G)) = \\chi'(G)$ for line graphs), Galvin's theorem for bipartite line graphs, and Ohba's theorem ($\\chi_L = \\chi$ when $|V| \\leq 2\\chi + 1$, proved by Noel–Reed–Wu 2015)."
     },
     {
       "id": "construction",
@@ -166,7 +166,7 @@
       "summary": "Axiomatizes structural details of the DHS counterexample: a Kneser-type base graph that is $(4,1)$-choosable, a key lemma providing a bad list assignment for $(8,2)$, and bounded degree ($\\Delta \\leq 100$).",
       "startLine": 286,
       "endLine": 313,
-      "mathContext": "Axiomatizes structural details of the DHS counterexample: a Kneser-type base graph that is $(4,1)$-choosable, a key lemma providing a bad list assignment for $(8,2)$, and bounded degree ($\\Delta \\leq "
+      "mathContext": "Axiomatizes structural details of the DHS counterexample: a Kneser-type base graph that is $(4,1)$-choosable, a key lemma providing a bad list assignment for $(8,2)$, and bounded degree ($\\Delta \\leq 100$)."
     },
     {
       "id": "main-result",

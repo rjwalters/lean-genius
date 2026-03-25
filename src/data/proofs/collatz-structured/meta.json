@@ -48,7 +48,9 @@
       "The `native_decide` tactic enables verification of specific Collatz trajectories (like 27's 111-step path) by compiling the recursive computation to native code — turning the proof assistant into an efficient trajectory checker"
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Number theory (modular arithmetic, binary representations)",
+      "Dynamical systems (orbit structure, attractors)",
+      "Computability theory (undecidability, Turing machines)"
     ]
   },
   "sections": [

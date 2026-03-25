@@ -58,7 +58,7 @@
       "startLine": 39,
       "endLine": 57,
       "summary": "Defines `PointConfig` (finite set of points in $\\mathbb{R}^2$), `Weighting` (positive real weights), `ConfigLine` (lines through $\\ge 2$ points via `AffineSubspace` with rank-1 direction), and `lineSum` (sum of weights on a line).",
-      "mathContext": "Defines `PointConfig` (finite set of points in $\\mathbb{R}^2$), `Weighting` (positive real weights), `ConfigLine` (lines through $\\ge 2$ points via `AffineSubspace` with rank-1 direction), and `lineSu"
+      "mathContext": "Defines `PointConfig` (finite set of points in $\\mathbb{R}^2$), `Weighting` (positive real weights), `ConfigLine` (lines through $\\ge 2$ points via `AffineSubspace` with rank-1 direction), and `lineSum` (sum of weights on a line)."
     },
     {
       "id": "magic",
@@ -66,7 +66,7 @@
       "startLine": 58,
       "endLine": 67,
       "summary": "Defines `IsMagic P`: there exist positive weights $w$ and constant $c > 0$ such that every configuration line has weight sum $c$. Defines the `magicConstant` via `Classical.choose`.",
-      "mathContext": "Formal definition: Defines `IsMagic P`: there exist positive weights $w$ and constant $c > 0$ such that every configuration line has weight sum $c$. Defines the `magicConstant` via `Classical.choose`."
+      "mathContext": "Defines `IsMagic P`: there exist positive weights $w$ and constant $c > 0$ such that every configuration line has weight sum $c$. Defines the `magicConstant` via `Classical.choose`."
     },
     {
       "id": "classes",
@@ -74,7 +74,7 @@
       "startLine": 68,
       "endLine": 114,
       "summary": "Defines the four classes: `IsCollinear` (all points on one line), `IsGeneralPosition` (no 3 collinear), `IsNearPencil` ($n-1$ on a line), `IsIncenterConfig` (triangle + incenter + bisector points). Axiomatizes each class as magic.",
-      "mathContext": "Defines the four classes: `IsCollinear` (all points on one line), `IsGeneralPosition` (no 3 collinear), `IsNearPencil` ($n-1$ on a line), `IsIncenterConfig` (triangle + incenter + bisector points). Ax"
+      "mathContext": "Defines the four classes: `IsCollinear` (all points on one line), `IsGeneralPosition` (no 3 collinear), `IsNearPencil` ($n-1$ on a line), `IsIncenterConfig` (triangle + incenter + bisector points). Axiomatizes each class as magic."
     },
     {
       "id": "projective",
@@ -90,7 +90,7 @@
       "startLine": 128,
       "endLine": 165,
       "summary": "Defines `IsMagicClass` (disjunction of the four classes), `murty_conjecture` (magic $\\Leftrightarrow$ magic class for $|P| \\ge 3$), axiomatizes `magic_classification`, and proves the contrapositive `not_magic_outside_classes`.",
-      "mathContext": "Defines `IsMagicClass` (disjunction of the four classes), `murty_conjecture` (magic $\\Leftrightarrow$ magic class for $|P| \\ge 3$), axiomatizes `magic_classification`, and proves the contrapositive `n"
+      "mathContext": "Defines `IsMagicClass` (disjunction of the four classes), `murty_conjecture` (magic $\\Leftrightarrow$ magic class for $|P| \\ge 3$), axiomatizes `magic_classification`, and proves the contrapositive `not_magic_outside_classes`."
     },
     {
       "id": "examples",
@@ -106,7 +106,7 @@
       "startLine": 188,
       "endLine": 239,
       "summary": "Defines the `incidenceMatrix` ($A_{L,p} = 1$ if $p \\in L$, else $0$). Axiomatizes `magic_iff_positive_solution` and the `weighting_dimension_bound`: outside the four classes, the positive orthant misses the solution space.",
-      "mathContext": "Defines the `incidenceMatrix` ($A_{L,p} = 1$ if $p \\in L$, else $0$). Axiomatizes `magic_iff_positive_solution` and the `weighting_dimension_bound`: outside the four classes, the positive orthant miss"
+      "mathContext": "Defines the `incidenceMatrix` ($A_{L,p} = 1$ if $p \\in L$, else $0$). Axiomatizes `magic_iff_positive_solution` and the `weighting_dimension_bound`: outside the four classes, the positive orthant misses the solution space."
     }
   ],
   "conclusion": {

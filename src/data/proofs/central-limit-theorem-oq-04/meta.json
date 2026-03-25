@@ -59,7 +59,7 @@
       "summary": "Defines `NCDistribution` as a moment sequence $\\{m_n\\}$ with normalization $m_0 = 1$. Proves extensionality (`nc_dist_ext`: equal moments implies equal distributions) and defines `diracNC` ($m_n = 0$ for $n \\geq 1$).",
       "startLine": 66,
       "endLine": 108,
-      "mathContext": "Defines `NCDistribution` as a moment sequence $\\{m_n\\}$ with normalization $m_0 = 1$. Proves extensionality (`nc_dist_ext`: equal moments implies equal distributions) and defines `diracNC` ($m_n = 0$ "
+      "mathContext": "Defines `NCDistribution` as a moment sequence $\\{m_n\\}$ with normalization $m_0 = 1$. Proves extensionality (`nc_dist_ext`: equal moments implies equal distributions) and defines `diracNC` ($m_n = 0$ for $n \\geq 1$)."
     },
     {
       "id": "free-independence",
@@ -83,7 +83,7 @@
       "summary": "Axiomatizes free convolution $\\boxplus$ as a commutative monoid with $\\kappa_n(\\mu \\boxplus \\nu) = \\kappa_n(\\mu) + \\kappa_n(\\nu)$. Proves `freeConvPow_add` ($\\mu^{\\boxplus(m+n)} = \\mu^{\\boxplus m} \\boxplus \\mu^{\\boxplus n}$) and `freeConvPow_cumulant` ($\\kappa_k(\\mu^{\\boxplus n}) = n \\kappa_k(\\mu)$) by induction.",
       "startLine": 171,
       "endLine": 259,
-      "mathContext": "Axiomatizes free convolution $\\boxplus$ as a commutative monoid with $\\kappa_n(\\mu \\boxplus \\nu) = \\kappa_n(\\mu) + \\kappa_n(\\nu)$. Proves `freeConvPow_add` ($\\mu^{\\boxplus(m+n)} = \\mu^{\\boxplus m} \\bo"
+      "mathContext": "Axiomatizes free convolution $\\boxplus$ as a commutative monoid with $\\kappa_n(\\mu \\boxplus \\nu) = \\kappa_n(\\mu) + \\kappa_n(\\nu)$. Proves `freeConvPow_add` ($\\mu^{\\boxplus(m+n)} = \\mu^{\\boxplus m} \\boxplus \\mu^{\\boxplus n}$) and `freeConvPow_cumulant` ($\\kappa_k(\\mu^{\\boxplus n}) = n \\kappa_k(\\mu)$) by induction."
     },
     {
       "id": "r-transform",
@@ -91,7 +91,7 @@
       "summary": "Axiomatizes the R-transform as the generating function of free cumulants: $R_\\mu(z) = \\sum \\kappa_n z^{n-1}$. Proves `Rtransform_freeConvPow` ($R_{\\mu^{\\boxplus n}} = n \\cdot R_\\mu$) by induction, paralleling the `freeConvPow_cumulant` proof.",
       "startLine": 260,
       "endLine": 305,
-      "mathContext": "Axiomatizes the R-transform as the generating function of free cumulants: $R_\\mu(z) = \\sum \\kappa_n z^{n-1}$. Proves `Rtransform_freeConvPow` ($R_{\\mu^{\\boxplus n}} = n \\cdot R_\\mu$) by induction, par"
+      "mathContext": "Axiomatizes the R-transform as the generating function of free cumulants: $R_\\mu(z) = \\sum \\kappa_n z^{n-1}$. Proves `Rtransform_freeConvPow` ($R_{\\mu^{\\boxplus n}} = n \\cdot R_\\mu$) by induction, paralleling the `freeConvPow_cumulant` proof."
     },
     {
       "id": "semicircle",
@@ -99,7 +99,7 @@
       "summary": "Defines the Wigner semicircle distribution with Catalan number moments ($m_{2k} = C_k$, odd moments zero). Axiomatizes its free cumulant structure: $\\kappa_2 = 1$ and $\\kappa_n = 0$ for $n \\neq 2$, giving R-transform $R_w(z) = z$.",
       "startLine": 306,
       "endLine": 371,
-      "mathContext": "Defines the Wigner semicircle distribution with Catalan number moments ($m_{2k} = C_k$, odd moments zero). Axiomatizes its free cumulant structure: $\\kappa_2 = 1$ and $\\kappa_n = 0$ for $n \\neq 2$, gi"
+      "mathContext": "Defines the Wigner semicircle distribution with Catalan number moments ($m_{2k} = C_k$, odd moments zero). Axiomatizes its free cumulant structure: $\\kappa_2 = 1$ and $\\kappa_n = 0$ for $n \\neq 2$, giving R-transform $R_w(z) = z$."
     },
     {
       "id": "dilation",
@@ -107,7 +107,7 @@
       "summary": "Axiomatizes dilation $D_c$ with cumulant scaling $\\kappa_n(D_c(\\mu)) = c^n \\kappa_n(\\mu)$ and R-transform scaling. Defines the normalized free convolution power $D_{1/\\sqrt{n}}(\\mu^{\\boxplus n})$ — the distribution of $(a_1 + \\cdots + a_n)/\\sqrt{n}$.",
       "startLine": 372,
       "endLine": 401,
-      "mathContext": "Axiomatizes dilation $D_c$ with cumulant scaling $\\kappa_n(D_c(\\mu)) = c^n \\kappa_n(\\mu)$ and R-transform scaling. Defines the normalized free convolution power $D_{1/\\sqrt{n}}(\\mu^{\\boxplus n})$ — th"
+      "mathContext": "Axiomatizes dilation $D_c$ with cumulant scaling $\\kappa_n(D_c(\\mu)) = c^n \\kappa_n(\\mu)$ and R-transform scaling. Defines the normalized free convolution power $D_{1/\\sqrt{n}}(\\mu^{\\boxplus n})$ — the distribution of $(a_1 + \\cdots + a_n)/\\sqrt{n}$."
     },
     {
       "id": "free-clt",
@@ -115,7 +115,7 @@
       "summary": "Defines the free renormalization map $T(\\mu) = D_{1/\\sqrt{2}}(\\mu \\boxplus \\mu)$, axiomatizes the semicircle as its fixed point, defines moment convergence, states the Free CLT (`free_clt`), and proves `semicircle_is_attractor`.",
       "startLine": 402,
       "endLine": 483,
-      "mathContext": "Defines the free renormalization map $T(\\mu) = D_{1/\\sqrt{2}}(\\mu \\boxplus \\mu)$, axiomatizes the semicircle as its fixed point, defines moment convergence, states the Free CLT (`free_clt`), and prove"
+      "mathContext": "Defines the free renormalization map $T(\\mu) = D_{1/\\sqrt{2}}(\\mu \\boxplus \\mu)$, axiomatizes the semicircle as its fixed point, defines moment convergence, states the Free CLT (`free_clt`), and proves `semicircle_is_attractor`."
     },
     {
       "id": "structural-parallel",
@@ -123,7 +123,7 @@
       "summary": "Defines `CLTStructure` abstracting the universal pattern: convolution monoid + cumulant linearization + limit law with only $\\kappa_2 \\neq 0$. Instantiates `freeCLTStructure` and proves structural verification theorems (`clt_structure_double_variance`, `clt_structure_double_higher`).",
       "startLine": 484,
       "endLine": 588,
-      "mathContext": "Defines `CLTStructure` abstracting the universal pattern: convolution monoid + cumulant linearization + limit law with only $\\kappa_2 \\neq 0$. Instantiates `freeCLTStructure` and proves structural ver"
+      "mathContext": "Defines `CLTStructure` abstracting the universal pattern: convolution monoid + cumulant linearization + limit law with only $\\kappa_2 \\neq 0$. Instantiates `freeCLTStructure` and proves structural verification theorems (`clt_structure_double_variance`, `clt_structure_double_higher`)."
     },
     {
       "id": "beyond",

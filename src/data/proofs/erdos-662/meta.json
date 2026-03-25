@@ -55,7 +55,7 @@
       "startLine": 29,
       "endLine": 44,
       "summary": "Defines 1-separation ($d(p,q) \\ge 1$ for all distinct pairs), the $t$-neighborhood $N_t(p)$, ordered and unordered pair counts. The unordered pair count $\\text{pairs}_t(S)$ is the central quantity in the conjecture.",
-      "mathContext": "Defines 1-separation ($d(p,q) \\ge 1$ for all distinct pairs), the $t$-neighborhood $N_t(p)$, ordered and unordered pair counts. The unordered pair count $\\text{pairs}_t(S)$ is the central quantity in "
+      "mathContext": "Defines 1-separation ($d(p,q) \\ge 1$ for all distinct pairs), the $t$-neighborhood $N_t(p)$, ordered and unordered pair counts. The unordered pair count $\\text{pairs}_t(S)$ is the central quantity in the conjecture."
     },
     {
       "id": "triangular-lattice",
@@ -63,7 +63,7 @@
       "startLine": 48,
       "endLine": 55,
       "summary": "Constructs the triangular lattice $\\Lambda = \\mathbb{Z}(1,0) + \\mathbb{Z}(\\frac{1}{2}, \\frac{\\sqrt{3}}{2})$ and axiomatizes the lattice count function $f(t) = |\\{\\mathbf{v} \\in \\Lambda \\setminus \\{\\mathbf{0}\\} : \\|\\mathbf{v}\\| \\le t\\}|$.",
-      "mathContext": "Constructs the triangular lattice $\\Lambda = \\mathbb{Z}(1,0) + \\mathbb{Z}(\\frac{1}{2}, \\frac{\\sqrt{3}}{2})$ and axiomatizes the lattice count function $f(t) = |\\{\\mathbf{v} \\in \\Lambda \\setminus \\{\\ma"
+      "mathContext": "Constructs the triangular lattice $\\Lambda = \\mathbb{Z}(1,0) + \\mathbb{Z}(\\frac{1}{2}, \\frac{\\sqrt{3}}{2})$ and axiomatizes the lattice count function $f(t) = |\\{\\mathbf{v} \\in \\Lambda \\setminus \\{\\mathbf{0}\\} : \\|\\mathbf{v}\\| \\le t\\}|$."
     },
     {
       "id": "lattice-distance",
@@ -79,7 +79,7 @@
       "startLine": 75,
       "endLine": 91,
       "summary": "Axiomatizes the per-vertex bound $|N_1(p)| \\le 6$ (2D kissing number), derives the ordered bound $6n$, and proves the contact number bound $\\text{pairs}_1(S) \\le 3n$ — the resolved $t = 1$ case of the conjecture.",
-      "mathContext": "Axiomatizes the per-vertex bound $|N_1(p)| \\le 6$ (2D kissing number), derives the ordered bound $6n$, and proves the contact number bound $\\text{pairs}_1(S) \\le 3n$ — the resolved $t = 1$ case of the"
+      "mathContext": "Axiomatizes the per-vertex bound $|N_1(p)| \\le 6$ (2D kissing number), derives the ordered bound $6n$, and proves the contact number bound $\\text{pairs}_1(S) \\le 3n$ — the resolved $t = 1$ case of the conjecture."
     },
     {
       "id": "main-conjecture",
@@ -87,7 +87,7 @@
       "startLine": 95,
       "endLine": 100,
       "summary": "States the Erdős–Lovász–Vesztergombi conjecture: for all $t \\ge 1$ and sufficiently large $n$, $\\text{pairs}_t(S) \\le n \\cdot f(t)/2$ for every 1-separated $S$ with $|S| = n$. Axiomatized as the conjecture remains open.",
-      "mathContext": "States the Erdős–Lovász–Vesztergombi conjecture: for all $t \\ge 1$ and sufficiently large $n$, $\\text{pairs}_t(S) \\le n \\cdot f(t)/2$ for every 1-separated $S$ with $|S| = n$. Axiomatized as the conje"
+      "mathContext": "States the Erdős–Lovász–Vesztergombi conjecture: for all $t \\ge 1$ and sufficiently large $n$, $\\text{pairs}_t(S) \\le n \\cdot f(t)/2$ for every 1-separated $S$ with $|S| = n$. Axiomatized as the conjecture remains open."
     }
   ],
   "overview": {
@@ -103,7 +103,8 @@
       "**Boundary effects**: The formulation requires $n \\ge N$ because finite lattice patches have fewer pairs per point near the boundary; the conjecture is asymptotic in nature"
     ],
     "prerequisites": [
-      "Combinatorics and number theory"
+      "Combinatorial geometry (incidence bounds, configurations)",
+      "Discrete geometry (point-line incidences, arrangements)"
     ]
   },
   "conclusion": {

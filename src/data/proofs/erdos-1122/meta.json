@@ -123,7 +123,7 @@
       "startLine": 44,
       "endLine": 64,
       "summary": "Defines `IsAdditive f` (f(ab) = f(a) + f(b) for coprime a,b ≥ 1) and `IsCompletelyAdditive f` (for all a,b ≥ 1). Proves `log_completely_additive` via `Nat.cast_mul` and `Real.log_mul`. Defines `valueDeterminedByPrimes` using `Nat.primeFactors` and `Nat.factorization`.",
-      "mathContext": "Defines `IsAdditive f` (f(ab) = f(a) + f(b) for coprime a,b ≥ 1) and `IsCompletelyAdditive f` (for all a,b ≥ 1). Proves `log_completely_additive` via `Nat.cast_mul` and `Real.log_mul`. Defines `valueD"
+      "mathContext": "Defines `IsAdditive f` (f(ab) = f(a) + f(b) for coprime a,b ≥ 1) and `IsCompletelyAdditive f` (for all a,b ≥ 1). Proves `log_completely_additive` via `Nat.cast_mul` and `Real.log_mul`. Defines `valueDeterminedByPrimes` using `Nat.primeFactors` and `Nat.factorization`."
     },
     {
       "id": "sec-defect-set",
@@ -131,7 +131,7 @@
       "startLine": 65,
       "endLine": 92,
       "summary": "Defines `monotonicityDefectSet f` = {n ≥ 1 : f(n+1) < f(n)}, `defectCount` via `Finset.filter` on `Finset.range`, `defectIsLittleO` (ε-N formulation), and `hasEmptyDefectSet`. Proves `empty_defect_means_increasing` by contradiction with `Set.mem_empty`.",
-      "mathContext": "Defines `monotonicityDefectSet f` = {n ≥ 1 : f(n+1) < f(n)}, `defectCount` via `Finset.filter` on `Finset.range`, `defectIsLittleO` (ε-N formulation), and `hasEmptyDefectSet`. Proves `empty_defect_mea"
+      "mathContext": "Defines `monotonicityDefectSet f` = {n ≥ 1 : f(n+1) < f(n)}, `defectCount` via `Finset.filter` on `Finset.range`, `defectIsLittleO` (ε-N formulation), and `hasEmptyDefectSet`. Proves `empty_defect_means_increasing` by contradiction with `Set.mem_empty`."
     },
     {
       "id": "sec-logarithmic",

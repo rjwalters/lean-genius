@@ -19,12 +19,11 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 1131,
     "erdosUrl": "https://erdosproblems.com/1131",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "sorries": 1,
     "theoremCount": 14,
     "lineCount": 642,
     "assumptions": "1 axiom: erdos_1131_conjecture (OPEN). 1 sorry: chebyshev_sq_expansion (DCT identity ∑l_k² = (1/n)(1+2∑T_j²), known from discrete cosine orthogonality). Proved: integration formula ∫T_j²=1-1/(4j²-1), change of variables, trace formula combining step, Chebyshev exact value, all bounds.",
@@ -43,7 +42,8 @@
       "**Gram matrix trace**: $I = \\operatorname{tr}(G)$ where $G_{jk} = \\int l_j l_k \\, dx$ connects the problem to spectral theory of interpolation operators"
     ],
     "prerequisites": [
-      "Combinatorics and number theory"
+      "Combinatorics (counting, extremal problems)",
+      "Number theory (primes, divisibility, arithmetic functions)"
     ]
   },
   "sections": [

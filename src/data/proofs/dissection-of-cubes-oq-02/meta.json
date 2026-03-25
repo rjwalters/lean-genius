@@ -58,10 +58,9 @@
       "Hilbert's Third Problem was the first of his 23 problems to be solved — Dehn answered it the same year (1900) it was posed, using purely algebraic methods to resolve a geometric question"
     ],
     "prerequisites": [
-      "Scissors congruence: decomposing polyhedra into finitely many pieces and reassembling",
-      "Dihedral angles of polyhedra and their rationality over $\\pi$ (Niven's theorem: $\\arccos(1/3)/\\pi$ is irrational)",
-      "Tensor product construction $\\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Z})$ for the Dehn invariant",
-      "Bolyai-Gerwien theorem (2D scissors congruence) and the contrast with 3D"
+      "Geometry (tetrahedra, volume computation)",
+      "Algebraic topology (Dehn-Sydler theorem)",
+      "Discrete geometry (dissection complexity, partition theory)"
     ]
   },
   "sections": [
@@ -79,7 +78,7 @@
       "startLine": 66,
       "endLine": 85,
       "summary": "Defines the dihedral angles of the cube (π/2) and regular tetrahedron (arccos(1/3)). Proves the cube angle is a rational multiple of π and proves the tetrahedron angle is irrational over π via Niven's theorem (Chebyshev recurrence).",
-      "mathContext": "Defines the dihedral angles of the cube (π/2) and regular tetrahedron (arccos(1/3)). Proves the cube angle is a rational multiple of π and proves the tetrahedron angle is irrational over π via Niven's"
+      "mathContext": "Defines the dihedral angles of the cube (π/2) and regular tetrahedron (arccos(1/3)). Proves the cube angle is a rational multiple of π and proves the tetrahedron angle is irrational over π via Niven's theorem (Chebyshev recurrence)."
     },
     {
       "id": "dehn",
@@ -87,7 +86,7 @@
       "startLine": 86,
       "endLine": 113,
       "summary": "Defines a simplified boolean Dehn invariant (dehnInvariantZero) testing whether all dihedral angles are rational multiples of π. Proves cube_dehn_zero and tetrahedron_dehn_nonzero — the two halves of the invariant obstruction.",
-      "mathContext": "Defines a simplified boolean Dehn invariant (dehnInvariantZero) testing whether all dihedral angles are rational multiples of π. Proves cube_dehn_zero and tetrahedron_dehn_nonzero — the two halves of "
+      "mathContext": "Defines a simplified boolean Dehn invariant (dehnInvariantZero) testing whether all dihedral angles are rational multiples of π. Proves cube_dehn_zero and tetrahedron_dehn_nonzero — the two halves of the invariant obstruction."
     },
     {
       "id": "dehn-theorem",
@@ -103,7 +102,7 @@
       "startLine": 128,
       "endLine": 150,
       "summary": "States and proves the Dehn obstruction theorem: cube and tetrahedron have different Dehn invariants. The main hilbert_third_problem theorem (sorry) would follow from combining this with Dehn's theorem.",
-      "mathContext": "States and proves the Dehn obstruction theorem: cube and tetrahedron have different Dehn invariants. The main hilbert_third_problem theorem (sorry) would follow from combining this with Dehn's theorem"
+      "mathContext": "States and proves the Dehn obstruction theorem: cube and tetrahedron have different Dehn invariants. The main hilbert_third_problem theorem (sorry) would follow from combining this with Dehn's theorem."
     },
     {
       "id": "bolyai-gerwien",
@@ -111,7 +110,7 @@
       "startLine": 151,
       "endLine": 177,
       "summary": "Proves polygon_dehn_zero: in 2D all interior angles are integer multiples of π, so the Dehn invariant vanishes for all polygons. This formalizes the dimensional contrast between 2D (always scissors congruent) and 3D (not always).",
-      "mathContext": "Proves polygon_dehn_zero: in 2D all interior angles are integer multiples of π, so the Dehn invariant vanishes for all polygons. This formalizes the dimensional contrast between 2D (always scissors co"
+      "mathContext": "Proves polygon_dehn_zero: in 2D all interior angles are integer multiples of π, so the Dehn invariant vanishes for all polygons. This formalizes the dimensional contrast between 2D (always scissors congruent) and 3D (not always)."
     },
     {
       "id": "dehn-sydler",
@@ -119,7 +118,7 @@
       "startLine": 178,
       "endLine": 199,
       "summary": "States the Dehn-Sydler theorem (1965): volume and Dehn invariant are the complete scissors congruence invariants in 3D. Two polyhedra are scissors congruent iff they have equal volume and equal Dehn invariant.",
-      "mathContext": "States the Dehn-Sydler theorem (1965): volume and Dehn invariant are the complete scissors congruence invariants in 3D. Two polyhedra are scissors congruent iff they have equal volume and equal Dehn i"
+      "mathContext": "States the Dehn-Sydler theorem (1965): volume and Dehn invariant are the complete scissors congruence invariants in 3D. Two polyhedra are scissors congruent iff they have equal volume and equal Dehn invariant."
     },
     {
       "id": "specific-angles",
@@ -150,6 +149,16 @@
       "relationship": "sibling",
       "description": "Studies the minimum collision number in cube dissections, a quantitative refinement of the dissection impossibility.",
       "targetId": "dissection-of-cubes-oq-01"
+    },
+    {
+      "targetId": "hilbert-3",
+      "relationship": "foundational",
+      "description": "Hilbert's third problem directly motivates this entry: Dehn proved that a cube and a regular tetrahedron of equal volume are not scissors-congruent, answering Hilbert's question negatively"
+    },
+    {
+      "targetId": "isoperimetric-theorem",
+      "relationship": "related",
+      "description": "Both involve fundamental geometric constraints on shape decomposition — isoperimetric bounds limit area-to-perimeter ratios while Dehn invariants limit polyhedral decomposition"
     }
   ],
   "leanFile": {

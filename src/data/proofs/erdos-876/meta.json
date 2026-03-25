@@ -83,7 +83,7 @@
       "summary": "Defines `IsSumFreeErdos A`: $\\forall a \\in A,\\; \\forall S \\subseteq A$ with $|S| \\geq 2$ and $\\max S < a$, we have $\\sum S \\neq a$. Defines `IsSumFreeClassical A`: $\\forall a,b \\in A,\\; a+b \\notin A$. Proves (with sorry) that Erdős implies classical.",
       "startLine": 43,
       "endLine": 77,
-      "mathContext": "Defines `IsSumFreeErdos A`: $\\forall a \\in A,\\; \\forall S \\subseteq A$ with $|S| \\geq 2$ and $\\max S < a$, we have $\\sum S \\neq a$. Defines `IsSumFreeClassical A`: $\\forall a,b \\in A,\\; a+b \\notin A$."
+      "mathContext": "Defines `IsSumFreeErdos A`: $\\forall a \\in A,\\; \\forall S \\subseteq A$ with $|S| \\geq 2$ and $\\max S < a$, we have $\\sum S \\neq a$. Defines `IsSumFreeClassical A`: $\\forall a,b \\in A,\\; a+b \\notin A$. Proves (with sorry) that Erdős implies classical."
     },
     {
       "id": "gap-sequences",
@@ -91,7 +91,7 @@
       "summary": "Defines `IsIncreasingEnumeration a` ($a_n < a_{n+1}$), `gap a n = a_{n+1} - a_n$, `HasGapBound a f` ($\\text{gap}(a, n) < f(n)$), and the critical `HasLinearGapBound a` ($\\text{gap}(a, n) < n$ for $n \\geq 1$).",
       "startLine": 78,
       "endLine": 110,
-      "mathContext": "Defines `IsIncreasingEnumeration a` ($a_n < a_{n+1}$), `gap a n = a_{n+1} - a_n$, `HasGapBound a f` ($\\text{gap}(a, n) < f(n)$), and the critical `HasLinearGapBound a` ($\\text{gap}(a, n) < n$ for $n \\"
+      "mathContext": "Defines `IsIncreasingEnumeration a` ($a_n < a_{n+1}$), `gap a n = a_{n+1} - a_n$, `HasGapBound a f` ($\\text{gap}(a, n) < f(n)$), and the critical `HasLinearGapBound a` ($\\text{gap}(a, n) < n$ for $n \\geq 1$)."
     },
     {
       "id": "main-questions",
@@ -99,7 +99,7 @@
       "summary": "Formalizes `ErdosQuestion876`: $\\exists a,\\; \\text{IsSumFreeErdos}(\\text{range}(a)) \\wedge \\text{HasLinearGapBound}(a)$. Axiomatizes `graham_result`: for any $\\varepsilon > 0$, eventually $a_{n+1} - a_n < n^{1+\\varepsilon}$.",
       "startLine": 111,
       "endLine": 137,
-      "mathContext": "Formalizes `ErdosQuestion876`: $\\exists a,\\; \\text{IsSumFreeErdos}(\\text{range}(a)) \\wedge \\text{HasLinearGapBound}(a)$. Axiomatizes `graham_result`: for any $\\varepsilon > 0$, eventually $a_{n+1} - a"
+      "mathContext": "Formalizes `ErdosQuestion876`: $\\exists a,\\; \\text{IsSumFreeErdos}(\\text{range}(a)) \\wedge \\text{HasLinearGapBound}(a)$. Axiomatizes `graham_result`: for any $\\varepsilon > 0$, eventually $a_{n+1} - a_n < n^{1+\\varepsilon}$."
     },
     {
       "id": "density-results",
@@ -107,7 +107,7 @@
       "summary": "Axiomatizes Erdős's density-zero theorem ($|A \\cap [1,N]|/N \\to 0$), Łuczak-Schoen upper bound $|A \\cap [1,N]| \\leq c\\sqrt{N \\log N}$, and lower bound $|B \\cap [1,N]| \\geq \\sqrt{N}/(\\log N)^{1/2+o(1)}$ for an explicit construction $B$.",
       "startLine": 138,
       "endLine": 172,
-      "mathContext": "Axiomatizes Erdős's density-zero theorem ($|A \\cap [1,N]|/N \\to 0$), Łuczak-Schoen upper bound $|A \\cap [1,N]| \\leq c\\sqrt{N \\log N}$, and lower bound $|B \\cap [1,N]| \\geq \\sqrt{N}/(\\log N)^{1/2+o(1)}"
+      "mathContext": "Axiomatizes Erdős's density-zero theorem ($|A \\cap [1,N]|/N \\to 0$), Łuczak-Schoen upper bound $|A \\cap [1,N]| \\leq c\\sqrt{N \\log N}$, and lower bound $|B \\cap [1,N]| \\geq \\sqrt{N}/(\\log N)^{1/2+o(1)}$ for an explicit construction $B$."
     },
     {
       "id": "growth-rate",
@@ -115,7 +115,7 @@
       "summary": "Axiomatizes the Deshouillers-Erdős-Melfi result: $\\exists a$ sum-free with $n^{3-\\varepsilon} < a_n < n^{3+\\varepsilon}$ for large $n$. The cubic exponent relates to the counting function via $a_n \\sim n^3 \\iff |A \\cap [1,N]| \\sim N^{1/3}$.",
       "startLine": 173,
       "endLine": 194,
-      "mathContext": "Axiomatizes the Deshouillers-Erdős-Melfi result: $\\exists a$ sum-free with $n^{3-\\varepsilon} < a_n < n^{3+\\varepsilon}$ for large $n$. The cubic exponent relates to the counting function via $a_n \\si"
+      "mathContext": "Axiomatizes the Deshouillers-Erdős-Melfi result: $\\exists a$ sum-free with $n^{3-\\varepsilon} < a_n < n^{3+\\varepsilon}$ for large $n$. The cubic exponent relates to the counting function via $a_n \\sim n^3 \\iff |A \\cap [1,N]| \\sim N^{1/3}$."
     },
     {
       "id": "reciprocal-sum",
@@ -123,7 +123,7 @@
       "summary": "Defines `reciprocalSum A = \\sum_{a \\in A,\\, a \\geq 1} 1/a$ via `tsum`. Axiomatizes Erdős's crude bound ($< 100$), Sullivan's improvement ($< 4$), and Sullivan's conjecture ($\\exists A$ with $\\sum 1/a > 2$).",
       "startLine": 195,
       "endLine": 226,
-      "mathContext": "Defines `reciprocalSum A = \\sum_{a \\in A,\\, a \\geq 1} 1/a$ via `tsum`. Axiomatizes Erdős's crude bound ($< 100$), Sullivan's improvement ($< 4$), and Sullivan's conjecture ($\\exists A$ with $\\sum 1/a "
+      "mathContext": "Defines `reciprocalSum A = \\sum_{a \\in A,\\, a \\geq 1} 1/a$ via `tsum`. Axiomatizes Erdős's crude bound ($< 100$), Sullivan's improvement ($< 4$), and Sullivan's conjecture ($\\exists A$ with $\\sum 1/a > 2$)."
     },
     {
       "id": "examples",

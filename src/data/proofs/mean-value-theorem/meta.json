@@ -96,7 +96,7 @@
       "startLine": 5,
       "endLine": 49,
       "summary": "Extensive documentation covering: what is proved (MVT with continuous/differentiable hypotheses), Wiedijk #75 reference, approach (Mathlib foundation + original contributions), proof status, and historical note on Lagrange (1797) and Cauchy (1821). Lists three Mathlib dependencies.",
-      "mathContext": "Extensive documentation covering: what is proved (MVT with continuous/differentiable hypotheses), Wiedijk #75 reference, approach (Mathlib foundation + original contributions), proof status, and histo"
+      "mathContext": "Extensive documentation covering: what is proved (MVT with continuous/differentiable hypotheses), Wiedijk #75 reference, approach (Mathlib foundation + original contributions), proof status, and historical note on Lagrange (1797) and Cauchy (1821). Lists three Mathlib dependencies."
     },
     {
       "id": "namespace-open",
@@ -112,7 +112,7 @@
       "startLine": 54,
       "endLine": 76,
       "summary": "Section docstring introduces the classical statement. Theorem `mvt` states: for $f$ continuous on $[a,b]$ and differentiable on $(a,b)$, $\\exists c \\in (a,b): \\text{deriv}\\, f\\, c = (f(b) - f(a))/(b - a)$. Proof is a direct application of `exists_deriv_eq_slope`.",
-      "mathContext": "Section docstring introduces the classical statement. Theorem `mvt` states: for $f$ continuous on $[a,b]$ and differentiable on $(a,b)$, $\\exists c \\in (a,b): \\text{deriv}\\, f\\, c = (f(b) - f(a))/(b -"
+      "mathContext": "Theorem `mvt` states: for $f$ continuous on $[a,b]$ and differentiable on $(a,b)$, $\\exists c \\in (a,b): \\text{deriv}\\, f\\, c = (f(b) - f(a))/(b - a)$."
     },
     {
       "id": "hasderivat-mvt",
@@ -120,7 +120,7 @@
       "startLine": 77,
       "endLine": 86,
       "summary": "Alternative formulation `mvt_hasDerivAt` for when an explicit derivative function $f'$ is provided. Hypotheses require `HasDerivAt f (f' x) x` for all $x \\in (a,b)$ instead of `DifferentiableOn`. Wraps `exists_hasDerivAt_eq_slope`.",
-      "mathContext": "Alternative formulation `mvt_hasDerivAt` for when an explicit derivative function $f'$ is provided. Hypotheses require `HasDerivAt f (f' x) x` for all $x \\in (a,b)$ instead of `DifferentiableOn`. Wrap"
+      "mathContext": "Alternative formulation `mvt_hasDerivAt` for when an explicit derivative function $f'$ is provided. Hypotheses require `HasDerivAt f (f' x) x` for all $x \\in (a,b)$ instead of `DifferentiableOn`."
     },
     {
       "id": "cauchy-mvt",
@@ -128,7 +128,7 @@
       "startLine": 87,
       "endLine": 110,
       "summary": "Section docstring introduces Cauchy's generalization. Theorem `cauchy_mvt`: for $f, g$ both continuous on $[a,b]$ and differentiable on $(a,b)$, $\\exists c \\in (a,b): (g(b) - g(a)) \\cdot f'(c) = (f(b) - f(a)) \\cdot g'(c)$. Wraps `exists_ratio_deriv_eq_ratio_slope`. Notes specialization to Lagrange when $g(x) = x$.",
-      "mathContext": "Section docstring introduces Cauchy's generalization. Theorem `cauchy_mvt`: for $f, g$ both continuous on $[a,b]$ and differentiable on $(a,b)$, $\\exists c \\in (a,b): (g(b) - g(a)) \\cdot f'(c) = (f(b)"
+      "mathContext": "Theorem `cauchy_mvt`: for $f, g$ both continuous on $[a,b]$ and differentiable on $(a,b)$, $\\exists c \\in (a,b): (g(b) - g(a)) \\cdot f'(c) = (f(b) - f(a)) \\cdot g'(c)$. Notes specialization to Lagrange when $g(x) = x$."
     },
     {
       "id": "corollaries",
@@ -136,7 +136,7 @@
       "startLine": 111,
       "endLine": 129,
       "summary": "Section header for corollaries. Proves `constant_of_deriv_zero`: if $f'(x) = 0$ for all $x \\in (a,b)$, then $f(b) = f(a)$. This is the only non-wrapper proof in the file, using `mvt` to obtain $c$, substituting the zero-derivative hypothesis, then `field_simp` and `linarith`.",
-      "mathContext": "Section header for corollaries. Proves `constant_of_deriv_zero`: if $f'(x) = 0$ for all $x \\in (a,b)$, then $f(b) = f(a)$. This is the only non-wrapper proof in the file, using `mvt` to obtain $c$, su"
+      "mathContext": "Proves `constant_of_deriv_zero`: if $f'(x) = 0$ for all $x \\in (a,b)$, then $f(b) = f(a)$. This is the only non-wrapper proof in the file, using `mvt` to obtain $c$, substituting the zero-derivative hypothesis, then `field_simp` and `linarith`."
     },
     {
       "id": "geometric-applications",
@@ -144,7 +144,7 @@
       "startLine": 130,
       "endLine": 156,
       "summary": "Documentation section covering: geometric interpretation (tangent parallel to secant), and four key applications — L'Hôpital's rule, Taylor's theorem remainder, monotonicity testing, and uniqueness of antiderivatives.",
-      "mathContext": "Documentation section covering: geometric interpretation (tangent parallel to secant), and four key applications — L'Hôpital's rule, Taylor's theorem remainder, monotonicity testing, and uniqueness of"
+      "mathContext": "Documentation section covering: geometric interpretation (tangent parallel to secant), and four key applications — L'Hôpital's rule, Taylor's theorem remainder, monotonicity testing, and uniqueness of antiderivatives."
     },
     {
       "id": "verification",

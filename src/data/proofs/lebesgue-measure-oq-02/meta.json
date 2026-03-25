@@ -81,11 +81,9 @@
       "**Zero sorries via delegation**: All 10 theorems are proved by delegating to Mathlib. The value is not in new proofs but in the organized presentation: Young $\\to$ Hölder $\\to$ Cauchy-Schwarz $\\to$ Minkowski, showing how one inequality generates the entire $L^p$ theory."
     ],
     "prerequisites": [
-      "Lebesgue measure and integration (lintegral)",
-      "Conjugate exponents (Real.HolderConjugate)",
-      "Lp spaces and their norms (MeasureTheory.Lp)",
-      "AEMeasurable functions",
-      "Parent proof: Lebesgue Measure"
+      "Real analysis (outer measure, sigma-algebras, Caratheodory extension)",
+      "Measure theory (Lebesgue measurability, null sets)",
+      "Set theory (axiom of choice, Vitali sets)"
     ]
   },
   "sections": [
@@ -217,6 +215,16 @@
       "targetId": "lebesgue-measure-oq-01",
       "relationship": "sibling",
       "description": "Sibling open question: Dirichlet Function Integral via Almost Everywhere Zero"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "The fundamental theorem of calculus in its Lebesgue form (absolute continuity) requires Hölder's inequality for bounding integrals and establishing dominated convergence"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "generalizes",
+      "description": "Hölder's inequality generalizes Cauchy-Schwarz from L² to L^p × L^q spaces; this entry formalizes the general case that subsumes the L² inner product inequality"
     }
   ]
 }

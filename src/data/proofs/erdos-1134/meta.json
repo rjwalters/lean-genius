@@ -85,7 +85,7 @@
       "startLine": 34,
       "endLine": 66,
       "summary": "Defines the three affine generating operations $f_1(x)=2x+1$, $f_2(x)=3x+1$, $f_3(x)=6x+1$ and the inductively-defined set $A$ as the smallest set containing 1 and closed under these maps. Includes closure theorems for each operation.",
-      "mathContext": "Defines the three affine generating operations $f_1(x)=2x+1$, $f_2(x)=3x+1$, $f_3(x)=6x+1$ and the inductively-defined set $A$ as the smallest set containing 1 and closed under these maps. Includes cl"
+      "mathContext": "Defines the three affine generating operations $f_1(x)=2x+1$, $f_2(x)=3x+1$, $f_3(x)=6x+1$ and the inductively-defined set $A$ as the smallest set containing 1 and closed under these maps. Includes closure theorems for each operation."
     },
     {
       "id": "density-definitions",
@@ -101,7 +101,7 @@
       "startLine": 89,
       "endLine": 109,
       "summary": "Axiomatizes the Klarner-Rado (1974) theorem: for sets closed under $x \\mapsto m_i x + b_i$, the exponent $\\sigma$ solving $\\sum m_i^{-\\sigma} = 1$ gives $|S \\cap [1,X]| \\ll X^{\\sigma+\\varepsilon}$. Proves $\\frac{1}{2}+\\frac{1}{3}+\\frac{1}{6}=1$ by `norm_num`, showing the generic bound is trivial here.",
-      "mathContext": "Axiomatizes the Klarner-Rado (1974) theorem: for sets closed under $x \\mapsto m_i x + b_i$, the exponent $\\sigma$ solving $\\sum m_i^{-\\sigma} = 1$ gives $|S \\cap [1,X]| \\ll X^{\\sigma+\\varepsilon}$. Pr"
+      "mathContext": "Axiomatizes the Klarner-Rado (1974) theorem: for sets closed under $x \\mapsto m_i x + b_i$, the exponent $\\sigma$ solving $\\sum m_i^{-\\sigma} = 1$ gives $|S \\cap [1,X]| \\ll X^{\\sigma+\\varepsilon}$. Proves $\\frac{1}{2}+\\frac{1}{3}+\\frac{1}{6}=1$ by `norm_num`, showing the generic bound is trivial here."
     },
     {
       "id": "crampin-hilton",
@@ -109,7 +109,7 @@
       "startLine": 110,
       "endLine": 132,
       "summary": "Introduces the sharp exponent $\\tau \\approx 0.900626$ via `Classical.choose` on the existence axiom. Axiomatizes the characteristic equation $6^{-\\tau} + \\sum_{k \\geq 0}(3 \\cdot 2^k)^{-\\tau} = 1$, the numerical bound $\\tau \\in (0.900, 0.901)$, and the two-sided asymptotic $C_1 X^{\\tau-\\varepsilon} \\leq |A \\cap [1,X]| \\leq C_2 X^{\\tau+\\varepsilon}$.",
-      "mathContext": "Introduces the sharp exponent $\\tau \\approx 0.900626$ via `Classical.choose` on the existence axiom. Axiomatizes the characteristic equation $6^{-\\tau} + \\sum_{k \\geq 0}(3 \\cdot 2^k)^{-\\tau} = 1$, the"
+      "mathContext": "Introduces the sharp exponent $\\tau \\approx 0.900626$ via `Classical.choose` on the existence axiom. Axiomatizes the characteristic equation $6^{-\\tau} + \\sum_{k \\geq 0}(3 \\cdot 2^k)^{-\\tau} = 1$, the numerical bound $\\tau \\in (0.900, 0.901)$, and the two-sided asymptotic $C_1 X^{\\tau-\\varepsilon} \\leq |A \\cap [1,X]| \\leq C_2 X^{\\tau+\\varepsilon}$."
     },
     {
       "id": "main-result",
@@ -117,7 +117,7 @@
       "startLine": 133,
       "endLine": 153,
       "summary": "Derives the answer NO: axiomatizes $\\underline{d}(A) = 0$ from the sublinear growth bound, then proves $\\neg\\text{HasPositiveLowerDensity}(A)$ by unfolding the definition and applying `norm_num`. Also states that $|A \\cap [1,X]|/X \\to 0$.",
-      "mathContext": "Derives the answer NO: axiomatizes $\\underline{d}(A) = 0$ from the sublinear growth bound, then proves $\\neg\\text{HasPositiveLowerDensity}(A)$ by unfolding the definition and applying `norm_num`. Also"
+      "mathContext": "Derives the answer NO: axiomatizes $\\underline{d}(A) = 0$ from the sublinear growth bound, then proves $\\neg\\text{HasPositiveLowerDensity}(A)$ by unfolding the definition and applying `norm_num`. Also states that $|A \\cap [1,X]|/X \\to 0$."
     },
     {
       "id": "structure-of-A",
@@ -125,7 +125,7 @@
       "startLine": 154,
       "endLine": 180,
       "summary": "Axiomatizes that every element of $A$ has a representation as a composition of the generating maps. Provides concrete examples: $1 \\in A$, $f_1(1)=3 \\in A$, $f_2(1)=4 \\in A$, $f_3(1)=7 \\in A$, verified by `rfl` and the closure theorems.",
-      "mathContext": "Axiomatizes that every element of $A$ has a representation as a composition of the generating maps. Provides concrete examples: $1 \\in A$, $f_1(1)=3 \\in A$, $f_2(1)=4 \\in A$, $f_3(1)=7 \\in A$, verifie"
+      "mathContext": "Axiomatizes that every element of $A$ has a representation as a composition of the generating maps. Provides concrete examples: $1 \\in A$, $f_1(1)=3 \\in A$, $f_2(1)=4 \\in A$, $f_3(1)=7 \\in A$, verified by `rfl` and the closure theorems."
     },
     {
       "id": "crampin-hilton-insight",
@@ -133,7 +133,7 @@
       "startLine": 181,
       "endLine": 193,
       "summary": "Defines the characteristic function $\\Phi(s) = 6^{-s} + (1-2^{-s})^{-1} \\cdot 3^{-s} - 1$ and axiomatizes $\\Phi(\\tau) = 0$. The closed-form expression encodes the combinatorial structure of how compositions of the generating maps contribute to the growth of $A$.",
-      "mathContext": "Defines the characteristic function $\\Phi(s) = 6^{-s} + (1-2^{-s})^{-1} \\cdot 3^{-s} - 1$ and axiomatizes $\\Phi(\\tau) = 0$. The closed-form expression encodes the combinatorial structure of how compos"
+      "mathContext": "Defines the characteristic function $\\Phi(s) = 6^{-s} + (1-2^{-s})^{-1} \\cdot 3^{-s} - 1$ and axiomatizes $\\Phi(\\tau) = 0$. The closed-form expression encodes the combinatorial structure of how compositions of the generating maps contribute to the growth of $A$."
     },
     {
       "id": "open-variants",
@@ -141,7 +141,7 @@
       "startLine": 194,
       "endLine": 215,
       "summary": "Formalizes Klarner's open variant $A' = \\langle 0; 2x, 3x+2, 6x+3 \\rangle$ with its own inductive type `InA'`. The question of whether $A'$ has positive density remains open, connected to Collatz-type dynamics.",
-      "mathContext": "Formalizes Klarner's open variant $A' = \\langle 0; 2x, 3x+2, 6x+3 \\rangle$ with its own inductive type `InA'`. The question of whether $A'$ has positive density remains open, connected to Collatz-type"
+      "mathContext": "Formalizes Klarner's open variant $A' = \\langle 0; 2x, 3x+2, 6x+3 \\rangle$ with its own inductive type `InA'`. The question of whether $A'$ has positive density remains open, connected to Collatz-type dynamics."
     },
     {
       "id": "main-statement",
@@ -149,7 +149,7 @@
       "startLine": 216,
       "endLine": 260,
       "summary": "Three summary theorems packaging the complete result: `erdos_1134_statement` (no positive density + growth bound + $\\tau < 1$), `erdos_1134_summary` (no positive density + exact zero density + numerical $\\tau$), and the minimal `erdos_1134` (no positive density + zero density).",
-      "mathContext": "Three summary theorems packaging the complete result: `erdos_1134_statement` (no positive density + growth bound + $\\tau < 1$), `erdos_1134_summary` (no positive density + exact zero density + numeric"
+      "mathContext": "Three summary theorems packaging the complete result: `erdos_1134_statement` (no positive density + growth bound + $\\tau < 1$), `erdos_1134_summary` (no positive density + exact zero density + numerical $\\tau$), and the minimal `erdos_1134` (no positive density + zero density)."
     }
   ],
   "conclusion": {

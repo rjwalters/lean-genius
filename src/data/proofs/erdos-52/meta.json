@@ -72,7 +72,7 @@
       "startLine": 38,
       "endLine": 53,
       "summary": "States `ErdosProblem52`: $\\forall \\varepsilon > 0,\\ \\exists C > 0$ such that $\\max(|A+A|, |A \\cdot A|) \\geq C \\cdot |A|^{2-\\varepsilon}$ for all finite $A \\subset \\mathbb{Z}$ with $|A| \\geq 2$. Defined as a `Prop` since the conjecture remains open.",
-      "mathContext": "States `ErdosProblem52`: $\\forall \\varepsilon > 0,\\ \\exists C > 0$ such that $\\max(|A+A|, |A \\cdot A|) \\geq C \\cdot |A|^{2-\\varepsilon}$ for all finite $A \\subset \\mathbb{Z}$ with $|A| \\geq 2$. Define"
+      "mathContext": "States `ErdosProblem52`: $\\forall \\varepsilon > 0,\\ \\exists C > 0$ such that $\\max(|A+A|, |A \\cdot A|) \\geq C \\cdot |A|^{2-\\varepsilon}$ for all finite $A \\subset \\mathbb{Z}$ with $|A| \\geq 2$."
     },
     {
       "id": "erdos-szemeredi",
@@ -80,7 +80,7 @@
       "startLine": 54,
       "endLine": 65,
       "summary": "Axiomatizes the 1983 foundational result: $\\exists c > 0$ such that $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1+c}$ for all $A$ with $|A| \\geq 2$. This was the first super-linear bound, originally with $c = 1/31$.",
-      "mathContext": "Axiomatizes the 1983 foundational result: $\\exists c > 0$ such that $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1+c}$ for all $A$ with $|A| \\geq 2$. This was the first super-linear bound, originally with $c ="
+      "mathContext": "Axiomatizes the 1983 foundational result: $\\exists c > 0$ such that $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1+c}$ for all $A$ with $|A| \\geq 2$. This was the first super-linear bound, originally with $c = 1/31$."
     },
     {
       "id": "bloom-bound",
@@ -88,7 +88,7 @@
       "startLine": 66,
       "endLine": 78,
       "summary": "Axiomatizes Bloom's state-of-the-art result: $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1270/951 - o(1)}$ where $1270/951 \\approx 1.3354$, stated in the form $\\forall \\varepsilon > 0,\\ \\exists N_0$ such that the bound holds for $|A| \\geq N_0$.",
-      "mathContext": "Axiomatizes Bloom's state-of-the-art result: $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1270/951 - o(1)}$ where $1270/951 \\approx 1.3354$, stated in the form $\\forall \\varepsilon > 0,\\ \\exists N_0$ such that"
+      "mathContext": "Axiomatizes Bloom's state-of-the-art result: $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1270/951 - o(1)}$ where $1270/951 \\approx 1.3354$, stated in the form $\\forall \\varepsilon > 0,\\ \\exists N_0$ such that the bound holds for $|A| \\geq N_0$."
     },
     {
       "id": "trivial-lower-bounds",
@@ -112,7 +112,7 @@
       "startLine": 100,
       "endLine": 123,
       "summary": "Defines $m$-fold sumset $mA$ and product set $A^m$ recursively, with base cases $0A = \\{0\\}$ and $A^0 = \\{1\\}$. States the generalized conjecture: $\\max(|mA|, |A^m|) \\geq C \\cdot |A|^{m-\\varepsilon}$ for $m \\geq 2$.",
-      "mathContext": "Defines $m$-fold sumset $mA$ and product set $A^m$ recursively, with base cases $0A = \\{0\\}$ and $A^0 = \\{1\\}$. States the generalized conjecture: $\\max(|mA|, |A^m|) \\geq C \\cdot |A|^{m-\\varepsilon}$ "
+      "mathContext": "Defines $m$-fold sumset $mA$ and product set $A^m$ recursively, with base cases $0A = \\{0\\}$ and $A^0 = \\{1\\}$. States the generalized conjecture: $\\max(|mA|, |A^m|) \\geq C \\cdot |A|^{m-\\varepsilon}$ for $m \\geq 2$."
     },
     {
       "id": "connection-p53",
@@ -120,7 +120,7 @@
       "startLine": 124,
       "endLine": 134,
       "summary": "Links to Problem 53 (resolved by Chang 2003 via the Balog–Szemerédi–Gowers theorem): if $\\max(|A+A|, |A \\cdot A|)$ is large, then $A$ generates many distinct subset sums and products. Axiomatizes the weak bound $(|A+A| + |A \\cdot A|) \\geq |A|$.",
-      "mathContext": "Links to Problem 53 (resolved by Chang 2003 via the Balog–Szemerédi–Gowers theorem): if $\\max(|A+A|, |A \\cdot A|)$ is large, then $A$ generates many distinct subset sums and products. Axiomatizes the "
+      "mathContext": "Links to Problem 53 (resolved by Chang 2003 via the Balog–Szemerédi–Gowers theorem): if $\\max(|A+A|, |A \\cdot A|)$ is large, then $A$ generates many distinct subset sums and products. Axiomatizes the weak bound $(|A+A| + |A \\cdot A|) \\geq |A|$."
     }
   ],
   "conclusion": {

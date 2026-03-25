@@ -39,7 +39,10 @@
       "**Extremal graphs reveal structure**: $h_3(3) = 5$ (unique: $C_5$), $h_3(4) = 11$ (unique: Grotzsch graph), $h_3(5) = 22$; the extremal graphs become less structured as $k$ grows"
     ],
     "prerequisites": [
-      "Combinatorics and number theory"
+      "Combinatorics (Turán's theorem, density bounds)",
+      "Combinatorics (extremal graph theory, Ramsey theory)",
+      "Extremal graph theory (triangle-free graphs, Ramsey)",
+      "Graph theory (chromatic number, cliques, matchings)"
     ]
   },
   "sections": [
@@ -57,7 +60,7 @@
       "startLine": 29,
       "endLine": 40,
       "summary": "Defines `IsTriangleFree` (no $K_3$ subgraph) and `HasProperColoring` ($k$-coloring with distinct colors on adjacent vertices). These are the local and global conditions whose interplay the problem studies.",
-      "mathContext": "Defines `IsTriangleFree` (no $K_3$ subgraph) and `HasProperColoring` ($k$-coloring with distinct colors on adjacent vertices). These are the local and global conditions whose interplay the problem stu"
+      "mathContext": "Defines `IsTriangleFree` (no $K_3$ subgraph) and `HasProperColoring` ($k$-coloring with distinct colors on adjacent vertices)."
     },
     {
       "id": "chromatic-threshold-def",
@@ -65,7 +68,7 @@
       "startLine": 41,
       "endLine": 50,
       "summary": "Defines `chromaticNumber` as $\\sup\\{k : G$ has no proper $k$-coloring$\\} + 1$, and `triangleFreeChromThreshold` $h_3(k)$ as the smallest $n$ with a triangle-free graph on $n$ vertices achieving $\\chi \\geq k$.",
-      "mathContext": "Defines `chromaticNumber` as $\\sup\\{k : G$ has no proper $k$-coloring$\\} + 1$, and `triangleFreeChromThreshold` $h_3(k)$ as the smallest $n$ with a triangle-free graph on $n$ vertices achieving $\\chi "
+      "mathContext": "Defines `chromaticNumber` as $\\sup\\{k : G$ has no proper $k$-coloring$\\} + 1$, and `triangleFreeChromThreshold` $h_3(k)$ as the smallest $n$ with a triangle-free graph on $n$ vertices achieving $\\chi \\geq k$."
     },
     {
       "id": "main-conjecture",
@@ -89,7 +92,7 @@
       "startLine": 69,
       "endLine": 83,
       "summary": "The probabilistic lower bound $(1/2 - o(1))k^2 \\log k$ from Shearer's Ramsey bound, and the constructive upper bound $(1+o(1))k^2 \\log k$ from algebraic constructions. Together they give $h_3(k) = \\Theta(k^2 \\log k)$ with constant in $[1/2, 1]$.",
-      "mathContext": "The probabilistic lower bound $(1/2 - o(1))k^2 \\log k$ from Shearer's Ramsey bound, and the constructive upper bound $(1+o(1))k^2 \\log k$ from algebraic constructions. Together they give $h_3(k) = \\Th"
+      "mathContext": "The probabilistic lower bound $(1/2 - o(1))k^2 \\log k$ from Shearer's Ramsey bound, and the constructive upper bound $(1+o(1))k^2 \\log k$ from algebraic constructions. Together they give $h_3(k) = \\Theta(k^2 \\log k)$ with constant in $[1/2, 1]$."
     },
     {
       "id": "graver-yackel",
@@ -113,7 +116,7 @@
       "startLine": 97,
       "endLine": 116,
       "summary": "Computed values: $h_3(1) = 1$, $h_3(2) = 2$, $h_3(3) = 5$ ($C_5$), $h_3(4) = 11$ (Grotzsch graph). Each extremal graph is a Mycielski graph. The Grotzsch graph with 11 vertices and 20 edges is the smallest triangle-free 4-chromatic graph.",
-      "mathContext": "Computed values: $h_3(1) = 1$, $h_3(2) = 2$, $h_3(3) = 5$ ($C_5$), $h_3(4) = 11$ (Grotzsch graph). Each extremal graph is a Mycielski graph. The Grotzsch graph with 11 vertices and 20 edges is the sma"
+      "mathContext": "Computed values: $h_3(1) = 1$, $h_3(2) = 2$, $h_3(3) = 5$ ($C_5$), $h_3(4) = 11$ (Grotzsch graph)."
     },
     {
       "id": "mycielski-construction",
@@ -121,7 +124,7 @@
       "startLine": 117,
       "endLine": 121,
       "summary": "Mycielski's 1955 inductive construction: $M_2 = K_2$, $M_{k+1}$ from $M_k$ via shadow vertices and a universal vertex. Produces $K_3$-free graphs with $\\chi(M_k) = k$ and $|V| = 3 \\cdot 2^{k-2} - 1$, proving finiteness of $h_3(k)$.",
-      "mathContext": "Mycielski's 1955 inductive construction: $M_2 = K_2$, $M_{k+1}$ from $M_k$ via shadow vertices and a universal vertex. Produces $K_3$-free graphs with $\\chi(M_k) = k$ and $|V| = 3 \\cdot 2^{k-2} - 1$, "
+      "mathContext": "Mycielski's 1955 inductive construction: $M_2 = K_2$, $M_{k+1}$ from $M_k$ via shadow vertices and a universal vertex. Produces $K_3$-free graphs with $\\chi(M_k) = k$ and $|V| = 3 \\cdot 2^{k-2} - 1$, proving finiteness of $h_3(k)$."
     }
   ],
   "conclusion": {

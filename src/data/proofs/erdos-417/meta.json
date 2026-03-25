@@ -89,7 +89,7 @@
       "summary": "Defines $V'(x) = |\\text{image}(\\varphi, \\{1,\\ldots,x\\})|$ via `Finset.image`, the `IsTotientValue` predicate $\\exists m > 0,\\, \\varphi(m) = n$, and $V(x) = |\\{n \\le x : n \\in \\text{range}(\\varphi)\\}|$ via `Finset.filter`.",
       "startLine": 45,
       "endLine": 73,
-      "mathContext": "Defines $V'(x) = |\\text{image}(\\varphi, \\{1,\\ldots,x\\})|$ via `Finset.image`, the `IsTotientValue` predicate $\\exists m > 0,\\, \\varphi(m) = n$, and $V(x) = |\\{n \\le x : n \\in \\text{range}(\\varphi)\\}|$"
+      "mathContext": "Defines $V'(x) = |\\text{image}(\\varphi, \\{1,\\ldots,x\\})|$ via `Finset.image`, the `IsTotientValue` predicate $\\exists m > 0,\\, \\varphi(m) = n$, and $V(x) = |\\{n \\le x : n \\in \\text{range}(\\varphi)\\}|$ via `Finset.filter`."
     },
     {
       "id": "basic-properties",
@@ -97,7 +97,7 @@
       "summary": "Proves $V'(x) \\le V(x)$ (sorry), `one_is_totient_value` ($\\varphi(1) = 1$), `two_is_totient_value` ($\\varphi(3) = 2$, sorry), and `odd_gt_one_not_totient` ($n > 1$ odd $\\Rightarrow \\neg\\text{IsTotientValue}(n)$, sorry).",
       "startLine": 74,
       "endLine": 97,
-      "mathContext": "Proves $V'(x) \\le V(x)$ (sorry), `one_is_totient_value` ($\\varphi(1) = 1$), `two_is_totient_value` ($\\varphi(3) = 2$, sorry), and `odd_gt_one_not_totient` ($n > 1$ odd $\\Rightarrow \\neg\\text{IsTotient"
+      "mathContext": "Proves $V'(x) \\le V(x)$ (sorry), `one_is_totient_value` ($\\varphi(1) = 1$), `two_is_totient_value` ($\\varphi(3) = 2$, sorry), and `odd_gt_one_not_totient` ($n > 1$ odd $\\Rightarrow \\neg\\text{IsTotientValue}(n)$, sorry)."
     },
     {
       "id": "main-questions",

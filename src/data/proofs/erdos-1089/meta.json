@@ -180,6 +180,10 @@
       "**Genuinely proved**: The ratio $g_d(n)/d^{n-1} \\geq c > 0$ is proved from the Erdős lower bound axiom; convergence of this ratio as $d \\to \\infty$ is the open question",
       "**Dimension vs. point count duality**: While the planar problem (Guth-Katz 2015) fixes $d=2$ and grows $n$, this problem fixes $n$ and grows $d$ — exploring the complementary axis of the distance problem landscape. The polynomial partitioning technique that resolved the planar case has yet to yield results in the high-dimensional threshold setting",
       "**Concentration of measure obstruction**: Random point configurations in high dimensions are useless for few-distance sets: on $S^{d-1}$, pairwise distances concentrate near $\\sqrt{2}$ as $d \\to \\infty$ (by the law of large numbers applied to $\\|p - q\\|^2 = 2 - 2\\langle p, q \\rangle$ where $\\langle p, q \\rangle \\to 0$). Achieving fewer than $n$ distinct distances requires algebraic or combinatorial structure, not random placement — explaining why constructions like the cube (with its lattice structure) are essential"
+    ],
+    "prerequisites": [
+      "Combinatorial geometry (incidence bounds, configurations)",
+      "Discrete geometry (point-line incidences, arrangements)"
     ]
   },
   "crossReferences": [

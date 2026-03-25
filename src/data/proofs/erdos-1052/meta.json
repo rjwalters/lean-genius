@@ -114,7 +114,7 @@
       "startLine": 26,
       "endLine": 42,
       "summary": "Defines properUnitaryDivisors (n : ℕ) : Finset ℕ via Finset.Ico 1 n filtered by d ∣ n ∧ d.Coprime (n / d). Defines IsUnitaryPerfect as sum equality plus positivity. Derives Decidable instance for native_decide.",
-      "mathContext": "Defines properUnitaryDivisors (n : ℕ) : Finset ℕ via Finset.Ico 1 n filtered by d ∣ n ∧ d.Coprime (n / d). Defines IsUnitaryPerfect as sum equality plus positivity. Derives Decidable instance for nati"
+      "mathContext": "Defines properUnitaryDivisors (n : ℕ) : Finset ℕ via Finset.Ico 1 n filtered by d ∣ n ∧ d.Coprime (n / d). Defines IsUnitaryPerfect as sum equality plus positivity. Derives Decidable instance for native_decide."
     },
     {
       "id": "basic-properties",
@@ -146,7 +146,7 @@
       "startLine": 131,
       "endLine": 151,
       "summary": "Axiomatizes even_of_isUnitaryPerfect with detailed proof sketch: σ*(n) = ∏(1 + pᵢ^aᵢ) factors, odd n makes all factors even, 2^ω(n) | 2n forces contradiction for k ≥ 2, k = 1 gives 1 = p^a impossible, k = 0 gives n = 1 not perfect.",
-      "mathContext": "Axiomatizes even_of_isUnitaryPerfect with detailed proof sketch: σ*(n) = ∏(1 + pᵢ^aᵢ) factors, odd n makes all factors even, 2^ω(n) | 2n forces contradiction for k ≥ 2, k = 1 gives 1 = p^a impossible,"
+      "mathContext": "Axiomatizes even_of_isUnitaryPerfect with detailed proof sketch: σ*(n) = ∏(1 + pᵢ^aᵢ) factors, odd n makes all factors even, 2^ω(n) | 2n forces contradiction for k ≥ 2, k = 1 gives 1 = p^a impossible, k = 0 gives n = 1 not perfect."
     },
     {
       "id": "examples",

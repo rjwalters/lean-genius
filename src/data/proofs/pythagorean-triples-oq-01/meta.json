@@ -121,7 +121,7 @@
       "summary": "Proves coprime pairs cannot be both-even. Classifies into three parity classes (EO, OE, OO). Verifies the algebraic identity $\\pi/8 \\times 6/\\pi^2 \\times 2/3 = 1/(2\\pi)$ and shows the density constant is positive.",
       "startLine": 111,
       "endLine": 183,
-      "mathContext": "Proves coprime pairs cannot be both-even. Classifies into three parity classes (EO, OE, OO). Verifies the algebraic identity $\\pi/8 \\times 6/\\pi^2 \\times 2/3 = 1/(2\\pi)$ and shows the density constant"
+      "mathContext": "Proves coprime pairs cannot be both-even. Verifies the algebraic identity $\\pi/8 \\times 6/\\pi^2 \\times 2/3 = 1/(2\\pi)$ and shows the density constant is positive."
     },
     {
       "id": "verification",
@@ -137,7 +137,7 @@
       "summary": "Proves primitiveTripleCount is monotone. Introduces sectorPointCount and coprimeInSectorCount as intermediate sieving steps, with ordering lemmas (primitive $\\le$ coprime $\\le$ sector) and growth results showing coprimeInSectorCount $\\to \\infty$.",
       "startLine": 222,
       "endLine": 375,
-      "mathContext": "Proves primitiveTripleCount is monotone. Introduces sectorPointCount and coprimeInSectorCount as intermediate sieving steps, with ordering lemmas (primitive $\\le$ coprime $\\le$ sector) and growth resu"
+      "mathContext": "Proves primitiveTripleCount is monotone. Introduces sectorPointCount and coprimeInSectorCount as intermediate sieving steps, with ordering lemmas (primitive $\\le$ coprime $\\le$ sector) and growth results showing coprimeInSectorCount $\\to \\infty$."
     },
     {
       "id": "partition-axioms",
@@ -145,7 +145,7 @@
       "summary": "Proves the partition identity coprimeInSector = primitive + bothOdd. States three axioms encoding deep analytic number theory: sector density $\\pi/8$ (Gauss circle problem), coprime fraction $6/\\pi^2$ (Möbius inversion), bothOdd fraction $1/3$ (parity equidistribution). Shows the 2/3 parity fraction follows from the 1/3 bothOdd axiom.",
       "startLine": 376,
       "endLine": 530,
-      "mathContext": "Proves the partition identity coprimeInSector = primitive + bothOdd. States three axioms encoding deep analytic number theory: sector density $\\pi/8$ (Gauss circle problem), coprime fraction $6/\\pi^2$"
+      "mathContext": "Proves the partition identity coprimeInSector = primitive + bothOdd. States three axioms encoding deep analytic number theory: sector density $\\pi/8$ (Gauss circle problem), coprime fraction $6/\\pi^2$ (Möbius inversion), bothOdd fraction $1/3$ (parity equidistribution). Shows the 2/3 parity fraction follows from the 1/3 bothOdd axiom."
     },
     {
       "id": "main-theorems",
@@ -153,7 +153,7 @@
       "summary": "Derives the main result by telescoping three ratio limits: $\\text{count}/N = (\\text{count}/\\text{coprime}) \\cdot (\\text{coprime}/\\text{sector}) \\cdot (\\text{sector}/N) \\to 2/3 \\cdot 6/\\pi^2 \\cdot \\pi/8 = 1/(2\\pi)$. Also proves the equivalent asymptotic form count$(N) \\sim N/(2\\pi)$.",
       "startLine": 531,
       "endLine": 622,
-      "mathContext": "Derives the main result by telescoping three ratio limits: $\\text{count}/N = (\\text{count}/\\text{coprime}) \\cdot (\\text{coprime}/\\text{sector}) \\cdot (\\text{sector}/N) \\to 2/3 \\cdot 6/\\pi^2 \\cdot \\pi/"
+      "mathContext": "Derives the main result by telescoping three ratio limits: $\\text{count}/N = (\\text{count}/\\text{coprime}) \\cdot (\\text{coprime}/\\text{sector}) \\cdot (\\text{sector}/N) \\to 2/3 \\cdot 6/\\pi^2 \\cdot \\pi/8 = 1/(2\\pi)$. Also proves the equivalent asymptotic form count$(N) \\sim N/(2\\pi)$."
     },
     {
       "id": "mathlib-connection",
@@ -169,7 +169,7 @@
       "summary": "Defines fine-grained counting functions for each parity class: coprimeEvenOddCount, coprimeOddEvenCount, coprimeOddOddCount. Proves the three-way partition and relates bothOddCoprimeCount to coprimeOddOddCount.",
       "startLine": 660,
       "endLine": 814,
-      "mathContext": "Defines fine-grained counting functions for each parity class: coprimeEvenOddCount, coprimeOddEvenCount, coprimeOddOddCount. Proves the three-way partition and relates bothOddCoprimeCount to coprimeOd"
+      "mathContext": "Defines fine-grained counting functions for each parity class: coprimeEvenOddCount, coprimeOddEvenCount, coprimeOddOddCount. Proves the three-way partition and relates bothOddCoprimeCount to coprimeOddOddCount."
     },
     {
       "id": "involution",
@@ -177,7 +177,7 @@
       "summary": "Proves the involution $(m,n) \\mapsto (m, m-n)$ preserves coprimality, swaps EO$\\leftrightarrow$OO, and is an involution. Uses Finset.card_bij to establish exact equality $|\\text{OE}(K)| = |\\text{OO}(K)|$ for all $K$.",
       "startLine": 814,
       "endLine": 930,
-      "mathContext": "Proves the involution $(m,n) \\mapsto (m, m-n)$ preserves coprimality, swaps EO$\\leftrightarrow$OO, and is an involution. Uses Finset.card_bij to establish exact equality $|\\text{OE}(K)| = |\\text{OO}(K"
+      "mathContext": "Proves the involution $(m,n) \\mapsto (m, m-n)$ preserves coprimality, swaps EO$\\leftrightarrow$OO, and is an involution. Uses Finset.card_bij to establish exact equality $|\\text{OE}(K)| = |\\text{OO}(K)|$ for all $K$."
     },
     {
       "id": "row-analysis",
@@ -193,7 +193,7 @@
       "summary": "The deepest technical section. Analyzes EO coprime density via GCD halving ($\\gcd(2k,n)=1$ iff $\\gcd(k,n)=1$ and $n$ odd). Decomposes column sums by $m$-parity and proves the boundary analysis for sector-triangle discrepancy.",
       "startLine": 1138,
       "endLine": 2029,
-      "mathContext": "The deepest technical section. Analyzes EO coprime density via GCD halving ($\\gcd(2k,n)=1$ iff $\\gcd(k,n)=1$ and $n$ odd). Decomposes column sums by $m$-parity and proves the boundary analysis for sec"
+      "mathContext": "Analyzes EO coprime density via GCD halving ($\\gcd(2k,n)=1$ iff $\\gcd(k,n)=1$ and $n$ odd). Decomposes column sums by $m$-parity and proves the boundary analysis for sector-triangle discrepancy."
     },
     {
       "id": "final-results",

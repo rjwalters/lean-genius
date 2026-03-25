@@ -73,7 +73,9 @@
       "The Zolotarev approach generalizes to higher reciprocity via Artin symbols on more general groups"
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Number theory (Legendre symbol, quadratic residues)",
+      "Modular arithmetic (Gauss sums, Eisenstein's lemma)",
+      "Algebra (finite fields, group theory of (Z/pZ)*)"
     ]
   },
   "sections": [
@@ -91,7 +93,7 @@
       "startLine": 36,
       "endLine": 65,
       "summary": "Defines $\\sigma_a(x) = ax$ as a permutation on $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ with inverse $\\sigma_{a^{-1}}$. Proves $\\sigma_{ab} = \\sigma_a \\circ \\sigma_b$ and packages into `mulPermHom`: a `MonoidHom` from units to permutations (the left regular representation).",
-      "mathContext": "Defines $\\sigma_a(x) = ax$ as a permutation on $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ with inverse $\\sigma_{a^{-1}}$. Proves $\\sigma_{ab} = \\sigma_a \\circ \\sigma_b$ and packages into `mulPermHom`: a `Monoi"
+      "mathContext": "Defines $\\sigma_a(x) = ax$ as a permutation on $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ with inverse $\\sigma_{a^{-1}}$. Proves $\\sigma_{ab} = \\sigma_a \\circ \\sigma_b$ and packages into `mulPermHom`: a `MonoidHom` from units to permutations (the left regular representation)."
     },
     {
       "id": "sign-character",
@@ -99,7 +101,7 @@
       "startLine": 67,
       "endLine": 93,
       "summary": "Defines `signMulHom = sign ∘ mulPerm` as a character $(\\mathbb{Z}/p\\mathbb{Z})^\\times \\to \\{\\pm 1\\}$. Proves: $\\chi(a)^2 = 1$, multiplicativity $\\chi(ab) = \\chi(a)\\chi(b)$, and square detection $\\chi(b^2) = +1$.",
-      "mathContext": "Defines `signMulHom = sign ∘ mulPerm` as a character $(\\mathbb{Z}/p\\mathbb{Z})^\\times \\to \\{\\pm 1\\}$. Proves: $\\chi(a)^2 = 1$, multiplicativity $\\chi(ab) = \\chi(a)\\chi(b)$, and square detection $\\chi("
+      "mathContext": "Defines `signMulHom = sign ∘ mulPerm` as a character $(\\mathbb{Z}/p\\mathbb{Z})^\\times \\to \\{\\pm 1\\}$. Proves: $\\chi(a)^2 = 1$, multiplicativity $\\chi(ab) = \\chi(a)\\chi(b)$, and square detection $\\chi(b^2) = +1$."
     },
     {
       "id": "zolotarev-context",
@@ -107,7 +109,7 @@
       "startLine": 95,
       "endLine": 133,
       "summary": "Describes the proof strategy for Zolotarev's Lemma: find a generator, analyze cycle structure, show both $\\mathrm{sign} \\circ \\sigma$ and the Legendre character are the unique non-trivial quadratic character. Defines the `unitToInt` helper for bridging between units and the Legendre symbol API.",
-      "mathContext": "Describes the proof strategy for Zolotarev's Lemma: find a generator, analyze cycle structure, show both $\\mathrm{sign} \\circ \\sigma$ and the Legendre character are the unique non-trivial quadratic ch"
+      "mathContext": "Describes the proof strategy for Zolotarev's Lemma: find a generator, analyze cycle structure, show both $\\mathrm{sign} \\circ \\sigma$ and the Legendre character are the unique non-trivial quadratic character. Defines the `unitToInt` helper for bridging between units and the Legendre symbol API."
     },
     {
       "id": "cycle-analysis",
@@ -115,7 +117,7 @@
       "startLine": 135,
       "endLine": 321,
       "summary": "The proof of Zolotarev's Lemma via character uniqueness. Key steps: $\\sigma_g$ is a $(p-1)$-cycle with $\\mathrm{sign}(\\sigma_g) = -1$ for odd $p$; `signMulHom` is surjective; `legendreCharOnUnits` is built and shown surjective (non-residues exist via `FiniteField.exists_nonsquare`); character uniqueness forces equality; bridge lemma connects via `quadraticChar`.",
-      "mathContext": "The proof of Zolotarev's Lemma via character uniqueness. Key steps: $\\sigma_g$ is a $(p-1)$-cycle with $\\mathrm{sign}(\\sigma_g) = -1$ for odd $p$; `signMulHom` is surjective; `legendreCharOnUnits` is "
+      "mathContext": "The proof of Zolotarev's Lemma via character uniqueness. Key steps: $\\sigma_g$ is a $(p-1)$-cycle with $\\mathrm{sign}(\\sigma_g) = -1$ for odd $p$; `signMulHom` is surjective; `legendreCharOnUnits` is built and shown surjective (non-residues exist via `FiniteField.exists_nonsquare`); character uniqueness forces equality; bridge lemma connects via `quadraticChar`."
     },
     {
       "id": "consequences",
@@ -123,7 +125,7 @@
       "startLine": 323,
       "endLine": 347,
       "summary": "Derives from Zolotarev: multiplicativity $\\left(\\frac{ab}{p}\\right) = \\left(\\frac{a}{p}\\right)\\left(\\frac{b}{p}\\right)$ (from sign multiplicativity), square detection $\\left(\\frac{b^2}{p}\\right) = 1$ (from $\\mathrm{sign}(\\sigma_b^2) = 1$), and sign order-2 property.",
-      "mathContext": "Derives from Zolotarev: multiplicativity $\\left(\\frac{ab}{p}\\right) = \\left(\\frac{a}{p}\\right)\\left(\\frac{b}{p}\\right)$ (from sign multiplicativity), square detection $\\left(\\frac{b^2}{p}\\right) = 1$ "
+      "mathContext": "Derives from Zolotarev: multiplicativity $\\left(\\frac{ab}{p}\\right) = \\left(\\frac{a}{p}\\right)\\left(\\frac{b}{p}\\right)$ (from sign multiplicativity), square detection $\\left(\\frac{b^2}{p}\\right) = 1$ (from $\\mathrm{sign}(\\sigma_b^2) = 1$), and sign order-2 property."
     },
     {
       "id": "qr-statement",
@@ -131,7 +133,7 @@
       "startLine": 349,
       "endLine": 387,
       "summary": "States QR: $\\left(\\frac{q}{p}\\right)\\left(\\frac{p}{q}\\right) = (-1)^{\\frac{p-1}{2}\\cdot\\frac{q-1}{2}}$ (from Mathlib). Compares Eisenstein (lattice points) and Zolotarev (permutation signs) in `two_proof_methods`, bundling QR with Zolotarev's Lemma and sign multiplicativity.",
-      "mathContext": "States QR: $\\left(\\frac{q}{p}\\right)\\left(\\frac{p}{q}\\right) = (-1)^{\\frac{p-1}{2}\\cdot\\frac{q-1}{2}}$ (from Mathlib). Compares Eisenstein (lattice points) and Zolotarev (permutation signs) in `two_pr"
+      "mathContext": "States QR: $\\left(\\frac{q}{p}\\right)\\left(\\frac{p}{q}\\right) = (-1)^{\\frac{p-1}{2}\\cdot\\frac{q-1}{2}}$ (from Mathlib). Compares Eisenstein (lattice points) and Zolotarev (permutation signs) in `two_proof_methods`, bundling QR with Zolotarev's Lemma and sign multiplicativity."
     },
     {
       "id": "supplements",
@@ -139,7 +141,7 @@
       "startLine": 389,
       "endLine": 408,
       "summary": "First supplement: $-1 \\in (\\mathbb{Z}/p\\mathbb{Z})^{\\times 2} \\iff p \\not\\equiv 3 \\pmod{4}$. Second supplement: $2 \\in (\\mathbb{Z}/p\\mathbb{Z})^{\\times 2} \\iff p \\equiv \\pm 1 \\pmod{8}$. Both restated with permutation-theoretic motivation.",
-      "mathContext": "First supplement: $-1 \\in (\\mathbb{Z}/p\\mathbb{Z})^{\\times 2} \\iff p \\not\\equiv 3 \\pmod{4}$. Second supplement: $2 \\in (\\mathbb{Z}/p\\mathbb{Z})^{\\times 2} \\iff p \\equiv \\pm 1 \\pmod{8}$. Both restated "
+      "mathContext": "First supplement: $-1 \\in (\\mathbb{Z}/p\\mathbb{Z})^{\\times 2} \\iff p \\not\\equiv 3 \\pmod{4}$. Second supplement: $2 \\in (\\mathbb{Z}/p\\mathbb{Z})^{\\times 2} \\iff p \\equiv \\pm 1 \\pmod{8}$."
     },
     {
       "id": "examples",
@@ -155,7 +157,7 @@
       "startLine": 444,
       "endLine": 482,
       "summary": "Proves $|(\\mathbb{Z}/p\\mathbb{Z})^\\times| = p - 1$, that $p - 1$ is even for odd $p$, and that a primitive root (generator $g$ with $\\mathrm{ord}(g) = p - 1$) exists. Foundation for the character uniqueness argument.",
-      "mathContext": "Proves $|(\\mathbb{Z}/p\\mathbb{Z})^\\times| = p - 1$, that $p - 1$ is even for odd $p$, and that a primitive root (generator $g$ with $\\mathrm{ord}(g) = p - 1$) exists. Foundation for the character uniq"
+      "mathContext": "Proves $|(\\mathbb{Z}/p\\mathbb{Z})^\\times| = p - 1$, that $p - 1$ is even for odd $p$, and that a primitive root (generator $g$ with $\\mathrm{ord}(g) = p - 1$) exists."
     },
     {
       "id": "mulperm-analysis",
@@ -163,7 +165,7 @@
       "startLine": 484,
       "endLine": 509,
       "summary": "Proves $\\sigma_a$ is a derangement for $a \\neq 1$ (no fixed points: $ax = x \\Rightarrow a = 1$) and that `mulPermHom` is injective ($\\sigma_a = \\sigma_b \\Rightarrow a = b$, faithful action).",
-      "mathContext": "Verified: Proves $\\sigma_a$ is a derangement for $a \\neq 1$ (no fixed points: $ax = x \\Rightarrow a = 1$) and that `mulPermHom` is injective ($\\sigma_a = \\sigma_b \\Rightarrow a = b$, faithful action)."
+      "mathContext": "Proves $\\sigma_a$ is a derangement for $a \\neq 1$ (no fixed points: $ax = x \\Rightarrow a = 1$) and that `mulPermHom` is injective ($\\sigma_a = \\sigma_b \\Rightarrow a = b$, faithful action)."
     },
     {
       "id": "character-uniqueness",
@@ -171,7 +173,7 @@
       "startLine": 511,
       "endLine": 577,
       "summary": "The key algebraic reduction: on a cyclic group $G = \\langle g \\rangle$, any surjective homomorphism $\\varphi: G \\to \\{\\pm 1\\}$ satisfies $\\varphi(g) = -1$ (otherwise $\\varphi$ is trivial). Two such homomorphisms must agree. This forces `signMulHom = legendreCharOnUnits`, proving Zolotarev's Lemma.",
-      "mathContext": "The key algebraic reduction: on a cyclic group $G = \\langle g \\rangle$, any surjective homomorphism $\\varphi: G \\to \\{\\pm 1\\}$ satisfies $\\varphi(g) = -1$ (otherwise $\\varphi$ is trivial). Two such ho"
+      "mathContext": "The key algebraic reduction: on a cyclic group $G = \\langle g \\rangle$, any surjective homomorphism $\\varphi: G \\to \\{\\pm 1\\}$ satisfies $\\varphi(g) = -1$ (otherwise $\\varphi$ is trivial). This forces `signMulHom = legendreCharOnUnits`, proving Zolotarev's Lemma."
     }
   ],
   "conclusion": {

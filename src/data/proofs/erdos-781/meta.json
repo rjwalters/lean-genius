@@ -89,7 +89,7 @@
       "summary": "Defines `TwoColoring n = Fin n → Bool` (abbrev), `StrictlyIncreasing` ($\\forall i < j : \\text{seq}(i) < \\text{seq}(j)$), `IsDescendingWave` ($2x_j \\geq x_{j-1} + x_{j+1}$ for interior points), `HasNonIncreasingGaps` (gap sequence non-increasing), and axiomatizes their equivalence via `descending_wave_equiv_gaps`.",
       "startLine": 35,
       "endLine": 64,
-      "mathContext": "Defines `TwoColoring n = Fin n → Bool` (abbrev), `StrictlyIncreasing` ($\\forall i < j : \\text{seq}(i) < \\text{seq}(j)$), `IsDescendingWave` ($2x_j \\geq x_{j-1} + x_{j+1}$ for interior points), `HasNon"
+      "mathContext": "Defines `TwoColoring n = Fin n → Bool` (abbrev), `StrictlyIncreasing` ($\\forall i < j : \\text{seq}(i) < \\text{seq}(j)$), `IsDescendingWave` ($2x_j \\geq x_{j-1} + x_{j+1}$ for interior points), `HasNonIncreasingGaps` (gap sequence non-increasing), and axiomatizes their equivalence via `descending_wave_equiv_gaps`."
     },
     {
       "id": "wave-structure",
@@ -97,7 +97,7 @@
       "summary": "Defines `DescendingWaveIn S k` (dependent record: seq + in_S + increasing + wave) and `HasMonochromaticWave n k c` ($\\exists$ wave in $\\{1,\\ldots,n\\}$ where all terms share the same color under coloring $c$).",
       "startLine": 65,
       "endLine": 79,
-      "mathContext": "Defines `DescendingWaveIn S k` (dependent record: seq + in_S + increasing + wave) and `HasMonochromaticWave n k c` ($\\exists$ wave in $\\{1,\\ldots,n\\}$ where all terms share the same color under colori"
+      "mathContext": "Defines `DescendingWaveIn S k` (dependent record: seq + in_S + increasing + wave) and `HasMonochromaticWave n k c` ($\\exists$ wave in $\\{1,\\ldots,n\\}$ where all terms share the same color under coloring $c$)."
     },
     {
       "id": "f-function",
@@ -105,7 +105,7 @@
       "summary": "Defines `f(k) = min{n | every 2-coloring of {1,...,n} has a monochromatic k-wave}` via `Nat.find`. Axiomatizes `f_exists` (Ramsey property at $n = f(k)$) and `f_minimal` (some coloring avoids waves for $n < f(k)$).",
       "startLine": 80,
       "endLine": 98,
-      "mathContext": "Defines `f(k) = min{n | every 2-coloring of {1,...,n} has a monochromatic k-wave}` via `Nat.find`. Axiomatizes `f_exists` (Ramsey property at $n = f(k)$) and `f_minimal` (some coloring avoids waves fo"
+      "mathContext": "Defines `f(k) = min{n | every 2-coloring of {1,...,n} has a monochromatic k-wave}` via `Nat.find`. Axiomatizes `f_exists` (Ramsey property at $n = f(k)$) and `f_minimal` (some coloring avoids waves for $n < f(k)$)."
     },
     {
       "id": "conjecture",
@@ -121,7 +121,7 @@
       "summary": "Axiomatizes three bounds: `BEF_lower_bound` ($f(k) \\geq k^2-k+1$), `BEF_upper_bound` ($f(k) \\leq (k^3-4k+9)/3$, cast to $\\mathbb{Q}$), and `alon_spencer_cubic` ($\\exists c > 0, f(k) \\geq ck^3$). Together: $k^2 - k + 1 \\leq f(k) = \\Theta(k^3)$.",
       "startLine": 109,
       "endLine": 138,
-      "mathContext": "Axiomatizes three bounds: `BEF_lower_bound` ($f(k) \\geq k^2-k+1$), `BEF_upper_bound` ($f(k) \\leq (k^3-4k+9)/3$, cast to $\\mathbb{Q}$), and `alon_spencer_cubic` ($\\exists c > 0, f(k) \\geq ck^3$). Toget"
+      "mathContext": "Axiomatizes three bounds: `BEF_lower_bound` ($f(k) \\geq k^2-k+1$), `BEF_upper_bound` ($f(k) \\leq (k^3-4k+9)/3$, cast to $\\mathbb{Q}$), and `alon_spencer_cubic` ($\\exists c > 0, f(k) \\geq ck^3$). Together: $k^2 - k + 1 \\leq f(k) = \\Theta(k^3)$."
     },
     {
       "id": "specific-values-axioms",
@@ -137,7 +137,7 @@
       "summary": "Proves `conjecture_disproved : ¬ErdosConjecture781` completely (no sorry). The proof instantiates the conjecture at $k=2$, obtaining $f(2) = 3$, then rewrites with axiom `f_2 : f 2 = 2` to get $2 = 3$, closed by `omega`.",
       "startLine": 148,
       "endLine": 155,
-      "mathContext": "Proves `conjecture_disproved : ¬ErdosConjecture781` completely (no sorry). The proof instantiates the conjecture at $k=2$, obtaining $f(2) = 3$, then rewrites with axiom `f_2 : f 2 = 2` to get $2 = 3$"
+      "mathContext": "Proves `conjecture_disproved : ¬ErdosConjecture781` completely (no sorry). The proof instantiates the conjecture at $k=2$, obtaining $f(2) = 3$, then rewrites with axiom `f_2 : f 2 = 2` to get $2 = 3$, closed by `omega`."
     },
     {
       "id": "specific-values",
@@ -153,7 +153,7 @@
       "summary": "Axiomatizes `alon_spencer_construction`: $\\exists c > 0, \\forall n \\leq ck^3, \\exists$ coloring of $\\{1,\\ldots,n\\}$ with no monochromatic $k$-wave. Proves existence via the probabilistic method: random colorings avoid waves with positive probability for cubic-sized intervals.",
       "startLine": 170,
       "endLine": 187,
-      "mathContext": "Axiomatizes `alon_spencer_construction`: $\\exists c > 0, \\forall n \\leq ck^3, \\exists$ coloring of $\\{1,\\ldots,n\\}$ with no monochromatic $k$-wave. Proves existence via the probabilistic method: rando"
+      "mathContext": "Axiomatizes `alon_spencer_construction`: $\\exists c > 0, \\forall n \\leq ck^3, \\exists$ coloring of $\\{1,\\ldots,n\\}$ with no monochromatic $k$-wave. Proves existence via the probabilistic method: random colorings avoid waves with positive probability for cubic-sized intervals."
     },
     {
       "id": "ascending-waves",
@@ -161,7 +161,7 @@
       "summary": "Defines `IsAscendingWave` (gaps non-decreasing) and `g(k)` (analog of $f(k)$). Axiomatizes `ascending_descending_similar`: $c_1 k^3 \\leq f(k) \\leq c_2 k^3$ AND $c_1 k^3 \\leq g(k) \\leq c_2 k^3$. The Alon-Spencer paper is titled 'Ascending waves' but treats both cases.",
       "startLine": 188,
       "endLine": 208,
-      "mathContext": "Defines `IsAscendingWave` (gaps non-decreasing) and `g(k)` (analog of $f(k)$). Axiomatizes `ascending_descending_similar`: $c_1 k^3 \\leq f(k) \\leq c_2 k^3$ AND $c_1 k^3 \\leq g(k) \\leq c_2 k^3$. The Al"
+      "mathContext": "Defines `IsAscendingWave` (gaps non-decreasing) and `g(k)` (analog of $f(k)$). Axiomatizes `ascending_descending_similar`: $c_1 k^3 \\leq f(k) \\leq c_2 k^3$ AND $c_1 k^3 \\leq g(k) \\leq c_2 k^3$."
     },
     {
       "id": "quasi-progressions",
@@ -169,7 +169,7 @@
       "summary": "Defines `IsQuasiProgression seq d error` (gaps approximately $d \\pm \\text{error}$) and axiomatizes `descending_wave_is_quasi`: every descending wave is a quasi-AP with error $\\leq \\text{seq}(0)$. Connects to the BEF paper 'Quasi-progressions and descending waves'.",
       "startLine": 209,
       "endLine": 222,
-      "mathContext": "Defines `IsQuasiProgression seq d error` (gaps approximately $d \\pm \\text{error}$) and axiomatizes `descending_wave_is_quasi`: every descending wave is a quasi-AP with error $\\leq \\text{seq}(0)$. Conn"
+      "mathContext": "Defines `IsQuasiProgression seq d error` (gaps approximately $d \\pm \\text{error}$) and axiomatizes `descending_wave_is_quasi`: every descending wave is a quasi-AP with error $\\leq \\text{seq}(0)$."
     },
     {
       "id": "summary",
@@ -177,7 +177,7 @@
       "summary": "Proves `erdos_781_summary : (∀k≥1, f(k)≥k²-k+1) ∧ (∃c>0, ∀k≥1, f(k)≥ck³) ∧ ¬ErdosConjecture781` and `erdos_781 : ¬ErdosConjecture781`. The full story: $k^2-k+1 \\leq f(k) = \\Theta(k^3)$, disproving the quadratic conjecture.",
       "startLine": 223,
       "endLine": 258,
-      "mathContext": "Proves `erdos_781_summary : (∀k≥1, f(k)≥k²-k+1) ∧ (∃c>0, ∀k≥1, f(k)≥ck³) ∧ ¬ErdosConjecture781` and `erdos_781 : ¬ErdosConjecture781`. The full story: $k^2-k+1 \\leq f(k) = \\Theta(k^3)$, disproving the"
+      "mathContext": "Proves `erdos_781_summary : (∀k≥1, f(k)≥k²-k+1) ∧ (∃c>0, ∀k≥1, f(k)≥ck³) ∧ ¬ErdosConjecture781` and `erdos_781 : ¬ErdosConjecture781`. The full story: $k^2-k+1 \\leq f(k) = \\Theta(k^3)$, disproving the quadratic conjecture."
     }
   ],
   "conclusion": {

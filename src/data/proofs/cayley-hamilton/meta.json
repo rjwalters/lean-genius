@@ -61,7 +61,9 @@
       "**Minimal vs. Characteristic:** The minimal polynomial $m_A$ divides $p_A$ (by Cayley-Hamilton), so $\\deg(m_A) \\leq n$. Equality holds iff $A$ has a cyclic vector. The gap between $m_A$ and $p_A$ measures the 'redundancy' in the eigenvalue structure."
     ],
     "prerequisites": [
-      "Linear algebra"
+      "Linear algebra (matrices, determinants, characteristic polynomial)",
+      "Ring theory (polynomial rings, evaluation homomorphisms)",
+      "Abstract algebra (commutativity of polynomial evaluation)"
     ]
   },
   "sections": [

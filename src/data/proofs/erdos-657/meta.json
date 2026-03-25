@@ -112,7 +112,7 @@
       "startLine": 60,
       "endLine": 97,
       "summary": "Defines $\\texttt{Triple}(A)$ for three distinct points, $\\texttt{IsIsosceles}$ (two of three distances equal), and $\\texttt{IsIsoscelesFree}$ ($\\forall t,\\; \\neg\\texttt{IsIsosceles}(t)$). Proves equivalence with $\\texttt{AllTriplesDistinct}$.",
-      "mathContext": "Defines $\\texttt{Triple}(A)$ for three distinct points, $\\texttt{IsIsosceles}$ (two of three distances equal), and $\\texttt{IsIsoscelesFree}$ ($\\forall t,\\; \\neg\\texttt{IsIsosceles}(t)$). Proves equiv"
+      "mathContext": "Defines $\\texttt{Triple}(A)$ for three distinct points, $\\texttt{IsIsosceles}$ (two of three distances equal), and $\\texttt{IsIsoscelesFree}$ ($\\forall t,\\; \\neg\\texttt{IsIsosceles}(t)$). Proves equivalence with $\\texttt{AllTriplesDistinct}$."
     },
     {
       "id": "distances",
@@ -128,7 +128,7 @@
       "startLine": 114,
       "endLine": 135,
       "summary": "Defines $f(n) = \\inf\\{|\\Delta(A)|/n\\}$ over isosceles-free $n$-point sets. Two equivalent formulations of the question: $\\forall M,\\; \\exists N$ (epsilon-delta) and $\\exists f$ with $\\texttt{Filter.Tendsto}$.",
-      "mathContext": "Defines $f(n) = \\inf\\{|\\Delta(A)|/n\\}$ over isosceles-free $n$-point sets. Two equivalent formulations of the question: $\\forall M,\\; \\exists N$ (epsilon-delta) and $\\exists f$ with $\\texttt{Filter.Te"
+      "mathContext": "Defines $f(n) = \\inf\\{|\\Delta(A)|/n\\}$ over isosceles-free $n$-point sets. Two equivalent formulations of the question: $\\forall M,\\; \\exists N$ (epsilon-delta) and $\\exists f$ with $\\texttt{Filter.Tendsto}$."
     },
     {
       "id": "dumitrescu",
@@ -160,7 +160,7 @@
       "startLine": 206,
       "endLine": 233,
       "summary": "In $\\mathbb{R}^k$ with $2^k \\ge n$, hypercube vertices give isosceles-free sets with $\\le n - 1$ distances ($\\|e_i - e_j\\|^2$ takes at most $k$ values). Shows the problem is nontrivial only in low dimensions.",
-      "mathContext": "In $\\mathbb{R}^k$ with $2^k \\ge n$, hypercube vertices give isosceles-free sets with $\\le n - 1$ distances ($\\|e_i - e_j\\|^2$ takes at most $k$ values). Shows the problem is nontrivial only in low dim"
+      "mathContext": "In $\\mathbb{R}^k$ with $2^k \\ge n$, hypercube vertices give isosceles-free sets with $\\le n - 1$ distances ($\\|e_i - e_j\\|^2$ takes at most $k$ values)."
     },
     {
       "id": "examples",

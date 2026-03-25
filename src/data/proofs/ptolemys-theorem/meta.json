@@ -50,7 +50,9 @@
       "Historically, Ptolemy used the theorem to derive chord addition formulas: $\\text{chord}(\\alpha \\pm \\beta)$ from $\\text{chord}(\\alpha)$ and $\\text{chord}(\\beta)$. These are the ancient versions of the sine and cosine addition formulas, which are the foundation of trigonometry."
     ],
     "prerequisites": [
-      "Geometry (Euclidean, combinatorial)"
+      "Euclidean geometry (cyclic quadrilaterals, diagonals)",
+      "Trigonometry (law of cosines, sine rule)",
+      "Algebra (Ptolemy's inequality, equality conditions)"
     ]
   },
   "sections": [
@@ -76,7 +78,7 @@
       "startLine": 64,
       "endLine": 87,
       "summary": "Ptolemy's theorem: $\\text{dist}(A,B) \\cdot \\text{dist}(C,D) + \\text{dist}(B,C) \\cdot \\text{dist}(D,A) = \\text{dist}(A,C) \\cdot \\text{dist}(B,D)$ for `Cospherical` points with diagonal intersection $P$ satisfying $\\angle APC = \\pi$ and $\\angle BPD = \\pi$. One-liner via `mul_dist_add_mul_dist_eq_mul_dist_of_cospherical`.",
-      "mathContext": "Ptolemy's theorem: $\\text{dist}(A,B) \\cdot \\text{dist}(C,D) + \\text{dist}(B,C) \\cdot \\text{dist}(D,A) = \\text{dist}(A,C) \\cdot \\text{dist}(B,D)$ for `Cospherical` points with diagonal intersection $P$"
+      "mathContext": "Ptolemy's theorem: $\\text{dist}(A,B) \\cdot \\text{dist}(C,D) + \\text{dist}(B,C) \\cdot \\text{dist}(D,A) = \\text{dist}(A,C) \\cdot \\text{dist}(B,D)$ for `Cospherical` points with diagonal intersection $P$ satisfying $\\angle APC = \\pi$ and $\\angle BPD = \\pi$."
     },
     {
       "id": "alternative",
@@ -108,7 +110,7 @@
       "startLine": 163,
       "endLine": 208,
       "summary": "Three verified examples: rectangle ($3 \\cdot 3 + 4 \\cdot 4 = 5 \\cdot 5$, recovering the Pythagorean theorem), square ($2s^2 = (s\\sqrt{2})^2$ via `Real.mul_self_sqrt`), and isosceles trapezoid ($5^2 + 6^2 = 61$, diagonal $= \\sqrt{61}$). All verified by `norm_num`.",
-      "mathContext": "Three verified examples: rectangle ($3 \\cdot 3 + 4 \\cdot 4 = 5 \\cdot 5$, recovering the Pythagorean theorem), square ($2s^2 = (s\\sqrt{2})^2$ via `Real.mul_self_sqrt`), and isosceles trapezoid ($5^2 + "
+      "mathContext": "Three verified examples: rectangle ($3 \\cdot 3 + 4 \\cdot 4 = 5 \\cdot 5$, recovering the Pythagorean theorem), square ($2s^2 = (s\\sqrt{2})^2$ via `Real.mul_self_sqrt`), and isosceles trapezoid ($5^2 + 6^2 = 61$, diagonal $= \\sqrt{61}$)."
     },
     {
       "id": "converse",
@@ -116,7 +118,7 @@
       "startLine": 209,
       "endLine": 232,
       "summary": "The converse: $AC \\cdot BD = AB \\cdot CD + AD \\cdot BC$ implies concyclicity. Ptolemy's inequality $AC \\cdot BD \\le AB \\cdot CD + AD \\cdot BC$ holds for all four-point configurations, with equality iff concyclic. Related to the cross-ratio being real and positive.",
-      "mathContext": "The converse: $AC \\cdot BD = AB \\cdot CD + AD \\cdot BC$ implies concyclicity. Ptolemy's inequality $AC \\cdot BD \\le AB \\cdot CD + AD \\cdot BC$ holds for all four-point configurations, with equality if"
+      "mathContext": "The converse: $AC \\cdot BD = AB \\cdot CD + AD \\cdot BC$ implies concyclicity. Ptolemy's inequality $AC \\cdot BD \\le AB \\cdot CD + AD \\cdot BC$ holds for all four-point configurations, with equality iff concyclic."
     },
     {
       "id": "history",
@@ -124,7 +126,7 @@
       "startLine": 233,
       "endLine": 267,
       "summary": "Historical discussion of chord tables ($\\text{chord}(\\theta) = d\\sin(\\theta/2)$), the equivalence to the sine addition formula $\\sin(\\alpha+\\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$, Ptolemy's legacy in astronomy (al-Khwarizmi, al-Biruni), and `#check` verification of all five exported theorems.",
-      "mathContext": "Historical discussion of chord tables ($\\text{chord}(\\theta) = d\\sin(\\theta/2)$), the equivalence to the sine addition formula $\\sin(\\alpha+\\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$, Ptolemy"
+      "mathContext": "Historical discussion of chord tables ($\\text{chord}(\\theta) = d\\sin(\\theta/2)$), the equivalence to the sine addition formula $\\sin(\\alpha+\\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$, Ptolemy's legacy in astronomy (al-Khwarizmi, al-Biruni), and `#check` verification of all five exported theorems."
     }
   ],
   "crossReferences": [

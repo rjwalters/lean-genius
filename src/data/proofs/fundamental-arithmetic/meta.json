@@ -66,7 +66,9 @@
       "The **Finsupp representation** `Nat.factorization` maps each prime to its exponent, giving $n \\mapsto (p \\mapsto v_p(n))$ — this is often more convenient than the list representation for multiplicative arithmetic"
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Elementary number theory (divisibility, primes, GCD)",
+      "Mathematical logic (existence and uniqueness proofs)",
+      "Well-ordering (strong induction, descent arguments)"
     ]
   },
   "sections": [

@@ -101,7 +101,7 @@
       "summary": "Defines `UniformHypergraph V` (structure with $r$, edges, uniformity constraint $|e| = r$, and $r \\geq 2$), `vertexDegree` ($\\deg_H(v) = |\\{e : v \\in e\\}|$), `maxDegree`, and `minMaxDegree` via `Finset.filter` and `Finset.univ.sup`",
       "startLine": 46,
       "endLine": 75,
-      "mathContext": "Defines `UniformHypergraph V` (structure with $r$, edges, uniformity constraint $|e| = r$, and $r \\geq 2$), `vertexDegree` ($\\deg_H(v) = |\\{e : v \\in e\\}|$), `maxDegree`, and `minMaxDegree` via `Finse"
+      "mathContext": "Defines `UniformHypergraph V` (structure with $r$, edges, uniformity constraint $|e| = r$, and $r \\geq 2$), `vertexDegree` ($\\deg_H(v) = |\\{e : v \\in e\\}|$), `maxDegree`, and `minMaxDegree` via `Finset.filter` and `Finset.univ.sup`"
     },
     {
       "id": "colorings",
@@ -109,7 +109,7 @@
       "summary": "Defines `IsProperColoring` (no monochromatic edge: $\\forall e,\\; \\exists v_1, v_2 \\in e,\\; c(v_1) \\neq c(v_2)$), `IsKColorable`, trivial upper bound $\\chi(H) \\leq |V|$, `chromaticNumber` via `Nat.find`, and `HasChromaticNumber3` ($\\neg 2\\text{-colorable} \\wedge 3\\text{-colorable}$)",
       "startLine": 76,
       "endLine": 104,
-      "mathContext": "Defines `IsProperColoring` (no monochromatic edge: $\\forall e,\\; \\exists v_1, v_2 \\in e,\\; c(v_1) \\neq c(v_2)$), `IsKColorable`, trivial upper bound $\\chi(H) \\leq |V|$, `chromaticNumber` via `Nat.find"
+      "mathContext": "Defines `IsProperColoring` (no monochromatic edge: $\\forall e,\\; \\exists v_1, v_2 \\in e,\\; c(v_1) \\neq c(v_2)$), `IsKColorable`, trivial upper bound $\\chi(H) \\leq |V|$, `chromaticNumber` via `Nat.find`, and `HasChromaticNumber3` ($\\neg 2\\text{-colorable} \\wedge 3\\text{-colorable}$)"
     },
     {
       "id": "f-function",
@@ -133,7 +133,7 @@
       "summary": "Axiomatizes the bound in three forms: pointwise ($\\exists v,\\; \\deg(v) \\geq 2^{r-1}/(4r)$), function ($f(r) \\geq \\lfloor 2^{r-1}/(4r) \\rfloor$), and asymptotic ($\\geq (\\sqrt{2} - \\varepsilon)^r$ for large $r$). Derives `erdos_833_solution` confirming exponential growth",
       "startLine": 137,
       "endLine": 170,
-      "mathContext": "Axiomatizes the bound in three forms: pointwise ($\\exists v,\\; \\deg(v) \\geq 2^{r-1}/(4r)$), function ($f(r) \\geq \\lfloor 2^{r-1}/(4r) \\rfloor$), and asymptotic ($\\geq (\\sqrt{2} - \\varepsilon)^r$ for l"
+      "mathContext": "Axiomatizes the bound in three forms: pointwise ($\\exists v,\\; \\deg(v) \\geq 2^{r-1}/(4r)$), function ($f(r) \\geq \\lfloor 2^{r-1}/(4r) \\rfloor$), and asymptotic ($\\geq (\\sqrt{2} - \\varepsilon)^r$ for large $r$)."
     },
     {
       "id": "related-results",
@@ -157,7 +157,7 @@
       "summary": "Describes the LLL argument: random 2-coloring with $\\Pr[\\text{monochromatic } e] = 2^{1-r}$, dependency $\\leq r\\Delta$; axiomatizes `contrapositive_form`: $\\forall v,\\; \\deg(v) < 2^{r-1}/(4r) \\implies \\chi(H) \\leq 2$",
       "startLine": 208,
       "endLine": 225,
-      "mathContext": "Describes the LLL argument: random 2-coloring with $\\Pr[\\text{monochromatic } e] = 2^{1-r}$, dependency $\\leq r\\Delta$; axiomatizes `contrapositive_form`: $\\forall v,\\; \\deg(v) < 2^{r-1}/(4r) \\implies"
+      "mathContext": "Describes the LLL argument: random 2-coloring with $\\Pr[\\text{monochromatic } e] = 2^{1-r}$, dependency $\\leq r\\Delta$; axiomatizes `contrapositive_form`: $\\forall v,\\; \\deg(v) < 2^{r-1}/(4r) \\implies \\chi(H) \\leq 2$"
     },
     {
       "id": "main-theorem",
@@ -165,7 +165,7 @@
       "summary": "**Verified proof**: `erdos_833 : ExponentialGrowthConjecture ∧ (∀ r ≥ 2, ∀ H, ∃ v, deg(v) ≥ 2^{r-1}/(4r))`, proved by `constructor; exact erdos_833_solution; exact erdos_lovasz_bound`. Packages the complete resolution of Problem #833",
       "startLine": 226,
       "endLine": 265,
-      "mathContext": "**Verified proof**: `erdos_833 : ExponentialGrowthConjecture ∧ (∀ r ≥ 2, ∀ H, ∃ v, deg(v) ≥ 2^{r-1}/(4r))`, proved by `constructor; exact erdos_833_solution; exact erdos_lovasz_bound`. Packages the co"
+      "mathContext": "**Verified proof**: `erdos_833 : ExponentialGrowthConjecture ∧ (∀ r ≥ 2, ∀ H, ∃ v, deg(v) ≥ 2^{r-1}/(4r))`, proved by `constructor; exact erdos_833_solution; exact erdos_lovasz_bound`. Packages the complete resolution of Problem #833"
     }
   ],
   "conclusion": {

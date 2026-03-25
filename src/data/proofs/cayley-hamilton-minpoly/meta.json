@@ -92,7 +92,9 @@
       "Nilpotent matrices have minpoly = X^d, so M^d = 0 with d = deg(minpoly) <= n"
     ],
     "prerequisites": [
-      "Linear algebra"
+      "Linear algebra (characteristic polynomial, minimal polynomial)",
+      "Abstract algebra (integral domains, polynomial factorization)",
+      "Module theory (annihilators, cyclic decomposition)"
     ]
   },
   "sections": [
@@ -110,7 +112,7 @@
       "startLine": 53,
       "endLine": 84,
       "summary": "Core theorem: $\\text{aeval}_M(f) = \\text{aeval}_M(f \\bmod \\mu_M)$. Uses the division algorithm $f = q \\cdot \\mu_M + r$ and $\\text{aeval}_M(\\mu_M) = 0$. Companion: $\\text{aeval}_M(f - f \\bmod \\mu_M) = 0$.",
-      "mathContext": "Core theorem: $\\text{aeval}_M(f) = \\text{aeval}_M(f \\bmod \\mu_M)$. Uses the division algorithm $f = q \\cdot \\mu_M + r$ and $\\text{aeval}_M(\\mu_M) = 0$. Companion: $\\text{aeval}_M(f - f \\bmod \\mu_M) = "
+      "mathContext": "Core theorem: $\\text{aeval}_M(f) = \\text{aeval}_M(f \\bmod \\mu_M)$. Uses the division algorithm $f = q \\cdot \\mu_M + r$ and $\\text{aeval}_M(\\mu_M) = 0$. Companion: $\\text{aeval}_M(f - f \\bmod \\mu_M) = 0$."
     },
     {
       "id": "degree-bounds",

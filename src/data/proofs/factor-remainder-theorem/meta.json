@@ -62,7 +62,8 @@
       "**Foundation for Polynomial GCD:** The Factor and Remainder Theorems underpin the Euclidean algorithm for polynomials: $\\gcd(p, q)$ is computed by repeated division, and common roots correspond to common factors. This extends to resultants, Bézout's theorem on curve intersections, and the Chinese Remainder Theorem for $R[x]/(f_1) \\times \\cdots \\times R[x]/(f_k)$."
     ],
     "prerequisites": [
-      "Abstract algebra"
+      "Polynomial algebra (division algorithm, roots)",
+      "Ring theory (ideals, quotient rings, evaluation homomorphisms)"
     ]
   },
   "sections": [

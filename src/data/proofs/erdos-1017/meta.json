@@ -70,7 +70,7 @@
       "summary": "Defines `edgeDisjoint`, `isPairwiseEdgeDisjoint`, `cliqueUnion` (graph union of complete subgraphs), and `isCliquePartition` (pairwise disjoint with union $= G$). The central predicate for the entire formalization.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Defines `edgeDisjoint`, `isPairwiseEdgeDisjoint`, `cliqueUnion` (graph union of complete subgraphs), and `isCliquePartition` (pairwise disjoint with union $= G$). The central predicate for the entire "
+      "mathContext": "Defines `edgeDisjoint`, `isPairwiseEdgeDisjoint`, `cliqueUnion` (graph union of complete subgraphs), and `isCliquePartition` (pairwise disjoint with union $= G$)."
     },
     {
       "id": "partition-number",
@@ -94,7 +94,7 @@
       "summary": "Constructs `completeBipartite A B` as the Turán graph $T(n,2) = K_{n/2, n/2}$, proves it has no triangles, and shows it requires $n^2/4$ edge-cliques—establishing tightness of the EGP bound.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "The complete bipartite graph $T(n,2) = K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ achieves $\\lfloor n^2/4 \\rfloor$ edges with no odd cliques. This is extremal for the $k=3$ (triangle partition) case."
+      "mathContext": "Constructs `completeBipartite A B` as the Turán graph $T(n,2) = K_{n/2, n/2}$, proves it has no triangles, and shows it requires $n^2/4$ edge-cliques—establishing tightness of the EGP bound."
     },
     {
       "id": "open-problem",
@@ -110,7 +110,7 @@
       "summary": "Axiomatizes Lovász's result: $G$ is the union of $\\binom{n}{2} - k + t$ cliques where $t \\approx \\sqrt{\\binom{n}{2} - k}$. This is a covering (not partition) result, providing a related but weaker bound.",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Axiomatizes Lovász's result: $G$ is the union of $\\binom{n}{2} - k + t$ cliques where $t \\approx \\sqrt{\\binom{n}{2} - k}$. This is a covering (not partition) result, providing a related but weaker bou"
+      "mathContext": "Axiomatizes Lovász's result: $G$ is the union of $\\binom{n}{2} - k + t$ cliques where $t \\approx \\sqrt{\\binom{n}{2} - k}$."
     },
     {
       "id": "k4free",
