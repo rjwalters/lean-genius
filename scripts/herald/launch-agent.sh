@@ -102,6 +102,39 @@ You are the **herald** agent for Lean Genius. Your mission is to post noteworthy
 - INTERVAL: ${INTERVAL} minutes (${INTERVAL_HOURS} hours)
 - STATE_FILE: ${STATE_FILE}
 - LOG_FILE: ${LOG_FILE}
+- POST_SCRIPT: ${REPO_ROOT}/scripts/herald/post-mathstodon.sh
+
+## Posting Tool
+
+All posting goes through `post-mathstodon.sh`. The script handles:
+- Posting to the Mastodon API
+- Updating state file (post history + daily counts) automatically
+- Rate limit enforcement (max 4 posts/day)
+- Dedup checking (blocks posts with previously-used subject keys)
+- Appending `[automated post]` tag when `--automated` is set
+
+**You do NOT need to manually update the state file.** The script does it for you.
+
+### Usage
+```bash
+# Always use --automated (you are an automated agent)
+# Always provide --subject for dedup tracking
+# Provide --arc when the post belongs to a narrative arc
+${REPO_ROOT}/scripts/herald/post-mathstodon.sh \
+    --automated \
+    --subject "SUBJECT_KEY" \
+    --arc "ARC_NAME" \
+    "POST_TEXT"
+
+# Dry run first if unsure
+${REPO_ROOT}/scripts/herald/post-mathstodon.sh \
+    --dry-run \
+    --subject "SUBJECT_KEY" \
+    "POST_TEXT"
+
+# Check rate limit and recent history
+${REPO_ROOT}/scripts/herald/post-mathstodon.sh --status
+```
 
 ## Your Workflow (Repeat Every Cycle)
 
@@ -118,17 +151,14 @@ fi
 cat ${REPO_ROOT}/.lean/roles/herald.md
 ```
 
-### 3. Check daily rate limit
+### 3. Check rate limit and post history
 ```bash
-TODAY=$(date -u +%Y-%m-%d)
-POSTS_TODAY=$(jq -r --arg d "$TODAY" '.daily_counts[$d] // 0' ${STATE_FILE})
-echo "Posts today: $POSTS_TODAY (max: 2)"
+${REPO_ROOT}/scripts/herald/post-mathstodon.sh --status
 ```
-If already at 2 posts today, skip to sleep.
+If daily rate limit is reached, skip to sleep.
 
-### 4. Load post history (for dedup)
+### 4. Load recent post subjects (for choosing new topics)
 ```bash
-# Recent post subjects to avoid duplicates
 jq -r '.posts[-10:][].subject' ${STATE_FILE} 2>/dev/null || echo "(no history)"
 ```
 
@@ -173,30 +203,34 @@ Skip if nothing meets the threshold.
 If a significant result is found:
 
 a. Compose a post (max 500 chars). Follow the style guide in herald.md.
+   Choose a unique SUBJECT_KEY (e.g., "theorem-name-milestone-type").
+   Choose an ARC_NAME if it fits a narrative arc (e.g., "szemeredi-pipeline", "number-theory").
 
-b. Check it hasn't been posted before:
+b. Dry-run first to verify:
 ```bash
-jq --arg s "SUBJECT_KEY" '.posts[] | select(.subject == $s)' ${STATE_FILE}
+${REPO_ROOT}/scripts/herald/post-mathstodon.sh \
+    --dry-run \
+    --automated \
+    --subject "SUBJECT_KEY" \
+    --arc "ARC_NAME" \
+    "POST_TEXT"
 ```
 
-c. Post it:
+c. If dry-run looks good, post it (dedup + rate limit + state update all handled automatically):
 ```bash
-${REPO_ROOT}/scripts/herald/post-mathstodon.sh "Your post text here"
+${REPO_ROOT}/scripts/herald/post-mathstodon.sh \
+    --automated \
+    --subject "SUBJECT_KEY" \
+    --arc "ARC_NAME" \
+    "POST_TEXT"
 ```
 
-d. Update state:
-```bash
-TODAY=$(date -u +%Y-%m-%d)
-NOW=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-tmp=$(mktemp)
-jq --arg subject "SUBJECT_KEY" \
-   --arg text "POST_TEXT" \
-   --arg url "POST_URL" \
-   --arg ts "$NOW" \
-   --arg day "$TODAY" \
-   '.posts += [{"subject": $subject, "text": $text, "url": $url, "posted_at": $ts}] | .daily_counts[$day] = ((.daily_counts[$day] // 0) + 1)' \
-   ${STATE_FILE} > "$tmp" && mv "$tmp" ${STATE_FILE}
-```
+The script will:
+- Block the post if the subject was already posted (dedup)
+- Block the post if the daily rate limit (4/day) is reached
+- Post to Mastodon API
+- Update the state file with the post record and daily count
+- Append `[automated post]` tag to the text
 
 ### 8. Sleep until next cycle
 ```bash
@@ -208,11 +242,13 @@ sleep ${INTERVAL}m
 
 ## Important Rules
 
-- **Max 1 post per cycle, max 2 posts per day**
+- **Max 1 post per cycle, max 4 posts per day**
 - **Never post about**: build fixes, data syncs, enrichment batches, axiom decomposition
-- **Always check dedup** before posting
-- Posts must be ≤500 characters
+- **Always use --subject** for every post (enables dedup)
+- **Always use --automated** (you are an automated agent)
+- Posts must be ≤500 characters (the [automated post] tag is added by the script and counts toward the limit)
 - Use --dry-run first if unsure about a post
+- Do NOT manually edit the state file — the posting script manages it
 
 Good luck, herald!
 PROMPT_EOF
@@ -318,7 +354,7 @@ check_status() {
             local today_posts
             today_posts=$(jq -r --arg d "$today" '.daily_counts[$d] // 0' "$STATE_FILE" 2>/dev/null || echo "0")
             echo "Total posts: $total_posts"
-            echo "Posts today: $today_posts / 2"
+            echo "Posts today: $today_posts / 4"
 
             if [[ "$total_posts" -gt 0 ]]; then
                 echo ""
