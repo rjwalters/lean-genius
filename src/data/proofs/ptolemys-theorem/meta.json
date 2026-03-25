@@ -28,7 +28,7 @@
     "originalContributions": [
       "Pedagogical examples connecting Ptolemy to the Pythagorean theorem (rectangle case)",
       "Curated exposition of historical and mathematical context",
-      "Symmetric formulation of Ptolemy's theorem"
+      "Named theorem API providing symmetric and rearranged forms for downstream use"
     ],
     "dateAdded": "2025-12-27",
     "wiedijkNumber": 95,
@@ -145,7 +145,7 @@
     }
   ],
   "conclusion": {
-    "summary": "A well-curated Mathlib wrapper presenting Ptolemy's theorem via EuclideanGeometry.mul_dist_le_mul_dist_add_mul_dist. The file provides 3 distinct theorem statements (main, symmetric, and rectangle/Pythagorean specialization) with extensive historical and pedagogical context. The core mathematical work is in Mathlib.",
+    "summary": "A well-curated Mathlib wrapper presenting Ptolemy's theorem via `mul_dist_add_mul_dist_eq_mul_dist_of_cospherical`. The file provides 3 named theorem variants (main, symmetric, rearranged) with 4 verified numerical examples and extensive historical and pedagogical context. The core mathematical work is in Mathlib.",
     "implications": "**Theoretical Significance**: Ptolemy's theorem bridges ancient and modern mathematics. It yields the trigonometric addition formulas (the foundation of trigonometry), generalizes the Pythagorean theorem, and characterizes cyclic quadrilaterals.\n\nThe complex-number proof reveals connections to conformal mappings and inversive geometry. Ptolemy's inequality generalizes to higher dimensions and is related to the positive semidefiniteness of the Cayley-Menger determinant.",
     "openQuestions": [
       "Can Ptolemy's inequality (AC·BD ≤ AB·CD + AD·BC for arbitrary four points) be formalized, with equality characterized by concyclicity?",
