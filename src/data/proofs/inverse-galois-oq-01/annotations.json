@@ -48,6 +48,18 @@
     "prerequisites": ["Cardinal coercion", "Equiv.Perm.not_solvable"]
   },
   {
+    "id": "ann-sn-cardinalities",
+    "proofId": "inverse-galois-oq-01",
+    "range": { "startLine": 102, "endLine": 120 },
+    "type": "technique",
+    "title": "Computing |Sₙ| = n! via Fintype.card_perm",
+    "content": "Five theorems compute $|S_1| = 1$, $|S_2| = 2$, $|S_3| = 6$, $|S_4| = 24$, $|S_5| = 120$, each by the same pattern: `rw [Fintype.card_perm, Fintype.card_fin]; norm_num`. Mathlib's `Fintype.card_perm` gives $|S_n| = (\\text{Fintype.card}(\\alpha))!$ and `Fintype.card_fin` evaluates $|\\text{Fin}\\,n| = n$, reducing to a numerical computation handled by `norm_num`.\n\nThese concrete values are needed for Part IV ($|S_5|/|A_5| = 2$) and the census in Part VIII.",
+    "mathContext": "$|S_n| = n!$ counts the number of bijections $\\{1,\\ldots,n\\} \\to \\{1,\\ldots,n\\}$. The factorial grows rapidly: $|S_5| = 120$, $|S_6| = 720$, etc. For the Inverse Galois Problem, these cardinalities determine the degrees of the corresponding splitting fields.",
+    "significance": "supporting",
+    "relatedConcepts": ["Fintype.card_perm", "Fintype.card_fin", "factorial", "norm_num"],
+    "prerequisites": ["Fintype", "Equiv.Perm"]
+  },
+  {
     "id": "ann-a5-card",
     "proofId": "inverse-galois-oq-01",
     "range": { "startLine": 122, "endLine": 124 },
@@ -84,6 +96,18 @@
     "prerequisites": ["s5_not_solvable", "alternatingGroup.subtype", "Equiv.Perm.sign"]
   },
   {
+    "id": "ann-a5-not-commutative",
+    "proofId": "inverse-galois-oq-01",
+    "range": { "startLine": 153, "endLine": 158 },
+    "type": "theorem",
+    "title": "A₅ Is Not Abelian",
+    "content": "`a5_not_commutative` proves $\\neg(\\forall a, b \\in A_5, ab = ba)$ by contradiction: if $A_5$ were abelian, then `isSolvable_of_comm` would give `IsSolvable(A_5)`, contradicting `a5_not_solvable`. This is a stepping stone to the perfectness proof — it rules out the trivial case $[A_5, A_5] = \\{e\\}$ in the simplicity dichotomy.\n\nThe implication chain: abelian $\\Rightarrow$ solvable $\\Rightarrow$ contradiction. This is why every non-abelian simple group is automatically non-solvable.",
+    "mathContext": "For any group: abelian $\\Rightarrow$ solvable (the derived series is $G \\supset [G,G] = \\{e\\}$ in one step). Contrapositive: non-solvable $\\Rightarrow$ non-abelian. $A_5$ has non-commuting elements — for example, the 3-cycle $(1\\,2\\,3)$ and the 3-cycle $(1\\,2\\,4)$ do not commute: $(1\\,2\\,3)(1\\,2\\,4) = (1\\,3)(2\\,4) \\neq (1\\,4)(2\\,3) = (1\\,2\\,4)(1\\,2\\,3)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["abelian group", "isSolvable_of_comm", "non-commutativity"],
+    "prerequisites": ["a5_not_solvable", "isSolvable_of_comm"]
+  },
+  {
     "id": "ann-a5-perfect",
     "proofId": "inverse-galois-oq-01",
     "range": { "startLine": 164, "endLine": 186 },
@@ -94,6 +118,42 @@
     "significance": "key",
     "relatedConcepts": ["perfect group", "commutator subgroup", "abelianization", "derived series"],
     "prerequisites": ["a5_simple", "a5_not_solvable", "a5_not_commutative", "IsSimpleGroup.eq_bot_or_eq_top_of_normal"]
+  },
+  {
+    "id": "ann-alternating-characterization",
+    "proofId": "inverse-galois-oq-01",
+    "range": { "startLine": 192, "endLine": 203 },
+    "type": "concept",
+    "title": "Part IV: Alternating Group as Index-2 Normal Subgroup",
+    "content": "Three results establish the structural relationship between $A_n$ and $S_n$: (1) `alternating_normal` — $A_n \\trianglelefteq S_n$ via `inferInstance` (since $A_n = \\ker(\\text{sign})$, a kernel is always normal); (2) `alternating_card_five'` restates $|A_5| = 60$; (3) `s5_div_a5` computes $|S_5|/|A_5| = 120/60 = 2$, confirming the index $[S_5:A_5] = 2$.\n\nThe index-2 condition means $A_n$ is the unique subgroup of index 2 in $S_n$, and the quotient $S_n/A_n \\cong C_2$ is the sign representation.",
+    "mathContext": "For any group $G$ and normal subgroup $N \\trianglelefteq G$ with $[G:N] = 2$: $N$ is automatically normal (since left and right cosets coincide when there are only two). The short exact sequence $1 \\to A_n \\to S_n \\to C_2 \\to 1$ splits for $n \\neq 2, 6$ (the splitting gives $S_n \\cong A_n \\rtimes C_2$, though the semidirect product structure is not needed here).",
+    "significance": "supporting",
+    "relatedConcepts": ["normal subgroup", "index-2 subgroup", "quotient group", "short exact sequence"],
+    "prerequisites": ["alternatingGroup", "sign homomorphism", "Fintype.card"]
+  },
+  {
+    "id": "ann-nonsolvable-realm",
+    "proofId": "inverse-galois-oq-01",
+    "range": { "startLine": 230, "endLine": 239 },
+    "type": "context",
+    "title": "Part V: The Solvable vs Non-Solvable Landscape",
+    "content": "Commentary and one theorem partitioning all finite groups into the solvable realm (covered by Shafarevich: cyclic, abelian, dihedral, $p$-groups, $S_1$–$S_4$, all groups of order $< 60$) and the non-solvable realm (requiring explicit constructions). `trivial_realizable` proves the trivial group is realized by the trivial extension $\\mathbb{Q}/\\mathbb{Q}$, using $|\\text{Gal}(\\mathbb{Q}/\\mathbb{Q})| = 1$ from `IsGalois.card_aut_eq_finrank` and $[\\mathbb{Q}:\\mathbb{Q}] = 1$.\n\nThe commentary catalogs which non-solvable groups have been realized: $A_5$ (order 60) and $S_5$ (order 120), with $\\text{PSL}(2,7)$ (168), $A_6$ (360), and sporadic groups as future targets.",
+    "mathContext": "Shafarevich's theorem (1954): every solvable group is $\\text{Gal}(K/\\mathbb{Q})$ for some $K$. All groups of order $< 60$ are solvable (Burnside's $p^aq^b$ theorem + Feit-Thompson odd-order theorem). The smallest non-solvable group is $A_5$ with $|A_5| = 60 = 2^2 \\cdot 3 \\cdot 5$, which has three distinct prime factors as required.",
+    "significance": "key",
+    "relatedConcepts": ["Shafarevich's theorem", "Burnside theorem", "Feit-Thompson", "realizability"],
+    "prerequisites": ["IsGalois", "FiniteDimensional", "Module.finrank_self"]
+  },
+  {
+    "id": "ann-fixed-field-exists",
+    "proofId": "inverse-galois-oq-01",
+    "range": { "startLine": 261, "endLine": 267 },
+    "type": "theorem",
+    "title": "Fixed Field Existence",
+    "content": "`fixed_field_exists` proves that for any subgroup $H \\leq \\text{Gal}(K/F)$, the fixed field $K^H = \\{x \\in K \\mid \\forall \\sigma \\in H, \\sigma(x) = x\\}$ exists as an intermediate field. The proof is a direct application of Mathlib's `IntermediateField.fixedField`.\n\nThis is the foundational step for the Galois correspondence: every subgroup determines a fixed field, and the degree formulas in subsequent theorems quantify this relationship.",
+    "mathContext": "$K^H = \\{x \\in K : \\sigma(x) = x \\text{ for all } \\sigma \\in H\\}$. The Galois correspondence: $H \\mapsto K^H$ gives an inclusion-reversing bijection between subgroups of $\\text{Gal}(K/F)$ and intermediate fields $F \\subseteq E \\subseteq K$, with inverse $E \\mapsto \\text{Gal}(K/E)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["fixed field", "Galois correspondence", "IntermediateField", "intermediate field"],
+    "prerequisites": ["IntermediateField.fixedField", "IsGalois", "FiniteDimensional"]
   },
   {
     "id": "ann-fixed-field",
@@ -130,6 +190,18 @@
     "significance": "supporting",
     "relatedConcepts": ["sign homomorphism", "short exact sequence", "alternating group", "even permutation"],
     "prerequisites": ["Equiv.Perm.sign", "Equiv.Perm.sign_surjective", "MonoidHom.mem_ker"]
+  },
+  {
+    "id": "ann-census",
+    "proofId": "inverse-galois-oq-01",
+    "range": { "startLine": 365, "endLine": 378 },
+    "type": "theorem",
+    "title": "Part VIII: Census of 18+ Realized Galois Groups",
+    "content": "An extensive commentary and one theorem documenting all groups explicitly realized as Galois groups over $\\mathbb{Q}$ across the Lean-Genius formalization. The census includes: cyclic groups $C_1$ through $C_{12}$ (via cyclotomic extensions $\\mathbb{Q}(\\zeta_p)$), $V_4 \\cong C_2^2$ (8th cyclotomic), $C_4 \\times C_2$ (15th cyclotomic), $C_2^3$ (compositum), $S_3$ ($X^3-2$), $D_4$ ($X^4-2$), $F_{20}$ ($X^5-2$), $A_5$ ($x^5+20x-16$), and $S_5$ ($x^5-4x+2$).\n\n`nonsolvable_realized_orders` states that Galois extensions of orders 60 ($A_5$) and 120 ($S_5$) exist. The 2 `sorry`s are structural — they require importing `InverseGaloisA5` and `AbelRuffiniOQ04OQ01` without creating import cycles.",
+    "mathContext": "The census shows the formalized frontier: all solvable groups are covered abstractly (Shafarevich axiom), while the non-solvable frontier extends to $A_5$ (via $x^5+20x-16$, Sylow analysis) and $S_5$ (via $x^5-4x+2$, Eisenstein + discriminant). The next non-solvable targets in order of complexity: $\\text{PSL}(2,7) \\cong GL(3,\\mathbb{F}_2)$ (order 168, realized by $x^7-7x+3$), $A_6$ (order 360), and $\\text{PSL}(2,11)$ (order 660).",
+    "significance": "key",
+    "relatedConcepts": ["cyclotomic extension", "Galois group census", "Shafarevich theorem", "splitting field"],
+    "prerequisites": ["InverseGalois.lean", "InverseGaloisA5.lean", "AbelRuffiniOQ04OQ01.lean"]
   },
   {
     "id": "ann-sn-solvable-iff",
