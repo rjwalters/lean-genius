@@ -103,12 +103,28 @@
       "mathContext": "Simpson: $\\delta_{\\min} = \\delta(\\{0 \\pmod{n_i}\\})$; all-zero residues minimize density. Shift invariance: $\\delta(a) = \\delta(0)$ for constant $a$."
     },
     {
-      "id": "open-question",
-      "title": "Maximum Density (Open)",
+      "id": "coprime-infrastructure",
+      "title": "Coprime LCM and Residue Shift Machinery",
       "startLine": 133,
-      "endLine": 334,
-      "summary": "Axiomatized coprime maximum ($\\delta_{\\max} = 1 - \\prod(1 - 1/n_i)$ by CRT), proved $\\delta_{\\max} \\leq 1$ for general moduli, and the single modulus base case ($\\delta = 1/n$).",
-      "mathContext": "Coprime case: $\\gcd(n_i, n_j) = 1 \\Rightarrow \\delta_{\\max} = 1 - \\prod(1 - 1/n_i)$ (CRT independence). Open: general formula for $\\delta_{\\max}$."
+      "endLine": 262,
+      "summary": "Technical infrastructure: coprime density axiom, `systemLCM_coprime_eq_prod` ($\\text{lcm} = \\prod$ for coprime moduli), residue shift injectivity and surjectivity via CRT, and the complement count per-modulus argument.",
+      "mathContext": "For coprime $L, n$: $k \\mapsto (j + kL) \\bmod n$ is bijective on $\\{0, \\ldots, n-1\\}$. This CRT bijection drives the complement counting."
+    },
+    {
+      "id": "complement-and-simpson",
+      "title": "Complement Count, Product Formula, and Simpson's Theorem",
+      "startLine": 263,
+      "endLine": 400,
+      "summary": "The file's central result: `complement_count_coprime` (~110 lines, proved by Finset.induction) shows uncovered count for coprime moduli is $\\prod(n_i-1)$. `product_fraction` converts to $\\prod(1-1/n_i)$. Simpson's theorem axiomatized: minimum density is achieved by equal residues.",
+      "mathContext": "$|\\text{uncovered}| = \\prod(n_i - 1)$. Density $= 1 - \\prod(1 - 1/n_i)$. Simpson: $\\delta_{\\min} = \\delta(a, a, \\ldots, a)$."
+    },
+    {
+      "id": "density-formulas-and-applications",
+      "title": "Coprime Density Formula, Max=Min, and Applications",
+      "startLine": 401,
+      "endLine": 646,
+      "summary": "Helper lemmas for shift invariance, `equal_residues_minimize` (equal residues achieve minimum), `coprime_density_formula` (all residue choices give same density for coprime moduli), `coprime_max_eq_min`, and singleton/single-modulus base cases.",
+      "mathContext": "Coprime: $\\delta_{\\max} = \\delta_{\\min} = 1 - \\prod(1 - 1/n_i)$. Singleton: $\\delta(\\{n\\}) = 1/n$."
     }
   ],
   "conclusion": {
