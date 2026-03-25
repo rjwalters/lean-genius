@@ -78,7 +78,7 @@
       "startLine": 28,
       "endLine": 96,
       "summary": "Unified theorem for last-digit rules (2, 4, 8, 16, 32, 5, 25, 125) including binary and hexadecimal bases.",
-      "mathContext": "Unified theorem for last-digit rules (2, 4, 8, 16, 32, 5, 25, 125) including binary and hexadecimal bases."
+      "mathContext": "$d \\mid 10^k \\Rightarrow d \\mid n \\iff d \\mid (n \\bmod 10^k)$. Covers $d \\in \\{2, 4, 5, 8, 16, 25, 32, 125\\}$ with appropriate $k$."
     },
     {
       "id": "power-generalizations",
@@ -86,7 +86,7 @@
       "startLine": 97,
       "endLine": 119,
       "summary": "General theorems: 2^k | n ↔ 2^k | (n mod 10^k), and similarly for 5^k.",
-      "mathContext": "General theorems: 2^k | n ↔ 2^k | (n mod 10^k), and similarly for 5^k."
+      "mathContext": "$2^k \\mid n \\iff 2^k \\mid (n \\bmod 10^k)$. Similarly $5^k \\mid n \\iff 5^k \\mid (n \\bmod 10^k)$. Both follow from $\\gcd(2^k, 10^k/2^k) = 1$ and $10^k = 2^k \\cdot 5^k$."
     },
     {
       "id": "truncation-13",
@@ -94,7 +94,7 @@
       "startLine": 120,
       "endLine": 154,
       "summary": "The 'add 4 times the last digit' rule for 13, proved via integer arithmetic and coprimality.",
-      "mathContext": "The 'add 4 times the last digit' rule for 13, proved via integer arithmetic and coprimality."
+      "mathContext": "$13 \\mid n \\iff 13 \\mid (\\lfloor n/10 \\rfloor + 4 \\cdot (n \\bmod 10))$. Proof: $13 \\mid 40 - 1$, so $n = 10q + r \\Rightarrow n \\equiv 10q + r \\equiv 10(q + 4r) \\pmod{13}$."
     },
     {
       "id": "digit-sum-rules",
@@ -102,7 +102,7 @@
       "startLine": 155,
       "endLine": 268,
       "summary": "Instantiations of the general digit-sum rule for 37 (base 1000), 99 (base 100), 999, 27, and rules in hex, octal, and other bases.",
-      "mathContext": "Instantiations of the general digit-sum rule for 37 (base 1000), 99 (base 100), 999, 27, and rules in hex, octal, and other bases."
+      "mathContext": "$d \\mid (b-1) \\Rightarrow d \\mid n \\iff d \\mid S_b(n)$ where $S_b(n)$ is the digit sum in base $b$. Examples: $37 \\mid n \\iff 37 \\mid S_{1000}(n)$, $99 \\mid n \\iff 99 \\mid S_{100}(n)$."
     },
     {
       "id": "casting-out",
@@ -110,7 +110,7 @@
       "startLine": 220,
       "endLine": 269,
       "summary": "Casting out nines/threes preserves addition and multiplication modulo 9/3.",
-      "mathContext": "Casting out nines/threes preserves addition and multiplication modulo 9/3."
+      "mathContext": "$n \\equiv S_{10}(n) \\pmod{9}$ (casting out nines). Preserves arithmetic: $S(a+b) \\equiv S(a) + S(b) \\pmod{9}$, $S(ab) \\equiv S(a) \\cdot S(b) \\pmod{9}$."
     },
     {
       "id": "digital-root",
@@ -118,7 +118,7 @@
       "startLine": 270,
       "endLine": 332,
       "summary": "Digital root definition, bound ≤ 9, positivity, divisibility-by-9 characterization, and mod-3 property.",
-      "mathContext": "Digital root definition, bound ≤ 9, positivity, divisibility-by-9 characterization, and mod-3 property."
+      "mathContext": "$\\text{dr}(n) = 1 + ((n-1) \\bmod 9)$ for $n > 0$. Properties: $1 \\leq \\text{dr}(n) \\leq 9$, $9 \\mid n \\iff \\text{dr}(n) = 9$, $3 \\mid n \\iff \\text{dr}(n) \\in \\{3, 6, 9\\}$."
     },
     {
       "id": "coprime-factorization",
@@ -126,7 +126,7 @@
       "startLine": 333,
       "endLine": 375,
       "summary": "Rules for 6, 12, 15, 18, 36, 45, 60, 90 via coprime factor decomposition.",
-      "mathContext": "Rules for 6, 12, 15, 18, 36, 45, 60, 90 via coprime factor decomposition."
+      "mathContext": "$\\gcd(a,b) = 1 \\Rightarrow (ab \\mid n \\iff a \\mid n \\wedge b \\mid n)$. Applied: $6 = 2 \\cdot 3$, $12 = 4 \\cdot 3$, $36 = 4 \\cdot 9$, $45 = 5 \\cdot 9$, etc."
     },
     {
       "id": "truncation-7-11",
@@ -134,7 +134,7 @@
       "startLine": 375,
       "endLine": 441,
       "summary": "Divisibility by 7 via subtract-2x-last-digit and divisibility by 11 via subtract-last-digit, both proved via integer arithmetic and coprimality.",
-      "mathContext": "Divisibility by 7 via subtract-2x-last-digit and divisibility by 11 via subtract-last-digit, both proved via integer arithmetic and coprimality."
+      "mathContext": "$7 \\mid n \\iff 7 \\mid (\\lfloor n/10 \\rfloor - 2(n \\bmod 10))$. $11 \\mid n \\iff 11 \\mid (\\lfloor n/10 \\rfloor - (n \\bmod 10))$. From $7 \\mid 21$ and $11 \\mid 11$."
     },
     {
       "id": "truncation-17-19",
@@ -142,7 +142,7 @@
       "startLine": 442,
       "endLine": 511,
       "summary": "Divisibility by 17 via subtract-5x-last-digit and divisibility by 19 via add-2x-last-digit.",
-      "mathContext": "Divisibility by 17 via subtract-5x-last-digit and divisibility by 19 via add-2x-last-digit."
+      "mathContext": "$17 \\mid n \\iff 17 \\mid (\\lfloor n/10 \\rfloor - 5(n \\bmod 10))$. $19 \\mid n \\iff 19 \\mid (\\lfloor n/10 \\rfloor + 2(n \\bmod 10))$. From $17 \\mid 51$ and $19 \\mid 19$."
     },
     {
       "id": "alternating-grouping",
@@ -150,7 +150,7 @@
       "startLine": 512,
       "endLine": 539,
       "summary": "Observations about alternating 3-digit groups: 1001 = 7·11·13 implies 1000 ≡ -1 (mod 7, 11, 13).",
-      "mathContext": "Observations about alternating 3-digit groups: 1001 = 7·11·13 implies 1000 ≡ -1 (mod 7, 11, 13)."
+      "mathContext": "$1001 = 7 \\cdot 11 \\cdot 13$, so $1000 \\equiv -1 \\pmod{7}$, $1000 \\equiv -1 \\pmod{11}$, $1000 \\equiv -1 \\pmod{13}$. Alternating 3-digit group sum tests divisibility by 7, 11, and 13."
     },
     {
       "id": "summary",
@@ -158,7 +158,7 @@
       "startLine": 540,
       "endLine": 550,
       "summary": "Master summary combining digit-sum, last-digit, and power generalization rules.",
-      "mathContext": "Master summary combining digit-sum, last-digit, and power generalization rules."
+      "mathContext": "Unified framework: digit-sum rules ($d \\mid b-1$), last-$k$-digit rules ($d \\mid b^k$), and truncation rules ($d \\mid mb \\pm 1$). All derive from $n = qb + r$ and modular arithmetic."
     }
   ],
   "conclusion": {
