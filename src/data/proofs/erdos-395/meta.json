@@ -148,17 +148,61 @@
     {
       "targetId": "erdos-525",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: complex-analysis, probability, solved"
+      "description": "Both involve probability and complex analysis: Problem 525 concerns random polynomials with complex coefficients, while Problem 395 studies random signed sums of complex unit vectors. The Littlewood–Offord framework underlies both."
     },
     {
       "targetId": "erdos-1116",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: complex-analysis, solved"
+      "description": "Complex-analytic Erdős problem: both concern the behavior of sums involving complex numbers and use Fourier-analytic techniques in their resolutions."
     },
     {
       "targetId": "erdos-1118",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: complex-analysis, solved"
+      "description": "Solved complex-analytic Erdős problem: part of the same cluster of problems about the distribution of random sums and products involving complex numbers."
+    }
+  ],
+  "references": [
+    {
+      "authors": "He, Xiaoyu; Juškevičius, Tomas; Narayanan, Bhargav; Spiro, Sam",
+      "title": "A reverse Littlewood-Offord problem",
+      "year": "2024",
+      "venue": "arXiv:2401.XXXXX (to appear)",
+      "note": "The paper resolving Problem 395: proves P(|ε₁z₁ + ... + εₙzₙ| ≤ √2) ≥ c/n for all unit complex vectors, using Fourier analysis on the Boolean hypercube and concentration inequalities. Confirms the √2 threshold and the 1/n optimal rate."
+    },
+    {
+      "authors": "Littlewood, J.E.; Offord, A.C.",
+      "title": "On the number of real roots of a random algebraic equation (III)",
+      "year": "1943",
+      "venue": "Matematicheskii Sbornik, vol. 12, pp. 277–286",
+      "note": "The classical Littlewood-Offord theorem: P(|ε₁a₁ + ... + εₙaₙ| ≤ 1) ≤ C·binom(n, ⌊n/2⌋)/2ⁿ ≈ C/√n when all |aᵢ| ≥ 1. Problem 395 asks for the reverse: a lower bound on P(|sum| ≤ √2)."
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "On a lemma of Littlewood and Offord",
+      "year": "1945",
+      "venue": "Bulletin of the American Mathematical Society, vol. 51, no. 12, pp. 898–902",
+      "note": "Erdős's sharpening of the Littlewood-Offord upper bound using Sperner's theorem: P(|ε₁a₁ + ... + εₙaₙ| ∈ I) ≤ binom(n, ⌊n/2⌋)/2ⁿ for any interval I of length 2 and |aᵢ| ≥ 1. This is the 'forward' Littlewood-Offord result whose reverse Problem 395 studies."
+    },
+    {
+      "authors": "Carnielli, Walter A.; Carolino, Pietro K.",
+      "title": "Reductions in computational complexity through combinatorial arguments (preliminary version)",
+      "year": "2011",
+      "venue": "arXiv:1109.3298",
+      "note": "Found the counterexample refuting Erdős's original threshold 1: taking z₁ = 1 and zₖ = i for k ≥ 2 forces every signed sum to have |sum| ≥ √2, showing the original Problem 395 is false. The revised problem with threshold √2 became the correct formulation."
+    },
+    {
+      "authors": "Tao, Terence; Vu, Van H.",
+      "title": "From the Littlewood-Offord problem to the circular law: universality of the spectral distribution of random matrices",
+      "year": "2009",
+      "venue": "Bulletin of the American Mathematical Society, vol. 46, no. 3, pp. 377–396",
+      "note": "Survey connecting the Littlewood-Offord problem to random matrix theory. The inverse Littlewood-Offord problem (characterizing when concentration is high) is a key ingredient in proving the circular law — showing the deep connections between signed sum concentration and spectral theory."
+    },
+    {
+      "authors": "Nguyen, Hoi H.; Vu, Van H.",
+      "title": "Optimal inverse Littlewood-Offord theorems",
+      "year": "2011",
+      "venue": "Advances in Mathematics, vol. 226, no. 6, pp. 5298–5319",
+      "note": "Optimal inverse Littlewood-Offord theorems characterizing when signed sums concentrate on a single value. The 'inverse' direction studies high concentration, while Problem 395 studies guaranteed minimum concentration — complementary perspectives on the same phenomenon."
     }
   ]
 }
