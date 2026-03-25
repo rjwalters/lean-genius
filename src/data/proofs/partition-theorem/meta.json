@@ -96,6 +96,41 @@
       "targetId": "ramseys-theorem",
       "relationship": "foundation",
       "description": "Both are foundational combinatorics results. Ramsey theory and partition theory are twin pillars of combinatorial mathematics, both concerning structure within large discrete objects."
+    },
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "complementary",
+      "description": "Inclusion-exclusion is a fundamental counting technique that provides an alternative approach to partition enumeration. While Euler's partition theorem uses generating functions, inclusion-exclusion can count partitions subject to constraints by systematically correcting for overcounting."
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "foundational",
+      "description": "The generating function proof of Euler's partition theorem relies on infinite geometric series: each factor 1/(1-x^k) = Σ x^{nk} encodes unrestricted repetitions of part k. The entire generating function framework for partition theory is built on geometric series identities."
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's identity e^{iπ}+1=0 and Euler's partition identity both showcase Euler's mastery of infinite products and series. The partition generating function ∏(1+x^k) shares structural kinship with Euler's product formula for sin(x), connecting partition theory to complex analysis."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Both are contributions of Euler to number theory and combinatorics. The totient function φ(n) counts integers coprime to n via a multiplicative product formula ∏(1-1/p), structurally analogous to the partition generating function's infinite product ∏(1-x^k)."
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The binomial coefficient C(n,k) counts combinations and underlies the combinatorial approach to partitions. Partitions into at most k distinct parts from {1,...,n} can be counted using binomial coefficients, connecting partition theory to elementary combinatorics."
+    },
+    {
+      "targetId": "derangements",
+      "relationship": "complementary",
+      "description": "Both derangements and partitions are classic enumeration problems solved by generating functions. The derangement generating function Σ D_n x^n/n! = e^{-x}/(1-x) and the partition generating function ∏1/(1-x^k) exemplify how different combinatorial constraints translate into different analytic structures."
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation n! ~ √(2πn)(n/e)^n is essential for the asymptotic analysis of partition numbers. The Hardy-Ramanujan-Rademacher formula p(n) ~ exp(π√(2n/3))/(4n√3) relies on saddle-point methods that use Stirling-type asymptotics for factorial and gamma function estimates."
     }
   ],
   "sections": [

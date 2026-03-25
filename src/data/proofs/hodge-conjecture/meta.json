@@ -203,6 +203,31 @@
     {
       "relationship": "Fellow Millennium Prize Problem. Both concern algebraic cycles: BSD relates to 0-cycles on elliptic curves, while Hodge concerns general algebraic cycles on projective varieties.",
       "targetId": "birch-swinnerton-dyer"
+    },
+    {
+      "targetId": "poincare-conjecture",
+      "relationship": "related",
+      "description": "Fellow Millennium Prize Problem (now proved by Perelman). The Poincare conjecture concerns the topology of 3-manifolds, while the Hodge conjecture concerns the algebraic topology of projective varieties. Both probe the deep relationship between topology and geometry — Perelman's proof uses Ricci flow, while Hodge theory decomposes cohomology via harmonic forms."
+    },
+    {
+      "targetId": "navier-stokes",
+      "relationship": "related",
+      "description": "Fellow Millennium Prize Problem. While Navier-Stokes concerns PDE regularity and Hodge concerns algebraic geometry, both involve deep analytic structures: the Hodge Laplacian Δ = dd* + d*d on differential forms is analogous to the Laplacian in fluid dynamics, and both problems remain open despite extensive partial progress."
+    },
+    {
+      "targetId": "p-vs-np",
+      "relationship": "related",
+      "description": "Fellow Millennium Prize Problem. P vs NP concerns computational complexity while the Hodge conjecture concerns algebraic cycles, but both ask about the gap between existence and constructibility — Shannon-type counting arguments show most Boolean functions are hard, while the Hodge conjecture asks whether cohomological 'shadows' of cycles are always realized by actual algebraic subvarieties."
+    },
+    {
+      "targetId": "fermats-last-theorem",
+      "relationship": "related",
+      "description": "Wiles's proof of Fermat's Last Theorem uses the modularity of elliptic curves, connecting number theory to the theory of modular forms. The Hodge conjecture similarly connects topology (Hodge classes) to algebraic geometry (algebraic cycles). Both illustrate how deep conjectures in number theory and geometry require bridging multiple mathematical worlds."
+    },
+    {
+      "targetId": "yang-mills-2d",
+      "relationship": "complementary",
+      "description": "The 2D Yang-Mills formalization studies gauge theory in a simplified setting where exact solutions exist. The full Yang-Mills mass gap problem (Millennium Prize) connects to the Hodge conjecture through gauge-theoretic methods: Donaldson's work on 4-manifold topology uses both Yang-Mills theory and Hodge-theoretic techniques on moduli spaces."
     }
   ],
   "conclusion": {
