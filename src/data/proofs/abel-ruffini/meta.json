@@ -304,6 +304,16 @@
       "targetId": "hilbert-10",
       "relationship": "related",
       "description": "Matiyasevich's 1970 negative resolution of Hilbert's 10th problem — no algorithm decides whether arbitrary Diophantine equations have integer solutions — extends the impossibility paradigm from Abel-Ruffini through Gödel and Turing to Diophantine decidability. Both concern the limits of solving polynomial equations, but at different levels: Abel-Ruffini limits symbolic expressibility of roots, while Hilbert's 10th limits algorithmic decidability of existence"
+    },
+    {
+      "targetId": "fermats-last-theorem",
+      "relationship": "related",
+      "description": "Wiles's 1995 proof of Fermat's Last Theorem is the most celebrated modern application of Galois theory: the proof studies the Galois representation $\\rho_{E,p} : \\text{Gal}(\\bar{\\mathbb{Q}}/\\mathbb{Q}) \\to \\text{GL}_2(\\mathbb{F}_p)$ attached to the Frey curve and proves modularity via deformations of Galois representations. Abel-Ruffini reveals symmetry groups as the organizing principle of polynomial solvability; FLT shows that same Galois-theoretic framework, vastly generalized through the Langlands program, governs Diophantine equations"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Quadratic reciprocity — which primes $p$ are squares mod $q$ and vice versa — is the simplest non-trivial instance of Artin reciprocity, the abelian case of the Langlands program mentioned in the conclusion. Gauss's law describes how primes split in quadratic extensions $\\mathbb{Q}(\\sqrt{d})/\\mathbb{Q}$, which have abelian (hence solvable) Galois group $\\mathbb{Z}/2\\mathbb{Z}$. Abel-Ruffini shows that once the Galois group becomes non-solvable ($S_5$), this kind of arithmetic control breaks down for radical expressibility"
     }
   ],
   "references": [
