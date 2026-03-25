@@ -274,5 +274,13 @@
       "venue": "Oxford University Press, 6th edition",
       "note": "Standard reference with multiple proofs of Bézout's identity via the Euclidean algorithm"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "bezout_identity",
+      "type": "core",
+      "description": "For integers a, b, there exist x, y with ax + by = gcd(a,b)",
+      "leanType": "(a b : Int) -> exists x y : Int, a * x + b * y = Int.gcd a b"
+    }
   ]
 }

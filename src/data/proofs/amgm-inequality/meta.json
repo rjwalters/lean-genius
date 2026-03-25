@@ -291,5 +291,19 @@
     "substantiveTheoremCount": 3,
     "mathlibWrappers": 5,
     "definitionCount": 0
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "amgm",
+      "type": "core",
+      "description": "AM-GM: arithmetic mean >= geometric mean for non-negative reals",
+      "leanType": "(a : Fin n -> R) -> (forall i, 0 <= a i) -> (sum a / n) >= (prod a)^(1/n)"
+    },
+    {
+      "name": "amgm_equality",
+      "type": "key",
+      "description": "Equality holds iff all values are equal",
+      "leanType": "AM a = GM a <-> forall i j, a i = a j"
+    }
+  ]
 }

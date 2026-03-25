@@ -249,5 +249,19 @@
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 0
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "derangement_count",
+      "type": "core",
+      "description": "Number of derangements of n elements: D_n = n! * sum_{k=0}^n (-1)^k/k!",
+      "leanType": "(n : Nat) -> card (derangements n) = n! * sum k in range (n+1), (-1)^k / k!"
+    },
+    {
+      "name": "derangement_probability",
+      "type": "key",
+      "description": "Probability of a random permutation being a derangement approaches 1/e",
+      "leanType": "Tendsto (fun n => D_n / n!) atTop (nhds (1/Real.exp 1))"
+    }
+  ]
 }

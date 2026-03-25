@@ -218,5 +218,13 @@
     "axiomCount": 0,
     "theoremCount": 12,
     "definitionCount": 0
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "buffon_probability",
+      "type": "core",
+      "description": "Probability a needle of length L crosses parallel lines distance D apart is 2L/(pi*D)",
+      "leanType": "L <= D -> P(needle crosses line) = 2 * L / (pi * D)"
+    }
+  ]
 }

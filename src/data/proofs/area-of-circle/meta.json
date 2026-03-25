@@ -347,5 +347,19 @@
       "venue": "https://www.cs.ru.nl/~freek/100/",
       "note": "The definitive list of 100 well-known mathematical theorems and their formalization status across proof assistants. The area of a circle is #9. This formalization contributes to the Lean 4 / Mathlib column"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "area_circle",
+      "type": "core",
+      "description": "Area of a circle of radius r is pi*r^2",
+      "leanType": "(r : R) -> 0 <= r -> area (circle r) = pi * r^2"
+    },
+    {
+      "name": "circumference_circle",
+      "type": "key",
+      "description": "Circumference of a circle of radius r is 2*pi*r",
+      "leanType": "(r : R) -> 0 <= r -> circumference (circle r) = 2 * pi * r"
+    }
   ]
 }

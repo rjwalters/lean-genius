@@ -323,5 +323,13 @@
     "axiomCount": 5,
     "theoremCount": 7,
     "definitionCount": 0
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "flt",
+      "type": "core",
+      "description": "No three positive integers a, b, c satisfy a^n + b^n = c^n for n > 2",
+      "leanType": "(n : Nat) -> 2 < n -> not (exists a b c : Nat, 0 < a and 0 < b and 0 < c and a^n + b^n = c^n)"
+    }
+  ]
 }

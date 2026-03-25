@@ -291,5 +291,13 @@
       "venue": "Prentice Hall, Chapter 15",
       "note": "Historical context: traces the birthday problem from von Mises (1939) through its popularization by mathematical recreationists and its unexpected applications in cryptography and DNA forensics"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "birthday_probability",
+      "type": "core",
+      "description": "Probability that at least 2 of n people share a birthday in a 365-day year",
+      "leanType": "P(collision among n) = 1 - prod k in range n, (365 - k) / 365"
+    }
   ]
 }

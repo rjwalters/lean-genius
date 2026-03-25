@@ -429,5 +429,13 @@
         "leanType": "(n : ℕ) → (f : SelfMap n) → ¬HasFixedPoint n f → Retraction n"
       }
     ]
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "brouwer_fixed_point",
+      "type": "core",
+      "description": "Every continuous map from a closed ball to itself has a fixed point",
+      "leanType": "Continuous f -> maps_to f (closedBall 0 1) -> exists x, f x = x"
+    }
+  ]
 }
