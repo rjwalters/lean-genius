@@ -112,8 +112,10 @@
       "**Gap is exactly one iterated log**: The difference between upper and lower bounds is the factor $\\log_r N$ at the deepest level of iterated logarithm. Closing this gap requires understanding whether the construction or the counting argument is tighter"
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Number theory (primes, divisibility)"
+      "Combinatorial number theory (subset sums, extremal problems)",
+      "Egyptian fractions and unit fractions",
+      "Prime number theorem (for lcm estimates)",
+      "Asymptotic notation (Θ, O, Ω)"
     ]
   },
   "conclusion": {
@@ -200,6 +202,16 @@
       "targetId": "erdos-28",
       "relationship": "related",
       "description": "Problem #28 (Erdős–Turán conjecture on bases) also studies representation counts for sumsets, though for $A + A$ rather than $\\sum 1/a$. Both concern the fundamental question of how representations must grow with density"
+    },
+    {
+      "targetId": "erdos-340-greedy-sidon",
+      "relationship": "related",
+      "description": "Sidon sets (no two pairs have the same sum $a + b$) are the additive analogue of distinct subset sums. Problem #340's greedy Sidon construction parallels the Bleicher–Erdős lower bound construction: both build extremal sets greedily while maintaining a distinctness invariant, with the rate of growth constrained by the available 'room' in the target space"
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "foundational",
+      "description": "The divergence of the harmonic series $\\sum 1/n = \\infty$ ensures that $R(N) \\to \\infty$: as the harmonic sum $H_N \\sim \\log N$ grows, there is increasingly more 'room' for distinct reciprocal subset sums. The Bleicher–Erdős bounds are calibrated against $H_N$ — the lower bound construction exploits the spread of the harmonic series, while the upper bound uses $\\text{lcm}(1,\\ldots,N) \\approx e^N$ to count how many distinct rational values fit in $[0, H_N]$"
     }
   ]
 }
