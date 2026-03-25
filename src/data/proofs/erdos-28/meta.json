@@ -28,7 +28,7 @@
       "Asymptotic notation and density of integer sets"
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 497,
+    "lineCount": 493,
     "mathlibDependencies": [
       {
         "theorem": "Set.ncard",
@@ -275,21 +275,19 @@
   ],
   "leanFile": {
     "imports": [
-      "Mathlib.Combinatorics.Additive.SumConv",
-      "Mathlib.Data.Finset.Card",
       "Mathlib.Data.Nat.Basic",
-      "Mathlib.Order.Filter.AtTopBot",
-      "Mathlib.Order.Filter.ENNReal",
-      "Mathlib.Topology.Algebra.Order.LiminfLimsup",
-      "Mathlib.Tactic"
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic",
+      "Proofs.Erdos340GreedySidon"
     ],
     "opens": [
-      "Filter",
-      "Set",
-      "Pointwise"
+      "Finset",
+      "Filter"
     ],
-    "namespace": "",
-    "lineCount": 497,
+    "namespace": "Erdos28",
+    "lineCount": 493,
     "axiomCount": 3,
     "theoremCount": 14,
     "definitionCount": 11
