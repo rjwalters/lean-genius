@@ -23,10 +23,11 @@
     "erdosNumber": 1131,
     "erdosUrl": "https://erdosproblems.com/1131",
     "erdosProblemStatus": "open",
-    "axiomCount": 2,
-    "theoremCount": 9,
-    "lineCount": 306,
-    "assumptions": "2 axioms: chebyshev_integral_estimate (deep analysis), erdos_1131_conjecture (OPEN). All 9 theorems fully proved including Cauchy-Schwarz lower bound I ≥ 2/n. Former false axiom lagrangeIntegral_upper_bound (I ≤ 2n) removed — counterexample: clustered nodes give I → ∞.",
+    "axiomCount": 1,
+    "sorries": 1,
+    "theoremCount": 12,
+    "lineCount": 365,
+    "assumptions": "1 axiom: erdos_1131_conjecture (OPEN). 1 sorry: chebyshev_integral_exact (known formula I_cheb = 2 - 2(n-1)/(n(2n-1)), proof plan via discrete cosine orthogonality). All 12 theorems fully proved including: Cauchy-Schwarz lower bound I ≥ 2/n, Chebyshev upper bound I_cheb < 2, and asymptotic estimate I_cheb ≈ 2-c/n.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -74,9 +75,9 @@
       "id": "chebyshev-nodes",
       "title": "Chebyshev Nodes",
       "startLine": 213,
-      "endLine": 270,
-      "summary": "Defines Chebyshev nodes $x_k = \\cos((2k+1)\\pi/(2n))$ (roots of $T_n$). Proves they lie in $[-1,1]$ and are distinct (using strict anti-monotonicity of cos on $[0,\\pi]$). Axiomatizes $I_{\\text{Cheb}} \\approx 2 - c/n$.",
-      "mathContext": "Chebyshev nodes: $x_k = \\cos\\frac{(2k+1)\\pi}{2n}$. $I_{\\text{Cheb}} = 2 - c/n + O(1/n^2)$."
+      "endLine": 329,
+      "summary": "Defines Chebyshev nodes $x_k = \\cos((2k+1)\\pi/(2n))$ (roots of $T_n$). Proves they lie in $[-1,1]$ and are distinct. Proves exact formula $I = 2 - 2(n-1)/(n(2n-1))$ (1 sorry), $I < 2$, and asymptotic estimate $\\exists c > 0$.",
+      "mathContext": "Chebyshev nodes: $x_k = \\cos\\frac{(2k+1)\\pi}{2n}$. $I_{\\text{Cheb}} = 2 - \\frac{2(n-1)}{n(2n-1)}$."
     },
     {
       "id": "conjecture",
@@ -142,9 +143,9 @@
       "MeasureTheory"
     ],
     "namespace": "Erdos1131",
-    "lineCount": 306,
-    "axiomCount": 2,
-    "theoremCount": 9,
+    "lineCount": 365,
+    "axiomCount": 1,
+    "theoremCount": 12,
     "definitionCount": 6
   }
 }

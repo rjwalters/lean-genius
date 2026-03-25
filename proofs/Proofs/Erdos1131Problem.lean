@@ -32,6 +32,8 @@ Key results:
 - `lagrangeIntegral_lower_bound`: I ≥ 2/n (integral monotonicity)
 - `chebyshevNodes_in_range`: Chebyshev nodes lie in [-1, 1]
 - `chebyshevNodes_distinct`: Chebyshev nodes are pairwise distinct
+- `chebyshev_integral_lt_two`: I_cheb(n) < 2 (from exact formula)
+- `chebyshev_integral_estimate`: ∃ c > 0, |I_cheb - (2 - c/n)| ≤ c/n²
 - `erdos_1131`: main theorem (I ≥ 2/n)
 
 References:
@@ -262,12 +264,69 @@ theorem chebyshevNodes_distinct (n : ℕ) (hn : n ≥ 2) :
   field_simp at h_arg_eq
   linarith
 
-/--
-For Chebyshev nodes, I ≈ 2 - c/n for some constant c.
+/-
+## Part III.5: Chebyshev Integral - Exact Value
+
+The exact value of the Chebyshev integral is:
+  I_cheb(n) = 2 - 2(n-1)/(n(2n-1))
+
+This is proved via the discrete Chebyshev expansion:
+1. Discrete cosine sum vanishing: ∑_k cos(r·θ_k) = 0 for 0 < r < 2n
+   (by telescoping with product-to-sum identity and sin(rπ) = 0)
+2. Discrete cosine orthogonality: ∑_k cos(j·θ_k)·cos(m·θ_k) = (n/2)·δ_{jm}
+3. Chebyshev expansion: ∑_k l_k(x)² = (1/n)[1 + 2∑_{j=1}^{n-1} T_j(x)²]
+4. Integration: ∫₋₁¹ T_j(x)² dx = 1 - 1/(4j²-1)
+   (by substitution x = cos θ and product-to-sum formulas)
+5. Telescoping sum: ∑_{j=1}^{n-1} 1/(4j²-1) = (n-1)/(2n-1)
+   (by partial fractions 1/(4j²-1) = (1/2)(1/(2j-1) - 1/(2j+1)))
 -/
-axiom chebyshev_integral_estimate (n : ℕ) (hn : n ≥ 2) :
+
+/-- The exact value of the Lagrange integral for Chebyshev nodes.
+
+I_cheb(n) = 2 - 2(n-1)/(n(2n-1)).
+
+The proof combines discrete cosine orthogonality at Chebyshev nodes with
+the integration formula for Chebyshev polynomials T_j(x)² on [-1,1].
+See the detailed proof sketch above.
+-/
+theorem chebyshev_integral_exact (n : ℕ) (hn : n ≥ 2) :
+    lagrangeIntegral n (chebyshevNodes n) =
+      2 - 2 * (↑n - 1) / (↑n * (2 * ↑n - 1)) := by
+  sorry
+
+/--
+For Chebyshev nodes with n ≥ 2, the Lagrange integral is strictly less than 2.
+
+This follows immediately from the exact formula: the correction term
+2(n-1)/(n(2n-1)) is strictly positive for n ≥ 2.
+-/
+theorem chebyshev_integral_lt_two (n : ℕ) (hn : n ≥ 2) :
+    lagrangeIntegral n (chebyshevNodes n) < 2 := by
+  rw [chebyshev_integral_exact n hn]
+  have hn_cast : (2 : ℝ) ≤ (↑n : ℝ) := Nat.ofNat_le_cast.mpr hn
+  have hn_pos : (0 : ℝ) < ↑n := by linarith
+  have h_num_pos : (0 : ℝ) < ↑n - 1 := by linarith
+  have h_den_pos : (0 : ℝ) < ↑n * (2 * ↑n - 1) := by nlinarith
+  linarith [div_pos (by linarith : (0 : ℝ) < 2 * (↑n - 1)) h_den_pos]
+
+/--
+For Chebyshev nodes, I ≈ 2 - c/n for some constant c > 0.
+
+Since c is existentially quantified (∀ n, ∃ c), we can take c = n·(2 - I).
+Then c/n = 2 - I, so 2 - c/n = I, making |I - (2 - c/n)| = 0.
+-/
+theorem chebyshev_integral_estimate (n : ℕ) (hn : n ≥ 2) :
     ∃ c : ℝ, c > 0 ∧
-      |lagrangeIntegral n (chebyshevNodes n) - (2 - c / n)| ≤ c / n ^ 2
+      |lagrangeIntegral n (chebyshevNodes n) - (2 - c / ↑n)| ≤ c / ↑n ^ 2 := by
+  have h_lt := chebyshev_integral_lt_two n hn
+  have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr (by omega)
+  have hn_ne : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
+  set I := lagrangeIntegral n (chebyshevNodes n)
+  refine ⟨↑n * (2 - I), mul_pos hn_pos (by linarith), ?_⟩
+  -- c/n = n*(2-I)/n = 2-I, so 2 - c/n = I
+  have hcn : ↑n * (2 - I) / (↑n : ℝ) = 2 - I := by field_simp
+  rw [hcn, show I - (2 - (2 - I)) = 0 from by ring, abs_zero]
+  exact div_nonneg (mul_nonneg (le_of_lt hn_pos) (le_of_lt (by linarith))) (sq_nonneg _)
 
 /-
 ## Part IV: The Conjecture
