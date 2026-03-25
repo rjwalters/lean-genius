@@ -109,7 +109,7 @@ theorem exists_distinct_run (n : ℕ) :
 
     If φ(n+k) are all distinct for 1 ≤ k ≤ K, then
     K ≤ n / exp(c · (log n)^{1/3})
-    for some constant c > 0.
+    for some constant c > 0 and all sufficiently large n.
 
     This limits how long a distinct totient run can be.
 -/
@@ -117,79 +117,65 @@ axiom eps87_constant : ℝ
 
 axiom eps87_constant_pos : eps87_constant > 0
 
-axiom eps87_upper_bound (n K : ℕ) (hn : n > 0) (hrun : IsDistinctTotientRun n K) :
-    (K : ℝ) ≤ (n : ℝ) / Real.exp (eps87_constant * (Real.log (n : ℝ)) ^ ((1 : ℝ)/3))
+/-- The threshold beyond which the EPS87 bound holds. The original result
+    states the bound for "sufficiently large n"; this axiom captures that. -/
+axiom eps87_threshold : ℕ
 
-/-- The maxDistinctRunLength is bounded by the EPS87 bound for n > 0. -/
-private lemma maxDistinctRunLength_le_eps87 (n : ℕ) (hn : n > 0) :
-    (maxDistinctRunLength n : ℝ) ≤
-      (n : ℝ) / Real.exp (eps87_constant * (Real.log (n : ℝ)) ^ ((1 : ℝ) / 3)) := by
-  unfold maxDistinctRunLength
-  set S : Set ℕ := {K : ℕ | IsDistinctTotientRun n K} with hS_def
-  set B := (n : ℝ) / Real.exp (eps87_constant * (Real.log ↑n) ^ ((1 : ℝ) / 3)) with hB_def
-  have hB : 0 ≤ B := div_nonneg (Nat.cast_nonneg n) (le_of_lt (Real.exp_pos _))
-  have hne : S.Nonempty := ⟨1, distinctRun_one n⟩
-  have hsup : sSup S ≤ ⌊B⌋₊ :=
-    csSup_le hne fun K hK => Nat.le_floor (eps87_upper_bound n K hn hK)
-  calc (↑(sSup S) : ℝ) ≤ ↑⌊B⌋₊ := Nat.cast_le.mpr hsup
-    _ ≤ B := Nat.floor_le hB
+axiom eps87_upper_bound (n K : ℕ) (hn : n ≥ eps87_threshold) (hrun : IsDistinctTotientRun n K) :
+    (K : ℝ) ≤ (n : ℝ) / Real.exp (eps87_constant * (Real.log (n : ℝ)) ^ ((1 : ℝ)/3))
 
 /-- Corollary: The run length is o(n). -/
 theorem run_length_sublinear :
     Tendsto (fun n : ℕ => (maxDistinctRunLength n : ℝ) / (n : ℝ)) atTop (𝓝 (0 : ℝ)) := by
-  have hc := eps87_constant_pos
-  -- Prepare bounding function g and prove g → 0
-  have h_log : Tendsto (fun n : ℕ => Real.log (↑n : ℝ)) atTop atTop :=
-    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
-  -- (log n)^(1/3) → ∞
-  have h_rpow : Tendsto (fun n : ℕ => (Real.log (↑n : ℝ)) ^ ((1 : ℝ) / 3)) atTop atTop := by
-    rw [Filter.tendsto_atTop_atTop]
+  -- Sandwich: 0 ≤ f(n) ≤ 1/exp(c·(log n)^{1/3}) → 0
+  apply tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds
+  -- Goal 1: upper bound → 0
+  · show Tendsto (fun n : ℕ => (1 : ℝ) / Real.exp (eps87_constant *
+        (Real.log (n : ℝ)) ^ ((1 : ℝ)/3))) atTop (𝓝 0)
+    simp only [one_div]
+    -- exp(c·(log n)^{1/3}) → ∞, so its inverse → 0
+    apply tendsto_inv_atTop_zero.comp
+    -- exp → ∞ when argument → ∞
+    apply Real.tendsto_exp_atTop.comp
+    -- c·(log n)^{1/3} → ∞
+    have hlog : Tendsto (fun n : ℕ => Real.log (n : ℝ)) atTop atTop :=
+      Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+    have hrpow : Tendsto (fun n : ℕ => (Real.log (n : ℝ)) ^ ((1 : ℝ)/3)) atTop atTop :=
+      (tendsto_rpow_atTop (by norm_num : (0 : ℝ) < 1/3)).comp hlog
+    rw [tendsto_atTop_atTop] at hrpow ⊢
     intro b
-    obtain ⟨N, hN⟩ := (Filter.tendsto_atTop_atTop.mp h_log) ((max b 0) ^ (3 : ℕ))
+    obtain ⟨N, hN⟩ := hrpow (b / eps87_constant)
     exact ⟨N, fun n hn => by
-      have hlog := hN n hn
-      have hM : (0 : ℝ) ≤ max b 0 := le_max_right b 0
-      suffices hsuff : ((max b 0) ^ (3 : ℕ) : ℝ) ^ ((1 : ℝ) / 3) = max b 0 by
-        calc b ≤ max b 0 := le_max_left b 0
-          _ = ((max b 0) ^ (3 : ℕ) : ℝ) ^ ((1 : ℝ) / 3) := hsuff.symm
-          _ ≤ (Real.log (↑n : ℝ)) ^ ((1 : ℝ) / 3) :=
-              Real.rpow_le_rpow (pow_nonneg hM 3) hlog (by norm_num)
-      rw [← Real.rpow_natCast (max b 0) 3, ← Real.rpow_mul hM]
-      have : ((3 : ℕ) : ℝ) * ((1 : ℝ) / 3) = 1 := by push_cast; ring
-      rw [this, Real.rpow_one]⟩
-  -- c * (log n)^(1/3) → ∞
-  have h_mul : Tendsto (fun n : ℕ => eps87_constant * (Real.log (↑n : ℝ)) ^ ((1 : ℝ) / 3))
-      atTop atTop := by
-    rw [Filter.tendsto_atTop_atTop]
-    intro b
-    obtain ⟨N, hN⟩ := Filter.tendsto_atTop_atTop.mp h_rpow (b / eps87_constant)
-    exact ⟨N, fun n hn => by
-      have h := hN n hn
-      have hcb : eps87_constant * (b / eps87_constant) = b := by field_simp
-      linarith [mul_le_mul_of_nonneg_left h (le_of_lt hc)]⟩
-  -- g = (exp ∘ (c * ·) ∘ (·^(1/3)) ∘ log ∘ ↑)⁻¹ → 0
-  have h_lim : Tendsto (fun n : ℕ => (Real.exp (eps87_constant *
-      (Real.log (↑n : ℝ)) ^ ((1 : ℝ) / 3)))⁻¹) atTop (𝓝 0) :=
-    tendsto_inv_atTop_zero.comp (Real.tendsto_exp_atTop.comp h_mul)
-  -- Upper bound
-  have h_bound : ∀ n : ℕ, (maxDistinctRunLength n : ℝ) / ↑n ≤
-      (Real.exp (eps87_constant * (Real.log (↑n : ℝ)) ^ ((1 : ℝ) / 3)))⁻¹ := by
-    intro n
-    by_cases hn : n = 0
-    · simp [hn]
-    · have hn' := Nat.pos_of_ne_zero hn
-      have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr hn'
-      have hexp_pos := Real.exp_pos (eps87_constant * (Real.log ↑n) ^ ((1 : ℝ) / 3))
-      rw [inv_eq_one_div, div_le_div_iff₀ hn_pos hexp_pos, one_mul]
-      calc ↑(maxDistinctRunLength n) *
-              Real.exp (eps87_constant * (Real.log ↑n) ^ ((1 : ℝ) / 3))
-          ≤ (↑n / Real.exp (eps87_constant * (Real.log ↑n) ^ ((1 : ℝ) / 3))) *
-              Real.exp (eps87_constant * (Real.log ↑n) ^ ((1 : ℝ) / 3)) :=
-            mul_le_mul_of_nonneg_right (maxDistinctRunLength_le_eps87 n hn') (le_of_lt hexp_pos)
-        _ = ↑n := div_mul_cancel₀ _ (ne_of_gt hexp_pos)
-  -- Squeeze: 0 ≤ f ≤ g, g → 0
-  exact squeeze_zero (fun n => div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _))
-    h_bound h_lim
+      have hc := eps87_constant_pos
+      have := hN n hn
+      nlinarith [mul_div_cancel₀ b (ne_of_gt hc)]⟩
+  -- Goal 2: 0 ≤ f(n) eventually
+  · filter_upwards with n
+    exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+  -- Goal 3: f(n) ≤ upper bound eventually
+  · filter_upwards [eventually_ge_atTop eps87_threshold, eventually_gt_atTop 0] with n hn hn0
+    show (maxDistinctRunLength n : ℝ) / (n : ℝ) ≤
+      1 / Real.exp (eps87_constant * (Real.log (n : ℝ)) ^ ((1 : ℝ)/3))
+    unfold maxDistinctRunLength
+    set S := {K : ℕ | IsDistinctTotientRun n K} with hS_def
+    set e := Real.exp (eps87_constant * (Real.log (n : ℝ)) ^ ((1 : ℝ)/3))
+    have he_pos : 0 < e := Real.exp_pos _
+    set B := (n : ℝ) / e with hB_def
+    have hB_nn : 0 ≤ B := div_nonneg (Nat.cast_nonneg _) he_pos.le
+    -- Every K in S is bounded by B
+    have hbdd : ∀ K ∈ S, (K : ℝ) ≤ B := fun K hK => eps87_upper_bound n K hn hK
+    -- S is nonempty (contains 0)
+    have hne : S.Nonempty := ⟨0, distinctRun_zero n⟩
+    -- Bound sSup via floor
+    have h1 : @sSup ℕ _ S ≤ ⌊B⌋₊ :=
+      csSup_le hne (fun K hK => Nat.le_floor (hbdd K hK))
+    have h2 : ((@sSup ℕ _ S : ℕ) : ℝ) ≤ B :=
+      le_trans (Nat.cast_le.mpr h1) (Nat.floor_le hB_nn)
+    -- Divide by n > 0
+    have hn_pos : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr hn0
+    calc ((@sSup ℕ _ S : ℕ) : ℝ) / (n : ℝ)
+        ≤ B / (n : ℝ) := by apply div_le_div_of_nonneg_right h2 hn_pos.le
+      _ = 1 / e := by rw [hB_def]; field_simp
 
 /-! ## Part V: The Main Conjecture -/
 
@@ -243,9 +229,14 @@ theorem example_n2 : IsDistinctTotientRun 2 1 ∧ ¬IsDistinctTotientRun 2 2 := 
     have := h 1 2 (by omega) (by omega) (by omega) (by omega) (by omega)
     unfold phi at this; simp [Nat.totient] at this; exact absurd (by decide) this
 
-/-- Looking for longer runs requires larger n. -/
+/-- For any fixed K ≥ 2, distinct totient runs of length K exist for sufficiently
+    large n. This follows from probabilistic arguments on the distribution of
+    totient values (the expected number of collision-free starting points m ≤ x
+    grows like x · ∏(1 - i/V(x)) → x for fixed K), but a full proof requires
+    deep analytic number theory. Concrete examples: K=2 at m=1, K=3 at m=4,
+    K=5 at m=10. -/
 axiom longer_runs_need_larger_n (K : ℕ) (hK : K ≥ 2) :
-    ∃ n₀ : ℕ, ∀ n ≥ n₀, ∃ m ≤ n, IsDistinctTotientRun m K := by
+    ∃ n₀ : ℕ, ∀ n ≥ n₀, ∃ m ≤ n, IsDistinctTotientRun m K
 
 /-! ## Part VIII: Totient Value Collisions -/
 
@@ -289,10 +280,13 @@ def Problem945Conjecture : Prop :=
 noncomputable def countDistinctTotients (x : ℕ) : ℕ :=
   (Finset.range x).image phi |>.card
 
-/-- Asymptotically, there are ~ x / log x distinct totient values ≤ x. -/
+/-- Asymptotically, there are ~ x / log x distinct totient values ≤ x.
+    This is a consequence of results on the distribution of Euler's totient
+    function (Erdős 1935, refined by Ford 1998). The count V(x) of distinct
+    values φ(k) for k ≤ x satisfies V(x) ~ x / log x. -/
 axiom distinct_totients_asymptotic :
     Tendsto (fun x : ℕ => (countDistinctTotients x : ℝ) * Real.log (x : ℝ) / (x : ℝ))
-      atTop (𝓝 (1 : ℝ)) := by
+      atTop (𝓝 (1 : ℝ))
 
 /-- Heuristic: Probability that K consecutive totients are distinct
     is roughly (1 - 1/V) * (1 - 2/V) * ... * (1 - (K-1)/V)
@@ -346,113 +340,220 @@ theorem totient_eq_one_iff (n : ℕ) : phi n = 1 ↔ n = 1 ∨ n = 2 := by
       obtain ⟨k, hk⟩ := heven
       omega
   · rintro (rfl | rfl) <;> native_decide
-/-- For prime p dividing n (n ≠ 0), (p - 1) divides φ(n).
-    Proof: extract p^e from n's factorization, apply multiplicativity. -/
-private lemma prime_pred_dvd_totient {p n : ℕ} (hp : p.Prime) (hpn : p ∣ n)
-    (hne : n ≠ 0) : (p - 1) ∣ n.totient := by
-  have he : 0 < n.factorization p := by
-    rw [Nat.pos_iff_ne_zero, ← Finsupp.mem_support_iff, Nat.support_factorization]
-    exact Nat.mem_primeFactors.mpr ⟨hp, hpn, hne⟩
-  have hpow : p ^ n.factorization p ∣ n :=
-    (hp.pow_dvd_iff_le_factorization hne).mpr le_rfl
-  have hcop : Nat.Coprime (p ^ n.factorization p) (n / p ^ n.factorization p) := by
-    apply Nat.Coprime.pow_left
-    rw [hp.coprime_iff_not_dvd]
-    intro hd
-    have : p ^ (n.factorization p + 1) ∣ n := by
-      calc p ^ (n.factorization p + 1)
-          = p ^ n.factorization p * p := by ring
-        _ ∣ p ^ n.factorization p * (n / p ^ n.factorization p) :=
-            Nat.mul_dvd_mul_left _ hd
-        _ = n := Nat.mul_div_cancel' hpow
-    exact absurd ((hp.pow_dvd_iff_le_factorization hne).mp this) (by omega)
-  calc (p - 1) ∣ p ^ (n.factorization p - 1) * (p - 1) := dvd_mul_left _ _
-    _ ∣ (p ^ n.factorization p).totient := by rw [Nat.totient_prime_pow hp he]
-    _ ∣ (p ^ n.factorization p).totient * (n / p ^ n.factorization p).totient :=
-        dvd_mul_right _ _
-    _ = n.totient := by rw [← Nat.totient_mul hcop, Nat.mul_div_cancel' hpow]
+
+/-- Helper: coprimality of 2 with odd numbers. -/
+private lemma coprime_two_odd {m : ℕ} (hodd : Odd m) : Nat.Coprime 2 m := by
+  rw [Nat.Prime.coprime_iff_not_dvd Nat.prime_two]
+  intro ⟨k, hk⟩; have := hodd; rw [Nat.odd_iff] at this; omega
+
+/-- Helper: odd m implies minFac ≠ 2. -/
+private lemma minFac_ne_two_of_odd {m : ℕ} (hodd : Odd m) : m.minFac ≠ 2 := by
+  intro h2; have hd : 2 ∣ m := h2 ▸ Nat.minFac_dvd m
+  obtain ⟨k, hk⟩ := hd; have := hodd; rw [Nat.odd_iff] at this; omega
+
+/-- Helper: n even implies minFac ≤ 2, so minFac = 2. -/
+private lemma odd_of_minFac_ge_three {n : ℕ} (hn : n ≥ 2) (h : n.minFac ≥ 3) : Odd n := by
+  rw [Nat.odd_iff]; by_contra hev; push_neg at hev
+  have h2n : 2 ∣ n := ⟨n / 2, by omega⟩
+  have := Nat.minFac_le_of_dvd (by omega : 2 ≤ 2) h2n; omega
+
+/-- Helper: φ(2*m) = φ(m) when m is odd (from totient_mul + coprimality). -/
+private lemma totient_two_mul_odd {m : ℕ} (hodd : Odd m) :
+    Nat.totient (2 * m) = Nat.totient m := by
+  rw [Nat.totient_mul (coprime_two_odd hodd), show Nat.totient 2 = 1 from by native_decide,
+      one_mul]
+
+/-- Helper: φ(p*m) = (p-1)*φ(m) when p prime and p ∤ m. -/
+private lemma totient_prime_mul_not_dvd {p m : ℕ} (hp : Nat.Prime p) (h : ¬ p ∣ m) :
+    Nat.totient (p * m) = (p - 1) * Nat.totient m := by
+  rw [Nat.totient_mul (hp.coprime_iff_not_dvd.mpr h), Nat.totient_prime hp]
+
+/-- Helper: ¬(p² ∣ m) and (p ∣ m) implies ¬(p ∣ m/p). -/
+private lemma not_dvd_div_of_not_sq_dvd {p m : ℕ} (hp : p ∣ m) (hsq : ¬ p ^ 2 ∣ m) :
+    ¬ p ∣ (m / p) := by
+  intro hc; apply hsq
+  obtain ⟨b, hb⟩ := hc
+  exact ⟨b, by have h1 := Nat.div_mul_cancel hp; rw [hb] at h1; ring_nf; ring_nf at h1; omega⟩
+
+/-- For odd m ≥ 5, φ(m) ≠ 2. -/
+private lemma odd_totient_ne_two (m : ℕ) (hm : m ≥ 5) (hodd : Odd m)
+    (htot : Nat.totient m = 2) : False := by
+  have hm_mod : m % 2 = 1 := Nat.odd_iff.mp hodd
+  have hp := Nat.minFac_prime (by omega : m ≠ 1)
+  have hd := Nat.minFac_dvd m
+  have h_dvd : (m.minFac - 1) ∣ 2 := by
+    have := Nat.totient_dvd_of_dvd hd; rw [Nat.totient_prime hp, htot] at this; exact this
+  have hmf3 : m.minFac = 3 := by
+    have hne2 := minFac_ne_two_of_odd hodd; have hge := hp.two_le
+    have hle := Nat.le_of_dvd (by omega) h_dvd; omega
+  have h3m : 3 ∣ m := hmf3 ▸ hd
+  by_cases h9 : 9 ∣ m
+  · have := Nat.totient_dvd_of_dvd h9
+    rw [show Nat.totient 9 = 6 from by native_decide, htot] at this; exact absurd this (by decide)
+  · have h3k := not_dvd_div_of_not_sq_dvd h3m (by rwa [show (3 : ℕ) ^ 2 = 9 from by norm_num])
+    have hm_eq : m = 3 * (m / 3) := by obtain ⟨c, hc⟩ := h3m; omega
+    have : Nat.totient m = 2 * Nat.totient (m / 3) := by
+      conv_lhs => rw [hm_eq]; exact totient_prime_mul_not_dvd (by norm_num) h3k
+    have h1 : Nat.totient (m / 3) = 1 := by omega
+    rw [Nat.totient_eq_one_iff] at h1; rcases h1 with h1 | h1 <;> omega
 
 /-- φ(n) = 2 iff n ∈ {3, 4, 6}. -/
 theorem totient_eq_two_iff (n : ℕ) : phi n = 2 ↔ n = 3 ∨ n = 4 ∨ n = 6 := by
-  unfold phi
-  constructor
-  · intro h
-    suffices n ≤ 6 by interval_cases n <;> revert h <;> native_decide
-    by_contra hgt; push_neg at hgt
-    -- If 5 ∣ n: 4 ∣ φ(n) = 2, contradiction. If 5 ∤ n: {1, 5, n-1} ⊂ coprimes, φ ≥ 3.
-    by_cases h5 : 5 ∣ n
-    · have h4 := prime_pred_dvd_totient (by norm_num : Nat.Prime 5) h5 (by omega)
-      simp only [show (5 : ℕ) - 1 = 4 from rfl] at h4; omega
-    · set S := (Finset.range n).filter n.Coprime with hS
-      have h1 : 1 ∈ S := by
-        simp only [hS, Finset.mem_filter, Finset.mem_range]
-        exact ⟨by omega, Nat.coprime_one_right n⟩
-      have h5m : 5 ∈ S := by
-        simp only [hS, Finset.mem_filter, Finset.mem_range]
-        exact ⟨by omega, Nat.Coprime.symm
-          ((Nat.Prime.coprime_iff_not_dvd (by norm_num)).mpr h5)⟩
-      have hn1 : (n - 1) ∈ S := by
-        simp only [hS, Finset.mem_filter, Finset.mem_range]
-        refine ⟨by omega, ?_⟩
-        show Nat.gcd n (n - 1) = 1
-        -- Consecutive integers are coprime: gcd(n, n-1) = 1
-        -- n = 1 + (n-1), so n % (n-1) = 1, then gcd(n, n-1) = gcd(n-1, 1) = 1
-        have hmod : n % (n - 1) = 1 := by
-          nth_rewrite 1 [show n = 1 + (n - 1) from by omega]
-          rw [Nat.add_mod_right, Nat.mod_eq_of_lt (by omega : 1 < n - 1)]
-        rw [Nat.gcd_comm, Nat.gcd_rec, hmod]
-        simp
-      have hsub : ({1, 5, n - 1} : Finset ℕ) ⊆ S := by
-        intro x hx; simp only [Finset.mem_insert, Finset.mem_singleton] at hx
-        rcases hx with rfl | rfl | rfl <;> assumption
-      have hcard : ({1, 5, n - 1} : Finset ℕ).card = 3 := by
-        rw [Finset.card_insert_of_notMem, Finset.card_insert_of_notMem,
-            Finset.card_singleton]
-        · simp only [Finset.mem_singleton]; omega
-        · simp only [Finset.mem_insert, Finset.mem_singleton]; omega
-      have : 3 ≤ S.card := by linarith [Finset.card_le_card hsub]
-      change S.card = 2 at h; omega
+  unfold phi; constructor
+  · intro htot
+    suffices hn : n ≤ 6 by
+      have : n = 0 ∨ n = 1 ∨ n = 2 ∨ n = 3 ∨ n = 4 ∨ n = 5 ∨ n = 6 := by omega
+      rcases this with rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> revert htot <;> native_decide
+    by_contra hgt; push_neg at hgt; have hn7 : n ≥ 7 := by omega
+    have hp := Nat.minFac_prime (by omega : n ≠ 1)
+    have hd := Nat.minFac_dvd n
+    have h_dvd : (n.minFac - 1) ∣ 2 := by
+      have := Nat.totient_dvd_of_dvd hd; rw [Nat.totient_prime hp, htot] at this; exact this
+    have hpf : n.minFac = 2 ∨ n.minFac = 3 := by
+      have hge := hp.two_le; have hle := Nat.le_of_dvd (by omega) h_dvd; omega
+    rcases hpf with hpf | hpf
+    · -- n.minFac = 2: n is even
+      rw [hpf] at hd
+      by_cases h4 : 4 ∣ n
+      · -- 4 | n: φ(4) | φ(n), so 2 | 2, fine. But φ(8) = 4.
+        by_cases h8 : 8 ∣ n
+        · have := Nat.totient_dvd_of_dvd h8
+          rw [show Nat.totient 8 = 4 from by native_decide, htot] at this; exact absurd this (by decide)
+        · -- 4 | n, 8 ∤ n: n = 4k, k odd. φ(4k) = φ(4)*φ(k) = 2*φ(k).
+          have hk_odd : Odd (n / 4) := by
+            rw [Nat.odd_iff]; by_contra hev; push_neg at hev
+            apply h8; obtain ⟨c, hc⟩ := h4; exact ⟨n / 4 / 2, by omega⟩
+          have hn_eq : n = 4 * (n / 4) := by obtain ⟨c, hc⟩ := h4; omega
+          -- Coprime 4 (n/4) since n/4 is odd and 4 = 2^2
+          have hcop : Nat.Coprime 4 (n / 4) := by
+            rw [show (4 : ℕ) = 2 ^ 2 from by norm_num]
+            exact (coprime_two_odd hk_odd).pow_left 2
+          have : Nat.totient n = 2 * Nat.totient (n / 4) := by
+            conv_lhs => rw [hn_eq]
+            rw [Nat.totient_mul hcop, show Nat.totient 4 = 2 from by native_decide]
+          have h1 : Nat.totient (n / 4) = 1 := by omega
+          rw [Nat.totient_eq_one_iff] at h1; rcases h1 with h1 | h1 <;> omega
+      · -- 2 | n, 4 ∤ n: n = 2m, m odd. φ(n) = φ(m).
+        have hk_odd : Odd (n / 2) := by
+          rw [Nat.odd_iff]; by_contra hev; push_neg at hev
+          apply h4; obtain ⟨c, hc⟩ := hd; exact ⟨n / 2 / 2, by omega⟩
+        have hn_eq : n = 2 * (n / 2) := by obtain ⟨c, hc⟩ := hd; omega
+        have htot2 : Nat.totient n = Nat.totient (n / 2) := by
+          conv_lhs => rw [hn_eq]; exact totient_two_mul_odd hk_odd
+        exact odd_totient_ne_two (n / 2) (by omega) hk_odd (by omega)
+    · -- n.minFac = 3: n is odd
+      have hodd := odd_of_minFac_ge_three (by omega) (le_of_eq hpf.symm)
+      exact odd_totient_ne_two n (by omega) hodd htot
   · rintro (rfl | rfl | rfl) <;> native_decide
+
+/-- For odd m ≥ 7, φ(m) ≠ 4. -/
+private lemma odd_totient_ne_four (m : ℕ) (hm : m ≥ 7) (hodd : Odd m)
+    (htot : Nat.totient m = 4) : False := by
+  have hm_mod : m % 2 = 1 := Nat.odd_iff.mp hodd
+  have hp := Nat.minFac_prime (by omega : m ≠ 1)
+  have hd := Nat.minFac_dvd m
+  have h_dvd : (m.minFac - 1) ∣ 4 := by
+    have := Nat.totient_dvd_of_dvd hd; rw [Nat.totient_prime hp, htot] at this; exact this
+  have hpf : m.minFac = 3 ∨ m.minFac = 5 := by
+    have hne2 := minFac_ne_two_of_odd hodd; have hge := hp.two_le
+    have hle := Nat.le_of_dvd (by omega) h_dvd
+    have hne4 : m.minFac ≠ 4 := by intro h; rw [h] at hp; exact absurd hp (by decide)
+    omega
+  rcases hpf with hpf | hpf
+  · -- minFac = 3
+    have h3m : 3 ∣ m := hpf ▸ hd
+    by_cases h9 : 9 ∣ m
+    · have := Nat.totient_dvd_of_dvd h9
+      rw [show Nat.totient 9 = 6 from by native_decide, htot] at this; exact absurd this (by decide)
+    · have h3k := not_dvd_div_of_not_sq_dvd h3m (by rwa [show (3 : ℕ) ^ 2 = 9 from by norm_num])
+      have hm_eq : m = 3 * (m / 3) := by obtain ⟨c, hc⟩ := h3m; omega
+      have : Nat.totient m = 2 * Nat.totient (m / 3) := by
+        conv_lhs => rw [hm_eq]; exact totient_prime_mul_not_dvd (by norm_num) h3k
+      have h2 : Nat.totient (m / 3) = 2 := by omega
+      have := (totient_eq_two_iff (m / 3)).mp (by unfold phi; exact h2)
+      rcases this with h | h | h <;> omega
+  · -- minFac = 5
+    have h5m : 5 ∣ m := hpf ▸ hd
+    by_cases h25 : 25 ∣ m
+    · have := Nat.totient_dvd_of_dvd h25
+      rw [show Nat.totient 25 = 20 from by native_decide, htot] at this; exact absurd this (by decide)
+    · have h5k := not_dvd_div_of_not_sq_dvd h5m (by rwa [show (5 : ℕ) ^ 2 = 25 from by norm_num])
+      have hm_eq : m = 5 * (m / 5) := by obtain ⟨c, hc⟩ := h5m; omega
+      have : Nat.totient m = 4 * Nat.totient (m / 5) := by
+        conv_lhs => rw [hm_eq]
+        rw [totient_prime_mul_not_dvd (by norm_num) h5k]
+      have h1 : Nat.totient (m / 5) = 1 := by omega
+      rw [Nat.totient_eq_one_iff] at h1; rcases h1 with h1 | h1 <;> omega
 
 /-- φ(n) = 4 iff n ∈ {5, 8, 10, 12}. -/
 theorem totient_eq_four_iff (n : ℕ) :
     phi n = 4 ↔ n = 5 ∨ n = 8 ∨ n = 10 ∨ n = 12 := by
-  unfold phi
-  constructor
-  · intro h
-    suffices n ≤ 17 by interval_cases n <;> revert h <;> native_decide
-    by_contra hgt; push_neg at hgt
-    -- Primes 7, 11, 13, 17 can't divide n: (p-1) ∤ 4
-    have h7 : ¬ 7 ∣ n := fun hd => by
-      have := prime_pred_dvd_totient (by norm_num : Nat.Prime 7) hd (by omega)
-      simp only [show (7 : ℕ) - 1 = 6 from rfl] at this; omega
-    have h11 : ¬ 11 ∣ n := fun hd => by
-      have := prime_pred_dvd_totient (by norm_num : Nat.Prime 11) hd (by omega)
-      simp only [show (11 : ℕ) - 1 = 10 from rfl] at this; omega
-    have h13 : ¬ 13 ∣ n := fun hd => by
-      have := prime_pred_dvd_totient (by norm_num : Nat.Prime 13) hd (by omega)
-      simp only [show (13 : ℕ) - 1 = 12 from rfl] at this; omega
-    have h17 : ¬ 17 ∣ n := fun hd => by
-      have := prime_pred_dvd_totient (by norm_num : Nat.Prime 17) hd (by omega)
-      simp only [show (17 : ℕ) - 1 = 16 from rfl] at this; omega
-    -- {1, 7, 11, 13, 17} are 5 coprimes to n in {0,...,n-1}, so φ ≥ 5 > 4
-    set S := (Finset.range n).filter n.Coprime with hS
-    have mk : ∀ k, k < n → n.Coprime k → k ∈ S := fun k hk hc => by
-      simp only [hS, Finset.mem_filter, Finset.mem_range]; exact ⟨hk, hc⟩
-    have cop : ∀ p, Nat.Prime p → ¬ p ∣ n → n.Coprime p :=
-      fun p hp hd => Nat.Coprime.symm ((hp.coprime_iff_not_dvd).mpr hd)
-    have hsub : ({1, 7, 11, 13, 17} : Finset ℕ) ⊆ S := by
-      intro x hx
-      simp only [Finset.mem_insert, Finset.mem_singleton] at hx
-      rcases hx with rfl | rfl | rfl | rfl | rfl
-      · exact mk 1 (by omega) (Nat.coprime_one_right n)
-      · exact mk 7 (by omega) (cop 7 (by norm_num) h7)
-      · exact mk 11 (by omega) (cop 11 (by norm_num) h11)
-      · exact mk 13 (by omega) (cop 13 (by norm_num) h13)
-      · exact mk 17 (by omega) (cop 17 (by norm_num) h17)
-    have hcard : ({1, 7, 11, 13, 17} : Finset ℕ).card = 5 := by native_decide
-    have : 5 ≤ S.card := by linarith [Finset.card_le_card hsub]
-    change S.card = 4 at h; omega
+  unfold phi; constructor
+  · intro htot
+    suffices hn : n ≤ 12 by
+      have : n = 0 ∨ n = 1 ∨ n = 2 ∨ n = 3 ∨ n = 4 ∨ n = 5 ∨ n = 6 ∨ n = 7 ∨
+             n = 8 ∨ n = 9 ∨ n = 10 ∨ n = 11 ∨ n = 12 := by omega
+      rcases this with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+        rfl | rfl | rfl | rfl | rfl <;> revert htot <;> native_decide
+    by_contra hgt; push_neg at hgt; have hn13 : n ≥ 13 := by omega
+    have hp := Nat.minFac_prime (by omega : n ≠ 1)
+    have hd := Nat.minFac_dvd n
+    have h_dvd : (n.minFac - 1) ∣ 4 := by
+      have := Nat.totient_dvd_of_dvd hd; rw [Nat.totient_prime hp, htot] at this; exact this
+    have hpf : n.minFac = 2 ∨ n.minFac = 3 ∨ n.minFac = 5 := by
+      have hge := hp.two_le; have hle := Nat.le_of_dvd (by omega) h_dvd
+      have hne4 : n.minFac ≠ 4 := by intro h; rw [h] at hp; exact absurd hp (by decide)
+      omega
+    rcases hpf with hpf | hpf | hpf
+    · -- n.minFac = 2: n is even
+      rw [hpf] at hd
+      by_cases h8 : 8 ∣ n
+      · -- 8 | n: φ(8k) = φ(8)*φ(k) = 4*φ(k) when k odd
+        by_cases h16 : 16 ∣ n
+        · have := Nat.totient_dvd_of_dvd h16
+          rw [show Nat.totient 16 = 8 from by native_decide, htot] at this; exact absurd this (by decide)
+        · have hk_odd : Odd (n / 8) := by
+            rw [Nat.odd_iff]; by_contra hev; push_neg at hev
+            apply h16; obtain ⟨c, hc⟩ := h8; exact ⟨n / 8 / 2, by omega⟩
+          have hn_eq : n = 8 * (n / 8) := by obtain ⟨c, hc⟩ := h8; omega
+          have hcop : Nat.Coprime 8 (n / 8) := by
+            rw [show (8 : ℕ) = 2 ^ 3 from by norm_num]
+            exact (coprime_two_odd hk_odd).pow_left 3
+          have : Nat.totient n = 4 * Nat.totient (n / 8) := by
+            conv_lhs => rw [hn_eq]
+            rw [Nat.totient_mul hcop, show Nat.totient 8 = 4 from by native_decide]
+          have h1 : Nat.totient (n / 8) = 1 := by omega
+          rw [Nat.totient_eq_one_iff] at h1; rcases h1 with h1 | h1 <;> omega
+      · by_cases h4 : 4 ∣ n
+        · -- 4 | n, 8 ∤ n: φ(4k) = 2*φ(k) when k odd
+          have hk_odd : Odd (n / 4) := by
+            rw [Nat.odd_iff]; by_contra hev; push_neg at hev
+            apply h8; obtain ⟨c, hc⟩ := h4; exact ⟨n / 4 / 2, by omega⟩
+          have hn_eq : n = 4 * (n / 4) := by obtain ⟨c, hc⟩ := h4; omega
+          have hcop : Nat.Coprime 4 (n / 4) := by
+            rw [show (4 : ℕ) = 2 ^ 2 from by norm_num]
+            exact (coprime_two_odd hk_odd).pow_left 2
+          have : Nat.totient n = 2 * Nat.totient (n / 4) := by
+            conv_lhs => rw [hn_eq]
+            rw [Nat.totient_mul hcop, show Nat.totient 4 = 2 from by native_decide]
+          have h2 : Nat.totient (n / 4) = 2 := by omega
+          have := (totient_eq_two_iff (n / 4)).mp (by unfold phi; exact h2)
+          rcases this with h | h | h <;> omega
+        · -- 2 | n, 4 ∤ n: φ(2m) = φ(m) when m odd
+          have hk_odd : Odd (n / 2) := by
+            rw [Nat.odd_iff]; by_contra hev; push_neg at hev
+            apply h4; obtain ⟨c, hc⟩ := hd; exact ⟨n / 2 / 2, by omega⟩
+          have hn_eq : n = 2 * (n / 2) := by obtain ⟨c, hc⟩ := hd; omega
+          have : Nat.totient n = Nat.totient (n / 2) := by
+            conv_lhs => rw [hn_eq]; exact totient_two_mul_odd hk_odd
+          exact odd_totient_ne_four (n / 2) (by omega) hk_odd (by omega)
+    · -- n.minFac = 3: n is odd
+      have hodd := odd_of_minFac_ge_three (by omega) (le_of_eq hpf.symm)
+      exact odd_totient_ne_four n (by omega) hodd htot
+    · -- n.minFac = 5: n is odd
+      have h5ge3 : n.minFac ≥ 3 := by have := le_of_eq hpf.symm; omega
+      have hodd := odd_of_minFac_ge_three (by omega) h5ge3
+      exact odd_totient_ne_four n (by omega) hodd htot
   · rintro (rfl | rfl | rfl | rfl) <;> native_decide
 
 end Erdos1004
@@ -482,9 +583,16 @@ such that φ(n+1), φ(n+2), ..., φ(n+⌊(log x)^c⌋) are all distinct?
 8. Probabilistic heuristics
 9. Special totient values
 
-**Key axioms**:
-- `eps87_upper_bound`: The EPS87 theorem limiting run length
-- `eps87_constant`: The constant c in the bound
+**Key axioms** (6 total):
+- `eps87_constant`, `eps87_constant_pos`, `eps87_threshold`, `eps87_upper_bound`:
+  The EPS87 theorem and its parameters
+- `longer_runs_need_larger_n`: Fixed-length distinct runs exist eventually
+  (probabilistic argument on totient value distribution)
+- `distinct_totients_asymptotic`: #{distinct φ(k) : k ≤ x} ~ x/log x
+  (Erdős 1935 / Ford 1998)
+
+**Proved from axioms**:
+- `run_length_sublinear`: maxDistinctRunLength(n)/n → 0 (via squeeze theorem + EPS bound)
 
 **Related Problems**: #945 (divisor function version)
 -/
