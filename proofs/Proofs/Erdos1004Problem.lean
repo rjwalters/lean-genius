@@ -282,15 +282,112 @@ theorem totient_eq_one_iff (n : ℕ) : phi n = 1 ↔ n = 1 ∨ n = 2 := by
       obtain ⟨k, hk⟩ := heven
       omega
   · rintro (rfl | rfl) <;> native_decide
+/-- For prime p dividing n (n ≠ 0), (p - 1) divides φ(n).
+    Proof: extract p^e from n's factorization, apply multiplicativity. -/
+private lemma prime_pred_dvd_totient {p n : ℕ} (hp : p.Prime) (hpn : p ∣ n)
+    (hne : n ≠ 0) : (p - 1) ∣ n.totient := by
+  have he : 0 < n.factorization p := by
+    rw [Nat.pos_iff_ne_zero, ← Finsupp.mem_support_iff, Nat.support_factorization]
+    exact Nat.mem_primeFactors.mpr ⟨hp, hpn, hne⟩
+  have hpow : p ^ n.factorization p ∣ n :=
+    (hp.pow_dvd_iff_le_factorization hne).mpr le_rfl
+  have hcop : Nat.Coprime (p ^ n.factorization p) (n / p ^ n.factorization p) := by
+    apply Nat.Coprime.pow_left
+    rw [hp.coprime_iff_not_dvd]
+    intro hd
+    have : p ^ (n.factorization p + 1) ∣ n := by
+      calc p ^ (n.factorization p + 1)
+          = p ^ n.factorization p * p := by ring
+        _ ∣ p ^ n.factorization p * (n / p ^ n.factorization p) :=
+            Nat.mul_dvd_mul_left _ hd
+        _ = n := Nat.mul_div_cancel' hpow
+    exact absurd ((hp.pow_dvd_iff_le_factorization hne).mp this) (by omega)
+  calc (p - 1) ∣ p ^ (n.factorization p - 1) * (p - 1) := dvd_mul_left _ _
+    _ ∣ (p ^ n.factorization p).totient := by rw [Nat.totient_prime_pow hp he]
+    _ ∣ (p ^ n.factorization p).totient * (n / p ^ n.factorization p).totient :=
+        dvd_mul_right _ _
+    _ = n.totient := by rw [← Nat.totient_mul hcop, Nat.mul_div_cancel' hpow]
 
 /-- φ(n) = 2 iff n ∈ {3, 4, 6}. -/
 theorem totient_eq_two_iff (n : ℕ) : phi n = 2 ↔ n = 3 ∨ n = 4 ∨ n = 6 := by
-  sorry
+  unfold phi
+  constructor
+  · intro h
+    suffices n ≤ 6 by interval_cases n <;> revert h <;> native_decide
+    by_contra hgt; push_neg at hgt
+    -- If 5 ∣ n: 4 ∣ φ(n) = 2, contradiction. If 5 ∤ n: {1, 5, n-1} ⊂ coprimes, φ ≥ 3.
+    by_cases h5 : 5 ∣ n
+    · have h4 := prime_pred_dvd_totient (by norm_num : Nat.Prime 5) h5 (by omega)
+      simp only [show (5 : ℕ) - 1 = 4 from rfl] at h4; omega
+    · set S := (Finset.range n).filter n.Coprime with hS
+      have h1 : 1 ∈ S := by
+        simp only [hS, Finset.mem_filter, Finset.mem_range]
+        exact ⟨by omega, Nat.coprime_one_right n⟩
+      have h5m : 5 ∈ S := by
+        simp only [hS, Finset.mem_filter, Finset.mem_range]
+        exact ⟨by omega, Nat.Coprime.symm
+          ((Nat.Prime.coprime_iff_not_dvd (by norm_num)).mpr h5)⟩
+      have hn1 : (n - 1) ∈ S := by
+        simp only [hS, Finset.mem_filter, Finset.mem_range]
+        refine ⟨by omega, ?_⟩
+        show Nat.gcd n (n - 1) = 1
+        have h1 : Nat.gcd n (n - 1) ∣ 1 := by
+          have := Nat.dvd_sub' (Nat.gcd_dvd_left n (n - 1)) (Nat.gcd_dvd_right n (n - 1))
+          rwa [show n - (n - 1) = 1 from by omega] at this
+        exact Nat.le_antisymm (Nat.le_of_dvd one_pos h1)
+          (Nat.gcd_pos_of_pos_left (n - 1) (by omega))
+      have hsub : ({1, 5, n - 1} : Finset ℕ) ⊆ S := by
+        intro x hx; simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+        rcases hx with rfl | rfl | rfl <;> assumption
+      have hcard : ({1, 5, n - 1} : Finset ℕ).card = 3 := by
+        rw [Finset.card_insert_of_notMem, Finset.card_insert_of_notMem,
+            Finset.card_singleton]
+        · simp only [Finset.mem_singleton]; omega
+        · simp only [Finset.mem_insert, Finset.mem_singleton]; omega
+      have : 3 ≤ S.card := by linarith [Finset.card_le_card hsub]
+      change S.card = 2 at h; omega
+  · rintro (rfl | rfl | rfl) <;> native_decide
 
 /-- φ(n) = 4 iff n ∈ {5, 8, 10, 12}. -/
 theorem totient_eq_four_iff (n : ℕ) :
     phi n = 4 ↔ n = 5 ∨ n = 8 ∨ n = 10 ∨ n = 12 := by
-  sorry
+  unfold phi
+  constructor
+  · intro h
+    suffices n ≤ 17 by interval_cases n <;> revert h <;> native_decide
+    by_contra hgt; push_neg at hgt
+    -- Primes 7, 11, 13, 17 can't divide n: (p-1) ∤ 4
+    have h7 : ¬ 7 ∣ n := fun hd => by
+      have := prime_pred_dvd_totient (by norm_num : Nat.Prime 7) hd (by omega)
+      simp only [show (7 : ℕ) - 1 = 6 from rfl] at this; omega
+    have h11 : ¬ 11 ∣ n := fun hd => by
+      have := prime_pred_dvd_totient (by norm_num : Nat.Prime 11) hd (by omega)
+      simp only [show (11 : ℕ) - 1 = 10 from rfl] at this; omega
+    have h13 : ¬ 13 ∣ n := fun hd => by
+      have := prime_pred_dvd_totient (by norm_num : Nat.Prime 13) hd (by omega)
+      simp only [show (13 : ℕ) - 1 = 12 from rfl] at this; omega
+    have h17 : ¬ 17 ∣ n := fun hd => by
+      have := prime_pred_dvd_totient (by norm_num : Nat.Prime 17) hd (by omega)
+      simp only [show (17 : ℕ) - 1 = 16 from rfl] at this; omega
+    -- {1, 7, 11, 13, 17} are 5 coprimes to n in {0,...,n-1}, so φ ≥ 5 > 4
+    set S := (Finset.range n).filter n.Coprime with hS
+    have mk : ∀ k, k < n → n.Coprime k → k ∈ S := fun k hk hc => by
+      simp only [hS, Finset.mem_filter, Finset.mem_range]; exact ⟨hk, hc⟩
+    have cop : ∀ p, Nat.Prime p → ¬ p ∣ n → n.Coprime p :=
+      fun p hp hd => Nat.Coprime.symm ((hp.coprime_iff_not_dvd).mpr hd)
+    have hsub : ({1, 7, 11, 13, 17} : Finset ℕ) ⊆ S := by
+      intro x hx
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+      rcases hx with rfl | rfl | rfl | rfl | rfl
+      · exact mk 1 (by omega) (Nat.coprime_one_right n)
+      · exact mk 7 (by omega) (cop 7 (by norm_num) h7)
+      · exact mk 11 (by omega) (cop 11 (by norm_num) h11)
+      · exact mk 13 (by omega) (cop 13 (by norm_num) h13)
+      · exact mk 17 (by omega) (cop 17 (by norm_num) h17)
+    have hcard : ({1, 7, 11, 13, 17} : Finset ℕ).card = 5 := by native_decide
+    have : 5 ≤ S.card := by linarith [Finset.card_le_card hsub]
+    change S.card = 4 at h; omega
+  · rintro (rfl | rfl | rfl | rfl) <;> native_decide
 
 end Erdos1004
 
