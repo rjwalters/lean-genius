@@ -148,7 +148,8 @@
     ],
     "prerequisites": [
       "mathematical foundations"
-    ]
+    ],
+    "mathContext": "Numerical verification via `norm_num`: for a circle of radius $r = 5$ with $P$ at distance $d = 3$ from center, $PA \\cdot PB = r^2 - d^2 = 25 - 9 = 16$ for every chord through $P$. If one chord has segments $2$ and $8$, another through the same point could have segments $4$ and $4$."
   },
   {
     "id": "ann-historical",
@@ -169,6 +170,7 @@
       "history of mathematics",
       "Euclid's Elements",
       "Jakob Steiner"
-    ]
+    ],
+    "mathContext": "Euclid proved the theorem synthetically using similar triangles: $\\triangle PAC \\sim \\triangle PDB$ (by the inscribed angle theorem), so $PA/PD = PC/PB$, hence $PA \\cdot PB = PC \\cdot PD$. Steiner's 1826 unification introduced the power $\\text{pow}(P) = |PO|^2 - r^2$ as a chord-independent invariant."
   }
 ]
