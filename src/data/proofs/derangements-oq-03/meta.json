@@ -222,6 +222,21 @@
       "targetId": "derangements-oq-02-oq-01",
       "relationship": "sibling",
       "description": "Sibling open question from the same parent: Partial Derangements for Arbitrary Finite Types"
+    },
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "foundational",
+      "description": "The classical derangement formula D(n) = n! * sum_{k=0}^n (-1)^k/k! is derived via the inclusion-exclusion principle applied to the sets A_i = {permutations fixing i}. The Euler identity proved here by strong induction is the algebraic consequence of that combinatorial argument."
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation n! ~ sqrt(2*pi*n) * (n/e)^n gives the asymptotic growth of factorials. Combined with D(n)/n! -> 1/e proved here, it yields the asymptotic count D(n) ~ n!/e, and Stirling refines this to D(n) ~ sqrt(2*pi*n) * (n/e)^n / e."
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "related",
+      "description": "Both derangements and combinations are fundamental counting functions in combinatorics. The partial derangement count (permutations with exactly k fixed points) equals C(n,k) * D(n-k), directly linking the binomial coefficient to the derangement count proved here."
     }
   ]
 }

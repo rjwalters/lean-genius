@@ -171,6 +171,16 @@
     {
       "relationship": "Explores further consequences of Brouwer FPT beyond Kakutani (topological degree, dimension theory)",
       "targetId": "brouwer-fixed-point-oq-02"
+    },
+    {
+      "targetId": "intermediate-value-theorem",
+      "relationship": "foundational",
+      "description": "The Intermediate Value Theorem is the 1-dimensional special case of Brouwer's fixed point theorem. This formalization's 1D Kakutani proof via IVT (Section 5) directly uses the IVT on g(x) = u(x) - x to find a fixed point, demonstrating the IVT-to-Brouwer-to-Kakutani hierarchy."
+    },
+    {
+      "targetId": "poincare-conjecture",
+      "relationship": "related",
+      "description": "Both concern deep topological properties of compact manifolds. Brouwer's theorem applies to contractible spaces (disks), while the Poincare conjecture characterizes the 3-sphere among simply connected closed 3-manifolds. The algebraic topology techniques (homotopy, homology) used to prove Brouwer's theorem are foundational to the Poincare conjecture."
     }
   ],
   "leanFile": {
