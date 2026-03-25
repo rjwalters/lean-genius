@@ -108,49 +108,56 @@
       "title": "The First Uncountable Ordinal ω₁",
       "summary": "Defines ω₁ = (Cardinal.aleph 1).ord and proves ω₁.card = aleph 1 via Cardinal.card_ord. This is the initial ordinal of ℵ₁.",
       "startLine": 53,
-      "endLine": 69
+      "endLine": 69,
+      "mathContext": "$\\omega_1 = (\\aleph_1).\\text{ord}$, the smallest ordinal of cardinality $\\aleph_1$. By `Cardinal.card_ord`, $\\omega_1.\\text{card} = \\aleph_1$."
     },
     {
       "id": "aleph1-successor",
       "title": "ℵ₁ as Successor of ℵ₀",
       "summary": "Proves aleph 1 = Order.succ ℵ₀ and the key characterization κ < ℵ₁ ↔ κ ≤ ℵ₀. Establishes ℵ₁ as the minimum uncountable cardinal.",
       "startLine": 70,
-      "endLine": 87
+      "endLine": 87,
+      "mathContext": "$\\aleph_1 = \\text{succ}(\\aleph_0)$: the successor characterization $\\kappa < \\aleph_1 \\iff \\kappa \\leq \\aleph_0$ makes $\\aleph_1$ the smallest cardinal strictly exceeding $\\aleph_0$."
     },
     {
       "id": "uncountability",
       "title": "Uncountability of ω₁",
       "summary": "Proves ℵ₀ < ℵ₁ via aleph_lt_aleph, then ω₁.card > ℵ₀ (ω₁ is uncountable). Also establishes ℵ₁ is minimum uncountable with no cardinal between ℵ₀ and ℵ₁.",
       "startLine": 88,
-      "endLine": 122
+      "endLine": 122,
+      "mathContext": "$\\aleph_0 < \\aleph_1$ from `aleph_lt_aleph` with $0 < 1$. Since $\\omega_1.\\text{card} = \\aleph_1 > \\aleph_0$, the ordinal $\\omega_1$ is uncountable. No cardinal lies strictly between $\\aleph_0$ and $\\aleph_1$."
     },
     {
       "id": "countable-ordinals",
       "title": "Countable Ordinals as Iio(ω₁)",
       "summary": "Defines IsCountableOrdinal α ↔ α.card ≤ ℵ₀. Proves α < ω₁ ↔ IsCountableOrdinal α via Cardinal.lt_ord, and derives that the set of countable ordinals equals Set.Iio omega1.",
       "startLine": 123,
-      "endLine": 143
+      "endLine": 143,
+      "mathContext": "$\\{\\alpha \\in \\text{Ord} : \\alpha.\\text{card} \\leq \\aleph_0\\} = \\{\\alpha : \\alpha < \\omega_1\\}$ — every countable ordinal lies below $\\omega_1$, and conversely."
     },
     {
       "id": "diagonal-argument",
       "title": "The Cantor Diagonal Argument",
       "summary": "Proves cantor_diagonal_countable_ordinals: for any f : ℕ → Ordinal with all f(n) < omega1, there exists β < omega1 exceeding all f(n). Uses sSup of range f plus ordinal successor.",
       "startLine": 155,
-      "endLine": 194
+      "endLine": 194,
+      "mathContext": "For $f : \\mathbb{N} \\to \\text{Ord}$ with $f(n) < \\omega_1$, let $\\beta = \\sup\\{f(n)\\} + 1$. Then $\\beta < \\omega_1$ (countable sup of countable ordinals is countable) and $\\beta > f(n)$ for all $n$."
     },
     {
       "id": "no-surjection",
       "title": "No Surjection from ℕ onto Countable Ordinals",
       "summary": "Derives that no function f : ℕ → Ordinal can surject onto all countable ordinals. Uses a clipping technique to handle f values that may exceed ω₁, then applies the diagonal argument.",
       "startLine": 195,
-      "endLine": 227
+      "endLine": 227,
+      "mathContext": "$\\nexists\\, f : \\mathbb{N} \\twoheadrightarrow \\{\\alpha : \\alpha < \\omega_1\\}$. Clip $f$ to handle values $\\geq \\omega_1$, then the diagonal argument produces a missing countable ordinal."
     },
     {
       "id": "summary",
       "title": "Summary: Four Key Results",
       "summary": "Capstone theorem combining: (1) ℵ₀ < ℵ₁, (2) ℵ₁ is minimum uncountable, (3) no surjection ℕ → countable ordinals, (4) ω₁.card = ℵ₁.",
       "startLine": 228,
-      "endLine": 272
+      "endLine": 272,
+      "mathContext": "(1) $\\aleph_0 < \\aleph_1$, (2) $\\nexists\\, \\kappa: \\aleph_0 < \\kappa < \\aleph_1$, (3) $\\mathbb{N} \\not\\twoheadrightarrow \\{\\alpha < \\omega_1\\}$, (4) $|\\{\\alpha < \\omega_1\\}| = \\aleph_1$."
     }
   ],
   "conclusion": {
