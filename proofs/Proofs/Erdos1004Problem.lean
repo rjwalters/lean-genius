@@ -109,7 +109,7 @@ theorem exists_distinct_run (n : ℕ) :
 
     If φ(n+k) are all distinct for 1 ≤ k ≤ K, then
     K ≤ n / exp(c · (log n)^{1/3})
-    for some constant c > 0.
+    for some constant c > 0 and all sufficiently large n.
 
     This limits how long a distinct totient run can be.
 -/
@@ -117,13 +117,65 @@ axiom eps87_constant : ℝ
 
 axiom eps87_constant_pos : eps87_constant > 0
 
-axiom eps87_upper_bound (n K : ℕ) (hn : n > 0) (hrun : IsDistinctTotientRun n K) :
+/-- The threshold beyond which the EPS87 bound holds. The original result
+    states the bound for "sufficiently large n"; this axiom captures that. -/
+axiom eps87_threshold : ℕ
+
+axiom eps87_upper_bound (n K : ℕ) (hn : n ≥ eps87_threshold) (hrun : IsDistinctTotientRun n K) :
     (K : ℝ) ≤ (n : ℝ) / Real.exp (eps87_constant * (Real.log (n : ℝ)) ^ ((1 : ℝ)/3))
 
 /-- Corollary: The run length is o(n). -/
 theorem run_length_sublinear :
     Tendsto (fun n : ℕ => (maxDistinctRunLength n : ℝ) / (n : ℝ)) atTop (𝓝 (0 : ℝ)) := by
-  sorry
+  -- Sandwich: 0 ≤ f(n) ≤ 1/exp(c·(log n)^{1/3}) → 0
+  apply tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds
+  -- Goal 1: upper bound → 0
+  · show Tendsto (fun n : ℕ => (1 : ℝ) / Real.exp (eps87_constant *
+        (Real.log (n : ℝ)) ^ ((1 : ℝ)/3))) atTop (𝓝 0)
+    simp only [one_div]
+    -- exp(c·(log n)^{1/3}) → ∞, so its inverse → 0
+    apply tendsto_inv_atTop_zero.comp
+    -- exp → ∞ when argument → ∞
+    apply Real.tendsto_exp_atTop.comp
+    -- c·(log n)^{1/3} → ∞
+    have hlog : Tendsto (fun n : ℕ => Real.log (n : ℝ)) atTop atTop :=
+      Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+    have hrpow : Tendsto (fun n : ℕ => (Real.log (n : ℝ)) ^ ((1 : ℝ)/3)) atTop atTop :=
+      (tendsto_rpow_atTop (by norm_num : (0 : ℝ) < 1/3)).comp hlog
+    rw [tendsto_atTop_atTop] at hrpow ⊢
+    intro b
+    obtain ⟨N, hN⟩ := hrpow (b / eps87_constant)
+    exact ⟨N, fun n hn => by
+      have hc := eps87_constant_pos
+      have := hN n hn
+      nlinarith [mul_div_cancel₀ b (ne_of_gt hc)]⟩
+  -- Goal 2: 0 ≤ f(n) eventually
+  · filter_upwards with n
+    exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+  -- Goal 3: f(n) ≤ upper bound eventually
+  · filter_upwards [eventually_ge_atTop eps87_threshold, eventually_gt_atTop 0] with n hn hn0
+    show (maxDistinctRunLength n : ℝ) / (n : ℝ) ≤
+      1 / Real.exp (eps87_constant * (Real.log (n : ℝ)) ^ ((1 : ℝ)/3))
+    unfold maxDistinctRunLength
+    set S := {K : ℕ | IsDistinctTotientRun n K} with hS_def
+    set e := Real.exp (eps87_constant * (Real.log (n : ℝ)) ^ ((1 : ℝ)/3))
+    have he_pos : 0 < e := Real.exp_pos _
+    set B := (n : ℝ) / e with hB_def
+    have hB_nn : 0 ≤ B := div_nonneg (Nat.cast_nonneg _) he_pos.le
+    -- Every K in S is bounded by B
+    have hbdd : ∀ K ∈ S, (K : ℝ) ≤ B := fun K hK => eps87_upper_bound n K hn hK
+    -- S is nonempty (contains 0)
+    have hne : S.Nonempty := ⟨0, distinctRun_zero n⟩
+    -- Bound sSup via floor
+    have h1 : @sSup ℕ _ S ≤ ⌊B⌋₊ :=
+      csSup_le hne (fun K hK => Nat.le_floor (hbdd K hK))
+    have h2 : ((@sSup ℕ _ S : ℕ) : ℝ) ≤ B :=
+      le_trans (Nat.cast_le.mpr h1) (Nat.floor_le hB_nn)
+    -- Divide by n > 0
+    have hn_pos : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr hn0
+    calc ((@sSup ℕ _ S : ℕ) : ℝ) / (n : ℝ)
+        ≤ B / (n : ℝ) := by apply div_le_div_of_nonneg_right h2 hn_pos.le
+      _ = 1 / e := by rw [hB_def]; field_simp
 
 /-! ## Part V: The Main Conjecture -/
 
@@ -524,8 +576,12 @@ such that φ(n+1), φ(n+2), ..., φ(n+⌊(log x)^c⌋) are all distinct?
 9. Special totient values
 
 **Key axioms**:
-- `eps87_upper_bound`: The EPS87 theorem limiting run length
+- `eps87_upper_bound`: The EPS87 theorem limiting run length (for n ≥ threshold)
 - `eps87_constant`: The constant c in the bound
+- `eps87_threshold`: The threshold beyond which the bound holds
+
+**Proved from axioms**:
+- `run_length_sublinear`: maxDistinctRunLength(n)/n → 0 (via squeeze theorem + EPS bound)
 
 **Related Problems**: #945 (divisor function version)
 -/
