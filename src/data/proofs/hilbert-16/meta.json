@@ -41,7 +41,12 @@
       "**Bifurcation complexity**: limit cycles can appear/disappear via Hopf bifurcation (from equilibria), from infinity, from polycycles (saddle connections), or by collision and annihilation — tracking these global phenomena across all parameter space is the main difficulty",
       "**The quadratic mystery**: even $H(2)$ is unknown after 125 years; the best lower bound $H(2) \\geq 4$ comes from Shi Songling's explicit (3,1) distribution, but no upper bound is known"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ordinary differential equations: existence, uniqueness, and phase portraits",
+      "Polynomial vector fields and the Poincare-Bendixson theorem",
+      "Periodic orbits, limit cycles, and topological dynamics in the plane",
+      "Bifurcation theory: Hopf bifurcation and saddle-node connections"
+    ]
   },
   "sections": [
     {

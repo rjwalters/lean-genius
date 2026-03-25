@@ -43,7 +43,12 @@
       "The `Nat` section demonstrates definitional isomorphism in practice: Lean's kernel-compiled `Nat.add` behaves identically to the recursive `Peano.add` for all closed terms, so every `rfl` proof in the `Peano` namespace has a direct analogue in the standard library.",
       "This entry is axiom-free in the strong sense: the `#print axioms` output is empty (no propositional extensionality, no choice, no excluded middle), placing it among the most foundationally minimal verified proofs in the gallery."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Peano axioms: zero, successor, and the induction principle",
+      "Recursive definitions of addition on natural numbers",
+      "Definitional equality and computation rules in type theory",
+      "The distinction between set-theoretic and type-theoretic foundations of arithmetic"
+    ]
   },
   "sections": [
     {

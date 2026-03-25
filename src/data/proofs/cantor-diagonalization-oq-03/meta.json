@@ -71,6 +71,12 @@
       "**Self-Application is the Key**: The proof of `not_has_no_fixpoint` uses the same self-application trick as Russell's paradox: if $\\neg p = p$, then $p$ can be applied to itself via cast, producing both $p$ and $\\neg p$. This is the type-theoretic core of all diagonal arguments.",
       "**Surjectivity is the Barrier**: Cantor's theorem is not about size per se — it's about the impossibility of a certain surjection. This formulation makes the logical content precise without appealing to cardinal arithmetic.",
       "**Constructive vs. Contradictory Forms**: The formalization presents both styles: `cantor` derives a contradiction from a hypothetical surjection, while `diagonal_not_in_range` constructively exhibits a function outside the range of any given $e$. The constructive form is stronger — it produces an explicit witness rather than merely refuting an assumption."
+    ],
+    "prerequisites": [
+      "Surjectivity and function spaces (A -> (A -> B))",
+      "Propositional logic, negation, and proof by contradiction",
+      "Fixed-point theorems and diagonal arguments in logic",
+      "Type-theoretic equality transport (cast) and self-application"
     ]
   },
   "sections": [

@@ -65,6 +65,12 @@
       "Ultrametric balls have no boundary: they are clopen and every interior point is a center, giving the space a tree-like partition structure at every scale",
       "The p-adic norm provides the canonical non-Archimedean metric, where integers are bounded (|n|_p ≤ 1) — the exact opposite of the real absolute value",
       "Ostrowski's classification theorem shows this Archimedean/non-Archimedean dichotomy is exhaustive: every absolute value on ℚ is equivalent to |·| or some |·|_p"
+    ],
+    "prerequisites": [
+      "Metric spaces: distance functions and the standard triangle inequality",
+      "p-adic numbers and the p-adic norm |x|_p",
+      "Topological concepts: open/closed sets, clopen sets, and ball structure",
+      "Ostrowski's classification of absolute values on the rationals"
     ]
   },
   "conclusion": {
