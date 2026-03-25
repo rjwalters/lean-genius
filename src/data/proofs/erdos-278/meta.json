@@ -170,11 +170,38 @@
       "Mathlib.Tactic"
     ],
     "opens": [],
-    "namespace": null,
+    "namespace": "",
     "lineCount": 646,
     "axiomCount": 1,
     "theoremCount": 31,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "mainTheorems": [
+      {
+        "name": "density_bounds",
+        "type": "original",
+        "description": "Coverage density of any congruence system lies in [0, 1]"
+      },
+      {
+        "name": "coprime_density_formula",
+        "type": "original",
+        "description": "For coprime moduli, coverage density = 1 − ∏(1 − 1/mᵢ) via inclusion-exclusion"
+      },
+      {
+        "name": "equal_residues_minimize",
+        "type": "original",
+        "description": "All-zero residues minimize coverage density among all residue choices for given moduli (Simpson's theorem)"
+      },
+      {
+        "name": "erdos_278_density_le_one",
+        "type": "original",
+        "description": "Maximum coverage density over all residue choices is ≤ 1, the fundamental upper bound"
+      },
+      {
+        "name": "single_modulus_density",
+        "type": "original",
+        "description": "Coverage density of a single residue class mod n is exactly 1/n"
+      }
+    ]
   },
   "crossReferences": [
     {
