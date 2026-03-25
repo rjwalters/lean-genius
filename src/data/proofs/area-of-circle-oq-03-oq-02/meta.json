@@ -2,7 +2,7 @@
   "id": "area-of-circle-oq-03-oq-02",
   "title": "Archimedes Pi Bounds: 223/71 < π < 22/7",
   "slug": "area-of-circle-oq-03-oq-02",
-  "description": "Archimedes' classical bounds on π from inscribed and circumscribed 96-gons: 223/71 < π < 22/7. Both bounds proved from Mathlib's pi_gt_d4/pi_lt_d4, 0 axioms, 1 sorry remaining.",
+  "description": "Archimedes' classical bounds on π from inscribed and circumscribed 96-gons: 223/71 < π < 22/7. Both bounds proved from Mathlib's pi_gt_d4/pi_lt_d4. Fully verified: 0 sorries, 0 axioms.",
   "meta": {
     "author": "Archimedes (c. 250 BCE), formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Approximations_of_%CF%80#Archimedes",
@@ -172,7 +172,14 @@
     "lineCount": 102,
     "axiomCount": 0,
     "theoremCount": 10,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "mainTheorems": [
+      "archimedes_lower_bound",
+      "archimedes_upper_bound",
+      "archimedes_bounds",
+      "inscribed_half_perimeter_lt_pi",
+      "archimedes_verified"
+    ]
   },
   "references": [
     {

@@ -306,6 +306,44 @@
       "IntermediateField"
     ],
     "namespace": "AngleTrisectionOQ02OQ03",
+    "mainTheorems": [
+      {
+        "name": "gauss_wantzel_theorem",
+        "type": "core",
+        "description": "A regular n-gon is constructible by compass and straightedge iff Euler's totient phi(n) is a power of 2",
+        "leanType": "(n : ℕ) → (hn : 3 ≤ n) → IsConstructibleNgon n ↔ TotientIsPow2 n"
+      },
+      {
+        "name": "units_zmod_is_2group_iff",
+        "type": "key",
+        "description": "The unit group (Z/nZ)* is a 2-group iff phi(n) is a power of 2, bridging OQ02's Galois criterion to the totient criterion",
+        "leanType": "(n : ℕ) → [NeZero n] → IsPGroup 2 (ZMod n)ˣ ↔ TotientIsPow2 n"
+      },
+      {
+        "name": "cos_2pi_div_n_isIntegral",
+        "type": "key",
+        "description": "cos(2pi/n) is integral (algebraic) over Q, proved via Chebyshev polynomials",
+        "leanType": "(n : ℕ) → (hn : 1 ≤ n) → IsIntegral ℚ (Real.cos (2 * Real.pi / ↑n))"
+      },
+      {
+        "name": "minpoly_cos_natDegree_eq",
+        "type": "key",
+        "description": "The minimal polynomial of cos(2pi/n) over Q has degree phi(n)/2",
+        "leanType": "(n : ℕ) → (hn : 3 ≤ n) → (minpoly ℚ (Real.cos (2 * Real.pi / ↑n))).natDegree = Nat.totient n / 2"
+      },
+      {
+        "name": "galois_conjugate_count",
+        "type": "key",
+        "description": "The number of distinct Galois conjugates cos(2k*pi/n) with gcd(k,n)=1 equals phi(n)/2",
+        "leanType": "(n : ℕ) → (hn : 3 ≤ n) → Finset.card (Finset.image (fun k => Real.cos (2 * ↑k * Real.pi / ↑n)) (Finset.filter (fun k => Nat.Coprime k n) (Finset.range n))) = Nat.totient n / 2"
+      },
+      {
+        "name": "fermat_prime_ngon_constructible",
+        "type": "supporting",
+        "description": "Every Fermat prime p >= 3 yields a constructible regular p-gon",
+        "leanType": "(p : ℕ) → (hp : IsFermatPrime p) → (h3 : 3 ≤ p) → IsConstructibleNgon p"
+      }
+    ],
     "lineCount": 1799,
     "axiomCount": 0,
     "theoremCount": 158,

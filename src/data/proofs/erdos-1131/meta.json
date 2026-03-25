@@ -25,7 +25,7 @@
     "erdosProblemStatus": "open",
     "axiomCount": 1,
     "theoremCount": 14,
-    "lineCount": 642,
+    "lineCount": 665,
     "assumptions": "1 axiom: erdos_1131_conjecture (OPEN). 7 sorries: chebyshev_sq_expansion (DCT identity), integral_chebyshev_sq (FTC API), product_to_sum_integral (sin/cos API), change_of_variables (hasDerivAt_cos), cos_sq_substitution (continuous_cos), chebyshev_inner_product (frequency sums), and lagrange_sum_formula (needs chebyshev_sq_expansion). All blocked on Mathlib calculus API gaps (hasDerivAt_cos, integral_sin_mul, continuous_sin/cos.comp).",
     "mathlib_version": "4.26.0"
   },
@@ -48,52 +48,108 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Module docstring summarizing Erdős Problem #1131 on minimizing $\\int \\sum |l_k(x)|^2\\,dx$ over node configurations in $[-1,1]$. Lists all proved theorems (interpolation, orthogonality, partition of unity, Cauchy-Schwarz bound, Chebyshev node properties, exact integral formula). Imports Mathlib and opens `MeasureTheory` namespace.",
+      "mathContext": "Problem: minimize $I(x_1,\\ldots,x_n) = \\int_{-1}^{1} \\sum_k |l_k(x)|^2\\,dx$. Known: $2/n \\le \\min I \\le 2 - 2/(2n-1)$."
+    },
+    {
       "id": "definitions",
-      "title": "Definitions",
-      "startLine": 43,
-      "endLine": 77,
-      "summary": "Imports Mathlib, opens MeasureTheory. Defines `NodeConfig n` (nodes in $[-1,1]$), `AreDistinct`, Lagrange basis $l_k(x) = \\prod_{i \\ne k} (x - x_i)/(x_k - x_i)$ as a finite product, and the objective functional $I = \\int_{-1}^{1} \\sum_k l_k(x)^2 \\, dx$.",
-      "mathContext": "$l_k(x) = \\prod_{i \\ne k} \\frac{x - x_i}{x_k - x_i}$, $I = \\int_{-1}^{1} \\sum_k l_k(x)^2 \\, dx$."
+      "title": "Part I: Definitions",
+      "startLine": 52,
+      "endLine": 79,
+      "summary": "Defines `NodeConfig n` (nodes in $[-1,1]$), `AreDistinct` (pairwise distinct nodes), the Lagrange basis polynomial $l_k(x)$ as a finite product over `Finset.filter`, and the objective functional `lagrangeIntegral` as the interval integral $\\int_{-1}^{1} \\sum_k l_k(x)^2\\,dx$.",
+      "mathContext": "$l_k(x) = \\prod_{i \\ne k} \\frac{x - x_i}{x_k - x_i}$, $\\quad I = \\int_{-1}^{1} \\sum_{k=1}^{n} l_k(x)^2 \\, dx$."
     },
     {
       "id": "basis-properties",
-      "title": "Basic Properties (All Proved)",
-      "startLine": 79,
-      "endLine": 138,
-      "summary": "Proves $l_k(x_k) = 1$ (interpolation), $l_k(x_j) = 0$ for $j \\ne k$ (orthogonality), connection to Mathlib's `Lagrange.basis`, and partition of unity $\\sum_k l_k(x) = 1$ via `Lagrange.sum_basis`.",
-      "mathContext": "$l_k(x_j) = \\delta_{kj}$ (Kronecker delta). Partition of unity: $\\sum_k l_k(x) = 1$."
+      "title": "Part II: Basic Properties (All Proved)",
+      "startLine": 81,
+      "endLine": 141,
+      "summary": "Four fully proved theorems: `lagrangeBasis_self` ($l_k(x_k) = 1$ by cancellation of each factor), `lagrangeBasis_other` ($l_k(x_j) = 0$ for $j \\ne k$ via the zero factor), `lagrangeBasis_eq_eval_basis` (connects to Mathlib's `Lagrange.basis` by rewriting `Polynomial.eval_prod`), and `partition_of_unity` ($\\sum_k l_k(x) = 1$ via `Lagrange.sum_basis` with injectivity of distinct nodes).",
+      "mathContext": "$l_k(x_j) = \\delta_{kj}$ (Kronecker delta). Partition of unity: $\\sum_{k=1}^{n} l_k(x) = 1$ for all $x$."
     },
     {
       "id": "lower-bound",
       "title": "Cauchy-Schwarz Lower Bound (Proved)",
-      "startLine": 140,
-      "endLine": 205,
-      "summary": "Proves pointwise $\\sum_k l_k(x)^2 \\ge 1/n$ via Cauchy-Schwarz on partition of unity, then $I \\ge 2/n$ by integral monotonicity. Uses variance identity $\\sum(l_k - 1/n)^2 = \\sum l_k^2 - 1/n \\ge 0$.",
-      "mathContext": "Cauchy-Schwarz: $(\\sum l_k)^2 \\le n \\sum l_k^2$. Since $\\sum l_k = 1$: $\\sum l_k^2 \\ge 1/n$, so $I \\ge 2/n$."
+      "startLine": 142,
+      "endLine": 213,
+      "summary": "Two proved theorems establishing the universal lower bound. `sum_sq_lagrangeBasis_ge`: pointwise $\\sum l_k(x)^2 \\ge 1/n$ proved via the variance identity $\\sum(l_k - 1/n)^2 = \\sum l_k^2 - 1/n \\ge 0$, expanding the square and using `partition_of_unity`. `lagrangeIntegral_lower_bound`: $I \\ge 2/n$ by integral monotonicity, rewriting $2/n = \\int_{-1}^{1}(1/n)\\,dx$ and applying `intervalIntegral.integral_nonneg`. Includes a note that no general upper bound exists (counterexample: $n=2$, nodes at $0$ and $\\delta$ give $I \\to \\infty$ as $\\delta \\to 0$).",
+      "mathContext": "Cauchy-Schwarz: $(\\sum l_k)^2 \\le n \\sum l_k^2$. Since $\\sum l_k = 1$: $\\sum l_k^2 \\ge 1/n$, hence $I \\ge 2/n$."
     },
     {
       "id": "chebyshev-nodes",
-      "title": "Chebyshev Nodes",
-      "startLine": 213,
-      "endLine": 329,
-      "summary": "Defines Chebyshev nodes $x_k = \\cos((2k+1)\\pi/(2n))$ (roots of $T_n$). Proves they lie in $[-1,1]$ and are distinct. Proves exact formula $I = 2 - 2(n-1)/(n(2n-1))$ (1 sorry), $I < 2$, and asymptotic estimate $\\exists c > 0$.",
-      "mathContext": "Chebyshev nodes: $x_k = \\cos\\frac{(2k+1)\\pi}{2n}$. $I_{\\text{Cheb}} = 2 - \\frac{2(n-1)}{n(2n-1)}$."
+      "title": "Part III: Chebyshev Node Definitions and Distinctness",
+      "startLine": 215,
+      "endLine": 265,
+      "summary": "Defines `chebyshevNodes n` as $x_k = \\cos((2k+1)\\pi/(2n))$ (roots of $T_n$). `chebyshevNodes_in_range`: nodes lie in $[-1,1]$ since $\\cos$ maps to $[-1,1]$. `chebyshevNodes_distinct`: proved by showing arguments $\\theta_k \\in [0,\\pi]$ are strictly increasing and $\\cos$ is strictly decreasing on $[0,\\pi]$, using `Real.strictAntiOn_cos.injOn`.",
+      "mathContext": "Chebyshev nodes of the first kind: $x_k = \\cos\\frac{(2k+1)\\pi}{2n}$, $k = 0,\\ldots,n-1$. These are zeros of $T_n(x)$."
+    },
+    {
+      "id": "chebyshev-integral-plan",
+      "title": "Part III.5: Chebyshev Integral Exact Value (Plan)",
+      "startLine": 267,
+      "endLine": 282,
+      "summary": "Detailed proof plan for the exact Chebyshev integral $I_{\\text{Cheb}}(n) = 2 - 2(n-1)/(n(2n-1))$. Outlines five steps: (1) discrete cosine vanishing $\\sum_k \\cos(r\\theta_k) = 0$ for $0 < r < 2n$, (2) DCT orthogonality, (3) Chebyshev expansion of $\\sum l_k^2$, (4) integration $\\int_{-1}^{1} T_j(x)^2\\,dx = 1 - 1/(4j^2-1)$, and (5) telescoping partial fraction sum.",
+      "mathContext": "$I_{\\text{Cheb}}(n) = 2 - \\frac{2(n-1)}{n(2n-1)}$. Key identity: $\\int_{-1}^{1} T_j(x)^2\\,dx = 1 - \\frac{1}{4j^2-1}$."
+    },
+    {
+      "id": "trig-infrastructure",
+      "title": "Trigonometric Identities and Discrete Cosine Vanishing",
+      "startLine": 284,
+      "endLine": 344,
+      "summary": "Foundational trigonometric lemmas: `two_sin_mul_cos` (product-to-sum $2\\sin a\\cos b = \\sin(a+b)+\\sin(a-b)$), `sin_nat_mul_pi` ($\\sin(m\\pi)=0$ by induction), and the key `discrete_cosine_vanishing`: $\\sum_{k=0}^{n-1}\\cos(r\\theta_k)=0$ for $0<r<2n$, proved by Abel summation — multiplying by $2\\sin(r\\pi/(2n))$, applying product-to-sum to get a telescoping sum via `Finset.sum_range_sub`, evaluating to $\\sin(r\\pi)-\\sin(0)=0$.",
+      "mathContext": "Discrete cosine vanishing: $\\sum_{k=0}^{n-1} \\cos\\!\\left(\\frac{r(2k+1)\\pi}{2n}\\right) = 0$ for $0 < r < 2n$. Proof: Abel summation with $2\\sin\\alpha\\cos\\beta = \\sin(\\alpha+\\beta)+\\sin(\\alpha-\\beta)$."
+    },
+    {
+      "id": "partial-fractions",
+      "title": "Telescoping Partial Fraction Sum (Proved)",
+      "startLine": 346,
+      "endLine": 363,
+      "summary": "Fully proved `partial_fraction_sum`: $\\sum_{j=0}^{m-1} \\frac{1}{4(j+1)^2-1} = \\frac{m}{2m+1}$, by induction on $m$. The inductive step uses `Finset.sum_range_succ`, `field_simp`, and `ring` to close the algebraic identity. This telescoping sum arises from partial fractions $\\frac{1}{(2j+1)(2j+3)} = \\frac{1}{2}\\left(\\frac{1}{2j+1}-\\frac{1}{2j+3}\\right)$.",
+      "mathContext": "$\\sum_{j=1}^{m} \\frac{1}{4j^2-1} = \\frac{m}{2m+1}$. Partial fractions: $\\frac{1}{4j^2-1} = \\frac{1}{2}\\left(\\frac{1}{2j-1}-\\frac{1}{2j+1}\\right)$."
+    },
+    {
+      "id": "integration-lemmas",
+      "title": "Integration and Substitution Lemmas",
+      "startLine": 365,
+      "endLine": 409,
+      "summary": "Six lemmas for evaluating $\\int_{-1}^{1} T_j(x)^2\\,dx$: `two_cos_mul_sin` (product-to-sum, proved), `integral_sin_mul` ($\\int_0^\\pi \\sin(k\\theta)\\,d\\theta$ by FTC — sorry, needs `hasDerivAt_cos`), `cos_nat_mul_pi` ($\\cos(m\\pi)=(-1)^m$ by induction, proved), `integral_cos_mul_sin` ($\\int_0^\\pi \\cos(2j\\theta)\\sin\\theta\\,d\\theta = -2/(4j^2-1)$ — sorry, needs `continuous_sin`), `integral_cos_substitution` (change of variables $x=\\cos\\theta$ — sorry, needs `hasDerivAt_cos`), and `integral_chebyshev_sq` ($\\int_{-1}^{1} T_j(x)^2\\,dx = 1-1/(4j^2-1)$ — sorry, blocked on `continuous_cos.comp`).",
+      "mathContext": "$\\int_0^\\pi \\sin(k\\theta)\\,d\\theta = \\frac{1-\\cos(k\\pi)}{k}$. Change of variables: $\\int_{-1}^{1} f(x)\\,dx = \\int_0^\\pi f(\\cos\\theta)\\sin\\theta\\,d\\theta$. $\\int_{-1}^{1} T_j(x)^2\\,dx = 1 - \\frac{1}{4j^2-1}$."
+    },
+    {
+      "id": "dct-orthogonality",
+      "title": "DCT Orthogonality Infrastructure",
+      "startLine": 410,
+      "endLine": 563,
+      "summary": "Discrete Cosine Transform orthogonality at Chebyshev angles, forming the backbone of the Chebyshev expansion. `two_cos_mul_cos` (product-to-sum for cosines, proved). `frequency_abel_sum`: Abel summation identity $2\\sin\\beta\\sum\\cos(2j\\beta)=(1-(-1)^s)\\sin\\beta$ using telescoping (proved). `frequency_cosine_sum_even`/`_odd`: frequency sums equal 0 (even $s$) or 1 (odd $s$), proved by factoring out $\\sin\\beta\\ne 0$. `dct_diagonal`: $1+2\\sum_{j=1}^{n-1}\\cos^2(j\\theta_k)=n$ (proved via `frequency_cosine_sum_odd`). `dct_offdiag`: $1+2\\sum\\cos(j\\theta_k)\\cos(j\\theta_m)=0$ for $k\\ne m$ (sorry — product-to-sum + parity). `chebyshev_sq_expansion`: $\\sum l_k^2 = (1/n)(1+2\\sum T_j^2)$ (sorry — needs DCT Parseval).",
+      "mathContext": "DCT orthogonality: $\\frac{1}{n}\\sum_{k=0}^{n-1}\\cos(j\\theta_k)\\cos(m\\theta_k)=\\frac{1}{2}\\delta_{jm}$ for $1\\le j,m\\le n-1$, where $\\theta_k=\\frac{(2k+1)\\pi}{2n}$. Chebyshev expansion: $\\sum_k l_k(x)^2=\\frac{1}{n}\\bigl(1+2\\sum_{j=1}^{n-1}T_j(x)^2\\bigr)$."
+    },
+    {
+      "id": "chebyshev-integral-results",
+      "title": "Chebyshev Integral: Exact Value and Estimates",
+      "startLine": 565,
+      "endLine": 629,
+      "summary": "Four theorems on the Chebyshev integral. `chebyshev_integral_trace`: trace formula $I = (1/n)(2n - 2\\sum 1/(4j^2-1))$ (sorry — needs `chebyshev_sq_expansion` + `integral_chebyshev_sq`). `chebyshev_integral_exact`: $I = 2 - 2(n-1)/(n(2n-1))$, proved by combining the trace formula with `partial_fraction_sum`. `chebyshev_integral_lt_two`: $I < 2$ since the correction term is positive (proved). `chebyshev_integral_estimate`: $\\exists c>0$ with $|I-(2-c/n)|\\le c/n^2$, proved by taking $c = n(2-I)$.",
+      "mathContext": "$I_{\\text{Cheb}}(n) = 2 - \\frac{2(n-1)}{n(2n-1)} < 2$. Asymptotically: $I_{\\text{Cheb}} = 2 - \\frac{1}{n} + O(1/n^2)$."
     },
     {
       "id": "conjecture",
-      "title": "The Main Conjecture (OPEN)",
-      "startLine": 272,
-      "endLine": 288,
-      "summary": "Defines $\\min I_n = \\inf\\{I : \\text{nodes in } [-1,1]\\}$. Erdős's conjecture (axiom): $|\\min I_n - (2 - 1/n)| \\le \\varepsilon/n$ for $n \\ge N_0(\\varepsilon)$.",
-      "mathContext": "Erdős conjecture: $\\min I = 2 - (1+o(1))/n$ as $n \\to \\infty$."
+      "title": "Part IV: The Conjecture (OPEN)",
+      "startLine": 631,
+      "endLine": 648,
+      "summary": "Defines `minLagrangeIntegral n` as $\\inf\\{I(\\mathbf{x}) : \\mathbf{x} \\in [-1,1]^n\\}$ using `sInf`. States the open conjecture as an axiom `erdos_1131_conjecture`: for every $\\varepsilon > 0$ there exists $N_0$ such that $|\\min I_n - (2 - 1/n)| \\le \\varepsilon/n$ for all $n \\ge N_0$, encoding $\\min I = 2 - (1+o(1))/n$.",
+      "mathContext": "Erdős conjecture: $\\min_{x_1,\\ldots,x_n \\in [-1,1]} I(x_1,\\ldots,x_n) = 2 - \\frac{1+o(1)}{n}$ as $n \\to \\infty$."
     },
     {
       "id": "main-theorem",
-      "title": "Main Formalized Result (Proved)",
-      "startLine": 290,
-      "endLine": 306,
-      "summary": "The theorem `erdos_1131`: for any distinct nodes in $[-1,1]$, $I \\ge 2/n$. Fully proved via the Cauchy-Schwarz lower bound.",
-      "mathContext": "$I(x_1,\\ldots,x_n) \\ge 2/n$ for all configurations."
+      "title": "Part V: Main Theorem (Proved)",
+      "startLine": 649,
+      "endLine": 665,
+      "summary": "The main formalized result `erdos_1131`: for any $n \\ge 1$ and any distinct nodes in $[-1,1]$, $I \\ge 2/n$. Proved by direct application of `lagrangeIntegral_lower_bound`. This establishes the universal lower bound while the tighter asymptotic behavior remains open (axiomatized conjecture).",
+      "mathContext": "$I(x_1,\\ldots,x_n) \\ge \\frac{2}{n}$ for all distinct configurations in $[-1,1]$."
     }
   ],
   "conclusion": {
@@ -143,7 +199,7 @@
       "MeasureTheory"
     ],
     "namespace": "Erdos1131",
-    "lineCount": 642,
+    "lineCount": 665,
     "axiomCount": 1,
     "theoremCount": 12,
     "definitionCount": 6

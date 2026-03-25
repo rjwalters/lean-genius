@@ -151,22 +151,21 @@
       "startLine": 418,
       "endLine": 488
     },
-    "type": "theorem",
-    "title": "Injectivity (Fully Proved)",
-    "content": "Proves `eval_injective_gen`: if two paths from any valid state yield the same state, the paths are equal. The 65-line proof is a structural induction on both paths simultaneously with 6 cases. Nil/nil is trivial. Nil/cons and cons/nil derive contradictions via state component monotonicity (the state must change if a step is taken). For L/L and R/R (same direction), the inductive hypothesis applies after peeling off the common prefix. The key cases are L/R and R/L: if one path goes left and the other right from the same state, `value_between_ancestors` shows the resulting values lie on opposite sides of the current mediant, contradicting equality. The final `eval_injective` specializes to the initial state $(0/1, 1/0)$.",
-    "mathContext": "$\\text{eval}(s, p_1) = \\text{eval}(s, p_2) \\implies p_1 = p_2$ for all valid states $s$ with $\\det(s) = 1$. The L/R contradiction: left yields value $< $ mediant while right yields value $> $ mediant, so equal final states are impossible.",
+    "type": "technique",
+    "title": "Injectivity (Proved)",
+    "content": "Proves that different paths from the root produce different `(pathNum, pathDen)` pairs via structural induction with BST ordering. The proof (`eval_injective_gen`) uses induction on paths, showing that at each L/R step, the BST ordering invariants (`value_between_ancestors`) force different paths to yield different rational values. The base cases use `ra_pos_of_det` and `lb_pos_of_det` from the determinant infrastructure. `eval_injective` specializes to the root state.",
+    "mathContext": "$\\text{evalPath}(p_1) = \\text{evalPath}(p_2) \\implies p_1 = p_2$. Proved by structural induction: if $p_1$ and $p_2$ first disagree at position $k$ (one goes L, the other R), then BST ordering gives $\\text{val}(p_1) < \\text{mediant} < \\text{val}(p_2)$, contradicting equality.",
     "significance": "key",
     "relatedConcepts": [
       "tree injectivity",
-      "structural induction",
-      "BST ordering contradiction",
-      "binary word encoding"
+      "binary word encoding",
+      "Stern-Brocot bijection",
+      "BST ordering"
     ],
     "prerequisites": [
       "value_between_ancestors",
       "ra_pos_of_det",
-      "lb_pos_of_det",
-      "component monotonicity lemmas"
+      "lb_pos_of_det"
     ],
     "importance": "high"
   },
@@ -199,12 +198,12 @@
     "id": "ann-sb-examples",
     "proofId": "denumerability-rationals-oq-03",
     "range": {
-      "startLine": 490,
-      "endLine": 600
+      "startLine": 401,
+      "endLine": 618
     },
     "type": "concept",
     "title": "Concrete Verification: First Three Levels of the Tree",
-    "content": "Seven verified examples confirming the first three levels of the Stern-Brocot tree: root $[] \\to 1/1$, level 1: $[L] \\to 1/2$, $[R] \\to 2/1$, level 2: $[L,L] \\to 1/3$, $[L,R] \\to 2/3$, $[R,L] \\to 3/2$, $[R,R] \\to 3/1$. Each example verifies numerator, denominator, coprimality, and ordering properties by `native_decide` or `norm_num`. These serve as computational validation that the abstract definitions produce the expected tree structure.",
+    "content": "Seven verified examples confirming the first three levels of the Stern-Brocot tree: root $[] \\to 1/1$, level 1: $[L] \\to 1/2$, $[R] \\to 2/1$, level 2: $[L,L] \\to 1/3$, $[L,R] \\to 2/3$, $[R,L] \\to 3/2$, $[R,R] \\to 3/1$. Each example verifies numerator, denominator, coprimality, and ordering properties by `native_decide` or `norm_num`. This section also includes the full `eval_injective_gen` proof and the final `eval_injective` theorem, establishing that the tree enumeration is injective.",
     "mathContext": "Level 0: $1/1$. Level 1: $1/2, 2/1$. Level 2: $1/3, 2/3, 3/2, 3/1$. All fractions are in lowest terms with the BST ordering property verified computationally.",
     "significance": "supporting",
     "relatedConcepts": [

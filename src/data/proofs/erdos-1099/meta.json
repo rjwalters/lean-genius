@@ -86,83 +86,108 @@
   },
   "sections": [
     {
-      "id": "divisors-ratios",
-      "title": "Divisors and Consecutive Ratios",
-      "summary": "Definition of τ(n), sorted divisors, and the divisor ratio list",
-      "startLine": 41,
-      "endLine": 74,
-      "mathContext": "Formal definition: Definition of τ(n), sorted divisors, and the divisor ratio list"
+      "id": "module-header",
+      "title": "Module Header and Problem Statement",
+      "summary": "File-level docstring stating Erdős Problem #1099 on divisor ratio sum boundedness, imports from Mathlib (divisors, Finset, rpow), and opens the Erdos1099 namespace.",
+      "startLine": 1,
+      "endLine": 31,
+      "mathContext": "States the problem: for $\\alpha > 1$, define $h_\\alpha(n) = \\sum_i \\left(\\frac{d_{i+1}}{d_i} - 1\\right)^\\alpha$ over consecutive divisors $1 = d_1 < d_2 < \\cdots < d_{\\tau(n)} = n$. Asks whether $\\liminf_{n \\to \\infty} h_\\alpha(n) \\ll_\\alpha 1$. Answer: YES (Vose, 1984)."
+    },
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions: τ(n) and Sorted Divisors",
+      "summary": "Defines tau (divisor count) as the cardinality of n.divisors and sortedDivisors as the sorted list of divisors of n in increasing order.",
+      "startLine": 33,
+      "endLine": 51,
+      "mathContext": "Defines $\\tau(n) = |\\{d : d \\mid n\\}|$ and the ordered divisor list $\\text{sortedDivisors}(n) = [d_1, d_2, \\ldots, d_{\\tau(n)}]$ where $d_1 \\le d_2 \\le \\cdots \\le d_{\\tau(n)}$."
+    },
+    {
+      "id": "sorted-divisor-properties",
+      "title": "Infrastructure: Sorted Divisor Properties",
+      "summary": "Proves foundational properties of sortedDivisors: 1 is a member, n is a member, the list is nonempty for n ≥ 1, elements are pairwise ≤, the list has no duplicates, all elements are positive, all elements are ≤ n, the head equals 1, and the list begins with 1 :: rest.",
+      "startLine": 53,
+      "endLine": 113,
+      "mathContext": "Establishes that for $n \\ge 1$: $1 \\in \\text{sortedDivisors}(n)$, $n \\in \\text{sortedDivisors}(n)$, the list is nonempty and sorted, every element $d$ satisfies $1 \\le d \\le n$, and $d_1 = 1$. These lemmas underpin all subsequent divisor-ratio arguments."
+    },
+    {
+      "id": "first-last-divisor",
+      "title": "First and Last Divisor Theorems",
+      "summary": "Proves that the first divisor is 1 (head? = some 1) and the last divisor is n (getLast? = some n), with supporting infrastructure for getLast and membership in pairwise-sorted lists.",
+      "startLine": 115,
+      "endLine": 178,
+      "mathContext": "Proves $d_1 = 1$ and $d_{\\tau(n)} = n$ formally via `first_divisor_is_one` and `last_divisor_is_n`. The last-divisor proof uses the fact that $n \\in \\text{sortedDivisors}(n)$ and every member is $\\le n$, so the maximum must equal $n$."
     },
     {
       "id": "h-alpha-function",
-      "title": "The h_α Function",
-      "summary": "Main function measuring divisor gap regularity",
-      "startLine": 75,
-      "endLine": 106,
-      "mathContext": "Mathematical content: Main function measuring divisor gap regularity"
+      "title": "The h_α Function and Divisor Ratios",
+      "summary": "Defines divisorRatios as the zipWith of consecutive quotients d_{i+1}/d_i, and h_alpha as the sum of (r - 1)^α over these ratios. Includes monadic normalization helpers that convert Lean 4's do/pure elaboration forms back to List.map for proof convenience.",
+      "startLine": 179,
+      "endLine": 232,
+      "mathContext": "Defines $\\text{divisorRatios}(n) = [d_2/d_1,\\, d_3/d_2,\\, \\ldots,\\, d_{\\tau}/d_{\\tau-1}]$ as rational numbers, then $h_\\alpha(n) = \\sum_{r \\in \\text{divisorRatios}(n)} (r - 1)^\\alpha$ as a real-valued sum using `Real.rpow`. The helper `h_alpha_eq_map_sum` normalizes away Lean 4 monadic elaboration."
     },
     {
-      "id": "lower-bound",
-      "title": "The Trivial Lower Bound",
-      "summary": "h_α(n) ≥ 1 for n ≥ 2",
-      "startLine": 107,
-      "endLine": 128
+      "id": "trivial-lower-bound",
+      "title": "The Trivial Lower Bound: h_α(n) ≥ 1",
+      "summary": "Proves that for n ≥ 2, the sorted divisor list has length ≥ 2 with second element d₂ ≥ 2, giving a first ratio d₂/1 ≥ 2. Then all divisor ratios are ≥ 1, and h_alpha_ge_one shows h_α(n) ≥ (2-1)^α = 1.",
+      "startLine": 234,
+      "endLine": 341,
+      "mathContext": "Key theorem: for $\\alpha > 1$ and $n \\ge 2$, $h_\\alpha(n) \\ge 1$. The proof chain is: $d_2 \\ge 2$ (since $d_2 \\ne 1$ by nodup and $d_2 > 0$), so $d_2/d_1 \\ge 2$, giving term $(2-1)^\\alpha = 1$. All other terms are nonneg since each ratio $\\ge 1$ implies $(r-1)^\\alpha \\ge 0$. Uses `Real.one_le_rpow` and `List.single_le_sum`."
     },
     {
       "id": "special-sequences",
-      "title": "Special Sequences",
-      "summary": "Factorial and lcm divisors, Erdős's open conjectures",
-      "startLine": 129,
-      "endLine": 154,
-      "mathContext": "Mathematical content: Factorial and lcm divisors, Erdős's open conjectures"
+      "title": "Special Sequences: Factorial and LCM Divisors",
+      "summary": "Defines factorialDivisors (divisors of n!) and lcmDivisors (divisors of lcm{1,...,n}). Notes that Erdős conjectured these have bounded h_α but both cases remain open.",
+      "startLine": 342,
+      "endLine": 366,
+      "mathContext": "Defines $\\text{factorialDivisors}(n) = \\{d : d \\mid n!\\}$ and $\\text{lcmDivisors}(n) = \\{d : d \\mid \\text{lcm}(1,\\ldots,n)\\}$. Erdős suggested that $h_\\alpha(n!)$ and $h_\\alpha(\\text{lcm}\\{1,\\ldots,n\\})$ remain bounded, but neither has been proved or disproved."
     },
     {
       "id": "vose-theorem",
-      "title": "Vose's Theorem (1984)",
-      "summary": "The main resolution: bounded liminf exists",
-      "startLine": 155,
-      "endLine": 195,
-      "mathContext": "Bound: The main resolution: bounded liminf exists"
+      "title": "Vose's Theorem (1984): Main Resolution",
+      "summary": "Axiomatizes Vose's two key results: (1) vose_bounded_sequence — existence of a sequence (n_k) with h_α(n_k) ≤ C_α, and (2) vose_liminf_bounded — for every ε > 0 there exists n with h_α(n) < bound + ε. The main theorem erdos_1099 derives from these that the liminf is finite.",
+      "startLine": 368,
+      "endLine": 405,
+      "mathContext": "Two axioms encode Vose's construction: $\\exists\\, C > 0,\\, (n_k)_{k \\ge 1}$ with $h_\\alpha(n_k) \\le C$ for all $k$; and $\\forall\\, \\varepsilon > 0,\\, \\exists\\, n > 0$ with $h_\\alpha(n) < B + \\varepsilon$. The theorem `erdos_1099` wraps these into $\\exists\\, C > 0$ such that $\\forall\\, \\varepsilon > 0,\\, \\exists\\, n$ with $h_\\alpha(n) < C + \\varepsilon$, resolving the problem affirmatively."
     },
     {
       "id": "related-sum",
-      "title": "The Related Sum",
-      "summary": "The sum Σ(d_{i+1}/dᵢ) and its lower bound",
-      "startLine": 196,
-      "endLine": 229,
-      "mathContext": "The sum $\\sum$(d_{i+1}/dᵢ) and its lower bound"
+      "title": "The Related Sum Σ(d_{i+1}/dᵢ)",
+      "summary": "Defines sumDivisorRatios S(n) = Σ(d_{i+1}/d_i) as a real-valued sum. Documents correction of a previously false axiom: the bound Σ ≥ τ(n) + log(n) fails for n=2, and the correct bound is Σ ≥ τ(n) - 1 + log(n).",
+      "startLine": 407,
+      "endLine": 426,
+      "mathContext": "Defines $S(n) = \\sum_i \\frac{d_{i+1}}{d_i}$, the unweighted sum of consecutive divisor ratios. Notes the corrected lower bound $S(n) \\ge \\tau(n) - 1 + \\log n$ (the earlier claim $S(n) > \\tau(n) + \\log n$ was disproved by $n = 2$: $S(2) = 2$ but $\\tau(2) + \\log 2 \\approx 2.69$)."
     },
     {
-      "id": "problem-673",
-      "title": "Connection to Problem #673",
-      "summary": "Related problem on divisor ratio functions",
-      "startLine": 230,
-      "endLine": 241,
-      "mathContext": "Mathematical content: Related problem on divisor ratio functions"
+      "id": "connection-673-and-strategy",
+      "title": "Connection to Problem #673 and Proof Strategy",
+      "summary": "Notes the relationship to Erdős #673, which studies G(n) = Σ d_i/d_{i+1} (inverse ratios). Outlines Vose's proof strategy: construct n with divisors spaced so d_{i+1}/d_i ≈ 1 + c/τ, giving h_α(n) ≈ c^α · τ^{1-α} → 0. Explains why n! and lcm{1,...,n} resist analysis.",
+      "startLine": 428,
+      "endLine": 456,
+      "mathContext": "Vose's strategy: construct $n$ with $\\tau(n)$ divisors satisfying $d_{i+1}/d_i \\approx 1 + c/\\tau$ for a constant $c$. Then $h_\\alpha(n) \\approx \\tau \\cdot (c/\\tau)^\\alpha = c^\\alpha \\cdot \\tau^{1-\\alpha} \\to 0$ as $\\tau \\to \\infty$ (since $\\alpha > 1$). The factorial $n!$ and $\\text{lcm}\\{1,\\ldots,n\\}$ have large $\\tau$ but proving uniform ratio bounds is non-trivial."
     },
     {
-      "id": "proof-strategy",
-      "title": "Proof Strategy",
-      "summary": "Vose's approach and why natural candidates remain open",
-      "startLine": 242,
-      "endLine": 264,
-      "mathContext": "Mathematical content: Vose's approach and why natural candidates remain open"
+      "id": "prime-examples",
+      "title": "Example: Primes Have Unbounded h_α",
+      "summary": "Proves prime_ratio_mem (the ratio p/1 = p appears in divisorRatios p) and prime_h_alpha_unbounded: for every M, there exists a prime p with h_α(p) > M for all α ≥ 1. Uses Nat.exists_infinite_primes to find large primes, then bounds h_α(p) ≥ (p-1)^α ≥ p-1 via Real.rpow_le_rpow_of_exponent_le.",
+      "startLine": 458,
+      "endLine": 522,
+      "mathContext": "For prime $p$, $\\text{divisors}(p) = \\{1, p\\}$ so $h_\\alpha(p) = (p-1)^\\alpha$. Since $\\alpha \\ge 1$ and $p - 1 \\ge 1$, we have $(p-1)^\\alpha \\ge p - 1$, which is unbounded. The proof uses infinitude of primes: given $M$, pick $p > M + 1$, then $h_\\alpha(p) \\ge p - 1 > M$."
     },
     {
-      "id": "examples",
-      "title": "Examples",
-      "summary": "Primes, powers of 2, and highly composite numbers",
-      "startLine": 265,
-      "endLine": 291,
-      "mathContext": "Mathematical content: Primes, powers of 2, and highly composite numbers"
+      "id": "power-of-two-analysis",
+      "title": "Powers of Two: Sorted Divisors and h_α(2^k) = k",
+      "summary": "Proves sortedDivisors(2^k) = [1, 2, 4, ..., 2^k] via sort-uniqueness of permutations. The divisorRatios of 2^k should be k copies of 2 (has 1 sorry due to Lean 4 monadic elaboration barriers in zipWith). Proves power_of_two_h_alpha: h_α(2^k) = k, since all k ratios equal 2 and (2-1)^α = 1.",
+      "startLine": 523,
+      "endLine": 597,
+      "mathContext": "For $n = 2^k$: divisors are $\\{2^0, 2^1, \\ldots, 2^k\\}$, so all $k$ consecutive ratios equal $2$. Thus $h_\\alpha(2^k) = k \\cdot (2-1)^\\alpha = k \\cdot 1 = k$, growing linearly in $k$. The `sortedDivisors_two_pow` proof uses `Nat.divisors_prime_pow` and sorted-permutation uniqueness. The `power_of_two_h_alpha` proof uses `List.sum_replicate` after rewriting through the monadic layer."
     },
     {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "Main theorem and key takeaways",
-      "startLine": 292,
-      "endLine": 320,
-      "mathContext": "Verified: Main theorem and key takeaways"
+      "id": "summary-theorem",
+      "title": "Summary: Erdős Problem #1099 Resolved",
+      "summary": "The erdos_1099_summary theorem packages both main results into a single conjunction: (1) for all α > 1, bounded liminf exists (from erdos_1099), and (2) the trivial lower bound h_α(n) ≥ 1 for n ≥ 2 (from h_alpha_ge_one). Closes the Erdos1099 namespace.",
+      "startLine": 599,
+      "endLine": 627,
+      "mathContext": "Final summary theorem: $\\forall\\, \\alpha > 1$, $\\exists\\, C > 0$ such that $\\forall\\, \\varepsilon > 0$, $\\exists\\, n > 0$ with $h_\\alpha(n) < C + \\varepsilon$ (Vose 1984), AND $\\forall\\, \\alpha > 1,\\, \\forall\\, n \\ge 2$, $h_\\alpha(n) \\ge 1$ (trivial lower bound). Together these characterize $\\liminf h_\\alpha(n) \\in [1, C_\\alpha]$."
     }
   ],
   "conclusion": {

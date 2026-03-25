@@ -4,7 +4,7 @@
     "proofId": "area-of-circle-oq-01-oq-03",
     "range": {
       "startLine": 1,
-      "endLine": 61
+      "endLine": 85
     },
     "type": "context",
     "title": "The Isoperimetric OQ Chain: From Area Formula to Global Inequality",
@@ -29,8 +29,8 @@
     "id": "ann-iso-oq03-02-circle-equality",
     "proofId": "area-of-circle-oq-01-oq-03",
     "range": {
-      "startLine": 62,
-      "endLine": 114
+      "startLine": 86,
+      "endLine": 139
     },
     "type": "insight",
     "title": "Circle Achieves Equality: C² = 4πA by Ring Computation",
@@ -53,8 +53,8 @@
     "id": "ann-iso-oq03-03-square",
     "proofId": "area-of-circle-oq-01-oq-03",
     "range": {
-      "startLine": 115,
-      "endLine": 148
+      "startLine": 139,
+      "endLine": 173
     },
     "type": "insight",
     "title": "Squares Are Suboptimal: Strict Inequality from π < 4",
@@ -77,8 +77,8 @@
     "id": "ann-iso-oq03-ngon-limit",
     "proofId": "area-of-circle-oq-01-oq-03",
     "range": {
-      "startLine": 149,
-      "endLine": 243
+      "startLine": 173,
+      "endLine": 277
     },
     "type": "technique",
     "title": "Regular n-gons Converge to Circle: tan(h)/h → 1 at h = 0",
@@ -102,13 +102,13 @@
     "id": "ann-iso-oq03-04-wirtinger",
     "proofId": "area-of-circle-oq-01-oq-03",
     "range": {
-      "startLine": 244,
-      "endLine": 355
+      "startLine": 277,
+      "endLine": 666
     },
     "type": "concept",
     "title": "Wirtinger's Inequality and SmoothClosedCurve Infrastructure",
-    "content": "Part IV introduces the SmoothClosedCurve structure and axiomatizes Wirtinger's inequality. SmoothClosedCurve has fields x, y : ℝ → ℝ (each smooth 2π-periodic), with circumference = ∫₀²π √(x'² + y'²) dt and area = (1/2)|∫₀²π (xy' - yx') dt| (Green's theorem). wirtinger_inequality is axiomatized: for smooth mean-zero periodic f, ∫f² ≤ ∫(f')². The Fourier proof would be: ∫f² = π∑(aₙ² + bₙ²) and ∫(f')² = π∑n²(aₙ² + bₙ²) ≥ ∫f². circleGamma provides the circle as SmoothClosedCurve with circumference 2πr and area πr².",
-    "mathContext": "**Wirtinger inequality**: $\\int_0^{2\\pi} f^2 \\leq \\int_0^{2\\pi}(f')^2$ for mean-zero periodic $f$. **Fourier proof**: $\\int f^2 = \\pi\\sum_{n\\geq 1}(a_n^2 + b_n^2)$ and $\\int(f')^2 = \\pi\\sum n^2(a_n^2+b_n^2) \\geq \\int f^2$. **Green's theorem area**: $A = \\frac{1}{2}|\\int_0^{2\\pi}(x(t)y'(t) - y(t)x'(t))\\,dt|$. **Equality condition**: equality iff $f = a_1\\cos t + b_1\\sin t$ (circle).",
+    "content": "Part IV proves Parseval's identity (parseval_periodic_real, via Aristotle), states fourierCoeffOn_deriv_periodic (IBP, 1 sorry), and proves the Fourier decomposition theorem and Wirtinger's inequality. SmoothClosedCurve structure has fields x, y : ℝ → ℝ (each smooth 2π-periodic), with circumference = ∫₀²π √(x'² + y'²) dt and area = (1/2)|∫₀²π (xy' - yx') dt| (Green's theorem). wirtinger_inequality is a theorem: for smooth mean-zero periodic f, ∫f² ≤ ∫(f')², proved from Fourier decomposition via hasSum_le. circleGamma provides the circle as SmoothClosedCurve with verified circumference 2πr and area πr².",
+    "mathContext": "**Parseval** (proved): $\\int_0^{2\\pi} f^2 = 2\\pi \\sum \\|\\hat{c}_n\\|^2$. **Wirtinger** (proved): $\\int_0^{2\\pi} f^2 \\leq \\int_0^{2\\pi}(f')^2$ for mean-zero periodic $f$. **Fourier proof**: $\\int f^2 = \\sum c_n^2$ and $\\int(f')^2 = \\sum n^2 c_n^2 \\geq \\int f^2$. **Green's theorem area**: $A = \\frac{1}{2}|\\int_0^{2\\pi}(x(t)y'(t) - y(t)x'(t))\\,dt|$.",
     "significance": "key",
     "relatedConcepts": [
       "wirtinger_inequality",
@@ -129,13 +129,13 @@
     "id": "ann-iso-oq03-05-sorry-analysis",
     "proofId": "area-of-circle-oq-01-oq-03",
     "range": {
-      "startLine": 356,
-      "endLine": 521
+      "startLine": 732,
+      "endLine": 1274
     },
     "type": "insight",
     "title": "Smooth Curve Inequality, Equality Characterization, and Algebraic Corollaries",
-    "content": "Parts V-VII build on Wirtinger. Part V: isoperimetric_inequality_smooth — the main sorry, using Wirtinger to prove 4πA ≤ L² for any smooth closed curve. The proof plan: constant-speed parametrization gives ∫(x'²+y'²) = 2πc²; Wirtinger gives ∫(x²+y²) ≤ 2πc²; Cauchy-Schwarz and Green's theorem close. Part VI: equality characterization (circle iff f = a₁cos + b₁sin). Part VII: algebraic corollaries from 4πA ≤ C² — bounds on area from perimeter, scale invariance of isoperimetric ratio, circle maximizes area for given perimeter.",
-    "mathContext": "**Remaining sorry**: `isoperimetric_inequality_smooth` — given `wirtinger_inequality`, prove $4\\pi A \\leq L^2$. Plan: constant-speed reparametrize so $\\int(x'^2+y'^2) = 2\\pi c^2 = L^2/(2\\pi)$; Wirtinger gives $\\int x^2 \\leq \\int(x')^2 = \\pi c^2$ (after centering); Green's: $2A = |\\int(xy'-yx')\\,dt|$; 2D C-S: $|\\int xy'\\,dt| \\leq \\sqrt{\\int x^2}\\sqrt{\\int(y')^2}$; arithmetic kernel closes. **Corollary**: $A \\leq C^2/(4\\pi)$ with equality iff circle.",
+    "content": "Parts V-VII build on Wirtinger. Part V: isoperimetric_inequality_smooth — NOW FULLY PROVED via mean subtraction (zero mean, preserves C and A), reparametrization to constant speed (exists_arclength_reparam, 1 sorry), Wirtinger sum-of-squares bound, integral Cauchy-Schwarz, area bound, and the arithmetic kernel. Part VI: equality characterization — equality_implies_circle proved algebraically (set r=C/(2π)). Part VII: algebraic corollaries from 4πA ≤ C² — bounds on area from perimeter, scale invariance, circle maximizes area.",
+    "mathContext": "**Main theorem** `isoperimetric_inequality_smooth` (proved): $4\\pi A \\leq C^2$ for any SmoothClosedCurve. **Proof**: reparametrize to constant speed + zero mean, apply Wirtinger bounds, close with arithmetic kernel. **Equality**: if $4\\pi A = C^2$ then curve is a circle ($r = C/(2\\pi)$). **Corollary**: $A \\leq C^2/(4\\pi)$ with equality iff circle.",
     "significance": "technical",
     "relatedConcepts": [
       "isoperimetric_inequality_smooth",
@@ -154,8 +154,8 @@
     "id": "ann-iso-oq03-06-arithmetic-kernel",
     "proofId": "area-of-circle-oq-01-oq-03",
     "range": {
-      "startLine": 523,
-      "endLine": 596
+      "startLine": 666,
+      "endLine": 732
     },
     "type": "concept",
     "title": "Arithmetic Kernel and 2D Cauchy-Schwarz: Fully Proved",
