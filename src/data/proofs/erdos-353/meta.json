@@ -184,7 +184,12 @@
     {
       "targetId": "erdos-988",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: geometric-measure-theory, solved"
+      "description": "Problem #988 shares the geometric measure theory framework: both study how measure conditions on point sets force the existence of specific geometric configurations. #353 focuses on infinite Lebesgue measure sets in $\\mathbb{R}^2$ and similar triangles, while #988 studies a related configuration existence problem"
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "related",
+      "description": "Both are topological/geometric existence results: Borsuk-Ulam guarantees antipodal coincidence for continuous maps from spheres, while Problem #353 guarantees geometric configurations in sets of infinite measure. Both illustrate the principle that sufficient 'size' (topological dimension, measure) forces structure"
     }
   ]
 }
