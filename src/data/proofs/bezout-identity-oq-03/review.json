@@ -93,21 +93,21 @@
       "priority": "high",
       "target": "enricher",
       "description": "Fix section line ranges in meta.json: combined should be ~141-155 (not 162-181), examples ~156-222 (not 182-241), crt-function ~224-258 (not 242-271), summary ~259-284 (not 272-284). These are off by 20+ lines.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "high",
       "target": "enricher",
       "description": "Fix truncated mathContext strings in 3 sections: existence (ends 'r'), uniqueness (ends 'divi'), examples (ends 'both '). Complete these sentences.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "medium",
       "target": "enricher",
       "description": "Reduce originalContributions from 10 items to 4: (1) CRT existence proof via Bézout formula, (2) CRT uniqueness and combined theorem, (3) Computable crtInt function with correctness proofs, (4) Bridge between Int.gcd and IsCoprime. Drop restatements, specializations, parallel formulations, and examples.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
