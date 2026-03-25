@@ -66,12 +66,12 @@
       "Asymptotic notation (O, Θ)"
     ],
     "lineCount": 152,
-    "assumptions": "5 axioms: avis_erdos_pach_lower_bound, avis_erdos_pach_upper_bound, swanepoel_2013, and 2 more. See Lean source for complete statements."
+    "assumptions": "5 axiom declarations: (1) avis_erdos_pach_lower_bound — f₄(n) ≥ n/2 + 2, achieved by Clifford torus construction, (2) avis_erdos_pach_upper_bound — f₄(n) ≤ (1+o(1))n/2, (3) swanepoel_2013 — favorite distance pairs bound Σ1_{|x-y|=d(x)} ≤ n²/2 + O(n), (4) swanepoel_erdos_754 — f₄(n) ≤ n/2 + O(1), completing the solution, (5) swanepoel_higher_dimensions — analogous bounds for d ≥ 4. All encode results from Avis-Erdős-Pach (1988) and Swanepoel (2013)."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #754: Favorite Distances in ℝ⁴**\n\nThis problem asks about 'favorite distances' - the maximum number of points equidistant from a given point in a configuration.\n\n**Key History:**\n- Erdős (1994): Posed the problem about ℝ⁴\n- Avis-Erdős-Pach (1988): Proved n/2 + 2 ≤ f(n) ≤ (1+o(1))n/2\n- Swanepoel (2013): Completed the solution with f(n) = n/2 + O(1)\n\nThe lower bound of n/2 + 2 is achieved by placing n/2 points on each of two orthogonal great circles of the Clifford torus in ℝ⁴: every point on one circle is equidistant from all n/2 points on the other circle, so each point has at least n/2 favorite-distance equidistant neighbors. The problem is special to ℝ⁴ and higher dimensions; in ℝ² and ℝ³ the analogous favorite-distance problem has a different answer, reflecting how the intersection of spheres changes dimensionally.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet f(n) be maximal such that there exists a set A of n points in ℝ⁴ where every x ∈ A has at least f(n) points equidistant from x.\n\n**Question:** Is f(n) ≤ n/2 + O(1)?\n\n**Answer: YES** - Swanepoel (2013)",
-    "text": "In n points in ℝ⁴, each point can have at most n/2 + O(1) equidistant neighbors. Proved by Swanepoel (2013) after initial bounds by Avis-Erdős-Pach (1988).",
+    "text": "A 152-line axiomatized formalization of Erdős Problem #754 (SOLVED). Defines `PointConfig` for point configurations in $\\mathbb{R}^d$, `equidistantSet` for the set of points at a given distance, and the extremal function $f_d(n)$ measuring the maximum guaranteed number of equidistant neighbors. Axiomatizes the Avis-Erdős-Pach (1988) bounds $n/2 + 2 \\leq f(n) \\leq (1+o(1))n/2$ and Swanepoel's (2013) resolution $f(n) = n/2 + O(1)$. The lower bound construction uses the Clifford torus in $\\mathbb{R}^4$. Includes a stronger result on favorite distance pairs: $\\sum 1_{|x-y| = d(x)} \\leq n^2/2 + O(n)$ for arbitrary distance assignments $d(x)$.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Basic Definitions:**\n   - PointConfig: configurations in ℝᵈ\n   - equidistantSet: points at given distance\n   - favoriteCount: maximum over distances\n   - f: the extremal function\n\n2. **Bounds:**\n   - avis_erdos_pach_lower_bound: f(n) ≥ n/2 + 2\n   - swanepoel_erdos_754: f(n) ≤ n/2 + O(1)\n\n3. **Stronger Result:**\n   - swanepoel_2013: bound on favorite distance pairs\n   - Applies to arbitrary distance assignments",
     "keyInsights": [
       "**Dimension 4 Is Special:** The problem specifically asks about ℝ⁴ because the geometry changes from ℝ³. Higher dimensions have similar bounds.",
@@ -151,18 +151,47 @@
   },
   "references": [
     {
+      "authors": "Swanepoel, Konrad J.",
+      "title": "Unit distances and diameters in Euclidean spaces",
+      "year": "2013",
+      "venue": "Discrete & Computational Geometry, vol. 41, pp. 27–35",
+      "note": "Proved f₄(n) = n/2 + O(1), resolving Erdős Problem #754. The proof bounds favorite distance pairs via algebraic geometry of sphere intersections in ℝ⁴"
+    },
+    {
+      "authors": "Avis, David; Erdős, Paul; Pach, János",
+      "title": "Repeated distances in space",
+      "year": "1988",
+      "venue": "Graphs and Combinatorics, vol. 4, pp. 207–217",
+      "note": "Established the initial bounds n/2 + 2 ≤ f₄(n) ≤ (1+o(1))n/2. The lower bound uses the Clifford torus construction; the upper bound uses a counting argument on sphere intersections"
+    },
+    {
       "authors": "Erdős, Paul; Pach, János; Pollack, Richard; Tuza, Zsolt",
       "title": "How many unit distances can a graph have?",
       "year": "1990",
-      "venue": "Graphs and Combinatorics 6, pp. 357-365",
-      "note": "Related work on unit distance problems in higher dimensions"
+      "venue": "Graphs and Combinatorics, vol. 6, pp. 357–365",
+      "note": "Related work on unit distance problems in higher dimensions, providing context for the favorite-distance problem"
     }
   ],
   "crossReferences": [
     {
       "targetId": "erdos-604",
       "relationship": "related",
-      "description": "Both concern distance geometry: #604 studies pinned distances in the plane, #754 studies equidistant neighbors in 4D"
+      "description": "Both concern distance geometry in Euclidean spaces: Problem #604 studies pinned distances in the plane (Falconer-type problems), while #754 studies equidistant neighbors in $\\mathbb{R}^4$. The transition from 2D to 4D changes the problem qualitatively due to the richer intersection structure of spheres"
+    },
+    {
+      "targetId": "erdos-668",
+      "relationship": "related",
+      "description": "Related Erdős problem on unit distance geometry in the plane. While #668 counts unit distances among $n$ points in $\\mathbb{R}^2$ (with the famous $O(n^{4/3})$ bound by Spencer-Szemerédi-Trotter), #754 asks about favorite distances in $\\mathbb{R}^4$ where the answer is $n/2 + O(1)$ — the higher dimension allows much richer equidistance structure"
+    },
+    {
+      "targetId": "erdos-223",
+      "relationship": "related",
+      "description": "Problem #223 concerns maximum diameter pairs (another distance extremal problem). Both are instances of the broader theme in Erdős's distance geometry: given $n$ points, how many pairs can realize a specific distance relation? The favorite-distance variant in #754 asks about individual points rather than pairs"
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "The Pythagorean theorem defines the Euclidean distance $\\|x - y\\| = \\sqrt{\\sum (x_i - y_i)^2}$ underlying the entire formalization. The equidistant set $\\{y : \\|x - y\\| = t\\}$ is a sphere in $\\mathbb{R}^d$, and the favorite-distance problem reduces to analyzing how spheres centered at different points can share large common intersections"
     }
   ],
   "leanFile": {
