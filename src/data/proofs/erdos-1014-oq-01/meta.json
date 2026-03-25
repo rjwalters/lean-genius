@@ -60,16 +60,24 @@
       "mathContext": "Standard result from real analysis. The bound follows from $\\log l / l \\to 0$ and $(l+1)/l \\leq 2$."
     },
     {
-      "id": "main-theorem",
-      "title": "Main Theorem: R(3,l+1)/R(3,l) → 1",
+      "id": "main-theorem-setup",
+      "title": "Main Theorem: Statement and Setup",
       "startLine": 101,
+      "endLine": 136,
+      "summary": "Statement of `erdos_1014_k3_ratio_convergence` in $\\varepsilon$-$N$ form. Setup: extract lower bound constant $c$ and threshold $L_1$, analysis threshold $L_2$, combined threshold $L_0 = \\max(L_1, L_2, 2)$. Cast Ramsey values to reals, establish $R > 0$ from `ramsey_pos`, and $R' \\geq R$ from monotonicity.",
+      "mathContext": "For $l > L_0 = \\max(L_1, L_2, 2)$: the Kim-Shearer lower bound holds, the analysis lemma applies, and $\\log l > 0$ (since $l \\geq 3$)."
+    },
+    {
+      "id": "main-theorem-calc",
+      "title": "Main Theorem: Calc Chain and Conclusion",
+      "startLine": 137,
       "endLine": 167,
-      "summary": "**Proved (modulo analysis lemma).** Combines the increment bound, lower bound, and analysis to show $|R(3,l+1)/R(3,l) - 1| \\leq (l+1) \\cdot \\log l / (c \\cdot l^2) \\to 0$.",
-      "mathContext": "The proof chain: monotonicity gives $|R(3,l+1)/R(3,l) - 1| = (R(3,l+1) - R(3,l))/R(3,l)$; the increment bound gives $\\leq (l+1)/R(3,l)$; the lower bound gives $\\leq (l+1) \\cdot \\log l / (c \\cdot l^2)$; analysis gives $\\to 0$. This shows $\\Theta$ bounds suffice for $k=3$ when combined with the recurrence."
+      "summary": "The core argument: $|R'/R - 1| = (R'-R)/R$ (monotonicity eliminates absolute value), $(R'-R)/R \\leq (l+1)/R$ (increment bound), $(l+1)/R \\leq (l+1) \\cdot \\log l / (c \\cdot l^2)$ (lower bound on denominator), and the final bound $< \\varepsilon$ (analysis lemma). The calc block uses `div_le_div_of_nonneg_right`, `div_le_div_of_nonneg_left`, and algebraic simplification via `div_div_eq_mul_div`.",
+      "mathContext": "$\\left|\\frac{R'}{R} - 1\\right| = \\frac{R'-R}{R} \\leq \\frac{l+1}{R} \\leq \\frac{l+1}{c \\cdot l^2/\\log l} = \\frac{(l+1)\\log l}{c \\cdot l^2} < \\varepsilon$"
     }
   ],
   "overview": {
-    "historicalContext": "Erdős asked in 1971 whether R(k,l+1)/R(k,l) → 1 for fixed k ≥ 3. The widespread belief was that the known Θ(l²/log l) bounds for R(3,l) were insufficient because the constants in the upper and lower bounds differ. This formalization shows that the recurrence relation provides an independent constraint on the increment R(3,l+1) - R(3,l) ≤ l+1 that, combined with only the lower bound, yields ratio convergence.",
+    "historicalContext": "Erdős Problem #1014 (first posed circa 1971) asks whether $R(k, l+1)/R(k, l) \\to 1$ for each fixed $k \\geq 3$. This sits at the intersection of Ramsey theory and asymptotic analysis. For $k = 3$, the order of magnitude of $R(3, l)$ was determined over two decades: the upper bound $R(3, l) \\leq O(l^2/\\log l)$ was proved by Ajtai, Komlós, and Szemerédi (1980) using a seminal application of the probabilistic method, and the matching lower bound $R(3, l) \\geq c \\cdot l^2/\\log l$ was established independently by Kim (1995) using a 'semi-random' method and Shearer (1995) via entropy. Mattheus and Verstraëte (2024) recently improved the constant to $(1/4 - o(1))$. Despite these $\\Theta$-level bounds, the ratio convergence question was widely believed to require exact asymptotics because the upper and lower bound constants differ. This formalization refutes that belief: the recurrence relation provides an independent constraint on the increment $R(3, l+1) - R(3, l) \\leq l+1$ that, combined with only the lower bound, proves ratio convergence via a squeeze argument.",
     "problemStatement": "Prove R(3, l+1)/R(3, l) → 1 as l → ∞.",
     "text": "For k = 3, the Ramsey recurrence R(3,l+1) ≤ R(3,l) + R(2,l+1) = R(3,l) + (l+1) bounds the increment linearly. Combined with R(3,l) ≥ c·l²/log l (Kim-Shearer), this gives R(3,l+1)/R(3,l) - 1 ≤ O(log l / l) → 0.",
     "proofStrategy": "Squeeze theorem: monotonicity gives 1 ≤ R(3,l+1)/R(3,l), and the recurrence plus lower bound give R(3,l+1)/R(3,l) ≤ 1 + O(log l/l). The ratio is squeezed to 1.",
@@ -77,7 +85,8 @@
       "**Recurrence as increment bound**: R(3,l+1) ≤ R(3,l) + R(2,l+1) = R(3,l) + (l+1) shows consecutive Ramsey numbers differ by at most l+1, far less than their magnitude Θ(l²/log l)",
       "**Only the lower bound is needed**: The upper bound R(3,l) ≤ C·l²/log l is not used at all. The recurrence provides the upper bound on the ratio directly",
       "**Θ bounds do suffice for k=3**: Contrary to the common claim that exact asymptotics are needed, the combination of recurrence + lower bound resolves the k=3 case",
-      "**Rate of convergence**: The proof gives an explicit rate: |R(3,l+1)/R(3,l) - 1| = O(log l / l)"
+      "**Rate of convergence**: The proof gives an explicit rate: |R(3,l+1)/R(3,l) - 1| = O(log l / l)",
+      "**Monotonicity eliminates absolute value**: Since R(3,l) ≤ R(3,l+1) by monotonicity, the ratio R(3,l+1)/R(3,l) ≥ 1, so |R(3,l+1)/R(3,l) - 1| = R(3,l+1)/R(3,l) - 1. This reduces the convergence to a one-sided bound, a common technique in ratio limit proofs for monotone sequences"
     ],
     "prerequisites": [
       "Ramsey theory (recurrence, monotonicity, R(2,l) = l)",
@@ -103,9 +112,52 @@
     "definitionCount": 0
   },
   "references": [
-    "Kim (1995): Lower bound R(3,l) ≥ c·l²/log l",
-    "Shearer (1995): Improved constant in lower bound",
-    "Erdős [Er71], Problem 1014",
-    "https://erdosproblems.com/1014"
+    {
+      "key": "Kim95",
+      "authors": ["J.H. Kim"],
+      "title": "The Ramsey number R(3,t) has order of magnitude t²/log t",
+      "venue": "Random Structures & Algorithms",
+      "year": "1995",
+      "volume": "7",
+      "pages": "173-207",
+      "note": "Proved R(3,t) ≥ c·t²/log t using the semi-random method; axiomatized in R3_lower_bound"
+    },
+    {
+      "key": "She95",
+      "authors": ["J.B. Shearer"],
+      "title": "On the independence number of sparse graphs",
+      "venue": "Random Structures & Algorithms",
+      "year": "1995",
+      "volume": "7",
+      "pages": "269-271",
+      "note": "Alternative proof of R(3,t) ≥ c·t²/log t via entropy method"
+    },
+    {
+      "key": "AKS80",
+      "authors": ["M. Ajtai", "J. Komlós", "E. Szemerédi"],
+      "title": "A note on Ramsey numbers",
+      "venue": "Journal of Combinatorial Theory, Series A",
+      "year": "1980",
+      "volume": "29",
+      "pages": "354-360",
+      "note": "Upper bound R(3,l) ≤ O(l²/log l), completing the Θ(l²/log l) determination"
+    },
+    {
+      "key": "MV24",
+      "authors": ["S. Mattheus", "J. Verstraëte"],
+      "title": "The asymptotics of r(4,t)",
+      "venue": "Annals of Mathematics",
+      "year": "2024",
+      "volume": "199",
+      "pages": "919-941",
+      "note": "Proved R(3,t) ≥ (1/4-o(1))t²/log t, sharpening Kim-Shearer"
+    },
+    {
+      "key": "Er71",
+      "authors": ["P. Erdős"],
+      "title": "Some unsolved problems in graph theory and combinatorial analysis",
+      "year": "1971",
+      "note": "Original source of Problem #1014 asking whether R(k,l+1)/R(k,l) → 1"
+    }
   ]
 }

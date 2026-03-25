@@ -86,52 +86,76 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Problem Overview and Imports",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Documents Erdős Problem #103 and the investigation goals: metric properties, isometry group structure, counterexample to unbounded↔tends-to-infinity, and corrected conjecture formulation. Imports Mathlib.",
+      "mathContext": "Erdős #103 (1994): $h(n) = |\\{P \\subset \\mathbb{R}^2 : |P|=n, d_{\\min} \\geq 1, \\text{diam minimal}\\} / {\\cong}|$. Question: $h(n) \\to \\infty$?"
+    },
+    {
       "id": "definitions",
-      "title": "Basic Definitions",
-      "startLine": 55,
-      "endLine": 82,
+      "title": "Core Definitions",
+      "startLine": 50,
+      "endLine": 72,
       "summary": "Defines PointConfig, pointDist (Euclidean distance), HasMinSeparation, Isometry2D (distance-preserving map), and AreCongruent (related by isometry).",
       "mathContext": "A point configuration is $\\text{Fin}\\, n \\to \\mathbb{R}^2$. Distance $d(p,q) = \\sqrt{(p_1-q_1)^2 + (p_2-q_2)^2}$. Configurations $P \\cong Q$ if $\\exists \\sigma$ distance-preserving with $Q_i = \\sigma(P_i)$."
     },
     {
       "id": "metric-properties",
       "title": "pointDist Metric Properties",
-      "startLine": 84,
-      "endLine": 121,
+      "startLine": 74,
+      "endLine": 116,
       "summary": "Proves pointDist is nonneg, reflexive (d(p,p)=0), symmetric, and definite (d(p,q)=0 iff p=q). Definiteness uses sq_eq_zero_iff to extract p.1=q.1, p.2=q.2 from squared distance = 0.",
       "mathContext": "$d(p,q) = 0 \\iff (p_1 - q_1)^2 + (p_2 - q_2)^2 = 0 \\iff p_1 = q_1 \\land p_2 = q_2 \\iff p = q$."
     },
     {
       "id": "isometry-properties",
-      "title": "Isometry Properties",
-      "startLine": 123,
-      "endLine": 188,
+      "title": "Isometry Properties and Group Structure",
+      "startLine": 117,
+      "endLine": 181,
       "summary": "Proves isometry injectivity from definiteness. Axiomatizes surjectivity (Mazur-Ulam). Constructs identity, composition, and inverse isometries. Proves inv_comp (left inverse) and comp_inv (right inverse).",
       "mathContext": "Injectivity: $\\sigma(p) = \\sigma(q) \\Rightarrow d(\\sigma(p), \\sigma(q)) = 0 \\Rightarrow d(p,q) = 0 \\Rightarrow p = q$. Inverse: $\\sigma^{-1} = \\text{surjInv}(\\sigma)$, a two-sided inverse by injectivity + surjectivity."
     },
     {
       "id": "congruence-relation",
       "title": "Congruence Equivalence Relation",
-      "startLine": 190,
-      "endLine": 220,
+      "startLine": 183,
+      "endLine": 213,
       "summary": "Proves congruence is reflexive (via identity isometry), symmetric (via inverse isometry, eliminating sorry from parent), and transitive (via composition). Also proves congruence preserves minimum separation.",
       "mathContext": "Symmetry: $P \\cong Q$ via $\\sigma \\Rightarrow Q \\cong P$ via $\\sigma^{-1}$, since $\\sigma^{-1}(Q_i) = \\sigma^{-1}(\\sigma(P_i)) = P_i$."
     },
     {
       "id": "counterexample",
       "title": "Unbounded Does Not Imply Tends to Infinity",
-      "startLine": 222,
-      "endLine": 259,
+      "startLine": 215,
+      "endLine": 252,
       "summary": "Defines the oscillating function (n if even, 0 if odd). Proves it is unbounded (take n=2(C+1)) and does NOT tend to infinity (odd 2N+1 always gives 0). Combines these to show the general implication fails.",
       "mathContext": "Define $f(n) = n$ if $n$ even, $f(n) = 0$ if $n$ odd. Then $\\forall C, \\exists n, f(n) > C$ but $\\neg(\\forall C, \\exists N, \\forall n \\geq N, f(n) > C)$."
     },
     {
       "id": "correct-equivalence",
       "title": "Correct Equivalence with Monotonicity",
-      "startLine": 261,
+      "startLine": 254,
       "endLine": 317,
-      "summary": "Proves: for monotone f, unbounded iff tends to infinity. States corrected conjecture formulation for h(n) requiring monotonicity. Proves conjecture chain: h->inf => weak (h>=2 eventually) => very weak (h>=2 infinitely often).",
-      "mathContext": "For monotone $f$: $f(N_0) > C$ and $n \\geq N_0 \\Rightarrow f(n) \\geq f(N_0) > C$. The chain: $h \\to \\infty \\Rightarrow h(n) \\geq 2$ eventually $\\Rightarrow h(n) \\geq 2$ infinitely often."
+      "summary": "Proves: for monotone f, unbounded iff tends to infinity. States corrected conjecture formulation for h(n) requiring monotonicity.",
+      "mathContext": "For monotone $f$: $f(N_0) > C$ and $n \\geq N_0 \\Rightarrow f(n) \\geq f(N_0) > C$."
+    },
+    {
+      "id": "structural-properties",
+      "title": "Conjecture Hierarchy and Structural Questions",
+      "startLine": 319,
+      "endLine": 354,
+      "summary": "Defines the conjecture chain: Strong (h→∞) => Weak (h≥2 eventually) => Very Weak (h≥2 infinitely often). Highlights monotonicity of h as an independent open question.",
+      "mathContext": "Strong: $\\forall C, \\exists N, \\forall n \\geq N, h(n) > C$. Weak: $\\exists N, \\forall n \\geq N, h(n) \\geq 2$. Very weak: $\\forall N, \\exists n \\geq N, h(n) \\geq 2$."
+    },
+    {
+      "id": "verification",
+      "title": "Export and Verification",
+      "startLine": 356,
+      "endLine": 368,
+      "summary": "#check statements verifying all main results: pointDist_eq_zero_iff, isometry2D_injective, congruent_symm, oscillating_unbounded/not_tendsto, unbounded_not_implies_tendsto, mono_unbounded_iff_tendsto, conjecture_equiv_mono, conjecture_chain.",
+      "mathContext": "Lean's #check confirms type-correctness of all 11 exported theorems."
     }
   ],
   "conclusion": {
@@ -142,12 +166,6 @@
       "Can we compute h(4)? The optimal 4-point configuration with separation >= 1 and minimal diameter is known, but counting incongruent optima requires careful analysis.",
       "Is h eventually monotone (monotone for n >= N0)? This weaker condition still suffices for the equivalence.",
       "Can boundary perturbation arguments provide lower bounds on h(n) for large n?"
-    ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-103",
-        "relationship": "Parent problem: this OQ investigates the main conjecture and corrects a logical error in the parent formalization"
-      }
     ]
   },
   "crossReferences": [
@@ -181,7 +199,7 @@
     "imports": ["Mathlib"],
     "opens": ["Metric", "Set", "Finset"],
     "namespace": "Erdos103OQ01",
-    "lineCount": 367,
+    "lineCount": 368,
     "axiomCount": 3,
     "theoremCount": 23,
     "definitionCount": 14
