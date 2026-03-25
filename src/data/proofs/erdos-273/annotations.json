@@ -1,5 +1,27 @@
 [
   {
+    "id": "erdos-273-header",
+    "proofId": "erdos-273",
+    "type": "context",
+    "range": {
+      "startLine": 1,
+      "endLine": 21
+    },
+    "title": "Module Documentation and Imports",
+    "content": "The module docstring introduces Erdős Problem #273: is there a covering system all of whose moduli are of the form $p - 1$ for primes $p \\geq 5$? A covering system is a finite collection of residue classes $a_i \\pmod{m_i}$ that covers all of $\\mathbb{Z}$. The constraint $m_i = p_i - 1$ with $p_i \\geq 5$ means moduli must be of the form 4, 6, 10, 12, 16, 18, 22, ... (one less than a prime $\\geq 5$). Selfridge found a covering system with moduli dividing 360 when $p = 3$ is allowed. The problem is OPEN. Imports the full Mathlib library and increases `maxRecDepth` to 1024 for the verification proofs.",
+    "mathContext": "A covering system $\\{a_i \\pmod{m_i}\\}_{i=1}^n$ satisfies $\\bigcup_{i=1}^n \\{z \\in \\mathbb{Z} : z \\equiv a_i \\pmod{m_i}\\} = \\mathbb{Z}$. The constraint: each $m_i = p_i - 1$ for some prime $p_i \\geq 5$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "covering systems",
+      "residue classes",
+      "primes minus one"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "Mathlib"
+    ]
+  },
+  {
     "id": "erdos-273-covering-def",
     "proofId": "erdos-273",
     "type": "definition",
@@ -119,6 +141,31 @@
       "LCM properties",
       "Finset operations",
       "noncomputable keyword"
+    ]
+  },
+  {
+    "id": "erdos-273-counting-lemmas",
+    "proofId": "erdos-273",
+    "type": "technique",
+    "range": {
+      "startLine": 101,
+      "endLine": 137
+    },
+    "title": "Residue Class Counting and System Non-Degeneracy",
+    "content": "Two key supporting theorems. `card_residue_class_nat` proves that among $\\{0, \\ldots, N-1\\}$, the residue class $\\{z : z \\equiv r \\pmod{m}\\}$ has exactly $N/m$ elements when $m \\mid N$. The proof constructs an explicit bijection $j \\mapsto r + jm$ from $\\{0, \\ldots, N/m - 1\\}$ to the residue class, with injectivity from `mul_right_cancel₀` and surjectivity via `Nat.div_add_mod`. This counting lemma is essential for the reciprocal sum theorem: it converts the covering condition into a cardinality bound via double-counting. `CoveringSystem.n_pos` proves $n \\geq 1$ for any covering system by contradiction: if $n = 0$, the index type `Fin 0` is empty, so no class covers $0$.",
+    "mathContext": "$|\\{z \\in [0, N) : z \\equiv r \\pmod{m}\\}| = N/m$ when $m \\mid N$. The bijection $j \\mapsto r + jm$ maps $[0, N/m)$ to the residue class. For covering systems: $n \\geq 1$ since $\\bigcup_{i=1}^0 = \\emptyset \\neq \\mathbb{Z}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "residue class counting",
+      "bijective proof",
+      "Nat.div_add_mod",
+      "Finset.card_image_of_injective"
+    ],
+    "prerequisites": [
+      "Finset.range",
+      "Finset.filter",
+      "Nat.mod_eq_of_lt",
+      "mul_right_cancel₀"
     ]
   },
   {
