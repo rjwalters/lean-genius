@@ -155,30 +155,68 @@
       "Is there a continuous analogue: what is $\\sup \\int_F s\\, d\\mu$ over packings of infinitely many squares?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "conjecture_equiv",
+      "type": "core",
+      "description": "The conjecture f(k²+1) = k is equivalent to f(k²+1) = f(k²) — one extra square beyond a perfect grid never helps",
+      "leanType": "∀ k : ℕ, k ≥ 1 → (f (k^2 + 1) = k ↔ f (k^2 + 1) = f (k^2))"
+    },
+    {
+      "name": "perfect_square_plateau",
+      "type": "core",
+      "description": "k² is a plateau point iff the conjecture holds at k: k² ∈ plateauSet ↔ f(k²+1) = k",
+      "leanType": "(k : ℕ) → k ≥ 1 → (k^2 ∈ plateauSet ↔ f (k^2 + 1) = k)"
+    },
+    {
+      "name": "one_in_plateau",
+      "type": "supporting",
+      "description": "1 is a plateau point: f(2) = f(1) = 1, the base case proved from f_1 and f_2 axioms",
+      "leanType": "1 ∈ plateauSet"
+    },
+    {
+      "name": "f_upper_bound",
+      "type": "supporting",
+      "description": "Cauchy-Schwarz bound: f(n) ≤ √n for all n",
+      "leanType": "(n : ℕ) → f n ≤ Real.sqrt n"
+    },
+    {
+      "name": "bku_theorem",
+      "type": "axiom",
+      "description": "Baek-Koizumi-Ueoro (2024): g(k²+1) = k for axis-parallel squares, resolving the restricted problem",
+      "leanType": "∀ k : ℕ, k ≥ 1 → g (k^2 + 1) = k"
+    }
+  ],
   "crossReferences": [
     {
-      "relationship": "Erdős Problem #99 asks whether minimal-diameter point sets with unit minimum distance must contain equilateral triangles — another packing optimality problem where Cauchy-Schwarz type arguments yield tight bounds on configurations.",
-      "targetId": "erdos-99"
+      "targetId": "erdos-99",
+      "relationship": "related",
+      "description": "Both are packing optimality problems: #99 asks about minimal-diameter point sets with unit minimum distance, #106 about maximizing side-length sum. Both use Cauchy-Schwarz type arguments for tight bounds"
     },
     {
-      "relationship": "Erdős Problem #103 counts incongruent optimal point configurations minimizing diameter, paralleling the question of how many combinatorially distinct optimal packings achieve f(k²) = k.",
-      "targetId": "erdos-103"
+      "targetId": "erdos-103",
+      "relationship": "related",
+      "description": "Both concern optimal discrete geometric configurations: #103 counts incongruent optimal point sets minimizing diameter, #106 asks about optimal square packings at perfect squares"
     },
     {
-      "relationship": "The Cauchy-Schwarz inequality is the central analytic tool: (Σsᵢ)² ≤ n·Σsᵢ² ≤ n gives f(n) ≤ √n, tight at perfect squares. The entire conjecture concerns when this bound can be matched just beyond a perfect square.",
-      "targetId": "cauchy-schwarz"
+      "targetId": "cauchy-schwarz",
+      "relationship": "foundational",
+      "description": "The central analytic tool: (Σsᵢ)² ≤ n·Σsᵢ² ≤ n gives f(n) ≤ √n, tight at perfect squares. The entire conjecture concerns behavior just beyond these tight points"
     },
     {
-      "relationship": "The isoperimetric theorem is the prototype extremal geometry result: asking which shape maximizes area for fixed perimeter. The square packing problem similarly asks which packing maximizes total side length under a containment constraint, exhibiting the same rigidity-at-extrema phenomenon.",
-      "targetId": "isoperimetric-theorem"
+      "targetId": "isoperimetric-theorem",
+      "relationship": "related",
+      "description": "Prototype extremal geometry result: both ask which configuration maximizes an objective under a containment constraint, exhibiting the same rigidity-at-extrema phenomenon"
     },
     {
-      "relationship": "The Happy Ending Problem (Erdős–Szekeres) is a foundational Erdős combinatorial geometry problem where exact thresholds are conjectured for finite configurations. Like Problem #106, it features a well-known lower bound construction (convex position) and a long-open matching upper bound.",
-      "targetId": "erdos-107"
+      "targetId": "erdos-107",
+      "relationship": "related",
+      "description": "The Happy Ending Problem features a conjectured tight threshold for finite configurations, like #106. Both have known lower bound constructions and long-open matching upper bounds"
     },
     {
-      "relationship": "The Borsuk-Ulam theorem is a cornerstone of combinatorial topology applied to geometry. The axis-parallel BKU (2024) resolution of Problem #106 used topological and measure-theoretic techniques, placing the problem in the broader tradition of applying analytic tools to packing questions.",
-      "targetId": "borsuk-ulam"
+      "targetId": "borsuk-ulam",
+      "relationship": "related",
+      "description": "The BKU (2024) axis-parallel resolution used topological and measure-theoretic techniques, connecting to the broader tradition of applying analytic topology to packing questions"
     }
   ],
   "references": [
