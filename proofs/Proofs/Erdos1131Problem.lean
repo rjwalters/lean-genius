@@ -135,31 +135,64 @@ theorem partition_of_unity (n : ℕ) (hn : n ≥ 1) (nodes : Fin n → ℝ)
   exact heval
 
 /--
-**Pointwise lower bound**: ∑ₖ l_k(x)² ≥ 1/n via partition of unity + variance bound.
+**Pointwise lower bound**: ∑ₖ l_k(x)² ≥ 1/n via variance bound on partition of unity.
+
+The variance identity ∑(l_k - 1/n)² = ∑l_k² - 1/n together with non-negativity
+of sums of squares gives ∑l_k² ≥ 1/n.
 -/
 theorem sum_sq_lagrangeBasis_ge (n : ℕ) (hn : n ≥ 1) (nodes : Fin n → ℝ)
     (hd : AreDistinct n nodes) (x : ℝ) :
     ∑ k : Fin n, (lagrangeBasis n nodes k x) ^ 2 ≥ 1 / n := by
   have hpou := partition_of_unity n hn nodes hd x
   have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr (by omega)
-  -- Cauchy-Schwarz / variance: 0 ≤ ∑(l_k - 1/n)² = ∑l_k² - 1/n
+  have hn_ne : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
   rw [ge_iff_le, ← sub_nonneg]
+  -- Variance: 0 ≤ ∑(l_k - 1/n)²
   have hvar : 0 ≤ ∑ k : Fin n, (lagrangeBasis n nodes k x - 1 / ↑n) ^ 2 :=
     Finset.sum_nonneg fun k _ => sq_nonneg _
-  sorry
+  -- Expand (a - c)² = a² + (-2c·a + c²) and distribute sum
+  have hexp : ∀ k : Fin n, (lagrangeBasis n nodes k x - 1 / ↑n) ^ 2 =
+    (lagrangeBasis n nodes k x) ^ 2 +
+    (-(2 / ↑n) * lagrangeBasis n nodes k x + 1 / ↑n ^ 2) := by intro k; ring
+  simp_rw [hexp] at hvar
+  rw [Finset.sum_add_distrib] at hvar
+  -- Factor the remainder sum: ∑(-(2/n)·l_k + 1/n²) = -(2/n)·∑l_k + n·(1/n²)
+  rw [show ∑ k : Fin n, (-(2 / ↑n) * lagrangeBasis n nodes k x + 1 / ↑n ^ 2) =
+      -(2 / ↑n) * ∑ k : Fin n, lagrangeBasis n nodes k x + ↑n * (1 / ↑n ^ 2) from by
+    rw [Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_const, Finset.card_fin,
+        nsmul_eq_mul]] at hvar
+  rw [hpou, mul_one] at hvar
+  -- hvar : 0 ≤ ∑l_k² + (-(2/n) + n/n²), simplify -(2/n) + n/n² = -1/n
+  have key : -(2 / (↑n : ℝ)) + ↑n * (1 / ↑n ^ 2) = -(1 / ↑n) := by field_simp; ring
+  linarith
 
 /--
 **Lower bound**: I(x₁,...,xₙ) ≥ 2/n for any configuration.
 
-Uses partition of unity (∑ l_k = 1) and pointwise variance bound (∑ l_k² ≥ 1/n).
+Uses pointwise bound ∑ l_k² ≥ 1/n and integral monotonicity:
+∫₋₁¹ ∑ l_k² ≥ ∫₋₁¹ (1/n) = 2/n.
 -/
 theorem lagrangeIntegral_lower_bound (n : ℕ) (hn : n ≥ 1) (nodes : Fin n → ℝ)
-    (hd : AreDistinct n nodes) (hrange : ∀ i, -1 ≤ nodes i ∧ nodes i ≤ 1) :
+    (hd : AreDistinct n nodes) (_hrange : ∀ i, -1 ≤ nodes i ∧ nodes i ≤ 1) :
     lagrangeIntegral n nodes ≥ 2 / n := by
   unfold lagrangeIntegral
-  have hpw := fun x => sum_sq_lagrangeBasis_ge n hn nodes hd x
-  -- ∫₋₁¹ (Σ l_k²) ≥ ∫₋₁¹ (1/n) = 2/n (integral monotonicity)
-  sorry
+  have hpw : ∀ x, 1 / ↑n ≤ ∑ k : Fin n, (lagrangeBasis n nodes k x) ^ 2 :=
+    fun x => sum_sq_lagrangeBasis_ge n hn nodes hd x
+  have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr (by omega)
+  have hn_ne : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
+  -- Integrand is continuous (polynomial), hence integrable
+  have h_cont : Continuous (fun x => ∑ k : Fin n, (lagrangeBasis n nodes k x) ^ 2) := by
+    apply continuous_finset_sum; intro k _
+    apply Continuous.pow
+    unfold lagrangeBasis
+    exact continuous_finset_prod _ fun i _ => (continuous_id.sub continuous_const).div_const _
+  rw [ge_iff_le, ← sub_nonneg]
+  -- Rewrite 2/n as ∫₋₁¹ (1/n), then use linearity + nonnegativity
+  rw [show (2 : ℝ) / ↑n = ∫ _ in (-1 : ℝ)..1, (1 : ℝ) / ↑n from by
+    rw [intervalIntegral.integral_const, smul_eq_mul]; ring]
+  rw [← intervalIntegral.integral_sub (h_cont.intervalIntegrable _ _) intervalIntegrable_const]
+  exact intervalIntegral.integral_nonneg (by norm_num : (-1 : ℝ) ≤ 1)
+    fun u _hu => by linarith [hpw u]
 
 /--
 **Upper bound**: I is bounded above by 2n for any configuration.
