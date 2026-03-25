@@ -250,6 +250,20 @@
       "year": "1926",
       "venue": "Transactions of the American Mathematical Society 28(1), 1–49",
       "note": "Introduced the Lefschetz number and proved the Lefschetz fixed point theorem, which subsumes Brouwer's theorem as the special case where the domain is contractible (Lefschetz number = 1)"
+    },
+    {
+      "authors": "Hadamard, Jacques",
+      "title": "Sur quelques applications de l'indice de Kronecker",
+      "year": "1910",
+      "venue": "In: J. Tannery, Introduction à la théorie des fonctions, Vol. 2, Appendix, Paris",
+      "note": "Proved the 2D case of Brouwer's fixed point theorem one year before Brouwer's general result, using degree theory (Kronecker index). Brouwer's 1911 paper generalized Hadamard's 2D argument to all continuous maps in arbitrary dimension"
+    },
+    {
+      "authors": "Arrow, Kenneth J.; Debreu, Gérard",
+      "title": "Existence of an Equilibrium for a Competitive Economy",
+      "year": "1954",
+      "venue": "Econometrica 22(3), 265–290",
+      "note": "Proved existence of general competitive equilibrium (Walrasian equilibrium) using Kakutani's fixed point theorem applied to excess demand correspondences. This is the economic application that earned Arrow (1972) and Debreu (1983) separate Nobel Prizes and established fixed point theory as a central tool in mathematical economics"
     }
   ],
   "conclusion": {
@@ -337,6 +351,41 @@
       "targetId": "brouwer-fixed-point-oq-04",
       "relationship": "extended-by",
       "description": "Kakutani's fixed point theorem (1941) generalizes Brouwer from single-valued to set-valued (multi-valued) maps: every upper hemicontinuous correspondence with non-empty convex compact values on a compact convex set has a fixed point. Nash's equilibrium theorem is a direct application"
+    },
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "thematic",
+      "description": "Euler's polyhedral formula V - E + F = 2 is proved using the same topological invariant — the Euler characteristic — that underlies Brouwer's theorem. Both are computed via homology: the Euler characteristic is the alternating sum of Betti numbers, and the no-retraction theorem follows from the nontrivial homology of the sphere. Euler's formula and Brouwer's theorem are two of the earliest results where topology replaces geometry"
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "thematic",
+      "description": "Both are landmark results where topological structure constrains combinatorial or continuous outcomes. The four-color theorem involves the topology of planar graphs (maps on the sphere S²), while Brouwer's theorem involves the topology of balls and spheres in all dimensions. Both were proved by surprisingly indirect methods: the four-color theorem by exhaustive computer search, Brouwer's theorem by algebraic topology machinery far exceeding the simplicity of the statement"
+    },
+    {
+      "targetId": "greens-theorem",
+      "relationship": "thematic",
+      "description": "Green's theorem relates a double integral over a region to a line integral along its boundary — a precursor to the general Stokes theorem, which itself underlies de Rham cohomology (the smooth analogue of singular homology used in Brouwer's proof). The boundary operator in Stokes' theorem and the boundary map in homology are algebraically analogous: both encode the relationship between a space and its boundary that drives the no-retraction argument"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "thematic",
+      "description": "The Fundamental Theorem of Calculus links integration over [a,b] to values at its boundary {a,b}, an instance of the general principle that integration over a manifold depends on its boundary — the topological principle underlying both Stokes' theorem and the homology computation that proves Brouwer's no-retraction theorem. The 1D Brouwer fixed point theorem follows directly from the IVT, which in turn rests on completeness of the reals and the structure captured by the FTC"
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "thematic",
+      "description": "Liouville's theorem (bounded entire functions are constant) is proved by showing that a bounded entire function's image cannot cover the sphere S², a topological argument using the Riemann sphere. This connects to Brouwer's theorem via degree theory: an entire function of degree zero (constant) cannot be surjective. Both results use topological invariants to constrain the behavior of continuous maps on compact spaces"
+    },
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "foundational",
+      "description": "Lebesgue measure on ℝⁿ underlies the statement that the n-ball B^n has positive measure (volume), in contrast to its boundary S^{n-1} which has n-dimensional measure zero. This measure-theoretic distinction reflects the topological one: B^n is n-dimensional and contractible, while S^{n-1} is (n-1)-dimensional with nontrivial (n-1)-homology. Lebesgue integration theory also underpins the analytic proofs of Brouwer's theorem via the hairy ball theorem and degree theory"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "thematic",
+      "description": "Both Brouwer's fixed point theorem and Ramsey's theorem are non-constructive existence results: Brouwer shows a fixed point must exist without locating it, Ramsey shows a monochromatic subgraph must exist without constructing it. Both are paradigmatic examples of what constructive mathematicians and intuitionists (including Brouwer himself) object to: proofs that guarantee existence via contradiction without providing the witness"
     }
   ],
   "leanFile": {
