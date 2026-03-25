@@ -135,11 +135,17 @@ axiom ramsey_upper_bound (t : ℕ) : ramseyNumber t t ≤ 4^t
 axiom burr_erdos_spencer (t : ℕ) (ht : t ≥ 3) :
   ∃ x : ℕ, x < t ∧ f t = ramseyNumber t (t - 1) + x
 
-/-- Lower bound: f(t) ≥ R(t, t-1) -/
-axiom f_lower_bound (t : ℕ) (ht : t ≥ 3) : f t ≥ ramseyNumber t (t - 1)
+/-- Lower bound: f(t) ≥ R(t, t-1).
+    Proof: From Burr-Erdős-Spencer, f(t) = R(t, t-1) + x with x ≥ 0. -/
+theorem f_lower_bound (t : ℕ) (ht : t ≥ 3) : f t ≥ ramseyNumber t (t - 1) := by
+  obtain ⟨x, _, hfx⟩ := burr_erdos_spencer t ht
+  omega
 
-/-- Upper bound: f(t) < R(t, t-1) + t -/
-axiom f_upper_bound (t : ℕ) (ht : t ≥ 3) : f t < ramseyNumber t (t - 1) + t
+/-- Upper bound: f(t) < R(t, t-1) + t.
+    Proof: From Burr-Erdős-Spencer, f(t) = R(t, t-1) + x with x < t. -/
+theorem f_upper_bound (t : ℕ) (ht : t ≥ 3) : f t < ramseyNumber t (t - 1) + t := by
+  obtain ⟨x, hxt, hfx⟩ := burr_erdos_spencer t ht
+  omega
 
 /-
 ## Asymptotic Behavior

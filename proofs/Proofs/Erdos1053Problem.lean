@@ -23,9 +23,7 @@ Guy's Problem B2.
 Reference: https://erdosproblems.com/1053
 -/
 
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Data.Nat.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Core Definitions -/
 
@@ -134,7 +132,21 @@ axiom guy_finiteness_conjecture (k : ℕ) (hk : k ≥ 3) :
 
 /-- If σ(n) = k·n and Robin's inequality holds, then
     k < e^γ · log log n for n ≥ 5041, giving k = O(log log n).
-    The Erdős question asks for the stronger o(log log n). -/
-axiom robin_gives_O_bound (n k : ℕ) (hn : n ≥ 5041)
+    The Erdős question asks for the stronger o(log log n).
+    Proof: From Robin, σ(n) < e^γ · n · log log n. Since σ(n) = k·n,
+    we get k·n < e^γ · n · log log n, and dividing by n gives the result. -/
+theorem robin_gives_O_bound (n k : ℕ) (hn : n ≥ 5041)
     (hkp : IsKPerfect n k) :
-    (k : ℝ) < Real.exp 0.5772 * Real.log (Real.log (n : ℝ))
+    (k : ℝ) < Real.exp 0.5772 * Real.log (Real.log (n : ℝ)) := by
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by positivity
+  have hrobin := robin_inequality_conditional n hn
+  -- Cast σ(n) = k * n to ℝ
+  have hσ_cast : (sigma n : ℝ) = (k : ℝ) * (n : ℝ) := by exact_mod_cast hkp.2
+  -- k = σ(n) / n
+  have hk_eq : (k : ℝ) = (sigma n : ℝ) / (n : ℝ) := by
+    rw [hσ_cast]; field_simp
+  -- σ(n)/n < exp(γ) * n * log(log n) / n = exp(γ) * log(log n)
+  rw [hk_eq, div_lt_iff₀ hn_pos]
+  have : Real.exp 0.5772 * Real.log (Real.log (n : ℝ)) * (n : ℝ) =
+      Real.exp 0.5772 * (n : ℝ) * Real.log (Real.log (n : ℝ)) := by ring
+  linarith
