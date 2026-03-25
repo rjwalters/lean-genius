@@ -23,7 +23,19 @@
     "axiomCount": 4,
     "lineCount": 255,
     "assumptions": "4 axiom(s) and 2 sorry(s). See the Lean source for details.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "relatedProblems": [
+      {
+        "id": "erdos-1095",
+        "relationship": "Both concern prime factors of combinatorial objects (binomial coefficients / divisor sequences)"
+      }
+    ],
+    "originalContributions": [
+      "Divisor list formalization with τ⊥(n) = coprime consecutive divisor count",
+      "Trivial lower bound τ⊥(n) ≥ ω(n) with tightness infinitely often",
+      "Erdős-Simonovits exponential bounds on g(k) for squarefree case",
+      "Three open questions formalized as Lean propositions"
+    ]
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and R. R. Hall in their 1978 paper *On some unconventional problems on the divisors of integers* (Acta Arithmetica). Hall was a specialist in multiplicative number theory at York, and this collaboration produced several problems exploring the fine structure of divisor sequences. The function $\\tau^{\\perp}(n)$ measures how often consecutive divisors in the increasing sequence $1 = d_1 < d_2 < \\cdots < d_{\\tau(n)} = n$ are coprime — a surprisingly subtle invariant. The trivial lower bound $\\tau^{\\perp}(n) \\geq \\omega(n)$ is immediate (each prime $p \\mid n$ contributes at least one coprime transition in the divisor list), and is tight infinitely often. The deeper questions concern whether $\\tau^{\\perp}(n)$ typically exceeds $\\omega(n)$ by a large factor. The exponential bounds on $g(k)$ are due to Erdős and Simonovits, who showed $\\sqrt{2}^k \\lesssim g(k) \\lesssim (2-c)^k$, revealing that the combinatorics of coprime transitions in divisor lattices is genuinely exponential but sub-maximal.",
