@@ -41,45 +41,58 @@
   },
   "sections": [
     {
+      "id": "intro-imports",
+      "title": "Introduction and Setup",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Module docstring stating Erdős Problem #524 (1961): determine the order of magnitude of $M_n(t) = \\max_{x \\in [-1,1]} |\\sum \\varepsilon_k x^k|$ for a.e. $t$. Imports Mathlib modules for real analysis, measure theory (Lebesgue), and filters.",
+      "mathContext": "Erdős Problem #524 asks for the precise growth rate of $M_n(t)$ as $n \\to \\infty$ for Lebesgue-a.e. $t \\in (0,1)$. The known bounds: $n^{1/2-\\varepsilon} \\ll M_n \\ll \\sqrt{n/\\log\\log n}$ (i.o.). Conjectured answer: $\\Theta(\\sqrt{n})$."
+    },
+    {
       "id": "definitions",
       "title": "Definitions",
       "startLine": 23,
       "endLine": 37,
-      "summary": "Defines **binaryDigit** (k-th binary digit of t mapped to ±1), **randSignPoly** (Rademacher polynomial Σ ε_k x^k), and **polyMax** (M_n(t) = sup over [-1,1] of |P_n|)."
+      "summary": "Defines `binaryDigit` (k-th binary digit of $t$ mapped to ±1 via $(-1)^{\\varepsilon_k}$), `randSignPoly` (Rademacher polynomial $P_n(t,x) = \\sum_{k=1}^n \\varepsilon_k(t) x^k$), and `polyMax` ($M_n(t) = \\sup_{x \\in [-1,1]} |P_n(t,x)|$).",
+      "mathContext": "$\\varepsilon_k(t) = (-1)^{\\lfloor t \\cdot 2^k \\rfloor \\bmod 2} \\in \\{\\pm 1\\}$, $P_n(t,x) = \\sum_{k=1}^n \\varepsilon_k(t) x^k$, $M_n(t) = \\max_{x \\in [-1,1]} |P_n(t,x)|$. Under Lebesgue measure, $\\{\\varepsilon_k\\}$ are i.i.d. Rademacher (symmetric ±1) random variables."
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound (Erdős)",
       "startLine": 38,
       "endLine": 48,
-      "summary": "Axiom **erdos_lower_bound**: For every ε ∈ (0, 1/2), M_n/n^{1/2-ε} → ∞ a.e. The lower bound comes from evaluating at x=1 (random walk) and the law of the iterated logarithm."
+      "summary": "Axiom `erdos_lower_bound`: For every $\\varepsilon \\in (0, 1/2)$, $M_n(t)/n^{1/2-\\varepsilon} \\to \\infty$ as $n \\to \\infty$ for a.e. $t$. The lower bound follows from evaluating at $x = 1$ (random walk) and the law of the iterated logarithm.",
+      "mathContext": "$\\forall \\varepsilon \\in (0, 1/2),\\, M_n(t) = \\omega(n^{1/2-\\varepsilon})$ a.s. Since $P_n(t,1) = \\sum \\varepsilon_k$ is a random walk, the LIL gives $|P_n(t,1)| \\geq \\sqrt{2n \\log\\log n}$ i.o., so $M_n \\geq \\sqrt{2n \\log\\log n}$ i.o."
     },
     {
       "id": "upper-bound",
       "title": "Upper Bound (Chung)",
       "startLine": 49,
       "endLine": 58,
-      "summary": "Axiom **chung_upper_bound**: ∃ C > 0, for a.e. t, i.o. n with M_n ≤ C√(n/log log n). An 'infinitely often' bound, not uniform — the log log n factor from LIL considerations."
+      "summary": "Axiom `chung_upper_bound`: $\\exists C > 0$ such that for a.e. $t$, $M_n(t) \\leq C\\sqrt{n/\\log\\log n}$ for infinitely many $n$. An 'infinitely often' bound from LIL considerations.",
+      "mathContext": "$M_n(t) \\leq C\\sqrt{n/\\log\\log n}$ i.o. a.s. The $\\sqrt{\\log\\log n}$ gap between this and $\\sqrt{n}$ is the central mystery: the bound says the maximum can sometimes dip *below* the random walk scale."
     },
     {
       "id": "comparison",
       "title": "Salem-Zygmund Comparison",
       "startLine": 59,
       "endLine": 71,
-      "summary": "Axiom **salem_zygmund_trigonometric**: Random trig polynomials have max Θ(√(n log n)) on [0,2π]. The algebraic polynomial case on [-1,1] differs due to endpoint concentration of monomials x^k."
+      "summary": "Axiom `salem_zygmund_trigonometric`: Random trigonometric polynomials $T_n(\\theta) = \\sum \\varepsilon_k \\cos(k\\theta)$ have $\\max |T_n| = \\Theta(\\sqrt{n \\log n})$ on $[0, 2\\pi]$ a.s. The algebraic polynomial case on $[-1,1]$ is expected to differ due to endpoint concentration.",
+      "mathContext": "Salem-Zygmund (1954): $\\max_{\\theta \\in [0,2\\pi]} |\\sum_{k=1}^n \\varepsilon_k \\cos(k\\theta)| = \\Theta(\\sqrt{n \\log n})$ a.s. The extra $\\sqrt{\\log n}$ factor vs. the conjectured $\\sqrt{n}$ for algebraic polynomials reflects the uniform covariance structure of trigonometric bases vs. the degenerate structure of monomials $x^k$ near $x = \\pm 1$."
     },
     {
       "id": "main-problem",
       "title": "Main Open Problem",
       "startLine": 72,
       "endLine": 82,
-      "summary": "Axiom **erdos_524_order_of_magnitude**: ∃ f with M_n = Θ(f(n)) a.e. Conjectured f(n) = √n. The gap between n^{1/2-ε} and √(n/log log n) remains the frontier."
+      "summary": "Axiom `erdos_524_order_of_magnitude`: $\\exists f : \\mathbb{N} \\to \\mathbb{R}_{>0}$ such that $M_n(t) = \\Theta(f(n))$ a.e. Conjectured $f(n) = \\sqrt{n}$. The gap between $n^{1/2-\\varepsilon}$ and $\\sqrt{n/\\log\\log n}$ remains the frontier.",
+      "mathContext": "The open problem: find $f(n)$ with $c_1 f(n) \\leq M_n(t) \\leq c_2 f(n)$ for all large $n$, a.s. Known: $f(n) = \\omega(n^{1/2-\\varepsilon})$ and $f(n) = O(\\sqrt{n/\\log\\log n})$. Conjecture: $f(n) = \\sqrt{n}$."
     }
   ],
   "overview": {
-    "historicalContext": "Problem #524 originates from **Salem and Zygmund's** foundational work on random polynomials (1954) and appears in **Erdős's 1961 compilation** [Er61, p.253]. The question asks about the typical maximum of a polynomial on [-1,1] with random ±1 coefficients — a Rademacher polynomial. **Erdős** proved (unpublished) that the maximum grows at least as fast as n^{1/2-ε} for any ε > 0. **Chung** proved the infinitely-often upper bound √(n/log log n). The classical **Salem-Zygmund theorem** gives Θ(√(n log n)) for trigonometric polynomials, but the algebraic polynomial case is expected to differ because monomials x^k concentrate near the endpoints ±1.",
+    "historicalContext": "Problem #524 originates from the foundational work of **Salem and Zygmund** (1954) on random trigonometric polynomials, where they proved $\\max_{\\theta} |\\sum \\varepsilon_k \\cos(k\\theta)| = \\Theta(\\sqrt{n \\log n})$ almost surely. Erdős posed the algebraic polynomial variant in his **1961 compilation** [Er61, p.253]: what is the correct order of magnitude of $M_n(t) = \\max_{x \\in [-1,1]} |\\sum \\varepsilon_k x^k|$ for a.e. $t$?\n\nThe study of random polynomials began with **Bloch and Pólya** (1932), who estimated the number of real zeros of polynomials with ±1 coefficients, followed by **Littlewood and Offord** (1938) who proved the first anti-concentration inequalities for Rademacher sums. **Kac** (1943) showed the expected number of real zeros is $\\sim (2/\\pi)\\log n$, establishing the field. For the maximum modulus question, **Erdős** proved (unpublished) a lower bound $M_n(t)/n^{1/2-\\varepsilon} \\to \\infty$ a.e. for every $\\varepsilon > 0$, using the law of the iterated logarithm at the endpoint $x = 1$. **Chung** proved the complementary infinitely-often upper bound $M_n \\leq C\\sqrt{n/\\log\\log n}$.\n\nThe gap between these bounds is narrow — both are $n^{1/2 \\pm o(1)}$ — but closing it requires understanding whether the maximum over all $x \\in [-1,1]$ exceeds the endpoint value $|P_n(t,1)|$ by more than a polylogarithmic factor. The problem remains open. Modern tools from Gaussian process theory (Talagrand's generic chaining) and random matrix theory offer potential approaches but have not yet resolved the question.",
     "problemStatement": "Determine the correct order of magnitude of M_n(t) = max_{x∈[-1,1]} |Σ_{k≤n} (-1)^{ε_k(t)} x^k| for almost all t ∈ (0,1), where ε_k(t) are the binary digits of t.",
-    "text": "Determine the correct order of magnitude of M_n(t) = max_{x∈[-1,1]} |Σ_{k≤n} (±1)·x^k| for a.e. t ∈ (0,1), where signs come from binary digits of t. Known: n^{1/2-ε} ≪ M_n ≪ √(n/log log n) i.o. OPEN.",
+    "text": "An 82-line formalization of Erdős Problem #524 (Salem-Zygmund, 1954; Erdős, 1961) on the maximum modulus of Rademacher polynomials. Defines `binaryDigit` (extracting ±1 signs from the binary expansion of $t \\in (0,1)$), `randSignPoly` ($P_n(t,x) = \\sum_{k=1}^n \\varepsilon_k(t) x^k$), and `polyMax` ($M_n(t) = \\max_{x \\in [-1,1]} |P_n(t,x)|$). Four axioms capture the state of knowledge: Erdős's lower bound $M_n/n^{1/2-\\varepsilon} \\to \\infty$ a.e., Chung's infinitely-often upper bound $M_n \\leq C\\sqrt{n/\\log\\log n}$, the Salem-Zygmund comparison for trigonometric polynomials ($\\Theta(\\sqrt{n \\log n})$), and the main open problem — existence of a function $f(n)$ with $M_n = \\Theta(f(n))$ a.e. The conjecture is $f(n) = \\sqrt{n}$.",
     "proofStrategy": "The formalization defines binaryDigit via floor arithmetic, randSignPoly as a Finset.sum over Rademacher coefficients times monomials, and polyMax via sSup. Erdős's lower bound and Chung's i.o. upper bound are axiomatized with ∀ᵐ (Lebesgue a.e.) quantifiers. The Salem-Zygmund comparison for trigonometric polynomials is stated for context. The main open problem is axiomatized as existence of a Θ-function. The file has 0 sorries.",
     "keyInsights": [
       "**Binary digits as Rademacher variables**: Under Lebesgue measure, the binary digits of t ∈ (0,1) are i.i.d. fair coin flips, making P_n a standard Rademacher polynomial",
@@ -120,24 +133,62 @@
     "definitionCount": 3
   },
   "references": [
-    "Salem, R. and Zygmund, A. (1954): Maximum of random trigonometric polynomials — Θ(√(n log n)) on [0,2π]",
-    "Erdős, P. (unpublished): M_n(t)/n^{1/2-ε} → ∞ a.e. for every ε > 0",
-    "Chung, K.L.: M_n(t) ≤ C√(n/log log n) for infinitely many n, a.e.",
-    "Erdős, P. [Er61, p.253]: Original problem statement",
-    "Kac, M. (1943): On the average number of real roots of random polynomials",
-    "Littlewood, J.E. and Offord, A.C. (1940s): On the number of real roots of random algebraic equations",
-    "https://erdosproblems.com/524"
+    {
+      "authors": "Salem, Raphaël; Zygmund, Antoni",
+      "title": "Some properties of trigonometric series whose terms have random signs",
+      "year": "1954",
+      "venue": "Acta Mathematica 91, pp. 245–301",
+      "note": "Foundational paper establishing that the maximum of random trigonometric polynomials with ±1 coefficients is Θ(√(n log n)) on [0,2π] — the trigonometric comparison case for Erdős #524"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Problems and results on diophantine approximations",
+      "year": "1961",
+      "venue": "Compositio Mathematica 16 (1964), pp. 52–65 [Er61, p.253]",
+      "note": "Contains the original statement of Problem #524 and the unpublished lower bound M_n(t)/n^{1/2-ε} → ∞ a.e."
+    },
+    {
+      "authors": "Kac, Mark",
+      "title": "On the average number of real roots of a random algebraic equation",
+      "year": "1943",
+      "venue": "Bulletin of the American Mathematical Society 49(4), pp. 314–320",
+      "note": "Pioneering paper on random polynomials, establishing the expected number of real zeros of Σ a_k x^k with i.i.d. Gaussian coefficients is ~(2/π) log n — the study of random polynomial zeros that motivates the maximum modulus question in #524"
+    },
+    {
+      "authors": "Littlewood, John E.; Offord, A. Cyril",
+      "title": "On the number of real roots of a random algebraic equation",
+      "year": "1938",
+      "venue": "Journal of the London Mathematical Society 13(4), pp. 288–295",
+      "note": "First systematic study of random algebraic equations with ±1 coefficients (the Littlewood-Offord problem). The anti-concentration inequalities developed here are foundational to the analysis of Rademacher polynomial maxima"
+    },
+    {
+      "authors": "Khintchine, Alexander",
+      "title": "Über einen Satz der Wahrscheinlichkeitsrechnung",
+      "year": "1924",
+      "venue": "Fundamenta Mathematicae 6, pp. 9–20",
+      "note": "The law of the iterated logarithm: |Σ_{k=1}^n X_k| ≤ √(2n log log n) a.s. for i.i.d. bounded random variables. This governs the endpoint values P_n(t,±1) and provides both the lower bound heuristic and the Chung upper bound for Erdős #524"
+    }
   ],
   "crossReferences": [
     {
       "targetId": "erdos-510",
       "relationship": "related",
-      "description": "Related formalization"
+      "description": "Chowla's cosine problem (Erdős #510) asks for the minimum of $\\max |\\sum \\cos(n_k \\theta)|$ over distinct positive integers $n_k$ — the extremal behavior of trigonometric sums with ±1-like structure. Both #510 and #524 study the interplay between combinatorial coefficient constraints and analytic extremal behavior, with Sidon set optimality in #510 connecting to the random polynomial maxima in #524"
     },
     {
       "targetId": "erdos-50",
       "relationship": "related",
-      "description": "Related formalization"
+      "description": "Erdős #50 studies the distribution of arithmetic functions under measure-theoretic frameworks — the same 'almost everywhere' paradigm as #524, where $M_n(t)$ is analyzed for Lebesgue-a.e. $t$. Both problems ask about typical vs. extremal behavior of number-theoretic/analytic quantities"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "foundational",
+      "description": "The CLT underlies the heuristic that $P_n(t,1) = \\sum \\varepsilon_k \\approx \\mathcal{N}(0, n)$, suggesting $M_n \\approx \\sqrt{n}$. The Gaussian approximation to Rademacher sums is the starting point for analyzing random polynomial maxima — the CLT provides the basic scale, while the open question is about corrections from evaluating over all $x \\in [-1,1]$, not just $x = 1$"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "technique",
+      "description": "The Salem-Zygmund theorem (axiom `salem_zygmund_trigonometric`) compares random algebraic polynomials with random Fourier/trigonometric polynomials. Fourier analysis provides the metric entropy arguments that determine $\\max |T_n| = \\Theta(\\sqrt{n \\log n})$ for the trigonometric case — understanding why the algebraic case on $[-1,1]$ is conjectured to be $\\Theta(\\sqrt{n})$ (without the $\\log n$ factor) requires analyzing the non-uniform covariance structure of monomials"
     }
   ]
 }

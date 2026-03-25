@@ -1,5 +1,30 @@
 [
   {
+    "id": "erdos-524-ann-intro",
+    "proofId": "erdos-524",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "context",
+    "title": "Module Overview: Erdős Problem #524",
+    "content": "The module docstring introduces Erdős Problem #524 (1961): determine the correct order of magnitude of $M_n(t) = \\max_{x \\in [-1,1]} |\\sum_{k=1}^n \\varepsilon_k(t) x^k|$ for Lebesgue-a.e. $t \\in (0,1)$, where $\\varepsilon_k(t) = \\pm 1$ are the binary digits of $t$. The file imports `Mathlib.Tactic`, `Mathlib.Data.Real.Basic` (for real arithmetic and `sSup`), `Mathlib.MeasureTheory.Measure.Lebesgue.Basic` (for the $\\forall^{\\text{m}}$ quantifier over Lebesgue measure), and `Mathlib.Order.Filter.Basic` (for `Filter.Tendsto` and `Filter.atTop` used in the divergence statements). The problem is OPEN — the known bounds $n^{1/2-\\varepsilon} \\ll M_n \\ll \\sqrt{n/\\log\\log n}$ (i.o.) leave a narrow gap around the conjectured $\\sqrt{n}$.",
+    "mathContext": "Erdős #524: find $f(n)$ with $M_n(t) = \\Theta(f(n))$ a.s. Known: $f(n) = \\omega(n^{1/2-\\varepsilon})$ (Erdős) and $f(n) = O(\\sqrt{n/\\log\\log n})$ i.o. (Chung). Conjecture: $f(n) = \\sqrt{n}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Rademacher polynomials",
+      "maximum modulus",
+      "law of the iterated logarithm",
+      "Salem-Zygmund theorem"
+    ],
+    "prerequisites": [
+      "MeasureTheory.Measure.Lebesgue",
+      "Filter.Tendsto",
+      "sSup",
+      "Real.rpow"
+    ]
+  },
+  {
     "id": "erdos-524-ann-binaryDigit",
     "proofId": "erdos-524",
     "range": {
