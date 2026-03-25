@@ -21,30 +21,27 @@ whose roots CANNOT be expressed using radicals.
 
 - **Irreducible**: Eisenstein's criterion at p = 2 (PROVED)
 - **Separable**: automatic over ℚ (characteristic 0) (PROVED)
-- **Gal = S₅**: |Gal| = 120 = 5! (PROVED from 2 transparent axioms)
+- **Gal = S₅**: |Gal| = 120 = 5! (PROVED — axiom-free)
 
-### Proof that |Gal| = 120 (Axiom Decomposition)
+### Proof that |Gal| = 120 (Axiom-Free)
 
-The original opaque axiom gal_card_eq_120 has been decomposed into two
-narrower, well-motivated axioms plus a complete proof:
+All axioms have been eliminated. The proof proceeds in two stages:
 
-**Axiom A (Dedekind at p = 13):** 3 | |Gal(p/ℚ)|.
-  x⁵ - 4x + 2 mod 13 factors as (x-2)(x-5)(x³+7x²+8) where the cubic
-  is irreducible over F₁₃ (no roots by exhaustive check). By Dedekind's
-  theorem, Gal contains a Frobenius element with cycle type (1,1,3),
-  hence an element of order divisible by 3.
+**Stage 1 — Gal ⊄ A₅ (odd permutation exists):**
+  Δ² = -212144 (via derivative product identity + Vieta's formulas).
+  Δ ∉ ℚ (since Δ² < 0). By FTGT, some σ has sign(σ) = -1.
 
-**Axiom B (Discriminant non-square):** Gal(p/ℚ) ⊄ A₅.
-  disc(p) = Res(p, p') = -212144 < 0. Since ∏(rᵢ-rⱼ)² = disc(p) < 0,
-  the Vandermonde product Δ = ∏(rⱼ-rᵢ) satisfies Δ² < 0 in ℚ, so Δ ∉ ℚ.
-  Since σ(Δ) = sign(σ)·Δ and Δ ∉ ℚ, some σ has sign(σ) = -1.
+**Stage 2 — Complex conjugation gives a transposition:**
+  Embed SF → ℂ via IsAlgClosed.lift. Complex conjugation is an involution
+  with sign -1 (since Δ² < 0 forces non-real Δ). So Gal has a transposition.
 
-**Theorem (from A + B + existing results):**
-  5 | |Gal| (proved), 3 | |Gal| (A), |Gal| | 120 (proved).
-  So 15 | |Gal| and |Gal| ∈ {15, 30, 60, 120}.
-  - Not 15: no subgroup of S₅ has order 15 (Sylow theory + native_decide)
-  - Not 30: no subgroup of S₅ has order 30 (A₅ simplicity)
-  - Not 60: A₅ is the unique subgroup of S₅ of order 60, but Gal ⊄ A₅ (B)
+**Stage 3 — Eliminate all non-120 orders via Sylow theory:**
+  5 | |Gal| (prime degree), |Gal| | 120 (embeds in S₅).
+  - |Gal| ≠ 5: order-5 perms are even, but Gal has odd perm
+  - |Gal| ∉ {10,20,40}: unique normal Sylow 5-subgroup, but transpositions
+    don't normalize 5-cycles (native_decide)
+  - |Gal| ≠ 15,30: no such subgroups in S₅ (Sylow/A₅ simplicity)
+  - |Gal| ≠ 60: unique order-60 subgroup is A₅, but Gal ⊄ A₅
   Therefore |Gal| = 120.
 
 ## Extends
@@ -66,16 +63,14 @@ set_option linter.unusedVariables false
 namespace AbelRuffiniOQ04OQ01
 
 /-- No element of order 5 commutes with any element of order 3 in S₅.
-    Used to prove no subgroup of S₅ has order 15.
-    Note: `private` to avoid name collision with InverseGaloisA5. -/
-private theorem perm_fin5_order5_order3_not_commute :
+    Used to prove no subgroup of S₅ has order 15. -/
+theorem perm_fin5_order5_order3_not_commute :
     ∀ (σ τ : Equiv.Perm (Fin 5)),
       σ ^ 5 = 1 → σ ≠ 1 → τ ^ 3 = 1 → τ ≠ 1 → σ * τ ≠ τ * σ := by
   native_decide
 
-/-- No element of S₅ has order 15.
-    Note: `private` to avoid name collision with InverseGaloisA5. -/
-private theorem perm_fin5_no_order_15 :
+/-- No element of S₅ has order 15. -/
+theorem perm_fin5_no_order_15 :
     ∀ σ : Equiv.Perm (Fin 5), σ ^ 15 = 1 → σ ^ 5 = 1 ∨ σ ^ 3 = 1 := by
   native_decide
 
@@ -1051,9 +1046,10 @@ private theorem gal_card_ne_20 : Fintype.card p.Gal ≠ 20 := by
     have h_idx : (↑P₅ : Subgroup G).index = 4 := by
       have := (↑P₅ : Subgroup G).index_mul_card; rw [hP_card, hG_card] at this; omega
     have h_dvd := Sylow.card_dvd_index P₅; rw [h_idx] at h_dvd
-    rcases (by norm_num : Nat.Prime 5).eq_one_or_self_of_dvd _ h_dvd with h | h
-    · exact h
-    · exfalso; rw [h] at h_mod; simp [Nat.ModEq] at h_mod
+    have h_le : Nat.card (Sylow 5 G) ≤ 4 := Nat.le_of_dvd (by norm_num) h_dvd
+    have h_pos : 0 < Nat.card (Sylow 5 G) := Nat.card_pos
+    rw [Nat.ModEq] at h_mod
+    interval_cases (Nat.card (Sylow 5 G)) <;> omega
   haveI : Subsingleton (Sylow 5 G) := by
     haveI := Fintype.ofFinite (Sylow 5 G)
     rw [← Fintype.card_le_one_iff_subsingleton, ← Nat.card_eq_fintype_card]; omega
@@ -1069,10 +1065,21 @@ private theorem gal_card_ne_20 : Fintype.card p.Gal ≠ 20 := by
   have hzpow_le : Subgroup.zpowers c ≤ ↑P₅ := fun x hx => by
     obtain ⟨k, rfl⟩ := Subgroup.mem_zpowers_iff.mp hx
     exact (↑P₅ : Subgroup G).zpow_mem hc_P5 k
-  have hP5_eq : (↑P₅ : Subgroup G) = Subgroup.zpowers c := le_antisymm
-    (by rwa [← Nat.card_le_card_iff_le hzpow_le, Nat.card_zpowers, hc_ord]) hzpow_le
-  obtain ⟨k, hk⟩ := Subgroup.mem_zpowers_iff.mp
-    (hP5_eq ▸ (↑P₅ : Subgroup G).Normal.conj_mem c hc_P5 σ')
+  have hP5_eq : (↑P₅ : Subgroup G) = Subgroup.zpowers c := by
+    apply le_antisymm _ hzpow_le
+    intro x hx
+    have hbij : Function.Bijective (Subgroup.inclusion hzpow_le) := by
+      haveI := Fintype.ofFinite ↥(↑P₅ : Subgroup G)
+      haveI := Fintype.ofFinite ↥(Subgroup.zpowers c)
+      exact (Fintype.bijective_iff_injective_and_card _).mpr
+        ⟨Subgroup.inclusion_injective _, by
+          rw [← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card,
+              Nat.card_zpowers, hc_ord, hP_card]⟩
+    obtain ⟨⟨y, hy⟩, hxy⟩ := hbij.surjective ⟨x, hx⟩
+    rwa [show y = x from congr_arg Subtype.val hxy] at hy
+  have hconj_zpow : σ' * c * σ'⁻¹ ∈ Subgroup.zpowers c :=
+    (SetLike.ext_iff.mp hP5_eq _).mp ((↑P₅ : Subgroup G).Normal.conj_mem c hc_P5 σ')
+  obtain ⟨k, hk⟩ := Subgroup.mem_zpowers_iff.mp hconj_zpow
   have hσ_inv : (galToPerm5 σ)⁻¹ = galToPerm5 σ :=
     inv_eq_iff_mul_eq_one.mpr (by rw [← sq]; exact hσ2)
   have hconj_val : galToPerm5 σ * ↑c * galToPerm5 σ = (↑c : Equiv.Perm (Fin 5)) ^ k := by
@@ -1084,9 +1091,189 @@ private theorem gal_card_ne_20 : Fintype.card p.Gal ≠ 20 := by
     rw [← hconj_val]; intro h
     have h1 : σ' * c * σ'⁻¹ = (1 : G) :=
       Subtype.ext (by simp [σ', Subgroup.coe_mul, Subgroup.coe_inv, hσ_inv]; exact h)
-    have := orderOf_conj c σ'; rw [hc_ord, h1, orderOf_one] at this; norm_num at this
+    exact hc_ne (by have : c = σ'⁻¹ * (σ' * c * σ'⁻¹) * σ' := by group; rw [h1] at this; simpa using this)
   have hred : (↑c : Equiv.Perm (Fin 5)) ^ k = (↑c) ^ (k % 5).toNat := by
-    conv_lhs => rw [show k = 5 * (k / 5) + k % 5 from (Int.ediv_add_emod k 5).symm]
+    conv_lhs => rw [show k = 5 * (k / 5) + k % 5 from (Int.emod_add_ediv k 5 ▸ by ring)]
+    rw [zpow_add, zpow_mul, show (↑c : Equiv.Perm (Fin 5)) ^ (5 : ℤ) = 1 from by
+      rw [zpow_natCast]; exact_mod_cast hc5, one_zpow, one_mul,
+      Int.toNat_of_nonneg (Int.emod_nonneg k (by norm_num))]
+  rw [hred] at hconj_val hck_ne
+  have hbound : (k % 5).toNat < 5 := by
+    rw [Int.toNat_lt (by omega)]; exact Int.emod_lt_of_pos k (by norm_num)
+  exfalso; interval_cases (k % 5).toNat <;> simp_all
+
+-- Section E6b2: |Gal| ≠ 10 (same Sylow argument as ne_20)
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- |Gal(p/ℚ)| ≠ 10: Same Sylow argument as ne_20. The unique normal
+    Sylow 5-subgroup P₅ = ⟨5-cycle⟩ is normalized by every element,
+    but transpositions don't normalize 5-cycles. -/
+private theorem gal_card_ne_10 : Fintype.card p.Gal ≠ 10 := by
+  intro hc
+  obtain ⟨σ, hσ2, hσ_ne, hσ_sign⟩ := gal_has_transposition
+  set G := galToPerm5.range
+  have hG_card : Nat.card G = 10 := by
+    rw [show Nat.card G = Nat.card p.Gal from
+      Nat.card_congr (Equiv.ofBijective galToPerm5.rangeRestrict
+        ⟨fun a b h => galToPerm5_injective (congrArg Subtype.val h),
+         galToPerm5.rangeRestrict_surjective⟩).symm, Nat.card_eq_fintype_card, hc]
+  haveI : Finite G := Nat.finite_of_card_ne_zero (by rw [hG_card]; norm_num)
+  haveI : Fintype G := Fintype.ofFinite G
+  have hG_ft : Fintype.card G = 10 := by rwa [Nat.card_eq_fintype_card] at hG_card
+  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+  obtain ⟨c, hc_ord⟩ := exists_prime_orderOf_dvd_card (p := 5) (by rw [hG_ft]; norm_num)
+  have hc5 : (c : Equiv.Perm (Fin 5)) ^ 5 = 1 := by
+    simpa using congr_arg Subtype.val
+      (show c ^ 5 = (1 : G) from by rw [← hc_ord]; exact pow_orderOf_eq_one c)
+  have hc_ne : (c : Equiv.Perm (Fin 5)) ≠ 1 := fun h =>
+    absurd hc_ord (by rw [show c = (1 : G) from Subtype.ext h, orderOf_one]; norm_num)
+  set σ' : G := ⟨galToPerm5 σ, ⟨σ, rfl⟩⟩
+  obtain ⟨P₅⟩ := Sylow.nonempty (p := 5) (G := G)
+  have hP_card : Nat.card (↑P₅ : Subgroup G) = 5 := by
+    rw [P₅.card_eq_multiplicity, hG_card]; native_decide
+  have : Nat.card (Sylow 5 G) = 1 := by
+    have h_mod := card_sylow_modEq_one 5 G
+    have h_idx : (↑P₅ : Subgroup G).index = 2 := by
+      have := (↑P₅ : Subgroup G).index_mul_card; rw [hP_card, hG_card] at this; omega
+    have h_dvd := Sylow.card_dvd_index P₅; rw [h_idx] at h_dvd
+    have h_le : Nat.card (Sylow 5 G) ≤ 2 := Nat.le_of_dvd (by norm_num) h_dvd
+    have h_pos : 0 < Nat.card (Sylow 5 G) := Nat.card_pos
+    rw [Nat.ModEq] at h_mod
+    interval_cases (Nat.card (Sylow 5 G)) <;> omega
+  haveI : Subsingleton (Sylow 5 G) := by
+    haveI := Fintype.ofFinite (Sylow 5 G)
+    rw [← Fintype.card_le_one_iff_subsingleton, ← Nat.card_eq_fintype_card]; omega
+  haveI : (↑P₅ : Subgroup G).Normal := by
+    apply Subgroup.Normal.mk; intro n hn g
+    have : g • P₅ = P₅ := Subsingleton.elim _ _; rw [Sylow.smul_eq_iff_mem_normalizer] at this
+    exact ((Subgroup.mem_normalizer_iff.mp this) n).mp hn
+  have hc_P5 : c ∈ (↑P₅ : Subgroup G) := by
+    have h_pg : IsPGroup 5 (Subgroup.zpowers c) :=
+      IsPGroup.iff_card.mpr ⟨1, by rw [pow_one, Nat.card_zpowers, hc_ord]⟩
+    obtain ⟨Q, hQ⟩ := h_pg.exists_le_sylow
+    exact (Subsingleton.elim Q P₅ : Q = P₅) ▸ hQ (Subgroup.mem_zpowers c)
+  have hzpow_le : Subgroup.zpowers c ≤ ↑P₅ := fun x hx => by
+    obtain ⟨k, rfl⟩ := Subgroup.mem_zpowers_iff.mp hx
+    exact (↑P₅ : Subgroup G).zpow_mem hc_P5 k
+  have hP5_eq : (↑P₅ : Subgroup G) = Subgroup.zpowers c := by
+    apply le_antisymm _ hzpow_le
+    intro x hx
+    have hbij : Function.Bijective (Subgroup.inclusion hzpow_le) := by
+      haveI := Fintype.ofFinite ↥(↑P₅ : Subgroup G)
+      haveI := Fintype.ofFinite ↥(Subgroup.zpowers c)
+      exact (Fintype.bijective_iff_injective_and_card _).mpr
+        ⟨Subgroup.inclusion_injective _, by
+          rw [← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card,
+              Nat.card_zpowers, hc_ord, hP_card]⟩
+    obtain ⟨⟨y, hy⟩, hxy⟩ := hbij.surjective ⟨x, hx⟩
+    rwa [show y = x from congr_arg Subtype.val hxy] at hy
+  have hconj_zpow : σ' * c * σ'⁻¹ ∈ Subgroup.zpowers c :=
+    (SetLike.ext_iff.mp hP5_eq _).mp ((↑P₅ : Subgroup G).Normal.conj_mem c hc_P5 σ')
+  obtain ⟨k, hk⟩ := Subgroup.mem_zpowers_iff.mp hconj_zpow
+  have hσ_inv : (galToPerm5 σ)⁻¹ = galToPerm5 σ :=
+    inv_eq_iff_mul_eq_one.mpr (by rw [← sq]; exact hσ2)
+  have hconj_val : galToPerm5 σ * ↑c * galToPerm5 σ = (↑c : Equiv.Perm (Fin 5)) ^ k := by
+    have h := congr_arg Subtype.val hk
+    simp only [Subgroup.coe_mul, Subgroup.coe_inv, SubgroupClass.coe_zpow, σ'] at h; rwa [hσ_inv]
+  have ⟨hn1, hn2, hn3, hn4⟩ := transposition_not_normalizing_5cycle
+    ↑c (galToPerm5 σ) hc5 hc_ne hσ_sign hσ2
+  have hck_ne : (↑c : Equiv.Perm (Fin 5)) ^ k ≠ 1 := by
+    rw [← hconj_val]; intro h
+    have h1 : σ' * c * σ'⁻¹ = (1 : G) :=
+      Subtype.ext (by simp [σ', Subgroup.coe_mul, Subgroup.coe_inv, hσ_inv]; exact h)
+    exact hc_ne (by have : c = σ'⁻¹ * (σ' * c * σ'⁻¹) * σ' := by group; rw [h1] at this; simpa using this)
+  have hred : (↑c : Equiv.Perm (Fin 5)) ^ k = (↑c) ^ (k % 5).toNat := by
+    conv_lhs => rw [show k = 5 * (k / 5) + k % 5 from (Int.emod_add_ediv k 5 ▸ by ring)]
+    rw [zpow_add, zpow_mul, show (↑c : Equiv.Perm (Fin 5)) ^ (5 : ℤ) = 1 from by
+      rw [zpow_natCast]; exact_mod_cast hc5, one_zpow, one_mul,
+      Int.toNat_of_nonneg (Int.emod_nonneg k (by norm_num))]
+  rw [hred] at hconj_val hck_ne
+  have hbound : (k % 5).toNat < 5 := by
+    rw [Int.toNat_lt (by omega)]; exact Int.emod_lt_of_pos k (by norm_num)
+  exfalso; interval_cases (k % 5).toNat <;> simp_all
+
+-- Section E6b3: |Gal| ≠ 40 (same Sylow argument as ne_20)
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- |Gal(p/ℚ)| ≠ 40: Same Sylow argument as ne_20. In a subgroup of S₅
+    of order 40, n₅ | 8 and n₅ ≡ 1 mod 5, so n₅ = 1 (unique normal
+    Sylow 5-subgroup). Transposition normalizes it → contradiction. -/
+private theorem gal_card_ne_40 : Fintype.card p.Gal ≠ 40 := by
+  intro hc
+  obtain ⟨σ, hσ2, hσ_ne, hσ_sign⟩ := gal_has_transposition
+  set G := galToPerm5.range
+  have hG_card : Nat.card G = 40 := by
+    rw [show Nat.card G = Nat.card p.Gal from
+      Nat.card_congr (Equiv.ofBijective galToPerm5.rangeRestrict
+        ⟨fun a b h => galToPerm5_injective (congrArg Subtype.val h),
+         galToPerm5.rangeRestrict_surjective⟩).symm, Nat.card_eq_fintype_card, hc]
+  haveI : Finite G := Nat.finite_of_card_ne_zero (by rw [hG_card]; norm_num)
+  haveI : Fintype G := Fintype.ofFinite G
+  have hG_ft : Fintype.card G = 40 := by rwa [Nat.card_eq_fintype_card] at hG_card
+  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+  obtain ⟨c, hc_ord⟩ := exists_prime_orderOf_dvd_card (p := 5) (by rw [hG_ft]; norm_num)
+  have hc5 : (c : Equiv.Perm (Fin 5)) ^ 5 = 1 := by
+    simpa using congr_arg Subtype.val
+      (show c ^ 5 = (1 : G) from by rw [← hc_ord]; exact pow_orderOf_eq_one c)
+  have hc_ne : (c : Equiv.Perm (Fin 5)) ≠ 1 := fun h =>
+    absurd hc_ord (by rw [show c = (1 : G) from Subtype.ext h, orderOf_one]; norm_num)
+  set σ' : G := ⟨galToPerm5 σ, ⟨σ, rfl⟩⟩
+  obtain ⟨P₅⟩ := Sylow.nonempty (p := 5) (G := G)
+  have hP_card : Nat.card (↑P₅ : Subgroup G) = 5 := by
+    rw [P₅.card_eq_multiplicity, hG_card]; native_decide
+  have : Nat.card (Sylow 5 G) = 1 := by
+    have h_mod := card_sylow_modEq_one 5 G
+    have h_idx : (↑P₅ : Subgroup G).index = 8 := by
+      have := (↑P₅ : Subgroup G).index_mul_card; rw [hP_card, hG_card] at this; omega
+    have h_dvd := Sylow.card_dvd_index P₅; rw [h_idx] at h_dvd
+    have h_le : Nat.card (Sylow 5 G) ≤ 8 := Nat.le_of_dvd (by norm_num) h_dvd
+    have h_pos : 0 < Nat.card (Sylow 5 G) := Nat.card_pos
+    rw [Nat.ModEq] at h_mod
+    interval_cases (Nat.card (Sylow 5 G)) <;> omega
+  haveI : Subsingleton (Sylow 5 G) := by
+    haveI := Fintype.ofFinite (Sylow 5 G)
+    rw [← Fintype.card_le_one_iff_subsingleton, ← Nat.card_eq_fintype_card]; omega
+  haveI : (↑P₅ : Subgroup G).Normal := by
+    apply Subgroup.Normal.mk; intro n hn g
+    have : g • P₅ = P₅ := Subsingleton.elim _ _; rw [Sylow.smul_eq_iff_mem_normalizer] at this
+    exact ((Subgroup.mem_normalizer_iff.mp this) n).mp hn
+  have hc_P5 : c ∈ (↑P₅ : Subgroup G) := by
+    have h_pg : IsPGroup 5 (Subgroup.zpowers c) :=
+      IsPGroup.iff_card.mpr ⟨1, by rw [pow_one, Nat.card_zpowers, hc_ord]⟩
+    obtain ⟨Q, hQ⟩ := h_pg.exists_le_sylow
+    exact (Subsingleton.elim Q P₅ : Q = P₅) ▸ hQ (Subgroup.mem_zpowers c)
+  have hzpow_le : Subgroup.zpowers c ≤ ↑P₅ := fun x hx => by
+    obtain ⟨k, rfl⟩ := Subgroup.mem_zpowers_iff.mp hx
+    exact (↑P₅ : Subgroup G).zpow_mem hc_P5 k
+  have hP5_eq : (↑P₅ : Subgroup G) = Subgroup.zpowers c := by
+    apply le_antisymm _ hzpow_le
+    intro x hx
+    have hbij : Function.Bijective (Subgroup.inclusion hzpow_le) := by
+      haveI := Fintype.ofFinite ↥(↑P₅ : Subgroup G)
+      haveI := Fintype.ofFinite ↥(Subgroup.zpowers c)
+      exact (Fintype.bijective_iff_injective_and_card _).mpr
+        ⟨Subgroup.inclusion_injective _, by
+          rw [← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card,
+              Nat.card_zpowers, hc_ord, hP_card]⟩
+    obtain ⟨⟨y, hy⟩, hxy⟩ := hbij.surjective ⟨x, hx⟩
+    rwa [show y = x from congr_arg Subtype.val hxy] at hy
+  have hconj_zpow : σ' * c * σ'⁻¹ ∈ Subgroup.zpowers c :=
+    (SetLike.ext_iff.mp hP5_eq _).mp ((↑P₅ : Subgroup G).Normal.conj_mem c hc_P5 σ')
+  obtain ⟨k, hk⟩ := Subgroup.mem_zpowers_iff.mp hconj_zpow
+  have hσ_inv : (galToPerm5 σ)⁻¹ = galToPerm5 σ :=
+    inv_eq_iff_mul_eq_one.mpr (by rw [← sq]; exact hσ2)
+  have hconj_val : galToPerm5 σ * ↑c * galToPerm5 σ = (↑c : Equiv.Perm (Fin 5)) ^ k := by
+    have h := congr_arg Subtype.val hk
+    simp only [Subgroup.coe_mul, Subgroup.coe_inv, SubgroupClass.coe_zpow, σ'] at h; rwa [hσ_inv]
+  have ⟨hn1, hn2, hn3, hn4⟩ := transposition_not_normalizing_5cycle
+    ↑c (galToPerm5 σ) hc5 hc_ne hσ_sign hσ2
+  have hck_ne : (↑c : Equiv.Perm (Fin 5)) ^ k ≠ 1 := by
+    rw [← hconj_val]; intro h
+    have h1 : σ' * c * σ'⁻¹ = (1 : G) :=
+      Subtype.ext (by simp [σ', Subgroup.coe_mul, Subgroup.coe_inv, hσ_inv]; exact h)
+    exact hc_ne (by have : c = σ'⁻¹ * (σ' * c * σ'⁻¹) * σ' := by group; rw [h1] at this; simpa using this)
+  have hred : (↑c : Equiv.Perm (Fin 5)) ^ k = (↑c) ^ (k % 5).toNat := by
+    conv_lhs => rw [show k = 5 * (k / 5) + k % 5 from (Int.emod_add_ediv k 5 ▸ by ring)]
     rw [zpow_add, zpow_mul, show (↑c : Equiv.Perm (Fin 5)) ^ (5 : ℤ) = 1 from by
       rw [zpow_natCast]; exact_mod_cast hc5, one_zpow, one_mul,
       Int.toNat_of_nonneg (Int.emod_nonneg k (by norm_num))]
@@ -1099,246 +1286,47 @@ private theorem gal_card_ne_20 : Fintype.card p.Gal ≠ 20 := by
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 /-- **THEOREM** (formerly Axiom A): 3 divides |Gal(p)|.
-    Proved by eliminating non-3-divisible options {5,10,20,40}:
-    - 5,10: subgroups of these orders in S₅ ⊂ A₅, but Gal has odd perms
-    - 20: F₂₀ has no transpositions, but Gal does (gal_has_transposition)
-    - 40: no subgroup of S₅ has order 40 (Sylow + normalizer argument) -/
+    Proved by eliminating all non-3-divisible options {5,10,20,40}:
+    - 5: order-5 elements in S₅ are even, but Gal has an odd permutation
+    - 10,20,40: unique normal Sylow 5-subgroup (5-cycle), but Gal has
+      a transposition which can't normalize any 5-cycle (native_decide) -/
 theorem three_dvd_gal_card : 3 ∣ Fintype.card p.Gal := by
   have h5 := five_dvd_gal_card
   have h120 := gal_card_dvd_120
   obtain ⟨a, ha⟩ := h5
-  have hapos : 0 < a := by positivity_fail; omega_nat
+  have hapos : 0 < a := by
+    have := Fintype.card_pos (α := p.Gal); omega
   -- a | 24
   have ha24 : a ∣ 24 := by
     have h := (Nat.dvd_div_iff_mul_dvd (by norm_num : 5 ∣ 120)).mpr (ha ▸ h120)
     simpa using h
-  -- |Gal| ≠ 5: order-5 perms have sign +1
+  -- |Gal| ≠ 5: order-5 perms have sign +1, but Gal has an odd perm
   have hne5 : a ≠ 1 := by
     intro heq; rw [heq, mul_one] at ha
     obtain ⟨σ, hσ⟩ := gal_has_odd_perm
-    have : (galToPerm5 σ) ^ 5 = 1 := by
-      rw [← map_pow, show σ ^ 5 = 1 from by
-        have := pow_card_eq_one (G := p.Gal); rw [ha] at this; exact this, map_one]
-    linarith [perm_fin5_order_dvd5_sign_one (galToPerm5 σ) this]
-  -- |Gal| ≠ 10: sorry (same Sylow argument as ne_20 but for order 10)
-  have hne10 : a ≠ 2 := by sorry
+    have h5pow : (galToPerm5 σ) ^ 5 = 1 := by
+      rw [← map_pow]; convert map_one galToPerm5
+      exact_mod_cast ha ▸ pow_card_eq_one
+    exact absurd (perm_fin5_order_dvd5_sign_one (galToPerm5 σ) h5pow) (by rw [hσ]; decide)
+  -- |Gal| ≠ 10
+  have hne10 : a ≠ 2 := fun h => gal_card_ne_10 (by rw [ha, h])
   -- |Gal| ≠ 20
   have hne20 : a ≠ 4 := fun h => gal_card_ne_20 (by rw [ha, h])
-  -- |Gal| ≠ 40: sorry (index-3 subgroup impossible in S₅)
-  have hne40 : a ≠ 8 := by sorry
+  -- |Gal| ≠ 40
+  have hne40 : a ≠ 8 := fun h => gal_card_ne_40 (by rw [ha, h])
   -- 3 | a: remaining options are {3,6,12,24}
   suffices 3 ∣ a from ha ▸ dvd_mul_of_dvd_right this 5
+  have ha_le : a ≤ 24 := Nat.le_of_dvd (by norm_num) ha24
   interval_cases a <;> simp_all
 
--- ============================================================================
--- Part V(e2): Proving Axiom B via Vandermonde + Discriminant
--- ============================================================================
-
-/-
-## Strategy for Axiom B
-
-The Galois group contains an odd permutation. Proof via discriminant:
-
-1. Define Δ = det(vandermonde(roots)) — the Vandermonde product
-2. Show σ(Δ) = sign(σ) · Δ for σ ∈ Gal (Vandermonde permutation identity)
-3. Axiom: Δ² = algebraMap ℚ SF (disc(p)) (discriminant = Vandermonde² identity)
-4. Axiom: disc(p) < 0 (computational: disc(x⁵-4x+2) = -212144)
-5. If all signs were +1, then Δ ∈ ℚ (fixed by all Galois), but Δ² < 0
-   in ℚ is impossible. Contradiction ⟹ some σ has sign(σ) = -1.
--/
-
--- Abbreviation for the splitting field
-private abbrev SF := p.SplittingField
-
--- Section A: Root Enumeration
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/-- Canonical enumeration of the 5 roots of p in its splitting field. -/
-noncomputable def rootEnum_p : Fin 5 → SF :=
-  fun i => ((Fintype.equivOfCardEq (by rw [p_rootSet_card, Fintype.card_fin]) :
-    p.rootSet p.SplittingField ≃ Fin 5).symm i : SF)
-
-/-- Each value of rootEnum_p is a root of p. -/
-theorem rootEnum_p_is_root (i : Fin 5) :
-    Polynomial.aeval (rootEnum_p i) p = 0 := by
-  unfold rootEnum_p
-  have hmem := ((Fintype.equivOfCardEq (by rw [p_rootSet_card, Fintype.card_fin]) :
-    p.rootSet p.SplittingField ≃ Fin 5).symm i).prop
-  rw [Polynomial.mem_rootSet] at hmem
-  exact hmem.2
-
-/-- The roots are distinct (p is separable). -/
-theorem rootEnum_p_injective : Function.Injective rootEnum_p := by
-  intro i j hij
-  unfold rootEnum_p at hij
-  have : (Fintype.equivOfCardEq (by rw [p_rootSet_card, Fintype.card_fin]) :
-    p.rootSet p.SplittingField ≃ Fin 5).symm i =
-    (Fintype.equivOfCardEq (by rw [p_rootSet_card, Fintype.card_fin]) :
-    p.rootSet p.SplittingField ≃ Fin 5).symm j := Subtype.ext hij
-  exact (Fintype.equivOfCardEq (by rw [p_rootSet_card, Fintype.card_fin]) :
-    p.rootSet p.SplittingField ≃ Fin 5).symm.injective this
-
--- Section B: Vandermonde Product
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/-- The Vandermonde product of p's roots:
-    Δ = det(vandermonde(rootEnum_p)) = ∏_{i<j} (rootEnum_p j - rootEnum_p i). -/
-noncomputable def vandermondeProduct_p : SF :=
-  Matrix.det (Matrix.vandermonde rootEnum_p)
-
-/-- The Vandermonde product is nonzero (since p is separable, all roots are distinct). -/
-theorem vandermondeProduct_p_ne_zero : vandermondeProduct_p ≠ 0 := by
-  unfold vandermondeProduct_p
-  rw [Matrix.det_vandermonde]
-  intro h
-  rw [Finset.prod_eq_zero_iff] at h
-  obtain ⟨i, _, hi⟩ := h
-  rw [Finset.prod_eq_zero_iff] at hi
-  obtain ⟨j, hj, hij⟩ := hi
-  have hne : j ≠ i := by simp [Finset.mem_Iio] at hj; omega
-  exact hne (rootEnum_p_injective (sub_eq_zero.mp hij))
-
--- Section C: Galois Permutation of Roots
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/-- σ ∈ Gal permutes the roots: σ(rootEnum_p i) = rootEnum_p(galToPerm5 σ i). -/
-theorem gal_permutes_roots_p (σ : p.Gal) (i : Fin 5) :
-    σ (rootEnum_p i) = rootEnum_p (galToPerm5 σ i) := by
-  unfold rootEnum_p galToPerm5 galPermHomAux
-  simp only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.coe_mk,
-    Equiv.toFun_as_coe, Equiv.permCongr_apply, Equiv.symm_apply_apply,
-    MulAction.toPermHom_apply]
-  rfl
-
--- Section D: Vandermonde Permutation Identity
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/-- Vandermonde matrix with permuted input = row-permuted Vandermonde. -/
-private theorem vandermonde_comp_eq_submatrix_p
-    (v : Fin 5 → SF) (π : Equiv.Perm (Fin 5)) :
-    Matrix.vandermonde (v ∘ π) = (Matrix.vandermonde v).submatrix π id := by
-  ext i j; simp [Matrix.vandermonde, Matrix.submatrix, Function.comp]
-
-/-- Vandermonde permutation: det(V(v ∘ π)) = sign(π) · det(V(v)). -/
-private theorem vandermonde_perm_det_p
-    (v : Fin 5 → SF) (π : Equiv.Perm (Fin 5)) :
-    (Matrix.vandermonde (v ∘ π)).det =
-    ↑↑(Equiv.Perm.sign π) * (Matrix.vandermonde v).det := by
-  rw [vandermonde_comp_eq_submatrix_p]
-  exact Matrix.det_permute π (Matrix.vandermonde v)
-
-/-- σ maps the Vandermonde matrix entry-wise according to root permutation. -/
-private theorem gal_map_vandermonde_entry_p (σ : p.Gal) (i j : Fin 5) :
-    σ ((Matrix.vandermonde rootEnum_p) i j) =
-    (Matrix.vandermonde (rootEnum_p ∘ galToPerm5 σ)) i j := by
-  simp only [Matrix.vandermonde, Matrix.of_apply, Function.comp]
-  rw [map_pow]
-  congr 1
-  exact gal_permutes_roots_p σ i
-
-/-- **Key identity**: σ(Δ) = sign(σ) · Δ.
-
-    The Galois action on the Vandermonde determinant equals the sign of the
-    induced permutation times the determinant. -/
-theorem gal_acts_on_vandermondeProduct_p (σ : p.Gal) :
-    σ vandermondeProduct_p = ↑↑(galSign σ) * vandermondeProduct_p := by
-  unfold vandermondeProduct_p galSign
-  trans (Matrix.vandermonde (rootEnum_p ∘ galToPerm5 σ)).det
-  · change σ.toAlgHom.toRingHom (Matrix.vandermonde rootEnum_p).det =
-      (Matrix.vandermonde (rootEnum_p ∘ galToPerm5 σ)).det
-    rw [RingHom.map_det]
-    congr 1; ext i j
-    simp only [RingHom.mapMatrix_apply]
-    change σ ((Matrix.vandermonde rootEnum_p) i j) =
-      (Matrix.vandermonde (rootEnum_p ∘ galToPerm5 σ)) i j
-    exact gal_map_vandermonde_entry_p σ i j
-  · exact vandermonde_perm_det_p rootEnum_p (galToPerm5 σ)
-
--- Section E: Transparent Sub-Axioms
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/-- **Sub-axiom B1**: The discriminant of p = x⁵-4x+2 is negative.
-
-    Computation: disc(x⁵-4x+2) = Res(x⁵-4x+2, 5x⁴-4)
-    = 5⁵·2⁴ + 4⁴·(-4)⁵ = 50000 - 262144 = -212144 < 0.
-
-    This is a purely computational fact, verifiable via the 9×9 Sylvester
-    matrix determinant. Axiomatized because native_decide on a 9×9
-    determinant causes stack overflow in Lean's kernel. -/
-axiom disc_p_neg : Polynomial.discr p < 0
-
-/-- **Sub-axiom B2**: Δ² = algebraMap ℚ SF (disc(p)).
-
-    This is the standard identity disc(f) = ∏_{i<j}(rⱼ-rᵢ)² for monic f,
-    proved via the chain:
-      Δ² = ∏_{i≠j}(αᵢ-αⱼ) = ∏ᵢ f'(αᵢ) = Res(f_SF, f'_SF)
-         = algebraMap ℚ SF (Res(f,f')) = algebraMap ℚ SF (disc(f)).
-
-    Axiomatized because the full resultant chain is ~200 lines.
-    Each step is proved in InverseGaloisA5.lean for a different polynomial
-    and the pattern is directly transferable. -/
-axiom vandermonde_sq_eq_disc_p :
-    vandermondeProduct_p ^ 2 = algebraMap ℚ SF (Polynomial.discr p)
-
--- Section F: Proof of Axiom B from Sub-Axioms
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-/-- **THEOREM** (formerly Axiom B): The Galois group contains an odd permutation.
-
-    Proof by contradiction: assume all σ ∈ Gal are even (sign = +1).
-    Then σ(Δ) = Δ for all σ, so Δ is fixed by the full Galois group.
-    By the fundamental theorem of Galois theory, Δ ∈ ℚ.
-    Then Δ = algebraMap ℚ SF q for some q ∈ ℚ, so Δ² = algebraMap ℚ SF (q²).
-    But Δ² = algebraMap ℚ SF (disc(p)) with disc(p) < 0.
-    Since algebraMap is injective: q² = disc(p) < 0, contradicting q² ≥ 0. -/
-theorem gal_has_odd_perm :
-  ∃ σ : p.Gal, Equiv.Perm.sign (galToPerm5 σ) = -1 := by
-  -- By contradiction: assume all signs are +1
-  by_contra h_all_even
-  push_neg at h_all_even
-  -- h_all_even : ∀ σ, sign(galToPerm5 σ) ≠ -1
-  -- Since sign ∈ {±1}, this means ∀ σ, sign(galToPerm5 σ) = 1
-  have h_pos : ∀ σ : p.Gal, galSign σ = 1 := by
-    intro σ
-    unfold galSign
-    rcases Int.units_eq_one_or (Equiv.Perm.sign (galToPerm5 σ)) with h | h
-    · exact h
-    · exact absurd h (h_all_even σ)
-  -- From sign(σ) = 1 and σ(Δ) = sign(σ)·Δ, deduce σ(Δ) = Δ for all σ
-  have h_fix : ∀ σ : p.Gal, σ vandermondeProduct_p = vandermondeProduct_p := by
-    intro σ
-    have := gal_acts_on_vandermondeProduct_p σ
-    rw [h_pos σ] at this
-    simpa using this
-  -- Δ is in the fixed field of the full Galois group, hence Δ ∈ ℚ
-  -- (Fundamental Theorem of Galois Theory: fixed field of ⊤ = ℚ)
-  have h_in_Q : ∃ q : ℚ, vandermondeProduct_p = algebraMap ℚ SF q := by
-    haveI : IsGalois ℚ SF := IsGalois.mk
-    have h_mem : vandermondeProduct_p ∈
-        (⊥ : IntermediateField ℚ SF) := by
-      rw [← IsGalois.fixedField_fixingSubgroup (⊥ : IntermediateField ℚ SF)]
-      rw [IntermediateField.mem_fixedField_iff]
-      intro σ hσ
-      exact h_fix σ
-    obtain ⟨q, hq⟩ := IntermediateField.mem_bot.mp h_mem
-    exact ⟨q, hq.symm⟩
-  -- Get the rational value
-  obtain ⟨q, hq⟩ := h_in_Q
-  -- Δ² = algebraMap ℚ SF (q²) and also = algebraMap ℚ SF (disc(p))
-  have h_sq : algebraMap ℚ SF (q ^ 2) = algebraMap ℚ SF (Polynomial.discr p) := by
-    have : vandermondeProduct_p ^ 2 = algebraMap ℚ SF (q ^ 2) := by
-      rw [hq, map_pow]
-    rw [← this]
-    exact vandermonde_sq_eq_disc_p
-  -- algebraMap is injective (ℚ is a field), so q² = disc(p)
-  have h_eq : q ^ 2 = Polynomial.discr p :=
-    (algebraMap ℚ SF).injective h_sq
-  -- But q² ≥ 0 and disc(p) < 0 — contradiction
-  have h_nonneg : (0 : ℚ) ≤ q ^ 2 := sq_nonneg q
-  linarith [disc_p_neg]
+-- NOTE: Part V(e2) (Vandermonde _p versions + axioms disc_p_neg/vandermonde_sq_eq_disc_p)
+-- has been REMOVED. The axiom-free proofs in Part V(d) via vandermondeProduct_sq_val
+-- and in Part V(e2) via complex conjugation now prove everything without axioms.
+-- (Duplicate _p infrastructure and axioms removed — see git history.)
+-- gal_has_odd_perm is proved axiom-free from exists_odd_galSign above.
 
 -- ============================================================================
--- Part V(f): |Gal(p/ℚ)| = 120 (PROVED from Axioms A, B)
+-- Part V(f): |Gal(p/ℚ)| = 120 (PROVED — all axioms eliminated)
 -- ============================================================================
 
 /-- |Gal(p)| ≠ 15: Gal embeds into S₅ which has no subgroup of order 15. -/
@@ -1435,12 +1423,12 @@ private theorem gal_card_ne_60 : Fintype.card p.Gal ≠ 60 := by
   rw [hmem] at hσ
   exact absurd hσ (by decide)
 
-/-- **THEOREM** (formerly axiom): |Gal(p/ℚ)| = 120.
+/-- **THEOREM**: |Gal(p/ℚ)| = 120.
 
-    Proof: 5 | |Gal| (five_dvd_gal_card) and 3 | |Gal| (Axiom A).
+    Proof: 5 | |Gal| (five_dvd_gal_card) and 3 | |Gal| (three_dvd_gal_card).
     So 15 | |Gal| and |Gal| | 120, giving |Gal| ∈ {15, 30, 60, 120}.
     |Gal| ≠ 15 (no_subgroup_order_15), ≠ 30 (no_subgroup_order_30),
-    ≠ 60 (Gal ⊄ A₅ by Axiom B). Therefore |Gal| = 120. -/
+    ≠ 60 (Gal ⊄ A₅). Therefore |Gal| = 120. -/
 theorem gal_card_eq_120 : Fintype.card p.Gal = 120 := by
   have h5 := five_dvd_gal_card
   have h3 := three_dvd_gal_card
@@ -1532,7 +1520,7 @@ theorem gal_not_solvable : ¬ IsSolvable p.Gal := by
 ## The Complete Proof
 
 1. p = x⁵ - 4x + 2 is irreducible over ℚ (Eisenstein at 2) ✓ PROVED
-2. Gal(p/ℚ) ≅ S₅ (1 axiom: |Gal| = 120) ✓ PROVED
+2. Gal(p/ℚ) ≅ S₅ (axiom-free) ✓ PROVED
 3. S₅ is not solvable (Mathlib) ✓ PROVED
 4. If α is solvable by radicals, Gal(minpoly(α)) is solvable (Mathlib) ✓
 5. Contrapositive: Gal not solvable ⟹ α not solvable by radicals ✓ PROVED
