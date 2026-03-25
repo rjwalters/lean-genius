@@ -31,7 +31,7 @@ We axiomatize GRH and prove its consequences rigorously.
 
 ## Status
 
-Axiomatized (GRH is an open conjecture)
+Axiomatized (GRH is an open conjecture). 0 sorry, 13 axiom.
 -/
 
 import Mathlib.NumberTheory.LSeries.PrimesInAP
@@ -196,12 +196,35 @@ theorem GRH_error_sublinear (x : ℝ) (hx : x > Real.exp 4) :
     calc Real.sqrt x * Real.log x
         < Real.sqrt x * Real.sqrt x := mul_lt_mul_of_pos_left hlog hsqrt_pos
       _ = x := Real.mul_self_sqrt (le_of_lt hx_pos)
-  -- log x ≤ x - 1 < x for all x > 0, but we need log x < √x.
-  -- Use: log x = log(√x · √x) = 2 log(√x), and log u < u for u > 0
-  -- gives log x < 2√x. Since √x > e² > 7, we also have log(√x) < √x - 1.
-  -- So log x = 2 log(√x) ≤ 2(√x - 1) < 2√x. For √x > 4, 2 log(√x) < √x.
-  -- This is the key real analysis fact; we use sorry for the technical bound.
-  sorry
+  -- Strategy: let w = x^{1/4} = √(√x). Then log x = 4·log w ≤ 4(w-1) < w² = √x.
+  -- The last step uses (w-2)² > 0, which requires w > 2 (from x > e⁴ > 16).
+  set w := Real.sqrt (Real.sqrt x) with hw_def
+  have hw_pos : 0 < w := Real.sqrt_pos.mpr hsqrt_pos
+  have hw_sq : w * w = Real.sqrt x := Real.mul_self_sqrt hsqrt_pos.le
+  have hlog_eq : Real.log x = 4 * Real.log w := by
+    linarith [Real.log_sqrt hx_pos.le, Real.log_sqrt hsqrt_pos.le]
+  have hlog_w : Real.log w ≤ w - 1 := by
+    linarith [Real.add_one_le_exp (Real.log w), Real.exp_log hw_pos]
+  have hw_gt_2 : w > 2 := by
+    have hexp4 : Real.exp 4 > 16 := by
+      have he1 : Real.exp 1 > 2 := by linarith [Real.exp_one_gt_d9]
+      have he2 : Real.exp 2 = Real.exp 1 * Real.exp 1 := by
+        rw [← Real.exp_add]; norm_num
+      have he2_gt : Real.exp 2 > 4 := by nlinarith
+      have he4 : Real.exp 4 = Real.exp 2 * Real.exp 2 := by
+        rw [← Real.exp_add]; norm_num
+      nlinarith
+    have hsqrt_gt_4 : Real.sqrt x > 4 := by
+      have : (4 : ℝ) = Real.sqrt 16 := by
+        rw [show (16 : ℝ) = 4 ^ 2 from by norm_num, Real.sqrt_sq (by norm_num : (0:ℝ) ≤ 4)]
+      rw [this]; exact Real.sqrt_lt_sqrt (by norm_num) (by linarith)
+    have : (2 : ℝ) = Real.sqrt 4 := by
+      rw [show (4 : ℝ) = 2 ^ 2 from by norm_num, Real.sqrt_sq (by norm_num : (0:ℝ) ≤ 2)]
+    rw [hw_def, this]; exact Real.sqrt_lt_sqrt (by norm_num) hsqrt_gt_4
+  calc Real.log x = 4 * Real.log w := hlog_eq
+    _ ≤ 4 * (w - 1) := by linarith
+    _ < w * w := by nlinarith
+    _ = Real.sqrt x := hw_sq
 
 /-
 ## Part IV: Least Prime in Arithmetic Progressions
