@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 0 sorries in main theorems, 1 axiom (vose_bounded_sequence), 2 sorries in helper lemmas. Down from 4A+0S. vose_liminf proved, false axiom removed.",
+    "progressSummary": "COMPLETE: 0 sorries, 1 axiom (vose_bounded_sequence). All helper lemmas proved.",
     "builtItems": [
       "17 new infrastructure theorems for sorted divisor properties",
       "first_divisor_is_one theorem (was axiom)",
@@ -49,7 +49,10 @@
       "list_bind_pure_ratCast: bridge monad do/pure to explicit map for ℚ→ℝ cast",
       "sortedDivisors_two_pow theorem: sorted divisors of 2^k = [2^0,...,2^k] via Nat.divisors_prime_pow + sorted permutation uniqueness",
       "list_range_pairwise_lt: List.range n is Pairwise (· < ·)",
-      "vose_liminf_bounded theorem (was axiom)"
+      "vose_liminf_bounded theorem (was axiom)",
+      "zipWith_ratios_eq_two: all ratios of a doubling list are 2",
+      "sortedDivisors_two_pow_geom: doubling property for sorted divisors of 2^k",
+      "divisorRatios_two_pow: proved (was sorry)"
     ],
     "insights": [
       "divisorRatios had a critical bug: computed d_i/d_{i+1} instead of d_{i+1}/d_i",
@@ -65,7 +68,8 @@
       "Lean4 monad elaboration creates do/pure form when composing List.map with casts — need flatMap_singleton helper to normalize",
       "sortedDivisors_two_pow proved via List.perm_ext_iff_of_nodup + Perm.eq_of_pairwise with explicit antisymmetry",
       "divisorRatios_two_pow blocked by Lean4 monadic normalization: zipWith with ℕ→ℚ cast creates do/pure form that breaks type matching with structural recursion helper",
-      "vose_liminf_bounded follows trivially from vose_bounded_sequence (pick any seq element)"
+      "vose_liminf_bounded follows trivially from vose_bounded_sequence (pick any seq element)",
+      "divisorRatios_two_pow proved via membership+length decomposition: all elements = 2 (by zipWith_ratios_eq_two using doubling property) and length = k"
     ],
     "mathlibGaps": [
       "No direct Finset.sort getLast = max lemma"
