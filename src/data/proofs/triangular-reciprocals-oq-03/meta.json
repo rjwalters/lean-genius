@@ -69,35 +69,40 @@
       "title": "Alternating Harmonic Series (Axiomatized)",
       "startLine": 27,
       "endLine": 45,
-      "summary": "Two axioms encoding the Mercator series at x=1: the alternating harmonic series = ln(2) and its shifted variant = 1 - ln(2). These require Abel's theorem for boundary convergence."
+      "summary": "Two axioms encoding the Mercator series at x=1: the alternating harmonic series = ln(2) and its shifted variant = 1 - ln(2). These require Abel's theorem for boundary convergence.",
+      "mathContext": "Two axioms encoding the Mercator series: $\\sum_{n=1}^{\\infty} (-1)^{n+1}/n = \\ln 2$ (alternating harmonic series) and a shifted variant. These provide the transcendental value needed for the closed form."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "startLine": 46,
       "endLine": 81,
-      "summary": "The core result: HasSum for ∑(-1)^{n+1}·2/(n(n+1)) = 4·ln(2) - 2. Proof via funext partial fractions, then combining two HasSum results with mul_left and sub."
+      "summary": "The core result: HasSum for ∑(-1)^{n+1}·2/(n(n+1)) = 4·ln(2) - 2. Proof via funext partial fractions, then combining two HasSum results with mul_left and sub.",
+      "mathContext": "The alternating sum: $\\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1} \\cdot 2}{n(n+1)} = 4\\ln 2 - 2$. Proof uses partial fractions: $\\frac{2}{n(n+1)} = \\frac{2}{n} - \\frac{2}{n+1}$, then regroups as two Mercator series."
     },
     {
       "id": "corollary",
       "title": "Unscaled Corollary",
       "startLine": 82,
       "endLine": 131,
-      "summary": "Derives ∑(-1)^{n+1}/(n(n+1)) = 2·ln(2) - 1 by dividing the main result by 2 using const_smul with 2⁻¹."
+      "summary": "Derives ∑(-1)^{n+1}/(n(n+1)) = 2·ln(2) - 1 by dividing the main result by 2 using const_smul with 2⁻¹.",
+      "mathContext": "Dividing by 2: $\\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1}}{n(n+1)} = 2\\ln 2 - 1 \\approx 0.3863$. Proved by scaling the main HasSum result with $2^{-1}$."
     },
     {
       "id": "summability",
       "title": "Summability",
       "startLine": 132,
       "endLine": 141,
-      "summary": "The alternating series is summable, derived directly from the main HasSum result."
+      "summary": "The alternating series is summable, derived directly from the main HasSum result.",
+      "mathContext": "The alternating series $\\sum (-1)^{n+1}/(n(n+1))$ is (absolutely) summable, since $1/(n(n+1)) \\leq 1/n^2$ and $\\sum 1/n^2$ converges. Derived from the main `HasSum` result."
     },
     {
       "id": "examples",
       "title": "Finite Partial Sums",
       "startLine": 142,
       "endLine": 165,
-      "summary": "Computes S₁ = 1, S₂ = 2/3, S₃ = 5/6, S₄ = 11/15 via norm_num, showing oscillation around the limit 4·ln(2) - 2."
+      "summary": "Computes S₁ = 1, S₂ = 2/3, S₃ = 5/6, S₄ = 11/15 via norm_num, showing oscillation around the limit 4·ln(2) - 2.",
+      "mathContext": "Partial sums: $S_1 = 1$, $S_2 = 1 - 1/3 = 2/3$, $S_3 = 2/3 + 1/6 = 5/6$, $S_4 = 5/6 - 1/10 = 11/15$. The sums oscillate around the limit $4\\ln 2 - 2 \\approx 0.7726$, verified by `norm_num`."
     }
   ],
   "crossReferences": [
