@@ -29,7 +29,7 @@
       "startLine": 45,
       "endLine": 52
     },
-    "type": "definition",
+    "type": "concept",
     "title": "bezout_int: The Foundation",
     "content": "This theorem restates B\u00e9zout's identity in a clean existential form: for any integers a and b, there exist integers x, y such that gcd(a,b) = a*x + b*y. The proof is a one-liner: it simply unpacks Mathlib's `Int.gcd_eq_gcd_ab` using the explicit coefficient functions `Int.gcdA` and `Int.gcdB`. This explicit computation via the extended Euclidean algorithm is what makes the CRT solution constructive.",
     "mathContext": "B\u00e9zout's identity: for any $a, b \\in \\mathbb{Z}$, $\\exists\\, x, y \\in \\mathbb{Z}$ such that $\\gcd(a,b) = ax + by$. The proof constructs the witnesses explicitly: $x = \\text{gcdA}(a,b)$, $y = \\text{gcdB}(a,b)$, where these are computed by the extended Euclidean algorithm.",
