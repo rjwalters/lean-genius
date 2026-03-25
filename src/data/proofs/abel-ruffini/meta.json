@@ -354,6 +354,11 @@
       "targetId": "angle-trisection-oq-02-oq-03",
       "relationship": "related",
       "description": "The Gauss-Wantzel theorem: a regular $n$-gon is constructible iff $\\varphi(n)$ is a power of 2, i.e., $n = 2^k p_1 \\cdots p_r$ with distinct Fermat primes $p_i$. This is the definitive constructibility criterion, paralleling Abel-Ruffini's solvability criterion: both reduce a classical question (constructibility / radical solvability) to a group-theoretic condition ($\\text{Gal}$ is a 2-group / $\\text{Gal}$ is solvable) via the same Galois correspondence, and both explain a sharp boundary ($n$-gon constructibility fails for $n = 7$ just as radical solvability fails for degree 5)"
+    },
+    {
+      "targetId": "nth-root-irrational",
+      "relationship": "foundational",
+      "description": "The irrationality of $m^{1/n}$ for non-perfect-power $m$ is the simplest manifestation of radical extensions producing genuinely new elements. Each step in a radical tower $K_i \\to K_i(\\sqrt[n]{a})$ extends the field precisely because $a^{1/n} \\notin K_i$ — the same mechanism that nth-root irrationality captures over $\\mathbb{Q}$. This entry proves the base case; Abel-Ruffini shows that iterating such extensions cannot reach certain algebraic numbers when the Galois group is non-solvable"
     }
   ],
   "references": [
