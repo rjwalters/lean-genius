@@ -166,7 +166,7 @@ PROMPT_EOF
     local tmpfile
     tmpfile=$(mktemp "${TMPDIR:-/tmp}/aristotle-llm-XXXXXX")
 
-    timeout 120 claude -p "$(cat "$prompt_file")" --model haiku --max-turns 1 < /dev/null > "$tmpfile" 2>/dev/null || {
+    timeout 120 claude -p "$(cat "$prompt_file")" --model sonnet --max-turns 1 < /dev/null > "$tmpfile" 2>/dev/null || {
         rm -f "$tmpfile" "$prompt_file"
         write_cache "$basename" "UNMAPPED" "Claude CLI call failed"
         echo "UNMAPPED"
