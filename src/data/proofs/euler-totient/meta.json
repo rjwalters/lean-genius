@@ -83,49 +83,56 @@
       "title": "Imports and Documentation",
       "summary": "Imports `ZMod.Basic`, `Nat.Totient`, `RingTheory.Int.Basic`, and `Tactic`. Docstring with $a^{\\varphi(n)} \\equiv 1$, approach via Lagrange's theorem, and historical note (Euler 1763, Wiedijk #10).",
       "startLine": 1,
-      "endLine": 43
+      "endLine": 43,
+      "mathContext": "Imports `ZMod.Basic`, `Nat.Totient`, and `Tactic`. Euler's totient $\\varphi(n) = |\\{k : 1 \\leq k \\leq n,\\, \\gcd(k,n) = 1\\}|$ counts units in $\\mathbb{Z}/n\\mathbb{Z}$."
     },
     {
       "id": "main-theorem",
       "title": "Euler's Theorem",
       "summary": "Proves $a^{\\varphi(n)} = 1$ for $a \\in (\\mathbb{Z}/n\\mathbb{Z})^\\times$ via `ZMod.pow_totient`. One-line proof from Lagrange's theorem.",
       "startLine": 44,
-      "endLine": 59
+      "endLine": 59,
+      "mathContext": "Euler's theorem: $a^{\\varphi(n)} \\equiv 1 \\pmod{n}$ for $\\gcd(a,n) = 1$. In Lean: `ZMod.unitOfCoprime` and `ZMod.IsUnit.pow_totient`. This generalizes Fermat's little theorem from primes to arbitrary moduli."
     },
     {
       "id": "fermat-corollary",
       "title": "Fermat's Little Theorem",
       "summary": "Derives $a^{p-1} = 1$ for prime $p$ by substituting $\\varphi(p) = p-1$ (`Nat.totient_prime`) into Euler's theorem. Also proves full form $a^p = a$ via `ZMod.pow_card`.",
       "startLine": 60,
-      "endLine": 83
+      "endLine": 83,
+      "mathContext": "Fermat's little theorem as a corollary: $a^{p-1} \\equiv 1 \\pmod{p}$ for prime $p$ and $p \\nmid a$. Obtained by substituting $\\varphi(p) = p - 1$ (`Nat.totient_prime`)."
     },
     {
       "id": "totient-values",
       "title": "Totient Function Examples",
       "summary": "Computes $\\varphi(n)$ for $n = 1, \\ldots, 6$ by `rfl`. Verifies $2^{\\varphi(5)} \\equiv 1 \\pmod{5}$ and $3^{\\varphi(7)} \\equiv 1 \\pmod{7}$ by `native_decide`.",
       "startLine": 84,
-      "endLine": 114
+      "endLine": 114,
+      "mathContext": "Computed values: $\\varphi(1) = 1$, $\\varphi(2) = 1$, $\\varphi(3) = 2$, $\\varphi(4) = 2$, $\\varphi(5) = 4$, $\\varphi(6) = 2$. Verified computationally by `rfl` in Lean."
     },
     {
       "id": "counterexample",
       "title": "Non-Coprime Counterexample",
       "summary": "Shows $2^{\\varphi(4)} \\not\\equiv 1 \\pmod{4}$ when $\\gcd(2,4) = 2 \\neq 1$, demonstrating the coprimality hypothesis is necessary.",
       "startLine": 115,
-      "endLine": 118
+      "endLine": 118,
+      "mathContext": "Demonstrates the coprimality hypothesis is necessary: $2^{\\varphi(4)} = 2^2 = 4 \\not\\equiv 1 \\pmod{4}$ because $\\gcd(2,4) = 2 \\neq 1$. Without coprimality, Euler's theorem fails."
     },
     {
       "id": "totient-properties",
       "title": "Totient Function Properties",
       "summary": "Proves $\\varphi(p) = p-1$ via `Nat.totient_prime` and $\\varphi(p^k) = p^{k-1}(p-1)$ via `Nat.totient_prime_pow`.",
       "startLine": 119,
-      "endLine": 131
+      "endLine": 131,
+      "mathContext": "Key properties: $\\varphi(p) = p - 1$ for primes, $\\varphi(p^k) = p^{k-1}(p-1)$ for prime powers, and the product formula $\\varphi(n) = n \\prod_{p \\mid n}(1 - 1/p)$."
     },
     {
       "id": "verification",
       "title": "Verification Checks",
       "summary": "Uses `#check` to confirm the API surface: `euler_totient`, `fermat_little_theorem`, `fermat_little_theorem_full`.",
       "startLine": 132,
-      "endLine": 136
+      "endLine": 136,
+      "mathContext": "Type-checking the main results via `#check` to confirm the API surface."
     }
   ],
   "crossReferences": [
