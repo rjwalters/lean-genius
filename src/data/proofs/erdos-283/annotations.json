@@ -7,16 +7,22 @@
       "endLine": 39
     },
     "type": "concept",
-    "title": "Problem Overview",
-    "content": "**Erdős Problem #283** connects Egyptian fractions (sums of distinct unit fractions like 1/2 + 1/3 + 1/6 = 1) with additive representation by polynomial values. Given a polynomial p with positive leading coefficient and no universal divisor, can every large m be written as p(n₁) + ... + p(nₖ) where 1/n₁ + ... + 1/nₖ = 1? Graham (1963) proved it for p(x) = x. Alekseyev (2019) proved it for p(x) = x². The general case remains open.",
-    "mathContext": "We use Polynomial for ℤ[X], Filter.atTop for 'sufficiently large' quantifiers, and Finset for finite sums. The polynomial evaluation p.eval n computes p(n). Egyptian fractions have ancient origins but continue to generate open problems in modern number theory.",
+    "title": "Problem Overview and Imports",
+    "content": "**Erdős Problem #283** connects Egyptian fractions (sums of distinct unit fractions like $1/2 + 1/3 + 1/6 = 1$) with additive representation by polynomial values. Given a polynomial $p$ with positive leading coefficient and no universal divisor, can every sufficiently large $m$ be written as $p(n_1) + \\cdots + p(n_k)$ where $1/n_1 + \\cdots + 1/n_k = 1$?\n\nGraham (1963) proved it for $p(x) = x$. Alekseyev (2019) proved it for $p(x) = x^2$ with the explicit threshold $m > 8542$. The general case remains open.\n\nNine Mathlib imports provide: `Polynomial.Basic` and `Eval.Defs` (integer polynomials $\\mathbb{Z}[X]$ and evaluation), `Degree.Definitions` (leading coefficient), `Data.Int.Basic` and `Data.Rat.Defs` (integers and rationals for the unit fraction sum), `Filter.AtTopBot.Basic` ('sufficiently large' via `atTop`), `Finset.Basic` and `Finset.Sum` (finite sets and their sums), and `Tactic` (general tactics).",
+    "mathContext": "The problem asks: given $p \\in \\mathbb{Z}[X]$ with $\\text{lc}(p) > 0$ and $\\gcd\\{p(n) : n \\in \\mathbb{Z}\\} = 1$, does every sufficiently large $m \\in \\mathbb{Z}$ admit distinct $n_1 < \\cdots < n_k \\in \\mathbb{Z}_{>0}$ with $\\sum 1/n_i = 1$ and $\\sum p(n_i) = m$?",
     "significance": "key",
     "relatedConcepts": [
       "Egyptian fractions",
       "polynomial evaluation",
-      "additive combinatorics"
+      "additive combinatorics",
+      "Erdős problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Polynomial.Basic",
+      "Finset.sum",
+      "Filter.atTop",
+      "Data.Rat.Defs"
+    ]
   },
   {
     "id": "ann-e283-egyptian",
@@ -26,16 +32,22 @@
       "endLine": 61
     },
     "type": "definition",
-    "title": "Egyptian Fractions",
-    "content": "**IsEgyptianDecomposition s** requires all elements positive and ∑ 1/n = 1 as rationals. Two examples are verified via native_decide: **{2,3,6}** (1/2 + 1/3 + 1/6 = 1) and **{2,4,6,12}** (1/2 + 1/4 + 1/6 + 1/12 = 1). The Finset representation ensures elements are distinct.",
-    "mathContext": "The ancient Egyptians used unit fractions exclusively. The condition ∑ 1/n = 1 is computed over ℚ to avoid rounding issues. The examples are verified by native_decide which checks the rational arithmetic at compile time.",
+    "title": "Egyptian Fraction Decompositions",
+    "content": "**`IsEgyptianDecomposition s`** requires all elements of the `Finset ℕ` $s$ to be positive and $\\sum_{n \\in s} 1/n = 1$ as rationals. The rational arithmetic avoids floating-point issues.\n\nTwo examples are verified via `native_decide`:\n- **$\\{2,3,6\\}$**: $1/2 + 1/3 + 1/6 = 3/6 + 2/6 + 1/6 = 1$ ✓\n- **$\\{2,4,6,12\\}$**: $1/2 + 1/4 + 1/6 + 1/12 = 6/12 + 3/12 + 2/12 + 1/12 = 1$ ✓\n\nThe `Finset` representation ensures elements are distinct (no repeated denominators). The `native_decide` tactic checks the rational arithmetic at compile time via Lean's trusted kernel.",
+    "mathContext": "Egyptian decompositions of 1: $\\sum_{n \\in S} \\frac{1}{n} = 1$ where $S \\subset \\mathbb{Z}_{>0}$ is finite with distinct elements. The number of such decompositions is infinite — the splitting identity $\\frac{1}{n} = \\frac{1}{n+1} + \\frac{1}{n(n+1)}$ generates new decompositions from existing ones. The Erdős-Straus conjecture (every $4/n$ has a 3-term Egyptian fraction) is a related open problem.",
     "significance": "key",
     "relatedConcepts": [
       "unit fractions",
       "Finset",
-      "rational arithmetic"
+      "rational arithmetic",
+      "Erdős-Straus conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.sum",
+      "Data.Rat",
+      "native_decide",
+      "positivity"
+    ]
   },
   {
     "id": "ann-e283-polynomial",
@@ -45,16 +57,22 @@
       "endLine": 98
     },
     "type": "definition",
-    "title": "Polynomial Condition and Main Conjecture",
-    "content": "**HasNoUniversalDivisor** ensures no d ≥ 2 divides all p(n). **X_has_no_universal_divisor** (proved): if d | p(1) = 1 then d is a unit, contradicting d ≥ 2. **sq_has_no_universal_divisor** (proved): same argument via p(1) = 1² = 1. **ErdosCondition p** asks: for sufficiently large m, ∃ Egyptian decomposition s with ∑ p(n) = m. **erdos_283_conjecture**: does this hold for all polynomials?",
-    "mathContext": "The proofs use isUnit_of_dvd_one and Int.isUnit_iff to show d | 1 forces d ∈ {±1}. The ErdosCondition uses Filter.atTop to express 'for all sufficiently large m'. The conjecture quantifies over all ℤ[X], making it very general.",
+    "title": "Universal Divisor Condition and Main Conjecture",
+    "content": "Three key definitions:\n\n**`HasNoUniversalDivisor p`**: no integer $d \\geq 2$ divides $p(n)$ for all $n$. Two proved instances:\n- `X_has_no_universal_divisor`: $p(x) = x$ satisfies it since $p(1) = 1$ and $d \\mid 1 \\Rightarrow d \\in \\{\\pm 1\\}$ (via `isUnit_of_dvd_one` and `Int.isUnit_iff`)\n- `sq_has_no_universal_divisor`: $p(x) = x^2$ satisfies it since $p(1) = 1$\n\n**`ErdosCondition p`**: for sufficiently large $m$ (via `Filter.atTop`), $\\exists$ Egyptian decomposition $s$ with $\\sum_{n \\in s} p(n) = m$.\n\n**`erdos_283_conjecture`**: positive leading coefficient $\\wedge$ no universal divisor $\\Rightarrow$ ErdosCondition. This is the full open problem.",
+    "mathContext": "$\\text{HasNoUniversalDivisor}(p) := \\neg \\exists d \\geq 2,\\, \\forall n \\in \\mathbb{Z},\\, d \\mid p(n)$. Equivalently, $\\gcd\\{p(n) : n \\in \\mathbb{Z}\\} = 1$. This condition is necessary: if $d \\mid p(n)$ for all $n$, then $\\sum p(n_i) \\equiv 0 \\pmod{d}$, so only multiples of $d$ are representable — not all sufficiently large integers.",
     "significance": "key",
     "relatedConcepts": [
       "divisibility",
-      "isUnit",
-      "Filter.atTop"
+      "polynomial gcd",
+      "Filter.atTop",
+      "open conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "isUnit_of_dvd_one",
+      "Int.isUnit_iff",
+      "Polynomial.eval",
+      "Filter.Eventually"
+    ]
   },
   {
     "id": "ann-e283-graham-alekseyev",
@@ -64,16 +82,22 @@
       "endLine": 117
     },
     "type": "concept",
-    "title": "Graham and Alekseyev Theorems",
-    "content": "**graham_theorem** (axiom): ErdosCondition X holds — every large m is a sum n₁ + ... + nₖ where 1/n₁ + ... + 1/nₖ = 1. **alekseyev_theorem** (axiom): for m > 8542, same with squares n₁² + ... + nₖ². **alekseyev_example** (proved via native_decide): ∑ n² over {2,4,6,12} = 200.",
-    "mathContext": "Graham's 1963 proof appeared in J. Austral. Math. Soc. and uses detailed combinatorial constructions. Alekseyev's 2019 result gives the explicit threshold 8542. The verified example 2²+4²+6²+12² = 200 provides a concrete witness.",
+    "title": "Graham's and Alekseyev's Theorems (Axiomatized)",
+    "content": "**`graham_theorem`** (axiom): `ErdosCondition X` — Graham (1963) proved in *J. Austral. Math. Soc.* that every sufficiently large $m$ is a sum $n_1 + \\cdots + n_k$ of distinct positive integers whose reciprocals sum to 1. His proof uses a greedy algorithm combined with the splitting identity $1/n = 1/(n+1) + 1/n(n+1)$ to adjust Egyptian fractions while controlling the integer sum.\n\n**`alekseyev_theorem`** (axiom): for all $m > 8542$, $\\exists$ Egyptian decomposition $s$ with $\\sum n_i^2 = m$. Alekseyev (2019) computed the explicit threshold via exhaustive search.\n\n**`alekseyev_example`** (proved via `native_decide`): $2^2 + 4^2 + 6^2 + 12^2 = 4 + 16 + 36 + 144 = 200$, with $1/2 + 1/4 + 1/6 + 1/12 = 1$.",
+    "mathContext": "Graham's technique: start with any Egyptian decomposition of 1 (e.g., $\\{2,3,6\\}$ with sum 11). To increase the sum by 1, replace $1/n$ with $1/(n+1) + 1/n(n+1)$ — this replaces $n$ with $n+1$ and $n(n+1)$ in the sum, increasing it by $n(n+1) - n + (n+1) = n^2 + 1$. By iterating carefully, any target sum is reachable.",
     "significance": "key",
     "relatedConcepts": [
-      "solved cases",
-      "native_decide",
-      "explicit threshold"
+      "greedy algorithm",
+      "Egyptian fraction splitting",
+      "explicit threshold",
+      "native_decide verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ErdosCondition",
+      "IsEgyptianDecomposition",
+      "Polynomial.X",
+      "native_decide"
+    ]
   },
   {
     "id": "ann-e283-extensions",
@@ -83,16 +107,21 @@
       "endLine": 154
     },
     "type": "concept",
-    "title": "Extensions and Structure",
-    "content": "**van_doorn_linear/quadratic** (axioms): extensions to p(x) = x+c and p(x) = x²+c. **cassels_theorem** (axiom): without the Egyptian constraint, representation always works — highlighting how much harder the constraint makes the problem. **trivial_egyptian** (proved): {1} is a decomposition since 1/1 = 1. **infinitely_many_egyptian_decompositions** (axiom): the set of decompositions is infinite.",
-    "mathContext": "Cassels (1960) resolved the unconstrained version, showing the Egyptian fraction requirement is the real source of difficulty. The trivial decomposition {1} is degenerate but illustrates the base case. Splitting 1/n into 1/(n+1) + 1/(n(n+1)) generates infinitely many decompositions.",
-    "significance": "key",
+    "title": "Extensions: van Doorn, Cassels, and Egyptian Structure",
+    "content": "**`van_doorn_linear`/`van_doorn_quadratic`** (axioms): van Doorn (2025) extended to $p(x) = ax + b$ and $p(x) = ax^2 + bx + c$ for specific coefficients satisfying the no-universal-divisor condition.\n\n**`cassels_theorem`** (axiom): Cassels (1960) proved that *without* the Egyptian constraint, representation always works — showing the Egyptian fraction requirement is the essential source of difficulty. If $p$ has positive leading coefficient and no universal divisor, every sufficiently large $m$ is a sum of distinct values $p(n_i)$, with no constraint on $\\sum 1/n_i$.\n\n**`trivial_egyptian`** (proved): $\\{1\\}$ is an Egyptian decomposition since $1/1 = 1$.\n\n**`infinitely_many_egyptian_decompositions`** (axiom): infinitely many decompositions of 1 exist, generated by the splitting identity $1/n = 1/(n+1) + 1/n(n+1)$.",
+    "mathContext": "Cassels' theorem resolves the 'unconstrained' version: $\\forall m \\gg 0$, $m = \\sum p(n_i)$ with distinct $n_i$. The gap between Cassels and Erdős 283 is precisely the Egyptian constraint $\\sum 1/n_i = 1$. The Sylvester-Fibonacci sequence $2, 3, 7, 43, 1807, 3263443, \\ldots$ (where $a_{n+1} = a_1 \\cdots a_n + 1$) gives the greedy Egyptian fraction for 1: $1 = 1/2 + 1/3 + 1/7 + 1/43 + 1/1807 + \\cdots$.",
+    "significance": "supporting",
     "relatedConcepts": [
       "Cassels theorem",
-      "splitting lemma",
-      "infinite family"
+      "Sylvester-Fibonacci sequence",
+      "splitting identity",
+      "greedy algorithm"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ErdosCondition",
+      "HasNoUniversalDivisor",
+      "Finset.singleton"
+    ]
   },
   {
     "id": "ann-e283-summary",
@@ -101,16 +130,21 @@
       "startLine": 156,
       "endLine": 175
     },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_283_summary** packages both known results as a proved conjunction: (1) Graham's theorem for p(x) = x, and (2) Alekseyev's theorem for p(x) = x² with threshold 8542. The proof is ⟨graham_theorem, alekseyev_theorem⟩.",
-    "mathContext": "The two-part conjunction captures the partially solved status: two specific polynomial cases are resolved while the general conjecture remains open. Unlike fully solved Erdős problems, there is no single comprehensive result — the problem requires case-by-case analysis for each polynomial degree.",
-    "significance": "key",
+    "type": "insight",
+    "title": "Summary: Partially Solved Status",
+    "content": "**`erdos_283_summary`** packages both known results as a proved conjunction: `⟨graham_theorem, alekseyev_theorem⟩`. This captures the partially solved status: two specific polynomial cases ($p(x) = x$ and $p(x) = x^2$) are resolved while the general conjecture remains open.\n\nThe summary table and `#check` commands verify all declarations: 6 axioms (graham_theorem, alekseyev_theorem, van_doorn_linear, van_doorn_quadratic, cassels_theorem, infinitely_many_egyptian_decompositions), 7 theorems (X_has_no_universal_divisor, sq_has_no_universal_divisor, egyptian examples, trivial_egyptian, erdos_283_summary), and 4 definitions (IsEgyptianDecomposition, HasNoUniversalDivisor, ErdosCondition, erdos_283_conjecture).\n\nThe gap to a full resolution: extending from $p(x) = x, x^2$ to arbitrary polynomials likely requires new techniques beyond Graham's greedy splitting approach.",
+    "mathContext": "`erdos_283_summary : ErdosCondition X ∧ (∀ m > 8542, ∃ s, IsEgyptianDecomposition s ∧ s.sum (· ^ 2) = m)`. The two components are independent — Graham's and Alekseyev's proofs use different techniques. A unified approach for general $p$ is the open challenge.",
+    "significance": "supporting",
     "relatedConcepts": [
       "conjunction",
       "partial resolution",
-      "open problem"
+      "open problem",
+      "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graham_theorem",
+      "alekseyev_theorem",
+      "And.intro"
+    ]
   }
 ]
