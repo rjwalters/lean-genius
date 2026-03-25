@@ -25,7 +25,26 @@
     "badge": "axiom",
     "proofRepoPath": "Proofs/Erdos1053Problem.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 152
+    "lineCount": 152,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "Finite set of divisors of a natural number, used for sigma definition",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets, used for sigma(n) = sum of divisors",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "sigma definition via Nat.divisors.sum with rfl proof (sigma_def)",
+      "one_perfect_unique: characterization that 1 is the unique 1-perfect number via Finset subset argument",
+      "perfect_examples and triperfect_examples via native_decide",
+      "robin_gives_O_bound: derived sigma(n) = O(n log log n) from Robin's conditional inequality",
+      "Complete formalization framework for k-perfect numbers with IsKPerfect predicate and perfectMultiplicity"
+    ]
   },
   "sections": [
     {
