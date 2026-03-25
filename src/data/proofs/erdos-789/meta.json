@@ -68,12 +68,12 @@
     "erdosProblemStatus": "open",
     "axiomCount": 10,
     "lineCount": 266,
-    "assumptions": "10 axiom declarations: (1) h — the extremal function h(n), (2) h_pos — h(n) > 0 for n ≥ 1, (3) h_achievable — the maximum is achieved for any n-element set, (4) erdos_1962_upper — h(n) ≤ C·n^{5/6}, (5) straus_1966_upper — h(n) ≤ C·√n (best upper), (6) erdos_1962_lower — h(n) ≥ c·n^{1/3}, (7) erdos_choi_1974_lower — h(n) ≥ c·(n log n)^{1/3} (best lower), (8) sidon_implies_sum_length_free — Sidon ⊂ sum-length-free, (9-10) erdos_789_statement components. All encode published results from Erdős (1962), Straus (1966), and Choi (1974)."
+    "assumptions": "10 axioms: h, h_pos, h_achievable, and 7 more. See Lean source for complete statements."
   },
   "overview": {
-    "historicalContext": "A set $B$ is *sum-length-free* if whenever two sums of elements from $B$ are equal, they must involve the same number of terms. This property is weaker than the Sidon condition (which requires the actual multisets of terms to be identical, not just the counts).\n\nErdős introduced the function $h(n)$ in his 1962 paper 'Some remarks on number theory III' (*Riveon Lematematika*), proving the initial bounds $n^{1/3} \\ll h(n) \\ll n^{5/6}$. The lower bound used a beautiful probabilistic construction: for a randomly chosen irrational $\\alpha$, the subset of elements $a \\in A$ whose fractional parts $\\{\\alpha a\\}$ lie in a small interval of width $\\sim n^{-2/3}$ tends to be sum-length-free, because equal-length sums produce similar fractional parts while different-length sums produce separated ones.\n\nErnst G. Straus dramatically improved the upper bound to $h(n) \\ll \\sqrt{n}$ in 1966 using a counting argument: if $|B| \\gg \\sqrt{n}$, the number of sum representations of a given length exceeds the number of distinct values, forcing a collision with different length. This remains the best known upper bound.\n\nS.L.G. Choi refined Erdős's probabilistic lower bound to $h(n) \\gg (n \\log n)^{1/3}$ in 1974 by incorporating Diophantine approximation techniques to optimize the choice of $\\alpha$. The logarithmic factor was gained by using the pigeonhole principle on continued fraction convergents.\n\nThe gap between $(n \\log n)^{1/3}$ and $\\sqrt{n}$ is substantial: at $n = 10^6$, the lower bound gives $\\approx 239$ while the upper bound gives $1000$. Closing this gap — determining whether $h(n) \\sim n^{\\alpha}$ for some $1/3 < \\alpha \\leq 1/2$ — remains the central open question.",
+    "historicalContext": "**The Sum-Length-Free Property**\\n\\nA set B is sum-length-free if whenever two sums of elements from B are equal, they must involve the same number of terms. This is weaker than the Sidon property (which requires the actual terms to be equal).\\n\\n**Erdős's Original Work (1962)**\\n\\nErdős proved h(n) ≪ n^{5/6} and h(n) ≫ n^{1/3}. The lower bound used a beautiful probabilistic construction: for random α, the set of elements whose fractional parts {αa} lie in a small interval tends to be sum-length-free.\\n\\n**Straus's Improvement (1966)**\\n\\nStraus dramatically improved the upper bound to h(n) ≪ √n using a clever counting argument on sum representations.\\n\\n**Erdős-Choi (1974)**\\n\\nChoi improved the lower bound to h(n) ≫ (n log n)^{1/3} by refining Erdős's probabilistic argument.\\n\\n**The Gap**\\n\\nThe gap between (n log n)^{1/3} and √n is substantial. For n = 10^6, this is roughly 239 vs 1000. Closing this gap is the main open problem.",
     "problemStatement": "Let h(n) be maximal such that if A ⊆ ℤ with |A| = n then there is B ⊆ A with |B| ≥ h(n) such that if a₁+⋯+aᵣ = b₁+⋯+bₛ with aᵢ,bᵢ ∈ B then r = s. Estimate h(n).",
-    "text": "A 266-line axiomatized formalization of Erdős Problem #789 (Wiedijk list not applicable — this is an open problem). The file defines `SumRep B` (multiset sum representations from a finite set $B \\subseteq \\mathbb{Z}$), `SumLengthFree B` (equal-value representations must have equal length), and the extremal function `h(n)` via 3 axioms (existence, positivity, achievability). Seven bound axioms encode the historical results: `erdos_1962_upper` ($n^{5/6}$), `straus_1966_upper` ($\\sqrt{n}$, best), `erdos_1962_lower` ($n^{1/3}$), `erdos_choi_1974_lower` ($(n \\log n)^{1/3}$, best). The connection to Sidon sets is formalized via `IsSidonSet` and `sidon_implies_sum_length_free`. The main theorem `erdos_789_statement` combines the best bounds into $(n \\log n)^{1/3} \\ll h(n) \\ll \\sqrt{n}$.",
+    "text": "Estimate h(n) where h(n) is the max |B| such that equal sums in B have equal length. Known: (n log n)^{1/3} ≪ h(n) ≪ √n. Status: OPEN.",
     "proofStrategy": "We formalize the sum-length-free property via SumRep structures and the SumLengthFree predicate. The function h(n) is axiomatized with bounds from Straus (upper) and Erdős-Choi (lower). We connect to Sidon sets and show computational examples. The main theorem combines all known bounds.",
     "keyInsights": [
       "Sum-length-free is weaker than Sidon: only length must match",
@@ -96,7 +96,7 @@
       "summary": "SumRep structure, SumLengthFree property",
       "startLine": 39,
       "endLine": 59,
-      "mathContext": "Formal definition: SumRep structure, SumLengthFree property"
+      "mathContext": "SumRep structure, SumLengthFree property"
     },
     {
       "id": "h-function",
@@ -104,7 +104,7 @@
       "summary": "Definition and existence axioms for h(n)",
       "startLine": 60,
       "endLine": 78,
-      "mathContext": "Formal definition: Definition and existence axioms for h(n)"
+      "mathContext": "Definition and existence axioms for h(n)"
     },
     {
       "id": "upper-bounds",
@@ -112,7 +112,7 @@
       "summary": "Erdős n^{5/6}, Straus √n (best known)",
       "startLine": 79,
       "endLine": 98,
-      "mathContext": "Mathematical content: Erdős n^{5/6}, Straus √n (best known)"
+      "mathContext": "Erdős n^{5/6}, Straus √n (best known)"
     },
     {
       "id": "lower-bounds",
@@ -120,7 +120,7 @@
       "summary": "Erdős n^{1/3}, Choi (n log n)^{1/3} (best known)",
       "startLine": 99,
       "endLine": 121,
-      "mathContext": "Erdős n^{1/3}, Choi (n $\\log n$)^{1/3} (best known)"
+      "mathContext": "Erdős n^{1/3}, Choi (n log n)^{1/3} (best known)"
     },
     {
       "id": "gap",
@@ -128,7 +128,7 @@
       "summary": "Combined bounds theorem: (n log n)^{1/3} ≪ h(n) ≪ √n",
       "startLine": 122,
       "endLine": 133,
-      "mathContext": "Combined bounds theorem: (n $\\log n$)^{1/3} ≪ h(n) ≪ √n"
+      "mathContext": "Combined bounds theorem: (n log n)^{1/3} ≪ h(n) ≪ √n"
     },
     {
       "id": "sidon",
@@ -136,7 +136,7 @@
       "summary": "IsSidonSet definition, Sidon implies sum-length-free",
       "startLine": 134,
       "endLine": 154,
-      "mathContext": "Formal definition: IsSidonSet definition, Sidon implies sum-length-free"
+      "mathContext": "IsSidonSet definition, Sidon implies sum-length-free"
     },
     {
       "id": "examples",
@@ -144,7 +144,7 @@
       "summary": "√1000 and √10^6 via native_decide",
       "startLine": 155,
       "endLine": 169,
-      "mathContext": "√1000 and √$10^{6}$ via native_decide"
+      "mathContext": "√1000 and √10^6 via native_decide"
     },
     {
       "id": "summary",
@@ -152,7 +152,7 @@
       "summary": "Main theorem combining bounds, problem OPEN",
       "startLine": 170,
       "endLine": 266,
-      "mathContext": "Verified: Main theorem combining bounds, problem OPEN"
+      "mathContext": "Main theorem combining bounds, problem OPEN"
     }
   ],
   "conclusion": {
@@ -184,56 +184,16 @@
     "theoremCount": 4,
     "definitionCount": 6
   },
-  "references": [
-    {
-      "authors": "Erdős, Paul",
-      "title": "Some remarks on number theory III",
-      "year": "1962",
-      "venue": "Riveon Lematematika, vol. 16, pp. 6–13",
-      "note": "Introduced h(n), the maximal sum-length-free subset size, with initial bounds n^{1/3} ≪ h(n) ≪ n^{5/6}. The lower bound used probabilistic selection via fractional parts"
-    },
-    {
-      "authors": "Straus, Ernst G.",
-      "title": "On a problem in combinatorial number theory",
-      "year": "1966",
-      "venue": "Journal of the Mathematical Society of Japan, vol. 18, pp. 198–204",
-      "note": "Improved the upper bound to h(n) ≪ √n via counting sum representations — still the best known upper bound"
-    },
-    {
-      "authors": "Choi, S.L.G.",
-      "title": "On a combinatorial problem in number theory",
-      "year": "1974",
-      "venue": "Proceedings of the London Mathematical Society, vol. 29, pp. 335–350",
-      "note": "Refined the lower bound to h(n) ≫ (n log n)^{1/3} using Diophantine approximation on Erdős's probabilistic construction"
-    },
-    {
-      "authors": "Tao, Terence; Vu, Van",
-      "title": "Additive Combinatorics",
-      "year": "2006",
-      "venue": "Cambridge University Press",
-      "note": "Standard reference for the broader additive combinatorics framework including sum-free sets, Sidon sets, and extremal problems"
-    }
-  ],
   "crossReferences": [
     {
       "targetId": "erdos-1109",
       "relationship": "related",
-      "description": "Related Erdős problem on additive combinatorics and sumset constraints. Both concern extremal questions about the structure of integer subsets under addition"
+      "description": "Related Erdős problem on additive combinatorics and sumset constraints"
     },
     {
-      "targetId": "erdos-186",
+      "targetId": "erdos-332",
       "relationship": "related",
-      "description": "Erdős Problem #186 concerns sum-free sets — sets with no $a + b = c$ among its elements. The sum-length-free condition in Problem 789 is a relaxation: instead of forbidding all additive structure, it only requires that equal sums use equal numbers of terms"
-    },
-    {
-      "targetId": "erdos-874",
-      "relationship": "related",
-      "description": "Referenced in the original problem statement as a related problem on additive combinatorics. Both concern extremal properties of integer subsets under sumset constraints"
-    },
-    {
-      "targetId": "erdos-324",
-      "relationship": "related",
-      "description": "Erdős Problem #324 concerns Sidon sets ($B_2$ sequences), where all pairwise sums are distinct. Every Sidon set is sum-length-free (the formalization proves `sidon_implies_sum_length_free`), and the maximum Sidon subset size $\\sim \\sqrt{n}$ matches Straus's upper bound for $h(n)$"
+      "description": "Both probe how density conditions force additive structure in integer sets, part of the broader density-forces-structure paradigm in additive combinatorics"
     }
   ]
 }
