@@ -56,10 +56,10 @@
     ],
     "axiomCount": 9,
     "lineCount": 270,
-    "assumptions": "9 axioms: erdos_hajnal_aleph2, erdos_hajnal_shelah, countable_chromatic_insufficient, and 6 more. See Lean source for complete statements."
+    "assumptions": "9 axioms encoding the Erdős-Hajnal-Shelah theorem and related results: `erdos_hajnal_aleph2` ($\\chi \\geq \\aleph_2$ case), `erdos_hajnal_shelah` ($\\chi \\geq \\aleph_1$ case), `countable_chromatic_insufficient` (optimality of threshold), `aleph1_is_optimal`, `bipartite_containment`, `triangle_free_odd_cycles`, `erdos_hajnal_even_open`, `thomassen_1983`, `erdos_594_summary`. All 4 theorems and 9 definitions are fully proved."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #594**\n\nThis problem connects graph theory with set theory through the study of infinite chromatic numbers.\n\n**History:**\n- Erdős and Hajnal posed the problem and proved it for graphs with χ ≥ ℵ₂\n- Erdős, Hajnal, and Shelah (1974) proved the full result for χ ≥ ℵ₁\n- Thomassen (1983) strengthened the result to show cycles pass through any given edge\n\n**Key Context:**\n- Relates to Problem #593 (hypergraph characterization, $500 prize, OPEN)\n- Relates to Problem #737 (cycles through edges, SOLVED by Thomassen)\n- Part of Erdős and Hajnal's systematic study of infinite chromatic numbers",
+    "historicalContext": "This problem is part of the Erdős-Hajnal program studying infinite chromatic numbers, which began in the 1960s. The central question: what substructures must appear in graphs with uncountable chromatic number?\n\nThe **De Bruijn-Erdős theorem** (1951) provides the foundational result: a graph has finite chromatic number $k$ if and only if every finite subgraph has chromatic number $\\leq k$. For infinite chromatic numbers, the landscape is richer. Erdős and Hajnal first proved that graphs with $\\chi(G) \\geq \\aleph_2$ contain all sufficiently large odd cycles. The key difficulty in improving this to $\\aleph_1$ is that $\\aleph_1$ is the first uncountable cardinal, so one cannot use simple counting arguments that work for $\\aleph_2$.\n\nErdős, Hajnal, and Saharon Shelah proved the full result for $\\chi(G) \\geq \\aleph_1$ in their 1974 paper 'On some general properties of chromatic number' (Colloquia Math. Soc. János Bolyai, Topics in Topology). Shelah's contribution was crucial: his set-theoretic techniques (partition calculus and the Erdős-Rado theorem) bridged the gap between $\\aleph_2$ and $\\aleph_1$.\n\nCarsten Thomassen (1983) later strengthened the result: not only do such graphs contain all large odd cycles, but the cycles can be found passing through any specified edge. The threshold $\\aleph_1$ is optimal — Erdős constructed graphs with chromatic number $\\aleph_0$ that avoid arbitrarily long odd cycles. The $\\$500$ prize Problem #593 asks the analogous question for 3-uniform hypergraphs and remains open.",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nDoes every graph $G$ with chromatic number $\\geq \\aleph_1$ contain all sufficiently large odd cycles?\n\n**Answer:** YES\n\n**More precisely:** For any graph $G$ with $\\chi(G) \\geq \\aleph_1$, there exists $N_0$ such that for all odd $n \\geq N_0$, $G$ contains a cycle of length $n$.\n\n**Note:** Erdős and Hajnal first proved this for $\\chi(G) \\geq \\aleph_2$. The improvement to $\\aleph_1$ is the main content of this problem.",
     "text": "Does every graph with chromatic number ≥ ℵ₁ contain all sufficiently large odd cycles? YES - proved by Erdős, Hajnal, and Shelah (1974).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Cardinals:** Define ℵ₀, ℵ₁, ℵ₂ using Mathlib's Cardinal.aleph\n\n2. **Chromatic Number:** Define colorability and chromatic number for infinite graphs\n\n3. **Cycles:** Define hasCycleOfLength and containsAllLargeOddCycles\n\n4. **Main Results:**\n   - erdos_hajnal_aleph2: partial result\n   - erdos_hajnal_shelah: full theorem\n   - aleph1_is_optimal: threshold optimality\n\n5. **Extensions:** Thomassen's strengthening about cycles through edges",
@@ -187,6 +187,29 @@
       "targetId": "erdos-110",
       "relationship": "related",
       "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, infinite-graphs, set-theory"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Hajnal, András; Shelah, Saharon",
+      "title": "On some general properties of chromatic number",
+      "year": "1974",
+      "venue": "Colloquia Math. Soc. János Bolyai, vol. 8, Topics in Topology, pp. 243–255",
+      "note": "Proved that every graph with χ ≥ ℵ₁ contains all sufficiently large odd cycles. Improved the earlier Erdős-Hajnal result for χ ≥ ℵ₂ using Shelah's partition calculus techniques."
+    },
+    {
+      "authors": "Thomassen, Carsten",
+      "title": "Infinite graphs",
+      "year": "1983",
+      "venue": "Selected Topics in Graph Theory 2, Academic Press, pp. 129–160",
+      "note": "Strengthened the Erdős-Hajnal-Shelah result: cycles can be found passing through any specified edge. Resolved the related Problem #737."
+    },
+    {
+      "authors": "De Bruijn, Nicolaas G.; Erdős, Paul",
+      "title": "A colour problem for infinite graphs and a problem in the theory of relations",
+      "year": "1951",
+      "venue": "Indagationes Mathematicae, 13, 369–373",
+      "note": "Foundational result: a graph has finite chromatic number k iff every finite subgraph does. This compactness principle underlies the study of infinite chromatic numbers in Problem #594."
     }
   ]
 }
