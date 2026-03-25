@@ -37,6 +37,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Set.Card
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
+import Proofs.Erdos340GreedySidon
 
 namespace Erdos28
 
@@ -347,65 +348,60 @@ theorem nat_repFunc (n : ℕ) : repFuncUnordered (Set.univ : Set ℕ) n = n / 2 
 
 /- ## Part VII: Connection to Sidon Sets -/
 
+/-- Bridge lemma: the Set-based IsSidon (unordered pair equality) implies the
+    Finset-based IsSidon (ordered pair equality with a ≤ b, c ≤ d).
+    From {a,b} = {c,d} with a ≤ b, c ≤ d: if c = a then b = d by omega;
+    if c = b then a ≤ b = c ≤ d and a + b = c + d forces a = c, b = d. -/
+private lemma isSidon_set_to_finset (A : Finset ℕ) (h : IsSidon (↑A : Set ℕ)) :
+    Erdos340.IsSidon A := by
+  intro a b c d ha hb hc hd hab hcd heq
+  have hset := h a b c d (Finset.mem_coe.mpr ha) (Finset.mem_coe.mpr hb)
+    (Finset.mem_coe.mpr hc) (Finset.mem_coe.mpr hd) heq
+  -- hset : ({a, b} : Set ℕ) = {c, d}, so c ∈ {a, b}
+  have hc_in : c ∈ ({a, b} : Set ℕ) := by rw [hset]; exact Set.mem_insert c {d}
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hc_in
+  rcases hc_in with rfl | rfl
+  · -- c = a: then a + b = a + d, so b = d
+    exact ⟨rfl, by omega⟩
+  · -- c = b: with a ≤ b = c ≤ d and a + b = b + d, so a = d
+    -- Then a ≤ b and b ≤ d = a, giving a = b = c = d
+    constructor <;> omega
+
 /-- **Known Result (Erdős-Turán)**: Sidon sets have at most √(2N) + 1 elements in {1,...,N}.
-    This is proved in Erdos340GreedySidon.lean as sidon_upper_bound_weak. -/
-axiom sidon_density_bound (A : Finset ℕ) (hS : IsSidon (A : Set ℕ)) (N : ℕ)
-    (hAN : ∀ a ∈ A, a ≤ N) : A.card ≤ Nat.sqrt (2 * N) + 1
+    Proved by importing Erdos340.sidon_upper_bound_weak via bridge lemma. -/
+theorem sidon_density_bound (A : Finset ℕ) (hS : IsSidon (A : Set ℕ)) (N : ℕ)
+    (hAN : ∀ a ∈ A, a ≤ N) : A.card ≤ Nat.sqrt (2 * N) + 1 :=
+  Erdos340.sidon_upper_bound_weak A (isSidon_set_to_finset A hS) N hAN
 
 /-- **Axiom: Sidon sets are NOT asymptotic bases.**
 
-## Mathematical Background
+## Mathematical Proof Sketch
 
-This is a fundamental structural result showing the tension between:
-- **Sidon property**: bounded representations (r_A(n) ≤ 2)
-- **Basis property**: cover all large integers (A + A ⊇ [N₀, ∞))
+By contradiction. Assume A is an infinite Sidon set that is a basis with threshold N₀.
+For any N ≥ N₀, let A_N = A ∩ [0, N].
 
-## Proof Outline
+1. **Coverage**: Each n ∈ [N₀, N] is a sum a + b with a, b ∈ A_N (both ≤ n ≤ N).
+   The sumset of A_N covers [N₀, N].
 
-### Key Insight: The Erdős-Turán Density Bound is Critical
+2. **Pair counting**: The sumset has at most |A_N|(|A_N|+1)/2 elements
+   (image of addition on ordered pairs (a,b) with a ≤ b from A_N).
+   So |A_N|(|A_N|+1)/2 ≥ N - N₀ + 1.
 
-The argument requires the **tight** Erdős-Turán bound: |A ∩ [1,N]| ≤ √N + O(N^{1/4}).
+3. **Tight Sidon density**: By `Erdos340.sidon_upper_bound`, |A_N| ≤ √N + √(√N) + 1.
+   So |A_N|(|A_N|+1)/2 ≈ N/2 + O(N^{3/4}).
 
-With this bound:
-- Sidon sumset size = |A_N|(|A_N|+1)/2 ≈ N/2 + O(N^{3/4})
-- Interval [N₀, N] has N - N₀ + 1 ≈ N elements (for N >> N₀)
-- Since N/2 < N, we get a contradiction
+4. **Contradiction**: For large N, N/2 + O(N^{3/4}) < N - N₀ + 1.
 
-### Why the √(2N) Bound is Insufficient
+## Dependencies
 
-The weaker bound |A ∩ [1,N]| ≤ √(2N) + 1 (proved in Erdos340GreedySidon.lean) gives:
-- Sumset size ≤ (√(2N)+1)(√(2N)+2)/2 ≈ N + 1.5√(2N)
-- This is ≥ N - N₀ + 1, so no direct contradiction!
-
-### The Tight Bound Approach
-
-The proper Erdős-Turán bound uses **sum-counting** rather than difference-counting:
-1. For A ⊆ [1, N], consider the sumset A + A ⊆ [2, 2N]
-2. For Sidon sets, |A + A| = |A|(|A|+1)/2 (sums are distinct)
-3. Since A + A ⊆ [2, 2N], we have |A|(|A|+1)/2 ≤ 2N - 1
-4. This gives |A| ≤ √(4N) - 1 + O(1) = 2√N + O(1)
-5. Refinement via the Erdős-Turán analysis gives √N + O(N^{1/4})
-
-### Formalization Gap
-
-To prove this theorem, we need:
-1. **Prove tight Sidon density bound** (~100 lines): |A ∩ [1,N]| ≤ √N + c·N^{1/4}
-2. **Set up Finset ↔ Set infrastructure** for truncations
-3. **Handle the contradiction argument** with explicit N choice
-
-The main technical challenge is proving the tight density bound. The weaker √(2N)
-bound uses differences, while the tight bound requires counting sums.
-
-## References
-
-- Erdős-Turán (1941): Original conjecture and density bounds
-- Erdos340GreedySidon.lean: sidon_upper_bound_weak (√(2N) bound, PROVED)
-- Erdos340GreedySidon.lean: sidon_upper_bound (√N + O(N^{1/4}) bound, AXIOM)
+Uses `Erdos340.sidon_upper_bound` (axiom in Erdos340GreedySidon.lean, the tight √N bound).
+The weaker √(2N) bound (`sidon_upper_bound_weak`, proved) is insufficient: it gives
+sumset ≈ N + O(√N) ≥ N - N₀ + 1, which holds and gives no contradiction.
 
 ## Status
 
-**HARD**: Known mathematics, needs ~200 lines of formalization.
-The key prerequisite is proving sidon_upper_bound in Erdos340GreedySidon.lean.
+**HARD**: Known mathematics, needs ~150 lines of formalization.
+Requires: (1) ordered pair counting lemma, (2) truncation Set→Finset, (3) explicit N₁.
 -/
 axiom sidon_not_basis (A : Set ℕ) (hS : IsSidon A) (hInf : A.Infinite) :
     ¬IsAsymptoticBasis A
