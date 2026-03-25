@@ -16,7 +16,11 @@
       "natural number arithmetic",
       "finite sets",
       "real analysis"
-    ]
+    ],
+    "range": {
+      "startLine": 1,
+      "endLine": 33
+    }
   },
   {
     "id": "ann-1000-incseq",
@@ -34,7 +38,11 @@
     "prerequisites": [
       "natural numbers",
       "monotone sequences"
-    ]
+    ],
+    "range": {
+      "startLine": 38,
+      "endLine": 43
+    }
   },
   {
     "id": "ann-1000-reduced-denom",
@@ -53,7 +61,11 @@
     "prerequisites": [
       "GCD",
       "integer division"
-    ]
+    ],
+    "range": {
+      "startLine": 45,
+      "endLine": 47
+    }
   },
   {
     "id": "ann-1000-phiA",
@@ -73,7 +85,11 @@
       "reduced denominator",
       "Euler's totient",
       "finite counting"
-    ]
+    ],
+    "range": {
+      "startLine": 49,
+      "endLine": 51
+    }
   },
   {
     "id": "ann-1000-phiA-bound",
@@ -91,7 +107,11 @@
     "prerequisites": [
       "generalized totient",
       "Euler's totient"
-    ]
+    ],
+    "range": {
+      "startLine": 56,
+      "endLine": 73
+    }
   },
   {
     "id": "ann-1000-naturalSeq",
@@ -109,7 +129,11 @@
     "prerequisites": [
       "increasing sequence",
       "Euler's totient"
-    ]
+    ],
+    "range": {
+      "startLine": 120,
+      "endLine": 188
+    }
   },
   {
     "id": "ann-1000-density",
@@ -128,7 +152,11 @@
     "prerequisites": [
       "generalized totient",
       "Euler product formula"
-    ]
+    ],
+    "range": {
+      "startLine": 75,
+      "endLine": 95
+    }
   },
   {
     "id": "ann-1000-cesaro",
@@ -148,7 +176,11 @@
       "density ratio",
       "arithmetic mean",
       "limit theory"
-    ]
+    ],
+    "range": {
+      "startLine": 100,
+      "endLine": 115
+    }
   },
   {
     "id": "ann-1000-cassels",
@@ -167,7 +199,11 @@
     "prerequisites": [
       "Cesàro average",
       "continued fractions"
-    ]
+    ],
+    "range": {
+      "startLine": 219,
+      "endLine": 220
+    }
   },
   {
     "id": "ann-1000-erdos-limit",
@@ -186,7 +222,11 @@
       "density ratio",
       "Euler's product formula",
       "prime number theorem"
-    ]
+    ],
+    "range": {
+      "startLine": 205,
+      "endLine": 208
+    }
   },
   {
     "id": "ann-1000-erdos-dichotomy",
@@ -205,7 +245,11 @@
     "prerequisites": [
       "density ratio",
       "Erdős' no-zero-limit theorem"
-    ]
+    ],
+    "range": {
+      "startLine": 210,
+      "endLine": 212
+    }
   },
   {
     "id": "ann-1000-vanishing",
@@ -223,7 +267,11 @@
     "prerequisites": [
       "Cesàro average",
       "Erdős' no-zero-limit"
-    ]
+    ],
+    "range": {
+      "startLine": 193,
+      "endLine": 198
+    }
   },
   {
     "id": "ann-1000-question",
@@ -241,7 +289,11 @@
     "prerequisites": [
       "vanishing average",
       "generalized totient bounds"
-    ]
+    ],
+    "range": {
+      "startLine": 190,
+      "endLine": 198
+    }
   },
   {
     "id": "ann-1000-haight",
@@ -259,7 +311,11 @@
     "prerequisites": [
       "vanishing average",
       "Erdős' dichotomy"
-    ]
+    ],
+    "range": {
+      "startLine": 229,
+      "endLine": 229
+    }
   },
   {
     "id": "ann-1000-solved",
@@ -275,7 +331,11 @@
     ],
     "prerequisites": [
       "Haight's theorem"
-    ]
+    ],
+    "range": {
+      "startLine": 231,
+      "endLine": 297
+    }
   },
   {
     "id": "ann-1000-oscillation",
@@ -294,6 +354,10 @@
       "Haight's theorem",
       "Erdős' dichotomy",
       "Cesàro averages"
-    ]
+    ],
+    "range": {
+      "startLine": 283,
+      "endLine": 297
+    }
   }
 ]
