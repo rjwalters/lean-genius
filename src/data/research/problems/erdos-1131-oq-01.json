@@ -17,11 +17,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-03-25T00:00:00.000Z",
-    "iteration": 2,
-    "focus": "Lower bound I ≥ 2/n fully proved. 0 sorries, 3 axioms remain (upper bound, Chebyshev estimate, open conjecture).",
+    "since": "2026-03-24T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "3→2 axioms, 9→12 theorems, 0 sorries. False upper bound removed. New: lagrangeIntegral_one (I=2 for n=1), sum_sq_at_node (integrand = 1 at nodes).",
     "blockers": [],
-    "nextAction": "Remove false upper bound axiom. Consider proving Chebyshev integral estimate.",
+    "nextAction": "Prove strict lower bound I > 2/n for n >= 2 (needs measure-theoretic integral positivity). Consider proving chebyshev_integral_estimate.",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 2,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 4→3 axioms, 2→0 sorries. Lower bound I ≥ 2/n fully proved via variance identity + integral monotonicity.",
+    "progressSummary": "PROGRESS: 3→2 axioms (false upper bound removed), 9→12 theorems. Lower bound tight at n=1 (I=2=2/n). Integrand equals 1 at every node.",
     "builtItems": [
       "lagrangeBasis_self: Finset.prod_eq_one + div_self (product of 1s)",
       "lagrangeBasis_other: Finset.prod_eq_zero + sub_self (zero factor)",
@@ -39,7 +39,9 @@
       "lagrangeBasis_eq_eval_basis: connects product form to Mathlib Lagrange.basis",
       "partition_of_unity: sum_k l_k(x) = 1 for all x (via Lagrange.sum_basis)",
       "sum_sq_lagrangeBasis_ge: ∑l_k² ≥ 1/n via variance identity (PROVED, 0 sorry)",
-      "lagrangeIntegral_lower_bound: I ≥ 2/n via integral monotonicity (PROVED, 0 sorry)"
+      "lagrangeIntegral_lower_bound: I ≥ 2/n via integral monotonicity (PROVED, 0 sorry)",
+      "lagrangeIntegral_one: I = 2 for n=1 (empty product = 1, integral of constant)",
+      "sum_sq_at_node: ∑l_k(x_j)² = 1 at each interpolation node"
     ],
     "insights": [
       "lagrangeBasis product form makes self/other proofs very clean",
@@ -50,13 +52,16 @@
       "Upper bound axiom I <= 2n is mathematically FALSE for nodes with small separation",
       "Variance identity approach: ∑(l_k-1/n)² = ∑l_k² - 1/n avoids need for sq_sum_le_card_mul_sum_sq",
       "intervalIntegral.integral_sub + integral_nonneg is cleaner than integral_mono for lower bounds",
-      "Continuous.intervalIntegrable provides integrability for polynomial-type functions via continuous_finset_sum/prod"
+      "Continuous.intervalIntegrable provides integrability for polynomial-type functions via continuous_finset_sum/prod",
+      "lagrangeIntegral_upper_bound (I <= 2n) is FALSE: for n=2 with nodes ±ε, I ~ 1/(3ε²) → ∞ as ε→0",
+      "Strict inequality I > 2/n for n ≥ 2 needs: continuous nonneg function with positive value has positive integral (measure theory)",
+      "sum_sq_at_node: ∑l_k(x_j)² = 1 at each node, using Kronecker delta property of Lagrange basis"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Remove false upper bound axiom (or add minimum separation condition)",
-      "Consider proving chebyshev_integral_estimate if feasible",
-      "The open conjecture erdos_1131_conjecture is an axiom (correctly so - it's unsolved)"
+      "Prove strict I > 2/n for n≥2 via intervalIntegral positivity of continuous nonneg function",
+      "Consider proving chebyshev_integral_estimate (reduces to I < 2 for Chebyshev nodes)",
+      "The open conjecture erdos_1131_conjecture is correctly an axiom"
     ]
   },
   "tags": [

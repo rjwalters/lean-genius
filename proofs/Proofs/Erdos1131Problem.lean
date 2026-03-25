@@ -195,11 +195,48 @@ theorem lagrangeIntegral_lower_bound (n : ℕ) (hn : n ≥ 1) (nodes : Fin n →
     fun u _hu => by linarith [hpw u]
 
 /--
-**Upper bound**: I is bounded above by 2n for any configuration.
+**Tightness at n=1**: When n = 1, I = 2 = 2/n, so the lower bound is tight.
+
+For n=1, the only basis polynomial is l₀(x) = 1 (empty product), so ∑l_k² = 1
+and I = ∫₋₁¹ 1 dx = 2.
 -/
-axiom lagrangeIntegral_upper_bound (n : ℕ) (hn : n ≥ 1) (nodes : Fin n → ℝ)
-    (hd : AreDistinct n nodes) (hrange : ∀ i, -1 ≤ nodes i ∧ nodes i ≤ 1) :
-    lagrangeIntegral n nodes ≤ 2 * n
+theorem lagrangeIntegral_one (nodes : Fin 1 → ℝ) :
+    lagrangeIntegral 1 nodes = 2 := by
+  unfold lagrangeIntegral
+  simp only [Fin.sum_univ_one]
+  -- The Lagrange basis for n=1 is the empty product = 1
+  have hb : ∀ x : ℝ, lagrangeBasis 1 nodes 0 x = 1 := by
+    intro x
+    simp only [lagrangeBasis]
+    have : Finset.univ.filter (fun i : Fin 1 => i ≠ 0) = ∅ := by
+      ext i; simp [Fin.eq_zero i]
+    rw [this, Finset.prod_empty]
+  simp_rw [hb, one_pow]
+  simp [intervalIntegral.integral_const, smul_eq_mul]
+  ring
+
+/--
+**Node evaluation**: ∑ₖ l_k(xⱼ)² = 1 at each node xⱼ.
+
+Since l_j(xⱼ) = 1 and l_k(xⱼ) = 0 for k ≠ j (Kronecker delta), the sum of squares
+collapses to 1² = 1. This shows the integrand reaches 1 at every node, which is
+much larger than the average lower bound 1/n for n ≥ 2.
+-/
+theorem sum_sq_at_node (n : ℕ) (nodes : Fin n → ℝ) (hd : AreDistinct n nodes)
+    (j : Fin n) :
+    ∑ k : Fin n, (lagrangeBasis n nodes k (nodes j)) ^ 2 = 1 := by
+  rw [Finset.sum_eq_single j]
+  · rw [lagrangeBasis_self n nodes hd j]; ring
+  · intro k _ hkj; rw [lagrangeBasis_other n nodes hd k j hkj]; ring
+  · intro h; exact absurd (Finset.mem_univ j) h
+
+/-
+**Strict lower bound (I > 2/n for n ≥ 2)**: `sum_sq_at_node` shows the integrand
+equals 1 at every node, while 1/n < 1 for n ≥ 2. Combined with the variance
+decomposition I = 2/n + ∫₋₁¹ ∑(l_k - 1/n)² dx, this gives I > 2/n since the
+deviation integral is positive (continuous nonneg function, positive at each node).
+Future work: formalize the strict inequality via measure-theoretic positivity.
+-/
 
 /-
 ## Part III: Chebyshev Nodes
