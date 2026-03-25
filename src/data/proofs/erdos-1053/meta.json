@@ -171,14 +171,25 @@
       "venue": "Journal für die reine und angewandte Mathematik, 197, 82–96",
       "note": "Derives structural necessary conditions for multiply perfect numbers using prime factorization constraints, providing the best unconditional bounds on k available without RH."
     },
-    "Erdős: original question",
-    "Guy: Unsolved Problems in Number Theory, B2",
-    "Gronwall (1913): lim sup σ(n)/(n log log n) = e^γ",
-    "Robin (1984): σ(n) < e^γ · n · log log n (conditional on RH)",
-    "Ramanujan (1915): Highly composite numbers (extensive study of σ(n)/n extremes)",
-    "Alaoglu–Erdős (1944): Structure of colossally abundant numbers",
-    "OEIS A007539: k-perfect numbers",
-    "https://erdosproblems.com/1053"
+    {
+      "authors": "Ramanujan, S.",
+      "title": "Highly composite numbers",
+      "year": "1915",
+      "venue": "Proceedings of the London Mathematical Society, 2(14), 347–409",
+      "note": "Extensive study of the extremal behavior of σ(n)/n, introducing highly composite numbers and establishing foundational results on the distribution of divisor sums."
+    }
   ],
-  "leanFile": "Proofs/Erdos1053Problem.lean"
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 152,
+    "axiomCount": 6,
+    "theoremCount": 5,
+    "substantiveTheoremCount": 2,
+    "computationalVerifications": 2,
+    "definitionCount": 4
+  }
 }

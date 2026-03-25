@@ -53,7 +53,7 @@
       "startLine": 1,
       "endLine": 37,
       "summary": "Module docstring documenting the problem statement, background, and references; single `import Mathlib` for full Mathlib access; `open` declarations (Set Real)",
-      "mathContext": "Draw n squares inside the unit square with no common interior point. Let f(n) be the maximum possible sum of the side-lengths. Is f(k²+1) = k?"
+      "mathContext": "Pack $n$ axis-aligned squares in $[0,1]^2$ with disjoint interiors. $f(n) = \\max \\sum_{i=1}^n s_i$. Conjecture: $f(k^2 + 1) = k$ for all $k \\geq 1$."
     },
     {
       "id": "squares",
@@ -252,6 +252,8 @@
     "lineCount": 233,
     "axiomCount": 13,
     "theoremCount": 5,
+    "substantiveTheoremCount": 2,
+    "sorryTheorems": 3,
     "definitionCount": 12
   }
 }

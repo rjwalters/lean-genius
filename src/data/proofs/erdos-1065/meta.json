@@ -74,7 +74,7 @@
       "startLine": 1,
       "endLine": 5,
       "summary": "Imports Mathlib's prime number basics, finite set infrastructure, natural number foundations, and tactic framework.",
-      "mathContext": "Uses `Nat.Prime`, `Set.Infinite`, `Set.Finite`, `Finset`, and decision procedures (`decide`, `norm_num`) from Mathlib."
+      "mathContext": "Dependencies: $\\text{Nat.Prime}$, $\\text{Set.Infinite}$, $\\text{Set.Finite}$, $\\text{Finset}$ from Mathlib. Decision procedures `decide` and `norm_num` verify small-case arithmetic."
     },
     {
       "id": "module-doc",
@@ -233,6 +233,8 @@
     "structureCount": 0,
     "axiomCount": 2,
     "theoremCount": 28,
+    "substantiveTheoremCount": 4,
+    "computationalVerifications": 24,
     "lemmaCount": 0,
     "defCount": 3,
     "imports": [
