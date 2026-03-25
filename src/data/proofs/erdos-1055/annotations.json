@@ -3,158 +3,116 @@
     "id": "prime-class",
     "proofId": "erdos-1055",
     "range": {
-      "startLine": 1,
-      "endLine": 41
+      "startLine": 63,
+      "endLine": 77
     },
     "type": "definition",
-    "title": "Prime Class",
-    "content": "The class of a prime p, defined recursively: class 1 means p+1 is 3-smooth; class r means all prime factors of p+1 have class ≤ r-1 with at least one at r-1.",
+    "title": "Prime Class Definition",
+    "content": "The class of a prime p, defined recursively: class 1 means p+1 is 3-smooth; class r means all prime factors of p+1 have class ≤ r-1 with at least one at r-1. The `primeClass` function uses well-founded recursion on `q < p` (since prime factors of `p+1` are at most `p` for `p ≥ 2`). `IsInClass` is the combined predicate requiring both primality and matching class.",
     "significance": "key",
     "mathContext": "The **Erdős–Selfridge prime classification** assigns to each prime $p$ a class $c(p) \\in \\{1, 2, 3, \\ldots\\}$ by recursion on the prime factorization of $p+1$. Formally: $c(p) = 1$ if $p+1$ is $3$-smooth (only factors $2$ and $3$), and $c(p) = 1 + \\max\\{c(q) : q \\mid p+1, q \\text{ prime}\\}$ otherwise. The $+1$ shift means the classification probes the **multiplicative structure of shifted primes** $p + 1$, a central topic in analytic number theory.",
     "relatedConcepts": [
       "smooth numbers",
       "shifted primes",
       "recursive classification",
-      "factorization depth"
+      "well-founded recursion"
     ],
     "prerequisites": [
       "prime factorization",
       "smooth numbers",
-      "recursive definitions"
+      "Nat.factors"
     ]
   },
   {
-    "id": "class-one",
+    "id": "class-values",
     "proofId": "erdos-1055",
     "range": {
-      "startLine": 42,
-      "endLine": 59
+      "startLine": 81,
+      "endLine": 100
     },
-    "type": "concept",
-    "title": "Class 1: 3-Smooth Successors",
-    "content": "A prime p is in class 1 if p+1 has only 2 and 3 as prime factors. Examples: 2 (3), 3 (4), 5 (6), 7 (8), 11 (12), 23 (24).",
-    "significance": "key",
-    "mathContext": "Class 1 primes are those $p$ where $p + 1 = 2^a \\cdot 3^b$ for some $a, b \\ge 0$. These are precisely the primes adjacent to **$3$-smooth numbers** (numbers whose prime factors are all $\\le 3$). The $3$-smooth numbers $\\{1, 2, 3, 4, 6, 8, 9, 12, 16, 18, 24, \\ldots\\}$ form the **regular numbers** of Babylonian mathematics. Known class 1 primes include $2, 3, 5, 7, 11, 17, 23, 31, 47, 53, 71, 107, 191, \\ldots$ — these become increasingly sparse as $3$-smooth numbers thin out.",
+    "type": "technique",
+    "title": "Verified Class Values via native_decide",
+    "content": "20 computationally verified class assignments using `native_decide`. Class 1 primes: 2, 3, 5, 7, 11, 17, 23, 31 (all have $p+1 = 2^a \\cdot 3^b$). Class 2: 13 ($14=2\\cdot7$), 19 ($20=2^2\\cdot5$), 29 ($30=2\\cdot3\\cdot5$), 41 ($42=2\\cdot3\\cdot7$), 43 ($44=2^2\\cdot11$). Class 3: 37 ($38=2\\cdot19$), 103 ($104=2^3\\cdot13$), 113 ($114=2\\cdot3\\cdot19$). Class 4: 73 ($74=2\\cdot37$). Class 5: 1021 ($1022=2\\cdot7\\cdot73$). Non-primes get class 0: verified for 4 and 6. All proofs are `by native_decide` — kernel computation of the recursive definition.",
+    "significance": "supporting",
+    "mathContext": "Class 1 primes are those $p$ where $p + 1 = 2^a \\cdot 3^b$: the **3-smooth shifted primes**. The chain structure: $13 \\to 14 = 2 \\cdot 7$ ($c(7) = 1$), $37 \\to 38 = 2 \\cdot 19$ ($c(19) = 2$), $73 \\to 74 = 2 \\cdot 37$ ($c(37) = 3$), $1021 \\to 1022 = 2 \\cdot 7 \\cdot 73$ ($c(73) = 4$).",
     "relatedConcepts": [
-      "3-smooth numbers",
-      "regular numbers",
-      "Størmer's theorem",
-      "Pierpont primes"
+      "native_decide",
+      "OEIS A005113",
+      "factorization chains",
+      "3-smooth numbers"
     ],
     "prerequisites": [
-      "3-smooth number definition",
-      "prime factorization"
+      "primeClass definition",
+      "kernel computation"
     ]
   },
   {
-    "id": "known-values",
+    "id": "least-primes",
     "proofId": "erdos-1055",
     "range": {
-      "startLine": 60,
-      "endLine": 77
+      "startLine": 102,
+      "endLine": 111
     },
     "type": "concept",
-    "title": "Known Least Primes (OEIS A005113)",
-    "content": "p_1=2, p_2=13 (14=2·7), p_3=37 (38=2·19), p_4=73 (74=2·37), p_5=1021 (1022=2·7·73). Each follows from the chain of class assignments.",
+    "title": "Least Prime in Each Class (OEIS A005113)",
+    "content": "Defines `findLeastPrimeInClass` (bounded linear search) and verifies the first 5 values: $p_1=2$, $p_2=13$, $p_3=37$, $p_4=73$, $p_5=1021$. Each verified by `native_decide`. The values $p_r^{1/r}$: $2, 3.61, 3.33, 2.92, 4.01$ are tantalizingly inconclusive about the growth rate — they don't clearly trend upward (supporting Erdős) or stabilize (supporting Selfridge).",
     "significance": "key",
-    "mathContext": "The sequence of **least primes in each class** (OEIS A005113) begins: $p_1 = 2$, $p_2 = 13$, $p_3 = 37$, $p_4 = 73$, $p_5 = 1021$. The chain structure is revealing: $13 + 1 = 14 = 2 \\cdot 7$ (7 is class 1), $37 + 1 = 38 = 2 \\cdot 19$ (19 is class 2 since $20 = 2^2 \\cdot 5$ and 5 is class 1), $73 + 1 = 74 = 2 \\cdot 37$ (37 is class 3), $1021 + 1 = 1022 = 2 \\cdot 7 \\cdot 73$ (73 is class 4). The values $p_r^{1/r}$: $2, 3.61, 3.33, 2.92, 4.01$ are tantalizingly inconclusive about the growth rate.",
+    "mathContext": "The sequence of **least primes in each class** (OEIS A005113): $p_1 = 2$, $p_2 = 13$, $p_3 = 37$, $p_4 = 73$, $p_5 = 1021$. The $r$th roots $p_r^{1/r}$: $2.00, 3.61, 3.33, 2.92, 4.01$ — inconclusive between the Erdős ($\\to \\infty$) and Selfridge (bounded) conjectures.",
     "relatedConcepts": [
       "OEIS A005113",
-      "Cunningham chains",
-      "factorization chains"
+      "bounded search",
+      "Cunningham chains"
     ],
     "prerequisites": [
-      "prime class definition",
-      "recursive class computation"
+      "primeClass",
+      "native_decide"
     ]
   },
   {
-    "id": "infinitude-conj",
+    "id": "structural-properties",
     "proofId": "erdos-1055",
     "range": {
-      "startLine": 78,
-      "endLine": 88
+      "startLine": 131,
+      "endLine": 200
     },
-    "type": "concept",
-    "title": "Infinitely Many in Each Class",
-    "content": "The main conjecture: for each r ≥ 1, the set of primes in class r is infinite. This is the primary question of Problem #1055.",
+    "type": "technique",
+    "title": "Structural Properties and Concrete Evidence",
+    "content": "Proved structural theorems: `primeClass_pos_of_prime` (primes have class $\\geq 1$), `class_of_factor_lt` (if $q \\mid p+1$ and $q$ prime, then $c(q) < c(p)$), `class_one_iff_smooth` (class 1 $\\iff$ $p+1$ is 3-smooth). Also concrete evidence for infinitude: `many_class1_primes` (8 known class-1 primes), `many_class2_primes` (5 known class-2 primes), `many_class3_primes` (3 known class-3 primes). These are verified by `native_decide` and `decide`.",
     "significance": "key",
-    "mathContext": "**Infinitude Conjecture**: For each $r \\ge 1$, the set $\\{p \\text{ prime} : c(p) = r\\}$ is infinite. For $r = 1$ this is known: by Størmer's theorem and the infinity of $3$-smooth numbers, there are infinitely many primes $p$ with $p + 1 = 2^a \\cdot 3^b$ (though the proof requires careful analysis of Pell equations). For $r \\ge 2$, the conjecture is **OPEN**. It would follow from strong enough results on primes in arithmetic progressions and the distribution of smooth numbers among shifted primes.",
+    "mathContext": "Key structural facts: $c(p) \\geq 1$ for all primes $p$, $q \\mid (p+1)$ prime $\\Rightarrow c(q) < c(p)$ (strict decrease along factorization chains), and $c(p) = 1 \\iff p + 1$ is 3-smooth. The concrete lists provide evidence for the infinitude conjecture.",
     "relatedConcepts": [
-      "Størmer's theorem",
-      "primes in arithmetic progressions",
-      "Linnik's theorem",
-      "shifted prime factorization"
+      "well-founded recursion",
+      "3-smooth characterization",
+      "factorization chains",
+      "decidable properties"
     ],
     "prerequisites": [
-      "prime class definition",
-      "density of smooth numbers"
+      "primeClass",
+      "nonSmooth_factor_lt",
+      "Nat.factors"
     ]
   },
   {
-    "id": "erdos-growth",
+    "id": "main-conjectures",
     "proofId": "erdos-1055",
     "range": {
-      "startLine": 89,
-      "endLine": 95
-    },
-    "type": "concept",
-    "title": "Erdős Growth Conjecture",
-    "content": "Erdős conjectured p_r^{1/r} → ∞: the least prime in class r grows superexponentially. The known data (2, 3.61, 3.33, 2.92, 4.01) is inconclusive.",
-    "significance": "key",
-    "mathContext": "**Erdős's Conjecture**: $p_r^{1/r} \\to \\infty$ as $r \\to \\infty$, i.e., $\\log p_r / r \\to \\infty$. This means the least class-$r$ prime grows **superexponentially** in $r$: faster than $C^r$ for any constant $C$. Erdős's intuition was that the recursive depth requirement makes high-class primes extremely rare, forcing $p_r$ to be astronomically large. The known data $p_r^{1/r} \\in \\{2, 3.61, 3.33, 2.92, 4.01\\}$ for $r = 1, \\ldots, 5$ shows no clear trend, making this conjecture genuinely uncertain.",
-    "relatedConcepts": [
-      "superexponential growth",
-      "extremal prime properties",
-      "computational evidence assessment"
-    ],
-    "prerequisites": [
-      "asymptotic growth rates",
-      "known values of p_r"
-    ]
-  },
-  {
-    "id": "selfridge-bounded",
-    "proofId": "erdos-1055",
-    "range": {
-      "startLine": 96,
-      "endLine": 103
-    },
-    "type": "concept",
-    "title": "Selfridge Bounded Conjecture",
-    "content": "Selfridge conjectured p_r^{1/r} is bounded: the least class-r prime grows at most exponentially. This directly contradicts Erdős's conjecture.",
-    "significance": "key",
-    "mathContext": "**Selfridge's Conjecture**: There exists a constant $C$ such that $p_r \\le C^r$ for all $r$, i.e., $p_r^{1/r}$ is bounded. This means the least class-$r$ prime grows at most **exponentially** in $r$. Selfridge's intuition was that the factorization chains $p \\to p+1 \\to \\text{factors} \\to \\ldots$ can be threaded efficiently, allowing relatively small primes in each class. The two conjectures ($p_r^{1/r} \\to \\infty$ vs bounded) are **mutually exclusive**—exactly one must be false, but which one remains unknown.",
-    "relatedConcepts": [
-      "exponential growth",
-      "factorization chain efficiency",
-      "contradictory conjectures"
-    ],
-    "prerequisites": [
-      "Erdős's growth conjecture",
-      "exponential vs superexponential growth"
-    ]
-  },
-  {
-    "id": "density-bound",
-    "proofId": "erdos-1055",
-    "range": {
-      "startLine": 104,
+      "startLine": 202,
       "endLine": 222
     },
-    "type": "definition",
-    "title": "Density Bound n^{o(1)}",
-    "content": "The number of primes ≤ n in any fixed class r is at most n^{o(1)}. Each class is extremely sparse, consistent with the recursive depth requirement.",
+    "type": "concept",
+    "title": "The Main Conjectures (OPEN)",
+    "content": "Four axiomatized conjectures: (1) `infinitely_many_in_each_class`: for each $r \\geq 1$, infinitely many primes have class $r$ — the primary question. (2) `erdos_growth_conjecture`: $p_r^{1/r} \\to \\infty$ (superexponential growth of least class-$r$ prime). (3) `selfridge_bounded_conjecture`: $\\exists C, \\forall r, p_r \\leq C^r$ (exponential growth). These are **mutually exclusive** — exactly one of Erdős and Selfridge is right. (4) `class_density_subpolynomial`: $|\\{p \\leq n : c(p) = r\\}| = n^{o(1)}$ (extreme sparsity of each class).",
     "significance": "key",
-    "mathContext": "The **density bound**: $|\\{p \\le n : c(p) = r\\}| = n^{o(1)}$ for each fixed $r \\ge 1$. This means class-$r$ primes form a set of **zero relative density** among all primes (since $\\pi(n) \\sim n/\\log n$). For class 1, this follows from the density of $3$-smooth numbers: $\\Psi(n, 3) \\sim c \\cdot (\\log n)^{\\alpha}$ for a constant $\\alpha$, so class 1 primes have counting function $O((\\log n)^{\\alpha})$. For higher classes, the recursive structure compounds the sparsity: each level of recursion further constrains the admissible primes.",
+    "mathContext": "The central tension: Erdős predicted $p_r^{1/r} \\to \\infty$ (factorization chains force astronomical primes), while Selfridge predicted $p_r^{1/r}$ bounded (chains can be threaded efficiently). The density axiom $n^{o(1)}$ reflects the compounding sparsity of recursive smoothness constraints. All four conjectures remain OPEN.",
     "relatedConcepts": [
-      "natural density",
-      "smooth number counting function Ψ(n,y)",
-      "sub-polynomial growth"
+      "superexponential vs exponential growth",
+      "contradictory conjectures",
+      "sub-polynomial density",
+      "smooth number counting"
     ],
     "prerequisites": [
-      "prime counting function",
-      "smooth number density",
+      "primeClass",
+      "OEIS A005113",
       "asymptotic notation"
     ]
   }
