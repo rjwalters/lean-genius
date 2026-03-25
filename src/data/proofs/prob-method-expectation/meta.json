@@ -140,6 +140,31 @@
       "targetId": "prob-method-applications",
       "relationship": "used-by",
       "description": "The first moment principle is used throughout the applications module for Ramsey bounds and chromatic number estimates"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Erdos's 1947 proof that R(k,k) >= 2^(k/2) is the original application of the first moment method to Ramsey theory, establishing the exponential lower bound"
+    },
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "foundational",
+      "description": "Inclusion-exclusion and the union bound are the combinatorial backbone of expectation calculations: linearity of expectation over indicator variables is the probabilistic form of additive counting"
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "related",
+      "description": "The birthday problem is a collision-counting argument where the expected number of collisions is computed via linearity of expectation — the same first moment technique formalized here"
+    },
+    {
+      "targetId": "shannon-entropy",
+      "relationship": "related",
+      "description": "Shannon entropy quantifies the expected information content of a random variable; the first moment method provides existence proofs that random codes achieve Shannon capacity"
+    },
+    {
+      "targetId": "randomized-maxcut",
+      "relationship": "used-by",
+      "description": "The randomized MAX-CUT algorithm uses the first moment method: a random partition cuts each edge with probability 1/2, so E[cut] >= m/2 by linearity of expectation"
     }
   ],
   "conclusion": {

@@ -175,6 +175,26 @@
       "targetId": "binomial-theorem",
       "relationship": "foundational",
       "description": "Matrix power expansion and polynomial evaluation at matrices use binomial-type identities for the algebraic manipulations"
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "Over $\\mathbb{C}$ the characteristic polynomial splits completely by the fundamental theorem of algebra, so the reduction mod $\\text{charpoly}(A)$ can be computed via partial fractions from eigenvalues"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "related",
+      "description": "Lagrange's theorem (subgroup order divides group order) is the algebraic analogue of the minimal polynomial dividing the characteristic polynomial — both reflect quotient structure in their respective settings"
+    },
+    {
+      "targetId": "de-moivre",
+      "relationship": "related",
+      "description": "De Moivre's formula computes powers of rotation matrices via $e^{in\\theta}$; the Cayley-Hamilton reduction reduces these matrix powers to linear combinations of $I$ and $A$ for $2 \\times 2$ rotations"
+    },
+    {
+      "targetId": "inverse-galois",
+      "relationship": "related",
+      "description": "The characteristic polynomial of a matrix determines a field extension via its splitting field; the Galois group of this extension governs the algebraic structure of the matrix's eigenvalues and Jordan form"
     }
   ],
   "references": [

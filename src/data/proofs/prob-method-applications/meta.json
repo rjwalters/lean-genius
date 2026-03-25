@@ -169,6 +169,31 @@
       "targetId": "prob-method-lovasz-local",
       "relationship": "depends-on",
       "description": "The Lovasz Local Lemma is used for chromatic number bounds and hypergraph coloring"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "The Ramsey lower bound R(k,k) >= 2^(k/2) proved here is the foundational application of the probabilistic method to Ramsey theory, complementing the upper bounds from Ramsey's original theorem"
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Szemeredi's theorem on arithmetic progressions in dense sets uses probabilistic and regularity methods closely related to those demonstrated in these applications"
+    },
+    {
+      "targetId": "randomized-maxcut",
+      "relationship": "related",
+      "description": "The randomized MAX-CUT approximation is a canonical application of the first moment method to optimization: random partitioning achieves a 1/2-approximation via linearity of expectation"
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "related",
+      "description": "The chromatic number bounds proved here via probabilistic methods provide the theoretical framework that the four-color theorem resolves exactly for planar graphs"
+    },
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "foundational",
+      "description": "The union bound used in tournament domination and Property B arguments is the first term of inclusion-exclusion; tighter probabilistic bounds require the full alternating sum"
     }
   ],
   "conclusion": {

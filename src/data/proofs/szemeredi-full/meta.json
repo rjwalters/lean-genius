@@ -161,6 +161,26 @@
       "targetId": "prob-method-lovasz-local",
       "relationship": "related",
       "description": "Both are landmark results bridging probability and combinatorics, forming the Phase 1 and Phase 3 anchors of the marquee program"
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "The companion density formulation of Szemeredi's theorem — this entry provides the full case assembly and axiom reduction, while the companion states the density version"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey's theorem guarantees monochromatic structure in colorings; Szemeredi's theorem is the density analogue, guaranteeing arithmetic structure in dense sets — van der Waerden's theorem bridges both viewpoints"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The PNT shows primes have density zero yet the Green-Tao theorem (2004) extends Szemeredi's theorem to prove primes contain arbitrarily long arithmetic progressions despite zero density"
+    },
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "foundational",
+      "description": "Counting and removal lemmas in the regularity method use inclusion-exclusion-style arguments to translate pseudorandom structure into arithmetic progression counts"
     }
   ],
   "conclusion": {
