@@ -79,3 +79,35 @@ The Inverse Galois Problem (IGP) asks whether every finite group is isomorphic t
 - Prove PSL(2,7) exists as a group (GL(3,F₂) has order 168) via native_decide
 - Formalize direct product realizability via coprime-degree compositum
 - Connect S5 realization to census (import InverseGaloisA5)
+
+## Session 2026-03-24 (Session 3) - Commutator Theorem & Census Fix
+
+**Mode**: REVISIT (richest available problem, score 29)
+**Outcome**: progress
+
+### What I Did
+- Extended `InverseGaloisOQ01.lean` from 591 → 723 lines, 39 → 47 theorems
+- **Fixed import collision**: InverseGaloisA5 and AbelRuffiniOQ04OQ01 share top-level `perm_fin5_order5_order3_not_commute`; fixed by adding `private` to duplicates in OQ04OQ01
+- **Eliminated 2 census sorries**: `nonsolvable_realized_orders` now sorry-free using `InverseGaloisA5.a5_realizable` (A₅) and `AbelRuffiniOQ04OQ01.gal_card_eq_120` (S₅)
+- **Proved [S₅,S₅] = A₅** (`s5_commutator_eq_alternating`): the commutator subgroup of S₅ is exactly A₅
+  - Direction 1 (`commutator_le_alternating`): sign hom maps to abelian ℤˣ, so [G,G] ≤ ker(sign) = A₅
+  - Direction 2 (`alternating_le_commutator`): A₅ perfect → commutator(↥A₅) = ⊤ → comap + commutator_le + Subgroup.commutator_mono
+- Added census integration: `a5_galois_iso`, `s5_galois_iso`, `s5_not_solvable_by_radicals`
+- Docker build verified: 0 axioms, 1 sorry (open problem only)
+
+### Key Findings
+- `Abelianization.commutator_subset_ker` handles direction 1 cleanly (sign maps [G,G] to 1)
+- `Subgroup.commutator_le` + `map_commutatorElement` + `Subgroup.mem_comap`: the clean proof path for direction 2
+- `Subgroup.closure_induction` in recent Mathlib uses dependent predicate; use `comap`-based proof instead
+- `private` keyword on `native_decide` theorems prevents export collision between files
+
+### Files Modified
+- `proofs/Proofs/InverseGaloisOQ01.lean` (extended, 723 lines, 47 theorems)
+- `proofs/Proofs/AbelRuffiniOQ04OQ01.lean` (2 theorems made `private` to fix collision)
+- `src/data/proofs/inverse-galois-oq-01/meta.json` (updated counts)
+- `src/data/research/problems/inverse-galois-oq-01.json` (updated knowledge)
+
+### Next Steps
+- Prove Jordan's theorem for S₅: normal subgroups are exactly {⊥, A₅, ⊤}
+- Formalize Hilbert irreducibility → all Sₙ realized (axiomatized)
+- Add PSL(2,7) characterization and realizability

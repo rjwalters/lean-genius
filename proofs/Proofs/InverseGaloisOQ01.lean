@@ -378,9 +378,11 @@ theorem nonsolvable_realized_orders :
   intro n hn
   simp at hn
   rcases hn with rfl | rfl
-  · -- n = 60: A₅ realized via splitting field of x⁵ + 20x - 16
+  · -- n = 60: A₅ via x⁵ - 5x⁴ + 10x³ - 10x² + 25x - 5 (InverseGaloisA5)
     exact InverseGaloisA5.a5_realizable
-  · -- n = 120: S₅ realized via splitting field of x⁵ - 4x + 2
+  · -- n = 120: S₅ via x⁵ - 4x + 2 (AbelRuffiniOQ04OQ01)
+    have : Normal ℚ AbelRuffiniOQ04OQ01.p.SplittingField := inferInstance
+    have : Algebra.IsSeparable ℚ AbelRuffiniOQ04OQ01.p.SplittingField := inferInstance
     exact ⟨AbelRuffiniOQ04OQ01.p.SplittingField,
       inferInstance, inferInstance, inferInstance, IsGalois.mk,
       AbelRuffiniOQ04OQ01.gal_card_eq_120⟩
@@ -571,6 +573,130 @@ theorem realizability_closed_under_quotients
   ⟨inferInstance, ⟨IsGalois.normalAutEquivQuotient N⟩⟩
 
 -- ============================================================================
+-- Part XV: The Commutator Subgroup — [S₅, S₅] = A₅
+-- ============================================================================
+
+/-
+**Theorem**: The derived (commutator) subgroup of S₅ is exactly A₅.
+
+This is equivalent to two facts:
+1. S₅/A₅ ≅ C₂ is abelian, so [S₅,S₅] ≤ A₅
+2. A₅ is perfect ([A₅,A₅] = A₅), so A₅ ≤ [S₅,S₅]
+
+**Significance for IGP**: The derived series of S₅ is:
+  S₅ ⊃ A₅ ⊃ A₅ ⊃ A₅ ⊃ ...
+The series stalls at A₅ because A₅ is perfect. This is precisely why S₅
+is not solvable (the derived series never reaches {e}).
+-/
+
+/-- Direction 1: [S₅,S₅] ≤ A₅.
+    Proof: The sign homomorphism maps S₅ onto the abelian group ℤˣ ≅ C₂.
+    Every commutator ghg⁻¹h⁻¹ has sign 1 (since sign is a homomorphism to an
+    abelian group), so [S₅,S₅] ≤ ker(sign) = A₅. -/
+theorem commutator_le_alternating :
+    commutator (Equiv.Perm (Fin 5)) ≤ alternatingGroup (Fin 5) := by
+  intro σ hσ
+  rw [Equiv.Perm.mem_alternatingGroup]
+  -- σ ∈ [S₅, S₅] means sign σ = 1, since sign is a hom to the abelian group ℤˣ
+  -- Use: for any hom f : G → A with A abelian, f maps commutator elements to 1
+  exact Abelianization.commutator_subset_ker
+    (MonoidHom.mk' (fun σ => Equiv.Perm.sign σ)
+      (fun _ _ => map_mul Equiv.Perm.sign _ _)) hσ
+
+/-- Direction 2: A₅ ≤ [S₅,S₅].
+    Proof: A₅ is perfect ([A₅,A₅] = A₅), so every element of A₅ is a product
+    of commutators from A₅ ⊆ S₅, hence lies in [S₅,S₅].
+    The key step uses closure induction to transfer commutator membership
+    from ↥A₅ to S₅ via the subtype embedding. -/
+theorem alternating_le_commutator :
+    alternatingGroup (Fin 5) ≤ commutator (Equiv.Perm (Fin 5)) := by
+  intro σ hσ
+  -- Since A₅ is perfect, ⟨σ, hσ⟩ ∈ commutator(↥A₅)
+  have hmem : (⟨σ, hσ⟩ : alternatingGroup (Fin 5)) ∈
+      commutator (alternatingGroup (Fin 5)) := by
+    rw [a5_commutator_eq_top]; exact Subgroup.mem_top _
+  -- Transfer: commutator(↥A₅) ≤ comap(ι, commutator(S₅))
+  -- i.e., for x ∈ commutator(↥A₅), ι(x) ∈ commutator(S₅)
+  -- Proof: use commutator_le to reduce to generators, then map_commutatorElement
+  let ι := (alternatingGroup (Fin 5)).subtype
+  have hle : commutator (alternatingGroup (Fin 5)) ≤
+      (commutator (Equiv.Perm (Fin 5))).comap ι := by
+    -- commutator ↥A₅ = ⁅⊤, ⊤⁆. Show ⁅⊤, ⊤⁆ ≤ comap ι [S₅,S₅]
+    rw [show commutator ↥(alternatingGroup (Fin 5)) =
+        ⁅(⊤ : Subgroup (alternatingGroup (Fin 5))), ⊤⁆ from rfl]
+    rw [Subgroup.commutator_le]
+    intro a _ b _
+    rw [Subgroup.mem_comap]
+    -- Need: ι ⁅a, b⁆ ∈ commutator S₅
+    -- ι ⁅a, b⁆ = ⁅ι a, ι b⁆ since ι is a homomorphism
+    rw [map_commutatorElement]
+    exact Subgroup.commutator_mem_commutator (Subgroup.mem_top _) (Subgroup.mem_top _)
+  exact hle hmem
+
+/-- **The Commutator Theorem**: [S₅, S₅] = A₅.
+    The derived subgroup of S₅ is exactly the alternating group A₅.
+    Combined with A₅ being perfect, this gives the complete derived series:
+      S₅ ⊃ A₅ = A₅ = A₅ = ... (stalls forever) -/
+theorem s5_commutator_eq_alternating :
+    commutator (Equiv.Perm (Fin 5)) = alternatingGroup (Fin 5) :=
+  le_antisymm commutator_le_alternating alternating_le_commutator
+
+/-- The abelianization of S₅ has order 2 (isomorphic to C₂).
+    This follows from S₅/[S₅,S₅] = S₅/A₅ having order |S₅|/|A₅| = 120/60 = 2. -/
+theorem s5_abelianization_order :
+    Fintype.card (Equiv.Perm (Fin 5)) / Fintype.card (alternatingGroup (Fin 5)) = 2 :=
+  s5_div_a5
+
+/-- The derived series of S₅ terminates: the second derived subgroup equals
+    the first. This is the precise obstruction to solvability. -/
+theorem s5_derived_series_stalls :
+    commutator (alternatingGroup (Fin 5)) = ⊤ := a5_commutator_eq_top
+
+-- ============================================================================
+-- Part XVI: Census Integration — Connecting Realized Groups
+-- ============================================================================
+
+/-
+With imports of InverseGaloisA5 and AbelRuffiniOQ04OQ01, we can now state
+the complete census of non-solvable groups realized in this formalization.
+
+The census theorem `nonsolvable_realized_orders` (Part VIII) is now sorry-free,
+connecting to:
+- InverseGaloisA5.a5_realizable: A₅ (order 60) via x⁵ - 5x⁴ + 10x³ - 10x² + 25x - 5
+- AbelRuffiniOQ04OQ01.gal_card_eq_120: S₅ (order 120) via x⁵ - 4x + 2
+
+### Transitive Dependencies
+- A₅ realization depends on 1 axiom: `three_dvd_gal_card` (Dedekind's theorem)
+- S₅ realization depends on 2 axioms: `three_dvd_gal_card`, `gal_has_odd_perm`
+  (both from Dedekind's theorem applied to different primes)
+
+### Groups Covered
+From our structural results, S₅ realization + quotient realizability gives:
+- S₅ itself (order 120)
+- C₂ = S₅/A₅ (order 2, via sign quotient)
+- {e} = S₅/S₅ (order 1, trivial quotient)
+
+The A₅ realization is independent (not a quotient of S₅, but a subgroup).
+-/
+
+/-- The A₅ Galois group is isomorphic to the alternating group (from A5 file). -/
+theorem a5_galois_iso :
+    Nonempty (InverseGaloisA5.q.Gal ≃* alternatingGroup (Fin 5)) :=
+  InverseGaloisA5.q_gal_iso_a5
+
+/-- The S₅ Galois group is isomorphic to the symmetric group (from OQ04OQ01 file). -/
+theorem s5_galois_iso :
+    Nonempty (AbelRuffiniOQ04OQ01.p.Gal ≃* Equiv.Perm (Fin 5)) :=
+  AbelRuffiniOQ04OQ01.gal_iso_s5
+
+/-- S₅ is NOT solvable by radicals: the polynomial x⁵ - 4x + 2 cannot be solved
+    using only field operations and nth roots. This is the concrete instance of
+    the Abel-Ruffini theorem. -/
+theorem s5_not_solvable_by_radicals :
+    ¬IsSolvable AbelRuffiniOQ04OQ01.p.Gal :=
+  AbelRuffiniOQ04OQ01.gal_not_solvable
+
+-- ============================================================================
 -- Verification
 -- ============================================================================
 
@@ -580,6 +706,7 @@ theorem realizability_closed_under_quotients
 #check an_solvable_iff             -- Aₙ solvable ↔ n ≤ 4
 #check a5_simple                   -- A₅ is simple
 #check a5_commutator_eq_top        -- A₅ is perfect
+#check s5_commutator_eq_alternating -- [S₅,S₅] = A₅
 #check finrank_over_fixed_field    -- [K : K^H] = |H|
 #check finrank_fixed_field_over_base  -- [K^H : F] = [G : H]
 #check cayley_card                 -- Cayley's theorem
@@ -588,6 +715,9 @@ theorem realizability_closed_under_quotients
 #check fixed_field_galois_card_eq_index  -- |Gal(K^H/F)| = [G : H]
 #check quotient_of_galois_realized -- Quotient realizability
 #check realizability_closed_under_quotients -- Realizability closed under quotients
+#check nonsolvable_realized_orders -- Census: A₅ and S₅ realized (sorry-free!)
+#check a5_galois_iso               -- Gal ≅ A₅
+#check s5_galois_iso               -- Gal ≅ S₅
 #check inverse_galois_conjecture   -- The open problem
 
 end InverseGaloisOQ01
