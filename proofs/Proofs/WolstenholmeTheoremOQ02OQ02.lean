@@ -17,14 +17,6 @@ Combine: p³ | (C(2p,p) - 2), giving C(2p-1,p-1) ≡ 1 (mod p³).
 ## Historical Context
 Joseph Wolstenholme proved this in 1862. Only two Wolstenholme primes
 are known: 16843 and 2124679, both ≡ 3 (mod 4).
-
-## Sorries
-1. `sum_units_pow_eq_zero`: Power sums vanish over (ZMod p)ˣ when (p-1) ∤ m.
-   Proof: pick generator g; g^m · S = S by permutation; g^m ≠ 1 ⟹ S = 0.
-2. `choose_pred_neg_one_pow`: C(p-1,k) ≡ (-1)^k (mod p).
-   Proof: descFactorial(p-1,k) = ∏(p-1-j) ≡ (-1)^k·k! in ZMod p; divide by k!.
-3. `p_dvd_sum_b_sq`: p | Σ(C(p,k)/p)².
-   Proof: bₖ ≡ (-1)^{k-1}/k ⟹ bₖ² ≡ 1/k² ≡ k² (inversion) ≡ 0 (power sum, m=2).
 -/
 import Mathlib
 
@@ -40,13 +32,41 @@ variable (p : ℕ) [hp : Fact (Nat.Prime p)]
 ## Section 1: Power Sum Lemma
 
 For prime p and m with (p-1) ∤ m, Σ_{x ∈ (ZMod p)ˣ} x^m = 0.
-Proof sketch: pick generator g of cyclic group (ZMod p)ˣ.
-g^m · S = S by reindexing via x ↦ g·x. Since g^m ≠ 1 in the field ZMod p, S = 0.
+Proof: pick generator g of cyclic group (ZMod p)ˣ.
+g^m · S = S by reindexing via x ↦ g·x. Since g^m ≠ 1, S = 0.
 -/
 
 lemma sum_units_pow_eq_zero (m : ℕ) (hm : ¬((p - 1) ∣ m)) (hp2 : 2 ≤ p) :
     ∑ x : (ZMod p)ˣ, (x : ZMod p) ^ m = 0 := by
-  sorry
+  -- Get a generator g of the cyclic group (ZMod p)ˣ
+  obtain ⟨g, hg⟩ := IsCyclic.exists_monoid_generator (α := (ZMod p)ˣ)
+  -- g^m ≠ 1 since orderOf g = |group| = p-1 and (p-1) ∤ m
+  have hgm : g ^ m ≠ 1 := by
+    intro heq
+    apply hm
+    rw [← ZMod.card_units_eq_totient p, ← Nat.totient_prime hp.out,
+        ← orderOf_eq_card_of_forall_mem_zpowers hg]
+    exact orderOf_dvd_of_pow_eq_one heq
+  -- Key: (↑g)^m * S = S by reindexing x ↦ g*x
+  set S := ∑ x : (ZMod p)ˣ, (x : ZMod p) ^ m with hS_def
+  have key : (↑g : ZMod p) ^ m * S = S := by
+    simp only [hS_def, Finset.mul_sum]
+    conv_rhs => rw [show (Finset.univ : Finset (ZMod p)ˣ) =
+      Finset.univ.map (Equiv.mulLeft g).toEmbedding from
+      (Finset.map_univ_equiv _).symm]
+    simp only [Finset.sum_map, Equiv.toEmbedding_apply, Equiv.mulLeft_apply,
+               Units.val_mul, mul_pow]
+  -- (↑g)^m ≠ 1 in ZMod p (from g^m ≠ 1 as a unit)
+  have hne : (↑g : ZMod p) ^ m ≠ 1 := by
+    intro h
+    apply hgm
+    ext
+    simp only [Units.val_pow_eq_pow_val, Units.val_one]
+    exact h
+  -- ((↑g)^m - 1) * S = 0 from key, and (↑g)^m - 1 ≠ 0, so S = 0
+  have h0 : ((↑g : ZMod p) ^ m - 1) * S = 0 := by
+    rw [sub_mul, one_mul, sub_eq_zero]; exact key
+  exact (mul_eq_zero.mp h0).resolve_left (sub_ne_zero.mpr hne)
 
 /-
 ## Section 2: C(p-1, k) ≡ (-1)^k (mod p)
@@ -57,7 +77,30 @@ Since C(p-1,k) = descFactorial(p-1,k)/k! and k! is a unit in ZMod p: C(p-1,k) �
 
 lemma choose_pred_neg_one_pow (k : ℕ) (hk : k ≤ p - 1) (hp5 : 5 ≤ p) :
     (Nat.choose (p - 1) k : ZMod p) = (-1) ^ k := by
-  sorry
+  suffices h : (k.factorial : ZMod p) * (Nat.choose (p - 1) k : ZMod p) =
+    (k.factorial : ZMod p) * (-1) ^ k by
+    have hne : (k.factorial : ZMod p) ≠ 0 := by
+      rw [Ne, ZMod.natCast_zmod_eq_zero_iff_dvd]
+      exact fun hdvd => absurd (hp.out.dvd_factorial.mp hdvd) (by omega)
+    exact mul_left_cancel₀ hne h
+  -- Cast the ℕ identity k! * C(n, k) = n.descFactorial k
+  rw [← Nat.cast_mul, Nat.factorial_mul_choose hk]
+  -- Now show: ((p-1).descFactorial k : ZMod p) = (k! : ZMod p) * (-1)^k
+  rw [mul_comm]
+  -- Prove by induction on k
+  induction k with
+  | zero => simp [Nat.descFactorial]
+  | succ k ih =>
+    rw [Nat.descFactorial_succ, Nat.cast_mul, Nat.factorial_succ, Nat.cast_mul, pow_succ]
+    rw [ih (by omega)]
+    -- Need: (p - 1 - k : ℕ) cast to ZMod p equals -(k + 1 : ℕ)
+    have h_sum : (p - 1 - k) + (k + 1) = p := by omega
+    have : ((p - 1 - k : ℕ) : ZMod p) = -((k + 1 : ℕ) : ZMod p) := by
+      have hp0 : ((p : ℕ) : ZMod p) = 0 := ZMod.natCast_self_eq_zero
+      have h_add : ((p - 1 - k : ℕ) : ZMod p) + ((k + 1 : ℕ) : ZMod p) = 0 := by
+        rw [← Nat.cast_add, h_sum, hp0]
+      exact eq_neg_of_add_eq_zero_left h_add
+    rw [this]; ring
 
 /-
 ## Section 3: Key Identity and Divisibility
@@ -86,15 +129,73 @@ lemma mul_b_eq (hp' : Nat.Prime p) (k : ℕ) (hk0 : 1 ≤ k) (hkp : k < p) :
   rw [hbk, Nat.mul_div_cancel_left _ (by omega : 0 < p)]
   exact mul_left_cancel₀ (by omega : (p : ℕ) ≠ 0) (by linarith)
 
-/-- The key divisibility: p | Σ_{k ∈ Ico 1 p} (C(p,k)/p)² for prime p ≥ 5.
+-- Per-element identity: bₖ² ≡ k⁻² in ZMod p
+private lemma b_sq_eq_inv_sq (hp' : Nat.Prime p) (h5 : 5 ≤ p) (k : ℕ)
+    (hk : k ∈ Finset.Ico 1 p) :
+    ((Nat.choose p k / p : ℕ) : ZMod p) ^ 2 = ((k : ℕ) : ZMod p)⁻¹ ^ 2 := by
+  have hm := Finset.mem_Ico.mp hk
+  have hk_ne : ((k : ℕ) : ZMod p) ≠ 0 := by
+    rw [Ne, ZMod.natCast_zmod_eq_zero_iff_dvd]
+    exact fun h => absurd (Nat.le_of_dvd (by omega) h) (by omega)
+  have h_mul := mul_b_eq p hp' k (by omega) (by omega)
+  have h_choose := choose_pred_neg_one_pow p (k - 1) (by omega) h5
+  have h_zmod : ((k : ℕ) : ZMod p) * ((Nat.choose p k / p : ℕ) : ZMod p) =
+      (-1) ^ (k - 1) := by
+    exact_mod_cast congrArg (Nat.cast : ℕ → ZMod p) h_mul ▸ h_choose
+  have h_b : ((Nat.choose p k / p : ℕ) : ZMod p) = (-1) ^ (k - 1) * ((k : ℕ) : ZMod p)⁻¹ := by
+    rw [← h_zmod, mul_comm, mul_assoc, mul_inv_cancel₀ hk_ne, mul_one]
+  rw [h_b, mul_pow, ← pow_mul, show (k - 1) * 2 = 2 * (k - 1) from by ring]
+  simp [neg_one_sq, one_pow, pow_mul, one_mul]
 
-    Full proof: Cast to ZMod p. By mul_b_eq and choose_pred_neg_one_pow:
-    (k : ZMod p) · (bₖ : ZMod p) = (-1)^(k-1), so bₖ = (-1)^(k-1)/k, bₖ² = 1/k².
-    Inversion bijection: Σ 1/k² = Σ k² over (ZMod p)ˣ.
-    Power sum (m=2, (p-1) ∤ 2 for p ≥ 5): Σ k² = 0. -/
+/-- The key divisibility: p | Σ_{k ∈ Ico 1 p} (C(p,k)/p)² for prime p ≥ 5. -/
 lemma p_dvd_sum_b_sq (hp' : Nat.Prime p) (h5 : 5 ≤ p) :
     (p : ℕ) ∣ ∑ k ∈ Finset.Ico 1 p, (Nat.choose p k / p) ^ 2 := by
-  sorry
+  rw [← ZMod.natCast_zmod_eq_zero_iff_dvd]
+  push_cast
+  -- Each bₖ² = k⁻² in ZMod p
+  have h_eq : ∑ k ∈ Finset.Ico 1 p, ((Nat.choose p k / p : ℕ) : ZMod p) ^ 2 =
+      ∑ k ∈ Finset.Ico 1 p, ((k : ℕ) : ZMod p)⁻¹ ^ 2 :=
+    Finset.sum_congr rfl (fun k hk => b_sq_eq_inv_sq p hp' h5 k hk)
+  rw [h_eq]
+  -- Use Fermat: a⁻¹ = a^(p-2) for a ≠ 0 in ZMod p, so k⁻² = k^(2(p-2))
+  have h_ne : ∀ k ∈ Finset.Ico 1 p, ((k : ℕ) : ZMod p) ≠ 0 := by
+    intro k hk; rw [Ne, ZMod.natCast_zmod_eq_zero_iff_dvd]
+    have := Finset.mem_Ico.mp hk
+    exact fun h => absurd (Nat.le_of_dvd (by omega) h) (by omega)
+  have h_fermat : ∑ k ∈ Finset.Ico 1 p, ((k : ℕ) : ZMod p)⁻¹ ^ 2 =
+      ∑ k ∈ Finset.Ico 1 p, ((k : ℕ) : ZMod p) ^ (2 * (p - 2)) := by
+    apply Finset.sum_congr rfl; intro k hk
+    rw [inv_pow, ← pow_mul]
+    congr 1
+    -- a⁻¹ = a^(p-2) via Fermat's little theorem
+    have hflt := ZMod.pow_card_sub_one_eq_one (h_ne k hk)
+    rw [ZMod.card p] at hflt
+    have : ((k : ℕ) : ZMod p) * ((k : ℕ) : ZMod p) ^ (p - 2) = 1 := by
+      rw [← pow_succ, show p - 2 + 1 = p - 1 from by omega, hflt]
+    calc ((k : ℕ) : ZMod p)⁻¹
+        = ((k : ℕ) : ZMod p)⁻¹ * 1 := (mul_one _).symm
+      _ = ((k : ℕ) : ZMod p)⁻¹ * (((k : ℕ) : ZMod p) * ((k : ℕ) : ZMod p) ^ (p - 2)) := by
+            rw [this]
+      _ = ((k : ℕ) : ZMod p) ^ (p - 2) := by
+            rw [← mul_assoc, inv_mul_cancel₀ (h_ne k hk), one_mul]
+  rw [h_fermat]
+  -- Relate Ico sum to units sum via bijection Units.mk0
+  have h_bij : ∑ k ∈ Finset.Ico 1 p, ((k : ℕ) : ZMod p) ^ (2 * (p - 2)) =
+      ∑ x : (ZMod p)ˣ, (x : ZMod p) ^ (2 * (p - 2)) := by
+    symm
+    apply Finset.sum_nbij' (fun x _ => (x : ZMod p).val) (fun k hk =>
+      Units.mk0 ((k : ℕ) : ZMod p) (h_ne k hk))
+    · intro x _; exact Finset.mem_Ico.mpr
+        ⟨Nat.pos_of_ne_zero (ZMod.val_ne_zero.mpr (Units.ne_zero x)), ZMod.val_lt _⟩
+    · intro _ _; exact Finset.mem_univ _
+    · intro x _; ext; simp [ZMod.natCast_zmod_val]
+    · intro k hk; simp [ZMod.val_natCast_of_lt (show k < p from (Finset.mem_Ico.mp hk).2)]
+    · intro x _; simp [ZMod.natCast_zmod_val]
+  rw [h_bij]
+  -- Apply sum_units_pow_eq_zero with m = 2(p-2)
+  -- Need: (p-1) ∤ 2(p-2). Since p ≥ 5: 2(p-2) = 2p-4, and
+  -- 2p-4 = (p-1) + (p-3), so 2(p-2) mod (p-1) = p-3 ≠ 0.
+  exact sum_units_pow_eq_zero p (2 * (p - 2)) (by omega) (by omega)
 
 /-
 ## Section 4: Wolstenholme's Theorem
