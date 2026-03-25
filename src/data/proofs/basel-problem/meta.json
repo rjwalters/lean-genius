@@ -371,6 +371,11 @@
       "targetId": "bertrands-postulate",
       "relationship": "related",
       "description": "Both results concern the distribution of primes among the integers. Bertrand's postulate (there exists a prime between $n$ and $2n$) constrains prime gaps, while the Euler product $\\zeta(2) = \\prod_p p^2/(p^2-1) = \\pi^2/6$ encodes the global density of primes. The convergence of $\\zeta(2)$ implies the prime reciprocals $\\sum 1/p$ must diverge sufficiently slowly — both results are early manifestations of the prime number theorem"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient function $\\varphi(n)$ counts integers coprime to $n$, and the probability that two random positive integers are coprime is $\\prod_p (1 - 1/p^2) = 1/\\zeta(2) = 6/\\pi^2$ — a striking connection between the Basel identity and coprimality. The Euler product $\\zeta(s) = \\prod_p (1 - p^{-s})^{-1}$ that produces this coprime probability is the multiplicative analog of $\\sum n^{-s}$, and the totient function satisfies $\\sum_{d|n} \\varphi(d) = n$, a Dirichlet convolution identity equivalent to $\\zeta(s) \\cdot \\sum \\varphi(n) n^{-s} = \\zeta(s-1)$"
     }
   ],
   "leanFile": {
