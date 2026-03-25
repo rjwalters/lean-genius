@@ -60,7 +60,7 @@
       "Examples for primes, powers of 2, and highly composite numbers"
     ],
     "axiomCount": 5,
-    "lineCount": 443,
+    "lineCount": 458,
     "assumptions": "5 axioms: vose_bounded_sequence, vose_liminf_bounded, sum_divisor_ratios_lower_bound, prime_h_alpha_unbounded, power_of_two_h_alpha. 1 sorry: h_alpha_ge_one (converted from axiom to theorem, gap in formalizing sorted divisor ratio bound). See Lean source for complete statements."
   },
   "overview": {
@@ -289,7 +289,7 @@
       "BigOperators"
     ],
     "namespace": "Erdos1099",
-    "lineCount": 443,
+    "lineCount": 458,
     "axiomCount": 5,
     "theoremCount": 19,
     "definitionCount": 7
