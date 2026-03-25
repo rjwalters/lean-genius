@@ -183,5 +183,42 @@
       "Is Müller's set essentially the unique optimal construction, or do other sets also achieve density $1/2$ while avoiding power-of-two sums?",
       "What happens if lower density is replaced by upper density $\\overline{d}(A) = \\limsup |A \\cap [0,N)|/N$? Is the optimal bound still $1/2$?"
     ]
-  }
+  },
+  "references": [
+    {
+      "authors": "M\u00fcller, Thomas W.",
+      "title": "Sum-free sets of natural numbers avoiding powers of two",
+      "year": "2011",
+      "venue": "Preprint (referenced in erdosproblems.com)",
+      "note": "Solved Erd\u0151s Problem #1136: proved the optimal density is exactly 1/2, achieved by the set of integers with consecutive 1-bits in binary. The upper bound uses a pairing argument"
+    },
+    {
+      "authors": "Erd\u0151s, Paul",
+      "title": "Some remarks on number theory, III",
+      "year": "1966",
+      "venue": "Mathematica (Timi\u0219oara), 10(33), pp. 67\u201374",
+      "note": "Contains early problems on sum-free sets and density constraints, providing context for Problem 1136's question about density thresholds"
+    },
+    {
+      "authors": "Eberhard, Sean; Green, Ben; Manners, Freddie",
+      "title": "Sets of integers with no large sum-free subset",
+      "year": "2014",
+      "venue": "Annals of Mathematics, 180(2), pp. 621\u2013652",
+      "note": "Modern results on sum-free sets in the integers, providing context for the density-based questions underlying Problem 1136"
+    },
+    {
+      "authors": "Cameron, Peter J.; Erd\u0151s, Paul",
+      "title": "On the number of sets of integers with various properties",
+      "year": "1990",
+      "venue": "Number Theory (Banff, 1988), pp. 61\u201379, de Gruyter",
+      "note": "Studies the enumeration and structure of sum-free sets, including density bounds that provide context for the 1/3 threshold in Problem 1136"
+    },
+    {
+      "authors": "Green, Ben; Ruzsa, Imre Z.",
+      "title": "Sum-free sets in abelian groups",
+      "year": "2005",
+      "venue": "Israel Journal of Mathematics, 147(1), pp. 157\u2013188",
+      "note": "General theory of sum-free sets in abelian groups, providing the algebraic framework for understanding density-based sum-avoidance problems like Problem 1136"
+    }
+  ]
 }
