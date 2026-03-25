@@ -93,7 +93,7 @@
       "startLine": 1,
       "endLine": 68,
       "summary": "Overview of the e+π transcendence question, connection to Schanuel's Conjecture, Nesterenko's Theorem, and current status.",
-      "mathContext": "Overview of the e+π transcendence question, connection to Schanuel's Conjecture, Nesterenko's Theorem, and current status."
+      "mathContext": "**Open question**: Is $e + \\pi$ transcendental? Connected to Schanuel's Conjecture: if $\\alpha_1, \\ldots, \\alpha_n$ are $\\mathbb{Q}$-linearly independent, then $\\text{tr.deg}_{\\mathbb{Q}}(\\alpha_1, \\ldots, \\alpha_n, e^{\\alpha_1}, \\ldots, e^{\\alpha_n}) \\geq n$."
     },
     {
       "id": "foundational-axioms",
@@ -101,7 +101,7 @@
       "startLine": 71,
       "endLine": 82,
       "summary": "e and π are transcendental over ℚ (Hermite 1873, Lindemann 1882) — re-stated as axioms for self-containedness.",
-      "mathContext": "e and π are transcendental over ℚ (Hermite 1873, Lindemann 1882) — re-stated as axioms for self-containedness."
+      "mathContext": "$e$ is transcendental (Hermite, 1873): no $p \\in \\mathbb{Q}[X] \\setminus \\{0\\}$ with $p(e) = 0$. $\\pi$ is transcendental (Lindemann, 1882): no $p \\in \\mathbb{Q}[X] \\setminus \\{0\\}$ with $p(\\pi) = 0$. Both via Lindemann-Weierstrass."
     },
     {
       "id": "vieta-identity",
@@ -109,7 +109,7 @@
       "startLine": 85,
       "endLine": 121,
       "summary": "Fully proved: e and π are roots of T² - (e+π)T + eπ = 0. Proved by ring — no sorry, no axioms.",
-      "mathContext": "Fully proved: e and π are roots of T² - (e+π)T + eπ = 0. Proved by ring — no sorry, no axioms."
+      "mathContext": "$e$ and $\\pi$ are roots of $T^2 - (e+\\pi)T + e\\pi = 0$ (Vieta's formulas). Proved by `ring` — a purely algebraic identity requiring no analysis."
     },
     {
       "id": "algebraic-closure",
@@ -125,7 +125,7 @@
       "startLine": 152,
       "endLine": 189,
       "summary": "Theorem: at least one of e+π, eπ is transcendental over ℚ. Proved by contradiction using Vieta identity + algebraic closure lemma + e's transcendence.",
-      "mathContext": "Theorem: at least one of e+π, eπ is transcendental over ℚ. Proved by contradiction using Vieta identity + algebraic closure lemma + e's transcendence."
+      "mathContext": "**Theorem**: At least one of $\\{e+\\pi, e\\pi\\}$ is transcendental over $\\mathbb{Q}$. Proof: if both algebraic, the quadratic $T^2 - (e+\\pi)T + e\\pi$ has algebraic coefficients, so its roots $e, \\pi$ are algebraic — contradiction."
     },
     {
       "id": "consequences",
@@ -133,7 +133,7 @@
       "startLine": 192,
       "endLine": 212,
       "summary": "If eπ is algebraic, then e+π is transcendental. If e+π is algebraic, then eπ is transcendental.",
-      "mathContext": "If eπ is algebraic, then e+π is transcendental. If e+π is algebraic, then eπ is transcendental."
+      "mathContext": "$e\\pi \\in \\overline{\\mathbb{Q}} \\Rightarrow e+\\pi \\notin \\overline{\\mathbb{Q}}$. $e+\\pi \\in \\overline{\\mathbb{Q}} \\Rightarrow e\\pi \\notin \\overline{\\mathbb{Q}}$. The two transcendence questions are linked by the quadratic $T^2 - (e+\\pi)T + e\\pi$."
     },
     {
       "id": "open-conjectures",
@@ -141,7 +141,7 @@
       "startLine": 215,
       "endLine": 232,
       "summary": "Three open conjectures with sorry: e+π transcendental, eπ transcendental, e+π irrational. All unknown as of 2026.",
-      "mathContext": "Three open conjectures with sorry: e+π transcendental, eπ transcendental, e+π irrational. All unknown as of 2026."
+      "mathContext": "**Open**: (1) $e + \\pi$ is transcendental, (2) $e\\pi$ is transcendental, (3) $e + \\pi$ is irrational. All widely believed but unproved. Even irrationality of $e + \\pi$ is unknown."
     },
     {
       "id": "schanuel-nesterenko",
@@ -149,7 +149,7 @@
       "startLine": 235,
       "endLine": 275,
       "summary": "Schanuel's Conjecture stated (unproven). Nesterenko's Theorem (1996) axiomatized: π, e^π, Γ(1/4) algebraically independent.",
-      "mathContext": "Schanuel's Conjecture stated (unproven). Nesterenko's Theorem (1996) axiomatized: π, e^π, Γ(1/4) algebraically independent."
+      "mathContext": "**Schanuel**: $1, i\\pi$ lin. indep. over $\\mathbb{Q}$, so $\\text{tr.deg}(1, i\\pi, e, e^{i\\pi}) = \\text{tr.deg}(1, i\\pi, e, -1) \\geq 2$, proving $e, \\pi$ alg. independent. **Nesterenko (1996)**: $\\pi, e^\\pi, \\Gamma(1/4)$ are algebraically independent (proved)."
     },
     {
       "id": "pi-irrationality",
@@ -157,7 +157,7 @@
       "startLine": 380,
       "endLine": 395,
       "summary": "Direct theorem: π is irrational, proved via Mathlib's irrational_pi from Mathlib.Analysis.Real.Pi.Irrational.",
-      "mathContext": "Direct theorem: π is irrational, proved via Mathlib's irrational_pi from Mathlib.Analysis.Real.Pi.Irrational."
+      "mathContext": "$\\pi \\notin \\mathbb{Q}$ — proved via Mathlib's `irrational_pi`. Combined with $e \\notin \\mathbb{Q}$ (from transcendence). But $e + \\pi \\notin \\mathbb{Q}$ is still open: irrationality of a sum of irrationals is not automatic."
     },
     {
       "id": "algebraic-independence",
@@ -173,7 +173,7 @@
       "startLine": 500,
       "endLine": 545,
       "summary": "Current status table: proved vs open results. Key theorems listed with #check.",
-      "mathContext": "Current status table: proved vs open results. Key theorems listed with #check."
+      "mathContext": "**Proved**: $e, \\pi$ transcendental; at least one of $\\{e+\\pi, e\\pi\\}$ transcendental; $\\pi$ irrational. **Open**: $e+\\pi$ transcendental; $e\\pi$ transcendental; $e + \\pi$ irrational; algebraic independence of $e, \\pi$."
     }
   ],
   "conclusion": {
