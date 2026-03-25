@@ -139,7 +139,7 @@
   ],
   "conclusion": {
     "summary": "The Fundamental Theorem of Algebra establishes that every non-constant polynomial with complex coefficients has a root in the complex numbers. This makes the complex numbers algebraically closed - the natural 'completion' of algebra. No matter how complicated a polynomial equation, its solutions always live in the complex plane.",
-    "implications": "**Theoretical Significance**: This theorem is foundational to all of modern algebra. It tells us that the complex numbers are the right setting for polynomial algebra - we never need to extend further.\n\nEvery polynomial of degree n has exactly n roots (with multiplicity), enabling complete factorization. The theorem connects algebra with analysis and topology, demonstrating the deep unity of mathematics.",
+    "implications": "**Algebraic Closure**: $\\mathbb{C}$ is algebraically closed — the terminal number system for polynomial algebra. No polynomial equation over $\\mathbb{C}$ forces you to enlarge the field. Compare: $\\mathbb{R}$ is not algebraically closed ($x^2+1=0$ has no real solution), and $\\mathbb{Q}$ is not (infinite tower of extensions needed). The single adjunction $\\mathbb{R} \\hookrightarrow \\mathbb{R}[i]/(i^2+1) = \\mathbb{C}$ closes $\\mathbb{R}$ completely — a striking fact captured by the Artin-Schreier theorem.\n\n**Linear Algebra and Spectral Theory**: Every $n \\times n$ complex matrix has at least one eigenvalue (its characteristic polynomial has degree $n \\geq 1$, so FTA guarantees a root). This implies every complex linear map has a Jordan normal form — a complete structural decomposition unavailable over $\\mathbb{R}$. The spectral theorem for normal operators and the singular value decomposition both rest on this foundation.\n\n**Complex Analysis**: Partial fraction decomposition of rational functions $r(z) = p(z)/q(z)$ over $\\mathbb{C}$ into terms $c/(z-r_i)^k$ requires $q$ to split into linear factors — which FTA guarantees. This decomposition is the basis of residue calculus and contour integration. Hadamard's factorization theorem extends FTA to entire functions of finite order.\n\n**Galois Theory**: FTA is logically prior to the entire theory of solvability by radicals. Abel-Ruffini (1824) and Galois (1832) ask which roots *can be expressed* by radical formulas — but this question presupposes FTA's guarantee that roots *exist* in $\\mathbb{C}$ at all. The Galois group of a polynomial acts on its roots in $\\mathbb{C}$, and the solvability of the group (in the group-theoretic sense) determines whether radicals suffice.\n\n**Number Theory and L-functions**: The Riemann zeta function and all L-functions are studied as meromorphic functions on $\\mathbb{C}$. The Hadamard product formula — a generalization of FTA's factorization to entire functions — expresses $\\zeta(s)$ as a product over its zeros. The distribution of these zeros in $\\mathbb{C}$ (the Riemann Hypothesis) directly controls the distribution of prime numbers.",
     "openQuestions": [
       "Can a purely algebraic proof of FTA be found? Every known proof uses the completeness of $\\mathbb{R}$ (via Liouville's theorem, winding numbers, or the intermediate value theorem). The fact that $\\mathbb{Q}_p$ (the $p$-adic numbers) is complete but NOT algebraically closed shows completeness alone is insufficient — some topological property specific to $\\mathbb{R}$ (connectedness? the archimedean property?) seems essential.",
       "The Mathlib proof uses Liouville's theorem. Can we formalize Gauss's purely algebraic proof (1849), which only uses the intermediate value theorem for odd-degree real polynomials plus the fact that every complex number has a square root? This would reduce the analytic prerequisites to the minimum.",
@@ -233,6 +233,26 @@
       "targetId": "descartes-rule-of-signs",
       "relationship": "complementary",
       "description": "FTA guarantees $n$ complex roots for a degree-$n$ polynomial; Descartes' rule bounds how many are positive real: at most as many as sign changes in the coefficient sequence. Together they constrain root location: FTA gives existence in $\\mathbb{C}$, Descartes constrains which are in $\\mathbb{R}_{>0}$"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Both FTA and Quadratic Reciprocity were proved by Gauss — FTA in his 1799 dissertation and QR (his 'golden theorem') with his first proof in 1796. The deeper connection is algebraic: QR governs how primes split in quadratic extensions $\\mathbb{Q}(\\sqrt{p^*})$, while FTA guarantees that cyclotomic polynomials $\\Phi_n(x)$ split completely over $\\mathbb{C}$ — and the Gauss periods used in Gauss's proof of QR are precisely the roots of these cyclotomic polynomials. Both results thus touch the structure of cyclotomic fields and Galois theory over algebraically closed fields"
+    },
+    {
+      "targetId": "de-moivre",
+      "relationship": "foundational",
+      "description": "De Moivre's theorem $(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$ provides the polar form of complex numbers that underlies the winding number proof of FTA. For large $R$, the map $\\theta \\mapsto p(Re^{i\\theta})/|p(Re^{i\\theta})|$ winds $n$ times around the origin as $\\theta$ goes from $0$ to $2\\pi$ (since the leading term $a_n R^n e^{in\\theta}$ dominates), and this winding cannot contract to zero — a fact proved using De Moivre's formula to track the argument. De Moivre also underlies the explicit computation of $n$-th roots of unity, the $n$ solutions of $z^n = 1$ that are the simplest illustration of FTA's root count"
+    },
+    {
+      "targetId": "factor-remainder-theorem",
+      "relationship": "foundational",
+      "description": "The Factor Theorem — $(x-a) \\mid p(x)$ if and only if $p(a) = 0$ — is the algebraic engine behind FTA's complete factorization. Once FTA guarantees a root $z_1$ exists, the Factor Theorem allows factoring out $(x - z_1)$, reducing degree by 1. Iterating this process $n$ times yields $p(x) = a_n(x-z_1)(x-z_2)\\cdots(x-z_n)$ — the linear factorization whose existence is the strongest form of FTA. The Mathlib formalization uses this pattern via `Polynomial.roots` and `prod_multiset_X_sub_C_of_monic_of_roots_card_eq`"
+    },
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "related",
+      "description": "The Riemann Hypothesis concerns zeros of the analytic continuation of $\\zeta(s) = \\sum n^{-s}$ in the complex plane $\\mathbb{C}$ — and FTA is what makes $\\mathbb{C}$ the right domain. The completed zeta function $\\xi(s)$ is an entire function of order 1, so by Hadamard's factorization theorem (a far-reaching generalization of FTA's linear factorization) it factors as $\\xi(s) = e^{A+Bs}\\prod_\\rho (1 - s/\\rho)e^{s/\\rho}$ over its zeros $\\rho$. FTA's consequence — that $\\mathbb{C}$ is algebraically closed — ensures that every L-function has its zeros in $\\mathbb{C}$, making complex analysis the natural setting for the study of prime distribution"
     }
   ],
   "references": [

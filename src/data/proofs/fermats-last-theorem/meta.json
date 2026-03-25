@@ -23,24 +23,24 @@
     "mathlibDependencies": [
       {
         "theorem": "FermatLastTheoremFor",
-        "description": "FLT statement for specific exponent: ∀ a b c : ℤ, a^n + b^n = c^n → a*b*c = 0",
+        "description": "Predicate FermatLastTheoremFor n: ∀ a b c : ℤ, a ≠ 0 → b ≠ 0 → c ≠ 0 → a^n + b^n ≠ c^n",
         "module": "Mathlib.NumberTheory.FLT.Basic"
       },
       {
         "theorem": "fermatLastTheoremFour",
-        "description": "FLT for n=4 (Fermat's infinite descent proof)",
+        "description": "FLT for n=4: proved by Fermat's method of infinite descent",
         "module": "Mathlib.NumberTheory.FLT.Four"
       },
       {
         "theorem": "fermatLastTheoremThree",
-        "description": "FLT for n=3 (Euler's proof via ℤ[ω])",
+        "description": "FLT for n=3: Euler's proof using the Eisenstein integers ℤ[ω] where ω = e^{2πi/3}",
         "module": "Mathlib.NumberTheory.FLT.Three"
       }
     ],
     "originalContributions": [
-      "Axiomatized framework for FLT proof structure",
-      "Pedagogical exposition of the Frey-Ribet-Wiles proof strategy (axiomatized, not formalized)",
-      "Educational overview of Wiles' proof strategy"
+      "Axiomatized proof structure following the Frey-Ribet-Wiles strategy with 5 axioms",
+      "Genuine proof that FLT reduces to prime exponents (flt_multiple: FermatLastTheoremFor n → FermatLastTheoremFor (m*n))",
+      "Pedagogical exposition of Frey curve construction, modularity, and Ribet's level-lowering in Lean docstrings"
     ],
     "dateAdded": "2025-12-22",
     "prerequisites": [
@@ -52,13 +52,13 @@
     "wiedijkNumber": 33,
     "axiomCount": 5,
     "lineCount": 204,
-    "assumptions": "5 axioms total. 2 with real mathematical content: FLT_for_odd_primes (the modularity theorem application) and fermatLastTheorem (the full FLT statement). 3 placeholder axioms concluding with True: FreyCurve_is_semistable, ModularityTheorem_semistable, RibetTheorem — these serve as proof-structure markers without encoding mathematical statements. The n=3 and n=4 cases are fully proved via Mathlib (fermatLastTheoremThree, fermatLastTheoremFour).",
+    "assumptions": "5 axioms total. 2 with real mathematical content: FLT_for_odd_primes (axiomatizes FermatLastTheoremFor p for odd primes p, the consequence of Modularity+Ribet) and fermatLastTheorem (the full FLT statement: ∀ n ≥ 3, FermatLastTheoremFor n). 3 placeholder axioms concluding with True (FreyCurve_is_semistable, ModularityTheorem_semistable, RibetTheorem) — these serve as proof-structure markers documenting the Frey-Ribet-Wiles chain without encoding actual mathematical statements. The n=3 and n=4 cases are fully proved via Mathlib (fermatLastTheoremThree, fermatLastTheoremFour).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "In 1637, Pierre de Fermat wrote in the margin of his copy of Diophantus's *Arithmetica*: \"I have discovered a truly marvelous proof of this, which this margin is too narrow to contain.\" This tantalizing note launched 358 years of mathematical obsession.\n\nGenerations of mathematicians attacked the problem. Euler proved the case n=3 (1770). Sophie Germain developed techniques for certain primes (1823). Ernst Kummer's work on ideal class groups proved it for all regular primes (1850), but infinitely many cases remained.\n\nThe modern breakthrough came from an unexpected direction. In 1984, Gerhard Frey proposed that a counterexample to Fermat would yield an elliptic curve with impossible properties. Jean-Pierre Serre refined this, and in 1986, Ken Ribet proved the key connection: if Fermat's Last Theorem were false, it would contradict the Taniyama-Shimura-Weil conjecture about modular forms.\n\nAndrew Wiles, who had dreamed of proving FLT since childhood, worked in secret for seven years. In June 1993, he announced his proof of enough of the modularity conjecture to imply FLT. But a gap was found. After a year of anguish, Wiles and Richard Taylor patched the proof using a brilliant new technique. On October 25, 1994, the proof was complete. It was published in 1995, ending the longest-standing unsolved problem in mathematics.",
     "problemStatement": "For any integer $n > 2$, there are no three positive integers $a$, $b$, $c$ such that:\n\n$$a^n + b^n = c^n$$\n\nEquivalently: the only integer solutions to $x^n + y^n = z^n$ for $n > 2$ are the trivial ones where $xyz = 0$.\n\nNote that $n = 2$ has infinitely many solutions (Pythagorean triples like $3^2 + 4^2 = 5^2$), but something fundamentally changes at $n = 3$.",
-    "text": "A 204-line axiomatized formalization of Fermat's Last Theorem with 0 sorries and 5 axioms. Imports Mathlib's `FermatLastTheoremFor` (the statement type), `fermatLastTheoremFour` ($n=4$ by Fermat's descent), and `fermatLastTheoremThree` ($n=3$ by Euler). The file provides `fermat_four` and `fermat_three` as explicit proofs of the $n=4$ and $n=3$ cases, `flt_multiple` demonstrating the classical reduction to prime exponents, and three axiomatized placeholders (FreyCurve_is_semistable, ModularityTheorem_semistable, RibetTheorem) marking the Frey-Ribet-Wiles proof structure. The axioms `FLT_for_odd_primes` and `fermatLastTheorem` encode the deep results. Commentary traces the proof strategy: Frey curve construction, semi-stability, Ribet's level-lowering, and the Taylor-Wiles patching method.",
+    "text": "A 204-line axiomatized formalization of Fermat's Last Theorem with 0 sorries and 5 axioms. Imports Mathlib's `FermatLastTheoremFor` (the statement predicate), `fermatLastTheoremFour` ($n=4$ by Fermat's infinite descent), and `fermatLastTheoremThree` ($n=3$ by Euler via Eisenstein integers). The file provides `fermat_four` and `fermat_three` as thin wrappers around these Mathlib results, `flt_multiple` as a genuine proof of the classical reduction to prime exponents, and three proof-structure axioms (FreyCurve_is_semistable, ModularityTheorem_semistable, RibetTheorem concluding with True) documenting the Frey-Ribet-Wiles chain. The axioms `FLT_for_odd_primes` (for odd prime exponents) and `fermatLastTheorem` (the full statement) encode the deep unformalized results. Lean docstrings trace each step: Frey curve construction, semi-stability, Ribet's level-lowering, and Taylor-Wiles patching.",
     "proofStrategy": "Wiles' proof proceeds by contradiction through a remarkable chain of ideas:\n\n1. **ASSUME** a counterexample exists: $a^n + b^n = c^n$ with $n > 2$ and $a, b, c$ positive integers.\n\n2. **CONSTRUCT** the Frey curve: From this hypothetical solution, build the elliptic curve\n   $$E: y^2 = x(x - a^n)(x + b^n)$$\n   This curve has unusual properties: it is semi-stable with discriminant divisible by enormous prime powers.\n\n3. **APPLY RIBET'S THEOREM** (1986): The Frey curve, if it existed, would be modular but have a conductor too small to match any modular form. This is impossible.\n\n4. **PROVE MODULARITY**: Wiles proves that all semistable elliptic curves over $\\mathbb{Q}$ are modular (the Taniyama-Shimura-Weil conjecture for semistable curves).\n\n5. **CONTRADICTION**: The Frey curve must be modular (by step 4), but cannot be modular (by step 3). Therefore, no counterexample exists.\n\nThe bulk of Wiles' 100+ page proof establishes the modularity theorem. The Taylor-Wiles patching method, developed to fix the gap, has become a fundamental tool in modern number theory.",
     "keyInsights": [
       "**Frey Curve:** A counterexample $a^n + b^n = c^n$ yields the elliptic curve $E: y^2 = x(x - a^n)(x + b^n)$ with discriminant $\\Delta \\sim (abc)^{2n}$ — a curve with 'impossibly' large conductor for its simple equation.",
@@ -195,6 +195,36 @@
       "targetId": "hilbert-10",
       "relationship": "related",
       "description": "Both concern integer solutions of polynomial equations: FLT proves $x^n + y^n = z^n$ has none for $n > 2$, while Hilbert's 10th shows no algorithm decides arbitrary Diophantine equations. FLT resolves a specific Diophantine question positively (decidable, answer is 'no solutions') within the generally undecidable landscape"
+    },
+    {
+      "targetId": "birch-swinnerton-dyer",
+      "relationship": "related",
+      "description": "The Birch and Swinnerton-Dyer conjecture concerns the very objects at the heart of Wiles' proof: elliptic curves over $\\mathbb{Q}$ and their $L$-functions. Wiles proved that semistable elliptic curves are modular (so their $L$-functions have analytic continuation), a prerequisite for BSD. The Frey curve central to FLT is itself an elliptic curve whose BSD behavior is intimately tied to the proof's contradiction"
+    },
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "related",
+      "description": "The Riemann Hypothesis concerns the zeros of $\\zeta(s)$, while Wiles' proof relies on properties of $L$-functions $L(E, s)$ attached to elliptic curves — a generalization of Riemann's zeta function. The Langlands program, which FLT exemplifies, predicts deep symmetries of all $L$-functions; RH is the simplest instance of this web of conjectures about $L$-function zeros"
+    },
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "foundational",
+      "description": "Sylow's theorems give the structure theory of finite groups that underlies Galois theory. Wiles' proof analyzes the Galois group $\\text{Gal}(\\overline{\\mathbb{Q}}/\\mathbb{Q})$ via its 2-dimensional mod-$p$ representations; the local structure at primes (decomposition and inertia groups) depends fundamentally on Sylow theory applied to Galois groups of local fields"
+    },
+    {
+      "targetId": "kummer-theorem",
+      "relationship": "historical",
+      "description": "Kummer's theorem on binomial coefficients and his 1847 work on cyclotomic fields and regular primes was the deepest 19th-century progress on FLT. He introduced ideal theory to repair the failure of unique factorization in $\\mathbb{Z}[\\zeta_p]$ — the same algebraic number theory that eventually evolved into the modular forms and Galois representations that Wiles used"
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "historical",
+      "description": "Fermat's two-squares theorem (every prime $p \\equiv 1 \\pmod{4}$ is a sum of two squares) is another of Fermat's claims from his marginal notes, proved by Euler and later Gauss. Both problems stem from Fermat's deep intuitions about integer arithmetic; the two-squares theorem was fully proved, while his Last Theorem required 358 more years and the full machinery of modern algebraic geometry"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The Prime Number Theorem governs the distribution of primes and is proved using $L$-functions — the same analytic objects at the core of Wiles' proof. The modularity of elliptic curves means their point-counts over $\\mathbb{F}_p$ are controlled by modular form coefficients, establishing an arithmetic-analytic bridge analogous to the one Hadamard and de la Vallée Poussin built for $\\pi(x)$"
     }
   ],
   "conclusion": {
@@ -263,6 +293,20 @@
       "year": "2001",
       "venue": "Journal of the AMS 14(4): 843-939",
       "note": "Completes the full modularity theorem: every elliptic curve over Q is modular, extending Wiles's result from semistable curves to all curves"
+    },
+    {
+      "authors": "Serre, Jean-Pierre",
+      "title": "Sur les représentations modulaires de degré 2 de Gal(Q̄/Q)",
+      "year": "1987",
+      "venue": "Duke Mathematical Journal 54(1): 179-230",
+      "note": "Serre's conjecture (now Khare-Wintenberger theorem) on odd irreducible 2-dimensional Galois representations arising from modular forms. The 'epsilon conjecture' that Ribet proved is a key special case, and Serre's formulation gave Ribet the precise target: if the Frey curve is modular, level-lowering forces it to a form of level 2"
+    },
+    {
+      "authors": "Diamond, Fred; Shurman, Jerry",
+      "title": "A First Course in Modular Forms",
+      "year": "2005",
+      "venue": "Springer Graduate Texts in Mathematics 228",
+      "note": "Standard graduate text on modular forms, covering the background machinery (modular curves, Hecke operators, Galois representations, L-functions) needed to understand Wiles' proof. Recommended for readers who want to understand the modularity theorem in depth"
     }
   ],
   "leanFile": {
