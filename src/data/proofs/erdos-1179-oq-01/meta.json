@@ -1,0 +1,68 @@
+{
+  "id": "erdos-1179-oq-01",
+  "title": "Second-Order Term in Uniform Subset Sum Representations",
+  "slug": "erdos-1179-oq-01",
+  "description": "What is the precise second-order term in g_ε(N)? Formalizes the correction term hierarchy (O(1) vs Θ(log log N) vs o(log N)) and proves foundational properties of representation counts in ℤ/Nℤ.",
+  "meta": {
+    "author": "Open Question (Erdős #1179)",
+    "sourceUrl": "https://erdosproblems.com/1179",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1179OQ01.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "additive-combinatorics",
+      "probability",
+      "analysis",
+      "open-question"
+    ],
+    "badge": "axiom",
+    "sorryCount": 0,
+    "axiomCount": 2,
+    "theoremCount": 9,
+    "definitionCount": 5,
+    "lineCount": 213,
+    "erdosNumber": 1179,
+    "erdosUrl": "https://erdosproblems.com/1179",
+    "erdosProblemStatus": "open-question",
+    "assumptions": "Two axioms for deep results: fourier_error_bound (Fourier analysis bound for reprCount deviations in ℤ/pℤ) and erdos_renyi_decay (exponential decay of Fourier error). All foundational representation count lemmas are fully proved.",
+    "mathlib_version": "4.26.0",
+    "leanFile": {
+      "imports": [
+        "Mathlib.Data.Finset.Basic",
+        "Mathlib.Data.Finset.Powerset",
+        "Mathlib.Data.Finset.Card",
+        "Mathlib.Data.Fintype.Basic",
+        "Mathlib.Data.Real.Basic",
+        "Mathlib.Data.ZMod.Basic",
+        "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+        "Mathlib.Tactic"
+      ],
+      "opens": ["Finset", "Real"],
+      "namespace": "Erdos1179OQ01",
+      "lineCount": 213,
+      "axiomCount": 2,
+      "theoremCount": 9,
+      "definitionCount": 5
+    }
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1179 asks about uniform subset sum representations: for a random k-subset A of an abelian group G of size N, when are the representation counts F_A(g) approximately uniform? The main asymptotic g_ε(N) ~ log₂ N was established by Erdős-Hall (1976), building on the Erdős-Rényi (1965) second-moment approach. The remaining open question is the precise second-order correction term.",
+    "problemStatement": "Determine the precise rate at which g_ε(N) - log₂ N grows. Is it O(1)? Θ(log log N)? Something else?",
+    "text": "What is the precise second-order term in g_ε(N)?",
+    "proofStrategy": "We formalize three candidate correction rates in a hierarchy: O(1) ⟹ o(log₂ N). We work concretely in ℤ/Nℤ and prove foundational properties of representation counts including the partition identity, monotonicity, and coverage growth. The Fourier analysis connection is axiomatized.",
+    "keyInsights": [
+      "**Partition Identity (Proved):** ∑_g F_A(g) = 2^|A| — representation counts partition the powerset",
+      "**Monotonicity (Proved):** Adding elements never decreases reprCount — key for inductive arguments",
+      "**Coverage Growth (Proved):** The number of represented elements grows monotonically with set size",
+      "**Correction Hierarchy (Proved):** O(1) ⟹ o(log₂ N), with the proof using logb monotonicity and the Archimedean property",
+      "**Fourier Connection (Axiomatized):** In ℤ/pℤ, character sums control reprCount deviations, decaying as |cos(π/p)|^k"
+    ],
+    "prerequisites": [
+      "Additive combinatorics (subset sums, representation counts)",
+      "Analysis (logarithms, asymptotics)",
+      "Algebra (ℤ/Nℤ, abelian groups)"
+    ]
+  }
+}
