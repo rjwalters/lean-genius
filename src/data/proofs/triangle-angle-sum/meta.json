@@ -187,6 +187,26 @@
       "targetId": "euler-polyhedral-formula",
       "relationship": "extends",
       "description": "Euler's formula V - E + F = 2 generalizes angle-sum properties to polyhedra: the angle defect at each vertex of a convex polyhedron sums to 4π (Descartes's theorem), a polyhedral analog of the triangle angle sum."
+    },
+    {
+      "targetId": "parallel-postulate-independence",
+      "relationship": "complementary",
+      "description": "The triangle angle sum α+β+γ=π is logically equivalent to the parallel postulate in neutral geometry. The independence of the parallel postulate directly implies that the angle sum theorem cannot be proved from the remaining axioms of geometry — it is an essentially Euclidean result that fails in hyperbolic (sum < π) and spherical (sum > π) geometry."
+    },
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "related",
+      "description": "The law of cosines c^2 = a^2 + b^2 - 2ab*cos(C) generalizes the Pythagorean theorem and encodes angle information into side-length relations. Combined with the triangle angle sum, it provides a complete metric characterization of Euclidean triangles: the angle sum constrains the angles, and the law of cosines constrains the sides."
+    },
+    {
+      "targetId": "picks-theorem",
+      "relationship": "related",
+      "description": "Pick's theorem A = I + B/2 - 1 computes the area of lattice polygons. For lattice triangles, combining Pick's theorem with the angle sum property connects discrete geometry (lattice point counting) to continuous geometry (angles and area), illustrating how Euclidean geometry bridges these perspectives."
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "related",
+      "description": "The angle sum theorem's dependence on the parallel postulate is a geometric analogue of Godel's incompleteness: certain natural-seeming statements cannot be proved from a restricted axiom set. The independence of the parallel postulate (established by Beltrami, 1868) predates and inspired later independence results in logic and set theory."
     }
   ],
   "mainTheorems": [
