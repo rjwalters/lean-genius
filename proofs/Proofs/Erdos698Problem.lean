@@ -31,7 +31,6 @@ import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Algebra.Order.Floor
 
 open Nat
 
@@ -178,8 +177,21 @@ The function h(n) = ⌊c · √n⌋ tends to infinity.
 -/
 theorem bergmanH_unbounded (c : ℝ) (hc : c > 0) : tendsToInfinity (bergmanH c) := by
   intro M
-  -- For large n, c · √n > M, so ⌊c · √n⌋ > M
-  sorry
+  -- Take N large enough that c · √N > M + 1
+  refine ⟨⌈((↑(M + 1) : ℝ) / c) ^ 2⌉₊, fun n hn => ?_⟩
+  show M < ⌊c * Real.sqrt ↑n⌋₊
+  -- It suffices to show ↑(M + 1) ≤ c * √n
+  suffices h : (↑(M + 1) : ℝ) ≤ c * Real.sqrt ↑n by
+    have := (Nat.le_floor_iff (by positivity : (0 : ℝ) ≤ c * Real.sqrt ↑n)).mpr h
+    omega
+  -- Show c * √n ≥ M + 1 via (M+1)/c ≤ √n
+  have hdc_nn : (0 : ℝ) ≤ (↑(M + 1) : ℝ) / c := by positivity
+  calc (↑(M + 1) : ℝ)
+      = c * ((↑(M + 1) : ℝ) / c) := by field_simp
+    _ ≤ c * Real.sqrt ↑n := by
+        apply mul_le_mul_of_nonneg_left _ hc.le
+        rw [← Real.sqrt_sq hdc_nn]
+        exact Real.sqrt_le_sqrt (le_trans (Nat.le_ceil _) (by exact_mod_cast hn))
 
 /--
 **Affirmative Answer:**
@@ -191,8 +203,15 @@ theorem erdos698_answer : erdos698Question := by
   constructor
   · exact bergmanH_unbounded c hc
   · intro n i j hvalid
-    -- By Bergman's bound, gcd ≥ c · √n ≥ ⌊c · √n⌋
-    sorry
+    -- From isValidPair: 2 ≤ i < j ≤ n/2, so n ≥ 6 ≥ 4
+    have hn4 : n ≥ 4 := by
+      have := hvalid.1; have := hvalid.2.1; have := hvalid.2.2; omega
+    -- Bergman gives (binomGcd n i j : ℝ) ≥ c * √n
+    have hreal := hbound n hn4 i j hvalid
+    -- ⌊c * √n⌋₊ ≤ c * √n ≤ binomGcd n i j
+    show bergmanH c n ≤ binomGcd n i j
+    show ⌊c * Real.sqrt ↑n⌋₊ ≤ binomGcd n i j
+    exact_mod_cast (Nat.floor_le (by positivity : (0 : ℝ) ≤ c * Real.sqrt ↑n)).trans hreal
 
 /-
 ## Part VII: Implications and Generalizations
