@@ -50,42 +50,48 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 19,
-      "summary": "Docstring establishing Erdős Problem #1092 from Erdős–Hajnal–Szemerédi, with Tang's observation connecting Rödl's 1982 construction. Imports SimpleGraph.Basic, Finset.Basic, Nat.Basic, and Tactic."
+      "summary": "Docstring establishing Erdős Problem #1092 from Erdős–Hajnal–Szemerédi, with Tang's observation connecting Rödl's 1982 construction. Imports SimpleGraph.Basic, Finset.Basic, Nat.Basic, and Tactic.",
+      "mathContext": "Docstring establishing Erdős Problem #1092 from Erdős–Hajnal–Szemerédi, with Tang's observation connecting Rödl's 1982 construction. Imports SimpleGraph.Basic, Finset.Basic, Nat.Basic, and Tactic."
     },
     {
       "id": "definitions",
       "title": "Graph Infrastructure",
       "startLine": 20,
       "endLine": 43,
-      "summary": "Custom `SGraph n` structure with adjacency, symmetry, irreflexivity. Defines `edgeCount`, `hasColoring` (proper $r$-coloring), and `chromaticNum` (via `Nat.find`). Uses `Fin n` for concrete finite vertex sets."
+      "summary": "Custom `SGraph n` structure with adjacency, symmetry, irreflexivity. Defines `edgeCount`, `hasColoring` (proper $r$-coloring), and `chromaticNum` (via `Nat.find`). Uses `Fin n` for concrete finite vertex sets.",
+      "mathContext": "Custom `SGraph n` structure with adjacency, symmetry, irreflexivity. Defines `edgeCount`, `hasColoring` (proper $r$-coloring), and `chromaticNum` (via `Nat.find`). Uses `Fin n` for concrete finite vertex sets."
     },
     {
       "id": "chromatic-reduce",
       "title": "Chromatic Reduction by Edge Deletion",
       "startLine": 44,
       "endLine": 53,
-      "summary": "Defines `CanReduceChromatic G k r`: existence of $\\leq k$ edge removals yielding $\\chi \\leq r$. Maintains symmetry by excluding both orientations of removed edges."
+      "summary": "Defines `CanReduceChromatic G k r`: existence of $\\leq k$ edge removals yielding $\\chi \\leq r$. Maintains symmetry by excluding both orientations of removed edges.",
+      "mathContext": "Defines `CanReduceChromatic G k r`: existence of $\\leq k$ edge removals yielding $\\chi \\leq r$. Maintains symmetry by excluding both orientations of removed edges."
     },
     {
       "id": "threshold",
       "title": "The Threshold Function $f_r(n)$",
       "startLine": 54,
       "endLine": 63,
-      "summary": "Defines `fThreshold r n` as $\\sup\\{k : \\text{local } k\\text{-reducibility} \\implies \\chi(G) \\leq r+1\\}$ via `sSup`. The central extremal quantity of the problem."
+      "summary": "Defines `fThreshold r n` as $\\sup\\{k : \\text{local } k\\text{-reducibility} \\implies \\chi(G) \\leq r+1\\}$ via `sSup`. The central extremal quantity of the problem.",
+      "mathContext": "Defines `fThreshold r n` as $\\sup\\{k : \\text{local } k\\text{-reducibility} \\implies \\chi(G) \\leq r+1\\}$ via `sSup`. The central extremal quantity of the problem."
     },
     {
       "id": "questions",
       "title": "The Main Conjectures",
       "startLine": 64,
       "endLine": 75,
-      "summary": "Question 1: $f_2(n) \\gg n$ (super-linear growth for $r = 2$). Question 2: $f_r(n) \\gg_r rn$ for general $r \\geq 2$. Both axiomatized as open problems."
+      "summary": "Question 1: $f_2(n) \\gg n$ (super-linear growth for $r = 2$). Question 2: $f_r(n) \\gg_r rn$ for general $r \\geq 2$. Both axiomatized as open problems.",
+      "mathContext": "Question 1: $f_2(n) \\gg n$ (super-linear growth for $r = 2$). Question 2: $f_r(n) \\gg_r rn$ for general $r \\geq 2$. Both axiomatized as open problems."
     },
     {
       "id": "rodl-bounds",
       "title": "Rödl's Construction and Bounds",
       "startLine": 76,
       "endLine": 102,
-      "summary": "Rödl's upper bound $f_2(n) \\leq C \\cdot n \\cdot (\\log n)^2$, trivial lower bound $f_r(n) \\geq n - 1$, and monotonicity $f_r(n) \\leq f_{r+1}(n)$. Connection to Problem #744."
+      "summary": "Rödl's upper bound $f_2(n) \\leq C \\cdot n \\cdot (\\log n)^2$, trivial lower bound $f_r(n) \\geq n - 1$, and monotonicity $f_r(n) \\leq f_{r+1}(n)$. Connection to Problem #744.",
+      "mathContext": "Rödl's upper bound $f_2(n) \\leq C \\cdot n \\cdot (\\log n)^2$, trivial lower bound $f_r(n) \\geq n - 1$, and monotonicity $f_r(n) \\leq f_{r+1}(n)$. Connection to Problem #744."
     }
   ],
   "conclusion": {

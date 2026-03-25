@@ -75,35 +75,40 @@
       "title": "Graph Properties",
       "startLine": 27,
       "endLine": 46,
-      "summary": "Axiomatised vertexCount, minDegree, chromaticNumber, edgeCount. Defines IsKChromaticCritical as χ = k with edge-critical property."
+      "summary": "Axiomatised vertexCount, minDegree, chromaticNumber, edgeCount. Defines IsKChromaticCritical as χ = k with edge-critical property.",
+      "mathContext": "Axiomatized graph properties: `vertexCount G := Fintype.card V`, `minDegree G := min_v deg(v)`, `chromaticNumber G` (minimum colors for proper coloring), `edgeCount G`. `IsKChromaticCritical k G` means $\\chi(G) = k$ and $\\chi(G - e) < k$ for every edge $e$."
     },
     {
       "id": "header-setup",
       "title": "Module Header and Problem Context",
       "startLine": 1,
       "endLine": 27,
-      "summary": "Documents Erdős Problem #1032: do 4-chromatic critical graphs with linear minimum degree exist? Frames the problem between Dirac's k=6 result (δ > n/2) and Simonovits-Toft's k=4 result (δ ≫ n^{1/3}). Imports Mathlib's natural number, finset, rational, and tactic libraries."
+      "summary": "Documents Erdős Problem #1032: do 4-chromatic critical graphs with linear minimum degree exist? Frames the problem between Dirac's k=6 result (δ > n/2) and Simonovits-Toft's k=4 result (δ ≫ n^{1/3}). Imports Mathlib's natural number, finset, rational, and tactic libraries.",
+      "mathContext": "Erdős #1032: do 4-chromatic critical graphs with $\\delta(G) \\geq cn$ exist for some constant $c > 0$? The Toft conjecture ($|E| \\geq (5/3 + o(1))n$ for 4-critical graphs) would imply $\\delta \\geq 5/3$ on average. Related to the Gallai conjecture on vertex-critical graphs."
     },
     {
       "id": "known-constructions",
       "title": "Known Constructions",
       "startLine": 48,
       "endLine": 62,
-      "summary": "Dirac's 6-chromatic critical graphs with δ > n/2, and Simonovits–Toft's 4-chromatic critical graphs with δ ≫ n^{1/3}."
+      "summary": "Dirac's 6-chromatic critical graphs with δ > n/2, and Simonovits–Toft's 4-chromatic critical graphs with δ ≫ n^{1/3}.",
+      "mathContext": "Dirac (1952): every $k$-critical graph with $k \\geq 4$ has $\\delta \\geq k - 1$. For 4-critical: $\\delta \\geq 3$. Simonovits-Toft constructed 4-chromatic critical graphs with $\\delta = \\lfloor n/3 \\rfloor + O(1)$. The question is whether $\\delta \\geq cn$ for some $c > 0$ is achievable for 4-critical graphs specifically."
     },
     {
       "id": "toft-conjecture",
       "title": "Toft's Conjecture",
       "startLine": 63,
       "endLine": 71,
-      "summary": "Every 4-chromatic critical graph on n vertices has ≥ (5/3+o(1))n edges."
+      "summary": "Every 4-chromatic critical graph on n vertices has ≥ (5/3+o(1))n edges.",
+      "mathContext": "Toft's conjecture: every 4-chromatic critical graph on $n$ vertices has $\\geq (5/3 + o(1))n$ edges. This implies an average degree of $\\geq 10/3$. A positive resolution would constrain the structure of 4-critical graphs, connecting to Brooks' theorem ($\\chi \\leq \\Delta + 1$ unless $G = K_n$ or odd cycle)."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 72,
       "endLine": 87,
-      "summary": "ErdosProblem1032: 4-chromatic critical graphs with linear minimum degree. Extended to ErdosProblem1032_k5 for 5-chromatic."
+      "summary": "ErdosProblem1032: 4-chromatic critical graphs with linear minimum degree. Extended to ErdosProblem1032_k5 for 5-chromatic.",
+      "mathContext": "`ErdosProblem1032`: $\\exists c > 0,\\, \\forall n,\\, \\exists G$ on $n$ vertices that is 4-chromatic critical with $\\delta(G) \\geq cn$. This asks whether high minimum degree is compatible with 4-criticality for large graphs."
     }
   ],
   "conclusion": {

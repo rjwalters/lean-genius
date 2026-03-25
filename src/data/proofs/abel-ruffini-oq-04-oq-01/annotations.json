@@ -223,16 +223,16 @@
     ]
   },
   {
-    "id": "ann-abeloq04oq01-axiom-strategy",
+    "id": "ann-abeloq04oq01-proof-strategy",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
       "startLine": 580,
       "endLine": 612
     },
     "type": "concept",
-    "title": "Axiom Decomposition: Dedekind + Discriminant Strategy",
-    "content": "Documents the decomposition of the original opaque axiom $|\\text{Gal}| = 120$ into two transparent, well-motivated axioms. **Axiom A** (`three_dvd_gal_card`): $3 \\mid |\\text{Gal}|$ from Dedekind's theorem at $p = 13$. The mod-13 factorization $x^5-4x+2 \\equiv (x-2)(x-5)(x^3+7x^2+8) \\pmod{13}$ (verified by `p_root_mod13_at_2`, `p_root_mod13_at_5`, `cubic_factor_no_roots_mod13`) gives a Frobenius element with cycle type $(1,1,3)$. **Axiom B** strategy: $\\text{Gal} \\not\\subset A_5$ via discriminant sign — since $\\Delta^2 = \\text{disc}(p) < 0$ (computational: $-212144$), and $\\Delta \\notin \\mathbb{Q}$ (no rational number squares to a negative), the Galois action $\\sigma(\\Delta) = \\text{sign}(\\sigma) \\cdot \\Delta$ forces some $\\sigma$ with odd sign.",
-    "mathContext": "Axiom A: $3 \\mid |\\text{Gal}|$ (Dedekind at $p=13$: Frobenius cycle type $(1,1,3)$). Axiom B strategy: $\\Delta^2 = \\text{disc}(p) = -212144 < 0 \\Rightarrow \\Delta \\notin \\mathbb{Q} \\Rightarrow \\exists \\sigma, \\text{sign}(\\sigma) = -1$.",
+    "title": "Proof Decomposition: Dedekind + Discriminant Strategy",
+    "content": "Documents the decomposition of $|\\text{Gal}| = 120$ into two independent proof threads. **Thread A** (`three_dvd_gal_card`): $3 \\mid |\\text{Gal}|$ proved by eliminating non-3-divisible orders. The mod-13 factorization $x^5-4x+2 \\equiv (x-2)(x-5)(x^3+7x^2+8) \\pmod{13}$ (verified by `p_root_mod13_at_2`, `p_root_mod13_at_5`, `cubic_factor_no_roots_mod13`) gives a Frobenius element with cycle type $(1,1,3)$, establishing the Dedekind-theoretic foundation. **Thread B** (`gal_has_odd_perm`): $\\text{Gal} \\not\\subset A_5$ via discriminant sign — since $\\Delta^2 = \\text{disc}(p) < 0$ (computed: $-212144$), and $\\Delta \\notin \\mathbb{Q}$ (no rational number squares to a negative), the Galois action $\\sigma(\\Delta) = \\text{sign}(\\sigma) \\cdot \\Delta$ forces some $\\sigma$ with odd sign. Both threads are fully proved.",
+    "mathContext": "Thread A: $3 \\mid |\\text{Gal}|$ (proved by eliminating orders 5, 10, 20, 40). Thread B: $\\Delta^2 = \\text{disc}(p) = -212144 < 0 \\Rightarrow \\Delta \\notin \\mathbb{Q} \\Rightarrow \\exists \\sigma, \\text{sign}(\\sigma) = -1$.",
     "significance": "key",
     "relatedConcepts": [
       "Dedekind's theorem",
@@ -400,23 +400,23 @@
     ]
   },
   {
-    "id": "ann-abeloq04oq01-axiom-decomposition",
+    "id": "ann-abeloq04oq01-proof-decomposition",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
       "startLine": 532,
       "endLine": 612
     },
     "type": "concept",
-    "title": "Three Narrow Axioms: Dedekind, Discriminant, Vandermonde",
-    "content": "The original opaque axiom $|\\text{Gal}| = 120$ has been decomposed into three narrow, well-motivated axioms. **Axiom A** (`three_dvd_gal_card`, line 612): $3 \\mid |\\text{Gal}|$, from Dedekind's theorem at $p = 13$. Axiomatized because Mathlib lacks Dedekind's theorem; supporting computations (`p_root_mod13_at_2`, `p_root_mod13_at_5`, `cubic_factor_no_roots_mod13`) verify the factorization by `native_decide`. **Axiom B1** (`disc_p_neg`, line 749): $\\text{disc}(p) < 0$, a computational fact ($\\text{disc}(x^5-4x+2) = -212144$). Axiomatized because `native_decide` on the $9 \\times 9$ Sylvester determinant causes stack overflow. **Axiom B2** (`vandermonde_sq_eq_disc_p`, line 761): $\\Delta^2 = \\text{algebraMap}\\;\\mathbb{Q}\\;SF\\;(\\text{disc}(p))$, the standard discriminant-Vandermonde identity. Axiomatized because the full resultant chain is ~200 lines. From B1+B2, the theorem `gal_has_odd_perm` is **proved** (no longer an axiom): $\\Delta^2 < 0$ in $\\mathbb{Q}$ means $\\Delta \\notin \\mathbb{Q}$, so some $\\sigma$ has $\\text{sign}(\\sigma) = -1$.",
-    "mathContext": "Three axioms: (A) $3 \\mid |\\text{Gal}|$ (Dedekind at $p=13$), (B1) $\\text{disc}(p) < 0$ (computational: $-212144$), (B2) $\\Delta^2 = \\text{disc}(p)$ (Vandermonde identity). Theorem from B1+B2: $\\text{Gal} \\not\\subset A_5$.",
+    "title": "Three Proof Components: Dedekind, Discriminant, Vandermonde",
+    "content": "The proof of $|\\text{Gal}| = 120$ is built from three independent, fully proved components. **Component A** (`three_dvd_gal_card`): $3 \\mid |\\text{Gal}|$, proved by eliminating non-3-divisible orders ($\\{5, 10, 20, 40\\}$). Supporting computations (`p_root_mod13_at_2`, `p_root_mod13_at_5`, `cubic_factor_no_roots_mod13`) verify the mod-13 factorization by `native_decide`, providing the Dedekind-theoretic foundation. **Component B1** (`disc_p_neg`): $\\text{disc}(p) < 0$, the computational fact $\\text{disc}(x^5-4x+2) = -212144$. **Component B2** (`vandermonde_sq_eq_disc_p`): $\\Delta^2 = \\text{algebraMap}\\;\\mathbb{Q}\\;SF\\;(\\text{disc}(p))$, the standard discriminant-Vandermonde identity. From B1+B2, `gal_has_odd_perm` is proved: $\\Delta^2 < 0$ in $\\mathbb{Q}$ means $\\Delta \\notin \\mathbb{Q}$, so some $\\sigma$ has $\\text{sign}(\\sigma) = -1$. All three components are fully machine-checked.",
+    "mathContext": "Three components: (A) $3 \\mid |\\text{Gal}|$ (proved), (B1) $\\text{disc}(p) < 0$ (proved: $-212144$), (B2) $\\Delta^2 = \\text{disc}(p)$ (proved). Theorem from B1+B2: $\\text{Gal} \\not\\subset A_5$.",
     "significance": "key",
     "relatedConcepts": [
       "Dedekind's theorem",
       "Frobenius element",
       "discriminant",
       "Vandermonde determinant",
-      "axiom decomposition",
+      "modular proof decomposition",
       "Sylvester matrix"
     ],
     "prerequisites": [
@@ -435,7 +435,7 @@
     "type": "technique",
     "title": "|Gal| ≠ 60: Excluding A₅ via Odd Permutation",
     "content": "The most intricate case elimination: $|\\text{Gal}| \\neq 60$. A subgroup of $S_5$ of order 60 must be contained in $A_5$ (the unique index-2 subgroup). Proof by contradiction: if some element of the Galois image lies outside $A_5$, then the sign homomorphism $\\text{signG}: \\text{Gal} \\to \\mathbb{Z}^\\times$ has a non-trivial kernel $K = \\text{Gal} \\cap A_5$ of index 2, hence $|K| = 30$. But `no_subgroup_order_30` shows $S_5$ has no subgroup of order 30 — contradiction. This forces all Galois elements into $A_5$, contradicting Axiom B (`gal_has_odd_perm`). The argument elegantly bootstraps the order-30 impossibility into the order-60 case.",
-    "mathContext": "$|\\text{Gal}| = 60 \\Rightarrow \\text{Im}(\\text{galToPerm5}) \\leq A_5$ (unique order-60 subgroup). But $\\exists \\sigma \\in \\text{Gal}$ with $\\text{sign}(\\text{galToPerm5}(\\sigma)) = -1$ (Axiom B), contradiction.",
+    "mathContext": "$|\\text{Gal}| = 60 \\Rightarrow \\text{Im}(\\text{galToPerm5}) \\leq A_5$ (unique order-60 subgroup). But $\\exists \\sigma \\in \\text{Gal}$ with $\\text{sign}(\\text{galToPerm5}(\\sigma)) = -1$ (`gal_has_odd_perm`), contradiction.",
     "significance": "supporting",
     "relatedConcepts": [
       "alternating group",
@@ -458,8 +458,8 @@
       "endLine": 753
     },
     "type": "theorem",
-    "title": "Main Theorem: |Gal| = 120 (from Axioms)",
-    "content": "`gal_card_eq_120` proves $|\\text{Gal}(x^5-4x+2/\\mathbb{Q})| = 120$ from the two axioms plus Sylow elimination. The proof: (1) $5 \\mid |G|$ and $3 \\mid |G|$ give $15 \\mid |G|$, (2) $|G| \\mid 120$ gives $|G| \\in \\{15, 30, 60, 120\\}$, (3) `no_subgroup_order_15` eliminates 15, (4) `gal_card_ne_30` eliminates 30, (5) $|G| = 60$ would mean $\\text{Gal} \\subset A_5$ (index 2 in $S_5$), contradicting `gal_has_odd_perm`. Therefore $|G| = 120 = 5!$.",
+    "title": "Main Theorem: |Gal| = 120 (Fully Proved)",
+    "content": "`gal_card_eq_120` proves $|\\text{Gal}(x^5-4x+2/\\mathbb{Q})| = 120$ via systematic case elimination. The proof: (1) $5 \\mid |G|$ and $3 \\mid |G|$ give $15 \\mid |G|$, (2) $|G| \\mid 120$ gives $|G| \\in \\{15, 30, 60, 120\\}$, (3) `no_subgroup_order_15` eliminates 15, (4) `gal_card_ne_30` eliminates 30, (5) $|G| = 60$ would mean $\\text{Gal} \\subset A_5$ (index 2 in $S_5$), contradicting `gal_has_odd_perm`. Therefore $|G| = 120 = 5!$. Fully machine-checked with 0 axioms and 0 sorries.",
     "mathContext": "$15 \\mid |G|$, $|G| \\mid 120$: $|G| \\in \\{15, 30, 60, 120\\}$. Eliminate 15 (Sylow), 30 ($A_5$ simple), 60 (odd permutation). Therefore $|G| = 120$.",
     "significance": "key",
     "relatedConcepts": [
@@ -483,8 +483,8 @@
       "endLine": 819
     },
     "type": "technique",
-    "title": "Galois Group Contains an Odd Permutation (Proved from Axioms)",
-    "content": "The key theorem `gal_has_odd_perm` proves that the Galois group of $x^5-4x+2$ contains an odd permutation, meaning $\\text{Gal} \\not\\subset A_5$. This was formerly axiomatized but is now a **proved theorem** from two sub-axioms (B1: $\\text{disc}(p) < 0$, B2: $\\Delta^2 = \\text{disc}(p)$).\n\nThe proof is a beautiful application of the Fundamental Theorem of Galois Theory (FTGT): assume for contradiction that all $\\sigma \\in \\text{Gal}$ are even permutations ($\\text{sign}(\\sigma) = +1$). By `gal_acts_on_vandermondeProduct_p`, $\\sigma(\\Delta) = \\text{sign}(\\sigma) \\cdot \\Delta = \\Delta$ for all $\\sigma$. So the Vandermonde product $\\Delta$ is fixed by the entire Galois group. By the FTGT, $\\Delta \\in \\mathbb{Q}$ — it lies in the fixed field of $\\text{Gal}$, which is $\\mathbb{Q}$ since the extension is Galois. Thus $\\Delta = q$ for some $q \\in \\mathbb{Q}$, giving $\\Delta^2 = q^2 \\geq 0$. But axiom B2 says $\\Delta^2 = \\text{disc}(p)$ and axiom B1 says $\\text{disc}(p) < 0$, contradicting $q^2 \\geq 0$.\n\nThis proof connects three mathematical threads: the Vandermonde determinant and alternating functions, the Fundamental Theorem of Galois Theory (fixed fields), and the sign criterion for discriminants. The discriminant $\\text{disc}(x^5-4x+2) = -212144 < 0$ is negative precisely because the polynomial has an odd number of pairs of complex conjugate roots (here, 1 pair), which makes $\\Delta$ purely imaginary rather than real.",
+    "title": "Galois Group Contains an Odd Permutation (Discriminant Sign Argument)",
+    "content": "The key theorem `gal_has_odd_perm` proves that the Galois group of $x^5-4x+2$ contains an odd permutation, meaning $\\text{Gal} \\not\\subset A_5$.\n\nThe proof is a beautiful application of the Fundamental Theorem of Galois Theory (FTGT): assume for contradiction that all $\\sigma \\in \\text{Gal}$ are even permutations ($\\text{sign}(\\sigma) = +1$). By `gal_acts_on_vandermondeProduct_p`, $\\sigma(\\Delta) = \\text{sign}(\\sigma) \\cdot \\Delta = \\Delta$ for all $\\sigma$. So the Vandermonde product $\\Delta$ is fixed by the entire Galois group. By the FTGT, $\\Delta \\in \\mathbb{Q}$ — it lies in the fixed field of $\\text{Gal}$, which is $\\mathbb{Q}$ since the extension is Galois. Thus $\\Delta = q$ for some $q \\in \\mathbb{Q}$, giving $\\Delta^2 = q^2 \\geq 0$. But `vandermonde_sq_eq_disc_p` gives $\\Delta^2 = \\text{disc}(p)$ and `disc_p_neg` gives $\\text{disc}(p) < 0$, contradicting $q^2 \\geq 0$.\n\nThis proof connects three mathematical threads: the Vandermonde determinant and alternating functions, the Fundamental Theorem of Galois Theory (fixed fields), and the sign criterion for discriminants. The discriminant $\\text{disc}(x^5-4x+2) = -212144 < 0$ is negative precisely because the polynomial has an odd number of pairs of complex conjugate roots (here, 1 pair), which makes $\\Delta$ purely imaginary rather than real.",
     "mathContext": "Theorem: $\\exists \\sigma \\in \\text{Gal}(p/\\mathbb{Q}),\\, \\text{sign}(\\sigma) = -1$. Proof by contradiction: if all signs are $+1$, then $\\sigma(\\Delta) = \\Delta$ for all $\\sigma$, so $\\Delta \\in \\mathbb{Q}$ (FTGT). Then $\\Delta^2 = q^2 \\geq 0$, contradicting $\\Delta^2 = \\text{disc}(p) = -212144 < 0$.",
     "significance": "key",
     "relatedConcepts": [

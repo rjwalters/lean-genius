@@ -78,35 +78,40 @@
       "title": "Header and Imports",
       "summary": "Problem statement, known results, references, and Mathlib imports for real numbers and finite sets",
       "startLine": 1,
-      "endLine": 23
+      "endLine": 23,
+      "mathContext": "Problem statement, known results, references, and Mathlib imports for real numbers and finite sets"
     },
     {
       "id": "definitions",
       "title": "Part I: Definitions",
       "summary": "AllDistancesDistinct predicate using squared Euclidean distance on Fin d → ℝ points; axiomatized extremal function f_d(n)",
       "startLine": 27,
-      "endLine": 49
+      "endLine": 49,
+      "mathContext": "AllDistancesDistinct predicate using squared Euclidean distance on Fin d → ℝ points; axiomatized extremal function f_d(n)"
     },
     {
       "id": "known-results",
       "title": "Part II: Known Results",
       "summary": "One-dimensional bound f_1(n) ≍ n², exact value f_2(3) = 7, three-point asymptotics f_d(3) = d²/2 + O(d), Erdős-Straus upper bound f_d(n) ≤ c_n^d",
       "startLine": 50,
-      "endLine": 70
+      "endLine": 70,
+      "mathContext": "One-dimensional bound f_1(n) ≍ n², exact value f_2(3) = 7, three-point asymptotics f_d(3) = d²/2 + O(d), Erdős-Straus upper bound f_d(n) ≤ c_n^d"
     },
     {
       "id": "main-conjecture",
       "title": "Part III: The Main Question",
       "summary": "The open conjecture: for fixed n ≥ 3, is f_d(n) = 2^{o(d)}? Formalized via ε-characterization of subexponential growth",
       "startLine": 71,
-      "endLine": 85
+      "endLine": 85,
+      "mathContext": "The open conjecture: for fixed n ≥ 3, is f_d(n) = 2^{o(d)}? Formalized via ε-characterization of subexponential growth"
     },
     {
       "id": "main-theorem",
       "title": "Part IV: Main Theorem",
       "summary": "Theorem erdos_1088: the Erdős-Straus exponential upper bound, proved by direct application of erdos_straus_upper_bound",
       "startLine": 86,
-      "endLine": 100
+      "endLine": 100,
+      "mathContext": "Theorem erdos_1088: the Erdős-Straus exponential upper bound, proved by direct application of erdos_straus_upper_bound"
     }
   ],
   "conclusion": {

@@ -48,49 +48,56 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 21,
-      "summary": "Docstring citing Erdős–Lacampagne–Selfridge (1988, 1993). Imports Nat.Prime.Basic, Nat.Choose.Basic, Nat.Factorization.Basic, Finset.Card, Real.Sqrt, and Tactic."
+      "summary": "Docstring citing Erdős–Lacampagne–Selfridge (1988, 1993). Imports Nat.Prime.Basic, Nat.Choose.Basic, Nat.Factorization.Basic, Finset.Card, Real.Sqrt, and Tactic.",
+      "mathContext": "Docstring citing Erdős–Lacampagne–Selfridge (1988, 1993). Imports Nat.Prime.Basic, Nat.Choose.Basic, Nat.Factorization.Basic, Finset.Card, Real.Sqrt, and Tactic."
     },
     {
       "id": "smooth-numbers",
       "title": "Smooth Numbers",
       "startLine": 22,
       "endLine": 29,
-      "summary": "Defines `IsKSmooth k m`: all prime factors of $m$ are $\\leq k$. The fundamental smoothness predicate used throughout."
+      "summary": "Defines `IsKSmooth k m`: all prime factors of $m$ are $\\leq k$. The fundamental smoothness predicate used throughout.",
+      "mathContext": "Defines `IsKSmooth k m`: all prime factors of $m$ are $\\leq k$. The fundamental smoothness predicate used throughout."
     },
     {
       "id": "deficiency",
       "title": "Deficiency Definition",
       "startLine": 30,
       "endLine": 42,
-      "summary": "Defines `NoSmallPrimeFactors` (no prime $\\leq k$ divides $\\binom{n}{k}$) and `deficiency` (count of $k$-smooth terms in the falling factorial via `Finset.filter`)."
+      "summary": "Defines `NoSmallPrimeFactors` (no prime $\\leq k$ divides $\\binom{n}{k}$) and `deficiency` (count of $k$-smooth terms in the falling factorial via `Finset.filter`).",
+      "mathContext": "Defines `NoSmallPrimeFactors` (no prime $\\leq k$ divides $\\binom{n}{k}$) and `deficiency` (count of $k$-smooth terms in the falling factorial via `Finset.filter`)."
     },
     {
       "id": "conjectures",
       "title": "The Two Conjectures",
       "startLine": 43,
       "endLine": 64,
-      "summary": "Part (i): $\\text{Set.Infinite}$ for deficiency-1 pairs. Part (ii): $\\text{Set.Finite}$ for deficiency $> 1$ pairs. Combined as `ErdosProblem1093`."
+      "summary": "Part (i): $\\text{Set.Infinite}$ for deficiency-1 pairs. Part (ii): $\\text{Set.Finite}$ for deficiency $> 1$ pairs. Combined as `ErdosProblem1093`.",
+      "mathContext": "Part (i): $\\text{Set.Infinite}$ for deficiency-1 pairs. Part (ii): $\\text{Set.Finite}$ for deficiency $> 1$ pairs. Combined as `ErdosProblem1093`."
     },
     {
       "id": "examples",
       "title": "Known Examples",
       "startLine": 65,
       "endLine": 78,
-      "summary": "Computed values: $d(7,3) = 1$, $d(13,4) = 1$, and $d(284,28) = 9$ (the record)."
+      "summary": "Computed values: $d(7,3) = 1$, $d(13,4) = 1$, and $d(284,28) = 9$ (the record).",
+      "mathContext": "Computed values: $d(7,3) = 1$, $d(13,4) = 1$, and $d(284,28) = 9$ (the record)."
     },
     {
       "id": "upper-bound",
       "title": "ELS Upper Bound and Census",
       "startLine": 79,
       "endLine": 94,
-      "summary": "ELS (1993) bound $n \\leq C \\cdot 2^k \\sqrt{k}$ for positive deficiency. At least 58 deficiency-1 examples known for $n \\leq 10^5$."
+      "summary": "ELS (1993) bound $n \\leq C \\cdot 2^k \\sqrt{k}$ for positive deficiency. At least 58 deficiency-1 examples known for $n \\leq 10^5$.",
+      "mathContext": "ELS (1993) bound $n \\leq C \\cdot 2^k \\sqrt{k}$ for positive deficiency. At least 58 deficiency-1 examples known for $n \\leq 10^5$."
     },
     {
       "id": "structural",
       "title": "Structural Properties",
       "startLine": 95,
       "endLine": 107,
-      "summary": "Proved theorem: if $n - i$ has a prime factor $> k$, it is not $k$-smooth and does not contribute to deficiency. Uses `omega` tactic."
+      "summary": "Proved theorem: if $n - i$ has a prime factor $> k$, it is not $k$-smooth and does not contribute to deficiency. Uses `omega` tactic.",
+      "mathContext": "Proved theorem: if $n - i$ has a prime factor $> k$, it is not $k$-smooth and does not contribute to deficiency. Uses `omega` tactic."
     }
   ],
   "conclusion": {
