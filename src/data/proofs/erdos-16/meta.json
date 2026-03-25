@@ -215,5 +215,44 @@
     "axiomCount": 14,
     "theoremCount": 0,
     "definitionCount": 10
-  }
+  },
+  "references": [
+    {
+      "key": "Er50b",
+      "authors": [
+        "P. Erdős"
+      ],
+      "title": "On integers of the form 2^k + p and some related problems",
+      "venue": "Summa Brasil. Math.",
+      "year": "1950",
+      "volume": "2",
+      "pages": "113-123",
+      "note": "Erdős asked whether the density of odd integers not of the form 2^k + p is positive"
+    },
+    {
+      "key": "Ro34",
+      "authors": [
+        "N. P. Romanoff"
+      ],
+      "title": "Über einige Sätze der additiven Zahlentheorie",
+      "venue": "Mathematische Annalen",
+      "year": "1934",
+      "volume": "109",
+      "pages": "668-678",
+      "note": "Proved that a positive proportion of odd integers can be represented as 2^k + p (Romanoff's theorem)"
+    },
+    {
+      "key": "CV04",
+      "authors": [
+        "Y.-G. Chen",
+        "X.-G. Sun"
+      ],
+      "title": "On Romanoff's constant",
+      "venue": "Journal of Number Theory",
+      "year": "2004",
+      "volume": "106",
+      "pages": "275-284",
+      "note": "Improved bounds on the density of integers representable as 2^k + p"
+    }
+  ]
 }

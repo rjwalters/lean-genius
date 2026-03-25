@@ -186,5 +186,33 @@
     "axiomCount": 6,
     "theoremCount": 8,
     "definitionCount": 8
-  }
+  },
+  "references": [
+    {
+      "key": "Er50",
+      "authors": [
+        "P. Erdős"
+      ],
+      "title": "On integers of the form 2^k + p and some related problems",
+      "venue": "Summa Brasil. Math.",
+      "year": "1950",
+      "volume": "2",
+      "pages": "113-123",
+      "note": "Original formulation of the problem about squarefree numbers plus powers of 2"
+    },
+    {
+      "key": "Cr02",
+      "authors": [
+        "R. Crandall",
+        "K. Dilcher",
+        "C. Pomerance"
+      ],
+      "title": "A search for Wieferich and Wilson primes",
+      "venue": "Mathematics of Computation",
+      "year": "1997",
+      "volume": "66",
+      "pages": "433-449",
+      "note": "Computational searches related to Wieferich primes, which connect to Erdős Problem #11"
+    }
+  ]
 }

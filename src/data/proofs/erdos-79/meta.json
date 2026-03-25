@@ -195,5 +195,34 @@
       "relationship": "related",
       "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
     }
+  ],
+  "references": [
+    {
+      "key": "CFGS83",
+      "authors": [
+        "V. Chvátal",
+        "V. Rödl",
+        "E. Szemerédi",
+        "W.T. Trotter"
+      ],
+      "title": "The Ramsey number of a graph with bounded maximum degree",
+      "venue": "Journal of Combinatorial Theory, Series B",
+      "year": "1983",
+      "volume": "34",
+      "pages": "239-243",
+      "note": "Proved Ramsey numbers are linear for bounded-degree graphs"
+    },
+    {
+      "key": "GR03",
+      "authors": [
+        "R.L. Graham",
+        "V. Rödl"
+      ],
+      "title": "Numbers in Ramsey theory",
+      "venue": "Surveys in Combinatorics, Cambridge University Press",
+      "year": "2003",
+      "pages": "111-153",
+      "note": "Survey of Ramsey number bounds including size-linearity results"
+    }
   ]
 }

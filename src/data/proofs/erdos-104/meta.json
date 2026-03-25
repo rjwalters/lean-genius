@@ -146,5 +146,31 @@
     "axiomCount": 12,
     "theoremCount": 1,
     "definitionCount": 11
-  }
+  },
+  "references": [
+    {
+      "key": "Er46",
+      "authors": [
+        "P. Erdős"
+      ],
+      "title": "On sets of distances of n points",
+      "venue": "American Mathematical Monthly",
+      "year": "1946",
+      "volume": "53",
+      "pages": "248-250",
+      "note": "Early work on distance problems in the plane, context for unit circle incidence questions"
+    },
+    {
+      "key": "PS04",
+      "authors": [
+        "J. Pach",
+        "M. Sharir"
+      ],
+      "title": "Geometric incidences",
+      "venue": "Towards a Theory of Geometric Graphs, AMS",
+      "year": "2004",
+      "pages": "185-223",
+      "note": "Survey of incidence geometry including unit circle problems"
+    }
+  ]
 }

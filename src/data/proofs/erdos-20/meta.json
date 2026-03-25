@@ -191,5 +191,35 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 8
-  }
+  },
+  "references": [
+    {
+      "key": "ER60",
+      "authors": [
+        "P. Erdős",
+        "R. Rado"
+      ],
+      "title": "Intersection theorems for systems of sets",
+      "venue": "Journal of the London Mathematical Society",
+      "year": "1960",
+      "volume": "35",
+      "pages": "85-90",
+      "note": "Original sunflower lemma: any family of more than (p-1)^k k! sets of size k contains a p-sunflower"
+    },
+    {
+      "key": "ALWZ20",
+      "authors": [
+        "R. Alweiss",
+        "S. Lovett",
+        "K. Wu",
+        "J. Zhang"
+      ],
+      "title": "Improved bounds for the sunflower lemma",
+      "venue": "Annals of Mathematics",
+      "year": "2021",
+      "volume": "194",
+      "pages": "795-815",
+      "note": "Major breakthrough: improved the sunflower bound from (p-1)^k k! to (Cp log(pk))^k"
+    }
+  ]
 }
