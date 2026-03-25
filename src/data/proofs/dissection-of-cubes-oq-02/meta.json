@@ -149,6 +149,16 @@
       "relationship": "sibling",
       "description": "Studies the minimum collision number in cube dissections, a quantitative refinement of the dissection impossibility.",
       "targetId": "dissection-of-cubes-oq-01"
+    },
+    {
+      "targetId": "hilbert-3",
+      "relationship": "foundational",
+      "description": "Hilbert's third problem directly motivates this entry: Dehn proved that a cube and a regular tetrahedron of equal volume are not scissors-congruent, answering Hilbert's question negatively"
+    },
+    {
+      "targetId": "isoperimetric-theorem",
+      "relationship": "related",
+      "description": "Both involve fundamental geometric constraints on shape decomposition — isoperimetric bounds limit area-to-perimeter ratios while Dehn invariants limit polyhedral decomposition"
     }
   ],
   "leanFile": {

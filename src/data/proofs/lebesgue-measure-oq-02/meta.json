@@ -215,6 +215,16 @@
       "targetId": "lebesgue-measure-oq-01",
       "relationship": "sibling",
       "description": "Sibling open question: Dirichlet Function Integral via Almost Everywhere Zero"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "The fundamental theorem of calculus in its Lebesgue form (absolute continuity) requires Hölder's inequality for bounding integrals and establishing dominated convergence"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "generalizes",
+      "description": "Hölder's inequality generalizes Cauchy-Schwarz from L² to L^p × L^q spaces; this entry formalizes the general case that subsumes the L² inner product inequality"
     }
   ]
 }

@@ -183,6 +183,16 @@
       "targetId": "central-limit-theorem",
       "relationship": "related",
       "description": "The CLT provides the rate of convergence (normal approximation) for finite-variance distributions; for heavy tails with α ∈ (1,2), the Stable CLT replaces the normal with an α-stable law"
+    },
+    {
+      "targetId": "central-limit-theorem-oq-01-oq-01",
+      "relationship": "related",
+      "description": "The Gnedenko-Kolmogorov domain of attraction theory characterizes what happens when variance is infinite — exactly the regime where the classical LLN fails and this open question arises"
+    },
+    {
+      "targetId": "buffons-needle",
+      "relationship": "application",
+      "description": "Buffon's needle uses the LLN to estimate π via repeated experiments; heavy-tailed variants of this problem would require the generalized convergence theory studied here"
     }
   ],
   "references": [
