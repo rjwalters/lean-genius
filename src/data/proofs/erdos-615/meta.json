@@ -63,7 +63,7 @@
     "assumptions": "8 axioms: ehss_upper_bound, sudakov_upper_bound, fox_loh_zhao_lower_bound, and 5 more. See Lean source for complete statements."
   },
   "overview": {
-    "historicalContext": "**Erdos Problem #615**\n\nThis is a fundamental problem in Ramsey-Turan theory, combining ideas from extremal graph theory and Ramsey theory.\n\n**Key History:**\n- Erdos-Hajnal-Simonovits-Sos-Szemeredi [EHSSS93] posed the problem (1993)\n- Erdos-Hajnal-Sos-Szemeredi [EHSS83] proved rt(n; 4, en) < (1/8 + o(1))n^2 (1983)\n- Sudakov [Su03] proved rt is subquadratic for very slow growth (2003)\n- Fox-Loh-Zhao [FLZ15] resolved it negatively (2015)\n\n**The Ramsey-Turan Number:**\nrt(n; k, l) = max edges in n-vertex graph with no K_k and no independent set of size l.\n\nThis combines Ramsey theory (avoiding monochromatic structures) with Turan theory (maximizing edges).",
+    "historicalContext": "Ramsey-Turán theory studies the maximum number of edges $\\text{rt}(n; k, f(n))$ in an $n$-vertex graph that simultaneously avoids complete subgraphs $K_k$ and large independent sets of size $f(n)$. The field was initiated by Vera Sós (1969) and systematically developed by Erdős, Hajnal, Sós, and Szemerédi in the 1970s-80s.\n\nThe classical Turán theorem (1941) gives $\\text{ex}(n; K_k) = (1 - 1/(k-1))n^2/2 + O(n)$. When the independence number is also bounded, the extremal number can be much smaller. For $K_4$: Erdős, Hajnal, Sós, and Szemerédi (1983) proved $\\text{rt}(n; 4, \\varepsilon n) < (1/8 + o(1))n^2$ for any fixed $\\varepsilon > 0$, using Szemerédi's regularity lemma. The constant $1/8$ (vs Turán's $1/3$ for $\\text{ex}(n; K_4)$) reflects the dramatic effect of banning large independent sets.\n\nProblem #615, posed by Erdős, Hajnal, Simonovits, Sós, and Szemerédi (1993), asked whether this $1/8$ barrier persists when $f(n)$ grows as slowly as $n/\\log n$. Benny Sudakov (2003) proved that $\\text{rt}(n; 4, f(n))$ is subquadratic whenever $f(n)/n \\to 0$, but the $n/\\log n$ case remained open.\n\nJacob Fox, Po-Shen Loh, and Yufei Zhao resolved the problem negatively in 2015: there exist $K_4$-free graphs with $(1/8 - o(1))n^2$ edges and independence number $O(n\\log\\log n/\\log n)$, showing the $1/8$ barrier holds. Their construction uses algebraic and probabilistic methods, identifying a 'critical window' around $f(n) \\approx \\sqrt{\\log n/\\log\\log n}$ where the phase transition occurs.",
     "problemStatement": "**Problem Statement (Disproved)**\n\nDoes there exist $c > 0$ such that if $G$ is a graph with $n$ vertices and $\\geq (1/8 - c)n^2$ edges, then $G$ must contain either $K_4$ or an independent set of size $n/\\log n$?\n\n**Equivalently:** Is $\\mathrm{rt}(n; 4, n/\\log n) < (1/8 - c)n^2$?\n\n**Answer: NO**\n\nFox, Loh, and Zhao (2015) proved that $\\mathrm{rt}(n; 4, n/\\log n) \\geq (1/8 - o(1))n^2$.\n\nThe \"critical window\" occurs at $f(n) \\approx \\sqrt{\\log n / \\log\\log n}$.",
     "text": "Does there exist c > 0 such that graphs with (1/8-c)n^2 edges must contain K4 or independence set of size n/log n? NO, disproved by Fox-Loh-Zhao (2015).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Define hasClique, hasIndependentSet, isRTGraph using Mathlib's SimpleGraph.\n\n2. **RT Number:** Define rt(n; k, l) as the maximum edge count.\n\n3. **Problem Statement:** State erdos_615_conjecture asking for constant c.\n\n4. **Upper Bounds:** Axiomatize EHSS83 and Sudakov results.\n\n5. **Fox-Loh-Zhao:** Axiomatize the critical window theorem showing lower bound.\n\n6. **Resolution:** The conjecture is false - no such c exists.\n\n7. **Critical Window:** Define and explain the phase transition at sqrt(log n / log log n).",
@@ -198,6 +198,29 @@
       "targetId": "erdos-1019",
       "relationship": "related",
       "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, turan-theory"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Fox, Jacob; Loh, Po-Shen; Zhao, Yufei",
+      "title": "The critical window for the classical Ramsey-Turán problem",
+      "year": "2015",
+      "venue": "Combinatorica, 35(4), 435–476",
+      "note": "Resolved Problem #615 negatively: constructed K₄-free graphs with (1/8 - o(1))n² edges and independence number O(n log log n / log n). Identified the critical window at f(n) ≈ √(log n / log log n)."
+    },
+    {
+      "authors": "Erdős, Paul; Hajnal, András; Sós, Vera T.; Szemerédi, Endre",
+      "title": "More results on Ramsey-Turán type problems",
+      "year": "1983",
+      "venue": "Combinatorica, 3(1), 69–81",
+      "note": "Proved rt(n; 4, εn) < (1/8 + o(1))n² for fixed ε > 0 using the regularity lemma. Established the 1/8 threshold for the K₄ case."
+    },
+    {
+      "authors": "Sudakov, Benny",
+      "title": "Few remarks on the Ramsey-Turán-type problems",
+      "year": "2003",
+      "venue": "Journal of Combinatorial Theory, Series B, 88(1), 99–106",
+      "note": "Proved rt(n; 4, f(n)) is subquadratic whenever f(n)/n → 0, a key intermediate result toward Problem #615."
     }
   ]
 }
