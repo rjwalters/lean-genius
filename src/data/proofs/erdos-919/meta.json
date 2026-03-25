@@ -17,7 +17,7 @@
       "infinite-combinatorics"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 919,
     "erdosUrl": "https://erdosproblems.com/919",
     "erdosProblemStatus": "open",
@@ -51,9 +51,10 @@
       "Erdős-Hajnal construction on ω₁²",
       "Generalization framework for cardinal parameters"
     ],
-    "axiomCount": 4,
-    "lineCount": 246,
-    "assumptions": "4 axiom(s) and 2 sorry(s). The Erdős-Hajnal graph is now explicitly defined (was previously axiomatized). The 2 sorries relate to connecting the order-type formulation (Question1/Question2) with a cardinality-based generalization."
+    "axiomCount": 2,
+    "lineCount": 313,
+    "assumptions": "2 axioms: erdosHajnal_chromatic (χ = ℵ₁, deep lower bound), partialConstruction (graph on ω₂² with χ = ℵ₂ and small subgraphs having χ ≤ ℵ₁). Upper bound for erdosHajnal_chromatic proved via second-coordinate coloring. erdosHajnal_subgraph and babai_theorem fully proved.",
+    "theoremCount": 16
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős in 1969 [Er69b] and sits at the intersection of graph theory, set theory, and infinite combinatorics. It was inspired by Babai's theorem about chromatic properties of graphs on well-ordered vertex sets.\n\nErdős and Hajnal made crucial progress by constructing a counterexample at the ℵ₁ level. They built a graph on ω₁² (the ordinal product of two copies of the first uncountable ordinal) with chromatic number ℵ₁, but where every strictly smaller subgraph (by order type) has countable chromatic number ≤ ℵ₀. This showed that Babai's theorem does not generalize to higher cardinals.\n\nThe natural question then arises: can we do the same construction at the next level? This is Problem #919: does there exist a graph on ω₂² with chromatic number ℵ₂ where smaller subgraphs have chromatic number at most ℵ₀ (not just ℵ₁)?",
