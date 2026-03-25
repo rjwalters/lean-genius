@@ -75,7 +75,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Jean-Pierre Serre (born 1926) generalized the Sylow theorems to profinite groups in his foundational 1965 work 'Cohomologie Galoisienne'. A profinite group is a compact, Hausdorff, totally disconnected topological group — equivalently, an inverse limit of finite groups. The absolute Galois group Gal(k̄/k) of any field is profinite, making pro-p Sylow theory essential for Galois cohomology and class field theory.\n\nThe pro-p Sylow theorem states that every profinite group G has maximal pro-p closed subgroups (the Sylow pro-p subgroups), that these are all conjugate, and that they arise as inverse limits of the finite Sylow p-subgroups in the quotient system of G. The existence proof uses Zorn's lemma on the poset of closed pro-p subgroups, with compactness guaranteeing that the closure of a chain's union is still pro-p.",
+    "historicalContext": "Ludwig Sylow proved his celebrated theorems for finite groups in 1872, establishing existence, conjugacy, and counting of $p$-subgroups. For nearly a century, these results were confined to finite groups. Jean-Pierre Serre (born 1926, Fields Medal 1954, Abel Prize 2003) generalized the Sylow theorems to profinite groups in his foundational 1965 work *Cohomologie Galoisienne* (Springer LNM 5), which became one of the most influential texts in 20th-century algebra.\n\nA profinite group is a compact, Hausdorff, totally disconnected topological group — equivalently, an inverse limit of finite groups: $G = \\varprojlim_{N \\trianglelefteq_o G} G/N$. The motivating examples are absolute Galois groups $\\text{Gal}(\\bar{k}/k)$, which encode all finite Galois extensions of a field $k$ simultaneously. The $p$-adic integers $\\mathbb{Z}_p = \\varprojlim \\mathbb{Z}/p^n\\mathbb{Z}$ and profinite completions $\\hat{\\mathbb{Z}} = \\varprojlim \\mathbb{Z}/n\\mathbb{Z}$ are prototypical examples.\n\nSerre's pro-p Sylow theorem states that every profinite group $G$ has maximal pro-p closed subgroups (the Sylow pro-p subgroups), that these are all conjugate, and that they arise as inverse limits of the finite Sylow $p$-subgroups in the quotient system of $G$. The existence proof replaces the counting arguments of finite Sylow theory with Zorn's lemma on the poset of closed pro-p subgroups, using compactness to guarantee upper bounds for chains. The conjugacy proof uses a characteristic technique of profinite group theory: project to finite quotients, apply finite results, and lift via the finite intersection property of compact spaces.\n\nThe theory was further developed by Ribes-Zalesskii (*Profinite Groups*, 2000) and Dixon-du Sautoy-Mann-Segal (*Analytic Pro-p Groups*, 1999). Lazard's theorem (1965) connects pro-p groups of finite rank to $p$-adic analytic groups, establishing a deep bridge between algebra, topology, and $p$-adic analysis.",
     "problemStatement": "**Pro-p Sylow Theorems for Profinite Groups**: Let G be a profinite group (compact, Hausdorff, totally disconnected topological group) and p a prime.\n\n1. **Existence**: G has a maximal pro-p closed subgroup (Sylow pro-p subgroup)\n2. **Conjugacy**: All Sylow pro-p subgroups are conjugate under inner automorphisms\n3. **Finite Recovery**: For finite discrete groups, the pro-p Sylow theory recovers the classical Sylow theorems",
     "text": "A 298-line formalization of pro-p Sylow theory for profinite groups. Defines IsProfiniteGroup as the conjunction of TopologicalGroup, CompactSpace, T2Space, and TotallyDisconnectedSpace. Introduces IsProP (pro-p condition: every open normal subgroup has p-power index) and SylowProP (maximal closed pro-p subgroup). Axiomatizes the deep results: existence via Zorn's lemma on closed pro-p subgroups, conjugacy via the finite approximation technique, the Frattini argument, projection to p-groups in quotients, and trivial intersection for distinct primes. Proves seven theorems: compactness of Sylow pro-p subgroups, the trivial subgroup is pro-p, the pro-p/p-group equivalence for finite groups, classical Sylow subgroups are pro-p, pro-p subgroups have p-power order, and the counting theorem for finite quotients.",
     "proofStrategy": "**Structure**: Bundle the profinite condition as IsProfiniteGroup, avoiding class-extension complications with TopologicalGroup.\n\n**Pro-p Definition**: A group is pro-p if every open normal subgroup has index equal to a power of p — this captures the inverse limit characterization.\n\n**Axioms**: The five axioms encode results whose proofs require inverse limit arguments:\n- Existence: Zorn's lemma on the nonempty poset of closed pro-p subgroups, with compactness providing upper bounds for chains\n- Conjugacy: Project to finite quotients, apply finite Sylow conjugacy, lift via the finite intersection property\n\n**Proved Results**: Compactness (closed subset of compact space), bot is pro-p (trivial quotients), finite recovery (IsProP ↔ IsPGroup via index-of-bot = cardinality), and Sylow counting in quotients.",
@@ -126,6 +126,14 @@
       "endLine": 260,
       "summary": "Proves the equivalence IsProP ↔ IsPGroup for finite discrete groups, that classical Sylow p-subgroups are pro-p, and that pro-p subgroups of finite groups have p-power order. Also proves the counting theorem n_p ≡ 1 (mod p) for finite quotients.",
       "mathContext": "The bridge between profinite and finite Sylow theory: checking IsProP for finite groups reduces to checking whether |G| is a p-power (since ⊥ is the only open subgroup in discrete topology)."
+    },
+    {
+      "id": "summary-verification",
+      "title": "Summary Table and Type Verification",
+      "startLine": 261,
+      "endLine": 298,
+      "summary": "Summary table cataloging all 12 declarations (5 axioms, 7 theorems, 4 definitions) with their status. Twelve #check commands verify that all declarations have the expected types, serving as a lightweight verification pass.",
+      "mathContext": "The 5 axioms encode inverse limit results: Zorn existence, finite-approximation conjugacy, profinite Frattini, projection to p-groups, and coprime trivial intersection. The 7 theorems are constructive consequences provable from Mathlib's finite group theory and point-set topology."
     }
   ],
   "conclusion": {
@@ -153,6 +161,16 @@
       "targetId": "inverse-galois-oq-01",
       "relationship": "related",
       "description": "The solvable inverse Galois problem reduces to understanding towers of abelian extensions, where the Sylow pro-p structure controls each layer"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem ($|H|$ divides $|G|$ for $H \\leq G$ finite) underpins the subgroup index calculations throughout: $[G:N] = |G|/|N|$. The profinite generalization replaces cardinality with the index of open subgroups"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Abel-Ruffini uses that $S_5$ is not solvable (a finite group-theoretic fact). Pro-p Sylow theory for profinite groups generalizes the same Sylow machinery to infinite groups like $\\text{Gal}(\\bar{\\mathbb{Q}}/\\mathbb{Q})$, whose Sylow pro-$p$ subgroups control $p$-adic Galois representations"
     }
   ],
   "references": [
