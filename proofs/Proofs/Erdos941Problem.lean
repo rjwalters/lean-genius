@@ -49,10 +49,7 @@ The following was proved by Aristotle:
   - OEIS A056828: Powerful numbers
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Data.Finset.Basic
+import Mathlib
 
 
 open Nat
@@ -99,15 +96,13 @@ theorem powerful_iff_alt (n : ℕ) (hn : n > 0) :
     intro x hx y hy h; subst h; simp_all +decide [ Nat.Prime.dvd_mul ] ;
     intro p pp dp; rcases dp with ( dp | dp ) <;> [ exact dvd_mul_of_dvd_left ( pow_dvd_pow_of_dvd ( pp.dvd_of_dvd_pow dp ) 2 ) _; exact dvd_mul_of_dvd_right ( pow_dvd_pow_of_dvd ( pp.dvd_of_dvd_pow dp ) 2 |> fun h => dvd_trans h ( pow_dvd_pow _ <| show 3 ≥ 2 by decide ) ) _ ] ;
 
-/-- 1 is powerful (vacuously). -/
+/-- 1 is powerful (vacuously: no prime divides 1). -/
 theorem one_is_powerful : IsPowerful 1 := by
   constructor
   · omega
   · intro p hp hpn
-    have : p = 1 := Nat.eq_one_of_pos_of_self_mul_self_mod_eq_one (hp.one_lt) (by
-      simp at hpn
-      omega)
-    omega
+    exfalso
+    exact hp.one_lt.not_ge (Nat.le_of_dvd one_pos hpn)
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -116,10 +111,10 @@ numerals are data in Lean, but the expected type is a proposition
 /-- Perfect squares are powerful. -/
 theorem square_is_powerful (a : ℕ) (ha : a > 0) : IsPowerful (a^2) := by
   constructor
-  · exact Nat.pos_pow_of_pos 2 ha
+  · exact pow_pos ha 2
   · intro p hp hpn
     -- p | a² → p | a → p² | a²
-    sorry
+    exact pow_dvd_pow_of_dvd (hp.dvd_of_dvd_pow hpn) 2
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -128,9 +123,11 @@ numerals are data in Lean, but the expected type is a proposition
 /-- Perfect cubes are powerful. -/
 theorem cube_is_powerful (b : ℕ) (hb : b > 0) : IsPowerful (b^3) := by
   constructor
-  · exact Nat.pos_pow_of_pos 3 hb
+  · exact pow_pos hb 3
   · intro p hp hpn
-    sorry
+    -- p | b³ → p | b → p² | b² | b³
+    have hpb : p ∣ b := hp.dvd_of_dvd_pow hpn
+    exact dvd_trans (pow_dvd_pow_of_dvd hpb 2) (pow_dvd_pow b (by norm_num : 2 ≤ 3))
 
 /-- Products of powerful numbers are powerful. -/
 theorem powerful_mul (m n : ℕ) (hm : IsPowerful m) (hn : IsPowerful n) :
@@ -161,10 +158,10 @@ example : IsPowerful 8 := cube_is_powerful 2 (by omega)
 
 /-- 72 = 8 × 9 = 2³ × 3² is powerful. -/
 theorem _72_is_powerful : IsPowerful 72 := by
-  have h8 := cube_is_powerful 2 (by omega)
-  have h9 := square_is_powerful 3 (by omega)
-  have : 72 = 8 * 9 := by norm_num
-  rw [this]
+  have h8 : IsPowerful 8 := cube_is_powerful 2 (by omega)
+  have h9 : IsPowerful 9 := square_is_powerful 3 (by omega)
+  have h72 : (72 : ℕ) = 8 * 9 := by norm_num
+  rw [h72]
   exact powerful_mul 8 9 h8 h9
 
 /-
@@ -264,10 +261,10 @@ has type
 
 /-- The number of representations of n as sum of 3 powerful numbers. -/
 noncomputable def numRepresentations (n : ℕ) : ℕ :=
-  (Finset.Icc 0 n).filter (fun a =>
-    (Finset.Icc 0 (n - a)).filter (fun b =>
-      IsPowerful a ∧ IsPowerful b ∧ IsPowerful (n - a - b)
-    ).card > 0).card
+  haveI : DecidablePred IsPowerful := Classical.decPred _
+  ((Finset.Icc 0 n).filter (fun a =>
+    ((Finset.Icc 0 (n - a)).filter (fun b =>
+      IsPowerful a ∧ IsPowerful b ∧ IsPowerful (n - a - b))).card > 0)).card
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -278,8 +275,8 @@ Hint: Additional diagnostic information may be available using the `set_option d
 /-- Asymptotic density of powerful numbers. -/
 axiom powerful_density :
   ∃ c : ℝ, c > 0 ∧
-    Filter.Tendsto (fun N =>
-      ((Finset.Icc 1 N).filter IsPowerful).card / (N : ℝ)^(1/2))
+    Filter.Tendsto (fun (N : ℕ) =>
+      (@Finset.filter ℕ IsPowerful (Classical.decPred _) (Finset.Icc 1 N)).card / Real.sqrt N)
     Filter.atTop (nhds c)
 
 /-
