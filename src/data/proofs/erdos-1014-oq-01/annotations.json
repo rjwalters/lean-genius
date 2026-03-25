@@ -65,8 +65,8 @@
     "range": { "startLine": 90, "endLine": 96 },
     "type": "technique",
     "title": "Analysis Lemma: (l+1) log l / (c l²) → 0",
-    "content": "The lemma `eventually_ratio_small` states that for any $c > 0$ and $\\varepsilon > 0$, eventually $(l+1) \\cdot \\log l / (c \\cdot l^2) < \\varepsilon$. This follows from the standard result $\\log x = o(x)$ (Mathlib's `isLittleO_log_rpow_atTop`), since $(l+1) \\cdot \\log l / (c \\cdot l^2) \\leq 2 \\cdot \\log l / (c \\cdot l) \\to 0$. **Contains 1 sorry** — the connection between Mathlib's `Asymptotics.IsLittleO` framework and the explicit $\\varepsilon$-$N$ bound is routine but not yet formalized.",
-    "mathContext": "$\\frac{(l+1) \\log l}{c \\cdot l^2} \\leq \\frac{2 \\log l}{c \\cdot l} \\to 0$ since $\\log l = o(l)$. This is the only sorry in the file.",
+    "content": "The lemma `eventually_ratio_small` states that for any $c > 0$ and $\\varepsilon > 0$, eventually $(l+1) \\cdot \\log l / (c \\cdot l^2) < \\varepsilon$. The proof extracts $\\delta = c\\varepsilon/4$ from Mathlib's `isLittleO_log_rpow_atTop` ($\\log x = o(x)$), obtaining $\\|\\log l\\| \\leq \\delta \\cdot \\|l\\|$ for large $l$. Then $(l+1) \\cdot \\log l \\leq 2l \\cdot (c\\varepsilon/4) \\cdot l = (\\varepsilon/2) \\cdot c l^2$, so the quotient is at most $\\varepsilon/2 < \\varepsilon$.",
+    "mathContext": "$\\frac{(l+1) \\log l}{c \\cdot l^2} \\leq \\frac{2 \\log l}{c \\cdot l} \\to 0$ since $\\log l = o(l)$. Fully proved using `isLittleO_log_rpow_atTop` and explicit $\\varepsilon$-$\\delta$ extraction.",
     "significance": "supporting",
     "relatedConcepts": ["little-o notation", "logarithmic growth", "isLittleO_log_rpow_atTop"],
     "prerequisites": ["real analysis: asymptotic notation", "Mathlib filter limits"]
