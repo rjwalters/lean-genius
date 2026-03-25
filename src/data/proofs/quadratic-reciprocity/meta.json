@@ -160,16 +160,6 @@
       "description": "Quadratic reciprocity implies Dirichlet-style results on primes in arithmetic progressions: primes $p \\equiv 1 \\pmod{4}$ vs $p \\equiv 3 \\pmod{4}$ behave differently as quadratic residues, connecting to Dirichlet's theorem on primes in progressions."
     },
     {
-      "targetId": "abel-ruffini",
-      "relationship": "related",
-      "description": "Both are landmarks of 19th-century algebra: Abel-Ruffini uses Galois groups to prove quintic unsolvability, while quadratic reciprocity reveals deep structure in $\\mathbb{Z}/p\\mathbb{Z}$. Artin reciprocity law unifies both into class field theory."
-    },
-    {
-      "targetId": "lagrange-theorem",
-      "relationship": "foundational",
-      "description": "The quadratic residues modulo $p$ form a subgroup of index 2 in $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, with order $(p-1)/2$ by Lagrange's theorem. This index-2 structure (the kernel of the Legendre symbol homomorphism) is the group-theoretic foundation for reciprocity"
-    },
-    {
       "targetId": "fermats-last-theorem",
       "relationship": "foundational",
       "description": "Quadratic reciprocity is the $n = 2$ case of Artin reciprocity, which Wiles's modularity theorem generalizes to 2-dimensional Galois representations. The Langlands program, of which FLT is a consequence, seeks to extend reciprocity laws to all reductive groups — making QR the historical seed of the entire program"
@@ -205,19 +195,9 @@
       "description": "Dirichlet's theorem on primes in arithmetic progressions is intimately connected: the Legendre symbol $(a/p)$ is a Dirichlet character mod $p$, and reciprocity controls how primes split in quadratic fields $\\mathbb{Q}(\\sqrt{d})$. The density of primes $p \\equiv 1 \\pmod{4}$ vs $p \\equiv 3 \\pmod{4}$ (equal by Dirichlet) underpins the uniformity behind reciprocity"
     },
     {
-      "targetId": "prime-number-theorem",
-      "relationship": "related",
-      "description": "The Prime Number Theorem and quadratic reciprocity both describe global structure of the primes, but from complementary angles: PNT counts primes asymptotically, while reciprocity governs their splitting behavior in quadratic fields. Together they shape analytic number theory via $L$-functions attached to Dirichlet characters and Hecke Grössencharacters"
-    },
-    {
       "targetId": "chinese-remainder-constructive",
       "relationship": "related",
       "description": "The Chinese Remainder Theorem is a prerequisite for understanding the Jacobi symbol $(a/n)$, the multiplicative generalization of the Legendre symbol to composite moduli: $(a/n) = \\prod_i (a/p_i^{e_i})$ factors via CRT. The Jacobi symbol inherits a reciprocity law from QR, making CRT and QR the two pillars of efficient modular arithmetic algorithms"
-    },
-    {
-      "targetId": "birch-swinnerton-dyer",
-      "relationship": "related",
-      "description": "Both BSD and quadratic reciprocity concern $L$-functions that encode arithmetic information: QR corresponds to the $L$-function of a quadratic character (a Hecke $L$-function), while BSD is about the $L$-function of an elliptic curve. The Langlands program, whose simplest non-trivial case is QR, aims to unify all such reciprocity phenomena through automorphic forms"
     }
   ],
   "leanFile": {
