@@ -341,6 +341,11 @@
       "description": "Hall's theorem (1928) is the partial converse of Lagrange's theorem for solvable groups: every Hall divisor of a solvable group's order yields a subgroup, and all such Hall subgroups are conjugate. This directly constrains the group-theoretic concept central to Abel-Ruffini — group solvability. The A₄ counterexample (6 divides $|A_4| = 12$ but $A_4$ has no subgroup of order 6) illustrates the subtlety of solvable group structure at the degree-4/5 threshold"
     },
     {
+      "targetId": "inverse-galois-oq-01",
+      "relationship": "extends",
+      "description": "Proves the complete characterization: $S_n$ is solvable iff $n \\leq 4$. Formalizes $A_5$ as simple, perfect, and non-solvable — the same group-theoretic facts that drive Abel-Ruffini's impossibility, now presented as a standalone result in the non-solvable frontier of the Inverse Galois Problem"
+    },
+    {
       "targetId": "angle-trisection-oq-02",
       "relationship": "related",
       "description": "The Wantzel-Galois theorem — an algebraic number $\\alpha$ is constructible by compass and straightedge iff $\\text{Gal}(\\text{minpoly}_{\\mathbb{Q}}(\\alpha))$ is a 2-group — is the constructibility analogue of Abel-Ruffini's radical solvability criterion. Both results reduce a geometric/algebraic question to group theory via the same Galois-theoretic framework: Abel-Ruffini asks whether the Galois group is solvable (abelian composition factors), while Wantzel-Galois asks whether it is a 2-group (all composition factors $\\mathbb{Z}/2$)"
