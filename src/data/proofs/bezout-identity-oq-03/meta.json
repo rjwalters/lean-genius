@@ -47,16 +47,10 @@
       }
     ],
     "originalContributions": [
-      "bezout_int: restated directly as a self-contained theorem showing ∃ x y, gcd(a,b) = a*x + b*y",
-      "coprime_bezout: specialization when gcd = 1, giving the CRT-ready form m*u + n*v = 1",
-      "crt_exists_via_bezout: explicit CRT existence with formula x = a*n*v + b*m*u, proved by linear_combination",
-      "isCoprime_of_gcd_eq_one: bridging gcd-based coprimality with IsCoprime (algebraic coprimality)",
-      "crt_unique_via_bezout: uniqueness modulo m*n via IsCoprime.mul_dvd",
-      "crt_via_bezout: combined existence-uniqueness statement",
-      "crt_iscop: CRT via IsCoprime directly (IsCoprime IS bezout_int for gcd = 1)",
-      "crtInt: explicit computable CRT function using Mathlib's Bézout coefficients",
-      "crtInt_mod_left/right: correctness theorems for the crtInt function",
-      "Four worked examples with explicit Bézout coefficients and verification"
+      "Explicit CRT existence proof via Bézout formula (x = a*n*v + b*m*u) with both congruences proved by linear_combination",
+      "CRT uniqueness and combined existence-uniqueness theorem via IsCoprime.mul_dvd",
+      "Computable crtInt function with correctness proofs (crtInt_mod_left, crtInt_mod_right)",
+      "Bridge between Int.gcd-coprimality and IsCoprime (isCoprime_of_gcd_eq_one)"
     ],
     "dateAdded": "2026-02-21",
     "axiomCount": 0,
@@ -111,7 +105,7 @@
       "startLine": 68,
       "endLine": 96,
       "summary": "The main existence theorem crt_exists_via_bezout. Gets Bézout coefficients from coprime_bezout, constructs x = a*n*v + b*m*u, proves both congruences using linear_combination -a * hbez and -b * hbez respectively.",
-      "mathContext": "The main existence theorem crt_exists_via_bezout. Gets Bézout coefficients from coprime_bezout, constructs x = a*n*v + b*m*u, proves both congruences using linear_combination -a * hbez and -b * hbez r"
+      "mathContext": "**CRT Existence**: Given $\\gcd(m,n) = 1$ with $mu + nv = 1$, the solution $x = anv + bmu$ satisfies $x \\equiv a \\pmod{m}$ (since $a - x = mu(a-b)$, so $m \\mid (a-x)$) and $x \\equiv b \\pmod{n}$ (since $b - x = nv(b-a)$, so $n \\mid (b-x)$). Both congruences proved by `linear_combination` with the Bézout equation."
     },
     {
       "id": "uniqueness",
@@ -119,7 +113,7 @@
       "startLine": 97,
       "endLine": 126,
       "summary": "Two theorems: isCoprime_of_gcd_eq_one (bridges Int.gcd = 1 and IsCoprime via linear_combination) and crt_unique_via_bezout (uniqueness mod m*n via IsCoprime.mul_dvd after rewriting congruences as divisibility).",
-      "mathContext": "Two theorems: isCoprime_of_gcd_eq_one (bridges Int.gcd = 1 and IsCoprime via linear_combination) and crt_unique_via_bezout (uniqueness mod m*n via IsCoprime.mul_dvd after rewriting congruences as divi"
+      "mathContext": "**CRT Uniqueness**: If $m \\mid (y - x)$ and $n \\mid (y - x)$ with $\\gcd(m,n) = 1$, then $mn \\mid (y - x)$ by `IsCoprime.mul_dvd`. The bridge `isCoprime_of_gcd_eq_one` converts `Int.gcd m n = 1` to `IsCoprime m n` via `linear_combination` on Bézout coefficients."
     },
     {
       "id": "iscop-version",
@@ -132,32 +126,32 @@
     {
       "id": "combined",
       "title": "Combined Existence-Uniqueness",
-      "startLine": 162,
-      "endLine": 181,
+      "startLine": 141,
+      "endLine": 155,
       "summary": "crt_via_bezout: packages existence and uniqueness into a single theorem using transitivity of congruences.",
       "mathContext": "Combined theorem: $\\exists x,\\, m \\mid (x - a) \\wedge n \\mid (x - b) \\wedge \\forall y,\\, (m \\mid (y-a) \\wedge n \\mid (y-b)) \\to mn \\mid (y - x)$. Packages existence + uniqueness via `⟨x, hx_mod_m, hx_mod_n, uniqueness⟩`."
     },
     {
       "id": "examples",
       "title": "Worked Examples",
-      "startLine": 182,
-      "endLine": 241,
+      "startLine": 156,
+      "endLine": 222,
       "summary": "Four examples showing explicit Bézout coefficients and CRT solutions: (3,5)→8, (7,11)→58, (4,9)→28, (6,7)→23. Each example shows the Bézout equation, the formula computation, and verification of both congruences.",
-      "mathContext": "Four examples showing explicit Bézout coefficients and CRT solutions: (3,5)→8, (7,11)→58, (4,9)→28, (6,7)→23. Each example shows the Bézout equation, the formula computation, and verification of both "
+      "mathContext": "Four worked examples with explicit Bézout coefficients and CRT solutions: $(3,5) \\to 8$, $(7,11) \\to 58$, $(4,9) \\to 28$, $(6,7) \\to 23$. Each example shows the Bézout equation, formula computation, and verification of both congruences via `norm_num` and `decide`."
     },
     {
       "id": "crt-function",
       "title": "Explicit CRT Function",
-      "startLine": 242,
-      "endLine": 271,
+      "startLine": 224,
+      "endLine": 258,
       "summary": "crtInt: a computable function returning x = a*n*gcdB + b*m*gcdA. Proved correct via crtInt_mod_left and crtInt_mod_right using linear_combination with the Bézout identity.",
       "mathContext": "Computable function $\\text{crtInt}(a, b, m, n) = a \\cdot n \\cdot v + b \\cdot m \\cdot u$ where $(u, v) = \\text{Int.gcdA/gcdB}(m, n)$. Returns the explicit CRT witness without existential quantification."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 272,
-      "endLine": 284,
+      "startLine": 259,
+      "endLine": 285,
       "summary": "Documents the 5-step proof strategy and the key insight that bezout_int and IsCoprime are two faces of the same coin.",
       "mathContext": "Five-step proof: (1) Bézout gives $mu + nv = 1$, (2) construct $x = anv + bmu$, (3) verify $x \\equiv a \\pmod{m}$ and $x \\equiv b \\pmod{n}$, (4) uniqueness mod $mn$ via `IsCoprime.mul_dvd`, (5) package into combined theorem."
     }

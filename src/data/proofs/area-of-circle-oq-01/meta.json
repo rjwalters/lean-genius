@@ -38,7 +38,7 @@
     "originalContributions": [
       "Pedagogical formalization connecting area differentiation to circumference via Mathlib's power rule",
       "Second derivative and monotonicity corollaries for circle area and circumference",
-      "Algebraic identity C² = 4πA (isoperimetric equality case for circles)"
+      "Convenience lemma: algebraic identity C² = 4πA for circles (proved by unfold + ring)"
     ],
     "dateAdded": "2026-02-14",
     "axiomCount": 0,
@@ -144,11 +144,11 @@
     },
     {
       "id": "isoperimetric",
-      "title": "Isoperimetric Equality and Duality",
+      "title": "Algebraic Identity and Duality",
       "startLine": 150,
       "endLine": 163,
-      "summary": "The isoperimetric equality $C^2 = 4\\pi A$ and the circumference-from-derivative duality theorem.",
-      "mathContext": "Connection to the isoperimetric inequality: among all curves of length $L$, the circle encloses the maximum area $A = L^2/(4\\pi)$. Equality iff the curve is a circle."
+      "summary": "The algebraic identity $C^2 = 4\\pi A$ (verified by expanding definitions) and the circumference-from-derivative duality theorem.",
+      "mathContext": "Algebraic identity: $(2\\pi r)^2 = 4\\pi \\cdot (\\pi r^2)$, i.e., $C^2 = 4\\pi A$. This is the equality case of the isoperimetric inequality, but only the algebraic identity is proved here — the optimality of circles among all curves is not formalized."
     }
   ],
   "conclusion": {

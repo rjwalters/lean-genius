@@ -89,21 +89,21 @@
       "priority": "low",
       "target": "enricher",
       "description": "Update meta.json theoremCount from 7 to 9",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "medium",
       "target": "enricher",
       "description": "Restructure originalContributions to distinguish core original work (lawvere_fixpoint, not_has_no_fixpoint) from derived corollaries (cantor, cantor_bool, russell, etc.)",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "low",
       "target": "enricher",
       "description": "Soften halting-problem language in description, key insight #1, and conclusion to clarify that the Bool variant captures the algebraic pattern but is not a formalization of Turing's undecidability result",
-      "status": "open"
+      "status": "resolved"
     }
   ],
 
