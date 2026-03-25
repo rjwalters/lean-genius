@@ -2,7 +2,7 @@
   "id": "cantor-diagonalization-oq-03",
   "title": "Lawvere Fixed-Point Theorem and Cantor's Theorem",
   "slug": "cantor-diagonalization-oq-03",
-  "description": "The Lawvere fixed-point theorem: if there exists a surjection e : A -> (A -> B), then every endomorphism f : B -> B has a fixed point. Cantor's theorem follows as a corollary by noting that negation (Not) has no fixed point in Prop, so no surjection A -> (A -> Prop) can exist. This unifies Cantor's diagonal argument, Russell's paradox, and the halting problem as instances of a single principle.",
+  "description": "The Lawvere fixed-point theorem: if there exists a surjection e : A -> (A -> B), then every endomorphism f : B -> B has a fixed point. Cantor's theorem follows as a corollary by noting that negation (Not) has no fixed point in Prop, so no surjection A -> (A -> Prop) can exist. This unifies Cantor's diagonal argument and Russell's paradox as instances of a single principle, and the Bool variant captures the algebraic pattern underlying the halting problem (though a full formalization of Turing's undecidability result would require additional computational machinery).",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -23,12 +23,10 @@
     "lineCount": 149,
     "assumptions": "None. Fully verified with 0 axioms, 0 sorries. Uses only basic logic and function theory from Mathlib.",
     "originalContributions": [
-      "lawvere_fixpoint: the general Lawvere fixed-point theorem for surjections A -> (A -> B)",
-      "not_has_no_fixpoint: negation has no fixed point in Prop (via cast and self-application)",
-      "cantor: Cantor's theorem as a direct corollary of Lawvere",
-      "cantor_bool: decidable version with Bool instead of Prop",
-      "russell: Russell's paradox as Cantor's theorem restated",
-      "diagonal_not_in_range: explicit diagonal construction showing non-membership in range"
+      "Core: lawvere_fixpoint — the general Lawvere fixed-point theorem via diagonal construction g(a) = f(e(a)(a))",
+      "Core: not_has_no_fixpoint / bnot_has_no_fixpoint — negation has no fixed point in Prop or Bool (via cast/self-application)",
+      "Corollary: cantor, cantor_no_surjection, cantor_bool, russell — four instances of Lawvere for different choices of B and f",
+      "Infrastructure: no_surjection_if_no_fixpoint (contrapositive), diagonal_not_in_range (explicit construction)"
     ],
     "dateAdded": "2026-03-24",
     "mathlibDependencies": [
@@ -56,7 +54,7 @@
       },
       {
         "id": "halting-problem",
-        "relationship": "Another Lawvere instance: undecidability of halting via diagonal with B = Bool"
+        "relationship": "The Bool variant (cantor_bool) mirrors the diagonal pattern used in Turing's halting argument, though this file formalizes the algebraic structure rather than the full computational undecidability result"
       }
     ]
   },
@@ -66,7 +64,7 @@
     "text": "A 149-line verified formalization of the Lawvere fixed-point theorem (1969) with 0 sorries and 0 axioms. The main theorem states: if $e : A \\to (A \\to B)$ is surjective, then every $f : B \\to B$ has a fixed point. The proof constructs the diagonal function $g(a) = f(e(a)(a))$ and uses surjectivity to find $a_0$ with $e(a_0) = g$, yielding $f(g(a_0)) = g(a_0)$. Five corollaries follow: Cantor's theorem for Prop, Cantor's theorem for Bool, Russell's paradox, the contrapositive (no fixed-point-free endomorphism implies no surjection), and an explicit diagonal non-membership result.",
     "proofStrategy": "1. **Lawvere's diagonal trick**: Given surjective $e : A \\to (A \\to B)$ and $f : B \\to B$, define $g(a) = f(e(a)(a))$. By surjectivity, $\\exists a_0$ with $e(a_0) = g$. Then $e(a_0)(a_0) = g(a_0) = f(e(a_0)(a_0))$, so $e(a_0)(a_0)$ is a fixed point of $f$.\n\n2. **Cantor from Lawvere**: Take $B = \\mathrm{Prop}$ and $f = \\neg$. Since $\\neg$ has no fixed point ($\\neg p = p$ leads to contradiction via self-application), Lawvere implies no surjection $A \\to (A \\to \\mathrm{Prop})$ exists.\n\n3. **Negation has no fixed point**: If $\\neg p = p$, cast along this equality to get $p \\to \\neg p$ and $\\neg p \\to p$. Define $\\neg p$ by $\\lambda h. (\\mathrm{cast}\\, h^{-1}\\, h)\\, h$, then derive contradiction.",
     "keyInsights": [
-      "**One Proof, Many Theorems**: Lawvere's fixed-point theorem unifies Cantor's diagonal argument, Russell's paradox, the halting problem, and Gödel's incompleteness theorem. Each is an instance with different $B$ and $f$: Cantor uses $B = \\mathrm{Prop}$, $f = \\neg$; Turing uses $B = \\mathrm{Bool}$, $f = !$; Russell uses the identity surjection.",
+      "**One Proof, Many Theorems**: Lawvere's fixed-point theorem unifies Cantor's diagonal argument and Russell's paradox as direct instances, and captures the algebraic pattern underlying the halting problem and Gödel's incompleteness. Each is an instance with different $B$ and $f$: Cantor uses $B = \\mathrm{Prop}$, $f = \\neg$; the Bool variant ($f = !$) mirrors the halting argument's structure; Russell uses the identity surjection. Note: the Bool variant demonstrates the diagonal pattern but is not itself a formalization of Turing's undecidability result, which requires additional computational machinery.",
       "**The Diagonal is Universal**: The construction $g(a) = f(e(a)(a))$ is the categorical essence of all diagonal arguments. It extracts the common pattern from seemingly different impossibility proofs into a single 3-line proof.",
       "**Self-Application is the Key**: The proof of `not_has_no_fixpoint` uses the same self-application trick as Russell's paradox: if $\\neg p = p$, then $p$ can be applied to itself via cast, producing both $p$ and $\\neg p$. This is the type-theoretic core of all diagonal arguments.",
       "**Surjectivity is the Barrier**: Cantor's theorem is not about size per se — it's about the impossibility of a certain surjection. This formulation makes the logical content precise without appealing to cardinal arithmetic.",
@@ -185,7 +183,7 @@
     "namespace": "LawvereCantor",
     "lineCount": 149,
     "axiomCount": 0,
-    "theoremCount": 7,
+    "theoremCount": 9,
     "definitionCount": 0
   },
   "references": [
