@@ -67,7 +67,11 @@
       "**Dixon's theorem is ergodic**: The average-case constant $12\\ln 2/\\pi^2$ arises from the invariant measure of the Gauss map $T(x) = \\{1/x\\}$, connecting number theory to dynamical systems. Formalizing this requires continued fractions and Birkhoff's ergodic theorem, neither available in Mathlib."
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Number theory (primes, divisibility)",
+      "Fibonacci numbers and their growth properties",
+      "Computational complexity (worst-case and average-case analysis)",
+      "Strong induction and well-founded recursion",
+      "Logarithmic functions and asymptotic notation"
     ]
   },
   "sections": [
@@ -184,6 +188,26 @@
       "targetId": "gcd-algorithm",
       "relationship": "extends",
       "description": "Parent formalization; this entry extends it with further exploration"
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "related",
+      "description": "Bezout's identity expresses gcd(a,b) as a linear combination; the extended Euclidean algorithm computes these coefficients using the same division chain analyzed here"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient function counts integers coprime to n (gcd = 1); the Euclidean algorithm is the standard method for testing coprimality"
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate bounds prime gaps; both results use Fibonacci/exponential growth arguments to establish logarithmic-scale bounds in number theory"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The prime number theorem gives the asymptotic density of primes; Dixon's average-case theorem for the Euclidean algorithm similarly uses analytic methods (the Gauss map) to determine asymptotic constants"
     }
   ]
 }

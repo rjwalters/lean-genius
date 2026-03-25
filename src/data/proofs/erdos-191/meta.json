@@ -225,6 +225,31 @@
       "targetId": "erdos-1109",
       "relationship": "related",
       "description": "Related additive combinatorics: squarefree sumsets use similar sieve techniques"
+    },
+    {
+      "targetId": "erdos-46",
+      "relationship": "related",
+      "description": "Monochromatic unit fraction representations: both problems seek monochromatic sets with large weighted sums (1/n_i vs 1/log x), combining Ramsey theory with analytic number theory"
+    },
+    {
+      "targetId": "erdos-924",
+      "relationship": "related",
+      "description": "Folkman-Nesetril-Rodl theorem on Ramsey properties without large cliques; Rodl is the solver of both problems, and both involve forcing monochromatic substructures in edge-colored graphs"
+    },
+    {
+      "targetId": "erdos-87",
+      "relationship": "related",
+      "description": "Ramsey numbers and chromatic number: both explore how Ramsey-type colorings force structured monochromatic subgraphs in complete graphs"
+    },
+    {
+      "targetId": "erdos-550",
+      "relationship": "related",
+      "description": "Ramsey numbers for trees and multipartite graphs: extends classical Ramsey theory to structured graph classes, complementing the weighted-sum refinement in Problem 191"
+    },
+    {
+      "targetId": "erdos-136",
+      "relationship": "related",
+      "description": "Erdos-Gyarfas function for edge-colorings of complete graphs: both problems study how edge-colorings of K_n force specific monochromatic or polychromatic substructures"
     }
   ],
   "references": [
