@@ -116,6 +116,11 @@
       "targetId": "abel-ruffini-oq-04-oq-01",
       "relationship": "extended-by",
       "description": "Completes the proof chain with a concrete witness: proves Gal(x^5 - 4x + 2 / Q) = S_5 and that this specific polynomial is unsolvable by radicals, instantiating the abstract group-theoretic chain proved here"
+    },
+    {
+      "targetId": "inverse-galois-oq-01",
+      "relationship": "related",
+      "description": "Proves the complete solvability characterization: Sₙ and Aₙ are solvable iff n ≤ 4, and [S₅,S₅] = A₅. Provides the full bidirectional threshold that this file witnesses from one side (non-solvability for n ≥ 5)"
     }
   ],
   "overview": {
@@ -226,6 +231,32 @@
     "trivialSpecializations": 6,
     "definitionCount": 0
   },
+  "mainTheorems": [
+    {
+      "name": "symmetric_not_solvable",
+      "type": "core",
+      "description": "The symmetric group Sₙ is not solvable for n ≥ 5. Bridges Mathlib's cardinal-level Equiv.Perm.not_solvable to a natural number bound via simp + exact_mod_cast",
+      "leanType": "(n : ℕ) → 5 ≤ n → ¬ IsSolvable (Equiv.Perm (Fin n))"
+    },
+    {
+      "name": "a5_is_simple",
+      "type": "alias",
+      "description": "A₅ is a simple group — direct alias for Mathlib's alternatingGroup.isSimpleGroup_five",
+      "leanType": "IsSimpleGroup (alternatingGroup (Fin 5))"
+    },
+    {
+      "name": "five_is_the_threshold",
+      "type": "key",
+      "description": "The exact solvability threshold: S₁ is solvable and S₅ is not, witnessing the sharp dichotomy at n = 5",
+      "leanType": "IsSolvable (Equiv.Perm (Fin 1)) ∧ ¬ IsSolvable (Equiv.Perm (Fin 5))"
+    },
+    {
+      "name": "s5_not_solvable",
+      "type": "specialization",
+      "description": "S₅ is not solvable — direct application of symmetric_not_solvable to n = 5",
+      "leanType": "¬ IsSolvable (Equiv.Perm (Fin 5))"
+    }
+  ],
   "references": [
     {
       "key": "Ab24",
