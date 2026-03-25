@@ -22,6 +22,8 @@ References:
 -/
 
 import Mathlib.NumberTheory.Divisors
+import Mathlib.NumberTheory.ArithmeticFunction.Defs
+import Mathlib.NumberTheory.ArithmeticFunction.Misc
 import Mathlib.Data.Finset.Sort
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Real.Basic
@@ -79,12 +81,59 @@ axiom tao_counterexample_1054 : ∃ ε : ℝ, ε > 0 ∧
 -- Part III: Sigma bound connection (key structural results)
 -- ============================================================
 
+/-- The last element of `scanl (+) a l` equals `a + l.sum`. -/
+private theorem scanl_add_ne_nil (a : ℕ) (l : List ℕ) :
+    l.scanl (· + ·) a ≠ [] := by
+  cases l <;> simp [List.scanl]
+
+private theorem getLast_scanl_add (a : ℕ) :
+    ∀ (l : List ℕ),
+      (l.scanl (· + ·) a).getLast (scanl_add_ne_nil a l) = a + l.sum := by
+  intro l
+  induction l generalizing a with
+  | nil => simp [List.scanl]
+  | cons b l ih =>
+    simp only [List.scanl, List.sum_cons]
+    rw [List.getLast_cons (scanl_add_ne_nil (a + b) l), ih (a + b)]
+    omega
+
+/-- Sorting a Finset preserves the sum. -/
+private theorem sort_sum_eq (s : Finset ℕ) : (s.sort (· ≤ ·)).sum = s.sum id := by
+  rw [← Multiset.sum_coe, Finset.sort_eq, Finset.sum]
+  simp [Multiset.map_id']
+
 /-- The sigma value is a partial divisor sum: σ(m) ∈ partialDivisorSums(m).
     This follows because sortedDivisors sums to σ(m) at the end.
     Key insight: the last partial sum = sum of all divisors = σ(m). -/
 theorem sigma_in_partial_sums (m : ℕ) (hm : m ≥ 1) :
     sigma m ∈ partialDivisorSums m := by
-  sorry
+  -- sortedDivisors m is non-empty (m ≥ 1 means 1 ∈ divisors)
+  have hsd_ne : sortedDivisors m ≠ [] := by
+    intro h; unfold sortedDivisors at h
+    have h1 : 1 ∈ m.divisors := Nat.one_mem_divisors.mpr (by omega)
+    have h2 := (Finset.mem_sort (r := (· ≤ ·))).mpr h1
+    rw [h] at h2; simp at h2
+  -- Decompose sortedDivisors m = d :: ds
+  obtain ⟨d, ds, hsd⟩ : ∃ d ds, sortedDivisors m = d :: ds := by
+    cases h : sortedDivisors m with
+    | nil => exact absurd h hsd_ne
+    | cons d ds => exact ⟨d, ds, rfl⟩
+  -- partialDivisorSums m = scanl (+) d ds
+  have hpds : partialDivisorSums m = List.scanl (· + ·) d ds := by
+    unfold partialDivisorSums; rw [hsd, List.scanl, List.tail_cons, Nat.zero_add]
+  -- scanl (+) d ds is non-empty
+  have hsc_ne : List.scanl (· + ·) d ds ≠ [] := scanl_add_ne_nil d ds
+  -- Last of scanl (+) d ds = d + ds.sum = sigma m
+  have hlast : (List.scanl (· + ·) d ds).getLast hsc_ne = sigma m := by
+    rw [getLast_scanl_add d ds]
+    -- d + ds.sum = (d :: ds).sum = (sortedDivisors m).sum = sigma m
+    rw [← List.sum_cons, ← hsd]
+    unfold sigma sortedDivisors
+    exact sort_sum_eq m.divisors
+  -- sigma m is the last element of partialDivisorSums m, hence a member
+  rw [hpds]
+  rw [← hlast]
+  exact List.getLast_mem hsc_ne
 
 /-- Key density witness: for any m ≥ 1, the value σ(m) is representable
     with a witness w ≤ m. This means f(σ(m)) ≤ m.
@@ -189,41 +238,110 @@ theorem sigma_ge_succ (m : ℕ) (hm : m ≥ 2) : sigma m ≥ m + 1 := by
         simp only [id]; ring
 
 -- ============================================================
--- Part VIII: Sigma ratio for 2^a * 3^b (sorries)
+-- Part VIII: Sigma ratio for 2^a * 3^b (proven via multiplicativity)
 -- ============================================================
 
+/-- Bridge: our custom sigma equals Mathlib's ArithmeticFunction.sigma 1. -/
+private theorem sigma_eq_arith_sigma1 (m : ℕ) :
+    sigma m = ArithmeticFunction.sigma 1 m := by
+  simp [sigma, ArithmeticFunction.sigma_apply, pow_one]
+
+/-- Powers of 2 and 3 are coprime. -/
+private theorem coprime_pow2_pow3 (a b : ℕ) :
+    Nat.Coprime (2 ^ a) (3 ^ b) :=
+  (by native_decide : Nat.Coprime 2 3).pow a b
+
+/-- Geometric sum identity: ∑_{i=0}^{a} 2^i + 1 = 2^{a+1}. -/
+private theorem geom_sum_two_eq (a : ℕ) :
+    (∑ i ∈ Finset.range (a + 1), (2 : ℕ) ^ i) + 1 = 2 ^ (a + 1) := by
+  induction a with
+  | zero => simp
+  | succ n ih =>
+    rw [Finset.sum_range_succ]
+    have : 2 ^ (n + 2) = 2 * 2 ^ (n + 1) := by ring
+    linarith
+
+/-- Geometric sum identity: 2 · ∑_{i=0}^{b} 3^i + 1 = 3^{b+1}. -/
+private theorem geom_sum_three_eq (b : ℕ) :
+    2 * (∑ i ∈ Finset.range (b + 1), (3 : ℕ) ^ i) + 1 = 3 ^ (b + 1) := by
+  induction b with
+  | zero => simp
+  | succ n ih =>
+    rw [Finset.sum_range_succ, mul_add]
+    have : 3 ^ (n + 2) = 3 * 3 ^ (n + 1) := by ring
+    linarith
+
+/-- σ₁ on prime powers equals the geometric sum. -/
+private theorem sigma1_prime_pow_eq (p k : ℕ) (hp : p.Prime) :
+    ArithmeticFunction.sigma 1 (p ^ k) = ∑ i ∈ Finset.range (k + 1), p ^ i := by
+  rw [ArithmeticFunction.sigma_apply_prime_pow hp]
+  congr 1; ext i; ring
+
 /-- For m = 2^a * 3^b, σ(m) = (2^(a+1) - 1) * ((3^(b+1) - 1) / 2). -/
-theorem sigma_ratio_2a_3b (a b : ℕ) (ha : a ≥ 1) (hb : b ≥ 1) :
+theorem sigma_ratio_2a_3b (a b : ℕ) (_ha : a ≥ 1) (_hb : b ≥ 1) :
     sigma (2^a * 3^b) = (2^(a+1) - 1) * ((3^(b+1) - 1) / 2) := by
-  sorry
+  rw [sigma_eq_arith_sigma1,
+      ArithmeticFunction.isMultiplicative_sigma.map_mul_of_coprime (coprime_pow2_pow3 a b),
+      sigma1_prime_pow_eq 2 a (by norm_num),
+      sigma1_prime_pow_eq 3 b (by norm_num)]
+  set S₂ := ∑ i ∈ Finset.range (a + 1), (2 : ℕ) ^ i
+  set S₃ := ∑ i ∈ Finset.range (b + 1), (3 : ℕ) ^ i
+  have hS₂ := geom_sum_two_eq a
+  have hS₃ := geom_sum_three_eq b
+  have hS₂' : S₂ = 2 ^ (a + 1) - 1 := by omega
+  have hS₃' : S₃ = (3 ^ (b + 1) - 1) / 2 := by
+    have heq : 3 ^ (b + 1) - 1 = 2 * S₃ := by omega
+    rw [heq, Nat.mul_div_cancel_left _ (by omega : (0 : ℕ) < 2)]
+  rw [hS₂', hS₃']
 
 /-- The ratio σ(2^a * 3^b) / (2^a * 3^b) ≤ 3 for all a, b ≥ 1. -/
-theorem sigma_ratio_2a_3b_bound (a b : ℕ) (ha : a ≥ 1) (hb : b ≥ 1) :
+theorem sigma_ratio_2a_3b_bound (a b : ℕ) (_ha : a ≥ 1) (_hb : b ≥ 1) :
     sigma (2^a * 3^b) ≤ 3 * (2^a * 3^b) := by
-  sorry
+  rw [sigma_eq_arith_sigma1,
+      ArithmeticFunction.isMultiplicative_sigma.map_mul_of_coprime (coprime_pow2_pow3 a b),
+      sigma1_prime_pow_eq 2 a (by norm_num),
+      sigma1_prime_pow_eq 3 b (by norm_num)]
+  set S₂ := ∑ i ∈ Finset.range (a + 1), (2 : ℕ) ^ i
+  set S₃ := ∑ i ∈ Finset.range (b + 1), (3 : ℕ) ^ i
+  have hS₂ := geom_sum_two_eq a
+  have hS₃ := geom_sum_three_eq b
+  -- Bounds on individual sums
+  have hS₂_le : S₂ ≤ 2 * 2 ^ a := by
+    have : 2 ^ (a + 1) = 2 * 2 ^ a := by ring
+    omega
+  have h2S₃_le : 2 * S₃ ≤ 3 * 3 ^ b := by
+    have : 3 ^ (b + 1) = 3 * 3 ^ b := by ring
+    omega
+  -- Multiply bounds: S₂ * (2*S₃) ≤ (2*2^a) * (3*3^b)
+  have hmul : S₂ * (2 * S₃) ≤ (2 * 2 ^ a) * (3 * 3 ^ b) :=
+    Nat.mul_le_mul hS₂_le h2S₃_le
+  -- Rearrange: 2*(S₂*S₃) ≤ 2*(3*2^a*3^b), then cancel the 2
+  have h1 : S₂ * (2 * S₃) = 2 * (S₂ * S₃) := by ring
+  have h2 : (2 * 2 ^ a) * (3 * 3 ^ b) = 2 * (3 * (2 ^ a * 3 ^ b)) := by ring
+  rw [h1, h2] at hmul
+  exact Nat.le_of_mul_le_mul_left hmul (by omega)
 
 /-
 ## Summary
 
 This file formalizes the density-theoretic framework for Erdős Problem 1054 OQ-01:
 
-### Proved (0 theorem sorries in proven section):
-1. `f_12_le_6` through `f_19344_le_5040`: Concrete σ-witnesses with ratio < 1/2
-2. `sigma_ratio_decreasing`: The ratio m/σ(m) decreases along superabundant m
-3. `abundant_ratio_le_half`: m/σ(m) ≤ 1/2 for abundant m
-4. `inf_many_small_ratio_one_third`: Infinitely many n with f(n)/n ≤ 1/3
-5. `f_ratio_lt_third`: 5040/19344 < 1/3
-6. `sigma_prime`: σ(p) = p + 1 for prime p
-7. `sigma_ge_succ`: σ(m) ≥ m + 1 for m ≥ 2
+### Proved (0 theorem sorries):
+1. `sigma_in_partial_sums`: σ(m) ∈ partialDivisorSums(m) for m ≥ 1
+2. `f_sigma_witness`: IsRepresentable(σ(m)) with witness w ≤ m
+3. `f_12_le_6` through `f_19344_le_5040`: Concrete σ-witnesses with ratio < 1/2
+4. `sigma_ratio_decreasing`: The ratio m/σ(m) decreases along superabundant m
+5. `abundant_ratio_le_half`: m/σ(m) ≤ 1/2 for abundant m
+6. `inf_many_small_ratio_one_third`: Infinitely many n with f(n)/n ≤ 1/3
+7. `f_ratio_lt_third`: 5040/19344 < 1/3
+8. `sigma_prime`: σ(p) = p + 1 for prime p
+9. `sigma_ge_succ`: σ(m) ≥ m + 1 for m ≥ 2
+10. `sigma_ratio_2a_3b`: σ(2^a·3^b) = (2^(a+1)-1)·((3^(b+1)-1)/2) via multiplicativity
+11. `sigma_ratio_2a_3b_bound`: σ(2^a·3^b) ≤ 3·2^a·3^b
 
 ### Axioms (2):
 - `erdos_1054_almost_all`: The open conjecture (density 0 of large-f set)
 - `tao_counterexample_1054`: Tao's result (unconditional o(n) fails)
-
-### Sorries (3):
-- `sigma_in_partial_sums`: Key sigma bound (σ(m) is a partial divisor sum)
-- `sigma_ratio_2a_3b`: Sigma formula for 2^a * 3^b
-- `sigma_ratio_2a_3b_bound`: Ratio bound
 
 ### Open Mathematical Questions:
 - Does {n : f(n) ≥ εn} have density 0? (Main conjecture)
