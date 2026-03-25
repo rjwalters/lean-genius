@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: sortedDivisors_two_pow proved (2→1 sorries). divisorRatios_two_pow blocked by Lean4 monadic cast normalization.",
+    "progressSummary": "COMPLETE: All sorries eliminated (1→0). 2 axioms remain (Vose 1984 deep results). divisorRatios_two_pow proved via List.ext_getElem + monadic normalization.",
     "builtItems": [
       "17 new infrastructure theorems for sorted divisor properties",
       "first_divisor_is_one theorem (was axiom)",
@@ -48,7 +48,10 @@
       "flatMap_singleton_eq_map: normalize monadic flatMap to List.map",
       "list_bind_pure_ratCast: bridge monad do/pure to explicit map for ℚ→ℝ cast",
       "sortedDivisors_two_pow theorem: sorted divisors of 2^k = [2^0,...,2^k] via Nat.divisors_prime_pow + sorted permutation uniqueness",
-      "list_range_pairwise_lt: List.range n is Pairwise (· < ·)"
+      "list_range_pairwise_lt: List.range n is Pairwise (· < ·)",
+      "list_bind_pure_natCast: normalize monadic ℕ→ℚ cast",
+      "h_alpha_as_map: normalize h_alpha to avoid monadic ℚ→ℝ elaboration",
+      "divisorRatios_two_pow: proved via ext_getElem + monadic normalization (was sorry)"
     ],
     "insights": [
       "divisorRatios had a critical bug: computed d_i/d_{i+1} instead of d_{i+1}/d_i",
@@ -63,13 +66,16 @@
       "sum_divisor_ratios_lower_bound was FALSE: fails for n=2 (2 > 2+ln2≈2.69), n=6 (5.5 > 4+ln6≈5.79)",
       "Lean4 monad elaboration creates do/pure form when composing List.map with casts — need flatMap_singleton helper to normalize",
       "sortedDivisors_two_pow proved via List.perm_ext_iff_of_nodup + Perm.eq_of_pairwise with explicit antisymmetry",
-      "divisorRatios_two_pow blocked by Lean4 monadic normalization: zipWith with ℕ→ℚ cast creates do/pure form that breaks type matching with structural recursion helper"
+      "divisorRatios_two_pow blocked by Lean4 monadic normalization: zipWith with ℕ→ℚ cast creates do/pure form that breaks type matching with structural recursion helper",
+      "divisorRatios_two_pow proved by: (1) normalize monadic ℕ→ℚ coercions via list_bind_pure_natCast, (2) fuse double maps with List.map_map, (3) prove element-wise via List.ext_getElem with custom tail indexing helper, (4) compute 2^(n+1)/2^n = 2 via field_simp",
+      "Lean4 monadic coercion also broke h_alpha elaboration — fixed with h_alpha_as_map normalization lemma using list_bind_pure_ratCast + List.map_map",
+      "Key fix for prime_ratio_mem: use simp only [List.tail_cons] instead of rw (simp handles let/have bindings, rw does not)"
     ],
     "mathlibGaps": [
       "No direct Finset.sort getLast = max lemma"
     ],
     "nextSteps": [
-      "Prove divisorRatios_two_pow by working around monadic normalization (use native_decide for small k + structural induction, or restate zipWith_div_doubles to match normalized types)"
+      "Problem complete — 0 sorries, 2 axioms (Vose deep results). No further work needed."
     ]
   },
   "tags": [

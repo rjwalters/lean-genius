@@ -207,6 +207,32 @@ This is definitional from the h_alpha definition.
 -/
 
 /-
+## Monadic Normalization Helpers
+
+Lean 4 elaborates coercions List ℕ → List ℚ and List ℚ → List ℝ via
+monadic do/pure forms. These lemmas normalize back to explicit List.map.
+-/
+
+private theorem flatMap_singleton_eq_map {α β : Type*} (f : α → β) (l : List α) :
+    l.flatMap (fun a => [f a]) = l.map f := by
+  induction l with
+  | nil => rfl
+  | cons a t ih => simp [List.flatMap_cons, ih]
+
+private theorem list_bind_pure_ratCast (l : List ℚ) :
+    (do let a ← l; pure (↑a : ℝ)) = l.map (Rat.cast · : ℚ → ℝ) :=
+  flatMap_singleton_eq_map Rat.cast l
+
+private theorem list_bind_pure_natCast (l : List ℕ) :
+    (do let a ← l; pure (↑a : ℚ)) = l.map (Nat.cast · : ℕ → ℚ) :=
+  flatMap_singleton_eq_map Nat.cast l
+
+/-- Normalize h_alpha to avoid Lean 4 monadic coercion elaboration. -/
+private theorem h_alpha_as_map (α : ℝ) (n : ℕ) :
+    h_alpha α n = ((divisorRatios n).map (fun (r : ℚ) => ((r : ℝ) - 1) ^ α)).sum := by
+  delta h_alpha; rw [list_bind_pure_ratCast, List.map_map]; congr 1
+
+/-
 ## Part III: The Trivial Lower Bound
 
 The first term alone gives h_α(n) ≥ 1 for n ≥ 2.
@@ -292,7 +318,7 @@ Proof: The first term is ((d₂/1) - 1)^α ≥ (2-1)^α = 1.
 -/
 theorem h_alpha_ge_one (α : ℝ) (hα : α > 1) (n : ℕ) (hn : n ≥ 2) :
     h_alpha α n ≥ 1 := by
-  unfold h_alpha
+  rw [h_alpha_as_map]
   obtain ⟨r, hr_mem, hr_ge⟩ := first_ratio_ge_two n hn
   set f := (fun (r : ℚ) => ((r : ℝ) - 1) ^ α) with hf_def
   have hr1 : (1 : ℝ) ≤ (r : ℝ) - 1 := by
@@ -445,11 +471,16 @@ private theorem prime_ratio_mem (p : ℕ) (hp : Nat.Prime p) :
       simpa [sortedDivisors] using this
     exact (Nat.mem_divisors.mp this).1
   have hd2_eq : d₂ = p := (hp.eq_one_or_self_of_dvd d₂ hd2_dvd).resolve_left (by omega)
-  subst hd2_eq
-  have : divisorRatios p = List.zipWith (fun a b => (↑a : ℚ) / ↑b)
-      (sortedDivisors p).tail (sortedDivisors p) := rfl
-  rw [this, heq, List.tail_cons, List.zipWith_cons_cons]
-  simp [Nat.cast_one, div_one]
+  rw [hd2_eq] at heq
+  -- heq : sortedDivisors p = 1 :: p :: rest
+  -- Show (↑p : ℚ) is in the first position of divisorRatios
+  have hmem : (↑p : ℚ) / ↑(1 : ℕ) ∈ divisorRatios p := by
+    unfold divisorRatios
+    rw [heq]
+    simp only [List.tail_cons]
+    exact List.mem_cons.mpr (Or.inl rfl)
+  simp [Nat.cast_one, div_one] at hmem
+  exact hmem
 
 /--
 **Example: Prime p**
@@ -475,7 +506,7 @@ theorem prime_h_alpha_unbounded :
     linarith
   calc h_alpha α p
       ≥ ((p : ℝ) - 1) ^ α := by
-        unfold h_alpha
+        rw [h_alpha_as_map]
         set f := (fun r : ℚ => ((r : ℝ) - 1) ^ α)
         have hr := prime_ratio_mem p hp
         have hall : ∀ x ∈ (divisorRatios p).map f, 0 ≤ x := by
@@ -488,7 +519,7 @@ theorem prime_h_alpha_unbounded :
         have hsle := by
           apply List.single_le_sum hall
           simp only [List.mem_map]; exact ⟨_, hr, rfl⟩
-        simp only [Rat.cast_natCast] at hsle
+        simp only [f, Rat.cast_natCast] at hsle
         linarith
     _ ≥ (p : ℝ) - 1 := by
         calc ((p : ℝ) - 1) ^ α
@@ -542,29 +573,41 @@ private theorem sortedDivisors_two_pow (k : ℕ) :
 Each ratio d_{i+1}/d_i = 2^(i+1)/2^i = 2. -/
 private theorem divisorRatios_two_pow (k : ℕ) :
     divisorRatios (2 ^ k) = List.replicate k (2 : ℚ) := by
-  sorry -- Monadic ℕ→ℚ cast normalization blocks direct proof; sortedDivisors_two_pow proved above
-
-private theorem flatMap_singleton_eq_map (f : ℚ → ℝ) (l : List ℚ) :
-    l.flatMap (fun a => [f a]) = l.map f := by
-  induction l with
-  | nil => rfl
-  | cons a t ih => simp [List.flatMap_cons, ih]
-
-private theorem list_bind_pure_ratCast (l : List ℚ) :
-    (do let a ← l; pure (↑a : ℝ)) = l.map (Rat.cast · : ℚ → ℝ) :=
-  flatMap_singleton_eq_map Rat.cast l
+  -- After unfolding, Lean 4 creates monadic do/pure forms for ℕ→ℚ coercions.
+  -- We normalize these, then prove element-wise equality.
+  unfold divisorRatios
+  rw [sortedDivisors_two_pow]
+  -- Normalize monadic ℕ→ℚ coercions
+  simp only [list_bind_pure_natCast]
+  -- Move map inside tail: map f l.tail → (map f l).tail
+  rw [show ∀ (f : ℕ → ℚ) (l : List ℕ), (l.tail).map f = (l.map f).tail from
+    fun f l => by cases l <;> simp]
+  -- Fuse double maps: map g (map f l) → map (g ∘ f) l
+  simp only [List.map_map]
+  -- Now: zipWith (·/·) ((range (k+1)).map g).tail ((range (k+1)).map g) = replicate k 2
+  apply List.ext_getElem
+  · -- Length equality
+    simp [List.length_zipWith, List.length_tail, List.length_map, List.length_range,
+          List.length_replicate]
+  · -- Element equality: each ratio 2^(n+1)/2^n = 2
+    intro n h₁ h₂
+    simp only [List.getElem_zipWith, List.getElem_replicate]
+    -- Handle l.tail[n] → l[n+1]
+    have htail : ∀ {β : Type} (l : List β) (i : ℕ) (h : i < l.tail.length),
+        l.tail[i] = l[i + 1]'(by rw [List.length_tail] at h; omega) := by
+      intro β l; cases l with
+      | nil => intro i h; simp at h
+      | cons a t => intro i _; rfl
+    simp only [htail, List.getElem_map, List.getElem_range, Function.comp_apply]
+    -- Goal: ↑(2 ^ (n + 1)) / ↑(2 ^ n) = 2
+    rw [pow_succ]; push_cast; field_simp
 
 set_option maxHeartbeats 1600000 in
 /-- For n = 2^k, h_α(2^k) = k since all k ratios equal 2 and (2-1)^α = 1^α = 1. -/
 theorem power_of_two_h_alpha (k : ℕ) (α : ℝ) (hα : α ≥ 1) :
     h_alpha α (2^k) = k := by
-  delta h_alpha
-  rw [divisorRatios_two_pow]
-  -- Convert monadic do/pure to explicit map, fuse maps, compute on replicate
-  rw [list_bind_pure_ratCast, List.map_map, List.map_replicate, List.sum_replicate]
-  -- Goal: k • ((fun r : ℚ => ((↑r : ℝ) - 1) ^ α) (2 : ℚ)) = ↑k
-  simp only [Function.comp_apply, show ((2 : ℚ) : ℝ) - 1 = 1 from by push_cast; ring,
-             Real.one_rpow, nsmul_eq_mul, mul_one]
+  rw [h_alpha_as_map, divisorRatios_two_pow, List.map_replicate, List.sum_replicate, nsmul_eq_mul]
+  norm_num [Real.one_rpow]
 
 /-
 **Example: Small highly composite**

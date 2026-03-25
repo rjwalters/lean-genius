@@ -2,7 +2,7 @@
 
 **Problem**: For α > 1, is liminf h_α(n) bounded, where h_α(n) = Σ((d_{i+1}/dᵢ) - 1)^α?
 **Answer**: YES (Vose, 1984)
-**Status**: IN-PROGRESS (2 sorries, 2 axioms)
+**Status**: COMPLETE (0 sorries, 2 axioms)
 
 ## Current State
 
@@ -63,3 +63,33 @@
 - `src/data/proofs/erdos-1099/meta.json` (axiomCount: 3→2, sorries: 0→2)
 - `src/data/research/problems/erdos-1099-oq-01.json` (knowledge updated)
 - `research/problems/erdos-1099-oq-01/knowledge.md` (session added)
+
+## Session 2026-03-25 (Session 4) - Prove divisorRatios_two_pow (1→0 sorries)
+
+**Mode**: REVISIT (RICH knowledge, score 33)
+**Outcome**: completed (2A+1S → 2A+0S, all sorries eliminated)
+
+### What I Did
+- Proved `divisorRatios_two_pow`: consecutive divisor ratios of 2^k are all 2
+- Added `list_bind_pure_natCast`: normalize monadic ℕ→ℚ coercion
+- Added `h_alpha_as_map`: normalize h_alpha to avoid monadic ℚ→ℝ elaboration
+- Generalized `flatMap_singleton_eq_map` to work with arbitrary types
+- Fixed 4 pre-existing proof regressions caused by Lean 4 monadic coercion changes
+- Simplified `power_of_two_h_alpha` using the new normalization infrastructure
+
+### Key Findings
+- **Root cause of monadic form**: Lean 4 elaborates `(a : ℚ)` where `a : ℕ` as a type annotation (making a : ℚ), not a coercion. This causes zipWith to expect List ℚ inputs, triggering monadic List coercion.
+- **Fix pattern**: Normalize `(do let a ← l; pure ↑a)` to `l.map ↑` via `flatMap_singleton_eq_map`, then fuse maps with `List.map_map`.
+- **simp vs rw for let bindings**: `simp only [List.tail_cons]` handles `have/let` bindings in goals; `rw [List.tail_cons]` does not.
+- **List.ext_getElem approach**: Prove list equality element-wise. Custom `htail` helper converts `l.tail[i]` to `l[i+1]` (not in Lean 4 stdlib).
+- **field_simp for ℚ division**: `2^(n+1)/2^n = 2` cleanly handled by `rw [pow_succ]; push_cast; field_simp`.
+
+### Files Modified
+- `proofs/Proofs/Erdos1099Problem.lean` (~575→647 lines, +5 lemmas, -1 sorry, many proof fixes)
+- `src/data/proofs/erdos-1099/meta.json` (sorries: 1→0)
+- `src/data/research/problems/erdos-1099-oq-01.json` (knowledge updated)
+- `research/problems/erdos-1099-oq-01/knowledge.md` (session added)
+
+### Next Steps
+- Problem complete — 0 sorries, 2 axioms (Vose deep results)
+- No further work needed on this problem
