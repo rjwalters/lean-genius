@@ -189,7 +189,7 @@ Each ratio r_i = d_{i+1}/d_i ≥ 1 for sorted divisors.
 -/
 def divisorRatios (n : ℕ) : List ℚ :=
   let divs := sortedDivisors n
-  List.zipWith (fun a b => (a : ℚ) / (b : ℚ)) divs.tail divs
+  @List.zipWith ℕ ℕ ℚ (fun a b => (a : ℚ) / (b : ℚ)) divs.tail divs
 
 /--
 **The h_α function:**
@@ -199,7 +199,7 @@ This measures the total "gap" between consecutive divisors, with larger
 gaps penalized more heavily for larger α.
 -/
 noncomputable def h_alpha (α : ℝ) (n : ℕ) : ℝ :=
-  (divisorRatios n).map (fun r => ((r : ℝ) - 1) ^ α) |>.sum
+  @List.map ℚ ℝ (fun r => ((r : ℝ) - 1) ^ α) (divisorRatios n) |>.sum
 
 /-
 h_α(n) can be computed by summing over consecutive pairs.
@@ -261,7 +261,7 @@ theorem first_ratio_ge_two (n : ℕ) (hn : n ≥ 2) :
 /-- In a sorted list of positive naturals, consecutive division ratios are ≥ 1. -/
 private theorem zipWith_div_ge_one :
     ∀ (l : List ℕ), l.Pairwise (· ≤ ·) → (∀ x ∈ l, 0 < x) →
-    ∀ q ∈ List.zipWith (fun a b => (a : ℚ) / (b : ℚ)) l.tail l, (1 : ℚ) ≤ q := by
+    ∀ q ∈ @List.zipWith ℕ ℕ ℚ (fun a b => (a : ℚ) / (b : ℚ)) l.tail l, (1 : ℚ) ≤ q := by
   intro l
   induction l with
   | nil => simp
@@ -450,9 +450,10 @@ private theorem prime_ratio_mem (p : ℕ) (hp : Nat.Prime p) :
     exact (Nat.mem_divisors.mp this).1
   have hd2_eq : d₂ = p := (hp.eq_one_or_self_of_dvd d₂ hd2_dvd).resolve_left (by omega)
   subst hd2_eq
-  have : divisorRatios p = List.zipWith (fun a b => (↑a : ℚ) / ↑b)
-      (sortedDivisors p).tail (sortedDivisors p) := rfl
-  rw [this, heq, List.tail_cons, List.zipWith_cons_cons]
+  show (↑d₂ : ℚ) ∈ divisorRatios d₂
+  unfold divisorRatios
+  rw [heq]; dsimp only
+  rw [List.tail_cons, List.zipWith_cons_cons]
   simp [Nat.cast_one, div_one]
 
 /--
@@ -492,7 +493,7 @@ theorem prime_h_alpha_unbounded :
         have hsle := by
           apply List.single_le_sum hall
           simp only [List.mem_map]; exact ⟨_, hr, rfl⟩
-        simp only [Rat.cast_natCast] at hsle
+        have hfp : f (↑p : ℚ) = ((↑p : ℝ) - 1) ^ α := by simp [f, Rat.cast_natCast]
         linarith
     _ ≥ (p : ℝ) - 1 := by
         calc ((p : ℝ) - 1) ^ α
@@ -542,32 +543,45 @@ private theorem sortedDivisors_two_pow (k : ℕ) :
   exact hperm.eq_of_pairwise (fun _ _ _ _ h1 h2 => le_antisymm h1 h2)
     (sortedDivisors_sorted (2 ^ k)) hs₂
 
+/-- Aux: for consecutive powers of 2, the ratios are all 2. -/
+private theorem geo_ratios_aux :
+    ∀ (s k : ℕ),
+    @List.zipWith ℕ ℕ ℚ (fun a c => (↑a : ℚ) / ↑c)
+      ((List.range' (s + 1) k).map (HPow.hPow 2 : ℕ → ℕ))
+      ((2 : ℕ) ^ s :: (List.range' (s + 1) k).map (HPow.hPow 2 : ℕ → ℕ))
+    = List.replicate k (2 : ℚ) := by
+  intro s k
+  induction k generalizing s with
+  | zero => simp
+  | succ m ih =>
+    simp only [List.range'_succ, List.map_cons, List.zipWith_cons_cons, List.replicate_succ,
+               List.cons.injEq]
+    refine ⟨?_, ?_⟩
+    · push_cast
+      rw [pow_succ]
+      exact mul_div_cancel_left₀ _ (pow_ne_zero _ (by norm_num : (2 : ℚ) ≠ 0))
+    · exact ih (s + 1)
+
 /-- The consecutive divisor ratios of 2^k consist of k copies of 2.
 Each ratio d_{i+1}/d_i = 2^(i+1)/2^i = 2. -/
 private theorem divisorRatios_two_pow (k : ℕ) :
     divisorRatios (2 ^ k) = List.replicate k (2 : ℚ) := by
-  sorry -- via sortedDivisors_two_pow + zipWith computation
-
-private theorem flatMap_singleton_eq_map (f : ℚ → ℝ) (l : List ℚ) :
-    l.flatMap (fun a => [f a]) = l.map f := by
-  induction l with
-  | nil => rfl
-  | cons a t ih => simp [List.flatMap_cons, ih]
-
-private theorem list_bind_pure_ratCast (l : List ℚ) :
-    (do let a ← l; pure (↑a : ℝ)) = l.map (Rat.cast · : ℚ → ℝ) :=
-  flatMap_singleton_eq_map Rat.cast l
+  unfold divisorRatios
+  rw [sortedDivisors_two_pow]
+  rw [show List.range (k + 1) = 0 :: List.range' 1 k from by
+    rw [List.range_eq_range']; rfl]
+  simp only [List.map_cons, List.tail_cons]
+  have h := geo_ratios_aux 0 k
+  simp only [pow_zero, Nat.zero_add] at h
+  exact h
 
 set_option maxHeartbeats 1600000 in
 /-- For n = 2^k, h_α(2^k) = k since all k ratios equal 2 and (2-1)^α = 1^α = 1. -/
 theorem power_of_two_h_alpha (k : ℕ) (α : ℝ) (hα : α ≥ 1) :
     h_alpha α (2^k) = k := by
   delta h_alpha
-  rw [divisorRatios_two_pow]
-  -- Convert monadic do/pure to explicit map, fuse maps, compute on replicate
-  rw [list_bind_pure_ratCast, List.map_map, List.map_replicate, List.sum_replicate]
-  -- Goal: k • ((fun r : ℚ => ((↑r : ℝ) - 1) ^ α) (2 : ℚ)) = ↑k
-  simp only [Function.comp_apply, show ((2 : ℚ) : ℝ) - 1 = 1 from by push_cast; ring,
+  rw [divisorRatios_two_pow, List.map_replicate, List.sum_replicate]
+  simp only [show ((2 : ℚ) : ℝ) - 1 = 1 from by push_cast; ring,
              Real.one_rpow, nsmul_eq_mul, mul_one]
 
 /-
