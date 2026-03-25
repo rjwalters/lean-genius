@@ -200,6 +200,26 @@
       "targetId": "stirling-formula",
       "relationship": "related",
       "description": "Stirling's approximation $n! \\sim \\sqrt{2\\pi n}(n/e)^n$ is derived using FTC applied to $\\ln(n!) = \\sum \\ln k \\approx \\int_1^n \\ln x\\,dx = n\\ln n - n + 1$. FTC converts the discrete sum to an integral, and the correction terms (including the $\\sqrt{2\\pi n}$ factor from the Euler-Maclaurin formula) require repeated application of integration by parts — itself a consequence of FTC"
+    },
+    {
+      "targetId": "taylor-theorem",
+      "relationship": "extends",
+      "description": "Taylor's theorem expresses a function as a polynomial plus a remainder term $f(x) = \\sum_{k=0}^{n} f^{(k)}(a)(x-a)^k/k! + R_n(x)$. The integral form of the remainder $R_n(x) = \\int_a^x f^{(n+1)}(t)(x-t)^n/n!\\,dt$ is a direct application of the Fundamental Theorem of Calculus applied repeatedly."
+    },
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "extends",
+      "description": "The Lebesgue integral generalizes the Riemann integral appearing in FTC. The Lebesgue differentiation theorem and the absolutely continuous version of FTC ($F(b) - F(a) = \\int_a^b F'(x)\\,dx$ for absolutely continuous $F$) extend the Fundamental Theorem to the measure-theoretic setting."
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "applied-in",
+      "description": "Fourier coefficients $a_n = \\frac{1}{\\pi}\\int_{-\\pi}^{\\pi} f(x)\\cos(nx)\\,dx$ are computed via integration (FTC). Integration by parts — a direct consequence of FTC — shows that smoother functions have faster-decaying Fourier coefficients: $|\\hat{f}(n)| = O(n^{-k})$ when $f \\in C^k$."
+    },
+    {
+      "targetId": "lhopital",
+      "relationship": "related",
+      "description": "L'Hôpital's rule evaluates indeterminate limits $\\lim f(x)/g(x)$ via derivatives. Its proof uses the Cauchy mean value theorem, which is itself proved using Rolle's theorem — all of which are closely related to the Mean Value Theorem, a consequence of FTC."
     }
   ],
   "references": [
