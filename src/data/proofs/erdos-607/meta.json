@@ -100,7 +100,7 @@
       "startLine": 1,
       "endLine": 25,
       "summary": "Header: incidence signatures, $F(n)$ counting function, Szemerédi-Trotter solution, $\\$250$ prize",
-      "mathContext": "Mathematical content: Header: incidence signatures, $F(n)$ counting function, Szemerédi-Trotter solution, $\\$250$ prize"
+      "mathContext": "#607: incidence signatures. F(n)=distinct signature count."
     },
     {
       "id": "point-configurations",
@@ -108,7 +108,7 @@
       "startLine": 31,
       "endLine": 62,
       "summary": "`Point` ($\\mathbb{R}^2$), `PointConfig n` (injective $\\text{Fin}\\, n \\to \\text{Point}$), `Line` (two distinct points), `Line.contains` (parametric $p_1 + t(p_2 - p_1)$), `determinedLines`",
-      "mathContext": "Mathematical content: `Point` ($\\mathbb{R}^2$), `PointConfig n` (injective $\\text{Fin}\\, n \\to \\text{Point}$), `Line` (two distinct points), `Line.contains` (parametric $p_1 + t(p_2 - p_1)$), `determinedLines`"
+      "mathContext": "n distinct points in R^2."
     },
     {
       "id": "incidence-counts",
@@ -116,7 +116,7 @@
       "startLine": 63,
       "endLine": 76,
       "summary": "`incidenceCount` (points on a line), `incidenceSignature` (`Multiset ℕ`), `incidenceSet` (`Finset ℕ` ignoring multiplicities)",
-      "mathContext": "`incidenceCount` (points on a line), `incidenceSignature` (`Multiset $\\mathbb{N}$`), `incidenceSet` (`Finset $\\mathbb{N}$` ignoring multiplicities)"
+      "mathContext": "incidenceCount: points on a line. Signature: multiset of counts."
     },
     {
       "id": "f-function",
@@ -124,7 +124,7 @@
       "startLine": 77,
       "endLine": 86,
       "summary": "`F n` (distinct signatures) and `F_set n` (distinct incidence sets) counting achievable patterns",
-      "mathContext": "Mathematical content: `F n` (distinct signatures) and `F_set n` (distinct incidence sets) counting achievable patterns"
+      "mathContext": "F(n)=|distinct signatures|."
     },
     {
       "id": "conjecture-solution",
@@ -132,7 +132,7 @@
       "startLine": 87,
       "endLine": 96,
       "summary": "`ErdosConjecture607`: $F(n) \\leq \\exp(C\\sqrt{n})$; `szemeredi_trotter_607`: proved",
-      "mathContext": "Mathematical content: `ErdosConjecture607`: $F(n) \\leq \\exp(C\\sqrt{n})$; `szemeredi_trotter_607`: proved"
+      "mathContext": "Erdos: F(n)<=exp(C sqrt(n)). SOLVED."
     },
     {
       "id": "upper-bound",
@@ -140,7 +140,7 @@
       "startLine": 97,
       "endLine": 113,
       "summary": "Constraints: `incidence_at_least_two` ($\\geq 2$), `incidence_at_most_n` ($\\leq n$), `lines_at_most_binomial` ($\\leq \\binom{n}{2}$)",
-      "mathContext": "Mathematical content: Constraints: `incidence_at_least_two` ($\\geq 2$), `incidence_at_most_n` ($\\leq n$), `lines_at_most_binomial` ($\\leq \\binom{n}{2}$)"
+      "mathContext": "Upper: partition + Szemeredi-Trotter constraints."
     },
     {
       "id": "lower-bound",
@@ -148,7 +148,7 @@
       "startLine": 114,
       "endLine": 124,
       "summary": "`LowerBoundConjecture`: $F(n) \\geq \\exp(c\\sqrt{n})$; `lower_bound_construction`: explicit configurations achieve this",
-      "mathContext": "Bound: `LowerBoundConjecture`: $F(n) \\geq \\exp(c\\sqrt{n})$; `lower_bound_construction`: explicit configurations achieve this"
+      "mathContext": "Lower: F(n)>=exp(c sqrt(n)). Grid constructions."
     },
     {
       "id": "special-configs",
@@ -156,7 +156,7 @@
       "startLine": 125,
       "endLine": 150,
       "summary": "`collinearConfig` ($A = \\{n\\}$), `generalPositionConfig` ($A = \\{2\\}$), `gridConfig` (intermediate $A$ with multiple values)",
-      "mathContext": "Mathematical content: `collinearConfig` ($A = \\{n\\}$), `generalPositionConfig` ($A = \\{2\\}$), `gridConfig` (intermediate $A$ with multiple values)"
+      "mathContext": "Collinear: {n}. General position: {2,...,2}."
     },
     {
       "id": "sz-trotter",
@@ -164,7 +164,7 @@
       "startLine": 151,
       "endLine": 164,
       "summary": "`szemeredi_trotter_incidence`: $I \\leq O((nm)^{2/3} + n + m)$; `incidence_bound_constrains_signature`",
-      "mathContext": "`szemeredi_trotter_incidence`: $I \\leq $O((nm)$^{2/3} + n + m)$; `incidence_bound_constrains_signature`"
+      "mathContext": "ST bound controls signature shapes."
     },
     {
       "id": "partitions",
@@ -172,7 +172,7 @@
       "startLine": 165,
       "endLine": 181,
       "summary": "`incidence_sum_constraint` ($\\sum \\binom{k_i}{2} = \\binom{n}{2}$), `partition_count_growth`: $\\exp(\\Theta(\\sqrt{n}))$ from Hardy-Ramanujan asymptotics",
-      "mathContext": "Mathematical content: `incidence_sum_constraint` ($\\sum \\binom{k_i}{2} = \\binom{n}{2}$), `partition_count_growth`: $\\exp(\\Theta(\\sqrt{n}))$ from Hardy-Ramanujan asymptotics"
+      "mathContext": "Sum C(k_i,2)=C(n,2). Constrained partition."
     },
     {
       "id": "main-results",
@@ -180,7 +180,7 @@
       "startLine": 182,
       "endLine": 203,
       "summary": "`erdos_607`: both bounds hold; `erdos_607_tight`: $\\exp(c\\sqrt{n}) \\leq F(n) \\leq \\exp(C\\sqrt{n})$",
-      "mathContext": "Bound: `erdos_607`: both bounds hold; `erdos_607_tight`: $\\exp(c\\sqrt{n}) \\leq F(n) \\leq \\exp(C\\sqrt{n})$"
+      "mathContext": "SOLVED: exp(c sqrt(n))<=F(n)<=exp(C sqrt(n))."
     }
   ],
   "conclusion": {

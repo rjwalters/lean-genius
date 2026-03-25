@@ -77,8 +77,11 @@
       "**Density:** Common values have positive lower density"
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Number theory (primes, divisibility)"
+      "Euler totient phi(n)",
+      "Sum of divisors sigma(n)",
+      "Multiplicative function images",
+      "Ford density estimates",
+      "Twin prime connections"
     ]
   },
   "sections": [
@@ -88,7 +91,7 @@
       "summary": "sumDivisors definition, notation, Euler's totient from Mathlib",
       "startLine": 40,
       "endLine": 70,
-      "mathContext": "Formal definition: sumDivisors definition, notation, Euler's totient from Mathlib"
+      "mathContext": "phi(n)=Euler totient. sigma(m)=sum of divisors. Both multiplicative."
     },
     {
       "id": "basic-properties",
@@ -96,7 +99,7 @@
       "summary": "sumDivisors_one, sumDivisors_prime, totient_prime, totient_lt",
       "startLine": 71,
       "endLine": 101,
-      "mathContext": "Mathematical content: sumDivisors_one, sumDivisors_prime, totient_prime, totient_lt"
+      "mathContext": "sigma(1)=1, sigma(p)=p+1. phi(p)=p-1. phi(n)<n for n>1."
     },
     {
       "id": "pair-sets",
@@ -104,7 +107,7 @@
       "summary": "totientSigmaPairs, commonValues, commonValues_iff",
       "startLine": 102,
       "endLine": 130,
-      "mathContext": "Mathematical content: totientSigmaPairs, commonValues, commonValues_iff"
+      "mathContext": "Common values: Im(phi) intersect Im(sigma). Infinitely many?"
     },
     {
       "id": "examples",
@@ -112,7 +115,7 @@
       "summary": "pair_5_3, pair_2_1, pair_7_5, pair_13_11, pair_13_6",
       "startLine": 131,
       "endLine": 216,
-      "mathContext": "Mathematical content: pair_5_3, pair_2_1, pair_7_5, pair_13_11, pair_13_6"
+      "mathContext": "phi(3)=2=sigma(1). phi(7)=6=sigma(5). phi(13)=12=sigma(11)."
     },
     {
       "id": "ford-luca-pomerance",
@@ -120,7 +123,7 @@
       "summary": "ford_luca_pomerance axiom, erdos_48 main theorem",
       "startLine": 217,
       "endLine": 243,
-      "mathContext": "Verified: ford_luca_pomerance axiom, erdos_48 main theorem"
+      "mathContext": "SOLVED: infinitely many (n,m) with phi(n)=sigma(m)."
     },
     {
       "id": "garaev",
@@ -128,7 +131,7 @@
       "summary": "garaev_improvement axiom with stronger density bounds",
       "startLine": 244,
       "endLine": 263,
-      "mathContext": "Axiomatized: garaev_improvement axiom with stronger density bounds"
+      "mathContext": "Garaev: stronger density bounds on solutions up to x."
     },
     {
       "id": "twin-primes",
@@ -136,7 +139,7 @@
       "summary": "twin_prime_gives_pair, twin_prime_implies_erdos_48",
       "startLine": 264,
       "endLine": 295,
-      "mathContext": "Mathematical content: twin_prime_gives_pair, twin_prime_implies_erdos_48"
+      "mathContext": "Twin primes p,p+2: phi(p+2)=p+1=sigma(p)."
     },
     {
       "id": "special-cases",
@@ -144,7 +147,7 @@
       "summary": "prime_pair_condition, Sophie Germain, perfect numbers",
       "startLine": 296,
       "endLine": 335,
-      "mathContext": "Mathematical content: prime_pair_condition, Sophie Germain, perfect numbers"
+      "mathContext": "Sophie Germain primes, perfect numbers give phi-sigma pairs."
     },
     {
       "id": "value-distribution",
@@ -152,7 +155,7 @@
       "summary": "totientRange, sigmaRange, common values 1, 4, 6, 12",
       "startLine": 336,
       "endLine": 402,
-      "mathContext": "Mathematical content: totientRange, sigmaRange, common values 1, 4, 6, 12"
+      "mathContext": "Range of phi: density ~ C/sqrt(log x) (Ford)."
     },
     {
       "id": "multiplicativity",
@@ -160,7 +163,7 @@
       "summary": "sumDivisors_multiplicative, totient_multiplicative",
       "startLine": 403,
       "endLine": 423,
-      "mathContext": "Mathematical content: sumDivisors_multiplicative, totient_multiplicative"
+      "mathContext": "sigma multiplicative: sigma(mn)=sigma(m)sigma(n) for gcd(m,n)=1."
     },
     {
       "id": "main-results",
@@ -168,7 +171,7 @@
       "summary": "erdos_48_summary, erdos_48_answer, at_least_five_pairs",
       "startLine": 424,
       "endLine": 471,
-      "mathContext": "Mathematical content: erdos_48_summary, erdos_48_answer, at_least_five_pairs"
+      "mathContext": "SOLVED: infinitely many common values of phi and sigma."
     }
   ],
   "conclusion": {
