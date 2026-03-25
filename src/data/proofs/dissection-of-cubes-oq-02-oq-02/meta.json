@@ -59,7 +59,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The Dehn invariant D(P) = \u03a3_e len(e) \u2297 [\u03b8(e)] \u2208 \u211d \u2297_\u2124 (\u211d/\u03c0\u2124) was introduced by Max Dehn in 1900 to prove that equal-volume polyhedra need not be scissors congruent. The tensor product formulation is essential: it automatically kills rational multiples of \u03c0 (because \u211d is a divisible \u2124-module) while preserving irrational ones. Sydler (1965) proved the stunning converse: volume + Dehn invariant completely characterize scissors congruence in \u211d\u00b3.",
+    "historicalContext": "At the 1900 International Congress of Mathematicians, David Hilbert posed 23 problems that would shape 20th-century mathematics. His Third Problem asked: can two polyhedra of equal volume always be cut into congruent pieces? In 2D, the Bolyai-Gerwien theorem (1833) answers yes \u2014 equal area suffices for scissors congruence. But Hilbert expected the 3D answer to be no, and his student Max Dehn proved him right within the year.\n\nDehn's 1900 proof introduced the invariant $D(P) = \\sum_e \\ell(e) \\otimes [\\theta(e)] \\in \\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Z})$, where $\\ell(e)$ is edge length and $\\theta(e)$ is dihedral angle. The tensor product formulation is essential: it automatically kills rational multiples of $\\pi$ (because $\\mathbb{R}$ is a divisible $\\mathbb{Z}$-module, so torsion vanishes in the tensor product) while preserving irrational ones. Since the cube has $D = 0$ (all dihedral angles are $\\pi/2$, a rational multiple of $\\pi$) but the regular tetrahedron has $D \\neq 0$ (its dihedral angle $\\arccos(1/3)$ is an irrational multiple of $\\pi$ by Niven's theorem), they cannot be scissors congruent despite having equal volume.\n\nFor 65 years, the converse remained open: does $D(P) = D(Q)$ together with $\\text{Vol}(P) = \\text{Vol}(Q)$ guarantee scissors congruence? Jean-Pierre Sydler proved this stunning sufficiency in 1965, using an intricate analysis of orthogonal prisms. B\u00f8rge Jessen simplified Sydler's proof in 1968 using homological methods, and later (1972) extended the result to $\\mathbb{R}^4$ with C.H. Dupont and M. Sah. For $n \\geq 5$, additional Dehn-type invariants may be needed, and the complete classification of scissors congruence remains open \u2014 a question connected to algebraic K-theory via the Casson invariant and Bloch's conjecture.",
     "problemStatement": "Formalize the Dehn-Sydler completeness theorem: two polyhedra in \u211d\u00b3 are scissors congruent if and only if they have equal volume and equal Dehn invariant D(P) \u2208 \u211d \u2297_\u2124 (\u211d/\u03c0\u2124). The proof uses the proper tensor product definition of the Dehn invariant, leveraging the divisibility of \u211d as a \u2124-module to prove that rational-multiple-of-\u03c0 dihedral angles automatically vanish.",
     "text": "Formalizes the algebraic Dehn invariant D(P) \u2208 \u211d \u2297_\u2124 (\u211d/\u03c0\u2124) using Mathlib tensor products. Proves the key structural theorem that rational angles vanish in the tensor product, computes D for cube (0), tetrahedron (\u22600), and octahedron (\u22600), and states the Dehn-Sydler completeness theorem.",
     "proofStrategy": "The file constructs the Dehn invariant group as TensorProduct \u2124 \u211d (\u211d \u29f8 AddSubgroup.zmultiples \u03c0). The central theorem tmul_torsion_eq_zero proves that if x \u2208 \u211d/\u03c0\u2124 has finite order (n\u2022x = 0), then r\u2297x = 0, using the divisibility of \u211d: r = n\u2022(r/n), so r\u2297x = (r/n)\u2297(n\u2022x) = (r/n)\u22970 = 0. This immediately gives rational_angle_vanishes: for q \u2208 \u211a, q.den\u2022[q\u03c0] = [q.num\u2022\u03c0] = 0, so r\u2297[q\u03c0] = 0. For the tetrahedron, Niven's theorem shows arccos(1/3)/\u03c0 is irrational, giving infinite order in \u211d/\u03c0\u2124, and flatness of \u211d over \u2124 ensures the tensor product element is nonzero.",
@@ -68,8 +68,212 @@
       "The proof that rational angles vanish uses a beautiful algebraic argument: \u211d is divisible as a \u2124-module, so torsion elements of \u211d/\u03c0\u2124 are killed in the tensor product",
       "The cube's zero Dehn invariant follows from \u03c0/2 being a rational multiple of \u03c0, while the tetrahedron's nonzero invariant comes from Niven's theorem (arccos(1/3)/\u03c0 is irrational)",
       "The octahedron's Dehn invariant equals the negative of the tetrahedron's, since arccos(-1/3) = \u03c0 - arccos(1/3) and [\u03c0] = 0 in \u211d/\u03c0\u2124",
-      "Dehn-Sydler completeness (1965) says volume + Dehn invariant are the COMPLETE scissors congruence invariants in \u211d\u00b3, contrasting with 2D where volume alone suffices"
+      "Dehn-Sydler completeness (1965) says volume + Dehn invariant are the COMPLETE scissors congruence invariants in \u211d\u00b3, contrasting with 2D where volume alone suffices",
+      "The torsion vanishing proof is a textbook instance of the general principle: tensoring with a divisible (= flat) $\\mathbb{Z}$-module kills all torsion elements. This is why $\\mathbb{R} \\otimes_{\\mathbb{Z}} M$ detects only the free part of $M$.",
+      "Space-filling polyhedra (cube, rectangular box, triangular prism, hexagonal prism) all have rational-multiple-of-$\\pi$ dihedral angles, so $D = 0$ for all of them \u2014 consistent with Dehn-Sydler, since equal-volume space-fillers are scissors congruent to each other",
+      "The 2D/3D contrast is structural: polygon triangulations produce only integer-multiple-of-$\\pi$ angles (torsion, vanishes), so the Dehn invariant is trivially zero \u2014 area alone classifies 2D scissors congruence (Bolyai-Gerwien). In 3D, irrational dihedral angles create a genuinely new obstruction"
+    ],
+    "prerequisites": [
+      "Tensor products over $\\mathbb{Z}$ (bilinearity, torsion behavior)",
+      "Quotient groups ($\\mathbb{R}/\\pi\\mathbb{Z}$)",
+      "Divisible and flat $\\mathbb{Z}$-modules",
+      "Niven's theorem (rationality of trigonometric values)",
+      "Polyhedra: dihedral angles, edge lengths, scissors congruence"
     ]
   },
-  "sections": []
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "Module docstring describing the Dehn-Sydler completeness theorem and key results. Imports Mathlib for tensor products, quotient groups, and trigonometry. Opens the `DehnSydler` namespace.",
+      "mathContext": "The four key Mathlib components: `TensorProduct` for $\\mathbb{R} \\otimes_{\\mathbb{Z}} M$, `QuotientAddGroup` for $\\mathbb{R}/\\pi\\mathbb{Z}$, `AddSubgroup.zmultiples` for $\\pi\\mathbb{Z}$, and `Real.arccos` for dihedral angle computation."
+    },
+    {
+      "id": "angle-quotient",
+      "title": "Part I: The Angle Quotient Group \u211d/\u03c0\u2124",
+      "startLine": 34,
+      "endLine": 50,
+      "summary": "Defines `piMultiples` ($\\pi\\mathbb{Z} \\subset \\mathbb{R}$), `AngleQuot` ($\\mathbb{R}/\\pi\\mathbb{Z}$), and `angleClass` ($\\theta \\mapsto [\\theta]$). The quotient identifies angles differing by integer multiples of $\\pi$.",
+      "mathContext": "$\\mathbb{R}/\\pi\\mathbb{Z}$ is the natural codomain for dihedral angles in the Dehn invariant: two angles that differ by $n\\pi$ contribute identically to scissors congruence (since cutting along a plane creates paired edges with angles summing to $\\pi$)."
+    },
+    {
+      "id": "angle-properties",
+      "title": "Part II: Properties of \u211d/\u03c0\u2124",
+      "startLine": 52,
+      "endLine": 83,
+      "summary": "Four algebraic properties: $[n\\pi] = 0$, $[\\pi] = 0$, $n \\cdot [\\theta] = [n\\theta]$, and the torsion characterization $n \\cdot [\\theta] = 0 \\iff n\\theta \\in \\pi\\mathbb{Z}$. These are the quotient group axioms needed for the vanishing argument.",
+      "mathContext": "The key structural fact: $[\\theta]$ has finite order in $\\mathbb{R}/\\pi\\mathbb{Z}$ iff $\\theta/\\pi \\in \\mathbb{Q}$. Rational-multiple-of-$\\pi$ angles are torsion; irrational-multiple-of-$\\pi$ angles have infinite order."
+    },
+    {
+      "id": "dehn-group",
+      "title": "Part III: The Dehn Invariant Group \u211d \u2297_\u2124 (\u211d/\u03c0\u2124)",
+      "startLine": 84,
+      "endLine": 97,
+      "summary": "Defines `DehnGroup` as `TensorProduct \u2124 \u211d AngleQuot` and `edgeTerm` for individual edge contributions $\\ell \\otimes [\\theta]$. The $\\mathbb{Z}$-bilinearity relation $(n \\cdot r) \\otimes x = r \\otimes (n \\cdot x)$ is the engine that kills torsion.",
+      "mathContext": "$\\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Z})$: the tensor product over $\\mathbb{Z}$ is the correct algebraic setting. The relation $(nr) \\otimes x = r \\otimes (nx)$ transfers scaling between factors, enabling the divisibility argument."
+    },
+    {
+      "id": "rational-vanishing",
+      "title": "Part IV: Rational Angle Vanishing",
+      "startLine": 99,
+      "endLine": 150,
+      "summary": "The algebraic core: `real_zsmul_div` (divisibility of $\\mathbb{R}$), `tmul_torsion_eq_zero` (torsion vanishes in tensor product), and `rational_angle_vanishes` ($r \\otimes [q\\pi] = 0$ for $q \\in \\mathbb{Q}$). The central proof: $r = n \\cdot (r/n)$, so $r \\otimes x = (r/n) \\otimes (nx) = (r/n) \\otimes 0 = 0$.",
+      "mathContext": "This is the key structural theorem: $\\mathbb{R}$ is divisible as a $\\mathbb{Z}$-module (every element is $n$-divisible for all $n \\neq 0$), which means $\\mathbb{R} \\otimes_{\\mathbb{Z}} T = 0$ for any torsion $\\mathbb{Z}$-module $T$. Applied to the torsion subgroup of $\\mathbb{R}/\\pi\\mathbb{Z}$, this kills all rational-angle edge contributions."
+    },
+    {
+      "id": "special-angles-cube",
+      "title": "Part V: Special Angles and Cube Dehn Invariant",
+      "startLine": 152,
+      "endLine": 180,
+      "summary": "Corollaries: edges with $\\pi/2$, $\\pi$, or $\\pi/3$ dihedral angles contribute zero. `cube_dehn_zero`: $D(\\text{cube}) = 0$ since all 12 cube edges have angle $\\pi/2 = (1/2)\\pi$.",
+      "mathContext": "$D(\\text{cube}) = 12a \\otimes [\\pi/2] = 0$ because $\\pi/2$ is rational $\\times \\pi$, hence $[\\pi/2]$ is torsion in $\\mathbb{R}/\\pi\\mathbb{Z}$ (order 2), and torsion vanishes."
+    },
+    {
+      "id": "irrational-angles",
+      "title": "Part VI: Irrational Angles and Infinite Order",
+      "startLine": 182,
+      "endLine": 211,
+      "summary": "Defines `tetAngle = arccos(1/3)`. Axiom `niven_arccos_third`: $\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$ (proved in parent file). Theorem `tetAngle_infinite_order`: $[\\arccos(1/3)]$ has infinite order in $\\mathbb{R}/\\pi\\mathbb{Z}$. Axiom `tmul_infinite_order_ne_zero`: flatness of $\\mathbb{R}$ over $\\mathbb{Z}$ ensures nonzero elements persist.",
+      "mathContext": "Niven's theorem (1956): the only rational values of $\\arccos(q)$ for $q \\in \\mathbb{Q}$ that are rational multiples of $\\pi$ are $q \\in \\{0, \\pm 1/2, \\pm 1\\}$. Since $1/3 \\notin \\{0, \\pm 1/2, \\pm 1\\}$, $\\arccos(1/3)/\\pi$ is irrational."
+    },
+    {
+      "id": "tetrahedron-nonzero",
+      "title": "Part VII: Tetrahedron Dehn Invariant is Nonzero",
+      "startLine": 213,
+      "endLine": 227,
+      "summary": "`tet_dehn_ne_zero`: $D(\\text{tet}) = 6a \\otimes [\\arccos(1/3)] \\neq 0$ for $a > 0$. Uses infinite order of $[\\arccos(1/3)]$ plus flatness axiom.",
+      "mathContext": "$D(\\text{tet}) = 6a \\otimes [\\arccos(1/3)] \\neq 0$ because: (1) $[\\arccos(1/3)]$ has infinite order (Niven), (2) $6a \\neq 0$ for $a > 0$, (3) $\\mathbb{R}$ is flat over $\\mathbb{Z}$, so the tensor product element is nonzero."
+    },
+    {
+      "id": "hilbert-third",
+      "title": "Part VIII: Hilbert's Third Problem",
+      "startLine": 229,
+      "endLine": 244,
+      "summary": "`hilbert_third_problem`: $D(\\text{cube}) = 0 \\neq D(\\text{tet})$, so the cube and regular tetrahedron are not scissors congruent. Four-line proof by contradiction.",
+      "mathContext": "$D(\\text{cube}) = 0$ and $D(\\text{tet}) \\neq 0$ immediately give $D(\\text{cube}) \\neq D(\\text{tet})$, so by Dehn's theorem (scissors congruence preserves $D$), the cube and tetrahedron are not scissors congruent \u2014 answering Hilbert's Third Problem."
+    },
+    {
+      "id": "octahedron",
+      "title": "Part IX: Octahedron Computation",
+      "startLine": 246,
+      "endLine": 283,
+      "summary": "Octahedron dihedral angle $\\arccos(-1/3) = \\pi - \\arccos(1/3)$ gives $[\\arccos(-1/3)] = -[\\arccos(1/3)]$ in $\\mathbb{R}/\\pi\\mathbb{Z}$. Therefore $D(\\text{oct}) = -D(\\text{tet}) \\neq 0$.",
+      "mathContext": "The identity $\\arccos(-x) = \\pi - \\arccos(x)$ gives $[\\arccos(-1/3)] = [\\pi] - [\\arccos(1/3)] = -[\\arccos(1/3)]$ since $[\\pi] = 0$. So octahedron and tetrahedron Dehn invariants differ only by sign."
+    },
+    {
+      "id": "completeness",
+      "title": "Part X: Dehn-Sydler Completeness Theorem",
+      "startLine": 285,
+      "endLine": 333,
+      "summary": "States the Dehn-Sydler completeness theorem as an axiom: $P \\cong_{\\text{sc}} Q \\iff \\text{Vol}(P) = \\text{Vol}(Q) \\wedge D(P) = D(Q)$. Includes placeholder axioms for scissors congruence preservation of Dehn invariant and volume.",
+      "mathContext": "Sydler's sufficiency proof (1965) is one of the hardest results in elementary geometry. It requires showing that any two polyhedra with equal volume and Dehn invariant can be related by a finite sequence of cuts and reassemblies \u2014 an intricate inductive argument on orthogonal prism decompositions."
+    },
+    {
+      "id": "2d-contrast",
+      "title": "Part XI: 2D Contrast and Rational-Angle Polyhedra",
+      "startLine": 335,
+      "endLine": 365,
+      "summary": "`polygon_angle_trivial`: 2D Dehn invariant is always zero (polygon angles after triangulation are integer multiples of $\\pi$). `dehn_zero_of_rational_angles`: any polyhedron with only rational-$\\times$-$\\pi$ dihedral angles has $D = 0$, covering all space-filling polyhedra.",
+      "mathContext": "In 2D, area alone classifies scissors congruence (Bolyai-Gerwien, 1833). The jump to 3D introduces the Dehn invariant as a genuinely new obstruction. For $n \\geq 4$, additional invariants may be needed \u2014 the complete classification is open."
+    },
+    {
+      "id": "summary",
+      "title": "Part XII: Axiom Budget and Type-Checking Summary",
+      "startLine": 367,
+      "endLine": 406,
+      "summary": "Documents the 6 axioms (4 substantive + 2 placeholder) and 7 key proved results. `#check` commands verify all theorems type-check. Closes the `DehnSydler` namespace.",
+      "mathContext": "Axiom budget: `niven_arccos_third` (proved in parent file), `tmul_infinite_order_ne_zero` (flatness), `arccos_neg_third` (trig identity), `dehn_sydler_theorem` (Sydler 1965), plus 2 scissors congruence preservation placeholders."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization constructs the mathematically proper Dehn invariant $D(P) \\in \\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Z})$ using Mathlib's tensor product infrastructure and proves Hilbert's Third Problem: the cube and regular tetrahedron are not scissors congruent. The central algebraic argument \u2014 that divisibility of $\\mathbb{R}$ as a $\\mathbb{Z}$-module kills torsion elements in the tensor product \u2014 cleanly separates rational-angle polyhedra (zero Dehn invariant) from irrational-angle ones (nonzero Dehn invariant).",
+    "implications": "**Theoretical Significance**: The Dehn invariant and Dehn-Sydler theorem have deep connections to modern mathematics:\n\n1. **Complete invariants in 3D**: Volume and Dehn invariant together completely classify scissors congruence in $\\mathbb{R}^3$. This is a rare example of a complete set of invariants for a geometric equivalence relation.\n\n2. **Algebraic K-theory**: Scissors congruence groups are related to the third algebraic K-group $K_3(\\mathbb{C})$ via work of Dupont-Sah and Goncharov. The Dehn invariant appears as a boundary map in the Bloch-Wigner exact sequence.\n\n3. **Hyperbolic geometry**: The Dehn invariant generalizes to hyperbolic 3-manifolds, where it connects to the Cheeger-Chern-Simons invariant. Neumann and Zagier showed that scissors congruence of hyperbolic polyhedra is related to values of the dilogarithm function.\n\n4. **Higher dimensions**: The 4D analogue was proved by Jessen-Dupont-Sah (1972), but for $n \\geq 5$ the complete set of scissors congruence invariants remains unknown.\n\n5. **Hilbert's legacy**: Hilbert's Third Problem was the first of his 23 problems to be solved (by Dehn, in the same year it was posed). It remains one of the few Hilbert problems with a complete, elementary answer.",
+    "openQuestions": [
+      "Can the `tmul_infinite_order_ne_zero` axiom (flatness of $\\mathbb{R}$ over $\\mathbb{Z}$) be proved from Mathlib's existing infrastructure? This requires showing that $\\mathbb{R}$, being torsion-free over a PID, is flat.",
+      "Can Sydler's sufficiency proof (equal volume + equal Dehn invariant implies scissors congruent) be formalized in Lean? The proof involves an intricate inductive argument on orthogonal prism decompositions.",
+      "The `arccos_neg_third` axiom ($\\arccos(-1/3) = \\pi - \\arccos(1/3)$) should be provable from Mathlib's trigonometric identities. Can it be eliminated?",
+      "Can the formalization be extended to compute Dehn invariants for more polyhedra (icosahedron, dodecahedron) and determine their scissors congruence classes?",
+      "What is the complete set of scissors congruence invariants in $\\mathbb{R}^n$ for $n \\geq 5$? The connection to algebraic K-theory suggests deep invariants beyond volume and Dehn-type obstructions."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "dissection-of-cubes",
+      "relationship": "parent",
+      "description": "The root entry in this family, introducing scissors congruence and the basic Dehn invariant concept"
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-02",
+      "relationship": "parent",
+      "description": "Proves Niven's theorem for arccos(1/3)/\u03c0 via Chebyshev polynomial recurrence \u2014 the key irrationality result used as an axiom in this file"
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-01",
+      "relationship": "sibling",
+      "description": "Alternative approach to the Dehn invariant in the same proof family"
+    },
+    {
+      "targetId": "hilbert-3",
+      "relationship": "related",
+      "description": "The gallery's direct entry for Hilbert's Third Problem \u2014 this file provides the tensor-product algebraic proof"
+    },
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "related",
+      "description": "Euler's polyhedral formula $V - E + F = 2$ provides the combinatorial foundation for polyhedra, complementing the metric invariants (volume, Dehn) used here"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Dehn, Max",
+      "title": "\u00dcber den Rauminhalt",
+      "year": "1900",
+      "venue": "Mathematische Annalen, 55(3), pp. 465\u2013478",
+      "note": "Introduced the Dehn invariant and proved Hilbert's Third Problem: the cube and regular tetrahedron are not scissors congruent, despite having equal volume"
+    },
+    {
+      "authors": "Sydler, Jean-Pierre",
+      "title": "Conditions n\u00e9cessaires et suffisantes pour l'\u00e9quivalence des poly\u00e8dres de l'espace euclidien \u00e0 trois dimensions",
+      "year": "1965",
+      "venue": "Commentarii Mathematici Helvetici, 40, pp. 43\u201380",
+      "note": "Proved the stunning converse: equal volume and equal Dehn invariant suffice for scissors congruence in \u211d\u00b3"
+    },
+    {
+      "authors": "Jessen, B\u00f8rge",
+      "title": "The algebra of polyhedra and the Dehn-Sydler theorem",
+      "year": "1968",
+      "venue": "Mathematica Scandinavica, 22, pp. 241\u2013256",
+      "note": "Simplified Sydler's proof using homological methods"
+    },
+    {
+      "authors": "Dupont, Johan L.; Sah, Chih-Han",
+      "title": "Scissors congruences, II",
+      "year": "1982",
+      "venue": "Journal of Pure and Applied Algebra, 25(2), pp. 159\u2013195",
+      "note": "Extended Dehn-Sydler to dimension 4 and connected scissors congruence to algebraic K-theory"
+    },
+    {
+      "authors": "Niven, Ivan",
+      "title": "Irrational Numbers",
+      "year": "1956",
+      "venue": "Carus Mathematical Monographs No. 11, MAA",
+      "note": "Contains the theorem that arccos(q) for rational q is a rational multiple of \u03c0 only for q \u2208 {0, \u00b11/2, \u00b11} \u2014 the irrationality result underlying the tetrahedron's nonzero Dehn invariant"
+    },
+    {
+      "authors": "Hilbert, David",
+      "title": "Mathematical Problems",
+      "year": "1900",
+      "venue": "Bulletin of the American Mathematical Society, 8(10), pp. 437\u2013479",
+      "note": "The address posing 23 problems. Problem 3 asks whether equal-volume polyhedra are always scissors congruent \u2014 resolved negatively by Dehn in the same year"
+    },
+    {
+      "authors": "Cartier, Pierre",
+      "title": "D\u00e9composition des poly\u00e8dres: le point sur le troisi\u00e8me probl\u00e8me de Hilbert",
+      "year": "1986",
+      "venue": "S\u00e9minaire Bourbaki, Expos\u00e9 646",
+      "note": "A comprehensive survey of Hilbert's Third Problem, the Dehn-Sydler theorem, and connections to algebraic K-theory"
+    }
+  ]
 }

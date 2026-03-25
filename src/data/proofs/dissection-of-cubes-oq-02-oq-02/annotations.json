@@ -90,10 +90,10 @@
     "type": "theorem",
     "title": "Hilbert's Third Problem: Cube ≇ Tetrahedron",
     "content": "`hilbert_third_problem`: $D(\\text{cube}) = 0 \\neq D(\\text{tetrahedron})$, so the cube and tetrahedron are not scissors congruent. This answers Hilbert's Third Problem (1900) negatively. The proof is four lines: assume equality, substitute $D(\\text{cube}) = 0$, contradict $D(\\text{tet}) \\neq 0$.",
-    "mathContext": "$D(\\text{cube}) = 0$ and $D(\\text{tet}) \\neq 0 \\Rightarrow D(\\text{cube}) \\neq D(\\text{tet})$.",
+    "mathContext": "$D(\\text{cube}) = 0$ and $D(\\text{tet}) \\neq 0 \\Rightarrow D(\\text{cube}) \\neq D(\\text{tet})$.\n\nHilbert's Third Problem (1900): Are two polyhedra of equal volume always scissors congruent? Dehn answered no: since scissors congruence preserves $D$ and $D(\\text{cube}) \\neq D(\\text{tet})$, no finite decomposition can transform one into the other. This was the first of Hilbert's 23 problems to be solved.",
     "significance": "key",
     "prerequisites": ["cube_dehn_zero", "tet_dehn_ne_zero"],
-    "relatedConcepts": ["Hilbert's Third Problem", "scissors congruence invariant"]
+    "relatedConcepts": ["Hilbert's Third Problem", "scissors congruence invariant", "Dehn's theorem (1900)"]
   },
   {
     "id": "ann-octahedron",
@@ -114,10 +114,10 @@
     "type": "concept",
     "title": "Dehn-Sydler Completeness and 2D Contrast",
     "content": "The Dehn-Sydler completeness theorem ($P \\cong_{\\text{sc}} Q \\iff \\text{Vol}(P) = \\text{Vol}(Q) \\wedge D(P) = D(Q)$) is axiomatized. `dehn_zero_of_rational_angles` proves that any polyhedron with only rational-multiple-of-$\\pi$ angles has $D = 0$, covering all space-filling polyhedra.\n\n`polygon_angle_trivial` explains the 2D contrast: all polygon angles after triangulation are integer multiples of $\\pi$, so $D$ is always zero in 2D — volume (area) is the sole invariant (Bolyai-Gerwien 1833).",
-    "mathContext": "2D: area alone classifies scissors congruence (Bolyai-Gerwien). 3D: volume + Dehn invariant (Dehn-Sydler). $n \\geq 4$: open — additional invariants may be needed.",
+    "mathContext": "The scissors congruence invariants by dimension:\n- $n = 2$: Area alone (Bolyai-Gerwien, 1833)\n- $n = 3$: Volume + Dehn invariant (Dehn 1900, Sydler 1965)\n- $n = 4$: Volume + Dehn-type invariant (Jessen-Dupont-Sah, 1972)\n- $n \\geq 5$: Open \u2014 connected to algebraic K-theory ($K_3(\\mathbb{C})$, Bloch-Wigner sequence)\n\nThe `dehn_zero_of_rational_angles` theorem is proved by structural induction on the edge list, applying `rational_angle_vanishes` to each edge.",
     "significance": "key",
     "prerequisites": ["rational_angle_vanishes", "Bolyai-Gerwien theorem"],
-    "relatedConcepts": ["complete invariants", "Bolyai-Gerwien theorem", "higher-dimensional scissors congruence"]
+    "relatedConcepts": ["complete invariants", "Bolyai-Gerwien theorem", "higher-dimensional scissors congruence", "algebraic K-theory"]
   },
   {
     "id": "ann-summary",
