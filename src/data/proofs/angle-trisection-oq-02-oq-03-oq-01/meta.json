@@ -227,7 +227,45 @@
     "namespace": "AngleTrisectionOQ02OQ03OQ01",
     "lineCount": 740,
     "axiomCount": 0,
-    "theoremCount": 41,
-    "definitionCount": 0
+    "theoremCount": 32,
+    "definitionCount": 9,
+    "mainTheorems": [
+      {
+        "name": "maximal_real_subfield_degree",
+        "type": "core",
+        "description": "For n >= 3, there exists an intermediate field F of Q(zeta_n)/Q with [F:Q] = phi(n)/2 (the maximal real subfield)",
+        "leanType": "(hn : 3 ≤ n) → ∃ (F : IntermediateField ℚ (CyclotomicField n ℚ)), Module.finrank ℚ F = Nat.totient n / 2"
+      },
+      {
+        "name": "conjAut_orderOf",
+        "type": "core",
+        "description": "Complex conjugation (zeta -> zeta^{-1}) has order exactly 2 in Gal(Q(zeta_n)/Q) for n >= 3",
+        "leanType": "(hn : 3 ≤ n) → orderOf (conjAut n) = 2"
+      },
+      {
+        "name": "cos_minimal_poly_degree",
+        "type": "core",
+        "description": "There exists a monic polynomial of degree phi(n)/2 vanishing at cos(2pi/n)",
+        "leanType": "(hn : 3 ≤ n) → ∃ P : ℚ[X], P.Monic ∧ P.natDegree = Nat.totient n / 2 ∧ Polynomial.aeval (Real.cos (2 * Real.pi / ↑n)) P = 0"
+      },
+      {
+        "name": "cos_algebraic_from_cyclotomic",
+        "type": "core",
+        "description": "cos(2pi/n) is algebraic over Q for n >= 3",
+        "leanType": "(hn : 3 ≤ n) → IsAlgebraic ℚ (Real.cos (2 * Real.pi / ↑n))"
+      },
+      {
+        "name": "cos_extension_is_galois",
+        "type": "core",
+        "description": "For n >= 3, Q(cos(2pi/n)) is a finite extension of Q with degree phi(n)/2",
+        "leanType": "(hn : 3 ≤ n) → ∃ (K : IntermediateField ℚ ℝ), FiniteDimensional ℚ K ∧ Real.cos (2 * Real.pi / ↑n) ∈ K ∧ Module.finrank ℚ K = Nat.totient n / 2"
+      },
+      {
+        "name": "cos_coprime_is_root",
+        "type": "core",
+        "description": "For k coprime to n, cos(2k*pi/n) is a root of minpoly(Q, cos(2pi/n)) — the Galois conjugates result",
+        "leanType": "(hn : 3 ≤ n) → (k : ℕ) → (hk : k < n) → (hc : Nat.Coprime k n) → Polynomial.aeval (Real.cos (2 * ↑k * Real.pi / ↑n)) (minpoly ℚ (Real.cos (2 * Real.pi / ↑n))) = 0"
+      }
+    ]
   }
 }
