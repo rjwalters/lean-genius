@@ -2,7 +2,7 @@
   "id": "abel-ruffini",
   "title": "Abel-Ruffini Theorem",
   "slug": "abel-ruffini",
-  "description": "The Abel-Ruffini theorem: there is no general algebraic solution in radicals to polynomial equations of degree five or higher. First proved by Abel (1824), building on Ruffini's incomplete 1799 attempt, and later recast by Galois (1832) via the profound connection between field theory and group theory — the symmetric group S₅ is not solvable because A₅ is simple. Wiedijk 100 theorem #16, presented as a pedagogical walkthrough composing Mathlib's Galois theory infrastructure (solvableByRad.isSolvable', Equiv.Perm.not_solvable, alternatingGroup.isSimpleGroup_five) into an accessible seven-part development.",
+  "description": "The Abel-Ruffini theorem: there is no general algebraic solution in radicals to polynomial equations of degree five or higher. First proved by Abel (1824), building on Ruffini's incomplete 1799 attempt, and later recast by Galois (1832) via the profound connection between field theory and group theory — the symmetric group S₅ is not solvable because A₅ is simple. Wiedijk 100 theorem #16, presented as a pedagogical walkthrough composing Mathlib's Galois theory infrastructure (solvableByRad.isSolvable', Equiv.Perm.not_solvable, alternatingGroup.isSimpleGroup_five) into an accessible seven-part development. Via Mathlib, we establish that solvability by radicals requires a solvable Galois group, and that S₅ (hence A₅) are not solvable.",
   "meta": {
     "author": "Niels Henrik Abel (1824), Evariste Galois (1832)",
     "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/FieldTheory/AbelRuffini.html",
@@ -294,6 +294,26 @@
       "targetId": "kroneckers-jugendtraum",
       "relationship": "related",
       "description": "Kronecker's Jugendtraum and the Kronecker-Weber theorem (every abelian extension of $\\mathbb{Q}$ is contained in a cyclotomic field) connect to Abel-Ruffini via abelian Galois groups: the theorem implies every polynomial with abelian Galois group is solvable by radicals. Abel-Ruffini's impossibility arises precisely when the Galois group is non-abelian (and non-solvable), making $S_5$ the critical obstruction"
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "Cantor's 1891 diagonal argument proving the uncountability of $\\mathbb{R}$ is a key link in the impossibility paradigm traced in the conclusion: Abel-Ruffini (1824, radical inexpressibility) $\\to$ Cantor (1891, uncountability) $\\to$ Godel (1931, incompleteness) $\\to$ Turing (1936, undecidability). Cantor's diagonal method became the direct template for both Godel's and Turing's proofs"
+    },
+    {
+      "targetId": "hilbert-10",
+      "relationship": "related",
+      "description": "Matiyasevich's 1970 negative resolution of Hilbert's tenth problem — no algorithm decides whether an arbitrary Diophantine equation has integer solutions — is the final entry in the impossibility paradigm chain traced in the conclusion: Abel-Ruffini $\\to$ Cantor $\\to$ Godel $\\to$ Turing $\\to$ Matiyasevich. Both results show a natural class of algebraic problems admits no universal solution procedure within a given formal framework"
+    },
+    {
+      "targetId": "fermats-last-theorem",
+      "relationship": "related",
+      "description": "Wiles's 1995 proof of FLT via modularity of semistable elliptic curves is the deepest application of the Galois-theoretic machinery that Abel-Ruffini inaugurated: Galois representations $\\rho_{E,p}: \\text{Gal}(\\overline{\\mathbb{Q}}/\\mathbb{Q}) \\to \\text{GL}_2(\\mathbb{F}_p)$ are the central objects in the Frey-Ribet-Wiles proof chain, extending Galois theory from finite extensions to the absolute Galois group"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Gauss's quadratic reciprocity law (Wiedijk #7) is the prototype for the reciprocity laws in class field theory mentioned in the conclusion's discussion of Artin reciprocity. The Legendre symbol $(p/q)$ encodes splitting behavior of primes in quadratic extensions — a special case of the Galois-theoretic framework that Abel-Ruffini applies to polynomial solvability. Both are Wiedijk 100 entries formalized via Mathlib"
     }
   ],
   "references": [
