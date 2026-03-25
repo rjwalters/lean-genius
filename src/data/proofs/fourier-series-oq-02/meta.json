@@ -198,6 +198,21 @@
       "targetId": "fourier-series-oq-03",
       "relationship": "related",
       "description": "Both study Fourier convergence under regularity conditions. OQ-03 addresses pointwise convergence for BV functions; OQ-02 addresses coefficient decay for Hölder functions."
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "Euler's Basel problem $\\sum 1/n^2 = \\pi^2/6$ can be proved via Parseval's identity applied to a suitable function's Fourier series. The Fourier coefficient decay rates formalized here (Hölder $\\alpha$ gives $O(1/n^\\alpha)$) quantify when Parseval summability applies: for $\\alpha > 1/2$, the Fourier coefficients are square-summable"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "foundational",
+      "description": "The Cauchy-Schwarz integral inequality underpins the Fourier coefficient bound: $|\\hat{f}(n)| = |\\langle f, e^{inx} \\rangle| \\leq \\|f\\|_2 \\cdot \\|e^{inx}\\|_2$ gives the trivial bound, while the Hölder decay improves this using the half-period trick $\\hat{f}(n) = -\\hat{f}(n) \\cdot e^{i\\pi n} = \\hat{f}(\\cdot) - \\hat{f}(\\cdot + \\pi/n)$"
+    },
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "foundational",
+      "description": "The Fourier coefficients are defined as Lebesgue integrals $\\hat{f}(n) = \\frac{1}{2\\pi} \\int_0^{2\\pi} f(x) e^{-inx} dx$. The Lebesgue measure infrastructure provides the integration theory needed for the half-period translation and the integral bounds that drive the decay estimate"
     }
   ],
   "conclusion": {
