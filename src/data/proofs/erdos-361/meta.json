@@ -74,9 +74,10 @@
       "The NP-completeness of the subset sum problem means computing `maxNonReprSize c n` exactly is computationally intractable, motivating the search for asymptotic bounds rather than exact formulas"
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Number theory (primes, divisibility)",
-      "Combinatorics (counting, extremal problems)"
+      "Subset sums and the subset sum problem (NP-completeness)",
+      "Extremal combinatorics: maximizing set size under constraints",
+      "Asymptotic notation: $O(\\cdot)$, $\\Theta(\\cdot)$ via Mathlib's $\\texttt{IsBigO}$/$\\texttt{IsTheta}$",
+      "Powerset and filtration combinatorics ($\\texttt{Finset.powerset}$, $\\texttt{Finset.filter}$)"
     ]
   },
   "sections": [
@@ -85,42 +86,48 @@
       "title": "Core Definitions",
       "startLine": 22,
       "endLine": 38,
-      "summary": "Defines `IsSubsetSum A n` ($\\exists B \\subseteq A, \\sum_{b \\in B} b = n$), `NonRepresenting A n` (negation: no subset sums to $n$), and `maxNonReprSize c n` as the supremum of $|A|$ over the powerset of $\\{1,\\ldots,\\lfloor cn \\rfloor\\}$ filtered by `NonRepresenting`, using `Finset.powerset`, `Finset.filter`, and `Finset.sup`."
+      "summary": "Defines `IsSubsetSum A n` ($\\exists B \\subseteq A, \\sum_{b \\in B} b = n$), `NonRepresenting A n` (negation: no subset sums to $n$), and `maxNonReprSize c n` as the supremum of $|A|$ over the powerset of $\\{1,\\ldots,\\lfloor cn \\rfloor\\}$ filtered by `NonRepresenting`, using `Finset.powerset`, `Finset.filter`, and `Finset.sup`.",
+      "mathContext": "$\\text{IsSubsetSum}(A, n) \\Leftrightarrow \\exists B \\subseteq A, \\sum_{b \\in B} b = n$; $\\text{maxNonReprSize}(c, n) = \\max\\{|A| : A \\subseteq \\{1,\\ldots,\\lfloor cn \\rfloor\\}, \\neg\\text{IsSubsetSum}(A, n)\\}$."
     },
     {
       "id": "conjecture",
       "title": "Main Conjectures",
       "startLine": 39,
       "endLine": 51,
-      "summary": "States two conjectures: `ErdosProblem361` asserts non-monotonicity of `maxNonReprSize c` (the irregularity question), and `MaxNonReprUnbounded` asserts the function tends to infinity via `Filter.Tendsto atTop atTop`."
+      "summary": "States two conjectures: `ErdosProblem361` asserts non-monotonicity of `maxNonReprSize c` (the irregularity question), and `MaxNonReprUnbounded` asserts the function tends to infinity via `Filter.Tendsto atTop atTop`.",
+      "mathContext": "Irregularity: $\\exists n_1 < n_2, \\text{maxNonReprSize}(c, n_1) > \\text{maxNonReprSize}(c, n_2)$. Unbounded: $\\text{maxNonReprSize}(c, n) \\to \\infty$ as $n \\to \\infty$."
     },
     {
       "id": "asymptotics",
       "title": "Asymptotic Growth",
       "startLine": 52,
       "endLine": 64,
-      "summary": "Axiomatizes `maxNonRepr_bigO_bound` (existence of a big-O bound) and the plausible $\\Theta(\\sqrt{n})$ growth rate `maxNonRepr_plausible_theta` using Mathlib's `Asymptotics.IsTheta` and `Asymptotics.IsBigO` with `Filter.atTop`."
+      "summary": "Axiomatizes `maxNonRepr_bigO_bound` (existence of a big-O bound) and the plausible $\\Theta(\\sqrt{n})$ growth rate `maxNonRepr_plausible_theta` using Mathlib's `Asymptotics.IsTheta` and `Asymptotics.IsBigO` with `Filter.atTop`.",
+      "mathContext": "Axioms: $\\text{maxNonReprSize}(c, n) = O(f(n))$ for some $f$; conjecture: $\\text{maxNonReprSize}(c, n) = \\Theta(\\sqrt{n})$, formalized via Mathlib's $\\texttt{IsTheta}$."
     },
     {
       "id": "basic-properties",
       "title": "Proved Basic Properties",
       "startLine": 65,
       "endLine": 91,
-      "summary": "Three fully proved results: `nonRepresenting_empty` (the empty set is non-representing for $n > 0$ since $\\sum \\emptyset = 0 \\neq n$), `nonRepresenting_subset` (subsets of non-representing sets are non-representing, by transitivity of $\\subseteq$), and `singleton_one_nonRepr` ($\\{1\\}$ is non-representing for $n \\geq 2$ since subsets sum to 0 or 1)."
+      "summary": "Three fully proved results: `nonRepresenting_empty` (the empty set is non-representing for $n > 0$ since $\\sum \\emptyset = 0 \\neq n$), `nonRepresenting_subset` (subsets of non-representing sets are non-representing, by transitivity of $\\subseteq$), and `singleton_one_nonRepr` ($\\{1\\}$ is non-representing for $n \\geq 2$ since subsets sum to 0 or 1).",
+      "mathContext": "$\\text{NonRepr}(\\emptyset, n)$ for $n > 0$; $B \\subseteq A \\wedge \\text{NonRepr}(A, n) \\implies \\text{NonRepr}(B, n)$ (downward closure); $\\text{NonRepr}(\\{1\\}, n)$ for $n \\geq 2$."
     },
     {
       "id": "structural-lemmas",
       "title": "Structural Lemmas",
       "startLine": 92,
       "endLine": 101,
-      "summary": "`nonRepresenting_of_sum_lt`: If the sum of all elements of $A$ is less than $n$, then $A$ is non-representing. The proof uses `Finset.sum_le_sum_of_subset_of_nonneg` to show any subset has an even smaller sum."
+      "summary": "`nonRepresenting_of_sum_lt`: If the sum of all elements of $A$ is less than $n$, then $A$ is non-representing. The proof uses `Finset.sum_le_sum_of_subset_of_nonneg` to show any subset has an even smaller sum.",
+      "mathContext": "$\\sum_{a \\in A} a < n \\implies \\text{NonRepr}(A, n)$, since $\\forall B \\subseteq A, \\sum B \\leq \\sum A < n$."
     },
     {
       "id": "proved-properties",
       "title": "Proved Properties",
       "startLine": 102,
       "endLine": 146,
-      "summary": "Two fully proved results (no sorry): `maxNonRepr_full_of_sum_lt` shows that when the total sum of $\\{1,\\ldots,\\lfloor cn \\rfloor\\}$ is less than $n$, the maximum non-representing set is the full range. `maxNonRepr_ge_one` proves $\\mathrm{maxNonReprSize}(c,n) \\geq 1$ for $c \\geq 1$, $n \\geq 2$ using $\\{1\\}$ as a witness via `Finset.le\\_sup`."
+      "summary": "Two fully proved results (no sorry): `maxNonRepr_full_of_sum_lt` shows that when the total sum of $\\{1,\\ldots,\\lfloor cn \\rfloor\\}$ is less than $n$, the maximum non-representing set is the full range. `maxNonRepr_ge_one` proves $\\mathrm{maxNonReprSize}(c,n) \\geq 1$ for $c \\geq 1$, $n \\geq 2$ using $\\{1\\}$ as a witness via `Finset.le\\_sup`.",
+      "mathContext": "$\\sum_{i=1}^{\\lfloor cn \\rfloor} i < n \\implies \\text{maxNonReprSize}(c,n) = \\lfloor cn \\rfloor$ (full range is optimal). Lower bound: $\\text{maxNonReprSize}(c,n) \\geq 1$ for $c \\geq 1, n \\geq 2$ (witness: $\\{1\\}$)."
     }
   ],
   "conclusion": {
@@ -159,8 +166,20 @@
   "references": [
     {
       "key": "ErGr80",
-      "citation": "Erdős, P. and Graham, R.L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de L'Enseignement Mathématique 28, Université de Genève.",
+      "citation": "Erdős, P. and Graham, R.L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de L'Enseignement Mathématique 28, Université de Genève, p. 59.",
       "type": "book"
+    },
+    {
+      "key": "ErdosTuran41",
+      "citation": "Erdős, P. and Turán, P. (1941). On a problem of Sidon in additive number theory, and on some related problems. Journal of the London Mathematical Society, 16(4), 212–215.",
+      "type": "paper",
+      "note": "Foundational paper establishing the √N density bound for Sidon sets, motivating the √n threshold in Problem #361"
+    },
+    {
+      "key": "Freiman73",
+      "citation": "Freiman, G.A. (1973). Foundations of a Structural Theory of Set Addition. Translations of Mathematical Monographs 37, AMS.",
+      "type": "book",
+      "note": "Freiman's theorem on the structure of sets with small sumset connects to the extremal sets in Problem #361 via inverse sumset theory"
     }
   ],
   "crossReferences": [
