@@ -26,6 +26,8 @@ Key results:
 
 - `lagrangeBasis_self`: l_k(x_k) = 1 (interpolation property)
 - `lagrangeBasis_other`: l_k(x_j) = 0 for j ≠ k (orthogonality)
+- `lagrangeBasis_eq_eval_basis`: connection to Mathlib's Lagrange.basis
+- `partition_of_unity`: ∑ₖ l_k(x) = 1 for all x (via Lagrange.sum_basis)
 - `chebyshevNodes_in_range`: Chebyshev nodes lie in [-1, 1]
 - `chebyshevNodes_distinct`: Chebyshev nodes are pairwise distinct
 
@@ -101,14 +103,63 @@ theorem lagrangeBasis_other (n : ℕ) (nodes : Fin n → ℝ) (_hd : AreDistinct
   · simp [sub_self]
 
 /--
+**Connection to Mathlib**: `lagrangeBasis` equals evaluation of `Lagrange.basis`.
+Both compute ∏_{i≠k} (x - xᵢ)/(xₖ - xᵢ).
+-/
+theorem lagrangeBasis_eq_eval_basis (n : ℕ) (nodes : Fin n → ℝ) (_hd : AreDistinct n nodes)
+    (k : Fin n) (x : ℝ) :
+    lagrangeBasis n nodes k x = (Lagrange.basis Finset.univ nodes k).eval x := by
+  simp only [lagrangeBasis, Lagrange.basis, Lagrange.basisDivisor]
+  rw [Polynomial.eval_prod]
+  apply Finset.prod_congr
+  · ext i; simp [Finset.mem_erase, Finset.mem_filter, and_comm]
+  · intro i _hi
+    simp [Polynomial.eval_mul, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]
+    field_simp
+
+/--
+**Partition of unity**: ∑ₖ l_k(x) = 1 for all x, when nodes are distinct.
+Proved via Mathlib's `Lagrange.sum_basis` theorem.
+-/
+theorem partition_of_unity (n : ℕ) (hn : n ≥ 1) (nodes : Fin n → ℝ)
+    (hd : AreDistinct n nodes) (x : ℝ) :
+    ∑ k : Fin n, lagrangeBasis n nodes k x = 1 := by
+  have hinj : Set.InjOn nodes (↑(Finset.univ : Finset (Fin n))) := by
+    intro i _ j _ hij; by_contra h; exact hd i j h hij
+  have hne : (Finset.univ : Finset (Fin n)).Nonempty :=
+    ⟨⟨0, by omega⟩, Finset.mem_univ _⟩
+  have hpoly := Lagrange.sum_basis hinj hne
+  have heval : ∑ j ∈ Finset.univ, (Lagrange.basis Finset.univ nodes j).eval x = 1 := by
+    rw [← Polynomial.eval_finset_sum, hpoly, Polynomial.eval_one]
+  simp_rw [← lagrangeBasis_eq_eval_basis n nodes hd] at heval
+  exact heval
+
+/--
+**Pointwise lower bound**: ∑ₖ l_k(x)² ≥ 1/n via partition of unity + variance bound.
+-/
+theorem sum_sq_lagrangeBasis_ge (n : ℕ) (hn : n ≥ 1) (nodes : Fin n → ℝ)
+    (hd : AreDistinct n nodes) (x : ℝ) :
+    ∑ k : Fin n, (lagrangeBasis n nodes k x) ^ 2 ≥ 1 / n := by
+  have hpou := partition_of_unity n hn nodes hd x
+  have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr (by omega)
+  -- Cauchy-Schwarz / variance: 0 ≤ ∑(l_k - 1/n)² = ∑l_k² - 1/n
+  rw [ge_iff_le, ← sub_nonneg]
+  have hvar : 0 ≤ ∑ k : Fin n, (lagrangeBasis n nodes k x - 1 / ↑n) ^ 2 :=
+    Finset.sum_nonneg fun k _ => sq_nonneg _
+  sorry
+
+/--
 **Lower bound**: I(x₁,...,xₙ) ≥ 2/n for any configuration.
 
-This follows because the l_k form a partition of unity at the nodes,
-and by Cauchy-Schwarz, the integral is bounded below.
+Uses partition of unity (∑ l_k = 1) and pointwise variance bound (∑ l_k² ≥ 1/n).
 -/
-axiom lagrangeIntegral_lower_bound (n : ℕ) (hn : n ≥ 1) (nodes : Fin n → ℝ)
+theorem lagrangeIntegral_lower_bound (n : ℕ) (hn : n ≥ 1) (nodes : Fin n → ℝ)
     (hd : AreDistinct n nodes) (hrange : ∀ i, -1 ≤ nodes i ∧ nodes i ≤ 1) :
-    lagrangeIntegral n nodes ≥ 2 / n
+    lagrangeIntegral n nodes ≥ 2 / n := by
+  unfold lagrangeIntegral
+  have hpw := fun x => sum_sq_lagrangeBasis_ge n hn nodes hd x
+  -- ∫₋₁¹ (Σ l_k²) ≥ ∫₋₁¹ (1/n) = 2/n (integral monotonicity)
+  sorry
 
 /--
 **Upper bound**: I is bounded above by 2n for any configuration.
