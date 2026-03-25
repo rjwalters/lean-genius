@@ -147,3 +147,34 @@ we proved a concrete witness: Gal(x^5 - 4x + 2 / Q) ≅ S_5.
    - InverseGaloisA5.lean proves this for q via ℂ embedding + Sophie Germain (~400 lines)
    - For p = x⁵-4x+2, p'=5x⁴-4 doesn't factor as nicely (no Sophie Germain)
    - Alternative: direct Sylvester matrix determinant computation (9×9 over ℤ)
+
+## Session 2026-03-25 (Session 4) - Eliminate Discriminant Axiom
+
+**Mode**: REVISIT (RICH knowledge, score 20)
+**Outcome**: progress (1 axiom eliminated)
+
+### What I Did
+- Proved `vandermondeProduct_sq_val` as a theorem, eliminating the axiom
+- Proof strategy: VP² = ∏ᵢ p'(αᵢ) via derivative product identity
+  - p_SF_eq_prod_linear: p factors as ∏(X - rootEnum i) in splitting field
+  - eval_deriv_at_root: p'(αᵢ) = ∏_{j≠i}(αᵢ - αⱼ) via derivative of factored polynomial
+  - vp_sq_eq_ordered_diff: ∏_{i≠j}(αᵢ-αⱼ) = VP² via Vandermonde determinant
+- Computation: VP²·∏αᵢ = ∏(16αᵢ-10) via root_poly_zero and deriv_times_root
+  - Vieta: ∏αᵢ = algebraMap ℚ SF (-2)
+  - Polynomial eval: ∏(16αᵢ-10) = -16⁵·p(5/8) = algebraMap ℚ SF 424288
+  - Division: VP² = 424288/(-2) = -212144
+
+### Key Findings
+- `algebraMap ℚ SF n` and `(n : SF)` are NOT interchangeable by ring/linarith in abstract splitting fields
+- Must use `linear_combination`, `calc`, and explicit algebraMap arithmetic (map_mul, map_sub) to avoid ring failures
+- Docker build reverts host files via volume mount (:delegated) - must commit before building
+- `set_option maxHeartbeats 800000` needed for p_SF_eq_prod_linear coprimality proof
+
+### Files Modified
+- proofs/Proofs/AbelRuffiniOQ04OQ01.lean (1036→1138 lines, axiom→theorem)
+
+### Next Steps
+1. Eliminate `three_dvd_gal_card` (3 | |Gal|) - requires either:
+   a. Build Dedekind's theorem (deep, ~500+ lines)
+   b. Real-roots approach: prove p has exactly 3 real roots, complex conjugation is transposition
+   c. Direct modular computation (ad hoc, polynomial-specific)

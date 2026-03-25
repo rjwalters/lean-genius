@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Axiom B eliminated. gal_has_odd_perm now a THEOREM via Vandermonde+FTGT. 2 axioms remain: three_dvd_gal_card + vandermondeProduct_sq_val (narrow disc computation).",
+    "progressSummary": "PROGRESS: 1 axiom eliminated (vandermondeProduct_sq_val). 1 axiom remains: three_dvd_gal_card (needs Dedekind theorem or real-roots approach).",
     "builtItems": [
       "Proofs/AbelRuffiniOQ04OQ01.lean: Full proof (362 lines, 12 theorems, 1 axiom)",
       "p_irreducible: Eisenstein at 2 for x^5-4x+2",
@@ -37,7 +37,9 @@
       "roots_not_solvable_by_rad: contrapositive of Galois theorem",
       "s5_realizable: S_5 realized as Galois group over Q",
       "Polynomial evaluations p(-2)=-22, p(-1)=5, p(0)=2, p(1)=-1, p(2)=26 (AbelRuffiniOQ04OQ01.lean)",
-      "rootEnum, vandermondeProduct, gal_acts_on_vandermondeProduct, gal_permutes_roots, vandermondeProduct_not_rational, fixed_by_all_gal_is_rational, exists_odd_galSign (proves former Axiom B)"
+      "rootEnum, vandermondeProduct, gal_acts_on_vandermondeProduct, gal_permutes_roots, vandermondeProduct_not_rational, fixed_by_all_gal_is_rational, exists_odd_galSign (proves former Axiom B)",
+      "vandermondeProduct_sq_val THEOREM (was axiom) in AbelRuffiniOQ04OQ01.lean",
+      "p_SF_eq_prod_linear, eval_deriv_at_root, vp_sq_eq_ordered_diff infrastructure"
     ],
     "insights": [
       "Concrete polynomial approach more tractable than generic polynomial: x^5-4x+2 via Eisenstein at 2",
@@ -46,7 +48,8 @@
       "Generic polynomial approach (MvPolynomial + FractionRing + esymmAlgEquiv) requires 3-4 substantial gap lemmas",
       "simp [eval_sub, eval_add, eval_mul, eval_pow, eval_C, eval_X] suffices for polynomial evaluation; ring only needed sometimes",
       "To eliminate gal_card_eq_120: need IVT over ℝ for real roots + group theory lemma (transitive + transposition + p-cycle → S_p)",
-      "Vandermonde product approach: σ(Δ)=sign(σ)·Δ, with Δ²=disc(p)=-212144<0, gives Δ∉ℚ. By FTGT, fixed by all σ→in ℚ. Contrapositive: Δ∉ℚ→∃σ with sign=-1."
+      "Vandermonde product approach: σ(Δ)=sign(σ)·Δ, with Δ²=disc(p)=-212144<0, gives Δ∉ℚ. By FTGT, fixed by all σ→in ℚ. Contrapositive: Δ∉ℚ→∃σ with sign=-1.",
+      "Vandermonde product squared equals -212144 PROVED via derivative product identity + Vieta + polynomial evaluation at 5/8"
     ],
     "mathlibGaps": [
       "No generic polynomial Galois group computation in Mathlib (FractionRing of MvPolynomial + Galois theory)",
