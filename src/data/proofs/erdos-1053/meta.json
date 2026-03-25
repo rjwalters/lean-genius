@@ -23,56 +23,56 @@
     "badge": "axiom",
     "proofRepoPath": "Proofs/Erdos1053Problem.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 140
+    "lineCount": 152
   },
   "sections": [
     {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 26,
-      "endLine": 29,
+      "endLine": 27,
       "summary": "Imports Mathlib divisor theory, basic natural number arithmetic, and tactic framework."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions: σ(n) and k-Perfection",
-      "startLine": 30,
-      "endLine": 45,
-      "summary": "Axiomatizes the sum-of-divisors function σ(n), defines k-perfect numbers (σ(n) = kn), and the abundancy index σ(n)/n."
+      "startLine": 28,
+      "endLine": 48,
+      "summary": "Defines the sum-of-divisors function σ(n), k-perfect numbers (σ(n) = kn), decidability instance, and the abundancy index σ(n)/n."
     },
     {
       "id": "classical-perfect",
       "title": "Classical Perfect Numbers (k = 1, 2)",
-      "startLine": 47,
-      "endLine": 60,
-      "summary": "Uniqueness of 1-perfect numbers, examples of 2-perfect (perfect) numbers, and Euler's characterization of even perfect numbers via Mersenne primes."
+      "startLine": 49,
+      "endLine": 81,
+      "summary": "Uniqueness of 1-perfect numbers (proved via subset sum argument), examples of 2-perfect numbers (native_decide), and Euler's characterization of even perfect numbers via Mersenne primes."
     },
     {
       "id": "multiperfect",
       "title": "Multiperfect Numbers (k ≥ 3)",
-      "startLine": 62,
-      "endLine": 71,
+      "startLine": 82,
+      "endLine": 96,
       "summary": "Known triperfect examples (k=3) and the existence of 11-perfect numbers, the largest known multiplicity."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture: k = o(log log n)",
-      "startLine": 75,
-      "endLine": 85,
+      "startLine": 97,
+      "endLine": 108,
       "summary": "States Erdős's central question: must the perfection multiplicity k grow strictly slower than log log n?"
     },
     {
       "id": "bounds",
       "title": "Gronwall's Theorem and Robin's Inequality",
-      "startLine": 87,
-      "endLine": 100,
+      "startLine": 109,
+      "endLine": 123,
       "summary": "Gronwall's 1913 result establishing e^γ · log log n as the natural scale, and Robin's 1984 conditional upper bound from the Riemann Hypothesis."
     },
     {
       "id": "finiteness-and-criterion",
       "title": "Guy's Finiteness Conjecture and Robin's Criterion",
-      "startLine": 102,
-      "endLine": 116,
+      "startLine": 124,
+      "endLine": 153,
       "summary": "Guy's stronger conjecture (finitely many k-perfect numbers for each k ≥ 3) and the derivation of k = O(log log n) from Robin's criterion."
     }
   ],
