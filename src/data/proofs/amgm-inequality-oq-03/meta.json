@@ -17,7 +17,7 @@
       "research",
       "open-problem"
     ],
-    "badge": "mathlib",
+    "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -123,7 +123,7 @@
       "The inversion step HM ≤ GM from GM⁻¹ ≤ 1/HM avoids div_le_iff by using explicit multiplicative algebra",
       "For 0 < r ≤ s: Jensen applies to convex function t ↦ t^(s/r) with exponent s/r ≥ 1",
       "The r=0 case (geometric mean as a limit) requires L'Hôpital and is the main Mathlib gap",
-      "General monotonicity for negative r (HM ≤ GM is the r=-1 to r=0 case) remains open in Mathlib4",
+      "The mixed-sign case M_r ≤ M_s for r < 0 < s (including HM ≤ GM as r = -1, s → 0) requires the r = 0 geometric mean limit and remains open in both this file and Mathlib4. Same-sign negative monotonicity (r ≤ s < 0) is proved here via the duality identity M_r(z) = M_{-r}(z⁻¹)⁻¹",
       "Lean 4 parsing: ∑ i ∈ s, BODY is greedy — always parenthesize: (∑ i ∈ s, BODY) * c, not ∑ i ∈ s, BODY * c",
       "Power means are the $L^p$ norms in disguise: $M_p(z,w) = \\|z\\|_{p,w}$ where $\\|z\\|_{p,w} = (\\sum w_i |z_i|^p)^{1/p}$ is the weighted $L^p$ norm. The Minkowski inequality $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ for $p \\geq 1$ follows from power mean monotonicity via homogeneity, making power means the discrete foundation of $L^p$ space geometry"
     ],
