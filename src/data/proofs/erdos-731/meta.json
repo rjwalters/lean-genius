@@ -90,10 +90,19 @@
     },
     {
       "id": "asymptotics",
-      "title": "Asymptotic Analysis and Bounds",
+      "title": "Asymptotic Analysis",
       "startLine": 75,
-      "endLine": 115,
-      "summary": "Axiomatizes the EGRS typical behavior, that the least non-divisor is prime, lower/upper bounds, Bertrand's postulate applied to $\\binom{2n}{n}$, and the exponential lower bound $\\binom{2n}{n} \\cdot (2n+1) \\geq 4^n$."
+      "endLine": 107,
+      "summary": "The counterexample `least_nondiv_counterexample` ($4$ is not prime but $4 \\nmid \\binom{4}{2} = 6$, showing the least non-divisor need not be prime). Axiomatizes `egrs_typical_behavior` (EGRS heuristic for typical $n$).",
+      "mathContext": "For most $n$, $f(n)$ is the smallest prime not dividing $\\binom{2n}{n}$. But $n = 2$: $\\binom{4}{2} = 6$, $4 \\nmid 6$, so $f(2) = 4$ (not prime). This shows the prime restriction is 'almost always' true but not universal."
+    },
+    {
+      "id": "bounds",
+      "title": "Bounds on the Least Non-Divisor",
+      "startLine": 108,
+      "endLine": 154,
+      "summary": "Proves `lower_bound_most_n` (heuristic $f(n) > (\\log n)^{1/2 - \\varepsilon}$ for most $n$), axiomatizes `upper_bound_trivial` ($f(n) \\leq 2n + 1$). Proves `bertrand_central` ($\\exists p$ prime with $n < p \\leq 2n$ and $p \\mid \\binom{2n}{n}$, from Bertrand's postulate) and `central_binom_lower` ($\\binom{2n}{n} \\cdot (2n+1) \\geq 4^n$, the exponential lower bound from summing $\\sum \\binom{2n}{k} = 4^n$).",
+      "mathContext": "Bertrand's postulate: $\\exists p$ prime with $n < p \\leq 2n$. Since $p \\leq 2n$, $p \\mid \\binom{2n}{n}$ (Kummer: the single base-$p$ digit of $n$ is $< p$). Exponential bound: $\\binom{2n}{n} \\geq 4^n / (2n+1)$ from $(1+1)^{2n} = \\sum \\binom{2n}{k}$."
     }
   ],
   "conclusion": {
