@@ -172,6 +172,22 @@
       "endLine": 448,
       "summary": "Cayley's theorem (`cayley_card`): every finite group $G$ embeds into $S_{|G|}$ via the left-regular representation $g \\mapsto (x \\mapsto gx)$. Proof uses `MulAction.toPermHom` with injectivity from the identity element. Followed by `#check` verification of all key results.",
       "mathContext": "Cayley's theorem ($G \\hookrightarrow S_{|G|}$) implies that realizing all symmetric groups over $\\mathbb{Q}$ is a necessary condition for the Inverse Galois Problem. However, it is not sufficient: embedding $G \\hookrightarrow S_n$ does not automatically yield a Galois extension with group $G$ (one needs $G$ as a quotient, not just a subgroup, of a realizable group)."
+    },
+    {
+      "id": "alternating-solvability",
+      "title": "Alternating Group Solvability Characterization",
+      "startLine": 449,
+      "endLine": 482,
+      "summary": "Proves A_n is not solvable for n >= 5 via the exact sequence 1 -> A_n -> S_n -> C_2 -> 1. Proves the biconditional: A_n is solvable iff n <= 4.",
+      "mathContext": "$A_n$ solvable $\\iff n \\leq 4$. Proof via $1 \\to A_n \\to S_n \\to C_2 \\to 1$: solvability of $A_n$ and $C_2$ would force solvability of $S_n$."
+    },
+    {
+      "id": "quotient-realizability",
+      "title": "Quotient Realizability via FTGT",
+      "startLine": 483,
+      "endLine": 591,
+      "summary": "Proves the fundamental structural theorem: every quotient of a realized Galois group is realized. Given K/F Galois with Gal(K/F) = G and normal H, the fixed field K^H is Galois over F with Gal(K^H/F) isomorphic to G/H.",
+      "mathContext": "FTGT quotient realizability: $\\text{Gal}(K/F) = G, H \\trianglelefteq G \\Rightarrow \\text{Gal}(K^H/F) \\cong G/H$. Consequence: realizing $G$ automatically realizes all quotients $G/H$."
     }
   ],
   "conclusion": {

@@ -144,6 +144,22 @@
       "endLine": 298,
       "summary": "A markdown summary table listing all 12 declarations (5 axioms, 7 theorems) with their status (proved/axiom/sorry), followed by `#check` commands verifying that all declarations have the expected types. Confirms the final tally: 5 axioms, 1 sorry, 7 proved theorems.",
       "mathContext": "The `#check` commands serve as a lightweight verification that all declarations are well-typed and properly exported from the `ProfiniteSylow` namespace."
+    },
+    {
+      "id": "finite-recovery-extended",
+      "title": "Pro-p Theory in Finite Groups",
+      "startLine": 299,
+      "endLine": 341,
+      "summary": "Proves the equivalence IsProP iff IsPGroup for finite groups with discrete topology. Shows every classical Sylow p-subgroup is closed and pro-p. Proves pro-p subgroups have p-power order.",
+      "mathContext": "Finite recovery: IsProP $\\iff$ IsPGroup for discrete finite groups. Every Sylow $p$-subgroup is closed and pro-$p$. Pro-$p$ implies $|H| = p^k$."
+    },
+    {
+      "id": "counting-and-summary",
+      "title": "Counting Theorem and Verification",
+      "startLine": 342,
+      "endLine": 393,
+      "summary": "Proves n_p is congruent to 1 mod p for finite quotients. Summary of all 15 results: 5 axioms and 10 proved theorems. Verification via #check on all key definitions.",
+      "mathContext": "Sylow counting: $n_p \\equiv 1 \\pmod{p}$. Score: 5 axioms, 10 proved theorems, 0 sorries."
     }
   ],
   "conclusion": {

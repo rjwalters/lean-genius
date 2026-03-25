@@ -95,6 +95,14 @@
       "endLine": 131,
       "summary": "Final statement: for any halting oracle, the diagonal program provides an explicit counterexample.",
       "mathContext": "$$\\forall H.\\; \\exists d.\\; H(d, d) \\neq D(d) \\quad \\text{(explicit counterexample via diagonalization)}$$"
+    },
+    {
+      "id": "main-summary",
+      "title": "Full Undecidability Theorem and Diagonalization Visualization",
+      "startLine": 132,
+      "endLine": 172,
+      "summary": "States $\text{halting\\_problem\\_undecidable}$: for any halting oracle $H$, there exists a behavior that $H$ fails to predict on some code. The diagonal construction visualizes the 2D table of program behaviors, flipping the diagonal to create an impossible row. Verification section with $\texttt{\\#check}$ on all key theorems.",
+      "mathContext": "Main result: $\forall H : \text{HaltingOracle}, \\exists b : \text{Behavior}, \forall c : \\mathbb{N}, H(c,c) \neq b(c)$. The diagonal argument pattern unifies halting undecidability with Cantor, Godel, Russell, and Tarski."
     }
   ],
   "conclusion": {

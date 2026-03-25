@@ -140,6 +140,22 @@
       "endLine": 502,
       "summary": "`rolle_polynomial` (fully proved via Mathlib's Rolle). `n_roots_derivative_roots` ($n+1$ roots of $p$ give $n$ roots of $p'$, fully proved). `rootsInInterval_split` (interval additivity). `PolyChain` structure for generalization to Sturm chains.",
       "mathContext": "Rolle's theorem gives the calculus foundation: between consecutive roots of $p$, $p'$ has a zero. By induction, $n+1$ roots of $p$ produce $\\geq n$ roots of $p'$, $\\geq n-1$ of $p''$, etc. This 'Rolle ladder' is the inductive engine for the `budan_upper_bound` axiom. The `PolyChain` abstraction prepares for Sturm's theorem, where pseudo-remainder chains replace derivative chains for exact (not just bounded) root counts."
+    },
+    {
+      "id": "structural-theorems",
+      "title": "Structural Theorems: Degree Bounds and Scalar Invariance",
+      "startLine": 503,
+      "endLine": 600,
+      "summary": "Proves V_p(x) <= deg(p): the Budan count is bounded by the polynomial degree. Key result: signChangesInList is invariant under nonzero scalar multiplication, proved by case analysis on sign of the scalar.",
+      "mathContext": "$V_p(x) \\leq \\deg(p)$. Sign change invariance: $\\text{signChanges}(c \\cdot l) = \\text{signChanges}(l)$ for $c \\neq 0$."
+    },
+    {
+      "id": "budan-scaling",
+      "title": "Budan Count Scaling and Degree Preservation",
+      "startLine": 601,
+      "endLine": 698,
+      "summary": "Proves budanCount_smul: scaling a polynomial by a nonzero constant preserves the Budan count. Technical infrastructure for the Budan-Fourier theorem connecting sign variations to root counts.",
+      "mathContext": "Budan scaling: $V_{cp}(x) = V_p(x)$ for $c \\neq 0$. Uses $(cp).\\deg = p.\\deg$ for $c \\neq 0, p \\neq 0$."
     }
   ],
   "conclusion": {
