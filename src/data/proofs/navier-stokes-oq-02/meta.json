@@ -85,12 +85,20 @@
   },
   "sections": [
     {
+      "id": "ladyzhenskaya-derivation",
+      "title": "Ladyzhenskaya Stability Estimate Derivation",
+      "startLine": 2694,
+      "endLine": 2709,
+      "summary": "Documents the PDE derivation of the stability estimate: take the L² inner product of the difference equation with $(u_1 - u_2)$, bound the nonlinear term via the Ladyzhenskaya inequality (2D only!), and obtain $W'(t) \\leq C \\cdot E(t) \\cdot W(t)$.",
+      "mathContext": "The Ladyzhenskaya inequality in 2D: $\\|u\\|_{L^4} \\leq C \\|u\\|_{L^2}^{1/2} \\|\\nabla u\\|_{L^2}^{1/2}$. Applied to the trilinear form: $|\\langle (u_1-u_2) \\cdot \\nabla u_1, u_1-u_2 \\rangle| \\leq C \\|\\nabla u_1\\| \\|u_1-u_2\\|^2$."
+    },
+    {
       "id": "pair-structure",
       "title": "NSSolutionPair2D: Framework for Comparing Solutions",
       "startLine": 2710,
-      "endLine": 2733,
-      "summary": "Defines the NSSolutionPair2D structure: two 2D NS solutions compared via difference energy W(t) with the Ladyzhenskaya stability estimate W'(t) ≤ C·E(t)·W(t). This abstracts the PDE analysis into a structural hypothesis.",
-      "mathContext": "Structure fields: $W : \\mathbb{R} \\to \\mathbb{R}$ (difference energy $\\|u_1 - u_2\\|^2_{L^2}$), $E : \\mathbb{R} \\to \\mathbb{R}$ (enstrophy $\\|\\nabla u\\|^2_{L^2}$), $C > 0$ (Ladyzhenskaya constant). Key hypothesis: $W'(t) \\leq C \\cdot E(t) \\cdot W(t)$ and $E(t) \\leq E(0)$ (bounded enstrophy, 2D-specific)."
+      "endLine": 2722,
+      "summary": "Defines the NSSolutionPair2D structure: W (difference energy), C_stab (Ladyzhenskaya constant), stability_estimate W'(t) ≤ C·E(t)·W(t). References GlobalNSSolution2D.E for enstrophy with bound E(t) ≤ E(0).",
+      "mathContext": "Structure fields: $W : \\mathbb{R} \\to \\mathbb{R}$ (difference energy $\\|u_1 - u_2\\|^2_{L^2}$), $C_{\\text{stab}} > 0$ (Ladyzhenskaya constant), stability estimate $W'(t) \\leq C \\cdot E(t) \\cdot W(t)$."
     },
     {
       "id": "gronwall-stability",
@@ -119,9 +127,9 @@
     {
       "id": "continuous-dependence",
       "title": "Continuous Dependence on Initial Data",
-      "startLine": 2864,
-      "endLine": 21110,
-      "summary": "continuous_dependence_2d: for any ε > 0, δ = ε·exp(-C·E(0)·T) gives W(0) ≤ δ implies W(t) ≤ ε on (0,T). Together with uniqueness, establishes Hadamard well-posedness.",
+      "startLine": 2850,
+      "endLine": 2891,
+      "summary": "continuous_dependence_2d: for any ε > 0, δ = ε·exp(-C·E(0)·T) gives W(0) ≤ δ implies W(t) ≤ ε on (0,T). Together with uniqueness, establishes Hadamard well-posedness. Section closes with `end GronwallStability`.",
       "mathContext": "$\\forall \\varepsilon > 0,\\, \\delta = \\varepsilon \\cdot e^{-CE(0)T}$: $W(0) \\leq \\delta \\Rightarrow W(t) \\leq \\delta \\cdot e^{CE(0)T} = \\varepsilon$ for $t \\in [0,T]$. This completes Hadamard's third criterion (continuous dependence on initial data)."
     }
   ],
