@@ -93,25 +93,29 @@
     ]
   },
   {
-    "id": "erdos-321-pair-sorry",
+    "id": "erdos-321-pair-theorem",
     "proofId": "erdos-321",
     "type": "technique",
     "range": {
       "startLine": 85,
-      "endLine": 91
+      "endLine": 124
     },
-    "title": "Pair Distinct Sums (Sorry)",
-    "content": "States `pair_hasDistinctReciprocalSums`: for $m < n$ with both $\\geq 1$, $\\{m, n\\}$ has distinct reciprocal subset sums. Contains a sorry - the proof that the 4 subsets $\\emptyset, \\{m\\}, \\{n\\}, \\{m,n\\}$ all yield distinct sums $0, 1/m, 1/n, 1/m+1/n$ is left incomplete. The key ordering is $0 < 1/n < 1/m < 1/m + 1/n$, which holds because $m < n$ implies $1/m > 1/n > 0$. The sorry likely requires working with `Finset.sum` over pairs, rational inequality (`Rat.div_lt_div`), and case analysis on the $2^2 = 4$ subsets of $\\{m, n\\}$.",
-    "mathContext": "For $1 \\leq m < n$: the 4 subset sums are $0 < \\frac{1}{n} < \\frac{1}{m} < \\frac{1}{m} + \\frac{1}{n}$, all distinct. This gives $R(N) \\geq 2$ for $N \\geq 2$.",
-    "significance": "supporting",
+    "title": "Subset Classification and Pair Distinctness (Proved)",
+    "content": "Two theorems: `subset_pair_cases` classifies all subsets of $\\{a,b\\}$ as $\\emptyset, \\{a\\}, \\{b\\}$, or $\\{a,b\\}$ (via case analysis on $a \\in S$ and $b \\in S$). Then `pair_hasDistinctReciprocalSums` proves that for $1 \\leq m < n$, $\\{m,n\\}$ has all 4 subset sums distinct. The proof establishes the strict chain $0 < 1/n < 1/m < 1/m + 1/n$ using `positivity` and `div_lt_div_of_pos_left`, then applies `subset_pair_cases` to both $S$ and $T$, yielding $4 \\times 4 = 16$ cases. Each case is discharged by `simp` (evaluating sums) followed by either `exact hne rfl` (if $S = T$, contradicting the distinctness hypothesis) or `linarith` (if the sums differ by the chain of inequalities). This is a clean, complete proof with no sorries.",
+    "mathContext": "For $1 \\leq m < n$: the 4 subset sums are $0 < \\frac{1}{n} < \\frac{1}{m} < \\frac{1}{m} + \\frac{1}{n}$, all distinct. The 16-case analysis on $(S, T)$ is reduced to $\\leq 12$ non-trivial cases (4 diagonal cases where $S = T$ are immediate contradictions). Gives $R(N) \\geq 2$ for $N \\geq 2$.",
+    "significance": "key",
     "relatedConcepts": [
-      "pair distinctness",
-      "rational ordering",
-      "sorry elimination"
+      "subset classification",
+      "rational chain of inequalities",
+      "div_lt_div_of_pos_left",
+      "linarith tactic",
+      "16-case exhaustion"
     ],
     "prerequisites": [
-      "Finset.sum over pairs",
-      "Rat arithmetic"
+      "Finset.sum_pair",
+      "Finset.Subset.antisymm",
+      "positivity",
+      "HasDistinctReciprocalSums"
     ]
   },
   {
