@@ -21,27 +21,30 @@
     "additionalFiles": [
       "Proofs/AbelRuffiniGaloisExtensions.lean",
       "Proofs/InverseGalois.lean",
-      "Proofs/InverseGaloisA5.lean"
+      "Proofs/InverseGaloisA5.lean",
+      "Proofs/AbelRuffiniOQ04OQ01.lean"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 1,
     "axiomCount": 0,
     "prerequisites": [
       "Galois theory (Galois groups, splitting fields, fixed fields)",
       "Group theory (symmetric groups, alternating groups, solvability, simplicity)",
       "Field extensions (finrank, tower law)"
     ],
-    "assumptions": "0 axioms in this file or its imports. 3 sorries: 2 census sorries for A5/S5 realization (would require importing InverseGaloisA5.lean and AbelRuffiniOQ04OQ01.lean), 1 intentional sorry for the open Inverse Galois Conjecture. Related files (InverseGalois.lean, InverseGaloisA5.lean) contain axioms but are NOT imported by this file.",
+    "assumptions": "0 axioms declared in this file. 1 sorry: the open Inverse Galois Conjecture (intentional). Imports InverseGaloisA5.lean (1 axiom: three_dvd_gal_card) and AbelRuffiniOQ04OQ01.lean (2 axioms: three_dvd_gal_card, gal_has_odd_perm) for the census theorem.",
     "leanFile": {
       "lineCount": 591,
       "theoremCount": 39,
       "lemmaCount": 0,
       "defCount": 0,
       "axiomCount": 0,
-      "sorryCount": 3,
+      "sorryCount": 1,
       "imports": [
         "Mathlib",
-        "Proofs.AbelRuffiniGaloisExtensions"
+        "Proofs.AbelRuffiniGaloisExtensions",
+        "Proofs.InverseGaloisA5",
+        "Proofs.AbelRuffiniOQ04OQ01"
       ],
       "note": "Key results: sn_solvable_iff (Sn solvable iff n<=4), a5_simple, a5_commutator_eq_top (A5 is perfect), finrank_over_fixed_field ([K:K^H]=|H|), finrank_fixed_field_over_base ([K^H:F]=[G:H]), cayley_card (Cayley embedding), inverse_galois_conjecture (open problem). Census of 18+ explicitly realized groups."
     },
@@ -143,7 +146,7 @@
       "title": "Part VIII: Census of Realized Groups",
       "startLine": 322,
       "endLine": 379,
-      "summary": "Extensive commentary listing 18+ groups explicitly realized as Galois groups over $\\mathbb{Q}$ across the Lean-Genius formalization: cyclic groups $C_1$ through $C_{12}$ (cyclotomic), $V_4$ (8th cyclotomic), $S_3$ ($X^3 - 2$), $D_4$ ($X^4 - 2$), $F_{20}$ ($X^5 - 2$), $A_5$ ($x^5 + 20x - 16$), $S_5$ ($x^5 - 4x + 2$). The `nonsolvable_realized_orders` theorem (2 sorries) states that Galois extensions of orders 60 and 120 exist.",
+      "summary": "Extensive commentary listing 18+ groups explicitly realized as Galois groups over $\\mathbb{Q}$ across the Lean-Genius formalization: cyclic groups $C_1$ through $C_{12}$ (cyclotomic), $V_4$ (8th cyclotomic), $S_3$ ($X^3 - 2$), $D_4$ ($X^4 - 2$), $F_{20}$ ($X^5 - 2$), $A_5$ ($x^5 + 20x - 16$), $S_5$ ($x^5 - 4x + 2$). The `nonsolvable_realized_orders` theorem proves that Galois extensions of orders 60 ($A_5$) and 120 ($S_5$) exist, using results from `InverseGaloisA5` and `AbelRuffiniOQ04OQ01`.",
       "mathContext": "The census documents the formalized frontier of the Inverse Galois Problem. The solvable groups are covered by Shafarevich's theorem (axiomatized); the non-solvable frontier extends to $A_5$ and $S_5$. Key unfformalized targets: $\\text{PSL}(2,7)$ (order 168, the second smallest simple group), $A_6$ (order 360), and the Mathieu groups."
     },
     {
@@ -172,11 +175,11 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization maps the solvability frontier of the Inverse Galois Problem in 448 lines with 31 theorems, 0 axioms, and 3 sorries (2 census entries requiring additional imports, 1 intentional for the open Inverse Galois Conjecture). The central result `sn_solvable_iff` ($S_n$ solvable $\\Leftrightarrow$ $n \\leq 4$) precisely delineates the boundary between groups covered by Shafarevich's theorem and those requiring explicit polynomial constructions. The deep structural analysis of $A_5$ — simple, not solvable, not abelian, and perfect — reveals why this boundary is sharp and irreversible.",
+    "summary": "This formalization maps the solvability frontier of the Inverse Galois Problem in 595 lines with 39 theorems, 0 axioms, and 1 sorry (intentional: the open Inverse Galois Conjecture). The central result `sn_solvable_iff` ($S_n$ solvable $\\Leftrightarrow$ $n \\leq 4$) precisely delineates the boundary between groups covered by Shafarevich's theorem and those requiring explicit polynomial constructions. The deep structural analysis of $A_5$ — simple, not solvable, not abelian, and perfect — reveals why this boundary is sharp and irreversible.",
     "implications": "**Connection to Abel-Ruffini**: The solvability characterization is the group-theoretic half of Abel-Ruffini. Combined with the Galois bridge (`solvableByRad.isSolvable'`), it gives: a polynomial of degree $n$ with generic Galois group $S_n$ is solvable by radicals iff $n \\leq 4$ — explaining exactly why the quadratic, cubic, and quartic formulas exist but the quintic formula does not.\n\n**Toward the full IGP**: The census shows 18+ groups formally realized over $\\mathbb{Q}$, with the non-solvable frontier at $A_5$ and $S_5$. Extending to $\\text{PSL}(2,7)$ (order 168), $A_6$ (order 360), and sporadic groups would advance the formalized frontier significantly.\n\n**Fixed field machinery**: The degree formulas $[K:K^H] = |H|$ and $[K^H:F] = [G:H]$ provide reusable infrastructure for future Galois-theoretic formalizations — any result needing the fundamental theorem of Galois theory can build on these.",
     "openQuestions": [
       "Can $\\text{PSL}(2,7)$ (order 168, the second smallest non-abelian simple group) be formally realized as a Galois group over $\\mathbb{Q}$? The standard approach uses the polynomial $x^7 - 7x + 3$, which has Galois group $\\text{PSL}(2,7)$.",
-      "Can the two census sorries be eliminated by importing `InverseGaloisA5` and `AbelRuffiniOQ04OQ01` without creating import cycles?",
+      "Can the quotient realizability theorem be applied constructively to derive new Galois groups from S5? (S5/A5 = C2 is trivial; more interesting quotients require larger realized groups.)",
       "The Inverse Galois Conjecture is stated but marked `sorry` (intentionally — it is open). Can partial results (e.g., all alternating groups are realizable via Hilbert's irreducibility theorem) be formalized as intermediate steps?",
       "Can the solvability characterization be generalized to alternating groups: $A_n$ solvable $\\Leftrightarrow$ $n \\leq 4$? The forward direction (simplicity of $A_n$ for $n \\geq 5$ implies non-solvability) follows from Mathlib."
     ]
