@@ -393,13 +393,13 @@ recover_server_completed() {
         # Try to identify the original file from the solution content
         # Look for filename hints in the Aristotle header comment
         local original_basename=""
-        original_basename=$(grep -oP 'project request had uuid: \K.*' "$tmp_solution" 2>/dev/null | head -1) || true
+        original_basename=$(sed -nE 's/.*project request had uuid: (.*)/\1/p' "$tmp_solution" 2>/dev/null | head -1) || true
 
         # Try to find the Lean module name from the file content
         # Look for namespace or import patterns that might hint at the original file
         local lean_basename=""
         # Check if there's a namespace declaration
-        lean_basename=$(grep -oP '^namespace\s+\K\w+' "$tmp_solution" 2>/dev/null | head -1) || true
+        lean_basename=$(sed -nE 's/^namespace[[:space:]]+([A-Za-z0-9_]+).*/\1/p' "$tmp_solution" 2>/dev/null | head -1) || true
 
         # Try to map the namespace to a file
         local target_file=""
@@ -416,7 +416,7 @@ recover_server_completed() {
         # Fallback 1: try "import Proofs.XXX" patterns in the file content
         if [[ -z "$target_file" ]]; then
             local module_name=""
-            module_name=$(grep -oP '^import\s+Proofs\.(\w+)' "$tmp_solution" 2>/dev/null | head -1 | sed 's/^import Proofs\.//' ) || true
+            module_name=$(sed -nE 's/^import[[:space:]]+Proofs\.([A-Za-z0-9_]+).*/\1/p' "$tmp_solution" 2>/dev/null | head -1) || true
             if [[ -n "$module_name" && -f "$PROOFS_DIR/${module_name}.lean" ]]; then
                 target_file="$PROOFS_DIR/${module_name}.lean"
             fi
@@ -428,14 +428,14 @@ recover_server_completed() {
         if [[ -z "$target_file" ]]; then
             local erdos_num=""
             # Try: "Erdős Problem #NNN" or "Erdos Problem #NNN" in comments
-            erdos_num=$(grep -oP '(?:Erdős|Erdos)\s+Problem\s+#\K\d+' "$tmp_solution" 2>/dev/null | head -1) || true
+            erdos_num=$(sed -nE 's/.*(Erdős|Erdos)[[:space:]]+Problem[[:space:]]+#([0-9]+).*/\2/p' "$tmp_solution" 2>/dev/null | head -1) || true
             # Try: "erdosproblems.com/NNN" URL
             if [[ -z "$erdos_num" ]]; then
-                erdos_num=$(grep -oP 'erdosproblems\.com/\K\d+' "$tmp_solution" 2>/dev/null | head -1) || true
+                erdos_num=$(sed -nE 's/.*erdosproblems\.com\/([0-9]+).*/\1/p' "$tmp_solution" 2>/dev/null | head -1) || true
             fi
             # Try: "ErdosNNN" in definition/theorem names
             if [[ -z "$erdos_num" ]]; then
-                erdos_num=$(grep -oP '\bErdos(\d+)\b' "$tmp_solution" 2>/dev/null | head -1 | grep -oP '\d+') || true
+                erdos_num=$(grep -oE 'Erdos[0-9]+' "$tmp_solution" 2>/dev/null | head -1 | grep -oE '[0-9]+') || true
             fi
 
             if [[ -n "$erdos_num" ]]; then
