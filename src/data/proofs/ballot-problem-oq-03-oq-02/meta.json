@@ -18,7 +18,7 @@
       "research"
     ],
     "badge": "wip",
-    "sorries": 1,
+    "sorries": 2,
     "axioms": 0,
     "mathlibDependencies": [
       {
@@ -63,7 +63,7 @@
     "dateAdded": "2026-03-22",
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
-    "lineCount": 2014,
+    "lineCount": 2091,
     "theoremCount": 79,
     "prerequisites": [
       "Matrix determinants and permutation signs (Mathlib)",
@@ -72,7 +72,7 @@
       "Gessel-Viennot involution theory"
     ],
     "assumptions": [
-      "cancellable_sum_eq_zero: self-inverse property of GV involution (1 sorry: needs tail-swap redesign to preserve path data)"
+      "gvCanon_membership and gvCanon_self_inverse: GV involution canonical crossing membership and self-inverse properties (2 sorries: needs tail-swap redesign to preserve path data)"
     ]
   },
   "overview": {
@@ -256,7 +256,7 @@
       "Finset"
     ],
     "namespace": "LGV",
-    "lineCount": 2014,
+    "lineCount": 2091,
     "axiomCount": 0,
     "theoremCount": 79,
     "definitionCount": 29
