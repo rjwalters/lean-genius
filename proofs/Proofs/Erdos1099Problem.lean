@@ -389,9 +389,12 @@ For any α > 1, liminf_{n→∞} h_α(n) is finite.
 
 This resolves Erdős Problem #1099 in the affirmative.
 -/
-axiom vose_liminf_bounded (α : ℝ) (hα : α > 1) :
+theorem vose_liminf_bounded (α : ℝ) (hα : α > 1) :
     ∃ (bound : ℝ), ∀ ε > 0,
-      ∃ (n : ℕ), n > 0 ∧ h_alpha α n < bound + ε
+      ∃ (n : ℕ), n > 0 ∧ h_alpha α n < bound + ε := by
+  obtain ⟨bound, _, seq, hpos, hbound⟩ := vose_bounded_sequence α hα
+  exact ⟨bound, fun ε hε => ⟨seq 0, by have := hpos 0; omega,
+    lt_of_le_of_lt (hbound 0) (by linarith)⟩⟩
 
 /--
 **Main theorem: Erdős Problem #1099 SOLVED**
@@ -555,17 +558,42 @@ private theorem sortedDivisors_two_pow (k : ℕ) :
     (Finset.pairwise_sort _ _)
     hperm
 
+/-- Helper: (do let a ← l; pure (↑a : ℚ)) = l.map Nat.cast for List ℕ. -/
+private theorem bind_pure_natCast (l : List ℕ) :
+    (do let a ← l; pure (↑a : ℚ)) = l.map (Nat.cast ·) := by
+  induction l with
+  | nil => rfl
+  | cons a t ih =>
+    change (↑a : ℚ) :: (do let a ← t; pure ↑a) = ↑a :: t.map Nat.cast
+    exact congrArg _ ih
+
 /-- The consecutive divisor ratios of 2^k consist of k copies of 2.
 Each ratio d_{i+1}/d_i = 2^(i+1)/2^i = 2. -/
 private theorem divisorRatios_two_pow (k : ℕ) :
     divisorRatios (2 ^ k) = List.replicate k (2 : ℚ) := by
-  unfold divisorRatios
+  simp only [divisorRatios]
   rw [sortedDivisors_two_pow]
-  -- The do/pure monad elaboration creates nested flatMap/bind forms
-  -- that resist direct normalization. The mathematical content is trivial
-  -- (2^(i+1)/2^i = 2) but the Lean 4 elaboration barrier requires
-  -- specialized bind/flatMap lemmas not yet available.
-  sorry
+  set L := (List.range (k + 1)).map (HPow.hPow 2) with hL_def
+  have hL_len : L.length = k + 1 := by simp [hL_def]
+  have htail_len : L.tail.length = k := by rw [List.length_tail, hL_len]; omega
+  have hL_ne : L ≠ [] := by intro h; simp [h] at hL_len
+  -- Convert do notation to explicit map
+  rw [bind_pure_natCast L.tail, bind_pure_natCast L]
+  apply List.ext_getElem
+  · rw [List.length_zipWith, List.length_map, List.length_map, htail_len, hL_len,
+        List.length_replicate, Nat.min_eq_left (by omega : k ≤ k + 1)]
+  · intro i hi₁ hi₂
+    have hik : i < k := by rwa [List.length_replicate] at hi₂
+    simp only [List.getElem_zipWith, List.getElem_replicate, List.getElem_map]
+    -- tail[i] = L[i+1]
+    have htail_eq : L.tail[i]'(by omega) =
+        L[i + 1]'(by rw [hL_len]; omega) := by
+      obtain ⟨a, t, heq⟩ := List.exists_cons_of_ne_nil hL_ne
+      simp [heq]
+    rw [htail_eq]
+    simp only [hL_def, List.getElem_map, List.getElem_range]
+    rw [Nat.pow_succ, Nat.cast_mul]
+    field_simp; norm_cast
 
 private theorem flatMap_singleton_eq_map (f : ℚ → ℝ) (l : List ℚ) :
     l.flatMap (fun a => [f a]) = l.map f := by
