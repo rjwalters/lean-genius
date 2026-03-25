@@ -194,13 +194,6 @@ theorem lagrangeIntegral_lower_bound (n : ℕ) (hn : n ≥ 1) (nodes : Fin n →
   exact intervalIntegral.integral_nonneg (by norm_num : (-1 : ℝ) ≤ 1)
     fun u _hu => by linarith [hpw u]
 
-/--
-**Upper bound**: I is bounded above by 2n for any configuration.
--/
-axiom lagrangeIntegral_upper_bound (n : ℕ) (hn : n ≥ 1) (nodes : Fin n → ℝ)
-    (hd : AreDistinct n nodes) (hrange : ∀ i, -1 ≤ nodes i ∧ nodes i ≤ 1) :
-    lagrangeIntegral n nodes ≤ 2 * n
-
 /-
 ## Part III: Chebyshev Nodes
 -/

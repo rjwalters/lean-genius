@@ -19,44 +19,50 @@
     "phase": "ACT",
     "since": "2026-03-25T00:00:00.000Z",
     "iteration": 2,
-    "focus": "Lower bound I ≥ 2/n fully proved. 0 sorries, 3 axioms remain (upper bound, Chebyshev estimate, open conjecture).",
+    "focus": "Variance decomposition framework: I = 2/n + ∫var. Strict lower bound I > 2/n for n ≥ 2 (1 sorry). Parent: false upper bound removed (3→2 axioms).",
     "blockers": [],
-    "nextAction": "Remove false upper bound axiom. Consider proving Chebyshev integral estimate.",
+    "nextAction": "Prove integratedVariance_strictly_pos (fill sorry with Mathlib integral_pos_iff_support_of_nonneg_ae).",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 2,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 4→3 axioms, 2→0 sorries. Lower bound I ≥ 2/n fully proved via variance identity + integral monotonicity.",
+    "progressSummary": "PROGRESS: Created OQ01 (241 lines, 10 theorems, 1 axiom, 1 sorry). Parent: 3→2 axioms (removed false I≤2n). Variance decomposition framework complete.",
     "builtItems": [
       "lagrangeBasis_self: Finset.prod_eq_one + div_self (product of 1s)",
       "lagrangeBasis_other: Finset.prod_eq_zero + sub_self (zero factor)",
       "chebyshevNodes_in_range: Real.neg_one_le_cos + Real.cos_le_one",
       "chebyshevNodes_distinct: Real.strictAntiOn_cos.injOn on [0,pi]",
       "lagrangeIntegral: noncomputable def using intervalIntegral",
-      "lagrangeBasis_eq_eval_basis: connects product form to Mathlib Lagrange.basis",
-      "partition_of_unity: sum_k l_k(x) = 1 for all x (via Lagrange.sum_basis)",
-      "sum_sq_lagrangeBasis_ge: ∑l_k² ≥ 1/n via variance identity (PROVED, 0 sorry)",
-      "lagrangeIntegral_lower_bound: I ≥ 2/n via integral monotonicity (PROVED, 0 sorry)"
+      "sum_sq_lagrangeBasis_ge: variance trick + Finset.sum_add_distrib + field_simp",
+      "lagrangeIntegral_lower_bound: continuity + intervalIntegral.integral_nonneg",
+      "variance_identity: ∑l_k² = 1/n + ∑(l_k-1/n)² (algebraic identity)",
+      "sum_sq_at_node: ∑l_k(x_j)² = 1 (Kronecker delta)",
+      "variance_at_node: variance = (n-1)/n at nodes",
+      "integral_decomposition: I = 2/n + ∫variance",
+      "lagrangeIntegral_strict_lower: I > 2/n for n≥2 (depends on sorry)"
     ],
     "insights": [
       "lagrangeBasis product form makes self/other proofs very clean",
       "Chebyshev arguments (2k+1)pi/(2n) lie in (0,pi) with cos strictly decreasing - direct injectivity",
       "div_le_iff and div_le_one_of_le removed in Mathlib v4.26.0 - use gcongr + field_simp instead",
-      "Mathlib has Lagrange.sum_basis in LinearAlgebra.Lagrange - partition of unity for free",
-      "Connection between product-form and Mathlib polynomial form needs Finset.erase/filter equivalence + field_simp",
-      "Upper bound axiom I <= 2n is mathematically FALSE for nodes with small separation",
-      "Variance identity approach: ∑(l_k-1/n)² = ∑l_k² - 1/n avoids need for sq_sum_le_card_mul_sum_sq",
-      "intervalIntegral.integral_sub + integral_nonneg is cleaner than integral_mono for lower bounds",
-      "Continuous.intervalIntegrable provides integrability for polynomial-type functions via continuous_finset_sum/prod"
+      "lagrangeIntegral_upper_bound (I <= 2n) is FALSE: clustered nodes (0, delta) give I = 2 + 4/(3*delta^2) -> infinity",
+      "Variance trick for Cauchy-Schwarz: suffices + sum_nonneg avoids needing a named CS lemma",
+      "linarith cannot unify 1/n and 2/n as related terms — use Finset.mul_sum to factor before simplifying",
+      "Remaining 2 axioms: chebyshev_integral_estimate (deep Chebyshev polynomial analysis), erdos_1131_conjecture (OPEN)",
+      "Conjecture reformulation: min I = 2-(1+o(1))/n ⟺ min ∫var = 2-(3+o(1))/n",
+      "Variance at nodes is always (n-1)/n, independent of node configuration"
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "Chebyshev polynomial integral identities for computing I(chebyshev_nodes) exactly",
+      "intervalIntegral strict positivity for continuous nonneg functions (might exist as integral_pos_iff_support_of_nonneg_ae)"
+    ],
     "nextSteps": [
-      "Remove false upper bound axiom (or add minimum separation condition)",
-      "Consider proving chebyshev_integral_estimate if feasible",
-      "The open conjecture erdos_1131_conjecture is an axiom (correctly so - it's unsolved)"
+      "Fill sorry: use intervalIntegral.integral_pos_iff_support_of_nonneg_ae",
+      "Explore tighter lower bounds using variance structure",
+      "Connect Gram matrix trace to variance decomposition"
     ]
   },
   "tags": [
@@ -79,20 +85,30 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.907Z",
-  "lastUpdate": "2026-03-25T00:38:00.000Z",
+  "lastUpdate": "2026-03-24T00:48:59.907Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1131Problem.lean",
       "filename": "Erdos1131Problem.lean",
-      "lineCount": 297,
-      "theoremCount": 11,
-      "axiomCount": 3,
-      "defCount": 7,
+      "lineCount": 307,
+      "theoremCount": 9,
+      "axiomCount": 2,
+      "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1131Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1131OQ01.lean",
+      "filename": "Erdos1131OQ01.lean",
+      "lineCount": 241,
+      "theoremCount": 10,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false
     }
   ]
 }

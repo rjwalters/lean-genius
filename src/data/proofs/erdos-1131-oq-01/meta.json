@@ -1,0 +1,133 @@
+{
+  "id": "erdos-1131-oq-01",
+  "title": "Variance Decomposition of Lagrange Basis Integrals",
+  "slug": "erdos-1131-oq-01",
+  "description": "Investigates the precise asymptotic min I = 2 - (1+o(1))/n via a variance decomposition I = 2/n + ∫variance, proving strict lower bound I > 2/n for n ≥ 2.",
+  "meta": {
+    "author": "Erdős, Szabados, Varma, Vértesi",
+    "sourceUrl": "https://erdosproblems.com/1131",
+    "date": "1994",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos1131OQ01.lean",
+    "tags": [
+      "erdos",
+      "approximation-theory",
+      "interpolation",
+      "lagrange-polynomials",
+      "variance-decomposition",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "erdosNumber": 1131,
+    "erdosUrl": "https://erdosproblems.com/1131",
+    "erdosProblemStatus": "open",
+    "axiomCount": 1,
+    "theoremCount": 10,
+    "lineCount": 241,
+    "assumptions": "1 axiom: erdos_1131_variance_conjecture (OPEN — reformulated Erdős conjecture in variance form). 1 sorry: integratedVariance_strictly_pos (standard analysis fact — continuous non-negative function with a positive value has positive integral). 10 theorems proved: variance_identity, sum_sq_at_node, variance_at_node, variance_pos_at_node, integral_decomposition, integratedVariance_nonneg, integratedVariance_strictly_pos (sorry), lagrangeIntegral_strict_lower, continuous_pointwiseVariance, erdos_1131_oq01.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "This open question investigates the precise second-order behavior of the minimum Lagrange basis integral min I(x₁,...,xₙ) = 2 - (1+o(1))/n conjectured by Erdős. The parent formalization proved I ≥ 2/n via Cauchy-Schwarz. This OQ establishes a structural decomposition showing why 2/n is never tight for n ≥ 2.",
+    "problemStatement": "For distinct nodes x₁,...,xₙ ∈ [-1,1], does I = ∫₋₁¹ Σ l_k(x)² dx satisfy min I = 2 - (1+o(1))/n? We decompose I = 2/n + ∫ variance and show the variance term is always strictly positive.",
+    "text": "Decomposes the Lagrange basis integral into a uniform floor (2/n) and integrated variance, proving the Cauchy-Schwarz bound I ≥ 2/n is never achieved for n ≥ 2.",
+    "proofStrategy": "The key technique is the variance decomposition: write ∑l_k(x)² = 1/n + ∑(l_k(x) - 1/n)² using the partition of unity ∑l_k = 1. Integrating gives I = 2/n + ∫variance. The variance equals (n-1)/n > 0 at each node (since l_k(x_j) = δ_{kj}), so the integral is strictly positive. The Erdős conjecture is reformulated as: min ∫variance = 2 - (3+o(1))/n.",
+    "keyInsights": [
+      "**Variance decomposition**: $I = 2/n + \\int_{-1}^{1} \\sum_k (l_k(x) - 1/n)^2 \\, dx$ cleanly separates the uniform floor from the excess",
+      "**Node evaluation**: $\\sum_k l_k(x_j)^2 = 1$ at every node (Kronecker delta identity), showing the integrand equals 1 at nodes vs 1/n elsewhere",
+      "**Strict lower bound**: The Cauchy-Schwarz bound $I \\ge 2/n$ is never achieved for $n \\ge 2$ because the variance is $(n-1)/n > 0$ at each node",
+      "**Conjecture reformulation**: $\\min I = 2 - (1+o(1))/n$ is equivalent to $\\min \\int \\text{variance} = 2 - (3+o(1))/n$"
+    ],
+    "prerequisites": [
+      "Lagrange interpolation",
+      "Interval integrals",
+      "Partition of unity"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 28,
+      "endLine": 50,
+      "summary": "Defines pointwise variance $\\sum (l_k(x) - 1/n)^2$, integrated variance $\\int_{-1}^{1} \\text{var}$, and proves continuity of the variance function.",
+      "mathContext": "Defines pointwise variance $\\sum (l_k(x) - 1/n)^2$, integrated variance $\\int_{-1}^{1} \\text{var}$, and proves continuity of the variance function."
+    },
+    {
+      "id": "variance-decomposition",
+      "title": "Variance Decomposition",
+      "startLine": 55,
+      "endLine": 90,
+      "summary": "Proves the algebraic identity $\\sum l_k^2 = 1/n + \\sum (l_k - 1/n)^2$ by expanding and using the partition of unity $\\sum l_k = 1$.",
+      "mathContext": "Proves the algebraic identity $\\sum l_k^2 = 1/n + \\sum (l_k - 1/n)^2$ by expanding and using the partition of unity $\\sum l_k = 1$."
+    },
+    {
+      "id": "node-evaluation",
+      "title": "Node Evaluation Identities",
+      "startLine": 95,
+      "endLine": 130,
+      "summary": "At each node $x_j$: $\\sum l_k(x_j)^2 = 1$ (Kronecker delta) and variance $= (n-1)/n > 0$ for $n \\ge 2$.",
+      "mathContext": "At each node $x_j$: $\\sum l_k(x_j)^2 = 1$ (Kronecker delta) and variance $= (n-1)/n > 0$ for $n \\ge 2$."
+    },
+    {
+      "id": "integral-decomposition",
+      "title": "Integral Decomposition",
+      "startLine": 135,
+      "endLine": 170,
+      "summary": "Proves $I = 2/n + \\int \\text{variance}$ via integral linearity, and $\\int \\text{variance} \\ge 0$.",
+      "mathContext": "Proves $I = 2/n + \\int \\text{variance}$ via integral linearity, and $\\int \\text{variance} \\ge 0$."
+    },
+    {
+      "id": "strict-bound",
+      "title": "Strict Lower Bound",
+      "startLine": 175,
+      "endLine": 215,
+      "summary": "For $n \\ge 2$: $I > 2/n$ strictly. The variance integral is positive since the continuous variance function equals $(n-1)/n > 0$ at each node.",
+      "mathContext": "For $n \\ge 2$: $I > 2/n$ strictly. The variance integral is positive since the continuous variance function equals $(n-1)/n > 0$ at each node."
+    },
+    {
+      "id": "conjecture",
+      "title": "Conjecture Reformulation",
+      "startLine": 220,
+      "endLine": 241,
+      "summary": "Reformulates Erdős conjecture as $\\min \\int \\text{variance} = 2 - (3+o(1))/n$ and states the main theorem $I > 2/n$.",
+      "mathContext": "Reformulates Erdős conjecture as $\\min \\int \\text{variance} = 2 - (3+o(1))/n$ and states the main theorem $I > 2/n$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The variance decomposition I = 2/n + ∫variance provides structural insight into the Erdős conjecture on Lagrange basis integrals. The strict lower bound I > 2/n shows the Cauchy-Schwarz bound is never tight for n ≥ 2. The conjecture is equivalently: the variance integral's minimum is 2 - (3+o(1))/n.",
+    "implications": "The decomposition identifies ∫variance as the key quantity controlling the gap between I and 2/n. Future work should bound this variance integral using Chebyshev/Legendre polynomial theory.",
+    "openQuestions": [
+      "What is the tight lower bound on ∫variance? Can the (log n)² factor in ESVV94 be removed?",
+      "Can the Gram matrix trace I = tr(G) be expressed in terms of the variance decomposition?",
+      "Does the variance decomposition give a cleaner proof of the ESVV94 bounds?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "Extends the parent formalization with structural decomposition of the integral",
+      "targetId": "erdos-1131"
+    }
+  ],
+  "references": [
+    {
+      "key": "ESVV94",
+      "citation": "Erdős, P., Szabados, J., Varma, A. K., Vértesi, P., Studia Sci. Math. Hungar. (1994), 55-60."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.Erdos1131Problem"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Erdos1131"
+    ],
+    "namespace": "Erdos1131OQ01",
+    "lineCount": 241,
+    "axiomCount": 1,
+    "theoremCount": 10,
+    "definitionCount": 3
+  }
+}
