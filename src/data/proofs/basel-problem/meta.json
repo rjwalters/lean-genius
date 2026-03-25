@@ -216,6 +216,34 @@
       "year": "1713",
       "venue": "Basel (published posthumously)",
       "note": "Contains the Bernoulli numbers B_k and their connection to power sums — the same B_k that appear in Euler's formula ζ(2k) = (-1)^(k+1) 2^(2k-1) π^(2k) B_{2k} / (2k)!"
+    },
+    {
+      "authors": "Aigner, Martin; Ziegler, Günter M.",
+      "title": "Proofs from THE BOOK",
+      "year": "2018",
+      "venue": "Springer, 6th edition, Chapter 9: 'Some irrational numbers' and Chapter 24: 'Pigeon-hole and double counting'",
+      "note": "Presents multiple elegant proofs of ζ(2) = π²/6 including the Fourier/Parseval approach and a double integral proof due to Beukers, Calabi, and Kolk (1993): ∫∫_{[0,1]²} 1/(1-xy) dx dy = ∑ 1/n² = π²/6, proved by the substitution x = sin(u)/cos(v), y = sin(v)/cos(u)"
+    },
+    {
+      "authors": "Riemann, Bernhard",
+      "title": "Ueber die Anzahl der Primzahlen unter einer gegebenen Grösse",
+      "year": "1859",
+      "venue": "Monatsberichte der Berliner Akademie, pp. 671–680",
+      "note": "The foundational memoir on the Riemann zeta function ζ(s) = ∑ n⁻ˢ as a function of a complex variable. Riemann established the analytic continuation, functional equation Γ(s/2)π⁻ˢ/²ζ(s) = Γ((1-s)/2)π⁻⁽¹⁻ˢ⁾/²ζ(1-s), and the connection between ζ-zeros and the distribution of primes — transforming the Basel identity ζ(2) = π²/6 from an isolated curiosity into the simplest special value of the central function in analytic number theory"
+    },
+    {
+      "authors": "Kalman, Dan",
+      "title": "Six Ways to Sum a Series",
+      "year": "1993",
+      "venue": "College Mathematics Journal, vol. 24, no. 5, pp. 402–421",
+      "note": "Surveys six distinct proofs of ζ(2) = π²/6: Euler's original sin(x)/x factorization, Fourier series / Parseval, a proof using the Weierstrass M-test, integration of arctan, a proof via the ψ function (digamma), and Apostol's proof using Fourier coefficients of |x| on [-π, π]"
+    },
+    {
+      "authors": "Zudilin, Wadim",
+      "title": "One of the numbers ζ(5), ζ(7), ζ(9), ζ(11) is irrational",
+      "year": "2001",
+      "venue": "Russian Mathematical Surveys, vol. 56, no. 4, pp. 774–776",
+      "note": "Sharpened Rivoal's 2000 result to show at least one of ζ(5), ζ(7), ζ(9), ζ(11) is irrational — the best known result on individual odd zeta values beyond Apéry's ζ(3), directly relevant to the Basel problem's open questions about odd zeta arithmetic"
     }
   ],
   "crossReferences": [
@@ -318,6 +346,31 @@
       "targetId": "taylor-sincos-convergence",
       "relationship": "technique",
       "description": "The Taylor series convergence of $\\sin(x)$ and $\\cos(x)$ underpins Euler's original Basel proof: the Taylor expansion $\\sin(x)/x = 1 - x^2/6 + x^4/120 - \\cdots$ provides the $x^2$ coefficient that Euler matched against the infinite product factorization to extract $\\zeta(2) = \\pi^2/6$. The convergence of these Taylor series (proved via derivative bounds $|\\sin^{(n)}(x)| \\leq 1$) justifies the coefficient comparison"
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "related",
+      "description": "The Hermite-Lindemann theorem ($\\alpha$ algebraic and nonzero $\\Rightarrow e^\\alpha$ transcendental) implies $\\pi$ is transcendental (since $e^{i\\pi} = -1$ is algebraic). This immediately gives that $\\zeta(2) = \\pi^2/6$ is transcendental — in fact, all even zeta values $\\zeta(2k) = \\text{rational} \\times \\pi^{2k}$ are transcendental by the same argument. The odd zeta values lack this structural guarantee, which is why their arithmetic nature remains mysterious"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "foundational",
+      "description": "The irrationality of $\\sqrt{2}$ (c. 500 BCE) is the first level of the expressibility hierarchy discussed in the Basel entry's implications: $\\sqrt{2} \\notin \\mathbb{Q}$ (irrationality) $\\to$ $\\zeta(2) = \\pi^2/6$ involves a transcendental constant (the Basel identity reveals $\\pi$ in an integer sum) $\\to$ $\\pi \\notin \\overline{\\mathbb{Q}}$ (Lindemann transcendence). Each level demonstrates a deeper barrier between discrete objects and the constants they encode"
+    },
+    {
+      "targetId": "vietas-formulas",
+      "relationship": "technique",
+      "description": "Euler's original Basel proof is essentially Vieta's formulas applied to an infinite product: just as Vieta's formulas express polynomial coefficients as elementary symmetric functions of roots, Euler's factorization $\\sin(x)/x = \\prod(1 - x^2/n^2\\pi^2)$ expresses the Taylor coefficient $-1/6$ of $x^2$ as the sum of 'roots' $-1/n^2\\pi^2$, yielding $\\sum 1/n^2\\pi^2 = 1/6$. Newton's identities (power sums from elementary symmetric functions) then generalize this to extract $\\zeta(4), \\zeta(6), \\ldots$ from higher coefficients"
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "FTA guarantees every polynomial over $\\mathbb{C}$ factors into linear terms — the finite-dimensional version of the Weierstrass factorization theorem that justifies Euler's infinite product $\\sin(x)/x = \\prod(1 - x^2/n^2\\pi^2)$. The analogy between finite polynomial roots and the zeros $\\{n\\pi\\}$ of $\\sin(x)$ was Euler's key insight; Weierstrass (1876) made this rigorous by showing that entire functions of finite order factor over their zeros (with convergence-producing exponential factors)"
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Both results concern the distribution of primes among the integers. Bertrand's postulate (there exists a prime between $n$ and $2n$) constrains prime gaps, while the Euler product $\\zeta(2) = \\prod_p p^2/(p^2-1) = \\pi^2/6$ encodes the global density of primes. The convergence of $\\zeta(2)$ implies the prime reciprocals $\\sum 1/p$ must diverge sufficiently slowly — both results are early manifestations of the prime number theorem"
     }
   ],
   "leanFile": {
