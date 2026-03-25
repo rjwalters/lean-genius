@@ -466,8 +466,58 @@ recover_server_completed() {
             done
         fi
 
+        # Fallback 4: "See XYZ.lean" docstring hint
+        # Many companion files contain "See AreaOfCircleOQ01OQ03.lean for the main formalization."
         if [[ -z "$target_file" ]]; then
-            echo -e "  ${YELLOW}Cannot map to local file (no namespace match), saving to results${NC}"
+            local see_ref=""
+            see_ref=$(sed -nE 's/.*See ([A-Z][A-Za-z0-9]+)\.lean.*/\1/p' "$tmp_solution" 2>/dev/null | head -1) || true
+            if [[ -n "$see_ref" ]]; then
+                for candidate in \
+                    "$PROOFS_DIR/${see_ref}Aristotle.lean" \
+                    "$PROOFS_DIR/${see_ref}.lean" \
+                    "$PROOFS_DIR/${see_ref}Problem.lean"; do
+                    if [[ -f "$candidate" ]]; then
+                        target_file="$candidate"
+                        break
+                    fi
+                done
+            fi
+        fi
+
+        # Fallback 5: fuzzy namespace prefix matching
+        # e.g., namespace "DescartesRuleOQ01" might match "DescartesRuleOfSignsOQ01.lean"
+        if [[ -z "$target_file" && -n "$lean_basename" ]]; then
+            local prefix
+            prefix=$(echo "$lean_basename" | sed -E 's/(OQ[0-9].*|Aristotle)$//')
+            if [[ -n "$prefix" && ${#prefix} -ge 5 ]]; then
+                local fuzzy_match
+                fuzzy_match=$(ls "$PROOFS_DIR"/ 2>/dev/null | grep -i "^${prefix}" | head -1) || true
+                if [[ -n "$fuzzy_match" && -f "$PROOFS_DIR/$fuzzy_match" ]]; then
+                    target_file="$PROOFS_DIR/$fuzzy_match"
+                fi
+            fi
+        fi
+
+        # Fallback 6: LLM-powered file mapping
+        if [[ -z "$target_file" ]] && [[ -x "$SCRIPT_DIR/llm-map-file.sh" ]]; then
+            echo -e "  ${CYAN}Attempting LLM mapping...${NC}"
+            local llm_result
+            llm_result=$("$SCRIPT_DIR/llm-map-file.sh" "$tmp_solution" 2>/dev/null) || true
+            if [[ -n "$llm_result" && "$llm_result" != "UNMAPPED" ]]; then
+                local llm_target="$PROOFS_DIR/$llm_result"
+                if [[ -f "$llm_target" ]]; then
+                    target_file="$llm_target"
+                    echo -e "  ${GREEN}LLM mapped to:${NC} $target_file"
+                else
+                    echo -e "  ${YELLOW}LLM suggested $llm_result but file not found${NC}"
+                fi
+            else
+                echo -e "  ${YELLOW}LLM could not map file${NC}"
+            fi
+        fi
+
+        if [[ -z "$target_file" ]]; then
+            echo -e "  ${YELLOW}Cannot map to local file (all fallbacks exhausted), saving to results${NC}"
             mv "$tmp_solution" "$RESULTS_DIR/recovered-${pid}.lean"
 
             # Track in jobs.json
