@@ -7,7 +7,7 @@
     "author": "Paul Erdős, Carl Pomerance, András Sárközy",
     "sourceUrl": "https://erdosproblems.com/1004",
     "date": "1987",
-    "status": "pending",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1004Problem.lean",
     "tags": [
       "erdos",
@@ -15,14 +15,14 @@
       "totient",
       "analytic-number-theory"
     ],
-    "badge": "wip",
-    "sorries": 0,
+    "badge": "formalized",
+    "sorries": 6,
     "erdosNumber": 1004,
     "erdosUrl": "https://erdosproblems.com/1004",
     "erdosProblemStatus": "open",
-    "axiomCount": 0,
-    "lineCount": 1,
-    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"formalized\".",
+    "axiomCount": 3,
+    "lineCount": 327,
+    "assumptions": "Three axioms for EPS87 upper bound (eps87_constant, eps87_constant_pos, eps87_upper_bound). Six sorries: run_length_sublinear, longer_runs_need_larger_n, distinct_totients_asymptotic, run_length_by_distinct_values, totient_eq_two_iff, totient_eq_four_iff.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -290,12 +290,12 @@
     }
   ],
   "leanFile": {
-    "imports": [],
-    "opens": [],
-    "namespace": null,
-    "lineCount": 1,
-    "axiomCount": 0,
-    "theoremCount": 0,
-    "definitionCount": 0
+    "imports": ["Mathlib"],
+    "opens": ["Nat", "Real", "Filter", "Finset", "Topology"],
+    "namespace": "Erdos1004",
+    "lineCount": 327,
+    "axiomCount": 3,
+    "theoremCount": 22,
+    "definitionCount": 12
   }
 }
