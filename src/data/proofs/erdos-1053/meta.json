@@ -33,49 +33,56 @@
       "title": "Imports and Setup",
       "startLine": 26,
       "endLine": 27,
-      "summary": "Imports Mathlib divisor theory, basic natural number arithmetic, and tactic framework."
+      "summary": "Imports Mathlib divisor theory, basic natural number arithmetic, and tactic framework.",
+      "mathContext": "Import `Mathlib` provides `Nat.divisors n` (the finset $\\{d : d \\mid n\\}$) enabling $\\sigma(n) = \\sum_{d \\mid n} d$, along with `native_decide` for computational verification of small examples."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions: σ(n) and k-Perfection",
       "startLine": 28,
       "endLine": 48,
-      "summary": "Defines the sum-of-divisors function σ(n), k-perfect numbers (σ(n) = kn), decidability instance, and the abundancy index σ(n)/n."
+      "summary": "Defines the sum-of-divisors function σ(n), k-perfect numbers (σ(n) = kn), decidability instance, and the abundancy index σ(n)/n.",
+      "mathContext": "$\\sigma(n) = \\sum_{d \\mid n} d$; $\\text{IsKPerfect}(n, k) \\Leftrightarrow \\sigma(n) = k \\cdot n$; abundancy index $I(n) = \\sigma(n)/n$. For prime powers: $\\sigma(p^a) = (p^{a+1}-1)/(p-1)$."
     },
     {
       "id": "classical-perfect",
       "title": "Classical Perfect Numbers (k = 1, 2)",
       "startLine": 49,
       "endLine": 81,
-      "summary": "Uniqueness of 1-perfect numbers (proved via subset sum argument), examples of 2-perfect numbers (native_decide), and Euler's characterization of even perfect numbers via Mersenne primes."
+      "summary": "Uniqueness of 1-perfect numbers (proved via subset sum argument), examples of 2-perfect numbers (native_decide), and Euler's characterization of even perfect numbers via Mersenne primes.",
+      "mathContext": "$\\sigma(n) = n \\iff n = 1$. Even perfect: $n = 2^{p-1}(2^p - 1)$ with $2^p - 1$ prime (Euclid-Euler). Examples: $\\sigma(6) = 12, \\sigma(28) = 56, \\sigma(496) = 992, \\sigma(8128) = 16256$."
     },
     {
       "id": "multiperfect",
       "title": "Multiperfect Numbers (k ≥ 3)",
       "startLine": 82,
       "endLine": 96,
-      "summary": "Known triperfect examples (k=3) and the existence of 11-perfect numbers, the largest known multiplicity."
+      "summary": "Known triperfect examples (k=3) and the existence of 11-perfect numbers, the largest known multiplicity.",
+      "mathContext": "$\\sigma(120) = 360 = 3 \\cdot 120$ (triperfect). Six triperfect numbers known. Largest known multiplicity: $k = 11$, no $k = 12$ example found."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture: k = o(log log n)",
       "startLine": 97,
       "endLine": 108,
-      "summary": "States Erdős's central question: must the perfection multiplicity k grow strictly slower than log log n?"
+      "summary": "States Erdős's central question: must the perfection multiplicity k grow strictly slower than log log n?",
+      "mathContext": "Conjecture: $\\sigma(n) = kn \\implies k = o(\\log\\log n)$. Equivalently, $k / \\log\\log n \\to 0$ along the sequence of $k$-perfect numbers."
     },
     {
       "id": "bounds",
       "title": "Gronwall's Theorem and Robin's Inequality",
       "startLine": 109,
       "endLine": 123,
-      "summary": "Gronwall's 1913 result establishing e^γ · log log n as the natural scale, and Robin's 1984 conditional upper bound from the Riemann Hypothesis."
+      "summary": "Gronwall's 1913 result establishing e^γ · log log n as the natural scale, and Robin's 1984 conditional upper bound from the Riemann Hypothesis.",
+      "mathContext": "Gronwall: $\\limsup \\sigma(n)/(n \\log\\log n) = e^\\gamma \\approx 1.781$. Robin (conditional on RH): $\\sigma(n) < e^\\gamma \\cdot n \\cdot \\log\\log n$ for $n \\geq 5041$, giving $k < e^\\gamma \\cdot \\log\\log n$."
     },
     {
       "id": "finiteness-and-criterion",
       "title": "Guy's Finiteness Conjecture and Robin's Criterion",
       "startLine": 124,
       "endLine": 152,
-      "summary": "Guy's stronger conjecture (finitely many k-perfect numbers for each k ≥ 3) and the derivation of k = O(log log n) from Robin's criterion."
+      "summary": "Guy's stronger conjecture (finitely many k-perfect numbers for each k ≥ 3) and the derivation of k = O(log log n) from Robin's criterion.",
+      "mathContext": "Guy: $\\forall k \\geq 3, |\\{n : \\sigma(n) = kn\\}| < \\infty$. Robin's criterion derivation: $\\sigma(n) = kn < e^\\gamma n \\log\\log n \\implies k < e^\\gamma \\log\\log n = O(\\log\\log n)$."
     }
   ],
   "overview": {
@@ -92,7 +99,11 @@
       "No $k = 12$ perfect number is known despite exhaustive search, suggesting the frontier of computability has been reached near $k = 11$"
     ],
     "prerequisites": [
-      "Mathematical prerequisites vary by topic"
+      "Sum-of-divisors function $\\sigma(n)$ and its multiplicativity",
+      "Perfect numbers and the Euclid-Euler characterization",
+      "Asymptotic notation: $O(\\cdot)$, $o(\\cdot)$, $\\limsup$",
+      "Gronwall's theorem and the Euler-Mascheroni constant $\\gamma$",
+      "Robin's inequality and its connection to the Riemann Hypothesis"
     ]
   },
   "conclusion": {
