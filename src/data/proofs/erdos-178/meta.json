@@ -98,11 +98,11 @@
     "text": "Does there exist f : ℕ → {-1,1} such that the discrepancy over any d sequences is bounded independently of m? SOLVED (Beck 1981): YES, with bound O(d^(4+ε)) (Beck 2017).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Signing Functions:** Define SigningFunction as ℕ → ℤ, with IsValidSigning ensuring values in {-1, 1}\n\n2. **Sequence Families:** Define InfiniteIntSeq and SeqFamily for collections of sequences\n\n3. **Discrepancy Measures:** Define partialSum, seqDiscrepancy, and maxDiscrepancy\n\n4. **Main Property:** Define HasBoundedDiscrepancy and ExistsBoundedSigning\n\n5. **Beck's Theorems:** Axiomatize Beck 1981 (existence), Beck uniform bound, and Beck 2017 (quantitative bound d^(4+ε))",
     "keyInsights": [
-      "**Uniform Bounds:** The key is that the bound depends only on d (number of sequences considered), not on m (prefix length) or the specific family",
-      "**Probabilistic Method Limitation:** Random signings give O(√m) discrepancy, but we need O_d(1) independent of m",
-      "**Beck's Contribution:** The proof uses sophisticated combinatorial techniques beyond simple probabilistic arguments",
-      "**Quantitative Progress:** From existential bound (1981) to explicit d^(4+ε) (2017) took 36 years",
-      "**Uniform Bound:** The bound C depends only on d, not on the specific family of sequences"
+      "The bound $C(d)$ depends only on $d$ (number of sequences considered), not on the prefix length $m$ or the specific family — this universality is what makes Beck's result deep. A family-dependent bound is trivial by compactness; the family-independent bound requires fundamentally new methods",
+      "Random signings give expected discrepancy $\\Theta(\\sqrt{m})$ by the central limit theorem, which grows without bound. Beck's deterministic construction achieves $O_d(1)$ — a qualitative breakthrough showing that structured signings vastly outperform random ones for this problem",
+      "The 36-year gap from existence (Beck 1981) to quantitative bound $O(d^{4+\\varepsilon})$ (Beck 2017) illustrates a common pattern in combinatorics: proving existence is often much easier than determining the right growth rate",
+      "Spencer's finite discrepancy theorem ($O(\\sqrt{n})$ for $n$ sets over $n$ elements) is the finite analogue. The infinite version studied here requires the signing to work for all prefix lengths simultaneously — a much stronger requirement that changes the problem qualitatively",
+      "The formalization uses 6 axioms to capture the three layers of Beck's results: (1) existence per family, (2) uniform bound over all families, (3) explicit polynomial bound $d^{4+\\varepsilon}$ — each strictly strengthening the previous"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -115,72 +115,72 @@
       "title": "Basic Definitions",
       "startLine": 33,
       "endLine": 55,
-      "summary": "Signing functions, sequences, and families.",
-      "mathContext": "Mathematical content: Signing functions, sequences, and families."
+      "summary": "Defines `SigningFunction` ($f : \\mathbb{N} \\to \\mathbb{Z}$), `IsValidSigning` ($f(n) \\in \\{-1, 1\\}$ for all $n$), `InfiniteIntSeq`, `IsStrictlyIncreasing`, and `SeqFamily` (indexed family of sequences).",
+      "mathContext": "Core objects: $f : \\mathbb{N} \\to \\{-1, 1\\}$ (signing), $A_i = \\{a_{i1} < a_{i2} < \\cdots\\}$ (strictly increasing integer sequences), $(A_i)_{i \\in \\mathbb{N}}$ (family)."
     },
     {
       "id": "discrepancy",
       "title": "Discrepancy Measures",
       "startLine": 56,
       "endLine": 72,
-      "summary": "Partial sums, sequence discrepancy, and max discrepancy.",
-      "mathContext": "Mathematical content: Partial sums, sequence discrepancy, and max discrepancy."
+      "summary": "Defines `partialSum f A m` ($\\sum_{j=1}^{m} f(a_j)$), `seqDiscrepancy` ($|\\text{partialSum}|$), and `maxDiscrepancy f family d m` ($\\max_{1 \\leq i \\leq d,\\, 1 \\leq j \\leq m} |\\sum_{k=1}^{j} f(a_{ik})|$).",
+      "mathContext": "The discrepancy $\\text{disc}(f, A_i, m) = |\\sum_{j=1}^{m} f(a_{ij})|$ measures imbalance. The max discrepancy $\\max_{i \\leq d,\\, j \\leq m} \\text{disc}(f, A_i, j)$ is the worst case over $d$ sequences and all prefix lengths up to $m$."
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "startLine": 73,
       "endLine": 86,
-      "summary": "Bounded discrepancy property and the main question.",
-      "mathContext": "Bound: Bounded discrepancy property and the main question."
+      "summary": "Defines `HasBoundedDiscrepancy f family d C` (discrepancy $\\leq C$ for all $m$) and `ExistsBoundedSigning` ($\\forall d,\\, \\exists C,\\, \\exists f$ valid with bounded discrepancy).",
+      "mathContext": "The question: $\\forall (A_i)_{i \\in \\mathbb{N}},\\, \\forall d,\\, \\exists C,\\, \\exists f : \\mathbb{N} \\to \\{-1,1\\}$ such that $\\max_{i \\leq d,\\, m \\geq 1} |\\sum_{j=1}^{m} f(a_{ij})| \\leq C$. The bound $C$ may depend on $d$ but not on $m$ or the specific family."
     },
     {
       "id": "beck-1981",
       "title": "Beck's Theorem (1981)",
       "startLine": 87,
       "endLine": 102,
-      "summary": "Existence of bounded signing for any family.",
-      "mathContext": "Bound: Existence of bounded signing for any family."
+      "summary": "Axiomatizes `beck_1981`: for any family, `ExistsBoundedSigning` holds. Also `beck_uniform_bound`: the bound $C(d)$ depends only on $d$, not on the family.",
+      "mathContext": "Beck (1981): $\\forall$ family, $\\forall d$, $\\exists f$ valid, $\\exists C$, discrepancy $\\leq C$. The uniform strengthening: $\\exists C : \\mathbb{N} \\to \\mathbb{N}$ such that $\\forall$ family, $\\forall d$, $\\exists f$ with discrepancy $\\leq C(d)$."
     },
     {
       "id": "beck-2017",
       "title": "Beck's Improvement (2017)",
       "startLine": 103,
       "endLine": 115,
-      "summary": "Quantitative bound d^(4+ε).",
-      "mathContext": "Bound: Quantitative bound d^(4+ε)."
+      "summary": "Axiomatizes `beck_2017`: $\\forall \\varepsilon > 0$, $\\exists K > 0$ such that $\\forall$ family, $\\forall d \\geq 1$, $\\exists f$ with discrepancy $\\leq K \\cdot d^{4+\\varepsilon}$.",
+      "mathContext": "The quantitative bound: $C(d) = O(d^{4+\\varepsilon})$ for any $\\varepsilon > 0$. This polynomial growth rate shows the bound is manageable — not exponential in $d$. Whether the exponent 4 is optimal remains open."
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "startLine": 116,
       "endLine": 133,
-      "summary": "Spencer's discrepancy theorem and EGZ connection.",
-      "mathContext": "Verified: Spencer's discrepancy theorem and EGZ connection."
+      "summary": "Axiomatizes Spencer's finite discrepancy theorem ($O(\\sqrt{n})$ for $n$ sets over $n$ elements) and the Erdős-Ginzburg-Ziv theorem (among $2n-1$ integers, $n$ have sum divisible by $n$) as contextual results.",
+      "mathContext": "Spencer (1985): for $n$ subsets of an $n$-element universe, discrepancy $\\leq 6\\sqrt{n}$. EGZ: among any $2n-1$ integers, some $n$ have sum $\\equiv 0 \\pmod{n}$. Both are finite-system results; Problem #178 extends to infinite families."
     },
     {
       "id": "difficulty",
       "title": "Why the Problem is Hard",
       "startLine": 134,
       "endLine": 151,
-      "summary": "Non-uniform case and probabilistic method limitations.",
-      "mathContext": "Mathematical content: Non-uniform case and probabilistic method limitations."
+      "summary": "Documents two difficulty sources: the non-uniform case is trivial (Beck's theorem applied per-family), but the uniform bound over all families requires new techniques. Random signings give $O(\\sqrt{m})$ discrepancy, far from the needed $O_d(1)$.",
+      "mathContext": "Random signing: by CLT, $\\sum_{j=1}^{m} f(a_{ij}) \\sim \\mathcal{N}(0, m)$, giving discrepancy $\\Theta(\\sqrt{m})$ — unbounded in $m$. Beck's deterministic construction achieves $O_d(1)$, a qualitative improvement over random methods."
     },
     {
       "id": "open-questions",
       "title": "Connections and Open Questions",
       "startLine": 152,
       "endLine": 162,
-      "summary": "Optimal exponent question.",
-      "mathContext": "Mathematical content: Optimal exponent question."
+      "summary": "Documents the open question of the optimal exponent: is $d^{4+\\varepsilon}$ the best possible, or can the exponent be reduced below 4?",
+      "mathContext": "Open: does $\\exists \\alpha < 4$ such that $C(d) = O(d^{\\alpha + \\varepsilon})$? The gap between the existential proof (1981) and the quantitative bound (2017) suggests further improvement may be possible."
     },
     {
       "id": "main-results",
       "title": "Main Results",
       "startLine": 163,
       "endLine": 181,
-      "summary": "Complete resolution combining Beck's results.",
-      "mathContext": "Mathematical content: Complete resolution combining Beck's results."
+      "summary": "Combines Beck's results into `erdos_178` (complete resolution) and `erdos_178_answer` (affirmative answer). Both are direct consequences of the axiomatized Beck theorems.",
+      "mathContext": "Final resolution: Problem #178 is SOLVED (YES). $\\forall$ family of infinite sequences, $\\exists f : \\mathbb{N} \\to \\{-1,1\\}$ with discrepancy $O(d^{4+\\varepsilon})$ uniformly over all families."
     }
   ],
   "conclusion": {
@@ -214,19 +214,19 @@
   },
   "crossReferences": [
     {
-      "title": "Erdős Problem #176: Discrepancy of Arithmetic Progressions",
-      "relationship": "Both are combinatorial discrepancy problems: #176 measures ±1 discrepancy on APs, while #178 asks whether infinite sequence families can be uniformly balanced",
-      "targetId": "erdos-176"
+      "targetId": "erdos-176",
+      "relationship": "related",
+      "description": "Erdős #176 studies discrepancy of arithmetic progressions under $\\pm 1$ colorings — the same discrepancy framework applied to a specific structured family, while #178 handles arbitrary infinite families"
     },
     {
-      "title": "Erdős Problem #177: Discrepancy of Arithmetic Progressions",
-      "relationship": "Part of the same family of Erdős discrepancy problems; all three (#176, #177, #178) study the limits of balanced colorings for structured set systems",
-      "targetId": "erdos-177"
+      "targetId": "erdos-177",
+      "relationship": "related",
+      "description": "Part of the Erdős discrepancy problem cluster (#176, #177, #178): all three study the limits of balanced colorings for structured set systems, with #178 being the most general (arbitrary infinite families)"
     },
     {
-      "title": "Erdős Problem #162: Discrepancy in 2-Coloured Complete Graphs",
-      "relationship": "Both concern discrepancy in combinatorial structures — #162 studies graph colorings while #178 studies sequence balancing",
-      "targetId": "erdos-162"
+      "targetId": "erdos-162",
+      "relationship": "related",
+      "description": "Both concern discrepancy in combinatorial structures — #162 studies discrepancy in 2-colored complete graphs while #178 studies sequence balancing, connected through the broader discrepancy theory framework"
     }
   ],
   "references": [
