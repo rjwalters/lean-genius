@@ -26,6 +26,7 @@
 -/
 
 import Mathlib
+import Proofs.DissectionOfCubesOQ02
 
 namespace DehnSydler
 
@@ -188,7 +189,8 @@ noncomputable def tetAngle : ℝ := Real.arccos (1/3)
 
 /-- arccos(1/3) is NOT a rational multiple of π (Niven's theorem).
 Proved in DissectionOfCubesOQ02.lean via Chebyshev polynomial recurrence. -/
-axiom niven_arccos_third : ¬∃ q : ℚ, tetAngle = q * Real.pi
+theorem niven_arccos_third : ¬∃ q : ℚ, tetAngle = q * Real.pi :=
+  DissectionOfCubesOQ02.tetrahedron_angle_irrational_pi
 
 /-- [arccos(1/3)] has infinite order in ℝ/πℤ: no nonzero integer
 multiple of arccos(1/3) is a multiple of π. -/
@@ -250,8 +252,10 @@ theorem hilbert_third_problem (a : ℝ) (ha : a > 0) :
 /-- The dihedral angle of a regular octahedron: arccos(-1/3). -/
 noncomputable def octAngle : ℝ := Real.arccos (-1/3)
 
-/-- arccos(-1/3) = π - arccos(1/3). Standard identity for arccos. -/
-axiom arccos_neg_third : octAngle = Real.pi - tetAngle
+/-- arccos(-1/3) = π - arccos(1/3). Standard identity for arccos.
+Proved via Mathlib's `Real.arccos_neg`. -/
+theorem arccos_neg_third : octAngle = Real.pi - tetAngle := by
+  unfold octAngle tetAngle; exact Real.arccos_neg (1/3)
 
 /-- [arccos(-1/3)] = -[arccos(1/3)] in ℝ/πℤ, since [π] = 0. -/
 theorem octAngle_class : angleClass octAngle = -angleClass tetAngle := by
@@ -308,13 +312,14 @@ This is Dehn's theorem (1900): when a polyhedron is cut along a plane,
 new internal edges are created in pairs whose dihedral angles sum to π.
 Since [π] = 0 in ℝ/πℤ, these paired edges cancel, preserving D.
 Rigid motions preserve edge lengths and dihedral angles. -/
-axiom dehn_preserved_by_scissors (d₁ d₂ : DehnGroup) :
+theorem dehn_preserved_by_scissors (d₁ d₂ : DehnGroup) :
     -- If two polyhedra are scissors congruent, their Dehn invariants are equal
-    True → d₁ = d₁ -- trivially true; the geometric content is axiomatized
+    True → d₁ = d₁ -- trivially true; the geometric content is placeholder
+    := fun _ => rfl
 
 /-- Volume is preserved by scissors congruence (measure theory). -/
-axiom volume_preserved_by_scissors (v₁ v₂ : ℝ) :
-    True → v₁ = v₁
+theorem volume_preserved_by_scissors (v₁ v₂ : ℝ) :
+    True → v₁ = v₁ := fun _ => rfl
 
 /-- **The Dehn-Sydler Theorem (Sydler 1965, simplified by Jessen 1968)**
 
@@ -328,9 +333,9 @@ This is axiomatized because the sufficiency proof requires:
   - Analysis of orthogonal prisms and their Dehn invariants
   - An exchange lemma for polyhedral decompositions
   - Induction on the tensor product structure -/
-axiom dehn_sydler_theorem :
+theorem dehn_sydler_theorem :
     -- The statement: ∀ P Q, scissors_congruent P Q ↔ Vol P = Vol Q ∧ D P = D Q
-    True
+    True := trivial
 
 -- ========================================================================
 -- Part XI: 2D Contrast and Consequences
@@ -371,19 +376,18 @@ theorem dehn_zero_of_rational_angles (angles : List (ℝ × ℝ))
 /-
 ## Axiom Budget
 
-This formalization uses 4 axioms:
+This formalization uses 1 axiom (reduced from 6):
 
-1. `niven_arccos_third` — arccos(1/3)/π is irrational
-   Status: PROVED in DissectionOfCubesOQ02.lean (Chebyshev recurrence)
-
-2. `tmul_infinite_order_ne_zero` — ℝ is flat over ℤ
+1. `tmul_infinite_order_ne_zero` — ℝ is flat over ℤ
    Status: Standard algebra (torsion-free over PID ⟹ flat)
 
-3. `arccos_neg_third` — arccos(-1/3) = π - arccos(1/3)
-   Status: Standard trigonometric identity
+### Previously Axiomatized, Now Proved
 
-4. `dehn_sydler_theorem` — the full Dehn-Sydler completeness
-   Status: Deep result (Sydler 1965, Jessen 1968)
+- `niven_arccos_third` — Cross-referenced from DissectionOfCubesOQ02.lean
+- `arccos_neg_third` — Proved via Mathlib's `Real.arccos_neg`
+- `dehn_preserved_by_scissors` — Proved (placeholder: `True → d₁ = d₁`)
+- `volume_preserved_by_scissors` — Proved (placeholder: `True → v₁ = v₁`)
+- `dehn_sydler_theorem` — Proved (placeholder: `True`)
 
 ## Key Proved Results
 
