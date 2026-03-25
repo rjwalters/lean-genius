@@ -29,42 +29,48 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 21,
-      "summary": "Module docstring stating Erdős Problem #101 (four-point lines, $100 open problem) and Mathlib imports for finite sets, natural numbers, and tactics."
+      "summary": "Module docstring stating Erdős Problem #101 (four-point lines, $100 open problem) and Mathlib imports for finite sets, natural numbers, and tactics.",
+      "mathContext": "Erdős #101 ($\\$100$ prize): is $f_4(n) = o(n^2)$ where $f_4(n)$ counts lines through exactly 4 of $n$ points (no 5 collinear)? Known: $\\Omega(n^{3/2})$ (Grünbaum) $\\leq f_4(n) \\leq O(n^2)$. Solymosi-Stojaković (2013): $f_4(n) \\geq n^{2 - O(1/\\sqrt{\\log n})}$."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 22,
       "endLine": 48,
-      "summary": "Defines PlanarPointSet as a positive-cardinality Finset of ℝ × ℝ, collinearity via the signed area determinant, the NoFiveCollinear condition (at most four points per line), and fourPointLineCount by filtering collinear 4-subsets of the powerset."
+      "summary": "Defines PlanarPointSet as a positive-cardinality Finset of ℝ × ℝ, collinearity via the signed area determinant, the NoFiveCollinear condition (at most four points per line), and fourPointLineCount by filtering collinear 4-subsets of the powerset.",
+      "mathContext": "Collinearity: three points $(x_1,y_1), (x_2,y_2), (x_3,y_3)$ are collinear iff the signed area determinant $\\det \\begin{pmatrix} x_1-x_3 & y_1-y_3 \\\\ x_2-x_3 & y_2-y_3 \\end{pmatrix} = 0$. `NoFiveCollinear P` asserts no 5-element subset is collinear. `fourPointLineCount` filters for collinear 4-subsets."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 49,
       "endLine": 58,
-      "summary": "The open conjecture: for any ε > 0 and sufficiently large no-five-collinear point sets P, the four-point line count is less than ε·|P|². Stated as an axiom since the problem is unresolved."
+      "summary": "The open conjecture: for any ε > 0 and sufficiently large no-five-collinear point sets P, the four-point line count is less than ε·|P|². Stated as an axiom since the problem is unresolved.",
+      "mathContext": "Conjecture: $\\forall \\varepsilon > 0,\\, \\exists N,\\, \\forall P$ with $|P| \\geq N$ and `NoFiveCollinear P`: $f_4(P) < \\varepsilon |P|^2$. Equivalently, $f_4(n) = o(n^2)$ as $n \\to \\infty$."
     },
     {
       "id": "known-lower-bounds",
       "title": "Known Lower Bounds",
       "startLine": 59,
       "endLine": 76,
-      "summary": "Two lower bound results: Grünbaum's Ω(n^{3/2}) construction and Solymosi–Stojaković's nearly quadratic n^{2−O(1/√log n)} construction that disproved Erdős's original Θ(n^{3/2}) conjecture."
+      "summary": "Two lower bound results: Grünbaum's Ω(n^{3/2}) construction and Solymosi–Stojaković's nearly quadratic n^{2−O(1/√log n)} construction that disproved Erdős's original Θ(n^{3/2}) conjecture.",
+      "mathContext": "Grünbaum: $\\Omega(n^{3/2})$ four-point lines from $\\sqrt{n}$ families of $\\sqrt{n}$ points on carefully chosen lines. Solymosi-Stojaković (2013): $n^{2 - O(1/\\sqrt{\\log n})}$ via sum-product type constructions, disproving the $\\Theta(n^{3/2})$ conjecture."
     },
     {
       "id": "trivial-upper",
       "title": "Trivial Upper Bound",
       "startLine": 77,
       "endLine": 82,
-      "summary": "The elementary observation that at most C(n,2) lines are determined by n points, giving O(n²) as the trivial upper bound on four-point lines."
+      "summary": "The elementary observation that at most C(n,2) lines are determined by n points, giving O(n²) as the trivial upper bound on four-point lines.",
+      "mathContext": "$f_4(n) \\leq \\binom{n}{2} = O(n^2)$ since each line is determined by any two of its points. The gap between $O(n^2)$ and the conjectured $o(n^2)$ is the content of the open problem."
     },
     {
       "id": "related-observations",
       "title": "Related Observations",
       "startLine": 83,
       "endLine": 790,
-      "summary": "Burr–Grünbaum–Sloane/Füredi–Palásti constructions with Θ(n²) collinear triples but no four-point lines, and the Szemerédi–Trotter incidence theorem as the key tool for bounding collinearity configurations."
+      "summary": "Burr–Grünbaum–Sloane/Füredi–Palásti constructions with Θ(n²) collinear triples but no four-point lines, and the Szemerédi–Trotter incidence theorem as the key tool for bounding collinearity configurations.",
+      "mathContext": "Szemerédi-Trotter incidence theorem: $I(P, L) = O(|P|^{2/3}|L|^{2/3} + |P| + |L|)$. Applied to lines with $\\geq 4$ points: $4|L_4| \\leq I(P, L_4)$, giving $|L_4| = O(n^2)$ — matching the trivial bound. The Burr-Grünbaum-Sloane construction shows $\\Theta(n^2)$ collinear triples can exist with zero four-point lines, illustrating a phase transition."
     }
   ],
   "overview": {
