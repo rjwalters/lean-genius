@@ -226,53 +226,130 @@ a transposition in the Galois group. A transitive subgroup of S₅
 -/
 
 -- ============================================================================
--- Part V(b): The Galois Group Has Order 120 (= 5!)
+-- Part V(b): Group Theory — 5-Cycle + Transposition Generates S₅
 -- ============================================================================
 
 /-
-## Why |Gal(p/ℚ)| = 120
+## Key Group Theory Lemma
 
-The polynomial p = x⁵ - 4x + 2 has exactly 3 real roots:
+A transitive subgroup of S₅ containing a transposition is S₅.
 
-**Sign changes (by direct evaluation):**
-  p(-2) = (-2)⁵ - 4(-2) + 2 = -32 + 8 + 2 = -22 < 0
-  p(-1) = (-1)⁵ - 4(-1) + 2 = -1 + 4 + 2 = 5 > 0     → root in (-2, -1)
-  p(0)  = 0 - 0 + 2 = 2 > 0
-  p(1)  = 1 - 4 + 2 = -1 < 0                            → root in (0, 1)
-  p(2)  = 32 - 8 + 2 = 26 > 0                            → root in (1, 2)
+**Proof**: By conjugating the transposition with the 5-cycle (guaranteed by
+transitivity + prime degree), we generate all 10 transpositions. Since every
+permutation is a product of transpositions, the subgroup is S₅.
 
-**Exactly 3 (not more):** p'(x) = 5x⁴ - 4 has exactly 2 real roots
-(at x = ±(4/5)^{1/4}), giving p exactly one local max and one local min.
-A degree-5 polynomial with 2 critical points has at most 3 real roots.
+The chain:
+  1. swap(k, k+1) = c₅ᵏ · swap(0,1) · c₅⁻ᵏ          (adjacent swaps)
+  2. swap(0, k+1) = swap(0,k) · swap(k,k+1) · swap(0,k)  (star swaps)
+  3. swap(a, b) = swap(0,a) · swap(0,b) · swap(0,a)       (all swaps)
+-/
 
-**The group-theoretic argument:**
-1. p is irreducible of prime degree 5, so 5 | |Gal| and Gal acts transitively.
-   In particular, Gal contains an element of order 5 (a 5-cycle in S₅).
-2. p has 3 real roots and 2 complex conjugate roots. Complex conjugation
-   σ : ℂ → ℂ restricts to an automorphism of the splitting field over ℚ.
-   Under the permutation representation, σ swaps the 2 non-real roots
-   and fixes the 3 real roots — this is a transposition.
-3. A transitive subgroup of Sₚ (p prime) containing a transposition
-   generates all of Sₚ. (Proof: conjugate the transposition by the p-cycle
-   to get transpositions (1,2), (2,3), ..., (p-1,p), which generate Sₚ.)
-4. Therefore Gal(p/ℚ) = S₅, so |Gal| = 5! = 120.
+-- The standard 5-cycle (0 1 2 3 4)
+private def c5 : Equiv.Perm (Fin 5) where
+  toFun := fun i => ⟨(i.val + 1) % 5, Nat.mod_lt _ (by omega)⟩
+  invFun := fun i => ⟨(i.val + 4) % 5, Nat.mod_lt _ (by omega)⟩
+  left_inv := by intro ⟨i, hi⟩; simp [Fin.ext_iff]; omega
+  right_inv := by intro ⟨i, hi⟩; simp [Fin.ext_iff]; omega
 
-This argument uses only:
-- Eisenstein's criterion (proved above)
-- Intermediate value theorem (for sign changes)
-- Derivative analysis (for bounding real roots)
-- Standard group theory (transposition + p-cycle → Sₚ)
+/-- The closure of a 5-cycle and a transposition in S₅ is all of S₅.
 
-The Lean formalization axiomatizes |Gal| = 120 directly. Future work can
-replace this with a full proof of the real root count and group theory lemma.
+    Proof: Conjugation generates all transpositions; every permutation
+    is a product of transpositions (Equiv.Perm.swap_induction_on). -/
+private theorem closure_cycle_swap_eq_top :
+    Subgroup.closure ({c5, Equiv.swap (0 : Fin 5) 1} : Set (Equiv.Perm (Fin 5))) = ⊤ := by
+  rw [eq_top_iff]
+  intro g _
+  -- Every permutation is a product of swaps
+  -- Helper: show every swap is in the closure
+  suffices hsw : ∀ a b : Fin 5, a ≠ b →
+      Equiv.swap a b ∈ Subgroup.closure ({c5, Equiv.swap (0 : Fin 5) 1} : Set (Equiv.Perm (Fin 5))) by
+    induction g using Equiv.Perm.swap_induction_on with
+    | one => exact Subgroup.one_mem _
+    | swap_mul f a b hab ih => exact Subgroup.mul_mem _ (hsw a b hab) (ih trivial)
+  -- Prove all 10 transpositions are in the closure
+  intro a b hab
+  set S := Subgroup.closure ({c5, Equiv.swap (0 : Fin 5) 1} : Set (Equiv.Perm (Fin 5)))
+  -- Generators are in S
+  have hc : c5 ∈ S := Subgroup.subset_closure (Set.mem_insert _ _)
+  have hs01 : Equiv.swap (0 : Fin 5) 1 ∈ S :=
+    Subgroup.subset_closure (Set.mem_insert_iff.mpr (Or.inr rfl))
+  -- Adjacent swaps via c5-conjugation (verified computationally)
+  have hs12 : Equiv.swap (1 : Fin 5) 2 ∈ S := by
+    have : c5 * Equiv.swap (0 : Fin 5) 1 * c5⁻¹ = Equiv.swap (1 : Fin 5) 2 := by native_decide
+    rw [← this]; exact S.mul_mem (S.mul_mem hc hs01) (S.inv_mem hc)
+  have hs23 : Equiv.swap (2 : Fin 5) 3 ∈ S := by
+    have : c5 ^ 2 * Equiv.swap (0 : Fin 5) 1 * (c5 ^ 2)⁻¹ = Equiv.swap (2 : Fin 5) 3 := by
+      native_decide
+    rw [← this]; exact S.mul_mem (S.mul_mem (S.pow_mem hc 2) hs01) (S.inv_mem (S.pow_mem hc 2))
+  have hs34 : Equiv.swap (3 : Fin 5) 4 ∈ S := by
+    have : c5 ^ 3 * Equiv.swap (0 : Fin 5) 1 * (c5 ^ 3)⁻¹ = Equiv.swap (3 : Fin 5) 4 := by
+      native_decide
+    rw [← this]; exact S.mul_mem (S.mul_mem (S.pow_mem hc 3) hs01) (S.inv_mem (S.pow_mem hc 3))
+  -- Star swaps via double conjugation
+  have hs02 : Equiv.swap (0 : Fin 5) 2 ∈ S := by
+    have : Equiv.swap (0 : Fin 5) 1 * Equiv.swap (1 : Fin 5) 2 *
+      Equiv.swap (0 : Fin 5) 1 = Equiv.swap (0 : Fin 5) 2 := by native_decide
+    rw [← this]; exact S.mul_mem (S.mul_mem hs01 hs12) hs01
+  have hs03 : Equiv.swap (0 : Fin 5) 3 ∈ S := by
+    have : Equiv.swap (0 : Fin 5) 2 * Equiv.swap (2 : Fin 5) 3 *
+      Equiv.swap (0 : Fin 5) 2 = Equiv.swap (0 : Fin 5) 3 := by native_decide
+    rw [← this]; exact S.mul_mem (S.mul_mem hs02 hs23) hs02
+  have hs04 : Equiv.swap (0 : Fin 5) 4 ∈ S := by
+    have : Equiv.swap (0 : Fin 5) 3 * Equiv.swap (3 : Fin 5) 4 *
+      Equiv.swap (0 : Fin 5) 3 = Equiv.swap (0 : Fin 5) 4 := by native_decide
+    rw [← this]; exact S.mul_mem (S.mul_mem hs03 hs34) hs03
+  -- Remaining swaps via star conjugation
+  have hs13 : Equiv.swap (1 : Fin 5) 3 ∈ S := by
+    have : Equiv.swap (0 : Fin 5) 1 * Equiv.swap (0 : Fin 5) 3 *
+      Equiv.swap (0 : Fin 5) 1 = Equiv.swap (1 : Fin 5) 3 := by native_decide
+    rw [← this]; exact S.mul_mem (S.mul_mem hs01 hs03) hs01
+  have hs14 : Equiv.swap (1 : Fin 5) 4 ∈ S := by
+    have : Equiv.swap (0 : Fin 5) 1 * Equiv.swap (0 : Fin 5) 4 *
+      Equiv.swap (0 : Fin 5) 1 = Equiv.swap (1 : Fin 5) 4 := by native_decide
+    rw [← this]; exact S.mul_mem (S.mul_mem hs01 hs04) hs01
+  have hs24 : Equiv.swap (2 : Fin 5) 4 ∈ S := by
+    have : Equiv.swap (0 : Fin 5) 2 * Equiv.swap (0 : Fin 5) 4 *
+      Equiv.swap (0 : Fin 5) 2 = Equiv.swap (2 : Fin 5) 4 := by native_decide
+    rw [← this]; exact S.mul_mem (S.mul_mem hs02 hs04) hs02
+  -- Case-split on a, b to select the right swap
+  fin_cases a <;> fin_cases b <;> simp_all <;> first
+    | exact hs01 | exact hs02 | exact hs03 | exact hs04
+    | exact hs12 | exact hs13 | exact hs14
+    | exact hs23 | exact hs24 | exact hs34
+    | (rw [Equiv.swap_comm]; assumption)
+
+-- ============================================================================
+-- Part V(c): The Galois Group Has Order 120 (= 5!)
+-- ============================================================================
+
+/-
+## Proof Architecture for |Gal(p/ℚ)| = 120
+
+The proof decomposes into:
+
+**Part A (Group Theory, PROVED above):**
+  closure_cycle_swap_eq_top: A 5-cycle + transposition generates all of S₅.
+
+**Part B (Complex Conjugation, NOT YET FORMALIZED):**
+  p has exactly 3 real roots (by IVT + derivative analysis).
+  Complex conjugation restricts to a transposition in the Galois group.
+
+  Evidence for 3 real roots:
+    p(-2)=-22, p(-1)=5   → root in (-2,-1)  (IVT, evaluations PROVED)
+    p(0)=2, p(1)=-1      → root in (0,1)    (IVT, evaluations PROVED)
+    p(1)=-1, p(2)=26     → root in (1,2)    (IVT, evaluations PROVED)
+    p'(x) = 5x⁴-4 has 2 real roots → at most 3 real roots (Rolle)
+
+**Remaining gap:** Connecting IVT roots to complex conjugation automorphism.
+  Requires: splitting field embedding into ℂ, conjugation preserving the
+  splitting field, counting fixed points. This is the last piece needed.
 -/
 
 /-- |Gal(p/ℚ)| = 120. This is the full symmetric group S₅.
 
-    Proof outline (not yet fully formalized):
-    p has exactly 3 real roots (by sign changes and derivative analysis),
-    so Gal contains a transposition (complex conjugation). Combined with
-    a 5-cycle (from prime degree), this generates S₅. -/
+    **Status:** Axiomatized. The group theory bridge is proved above
+    (closure_cycle_swap_eq_top). What remains is showing the Galois group
+    contains a transposition via complex conjugation + real root analysis. -/
 axiom gal_card_eq_120 : Fintype.card p.Gal = 120
 
 -- ============================================================================

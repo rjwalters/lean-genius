@@ -29,32 +29,35 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 5 evaluation lemmas proved. 1 axiom remains (|Gal|=120). Next: IVT for real roots, then group theory.",
+    "progressSummary": "PROGRESS: Group theory PROVED (closure_cycle_swap_eq_top). 1 axiom remains (|Gal|=120). Remaining: IVT + complex conjugation.",
     "builtItems": [
-      "Proofs/AbelRuffiniOQ04OQ01.lean: Full proof (362 lines, 12 theorems, 1 axiom)",
+      "Proofs/AbelRuffiniOQ04OQ01.lean: Full proof (475 lines, 13 theorems, 1 axiom, 3 defs)",
       "p_irreducible: Eisenstein at 2 for x^5-4x+2",
       "gal_iso_s5: Gal(p/Q) \u2245 S_5 via galActionHom bijectivity",
       "roots_not_solvable_by_rad: contrapositive of Galois theorem",
       "s5_realizable: S_5 realized as Galois group over Q",
-      "Polynomial evaluations p(-2)=-22, p(-1)=5, p(0)=2, p(1)=-1, p(2)=26 (AbelRuffiniOQ04OQ01.lean)"
+      "Polynomial evaluations p(-2)=-22, p(-1)=5, p(0)=2, p(1)=-1, p(2)=26",
+      "closure_cycle_swap_eq_top: 5-cycle + transposition generates all of S_5 (77 lines, native_decide for conjugation identities)"
     ],
     "insights": [
       "Concrete polynomial approach more tractable than generic polynomial: x^5-4x+2 via Eisenstein at 2",
       "galActionHom bijectivity pattern (injective + card equality) well-established in codebase for S_3, F_20, A_5",
       "solvable_of_surjective (not isSolvable_of_surjective) is the correct Mathlib4 name for solvability transfer",
-      "Generic polynomial approach (MvPolynomial + FractionRing + esymmAlgEquiv) requires 3-4 substantial gap lemmas",
-      "simp [eval_sub, eval_add, eval_mul, eval_pow, eval_C, eval_X] suffices for polynomial evaluation; ring only needed sometimes",
-      "To eliminate gal_card_eq_120: need IVT over \u211d for real roots + group theory lemma (transitive + transposition + p-cycle \u2192 S_p)"
+      "native_decide works for permutation equality on Fin 5 but NOT for Subgroup.closure = ⊤ (no Decidable instance)",
+      "The group theory proof uses swap_induction_on + explicit conjugation chain: c5^k swap(0,1) c5^{-k} gives adjacent transpositions, then star conjugation gives all 10 transpositions",
+      "Subgroup.closure equality lacks Decidable instance; must prove membership of all generators manually then use swap_induction_on"
     ],
     "mathlibGaps": [
       "No generic polynomial Galois group computation in Mathlib (FractionRing of MvPolynomial + Galois theory)",
-      "No direct MulEquiv.isSolvable_iff \u2014 must use solvable_of_surjective with explicit surjectivity proof"
+      "No direct MulEquiv.isSolvable_iff — must use solvable_of_surjective with explicit surjectivity proof",
+      "No Decidable instance for Subgroup.closure S = ⊤ on finite groups"
     ],
     "nextSteps": [
-      "Cast evaluations to \u211d and apply IVT (Polynomial.aeval continuity + IVT) to get roots in (-2,-1), (0,1), (1,2)",
-      "Show f'=5x^4-4 has exactly 2 real roots to bound real root count to 3",
-      "Prove group theory: transitive subgroup of S_p (p prime) with transposition = S_p",
-      "Complex conjugation on 2 non-real roots gives transposition in Gal \u2192 Gal = S_5 \u2192 |Gal|=120"
+      "Cast evaluations to ℝ and apply IVT to get roots in (-2,-1), (0,1), (1,2)",
+      "Show f'=5x^4-4 has exactly 2 real roots to bound real root count to 3 (Rolle)",
+      "Embed splitting field into ℂ and show complex conjugation restricts to an automorphism",
+      "Show complex conjugation acts as a transposition on roots (fixes 3 real, swaps 2 complex)",
+      "Connect closure_cycle_swap_eq_top to galActionHom image to prove |Gal|=120 as theorem"
     ]
   },
   "tags": [
@@ -111,6 +114,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ01.lean",
+      "filename": "AbelRuffiniOQ04OQ01.lean",
+      "lineCount": 475,
+      "theoremCount": 13,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ01.lean"
     }
   ]
 }
