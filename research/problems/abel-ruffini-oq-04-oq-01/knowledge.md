@@ -178,3 +178,54 @@ we proved a concrete witness: Gal(x^5 - 4x + 2 / Q) ≅ S_5.
    a. Build Dedekind's theorem (deep, ~500+ lines)
    b. Real-roots approach: prove p has exactly 3 real roots, complex conjugation is transposition
    c. Direct modular computation (ad hoc, polynomial-specific)
+
+## Session 2026-03-25 (Session 5) - Axiom Analysis & Computational Lemmas
+
+**Mode**: REVISIT (RICH knowledge, score ~30)
+**Outcome**: progress (added infrastructure for future axiom elimination)
+
+### What I Did
+- Analyzed the remaining axiom `three_dvd_gal_card` deeply
+- Added 2 native_decide lemmas for future elimination of |Gal| ∈ {5, 10}:
+  1. `perm_fin5_order_dvd5_sign_one`: ∀ σ ∈ S₅, σ^5=1 → sign(σ)=1
+  2. `transposition_not_normalizing_5cycle`: no transposition normalizes any 5-cycle
+- Updated meta.json to reflect 1 axiom (down from 2 in prior meta)
+- Created PR #6776 with all accumulated work (4 sessions of axiom elimination)
+
+### Key Findings - Axiom Elimination Analysis
+The remaining axiom `three_dvd_gal_card` is equivalent to `|Gal| ≠ 20` (i.e., Gal ≠ F₂₀):
+
+**Already proved (no axiom needed):**
+- |Gal| ≠ 5: elements have order|5, all even, contradicts odd perm
+- |Gal| ≠ 10: odd involutions are transpositions, can't normalize 5-cycle (new lemma)
+- |Gal| ≠ 15: no such subgroup in S₅ (Sylow)
+- |Gal| ≠ 30: no such subgroup in S₅ (A₅ simplicity)
+- |Gal| ≠ 40: no such subgroup in S₅ (index-3, A₅ simplicity)
+- |Gal| ≠ 60: Gal has odd perm, unique order-60 subgroup is A₅
+
+**Only |Gal| = 20 (F₂₀) remains** — requires new mathematical input:
+- F₂₀ is the UNIQUE transitive subgroup of S₅ with odd perms and order < 120
+- F₂₀ has 5-cycles (even), 4-cycles (odd), double transpositions (even) — NO transpositions
+- F₂₀ has NO element of order 3
+
+**Approaches for future elimination of |Gal| = 20:**
+1. **Dedekind's theorem at p=13** (~500 lines): mod 13 factorization → Frobenius has order 3 → 3||Gal| → Gal ≠ F₂₀
+2. **Real-roots + complex conjugation** (~300 lines): 3 real roots → conj = transposition → Gal ≠ F₂₀ (F₂₀ has no transpositions)
+3. **Embed into ℂ + IVT** for root counting: needs Mathlib `Polynomial.IVT` or `IsAlgClosed.lift`
+
+**Why "product order" tricks fail for |Gal| = 20:**
+- F₂₀ IS a valid subgroup of S₅ containing 5-cycles and odd perms
+- ∃ σ (5-cycle), τ (4-cycle, odd) ∈ F₂₀ with (σ·τ)^20 = 1 (e.g., 4-cycle composed with 5-cycle can give order 4, and 4|20)
+- So no single word in {σ, τ} can computationally distinguish F₂₀ from S₅
+
+### Files Modified
+- proofs/Proofs/AbelRuffiniOQ04OQ01.lean (1138→1156 lines, +2 lemmas)
+- src/data/proofs/abel-ruffini-oq-04-oq-01/meta.json (axiomCount 2→1)
+
+### Recommended Next Session
+Priority: Real-roots approach (option 2 above). Key steps:
+1. Prove p has ≥3 real roots via IVT (sign changes at -2,-1,0,1,2)
+2. Prove p has ≤3 real roots (p' = 5x⁴-4 has 2 real roots → Rolle)
+3. Embed splitting field into ℂ via `IsAlgClosed.lift`
+4. Complex conjugation fixes 3 real roots, swaps 2 complex → transposition
+5. `transposition_not_normalizing_5cycle` blocks F₂₀ → |Gal| ≠ 20
