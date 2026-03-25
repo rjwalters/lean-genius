@@ -269,6 +269,31 @@
       "targetId": "descartes-rule-of-signs",
       "relationship": "related",
       "description": "Descartes' rule bounds the number of positive real roots — a classical tool in the Galois group computation pipeline for exhibiting specific polynomials with $\\text{Gal} = S_5$, bridging the gap between the abstract impossibility and concrete unsolvable quintics"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "One level above Abel-Ruffini in the expressibility hierarchy: Abel-Ruffini shows certain algebraic numbers escape radical expressions, while Hermite's 1873 proof that $e$ is transcendental shows it escapes all polynomial equations over $\\mathbb{Q}$. Both are impossibility results about the limits of symbolic expressibility"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "Lindemann's 1882 proof that $\\pi$ is transcendental completed the expressibility hierarchy discussed in the conclusion: irrationality ($\\sqrt{2} \\notin \\mathbb{Q}$) → radical inexpressibility (Abel-Ruffini) → algebraic inexpressibility ($\\pi \\notin \\overline{\\mathbb{Q}}$). Lindemann's result also settled the impossibility of squaring the circle, paralleling Abel-Ruffini's impossibility methodology"
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Gödel's 1931 incompleteness theorems extend the impossibility paradigm inaugurated by Abel-Ruffini: where Abel-Ruffini shows no radical formula solves all quintics, Gödel shows no consistent formal system proves all arithmetic truths. Both reveal fundamental limits of formal frameworks — algebraic operations in one case, logical deduction in the other"
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "related",
+      "description": "Turing's 1936 proof that no algorithm decides whether arbitrary programs halt continues the impossibility paradigm from Abel-Ruffini through Gödel: radical inexpressibility → logical incompleteness → computational undecidability. Each result shows a natural class of problems admits no universal solution within a given formal framework"
+    },
+    {
+      "targetId": "kroneckers-jugendtraum",
+      "relationship": "related",
+      "description": "Kronecker's Jugendtraum and the Kronecker-Weber theorem (every abelian extension of $\\mathbb{Q}$ is contained in a cyclotomic field) connect to Abel-Ruffini via abelian Galois groups: the theorem implies every polynomial with abelian Galois group is solvable by radicals. Abel-Ruffini's impossibility arises precisely when the Galois group is non-abelian (and non-solvable), making $S_5$ the critical obstruction"
     }
   ],
   "references": [
