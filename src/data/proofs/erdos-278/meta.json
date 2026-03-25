@@ -153,7 +153,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures the full structure of Erdős Problem #278: congruence system coverage density, the optimization over residue choices, Simpson's theorem resolving the minimum (1986), the coprime case resolving the maximum via CRT, and the open question for non-coprime moduli. The three proved theorems (density bounds) demonstrate that the formalization is computationally meaningful beyond just axiomatized statements.",
-    "implications": "**Theoretical Significance**: A complete solution to the maximum density problem would characterize the covering efficiency of congruence systems with shared prime factors.\n\nThis connects to scheduling theory (cyclic scheduling with period constraints), coding theory (covering codes), and the broader Erdős program on covering systems that culminated in Hough's 2015 resolution of the minimum modulus conjecture.",
+    "implications": "**Theoretical Significance**:\n\n1. **COVERING EFFICIENCY**: A complete solution to the maximum density problem would characterize the covering efficiency of congruence systems with shared prime factors, answering how residue overlap can be optimized in the non-coprime regime.\n\n2. **SIEVE THEORY CONNECTION**: The coprime density formula $1 - \\prod(1 - 1/n_i)$ is structurally identical to Legendre's sieve. For non-coprime moduli, the maximum density problem asks how much the 'sieve error' can be exploited — a question that connects to the Selberg sieve and other analytic number theory tools.\n\n3. **COMPUTATIONAL COMPLEXITY**: The optimization over $\\prod n_i$ residue choices is exponentially large. Whether $\\delta_{\\max}(A)$ is NP-hard to compute would place covering density optimization in the landscape of computational number theory.\n\n4. **SCHEDULING AND CODING THEORY**: Congruence coverage density connects to cyclic scheduling (periodic task allocation with resource constraints) and covering codes (finding codewords that cover all words within a given Hamming distance).\n\n5. **ERDŐS COVERING SYSTEM PROGRAM**: Problem #278 is part of the systematic study of covering systems that spans Problems #23, #273-#281 in the Erdős-Graham monograph, culminating in Hough's 2015 resolution of the minimum modulus conjecture. This entry formalizes one facet — density optimization — of a program that connects number theory to combinatorial optimization.",
     "openQuestions": [
       "What is the maximum coverage density $\\delta_{\\max}(A)$ for arbitrary (non-coprime) moduli?",
       "Is there a polynomial-time algorithm to compute $\\delta_{\\max}(A)$, or is the optimization NP-hard?",
@@ -206,6 +206,21 @@
       "targetId": "infinitude-primes",
       "relationship": "related",
       "description": "The density formula $1 - \\prod(1 - 1/n_i)$ for coprime moduli is analogous to the Euler product $\\prod_p (1 - 1/p)^{-1}$ connecting prime distribution to product formulas over primes"
+    },
+    {
+      "targetId": "erdos-275",
+      "relationship": "related",
+      "description": "Neighbor in the Erdős-Graham covering system section: #275 concerns covering congruences, while #278 optimizes coverage density for fixed moduli. Both explore how congruence class arrangements affect coverage properties"
+    },
+    {
+      "targetId": "erdos-277",
+      "relationship": "related",
+      "description": "Neighbor in the Erdős-Graham covering system section: #277 connects covering systems to abundancy, while #278 connects them to density optimization. Both study structural properties of congruence class unions"
+    },
+    {
+      "targetId": "erdos-281",
+      "relationship": "related",
+      "description": "Direct thematic sibling: #281 also concerns covering congruences and density, complementing #278's focus on maximum density optimization. Together they explore different facets of the density landscape for congruence class coverings"
     }
   ],
   "references": [
