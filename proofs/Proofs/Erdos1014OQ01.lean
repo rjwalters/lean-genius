@@ -90,10 +90,38 @@ theorem increment_bound (l : ℕ) (hl : l ≥ 1) :
 theorem eventually_ratio_small (c : ℝ) (hc : c > 0) (ε : ℝ) (hε : ε > 0) :
     ∃ L : ℕ, ∀ l : ℕ, l > L →
       ((l : ℝ) + 1) * Real.log (l : ℝ) / (c * (l : ℝ) ^ 2) < ε := by
-  -- From isLittleO_log_rpow_atTop: log x = o(x) at ∞
-  -- So for δ = c*ε/4 > 0, eventually ‖log x‖ ≤ δ * ‖x‖
-  -- Then (l+1)*log l/(c*l²) ≤ 2l*δ*l/(c*l²) = 2δ/c = ε/2 < ε
-  sorry
+  -- log = o(x^1) at ∞ (Mathlib)
+  have ho := isLittleO_log_rpow_atTop (show (0 : ℝ) < 1 by norm_num)
+  -- For δ = c*ε/4 > 0, eventually ‖log x‖ ≤ δ * ‖x^1‖
+  have hev := ho.bound (show (0 : ℝ) < c * ε / 4 by positivity)
+  obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp hev
+  -- Transfer ℝ threshold to ℕ
+  use ⌈N⌉₊ + 1
+  intro l hl
+  have hl1 : 1 < l := by omega
+  have hl_pos : (0 : ℝ) < (l : ℝ) := by positivity
+  have hlog_pos : 0 < Real.log (l : ℝ) := Real.log_pos (by exact_mod_cast hl1)
+  have hl2 : (2 : ℝ) ≤ (l : ℝ) := by exact_mod_cast (show 2 ≤ l by omega)
+  -- l ≥ N as reals
+  have hl_ge_N : N ≤ (l : ℝ) := le_trans (Nat.le_ceil N) (by exact_mod_cast (show ⌈N⌉₊ ≤ l by omega))
+  -- Get bound: ‖log l‖ ≤ (c*ε/4) * ‖l^1‖, simplify norms
+  have hb := hN (l : ℝ) hl_ge_N
+  rw [rpow_one, Real.norm_eq_abs, Real.norm_eq_abs, abs_of_pos hlog_pos,
+      abs_of_pos hl_pos] at hb
+  -- Chain: (l+1)*log l ≤ 2l*(cε/4*l) = (ε/2)*(c*l²), then divide
+  have h_num : ((l : ℝ) + 1) * Real.log (l : ℝ) ≤
+               ε / 2 * (c * (l : ℝ) ^ 2) :=
+    calc ((l : ℝ) + 1) * Real.log (l : ℝ)
+        ≤ (2 * (l : ℝ)) * Real.log (l : ℝ) :=
+          mul_le_mul_of_nonneg_right (by linarith) (le_of_lt hlog_pos)
+      _ ≤ (2 * (l : ℝ)) * (c * ε / 4 * (l : ℝ)) :=
+          mul_le_mul_of_nonneg_left hb (by positivity)
+      _ = ε / 2 * (c * (l : ℝ) ^ 2) := by ring
+  -- Conclude via div_le_iff
+  have hd : (0 : ℝ) < c * (l : ℝ) ^ 2 := by positivity
+  calc ((l : ℝ) + 1) * Real.log (l : ℝ) / (c * (l : ℝ) ^ 2)
+      ≤ ε / 2 := (div_le_iff₀ hd).mpr h_num
+    _ < ε := by linarith
 
 -- ══════════════════════════════════════════════════════════════════
 -- § Main Theorem
