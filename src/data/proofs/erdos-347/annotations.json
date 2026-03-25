@@ -77,7 +77,7 @@
     "type": "definition",
     "range": {
       "startLine": 56,
-      "endLine": 63
+      "endLine": 61
     },
     "title": "Cofinite Subsequences",
     "content": "IsCofiniteSubseq a iota means iota is a strictly monotone reindexing omitting only finitely many indices. This captures robustness: removing finitely many terms should not destroy the density-1 property.",
@@ -124,12 +124,12 @@
     "proofId": "erdos-347",
     "type": "insight",
     "range": {
-      "startLine": 80,
-      "endLine": 93
+      "startLine": 82,
+      "endLine": 102
     },
-    "title": "Basic Properties of Subset Sums",
-    "content": "Three structural properties: 0 is always in P(A) (empty sum), P(A) is closed under adding elements of A, and P is monotone (A subset B implies P(A) subset P(B)).",
-    "mathContext": "The three axioms capture the algebraic structure of subset sums: (1) `zero_mem_subsetSums`: $0 \\in P(A)$ for any $A$ (the empty finite subset sums to 0). (2) `subsetSums_add`: if $s \\in P(A)$ and $a \\in A$ then $s + a \\in P(A)$ (extend the witnessing finite subset by $a$). (3) `subsetSums_mono`: $A \\subseteq B \\Rightarrow P(A) \\subseteq P(B)$ (more elements means more possible sums). Together these make $P$ a closure operator on $\\mathcal{P}(\\mathbb{N})$. The monotonicity property is used in the main proof: since a cofinite subsequence of $a$ omits only finitely many terms, $P(a \\circ \\iota) \\supseteq P(a) \\setminus (\\text{sums using deleted terms})$, and the density-1 property is preserved if the 'damage' from deleted terms is bounded.",
+    "title": "Basic Properties of Subset Sums (Proved)",
+    "content": "Three proved structural properties of the subset sums operator $P$. (1) `zero_mem_subsetSums`: $0 \\in P(A)$ for any $A$ — the empty subset has sum 0, proved via $\\langle \\emptyset, \\text{simp}, \\text{simp} \\rangle$. (2) `subsetSums_insert`: if $s = \\sum S$ with $S \\subseteq A$ and $a \\in A \\setminus S$, then $s + a \\in P(A)$ — extends the witness to $S \\cup \\{a\\}$. **Important subtlety**: the original `subsetSums_add` axiom ($s \\in P(A) \\wedge a \\in A \\Rightarrow s+a \\in P(A)$) was **incorrect** — it fails when $a$ is already in the witnessing finset $S$ (e.g., $A = \\{2,3\\}$, $s = 5$, $a = 2$: $7 \\notin P(\\{2,3\\}) = \\{0,2,3,5\\}$). The corrected version requires $a \\notin S$. (3) `subsetSums_mono`: $A \\subseteq B \\Rightarrow P(A) \\subseteq P(B)$ — any witness $S \\subseteq A$ is also $S \\subseteq B$.",
+    "mathContext": "Three proved theorems: (1) $0 \\in P(A)$ ($\\emptyset$ is a valid witness). (2) $S \\subseteq A \\wedge a \\in A \\setminus S \\Rightarrow \\sum S + a = \\sum(S \\cup \\{a\\}) \\in P(A)$ (requires $a \\notin S$ for correct set union). (3) $A \\subseteq B \\Rightarrow P(A) \\subseteq P(B)$ (witnesses transfer). The fresh-witness requirement in (2) is a non-trivial correctness constraint: subsets are sets, not multisets, so adding an already-present element is invalid.",
     "significance": "supporting",
     "relatedConcepts": [
       "closure operators",
