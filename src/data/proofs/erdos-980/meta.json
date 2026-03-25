@@ -97,6 +97,11 @@
       "targetId": "prime-number-theorem",
       "relationship": "uses",
       "description": "The prime number theorem π(x) ~ x/log x is foundational to interpreting the asymptotic Σ n_k(p) ~ c_k · x/log x."
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Quadratic reciprocity determines which integers are quadratic residues mod p — the foundation for understanding k-th power residues. Problem #980 studies the sum of least k-th power nonresidues, directly building on the residue/nonresidue classification that reciprocity laws govern"
     }
   ],
   "leanFile": {
