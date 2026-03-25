@@ -117,6 +117,21 @@
       "targetId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
       "relationship": "related",
       "description": "Both entries formalize classical analysis from first principles using Lean 4 automation tactics (nlinarith, linarith, norm_num, ring)."
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "related",
+      "description": "The bisection method constructively proves $\\sqrt{2} \\in [1, 2]$ by showing $f(x) = x^2 - 2$ changes sign on $[1, 2]$. The irrationality of $\\sqrt{2}$ (proved in the parent entry) means the bisection sequence converges to an irrational limit — the sequence of rational approximations from bisection never terminates"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "The Fundamental Theorem of Calculus connects the bisection method to Newton's method: while bisection has convergence rate $O(2^{-n})$ (linear), Newton's method uses $f'/f$ to achieve quadratic convergence $O(\\varepsilon^{2^n})$. The FTC provides the derivative existence needed for Newton's method, making bisection the fallback when differentiability is unavailable"
+    },
+    {
+      "targetId": "area-of-circle-oq-03",
+      "relationship": "related",
+      "description": "Archimedes' method of exhaustion (formalized in area-of-circle-oq-03) is historically the first bisection-type argument: inscribed/circumscribed polygons bracket the circle's area, each refinement halving the gap. The bisection method generalizes this to arbitrary continuous functions"
     }
   ],
   "conclusion": {
