@@ -2,7 +2,7 @@
   "id": "denumerability-rationals-oq-03",
   "title": "Stern-Brocot Tree Encoding of Rationals",
   "slug": "denumerability-rationals-oq-03",
-  "description": "Formalizes the Stern-Brocot tree as a state machine and proves coprimality, positivity, ordering, and injectivity — all driven by a single determinant invariant. Known to list every positive rational exactly once in lowest terms (surjectivity is future work; injectivity and coprimality proved here).",
+  "description": "Formalizes the Stern-Brocot tree, an alternative to Cantor's diagonal enumeration that is known to list every positive rational exactly once in lowest terms. Proves the determinant invariant, automatic coprimality of all tree nodes, positivity, mediant ordering, and injectivity (different paths yield different rationals). Surjectivity (every rational appears) is future work.",
   "meta": {
     "author": "Stern (1858), Brocot (1861)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Stern%E2%80%93Brocot_tree",
@@ -65,7 +65,7 @@
   "overview": {
     "historicalContext": "The Stern-Brocot tree was independently discovered by Moritz Abraham Stern in 1858 and Achille Brocot in 1861. Stern was a German mathematician studying number-theoretic functions; Brocot was a French clockmaker seeking optimal gear ratios for mechanical clocks. Both arrived at the same elegant structure: a binary tree containing every positive rational number exactly once, already in lowest terms.\n\nThe tree is built using the mediant operation: given fractions a/b and c/d, their mediant is (a+c)/(b+d). Starting with the 'sentinels' 0/1 and 1/0, the root is their mediant 1/1. Each node's left child is the mediant of the node with its left ancestor, and likewise for the right.\n\nThe Stern-Brocot tree has deep connections to continued fractions (the path to any rational encodes its continued fraction expansion), the Euclidean algorithm (the search path mimics gcd computation), Farey sequences (each level of the tree corresponds to a Farey-like refinement), and the Calkin-Wilf tree (a closely related structure with the same enumeration but different tree shape).\n\nGraham, Knuth, and Patashnik's 'Concrete Mathematics' (1994) popularized the tree in computer science, using it to derive properties of continued fractions and to prove the density of rationals in the reals constructively.",
     "problemStatement": "**Stern-Brocot Tree Encoding (OQ-03)**\n\nFormalize the Stern-Brocot tree as an alternative encoding of the positive rationals, proving:\n\n1. Every node is in lowest terms (coprimality)\n2. Every node represents a positive rational\n3. The tree is strictly ordered (left < root < right)\n4. The encoding is injective (different paths give different rationals)",
-    "text": "Formalizes the Stern-Brocot tree, an alternative to Cantor's diagonal enumeration that lists every positive rational exactly once in lowest terms. Proves the determinant invariant, automatic coprimality of all tree nodes, positivity, mediant ordering, and injectivity (different paths yield different rationals).",
+    "text": "Formalizes the Stern-Brocot tree, an alternative to Cantor's diagonal enumeration that is known to list every positive rational exactly once in lowest terms. Proves the determinant invariant, automatic coprimality of all tree nodes, positivity, mediant ordering, and injectivity (different paths yield different rationals). Surjectivity remains as future work.",
     "proofStrategy": "**Formalization Approach**\n\nThe Lean file provides 600 lines with 30 theorems and 0 sorries:\n\n1. **State Machine:** Define navigation as a state `(la/lb, ra/rb)` tracking the left and right ancestors. The current node is the mediant `(la+ra)/(lb+rb)`.\n\n2. **Determinant Invariant:** Prove `det(s) = ra*lb - la*rb = 1` is preserved by both steps. This drives all other properties.\n\n3. **Coprimality:** From `ra*lb - la*rb = 1`, derive `gcd(la+ra, lb+rb) = 1` via Bezout.\n\n4. **Positivity:** By induction, `la + ra > 0` and `lb + rb > 0` at every reachable state.\n\n5. **BST Ordering:** `value_between_ancestors` proves that any descendant's value lies strictly between its ancestors, using cross-product inequalities and the determinant.\n\n6. **Injectivity:** `eval_injective_gen` by induction on paths: nil vs cons uses monotonicity; L vs R uses BST ordering; same direction uses IH.",
     "keyInsights": [
       "**The Determinant Invariant**: The single identity ra*lb - la*rb = 1 drives everything. From it we get coprimality (via the Bezout-like identity), ordering (via positivity of the cross-product), and ultimately completeness. This is more elegant than Cantor's pairing, which requires separate reduction to lowest terms.",
@@ -160,11 +160,11 @@
     },
     {
       "id": "injectivity",
-      "title": "BST Infrastructure and Injectivity Proof",
+      "title": "Injectivity via BST Ordering",
       "startLine": 228,
       "endLine": 488,
-      "summary": "BST ordering infrastructure (`value_between_ancestors`, `ra_pos_of_det`, `lb_pos_of_det`) and the injectivity theorem: `eval_injective_gen` proves by structural induction that different paths yield different rationals, using BST ordering to show disagreeing paths give separated values. `eval_injective` specializes to the root state.",
-      "mathContext": "$\\text{evalPath}(p_1) = \\text{evalPath}(p_2) \\implies p_1 = p_2$. Proved via BST ordering: if paths disagree at position $k$, the L-path value is strictly less than the mediant which is strictly less than the R-path value."
+      "summary": "Component monotonicity lemmas (ra_ge_eval, lb_ge_eval, etc.), BST preservation invariants (num_lt_den_preserved, num_gt_den_preserved), value_between_ancestors, and the 65-line eval_injective_gen proof (structural induction: L/R cases use BST ordering contradiction, same-direction cases recurse).",
+      "mathContext": "The BST invariant ensures left descendants have value $<$ mediant and right descendants have value $>$ mediant. If two paths disagree at step $k$ (one goes L, other R), their values separate and can never reconverge. This drives the 6-case induction in `eval_injective_gen`."
     },
     {
       "id": "examples",
