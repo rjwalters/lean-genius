@@ -308,12 +308,12 @@
     {
       "targetId": "fermats-last-theorem",
       "relationship": "related",
-      "description": "Wiles's 1995 proof of Fermat's Last Theorem is the most celebrated modern application of Galois theory: the proof studies the Galois representation $\\rho_{E,p} : \\text{Gal}(\\bar{\\mathbb{Q}}/\\mathbb{Q}) \\to \\text{GL}_2(\\mathbb{F}_p)$ attached to the Frey curve and proves modularity via deformations of Galois representations. Abel-Ruffini reveals symmetry groups as the organizing principle of polynomial solvability; FLT shows that same Galois-theoretic framework, vastly generalized through the Langlands program, governs Diophantine equations"
+      "description": "Wiles's 1995 proof of FLT via modularity of semistable elliptic curves is the greatest triumph of the Galois-theoretic framework that Abel-Ruffini inaugurated. Where Abel-Ruffini uses the Galois group $S_5$ of a polynomial to prove radical inexpressibility, Wiles uses Galois representations $\\rho_{E,p}: \\text{Gal}(\\overline{\\mathbb{Q}}/\\mathbb{Q}) \\to \\text{GL}_2(\\mathbb{F}_p)$ of elliptic curves to prove Fermat's conjecture — both reduce number-theoretic questions to the structure of Galois groups, but at vastly different levels of sophistication"
     },
     {
-      "targetId": "elementary-quadratic-reciprocity",
+      "targetId": "quadratic-reciprocity",
       "relationship": "related",
-      "description": "Quadratic reciprocity — which primes $p$ are squares mod $q$ and vice versa — is the simplest non-trivial instance of Artin reciprocity, the abelian case of the Langlands program mentioned in the conclusion. Gauss's law describes how primes split in quadratic extensions $\\mathbb{Q}(\\sqrt{d})/\\mathbb{Q}$, which have abelian (hence solvable) Galois group $\\mathbb{Z}/2\\mathbb{Z}$. Abel-Ruffini shows that once the Galois group becomes non-solvable ($S_5$), this kind of arithmetic control breaks down for radical expressibility"
+      "description": "Gauss's golden theorem $(p/q)(q/p) = (-1)^{(p-1)(q-1)/4}$ was among the first results later explained by class field theory, which classifies abelian extensions of $\\mathbb{Q}$ via Artin reciprocity — the abelian case of the Langlands program. Abel-Ruffini's impossibility concerns the non-abelian boundary: polynomials with abelian Galois groups (covered by class field theory and Kronecker-Weber) are always solvable by radicals, while those with non-solvable groups like $S_5$ are not"
     }
   ],
   "references": [
