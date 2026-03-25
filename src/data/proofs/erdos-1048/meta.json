@@ -166,14 +166,14 @@
       "title": "Potential Theory",
       "summary": "Axiomatizes logCapacity (logarithmic capacity of a compact set), the fundamental formula lemniscate_capacity (cap(L(f,c)) = c^{1/n} for degree-n monic f), and capacity_diameter_inequality (diam(S) ≥ 4·cap(S) for connected S), linking the geometric diameter bounds to potential-theoretic invariants",
       "startLine": 214,
-      "endLine": 230,
+      "endLine": 231,
       "mathContext": "$\\text{cap}(L(f, c)) = c^{1/n}$ for degree-$n$ monic $f$. Capacity-diameter inequality: $\\text{diam}(S) \\geq 4 \\cdot \\text{cap}(S)$ for connected compact $S \\subset \\mathbb{C}$."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Unifies the disproof via erdos_1048 : ¬ EHPConjecture (reducing to EHP_false_for_r_gt_1), defines erdos_1048_answer and erdos_1048_status strings, and proves pommerenke_insight: for any r > 1 and any δ > 0, there exists a monic polynomial with all roots on |z| = r whose lemniscate components all have diameter < δ",
-      "startLine": 231,
+      "startLine": 233,
       "endLine": 273,
       "mathContext": "$\\neg\\,\\text{EHPConjecture}$ via `EHP_false_for_r_gt_1`. Pommerenke's insight: $\\forall r > 1,\\, \\forall \\delta > 0,\\, \\exists f$ monic with roots on $|z| = r$ such that all component diameters $< \\delta$."
     }
@@ -252,7 +252,7 @@
       {
         "name": "EHP_false_for_r_gt_1",
         "type": "original",
-        "description": "Disproves the Erdős–Herzog–Piranian conjecture for r > 1: constructs monic polynomials with all roots in the unit disk whose lemniscate diameter exceeds 2"
+        "description": "Disproves the Erdős–Herzog–Piranian conjecture: ¬ EHPConjecture, using Pommerenke's counterexample z^n − r^n whose lemniscate component diameters vanish for r > 1"
       },
       {
         "name": "erdos_1048",
@@ -262,12 +262,12 @@
       {
         "name": "zn_diameter",
         "type": "original",
-        "description": "The diameter of the lemniscate {|zⁿ - 1| < c} for roots of unity, providing explicit diameter calculations"
+        "description": "The unit lemniscate of z^n is the open unit disk: diameter(unitLemniscate(X^n)) = 2, showing the bound diam ≥ 2 is sharp for r = 0"
       },
       {
         "name": "pommerenke_insight",
         "type": "original",
-        "description": "Pommerenke's key observation: for r > 1, the lemniscate of zⁿ − rⁿ has diameter exceeding 2 for large n"
+        "description": "Pommerenke's key observation: for any r > 1 and any δ > 0, there exists a BoundedMonicPoly with maxComponentDiameter < δ"
       }
     ]
   },
