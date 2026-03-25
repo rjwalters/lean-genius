@@ -58,7 +58,7 @@
   "overview": {
     "historicalContext": "A **Sidon set** (or B_2 sequence) is a set of integers where all pairwise sums are distinct. These sets, named after Simon Sidon who studied them in the 1930s, appear throughout additive combinatorics.\n\nErdős Problem #44 asks whether any Sidon set can be extended to achieve near-optimal density. The famous Erdős-Turán conjecture (Problem #28) posits that Sidon sets in [1,N] have at most (1+o(1))sqrt(N) elements, and this problem asks about the reverse: can we always extend a Sidon set to approach this bound?\n\nThis file proves auxiliary undergraduate-level results from the formal-conjectures repository while the main conjecture remains open.",
     "problemStatement": "Let $N \\geq 1$ and $A \\subseteq \\{1,\\ldots,N\\}$ be a Sidon set. Is it true that, for any $\\varepsilon > 0$, there exist $M = M(\\varepsilon)$ and $B \\subseteq \\{N+1,\\ldots,M\\}$ such that $A \\cup B \\subseteq \\{1,\\ldots,M\\}$ is a Sidon set of size at least $(1-\\varepsilon)\\sqrt{M}$?\n\n**Status:** OPEN",
-    "text": "Can any Sidon set be extended to achieve near-optimal density (1-eps)sqrt(M)? An OPEN conjecture with auxiliary results about Sidon set bounds proved.",
+    "text": "A 346-line formalization of Erdős Problem #44 (open) on extending Sidon sets to near-optimal density. A Sidon set (B$_2$ sequence) is a set $A$ of integers where all pairwise sums $a + b$ ($a \\leq b$) are distinct. The problem asks: given any Sidon set $A \\subseteq \\{1,\\ldots,N\\}$ and $\\varepsilon > 0$, can we always find $M$ and $B \\subseteq \\{N+1,\\ldots,M\\}$ such that $A \\cup B$ is Sidon with $|A \\cup B| \\geq (1-\\varepsilon)\\sqrt{M}$? The file proves three auxiliary results: $\\{1,2,4,8,13\\}$ is Sidon (by `decide` on all pairwise sums), the upper bound $|A| \\leq 2\\sqrt{N}$ (counting argument), and that powers of 2 form Sidon sets (binary uniqueness). Imports Sidon infrastructure from `Erdos340GreedySidon`.",
     "proofStrategy": "We prove three auxiliary results:\n\n1. **Concrete example**: Verify {1,2,4,8,13} is Sidon by checking all 15 pairwise sums are distinct.\n\n2. **Upper bound**: Any Sidon set in [1,N] has at most 2sqrt(N) elements. This follows from counting: the sums span [2,2N], and distinctness limits the set size.\n\n3. **Lower bound infrastructure**: Powers of 2 form a Sidon set (by binary uniqueness), providing a construction achieving log(N) elements.\n\nThe main conjecture is stated but marked OPEN.",
     "keyInsights": [
       "**Sidon property**: All pairwise sums a+b (with a<=b) are distinct - no two pairs give the same sum",
@@ -80,35 +80,40 @@
       "title": "Imports and Setup",
       "startLine": 1,
       "endLine": 29,
-      "summary": "Import Sidon infrastructure from Erdos340"
+      "summary": "Imports Sidon set infrastructure from `Erdos340GreedySidon` (providing `IsSidon`, `sidon_bound`, greedy construction), `Mathlib` for `Finset`, `BigOperators`, and `decide` tactic. Opens the `Erdos340` namespace.",
+      "mathContext": "The file builds on Erdős #340 (greedy Sidon construction), reusing the `IsSidon` predicate: $A$ is Sidon iff $\\forall a_1, b_1, a_2, b_2 \\in A$, $a_1 + b_1 = a_2 + b_2 \\Rightarrow \\{a_1, b_1\\} = \\{a_2, b_2\\}$."
     },
     {
       "id": "example",
-      "title": "Concrete Example",
+      "title": "Concrete Sidon Set Example",
       "startLine": 30,
       "endLine": 72,
-      "summary": "Prove {1,2,4,8,13} is a Sidon set"
+      "summary": "Proves $\\{1, 2, 4, 8, 13\\}$ is a Sidon set by verifying all $\\binom{5}{2} + 5 = 15$ pairwise sums ($a + b$ with $a \\leq b$) are distinct. Uses `decide` or `native_decide` to check the sum distinctness property.",
+      "mathContext": "The 15 pairwise sums of $\\{1,2,4,8,13\\}$: $2,3,5,9,14,4,6,10,15,8,12,17,16,21,26$ — all distinct. This verifies $|A| = 5$ elements in $[1,13]$, consistent with the upper bound $|A| \\leq 2\\sqrt{13} \\approx 7.2$."
     },
     {
       "id": "upper-bound",
-      "title": "Upper Bound",
+      "title": "Upper Bound: $|A| \\leq 2\\sqrt{N}$",
       "startLine": 73,
       "endLine": 104,
-      "summary": "Sidon sets have at most 2sqrt(N) elements"
+      "summary": "Proves that any Sidon set $A \\subseteq \\{1,\\ldots,N\\}$ has at most $2\\sqrt{N}$ elements. The argument: $|A|$ elements produce $\\binom{|A|}{2} + |A| = |A|(|A|+1)/2$ distinct sums in $[2, 2N]$, so $|A|^2/2 \\leq 2N-1$.",
+      "mathContext": "For a Sidon set $A \\subseteq [1,N]$: the sums $a + b$ ($a \\leq b$) lie in $[2, 2N]$ and are all distinct, giving $\\binom{|A|}{2} + |A| \\leq 2N - 1$. This yields $|A| \\leq (1+o(1))\\sqrt{2N}$; the factor 2 in '$2\\sqrt{N}$' is a convenient weaker bound."
     },
     {
       "id": "lower-bound",
-      "title": "Lower Bound Construction",
+      "title": "Lower Bound: Powers of 2 are Sidon",
       "startLine": 105,
       "endLine": 175,
-      "summary": "Powers of 2 form Sidon sets, existence of sqrt(N)/2 density sets"
+      "summary": "Proves that powers of 2 form a Sidon set: if $2^a + 2^b = 2^c + 2^d$ then $\\{a,b\\} = \\{c,d\\}$, by uniqueness of binary representations. This gives a Sidon set of size $\\lfloor \\log_2 N \\rfloor$ in $[1,N]$.",
+      "mathContext": "$\\{2^0, 2^1, \\ldots, 2^k\\}$ is Sidon because $2^a + 2^b = 2^c + 2^d$ with $a \\leq b, c \\leq d$ implies equal binary representations, hence $\\{a,b\\} = \\{c,d\\}$. This gives $|A| = \\lfloor \\log_2 N \\rfloor + 1 = \\Theta(\\log N)$, far below the optimal $\\Theta(\\sqrt{N})$ achieved by finite field constructions (Singer, Bose-Chowla)."
     },
     {
       "id": "main",
       "title": "Main Conjecture (OPEN)",
       "startLine": 176,
       "endLine": 343,
-      "summary": "Statement of Erdos Problem 44 - marked as open"
+      "summary": "States the main open conjecture: for any Sidon set $A \\subseteq [1,N]$ and $\\varepsilon > 0$, there exist $M$ and $B \\subseteq [N+1,M]$ such that $A \\cup B$ is Sidon with $|A \\cup B| \\geq (1-\\varepsilon)\\sqrt{M}$. Axiomatized as `erdos_44`.",
+      "mathContext": "The conjecture asks whether every Sidon set can be 'completed' to near-optimal density. The trivial upper bound gives $|\\text{Sidon in } [1,M]| \\leq (1+o(1))\\sqrt{M}$, and the question is whether this bound is approachable starting from any initial Sidon set — not just from scratch."
     }
   ],
   "conclusion": {
