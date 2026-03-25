@@ -87,28 +87,28 @@
       "priority": "high",
       "target": "enricher",
       "description": "Fix annotation ann-sb-injectivity: remove sorry claims (the proof is complete), update range to 418-488, rewrite content to describe the actual injectivity proof (structural induction with BST ordering), replace 'sorry' in prerequisites with 'value_between_ancestors, ra_pos_of_det, lb_pos_of_det'.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "medium",
       "target": "enricher",
       "description": "Add 'injectivity' section to meta.json covering lines 228-488 (BST infrastructure + injectivity proof). Narrow 'examples' section to lines 490-600.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "medium",
       "target": "enricher",
       "description": "Revise description's first sentence to not imply surjectivity, or qualify it as 'known to list every positive rational exactly once (surjectivity is future work, injectivity and coprimality proved here)'.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "low",
       "target": "enricher",
       "description": "Split ann-sb-examples into separate annotations for the injectivity proof (418-488) and concrete examples (490-600).",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",

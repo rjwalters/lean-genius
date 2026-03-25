@@ -2,7 +2,7 @@
   "id": "denumerability-rationals-oq-03",
   "title": "Stern-Brocot Tree Encoding of Rationals",
   "slug": "denumerability-rationals-oq-03",
-  "description": "Formalizes the Stern-Brocot tree, an alternative to Cantor's diagonal enumeration that lists every positive rational exactly once in lowest terms. Proves the determinant invariant, automatic coprimality of all tree nodes, positivity, mediant ordering, and injectivity (different paths yield different rationals).",
+  "description": "Formalizes the Stern-Brocot tree as a state machine and proves coprimality, positivity, ordering, and injectivity — all driven by a single determinant invariant. Known to list every positive rational exactly once in lowest terms (surjectivity is future work; injectivity and coprimality proved here).",
   "meta": {
     "author": "Stern (1858), Brocot (1861)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Stern%E2%80%93Brocot_tree",
@@ -159,10 +159,18 @@
       "mathContext": "$la \\cdot (lb+rb) < (la+ra) \\cdot lb$ and $(la+ra) \\cdot rb < ra \\cdot (lb+rb)$, i.e., $\\frac{la}{lb} < \\frac{la+ra}{lb+rb} < \\frac{ra}{rb}$."
     },
     {
+      "id": "injectivity",
+      "title": "BST Infrastructure and Injectivity Proof",
+      "startLine": 228,
+      "endLine": 488,
+      "summary": "BST ordering infrastructure (`value_between_ancestors`, `ra_pos_of_det`, `lb_pos_of_det`) and the injectivity theorem: `eval_injective_gen` proves by structural induction that different paths yield different rationals, using BST ordering to show disagreeing paths give separated values. `eval_injective` specializes to the root state.",
+      "mathContext": "$\\text{evalPath}(p_1) = \\text{evalPath}(p_2) \\implies p_1 = p_2$. Proved via BST ordering: if paths disagree at position $k$, the L-path value is strictly less than the mediant which is strictly less than the R-path value."
+    },
+    {
       "id": "examples",
       "title": "Concrete Examples",
-      "startLine": 243,
-      "endLine": 584,
+      "startLine": 490,
+      "endLine": 600,
       "summary": "Seven verified examples confirming the first 3 levels: [] → 1/1, [L] → 1/2, [R] → 2/1, [L,L] → 1/3, [L,R] → 2/3, [R,L] → 3/2, [R,R] → 3/1.",
       "mathContext": "Level 0: $1/1$. Level 1: $1/2, 2/1$. Level 2: $1/3, 2/3, 3/2, 3/1$. All verified by computation."
     }

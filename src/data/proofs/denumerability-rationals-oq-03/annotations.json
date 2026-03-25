@@ -148,23 +148,24 @@
     "id": "ann-sb-injectivity",
     "proofId": "denumerability-rationals-oq-03",
     "range": {
-      "startLine": 235,
-      "endLine": 237
+      "startLine": 418,
+      "endLine": 488
     },
-    "type": "concept",
-    "title": "Injectivity (Stated)",
-    "content": "States that different paths from the root produce different `(pathNum, pathDen)` pairs. This is the file's sole sorry. The proof would follow from the ordering property: at each step, left descendants have strictly smaller rational values and right descendants strictly larger values. So if two paths disagree at some position, their resulting rationals must differ. Combined with coprimality, this shows the Stern-Brocot tree is an injection from binary words to $\\mathbb{Q}^+$ in lowest terms.",
-    "mathContext": "$\\text{evalPath}(p_1) = \\text{evalPath}(p_2) \\implies p_1 = p_2$",
+    "type": "technique",
+    "title": "Injectivity (Proved)",
+    "content": "Proves that different paths from the root produce different `(pathNum, pathDen)` pairs via structural induction with BST ordering. The proof (`eval_injective_gen`) uses induction on paths, showing that at each L/R step, the BST ordering invariants (`value_between_ancestors`) force different paths to yield different rational values. The base cases use `ra_pos_of_det` and `lb_pos_of_det` from the determinant infrastructure. `eval_injective` specializes to the root state.",
+    "mathContext": "$\\text{evalPath}(p_1) = \\text{evalPath}(p_2) \\implies p_1 = p_2$. Proved by structural induction: if $p_1$ and $p_2$ first disagree at position $k$ (one goes L, the other R), then BST ordering gives $\\text{val}(p_1) < \\text{mediant} < \\text{val}(p_2)$, contradicting equality.",
     "significance": "key",
     "relatedConcepts": [
       "tree injectivity",
       "binary word encoding",
-      "Stern-Brocot bijection"
+      "Stern-Brocot bijection",
+      "BST ordering"
     ],
     "prerequisites": [
-      "mediant_strictly_between",
-      "eval",
-      "sorry"
+      "value_between_ancestors",
+      "ra_pos_of_det",
+      "lb_pos_of_det"
     ],
     "importance": "high"
   },
