@@ -50,7 +50,7 @@
   {
     "id": "ann-increment-bound",
     "proofId": "erdos-1014-oq-01",
-    "range": { "startLine": 75, "endLine": 81 },
+    "range": { "startLine": 70, "endLine": 81 },
     "type": "technique",
     "title": "Linear Increment Bound from Recurrence",
     "content": "The theorem `increment_bound` proves $R(3, l+1) \\leq R(3, l) + (l+1)$ by specializing the Ramsey recurrence to $k = 3$: $R(3, l+1) \\leq R(3, l) + R(2, l+1) = R(3, l) + (l+1)$. This is the central structural insight — while $R(3,l)$ grows quadratically (up to log), consecutive values differ by at most a linear function. The proof uses `omega` to close the arithmetic after substituting the recurrence and $R(2, l+1) = l+1$.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-analysis-lemma",
     "proofId": "erdos-1014-oq-01",
-    "range": { "startLine": 90, "endLine": 96 },
+    "range": { "startLine": 87, "endLine": 124 },
     "type": "technique",
     "title": "Analysis Lemma: (l+1) log l / (c l²) → 0",
     "content": "The lemma `eventually_ratio_small` states that for any $c > 0$ and $\\varepsilon > 0$, eventually $(l+1) \\cdot \\log l / (c \\cdot l^2) < \\varepsilon$. The proof extracts $\\delta = c\\varepsilon/4$ from Mathlib's `isLittleO_log_rpow_atTop` ($\\log x = o(x)$), obtaining $\\|\\log l\\| \\leq \\delta \\cdot \\|l\\|$ for large $l$. Then $(l+1) \\cdot \\log l \\leq 2l \\cdot (c\\varepsilon/4) \\cdot l = (\\varepsilon/2) \\cdot c l^2$, so the quotient is at most $\\varepsilon/2 < \\varepsilon$.",
@@ -74,7 +74,7 @@
   {
     "id": "ann-main-theorem-statement",
     "proofId": "erdos-1014-oq-01",
-    "range": { "startLine": 110, "endLine": 112 },
+    "range": { "startLine": 130, "endLine": 140 },
     "type": "insight",
     "title": "Main Theorem Statement",
     "content": "The main theorem `erdos_1014_k3_ratio_convergence` states $\\forall \\varepsilon > 0, \\exists L_0, \\forall l > L_0: |R(3,l+1)/R(3,l) - 1| < \\varepsilon$. This is the standard $\\varepsilon$-$N$ formulation of $\\lim_{l \\to \\infty} R(3,l+1)/R(3,l) = 1$, using Lean's real division and absolute value. The formulation avoids Filter.Tendsto in favor of the explicit quantified statement, making the proof structure transparent.",
@@ -86,7 +86,7 @@
   {
     "id": "ann-proof-setup",
     "proofId": "erdos-1014-oq-01",
-    "range": { "startLine": 113, "endLine": 136 },
+    "range": { "startLine": 141, "endLine": 160 },
     "type": "technique",
     "title": "Proof Setup: Extracting Constants and Casting to ℝ",
     "content": "The proof begins by extracting the lower bound constant $c$ and threshold $L_1$ from `R3_lower_bound`, and the analysis threshold $L_2$ from `eventually_ratio_small`. The combined threshold $L_0 = \\max(\\max(L_1, L_2), 2)$ ensures all hypotheses hold and $\\log l > 0$. The Ramsey values are cast to reals ($R, R'$) and positivity ($R > 0$) is established from `ramsey_pos` via `exact_mod_cast`.",
@@ -98,7 +98,7 @@
   {
     "id": "ann-calc-chain",
     "proofId": "erdos-1014-oq-01",
-    "range": { "startLine": 158, "endLine": 167 },
+    "range": { "startLine": 186, "endLine": 195 },
     "type": "technique",
     "title": "The Calc Chain: Squeeze to ε",
     "content": "The final `calc` block chains three inequalities: $(R' - R)/R \\leq (l+1)/R$ (from the increment bound), $(l+1)/R \\leq (l+1)/(c \\cdot l^2/\\log l)$ (from the lower bound on $R$), and the algebraic simplification $(l+1) \\cdot \\log l / (c \\cdot l^2) < \\varepsilon$ (from the analysis lemma). The first step uses `div_le_div_of_nonneg_right`, the second uses `div_le_div_of_nonneg_left` (larger denominator gives smaller fraction), and the third is a direct application of `hL₂`.",
@@ -108,9 +108,33 @@
     "prerequisites": ["real division properties", "div_le_div lemmas"]
   },
   {
+    "id": "ann-monotonicity-transfer",
+    "proofId": "erdos-1014-oq-01",
+    "range": { "startLine": 161, "endLine": 171 },
+    "type": "technique",
+    "title": "Transferring Combinatorial Bounds to ℝ",
+    "content": "Three key bounds are cast from $\\mathbb{N}$ to $\\mathbb{R}$: monotonicity ($R' \\geq R$) via `Nat.cast_le.mpr`, the increment bound ($R' - R \\leq l+1$) via `exact_mod_cast`, and `linarith` closes the arithmetic gap. This is the central casting pattern in formalized asymptotics: Ramsey numbers live in $\\mathbb{N}$ but the limit argument requires $\\mathbb{R}$. Lean's `Nat.cast` preserves order and arithmetic, but the proof must explicitly invoke the coercion lemmas. The `set R := ... with hR_def` idiom names the cast values and records the defining equation for `simp` rewrites.",
+    "mathContext": "$R = (R(3,l) : \\mathbb{R}),\\; R' = (R(3,l+1) : \\mathbb{R})$. Monotonicity: $R' \\geq R$ from $R(3,l) \\leq R(3,l+1)$ in $\\mathbb{N}$. Increment: $R' - R \\leq l+1$ from the $\\mathbb{N}$ bound $R(3,l+1) \\leq R(3,l) + (l+1)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.cast_le", "exact_mod_cast", "type coercion", "order-preserving embeddings"],
+    "prerequisites": ["Lean 4 coercions", "Nat.cast properties"]
+  },
+  {
+    "id": "ann-log-lower-bound",
+    "proofId": "erdos-1014-oq-01",
+    "range": { "startLine": 179, "endLine": 185 },
+    "type": "technique",
+    "title": "Log Positivity and Lower Bound Application",
+    "content": "Establishes $\\log l > 0$ for $l \\geq 3$ via `Real.log_pos` and applies the Kim–Shearer lower bound to get $R(3,l) \\geq c \\cdot l^2/\\log l$ for the current $l$. The positivity of $c \\cdot l^2/\\log l$ is then derived by `positivity`. These are the final ingredients needed before the `calc` chain: the lower bound provides the denominator swap $1/R \\leq \\log l/(c \\cdot l^2)$, and positivity ensures the division inequalities are well-directed.",
+    "mathContext": "$l \\geq 3 \\Rightarrow (l : \\mathbb{R}) > 1 \\Rightarrow \\log l > 0$. Then $R \\geq c \\cdot l^2/\\log l > 0$, so dividing by $R$ vs dividing by $c \\cdot l^2/\\log l$ is a valid monotonicity step.",
+    "significance": "supporting",
+    "relatedConcepts": ["Real.log_pos", "positivity tactic", "denominator comparison"],
+    "prerequisites": ["real logarithm properties", "Lean positivity automation"]
+  },
+  {
     "id": "ann-abs-simplification",
     "proofId": "erdos-1014-oq-01",
-    "range": { "startLine": 144, "endLine": 150 },
+    "range": { "startLine": 172, "endLine": 178 },
     "type": "technique",
     "title": "Absolute Value Simplification via Monotonicity",
     "content": "The absolute value $|R'/R - 1|$ simplifies to $(R' - R)/R$ because $R' \\geq R$ (monotonicity) implies $R'/R \\geq 1$, so $R'/R - 1 \\geq 0$. The proof uses `abs_of_nonneg` after algebraically rewriting $R'/R - 1 = (R' - R)/R$ via `field_simp`. This is a common pattern in ratio convergence proofs: monotonicity eliminates the absolute value, reducing the problem to a one-sided bound.",
