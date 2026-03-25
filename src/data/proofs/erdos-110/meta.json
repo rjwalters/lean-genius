@@ -80,7 +80,7 @@
       "summary": "Chromatic numbers and colorings",
       "startLine": 31,
       "endLine": 51,
-      "mathContext": "Mathematical content: Chromatic numbers and colorings"
+      "mathContext": "Defines proper $k$-coloring (`IsProperColoring`), $k$-colorability (`IsKColorable`), and chromatic number $\\chi(G) = \\min\\{k : G \\text{ is } k\\text{-colorable}\\}$ as an `ℕ∞`-valued infimum. The formalization uses `Fin k` as the color set, making colorings functions $V \\to \\text{Fin}\\,k$ with the adjacency constraint $G.\\text{Adj}\\,v\\,w \\Rightarrow c(v) \\neq c(w)$."
     },
     {
       "id": "subgraphs",
@@ -88,7 +88,7 @@
       "summary": "Finite chromatic subgraph definitions",
       "startLine": 52,
       "endLine": 70,
-      "mathContext": "Formal definition: Finite chromatic subgraph definitions"
+      "mathContext": "The induced subgraph $G[S]$ on $S \\subseteq V$ inherits adjacency: $G[S].\\text{Adj}\\,v\\,w \\iff G.\\text{Adj}\\,v\\,w$ for $v, w \\in S$. `HasFiniteNChromaticSubgraph G n b` asserts $\\exists S$ with $|S| \\leq b$ and $\\chi(G[S]) \\geq n$ — a finite subgraph with high chromatic number and bounded size."
     },
     {
       "id": "cardinals",
@@ -96,7 +96,7 @@
       "summary": "ℵ₀, ℵ₁, and infinite chromatic numbers",
       "startLine": 71,
       "endLine": 98,
-      "mathContext": "Mathematical content: ℵ₀, ℵ₁, and infinite chromatic numbers"
+      "mathContext": "Cardinal arithmetic for infinite chromatic numbers: $\\aleph_0 = |\\mathbb{N}|$ and $\\aleph_1 = \\aleph_0^+$ (the first uncountable cardinal). `HasChromaticNumberAtLeast G \\kappa` means $G$ is not $k$-colorable for any finite $k < \\kappa$, and `HasChromaticNumber G \\kappa$ adds that $G$ IS $\\kappa$-colorable. The theorem $\\aleph_1 = \\text{succ}(\\aleph_0)$ is proved via `Cardinal.aleph`."
     },
     {
       "id": "de-bruijn-erdos",
@@ -104,7 +104,7 @@
       "summary": "Foundation: existence of finite chromatic subgraphs",
       "startLine": 99,
       "endLine": 116,
-      "mathContext": "Mathematical content: Foundation: existence of finite chromatic subgraphs"
+      "mathContext": "The de Bruijn-Erdős theorem (1951): if $\\chi(G) = \\infty$ (i.e., $\\chi(G) \\geq \\aleph_0$), then for every $n \\in \\mathbb{N}$, $G$ contains a finite subgraph with $\\chi \\geq n$. This is a compactness result — the contrapositive `de_bruijn_erdos_compactness` says: if every finite subgraph is $k$-colorable, then $G$ is $k$-colorable. Crucially, this says NOTHING about the size of the $n$-chromatic subgraph."
     },
     {
       "id": "conjecture",
@@ -112,7 +112,7 @@
       "summary": "The conjecture that was disproved",
       "startLine": 117,
       "endLine": 140,
-      "mathContext": "Mathematical content: The conjecture that was disproved"
+      "mathContext": "The Erdős-Hajnal-Szemerédi conjecture (1982): for $\\aleph_1$-chromatic graphs, $\\exists F : \\mathbb{N} \\to \\mathbb{N}$ and $N_0$ such that $\\forall n \\geq N_0$, $G$ has an $n$-chromatic subgraph on $\\leq F(n)$ vertices. The conjecture was motivated by the observation that it fails for $\\aleph_0$-chromatic graphs (`conjecture_fails_aleph0`) but was hoped to hold when $\\chi = \\aleph_1$."
     },
     {
       "id": "shelah",
@@ -120,7 +120,7 @@
       "summary": "2005: Consistent that no F exists",
       "startLine": 141,
       "endLine": 154,
-      "mathContext": "Mathematical content: 2005: Consistent that no F exists"
+      "mathContext": "Shelah (2005) showed the conjecture's failure is *consistent* with ZFC: there exists a model of set theory where an $\\aleph_1$-chromatic graph has no uniform bound $F(n)$. This left open whether the failure was a ZFC theorem or merely consistent."
     },
     {
       "id": "lambie-hanson",
@@ -128,7 +128,7 @@
       "summary": "2020: Definitive ZFC counterexample and disproof theorem",
       "startLine": 155,
       "endLine": 179,
-      "mathContext": "Verified: 2020: Definitive ZFC counterexample and disproof theorem"
+      "mathContext": "Lambie-Hanson (2020) resolved the problem definitively: the conjecture is FALSE in ZFC. He constructed an $\\aleph_1$-chromatic graph $G_{LH}$ such that for every $F : \\mathbb{N} \\to \\mathbb{N}$ and every $N_0$, there exists $n \\geq N_0$ where $G_{LH}$ has no $n$-chromatic subgraph on $\\leq F(n)$ vertices. The Lean proof `erdos_110_disproved` derives the contradiction in 5 lines from this axiom."
     },
     {
       "id": "growth-rate",
@@ -136,7 +136,7 @@
       "summary": "Tower function, growth expectation moot, graph compactness",
       "startLine": 180,
       "endLine": 207,
-      "mathContext": "Mathematical content: Tower function, growth expectation moot, graph compactness"
+      "mathContext": "Erdős expected $F$ would need to grow at tower-function speed ($2^{2^{\\cdots^n}}$). The `tower k n` function iterates $n \\mapsto 2^n$ $k$ times. The theorem `erdos_growth_expectation_moot` shows Erdős's intuition was correct in spirit: no growth rate suffices because no $F$ exists at all."
     },
     {
       "id": "counterexample",
@@ -144,7 +144,7 @@
       "summary": "LambieHansonGraph structure and existence",
       "startLine": 208,
       "endLine": 235,
-      "mathContext": "Formal definition: LambieHansonGraph structure and existence"
+      "mathContext": "The `LambieHansonGraph` structure packages the counterexample's properties: (1) $\\chi(G) = \\aleph_1$ exactly, (2) it defeats all proposed bounds $F$, and (3) by de Bruijn-Erdős, $n$-chromatic subgraphs still exist for all $n$ — they just cannot be uniformly bounded in size. The graph-theoretic compactness theorem shows why local (finite) colorability implies global colorability but cannot control subgraph sizes."
     },
     {
       "id": "summary",
@@ -152,7 +152,7 @@
       "summary": "erdos_110 and erdos_110_summary theorems",
       "startLine": 236,
       "endLine": 261,
-      "mathContext": "Verified: erdos_110 and erdos_110_summary theorems"
+      "mathContext": "Erdős Problem #110 is DISPROVED: the Erdős-Hajnal-Szemerédi conjecture (1982) is false in ZFC. Shelah (2005) showed consistency, Lambie-Hanson (2020) proved it outright. The de Bruijn-Erdős theorem guarantees existence of $n$-chromatic subgraphs but cannot be made uniform over $\\aleph_1$-chromatic graphs."
     }
   ],
   "conclusion": {

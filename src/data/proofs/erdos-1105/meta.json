@@ -97,7 +97,7 @@
       "summary": "SimpleGraph, EdgeSet, CompleteGraph, numEdgesKn, EdgeColoring, numColors",
       "startLine": 34,
       "endLine": 60,
-      "mathContext": "Mathematical content: SimpleGraph, EdgeSet, CompleteGraph, numEdgesKn, EdgeColoring, numColors"
+      "mathContext": "Defines simple graphs on `Fin n`, edge-colorings as functions $(\\text{Fin}\\,n \\times \\text{Fin}\\,n) \\to \\text{Fin}\\,c$, and `numColors` counting distinct colors on edges $\\{(i,j) : i < j\\}$. The complete graph $K_n$ has $\\binom{n}{2}$ edges. Edge-colorings are the central object: anti-Ramsey theory studies the maximum number of colors achievable while avoiding rainbow copies of a target graph."
     },
     {
       "id": "paths-cycles",
@@ -105,7 +105,7 @@
       "summary": "PathGraph, CycleGraph, numEdgesPath, numEdgesCycle",
       "startLine": 61,
       "endLine": 80,
-      "mathContext": "Mathematical content: PathGraph, CycleGraph, numEdgesPath, numEdgesCycle"
+      "mathContext": "The path $P_k$ on $k$ vertices has edges $\\{i, i+1\\}$ for $i = 0, \\ldots, k-2$ ($k-1$ edges). The cycle $C_k$ adds edge $\\{0, k-1\\}$ ($k$ edges). These are the simplest non-trivial targets for anti-Ramsey problems, and even for $C_k$ the exact anti-Ramsey number is not known in general."
     },
     {
       "id": "rainbow",
@@ -113,7 +113,7 @@
       "summary": "GraphEmbedding, embeddedEdges, IsRainbow, AvoidsRainbow",
       "startLine": 81,
       "endLine": 110,
-      "mathContext": "Mathematical content: GraphEmbedding, embeddedEdges, IsRainbow, AvoidsRainbow"
+      "mathContext": "A `GraphEmbedding` maps $H$'s vertices injectively into $K_n$ preserving edges. A copy is *rainbow* (`IsRainbow`) if all embedded edge colors are distinct. `AvoidsRainbow` means no embedded copy is rainbow. Anti-Ramsey theory studies how many colors can be used while maintaining this avoidance property."
     },
     {
       "id": "anti-ramsey",
@@ -121,7 +121,7 @@
       "summary": "antiRamsey, arCycle, arPath definitions",
       "startLine": 111,
       "endLine": 127,
-      "mathContext": "Formal definition: antiRamsey, arCycle, arPath definitions"
+      "mathContext": "The anti-Ramsey number $\\text{AR}(n, H) = \\max\\{c : \\exists$ edge-coloring of $K_n$ with $c$ colors and no rainbow $H\\}$. Defined as `sSup` over valid color counts. Specializations: `arCycle n k` for $\\text{AR}(n, C_k)$ and `arPath n k` for $\\text{AR}(n, P_k)$. The quantity $\\text{AR}(n, H) \\geq \\text{ex}(n, H) + 1$ always holds (color the $H$-free extremal graph rainbow, rest monochrome)."
     },
     {
       "id": "cycle-conjecture",
@@ -129,7 +129,7 @@
       "summary": "cycleCoeff, CycleConjecture, ar_triangle",
       "startLine": 128,
       "endLine": 148,
-      "mathContext": "Mathematical content: cycleCoeff, CycleConjecture, ar_triangle"
+      "mathContext": "Conjecture: $\\text{AR}(n, C_k) = ((k-2)/2 + 1/(k-1))n + O(1)$. The coefficient `cycleCoeff k` captures the asymptotic growth. Known: $\\text{AR}(n, C_3) = n - 1$ (Erdős-Simonovits-Sós, 1975), which matches the formula since $(1/2 + 1/2)n - 1 = n - 1$. The general formula remains open."
     },
     {
       "id": "path-conjecture",
@@ -137,7 +137,7 @@
       "summary": "pathL, pathEpsilon, pathFormula, PathConjecture, simonovits_sos_path, yuan_path_announced",
       "startLine": 149,
       "endLine": 183,
-      "mathContext": "Mathematical content: pathL, pathEpsilon, pathFormula, PathConjecture, simonovits_sos_path, yuan_path_announced"
+      "mathContext": "Conjecture: for $n \\geq k \\geq 5$, $\\text{AR}(n, P_k) = \\max(\\binom{k-2}{2}+1,\\; \\binom{\\ell-1}{2}+(\\ell-1)(n-\\ell+1)+\\varepsilon)$ where $\\ell = \\lfloor(k-1)/2\\rfloor$ and $\\varepsilon = 1$ (odd $k$) or $2$ (even $k$). Simonovits-Sós (1984) proved this for $n \\geq ck^2$. Yuan (2021) announced the full proof for all $n \\geq k \\geq 5$."
     },
     {
       "id": "bounds",
@@ -145,7 +145,7 @@
       "summary": "ar_lower_bound, ar_upper_bound, ar_mono_n",
       "startLine": 184,
       "endLine": 202,
-      "mathContext": "Bound: ar_lower_bound, ar_upper_bound, ar_mono_n"
+      "mathContext": "General bounds: $1 \\leq \\text{AR}(n, H) \\leq \\binom{n}{2}$. The lower bound `ar_lower_bound` uses a constant coloring (1 color, trivially avoids rainbow). The upper bound `ar_upper_bound` uses $\\binom{n}{2} = |E(K_n)|$ (at most one color per edge). The proofs of `ar_lower_bound` and `ar_upper_bound` are fully verified in Lean using `csSup_le` and `le_csSup` for the `sSup` definition. Monotonicity in $n$ is axiomatized."
     },
     {
       "id": "turan",
@@ -153,7 +153,7 @@
       "summary": "turan definition, ar_turan_lower",
       "startLine": 203,
       "endLine": 220,
-      "mathContext": "Formal definition: turan definition, ar_turan_lower"
+      "mathContext": "The Turán number $\\text{ex}(n, H) = \\max\\{|E(G)| : G \\text{ on } n \\text{ vertices, } H\\text{-free}\\}$. The key connection: $\\text{AR}(n, H) \\geq \\text{ex}(n, H) + 1$ because an $H$-free graph can be colored rainbow (using all its edges as distinct colors), with the remaining edges of $K_n$ getting one extra color."
     },
     {
       "id": "special-cases",
@@ -161,7 +161,7 @@
       "summary": "ar_triangle, ar_path_3, ar_k3",
       "startLine": 221,
       "endLine": 235,
-      "mathContext": "Mathematical content: ar_triangle, ar_path_3, ar_k3"
+      "mathContext": "Known exact values: $\\text{AR}(n, C_3) = n - 1$ (Erdős-Simonovits-Sós, 1975), $\\text{AR}(n, P_3) = 1$ (trivial: any 2-colored edge coloring avoids rainbow $P_3$), $\\text{AR}(n, K_3) = n - 1$ (same as $C_3$ since $K_3 = C_3$). These form the base cases for the general conjectures."
     },
     {
       "id": "status",
@@ -169,7 +169,7 @@
       "summary": "erdos_1105_status, erdos_1105_cycle_statement, erdos_1105_path_statement",
       "startLine": 236,
       "endLine": 275,
-      "mathContext": "Mathematical content: erdos_1105_status, erdos_1105_cycle_statement, erdos_1105_path_statement"
+      "mathContext": "The cycle conjecture remains OPEN for general $k$. The path conjecture is conditionally resolved by Yuan (2021) for $n \\geq k \\geq 5$. The main formal statements `erdos_1105_cycle_statement` and `erdos_1105_path_statement` confirm that the Lean definitions faithfully capture the conjectures (both reduce to `rfl`)."
     }
   ],
   "conclusion": {
