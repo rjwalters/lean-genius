@@ -160,8 +160,8 @@
     "proofId": "erdos-278",
     "type": "technique",
     "range": {
-      "startLine": 93,
-      "endLine": 109
+      "startLine": 126,
+      "endLine": 145
     },
     "title": "Density Bounds: 0 ≤ δ ≤ 1",
     "content": "Three proved results: density is non-negative (ratio of naturals), at most 1 (filtered set is a subset of the range), and the combined bound $0 \\leq \\delta \\leq 1$. These are the only fully proved theorems in the file — everything else is axiomatized.",
@@ -183,8 +183,8 @@
     "proofId": "erdos-278",
     "type": "concept",
     "range": {
-      "startLine": 116,
-      "endLine": 117
+      "startLine": 149,
+      "endLine": 155
     },
     "title": "Inclusion-Exclusion Density",
     "content": "The first-order inclusion-exclusion approximation $\\sum_{i=1}^r 1/n_i$ for the equal-residue coverage density. The full formula is $\\sum 1/n_i - \\sum 1/\\mathrm{lcm}(n_i, n_j) + \\cdots$, but only the first term is formalized here.",
@@ -205,8 +205,8 @@
     "proofId": "erdos-278",
     "type": "technique",
     "range": {
-      "startLine": 123,
-      "endLine": 131
+      "startLine": 397,
+      "endLine": 399
     },
     "title": "Simpson's Theorem (1986)",
     "content": "The minimum coverage density is achieved when all residues are equal: $\\delta_{\\min} = \\delta(\\mathcal{S}_0)$ where $\\mathcal{S}_0$ uses $a_i = 0$ for all $i$. Simpson's proof uses a probabilistic/averaging argument over residue shifts. The corollary `equal_residues_minimize` states that all constant-residue systems achieve the same density (shifting residues uniformly doesn't change coverage count).",
@@ -229,8 +229,8 @@
     "proofId": "erdos-278",
     "type": "concept",
     "range": {
-      "startLine": 136,
-      "endLine": 138
+      "startLine": 497,
+      "endLine": 551
     },
     "title": "Coprime Case: Maximum Density",
     "content": "When all moduli are pairwise coprime, the maximum coverage density is $\\sum 1/n_i$, achieved by the Chinese Remainder Theorem. Coprimality means the congruences are independent: $\\Pr[m \\equiv a_i \\pmod{n_i} \\text{ and } m \\equiv a_j \\pmod{n_j}] = 1/(n_i n_j)$, so inclusion-exclusion simplifies to $1 - \\prod(1 - 1/n_i)$.",
