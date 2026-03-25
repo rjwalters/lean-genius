@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Nonderogatory_matrix",
     "date": "2026",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ05OQ01.lean",
     "tags": [
       "linear-algebra",
@@ -18,7 +18,7 @@
       "research"
     ],
     "badge": "verified",
-    "sorries": 0,
+    "sorries": 1,
     "mathlibDependencies": [
       {
         "theorem": "minpoly.aeval",
@@ -78,7 +78,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 270,
-    "assumptions": "No axioms, no sorries. Fully machine-checked. Uses Classical.propDecidable as a local instance for decidability of propositions.",
+    "assumptions": "0 axioms, 1 sorry remaining. Uses Classical.propDecidable as a local instance for decidability of propositions.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -184,8 +184,8 @@
       "Over finite fields $\\mathbb{F}_q$ with $q \\leq n$, the union avoidance lemma fails. What is the exact threshold: for which $(n, q)$ pairs does every nonderogatory $M \\in M_n(\\mathbb{F}_q)$ have a cyclic vector?"
     ]
   },
-  "sorryCount": 0,
-  "status": "verified",
+  "sorryCount": 1,
+  "status": "formalized",
   "badge": "verified",
   "leanFile": {
     "imports": [
