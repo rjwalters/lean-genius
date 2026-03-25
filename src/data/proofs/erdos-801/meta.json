@@ -59,19 +59,21 @@
       "Lean 4 / Mathlib: SimpleGraph, Finset, Filter.atTop"
     ],
     "lineCount": 123,
-    "assumptions": "3 axiom(s): alon_1996, log_factor_necessary, vertex_set_size_optimal. See Lean source for complete statements."
+    "assumptions": "3 axioms encoding Alon's 1996 result and matching bounds: (1) `alon_1996` — for every graph G on n vertices with α(G) ≤ √n, there exists S ⊆ V with |S| ≤ √n and e(S) ≥ c√n log n (the main theorem, proved via the probabilistic method), (2) `log_factor_necessary` — the √n log n bound is tight: for all C > 0, there exist graphs with α(G) ≤ √n where every √n-subset has at most C√n log n induced edges (from Paley graph constructions), (3) `vertex_set_size_optimal` — the √n vertex budget is optimal: reducing to ε√n drops the edge guarantee below √n (using Filter.atTop for the 'eventually' quantifier). No sorries."
   },
   "overview": {
     "historicalContext": "Erdős posed this problem circa 1979, asking whether graphs with bounded independence number must contain locally dense subsets — a fundamental local-global question in extremal graph theory. The problem is motivated by Ramsey theory: if $\\alpha(G) \\leq \\sqrt{n}$, then by Ramsey-type reasoning, the graph must be 'dense' in some sense, but can this density be localized to a small subset? Noga Alon resolved it affirmatively in 1996 using the probabilistic method — specifically, random sampling of $\\sqrt{n}$-vertex subsets. The expected number of induced edges in a random $\\sqrt{n}$-subset is $\\Omega(\\sqrt{n} \\log n)$ when $\\alpha(G) \\leq \\sqrt{n}$ implies $e(G) = \\Omega(n \\log n)$, so some $\\sqrt{n}$-subset achieves this bound. The $\\log n$ factor is tight: Paley graphs (constructed from quadratic residues modulo primes) show no $\\sqrt{n}$-subset can induce more than $O(\\sqrt{n} \\log n)$ edges. This connects to deep questions about pseudo-random graphs and Ramsey multiplicity.",
     "problemStatement": "If G is a graph on n vertices containing no independent set on more than √n vertices, then there is a set of at most √n vertices containing at least c · √n · log n edges for some constant c > 0.",
-    "text": "If G is a graph on n vertices with no independent set larger than √n, then there exists a set of ≤ √n vertices containing ≫ √n log n edges. Proved by Alon (1996) using probabilistic methods.",
+    "text": "A formalization of Erdős Problem #801 on dense subgraphs in graphs with bounded independence number. The Lean file defines `FiniteGraph n` wrapping `SimpleGraph (Fin n)`, the independence number $\\alpha(G)$ via `sSup` over `IsIndependent` sets, and the induced edge count $e_G(S)$ via `Finset.filter`. Three axioms encode Alon's 1996 result and matching tightness: `alon_1996` asserts the $\\Omega(\\sqrt{n}\\log n)$ edge bound, `log_factor_necessary` shows the bound is sharp (Paley graph constructions), and `vertex_set_size_optimal` proves the $\\sqrt{n}$ vertex budget cannot be reduced. The `erdos_801_summary` theorem packages existence and tightness as a conjunction, giving a complete characterization: $\\max_{|S| \\leq \\sqrt{n}} e(S) = \\Theta(\\sqrt{n}\\log n)$ when $\\alpha(G) \\leq \\sqrt{n}$.",
     "proofStrategy": "The formalization wraps `SimpleGraph (Fin n)` as `FiniteGraph n`, defines $\\alpha(G)$ via `sSup` over independent sets (`IsIndependent`), and counts induced edges via `Finset.filter` on ordered pairs. `Erdos801Statement` quantifies: $\\exists c > 0,\\; \\forall n \\geq 2,\\; \\forall G$ with $\\alpha(G) \\leq \\sqrt{n}$, $\\exists S$ with $|S| \\leq \\sqrt{n}$ and $e(S) \\geq c\\sqrt{n}\\log n$. Alon's theorem, log-factor necessity, and vertex-size optimality are axiomatized. The summary theorem pairs existence with tightness. 0 sorries.",
     "keyInsights": [
       "**Local-global principle**: $\\alpha(G) \\leq \\sqrt{n}$ (global) forces $\\exists S$ with $|S| \\leq \\sqrt{n}$ and $e(S) \\geq c\\sqrt{n}\\log n$ (local density)",
       "**Probabilistic method**: Alon's proof samples random $\\sqrt{n}$-subsets; since $\\alpha(G) \\leq \\sqrt{n}$ implies $e(G) = \\Omega(n\\log n)$, the expected induced edges are $\\Omega(\\sqrt{n}\\log n)$",
       "**Log factor is tight**: Paley graph constructions show $\\sqrt{n}\\log n$ cannot be improved to $\\sqrt{n}(\\log n)^{1+\\varepsilon}$ — the bound is sharp up to constants",
       "**Vertex budget is optimal**: Reducing the subset size to $\\varepsilon\\sqrt{n}$ drops the achievable edge count below $\\sqrt{n}$, not just below $\\sqrt{n}\\log n$",
-      "**Ramsey connection**: $\\alpha(G) \\leq \\sqrt{n}$ is equivalent to $R(3, \\sqrt{n}) \\leq n$ type constraints, linking to classical Ramsey theory"
+      "**Ramsey connection**: $\\alpha(G) \\leq \\sqrt{n}$ is equivalent to $R(3, \\sqrt{n}) \\leq n$ type constraints, linking to classical Ramsey theory",
+      "**Pseudo-randomness interpretation**: The tightness construction via Paley graphs connects to the theory of pseudo-random graphs. Paley graphs have $\\alpha(P_p) = O(\\sqrt{p} \\log p)$ (Peralta 1992) and near-uniform edge distribution, making every $\\sqrt{p}$-subset have approximately the same edge density — exactly the property that saturates the $\\sqrt{n} \\log n$ bound.",
+      "**Structural vs. probabilistic proofs**: Alon's proof is inherently probabilistic — it shows the expected value is $\\Omega(\\sqrt{n} \\log n)$ so a good subset must exist, but does not identify it. Whether a deterministic polynomial-time algorithm can find $S$ remains open, connecting to the broader program of derandomizing the probabilistic method."
     ],
     "prerequisites": [
       "Graph theory fundamentals (vertices, edges, adjacency)",
@@ -124,8 +126,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Alon (1996) proved that graphs with independence number at most √n must contain a small dense subgraph. Specifically, there exists a set of ≤ √n vertices inducing ≫ √n log n edges. The bound is tight up to constants.",
-    "implications": "The result demonstrates a local-global principle: global sparsity constraints (bounded independence) imply local density. Applications include community detection algorithms, dense subgraph discovery, and Ramsey-type structural theorems.",
+    "summary": "Alon (1996) proved that graphs with independence number at most $\\sqrt{n}$ must contain a small dense subgraph: there exists $S$ with $|S| \\leq \\sqrt{n}$ and $e(S) \\geq c\\sqrt{n}\\log n$. The formalization captures both the existence result and its sharpness: the $\\log n$ factor is tight (Paley graph constructions) and the $\\sqrt{n}$ vertex budget is optimal. The `erdos_801_summary` theorem packages these as a conjunction.",
+    "implications": "**Local-global principle**: The result demonstrates a fundamental phenomenon in extremal graph theory: global sparsity constraints ($\\alpha(G) \\leq \\sqrt{n}$) force local density ($\\exists S$ with many induced edges). This is a structural analogue of Ramsey-type compactness.\n\n**Algorithmic applications**: Finding the dense subset $S$ is related to community detection in networks and dense subgraph discovery problems. The probabilistic proof gives an efficient randomized algorithm (sample random $\\sqrt{n}$-subsets) but deterministic algorithms remain an open question.\n\n**Pseudo-random graph theory**: The tightness via Paley graphs connects to the Alon-Spencer theory of $(p, \\lambda)$-jumbled graphs, where uniform local density follows from spectral gap bounds. The optimal constant $c$ in the edge bound is related to the spectral properties of extremal constructions.\n\n**Generalization to $\\alpha(G) \\leq n^{\\beta}$**: For general $\\beta \\in (0, 1)$, the problem generalizes to finding $n^{\\beta}$-vertex subsets with many edges when $\\alpha(G) \\leq n^{\\beta}$. The expected edge count argument gives $\\Omega(n^{\\beta} \\log n)$, but tightness for general $\\beta$ requires different constructions.",
     "openQuestions": [
       "What is the optimal constant $c$ such that $\\max_{|S| \\leq \\sqrt{n}} e(S) \\geq c\\sqrt{n}\\log n$ for all $G$ with $\\alpha(G) \\leq \\sqrt{n}$?",
       "Can the result be extended to $k$-uniform hypergraphs: does $\\alpha_k(H) \\leq n^{1/k}$ force a dense $n^{1/k}$-vertex sub-hypergraph?",
@@ -146,19 +148,43 @@
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
       "venue": "Monographies de L'Enseignement Mathématique 28",
-      "note": "[ErGr80] original formulation"
+      "note": "Original formulation of Problem #801 and many other open problems in combinatorial number theory and graph theory"
+    },
+    {
+      "authors": "Alon, Noga; Spencer, Joel H.",
+      "title": "The Probabilistic Method",
+      "year": "2016",
+      "venue": "John Wiley & Sons, 4th edition",
+      "note": "Standard reference for probabilistic combinatorics including the random subset argument used in Alon's proof. Covers the expected value method and pseudo-random graphs relevant to tightness"
+    },
+    {
+      "authors": "Peralta, René",
+      "title": "On the distribution of quadratic residues and nonresidues modulo a prime number",
+      "year": "1992",
+      "venue": "Mathematics of Computation, vol. 58, pp. 433–440",
+      "note": "Bounds on the independence number of Paley graphs: α(P_p) = O(√p log p). These graphs provide the tightness construction for Problem #801"
     }
   ],
   "crossReferences": [
     {
       "targetId": "ramseys-theorem",
-      "description": "The independence/clique duality underlying Alon's proof — α(G) ≤ √n is a Ramsey-type constraint",
-      "relationship": "related"
+      "relationship": "foundational",
+      "description": "The independence/clique duality underlying Alon's proof: $\\alpha(G) \\leq \\sqrt{n}$ is a Ramsey-type constraint forcing the graph to be dense enough that random subsets inherit many edges"
     },
     {
-      "targetId": "erdos-806",
-      "description": "Both are Erdős problems about structural graph-theoretic properties",
-      "relationship": "related"
+      "targetId": "erdos-802",
+      "relationship": "related",
+      "description": "Independent sets in $K_r$-free graphs: a closely related problem studying how the independence number behaves when cliques of a fixed size are forbidden. Both explore the tension between independence and local density"
+    },
+    {
+      "targetId": "erdos-803",
+      "relationship": "related",
+      "description": "D-balanced subgraphs in dense graphs: another Erdős problem about finding structured subgraphs with prescribed properties in graphs with density constraints"
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "Szemerédi's regularity lemma provides the structural decomposition framework for finding dense substructures in dense graphs. The dense subgraph existence in Problem #801 can be contextualized within this framework"
     }
   ],
   "leanFile": {
