@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Axiom count reduced 4→2. Fixed 2 incorrect numerical axioms (wrong OEIS value 1.2517→1.2535, wrong perturbation diff 0.04→0.535). Proved factorialSum bounds (1.253, 1.254) via partial sums + factorial tail estimation. File now has 25 theorems, 2 axioms, 0 sorries.",
+    "progressSummary": "COMPLETED: Axiom count 2→1. Proved perturbation_difference (was axiom) via exp(1) bounds from Maclaurin series partial sums + factorial tail estimation. Only erdos_68 (OPEN conjecture) remains.",
     "builtItems": [
       "factorialSum_lower_bound: proved > 1253/1000 via 5-term partial sum",
       "factorialSum_lt: proved < 1254/1000 via tail estimation with (n+7)! ≥ 5040·8^n",
@@ -37,7 +37,13 @@
       "summand_le_two_div_factorial: tighter bound summand(n) ≤ 2/(n+2)!",
       "factorial_ge_base_mul_pow: (n+7)! ≥ 5040·8^n by induction",
       "inv_factorial_le_geometric: 1/(n+7)! ≤ (1/5040)·(1/8)^n",
-      "fifth_term: summand(4) = 1/719"
+      "fifth_term: summand(4) = 1/719",
+      "perturbation_difference: proved factorialSum - eRelatedSum ∈ (535/1000, 536/1000) via exp bounds",
+      "exp_one_gt/exp_one_lt_bound: proved 2718/1000 < exp(1) < 27184/10000",
+      "factorialSum_tighter_lower: proved factorialSum > 6267/5000 from 6-term partial sum",
+      "eRelatedSum_summable: summability by comparison with geometric series",
+      "eRelatedSum_lower: proved eRelatedSum > 718/1000 from 6-term partial sum",
+      "sixth_term: summand(5) = 1/5039"
     ],
     "insights": [
       "eRelatedSum_value provable: Σ_{n≥2} 1/n! = e - 2 via tsum_eq_zero_add (peel off n=0,1 terms)",
@@ -46,7 +52,11 @@
       "erdos_68 is the main OPEN conjecture — irrationality of Σ 1/(n!-1)",
       "oeis_a331373 axiom had WRONG value (1.2517) - actual OEIS A331373 is 1.25349875...",
       "perturbation_difference axiom had WRONG bounds (0.04-0.05) - actual is ~0.535",
-      "Upper bound proof uses factorial growth: (n+7)! ≥ 5040·8^n gives geometric tail comparison"
+      "Upper bound proof uses factorial growth: (n+7)! ≥ 5040·8^n gives geometric tail comparison",
+      "perturbation_difference provable from exp(1) and factorialSum bounds without direct difference series computation",
+      "Lean linarith cannot chain >5 peeling steps or match factorialSum with ∑ summand without explicit show/rw",
+      "Summable.tsum_le_tsum is the current Mathlib name (not tsum_le_tsum)",
+      "div_le_div_iff₀ is the current name (not div_le_div_iff)"
     ],
     "mathlibGaps": [
       "tsum manipulation for index shifting requires careful summability arguments"

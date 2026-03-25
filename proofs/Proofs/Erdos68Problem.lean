@@ -256,6 +256,11 @@ theorem fifth_term : summand 4 = 1 / 719 := by
   unfold summand
   norm_num [factorial]
 
+/-- 7! - 1 = 5039, so the sixth term is 1/5039. -/
+theorem sixth_term : summand 5 = 1 / 5039 := by
+  unfold summand
+  norm_num [factorial]
+
 /-- Partial sum S_4 = 1 + 1/5 + 1/23 + 1/119 ≈ 1.251... -/
 theorem partial_sum_approx :
     summand 0 + summand 1 + summand 2 + summand 3 > 1.25 := by
@@ -270,6 +275,7 @@ Since all terms are positive, the infinite sum exceeds any partial sum.
 -/
 theorem factorialSum_lower_bound : factorialSum > 1253 / 1000 := by
   -- Peel off first 5 terms, use positivity of tail
+  show ∑' n, summand n > 1253 / 1000
   have hs := factorialSum_summable
   have p0 : ∑' n, summand n = summand 0 + ∑' n, summand (n + 1) := hs.tsum_eq_zero_add
   have p1 : ∑' n, summand (n + 1) = summand 1 + ∑' n, summand (n + 2) :=
@@ -286,6 +292,39 @@ theorem factorialSum_lower_bound : factorialSum > 1253 / 1000 := by
     rw [first_term, second_term, third_term, fourth_term, fifth_term]; norm_num
   linarith
 
+/--
+**Proved: factorialSum > 6267/5000**
+
+Tighter lower bound from 6-term partial sum, needed for perturbation_difference.
+-/
+private theorem factorialSum_tighter_lower : factorialSum > 6267 / 5000 := by
+  show ∑' n, summand n > 6267 / 5000
+  have hs := factorialSum_summable
+  have p0 : ∑' n, summand n = summand 0 + ∑' n, summand (n + 1) := hs.tsum_eq_zero_add
+  have p1 : ∑' n, summand (n + 1) = summand 1 + ∑' n, summand (n + 2) :=
+    ((summable_nat_add_iff 1).mpr hs).tsum_eq_zero_add
+  have p2 : ∑' n, summand (n + 2) = summand 2 + ∑' n, summand (n + 3) :=
+    ((summable_nat_add_iff 2).mpr hs).tsum_eq_zero_add
+  have p3 : ∑' n, summand (n + 3) = summand 3 + ∑' n, summand (n + 4) :=
+    ((summable_nat_add_iff 3).mpr hs).tsum_eq_zero_add
+  have p4 : ∑' n, summand (n + 4) = summand 4 + ∑' n, summand (n + 5) :=
+    ((summable_nat_add_iff 4).mpr hs).tsum_eq_zero_add
+  have p5 : ∑' n, summand (n + 5) = summand 5 + ∑' n, summand (n + 6) :=
+    ((summable_nat_add_iff 5).mpr hs).tsum_eq_zero_add
+  have htail_nn : (0 : ℝ) ≤ ∑' n, summand (n + 6) :=
+    tsum_nonneg (fun n => le_of_lt (summand_pos _))
+  have harith : summand 0 + summand 1 + summand 2 + summand 3 + summand 4 + summand 5 >
+      6267 / 5000 := by
+    rw [first_term, second_term, third_term, fourth_term, fifth_term, sixth_term]; norm_num
+  -- Chain in groups of 2
+  have h01 : ∑' n, summand n = summand 0 + summand 1 + ∑' n, summand (n + 2) := by
+    linarith [p0, p1]
+  have h23 : ∑' n, summand (n + 2) = summand 2 + summand 3 + ∑' n, summand (n + 4) := by
+    linarith [p2, p3]
+  have h45 : ∑' n, summand (n + 4) ≥ summand 4 + summand 5 := by
+    linarith [p4, p5, htail_nn]
+  linarith
+
 /-- Tighter bound: summand n ≤ 2/(n+2)! since (n+2)!-1 ≥ (n+2)!/2. -/
 private lemma summand_le_two_div_factorial (n : ℕ) :
     summand n ≤ 2 / (n + 2).factorial := by
@@ -297,7 +336,7 @@ private lemma summand_le_two_div_factorial (n : ℕ) :
   have hfact_pos : (0 : ℝ) < (n + 2).factorial := Nat.cast_pos.mpr (Nat.factorial_pos _)
   have hfact_real : ((n + 2).factorial : ℝ) ≥ 2 := by exact_mod_cast hfact_ge2
   have hden_pos : ((n + 2).factorial : ℝ) - 1 > 0 := by linarith
-  rw [div_le_div_iff hden_pos hfact_pos]
+  rw [div_le_div_iff₀ hden_pos hfact_pos]
   nlinarith
 
 /-- For m ≥ 7: m! ≥ 5040 · 8^(m-7). Used for tight factorial tail bounds. -/
@@ -325,6 +364,7 @@ geometric series via the bound (n+7)! ≥ 5040·8ⁿ.
 -/
 theorem factorialSum_lt : factorialSum < 1254 / 1000 := by
   -- Step 1: Decompose ∑' summand = S₅ + ∑' summand(·+5) by peeling 5 terms
+  show ∑' n, summand n < 1254 / 1000
   have hs := factorialSum_summable
   have p0 : ∑' n, summand n = summand 0 + ∑' n, summand (n + 1) := hs.tsum_eq_zero_add
   have p1 : ∑' n, summand (n + 1) = summand 1 + ∑' n, summand (n + 2) :=
@@ -350,7 +390,7 @@ theorem factorialSum_lt : factorialSum < 1254 / 1000 := by
         _ = (1 / 2520) * (1 / 8) ^ n := by ring
     calc ∑' n, summand (n + 5)
         ≤ ∑' n, (1 / 2520 : ℝ) * (1 / 8) ^ n :=
-          tsum_le_tsum hle ((summable_nat_add_iff 5).mpr hs) geo_sum
+          Summable.tsum_le_tsum hle ((summable_nat_add_iff 5).mpr hs) geo_sum
       _ = (1 / 2520) * ∑' n, (1 / 8 : ℝ) ^ n := tsum_mul_left
       _ = (1 / 2520) * (1 - 1 / 8)⁻¹ := by
           rw [tsum_geometric_of_lt_one (by norm_num) (by norm_num)]
@@ -417,16 +457,150 @@ theorem eRelatedSum_value : eRelatedSum = Real.exp 1 - 2 := by
   -- Chain: exp 1 = f 0 + f 1 + Σ f(n+2) = 1 + 1 + eRelatedSum = 2 + eRelatedSum
   linarith
 
+/-- Summability of eRelatedSum terms by comparison with geometric series. -/
+private lemma eRelatedSum_summable :
+    Summable (fun n => (1 : ℝ) / ↑((n + 2).factorial)) := by
+  apply Summable.of_norm_bounded
+    (summable_geometric_of_lt_one (show (0 : ℝ) ≤ 1 / 2 by norm_num)
+      (show (1 : ℝ) / 2 < 1 by norm_num))
+  intro n
+  rw [Real.norm_of_nonneg (by positivity)]
+  -- 1/(n+2)! ≤ summand n ≤ (1/2)^n
+  have hfact_pos : (0 : ℝ) < ↑((n + 2).factorial) :=
+    Nat.cast_pos.mpr (Nat.factorial_pos _)
+  have hfact_ge2 : ((n + 2).factorial : ℝ) ≥ 2 := by
+    have : (n + 2) ∣ (n + 2).factorial :=
+      ⟨(n + 1).factorial, (Nat.factorial_succ (n + 1)).symm⟩
+    have := Nat.le_of_dvd (Nat.factorial_pos _) this
+    exact_mod_cast show 2 ≤ (n + 2).factorial by omega
+  calc (1 : ℝ) / ↑((n + 2).factorial)
+      ≤ 1 / (↑((n + 2).factorial) - 1) := by
+        apply one_div_le_one_div_of_le (by linarith) (by linarith)
+    _ ≤ (1 / 2) ^ n := summand_le_half_pow n
+
+/-- eRelatedSum > 718/1000 from 6-term partial sum. -/
+private lemma eRelatedSum_lower : eRelatedSum > 718 / 1000 := by
+  unfold eRelatedSum
+  have hs := eRelatedSum_summable
+  have p0 := hs.tsum_eq_zero_add
+  have p1 := ((summable_nat_add_iff 1).mpr hs).tsum_eq_zero_add
+  have p2 := ((summable_nat_add_iff 2).mpr hs).tsum_eq_zero_add
+  have p3 := ((summable_nat_add_iff 3).mpr hs).tsum_eq_zero_add
+  have p4 := ((summable_nat_add_iff 4).mpr hs).tsum_eq_zero_add
+  have p5 := ((summable_nat_add_iff 5).mpr hs).tsum_eq_zero_add
+  have htail_nn : (0 : ℝ) ≤ ∑' n, (1 : ℝ) / ↑((n + 6 + 2).factorial) :=
+    tsum_nonneg fun n => by positivity
+  have harith : (1 : ℝ) / ↑((0 + 2).factorial) + (1 : ℝ) / ↑((1 + 2).factorial) +
+      (1 : ℝ) / ↑((2 + 2).factorial) + (1 : ℝ) / ↑((3 + 2).factorial) +
+      (1 : ℝ) / ↑((4 + 2).factorial) + (1 : ℝ) / ↑((5 + 2).factorial) > 718 / 1000 := by
+    norm_num [Nat.factorial]
+  -- Chain peeling steps in pairs for linarith
+  have h01 : ∑' n, (1 : ℝ) / ↑((n + 2).factorial) =
+      (1 : ℝ) / ↑((0 + 2).factorial) + (1 : ℝ) / ↑((1 + 2).factorial) +
+      ∑' n, (1 : ℝ) / ↑((n + 2 + 2).factorial) := by linarith [p0, p1]
+  have h23 : ∑' n, (1 : ℝ) / ↑((n + 2 + 2).factorial) =
+      (1 : ℝ) / ↑((2 + 2).factorial) + (1 : ℝ) / ↑((3 + 2).factorial) +
+      ∑' n, (1 : ℝ) / ↑((n + 4 + 2).factorial) := by linarith [p2, p3]
+  have h45 : ∑' n, (1 : ℝ) / ↑((n + 4 + 2).factorial) =
+      (1 : ℝ) / ↑((4 + 2).factorial) + (1 : ℝ) / ↑((5 + 2).factorial) +
+      ∑' n, (1 : ℝ) / ↑((n + 6 + 2).factorial) := by linarith [p4, p5]
+  linarith
+
+/-- (m+8)! ≥ 40320 · 8^m, derived from factorial_ge_base_mul_pow. -/
+private lemma factorial_8_ge (m : ℕ) : (m + 8).factorial ≥ 40320 * 8 ^ m := by
+  have h := factorial_ge_base_mul_pow (m + 1)
+  have h1 : m + 1 + 7 = m + 8 := by omega
+  rw [h1] at h
+  linarith [show 5040 * 8 ^ (m + 1) = 40320 * 8 ^ m from by ring]
+
+/-- 1/(m+8)! ≤ (1/40320) · (1/8)^m by factorial growth bound. -/
+private lemma inv_factorial_8_le_geometric (m : ℕ) :
+    (1 : ℝ) / ↑((m + 8).factorial) ≤ (1 / 40320) * (1 / 8) ^ m := by
+  rw [show (1 : ℝ) / 40320 * (1 / 8) ^ m = 1 / (40320 * 8 ^ m) from by
+    rw [div_pow, one_pow]; ring]
+  exact one_div_le_one_div_of_le (by positivity)
+    (by exact_mod_cast factorial_8_ge m)
+
+set_option maxHeartbeats 400000 in
+/-- eRelatedSum < 7184/10000, proved via exp(1) upper bound. -/
+private lemma eRelatedSum_upper : eRelatedSum < 7184 / 10000 := by
+  -- Use eRelatedSum = exp 1 - 2 to avoid shifted indices
+  have hval := eRelatedSum_value
+  rw [hval]
+  -- Suffices: exp 1 < 27184/10000
+  suffices h : Real.exp 1 < 27184 / 10000 by linarith
+  -- exp 1 = Σ 1/n!, bound using 8-term partial sum + geometric tail
+  set f : ℕ → ℝ := fun n => (1 : ℝ) / ↑(n.factorial)
+  have exp_eq : Real.exp 1 = ∑' n, f n := by
+    rw [Real.exp_eq_exp_ℝ, NormedSpace.exp_eq_tsum (𝕂 := ℝ) (𝔸 := ℝ)]
+    apply tsum_congr; intro n; simp [f, smul_eq_mul, div_eq_mul_inv, mul_comm]
+  have hsum : Summable f :=
+    (summable_pow_div_factorial (1 : ℝ)).congr fun n => by simp [f]
+  rw [exp_eq]
+  have p0 : ∑' n, f n = f 0 + ∑' n, f (n + 1) := hsum.tsum_eq_zero_add
+  have p1 : ∑' n, f (n + 1) = f 1 + ∑' n, f (n + 2) :=
+    ((summable_nat_add_iff 1).mpr hsum).tsum_eq_zero_add
+  have p2 : ∑' n, f (n + 2) = f 2 + ∑' n, f (n + 3) :=
+    ((summable_nat_add_iff 2).mpr hsum).tsum_eq_zero_add
+  have p3 : ∑' n, f (n + 3) = f 3 + ∑' n, f (n + 4) :=
+    ((summable_nat_add_iff 3).mpr hsum).tsum_eq_zero_add
+  have p4 : ∑' n, f (n + 4) = f 4 + ∑' n, f (n + 5) :=
+    ((summable_nat_add_iff 4).mpr hsum).tsum_eq_zero_add
+  have p5 : ∑' n, f (n + 5) = f 5 + ∑' n, f (n + 6) :=
+    ((summable_nat_add_iff 5).mpr hsum).tsum_eq_zero_add
+  have p6 : ∑' n, f (n + 6) = f 6 + ∑' n, f (n + 7) :=
+    ((summable_nat_add_iff 6).mpr hsum).tsum_eq_zero_add
+  have p7 : ∑' n, f (n + 7) = f 7 + ∑' n, f (n + 8) :=
+    ((summable_nat_add_iff 7).mpr hsum).tsum_eq_zero_add
+  -- Bound tail: Σ_{n≥8} 1/n! ≤ 1/35280
+  have htail : ∑' n, f (n + 8) ≤ 1 / 35280 := by
+    have geo_sum : Summable (fun n => (1 / 40320 : ℝ) * (1 / 8) ^ n) :=
+      (summable_geometric_of_lt_one (by norm_num) (by norm_num)).mul_left _
+    have hle : ∀ n, f (n + 8) ≤ (1 / 40320 : ℝ) * (1 / 8) ^ n := fun n =>
+      inv_factorial_8_le_geometric n
+    calc ∑' n, f (n + 8)
+        ≤ ∑' n, (1 / 40320 : ℝ) * (1 / 8) ^ n :=
+          Summable.tsum_le_tsum hle ((summable_nat_add_iff 8).mpr hsum) geo_sum
+      _ = (1 / 40320) * ∑' n, (1 / 8 : ℝ) ^ n := tsum_mul_left
+      _ = (1 / 40320) * (1 - 1 / 8)⁻¹ := by
+          rw [tsum_geometric_of_lt_one (by norm_num) (by norm_num)]
+      _ = 1 / 35280 := by norm_num
+  -- Pre-compute term values
+  have hf0 : f 0 = 1 := by simp [f, Nat.factorial]
+  have hf1 : f 1 = 1 := by simp [f, Nat.factorial]
+  have hf2 : f 2 = 1 / 2 := by simp [f, Nat.factorial]
+  have hf3 : f 3 = 1 / 6 := by simp [f, Nat.factorial]
+  have hf4 : f 4 = 1 / 24 := by simp [f, Nat.factorial]
+  have hf5 : f 5 = 1 / 120 := by simp [f, Nat.factorial]
+  have hf6 : f 6 = 1 / 720 := by simp [f, Nat.factorial]
+  have hf7 : f 7 = 1 / 5040 := by simp [f, Nat.factorial]
+  have harith : f 0 + f 1 + f 2 + f 3 + f 4 + f 5 + f 6 + f 7 + (1:ℝ)/35280 < 27184/10000 := by
+    rw [hf0, hf1, hf2, hf3, hf4, hf5, hf6, hf7]; norm_num
+  -- Chain peeling in groups of 2
+  have h01 : ∑' n, f n = f 0 + f 1 + ∑' n, f (n + 2) := by linarith [p0, p1]
+  have h23 : ∑' n, f (n + 2) = f 2 + f 3 + ∑' n, f (n + 4) := by linarith [p2, p3]
+  have h45 : ∑' n, f (n + 4) = f 4 + f 5 + ∑' n, f (n + 6) := by linarith [p4, p5]
+  have h67eq : ∑' n, f (n + 6) = f 6 + f 7 + ∑' n, f (n + 8) := by linarith [p6, p7]
+  -- Substitute concrete values for f 6, f 7
+  rw [hf6, hf7] at h67eq
+  have h67 : ∑' n, f (n + 6) ≤ 1/720 + 1/5040 + 1/35280 := by linarith [h67eq, htail]
+  -- Also substitute in h45
+  rw [hf4, hf5] at h45
+  rw [hf2, hf3] at h23
+  rw [hf0, hf1] at h01
+  linarith
+
 /--
-**Perturbation difference identity**
+**Perturbation difference (PROVED)**
 
-factorialSum - eRelatedSum = Σ_{n≥0} 1/((n+2)! · ((n+2)!-1))
+factorialSum - eRelatedSum ∈ (535/1000, 536/1000)
 
-This is approximately 0.5352, dominated by the n=0 term 1/(2·1) = 1/2.
-The -1 perturbation makes a substantial difference (≈ 74% of eRelatedSum).
+Previously axiomatized; now proved from tight bounds on factorialSum and eRelatedSum.
 -/
-axiom perturbation_difference :
-    factorialSum - eRelatedSum > 535 / 1000 ∧ factorialSum - eRelatedSum < 536 / 1000
+theorem perturbation_difference :
+    factorialSum - eRelatedSum > 535 / 1000 ∧ factorialSum - eRelatedSum < 536 / 1000 :=
+  ⟨by linarith [factorialSum_tighter_lower, eRelatedSum_upper],
+   by linarith [factorialSum_lt, eRelatedSum_lower]⟩
 
 /-
 # Part 8: OEIS Connection
