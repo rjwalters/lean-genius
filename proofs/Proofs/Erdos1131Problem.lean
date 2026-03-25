@@ -28,11 +28,14 @@ Key results:
 - `lagrangeBasis_other`: l_k(x_j) = 0 for j ≠ k (orthogonality)
 - `lagrangeBasis_eq_eval_basis`: connection to Mathlib's Lagrange.basis
 - `partition_of_unity`: ∑ₖ l_k(x) = 1 for all x (via Lagrange.sum_basis)
-- `sum_sq_lagrangeBasis_ge`: ∑ₖ l_k(x)² ≥ 1/n (Cauchy-Schwarz)
+- `sum_sq_lagrangeBasis_ge`: ∑ₖ l_k(x)² ≥ 1/n (pointwise variance bound)
 - `lagrangeIntegral_lower_bound`: I ≥ 2/n (integral monotonicity)
+- `lagrangeBasis_continuous`: each l_k is continuous
+- `quadrature_weights_sum`: ∑ₖ w_k = 2 (quadrature exactness for constants)
+- `lagrangeIntegral_cross_term_identity`: I = 2 - ∫ off-diagonal Gram matrix
+- `lagrangeIntegral_single`: I = 2 for n = 1
 - `chebyshevNodes_in_range`: Chebyshev nodes lie in [-1, 1]
 - `chebyshevNodes_distinct`: Chebyshev nodes are pairwise distinct
-- `erdos_1131`: main theorem (I ≥ 2/n)
 
 References:
 - Erdős: Original problem formulation
@@ -138,43 +141,52 @@ theorem partition_of_unity (n : ℕ) (hn : n ≥ 1) (nodes : Fin n → ℝ)
   exact heval
 
 /--
-**Pointwise lower bound**: ∑ₖ l_k(x)² ≥ 1/n via Cauchy-Schwarz on partition of unity.
+Continuity of the Lagrange basis function (polynomial in x, hence continuous).
+-/
+theorem lagrangeBasis_continuous (n : ℕ) (nodes : Fin n → ℝ) (k : Fin n) :
+    Continuous (lagrangeBasis n nodes k) := by
+  unfold lagrangeBasis
+  exact continuous_finset_prod _ fun i _ => (continuous_id.sub continuous_const).div_const _
 
-By Cauchy-Schwarz for finite sums: (∑ l_k)² ≤ n · ∑ l_k².
-Since ∑ l_k = 1 (partition of unity), we get 1 ≤ n · ∑ l_k², hence ∑ l_k² ≥ 1/n.
+/--
+Continuity of the sum of squared Lagrange basis functions.
+-/
+theorem sum_sq_lagrangeBasis_continuous (n : ℕ) (nodes : Fin n → ℝ) :
+    Continuous (fun x => ∑ k : Fin n, (lagrangeBasis n nodes k x) ^ 2) := by
+  apply continuous_finset_sum; intro k _
+  exact (lagrangeBasis_continuous n nodes k).pow 2
+
+/--
+**Pointwise lower bound**: ∑ₖ l_k(x)² ≥ 1/n via variance bound on partition of unity.
+
+The variance identity ∑(l_k - 1/n)² = ∑l_k² - 1/n together with non-negativity
+of sums of squares gives ∑l_k² ≥ 1/n.
 -/
 theorem sum_sq_lagrangeBasis_ge (n : ℕ) (hn : n ≥ 1) (nodes : Fin n → ℝ)
     (hd : AreDistinct n nodes) (x : ℝ) :
     ∑ k : Fin n, (lagrangeBasis n nodes k x) ^ 2 ≥ 1 / n := by
   have hpou := partition_of_unity n hn nodes hd x
   have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr (by omega)
-  have hn_ne : (n : ℝ) ≠ 0 := ne_of_gt hn_pos
-  -- Variance identity: ∑(l_k - 1/n)² = ∑l_k² - 1/n (when ∑l_k = 1)
-  -- Since ∑(l_k - 1/n)² ≥ 0, we get ∑l_k² ≥ 1/n
+  have hn_ne : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
   rw [ge_iff_le, ← sub_nonneg]
-  -- Goal: 0 ≤ ∑l_k² - 1/n
-  -- Show this equals ∑(l_k - 1/n)² ≥ 0
-  suffices hid : ∑ k : Fin n, (lagrangeBasis n nodes k x) ^ 2 - 1 / ↑n =
-      ∑ k : Fin n, (lagrangeBasis n nodes k x - 1 / ↑n) ^ 2 by
-    rw [hid]; exact Finset.sum_nonneg fun k _ => sq_nonneg _
-  -- Prove the identity by expanding the RHS
-  -- RHS = ∑(l_k² - 2l_k/n + 1/n²) = ∑l_k² - (2/n)·∑l_k + n·(1/n²)
-  --     = ∑l_k² - 2/n + 1/n = ∑l_k² - 1/n = LHS
-  have step1 : ∀ k : Fin n, (lagrangeBasis n nodes k x - 1 / ↑n) ^ 2 =
-      (lagrangeBasis n nodes k x) ^ 2 - 2 * (1 / ↑n) * lagrangeBasis n nodes k x + (1 / ↑n) ^ 2 :=
-    fun k => by ring
-  simp_rw [step1]
-  rw [Finset.sum_add_distrib, Finset.sum_sub_distrib,
-      Finset.sum_const, Finset.card_fin, nsmul_eq_mul]
-  -- Factor: ∑ 2(1/n)·l_k = 2(1/n)·∑l_k
-  have hmid : ∑ k : Fin n, 2 * (1 / ↑n) * lagrangeBasis n nodes k x =
-      2 * (1 / ↑n) * ∑ k : Fin n, lagrangeBasis n nodes k x :=
-    (Finset.mul_sum ..).symm
-  rw [hmid, hpou]
-  -- Goal: ∑l_k² - 1/n = ∑l_k² - 2(1/n)·1 + n·(1/n)²
-  -- Arithmetic: -1/n = -2/n + 1/n, i.e., n·(1/n)² - 2·(1/n) + 1/n = 0
-  field_simp
-  ring
+  -- Variance: 0 ≤ ∑(l_k - 1/n)²
+  have hvar : 0 ≤ ∑ k : Fin n, (lagrangeBasis n nodes k x - 1 / ↑n) ^ 2 :=
+    Finset.sum_nonneg fun k _ => sq_nonneg _
+  -- Expand (a - c)² = a² + (-2c·a + c²) and distribute sum
+  have hexp : ∀ k : Fin n, (lagrangeBasis n nodes k x - 1 / ↑n) ^ 2 =
+    (lagrangeBasis n nodes k x) ^ 2 +
+    (-(2 / ↑n) * lagrangeBasis n nodes k x + 1 / ↑n ^ 2) := by intro k; ring
+  simp_rw [hexp] at hvar
+  rw [Finset.sum_add_distrib] at hvar
+  -- Factor the remainder sum: ∑(-(2/n)·l_k + 1/n²) = -(2/n)·∑l_k + n·(1/n²)
+  rw [show ∑ k : Fin n, (-(2 / ↑n) * lagrangeBasis n nodes k x + 1 / ↑n ^ 2) =
+      -(2 / ↑n) * ∑ k : Fin n, lagrangeBasis n nodes k x + ↑n * (1 / ↑n ^ 2) from by
+    rw [Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_const, Finset.card_fin,
+        nsmul_eq_mul]] at hvar
+  rw [hpou, mul_one] at hvar
+  -- hvar : 0 ≤ ∑l_k² + (-(2/n) + n/n²), simplify -(2/n) + n/n² = -1/n
+  have key : -(2 / (↑n : ℝ)) + ↑n * (1 / ↑n ^ 2) = -(1 / ↑n) := by field_simp; ring
+  linarith
 
 /--
 **Lower bound**: I(x₁,...,xₙ) ≥ 2/n for any configuration.
@@ -189,13 +201,8 @@ theorem lagrangeIntegral_lower_bound (n : ℕ) (hn : n ≥ 1) (nodes : Fin n →
   have hpw : ∀ x, 1 / ↑n ≤ ∑ k : Fin n, (lagrangeBasis n nodes k x) ^ 2 :=
     fun x => sum_sq_lagrangeBasis_ge n hn nodes hd x
   have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr (by omega)
-  -- Integrand is continuous (polynomial), hence integrable
-  have h_cont : Continuous (fun x => ∑ k : Fin n, (lagrangeBasis n nodes k x) ^ 2) := by
-    apply continuous_finset_sum; intro k _
-    apply Continuous.pow
-    show Continuous (fun x => lagrangeBasis n nodes k x)
-    unfold lagrangeBasis
-    exact continuous_finset_prod _ fun i _ => (continuous_id.sub continuous_const).div_const _
+  have hn_ne : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
+  have h_cont := sum_sq_lagrangeBasis_continuous n nodes
   rw [ge_iff_le, ← sub_nonneg]
   -- Rewrite 2/n as ∫₋₁¹ (1/n), then use linearity + nonnegativity
   rw [show (2 : ℝ) / ↑n = ∫ _ in (-1 : ℝ)..1, (1 : ℝ) / ↑n from by
@@ -204,11 +211,117 @@ theorem lagrangeIntegral_lower_bound (n : ℕ) (hn : n ≥ 1) (nodes : Fin n →
   exact intervalIntegral.integral_nonneg (by norm_num : (-1 : ℝ) ≤ 1)
     fun u _hu => by linarith [hpw u]
 
-/-
-Note: There is NO general upper bound on I independent of node spacing.
-Counterexample: n=2, nodes at 0 and δ give I = 2 + 4/(3δ²) → ∞ as δ → 0.
-The infimum of I over all configurations is ≈ 2 - c/n (see Chebyshev section).
+/--
+The quadrature weight w_k = ∫₋₁¹ l_k(x) dx for the k-th node.
 -/
+noncomputable def quadratureWeight (n : ℕ) (nodes : Fin n → ℝ) (k : Fin n) : ℝ :=
+  ∫ x in (-1 : ℝ)..1, lagrangeBasis n nodes k x
+
+/--
+**Quadrature weights sum to 2**: ∑_k w_k = 2.
+
+Follows from the partition of unity ∑ l_k(x) = 1 and linearity of integration:
+∑_k ∫₋₁¹ l_k(x) dx = ∫₋₁¹ ∑_k l_k(x) dx = ∫₋₁¹ 1 dx = 2.
+-/
+theorem quadrature_weights_sum (n : ℕ) (hn : n ≥ 1) (nodes : Fin n → ℝ)
+    (hd : AreDistinct n nodes) :
+    ∑ k : Fin n, quadratureWeight n nodes k = 2 := by
+  unfold quadratureWeight
+  -- Swap sum and integral: ∑_k ∫ l_k = ∫ ∑_k l_k
+  have h_intble : ∀ k : Fin n, IntervalIntegrable (lagrangeBasis n nodes k)
+      MeasureTheory.volume (-1 : ℝ) 1 :=
+    fun k => (lagrangeBasis_continuous n nodes k).intervalIntegrable _ _
+  rw [← intervalIntegral.integral_finset_sum (fun k _ => h_intble k)]
+  -- Apply partition of unity: ∑_k l_k(x) = 1
+  have hpou : (fun x => ∑ k ∈ Finset.univ, lagrangeBasis n nodes k x) = fun _ => (1 : ℝ) := by
+    ext x; simp [partition_of_unity n hn nodes hd x]
+  rw [hpou, intervalIntegral.integral_const, smul_eq_mul, mul_one]
+  norm_num
+
+/--
+The off-diagonal Gram matrix contribution: ∑_{k≠j} l_k(x)·l_j(x).
+-/
+noncomputable def gramOffDiag (n : ℕ) (nodes : Fin n → ℝ) (x : ℝ) : ℝ :=
+  ∑ k : Fin n, (Finset.univ.filter (· ≠ k)).sum fun j =>
+    lagrangeBasis n nodes k x * lagrangeBasis n nodes j x
+
+/--
+**Gram matrix decomposition**: I = 2 - ∫₋₁¹ ∑_{k≠j} l_k(x)·l_j(x) dx.
+
+From the partition of unity ∑ l_k = 1, multiplying by l_k and summing gives
+∑ l_k² + ∑_{k≠j} l_k·l_j = 1. Integrating: I = 2 - ∫ ∑_{k≠j} l_k·l_j dx.
+
+This connects I to the off-diagonal entries of the Gram matrix G_{kj} = ⟨l_k, l_j⟩_L².
+-/
+theorem lagrangeIntegral_cross_term_identity (n : ℕ) (hn : n ≥ 1) (nodes : Fin n → ℝ)
+    (hd : AreDistinct n nodes) (_hrange : ∀ i, -1 ≤ nodes i ∧ nodes i ≤ 1) :
+    lagrangeIntegral n nodes = 2 - ∫ x in (-1 : ℝ)..1, gramOffDiag n nodes x := by
+  unfold lagrangeIntegral gramOffDiag
+  -- The cross-term function is continuous
+  have h_cross_cont : Continuous (fun x =>
+      ∑ k : Fin n, (Finset.univ.filter (· ≠ k)).sum fun j =>
+        lagrangeBasis n nodes k x * lagrangeBasis n nodes j x) := by
+    apply continuous_finset_sum; intro k _
+    apply continuous_finset_sum; intro j _
+    exact (lagrangeBasis_continuous n nodes k).mul (lagrangeBasis_continuous n nodes j)
+  -- For each k: l_k² + ∑_{j≠k} l_k*l_j = l_k
+  -- (from: l_k = l_k * 1 = l_k * ∑_j l_j = l_k*l_k + ∑_{j≠k} l_k*l_j)
+  have h_each : ∀ x (k : Fin n),
+      (lagrangeBasis n nodes k x) ^ 2 +
+      ((Finset.univ.filter (· ≠ k)).sum fun j =>
+        lagrangeBasis n nodes k x * lagrangeBasis n nodes j x) =
+      lagrangeBasis n nodes k x := by
+    intro x k
+    -- ∑_j l_k*l_j = l_k (from POU)
+    have h_total : (Finset.univ.sum fun j =>
+        lagrangeBasis n nodes k x * lagrangeBasis n nodes j x) =
+        lagrangeBasis n nodes k x := by
+      rw [← Finset.mul_sum, partition_of_unity n hn nodes hd x, mul_one]
+    -- Split: l_k*l_k + ∑_{erase k} l_k*l_j = ∑_univ l_k*l_j
+    have h_split := Finset.add_sum_erase Finset.univ
+      (fun j => lagrangeBasis n nodes k x * lagrangeBasis n nodes j x)
+      (Finset.mem_univ k)
+    -- Combine: l_k^2 + ∑_{≠k} = l_k*l_k + ∑_{erase k} = ∑_univ = l_k
+    rw [sq, Finset.filter_ne']
+    linarith
+  -- Sum over k: ∑_k l_k² + cross = ∑_k l_k = 1
+  have hpw : ∀ x, ∑ k : Fin n, (lagrangeBasis n nodes k x) ^ 2 =
+      1 - ∑ k : Fin n, ((Finset.univ.filter (· ≠ k)).sum fun j =>
+        lagrangeBasis n nodes k x * lagrangeBasis n nodes j x) := by
+    intro x
+    have h_sum : ∑ k : Fin n, ((lagrangeBasis n nodes k x) ^ 2 +
+        ((Finset.univ.filter (· ≠ k)).sum fun j =>
+          lagrangeBasis n nodes k x * lagrangeBasis n nodes j x)) =
+        ∑ k : Fin n, lagrangeBasis n nodes k x :=
+      Finset.sum_congr rfl (fun k _ => h_each x k)
+    rw [Finset.sum_add_distrib, partition_of_unity n hn nodes hd x] at h_sum
+    linarith
+  -- Integrate both sides: I = ∫ (1 - cross) = 2 - ∫ cross
+  have h_eq : (fun x => ∑ k : Fin n, (lagrangeBasis n nodes k x) ^ 2) =
+      (fun x => 1 - ∑ k : Fin n, ((Finset.univ.filter (· ≠ k)).sum fun j =>
+        lagrangeBasis n nodes k x * lagrangeBasis n nodes j x)) :=
+    funext hpw
+  rw [h_eq, intervalIntegral.integral_sub intervalIntegrable_const
+      (h_cross_cont.intervalIntegrable _ _),
+    intervalIntegral.integral_const, smul_eq_mul, mul_one]
+  norm_num
+
+/--
+**Single-node case**: For n = 1, I = 2.
+
+With one node, l₁(x) = 1 (empty product), so I = ∫₋₁¹ 1 dx = 2.
+-/
+theorem lagrangeIntegral_single (nodes : Fin 1 → ℝ) :
+    lagrangeIntegral 1 nodes = 2 := by
+  unfold lagrangeIntegral
+  -- For Fin 1, the sum is a single term and l_0 = 1 (empty product)
+  have hbasis : ∀ x, lagrangeBasis 1 nodes 0 x = 1 := by
+    intro x; unfold lagrangeBasis
+    convert Finset.prod_empty (f := fun (i : Fin 1) =>
+      (x - nodes i) / (nodes 0 - nodes i))
+  have hsq : ∀ x, ∑ k : Fin 1, (lagrangeBasis 1 nodes k x) ^ 2 = 1 := by
+    intro x; rw [Fin.sum_univ_one, hbasis x, one_pow]
+  simp_rw [hsq]; norm_num
 
 /-
 ## Part III: Chebyshev Nodes

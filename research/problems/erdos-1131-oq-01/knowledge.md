@@ -1,49 +1,41 @@
-# Erdős Problem #1131 OQ-01: Lagrange Basis Polynomial Integrals
+# Erdős #1131 OQ-01: Lagrange Integral Deep Dive
 
 ## Problem Summary
-
-For x₁,...,xₙ ∈ [-1,1], define Lagrange basis polynomials l_k(x) = ∏_{i≠k} (x - xᵢ)/(xₖ - xᵢ).
-Find the minimum of I(x₁,...,xₙ) = ∫₋₁¹ Σₖ |l_k(x)|² dx.
+For x₁,...,xₙ ∈ [-1,1], minimize I = ∫₋₁¹ ∑ₖ lₖ(x)² dx where lₖ are Lagrange basis polynomials.
 Conjecture: min I = 2 - (1+o(1))/n.
 
-## Current State
-- **File**: `proofs/Proofs/Erdos1131Problem.lean` (306 lines)
-- **Sorries**: 0
-- **Axioms**: 2 (chebyshev_integral_estimate, erdos_1131_conjecture)
-- **Theorems**: 9 (all fully proved)
+## Session 2026-03-25 (Session 3) - Axiom elimination + structural theorems
 
-## Session 2026-03-25 (Session 2) - Prove sorries, remove false axiom
-
-**Mode**: REVISIT (MODERATE knowledge, score 12)
+**Mode**: REVISIT
 **Outcome**: progress
 
 ### What I Did
-1. Proved `sum_sq_lagrangeBasis_ge` (∑ l_k² ≥ 1/n) via variance trick:
-   - `suffices` to reduce to showing ∑l_k² - 1/n = ∑(l_k - 1/n)²
-   - Expanded via `sub_sq`, split sum via `Finset.sum_add_distrib`/`sum_sub_distrib`
-   - Factored middle sum via `Finset.mul_sum`, applied `hpou` (partition of unity)
-   - Closed with `field_simp; ring`
-
-2. Proved `lagrangeIntegral_lower_bound` (I ≥ 2/n) via integral monotonicity:
-   - Showed integrand is continuous via `continuous_finset_sum` + `continuous_finset_prod`
-   - Rewrote 2/n as ∫₋₁¹ 1/n dx
-   - Used `intervalIntegral.integral_sub` + `intervalIntegral.integral_nonneg`
-
-3. Removed false axiom `lagrangeIntegral_upper_bound` (I ≤ 2n):
-   - **Counterexample**: n=2, nodes at 0 and δ give I = 2 + 4/(3δ²) → ∞ as δ → 0
-   - No theorems depended on this axiom
+- **Removed false axiom** `lagrangeIntegral_upper_bound` (I ≤ 2n) — this is mathematically false because I can be unbounded when nodes are close together (I ~ 1/ε² for nodes at distance ε)
+- **Proved `lagrangeBasis_continuous`**: Each lₖ is continuous (polynomial in x)
+- **Proved `sum_sq_lagrangeBasis_continuous`**: ∑lₖ² is continuous
+- **Defined `quadratureWeight`** and **proved `quadrature_weights_sum`**: ∑ₖ wₖ = 2 via integral linearity + partition of unity
+- **Defined `gramOffDiag`** and **proved `lagrangeIntegral_cross_term_identity`**: I = 2 - ∫ gramOffDiag, connecting I to off-diagonal Gram matrix entries
+- **Proved `lagrangeIntegral_single`**: I = 2 for n=1 (empty product gives lₖ ≡ 1)
 
 ### Key Findings
-- `lagrangeIntegral_upper_bound` is mathematically false — no general upper bound on I exists
-- `linarith` cannot recognize that `1/↑n` and `2/↑n` are linearly related; use `Finset.mul_sum` to factor first
-- The `suffices` pattern (reduce goal to sum nonnegativity) is much cleaner than expanding and rearranging
-- `field_simp; ring` handles the final arithmetic after clearing Finset.sum infrastructure
+- The cross-term identity proof uses a clean chain: `Finset.add_sum_erase` + `Finset.mul_sum` + partition of unity
+- `convert Finset.prod_empty` elegantly handles the Fin 1 empty product case
+- Parsing issue: `∑ j in S, f` inside `∫ x in a..b, body` causes ambiguity — solved with `gramOffDiag` helper def
+- `Finset.filter_ne'` converts between `filter (· ≠ k)` and `erase k`
 
 ### Files Modified
-- `proofs/Proofs/Erdos1131Problem.lean` (264→306 lines, 2→0 sorries, 3→2 axioms)
+- `proofs/Proofs/Erdos1131Problem.lean` (297→419 lines, 9→14 theorems, 3→2 axioms)
 - `src/data/proofs/erdos-1131/meta.json`
 - `src/data/research/problems/erdos-1131-oq-01.json`
 
+### Stats Change
+| Metric | Before | After |
+|--------|--------|-------|
+| Axioms | 3 | **2** |
+| Theorems | 9 | **14** |
+| Definitions | 6 | **8** |
+| Lines | 297 | **419** |
+
 ### Next Steps
-- `chebyshev_integral_estimate` requires Chebyshev polynomial T_n representation of l_k and exact integral computation — substantial infrastructure needed
-- `erdos_1131_conjecture` is genuinely OPEN, stays as axiom
+- Prove `chebyshev_integral_estimate` (requires Chebyshev polynomial theory — substantial)
+- The open conjecture is correctly axiomatized

@@ -24,9 +24,9 @@
     "erdosUrl": "https://erdosproblems.com/1131",
     "erdosProblemStatus": "open",
     "axiomCount": 2,
-    "theoremCount": 9,
-    "lineCount": 306,
-    "assumptions": "2 axioms: chebyshev_integral_estimate (deep analysis), erdos_1131_conjecture (OPEN). All 9 theorems fully proved including Cauchy-Schwarz lower bound I ≥ 2/n. Former false axiom lagrangeIntegral_upper_bound (I ≤ 2n) removed — counterexample: clustered nodes give I → ∞.",
+    "theoremCount": 14,
+    "lineCount": 419,
+    "assumptions": "2 axioms: chebyshev_integral_estimate (deep analysis), erdos_1131_conjecture (OPEN). 14 theorems including: quadrature_weights_sum (∑wₖ=2), lagrangeIntegral_cross_term_identity (I=2-∫Gram off-diagonal), lagrangeIntegral_single (I=2 for n=1).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
