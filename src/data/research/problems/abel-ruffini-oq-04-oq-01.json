@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 1 axiom eliminated (vandermondeProduct_sq_val). 1 axiom remains: three_dvd_gal_card (needs Dedekind theorem or real-roots approach).",
+    "progressSummary": "PROGRESS: Axiom replaced with theorem+sorry. 3 sorry remain: gal_has_transposition (IVT+conj), gal_card_ne_20 (Sylow), three_dvd_gal_card (combines both)",
     "builtItems": [
       "Proofs/AbelRuffiniOQ04OQ01.lean: Full proof (362 lines, 12 theorems, 1 axiom)",
       "p_irreducible: Eisenstein at 2 for x^5-4x+2",
@@ -39,7 +39,9 @@
       "Polynomial evaluations p(-2)=-22, p(-1)=5, p(0)=2, p(1)=-1, p(2)=26 (AbelRuffiniOQ04OQ01.lean)",
       "rootEnum, vandermondeProduct, gal_acts_on_vandermondeProduct, gal_permutes_roots, vandermondeProduct_not_rational, fixed_by_all_gal_is_rational, exists_odd_galSign (proves former Axiom B)",
       "vandermondeProduct_sq_val THEOREM (was axiom) in AbelRuffiniOQ04OQ01.lean",
-      "p_SF_eq_prod_linear, eval_deriv_at_root, vp_sq_eq_ordered_diff infrastructure"
+      "p_SF_eq_prod_linear, eval_deriv_at_root, vp_sq_eq_ordered_diff infrastructure",
+      "gal_has_transposition (sorry), gal_card_ne_20 (sorry), three_dvd_gal_card theorem skeleton (AbelRuffiniOQ04OQ01.lean)",
+      "normalizer_5cycle_card_20, perm_fin5_order_dvd10_odd_is_false (native_decide, AbelRuffiniOQ04OQ01.lean)"
     ],
     "insights": [
       "Concrete polynomial approach more tractable than generic polynomial: x^5-4x+2 via Eisenstein at 2",
@@ -49,17 +51,19 @@
       "simp [eval_sub, eval_add, eval_mul, eval_pow, eval_C, eval_X] suffices for polynomial evaluation; ring only needed sometimes",
       "To eliminate gal_card_eq_120: need IVT over ℝ for real roots + group theory lemma (transitive + transposition + p-cycle → S_p)",
       "Vandermonde product approach: σ(Δ)=sign(σ)·Δ, with Δ²=disc(p)=-212144<0, gives Δ∉ℚ. By FTGT, fixed by all σ→in ℚ. Contrapositive: Δ∉ℚ→∃σ with sign=-1.",
-      "Vandermonde product squared equals -212144 PROVED via derivative product identity + Vieta + polynomial evaluation at 5/8"
+      "Vandermonde product squared equals -212144 PROVED via derivative product identity + Vieta + polynomial evaluation at 5/8",
+      "Axiom three_dvd_gal_card can be eliminated via complex conjugation: 3 real roots (IVT) → conj is transposition → F₂₀ excluded → |Gal|=120",
+      "Resolvent sextic R(y) = y⁶-32y⁵+640y⁴-10240y³+102400y²-574288y+1648576 is irreducible over ℚ (mod 7) and has no rational root — alternative proof path",
+      "normalizer_5cycle_card_20: normalizer of 5-cycle in S₅ has order 20 (native_decide verified)"
     ],
     "mathlibGaps": [
       "No generic polynomial Galois group computation in Mathlib (FractionRing of MvPolynomial + Galois theory)",
       "No direct MulEquiv.isSolvable_iff — must use solvable_of_surjective with explicit surjectivity proof"
     ],
     "nextSteps": [
-      "Cast evaluations to ℝ and apply IVT (Polynomial.aeval continuity + IVT) to get roots in (-2,-1), (0,1), (1,2)",
-      "Show f'=5x^4-4 has exactly 2 real roots to bound real root count to 3",
-      "Prove group theory: transitive subgroup of S_p (p prime) with transposition = S_p",
-      "Complex conjugation on 2 non-real roots gives transposition in Gal → Gal = S_5 → |Gal|=120"
+      "Fill gal_has_transposition: IVT for 3 real roots + embed SF→ℂ + conjugation automorphism",
+      "Fill gal_card_ne_20: Sylow theory (unique Sylow 5-subgroup in order-20 group) + transposition_not_normalizing_5cycle",
+      "Fill three_dvd_gal_card: combine gal_card_ne_20 with existing eliminators for 5,10,15,30,40,60"
     ]
   },
   "tags": [

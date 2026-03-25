@@ -229,3 +229,61 @@ Priority: Real-roots approach (option 2 above). Key steps:
 3. Embed splitting field into ℂ via `IsAlgClosed.lift`
 4. Complex conjugation fixes 3 real roots, swaps 2 complex → transposition
 5. `transposition_not_normalizing_5cycle` blocks F₂₀ → |Gal| ≠ 20
+
+## Session 2026-03-25 (Session 5) - Axiom Elimination Architecture
+
+**Mode**: REVISIT (RICH knowledge, score 23)
+**Outcome**: progress (axiom→theorem with 3 sorry's, proof architecture complete)
+
+### What I Did
+- **Replaced axiom with theorem**: `three_dvd_gal_card` is now a `theorem` (with sorry)
+  instead of an `axiom`. The proof skeleton is complete.
+- **Added computational lemmas** (native_decide):
+  - `normalizer_5cycle_card_20`: normalizer of any 5-cycle in S₅ has 20 elements
+  - `perm_fin5_order_dvd10_odd_is_false`: odd elements of order dividing 10 have σ^5 ≠ 1
+- **Added proof architecture**: `gal_has_transposition`, `gal_card_ne_20` theorems
+  with documented sorry's and clear proof strategies
+- **Computed the resolvent sextic** (external verification):
+  R(y) = y⁶ - 32y⁵ + 640y⁴ - 10240y³ + 102400y² - 574288y + 1648576
+  Irreducible over ℚ (irreducible mod 7), no rational root → Gal ⊄ F₂₀
+  This provides an alternative proof path (not yet formalized in Lean)
+- **Verified numerically**: p has exactly 3 real roots
+  r₁ ≈ -1.519, r₂ ≈ 0.508, r₃ ≈ 1.244 (real)
+  r₄,r₅ ≈ -0.117 ± 1.438i (complex conjugate)
+
+### Key Findings
+- The axiom elimination requires ONE key unproved step: `gal_has_transposition`
+  (∃ σ ∈ Gal acting as a transposition on roots). Everything else follows.
+- **Two viable paths** to proving `gal_has_transposition`:
+  1. **IVT + complex conjugation**: 3 real roots → conj is transposition → Gal has transposition
+     Requires: Mathlib IVT + embedding SF→ℂ + cardinality argument for Gal ↔ Hom(SF,ℂ)
+  2. **Resolvent sextic**: R irreducible over ℚ (via mod 7) + R has root in SF → [ℚ(θ):ℚ]=6
+     → 3 | |Gal|. This bypasses the transposition argument entirely.
+- For the IVT approach, key Mathlib APIs identified:
+  - `intermediate_value_Icc` for IVT
+  - `Polynomial.continuous_aeval` for polynomial continuity
+  - `IsAlgClosed.lift (R := ℚ)` for embedding SF → ℂ
+  - `starRingEnd ℂ` for complex conjugation
+- The |Gal| = 40 elimination needs: normalizer of Sylow 5-subgroup has order 20,
+  so any group of order 40 in S₅ would exceed normalizer size (contradiction)
+
+### Files Modified
+- proofs/Proofs/AbelRuffiniOQ04OQ01.lean (1156→~1200 lines)
+  - axiom three_dvd_gal_card → theorem three_dvd_gal_card (with sorry)
+  - Added: gal_has_transposition, gal_card_ne_20, normalizer_5cycle_card_20,
+    perm_fin5_order_dvd10_odd_is_false
+
+### Sorry Inventory (3 remaining)
+1. `gal_has_transposition` — the main unproved step. Needs IVT + complex conjugation.
+2. `gal_card_ne_20` — follows from (1) + Sylow theory + transposition_not_normalizing_5cycle
+3. `three_dvd_gal_card` — follows from (2) + existing eliminators
+
+### Recommended Next Session
+Fill `gal_has_transposition` via:
+1. **IVT**: Show `Polynomial.aeval x p` has sign changes at -2,-1,0,1,2 over ℝ
+   Use `intermediate_value_Icc` + `Polynomial.continuous_aeval`
+2. **Embedding**: Define `ι := IsAlgClosed.lift (R := ℚ) : SF →ₐ[ℚ] ℂ`
+3. **Conjugate embedding**: Define `ι' := starRingEnd ℂ ∘ ι : SF →ₐ[ℚ] ℂ`
+4. **Lift to Gal**: Use `Fintype.card (SF →ₐ[ℚ] ℂ) = Fintype.card p.Gal` + injectivity
+   of σ ↦ ι ∘ σ to get surjectivity → ∃ σ_conj with ι ∘ σ_conj = ι'
+5. **Transposition**: σ_conj fixes 3 real roots (IVT), swaps 2 complex → transposition
