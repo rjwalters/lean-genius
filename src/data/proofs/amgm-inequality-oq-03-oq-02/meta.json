@@ -257,7 +257,34 @@
     "axiomCount": 0,
     "theoremCount": 10,
     "lemmaCount": 0,
-    "defCount": 0
+    "defCount": 0,
+    "mainTheorems": [
+      {
+        "name": "tendsto_powerMean_zero",
+        "type": "core",
+        "description": "lim_{r→0} (∑ wᵢzᵢ^r)^(1/r) = ∏ zᵢ^wᵢ (power mean → geometric mean)"
+      },
+      {
+        "name": "tendsto_log_sum_div_rpow",
+        "type": "key",
+        "description": "(log ∑ wᵢzᵢ^r)/r → ∑ wᵢ log zᵢ via hasDerivAt_iff_tendsto_slope"
+      },
+      {
+        "name": "hasDerivAt_sum_weighted_rpow_zero",
+        "type": "key",
+        "description": "d/dr[∑ wᵢzᵢ^r]|_{r=0} = ∑ wᵢ log zᵢ"
+      },
+      {
+        "name": "powerMean_neg1_le_geomMean_le_arithMean",
+        "type": "corollary",
+        "description": "HM ≤ GM ≤ AM for weighted means"
+      },
+      {
+        "name": "geomMean_eq_exp_sum_log",
+        "type": "supporting",
+        "description": "GM = exp(∑ wᵢ log zᵢ)"
+      }
+    ]
   },
   "references": [
     {
