@@ -134,9 +134,43 @@ theorem nonzero_signed_sum_exists :
 /-- Each term δ_k/(k+1) in the signed sum has denominator dividing lcm(1,...,n).
     When the sum is expressed over this common denominator, a nonzero sum
     has numerator with absolute value ≥ 1, giving |sum| ≥ 1/lcm(1,...,n). -/
-axiom weak_inequality (n : ℕ) (δ : Fin n → ℤ) (hδ : IsSignFunction n δ)
+theorem weak_inequality (n : ℕ) (δ : Fin n → ℤ) (_hδ : IsSignFunction n δ)
     (hne : signedUnitFractionSum n δ ≠ 0) :
-    |signedUnitFractionSum n δ| ≥ 1 / (lcm_1_to_n n : ℚ)
+    |signedUnitFractionSum n δ| ≥ 1 / (lcm_1_to_n n : ℚ) := by
+  set L := lcm_1_to_n n
+  set S := signedUnitFractionSum n δ
+  -- Trivial if L = 0 (then 1/0 = 0 in ℚ, and |S| ≥ 0)
+  by_cases hL : (L : ℚ) = 0
+  · simp only [hL, div_zero]; exact abs_nonneg _
+  have hLQ_pos : (0 : ℚ) < L := lt_of_le_of_ne (Nat.cast_nonneg L) (Ne.symm hL)
+  -- Key: L * S is an integer (since each (k+1) divides L)
+  have ⟨m, hm⟩ : ∃ m : ℤ, (L : ℚ) * S = m := by
+    simp only [S, signedUnitFractionSum, Finset.mul_sum]
+    suffices h : ∀ k : Fin n, ∃ m : ℤ,
+        (L : ℚ) * ((δ k : ℚ) / ((k.val : ℚ) + 1)) = m from by
+      choose f hf using h
+      exact ⟨∑ k, f k, by simp_rw [hf, ← Int.cast_sum]⟩
+    intro k
+    obtain ⟨c, hc⟩ := Finset.dvd_lcm (f := (· + 1))
+      (show k.val ∈ Finset.range n from Finset.mem_range.mpr k.isLt)
+    exact ⟨δ k * c, by
+      have hkne : ((k.val : ℚ) + 1) ≠ 0 := by positivity
+      have hLc : (L : ℚ) = ((k.val : ℚ) + 1) * (c : ℚ) := by exact_mod_cast hc
+      rw [hLc]; field_simp; push_cast; ring⟩
+  -- S ≠ 0 and L ≠ 0 imply m ≠ 0
+  have hm_ne : m ≠ 0 := by
+    intro h; apply hne
+    have : (L : ℚ) * S = 0 := by simp [hm, h]
+    exact (mul_eq_zero.mp this).resolve_left (ne_of_gt hLQ_pos)
+  -- Conclude: |S| ≥ 1/L, since |S| * L = |m| ≥ 1
+  rw [ge_iff_le, div_le_iff₀ hLQ_pos]
+  calc (1 : ℚ) ≤ |(m : ℚ)| := by
+          exact_mod_cast (show (1 : ℤ) ≤ |m| by
+            rcases le_or_gt 0 m with h | h
+            · rw [abs_of_nonneg h]; omega
+            · rw [abs_of_neg h]; omega)
+    _ = |(L : ℚ) * S| := by congr 1; exact hm.symm
+    _ = |S| * L := by rw [abs_mul, abs_of_pos hLQ_pos, mul_comm]
 
 /- ## Part VI: Summary -/
 
