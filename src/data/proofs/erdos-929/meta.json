@@ -20,9 +20,9 @@
     "erdosNumber": 929,
     "erdosUrl": "https://erdosproblems.com/929",
     "erdosProblemStatus": "open",
-    "axiomCount": 6,
-    "lineCount": 110,
-    "assumptions": "6 axiom(s) and 0 sorry(s). See the Lean source for details.",
+    "axiomCount": 3,
+    "lineCount": 224,
+    "assumptions": "3 axiom(s) and 1 sorry(s). Deep axioms: rosser_lower, fgkmt_upper, smooth_threshold_2. Sorry: arithmetic progression density argument.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -132,9 +132,9 @@
       "Filter"
     ],
     "namespace": null,
-    "lineCount": 110,
-    "axiomCount": 6,
-    "theoremCount": 1,
-    "definitionCount": 5
+    "lineCount": 224,
+    "axiomCount": 3,
+    "theoremCount": 14,
+    "definitionCount": 7
   }
 }

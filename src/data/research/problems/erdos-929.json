@@ -1,7 +1,7 @@
 {
   "slug": "erdos-929",
   "title": "Erdős #929",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -29,23 +29,33 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Fixed sorry in smoothThreshold definition (converted to explicit axiom smooth_block_exists). Fixed pre-existing DecidablePred bug in upperDensity. Added smoothBlockSet_antitone theorem. 7 axioms (1 new: smooth_block_exists), 0 sorries, 1 theorem, 109 lines.",
+    "progressSummary": "PROGRESS: Fixed critical semantic error (IsSmooth→HasSmallFactor: x-smooth was wrong, need 'has small factor'). Eliminated 3 axioms (6→3): proved smooth_block_exists, trivial_upper, smoothThreshold_mono. Added 13 new theorems including upperDensity_mono and CRT-based smooth block construction. 1 sorry remains: AP density argument in smoothBlockSet_pos_density.",
     "builtItems": [
       "Fixed sorry in smoothThreshold: converted to explicit axiom smooth_block_exists",
       "Fixed DecidablePred bug: used Classical.decPred in Set.upperDensity",
-      "Proved smoothBlockSet_antitone: monotonicity of smooth block sets"
+      "Proved smoothBlockSet_antitone: monotonicity of smooth block sets",
+      "SEMANTIC FIX: Replaced IsSmooth (all factors ≤ x) with HasSmallFactor (minFac ≤ x)",
+      "Proved dvd_factorial_of_pos_le: m | n! for 0 < m ≤ n",
+      "Proved densityRatio_mono + densityRatio_le_one + bounded/cobounded conditions",
+      "Proved upperDensity_mono: A ⊆ B → upperDensity A ≤ upperDensity B",
+      "Proved smoothBlock_of_factorial_cong: CRT argument for n ≡ 1 mod (k+1)!",
+      "Proved smooth_block_exists as theorem (was axiom) using k+1 witness",
+      "Proved trivial_upper as theorem (was axiom) via Nat.find_le",
+      "Proved smoothThreshold_mono as theorem (was axiom) via Nat.find_le + upperDensity_mono"
     ],
     "insights": [
-      "7 axioms classified: erdos_929_conjecture (open), rosser_lower/fgkmt_upper (deep bounds), trivial_upper/smoothThreshold_mono/smooth_threshold_2 (structural), smooth_block_exists (density witness)",
-      "smoothThreshold definition had a sorry masking a DecidablePred bug in upperDensity - both fixed",
-      "smoothBlockSet_antitone: proved that larger k gives smaller smooth block sets (k1<=k2 implies inclusion)",
-      "The structural axioms (trivial_upper, smoothThreshold_mono, smooth_threshold_2) could potentially be proved with more work on upperDensity properties"
+      "CRITICAL: Original IsSmooth (all factors ≤ x) was WRONG for this problem. x-smooth numbers have density 0 for fixed x, making smooth_block_exists false. Erdős means 'has a prime factor ≤ x' (minFac ≤ x).",
+      "CRT argument: n ≡ 1 mod (k+1)! forces (i+1) | (n+i) for 1≤i≤k since (i+1) | (k+1)!. Then minFac(n+i) ≤ i+1 ≤ k+1.",
+      "upperDensity_mono via limsup_le_limsup: needs Eventually pointwise ≤, IsCoboundedUnder for left, IsBoundedUnder for right",
+      "Density ratios are in [0,1]: bounded above by 1 (card_filter_le), below by 0 (nonneg)",
+      "smooth_threshold_2 = 3 needs showing: for x ≤ 2, smoothBlockSet 2 x has density 0 (consecutive integers can't both be even)"
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "No general AP density lemma: need to prove arithmetic progressions have positive upper density from scratch"
+    ],
     "nextSteps": [
-      "Prove smoothThreshold_mono from smoothBlockSet_antitone + upperDensity monotonicity",
-      "Prove trivial_upper (S(k) <= k+1) using CRT argument",
-      "Prove smooth_threshold_2 (S(2)=3) computationally"
+      "Prove smoothBlockSet_pos_density sorry: show AP {M*t+1} has positive upper density via le_limsup_of_frequently_le",
+      "Prove smooth_threshold_2 (S(2)=3): show smoothBlockSet 2 x empty/singleton for x≤2, positive density for x=3"
     ],
     "markdown": "# Erdős #929 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$ be large and let $S(k)$ be the minimal $x$ such that there is a positive density set of $n$ where\\[n+1,n+2,\\ldots,n+k\\]are all divisible by primes $\\leq x$.\n\nEstimate $S(k)$ - in particular, is it true that $S(k)\\geq k^{1-o(1)}$?\n\n\n\nIt follows from Rosser's sieve that $S(k)> k^{1/2-o(1)}$.\n\nIt is trivial that $S(k)\\leq k+1$ since, for example, one can take $n\\equiv 1\\pmod{(k+1)!}$. The best bound on large gaps between primes due to Ford, Green, Konyagin, Maynard, and Tao \\cite{FGKMT18} (see [4]) implies\\[S(k) \\ll k \\frac{\\log\\log\\log k}{\\log\\log k\\log\\log\\log\\log k}.\\]\n\n\n\n\nReferences\n\n\n[FGKMT18] Ford, Kevin and Green, Ben and Konyagin, Sergei and Maynard, James and Tao, Terence, Long gaps between primes. J. Amer. Math. Soc. (2018), 65-105.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #4\n- Problem #928\n- Problem #930\n- Problem #39\n- Problem #1\n\n## References\n\n- Er76d\n- FGKMT18\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
@@ -70,11 +80,11 @@
     {
       "path": "Proofs/Erdos929Problem.lean",
       "filename": "Erdos929Problem.lean",
-      "lineCount": 111,
-      "theoremCount": 1,
-      "axiomCount": 6,
-      "defCount": 6,
-      "sorryCount": 0,
+      "lineCount": 224,
+      "theoremCount": 14,
+      "axiomCount": 3,
+      "defCount": 7,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos929Problem.lean"
     }
