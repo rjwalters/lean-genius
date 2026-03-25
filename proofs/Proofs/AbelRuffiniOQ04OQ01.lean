@@ -960,10 +960,12 @@ private noncomputable def conjHom : ℂ →ₐ[ℚ] ℂ where
     show starRingEnd ℂ (algebraMap ℚ ℂ r) = algebraMap ℚ ℂ r
     rw [IsScalarTower.algebraMap_apply ℚ ℝ ℂ]; exact Complex.conj_ofReal _
 private noncomputable def sfConjEmb : SF →ₐ[ℚ] ℂ := conjHom.comp sfEmb
-private noncomputable def conjGalAut : SF ≃ₐ[ℚ] SF := sfConjEmb.restrictNormal SF
+private noncomputable def conjGalAut : SF ≃ₐ[ℚ] SF := sfConjEmb.restrictNormal' SF
 private theorem conjGalAut_spec (x : SF) :
-    sfEmb (conjGalAut x) = starRingEnd ℂ (sfEmb x) :=
-  sfConjEmb.restrictNormal_commutes SF x
+    sfEmb (conjGalAut x) = starRingEnd ℂ (sfEmb x) := by
+  have h := sfConjEmb.restrictNormal_commutes SF x
+  simp only [Algebra.id.map_eq_id, RingHom.id_apply] at h
+  exact h
 private theorem conjGalAut_sq : conjGalAut ^ 2 = 1 := by
   ext x; apply sfEmb.injective; show sfEmb ((conjGalAut * conjGalAut) x) = sfEmb x
   simp only [AlgEquiv.mul_apply]; rw [conjGalAut_spec, conjGalAut_spec, Complex.conj_conj]
@@ -976,12 +978,12 @@ private theorem galSign_conjGal : galSign conjGal = -1 := by
     rw [← conjGalAut_spec]; exact congrArg sfEmb hact
   have him : (sfEmb vandermondeProduct).im = 0 := Complex.conj_eq_iff_im.mp hconj
   have hval : sfEmb vandermondeProduct ^ 2 = (-212144 : ℂ) := by
-    rw [← map_pow sfEmb, vandermondeProduct_sq_val, sfEmb.commutes]; push_cast; ring
+    rw [← map_pow sfEmb, vandermondeProduct_sq_val, sfEmb.commutes]; push_cast; norm_num
   have hre : sfEmb vandermondeProduct = ↑(sfEmb vandermondeProduct).re :=
     Complex.ext rfl (by simp [him])
   rw [hre] at hval
   have : ((sfEmb vandermondeProduct).re ^ 2 : ℝ) = -212144 := by
-    have := congr_arg Complex.re hval; simp [Complex.ofReal_pow] at this; linarith
+    exact_mod_cast hval
   linarith [sq_nonneg (sfEmb vandermondeProduct).re]
 
 theorem gal_has_transposition :
@@ -990,7 +992,7 @@ theorem gal_has_transposition :
   refine ⟨conjGal, ?_, ?_, ?_⟩
   · rw [← map_pow, show conjGal ^ 2 = 1 from conjGalAut_sq, map_one]
   · intro heq; have : galSign conjGal = 1 := by unfold galSign; rw [heq, Equiv.Perm.sign_one]
-    linarith [galSign_conjGal]
+    exact absurd galSign_conjGal (by rw [this]; decide)
   · exact galSign_conjGal
 
 -- Section E6b: |Gal| ≠ 20 (from transposition + F₂₀ structure)
@@ -1033,8 +1035,8 @@ private theorem gal_card_ne_20 : Fintype.card p.Gal ≠ 20 := by
   haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
   obtain ⟨c, hc_ord⟩ := exists_prime_orderOf_dvd_card (p := 5) (by rw [hG_ft]; norm_num)
   have hc5 : (c : Equiv.Perm (Fin 5)) ^ 5 = 1 := by
-    simpa using congr_arg Subtype.val
-      (show c ^ 5 = (1 : G) from by rw [← hc_ord]; exact pow_orderOf_eq_one c)
+    have h : c ^ orderOf c = (1 : G) := pow_orderOf_eq_one c
+    rw [hc_ord] at h; simpa using congr_arg Subtype.val h
   have hc_ne : (c : Equiv.Perm (Fin 5)) ≠ 1 := fun h =>
     absurd hc_ord (by rw [show c = (1 : G) from Subtype.ext h, orderOf_one]; norm_num)
   set σ' : G := ⟨galToPerm5 σ, ⟨σ, rfl⟩⟩
@@ -1053,7 +1055,7 @@ private theorem gal_card_ne_20 : Fintype.card p.Gal ≠ 20 := by
   haveI : Subsingleton (Sylow 5 G) := by
     haveI := Fintype.ofFinite (Sylow 5 G)
     rw [← Fintype.card_le_one_iff_subsingleton, ← Nat.card_eq_fintype_card]; omega
-  haveI : (↑P₅ : Subgroup G).Normal := by
+  haveI hNP : (↑P₅ : Subgroup G).Normal := by
     apply Subgroup.Normal.mk; intro n hn g
     have : g • P₅ = P₅ := Subsingleton.elim _ _; rw [Sylow.smul_eq_iff_mem_normalizer] at this
     exact ((Subgroup.mem_normalizer_iff.mp this) n).mp hn
@@ -1078,25 +1080,31 @@ private theorem gal_card_ne_20 : Fintype.card p.Gal ≠ 20 := by
     obtain ⟨⟨y, hy⟩, hxy⟩ := hbij.surjective ⟨x, hx⟩
     rwa [show y = x from congr_arg Subtype.val hxy] at hy
   have hconj_zpow : σ' * c * σ'⁻¹ ∈ Subgroup.zpowers c :=
-    (SetLike.ext_iff.mp hP5_eq _).mp ((↑P₅ : Subgroup G).Normal.conj_mem c hc_P5 σ')
+    (SetLike.ext_iff.mp hP5_eq _).mp (hNP.conj_mem c hc_P5 σ')
   obtain ⟨k, hk⟩ := Subgroup.mem_zpowers_iff.mp hconj_zpow
   have hσ_inv : (galToPerm5 σ)⁻¹ = galToPerm5 σ :=
     inv_eq_iff_mul_eq_one.mpr (by rw [← sq]; exact hσ2)
   have hconj_val : galToPerm5 σ * ↑c * galToPerm5 σ = (↑c : Equiv.Perm (Fin 5)) ^ k := by
     have h := congr_arg Subtype.val hk
-    simp only [Subgroup.coe_mul, Subgroup.coe_inv, SubgroupClass.coe_zpow, σ'] at h; rwa [hσ_inv]
+    simp only [Subgroup.coe_mul, Subgroup.coe_inv, SubgroupClass.coe_zpow, σ'] at h
+    rw [hσ_inv] at h; exact h.symm
   have ⟨hn1, hn2, hn3, hn4⟩ := transposition_not_normalizing_5cycle
     ↑c (galToPerm5 σ) hc5 hc_ne hσ_sign hσ2
   have hck_ne : (↑c : Equiv.Perm (Fin 5)) ^ k ≠ 1 := by
     rw [← hconj_val]; intro h
     have h1 : σ' * c * σ'⁻¹ = (1 : G) :=
-      Subtype.ext (by simp [σ', Subgroup.coe_mul, Subgroup.coe_inv, hσ_inv]; exact h)
-    exact hc_ne (by have : c = σ'⁻¹ * (σ' * c * σ'⁻¹) * σ' := by group; rw [h1] at this; simpa using this)
+      Subtype.ext (by simp only [σ', Subgroup.coe_mul, Subgroup.coe_inv]; rw [hσ_inv]; exact h)
+    have hc1 : c = 1 := by have := (by group : c = σ'⁻¹ * (σ' * c * σ'⁻¹) * σ'); rw [h1] at this; simpa using this
+    exact hc_ne (congr_arg Subtype.val hc1)
   have hred : (↑c : Equiv.Perm (Fin 5)) ^ k = (↑c) ^ (k % 5).toNat := by
-    conv_lhs => rw [show k = 5 * (k / 5) + k % 5 from (Int.emod_add_ediv k 5 ▸ by ring)]
-    rw [zpow_add, zpow_mul, show (↑c : Equiv.Perm (Fin 5)) ^ (5 : ℤ) = 1 from by
-      rw [zpow_natCast]; exact_mod_cast hc5, one_zpow, one_mul,
-      Int.toNat_of_nonneg (Int.emod_nonneg k (by norm_num))]
+    have hdiv : k = 5 * (k / 5) + k % 5 := by omega
+    conv_lhs => rw [hdiv]
+    rw [zpow_add, zpow_mul]
+    have h5z : (↑c : Equiv.Perm (Fin 5)) ^ (5 : ℤ) = 1 := by
+      rw [show (5 : ℤ) = ↑(5 : ℕ) from by norm_cast, zpow_natCast]; exact_mod_cast hc5
+    rw [h5z, one_zpow, one_mul]
+    conv_lhs => rw [(Int.toNat_of_nonneg (Int.emod_nonneg k (by norm_num))).symm]
+    simp only [zpow_natCast]
   rw [hred] at hconj_val hck_ne
   have hbound : (k % 5).toNat < 5 := by
     rw [Int.toNat_lt (by omega)]; exact Int.emod_lt_of_pos k (by norm_num)
@@ -1123,8 +1131,8 @@ private theorem gal_card_ne_10 : Fintype.card p.Gal ≠ 10 := by
   haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
   obtain ⟨c, hc_ord⟩ := exists_prime_orderOf_dvd_card (p := 5) (by rw [hG_ft]; norm_num)
   have hc5 : (c : Equiv.Perm (Fin 5)) ^ 5 = 1 := by
-    simpa using congr_arg Subtype.val
-      (show c ^ 5 = (1 : G) from by rw [← hc_ord]; exact pow_orderOf_eq_one c)
+    have h : c ^ orderOf c = (1 : G) := pow_orderOf_eq_one c
+    rw [hc_ord] at h; simpa using congr_arg Subtype.val h
   have hc_ne : (c : Equiv.Perm (Fin 5)) ≠ 1 := fun h =>
     absurd hc_ord (by rw [show c = (1 : G) from Subtype.ext h, orderOf_one]; norm_num)
   set σ' : G := ⟨galToPerm5 σ, ⟨σ, rfl⟩⟩
@@ -1143,7 +1151,7 @@ private theorem gal_card_ne_10 : Fintype.card p.Gal ≠ 10 := by
   haveI : Subsingleton (Sylow 5 G) := by
     haveI := Fintype.ofFinite (Sylow 5 G)
     rw [← Fintype.card_le_one_iff_subsingleton, ← Nat.card_eq_fintype_card]; omega
-  haveI : (↑P₅ : Subgroup G).Normal := by
+  haveI hNP : (↑P₅ : Subgroup G).Normal := by
     apply Subgroup.Normal.mk; intro n hn g
     have : g • P₅ = P₅ := Subsingleton.elim _ _; rw [Sylow.smul_eq_iff_mem_normalizer] at this
     exact ((Subgroup.mem_normalizer_iff.mp this) n).mp hn
@@ -1168,25 +1176,31 @@ private theorem gal_card_ne_10 : Fintype.card p.Gal ≠ 10 := by
     obtain ⟨⟨y, hy⟩, hxy⟩ := hbij.surjective ⟨x, hx⟩
     rwa [show y = x from congr_arg Subtype.val hxy] at hy
   have hconj_zpow : σ' * c * σ'⁻¹ ∈ Subgroup.zpowers c :=
-    (SetLike.ext_iff.mp hP5_eq _).mp ((↑P₅ : Subgroup G).Normal.conj_mem c hc_P5 σ')
+    (SetLike.ext_iff.mp hP5_eq _).mp (hNP.conj_mem c hc_P5 σ')
   obtain ⟨k, hk⟩ := Subgroup.mem_zpowers_iff.mp hconj_zpow
   have hσ_inv : (galToPerm5 σ)⁻¹ = galToPerm5 σ :=
     inv_eq_iff_mul_eq_one.mpr (by rw [← sq]; exact hσ2)
   have hconj_val : galToPerm5 σ * ↑c * galToPerm5 σ = (↑c : Equiv.Perm (Fin 5)) ^ k := by
     have h := congr_arg Subtype.val hk
-    simp only [Subgroup.coe_mul, Subgroup.coe_inv, SubgroupClass.coe_zpow, σ'] at h; rwa [hσ_inv]
+    simp only [Subgroup.coe_mul, Subgroup.coe_inv, SubgroupClass.coe_zpow, σ'] at h
+    rw [hσ_inv] at h; exact h.symm
   have ⟨hn1, hn2, hn3, hn4⟩ := transposition_not_normalizing_5cycle
     ↑c (galToPerm5 σ) hc5 hc_ne hσ_sign hσ2
   have hck_ne : (↑c : Equiv.Perm (Fin 5)) ^ k ≠ 1 := by
     rw [← hconj_val]; intro h
     have h1 : σ' * c * σ'⁻¹ = (1 : G) :=
-      Subtype.ext (by simp [σ', Subgroup.coe_mul, Subgroup.coe_inv, hσ_inv]; exact h)
-    exact hc_ne (by have : c = σ'⁻¹ * (σ' * c * σ'⁻¹) * σ' := by group; rw [h1] at this; simpa using this)
+      Subtype.ext (by simp only [σ', Subgroup.coe_mul, Subgroup.coe_inv]; rw [hσ_inv]; exact h)
+    have hc1 : c = 1 := by have := (by group : c = σ'⁻¹ * (σ' * c * σ'⁻¹) * σ'); rw [h1] at this; simpa using this
+    exact hc_ne (congr_arg Subtype.val hc1)
   have hred : (↑c : Equiv.Perm (Fin 5)) ^ k = (↑c) ^ (k % 5).toNat := by
-    conv_lhs => rw [show k = 5 * (k / 5) + k % 5 from (Int.emod_add_ediv k 5 ▸ by ring)]
-    rw [zpow_add, zpow_mul, show (↑c : Equiv.Perm (Fin 5)) ^ (5 : ℤ) = 1 from by
-      rw [zpow_natCast]; exact_mod_cast hc5, one_zpow, one_mul,
-      Int.toNat_of_nonneg (Int.emod_nonneg k (by norm_num))]
+    have hdiv : k = 5 * (k / 5) + k % 5 := by omega
+    conv_lhs => rw [hdiv]
+    rw [zpow_add, zpow_mul]
+    have h5z : (↑c : Equiv.Perm (Fin 5)) ^ (5 : ℤ) = 1 := by
+      rw [show (5 : ℤ) = ↑(5 : ℕ) from by norm_cast, zpow_natCast]; exact_mod_cast hc5
+    rw [h5z, one_zpow, one_mul]
+    conv_lhs => rw [(Int.toNat_of_nonneg (Int.emod_nonneg k (by norm_num))).symm]
+    simp only [zpow_natCast]
   rw [hred] at hconj_val hck_ne
   have hbound : (k % 5).toNat < 5 := by
     rw [Int.toNat_lt (by omega)]; exact Int.emod_lt_of_pos k (by norm_num)
@@ -1213,8 +1227,8 @@ private theorem gal_card_ne_40 : Fintype.card p.Gal ≠ 40 := by
   haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
   obtain ⟨c, hc_ord⟩ := exists_prime_orderOf_dvd_card (p := 5) (by rw [hG_ft]; norm_num)
   have hc5 : (c : Equiv.Perm (Fin 5)) ^ 5 = 1 := by
-    simpa using congr_arg Subtype.val
-      (show c ^ 5 = (1 : G) from by rw [← hc_ord]; exact pow_orderOf_eq_one c)
+    have h : c ^ orderOf c = (1 : G) := pow_orderOf_eq_one c
+    rw [hc_ord] at h; simpa using congr_arg Subtype.val h
   have hc_ne : (c : Equiv.Perm (Fin 5)) ≠ 1 := fun h =>
     absurd hc_ord (by rw [show c = (1 : G) from Subtype.ext h, orderOf_one]; norm_num)
   set σ' : G := ⟨galToPerm5 σ, ⟨σ, rfl⟩⟩
@@ -1233,7 +1247,7 @@ private theorem gal_card_ne_40 : Fintype.card p.Gal ≠ 40 := by
   haveI : Subsingleton (Sylow 5 G) := by
     haveI := Fintype.ofFinite (Sylow 5 G)
     rw [← Fintype.card_le_one_iff_subsingleton, ← Nat.card_eq_fintype_card]; omega
-  haveI : (↑P₅ : Subgroup G).Normal := by
+  haveI hNP : (↑P₅ : Subgroup G).Normal := by
     apply Subgroup.Normal.mk; intro n hn g
     have : g • P₅ = P₅ := Subsingleton.elim _ _; rw [Sylow.smul_eq_iff_mem_normalizer] at this
     exact ((Subgroup.mem_normalizer_iff.mp this) n).mp hn
@@ -1258,25 +1272,31 @@ private theorem gal_card_ne_40 : Fintype.card p.Gal ≠ 40 := by
     obtain ⟨⟨y, hy⟩, hxy⟩ := hbij.surjective ⟨x, hx⟩
     rwa [show y = x from congr_arg Subtype.val hxy] at hy
   have hconj_zpow : σ' * c * σ'⁻¹ ∈ Subgroup.zpowers c :=
-    (SetLike.ext_iff.mp hP5_eq _).mp ((↑P₅ : Subgroup G).Normal.conj_mem c hc_P5 σ')
+    (SetLike.ext_iff.mp hP5_eq _).mp (hNP.conj_mem c hc_P5 σ')
   obtain ⟨k, hk⟩ := Subgroup.mem_zpowers_iff.mp hconj_zpow
   have hσ_inv : (galToPerm5 σ)⁻¹ = galToPerm5 σ :=
     inv_eq_iff_mul_eq_one.mpr (by rw [← sq]; exact hσ2)
   have hconj_val : galToPerm5 σ * ↑c * galToPerm5 σ = (↑c : Equiv.Perm (Fin 5)) ^ k := by
     have h := congr_arg Subtype.val hk
-    simp only [Subgroup.coe_mul, Subgroup.coe_inv, SubgroupClass.coe_zpow, σ'] at h; rwa [hσ_inv]
+    simp only [Subgroup.coe_mul, Subgroup.coe_inv, SubgroupClass.coe_zpow, σ'] at h
+    rw [hσ_inv] at h; exact h.symm
   have ⟨hn1, hn2, hn3, hn4⟩ := transposition_not_normalizing_5cycle
     ↑c (galToPerm5 σ) hc5 hc_ne hσ_sign hσ2
   have hck_ne : (↑c : Equiv.Perm (Fin 5)) ^ k ≠ 1 := by
     rw [← hconj_val]; intro h
     have h1 : σ' * c * σ'⁻¹ = (1 : G) :=
-      Subtype.ext (by simp [σ', Subgroup.coe_mul, Subgroup.coe_inv, hσ_inv]; exact h)
-    exact hc_ne (by have : c = σ'⁻¹ * (σ' * c * σ'⁻¹) * σ' := by group; rw [h1] at this; simpa using this)
+      Subtype.ext (by simp only [σ', Subgroup.coe_mul, Subgroup.coe_inv]; rw [hσ_inv]; exact h)
+    have hc1 : c = 1 := by have := (by group : c = σ'⁻¹ * (σ' * c * σ'⁻¹) * σ'); rw [h1] at this; simpa using this
+    exact hc_ne (congr_arg Subtype.val hc1)
   have hred : (↑c : Equiv.Perm (Fin 5)) ^ k = (↑c) ^ (k % 5).toNat := by
-    conv_lhs => rw [show k = 5 * (k / 5) + k % 5 from (Int.emod_add_ediv k 5 ▸ by ring)]
-    rw [zpow_add, zpow_mul, show (↑c : Equiv.Perm (Fin 5)) ^ (5 : ℤ) = 1 from by
-      rw [zpow_natCast]; exact_mod_cast hc5, one_zpow, one_mul,
-      Int.toNat_of_nonneg (Int.emod_nonneg k (by norm_num))]
+    have hdiv : k = 5 * (k / 5) + k % 5 := by omega
+    conv_lhs => rw [hdiv]
+    rw [zpow_add, zpow_mul]
+    have h5z : (↑c : Equiv.Perm (Fin 5)) ^ (5 : ℤ) = 1 := by
+      rw [show (5 : ℤ) = ↑(5 : ℕ) from by norm_cast, zpow_natCast]; exact_mod_cast hc5
+    rw [h5z, one_zpow, one_mul]
+    conv_lhs => rw [(Int.toNat_of_nonneg (Int.emod_nonneg k (by norm_num))).symm]
+    simp only [zpow_natCast]
   rw [hred] at hconj_val hck_ne
   have hbound : (k % 5).toNat < 5 := by
     rw [Int.toNat_lt (by omega)]; exact Int.emod_lt_of_pos k (by norm_num)
