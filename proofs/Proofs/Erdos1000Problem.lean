@@ -24,11 +24,13 @@
   Proved: naturalSeq_phiA_eq_totient (filter condition ↔ coprimality + Icc/range bridge)
   Proved: phiA_ge_totient (φ_A(k) ≥ φ(n_k) — coprime elements always pass the filter)
   Proved: densityRatio_ge_totient_ratio (ρ_A(k) ≥ φ(n_k)/n_k)
+  Proved: phiA_decomposition (φ_A(k) = Σ_{e|n_k, e unused} φ(e) — exact divisor decomposition)
 
   Tags: number-theory, diophantine-approximation, totient-function, cesaro-averages
 -/
 
 import Mathlib
+import Proofs.EulerTotientOQ04
 
 namespace Erdos1000
 
@@ -245,6 +247,158 @@ theorem densityRatio_ge_totient_ratio (A : IncreasingSeq) (k : ℕ) :
   apply div_le_div_of_nonneg_right
   · exact_mod_cast phiA_ge_totient A k
   · exact Nat.cast_nonneg _
+
+/- ## Part IV-C: Exact Divisor Decomposition -/
+
+/-- The reduced denominator n/gcd(m,n) equals e iff gcd(m,n) = n/e,
+    when e divides n and both are positive. -/
+private lemma reducedDenom_eq_iff_gcd {m n e : ℕ} (hn : 0 < n) (he : 0 < e)
+    (hd : e ∣ n) : reducedDenom m n = e ↔ Nat.gcd m n = n / e := by
+  unfold reducedDenom
+  constructor
+  · intro h
+    have hg_dvd := Nat.gcd_dvd_right m n
+    have hne : Nat.gcd m n * e = n := by
+      have h1 := Nat.div_mul_cancel hg_dvd
+      rw [h] at h1
+      linarith [mul_comm (Nat.gcd m n) e]
+    have h1 := Nat.mul_div_cancel (Nat.gcd m n) he -- gcd * e / e = gcd
+    have h2 : Nat.gcd m n * e / e = n / e := by rw [hne]
+    linarith
+  · intro h
+    rw [h]
+    -- Goal: n / (n / e) = e
+    have hde := Nat.div_mul_cancel hd -- n / e * e = n
+    have hd_pos : 0 < n / e := Nat.div_pos (Nat.le_of_dvd hn hd) he
+    calc n / (n / e) = n / e * e / (n / e) := by congr 1; exact hde.symm
+      _ = e := Nat.mul_div_cancel_left e hd_pos
+
+/-- The reduced denominator of any m divides n (when n > 0). -/
+private lemma reducedDenom_dvd (m n : ℕ) : reducedDenom m n ∣ n :=
+  Nat.div_dvd_of_dvd (Nat.gcd_dvd_right m n)
+
+/-- For e ≥ 2 with e | n: the Icc-based gcd filter equals the range-based gcdClass.
+    Both exclude 0 and n (which have gcd = n ≠ n/e when e ≥ 2). -/
+private lemma Icc_filter_gcd_eq_gcdClass (n e : ℕ) (hn : 0 < n)
+    (hd : e ∣ n) (he2 : 2 ≤ e) :
+    (Icc 1 n).filter (fun m => Nat.gcd m n = n / e) =
+    EulerTotientOQ04.gcdClass n (n / e) := by
+  have hd_lt : n / e < n := Nat.div_lt_self hn (by omega)
+  ext m; simp only [mem_filter, mem_Icc, EulerTotientOQ04.mem_gcdClass]
+  constructor
+  · rintro ⟨⟨_, hmn⟩, hg⟩
+    exact ⟨by rcases eq_or_lt_of_le hmn with rfl | h
+              · rw [Nat.gcd_self] at hg; omega
+              · exact h, hg⟩
+  · rintro ⟨hm_lt, hg⟩
+    refine ⟨⟨?_, le_of_lt hm_lt⟩, hg⟩
+    rcases Nat.eq_zero_or_pos m with rfl | h
+    · simp [Nat.gcd_zero_left] at hg; omega
+    · exact h
+
+/-- Cardinality of the reduced-denominator class:
+    |{m ∈ Icc 1 n : reducedDenom m n = e}| = φ(e) for e | n.
+    For e ≥ 2, bridges to gcdClass via EulerTotientOQ04.
+    For e = 1, the class is {n} with cardinality 1 = φ(1). -/
+private lemma card_Icc_filter_reducedDenom_eq (n e : ℕ) (hn : 0 < n) (he : 0 < e)
+    (hd : e ∣ n) :
+    ((Icc 1 n).filter (fun m => reducedDenom m n = e)).card = Nat.totient e := by
+  have hfilt : ∀ m ∈ Icc 1 n, (reducedDenom m n = e ↔ Nat.gcd m n = n / e) :=
+    fun m _ => reducedDenom_eq_iff_gcd hn he hd
+  rw [Finset.filter_congr hfilt]
+  rcases le_or_gt 2 e with he2 | he_lt
+  · -- e ≥ 2: bridge to gcdClass
+    have hd_pos : 0 < n / e := Nat.div_pos (Nat.le_of_dvd hn hd) he
+    have hd_dvd : (n / e) ∣ n := Nat.div_dvd_of_dvd hd
+    rw [Icc_filter_gcd_eq_gcdClass n e hn hd he2,
+        EulerTotientOQ04.card_gcdClass_eq_totient n (n / e) hn hd_pos hd_dvd]
+    -- Goal: Nat.totient (n / (n / e)) = Nat.totient e
+    -- Need: n / (n / e) = e
+    have hde := Nat.div_mul_cancel hd
+    congr 1
+    calc n / (n / e) = n / e * e / (n / e) := by congr 1; exact hde.symm
+      _ = e := Nat.mul_div_cancel_left e hd_pos
+  · -- e = 1 (since 0 < e and e < 2)
+    have he1 : e = 1 := by omega
+    subst he1
+    -- gcd(m, n) = n/1 = n iff m = n in Icc 1 n
+    have : (Icc 1 n).filter (fun m => Nat.gcd m n = n / 1) = {n} := by
+      rw [Nat.div_one]; ext m; simp only [mem_filter, mem_Icc, mem_singleton]
+      constructor
+      · rintro ⟨⟨_, hmn⟩, hg⟩
+        exact Nat.le_antisymm hmn (Nat.le_of_dvd (by omega) (hg ▸ Nat.gcd_dvd_left m n))
+      · rintro rfl; exact ⟨⟨by omega, le_refl _⟩, Nat.gcd_self _⟩
+    rw [this, card_singleton]
+    native_decide -- Nat.totient 1 = 1
+
+/-- **Exact Divisor Decomposition of φ_A**:
+
+    φ_A(k) = Σ_{e | n_k, e unused} φ(e)
+
+    The generalized totient equals the sum of Euler's totient over divisors
+    of n_k that don't appear as earlier terms in the sequence.
+
+    Proof: partition Icc 1 n_k by reduced-denominator value. Each class for
+    divisor e has φ(e) elements (via the bijection m ↦ m/(n_k/e)). The phiA
+    filter keeps exactly those classes whose divisor e is "unused" — not
+    equal to any previous sequence term.
+
+    This structural theorem enables analysis of all four axioms:
+    - erdos_no_zero_limit via bounding the unused-divisor sum
+    - erdos_dichotomy via Euler product for φ(e)/e
+    - cassels_liminf_zero/haight_resolution via explicit constructions. -/
+theorem phiA_decomposition (A : IncreasingSeq) (k : ℕ) :
+    phiA A k = ((A.seq k).divisors.filter
+      (fun e => ∀ j : ℕ, j < k → e ≠ A.seq j)).sum Nat.totient := by
+  unfold phiA
+  set n := A.seq k with hn_def
+  set F := fun m => ∀ j : ℕ, j < k → reducedDenom m n ≠ A.seq j
+  set P := fun e => ∀ j : ℕ, j < k → e ≠ A.seq j
+  have hn : 0 < n := A.pos k
+  -- Step 1: phiA filter = disjoint union of RD-classes over unused divisors
+  have hbiUnion : (Icc 1 n).filter F =
+      (n.divisors.filter P).biUnion
+        (fun e => (Icc 1 n).filter (fun m => reducedDenom m n = e)) := by
+    ext m; simp only [mem_filter, mem_biUnion, Nat.mem_divisors]
+    constructor
+    · intro ⟨hm, hF⟩
+      exact ⟨reducedDenom m n, ⟨⟨reducedDenom_dvd m n, hn.ne'⟩, hF⟩, hm, rfl⟩
+    · rintro ⟨e, ⟨_, hP⟩, hm, hrd⟩
+      exact ⟨hm, fun j hj => hrd ▸ hP j hj⟩
+  rw [hbiUnion]
+  -- Step 2: card of disjoint union = sum of cards
+  rw [card_biUnion (fun e₁ _ e₂ _ hne => by
+    simp only [Finset.disjoint_filter]
+    intro m _ h1 h2; exact absurd (h1.symm.trans h2) hne)]
+  -- Step 3: each card = φ(e)
+  apply Finset.sum_congr rfl
+  intro e he
+  simp only [mem_filter, Nat.mem_divisors] at he
+  have he_pos : 0 < e := by
+    rcases Nat.eq_zero_or_pos e with rfl | h
+    · simp at he
+    · exact h
+  exact card_Icc_filter_reducedDenom_eq n e hn he_pos he.1.1
+
+/-- The decomposition specializes correctly at k=0: all divisors are unused,
+    recovering the identity Σ_{e | n₀} φ(e) = n₀ = phiA(A, 0). -/
+theorem phiA_decomposition_zero (A : IncreasingSeq) :
+    ((A.seq 0).divisors.filter
+      (fun e => ∀ j : ℕ, j < 0 → e ≠ A.seq j)).sum Nat.totient = A.seq 0 := by
+  have : (A.seq 0).divisors.filter (fun e => ∀ j : ℕ, j < 0 → e ≠ A.seq j) =
+         (A.seq 0).divisors := by
+    apply filter_true_of_mem; intro _ _; intro j hj; omega
+  rw [this, Nat.sum_totient]
+
+/-- Corollary: phiA_ge_totient follows from the decomposition, since
+    n_k is always an unused divisor (strictly greater than all previous terms). -/
+theorem phiA_ge_totient' (A : IncreasingSeq) (k : ℕ) :
+    Nat.totient (A.seq k) ≤ phiA A k := by
+  rw [phiA_decomposition]
+  apply Finset.single_le_sum (fun e _ => Nat.zero_le _)
+  simp only [mem_filter, Nat.mem_divisors]
+  exact ⟨⟨dvd_refl _, (A.pos k).ne'⟩,
+    fun j hj => Nat.ne_of_gt (A.strictMono (by omega))⟩
 
 /- ## Part V: Main Predicates -/
 
