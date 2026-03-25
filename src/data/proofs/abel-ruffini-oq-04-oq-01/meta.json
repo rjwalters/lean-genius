@@ -1,0 +1,234 @@
+{
+  "id": "abel-ruffini-oq-04-oq-01",
+  "title": "Concrete Abel-Ruffini: Gal(x\u2075 - 4x + 2) \u2245 S\u2085 and Unsolvability by Radicals",
+  "slug": "abel-ruffini-oq-04-oq-01",
+  "description": "Proves that the polynomial x\u2075 - 4x + 2 over \u211a has Galois group S\u2085, completing the Abel-Ruffini proof chain with a concrete witness. The roots of this polynomial cannot be expressed using radicals. Irreducibility proved via Eisenstein at p=2; Gal \u2245 S\u2085 via galActionHom bijectivity (1 axiom: |Gal|=120). Realizes S\u2085 as a Galois group over \u211a.",
+  "meta": {
+    "author": "Abel (1824), Galois (1832)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Abel%E2%80%93Ruffini_theorem",
+    "date": "1824",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/AbelRuffiniOQ04OQ01.lean",
+    "tags": [
+      "algebra",
+      "group-theory",
+      "galois-theory",
+      "solvability",
+      "symmetric-group",
+      "eisenstein-criterion",
+      "wiedijk-100"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "assumptions": "One axiom: gal_card_eq_120 (|Gal(x\u2075-4x+2/\u211a)| = 120). Justified by: the polynomial has exactly 3 real roots (sign changes + derivative analysis), so complex conjugation is a transposition in the Galois group; combined with a 5-cycle (prime degree), these generate S\u2085.",
+    "wiedijkNumber": 16,
+    "dateAdded": "2026-03-25",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.irreducible_of_eisenstein_criterion",
+        "description": "Eisenstein's irreducibility criterion",
+        "module": "Mathlib.RingTheory.EisensteinCriterion"
+      },
+      {
+        "theorem": "Polynomial.Gal.galActionHom_injective",
+        "description": "Galois group embeds into Perm(rootSet)",
+        "module": "Mathlib.FieldTheory.PolynomialGaloisGroup"
+      },
+      {
+        "theorem": "Polynomial.Gal.prime_degree_dvd_card",
+        "description": "Prime degree divides Galois group order",
+        "module": "Mathlib.FieldTheory.PolynomialGaloisGroup"
+      },
+      {
+        "theorem": "solvableByRad.isSolvable'",
+        "description": "Solvable by radicals implies solvable Galois group",
+        "module": "Mathlib.FieldTheory.AbelRuffini"
+      },
+      {
+        "theorem": "Equiv.Perm.not_solvable",
+        "description": "Perm(\u03b1) not solvable for |\u03b1| \u2265 5",
+        "module": "Mathlib.GroupTheory.Solvable"
+      }
+    ],
+    "originalContributions": [
+      "Complete proof chain from Eisenstein irreducibility through galActionHom bijectivity to unsolvability by radicals for a specific polynomial x\u2075 - 4x + 2",
+      "S\u2085 realizability theorem: first concrete realization of S\u2085 as a Galois group over \u211a in the gallery",
+      "Connects existing Abel-Ruffini proof chain (OQ-04) to a concrete witness, addressing the open question about formalizing the generic quintic Galois group"
+    ],
+    "prerequisites": [
+      "Galois theory (splitting fields, Galois groups, radical extensions)",
+      "Eisenstein's irreducibility criterion",
+      "Solvable groups and the derived series"
+    ],
+    "mathlib_version": "4.26.0",
+    "lineCount": 362,
+    "relatedProblems": [
+      {
+        "id": "abel-ruffini-oq-04",
+        "relationship": "Extends: provides the concrete polynomial witness for the proof chain documented in OQ-04"
+      },
+      {
+        "id": "abel-ruffini",
+        "relationship": "Extends: uses the Galois bridge from the base theorem to conclude unsolvability"
+      },
+      {
+        "id": "inverse-galois",
+        "relationship": "Contributes: realizes S\u2085 as a Galois group over \u211a"
+      }
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini-oq-04",
+      "relationship": "extends",
+      "description": "Provides the concrete polynomial witness for Step 5 of the proof chain: Gal(x\u2075-4x+2/\u211a) \u2245 S\u2085"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "extends",
+      "description": "Uses the Galois bridge (solvable by radicals \u21d2 solvable Galois group) to conclude unsolvability"
+    },
+    {
+      "targetId": "inverse-galois",
+      "relationship": "contributes",
+      "description": "Realizes S\u2085 as Gal(x\u2075-4x+2/\u211a), complementing S\u2083 and F\u2082\u2080 realizations in the gallery"
+    }
+  ],
+  "overview": {
+    "historicalContext": "The Abel-Ruffini theorem has a dramatic history. Ruffini (1799) gave the first incomplete proof that the general quintic is unsolvable by radicals, but his argument had gaps in the treatment of permutation groups. Abel (1824) provided the first rigorous proof, showing no universal radical formula exists for degree 5 or higher. Galois (1832, published posthumously after his death in a duel at age 20) gave the definitive framework: a polynomial is solvable by radicals if and only if its Galois group is solvable. Since $S_5$ is not solvable (because $A_5$ is simple and non-abelian), any polynomial with Galois group $S_5$ has unsolvable roots. The polynomial $x^5 - 4x + 2$ is a standard textbook example appearing in Dummit-Foote, Artin, and Lang, chosen because Eisenstein's criterion (1850) gives easy irreducibility and derivative analysis shows exactly 3 real roots. This formalization bridges abstract impossibility to a concrete witness: these five specific complex numbers cannot be written using radicals.",
+    "problemStatement": "Prove that the polynomial $x^5 - 4x + 2$ has Galois group $S_5$ over $\\mathbb{Q}$, and conclude that its roots cannot be expressed using radicals.",
+    "text": "This file completes the Abel-Ruffini proof chain by providing a concrete polynomial whose roots are provably unsolvable by radicals. The polynomial x\u2075 - 4x + 2 is shown irreducible via Eisenstein's criterion at p=2, and its Galois group is identified as S\u2085 via the galActionHom bijectivity argument. Since S\u2085 is not solvable, Galois's theorem implies the roots cannot be expressed by radicals.",
+    "proofStrategy": "1. Irreducibility: Eisenstein's criterion at the prime ideal (2) in \u2124, transferred to \u211a via Gauss's lemma. 2. Galois group identification: galActionHom embeds Gal into S\u2085 (injective); with |Gal| = 120 = 5! (axiomatized), the embedding is bijective, giving Gal \u2245 S\u2085. 3. Non-solvability transfer: S\u2085 is not solvable (Mathlib), transferred via MulEquiv. 4. Abel-Ruffini conclusion: contrapositive of Galois's theorem (solvable by radicals \u21d2 solvable Galois group).",
+    "keyInsights": [
+      "**Eisenstein at p = 2 is elegant**: Coefficients $(1, 0, 0, 0, -4, 2)$ satisfy Eisenstein at $(2)$: non-leading coefficients all divisible by 2, constant term 2 not divisible by 4, leading coefficient coprime to 2. This is the simplest irreducibility argument for a specific quintic.",
+      "**3 real roots give a transposition**: Sign analysis at $f(-2) < 0 < f(-1)$, $f(0) > 0 > f(1)$, $f(1) < 0 < f(2)$ locates 3 real roots. Since $f'(x) = 5x^4 - 4$ has only 2 real critical points, there are exactly 3 real and 2 complex conjugate roots. Complex conjugation acts as a transposition on the 5 roots.",
+      "**Transposition + p-cycle generates $S_p$**: Conjugate the transposition $(i\\;j)$ by powers of the $p$-cycle $(1\\;2\\;\\cdots\\;p)$ to generate all adjacent transpositions $(k\\;k+1)$, which generate $S_p$. This classical result is the group-theoretic bridge from real root analysis to the full symmetric group.",
+      "**Pigeonhole for bijectivity**: With $|\\text{Gal}| = |\\text{Perm}(\\text{rootSet})| = 120$ and the injective galActionHom, bijectivity follows from the pigeonhole principle. This avoids constructing an explicit inverse.",
+      "**Concrete witness matters**: Abel's original theorem proves existence of unsolvable quintics abstractly. This formalization gives a specific polynomial $x^5 - 4x + 2$ whose five roots provably resist all radical expressions, making the impossibility tangible."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Overview and Proof Chain",
+      "startLine": 1,
+      "endLine": 57,
+      "summary": "Documents the complete Abel-Ruffini proof chain and motivation for choosing $x^5 - 4x + 2$. Lists all 5 steps from $A_5$ simplicity to unsolvability by radicals.",
+      "mathContext": "Proof chain: (1) $A_5$ simple, (2) $S_n$ not solvable for $n \\geq 5$, (3) solvable by radicals $\\Rightarrow$ solvable Gal, (4) $\\text{Gal}(x^5-4x+2/\\mathbb{Q}) \\cong S_5$, (5) roots not expressible by radicals."
+    },
+    {
+      "id": "polynomial",
+      "title": "The Polynomial p = X\u2075 - 4X + 2",
+      "startLine": 58,
+      "endLine": 68,
+      "summary": "Defines $p = X^5 - 4X + 2$ over $\\mathbb{Q}$ and its $\\mathbb{Z}[X]$ version for Eisenstein criterion application.",
+      "mathContext": "$p(x) = x^5 - 4x + 2 \\in \\mathbb{Q}[X]$, $p_{\\text{int}} = x^5 - 4x + 2 \\in \\mathbb{Z}[X]$."
+    },
+    {
+      "id": "irreducibility",
+      "title": "Irreducibility via Eisenstein at p = 2",
+      "startLine": 69,
+      "endLine": 175,
+      "summary": "Proves $p$ is irreducible over $\\mathbb{Q}$. First proves irreducibility over $\\mathbb{Z}$ using Eisenstein's criterion at the prime ideal $(2)$, then transfers to $\\mathbb{Q}$ via Gauss's lemma (monic $\\Rightarrow$ primitive).",
+      "mathContext": "Eisenstein at $(2) \\subset \\mathbb{Z}$: $2 \\nmid 1$, $2 \\mid 0, 0, 0, -4, 2$, $4 \\nmid 2$. Therefore $p$ is irreducible over $\\mathbb{Z}$, hence over $\\mathbb{Q}$ by Gauss's lemma."
+    },
+    {
+      "id": "structure",
+      "title": "Basic Structural Properties",
+      "startLine": 176,
+      "endLine": 206,
+      "summary": "Proves $\\deg(p) = 5$, $p$ is monic, $p$ is separable (char 0), and $|\\text{rootSet}(p)| = 5$.",
+      "mathContext": "$\\deg(p) = 5$, $p$ monic and separable. In the splitting field: $|\\{\\alpha : p(\\alpha) = 0\\}| = 5$."
+    },
+    {
+      "id": "galois-structure",
+      "title": "Galois Group Structure",
+      "startLine": 207,
+      "endLine": 228,
+      "summary": "Proves $5 \\mid |\\text{Gal}|$ (prime degree gives transitive action, orbit-stabilizer) and $|\\text{Gal}| \\mid 120$ (galActionHom embeds $\\text{Gal}$ into $S_5$). Together: $|\\text{Gal}| \\in \\{5, 10, 15, 20, 30, 40, 60, 120\\}$.",
+      "mathContext": "$5 \\mid |\\text{Gal}|$ and $|\\text{Gal}| \\mid 5! = 120$. Possible orders: $\\{5, 10, 15, 20, 30, 40, 60, 120\\}$."
+    },
+    {
+      "id": "gal-order",
+      "title": "Galois Group Order (Axiom)",
+      "startLine": 229,
+      "endLine": 267,
+      "summary": "Axiomatizes $|\\text{Gal}| = 120$ with detailed justification: 3 real roots (sign changes + derivative analysis), complex conjugation gives a transposition, transposition + 5-cycle generates $S_5$.",
+      "mathContext": "Axiom: $|\\text{Gal}(x^5-4x+2/\\mathbb{Q})| = 120 = 5!$. Justified: 3 real roots $\\Rightarrow$ transposition, prime degree $\\Rightarrow$ 5-cycle, $\\langle (i\\;j), (1\\;2\\;3\\;4\\;5) \\rangle = S_5$."
+    },
+    {
+      "id": "gal-iso",
+      "title": "Gal(p/\u211a) \u2245 S\u2085",
+      "startLine": 268,
+      "endLine": 280,
+      "summary": "Proves $\\text{Gal} \\cong S_5$ via galActionHom bijectivity: injective + $|\\text{Gal}| = |\\text{Perm}(\\text{rootSet})| = 120$. Transfers via $\\text{rootSet} \\simeq \\text{Fin}\\;5$.",
+      "mathContext": "$\\text{galActionHom}$ injective + $|\\text{Gal}| = |S_5| = 120$ $\\Rightarrow$ bijective $\\Rightarrow$ $\\text{Gal}(p/\\mathbb{Q}) \\cong S_5$."
+    },
+    {
+      "id": "not-solvable",
+      "title": "Non-Solvability",
+      "startLine": 281,
+      "endLine": 300,
+      "summary": "Proves $S_5$ is not solvable ($A_5$ is simple, $5 \\geq 5$) and transfers to $\\text{Gal}$ via the surjective isomorphism.",
+      "mathContext": "$S_5$ not solvable (derived series: $S_5 \\supset A_5 \\supset \\{e\\}$, $A_5$ simple non-abelian). $\\text{Gal} \\cong S_5 \\Rightarrow \\text{Gal}$ not solvable."
+    },
+    {
+      "id": "abel-ruffini",
+      "title": "Abel-Ruffini Conclusion",
+      "startLine": 301,
+      "endLine": 340,
+      "summary": "Main theorem: the roots of $x^5 - 4x + 2$ are not solvable by radicals. By contrapositive: if $\\alpha$ were solvable by radicals, $\\text{Gal}(p/\\mathbb{Q})$ would be solvable, but $S_5$ is not.",
+      "mathContext": "$\\alpha \\in \\text{Rad}(\\mathbb{Q}) \\Rightarrow \\text{Gal}(p/\\mathbb{Q})$ solvable $\\Rightarrow S_5$ solvable $\\Rightarrow \\bot$."
+    },
+    {
+      "id": "realizability",
+      "title": "$S_5$ Realizability",
+      "startLine": 341,
+      "endLine": 365,
+      "summary": "$S_5$ is realizable as a Galois group over $\\mathbb{Q}$, witnessed by the splitting field of $x^5 - 4x + 2$. Contributes to the inverse Galois problem.",
+      "mathContext": "$\\exists K/\\mathbb{Q}$ Galois: $\\text{Gal}(K/\\mathbb{Q}) \\cong S_5$. Witness: $K = $ splitting field of $x^5 - 4x + 2$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization completes the Abel-Ruffini proof chain by exhibiting a concrete polynomial $x^5 - 4x + 2$ whose roots cannot be expressed by radicals. The proof proceeds from Eisenstein irreducibility through Galois group identification ($\\text{Gal} \\cong S_5$ via galActionHom bijectivity) to the final unsolvability conclusion via Galois's theorem. Only one axiom is used: $|\\text{Gal}| = 120$, justified by classical real root analysis and group generation.",
+    "implications": "This result makes the Abel-Ruffini theorem tangible: rather than an abstract impossibility for the 'general quintic', we have a specific polynomial whose five roots provably resist all radical expressions. The $S_5$ realizability result also contributes to the inverse Galois problem, complementing existing gallery realizations of $S_3$ and $F_{20}$.",
+    "openQuestions": [
+      "Can the axiom $|\\text{Gal}| = 120$ be eliminated by formalizing the real root count (intermediate value theorem + derivative analysis) and the group generation lemma (transposition + p-cycle generates $S_p$)?",
+      "What is the simplest quintic with Galois group $S_5$ in terms of coefficient size? Is $x^5 - x - 1$ also a valid witness (it has $\\text{Gal} = S_5$ and smaller coefficients)?",
+      "Can this approach be generalized to realize other transitive subgroups of $S_5$ (e.g., $A_5$, $D_5$, $F_{20}$) as Galois groups of specific quintics?",
+      "The Mazur-Ulam gap: can Mathlib's growing theory of polynomial Galois groups eventually compute $|\\text{Gal}|$ for specific polynomials, eliminating the need for the cardinality axiom?"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Polynomial"],
+    "namespace": "AbelRuffiniOQ04OQ01",
+    "lineCount": 362,
+    "axiomCount": 1,
+    "theoremCount": 12,
+    "definitionCount": 2
+  },
+  "references": [
+    {
+      "key": "Ab24",
+      "citation": "Abel, N.H., M\u00e9moire sur les \u00e9quations alg\u00e9briques, o\u00f9 l'on d\u00e9montre l'impossibilit\u00e9 de la r\u00e9solution de l'\u00e9quation g\u00e9n\u00e9rale du cinqui\u00e8me degr\u00e9 (1824).",
+      "type": "paper"
+    },
+    {
+      "key": "Ga32",
+      "citation": "Galois, \u00c9., M\u00e9moire sur les conditions de r\u00e9solubilit\u00e9 des \u00e9quations par radicaux (1832).",
+      "type": "paper"
+    },
+    {
+      "key": "Ar42",
+      "citation": "Artin, E., Galois Theory, Notre Dame Mathematical Lectures 2 (1942).",
+      "type": "book"
+    },
+    {
+      "key": "DF04",
+      "citation": "Dummit, D.S. and Foote, R.M., Abstract Algebra, 3rd ed., Wiley (2004). Section 14.6: example of x^5-4x+2 with Galois group S_5.",
+      "type": "book"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1131-oq-01",
   "title": "Is min I = 2 - (1+o(1))/n",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,24 +16,40 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-24T00:48:59.907Z",
+    "phase": "ACT",
+    "since": "2026-03-25T00:00:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Proved 5 axioms via product/cos/integral reasoning.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Attempt partition_of_unity or lagrangeIntegral_lower_bound.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: 9→4 axioms. Proved lagrangeBasis_self/other, chebyshevNodes_in_range/distinct, replaced lagrangeIntegral axiom with proper interval integral def.",
+    "builtItems": [
+      "lagrangeBasis_self: Finset.prod_eq_one + div_self (product of 1s)",
+      "lagrangeBasis_other: Finset.prod_eq_zero + sub_self (zero factor)",
+      "chebyshevNodes_in_range: Real.neg_one_le_cos + Real.cos_le_one",
+      "chebyshevNodes_distinct: Real.strictAntiOn_cos.injOn on [0,pi]",
+      "lagrangeIntegral: noncomputable def using intervalIntegral"
+    ],
+    "insights": [
+      "lagrangeBasis product form makes self/other proofs very clean",
+      "Chebyshev arguments (2k+1)pi/(2n) lie in (0,pi) with cos strictly decreasing - direct injectivity",
+      "div_le_iff and div_le_one_of_le removed in Mathlib v4.26.0 - use gcongr + field_simp instead",
+      "Remaining 4 axioms: 2 integral bounds (need L2/Cauchy-Schwarz), 1 Chebyshev estimate (deep analysis), 1 OPEN conjecture"
+    ],
+    "mathlibGaps": [
+      "Lagrange interpolation integral bounds require MeasureTheory.Integral + Cauchy-Schwarz in L2"
+    ],
+    "nextSteps": [
+      "Attempt lagrangeIntegral_lower_bound: I >= 2/n via partition of unity + Cauchy-Schwarz",
+      "Consider proving partition_of_unity: sum_k l_k(x) = 1 (polynomial degree argument)"
+    ]
   },
   "tags": [
     "erdos",
@@ -62,9 +78,9 @@
     {
       "path": "Proofs/Erdos1131Problem.lean",
       "filename": "Erdos1131Problem.lean",
-      "lineCount": 159,
-      "theoremCount": 1,
-      "axiomCount": 9,
+      "lineCount": 213,
+      "theoremCount": 5,
+      "axiomCount": 4,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,

@@ -161,7 +161,28 @@ theorem trivial_decomp_exists (n r : ℕ) (H : RUniformHypergraph (Fin n) r) :
     ∃ pieces : Finset (Finset (Finset (Fin n))),
       IsValidDecomp r H pieces ∧
       pieces.card ≤ H.edges.card := by
-  sorry
+  -- Construct: pieces = { {e} | e ∈ H.edges }
+  refine ⟨H.edges.image (fun e => ({e} : Finset (Finset (Fin n)))), ?_, ?_⟩
+  · exact {
+      pieces_valid := by
+        intro p hp
+        simp only [Finset.mem_image] at hp
+        obtain ⟨e, he, rfl⟩ := hp
+        exact Or.inl ⟨e, H.uniform e he, rfl⟩
+      pairwise_disjoint := by
+        intro p₁ hp₁ p₂ hp₂ hne
+        simp only [Finset.mem_image] at hp₁ hp₂
+        obtain ⟨e₁, _, rfl⟩ := hp₁
+        obtain ⟨e₂, _, rfl⟩ := hp₂
+        intro e
+        simp only [Finset.mem_singleton, not_and]
+        intro h1 h2
+        exact hne (by rw [h1, h2])
+      covers := by
+        intro e he
+        exact ⟨{e}, Finset.mem_image.mpr ⟨e, he, rfl⟩, Finset.mem_singleton.mpr rfl⟩
+    }
+  · exact Finset.card_image_le
 
 -- ## Relationship to Other Problems
 

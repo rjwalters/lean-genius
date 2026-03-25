@@ -1226,28 +1226,37 @@
       "issues": []
     },
     "erdos-138": {
-      "auditCount": 1,
-      "lastAudited": "2026-03-24T08:30:30Z",
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T18:30:00Z",
       "result": "issues-fixed",
-      "issues": []
+      "issues": [
+        "PR #6446: sorries 4\u21925"
+      ]
     },
     "erdos-392": {
-      "auditCount": 1,
-      "lastAudited": "2026-03-24T08:30:30Z",
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T18:20:00Z",
       "result": "issues-fixed",
-      "issues": []
+      "issues": [
+        "PR #6444: sorries 2\u21923"
+      ]
     },
     "erdos-628": {
-      "auditCount": 1,
-      "lastAudited": "2026-03-24T08:30:30Z",
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T18:10:00Z",
       "result": "issues-fixed",
-      "issues": []
+      "issues": [
+        "PR #6443: sorries 11\u219212, definitionCount 14\u219212"
+      ]
     },
     "erdos-746": {
-      "auditCount": 1,
-      "lastAudited": "2026-03-24T08:30:30Z",
-      "result": "issues-fixed",
-      "issues": []
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T18:00:00Z",
+      "result": "issues-found",
+      "issues": [
+        "PR #6440: sorry count 3\u21924",
+        "Issue #6441: 9 vacuous True stubs"
+      ]
     },
     "erdos-1160": {
       "auditCount": 1,
@@ -6548,10 +6557,12 @@
       "agentId": "auditor-cycle-20-batch"
     },
     "erdos-719": {
-      "lastAudited": "2026-03-24T13:12:27Z",
-      "auditCount": 1,
-      "result": "clean",
-      "agentId": "auditor-cycle-20-batch"
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T18:40:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "PR #6447: sorries 2\u21921, lineCount 175\u2192196"
+      ]
     },
     "erdos-72": {
       "lastAudited": "2026-03-24T13:12:27Z",
@@ -9200,15 +9211,29 @@
       "issues": []
     },
     "descartes-rule-of-signs-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-03-24T23:11:13Z",
-      "result": "clean",
-      "issues": []
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T18:50:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "PR #6448: sorries 2\u21920, lineCount 552\u2192698"
+      ]
     },
     "fundamental-theorem-algebra-oq-04": {
       "auditCount": 1,
       "lastAudited": "2026-03-24T23:11:13Z",
       "result": "issues-found",
+      "issues": []
+    },
+    "erdos-1014-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T23:33:39Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-103-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T23:34:02Z",
+      "result": "clean",
       "issues": []
     }
   },

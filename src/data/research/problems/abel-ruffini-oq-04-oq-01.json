@@ -1,7 +1,7 @@
 {
   "slug": "abel-ruffini-oq-04-oq-01",
   "title": "Formalize the Galois group computation for the generic quintic: Gal(x⁵ + a₁x⁴...",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,24 +16,42 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-24T00:48:59.816Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "ACT",
+    "since": "2026-03-25T00:00:00Z",
+    "iteration": 2,
+    "focus": "Concrete polynomial x^5-4x+2 proved with 1 axiom",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Eliminate gal_card_eq_120 axiom",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: Proved Gal(x^5-4x+2/Q) ≅ S_5 with 1 axiom (|Gal|=120). Roots not solvable by radicals.",
+    "builtItems": [
+      "Proofs/AbelRuffiniOQ04OQ01.lean: Full proof (362 lines, 12 theorems, 1 axiom)",
+      "p_irreducible: Eisenstein at 2 for x^5-4x+2",
+      "gal_iso_s5: Gal(p/Q) ≅ S_5 via galActionHom bijectivity",
+      "roots_not_solvable_by_rad: contrapositive of Galois theorem",
+      "s5_realizable: S_5 realized as Galois group over Q"
+    ],
+    "insights": [
+      "Concrete polynomial approach more tractable than generic polynomial: x^5-4x+2 via Eisenstein at 2",
+      "galActionHom bijectivity pattern (injective + card equality) well-established in codebase for S_3, F_20, A_5",
+      "solvable_of_surjective (not isSolvable_of_surjective) is the correct Mathlib4 name for solvability transfer",
+      "Generic polynomial approach (MvPolynomial + FractionRing + esymmAlgEquiv) requires 3-4 substantial gap lemmas"
+    ],
+    "mathlibGaps": [
+      "No generic polynomial Galois group computation in Mathlib (FractionRing of MvPolynomial + Galois theory)",
+      "No direct MulEquiv.isSolvable_iff — must use solvable_of_surjective with explicit surjectivity proof"
+    ],
+    "nextSteps": [
+      "Eliminate gal_card_eq_120 axiom: formalize 3-real-roots analysis (IVT + derivative bounding)",
+      "Or: prove group theory lemma (transitive + transposition + p-cycle = S_p) to derive |Gal|=120 from 3 real roots",
+      "Generic polynomial approach: build FractionRing functoriality for MvPolynomial subalgebras"
+    ]
   },
   "tags": [
     "algebra",
@@ -53,7 +71,7 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.815Z",
-  "lastUpdate": "2026-03-24T00:48:59.816Z",
+  "lastUpdate": "2026-03-25T00:00:00Z",
   "significance": 8,
   "tractability": 6,
   "leanFiles": [

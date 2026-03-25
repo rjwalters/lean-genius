@@ -155,5 +155,22 @@
       "relationship": "sibling",
       "description": "Sibling open question: Minimal Polynomial vs Characteristic Polynomial Reduction"
     }
+  ],
+  "references": [
+    {
+      "key": "CH53",
+      "citation": "Cayley, A., A memoir on the theory of matrices, Philosophical Transactions of the Royal Society of London 148 (1858), 17–37. Original statement of the Cayley-Hamilton theorem.",
+      "type": "paper"
+    },
+    {
+      "key": "HJ13",
+      "citation": "Horn, R.A. and Johnson, C.R., Matrix Analysis, 2nd ed., Cambridge University Press (2013), Chapter 2. Modern treatment of Cayley-Hamilton with applications to matrix functions and polynomials.",
+      "type": "book"
+    },
+    {
+      "key": "La95",
+      "citation": "Lancaster, P. and Tismenetsky, M., The Theory of Matrices, 2nd ed., Academic Press (1985). Comprehensive treatment of matrix polynomials and computational aspects of Cayley-Hamilton reduction.",
+      "type": "book"
+    }
   ]
 }
