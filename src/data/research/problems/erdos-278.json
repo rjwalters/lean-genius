@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 6 proved key building block for coprime_density_formula axiom elimination: systemLCM = product for coprime moduli.",
+    "progressSummary": "AXIOM ELIMINATION: coprime_density_formula PROVED (2→1 axioms). CRT complement counting argument. File: 31 theorems, 1 axiom (Simpson 1986), 0 sorries, 646 lines.",
     "builtItems": [
       "Proved erdos_278_density_le_one (axiom → theorem) via csSup_le",
       "Fixed foldl_lcm_pos: updated List.mem_cons_self/mem_cons_of_mem to simp",
@@ -45,7 +45,14 @@
       "Added coprimeDensity definition and coprimeDensity_singleton theorem",
       "Proved coprime_max_eq_min: for coprime moduli, max=min=coprimeDensity (from axiom)",
       "PROVED foldl_lcm_eq_foldl_mul: for pairwise coprime lists, foldl lcm = foldl mul",
-      "PROVED systemLCM_coprime_eq_prod: for pairwise coprime moduli, systemLCM = Finset.prod id"
+      "PROVED systemLCM_coprime_eq_prod: for pairwise coprime moduli, systemLCM = Finset.prod id",
+      "coprime_density_formula PROVED (was axiom): CRT argument via complement_eq_prod + prod_sub_one_div",
+      "complement_eq_prod: core CRT lemma by Finset induction with biUnion fiber decomposition",
+      "coprime_shift_injective: CRT injectivity for residue shifts",
+      "coprime_residues_complete: complete residue system for coprime shifts",
+      "coprime_avoid_count: exactly (n-1) residues avoid a given target",
+      "mod_add_mul_dvd: helper for modular arithmetic with divisibility",
+      "prod_sub_one_div: fraction identity connecting ℕ products to ℝ density"
     ],
     "insights": [
       "erdos_278_open_question was trivially provable: maxCoverageDensity is sSup of densities, each ≤ 1",
@@ -59,7 +66,8 @@
       "Fixed round-trips using Nat.div_add_mod decomposition + ring for Nat.add_mul_mod_self_left",
       "For coprime moduli, CRT makes density invariant under residue choice: max=min=coprimeDensity",
       "coprime_density_formula proof path: (1) systemLCM=prod [DONE], (2) CRT bijection, (3) complement counting ∏(nᵢ-1)",
-      "List.pairwise_iff_forall_ne missing in Mathlib - use pairwise_iff_getElem + Nodup"
+      "List.pairwise_iff_forall_ne missing in Mathlib - use pairwise_iff_getElem + Nodup",
+      "CRT complement counting: for coprime moduli, uncovered elements = ∏(nᵢ-1) by Finset induction with fiber decomposition"
     ],
     "mathlibGaps": [],
     "nextSteps": [
