@@ -99,7 +99,9 @@
       "**Universe Subtlety**: The set {α : Ordinal.{0} | α.card ≤ ℵ₀} lives in Type 1, so its cardinality is Cardinal.{1}. The key result ω₁.card = aleph 1 remains in Cardinal.{0} and is proved directly."
     ],
     "prerequisites": [
-      "Set theory and cardinality"
+      "Set theory (cardinals, power sets, injections)",
+      "Mathematical logic (Russell's paradox, self-reference)",
+      "Computability theory (halting problem, undecidability)"
     ]
   },
   "sections": [

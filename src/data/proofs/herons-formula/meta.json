@@ -50,7 +50,9 @@
       "**Algebraic proof by `ring`**: The key algebraic identity reducing Heron's product to the expanded form is closed entirely by Lean's `ring` tactic, demonstrating the power of verified algebraic computation"
     ],
     "prerequisites": [
-      "Geometry (Euclidean, combinatorial)"
+      "Euclidean geometry (triangles, area formulas)",
+      "Algebra (algebraic manipulation, square roots)",
+      "Trigonometry (law of cosines, area = ab sin C / 2)"
     ]
   },
   "sections": [

@@ -81,11 +81,9 @@
       "**Zero sorries via delegation**: All 10 theorems are proved by delegating to Mathlib. The value is not in new proofs but in the organized presentation: Young $\\to$ Hölder $\\to$ Cauchy-Schwarz $\\to$ Minkowski, showing how one inequality generates the entire $L^p$ theory."
     ],
     "prerequisites": [
-      "Lebesgue measure and integration (lintegral)",
-      "Conjugate exponents (Real.HolderConjugate)",
-      "Lp spaces and their norms (MeasureTheory.Lp)",
-      "AEMeasurable functions",
-      "Parent proof: Lebesgue Measure"
+      "Real analysis (outer measure, sigma-algebras, Caratheodory extension)",
+      "Measure theory (Lebesgue measurability, null sets)",
+      "Set theory (axiom of choice, Vitali sets)"
     ]
   },
   "sections": [

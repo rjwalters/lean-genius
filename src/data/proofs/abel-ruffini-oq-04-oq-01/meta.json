@@ -154,6 +154,12 @@
       "**Sylow elimination as case analysis**: The proof that $|\\text{Gal}| = 120$ is a remarkable case analysis. From $5 \\mid |G|$, $3 \\mid |G|$, and $|G| \\mid 120$, the candidates are $\\{15, 30, 60, 120\\}$. Sylow theory eliminates 15 (unique $P_5$ and $P_3$ would force a cyclic subgroup of order 15, but $S_5$ has none). The simplicity of $A_5$ eliminates 30 (an index-4 subgroup gives $S_5 \\to S_4$, impossible). The odd permutation from discriminant analysis eliminates 60 ($A_5$ is the unique order-60 subgroup, but the Galois image is not contained in $A_5$). Only 120 remains.",
       "**Axiom decomposition as formalization strategy**: Rather than axiomatizing the final result $|\\text{Gal}| = 120$ directly, this proof decomposes it into three narrow, independently verifiable axioms — each corresponding to a specific mathematical tool (Dedekind's theorem, discriminant computation, Vandermonde identity). This makes the axioms transparent and provides a clear roadmap for elimination: each axiom has a known proof technique that could be formalized in Lean.",
       "**Dedekind's theorem bridges algebra and number theory**: The key axiom $3 \\mid |\\text{Gal}|$ comes from reducing $p(x)$ modulo a prime $q = 13$ and analyzing the factorization pattern. The factorization $x^5 - 4x + 2 \\equiv (x-2)(x-5)(x^3+7x^2+8) \\pmod{13}$ reveals a Frobenius element with cycle type $(1,1,3)$, so $3 \\mid |\\text{Gal}|$ by Lagrange's theorem. This exemplifies the Langlands philosophy: arithmetic information (mod-$p$ reduction) constrains algebraic structure (Galois group order)."
+    ],
+    "prerequisites": [
+      "Abstract algebra (groups, solvable groups, symmetric groups)",
+      "Galois theory (field extensions, Galois groups, splitting fields)",
+      "Polynomial algebra (irreducibility criteria, Eisenstein criterion)",
+      "Number theory (p-adic valuations, reduction modulo primes)"
     ]
   },
   "sections": [

@@ -68,7 +68,9 @@
       "**Lean Proof Technique:** The proof works over `Nat.digits 10 n` (Mathlib's digit decomposition) and uses `Finset.sum_congr` with the congruence $10^k \\equiv 1$, reducing the problem to summing digits modulo 3."
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Elementary number theory (divisibility, modular arithmetic)",
+      "Digital root theory (digit sum properties)",
+      "Mathematical induction"
     ]
   },
   "sections": [

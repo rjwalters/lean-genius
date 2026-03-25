@@ -69,6 +69,11 @@
       "Concavity decomposes into two applications of convexity of x·log(x), one for each 'leg' of h(p) = f(p) + f(1-p) where f(x) = -x·log(x), connected by the affine identity on weights",
       "The zero characterization h(p)=0 iff p∈{0,1} uses strict log monotonicity to upgrade the non-negativity proof: the same sign argument that gives ≤ 0 becomes < 0 in the interior, forcing both terms to be simultaneously zero only at the boundary",
       "The symmetry h(p) = h(1-p) is proved purely by ring arithmetic with no analysis, reflecting that entropy depends only on the multiset of probabilities — relabeling outcomes cannot change information content"
+    ],
+    "prerequisites": [
+      "Real analysis (continuity, differentiability, concavity)",
+      "Information theory (entropy, mutual information)",
+      "Convex analysis (Jensen inequality, second derivative test)"
     ]
   },
   "sections": [

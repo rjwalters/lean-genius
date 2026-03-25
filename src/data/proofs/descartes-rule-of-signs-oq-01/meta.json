@@ -91,7 +91,9 @@
       "For the combined rule (upper bound + parity), even the simplified statement `descartes_rule_combined` is useful: it gives exact count modulo 2, and `one_sign_variation_one_positive_root` derives the exact count 1 from signVariations = 1."
     ],
     "prerequisites": [
-      "Abstract algebra"
+      "Polynomial algebra (real roots, sign changes)",
+      "Real analysis (intermediate value theorem, root bounds)",
+      "Combinatorics (sign variation sequences)"
     ]
   },
   "sections": [

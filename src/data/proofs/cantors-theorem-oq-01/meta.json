@@ -78,7 +78,9 @@
       "**Universe Pinning:** All `Cardinal` statements must use `Cardinal.{0}` to avoid universe metavariable issues in Lean4. This is a formalization concern, not a mathematical one — but essential for correct type-checking."
     ],
     "prerequisites": [
-      "Set theory and cardinality"
+      "Set theory (power sets, cardinality comparisons)",
+      "Mathematical logic (proof by contradiction)",
+      "Abstract algebra (functions, injections, surjections)"
     ]
   },
   "sections": [

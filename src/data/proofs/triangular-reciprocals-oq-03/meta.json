@@ -58,7 +58,9 @@
       "The Lean formalization handles the n=0 edge case explicitly via if-then-else, since ℕ-indexed series must account for 0 even though the mathematical series starts at n=1"
     ],
     "prerequisites": [
-      "Mathematical analysis"
+      "Real analysis (series convergence, partial fractions)",
+      "Combinatorics (triangular numbers, binomial coefficients)",
+      "Calculus (telescoping sums, integral comparison)"
     ]
   },
   "sections": [

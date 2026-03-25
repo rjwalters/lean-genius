@@ -67,7 +67,9 @@
       "The $\\sqrt{2}$ proof is constructive via Mathlib's `Real.sqrt`, not via bisection — connecting the bisection sequence to sqrt requires the full convergence theorem"
     ],
     "prerequisites": [
-      "Mathematical analysis"
+      "Real analysis (continuity, completeness of reals)",
+      "Topology (connectedness, path-connectedness)",
+      "Order theory (least upper bound property)"
     ]
   },
   "sections": [

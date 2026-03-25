@@ -71,7 +71,9 @@
       "**Divisibility-based proof**: Using `Int.modEq_iff_dvd` converts congruences to divisibility, which is the natural language for the algebraic argument from Bézout's identity."
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Number theory (extended Euclidean algorithm, GCD properties)",
+      "Ring theory (principal ideal domains)",
+      "Modular arithmetic (linear congruences, inverses)"
     ]
   },
   "sections": [

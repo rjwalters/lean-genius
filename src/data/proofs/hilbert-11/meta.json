@@ -48,7 +48,10 @@
       "**Hilbert reciprocity** $\\prod_v (a,b)_v = 1$: the product of all Hilbert symbols equals 1, generalizing quadratic reciprocity and connecting quadratic forms to class field theory"
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Number theory (primes, divisibility, quadratic residues)",
+      "Linear algebra (symmetric bilinear forms, eigenvalues)",
+      "p-adic numbers (completions, Hensel's lemma)",
+      "Abstract algebra (rings, fields, Grothendieck groups)"
     ]
   },
   "sections": [

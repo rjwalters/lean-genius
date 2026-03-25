@@ -68,7 +68,9 @@
       "The formalization bridges discrete combinatorics (sign changes in coefficient lists) with continuous analysis (intermediate value theorem, Rolle's theorem), illustrating how Lean handles both paradigms within a single proof"
     ],
     "prerequisites": [
-      "Abstract algebra"
+      "Polynomial algebra (roots, factorization)",
+      "Real analysis (intermediate value theorem, continuity)",
+      "Combinatorics (sign changes, variations)"
     ]
   },
   "sections": [

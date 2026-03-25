@@ -104,7 +104,9 @@
       "**RSA depends on Bézout**: In RSA, the private key $d$ satisfies $ed \\equiv 1 \\pmod{\\phi(n)}$, which is found by applying the extended Euclidean algorithm to $e$ and $\\phi(n)$. The security of RSA rests on the computational difficulty of factoring $n$, but key generation is efficient precisely because of Bézout's identity"
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)"
+      "Number theory (divisibility, GCD, Euclidean algorithm)",
+      "Ring theory (principal ideal domains, Bezout domains)",
+      "Abstract algebra (ideals, quotient rings)"
     ]
   },
   "sections": [

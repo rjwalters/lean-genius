@@ -100,6 +100,11 @@
       "The proof technique generalizes: any Machin-like formula pi/4 = sum of c_i * arctan(a_i/b_i) can be verified by iterating arctan_add",
       "Machin's formula reduces pi computation from O(N) terms (Leibniz) to O(log N) terms: the arctan series at x = 1/5 converges as O(5^{-2N}) and at x = 1/239 as O(239^{-2N}), making each additional term worth many digits",
       "The 28561 = 169^2 coincidence is explained by Gaussian integers: $(2+i)^4(239+i)$ is a real multiple of $(1+i)$, so $4\\arg(2+i) + \\arg(239+i) = \\arg(1+i) = \\pi/4$ — Størmer's theorem (1899) classifies all such two-term identities via $\\mathbb{Z}[i]$ factorizations"
+    ],
+    "prerequisites": [
+      "Trigonometry (arctangent function, addition formulas)",
+      "Real analysis (Taylor series, convergence of series)",
+      "Numerical analysis (convergence acceleration, Machin-like formulas)"
     ]
   },
   "sections": [

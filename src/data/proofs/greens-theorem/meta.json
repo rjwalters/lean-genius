@@ -74,7 +74,9 @@
       "**Generalized Stokes' theorem**: Green's theorem is $\\int_{\\partial D} \\omega = \\int_D d\\omega$ for the 1-form $\\omega = P\\,dx + Q\\,dy$ with exterior derivative $d\\omega = (\\partial_x Q - \\partial_y P)\\,dx \\wedge dy$. The 3D version is the classical Stokes' theorem; the 1D version is the FTC."
     ],
     "prerequisites": [
-      "Mathematical analysis"
+      "Multivariable calculus (partial derivatives, double integrals)",
+      "Vector calculus (line integrals, curl, divergence)",
+      "Real analysis (Riemann integration, Fubini's theorem)"
     ]
   },
   "sections": [
