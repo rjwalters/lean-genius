@@ -53,7 +53,7 @@
       "summary": "Defines ProbMeasure wrapping Mathlib's Measure R with IsProbabilityMeasure constraint, and diracProb for Dirac delta measures.",
       "startLine": 35,
       "endLine": 48,
-      "mathContext": "Defines ProbMeasure wrapping Mathlib's Measure R with IsProbabilityMeasure constraint, and diracProb for Dirac delta measures."
+      "mathContext": "$\\text{ProbMeasure}(\\mathbb{R})$: measures $\\mu$ with $\\mu(\\mathbb{R}) = 1$. Dirac measure: $\\delta_a(B) = \\mathbf{1}_B(a)$. These form the objects of the convolution monoid."
     },
     {
       "id": "convolution",
@@ -61,7 +61,7 @@
       "summary": "Axiomatizes convolution of probability measures and its preservation of the probability measure property.",
       "startLine": 49,
       "endLine": 61,
-      "mathContext": "Axiomatizes convolution of probability measures and its preservation of the probability measure property."
+      "mathContext": "$(\\mu * \\nu)(B) = \\int\\int \\mathbf{1}_B(x+y)\\, d\\mu(x)\\, d\\nu(y)$. Convolution of probability measures is again a probability measure: $(\\mu * \\nu)(\\mathbb{R}) = 1$."
     },
     {
       "id": "monoid",
@@ -69,7 +69,7 @@
       "summary": "Axioms for the commutative monoid: associativity, left/right identity (Dirac at 0), commutativity.",
       "startLine": 62,
       "endLine": 81,
-      "mathContext": "Axioms for the commutative monoid: associativity, left/right identity (Dirac at 0), commutativity."
+      "mathContext": "$(\\text{ProbMeasure}(\\mathbb{R}), *, \\delta_0)$ is a commutative monoid: $\\mu * (\\nu * \\rho) = (\\mu * \\nu) * \\rho$ (associativity), $\\mu * \\delta_0 = \\mu$ (identity), $\\mu * \\nu = \\nu * \\mu$ (commutativity)."
     },
     {
       "id": "conv-pow",
@@ -77,7 +77,7 @@
       "summary": "Defines convPow mu n recursively, proves convPow_zero, convPow_one, and the distribution law convPow_add by induction.",
       "startLine": 82,
       "endLine": 114,
-      "mathContext": "Defines convPow mu n recursively, proves convPow_zero, convPow_one, and the distribution law convPow_add by induction."
+      "mathContext": "$\\mu^{*n} = \\underbrace{\\mu * \\cdots * \\mu}_{n}$: $\\mu^{*0} = \\delta_0$, $\\mu^{*1} = \\mu$. Distribution of $S_n = X_1 + \\cdots + X_n$ is $\\mu^{*n}$ when $X_i \\sim \\mu$ i.i.d."
     },
     {
       "id": "char-fun",
@@ -85,7 +85,7 @@
       "summary": "Axiomatizes the characteristic function, proves it is a monoid homomorphism (charFun_convolution, charFun_dirac_zero), and derives charFun_convPow.",
       "startLine": 115,
       "endLine": 145,
-      "mathContext": "Axiomatizes the characteristic function, proves it is a monoid homomorphism (charFun_convolution, charFun_dirac_zero), and derives charFun_convPow."
+      "mathContext": "$\\hat{\\mu}(t) = \\int e^{itx}\\, d\\mu(x)$ is a monoid homomorphism: $\\widehat{\\mu * \\nu}(t) = \\hat{\\mu}(t) \\cdot \\hat{\\nu}(t)$, $\\hat{\\delta}_0(t) = 1$. This linearizes convolution into pointwise multiplication."
     },
     {
       "id": "normalization-clt",
@@ -93,7 +93,7 @@
       "summary": "Axiomatizes normalization, mean, variance, the standard Gaussian, and the CLT as convergence of normalized convolution powers.",
       "startLine": 146,
       "endLine": 190,
-      "mathContext": "Axiomatizes normalization, mean, variance, the standard Gaussian, and the CLT as convergence of normalized convolution powers."
+      "mathContext": "Normalization: $\\mu_n = T_{1/\\sqrt{n}} \\mu^{*n}$ where $T_c$ rescales. **CLT**: $\\mu_n \\xrightarrow{w} \\Phi$ (standard Gaussian) when $\\mu$ has mean 0 and variance 1. $\\hat{\\Phi}(t) = e^{-t^2/2}$."
     },
     {
       "id": "gaussian-fixed-point",
@@ -101,7 +101,7 @@
       "summary": "Axiomatizes Gaussian stability under all convolution powers and Cramer's indecomposability theorem.",
       "startLine": 191,
       "endLine": 214,
-      "mathContext": "Axiomatizes Gaussian stability under all convolution powers and Cramer's indecomposability theorem."
+      "mathContext": "$\\Phi^{*n}_{\\text{normalized}} = \\Phi$ for all $n$ — the Gaussian is a fixed point of the CLT normalization. **Cramér**: $\\mu * \\nu = \\Phi \\Rightarrow \\mu, \\nu$ both Gaussian (indecomposability)."
     },
     {
       "id": "categorical-perspective",
@@ -109,7 +109,7 @@
       "summary": "Domain of attraction definition, CLT as DOA membership, Gaussian in its own DOA, DOA closure under convolution.",
       "startLine": 215,
       "endLine": 241,
-      "mathContext": "Domain of attraction definition, CLT as DOA membership, Gaussian in its own DOA, DOA closure under convolution."
+      "mathContext": "**Domain of attraction**: $\\mu \\in \\text{DOA}(\\Phi) \\iff T_{1/\\sqrt{n}}\\mu^{*n} \\to \\Phi$. CLT says finite-variance distributions are in $\\text{DOA}(\\Phi)$. Infinite variance leads to stable distributions $S_\\alpha$ with $\\alpha < 2$."
     },
     {
       "id": "summary",
@@ -117,7 +117,7 @@
       "summary": "Packages all four monoid axioms into convolution_monoid_summary theorem.",
       "startLine": 241,
       "endLine": 241,
-      "mathContext": "Packages all four monoid axioms into convolution_monoid_summary theorem."
+      "mathContext": "Convolution monoid $(\\text{ProbMeasure}, *, \\delta_0)$ with characteristic function homomorphism $\\hat{\\cdot}: (\\text{ProbMeasure}, *) \\to (C_b, \\cdot)$, CLT as convergence $\\mu_n \\to \\Phi$, and Gaussian as fixed point/attractor."
     }
   ],
   "overview": {
