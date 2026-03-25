@@ -60,6 +60,24 @@ noncomputable def preciseThreshold (n : ℕ) : ℝ :=
   else (1/2) * n * Real.log n + (1/2) * n * Real.log (Real.log n)
 
 /-
+## Probabilistic Framework
+
+The results below concern random graphs, where properties hold
+"asymptotically almost surely" (a.a.s.), meaning with probability → 1
+as n → ∞. We introduce opaque predicates to represent these probabilistic
+notions; full formalization would require a measure space on graphs.
+-/
+
+/-- Property P holds asymptotically almost surely for G(n, m(n)):
+    Pr[P(G(n, m(n)))] → 1 as n → ∞. Opaque; full formalization
+    requires a probability space on graphs. -/
+opaque AlmostSurely (m : ℕ → ℝ) (P : (n : ℕ) → GraphOnN n → Prop) : Prop
+
+/-- The probability that a uniformly random graph G(n, m) satisfies P.
+    Opaque; defines the random variable used in limit statements. -/
+opaque ProbInGnm (n : ℕ) (m : ℝ) (P : GraphOnN n → Prop) : ℝ
+
+/-
 ## Part II: Hamiltonicity
 -/
 
@@ -99,10 +117,10 @@ def HasPerfectMatching (G : GraphOnN n) : Prop :=
 
 /-- **Erdős-Rényi (1966):**
     Random graph with ≥ (1/2 + ε)n log n edges almost surely has a perfect matching. -/
-axiom erdos_renyi_matching (n : ℕ) (hn : n ≥ 2) (hn_even : Even n) (ε : ℝ) (hε : ε > 0) :
-  -- With probability tending to 1:
-  -- G(n, m) with m ≥ (1/2 + ε)n log n has a perfect matching
-  True
+axiom erdos_renyi_matching (ε : ℝ) (hε : ε > 0) :
+  AlmostSurely
+    (fun n => hamiltonianThreshold n ε)
+    (fun n G => HasPerfectMatching G)
 
 /-
 ## Part V: The Erdős Question
@@ -112,8 +130,9 @@ axiom erdos_renyi_matching (n : ℕ) (hn : n ≥ 2) (hn_even : Even n) (ε : ℝ
     ≥ (1/2 + ε)n log n edges are Hamiltonian? -/
 def ErdosQuestion746 : Prop :=
   ∀ ε : ℝ, ε > 0 →
-    -- Almost surely: G(n, m) with m ≥ (1/2 + ε)n log n is Hamiltonian
-    True
+    AlmostSurely
+      (fun n => hamiltonianThreshold n ε)
+      (fun n G => IsHamiltonian G)
 
 /-
 ## Part VI: Pósa's Result
@@ -123,9 +142,9 @@ def ErdosQuestion746 : Prop :=
     Random graph with ≥ Cn log n edges is almost surely Hamiltonian (for large C). -/
 axiom posa_theorem :
   ∃ C : ℝ, C > 0 ∧
-    ∀ n : ℕ, n ≥ 3 →
-      -- Almost surely: G(n, m) with m ≥ Cn log n is Hamiltonian
-      True
+    AlmostSurely
+      (fun n => C * ↑n * Real.log ↑n)
+      (fun n G => IsHamiltonian G)
 
 /-- Pósa's constant is finite but not optimal. -/
 def posaConstant : ℝ := 1000 -- Placeholder, actual value not specified
@@ -134,36 +153,35 @@ def posaConstant : ℝ := 1000 -- Placeholder, actual value not specified
 ## Part VII: Korshunov's Improvement
 -/
 
-/-- **Korshunov (1977):**
-    ≥ (1/2)n log n + (1/2)n log log n + ω(n)n edges suffices for Hamiltonicity,
-    where ω(n) → ∞ as n → ∞. -/
-axiom korshunov_theorem :
-  ∀ ω : ℕ → ℝ, (∀ n, ω n > 0) → (Filter.Tendsto ω Filter.atTop Filter.atTop) →
-    ∀ n : ℕ, n ≥ 3 →
-      -- Almost surely: G(n, m) with m ≥ (1/2)n log n + (1/2)n log log n + ω(n)n
-      -- is Hamiltonian
-      True
-
 /-- Korshunov established the sharp threshold up to lower order terms. -/
 def korshunovThreshold (n : ℕ) (ω : ℕ → ℝ) : ℝ :=
   if n ≤ 2 then 0
   else (1/2) * n * Real.log n + (1/2) * n * Real.log (Real.log n) + ω n * n
 
+/-- **Korshunov (1977):**
+    ≥ (1/2)n log n + (1/2)n log log n + ω(n)n edges suffices for Hamiltonicity,
+    where ω(n) → ∞ as n → ∞. -/
+axiom korshunov_theorem (ω : ℕ → ℝ) (hω_pos : ∀ n, ω n > 0)
+    (hω_tend : Filter.Tendsto ω Filter.atTop Filter.atTop) :
+  AlmostSurely
+    (fun n => korshunovThreshold n ω)
+    (fun n G => IsHamiltonian G)
+
 /-
 ## Part VIII: Komlós-Szemerédi Precise Result
 -/
+
+/-- The limiting probability at threshold. -/
+noncomputable def limitingProbability (c : ℝ) : ℝ :=
+  Real.exp (-Real.exp (-2 * c))
 
 /-- **Komlós-Szemerédi (1983):**
     With (1/2)n log n + (1/2)n log log n + cn edges,
     P(Hamiltonian) → e^{-e^{-2c}} as n → ∞. -/
 axiom komlos_szemeredi_theorem (c : ℝ) :
-  -- The probability that G(n, m) is Hamiltonian tends to e^{-e^{-2c}}
-  -- when m = (1/2)n log n + (1/2)n log log n + cn
-  True
-
-/-- The limiting probability at threshold. -/
-noncomputable def limitingProbability (c : ℝ) : ℝ :=
-  Real.exp (-Real.exp (-2 * c))
+  Filter.Tendsto
+    (fun n => ProbInGnm n (preciseThreshold n + c * ↑n) (fun G => IsHamiltonian G))
+    Filter.atTop (nhds (limitingProbability c))
 
 /-- At c = 0, probability is e^{-1} ≈ 0.368. -/
 theorem limiting_prob_at_zero : limitingProbability 0 = Real.exp (-1) := by
@@ -181,16 +199,15 @@ axiom limiting_prob_at_neg_infinity :
 ## Part IX: The Answer
 -/
 
-/-- The answer is YES: the conjecture is true. -/
+/-- The answer is YES: the conjecture is true.
+    Follows from Korshunov's theorem: for any ε > 0, choosing ω → ∞ slowly
+    gives korshunovThreshold ≤ hamiltonianThreshold for large n. -/
 theorem erdos_746_answer : ErdosQuestion746 := by
-  intro ε hε
-  -- Korshunov's theorem implies this
-  trivial
+  sorry
 
 /-- The threshold for Hamiltonicity is (1/2)n log n + (1/2)n log log n. -/
 def hamiltonianThresholdValue : Prop :=
-  -- The sharp threshold is (1/2)n log n + (1/2)n log log n
-  True
+  AlmostSurely (fun n => preciseThreshold n) (fun n G => IsHamiltonian G)
 
 /-
 ## Part X: Connection to Connectivity
@@ -201,19 +218,22 @@ def IsConnected (G : GraphOnN n) : Prop :=
   ∀ u v : Fin n, G.Reachable u v
 
 /-- The threshold for connectivity is also (1/2)n log n. -/
-axiom connectivity_threshold (n : ℕ) (hn : n ≥ 2) (ε : ℝ) (hε : ε > 0) :
-  -- Almost surely: G(n, m) with m ≥ (1/2 + ε)n log n is connected
-  True
+axiom connectivity_threshold (ε : ℝ) (hε : ε > 0) :
+  AlmostSurely
+    (fun n => hamiltonianThreshold n ε)
+    (fun n G => IsConnected G)
 
 /-- Hamiltonicity implies connectivity. -/
 theorem hamiltonian_implies_connected (G : GraphOnN n) (hn : n ≥ 2) :
     IsHamiltonian G → IsConnected G := by
   sorry
 
-/-- The thresholds for connectivity and Hamiltonicity coincide. -/
+/-- The thresholds for connectivity and Hamiltonicity coincide:
+    both properties hold a.a.s. above (1/2 + ε)n log n edges. -/
 def thresholdCoincidence : Prop :=
-  -- Both are (1/2)n log n (up to lower order terms)
-  True
+  ∀ ε : ℝ, ε > 0 →
+    AlmostSurely (fun n => hamiltonianThreshold n ε) (fun n G => IsHamiltonian G) ∧
+    AlmostSurely (fun n => hamiltonianThreshold n ε) (fun n G => IsConnected G)
 
 /-
 ## Part XI: Related Properties
@@ -223,10 +243,11 @@ def thresholdCoincidence : Prop :=
 def MinDegree (G : GraphOnN n) : ℕ :=
   (Finset.univ : Finset (Fin n)).inf' (by sorry) (fun v => G.degree v)
 
-/-- Random graphs typically have minimum degree close to average degree. -/
-axiom random_graph_min_degree (n m : ℕ) (hn : n ≥ 2) :
-  -- In G(n, m), the minimum degree is close to 2m/n with high probability
-  True
+/-- Random graphs above the Hamiltonicity threshold a.a.s. have no isolated vertices. -/
+axiom random_graph_min_degree (ε : ℝ) (hε : ε > 0) :
+  AlmostSurely
+    (fun n => hamiltonianThreshold n ε)
+    (fun n G => MinDegree G ≥ 1)
 
 /-
 ## Part XII: Summary
@@ -246,15 +267,14 @@ Answer: YES
 theorem erdos_746 : ErdosQuestion746 := erdos_746_answer
 
 /-- Main result: The conjecture is true. -/
-theorem erdos_746_main :
-    ∀ ε : ℝ, ε > 0 → True := -- Probability statement about Hamiltonicity
-  fun ε hε => erdos_746 ε hε
+theorem erdos_746_main : ErdosQuestion746 := erdos_746
 
 /-- The precise limiting distribution is known. -/
 theorem erdos_746_precise (c : ℝ) :
-    -- P(Hamiltonian) → e^{-e^{-2c}} at the threshold
-    True := by
-  exact komlos_szemeredi_theorem c
+    Filter.Tendsto
+      (fun n => ProbInGnm n (preciseThreshold n + c * ↑n) (fun G => IsHamiltonian G))
+      Filter.atTop (nhds (limitingProbability c)) :=
+  komlos_szemeredi_theorem c
 
 /-- The problem is completely solved. -/
 theorem erdos_746_solved : ErdosQuestion746 := erdos_746

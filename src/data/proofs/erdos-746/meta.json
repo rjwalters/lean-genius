@@ -19,7 +19,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 4,
+    "sorries": 5,
     "erdosNumber": 746,
     "erdosUrl": "https://erdosproblems.com/746",
     "erdosProblemStatus": "solved",
@@ -51,15 +51,17 @@
       "GraphOnN: simple graphs on n vertices",
       "numEdges: edge count",
       "hamiltonianThreshold, preciseThreshold: threshold functions",
+      "AlmostSurely, ProbInGnm: opaque framework predicates for probabilistic random graph statements",
       "IsHamiltonianCycle, IsHamiltonian: Hamiltonicity definitions",
       "IsPerfectMatching, HasPerfectMatching: matching definitions",
-      "ErdosQuestion746: formal problem statement",
-      "erdos_renyi_matching axiom: perfect matching threshold",
-      "posa_theorem axiom: Cn log n suffices",
-      "korshunov_theorem axiom: sharp threshold",
-      "komlos_szemeredi_theorem axiom: limiting probability e^{-e^{-2c}}",
+      "ErdosQuestion746: formal problem statement (AlmostSurely Hamiltonian above threshold)",
+      "erdos_renyi_matching axiom: a.a.s. perfect matching above (1/2+ε)n log n",
+      "posa_theorem axiom: ∃ C, a.a.s. Hamiltonian above Cn log n",
+      "korshunov_theorem axiom: a.a.s. Hamiltonian above sharp threshold",
+      "komlos_szemeredi_theorem axiom: Pr(Ham) → e^{-e^{-2c}} via Filter.Tendsto",
       "limitingProbability, limiting_prob_at_zero: probability function",
-      "IsConnected, hamiltonian_implies_connected: connectivity"
+      "IsConnected, hamiltonian_implies_connected: connectivity",
+      "thresholdCoincidence: Hamiltonicity and connectivity share the threshold"
     ],
     "relatedProblems": [
       {
@@ -80,7 +82,7 @@
     ],
     "axiomCount": 9,
     "lineCount": 262,
-    "assumptions": "9 axiom declarations, 4 sorries. WARNING: 7 of 9 axioms conclude with True (vacuous). Core definition ErdosQuestion746 is ∀ ε, ε > 0 → True, making summary theorems trivially provable. Only dirac_theorem, limiting_prob_at_infinity, and limiting_prob_at_neg_infinity encode non-trivial mathematical content."
+    "assumptions": "9 axiom declarations (all with non-trivial mathematical content), 5 sorries, 2 opaque framework predicates (AlmostSurely, ProbInGnm). Axioms encode: Dirac's theorem, Erdős-Rényi matching threshold, Pósa's theorem, Korshunov's sharp threshold, Komlós-Szemerédi limiting probability, asymptotic limit behavior of limitingProbability, connectivity threshold, and minimum degree concentration. Probabilistic statements use opaque AlmostSurely/ProbInGnm predicates since full formalization requires a measure space on graphs."
   },
   "overview": {
     "historicalContext": "**The Erdős-Rényi Random Graph Revolution**\n\nErdős and Rényi's 1959–1966 papers on random graphs $G(n, m)$ revolutionized combinatorics by introducing probabilistic methods to study graph properties. They discovered that many graph properties exhibit **sharp thresholds**: the property jumps from almost surely absent to almost surely present as $m$ crosses a critical value.\n\n**The Matching-Hamiltonicity Connection**\n\nIn 1966, Erdős and Rényi proved that $G(n, m)$ with $m \\ge (1/2 + \\varepsilon) n \\log n$ almost surely has a perfect matching. Since a Hamiltonian cycle decomposes into two perfect matchings, they conjectured the same threshold for Hamiltonicity — one of the most natural questions in random graph theory.\n\n**The Path to Resolution**\n\nPósa (1976) proved Hamiltonicity for $Cn \\log n$ edges using his **rotation-extension technique**, a landmark method that became central to probabilistic combinatorics. Korshunov (1977) established the sharp threshold as $(1/2) n \\log n + (1/2) n \\log \\log n + o(n)$, confirming Erdős-Rényi's conjecture. Finally, Komlós and Szemerédi (1983) determined the precise limiting distribution: with $m = (1/2) n \\log n + (1/2) n \\log \\log n + cn$ edges, $\\Pr[\\text{Hamiltonian}] \\to e^{-e^{-2c}}$ — a **Gumbel (double exponential)** distribution.\n\n**The Threshold Coincidence**\n\nRemarkably, the Hamiltonicity threshold coincides with the connectivity threshold. Both are controlled by the same bottleneck: vertices of degree 0 or 1. The factor 2 in the Gumbel exponent $e^{-2c}$ reflects the two failure modes (degree 0 and degree 1) at the critical edge count.",
@@ -221,10 +223,10 @@
       "Finset"
     ],
     "namespace": "Erdos746",
-    "lineCount": 262,
+    "lineCount": 282,
     "axiomCount": 9,
     "theoremCount": 7,
-    "definitionCount": 17
+    "definitionCount": 19
   },
   "references": [
     {
