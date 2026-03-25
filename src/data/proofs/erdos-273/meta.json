@@ -42,7 +42,7 @@
       "Structure definition of CoveringSystem with ℤ-based covering property",
       "Parameterized IsPrimeMinusOne predicate capturing both the p ≥ 3 (solved) and p ≥ 5 (open) cases",
       "Formal statement of ErdosProblem273 as existence of a p ≥ 5 prime-minus-one covering system",
-      "Axiomatization of Selfridge's p ≥ 3 example, the reciprocal sum necessary condition, and the minimum modulus constraint",
+      "Full constructive proof of Selfridge's p ≥ 3 covering system, proof of the reciprocal sum necessary condition ∑ 1/mᵢ ≥ 1 via counting argument, and proved structural constraints (minimum modulus ≥ 4, all moduli even)",
       "Enumeration of easy primes for 360-based constructions and connection to Hough's theorem"
     ],
     "axiomCount": 0,
@@ -56,7 +56,7 @@
     "historicalContext": "A covering system is a finite collection of residue classes $a_i \\pmod{m_i}$ whose union is all of $\\mathbb{Z}$. Erdős asked whether one can construct a covering system using only moduli of the form $p - 1$ for primes $p \\geq 5$. When $p \\geq 3$ is allowed, Selfridge found such a system using divisors of $360 = 2^3 \\cdot 3^2 \\cdot 5$, with the key modulus $2 = 3 - 1$. The restriction to $p \\geq 5$ excludes modulus 2, making coverage much harder since every modulus must be $\\geq 4$. From Erdős–Graham (1980), p.24. Hough's 2015 resolution of the minimum modulus conjecture constrains the approach further.",
     "problemStatement": "Is there a covering system all of whose moduli are of the form $p - 1$ for some prime $p \\geq 5$?",
     "text": "Is there a covering system all of whose moduli are of the form $p - 1$ for primes $p \\geq 5$? Selfridge found one when $p \\geq 3$ is allowed (using divisors of 360). The case $p \\geq 5$ remains OPEN.",
-    "proofStrategy": "The formalization defines `CoveringSystem` as a structure with moduli $m_i \\geq 2$, residues, and a covering property over $\\mathbb{Z}$. `IsPrimeMinusOne k m` holds when $m = p - 1$ for some prime $p \\geq k$, and `AllModuliPrimeMinusOne k cs` lifts this to all moduli. `ErdosProblem273` asks for existence with $k = 5$. Selfridge's solution for $k = 3$ is axiomatized, along with the reciprocal sum necessary condition $\\sum 1/m_i \\geq 1$, the LCM periodicity reduction, and the key structural constraints: all moduli $> 2$ and $\\geq 4$ when $p \\geq 5$. The easy primes $\\{5, 7, 13, 19, 37, 61, 181\\}$ for 360-based constructions are enumerated.",
+    "proofStrategy": "The formalization defines `CoveringSystem` as a structure with moduli $m_i \\geq 2$, residues, and a covering property over $\\mathbb{Z}$. `IsPrimeMinusOne k m` holds when $m = p - 1$ for some prime $p \\geq k$, and `AllModuliPrimeMinusOne k cs` lifts this to all moduli. `ErdosProblem273` asks for existence with $k = 5$. Selfridge's solution for $k = 3$ is proved constructively (explicit 3-class system), along with a proved reciprocal sum necessary condition $\\sum 1/m_i \\geq 1$ via counting argument, and proved structural constraints: all moduli $> 2$ and $\\geq 4$ when $p \\geq 5$. The easy primes $\\{5, 7, 13, 19, 37, 61, 181\\}$ for 360-based constructions are enumerated.",
     "keyInsights": [
       "Selfridge's covering system works when $p \\geq 3$ is allowed, using modulus $2 = 3 - 1$ as a key building block",
       "For $p \\geq 5$, the smallest allowed modulus is $4 = 5 - 1$, excluding modulus 2 and making it impossible for any single class to cover half of $\\mathbb{Z}$",
@@ -101,7 +101,7 @@
       "title": "The Selfridge Example (p ≥ 3)",
       "startLine": 63,
       "endLine": 73,
-      "summary": "Axiomatizes Selfridge's covering system for $p \\geq 3$ using divisors of $360 = 2^3 \\cdot 3^2 \\cdot 5$. The key modulus $2 = 3 - 1$ enables coverage of all parities.",
+      "summary": "Proves Selfridge's covering system for $p \\geq 3$ constructively using an explicit 3-class system $\\{0 \\bmod 2, 1 \\bmod 4, 3 \\bmod 4\\}$. The key modulus $2 = 3 - 1$ enables coverage of all parities.",
       "mathContext": "Selfridge: covering with moduli $\\mid 360 = 2^3 \\cdot 3^2 \\cdot 5$. Key: $2 = 3 - 1$ covers all parities."
     },
     {
@@ -109,7 +109,7 @@
       "title": "Covering System Basics",
       "startLine": 74,
       "endLine": 93,
-      "summary": "Defines `CoveringSystem.lcm` for periodicity reduction, axiomatizes $\\sum 1/m_i \\geq 1$ over $\\mathbb{Q}$, and defines `IsDistinct` (injective moduli) connecting to Hough's minimum modulus theorem.",
+      "summary": "Defines `CoveringSystem.lcm` for periodicity reduction, proves $\\sum 1/m_i \\geq 1$ over $\\mathbb{Q}$ via a counting/union-bound argument, and defines `IsDistinct` (injective moduli) connecting to Hough's minimum modulus theorem.",
       "mathContext": "Necessary condition: $\\sum_{i=1}^{n} 1/m_i \\geq 1$. Periodicity: covering is determined by behavior on $[0, \\text{lcm}(m_i))$."
     },
     {
@@ -117,7 +117,7 @@
       "title": "Connection to Other Problems",
       "startLine": 94,
       "endLine": 113,
-      "summary": "Enumerates `easyPrimes` $= \\{5, 7, 13, 19, 37, 61, 181\\}$ (primes $p \\geq 5$ with $(p-1) \\mid 360$) and axiomatizes the key constraints: all moduli $> 2$ and $\\geq 4$ when restricted to $p \\geq 5$.",
+      "summary": "Enumerates `easyPrimes` $= \\{5, 7, 13, 19, 37, 61, 181\\}$ (primes $p \\geq 5$ with $(p-1) \\mid 360$) and proves the key constraints: all moduli $> 2$ and $\\geq 4$ when restricted to $p \\geq 5$.",
       "mathContext": "Easy primes: $\\{p \\geq 5 : (p-1) \\mid 360\\} = \\{5,7,13,19,37,61,181\\}$. Constraint: all $m_i \\geq 4$ for $p \\geq 5$."
     },
     {
