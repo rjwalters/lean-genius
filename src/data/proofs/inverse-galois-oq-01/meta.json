@@ -24,14 +24,14 @@
       "Proofs/InverseGaloisA5.lean"
     ],
     "badge": "axiom",
-    "sorries": 3,
-    "axiomCount": 0,
+    "sorries": 5,
+    "axiomCount": 3,
     "prerequisites": [
       "Galois theory (Galois groups, splitting fields, fixed fields)",
       "Group theory (symmetric groups, alternating groups, solvability, simplicity)",
       "Field extensions (finrank, tower law)"
     ],
-    "assumptions": "0 axiom declarations. 3 sorry(s): 2 census sorries (A5/S5 realization requires importing other files), 1 intentional sorry for the open Inverse Galois Conjecture.",
+    "assumptions": "3 axioms across dependency chain: Shafarevich's theorem and symmetric group realizability (InverseGalois.lean), A5 Galois group order (InverseGaloisA5.lean). 5 sorries total: 2 census sorries for A5/S5 realization, 1 open Inverse Galois Conjecture, 1 Hilbert irreducibility (InverseGalois.lean), 1 open IGP statement (InverseGalois.lean).",
     "leanFile": {
       "lineCount": 448,
       "theoremCount": 31,
