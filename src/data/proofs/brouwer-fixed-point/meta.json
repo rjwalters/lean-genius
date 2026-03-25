@@ -350,6 +350,26 @@
     "opens": [
       "Set",
       "Metric"
+    ],
+    "mainTheorems": [
+      {
+        "name": "brouwer_fixed_point",
+        "type": "synthesis",
+        "description": "Every continuous self-map of the closed n-ball has a fixed point (n >= 1)",
+        "leanType": "(hn : n ≥ 1) → (f : SelfMap n) → HasFixedPoint n f"
+      },
+      {
+        "name": "no_retraction",
+        "type": "wrapper",
+        "description": "No continuous retraction from B^n to S^{n-1} exists (wraps axiom)",
+        "leanType": "(hn : n ≥ 1) → ¬∃ r : Retraction n, True"
+      },
+      {
+        "name": "retraction_from_no_fixpoint",
+        "type": "bridge",
+        "description": "A self-map without fixed points yields a retraction via ray-casting (wraps axiom)",
+        "leanType": "(n : ℕ) → (f : SelfMap n) → ¬HasFixedPoint n f → Retraction n"
+      }
     ]
   }
 }
