@@ -2,7 +2,7 @@
   "id": "cevas-theorem",
   "title": "Ceva's Theorem",
   "slug": "cevas-theorem",
-  "description": "Ceva's Theorem (Wiedijk's #61): Given a triangle ABC with cevians AD, BE, CF, these lines are concurrent if and only if (AF/FB) * (BD/DC) * (CE/EA) = 1",
+  "description": "Ceva's Theorem (Wiedijk #61): the algebraic equivalence that the Ceva product (AF/FB)(BD/DC)(CE/EA) = 1 iff the parameter condition def = (1-d)(1-e)(1-f) holds, proved from scratch with field_simp and linarith. The geometric interpretation (product = 1 ↔ cevians concurrent) is described in commentary but the proof is purely algebraic.",
   "meta": {
     "author": "Giovanni Ceva (1678, formalized in Lean 4)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Ceva%27s_theorem",
@@ -179,19 +179,9 @@
       "description": "Both are fundamental triangle theorems: the law of cosines generalizes Pythagoras metrically, while Ceva's theorem characterizes concurrency of cevians — the law of cosines can be used to derive coordinate proofs of Ceva's theorem"
     },
     {
-      "targetId": "triangle-angle-sum",
-      "relationship": "foundational",
-      "description": "The angle sum property (180 degrees) is the most basic triangle theorem, while Ceva's theorem is a deeper structural result — both concern the fundamental geometry of triangles"
-    },
-    {
       "targetId": "feuerbachs-theorem",
       "relationship": "related",
       "description": "Both are classical triangle geometry results: Ceva's theorem concerns cevian concurrency, while Feuerbach's theorem concerns the tangency of the nine-point circle and incircle — both reveal deep structure in triangle configurations"
-    },
-    {
-      "targetId": "isosceles-triangle",
-      "relationship": "foundational",
-      "description": "The isosceles triangle theorem is the simplest symmetry result in triangle geometry, while Ceva's theorem handles the general asymmetric case — both concern the interplay of vertices and sides"
     }
   ]
 }
