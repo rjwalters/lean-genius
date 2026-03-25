@@ -76,7 +76,7 @@
       "startLine": 1,
       "endLine": 44,
       "summary": "Module documentation: states De Moivre's formula, proof approach via Euler's formula and exp power rule, status, Mathlib dependencies, and historical note on de Moivre (1667-1754).",
-      "mathContext": "Module documentation: states De Moivre's formula, proof approach via Euler's formula and exp power rule, status, Mathlib dependencies, and historical note on de Moivre (1667-1754)."
+      "mathContext": "De Moivre's theorem: $(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$. Proof via Euler's formula: $e^{i\\theta} = \\cos\\theta + i\\sin\\theta$, so $(e^{i\\theta})^n = e^{in\\theta}$."
     },
     {
       "id": "main-theorem",
@@ -84,7 +84,7 @@
       "startLine": 45,
       "endLine": 77,
       "summary": "Proves (cos θ + i sin θ)^n = cos(nθ) + i sin(nθ) by rewriting with Complex.exp_mul_I, applying Complex.exp_nat_mul, then converting back via simp.",
-      "mathContext": "Proves (cos θ + i sin θ)^n = cos(nθ) + i sin(nθ) by rewriting with Complex.exp_mul_I, applying Complex.exp_nat_mul, then converting back via simp."
+      "mathContext": "$(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$ for all $n \\in \\mathbb{N}$. Proof: rewrite via `Complex.exp_mul_I`, apply `Complex.exp_nat_mul`, then convert back to trigonometric form."
     },
     {
       "id": "exp-form",
@@ -92,7 +92,7 @@
       "startLine": 78,
       "endLine": 96,
       "summary": "Two equivalent exponential formulations: (exp(θI))^n = exp(nθI) and (exp(Iθ))^n = exp(I·nθ). Both proved by exp_nat_mul plus ring.",
-      "mathContext": "Two equivalent exponential formulations: (exp(θI))^n = exp(nθI) and (exp(Iθ))^n = exp(I·nθ). Both proved by exp_nat_mul plus ring."
+      "mathContext": "$(e^{i\\theta})^n = e^{in\\theta}$ — the exponential form follows from the power law for $\\exp$. Equivalently $(e^{\\theta i})^n = e^{n\\theta i}$ (commutative multiplication in $\\mathbb{C}$)."
     },
     {
       "id": "integer-ext",
@@ -100,7 +100,7 @@
       "startLine": 97,
       "endLine": 127,
       "summary": "Extension to integer exponents via Complex.exp_int_mul. Both exponential and trigonometric forms for ℤ-valued n, covering negative powers (reciprocals of complex numbers on the unit circle).",
-      "mathContext": "Extension to integer exponents via Complex.exp_int_mul. Both exponential and trigonometric forms for ℤ-valued n, covering negative powers (reciprocals of complex numbers on the unit circle)."
+      "mathContext": "$(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$ for $n \\in \\mathbb{Z}$. Uses `Complex.exp_int_mul`. For $n < 0$: $(e^{i\\theta})^{-k} = e^{-ik\\theta} = \\cos(k\\theta) - i\\sin(k\\theta)$."
     },
     {
       "id": "double-angle",
@@ -108,7 +108,7 @@
       "startLine": 128,
       "endLine": 147,
       "summary": "Derives double angle formula cos(2θ) + i sin(2θ) = (cos θ + i sin θ)² as the special case n = 2 of the main theorem.",
-      "mathContext": "Derives double angle formula cos(2θ) + i sin(2θ) = (cos θ + i sin θ)² as the special case n = 2 of the main theorem."
+      "mathContext": "$n = 2$: $(\\cos\\theta + i\\sin\\theta)^2 = \\cos(2\\theta) + i\\sin(2\\theta)$. Expanding: $\\cos(2\\theta) = \\cos^2\\theta - \\sin^2\\theta$, $\\sin(2\\theta) = 2\\sin\\theta\\cos\\theta$."
     },
     {
       "id": "triple-angle",
@@ -116,7 +116,7 @@
       "startLine": 148,
       "endLine": 163,
       "summary": "Derives triple angle formula cos(3θ) + i sin(3θ) = (cos θ + i sin θ)³ as the special case n = 3.",
-      "mathContext": "Derives triple angle formula cos(3θ) + i sin(3θ) = (cos θ + i sin θ)³ as the special case n = 3."
+      "mathContext": "$n = 3$: $(\\cos\\theta + i\\sin\\theta)^3 = \\cos(3\\theta) + i\\sin(3\\theta)$. Expanding: $\\cos(3\\theta) = 4\\cos^3\\theta - 3\\cos\\theta$, $\\sin(3\\theta) = 3\\sin\\theta - 4\\sin^3\\theta$."
     },
     {
       "id": "roots-of-unity",
@@ -124,7 +124,7 @@
       "startLine": 164,
       "endLine": 190,
       "summary": "Proves exp(2πik/n)^n = 1 via exp_nat_mul, field_simp to cancel n, then exp(k · 2πi) = (exp(2πi))^k = 1^k = 1. Uses Complex.exp_two_pi_mul_I.",
-      "mathContext": "Proves exp(2πik/n)^n = 1 via exp_nat_mul, field_simp to cancel n, then exp(k · 2πi) = (exp(2πi))^k = 1^k = 1. Uses Complex.exp_two_pi_mul_I."
+      "mathContext": "$\\omega_k = e^{2\\pi ik/n}$ satisfies $\\omega_k^n = e^{2\\pi ik} = 1$, so $\\omega_k$ is an $n$-th root of unity. The $n$ roots are $\\{e^{2\\pi ik/n} : k = 0, 1, \\ldots, n-1\\}$, equally spaced on the unit circle."
     },
     {
       "id": "special-cases",
@@ -132,7 +132,7 @@
       "startLine": 191,
       "endLine": 239,
       "summary": "n = 0 (trivial: x^0 = 1) and n = 1 (identity) special cases. Concluding discussion of applications in signal processing, electrical engineering, physics, and number theory. Final #check exports.",
-      "mathContext": "n = 0 (trivial: x^0 = 1) and n = 1 (identity) special cases. Concluding discussion of applications in signal processing, electrical engineering, physics, and number theory. Final #check exports."
+      "mathContext": "$n = 0$: $(\\cos\\theta + i\\sin\\theta)^0 = 1 = \\cos(0) + i\\sin(0)$. $n = 1$: identity. Applications: Chebyshev polynomials $T_n(\\cos\\theta) = \\cos(n\\theta)$, DFT via roots of unity."
     }
   ],
   "crossReferences": [
