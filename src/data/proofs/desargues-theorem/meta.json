@@ -240,6 +240,21 @@
       "targetId": "four-color-theorem",
       "relationship": "thematic",
       "description": "Both are foundational results about planar geometric/combinatorial structures: the four-color theorem concerns graph coloring on the plane, while Desargues's theorem concerns projective configurations — both involve deep structural analysis"
+    },
+    {
+      "targetId": "feuerbachs-theorem",
+      "relationship": "related",
+      "description": "Both are classical results in advanced triangle geometry. Feuerbach's theorem (the nine-point circle is tangent to the incircle) and Desargues's theorem (perspective from a point implies perspective from a line) both reveal hidden structure in triangle configurations — Feuerbach through circle geometry, Desargues through projective duality"
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "FTA guarantees algebraic closure of $\\mathbb{C}$, which underpins the algebraic framework for projective geometry. Desargues's theorem holds in projective planes coordinatized by division rings (by the Hessenberg theorem), and the classification of projective planes is deeply connected to the algebraic structures that FTA constrains. Desargues's theorem fails in some non-Desarguesian planes, illustrating the interplay between algebra and geometry"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "related",
+      "description": "Both results illuminate the boundaries of geometric constructions. Angle trisection is impossible with compass and straightedge (a constraint from Euclidean geometry), while Desargues's theorem holds in all projective planes arising from division rings but can fail in non-Desarguesian planes — both demonstrate how the underlying algebraic structure determines what geometric constructions are valid"
     }
   ]
 }
