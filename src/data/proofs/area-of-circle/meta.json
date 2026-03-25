@@ -232,6 +232,21 @@
       "targetId": "buffons-needle",
       "relationship": "related",
       "description": "Buffon's needle problem (1733) gives a surprising probabilistic method for computing $\\pi$: drop a needle of length $\\ell$ on parallel lines spaced $d \\geq \\ell$ apart, and $P(\\text{crossing}) = 2\\ell/(\\pi d)$. The connection to the circle area formula is through the integral geometry of circles: the needle's orientation $\\theta \\in [0, \\pi)$ parameterizes a semicircle, and the crossing probability involves integrating $\\sin\\theta$ over this arc — a computation ultimately grounded in the circle's geometry that $A = \\pi r^2$ formalizes"
+    },
+    {
+      "targetId": "greens-theorem",
+      "relationship": "related",
+      "description": "Green's theorem gives the area of a planar region as a line integral: $A = \\frac{1}{2}\\oint_C (x\\,dy - y\\,dx)$. For a circle of radius $r$ parameterized by $(r\\cos\\theta, r\\sin\\theta)$, this yields $\\frac{1}{2}\\int_0^{2\\pi} r^2\\,d\\theta = \\pi r^2$ — providing a vector calculus proof of the circle area formula that connects it to the curl and circulation framework"
+    },
+    {
+      "targetId": "leibniz-pi",
+      "relationship": "related",
+      "description": "The Leibniz series $\\pi/4 = 1 - 1/3 + 1/5 - 1/7 + \\cdots$ (discovered by Madhava c. 1400, rediscovered by Leibniz 1674) provides an exact infinite series for the same constant $\\pi$ whose geometric meaning as the area-to-radius-squared ratio this entry formalizes. The series arises from the arctangent Taylor expansion $\\arctan(1) = \\pi/4$, connecting the circle's analytic properties to its area"
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-01",
+      "relationship": "extended-by",
+      "description": "Generalizes the circumference-to-area integration to $n$ dimensions: derives $V_n(r)$ from $S_n(r)$ via $V_n(r) = \\int_0^r S_n(\\rho)\\, d\\rho$, extending the annular ring argument from the 2D case ($A = \\int_0^r 2\\pi\\rho\\, d\\rho$) to arbitrary dimension"
     }
   ],
   "leanFile": {
