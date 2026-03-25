@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "proofId": "bezout-identity-oq-03",
+  "reviewDate": "2026-03-24T19:00:00Z",
+  "reviewer": "peer-reviewer",
+
+  "overallAssessment": {
+    "grade": "B",
+    "oneLiner": "A well-structured CRT proof chain with genuine mathematical assembly — the explicit formula x = a*n*v + b*m*u is verified via clean linear_combination arguments — let down by inflated contributions list and sloppy section metadata.",
+    "tier": "B",
+    "tierJustification": "The core CRT proof uses Mathlib's Bézout identity (Int.gcd_eq_gcd_ab) and coprime divisor lemma (IsCoprime.mul_dvd) as building blocks, but the assembly — constructing the explicit solution formula, verifying both congruences, bridging gcd-coprimality with IsCoprime, and packaging into a combined existence-uniqueness theorem — involves genuine multi-step reasoning beyond mere wrapping. Strong Tier B.",
+    "stratification": {
+      "proved": [
+        "crt_exists_via_bezout (CRT existence with explicit formula, 10-line proof with linear_combination)",
+        "crt_unique_via_bezout (uniqueness mod m*n via IsCoprime.mul_dvd)",
+        "crt_via_bezout (combined existence-uniqueness with transitivity argument)",
+        "isCoprime_of_gcd_eq_one (bridge between gcd-coprimality and algebraic IsCoprime)",
+        "crtInt_mod_left / crtInt_mod_right (correctness of computable CRT function)",
+        "crt_iscop / crt_unique_iscop (parallel IsCoprime formulations)",
+        "coprime_bezout (specialization of Bézout to gcd=1)",
+        "17 worked examples verified by norm_num/decide"
+      ],
+      "axiomatized": [],
+      "elementary": [
+        "bezout_int (one-line restatement of Mathlib's Int.gcd_eq_gcd_ab)"
+      ],
+      "assessment": "All theorems fully proved with 0 axioms. The main contribution is the CRT proof chain from Bézout to existence+uniqueness — this involves genuine algebraic reasoning via linear_combination. The IsCoprime parallel formulations are mildly redundant but serve a real API purpose. bezout_int is a pure Mathlib wrapper but serves as the foundation for the chain."
+    }
+  },
+
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "crt_exists_via_bezout, lines 79-90",
+      "finding": "The CRT existence proof is well-crafted: it constructs the explicit solution x = a*n*v + b*m*u, then verifies both congruences with `linear_combination -a * hbez` and `linear_combination -b * hbez`. This is elegant — the `linear_combination` tactic captures the algebraic heart of the CRT argument in a single line per congruence. The inline comments ('x ≡ a (mod m): show m ∣ a - (a * n * v + b * m * u) = m * u * (a - b)') make the reasoning transparent.",
+      "recommendation": "Exemplary proof style to maintain. The explicit formula + linear_combination pattern is a good template for other number-theoretic proofs."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "overview.keyInsights in meta.json",
+      "finding": "The insight 'IsCoprime IS Bézout's identity: In Lean 4, IsCoprime m n is *defined* as ∃ u v, u * m + v * n = 1' is genuinely illuminating. This is a non-obvious Lean/Mathlib-specific observation that helps readers understand both the mathematics and the formalization framework. The observation about coefficient ordering (IsCoprime has u*m+v*n=1 vs the more natural m*u+n*v=1) is also practical and helpful.",
+      "recommendation": "Preserve. This kind of framework-level insight elevates the entry beyond pure mathematics."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "section Examples, lines 158-222",
+      "finding": "The four worked examples with explicit Bézout coefficients, formula calculations, and machine-verified congruences are excellent pedagogy. Example 4 (negative solutions) is particularly valuable as it demonstrates why the integer formulation is more natural than the natural number version. The comments showing step-by-step calculations (e.g., 'x = 2 * 5 * (-1) + 3 * 3 * 2 = -10 + 18 = 8') bridge the abstract formula to concrete arithmetic.",
+      "recommendation": "Preserve. Consider adding one more example with larger moduli to show the method scales."
+    },
+    {
+      "severity": "moderate",
+      "category": "overclaim",
+      "location": "meta.json originalContributions (10 items)",
+      "finding": "Lists 10 'original contributions' including: bezout_int (a one-line Mathlib restatement), coprime_bezout (a 3-line specialization), isCoprime_of_gcd_eq_one (a 1-line bridge), and 'Four worked examples with explicit Bézout coefficients and verification' (examples are not contributions). The list inflates what should be 3-4 genuine contributions: the CRT existence proof, uniqueness, computable function, and the IsCoprime bridge.",
+      "recommendation": "Reduce to 4 items: (1) Explicit CRT existence proof via Bézout formula with linear_combination, (2) CRT uniqueness and combined existence-uniqueness theorem, (3) Computable crtInt function with correctness proofs, (4) Bridge between Int.gcd-coprimality and IsCoprime. Drop bezout_int restatement, coprime_bezout, parallel IsCoprime versions, and examples from the contributions list."
+    },
+    {
+      "severity": "moderate",
+      "category": "inconsistency",
+      "location": "meta.json sections line ranges",
+      "finding": "Several section line ranges are significantly off. 'combined' (startLine 162, endLine 181) should be approximately 141-155 — the /-! header is at line 141 and crt_via_bezout spans lines 146-154. 'examples' (startLine 182, endLine 241) should be approximately 156-222 — the section starts at line 158 and ends at line 222. Both are shifted by ~20 lines. Additionally, the existence, uniqueness, and examples sections have truncated mathContext strings (ending in 'r', 'divi', and 'both ' respectively).",
+      "recommendation": "Fix line ranges: combined should be ~141-155, examples ~156-222, crt-function ~224-258, summary ~259-284. Fix truncated mathContext strings in existence, uniqueness, and examples sections."
+    },
+    {
+      "severity": "minor",
+      "category": "filler",
+      "location": "lines 276-282: #check statements",
+      "finding": "Seven #check statements at the end of the file serve no formal purpose — they don't prove anything and are not visible to gallery readers. They may have been useful during development but should be removed from the final proof.",
+      "recommendation": "Remove the #check block (lines 276-282). If these serve as a table of contents, add them to the docstring comment instead."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "ann-bezout-int, type field",
+      "finding": "The annotation for bezout_int has type 'definition' but bezout_int is a theorem (declared with `theorem`). It does define the existential witnesses, but in Lean's classification it is a theorem.",
+      "recommendation": "Change type to 'concept' or 'technique' to avoid the definition/theorem mismatch."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json leanFile.lineCount: 284",
+      "finding": "The Lean file has 285 lines (284 lines of content plus trailing newline). The meta.json says 284. This is a trivial off-by-one but contributes to the pattern of imprecise metadata in this entry.",
+      "recommendation": "Update to 285 or verify against `wc -l`."
+    }
+  ],
+
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Fix section line ranges in meta.json: combined should be ~141-155 (not 162-181), examples ~156-222 (not 182-241), crt-function ~224-258 (not 242-271), summary ~259-284 (not 272-284). These are off by 20+ lines.",
+      "status": "open"
+    },
+    {
+      "id": "ai-2",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Fix truncated mathContext strings in 3 sections: existence (ends 'r'), uniqueness (ends 'divi'), examples (ends 'both '). Complete these sentences.",
+      "status": "open"
+    },
+    {
+      "id": "ai-3",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Reduce originalContributions from 10 items to 4: (1) CRT existence proof via Bézout formula, (2) CRT uniqueness and combined theorem, (3) Computable crtInt function with correctness proofs, (4) Bridge between Int.gcd and IsCoprime. Drop restatements, specializations, parallel formulations, and examples.",
+      "status": "open"
+    },
+    {
+      "id": "ai-4",
+      "priority": "low",
+      "target": "researcher",
+      "description": "Remove 7 #check statements at end of BezoutIdentityOQ03.lean (lines 276-282) — they serve no formal purpose in the final proof.",
+      "status": "open"
+    }
+  ],
+
+  "qualityScores": {
+    "mathematicalSubstance": 7,
+    "originalityAccuracy": 6,
+    "completeness": 9,
+    "framingPrecision": 7,
+    "pedagogicalQuality": 8,
+    "internalConsistency": 6,
+    "epistemicCoherence": 8,
+    "overall": 7.3
+  },
+
+  "suggestedBestFraming": "A formalization of the Chinese Remainder Theorem over the integers using Bézout coefficients: given coprime m, n with mu + nv = 1, the explicit solution x = a*n*v + b*m*u satisfies both congruences, proved via linear_combination. Includes uniqueness, a computable CRT function, and worked examples."
+}
