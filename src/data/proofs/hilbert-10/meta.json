@@ -150,6 +150,26 @@
       "targetId": "abel-ruffini",
       "relationship": "thematic",
       "description": "Abel-Ruffini (1824) pioneered the impossibility-proof paradigm for polynomial equations: no radical formula solves all quintics, because the Galois group $S_5$ is not solvable. Matiyasevich (1970) proved the analogous impossibility for Diophantine equations: no algorithm decides all integer polynomial systems. Both reveal fundamental limits on 'solving' polynomial equations within a given formal framework"
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "foundational",
+      "description": "Cantor's diagonal argument (1891) is the ancestor of the self-referential constructions used in both the halting problem and H10. The chain runs: Cantor's diagonal $\\to$ Godel's self-referential sentence (1931) $\\to$ Turing's diagonal halting argument (1936) $\\to$ MRDP reduction to H10 (1970). Each extends the impossibility paradigm from set theory through logic and computation to number theory"
+    },
+    {
+      "targetId": "fermats-last-theorem",
+      "relationship": "thematic",
+      "description": "Both concern integer solutions of polynomial equations: FLT proves $x^n + y^n = z^n$ has no nontrivial solutions for $n > 2$ (a specific Diophantine question, decidable, answer is 'no'), while H10 proves that the GENERAL question of Diophantine solvability is undecidable. FLT shows some Diophantine equations can be resolved with enormous effort; H10 shows no uniform method can resolve them all"
+    },
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Both represent deep 20th/21st-century results in number theory that connect elementary objects (primes, polynomials) to sophisticated machinery (sieve theory, computability). The bounded prime gaps formalization uses admissible tuples and sieve axioms; the H10 formalization uses MRDP and halting reduction — both distilling complex proofs into clean axiomatic frameworks"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique factorization of integers underpins the Diophantine equation framework: the structure of integer solutions to $P(x_1,\\ldots,x_n) = 0$ depends on the arithmetic of $\\mathbb{Z}$, and unique factorization enables the encoding of computation via polynomial equations that is central to the MRDP theorem"
     }
   ],
   "references": [
@@ -166,6 +186,27 @@
       "year": "1973",
       "venue": "The American Mathematical Monthly, 80(3), pp. 233-269",
       "note": "Accessible exposition of the complete proof, covering the work of all four contributors"
+    },
+    {
+      "authors": "Matiyasevich, Yuri V.",
+      "title": "Hilbert's Tenth Problem",
+      "year": "1993",
+      "venue": "MIT Press",
+      "note": "Comprehensive monograph by the author of the final step, covering the full MRDP theorem with historical context, the Fibonacci-Pell construction, and connections to computability theory"
+    },
+    {
+      "authors": "Davis, Martin; Putnam, Hilary; Robinson, Julia",
+      "title": "The decision problem for exponential Diophantine equations",
+      "year": "1961",
+      "venue": "Annals of Mathematics, 74(3), pp. 425-436",
+      "note": "The DPR theorem: every r.e. set is exponential Diophantine. Reduced H10 to the question of whether exponential growth is Diophantine — the open problem Matiyasevich solved in 1970"
+    },
+    {
+      "authors": "Jones, James P.",
+      "title": "Universal Diophantine equation",
+      "year": "1982",
+      "venue": "The Journal of Symbolic Logic, 47(3), pp. 549-571",
+      "note": "Constructs an explicit universal Diophantine equation: a single polynomial whose solvability, parameterized by one variable, encodes all r.e. sets. Demonstrates the full power of the MRDP theorem"
     }
   ],
   "leanFile": {
