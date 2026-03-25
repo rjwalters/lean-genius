@@ -148,25 +148,28 @@
     "id": "ann-sb-injectivity",
     "proofId": "denumerability-rationals-oq-03",
     "range": {
-      "startLine": 418,
+      "startLine": 417,
       "endLine": 488
     },
     "type": "theorem",
-    "title": "Injectivity (Fully Proved)",
-    "content": "Proves `eval_injective_gen`: if two paths from any valid state yield the same state, the paths are equal. The 65-line proof is a structural induction on both paths simultaneously with 6 cases. Nil/nil is trivial. Nil/cons and cons/nil derive contradictions via state component monotonicity (the state must change if a step is taken). For L/L and R/R (same direction), the inductive hypothesis applies after peeling off the common prefix. The key cases are L/R and R/L: if one path goes left and the other right from the same state, `value_between_ancestors` shows the resulting values lie on opposite sides of the current mediant, contradicting equality. The final `eval_injective` specializes to the initial state $(0/1, 1/0)$.",
-    "mathContext": "$\\text{eval}(s, p_1) = \\text{eval}(s, p_2) \\implies p_1 = p_2$ for all valid states $s$ with $\\det(s) = 1$. The L/R contradiction: left yields value $< $ mediant while right yields value $> $ mediant, so equal final states are impossible.",
+    "title": "Injectivity via Structural Induction and BST Ordering",
+    "content": "`eval_injective_gen` is a 65-line structural induction proving that `eval s p1 = eval s p2` implies `p1 = p2` for any state with `det = 1`. The proof handles 6 cases: (nil, nil) is trivial; (nil, cons) and (cons, nil) derive contradictions from component monotonicity — after any step, `rb` or `la` strictly increases, making the result differ from the initial state. The (L, R) and (R, L) cases use `value_between_ancestors`: a left descendant's value is below the current mediant while a right descendant's is above, so equal states imply a contradiction via `linarith`. The (L, L) and (R, R) cases recurse via the induction hypothesis. `eval_injective` specializes to `State.init` using `det_init`.",
+    "mathContext": "$\\text{eval}(s, p_1) = \\text{eval}(s, p_2) \\land \\det(s) = 1 \\implies p_1 = p_2$. The (L, R) case: `value_between_ancestors` gives $(la+ra) \\cdot \\text{tden} < \\text{tnum} \\cdot (lb+rb)$ for left descendants and $\\text{tnum} \\cdot (lb+rb) < (la+ra) \\cdot \\text{tden}$ for right descendants — contradicting state equality.",
     "significance": "key",
     "relatedConcepts": [
-      "tree injectivity",
       "structural induction",
-      "BST ordering contradiction",
-      "binary word encoding"
+      "binary search tree injectivity",
+      "BST ordering invariant",
+      "Stern-Brocot bijection"
     ],
     "prerequisites": [
       "value_between_ancestors",
+      "rb_ge_after_left",
+      "la_ge_after_right",
       "ra_pos_of_det",
       "lb_pos_of_det",
-      "component monotonicity lemmas"
+      "det_left",
+      "det_right"
     ],
     "importance": "high"
   },
@@ -204,17 +207,20 @@
     },
     "type": "concept",
     "title": "Concrete Verification: First Three Levels of the Tree",
-    "content": "Seven verified examples confirming the first three levels of the Stern-Brocot tree: root $[] \\to 1/1$, level 1: $[L] \\to 1/2$, $[R] \\to 2/1$, level 2: $[L,L] \\to 1/3$, $[L,R] \\to 2/3$, $[R,L] \\to 3/2$, $[R,R] \\to 3/1$. Each example verifies numerator, denominator, coprimality, and ordering properties by `native_decide` or `norm_num`. These serve as computational validation that the abstract definitions produce the expected tree structure.",
-    "mathContext": "Level 0: $1/1$. Level 1: $1/2, 2/1$. Level 2: $1/3, 2/3, 3/2, 3/1$. All fractions are in lowest terms with the BST ordering property verified computationally.",
+    "content": "Seven verified examples confirming the first three levels of the Stern-Brocot tree: root $[] \\to 1/1$, level 1: $[L] \\to 1/2$, $[R] \\to 2/1$, level 2: $[L,L] \\to 1/3$, $[L,R] \\to 2/3$, $[R,L] \\to 3/2$, $[R,R] \\to 3/1$. Each example verifies numerator, denominator, coprimality, and ordering properties by `native_decide` or `norm_num`. These serve as computational validation of the definitions and invariants proved earlier.",
+    "mathContext": "Level 0: $1/1$. Level 1: $1/2, 2/1$. Level 2: $1/3, 2/3, 3/2, 3/1$. All fractions are in lowest terms with the BST ordering property verified computationally. These are the first 7 Stern-Brocot fractions, matching the Farey sequence $F_3 = \\{0/1, 1/3, 1/2, 2/3, 1/1, 3/2, 2/1, 3/1, 1/0\\}$ (excluding the sentinels).",
     "significance": "supporting",
     "relatedConcepts": [
       "Stern-Brocot tree levels",
       "Farey sequence F_3",
-      "native_decide"
+      "native_decide",
+      "computational verification"
     ],
     "prerequisites": [
       "state machine definitions",
-      "eval function"
+      "eval function",
+      "pathNum",
+      "pathDen"
     ],
     "importance": "medium"
   }
