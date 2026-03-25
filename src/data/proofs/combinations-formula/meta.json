@@ -145,6 +145,26 @@
       "targetId": "bertrands-postulate",
       "relationship": "related",
       "description": "Erdős's proof analyzes the prime factorization of C(2n,n), the central binomial coefficient — the combinations formula gives the factorial representation that enables this analysis"
+    },
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "related",
+      "description": "The inclusion-exclusion principle counts elements in unions of sets by alternating sums of intersection sizes, which are themselves counted by C(n,k). The derangement formula D_n = n! Σ(-1)^k/k! is inclusion-exclusion applied to permutations with C(n,k) selecting which positions are fixed"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation n! ~ √(2πn)(n/e)^n gives asymptotic estimates for C(n,k) — most importantly, C(n, n/2) ~ 2^n/√(πn/2) for the central binomial coefficient, which governs random walk return probabilities and entropy"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "used-by",
+      "description": "Ramsey theory bounds like R(k,k) ≤ C(2k-2, k-1) use binomial coefficients directly. The combinations formula converts these into factorial expressions for asymptotic analysis via Stirling's formula"
+    },
+    {
+      "targetId": "prob-method-lovasz-local",
+      "relationship": "used-by",
+      "description": "The Lovász Local Lemma and many probabilistic method arguments use C(n,k) to count configurations — the k-SAT application bounds clause dependencies using binomial coefficient estimates"
     }
   ],
   "references": [
