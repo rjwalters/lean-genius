@@ -251,11 +251,116 @@ theorem fourth_term : summand 3 = 1 / 119 := by
   unfold summand
   norm_num [factorial]
 
+/-- 6! - 1 = 719, so the fifth term is 1/719. -/
+theorem fifth_term : summand 4 = 1 / 719 := by
+  unfold summand
+  norm_num [factorial]
+
 /-- Partial sum S_4 = 1 + 1/5 + 1/23 + 1/119 ≈ 1.251... -/
 theorem partial_sum_approx :
     summand 0 + summand 1 + summand 2 + summand 3 > 1.25 := by
   rw [first_term, second_term, third_term, fourth_term]
   norm_num
+
+/--
+**Proved: factorialSum > 1.253**
+
+Lower bound from the first 5 partial sums: 1 + 1/5 + 1/23 + 1/119 + 1/719 > 1.253.
+Since all terms are positive, the infinite sum exceeds any partial sum.
+-/
+theorem factorialSum_lower_bound : factorialSum > 1253 / 1000 := by
+  -- Peel off first 5 terms, use positivity of tail
+  have hs := factorialSum_summable
+  have p0 : ∑' n, summand n = summand 0 + ∑' n, summand (n + 1) := hs.tsum_eq_zero_add
+  have p1 : ∑' n, summand (n + 1) = summand 1 + ∑' n, summand (n + 2) :=
+    ((summable_nat_add_iff 1).mpr hs).tsum_eq_zero_add
+  have p2 : ∑' n, summand (n + 2) = summand 2 + ∑' n, summand (n + 3) :=
+    ((summable_nat_add_iff 2).mpr hs).tsum_eq_zero_add
+  have p3 : ∑' n, summand (n + 3) = summand 3 + ∑' n, summand (n + 4) :=
+    ((summable_nat_add_iff 3).mpr hs).tsum_eq_zero_add
+  have p4 : ∑' n, summand (n + 4) = summand 4 + ∑' n, summand (n + 5) :=
+    ((summable_nat_add_iff 4).mpr hs).tsum_eq_zero_add
+  have htail_nn : (0 : ℝ) ≤ ∑' n, summand (n + 5) :=
+    tsum_nonneg (fun n => le_of_lt (summand_pos _))
+  have harith : summand 0 + summand 1 + summand 2 + summand 3 + summand 4 > 1253 / 1000 := by
+    rw [first_term, second_term, third_term, fourth_term, fifth_term]; norm_num
+  linarith
+
+/-- Tighter bound: summand n ≤ 2/(n+2)! since (n+2)!-1 ≥ (n+2)!/2. -/
+private lemma summand_le_two_div_factorial (n : ℕ) :
+    summand n ≤ 2 / (n + 2).factorial := by
+  unfold summand
+  have hdvd : (n + 2) ∣ (n + 2).factorial :=
+    ⟨(n + 1).factorial, (Nat.factorial_succ (n + 1)).symm⟩
+  have hfact_ge2 : (n + 2).factorial ≥ 2 :=
+    le_trans (by omega : 2 ≤ n + 2) (Nat.le_of_dvd (Nat.factorial_pos _) hdvd)
+  have hfact_pos : (0 : ℝ) < (n + 2).factorial := Nat.cast_pos.mpr (Nat.factorial_pos _)
+  have hfact_real : ((n + 2).factorial : ℝ) ≥ 2 := by exact_mod_cast hfact_ge2
+  have hden_pos : ((n + 2).factorial : ℝ) - 1 > 0 := by linarith
+  rw [div_le_div_iff hden_pos hfact_pos]
+  nlinarith
+
+/-- For m ≥ 7: m! ≥ 5040 · 8^(m-7). Used for tight factorial tail bounds. -/
+private lemma factorial_ge_base_mul_pow (n : ℕ) : (n + 7).factorial ≥ 5040 * 8 ^ n := by
+  induction n with
+  | zero => norm_num [Nat.factorial]
+  | succ n ih =>
+    show (n + 8).factorial ≥ 5040 * 8 ^ (n + 1)
+    have h : (n + 8).factorial = (n + 8) * (n + 7).factorial := Nat.factorial_succ (n + 7)
+    rw [h]
+    calc 5040 * 8 ^ (n + 1) = 8 * (5040 * 8 ^ n) := by ring
+      _ ≤ (n + 8) * (n + 7).factorial := Nat.mul_le_mul (by omega) ih
+
+/-- 1/(n+7)! ≤ (1/5040) · (1/8)^n by the factorial growth bound. -/
+private lemma inv_factorial_le_geometric (n : ℕ) :
+    (1 : ℝ) / (n + 7).factorial ≤ (1 / 5040) * (1 / 8) ^ n := by
+  rw [show (1 : ℝ) / 5040 * (1 / 8) ^ n = 1 / (5040 * 8 ^ n) from by rw [div_pow, one_pow]; ring]
+  exact one_div_le_one_div_of_le (by positivity) (by exact_mod_cast factorial_ge_base_mul_pow n)
+
+/--
+**Proved: factorialSum < 1.254**
+
+Split factorialSum = S₅ + tail, where tail ≤ 1/2205 by comparison with
+geometric series via the bound (n+7)! ≥ 5040·8ⁿ.
+-/
+theorem factorialSum_lt : factorialSum < 1254 / 1000 := by
+  -- Step 1: Decompose ∑' summand = S₅ + ∑' summand(·+5) by peeling 5 terms
+  have hs := factorialSum_summable
+  have p0 : ∑' n, summand n = summand 0 + ∑' n, summand (n + 1) := hs.tsum_eq_zero_add
+  have p1 : ∑' n, summand (n + 1) = summand 1 + ∑' n, summand (n + 2) :=
+    ((summable_nat_add_iff 1).mpr hs).tsum_eq_zero_add
+  have p2 : ∑' n, summand (n + 2) = summand 2 + ∑' n, summand (n + 3) :=
+    ((summable_nat_add_iff 2).mpr hs).tsum_eq_zero_add
+  have p3 : ∑' n, summand (n + 3) = summand 3 + ∑' n, summand (n + 4) :=
+    ((summable_nat_add_iff 3).mpr hs).tsum_eq_zero_add
+  have p4 : ∑' n, summand (n + 4) = summand 4 + ∑' n, summand (n + 5) :=
+    ((summable_nat_add_iff 4).mpr hs).tsum_eq_zero_add
+  -- Step 2: Bound tail using summand ≤ 2/(n+2)! and geometric comparison
+  have htail : ∑' n, summand (n + 5) ≤ 1 / 2205 := by
+    -- Geometric comparison bound
+    have geo_sum : Summable (fun n => (1 / 2520 : ℝ) * (1 / 8) ^ n) :=
+      (summable_geometric_of_lt_one (by norm_num) (by norm_num)).mul_left _
+    -- summand(n+5) ≤ 2/(n+7)! ≤ (1/2520)·(1/8)^n
+    have hle : ∀ n, summand (n + 5) ≤ (1 / 2520 : ℝ) * (1 / 8) ^ n := by
+      intro n
+      calc summand (n + 5)
+          ≤ 2 / ((n + 7).factorial : ℝ) := summand_le_two_div_factorial (n + 5)
+        _ = 2 * ((1 : ℝ) / (n + 7).factorial) := by ring
+        _ ≤ 2 * ((1 / 5040) * (1 / 8) ^ n) := by gcongr; exact inv_factorial_le_geometric n
+        _ = (1 / 2520) * (1 / 8) ^ n := by ring
+    calc ∑' n, summand (n + 5)
+        ≤ ∑' n, (1 / 2520 : ℝ) * (1 / 8) ^ n :=
+          tsum_le_tsum hle ((summable_nat_add_iff 5).mpr hs) geo_sum
+      _ = (1 / 2520) * ∑' n, (1 / 8 : ℝ) ^ n := tsum_mul_left
+      _ = (1 / 2520) * (1 - 1 / 8)⁻¹ := by
+          rw [tsum_geometric_of_lt_one (by norm_num) (by norm_num)]
+      _ = 1 / 2205 := by norm_num
+  -- Step 3: Compute S₅ + 1/2205 < 1254/1000
+  have harith : summand 0 + summand 1 + summand 2 + summand 3 + summand 4 +
+      (1 : ℝ) / 2205 < 1254 / 1000 := by
+    rw [first_term, second_term, third_term, fourth_term, fifth_term]; norm_num
+  -- Combine all pieces
+  linarith
 
 /-
 # Part 7: Why This Is Hard
@@ -312,9 +417,16 @@ theorem eRelatedSum_value : eRelatedSum = Real.exp 1 - 2 := by
   -- Chain: exp 1 = f 0 + f 1 + Σ f(n+2) = 1 + 1 + eRelatedSum = 2 + eRelatedSum
   linarith
 
-/-- The -1 perturbation makes a small but crucial difference. -/
+/--
+**Perturbation difference identity**
+
+factorialSum - eRelatedSum = Σ_{n≥0} 1/((n+2)! · ((n+2)!-1))
+
+This is approximately 0.5352, dominated by the n=0 term 1/(2·1) = 1/2.
+The -1 perturbation makes a substantial difference (≈ 74% of eRelatedSum).
+-/
 axiom perturbation_difference :
-    factorialSum - eRelatedSum > 0.04 ∧ factorialSum - eRelatedSum < 0.05
+    factorialSum - eRelatedSum > 535 / 1000 ∧ factorialSum - eRelatedSum < 536 / 1000
 
 /-
 # Part 8: OEIS Connection
@@ -322,8 +434,14 @@ axiom perturbation_difference :
 The decimal expansion is OEIS A331373.
 -/
 
-/-- The sum starts 1.2517525711... (OEIS A331373). -/
-axiom oeis_a331373 : factorialSum > 1.251 ∧ factorialSum < 1.252
+/--
+**Proved: factorialSum ∈ (1.253, 1.254)**
+
+Both bounds proved: lower from partial sums, upper from factorial tail estimation.
+The full value is approximately 1.25349875569995... (OEIS A331373).
+-/
+theorem factorialSum_bounds : factorialSum > 1253 / 1000 ∧ factorialSum < 1254 / 1000 :=
+  ⟨factorialSum_lower_bound, factorialSum_lt⟩
 
 /-
 # Part 9: Connections to Transcendence Theory
@@ -374,7 +492,7 @@ theorem erdos_68_statement : ErdosConjecture68 ↔ Irrational factorialSum := by
 **Status:** OPEN
 
 **Known:**
-- The sum converges to approximately 1.2517525711... (OEIS A331373)
+- The sum converges to approximately 1.25349875569995... (OEIS A331373)
 - Weisenberg: Σ 1/(n!-1) = Σ_n Σ_k (1/n!)^k
 
 **Erdős's Broader Conjecture:**
