@@ -2,7 +2,7 @@
   "id": "abel-ruffini-oq-04-oq-01",
   "title": "Concrete Abel-Ruffini: Gal(x⁵ - 4x + 2) ≅ S₅ and Unsolvability by Radicals",
   "slug": "abel-ruffini-oq-04-oq-01",
-  "description": "Proves that the polynomial x⁵ - 4x + 2 over ℚ has Galois group S₅, completing the Abel-Ruffini proof chain with a concrete witness. The roots of this polynomial cannot be expressed using radicals. Irreducibility proved via Eisenstein at p=2; |Gal|=120 proved from Dedekind's theorem (3||Gal|) and discriminant analysis (Gal⊄A₅), using Sylow theory to rule out orders 15, 30, 60. Realizes S₅ as a Galois group over ℚ.",
+  "description": "Proves that the polynomial x⁵ - 4x + 2 over ℚ has Galois group S₅, completing the Abel-Ruffini proof chain with a concrete witness. The roots of this polynomial cannot be expressed using radicals. Irreducibility proved via Eisenstein at p=2; |Gal|=120 proved axiom-free via Vandermonde discriminant (Gal⊄A₅), complex conjugation (transposition exists), and Sylow theory to rule out orders 5, 10, 15, 20, 30, 40, 60. Realizes S₅ as a Galois group over ℚ.",
   "meta": {
     "author": "Abel (1824), Galois (1832)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Abel%E2%80%93Ruffini_theorem",
@@ -62,7 +62,7 @@
       "Solvable groups and the derived series"
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 1581,
+    "lineCount": 1601,
     "relatedProblems": [
       {
         "id": "abel-ruffini-oq-04",
@@ -286,7 +286,7 @@
       "Polynomial"
     ],
     "namespace": "AbelRuffiniOQ04OQ01",
-    "lineCount": 1581,
+    "lineCount": 1601,
     "axiomCount": 0,
     "sorryCount": 0,
     "theoremCount": 88,
