@@ -213,6 +213,26 @@
       "targetId": "lagrange-four-squares",
       "relationship": "related",
       "description": "Lagrange's four squares theorem shows the squares form an additive basis of order 4. The Erdős–Turán conjecture asks about bases of order 2 — both concern the structure of additive bases but at different orders, and Lagrange's result motivated the general study of Waring-type additive bases"
+    },
+    {
+      "targetId": "erdos-35",
+      "relationship": "related",
+      "description": "Erdős Problem #35 concerns Schnirelmann density and additive bases — the Schnirelmann density criterion is the classical tool for proving sets are additive bases. The Erdős-Turán conjecture concerns the representation function of bases rather than their density."
+    },
+    {
+      "targetId": "erdos-29",
+      "relationship": "related",
+      "description": "Erdős Problem #29 asks for explicit economical additive bases: sets $A$ with $A + A \\supseteq \\mathbb{N}$ but $r_A(n)$ growing as slowly as possible. This is the constructive complement to the Erdős-Turán conjecture, which asserts no basis can keep $r_A(n)$ bounded."
+    },
+    {
+      "targetId": "erdos-322",
+      "relationship": "related",
+      "description": "Erdős Problem #322 concerns representations as sums of $k$-th powers — a Waring-type generalization of the additive basis question. The Erdős-Turán conjecture specializes to order-2 bases; Waring's problem asks about higher-order bases formed by perfect powers."
+    },
+    {
+      "targetId": "erdos-14",
+      "relationship": "related",
+      "description": "Erdős Problem #14 concerns unique sums and non-unique representations in sumsets — the complementary question to Erdős-Turán: while the conjecture asks whether representations must grow, Problem #14 studies when representations can be kept unique."
     }
   ],
   "references": [
