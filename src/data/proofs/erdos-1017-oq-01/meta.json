@@ -58,7 +58,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "**Clique Partition of Graphs**\n\nThe clique partition problem asks: how many complete subgraphs are needed to partition all edges of a graph? Erdős, Goodman, and Pósa (1966) proved the elegant bound f(n,k) ≤ ⌊n²/4⌋ using only edges and triangles. The key insight: greedy triangle extraction leaves a triangle-free remainder, which is bipartite (Ramsey) and has at most ⌊n²/4⌋ edges (Turán).\n\nThe bound is tight: K_{n/2,n/2} has n²/4 edges, no triangles, so each edge must be its own clique. Erdős then asked: when k > n²/4, the graph must contain triangles. Can these be exploited to reduce the partition count below ⌊n²/4⌋?",
+    "historicalContext": "The clique partition number $\\text{cp}(G)$ — the minimum number of complete subgraphs needed to edge-partition $G$ — was first studied systematically by Erdős, Goodman, and Pósa in their 1966 paper, where they proved the surprising upper bound $\\text{cp}(G) \\leq \\lfloor n^2/4 \\rfloor$ using only edges and triangles. Their proof is a gem of combinatorial reasoning: greedily extract edge-disjoint triangles until none remain, observe the remainder is triangle-free (hence bipartite by Ramsey's theorem for $R(3,3) = 6$), and apply Turán's theorem to bound the bipartite remainder.\n\nThe problem is equivalent to the chromatic index of the complement $\\bar{G}$, connecting it to Vizing's theorem (1964) and the edge-coloring literature. Lovász (1968) studied the covering variant, and the covering-vs-partition gap remains poorly understood.\n\nGyőri and Keszegh (2017) made the first progress on Erdős's question for dense graphs, showing that $K_4$-free graphs with $m$ edges beyond the Turán threshold contain $m$ edge-disjoint triangles — giving a linear reduction $\\text{cp}(G) = \\lfloor n^2/4 \\rfloor - m$. Razborov's flag algebra machinery (2010) provides supersaturation bounds that suggest further improvements should be possible when larger cliques are present, but the general case remains open.",
     "problemStatement": "**Open Question**: Can $f(n,k) < \\lfloor n^2/4 \\rfloor$ when $k > n^2/4$?\n\n**Known**: Erdős-Goodman-Pósa: $f(n,k) \\leq \\lfloor n^2/4 \\rfloor$ for all $k$.\n**Extremal**: $K_{n/2,n/2}$ achieves equality.\n**Partial**: $K_4$-free case resolved by Győri-Keszegh (2017): $f = \\lfloor n^2/4 \\rfloor - m$ when the graph has $\\lfloor n^2/4 \\rfloor + m$ edges and avoids $K_4$.\n**Open**: General case with $K_4$ and larger cliques.",
     "text": "Can f(n,k) < ⌊n²/4⌋ when k > n²/4? Formalizes the Erdős-Goodman-Pósa framework, tightness via K_{n/2,n/2}, and the Győri-Keszegh K₄-free resolution. The general case with K₄ and larger cliques remains open.",
     "proofStrategy": "The formalization builds a complete framework for edge clique partitions in 8 parts:\n\n1. **EdgeCliquePartition structure**: cliques covering all edges\n2. **Turán bound**: ⌊n²/4⌋ with concrete values and monotonicity\n3. **EGP theorem**: every graph partitions into ≤ ⌊n²/4⌋ cliques\n4. **Extremal example**: K_{k,k} with triangle-freeness and edge count\n5. **Open question**: formal statement with isDense predicate\n6. **Győri-Keszegh**: K₄-free resolution with triangle packing\n7. **Lovász covering**: related covering bound\n8. **Connections**: supersaturation and edge-coloring duality",
@@ -133,6 +133,16 @@
       "mathContext": "Related bounds: Lovász covering, edge-coloring duality ($\\text{cp}(G) = \\chi'(\\bar{G})$), and Razborov supersaturation."
     }
   ],
+  "conclusion": {
+    "summary": "This formalization captures the complete landscape of Erdős's clique partition question: the EGP upper bound $\\lfloor n^2/4 \\rfloor$, its tightness via $K_{k,k}$, the open question for dense graphs, and the Győri-Keszegh resolution of the $K_4$-free case. The key proved result is `k4free_improves`: dense $K_4$-free graphs have clique partition number strictly below the EGP bound.",
+    "implications": "A full resolution of the general case (allowing $K_4$ and larger cliques) would determine whether dense graphs always admit more efficient clique partitions. This connects to edge-coloring of complement graphs via $\\text{cp}(G) = \\chi'(\\bar{G})$, to flag algebra methods for triangle counting, and to practical graph decomposition algorithms.",
+    "openQuestions": [
+      "Can $f(n,k) < \\lfloor n^2/4 \\rfloor$ when the graph contains $K_4$? (THE open question — Erdős #1017)",
+      "What is the optimal clique partition number for the Paley graph and other algebraically-structured dense graphs?",
+      "Can flag algebra or regularity lemma methods give non-trivial lower bounds on clique partition numbers?",
+      "Is there a polynomial-time algorithm for optimal edge clique partition, or is it NP-hard for dense graphs?"
+    ]
+  },
   "crossReferences": [
     {
       "targetId": "erdos-1017",
@@ -153,6 +163,14 @@
     {
       "text": "Győri, E., Keszegh, B. (2017). On the number of edge-disjoint triangles in K₄-free graphs. Combinatorica.",
       "url": "https://link.springer.com/article/10.1007/s00493-016-3375-x"
+    },
+    {
+      "text": "Razborov, A.A. (2010). On the minimal density of triangles in graphs. Combinatorics, Probability and Computing.",
+      "url": "https://doi.org/10.1017/S0963548310000015"
+    },
+    {
+      "text": "Lovász, L. (1968). On covering of graphs. Theory of Graphs (Proc. Colloq. Tihany, 1966), Academic Press.",
+      "url": ""
     }
   ]
 }

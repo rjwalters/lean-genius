@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "ann-edge-clique-partition",
+    "proofId": "erdos-1017-oq-01",
+    "range": { "startLine": 42, "endLine": 63 },
+    "type": "definition",
+    "title": "Edge Clique Partition Framework",
+    "content": "An `EdgeCliquePartition` is a finset of cliques (each a `Finset V`) that covers every edge of $G$: for every edge $\\{v,w\\}$, some clique contains both $v$ and $w$. The `cliquePartitionNum` is defined via `sInf`, the infimum over all partition sizes. The predicate `usesOnlyEdgesAndTriangles` restricts to cliques of size $\\leq 3$ ($K_2$ and $K_3$), which is the key constraint in the EGP theorem. This framework is the combinatorial backbone of the entire formalization.",
+    "mathContext": "$\\text{cp}(G) = \\inf\\{|\\mathcal{P}| : \\mathcal{P} \\text{ is an edge clique partition of } G\\}$",
+    "significance": "key",
+    "relatedConcepts": ["clique partition number", "edge decomposition", "graph covering", "set intersection representation"],
+    "prerequisites": ["graph theory", "SimpleGraph in Mathlib", "Finset"]
+  },
+  {
+    "id": "ann-turan-bound",
+    "proofId": "erdos-1017-oq-01",
+    "range": { "startLine": 70, "endLine": 84 },
+    "type": "definition",
+    "title": "Turán Bound: Floor of n²/4",
+    "content": "The function `turanBound n = n²/4` (integer division) equals the Turán number $\\text{ex}(n, K_3)$: the maximum number of edges in a triangle-free graph on $n$ vertices. The unique extremal graph is the complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. Concrete values (0 through 4) and monotonicity are proved. This bound appears throughout as the baseline that dense graphs might improve upon.",
+    "mathContext": "$\\text{turanBound}(n) = \\lfloor n^2/4 \\rfloor = \\text{ex}(n, K_3)$",
+    "significance": "key",
+    "relatedConcepts": ["Turán's theorem", "extremal graph theory", "triangle-free graphs", "Mantel's theorem"],
+    "prerequisites": ["Turán's theorem", "extremal graph theory"]
+  },
+  {
+    "id": "ann-egp-theorem",
+    "proofId": "erdos-1017-oq-01",
+    "range": { "startLine": 91, "endLine": 109 },
+    "type": "concept",
+    "title": "Erdős-Goodman-Pósa Theorem (1966)",
+    "content": "The EGP theorem states that every graph on $n$ vertices can be edge-partitioned into at most $\\lfloor n^2/4 \\rfloor$ complete subgraphs, using only edges and triangles. The proof strategy is elegant: extract a maximal set of edge-disjoint triangles, observe the remainder is triangle-free (hence bipartite by Ramsey), and count: each triangle replaces 3 edges with 1 clique. The bipartite remainder has $\\leq \\lfloor n^2/4 \\rfloor$ edges by Turán, so the total partition size is $\\leq \\lfloor n^2/4 \\rfloor$. The corollary `cliquePartitionNum_le_turan` is proved from the axiom using `sInf`.",
+    "mathContext": "$\\text{cp}(G) \\leq \\lfloor n^2/4 \\rfloor$ for every graph $G$ on $n$ vertices (Erdős-Goodman-Pósa 1966)",
+    "significance": "key",
+    "relatedConcepts": ["graph decomposition", "triangle packing", "bipartite graphs", "Ramsey theory"],
+    "prerequisites": ["Turán's theorem", "Ramsey theory (triangle-free ⟹ bipartite)"]
+  },
+  {
+    "id": "ann-complete-bipartite",
+    "proofId": "erdos-1017-oq-01",
+    "range": { "startLine": 116, "endLine": 161 },
+    "type": "technique",
+    "title": "Extremal Example: K_{k,k} Achieves the EGP Bound",
+    "content": "The complete bipartite graph $K_{k,k}$ is constructed on `Fin k ⊕ Fin k`, with adjacency only between the two parts. It has $k^2$ edges, is triangle-free (any clique in a bipartite graph has $\\leq 2$ vertices), so every edge must be its own clique in any partition. Thus $\\text{cp}(K_{k,k}) = k^2 = \\lfloor (2k)^2/4 \\rfloor$, showing the EGP bound is tight. This is the key obstruction: for sparse graphs near the Turán threshold, no improvement is possible.",
+    "mathContext": "$K_{k,k}$: $k^2$ edges, triangle-free, $\\text{cp}(K_{k,k}) = k^2 = \\lfloor (2k)^2/4 \\rfloor = \\text{turanBound}(2k)$",
+    "significance": "key",
+    "relatedConcepts": ["complete bipartite graph", "extremal graph", "tightness", "Turán graph"],
+    "prerequisites": ["bipartite graphs", "clique structure of bipartite graphs"]
+  },
+  {
+    "id": "ann-open-question",
+    "proofId": "erdos-1017-oq-01",
+    "range": { "startLine": 168, "endLine": 198 },
+    "type": "insight",
+    "title": "The Open Question: Dense Graphs and Larger Cliques",
+    "content": "A graph is 'dense' when $|E(G)| > \\lfloor n^2/4 \\rfloor$: by Turán's theorem, such graphs must contain triangles. Erdős asked: can these triangles (and larger cliques) be exploited to reduce the partition count below $\\lfloor n^2/4 \\rfloor$? The savings from each clique type are computed: a triangle saves 2 edges from the partition count, $K_4$ saves 5, and $K_5$ saves 9. The theorem `k4_saves_more_than_triangle` shows $K_4$ saves more than twice what a triangle does, but overlapping cliques make optimal extraction NP-hard in general.",
+    "mathContext": "$K_r$ replaces $\\binom{r}{2}$ edges with 1 clique, saving $\\binom{r}{2} - 1$.\n$K_3$: saves 2, $K_4$: saves 5, $K_5$: saves 9.",
+    "significance": "key",
+    "relatedConcepts": ["dense graph", "Turán threshold", "clique savings", "NP-hardness of optimal partitioning"],
+    "prerequisites": ["Turán's theorem", "graph density"]
+  },
+  {
+    "id": "ann-gyori-keszegh",
+    "proofId": "erdos-1017-oq-01",
+    "range": { "startLine": 205, "endLine": 240 },
+    "type": "concept",
+    "title": "Győri-Keszegh Resolution of the K₄-Free Case (2017)",
+    "content": "Győri and Keszegh (2017) resolved the $K_4$-free case: if $G$ is $K_4$-free with $\\lfloor n^2/4 \\rfloor + m$ edges, then $G$ contains $m$ edge-disjoint triangles. Since the only cliques in a $K_4$-free graph are edges and triangles, each triangle saves 2, yielding $\\text{cp}(G) = \\lfloor n^2/4 \\rfloor - m$. The theorem `k4free_improves` proves that dense $K_4$-free graphs strictly improve on the EGP bound, using natural number subtraction: $\\text{cp}(G) = t - m < t$ since $m > 0$. The general case (allowing $K_4$) remains open.",
+    "mathContext": "$G$ is $K_4$-free, $|E(G)| = \\lfloor n^2/4 \\rfloor + m \\implies \\text{cp}(G) = \\lfloor n^2/4 \\rfloor - m$ (Győri-Keszegh 2017)",
+    "significance": "key",
+    "relatedConcepts": ["edge-disjoint triangle packing", "K₄-free graphs", "Turán-type results", "partial resolution"],
+    "prerequisites": ["triangle packing", "Turán's theorem", "extremal graph theory"]
+  },
+  {
+    "id": "ann-lovasz-covering",
+    "proofId": "erdos-1017-oq-01",
+    "range": { "startLine": 247, "endLine": 256 },
+    "type": "context",
+    "title": "Lovász Covering Bound (1968)",
+    "content": "Lovász (1968) proved a covering bound: every graph can be covered by at most $n(n-1)/2$ cliques. This is weaker than a partition bound because cliques may overlap (an edge can be in multiple covering cliques but only one partition clique). The covering-vs-partition gap is itself an open problem, and the two numbers can differ significantly for dense graphs.",
+    "mathContext": "Covering: cliques may overlap. Partition: edge-disjoint. $\\text{cp}(G) \\geq \\text{cc}(G)$ always.",
+    "significance": "context",
+    "relatedConcepts": ["clique covering number", "covering vs partitioning", "Lovász theta function"],
+    "prerequisites": ["graph theory", "covering theory"]
+  },
+  {
+    "id": "ann-connections",
+    "proofId": "erdos-1017-oq-01",
+    "range": { "startLine": 262, "endLine": 273 },
+    "type": "insight",
+    "title": "Connections: Edge Coloring and Supersaturation",
+    "content": "Two deep connections are axiomatized. First, the clique partition number of $G$ equals the chromatic index $\\chi'(\\bar{G})$ of the complement — linking Problem #1017 to Vizing's theorem and edge-coloring theory. Second, Razborov's flag algebra result (2010) gives supersaturation: when $|E(G)| \\geq \\lfloor n^2/4 \\rfloor + m$, the triangle count is at least $\\Omega(m^2)$. More triangles mean more potential savings, suggesting dense graphs should have smaller clique partition numbers.",
+    "mathContext": "$\\text{cp}(G) = \\chi'(\\bar{G})$ (clique partition = chromatic index of complement).\nSupersaturation: $|E| \\geq \\lfloor n^2/4 \\rfloor + m \\implies$ triangle count $\\geq cm^2$ (Razborov 2010).",
+    "significance": "supporting",
+    "relatedConcepts": ["chromatic index", "Vizing's theorem", "flag algebras", "Razborov supersaturation", "complement graph"],
+    "prerequisites": ["edge coloring", "flag algebras", "Kruskal-Katona theorem"]
+  }
+]
