@@ -7,7 +7,7 @@
     "author": "Abel (1824), Galois (1832)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Abel%E2%80%93Ruffini_theorem",
     "date": "1824",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/AbelRuffiniOQ04OQ01.lean",
     "tags": [
       "algebra",
@@ -18,10 +18,10 @@
       "eisenstein-criterion",
       "wiedijk-100"
     ],
-    "badge": "axiom",
-    "sorries": 2,
-    "axiomCount": 2,
-    "assumptions": "Two axioms: (B1) disc_p_neg (disc(x^5-4x+2) < 0, computational: -212144), (B2) vandermonde_sq_eq_disc_p (Δ² = disc identity). Former Axiom A (three_dvd_gal_card) is now PROVED via complex conjugation: embed SF→ℂ, restrict conj to Gal automorphism, show sign=-1 via Vandermonde discriminant → transposition in Gal → |Gal|≠20 by Sylow+normalizer → 3||Gal| by elimination. Two scoped sorry's remain for |Gal|≠10 and |Gal|≠40 cases.",
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries after PR #6856 eliminated all remaining assumptions. Former axioms B1 (disc_p_neg) and B2 (vandermonde_sq_eq_disc_p) are now proved. Axiom A (three_dvd_gal_card) was proved via complex conjugation. All Galois group order exclusions (|Gal|≠10, ≠20, ≠40) are now proved via Sylow theory.",
     "wiedijkNumber": 16,
     "dateAdded": "2026-03-25",
     "mathlibDependencies": [
@@ -62,7 +62,7 @@
       "Solvable groups and the derived series"
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 1593,
+    "lineCount": 1581,
     "relatedProblems": [
       {
         "id": "abel-ruffini-oq-04",
@@ -286,9 +286,9 @@
       "Polynomial"
     ],
     "namespace": "AbelRuffiniOQ04OQ01",
-    "lineCount": 1593,
-    "axiomCount": 2,
-    "sorryCount": 2,
+    "lineCount": 1581,
+    "axiomCount": 0,
+    "sorryCount": 0,
     "theoremCount": 88,
     "definitionCount": 6,
     "mainTheorems": [
