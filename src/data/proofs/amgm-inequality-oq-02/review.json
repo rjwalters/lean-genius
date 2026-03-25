@@ -76,21 +76,21 @@
       "priority": "high",
       "target": "enricher",
       "description": "Fix stale sorry metadata: (1) Remove '1 sorry in h_binom identity' from originalContributions[6]. (2) Update overview.problemStatement to say the binomial identity is fully proved. (3) Update conclusion.implications to remove the 'h_binom sorry' paragraph. The Lean code at lines 205-224 proves sq_sum_eq_sum_sq_add_two_elemSymm with 0 sorries — all textual references to this sorry are stale.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "medium",
       "target": "enricher",
       "description": "Expand mathlibDependencies from 4 to ~10 entries. Key additions: Finset.powersetCard_succ_insert, Nat.choose_succ_succ, Real.sq_sqrt, Real.sqrt_mul, Finset.sum_nonneg, Finset.prod_nonneg, Finset.sum_union, Finset.prod_insert.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "low",
       "target": "enricher",
       "description": "Reconcile theoremCount (25) with the summary section listing (17+2=19) by either adding private lemmas to the summary or clarifying the count distinction.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
 
