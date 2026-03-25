@@ -140,7 +140,35 @@
     "lineCount": 221,
     "axiomCount": 0,
     "theoremCount": 12,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "substantiveTheoremCount": 4,
+    "trivialSpecializations": 8,
+    "mainTheorems": [
+      {
+        "name": "ivt",
+        "type": "wrapper",
+        "description": "IVT: continuous f on [a,b] with f(a) <= y <= f(b) has a preimage",
+        "leanType": "{a b : ℝ} → a ≤ b → ContinuousOn f (Icc a b) → f a ≤ y → y ≤ f b → ∃ c ∈ Icc a b, f c = y"
+      },
+      {
+        "name": "bolzano",
+        "type": "original",
+        "description": "Bolzano's theorem: continuous f with f(a) < 0 < f(b) has a zero",
+        "leanType": "{a b : ℝ} → a < b → ContinuousOn f (Icc a b) → f a < 0 → 0 < f b → ∃ c ∈ Ioo a b, f c = 0"
+      },
+      {
+        "name": "odd_degree_poly_has_root",
+        "type": "original",
+        "description": "Every odd-degree real polynomial has a real root",
+        "leanType": "{f : ℝ → ℝ} → Continuous f → (∀ M, ∃ x, M < f x) → (∀ M, ∃ x, f x < M) → ∃ x, f x = 0"
+      },
+      {
+        "name": "fixed_point_Icc",
+        "type": "original",
+        "description": "Continuous f : [a,b] → [a,b] has a fixed point",
+        "leanType": "{a b : ℝ} → a ≤ b → ContinuousOn f (Icc a b) → f '' Icc a b ⊆ Icc a b → ∃ c ∈ Icc a b, f c = c"
+      }
+    ]
   },
   "crossReferences": [
     {
