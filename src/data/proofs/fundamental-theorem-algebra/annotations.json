@@ -23,6 +23,78 @@
     ]
   },
   {
+    "id": "ann-concrete-examples",
+    "proofId": "fundamental-theorem-algebra",
+    "range": {
+      "startLine": 56,
+      "endLine": 73
+    },
+    "type": "example",
+    "title": "Concrete Examples and Main Theorem Setup",
+    "content": "Two concrete examples ground the abstract theorem: (1) $z^2 + 1$ has degree 2, verified by `simp [degree_add_eq_left_of_degree_lt]` which shows the leading term $z^2$ dominates the constant 1 in degree. (2) The imaginary unit $i$ is a root of $z^2 + 1$, verified by computing $i^2 + 1 = -1 + 1 = 0$ using `Complex.I_sq` and `norm_num`. These examples preview the main theorem: every such polynomial (degree $\\geq 1$) must have a root.\n\nThe section header introduces the FTA statement: every non-constant polynomial with complex coefficients has at least one complex root, where 'non-constant' means degree $\\geq 1$.",
+    "mathContext": "$z^2 + 1 = 0$ has roots $z = \\pm i$ since $i^2 = -1$. In $\\mathbb{R}[x]$, this polynomial has no roots — the extension to $\\mathbb{C}$ is what FTA guarantees. The degree computation $\\deg(X^2 + 1) = 2$ uses Lean's `degree_add_eq_left_of_degree_lt` which shows $\\deg(1) = 0 < 2 = \\deg(X^2)$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Complex.I_sq",
+      "degree_add_eq_left_of_degree_lt",
+      "polynomial evaluation"
+    ],
+    "relatedConcepts": [
+      "polynomial roots",
+      "imaginary unit",
+      "degree computation",
+      "IsRoot predicate"
+    ]
+  },
+  {
+    "id": "ann-algebraic-closure",
+    "proofId": "fundamental-theorem-algebra",
+    "range": {
+      "startLine": 102,
+      "endLine": 117
+    },
+    "type": "concept",
+    "title": "Algebraic Closure: C is Algebraically Closed",
+    "content": "A field $K$ is **algebraically closed** if every non-constant polynomial over $K$ has a root in $K$. FTA says exactly this about $\\mathbb{C}$. Mathlib provides the instance `Complex.isAlgClosed : IsAlgClosed \\mathbb{C}`, which encodes this property as a typeclass.\n\nThe immediate consequence is `splits_over_complex`: every polynomial $p \\in \\mathbb{C}[x]$ splits into linear factors over $\\mathbb{C}$, i.e., $p = a_n \\prod (x - r_i)$. The proof delegates to `IsAlgClosed.splits_codomain`, which derives splitting from the algebraic closure property via repeated root extraction.",
+    "mathContext": "A field $K$ is algebraically closed iff every $p \\in K[x]$ with $\\deg(p) \\geq 1$ has a root in $K$. Equivalently, $K$ has no proper algebraic extensions — $K = \\overline{K}$. The algebraic closure of $\\mathbb{Q}$ is $\\overline{\\mathbb{Q}} \\subsetneq \\mathbb{C}$; the algebraic closure of $\\mathbb{R}$ is $\\mathbb{C} = \\mathbb{R}[i]/(i^2+1)$, a degree-2 extension.",
+    "significance": "key",
+    "prerequisites": [
+      "IsAlgClosed typeclass",
+      "Complex.isAlgClosed",
+      "Polynomial.Splits"
+    ],
+    "relatedConcepts": [
+      "algebraic closure",
+      "IsAlgClosed",
+      "Splits predicate",
+      "field extension"
+    ]
+  },
+  {
+    "id": "ann-factorization-intro",
+    "proofId": "fundamental-theorem-algebra",
+    "range": {
+      "startLine": 119,
+      "endLine": 131
+    },
+    "type": "concept",
+    "title": "Complete Factorization: Every Polynomial Factors into Linear Terms",
+    "content": "Since $\\mathbb{C}$ is algebraically closed, every degree-$n$ polynomial has exactly $n$ roots (counted with multiplicity) and factors completely as $p(z) = a_n(z - r_1)(z - r_2)\\cdots(z - r_n)$.\n\nThe section introduces `card_roots_eq_degree` (root count equals degree for nonzero polynomials) and `monic_prod_roots` (a monic polynomial equals the product of its root factors). Together these capture the strongest form of FTA: not just root existence, but complete linear factorization.",
+    "mathContext": "For $p \\in \\mathbb{C}[x]$ with $\\deg(p) = n$ and leading coefficient $a_n$: $p(z) = a_n \\prod_{i=1}^{n} (z - r_i)$ where $r_1, \\ldots, r_n$ are the roots (with multiplicity). The multiset $\\{r_1, \\ldots, r_n\\}$ is `Polynomial.roots p` in Mathlib, and `Multiset.card (roots p) = natDegree p` is the root-counting statement.",
+    "significance": "key",
+    "prerequisites": [
+      "Polynomial.roots",
+      "Multiset.card",
+      "polynomial factorization"
+    ],
+    "relatedConcepts": [
+      "linear factorization",
+      "root multiplicity",
+      "Polynomial.roots",
+      "monic polynomial"
+    ]
+  },
+  {
     "id": "ann-main-theorem",
     "proofId": "fundamental-theorem-algebra",
     "range": {

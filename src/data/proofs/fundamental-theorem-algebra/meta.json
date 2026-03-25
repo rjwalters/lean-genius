@@ -311,6 +311,46 @@
     "lineCount": 214,
     "axiomCount": 0,
     "theoremCount": 6,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "substantiveTheoremCount": 2,
+    "trivialSpecializations": 4,
+    "mainTheorems": [
+      {
+        "name": "fundamental_theorem_of_algebra",
+        "type": "wrapper",
+        "description": "Every non-constant complex polynomial has at least one root",
+        "leanType": "{p : ℂ[X]} → 0 < degree p → ∃ z : ℂ, IsRoot p z"
+      },
+      {
+        "name": "no_roots_implies_constant",
+        "type": "bridge",
+        "description": "If a polynomial has no roots, it is constant (contrapositive of FTA)",
+        "leanType": "{p : ℂ[X]} → (∀ z : ℂ, ¬IsRoot p z) → p.natDegree = 0"
+      },
+      {
+        "name": "splits_over_complex",
+        "type": "wrapper",
+        "description": "Every complex polynomial splits into linear factors",
+        "leanType": "(p : ℂ[X]) → Splits (RingHom.id ℂ) p"
+      },
+      {
+        "name": "card_roots_eq_degree",
+        "type": "wrapper",
+        "description": "A nonzero complex polynomial has exactly degree-many roots (counted with multiplicity)",
+        "leanType": "{p : ℂ[X]} → p ≠ 0 → Multiset.card p.roots = p.natDegree"
+      },
+      {
+        "name": "monic_prod_roots",
+        "type": "wrapper",
+        "description": "A monic polynomial equals the product of (X - root) over its roots",
+        "leanType": "{p : ℂ[X]} → Monic p → p = (p.roots.map (fun a => X - C a)).prod"
+      },
+      {
+        "name": "quadratic_has_root",
+        "type": "bridge",
+        "description": "Every quadratic az² + bz + c with a ≠ 0 has a root in ℂ",
+        "leanType": "(a b c : ℂ) → a ≠ 0 → ∃ z : ℂ, a * z ^ 2 + b * z + c = 0"
+      }
+    ]
   }
 }
