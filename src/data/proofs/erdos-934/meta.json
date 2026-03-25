@@ -18,7 +18,7 @@
       "2K2-free"
     ],
     "badge": "axiom",
-    "sorries": 8,
+    "sorries": 7,
     "erdosNumber": 934,
     "erdosUrl": "https://erdosproblems.com/934",
     "erdosProblemStatus": "solved",
@@ -57,7 +57,7 @@
     ],
     "axiomCount": 11,
     "lineCount": 261,
-    "assumptions": "11 axiom(s) and 8 sorry(s)."
+    "assumptions": "11 axiom(s) and 7 sorry(s)."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #934** was posed by Erdős and Nešetřil, studying edge separation in bounded-degree graphs.\n\n**Historical Development:**\n- **1983 (Bermond-Bond-Paoli-Peyrat):** Conjectured h_2(d) ≤ 5d²/4 + 1, with equality for even d.\n- **1988 (Erdős):** Wrote 'This problem seems interesting only if there is a nice expression for h_t(d).'\n- **1990 (Chung-Gyárfás-Tuza-Trotter):** Proved h_2(d) = ⌊5d²/4⌋ + 1 exactly.\n- **2022 (Cambie et al.):** Proved h_3(3) = 23, conjectured h_3(d) ≤ d³-d²+d+2, and established general bounds.\n\nThe problem connects to 2K₂-free graphs and line graph diameter problems.",
