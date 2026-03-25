@@ -31,35 +31,40 @@
       "title": "Core Definitions",
       "startLine": 22,
       "endLine": 49,
-      "summary": "Defines the foundational objects: `IsEntire` (entire function predicate), `IsMonomial` ($f(z) = cz^n$), the maximum modulus $M(r) = \\max_{|z|=r} |f(z)|$ via `maxModulus`, and the counting function $\\nu(r) = \\#\\{z : |z|=r,\\, |f(z)|=M(r)\\}$ via `nu`. All core definitions are axiomatized except `IsMonomial`."
+      "summary": "Defines the foundational objects: `IsEntire` (entire function predicate), `IsMonomial` ($f(z) = cz^n$), the maximum modulus $M(r) = \\max_{|z|=r} |f(z)|$ via `maxModulus`, and the counting function $\\nu(r) = \\#\\{z : |z|=r,\\, |f(z)|=M(r)\\}$ via `nu`. All core definitions are axiomatized except `IsMonomial`.",
+      "mathContext": "Defines the foundational objects: `IsEntire` (entire function predicate), `IsMonomial` ($f(z) = cz^n$), the maximum modulus $M(r) = \\max_{|z|=r} |f(z)|$ via `maxModulus`, and the counting function $\\nu(r) = \\#\\{z : |z|=r,\\, |f(z)|=M(r)\\}$ via `nu`. All core definitions are axiomatized except `IsMonomial`."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 50,
       "endLine": 60,
-      "summary": "States that $1 \\le \\nu(r) < \\infty$ for non-monomial entire functions: finiteness from the identity theorem (the real-analytic function $\\theta \\mapsto |f(re^{i\\theta})|$ has finitely many maxima), and existence from compactness of the circle."
+      "summary": "States that $1 \\le \\nu(r) < \\infty$ for non-monomial entire functions: finiteness from the identity theorem (the real-analytic function $\\theta \\mapsto |f(re^{i\\theta})|$ has finitely many maxima), and existence from compactness of the circle.",
+      "mathContext": "States that $1 \\le \\nu(r) < \\infty$ for non-monomial entire functions: finiteness from the identity theorem (the real-analytic function $\\theta \\mapsto |f(re^{i\\theta})|$ has finitely many maxima), and existence from compactness of the circle."
     },
     {
       "id": "question-1",
       "title": "Question 1: lim sup ν(r) = ∞ (Solved)",
       "startLine": 61,
       "endLine": 69,
-      "summary": "The solved part: Herzog–Piranian (1968) showed $\\limsup_{r \\to \\infty} \\nu(r) = \\infty$ is achievable. Formalized as: for every $N$, there exists a non-monomial entire $f$ and arbitrarily large $r$ with $\\nu(r) \\ge N$."
+      "summary": "The solved part: Herzog–Piranian (1968) showed $\\limsup_{r \\to \\infty} \\nu(r) = \\infty$ is achievable. Formalized as: for every $N$, there exists a non-monomial entire $f$ and arbitrarily large $r$ with $\\nu(r) \\ge N$.",
+      "mathContext": "The solved part: Herzog–Piranian (1968) showed $\\limsup_{r \\to \\infty} \\nu(r) = \\infty$ is achievable. Formalized as: for every $N$, there exists a non-monomial entire $f$ and arbitrarily large $r$ with $\\nu(r) \\ge N$."
     },
     {
       "id": "question-2",
       "title": "Question 2: lim inf ν(r) = ∞ (Open)",
       "startLine": 70,
       "endLine": 80,
-      "summary": "The open part: can $\\liminf_{r \\to \\infty} \\nu(r) = \\infty$ for a non-monomial entire function? Formalized as a disjunction — either such $f$ exists, or every non-monomial has $\\nu(r)$ bounded infinitely often."
+      "summary": "The open part: can $\\liminf_{r \\to \\infty} \\nu(r) = \\infty$ for a non-monomial entire function? Formalized as a disjunction — either such $f$ exists, or every non-monomial has $\\nu(r)$ bounded infinitely often.",
+      "mathContext": "The open part: can $\\liminf_{r \\to \\infty} \\nu(r) = \\infty$ for a non-monomial entire function? Formalized as a disjunction — either such $f$ exists, or every non-monomial has $\\nu(r)$ bounded infinitely often."
     },
     {
       "id": "approximate-context",
       "title": "Approximate Result and Hadamard Context",
       "startLine": 81,
       "endLine": 100,
-      "summary": "Glücksam–Pardo-Simón (2024): for any $\\varepsilon > 0$ and $N$, there exists entire $f$ with $N$ points achieving $(1-\\varepsilon)M(r)$ for all large $r$. Also states monotonicity of $M(r)$ from the maximum modulus principle and the Hadamard three-circles theorem."
+      "summary": "Glücksam–Pardo-Simón (2024): for any $\\varepsilon > 0$ and $N$, there exists entire $f$ with $N$ points achieving $(1-\\varepsilon)M(r)$ for all large $r$. Also states monotonicity of $M(r)$ from the maximum modulus principle and the Hadamard three-circles theorem.",
+      "mathContext": "Glücksam–Pardo-Simón (2024): for any $\\varepsilon > 0$ and $N$, there exists entire $f$ with $N$ points achieving $(1-\\varepsilon)M(r)$ for all large $r$. Also states monotonicity of $M(r)$ from the maximum modulus principle and the Hadamard three-circles theorem."
     }
   ],
   "overview": {

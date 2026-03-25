@@ -78,35 +78,40 @@
       "title": "Header and Imports",
       "summary": "Problem statement, resolution history, references, and Mathlib imports for complex analysis and real number operations",
       "startLine": 1,
-      "endLine": 25
+      "endLine": 25,
+      "mathContext": "Problem statement, resolution history, references, and Mathlib imports for complex analysis and real number operations"
     },
     {
       "id": "definitions",
       "title": "Part I: Definitions",
       "summary": "IsFiniteOrder (entire function order via ε-characterization), IsEscapePath (filter-based f → ∞), axiomatized arcLengthInDisk for measure-theoretic arc length",
       "startLine": 29,
-      "endLine": 53
+      "endLine": 53,
+      "mathContext": "IsFiniteOrder (entire function order via ε-characterization), IsEscapePath (filter-based f → ∞), axiomatized arcLengthInDisk for measure-theoretic arc length"
     },
     {
       "id": "hayman-positive",
       "title": "Part II: Hayman's Positive Result",
       "summary": "Axiom: every finite-order entire function admits an escape path with ℓ(r) ≤ Cr (under regularity conditions on growth rate)",
       "startLine": 54,
-      "endLine": 69
+      "endLine": 69,
+      "mathContext": "Axiom: every finite-order entire function admits an escape path with ℓ(r) ≤ Cr (under regularity conditions on growth rate)"
     },
     {
       "id": "counterexample",
       "title": "Part III: Gol'dberg-Eremenko Counterexample",
       "summary": "Axiom: existence of a finite-order entire function where every escape path has ℓ(r) growing faster than O(r), disproving the conjecture",
       "startLine": 70,
-      "endLine": 84
+      "endLine": 84,
+      "mathContext": "Axiom: existence of a finite-order entire function where every escape path has ℓ(r) growing faster than O(r), disproving the conjecture"
     },
     {
       "id": "main-theorem",
       "title": "Part IV: Main Theorem",
       "summary": "Theorem erdos_1115: the general conjecture is false, proved by direct invocation of the Gol'dberg-Eremenko counterexample",
       "startLine": 85,
-      "endLine": 102
+      "endLine": 102,
+      "mathContext": "Theorem erdos_1115: the general conjecture is false, proved by direct invocation of the Gol'dberg-Eremenko counterexample"
     }
   ],
   "conclusion": {

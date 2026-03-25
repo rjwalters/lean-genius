@@ -83,49 +83,56 @@
       "title": "Cardinal Setup",
       "summary": "Defines ℵ₁ and ℵ₀ using Mathlib's Cardinal.aleph, axiomatizes types A, B, C of cardinality ℵ₁.",
       "startLine": 33,
-      "endLine": 57
+      "endLine": 57,
+      "mathContext": "Defines ℵ₁ and ℵ₀ using Mathlib's Cardinal.aleph, axiomatizes types A, B, C of cardinality ℵ₁."
     },
     {
       "id": "colorings-cubes",
       "title": "Colorings and Monochromatic Cubes",
       "summary": "Defines TwoColoring, isMonochromatic, and hasCardAleph0 predicates.",
       "startLine": 58,
-      "endLine": 82
+      "endLine": 82,
+      "mathContext": "Defines TwoColoring, isMonochromatic, and hasCardAleph0 predicates."
     },
     {
       "id": "conjecture",
       "title": "The Erdős-Hajnal Conjecture",
       "summary": "Formalizes the partition property ℵ₁³ → (ℵ₀)³₂ as erdos_hajnal_conjecture.",
       "startLine": 83,
-      "endLine": 96
+      "endLine": 96,
+      "mathContext": "Formalizes the partition property ℵ₁³ → (ℵ₀)³₂ as erdos_hajnal_conjecture."
     },
     {
       "id": "disproof",
       "title": "Prikry-Mills Disproof",
       "summary": "The axiomatized disproof and derived existence of a bad coloring.",
       "startLine": 97,
-      "endLine": 123
+      "endLine": 123,
+      "mathContext": "The axiomatized disproof and derived existence of a bad coloring."
     },
     {
       "id": "two-dim",
       "title": "Two-Dimensional Analogue",
       "summary": "The 2D negative result ℵ₁² ↛ (ℵ₀)²₂ axiomatized for comparison.",
       "startLine": 124,
-      "endLine": 139
+      "endLine": 139,
+      "mathContext": "The 2D negative result ℵ₁² ↛ (ℵ₀)²₂ axiomatized for comparison."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "summary": "erdos_1128: the Erdős-Hajnal conjecture is false.",
       "startLine": 140,
-      "endLine": 149
+      "endLine": 149,
+      "mathContext": "erdos_1128: the Erdős-Hajnal conjecture is false."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_1128_summary combining the disproof and bad coloring existence.",
       "startLine": 150,
-      "endLine": 177
+      "endLine": 177,
+      "mathContext": "erdos_1128_summary combining the disproof and bad coloring existence."
     }
   ],
   "conclusion": {
