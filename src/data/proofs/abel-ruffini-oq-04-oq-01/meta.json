@@ -179,8 +179,8 @@
       "title": "Parts V(a)-(f): Galois Group Order |Gal| = 120 (Theorem)",
       "startLine": 230,
       "endLine": 754,
-      "summary": "Proves $|\\text{Gal}| = 120$ as a theorem via axiom decomposition. (a) Evaluations showing 3 sign changes. (b) Group theory: 5-cycle + transposition = $S_5$ via native_decide conjugation chain. (c) galToPerm5 injection infrastructure. (d) Sylow theory: no order-15 subgroups (native_decide), no order-30 subgroups ($A_5$ simplicity). (e) Two narrow axioms: $3 \\mid |\\text{Gal}|$ (Dedekind at $p=13$) and $\\text{Gal} \\not\\subset A_5$ (discriminant $< 0$). (f) Proof: $15 \\mid |\\text{Gal}|$, $|\\text{Gal}| \\mid 120$, rule out 15/30/60.",
-      "mathContext": "Theorem: $|\\text{Gal}(x^5-4x+2/\\mathbb{Q})| = 120$. From $5 \\mid |G|$, $3 \\mid |G|$ (Dedekind), $|G| \\mid 120$: $|G| \\in \\{15,30,60,120\\}$. Not 15 (Sylow), not 30 ($A_5$ simple), not 60 ($G \\not\\subset A_5$). Two axioms: Dedekind's theorem at $p=13$, discriminant-Vandermonde identity."
+      "summary": "Proves $|\\text{Gal}| = 120$ as a theorem via axiom decomposition. (a) Evaluations showing 3 sign changes. (b) Group theory: 5-cycle + transposition = $S_5$ via native_decide conjugation chain. (c) galToPerm5 injection infrastructure. (d) Sylow theory: no order-15 subgroups (native_decide), no order-30 subgroups ($A_5$ simplicity). (e) Three narrow axioms: $3 \\mid |\\text{Gal}|$ (Dedekind at $p=13$), $\\text{disc}(p) < 0$ (computational), $\\Delta^2 = \\text{disc}(p)$ (Vandermonde identity). From (e), `gal_has_odd_perm` is **proved** as a theorem. (f) Proof: $15 \\mid |\\text{Gal}|$, $|\\text{Gal}| \\mid 120$, rule out 15/30/60.",
+      "mathContext": "Theorem: $|\\text{Gal}(x^5-4x+2/\\mathbb{Q})| = 120$. From $5 \\mid |G|$, $3 \\mid |G|$ (Dedekind), $|G| \\mid 120$: $|G| \\in \\{15,30,60,120\\}$. Not 15 (Sylow), not 30 ($A_5$ simple), not 60 ($G \\not\\subset A_5$). Three axioms: Dedekind at $p=13$, discriminant negativity, Vandermonde-discriminant identity."
     },
     {
       "id": "gal-iso",
@@ -210,13 +210,13 @@
       "id": "realizability",
       "title": "Part IX: $S_5$ Realizability and Verification",
       "startLine": 844,
-      "endLine": 874,
-      "summary": "$S_5$ is realizable as a Galois group over $\\mathbb{Q}$, witnessed by the splitting field of $x^5 - 4x + 2$. Followed by `#check` verification of all key theorems and namespace closure.",
+      "endLine": 1069,
+      "summary": "$S_5$ is realizable as a Galois group over $\\mathbb{Q}$, witnessed by the splitting field of $x^5 - 4x + 2$. Constructs the `IsGalois` structure (finite-dimensional, normal, separable). Concludes with `#check` verification of all key theorems: `p_irreducible`, `p_natDegree`, `p_separable`, `five_dvd_gal_card`, `gal_card_dvd_120`, `gal_iso_s5`.",
       "mathContext": "$\\exists K/\\mathbb{Q}$ Galois: $\\text{Gal}(K/\\mathbb{Q}) \\cong S_5$. Witness: $K = $ splitting field of $x^5 - 4x + 2$."
     }
   ],
   "conclusion": {
-    "summary": "This formalization completes the Abel-Ruffini proof chain by exhibiting a concrete polynomial $x^5 - 4x + 2$ whose roots cannot be expressed by radicals. The proof proceeds from Eisenstein irreducibility through Galois group identification ($\\text{Gal} \\cong S_5$) to the unsolvability conclusion via Galois's theorem. The key result $|\\text{Gal}| = 120$ is proved as a theorem from two narrow axioms (Dedekind at $p=13$, discriminant non-square) via Sylow theory and $A_5$ simplicity.",
+    "summary": "This formalization completes the Abel-Ruffini proof chain by exhibiting a concrete polynomial $x^5 - 4x + 2$ whose roots cannot be expressed by radicals. The proof proceeds from Eisenstein irreducibility through Galois group identification ($\\text{Gal} \\cong S_5$) to the unsolvability conclusion via Galois's theorem. The key result $|\\text{Gal}| = 120$ is proved as a theorem from three narrow axioms: (A) Dedekind at $p=13$ gives $3 \\mid |\\text{Gal}|$, (B1) $\\text{disc}(p) < 0$ (computational), (B2) $\\Delta^2 = \\text{disc}(p)$ (Vandermonde identity). From these, `gal_has_odd_perm` is proved as a theorem, and Sylow elimination forces $|\\text{Gal}| = 120$.",
     "implications": "This result makes the Abel-Ruffini theorem tangible: rather than an abstract impossibility for the 'general quintic', we have a specific polynomial whose five roots provably resist all radical expressions. The $S_5$ realizability result also contributes to the inverse Galois problem, complementing existing gallery realizations of $S_3$ and $F_{20}$.",
     "openQuestions": [
       "The group theory is now proved (closure_cycle_swap_eq_top). Remaining to eliminate the axiom: formalize real root count (IVT + Rolle) and show complex conjugation gives a transposition in the Galois group.",
@@ -234,7 +234,7 @@
     ],
     "namespace": "AbelRuffiniOQ04OQ01",
     "lineCount": 1069,
-    "axiomCount": 2,
+    "axiomCount": 3,
     "theoremCount": 37,
     "definitionCount": 6,
     "sorryCount": 0,
