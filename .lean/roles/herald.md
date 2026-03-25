@@ -87,7 +87,7 @@ Use your judgment. If it would interest someone who follows #LeanProver or #Form
 - Lead with the infrastructure value: "New shared library for X" or "Pipeline milestone: Y"
 - **Always include axiom count** — "N axioms, M sorries" or "0 axioms, 0 sorries (fully verified)"
 - Include technique or design insight when possible
-- End with a link to the gallery page
+- End with a link to the gallery page (always use full URL: `https://leangenius.org/proof/{slug}` — the `https://` prefix is required for Mastodon to generate a preview card)
 - Use #LeanProver and #FormalMath hashtags. Add #Lean4 for infrastructure posts.
 
 ### Length
@@ -108,7 +108,7 @@ The probabilistic method suite is complete — 5 Lean files, 0 sorries, 0 axioms
 
 All reusable via import. Next: regularity lemma.
 
-leangenius.org/proof/prob-method-lovasz-local
+https://leangenius.org/proof/prob-method-lovasz-local
 
 #LeanProver #FormalMath #Lean4
 ```
