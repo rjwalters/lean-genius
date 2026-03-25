@@ -156,33 +156,6 @@
       "description": "Bézout's identity provides the coefficient witness for CRT solvability: the examples use 6·(-1) + 4·2 = gcd(6,4) to construct solutions"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "chinese-remainder-non-coprime",
-      "relationship": "extends",
-      "description": "Extends the non-coprime CRT formalization with Dirichlet's approximation theorem, connecting lattice geometry to Diophantine approximation"
-    },
-    {
-      "id": "chinese-remainder-non-coprime-oq-01",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "chinese-remainder-constructive",
-      "relationship": "related",
-      "description": "The constructive CRT computes solutions for coprime moduli; this file extends to non-coprime solvability and Diophantine approximation"
-    },
-    {
-      "id": "bezout-identity",
-      "relationship": "foundational",
-      "description": "Bézout's identity provides the coefficient witness for CRT solvability: the examples use 6·(-1) + 4·2 = gcd(6,4) to construct solutions"
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "related",
-      "description": "The pigeonhole principle used in Dirichlet's theorem is the same combinatorial tool that yields Euclid's proof of infinite primes via counting arguments"
-    }
-  ],
   "conclusion": {
     "summary": "We have formalized Dirichlet's approximation theorem via the pigeonhole principle, establishing the foundational result of Diophantine approximation. The proof demonstrates how finite combinatorics (pigeonhole on N+1 fractional parts) yields a powerful analytic result (rational approximation quality 1/(qN)). The connections to CRT lattice structure, Stern-Brocot mediants, and the golden ratio show how number theory, combinatorics, and geometry interweave in the theory of Diophantine approximation.",
     "implications": [

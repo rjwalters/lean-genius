@@ -204,27 +204,5 @@
       "venue": "Bulletin of Symbolic Logic, 9(3), 362–386",
       "note": "Systematic catalogue of Lawvere instances: Cantor, Russell, Richard, Berry, König, Turing, Gödel, Tarski — all derived from a single diagonal lemma in cartesian closed categories."
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "cantor-diagonalization",
-      "relationship": "generalizes",
-      "description": "The base Cantor proof uses the diagonal argument directly; this proof derives it as a corollary of the more general Lawvere fixed-point theorem"
-    },
-    {
-      "id": "cantors-theorem",
-      "relationship": "generalizes",
-      "description": "Cantor's theorem (|S| < |P(S)|) follows from Lawvere by taking B = Prop and f = Not"
-    },
-    {
-      "id": "halting-problem",
-      "relationship": "related",
-      "description": "The halting problem is another instance of Lawvere's theorem with B = Bool and f = boolean negation"
-    },
-    {
-      "id": "godel-incompleteness",
-      "relationship": "related",
-      "description": "Gödel's incompleteness theorem can be viewed as a Lawvere instance where the surjection encodes formulas as numbers"
-    }
   ]
 }

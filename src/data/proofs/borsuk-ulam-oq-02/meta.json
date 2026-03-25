@@ -186,39 +186,32 @@
   },
   "references": [
     {
-      "authors": "Borsuk, K.",
+      "authors": "Borsuk, Karol",
       "title": "Drei Sätze über die n-dimensionale euklidische Sphäre",
       "year": "1933",
-      "venue": "Fundamenta Mathematicae, 20(1):177–190",
-      "note": "Original paper proving the Borsuk-Ulam theorem; establishes the ℤ/2 case that every continuous f: Sⁿ → ℝⁿ has an antipodal pair"
+      "venue": "Fundamenta Mathematicae 20, 177–190",
+      "note": "Original statement and proof of the Borsuk-Ulam theorem for the antipodal ℤ/2 action on Sⁿ"
     },
     {
-      "authors": "Yang, C.-T.",
-      "title": "On theorems of Borsuk-Ulam, Kakutani-Yamabe-Yujobô and Dyson, I",
+      "authors": "Yang, Chung-Tao",
+      "title": "On theorems of Borsuk-Ulam, Kakutani-Yamabe-Yujobô and Dyson",
       "year": "1954",
-      "venue": "Annals of Mathematics, 60(2):262–282",
-      "note": "Proves the Yang-Borsuk theorem for ℤ/p actions on S^(2n-1); the key reference for the prime-order equivariant generalization axiomized in this entry"
+      "venue": "Annals of Mathematics 60, 262–282",
+      "note": "Extended Borsuk-Ulam to free ℤ/p actions on odd-dimensional spheres, proving the Yang-Bourgin theorem formalized in this file"
     },
     {
-      "authors": "Dold, A.",
+      "authors": "Dold, Albrecht",
       "title": "Simple proofs of some Borsuk-Ulam results",
       "year": "1983",
-      "venue": "Contemporary Mathematics, 19:65–69",
-      "note": "Dold's cohomological index obstruction theorem for free G-space maps; axiomized as dold_theorem in this entry"
+      "venue": "Contemporary Mathematics 19, 65–69",
+      "note": "Introduced the cohomological index approach for general finite group actions, giving the framework axiomatized here"
     },
     {
-      "authors": "Matoušek, J.",
-      "title": "Using the Borsuk-Ulam Theorem: Lectures on Topological Methods in Combinatorics and Geometry",
+      "authors": "Matoušek, Jiří",
+      "title": "Using the Borsuk-Ulam Theorem",
       "year": "2003",
-      "venue": "Springer-Verlag",
-      "note": "Comprehensive modern treatment including equivariant versions, Dold's theorem, and applications to combinatorics via topological methods"
-    },
-    {
-      "authors": "tom Dieck, T.",
-      "title": "Transformation Groups and Representation Theory",
-      "year": "1979",
-      "venue": "Springer Lecture Notes in Mathematics, vol. 766",
-      "note": "Covers equivariant cohomology and the cohomological index theory used to prove equivariant Borsuk-Ulam results for compact Lie groups"
+      "venue": "Springer, Universitext",
+      "note": "Comprehensive treatment of Borsuk-Ulam and its applications to combinatorics, with equivariant topology background"
     }
   ],
   "leanFile": {
@@ -259,58 +252,6 @@
     },
     {
       "targetId": "borsuk-ulam-oq-03-oq-01-oq-01",
-      "relationship": "sibling",
-      "description": "Sibling open question from the same parent: Tucker 2D Lemma via Graph-Theoretic Path-Following"
-    }
-  ],
-  "references": [
-    {
-      "authors": "Borsuk, Karol",
-      "title": "Drei Sätze über die n-dimensionale euklidische Sphäre",
-      "year": "1933",
-      "venue": "Fundamenta Mathematicae 20, 177–190",
-      "note": "Original statement and proof of the Borsuk-Ulam theorem for the antipodal ℤ/2 action on Sⁿ"
-    },
-    {
-      "authors": "Yang, Chung-Tao",
-      "title": "On theorems of Borsuk-Ulam, Kakutani-Yamabe-Yujobô and Dyson",
-      "year": "1954",
-      "venue": "Annals of Mathematics 60, 262–282",
-      "note": "Extended Borsuk-Ulam to free ℤ/p actions on odd-dimensional spheres, proving the Yang-Bourgin theorem formalized in this file"
-    },
-    {
-      "authors": "Dold, Albrecht",
-      "title": "Simple proofs of some Borsuk-Ulam results",
-      "year": "1983",
-      "venue": "Contemporary Mathematics 19, 65–69",
-      "note": "Introduced the cohomological index approach for general finite group actions, giving the framework axiomatized here"
-    },
-    {
-      "authors": "Matoušek, Jiří",
-      "title": "Using the Borsuk-Ulam Theorem",
-      "year": "2003",
-      "venue": "Springer, Universitext",
-      "note": "Comprehensive treatment of Borsuk-Ulam and its applications to combinatorics, with equivariant topology background"
-    }
-  ],
-  "relatedProofs": [
-    {
-      "id": "borsuk-ulam",
-      "relationship": "extends",
-      "description": "Parent formalization; this entry extends it with further exploration"
-    },
-    {
-      "id": "borsuk-ulam-oq-03",
-      "relationship": "sibling",
-      "description": "Sibling open question from the same parent: Constructive Borsuk-Ulam Theorem and Equivalences"
-    },
-    {
-      "id": "borsuk-ulam-oq-03-oq-01",
-      "relationship": "sibling",
-      "description": "Sibling open question from the same parent: Quantitative Borsuk-Ulam and Tucker's Lemma in 1D"
-    },
-    {
-      "id": "borsuk-ulam-oq-03-oq-01-oq-01",
       "relationship": "sibling",
       "description": "Sibling open question from the same parent: Tucker 2D Lemma via Graph-Theoretic Path-Following"
     }

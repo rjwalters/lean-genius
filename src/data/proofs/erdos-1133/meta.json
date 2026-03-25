@@ -196,33 +196,6 @@
       "targetId": "fourier-series"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-1132",
-      "similarity": "high",
-      "note": "Companion Erdős interpolation problem on Lebesgue functions; shares the Lagrange basis polynomial framework and Faber-type divergence arguments."
-    },
-    {
-      "id": "erdos-1130",
-      "similarity": "high",
-      "note": "Studies the same Lagrange operator from a subinterval perspective; the Lebesgue constant bound (2/π) log n proved there is directly cited in the #1133 formalization."
-    },
-    {
-      "id": "erdos-1131",
-      "similarity": "medium",
-      "note": "L² counterpart to #1133's L∞ analysis; both probe optimal node placement and polynomial norm bounds under different inner products."
-    },
-    {
-      "id": "fourier-series",
-      "similarity": "medium",
-      "note": "Fourier series and polynomial interpolation are the two classical approximation paradigms; Runge's phenomenon (divergence for uniform nodes) mirrors Gibbs phenomenon in Fourier theory."
-    },
-    {
-      "id": "taylor-theorem",
-      "similarity": "low",
-      "note": "Taylor's theorem provides the divided-difference remainder formula that makes polynomial interpolation error quantitative; used implicitly in the chebyshev_optimal and lagrange_divergence axioms."
-    }
-  ],
   "references": [
     {
       "authors": [

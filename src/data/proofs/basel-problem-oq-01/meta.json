@@ -229,42 +229,5 @@
       "citation": "Fischler, S. and Nesterenko, Y., Arithmetic properties of values of the Riemann zeta function at odd integers, Bulletin of the London Mathematical Society 42(3) (2010), 457–470.",
       "type": "paper"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "basel-problem",
-      "relationship": "extends",
-      "description": "Parent entry proving ζ(2) = π²/6 — this file explores the deeper question of ζ(5) irrationality, extending from even zeta values (known closed forms) to odd zeta values (largely mysterious)"
-    },
-    {
-      "id": "riemann-hypothesis",
-      "relationship": "related",
-      "description": "Both concern the Riemann zeta function ζ(s): RH addresses the zeros of ζ in the critical strip, while this file addresses the arithmetic nature of ζ at odd positive integers"
-    },
-    {
-      "id": "e-transcendental",
-      "relationship": "related",
-      "description": "Both are questions about the arithmetic nature of fundamental constants — e's transcendence is proved, while ζ(5)'s irrationality remains open despite strong numerical evidence"
-    },
-    {
-      "id": "harmonic-divergence",
-      "relationship": "foundational",
-      "description": "The harmonic series $\\sum 1/n$ diverges, while $\\zeta(2) = \\sum 1/n^2 = \\pi^2/6$ converges (Basel problem). The question of whether $\\zeta(5) = \\sum 1/n^5$ is irrational probes the arithmetic nature of these convergent sums — the divergence/convergence boundary at $s = 1$ is foundational, and the irrationality question asks about the deeper algebraic structure of the convergent values"
-    },
-    {
-      "id": "euler-identity",
-      "relationship": "related",
-      "description": "Euler's identity $e^{i\\pi} + 1 = 0$ connects the constants $e$, $\\pi$, and $i$. The zeta values $\\zeta(2k) = (-1)^{k+1}(2\\pi)^{2k}B_{2k}/(2(2k)!)$ involve $\\pi$, linking even zeta values to the same transcendental constant in Euler's identity. The irrationality of odd zeta values like $\\zeta(5)$ remains open precisely because they lack such clean $\\pi$-based formulas"
-    },
-    {
-      "id": "basel-problem-oq-02",
-      "relationship": "related",
-      "description": "Sibling open question focusing on the transcendence of ALL odd zeta values and the full implication hierarchy (transcendence => irrationality => Apery + Rivoal + Zudilin); this entry focuses specifically on ζ(5) irrationality"
-    },
-    {
-      "id": "pi-transcendental",
-      "relationship": "related",
-      "description": "Lindemann's theorem (π transcendental) is the key ingredient for even zeta transcendence (ζ(2k) = rational * π^(2k)); contrasts with the open status of odd zeta irrationality explored here"
-    }
   ]
 }

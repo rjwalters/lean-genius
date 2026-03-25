@@ -135,43 +135,6 @@
       "description": "The binomial theorem underlies the probabilistic random-set heuristic in Problem #40: the expected number of representations $\\mathbb{E}[r_A(n)]$ is computed by summing over pairs $(a, b)$ with each element independently included, giving a binomial expectation. The threshold density $\\sqrt{N}/g(N)$ is calibrated so that $\\mathbb{E}[r_A(n)] \\sim 1/g(N)^2 \\to 0$."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-41",
-      "relationship": "related",
-      "description": "Erdős Problem #41 also concerns additive bases and representation functions, exploring threshold densities for covering all sufficiently large integers. Both problems share the $\\sqrt{N}$ density landscape and ask how minimal density constraints force structural properties of the representation function."
-    },
-    {
-      "id": "erdos-43",
-      "relationship": "related",
-      "description": "Erdős Problem #43 on Sidon sets (B_2 sequences) directly underpins Problem #40: Sidon sets achieve density $\\approx \\sqrt{N}$ with $r_A(n) \\leq 1$, establishing the $\\sqrt{N}$ threshold as the natural boundary. The Erdős–Turán 1941 density bound for Sidon sets is precisely the extremal case that Problem #40 asks to push below."
-    },
-    {
-      "id": "erdos-47",
-      "relationship": "related",
-      "description": "Erdős Problem #47 concerns $B_h$ sets and multiplicities in sumsets. The $B_2[g]$ bound ($r_A(n) \\leq g \\Rightarrow A(N) \\leq c_g \\sqrt{N}$) formalized in Problem #40 is the direct generalization from Sidon sets ($g=1$) to bounded-multiplicity sets, and connects to the broader theory of $B_h$ sequences studied in Problem #47."
-    },
-    {
-      "id": "erdos-500",
-      "relationship": "related",
-      "description": "Erdős Problem #500, also carrying a high bounty, shares the theme of quantitative density conditions in additive number theory. Both problems reflect Erdős's program of identifying sharp numerical thresholds governing additive structure, and both remain open as of 2026."
-    },
-    {
-      "id": "erdos-1",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "szemeredi-regularity",
-      "relationship": "foundational",
-      "description": "The Szemerédi regularity lemma is a fundamental tool in additive combinatorics that provides structural decompositions of dense graphs. While Problem #40 concerns sumsets, the regularity approach to additive problems (via Fourier analysis on dense sets) represents the same lineage of ideas about density thresholds and structure, and regularity-type arguments are central to modern attacks on the Erdős–Turán conjecture."
-    },
-    {
-      "id": "binomial-theorem",
-      "relationship": "foundational",
-      "description": "The binomial theorem underlies the probabilistic random-set heuristic in Problem #40: the expected number of representations $\\mathbb{E}[r_A(n)]$ is computed by summing over pairs $(a, b)$ with each element independently included, giving a binomial expectation. The threshold density $\\sqrt{N}/g(N)$ is calibrated so that $\\mathbb{E}[r_A(n)] \\sim 1/g(N)^2 \\to 0$."
-    }
-  ],
   "references": [
     {
       "authors": "Erdős, Paul; Turán, Pál",

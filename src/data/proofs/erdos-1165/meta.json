@@ -160,18 +160,6 @@
       "description": "Both demonstrate that precise quantitative bounds (Bertrand: a prime in (n, 2n]; Tóth: at most 3 favourite sites) can require decades of effort to prove, even when the statement is simple."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "central-limit-theorem",
-      "title": "Central Limit Theorem",
-      "relationship": "background — CLT gives the Gaussian scaling of the 2D walk"
-    },
-    {
-      "id": "erdos-1144",
-      "title": "Erdős Problem #1144: Partial Sums of Random Multiplicative Functions",
-      "relationship": "sibling Erdős problem involving probabilistic analysis"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Probability.ProbabilityMassFunction.Basic",

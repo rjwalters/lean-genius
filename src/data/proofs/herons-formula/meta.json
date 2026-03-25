@@ -151,28 +151,6 @@
       "Can the isoperimetric inequality for triangles — that the equilateral triangle maximizes area for fixed perimeter — be derived from Heron's formula using AM-GM?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "pythagorean-theorem",
-      "relationship": "related",
-      "description": "Heron's formula can be derived from the Pythagorean theorem by expressing the triangle altitude in terms of side lengths and applying a^2 + h^2 = c^2."
-    },
-    {
-      "id": "triangle-angle-sum",
-      "relationship": "related",
-      "description": "Both are fundamental triangle geometry results. The triangle angle sum (180 degrees) and Heron's formula together characterize Euclidean triangles."
-    },
-    {
-      "id": "triangle-inequality",
-      "relationship": "foundational",
-      "description": "The triangle inequality ensures s(s-a)(s-b)(s-c) >= 0 for valid triangles, making the square root in Heron's formula well-defined."
-    },
-    {
-      "id": "ptolemys-theorem",
-      "relationship": "related",
-      "description": "Both are classical geometry results from antiquity. Heron (c. 60 AD) and Ptolemy (c. 150 AD) developed foundational geometric computation tools."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Geometry.Euclidean.Triangle",

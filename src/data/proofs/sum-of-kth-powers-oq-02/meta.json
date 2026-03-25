@@ -182,28 +182,6 @@
       "Prove functional equation"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "sum-of-kth-powers",
-      "relationship": "extends",
-      "description": "Extends integer power sums to real exponents"
-    },
-    {
-      "id": "basel-problem",
-      "relationship": "uses",
-      "description": "Uses zeta(2) = pi^2/6 for upper bounds"
-    },
-    {
-      "id": "basel-problem-oq-01",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "riemann-hypothesis",
-      "relationship": "foundational",
-      "description": "Basic properties of zeta(s) for real s > 1"
-    }
-  ],
   "crossReferences": [
     {
       "targetId": "sum-of-kth-powers",

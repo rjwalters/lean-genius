@@ -268,38 +268,6 @@
       "note": "Chapter 2 covers sumsets and the Erdős–Turán conjecture in the context of modern additive combinatorics; includes the Freiman-Ruzsa theorem and connections to inverse sumset theory"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-1",
-      "relationship": "related",
-      "description": "Problem #1 (distinct subset sums) and Problem #28 (unbounded representation) are dual questions in additive combinatorics: #1 asks when all subset sums are distinct ($r \\leq 1$), while #28 asks whether representation counts must be unbounded for bases. Both concern the fundamental tension between density and additive structure"
-    },
-    {
-      "id": "erdos-3",
-      "relationship": "related",
-      "description": "Both bear the name Erdős-Turán and concern how arithmetic structure is forced by density. Problem #3 asks whether dense sets must contain APs; Problem #28 asks whether bases must have unbounded representations. Both remain open after 80+ years"
-    },
-    {
-      "id": "erdos-39",
-      "relationship": "related",
-      "description": "Problem #39 on infinite Sidon set growth asks about the maximum growth rate of Sidon sets ($r_A(n) \\leq 1$). Sidon sets are precisely the extremal case for Problem #28: they have minimal representation but are provably too sparse to be bases"
-    },
-    {
-      "id": "erdos-40",
-      "relationship": "extends",
-      "description": "Problem #40 asks whether $B_2[g]$ sets can be asymptotic bases. The Erdős–Turán conjecture (#28) implies the answer is no: if $\\limsup r_A(n) = \\infty$ for every basis, then no set with $r_A(n) \\leq g$ can be a basis. The formalization proves this implication directly"
-    },
-    {
-      "id": "erdos-41",
-      "relationship": "extends",
-      "description": "Problem #41 on $B_h$ sequence density bounds generalizes Sidon sets to higher-order representation constraints. The Erdős-Turán conjecture on bases of order 2 connects directly to whether $B_2[g]$ sets can be bases — Problem #28 implies they cannot"
-    },
-    {
-      "id": "erdos-42",
-      "relationship": "related",
-      "description": "Problem #42 on Sidon sets with disjoint difference sets explores the structure theory of $B_2$ sets, the same objects whose density limitations make the Erdős-Turán conjecture plausible"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.Additive.SumConv",

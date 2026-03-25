@@ -161,17 +161,5 @@
       "venue": "Rocky Mountain Journal of Mathematics, vol. 29, pp. 1387–1411",
       "note": "Extended the Erdős-Graham framework to study factorial products within specific integer sequences, providing structural results on the distribution of Dₖ"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "infinitude-primes",
-      "relationship": "foundational",
-      "description": "The structure of Dₖ depends on prime factorizations of factorials. Legendre's formula v_p(n!) = ∑⌊n/pⁱ⌋ determines which factorial products can be perfect squares"
-    },
-    {
-      "id": "fundamental-arithmetic",
-      "relationship": "foundational",
-      "description": "Unique prime factorization is the foundation for analyzing when a product a₁!···aₖ! is a perfect square: each prime's total exponent must be even"
-    }
   ]
 }

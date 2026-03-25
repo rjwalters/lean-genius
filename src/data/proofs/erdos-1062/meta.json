@@ -106,58 +106,6 @@
       "How does the extremal function behave for the $k$-fold generalization: no element divides $k$ distinct others? The $k=1$ case is primitive sets (density 0), $k=2$ is NDTO (density $\\approx 0.67$) — what happens for $k=3, 4, \\ldots$?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "erdos-1063",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "erdos-164",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "erdos-168",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "erdos-12",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "erdos-131",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "divisibility-by-3",
-      "relationship": "related",
-      "description": "Divisibility is the core relation: this problem restricts sets based on the divisibility partial order on {1,...,n}. Understanding divisibility structure (like the digit sum criterion for 3-divisibility) helps construct large valid sets"
-    },
-    {
-      "id": "fundamental-arithmetic",
-      "relationship": "foundational",
-      "description": "Unique prime factorization underlies the divisibility poset structure: a | b iff every prime power in a's factorization divides b. The 'no element divides two others' condition constrains star-shaped substructures in this poset"
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "foundational",
-      "description": "The infinitude of primes shapes the structure of the divisibility poset on {1,...,n}. Primes contribute to the valid set since they can divide at most one other element in {1,...,n} that is also ≤ n (namely 2p, 3p, etc.)"
-    },
-    {
-      "id": "partition-theorem",
-      "relationship": "related",
-      "description": "The problem connects to partition theory through the structure of the divisibility lattice: Dilworth's theorem relates maximum antichains (Sperner-type) to minimum chain covers, and the 'no element divides two others' constraint is a generalization of antichain conditions"
-    },
-    {
-      "id": "derangements",
-      "relationship": "thematic",
-      "description": "Both are extremal counting problems: derangements count permutations avoiding fixed points, while this problem maximizes subsets avoiding divisibility 'stars'. Both have asymptotic density results (derangements: 1/e, this problem: c ∈ [0.6725, 0.6736])"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

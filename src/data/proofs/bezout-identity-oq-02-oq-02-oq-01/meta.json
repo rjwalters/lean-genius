@@ -303,42 +303,5 @@
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 2
-  },
-  "relatedProofs": [
-    {
-      "id": "bezout-identity",
-      "relationship": "extends",
-      "description": "Root formalization of Bézout's identity; this entry extends it with a constructive divisibility algorithm using the Bézout coefficients"
-    },
-    {
-      "id": "bezout-identity-oq-02",
-      "relationship": "extends",
-      "description": "Parent open question about Euclid's lemma; this entry resolves the sub-question about constructive quotient computation"
-    },
-    {
-      "id": "bezout-identity-oq-02-oq-02",
-      "relationship": "extends",
-      "description": "Direct parent in the open question chain: generalizes Euclid's lemma to commutative rings. This entry adds the constructive quotient computation"
-    },
-    {
-      "id": "bezout-identity-oq-02-oq-02-oq-01-oq-01",
-      "relationship": "extended-by",
-      "description": "Child entry that resolves the first open question: removes the noncomputable annotation from constructive_div by replacing classical choice (hdvd.choose) with computable integer division, making the full algorithm executable"
-    },
-    {
-      "id": "chinese-remainder-constructive",
-      "relationship": "related",
-      "description": "Both use the extended Euclidean algorithm constructively: CRT for simultaneous congruences, this for explicit quotient extraction"
-    },
-    {
-      "id": "gcd-algorithm",
-      "relationship": "related",
-      "description": "Standard Euclidean algorithm for GCD computation. This entry implements the extended version that additionally returns Bézout coefficients"
-    },
-    {
-      "id": "fundamental-arithmetic",
-      "relationship": "related",
-      "description": "Unique prime factorization relies on Euclid's lemma (if p | ab and p prime, then p | a or p | b) — the constructive version here gives the explicit quotient"
-    }
-  ]
+  }
 }

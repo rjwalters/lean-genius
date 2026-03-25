@@ -128,36 +128,6 @@
       "targetId": "erdos-906"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-513",
-      "slug": "erdos-513",
-      "title": "Erdős Problem #513: Maximum Term of a Power Series",
-      "relationshipType": "shared-technique",
-      "notes": "Both use Wiman–Valiron theory. The central index N(r) controls the dominant power series term and is central to understanding angular distribution of maximum-modulus points studied in #1117."
-    },
-    {
-      "id": "erdos-516",
-      "slug": "erdos-516",
-      "title": "Erdős Problem #516: Gap Series and the Minimum Modulus Problem",
-      "relationshipType": "shared-technique",
-      "notes": "Herzog–Piranian's lacunary series construction (solving Question 1 of #1117) closely parallels the Fabry gap techniques studied in #516. Both exploit the rigidity of lacunary series to force extremal behavior of |f(z)|."
-    },
-    {
-      "id": "erdos-1116",
-      "slug": "erdos-1116",
-      "title": "Erdős Problem #1116: Extreme Value Distribution of Entire Functions",
-      "relationshipType": "same-collection",
-      "notes": "Adjacent problems in Hayman's 1974 Research Problems collection. Both concern counting functions that measure how many times a value is achieved, in different senses: n(r,a) in Nevanlinna theory vs ν(r) for maximum-modulus points."
-    },
-    {
-      "id": "erdos-1118",
-      "slug": "erdos-1118",
-      "title": "Erdős Problem #1118: Entire Functions with Finite Measure Superlevel Sets",
-      "relationshipType": "same-collection",
-      "notes": "Adjacent problem in the Hayman collection about the geometry of level sets of entire functions. Complements #1117's study of the structure of the maximum-modulus level set on circles."
-    }
-  ],
   "references": [
     {
       "key": "Ha74",

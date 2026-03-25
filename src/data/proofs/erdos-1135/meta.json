@@ -150,24 +150,6 @@
       "targetId": "prime-number-theorem"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "collatz-structured",
-      "relationship": "Companion formalization: verifies concrete Collatz convergence for powers of 2 and small values (3, 5, 6, 7, 9, 27) using the same compressed Lean definitions. Together they constitute the full Collatz formalization in this gallery."
-    },
-    {
-      "id": "riemann-hypothesis",
-      "relationship": "Fellow axiomatized open conjecture formalized with computational evidence up to enormous ranges and strong partial results; both represent the outer frontier of current proof assistant formalization."
-    },
-    {
-      "id": "fermats-last-theorem",
-      "relationship": "Canonical example of a long-open Diophantine conjecture resolved by deep new mathematics — the benchmark for how 'unprovable-seeming' number-theoretic problems can eventually fall to the right new ideas."
-    },
-    {
-      "id": "bertrands-postulate",
-      "relationship": "Erdős's own elementary proof of this prime-gap result exemplifies the style of reasoning he championed; the Collatz prize reflects the same Erdős tradition of offering cash rewards for hard problems."
-    }
-  ],
   "references": [
     {
       "key": "Tao22",

@@ -232,43 +232,6 @@
       "note": "Standard reference for derangement theory and the exponential formula"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "inclusion-exclusion",
-      "relationship": "foundational",
-      "description": "The derangement formula D(n) = n! * sum((-1)^k/k!) is a direct application of the inclusion-exclusion principle, counting permutations that avoid all n fixed-point events."
-    },
-    {
-      "id": "euler-totient",
-      "relationship": "related",
-      "description": "Both use inclusion-exclusion over arithmetic/combinatorial structures: derangements over permutation fixed points, Euler's totient over prime divisibility."
-    },
-    {
-      "id": "binomial-theorem",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "e-transcendental",
-      "relationship": "related",
-      "description": "The derangement probability D_n/n! = ∑(-1)^k/k! converges to 1/e as n→∞ — the Taylor series of e^{-1} truncated at the n-th term. The transcendence of e means D_n/n! is never exactly 1/e for finite n"
-    },
-    {
-      "id": "stirling-formula",
-      "relationship": "related",
-      "description": "Stirling's approximation n! ≈ √(2πn)(n/e)^n combined with D_n ≈ n!/e gives D_n ≈ √(2πn)(n/e)^n/e — an asymptotic formula for derangement counts involving both π and e"
-    },
-    {
-      "id": "buffons-needle",
-      "relationship": "related",
-      "description": "Both are classic probability problems where fundamental constants appear unexpectedly: Buffon's needle yields $2/\\pi$ from geometric probability, while derangements yield $1/e$ from combinatorial probability. Both demonstrate that basic probabilistic experiments connect to deep analysis"
-    },
-    {
-      "id": "birthday-problem",
-      "relationship": "related",
-      "description": "Both are celebrated combinatorial probability problems with counterintuitive answers. The birthday problem counts collisions in random mappings while derangements count fixed-point-free permutations. Both exhibit rapid convergence to their limiting probabilities"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.Derangements.Finite",

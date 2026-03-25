@@ -172,33 +172,6 @@
       "description": "The integral evaluations in the crossing probability formula use the fundamental theorem of calculus to compute definite integrals of trigonometric functions"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "buffons-needle",
-      "relationship": "extends",
-      "description": "Parent proof: Buffon's needle in 2D (P = 2L/(πd)) — this file extends to the 3D parallel planes case with E = L/(2d)"
-    },
-    {
-      "id": "buffons-needle-oq-01-oq-01",
-      "relationship": "related",
-      "description": "Another Buffon extension exploring different geometric configurations"
-    },
-    {
-      "id": "area-of-circle",
-      "relationship": "foundational",
-      "description": "The area formula A = πr² underlies the geometric probability computations; π appears naturally in Buffon-type problems via the circular symmetry of needle orientation"
-    },
-    {
-      "id": "fundamental-theorem-calculus",
-      "relationship": "foundational",
-      "description": "The integral evaluations in the crossing probability formula use the fundamental theorem of calculus to compute definite integrals of trigonometric functions"
-    },
-    {
-      "id": "birthday-problem",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    }
-  ],
   "references": [
     {
       "authors": "Buffon, G.-L. L.",
