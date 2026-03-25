@@ -71,49 +71,56 @@
       "title": "Setup and Imports",
       "startLine": 1,
       "endLine": 43,
-      "summary": "Introduces the historical context, imports Mathlib's topology and intermediate value libraries, and opens the namespace."
+      "summary": "Introduces the historical context, imports Mathlib's topology and intermediate value libraries, and opens the namespace.",
+      "mathContext": "Imports `Mathlib.Topology.Order.IntermediateValue` and `Mathlib.Analysis.SpecificLimits.Basic`. The IVT states: if $f: [a,b] \\to \\mathbb{R}$ is continuous and $c$ lies between $f(a)$ and $f(b)$, then $\\exists x \\in [a,b],\\, f(x) = c$. Wiedijk #60."
     },
     {
       "id": "classical-statement",
       "title": "The Classical Statement",
       "startLine": 45,
       "endLine": 72,
-      "summary": "Presents the main IVT theorem: continuous functions on closed intervals hit all intermediate values."
+      "summary": "Presents the main IVT theorem: continuous functions on closed intervals hit all intermediate values.",
+      "mathContext": "The classical IVT: for $f : \\mathbb{R} \\to \\mathbb{R}$ continuous on $[a,b]$ with $f(a) \\leq c \\leq f(b)$ (or $f(b) \\leq c \\leq f(a)$), there exists $x \\in [a,b]$ with $f(x) = c$. In Lean: `IsPreconnected.intermediate_value` from Mathlib's topological formulation."
     },
     {
       "id": "existence-form",
       "title": "Explicit Existence Form",
       "startLine": 74,
       "endLine": 107,
-      "summary": "Reformulates IVT as an explicit existence statement: given c between f(a) and f(b), there exists x with f(x) = c."
+      "summary": "Reformulates IVT as an explicit existence statement: given c between f(a) and f(b), there exists x with f(x) = c.",
+      "mathContext": "The explicit existence formulation: given $a \\leq b$ and $c$ between $f(a)$ and $f(b)$, construct a witness $x \\in [a,b]$ satisfying $f(x) = c$. This is computationally richer than the classical statement, as it provides the intermediate point rather than just asserting its existence."
     },
     {
       "id": "bolzano",
       "title": "Root-Finding Corollary (Bolzano's Theorem)",
       "startLine": 109,
       "endLine": 167,
-      "summary": "Proves that if f(a) and f(b) have opposite signs, f has a root in (a, b). Also proves the general sign-change criterion."
+      "summary": "Proves that if f(a) and f(b) have opposite signs, f has a root in (a, b). Also proves the general sign-change criterion.",
+      "mathContext": "Bolzano's theorem (1817): if $f$ is continuous on $[a,b]$ with $f(a) < 0 < f(b)$ (or vice versa), then $\\exists x \\in (a,b),\\, f(x) = 0$. This is the special case $c = 0$ of IVT and historically preceded the general statement. The proof uses the completeness of $\\mathbb{R}$ via the least upper bound property: $x = \\sup\\{t \\in [a,b] : f(t) < 0\\}$."
     },
     {
       "id": "connected-sets",
       "title": "Continuous Functions on Connected Sets",
       "startLine": 169,
       "endLine": 183,
-      "summary": "Shows IVT as a consequence of the general principle that continuous images of connected sets are connected."
+      "summary": "Shows IVT as a consequence of the general principle that continuous images of connected sets are connected.",
+      "mathContext": "The topological generalization: if $S$ is connected and $f: S \\to \\mathbb{R}$ is continuous, then $f(S)$ is connected (hence an interval). IVT follows because $[a,b]$ is connected in $\\mathbb{R}$ and continuous images of connected sets are connected. This is Mathlib's primary formulation via `IsPreconnected.intermediate_value`."
     },
     {
       "id": "applications",
       "title": "Applications and Corollaries",
       "startLine": 185,
       "endLine": 213,
-      "summary": "Proves that odd-degree polynomials have roots and the fixed point theorem for continuous self-maps on intervals."
+      "summary": "Proves that odd-degree polynomials have roots and the fixed point theorem for continuous self-maps on intervals.",
+      "mathContext": "Two classical applications: (1) every odd-degree real polynomial has a real root (since $\\lim_{x \\to \\pm\\infty} p(x) = \\pm\\infty$, IVT gives a zero); (2) the fixed-point theorem for $f: [a,b] \\to [a,b]$ continuous ($g(x) = f(x) - x$ satisfies $g(a) \\geq 0$ and $g(b) \\leq 0$, so Bolzano gives a fixed point)."
     },
     {
       "id": "checks",
       "title": "Type Checking",
       "startLine": 215,
       "endLine": 221,
-      "summary": "Verifies the types of the main theorems using #check commands."
+      "summary": "Verifies the types of the main theorems using #check commands.",
+      "mathContext": "Type-checking the main theorems with `#check` to verify their signatures match the expected statements."
     }
   ],
   "conclusion": {

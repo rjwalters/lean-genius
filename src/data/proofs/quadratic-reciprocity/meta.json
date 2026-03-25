@@ -76,49 +76,56 @@
       "title": "Introduction",
       "startLine": 1,
       "endLine": 62,
-      "summary": "Overview of quadratic reciprocity, historical context, and significance."
+      "summary": "Overview of quadratic reciprocity, historical context, and significance.",
+      "mathContext": "Imports `Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity` which provides `legendreSym.quadratic_reciprocity` and the supplementary laws. The Legendre symbol $\\left(\\frac{a}{p}\\right) \\in \\{-1, 0, 1\\}$ measures whether $a$ is a quadratic residue mod $p$: it equals $1$ if $\\exists x,\\, x^2 \\equiv a \\pmod{p}$, and $-1$ otherwise. Wiedijk #7."
     },
     {
       "id": "main-law",
       "title": "The Main Law",
       "startLine": 63,
       "endLine": 115,
-      "summary": "Product form, quotient form, and special cases for 1 mod 4 and 3 mod 4."
+      "summary": "Product form, quotient form, and special cases for 1 mod 4 and 3 mod 4.",
+      "mathContext": "The main law in product form: $\\left(\\frac{q}{p}\\right)\\left(\\frac{p}{q}\\right) = (-1)^{\\frac{p-1}{2} \\cdot \\frac{q-1}{2}}$ for distinct odd primes $p, q$. Equivalently: the symbols agree unless both $p \\equiv q \\equiv 3 \\pmod{4}$, in which case they differ by a sign. Four formulations: product form (`quadratic_reciprocity_product`), quotient form (`quadratic_reciprocity_quotient`), and the two case splits for $p \\equiv 1 \\pmod{4}$ and $p \\equiv q \\equiv 3 \\pmod{4}$."
     },
     {
       "id": "first-supplementary",
       "title": "First Supplementary Law",
       "startLine": 116,
       "endLine": 128,
-      "summary": "When -1 is a quadratic residue modulo a prime."
+      "summary": "When -1 is a quadratic residue modulo a prime.",
+      "mathContext": "First supplementary law: $\\left(\\frac{-1}{p}\\right) = (-1)^{(p-1)/2}$, i.e., $-1$ is a quadratic residue mod $p$ iff $p \\equiv 1 \\pmod{4}$. Lean statement: `IsSquare (-1 : ZMod p) \\leftrightarrow p \\% 4 \\neq 3`. This determines when $x^2 \\equiv -1 \\pmod{p}$ has solutions — equivalently, when the Gaussian integers $\\mathbb{Z}[i]$ split the prime $p$."
     },
     {
       "id": "second-supplementary",
       "title": "Second Supplementary Law",
       "startLine": 129,
       "endLine": 147,
-      "summary": "When 2 is a quadratic residue modulo a prime, and the combined -2 law."
+      "summary": "When 2 is a quadratic residue modulo a prime, and the combined -2 law.",
+      "mathContext": "Second supplementary law: $\\left(\\frac{2}{p}\\right) = (-1)^{(p^2-1)/8}$, i.e., $2$ is a QR mod $p$ iff $p \\equiv \\pm 1 \\pmod{8}$. The combined $-2$ law (`neg_two_is_square_iff`): $-2$ is a QR mod $p$ iff $p \\equiv 1$ or $3 \\pmod{8}$. These determine when $\\mathbb{Z}[\\sqrt{2}]$ and $\\mathbb{Z}[\\sqrt{-2}]$ split the prime $p$."
     },
     {
       "id": "square-roots-between-primes",
       "title": "Square Roots Between Primes",
       "startLine": 149,
       "endLine": 161,
-      "summary": "IsSquare equivalences between two primes: p ≡ 1 (mod 4) case and p ≡ q ≡ 3 (mod 4) case."
+      "summary": "IsSquare equivalences between two primes: p ≡ 1 (mod 4) case and p ≡ q ≡ 3 (mod 4) case.",
+      "mathContext": "Reformulations as `IsSquare` equivalences between two primes. For $p \\equiv 1 \\pmod{4}$: $q$ is a square mod $p$ $\\iff$ $p$ is a square mod $q$ (perfect symmetry). For $p \\equiv q \\equiv 3 \\pmod{4}$: $q$ is a square mod $p$ $\\iff$ $p$ is NOT a square mod $q$ (anti-symmetry). These are the `IsSquare` translations of the Legendre symbol formulations."
     },
     {
       "id": "examples",
       "title": "Examples",
       "startLine": 163,
       "endLine": 199,
-      "summary": "Concrete calculations for primes 3, 5, and 7."
+      "summary": "Concrete calculations for primes 3, 5, and 7.",
+      "mathContext": "Concrete computations verifying the theorems at small primes. Reciprocity: $(3/5) = (5/3) = -1$ (since $5 \\equiv 1 \\pmod{4}$), and $(3/7) = -(7/3) = -1$ (since $3 \\equiv 7 \\equiv 3 \\pmod{4}$). First supplementary: $2^2 = 4 \\equiv -1 \\pmod{5}$ (since $5 \\equiv 1 \\pmod{4}$). Second supplementary: $3^2 = 9 \\equiv 2 \\pmod{7}$ (since $7 \\equiv 7 \\pmod{8}$)."
     },
     {
       "id": "euler-criterion",
       "title": "Euler's Criterion",
       "startLine": 200,
       "endLine": 231,
-      "summary": "The connection between Legendre symbols and powers."
+      "summary": "The connection between Legendre symbols and powers.",
+      "mathContext": "Euler's criterion: $\\left(\\frac{a}{p}\\right) \\equiv a^{(p-1)/2} \\pmod{p}$. This is the computational engine for evaluating Legendre symbols — it reduces quadratic residuosity to modular exponentiation. The Legendre symbol is also completely multiplicative: $\\left(\\frac{ab}{p}\\right) = \\left(\\frac{a}{p}\\right)\\left(\\frac{b}{p}\\right)$. Together, Euler's criterion + multiplicativity + reciprocity give an efficient Euclidean-algorithm-like procedure for computing any Legendre symbol."
     }
   ],
   "conclusion": {

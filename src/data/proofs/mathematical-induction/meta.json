@@ -78,49 +78,56 @@
       "title": "Introduction",
       "startLine": 1,
       "endLine": 45,
-      "summary": "Overview of mathematical induction, its historical significance, and role in Lean's foundations."
+      "summary": "Overview of mathematical induction, its historical significance, and role in Lean's foundations.",
+      "mathContext": "Mathematical induction is the foundational proof technique for $\\mathbb{N}$: $P(0) \\land (\\forall n,\\, P(n) \\to P(n+1)) \\Rightarrow \\forall n,\\, P(n)$. In Lean 4, induction is built into the type theory via the `Nat` recursor."
     },
     {
       "id": "weak-induction",
       "title": "Weak Induction",
       "startLine": 49,
       "endLine": 77,
-      "summary": "The standard form of induction: prove P(0), prove P(n) -> P(n+1), conclude forall n. P(n)."
+      "summary": "The standard form of induction: prove P(0), prove P(n) -> P(n+1), conclude forall n. P(n).",
+      "mathContext": "Weak (ordinary) induction: to prove $\\forall n \\in \\mathbb{N},\\, P(n)$, it suffices to prove $P(0)$ (base case) and $\\forall n,\\, P(n) \\to P(n+1)$ (inductive step). In Lean, this is `Nat.rec` or the `induction` tactic."
     },
     {
       "id": "strong-induction",
       "title": "Strong Induction",
       "startLine": 78,
       "endLine": 105,
-      "summary": "Complete induction where the hypothesis is P(k) for all k < n."
+      "summary": "Complete induction where the hypothesis is P(k) for all k < n.",
+      "mathContext": "Strong (complete) induction: to prove $\\forall n,\\, P(n)$, assume $P(k)$ holds for ALL $k < n$ and prove $P(n)$. Equivalent to weak induction over well-founded relations. In Lean: `Nat.strongRecOn` or `WellFoundedRelation`."
     },
     {
       "id": "equivalence",
       "title": "Equivalence of Weak and Strong Induction",
       "startLine": 106,
       "endLine": 148,
-      "summary": "Proof that weak and strong induction can derive each other."
+      "summary": "Proof that weak and strong induction can derive each other.",
+      "mathContext": "Proof that weak and strong induction are equivalent: strong induction implies weak (take $k = n$ in the hypothesis), and weak implies strong (by inducting on the proposition $Q(n) := \\forall k < n,\\, P(k)$)."
     },
     {
       "id": "examples",
       "title": "Example Applications",
       "startLine": 149,
       "endLine": 174,
-      "summary": "Classic examples: sum of first n naturals and existence of prime divisors."
+      "summary": "Classic examples: sum of first n naturals and existence of prime divisors.",
+      "mathContext": "Concrete examples proving sum formulas, divisibility properties, and other standard induction exercises."
     },
     {
       "id": "well-ordering",
       "title": "Well-Ordering Principle",
       "startLine": 175,
       "endLine": 203,
-      "summary": "The well-ordering principle and its connection to strong induction."
+      "summary": "The well-ordering principle and its connection to strong induction.",
+      "mathContext": "The well-ordering principle: every non-empty subset of $\\mathbb{N}$ has a least element. This is equivalent to induction and provides an alternative proof technique (assume $\\neg P(n)$ for some $n$, take the minimal counterexample)."
     },
     {
       "id": "peano-axioms",
       "title": "Connection to Peano Axioms",
       "startLine": 204,
       "endLine": 249,
-      "summary": "How induction relates to Lean's type theory and the Nat recursor."
+      "summary": "How induction relates to Lean's type theory and the Nat recursor.",
+      "mathContext": "Connection to Lean 4's type theory: `Nat` is defined as an inductive type with constructors `zero` and `succ`, and the recursor `Nat.rec` IS mathematical induction at the type level. Peano's axioms are encoded in the type definition."
     }
   ],
   "conclusion": {

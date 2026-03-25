@@ -79,49 +79,56 @@
       "title": "Introduction",
       "startLine": 1,
       "endLine": 41,
-      "summary": "Overview of the divisibility by 3 rule and its significance as Wiedijk #85."
+      "summary": "Overview of the divisibility by 3 rule and its significance as Wiedijk #85.",
+      "mathContext": "The digit sum divisibility rule (Wiedijk #85): $3 \\mid n \\iff 3 \\mid \\text{digitSum}(n)$. Based on the key congruence $10 \\equiv 1 \\pmod{3}$."
     },
     {
       "id": "key-insight",
       "title": "The Key Insight",
       "startLine": 42,
       "endLine": 63,
-      "summary": "Explanation of why the rule works: 10 ≡ 1 (mod 3)."
+      "summary": "Explanation of why the rule works: 10 ≡ 1 (mod 3).",
+      "mathContext": "The fundamental observation: since $10 \\equiv 1 \\pmod{3}$, we have $10^k \\equiv 1 \\pmod{3}$ for all $k$, so $n = \\sum d_i \\cdot 10^i \\equiv \\sum d_i \\pmod{3}$."
     },
     {
       "id": "main-theorems",
       "title": "Main Theorems",
       "startLine": 64,
       "endLine": 98,
-      "summary": "The divisibility by 3 and 9 rules with both divisibility and congruence forms."
+      "summary": "The divisibility by 3 and 9 rules with both divisibility and congruence forms.",
+      "mathContext": "The divisibility rules: $3 \\mid n \\iff 3 \\mid \\text{digitSum}(n)$ and $9 \\mid n \\iff 9 \\mid \\text{digitSum}(n)$. Both follow from $10 \\equiv 1 \\pmod{3}$ (and $\\pmod{9}$)."
     },
     {
       "id": "general-principle",
       "title": "General Principle",
       "startLine": 99,
       "endLine": 118,
-      "summary": "Generalization to arbitrary bases and divisors."
+      "summary": "Generalization to arbitrary bases and divisors.",
+      "mathContext": "Generalization: in base $b$, $d \\mid (b-1) \\Rightarrow d \\mid n \\iff d \\mid \\text{digitSum}_b(n)$. The classical rules for 3 and 9 are the base-10 cases since $3 \\mid 9 = 10 - 1$."
     },
     {
       "id": "examples",
       "title": "Examples",
       "startLine": 119,
       "endLine": 178,
-      "summary": "Concrete examples verifying the divisibility rules."
+      "summary": "Concrete examples verifying the divisibility rules.",
+      "mathContext": "Concrete examples verifying the rule at specific numbers."
     },
     {
       "id": "proof-explanation",
       "title": "Why It Works",
       "startLine": 179,
       "endLine": 206,
-      "summary": "Detailed explanation of the proof idea with modular arithmetic examples."
+      "summary": "Detailed explanation of the proof idea with modular arithmetic examples.",
+      "mathContext": "The modular arithmetic proof: $n = d_k \\cdot 10^k + \\cdots + d_1 \\cdot 10 + d_0 \\equiv d_k + \\cdots + d_1 + d_0 \\pmod{3}$, since each $10^i \\equiv 1^i = 1$."
     },
     {
       "id": "applications",
       "title": "Applications",
       "startLine": 207,
       "endLine": 235,
-      "summary": "Theorems for iterative digit sums and transitivity properties."
+      "summary": "Theorems for iterative digit sums and transitivity properties.",
+      "mathContext": "Applications: iterative digit sums (applying the rule repeatedly until reaching a single digit), transitivity ($3 \\mid \\text{digitSum}(n)$ and the rule give $3 \\mid n$), and the 'casting out nines' technique."
     }
   ],
   "conclusion": {
