@@ -19,14 +19,14 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 7,
     "erdosNumber": 1131,
     "erdosUrl": "https://erdosproblems.com/1131",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
     "theoremCount": 14,
     "lineCount": 642,
-    "assumptions": "1 axiom: erdos_1131_conjecture (OPEN). 1 sorry: chebyshev_sq_expansion (DCT identity ∑l_k² = (1/n)(1+2∑T_j²), known from discrete cosine orthogonality). Proved: integration formula ∫T_j²=1-1/(4j²-1), change of variables, trace formula combining step, Chebyshev exact value, all bounds.",
+    "assumptions": "1 axiom: erdos_1131_conjecture (OPEN). 7 sorries: chebyshev_sq_expansion (DCT identity), integral_chebyshev_sq (FTC API), product_to_sum_integral (sin/cos API), change_of_variables (hasDerivAt_cos), cos_sq_substitution (continuous_cos), chebyshev_inner_product (frequency sums), and lagrange_sum_formula (needs chebyshev_sq_expansion). All blocked on Mathlib calculus API gaps (hasDerivAt_cos, integral_sin_mul, continuous_sin/cos.comp).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
