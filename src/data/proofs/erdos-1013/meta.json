@@ -122,9 +122,25 @@
       "id": "mycielski-construction",
       "title": "Mycielski's Construction",
       "startLine": 117,
-      "endLine": 121,
-      "summary": "Mycielski's 1955 inductive construction: $M_2 = K_2$, $M_{k+1}$ from $M_k$ via shadow vertices and a universal vertex. Produces $K_3$-free graphs with $\\chi(M_k) = k$ and $|V| = 3 \\cdot 2^{k-2} - 1$, proving finiteness of $h_3(k)$.",
-      "mathContext": "Mycielski's 1955 inductive construction: $M_2 = K_2$, $M_{k+1}$ from $M_k$ via shadow vertices and a universal vertex. Produces $K_3$-free graphs with $\\chi(M_k) = k$ and $|V| = 3 \\cdot 2^{k-2} - 1$, proving finiteness of $h_3(k)$."
+      "endLine": 129,
+      "summary": "Axiom `mycielski_construction`: for each $k \\geq 2$, a triangle-free graph with $\\chi \\geq k$ exists. Helper `threshold_set_nonempty` proves the infimum in $h_3(k)$'s definition is taken over a nonempty set, by case analysis on $k$ with Mycielski for $k \\geq 2$.",
+      "mathContext": "Mycielski's 1955 inductive construction: $M_2 = K_2$, $M_{k+1}$ from $M_k$ by adding shadow vertices and a universal vertex. $|V(M_k)| = 3 \\cdot 2^{k-2} - 1$, $\\chi(M_k) = k$, $K_3$-free."
+    },
+    {
+      "id": "structural-properties",
+      "title": "Structural Properties",
+      "startLine": 130,
+      "endLine": 188,
+      "summary": "Proves `threshold_mono` ($j \\leq k \\Rightarrow h_3(j) \\leq h_3(k)$, via `csInf_le_csInf`), `threshold_one` ($h_3(1) = 1$, single vertex is $K_3$-free with $\\chi \\geq 1$), `threshold_two` ($h_3(2) = 2$, complete graph $K_2$ is $K_3$-free with $\\chi = 2$, proved by `le_antisymm` with case analysis on $n \\in \\{0, 1\\}$). Axiomatizes `threshold_three` ($h_3(3) = 5$, cycle $C_5$) and `threshold_four` ($h_3(4) = 11$, Grötzsch graph).",
+      "mathContext": "$h_3(1) = 1$ (single vertex), $h_3(2) = 2$ ($K_2$), $h_3(3) = 5$ ($C_5$), $h_3(4) = 11$ (Grötzsch graph). The `threshold_two` proof is ~20 lines: shows $K_2 = (\\top : \\text{SimpleGraph}(\\text{Fin}\\ 2))$ is triangle-free and not 1-colorable, then shows any graph on $< 2$ vertices IS 1-colorable."
+    },
+    {
+      "id": "proved-results",
+      "title": "Proved Results",
+      "startLine": 190,
+      "endLine": 221,
+      "summary": "Five proved utility theorems: `trivial_n_coloring` (any graph on $n$ vertices is $n$-colorable via identity), `coloring_monotone` ($k$-colorable $\\Rightarrow$ $(k+1)$-colorable via `castSucc`), `empty_graph_colorable` (0-vertex graphs are $k$-colorable), `empty_graph_triangle_free` and `single_vertex_triangle_free` (0- and 1-vertex graphs are trivially $K_3$-free). These support the threshold proofs above.",
+      "mathContext": "The identity function gives an $n$-coloring of any graph on $n$ vertices. Casting colors via $\\text{Fin}(k) \\hookrightarrow \\text{Fin}(k+1)$ preserves properness. Graphs on 0 or 1 vertices are trivially triangle-free."
     }
   ],
   "conclusion": {
