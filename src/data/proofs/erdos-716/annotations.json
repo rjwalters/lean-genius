@@ -1,5 +1,17 @@
 [
   {
+    "id": "erdos-716-header",
+    "proofId": "erdos-716",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 57 },
+    "title": "Module Documentation, Imports, and Hypergraph Structure",
+    "content": "Erdős Problem #716 (the Ruzsa-Szemerédi (6,3) problem): is $\\text{ex}_3(n, \\mathcal{F}) = o(n^2)$? Equivalently: max edges where every edge is in a unique triangle? SOLVED by Ruzsa-Szemerédi (1978) via Szemerédi regularity: $o(n^2)$ with bound $n^2 \\cdot e^{-\\Omega(\\sqrt{\\log n})}$. Posed by Brown-Erdős-Sós (1973). Defines `Hypergraph3` (3-uniform) and `spannedVertices`.",
+    "mathContext": "$f^{(3)}(n; 6, 3) = o(n^2)$. Via Triangle Removal: graphs with $\\epsilon n^2$ edges in unique triangles have $\\Omega(n^3)$ triangles, contradicting removal for sparse hypergraphs.",
+    "significance": "key",
+    "relatedConcepts": ["Ruzsa-Szemerédi theorem", "Triangle Removal Lemma", "Szemerédi regularity"],
+    "prerequisites": ["SimpleGraph.Basic", "Finset.card"]
+  },
+  {
     "id": "ann-716-1",
     "proofId": "erdos-716",
     "range": {
