@@ -15,8 +15,7 @@
       "calculus",
       "integration",
       "ftc",
-      "extension",
-      "research"
+      "extension"
     ],
     "badge": "mathlib",
     "sorries": 0,
@@ -43,12 +42,9 @@
       }
     ],
     "originalContributions": [
-      "Complete formalization of A(r) = ∫₀ʳ C(ρ) dρ via FTC Part 2",
-      "Answers the open question from the Circumference from Area gallery entry",
-      "Annulus area formula: ∫_{r₁}^{r₂} 2πρ dρ = π(r₂² - r₁²)",
-      "Duality theorem: differentiating the integral recovers the circumference (FTC Part 1)",
-      "Unit disk area verification: ∫₀¹ 2πρ dρ = π",
-      "Scaling law: changing radius by c scales area by c²"
+      "Complete formalization of A(r) = ∫₀ʳ C(ρ) dρ via FTC Part 2, assembling derivative and integrability hypotheses for Mathlib's integral_eq_sub_of_hasDerivAt",
+      "Answers the open question from the Circumference from Area gallery entry, completing the integration-differentiation duality",
+      "Corollaries: annulus area formula, FTC Part 1 duality, unit disk area, and quadratic scaling law"
     ],
     "dateAdded": "2026-02-23",
     "axiomCount": 0,
@@ -108,7 +104,7 @@
     {
       "targetId": "area-of-circle-oq-01-oq-02-oq-02",
       "relationship": "extended-by",
-      "description": "Integration by parts for Fourier coefficients of periodic functions — the same IBP technique used in the circumference integration proof extends to computing the Fourier coefficients that arise when representing geometric quantities (like arc length and curvature) as trigonometric series"
+      "description": "Integration by parts for Fourier coefficients of periodic functions — the integration techniques from Mathlib (interval integrals, FTC) used in this circumference integration proof extend to computing Fourier coefficients that arise when representing geometric quantities as trigonometric series"
     }
   ],
   "sections": [
@@ -154,7 +150,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization proves A(r) = ∫₀ʳ C(ρ) dρ using the Fundamental Theorem of Calculus, answering the open question from the Circumference from Area gallery entry. The proof uses the companion result dA/dr = C(r) as the antiderivative relationship, then applies FTC Part 2. Together with its companion, it establishes the complete integration-differentiation duality for circle geometry. The proof file contains 153 lines, 0 sorries, 0 axioms.",
+    "summary": "This formalization proves A(r) = ∫₀ʳ C(ρ) dρ using the Fundamental Theorem of Calculus, answering the open question from the Circumference from Area gallery entry. The proof uses the companion result dA/dr = C(r) as the antiderivative relationship, then applies FTC Part 2. Together with its companion, it establishes the complete integration-differentiation duality for circle geometry. The proof file contains 146 lines, 0 sorries, 0 axioms.",
     "implications": "**Theoretical Significance**: The integration-differentiation duality $A' = C$ and $A = \\int C$ is not special to circles — it holds for all dimensions.\n\nThe $n$-ball volume $V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2+1)$ satisfies $V_n' = S_n$ where $S_n$ is surface area, and $V_n(r) = \\int_0^r S_n(\\rho)\\, d\\rho$. This pattern reflects a deep principle in geometric measure theory: the boundary measure is the variation of the volume measure.",
     "openQuestions": [
       "Can the n-dimensional analogue V_n(r) = ∫₀ʳ S_n(ρ) dρ be formalized for all n?",
@@ -217,7 +213,7 @@
     {
       "id": "area-of-circle-oq-01-oq-02-oq-02",
       "relationship": "extended-by",
-      "description": "Integration by parts for Fourier coefficients of periodic functions — the same IBP technique used in the circumference integration proof extends to computing the Fourier coefficients that arise when representing geometric quantities (like arc length and curvature) as trigonometric series"
+      "description": "Integration by parts for Fourier coefficients of periodic functions — the integration techniques from Mathlib (interval integrals, FTC) used in this circumference integration proof extend to computing Fourier coefficients that arise when representing geometric quantities as trigonometric series"
     }
   ],
   "references": [
