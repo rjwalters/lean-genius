@@ -1,0 +1,156 @@
+{
+  "version": 1,
+  "proofId": "area-of-circle-oq-01-oq-02",
+  "reviewDate": "2026-03-24T12:00:00Z",
+  "reviewer": "peer-reviewer",
+
+  "overallAssessment": {
+    "grade": "B+",
+    "oneLiner": "A clean, complete FTC application with honest Mathlib-badge framing, slightly padded by trivial corollaries listed as original contributions.",
+    "tier": "A",
+    "tierJustification": "Fully formalized: 0 sorries, 0 axioms, all definitions complete, all 11 theorems proved. Qualifies as Tier A despite the mathematical content being standard calculus, because there are no gaps or assumptions.",
+    "stratification": {
+      "proved": [
+        "hasDerivAt_circleArea (derivative setup via power rule)",
+        "area_from_integral (main FTC Part 2 application)",
+        "diff_area_eq_circumference (FTC Part 1 duality)",
+        "annulus_area_from_integral (FTC on general interval)",
+        "annulus_area_formula (explicit annulus computation)"
+      ],
+      "axiomatized": [],
+      "elementary": [
+        "continuous_circleArea (one-liner: continuity tactic)",
+        "continuous_circumference (one-liner: continuity tactic)",
+        "area_from_integral_nonneg (trivial wrapper, unused hypothesis)",
+        "area_from_integral_explicit (unfolds definitions only)",
+        "unit_disk_area (special case r=1)",
+        "area_scaling (algebraic identity via ring)"
+      ],
+      "assessment": "The proved components (derivative setup, main FTC application, FTC Part 1 duality, annulus generalization) carry the mathematical weight; the elementary corollaries are legitimate completeness results but should not be presented as original contributions."
+    }
+  },
+
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "area_from_integral, lines 82-91",
+      "finding": "The main theorem is well-structured: it explicitly constructs both FTC hypotheses (HasDerivAt on uIcc, IntervalIntegrable from continuity) and applies integral_eq_sub_of_hasDerivAt cleanly. The proof works for all r ∈ ℝ (not just r ≥ 0) via signed integrals, which is a genuine strength over a more restrictive formalization.",
+      "recommendation": "Preserve this structure. It is a good template for other FTC applications in the gallery."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "diff_area_eq_circumference, lines 125-131",
+      "finding": "The FTC Part 1 theorem closes the integration-differentiation loop. Using integral_hasDerivAt_right with three explicit hypotheses (integrability, measurability, continuity) demonstrates genuine Mathlib fluency. The narrative framing of this as 'duality' between the companion entry (C = dA/dr) and this entry (A = ∫C) is conceptually sound.",
+      "recommendation": "Preserve. This is the most mathematically satisfying part of the entry."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "meta.json badge field",
+      "finding": "The badge value 'mathlib' honestly signals that this proof relies on Mathlib's FTC infrastructure rather than claiming 'original' status. This is good epistemic hygiene — the proof's value is in the composition and pedagogy, not in novel mathematical reasoning.",
+      "recommendation": "Preserve this honest framing."
+    },
+    {
+      "severity": "minor",
+      "category": "filler",
+      "location": "area_from_integral_nonneg, lines 94-96",
+      "finding": "This theorem adds a hypothesis (0 ≤ r) that is immediately discarded (bound as _hr). Since area_from_integral already works for all r ∈ ℝ, this is strictly weaker — a reader seeing both might wonder whether the main theorem actually requires nonnegativity. The underscore-prefixed binder makes the unused hypothesis explicit in the code.",
+      "recommendation": "Consider removing this theorem or, if kept for pedagogical reasons, adding a comment explaining it exists for interface compatibility (e.g., callers that have 0 ≤ r in context)."
+    },
+    {
+      "severity": "moderate",
+      "category": "overclaim",
+      "location": "meta.json originalContributions, items 4-6",
+      "finding": "Three of the six listed 'original contributions' are routine corollaries: (4) 'Duality theorem' is a direct application of integral_hasDerivAt_right, not a new theorem; (5) 'Unit disk area verification' is the main theorem with r=1; (6) 'Scaling law' is resolved entirely by the ring tactic after rewriting. Listing these alongside the genuine main theorem dilutes the entry's claimed contributions.",
+      "recommendation": "Reduce originalContributions to the first 3 items (main theorem, open question answer, annulus formula). Move items 4-6 to a 'corollaries' or 'verifications' field, or mention them in the description without claiming originality."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json conclusion.summary",
+      "finding": "The conclusion states 'The proof file contains 153 lines' but the actual file has 146 lines (confirmed by wc -l). The meta.json lineCount field correctly says 146.",
+      "recommendation": "Fix the conclusion to say 146 lines."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "annotations.json ann-area-circle-oq02-01-header",
+      "finding": "The header annotation states 'Key imports: Mathlib.Analysis.SpecialFunctions.Integrals' but the actual import is Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic. The Integrals module is not imported.",
+      "recommendation": "Correct the annotation to reference the actual import: Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "annotations.json ann-area-circle-oq02-02-definitions, mathContext",
+      "finding": "The annotation claims Mathlib's Real.pi is 'proved transcendental via the Lindemann-Weierstrass theorem.' Mathlib has Irrational Real.pi but the full Lindemann-Weierstrass theorem and pi-transcendence may not be in Mathlib. This could overstate Mathlib's current capabilities.",
+      "recommendation": "Verify whether Mathlib has Transcendental Real.pi. If not, soften to 'Real.pi = 4 * arctan 1, known to be irrational (proved in Mathlib).'"
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "crossReferences, area-of-circle-oq-01-oq-02-oq-02",
+      "finding": "The cross-reference describes 'the same IBP technique used in the circumference integration proof' but this proof uses FTC Part 2 (integral_eq_sub_of_hasDerivAt), not integration by parts. FTC and IBP are distinct theorems. The link to Fourier coefficient computation via IBP is tenuous.",
+      "recommendation": "Rewrite the cross-reference description to accurately state that the child entry extends the FTC-based integration framework (not IBP specifically) to Fourier analysis applications."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json badge vs axiom integrity policy",
+      "finding": "Badge value 'mathlib' is not in the standard badge vocabulary defined in the axiom integrity policy (which lists 'original', 'verified', 'axiom'). While 'mathlib' is descriptive and honest, it may not be recognized by gallery infrastructure.",
+      "recommendation": "Verify 'mathlib' is a supported badge value in the gallery. If not, consider 'verified' (since 0 sorries/0 axioms) with a note in the description about Mathlib dependence."
+    }
+  ],
+
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Trim originalContributions from 6 to 3 items: keep main theorem, open question answer, and annulus formula. Remove or relocate the duality theorem, unit disk, and scaling law claims.",
+      "status": "open"
+    },
+    {
+      "id": "ai-2",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Fix line count in conclusion.summary: change '153 lines' to '146 lines'.",
+      "status": "open"
+    },
+    {
+      "id": "ai-3",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Fix annotation ann-area-circle-oq02-01-header: change 'Mathlib.Analysis.SpecialFunctions.Integrals' to 'Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic'.",
+      "status": "open"
+    },
+    {
+      "id": "ai-4",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Verify Mathlib transcendence claim in ann-area-circle-oq02-02-definitions and correct if overstated.",
+      "status": "open"
+    },
+    {
+      "id": "ai-5",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Fix cross-reference to area-of-circle-oq-01-oq-02-oq-02: replace 'IBP technique' with 'FTC-based integration framework'.",
+      "status": "open"
+    }
+  ],
+
+  "qualityScores": {
+    "mathematicalSubstance": 7,
+    "originalityAccuracy": 7,
+    "completeness": 9,
+    "framingPrecision": 8,
+    "pedagogicalQuality": 8,
+    "internalConsistency": 8,
+    "epistemicCoherence": 9,
+    "overall": 8.0
+  },
+
+  "suggestedBestFraming": "A complete, sorry-free formalization of the circle area formula A(r) = ∫₀ʳ 2πρ dρ = πr² via the Fundamental Theorem of Calculus (Part 2), with corollaries including the annulus area formula and FTC Part 1 duality — answering the integration-direction open question from the companion Circumference from Area entry."
+}
