@@ -142,23 +142,7 @@
       "What is the connection to the Erdős conjecture on the maximum of Σ 1/(aₙ log aₙ) over primitive sets?"
     ]
   },
-  "crossReferences": [
-    {
-      "targetId": "erdos-1935-primitive",
-      "relationship": "foundational",
-      "description": "Erdős (1935) proved Σ 1/(aₙ log aₙ) converges for primitive a, the foundational result for this problem's necessary conditions"
-    },
-    {
-      "targetId": "behrend-theorem",
-      "relationship": "related",
-      "description": "Behrend's results on primitive sets provide density bounds that constrain the domination problem"
-    },
-    {
-      "targetId": "prime-harmonic-series",
-      "relationship": "related",
-      "description": "The primes form the densest primitive set; the divergence of Σ 1/(p log p) = Σ 1/p · 1/log p shows primes barely fail the necessary condition"
-    }
-  ],
+  "crossReferences": [],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",
