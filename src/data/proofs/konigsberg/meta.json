@@ -71,7 +71,7 @@
       "startLine": 1,
       "endLine": 46,
       "summary": "Overview of the problem and its significance as the founding of graph theory.",
-      "mathContext": "Overview of the problem and its significance as the founding of graph theory."
+      "mathContext": "Introduces the Konigsberg bridge problem: given $G = (V, E)$ with $|V| = 4$ landmasses and $|E| = 7$ bridges, determine whether an Eulerian path (traversing each $e \\in E$ exactly once) exists."
     },
     {
       "id": "vertices",
@@ -79,7 +79,7 @@
       "startLine": 47,
       "endLine": 83,
       "summary": "Defining the 11 vertices: 4 landmasses and 7 bridges.",
-      "mathContext": "Defining the 11 vertices: 4 landmasses and 7 bridges."
+      "mathContext": "Defines the vertex set $V = \\{N, S, I_1, I_2, b_1, \\ldots, b_7\\}$ with $|V| = 11$ (4 landmasses + 7 bridge-vertices) to model the multigraph as a simple graph without parallel edges."
     },
     {
       "id": "edges",
@@ -87,7 +87,7 @@
       "startLine": 84,
       "endLine": 102,
       "summary": "The edge list connecting bridges to their landmasses.",
-      "mathContext": "The edge list connecting bridges to their landmasses."
+      "mathContext": "Defines the edge set $E \\subseteq V \\times V$ encoding the adjacency relation: each bridge vertex $b_i$ connects to exactly two landmass vertices, giving $|E| = 14$ directed pairs (7 bridges $\\times$ 2 endpoints)."
     },
     {
       "id": "simple-graph",
@@ -95,7 +95,7 @@
       "startLine": 103,
       "endLine": 118,
       "summary": "Constructing the graph with symmetry and no self-loops.",
-      "mathContext": "Constructing the graph with symmetry and no self-loops."
+      "mathContext": "Constructs $G$ as a $\\texttt{SimpleGraph}$ over the vertex type, verifying the symmetric property $\\{u, v\\} \\in E \\implies \\{v, u\\} \\in E$ and the irreflexive property $\\{v, v\\} \\notin E$ (no self-loops)."
     },
     {
       "id": "degrees",
@@ -103,7 +103,7 @@
       "startLine": 119,
       "endLine": 141,
       "summary": "Computing the degree of each vertex: landmasses are odd, bridges are even.",
-      "mathContext": "Computing the degree of each vertex: landmasses are odd, bridges are even."
+      "mathContext": "Computes $\\deg(v)$ for each $v \\in V$: $\\deg(I_1) = 5$, $\\deg(I_2) = 3$, $\\deg(N) = 3$, $\\deg(S) = 3$ (all odd), and $\\deg(b_i) = 2$ for each bridge vertex (all even)."
     },
     {
       "id": "odd-vertices",
@@ -111,7 +111,7 @@
       "startLine": 142,
       "endLine": 160,
       "summary": "Proving exactly the four landmasses have odd degree.",
-      "mathContext": "Proving exactly the four landmasses have odd degree."
+      "mathContext": "Proves $|\\{v \\in V \\mid 2 \\nmid \\deg(v)\\}| = 4$, with the odd-degree vertices being exactly the four landmasses $\\{N, S, I_1, I_2\\}$."
     },
     {
       "id": "main-theorem",
@@ -119,7 +119,7 @@
       "startLine": 161,
       "endLine": 189,
       "summary": "The impossibility proof using Euler's theorem on odd-degree vertices.",
-      "mathContext": "The impossibility proof using Euler's theorem on odd-degree vertices."
+      "mathContext": "Proves $\\nexists$ Eulerian path in $G$. By Euler's theorem ($\\texttt{IsEulerian.card\\_odd\\_degree}$), an Eulerian path requires $|\\{v : 2 \\nmid \\deg(v)\\}| \\in \\{0, 2\\}$. Since the Konigsberg graph has 4 odd-degree vertices, this is a contradiction."
     },
     {
       "id": "history",
@@ -127,7 +127,7 @@
       "startLine": 190,
       "endLine": 220,
       "summary": "Euler's original reasoning and the broader impact on mathematics.",
-      "mathContext": "Euler's original reasoning and the broader impact on mathematics."
+      "mathContext": "Discusses Euler's 1736 abstraction: replacing geographic layout with the graph $G = (V, E)$ and reducing traversability to the parity condition $|\\{v : 2 \\nmid \\deg(v)\\}| \\leq 2$. This founded the field of graph theory and combinatorial topology."
     }
   ],
   "conclusion": {
