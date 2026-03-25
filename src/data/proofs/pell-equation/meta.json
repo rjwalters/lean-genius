@@ -172,11 +172,6 @@
       "description": "Quadratic reciprocity determines when $D$ is a quadratic residue mod $p$, which governs the factoring of primes in $\\mathbb{Z}[\\sqrt{D}]$ — the number ring whose unit group encodes Pell equation solutions. The Legendre symbol $(D/p)$ predicts whether $x^2 \\equiv D \\pmod{p}$ has solutions, a local condition for Pell solvability"
     },
     {
-      "targetId": "continued-fractions",
-      "relationship": "technique",
-      "description": "The continued fraction expansion of $\\sqrt{D}$ is periodic (Lagrange, 1770), and the convergents provide the fundamental solution to Pell's equation. The period length determines the size of the fundamental solution, which can be exponential in $D$"
-    },
-    {
       "targetId": "fermat-two-squares",
       "relationship": "related",
       "description": "Fermat's two-squares theorem ($p = x^2 + y^2 \\iff p \\equiv 1 \\pmod{4}$) is the $D = -1$ analogue of Pell's equation in the Gaussian integers $\\mathbb{Z}[i]$. Both reduce to questions about units and norms in quadratic rings: Pell solutions are units of $\\mathbb{Z}[\\sqrt{D}]$, while two-squares representations correspond to norms from $\\mathbb{Z}[i]$"

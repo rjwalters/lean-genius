@@ -176,11 +176,6 @@
   ],
   "crossReferences": [
     {
-      "targetId": "chinese-remainder-theorem",
-      "relationship": "generalizes",
-      "description": "This entry generalizes the classical CRT (coprime moduli) to arbitrary moduli, adding the gcd solvability condition and replacing product with lcm for uniqueness"
-    },
-    {
       "targetId": "bezout-identity",
       "relationship": "uses",
       "description": "The sufficiency proof uses Bézout coefficients from the extended Euclidean algorithm to construct the solution explicitly"
