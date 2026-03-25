@@ -66,14 +66,24 @@ axiom gerver_ramsey_2d :
 
 /- ## Basic properties -/
 
-/-- Collinearity is reflexive: any point is collinear with itself. -/
+/-- Collinearity is reflexive: any point is collinear with itself.
+    Uses witnesses (0, 1): 0·(q-p) = 1·(p-p) = 0. -/
 theorem collinear_refl {d : ℕ} (p q : LatPoint d) :
     AreCollinear p q p := by
-  exact ⟨1, 0, Or.inl one_ne_zero, fun j => by ring⟩
+  exact ⟨0, 1, Or.inr one_ne_zero, fun j => by ring⟩
 
-/-- Collinearity is symmetric in the outer two points. -/
-axiom collinear_symm {d : ℕ} (p q r : LatPoint d) :
-    AreCollinear p q r → AreCollinear r q p
+/-- Collinearity is symmetric in the outer two points.
+    Given a(q-p) = b(r-p), witnesses (a, a-b) satisfy a(q-r) = (a-b)(p-r). -/
+theorem collinear_symm {d : ℕ} (p q r : LatPoint d) :
+    AreCollinear p q r → AreCollinear r q p := by
+  rintro ⟨a, b, hab, h⟩
+  refine ⟨a, a - b, ?_, fun j => ?_⟩
+  · -- a ≠ 0 ∨ a - b ≠ 0: if a = 0 then b ≠ 0 so a - b = -b ≠ 0
+    rcases ne_or_eq a 0 with ha | rfl
+    · exact Or.inl ha
+    · exact Or.inr (by simpa using hab.resolve_left (not_not.mpr rfl))
+  · -- a * (q j - r j) = (a - b) * (p j - r j) follows from a*(q_j-p_j) = b*(r_j-p_j)
+    have := h j; linarith
 
 /-- A constant walk (all points equal) trivially has collinear triples. -/
 theorem collinear_const {d : ℕ} (v : LatPoint d) :
