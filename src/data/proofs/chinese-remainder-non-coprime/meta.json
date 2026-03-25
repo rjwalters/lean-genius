@@ -184,6 +184,26 @@
       "targetId": "bezout-identity",
       "relationship": "uses",
       "description": "The sufficiency proof uses Bézout coefficients from the extended Euclidean algorithm to construct the solution explicitly"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "generalizes",
+      "description": "The constructive CRT requires coprime moduli; this entry removes that restriction, recovering the classical CRT as the special case gcd(m,n) = 1"
+    },
+    {
+      "targetId": "chinese-remainder-constructive-oq-04",
+      "relationship": "related",
+      "description": "Generalizes CRT to arbitrary-length moduli lists via induction; the non-coprime three-moduli extension here complements that approach when coprimality fails"
+    },
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "uses",
+      "description": "The solvability criterion gcd(m,n) | (a-b) and the reduction to coprime moduli m/g, n/g both depend on GCD computation via the Euclidean algorithm"
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime-oq-01",
+      "relationship": "parent",
+      "description": "Open question extending this entry: investigates computational efficiency of non-coprime CRT for large moduli, including Garner's mixed-radix decomposition"
     }
   ],
   "leanFile": {

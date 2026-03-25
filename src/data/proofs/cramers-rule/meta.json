@@ -68,7 +68,10 @@
       "**Cofactor Expansion:** Each $\\text{cramer}(A,b)_i$ is a cofactor expansion along column $i$ using the entries of $b$ instead of $A$. This is why the determinant $\\det(A_i)$ arises naturally."
     ],
     "prerequisites": [
-      "Linear algebra"
+      "Linear algebra (matrix multiplication, vector spaces over commutative rings)",
+      "Determinants (Leibniz formula, cofactor expansion)",
+      "Adjugate matrix (classical adjoint, A * adj(A) = det(A) * I)",
+      "Invertibility (Invertible typeclass, units in commutative rings)"
     ]
   },
   "sections": [
@@ -155,6 +158,26 @@
       "targetId": "cayley-hamilton-minpoly",
       "relationship": "related",
       "description": "The minimal polynomial annihilator theory extends the Cayley-Hamilton framework that shares the adjugate-determinant machinery with Cramer's rule."
+    },
+    {
+      "targetId": "cramers-rule-oq-01",
+      "relationship": "parent",
+      "description": "Open question proving the Cayley-Hamilton theorem as a direct corollary of Cramer's adjugate identity A * adj(A) = det(A) * I"
+    },
+    {
+      "targetId": "cramers-rule-oq-02",
+      "relationship": "parent",
+      "description": "Open question formalizing the complexity gap: Gaussian elimination at O(n^3) is super-polynomially faster than Cramer's rule at O((n+1)*n*n!) multiplications"
+    },
+    {
+      "targetId": "cramers-rule-oq-03",
+      "relationship": "parent",
+      "description": "Open question extending Cramer's rule to non-commutative division rings via Gelfand-Retakh quasideterminants, reducing to the classical rule when the ring is commutative"
+    },
+    {
+      "targetId": "cayley-hamilton-reduction",
+      "relationship": "related",
+      "description": "Uses the Cayley-Hamilton theorem — derived from the same adjugate identity central to Cramer's rule — to reduce polynomial evaluation on matrices via characteristic polynomial division"
     }
   ],
   "conclusion": {
