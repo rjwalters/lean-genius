@@ -7,7 +7,7 @@
     "author": "Erdős (problem), Borwein (1991 proof)",
     "sourceUrl": "https://erdosproblems.com/1050",
     "date": "1991",
-    "status": "pending",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1050Problem.lean",
     "tags": [
       "erdos",
@@ -17,8 +17,8 @@
       "transcendence",
       "solved"
     ],
-    "badge": "wip",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 11,
     "erdosNumber": 1050,
     "erdosUrl": "https://erdosproblems.com/1050",
     "erdosProblemStatus": "solved",
@@ -62,9 +62,9 @@
       "erdos-1051",
       "erdos-257"
     ],
-    "axiomCount": 0,
-    "lineCount": 1,
-    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"axiomatized\"."
+    "axiomCount": 3,
+    "lineCount": 340,
+    "assumptions": "Three axioms: (1) borwein_irrationality — Borwein's 1991 Padé approximation result for T(q,r); (2) S_approx — numerical bounds 0.286 < S < 0.288; (3) transcendence_conjecture_status — records open status of transcendence conjecture."
   },
   "overview": {
     "historicalContext": "**From Lambert Series to Borwein's Theorem**\n\nThe study of series with exponential denominators began with Johann Heinrich Lambert's 1748 investigation of ∑ q^n/(1-q^n) — the Lambert series — which he connected to the divisor function τ(n). Euler recognized the identity ∑ 1/(q^n - 1) = ∑ τ(n)/q^n, linking these series to multiplicative number theory.\n\nIn 1948, Erdős published a foundational paper in the Journal of the Indian Mathematical Society proving that ∑ 1/(2^n - 1) is irrational. His method exploited the divisor function identity: if the sum were rational p/q, then ∑ τ(n)/2^n = p/q, and the arithmetic properties of τ (specifically, that τ(n) is often large — on average log n) would produce contradictions modulo carefully chosen primes. This result established the Erdős-Borwein constant E ≈ 1.60669 as one of the first explicitly-defined irrationals in this family.\n\nErdős conjectured much more: that ∑ 1/(2^n + t) should be transcendental for every integer t ≠ 0. Problem #1050 asks specifically about the case t = -3, i.e., whether ∑ 1/(2^n - 3) is irrational.\n\n**Peter Borwein (1991)** proved the definitive irrationality result in Math. Proc. Cambridge Philos. Soc.: for any integer q ≥ 2 and rational r ≠ 0 (with r ≠ -q^n for any n), the series ∑ 1/(q^n + r) is irrational. His proof used Padé approximation to the q-logarithm function log_q(1+x) = ∑ (-x)^n/(q^n - 1), constructing rational approximants whose quality exceeds the Dirichlet threshold. This completely solved Problem #1050 and subsumed Erdős's 1948 result as a special case.\n\nThe stronger transcendence conjecture remains OPEN. Even for the Erdős-Borwein constant ∑ 1/(2^n - 1), transcendence has not been established. The methods of Mahler (1929) and Nishioka (1996) for q-series transcendence do not directly apply to these Lambert-type series, and fundamentally new techniques appear to be needed.",
@@ -89,82 +89,82 @@
     {
       "id": "series",
       "title": "The Series",
-      "summary": "Defines the general family T(q,r) = ∑ 1/(q^n + r) via tsum, the specific instance S = T(2, -3) for Problem #1050, and the alternative definition sumTwoMinusThree for direct computation",
-      "startLine": 1,
-      "endLine": 1,
+      "summary": "Defines the general family T(q,r) = ∑ 1/(q^n + r) via tsum, the specific instance S = T(2, -3) for Problem #1050, the alternative definition sumTwoMinusThree for direct computation, and proves S_eq_sumTwoMinusThree (sorry)",
+      "startLine": 26,
+      "endLine": 45,
       "mathContext": "Formal definition: Defines the general family T(q,r) = ∑ 1/(q^n + r) via tsum, the specific instance S = T(2, -3) for Problem #1050, and the alternative definition sumTwoMinusThree for direct computation"
     },
     {
       "id": "convergence",
       "title": "Convergence",
-      "summary": "Proves T_summable (convergence for q ≥ 2, r ≠ -q^n via geometric series comparison), S_summable (specialization to q=2, r=-3), and denom_nonzero (2^n - 3 ≠ 0 for all n ≥ 1 by case split on n=1 vs n≥2)",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Proves T_summable (convergence for q $\\geq$ 2, r $\\neq$ -q^n via geometric series comparison), S_summable (specialization to q=2, r=-3), and denom_nonzero ($2^{n}$ - 3 $\\neq$ 0 for all n $\\geq$ 1 by case split on n=1 vs n$\\geq$2)"
+      "summary": "Proves T_summable (sorry), S_summable (sorry), denom_nonzero (sorry), and first_term (proved via norm_num)",
+      "startLine": 47,
+      "endLine": 69,
+      "mathContext": "Establishes convergence for T(q,r) via geometric series comparison, specializes to S, and verifies denominators 2^n - 3 are nonzero for n >= 2"
     },
     {
       "id": "first-terms",
       "title": "First Terms",
-      "summary": "Computes explicit values: term_1 (2¹-3 = -1), term_2 (2²-3 = 1), term_3 (2³-3 = 5), demonstrating the negative first term, exact cancellation -1+1=0, and S_first_terms showing S = 0 + 1/5 + 1/13 + 1/29 + ... ≈ 0.287",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Computes explicit values: term_1 (2¹-3 = -1), term_2 (2²-3 = 1), term_3 (2³-3 = 5), demonstrating the negative first term, exact cancellation -1+1=0, and S_first_terms showing S = 0 + 1/5 + 1/13 + 1/29 + ... ≈ 0.287"
+      "summary": "Computes explicit values via norm_num: term_1 (2^1-3 = -1), term_2 (2^2-3 = 1), term_3 (2^3-3 = 5), term_4 (2^4-3 = 13), term_5 (2^5-3 = 29), and S_first_terms decomposition (sorry)",
+      "startLine": 71,
+      "endLine": 97,
+      "mathContext": "Computes explicit values: term_1 through term_5, demonstrating the negative first term, exact cancellation -1+1=0, and S_first_terms showing S = 0 + 1/5 + 1/13 + 1/29 + ..."
     },
     {
       "id": "borwein",
       "title": "Borwein's Theorem",
-      "summary": "Axiomatizes borwein_irrationality (1991 Padé approximation result for T(q,r)), derives S_irrational by instantiating with q=2, r=-3 and verifying the pole-avoidance condition 3 ∉ {2^n : n ≥ 1}",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Axiomatizes borwein_irrationality (1991 Padé approximation result for T(q,r)), derives S_irrational by instantiating with q=2, r=-3 and verifying the pole-avoidance condition 3 ∉ {$2^{n}$ : n $\\geq$ 1}"
+      "summary": "Axiomatizes borwein_irrationality (1991 Pade approximation result for T(q,r)), derives S_irrational by instantiating with q=2, r=-3 and verifying the pole-avoidance condition via case split on n",
+      "startLine": 98,
+      "endLine": 139,
+      "mathContext": "Axiomatizes borwein_irrationality (1991 Pade approximation result for T(q,r)), derives S_irrational by instantiating with q=2, r=-3 and verifying the pole-avoidance condition 3 is not a power of 2"
     },
     {
       "id": "related",
       "title": "Related Series",
-      "summary": "Applies Borwein's theorem to three further series: sum_2n_minus_1_irrational (∑ 1/(2^n-1), recovering Erdős 1948 as a special case), sum_2n_plus_1_irrational (∑ 1/(2^n+1), the companion constant), sum_3n_minus_1_irrational (∑ 1/(3^n-1), base-3 extension), and general_irrational for arbitrary valid parameters",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Applies Borwein's theorem to three further series: sum_2n_minus_1_irrational (∑ 1/(2^n-1), recovering Erdős 1948 as a special case), sum_2n_plus_1_irrational (∑ 1/(2^n+1), the companion constant), sum_3n_minus_1_irrational (∑ 1/(3^n-1), base-3 extension), and general_irrational for arbitrary valid parameters"
+      "summary": "Applies Borwein's theorem to three further series: sum_2n_minus_1_irrational (∑ 1/(2^n-1), recovering Erdos 1948), sum_2n_plus_1_irrational (∑ 1/(2^n+1)), sum_3n_minus_1_irrational (∑ 1/(3^n-1)), and general_irrational for arbitrary valid parameters",
+      "startLine": 141,
+      "endLine": 205,
+      "mathContext": "Applies Borwein's theorem to three further series and provides a general instantiation for arbitrary valid parameters"
     },
     {
       "id": "transcendence",
       "title": "Transcendence Conjecture",
-      "summary": "States ErdosTranscendenceConjecture (∑ 1/(2^n+t) transcendental for integer t ≠ 0) and GeneralTranscendenceConjecture (T(q,r) transcendental for all valid q,r), proves transcendence_implies_irrationality linking the hierarchy, and records the OPEN status",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "States ErdosTranscendenceConjecture (∑ 1/(2^n+t) transcendental for integer t ≠ 0) and GeneralTranscendenceConjecture (T(q,r) transcendental for all valid q,r), proves transcendence_implies_irrationality linking the hierarchy, and records the OPEN status"
+      "summary": "Defines ErdosTranscendenceConjecture and GeneralTranscendenceConjecture as Prop types, states transcendence_implies_irrationality (sorry), and records transcendence_conjecture_status as an axiom",
+      "startLine": 207,
+      "endLine": 236,
+      "mathContext": "States Erdos's transcendence conjecture for T(2,t) and the general form for T(q,r), with the hierarchy link from transcendence to irrationality"
     },
     {
       "id": "connection",
       "title": "Connection to #1049",
-      "summary": "Defines S_1049 t = ∑ 1/(t^n - 1) from Problem #1049, proves T_eq_S_1049 showing T(q,-1) = S_1049(q), and problems_related establishing that both problems are resolved by Borwein's single theorem",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Formal definition: Defines S_1049 t = ∑ 1/(t^n - 1) from Problem #1049, proves T_eq_S_1049 showing T(q,-1) = S_1049(q), and problems_related establishing that both problems are resolved by Borwein's single theorem"
+      "summary": "Defines S_1049 t = ∑ 1/(t^n - 1) from Problem #1049, states T_eq_S_1049 showing T(q,-1) = S_1049(q) (sorry), and problems_related (sorry)",
+      "startLine": 237,
+      "endLine": 257,
+      "mathContext": "Defines S_1049 t = ∑ 1/(t^n - 1) from Problem #1049, proves T_eq_S_1049 showing T(q,-1) = S_1049(q), and problems_related establishing that both problems are resolved by Borwein's single theorem"
     },
     {
       "id": "numerical",
       "title": "Numerical Values",
-      "summary": "Axiomatizes S_approx (0.286 < S < 0.288), proves S_positive (tail dominance after cancellation), S_lt_one (comparison with geometric series), and partial_sums_converge linking finite sums to the tsum limit",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Axiomatizes S_approx (0.286 < S < 0.288), proves S_positive (tail dominance after cancellation), S_lt_one (comparison with geometric series), and partial_sums_converge linking finite sums to the tsum limit"
+      "summary": "Axiomatizes S_approx (0.286 < S < 0.288), derives S_positive and S_lt_one from the axiom, and states partial_sums_converge (sorry)",
+      "startLine": 258,
+      "endLine": 283,
+      "mathContext": "Axiomatizes numerical bounds on S, derives positivity and upper bound, and links partial sums to the tsum limit"
     },
     {
       "id": "oeis",
       "title": "OEIS Connection",
-      "summary": "Defines oeis_A331372 (the shifted Mersenne sequence 2^n - 3), verifies denom_sequence matching OEIS, and proves denom_growth (exponential growth 2^n - 3 > 2^{n-1} for n ≥ 3, ensuring O(1/2^n) convergence rate)",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Defines oeis_A331372 (the shifted Mersenne sequence 2^n - 3), verifies denom_sequence matching OEIS, and proves denom_growth (exponential growth 2^n - 3 > 2^{n-1} for n ≥ 3, ensuring O(1/2^n) convergence rate)"
+      "summary": "Defines oeis_A331372 (the shifted Mersenne sequence 2^n - 3), states denom_sequence (sorry) and denom_growth (sorry)",
+      "startLine": 284,
+      "endLine": 303,
+      "mathContext": "Defines oeis_A331372 (the shifted Mersenne sequence 2^n - 3), verifies denom_sequence matching OEIS, and states denom_growth (exponential growth for n >= 3)"
     },
     {
       "id": "main",
       "title": "Main Results",
-      "summary": "Unifies the formalization: erdos_1050 (the capstone irrationality result), erdos_1050_answer and erdos_1050_status (documentation strings), and borwein_theorem (complete restatement of Borwein's 1991 result covering rational r, not just integer shifts)",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Unifies the formalization: erdos_1050 (the capstone irrationality result), erdos_1050_answer and erdos_1050_status (documentation strings), and borwein_theorem (complete restatement of Borwein's 1991 result covering rational r, not just integer shifts)"
+      "summary": "Defines erdos_1050 as alias for S_irrational, erdos_1050_answer and erdos_1050_status as documentation strings, and borwein_theorem as alias for borwein_irrationality",
+      "startLine": 305,
+      "endLine": 340,
+      "mathContext": "Unifies the formalization: erdos_1050 (the capstone irrationality result), erdos_1050_answer and erdos_1050_status (documentation strings), and borwein_theorem (complete restatement of Borwein's 1991 result)"
     }
   ],
   "conclusion": {
@@ -221,14 +221,30 @@
     }
   ],
   "leanFile": {
-    "imports": [],
-    "opens": [],
-    "namespace": "",
-    "lineCount": 1,
-    "axiomCount": 0,
-    "theoremCount": 0,
-    "definitionCount": 0,
-    "mainTheorems": []
+    "imports": ["Mathlib"],
+    "opens": ["BigOperators", "Real"],
+    "namespace": "Erdos1050",
+    "lineCount": 340,
+    "axiomCount": 3,
+    "theoremCount": 25,
+    "definitionCount": 9,
+    "mainTheorems": [
+      {
+        "name": "erdos_1050",
+        "statement": "Irrational S",
+        "description": "The capstone result: ∑ 1/(2^n - 3) is irrational"
+      },
+      {
+        "name": "S_irrational",
+        "statement": "Irrational S",
+        "description": "Direct proof via borwein_irrationality with q=2, r=-3"
+      },
+      {
+        "name": "borwein_theorem",
+        "statement": "Irrational (T q r)",
+        "description": "Borwein's general irrationality theorem for T(q,r)"
+      }
+    ]
   },
   "references": [
     {

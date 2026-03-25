@@ -100,7 +100,7 @@
     },
     "type": "technique",
     "title": "Structural Properties and Concrete Evidence",
-    "content": "Proved structural theorems: `primeClass_pos_of_prime` (primes have class $\\geq 1$), `class_of_factor_lt` (if $q \\mid p+1$ and $q$ prime, then $c(q) < c(p)$), `class_one_iff_smooth` (class 1 $\\iff$ $p+1$ is 3-smooth). Also concrete evidence for infinitude: `many_class1_primes` (8 known class-1 primes), `many_class2_primes` (5 known class-2 primes), `many_class3_primes` (3 known class-3 primes). These are verified by `native_decide` and `decide`.",
+    "content": "Proved structural theorems: `primeClass_pos_of_prime` (primes have class $\\geq 1$), `class_of_factor_lt` (if $q \\mid p+1$ and $q$ prime, then $c(q) < c(p)$), `class_one_iff_smooth` (class 1 $\\iff$ $p+1$ is 3-smooth). Also concrete evidence for infinitude: `many_class1_primes` ($\\geq 8$ class-1 primes below 50), `many_class2_primes` ($\\geq 8$ class-2 primes below 100), `many_class3_primes` ($\\geq 3$ class-3 primes below 200). These are verified by `native_decide`.",
     "significance": "key",
     "mathContext": "Key structural facts: $c(p) \\geq 1$ for all primes $p$, $q \\mid (p+1)$ prime $\\Rightarrow c(q) < c(p)$ (strict decrease along factorization chains), and $c(p) = 1 \\iff p + 1$ is 3-smooth. The concrete lists provide evidence for the infinitude conjecture.",
     "relatedConcepts": [

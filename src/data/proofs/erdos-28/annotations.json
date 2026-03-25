@@ -93,26 +93,26 @@
     ]
   },
   {
-    "id": "counting-fn",
+    "id": "rep-func-finset",
     "proofId": "erdos-28",
     "range": {
-      "startLine": 57,
-      "endLine": 59
+      "startLine": 58,
+      "endLine": 60
     },
     "type": "definition",
-    "title": "Counting Function",
-    "content": "The counting function $A(N) = |A \\cap [1, N]|$ measures the density of $A$ up to $N$. For any basis of order 2, a simple pigeonhole argument shows $A(N) \\geq c\\sqrt{N}$ — the number of pairs from $A \\cap [1,N]$ must cover all integers up to $N$. This is the density threshold relevant to the stronger conjecture.",
-    "mathContext": "$A(N) = |A \\cap \\{1, 2, \\ldots, N\\}|$. If $A + A \\supseteq \\{1, \\ldots, N\\}$, then $\\binom{A(N)}{2} \\geq N$, giving $A(N) \\gg \\sqrt{N}$. The **density version** of the conjecture replaces the basis condition with $A(N) \\gg \\sqrt{N}$.",
-    "significance": "key",
+    "title": "Finset-Based Representation Function",
+    "content": "`repFuncFinset` is a computable variant of the representation function for finite sets $A$. Given a `Finset ℕ`, it forms the product $A \\times A$, filters for pairs $(a,b)$ with $a + b = n$, and returns the `Finset.card`. Unlike the `Set`-based `repFunc` (which uses `Set.ncard` and is `noncomputable`), this version can be evaluated by the kernel. The file does not use `repFuncFinset` in the main development — it serves as a computable witness.",
+    "mathContext": "$r_A^{\\text{fin}}(n) = |\\{(a,b) \\in A \\times A : a+b=n\\}|$ via `(A.product A).filter (\\lambda p, p.1 + p.2 = n) |>.card$. This is the ordered count (each unordered pair $\\{a,b\\}$ with $a \\neq b$ is counted twice).",
+    "significance": "supporting",
     "relatedConcepts": [
-      "asymptotic density",
-      "Schnirelmann density",
-      "pigeonhole principle"
+      "Finset.product",
+      "Finset.filter",
+      "computable representation",
+      "Finset.card"
     ],
     "prerequisites": [
-      "Finset.Icc",
-      "Finset.filter",
-      "counting arguments"
+      "Finset API",
+      "repFunc (noncomputable version)"
     ]
   },
   {
@@ -305,6 +305,32 @@
       "IsAsymptoticBasis2",
       "Filter.Tendsto",
       "atTop"
+    ]
+  },
+  {
+    "id": "basis-equivalence",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 76,
+      "endLine": 108
+    },
+    "type": "theorem",
+    "title": "Equivalence of Two Basis Definitions (isAsymptoticBasis_iff)",
+    "content": "Proves that `IsAsymptoticBasis` (threshold form: $\\exists N_0, \\forall n \\geq N_0, n \\in A+A$) is equivalent to `IsAsymptoticBasis'` (finite complement: $(A+A)^c$ is finite). The forward direction embeds the complement into $\\{0, \\ldots, N_0-1\\}$ via `Finset.range N_0`, which is finite. The reverse direction uses `BddAbove` on the finite complement: if the complement is nonempty, its supremum $M$ exists, and all $n > M$ lie in $A+A$; if the complement is empty, every integer is in $A+A$. This is the longest proved theorem in the file (~30 lines) and establishes the foundation for later results that use either definition interchangeably.",
+    "mathContext": "$\\text{IsAsymptoticBasis}(A) \\Leftrightarrow \\text{IsAsymptoticBasis}'(A)$. Forward: $(A+A)^c \\subseteq [0, N_0) \\Rightarrow (A+A)^c$ finite. Reverse: $(A+A)^c$ finite $\\Rightarrow$ bounded above $\\Rightarrow$ $M := \\sup (A+A)^c$ exists $\\Rightarrow$ $\\forall n > M, n \\in A+A$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "BddAbove",
+      "sSup",
+      "Set.Finite",
+      "Finset.range",
+      "basis definitions"
+    ],
+    "prerequisites": [
+      "IsAsymptoticBasis",
+      "IsAsymptoticBasis'",
+      "Set.Finite.bddAbove",
+      "le_csSup"
     ]
   },
   {

@@ -101,14 +101,14 @@
       "id": "preamble",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 22,
+      "endLine": 25,
       "summary": "File header documenting Dickson's sum-free extension problem, the eventual periodicity conjecture, and its OPEN status. Imports Mathlib for Finset, natural numbers, and tactics.",
       "mathContext": "Dickson's construction: start with $A_0 \\subset \\mathbb{N}^+$ finite, extend by $a_{n+1} = \\min\\{m \\notin \\text{pairwiseSums}(A_n)\\}$. Conjecture: $a_{n+1} - a_n$ is eventually periodic."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
-      "startLine": 23,
+      "startLine": 27,
       "endLine": 54,
       "summary": "`pairwiseSums`, `IsSumRepresentable`, `dicksonSeq` (greedy extension via `Nat.find`), `dicksonDiff`, and `IsEventuallyPeriodic`.",
       "mathContext": "`pairwiseSums(S) = \\{a + b : a, b \\in S\\}$; `dicksonSeq A0 n` defined recursively via `Nat.find` (smallest $m$ not in pairwiseSums); `IsEventuallyPeriodic f p N` $\\iff$ $\\forall n \\geq N, f(n+p) = f(n)$."
@@ -192,6 +192,6 @@
     "axiomCount": 9,
     "theoremCount": 0,
     "definitionCount": 5,
-    "mainTheorems": []
+    "mainTheorems": ["erdos_341_conjecture"]
   }
 }
