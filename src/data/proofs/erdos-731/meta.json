@@ -20,8 +20,8 @@
     "erdosNumber": 731,
     "erdosUrl": "https://erdosproblems.com/731",
     "erdosProblemStatus": "open",
-    "axiomCount": 7,
-    "lineCount": 105,
+    "axiomCount": 3,
+    "lineCount": 154,
     "mathlibDependencies": [
       {
         "theorem": "Nat.choose",
@@ -39,7 +39,7 @@
         "module": "Mathlib.Order.WellFounded"
       }
     ],
-    "assumptions": "7 axiom declarations: prime_divides_central_iff, small_primes_divide, two_divides_central, least_nondiv_is_prime, upper_bound_trivial, bertrand_central, central_binom_lower. Proved 5 placeholder axioms (erdos_731_conjecture, kummer_carries, primorial_asymptotic, egrs_typical_behavior, lower_bound_most_n) that had True conclusions.",
+    "assumptions": "3 axiom declarations: prime_divides_central_iff (Kummer's carry characterization), small_primes_divide (small primes divide C(2n,n) for large n), upper_bound_trivial (least non-divisor ≤ 2n+1). Proved: two_divides_central (Pascal+symmetry), bertrand_central (Bertrand+dvd_choose_add), central_binom_lower (binomial sum+max term). Removed least_nondiv_is_prime (false: counterexample n=2, C(4,2)=6, leastNonDiv=4).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -126,14 +126,17 @@
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Choose.Central",
+      "Mathlib.Data.Nat.Choose.Dvd",
+      "Mathlib.Data.Nat.Choose.Sum",
       "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.NumberTheory.Bertrand",
       "Mathlib.Tactic"
     ],
     "opens": [],
     "namespace": null,
     "lineCount": 105,
     "axiomCount": 7,
-    "theoremCount": 5,
+    "theoremCount": 9,
     "definitionCount": 3
   },
   "references": [
