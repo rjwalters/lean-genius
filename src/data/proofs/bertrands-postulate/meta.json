@@ -176,6 +176,21 @@
       "targetId": "prime-reciprocal-divergence",
       "relationship": "related",
       "description": "Both quantify prime density: Bertrand's postulate gives a local guarantee ($\\exists$ prime in $(n, 2n]$), while $\\sum 1/p = \\infty$ gives a global measure (primes are collectively dense enough for their reciprocals to diverge). Together they establish that primes are both locally frequent and globally ubiquitous"
+    },
+    {
+      "targetId": "erdos-4",
+      "relationship": "related",
+      "description": "Erdős Problem #4 studies large prime gaps $p_{n+1} - p_n$. Bertrand's postulate gives the elementary bound $p_{n+1} - p_n < p_n$; Erdős conjectured and proved (with Rankin) that gaps can be as large as $c \\cdot \\log p \\cdot \\log\\log p \\cdot \\log\\log\\log\\log p / (\\log\\log\\log p)^2$."
+    },
+    {
+      "targetId": "legendre-partial",
+      "relationship": "related",
+      "description": "Legendre's conjecture ($\\exists$ prime between $n^2$ and $(n+1)^2$) is strictly stronger than Bertrand's postulate: since $(n+1)^2 < 2n^2$ for $n \\geq 3$, Legendre would imply Bertrand for $n \\geq 9$. Legendre remains open while Bertrand has been proved since 1852."
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "foundational",
+      "description": "Stirling's approximation $n! \\sim \\sqrt{2\\pi n}(n/e)^n$ gives the asymptotic estimate $\\binom{2n}{n} \\sim 4^n/\\sqrt{\\pi n}$, which is the sharper version of the lower bound $\\binom{2n}{n} \\geq 4^n/(2n)$ used in Erdős's proof of Bertrand's postulate."
     }
   ],
   "leanFile": {
