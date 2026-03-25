@@ -264,8 +264,23 @@ For α > 1 and n ≥ 2, we have h_α(n) ≥ 1.
 
 Proof: The first term is ((d₂/1) - 1)^α ≥ (2-1)^α = 1.
 -/
-axiom h_alpha_ge_one (α : ℝ) (hα : α > 1) (n : ℕ) (hn : n ≥ 2) :
-    h_alpha α n ≥ 1
+theorem h_alpha_ge_one (α : ℝ) (hα : α > 1) (n : ℕ) (hn : n ≥ 2) :
+    h_alpha α n ≥ 1 := by
+  unfold h_alpha
+  obtain ⟨r, hr_mem, hr_ge⟩ := first_ratio_ge_two n hn
+  set f := (fun (r : ℚ) => ((r : ℝ) - 1) ^ α) with hf_def
+  -- The term for r is ≥ 1 (since r ≥ 2, so r-1 ≥ 1, and 1^α = 1 ≤ (r-1)^α)
+  have hr1 : (1 : ℝ) ≤ (r : ℝ) - 1 := by
+    have : (2 : ℚ) ≤ r := hr_ge
+    have : (2 : ℝ) ≤ (r : ℝ) := by exact_mod_cast this
+    linarith
+  have hterm_ge : 1 ≤ f r := by
+    simp only [hf_def]
+    exact Real.one_le_rpow hr1 (by linarith)
+  -- h_alpha ≥ 1 because the sum contains a term ≥ 1 and all terms are nonneg
+  -- The nonneg condition requires: all divisor ratios ≥ 1 (sorted divisors increasing)
+  -- This is the remaining gap: formalizing that zipWith (/) tail divs ≥ 1 for sorted divs
+  sorry
 
 /-
 ## Part IV: Special Sequences
