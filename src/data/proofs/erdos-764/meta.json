@@ -187,17 +187,22 @@
     {
       "targetId": "erdos-763",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: additive-combinatorics, analytic-number-theory, representation-functions"
+      "description": "Erdős #763 studies the 2-fold convolution case — the Erdős-Fuchs theorem (1956) proves $r_2(n) = cn + O(1)$ is impossible, the direct predecessor to the 3-fold impossibility in this problem. Vaughan extended this from 2-fold to arbitrary h-fold"
     },
     {
       "targetId": "erdos-1136",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: additive-combinatorics, solved"
+      "description": "Erdős #1136 is a solved problem in additive combinatorics — the common theme of understanding how additive structure constrains representation counts connects both problems through the Erdős-Fuchs framework"
     },
     {
       "targetId": "erdos-1179",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: additive-combinatorics, solved"
+      "description": "Erdős #1179 concerns additive combinatorics — relates through the shared study of how representation functions of additive sets must oscillate, a universal phenomenon across different convolution orders"
+    },
+    {
+      "targetId": "erdos-340-greedy-sidon",
+      "relationship": "related",
+      "description": "Sidon sets (B₂ sets) are precisely the sets where $r_2(n) \\leq 1$ — the extreme case of bounded representation. Erdős #764 shows that even achieving $r_h(n) = cn + O(1)$ is impossible, while Sidon sets aim for $r_2(n) \\leq 1$, connecting both problems through the spectrum of representation regularity"
     }
   ]
 }
