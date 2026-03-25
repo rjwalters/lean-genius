@@ -49,49 +49,56 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 20,
-      "summary": "Module docstring citing Erdős–Graham (1980) and Erdős (1988). Imports Mathlib's integer and real basics, irrationality predicate, filter library for liminf, infinite sums (tsum), and general tactics."
+      "summary": "Module docstring citing Erdős–Graham (1980) and Erdős (1988). Imports Mathlib's integer and real basics, irrationality predicate, filter library for liminf, infinite sums (tsum), and general tactics.",
+      "mathContext": "Module docstring citing Erdős–Graham (1980) and Erdős (1988). Imports Mathlib's integer and real basics, irrationality predicate, filter library for liminf, infinite sums (tsum), and general tactics."
     },
     {
       "id": "growth-condition",
       "title": "Growth Condition",
       "startLine": 21,
       "endLine": 30,
-      "summary": "Defines GrowthCondition: $\\liminf a_n^{1/2^n} > 1$ via Filter.liminf with atTop filter. Marked noncomputable due to real-valued limit computation."
+      "summary": "Defines GrowthCondition: $\\liminf a_n^{1/2^n} > 1$ via Filter.liminf with atTop filter. Marked noncomputable due to real-valued limit computation.",
+      "mathContext": "Defines GrowthCondition: $\\liminf a_n^{1/2^n} > 1$ via Filter.liminf with atTop filter. Marked noncomputable due to real-valued limit computation."
     },
     {
       "id": "series",
       "title": "The Reciprocal Product Series",
       "startLine": 31,
       "endLine": 38,
-      "summary": "Defines erdosSeries as $\\sum 1/(a_n \\cdot a_{n+1})$ using Mathlib's tsum. Marked noncomputable since it involves real-valued infinite sums."
+      "summary": "Defines erdosSeries as $\\sum 1/(a_n \\cdot a_{n+1})$ using Mathlib's tsum. Marked noncomputable since it involves real-valued infinite sums.",
+      "mathContext": "Defines erdosSeries as $\\sum 1/(a_n \\cdot a_{n+1})$ using Mathlib's tsum. Marked noncomputable since it involves real-valued infinite sums."
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
       "startLine": 39,
       "endLine": 52,
-      "summary": "States ErdosProblem1051 as a Prop: for all strictly monotone integer sequences satisfying the growth condition, the erdosSeries is irrational. Uses Mathlib's Irrational and StrictMono."
+      "summary": "States ErdosProblem1051 as a Prop: for all strictly monotone integer sequences satisfying the growth condition, the erdosSeries is irrational. Uses Mathlib's Irrational and StrictMono.",
+      "mathContext": "States ErdosProblem1051 as a Prop: for all strictly monotone integer sequences satisfying the growth condition, the erdosSeries is irrational. Uses Mathlib's Irrational and StrictMono."
     },
     {
       "id": "rapid-growth",
       "title": "Rapid Growth Case (Solved)",
       "startLine": 53,
       "endLine": 64,
-      "summary": "Axiomatizes Erdős's 1988 result: irrationality holds when $a_{n+1} \\geq C \\cdot a_n^2$ for some $C > 0$. This is the strongest known partial result toward the full conjecture."
+      "summary": "Axiomatizes Erdős's 1988 result: irrationality holds when $a_{n+1} \\geq C \\cdot a_n^2$ for some $C > 0$. This is the strongest known partial result toward the full conjecture.",
+      "mathContext": "Axiomatizes Erdős's 1988 result: irrationality holds when $a_{n+1} \\geq C \\cdot a_n^2$ for some $C > 0$. This is the strongest known partial result toward the full conjecture."
     },
     {
       "id": "convergence",
       "title": "Convergence and Positivity",
       "startLine": 65,
       "endLine": 78,
-      "summary": "Two axioms: (1) the series converges absolutely (Summable) under the growth condition, and (2) the sum is strictly positive when all terms $a_n > 0$."
+      "summary": "Two axioms: (1) the series converges absolutely (Summable) under the growth condition, and (2) the sum is strictly positive when all terms $a_n > 0$.",
+      "mathContext": "Two axioms: (1) the series converges absolutely (Summable) under the growth condition, and (2) the sum is strictly positive when all terms $a_n > 0$."
     },
     {
       "id": "related-series",
       "title": "Related Series and Examples",
       "startLine": 79,
       "endLine": 98,
-      "summary": "Defines simpleReciprocalSeries ($\\sum 1/a_n$) and states the parallel irrationality conjecture. The Sylvester–Fibonacci example provides an existential witness confirming the conjecture is non-vacuous."
+      "summary": "Defines simpleReciprocalSeries ($\\sum 1/a_n$) and states the parallel irrationality conjecture. The Sylvester–Fibonacci example provides an existential witness confirming the conjecture is non-vacuous.",
+      "mathContext": "Defines simpleReciprocalSeries ($\\sum 1/a_n$) and states the parallel irrationality conjecture. The Sylvester–Fibonacci example provides an existential witness confirming the conjecture is non-vacuous."
     }
   ],
   "conclusion": {
