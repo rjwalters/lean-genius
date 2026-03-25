@@ -24,9 +24,9 @@
     "erdosUrl": "https://erdosproblems.com/1131",
     "erdosProblemStatus": "open",
     "axiomCount": 2,
-    "theoremCount": 14,
-    "lineCount": 419,
-    "assumptions": "2 axioms: chebyshev_integral_estimate (deep analysis), erdos_1131_conjecture (OPEN). 14 theorems including: quadrature_weights_sum (∑wₖ=2), lagrangeIntegral_cross_term_identity (I=2-∫Gram off-diagonal), lagrangeIntegral_single (I=2 for n=1).",
+    "theoremCount": 19,
+    "lineCount": 548,
+    "assumptions": "2 axioms: chebyshev_integral_estimate (deep analysis), erdos_1131_conjecture (OPEN). 19 theorems including: Gram matrix identity (∑l_k²+gramOffDiag=1), gramOffDiag vanishes at nodes, sum_sq_at_node (∑l_k(xⱼ)²=1), Gauss quadrature identity (I=2 when quadrature exact for l_k²).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -79,10 +79,26 @@
       "mathContext": "Chebyshev nodes: $x_k = \\cos\\frac{(2k+1)\\pi}{2n}$. $I_{\\text{Cheb}} = 2 - c/n + O(1/n^2)$."
     },
     {
+      "id": "gram-structure",
+      "title": "Gram Matrix Structure (All Proved)",
+      "startLine": 386,
+      "endLine": 470,
+      "summary": "Extracts structural theorems about the off-diagonal Gram matrix. Proves the pointwise identity $\\sum l_k^2 + \\text{gramOffDiag} = 1$, continuity of gramOffDiag, vanishing at nodes, and the sum of squared basis at nodes equals 1.",
+      "mathContext": "$\\sum_k l_k(x)^2 + \\sum_{k \\ne j} l_k(x)l_j(x) = 1$. At nodes: gramOffDiag vanishes, $\\sum l_k(x_j)^2 = 1$."
+    },
+    {
+      "id": "quadrature-theory",
+      "title": "Quadrature Theory (Gauss Identity, Proved)",
+      "startLine": 472,
+      "endLine": 512,
+      "summary": "Proves the Gauss quadrature identity: if the quadrature $\\sum w_k f(x_k)$ is exact for $l_k^2$, then $I = 2$. This applies to Gauss-Legendre nodes (exact for degree $\\le 2n-1$, and $l_k^2$ has degree $2(n-1) \\le 2n-2$). Key insight: the minimum of $I$ is NOT achieved by Gauss nodes.",
+      "mathContext": "If $\\int l_k^2 = \\sum_j w_j l_k(x_j)^2$ (quadrature exactness), then $\\int l_k^2 = w_k$, so $I = \\sum w_k = 2$."
+    },
+    {
       "id": "conjecture",
       "title": "The Main Conjecture (OPEN)",
-      "startLine": 272,
-      "endLine": 288,
+      "startLine": 514,
+      "endLine": 530,
       "summary": "Defines $\\min I_n = \\inf\\{I : \\text{nodes in } [-1,1]\\}$. Erdős's conjecture (axiom): $|\\min I_n - (2 - 1/n)| \\le \\varepsilon/n$ for $n \\ge N_0(\\varepsilon)$.",
       "mathContext": "Erdős conjecture: $\\min I = 2 - (1+o(1))/n$ as $n \\to \\infty$."
     },
@@ -142,9 +158,9 @@
       "MeasureTheory"
     ],
     "namespace": "Erdos1131",
-    "lineCount": 306,
+    "lineCount": 548,
     "axiomCount": 2,
-    "theoremCount": 9,
-    "definitionCount": 6
+    "theoremCount": 19,
+    "definitionCount": 7
   }
 }

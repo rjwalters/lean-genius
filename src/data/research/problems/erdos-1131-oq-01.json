@@ -19,17 +19,17 @@
     "phase": "ACT",
     "since": "2026-03-25T00:00:00.000Z",
     "iteration": 3,
-    "focus": "Proved quadrature_weights_sum + cross-term identity + single-node case. 2 axioms remain: Chebyshev estimate + open conjecture.",
+    "focus": "Added Gram matrix structure theorems and Gauss quadrature identity. 19 theorems, 0 sorries, 2 axioms.",
     "blockers": [],
-    "nextAction": "Prove chebyshev_integral_estimate if feasible.",
+    "nextAction": "chebyshev_integral_estimate requires proving I<2 for Chebyshev nodes (reduces to showing off-diagonal Gram integral is positive). Substantial infrastructure needed.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 2,
-      "approachesTried": 2
+      "total": 3,
+      "currentApproach": 3,
+      "approachesTried": 3
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 9→14 theorems. New: quadrature weights sum, Gram decomposition, single-node exact value.",
+    "progressSummary": "PROGRESS: 14→19 theorems. New: Gram identity (∑l_k²+gramOffDiag=1), gramOffDiag vanishing at nodes, sum_sq_at_node, Gauss quadrature identity (I=2 when exact).",
     "builtItems": [
       "lagrangeBasis_self: Finset.prod_eq_one + div_self (product of 1s)",
       "lagrangeBasis_other: Finset.prod_eq_zero + sub_self (zero factor)",
@@ -44,7 +44,12 @@
       "quadrature_weights_sum: ∑w_k = 2 (integral linearity + POU)",
       "gramOffDiag: definition of off-diagonal Gram matrix contribution",
       "lagrangeIntegral_cross_term_identity: I = 2 - ∫ gramOffDiag (Gram decomposition)",
-      "lagrangeIntegral_single: I = 2 for n=1 (empty product)"
+      "lagrangeIntegral_single: I = 2 for n=1 (empty product)",
+      "sum_sq_plus_gramOffDiag_eq_one: pointwise Gram identity ∑l_k² + gramOffDiag = 1",
+      "gramOffDiag_continuous: continuity of off-diagonal Gram function",
+      "gramOffDiag_at_node: gramOffDiag(xⱼ)=0 at each node",
+      "sum_sq_at_node: ∑l_k(xⱼ)²=1 via Finset.sum_ite_eq + lagrangeBasis_self/other",
+      "lagrangeIntegral_eq_two_of_sq_exact: Gauss identity — exact quadrature for l_k² implies I=2"
     ],
     "insights": [
       "lagrangeBasis product form makes self/other proofs very clean",
@@ -56,14 +61,20 @@
       "Remaining 2 axioms: chebyshev_integral_estimate (deep Chebyshev polynomial analysis), erdos_1131_conjecture (OPEN)",
       "Gram decomposition I = 2 - ∫ cross-terms connects I to off-diagonal Gram matrix entries",
       "Finset.add_sum_erase + Finset.mul_sum + POU gives clean proof of diagonal/off-diagonal split",
-      "convert Finset.prod_empty handles Fin 1 empty product elegantly"
+      "convert Finset.prod_empty handles Fin 1 empty product elegantly",
+      "Gauss-Legendre nodes have I=2 identically (quadrature exact for degree ≤ 2n-1, l_k² has degree 2n-2)",
+      "The minimum of I is NOT at Gauss nodes — Chebyshev and optimal nodes have I < 2",
+      "chebyshev_integral_estimate reduces to proving I(Chebyshev) < 2, i.e., ∫gramOffDiag > 0",
+      "Finset.sum_ite_eq + split_ifs pattern cleanly handles interpolation property evaluations",
+      "rw [hkj] at hi converts i≠k to i≠j — avoids subst issues with bound variables"
     ],
     "mathlibGaps": [
       "Chebyshev polynomial integral identities for computing I(chebyshev_nodes) exactly"
     ],
     "nextSteps": [
-      "Prove chebyshev_integral_estimate (I ≈ 2-c/n for Chebyshev nodes) — requires Chebyshev polynomial theory",
-      "The open conjecture erdos_1131_conjecture is correctly axiomatized (unsolved)"
+      "Prove I(Chebyshev_n) < 2 for all n≥2 — key blocker for chebyshev_integral_estimate",
+      "Build Chebyshev polynomial T_n representation of l_k for exact I computation",
+      "Consider explicit n=2 computation: I = 5/3 = 2 - 1/3 for ±√2/2 nodes"
     ]
   },
   "tags": [

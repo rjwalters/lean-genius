@@ -383,6 +383,135 @@ axiom chebyshev_integral_estimate (n : ℕ) (hn : n ≥ 2) :
       |lagrangeIntegral n (chebyshevNodes n) - (2 - c / n)| ≤ c / n ^ 2
 
 /-
+## Part III-b: Gram Matrix Structure
+-/
+
+/--
+**Pointwise Gram identity**: ∑ₖ l_k(x)² + gramOffDiag(x) = 1.
+
+Follows from the partition of unity: multiply ∑ l_k = 1 by each l_k, use l_k · ∑l_j = l_k,
+then sum to get ∑l_k² + ∑_{k≠j} l_k l_j = ∑l_k = 1.
+-/
+theorem sum_sq_plus_gramOffDiag_eq_one (n : ℕ) (hn : n ≥ 1) (nodes : Fin n → ℝ)
+    (hd : AreDistinct n nodes) (x : ℝ) :
+    (∑ k : Fin n, (lagrangeBasis n nodes k x) ^ 2) + gramOffDiag n nodes x = 1 := by
+  unfold gramOffDiag
+  -- For each k: l_k² + ∑_{j≠k} l_k·l_j = l_k (from partition of unity)
+  have h_each : ∀ (k : Fin n),
+      (lagrangeBasis n nodes k x) ^ 2 +
+      ((Finset.univ.filter (· ≠ k)).sum fun j =>
+        lagrangeBasis n nodes k x * lagrangeBasis n nodes j x) =
+      lagrangeBasis n nodes k x := by
+    intro k
+    have h_total : (Finset.univ.sum fun j =>
+        lagrangeBasis n nodes k x * lagrangeBasis n nodes j x) =
+        lagrangeBasis n nodes k x := by
+      rw [← Finset.mul_sum, partition_of_unity n hn nodes hd x, mul_one]
+    have h_split := Finset.add_sum_erase Finset.univ
+      (fun j => lagrangeBasis n nodes k x * lagrangeBasis n nodes j x)
+      (Finset.mem_univ k)
+    rw [sq, Finset.filter_ne']
+    linarith
+  -- Sum over k: ∑(l_k² + cross_k) = ∑l_k = 1
+  have h_sum : ∑ k : Fin n, ((lagrangeBasis n nodes k x) ^ 2 +
+      ((Finset.univ.filter (· ≠ k)).sum fun j =>
+        lagrangeBasis n nodes k x * lagrangeBasis n nodes j x)) =
+      ∑ k : Fin n, lagrangeBasis n nodes k x :=
+    Finset.sum_congr rfl (fun k _ => h_each k)
+  rw [Finset.sum_add_distrib, partition_of_unity n hn nodes hd x] at h_sum
+  linarith
+
+/--
+Continuity of the off-diagonal Gram function.
+-/
+theorem gramOffDiag_continuous (n : ℕ) (nodes : Fin n → ℝ) :
+    Continuous (gramOffDiag n nodes) := by
+  unfold gramOffDiag
+  apply continuous_finset_sum; intro k _
+  apply continuous_finset_sum; intro j _
+  exact (lagrangeBasis_continuous n nodes k).mul (lagrangeBasis_continuous n nodes j)
+
+/--
+**Gram vanishing at nodes**: gramOffDiag(xⱼ) = 0 for each node xⱼ.
+
+At node xⱼ, exactly one basis function is nonzero (l_j(xⱼ) = 1), so all cross terms
+l_k · l_i with k ≠ i vanish (at least one factor is 0).
+-/
+theorem gramOffDiag_at_node (n : ℕ) (nodes : Fin n → ℝ) (hd : AreDistinct n nodes)
+    (j : Fin n) : gramOffDiag n nodes (nodes j) = 0 := by
+  unfold gramOffDiag
+  apply Finset.sum_eq_zero
+  intro k _
+  apply Finset.sum_eq_zero
+  intro i hi
+  rw [Finset.mem_filter] at hi
+  by_cases hkj : k = j
+  · -- k = j: then i ≠ k = j, so l_i(xⱼ) = 0
+    rw [hkj] at hi
+    rw [lagrangeBasis_other n nodes hd i j hi.2, mul_zero]
+  · -- k ≠ j: l_k(xⱼ) = 0, so the term is 0
+    rw [lagrangeBasis_other n nodes hd k j hkj, zero_mul]
+
+/--
+**Sum of squared basis at nodes**: ∑ₖ l_k(xⱼ)² = 1 at each node.
+
+Since l_j(xⱼ) = 1 and l_k(xⱼ) = 0 for k ≠ j, only the j-th term contributes.
+-/
+theorem sum_sq_at_node (n : ℕ) (nodes : Fin n → ℝ) (hd : AreDistinct n nodes)
+    (j : Fin n) :
+    ∑ k : Fin n, (lagrangeBasis n nodes k (nodes j)) ^ 2 = 1 := by
+  have h : ∀ k : Fin n, (lagrangeBasis n nodes k (nodes j)) ^ 2 =
+      if k = j then 1 else 0 := by
+    intro k
+    by_cases hkj : k = j
+    · subst hkj; simp [lagrangeBasis_self n nodes hd]
+    · simp [lagrangeBasis_other n nodes hd k j hkj, hkj]
+  simp_rw [h, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+
+/-
+## Part III-c: Quadrature Theory
+-/
+
+/--
+**Gauss quadrature identity**: If the quadrature ∑ wₖ f(xₖ) is exact for the
+squared Lagrange basis functions l_k², then I(x₁,...,xₙ) = 2.
+
+This holds for Gauss-Legendre nodes (where quadrature is exact for degree ≤ 2n−1,
+and l_k² has degree 2(n−1) ≤ 2n−2 < 2n−1). The hypothesis states exactness
+directly for l_k², avoiding polynomial degree machinery.
+
+Key insight: the minimum of I (conjectured ≈ 2 − (1+o(1))/n) is NOT at Gauss nodes.
+-/
+theorem lagrangeIntegral_eq_two_of_sq_exact (n : ℕ) (hn : n ≥ 1)
+    (nodes : Fin n → ℝ) (hd : AreDistinct n nodes)
+    (hexact : ∀ k : Fin n,
+      ∫ x in (-1 : ℝ)..1, (lagrangeBasis n nodes k x) ^ 2 =
+        ∑ j : Fin n, quadratureWeight n nodes j *
+          (lagrangeBasis n nodes k (nodes j)) ^ 2) :
+    lagrangeIntegral n nodes = 2 := by
+  -- Step 1: Each ∫l_k² = w_k (by quadrature exactness + interpolation properties)
+  have h_each : ∀ k : Fin n,
+      ∫ x in (-1 : ℝ)..1, (lagrangeBasis n nodes k x) ^ 2 =
+        quadratureWeight n nodes k := by
+    intro k
+    rw [hexact k]
+    -- Evaluate: l_k(x_j)² = 1 if j = k, else 0
+    have h_eval : ∀ j : Fin n, (lagrangeBasis n nodes k (nodes j)) ^ 2 =
+        if j = k then 1 else 0 := by
+      intro j
+      by_cases hjk : j = k
+      · subst hjk; simp [lagrangeBasis_self n nodes hd]
+      · simp [lagrangeBasis_other n nodes hd k j (Ne.symm hjk), hjk]
+    simp_rw [h_eval, mul_ite, mul_one, mul_zero,
+      Finset.sum_ite_eq', Finset.mem_univ, if_true]
+  -- Step 2: I = ∑∫l_k² = ∑w_k = 2
+  unfold lagrangeIntegral
+  rw [intervalIntegral.integral_finset_sum (fun k _ =>
+    ((lagrangeBasis_continuous n nodes k).pow 2).intervalIntegrable _ _)]
+  simp_rw [h_each]
+  exact quadrature_weights_sum n hn nodes hd
+
+/-
 ## Part IV: The Conjecture
 -/
 

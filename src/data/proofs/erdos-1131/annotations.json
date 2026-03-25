@@ -346,5 +346,69 @@
       "lagrange-integral-lower-bound",
       "partition-of-unity"
     ]
+  },
+  {
+    "id": "ann-1131-gram-identity",
+    "proofId": "erdos-1131",
+    "range": {
+      "startLine": 393,
+      "endLine": 430
+    },
+    "type": "technique",
+    "title": "Pointwise Gram Identity",
+    "content": "The identity $\\sum_k l_k(x)^2 + \\text{gramOffDiag}(x) = 1$ decomposes the partition of unity squared. This is extracted from the cross-term identity proof as a standalone structural result.",
+    "significance": "supporting",
+    "mathContext": "From $\\sum l_k = 1$, multiplying by $l_k$ and summing gives $\\sum l_k^2 + \\sum_{k \\ne j} l_k l_j = 1$. The off-diagonal sum is the gramOffDiag function.",
+    "relatedConcepts": [
+      "gram-matrix",
+      "partition-of-unity"
+    ],
+    "prerequisites": [
+      "partition-of-unity"
+    ]
+  },
+  {
+    "id": "ann-1131-gram-at-node",
+    "proofId": "erdos-1131",
+    "range": {
+      "startLine": 440,
+      "endLine": 455
+    },
+    "type": "technique",
+    "title": "Gram Vanishing at Nodes",
+    "content": "The off-diagonal Gram function vanishes at each node: $\\text{gramOffDiag}(x_j) = 0$. At node $x_j$, only $l_j(x_j) = 1$ is nonzero, so all cross terms $l_k \\cdot l_i$ with $k \\ne i$ have at least one zero factor.",
+    "significance": "supporting",
+    "mathContext": "At nodes, the Lagrange interpolation property $l_k(x_j) = \\delta_{kj}$ kills all off-diagonal products.",
+    "relatedConcepts": [
+      "interpolation-property",
+      "gram-matrix"
+    ],
+    "prerequisites": [
+      "lagrange-basis-self",
+      "lagrange-basis-other"
+    ]
+  },
+  {
+    "id": "ann-1131-gauss-identity",
+    "proofId": "erdos-1131",
+    "range": {
+      "startLine": 482,
+      "endLine": 512
+    },
+    "type": "key-result",
+    "title": "Gauss Quadrature Identity: $I = 2$",
+    "content": "If the quadrature rule $\\sum w_k f(x_k)$ is exact for the squared Lagrange basis functions $l_k^2$, then $I = \\sum w_k = 2$. This holds for Gauss-Legendre nodes since $l_k^2$ has degree $2(n-1) \\le 2n-2 < 2n-1$. The proof uses the interpolation property: $\\sum_j w_j l_k(x_j)^2 = w_k \\cdot 1 + \\sum_{j \\ne k} w_j \\cdot 0 = w_k$, so $\\int l_k^2 = w_k$ and $I = \\sum w_k = 2$.",
+    "significance": "key",
+    "mathContext": "This reveals that Gauss-Legendre nodes give $I = 2$ identically, so the minimum of $I$ (conjectured $\\approx 2 - 1/n$) is NOT achieved by Gauss nodes. The proof pattern — converting interpolation evaluations to if-then-else via `Finset.sum_ite_eq` — is broadly reusable.",
+    "relatedConcepts": [
+      "gauss-quadrature",
+      "lagrange-interpolation",
+      "gram-matrix"
+    ],
+    "prerequisites": [
+      "quadrature-weights-sum",
+      "lagrange-basis-self",
+      "lagrange-basis-other"
+    ]
   }
 ]
