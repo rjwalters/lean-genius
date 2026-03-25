@@ -7,7 +7,7 @@
     "author": "Barbier (1860); Lean formalization 2026",
     "sourceUrl": "https://en.wikipedia.org/wiki/Buffon%27s_noodle",
     "date": "1860",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/BuffonsNeedleOQ01OQ01.lean",
     "tags": [
       "probability",
@@ -20,8 +20,8 @@
       "cauchy-crofton",
       "open-question-resolved"
     ],
-    "badge": "verified",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 5,
     "mathlibDependencies": [
       {
         "theorem": "intervalIntegral.integral_comp_add_right",
@@ -70,9 +70,9 @@
       "buffon_smooth_full: the complete Buffon-Barbier theorem with all hypotheses explicit"
     ],
     "dateAdded": "2026-02-25",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 390,
-    "assumptions": "No axioms. The axiom declarations referenced in documentation are from the parent file (BuffonsNoodle.lean) and appear only in comments.",
+    "assumptions": "1 axiom declaration (buffon_noodle_smooth_eq), 5 sorries remaining. See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

@@ -128,28 +128,28 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Update all section line ranges in meta.json to match the current Lean file. Key corrections: selfridge-example endLine 73→91, covering-basics startLine 74→93 endLine 93→217, connections startLine 94→219.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "medium",
       "target": "enricher",
       "description": "Update annotation line ranges in annotations.json to match current file. Key corrections: erdos-273-reciprocal range 82-86→143-211, ann-e273-verification range 142-182→265-303.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",
       "priority": "low",
       "target": "enricher",
       "description": "Fix mathlibDependencies[1]: replace Int.emod_emod_of_dvd (not used) with actually-used theorems like Int.emod_lt_of_pos or Finset.card_biUnion_le.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-6",
       "priority": "low",
       "target": "enricher",
       "description": "Fix section numbering gap in Lean file (VII→IX, no VIII) or update meta.json sections to reflect current numbering.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
 

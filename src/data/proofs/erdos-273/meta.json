@@ -28,9 +28,9 @@
         "module": "Mathlib.Data.Nat.Prime.Basic"
       },
       {
-        "theorem": "Int.emod_emod_of_dvd",
-        "description": "Integer modular arithmetic — used for the covering property z ≡ r_i (mod m_i)",
-        "module": "Mathlib.Data.Int.Basic"
+        "theorem": "Finset.card_biUnion_le",
+        "description": "Union bound for finite sets — used in covering_reciprocal_sum to bound N ≤ ∑ N/mᵢ",
+        "module": "Mathlib.Data.Finset.Basic"
       },
       {
         "theorem": "Finset.prod / Finset.sum",
@@ -99,49 +99,41 @@
     {
       "id": "selfridge-example",
       "title": "The Selfridge Example (p ≥ 3)",
-      "startLine": 63,
-      "endLine": 73,
-      "summary": "Proves Selfridge's covering system for $p \\geq 3$ constructively using an explicit 3-class system $\\{0 \\bmod 2, 1 \\bmod 4, 3 \\bmod 4\\}$. The key modulus $2 = 3 - 1$ enables coverage of all parities.",
-      "mathContext": "Selfridge: covering with moduli $\\mid 360 = 2^3 \\cdot 3^2 \\cdot 5$. Key: $2 = 3 - 1$ covers all parities."
+      "startLine": 60,
+      "endLine": 92,
+      "summary": "Proves Selfridge's covering system for $p \\geq 3$ constructively using an explicit 3-class system $\\{0 \\bmod 2, 1 \\bmod 4, 3 \\bmod 4\\}$ with moduli $[2, 4, 4]$ and residues $[0, 1, 3]$. Full verification of moduli_ge_two, covers (via `fin_cases` and `omega`), and AllModuliPrimeMinusOne 3.",
+      "mathContext": "Selfridge: covering with moduli from $\\{p - 1 : p \\geq 3\\}$. The 3-class system uses $2 = 3 - 1$ and $4 = 5 - 1$. Coverage: $0 \\bmod 2$ gets all evens; $1 \\bmod 4$ and $3 \\bmod 4$ get the remaining odds."
     },
     {
       "id": "covering-basics",
       "title": "Covering System Basics",
-      "startLine": 74,
-      "endLine": 93,
-      "summary": "Defines `CoveringSystem.lcm` for periodicity reduction, proves $\\sum 1/m_i \\geq 1$ over $\\mathbb{Q}$ via a counting/union-bound argument, and defines `IsDistinct` (injective moduli) connecting to Hough's minimum modulus theorem.",
-      "mathContext": "Necessary condition: $\\sum_{i=1}^{n} 1/m_i \\geq 1$. Periodicity: covering is determined by behavior on $[0, \\text{lcm}(m_i))$."
+      "startLine": 93,
+      "endLine": 217,
+      "summary": "Defines `CoveringSystem.lcm` for periodicity reduction. Proves `card_residue_class_nat` (bijection counting lemma: $|\\{z \\in [0,N) : z \\equiv r \\pmod m\\}| = N/m$), `CoveringSystem.n_pos` ($n \\geq 1$), and the main `covering_reciprocal_sum` ($\\sum 1/m_i \\geq 1$ via product N = $\\prod m_i$, union bound, and $\\mathbb{Q}$ casting). Defines `IsDistinct` connecting to Hough's theorem.",
+      "mathContext": "Necessary condition: $\\sum_{i=1}^{n} 1/m_i \\geq 1$. Proof: let $N = \\prod m_i$; each class has $N/m_i$ elements in $[0,N)$; covering $\\Rightarrow$ $N \\leq \\sum N/m_i$; divide by $N$. Periodicity: covering is determined by behavior on $[0, \\text{lcm}(m_i))$."
     },
     {
       "id": "connections",
       "title": "Connection to Other Problems",
-      "startLine": 94,
-      "endLine": 113,
-      "summary": "Enumerates `easyPrimes` $= \\{5, 7, 13, 19, 37, 61, 181\\}$ (primes $p \\geq 5$ with $(p-1) \\mid 360$) and proves the key constraints: all moduli $> 2$ and $\\geq 4$ when restricted to $p \\geq 5$.",
-      "mathContext": "Easy primes: $\\{p \\geq 5 : (p-1) \\mid 360\\} = \\{5,7,13,19,37,61,181\\}$. Constraint: all $m_i \\geq 4$ for $p \\geq 5$."
-    },
-    {
-      "id": "structural-constraints",
-      "title": "Structural Constraints: Minimum Modulus and Parity",
-      "startLine": 115,
-      "endLine": 136,
-      "summary": "Proves `min_modulus_ge_4` (all moduli in a $p-1$ covering with $p \\geq 5$ are $\\geq 4$) and `moduli_even` (all such moduli are even, since odd primes $p \\geq 5$ have $p - 1$ even). These constraints severely limit the covering system structure.",
-      "mathContext": "Key obstacle: without modulus 2 (since $3$ is excluded) or 3 (since $4-1 = 3$ requires $p = 4$, not prime), the minimum modulus is $4 = 5 - 1$. All moduli are even since $p \\geq 5$ implies $p$ odd, hence $p - 1$ even."
+      "startLine": 219,
+      "endLine": 258,
+      "summary": "Enumerates `easyPrimes` $= \\{5, 7, 13, 19, 37, 61, 181\\}$ (primes $p \\geq 5$ with $(p-1) \\mid 360$). Proves `difficulty_even_coverage` (all moduli $> 2$), `min_modulus_ge_4` (all moduli $\\geq 4$), and `moduli_even` (all moduli even since $p \\geq 5$ implies $p$ odd).",
+      "mathContext": "Easy primes: $\\{p \\geq 5 : (p-1) \\mid 360\\} = \\{5,7,13,19,37,61,181\\}$. Constraints: all $m_i > 2$, $m_i \\geq 4$, $m_i$ even for $p \\geq 5$."
     },
     {
       "id": "verified-properties",
       "title": "Verified Properties of Easy Primes",
-      "startLine": 138,
-      "endLine": 150,
-      "summary": "Computationally verifies three properties of `easyPrimes` $= \\{5, 7, 13, 19, 37, 61, 181\\}$: all prime, all $\\geq 5$, and all $p - 1$ divide $360 = \\text{lcm}(4,6,12,18,36,60,180)$.",
+      "startLine": 260,
+      "endLine": 271,
+      "summary": "Computationally verifies three properties of `easyPrimes` via `decide`: all prime (`easyPrimes_all_prime`), all $\\geq 5$ (`easyPrimes_ge_five`), and all $p - 1$ divide 360 (`easyPrimes_mod_divides_360`).",
       "mathContext": "The 'easy' primes are those $p$ where $p - 1$ divides a tractable modulus: $4, 6, 12, 18, 36, 60, 180$. Their $p - 1$ values all divide $360$, giving Chinese Remainder Theorem compatibility."
     },
     {
       "id": "reciprocal-obstruction",
       "title": "Reciprocal Sum Obstruction",
-      "startLine": 152,
-      "endLine": 182,
-      "summary": "Proves `easyPrimes_reciprocal_sum_lt_one`: $\\sum 1/(p_i - 1) = 109/180 < 1$, so the easy primes alone cannot form a covering system (which requires $\\sum 1/m_i \\geq 1$). Also proves `max_single_density`: no single modulus $p - 1$ with $p \\geq 5$ covers more than $1/4$ of the integers.",
+      "startLine": 273,
+      "endLine": 303,
+      "summary": "Proves `easyPrimes_reciprocal_sum_lt_one`: $\\sum 1/(p_i - 1) < 1$, and `reciprocal_sum_109_over_180`: the exact value is $109/180$. Also proves `max_single_density`: no single modulus $p - 1$ with $p \\geq 5$ covers more than $1/4$ of the integers (using `one_div_le_one_div_of_le`). Note: section numbering jumps from VII to IX in the Lean file (no Section VIII).",
       "mathContext": "A covering system $\\{a_i \\pmod{m_i}\\}$ must satisfy $\\sum 1/m_i \\geq 1$ (counting measure argument). The easy primes give $\\sum 1/(p_i - 1) = 1/4 + 1/6 + 1/12 + 1/18 + 1/36 + 1/60 + 1/180 = 109/180 \\approx 0.606 < 1$. Additional moduli or repetitions are needed."
     }
   ],
