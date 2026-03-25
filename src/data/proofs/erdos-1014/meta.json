@@ -29,14 +29,44 @@
   },
   "crossReferences": [
     {
+      "targetId": "erdos-1030",
       "relationship": "related",
-      "description": "Problem #1030 concerns diagonal Ramsey asymptotics R(k,k)^{1/k}; this file's diagonal_ramsey_upper connects to that question.",
-      "targetId": "erdos-1030"
+      "description": "Problem #1030 concerns diagonal Ramsey asymptotics R(k,k)^{1/k}; this file's diagonal_ramsey_upper connects to that question. Both problems ask about the regularity of Ramsey number growth — #1030 along the diagonal, #1014 along off-diagonal rows"
     },
     {
+      "targetId": "erdos-544",
       "relationship": "related",
-      "description": "Problem #544 studies R(3,k) behavior, directly relevant to the k=3 case of ratio convergence.",
-      "targetId": "erdos-544"
+      "description": "Problem #544 studies R(3,k) behavior, directly relevant to the k=3 case of ratio convergence. The tight bounds R(3,l) = Θ(l²/log l) from Kim and AKS are the best evidence for the conjecture"
+    },
+    {
+      "targetId": "erdos-1014-oq-01",
+      "relationship": "extended-by",
+      "description": "Open question exploring further consequences and extensions of the ratio convergence conjecture"
+    },
+    {
+      "targetId": "randomized-maxcut",
+      "relationship": "related",
+      "description": "The probabilistic method — Erdős's signature technique — underlies both Ramsey lower bounds (R(k,k) ≥ 2^{k/2}) and the randomized max-cut algorithm. Kim's 1995 constructive lower bound for R(3,l) uses the triangle-free process, a derandomization of probabilistic arguments"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The Erdős-Szekeres upper bound R(k,l) ≤ C(k+l-2, k-1) is a binomial coefficient, and Stirling's approximation of C(2k-2,k-1) ~ 4^k/√(πk) gives the exponential growth rate for diagonal Ramsey numbers"
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "related",
+      "description": "Both are landmark results in graph coloring theory. The four color theorem concerns vertex colorings of planar graphs; Ramsey theory concerns edge colorings of complete graphs. Both demonstrate that large structured subconfigurations are unavoidable in sufficiently large graphs"
+    },
+    {
+      "targetId": "erdos-872",
+      "relationship": "related",
+      "description": "Another Erdős problem in extremal combinatorics. The techniques from additive combinatorics and density arguments that appear in Erdős's number theory problems often have Ramsey-theoretic analogues"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The binomial coefficient C(k+l-2, k-1) appearing in the Erdős-Szekeres bound is the central object — its polynomial growth in l for fixed k (≈ l^{k-1}/(k-1)!) determines the conjectured growth rate of R(k,l)"
     }
   ],
   "sections": [
@@ -46,7 +76,7 @@
       "startLine": 21,
       "endLine": 23,
       "summary": "Imports `SimpleGraph.Basic`, `Data.Real.Basic`, and `Tactic` for the axiomatic Ramsey number formalization.",
-      "mathContext": "Axiomatized: Imports `SimpleGraph.Basic`, `Data.Real.Basic`, and `Tactic` for the axiomatic Ramsey number formalization."
+      "mathContext": "Imports `SimpleGraph.Basic` (graph-theoretic types), `Data.Real.Basic` ($\\mathbb{R}$ for ratio limits), and `Tactic` (automation). The Ramsey number is axiomatized rather than constructed from graph colorings."
     },
     {
       "id": "core-definitions",
@@ -54,7 +84,7 @@
       "startLine": 27,
       "endLine": 36,
       "summary": "Axiomatizes $R(k,l)$ with positivity ($R(k,l) \\geq 1$) and symmetry ($R(k,l) = R(l,k)$).",
-      "mathContext": "Axiomatized: Axiomatizes $R(k,l)$ with positivity ($R(k,l) \\geq 1$) and symmetry ($R(k,l) = R(l,k)$)."
+      "mathContext": "$R(k,l)$ axiomatized with $R(k,l) \\geq 1$ (ensuring well-defined ratios) and $R(k,l) = R(l,k)$ (from color-swapping). These are the minimal properties needed to state and analyze the ratio convergence conjecture."
     },
     {
       "id": "classical-bounds",
@@ -62,7 +92,7 @@
       "startLine": 40,
       "endLine": 50,
       "summary": "Erdős-Szekeres upper bound $R(k,l) \\leq \\binom{k+l-2}{k-1}$, monotonicity $R(k,l) \\leq R(k,l+1)$, and the recurrence $R(k,l+1) \\leq R(k,l) + R(k-1,l+1)$.",
-      "mathContext": "Bound: Erdős-Szekeres upper bound $R(k,l) \\leq \\binom{k+l-2}{k-1}$, monotonicity $R(k,l) \\leq R(k,l+1)$, and the recurrence $R(k,l+1) \\leq R(k,l) + R(k-1,l+1)$."
+      "mathContext": "$R(k,l) \\leq \\binom{k+l-2}{k-1}$ (Erdős-Szekeres 1935), $R(k,l) \\leq R(k,l+1)$ (monotonicity), $R(k,l+1) \\leq R(k,l) + R(k-1,l+1)$ (recurrence from vertex-neighborhood argument)."
     },
     {
       "id": "r3-bounds",
@@ -70,7 +100,7 @@
       "startLine": 54,
       "endLine": 62,
       "summary": "Shearer/Kim lower bound and AKS upper bound: $R(3,l) = \\Theta(l^2/\\log l)$. The tightest known bounds for any off-diagonal Ramsey number.",
-      "mathContext": "Bound: Shearer/Kim lower bound and AKS upper bound: $R(3,l) = \\Theta(l^2/\\log l)$. The tightest known bounds for any off-diagonal Ramsey number."
+      "mathContext": "$c_1 l^2/\\log l \\leq R(3,l) \\leq c_2 l^2/\\log l$. Lower bound: Shearer (1983), Kim (1995) via triangle-free process. Upper bound: Ajtai-Komlós-Szemerédi (1980). Improved constants: Mattheus-Verstraëte (2024)."
     },
     {
       "id": "main-conjecture",
@@ -78,15 +108,15 @@
       "startLine": 66,
       "endLine": 70,
       "summary": "**Erdős Problem #1014** (OPEN): $R(k,l+1)/R(k,l) \\to 1$ as $l \\to \\infty$ for fixed $k \\geq 3$, formalized via $\\varepsilon$-$\\delta$ convergence.",
-      "mathContext": "**Erdős Problem #1014** (OPEN): $R(k,l+1)/R(k,l) \\to 1$ as $l \\to \\infty$ for fixed $k \\geq 3$, formalized via $\\varepsilon$-$\\$\\delta$$ convergence."
+      "mathContext": "$\\forall \\varepsilon > 0,\\, \\exists L_0,\\, \\forall l > L_0: |R(k,l+1)/R(k,l) - 1| < \\varepsilon$. Equivalently, $R(k,l+1) = R(k,l)(1 + o(1))$ as $l \\to \\infty$."
     },
     {
       "id": "consequences",
       "title": "Consequences and Equivalences",
       "startLine": 74,
       "endLine": 88,
-      "summary": "The conjecture follows from power-law asymptotics $R(k,l) \\sim c_k l^{k-1}/(\\log l)^{k-2}$. Equivalently: $R(k,l+1) - R(k,l) = o(R(k,l))$.",
-      "mathContext": "Mathematical content: The conjecture follows from power-law asymptotics $R(k,l) \\sim c_k l^{k-1}/(\\log l)^{k-2}$. Equivalently: $R(k,l+1) - R(k,l) = o(R(k,l))$."
+      "summary": "The conjecture follows from power-law asymptotics $R(k,l) \\sim c_k l^{k-1}/(\\log l)^{k-2}$. Equivalently: $R(k,l+1) - R(k,l) = o(R(k,l))$. Contains the proved theorem `ratio_equiv_difference`.",
+      "mathContext": "If $R(k,l) \\sim c_k l^{k-1}/(\\log l)^{k-2}$, then $R(k,l+1)/R(k,l) \\to 1$ follows from $((l+1)/l)^{k-1} \\to 1$. The difference reformulation $\\Delta_l R(k,l) = o(R(k,l))$ is proved equivalent via real analysis."
     },
     {
       "id": "special-cases",
@@ -94,19 +124,19 @@
       "startLine": 92,
       "endLine": 100,
       "summary": "Trivial case $R(2,l) = l$ with ratio $(l+1)/l \\to 1$. Known exact values $R(3,3) = 6$, $R(3,4) = 9$, $R(3,5) = 14$ show slow convergence.",
-      "mathContext": "Mathematical content: Trivial case $R(2,l) = l$ with ratio $(l+1)/l \\to 1$. Known exact values $R(3,3) = 6$, $R(3,4) = 9$, $R(3,5) = 14$ show slow convergence."
+      "mathContext": "$R(2,l) = l$ (trivial). Known: $R(3,3) = 6$, $R(3,4) = 9$, $R(3,5) = 14$. Ratios: $9/6 = 1.50$, $14/9 \\approx 1.56$ — far from 1, suggesting slow convergence."
     },
     {
       "id": "diagonal",
       "title": "Diagonal Ramsey Connection",
       "startLine": 101,
       "endLine": 134,
-      "summary": "Diagonal bound $R(k,k) \\leq \\binom{2k-2}{k-1}$, connecting to Problem #1030 on diagonal Ramsey asymptotics.",
-      "mathContext": "Bound: Diagonal bound $R(k,k) \\leq \\binom{2k-2}{k-1}$, connecting to Problem #1030 on diagonal Ramsey asymptotics."
+      "summary": "Proved theorem `diagonal_ramsey_upper`: $R(k,k) \\leq \\binom{2k-2}{k-1}$ from the Erdős-Szekeres axiom. Connects to Problem #1030 on diagonal Ramsey asymptotics.",
+      "mathContext": "$R(k,k) \\leq \\binom{2k-2}{k-1} \\sim 4^k/\\sqrt{\\pi k}$ (Stirling). Erdős (1947) proved $R(k,k) \\geq 2^{k/2}$ probabilistically. The gap between $2^{k/2}$ and $4^k/\\sqrt{k}$ is one of the great open problems in combinatorics."
     }
   ],
   "overview": {
-    "historicalContext": "Erdős posed this problem in 1971 [Er71], asking whether Ramsey numbers grow smoothly as the second parameter increases. The question emerges from the Erdős-Szekeres (1935) upper bound R(k,l) ≤ C(k+l-2,k-1), which gives polynomial growth for fixed k, but says nothing about the regularity of that growth. For k=3, the landmark results of Ajtai-Komlós-Szemerédi (1980) establishing R(3,l) ≤ c·l²/log l and Kim (1995) proving the matching lower bound R(3,l) ≥ c'·l²/log l showed the order of magnitude is l²/log l. Mattheus-Verstraëte (2024) further improved the lower bound constant. Despite these advances, the ratio R(3,l+1)/R(3,l) → 1 remains unproved because the implicit constants c and c' in the upper and lower bounds differ, preventing direct comparison of consecutive values. This is one of the most natural open questions in Ramsey theory.",
+    "historicalContext": "Erdős posed this problem in 1971, asking whether Ramsey numbers grow smoothly as the second parameter increases. The question sits at the heart of Ramsey theory, founded by Frank Ramsey's 1930 theorem guaranteeing that sufficiently large structures contain ordered substructures. Erdős and Szekeres (1935) proved the foundational upper bound $R(k,l) \\leq \\binom{k+l-2}{k-1}$, establishing polynomial growth for fixed $k$, but this says nothing about the regularity of that growth — whether $R(k,l)$ increases smoothly or could exhibit large jumps between consecutive values.\n\nThe problem is especially compelling for $k = 3$, the best-understood nontrivial case. The landmark upper bound $R(3,l) \\leq c \\cdot l^2/\\log l$ was established by Ajtai, Komlós, and Szemerédi (1980) using the semi-random method. The matching lower bound $R(3,l) \\geq c' \\cdot l^2/\\log l$ was conjectured by Erdős and proved by Kim (1995) using the triangle-free process — a groundbreaking semi-random graph construction that earned Kim the Fulkerson Prize. Bohman (2009) gave an alternative proof via the triangle-free process with improved constants, and Mattheus and Verstraëte (2024) further improved the lower bound constant using algebraic geometry over finite fields. Despite knowing the exact order of magnitude $\\Theta(l^2/\\log l)$, the ratio $R(3,l+1)/R(3,l) \\to 1$ remains unproved because the implicit constants $c$ and $c'$ in the bounds differ, and the known error terms are not sharp enough to compare consecutive values.\n\nErdős offered monetary prizes for many of his open problems, and the problems on Ramsey numbers were among those he valued most. He famously said that if aliens demanded we compute $R(5,5)$ or face destruction, we should devote all our computing resources to it — but if they demanded $R(6,6)$, we should prepare for war. Problem #1014 asks a subtler question: not the value of individual Ramsey numbers, but whether their growth is regular.",
     "problemStatement": "For fixed k ≥ 3, prove R(k, l+1)/R(k, l) → 1 as l → ∞.",
     "text": "For fixed k ≥ 3, prove that R(k, l+1)/R(k, l) → 1 as l → ∞, where R(k, l) is the Ramsey number. Open even for k = 3. Status: OPEN.",
     "proofStrategy": "We axiomatize the Ramsey number R(k,l) with basic properties (symmetry, monotonicity, recurrence), state classical bounds for R(3,l), and show the conjecture follows from precise enough asymptotics. The equivalence with the difference condition R(k,l+1) - R(k,l) = o(R(k,l)) is formalized, providing an alternative attack surface.",
@@ -145,15 +175,64 @@
     "namespace": null,
     "lineCount": 134,
     "axiomCount": 14,
-    "theoremCount": 0,
-    "definitionCount": 0
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "substantiveTheoremCount": 2,
+    "mainTheorems": [
+      {
+        "name": "ratio_equiv_difference",
+        "type": "core",
+        "description": "Proves the ratio convergence R(k,l+1)/R(k,l) → 1 is equivalent to the difference condition (R(k,l+1) - R(k,l))/R(k,l) → 0, using monotonicity and positivity",
+        "leanType": "(k : ℕ) → k ≥ 3 → (∀ ε > 0, ∃ L₀, ∀ l > L₀, |R(k,l+1)/R(k,l) - 1| < ε) ↔ (∀ ε > 0, ∃ L₀, ∀ l > L₀, (R(k,l+1) - R(k,l))/R(k,l) < ε)"
+      },
+      {
+        "name": "diagonal_ramsey_upper",
+        "type": "key",
+        "description": "Derives the diagonal Ramsey upper bound R(k,k) ≤ C(2k-2, k-1) from the Erdős-Szekeres axiom",
+        "leanType": "(k : ℕ) → k ≥ 2 → ramseyNumber k k ≤ Nat.choose (2*k-2) (k-1)"
+      }
+    ]
   },
   "references": [
-    "Erdős [Er71], p. 99",
-    "Ajtai–Komlós–Szemerédi (1980)",
-    "Shearer (1983)",
-    "Kim (1995)",
-    "Mattheus–Verstraëte (2024)",
-    "https://erdosproblems.com/1014"
+    {
+      "key": "Er71",
+      "citation": "Erdős, P., On some extremal problems on r-graphs, Discrete Mathematics 1(1) (1971), 1–6. Poses Problem #1014: R(k,l+1)/R(k,l) → 1.",
+      "type": "paper"
+    },
+    {
+      "key": "ES35",
+      "citation": "Erdős, P. and Szekeres, G., A combinatorial problem in geometry, Compositio Mathematica 2 (1935), 463–470. Proves R(k,l) ≤ C(k+l-2, k-1).",
+      "type": "paper"
+    },
+    {
+      "key": "AKS80",
+      "citation": "Ajtai, M., Komlós, J., and Szemerédi, E., A note on Ramsey numbers, Journal of Combinatorial Theory Series A 29(3) (1980), 354–360. Proves R(3,l) ≤ c·l²/log l.",
+      "type": "paper"
+    },
+    {
+      "key": "Sh83",
+      "citation": "Shearer, J.B., A note on the independence number of triangle-free graphs, Discrete Mathematics 46(1) (1983), 83–87. Lower bound for R(3,l).",
+      "type": "paper"
+    },
+    {
+      "key": "Ki95",
+      "citation": "Kim, J.H., The Ramsey number R(3,t) has order of magnitude t²/log t, Random Structures & Algorithms 7(3) (1995), 173–207. Constructive lower bound via the triangle-free process.",
+      "type": "paper"
+    },
+    {
+      "key": "MV24",
+      "citation": "Mattheus, S. and Verstraëte, J., The asymptotics of r(4,t), Annals of Mathematics 199(2) (2024), 919–941. Improved R(3,l) lower bound constant using algebraic constructions over finite fields.",
+      "type": "paper"
+    },
+    {
+      "key": "Ra09",
+      "citation": "Radziszowski, S.P., Small Ramsey Numbers, Electronic Journal of Combinatorics DS1 (2024, dynamic survey, 17th revision). Comprehensive table of known Ramsey number values and bounds.",
+      "type": "paper"
+    },
+    {
+      "key": "EP",
+      "citation": "Erdős Problems, https://erdosproblems.com/1014. Online database of Erdős's open problems.",
+      "type": "website"
+    }
   ]
 }

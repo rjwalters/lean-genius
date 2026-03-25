@@ -4,7 +4,7 @@
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
       "startLine": 1,
-      "endLine": 57
+      "endLine": 133
     },
     "type": "context",
     "title": "Proof Chain Overview and Mathematical Background",
@@ -29,8 +29,8 @@
     "id": "ann-abeloq04oq01-polynomial",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 67,
-      "endLine": 70
+      "startLine": 140,
+      "endLine": 143
     },
     "type": "definition",
     "title": "The Polynomial p = X^5 - 4X + 2",
@@ -52,8 +52,8 @@
     "id": "ann-abeloq04oq01-eisenstein",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 93,
-      "endLine": 133
+      "startLine": 166,
+      "endLine": 210
     },
     "type": "technique",
     "title": "Eisenstein's Irreducibility Criterion at p = 2",
@@ -77,8 +77,8 @@
     "id": "ann-abeloq04oq01-gauss",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 134,
-      "endLine": 145
+      "startLine": 211,
+      "endLine": 219
     },
     "type": "technique",
     "title": "Transfer to Q-Irreducibility via Gauss's Lemma",
@@ -100,8 +100,8 @@
     "id": "ann-abeloq04oq01-structural",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 152,
-      "endLine": 169
+      "startLine": 225,
+      "endLine": 243
     },
     "type": "technique",
     "title": "Structural Properties: Degree, Separability, Root Set",
@@ -125,8 +125,8 @@
     "id": "ann-abeloq04oq01-galois-bounds",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 176,
-      "endLine": 193
+      "startLine": 249,
+      "endLine": 267
     },
     "type": "technique",
     "title": "Galois Group Order Bounds: 5 | |Gal| and |Gal| | 120",
@@ -149,12 +149,12 @@
     "id": "ann-abeloq04oq01-evaluations",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 233,
-      "endLine": 260
+      "startLine": 273,
+      "endLine": 299
     },
     "type": "technique",
     "title": "Polynomial Evaluations: Sign Changes Locating 3 Real Roots",
-    "content": "Formally computes $p(-2) = -22$, $p(-1) = 5$, $p(0) = 2$, $p(1) = -1$, $p(2) = 26$ using `unfold p; simp [...]; ring`. The three sign changes $(-22 \\to 5, 2 \\to -1, -1 \\to 26)$ locate real roots in $(-2,-1)$, $(0,1)$, and $(1,2)$ by the intermediate value theorem. Combined with the derivative $p'(x) = 5x^4 - 4$ having exactly 2 real critical points, $p$ has exactly 3 real roots and 2 complex conjugate roots. This is the computational foundation for the axiom $|\\text{Gal}| = 120$: complex conjugation swaps the 2 non-real roots (a transposition), which together with a 5-cycle generates $S_5$.",
+    "content": "Formally computes $p(-2) = -22$, $p(-1) = 5$, $p(0) = 2$, $p(1) = -1$, $p(2) = 26$ using `unfold p; simp [...]; ring`. The three sign changes $(-22 \\to 5, 2 \\to -1, -1 \\to 26)$ locate real roots in $(-2,-1)$, $(0,1)$, and $(1,2)$ by the intermediate value theorem. Combined with the derivative $p'(x) = 5x^4 - 4$ having exactly 2 real critical points, $p$ has exactly 3 real roots and 2 complex conjugate roots. This is computational support for the theorem $|\\text{Gal}| = 120$: complex conjugation swaps the 2 non-real roots (a transposition), which together with the Sylow elimination argument establishes the full Galois group.",
     "mathContext": "$p(-2) = -22 < 0$, $p(-1) = 5 > 0$, $p(0) = 2 > 0$, $p(1) = -1 < 0$, $p(2) = 26 > 0$. Three sign changes $\\Rightarrow$ at least 3 real roots. $p'(x) = 5x^4 - 4$ has 2 real roots $\\Rightarrow$ at most 3 real roots. Therefore exactly 3 real, 2 complex conjugate roots.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -174,8 +174,8 @@
     "id": "ann-abeloq04oq01-group-theory",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 262,
-      "endLine": 365
+      "startLine": 321,
+      "endLine": 393
     },
     "type": "technique",
     "title": "5-Cycle + Transposition Generates S₅ (closure_cycle_swap_eq_top) [Vestigial]",
@@ -201,8 +201,8 @@
     "id": "ann-abeloq04oq01-galtoperm5",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 360,
-      "endLine": 405
+      "startLine": 420,
+      "endLine": 439
     },
     "type": "technique",
     "title": "galToPerm5: Injection Infrastructure from Gal to S₅",
@@ -226,8 +226,8 @@
     "id": "ann-abeloq04oq01-proof-strategy",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 580,
-      "endLine": 612
+      "startLine": 635,
+      "endLine": 682
     },
     "type": "concept",
     "title": "Proof Decomposition: Discriminant + Sylow Strategy",
@@ -235,24 +235,24 @@
     "mathContext": "Thread A: $\\Delta^2 = \\text{disc}(p) = -212144 < 0 \\Rightarrow \\Delta \\notin \\mathbb{Q} \\Rightarrow \\exists \\sigma, \\text{sign}(\\sigma) = -1$ (FTGT argument). Thread B: $3 \\mid |\\text{Gal}|$ (proved by Sylow elimination of orders 5, 10, 20, 40).",
     "significance": "key",
     "relatedConcepts": [
-      "Dedekind's theorem",
-      "Frobenius element",
-      "cycle type",
+      "Vandermonde determinant",
       "discriminant",
-      "Vandermonde determinant"
+      "complex conjugation",
+      "Sylow theory",
+      "FTGT (Fundamental Theorem of Galois Theory)"
     ],
     "prerequisites": [
-      "mod-p factorization of polynomials",
       "discriminant-Vandermonde identity",
-      "Galois action on Δ"
+      "Galois action on Δ",
+      "Sylow theorems"
     ]
   },
   {
     "id": "ann-abeloq04oq01-vandermonde",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 631,
-      "endLine": 710
+      "startLine": 635,
+      "endLine": 826
     },
     "type": "technique",
     "title": "Vandermonde Product Infrastructure and Permutation Identity",
@@ -277,12 +277,12 @@
     "id": "ann-abeloq04oq01-iso",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 958,
-      "endLine": 987
+      "startLine": 1489,
+      "endLine": 1515
     },
     "type": "insight",
     "title": "Gal(p/Q) = S_5 via galActionHom Bijectivity",
-    "content": "The central isomorphism: $\\text{Gal}(p/\\mathbb{Q}) \\cong S_5$. The proof proceeds in three steps: (1) `galActionHom` is injective (Mathlib), (2) $|\\text{Gal}| = 120 = |\\text{Perm}(\\text{rootSet})|$ (axiom + root set card), so `galActionHom` is bijective by the pigeonhole principle (`Fintype.bijective_iff_injective_and_card`), (3) transfer from $\\text{Perm}(\\text{rootSet})$ to $\\text{Perm}(\\text{Fin}\\;5)$ via `Equiv.permCongr`. The `MulEquiv.ofBijective` constructor packages the bijective homomorphism as a group isomorphism.",
+    "content": "The central isomorphism: $\\text{Gal}(p/\\mathbb{Q}) \\cong S_5$. The proof proceeds in three steps: (1) `galActionHom` is injective (Mathlib), (2) $|\\text{Gal}| = 120 = |\\text{Perm}(\\text{rootSet})|$ (`gal_card_eq_120` + root set card), so `galActionHom` is bijective by the pigeonhole principle (`Fintype.bijective_iff_injective_and_card`), (3) transfer from $\\text{Perm}(\\text{rootSet})$ to $\\text{Perm}(\\text{Fin}\\;5)$ via `Equiv.permCongr`. The `MulEquiv.ofBijective` constructor packages the bijective homomorphism as a group isomorphism.",
     "mathContext": "$\\text{galActionHom}: \\text{Gal}(p/\\mathbb{Q}) \\hookrightarrow \\text{Perm}(\\text{rootSet})$. Injective + $|\\text{Gal}| = |\\text{Perm}(\\text{rootSet})| = 120$ $\\Rightarrow$ bijective $\\Rightarrow$ $\\text{Gal}(p/\\mathbb{Q}) \\cong S_5$.",
     "significance": "key",
     "relatedConcepts": [
@@ -302,8 +302,8 @@
     "id": "ann-abeloq04oq01-nonsolvable",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 993,
-      "endLine": 1006
+      "startLine": 1521,
+      "endLine": 1534
     },
     "type": "technique",
     "title": "Non-Solvability: S_5 to Gal Transfer",
@@ -327,8 +327,8 @@
     "id": "ann-abeloq04oq01-main",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 1025,
-      "endLine": 1041
+      "startLine": 1558,
+      "endLine": 1569
     },
     "type": "insight",
     "title": "Abel-Ruffini Conclusion: Roots Not Solvable by Radicals",
@@ -352,8 +352,8 @@
     "id": "ann-abeloq04oq01-realizability",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 1047,
-      "endLine": 1058
+      "startLine": 1575,
+      "endLine": 1601
     },
     "type": "insight",
     "title": "S_5 Realizability as a Galois Group over Q",
@@ -377,8 +377,8 @@
     "id": "ann-abeloq04oq01-sylow-no15",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 401,
-      "endLine": 530
+      "startLine": 449,
+      "endLine": 609
     },
     "type": "technique",
     "title": "Sylow Theory: No Subgroups of Order 15 or 30 in S₅",
@@ -403,8 +403,8 @@
     "id": "ann-abeloq04oq01-proof-decomposition",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 532,
-      "endLine": 612
+      "startLine": 635,
+      "endLine": 908
     },
     "type": "concept",
     "title": "Three Proof Components: Vandermonde, Complex Conjugation, Sylow",
@@ -430,12 +430,12 @@
     "id": "ann-abeloq04oq01-gal-card-ne60",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 863,
-      "endLine": 917
+      "startLine": 1452,
+      "endLine": 1480
     },
     "type": "technique",
     "title": "|Gal| ≠ 60: Excluding A₅ via Odd Permutation",
-    "content": "The most intricate case elimination: $|\\text{Gal}| \\neq 60$. A subgroup of $S_5$ of order 60 must be contained in $A_5$ (the unique index-2 subgroup). Proof by contradiction: if some element of the Galois image lies outside $A_5$, then the sign homomorphism $\\text{signG}: \\text{Gal} \\to \\mathbb{Z}^\\times$ has a non-trivial kernel $K = \\text{Gal} \\cap A_5$ of index 2, hence $|K| = 30$. But `no_subgroup_order_30` shows $S_5$ has no subgroup of order 30 — contradiction. This forces all Galois elements into $A_5$, contradicting Axiom B (`gal_has_odd_perm`). The argument elegantly bootstraps the order-30 impossibility into the order-60 case.",
+    "content": "The most intricate case elimination: $|\\text{Gal}| \\neq 60$. A subgroup of $S_5$ of order 60 must be contained in $A_5$ (the unique index-2 subgroup). Proof by contradiction: if some element of the Galois image lies outside $A_5$, then the sign homomorphism $\\text{signG}: \\text{Gal} \\to \\mathbb{Z}^\\times$ has a non-trivial kernel $K = \\text{Gal} \\cap A_5$ of index 2, hence $|K| = 30$. But `no_subgroup_order_30` shows $S_5$ has no subgroup of order 30 — contradiction. This forces all Galois elements into $A_5$, contradicting `gal_has_odd_perm`. The argument elegantly bootstraps the order-30 impossibility into the order-60 case.",
     "mathContext": "$|\\text{Gal}| = 60 \\Rightarrow \\text{Im}(\\text{galToPerm5}) \\leq A_5$ (unique order-60 subgroup). But $\\exists \\sigma \\in \\text{Gal}$ with $\\text{sign}(\\text{galToPerm5}(\\sigma)) = -1$ (`gal_has_odd_perm`), contradiction.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -455,8 +455,8 @@
     "id": "ann-abeloq04oq01-gal-card-theorem",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 700,
-      "endLine": 753
+      "startLine": 1452,
+      "endLine": 1480
     },
     "type": "theorem",
     "title": "Main Theorem: |Gal| = 120 (Fully Proved)",
@@ -480,8 +480,8 @@
     "id": "ann-abeloq04oq01-odd-perm",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 720,
-      "endLine": 819
+      "startLine": 827,
+      "endLine": 908
     },
     "type": "technique",
     "title": "Galois Group Contains an Odd Permutation (Discriminant Sign Argument)",
@@ -507,8 +507,8 @@
     "id": "ann-abeloq04oq01-case-elim",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 821,
-      "endLine": 862
+      "startLine": 1353,
+      "endLine": 1451
     },
     "type": "technique",
     "title": "Case Elimination: |Gal| ≠ 15 and |Gal| ≠ 30",

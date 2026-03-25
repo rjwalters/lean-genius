@@ -153,9 +153,8 @@ This is a fundamental algebraic property: the Fourier monomials form a group
 under pointwise multiplication. -/
 theorem fourier_mul (n m : ℤ) (x : AddCircle T) :
     fourier n x * fourier m x = fourier (n + m) x := by
-  -- TODO: Mathlib API change broke Submonoid.coe_mul / AddCircle.toCircle_add
-  -- Pre-existing issue on main (not introduced by this PR)
-  sorry
+  simp only [fourier_apply, add_zsmul, AddCircle.toCircle_add]
+  rfl
 
 /-- The conjugate of e_n is e_{-n}.
 

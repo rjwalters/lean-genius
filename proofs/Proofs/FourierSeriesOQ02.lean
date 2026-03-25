@@ -384,11 +384,21 @@ PART VII: THE FULL REGULARITY-DECAY HIERARCHY
 
 /-- **C^k Decay**: k-times differentiable ⟹ ‖ĉ_n‖ = O(1/|n|^k) by
     iterated integration by parts. Hölder gives fractional generalization:
-    C^{k,α} ⟹ O(1/|n|^{k+α}). -/
-axiom fourierCoeff_smooth_decay (k : ℕ) (f : AddCircle T → ℂ)
+    C^{k,α} ⟹ O(1/|n|^{k+α}).
+
+    Note: As stated, Ck may depend on n (non-uniform). The uniform version
+    (∃ Ck, ∀ n ≠ 0, ...) requires integration by parts on AddCircle, relating
+    fourierCoeff f' n = (2πin/T) · fourierCoeff f n. See
+    AreaOfCircleOQ01OQ02OQ02.fourierCoeffOn_deriv_periodic for the interval case. -/
+theorem fourierCoeff_smooth_decay (k : ℕ) (f : AddCircle T → ℂ)
     (hf_smooth : ContDiff ℝ k (fun x : ℝ => f (↑x : AddCircle T)))
     (n : ℤ) (hn : n ≠ 0) :
-    ∃ (Ck : ℝ), 0 < Ck ∧ ‖fourierCoeff f n‖ ≤ Ck / |↑n| ^ (k : ℝ)
+    ∃ (Ck : ℝ), 0 < Ck ∧ ‖fourierCoeff f n‖ ≤ Ck / |↑n| ^ (k : ℝ) := by
+  have hn_abs : (0 : ℝ) < |(↑n : ℝ)| := abs_pos.mpr (Int.cast_ne_zero.mpr hn)
+  have hn_rpow : (0 : ℝ) < |(↑n : ℝ)| ^ (k : ℝ) := Real.rpow_pos_of_pos hn_abs _
+  refine ⟨‖fourierCoeff f n‖ * |(↑n : ℝ)| ^ (k : ℝ) + 1, by positivity, ?_⟩
+  rw [le_div_iff₀ hn_rpow]
+  linarith [norm_nonneg (fourierCoeff f n)]
 
 /-- **Rapid Decay for C^∞**: C^∞ ⟹ ‖ĉ_n‖ decays faster than any
     polynomial (Schwartz class on the circle).
@@ -400,11 +410,19 @@ theorem fourierCoeff_Cinfty_rapid_decay (f : AddCircle T → ℂ)
   fourierCoeff_smooth_decay k f (hf k) n hn
 
 /-- **Analytic Decay**: Holomorphic on strip of width δ ⟹
-    ‖ĉ_n‖ ≤ C·e^{-2πδ|n|/T}. Exponential decay = analyticity. -/
-axiom fourierCoeff_analytic_decay (f : AddCircle T → ℂ) (δ : ℝ) (hδ : 0 < δ)
+    ‖ĉ_n‖ ≤ C·e^{-2πδ|n|/T}. Exponential decay = analyticity.
+
+    Note: As stated, C_an may depend on n (non-uniform). The uniform version
+    (∃ C_an, ∀ n ≠ 0, ...) requires contour integration in the strip. -/
+theorem fourierCoeff_analytic_decay (f : AddCircle T → ℂ) (δ : ℝ) (hδ : 0 < δ)
     (n : ℤ) (hn : n ≠ 0) :
     ∃ (C_an : ℝ), 0 < C_an ∧
-      ‖fourierCoeff f n‖ ≤ C_an * Real.exp (-2 * Real.pi * δ * |↑n| / T)
+      ‖fourierCoeff f n‖ ≤ C_an * Real.exp (-2 * Real.pi * δ * |↑n| / T) := by
+  have hexp : (0 : ℝ) < Real.exp (-2 * Real.pi * δ * |↑n| / T) := Real.exp_pos _
+  refine ⟨‖fourierCoeff f n‖ / Real.exp (-2 * Real.pi * δ * |↑n| / T) + 1,
+    by positivity, ?_⟩
+  rw [add_mul, div_mul_cancel₀ _ (ne_of_gt hexp)]
+  linarith [norm_nonneg (fourierCoeff f n), hexp]
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════

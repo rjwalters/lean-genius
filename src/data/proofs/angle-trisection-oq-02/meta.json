@@ -96,6 +96,11 @@
       "description": "Both use Galois groups to prove impossibility: Abel-Ruffini via solvable groups, constructibility via 2-groups"
     },
     {
+      "targetId": "abel-ruffini-oq-04",
+      "relationship": "related",
+      "description": "Exposes the group-theoretic proof chain from $A_5$ simplicity to $S_n$ non-solvability — the chain establishing why solvable Galois groups (radical solvability) are strictly more permissive than 2-group Galois groups (constructibility). Every 2-group is solvable (composition factors $\\mathbb{Z}/2\\mathbb{Z}$ are abelian), so constructible $\\subsetneq$ solvable by radicals, with the threshold at $A_5$"
+    },
+    {
       "targetId": "inverse-galois",
       "relationship": "related",
       "description": "The Galois group realizations (S₃ for x³-2, D₄ for x⁴-2) are concrete instances of the inverse Galois problem"

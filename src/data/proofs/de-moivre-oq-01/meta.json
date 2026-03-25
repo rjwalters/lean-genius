@@ -192,17 +192,37 @@
     {
       "targetId": "de-moivre",
       "relationship": "extends",
-      "description": "Parent formalization; this entry extends it with further exploration"
+      "description": "Extends the parent De Moivre theorem formalization by extracting explicit polynomial formulas — the Chebyshev connection $\\cos(n\\theta) = T_n(\\cos\\theta)$ is the main new result"
     },
     {
       "targetId": "de-moivre-oq-02",
-      "relationship": "sibling",
-      "description": "Sibling open question from the same parent: Chebyshev Polynomial Properties via De Moivre's Theorem"
+      "relationship": "related",
+      "description": "Sibling extension exploring Chebyshev polynomial properties (orthogonality, extremal properties, minimax) via the De Moivre connection"
     },
     {
       "targetId": "de-moivre-oq-03",
-      "relationship": "sibling",
-      "description": "Sibling open question from the same parent: De Moivre OQ-03: Fractional Exponents and Root Extraction"
+      "relationship": "related",
+      "description": "Sibling extension exploring fractional exponents and root extraction from De Moivre's theorem"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "related",
+      "description": "The triple angle formula $\\cos(3\\theta) = 4\\cos^3\\theta - 3\\cos\\theta$ (proved here as $T_3 = 4X^3 - 3X$) is the key ingredient showing angle trisection requires solving a cubic — impossible with compass and straightedge by Galois theory"
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "foundational",
+      "description": "Euler's formula $e^{i\\theta} = \\cos\\theta + i\\sin\\theta$ is the modern form of De Moivre's theorem: $(e^{i\\theta})^n = e^{in\\theta}$ gives De Moivre immediately. The multiple angle formulas here are the real and imaginary parts of this identity"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "related",
+      "description": "Chebyshev polynomials form an orthogonal basis for $L^2([-1,1], (1-x^2)^{-1/2}dx)$ — the 'Fourier series in disguise' under the substitution $x = \\cos\\theta$. The multiple angle formulas here become Fourier modes under this change of variables"
+    },
+    {
+      "targetId": "taylor-sincos-convergence",
+      "relationship": "related",
+      "description": "The Taylor series of $\\cos$ and $\\sin$ provide the analytic foundation, while Chebyshev polynomials provide the best polynomial approximation — the Chebyshev nodes minimize the maximum approximation error (minimax property)"
     }
   ]
 }
