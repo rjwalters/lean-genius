@@ -362,18 +362,193 @@ lemma partial_fraction_sum (m : ℕ) :
     field_simp
     ring
 
+/-- Product-to-sum: 2·cos(a)·sin(b) = sin(a+b) - sin(a-b). -/
+private lemma two_cos_mul_sin (a b : ℝ) :
+    2 * Real.cos a * Real.sin b = Real.sin (a + b) - Real.sin (a - b) := by
+  have h := two_sin_mul_cos b a
+  rw [show b + a = a + b from add_comm b a,
+      show b - a = -(a - b) from by ring, Real.sin_neg] at h
+  linarith
+
+/-- ∫_0^π sin(kθ) dθ = (1 - cos(kπ))/k for k ≥ 1, by FTC with antiderivative -cos(kθ)/k. -/
+private lemma integral_sin_mul (k : ℕ) (hk : k ≥ 1) :
+    ∫ θ in (0 : ℝ)..Real.pi, Real.sin ((↑k : ℝ) * θ) =
+    (1 - Real.cos ((↑k : ℝ) * Real.pi)) / (↑k : ℝ) := by
+  have hk_pos : (0 : ℝ) < ↑k := Nat.cast_pos.mpr (by omega)
+  have hk_ne : (↑k : ℝ) ≠ 0 := ne_of_gt hk_pos
+  -- Antiderivative F(θ) = -(1/k)cos(kθ) satisfies F'(θ) = sin(kθ)
+  have hd : ∀ θ ∈ Set.uIcc (0 : ℝ) Real.pi,
+      HasDerivAt (fun θ => -(1 / (↑k : ℝ)) * Real.cos ((↑k : ℝ) * θ))
+        (Real.sin ((↑k : ℝ) * θ)) θ := by
+    intro θ _
+    have h_inner : HasDerivAt (fun θ => (↑k : ℝ) * θ) (↑k : ℝ) θ :=
+      (hasDerivAt_id θ).const_mul _
+    have h_cos : HasDerivAt (fun θ => Real.cos ((↑k : ℝ) * θ))
+        (-Real.sin ((↑k : ℝ) * θ) * (↑k : ℝ)) θ :=
+      (hasDerivAt_cos _).comp θ h_inner
+    convert h_cos.const_mul (-(1 / (↑k : ℝ))) using 1
+    field_simp; ring
+  rw [integral_eq_sub_of_hasDerivAt hd
+    ((continuous_sin.comp (continuous_const.mul continuous_id')).intervalIntegrable _ _)]
+  simp only [mul_zero, Real.cos_zero]; field_simp; ring
+
+/-- cos(m·π) = (-1)^m for natural m. -/
+private lemma cos_nat_mul_pi (m : ℕ) : Real.cos ((↑m : ℝ) * Real.pi) = (-1) ^ m := by
+  induction m with
+  | zero => simp
+  | succ k ih =>
+    rw [Nat.cast_succ, add_mul, one_mul, Real.cos_add, ih, Real.cos_pi, Real.sin_pi]
+    ring
+
+/-- ∫_0^π cos(2jθ)·sin(θ) dθ = -2/(4j²-1) for j ≥ 1.
+Product-to-sum decomposes into two sin integrals evaluated via `integral_sin_mul`. -/
+private lemma integral_cos_mul_sin (j : ℕ) (hj : j ≥ 1) :
+    ∫ θ in (0 : ℝ)..Real.pi, Real.cos (2 * (↑j : ℝ) * θ) * Real.sin θ =
+    -(2 : ℝ) / (4 * (↑j : ℝ) ^ 2 - 1) := by
+  have hj_pos : (0 : ℝ) < ↑j := Nat.cast_pos.mpr (by omega)
+  -- Rewrite integrand: cos(A)sin(B) = (1/2)(sin(A+B) - sin(A-B))
+  have h_pts : ∀ θ : ℝ, Real.cos (2 * ↑j * θ) * Real.sin θ =
+      (1/2) * Real.sin ((2 * ↑j + 1) * θ) - (1/2) * Real.sin ((2 * ↑j - 1) * θ) := by
+    intro θ
+    have h := two_cos_mul_sin (2 * ↑j * θ) θ
+    have h1 : 2 * ↑j * θ + θ = (2 * ↑j + 1) * θ := by ring
+    have h2 : 2 * ↑j * θ - θ = (2 * ↑j - 1) * θ := by ring
+    rw [h1, h2] at h; linarith
+  simp_rw [funext h_pts]
+  -- Split integral
+  have h_int : ∀ (c : ℝ),
+      IntervalIntegrable (fun θ => (1/2 : ℝ) * Real.sin (c * θ)) volume 0 Real.pi :=
+    fun c => ((continuous_sin.comp (continuous_const.mul continuous_id')).const_mul _
+      ).intervalIntegrable _ _
+  rw [intervalIntegral.integral_sub (h_int _) (h_int _),
+      intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul]
+  -- Cast and apply integral_sin_mul
+  have h2j1 : (2 * (↑j : ℝ) + 1) = (↑(2 * j + 1) : ℝ) := by push_cast; ring
+  have h2j1m : (2 * (↑j : ℝ) - 1) = (↑(2 * j - 1) : ℝ) := by
+    rw [Nat.cast_sub (show 1 ≤ 2 * j from by omega)]; push_cast; ring
+  rw [h2j1, h2j1m, integral_sin_mul (2*j+1) (by omega), integral_sin_mul (2*j-1) (by omega)]
+  -- cos(odd·π) = -1
+  rw [cos_nat_mul_pi, cos_nat_mul_pi]
+  have hodd1 : Odd (2 * j + 1) := ⟨j, by ring⟩
+  have hodd2 : Odd (2 * j - 1) := ⟨j - 1, by omega⟩
+  rw [Odd.neg_one_pow hodd1, Odd.neg_one_pow hodd2]
+  -- Algebra: (1/2)·2/(2j+1) - (1/2)·2/(2j-1) = -2/(4j²-1)
+  have h1 : (0 : ℝ) < 2 * ↑j + 1 := by linarith
+  have h2 : (0 : ℝ) < 2 * ↑j - 1 := by
+    have : (1 : ℝ) ≤ ↑j := by exact_mod_cast hj; linarith
+  field_simp; ring
+
+/-- Change of variables: ∫₋₁¹ f(x) dx = ∫_0^π f(cos θ) sin θ dθ.
+Applies Mathlib's substitution with φ = cos, φ' = -sin. -/
+private lemma integral_cos_substitution {f : ℝ → ℝ} (hf : Continuous f) :
+    ∫ x in (-1 : ℝ)..1, f x =
+    ∫ θ in (0 : ℝ)..Real.pi, f (Real.cos θ) * Real.sin θ := by
+  have hg : ∀ θ ∈ Set.uIcc (0 : ℝ) Real.pi,
+      HasDerivAt Real.cos (-Real.sin θ) θ :=
+    fun θ _ => hasDerivAt_cos θ
+  have h := intervalIntegral.integral_comp_mul_deriv hg
+    continuous_sin.neg.continuousOn (hf.continuousOn.mono (Set.subset_univ _))
+  simp only [Real.cos_zero, Real.cos_pi] at h
+  -- h : ∫_0^π f(cos θ) * (-sin θ) = ∫_1^{-1} f(x) = -(∫_{-1}^1 f(x))
+  rw [intervalIntegral.integral_symm] at h
+  have h_neg : ∫ θ in (0:ℝ)..Real.pi, f (Real.cos θ) * (-Real.sin θ) =
+      -(∫ θ in (0:ℝ)..Real.pi, f (Real.cos θ) * Real.sin θ) := by
+    simp_rw [mul_neg]; exact intervalIntegral.integral_neg
+  linarith [h_neg]
+
+/-- ∫₋₁¹ cos²(j·arccos x) dx = 1 - 1/(4j²-1) for j ≥ 1.
+
+cos²(jα) = (1+cos(2jα))/2, then substitution x = cos θ converts to trigonometric
+integrals evaluated via product-to-sum and FTC. -/
+private lemma integral_chebyshev_sq (j : ℕ) (hj : j ≥ 1) :
+    ∫ x in (-1 : ℝ)..1, (Real.cos ((↑j : ℝ) * Real.arccos x)) ^ 2 =
+    1 - 1 / (4 * (↑j : ℝ) ^ 2 - 1) := by
+  have hj_pos : (0 : ℝ) < ↑j := Nat.cast_pos.mpr (by omega)
+  -- cos²(α) = (1 + cos(2α))/2
+  have h_sq : ∀ x : ℝ, (Real.cos ((↑j : ℝ) * Real.arccos x)) ^ 2 =
+      1/2 + 1/2 * Real.cos (2 * (↑j : ℝ) * Real.arccos x) := by
+    intro x; have := Real.cos_sq ((↑j : ℝ) * Real.arccos x)
+    rw [show 2 * ((↑j : ℝ) * Real.arccos x) = 2 * ↑j * Real.arccos x from by ring] at this
+    linarith
+  simp_rw [funext h_sq]
+  -- Split: ∫(1/2 + 1/2·cos(...)) = 1 + (1/2)·∫cos(...)
+  have h_cont : Continuous (fun x => (1:ℝ)/2 * Real.cos (2 * (↑j : ℝ) * Real.arccos x)) :=
+    (continuous_cos.comp (continuous_const.mul Real.continuous_arccos)).const_mul _
+  rw [intervalIntegral.integral_add intervalIntegrable_const (h_cont.intervalIntegrable _ _),
+      intervalIntegral.integral_const, smul_eq_mul, show (1:ℝ)/2 * (1 - (-1)) = 1 from by ring,
+      intervalIntegral.integral_const_mul]
+  -- Substitution: ∫₋₁¹ cos(2j·arccos(x)) dx = ∫_0^π cos(2j·arccos(cos θ))·sin θ dθ
+  rw [integral_cos_substitution (continuous_cos.comp (continuous_const.mul Real.continuous_arccos))]
+  -- arccos(cos θ) = θ for θ ∈ [0, π]
+  have h_arccos : ∀ θ ∈ Set.uIcc (0 : ℝ) Real.pi,
+      Real.cos (2 * (↑j : ℝ) * Real.arccos (Real.cos θ)) * Real.sin θ =
+      Real.cos (2 * (↑j : ℝ) * θ) * Real.sin θ := by
+    intro θ hθ
+    rw [Set.uIcc_of_le Real.pi_pos.le] at hθ
+    rw [Real.arccos_cos hθ.1 hθ.2]
+  rw [intervalIntegral.integral_congr h_arccos, integral_cos_mul_sin j hj]
+  -- Algebra: 1 + (1/2)·(-2/(4j²-1)) = 1 - 1/(4j²-1)
+  have h3 : (4 : ℝ) * ↑j ^ 2 - 1 ≠ 0 := by nlinarith
+  field_simp; ring
+
+/-- **Chebyshev expansion**: ∑_k l_k(x)² = (1/n)(1 + 2∑_{j=1}^{n-1} cos²(j·arccos x))
+for Chebyshev nodes and x ∈ [-1,1].
+
+The Lagrange basis at Chebyshev nodes θ_k = (2k+1)π/(2n) has the discrete cosine
+representation l_k(x) = (1/n)(1 + 2∑_{j=1}^{n-1} cos(jθ_k)·cos(j·arccos x)).
+Squaring and summing over k, cross terms cancel by discrete cosine orthogonality
+(∑_k cos(jθ_k)cos(mθ_k) = (n/2)δ_{jm} for 1 ≤ j,m < n), which follows from
+`discrete_cosine_vanishing`. -/
+private lemma chebyshev_sq_expansion (n : ℕ) (_hn : n ≥ 2) (x : ℝ)
+    (_hx : x ∈ Set.Icc (-1 : ℝ) 1) :
+    ∑ k : Fin n, (lagrangeBasis n (chebyshevNodes n) k x) ^ 2 =
+    (1 / (↑n : ℝ)) * (1 + 2 * ∑ j ∈ Finset.range (n - 1),
+      (Real.cos (((↑j : ℝ) + 1) * Real.arccos x)) ^ 2) := by
+  sorry
+
 /-- **Trace formula**: The Chebyshev integral equals (1/n)(2n - 2·∑1/(4j²-1)).
 
-This encapsulates two deep analytical results:
-1. **Chebyshev expansion**: For Chebyshev nodes, ∑_k l_k(x)² = (1/n)(1 + 2∑_{j=1}^{n-1} T_j(x)²),
-   via discrete cosine orthogonality (see `discrete_cosine_vanishing`).
-2. **Integration formula**: ∫₋₁¹ T_j(x)² dx = 1 - 1/(4j²-1) for j ≥ 1,
-   via substitution x = cos θ and product-to-sum identities. -/
+Combines the Chebyshev expansion (∑l_k² = (1/n)(1+2∑T_j²)) with the integration formula
+(∫₋₁¹ T_j² = 1-1/(4j²-1)):
+∫₋₁¹ ∑l_k² = (1/n)∫₋₁¹(1+2∑T_j²) = (1/n)(2+2∑(1-1/(4j²-1))) = (1/n)(2n-2∑1/(4j²-1)). -/
 private lemma chebyshev_integral_trace (n : ℕ) (hn : n ≥ 2) :
     lagrangeIntegral n (chebyshevNodes n) =
     (1 / ↑n : ℝ) * (2 * ↑n - 2 * ∑ j ∈ Finset.range (n - 1),
       (1 : ℝ) / (4 * ((↑j : ℝ) + 1) ^ 2 - 1)) := by
-  sorry
+  unfold lagrangeIntegral
+  -- Step 1: Rewrite integrand using Chebyshev expansion
+  have h_congr : ∀ x ∈ Set.uIcc (-1 : ℝ) 1,
+      ∑ k : Fin n, (lagrangeBasis n (chebyshevNodes n) k x) ^ 2 =
+      (1 / (↑n : ℝ)) * (1 + 2 * ∑ j ∈ Finset.range (n - 1),
+        (Real.cos (((↑j : ℝ) + 1) * Real.arccos x)) ^ 2) := by
+    intro x hx; rw [Set.uIcc_of_le (by norm_num : (-1:ℝ) ≤ 1)] at hx
+    exact chebyshev_sq_expansion n hn x hx
+  rw [intervalIntegral.integral_congr h_congr, intervalIntegral.integral_const_mul]
+  congr 1
+  -- Step 2: Evaluate ∫₋₁¹ (1 + 2·∑ cos²((j+1)·arccos x)) = 2n - 2·∑ 1/(4(j+1)²-1)
+  have hF_cont : ∀ j, Continuous (fun x =>
+      (Real.cos (((↑j : ℝ) + 1) * Real.arccos x)) ^ 2) :=
+    fun _ => ((continuous_const.mul Real.continuous_arccos).cos).pow 2
+  have hF_int : ∀ j, IntervalIntegrable (fun x =>
+      (Real.cos (((↑j : ℝ) + 1) * Real.arccos x)) ^ 2) volume (-1) 1 :=
+    fun j => (hF_cont j).intervalIntegrable _ _
+  -- Split ∫(1 + 2·∑f_j) = 2 + 2·∑∫f_j
+  rw [intervalIntegral.integral_add intervalIntegrable_const
+      ((intervalIntegrable_finset_sum _ (fun j _ => hF_int j)).const_mul 2),
+    intervalIntegral.integral_const, smul_eq_mul, show (1:ℝ) * (1 - (-1)) = 2 from by ring,
+    intervalIntegral.integral_const_mul,
+    intervalIntegral.integral_finset_sum _ (fun j _ => hF_int j)]
+  -- Apply integration formula to each term
+  have h_eval : ∀ j ∈ Finset.range (n - 1),
+      ∫ x in (-1:ℝ)..1, (Real.cos (((↑j : ℝ) + 1) * Real.arccos x)) ^ 2 =
+      1 - 1 / (4 * ((↑j : ℝ) + 1) ^ 2 - 1) := by
+    intro j _
+    convert integral_chebyshev_sq (j + 1) (by omega) using 2
+    push_cast; ring
+  simp_rw [Finset.sum_congr rfl h_eval]
+  -- Algebra: 2 + 2·∑(1 - 1/(...)) = 2n - 2·∑ 1/(...)
+  rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]
+  push_cast; ring
 
 /-- The exact value of the Lagrange integral for Chebyshev nodes.
 

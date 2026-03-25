@@ -7,10 +7,10 @@ Find the minimum of I(x₁,...,xₙ) = ∫₋₁¹ Σₖ |l_k(x)|² dx.
 Conjecture: min I = 2 - (1+o(1))/n.
 
 ## Current State
-- **File**: `proofs/Proofs/Erdos1131Problem.lean` (467 lines)
-- **Sorries**: 1 (chebyshev_integral_trace — Chebyshev expansion + integration)
+- **File**: `proofs/Proofs/Erdos1131Problem.lean` (642 lines)
+- **Sorries**: 1 (chebyshev_sq_expansion — DCT identity for Lagrange basis)
 - **Axioms**: 1 (erdos_1131_conjecture — OPEN, must stay)
-- **Theorems**: 9 (all fully proved)
+- **Theorems**: 23 (14 public + 9 private helpers, all proved)
 
 ## Session 2026-03-25 (Session 2) - Prove sorries, remove false axiom
 
@@ -70,4 +70,29 @@ Conjecture: min I = 2 - (1+o(1))/n.
 
 ### Next Steps
 - Prove `chebyshev_integral_trace`: needs Chebyshev expansion + ∫T_j²dx
+- `erdos_1131_conjecture` stays as axiom
+
+## Session 2026-03-24 (Session 4) - Prove integration formula and trace combining step
+
+**Mode**: REVISIT (RICH knowledge)
+**Outcome**: major progress
+
+### What I Did
+1. **Proved `integral_chebyshev_sq`**: ∫₋₁¹ cos²(j·arccos x) dx = 1 - 1/(4j²-1)
+   - Via cos²(jα) = (1+cos(2jα))/2, substitution x=cos θ, product-to-sum, FTC
+2. **Proved 6 helper lemmas**: two_cos_mul_sin, integral_sin_mul, cos_nat_mul_pi, integral_cos_mul_sin, integral_cos_substitution, integral_chebyshev_sq
+3. **Proved `chebyshev_integral_trace`** from chebyshev_sq_expansion + integral_chebyshev_sq
+4. **Added `chebyshev_sq_expansion`** as sorry (DCT identity)
+
+### Key Findings
+- `Real.continuous_arccos` available in Mathlib
+- `intervalIntegral.integral_comp_mul_deriv` for change of variables
+- `Real.arccos_cos` requires 0 ≤ θ ∧ θ ≤ π
+- `intervalIntegrable_finset_sum` and `intervalIntegral.integral_finset_sum` for sum/integral exchange
+
+### Files Modified
+- `proofs/Proofs/Erdos1131Problem.lean` (467→642 lines, sorry moved to expansion)
+
+### Next Steps
+- Prove `chebyshev_sq_expansion`: DCT identity (~200 lines)
 - `erdos_1131_conjecture` stays as axiom
