@@ -19,7 +19,7 @@
       "open-question"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "dateAdded": "2026-03-23",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -75,8 +75,8 @@
       "full regularity-decay hierarchy: Hölder → C^k → C^∞ → analytic"
     ],
     "axiomCount": 4,
-    "lineCount": 430,
-    "assumptions": "4 axioms (optimality, regularity converse, smooth decay, analytic decay). 1 sorry (parseval_of_holder, blocked on Lp API)."
+    "lineCount": 448,
+    "assumptions": "4 axioms (optimality, regularity converse, smooth decay, analytic decay). 0 sorries."
   },
   "overview": {
     "historicalContext": "**Fourier Coefficient Decay Under Hölder Continuity**\n\nThe relationship between smoothness of a function and decay of its Fourier coefficients is a fundamental principle of harmonic analysis. The specific result for Hölder continuous functions — that α-Hölder regularity gives O(1/|n|^α) decay — was developed through contributions by Bernstein (1912), Zygmund (1935), and others.\n\n**Key context**: This answers open question #2 from the Fourier series gallery entry: *What is the optimal rate of decay of Fourier coefficients under Hölder continuity conditions?*\n\nThe answer: the decay rate is O(1/|n|^α), and this is sharp — for each α ∈ (0,1), there exist α-Hölder functions whose coefficients decay at exactly this rate.",
@@ -160,7 +160,7 @@
       "title": "Lipschitz Corollary and Square-Summability",
       "startLine": 256,
       "endLine": 276,
-      "summary": "Proves `fourierCoeff_lipschitz_decay`: the Lipschitz case ($\\alpha = 1$) recovers $\\|\\hat{c}_n\\| \\leq CT/(4|n|)$. States `fourierCoeff_sq_summable_of_holder` ($\\alpha > 1/2 \\Rightarrow$ square-summable, sorry — blocked on Mathlib $L^p$ API).",
+      "summary": "Proves `fourierCoeff_lipschitz_decay`: the Lipschitz case ($\\alpha = 1$) recovers $\\|\\hat{c}_n\\| \\leq CT/(4|n|)$. Proves `fourierCoeff_sq_summable_of_holder` ($\\alpha > 1/2 \\Rightarrow$ square-summable via Parseval/Bessel inequality).",
       "mathContext": "Lipschitz: $\\|\\hat{c}_n\\| = O(1/|n|)$, from $\\alpha = 1$ in the main theorem. Square-summability: $\\|\\hat{c}_n\\|^2 = O(1/|n|^{2\\alpha})$, and $\\sum 1/|n|^{2\\alpha} < \\infty$ when $2\\alpha > 1$."
     },
     {

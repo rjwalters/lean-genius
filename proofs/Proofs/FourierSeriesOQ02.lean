@@ -270,10 +270,29 @@ theorem fourierCoeff_sq_summable_of_holder (C : ℝ≥0) (α : ℝ≥0)
     (f : AddCircle T → ℂ) (hf : IsHolderOnCircle C α f)
     (hα : (1 : ℝ) / 2 < (α : ℝ)) :
     Summable (fun n : ℤ => ‖fourierCoeff f n‖ ^ 2) := by
-  -- Strategy: Hölder(α>0) → continuous on compact AddCircle → L² → Parseval
-  -- Blocked on API: need Lp.mk from continuous function (Memℒp/MemLp naming issue)
-  -- Alternative: explicit comparison with p-series via decay bound + ℤ summability
-  sorry
+  -- Hölder(α>0) → continuous on compact AddCircle → bounded → L² → Parseval
+  have hα_pos : (0 : ℝ) < α := by linarith
+  have hf_cont : Continuous f := holder_continuous hf hα_pos
+  -- Step 1: Continuous on compact AddCircle → bounded → MemLp 2
+  -- Pattern from AreaOfCircleOQ01OQ03 lines 491-498:
+  -- bound f by its sup norm, show constant is in MemLp, apply mono'
+  have hf_memLp : MeasureTheory.MemLp f 2 haarAddCircle :=
+    (MeasureTheory.memLp_const
+      (sSup (Set.range fun x : AddCircle T => ‖f x‖))).mono'
+      hf_cont.aestronglyMeasurable
+      (Filter.Eventually.of_forall fun x =>
+        le_csSup (IsCompact.bddAbove (isCompact_range hf_cont.norm))
+          (Set.mem_range_self x))
+  -- Step 2: Lift to Lp element for Parseval
+  set f_Lp := hf_memLp.toLp f
+  -- Step 3: Fourier coefficients of the Lp representative equal those of f
+  have hfc_eq : ∀ n : ℤ, fourierCoeff (⇑f_Lp) n = fourierCoeff f n := fun n => by
+    unfold fourierCoeff
+    exact MeasureTheory.integral_congr_ae
+      (hf_memLp.coeFn_toLp.mono fun x hx => by simp only [smul_eq_mul]; rw [hx])
+  -- Step 4: Parseval/Bessel (hasSum_sq_fourierCoeff) gives summability for L²,
+  -- transfer from f_Lp to f using coefficient equality
+  exact (hasSum_sq_fourierCoeff f_Lp).summable.congr fun n => by rw [hfc_eq n]
 
 /-- **Riemann-Lebesgue from Hölder**: ‖ĉ_n‖ = O(1/|n|^α) → 0.
     From fourierCoeff_holder_decay: for any ε > 0, the set {n : ‖ĉ_n‖ ≥ ε}
@@ -332,7 +351,6 @@ theorem riemannLebesgue_of_holder (C : ℝ≥0) (α : ℝ≥0)
         (↑C / 2 : ℝ) * (T / (2 * ((↑N₀ : ℝ) + 1))) ^ (↑α : ℝ) :=
       mul_le_mul_of_nonneg_left h_rpow_le (div_nonneg (NNReal.coe_nonneg C) (by norm_num))
     have h_a_lt := hN₀ N₀ le_rfl  -- a(N₀) ∈ Set.Iio ε, i.e., a(N₀) < ε
-    simp only [Set.mem_Iio] at h_a_lt
     linarith [fourierCoeff_holder_decay C α f hf hα n hn0]
 
 /-
