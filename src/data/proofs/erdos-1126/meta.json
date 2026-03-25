@@ -175,5 +175,42 @@
     "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 5
-  }
+  },
+  "references": [
+    {
+      "authors": "de Bruijn, Nicolaas Govert",
+      "title": "On almost additive functions",
+      "year": "1966",
+      "venue": "Colloquium Mathematicum, 15, pp. 59\u201363",
+      "note": "Proved the main result: if f(x+y) = f(x) + f(y) for almost all (x,y) \u2208 \u211d\u00b2, then f agrees a.e. with a solution of Cauchy's functional equation"
+    },
+    {
+      "authors": "Erd\u0151s, Paul",
+      "title": "Problem P310",
+      "year": "1960",
+      "venue": "Colloquium Mathematicum, 7, pp. 311",
+      "note": "Original problem statement asking whether almost-everywhere Cauchy functional equation solutions agree a.e. with exact solutions"
+    },
+    {
+      "authors": "Cauchy, Augustin-Louis",
+      "title": "Cours d'analyse de l'\u00c9cole Royale Polytechnique",
+      "year": "1821",
+      "venue": "Paris: Debure",
+      "note": "Introduced Cauchy's functional equation f(x+y) = f(x) + f(y) and proved that continuous solutions are linear: f(x) = cx"
+    },
+    {
+      "authors": "Hamel, Georg",
+      "title": "Eine Basis aller Zahlen und die unstetigen L\u00f6sungen der Funktionalgleichung: f(x+y) = f(x) + f(y)",
+      "year": "1905",
+      "venue": "Mathematische Annalen, 60, pp. 459\u2013462",
+      "note": "Using the Axiom of Choice, constructed discontinuous solutions of Cauchy's equation via a Hamel basis for \u211d/\u211a, showing measurability or monotonicity is needed to force linearity"
+    },
+    {
+      "authors": "Kuczma, Marek",
+      "title": "An Introduction to the Theory of Functional Equations and Inequalities",
+      "year": "2009",
+      "venue": "Birkh\u00e4user, 2nd edition (ed. A. Gil\u00e1nyi)",
+      "note": "Standard reference on Cauchy's functional equation and its generalizations, including almost-everywhere solutions and the de Bruijn theorem"
+    }
+  ]
 }
