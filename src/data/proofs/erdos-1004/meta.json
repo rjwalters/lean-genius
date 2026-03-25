@@ -16,13 +16,13 @@
       "analytic-number-theory"
     ],
     "badge": "formalized",
-    "sorries": 6,
+    "sorries": 5,
     "erdosNumber": 1004,
     "erdosUrl": "https://erdosproblems.com/1004",
     "erdosProblemStatus": "open",
     "axiomCount": 3,
     "lineCount": 327,
-    "assumptions": "Three axioms for EPS87 upper bound (eps87_constant, eps87_constant_pos, eps87_upper_bound). Six sorries: run_length_sublinear, longer_runs_need_larger_n, distinct_totients_asymptotic, run_length_by_distinct_values, totient_eq_two_iff, totient_eq_four_iff.",
+    "assumptions": "Three axioms for EPS87 upper bound (eps87_constant, eps87_constant_pos, eps87_upper_bound). Five sorries: run_length_sublinear, longer_runs_need_larger_n, distinct_totients_asymptotic, totient_eq_two_iff, totient_eq_four_iff.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -296,6 +296,6 @@
     "lineCount": 327,
     "axiomCount": 3,
     "theoremCount": 22,
-    "definitionCount": 12
+    "definitionCount": 13
   }
 }
