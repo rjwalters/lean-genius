@@ -16,13 +16,13 @@
       "analytic-number-theory"
     ],
     "badge": "formalized",
-    "sorries": 2,
+    "sorries": 3,
     "erdosNumber": 1004,
     "erdosUrl": "https://erdosproblems.com/1004",
     "erdosProblemStatus": "open",
     "axiomCount": 3,
-    "lineCount": 492,
-    "assumptions": "Three axioms for EPS87 upper bound (eps87_constant, eps87_constant_pos, eps87_upper_bound). Two sorries: longer_runs_need_larger_n, distinct_totients_asymptotic. run_length_sublinear proved from axioms.",
+    "lineCount": 533,
+    "assumptions": "Three axioms for EPS87 upper bound (eps87_constant, eps87_constant_pos, eps87_upper_bound). Three sorries: run_length_sublinear, longer_runs_need_larger_n, distinct_totients_asymptotic.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -38,11 +38,8 @@
       "**Parallel structure with divisor function**: Problem 945 asks the identical question for $\\tau(n)$. Both $\\varphi$ and $\\tau$ are multiplicative, but their collision patterns differ: $\\tau$ has more collisions at small values (many $n$ with 2 divisors), while $\\varphi$ collides differently (even values dominate)"
     ],
     "prerequisites": [
-      "Eulers totient function $\\varphi(n)$ and its properties",
-      "Multiplicative number theory (divisor function $\\tau(n)$)",
-      "Distribution of totient values and collision rates",
-      "Pigeonhole principle and counting arguments",
-      "Asymptotic analysis ($\\log n$ factors)"
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
     ]
   },
   "sections": [
@@ -52,7 +49,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "File documentation citing EPS (1987), imports from Mathlib: `EulerPhi.Basic` for $\\varphi(n)$, `ArithmeticFunction`, `Log.Basic` and `Pow.Real` for asymptotic bounds, and `Topology.Instances.Real` for `Filter.atTop`.",
-      "mathContext": "File documentation citing EPS (1987), imports from Mathlib: `EulerPhi.Basic` for $\\varphi(n)$, `ArithmeticFunction`, `Log.Basic` and `Pow.Real` for asymptotic bounds, and `Topology.Instances.Real` for `Filter.atTop`."
+      "mathContext": "File documentation citing EPS (1987), imports from Mathlib: `EulerPhi.Basic` for $\\varphi(n)$, `ArithmeticFunction`, `Log.Basic` and `Pow.Real` for asymptotic bounds, and `Topology.Instances.Real` for"
     },
     {
       "id": "totient",
@@ -60,7 +57,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Defines `phi(n)` as `Nat.totient n`, proves $\\varphi(p) = p-1$ for primes, and establishes bounds: $\\varphi(n) > 0$ for $n > 0$, $\\varphi(n) \\leq n$, $\\varphi(n) < n$ for $n > 1$.",
-      "mathContext": "$\\varphi(n)$ — Eulers totient: count of integers in $[1,n]$ coprime to $n$. Key: $\\varphi(p) = p-1$ for primes, $\\varphi(p^k) = p^{k-1}(p-1)$, multiplicative on coprime arguments."
+      "mathContext": "Defines `phi(n)` as `Nat.totient n`, proves $\\varphi(p) = p-1$ for primes, and establishes bounds: $\\varphi(n) > 0$ for $n > 0$, $\\varphi(n) \\leq n$, $\\varphi(n) < n$ for $n > 1$."
     },
     {
       "id": "distinct-runs",
@@ -68,7 +65,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Defines `IsDistinctTotientRun(n, K)`: $\\varphi$ is injective on $\\{n+1, \\ldots, n+K\\}$. Equivalent `Set.InjOn` formulation stated. Trivial cases $K=0$ and $K=1$ proved.",
-      "mathContext": "$\\text{IsDistinctTotientRun}(n, K)$: $\\varphi$ is injective on $\\{n, n+1, \\ldots, n+K-1\\}$ — all $K$ consecutive integers have distinct totient values."
+      "mathContext": "Defines `IsDistinctTotientRun(n, K)`: $\\varphi$ is injective on $\\{n+1, \\ldots, n+K\\}$. Equivalent `Set.InjOn` formulation stated. Trivial cases $K=0$ and $K=1$ proved."
     },
     {
       "id": "max-length",
@@ -76,7 +73,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Defines `maxDistinctRunLength(n) = \\sup\\{K : \\text{IsDistinctTotientRun}(n,K)\\}` and proves it is at least 1 for every $n$.",
-      "mathContext": "$L(n) = \\max\\{K : \\text{IsDistinctTotientRun}(n, K)\\}$ — the longest run of consecutive integers with pairwise distinct $\\varphi$ values, starting at $n$."
+      "mathContext": "Defines `maxDistinctRunLength(n) = \\sup\\{K : \\text{IsDistinctTotientRun}(n,K)\\}` and proves it is at least 1 for every $n$."
     },
     {
       "id": "eps87",
@@ -84,7 +81,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Axiomatizes the Erdős–Pomerance–Sárközy theorem: $K \\leq n/\\exp(c(\\log n)^{1/3})$ for distinct runs of length $K$. Corollary: $f(n)/n \\to 0$ (sublinear growth).",
-      "mathContext": "Erdős-Pomerance-Sárközy (1987): $L(n) \\leq n/(\\log n)^{c}$ for some $c > 0$. The totient function collides too often for very long distinct runs."
+      "mathContext": "Axiomatizes the Erdős–Pomerance–Sárközy theorem: $K \\leq n/\\exp(c(\\log n)^{1/3})$ for distinct runs of length $K$. Corollary: $f(n)/n \\to 0$ (sublinear growth)."
     },
     {
       "id": "conjecture",
@@ -92,7 +89,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "States `Erdos1004Conjecture`: $\\forall c > 0,\\ \\forall^\\infty x,\\ \\exists n \\leq x$ with distinct run of length $\\lfloor (\\log x)^c \\rfloor$. Also: negation, `SmallCaseConjecture`, and the EPS constraint heuristic $c \\leq 1/3$.",
-      "mathContext": "States `Erdos1004Conjecture`: $\\forall c > 0,\\ \\forall^\\infty x,\\ \\exists n \\leq x$ with distinct run of length $\\lfloor (\\log x)^c \\rfloor$. Also: negation, `SmallCaseConjecture`, and the EPS constraint heuristic $c \\leq 1/3$."
+      "mathContext": "States `Erdos1004Conjecture`: $\\forall c > 0,\\ \\forall^\\infty x,\\ \\exists n \\leq x$ with distinct run of length $\\lfloor (\\log x)^c \\rfloor$. Also: negation, `SmallCaseConjecture`, and the EPS constra"
     },
     {
       "id": "examples",
@@ -100,7 +97,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Verified computations: $n=1$ gives run length 2 ($\\varphi(2)=1, \\varphi(3)=2, \\varphi(4)=2$), $n=2$ gives run length 1. Proves longer runs require larger starting points.",
-      "mathContext": "Small cases: $\\varphi(2)=1, \\varphi(3)=2$ gives run length 2 from $n=1$. $\\varphi(4)=2=\\varphi(3)$: collision at $n=3$. The first long runs start around $n=1$."
+      "mathContext": "Verified computations: $n=1$ gives run length 2 ($\\varphi(2)=1, \\varphi(3)=2, \\varphi(4)=2$), $n=2$ gives run length 1. Proves longer runs require larger starting points."
     },
     {
       "id": "collisions",
@@ -108,7 +105,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Defines `TotientCollision`, proves $\\varphi(1) = \\varphi(2) = 1$ and $\\varphi(3) = \\varphi(4) = 2$. Key theorem: `collision_ends_run` — a collision at positions $i < j$ in a run bounds its length to $< j$.",
-      "mathContext": "Defines `TotientCollision`, proves $\\varphi(1) = \\varphi(2) = 1$ and $\\varphi(3) = \\varphi(4) = 2$. Key theorem: `collision_ends_run` — a collision at positions $i < j$ in a run bounds its length to $< j$."
+      "mathContext": "Defines `TotientCollision`, proves $\\varphi(1) = \\varphi(2) = 1$ and $\\varphi(3) = \\varphi(4) = 2$. Key theorem: `collision_ends_run` — a collision at positions $i < j$ in a run bounds its length to $"
     },
     {
       "id": "divisor",
@@ -116,7 +113,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Defines $\\tau(n) = |\\text{divisors}(n)|$, `IsDistinctDivisorRun`, and `Problem945Conjecture`: the analogous question for $\\tau$ instead of $\\varphi$.",
-      "mathContext": "$\\tau(n) = |\\{d : d \\mid n\\}|$ — the divisor function. An analogous problem: longest run with distinct $\\tau$ values. Similar behavior expected since $\\tau$ is also multiplicative."
+      "mathContext": "Defines $\\tau(n) = |\\text{divisors}(n)|$, `IsDistinctDivisorRun`, and `Problem945Conjecture`: the analogous question for $\\tau$ instead of $\\varphi$."
     },
     {
       "id": "heuristics",
@@ -124,7 +121,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Counts distinct totient values: $|\\{\\varphi(k) : k \\leq x\\}| \\sim x/\\log x$. Birthday paradox analysis: collisions likely after $K \\approx \\sqrt{x/\\log x}$ terms, suggesting logarithmic runs should exist.",
-      "mathContext": "Counts distinct totient values: $|\\{\\varphi(k) : k \\leq x\\}| \\sim x/\\log x$. Birthday paradox analysis: collisions likely after $K \\approx \\sqrt{x/\\log x}$ terms, suggesting logarithmic runs should exist."
+      "mathContext": "Counts distinct totient values: $|\\{\\varphi(k) : k \\leq x\\}| \\sim x/\\log x$. Birthday paradox analysis: collisions likely after $K \\approx \\sqrt{x/\\log x}$ terms, suggesting logarithmic runs should ex"
     },
     {
       "id": "bounds",
@@ -132,7 +129,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Trivial bound $K \\leq n+K$ and structural bound $K \\leq |\\{\\varphi(m) : m \\leq n+K+1\\}|$ (distinct values bound injective image).",
-      "mathContext": "Trivial: $L(n) \\leq n + L(n) - 1$ (tautology). Structural: $L(n) \\leq |\\{\\varphi(m) : m \\leq n + L(n)\\}|$ — run length bounded by the image size of $\\varphi$ in the range."
+      "mathContext": "Trivial bound $K \\leq n+K$ and structural bound $K \\leq |\\{\\varphi(m) : m \\leq n+K+1\\}|$ (distinct values bound injective image)."
     },
     {
       "id": "special",
@@ -140,7 +137,7 @@
       "startLine": 1,
       "endLine": 1,
       "summary": "Characterizes $\\varphi^{-1}(1) = \\{1,2\\}$, $\\varphi^{-1}(2) = \\{3,4,6\\}$, $\\varphi^{-1}(4) = \\{5,8,10,12\\}$. Illustrates increasing preimage sizes relevant to Carmichael's conjecture.",
-      "mathContext": "$\\varphi^{-1}(1) = \\{1, 2\\}$, $\\varphi^{-1}(2) = \\{3, 4, 6\\}$: some totient values have many preimages. The pigeonhole principle from these collisions constrains run lengths."
+      "mathContext": "Characterizes $\\varphi^{-1}(1) = \\{1,2\\}$, $\\varphi^{-1}(2) = \\{3,4,6\\}$, $\\varphi^{-1}(4) = \\{5,8,10,12\\}$. Illustrates increasing preimage sizes relevant to Carmichael's conjecture."
     }
   ],
   "conclusion": {
@@ -260,9 +257,9 @@
       "Topology"
     ],
     "namespace": "Erdos1004",
-    "lineCount": 492,
+    "lineCount": 533,
     "axiomCount": 3,
-    "theoremCount": 23,
+    "theoremCount": 22,
     "definitionCount": 13
   }
 }
