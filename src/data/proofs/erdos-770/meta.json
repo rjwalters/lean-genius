@@ -136,7 +136,43 @@
       "What is the average order of h(n)? Is it O(log n), O(log log n), or something else?"
     ]
   },
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "euler-totient",
+      "relationship": "foundational",
+      "description": "Euler's theorem $a^{\\phi(n)} \\equiv 1 \\pmod{n}$ generalizes Fermat's little theorem, the key mechanism driving $h(n)$. When $p$ is prime, $\\phi(p) = p - 1$ recovers Fermat: $a^{p-1} \\equiv 1 \\pmod{p}$. Understanding $h(n)$ requires tracking which primes $p$ have $(p-1) \\mid n$, i.e., which primes' Fermat periodicity divides $n$"
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "related",
+      "description": "The order of $a$ modulo a prime $p$ determines the minimal $n$ with $p \\mid a^n - 1$. When $a$ is a primitive root mod $p$, its order is $p-1$, and $p \\mid a^n - 1$ iff $(p-1) \\mid n$ — the exact Fermat periodicity condition controlling shared factors in $\\gcd(2^n-1, \\ldots, k^n-1)$"
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "foundational",
+      "description": "Bézout's identity underpins the GCD computation at the heart of $h(n)$: $\\gcd(a, b) = 1$ iff there exist integers $x, y$ with $ax + by = 1$. The `gcdPowerSeq` definition computes iterated GCDs via `Finset.fold Nat.gcd`, relying on associativity and commutativity properties rooted in Bézout's characterization"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Dirichlet's theorem guarantees infinitely many primes in each arithmetic progression $a + nd$ with $\\gcd(a, d) = 1$. The density questions about $h(n)$ (Q1: does $\\delta_p$ exist?) connect to the distribution of $n$ such that the largest prime $p$ with $(p-1) \\mid n$ equals a given value — a condition governed by the primes in arithmetic progressions modulo divisors of $n$"
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate ($\\exists$ prime in $(n, 2n]$) provides a crude upper bound: $h(n) \\leq 2(n+1)$ since there is always a prime $p \\leq 2(n+1)$ with $(p-1) \\mid n$ (taking $p = n+1$ when prime, or finding a suitable prime by Bertrand). Sharper bounds on $h(n)$ require deeper prime distribution results"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "The Chinese Remainder Theorem relates to the coprimality structure underlying $h(n)$: the GCD cascade (e.g., at $n=12$ where $\\gcd = 5 \\cdot 7 \\cdot 13$ drops to 1) can be analyzed prime-by-prime using CRT, since $\\gcd(a^n-1, b^n-1)$ factors according to common prime divisors"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The unique prime factorization theorem underpins the entire analysis: the GCD cascade in $\\gcd(2^n-1, \\ldots, k^n-1)$ is governed by which primes divide all terms $a^n-1$ for $a \\in [2,k]$, and Fermat's little theorem provides the prime-by-prime criterion $(p-1) \\mid n$"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

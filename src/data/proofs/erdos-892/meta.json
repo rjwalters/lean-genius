@@ -142,7 +142,33 @@
       "What is the connection to the Erdős conjecture on the maximum of Σ 1/(aₙ log aₙ) over primitive sets?"
     ]
   },
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "erdos-12",
+      "relationship": "related",
+      "description": "Problem #12 studies divisibility-free (primitive) sets — sets where no element divides another. Problem #892 asks when a primitive sequence can be dominated by a given growth rate $b_n$, extending the basic primitive set question to asymptotic domination"
+    },
+    {
+      "targetId": "erdos-164",
+      "relationship": "related",
+      "description": "Problem #164 studies the maximum sum $\\sum 1/a_i$ over primitive sets $A \\subseteq [N]$. Problem #892's Erdős (1935) necessary condition $\\sum 1/(b_n \\log b_n) < \\infty$ is the continuous analog — both measure primitive sets via reciprocal sums"
+    },
+    {
+      "targetId": "erdos-793",
+      "relationship": "related",
+      "description": "Problem #793 studies primitive sets avoiding product divisibility. Both problems concern the structure and density constraints on primitive sequences, with #892 focusing on domination by growth rates and #793 on multiplicative avoidance conditions"
+    },
+    {
+      "targetId": "erdos-784",
+      "relationship": "related",
+      "description": "Problem #784 studies sieving sets with bounded reciprocal sums $\\sum 1/(a_n \\log a_n)$. The same reciprocal-log convergence condition appears as the necessary condition in #892 (Erdős 1935), suggesting deep structural connections between sieving density and primitive sequence domination"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization underpins the primitivity condition: a sequence is primitive iff no element divides another, which requires analyzing the divisibility lattice structured by prime factorizations. The $\\sum 1/(b_n \\log b_n)$ convergence condition reflects how prime factors distribute among sequence elements"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",
