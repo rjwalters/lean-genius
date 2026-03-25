@@ -118,6 +118,11 @@
       "description": "Completes the proof chain with a concrete witness: proves Gal(x^5 - 4x + 2 / Q) = S_5 and that this specific polynomial is unsolvable by radicals, instantiating the abstract group-theoretic chain proved here"
     },
     {
+      "targetId": "angle-trisection-oq-02",
+      "relationship": "related",
+      "description": "Formalizes the constructibility criterion via Galois 2-groups, illustrating the strict containment constructible ⊊ solvable by radicals: every 2-group is solvable (composition factors ℤ/2ℤ are abelian), so constructibility is a stronger condition than radical solvability, with A₅'s non-solvability marking the threshold where the broader class fails"
+    },
+    {
       "targetId": "inverse-galois-oq-01",
       "relationship": "related",
       "description": "Proves the complete solvability characterization: Sₙ and Aₙ are solvable iff n ≤ 4, and [S₅,S₅] = A₅. Provides the full bidirectional threshold that this file witnesses from one side (non-solvability for n ≥ 5)"
