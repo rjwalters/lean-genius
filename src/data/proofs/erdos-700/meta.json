@@ -26,53 +26,68 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Module docstring introducing Erdos Problem #700: study $f(n) = \\min_{1 < k \\le n/2} \\gcd(n, \\binom{n}{k})$ with three open questions on characterization, large values, and upper bounds. Imports `Mathlib.Tactic`, `Nat.Basic`, `Nat.GCD.Basic`, `Nat.Choose.Basic`, `Nat.Prime.Basic`.",
+      "mathContext": "Erdos-Szekeres study $f(n)$, the minimum GCD of $n$ with its non-trivial binomial coefficients. Three questions: (1) characterize $\\{n : f(n) = n/P(n)\\}$, (2) infinitely many $n$ with $f(n) > \\sqrt{n}$?, (3) $f(n) \\ll_A n/(\\log n)^A$? Known: $f(pq) = p$ for primes $p \\le q$, $f(p^2) \\ge p$, $f(30) = 6$."
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 26,
       "endLine": 46,
-      "summary": "Defines `largestPrimeFactor` $P(n)$ via `Finset.sup` over prime divisors, `smallestPrimeFactor` $p(n)$ via `Nat.minFac`, and `fBinom` $f(n) = \\min_{1 < k \\leq n/2} \\gcd(n, \\binom{n}{k})$ as a proper `Finset.min'` definition (previously axiomatized)."
+      "summary": "Defines `largestPrimeFactor` $P(n)$ via `Finset.sup` over prime divisors (returns 0 for $n \\le 1$), `smallestPrimeFactor` $p(n)$ via `Nat.minFac`, and `fBinom` $f(n) = \\min_{1 < k \\leq n/2} \\gcd(n, \\binom{n}{k})$ as `Finset.min'` over `Finset.Icc 2 (n/2)` (nonempty for $n \\ge 4$, returns 0 otherwise).",
+      "mathContext": "$P(n) = \\sup\\{p \\in [0, n] : p \\text{ prime}, p \\mid n\\}$. $p(n) = \\text{Nat.minFac}(n)$. $f(n) = \\min\\{\\gcd(n, \\binom{n}{k}) : 2 \\le k \\le n/2\\}$ for $n \\ge 4$. The function $f$ measures the minimum common divisor between $n$ and its non-trivial binomial coefficients, detecting the arithmetic structure of $n$ through Pascal's triangle."
     },
     {
       "id": "helper-lemmas",
       "title": "Helper Lemmas",
       "startLine": 48,
-      "endLine": 58,
-      "summary": "Proves `minFac_prime_sq`: $\\text{minFac}(p^2) = p$ for prime $p$, using `dvd_of_dvd_pow` and the uniqueness of prime factorization. Key step: $\\text{minFac}(p^2)$ is prime, divides $p^2$, hence divides $p$, and since $p$ is prime, must equal $p$."
+      "endLine": 80,
+      "summary": "Proves `minFac_prime_sq` ($\\text{minFac}(p^2) = p$) via `dvd_of_dvd_pow` and prime uniqueness. Proves `minFac_mul_prime` ($\\text{minFac}(pq) = p$ for primes $p \\le q$) via case analysis on which prime factor the minFac divides. Proves `le_largestPrimeFactor`: any prime factor $r \\mid n$ satisfies $r \\le P(n)$.",
+      "mathContext": "Lemma `minFac_prime_sq`: $\\text{minFac}(p^2)$ is prime and divides $p^2$, hence divides $p$ by `dvd_of_dvd_pow`, and equals $p$ since $p$ is prime. Lemma `minFac_mul_prime`: $\\text{minFac}(pq)$ divides $pq$, so divides $p$ or $q$; combined with $\\text{minFac}(pq) \\le p$ (from `minFac_le_of_dvd`), yields $\\text{minFac}(pq) = p$. These are used in proving $f(pq) = p$ and $f(p^2) \\ge p$."
     },
     {
       "id": "bounds",
       "title": "Basic Sandwich Bounds",
-      "startLine": 60,
-      "endLine": 74,
-      "summary": "Axiomatizes the fundamental inequality $p(n) \\leq f(n) \\leq n/P(n)$ for composite $n \\geq 2$. The upper bound `f_upper_bound` uses Kummer's theorem, and the lower bound `f_lower_bound` follows from divisibility properties of binomial coefficients."
+      "startLine": 82,
+      "endLine": 96,
+      "summary": "Axiomatizes `f_upper_bound` ($f(n) \\le n/P(n)$ for composite $n$, via Kummer's theorem) and `f_lower_bound` ($p(n) \\le f(n)$ for $n \\ge 2$, since the smallest prime dividing $n$ divides every $\\gcd(n, \\binom{n}{k})$).",
+      "mathContext": "The sandwich inequality $p(n) \\le f(n) \\le n/P(n)$ is the fundamental structural result. Upper bound: choosing $k = p^a$ where $p^a \\| n$ gives exactly one carry in base-$p$ addition, so $v_p(\\binom{n}{k}) = 1$, hence $\\gcd(n, \\binom{n}{p^a}) = n/p^a \\le n/P(n)$. Lower bound: for every $0 < k < n$, Kummer's theorem gives $v_p(\\binom{n}{k}) \\ge 1$ when $p \\mid n$."
     },
     {
       "id": "equalities",
       "title": "Known Exact Values",
-      "startLine": 76,
-      "endLine": 88,
-      "summary": "Axiomatizes `f_semiprime`: $f(pq) = p$ for primes $p \\leq q$, and `f_30`: $f(30) = 6 = 30/5$. These show that $f(n) = n/P(n)$ holds for all semiprimes and some non-semiprimes."
+      "startLine": 98,
+      "endLine": 135,
+      "summary": "PROVES `f_semiprime`: $f(pq) = p$ for primes $p \\le q$, by sandwiching between `f_lower_bound` (giving $p \\le f(pq)$) and `f_upper_bound` (giving $f(pq) \\le pq/P(pq) \\le p$). Axiomatizes `f_30`: $f(30) = 6 = 30/5$, the first non-semiprime example achieving $f(n) = n/P(n)$.",
+      "mathContext": "Proved: $f(pq) = p$ for primes $p \\le q$. Lower bound: $p = \\text{minFac}(pq) \\le f(pq)$. Upper bound: $f(pq) \\le pq/P(pq)$, and $q \\le P(pq)$ (since $q$ is a prime factor), so $pq/P(pq) \\le pq/q \\cdot P(pq)/P(pq) \\le p$. The case $n = 30 = 2 \\cdot 3 \\cdot 5$ with $f(30) = 6$ shows the characterization extends beyond semiprimes."
     },
     {
       "id": "question1",
       "title": "Question 1: Characterization of f(n) = n/P(n) (OPEN)",
-      "startLine": 90,
-      "endLine": 98,
-      "summary": "Documents the open characterization problem: which composite $n$ satisfy $f(n) = n/P(n)$? Known examples include all semiprimes $pq$ and $n = 30$. The previous false axiom (claiming this holds for ALL composite $n$) has been removed."
+      "startLine": 137,
+      "endLine": 144,
+      "summary": "Documents the open characterization problem: which composite $n$ satisfy $f(n) = n/P(n)$? Known examples: all semiprimes $pq$ (by `f_semiprime`) and $n = 30$ (by `f_30`). The general characterization remains open; $f(n) = n/P(n)$ does NOT hold for all composite $n$.",
+      "mathContext": "Open question: characterize $\\{n \\text{ composite} : f(n) = n/P(n)\\}$. Known: all semiprimes $pq$ satisfy this, as do some non-semiprimes like $30$. A false axiom claiming this holds for all composite $n$ was identified and removed."
     },
     {
       "id": "question2",
       "title": "Question 2: Large Values of f(n)",
-      "startLine": 100,
-      "endLine": 120,
-      "summary": "PROVES `f_prime_square`: $f(p^2) \\geq p = \\sqrt{p^2}$ from `f_lower_bound` and `minFac_prime_sq`. Then states `erdos_700_question2`: are there infinitely many composite $n$ with $f(n) > \\sqrt{n}$? Prime squares achieve equality, so strict inequality remains open."
+      "startLine": 146,
+      "endLine": 166,
+      "summary": "PROVES `f_prime_square`: $f(p^2) \\ge p = \\sqrt{p^2}$ from `f_lower_bound` and `minFac_prime_sq`. Axiomatizes `erdos_700_question2`: infinitely many composite $n$ with $f(n) > \\sqrt{n}$. Prime squares give equality ($f(p^2) \\ge p = \\sqrt{p^2}$), so strict inequality is the open part.",
+      "mathContext": "Proved: $f(p^2) \\ge p$, since $p(p^2) = \\text{minFac}(p^2) = p$ and $p(n) \\le f(n)$. Open: are there infinitely many composite $n$ with $f(n) > \\sqrt{n}$ strictly? Prime squares are sparse ($\\sim \\sqrt{x}/\\log x$ up to $x$), and they only achieve $f(p^2) \\ge \\sqrt{n}$, not strict inequality."
     },
     {
       "id": "question3",
       "title": "Question 3: Upper Bound Conjecture",
-      "startLine": 122,
-      "endLine": 128,
-      "summary": "Formalizes `erdos_700_question3`: for every $A > 0$, there exists $C > 0$ such that $f(n) \\leq C \\cdot n / (\\log n)^A$ for all composite $n \\geq 4$. This would show $f(n)$ is much smaller than $n/P(n)$ for typical $n$."
+      "startLine": 168,
+      "endLine": 176,
+      "summary": "Axiomatizes `erdos_700_question3`: for every $A > 0$, $\\exists C > 0$ such that $f(n) \\le C \\cdot n / (\\log n)^A$ for all composite $n \\ge 4$. This would show $f(n)$ is much smaller than $n/P(n)$ for typical $n$, since $P(n) \\sim \\log n$ by Hardy-Ramanujan.",
+      "mathContext": "Open conjecture: $f(n) \\ll_A n/(\\log n)^A$ for every fixed $A > 0$. This would imply $f(n)/n \\to 0$ faster than any power of $1/\\log n$. The connection to the Hardy-Ramanujan theorem: $P(n) \\sim \\log n$ for typical $n$, so $n/P(n) \\sim n/\\log n$, and the conjecture asks whether $f(n)$ is typically much smaller than even this."
     }
   ],
   "overview": {

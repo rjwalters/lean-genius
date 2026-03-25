@@ -102,70 +102,108 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Problem Statement and Background",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Docstring summarizing Erdős Problem #828: for any integer $a$, are there infinitely many $n$ with $\\varphi(n) \\mid n + a$? Lists the key cases ($a = 0$ characterized, $a = -1$ is Lehmer's conjecture) and references. Imports Mathlib and opens the `Nat` and `Set` namespaces.",
+      "mathContext": "The problem unifies several classical questions. For $a = 0$: $\\varphi(n) \\mid n$ iff $n \\in \\{0,1\\}$ or $n = 2^a \\cdot 3^b$. For $a = -1$: $\\varphi(n) \\mid n-1$ is Lehmer's conjecture (1932). Attribution to Graham; see Guy (2004), Problem B37."
+    },
+    {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "totientDivisors(a): the set {n ∈ ℕ : φ(n) | n + a}",
-      "startLine": 36,
-      "endLine": 41
+      "startLine": 34,
+      "endLine": 39,
+      "summary": "Defines `totientDivisors(a)` as the set $\\{n \\in \\mathbb{N} : \\varphi(n) \\mid n + a\\}$ using integer arithmetic to handle negative $a$.",
+      "mathContext": "The central object: $\\text{totientDivisors}(a) = \\{n \\in \\mathbb{N} : \\varphi(n) \\mid n + a\\}$ where $\\varphi$ is Euler's totient and the divisibility is checked in $\\mathbb{Z}$."
     },
     {
-      "id": "case-zero",
-      "title": "Special Case a = 0",
-      "summary": "totient_dvd_self_iff axiom and totientDivisors_zero_infinite theorem (proved via 2^k family)",
-      "startLine": 42,
-      "endLine": 64
+      "id": "two-pow-three-pow-lemma",
+      "title": "Totient Divides $2^a \\cdot 3^b$",
+      "startLine": 40,
+      "endLine": 66,
+      "summary": "Proves `totient_dvd_two_pow_mul_three_pow`: for $a > 0$ and any $b$, $\\varphi(2^a \\cdot 3^b) \\mid 2^a \\cdot 3^b$. The base case ($b = 0$) uses $\\varphi(2^a) = 2^{a-1}$. The inductive case uses coprimality of $2^a$ and $3^{b+1}$, multiplicativity $\\varphi(mn) = \\varphi(m)\\varphi(n)$, and the prime power formulas to reduce to a divisibility chain.",
+      "mathContext": "$\\varphi(2^a \\cdot 3^b) = 2^{a-1} \\cdot 3^{b-1} \\cdot 2 = 2^a \\cdot 3^{b-1}$ divides $2^a \\cdot 3^b$ since $3^{b-1} \\mid 3^b$. This establishes the reverse direction of the characterization: every $2^a \\cdot 3^b$ with $a > 0$ lies in $\\text{totientDivisors}(0)$."
     },
     {
-      "id": "lehmer",
-      "title": "Lehmer's Conjecture (a = -1)",
-      "summary": "lehmerConjecture definition, prime_totient_dvd_pred theorem, totientDivisors_neg_one_infinite theorem (proved from primes)",
-      "startLine": 65,
-      "endLine": 93
+      "id": "odd-prime-classification",
+      "title": "Odd Prime Classification Lemma",
+      "startLine": 67,
+      "endLine": 77,
+      "summary": "Proves `odd_prime_of_pred_dvd_two_mul`: if $p$ is an odd prime with $(p-1) \\mid 2p$, then $p = 3$. Uses the fact that $\\gcd(p-1, p) = 1$, so $(p-1) \\mid 2p$ implies $(p-1) \\mid 2$, forcing $p \\leq 3$.",
+      "mathContext": "Key classification: among odd primes $p$, the condition $(p-1) \\mid 2p$ pins down $p = 3$ uniquely. Since $\\gcd(p-1, p) = 1$ (consecutive integers are coprime), we get $(p-1) \\mid 2$, so $p - 1 \\in \\{1, 2\\}$, hence $p \\in \\{2, 3\\}$, and $p \\neq 2$ forces $p = 3$."
+    },
+    {
+      "id": "factorization-helpers",
+      "title": "Factorization Helper Lemmas",
+      "startLine": 78,
+      "endLine": 122,
+      "summary": "Four helper lemmas for the forward direction of the characterization. `factorization_pos_of_dvd`: if prime $p \\mid n$ then $p$'s exponent in $n$ is positive. `pow_factorization_dvd`: $p^{v_p(n)} \\mid n$. `coprime_pow_factorization_div`: $\\gcd(p^{v_p(n)},\\, n / p^{v_p(n)}) = 1$. `pred_dvd_totient_of_prime_dvd`: if $p \\mid n$ then $(p-1) \\mid \\varphi(n)$.",
+      "mathContext": "These lemmas wrap the $p$-adic valuation $v_p(n)$ and the decomposition $n = p^{v_p(n)} \\cdot (n / p^{v_p(n)})$ with coprime factors. The key consequence is $(p-1) \\mid \\varphi(n)$ whenever $p \\mid n$, since $\\varphi(p^e) = p^{e-1}(p-1)$ and $\\varphi$ is multiplicative over coprime factors."
+    },
+    {
+      "id": "parity-lemmas",
+      "title": "Parity and Divisibility Lemmas",
+      "startLine": 123,
+      "endLine": 136,
+      "summary": "Two parity lemmas. `two_dvd_pred_of_odd_prime`: $2 \\mid (p-1)$ for any odd prime $p$, proved by showing $p$ is odd so $p-1$ is even. `four_not_dvd_two_mul_odd`: if $m$ is odd then $4 \\nmid 2m$, a simple divisibility argument.",
+      "mathContext": "For odd primes $p$, $p - 1$ is even, so $2 \\mid (p-1)$. Combined with `pred_dvd_totient_of_prime_dvd`, this gives: if two distinct odd primes $p, r$ divide $n$, then $4 \\mid \\varphi(n)$. The lemma $4 \\nmid 2m$ (for odd $m$) provides the contradiction in the uniqueness argument."
+    },
+    {
+      "id": "odd-totient-structure",
+      "title": "Odd Numbers with $\\varphi(m) \\mid 2m$ Are Powers of 3",
+      "startLine": 137,
+      "endLine": 209,
+      "summary": "Proves `odd_totient_dvd_two_mul`: if $m > 0$, $m \\neq 1$, $m$ is odd, and $\\varphi(m) \\mid 2m$, then $m = 3^e$ for some $e > 0$. The proof has three steps: (1) $m$ has exactly one prime factor (otherwise two odd prime divisors give $4 \\mid \\varphi(m) \\mid 2m$, contradicting $m$ odd); (2) $m = p^e$ since $p$ is the sole prime factor; (3) $(p-1) \\mid 2p$ forces $p = 3$.",
+      "mathContext": "This is the deepest lemma in the file. If $m$ is odd with $\\varphi(m) \\mid 2m$, suppose $p \\neq r$ are both odd prime divisors. Then $2 \\mid (p-1) \\mid \\varphi(p^{v_p(m)})$ and $2 \\mid (r-1) \\mid \\varphi(m/p^{v_p(m)})$, so $4 \\mid \\varphi(m) \\mid 2m$. But $4 \\nmid 2m$ since $m$ is odd — contradiction. Hence $m = p^e$, and $\\varphi(p^e) = p^{e-1}(p-1) \\mid 2p^e$ simplifies to $(p-1) \\mid 2p$, giving $p = 3$."
+    },
+    {
+      "id": "characterization-theorem",
+      "title": "Full Characterization: $\\varphi(n) \\mid n$ iff $n = 2^a \\cdot 3^b$",
+      "startLine": 210,
+      "endLine": 290,
+      "summary": "Proves `totient_dvd_self_iff`: $\\varphi(n) \\mid n$ iff $n \\leq 1$ or $n = 2^a \\cdot 3^b$ with $a > 0$. The forward direction extracts the 2-adic part $n = 2^\\alpha \\cdot m$ with $m$ odd, shows $\\varphi(n) = 2^{\\alpha-1} \\cdot \\varphi(m)$, deduces $\\varphi(m) \\mid 2m$, and applies `odd_totient_dvd_two_mul` to get $m = 3^b$. The reverse uses `totient_dvd_two_pow_mul_three_pow`.",
+      "mathContext": "The central result: $\\varphi(n) \\mid n \\Leftrightarrow n \\leq 1$ or $n = 2^a \\cdot 3^b$. Forward: write $n = 2^\\alpha m$ with $m$ odd, $\\alpha \\geq 1$ (since $\\varphi(n)$ even for $n \\geq 3$ forces $2 \\mid n$). Then $\\varphi(n) = 2^{\\alpha-1} \\varphi(m)$ and $\\varphi(n) \\mid n$ gives $\\varphi(m) \\mid 2m$, so $m = 3^b$ or $m = 1$. Reverse: direct computation."
+    },
+    {
+      "id": "zero-infinite",
+      "title": "Infinitely Many Solutions for $a = 0$",
+      "startLine": 291,
+      "endLine": 303,
+      "summary": "Proves `totientDivisors_zero_infinite`: $\\text{totientDivisors}(0)$ is infinite by exhibiting the injective family $k \\mapsto 2^{k+1}$. Each member satisfies $\\varphi(2^{k+1}) = 2^k \\mid 2^{k+1}$. Uses `Set.infinite_of_injective_forall_mem` with injectivity from `Nat.pow_right_injective`.",
+      "mathContext": "$\\varphi(2^{k+1}) = 2^k$ divides $2^{k+1} = 2 \\cdot 2^k$, so every $2^{k+1}$ lies in $\\text{totientDivisors}(0)$. The map $k \\mapsto 2^{k+1}$ is injective, giving infinitely many distinct elements."
+    },
+    {
+      "id": "lehmer-conjecture",
+      "title": "Lehmer's Conjecture and the $a = -1$ Case",
+      "startLine": 304,
+      "endLine": 321,
+      "summary": "Defines `lehmerConjecture`: for $n > 1$, $\\varphi(n) \\mid n-1$ iff $n$ is prime (open since 1932). Proves `prime_totient_dvd_pred`: $\\varphi(p) \\mid p-1$ for prime $p$ (trivially $p-1 \\mid p-1$). Proves `totientDivisors_neg_one_infinite`: every prime $p$ satisfies $\\varphi(p) \\mid p + (-1)$, so $\\text{totientDivisors}(-1)$ is infinite via `Nat.infinite_setOf_prime`.",
+      "mathContext": "Lehmer's conjecture (1932): no composite $n > 1$ satisfies $\\varphi(n) \\mid n-1$. The easy direction ($n$ prime $\\Rightarrow \\varphi(n) = n-1 \\mid n-1$) gives infinitely many witnesses for $a = -1$, since there are infinitely many primes."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
-      "summary": "erdos828Conjecture: ∀ a : ℤ, (totientDivisors a).Infinite",
-      "startLine": 94,
-      "endLine": 100
+      "startLine": 322,
+      "endLine": 326,
+      "summary": "Defines `erdos828Conjecture`: $\\forall a \\in \\mathbb{Z},\\; \\text{totientDivisors}(a)$ is infinite. This is the full open problem — the formalization establishes it as a `Prop` without proof.",
+      "mathContext": "The conjecture $\\forall a \\in \\mathbb{Z},\\; |\\{n : \\varphi(n) \\mid n + a\\}| = \\infty$ remains open. The cases $a = 0$ and $a = -1$ are proved infinite in this file, but the general statement (attributed to Graham) is unresolved."
     },
     {
       "id": "structural-properties",
-      "title": "Structural Properties",
-      "summary": "totient_even (proved), totient_prime', totient_prime_pow_formula (proved from Mathlib)",
-      "startLine": 101,
-      "endLine": 119
+      "title": "Structural Properties of the Totient",
+      "startLine": 327,
+      "endLine": 339,
+      "summary": "Three structural results. `totient_even_of_gt_two`: $2 \\mid \\varphi(n)$ for $n > 2$, from `Nat.totient_even`. `totient_prime'`: $\\varphi(p) = p - 1$ (wrapper around `totient_prime`). `totient_prime_pow_formula`: $\\varphi(p^k) = p^{k-1}(p-1)$ for $k > 0$ (wrapper around `Nat.totient_prime_pow`).",
+      "mathContext": "These are standard identities. $\\varphi(n)$ is even for $n \\geq 3$ because either $4 \\mid n$ (giving $2 \\mid \\varphi(4) \\mid \\varphi(n)$) or $n$ has an odd prime factor $p$ with $2 \\mid (p-1) \\mid \\varphi(n)$. The prime power formula $\\varphi(p^k) = p^{k-1}(p-1)$ follows from counting integers up to $p^k$ not divisible by $p$."
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "summary": "erdos_828_summary: both a=0 and a=-1 cases are infinite",
-      "startLine": 120,
-      "endLine": 132
-    },
-    {
-      "id": "powers-of-two",
-      "title": "Powers of Two: Infinite Totient Divisors for $a = 0$",
-      "startLine": 133,
-      "endLine": 147,
-      "summary": "Completes the proof that $\\{2^k : k \\geq 1\\} \\subseteq \\text{totientDivisors}(0)$: shows $\\varphi(2^{k+1}) = 2^k \\mid 2^{k+1}$ via `totient_prime_pow`. Injectivity via `pow_right_injective`.",
-      "mathContext": "$\\varphi(2^{k+1}) = 2^k$ divides $2^{k+1} = 2 \\cdot 2^k$, so $\\varphi(n) \\mid n + 0$ for all $n = 2^{k+1}$."
-    },
-    {
-      "id": "lehmer-conjecture",
-      "title": "Lehmer's Conjecture and $a = -1$ Case",
-      "startLine": 149,
-      "endLine": 175,
-      "summary": "Defines `lehmerConjecture` ($\\varphi(n) \\mid n-1 \\Leftrightarrow n$ prime, OPEN). Proves `prime_totient_dvd_pred` ($\\varphi(p) = p-1 \\mid p-1$) and `totientDivisors_neg_one_infinite` (all primes witness the $a = -1$ case, so `totientDivisors(-1)` is infinite by `Nat.infinite_setOf_prime`).",
-      "mathContext": "Lehmer (1932): is $\\varphi(n) \\mid n-1$ equivalent to $n$ prime? No composite counterexample is known. The easiest direction: $n$ prime $\\Rightarrow \\varphi(n) = n-1 \\mid n-1$."
-    },
-    {
-      "id": "conjecture-structural",
-      "title": "Main Conjecture and Structural Properties",
-      "startLine": 177,
-      "endLine": 205,
-      "summary": "Defines `erdos828Conjecture`: $\\forall a \\in \\mathbb{Z}$, $\\text{totientDivisors}(a)$ is infinite. Proves structural lemmas: $\\varphi(n)$ is even for $n > 2$ (via `Nat.totient_even`), $\\varphi(p) = p-1$, $\\varphi(p^k) = p^{k-1}(p-1)$. Summary theorem: both $a = 0$ and $a = -1$ cases are infinite.",
-      "mathContext": "The multiplicativity of $\\varphi$ ($\\varphi(mn) = \\varphi(m)\\varphi(n)$ for $\\gcd(m,n) = 1$) and the prime power formula $\\varphi(p^k) = p^{k-1}(p-1)$ are the key tools. The summary $\\text{totientDivisors}(0) \\cup \\text{totientDivisors}(-1) = \\infty$ establishes the two solved cases."
+      "title": "Summary Theorem",
+      "startLine": 340,
+      "endLine": 346,
+      "summary": "Proves `erdos_828_summary`: both $\\text{totientDivisors}(0)$ and $\\text{totientDivisors}(-1)$ are infinite, packaging the two main results. Closes the `Erdos828` namespace.",
+      "mathContext": "The conjunction $\\text{totientDivisors}(0).\\text{Infinite} \\wedge \\text{totientDivisors}(-1).\\text{Infinite}$ summarizes the formalization's verified content: the $a = 0$ case (via powers of 2) and the $a = -1$ case (via primes) are both settled."
     }
   ],
   "conclusion": {

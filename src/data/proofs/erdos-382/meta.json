@@ -87,84 +87,92 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module docstring stating the problem, known results, and references, followed by Mathlib imports for primes, Finset, BigOperators, factorization, real analysis, logarithms, and Bertrand's postulate. Opens Nat, BigOperators, Finset, Real namespaces.",
+      "mathContext": "Imports provide $\\mathbb{N}$ prime infrastructure (`Nat.Prime`, `primeFactorsList`, `factorization`), finite set products $\\prod_{m \\in S} m$ via `BigOperators`, closed intervals `Finset.Icc`, real-valued expressions $v^\\varepsilon$ and $\\log p$ for asymptotic bounds, and Bertrand's postulate $\\exists q \\text{ prime}, p < q \\le 2p$."
+    },
+    {
       "id": "basic-definitions",
       "title": "Part I: Basic Definitions",
-      "startLine": 44,
-      "endLine": 64,
-      "summary": "prodInterval via Finset.Icc product, prodInterval_singleton proved by simp, prodInterval_factorial axiom.",
-      "mathContext": "Axiomatized: prodInterval via Finset.Icc product, prodInterval_singleton proved by simp, prodInterval_factorial axiom."
+      "startLine": 45,
+      "endLine": 73,
+      "summary": "Defines prodInterval(u,v) = product over Finset.Icc u v. Two theorems proved: prodInterval_singleton (prodInterval n n = n, by simp on Icc_self) and prodInterval_factorial (prodInterval 1 n = n!, by induction splitting Icc at the successor).",
+      "mathContext": "Defines $\\mathrm{prodInterval}(u,v) = \\prod_{m=u}^{v} m = \\frac{v!}{(u-1)!}$ using `Finset.Icc`. Proves $\\mathrm{prodInterval}(n,n) = n$ and $\\mathrm{prodInterval}(1,n) = n!$ by induction, decomposing $\\mathrm{Icc}\\,1\\,(n+1) = \\{n+1\\} \\cup \\mathrm{Icc}\\,1\\,n$ and applying `Nat.factorial_succ`."
     },
     {
       "id": "largest-prime",
       "title": "Part II: Largest Prime Divisor",
-      "startLine": 65,
-      "endLine": 88,
-      "summary": "largestPrimeDivisor via primeFactorsList foldl max. All three properties PROVED: divides n, is prime, is maximal — via helper lemmas establishing foldl max membership in nonempty lists of primes.",
-      "mathContext": "largestPrimeDivisor via primeFactorsList foldl max. Proved largestPrimeDivisor_dvd, largestPrimeDivisor_prime, prime_le_largestPrimeDivisor using foldl_max_mem_primeFactorsList and Nat.dvd_of_mem_primeFactorsList / Nat.prime_of_mem_primeFactorsList / Nat.mem_primeFactorsList."
+      "startLine": 74,
+      "endLine": 157,
+      "summary": "Defines largestPrimeDivisor as foldl max 0 over primeFactorsList. Four private helper lemmas establish that foldl max is monotone, dominates members, and its result is either init or a list member. Key lemma: for n > 1, primeFactorsList is nonempty and foldl max 0 is a member. Three public theorems proved: largestPrimeDivisor divides n, is prime, and every prime divisor p|n satisfies p ≤ largestPrimeDivisor n.",
+      "mathContext": "Defines $\\mathrm{lpd}(n) = \\max(n.\\mathrm{primeFactorsList})$ via `List.foldl max 0`. Helper lemmas prove $\\mathrm{foldl}\\,\\max\\,\\mathrm{init}\\,l \\ge \\mathrm{init}$, $x \\in l \\Rightarrow \\mathrm{foldl}\\,\\max\\,\\mathrm{init}\\,l \\ge x$, and that the result is $\\mathrm{init}$ or a member. Since $n > 1$ implies `primeFactorsList` is nonempty (via `Nat.prod_primeFactorsList`), the foldl result is a member, yielding: $\\mathrm{lpd}(n) \\mid n$, $\\mathrm{lpd}(n)$ is prime, and $p \\mid n \\Rightarrow p \\le \\mathrm{lpd}(n)$."
     },
     {
       "id": "exponent",
       "title": "Part III: Exponent of Prime in Product",
-      "startLine": 89,
-      "endLine": 105,
-      "summary": "exponent (p-adic valuation wrapper), exponentInProduct, sum decomposition axiom.",
-      "mathContext": "Axiomatized: exponent (p-adic valuation wrapper), exponentInProduct, sum decomposition axiom."
+      "startLine": 158,
+      "endLine": 193,
+      "summary": "Defines exponent(p,n) = n.factorization p and exponentInProduct(p,u,v) = exponent of p in prodInterval(u,v). Private lemma factorization_finset_prod_id proves factorization distributes over Finset products of nonzero naturals via induction. Main theorem exponentInProduct_sum (PROVED): for prime p and u > 0, the exponent of p in the interval product equals the sum of individual exponents.",
+      "mathContext": "Wraps $v_p(n) = n.\\mathrm{factorization}(p)$ (the $p$-adic valuation). Proves $v_p\\!\\left(\\prod_{m \\in S} m\\right) = \\sum_{m \\in S} v_p(m)$ for $S \\subseteq \\mathbb{N}_{>0}$ by Finset induction, using `Nat.factorization_mul` and `Finset.prod_ne_zero`. Applies this to show $v_p(\\mathrm{prodInterval}(u,v)) = \\sum_{m=u}^{v} v_p(m)$ when $u > 0$."
     },
     {
-      "id": "condition",
-      "title": "Part IV: The Condition",
-      "startLine": 106,
-      "endLine": 131,
-      "summary": "satisfiesCondition: largest prime has exponent ≥ 2. Structural axioms on exponent behavior.",
-      "mathContext": "satisfiesCondition: largest prime has exponent $\\geq$ 2. Structural axioms on exponent behavior."
+      "id": "condition-and-bertrand",
+      "title": "Part IV: The Condition and Bertrand Application",
+      "startLine": 194,
+      "endLine": 257,
+      "summary": "Defines satisfiesCondition(u,v): u ≤ v, u > 0, and the largest prime dividing the product has exponent ≥ 2. Proves largest_prime_exp_one (PROVED, 42 lines): if p is the largest prime ≤ v with p² > v, then exponent of p in prodInterval is exactly 1, using Bertrand's postulate to show 2p > v (so p is the unique multiple of p in [u,v]) and the sum decomposition to compute the exponent. Includes a note explaining why a previously axiomatized result (exp_ge_two_needs_square) was incorrect and removed.",
+      "mathContext": "Defines the Erd\\H{o}s--Graham condition: $u \\le v$, $u > 0$, and $v_p(\\mathrm{prodInterval}(u,v)) \\ge 2$ where $p = \\mathrm{lpd}(\\mathrm{prodInterval}(u,v))$. Key theorem `largest_prime_exp_one`: if $p$ is the largest prime $\\le v$ with $p^2 > v$, Bertrand's postulate gives a prime $q$ with $p < q \\le 2p$; if $q \\le v$ then $q \\le p$ by maximality, contradiction, so $v < 2p$. Thus $p$ is the unique multiple of itself in $[u,v]$, and $v_p(\\mathrm{prodInterval}) = v_p(p) + 0 = 1$. Note: the removed axiom `exp\\_ge\\_two\\_needs\\_square` was wrong because $v_p \\ge 2$ can arise from multiple distinct multiples of $p$ (e.g., $[3,6]$ with $p=3$: $v_3(3)+v_3(6)=2$ but $9 \\nmid k$ for any $k \\in [3,6]$)."
     },
     {
       "id": "questions",
       "title": "Part V: The Questions",
-      "startLine": 132,
-      "endLine": 160,
-      "summary": "question1 (subpolynomial growth) and question2 (unbounded length) as formal propositions.",
-      "mathContext": "Bound: question1 (subpolynomial growth) and question2 (unbounded length) as formal propositions."
+      "startLine": 259,
+      "endLine": 286,
+      "summary": "Formalizes both open questions. question1: for every ε > 0 and large enough v, satisfiesCondition(u,v) implies (v−u : ℝ) < v^ε (subpolynomial growth). question2: for every bound L, there exist u,v satisfying the condition with v−u > L (unbounded length). Both are axiomatized as OPEN conjectures: erdos_382_q1 and erdos_382_q2_heuristic.",
+      "mathContext": "Question 1: $\\forall \\varepsilon > 0,\\; \\exists V,\\; \\forall u,v \\ge V,\\; \\text{satisfiesCondition}(u,v) \\Rightarrow v - u < v^\\varepsilon$ (i.e., $v - u = v^{o(1)}$). Question 2: $\\forall L \\in \\mathbb{N},\\; \\exists u,v,\\; \\text{satisfiesCondition}(u,v) \\wedge v - u > L$. Both are stated as axioms since they are open conjectures. Cambie's heuristic suggests Question 2 is YES."
     },
     {
       "id": "ramachandra",
       "title": "Part VI: Known Upper Bound",
-      "startLine": 161,
-      "endLine": 174,
-      "summary": "Ramachandra's bound axiom: v−u ≤ v^{1/2+ε} for large v.",
-      "mathContext": "Ramachandra's bound axiom: v−u $\\leq$ v^{1/2+ε} for large v."
+      "startLine": 288,
+      "endLine": 301,
+      "summary": "Axiomatizes Ramachandra's bound: for any ε > 0 and sufficiently large v, if [u,v] satisfies the condition, then (v−u : ℝ) ≤ v^(1/2 + ε). This is the best known unconditional upper bound on interval length.",
+      "mathContext": "Ramachandra's bound (axiomatized): $\\forall \\varepsilon > 0,\\; \\exists V,\\; \\forall u,v \\ge V,\\; \\text{satisfiesCondition}(u,v) \\Rightarrow v - u \\le v^{1/2 + \\varepsilon}$. Equivalently, $v - u \\le v^{1/2 + o(1)}$. This is the strongest known unconditional result, derived from analytic estimates on the distribution of primes in short intervals."
     },
     {
       "id": "cramer",
       "title": "Part VII: Connection to Cramér's Conjecture",
-      "startLine": 175,
-      "endLine": 192,
-      "summary": "cramersConjecture definition, cramer_implies_q1 axiom.",
-      "mathContext": "Formal definition: cramersConjecture definition, cramer_implies_q1 axiom."
+      "startLine": 302,
+      "endLine": 317,
+      "summary": "Defines cramersConjecture: there exists C > 0 such that consecutive prime gaps satisfy q−p ≤ C·(log p)². Axiomatizes cramer_implies_q1: Cramér's conjecture implies Question 1 (subpolynomial growth). The connection is that Cramér's conjecture prevents long prime-free intervals, forcing primes above √v into any sufficiently long interval.",
+      "mathContext": "Cram\\'er's conjecture: $\\exists C > 0$ such that for consecutive primes $p < q$ with no prime between them, $q - p \\le C (\\log p)^2$. Axiom `cramer_implies_q1`: Cram\\'er $\\Rightarrow$ Question 1. The logic: if $v - u > v^\\varepsilon$ for some $\\varepsilon > 0$, the interval $[u,v]$ has length $\\gg v^\\varepsilon$, but Cram\\'er bounds prime gaps by $O((\\log v)^2)$, so a prime $p > \\sqrt{v}$ must appear in $[u,v]$ for large $v$, contradicting the condition."
     },
     {
-      "id": "examples",
-      "title": "Part VIII: Examples",
-      "startLine": 193,
-      "endLine": 207,
-      "summary": "Concrete example: prodInterval 2 4 = 24 via native_decide. Structural constraint axiom.",
-      "mathContext": "Axiomatized: Concrete example: prodInterval 2 4 = 24 via native_decide. Structural constraint axiom."
+      "id": "examples-and-main-theorem",
+      "title": "Part VIII: Examples and Main Structural Theorem",
+      "startLine": 319,
+      "endLine": 419,
+      "summary": "Concrete example: prodInterval 2 4 = 24 proved by native_decide. Major theorem no_prime_in_upper_half (PROVED, 83 lines): if [u,v] satisfies the condition, then every prime p in [u,v] satisfies p ≤ √v. Proof: assume p > √v; then p divides the product, so q = lpd(product) ≥ p > √v; Bertrand gives 2q > v; thus q is the unique multiple of itself in [u,v]; the sum decomposition gives exponent = 1, contradicting the condition's requirement of ≥ 2.",
+      "mathContext": "Example: $\\mathrm{prodInterval}(2,4) = 2 \\cdot 3 \\cdot 4 = 24$ by `native_decide`. Main theorem `no_prime_in_upper_half`: $\\text{satisfiesCondition}(u,v) \\Rightarrow \\forall p \\text{ prime},\\; u \\le p \\le v \\Rightarrow p \\le \\lfloor\\sqrt{v}\\rfloor$. Proof by contradiction: if $p > \\sqrt{v}$, then $q := \\mathrm{lpd}(\\Pi) \\ge p > \\sqrt{v}$. Bertrand's postulate gives a prime $r$ with $q < r \\le 2q$; if $r \\le v$ then $r$ divides $\\Pi$ so $q \\ge r > q$, contradiction, hence $v < 2q$. The only multiple of $q$ in $[u,v]$ is $q$ itself (since $2q > v$), so $v_q(\\Pi) = v_q(q) + \\sum_{m \\ne q} 0 = 1 < 2$, contradicting the condition."
     },
     {
       "id": "prime-free",
       "title": "Part IX: Prime-Free Interval Perspective",
-      "startLine": 208,
-      "endLine": 225,
-      "summary": "noPrimeLargerThanSqrt predicate and equivalence axiom condition_iff_no_large_prime.",
-      "mathContext": "Axiomatized: noPrimeLargerThanSqrt predicate and equivalence axiom condition_iff_no_large_prime."
+      "startLine": 421,
+      "endLine": 441,
+      "summary": "Defines noPrimeLargerThanSqrt(u,v): every prime p with u ≤ p ≤ v satisfies p ≤ √v. Axiomatizes condition_iff_no_large_prime: the Erdős-Graham condition is equivalent to u ≤ v, u > 0, and noPrimeLargerThanSqrt. The forward direction is proved by no_prime_in_upper_half; the backward direction (no large primes implies some prime has exponent ≥ 2) is axiomatized as it requires deeper combinatorial arguments.",
+      "mathContext": "Defines the predicate $\\text{noPrimeLargerThanSqrt}(u,v) :\\equiv \\forall p \\text{ prime},\\; u \\le p \\le v \\Rightarrow p \\le \\lfloor\\sqrt{v}\\rfloor$. Axiom `condition_iff_no_large_prime`: $\\text{satisfiesCondition}(u,v) \\iff (u \\le v \\wedge u > 0 \\wedge \\text{noPrimeLargerThanSqrt}(u,v))$. The forward direction ($\\Rightarrow$) is the proved theorem `no_prime_in_upper_half`. The backward direction ($\\Leftarrow$) requires showing that if all primes in $[u,v]$ are $\\le \\sqrt{v}$, then the largest prime factor of $\\prod_{m=u}^{v} m$ must have exponent $\\ge 2$ — a deeper pigeonhole argument on $p$-adic valuations."
     },
     {
       "id": "summary",
       "title": "Part X: Summary",
-      "startLine": 226,
-      "endLine": 266,
-      "summary": "erdos_382_summary theorem combining Ramachandra bound, Cramér implication, and problem statement. Consistency theorem. Status: OPEN.",
-      "mathContext": "Verified: erdos_382_summary theorem combining Ramachandra bound, Cramér implication, and problem statement. Consistency theorem. Status: OPEN."
+      "startLine": 443,
+      "endLine": 483,
+      "summary": "erdos_382_summary (PROVED): a conjunction of Ramachandra's bound, Cramér implies Q1, and True (both questions stated), assembled from the three axioms. ramachandra_consistent_with_questions (PROVED): identity function showing the bound is consistent with both questions. Closes the Erdos382 namespace.",
+      "mathContext": "Theorem `erdos_382_summary`: $\\left(\\forall \\varepsilon > 0,\\; \\exists V,\\; \\ldots v-u \\le v^{1/2+\\varepsilon}\\right) \\wedge \\left(\\text{Cram\\'er} \\Rightarrow \\text{Q1}\\right) \\wedge \\top$, proved by $\\langle\\texttt{ramachandra\\_bound},\\, \\texttt{cramer\\_implies\\_q1},\\, \\texttt{trivial}\\rangle$. Theorem `ramachandra_consistent_with_questions`: the identity function, witnessing that Ramachandra's bound $v - u \\le v^{1/2+o(1)}$ is logically compatible with both subpolynomial growth (Q1) and unbounded length (Q2), since $v^{1/2+o(1)} \\to \\infty$ yet $v^{1/2+o(1)} = v^{o(1)} \\cdot v^{1/2}$."
     }
   ],
   "conclusion": {

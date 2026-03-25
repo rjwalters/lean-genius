@@ -88,46 +88,76 @@
   },
   "sections": [
     {
-      "id": "imports",
-      "title": "Imports and Setup",
-      "summary": "Imports Mathlib modules for $\\mathbb{N}$, `Set`, `Finset`, $\\mathbb{Q}$, and tactics. No EuclideanSpace import — the formalization uses $\\mathbb{Q} \\times \\mathbb{Q}$ as a coordinate abstraction.",
-      "startLine": 18,
-      "endLine": 23
+      "id": "docstring",
+      "title": "Module Docstring",
+      "startLine": 1,
+      "endLine": 16,
+      "summary": "Problem statement for Erdős Problem #1071 on maximal packings of unit segments in the unit square.",
+      "mathContext": "States the two questions: (a) SOLVED by Danzer — existence of a finite maximal set of pairwise non-intersecting unit segments in $[0,1]^2$. (b) OPEN — existence of a region $R$ with a countably infinite maximal packing."
     },
     {
-      "id": "segment-abstractions",
-      "title": "Segment Abstractions",
-      "summary": "Defines `UnitSegment` with $\\mathbb{Q}^2$ endpoints and abstracted unit length. `InUnitSquare(p) \\iff p \\in [0,1]^2$, `SegmentInSquare` for endpoint containment, `AreDisjoint` (axiomatized) with symmetry.",
+      "id": "imports-namespace",
+      "title": "Imports and Namespace",
+      "startLine": 18,
+      "endLine": 22,
+      "summary": "Imports Mathlib and opens the Set namespace.",
+      "mathContext": "Imports full Mathlib for `Set`, `Disjoint`, `Real.sqrt`, real arithmetic. Opens `Set` for set operations."
+    },
+    {
+      "id": "geometric-foundations",
+      "title": "Part 1: Geometric Foundations",
       "startLine": 24,
-      "endLine": 46
+      "endLine": 51,
+      "summary": "Defines the geometric primitives: Euclidean distance, unit segments, line segment point sets, and containment in the unit square.",
+      "mathContext": "Defines `euclidDist(p,q) = \\sqrt{(p_1 - q_1)^2 + (p_2 - q_2)^2}$. `UnitSegment` structure with $\\mathbb{R}^2$ endpoints and proof `euclidDist = 1$. `segmentSet(p,q) = \\{(1-t)p + tq : t \\in [0,1]\\}$ (convex combinations). `InUnitSquare(p) \\iff p \\in [0,1]^2$. `SegmentInSquare(s)` requires both endpoints in the unit square."
+    },
+    {
+      "id": "disjointness",
+      "title": "Part 2: Disjointness",
+      "startLine": 53,
+      "endLine": 69,
+      "summary": "Defines segment disjointness and endpoint-disjointness, with a proved symmetry lemma.",
+      "mathContext": "Defines `AreDisjoint(s,t) \\iff \\text{Disjoint}(\\text{segmentSet}(s), \\text{segmentSet}(t))$ (empty intersection of point sets). PROVED `disjoint_symm` via `Disjoint.symm`. Defines `EndpointDisjoint(s,t)`: intersection $\\subseteq \\{s.x_1, s.x_2\\} \\cup \\{t.x_1, t.x_2\\}$ (segments may touch only at their endpoints)."
     },
     {
       "id": "packing-defs",
-      "title": "Packing Definitions",
-      "summary": "Defines `IsPacking` (containment $+$ pairwise disjointness), `IsMaximalPacking` (blocking condition: every new segment intersects some existing one), `IsFinitePacking` ($|S| < \\infty$), and `IsCountablyInfinitePacking` ($|S| = \\aleph_0$).",
-      "startLine": 47,
-      "endLine": 67
+      "title": "Part 3: Packing Definitions",
+      "startLine": 71,
+      "endLine": 92,
+      "summary": "Builds the hierarchy of packing predicates from basic to maximal to cardinality-constrained.",
+      "mathContext": "Defines `IsPacking(S)`: all segments in $[0,1]^2$ and pairwise disjoint. `IsMaximalPacking(S)`: packing $+$ blocking condition ($\\forall s \\notin S$, $\\exists t \\in S$ with $\\neg\\text{AreDisjoint}(s,t)$). `IsFinitePacking(S)`: packing $\\wedge$ $S$ finite. `IsCountablyInfinitePacking(S)`: packing $\\wedge$ $S$ countable $\\wedge$ $S$ infinite."
+    },
+    {
+      "id": "structural-lemmas",
+      "title": "Part 4: Structural Lemmas",
+      "startLine": 94,
+      "endLine": 127,
+      "summary": "Proves foundational properties of segments and packings.",
+      "mathContext": "PROVED `left_endpoint_mem_segment` and `right_endpoint_mem_segment`: endpoints $p, q \\in \\text{segmentSet}(p,q)$ (at $t=0$ and $t=1$). PROVED `packing_empty`: $\\emptyset$ is a packing. PROVED `packing_subset`: subsets of packings are packings. PROVED `finite_packing_countable`: finite packings are countable (via `Set.Finite.countable`). PROVED `disjoint_implies_endpoint_disjoint`: strict disjointness implies endpoint-disjointness."
     },
     {
       "id": "danzer",
-      "title": "Danzer's Result (Part a — SOLVED)",
-      "summary": "Axiomatizes `danzer_finite_maximal`: $\\exists S$ finite and maximal in $[0,1]^2$. Ludwig Danzer's construction earned \\$10 from Erdős.",
-      "startLine": 68,
-      "endLine": 74
+      "title": "Part 5: Danzer's Result (SOLVED)",
+      "startLine": 128,
+      "endLine": 135,
+      "summary": "Axiomatizes the solved part (a): existence of a finite maximal packing.",
+      "mathContext": "Axiom `danzer_finite_maximal`: $\\exists S$, `IsFinitePacking(S)` $\\wedge$ `IsMaximalPacking(S)`. Ludwig Danzer constructed an explicit finite configuration of unit segments at multiple orientations that blocks every possible placement in $[0,1]^2$, earning Erdős's \\$10 prize."
     },
     {
-      "id": "region-packing",
-      "title": "Region Packings and the Open Problem (Part b)",
-      "summary": "Defines `Region := \\text{Set}(\\mathbb{Q}^2)$, `IsRegionPacking`, `IsMaximalRegionPacking`. Axiomatizes `ErdosProblem1071b`: $\\exists R, S$ with $|S| = \\aleph_0$ and $S$ maximal in $R$. Status: **OPEN**.",
-      "startLine": 75,
-      "endLine": 96
+      "id": "open-problem",
+      "title": "Part 6: The Open Problem",
+      "startLine": 137,
+      "endLine": 159,
+      "summary": "Generalizes to region packings and states the open problem on countably infinite maximal packings.",
+      "mathContext": "Defines `Region := \\text{Set}(\\mathbb{R}^2)$. `IsRegionPacking(R, S)`: endpoints in $R$ and pairwise disjoint. `IsMaximalRegionPacking(R, S)`: region packing $+$ blocking in $R$. Axiom `ErdosProblem1071b`: $\\exists R, S$ with $S$ countable, infinite, and maximal in $R$. Key insight: $[0,1]^2$ forces finite packings by compactness, so part (b) requires an unbounded region."
     },
     {
       "id": "endpoint-variant",
-      "title": "Endpoint-Intersection Variant",
-      "summary": "Axiomatizes `EndpointDisjoint` (segments may touch at endpoints only) and `ErdosProblem1071_endpoint_variant`: $\\exists S$ finite, endpoint-disjoint, maximal in $[0,1]^2$.",
-      "startLine": 97,
-      "endLine": 109
+      "title": "Part 7: Endpoint-Intersection Variant",
+      "startLine": 161,
+      "endLine": 174,
+      "summary": "States the open variant allowing segments to touch at endpoints.",
+      "mathContext": "Axiom `ErdosProblem1071_endpoint_variant`: $\\exists S$ finite with all segments in $[0,1]^2$, pairwise `EndpointDisjoint`, and maximal under this weaker condition. Fan-like configurations (segments radiating from one point) become valid, potentially enabling more efficient blocking."
     }
   ],
   "conclusion": {
