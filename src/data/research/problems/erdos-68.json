@@ -1,7 +1,7 @@
 {
   "slug": "erdos-68",
   "title": "Erdős #68",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -29,19 +29,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: eRelatedSum_value axiom provable from e Taylor series. File in good shape (15 thm, 4 ax).",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: Axiom count reduced 4→2. Fixed 2 incorrect numerical axioms (wrong OEIS value 1.2517→1.2535, wrong perturbation diff 0.04→0.535). Proved factorialSum bounds (1.253, 1.254) via partial sums + factorial tail estimation. File now has 25 theorems, 2 axioms, 0 sorries.",
+    "builtItems": [
+      "factorialSum_lower_bound: proved > 1253/1000 via 5-term partial sum",
+      "factorialSum_lt: proved < 1254/1000 via tail estimation with (n+7)! ≥ 5040·8^n",
+      "factorialSum_bounds: combined interval theorem",
+      "summand_le_two_div_factorial: tighter bound summand(n) ≤ 2/(n+2)!",
+      "factorial_ge_base_mul_pow: (n+7)! ≥ 5040·8^n by induction",
+      "inv_factorial_le_geometric: 1/(n+7)! ≤ (1/5040)·(1/8)^n",
+      "fifth_term: summand(4) = 1/719"
+    ],
     "insights": [
       "eRelatedSum_value provable: Σ_{n≥2} 1/n! = e - 2 via tsum_eq_zero_add (peel off n=0,1 terms)",
       "Needs: Real.exp Taylor series (hasSum_exp or exp_eq_tsum_div), Summability of 1/n!, tsum_eq_zero_add twice",
       "perturbation_difference and oeis_a331373 need numerical bounds — harder to prove in Lean",
-      "erdos_68 is the main OPEN conjecture — irrationality of Σ 1/(n!-1)"
+      "erdos_68 is the main OPEN conjecture — irrationality of Σ 1/(n!-1)",
+      "oeis_a331373 axiom had WRONG value (1.2517) - actual OEIS A331373 is 1.25349875...",
+      "perturbation_difference axiom had WRONG bounds (0.04-0.05) - actual is ~0.535",
+      "Upper bound proof uses factorial growth: (n+7)! ≥ 5040·8^n gives geometric tail comparison"
     ],
     "mathlibGaps": [
       "tsum manipulation for index shifting requires careful summability arguments"
     ],
     "nextSteps": [
-      "Prove eRelatedSum_value: use exp Taylor series + peel off first two terms via tsum_eq_zero_add"
+      "Prove perturbation_difference using factorialSum bounds + Mathlib exp bounds",
+      "This would reduce to 1 axiom (the OPEN conjecture only)"
     ],
     "markdown": "# Erdős #68 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs\\[\\sum_{n\\geq 2}\\frac{1}{n!-1}\\]irrational?\n\n\n\nThe decimal expansion is A331373 in the OEIS. Weisenberg has observed that this sum can also be written as\\[\\sum_{k\\geq 1}\\sum_{n\\geq 2}\\frac{1}{(n!)^k}.\\]Erd\\H{o}s \\cite{Er88c} notes that $\\sum \\frac{1}{n!+t}$ should be transcendental for every integer $t$.\n\n\n\n\nReferences\n\n\n[Er88c] Erd\\\"{o}s, P., On the irrationality of certain series: problems and results. New advances in transcendence theory (Durham, 1986) (1988), 102-109.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #67\n- Problem #69\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er68d\n- Er90\n- Er97e\n- Er97f\n- Er88c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
