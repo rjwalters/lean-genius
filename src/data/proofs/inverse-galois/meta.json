@@ -168,7 +168,7 @@
       "startLine": 60,
       "endLine": 81,
       "summary": "Formal statement of the IGP as a Lean proposition. Marked as an open problem with sorry - no proof is known for the general case.",
-      "mathContext": "Formal statement of the IGP as a Lean proposition. Marked as an open problem with sorry - no proof is known for the general case."
+      "mathContext": "The Inverse Galois Conjecture: $\\forall G$ (finite group), $\\exists\\, K/\\mathbb{Q}$ Galois with $\\operatorname{Gal}(K/\\mathbb{Q}) \\cong G$. Formalized as a Lean proposition; `sorry` marks the open problem."
     },
     {
       "id": "cyclotomic-galois",
@@ -176,7 +176,7 @@
       "startLine": 82,
       "endLine": 121,
       "summary": "CyclotomicField n ℚ is Galois over ℚ (IsCyclotomicExtension.isGalois), and its Galois group is abelian (commutative).",
-      "mathContext": "CyclotomicField n ℚ is Galois over ℚ (IsCyclotomicExtension.isGalois), and its Galois group is abelian (commutative)."
+      "mathContext": "$\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}$ is a Galois extension with $\\operatorname{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q})$ abelian, since cyclotomic extensions are always Galois."
     },
     {
       "id": "galois-group-structure",
@@ -184,7 +184,7 @@
       "startLine": 122,
       "endLine": 170,
       "summary": "The Galois group of the n-th cyclotomic polynomial is isomorphic to (ZMod n)ˣ. Cyclotomic irreducibility proved via Polynomial.cyclotomic.irreducible_rat.",
-      "mathContext": "The Galois group of the n-th cyclotomic polynomial is isomorphic to (ZMod n)ˣ. Cyclotomic irreducibility proved via Polynomial.cyclotomic.irreducible_rat."
+      "mathContext": "$\\operatorname{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^{\\times}$ when $\\Phi_n(x)$ is irreducible over $\\mathbb{Q}$, with $|(\\mathbb{Z}/n\\mathbb{Z})^{\\times}| = \\varphi(n)$."
     },
     {
       "id": "s3-realization",
@@ -192,7 +192,7 @@
       "startLine": 367,
       "endLine": 700,
       "summary": "Gal(X³-2/ℚ) ≅ S₃ proved from scratch: Eisenstein irreducibility at p=2, 3||Gal| (prime degree), |Gal||6 (Gal ↪ S₃), 2||Gal| (cube root of unity), coprimality gives |Gal|=6, bijectivity of galActionHom.",
-      "mathContext": "Gal(X³-2/ℚ) ≅ S₃ proved from scratch: Eisenstein irreducibility at p=2, 3||Gal| (prime degree), |Gal||6 (Gal ↪ S₃), 2||Gal| (cube root of unity), coprimality gives |Gal|=6, bijectivity of galActionHom"
+      "mathContext": "$\\operatorname{Gal}(\\mathbb{Q}(\\sqrt[3]{2}, \\zeta_3)/\\mathbb{Q}) \\cong S_3$. Eisenstein at $p=2$ gives irreducibility; $3 \\mid |\\operatorname{Gal}|$ (prime degree), $|\\operatorname{Gal}| \\mid 6$ ($\\operatorname{Gal} \\hookrightarrow S_3$), $2 \\mid |\\operatorname{Gal}|$ ($\\zeta_3 \\notin \\mathbb{Q}$), so $|\\operatorname{Gal}|=6$."
     },
     {
       "id": "a5-realization",
@@ -201,7 +201,7 @@
       "endLine": 992,
       "summary": "In InverseGaloisA5.lean: A₅ ≅ Gal(x⁵-5x⁴+10x³-10x²+25x-5/ℚ). Eisenstein irreducibility at p=5, |Gal|=60 via Sylow theory (no S₅ subgroups of order 15 or 30), explicit MulEquiv with alternatingGroup(Fin 5). 102 theorems, 1 axiom (Dedekind's theorem), 0 sorries. VP² proved via ℂ embedding + Sophie Germain identity.",
       "file": "Proofs/InverseGaloisA5.lean",
-      "mathContext": "In InverseGaloisA5.lean: A₅ ≅ Gal(x⁵-5x⁴+10x³-10x²+25x-5/ℚ). Eisenstein irreducibility at p=5, |Gal|=60 via Sylow theory (no S₅ subgroups of order 15 or 30), explicit MulEquiv with alternatingGroup(Fi"
+      "mathContext": "$A_5 \\cong \\operatorname{Gal}(q/\\mathbb{Q})$ where $q = x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5$. Eisenstein at $p=5$; $|\\operatorname{Gal}| = 60$ by Sylow theory (no subgroups of order 15 or 30 in $S_5$); index-2 subgroup detection yields $\\operatorname{Gal} \\cong A_5$."
     },
     {
       "id": "d4-realization",
@@ -210,7 +210,7 @@
       "endLine": 680,
       "summary": "In InverseGaloisD4.lean: D₄ ≅ Gal(X⁴-2/ℚ). 27 theorems, 0 axioms, 0 sorries. Proves the dihedral group of order 8 is realizable as a Galois group over ℚ.",
       "file": "Proofs/InverseGaloisD4.lean",
-      "mathContext": "In InverseGaloisD4.lean: D₄ ≅ Gal(X⁴-2/ℚ). 27 theorems, 0 axioms, 0 sorries. Proves the dihedral group of order 8 is realizable as a Galois group over ℚ."
+      "mathContext": "$D_4 \\cong \\operatorname{Gal}(X^4 - 2 / \\mathbb{Q})$: the dihedral group of order 8 realized as the Galois group of the splitting field $\\mathbb{Q}(\\sqrt[4]{2}, i)$. Fully proved (0 axioms, 0 sorries)."
     },
     {
       "id": "f20-realization",
@@ -219,7 +219,7 @@
       "endLine": 529,
       "summary": "In InverseGaloisF20.lean: F₂₀ ≅ Gal(X⁵-2/ℚ). The Frobenius group of order 20 (the unique solvable transitive subgroup of S₅ of order 20). 27 theorems, 0 axioms, 0 sorries.",
       "file": "Proofs/InverseGaloisF20.lean",
-      "mathContext": "In InverseGaloisF20.lean: F₂₀ ≅ Gal(X⁵-2/ℚ). The Frobenius group of order 20 (the unique solvable transitive subgroup of S₅ of order 20). 27 theorems, 0 axioms, 0 sorries."
+      "mathContext": "$F_{20} \\cong \\operatorname{Gal}(X^5 - 2 / \\mathbb{Q})$: the Frobenius group $F_{20} = \\mathbb{Z}/5\\mathbb{Z} \\rtimes \\mathbb{Z}/4\\mathbb{Z}$, the unique solvable transitive subgroup of $S_5$ of order 20. Fully proved (0 axioms, 0 sorries)."
     },
     {
       "id": "group-census",
@@ -227,7 +227,7 @@
       "startLine": 1100,
       "endLine": 1530,
       "summary": "Systematic census of all groups of order ≤ 8: 14 of 15 groups realized with sorry-free proofs. Only Q₈ (quaternion) remains. Extended census covers 21+ groups including order 16 (C₂×C₈, C₂²×C₄), order 20 (C₂×C₁₀), and order 24 (C₄×C₆). Uses cyclotomic fields with totient/exponent analysis and native_decide verification.",
-      "mathContext": "Systematic census of all groups of order ≤ 8: 14 of 15 groups realized with sorry-free proofs. Only Q₈ (quaternion) remains. Extended census covers 21+ groups including order 16 (C₂×C₈, C₂²×C₄), order"
+      "mathContext": "Realizability census: for $|G| \\leq 8$, 14 of 15 groups realized via $\\operatorname{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^{\\times}$ and totient analysis. Extended to $C_2 \\times C_8$ via $(\\mathbb{Z}/32\\mathbb{Z})^{\\times}$, $C_2^2 \\times C_4$ via $(\\mathbb{Z}/40\\mathbb{Z})^{\\times}$, etc. Only $Q_8$ unformalized."
     },
     {
       "id": "sharp-threshold",
@@ -236,7 +236,7 @@
       "endLine": 1881,
       "summary": "In AbelRuffiniGaloisExtensions.lean: S_n is solvable iff n ≤ 4. Uses Equiv.Perm.not_solvable for n ≥ 5. This is the fundamental threshold in the Abel-Ruffini theorem. 59 theorems, all fully proved.",
       "file": "Proofs/AbelRuffiniGaloisExtensions.lean",
-      "mathContext": "In AbelRuffiniGaloisExtensions.lean: S_n is solvable iff n ≤ 4. Uses Equiv.Perm.not_solvable for n ≥ 5. This is the fundamental threshold in the Abel-Ruffini theorem. 59 theorems, all fully proved."
+      "mathContext": "Sharp solvability threshold: $S_n$ is solvable $\\iff n \\leq 4$. For $n \\geq 5$, the commutator series $S_n \\supset A_n \\supset \\{e\\}$ fails since $A_n$ is simple and non-abelian. This is the group-theoretic core of Abel-Ruffini."
     }
   ],
   "conclusion": {
