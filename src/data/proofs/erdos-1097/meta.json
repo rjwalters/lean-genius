@@ -21,6 +21,13 @@
     "erdosUrl": "https://erdosproblems.com/1097",
     "erdosProblemStatus": "open",
     "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Formalization of D(A) = {d : ∃ a,b,c ∈ A with b-a = c-b = d} as the 3-AP common difference set",
+      "Axiomatized best known bounds: Katz-Tao O(n^{11/6}) upper, Lemm Ω(n^{1.778}) lower",
+      "DeepMind AlphaEvolve Ω(n^{1.822}) bound integration",
+      "Chan's equivalence to Bourgain's sums-differences problem",
+      "Structural theorems: monotonicity, trivial bounds, AP-free set bound"
+    ],
     "axiomCount": 6,
     "assumptions": "6 axiom declarations: katz_tao_upper (O(n^{11/6}) upper bound), erdos_spencer_lower (Ω(n log n) lower bound), erdos_ruzsa_explicit (Ω(n^{4/3}) explicit lower bound), lemm_lower (Ω(n^{1.778}) best known lower bound), alphaevolve_improvement (Ω(n^{1.822}) DeepMind AlphaEvolve result), chan_equivalence (equivalence to Bourgain sums-differences problem). All are established results from the literature.",
     "lineCount": 374,
