@@ -261,6 +261,16 @@
       "targetId": "bertrands-postulate-oq-03",
       "relationship": "related",
       "description": "Sub-entry extending Bertrand's postulate with refined prime counting bounds. The bounded prime gaps formalization uses Bertrand to prove primeGap_le_nthPrime ($g(n) \\leq p_n$), connecting the classical upper bound on every gap to the modern Polymath lower-frequency result ($g(n) \\leq 246$ infinitely often)"
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Both concern density and patterns in the primes. The Green-Tao theorem (2004) — that primes contain arbitrarily long arithmetic progressions — combines Szemerédi's theorem with a transference principle. Similarly, the bounded prime gaps result uses sieve theory to detect patterns (admissible tuples) in the primes. Both represent the application of combinatorial tools to analytic number theory"
+    },
+    {
+      "targetId": "legendre-partial",
+      "relationship": "related",
+      "description": "Legendre conjectured (c. 1808) that there is a prime between consecutive perfect squares $n^2$ and $(n+1)^2$, implying prime gaps grow at most as $2n + 1$. While Legendre's conjecture remains open, the bounded prime gaps theorem gives the complementary result: infinitely often, consecutive primes are within 246 of each other — capturing the opposite extreme of prime gap behavior"
     }
   ],
   "leanFile": {

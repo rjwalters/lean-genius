@@ -177,6 +177,21 @@
       "targetId": "buffons-needle-oq-02",
       "relationship": "extended-by",
       "description": "Extends Buffon's needle to 3 dimensions: a needle dropped among parallel planes spaced $d$ apart has expected crossing count $L/(2d)$ — answering the open question about higher-dimensional generalizations"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "The Fundamental Theorem of Calculus underlies the key integral $\\int_0^\\pi \\sin\\theta\\, d\\theta = [-\\cos\\theta]_0^\\pi = 2$ that is the computational heart of Buffon's result. Without FTC, the geometric probability would require Archimedes-style exhaustion methods"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "related",
+      "description": "The Monte Carlo $\\pi$ estimator $\\hat{\\pi} = 2\\ell n/(kd)$ converges to $\\pi$ by the law of large numbers, with error governed by the Central Limit Theorem: $\\hat{\\pi} - \\pi$ is approximately $N(0, \\sigma^2/n)$ where $\\sigma^2 = P(1-P) \\cdot (2\\ell/(Pd))^2$. The CLT quantifies the convergence rate of this earliest Monte Carlo method"
+    },
+    {
+      "targetId": "intermediate-value-theorem",
+      "relationship": "foundational",
+      "description": "The geometric setup of Buffon's needle uses the intermediate value theorem implicitly: the needle crosses a line iff the perpendicular distance from its center to the nearest line is less than $(\\ell/2)\\sin\\theta$, and IVT ensures this crossing threshold varies continuously with the angle"
     }
   ],
   "leanFile": {
