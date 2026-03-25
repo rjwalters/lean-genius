@@ -144,6 +144,30 @@
       "endLine": 185,
       "summary": "Proved: irrationality conjecture implies Rivoal and Zudilin; transcendence conjecture recovers all known results.",
       "mathContext": "The implication landscape: $\\forall k,\\, \\zeta(2k+1) \\notin \\mathbb{Q}$ implies Rivoal's 'infinitely many irrational' and Zudilin's 'one of $\\{\\zeta(5),\\zeta(7),\\zeta(9),\\zeta(11)\\}$ irrational'. The stronger transcendence conjecture $\\forall k,\\, \\zeta(2k+1) \\notin \\overline{\\mathbb{Q}}$ recovers ALL known results as corollaries — a strong consistency check."
+    },
+    {
+      "id": "odd-conjectures",
+      "title": "Odd Zeta Transcendence and Irrationality Conjectures",
+      "startLine": 186,
+      "endLine": 196,
+      "summary": "Defines $\text{odd\\_zeta\\_transcendence\\_conjecture}$: all $\\zeta(2k+1)$ for $k \\geq 1$ are transcendental. Defines the weaker $\text{odd\\_zeta\\_irrationality\\_conjecture}$: all odd zeta values are irrational. Notes that no specific odd zeta value beyond $\\zeta(3)$ has been proved irrational.",
+      "mathContext": "Transcendence conjecture: $\\zeta(2k+1) \\in \\overline{\\mathbb{Q}}^c$ for all $k \\geq 1$. Irrationality conjecture: $\\zeta(2k+1) \notin \\mathbb{Q}$ for all $k \\geq 1$."
+    },
+    {
+      "id": "structural-relationships",
+      "title": "Structural Relationships Between Conjectures",
+      "startLine": 197,
+      "endLine": 219,
+      "summary": "Proves the logical chain: transcendence conjecture implies irrationality conjecture, which implies Apery's theorem ($\\zeta(3)$ irrational) as the $k=1$ case, and further implies joint irrationality of $\\zeta(3)$ and $\\zeta(5)$.",
+      "mathContext": "Logical hierarchy: $\text{Transcendental}(\\zeta(2k+1)) \\Rightarrow \text{Irrational}(\\zeta(2k+1)) \\Rightarrow \text{Irrational}(\\zeta(3)) \\wedge \text{Irrational}(\\zeta(5))$."
+    },
+    {
+      "id": "even-odd-divide",
+      "title": "The Even-Odd Divide and Problem Status",
+      "startLine": 220,
+      "endLine": 274,
+      "summary": "Defines $\text{even\\_zeta\\_rational\\_multiple}$: $\\zeta(2k) = q \\cdot \\pi^{2k}$ for rational $q$. Verifies transcendence of $\\zeta(2)$ and $\\zeta(4)$ from axiomatized Lindemann. Proves the arithmetic hierarchy: $\\zeta(2)$ transcendental, $\\zeta(3)$ irrational (Apery), $\\zeta(5)$ status unknown.",
+      "mathContext": "Even-odd dichotomy: $\\zeta(2k) = c_k \\pi^{2k}$ (transcendental via Lindemann) vs. $\\zeta(2k+1)$ with no known closed form. Arithmetic hierarchy: transcendental \\supset irrational \\supset algebraic."
     }
   ],
   "conclusion": {

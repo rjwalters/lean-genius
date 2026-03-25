@@ -250,5 +250,19 @@
       "venue": "Cambridge University Press, 2nd edition",
       "note": "Comprehensive treatment of the minimal polynomial and its relationship to the Cayley-Hamilton theorem"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "minpoly_annihilates",
+      "type": "core",
+      "description": "The minimal polynomial annihilates the matrix: mu_A(A) = 0",
+      "leanType": "(A : Matrix n n R) -> aeval A (minpoly R A) = 0"
+    },
+    {
+      "name": "minpoly_minimal",
+      "type": "key",
+      "description": "The minimal polynomial has smallest degree among annihilating polynomials",
+      "leanType": "aeval A p = 0 -> Monic p -> minpoly.natDegree <= p.natDegree"
+    }
   ]
 }

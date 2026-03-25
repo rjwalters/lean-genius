@@ -252,5 +252,13 @@
       "venue": "https://www.cs.ru.nl/~freek/100/",
       "note": "The Fair Games Theorem is #62 on Wiedijk's list of 100 well-known mathematical theorems: 'You cannot beat a fair game with any strategy'"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "fair_game_theorem",
+      "type": "core",
+      "description": "In a fair game, the expected value of the gambler's fortune is constant (martingale property)",
+      "leanType": "fair_game G -> E[fortune n] = E[fortune 0]"
+    }
   ]
 }

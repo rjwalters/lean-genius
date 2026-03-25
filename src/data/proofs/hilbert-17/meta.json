@@ -250,5 +250,13 @@
       "venue": "Inventiones Mathematicae 4, 229–237",
       "note": "Proved that at most 2^n rational function squares suffice for n-variable PSD polynomials"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "hilbert17_artin",
+      "type": "core",
+      "description": "A non-negative polynomial over R is a sum of squares of rational functions (Artin 1927)",
+      "leanType": "(p : MvPolynomial (Fin n) R) -> (forall x, 0 <= eval x p) -> exists qs, p = sum (q_i^2 / r_i^2)"
+    }
   ]
 }

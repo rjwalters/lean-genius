@@ -796,5 +796,13 @@
       "venue": "Inventiones Mathematicae 195(1), 1–277",
       "note": "Proved the other divisibility of the Iwasawa Main Conjecture for elliptic curves with good ordinary reduction, completing the p-adic approach to BSD rank 0/1"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "bsd_conjecture",
+      "type": "core",
+      "description": "Millennium Prize: rank of E(Q) equals order of vanishing of L(E,s) at s=1",
+      "leanType": "EllipticCurve E -> rank E(Q) = ord_{s=1} L(E,s)"
+    }
   ]
 }

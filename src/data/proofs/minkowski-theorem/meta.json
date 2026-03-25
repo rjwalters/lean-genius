@@ -186,5 +186,13 @@
       "venue": "Leipzig: Teubner",
       "note": "Founded the geometry of numbers — proved that a convex symmetric body of sufficient volume must contain a non-zero lattice point"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "minkowski_lattice",
+      "type": "core",
+      "description": "A convex symmetric body of volume > 2^n contains a nonzero lattice point",
+      "leanType": "Convex S -> symmetric S -> volume S > 2^n -> exists p in Lattice, p != 0 and p in S"
+    }
   ]
 }

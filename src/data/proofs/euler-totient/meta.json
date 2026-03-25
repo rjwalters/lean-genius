@@ -222,5 +222,19 @@
       "venue": "Oxford University Press",
       "note": "Standard reference for the totient function and its properties"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "euler_totient_formula",
+      "type": "core",
+      "description": "phi(n) = n * product (1 - 1/p) over prime divisors p of n",
+      "leanType": "Nat.totient n = n * Finset.prod (Nat.primeFactors n) (fun p => 1 - 1/p)"
+    },
+    {
+      "name": "euler_theorem",
+      "type": "key",
+      "description": "a^phi(n) = 1 (mod n) for gcd(a,n) = 1",
+      "leanType": "Nat.Coprime a n -> a ^ Nat.totient n % n = 1"
+    }
   ]
 }

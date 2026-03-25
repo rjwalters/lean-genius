@@ -216,5 +216,19 @@
     "axiomCount": 2,
     "theoremCount": 14,
     "definitionCount": 14
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "isoperimetric_inequality",
+      "type": "core",
+      "description": "Among all closed curves of length L, the circle encloses the maximum area: A <= L^2/(4*pi)",
+      "leanType": "ClosedCurve gamma -> length gamma = L -> area_enclosed gamma <= L^2 / (4 * pi)"
+    },
+    {
+      "name": "isoperimetric_equality",
+      "type": "key",
+      "description": "Equality holds iff the curve is a circle",
+      "leanType": "area_enclosed gamma = L^2 / (4 * pi) <-> is_circle gamma"
+    }
+  ]
 }

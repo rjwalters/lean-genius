@@ -155,6 +155,22 @@
       "endLine": 284,
       "summary": "Proves the Krylov subspace is M-invariant and establishes the O(n^2) recurrence for efficient computation.",
       "mathContext": "$M \\cdot v_k = v_{k+1}$: the Krylov subspace $\\text{span}\\{v_0, \\ldots, v_{d-1}\\}$ is $M$-invariant. Each step costs $O(n^2)$."
+    },
+    {
+      "id": "krylov-invariance",
+      "title": "Krylov Subspace Invariance and Recurrence",
+      "startLine": 285,
+      "endLine": 321,
+      "summary": "Proves $\text{krylov\\_subspace\\_invariant}$: $M \\cdot v_k = v_{k+1}$ where $v_k = M^k v$, showing the Krylov subspace is $M$-invariant. Proves the recurrence relation enabling $O(n^2)$ computation per Krylov step (single matrix-vector multiply) vs. $O(n^3)$ for naive $M^k$ computation.",
+      "mathContext": "Krylov invariance: $M \\cdot (M^k v) = M^{k+1} v$. Recurrence gives $O(n^2)$ per step vs. $O(n^3)$ naive, saving a factor of $n$ over $d \\leq n$ iterations."
+    },
+    {
+      "id": "summary-complexity",
+      "title": "Algorithm Summary and Complexity Analysis",
+      "startLine": 322,
+      "endLine": 368,
+      "summary": "Summary documenting the complete Krylov algorithm: compute $v, Mv, \\ldots, M^d v$ until linear dependence at step $d \\leq \\deg(\\mu_M) \\leq n$, extract minimal polynomial from dependence coefficients. Total cost: $O(n^3)$ field operations. Lists all 10 proved theorems with 0 sorries.",
+      "mathContext": "Krylov algorithm: $O(n^3)$ total for $\\mu_M$ computation. Optimal for nonderogatory matrices where $\\mu_M = \\chi_M$ and exactly $n$ Krylov vectors are independent."
     }
   ],
   "overview": {

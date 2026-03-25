@@ -289,5 +289,25 @@
       "venue": "https://www.cs.ru.nl/~freek/100/",
       "note": "The Sylow Theorems are #72 on Wiedijk's list of 100 well-known mathematical theorems and their formalization status across proof assistants"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "sylow_existence",
+      "type": "core",
+      "description": "If p^k divides |G|, then G has a subgroup of order p^k",
+      "leanType": "(p : Nat) -> Nat.Prime p -> p^k | Fintype.card G -> exists H : Subgroup G, Fintype.card H = p^k"
+    },
+    {
+      "name": "sylow_conjugacy",
+      "type": "key",
+      "description": "All Sylow p-subgroups are conjugate",
+      "leanType": "(P Q : Sylow p G) -> exists g, P = g * Q * g^(-1)"
+    },
+    {
+      "name": "sylow_counting",
+      "type": "key",
+      "description": "The number of Sylow p-subgroups divides |G|/p^k and is congruent to 1 mod p",
+      "leanType": "card (Sylow p G) % p = 1 and card (Sylow p G) | (card G / p^k)"
+    }
   ]
 }

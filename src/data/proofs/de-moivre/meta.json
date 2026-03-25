@@ -215,5 +215,13 @@
       "venue": "McGraw-Hill (reprinted by Dover, 1959)",
       "note": "Collects primary source translations including de Moivre's original work, providing historical context for the development of complex number theory"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "de_moivre",
+      "type": "core",
+      "description": "(cos theta + i sin theta)^n = cos(n*theta) + i sin(n*theta)",
+      "leanType": "(theta : R) -> (n : Nat) -> (Complex.exp (theta * I))^n = Complex.exp (n * theta * I)"
+    }
   ]
 }

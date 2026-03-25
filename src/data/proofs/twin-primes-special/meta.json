@@ -155,5 +155,13 @@
       "venue": "Annals of Mathematics 179(3), 1121–1174",
       "note": "Proved the first finite bound on prime gaps — a major step toward the twin prime conjecture"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "twin_prime_conjecture",
+      "type": "core",
+      "description": "There are infinitely many pairs of primes differing by 2",
+      "leanType": "Set.Infinite {p | Nat.Prime p and Nat.Prime (p + 2)}"
+    }
   ]
 }

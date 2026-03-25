@@ -233,5 +233,13 @@
       "venue": "Proceedings of the Japan Academy 28(4), 177–181",
       "note": "Strengthened Bertrand: for n > 25, there is always a prime between n and 6n/5, reducing the gap ratio from 2 to 1.2"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "bertrands_postulate",
+      "type": "core",
+      "description": "For every n >= 1, there exists a prime p with n < p <= 2n",
+      "leanType": "(n : Nat) -> 1 <= n -> exists p, Nat.Prime p and n < p and p <= 2*n"
+    }
   ]
 }

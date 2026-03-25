@@ -188,5 +188,13 @@
       "venue": "Commentarii Academiae Scientiarum Petropolitanae 9, 160–188",
       "note": "Proved that the sum of reciprocals of primes diverges — the first result on the distribution of primes"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "prime_reciprocal_diverges",
+      "type": "core",
+      "description": "The sum of reciprocals of primes diverges",
+      "leanType": "not (Summable (fun p => 1 / p : {p : Nat // Nat.Prime p} -> R))"
+    }
   ]
 }

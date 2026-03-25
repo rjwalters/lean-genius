@@ -298,5 +298,19 @@
       "citation": "De Morgan, A., A Budget of Paradoxes, Longmans, Green & Co. (1872, posthumous; 2nd ed. 1915). Catalogues angle trisection and circle squaring claims from amateur mathematicians, documenting the persistence of these problems long after their impossibility was proved.",
       "type": "book"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "angle_trisection_impossible",
+      "type": "core",
+      "description": "The general angle cannot be trisected by compass and straightedge",
+      "leanType": "not (forall theta, exists constructible_trisection theta)"
+    },
+    {
+      "name": "sixty_degree_not_trisectible",
+      "type": "key",
+      "description": "60 degrees cannot be trisected: cos(20 deg) is not constructible",
+      "leanType": "not (Constructible (Real.cos (20 * pi / 180)))"
+    }
   ]
 }

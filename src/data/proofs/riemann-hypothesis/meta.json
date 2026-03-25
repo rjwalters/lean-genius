@@ -342,5 +342,13 @@
     "axiomCount": 32,
     "theoremCount": 358,
     "definitionCount": 38
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "riemann_hypothesis",
+      "type": "core",
+      "description": "All non-trivial zeros of the Riemann zeta function have real part 1/2",
+      "leanType": "riemannZeta s = 0 -> s.re != 0 -> s.re != 1 -> s.re = 1/2"
+    }
+  ]
 }

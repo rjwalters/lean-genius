@@ -282,5 +282,13 @@
       "venue": "Annals of Mathematics Studies No. 3, Princeton University Press",
       "note": "Proved the Continuum Hypothesis is consistent with ZFC by constructing the constructible universe L — half of the independence proof, complementing Cohen's 1963 forcing result. Shows that Cantor's hierarchy $\\aleph_0 < 2^{\\aleph_0}$ is consistent with $2^{\\aleph_0} = \\aleph_1$"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "cantor_theorem",
+      "type": "core",
+      "description": "No surjection from a set to its power set",
+      "leanType": "(f : alpha -> Set alpha) -> not (Function.Surjective f)"
+    }
   ]
 }

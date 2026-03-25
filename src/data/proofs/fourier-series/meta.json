@@ -258,5 +258,19 @@
       "venue": "Acta Mathematica 116, pp. 135-157",
       "note": "Proved pointwise convergence of Fourier series for L² functions"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "fourier_convergence",
+      "type": "core",
+      "description": "L2 convergence of Fourier series for square-integrable functions",
+      "leanType": "f in L2 -> Tendsto (fun N => norm(f - S_N f)) atTop (nhds 0)"
+    },
+    {
+      "name": "parseval_theorem",
+      "type": "key",
+      "description": "Parseval's theorem: ||f||^2 = sum |c_n|^2",
+      "leanType": "integral |f|^2 = sum n, |fourierCoeff f n|^2"
+    }
   ]
 }

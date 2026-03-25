@@ -246,5 +246,13 @@
       "venue": "Les Relations entre les Mathématiques et la Physique Théorique, IHÉS",
       "note": "Elegant proof using the group of affine transformations"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "morley_theorem",
+      "type": "core",
+      "description": "The triangle formed by adjacent angle trisectors is equilateral",
+      "leanType": "Triangle ABC -> trisector_triangle ABC is equilateral"
+    }
   ]
 }

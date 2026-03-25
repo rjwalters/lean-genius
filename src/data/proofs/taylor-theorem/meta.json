@@ -229,5 +229,13 @@
       "venue": "McGraw-Hill, 3rd edition",
       "note": "Standard textbook proof of Taylor's theorem with remainder in various forms (Lagrange, Cauchy, integral)"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "taylor_theorem",
+      "type": "core",
+      "description": "f(x) = sum_{k=0}^n f^(k)(a)/k! * (x-a)^k + R_n(x) with Lagrange remainder",
+      "leanType": "ContDiff n f -> exists c between a x, f x = taylorPoly n f a x + f^(n+1)(c) / (n+1)! * (x-a)^(n+1)"
+    }
   ]
 }

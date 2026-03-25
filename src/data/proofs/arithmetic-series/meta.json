@@ -249,5 +249,13 @@
       "venue": "American Scientist, Vol. 94, No. 3, pp. 200-205",
       "note": "Investigates the historical accuracy of the Gauss schoolboy anecdote, tracing over 100 versions of the story and showing how details have been embellished over two centuries"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "arithmetic_series_sum",
+      "type": "core",
+      "description": "Sum of first n natural numbers equals n*(n+1)/2 (Gauss formula)",
+      "leanType": "(n : Nat) -> sum k in range (n+1), k = n * (n+1) / 2"
+    }
   ]
 }

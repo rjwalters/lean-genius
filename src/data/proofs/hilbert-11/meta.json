@@ -225,5 +225,25 @@
       "venue": "Springer GTM 7",
       "note": "Modern treatment of quadratic forms over Q and the Hasse-Minkowski theorem"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "HasseMinkowskiTheorem",
+      "type": "core",
+      "description": "A quadratic form over Q is isotropic iff it is isotropic over R and all Q_p",
+      "leanType": "Q.RepresentsZeroOverReals -> (forall p, Q.RepresentsZeroOverPadic p) -> Q.RepresentsZeroNontrivially"
+    },
+    {
+      "name": "sylvester_law_of_inertia",
+      "type": "key",
+      "description": "Every real quadratic form has a unique signature (p,q)",
+      "leanType": "(Q : QuadraticForm R V) -> exists! sig : RealSignature, classifies Q sig"
+    },
+    {
+      "name": "lagrange_four_squares",
+      "type": "key",
+      "description": "Every natural number is a sum of four squares",
+      "leanType": "forall n : Nat, exists a b c d : Int, n = a^2 + b^2 + c^2 + d^2"
+    }
   ]
 }

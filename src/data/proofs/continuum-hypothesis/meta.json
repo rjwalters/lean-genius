@@ -177,5 +177,19 @@
       "venue": "Proceedings of the National Academy of Sciences 50(6), 1143–1148",
       "note": "Proved CH is independent of ZFC using the method of forcing — won the Fields Medal in 1966"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "ch_independent",
+      "type": "core",
+      "description": "The continuum hypothesis is independent of ZFC (Godel + Cohen)",
+      "leanType": "Consistent ZFC -> not (Provable ZFC CH) and not (Provable ZFC (not CH))"
+    },
+    {
+      "name": "ch_statement",
+      "type": "key",
+      "description": "CH: there is no cardinal strictly between aleph_0 and 2^aleph_0",
+      "leanType": "not (exists kappa, aleph_0 < kappa and kappa < 2^aleph_0)"
+    }
   ]
 }

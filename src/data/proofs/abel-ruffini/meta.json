@@ -475,5 +475,13 @@
       "venue": "Springer (edited by V.B. Alekseev; based on Arnold's 1963 lectures to Moscow high school students)",
       "note": "Presents Arnold's remarkable topological proof of Abel-Ruffini via monodromy of polynomial roots: as coefficients vary along loops, roots braid with monodromy group S₅, which is not solvable — so no radical expression (whose monodromy is always solvable) can represent the roots. Uses only continuity and fundamental groups, no abstract algebra. Originally presented to high school students, demonstrating the quintic's impossibility is fundamentally a topological fact about branched coverings"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "exists_not_solvable_by_rad",
+      "type": "core",
+      "description": "There exists a polynomial of degree >= 5 whose roots cannot be expressed by radicals",
+      "leanType": "exists (p : Polynomial F), 5 <= p.natDegree and exists alpha, aeval alpha p = 0 and not (IsSolvableByRad F alpha)"
+    }
   ]
 }

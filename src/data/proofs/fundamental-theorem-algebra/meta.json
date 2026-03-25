@@ -352,5 +352,13 @@
         "leanType": "(a b c : ℂ) → a ≠ 0 → ∃ z : ℂ, a * z ^ 2 + b * z + c = 0"
       }
     ]
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "fta",
+      "type": "core",
+      "description": "Every non-constant polynomial over C has a root",
+      "leanType": "(p : Polynomial C) -> 0 < p.natDegree -> exists z : C, aeval z p = 0"
+    }
+  ]
 }

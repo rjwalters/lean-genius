@@ -306,5 +306,25 @@
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 0
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "cauchy_schwarz_inner",
+      "type": "core",
+      "description": "|<u,v>| <= ||u|| * ||v|| in real inner product spaces",
+      "leanType": "[InnerProductSpace R E] -> (u v : E) -> |inner u v| <= norm(u) * norm(v)"
+    },
+    {
+      "name": "cauchy_schwarz_sum",
+      "type": "wrapper",
+      "description": "Finite sum form: (sum a_i*b_i)^2 <= (sum a_i^2)*(sum b_i^2)",
+      "leanType": "(a b : Fin n -> R) -> (sum (a i * b i))^2 <= (sum (a i^2)) * (sum (b i^2))"
+    },
+    {
+      "name": "cauchy_schwarz_two_eq_iff",
+      "type": "bridge",
+      "description": "Equality iff a1*b2 = a2*b1 (proportionality characterization)",
+      "leanType": "(a1 a2 b1 b2 : R) -> (a1*b1 + a2*b2)^2 = (a1^2 + a2^2)*(b1^2 + b2^2) <-> a1*b2 = a2*b1"
+    }
+  ]
 }

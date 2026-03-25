@@ -237,5 +237,13 @@
       "venue": "McGraw-Hill, 3rd edition",
       "note": "Standard textbook proof using the connectedness of intervals"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "ivt",
+      "type": "core",
+      "description": "A continuous function on [a,b] attains every value between f(a) and f(b)",
+      "leanType": "ContinuousOn f (Icc a b) -> f a <= y -> y <= f b -> exists c in Icc a b, f c = y"
+    }
   ]
 }

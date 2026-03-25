@@ -216,5 +216,13 @@
       "Mathlib.Tactic"
     ],
     "opens": []
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "four_color",
+      "type": "core",
+      "description": "Every planar graph is 4-colorable",
+      "leanType": "PlanarGraph G -> exists f : V -> Fin 4, proper_coloring G f"
+    }
+  ]
 }

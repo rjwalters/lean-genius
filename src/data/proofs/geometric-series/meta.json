@@ -281,5 +281,13 @@
         "description": "Summable (fun k => r^k) for |r| < 1 — convergence precondition"
       }
     ]
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "geometric_series_sum",
+      "type": "core",
+      "description": "For |r| < 1, the sum of the geometric series is 1/(1-r)",
+      "leanType": "norm r < 1 -> HasSum (fun n => r^n) (1 / (1 - r))"
+    }
+  ]
 }

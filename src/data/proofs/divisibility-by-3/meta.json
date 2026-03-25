@@ -181,5 +181,13 @@
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 0
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "divisibility_by_3",
+      "type": "core",
+      "description": "A number is divisible by 3 iff the sum of its digits is divisible by 3",
+      "leanType": "(n : Nat) -> 3 | n <-> 3 | digitSum n"
+    }
+  ]
 }

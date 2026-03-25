@@ -245,5 +245,19 @@
       "relationship": "related",
       "description": "The Mersenne number $M_p = 2^p - 1$ factors as $(2-1)(2^{p-1} + 2^{p-2} + \\cdots + 1)$ when $p$ is composite (via the factorization $x^{ab} - 1 = (x^a - 1)(x^{a(b-1)} + \\cdots + 1)$). This explains why Mersenne primes require $p$ to be prime: if $p = ab$ then $2^a - 1 \\mid 2^p - 1$"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "euclid_euler",
+      "type": "core",
+      "description": "n is an even perfect number iff n = 2^(p-1)(2^p - 1) with 2^p - 1 prime",
+      "leanType": "EvenPerfect n <-> exists p, Nat.Prime (2^p - 1) and n = 2^(p-1) * (2^p - 1)"
+    },
+    {
+      "name": "sigma_perfect",
+      "type": "key",
+      "description": "n is perfect iff sigma(n) = 2n",
+      "leanType": "Perfect n <-> Nat.sigma n = 2 * n"
+    }
   ]
 }

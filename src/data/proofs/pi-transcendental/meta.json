@@ -210,5 +210,19 @@
     "axiomCount": 8,
     "theoremCount": 11,
     "definitionCount": 0
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "pi_transcendental",
+      "type": "core",
+      "description": "Pi is transcendental over Q",
+      "leanType": "Transcendental Q Real.pi"
+    },
+    {
+      "name": "squaring_circle_impossible",
+      "type": "key",
+      "description": "Squaring the circle is impossible (corollary of pi's transcendence)",
+      "leanType": "not (Constructible Real.pi)"
+    }
+  ]
 }

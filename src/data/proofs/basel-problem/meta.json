@@ -422,5 +422,19 @@
         "leanType": "(k : ℕ) → k ≠ 0 → HasSum (fun n : ℕ => 1 / (↑n : ℝ) ^ (2 * k)) ((-1)^(k+1) * 2^(2*k-1) * π^(2*k) * bernoulli (2*k) / (2*k).factorial)"
       }
     ]
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "basel_problem",
+      "type": "core",
+      "description": "Sum of reciprocal squares: sum 1/n^2 = pi^2/6 (Euler 1734)",
+      "leanType": "HasSum (fun n => 1 / (n+1)^2) (pi^2 / 6)"
+    },
+    {
+      "name": "zeta_two",
+      "type": "key",
+      "description": "The Riemann zeta function at 2 equals pi^2/6",
+      "leanType": "riemannZeta 2 = pi^2 / 6"
+    }
+  ]
 }

@@ -332,5 +332,13 @@
       "venue": "Journal fuer die reine und angewandte Mathematik 110, 104-129",
       "note": "Proved S_n and A_n are realizable over Q via Hilbert irreducibility, establishing the first systematic results on the Inverse Galois Problem"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "inverse_galois_sn",
+      "type": "core",
+      "description": "Every symmetric group S_n occurs as a Galois group over Q",
+      "leanType": "(n : Nat) -> exists K : IntermediateField Q, Gal(K/Q) ≅ Perm (Fin n)"
+    }
   ]
 }

@@ -190,5 +190,13 @@
       "venue": "Academic Press",
       "note": "Systematic study of metric spaces where geodesics are unique — the class of geometries Hilbert's 4th problem asks to characterize"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "hilbert4_metric",
+      "type": "core",
+      "description": "Construction of metrics for which straight lines are geodesics",
+      "leanType": "exists metric, forall line, is_geodesic metric line"
+    }
   ]
 }

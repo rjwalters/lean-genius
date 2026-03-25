@@ -336,5 +336,13 @@
       "venue": "terrytao.wordpress.com",
       "note": "Accessible exposition of Zhang's method and the Maynard-Tao improvements, including the connection to the Bombieri-Vinogradov theorem and admissible tuples"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "bounded_gaps",
+      "type": "core",
+      "description": "There exist infinitely many pairs of primes with bounded gap (Zhang/Maynard)",
+      "leanType": "exists H, Set.Infinite {n | exists p, Nat.Prime p and Nat.Prime (p + H) and p >= n}"
+    }
   ]
 }

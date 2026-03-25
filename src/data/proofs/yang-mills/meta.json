@@ -332,5 +332,13 @@
       "venue": "Clay Mathematics Institute Millennium Problems",
       "note": "Official problem statement for the $1 million Clay prize — proving existence of the mass gap"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "yang_mills_mass_gap",
+      "type": "core",
+      "description": "Millennium Prize: Yang-Mills theory exists and has a mass gap",
+      "leanType": "YangMillsTheory G -> exists m > 0, mass_gap m (quantized_theory G)"
+    }
   ]
 }

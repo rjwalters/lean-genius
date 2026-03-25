@@ -198,5 +198,13 @@
       "venue": "Springer",
       "note": "Modern treatment of Ptolemy's theorem in the context of Euclidean and non-Euclidean geometry"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "ptolemy",
+      "type": "core",
+      "description": "In a cyclic quadrilateral: AC*BD = AB*CD + AD*BC",
+      "leanType": "cyclic_quadrilateral ABCD -> AC*BD = AB*CD + AD*BC"
+    }
   ]
 }

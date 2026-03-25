@@ -199,5 +199,13 @@
       "venue": "Oxford University Press",
       "note": "Rigorous treatment of summability methods that give meaning to divergent series like Ramanujan's"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "ramanujan_sum",
+      "type": "core",
+      "description": "The Ramanujan/zeta regularization: 1+2+3+... 'equals' -1/12",
+      "leanType": "riemannZeta (-1) = -1/12"
+    }
   ]
 }

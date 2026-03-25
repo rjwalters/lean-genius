@@ -224,5 +224,13 @@
       "venue": "W.A. Benjamin",
       "note": "Modern proof using differential forms, presenting Green's theorem as a special case of Stokes' theorem"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "greens_theorem",
+      "type": "core",
+      "description": "The line integral around a closed curve equals the double integral of the curl over the enclosed region",
+      "leanType": "integral_boundary (P dx + Q dy) = integral_region (dQ/dx - dP/dy) dA"
+    }
   ]
 }

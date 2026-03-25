@@ -190,5 +190,13 @@
       "venue": "Abhandlungen der Königlichen Gesellschaft der Wissenschaften zu Göttingen 7, 3–22",
       "note": "Riemann's investigation of hypergeometric equations and their monodromy — the origin of the Riemann-Hilbert problem"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "hilbert21_monodromy",
+      "type": "core",
+      "description": "Existence of Fuchsian systems with prescribed monodromy",
+      "leanType": "MonodromyRep rho -> exists system, Fuchsian system and monodromy system = rho"
+    }
   ]
 }

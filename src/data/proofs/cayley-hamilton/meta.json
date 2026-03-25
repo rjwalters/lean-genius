@@ -213,5 +213,19 @@
       "venue": "Hodges and Smith, Dublin",
       "note": "Hamilton proved that every quaternion satisfies a quadratic equation — the quaternionic analogue of Cayley-Hamilton, predating Cayley's matrix formulation by five years"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "cayley_hamilton",
+      "type": "core",
+      "description": "Every square matrix satisfies its characteristic polynomial: chi_A(A) = 0",
+      "leanType": "(A : Matrix (Fin n) (Fin n) R) -> aeval A A.charpoly = 0"
+    },
+    {
+      "name": "minpoly_dvd_charpoly",
+      "type": "key",
+      "description": "The minimal polynomial divides the characteristic polynomial",
+      "leanType": "(A : Matrix (Fin n) (Fin n) R) -> minpoly R A dvd A.charpoly"
+    }
   ]
 }

@@ -228,5 +228,13 @@
       "venue": "Cambridge University Press",
       "note": "Comprehensive treatment of Cauchy-Schwarz and its generalizations, including the integral form, Hölder's inequality, and applications across mathematics"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "cauchy_schwarz_integral",
+      "type": "core",
+      "description": "|integral f*g|^2 <= (integral f^2) * (integral g^2) for L2 functions",
+      "leanType": "f in L2 -> g in L2 -> |integral f*g|^2 <= (integral f^2) * (integral g^2)"
+    }
   ]
 }
