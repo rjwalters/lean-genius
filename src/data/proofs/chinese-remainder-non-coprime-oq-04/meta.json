@@ -158,12 +158,7 @@
   ],
   "conclusion": {
     "summary": "We have formalized Dirichlet's approximation theorem via the pigeonhole principle, establishing the foundational result of Diophantine approximation. The proof demonstrates how finite combinatorics (pigeonhole on N+1 fractional parts) yields a powerful analytic result (rational approximation quality 1/(qN)). The connections to CRT lattice structure, Stern-Brocot mediants, and the golden ratio show how number theory, combinatorics, and geometry interweave in the theory of Diophantine approximation.",
-    "implications": [
-      "Every irrational has infinitely many rational approximations p/q with quality better than 1/q²",
-      "The golden ratio is the hardest-to-approximate irrational (Hurwitz constant √5)",
-      "CRT solvability for non-coprime moduli reduces to lattice point counting",
-      "Dirichlet's method extends to simultaneous approximation in higher dimensions (Minkowski's theorem)"
-    ],
+    "implications": "**1. Diophantine approximation**: Every irrational $\\alpha$ has infinitely many rational approximations $p/q$ satisfying $|\\alpha - p/q| < 1/q^2$. Hurwitz's theorem (1891) sharpens this to $1/(\\sqrt{5}q^2)$ — optimal because the golden ratio $\\phi = (1+\\sqrt{5})/2$ is the worst-approximable irrational.\n\n**2. Lattice connections**: CRT solvability for non-coprime moduli reduces to lattice point counting — the system $x \\equiv a_i \\pmod{m_i}$ is solvable iff $\\gcd(m_i, m_j) \\mid (a_i - a_j)$ for all pairs, connecting number theory to the geometry of numbers.\n\n**3. Higher-dimensional extensions**: Dirichlet's method extends via Minkowski's theorem to simultaneous approximation: for $\\alpha_1, \\ldots, \\alpha_n \\in \\mathbb{R}$, there exist integers with $|\\alpha_i - p_i/q| < 1/q^{1+1/n}$ for all $i$.\n\n**4. Transcendence theory**: Roth's theorem (1955, Fields Medal) proves $|\\alpha - p/q| > c_\\varepsilon/q^{2+\\varepsilon}$ for algebraic $\\alpha$ — matching Dirichlet's bound up to $\\varepsilon$ and providing the sharpest known measure of irrationality for algebraic numbers.",
     "openQuestions": [
       "Can the pigeonhole-based proof be extended to simultaneous Diophantine approximation in Lean, formalizing Minkowski's lattice point theorem for convex bodies?",
       "What is the formal relationship between the Stern-Brocot mediant operation and the convergents of continued fraction expansions — can this be unified in Lean's Mathlib?",
