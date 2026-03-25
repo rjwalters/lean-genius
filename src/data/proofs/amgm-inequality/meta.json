@@ -294,16 +294,22 @@
   },
   "mainTheorems": [
     {
-      "name": "amgm",
+      "name": "am_gm_two",
       "type": "core",
-      "description": "AM-GM: arithmetic mean >= geometric mean for non-negative reals",
-      "leanType": "(a : Fin n -> R) -> (forall i, 0 <= a i) -> (sum a / n) >= (prod a)^(1/n)"
+      "description": "Elementary two-variable AM-GM: (a + b) / 2 ≥ √(ab) via (√a - √b)² ≥ 0",
+      "leanType": "(a b : ℝ) → 0 ≤ a → 0 ≤ b → (a + b) / 2 ≥ Real.sqrt (a * b)"
     },
     {
-      "name": "amgm_equality",
+      "name": "am_gm_two_eq_iff",
       "type": "key",
-      "description": "Equality holds iff all values are equal",
-      "leanType": "AM a = GM a <-> forall i j, a i = a j"
+      "description": "Equality characterization: (a + b) / 2 = √(ab) iff a = b",
+      "leanType": "(a b : ℝ) → 0 ≤ a → 0 ≤ b → ((a + b) / 2 = Real.sqrt (a * b) ↔ a = b)"
+    },
+    {
+      "name": "am_gm_weighted",
+      "type": "key",
+      "description": "General weighted AM-GM via Mathlib: ∏ zᵢ^wᵢ ≤ ∑ wᵢzᵢ for weights summing to 1",
+      "leanType": "{ι : Type*} → (s : Finset ι) → (w z : ι → ℝ) → (∀ i ∈ s, 0 ≤ w i) → ∑ i ∈ s, w i = 1 → (∀ i ∈ s, 0 ≤ z i) → ∏ i ∈ s, z i ^ w i ≤ ∑ i ∈ s, w i * z i"
     }
   ]
 }
