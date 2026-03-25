@@ -119,8 +119,8 @@
     "proofId": "erdos-321",
     "type": "definition",
     "range": {
-      "startLine": 93,
-      "endLine": 101
+      "startLine": 126,
+      "endLine": 134
     },
     "title": "R(N) - Maximum Set Size",
     "content": "Defines $R(N) = \\text{maxDistinctReciprocal}(N)$ as the maximum cardinality of a subset $A \\subseteq \\{1, \\ldots, N\\}$ with distinct reciprocal subset sums, via `Finset.sup` over the powerset of $\\{0, \\ldots, N\\}$ filtered by the conjunction of `HasDistinctReciprocalSums` and the range constraint $1 \\leq n \\leq N$ for all elements. The definition is `noncomputable` due to the existential quantification in `HasDistinctReciprocalSums`. Small values: $R(1) = 1$ ($\\{1\\}$), $R(2) = 2$ ($\\{1, 2\\}$), $R(3) = 3$ ($\\{1, 2, 3\\}$).",
@@ -142,8 +142,8 @@
     "proofId": "erdos-321",
     "type": "concept",
     "range": {
-      "startLine": 103,
-      "endLine": 122
+      "startLine": 138,
+      "endLine": 155
     },
     "title": "Bleicher-Erdos Bounds (Axiomatized)",
     "content": "Three axioms encoding the known bounds on $R(N)$:\n\n1. **Lower bound** (1975): $R(N) \\geq N/\\log N$ for sufficiently large $N$. The full result by Bleicher-Erdos gives $R(N) \\geq (N/\\log N) \\cdot \\prod_{i=3}^{k} \\log_i N$. The construction selects integers $n \\leq N$ whose prime factorizations have specific properties ensuring reciprocal subset sums separate, using the unique factorization of $\\text{lcm}(1, \\ldots, N)$ into prime powers.\n\n2. **Upper bound** (1976): $R(N) \\leq C \\cdot (N/\\log N) \\cdot \\log\\log N$ for some constant $C > 0$. Uses a counting argument: $2^{|A|}$ distinct sums must fit within the range of rationals with denominator $\\text{lcm}(1, \\ldots, N) \\approx e^N$ (by the prime number theorem), giving $|A| \\leq \\log_2(\\text{lcm}) \\approx N/\\log 2$.\n\n3. **Main term**: $c_1 \\cdot N/\\log N \\leq R(N) \\leq c_2 \\cdot (N/\\log N) \\cdot \\log\\log N$, combining both bounds. The gap is exactly one iterated logarithm factor.\n\nThese are axiomatized (not proved in Lean) since the proofs require deep analytic number theory including the prime number theorem and careful prime factorization estimates.",
@@ -167,8 +167,8 @@
     "proofId": "erdos-321",
     "type": "insight",
     "range": {
-      "startLine": 124,
-      "endLine": 137
+      "startLine": 157,
+      "endLine": 170
     },
     "title": "Erdos Problem #321: Exact Asymptotics (OPEN)",
     "content": "The main open problem: determine the exact asymptotic behavior of $R(N)$. The theorem `erdos_321_asymptotics` states a tautological existence ($\\exists f, R(N) = f(N)$ — trivially satisfied by $f = R$), with the `rfl` proof acknowledging this is definitional. The real content is in the **gap between known bounds**: is $R(N) \\sim c \\cdot N/\\log N$ for some constant $c$ (Erdos conjectured yes), or do iterated logarithm corrections persist? This has been open for 50 years, making it one of the most precisely bounded yet unresolved problems in combinatorial number theory.\n\nThe file honestly frames this: the `/-` comment notes the tautology, and the proof is just `rfl`. The mathematical depth resides in the axiomatized bounds and the structured documentation, not in the single executable theorem.",
