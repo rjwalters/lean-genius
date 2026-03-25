@@ -611,17 +611,212 @@ theorem not yet in Mathlib:
     cubic_factor_no_roots_mod13 verify the factorization. -/
 axiom three_dvd_gal_card : 3 ∣ Fintype.card p.Gal
 
-/-- **Axiom B**: The Galois group is NOT contained in A₅.
+-- ============================================================================
+-- Part V(e2): Proving Axiom B via Vandermonde + Discriminant
+-- ============================================================================
 
-    disc(p) = -212144 < 0, so the Vandermonde product Δ satisfies
-    Δ² < 0, hence Δ ∉ ℚ. Since σ(Δ) = sign(σ)·Δ and Δ generates
-    a degree-2 extension of ℚ, there exists σ with sign(σ) = -1.
+/-
+## Strategy for Axiom B
 
-    Axiomatized because Mathlib lacks the disc(f) = Δ² identity.
-    The discriminant value -212144 is verifiable via the Sylvester
-    matrix determinant of p and p'. -/
-axiom gal_has_odd_perm :
-  ∃ σ : p.Gal, Equiv.Perm.sign (galToPerm5 σ) = -1
+The Galois group contains an odd permutation. Proof via discriminant:
+
+1. Define Δ = det(vandermonde(roots)) — the Vandermonde product
+2. Show σ(Δ) = sign(σ) · Δ for σ ∈ Gal (Vandermonde permutation identity)
+3. Axiom: Δ² = algebraMap ℚ SF (disc(p)) (discriminant = Vandermonde² identity)
+4. Axiom: disc(p) < 0 (computational: disc(x⁵-4x+2) = -212144)
+5. If all signs were +1, then Δ ∈ ℚ (fixed by all Galois), but Δ² < 0
+   in ℚ is impossible. Contradiction ⟹ some σ has sign(σ) = -1.
+-/
+
+-- Abbreviation for the splitting field
+private abbrev SF := p.SplittingField
+
+-- Section A: Root Enumeration
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- Canonical enumeration of the 5 roots of p in its splitting field. -/
+noncomputable def rootEnum_p : Fin 5 → SF :=
+  fun i => ((Fintype.equivOfCardEq (by rw [p_rootSet_card, Fintype.card_fin]) :
+    p.rootSet p.SplittingField ≃ Fin 5).symm i : SF)
+
+/-- Each value of rootEnum_p is a root of p. -/
+theorem rootEnum_p_is_root (i : Fin 5) :
+    Polynomial.aeval (rootEnum_p i) p = 0 := by
+  unfold rootEnum_p
+  have hmem := ((Fintype.equivOfCardEq (by rw [p_rootSet_card, Fintype.card_fin]) :
+    p.rootSet p.SplittingField ≃ Fin 5).symm i).prop
+  rw [Polynomial.mem_rootSet] at hmem
+  exact hmem.2
+
+/-- The roots are distinct (p is separable). -/
+theorem rootEnum_p_injective : Function.Injective rootEnum_p := by
+  intro i j hij
+  unfold rootEnum_p at hij
+  have : (Fintype.equivOfCardEq (by rw [p_rootSet_card, Fintype.card_fin]) :
+    p.rootSet p.SplittingField ≃ Fin 5).symm i =
+    (Fintype.equivOfCardEq (by rw [p_rootSet_card, Fintype.card_fin]) :
+    p.rootSet p.SplittingField ≃ Fin 5).symm j := Subtype.ext hij
+  exact (Fintype.equivOfCardEq (by rw [p_rootSet_card, Fintype.card_fin]) :
+    p.rootSet p.SplittingField ≃ Fin 5).symm.injective this
+
+-- Section B: Vandermonde Product
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- The Vandermonde product of p's roots:
+    Δ = det(vandermonde(rootEnum_p)) = ∏_{i<j} (rootEnum_p j - rootEnum_p i). -/
+noncomputable def vandermondeProduct_p : SF :=
+  Matrix.det (Matrix.vandermonde rootEnum_p)
+
+/-- The Vandermonde product is nonzero (since p is separable, all roots are distinct). -/
+theorem vandermondeProduct_p_ne_zero : vandermondeProduct_p ≠ 0 := by
+  unfold vandermondeProduct_p
+  rw [Matrix.det_vandermonde]
+  intro h
+  rw [Finset.prod_eq_zero_iff] at h
+  obtain ⟨i, _, hi⟩ := h
+  rw [Finset.prod_eq_zero_iff] at hi
+  obtain ⟨j, hj, hij⟩ := hi
+  have hne : j ≠ i := by simp [Finset.mem_Iio] at hj; omega
+  exact hne (rootEnum_p_injective (sub_eq_zero.mp hij))
+
+-- Section C: Galois Permutation of Roots
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- σ ∈ Gal permutes the roots: σ(rootEnum_p i) = rootEnum_p(galToPerm5 σ i). -/
+theorem gal_permutes_roots_p (σ : p.Gal) (i : Fin 5) :
+    σ (rootEnum_p i) = rootEnum_p (galToPerm5 σ i) := by
+  unfold rootEnum_p galToPerm5 galPermHomAux
+  simp only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.coe_mk,
+    Equiv.toFun_as_coe, Equiv.permCongr_apply, Equiv.symm_apply_apply,
+    MulAction.toPermHom_apply]
+  rfl
+
+-- Section D: Vandermonde Permutation Identity
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- Vandermonde matrix with permuted input = row-permuted Vandermonde. -/
+private theorem vandermonde_comp_eq_submatrix_p
+    (v : Fin 5 → SF) (π : Equiv.Perm (Fin 5)) :
+    Matrix.vandermonde (v ∘ π) = (Matrix.vandermonde v).submatrix π id := by
+  ext i j; simp [Matrix.vandermonde, Matrix.submatrix, Function.comp]
+
+/-- Vandermonde permutation: det(V(v ∘ π)) = sign(π) · det(V(v)). -/
+private theorem vandermonde_perm_det_p
+    (v : Fin 5 → SF) (π : Equiv.Perm (Fin 5)) :
+    (Matrix.vandermonde (v ∘ π)).det =
+    ↑↑(Equiv.Perm.sign π) * (Matrix.vandermonde v).det := by
+  rw [vandermonde_comp_eq_submatrix_p]
+  exact Matrix.det_permute π (Matrix.vandermonde v)
+
+/-- σ maps the Vandermonde matrix entry-wise according to root permutation. -/
+private theorem gal_map_vandermonde_entry_p (σ : p.Gal) (i j : Fin 5) :
+    σ ((Matrix.vandermonde rootEnum_p) i j) =
+    (Matrix.vandermonde (rootEnum_p ∘ galToPerm5 σ)) i j := by
+  simp only [Matrix.vandermonde, Matrix.of_apply, Function.comp]
+  rw [map_pow]
+  congr 1
+  exact gal_permutes_roots_p σ i
+
+/-- **Key identity**: σ(Δ) = sign(σ) · Δ.
+
+    The Galois action on the Vandermonde determinant equals the sign of the
+    induced permutation times the determinant. -/
+theorem gal_acts_on_vandermondeProduct_p (σ : p.Gal) :
+    σ vandermondeProduct_p = ↑↑(galSign σ) * vandermondeProduct_p := by
+  unfold vandermondeProduct_p galSign
+  trans (Matrix.vandermonde (rootEnum_p ∘ galToPerm5 σ)).det
+  · change σ.toAlgHom.toRingHom (Matrix.vandermonde rootEnum_p).det =
+      (Matrix.vandermonde (rootEnum_p ∘ galToPerm5 σ)).det
+    rw [RingHom.map_det]
+    congr 1; ext i j
+    simp only [RingHom.mapMatrix_apply]
+    change σ ((Matrix.vandermonde rootEnum_p) i j) =
+      (Matrix.vandermonde (rootEnum_p ∘ galToPerm5 σ)) i j
+    exact gal_map_vandermonde_entry_p σ i j
+  · exact vandermonde_perm_det_p rootEnum_p (galToPerm5 σ)
+
+-- Section E: Transparent Sub-Axioms
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- **Sub-axiom B1**: The discriminant of p = x⁵-4x+2 is negative.
+
+    Computation: disc(x⁵-4x+2) = Res(x⁵-4x+2, 5x⁴-4)
+    = 5⁵·2⁴ + 4⁴·(-4)⁵ = 50000 - 262144 = -212144 < 0.
+
+    This is a purely computational fact, verifiable via the 9×9 Sylvester
+    matrix determinant. Axiomatized because native_decide on a 9×9
+    determinant causes stack overflow in Lean's kernel. -/
+axiom disc_p_neg : Polynomial.discr p < 0
+
+/-- **Sub-axiom B2**: Δ² = algebraMap ℚ SF (disc(p)).
+
+    This is the standard identity disc(f) = ∏_{i<j}(rⱼ-rᵢ)² for monic f,
+    proved via the chain:
+      Δ² = ∏_{i≠j}(αᵢ-αⱼ) = ∏ᵢ f'(αᵢ) = Res(f_SF, f'_SF)
+         = algebraMap ℚ SF (Res(f,f')) = algebraMap ℚ SF (disc(f)).
+
+    Axiomatized because the full resultant chain is ~200 lines.
+    Each step is proved in InverseGaloisA5.lean for a different polynomial
+    and the pattern is directly transferable. -/
+axiom vandermonde_sq_eq_disc_p :
+    vandermondeProduct_p ^ 2 = algebraMap ℚ SF (Polynomial.discr p)
+
+-- Section F: Proof of Axiom B from Sub-Axioms
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/-- **THEOREM** (formerly Axiom B): The Galois group contains an odd permutation.
+
+    Proof by contradiction: assume all σ ∈ Gal are even (sign = +1).
+    Then σ(Δ) = Δ for all σ, so Δ is fixed by the full Galois group.
+    By the fundamental theorem of Galois theory, Δ ∈ ℚ.
+    Then Δ = algebraMap ℚ SF q for some q ∈ ℚ, so Δ² = algebraMap ℚ SF (q²).
+    But Δ² = algebraMap ℚ SF (disc(p)) with disc(p) < 0.
+    Since algebraMap is injective: q² = disc(p) < 0, contradicting q² ≥ 0. -/
+theorem gal_has_odd_perm :
+  ∃ σ : p.Gal, Equiv.Perm.sign (galToPerm5 σ) = -1 := by
+  -- By contradiction: assume all signs are +1
+  by_contra h_all_even
+  push_neg at h_all_even
+  -- h_all_even : ∀ σ, sign(galToPerm5 σ) ≠ -1
+  -- Since sign ∈ {±1}, this means ∀ σ, sign(galToPerm5 σ) = 1
+  have h_pos : ∀ σ : p.Gal, galSign σ = 1 := by
+    intro σ
+    unfold galSign
+    rcases Int.units_eq_one_or (Equiv.Perm.sign (galToPerm5 σ)) with h | h
+    · exact h
+    · exact absurd h (h_all_even σ)
+  -- From sign(σ) = 1 and σ(Δ) = sign(σ)·Δ, deduce σ(Δ) = Δ for all σ
+  have h_fix : ∀ σ : p.Gal, σ vandermondeProduct_p = vandermondeProduct_p := by
+    intro σ
+    have := gal_acts_on_vandermondeProduct_p σ
+    rw [h_pos σ] at this
+    simpa using this
+  -- Δ is in the fixed field of the full Galois group, hence Δ ∈ ℚ
+  -- (Fundamental Theorem of Galois Theory: fixed field of ⊤ = ℚ)
+  have h_in_Q : ∃ q : ℚ, vandermondeProduct_p = algebraMap ℚ SF q := by
+    haveI : IsGalois ℚ SF := IsGalois.mk
+    have h_mem : vandermondeProduct_p ∈
+        (⊥ : IntermediateField ℚ SF) := by
+      rw [← IsGalois.fixedField_fixingSubgroup (⊥ : IntermediateField ℚ SF)]
+      rw [IntermediateField.mem_fixedField_iff]
+      intro σ hσ
+      exact h_fix σ
+    obtain ⟨q, hq⟩ := IntermediateField.mem_bot.mp h_mem
+    exact ⟨q, hq.symm⟩
+  -- Get the rational value
+  obtain ⟨q, hq⟩ := h_in_Q
+  -- Δ² = algebraMap ℚ SF (q²) and also = algebraMap ℚ SF (disc(p))
+  have h_sq : algebraMap ℚ SF (q ^ 2) = algebraMap ℚ SF (Polynomial.discr p) := by
+    have : vandermondeProduct_p ^ 2 = algebraMap ℚ SF (q ^ 2) := by
+      rw [hq, map_pow]
+    rw [← this]
+    exact vandermonde_sq_eq_disc_p
+  -- algebraMap is injective (ℚ is a field), so q² = disc(p)
+  have h_eq : q ^ 2 = Polynomial.discr p :=
+    (algebraMap ℚ SF).injective h_sq
+  -- But q² ≥ 0 and disc(p) < 0 — contradiction
+  have h_nonneg : (0 : ℚ) ≤ q ^ 2 := sq_nonneg q
+  linarith [disc_p_neg]
 
 -- ============================================================================
 -- Part V(f): |Gal(p/ℚ)| = 120 (PROVED from Axioms A, B)

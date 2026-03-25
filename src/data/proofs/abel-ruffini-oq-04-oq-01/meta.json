@@ -20,8 +20,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 2,
-    "assumptions": "Two axioms: (A) three_dvd_gal_card (3||Gal|, from Dedekind's theorem at p=13: mod 13 factorization verified computationally), (B) gal_has_odd_perm (Gal⊄A₅, from disc=-212144<0 and Vandermonde-discriminant identity). The former opaque axiom |Gal|=120 is now a THEOREM proved from these via Sylow theory (no order-15 or order-30 subgroups in S₅) and A₅ simplicity.",
+    "axiomCount": 3,
+    "assumptions": "Three axioms: (A) three_dvd_gal_card (3||Gal|, Dedekind at p=13), (B1) disc_p_neg (disc(x^5-4x+2) < 0, computational: -212144), (B2) vandermonde_sq_eq_disc_p (standard identity). Former Axiom B (gal_has_odd_perm) is now a PROVED THEOREM via Vandermonde permutation identity + FTGT + discriminant sign.",
     "wiedijkNumber": 16,
     "dateAdded": "2026-03-25",
     "mathlibDependencies": [
@@ -62,7 +62,7 @@
       "Solvable groups and the derived series"
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 874,
+    "lineCount": 1069,
     "relatedProblems": [
       {
         "id": "abel-ruffini-oq-04",
@@ -233,7 +233,7 @@
       "Polynomial"
     ],
     "namespace": "AbelRuffiniOQ04OQ01",
-    "lineCount": 874,
+    "lineCount": 1069,
     "axiomCount": 2,
     "theoremCount": 37,
     "definitionCount": 6,
