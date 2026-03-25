@@ -214,5 +214,49 @@
     "axiomCount": 0,
     "theoremCount": 0,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "Shelah, Saharon",
+      "title": "Erdős and Rényi conjecture",
+      "year": "1998",
+      "venue": "Journal of Combinatorial Theory, Series A, 82(2), pp. 179\u2013185",
+      "note": "Proved the Erdős-Rényi conjecture: non-Ramsey graphs on n vertices have at least 2^{cn} non-isomorphic induced subgraphs, using a partition argument connected to the Hales-Jewett theorem"
+    },
+    {
+      "authors": "Alon, Noga; Hajnal, András",
+      "title": "Ramsey graphs contain many distinct induced subgraphs",
+      "year": "1991",
+      "venue": "Graph Theory and Combinatorics (Cambridge, 1988), Discrete Mathematics, 93(1), pp. 1\u20138",
+      "note": "Proved the sub-exponential bound exp(n/(log n)^{O(log log n)}) for distinct induced subgraphs in non-Ramsey graphs, using Szemerédi's regularity lemma"
+    },
+    {
+      "authors": "Erdős, Paul; Hajnal, András",
+      "title": "Ramsey-type theorems",
+      "year": "1989",
+      "venue": "Discrete Applied Mathematics, 25(1\u20132), pp. 37\u201352",
+      "note": "Proved the first exponential bound 2^{Ω(n)} for graphs avoiding complete bipartite subgraphs K_{k,k} in both the graph and its complement"
+    },
+    {
+      "authors": "Prömel, Hans Jürgen; Rödl, Vojtěch",
+      "title": "Non-Ramsey graphs are c·log(n)-universal",
+      "year": "1999",
+      "venue": "Journal of Combinatorial Theory, Series A, 88(2), pp. 379\u2013384",
+      "note": "Proved that non-Ramsey graphs are c·log(n)-universal (contain every graph on c·log(n) vertices as an induced subgraph), providing an alternative approach to induced subgraph diversity"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Graph theory and probability",
+      "year": "1959",
+      "venue": "Canadian Journal of Mathematics, 11, pp. 34\u201338",
+      "note": "Early paper establishing the probabilistic method for graph Ramsey theory, showing random graphs achieve the logarithmic bound for clique/independent set size"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Some old and new problems in various branches of combinatorics",
+      "year": "1997",
+      "venue": "Discrete Mathematics, 165/166, pp. 227\u2013231",
+      "note": "Survey including Problem 1036 and related questions on induced subgraph diversity in non-Ramsey graphs"
+    }
+  ]
 }
