@@ -294,6 +294,16 @@
       "targetId": "kroneckers-jugendtraum",
       "relationship": "related",
       "description": "Kronecker's Jugendtraum and the Kronecker-Weber theorem (every abelian extension of $\\mathbb{Q}$ is contained in a cyclotomic field) connect to Abel-Ruffini via abelian Galois groups: the theorem implies every polynomial with abelian Galois group is solvable by radicals. Abel-Ruffini's impossibility arises precisely when the Galois group is non-abelian (and non-solvable), making $S_5$ the critical obstruction"
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "Cantor's 1891 diagonal argument proving the uncountability of $\\mathbb{R}$ continues the impossibility paradigm inaugurated by Abel-Ruffini: no enumeration captures all reals, just as no radical formula captures all quintic roots. Cantor's method became the template for both Gödel's incompleteness and Turing's halting problem proofs"
+    },
+    {
+      "targetId": "hilbert-10",
+      "relationship": "related",
+      "description": "Matiyasevich's 1970 negative resolution of Hilbert's 10th problem — no algorithm decides whether arbitrary Diophantine equations have integer solutions — extends the impossibility paradigm from Abel-Ruffini through Gödel and Turing to Diophantine decidability. Both concern the limits of solving polynomial equations, but at different levels: Abel-Ruffini limits symbolic expressibility of roots, while Hilbert's 10th limits algorithmic decidability of existence"
     }
   ],
   "references": [
