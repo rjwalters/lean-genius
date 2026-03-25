@@ -249,6 +249,32 @@
     "lineCount": 115,
     "axiomCount": 0,
     "theoremCount": 4,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "mainTheorems": [
+      {
+        "name": "natDegree_dvd_card_gal",
+        "statement": "For any irreducible polynomial p over a CharZero field F, p.natDegree divides Nat.card p.Gal",
+        "line": 30,
+        "significance": "Generalizes Mathlib's prime_degree_dvd_card to all irreducible polynomials via the tower law on F ⊂ F⟮α⟯ ⊂ SplittingField(p)"
+      },
+      {
+        "name": "galois_2group_implies_degree_pow2",
+        "statement": "If Gal(minpoly(ℚ,α)) is a 2-group, then natDegree(minpoly ℚ α) divides 2^n for some n",
+        "line": 66,
+        "significance": "Eliminates the axiom galois_2group_implies_degree_pow2 from OQ-02 by chaining natDegree_dvd_card_gal with IsPGroup.iff_card"
+      },
+      {
+        "name": "galois_2group_implies_degree_is_pow2",
+        "statement": "If Gal(minpoly(ℚ,α)) is a 2-group, then natDegree(minpoly ℚ α) = 2^k for some k",
+        "line": 76,
+        "significance": "Strengthens divisibility to equality using OQ-01's dvd_pow_two_is_pow_two — the definitive form of the axiom elimination"
+      },
+      {
+        "name": "galois_criterion_implies_degree_criterion",
+        "statement": "The Galois criterion (2-group Gal) implies the degree criterion (natDegree = 2^k)",
+        "line": 97,
+        "significance": "Bridge theorem connecting OQ-02's Galois-theoretic approach to OQ-01's degree-theoretic approach to constructibility"
+      }
+    ]
   }
 }

@@ -293,7 +293,57 @@
     "lineCount": 298,
     "axiomCount": 1,
     "theoremCount": 15,
-    "definitionCount": 1
+    "definitionCount": 1,
+    "mainTheorems": [
+      {
+        "name": "wantzel_galois_characterization",
+        "type": "axiom",
+        "description": "The Wantzel-Galois biconditional: an algebraic number is constructible iff its minimal polynomial has a 2-group Galois group",
+        "leanType": "(α : ℝ) → (hα : IsIntegral ℚ α) → IsConstructibleFromQ α ↔ IsPGroup 2 (minpoly ℚ α).Gal"
+      },
+      {
+        "name": "x_cube_sub_2_gal_not_2group",
+        "type": "core",
+        "description": "Gal(x³-2/ℚ) ≅ S₃ (order 6) is NOT a 2-group, so ∛2 is not constructible",
+        "leanType": "¬ IsPGroup 2 (X ^ 3 - C 2 : ℚ[X]).Gal"
+      },
+      {
+        "name": "cos20_gal_not_2group",
+        "type": "core",
+        "description": "Gal(8x³-6x-1/ℚ) ≅ ℤ/3ℤ (order 3) is NOT a 2-group, so cos(20°) is not constructible",
+        "leanType": "¬ IsPGroup 2 (8 * X ^ 3 - 6 * X - C 1 : ℚ[X]).Gal"
+      },
+      {
+        "name": "x_sq_sub_2_gal_is_2group",
+        "type": "core",
+        "description": "Gal(x²-2/ℚ) ≅ ℤ/2ℤ (order 2 = 2¹) IS a 2-group, so √2 is constructible",
+        "leanType": "IsPGroup 2 (X ^ 2 - C 2 : ℚ[X]).Gal"
+      },
+      {
+        "name": "x_4th_sub_2_gal_is_2group",
+        "type": "core",
+        "description": "Gal(x⁴-2/ℚ) ≅ D₄ (order 8 = 2³) IS a 2-group, so 2^(1/4) is constructible",
+        "leanType": "IsPGroup 2 (X ^ 4 - C 2 : ℚ[X]).Gal"
+      },
+      {
+        "name": "galois_2group_implies_degree_pow2",
+        "type": "key",
+        "description": "2-group Galois group implies the minimal polynomial degree divides a power of 2 (OQ-02 implies OQ-01)",
+        "leanType": "(α : ℝ) → (hα : IsIntegral ℚ α) → IsPGroup 2 (minpoly ℚ α).Gal → ∃ n : ℕ, (minpoly ℚ α).natDegree ∣ 2 ^ n"
+      },
+      {
+        "name": "constructible_implies_degree_dvd_pow2",
+        "type": "key",
+        "description": "Constructibility implies the degree criterion: chains wantzel_galois_characterization with galois_2group_implies_degree_pow2",
+        "leanType": "(α : ℝ) → (hα : IsIntegral ℚ α) → IsConstructibleFromQ α → ∃ n : ℕ, (minpoly ℚ α).natDegree ∣ 2 ^ n"
+      },
+      {
+        "name": "not_constructible_of_not_2group",
+        "type": "key",
+        "description": "Contrapositive: non-2-group Galois group implies non-constructibility",
+        "leanType": "(α : ℝ) → (hα : IsIntegral ℚ α) → ¬ IsPGroup 2 (minpoly ℚ α).Gal → ¬ IsConstructibleFromQ α"
+      }
+    ]
   },
   "references": [
     {

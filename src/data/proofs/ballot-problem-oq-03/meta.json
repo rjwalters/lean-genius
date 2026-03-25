@@ -211,9 +211,9 @@
     "summary": "Comprehensive formalization of 2D lattice path combinatorics. Proves the Crossing Lemma, path count formula, Catalan numbers, ballot theorem, Vandermonde identity, binomial coefficient symmetry via path flip bijection, LGV determinant algebra, and Catalan-Ballot unification. The Lindström involution infrastructure is in place for the full LGV proof.",
     "implications": "**Theoretical Significance and Applications:**\n1. **Combinatorics**: The LGV lemma is the foundation for counting plane partitions, standard Young tableaux, and Aztec diamond tilings\n2. **Algebra**: Determinantal identities for Schur polynomials follow from LGV\n3. **Probability**: The ballot problem and Catalan numbers are unified through lattice path bijections and the reflection principle\n4. **Geometry**: Non-intersecting path counting generalizes to higher-dimensional reflection principles\n5. **Formalization**: This 2878-line development demonstrates that substantial enumerative combinatorics (binomial identities, bijective proofs, sign-reversing involutions) can be machine-verified in Lean 4 with Mathlib",
     "openQuestions": [
-      "Complete lgv_lemma_2x2: formalize the Lindström involution bijection (swapTails at first meeting column creates an involution between intersecting identity pairs and all crossing pairs)",
-      "Extend to r×r LGV lemma for r > 2 paths using the general Lindström-Gessel-Viennot determinant",
-      "Formalize the bijection between non-intersecting Dyck paths and Standard Young Tableaux"
+      "Extend to the general r×r LGV lemma for r > 2 non-intersecting lattice path tuples using the full Lindström-Gessel-Viennot determinant formula",
+      "Formalize the bijection between non-intersecting Dyck paths and Standard Young Tableaux via the RSK correspondence",
+      "Derive the hook-length formula for Standard Young Tableaux as a corollary of the r×r LGV lemma"
     ]
   },
   "crossReferences": [
@@ -311,6 +311,68 @@
     "lineCount": 2878,
     "axiomCount": 0,
     "theoremCount": 119,
-    "definitionCount": 32
+    "definitionCount": 32,
+    "mainTheorems": [
+      {
+        "name": "lgv_lemma_2x2",
+        "line": 2834,
+        "statement": "The 2x2 LGV Lemma: niPairCount equals lgvDet under proper source/target ordering (a1 <= a2, b1 <= b2)",
+        "description": "Core result. The count of non-intersecting lattice path pairs equals the 2x2 determinant of binomial path counts. Proved via complement counting and the Lindstrom involution bijection."
+      },
+      {
+        "name": "crossing_lemma",
+        "line": 257,
+        "statement": "If y1 < y2 and y1+n1 > y2+n2, then the paths are not non-intersecting",
+        "description": "The 2D reflection principle: paths that start lower but end higher must share a lattice point. Proved by column induction on the entry gap."
+      },
+      {
+        "name": "path_count_eq_choose",
+        "line": 351,
+        "statement": "|pathType m n| = C(m+n, m)",
+        "description": "The number of lattice paths with m East and n North steps equals the binomial coefficient, proved via the pathSplitEquiv bijection and Pascal's identity."
+      },
+      {
+        "name": "lindstrom_involution",
+        "line": 2803,
+        "statement": "Dual injections between intersecting identity pairs and crossing pairs yield equal cardinalities",
+        "description": "The Lindstrom sign-reversing involution: swapping suffixes at the canonical shared point bijects intersecting identity pairs with all crossing pairs."
+      },
+      {
+        "name": "ballot_formula",
+        "line": 574,
+        "statement": "ballotSeqCount(p,q) * (p+q) = (p-q) * C(p+q, p) for q < p",
+        "description": "The classical ballot theorem in multiplicative form, proved via the absorption identity."
+      },
+      {
+        "name": "catalan_formula",
+        "line": 523,
+        "statement": "Cn(n) * (n+1) = C(2n, n)",
+        "description": "The Catalan number division formula, proved algebraically via the absorption identity."
+      },
+      {
+        "name": "catalan_eq_ballot",
+        "line": 1097,
+        "statement": "Cn(n) = ballotSeqCount(n+1, n)",
+        "description": "Unifies the Catalan number with the ballot count: the n-th Catalan number counts ballot sequences where A (n+1 votes) always leads B (n votes)."
+      },
+      {
+        "name": "vandermonde",
+        "line": 499,
+        "statement": "C(m+n, r) = sum over k of C(m,k) * C(n, r-k)",
+        "description": "Vandermonde's convolution identity, derived from Mathlib's Nat.add_choose_eq."
+      },
+      {
+        "name": "choose_symm_via_paths",
+        "line": 1062,
+        "statement": "C(m+n, m) = C(m+n, n) via the pathFlip bijection",
+        "description": "Bijective proof of binomial symmetry: swapping East and North steps gives pathType(m,n) ≃ pathType(n,m)."
+      },
+      {
+        "name": "lgvDet_nonneg",
+        "line": 2872,
+        "statement": "0 <= lgvDet(m, a1, b1, a2, b2) under proper ordering",
+        "description": "Non-negativity of the LGV determinant follows from the LGV lemma since it counts non-intersecting path pairs."
+      }
+    ]
   }
 }
