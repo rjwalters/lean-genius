@@ -4,7 +4,9 @@
   "slug": "erdos-1053",
   "description": "If σ(n) = k·n (n is k-perfect), must k = o(log log n)? Known: k ≤ 11 exists. Gronwall: σ(n)/n = O(log log n). Robin's inequality gives k = O(log log n) conditionally on RH. Status: OPEN.",
   "meta": {
+    "author": "Paul Erdős",
     "erdosNumber": 1053,
+    "erdosProblemStatus": "open",
     "status": "axiomatized",
     "tags": [
       "erdos",
@@ -184,12 +186,29 @@
       "Mathlib"
     ],
     "opens": [],
-    "namespace": null,
+    "namespace": "",
     "lineCount": 152,
     "axiomCount": 6,
     "theoremCount": 5,
     "substantiveTheoremCount": 2,
     "computationalVerifications": 2,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "mainTheorems": [
+      {
+        "name": "one_perfect_unique",
+        "type": "proved",
+        "description": "The only 1-perfect number is 1 (σ(n) = n implies n = 1)"
+      },
+      {
+        "name": "robin_gives_O_bound",
+        "type": "proved",
+        "description": "Robin's inequality (conditional on RH) implies k = O(log log n) for k-perfect n ≥ 5041"
+      },
+      {
+        "name": "sigma_def",
+        "type": "proved",
+        "description": "σ(n) = ∑ d, d | n — the divisor sum function as a Finset.sum"
+      }
+    ]
   }
 }
