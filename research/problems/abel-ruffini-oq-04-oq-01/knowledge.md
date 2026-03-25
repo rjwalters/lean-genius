@@ -70,7 +70,49 @@ we proved a concrete witness: Gal(x^5 - 4x + 2 / Q) ≅ S_5.
 - src/data/research/problems/abel-ruffini-oq-04-oq-01.json (updated knowledge)
 
 ### Remaining Work to Eliminate the Axiom
-1. **Real analysis (IVT + Rolle)**: Show p has exactly 3 real roots (~100-150 lines)
-2. **Complex conjugation**: Embed splitting field into ℂ, show conj restricts to automorphism (~100-150 lines)
-3. **Connection**: Show the automorphism acts as a transposition on roots (~50 lines)
-4. **Final bridge**: Connect closure_cycle_swap_eq_top to galActionHom image (~50 lines)
+1. ~~**Real analysis (IVT + Rolle)**: Show p has exactly 3 real roots~~ **SUPERSEDED by Session 3**
+2. ~~**Complex conjugation**: Embed splitting field into ℂ~~ **SUPERSEDED by Session 3**
+3. ~~**Connection**: automorphism acts as transposition~~ **SUPERSEDED by Session 3**
+4. ~~**Final bridge**: Connect to galActionHom~~ **SUPERSEDED by Session 3**
+
+## Session 2026-03-24 (Session 3) - Axiom Decomposition via Sylow Theory
+
+**Mode**: REVISIT (RICH knowledge, score ~25)
+**Outcome**: progress (|Gal|=120 now PROVED as theorem from 2 narrow axioms)
+
+### What I Did
+- Decomposed the opaque axiom `gal_card_eq_120` into 2 narrower, well-motivated axioms
+- Added galToPerm5 infrastructure (injection Gal → Perm(Fin 5), sign homomorphism)
+- Proved `no_subgroup_order_15` via Sylow theory + native_decide (order-5/order-3 commutativity obstruction)
+- Proved `no_subgroup_order_30` via A₅ simplicity (index-2 subgroup contradicts simple)
+- Proved `gal_card_ne_60` via sign homomorphism (unique order-60 subgroup is A₅, but Gal ⊄ A₅)
+- Proved `gal_card_eq_120` as a THEOREM from the 2 axioms + divisibility analysis
+- Verified mod 13 factorization: p_root_mod13_at_2, p_root_mod13_at_5, cubic_factor_no_roots_mod13
+
+### The Two New Axioms
+1. `three_dvd_gal_card`: 3 | |Gal| (Dedekind's theorem at p=13)
+   - Supporting: x⁵-4x+2 ≡ (x-2)(x-5)(x³+7x²+8) mod 13 (verified by native_decide)
+   - Cubic has no roots mod 13 (verified by native_decide)
+   - Blocked by: Mathlib lacks Dedekind's theorem
+2. `gal_has_odd_perm`: ∃ σ ∈ Gal with sign(σ) = -1
+   - Supporting: disc(p) = -212144 < 0, so Vandermonde product Δ ∉ ℚ
+   - Blocked by: Mathlib lacks disc(f) = Δ² identity
+
+### Key Findings
+- The Sylow approach (InverseGaloisA5 pattern) is much more practical than IVT + complex conjugation
+- native_decide can verify mod-13 factorization efficiently
+- no_subgroup_order_15 requires the deep fact that order-5 and order-3 elements don't commute in S₅
+- no_subgroup_order_30 follows from A₅ simplicity via index-2 normality
+- gal_card_ne_60 requires showing that ANY order-60 subgroup of S₅ is A₅ (via sign homomorphism)
+
+### Files Modified
+- proofs/Proofs/AbelRuffiniOQ04OQ01.lean (475→874 lines, 13→37 theorems, 1→2 axioms)
+- src/data/proofs/abel-ruffini-oq-04-oq-01/meta.json (updated counts)
+- src/data/research/problems/abel-ruffini-oq-04-oq-01.json (to be updated)
+
+### Remaining Work to Eliminate ALL Axioms
+1. **Dedekind's theorem**: Formalize the connection between mod-p factorization and Frobenius cycle types (~200-300 lines)
+2. **Discriminant-Vandermonde identity**: Prove disc(f) = Δ² for monic separable polynomials (~100-200 lines)
+   - Mathlib has Matrix.det_vandermonde; need to connect to Polynomial.disc
+3. **Alternative for Axiom B**: Could use IVT approach instead (3 real roots → disc < 0)
+   - IVT gives roots, derivative gives upper bound, combined: exactly 3 real → disc negative

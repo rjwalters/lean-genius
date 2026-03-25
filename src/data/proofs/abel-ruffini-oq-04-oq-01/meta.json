@@ -2,7 +2,7 @@
   "id": "abel-ruffini-oq-04-oq-01",
   "title": "Concrete Abel-Ruffini: Gal(x⁵ - 4x + 2) ≅ S₅ and Unsolvability by Radicals",
   "slug": "abel-ruffini-oq-04-oq-01",
-  "description": "Proves that the polynomial x⁵ - 4x + 2 over ℚ has Galois group S₅, completing the Abel-Ruffini proof chain with a concrete witness. The roots of this polynomial cannot be expressed using radicals. Irreducibility proved via Eisenstein at p=2; Gal ≅ S₅ via galActionHom bijectivity (1 axiom: |Gal|=120). Realizes S₅ as a Galois group over ℚ.",
+  "description": "Proves that the polynomial x⁵ - 4x + 2 over ℚ has Galois group S₅, completing the Abel-Ruffini proof chain with a concrete witness. The roots of this polynomial cannot be expressed using radicals. Irreducibility proved via Eisenstein at p=2; |Gal|=120 proved from Dedekind's theorem (3||Gal|) and discriminant analysis (Gal⊄A₅), using Sylow theory to rule out orders 15, 30, 60. Realizes S₅ as a Galois group over ℚ.",
   "meta": {
     "author": "Abel (1824), Galois (1832)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Abel%E2%80%93Ruffini_theorem",
@@ -20,8 +20,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 1,
-    "assumptions": "One axiom: gal_card_eq_120 (|Gal(x⁵-4x+2/ℚ)| = 120). Justified by: the polynomial has exactly 3 real roots (sign changes + derivative analysis), so complex conjugation is a transposition in the Galois group; combined with a 5-cycle (prime degree), these generate S₅.",
+    "axiomCount": 2,
+    "assumptions": "Two axioms: (A) three_dvd_gal_card (3||Gal|, from Dedekind's theorem at p=13: mod 13 factorization verified computationally), (B) gal_has_odd_perm (Gal⊄A₅, from disc=-212144<0 and Vandermonde-discriminant identity). The former opaque axiom |Gal|=120 is now a THEOREM proved from these via Sylow theory (no order-15 or order-30 subgroups in S₅) and A₅ simplicity.",
     "wiedijkNumber": 16,
     "dateAdded": "2026-03-25",
     "mathlibDependencies": [
@@ -176,11 +176,11 @@
     },
     {
       "id": "gal-order",
-      "title": "Part V: Polynomial Evaluations and Galois Group Order (Axiom)",
+      "title": "Parts V(a)-(f): Galois Group Order |Gal| = 120 (Theorem)",
       "startLine": 195,
-      "endLine": 276,
-      "summary": "Computes $p(-2) = -22$, $p(-1) = 5$, $p(0) = 2$, $p(1) = -1$, $p(2) = 26$ (showing 3 sign changes hence $\\geq 3$ real roots). Axiomatizes $|\\text{Gal}| = 120$ with detailed justification: 3 real roots + derivative analysis, complex conjugation gives a transposition, transposition + 5-cycle generates $S_5$.",
-      "mathContext": "Axiom: $|\\text{Gal}(x^5-4x+2/\\mathbb{Q})| = 120 = 5!$. Justified: 3 sign changes in $p$ at integer values, $p'(x) = 5x^4 - 4$ has 2 real critical points, so $p$ has exactly 3 real roots $\\Rightarrow$ transposition, prime degree $\\Rightarrow$ 5-cycle, $\\langle (i\\;j), (1\\;2\\;3\\;4\\;5) \\rangle = S_5$."
+      "endLine": 755,
+      "summary": "Proves $|\\text{Gal}| = 120$ as a theorem via axiom decomposition. (a) Evaluations showing 3 sign changes. (b) Group theory: 5-cycle + transposition = $S_5$ via native_decide conjugation chain. (c) galToPerm5 injection infrastructure. (d) Sylow theory: no order-15 subgroups (native_decide), no order-30 subgroups ($A_5$ simplicity). (e) Two narrow axioms: $3 \\mid |\\text{Gal}|$ (Dedekind at $p=13$) and $\\text{Gal} \\not\\subset A_5$ (discriminant $< 0$). (f) Proof: $15 \\mid |\\text{Gal}|$, $|\\text{Gal}| \\mid 120$, rule out 15/30/60.",
+      "mathContext": "Theorem: $|\\text{Gal}(x^5-4x+2/\\mathbb{Q})| = 120$. From $5 \\mid |G|$, $3 \\mid |G|$ (Dedekind), $|G| \\mid 120$: $|G| \\in \\{15,30,60,120\\}$. Not 15 (Sylow), not 30 ($A_5$ simple), not 60 ($G \\not\\subset A_5$). Two axioms: Dedekind's theorem at $p=13$, discriminant-Vandermonde identity."
     },
     {
       "id": "gal-iso",
@@ -216,7 +216,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization completes the Abel-Ruffini proof chain by exhibiting a concrete polynomial $x^5 - 4x + 2$ whose roots cannot be expressed by radicals. The proof proceeds from Eisenstein irreducibility through Galois group identification ($\\text{Gal} \\cong S_5$ via galActionHom bijectivity) to the final unsolvability conclusion via Galois's theorem. Only one axiom is used: $|\\text{Gal}| = 120$, justified by classical real root analysis and group generation.",
+    "summary": "This formalization completes the Abel-Ruffini proof chain by exhibiting a concrete polynomial $x^5 - 4x + 2$ whose roots cannot be expressed by radicals. The proof proceeds from Eisenstein irreducibility through Galois group identification ($\\text{Gal} \\cong S_5$) to the unsolvability conclusion via Galois's theorem. The key result $|\\text{Gal}| = 120$ is proved as a theorem from two narrow axioms (Dedekind at $p=13$, discriminant non-square) via Sylow theory and $A_5$ simplicity.",
     "implications": "This result makes the Abel-Ruffini theorem tangible: rather than an abstract impossibility for the 'general quintic', we have a specific polynomial whose five roots provably resist all radical expressions. The $S_5$ realizability result also contributes to the inverse Galois problem, complementing existing gallery realizations of $S_3$ and $F_{20}$.",
     "openQuestions": [
       "The group theory is now proved (closure_cycle_swap_eq_top). Remaining to eliminate the axiom: formalize real root count (IVT + Rolle) and show complex conjugation gives a transposition in the Galois group.",
@@ -233,10 +233,11 @@
       "Polynomial"
     ],
     "namespace": "AbelRuffiniOQ04OQ01",
-    "lineCount": 475,
-    "axiomCount": 1,
-    "theoremCount": 13,
-    "definitionCount": 3
+    "lineCount": 874,
+    "axiomCount": 2,
+    "theoremCount": 37,
+    "definitionCount": 6,
+    "sorryCount": 0
   },
   "references": [
     {
