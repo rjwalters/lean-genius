@@ -98,28 +98,28 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Fix x-vs-cos θ notation in originalContributions[1] and [2]: change generic x to cos θ to match the actual Lean theorem signatures. See finding for exact wording.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "medium",
       "target": "enricher",
       "description": "In overview.text, replace 'A complete formalization of deeper' with 'A formalization of key'. In sections[0].summary, moderate the monoid claim to 'demonstrates monoid-like structure' with the same parenthetical already used in originalContributions[0].",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "low",
       "target": "enricher",
       "description": "Fix theorem count in sections[5].mathContext: change '15 theorems' to '16 theorems'.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "low",
       "target": "enricher",
       "description": "In overview.text, use cos θ notation for the product-to-sum and parity formulas to match the Lean file's scope.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
 
