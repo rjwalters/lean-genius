@@ -211,8 +211,8 @@
     "proofId": "erdos-332",
     "type": "concept",
     "range": {
-      "startLine": 85,
-      "endLine": 88
+      "startLine": 101,
+      "endLine": 109
     },
     "title": "Erdős Problem 332: Weakest Sufficient Condition",
     "content": "The main open question formalized: find the weakest property $P$ of subsets $A \\subseteq \\mathbb{N}$ such that $P(A)$ implies $D(A)$ has bounded gaps. The formalization states this as: any such $P$ must be implied by positive upper density. The actual open question is whether conditions strictly weaker than positive density also work — for instance, does $\\sum_{a \\in A} 1/a = \\infty$ suffice?",
@@ -234,8 +234,8 @@
     "proofId": "erdos-332",
     "type": "concept",
     "range": {
-      "startLine": 92,
-      "endLine": 97
+      "startLine": 113,
+      "endLine": 118
     },
     "title": "Harmonic Sum Divergence for D(A)",
     "content": "An axiomatized related question: does positive upper density of $A$ imply that $\\sum_{d \\in D(A) \\cap \\mathbb{N}} 1/d = \\infty$? If true, this would show $D(A)$ is not only syndetic but has 'harmonic thickness'. The divergence of the harmonic sum is strictly weaker than positive density (the primes have divergent harmonic sum but zero density), so this would be a different kind of structural richness.",
