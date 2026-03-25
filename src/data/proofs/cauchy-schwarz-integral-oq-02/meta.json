@@ -92,49 +92,56 @@
       "title": "Open Question and Proof Strategy",
       "startLine": 1,
       "endLine": 57,
-      "summary": "Imports and module-level documentation: states the open question, presents two derivation paths (inner-product CS for p=2; Hölder for general p), and diagrams the mathematical hierarchy CS → Hölder → Minkowski."
+      "summary": "Imports and module-level documentation: states the open question, presents two derivation paths (inner-product CS for p=2; Hölder for general p), and diagrams the mathematical hierarchy CS → Hölder → Minkowski.",
+      "mathContext": "Derives Minkowski's integral inequality as a corollary of Cauchy-Schwarz, showing the logical chain: Cauchy-Schwarz $\\Rightarrow$ Minkowski ($L^2$) $\\Rightarrow$ Minkowski ($L^p$ via Hölder)."
     },
     {
       "id": "setup",
       "title": "Noncomputable Section and Namespace",
       "startLine": 59,
       "endLine": 65,
-      "summary": "Declares the noncomputable section (required for real-valued analysis), opens MeasureTheory, and introduces the ambient measure space variable (α, μ)."
+      "summary": "Declares the noncomputable section (required for real-valued analysis), opens MeasureTheory, and introduces the ambient measure space variable (α, μ).",
+      "mathContext": "Opens `MeasureTheory` and `ENNReal` namespaces. Noncomputable section required for real-valued analysis in Lean 4 (real numbers involve classical choice)."
     },
     {
       "id": "l2-case",
       "title": "Section I: L² Minkowski from Inner-Product CS",
       "startLine": 67,
       "endLine": 107,
-      "summary": "minkowski_l2_from_CS and minkowski_inner_product_space: explicit Lean 4 derivation using norm_add_sq_real + abs_real_inner_le_norm + Real.sqrt_le_sqrt. Generalizes from Lp ℝ 2 μ to any real InnerProductSpace."
+      "summary": "minkowski_l2_from_CS and minkowski_inner_product_space: explicit Lean 4 derivation using norm_add_sq_real + abs_real_inner_le_norm + Real.sqrt_le_sqrt. Generalizes from Lp ℝ 2 μ to any real InnerProductSpace.",
+      "mathContext": "Minkowski for $L^2$ from Cauchy-Schwarz: $\\|f+g\\|_2^2 = \\|f\\|_2^2 + 2\\langle f, g \\rangle + \\|g\\|_2^2 \\leq \\|f\\|_2^2 + 2\\|f\\|_2\\|g\\|_2 + \\|g\\|_2^2 = (\\|f\\|_2 + \\|g\\|_2)^2$."
     },
     {
       "id": "general-lp",
       "title": "Sections II–III: General Lᵖ Minkowski via Hölder",
       "startLine": 109,
       "endLine": 163,
-      "summary": "minkowski_lp_from_holder and minkowski_lp_triangle: use Fact (1 ≤ p) to activate the NormedAddCommGroup instance on Lp ℝ p μ, reducing Minkowski to norm_add_le. Includes documentation of the eLpNorm_add_le (formerly snorm_add_le) API change."
+      "summary": "minkowski_lp_from_holder and minkowski_lp_triangle: use Fact (1 ≤ p) to activate the NormedAddCommGroup instance on Lp ℝ p μ, reducing Minkowski to norm_add_le. Includes documentation of the eLpNorm_add_le (formerly snorm_add_le) API change.",
+      "mathContext": "Minkowski for $L^p$ ($p \\geq 1$): $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$. Derived from Hölder's inequality by writing $|f+g|^p \\leq |f+g|^{p-1}(|f|+|g|)$ and applying Hölder to each term."
     },
     {
       "id": "elpnorm-form",
       "title": "Section IV: Minkowski in eLpNorm Seminorm Form",
       "startLine": 165,
       "endLine": 183,
-      "summary": "minkowski_elpnorm_triangle: proves the Minkowski inequality directly for the eLpNorm seminorm (working with raw measurable functions rather than Lp equivalence classes) via eLpNorm_add_le."
+      "summary": "minkowski_elpnorm_triangle: proves the Minkowski inequality directly for the eLpNorm seminorm (working with raw measurable functions rather than Lp equivalence classes) via eLpNorm_add_le.",
+      "mathContext": "The `eLpNorm` formulation: proves Minkowski directly for Mathlib's extended $L^p$ seminorm, bridging between the abstract `NormedAddCommGroup` instance and the concrete measure-theoretic definition."
     },
     {
       "id": "bochner-form",
       "title": "Section V: Full Two-Variable Minkowski via Bochner Integration",
       "startLine": 185,
       "endLine": 232,
-      "summary": "minkowski_integral_bochner and minkowski_integral_l2_from_cs: prove ‖∫F(y)dν‖_{Lp} ≤ ∫‖F(y)‖_{Lp}dν using norm_integral_le_integral_norm. The L² version makes the CS provenance explicit in the proof chain."
+      "summary": "minkowski_integral_bochner and minkowski_integral_l2_from_cs: prove ‖∫F(y)dν‖_{Lp} ≤ ∫‖F(y)‖_{Lp}dν using norm_integral_le_integral_norm. The L² version makes the CS provenance explicit in the proof chain.",
+      "mathContext": "The Bochner integral form: $\\left\\|\\int F(y)\\,d\\nu\\right\\|_{L^p(\\mu)} \\leq \\int \\|F(y)\\|_{L^p(\\mu)}\\,d\\nu$. This is Minkowski's integral inequality, the continuous analog of the triangle inequality for sums."
     },
     {
       "id": "main-result",
       "title": "Section VI: Main Result — Complete Answer",
       "startLine": 234,
       "endLine": 263,
-      "summary": "minkowski_from_cauchy_schwarz and minkowski_integral_ineq_l2: the primary named theorems answering the open question, delegating to minkowski_l2_from_CS and documenting the complete CS→Hölder→Minkowski formal proof chain."
+      "summary": "minkowski_from_cauchy_schwarz and minkowski_integral_ineq_l2: the primary named theorems answering the open question, delegating to minkowski_l2_from_CS and documenting the complete CS→Hölder→Minkowski formal proof chain.",
+      "mathContext": "The named theorems `minkowski_from_cauchy_schwarz` and `minkowski_integral_ineq_l2`: the primary results packaging the full derivation chain from Cauchy-Schwarz to Minkowski for both discrete and integral forms."
     }
   ],
   "conclusion": {
