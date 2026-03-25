@@ -130,17 +130,27 @@
     },
     {
       "id": "basic-properties",
-      "title": "Basic Properties and Binomial Connection",
-      "startLine": 80,
-      "endLine": 95,
-      "summary": "`gExcess_nonneg` (axiom): $g_k(n) \\ge 0$ from trivial tuple $(n, 0, \\ldots, 0)$. `g2_binomial_connection` (axiom): for $k = 2$, the excess connects to integrality of $n!/(a! \\cdot b!)$."
+      "title": "Basic Properties (Proved)",
+      "startLine": 88,
+      "endLine": 151,
+      "summary": "Three proved theorems: `factor_le_of_factorial_divides` (if $\\prod a_i! \\mid n!$ then each $a_i \\leq n$, by Finset divisibility and induction on $n$), `excess_set_bddAbove` (the excess set is bounded above by $k(n+1)$, a 25-line argument), `zero_mem_excess_set` (trivial tuple $(n,0,\\ldots,0)$ witnesses $0 \\in$ excess set), and `gExcess_nonneg` ($g_k(n) \\geq 0$ via `le_csSup`).",
+      "mathContext": "Key: $\\prod a_i! \\mid n! \\Rightarrow a_i! \\mid \\prod a_j! \\mid n! \\Rightarrow a_i \\leq n$. Therefore excess $\\leq k \\cdot n - n = (k-1)n$. The trivial tuple $(n, 0, \\ldots, 0)$ has $n! \\cdot 1^{k-1} \\mid n!$ with excess $0$."
+    },
+    {
+      "id": "binomial-connection",
+      "title": "Binomial Connection for $k = 2$",
+      "startLine": 153,
+      "endLine": 168,
+      "summary": "`g2_binomial_connection`: proves $g_2(n) = \\sup\\{a + b - n : a! \\cdot b! \\mid n!\\}$ by constructing a bijection between `Fin 2 → ℕ` tuples and pairs $(a, b)$ using `Fin.prod_univ_two` and the `![a, b]` matrix notation.",
+      "mathContext": "$g_2(n) = \\sup\\{a + b - n : a! \\cdot b! \\mid n!\\}$. The condition $a! \\cdot b! \\mid n!$ is equivalent to $\\binom{a+b}{a} \\cdot (a+b)!/n! \\in \\mathbb{Z}$, connecting to Kummer's theorem on carries in base-$p$ addition."
     },
     {
       "id": "k-equals-2",
-      "title": "The $k = 2$ Case",
-      "startLine": 96,
-      "endLine": 113,
-      "summary": "`g2_excess_characterization` (axiom): supremum $g_2(n)$ is attained by some $(a, b)$ with $a! \\cdot b! \\mid n!$. `average_g2_growth` (axiom): $\\sum_{n \\le x} g_2(n) / (x \\log x) \\to c_2$ for some $c_2 > 0$."
+      "title": "The $k = 2$ Case: Axioms",
+      "startLine": 169,
+      "endLine": 184,
+      "summary": "Two axioms for the $k = 2$ special case: `g2_excess_characterization` (the supremum $g_2(n)$ is attained by some pair $(a, b)$) and `average_g2_growth` ($\\sum_{n \\leq x} g_2(n) / (x \\log x) \\to c_2$ for some $c_2 > 0$).",
+      "mathContext": "$\\exists (a, b)$ with $a! \\cdot b! \\mid n!$ and $a + b - n = g_2(n)$ (supremum attained). The constant $c_2$ encodes the average excess rate for pairs."
     }
   ],
   "conclusion": {
