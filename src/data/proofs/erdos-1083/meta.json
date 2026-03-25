@@ -79,42 +79,48 @@
       "title": "Header and Imports",
       "summary": "Module documentation, problem statement, known bounds, references, and Mathlib imports for real numbers and finite sets",
       "startLine": 1,
-      "endLine": 23
+      "endLine": 23,
+      "mathContext": "Module documentation, problem statement, known bounds, references, and Mathlib imports for real numbers and finite sets"
     },
     {
       "id": "definitions",
       "title": "Part I: Definitions",
       "summary": "Axiomatization of f_d(n) as the extremal distinct-distance function mapping dimension and point count to minimum distinct distances",
       "startLine": 24,
-      "endLine": 35
+      "endLine": 35,
+      "mathContext": "Axiomatization of f_d(n) as the extremal distinct-distance function mapping dimension and point count to minimum distinct distances"
     },
     {
       "id": "erdos-bounds",
       "title": "Part II: Erdős's Bounds (1946)",
       "summary": "Erdős's original sandwich inequality: existence of constants c₁, c₂ > 0 such that c₁·n^{1/d} ≤ f_d(n) ≤ c₂·n^{2/d}",
       "startLine": 36,
-      "endLine": 50
+      "endLine": 50,
+      "mathContext": "Erdős's original sandwich inequality: existence of constants c₁, c₂ > 0 such that c₁·n^{1/d} ≤ f_d(n) ≤ c₂·n^{2/d}"
     },
     {
       "id": "solymosi-vu",
       "title": "Part III: Solymosi-Vu Improvement",
       "summary": "The 2008 improvement for d ≥ 4: f_d(n) ≥ n^{2/d - c/d²}, bringing the lower bound exponent within O(1/d²) of the conjectured value",
       "startLine": 51,
-      "endLine": 63
+      "endLine": 63,
+      "mathContext": "The 2008 improvement for d ≥ 4: f_d(n) ≥ n^{2/d - c/d²}, bringing the lower bound exponent within O(1/d²) of the conjectured value"
     },
     {
       "id": "conjecture",
       "title": "Part IV: The Conjecture",
       "summary": "The open conjecture f_d(n) = n^{2/d - o(1)}, formalized via ε-δ quantification over subpolynomial factors",
       "startLine": 64,
-      "endLine": 77
+      "endLine": 77,
+      "mathContext": "The open conjecture f_d(n) = n^{2/d - o(1)}, formalized via ε-δ quantification over subpolynomial factors"
     },
     {
       "id": "main-theorem",
       "title": "Part V: Main Theorem",
       "summary": "The main theorem erdos_1083 restating the established bounds, proved by direct application of erdos_bounds",
       "startLine": 78,
-      "endLine": 94
+      "endLine": 94,
+      "mathContext": "The main theorem erdos_1083 restating the established bounds, proved by direct application of erdos_bounds"
     }
   ],
   "conclusion": {
