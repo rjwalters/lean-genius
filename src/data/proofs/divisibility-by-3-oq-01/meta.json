@@ -56,7 +56,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Divisibility rules have been known since ancient times. This extension formalizes a comprehensive collection of such rules in Lean 4, going far beyond the basic divisibility-by-3 rule.\n\nThe rules fall into three families:\n1. **Last-k-digits rules**: When d divides the base power (e.g., 4|100), check the last k digits\n2. **Digit-sum rules**: When base ≡ 1 (mod d), check the digit sum\n3. **Truncation rules**: Reduce the number by removing a digit and adjusting (e.g., for 7 and 13)\n\nAll three families are unified through modular arithmetic.",
+    "historicalContext": "Divisibility rules are among the oldest mathematical algorithms, with origins in ancient Babylonian, Indian, and Chinese mathematics. The digit-sum rule for 9 ('casting out nines') was known to Arab mathematicians by the 9th century and was described by al-Khwārizmī. The digit-sum rule for 3 follows from the same principle: $10 \\equiv 1 \\pmod{3}$, so $n \\equiv$ digit sum $\\pmod{3}$.\n\nThe truncation methods have a more recent history. The rule for 7 (subtract 2 times the last digit) and for 13 (add 4 times the last digit) appeared in recreational mathematics texts of the 19th and 20th centuries. Martin Gardner popularized many such rules in his *Scientific American* columns. The underlying principle is uniform: if $d \\mid (10c \\pm 1)$, then $d \\mid n \\iff d \\mid (\\lfloor n/10 \\rfloor \\pm c \\cdot (n \\bmod 10))$, since $n = 10q + r$ gives $10(q \\pm cr) = n \\pm (10c \\mp 1)r$.\n\nThe beautiful factorization $1001 = 7 \\times 11 \\times 13$ connects three truncation rules to a single fact: $1000 \\equiv -1$ modulo each of 7, 11, and 13, giving alternating 3-digit group tests for all three. Digital root theory (repeatedly summing digits until a single digit remains) provides a complete characterization: $\\text{dr}(n) = 1 + ((n-1) \\bmod 9)$ for $n > 0$, connecting elementary arithmetic to modular algebra.\n\nThis formalization verifies 56 theorems covering all three families, with 0 sorries and 0 axioms, building on Mathlib's `Nat.modEq_digits_sum` for the digit-sum foundation.",
     "problemStatement": "Formalize a comprehensive collection of divisibility rules:\n\n**Last-k-digits (general)**: If $d | M$, then $d | n \\iff d | (n \\bmod M)$\n\n**Digit-sum (general)**: If $b \\equiv 1 \\pmod{d}$, then $d | n \\iff d | \\text{(digits sum in base }b\\text{)}$\n\n**Truncation for 13**: $13 | n \\iff 13 | (\\lfloor n/10 \\rfloor + 4 \\cdot (n \\bmod 10))$\n\n**Coprime factorization**: If $\\gcd(d_1, d_2) = 1$, then $d_1 d_2 | n \\iff d_1 | n \\wedge d_2 | n$\n\n**Digital root**: $\\text{dr}(n) = 9 \\iff 9 | n$ (for $n > 0$); $3 | n \\iff 3 | \\text{dr}(n)$",
     "text": "A comprehensive collection of formally verified divisibility rules: general last-k-digits framework, power-of-2/5 generalizations, truncation methods for 7, 11, 13, 17, and 19, casting out nines/threes, digital root theory, and coprime factorization rules.",
     "proofStrategy": "The proofs use three main techniques:\n\n1. **Modular arithmetic**: The general last-k-digits theorem follows from n = M·q + r, so if d|M then d|n iff d|r.\n\n2. **Mathlib's digit infrastructure**: Nat.modEq_digits_sum provides digit-sum congruences for any base-divisor pair where base ≡ 1 (mod d).\n\n3. **Integer lifting for truncation**: The divisibility-by-13 proof works in ℤ, using the identity 10(q + 4r) = n + 39r, then extracting divisibility via coprimality of 13 and 10.",
@@ -190,17 +190,32 @@
     {
       "targetId": "divisibility-by-3",
       "relationship": "extends",
-      "description": "Extends the base divisibility-by-3 formalization to a comprehensive collection covering truncation methods, digital root theory, and coprime factorization for all primes up to 19"
+      "description": "Extends the base divisibility-by-3 formalization (Wiedijk #85) to a comprehensive collection covering truncation methods for primes up to 19, digital root theory, coprime factorization, and digit-sum rules in multiple bases"
     },
     {
       "targetId": "divisibility-truncation-general",
       "relationship": "related",
-      "description": "The truncation methods for 7, 11, 13, 17, 19 proved individually here are unified into a single parametric theorem in divisibility-truncation-general"
+      "description": "The truncation methods for 7, 11, 13, 17, 19 proved individually here are unified into a single parametric theorem in divisibility-truncation-general via the identity $d \\mid (mb \\pm 1)$"
     },
     {
       "targetId": "chinese-remainder-constructive",
       "relationship": "related",
-      "description": "Both entries use modular arithmetic and coprimality; the coprime factorization rules here parallel the Chinese Remainder Theorem's decomposition of modular arithmetic"
+      "description": "The coprime factorization rules (6, 12, 15, 18, 36, 45, 60, 90) here are direct applications of CRT: $\\gcd(a,b) = 1 \\Rightarrow ab \\mid n \\iff a \\mid n \\wedge b \\mid n$"
+    },
+    {
+      "targetId": "divisibility-by-3-oq-04",
+      "relationship": "related",
+      "description": "Another extension from the divisibility-by-3 family, exploring further number-theoretic applications of digit-sum congruences"
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "foundational",
+      "description": "Bézout's identity provides the coprimality machinery used throughout: the truncation proofs rely on $\\gcd(d, 10) = 1$ to lift ℤ-divisibility, and the coprime factorization rules use $\\gcd(a,b) = 1$ from Bézout"
+    },
+    {
+      "targetId": "divisibility-by-3-oq-02",
+      "relationship": "related",
+      "description": "Sibling extension exploring different aspects of divisibility theory from the same base formalization"
     }
   ],
   "references": [
