@@ -138,6 +138,26 @@
       "targetId": "leibniz-pi",
       "relationship": "related",
       "description": "The Leibniz series involves limits and series convergence, areas where L'Hopital's rule provides useful asymptotic tools"
+    },
+    {
+      "targetId": "intermediate-value-theorem",
+      "relationship": "related",
+      "description": "Both are core theorems of real analysis relying on completeness: the IVT guarantees existence of roots via continuity, while L'Hopital's rule evaluates limits via differentiability — together they form the foundational toolkit for analyzing functions in introductory analysis courses"
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "related",
+      "description": "L'Hopital's rule is used to compare growth rates of functions, directly applicable to showing that the harmonic series diverges: the comparison ln(n)/n -> 0 via L'Hopital establishes that harmonic partial sums grow like ln(n), confirming divergence"
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "related",
+      "description": "Both are foundational calculus results: the geometric series formula provides closed forms for infinite sums, while L'Hopital's rule evaluates indeterminate limits — L'Hopital is often used to analyze the boundary behavior of power series at their radius of convergence"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The prime number theorem states pi(x) ~ x/ln(x), and L'Hopital's rule is the standard tool for verifying asymptotic equivalences of this form: showing that lim pi(x)/(x/ln(x)) = 1 requires precisely the kind of indeterminate-form analysis that L'Hopital's rule provides"
     }
   ],
   "conclusion": {

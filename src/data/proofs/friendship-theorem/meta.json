@@ -154,6 +154,26 @@
       "targetId": "lagrange-theorem",
       "relationship": "foundational",
       "description": "The counting argument in the friendship theorem uses divisibility: the sum $\\sum \\deg(v)^2$ must satisfy divisibility constraints that force regularity or the existence of a universal vertex. Lagrange's theorem on subgroup orders provides the group-theoretic machinery underlying these divisibility arguments"
+    },
+    {
+      "targetId": "konigsberg",
+      "relationship": "related",
+      "description": "Both are foundational results in graph theory: the Konigsberg bridge problem launched the field by characterizing Eulerian paths via vertex degrees, while the friendship theorem characterizes graphs with the unique-common-neighbor property — both show how local degree conditions determine global graph structure"
+    },
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "foundational",
+      "description": "The counting arguments in the friendship theorem rely on inclusion-exclusion style reasoning: computing the number of common neighbors by counting paths of length 2 and applying overcounting corrections is an instance of the inclusion-exclusion principle on edge sets"
+    },
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "related",
+      "description": "Both are structural results constraining graph topology: Euler's formula V - E + F = 2 constrains planar graphs, while the friendship theorem constrains graphs with the unique-common-neighbor property — both show that simple local conditions force rigid global structure (planarity vs. windmill)"
+    },
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "related",
+      "description": "The friendship theorem was proved by Erdos, who pioneered the probabilistic method: while the friendship theorem itself uses spectral rather than probabilistic methods, the expectation method provides alternative approaches to extremal graph theory problems of the same flavor"
     }
   ],
   "leanFile": {

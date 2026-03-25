@@ -192,6 +192,26 @@
         "classical-geometry"
       ],
       "targetId": "area-of-circle"
+    },
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "related",
+      "description": "Both are foundational results in combinatorial geometry: Euler's formula governs the topology of polyhedra (V - E + F = 2), while Pascal's theorem governs the incidence geometry of conics — both reveal deep structural constraints from simple combinatorial conditions"
+    },
+    {
+      "targetId": "picks-theorem",
+      "relationship": "related",
+      "description": "Both relate geometry to combinatorial counting: Pick's theorem counts lattice points to compute area, while Pascal's theorem counts incidences of lines and conics — both illustrate how discrete combinatorial data encodes continuous geometric information"
+    },
+    {
+      "targetId": "ptolemys-theorem",
+      "relationship": "related",
+      "description": "Both concern configurations of points on conics: Ptolemy's theorem characterizes cyclic quadrilaterals via the product relation on diagonals and sides, while Pascal's theorem characterizes hexagons inscribed in conics via collinearity of opposite-side intersections — both are classical results in the geometry of circles and conics"
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "thematic",
+      "description": "Both are landmark results in combinatorial and incidence geometry: the four-color theorem constrains planar graph colorings, while Pascal's theorem constrains projective incidence configurations — both demonstrate how topological or projective constraints force global combinatorial structure"
     }
   ],
   "leanFile": {

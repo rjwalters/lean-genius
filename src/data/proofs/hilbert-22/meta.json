@@ -154,6 +154,21 @@
       "targetId": "poincare-conjecture",
       "relationship": "related",
       "description": "The uniformization theorem classifies 2-dimensional surfaces by geometry (spherical, flat, hyperbolic), while the Poincare conjecture (proved by Perelman) extends this classification idea to 3-manifolds via Ricci flow and geometrization"
+    },
+    {
+      "targetId": "hilbert-19",
+      "relationship": "related",
+      "description": "Both concern smoothness of geometric objects: Problem 19 proves variational minimizers are smooth (De Giorgi-Nash-Moser), while Problem 22 shows every Riemann surface admits a smooth conformal parametrization by a model space — both resolve existence-of-smooth-structure questions posed by Hilbert"
+    },
+    {
+      "targetId": "hilbert-21",
+      "relationship": "related",
+      "description": "Both Hilbert problems concern analytic structures on surfaces: Problem 21 asks for existence of Fuchsian differential equations with prescribed monodromy (Riemann-Hilbert problem), while Problem 22 asks for uniformization — both are solved by constructing holomorphic maps on Riemann surfaces"
+    },
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "related",
+      "description": "Euler's formula V - E + F = 2 computes the Euler characteristic of surfaces, which determines the conformal type in the uniformization theorem: surfaces with chi > 0 are spherical, chi = 0 are parabolic, and chi < 0 are hyperbolic"
     }
   ],
   "references": [
