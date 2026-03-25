@@ -35,6 +35,21 @@
         "theorem": "Nat.choose",
         "description": "Binomial coefficients for path counting",
         "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Finset.sum_involution",
+        "description": "Key cancellation tool: signed sum over an involution with sign reversal and no fixed points is zero",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Fintype.card_pi",
+        "description": "Product factorization for permutation path tuple cardinality",
+        "module": "Mathlib.Data.Fintype.Pi"
+      },
+      {
+        "theorem": "Matrix.det_transpose",
+        "description": "Leibniz formula column form for the algebraic bridge",
+        "module": "Mathlib.LinearAlgebra.Matrix.Determinant"
       }
     ],
     "originalContributions": [
@@ -47,9 +62,7 @@
       "swapTailsAt: tail-swap operation (involution kernel for GV proof)",
       "swapTailsAt length preservation theorems",
       "gessel_viennot_transposition_sign: sign(swap(i,σi)∘σ) = -sign(σ) (proved)",
-      "isNonIntersecting_of_r_one: every 1-tuple is vacuously non-intersecting (proved)",
-      "pathMatrix_det_nonneg: non-negativity of path matrix determinant (from LGV axiom)",
-      "lgv_lemma_rxr: the main r×r LGV lemma (NOW PROVED as theorem)",
+      "lgv_lemma_rxr: the main r×r LGV lemma (proved as theorem, transitive sorry dep through gvCanon_self_inverse)",
       "firstNonFixed: smallest non-fixed point of non-identity perm (4 lemmas proved)",
       "permPathTuple_card: cardinality factorization for σ-path tuples (proved)",
       "det_pathMatrix_eq_signed_sum: algebraic bridge det = signed perm sum (proved)",
@@ -72,13 +85,13 @@
       "Gessel-Viennot involution theory"
     ],
     "assumptions": [
-      "gvCanon_membership and gvCanon_self_inverse: GV involution canonical crossing membership and self-inverse properties (2 sorries: needs tail-swap redesign to preserve path data)"
+      "canonCrossN_preserved (line 1982) and gvCanon_self_inverse (line 1989): canonical crossing code preserved under involution, and double tail-swap recovers original paths (2 sorries). Note: gvCanon_membership is fully proved (118 lines, no sorry)"
     ]
   },
   "overview": {
     "historicalContext": "The Lindström-Gessel-Viennot (LGV) lemma is one of the most versatile tools in enumerative combinatorics. Bernt Lindström proved a general version for vector matroids in 1973, building on ideas from Karlin and McGregor's 1959 work on coincidence probabilities of Markov chains. Ira Gessel and Gérard Viennot independently rediscovered and popularized the result in their influential 1985 paper, providing the elegant sign-reversing involution proof that has become the standard approach. The lemma connects non-intersecting lattice paths to determinants: the number of $r$-tuples of pairwise non-intersecting paths equals $\\det[e(A_i, B_j)]_{i,j}$. This determinantal structure has profound consequences—it underlies the Jacobi-Trudi identity for Schur polynomials, the Cauchy-Binet identity in linear algebra, and the Kasteleyn method for perfect matchings. The GV involution is a paradigmatic example of the 'cancellation via involution' technique that pervades algebraic combinatorics.",
     "problemStatement": "**The r×r LGV Lemma**: Given strictly increasing source points A₁,...,Aᵣ and target points B₁,...,Bᵣ on a lattice grid of width m, the number of r-tuples of pairwise non-intersecting lattice paths (Pᵢ: Aᵢ→Bᵢ) equals\n\n  det[ e(Aᵢ, Bⱼ) ]_{i,j=1}^r\n\nwhere e(A,B) = C(m + (bⱼ - aᵢ), m) is the number of monotone lattice paths from A to B.",
-    "text": "This formalization builds the complete infrastructure for the r×r Lindström-Gessel-Viennot determinant identity in Lean 4. Starting from lattice paths as Boolean lists, it constructs the PathMN type with a Fintype instance, defines the r×r path weight matrix over ℤ, and introduces permutation-indexed path tuples. The proof architecture connects the Leibniz determinant expansion (via Matrix.det_apply) to the combinatorial signed sum over permutation path tuples, then applies the Gessel-Viennot sign-reversing involution to cancel all non-identity contributions. Key proved components include a discrete intermediate value theorem for lattice path crossings, cardinality of PathMN via double induction on Pascal's rule, and the algebraic bridge equating det M with the signed permutation sum. Two sorries remain in the canonical involution's membership and self-inverse properties.",
+    "text": "This formalization builds the complete infrastructure for the r×r Lindström-Gessel-Viennot determinant identity in Lean 4. Starting from lattice paths as Boolean lists, it constructs the PathMN type with a Fintype instance, defines the r×r path weight matrix over ℤ, and introduces permutation-indexed path tuples. The proof architecture connects the Leibniz determinant expansion (via Matrix.det_apply) to the combinatorial signed sum over permutation path tuples, then applies the Gessel-Viennot sign-reversing involution to cancel all non-identity contributions. Key proved components include a discrete intermediate value theorem for lattice path crossings, cardinality of PathMN via double induction on Pascal's rule, and the algebraic bridge equating det M with the signed permutation sum. Two sorries remain in the involution's self-inverse proof: canonCrossN_preserved (canonical crossing preserved under involution) and gvCanon_self_inverse (double tail-swap = identity). The membership proof (gvCanon_membership) is fully proved.",
     "proofStrategy": "**Gessel-Viennot Involution**:\n1. Expand det M = Σ_σ sign(σ) ∏ᵢ M_{i,σ(i)} where M_{i,j} = e(Aᵢ, Bⱼ)\n2. Each term ∏ M_{i,σ(i)} counts σ-path tuples (Pᵢ: Aᵢ→B_{σ(i)})\n3. For σ ≠ id: find smallest i with σ(i) ≠ i; paths Pᵢ and P_{σ(i)} must cross\n4. Swap tails at first crossing point → maps σ-tuple to (swap(i,σ(i))∘σ)-tuple\n5. sign changes (transposition): terms cancel pairwise\n6. Only σ = id survives; non-NI id-tuples also cancel → niTupleCount = det M",
     "keyInsights": [
       "The sign-reversing involution pairs each σ-tuple with a τ-tuple where τ = swap(i,σ(i))∘σ has opposite sign, causing pairwise cancellation",
@@ -88,7 +101,7 @@
       "The LGV lemma connects combinatorics to linear algebra: non-intersecting lattice paths encode determinantal identities",
       "The crossing lemma (lattice_paths_must_cross) is a discrete intermediate value theorem: if two monotone lattice paths start on opposite sides and end on opposite sides, they must share a column entry — proved via Finset.max' on the set of columns where the first path is still below",
       "The canonical GV involution uses Nat.find with a lexicographic encoding (column, i, j) to deterministically select the 'first' crossing pair, ensuring the involution is canonical and self-inverse",
-      "The two remaining sorries are purely technical: showing the tail-swapped paths still share a lattice point (membership) and that double tail-swap recovers the original paths (self-inverse)"
+      "The two remaining sorries are purely technical: showing the canonical crossing code is preserved under involution (canonCrossN_preserved) and that double tail-swap recovers the original paths (gvCanon_self_inverse). The membership proof (gvCanon_membership) is fully proved in 118 lines"
     ],
     "prerequisites": [
       "Matrix determinants and permutation signs (Mathlib)",
@@ -163,6 +176,14 @@
       "mathContext": "$\\det M = \\sum_{\\sigma \\in S_r} \\mathrm{sgn}(\\sigma) \\prod_{i} M_{i,\\sigma(i)} = \\sum_\\sigma \\mathrm{sgn}(\\sigma) \\cdot |\\mathrm{PermPathTuple}(\\sigma)|$"
     },
     {
+      "id": "tagged-tuples",
+      "title": "Part 7d: Tagged Path Tuples",
+      "startLine": 600,
+      "endLine": 648,
+      "summary": "TaggedPathTuple (sigma type ⨆_σ PermPathTuple(σ)), taggedWeight (sign extraction), sum_tagged_eq_sum_perm (reformulation as sum over permutations), IsGVFixedPoint (identity NI tuples).",
+      "mathContext": "$\\mathrm{TaggedPathTuple} = \\coprod_{\\sigma} \\mathrm{PermPathTuple}(\\sigma)$; the GV involution acts on the cancellable (non-fixed-point) subset."
+    },
+    {
       "id": "crossing-lemma",
       "title": "Part 7e: Crossing Lemma (Discrete IVT)",
       "startLine": 649,
@@ -174,9 +195,9 @@
       "id": "gv-involution-construction",
       "title": "Parts 7f–7l: Full GV Involution Construction",
       "startLine": 736,
-      "endLine": 1835,
-      "summary": "wellFormed condition, non-identity permutation crossing theorem, tagged path tuples (sigma type), GV involution via northThenEast paths, canonical crossing selection (Nat.find + lex encoding), tail-swap PathMN construction with length/East-count preservation, and final involution properties. Contains 2 sorries: gvCanon_membership and gvCanon_self_inverse.",
-      "mathContext": "The canonical involution $\\iota$ maps $(\\sigma, \\vec{P})$ to $((i\\;j) \\circ \\sigma, \\vec{P'})$ where $(i,j)$ is the lexicographically first crossing pair and $\\vec{P'}$ swaps tails of paths $i$ and $j$ at the crossing column. $\\iota$ is sign-reversing, fixed-point-free on cancellable tuples, and (modulo 2 sorries) self-inverse."
+      "endLine": 1797,
+      "summary": "wellFormed condition, non-identity permutation crossing theorem, column entry prefix lemmas (take_at_column_entry, take_east_count_within_column), northThenEast canonical paths, canonical crossing selection (Nat.find + lex encoding via crossingCode), tail-swap PathMN construction with length/East-count preservation, and involution assembly (gvCanonInv). gvCanon_membership is fully proved (118 lines). gvCanon_sign_reversal and gvCanon_no_fixed are proved.",
+      "mathContext": "The canonical involution $\\iota$ maps $(\\sigma, \\vec{P})$ to $((i\\;j) \\circ \\sigma, \\vec{P'})$ where $(i,j)$ is the lexicographically first crossing pair and $\\vec{P'}$ swaps tails of paths $i$ and $j$ at the crossing column. $\\iota$ is sign-reversing and fixed-point-free on cancellable tuples."
     },
     {
       "id": "lgv-lemma",
@@ -193,13 +214,21 @@
       "endLine": 1885,
       "summary": "Non-negativity of det, r=1 vacuous NI, lgv_universality, and an applications survey: Schur polynomials (Jacobi-Trudi), Catalan numbers, Aztec diamond tilings, plane partitions.",
       "mathContext": "$\\det M \\geq 0$ since $\\det M = \\mathrm{niTupleCount} \\in \\mathbb{N}$. For $r=1$, every singleton path tuple is vacuously non-intersecting, so $\\mathrm{niTupleCount} = \\binom{m + (b_1-a_1)}{m}$."
+    },
+    {
+      "id": "self-inverse-and-cancellation",
+      "title": "Self-Inverse Proof and Final Cancellation",
+      "startLine": 1886,
+      "endLine": 2091,
+      "summary": "gvCanon_membership proof completion (118 lines, fully proved), canonCrossN_preserved (sorry: canonical crossing invariant), gvCanon_self_inverse (sorry: double tail-swap = id), cancellable_sum_eq_zero (proved via Finset.sum_involution), and the final gv_involution_cancellation theorem.",
+      "mathContext": "The 2 sorries: $\\mathrm{canonCrossN}(\\iota(t)) = \\mathrm{canonCrossN}(t)$ and $\\iota^2 = \\mathrm{id}$. Once closed, the full chain is: $\\sum_{\\text{cancellable}} \\mathrm{sgn}(\\sigma) = 0 \\Rightarrow \\mathrm{niTupleCount} = \\det M$."
     }
   ],
   "conclusion": {
-    "summary": "Comprehensive formalization of the general r×r LGV lemma infrastructure. Defines the path tuple structures, weight matrix, and non-intersection predicate for arbitrary r. Proves the key sign-change lemma (transposition reverses permutation sign) and establishes non-negativity of the path matrix determinant. The main LGV equality is axiomatized pending the full Gessel-Viennot involution proof.",
+    "summary": "Near-complete formalization of the general r×r LGV lemma in 2091 lines of original infrastructure. The main theorem lgv_lemma_rxr is proved as a theorem with transitive dependency on 2 remaining sorries in the involution self-inverse proof (canonCrossN_preserved and gvCanon_self_inverse). The GV involution construction, sign reversal, membership (118 lines, fully proved), and no-fixed-points properties are all complete. Key proved components: pathMN_card via double induction, det_pathMatrix_eq_signed_sum algebraic bridge, lattice_paths_must_cross discrete IVT, and cancellable_sum_eq_zero via Finset.sum_involution.",
     "implications": "**Theoretical Significance**: **Applications of the r×r LGV lemma:**\n1. **Schur polynomials**: Via Jacobi-Trudi, s_λ = det[h_{λᵢ-i+j}] counts NI lattice paths (semistandard Young tableaux)\n**2. Plane partitions**: MacMahon's box formula via LGV on 3D lattice\n3. **Aztec diamond**: 2^{n(n+1)/2} tilings via NI path determinant\n4. **Random matrices**: Eigenvalue spacing via NI random walk paths.",
     "openQuestions": [
-      "Close the 2 remaining sorries in gvCanon_membership and gvCanon_self_inverse to complete the GV involution proof (lgv_lemma_rxr itself is proved modulo these)",
+      "Close the 2 remaining sorries in canonCrossN_preserved (canonical crossing preserved under involution) and gvCanon_self_inverse (double tail-swap = identity) to complete the GV involution proof",
       "Connect to Mathlib's Schur polynomial infrastructure for the Jacobi-Trudi identity",
       "Extend to weighted lattice paths (generating function version of LGV)"
     ]
