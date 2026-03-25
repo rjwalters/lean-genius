@@ -27,10 +27,11 @@ References:
 - Related to Erdős Problem #1129
 -/
 
-import Mathlib.Analysis.Calculus.LagrangeInterpolation
+-- import Mathlib.Analysis.Calculus.LagrangeInterpolation  -- doesn't exist in v4.26
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Topology.MetricSpace.Basic
+import Mathlib.LinearAlgebra.Lagrange
 
 open Real MeasureTheory Finset
 
@@ -62,13 +63,10 @@ theorem lagrangeBasis_self (nodes : Fin n → ℝ) (k : Fin n)
     (hdistinct : ∀ i j, i ≠ j → nodes i ≠ nodes j) :
     lagrangeBasis nodes k (nodes k) = 1 := by
   unfold lagrangeBasis
-  -- Numerator and denominator are identical
-  have hne : ∏ i ∈ Finset.univ.filter (· ≠ k), (nodes k - nodes i) ≠ 0 := by
-    apply Finset.prod_ne_zero
-    intro i hi
-    simp at hi
-    exact sub_ne_zero.mpr (hdistinct k i hi.2)
-  exact div_self hne
+  apply Finset.prod_eq_one; intro i _
+  split_ifs with h
+  · rfl
+  · exact div_self (sub_ne_zero.mpr (hdistinct k i (fun hki => h hki.symm)))
 
 /-- **Lagrange basis at other nodes equals 0.**
     The numerator has factor (nodes j - nodes j) = 0 since j ≠ k. -/
@@ -76,10 +74,8 @@ theorem lagrangeBasis_other (nodes : Fin n → ℝ) (k j : Fin n)
     (hdistinct : ∀ i₁ i₂, i₁ ≠ i₂ → nodes i₁ ≠ nodes i₂) (hkj : k ≠ j) :
     lagrangeBasis nodes k (nodes j) = 0 := by
   unfold lagrangeBasis
-  rw [div_eq_zero_iff]
-  left
-  apply Finset.prod_eq_zero (Finset.mem_filter.mpr ⟨Finset.mem_univ j, hkj.symm⟩)
-  simp
+  apply Finset.prod_eq_zero (Finset.mem_univ j)
+  simp [hkj.symm, sub_self]
 
 /- ## Part II: The Lebesgue Function
 
@@ -104,8 +100,42 @@ noncomputable def lebesgueConstant (nodes : Fin n → ℝ) : ℝ :=
 This is a standard polynomial identity: the Lagrange interpolant of the constant
 function 1 is identically 1, i.e., Σₖ lₖ(x) = 1 for all x. -/
 lemma lagrangeBasis_sum_eq_one (nodes : Fin n → ℝ) (x : ℝ)
-    (hdistinct : ∀ i j, i ≠ j → nodes i ≠ nodes j) :
-    ∑ k : Fin n, lagrangeBasis nodes k x = 1 := by sorry
+    (hdistinct : ∀ i j, i ≠ j → nodes i ≠ nodes j)
+    (hn : 0 < n := by omega) :
+    ∑ k : Fin n, lagrangeBasis nodes k x = 1 := by
+  -- Strategy: use Mathlib's Lagrange.sum_basis + bridge to our definition
+  haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩
+  -- Step 1: InjOn hypothesis for Mathlib
+  have hinj : Set.InjOn nodes (↑(Finset.univ : Finset (Fin n))) := by
+    intro i _ j _ heq; by_contra hne; exact hdistinct i j hne heq
+  -- Step 2: Mathlib's polynomial partition of unity
+  have hpoly := Lagrange.sum_basis hinj Finset.univ_nonempty
+  have heval := congr_arg (Polynomial.eval x) hpoly
+  rw [Polynomial.eval_finset_sum] at heval
+  simp only [Polynomial.eval_one] at heval
+  -- Step 3: Bridge each term: lagrangeBasis = eval x (Lagrange.basis)
+  suffices hbridge : ∀ k : Fin n, lagrangeBasis nodes k x =
+      Polynomial.eval x (Lagrange.basis Finset.univ nodes k) by
+    simp_rw [hbridge]; exact heval
+  intro k
+  unfold lagrangeBasis
+  simp only [Lagrange.basis, Lagrange.basisDivisor, Polynomial.eval_prod, Polynomial.eval_mul,
+    Polynomial.eval_C, Polynomial.eval_sub, Polynomial.eval_X]
+  -- LHS: ∏ i : Fin n, if i = k then 1 else (x - nodes i) / (nodes k - nodes i)
+  -- RHS: ∏ j ∈ univ.erase k, (nodes k - nodes j)⁻¹ * (x - nodes j)
+  -- Rewrite div as inv*mul, then split the ite-product
+  have hite : ∀ i : Fin n, i ∈ Finset.univ →
+      (if i = k then (1 : ℝ) else (x - nodes i) / (nodes k - nodes i)) =
+      (if i = k then 1 else (nodes k - nodes i)⁻¹ * (x - nodes i)) := by
+    intro i _; split_ifs <;> [rfl; rw [div_eq_mul_inv, mul_comm]]
+  rw [Finset.prod_congr rfl hite]
+  -- Split: ∏ over univ with ite = (k-term) * (rest) = 1 * ∏ over erase
+  rw [← Finset.mul_prod_erase _ _ (Finset.mem_univ k)]
+  simp only [ite_true, one_mul]
+  apply Finset.prod_congr rfl
+  intro i hi
+  have hik : i ≠ k := (Finset.mem_erase.mp hi).1
+  simp only [hik, ite_false]
 
 /-- **Lebesgue function is always at least 1.**
 Proof: By partition of unity, Σₖ lₖ(x) = 1. By triangle inequality,
