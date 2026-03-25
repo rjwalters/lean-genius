@@ -108,16 +108,28 @@
     "relatedConcepts": ["octahedron geometry", "arccos identity", "negation in tensor products"]
   },
   {
-    "id": "ann-completeness",
+    "id": "ann-dehn-sydler-statement",
     "proofId": "dissection-of-cubes-oq-02-oq-02",
-    "range": { "startLine": 285, "endLine": 365 },
+    "range": { "startLine": 285, "endLine": 333 },
     "type": "concept",
-    "title": "Dehn-Sydler Completeness and 2D Contrast",
-    "content": "The Dehn-Sydler completeness theorem ($P \\cong_{\\text{sc}} Q \\iff \\text{Vol}(P) = \\text{Vol}(Q) \\wedge D(P) = D(Q)$) is axiomatized. `dehn_zero_of_rational_angles` proves that any polyhedron with only rational-multiple-of-$\\pi$ angles has $D = 0$, covering all space-filling polyhedra.\n\n`polygon_angle_trivial` explains the 2D contrast: all polygon angles after triangulation are integer multiples of $\\pi$, so $D$ is always zero in 2D — volume (area) is the sole invariant (Bolyai-Gerwien 1833).",
-    "mathContext": "2D: area alone classifies scissors congruence (Bolyai-Gerwien). 3D: volume + Dehn invariant (Dehn-Sydler). $n \\geq 4$: open — additional invariants may be needed.",
+    "title": "Dehn-Sydler Completeness Theorem (Axiomatized)",
+    "content": "The Dehn-Sydler theorem is axiomatized: $P \\cong_{\\text{sc}} Q \\iff \\text{Vol}(P) = \\text{Vol}(Q) \\wedge D(P) = D(Q)$. The forward direction ($\\Rightarrow$) is Dehn's 1900 result: cutting creates paired edges with angles summing to $\\pi$, which cancel since $[\\pi] = 0$. The backward direction ($\\Leftarrow$) is Sydler's deep 1965 theorem, requiring analysis of orthogonal prisms and an inductive exchange argument. Two placeholder axioms (`dehn_preserved_by_scissors`, `volume_preserved_by_scissors`) encode the invariance properties; the full `dehn_sydler_theorem` encodes the completeness statement.",
+    "mathContext": "$P \\cong_{\\text{sc}} Q \\iff \\text{Vol}(P) = \\text{Vol}(Q) \\wedge D(P) = D(Q)$. This completely classifies scissors congruence in $\\mathbb{R}^3$ by two computable invariants.",
     "significance": "key",
-    "prerequisites": ["rational_angle_vanishes", "Bolyai-Gerwien theorem"],
-    "relatedConcepts": ["complete invariants", "Bolyai-Gerwien theorem", "higher-dimensional scissors congruence"]
+    "prerequisites": ["Dehn invariant construction", "Sydler's sufficiency proof (1965)"],
+    "relatedConcepts": ["complete invariants", "Sydler's theorem", "scissors congruence classification"]
+  },
+  {
+    "id": "ann-2d-contrast",
+    "proofId": "dissection-of-cubes-oq-02-oq-02",
+    "range": { "startLine": 335, "endLine": 365 },
+    "type": "insight",
+    "title": "2D Contrast: Why Area Suffices for Polygons",
+    "content": "`polygon_angle_trivial` shows $r \\otimes [q\\pi] = 0$ for rational $q$ (just reuses `rational_angle_vanishes`). `dehn_zero_of_rational_angles` proves that any polyhedron whose dihedral angles are all rational multiples of $\\pi$ has $D = 0$, by induction over the edge list. This explains why the Dehn invariant doesn't appear in 2D: after triangulating a polygon, all internal angles are integer multiples of $\\pi$ (each triangle has angle sum $\\pi$), so the 2D Dehn invariant is identically zero. Area alone classifies polygon scissors congruence (Bolyai-Gerwien, 1833).",
+    "mathContext": "2D: area alone classifies scissors congruence (Bolyai-Gerwien 1833). 3D: volume + Dehn invariant (Dehn-Sydler 1965). For $n \\geq 4$: Jessen-Thorup (1978) showed volume + Dehn invariant do NOT suffice — additional invariants are needed.",
+    "significance": "supporting",
+    "prerequisites": ["rational_angle_vanishes", "Bolyai-Gerwien theorem", "List.foldl"],
+    "relatedConcepts": ["Bolyai-Gerwien theorem", "polygon triangulation", "higher-dimensional scissors congruence"]
   },
   {
     "id": "ann-summary",
