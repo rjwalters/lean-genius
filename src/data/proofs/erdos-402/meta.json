@@ -142,6 +142,21 @@
     {
       "relationship": "Problem 403 concerns related GCD and divisibility questions in finite sets, sharing the Erdős–Graham framework",
       "targetId": "erdos-403"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient function $\\varphi(n)$ counts integers coprime to $n$, and GCD computations are central to both problems. Graham's conjecture bounds $\\gcd(a,b)$ relative to set size, while $\\varphi$ measures coprimality density — both probe the multiplicative structure of finite sets"
+    },
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "foundational",
+      "description": "The Euclidean algorithm for GCD is the computational foundation for Graham's conjecture. Every instance of the conjecture requires evaluating $\\gcd(a,b)$ for pairs in a finite set, and the algorithmic properties of GCD underpin both verification and the sieve arguments in Balasubramanian–Soundararajan's proof"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler totient and GCD are intimately connected: $\\varphi(n)$ counts integers coprime to $n$, and GCD computations underlie Graham conjecture on products of distinct integers. Both probe the multiplicative structure of integer sequences"
     }
   ],
   "leanFile": {
