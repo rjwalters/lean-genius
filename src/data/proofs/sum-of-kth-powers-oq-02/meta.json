@@ -175,11 +175,11 @@
   },
   "conclusion": {
     "summary": "All 14 results fully proved. 0 sorries, 0 axioms.",
-    "implications": "Complete bridge from Faulhaber integer power sums to zeta(s) real-exponent theory.",
+    "implications": "**1. Convergence dichotomy**: The sharp threshold $s > 1$ for convergence of $\\zeta(s) = \\sum_{n=1}^{\\infty} 1/n^s$ is fundamental to analysis. The divergence at $s = 1$ (harmonic series) connects to the infinitude of primes via Euler's product formula $\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$.\n\n**2. Bridge to number theory**: This formalization bridges Faulhaber's combinatorial integer power sums $\\sum_{k=1}^n k^m$ to the analytic zeta function $\\zeta(s) = \\sum 1/n^s$. The zeta function is the Rosetta stone of number theory: its zeros encode the distribution of primes (Riemann hypothesis), its special values encode deep arithmetic invariants (class numbers, regulators), and its Euler product connects additive and multiplicative number theory.\n\n**3. Special values and Bernoulli numbers**: The verified values $\\zeta(2) = \\pi^2/6$ (Basel problem) and $\\zeta(4) = \\pi^4/90$ are instances of Euler's general formula $\\zeta(2k) = (-1)^{k+1} B_{2k} (2\\pi)^{2k} / (2(2k)!)$ where $B_{2k}$ are Bernoulli numbers. The odd zeta values $\\zeta(3), \\zeta(5), \\ldots$ remain mysterious — Apéry (1979) proved $\\zeta(3)$ irrational, but the irrationality of $\\zeta(5)$ is open.\n\n**4. Monotonicity and functional analysis**: The proved monotonicity $s_1 < s_2 \\Rightarrow \\zeta(s_1) > \\zeta(s_2)$ for $s > 1$ reflects the strict decrease of the zeta function on the real line, with $\\zeta(s) \\to \\infty$ as $s \\to 1^+$ and $\\zeta(s) \\to 1$ as $s \\to \\infty$.",
     "openQuestions": [
-      "Extend to zeta(6), zeta(8) via Bernoulli numbers",
-      "Formalize Euler product",
-      "Prove functional equation"
+      "Can $\\zeta(2k)$ for $k = 3, 4, \\ldots$ be computed from Bernoulli numbers in Lean? The formula $\\zeta(2k) = (-1)^{k+1} B_{2k} (2\\pi)^{2k} / (2(2k)!)$ would give $\\zeta(6) = \\pi^6/945$, $\\zeta(8) = \\pi^8/9450$, etc.",
+      "Can the Euler product formula $\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$ be formalized? This would connect the additive definition (sum over naturals) to the multiplicative structure (product over primes), providing a new proof of the infinitude of primes",
+      "Can the functional equation $\\zeta(s) = 2^s \\pi^{s-1} \\sin(\\pi s/2) \\Gamma(1-s) \\zeta(1-s)$ be stated and the analytic continuation to $\\mathbb{C} \\setminus \\{1\\}$ formalized? This is the key ingredient connecting the Riemann hypothesis to prime distribution"
     ]
   },
   "crossReferences": [
@@ -196,7 +196,22 @@
     {
       "targetId": "riemann-hypothesis",
       "relationship": "foundational",
-      "description": "Basic properties of zeta(s) for real s > 1"
+      "description": "The Riemann hypothesis concerns the zeros of the analytic continuation of $\\zeta(s)$ to $\\mathbb{C}$. This entry formalizes the real-valued restriction $\\zeta(s)$ for $s > 1$, providing the starting point for the full complex theory"
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "The divergence of $\\sum 1/p$ (Euler, 1737) follows from the Euler product $\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$ and the divergence of $\\zeta(s)$ as $s \\to 1^+$. Both results concern the growth rate of the harmonic-type series that this entry's convergence dichotomy classifies"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's formula $n! \\sim \\sqrt{2\\pi n}(n/e)^n$ involves the same $\\pi$ that appears in $\\zeta(2k) = (-1)^{k+1} B_{2k} (2\\pi)^{2k} / (2(2k)!)$. Both arise from the Gamma function $\\Gamma(s)$, which appears in the functional equation of $\\zeta(s)$"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Euler's proof of the infinitude of primes (1737) uses $\\zeta(s) \\to \\infty$ as $s \\to 1^+$ combined with the Euler product: if primes were finite, $\\prod_p (1-p^{-1})^{-1}$ would be a finite product, contradicting the divergence"
     }
   ],
   "references": [
