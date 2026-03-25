@@ -133,12 +133,32 @@
     {
       "targetId": "erdos-57",
       "relationship": "related",
-      "description": "Both study structural properties of graphs with forbidden subgraphs -- #57 via cycle lengths, #59 via counting"
+      "description": "Both study structural properties of graphs with forbidden subgraphs — #57 characterizes odd cycle lengths in infinite chromatic number graphs, #59 counts H-free graphs"
     },
     {
       "targetId": "erdos-65",
       "relationship": "related",
-      "description": "Erdos #65 relates edge density to cycle variety; #59 counts graphs avoiding a fixed subgraph"
+      "description": "Cycle lengths in dense graphs — edge density forces many cycle lengths, while #59 studies how many graphs avoid a fixed cycle entirely"
+    },
+    {
+      "targetId": "erdos-60",
+      "relationship": "related",
+      "description": "Supersaturation of 4-cycles — counts copies of C₄ beyond the Turán threshold, complementary to #59 which counts C₆-free graphs below the threshold"
+    },
+    {
+      "targetId": "erdos-573",
+      "relationship": "related",
+      "description": "Extremal numbers for {C₃,C₄}-free graphs — directly computes Turán-type bounds for forbidden short cycles, the same ex(n;H) function whose exponential 2^{ex(n;H)} governs the count in #59"
+    },
+    {
+      "targetId": "erdos-22",
+      "relationship": "related",
+      "description": "Ramsey-Turán numbers for K₄ — combines Ramsey and Turán theory; #59 similarly bridges extremal density (Turán numbers) with combinatorial enumeration"
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "foundational",
+      "description": "The Szemerédi regularity lemma is the key tool in the Erdős-Frankl-Rödl (1986) proof that non-bipartite H-free graph counts satisfy 2^{(1+o(1))ex(n;H)}"
     }
   ],
   "leanFile": {
