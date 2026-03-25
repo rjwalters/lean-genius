@@ -77,7 +77,8 @@
       "endLine": 52,
       "content": "Definition of the Collatz function and its basic properties: collatz(even) = n/2, collatz(odd) = 3n+1, and the iteration infrastructure.",
       "summary": "Defines the Collatz map $T(n)$ with parity branching, proves simplification lemmas (`collatz_zero`, `collatz_one`, `collatz_two_mul`), and introduces `collatzIter` for orbit computation and `IsPeriodic` for cycle formalization.",
-      "proofMethod": "Direct definition with modular arithmetic branching."
+      "proofMethod": "Direct definition with modular arithmetic branching.",
+      "mathContext": "The Collatz map: $T(n) = n/2$ if $n$ is even, $T(n) = 3n+1$ if $n$ is odd. Simplification lemmas: `collatz_even` and `collatz_odd`. The conjecture: for all $n \\geq 1$, the orbit $n, T(n), T^2(n), \\ldots$ eventually reaches 1."
     },
     {
       "id": "no-fixed-points",
@@ -86,7 +87,8 @@
       "endLine": 65,
       "content": "Proof that collatz(n) = n implies n = 0. The even case gives n/2 = n (impossible for n > 0), and the odd case gives 3n+1 = n (impossible for ℕ).",
       "summary": "Eliminates period-1 orbits via parity case split. Both cases reduce to linear equations over $\\mathbb{N}$ with no positive solutions, dispatched by `omega`.",
-      "proofMethod": "Case split on parity with omega for the arithmetic contradictions."
+      "proofMethod": "Case split on parity with omega for the arithmetic contradictions.",
+      "mathContext": "No period-1 orbits: $T(n) = n$ has no solution for $n \\geq 2$. If $n$ is even: $n/2 = n \\Rightarrow n = 0$. If $n$ is odd: $3n+1 = n \\Rightarrow n = -1/2$. Neither gives a positive integer fixed point."
     },
     {
       "id": "no-two-cycles",
@@ -95,7 +97,8 @@
       "endLine": 89,
       "content": "Proof that collatz(collatz(n)) = n implies n = 0. Uses nested parity analysis: for even n, check if n/2 is even or odd; for odd n, 3n+1 is always even and (3n+1)/2 = n gives a contradiction.",
       "summary": "Eliminates period-2 orbits by exhausting all four parity combinations of $(n, T(n))$. The odd-even case gives $(3n+1)/2 = n$, which forces $n = -1$ — impossible in $\\mathbb{N}$.",
-      "proofMethod": "Nested case analysis on parity of n and n/2."
+      "proofMethod": "Nested case analysis on parity of n and n/2.",
+      "mathContext": "No period-2 orbits: exhaust all four parity combinations of $(n, T(n))$. The odd-even case gives $n/2 = (3n+1)/2$, impossible. The even-odd case gives $3(n/2)+1 = n \\Rightarrow n = 2$, but $T(2) = 1 \\neq T^2(2) = 2$. No valid 2-cycle exists."
     },
     {
       "id": "unique-cycle",
@@ -104,7 +107,8 @@
       "endLine": 113,
       "content": "The orbit 1 → 4 → 2 → 1 is a 3-cycle, and 3 is the minimum period. No shorter period exists for 1.",
       "summary": "Computationally verifies $T^3(1) = 1$ and proves minimality: periods 1 and 2 are excluded. Explicitly computes the orbit elements $1 \\to 4 \\to 2 \\to 1$.",
-      "proofMethod": "Computational verification via native_decide plus interval_cases for minimality."
+      "proofMethod": "Computational verification via native_decide plus interval_cases for minimality.",
+      "mathContext": "The unique small cycle is $1 \\to 4 \\to 2 \\to 1$ (period 3). Computationally verified: $T^3(1) = 1$. Minimality: periods 1 and 2 have been excluded, so this 3-cycle is the smallest."
     },
     {
       "id": "structural-properties",
@@ -113,7 +117,8 @@
       "endLine": 153,
       "content": "Odd steps strictly increase (collatz(n) > n for odd n ≥ 1), even steps strictly decrease (collatz(n) < n for even n ≥ 2). The 3/4 contraction: for n ≡ 1 mod 4, three steps yield (3n+1)/4 < n.",
       "summary": "Establishes monotonicity properties and the key 3/4 contraction theorem: three Collatz steps on $n \\equiv 1 \\pmod{4}$ produce $(3n+1)/4 < n$, leveraging $4 \\mid (3n+1)$ to guarantee two consecutive halvings.",
-      "proofMethod": "Rewriting with collatz_odd/even followed by omega for arithmetic bounds."
+      "proofMethod": "Rewriting with collatz_odd/even followed by omega for arithmetic bounds.",
+      "mathContext": "The $3/4$ contraction theorem: three Collatz steps on an odd number $n$ give $T^3(n) \\leq (3n+1)/2 + 1 \\approx 3n/4 + \\text{const}$, showing average decrease. Monotonicity properties of the map on specific residue classes."
     },
     {
       "id": "halving-constraints",
@@ -122,7 +127,8 @@
       "endLine": 190,
       "content": "For a cycle with j odd steps and M halvings, we need 2^M > 3^j. This gives minimum halving requirements: j=1→M≥2, j=2→M≥4, j=3→M≥5, j=4→M≥7. Combined with j + M = cycle length, this gives minimum cycle lengths.",
       "summary": "Formalizes the Lagarias algebraic constraint: a cycle with $j$ odd steps and $M$ halvings requires $2^M > 3^j$, i.e., $M > j \\log_2 3$. Proves concrete bounds for $j = 1, 2, 3, 4$ and derives minimum total cycle lengths $L = j + M$.",
-      "proofMethod": "Proof by contradiction with interval_cases on M, using simp_all to evaluate concrete exponentials."
+      "proofMethod": "Proof by contradiction with interval_cases on M, using simp_all to evaluate concrete exponentials.",
+      "mathContext": "Lagarias's algebraic constraint: a hypothetical cycle with $j$ odd steps and $M$ total halvings satisfies $n = (3^j n + \\sum 3^k)/2^M$, giving $n(2^M - 3^j) = \\sum 3^k$. For $2^M > 3^j$ (enough halvings), the cycle must decrease — constraining possible cycle lengths."
     },
     {
       "id": "small-verification",
@@ -131,7 +137,8 @@
       "endLine": 256,
       "content": "Computational verification that all numbers 1-20 reach 1, with exact step counts. This means any non-trivial cycle must have minimum element > 20.",
       "summary": "Provides existential witnesses $(k, \\text{native\\_decide})$ proving $T^k(n) = 1$ for each $n \\in [1, 20]$. The step counts reveal the irregular growth of stopping times (e.g., $\\sigma(9) = 19$ vs $\\sigma(16) = 4$).",
-      "proofMethod": "Existential witnesses with native_decide for each n from 1 to 20."
+      "proofMethod": "Existential witnesses with native_decide for each n from 1 to 20.",
+      "mathContext": "Computational verification: for each $n$ in a range, exhibits a witness $k$ with $T^k(n) = 1$ via `native_decide`. This confirms the Collatz conjecture for small values."
     }
   ],
   "conclusion": {

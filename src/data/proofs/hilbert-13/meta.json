@@ -65,49 +65,56 @@
       "title": "Superposition of Functions",
       "startLine": 63,
       "endLine": 93,
-      "summary": "Definition of function representation using superpositions of lower-dimensional functions and the Kolmogorov-Arnold representation structure."
+      "summary": "Definition of function representation using superpositions of lower-dimensional functions and the Kolmogorov-Arnold representation structure.",
+      "mathContext": "Function superposition: $f(x_1, \\ldots, x_n)$ can be represented using functions of fewer variables composed with addition. Hilbert conjectured (1900) that $f(x_1, \\ldots, x_7)$ arising from solving degree-7 equations cannot be represented using only functions of two variables."
     },
     {
       "id": "kolmogorov-arnold",
       "title": "The Kolmogorov-Arnold Theorem",
       "startLine": 94,
       "endLine": 146,
-      "summary": "The main theorem stating that every continuous function of n variables can be represented using functions of one variable."
+      "summary": "The main theorem stating that every continuous function of n variables can be represented using functions of one variable.",
+      "mathContext": "The Kolmogorov-Arnold representation theorem (1957): every continuous $f: [0,1]^n \\to \\mathbb{R}$ can be written as $f(x_1, \\ldots, x_n) = \\sum_{q=0}^{2n} \\Phi_q\\left(\\sum_{p=1}^{n} \\phi_{q,p}(x_p)\\right)$ where $\\Phi_q$ and $\\phi_{q,p}$ are continuous functions of ONE variable. This disproves Hilbert's conjecture for continuous functions."
     },
     {
       "id": "septic",
       "title": "The Septic Equation",
       "startLine": 147,
       "endLine": 182,
-      "summary": "Connection to the original motivation: the Bring-Jerrard form of degree-7 polynomials and Abel-Ruffini impossibility."
+      "summary": "Connection to the original motivation: the Bring-Jerrard form of degree-7 polynomials and Abel-Ruffini impossibility.",
+      "mathContext": "Hilbert's original motivation: the Bring-Jerrard form $x^7 + ax^3 + bx^2 + cx + 1 = 0$ reduces degree-7 equations to 3 parameters. Can the roots be expressed using functions of only 2 variables? Kolmogorov-Arnold says yes (for continuous functions), but the smooth case remains open."
     },
     {
       "id": "smooth-case",
       "title": "Smooth Functions: Vitushkin's Theorem",
       "startLine": 183,
       "endLine": 230,
-      "summary": "For smooth (C^k) functions, Hilbert's intuition holds: some require more variables. Vitushkin's obstruction theorem."
+      "summary": "For smooth (C^k) functions, Hilbert's intuition holds: some require more variables. Vitushkin's obstruction theorem.",
+      "mathContext": "For $C^k$ functions ($k \\geq 2$), Hilbert's intuition holds partially: Vitushkin (1954) showed some $C^k$ functions of 3 variables cannot be represented via $C^k$ functions of 2 variables. The analytic ($C^\\omega$) case remains open and is arguably the 'true' Hilbert 13th problem."
     },
     {
       "id": "universal-functions",
       "title": "Universal Inner Functions",
       "startLine": 231,
       "endLine": 269,
-      "summary": "Arnold's refinement showing that the inner functions can be chosen independently of the function being represented."
+      "summary": "Arnold's refinement showing that the inner functions can be chosen independently of the function being represented.",
+      "mathContext": "Arnold's refinement (1957): the inner functions $\\phi_{q,p}$ in Kolmogorov's representation can be chosen independently of $f$ — only the outer functions $\\Phi_q$ depend on the target. This makes the representation universal: fixed inner functions serve all continuous functions."
     },
     {
       "id": "applications",
       "title": "Applications and Consequences",
       "startLine": 270,
       "endLine": 299,
-      "summary": "Modern applications including neural network theory and Kolmogorov-Arnold Networks (KANs)."
+      "summary": "Modern applications including neural network theory and Kolmogorov-Arnold Networks (KANs).",
+      "mathContext": "Modern connections: Kolmogorov-Arnold Networks (KANs) in machine learning use learnable activation functions on edges (analogous to $\\phi_{q,p}$) rather than fixed activations on nodes. The representation theorem provides the theoretical foundation: any continuous function can be learned by a 2-layer KAN."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 319,
       "endLine": 399,
-      "summary": "Complete summary of Hilbert's 13th problem, its resolution, and remaining open questions."
+      "summary": "Complete summary of Hilbert's 13th problem, its resolution, and remaining open questions.",
+      "mathContext": "Summary: Hilbert's 13th is resolved for continuous functions (Kolmogorov-Arnold, 1957) but open for smooth/analytic functions. The theorem reveals that topological dimension does not constrain continuous function representation, while differentiable structure does."
     }
   ],
   "conclusion": {

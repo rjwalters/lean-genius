@@ -89,49 +89,56 @@
       "title": "Pigeonhole Setup for Fractional Part Binning",
       "startLine": 27,
       "endLine": 65,
-      "summary": "Defines the bin function binFn : Fin(N+1) → Fin(N) mapping index i to ⌊N · fract(iα)⌋, with supporting lemmas for well-typedness (floor non-negative, floor < N) and the key same_bin_fract_close lemma showing colliding bins imply fractional parts within 1/N."
+      "summary": "Defines the bin function binFn : Fin(N+1) → Fin(N) mapping index i to ⌊N · fract(iα)⌋, with supporting lemmas for well-typedness (floor non-negative, floor < N) and the key same_bin_fract_close lemma showing colliding bins imply fractional parts within 1/N.",
+      "mathContext": "Pigeonhole setup for Dirichlet's theorem: define `binFn : Fin(N+1) → Fin(N)` mapping $i \\mapsto \\lfloor N \\cdot \\{i\\alpha\\} \\rfloor$, where $\\{\\cdot\\}$ denotes the fractional part. Since $N+1 > N$, the pigeonhole principle guarantees two indices with the same bin."
     },
     {
       "id": "dirichlet-theorem",
       "title": "Dirichlet's Approximation Theorem",
       "startLine": 66,
       "endLine": 113,
-      "summary": "Proves Dirichlet's approximation theorem: for any real α and N ≥ 1, there exist p, q with 1 ≤ q ≤ N and |qα - p| < 1/N. Applies pigeonhole via Fintype.exists_ne_map_eq_of_card_lt to binFn, then converts the bin collision to an approximation bound through fract_sub_eq and careful cast gymnastics."
+      "summary": "Proves Dirichlet's approximation theorem: for any real α and N ≥ 1, there exist p, q with 1 ≤ q ≤ N and |qα - p| < 1/N. Applies pigeonhole via Fintype.exists_ne_map_eq_of_card_lt to binFn, then converts the bin collision to an approximation bound through fract_sub_eq and careful cast gymnastics.",
+      "mathContext": "Dirichlet's approximation theorem: for any $\\alpha \\in \\mathbb{R}$ and $N \\geq 1$, there exist $p, q \\in \\mathbb{Z}$ with $1 \\leq q \\leq N$ and $|q\\alpha - p| < 1/N$. Equivalently, $|\\alpha - p/q| < 1/(qN) \\leq 1/q^2$."
     },
     {
       "id": "consequences",
       "title": "Consequences: Nearest Integer Bound",
       "startLine": 114,
       "endLine": 123,
-      "summary": "Derives the nearest integer bound: every real number has an integer within distance 1/2. A direct corollary using the floor of α + 1/2."
+      "summary": "Derives the nearest integer bound: every real number has an integer within distance 1/2. A direct corollary using the floor of α + 1/2.",
+      "mathContext": "Consequences: every real number has a nearest integer within distance $1/2$. Also: for irrational $\\alpha$, there are infinitely many rationals $p/q$ with $|\\alpha - p/q| < 1/q^2$ (by letting $N \\to \\infty$)."
     },
     {
       "id": "lattice-points",
       "title": "Lattice Point Theorem",
       "startLine": 124,
       "endLine": 147,
-      "summary": "Proves integer_in_interval (any interval [a, a+1) contains an integer via ceiling) and lattice_point_exists (any interval (a, a+m] contains a multiple of m), providing the geometric foundation for CRT solvability through lattice coset arguments."
+      "summary": "Proves integer_in_interval (any interval [a, a+1) contains an integer via ceiling) and lattice_point_exists (any interval (a, a+m] contains a multiple of m), providing the geometric foundation for CRT solvability through lattice coset arguments.",
+      "mathContext": "Integer-in-interval: every half-open interval $[a, a+1)$ contains an integer ($\\lceil a \\rceil$). Lattice point existence: intervals of length $\\geq 1$ in $\\mathbb{R}$ contain at least one integer."
     },
     {
       "id": "stern-brocot",
       "title": "Mediant and Stern-Brocot Property",
       "startLine": 148,
       "endLine": 175,
-      "summary": "Proves the mediant (a+c)/(b+d) lies strictly between a/b and c/d via cross-multiplication, and that Farey neighbors (determinant cb - ad = 1) are automatically ordered. These results underlie the Stern-Brocot tree construction of best rational approximations."
+      "summary": "Proves the mediant (a+c)/(b+d) lies strictly between a/b and c/d via cross-multiplication, and that Farey neighbors (determinant cb - ad = 1) are automatically ordered. These results underlie the Stern-Brocot tree construction of best rational approximations.",
+      "mathContext": "The mediant property: if $a/b < c/d$ (with $b, d > 0$), then $a/b < (a+c)/(b+d) < c/d$. Proved by cross-multiplication: $a(b+d) < b(a+c)$ iff $ad < bc$. This is the basis of the Stern-Brocot tree."
     },
     {
       "id": "golden-ratio",
       "title": "Golden Ratio Properties",
       "startLine": 176,
       "endLine": 208,
-      "summary": "Defines φ = (1+√5)/2 and proves its key algebraic identities: positivity, φ > 1, φ² = φ + 1, 1/φ = φ - 1, and the minimal polynomial root property. Includes Fibonacci verification examples showing the denominators of φ's best rational approximations."
+      "summary": "Defines φ = (1+√5)/2 and proves its key algebraic identities: positivity, φ > 1, φ² = φ + 1, 1/φ = φ - 1, and the minimal polynomial root property. Includes Fibonacci verification examples showing the denominators of φ's best rational approximations.",
+      "mathContext": "The golden ratio $\\varphi = (1+\\sqrt{5})/2$: key identities $\\varphi^2 = \\varphi + 1$, $\\varphi > 1$, and $\\varphi$ is the 'hardest to approximate' irrational — its continued fraction $[1;1,1,1,\\ldots]$ has the slowest convergence among all irrationals (Hurwitz's theorem)."
     },
     {
       "id": "crt-examples",
       "title": "CRT Non-Coprime Lattice Examples",
       "startLine": 209,
       "endLine": 239,
-      "summary": "Concrete computational examples: a solvable non-coprime system (x ≡ 3 mod 6, x ≡ 1 mod 4 → x = 9 mod 12), an unsolvable system (gcd doesn't divide residue difference), Bézout witness verification, and the classical Sunzi problem for coprime moduli."
+      "summary": "Concrete computational examples: a solvable non-coprime system (x ≡ 3 mod 6, x ≡ 1 mod 4 → x = 9 mod 12), an unsolvable system (gcd doesn't divide residue difference), Bézout witness verification, and the classical Sunzi problem for coprime moduli.",
+      "mathContext": "Concrete CRT examples: the non-coprime system $x \\equiv 3 \\pmod{6}$, $x \\equiv 1 \\pmod{4}$ has solution $x = 9$ (checking: $9 = 6+3$ and $9 = 2 \\cdot 4 + 1$). Demonstrates that CRT extends beyond coprime moduli when compatibility conditions hold."
     }
   ],
   "crossReferences": [

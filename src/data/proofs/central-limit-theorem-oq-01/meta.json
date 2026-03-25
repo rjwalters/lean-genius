@@ -83,49 +83,56 @@
       "title": "Introduction and Motivation",
       "startLine": 1,
       "endLine": 42,
-      "summary": "Module documentation explaining the question, answer, and key insight about α-stable distributions."
+      "summary": "Module documentation explaining the question, answer, and key insight about α-stable distributions.",
+      "mathContext": "When the variance is infinite ($\\sigma^2 = \\infty$), the classical CLT fails. The answer: normalized sums converge to $\\alpha$-stable distributions ($0 < \\alpha < 2$) instead of Gaussians, with normalization $n^{1/\\alpha}$ replacing $\\sqrt{n}$."
     },
     {
       "id": "definition",
       "title": "The α-Stable Characteristic Function",
       "startLine": 43,
       "endLine": 82,
-      "summary": "Definition of stableCharFun α t = exp(-|t|^α), with basic properties: φ(0)=1 and ‖φ‖≤1."
+      "summary": "Definition of stableCharFun α t = exp(-|t|^α), with basic properties: φ(0)=1 and ‖φ‖≤1.",
+      "mathContext": "The $\\alpha$-stable characteristic function: $\\varphi_\\alpha(t) = e^{-|t|^\\alpha}$ for $0 < \\alpha \\leq 2$. Properties: $\\varphi(0) = 1$ (normalization) and $|\\varphi(t)| \\leq 1$ (characteristic functions are bounded)."
     },
     {
       "id": "stability-core",
       "title": "Core Stability Theorem",
       "startLine": 83,
       "endLine": 126,
-      "summary": "The normalization identity |t/n^(1/α)|^α = |t|^α/n and the main stability theorem [φ_α(t/n^(1/α))]^n = φ_α(t)."
+      "summary": "The normalization identity |t/n^(1/α)|^α = |t|^α/n and the main stability theorem [φ_α(t/n^(1/α))]^n = φ_α(t).",
+      "mathContext": "The stability identity: $[\\varphi_\\alpha(t/n^{1/\\alpha})]^n = e^{-n \\cdot |t|^\\alpha/n} = e^{-|t|^\\alpha} = \\varphi_\\alpha(t)$. This means the $\\alpha$-stable distribution is closed under convolution with $n^{1/\\alpha}$ normalization."
     },
     {
       "id": "special-cases",
       "title": "Special Cases: Gaussian, Cauchy, Lévy",
       "startLine": 127,
       "endLine": 185,
-      "summary": "Gaussian is 2-stable (normalization √n), Cauchy is 1-stable (normalization n), Lévy is 1/2-stable (normalization n²)."
+      "summary": "Gaussian is 2-stable (normalization √n), Cauchy is 1-stable (normalization n), Lévy is 1/2-stable (normalization n²).",
+      "mathContext": "Key cases: $\\alpha = 2$ is Gaussian (normalization $\\sqrt{n}$, finite variance), $\\alpha = 1$ is Cauchy (normalization $n$, heavy tails $\\sim 1/x^2$), $\\alpha = 1/2$ is Lévy (normalization $n^2$, extreme heavy tails)."
     },
     {
       "id": "infinite-variance",
       "title": "Why Infinite Variance: Distinctness from Gaussian",
       "startLine": 186,
       "endLine": 245,
-      "summary": "Proof that α-stable (α<2) differs from Gaussian via log-injectivity argument. Formal statement of domain of attraction theorem."
+      "summary": "Proof that α-stable (α<2) differs from Gaussian via log-injectivity argument. Formal statement of domain of attraction theorem.",
+      "mathContext": "For $\\alpha < 2$, the $\\alpha$-stable distribution has infinite variance. Proof: if it had finite variance, the CLT would give Gaussian convergence with $\\sqrt{n}$ normalization, contradicting the $n^{1/\\alpha}$ normalization ($\\alpha < 2 \\Rightarrow 1/\\alpha > 1/2$)."
     },
     {
       "id": "generalized-clt",
       "title": "The Generalized CLT and Lévy-Khintchine",
       "startLine": 246,
       "endLine": 295,
-      "summary": "Axiomatized Lévy-Khintchine representation and Gnedenko-Kolmogorov domain of attraction theorem."
+      "summary": "Axiomatized Lévy-Khintchine representation and Gnedenko-Kolmogorov domain of attraction theorem.",
+      "mathContext": "The Gnedenko-Kolmogorov generalized CLT: the domain of attraction of an $\\alpha$-stable law consists of distributions with regularly varying tails $P(|X| > x) \\sim x^{-\\alpha} L(x)$ where $L$ is slowly varying. The Lévy-Khintchine representation characterizes all infinitely divisible distributions."
     },
     {
       "id": "summary",
       "title": "Main Result and Summary",
       "startLine": 296,
       "endLine": 313,
-      "summary": "Summary of what happens with infinite variance: α-stable limit with normalization n^(1/α)."
+      "summary": "Summary of what happens with infinite variance: α-stable limit with normalization n^(1/α).",
+      "mathContext": "Summary: infinite variance $\\Rightarrow$ the CLT changes from Gaussian ($\\alpha = 2$, $\\sqrt{n}$ normalization) to $\\alpha$-stable ($0 < \\alpha < 2$, $n^{1/\\alpha}$ normalization). The tail exponent $\\alpha$ determines the limit distribution and the required normalization."
     }
   ],
   "conclusion": {

@@ -93,49 +93,56 @@
       "title": "Imports and Setup",
       "startLine": 1,
       "endLine": 113,
-      "summary": "Imports Mathlib's algebraic number theory (`IsAlgebraic`, `Transcendental`), complex exponentiation (`Complex.cpow`), irrationality (`Irrational`), and special functions. Sets `noncomputable section` and opens relevant namespaces."
+      "summary": "Imports Mathlib's algebraic number theory (`IsAlgebraic`, `Transcendental`), complex exponentiation (`Complex.cpow`), irrationality (`Irrational`), and special functions. Sets `noncomputable section` and opens relevant namespaces.",
+      "mathContext": "Imports Mathlib's `IsAlgebraic`, `Transcendental`, and complex exponential definitions. The Gelfond-Schneider theorem (1934): if $a$ and $b$ are algebraic numbers with $a \\neq 0, 1$ and $b$ irrational, then $a^b$ is transcendental. Resolves Hilbert's seventh problem."
     },
     {
       "id": "axiom-catalog",
       "title": "Axiom Catalog",
       "startLine": 126,
       "endLine": 202,
-      "summary": "Seven technical axioms bridging real and complex analysis: `real_algebraic_to_complex_algebraic`, `real_cpow_eq_rpow`, `transcendental_of_complex_eq_real`, Euler's identity $(-1)^{-i} = e^\\pi$, cube root properties, and the Hermite-Lindemann corollary for $\\log$."
+      "summary": "Seven technical axioms bridging real and complex analysis: `real_algebraic_to_complex_algebraic`, `real_cpow_eq_rpow`, `transcendental_of_complex_eq_real`, Euler's identity $(-1)^{-i} = e^\\pi$, cube root properties, and the Hermite-Lindemann corollary for $\\log$.",
+      "mathContext": "Seven technical axioms bridging real and complex analysis: `real_algebraic_to_complex_algebraic` (algebraic over $\\mathbb{R}$ implies algebraic over $\\mathbb{C}$), complex exponential and logarithm properties, and the definition of $a^b := e^{b \\log a}$ for complex numbers."
     },
     {
       "id": "main-theorem",
       "title": "The Gelfond-Schneider Theorem",
       "startLine": 228,
       "endLine": 276,
-      "summary": "States the complex Gelfond-Schneider theorem as an axiom: $a^b$ is transcendental for algebraic $a \\neq 0, 1$ and algebraic irrational $b$. **Proves** the real version `gelfond_schneider_real` by lifting to $\\mathbb{C}$ and transferring transcendence back."
+      "summary": "States the complex Gelfond-Schneider theorem as an axiom: $a^b$ is transcendental for algebraic $a \\neq 0, 1$ and algebraic irrational $b$. **Proves** the real version `gelfond_schneider_real` by lifting to $\\mathbb{C}$ and transferring transcendence back.",
+      "mathContext": "The Gelfond-Schneider theorem stated as an axiom: for $a, b \\in \\mathbb{C}$ algebraic with $a \\neq 0, 1$ and $b \\notin \\mathbb{Q}$, the power $a^b$ is transcendental. This implies: $2^{\\sqrt{2}}$ (Gelfond-Schneider constant), $e^\\pi = (-1)^{-i}$ (Gelfond's constant), and $(\\sqrt{2})^{\\sqrt{2}}$ are all transcendental."
     },
     {
       "id": "corollaries",
       "title": "Famous Corollaries",
       "startLine": 283,
       "endLine": 396,
-      "summary": "Proves $2^{\\sqrt{2}}$, $e^\\pi = (-1)^{-i}$, $(\\sqrt{2})^{\\sqrt{2}}$, and $2^{\\sqrt[3]{2}}$ are transcendental. Each follows by verifying the hypotheses of `gelfond_schneider_real`. The $e^\\pi$ proof uses Euler's identity cleverly."
+      "summary": "Proves $2^{\\sqrt{2}}$, $e^\\pi = (-1)^{-i}$, $(\\sqrt{2})^{\\sqrt{2}}$, and $2^{\\sqrt[3]{2}}$ are transcendental. Each follows by verifying the hypotheses of `gelfond_schneider_real`. The $e^\\pi$ proof uses Euler's identity cleverly.",
+      "mathContext": "Concrete transcendence results: $2^{\\sqrt{2}}$ ($a = 2$, $b = \\sqrt{2}$), $e^\\pi = (-1)^{-i}$ ($a = -1 = e^{i\\pi}$, $b = -i$), $(\\sqrt{2})^{\\sqrt{2}}$ (Gelfond-Schneider constant), and $2^{\\sqrt[3]{2}}$. Each instantiates the main theorem with specific algebraic bases and irrational exponents."
     },
     {
       "id": "connections",
       "title": "Connections to Hermite-Lindemann",
       "startLine": 397,
       "endLine": 446,
-      "summary": "Discusses the relationship: $a^b = e^{b \\log a}$, so Hermite-Lindemann (if $\\alpha$ is algebraic nonzero, $e^\\alpha$ is transcendental) implies $\\log$ of algebraic $\\neq 1$ is transcendental. States Baker's 1966 generalization to linear forms in logarithms."
+      "summary": "Discusses the relationship: $a^b = e^{b \\log a}$, so Hermite-Lindemann (if $\\alpha$ is algebraic nonzero, $e^\\alpha$ is transcendental) implies $\\log$ of algebraic $\\neq 1$ is transcendental. States Baker's 1966 generalization to linear forms in logarithms.",
+      "mathContext": "The identity $a^b = e^{b \\log a}$ connects Gelfond-Schneider to Hermite-Lindemann: if $\\alpha$ is algebraic and nonzero, $e^\\alpha$ is transcendental. Gelfond-Schneider handles the case where the exponent is algebraic irrational rather than algebraic nonzero, extending the transcendence landscape."
     },
     {
       "id": "proof-techniques",
       "title": "Proof Techniques (Pedagogical)",
       "startLine": 447,
       "endLine": 513,
-      "summary": "Describes the Gelfond-Schneider method: (1) assume $a^b$ algebraic, (2) construct auxiliary function $f(z) = \\sum p(m,n) a^{mz} a^{bnz}$, (3) apply Siegel's lemma for integer coefficients, (4) count zeros via analytic function theory, (5) derive contradiction."
+      "summary": "Describes the Gelfond-Schneider method: (1) assume $a^b$ algebraic, (2) construct auxiliary function $f(z) = \\sum p(m,n) a^{mz} a^{bnz}$, (3) apply Siegel's lemma for integer coefficients, (4) count zeros via analytic function theory, (5) derive contradiction.",
+      "mathContext": "The Gelfond-Schneider proof method: (1) assume $a^b$ is algebraic, (2) construct an auxiliary function $f(z) = \\sum P_{ij} a^{iz} z^j$ vanishing to high order at $0, 1, 2, \\ldots, T$, (3) use Schwarz's lemma to bound $|f|$, (4) derive a contradiction from the growth rate vs. vanishing. This auxiliary function technique became standard in transcendence theory."
     },
     {
       "id": "open-problems",
       "title": "Open Problems",
       "startLine": 514,
       "endLine": 560,
-      "summary": "Lists open questions: is $e^e$ transcendental? $\\pi^e$? $2^e$? States Schanuel's conjecture: if $z_1, \\ldots, z_n$ are $\\mathbb{Q}$-linearly independent, then $\\mathrm{trdeg}_{\\mathbb{Q}} \\mathbb{Q}(z_i, e^{z_i}) \\geq n$."
+      "summary": "Lists open questions: is $e^e$ transcendental? $\\pi^e$? $2^e$? States Schanuel's conjecture: if $z_1, \\ldots, z_n$ are $\\mathbb{Q}$-linearly independent, then $\\mathrm{trdeg}_{\\mathbb{Q}} \\mathbb{Q}(z_i, e^{z_i}) \\geq n$.",
+      "mathContext": "Open questions: is $e^e$ transcendental? Is $\\pi^e$? Is $2^e$? Schanuel's conjecture would resolve all of these: it asserts that if $\\alpha_1, \\ldots, \\alpha_n$ are $\\mathbb{Q}$-linearly independent complex numbers, then $\\text{trdeg}_{\\mathbb{Q}}(\\alpha_1, \\ldots, \\alpha_n, e^{\\alpha_1}, \\ldots, e^{\\alpha_n}) \\geq n$."
     }
   ],
   "crossReferences": [
