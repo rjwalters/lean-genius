@@ -190,33 +190,6 @@
       "targetId": "ramseys-theorem"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-64",
-      "relationship": "Direct companion problem: asks whether minimum-degree-3 graphs contain power-of-2 cycles, sharing the same central set A = {2^k} with Problem #72's Liu-Montgomery answer",
-      "description": ""
-    },
-    {
-      "id": "erdos-65",
-      "relationship": "Sibling problem on cycle lengths in dense graphs: asks about the reciprocal sum of cycle lengths, complementing Problem #72's existence question for unavoidable sets",
-      "description": ""
-    },
-    {
-      "id": "erdos-71",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "erdos-1012",
-      "relationship": "Related extremal result: characterizes graphs with long cycles via edge density, using similar density-threshold techniques to Problem #72's unavoidability framework",
-      "description": ""
-    },
-    {
-      "id": "szemeredi-regularity",
-      "relationship": "Core technique in the Liu-Montgomery (2020) proof: the regularity lemma is used to decompose dense graphs into structured pieces where cycle detection proceeds",
-      "description": ""
-    }
-  ],
   "references": [
     {
       "authors": [

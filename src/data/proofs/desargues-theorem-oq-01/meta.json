@@ -173,20 +173,6 @@
       "description": "OQ-04 proves self-duality of Desargues's theorem over commutative rings, building on the same algebraic framework introduced here"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "desargues-theorem",
-      "relationship": "Base formalization that motivated this generalization; uses the deprecated CrossProduct module over ℝ",
-      "description": "Extends the base Desargues formalization to any commutative ring K, replacing the deprecated CrossProduct module with a custom cross product"
-    },
-    {
-      "id": "pythagorean-theorem",
-      "relationship": "Another classical geometry result formalized algebraically in Lean 4 using Mathlib's linear algebra infrastructure"
-    },
-    "desargues-theorem",
-    "desargues-theorem-oq-02",
-    "desargues-theorem-oq-04"
-  ],
   "references": [
     {
       "authors": "Girard Desargues",

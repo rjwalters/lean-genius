@@ -218,32 +218,5 @@
       "venue": "Transactions of the American Mathematical Society, 94(3), 441–451",
       "note": "Independent discovery of the cycle lemma in the context of formal power series and Lagrange inversion; establishes the connection between cyclic rotations and tree enumeration"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "ballot-problem-oq-01",
-      "relationship": "parent",
-      "description": "Parent proof containing the full Dvoretzky-Motzkin Cycle Lemma (cycle_lemma: |goodRotations l| = a - k*b) that uses this discrete IVT as a key ingredient"
-    },
-    {
-      "id": "ballot-problem",
-      "relationship": "ancestor",
-      "description": "Classical Bertrand ballot theorem: setting k=1 in the cycle lemma recovers the ballot problem probability (a-b)/(a+b)"
-    },
-    {
-      "id": "intermediate-value-theorem",
-      "relationship": "related",
-      "description": "This file proves a discrete analog of the IVT: for {+1,-k}-sequences, prefix sums that start below and end above a target value v must achieve exactly v at some intermediate position — the same 'crossing' principle as the continuous IVT"
-    },
-    {
-      "id": "ballot-problem-oq-02",
-      "relationship": "sibling",
-      "description": "Continuous-time analog via Brownian motion — while this file uses discrete IVT for the cycle lemma, the sibling extends ballot counting to the continuous setting where random walks become Brownian bridges and the cycle lemma becomes the reflection principle"
-    },
-    {
-      "id": "ballot-problem-oq-03",
-      "relationship": "sibling",
-      "description": "The Lindström-Gessel-Viennot lemma via 2D reflection — a different combinatorial approach to ballot-type counting. While this file uses cyclic rotation (Dvoretzky-Motzkin), LGV uses lattice path non-intersection, providing a dual perspective on the same counting problems"
-    }
   ]
 }

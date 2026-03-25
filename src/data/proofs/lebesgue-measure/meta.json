@@ -194,33 +194,6 @@
       "relationship": "Cantor's theorem that $\\mathbb{R}$ is uncountable connects to the existence of uncountable null sets (like the Cantor set) and non-measurable sets (Vitali's construction)."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "fundamental-theorem-calculus",
-      "relationship": "The Fundamental Theorem of Calculus holds in the Lebesgue setting: if $f$ is absolutely continuous, then $f' \\in L^1$ and $\\int_a^b f' = f(b) - f(a)$.",
-      "description": ""
-    },
-    {
-      "id": "fourier-series",
-      "relationship": "Fourier series convergence in $L^2$ relies on the completeness of the Lebesgue $L^2$ space and the Riesz-Fischer theorem.",
-      "description": ""
-    },
-    {
-      "id": "central-limit-theorem",
-      "relationship": "The Central Limit Theorem is stated and proved using measure-theoretic probability, where random variables are measurable functions and expectations are Lebesgue integrals.",
-      "description": ""
-    },
-    {
-      "id": "laws-of-large-numbers",
-      "relationship": "The Strong Law of Large Numbers uses dominated convergence and measure-theoretic tools to establish almost sure convergence of sample means.",
-      "description": ""
-    },
-    {
-      "id": "cauchy-schwarz-integral",
-      "relationship": "The integral Cauchy-Schwarz inequality $|\\int fg| \\leq \\|f\\|_2 \\|g\\|_2$ is a special case of Holder's inequality in the Lebesgue $L^2$ space.",
-      "description": ""
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",

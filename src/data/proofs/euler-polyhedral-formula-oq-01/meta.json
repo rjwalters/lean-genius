@@ -196,20 +196,6 @@
       "description": "The Four Color Theorem is the optimal coloring result; this entry provides the elementary Six Color proof and the Heawood formula for higher-genus surfaces"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "euler-polyhedral-formula",
-      "relationship": "Base formalization of V-E+F=2; this OQ-01 develops the full planar graph theory including degeneracy, coloring, and genus bounds",
-      "description": "Extends the base Euler polyhedral formula V-E+F=2 to planar graph theory: spanning tree proof, 5-degeneracy, Six Color Theorem, Heawood bounds, and K₅ non-planarity"
-    },
-    {
-      "id": "euler-polyhedral-formula-oq-02",
-      "relationship": "Companion discrete Gauss-Bonnet formalization; together they cover the combinatorial and geometric aspects of the Euler characteristic"
-    },
-    "euler-polyhedral-formula",
-    "euler-polyhedral-formula-oq-01-oq-01",
-    "four-color-theorem"
-  ],
   "references": [
     {
       "authors": "Leonhard Euler",

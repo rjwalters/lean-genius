@@ -209,48 +209,6 @@
       "description": "Sub-entry: Ideal-theoretic CRT: R/∏Iᵢ ≅ ∏ R/Iᵢ"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "bezout-identity",
-      "relationship": "extends",
-      "description": "Parent entry proving gcd(a,b) = ax + by — this file uses Bézout coefficients to construct explicit CRT solutions"
-    },
-    {
-      "id": "bezout-identity-oq-02",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "chinese-remainder-constructive",
-      "relationship": "complementary",
-      "description": "The natural-number CRT formalization using Nat.chineseRemainder — this file provides the integer-level alternative using Bézout coefficients directly"
-    },
-    {
-      "id": "chinese-remainder-non-coprime",
-      "relationship": "related",
-      "description": "Extends CRT to the non-coprime case gcd(m,n) > 1 — where the coprimality assumption of this file fails, requiring a different approach"
-    },
-    {
-      "id": "fundamental-arithmetic",
-      "relationship": "related",
-      "description": "CRT and FTA are both consequences of Bézout's identity: FTA uses Euclid's lemma (from Bézout), while CRT uses Bézout coefficients as selectors"
-    },
-    {
-      "id": "bezout-identity-oq-03-oq-01",
-      "relationship": "extended-by",
-      "description": "Sub-entry: CRT Ring Isomorphism ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ"
-    },
-    {
-      "id": "bezout-identity-oq-03-oq-01-oq-01",
-      "relationship": "extended-by",
-      "description": "Sub-entry: k-fold Chinese Remainder Theorem: ℤ/(n₁···nₖ)ℤ ≅ ∏ᵢ ℤ/nᵢℤ"
-    },
-    {
-      "id": "bezout-identity-oq-03-oq-01-oq-01-oq-01",
-      "relationship": "extended-by",
-      "description": "Sub-entry: Ideal-theoretic CRT: R/∏Iᵢ ≅ ∏ R/Iᵢ"
-    }
-  ],
   "references": [
     {
       "authors": "Sun Zi",

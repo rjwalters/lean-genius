@@ -147,7 +147,9 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib"],
+    "imports": [
+      "Mathlib"
+    ],
     "opens": [],
     "namespace": "Erdos1139",
     "lineCount": 192,
@@ -181,12 +183,5 @@
       "relationship": "related",
       "description": "Erdős #218 on prime gap densities explores the distributional behavior of prime gaps, providing context for the almost-prime gap question."
     }
-  ],
-  "relatedProofs": [
-    "bounded-prime-gaps",
-    "erdos-1137",
-    "erdos-1101",
-    "erdos-222",
-    "erdos-218"
   ]
 }

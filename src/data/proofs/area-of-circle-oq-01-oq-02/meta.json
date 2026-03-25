@@ -179,43 +179,6 @@
     "theoremCount": 11,
     "definitionCount": 2
   },
-  "relatedProofs": [
-    {
-      "id": "area-of-circle",
-      "relationship": "extends",
-      "description": "The foundational Area of a Circle entry proves A = πr² via Lebesgue measure. This entry derives the same formula by integration, using circumference as the integrand."
-    },
-    {
-      "id": "area-of-circle-oq-01",
-      "relationship": "companion",
-      "description": "The companion entry proves C = dA/dr (differentiation direction). This entry proves A = ∫C dr (integration direction). Together they establish the complete FTC duality for circle geometry."
-    },
-    {
-      "id": "fundamental-theorem-calculus",
-      "relationship": "uses",
-      "description": "This proof is a direct application of FTC Part 2 (integral_eq_sub_of_hasDerivAt) from the Fundamental Theorem of Calculus entry."
-    },
-    {
-      "id": "isoperimetric-theorem",
-      "relationship": "related",
-      "description": "The annulus area formula ∫_{r₁}^{r₂} 2πρ dρ = π(r₂²-r₁²) proved here relates to the isoperimetric inequality: the circle achieves the maximum area-to-perimeter ratio"
-    },
-    {
-      "id": "pi-transcendental",
-      "relationship": "related",
-      "description": "Both use Mathlib's π: the integral ∫₀ʳ 2πρ dρ = πr² involves the same transcendental constant whose properties are established in the π-transcendence formalization"
-    },
-    {
-      "id": "area-of-circle-oq-01-oq-02-oq-01",
-      "relationship": "extended-by",
-      "description": "Generalizes the circumference-to-area integration from 2D circles to n-dimensional spheres: $V_n(r) = \\int_0^r S_n(\\rho)\\, d\\rho$ where $S_n$ is the surface area of the n-sphere. The same radial integration technique that yields $\\pi r^2$ from $2\\pi r$ extends to derive volume formulas for spheres, hyperspheres, and higher-dimensional balls"
-    },
-    {
-      "id": "area-of-circle-oq-01-oq-02-oq-02",
-      "relationship": "extended-by",
-      "description": "Integration by parts for Fourier coefficients of periodic functions — the integration techniques from Mathlib (interval integrals, FTC) used in this circumference integration proof extend to computing Fourier coefficients that arise when representing geometric quantities as trigonometric series"
-    }
-  ],
   "references": [
     {
       "key": "Ar87",

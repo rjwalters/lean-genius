@@ -170,22 +170,5 @@
       "authors": "Erdős–Graham 1980",
       "note": "Original source of both conjectures"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "erdos-362",
-      "relationship": "related-problem",
-      "description": "Both involve counting integers with specific additive representations: #323 counts sums of k-th powers, #362 counts subsets with a given sum"
-    },
-    {
-      "id": "fermat-two-squares",
-      "relationship": "foundation",
-      "description": "Fermat's theorem on sums of two squares provides the multiplicative criterion underlying Landau's asymptotic for f_{2,2}(x)"
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "technique",
-      "description": "The prime number theorem underlies the analytic number theory techniques used in Landau's proof of f_{2,2}(x) ~ c·x/√(log x)"
-    }
   ]
 }

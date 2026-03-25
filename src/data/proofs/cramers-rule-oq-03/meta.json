@@ -135,29 +135,15 @@
       "description": "The minimal polynomial and Cayley-Hamilton theorem both involve determinantal identities for matrices; quasideterminants provide the non-commutative generalization of these polynomial-matrix relationships"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "cramers-rule",
-      "relationship": "parent",
-      "description": "Classical Cramer's Rule over commutative fields — this entry extends it to division rings"
-    },
-    {
-      "id": "cayley-hamilton",
-      "relationship": "related",
-      "description": "Matrix algebra and determinantal identities — the Cayley-Hamilton theorem connects to the algebraic structure that quasideterminants generalize"
-    },
-    {
-      "id": "cramers-rule-oq-02",
-      "relationship": "sibling",
-      "description": "Another open question from Cramer's Rule exploring different extension directions"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.LinearAlgebra.Matrix.Adjugate",
       "Mathlib.Tactic"
     ],
-    "opens": ["Matrix", "Finset"],
+    "opens": [
+      "Matrix",
+      "Finset"
+    ],
     "namespace": "CramersRuleOQ03",
     "lineCount": 175,
     "axiomCount": 0,

@@ -150,17 +150,25 @@
       "id": "lower-bound",
       "title": "Cycle Lemma Lower Bound and Main Theorem",
       "startLine": 516,
-      "endLine": 701,
-      "summary": "Proves $|\\text{goodRotations}| \\geq S$ via `levelPos` surjection (discrete IVT exploiting $+1$ steps); combines with upper bound to prove the **cycle lemma**: $|\\text{goodRotations}| = a - kb$; includes `native_decide` verification examples",
+      "endLine": 774,
+      "summary": "Proves $|\\text{goodRotations}| \\geq S$ via `levelPos` surjection (discrete IVT exploiting $+1$ steps); combines with upper bound to prove the **cycle lemma**: $|\\text{goodRotations}| = a - kb$; includes `native_decide` verification examples; culminates in `cycle_lemma`: $|\\text{goodRotations}| = a - kb$ via `le_antisymm`",
       "mathContext": "The sandwich: injection gives $|\\text{goodRotations}| \\leq S$, surjection gives $|\\text{goodRotations}| \\geq S$, so $|\\text{goodRotations}| = S = a - kb$. The surjection uses a discrete IVT: for each level $v \\in [\\min(\\sigma), \\min(\\sigma)+S)$, find position $i$ with $\\sigma(i) = v$ (exploiting that $+1$ steps can only increase by 1), and this position gives a good rotation."
     },
     {
       "id": "lattice-paths",
       "title": "Part VIII: Lattice Path Interpretation",
-      "startLine": 702,
-      "endLine": 710,
+      "startLine": 781,
+      "endLine": 789,
       "summary": "Interprets prefix sums as lattice path heights: A-vote $= (+1)$ step, B-vote $= (-k)$ step; path stays above $x$-axis iff all prefix sums are positive",
       "mathContext": "The lattice path interpretation: a ballot sequence $l = [l_1, \\ldots, l_n]$ defines a path in $\\mathbb{Z}^2$ from $(0,0)$ to $(n, a-kb)$, with height at time $j$ equal to $\\sigma(j) = \\sum_{i=1}^{j} l_i$. The $k$-fold dominance condition 'A always has > k times B's votes' translates to $\\sigma(j) > 0$ for all $j$, i.e., the path stays strictly above the $x$-axis."
+    },
+    {
+      "id": "verification",
+      "title": "Verification Examples",
+      "startLine": 776,
+      "endLine": 779,
+      "summary": "Three `native_decide` examples verifying the cycle lemma for small ballot sequences: $[1,1,-1]$, $[1,1,1,-1,-1]$, $[1,1,1,-1]$",
+      "mathContext": "Brute-force verification of $|\\text{goodRotations}| = a - kb$ for concrete sequences, independent of the cycle lemma proof."
     }
   ],
   "conclusion": {
@@ -190,38 +198,6 @@
     },
     {
       "targetId": "ballot-problem-oq-01-oq-01",
-      "relationship": "extended-by",
-      "description": "Applies the Dvoretzky-Motzkin cycle lemma with a discrete intermediate value theorem to analyze ballot sequences — extending the k-fold dominance criterion from this file with a rotational symmetry argument that counts favorable cyclic permutations"
-    }
-  ],
-  "relatedProofs": [
-    {
-      "id": "ballot-problem",
-      "relationship": "extends",
-      "description": "Generalizes the classical ballot problem from 1-fold dominance (p>q always) to k-fold dominance (candidate A always has ≥k× candidate B's votes at every stage)"
-    },
-    {
-      "id": "ballot-problem-oq-02",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "ballot-problem-oq-03",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "combinations-formula",
-      "relationship": "foundational",
-      "description": "The counting formula for k-ballot sequences uses generalized binomial coefficients — the number of lattice paths with asymmetric step sizes"
-    },
-    {
-      "id": "erdos-szekeres",
-      "relationship": "related",
-      "description": "Both are combinatorial results on sequences: Erdős-Szekeres guarantees monotone subsequences, the generalized ballot problem counts sequences satisfying a dominance constraint"
-    },
-    {
-      "id": "ballot-problem-oq-01-oq-01",
       "relationship": "extended-by",
       "description": "Applies the Dvoretzky-Motzkin cycle lemma with a discrete intermediate value theorem to analyze ballot sequences — extending the k-fold dominance criterion from this file with a rotational symmetry argument that counts favorable cyclic permutations"
     }

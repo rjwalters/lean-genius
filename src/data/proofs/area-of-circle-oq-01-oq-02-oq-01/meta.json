@@ -250,37 +250,5 @@
       "venue": "Flavors of Geometry, MSRI Publications",
       "note": "Modern treatment of high-dimensional volume and the concentration of measure phenomenon"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "area-of-circle-oq-01-oq-02",
-      "relationship": "extends",
-      "description": "Parent entry proving A = ∫₀ʳ C(ρ) dρ for circles — this file generalizes from 2D to arbitrary dimension n, replacing πr² with ω_n·r^n"
-    },
-    {
-      "id": "area-of-circle-oq-01",
-      "relationship": "extends",
-      "description": "The circumference-from-area differentiation C = dA/dr is the 2D case of this file's n-dimensional derivative relation V'_n = S_n"
-    },
-    {
-      "id": "area-of-circle",
-      "relationship": "ancestor",
-      "description": "The original area formalization A = πr² — this file recovers it as the n=2 special case V₂(r) = ω₂·r² = πr²"
-    },
-    {
-      "id": "fundamental-theorem-calculus",
-      "relationship": "uses",
-      "description": "FTC Part 2 (integral_eq_sub_of_hasDerivAt) is the key tool: since V_n(0) = 0 and V'_n = S_n, FTC gives V_n(r) = ∫₀ʳ S_n(ρ) dρ"
-    },
-    {
-      "id": "stirling-formula",
-      "relationship": "related",
-      "description": "Stirling's approximation for Γ(n/2+1) determines the asymptotic behavior of ω_n → 0 as n → ∞, explaining the 'thin shell' phenomenon in high dimensions"
-    },
-    {
-      "id": "area-of-circle-oq-01-oq-02-oq-02",
-      "relationship": "sibling",
-      "description": "Sibling entry on integration by parts for Fourier coefficients — both extend the circumference integration approach from the parent entry, with this file generalizing to n dimensions and the sibling applying IBP to periodic function analysis"
-    }
   ]
 }

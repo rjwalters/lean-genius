@@ -166,38 +166,6 @@
       "targetId": "erdos-906"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "mean-value-theorem",
-      "title": "Mean Value Theorem",
-      "connection": "foundational",
-      "description": "Rolle's Theorem (a corollary of MVT) is the key analytic tool. The Lean formalization imports Mathlib.Analysis.Calculus.MeanValue specifically to access this result."
-    },
-    {
-      "id": "fundamental-theorem-algebra",
-      "title": "Fundamental Theorem of Algebra",
-      "connection": "prerequisite",
-      "description": "Underpins the count of roots and critical points used throughout. A degree-(n+1) real polynomial with n+1 distinct real roots has exactly n critical points by repeated application of Rolle."
-    },
-    {
-      "id": "erdos-1038",
-      "title": "Erdős Problem #1038: Sublevel Sets of Monic Polynomials",
-      "connection": "thematic",
-      "description": "Concerns the geometry of real polynomials — specifically how root structure governs measure-theoretic properties of level sets. Complements Problem #1114's focus on how AP root structure governs the spacing of derivative zeros."
-    },
-    {
-      "id": "erdos-1125",
-      "title": "Erdős Problem #1125: Kemperman's Inequality and Monotonicity",
-      "connection": "thematic",
-      "description": "Both results establish monotonicity via convexity on the real line. Kemperman's work and Bálint's argument belong to the same tradition of extracting ordered structure from analytic inequalities."
-    },
-    {
-      "id": "erdos-1129",
-      "title": "Erdős Problem #1129: Optimal Lagrange Interpolation Nodes",
-      "connection": "thematic",
-      "description": "Chebyshev nodes — the optimal interpolation nodes — cluster at endpoints and spread outward, the opposite pattern to AP-root critical points (which cluster near the center). The two results together illuminate the extremal geometry of polynomial node configurations."
-    }
-  ],
   "references": [
     {
       "authors": [

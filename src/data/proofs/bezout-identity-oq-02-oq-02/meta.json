@@ -168,28 +168,6 @@
       "description": "Unique factorization in PIDs follows from the generalized Euclid's lemma: irreducible = prime in decomposition monoids"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "bezout-identity-oq-02",
-      "relationship": "extends",
-      "description": "Parent entry proving Euclid's lemma for ℤ — this file generalizes to arbitrary commutative rings, showing the proof is a pure ring identity"
-    },
-    {
-      "id": "bezout-identity-oq-02-oq-01",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "bezout-identity",
-      "relationship": "ancestor",
-      "description": "The original Bézout identity — the generalization shows IsCoprime (∃u,v: ua+vb=1) suffices for Euclid's lemma in any ring"
-    },
-    {
-      "id": "fundamental-arithmetic",
-      "relationship": "related",
-      "description": "Unique factorization in PIDs follows from the generalized Euclid's lemma: irreducible = prime in decomposition monoids"
-    }
-  ],
   "references": [
     {
       "authors": "Bézout, Étienne",

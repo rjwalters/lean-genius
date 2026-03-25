@@ -147,28 +147,6 @@
       "description": "The identity C(m+n,r) = Σ C(m,i)·C(n,j) is a convolution of binomial coefficients"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "binomial-theorem-oq-04",
-      "relationship": "extends",
-      "description": "Parent entry proving Vandermonde via Nat.add_choose_eq — this file provides the algebraic proof via polynomial coefficient comparison, a conceptually different approach"
-    },
-    {
-      "id": "binomial-theorem",
-      "relationship": "uses",
-      "description": "The coefficient extraction (1+X)^n has r-th coefficient C(n,r) is the binomial theorem — the algebraic proof of Vandermonde is essentially a consequence"
-    },
-    {
-      "id": "combinations-formula",
-      "relationship": "foundational",
-      "description": "The identity C(m+n,r) = Σ C(m,i)·C(n,j) is a convolution of binomial coefficients"
-    },
-    {
-      "id": "arithmetic-series-oq-02-oq-02",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Choose.Basic",

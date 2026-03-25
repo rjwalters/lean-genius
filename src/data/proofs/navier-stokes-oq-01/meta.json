@@ -218,43 +218,6 @@
       "description": "The integral identities are formulated using Lebesgue integration (MeasureTheory.Integral.IntervalIntegral), with IntervalIntegrable conditions proved via ContinuousOn"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "navier-stokes",
-      "relationship": "extends",
-      "description": "Extends the base Navier-Stokes formalization with quantitative enstrophy decay estimates and the energy identity for 2D "
-    },
-    {
-      "id": "navier-stokes-oq-02",
-      "relationship": "related",
-      "description": "Companion formalization covering additional aspects of the 2D Navier-Stokes regularity theory"
-    },
-    {
-      "id": "navier-stokes-existence",
-      "relationship": "related",
-      "description": "Existence theory for Navier-Stokes solutions — the solutions whose enstrophy decay properties are formalized here"
-    },
-    {
-      "id": "fundamental-theorem-calculus",
-      "relationship": "foundational",
-      "description": "The enstrophy integral identity directly applies the FTC (integral_eq_sub_of_hasDerivAt_of_le) to convert the pointwise ODE E'(t) = -2νP(t) into the global identity ∫₀ᵀ -2νP = E(T) - E(0)"
-    },
-    {
-      "id": "fundamental-theorem-calculus-oq-01",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "cauchy-schwarz-integral",
-      "relationship": "foundational",
-      "description": "The Cauchy-Schwarz inequality for integrals underlies many estimates in PDE regularity theory, including bounding enstrophy dissipation rates"
-    },
-    {
-      "id": "lebesgue-measure",
-      "relationship": "foundational",
-      "description": "The integral identities are formulated using Lebesgue integration (MeasureTheory.Integral.IntervalIntegral), with IntervalIntegrable conditions proved via ContinuousOn"
-    }
-  ],
   "references": [
     {
       "authors": "Leray, Jean",

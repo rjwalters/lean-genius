@@ -14,6 +14,11 @@
       "prime gaps",
       "prime distribution",
       "number theory"
+    ],
+    "mathContext": "For all n > 0, there exists a prime p with n < p <= 2n. The gap p_{k+1} - p_k < p_k for all primes p_k.",
+    "prerequisites": [
+      "natural number arithmetic",
+      "prime numbers"
     ]
   },
   {
@@ -26,11 +31,15 @@
     "type": "insight",
     "title": "Three Mathematical Giants",
     "content": "**Bertrand (1845)**: Conjectured the result after checking it for all $n$ up to 3 million by hand calculation.\n\n**Chebyshev (1852)**: Proved the conjecture using analytic techniques involving his famous $\\vartheta$ and $\\psi$ functions.\n\n**Erdős (1932)**: Published an elementary proof at age 19—his first paper. This launched a legendary career of 1,500+ papers and became the standard approach taught today.",
-    "mathContext": "The proof evolved from analytic to elementary methods.",
+    "mathContext": "Chebyshev used theta(x) = sum_{p<=x} ln p. Erdos analyzed C(2n,n) >= 4^n/(2n) to show primes must exist in (n,2n] for n >= 512.",
     "significance": "key",
     "relatedConcepts": [
       "history of mathematics",
       "analytic number theory"
+    ],
+    "prerequisites": [
+      "prime number theory history",
+      "analytic number theory basics"
     ]
   },
   {
@@ -48,7 +57,8 @@
     "relatedConcepts": [
       "prime numbers",
       "existence proofs"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-prime-gaps",
@@ -65,7 +75,8 @@
     "relatedConcepts": [
       "prime gaps",
       "consecutive primes"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-infinitude",
@@ -81,6 +92,33 @@
     "relatedConcepts": [
       "infinitude of primes",
       "Euclid's theorem"
+    ],
+    "mathContext": "For any N, Bertrand gives a prime p > N by applying with n = N+1. This implies pi(x) -> infinity as x -> infinity.",
+    "prerequisites": [
+      "bertrand_postulate",
+      "Nat.prime_two"
+    ]
+  },
+  {
+    "id": "ann-no-largest-prime",
+    "proofId": "bertrands-postulate",
+    "range": {
+      "startLine": 99,
+      "endLine": 107
+    },
+    "type": "theorem",
+    "title": "No Largest Prime via Bertrand",
+    "content": "Proof by contradiction: assume prime p is the largest; primes_infinite_via_bertrand yields q > p prime; contradiction.",
+    "mathContext": "Not exists p prime such that forall q prime, q <= p. Proof: assume p; get q > p prime from Bertrand; contradiction.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "proof by contradiction",
+      "infinitude of primes",
+      "omega tactic"
+    ],
+    "prerequisites": [
+      "primes_infinite_via_bertrand",
+      "omega"
     ]
   },
   {
@@ -98,7 +136,8 @@
     "relatedConcepts": [
       "binomial coefficients",
       "prime factorization"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-small-cases",
@@ -114,6 +153,11 @@
     "relatedConcepts": [
       "constructive proofs",
       "explicit bounds"
+    ],
+    "mathContext": "Chain 983, 491, 241, 127, 61, 31, 17, 11, 7, 5, 3, 2 satisfies p_i > p_{i+1}/2. Covers all n < 521.",
+    "prerequisites": [
+      "explicit prime verification",
+      "omega tactic"
     ]
   },
   {
@@ -132,6 +176,7 @@
       "Prime Number Theorem",
       "asymptotic analysis",
       "Riemann Hypothesis"
-    ]
+    ],
+    "prerequisites": []
   }
 ]

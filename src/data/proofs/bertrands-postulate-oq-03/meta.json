@@ -208,58 +208,6 @@
       "description": "The divergence of $\\sum 1/p$ (over primes) establishes that primes are 'dense enough' that their reciprocals diverge. This is a weaker result than prime density in short intervals (which this file addresses), but provides foundational evidence that primes are not sparse — the divergence rate $\\sum_{p \\leq x} 1/p \\sim \\log\\log x$ is the crudest measure of prime distribution"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "bertrands-postulate",
-      "relationship": "extends",
-      "description": "Parent entry proving Bertrand's postulate (a prime between n and 2n) — this file extends to the precise density question: how small can θ be such that [x, x+x^θ] always contains a prime?"
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "foundational",
-      "description": "PNT (π(x) ~ x/ln x) provides the asymptotic framework for understanding prime density in short intervals — Bertrand's postulate is the crude θ=1 case"
-    },
-    {
-      "id": "bounded-prime-gaps",
-      "relationship": "related",
-      "description": "Both address prime distribution: bounded gaps (Zhang-Maynard-Tao) shows infinitely many gaps ≤ 246, while this entry studies the weakest θ guaranteeing primes in every interval [x, x+x^θ]"
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "ancestor",
-      "description": "The foundational result that primes are infinite — this entry quantifies their distribution in short intervals"
-    },
-    {
-      "id": "riemann-hypothesis",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "twin-primes-special",
-      "relationship": "related",
-      "description": "Both address fine-grained prime distribution: twin primes concern gaps of exactly 2 between consecutive primes, while this entry studies the density of primes in intervals of the form $[x, x + x^\\theta]$. The twin prime conjecture and Bertrand-type results are complementary facets of understanding how primes cluster"
-    },
-    {
-      "id": "euler-totient",
-      "relationship": "foundational",
-      "description": "Euler's totient $\\varphi(n) = n \\prod_{p|n}(1-1/p)$ encodes the local prime structure that determines prime density. The product over primes in the totient formula is intimately connected to the Euler product $\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$ whose properties (especially the zero-free region) control prime distribution in short intervals"
-    },
-    {
-      "id": "stirling-formula",
-      "relationship": "related",
-      "description": "Stirling's approximation $n! \\approx \\sqrt{2\\pi n}(n/e)^n$ is needed for asymptotic estimates in prime counting: Chebyshev's proof of Bertrand's postulate uses binomial coefficient bounds that depend on Stirling-type estimates, and the prime number theorem's proof via the Selberg-Erdős elementary method uses factorial asymptotics"
-    },
-    {
-      "id": "quadratic-reciprocity",
-      "relationship": "related",
-      "description": "Quadratic reciprocity governs the splitting behavior of primes in quadratic fields, connecting to the Chebotarev density theorem — a generalization of the prime number theorem to arithmetic progressions and number fields. The density of primes in short intervals (this entry) and the density of primes in arithmetic progressions (Dirichlet's theorem, generalized by Chebotarev) are two perspectives on the same underlying regularity of prime distribution"
-    },
-    {
-      "id": "prime-reciprocal-divergence",
-      "relationship": "related",
-      "description": "The divergence of $\\sum 1/p$ (over primes) establishes that primes are 'dense enough' that their reciprocals diverge. This is a weaker result than prime density in short intervals (which this file addresses), but provides foundational evidence that primes are not sparse — the divergence rate $\\sum_{p \\leq x} 1/p \\sim \\log\\log x$ is the crudest measure of prime distribution"
-    }
-  ],
   "references": [
     {
       "authors": "Baker, Roger C.; Harman, Glyn; Pintz, János",

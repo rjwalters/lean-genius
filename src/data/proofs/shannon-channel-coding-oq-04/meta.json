@@ -163,28 +163,6 @@
       "Does extending to the multivariate entropy function H(p₁,...,pₙ) = -Σ pᵢ log pᵢ preserve all properties via the same convexOn_mul_log approach?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "shannon-channel-coding",
-      "relationship": "extends",
-      "description": "Binary entropy is the key ingredient in BSC capacity C = 1 - h(p) and Fano's inequality"
-    },
-    {
-      "id": "shannon-entropy",
-      "relationship": "specializes",
-      "description": "Binary entropy is Shannon entropy for the Bernoulli(p) distribution on {0,1}"
-    },
-    {
-      "id": "shannon-source-coding",
-      "relationship": "supports",
-      "description": "Binary entropy h(p) determines the optimal compression rate for a Bernoulli(p) source via Shannon's source coding theorem"
-    },
-    {
-      "id": "shannon-source-coding-oq-02",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

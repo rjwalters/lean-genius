@@ -115,33 +115,6 @@
       "targetId": "infinitude-primes"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "wilsons-theorem",
-      "title": "Wilson's Theorem",
-      "relevance": "Core tool: characterises primes via (p-1)! ≡ -1 (mod p), establishing the baseline for the composite exception studied in Problem 1073."
-    },
-    {
-      "id": "erdos-1072",
-      "title": "Erdős Problem #1072: Least n with n! ≡ −1 (mod p)",
-      "relevance": "Sibling problem in the same factorial-plus-one family, studying the prime side of the same divisibility question."
-    },
-    {
-      "id": "erdos-1074",
-      "title": "Erdős Problem #1074: EHS Numbers and Pillai Primes",
-      "relevance": "Related density problem from the Erdős-Hardy-Subbarao programme on factorial arithmetic."
-    },
-    {
-      "id": "erdos-728-factorial-divisibility",
-      "title": "Erdős Problem #728: Factorial Divisibility",
-      "relevance": "Parallel Lean formalization of a factorial divisibility conjecture using closely related proof structures."
-    },
-    {
-      "id": "bertrands-postulate",
-      "title": "Bertrand's Postulate",
-      "relevance": "Prime-gap result underlying the coprimality constraint that limits which composites can divide n!+1."
-    }
-  ],
   "references": [
     {
       "authors": [

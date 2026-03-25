@@ -189,33 +189,6 @@
       "description": "The Cayley-Hamilton theorem provides the connection between matrices and their characteristic/minimal polynomials, which Skolem-Noether shows are preserved by all automorphisms"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "cayley-hamilton",
-      "relationship": "foundational",
-      "description": "The Cayley-Hamilton theorem provides the connection between matrices and their characteristic/minimal polynomials, which Skolem-Noether shows are preserved by all automorphisms"
-    },
-    {
-      "id": "cayley-hamilton-minpoly",
-      "relationship": "extends",
-      "description": "Root formalization connecting Cayley-Hamilton to minimal polynomials; the Skolem-Noether theorem shows all automorphisms preserving minimal polynomials are inner"
-    },
-    {
-      "id": "cayley-hamilton-minpoly-oq-02",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    },
-    {
-      "id": "cayley-hamilton-minpoly-oq-02-oq-01",
-      "relationship": "extends",
-      "description": "Parent file proving minimal polynomial preservation under algebra equivalences; this file extends to the full Skolem-Noether theorem"
-    },
-    {
-      "id": "cayley-hamilton-reduction",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    }
-  ],
   "relatedProblems": [
     {
       "id": "cayley-hamilton-minpoly-oq-02-oq-01",

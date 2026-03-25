@@ -277,11 +277,58 @@
     ]
   },
   {
+    "id": "ann-lower-bound",
+    "proofId": "ballot-problem-oq-01",
+    "range": {
+      "startLine": 727,
+      "endLine": 761
+    },
+    "type": "technique",
+    "title": "Cycle Lemma Lower Bound via levelPos Surjection",
+    "content": "`goodRotations_card_ge` proves $|\\text{goodRotations}| \\geq a - kb$ by constructing a surjection from $\\{0, \\ldots, a-kb-1\\}$ into `goodRotations` via `levelPos`. For each integer level $n < a-kb$, `levelPos l n` is the rightmost position where the prefix sum is $\\leq \\min(\\sigma) + n$. The key theorem `levelPos_eq` (lines 703-725) proves that `prefixSum l (levelPos l n) = minPrefixSum l + n` exactly, by showing that the step at `levelPos` must be $+1$ (if it were $-k$, the next prefix sum would be too low, contradicting maximality). Injectivity of `levelPos` follows: if $\\text{levelPos}(n_1) = \\text{levelPos}(n_2)$, then $\\min(\\sigma) + n_1 = \\min(\\sigma) + n_2$, so $n_1 = n_2$.",
+    "mathContext": "$$g(n) = \\text{levelPos}(l, n), \\quad g : \\{0, \\ldots, S-1\\} \\hookrightarrow \\text{goodRotations}$$\n\nEach $g(n)$ is the rightmost position where $\\sigma \\leq \\min(\\sigma) + n$. The $+1$ step structure forces $\\sigma(g(n)) = \\min(\\sigma) + n$ exactly, making $g$ injective.",
+    "significance": "key",
+    "relatedConcepts": [
+      "surjection",
+      "levelPos",
+      "Finset.card_le_card_of_injOn",
+      "discrete IVT"
+    ],
+    "prerequisites": [
+      "levelPos_eq",
+      "rightmostAtLevel_good",
+      "levelPos_lt"
+    ]
+  },
+  {
+    "id": "ann-verification-examples",
+    "proofId": "ballot-problem-oq-01",
+    "range": {
+      "startLine": 776,
+      "endLine": 779
+    },
+    "type": "context",
+    "title": "native_decide Verification Examples",
+    "content": "Three concrete examples verified by `native_decide`: $[1,1,-1]$ has 1 good rotation (out of 3), $[1,1,1,-1,-1]$ has 1 (out of 5), and $[1,1,1,-1]$ has 2 (out of 4). These match the cycle lemma formula: $a - kb$ gives $2-1=1$, $3-2=1$, and $3-1=2$ respectively. The `native_decide` tactic evaluates the decidable predicate `isGoodRotation` for each rotation, providing brute-force verification independent of the cycle lemma proof.",
+    "mathContext": "Verification: $[1,1,-1]$: $a=2, b=1, k=1 \\Rightarrow 2-1=1$. $[1,1,1,-1,-1]$: $a=3, b=2, k=1 \\Rightarrow 3-2=1$. $[1,1,1,-1]$: $a=3, b=1, k=1 \\Rightarrow 3-1=2$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "native_decide",
+      "decidable predicates",
+      "cycle lemma verification"
+    ],
+    "prerequisites": [
+      "goodRotations",
+      "isGoodRotation",
+      "Decidable"
+    ]
+  },
+  {
     "id": "ann-cycle-lemma",
     "proofId": "ballot-problem-oq-01",
     "range": {
-      "startLine": 684,
-      "endLine": 695
+      "startLine": 763,
+      "endLine": 774
     },
     "type": "technique",
     "title": "The Cycle Lemma (Dvoretzky-Motzkin, 1947)",
@@ -304,8 +351,8 @@
     "id": "ann-lattice-path",
     "proofId": "ballot-problem-oq-01",
     "range": {
-      "startLine": 702,
-      "endLine": 710
+      "startLine": 781,
+      "endLine": 789
     },
     "type": "insight",
     "title": "Lattice Path Interpretation: Geometry of Vote Counting",

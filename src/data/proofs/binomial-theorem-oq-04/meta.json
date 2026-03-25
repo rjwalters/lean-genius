@@ -184,33 +184,6 @@
       "description": "The 2D hockey stick identity uses a parallel Vandermonde as its core — both are convolutions of binomial coefficients"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "binomial-theorem",
-      "relationship": "extends",
-      "description": "Parent entry — Vandermonde's identity follows from comparing coefficients of x^r in (1+x)^m·(1+x)^n = (1+x)^(m+n)"
-    },
-    {
-      "id": "combinations-formula",
-      "relationship": "foundational",
-      "description": "The identity is a convolution of binomial coefficients C(m,k)·C(n,r-k) — the C(n,k) formula is the building block"
-    },
-    {
-      "id": "ballot-problem-oq-03",
-      "relationship": "related",
-      "description": "The LGV lemma uses Vandermonde-type identities for lattice path counting — the parallel Vandermonde proved there is a shifted variant of this identity"
-    },
-    {
-      "id": "arithmetic-series-oq-02-oq-02",
-      "relationship": "related",
-      "description": "The 2D hockey stick identity uses a parallel Vandermonde as its core — both are convolutions of binomial coefficients"
-    },
-    {
-      "id": "binomial-theorem-oq-03",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Choose.Basic",

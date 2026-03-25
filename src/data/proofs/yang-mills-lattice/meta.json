@@ -145,23 +145,6 @@
       "description": "The 2D Yang-Mills theory is exactly solvable (Migdal 1975): the lattice gauge theory simplifies because each plaquette contributes independently. This sibling entry exploits the 2D simplification while the lattice formalism here works in arbitrary dimension"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "yang-mills",
-      "relationship": "part-of",
-      "description": "Sub-module of the comprehensive Yang-Mills formalization"
-    },
-    {
-      "id": "yang-mills-transfer-matrix",
-      "relationship": "supports",
-      "description": "Lattice structures are used by the transfer matrix formalism to prove the mass gap"
-    },
-    {
-      "id": "yang-mills-2d",
-      "relationship": "related",
-      "description": "Related gallery proof"
-    }
-  ],
   "leanFile": {
     "lineCount": 28001,
     "structureCount": 365,

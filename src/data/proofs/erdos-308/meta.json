@@ -203,27 +203,5 @@
     "axiomCount": 19,
     "theoremCount": 3,
     "definitionCount": 9
-  },
-  "relatedProofs": [
-    {
-      "id": "harmonic-divergence",
-      "relationship": "The harmonic series $H_N = \\sum_{k=1}^N 1/k$ is the key quantity bounding representability; harmonic-divergence proves $H_N \\to \\infty$, which implies $f(N) \\to \\infty$"
-    },
-    {
-      "id": "prime-reciprocal-divergence",
-      "relationship": "Both study sums of reciprocals: prime-reciprocal-divergence shows $\\sum 1/p$ diverges, while #308 studies which integers arise as subset sums of $\\{1/k : k \\leq N\\}$"
-    },
-    {
-      "id": "basel-problem",
-      "relationship": "The Basel problem computes $\\sum_{k=1}^\\infty 1/k^2 = \\pi^2/6$; both results concern sums of reciprocals, and the harmonic number $H_N$ is the degree-1 analogue of the Basel sum"
-    },
-    {
-      "id": "erdos-306",
-      "relationship": "Adjacent Erdős–Graham Egyptian fraction problem: #306 concerns decompositions of rationals into distinct unit fractions, complementing #308's bounded-denominator representability question"
-    },
-    {
-      "id": "erdos-124-complete-sequences",
-      "relationship": "Both study completeness of integer sequences: #124 asks when a sequence is complete (every large integer is a subset sum), while #308 asks which integers are subset sums of $\\{1/k\\}$ mapped to $\\mathbb{Z}$"
-    }
-  ]
+  }
 }

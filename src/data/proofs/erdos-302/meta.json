@@ -261,27 +261,5 @@
       "venue": "arXiv preprint",
       "note": "Proved upper bound f(N) ≤ (9/10+o(1))N"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "erdos-23",
-      "relationship": "related",
-      "description": "Both are Erdős extremal combinatorics problems about maximum/minimum sizes of sets satisfying structural constraints"
-    },
-    {
-      "id": "erdos-285",
-      "relationship": "related",
-      "description": "Both concern Egyptian fraction / unit fraction structure: #285 studies asymptotics of Egyptian fraction representations, #302 studies maximum sets avoiding unit fraction equations"
-    },
-    {
-      "id": "erdos-288",
-      "relationship": "related",
-      "description": "Both concern unit fraction sums and finiteness: #288 asks about finitely many interval pairs with integer harmonic sums, #302 asks about maximum sets avoiding 1/a = 1/b + 1/c"
-    },
-    {
-      "id": "erdos-303",
-      "relationship": "related",
-      "description": "The coloring version of #302: can {1,...,N} be 2-colored with no monochromatic solution to 1/a = 1/b + 1/c? Solved by Brown-Rödl (1991)"
-    }
   ]
 }
