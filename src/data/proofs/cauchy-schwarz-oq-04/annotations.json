@@ -1,5 +1,27 @@
 [
   {
+    "id": "csoq04-header",
+    "proofId": "cauchy-schwarz-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 28
+    },
+    "type": "context",
+    "title": "Module Header and Problem Setup",
+    "content": "The module header establishes the context: when Cauchy-Schwarz equality $|\\langle u,v\\rangle| = \\|u\\|\\|v\\|$ holds, what is the exact proportionality constant? The answer — the orthogonal projection coefficient $\\langle u,v\\rangle/\\|v\\|^2$ — connects the inequality to projection theory.\n\nThe proof works in an abstract real inner product space `E` with `[NormedAddCommGroup E] [InnerProductSpace ℝ E]`, making all results applicable to $\\mathbb{R}^n$, $L^2$ function spaces, and any Hilbert space over $\\mathbb{R}$. The `import Mathlib` brings the full Mathlib library; `open scoped InnerProductSpace` enables the `⟪u, v⟫_ℝ` notation for real inner products.",
+    "mathContext": "The proof works in an arbitrary real inner product space $(E, \\langle\\cdot,\\cdot\\rangle)$ satisfying the axioms: symmetry $\\langle u,v\\rangle = \\langle v,u\\rangle$, linearity in the first argument, and positive-definiteness $\\langle u,u\\rangle > 0$ for $u \\neq 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "InnerProductSpace",
+      "NormedAddCommGroup",
+      "Cauchy-Schwarz inequality"
+    ],
+    "prerequisites": [
+      "Lean 4 type classes",
+      "Mathlib inner product spaces"
+    ]
+  },
+  {
     "id": "csoq04-projcoeff",
     "proofId": "cauchy-schwarz-oq-04",
     "type": "concept",
@@ -110,6 +132,73 @@
     ]
   },
   {
+    "id": "csoq04-reverse-direction",
+    "proofId": "cauchy-schwarz-oq-04",
+    "range": {
+      "startLine": 93,
+      "endLine": 112
+    },
+    "type": "technique",
+    "title": "Reverse Direction and Full Biconditional",
+    "content": "`cs_equality_of_exact_constant` proves the reverse: if $u = \\text{projCoeff}(u,v) \\cdot v$, then $|\\langle u,v\\rangle| = \\|u\\|\\|v\\|$. The proof substitutes $u = cv$ into both sides: $|\\langle cv, v\\rangle| = |c| \\cdot \\|v\\|^2$ and $\\|cv\\| \\cdot \\|v\\| = |c| \\cdot \\|v\\|^2$, then uses `ring` to close. The biconditional `cs_equality_iff_exact_constant` combines both directions via `Iff.intro`.",
+    "mathContext": "Reverse: $u = cv \\Rightarrow |\\langle u,v\\rangle| = |c|\\|v\\|^2 = \\|cv\\|\\|v\\| = \\|u\\|\\|v\\|$. The biconditional: $|\\langle u,v\\rangle| = \\|u\\|\\|v\\| \\iff u = \\frac{\\langle u,v\\rangle}{\\|v\\|^2}v$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "biconditional proof",
+      "norm_smul",
+      "inner_smul_left"
+    ],
+    "prerequisites": [
+      "cs_equality_exact_constant",
+      "real_inner_self_eq_norm_sq"
+    ]
+  },
+  {
+    "id": "csoq04-coefficient-props",
+    "proofId": "cauchy-schwarz-oq-04",
+    "range": {
+      "startLine": 118,
+      "endLine": 143
+    },
+    "type": "technique",
+    "title": "Projection Coefficient Algebra",
+    "content": "Four algebraic properties of `projCoeff`:\n\n1. **Recovery** (`projCoeff_of_smul`): $\\text{projCoeff}(cv, v) = c$ — the coefficient recovers scalars. Uses `inner_smul_left` + `mul_div_cancel_right₀`.\n2. **Normalization** (`projCoeff_self`): $\\text{projCoeff}(v, v) = 1$ — as a corollary of recovery with $c = 1$.\n3. **Additivity** (`projCoeff_add`): $\\text{projCoeff}(u_1 + u_2, v) = \\text{projCoeff}(u_1, v) + \\text{projCoeff}(u_2, v)$ — from `inner_add_left` + `add_div`.\n4. **Homogeneity** (`projCoeff_smul`): $\\text{projCoeff}(cu, v) = c \\cdot \\text{projCoeff}(u, v)$ — from `inner_smul_left` + `mul_div_assoc`.\n\nTogether, these show $u \\mapsto \\text{projCoeff}(u, v)$ is a linear functional — the Riesz representative is $v/\\|v\\|^2$.",
+    "mathContext": "The map $\\pi_v : u \\mapsto \\text{projCoeff}(u,v)$ is a continuous linear functional with $\\pi_v(cv) = c$ (recovery), $\\pi_v(v) = 1$ (normalization), and $\\|\\pi_v\\| = 1/\\|v\\|$ (Riesz representation).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "linear functional",
+      "Riesz representation",
+      "Gram-Schmidt"
+    ],
+    "prerequisites": [
+      "inner_smul_left",
+      "inner_add_left",
+      "div_mul_cancel"
+    ]
+  },
+  {
+    "id": "csoq04-residual-bridge",
+    "proofId": "cauchy-schwarz-oq-04",
+    "range": {
+      "startLine": 149,
+      "endLine": 197
+    },
+    "type": "insight",
+    "title": "Residual Characterization and Bridge to Existential Form",
+    "content": "**Residual characterization** (`cs_equality_iff_zero_residual`): CS equality $\\iff$ $u - \\text{proj}(u,v) = 0$. This reframes the algebraic equality condition geometrically: CS equality holds precisely when $u$ has no component orthogonal to $v$.\n\n**Geometric interpretation** (Parts IV-V): The sign of `projCoeff` determines the direction relationship: $\\text{projCoeff} > 0$ when $\\langle u,v\\rangle > 0$ (same direction), $\\text{projCoeff} < 0$ when $\\langle u,v\\rangle < 0$ (opposite direction).\n\n**Bridge** (`existential_constant_is_projCoeff`): If $u = cv$ for any scalar $c$, then $c = \\text{projCoeff}(u,v)$. This shows the constant is unique, sharpening the base CauchySchwarz.lean result from $\\exists c$ to the specific $c = \\langle u,v\\rangle/\\|v\\|^2$.",
+    "mathContext": "Three equivalent characterizations of CS equality: (1) $|\\langle u,v\\rangle| = \\|u\\|\\|v\\|$, (2) $u = \\frac{\\langle u,v\\rangle}{\\|v\\|^2}v$, (3) $u - \\text{proj}_v(u) = 0$. Uniqueness: $u = cv \\Rightarrow c = \\langle u,v\\rangle/\\|v\\|^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "orthogonal complement",
+      "zero residual",
+      "unique determination"
+    ],
+    "prerequisites": [
+      "cs_equality_iff_exact_constant",
+      "projCoeff_of_smul"
+    ]
+  },
+  {
     "id": "csoq04-finite-sum",
     "proofId": "cauchy-schwarz-oq-04",
     "type": "concept",
@@ -153,6 +242,27 @@
     "prerequisites": [
       "projCoeff_pos_of_inner_pos",
       "projCoeff_neg_of_inner_neg"
+    ]
+  },
+  {
+    "id": "csoq04-examples",
+    "proofId": "cauchy-schwarz-oq-04",
+    "range": {
+      "startLine": 274,
+      "endLine": 288
+    },
+    "type": "context",
+    "title": "Verified Examples and Type Checks",
+    "content": "Concrete sanity checks verifying the projection coefficient on simple cases: `projCoeff(3v, v) = 3` (the coefficient recovers the scalar when $u$ is a known multiple of $v$) and `projCoeff(v, v) = 1` (self-projection gives unit coefficient). The `#check` commands verify that the main theorems have the expected types, serving as a lightweight regression test — if the theorem signatures change, the `#check` calls will fail.",
+    "mathContext": "$\\text{projCoeff}(3v, v) = \\frac{\\langle 3v, v\\rangle}{\\|v\\|^2} = \\frac{3\\|v\\|^2}{\\|v\\|^2} = 3$ and $\\text{projCoeff}(v, v) = \\frac{\\|v\\|^2}{\\|v\\|^2} = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "projCoeff_of_smul",
+      "projCoeff_self",
+      "#check"
+    ],
+    "prerequisites": [
+      "projCoeff definition"
     ]
   }
 ]
