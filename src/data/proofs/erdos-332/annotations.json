@@ -1,5 +1,28 @@
 [
   {
+    "id": "erdos-332-docstring",
+    "proofId": "erdos-332",
+    "type": "context",
+    "range": {
+      "startLine": 1,
+      "endLine": 13
+    },
+    "title": "Module Documentation: Problem Statement",
+    "content": "The module docstring states Erdős Problem #332: given $A \\subseteq \\mathbb{N}$, define $D(A)$ as the set of integers occurring infinitely often as differences $a_1 - a_2$. What conditions on $A$ ensure $D(A)$ has bounded gaps (is syndetic)? The known sufficient condition is positive upper density, due to Prikry, Tijdeman, and Stewart. The open question asks for the weakest such condition. The problem appears in Erdős and Graham's 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory*.",
+    "mathContext": "Given $A \\subseteq \\mathbb{N}$, $D(A) = \\{d \\in \\mathbb{Z} : |\\{(a_1,a_2) \\in A^2 : a_1 - a_2 = d\\}| = \\infty\\}$. Known: $\\overline{d}(A) > 0 \\Rightarrow D(A)$ is syndetic. Open: what is the weakest $P$ with $P(A) \\Rightarrow \\text{HasBoundedGaps}(D(A))$?",
+    "significance": "key",
+    "relatedConcepts": [
+      "difference sets",
+      "syndetic sets",
+      "upper density",
+      "Erdős problems"
+    ],
+    "prerequisites": [
+      "additive combinatorics",
+      "density of integer sets"
+    ]
+  },
+  {
     "id": "erdos-332-imports",
     "proofId": "erdos-332",
     "type": "concept",

@@ -116,8 +116,8 @@
       "title": "Known Results",
       "startLine": 59,
       "endLine": 97,
-      "summary": "Four axiomatized results: **Prikry's theorem** ($\\overline{d}(A) > 0 \\Rightarrow D(A)$ syndetic), density inheritance for $D(A)$, symmetry $D(A) = -D(A)$, and $0 \\in D(A)$ for infinite $A$.",
-      "mathContext": "Prikry: $\\overline{d}(A) > 0 \\Rightarrow \\text{HasBoundedGaps}(D(A))$. Structure: $D(A) = -D(A)$, $0 \\in D(A)$ for infinite $A$."
+      "summary": "Two axioms (Prikry's theorem: $\\overline{d}(A) > 0 \\Rightarrow D(A)$ syndetic; density inheritance for $D(A)$) and two proved theorems (`diffSet_symm`: $D(A) = -D(A)$ via the swap bijection; `zero_mem_diffSet`: $0 \\in D(A)$ for infinite $A$ via diagonal pairs).",
+      "mathContext": "Axioms: Prikry's theorem $\\overline{d}(A) > 0 \\Rightarrow \\text{HasBoundedGaps}(D(A))$; density inheritance. Proved: $D(A) = -D(A)$, $0 \\in D(A)$ for infinite $A$."
     },
     {
       "id": "main-problem",
@@ -146,6 +146,20 @@
       "What is the relationship between the syndeticity of $D(A)$ and the IP-set or thick-set properties of $D(A)$?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "diffSet_symm",
+      "type": "original",
+      "description": "D(A) is symmetric: d ∈ D(A) ↔ -d ∈ D(A), proved via the swap bijection (a₁,a₂) ↦ (a₂,a₁)",
+      "leanType": "(A : Set ℕ) → (d : ℤ) → d ∈ diffSet A ↔ -d ∈ diffSet A"
+    },
+    {
+      "name": "zero_mem_diffSet",
+      "type": "original",
+      "description": "0 ∈ D(A) for any infinite A: every element pairs with itself, giving infinitely many witness pairs",
+      "leanType": "(A : Set ℕ) → Set.Infinite A → (0 : ℤ) ∈ diffSet A"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "erdos-23",
