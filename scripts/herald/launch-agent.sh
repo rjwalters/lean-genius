@@ -38,7 +38,7 @@ SIGNALS_DIR="$REPO_ROOT/.loom/signals"
 STATE_DIR="$REPO_ROOT/.loom/state"
 SESSION_NAME="herald-agent"
 LOG_FILE="$LOGS_DIR/herald.log"
-INTERVAL="${HERALD_INTERVAL:-360}"
+INTERVAL="${HERALD_INTERVAL:-180}"
 STATE_FILE="$STATE_DIR/herald-posts.json"
 
 # Colors
