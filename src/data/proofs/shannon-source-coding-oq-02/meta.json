@@ -157,6 +157,16 @@
       "targetId": "shannon-channel-coding",
       "relationship": "related",
       "description": "Source coding (compression) and channel coding (reliability) are dual halves of Shannon theory"
+    },
+    {
+      "targetId": "laws-of-large-numbers",
+      "relationship": "related",
+      "description": "The law of large numbers underpins the source coding theorem: the Asymptotic Equipartition Property (AEP) shows that for long sequences, -log(P(X_1,...,X_n))/n -> H(X) almost surely. This concentration result is what makes Shannon coding achievable — typical sequences have probability close to 2^(-nH), enabling compression to H bits per symbol."
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "related",
+      "description": "The CLT refines the LLN convergence underlying source coding: the log-probability of a length-n sequence is approximately normal with mean nH and variance n*sigma^2. This gives the finite-blocklength refinement of Huffman coding performance: the excess rate above entropy decreases as O(1/sqrt(n))."
     }
   ],
   "conclusion": {

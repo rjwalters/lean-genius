@@ -156,6 +156,16 @@
       "targetId": "cauchy-schwarz",
       "relationship": "related",
       "description": "Cauchy-Schwarz gives $|\\langle x,y \\rangle| \\leq \\|x\\| \\cdot \\|y\\|$, which implies the Euclidean triangle inequality via $\\|x+y\\| \\leq \\|x\\| + \\|y\\|$. The ultrametric inequality $d(x,z) \\leq \\max(d(x,y), d(y,z))$ is strictly stronger — it replaces the additive bound with a maximum, reflecting the non-Archimedean nature of $p$-adic and formal power series valuations"
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "The Pythagorean theorem establishes the Euclidean distance formula d(x,y) = sqrt(sum (x_i - y_i)^2), which satisfies the standard triangle inequality d(x,z) <= d(x,y) + d(y,z). The ultrametric inequality strengthens this to d(x,z) <= max(d(x,y), d(y,z)), showing that p-adic distances behave fundamentally differently from Euclidean distances."
+    },
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "related",
+      "description": "The law of cosines c^2 = a^2 + b^2 - 2ab*cos(C) determines when a triangle is acute, right, or obtuse in Euclidean geometry. In ultrametric spaces, the isosceles triangle theorem (every triangle has at least two equal sides) replaces this classification entirely: triangles cannot be scalene, and the 'angle' information is collapsed to the max operation."
     }
   ],
   "references": [

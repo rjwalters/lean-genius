@@ -243,6 +243,16 @@
       "targetId": "area-of-circle",
       "relationship": "related",
       "description": "Hyperbolic and spherical area formulas connect to circle area through the angular defect/excess: hyperbolic triangle area = pi - alpha - beta - gamma, with connections to hyperbolic disk area formulas."
+    },
+    {
+      "targetId": "triangle-angle-sum",
+      "relationship": "related",
+      "description": "The angle sum of a triangle is exactly pi in Euclidean geometry but less than pi in hyperbolic and greater than pi in spherical geometry. The area-defect formulas in this formalization (area = pi/2 - alpha - beta for hyperbolic right triangles) directly encode this angle-sum variation."
+    },
+    {
+      "targetId": "herons-formula",
+      "relationship": "related",
+      "description": "Heron's formula computes Euclidean triangle area from side lengths alone. The non-Euclidean Pythagorean theorems here generalize the side-length relations that underpin Heron's formula, and the hyperbolic/spherical area-defect formulas provide the non-Euclidean analogues of area computation."
     }
   ],
   "leanFile": {

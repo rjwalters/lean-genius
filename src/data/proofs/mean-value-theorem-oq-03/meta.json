@@ -222,6 +222,16 @@
       "targetId": "triangle-inequality",
       "relationship": "foundational",
       "description": "The triangle inequality in normed spaces is the key tool replacing IVT in the vector-valued setting, enabling the norm bound ||f(b)-f(a)|| <= C(b-a) that defines the mean value inequality."
+    },
+    {
+      "targetId": "taylor-theorem",
+      "relationship": "related",
+      "description": "Taylor's theorem generalizes the MVT to higher-order approximations: f(b) = f(a) + f'(a)(b-a) + f''(c)(b-a)^2/2. The MVT is the first-order Taylor remainder estimate, and the vector-valued MVT inequality here provides the foundation for vector-valued Taylor remainder bounds in Banach spaces."
+    },
+    {
+      "targetId": "lhopital",
+      "relationship": "related",
+      "description": "L'Hopital's rule evaluates indeterminate limits by comparing derivatives, and its proof relies on the Cauchy mean value theorem (a ratio form of the MVT). The vector-valued MVT inequality generalizes the derivative comparison to norm estimates, extending L'Hopital-type reasoning to Banach-space-valued functions."
     }
   ],
   "references": [

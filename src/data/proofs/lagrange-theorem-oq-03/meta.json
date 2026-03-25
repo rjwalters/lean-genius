@@ -241,6 +241,16 @@
       "targetId": "lagrange-theorem",
       "relationship": "extends",
       "description": "Parent formalization; this entry extends it with further exploration"
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "Both Lagrange's theorem and the Cayley-Hamilton theorem concern structural constraints in algebra. While Lagrange constrains subgroup orders in finite groups, Cayley-Hamilton constrains eigenvalues of matrices. The connection deepens for matrix groups where Sylow and Hall subgroups correspond to eigenvalue structures."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient function phi(n) counts units in Z/nZ, and Euler's theorem a^phi(n) = 1 (mod n) follows from Lagrange's theorem applied to (Z/nZ)*. Hall's coprimality condition gcd(|H|, [G:H]) = 1 generalizes the coprimality central to Euler's totient theory."
     }
   ]
 }

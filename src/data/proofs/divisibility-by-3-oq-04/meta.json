@@ -156,6 +156,21 @@
       "targetId": "chinese-remainder-constructive",
       "relationship": "related",
       "description": "Both formalize modular arithmetic applications: CRT combines congruences mod coprime moduli, while casting out nines uses congruences for arithmetic verification"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "related",
+      "description": "The Fundamental Theorem of Arithmetic (unique prime factorization) underlies divisibility theory. The digit-sum congruence n = digitsum(n) (mod 9) is a consequence of 10 = 1 (mod 9), and the generalization to arbitrary bases uses the same modular structure that prime factorization governs."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient function and Euler's theorem a^phi(n) = 1 (mod n) are central to modular arithmetic. The casting-out principle b = 1 (mod d) is a special case of the modular structure that Euler's theorem describes, and both rely on the ring homomorphism property of reduction mod d."
+    },
+    {
+      "targetId": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "Mathematical induction is the proof technique underlying the digit-sum congruence: the base representation n = sum a_k * b^k and the congruence b^k = 1 (mod d) are established inductively. The parent proof's strong induction on digit count directly parallels classical induction."
     }
   ],
   "references": [
