@@ -222,7 +222,17 @@
     {
       "targetId": "erdos-1109",
       "relationship": "related",
-      "description": "Related additive combinatorics: squarefree sumsets use similar sieve techniques"
+      "description": "Problem #1109 studies squarefree sumsets using sieve techniques similar to those used in the weighted-sum analysis of monochromatic sets. Both combine number-theoretic structure with combinatorial density arguments"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey's theorem guarantees monochromatic cliques in edge-colored complete graphs. Problem #191 asks how 'large' (in a weighted harmonic sense) monochromatic subsets can be forced to exist — a quantitative refinement of the Ramsey property from clique existence to weighted-sum lower bounds"
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "related",
+      "description": "The divergence of the harmonic series is the foundational fact underlying the $\\sum 1/\\log n$ weighting. Problem #191 asks whether monochromatic subsets must have divergent weighted harmonic sums — connecting Ramsey-theoretic partition results to the harmonic-sum structure of the integers"
     }
   ],
   "references": [
