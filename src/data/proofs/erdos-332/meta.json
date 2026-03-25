@@ -189,11 +189,23 @@
     "opens": [
       "Set"
     ],
-    "namespace": null,
+    "namespace": "",
     "lineCount": 118,
     "axiomCount": 3,
     "theoremCount": 2,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "mainTheorems": [
+      {
+        "name": "diffSet_symm",
+        "type": "original",
+        "description": "D(A) is symmetric: d ∈ D(A) ↔ -d ∈ D(A), proved via the bijection (a₁,a₂) ↦ (a₂,a₁)"
+      },
+      {
+        "name": "zero_mem_diffSet",
+        "type": "original",
+        "description": "0 ∈ D(A) for any infinite A: every element pairs with itself, giving infinitely many witness pairs"
+      }
+    ]
   },
   "references": [
     {
@@ -216,6 +228,20 @@
       "year": "1966",
       "venue": "Oxford University Press",
       "note": "Classical reference for difference sets, density conditions, and additive bases; includes the average representation divergence result"
+    },
+    {
+      "authors": "Bergelson, Vitaly",
+      "title": "Sets of recurrence of ℤᵐ-actions and properties of sets of differences in ℤᵐ",
+      "year": "1985",
+      "venue": "Journal of the London Mathematical Society, vol. 31, pp. 295–304",
+      "note": "Generalizes Prikry's theorem to ℤᵐ and connects difference set syndeticity to recurrence properties in ergodic theory via the Furstenberg correspondence"
+    },
+    {
+      "authors": "Ruzsa, Imre Z.",
+      "title": "Connections between the uniform distribution of a sequence and its differences",
+      "year": "1979",
+      "venue": "In: Topics in Classical Number Theory (Budapest), Colloq. Math. Soc. János Bolyai 34, pp. 1419–1443",
+      "note": "Studies structural properties of difference sets including density inheritance and connections to harmonic analysis on ℤ — foundational for the density-to-syndeticity pipeline axiomatized in this formalization"
     }
   ]
 }
