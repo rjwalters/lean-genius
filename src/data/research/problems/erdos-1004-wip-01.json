@@ -29,9 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Proved 2 totient characterizations (sorries 5→3). Remaining: 3 deep sorries (sublinear growth, long runs existence, asymptotic density).",
+    "builtItems": [
+      "Proved totient_eq_two_iff: φ(n) = 2 ↔ n ∈ {3,4,6}",
+      "Proved totient_eq_four_iff: φ(n) = 4 ↔ n ∈ {5,8,10,12}",
+      "Helper prime_pred_dvd_totient via factorization + multiplicativity"
+    ],
+    "insights": [
+      "prime_pred_dvd_totient: if prime p | n then (p-1) | φ(n), key infrastructure for totient characterizations"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
