@@ -62,7 +62,7 @@
       "Solvable groups and the derived series"
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 475,
+    "lineCount": 874,
     "relatedProblems": [
       {
         "id": "abel-ruffini-oq-04",
@@ -138,79 +138,79 @@
       "id": "header",
       "title": "Problem Overview and Proof Chain",
       "startLine": 1,
-      "endLine": 60,
+      "endLine": 91,
       "summary": "Documents the complete Abel-Ruffini proof chain and motivation for choosing $x^5 - 4x + 2$. Lists all 5 steps from $A_5$ simplicity to unsolvability by radicals. Opens namespace and imports Mathlib.",
       "mathContext": "Proof chain: (1) $A_5$ simple, (2) $S_n$ not solvable for $n \\geq 5$, (3) solvable by radicals $\\Rightarrow$ solvable Gal, (4) $\\text{Gal}(x^5-4x+2/\\mathbb{Q}) \\cong S_5$, (5) roots not expressible by radicals."
     },
     {
       "id": "polynomial",
       "title": "Part I: The Polynomial p = X⁵ - 4X + 2",
-      "startLine": 62,
-      "endLine": 70,
+      "startLine": 96,
+      "endLine": 105,
       "summary": "Defines $p = X^5 - 4X + 2$ over $\\mathbb{Q}$ and its $\\mathbb{Z}[X]$ version `p_int` for Eisenstein criterion application.",
       "mathContext": "$p(x) = x^5 - 4x + 2 \\in \\mathbb{Q}[X]$, $p_{\\text{int}} = x^5 - 4x + 2 \\in \\mathbb{Z}[X]$."
     },
     {
       "id": "irreducibility",
       "title": "Part II: Irreducibility via Eisenstein at p = 2",
-      "startLine": 72,
-      "endLine": 145,
+      "startLine": 106,
+      "endLine": 181,
       "summary": "Proves $p$ is irreducible over $\\mathbb{Q}$. First proves irreducibility over $\\mathbb{Z}$ using Eisenstein's criterion at the prime ideal $(2)$, then transfers to $\\mathbb{Q}$ via Gauss's lemma (monic $\\Rightarrow$ primitive).",
       "mathContext": "Eisenstein at $(2) \\subset \\mathbb{Z}$: $2 \\nmid 1$, $2 \\mid 0, 0, 0, -4, 2$, $4 \\nmid 2$. Therefore $p$ is irreducible over $\\mathbb{Z}$, hence over $\\mathbb{Q}$ by Gauss's lemma."
     },
     {
       "id": "structure",
       "title": "Part III: Basic Structural Properties",
-      "startLine": 147,
-      "endLine": 169,
+      "startLine": 182,
+      "endLine": 205,
       "summary": "Proves $\\deg(p) = 5$, $p$ is monic, $p$ is separable (char 0), and $|\\text{rootSet}(p)| = 5$.",
       "mathContext": "$\\deg(p) = 5$, $p$ monic and separable. In the splitting field: $|\\{\\alpha : p(\\alpha) = 0\\}| = 5$."
     },
     {
       "id": "galois-structure",
       "title": "Part IV: Galois Group Structure",
-      "startLine": 171,
-      "endLine": 193,
+      "startLine": 206,
+      "endLine": 229,
       "summary": "Proves $5 \\mid |\\text{Gal}|$ (prime degree gives transitive action, orbit-stabilizer) and $|\\text{Gal}| \\mid 120$ (galActionHom embeds $\\text{Gal}$ into $S_5$). Together: $|\\text{Gal}| \\in \\{5, 10, 15, 20, 30, 40, 60, 120\\}$.",
       "mathContext": "$5 \\mid |\\text{Gal}|$ and $|\\text{Gal}| \\mid 5! = 120$. Possible orders: $\\{5, 10, 15, 20, 30, 40, 60, 120\\}$."
     },
     {
       "id": "gal-order",
       "title": "Parts V(a)-(f): Galois Group Order |Gal| = 120 (Theorem)",
-      "startLine": 195,
-      "endLine": 755,
+      "startLine": 230,
+      "endLine": 754,
       "summary": "Proves $|\\text{Gal}| = 120$ as a theorem via axiom decomposition. (a) Evaluations showing 3 sign changes. (b) Group theory: 5-cycle + transposition = $S_5$ via native_decide conjugation chain. (c) galToPerm5 injection infrastructure. (d) Sylow theory: no order-15 subgroups (native_decide), no order-30 subgroups ($A_5$ simplicity). (e) Two narrow axioms: $3 \\mid |\\text{Gal}|$ (Dedekind at $p=13$) and $\\text{Gal} \\not\\subset A_5$ (discriminant $< 0$). (f) Proof: $15 \\mid |\\text{Gal}|$, $|\\text{Gal}| \\mid 120$, rule out 15/30/60.",
       "mathContext": "Theorem: $|\\text{Gal}(x^5-4x+2/\\mathbb{Q})| = 120$. From $5 \\mid |G|$, $3 \\mid |G|$ (Dedekind), $|G| \\mid 120$: $|G| \\in \\{15,30,60,120\\}$. Not 15 (Sylow), not 30 ($A_5$ simple), not 60 ($G \\not\\subset A_5$). Two axioms: Dedekind's theorem at $p=13$, discriminant-Vandermonde identity."
     },
     {
       "id": "gal-iso",
       "title": "Part VI: Gal(p/ℚ) ≅ S₅",
-      "startLine": 278,
-      "endLine": 311,
-      "summary": "Proves $\\text{Gal} \\cong S_5$ via galActionHom bijectivity: injective (Mathlib) + $|\\text{Gal}| = |\\text{Perm}(\\text{rootSet})| = 120$ (axiom). Transfers via $\\text{rootSet} \\simeq \\text{Fin}\\;5$ using `Equiv.permCongr`.",
+      "startLine": 755,
+      "endLine": 789,
+      "summary": "Proves $\\text{Gal} \\cong S_5$ via galActionHom bijectivity: injective (Mathlib) + $|\\text{Gal}| = |\\text{Perm}(\\text{rootSet})| = 120$. Transfers via $\\text{rootSet} \\simeq \\text{Fin}\\;5$ using `Equiv.permCongr`.",
       "mathContext": "$\\text{galActionHom}$ injective + $|\\text{Gal}| = |S_5| = 120$ $\\Rightarrow$ bijective $\\Rightarrow$ $\\text{Gal}(p/\\mathbb{Q}) \\cong S_5$."
     },
     {
       "id": "not-solvable",
       "title": "Part VII: Non-Solvability",
-      "startLine": 313,
-      "endLine": 330,
+      "startLine": 790,
+      "endLine": 808,
       "summary": "Proves $S_5$ is not solvable ($A_5$ is simple, $5 \\geq 5$ via `Equiv.Perm.not_solvable`) and transfers to $\\text{Gal}$ via the surjective isomorphism using `solvable_of_surjective`.",
       "mathContext": "$S_5$ not solvable (derived series: $S_5 \\supset A_5 \\supset A_5 \\supset \\cdots$, $A_5$ simple non-abelian). $\\text{Gal} \\cong S_5 \\Rightarrow \\text{Gal}$ not solvable."
     },
     {
       "id": "abel-ruffini",
       "title": "Part VIII: Abel-Ruffini Conclusion",
-      "startLine": 332,
-      "endLine": 365,
+      "startLine": 809,
+      "endLine": 843,
       "summary": "Main theorem `roots_not_solvable_by_rad`: the roots of $x^5 - 4x + 2$ are not solvable by radicals. Proof by contrapositive: if $\\alpha$ were solvable by radicals, `solvableByRad.isSolvable'` gives $\\text{Gal}$ solvable, contradicting `gal_not_solvable`.",
       "mathContext": "$\\alpha \\in \\text{Rad}(\\mathbb{Q}) \\Rightarrow \\text{Gal}(p/\\mathbb{Q})$ solvable $\\Rightarrow S_5$ solvable $\\Rightarrow \\bot$."
     },
     {
       "id": "realizability",
       "title": "Part IX: $S_5$ Realizability and Verification",
-      "startLine": 367,
-      "endLine": 398,
+      "startLine": 844,
+      "endLine": 874,
       "summary": "$S_5$ is realizable as a Galois group over $\\mathbb{Q}$, witnessed by the splitting field of $x^5 - 4x + 2$. Followed by `#check` verification of all key theorems and namespace closure.",
       "mathContext": "$\\exists K/\\mathbb{Q}$ Galois: $\\text{Gal}(K/\\mathbb{Q}) \\cong S_5$. Witness: $K = $ splitting field of $x^5 - 4x + 2$."
     }
