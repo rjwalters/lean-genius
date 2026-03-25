@@ -488,10 +488,22 @@
   ],
   "mainTheorems": [
     {
-      "name": "exists_not_solvable_by_rad",
+      "name": "not_solvable_by_rad_of_not_solvable_gal",
       "type": "core",
-      "description": "There exists a polynomial of degree >= 5 whose roots cannot be expressed by radicals",
-      "leanType": "exists (p : Polynomial F), 5 <= p.natDegree and exists alpha, aeval alpha p = 0 and not (IsSolvableByRad F alpha)"
+      "description": "Abel-Ruffini contrapositive: if the Galois group of an irreducible polynomial is not solvable, then its roots are not solvable by radicals",
+      "leanType": "(α : E) → (q : Polynomial F) → Irreducible q → aeval α q = 0 → ¬ IsSolvable q.Gal → ¬ IsSolvableByRad F α"
+    },
+    {
+      "name": "galois_bridge",
+      "type": "key",
+      "description": "Solvability by radicals implies solvable Galois group (Galois's fundamental theorem, from Mathlib)",
+      "leanType": "(α : E) → (q : Polynomial F) → Irreducible q → aeval α q = 0 → IsSolvableByRad F α → IsSolvable q.Gal"
+    },
+    {
+      "name": "symmetric_group_not_solvable",
+      "type": "key",
+      "description": "The symmetric group Sₙ is not solvable for n ≥ 5",
+      "leanType": "(n : ℕ) → 5 ≤ n → ¬ IsSolvable (Equiv.Perm (Fin n))"
     }
   ]
 }
