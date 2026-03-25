@@ -106,11 +106,6 @@
       "description": "The Galois group realizations (S₃ for x³-2, D₄ for x⁴-2) are concrete instances of the inverse Galois problem"
     },
     {
-      "targetId": "lagrange-theorem",
-      "relationship": "foundational",
-      "description": "The tower law [K:ℚ] = ∏[Kᵢ₊₁:Kᵢ] — a consequence of Lagrange's theorem — underpins galois_2group_implies_degree_pow2: the minimal polynomial degree divides |Gal| = 2^k"
-    },
-    {
       "targetId": "sqrt2-irrational",
       "relationship": "complementary",
       "description": "√2 is the canonical constructible irrational: |Gal(x²-2/ℚ)| = 2 = 2¹, proved here by divisibility squeeze. Its irrationality is the first step beyond ℚ in the constructible tower"
@@ -129,11 +124,6 @@
       "targetId": "primitive-roots",
       "relationship": "foundational",
       "description": "Primitive roots establish that $(\\mathbb{Z}/p\\mathbb{Z})^{\\times}$ is cyclic of order $p-1$. For the Gauss-Wantzel theorem: the regular $p$-gon is constructible iff $\\text{Gal}(\\mathbb{Q}(\\zeta_p)/\\mathbb{Q}) \\cong (\\mathbb{Z}/p\\mathbb{Z})^{\\times}$ is a 2-group, i.e., $p-1 = 2^k$, i.e., $p$ is a Fermat prime. Gauss's construction of the 17-gon used the 2-group structure of $(\\mathbb{Z}/17\\mathbb{Z})^{\\times} \\cong \\mathbb{Z}/16\\mathbb{Z}$"
-    },
-    {
-      "targetId": "euler-totient",
-      "relationship": "foundational",
-      "description": "The Gauss-Wantzel theorem states the regular $n$-gon is constructible iff $\\phi(n) = 2^k$, making Euler's totient function the bridge between number theory and constructibility. Since $\\text{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^{\\times}$ has order $\\phi(n)$, the 2-group criterion reduces to $\\phi(n) = 2^k$"
     },
     {
       "targetId": "nth-root-irrational",
@@ -159,11 +149,6 @@
       "targetId": "fundamental-theorem-algebra",
       "relationship": "complementary",
       "description": "FTA guarantees every polynomial has roots in $\\mathbb{C}$, so constructibility is never about existence of solutions — only about which geometric operations can produce them. The 2-group criterion characterizes which algebraic numbers (all of which exist by FTA) happen to lie in the compass-and-straightedge closure of $\\mathbb{Q}$"
-    },
-    {
-      "targetId": "sylow-theorems",
-      "relationship": "foundational",
-      "description": "Sylow's theorems provide the structural theory of $p$-groups within finite groups. The 2-group Galois criterion for constructibility is a direct application: $\\text{Gal}(\\text{minpoly}(\\alpha))$ is a 2-group iff its order is $2^n$, and Sylow theory guarantees that 2-groups have normal subgroups of every intermediate 2-power order, yielding the composition series with $\\mathbb{Z}/2\\mathbb{Z}$ factors that correspond to the degree-2 extension tower. More precisely, the backward direction of the Wantzel-Galois biconditional uses the fact that finite $p$-groups are nilpotent (hence solvable), with successive quotients of the upper central series all being $p$-groups — for $p = 2$, this gives the tower of quadratic extensions"
     },
     {
       "targetId": "abel-ruffini-oq-04-oq-01",
