@@ -2,7 +2,7 @@
   "id": "erdos-1179-oq-01",
   "title": "Second-Order Term in Uniform Subset Sum Representations",
   "slug": "erdos-1179-oq-01",
-  "description": "What is the precise second-order term in g_ε(N)? Formalizes the correction term hierarchy (O(1) vs Θ(log log N) vs o(log N)) and proves foundational properties of representation counts in ℤ/Nℤ, including the partition identity ∑_g F_A(g) = 2^|A|, monotonicity under set growth, and coverage monotonicity. The Fourier-analytic connection to character sums is axiomatized.",
+  "description": "What is the precise second-order term in g_ε(N)? Formalizes the correction term hierarchy (O(1) vs Θ(log log N) vs o(log N)) and proves foundational properties of representation counts in ℤ/Nℤ, including the partition identity ∑_g F_A(g) = 2^|A|, monotonicity under set growth, and coverage monotonicity. Proves erdos_renyi_decay (exponential decay of Fourier error) from the corrected fourier_error_bound axiom via geometric series arguments.",
   "meta": {
     "author": "Open Question (Erdős #1179)",
     "sourceUrl": "https://erdosproblems.com/1179",
@@ -19,14 +19,14 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 2,
-    "theoremCount": 9,
+    "axiomCount": 1,
+    "theoremCount": 11,
     "definitionCount": 5,
-    "lineCount": 213,
+    "lineCount": 286,
     "erdosNumber": 1179,
     "erdosUrl": "https://erdosproblems.com/1179",
     "erdosProblemStatus": "open-question",
-    "assumptions": "Two axioms for deep results: fourier_error_bound (Fourier analysis bound for reprCount deviations in ℤ/pℤ via character sums) and erdos_renyi_decay (exponential decay of Fourier error for k ≈ 2 log₂ p, the core of the Erdős-Rényi 1965 approach). All foundational representation count lemmas (partition identity, monotonicity, coverage growth, singleton bound, base cases) are fully proved with zero sorries.",
+    "assumptions": "One axiom: fourier_error_bound (corrected Fourier analysis bound for reprCount deviations in ℤ/pℤ via character sums, with proper 2^k/p scaling factor and k-1 exponent for 0∈A). The erdos_renyi_decay theorem is now PROVED from this axiom via geometric decay of |cos(π/p)|^k. All foundational representation count lemmas (partition identity, monotonicity, coverage growth, singleton bound, base cases) are fully proved with zero sorries.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
@@ -77,13 +77,15 @@
         "Mathlib.Data.Real.Basic",
         "Mathlib.Data.ZMod.Basic",
         "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+        "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+        "Mathlib.Analysis.SpecificLimits.Normed",
         "Mathlib.Tactic"
       ],
       "opens": ["Finset", "Real"],
       "namespace": "Erdos1179OQ01",
-      "lineCount": 213,
-      "axiomCount": 2,
-      "theoremCount": 9,
+      "lineCount": 286,
+      "axiomCount": 1,
+      "theoremCount": 11,
       "definitionCount": 5,
       "mainTheorems": [
         {
@@ -109,6 +111,18 @@
           "type": "proved",
           "description": "The correction hierarchy: O(1) implies o(log₂ N)",
           "leanType": "(gEps : ℝ → ℕ → ℕ) → (ε : ℝ) → CorrectionIsBounded gEps ε → CorrectionIsSublinearInLog gEps ε"
+        },
+        {
+          "name": "abs_cos_pi_div_prime_lt_one",
+          "type": "proved",
+          "description": "|cos(π/p)| < 1 for any prime p — key lemma for geometric decay",
+          "leanType": "(p : ℕ) → (hp : Nat.Prime p) → |cos(π/p)| < 1"
+        },
+        {
+          "name": "erdos_renyi_decay",
+          "type": "proved",
+          "description": "Erdős-Rényi exponential decay: for k ≥ clog₂ p + C, Fourier error ≤ ε · 2^k/p. Proved from fourier_error_bound via geometric decay of |cos(π/p)|^(k-1)",
+          "leanType": "(p : ℕ) → (hp : Nat.Prime p) → ∀ ε > 0, ∃ C, ∀ k ≥ clog 2 p + C, ∀ A, A.card = k → ∀ g, |F_A(g) - 2^k/p| ≤ ε · (2^k/p)"
         }
       ]
     }
@@ -186,10 +200,10 @@
     {
       "id": "fourier",
       "title": "Part VI: Fourier Analysis Connection",
-      "startLine": 176,
-      "endLine": 194,
-      "summary": "Two axioms capture the Fourier-analytic core: `fourier_error_bound` (character sum control of $|F_A(g) - 2^k/p|$ by $(p-1)|\\cos(\\pi/p)|^k$) and `erdos_renyi_decay` (for $k \\approx 2\\log_2 p$, the error decays to $O(\\varepsilon \\cdot 2^k/p)$).",
-      "mathContext": "For $A \\subseteq \\mathbb{Z}/p\\mathbb{Z}$: $F_A(g) = \\frac{1}{p}\\sum_\\chi \\chi(-g)\\prod_{a \\in A}(1+\\chi(a))$. Non-trivial characters contribute $\\leq (p-1)|\\cos(\\pi/p)|^k$, which decays exponentially in $k$."
+      "startLine": 178,
+      "endLine": 267,
+      "summary": "Proves `abs_cos_pi_div_prime_lt_one` ($|\\cos(\\pi/p)| < 1$ for primes) via strict monotonicity of cosine on $[0,\\pi]$. One corrected axiom `fourier_error_bound` (with proper $2^k/p$ scaling and $k-1$ exponent). Proves `erdos_renyi_decay` from the axiom: the relative error $(p-1)|\\cos(\\pi/p)|^{k-1}$ decays geometrically below any $\\varepsilon > 0$ for sufficiently large $k$. Original axiom was mathematically false (counterexample: $A=\\{1,2\\} \\subseteq \\mathbb{Z}/3\\mathbb{Z}$).",
+      "mathContext": "For $A \\subseteq \\mathbb{Z}/p\\mathbb{Z}$: $F_A(g) = \\frac{1}{p}\\sum_\\chi \\chi(-g)\\prod_{a \\in A}(1+\\chi(a))$. Non-trivial characters contribute $\\leq (p-1)|\\cos(\\pi/p)|^{k-1} \\cdot 2^k/p$. Since $|\\cos(\\pi/p)| < 1$, geometric decay gives relative error $\\to 0$."
     },
     {
       "id": "summary",
@@ -205,7 +219,7 @@
     "implications": "**Connections to additive combinatorics:** The representation count machinery (partition identity, monotonicity, convolution structure) connects to fundamental tools in additive number theory — Freiman's theorem, the Erdős-Ginzburg-Ziv theorem, and sumset estimates. The Fourier method axiomatized here is a special case of the Hardy-Littlewood circle method applied to finite groups.\n\n**Problem #543 analogy:** The disproof of #543 showed $\\Theta(\\log\\log N)$ is the optimal correction for coverage. If the uniformity problem (#1179) has the same answer, it would reveal a deep structural connection between 'covering all elements' and 'covering them uniformly' — both governed by the same second-order logarithmic correction.\n\n**Computational verification:** The formalized definitions are in principle computable for small $N$ (modulo the `noncomputable` annotation on `reprCount`). A computational investigation of $g_\\varepsilon(N)$ for small $N$ and various $\\varepsilon$ could provide empirical evidence for the correct rate.",
     "openQuestions": [
       "Is the correction term $g_\\varepsilon(N) - \\log_2 N$ bounded ($O(1)$) or does it grow as $\\Theta(\\log\\log N)$? The disproof of Problem #543 suggests the latter, but the uniformity condition here is strictly stronger than coverage.",
-      "Can the Fourier axioms (fourier_error_bound and erdos_renyi_decay) be proved from Mathlib's character theory? This requires discrete Fourier analysis infrastructure: character groups of $\\mathbb{Z}/p\\mathbb{Z}$, Pontryagin duality, and character orthogonality relations.",
+      "Can the remaining fourier_error_bound axiom be proved from Mathlib's character theory? This requires discrete Fourier analysis infrastructure: character groups of $\\mathbb{Z}/p\\mathbb{Z}$, orthogonality relations, and the identity $|1+\\chi(a)| = 2|\\cos(\\pi ja/p)|$.",
       "Can the $\\Theta(\\log\\log N) \\Rightarrow o(\\log N)$ implication be formalized to complete the full hierarchy chain?",
       "Does the second-order term depend on the group structure (cyclic vs general abelian) or only on the group order $N$?"
     ]

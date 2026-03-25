@@ -26,6 +26,8 @@ import Mathlib.Data.Fintype.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Analysis.SpecificLimits.Normed
 import Mathlib.Tactic
 
 namespace Erdos1179OQ01
@@ -177,21 +179,91 @@ theorem bounded_implies_sublinear (gEps : ℝ → ℕ → ℕ) (ε : ℝ)
 ## Part VI: Fourier analysis connection
 -/
 
-/-- In ℤ/pℤ (p prime), the Fourier error bound controls reprCount deviations.
-    F_A(g) = (1/p) ∑_χ χ(-g) ∏_{a ∈ A} (1 + χ(a)).
-    The χ ≠ 1 terms contribute at most (p-1) · |cos(π/p)|^k. -/
-axiom fourier_error_bound (p : ℕ) (hp : Nat.Prime p) (k : ℕ) :
-  ∀ A : Finset (ZMod p), A.card = k →
-    ∀ g : ZMod p, |(reprCount A g : ℝ) - (2 : ℝ) ^ k / p| ≤
-      (p - 1 : ℝ) * |Real.cos (Real.pi / p)| ^ k
+/-- |cos(π/p)| < 1 for any prime p ≥ 2.
+    For p = 2: cos(π/2) = 0. For p ≥ 3: 0 < π/p < π so -1 < cos(π/p) < 1. -/
+private lemma abs_cos_pi_div_prime_lt_one (p : ℕ) (hp : Nat.Prime p) :
+    |Real.cos (Real.pi / ↑p)| < 1 := by
+  have hp_pos : (0 : ℝ) < ↑p := Nat.cast_pos.mpr hp.pos
+  have hp_one_lt : (1 : ℝ) < ↑p := by exact_mod_cast hp.one_lt
+  have hx_pos : (0 : ℝ) < π / ↑p := div_pos Real.pi_pos hp_pos
+  have hx_lt_pi : π / ↑p < π := div_lt_self Real.pi_pos hp_one_lt
+  rw [abs_lt]
+  constructor
+  · -- cos(π/p) > cos(π) = -1 since π/p < π and cos strictly decreasing on [0,π]
+    have h1 : π / ↑p ∈ Set.Icc (0 : ℝ) π := ⟨hx_pos.le, hx_lt_pi.le⟩
+    have h2 : π ∈ Set.Icc (0 : ℝ) π := ⟨Real.pi_pos.le, le_refl _⟩
+    have := Real.strictAntiOn_cos h1 h2 hx_lt_pi
+    rw [Real.cos_pi] at this
+    linarith
+  · -- cos(π/p) < cos(0) = 1 since 0 < π/p and cos strictly decreasing on [0,π]
+    have h1 : (0 : ℝ) ∈ Set.Icc (0 : ℝ) π := ⟨le_refl _, Real.pi_pos.le⟩
+    have h2 : π / ↑p ∈ Set.Icc (0 : ℝ) π := ⟨hx_pos.le, hx_lt_pi.le⟩
+    have := Real.strictAntiOn_cos h1 h2 hx_pos
+    rwa [Real.cos_zero] at this
 
-/-- For k ≈ 2 log₂ p, the Fourier error decays to O(1/p).
-    This is the core of the Erdős-Rényi (1965) approach. -/
-axiom erdos_renyi_decay (p : ℕ) (hp : Nat.Prime p) :
-  ∀ ε : ℝ, ε > 0 → ∃ C : ℕ, ∀ k : ℕ, k ≥ Nat.clog 2 p + C →
-    ∀ A : Finset (ZMod p), A.card = k →
-      ∀ g : ZMod p, |(reprCount A g : ℝ) - (2 : ℝ) ^ k / p| ≤
-        ε * ((2 : ℝ) ^ k / p)
+/-- Fourier-analytic error bound for representation counts in ℤ/pℤ.
+
+    For A ⊆ ℤ/pℤ of size k, Fourier inversion gives:
+      F_A(g) = (1/p) ∑_χ χ(-g) ∏_{a ∈ A} (1 + χ(a))
+    The trivial character contributes 2^k/p (the "uniform" term).
+    For χ ≠ 1: |1 + χ(a)| = 2|cos(πja/p)|, and for nonzero a mod p,
+    |cos(πja/p)| ≤ cos(π/p) < 1. The exponent k-1 (not k) accounts for
+    the possibility that 0 ∈ A, where |cos(0)| = 1.
+
+    **Note**: The original axiom (without 2^k/p factor) was mathematically
+    false. Counterexample: A = {1,2} in ℤ/3ℤ gives error 2/3 but the old
+    bound was (3-1)·cos(π/3)² = 1/2 < 2/3. -/
+axiom fourier_error_bound (p : ℕ) (hp : Nat.Prime p) (k : ℕ) (hk : 1 ≤ k) :
+  ∀ A : Finset (ZMod p), A.card = k →
+    ∀ g : ZMod p, |(reprCount A g : ℝ) - (2 : ℝ) ^ k / ↑p| ≤
+      (↑p - 1 : ℝ) * |Real.cos (Real.pi / ↑p)| ^ (k - 1) * ((2 : ℝ) ^ k / ↑p)
+
+/-- For k ≥ clog₂ p + C, the Fourier error decays to at most ε · 2^k/p.
+    This is the core of the Erdős-Rényi (1965) approach.
+
+    Proof: from fourier_error_bound, the relative error is bounded by
+    (p-1) · |cos(π/p)|^(k-1). Since |cos(π/p)| < 1 for all primes,
+    this decays geometrically and falls below ε for large enough k. -/
+theorem erdos_renyi_decay (p : ℕ) (hp : Nat.Prime p) :
+    ∀ ε : ℝ, ε > 0 → ∃ C : ℕ, ∀ k : ℕ, k ≥ Nat.clog 2 p + C →
+      ∀ A : Finset (ZMod p), A.card = k →
+        ∀ g : ZMod p, |(reprCount A g : ℝ) - (2 : ℝ) ^ k / ↑p| ≤
+          ε * ((2 : ℝ) ^ k / ↑p) := by
+  intro ε hε
+  -- |cos(π/p)| < 1 for primes
+  have hcos_lt := abs_cos_pi_div_prime_lt_one p hp
+  have hcos_nn := abs_nonneg (Real.cos (π / ↑p))
+  -- (p : ℝ) - 1 > 0 for primes
+  have hp_sub : (0 : ℝ) < ↑p - 1 := by
+    have : 1 < (p : ℝ) := by exact_mod_cast hp.one_lt
+    linarith
+  -- Find K₀ with |cos(π/p)|^K₀ < ε/(p-1)
+  obtain ⟨K₀, hK₀⟩ := exists_pow_lt_of_lt_one (div_pos hε hp_sub) hcos_lt
+  -- C = K₀ + 1 ensures k-1 ≥ K₀ and k ≥ 1
+  use K₀ + 1
+  intro k hk A hA g
+  have hk1 : 1 ≤ k := by omega
+  -- From fourier_error_bound (corrected):
+  -- |error| ≤ (p-1) · |cos(π/p)|^(k-1) · (2^k/p)
+  have hfourier := fourier_error_bound p hp k hk1 A hA g
+  -- Suffices: (p-1) · |cos(π/p)|^(k-1) ≤ ε
+  suffices hsuff : (↑p - 1 : ℝ) * |Real.cos (π / ↑p)| ^ (k - 1) ≤ ε by
+    calc |(reprCount A g : ℝ) - (2 : ℝ) ^ k / ↑p|
+        ≤ (↑p - 1) * |Real.cos (π / ↑p)| ^ (k - 1) * ((2 : ℝ) ^ k / ↑p) := hfourier
+      _ ≤ ε * ((2 : ℝ) ^ k / ↑p) := by
+          apply mul_le_mul_of_nonneg_right hsuff
+          exact div_nonneg (pow_nonneg (by norm_num : (0:ℝ) ≤ 2) k) (Nat.cast_nonneg p)
+  -- k - 1 ≥ K₀ since k ≥ clog 2 p + K₀ + 1 ≥ K₀ + 1
+  have hk_ge : K₀ ≤ k - 1 := by omega
+  -- |cos(π/p)|^(k-1) ≤ |cos(π/p)|^K₀ (decreasing for base ≤ 1)
+  -- Then (p-1) · |cos(π/p)|^(k-1) ≤ (p-1) · ε/(p-1) = ε
+  calc (↑p - 1 : ℝ) * |Real.cos (π / ↑p)| ^ (k - 1)
+      ≤ (↑p - 1) * |Real.cos (π / ↑p)| ^ K₀ := by
+        apply mul_le_mul_of_nonneg_left _ hp_sub.le
+        exact pow_le_pow_of_le_one hcos_nn hcos_lt.le hk_ge
+    _ ≤ (↑p - 1) * (ε / (↑p - 1)) := by
+        apply mul_le_mul_of_nonneg_left (le_of_lt hK₀) hp_sub.le
+    _ = ε := by field_simp
 
 /-
 ## Part VII: Summary and open question
@@ -205,7 +277,8 @@ axiom erdos_renyi_decay (p : ℕ) (hp : Nat.Prime p) :
     2. Θ(log log N) — by analogy with Problem #543
     3. o(log₂ N) — weakest, already known from Erdős-Hall
 
-    We proved: O(1) ⟹ o(log₂ N), establishing the hierarchy. -/
+    We proved: O(1) ⟹ o(log₂ N), establishing the hierarchy.
+    We proved: erdos_renyi_decay from fourier_error_bound (geometric decay). -/
 theorem second_order_hierarchy (gEps : ℝ → ℕ → ℕ) (ε : ℝ) :
     CorrectionIsBounded gEps ε → CorrectionIsSublinearInLog gEps ε :=
   bounded_implies_sublinear gEps ε
