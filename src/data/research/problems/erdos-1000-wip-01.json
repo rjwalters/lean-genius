@@ -1,39 +1,54 @@
 {
   "slug": "erdos-1000-wip-01",
   "title": "Complete Erdős #1000: Generalized Totients and Diophantine Approximation (Work in Progress)",
-  "phase": "NEW",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in number theory: Complete Erdős #1000: Generalized Totients and Diophantine Approximation (Work in Progress).",
-    "whyMatters": []
+    "formal": "Prove one or more of the 4 axioms in Erdos1000Problem.lean: erdos_no_zero_limit, erdos_dichotomy, cassels_liminf_zero, haight_resolution",
+    "plain": "The existing formalization of Erdős #1000 has 4 deep axioms about generalized totients and Cesàro averages. Goal: reduce the axiom count by proving structural results.",
+    "whyMatters": ["Connects totient theory to Cesàro summation", "Illustrates pointwise vs averaged convergence gap"]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": ["phiA_ge_totient: φ_A(k) ≥ φ(n_k)", "densityRatio_ge_totient_ratio: ρ_A(k) ≥ φ(n_k)/n_k"],
+    "open": ["erdos_no_zero_limit", "erdos_dichotomy", "cassels_liminf_zero", "haight_resolution"],
+    "goal": "Prove erdos_no_zero_limit or cassels_liminf_zero"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-24T00:48:59.900Z",
+    "phase": "ORIENT",
+    "since": "2026-03-25T00:00:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Proved structural lower bound lemmas. Assessing feasibility of axiom proofs.",
+    "blockers": ["erdos_no_zero_limit requires deeper structural argument beyond phiA ≥ totient"],
+    "nextAction": "Investigate cassels_liminf_zero: explicit sequence construction via continued fractions",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: No Lean file exists.",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: Proved phiA_ge_totient and densityRatio_ge_totient_ratio. Fixed Mathlib migration. 4 axioms remain.",
+    "builtItems": [
+      {"name": "phiA_ge_totient", "type": "theorem", "description": "φ_A(k) ≥ φ(n_k) for any increasing sequence — coprime elements always pass phiA filter"},
+      {"name": "densityRatio_ge_totient_ratio", "type": "theorem", "description": "ρ_A(k) ≥ φ(n_k)/n_k — real-valued lower bound on density ratio"},
+      {"name": "coprime_range_subset_phiA_filter", "type": "lemma", "description": "Coprime elements in range form subset of phiA filter set"}
+    ],
+    "insights": [
+      "phiA_ge_totient: coprime m has reducedDenom = n_k > n_j for j < k",
+      "Lower bound alone insufficient for erdos_no_zero_limit since φ(n)/n → 0 along primorials",
+      "Erdős' proof needs structural argument about excluded-denominator interplay",
+      "Mathlib v4.26.0 API migration: ∑ in → ∈, omega/semiimplicit, division lemma changes"
+    ],
+    "mathlibGaps": [
+      "No gaps: Nat.totient, Finset.card_le_card, gcd API all sufficient"
+    ],
+    "nextSteps": [
+      "Investigate cassels_liminf_zero via explicit continued fraction construction",
+      "Study erdos_no_zero_limit strategy: why can't ρ_A converge to 0?",
+      "Consider erdos_dichotomy via Euler product techniques"
+    ]
   },
   "tags": [
     "erdos",
@@ -51,11 +66,11 @@
   ],
   "references": {
     "papers": [],
-    "urls": [],
-    "mathlib": []
+    "urls": ["https://erdosproblems.com/1000"],
+    "mathlib": ["Mathlib.Data.Nat.Totient"]
   },
   "started": "2026-03-24T00:48:59.900Z",
-  "lastUpdate": "2026-03-24T00:48:59.900Z",
+  "lastUpdate": "2026-03-25T00:00:00Z",
   "significance": 7,
   "tractability": 6
 }

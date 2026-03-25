@@ -22,6 +22,8 @@
   Axiom count: 4 (erdos_no_zero_limit, erdos_dichotomy,
     cassels_liminf_zero, haight_resolution)
   Proved: naturalSeq_phiA_eq_totient (filter condition ↔ coprimality + Icc/range bridge)
+  Proved: phiA_ge_totient (φ_A(k) ≥ φ(n_k) — coprime elements always pass the filter)
+  Proved: densityRatio_ge_totient_ratio (ρ_A(k) ≥ φ(n_k)/n_k)
 
   Tags: number-theory, diophantine-approximation, totient-function, cesaro-averages
 -/
@@ -98,7 +100,7 @@ theorem densityRatio_zero (A : IncreasingSeq) :
 
 /-- The Cesàro average C_A(N) = (1/N) Σ_{k<N} ρ_A(k). -/
 noncomputable def cesaroAvg (A : IncreasingSeq) (N : ℕ) : ℝ :=
-  (∑ k in range N, densityRatio A k) / N
+  (∑ k ∈ range N, densityRatio A k) / N
 
 /-- C_A(N) ≥ 0 for all N. -/
 theorem cesaroAvg_nonneg (A : IncreasingSeq) (N : ℕ) :
@@ -110,8 +112,8 @@ theorem cesaroAvg_le_one (A : IncreasingSeq) (N : ℕ) (hN : 0 < N) :
     cesaroAvg A N ≤ 1 := by
   unfold cesaroAvg
   rw [div_le_one (by exact_mod_cast hN : (0 : ℝ) < ↑N)]
-  calc ∑ k in range N, densityRatio A k
-      ≤ ∑ _ in range N, (1 : ℝ) := sum_le_sum fun k _ => densityRatio_le_one A k
+  calc ∑ k ∈ range N, densityRatio A k
+      ≤ ∑ _ ∈ range N, (1 : ℝ) := sum_le_sum fun k _ => densityRatio_le_one A k
     _ = N := by simp
 
 /- ## Part IV: The Natural Sequence -/
@@ -119,7 +121,7 @@ theorem cesaroAvg_le_one (A : IncreasingSeq) (N : ℕ) (hN : 0 < N) :
 /-- The natural sequence A = {1, 2, 3, ...} (0-indexed: seq(k) = k+1). -/
 def naturalSeq : IncreasingSeq where
   seq := fun n => n + 1
-  strictMono := fun _ _ h => by omega
+  strictMono := fun {a b} hab => Nat.add_lt_add_right hab 1
   pos := fun _ => by omega
 
 /-- For A = ℕ, φ_A(k) equals Euler's totient φ(k+1).
@@ -175,17 +177,74 @@ theorem naturalSeq_phiA_eq_totient (k : ℕ) :
     constructor
     · -- Icc → range: m ≤ n ∧ gcd(m,n)=1 → m < n (since gcd(n,n)=n≠1)
       rintro ⟨⟨hm1, hmn⟩, hg⟩
-      exact ⟨by rcases eq_or_lt_of_le hmn with rfl | h
-               · rw [Nat.gcd_self] at hg; omega
-               · exact h,
-             by rwa [Nat.gcd_comm]⟩
+      refine ⟨?_, by rwa [Nat.gcd_comm]⟩
+      rcases eq_or_lt_of_le hmn with rfl | h
+      · rw [Nat.gcd_self] at hg; omega
+      · exact h
     · -- range → Icc: m < n ∧ gcd(n,m)=1 → 1 ≤ m (since gcd(n,0)=n≠1)
       rintro ⟨hmn, hg⟩
       rw [Nat.gcd_comm] at hg
-      exact ⟨⟨by rcases Nat.eq_zero_or_pos m with rfl | h
-                · simp [Nat.gcd_zero_left] at hg; omega
-                · exact h,
-              le_of_lt hmn⟩, hg⟩
+      refine ⟨⟨?_, le_of_lt hmn⟩, hg⟩
+      rcases Nat.eq_zero_or_pos m with rfl | h
+      · simp [Nat.gcd_zero_left] at hg
+      · exact h
+
+/- ## Part IV-B: Structural Lower Bound -/
+
+/-- For n ≥ 2 and m coprime to n, m is in {1,...,n} and the reduced denominator
+    n/gcd(m,n) = n exceeds all previous sequence terms. So coprime elements
+    in range(n) are a subset of the phiA filter set. -/
+private lemma coprime_range_subset_phiA_filter (A : IncreasingSeq) (k : ℕ)
+    (hn : 2 ≤ A.seq (k + 1)) :
+    (Finset.range (A.seq (k + 1))).filter (Nat.Coprime (A.seq (k + 1))) ⊆
+    (Icc 1 (A.seq (k + 1))).filter (fun m =>
+      ∀ j : ℕ, j < k + 1 → reducedDenom m (A.seq (k + 1)) ≠ A.seq j) := by
+  intro m hm
+  simp only [mem_filter, mem_range] at hm
+  obtain ⟨hm_lt, hm_cop⟩ := hm
+  simp only [mem_filter, mem_Icc]
+  refine ⟨⟨?_, le_of_lt hm_lt⟩, ?_⟩
+  · -- 1 ≤ m: since Coprime n m and n ≥ 2, m ≠ 0
+    rcases Nat.eq_zero_or_pos m with rfl | hpos
+    · simp [Nat.Coprime] at hm_cop; omega
+    · exact hpos
+  · -- ∀ j < k+1, reducedDenom m n ≠ A.seq j
+    intro j hj
+    unfold reducedDenom
+    -- gcd(m, n) = 1 since Coprime n m means gcd(n, m) = 1
+    have hgcd : Nat.gcd m (A.seq (k + 1)) = 1 := by rwa [Nat.gcd_comm]
+    rw [hgcd, Nat.div_one]
+    -- A.seq (k+1) > A.seq j since j < k+1
+    exact Nat.ne_of_gt (A.strictMono (by omega))
+
+/-- Key structural lemma: φ_A(k) ≥ φ(n_k) for any increasing sequence A.
+    Every m coprime to n_k has reduced denominator n_k, which exceeds all
+    previous terms n_j (j < k). So coprime elements always pass the filter.
+    This lower bound is the foundation for Erdős' no-zero-limit theorem. -/
+theorem phiA_ge_totient (A : IncreasingSeq) (k : ℕ) :
+    Nat.totient (A.seq k) ≤ phiA A k := by
+  rcases k with _ | k
+  · -- k = 0: phiA = n₀ ≥ totient(n₀)
+    rw [phiA_zero]
+    exact Nat.totient_le _
+  · -- k ≥ 1: n = A.seq (k+1) ≥ 2
+    unfold phiA
+    have hn : 2 ≤ A.seq (k + 1) := by
+      have h0 : 0 < A.seq 0 := A.pos 0
+      have h1 : A.seq 0 < A.seq (k + 1) := A.strictMono (by omega)
+      omega
+    -- totient n = card of (range n).filter(Coprime n) by definition
+    -- This is ⊆ the phiA filter set, so card inequality follows
+    exact Finset.card_le_card (coprime_range_subset_phiA_filter A k hn)
+
+/-- The density ratio ρ_A(k) is bounded below by φ(n_k)/n_k.
+    Real-valued corollary of phiA_ge_totient. -/
+theorem densityRatio_ge_totient_ratio (A : IncreasingSeq) (k : ℕ) :
+    (Nat.totient (A.seq k) : ℝ) / (A.seq k : ℝ) ≤ densityRatio A k := by
+  unfold densityRatio
+  apply div_le_div_of_nonneg_right
+  · exact_mod_cast phiA_ge_totient A k
+  · exact Nat.cast_nonneg _
 
 /- ## Part V: Main Predicates -/
 
@@ -240,7 +299,7 @@ theorem vanishing_avg_visits_zero (A : IncreasingSeq) (hV : VanishingAverage A)
   by_contra h
   rw [Filter.not_frequently] at h
   -- h : ∀ᶠ k in atTop, ¬ (densityRatio A k < ε)
-  have hev : ∀ᶠ k in atTop, ε ≤ densityRatio A k := h.mono fun k hk => le_of_not_lt hk
+  have hev : ∀ᶠ k in atTop, ε ≤ densityRatio A k := h.mono fun k hk => le_of_not_gt hk
   obtain ⟨K, hK⟩ := eventually_atTop.mp hev
   -- VanishingAverage: eventually C_A(N) < ε/2
   have hV2 : ∀ᶠ N in atTop, cesaroAvg A N < ε / 2 := by
@@ -260,21 +319,28 @@ theorem vanishing_avg_visits_zero (A : IncreasingSeq) (hV : VanishingAverage A)
   have h1 : cesaroAvg A N < ε / 2 := hN₀ N hN0_bound
   -- C_A(N) ≥ ε/2 (from the lower bound on the sum)
   have h2 : ε / 2 ≤ cesaroAvg A N := by
-    unfold cesaroAvg
-    -- Need: ε/2 ≤ (Σ ρ(k)) / N, i.e., ε/2 * N ≤ Σ ρ(k)
     have hNR : (0 : ℝ) < ↑N := Nat.cast_pos.mpr hNpos
-    rw [le_div_iff₀ hNR]
     -- Σ_{k<N} ρ(k) ≥ Σ_{K≤k<N} ε = (N-K)·ε ≥ N/2·ε = ε/2·N
-    calc ε / 2 * ↑N ≤ ↑(N - K) * ε := by
-            have : (K : ℝ) ≤ (N : ℝ) / 2 := by push_cast; linarith
-            rw [Nat.cast_sub hKleN]; nlinarith
-      _ = ∑ _i ∈ Ico K N, ε := by rw [sum_const, Nat.card_Ico, nsmul_eq_mul]
-      _ ≤ ∑ i ∈ Ico K N, densityRatio A i :=
-            sum_le_sum fun i hi => hK i (mem_Ico.mp hi).1
-      _ ≤ ∑ i ∈ range N, densityRatio A i := by
-            apply sum_le_sum_of_subset_of_nonneg
-            · intro x hx; exact mem_range.mpr (mem_Ico.mp hx).2
-            · intro i _ _; exact densityRatio_nonneg A i
+    have hsum : ε / 2 * ↑N ≤ ∑ k ∈ range N, densityRatio A k := by
+      calc ε / 2 * ↑N ≤ ↑(N - K) * ε := by
+              have : (K : ℝ) ≤ (N : ℝ) / 2 := by
+                have h2K : (2 * (K : ℝ) + 1 ≤ ↑N) := by exact_mod_cast hN_bound
+                linarith
+              rw [Nat.cast_sub hKleN]; nlinarith
+        _ = ∑ _i ∈ Ico K N, ε := by rw [sum_const, Nat.card_Ico, nsmul_eq_mul]
+        _ ≤ ∑ i ∈ Ico K N, densityRatio A i :=
+              sum_le_sum fun i hi => hK i (mem_Ico.mp hi).1
+        _ ≤ ∑ i ∈ range N, densityRatio A i := by
+              apply sum_le_sum_of_subset_of_nonneg
+              · intro x hx; exact mem_range.mpr (mem_Ico.mp hx).2
+              · intro i _ _; exact densityRatio_nonneg A i
+    -- ε/2 ≤ Σ/N from ε/2 * N ≤ Σ and N > 0
+    show ε / 2 ≤ cesaroAvg A N
+    unfold cesaroAvg
+    have hNne : (↑N : ℝ) ≠ 0 := hNR.ne'
+    have key : ε / 2 * ↑N / ↑N ≤ (∑ k ∈ range N, densityRatio A k) / ↑N :=
+      div_le_div_of_nonneg_right hsum hNR.le
+    rwa [mul_div_cancel_right₀ _ hNne] at key
   linarith
 
 /-- Haight oscillation: the sequence achieving vanishing Cesàro average
