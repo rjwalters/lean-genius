@@ -20,7 +20,7 @@
     "erdosUrl": "https://erdosproblems.com/1084",
     "axiomCount": 11,
     "assumptions": "11 axiom declarations: maxUnitDistPairs (extremal function definition), f1_exact (f_1(n)=n-1), f2_upper_erdos (Erdos 3n-c*sqrt(n) bound), harborth_exact (2D exact formula), triangular_lattice_optimal (A2 lattice achieves max), f2_trivial_upper (f_2(n)<3n), f3_leading (3D leading coefficient 6), bezdek_reid_upper (3D n^{2/3} correction), erdos_1084_d3_conjecture (3D Theta(n^{2/3}) conjecture), fd_lower_general (general lower bound), fd_upper_general (Kabatyansky-Levenshtein upper bound). f1_upper_bound and f1_achievable are now fully proved.",
-    "lineCount": 365,
+    "lineCount": 368,
     "badge": "axiom",
     "mathlib_version": "4.26.0"
   },
@@ -181,9 +181,11 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 264,
+    "lineCount": 368,
     "axiomCount": 12,
     "theoremCount": 3,
+    "substantiveTheoremCount": 0,
+    "sorryTheorems": 3,
     "definitionCount": 2
   }
 }
