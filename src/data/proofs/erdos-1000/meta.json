@@ -48,83 +48,83 @@
   "sections": [
     {
       "id": "imports",
-      "title": "Imports and Setup",
-      "summary": "Module imports for Nat.GCD, Finset, real casts, and filter limits",
+      "title": "Imports and Docstring",
       "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Mathematical content: Module imports for Nat.GCD, Finset, real casts, and filter limits"
+      "endLine": 33,
+      "summary": "Module docstring describing the problem (Cassels 1950, Erdős 1964, Haight), `import Mathlib`, namespace and opens.",
+      "mathContext": "Sets up the formalization environment. The single `import Mathlib` provides Finset, Nat.GCD, real number casts, and Filter/Topology for limit predicates."
     },
     {
       "id": "generalized-totient",
-      "title": "The Generalized Totient φ_A",
-      "summary": "IncreasingSeq, reducedDenom, and φ_A definitions",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Formal definition: IncreasingSeq, reducedDenom, and φ_A definitions"
+      "title": "Part I: Core Definitions",
+      "startLine": 35,
+      "endLine": 51,
+      "summary": "Defines `IncreasingSeq` (strictly monotone positive integer sequence), `reducedDenom m n = n / gcd(m,n)` (reduced denominator of m/n), and `phiA A k` (generalized totient: count of m ≤ n_k whose reduced denominator avoids all previous terms).",
+      "mathContext": "$\\varphi_A(k) = |\\{m \\leq n_k : \\frac{n_k}{\\gcd(m, n_k)} \\neq n_j \\text{ for all } j < k\\}|$. When $A = \\mathbb{N}$, this reduces to Euler's totient $\\varphi(n_k)$."
     },
     {
       "id": "basic-properties",
-      "title": "Basic Properties",
-      "summary": "φ_A(k) ≥ φ(n_k) bound and naturalSeq baseline",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "φ_A(k) $\\geq$ φ(n_k) bound and naturalSeq baseline"
+      "title": "Part II: Basic Properties",
+      "startLine": 53,
+      "endLine": 95,
+      "summary": "Proves `phiA_le` ($\\varphi_A(k) \\leq n_k$), `phiA_zero` ($\\varphi_A(0) = n_0$), defines `densityRatio` ($\\rho_A(k) = \\varphi_A(k)/n_k$), and proves $0 \\leq \\rho_A(k) \\leq 1$ and $\\rho_A(0) = 1$.",
+      "mathContext": "The density ratio $\\rho_A(k) = \\varphi_A(k)/n_k \\in [0, 1]$ measures what fraction of denominators are 'new' at step $k$. The first ratio is always 1 since there are no prior terms to exclude."
     },
     {
-      "id": "average-density",
-      "title": "Average Density",
-      "summary": "Density ratio ρ_A(k) = φ_A(k)/n_k and Cesàro average C_A(N)",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Mathematical content: Density ratio ρ_A(k) = φ_A(k)/n_k and Cesàro average C_A(N)"
+      "id": "cesaro-average",
+      "title": "Part III: Cesàro Average",
+      "startLine": 97,
+      "endLine": 115,
+      "summary": "Defines `cesaroAvg A N = (1/N) Σ_{k<N} ρ_A(k)` and proves `cesaroAvg_nonneg` ($C_A(N) \\geq 0$) and `cesaroAvg_le_one` ($C_A(N) \\leq 1$ for $N > 0$).",
+      "mathContext": "$C_A(N) = \\frac{1}{N} \\sum_{k=0}^{N-1} \\frac{\\varphi_A(k)}{n_k} \\in [0, 1]$. This is the Cesàro mean of the density sequence."
     },
     {
-      "id": "cassels-result",
-      "title": "Cassels' Result (1950)",
-      "summary": "Liminf of Cesàro average can be 0; Diophantine approximation connection",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Mathematical content: Liminf of Cesàro average can be 0; Diophantine approximation connection"
+      "id": "natural-sequence",
+      "title": "Part IV: The Natural Sequence",
+      "startLine": 117,
+      "endLine": 189,
+      "summary": "Defines `naturalSeq` ($A = \\{1,2,3,\\ldots\\}$) and proves the key theorem `naturalSeq_phiA_eq_totient`: $\\varphi_A(k) = \\varphi(k+1)$ (Euler's totient). The proof handles $k = 0$ by `native_decide` and $k \\geq 1$ by showing the filter condition (reduced denominator avoids previous terms) is equivalent to coprimality, then bridging between `Icc` and `range` Finsets.",
+      "mathContext": "For $A = \\mathbb{N}$: the reduced denominator of $m/(k+2)$ avoids $\\{1, \\ldots, k+1\\}$ iff $\\gcd(m, k+2) = 1$, because $\\frac{k+2}{\\gcd(m, k+2)} = k+2$ iff $\\gcd = 1$. The Icc/range bridge uses the facts that $\\gcd(n,n) = n \\neq 1$ and $\\gcd(n,0) = n \\neq 1$ for $n \\geq 2$."
+    },
+    {
+      "id": "main-predicates",
+      "title": "Part V: Main Predicates",
+      "startLine": 190,
+      "endLine": 198,
+      "summary": "Defines `VanishingAverage A` ($C_A(N) \\to 0$) and `DensityToZero A` ($\\rho_A(k) \\to 0$) as filter-limit predicates.",
+      "mathContext": "$\\text{VanishingAverage}(A) :\\Leftrightarrow \\lim_{N \\to \\infty} C_A(N) = 0$. $\\text{DensityToZero}(A) :\\Leftrightarrow \\lim_{k \\to \\infty} \\rho_A(k) = 0$."
     },
     {
       "id": "erdos-results",
-      "title": "Erdős' Results (1964)",
-      "summary": "No-zero-limit theorem and liminf/limsup dichotomy",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Verified: No-zero-limit theorem and liminf/limsup dichotomy"
+      "title": "Part VI: Erdős' Results (1964)",
+      "startLine": 200,
+      "endLine": 212,
+      "summary": "Two axioms: `erdos_no_zero_limit` ($\\rho_A(k) \\not\\to 0$ for any $A$, via Mertens' bound $\\varphi(n)/n \\geq c/\\log\\log n$) and `erdos_dichotomy` (if $\\liminf \\rho_A = 0$ then $\\limsup \\rho_A = 1$, via the Euler product for $\\varphi(n)/n$).",
+      "mathContext": "Axiom 1: $\\neg \\text{DensityToZero}(A)$ for all $A$. Axiom 2: $\\liminf \\rho_A = 0 \\Rightarrow \\limsup \\rho_A = 1$. These establish that the density ratio must oscillate — it can visit near 0 but cannot stay there, and if it visits near 0 it must also visit near 1."
     },
     {
-      "id": "main-question",
-      "title": "The Main Question",
-      "summary": "VanishingAverage predicate and Erdős' conjecture",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Mathematical content: VanishingAverage predicate and Erdős' conjecture"
+      "id": "cassels-result",
+      "title": "Part VII: Cassels' Result (1950)",
+      "startLine": 214,
+      "endLine": 220,
+      "summary": "Axiom `cassels_liminf_zero`: there exists $A$ with $\\liminf C_A(N) = 0$, constructed via continued fraction convergents. Historically the first result showing the average can approach 0.",
+      "mathContext": "$\\exists A : \\text{IncreasingSeq},\\; \\forall \\varepsilon > 0,\\; \\exists^\\infty N,\\; C_A(N) < \\varepsilon$. Weaker than Haight's result (liminf = 0 vs lim = 0)."
     },
     {
       "id": "haight-resolution",
-      "title": "Haight's Resolution",
-      "summary": "Haight's theorem: vanishing-average sequences exist (SOLVED)",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Verified: Haight's theorem: vanishing-average sequences exist (SOLVED)"
+      "title": "Part VIII: Haight's Resolution",
+      "startLine": 222,
+      "endLine": 229,
+      "summary": "Axiom `haight_resolution`: $\\exists A$ with $C_A(N) \\to 0$. Resolves Erdős' problem affirmatively. The construction uses rapidly growing highly composite numbers.",
+      "mathContext": "$\\exists A : \\text{IncreasingSeq},\\; \\text{VanishingAverage}(A)$. The answer to Erdős' question is YES, contrary to his expectation."
     },
     {
-      "id": "diophantine-connection",
-      "title": "Connection to Diophantine Approximation",
-      "summary": "Cassels' characterization via Khinchin-Groshev theory",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Mathematical content: Cassels' characterization via Khinchin-Groshev theory"
-    },
-    {
-      "id": "observations",
-      "title": "Observations and Corollaries",
-      "summary": "Haight oscillation: vanishing average with maximal oscillation",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Mathematical content: Haight oscillation: vanishing average with maximal oscillation"
+      "id": "corollaries",
+      "title": "Part IX: Corollaries",
+      "startLine": 231,
+      "endLine": 304,
+      "summary": "Four proved theorems synthesizing the axioms: `vanishing_avg_visits_zero` (vanishing average implies $\\rho_A$ frequently visits near 0, via a split-sum argument), `haight_oscillation` (Haight's sequence oscillates between near 0 and near 1), `no_density_zero` (no sequence has $\\rho_A \\to 0$), and `pointwise_cesaro_gap` ($\\exists A$ with $C_A(N) \\to 0$ but $\\rho_A(k) \\not\\to 0$, a concrete separation between pointwise and Cesàro convergence).",
+      "mathContext": "The key proved result `vanishing_avg_visits_zero` is a 40-line argument: assuming $\\rho_A(k) \\geq \\varepsilon$ eventually, the Cesàro sum is bounded below by $\\varepsilon(N - K)/N \\to \\varepsilon$, contradicting $C_A(N) \\to 0$. The corollaries combine this with the axioms via short compositions."
     }
   ],
   "conclusion": {
