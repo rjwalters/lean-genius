@@ -64,6 +64,14 @@
   ],
   "sections": [
     {
+      "id": "header-and-setup",
+      "title": "Problem Statement and Setup",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "File header documenting the proof strategy for $R(3,l+1)/R(3,l) \\to 1$, citing Kim (1995), Shearer (1995), and Mattheus–Verstraëte (2024). Imports Mathlib, opens the `Real` namespace for unqualified `log`, and declares the `Erdos1014OQ01` namespace.",
+      "mathContext": "The proof operates in $\\mathbb{R}$ after casting natural-number Ramsey values. The `open Real` directive makes `Real.log` available as `log`."
+    },
+    {
       "id": "axioms",
       "title": "Axioms from Parent Formalization",
       "startLine": 34,
@@ -74,7 +82,7 @@
     {
       "id": "increment-bound",
       "title": "Linear Increment Bound",
-      "startLine": 69,
+      "startLine": 66,
       "endLine": 81,
       "summary": "**Proved.** The recurrence gives $R(3,l+1) \\leq R(3,l) + (l+1)$, bounding consecutive increments by a linear function.",
       "mathContext": "Key structural insight: from $R(3,l+1) \\leq R(3,l) + R(2,l+1) = R(3,l) + (l+1)$. While $R(3,l) = \\Theta(l^2/\\log l)$, the increment is only $O(l)$."
@@ -82,7 +90,7 @@
     {
       "id": "analysis-lemma",
       "title": "Analysis Lemma",
-      "startLine": 86,
+      "startLine": 83,
       "endLine": 124,
       "summary": "**Proved.** Shows $(l+1) \\cdot \\log l / (c \\cdot l^2) < \\varepsilon$ for sufficiently large $l$, using Mathlib's `isLittleO_log_rpow_atTop` ($\\log x = o(x)$).",
       "mathContext": "Standard result from real analysis. The bound follows from $\\log l / l \\to 0$ and $(l+1)/l \\leq 2$."
@@ -90,7 +98,7 @@
     {
       "id": "main-theorem",
       "title": "Main Theorem: R(3,l+1)/R(3,l) → 1",
-      "startLine": 129,
+      "startLine": 126,
       "endLine": 197,
       "summary": "**Fully proved.** Combines the increment bound, lower bound, and analysis to show $|R(3,l+1)/R(3,l) - 1| \\leq (l+1) \\cdot \\log l / (c \\cdot l^2) \\to 0$.",
       "mathContext": "The proof chain: monotonicity gives $|R(3,l+1)/R(3,l) - 1| = (R(3,l+1) - R(3,l))/R(3,l)$; the increment bound gives $\\leq (l+1)/R(3,l)$; the lower bound gives $\\leq (l+1) \\cdot \\log l / (c \\cdot l^2)$; analysis gives $\\to 0$. This shows $\\Theta$ bounds suffice for $k=3$ when combined with the recurrence."
@@ -105,7 +113,8 @@
       "**Recurrence as increment bound**: R(3,l+1) ≤ R(3,l) + R(2,l+1) = R(3,l) + (l+1) shows consecutive Ramsey numbers differ by at most l+1, far less than their magnitude Θ(l²/log l)",
       "**Only the lower bound is needed**: The upper bound R(3,l) ≤ C·l²/log l is not used at all. The recurrence provides the upper bound on the ratio directly",
       "**Θ bounds do suffice for k=3**: Contrary to the common claim that exact asymptotics are needed, the combination of recurrence + lower bound resolves the k=3 case",
-      "**Rate of convergence**: The proof gives an explicit rate: |R(3,l+1)/R(3,l) - 1| = O(log l / l)"
+      "**Rate of convergence**: The proof gives an explicit rate: |R(3,l+1)/R(3,l) - 1| = O(log l / l)",
+      "**Formalization bridges combinatorics and analysis**: The proof requires careful casting between $\\mathbb{N}$ (where Ramsey numbers live) and $\\mathbb{R}$ (where limits are defined), using Mathlib's `isLittleO_log_rpow_atTop` to extract an explicit $\\varepsilon$-$\\delta$ bound from the asymptotic $\\log x = o(x)$. This demonstrates how Lean 4 + Mathlib can smoothly integrate discrete combinatorics with continuous analysis"
     ],
     "prerequisites": [
       "Ramsey theory (recurrence, monotonicity, R(2,l) = l)",
