@@ -114,24 +114,24 @@
     {
       "id": "known-results",
       "title": "Known Results",
-      "startLine": 58,
-      "endLine": 77,
+      "startLine": 59,
+      "endLine": 97,
       "summary": "Four axiomatized results: **Prikry's theorem** ($\\overline{d}(A) > 0 \\Rightarrow D(A)$ syndetic), density inheritance for $D(A)$, symmetry $D(A) = -D(A)$, and $0 \\in D(A)$ for infinite $A$.",
       "mathContext": "Prikry: $\\overline{d}(A) > 0 \\Rightarrow \\text{HasBoundedGaps}(D(A))$. Structure: $D(A) = -D(A)$, $0 \\in D(A)$ for infinite $A$."
     },
     {
       "id": "main-problem",
       "title": "The Main Open Problem",
-      "startLine": 78,
-      "endLine": 89,
+      "startLine": 99,
+      "endLine": 109,
       "summary": "Erdős Problem 332: characterize the weakest property $P$ such that $P(A) \\Rightarrow \\text{HasBoundedGaps}(D(A))$. Positive upper density is the best known sufficient condition.",
       "mathContext": "Find weakest $P$: $P(A) \\Rightarrow \\text{HasBoundedGaps}(D(A))$. Known: $\\overline{d}(A) > 0$ suffices."
     },
     {
       "id": "related-questions",
       "title": "Related Questions",
-      "startLine": 90,
-      "endLine": 97,
+      "startLine": 111,
+      "endLine": 118,
       "summary": "Does positive density imply $\\sum_{d \\in D(A)} 1/d = \\infty$? This would show $D(A)$ has 'harmonic thickness' beyond mere syndeticity.",
       "mathContext": "Open: $\\overline{d}(A) > 0 \\Rightarrow \\sum_{d \\in D(A)} 1/|d| = \\infty$? (harmonic thickness conjecture)"
     }
