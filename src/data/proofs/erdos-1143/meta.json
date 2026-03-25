@@ -91,31 +91,35 @@
     },
     {
       "id": "density",
-      "title": "Density Properties and Asymptotics",
+      "title": "Density Properties",
       "startLine": 72,
-      "endLine": 95,
-      "summary": "Expected density lies in $(0, 1)$ for nonempty prime sets: $0 < 1 - \\prod(1-1/p_i) < 1$ since each factor $(1-1/p_i) \\in (0,1)$. Axiomatizes the asymptotic: $|F_k - k \\cdot d| \\leq C$ for a constant $C$."
+      "endLine": 192,
+      "summary": "Proves `expectedDensity_pos` ($0 < 1 - \\prod(1 - 1/p_i)$ for nonempty prime sets, via a 20-line product positivity argument using $\\prod f \\leq f(p_0) < 1$) and `expectedDensity_lt_one` (density $< 1$). Also axiomatizes `covering_asymptotic`: $|F_k - k \\cdot d| \\leq C$ for a constant depending only on the prime set.",
+      "mathContext": "$0 < 1 - \\prod_{p \\in S}(1 - 1/p) < 1$ for nonempty prime sets. Each factor $(1 - 1/p) \\in (0, 1)$ for primes $p \\geq 2$. The product $\\leq$ any single factor $< 1$."
     },
     {
       "id": "alpha-regime",
       "title": "The $\\alpha > 2$ Regime",
-      "startLine": 96,
-      "endLine": 118,
-      "summary": "Two axioms for the parameter $\\alpha = k/p_u$: (1) **Erdős-Selfridge** ($2 < \\alpha < 3$): an exact value of $F_k$ exists (paper not located). (2) **$\\alpha > 3$**: $F_k$ is bounded between $k(d - 1)$ and $kd + u$ (essentially the density approximation plus the number of primes)."
+      "startLine": 200,
+      "endLine": 221,
+      "summary": "Two axioms for the parameter $\\alpha = k/p_u$: `erdos_selfridge_exact` ($2 < \\alpha < 3$, exact value of $F_k$ exists — paper not located), `alpha_gt_3_open` ($\\alpha > 3$, $F_k$ bounded between $k(d-1)$ and $kd + u$).",
+      "mathContext": "When $k = \\alpha p_u$ with $2 < \\alpha < 3$, the interval spans 2+ complete periods of $p_u$, enabling exact computation. For $\\alpha > 3$: only density bounds are known."
     },
     {
       "id": "examples",
       "title": "Concrete Density Examples",
-      "startLine": 119,
-      "endLine": 135,
-      "summary": "Computes expected density for small prime sets: $d(\\{2,3\\}) = 1 - (1/2)(2/3) = 2/3$ (in any 6 integers, 4 are even or divisible by 3) and $d(\\{2,3,5\\}) = 1 - (1/2)(2/3)(4/5) = 11/15$."
+      "startLine": 223,
+      "endLine": 239,
+      "summary": "Computes expected density for small prime sets: `density_two_three` ($d(\\{2,3\\}) = 1 - (1/2)(2/3) = 2/3$, via `norm_num` and `Finset.prod_pair`) and `density_two_three_five` ($d(\\{2,3,5\\}) = 11/15$, via `Finset.prod_insert`).",
+      "mathContext": "$d(\\{2,3\\}) = 1 - (1-1/2)(1-1/3) = 2/3$: in any 6 consecutive integers, exactly 4 are divisible by 2 or 3. $d(\\{2,3,5\\}) = 1 - (1/2)(2/3)(4/5) = 11/15$."
     },
     {
       "id": "jacobsthal-connection",
-      "title": "Connection to Jacobsthal's Function",
-      "startLine": 136,
-      "endLine": 168,
-      "summary": "Links to Erdős #970: Jacobsthal's function $h(k)$ asks for the minimal interval guaranteeing a coprime element. The relationship: uncovered $= k - F_k$, so the two problems are complementary. If $h(u)$ is the Jacobsthal value, then $F_{h(u)-1} = h(u) - 1$ (all integers covered)."
+      "title": "Jacobsthal Connection and Summary",
+      "startLine": 241,
+      "endLine": 273,
+      "summary": "Defines the complement relation between covering count and Jacobsthal's function: uncovered $= k - F_k$. `covering_complement_relation` is a True-stub placeholder. Closing summary documents the known results and open status.",
+      "mathContext": "Jacobsthal's function $h(u)$ is the minimal $m$ such that any $m$ consecutive integers contain one coprime to $p_1 \\cdots p_u$. The dual: $F_{h(u)-1} = h(u) - 1$ (all covered). See Erdős #970."
     }
   ],
   "conclusion": {
