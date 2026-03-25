@@ -69,16 +69,24 @@ def IsEpsUniform {G : Type*} [AddCommGroup G] [Fintype G] [DecidableEq G]
 
 -- Total representations: ∑_g F_A(g) = 2^|A|.
 -- Each subset S ⊆ A sums to exactly one element, so the counts partition 2^|A|.
-axiom total_reprCount {G : Type*} [AddCommGroup G] [Fintype G] [DecidableEq G]
-    (A : Finset G) : (∑ g : G, reprCount A g) = 2 ^ A.card
+theorem total_reprCount {G : Type*} [AddCommGroup G] [Fintype G] [DecidableEq G]
+    (A : Finset G) : (∑ g : G, reprCount A g) = 2 ^ A.card := by
+  simp only [reprCount]
+  rw [← card_powerset A]
+  symm
+  apply Finset.card_eq_sum_card_fiberwise
+  intro S hS
+  exact Finset.mem_univ (S.sum id)
 
 -- The empty set represents only 0 (via the empty subset).
-axiom reprCount_empty_zero {G : Type*} [AddCommGroup G] [DecidableEq G] :
-    reprCount (∅ : Finset G) (0 : G) = 1
+theorem reprCount_empty_zero {G : Type*} [AddCommGroup G] [DecidableEq G] :
+    reprCount (∅ : Finset G) (0 : G) = 1 := by
+  simp [reprCount, powerset_empty, filter_singleton, sum_empty]
 
 -- The empty set gives 0 representations for nonzero elements.
-axiom reprCount_empty_nonzero {G : Type*} [AddCommGroup G] [DecidableEq G]
-    (g : G) (hg : g ≠ 0) : reprCount (∅ : Finset G) g = 0
+theorem reprCount_empty_nonzero {G : Type*} [AddCommGroup G] [DecidableEq G]
+    (g : G) (hg : g ≠ 0) : reprCount (∅ : Finset G) g = 0 := by
+  simp [reprCount, powerset_empty, filter_singleton, sum_empty, hg.symm]
 
 /- ## Part IV: The Function g_ε(N) -/
 
@@ -144,11 +152,36 @@ axiom main_asymptotic (ε : ℝ) (hε : 0 < ε) (hε1 : ε < 1) :
 -- Spanning is weaker than ε-uniformity:
 -- if representations are ε-uniform (for any ε < 1), then every element
 -- has at least (1-ε) · 2^k/N > 0 representations, so the set spans.
-axiom uniform_implies_spanning {G : Type*} [AddCommGroup G] [Fintype G]
+theorem uniform_implies_spanning {G : Type*} [AddCommGroup G] [Fintype G]
     [DecidableEq G] (A : Finset G) (ε : ℝ) (hε : 0 < ε) (hε1 : ε < 1)
     (hk : A.card ≥ Nat.clog 2 (Fintype.card G))
     (hunif : IsEpsUniform A ε) :
-    ∀ g : G, reprCount A g ≥ 1
+    ∀ g : G, reprCount A g ≥ 1 := by
+  intro g
+  -- From ε-uniformity: |F(g) - μ| ≤ ε·μ where μ = 2^k/N
+  have hunif_g := hunif g
+  set μ := expectedReprCount A.card (Fintype.card G) with hμ_def
+  -- From |F(g) - μ| ≤ ε·μ we get F(g) ≥ (1-ε)·μ
+  have hge : (reprCount A g : ℝ) ≥ (1 - ε) * μ := by
+    have h := (abs_le.mp hunif_g).1
+    nlinarith
+  -- Show μ ≥ 1: since k ≥ ⌈log₂ N⌉, we have 2^k ≥ N, so μ = 2^k/N ≥ 1
+  have hN_pos : (0 : ℝ) < Fintype.card G := by exact_mod_cast Fintype.card_pos
+  have hμ_ge : μ ≥ 1 := by
+    rw [hμ_def, ge_iff_le, ← sub_nonneg]
+    simp only [expectedReprCount]
+    have h2k : (Fintype.card G : ℝ) ≤ (2 : ℝ) ^ A.card := by
+      have h1 := (Nat.le_pow_clog (show 1 < 2 by omega) (Fintype.card G)).trans
+        (Nat.pow_le_pow_right (show 0 < 2 by omega) hk)
+      exact_mod_cast h1
+    rw [show (2 : ℝ) ^ A.card / ↑(Fintype.card G) - 1 =
+      ((2 : ℝ) ^ A.card - ↑(Fintype.card G)) / ↑(Fintype.card G) from by field_simp]
+    exact div_nonneg (by linarith) (by linarith)
+  -- So (reprCount A g : ℝ) ≥ (1-ε)·1 = 1-ε > 0
+  have hpos : (reprCount A g : ℝ) > 0 := by nlinarith
+  -- A natural number that's > 0 as a real is ≥ 1
+  have : reprCount A g ≠ 0 := by intro h; simp [h] at hpos
+  omega
 
 /- ## Part IX: Monotonicity -/
 
