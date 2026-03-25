@@ -236,30 +236,40 @@
       "Mathlib.Data.Set.Basic",
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Tactic"
-    ],
-    "mainTheorems": [
-      {
-        "name": "example_101",
-        "type": "verified",
-        "description": "p = 101 satisfies AllFactorialSubtractionsComposite"
-      },
-      {
-        "name": "example_211",
-        "type": "verified",
-        "description": "p = 211 satisfies AllFactorialSubtractionsComposite"
-      },
-      {
-        "name": "counterexample_89",
-        "type": "verified",
-        "description": "p = 89 does NOT satisfy AllFactorialSubtractionsComposite (89-6=83 prime)"
-      },
-      {
-        "name": "ErdosProblem1059",
-        "type": "definition",
-        "description": "Set.Infinite {p : ℕ | p.Prime ∧ AllFactorialSubtractionsComposite p} (open conjecture, stated as def)"
-      }
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "example_101",
+      "type": "verified",
+      "description": "p = 101 satisfies AllFactorialSubtractionsComposite — verified by interval_cases + decide",
+      "leanType": "AllFactorialSubtractionsComposite 101"
+    },
+    {
+      "name": "example_211",
+      "type": "verified",
+      "description": "p = 211 satisfies AllFactorialSubtractionsComposite — verified by interval_cases + decide",
+      "leanType": "AllFactorialSubtractionsComposite 211"
+    },
+    {
+      "name": "counterexample_89",
+      "type": "verified",
+      "description": "p = 89 does NOT satisfy the property (89 - 3! = 83 is prime)",
+      "leanType": "¬ AllFactorialSubtractionsComposite 89"
+    },
+    {
+      "name": "two_witnesses",
+      "type": "core",
+      "description": "Summary: both 101 and 211 are prime and factorial-avoiding, packaging four proofs into one conjunction",
+      "leanType": "(Nat.Prime 101) ∧ AllFactorialSubtractionsComposite 101 ∧ (Nat.Prime 211) ∧ AllFactorialSubtractionsComposite 211"
+    },
+    {
+      "name": "erdos_alternative_approach",
+      "type": "axiom",
+      "description": "Erdős's smooth-number variant: infinitely many l-rough n in (l!, (l+1)!] with all factorial subtractions composite",
+      "leanType": "Set.Infinite {n : ℕ | ∃ l, l.factorial < n ∧ ...}"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #1059 remains open: are there infinitely many primes $p$ with every factorial subtraction $p - k!$ composite? This 160-line formalization verifies two concrete witnesses ($p = 101, 211$) and one counterexample ($p = 89$) using Lean's certified `decide` tactic, reducing the infinite universal quantifier to finite case analysis via factorial growth bounds. The key structural insight is the extreme sparsity of factorials: only $O(\\log n / \\log \\log n)$ factorials lie below $n$, making the condition surprisingly mild for large primes. The probabilistic heuristic predicts density 1 among primes (each subtraction is independently prime with probability $\\sim 1/\\ln p$, and the few checks make all-composite increasingly likely), yet no rigorous proof exists. The formalization axiomatizes the main conjecture (`Set.Infinite`) alongside Erdős's smooth-number variant — replacing primality with $l$-roughness — which may be more tractable via sieve theory.",
     "implications": "**Theoretical Significance**: A resolution would illuminate the relationship between prime distribution and factorial arithmetic.\n\nThe probabilistic heuristic strongly suggests the answer is yes — in fact, it predicts that the density of qualifying primes among all primes approaches 1 — but converting such arguments into rigorous proofs remains a central challenge in analytic number theory.\n\nThe problem connects to several themes: (1) the general question of whether primes 'avoid' structured sequences (cf. Bunyakovsky conjecture, Bateman-Horn conjecture); (2) Erdős's smooth-number variant links to sieve theory and the Dickman function $\\rho(u)$, which governs the distribution of integers with no prime factors exceeding $n^{1/u}$; (3) the computational verification strategy — reducing an infinite problem to finite case analysis via factorial growth bounds — demonstrates a pattern common to many number-theoretic formalizations.",
