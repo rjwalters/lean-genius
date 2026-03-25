@@ -44,6 +44,13 @@
       "Corrected subsetSums_insert with fresh-witness requirement (original subsetSums_add was incorrect for multiset-like reasoning)",
       "Three proved structural properties: zero_mem_subsetSums, subsetSums_insert, subsetSums_mono"
     ],
+    "prerequisites": [
+      "Subset sum theory: completeness ($P(A) \\supseteq \\{N_0, N_0+1,\\ldots\\}$), density of sumsets, and additive representations",
+      "Asymptotic density: natural density $d(A) = \\lim A(N)/N$, convergence of counting function ratios",
+      "Sequences: monotone integer sequences, consecutive ratio limits $\\lim a_{n+1}/a_n$, and binary representation via powers of 2",
+      "Cofinite sets and subsequences: strictly monotone reindexing with cofinite range, robustness under finite deletions",
+      "Lean 4 and Mathlib: Finset.sum, StrictMono, Set.Finite, and noncomputable definitions"
+    ],
     "lineCount": 102,
     "mathlib_version": "4.26.0"
   },
@@ -60,10 +67,11 @@
       "This is one of the solved Erdos problems, demonstrating that formal verification can capture and confirm combinatorial constructions"
     ],
     "prerequisites": [
-      "Subset sum theory: completeness, density of sumsets",
-      "Asymptotic density: natural density, upper/lower density",
-      "Sequences: monotone sequences, consecutive ratios, binary representations",
-      "Cofinite sets: finitely many removals from infinite sequences"
+      "Subset sum theory: completeness of sequences ($P(A) = \\{\\sum_{a \\in S} a : S \\subseteq A, S \\text{ finite}\\}$ covers all large integers), density of sumsets, and the binary representation threshold at ratio 2",
+      "Asymptotic density: natural density $d(S) = \\lim_{N \\to \\infty} |S \\cap [1,N]|/N$, convergence via $\\varepsilon$-$N_0$ formulation over $\\mathbb{Q}$",
+      "Sequences: monotone integer sequences, consecutive ratio limits $\\lim a_{n+1}/a_n = r$, and the critical role of $r = 2$ as the boundary between easy completeness ($r < 2$) and inevitable gaps ($r > 2$)",
+      "Cofinite sets and subsequences: strictly monotone reindexing $\\iota : \\mathbb{N} \\to \\mathbb{N}$ with $\\mathbb{N} \\setminus \\text{range}(\\iota)$ finite, ensuring robustness under finite deletions",
+      "Lean 4 and Mathlib: Finset.sum for subset sums, StrictMono for reindexing, Set.Finite for cofinite conditions"
     ]
   },
   "sections": [
@@ -169,12 +177,7 @@
       "description": "Both involve additive structure at critical thresholds: #40 studies B_2[g] sets that cannot be bases, while #347 studies sequences at the critical ratio 2 that can be robustly complete. Both concern how growth rate constraints interact with additive coverage"
     },
     {
-      "targetId": "zeckendorf-representation",
-      "relationship": "related",
-      "description": "Zeckendorf's theorem guarantees unique representation of every positive integer as a sum of non-consecutive Fibonacci numbers — the Fibonacci sequence is complete with ratio limit $\\phi \\approx 1.618 < 2$. Problem #347 asks whether completeness (with density-1 robustness) is achievable at the harder critical ratio 2, where the gap between consecutive terms just barely allows coverage"
-    },
-    {
-      "targetId": "partition-function",
+      "targetId": "partition-theorem",
       "relationship": "related",
       "description": "Both concern representing integers as sums from a fixed set. The partition function $p(n)$ counts unrestricted representations; Problem #347 asks for a sequence with enough representations that deleting finitely many terms still yields density-1 coverage — a representation-richness condition dual to the partition-counting perspective"
     },
