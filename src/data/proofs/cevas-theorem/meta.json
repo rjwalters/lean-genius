@@ -183,5 +183,13 @@
       "relationship": "related",
       "description": "Both are classical triangle geometry results: Ceva's theorem concerns cevian concurrency, while Feuerbach's theorem concerns the tangency of the nine-point circle and incircle — both reveal deep structure in triangle configurations"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "ceva_theorem",
+      "type": "core",
+      "description": "Three cevians of a triangle are concurrent iff (AF/FB)(BD/DC)(CE/EA) = 1",
+      "leanType": "cevians_concurrent <-> (AF/FB) * (BD/DC) * (CE/EA) = 1"
+    }
   ]
 }

@@ -187,5 +187,19 @@
       "venue": "Leipzig",
       "note": "Axiomatic treatment of Euclidean geometry; the isosceles triangle theorem follows from SAS congruence"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "isosceles_base_angles",
+      "type": "core",
+      "description": "In an isosceles triangle, base angles are equal (pons asinorum)",
+      "leanType": "side_AB = side_AC -> angle_B = angle_C"
+    },
+    {
+      "name": "isosceles_converse",
+      "type": "key",
+      "description": "If two angles of a triangle are equal, the sides opposite them are equal",
+      "leanType": "angle_B = angle_C -> side_AB = side_AC"
+    }
   ]
 }

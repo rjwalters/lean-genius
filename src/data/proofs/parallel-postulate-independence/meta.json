@@ -160,5 +160,13 @@
       "venue": "W.H. Freeman, 4th edition",
       "note": "Comprehensive treatment of the parallel postulate's history and the development of non-Euclidean geometry"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "parallel_postulate_independent",
+      "type": "core",
+      "description": "The parallel postulate is independent of the other Euclidean axioms",
+      "leanType": "Consistent (EuclidAxioms without P5) -> not (Provable (EuclidAxioms without P5) P5)"
+    }
   ]
 }

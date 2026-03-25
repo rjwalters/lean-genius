@@ -316,5 +316,13 @@
       "venue": "Cambridge University Press",
       "note": "Comprehensive textbook covering P vs NP, circuit complexity, and the barriers (relativization, natural proofs, algebrization) to resolving the question"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "p_vs_np",
+      "type": "core",
+      "description": "Millennium Prize: Is P equal to NP?",
+      "leanType": "P = NP or P != NP (independent of current axioms)"
+    }
   ]
 }

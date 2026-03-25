@@ -185,5 +185,13 @@
       "venue": "Cambridge University Press, 2nd edition",
       "note": "Covers the reduction approach to Cayley-Hamilton via companion matrices and rational canonical form"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "matrix_polynomial_reduction",
+      "type": "core",
+      "description": "Any polynomial in A can be reduced to degree < deg(chi_A) using Cayley-Hamilton",
+      "leanType": "(p : Polynomial R) -> exists q, q.natDegree < A.charpoly.natDegree and aeval A p = aeval A q"
+    }
   ]
 }

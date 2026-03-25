@@ -177,5 +177,13 @@
       "venue": "American Mathematical Society, Graduate Studies in Mathematics 19, 2nd edition",
       "note": "Modern treatment of existence and regularity for elliptic boundary value problems — context for Hilbert's 20th problem"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "hilbert20_existence",
+      "type": "core",
+      "description": "Solutions to elliptic boundary value problems exist under Hilbert's conditions",
+      "leanType": "EllipticOperator L -> BoundaryData g -> exists u, L u = f and u|_boundary = g"
+    }
   ]
 }

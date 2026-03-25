@@ -187,5 +187,13 @@
       "relationship": "related",
       "description": "Shannon entropy axiomatizes information-theoretic aspects that connect to Hilbert's 6th through statistical mechanics: the Boltzmann-Gibbs-Shannon entropy framework is a partial success story in axiomatizing physical theories"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "hilbert6_axiomatization",
+      "type": "core",
+      "description": "Mathematical axiomatization of physical theories",
+      "leanType": "PhysicalTheory T -> exists axioms, Consistent axioms and Models T axioms"
+    }
   ]
 }

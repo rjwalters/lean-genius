@@ -169,5 +169,13 @@
       "venue": "Oxford University Press, 6th edition",
       "note": "Contains the standard proof that n-th roots of non-perfect-powers are irrational, using unique factorization"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "nth_root_irrational",
+      "type": "core",
+      "description": "The nth root of a positive integer is irrational unless it is a perfect nth power",
+      "leanType": "(n k : Nat) -> 1 < n -> not (exists m, k = m^n) -> Irrational (k^(1/n : R))"
+    }
   ]
 }

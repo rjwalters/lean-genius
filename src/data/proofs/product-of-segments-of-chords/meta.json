@@ -185,5 +185,13 @@
       "venue": "Alexandria",
       "note": "The power of a point theorem: if two chords intersect inside a circle, the products of their segments are equal"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "intersecting_chords",
+      "type": "core",
+      "description": "If two chords intersect inside a circle, the products of their segments are equal: PA*PB = PC*PD",
+      "leanType": "chords_intersect_at P -> PA * PB = PC * PD"
+    }
   ]
 }

@@ -153,5 +153,13 @@
       "venue": "Forum of Mathematics, Pi 10, e12",
       "note": "Proved that almost all positive integers eventually reach a value close to 1 under the Collatz map — the strongest known result toward the conjecture"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "collatz_conjecture",
+      "type": "core",
+      "description": "Every positive integer eventually reaches 1 under the Collatz map",
+      "leanType": "(n : Nat) -> 0 < n -> exists k, collatz^k n = 1"
+    }
   ]
 }

@@ -280,5 +280,13 @@
       "venue": "Amer. Math. Monthly, 59(6), 365-370",
       "note": "Extension of CRT to non-coprime moduli via compatibility conditions"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "crt",
+      "type": "core",
+      "description": "System of congruences x = a_i (mod n_i) with pairwise coprime moduli has a unique solution mod N",
+      "leanType": "pairwise_coprime ns -> exists! x (mod prod ns), forall i, x % ns i = as i"
+    }
   ]
 }

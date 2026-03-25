@@ -222,5 +222,13 @@
     "axiomCount": 0,
     "theoremCount": 16,
     "definitionCount": 0
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "crt_non_coprime",
+      "type": "core",
+      "description": "System x = a (mod m), x = b (mod n) has a solution iff gcd(m,n) | (a-b)",
+      "leanType": "exists x, x % m = a and x % n = b <-> Nat.gcd m n | (a - b)"
+    }
+  ]
 }
