@@ -19,7 +19,7 @@
       "trigonometry",
       "open-question"
     ],
-    "badge": "verified",
+    "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -41,6 +41,16 @@
         "theorem": "Real.sqrt_mul",
         "description": "sqrt(a*b) = sqrt(a)*sqrt(b) for a ≥ 0",
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "real_inner_self_eq_norm_sq",
+        "description": "⟪x, x⟫ = ‖x‖² — used for inner product computations on cevian points",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "norm_sub_sq_real",
+        "description": "‖x - y‖² = ‖x‖² - 2⟪x,y⟫ + ‖y‖² — key for sin-ratio computation",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
       }
     ],
     "originalContributions": [
@@ -48,7 +58,7 @@
       "spherical_ceva_product_eq_weight_ratio: triple product of sin-ratios = (β_D/α_D)·(β_E/α_E)·(β_F/α_F)",
       "spherical_ceva_weight_balance_iff: product = 1 ↔ α_D·α_E·α_F = β_D·β_E·β_F",
       "spherical_ceva_iff_weight_balance: main theorem — concrete algebraic Ceva condition via unit vectors",
-      "Bridges CevasTheoremSinRatio.lean and CevasTheoremNonEuclidean.lean via explicit weight parameters"
+      "Conceptual bridge between the sin-ratio and non-Euclidean Ceva formalizations, though the sin-ratio formula is re-derived here rather than imported from CevasTheoremSinRatio.lean"
     ],
     "dateAdded": "2026-02-24",
     "axiomCount": 0,
@@ -117,12 +127,28 @@
       "mathContext": "Apply sin_ratio_cevian_point to each cevian: $D$ on $BC$ with weights $(\\alpha_D, \\beta_D)$, $E$ on $CA$ with $(\\alpha_E, \\beta_E)$, $F$ on $AB$ with $(\\alpha_F, \\beta_F)$. Product: $\\frac{\\sin BD}{\\sin DC} \\cdot \\frac{\\sin CE}{\\sin EA} \\cdot \\frac{\\sin AF}{\\sin FB} = \\frac{\\beta_D \\beta_E \\beta_F}{\\alpha_D \\alpha_E \\alpha_F}$."
     },
     {
-      "id": "weight-balance",
-      "title": "Weight Balance Criterion and Main Theorem",
+      "id": "weight-balance-criterion",
+      "title": "Weight Balance Criterion",
       "startLine": 170,
+      "endLine": 201,
+      "summary": "spherical_ceva_weight_balance_iff: the concurrency condition product=1 iff α_D·α_E·α_F = β_D·β_E·β_F. weight_balance_symmetric: the condition is symmetric under cyclic permutation.",
+      "mathContext": "Concurrency: $\\frac{\\beta_D \\beta_E \\beta_F}{\\alpha_D \\alpha_E \\alpha_F} = 1 \\iff \\alpha_D \\alpha_E \\alpha_F = \\beta_D \\beta_E \\beta_F$."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 203,
+      "endLine": 216,
+      "summary": "equal_weight_ceva: equal weights α_i = β_i = 1 give the medial cevians (concurrent by α·α·α = β·β·β = 1).",
+      "mathContext": "Equal weights $\\alpha_i = \\beta_i$ give arc-bisecting cevians. Their concurrency $1 \\cdot 1 \\cdot 1 = 1 \\cdot 1 \\cdot 1$ is trivially verified."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: Spherical Ceva via Weight Balance",
+      "startLine": 218,
       "endLine": 262,
-      "summary": "spherical_ceva_weight_balance_iff, weight_balance_symmetric, equal_weight_ceva, and spherical_ceva_iff_weight_balance. The concurrency condition product=1 iff α_D·α_E·α_F = β_D·β_E·β_F.",
-      "mathContext": "Concurrency: $\\frac{\\beta_D \\beta_E \\beta_F}{\\alpha_D \\alpha_E \\alpha_F} = 1 \\iff \\alpha_D \\alpha_E \\alpha_F = \\beta_D \\beta_E \\beta_F$. This is the spherical Ceva condition in weight-balance form. Equal weights $\\alpha_i = \\beta_i$ give concurrent medians (arc-bisecting cevians)."
+      "summary": "spherical_ceva_iff_weight_balance: the full iff statement connecting the sin-product form to the weight-product form — the main result of the file.",
+      "mathContext": "The complete spherical Ceva theorem: $\\frac{\\sin BD}{\\sin DC} \\cdot \\frac{\\sin CE}{\\sin EA} \\cdot \\frac{\\sin AF}{\\sin FB} = 1 \\iff \\alpha_D \\alpha_E \\alpha_F = \\beta_D \\beta_E \\beta_F$."
     }
   ],
   "crossReferences": [
@@ -150,11 +176,6 @@
       "targetId": "law-of-cosines",
       "relationship": "foundational",
       "description": "The spherical law of cosines $\\cos c = \\cos a \\cos b + \\sin a \\sin b \\cos C$ is the fundamental identity relating angles and sides on the sphere. This entry's inner product computation $\\langle B, D \\rangle = (\\alpha + \\beta m)/n$ is the unit-vector version of the same geometric relationship."
-    },
-    {
-      "targetId": "pythagorean-theorem",
-      "relationship": "related",
-      "description": "The Pythagorean theorem and Ceva's theorem are both fundamental results about triangles that admit deep generalizations: Pythagoras to inner product spaces (via $\\|x+y\\|^2 = \\|x\\|^2 + \\|y\\|^2$ for orthogonal vectors), Ceva to spherical and projective geometry as formalized here."
     }
   ],
   "conclusion": {

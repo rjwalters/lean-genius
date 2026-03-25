@@ -15,7 +15,7 @@
       "cauchy-schwarz",
       "minkowski",
       "inner-product",
-      "open-problem"
+      "equality-characterization"
     ],
     "badge": "verified",
     "sorries": 0,
@@ -39,14 +39,24 @@
         "module": "Mathlib.Analysis.InnerProductSpace.Basic"
       },
       {
-        "theorem": "inner_smul_left",
-        "description": "⟪c•f,g⟫ = c * ⟪f,g⟫ for real scalars",
+        "theorem": "real_inner_smul_left",
+        "description": "⟪c•f,g⟫_ℝ = c * ⟪f,g⟫_ℝ for real scalars",
         "module": "Mathlib.Analysis.InnerProductSpace.Basic"
       },
       {
-        "theorem": "inner_smul_right",
-        "description": "⟪f,c•g⟫ = conj(c) * ⟪f,g⟫",
+        "theorem": "real_inner_smul_right",
+        "description": "⟪f,c•g⟫_ℝ = c * ⟪f,g⟫_ℝ for real scalars",
         "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "norm_smul",
+        "description": "‖c•f‖ = |c| * ‖f‖ — used for norm computations of scaled vectors",
+        "module": "Mathlib.Analysis.NormedSpace.Basic"
+      },
+      {
+        "theorem": "norm_eq_zero",
+        "description": "‖f‖ = 0 ↔ f = 0 — used for proportionality characterization",
+        "module": "Mathlib.Analysis.Normed.Group.Basic"
       },
       {
         "theorem": "real_inner_comm",
@@ -179,6 +189,7 @@
     "lineCount": 91,
     "axiomCount": 0,
     "theoremCount": 3,
+    "substantiveTheoremCount": 3,
     "definitionCount": 0
   },
   "references": [

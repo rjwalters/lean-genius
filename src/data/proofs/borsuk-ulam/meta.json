@@ -19,20 +19,25 @@
     "sorries": 0,
     "mathlibDependencies": [
       {
-        "theorem": "Topology.Basic",
-        "description": "Foundational topology definitions",
-        "module": "Mathlib.Topology.Basic"
+        "theorem": "Metric.mem_sphere",
+        "description": "Characterization of sphere membership via distance",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
       },
       {
-        "theorem": "Analysis.InnerProductSpace",
-        "description": "Inner product space and norm definitions",
-        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+        "theorem": "norm_neg",
+        "description": "‖-x‖ = ‖x‖, used for gadget oddness",
+        "module": "Mathlib.Analysis.Normed.Group.Basic"
+      },
+      {
+        "theorem": "continuous_neg",
+        "description": "Negation is continuous, used for gadget continuity",
+        "module": "Mathlib.Topology.Algebra.Group.Basic"
       }
     ],
     "originalContributions": [
-      "Complete proof via covering space theory",
-      "Gadget function construction g(x) = f(x) - f(-x)",
-      "No-odd-map lemma formalization"
+      "Proof architecture via gadget function construction, reducing Borsuk-Ulam to the topological obstruction (axiomatized pending Mathlib covering space theory)",
+      "Gadget function g(x) = f(x) - f(-x) with formalized properties: continuity, oddness, nonzero-on-sphere",
+      "Modular proof structure suitable for completing when Mathlib gains covering space theory"
     ],
     "dateAdded": "2025-12-22",
     "lineCount": 265,

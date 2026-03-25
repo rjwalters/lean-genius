@@ -69,28 +69,28 @@
       "priority": "high",
       "target": "enricher",
       "description": "Fix lineCount in meta.json: either set to ~124 (the focused range lines 220-343) or add a focusedRange field. The current 372-line count is the full shared file and misrepresents this sub-entry's scope.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "medium",
       "target": "enricher",
       "description": "Replace the catch-all 'header' section (lines 1-219) with a focused predecessor summary that explains what this sub-entry builds on from the parent, without claiming that content as its own.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "medium",
       "target": "enricher",
       "description": "Change badge from 'mathlib' to 'original' — the duality identity and dual argument are genuine original proofs, not Mathlib wrappers.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "low",
       "target": "enricher",
       "description": "Trim cross-references to those directly relevant to negative monotonicity/duality. Remove cauchy-schwarz, cauchy-schwarz-integral, triangle-inequality, and mean-value-theorem (these belong to the parent entry).",
-      "status": "open"
+      "status": "resolved"
     }
   ],
 

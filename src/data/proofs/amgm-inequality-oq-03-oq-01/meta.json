@@ -16,7 +16,7 @@
       "classic",
       "research"
     ],
-    "badge": "mathlib",
+    "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -53,7 +53,8 @@
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
-    "lineCount": 372,
+    "lineCount": 124,
+    "focusedRange": {"startLine": 220, "endLine": 343},
     "assumptions": "0 axioms, 0 sorries. Core building blocks (Jensen, rpow arithmetic) from Mathlib; original proofs for duality identity and negative-exponent monotonicity.",
     "mathlib_version": "4.26.0"
   },
@@ -79,12 +80,12 @@
   },
   "sections": [
     {
-      "id": "header",
-      "title": "Module Header and Imports",
-      "startLine": 1,
+      "id": "parent-dependencies",
+      "title": "Dependencies from Parent Entry",
+      "startLine": 57,
       "endLine": 219,
-      "summary": "Module docstring documenting the problem statement, background, and references; 4 Mathlib imports covering required modules; universe/variable declarations; 3 definitions; 7 theorems",
-      "mathContext": "How do weighted power means $M_r(z,w) = (\\sum w_i z_i^r)^{1/r}$ interpolate between AM and GM? Proves monotonicity $M_r \\leq M_s$ for $r \\leq s$, with special cases HM $\\leq$ GM $\\leq$ AM."
+      "summary": "This sub-entry builds on the parent file's definitions (weightedPowerMean, weightedGeomMean, weightedArithMean) and the positive monotonicity theorem (power_mean_monotone_pos). Lines 1-219 belong to the parent entry amgm-inequality-oq-03.",
+      "mathContext": "Prerequisites: $M_p = (\\sum w_i z_i^p)^{1/p}$, $\\text{GM} = \\prod z_i^{w_i}$, and the positive case $M_r \\leq M_s$ for $0 < r \\leq s$ (via Jensen). This sub-entry extends these to negative exponents."
     },
     {
       "id": "duality-identity",
@@ -145,7 +146,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 372,
+    "lineCount": 124,
     "structureCount": 0,
     "axiomCount": 0,
     "theoremCount": 13,
@@ -169,34 +170,14 @@
       "description": "The AM-GM inequality is the r=1, s=0 case of the general power mean monotonicity chain"
     },
     {
-      "targetId": "cauchy-schwarz",
-      "relationship": "related",
-      "description": "Both are fundamental inequalities in analysis; Cauchy-Schwarz can be derived from the r=2 power mean"
-    },
-    {
-      "targetId": "cauchy-schwarz-integral",
-      "relationship": "related",
-      "description": "The Bunyakovsky-Schwarz integral inequality is the continuous/L² analog of the discrete M₁ ≤ M₂ power mean inequality"
-    },
-    {
       "targetId": "amgm-inequality-oq-02",
       "relationship": "related",
       "description": "Maclaurin's inequalities via elementary symmetric polynomials give an alternative chain between AM and GM using e_k means — complementary to the power mean approach used here"
     },
     {
-      "targetId": "triangle-inequality",
-      "relationship": "related",
-      "description": "For p ≥ 1, power mean monotonicity M₁ ≤ M_p implies Minkowski's inequality (the L^p triangle inequality), connecting the discrete mean hierarchy to normed space geometry"
-    },
-    {
       "targetId": "shannon-entropy",
       "relationship": "related",
       "description": "Shannon entropy H(X) = -∑ pᵢ log pᵢ is the α→1 limit of Rényi entropy H_α = (1/(1-α))·log ∑ pᵢ^α. Since H_α ∝ log M_{α-1}, the duality M_r(z) = M_{-r}(z⁻¹)⁻¹ translates to a duality on Rényi entropies — the negative power mean monotonicity here implies the corresponding Rényi entropy monotonicity for α > 1"
-    },
-    {
-      "targetId": "mean-value-theorem",
-      "relationship": "related",
-      "description": "The mean value theorem underpins the r→0 limit case: proving lim_{r→0} M_r = GM requires L'Hôpital's rule (which depends on MVT). While this file handles only the r < 0 case, the mixed-sign crossing r < 0 < s ultimately depends on the r=0 bridge that MVT enables"
     },
     {
       "targetId": "sum-of-kth-powers",

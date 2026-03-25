@@ -62,14 +62,14 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Fix mathlibDependencies: rename inner_smul_left → real_inner_smul_left, inner_smul_right → real_inner_smul_right. Add missing dependencies: norm_smul (Mathlib.Analysis.NormedSpace.Basic), mul_right_cancel₀ (Mathlib.Algebra.Group.Basic), norm_nonneg (Mathlib.Analysis.Normed.Group.Basic), norm_eq_zero (Mathlib.Analysis.Normed.Group.Basic), sq_eq_zero_iff (Mathlib.Algebra.GroupPower.Basic), Real.norm_of_nonneg (Mathlib.Analysis.SpecificLimits.Basic).",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "low",
       "target": "enricher",
       "description": "Replace tag 'open-problem' with 'research' or 'equality-characterization'. Add substantiveTheoremCount: 3 and trivialPlaceholders: 0 to leanFile object.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
 
