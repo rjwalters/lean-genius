@@ -1,5 +1,27 @@
 [
   {
+    "id": "ann-header",
+    "proofId": "divisibility-truncation-general-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "context",
+    "title": "Unified Osculator: Merging Positive and Negative Cases",
+    "content": "This file answers an open question from the parent entry `divisibility-truncation-general`: can the positive and negative osculator theorems be merged into a single theorem with a signed osculator $c \\in \\mathbb{Z}$?\n\nThe answer is YES. The key insight is that the condition $d | (10c - 1)$ for positive osculators ($c > 0$) and $d | (10c_{\\text{neg}} + 1)$ for negative osculators are the same condition with $c$ replaced by $-c_{\\text{neg}}$, since $10(-c_{\\text{neg}}) - 1 = -(10c_{\\text{neg}} + 1)$.\n\nThis gives a single **Unified Osculator Theorem** that subsumes both cases, simplifying the proof architecture from two separate theorems to one plus a sign-conversion corollary.",
+    "mathContext": "Unification: $d | (10c_{\\text{neg}} + 1) \\iff d | (10(-c_{\\text{neg}}) - 1)$, so the negative osculator rule is the positive rule with $c \\mapsto -c_{\\text{neg}}$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "divisibility-truncation-general entry",
+      "positive and negative osculator concepts"
+    ],
+    "relatedConcepts": [
+      "osculator theory",
+      "theorem unification",
+      "signed arithmetic"
+    ]
+  },
+  {
     "id": "ann-div-mod-cast",
     "proofId": "divisibility-truncation-general-oq-01",
     "range": {
@@ -112,6 +134,28 @@
     "prerequisites": [
       "IsCoprime.dvd_of_dvd_mul_left",
       "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-verification",
+    "proofId": "divisibility-truncation-general-oq-01",
+    "range": {
+      "startLine": 137,
+      "endLine": 159
+    },
+    "type": "context",
+    "title": "Verification Examples and API Summary",
+    "content": "Three verification examples confirm the dual osculator sum theorem: $5 + 2 = 7$ for $d = 7$, $4 + 9 = 13$ for $d = 13$, and $12 + 5 = 17$ for $d = 17$. Each is discharged by providing the explicit quotient witness via `norm_num`.\n\nSanity checks verify divisibility with `native_decide`: $7 | 49$, $13 | 169$, $19 | 57$, and $\\neg(7 | 50)$. The `#check` commands confirm the three main theorems are accessible: `unified_osculator`, `neg_osculator_from_unified`, and `dual_osculators_sum`.",
+    "mathContext": "Verified: $c_+ + c_- = d$ for $d \\in \\{7, 13, 17\\}$. Sanity: $7 | 49$ ✓, $\\neg(7 | 50)$ ✓.",
+    "significance": "technical",
+    "prerequisites": [
+      "norm_num",
+      "native_decide"
+    ],
+    "relatedConcepts": [
+      "verification examples",
+      "API surface",
+      "sanity checks"
     ]
   }
 ]
