@@ -1,0 +1,56 @@
+{
+  "id": "inverse-galois-oq-01",
+  "title": "Inverse Galois Problem: Non-Solvable Frontier",
+  "slug": "inverse-galois-oq-01",
+  "description": "Explores the boundary between solvable and non-solvable realms in the Inverse Galois Problem. Proves the complete characterization: Sn is solvable iff n <= 4. Shows A5 is simple, perfect, and not solvable. Establishes Galois-theoretic fixed field degree formulas. States the full Inverse Galois Conjecture.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-03-24",
+    "status": "axiomatized",
+    "tags": [
+      "algebra",
+      "galois-theory",
+      "group-theory",
+      "solvability",
+      "inverse-galois",
+      "open-problem",
+      "alternating-group",
+      "symmetric-group"
+    ],
+    "proofRepoPath": "Proofs/InverseGaloisOQ01.lean",
+    "additionalFiles": [
+      "Proofs/AbelRuffiniGaloisExtensions.lean",
+      "Proofs/InverseGalois.lean",
+      "Proofs/InverseGaloisA5.lean"
+    ],
+    "badge": "axiom",
+    "sorries": 3,
+    "axiomCount": 0,
+    "prerequisites": [
+      "Galois theory (Galois groups, splitting fields, fixed fields)",
+      "Group theory (symmetric groups, alternating groups, solvability, simplicity)",
+      "Field extensions (finrank, tower law)"
+    ],
+    "assumptions": "0 axiom declarations. 3 sorry(s): 2 census sorries (A5/S5 realization requires importing other files), 1 intentional sorry for the open Inverse Galois Conjecture.",
+    "leanFile": {
+      "lineCount": 448,
+      "theoremCount": 31,
+      "lemmaCount": 0,
+      "defCount": 0,
+      "axiomCount": 0,
+      "sorryCount": 3,
+      "imports": [
+        "Mathlib",
+        "Proofs.AbelRuffiniGaloisExtensions"
+      ],
+      "note": "Key results: sn_solvable_iff (Sn solvable iff n<=4), a5_simple, a5_commutator_eq_top (A5 is perfect), finrank_over_fixed_field ([K:K^H]=|H|), finrank_fixed_field_over_base ([K^H:F]=[G:H]), cayley_card (Cayley embedding), inverse_galois_conjecture (open problem). Census of 18+ explicitly realized groups."
+    },
+    "keyInsights": [
+      "The solvability divide at n=5 is the fundamental boundary: for n<=4 all symmetric groups are solvable (covered by Shafarevich), for n>=5 they are not",
+      "A5 is the smallest non-abelian simple group and the key obstruction to solvability of Sn for n>=5",
+      "A5 is perfect ([A5,A5]=A5) - its commutator subgroup equals itself, so the derived series stalls",
+      "The Galois correspondence gives [K:K^H]=|H| and [K^H:F]=[G:H] for any subgroup H of Gal(K/F)",
+      "Every finite group embeds into a symmetric group (Cayley), connecting IGP to Sn realizability"
+    ]
+  }
+}

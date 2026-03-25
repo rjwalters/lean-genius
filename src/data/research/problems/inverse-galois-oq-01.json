@@ -1,13 +1,13 @@
 {
   "slug": "inverse-galois-oq-01",
-  "title": "Does every finite group appear as a Galois group over ℚ",
-  "phase": "NEW",
+  "title": "Does every finite group appear as a Galois group over \u211a",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formalization an open mathematical problem in algebra: Does every finite group appear as a Galois group over ℚ.",
+    "plain": "Formalization an open mathematical problem in algebra: Does every finite group appear as a Galois group over \u211a.",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,24 +16,48 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-24T00:48:59.909Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "ACT",
+    "since": "2026-03-24T23:00:00.000Z",
+    "iteration": 2,
+    "focus": "Created InverseGaloisOQ01.lean with solvability characterization and structural results",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Add more non-solvable group realizations (PSL(2,7), A6)",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: Created 448-line proof with 31 theorems (0 axioms). Key: sn_solvable_iff, a5_simple, a5_commutator_eq_top, fixed field degree formulas.",
+    "builtItems": [
+      "sn_solvable_iff: Sn solvable iff n<=4",
+      "a5_simple: A5 is simple",
+      "a5_not_solvable: A5 not solvable via S5",
+      "a5_commutator_eq_top: A5 is perfect",
+      "finrank_over_fixed_field: [K:K^H]=|H|",
+      "finrank_fixed_field_over_base: [K^H:F]=[G:H]",
+      "sign_surjective: sign Sn->Z/2 surjective",
+      "cayley_card: Cayley embedding",
+      "inverse_galois_conjecture: formal IGC statement",
+      "Gallery entry: inverse-galois-oq-01"
+    ],
+    "insights": [
+      "Solvability divide at n=5 is the key IGP boundary",
+      "A5 perfection blocks derived series for n>=5",
+      "Every quotient of realized Galois group is realized",
+      "Cayley theorem reduces IGP to symmetric group realizability"
+    ],
+    "mathlibGaps": [
+      "No MulAction.toPermHom_injective (proved manually)",
+      "IsSimpleGroup uses eq_bot_or_eq_top_of_normal"
+    ],
+    "nextSteps": [
+      "Realize PSL(2,7) as Galois group over Q",
+      "Realize A6 via explicit polynomial",
+      "Prove quotient realizability theorem",
+      "Connect S5 realization to census"
+    ]
   },
   "tags": [
     "algebra",
