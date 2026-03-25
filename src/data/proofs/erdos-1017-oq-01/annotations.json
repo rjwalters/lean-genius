@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "ann-ecp-framework",
+    "proofId": "erdos-1017-oq-01",
+    "range": { "startLine": 38, "endLine": 64 },
+    "type": "definition",
+    "title": "Edge Clique Partition Framework",
+    "content": "The `EdgeCliquePartition` structure formalizes decompositions of a graph's edge set into complete subgraphs. Each partition consists of a finset of cliques (themselves finsets of vertices), with proofs that each element is a clique and every edge is covered. The clique partition number $\\text{cp}(G) = \\inf\\{|P| : P \\text{ is an edge clique partition}\\}$ is defined via `sInf`, and the predicate `usesOnlyEdgesAndTriangles` restricts cliques to size $\\leq 3$. This framework is the scaffolding for the entire formalization.",
+    "mathContext": "$\\text{cp}(G) = \\min\\{|\\mathcal{P}| : \\mathcal{P} \\text{ partitions } E(G) \\text{ into cliques}\\}$",
+    "significance": "key",
+    "relatedConcepts": ["edge clique partition", "clique partition number", "graph decomposition", "sInf"],
+    "prerequisites": ["Mathlib SimpleGraph", "Finset", "Fintype"]
+  },
+  {
+    "id": "ann-turan-bound",
+    "proofId": "erdos-1017-oq-01",
+    "range": { "startLine": 66, "endLine": 85 },
+    "type": "definition",
+    "title": "Turan Bound and Monotonicity",
+    "content": "The Turan bound $\\lfloor n^2/4 \\rfloor$ equals $\\text{ex}(n, K_3)$, the maximum edges in a triangle-free graph on $n$ vertices. This is the key threshold throughout the formalization: graphs below it are 'sparse' (triangle-free possible), graphs above it are 'dense' (must contain triangles). The monotonicity proof `turanBound_mono` uses `Nat.div_le_div_right` and `Nat.pow_le_pow_left`, and concrete values for $n = 0, \\ldots, 4$ are verified by `decide`.",
+    "mathContext": "$\\text{turanBound}(n) = \\lfloor n^2/4 \\rfloor = \\text{ex}(n, K_3)$",
+    "significance": "key",
+    "relatedConcepts": ["Turan theorem", "extremal graph theory", "triangle-free graphs", "Mantel theorem"],
+    "prerequisites": ["Turan's theorem", "extremal graph theory"]
+  },
+  {
+    "id": "ann-egp-theorem",
+    "proofId": "erdos-1017-oq-01",
+    "range": { "startLine": 87, "endLine": 110 },
+    "type": "technique",
+    "title": "Erdos-Goodman-Posa Theorem (1966)",
+    "content": "The EGP theorem is axiomatized: every graph on $n$ vertices can be edge-partitioned into at most $\\lfloor n^2/4 \\rfloor$ cliques, using only edges ($K_2$) and triangles ($K_3$). The proof sketch is: extract a maximal set of edge-disjoint triangles, leaving a triangle-free (hence bipartite by Ramsey) remainder with at most $\\lfloor n^2/4 \\rfloor$ edges by Turan. The corollary `cliquePartitionNum_le_turan` is proved from the axiom: the `sInf` of partition sizes is at most the EGP partition's size.",
+    "mathContext": "$f(n,k) \\leq \\lfloor n^2/4 \\rfloor$ for all $n, k$ (Erdos-Goodman-Posa 1966)",
+    "significance": "key",
+    "relatedConcepts": ["EGP theorem", "triangle extraction", "Ramsey theory", "bipartite remainder"],
+    "prerequisites": ["Turan's theorem", "Ramsey theory", "bipartite graphs"]
+  },
+  {
+    "id": "ann-extremal-bipartite",
+    "proofId": "erdos-1017-oq-01",
+    "range": { "startLine": 112, "endLine": 162 },
+    "type": "technique",
+    "title": "Extremal Example: Complete Bipartite Graph",
+    "content": "The complete bipartite graph $K_{k,k}$ is constructed on `Fin k \\oplus Fin k` with a `DecidableRel` instance for computability. Three axioms establish its properties: triangle-freeness ($K_{k,k}$ is bipartite so has no odd cliques), edge count ($k^2$), and the partition-equals-edges principle for triangle-free graphs. The main theorem `egp_tight_example` proves $\\text{cp}(K_{k,k}) = k^2$ by rewriting with these axioms, and `egp_tight_matches_turan` shows $k^2 = \\lfloor (2k)^2/4 \\rfloor$, confirming the EGP bound is tight.",
+    "mathContext": "$\\text{cp}(K_{k,k}) = k^2 = \\lfloor (2k)^2/4 \\rfloor = \\text{turanBound}(2k)$",
+    "significance": "key",
+    "relatedConcepts": ["complete bipartite graph", "extremal example", "tightness", "DecidableRel"],
+    "prerequisites": ["bipartite graphs", "Turan bound"]
+  },
+  {
+    "id": "ann-open-question",
+    "proofId": "erdos-1017-oq-01",
+    "range": { "startLine": 164, "endLine": 199 },
+    "type": "insight",
+    "title": "The Open Question: Dense Graphs with Large Cliques",
+    "content": "The predicate `isDense G` means $|E(G)| > \\lfloor n^2/4 \\rfloor$, forcing $G$ to contain a triangle (by Turan's theorem, axiomatized as `dense_contains_triangle`). The open question `erdos1017_question` asks: does every dense graph on $n$ vertices satisfy $\\text{cp}(G) < \\lfloor n^2/4 \\rfloor$? The savings theorems quantify the potential: a triangle saves 2 cliques, $K_4$ saves 5, $K_5$ saves 9, and $K_4$ saves more than twice what a triangle does. The challenge is that overlapping cliques make optimization NP-hard.",
+    "mathContext": "$K_r$ saves $\\binom{r}{2} - 1$ cliques: $K_3$ saves 2, $K_4$ saves 5, $K_5$ saves 9",
+    "significance": "key",
+    "relatedConcepts": ["dense graphs", "Turan threshold", "clique savings", "NP-hardness"],
+    "prerequisites": ["Turan's theorem", "EGP bound"]
+  },
+  {
+    "id": "ann-gyori-keszegh",
+    "proofId": "erdos-1017-oq-01",
+    "range": { "startLine": 200, "endLine": 241 },
+    "type": "technique",
+    "title": "Gyori-Keszegh K4-Free Resolution (2017)",
+    "content": "The Gyori-Keszegh theorem resolves the open question for $K_4$-free graphs: if $G$ is $K_4$-free with $\\lfloor n^2/4 \\rfloor + m$ edges, it contains $m$ edge-disjoint triangles, and $\\text{cp}(G) = \\lfloor n^2/4 \\rfloor - m$. The key theorem `k4free_improves` proves that dense $K_4$-free graphs strictly improve on the EGP bound. The proof is clean: set $t = \\text{turanBound}(n)$, observe $t > 0$ for $n \\geq 2$, note $k - t > 0$ by density, apply the Gyori-Keszegh partition formula, and conclude $t - (k-t) < t$.",
+    "mathContext": "$G$ is $K_4$-free with $\\lfloor n^2/4 \\rfloor + m$ edges $\\implies \\text{cp}(G) = \\lfloor n^2/4 \\rfloor - m$",
+    "significance": "key",
+    "relatedConcepts": ["Gyori-Keszegh theorem", "K4-free graphs", "edge-disjoint triangles", "triangle packing"],
+    "prerequisites": ["EGP theorem", "Turan bound", "triangle packing"]
+  },
+  {
+    "id": "ann-lovasz-covering",
+    "proofId": "erdos-1017-oq-01",
+    "range": { "startLine": 242, "endLine": 267 },
+    "type": "concept",
+    "title": "Lovasz Covering Bound and Edge-Coloring Duality",
+    "content": "Lovasz (1968) showed that any graph on $n$ vertices can be covered by at most $n(n-1)/2$ cliques. The duality $\\text{cp}(G) = \\chi'(\\bar{G})$ connects clique partition to the chromatic index of the complement, linking Problem #1017 to Vizing's theorem (1964). This duality means that improving the EGP bound is equivalent to improving edge-coloring bounds for complements of dense graphs. The covering bound is weaker than a partition bound because coverings allow edge overlap.",
+    "mathContext": "$\\text{cp}(G) = \\chi'(\\bar{G})$ (clique partition = edge-chromatic number of complement)",
+    "significance": "supporting",
+    "relatedConcepts": ["Lovasz covering", "Vizing's theorem", "chromatic index", "complement graph", "edge coloring"],
+    "prerequisites": ["edge coloring", "Vizing's theorem", "graph complement"]
+  },
+  {
+    "id": "ann-connections",
+    "proofId": "erdos-1017-oq-01",
+    "range": { "startLine": 268, "endLine": 274 },
+    "type": "context",
+    "title": "Supersaturation and Connections",
+    "content": "Razborov's flag algebra method (2010) proves triangle supersaturation: when $|E(G)| \\geq \\lfloor n^2/4 \\rfloor + m$, the graph contains at least $\\Omega(m^2)$ triangles. More triangles mean more potential savings for clique partitions, but exploiting this requires managing overlaps. The axiom here is a simplified lower bound ($\\geq m$ triangles). The full supersaturation result, combined with advanced packing techniques, is the most promising approach to resolving the general open question.",
+    "mathContext": "$|E(G)| \\geq \\lfloor n^2/4 \\rfloor + m \\implies \\text{triangles}(G) \\geq cm^2$ (Razborov 2010)",
+    "significance": "supporting",
+    "relatedConcepts": ["flag algebras", "Razborov", "supersaturation", "Kruskal-Katona", "triangle counting"],
+    "prerequisites": ["flag algebras", "Turan's theorem", "supersaturation"]
+  }
+]
