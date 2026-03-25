@@ -70,7 +70,8 @@
       "**Convex case is simpler**: In convex position, $O(n)$ distinct distances with multiplicity $O(n)$ gives $\\sum f(d)^2 = O(n^3)$ — no $\\log n$ factor, no polynomial method needed. The general case requires the algebraic machinery"
     ],
     "prerequisites": [
-      "Combinatorics and number theory"
+      "Algebraic geometry (algebraic curves, polynomial method)",
+      "Combinatorial geometry (incidence theorems, Szemerédi-Trotter)"
     ]
   },
   "sections": [

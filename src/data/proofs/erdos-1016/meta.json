@@ -39,7 +39,10 @@
       "**Bondy's quadratic threshold is far from tight**: the classic result that $n^2/4$ edges suffice for pancyclicity or bipartiteness gives a threshold of $\\Theta(n^2)$, vastly exceeding the true threshold of $n + O(\\log n)$"
     ],
     "prerequisites": [
-      "Combinatorics and number theory"
+      "Combinatorics (cycle structure, permutations)",
+      "Combinatorics (degree conditions, Ore's theorem)",
+      "Combinatorics (extremal graph theory, Ramsey theory)",
+      "Graph theory (Hamiltonian cycles, Eulerian paths)"
     ]
   },
   "sections": [

@@ -72,7 +72,10 @@
       "**Problem 404 Generalization:** The function $f(a,p) = \\sup\\{k : \\exists S \\ni a,\\ p^k \\mid \\sum_{x \\in S} x!\\}$ unifies Problems 403 and 404; Problem 403 is the instance $f(2,2) \\leq 254$, while the general $f(a,p)$ remains open for most values"
     ],
     "prerequisites": [
-      "Mathematical prerequisites vary by topic"
+      "Analysis (asymptotic estimates, generating functions)",
+      "Diophantine equations (integer solutions, descent)",
+      "Number theory (Fermat descent, modular methods)",
+      "Number theory (prime distribution, arithmetic functions)"
     ]
   },
   "sections": [
