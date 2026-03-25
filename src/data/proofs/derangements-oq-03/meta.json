@@ -81,8 +81,11 @@
       "**Factorial Convergence**: Convergence $1/(n+1)! \\to 0$ follows from `summable_altFactTerm.tendsto_atTop_zero` with a shift, connecting naturally to the tail bound."
     ],
     "prerequisites": [
-      "Combinatorics (counting, extremal problems)",
-      "Mathematical analysis"
+      "Derangements and the numDerangements recurrence in Mathlib",
+      "Taylor series and the exponential function (NormedSpace.exp_eq_tsum)",
+      "Alternating series estimation (Leibniz criterion)",
+      "Infinite sums in Lean (HasSum, tsum, Summable)",
+      "Strong induction (Nat.strong_induction_on)"
     ]
   },
   "sections": [
@@ -92,7 +95,7 @@
       "startLine": 1,
       "endLine": 40,
       "summary": "Overview of the sharp convergence rate |D(n)/n! - 1/e| ≤ 1/(n+1)! and imports (Derangements.Finite, SpecificLimits.Normed, ExpDeriv, InfiniteSum.Basic).",
-      "mathContext": "Overview of the sharp convergence rate |D(n)/n! - 1/e| ≤ 1/(n+1)! and imports (Derangements.Finite, SpecificLimits.Normed, ExpDeriv, InfiniteSum.Basic)."
+      "mathContext": "The main result: $\\left|\\frac{D(n)}{n!} - e^{-1}\\right| \\leq \\frac{1}{(n+1)!}$. Imports `Derangements.Finite` for `numDerangements`, `SpecificLimits.Normed` for `summable_pow_div_factorial`, `ExpDeriv` for `NormedSpace.exp_eq_tsum`, and `InfiniteSum.Basic` for `HasSum`/`tsum`."
     },
     {
       "id": "section-i",
@@ -100,7 +103,7 @@
       "startLine": 41,
       "endLine": 66,
       "summary": "Definition of altFactTerm k = (-1)^k/k! and altFactPartialSum n = ∑_{k=0}^n altFactTerm k. Helper lemmas: factorial_cast_pos, factorial_cast_ne_zero, altFactTerm_abs, altFactPartialSum_succ.",
-      "mathContext": "Definition of altFactTerm k = (-1)^k/k! and altFactPartialSum n = ∑_{k=0}^n altFactTerm k. Helper lemmas: factorial_cast_pos, factorial_cast_ne_zero, altFactTerm_abs, altFactPartialSum_succ."
+      "mathContext": "Defines $a_k = \\frac{(-1)^k}{k!}$ (`altFactTerm`) and $S_n = \\sum_{k=0}^n a_k$ (`altFactPartialSum`). The recurrence $S_{n+1} = S_n + a_{n+1}$ is proved as `altFactPartialSum_succ`. Helper: $|a_k| = 1/k!$ (`altFactTerm_abs`)."
     },
     {
       "id": "section-ii",
@@ -108,7 +111,7 @@
       "startLine": 67,
       "endLine": 91,
       "summary": "numDerangements_eq_factorial_mul_altSum: D(n) = n! · ∑_{k=0}^n (-1)^k/k! by strong induction. derangements_div_factorial: D(n)/n! = altFactPartialSum n.",
-      "mathContext": "numDerangements_eq_factorial_mul_altSum: D(n) = n! · ∑_{k=0}^n (-1)^k/k! by strong induction. derangements_div_factorial: D(n)/n! = altFactPartialSum n."
+      "mathContext": "Euler's identity: $D(n) = n! \\cdot \\sum_{k=0}^n \\frac{(-1)^k}{k!}$. Proved by strong induction using $D(n+2) = (n+1)(D(n) + D(n+1))$. Corollary: $D(n)/n! = S_n$, the $n$-th partial sum of $e^{-1}$'s Taylor series."
     },
     {
       "id": "section-iii",
@@ -116,7 +119,7 @@
       "startLine": 92,
       "endLine": 114,
       "summary": "summable_altFactTerm: the alternating series is summable. exp_neg_one_eq_tsum_alt: e^{-1} = ∑ (-1)^k/k! via NormedSpace.exp_eq_tsum.",
-      "mathContext": "summable_altFactTerm: the alternating series is summable. exp_neg_one_eq_tsum_alt: e^{-1} = ∑ (-1)^k/k! via NormedSpace.exp_eq_tsum."
+      "mathContext": "$e^{-1} = \\sum_{k=0}^\\infty \\frac{(-1)^k}{k!}$, via `NormedSpace.exp_eq_tsum` at $x = -1$. Summability follows from $|(-1)^k/k!| = 1/k! \\leq |{-1}|^k/k!$ and `summable_pow_div_factorial`."
     },
     {
       "id": "section-iv",
@@ -124,7 +127,7 @@
       "startLine": 115,
       "endLine": 261,
       "summary": "tsum_eq_partial_sum_add_tail: tail decomposition. alt_partial_sum_nonneg: non-negativity of ∑_{k<N} (-1)^k/(m+k)! (strong induction on pairs). alt_partial_sum_le_first: bounded above by 1/m!. alternating_tail_bound: |tail| ≤ 1/(n+1)!.",
-      "mathContext": "tsum_eq_partial_sum_add_tail: tail decomposition. alt_partial_sum_nonneg: non-negativity of ∑_{k<N} (-1)^k/(m+k)! (strong induction on pairs). alt_partial_sum_le_first: bounded above by 1/m!. alternat"
+      "mathContext": "Tail decomposition: $e^{-1} = S_n + R_n$ where $R_n = \\sum_{k=0}^\\infty \\frac{(-1)^k}{(n+1+k)!}$. Bounds: $0 \\leq \\sum_{k<N} \\frac{(-1)^k}{(m+k)!} \\leq \\frac{1}{m!}$ by pairing consecutive terms (each pair is non-negative since $(m+2k)! \\leq (m+2k+1)!$). Therefore $|R_n| \\leq \\frac{1}{(n+1)!}$."
     },
     {
       "id": "section-v",
@@ -132,7 +135,7 @@
       "startLine": 262,
       "endLine": 310,
       "summary": "derangements_convergence_rate: |D(n)/n! - e^{-1}| ≤ 1/(n+1)! (sharp bound). derangements_tendsto_inv_e: D(n)/n! → e^{-1} using Metric.tendsto_atTop and factorial tail convergence.",
-      "mathContext": "derangements_convergence_rate: |D(n)/n! - e^{-1}| ≤ 1/(n+1)! (sharp bound). derangements_tendsto_inv_e: D(n)/n! → e^{-1} using Metric.tendsto_atTop and factorial tail convergence."
+      "mathContext": "$\\left|\\frac{D(n)}{n!} - e^{-1}\\right| = |S_n - (S_n + R_n)| = |R_n| \\leq \\frac{1}{(n+1)!}$. Convergence: $\\frac{1}{(n+1)!} \\to 0$ implies $D(n)/n! \\to e^{-1}$ via `Metric.tendsto_atTop`."
     },
     {
       "id": "section-vi",
@@ -140,7 +143,7 @@
       "startLine": 311,
       "endLine": 342,
       "summary": "convergence_rate_monotone: error bound decreases with n. derangements_div_factorial_nonneg: ratio always ≥ 0. Concrete error bounds for n=0,1,2,3: |error| ≤ 1, 1/2, 1/6, 1/24.",
-      "mathContext": "convergence_rate_monotone: error bound decreases with n. derangements_div_factorial_nonneg: ratio always ≥ 0. Concrete error bounds for n=0,1,2,3: |error| ≤ 1, 1/2, 1/6, 1/24."
+      "mathContext": "Monotonicity: $\\frac{1}{(n+2)!} \\leq \\frac{1}{(n+1)!}$ since $(n+2)! = (n+2)(n+1)!$. Concrete: $|D(0)/0! - e^{-1}| \\leq 1$, $|D(1)/1! - e^{-1}| \\leq 1/2$, $|D(2)/2! - e^{-1}| \\leq 1/6$, $|D(3)/3! - e^{-1}| \\leq 1/24$."
     },
     {
       "id": "section-vii",
@@ -148,7 +151,7 @@
       "startLine": 343,
       "endLine": 405,
       "summary": "derangements_alternating_even: e^{-1} ≤ D(2n)/(2n)! (even partial sums overshoot). derangements_alternating_odd: D(2n+1)/(2n+1)! ≤ e^{-1} (odd partial sums undershoot).",
-      "mathContext": "derangements_alternating_even: e^{-1} ≤ D(2n)/(2n)! (even partial sums overshoot). derangements_alternating_odd: D(2n+1)/(2n+1)! ≤ e^{-1} (odd partial sums undershoot)."
+      "mathContext": "$\\frac{D(2n)}{(2n)!} = S_{2n} \\geq e^{-1}$ (even partial sums overshoot, since the tail $R_{2n}$ starts with a negative term $(-1)^{2n+1}/(2n+1)!$). $\\frac{D(2n+1)}{(2n+1)!} = S_{2n+1} \\leq e^{-1}$ (odd partial sums undershoot, since $R_{2n+1}$ starts positive)."
     }
   ],
   "conclusion": {
@@ -211,17 +214,42 @@
     {
       "targetId": "derangements",
       "relationship": "extends",
-      "description": "Parent formalization; this entry extends it with further exploration"
+      "description": "Parent formalization containing the base derangement count and inclusion-exclusion formula. This entry extends it with the sharp convergence rate to $1/e$"
     },
     {
       "targetId": "derangements-oq-02",
       "relationship": "sibling",
-      "description": "Sibling open question from the same parent: Partial Derangements: Permutations with Exactly k Fixed Poin"
+      "description": "Partial derangements: permutations with exactly $k$ fixed points. The convergence rate proved here for $k=0$ (no fixed points) generalizes: the probability of exactly $k$ fixed points converges to $e^{-1}/k!$ (Poisson distribution)"
     },
     {
       "targetId": "derangements-oq-02-oq-01",
       "relationship": "sibling",
-      "description": "Sibling open question from the same parent: Partial Derangements for Arbitrary Finite Types"
+      "description": "Partial derangements for arbitrary finite types, extending the concrete Fin n version"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "The transcendence of $e$ (Hermite, 1873) is deeply connected: this entry uses $e^{-1} = \\sum (-1)^k/k!$ as the exact limit. The fast convergence $|D(n)/n! - 1/e| \\leq 1/(n+1)!$ implies $e$ is well-approximated by rationals $D(n)/n!$, yielding irrationality of $e$ as a corollary (the approximation is too good for $e$ to be rational, by the Dirichlet approximation theorem)"
+    },
+    {
+      "targetId": "taylor-theorem",
+      "relationship": "foundational",
+      "description": "The Taylor series $e^x = \\sum x^k/k!$ evaluated at $x = -1$ gives $e^{-1} = \\sum (-1)^k/k!$, the infinite series whose partial sums equal $D(n)/n!$. The alternating series estimation used here is a classical consequence of Taylor's theorem with remainder"
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "related",
+      "description": "Both are combinatorial probability results involving permutations: the birthday problem computes collision probabilities, while derangements compute the probability of no fixed points. Both converge to limits involving $e$ ($1 - e^{-n^2/2N}$ for birthdays, $1/e$ for derangements)"
+    },
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "foundational",
+      "description": "The classical derivation of $D(n) = n! \\sum_{k=0}^n (-1)^k/k!$ uses inclusion-exclusion on the sets $A_i = \\{\\sigma : \\sigma(i) = i\\}$. This entry proves the identity by induction instead, but the inclusion-exclusion derivation motivates the formula"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation $n! \\approx \\sqrt{2\\pi n}(n/e)^n$ provides asymptotics for the factorial denominator in the error bound $1/(n+1)!$. Combined with this entry's result, it gives the exponential decay rate of the error: $|D(n)/n! - 1/e| \\lesssim e^{n+1}/(n+1)^{n+3/2}$"
     }
   ]
 }
