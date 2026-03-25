@@ -120,10 +120,76 @@ axiom eps87_constant_pos : eps87_constant > 0
 axiom eps87_upper_bound (n K : ℕ) (hn : n > 0) (hrun : IsDistinctTotientRun n K) :
     (K : ℝ) ≤ (n : ℝ) / Real.exp (eps87_constant * (Real.log (n : ℝ)) ^ ((1 : ℝ)/3))
 
+/-- The maxDistinctRunLength is bounded by the EPS87 bound for n > 0. -/
+private lemma maxDistinctRunLength_le_eps87 (n : ℕ) (hn : n > 0) :
+    (maxDistinctRunLength n : ℝ) ≤
+      (n : ℝ) / Real.exp (eps87_constant * (Real.log (n : ℝ)) ^ ((1 : ℝ) / 3)) := by
+  unfold maxDistinctRunLength
+  set S : Set ℕ := {K : ℕ | IsDistinctTotientRun n K} with hS_def
+  set B := (n : ℝ) / Real.exp (eps87_constant * (Real.log ↑n) ^ ((1 : ℝ) / 3)) with hB_def
+  have hB : 0 ≤ B := div_nonneg (Nat.cast_nonneg n) (le_of_lt (Real.exp_pos _))
+  have hne : S.Nonempty := ⟨1, distinctRun_one n⟩
+  have hsup : sSup S ≤ ⌊B⌋₊ :=
+    csSup_le hne fun K hK => Nat.le_floor (eps87_upper_bound n K hn hK)
+  calc (↑(sSup S) : ℝ) ≤ ↑⌊B⌋₊ := Nat.cast_le.mpr hsup
+    _ ≤ B := Nat.floor_le hB
+
 /-- Corollary: The run length is o(n). -/
 theorem run_length_sublinear :
     Tendsto (fun n : ℕ => (maxDistinctRunLength n : ℝ) / (n : ℝ)) atTop (𝓝 (0 : ℝ)) := by
-  sorry
+  have hc := eps87_constant_pos
+  -- Prepare bounding function g and prove g → 0
+  have h_log : Tendsto (fun n : ℕ => Real.log (↑n : ℝ)) atTop atTop :=
+    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  -- (log n)^(1/3) → ∞
+  have h_rpow : Tendsto (fun n : ℕ => (Real.log (↑n : ℝ)) ^ ((1 : ℝ) / 3)) atTop atTop := by
+    rw [Filter.tendsto_atTop_atTop]
+    intro b
+    obtain ⟨N, hN⟩ := (Filter.tendsto_atTop_atTop.mp h_log) ((max b 0) ^ (3 : ℕ))
+    exact ⟨N, fun n hn => by
+      have hlog := hN n hn
+      have hM : (0 : ℝ) ≤ max b 0 := le_max_right b 0
+      suffices hsuff : ((max b 0) ^ (3 : ℕ) : ℝ) ^ ((1 : ℝ) / 3) = max b 0 by
+        calc b ≤ max b 0 := le_max_left b 0
+          _ = ((max b 0) ^ (3 : ℕ) : ℝ) ^ ((1 : ℝ) / 3) := hsuff.symm
+          _ ≤ (Real.log (↑n : ℝ)) ^ ((1 : ℝ) / 3) :=
+              Real.rpow_le_rpow (pow_nonneg hM 3) hlog (by norm_num)
+      rw [← Real.rpow_natCast (max b 0) 3, ← Real.rpow_mul hM]
+      have : ((3 : ℕ) : ℝ) * ((1 : ℝ) / 3) = 1 := by push_cast; ring
+      rw [this, Real.rpow_one]⟩
+  -- c * (log n)^(1/3) → ∞
+  have h_mul : Tendsto (fun n : ℕ => eps87_constant * (Real.log (↑n : ℝ)) ^ ((1 : ℝ) / 3))
+      atTop atTop := by
+    rw [Filter.tendsto_atTop_atTop]
+    intro b
+    obtain ⟨N, hN⟩ := Filter.tendsto_atTop_atTop.mp h_rpow (b / eps87_constant)
+    exact ⟨N, fun n hn => by
+      have h := hN n hn
+      have hcb : eps87_constant * (b / eps87_constant) = b := by field_simp
+      linarith [mul_le_mul_of_nonneg_left h (le_of_lt hc)]⟩
+  -- g = (exp ∘ (c * ·) ∘ (·^(1/3)) ∘ log ∘ ↑)⁻¹ → 0
+  have h_lim : Tendsto (fun n : ℕ => (Real.exp (eps87_constant *
+      (Real.log (↑n : ℝ)) ^ ((1 : ℝ) / 3)))⁻¹) atTop (𝓝 0) :=
+    tendsto_inv_atTop_zero.comp (Real.tendsto_exp_atTop.comp h_mul)
+  -- Upper bound
+  have h_bound : ∀ n : ℕ, (maxDistinctRunLength n : ℝ) / ↑n ≤
+      (Real.exp (eps87_constant * (Real.log (↑n : ℝ)) ^ ((1 : ℝ) / 3)))⁻¹ := by
+    intro n
+    by_cases hn : n = 0
+    · simp [hn]
+    · have hn' := Nat.pos_of_ne_zero hn
+      have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr hn'
+      have hexp_pos := Real.exp_pos (eps87_constant * (Real.log ↑n) ^ ((1 : ℝ) / 3))
+      rw [inv_eq_one_div, div_le_div_iff₀ hn_pos hexp_pos, one_mul]
+      calc ↑(maxDistinctRunLength n) *
+              Real.exp (eps87_constant * (Real.log ↑n) ^ ((1 : ℝ) / 3))
+          ≤ (↑n / Real.exp (eps87_constant * (Real.log ↑n) ^ ((1 : ℝ) / 3))) *
+              Real.exp (eps87_constant * (Real.log ↑n) ^ ((1 : ℝ) / 3)) :=
+            mul_le_mul_of_nonneg_right (maxDistinctRunLength_le_eps87 n hn') (le_of_lt hexp_pos)
+        _ = ↑n := div_mul_cancel₀ _ (ne_of_gt hexp_pos)
+  -- Squeeze: 0 ≤ f ≤ g, g → 0
+  exact squeeze_zero (fun n => div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _))
+    h_bound h_lim
 
 /-! ## Part V: The Main Conjecture -/
 
@@ -331,11 +397,13 @@ theorem totient_eq_two_iff (n : ℕ) : phi n = 2 ↔ n = 3 ∨ n = 4 ∨ n = 6 :
         simp only [hS, Finset.mem_filter, Finset.mem_range]
         refine ⟨by omega, ?_⟩
         show Nat.gcd n (n - 1) = 1
-        have h1 : Nat.gcd n (n - 1) ∣ 1 := by
-          have := Nat.dvd_sub' (Nat.gcd_dvd_left n (n - 1)) (Nat.gcd_dvd_right n (n - 1))
-          rwa [show n - (n - 1) = 1 from by omega] at this
-        exact Nat.le_antisymm (Nat.le_of_dvd one_pos h1)
-          (Nat.gcd_pos_of_pos_left (n - 1) (by omega))
+        -- Consecutive integers are coprime: gcd(n, n-1) = 1
+        -- n = 1 + (n-1), so n % (n-1) = 1, then gcd(n, n-1) = gcd(n-1, 1) = 1
+        have hmod : n % (n - 1) = 1 := by
+          nth_rewrite 1 [show n = 1 + (n - 1) from by omega]
+          rw [Nat.add_mod_right, Nat.mod_eq_of_lt (by omega : 1 < n - 1)]
+        rw [Nat.gcd_comm, Nat.gcd_rec, hmod]
+        simp
       have hsub : ({1, 5, n - 1} : Finset ℕ) ⊆ S := by
         intro x hx; simp only [Finset.mem_insert, Finset.mem_singleton] at hx
         rcases hx with rfl | rfl | rfl <;> assumption
