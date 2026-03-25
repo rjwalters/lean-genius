@@ -31,6 +31,12 @@ Key results:
 - `chebyshevNodes_in_range`: Chebyshev nodes lie in [-1, 1]
 - `chebyshevNodes_distinct`: Chebyshev nodes are pairwise distinct
 
+## Axiom Correction
+
+The original axiom `lagrangeIntegral_upper_bound` (I ≤ 2n for all configurations)
+was mathematically false: clustering nodes makes I arbitrarily large.
+Replaced with `chebyshev_integral_bounded` (I ≤ 2 for Chebyshev nodes).
+
 References:
 - Erdős: Original problem formulation
 - Turetskii (1940): Early results on Lebesgue constants
@@ -194,15 +200,13 @@ theorem lagrangeIntegral_lower_bound (n : ℕ) (hn : n ≥ 1) (nodes : Fin n →
   exact intervalIntegral.integral_nonneg (by norm_num : (-1 : ℝ) ≤ 1)
     fun u _hu => by linarith [hpw u]
 
-/--
-**Upper bound**: I is bounded above by 2n for any configuration.
--/
-axiom lagrangeIntegral_upper_bound (n : ℕ) (hn : n ≥ 1) (nodes : Fin n → ℝ)
-    (hd : AreDistinct n nodes) (hrange : ∀ i, -1 ≤ nodes i ∧ nodes i ≤ 1) :
-    lagrangeIntegral n nodes ≤ 2 * n
-
 /-
 ## Part III: Chebyshev Nodes
+
+Note: The original axiom `lagrangeIntegral_upper_bound` (I ≤ 2n for all configurations)
+was mathematically false: clustering nodes at x₁=0, x₂=ε gives
+∫₋₁¹ l₂² dx = 2/(3ε²) → ∞. No universal upper bound exists.
+The correct statement is about specific node configurations (Chebyshev).
 -/
 
 /--
@@ -252,6 +256,15 @@ theorem chebyshevNodes_distinct (n : ℕ) (hn : n ≥ 2) :
   suffices h : (i : ℝ) = (j : ℝ) from Fin.ext (by exact_mod_cast h)
   field_simp at h_arg_eq
   linarith
+
+/--
+**Existence of bounded configurations**: For Chebyshev nodes, I ≤ 2.
+
+Since ∑ₖ l_k(x) = 1 (partition of unity) and Chebyshev nodes are well-separated,
+the integral is bounded. At n=1, I=2 exactly. For n≥2, I < 2.
+-/
+axiom chebyshev_integral_bounded (n : ℕ) (hn : n ≥ 1) :
+    lagrangeIntegral n (chebyshevNodes n) ≤ 2
 
 /--
 For Chebyshev nodes, I ≈ 2 - c/n for some constant c.

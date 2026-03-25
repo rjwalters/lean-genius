@@ -25,8 +25,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 3,
     "theoremCount": 9,
-    "lineCount": 297,
-    "assumptions": "3 axioms: lagrangeIntegral_upper_bound, chebyshev_integral_estimate, erdos_1131_conjecture (OPEN). 0 sorries. 8 former axioms now proved: lagrangeIntegral replaced with interval integral def, lagrangeBasis_self/other proved from product definition, chebyshevNodes_in_range from cos bounds, chebyshevNodes_distinct from cos strict anti on [0,pi], sum_sq_lagrangeBasis_ge and lagrangeIntegral_lower_bound proved via Cauchy-Schwarz and integral monotonicity.",
+    "lineCount": 310,
+    "assumptions": "3 axioms: chebyshev_integral_bounded (corrected: replaces false lagrangeIntegral_upper_bound), chebyshev_integral_estimate, erdos_1131_conjecture (OPEN). 0 sorries. The original axiom 'I ≤ 2n for all configurations' was mathematically false (clustering nodes makes I arbitrarily large). Replaced with correct axiom 'I ≤ 2 for Chebyshev nodes'.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -83,8 +83,8 @@
       "title": "Known Bounds",
       "startLine": 76,
       "endLine": 92,
-      "summary": "Lower bound $I \\ge 2/n$ (Cauchy-Schwarz on the partition of unity $\\sum l_k = 1$). Crude upper bound $I \\le 2n$. The ESVV94 tight bounds are $2 - O((\\log n)^2/n) \\le \\min I \\le 2 - 2/(2n-1)$.",
-      "mathContext": "Lower bound $I \\ge 2/n$ (Cauchy-Schwarz on the partition of unity $\\sum l_k = 1$). Crude upper bound $I \\le 2n$. The ESVV94 tight bounds are $2 - O((\\log n)^2/n) \\le \\min I \\le 2 - 2/(2n-1)$."
+      "summary": "Lower bound $I \\ge 2/n$ (Cauchy-Schwarz on the partition of unity $\\sum l_k = 1$). For Chebyshev nodes $I \\le 2$. Note: no universal upper bound exists (clustering nodes makes $I$ arbitrarily large). ESVV94 tight bounds: $2 - O((\\log n)^2/n) \\le \\min I \\le 2 - 2/(2n-1)$.",
+      "mathContext": "Lower bound $I \\ge 2/n$ (Cauchy-Schwarz on the partition of unity $\\sum l_k = 1$). For Chebyshev nodes $I \\le 2$. Note: no universal upper bound exists (clustering nodes makes $I$ arbitrarily large). ESVV94 tight bounds: $2 - O((\\log n)^2/n) \\le \\min I \\le 2 - 2/(2n-1)$."
     },
     {
       "id": "chebyshev-nodes",
@@ -158,9 +158,9 @@
     ],
     "opens": [],
     "namespace": "Erdos1131",
-    "lineCount": 264,
-    "axiomCount": 9,
-    "theoremCount": 1,
-    "definitionCount": 5
+    "lineCount": 310,
+    "axiomCount": 3,
+    "theoremCount": 9,
+    "definitionCount": 6
   }
 }
